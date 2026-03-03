@@ -354,3 +354,7 @@ After any correction from the user, append the lesson to this section:
 - Git commands in sandbox need: `set +H` (disable bash history expansion for `!!` in folder name), `GIT_DISCOVERY_ACROSS_FILESYSTEM=1`, and `git -C "$REPO"` instead of `cd`
 - Netlify deploys use the MCP connector's proxy auth command — not direct git-based deploys (those hit strict contributor verification)
 - Always use Python `os` module for file operations when folder names contain `!!` — bash escaping is unreliable
+- Netlify MCP deploy caches based on remote git commit hash — if local commits aren't pushed to GitHub, Netlify reuses cached files from the last known remote commit. New files that were never in the remote repo won't get uploaded automatically.
+- **Deploy workaround for new files:** If a new file returns 404 after deploy, append a comment like `<!-- deploy-force: YYYY-MM-DD -->` to the file so Netlify's diff engine detects it as "changed" and uploads it. Only needed for files that never existed in a previous successful deploy.
+- Netlify site is connected to `seascape-vacations-site` on GitHub (not `seascape-vacations-2026` which is the local remote) — commit URLs in deploy data reference the former
+- Property photo images use Hostaway CDN (`bookingenginecdn.hostaway.com/listing/51916-{listingID}-{hash}`). **Dockside Dreams = listing 189511, The Oasis = listing 206016.** Both `bookingenginecdn` (CDN display images) and `hostaway-platform.s3` (schema images) must use the same listing ID per property. When they mismatch, photos appear swapped on the live site.

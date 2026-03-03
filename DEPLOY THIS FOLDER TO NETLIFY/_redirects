@@ -37,3 +37,8 @@
 # Property deep links (legacy)
 /listings/:id   /?listing=:id   301
 /rentals/*   /?rental=:splat   301
+
+/area-guide-ami-preview  /area-guide-ami  301
+/area-guide-ami-preview.html  /area-guide-ami  301
+
+/stays/rentals-with-elevators/  /stays/vacation-rentals-with-elevator/  301
