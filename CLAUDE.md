@@ -14,9 +14,9 @@
 2. **Property owners** — considering management services for their vacation rental
 
 **Live site:** https://seascape-vacations.com
-**GitHub:** https://github.com/uncfreak1255-code/seascape-vacations-2026
+**GitHub:** https://github.com/uncfreak1255-code/seascape-vacations-site.git
 **Hosting:** Netlify (site ID: `380fdf4b-91dd-4c6d-a31c-252c07aade81`)
-**Stack:** Eleventy (11ty) static site generator, deployed to Netlify
+**Stack:** Static HTML site deployed to Netlify
 **Domain authority:** Low (new site) — prioritize low-competition long-tail keywords
 
 ---
@@ -27,8 +27,8 @@
 /                               # Source repo root
 ├── DEPLOY THIS FOLDER TO NETLIFY/  # ← THIS is what gets deployed to Netlify
 │   ├── index.html              # Homepage
-│   ├── stays/                  # 71 programmatic SEO pages (vacationer-facing)
-│   ├── guides/                 # 30 area guides (informational content)
+│   ├── stays/                  # 86+ programmatic SEO pages (vacationer-facing)
+│   ├── guides/                 # 46+ area guides (informational content)
 │   ├── properties/             # 5 individual property pages
 │   ├── property-management/    # 31 pages (property owner-facing)
 │   ├── about-us/               # About page
@@ -37,10 +37,11 @@
 │   ├── _redirects              # Netlify redirects
 │   ├── _headers                # Security/cache headers
 │   └── netlify.toml            # Build config
-├── src/                        # Eleventy source templates
-├── eleventy.config.js          # Build configuration
+├── CLAUDE.md                   # This file — SEO agent strategy doc
 ├── SEO-IMPLEMENTATION-PLAN.md  # Tracks what's been built
-└── package.json                # Node dependencies
+├── task-log-YYYY-MM.md         # Shared cross-task coordination log (monthly)
+├── content-priorities-YYYY-MM.md # Seasonal content calendar (monthly)
+└── docs/plans/                 # Implementation plans
 ```
 
 **CRITICAL:** Only the `DEPLOY THIS FOLDER TO NETLIFY/` directory goes to production. All other files are source/build files.
@@ -53,16 +54,37 @@ Use these MCP tools when available — they're already authenticated:
 
 | Tool | Use For |
 |------|---------|
-| **Ahrefs** | Keyword research, backlink analysis, competitor research, SERP analysis, domain rating, organic keyword tracking |
+| **Ahrefs** | Keyword research, SERP overview, keyword difficulty. **FREE PLAN** — most Site Explorer and Brand Radar endpoints unavailable |
 | **Netlify** | Deploy site, check deploy status, manage env vars, check build logs |
+| **Gmail** | Create drafts, search messages, read threads (for outreach coordination) |
+| **Desktop Commander** | File system access on Mac: read/write/edit files, list directories, run processes, search files |
 | **Google Search Console** (via Graphed.com MCP if connected) | Crawl data, indexing status, keyword impressions, CTR, position tracking |
 | **Google Analytics 4** (if connected) | Traffic data, user behavior, conversion tracking |
 
-### Ahrefs API Usage Notes
-- Always use `mode=subdomains` when analyzing a domain (not `mode=domain`)
-- Check `doc` tool first for correct input schema before any API call
-- Key endpoints: `site-explorer-organic-keywords`, `keywords-explorer-overview`, `site-explorer-organic-competitors`, `serp-overview`
-- The account may have API unit limits — use `subscription-info-limits-and-usage` to check before heavy operations
+### Ahrefs API — FREE PLAN LIMITATIONS
+**CRITICAL: This account is on the Ahrefs FREE plan.** Most API endpoints return `{"error": "Insufficient plan"}`.
+
+**What WORKS on free plan:**
+- `keywords-explorer-overview` — keyword volume, difficulty, CPC
+- `keywords-explorer-matching-terms` — keyword ideas
+- `keywords-explorer-related-terms` — related keyword suggestions
+- `serp-overview` — top 10 results for a keyword
+- `doc` — API documentation
+
+**What DOES NOT WORK (returns "Insufficient plan"):**
+- `site-explorer-*` — ALL site explorer endpoints (domain rating, organic keywords, backlinks, referring domains, etc.)
+- `brand-radar-*` — ALL Brand Radar endpoints (AI mentions, share of voice, cited pages, etc.)
+- `subscription-info-limits-and-usage` — even checking your own plan fails
+- `batch-analysis`, `rank-tracker-*` — unavailable
+
+**Fallback strategy for ALL tasks:** Use web search as the PRIMARY method for any data that Ahrefs free plan can't provide:
+- **Rank checking:** Search `site:seascape-vacations.com [keyword]` to verify indexing, then search the keyword to estimate position
+- **Competitor research:** Web search for target keywords and note who ranks
+- **Backlink discovery:** Web search for competitor brand mentions and link opportunities
+- **AI citation tracking:** Manually test queries in ChatGPT, Perplexity, Google AI Overviews
+- **Domain metrics:** Use free web tools or web search for "[domain] domain authority"
+
+When building scheduled tasks: ALWAYS try Ahrefs keywords-explorer/serp-overview first (these work on free plan), use web search for everything else. Never let a task fail silently because Ahrefs returned "Insufficient plan".
 
 ---
 
@@ -204,11 +226,11 @@ When creating content designed to get cited by AI engines:
 
 ## Programmatic SEO Playbook
 
-The site already has 71 stays pages and 31 property-management pages generated programmatically. Follow this pattern for new pages:
+The site has 86+ stays pages, 46+ guides, and 31 property-management pages generated programmatically. Follow this pattern for new pages:
 
 ### Creating New Programmatic Pages
-1. **Keyword research first:** Use Ahrefs `keywords-explorer-matching-terms` or `keywords-explorer-related-terms` to find long-tail opportunities with difficulty < 30 and volume > 50/month
-2. **Check SERP:** Use `serp-overview` to see what's ranking — if it's all DR 70+ sites, skip it
+1. **Keyword research first:** Use Ahrefs `keywords-explorer-matching-terms` or `keywords-explorer-related-terms` (these work on free plan) to find long-tail opportunities with difficulty < 30 and volume > 50/month. If Ahrefs unavailable, use web search to assess keyword competitiveness.
+2. **Check SERP:** Use `serp-overview` (works on free plan) to see what's ranking — if it's all DR 70+ sites, skip it. Alternatively, web search the keyword and check the top 10 manually.
 3. **Template consistency:** Match the existing HTML template structure in `/stays/` or `/property-management/`
 4. **Unique content:** Each page must have genuinely unique body content (not just swapped keywords). Include specific local knowledge, property recommendations, area tips
 5. **Schema markup:** Every new page gets `VacationRental` or `LocalBusiness` schema + `BreadcrumbList` + `FAQPage`
@@ -244,12 +266,13 @@ Organize content in topical clusters to build authority:
 ## Link Building Playbook
 
 ### Competitor Backlink Gap Analysis
-Use Ahrefs to find link opportunities:
-1. Identify top 5 organic competitors with `site-explorer-organic-competitors`
-2. Pull their referring domains with `site-explorer-referring-domains`
-3. Find domains linking to competitors but NOT to seascape-vacations.com
-4. For each gap domain: check the specific linking page, assess relevance, draft outreach
+Find link opportunities using web search (Ahrefs Site Explorer unavailable on free plan):
+1. Identify top 5 organic competitors by web searching target keywords and noting who ranks consistently
+2. Web search each competitor's brand name to find who mentions/links to them
+3. Find sites linking to competitors but NOT to seascape-vacations.com
+4. For each opportunity: check the linking page, assess relevance, draft outreach email
 5. Priority targets: local tourism sites, travel blogs, Florida business directories, real estate publications
+6. If Ahrefs plan is upgraded, use `site-explorer-organic-competitors` and `site-explorer-referring-domains` for more precise data
 
 ### Local Link Building (High Priority for Low-DR Sites)
 - Bradenton Area Convention and Visitors Bureau
@@ -263,58 +286,65 @@ Use Ahrefs to find link opportunities:
 
 ## Automation & Monitoring
 
-### Scheduled Tasks (Already Configured in Cowork)
-- **Weekly (Monday 8am):** SEO health check — crawl errors, broken links, indexing status
-- **Bi-weekly (Wednesday 9am):** Content creation — new pages based on keyword gaps
-- **Monthly (1st of month):** Competitor analysis + GEO audit — who's getting cited by AI
-- **Quarterly:** Full SEO audit with Ahrefs data pull
+### Scheduled Tasks (Configured in Cowork)
 
-### Automated GEO + SEO Workflows
+**Daily Operations:**
 
-**Weekly: Content Quality Patrol (Monday 8am)**
-1. Scan 10 stays pages for AI marker phrases → flag and queue rewrites
-2. Check all pages for identical H2 structures → diversify headings
-3. Verify internal links aren't broken
-4. Report: pages fixed, pages queued, link health
+| Day | Time | Task ID | What It Does |
+|-----|------|---------|-------------|
+| Monday | 7am | `seo-weekly-health-check` | Technical patrol: broken links, schema, meta tags, sitemap sync |
+| Tuesday | 7am | `content-quality-patrol` | AI detection: banned phrases, heading patterns, flat rhythm |
+| Wednesday | 8am | `seo-content-creation` | New content page targeting seasonal keyword priority |
+| Thursday | 7am | `internal-linking-rebuild` | Link architecture: orphan pages, cluster health, anchor text |
+| Friday | 8am | `pseo-page-builder` | Programmatic SEO: 2-3 new long-tail pages |
+| Friday | 5pm | `outreach-execution-reminder` | Formats link-building emails ready to send |
+| Saturday | 8am | `rank-performance-tracker` | Checks if recent pages are ranking, fixes underperformers |
 
-**Bi-weekly: GEO Table Injection (Wednesday 9am)**
-1. Pick 5 stays pages with NO comparison tables
-2. Generate relevant comparison table for each (pricing, features, distances, seasonal data)
-3. Inject table into page HTML
-4. Update sitemap lastmod dates
-5. Deploy changes
+**Monthly/Periodic:**
 
-**Monthly: GEO Citation Audit (1st of month)**
-1. Test 6 target queries across ChatGPT + Perplexity
-2. Record which brands get cited and from which URLs
-3. Analyze what content format AI pulled from (tables, FAQs, summaries)
-4. Compare to previous month
-5. Create 1 new "research report" style page targeting a gap where no competitor is cited
-6. Draft 1 press release for PRWeb distribution if budget allows
+| Schedule | Task ID | What It Does |
+|----------|---------|-------------|
+| 1st of month, 6am | `seasonal-content-calendar` | Sets monthly content theme based on booking seasonality |
+| 1st of month, 9am | `seo-monthly-competitor-geo-audit` | Competitor intelligence + content gap closing |
+| 1st & 15th, 9am | `geo-citation-audit` | AI citation tracking (web search testing) + content fixes |
+| 1st & 15th, 9am | `conversion-optimization-patrol` | CTA, booking flow, trust signal, mobile UX audit |
+| 1st & 15th, 10am | `page-speed-monitor` | File size, image, schema bloat monitoring |
+| Last day of month | `monthly-seo-summary` | Plain-English monthly digest for owner |
+| Quarterly | `seo-quarterly-full-audit` | Full SEO + GEO re-audit with benchmarking |
 
-**Monthly: Internal Linking Rebuild (15th of month)**
-1. Map all pages by topic cluster
-2. Identify orphan pages (pages with < 3 inbound internal links)
-3. Add contextual internal links from related pages
-4. Ensure each cluster's pillar page links to all supporting pages and vice versa
-5. Use descriptive anchor text with target keywords
+**Cross-Task Coordination:**
+All tasks append to `task-log-YYYY-MM.md` in workspace. Content creation tasks read the log and `content-priorities-YYYY-MM.md` before picking keywords. Monthly summary reads the log as its primary data source. This prevents duplicate content creation and keeps reporting accurate.
 
-**Quarterly: Competitor Backlink Gap (1st of quarter)**
-1. Pull top 5 organic competitors via Ahrefs
-2. Get their referring domains
-3. Find domains linking to them but NOT to seascape-vacations.com
-4. Draft outreach emails for top 10 gap opportunities
-5. Prioritize: local tourism sites, Florida travel blogs, real estate publications
+### Automated Workflow Summary
+
+Each task above runs its own full workflow. Key workflow patterns:
+
+**Content Creation Flow:** seasonal-content-calendar (1st) → content tasks read `content-priorities-YYYY-MM.md` → seo-content-creation (Wed) and pseo-page-builder (Fri) create pages aligned with seasonal themes → rank-performance-tracker (Sat) checks if they're ranking 30-60 days later
+
+**Quality Loop:** content-quality-patrol (Tue) fixes AI detection issues → seo-weekly-health-check (Mon) catches technical issues → page-speed-monitor (bi-monthly) prevents bloat → conversion-optimization-patrol (bi-monthly) ensures pages convert
+
+**Competitive Loop:** seo-monthly-competitor-geo-audit (1st) identifies gaps → geo-citation-audit (1st & 15th) tracks AI citations → outreach-execution-reminder (Fri) formats link-building emails → monthly-seo-summary aggregates everything
+
+**Deploy Workflow (ALL tasks that deploy):**
+1. Stage changes: `git add -A`
+2. Commit with descriptive message
+3. **Push to GitHub FIRST** (Netlify caches based on remote git commit hash)
+4. Deploy via Netlify MCP (`deploy-site`, siteId: `380fdf4b-91dd-4c6d-a31c-252c07aade81`)
+5. Verify: curl 3 changed pages, confirm new content is live
+6. If verification fails: wait 60s, re-push, re-deploy, re-verify
+7. If still fails: log `⚠️ DEPLOY FAILED` in task-log for manual intervention
 
 ### Key Metrics to Track
 - Organic traffic (Google Analytics — connect via Graphed.com MCP)
-- Keyword positions for target terms (Ahrefs rank tracker)
-- Domain Rating progress (Ahrefs)
-- AI engine citations (test monthly per GEO Testing Protocol above)
+- Keyword positions for target terms (web search `site:` checks — Ahrefs rank tracker unavailable on free plan)
+- AI engine citations (test bi-monthly per GEO Testing Protocol above — manual web search method)
 - Direct booking conversions from SEO pages
-- Pages indexed (Google Search Console — connect via Graphed.com MCP)
+- Pages indexed (Google Search Console or `site:seascape-vacations.com` count)
 - Table coverage: % of pages with at least one HTML table (target: 100%)
 - H2 uniqueness: % of pages with non-template headings (target: 100%)
+- CTA coverage: % of stays/guides pages with strong booking CTA (target: 100%)
+- Mobile CTA placement: % of pages with CTA in first screen (target: 90%+)
+- Content performance: % of pages published 60+ days ago that appear in top 50 for target keyword
 
 ---
 
@@ -339,9 +369,11 @@ Use Ahrefs to find link opportunities:
 ### When Deploying Changes
 1. Make changes in the `DEPLOY THIS FOLDER TO NETLIFY/` directory
 2. Update `sitemap.xml` if any new pages or significant content changes
-3. Commit and push to GitHub
-4. Deploy via Netlify MCP or CLI
-5. Verify the deploy succeeded and pages render correctly
+3. Stage and commit: `git add -A && git commit -m "descriptive message"`
+4. **Push to GitHub FIRST** — Netlify MCP deploy caches based on remote git commit hash. If you don't push, Netlify serves stale cached files.
+5. Deploy via Netlify MCP: `deploy-site` with siteId `380fdf4b-91dd-4c6d-a31c-252c07aade81`
+6. Verify: curl 3 changed pages, confirm new content appears (not just HTTP 200 — check for a unique string)
+7. If new files return 404 after deploy, add `<!-- deploy-force: YYYY-MM-DD -->` comment and redeploy
 
 ---
 
@@ -358,3 +390,10 @@ After any correction from the user, append the lesson to this section:
 - **Deploy workaround for new files:** If a new file returns 404 after deploy, append a comment like `<!-- deploy-force: YYYY-MM-DD -->` to the file so Netlify's diff engine detects it as "changed" and uploads it. Only needed for files that never existed in a previous successful deploy.
 - Netlify site is connected to `seascape-vacations-site` on GitHub (not `seascape-vacations-2026` which is the local remote) — commit URLs in deploy data reference the former
 - Property photo images use Hostaway CDN (`bookingenginecdn.hostaway.com/listing/51916-{listingID}-{hash}`). **Dockside Dreams = listing 189511, The Oasis = listing 206016.** Both `bookingenginecdn` (CDN display images) and `hostaway-platform.s3` (schema images) must use the same listing ID per property. When they mismatch, photos appear swapped on the live site.
+- **Ahrefs FREE plan limitation:** Most Site Explorer, Brand Radar, and Rank Tracker API endpoints return "Insufficient plan". Only Keywords Explorer and SERP Overview work. Always use web search as primary fallback for rank checking, competitor research, and backlink analysis.
+- Cross-task coordination via shared `task-log-YYYY-MM.md` prevents duplicate content creation and keeps the monthly summary accurate
+- Seasonal content alignment (via `content-priorities-YYYY-MM.md`) outperforms random keyword selection — always check the priorities file before creating content
+- Conversion elements (CTAs, book-direct messaging, trust signals) are as important as traffic generation — audit them bi-monthly
+- Deploy verification must include content checking (not just HTTP 200) — verify a unique string from the new content appears in the curl response
+- H2 uniqueness audit (March 2026): 298 unique H2s across 70 pages, 0 duplicates — current site passes
+- Internal linking rebuild (March 2026): 11 new contextual links added across topic clusters
