@@ -23,23 +23,38 @@
 /author/*   /about-us/   301
 
 # Legacy city/destination URLs -> current guides
-/city/sarasota/*   /area-guide-sarasota.html   301
-/city/sarasota   /area-guide-sarasota.html   301
-/destinations/siesta-key/*   /area-guide-siesta-key.html   301
-/destinations/siesta-key   /area-guide-siesta-key.html   301
-/destinations/sarasota/*   /area-guide-sarasota.html   301
-/destinations/sarasota   /area-guide-sarasota.html   301
-/destinations/bradenton/*   /area-guide-bradenton.html   301
-/destinations/bradenton   /area-guide-bradenton.html   301
-/destinations/anna-maria-island/*   /area-guide-ami.html   301
-/destinations/anna-maria-island   /area-guide-ami.html   301
+/city/sarasota/*   /guides/sarasota-area-guide/   301
+/city/sarasota   /guides/sarasota-area-guide/   301
+/destinations/siesta-key/*   /guides/siesta-key-area-guide/   301
+/destinations/siesta-key   /guides/siesta-key-area-guide/   301
+/destinations/sarasota/*   /guides/sarasota-area-guide/   301
+/destinations/sarasota   /guides/sarasota-area-guide/   301
+/destinations/bradenton/*   /guides/bradenton-area-guide/   301
+/destinations/bradenton   /guides/bradenton-area-guide/   301
+/destinations/anna-maria-island/*   /guides/anna-maria-island-area-guide/   301
+/destinations/anna-maria-island   /guides/anna-maria-island-area-guide/   301
 
 # Property deep links (legacy)
 /listings/:id   /?listing=:id   301
 /rentals/*   /?rental=:splat   301
 
-/area-guide-ami-preview  /area-guide-ami  301
-/area-guide-ami-preview.html  /area-guide-ami  301
+# Area guide migrations (old root-level -> new /guides/ paths)
+/area-guide-ami  /guides/anna-maria-island-area-guide/  301
+/area-guide-ami.html  /guides/anna-maria-island-area-guide/  301
+/area-guide-ami-preview  /guides/anna-maria-island-area-guide/  301
+/area-guide-ami-preview.html  /guides/anna-maria-island-area-guide/  301
+/area-guide-bradenton  /guides/bradenton-area-guide/  301
+/area-guide-bradenton.html  /guides/bradenton-area-guide/  301
+/area-guide-bradenton-beach  /guides/bradenton-beach-area-guide/  301
+/area-guide-bradenton-beach.html  /guides/bradenton-beach-area-guide/  301
+/area-guide-holmes-beach  /guides/holmes-beach-area-guide/  301
+/area-guide-holmes-beach.html  /guides/holmes-beach-area-guide/  301
+/area-guide-longboat-key  /guides/longboat-key-area-guide/  301
+/area-guide-longboat-key.html  /guides/longboat-key-area-guide/  301
+/area-guide-sarasota  /guides/sarasota-area-guide/  301
+/area-guide-sarasota.html  /guides/sarasota-area-guide/  301
+/area-guide-siesta-key  /guides/siesta-key-area-guide/  301
+/area-guide-siesta-key.html  /guides/siesta-key-area-guide/  301
 
 /stays/rentals-with-elevators/  /stays/vacation-rentals-with-elevator/  301
 
