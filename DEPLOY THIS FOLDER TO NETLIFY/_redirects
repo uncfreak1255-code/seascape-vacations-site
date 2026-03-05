@@ -72,3 +72,33 @@
 /stays/luxury-vacation-rentals-bradenton  /stays/bradenton-waterfront-vacation-rentals  301
 /property-management/vacation-rental-revenue-management  /property-management/maximize-vacation-rental-income-florida  301
 /property-management/vacation-rental-marketing  /property-management/vacation-rental-marketing-florida  301
+
+# --- GSC 404 fixes (added 2026-03-04) ---
+
+# Admin/internal pages (old platform routes, not public)
+/reset-password   /  301
+/reset-password/  /  301
+/membership-webhook   /  301
+/membership-webhook/  /  301
+/messages   /  301
+/messages/  /  301
+/instant-booking   /  301
+/instant-booking/  /  301
+/add-listing   /  301
+/add-listing/  /  301
+/dashboard   /  301
+/dashboard/  /  301
+
+# WordPress legacy paths
+/wp-content/*   /  301
+/wp-admin   /  301
+/wp-login.php   /  301
+/woocommerce   /  301
+/woocommerce/  /  301
+
+# Old /pages/ prefix routes
+/pages/blog   /guides/  301
+/pages/about-us   /about-us/  301
+
+# High-impression 404 — weather page exists at /guides/ path
+/anna-maria-island-weather.html   /guides/anna-maria-island-weather.html  301
