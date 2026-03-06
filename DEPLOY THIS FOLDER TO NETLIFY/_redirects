@@ -14,7 +14,7 @@
 /experiences   /about-us/   301
 /travel-spot-guide/*   /guides/   301
 /what-awaits-you-at-seascape-vacations/*   /guides/   301
-/contact-us   /?page=contact   301
+/contact-us   /contact/   301
 
 # Legacy listing pages (singular)
 /listing/*   /?rental=:splat   301
