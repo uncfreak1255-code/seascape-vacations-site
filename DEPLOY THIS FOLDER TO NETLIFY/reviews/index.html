@@ -1,0 +1,354 @@
+<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Guest Reviews | Seascape Vacations — Real Guest Experiences</title>
+<meta name="description" content="Read real guest reviews from 420+ stays across our Gulf Coast vacation rentals. 5-star rated properties in Bradenton, Anna Maria Island, Sarasota & Siesta Key.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://seascape-vacations.com/"},{"@type":"ListItem","position":2,"name":"Reviews","item":"https://seascape-vacations.com/reviews/"}]}</script>
+<style>
+:root{--brand:#5F8A8B;--brand-light:#7BA3A4;--brand-dark:#3D5C5D;--brand-darker:#2D4647;--gold:#C9A962;--cream:#F5EED6;--cream-dark:#EBE4CC;--cream-light:#FAF7EE;--stone:#3A3A3A;--stone-light:#6A6A6A;--white:#FFFFFF}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Poppins,-apple-system,sans-serif;background:var(--cream);color:var(--stone);line-height:1.7}
+h1,h2,h3{font-family:'Playfair Display',Georgia,serif;font-weight:500;letter-spacing:-.02em}
+a{text-decoration:none;color:inherit}
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(245,238,214,.98);backdrop-filter:blur(20px);border-bottom:1px solid rgba(0,0,0,.06);box-shadow:0 4px 30px rgba(0,0,0,.08)}
+.nav-inner{display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1400px;margin:0 auto}
+.nav-logo{display:flex;align-items:center;gap:14px}
+.nav-logo-text{font-family:'Playfair Display',serif;font-size:20px;font-weight:500;color:var(--brand);letter-spacing:.05em}
+.nav-logo-sub{font-size:9px;letter-spacing:.2em;color:var(--stone-light);text-transform:uppercase;margin-top:-2px}
+.btn{background:linear-gradient(135deg,var(--brand) 0,var(--brand-dark) 100%);color:#fff;padding:14px 28px;border-radius:50px;font-weight:600;font-size:14px;border:none;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:transform .25s ease,box-shadow .25s ease;box-shadow:0 4px 15px rgba(61,107,109,.3)}
+.btn:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(61,107,109,.35)}
+.btn-gold{background:linear-gradient(135deg,var(--gold) 0,#b8943a 100%);color:var(--stone);box-shadow:0 4px 15px rgba(201,169,98,.3)}
+.main{padding-top:86px}
+.crumbs{background:#fff;padding:12px 24px;border-bottom:1px solid var(--cream-dark)}
+.crumbs ol{display:flex;gap:8px;list-style:none;font-size:13px;max-width:1100px;margin:0 auto}
+.crumbs a{color:var(--brand)}
+.hero{padding:72px 24px 52px;background:linear-gradient(180deg,#f5eed6 0,#faf7ee 100%);border-bottom:1px solid rgba(0,0,0,.06);text-align:center}
+.container{max-width:1100px;margin:0 auto}
+.tag{display:inline-block;font-size:12px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--brand);margin-bottom:12px}
+.title{font-size:clamp(34px, 4.5vw, 52px);margin-bottom:10px}
+.subtitle{color:var(--stone-light);max-width:700px;margin:0 auto}
+
+/* Stats bar */
+.stats-bar{display:flex;justify-content:center;gap:48px;padding:32px 24px;background:#fff;border-bottom:1px solid var(--cream-dark)}
+.stat-item{text-align:center}
+.stat-num{font-family:'Playfair Display',serif;font-size:36px;font-weight:600;color:var(--brand-dark)}
+.stat-label{font-size:13px;color:var(--stone-light);margin-top:2px}
+
+/* Stars SVG */
+.stars{display:inline-flex;gap:2px}
+.stars svg{width:18px;height:18px;fill:var(--gold)}
+
+/* Review cards */
+.reviews-section{padding:64px 24px}
+.reviews-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:24px;margin-top:40px}
+.review-card{background:#fff;border-radius:16px;padding:32px;border:1px solid rgba(0,0,0,.06);box-shadow:0 2px 12px rgba(0,0,0,.04);transition:transform .2s ease,box-shadow .2s ease}
+.review-card:hover{transform:translateY(-3px);box-shadow:0 8px 30px rgba(0,0,0,.08)}
+.review-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px}
+.review-guest{display:flex;align-items:center;gap:12px}
+.guest-avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,rgba(95,138,139,.15) 0,rgba(95,138,139,.08) 100%);display:flex;align-items:center;justify-content:center;font-weight:600;color:var(--brand-dark);font-size:16px}
+.guest-name{font-weight:600;font-size:15px}
+.guest-meta{font-size:12px;color:var(--stone-light);margin-top:1px}
+.review-text{font-size:14.5px;line-height:1.75;color:var(--stone)}
+.review-property{display:inline-flex;align-items:center;gap:6px;margin-top:16px;padding:6px 14px;background:var(--cream-light);border-radius:50px;font-size:12px;font-weight:500;color:var(--brand-dark)}
+.review-property svg{width:14px;height:14px;stroke:var(--brand);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+/* Featured review */
+.featured-review{grid-column:1/-1;background:linear-gradient(135deg,var(--brand-dark) 0,var(--brand-darker) 100%);color:#fff;border:none}
+.featured-review .guest-avatar{background:rgba(255,255,255,.15);color:#fff}
+.featured-review .guest-meta{color:rgba(255,255,255,.6)}
+.featured-review .review-text{color:rgba(255,255,255,.9)}
+.featured-review .review-property{background:rgba(255,255,255,.1);color:rgba(255,255,255,.8)}
+.featured-review .review-property svg{stroke:rgba(255,255,255,.7)}
+.featured-review .stars svg{fill:var(--gold)}
+
+/* Filter bar */
+.filter-bar{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px;justify-content:center}
+.filter-btn{padding:8px 20px;border-radius:50px;border:1px solid var(--cream-dark);background:#fff;font-size:13px;font-weight:500;cursor:pointer;transition:all .2s;color:var(--stone)}
+.filter-btn:hover,.filter-btn.active{background:var(--brand);color:#fff;border-color:var(--brand)}
+
+/* CTA */
+.cta{padding:80px 24px;background:linear-gradient(135deg,var(--brand-dark) 0,var(--brand-darker) 100%);text-align:center;color:#fff}
+.cta h2{font-size:clamp(28px,3.5vw,42px);margin-bottom:10px}
+.cta p{opacity:.8;margin-bottom:28px;max-width:600px;margin-left:auto;margin-right:auto}
+
+/* Footer */
+.footer{background:var(--stone);color:rgba(255,255,255,.6);padding:48px 24px;text-align:center;font-size:13px}
+.footer-links{display:flex;gap:24px;justify-content:center;margin-bottom:16px;flex-wrap:wrap}
+.footer-links a{color:rgba(255,255,255,.6);transition:color .2s}
+.footer-links a:hover{color:#fff}
+
+@media(max-width:768px){
+  .stats-bar{gap:24px;flex-wrap:wrap}
+  .reviews-grid{grid-template-columns:1fr}
+  .featured-review{grid-column:1}
+  .filter-bar{justify-content:flex-start}
+}
+</style></head><body>
+
+<nav class="nav"><div class="nav-inner">
+  <a href="/" class="nav-logo"><div><div class="nav-logo-text">SEASCAPE</div><div class="nav-logo-sub">Vacations</div></div></a>
+  <a href="/properties/" class="btn" style="padding:10px 22px;font-size:13px">Book Direct</a>
+</div></nav>
+
+<main class="main">
+
+<div class="crumbs"><ol class="container"><li><a href="/">Home</a> /</li><li>Reviews</li></ol></div>
+
+<div class="hero">
+  <div class="container">
+    <span class="tag">Guest Experiences</span>
+    <h1 class="title">What Our Guests Say</h1>
+    <p class="subtitle">Real reviews from real guests across our Gulf Coast vacation homes. Every review is from a verified Airbnb stay.</p>
+  </div>
+</div>
+
+<div class="stats-bar">
+  <div class="stat-item"><div class="stat-num">420+</div><div class="stat-label">Verified Reviews</div></div>
+  <div class="stat-item"><div class="stat-num">4.95</div><div class="stat-label">Average Rating</div></div>
+  <div class="stat-item"><div class="stat-num">5</div><div class="stat-label">Properties</div></div>
+  <div class="stat-item">
+    <div class="stars" style="justify-content:center">
+      <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+    </div>
+    <div class="stat-label">Overall Rating</div>
+  </div>
+</div>
+
+<section class="reviews-section">
+  <div class="container">
+    <div class="filter-bar">
+      <button class="filter-btn active">All Properties</button>
+      <button class="filter-btn">River House</button>
+      <button class="filter-btn">Dockside Dreams</button>
+      <button class="filter-btn">The Oasis</button>
+      <button class="filter-btn">Bradenton Pool Home</button>
+      <button class="filter-btn">Sarasota Luxe</button>
+    </div>
+
+    <div class="reviews-grid">
+
+      <!-- FEATURED: Gary - River House -->
+      <div class="review-card featured-review">
+        <div class="review-header">
+          <div class="review-guest">
+            <div class="guest-avatar">G</div>
+            <div><div class="guest-name">Gary</div><div class="guest-meta">Cranberry Township, PA · February 2026</div></div>
+          </div>
+          <div class="stars"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+        </div>
+        <p class="review-text">"This is the nicest place we've stayed in Florida. For the birder, naturalist, kayaker, fisherman or beach goer, this place has it. A little unnerving for Pennsylvanians to share a waterway in a kayak with some sizable gators but absolutely thrilling for us! Neighbors were friendly and from our home state. Jim was a perfect host and so helpful with everything. Place was very clean and well furnished. We'll be going back for sure."</p>
+        <span class="review-property"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg> River House</span>
+      </div>
+
+      <!-- Christine - Dockside Dreams -->
+      <div class="review-card">
+        <div class="review-header">
+          <div class="review-guest">
+            <div class="guest-avatar">C</div>
+            <div><div class="guest-name">Christine</div><div class="guest-meta">Vineland, NJ · January 2026</div></div>
+          </div>
+          <div class="stars"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+        </div>
+        <p class="review-text">"The place was immaculate and high end. Spacious and tastefully decorated! We especially liked how spread out the bedrooms were. We were there for our wedding and the home was perfect for getting ready and hosting."</p>
+        <span class="review-property"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg> Dockside Dreams</span>
+      </div>
+
+      <!-- Susan - Bradenton Pool Home -->
+      <div class="review-card">
+        <div class="review-header">
+          <div class="review-guest">
+            <div class="guest-avatar">S</div>
+            <div><div class="guest-name">Susan</div><div class="guest-meta">Snellville, GA · October 2025</div></div>
+          </div>
+          <div class="stars"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+        </div>
+        <p class="review-text">"Perfect home for our trip. Quiet neighborhood that felt safe and very convenient to everything. Home is well laid out. So comfortably appointed felt at home the moment we arrived. Thoughtful amenities and host. Everything we needed and a few things we didn't think of. The outside space is even better than the pictures and made our time feel like an escape. Highly recommend, will definitely stay here again."</p>
+        <span class="review-property"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg> Bradenton Pool Home</span>
+      </div>
+
+      <!-- Kenneth - River House -->
+      <div class="review-card">
+        <div class="review-header">
+          <div class="review-guest">
+            <div class="guest-avatar">K</div>
+            <div><div class="guest-name">Kenneth</div><div class="guest-meta">Elkton, MD · February 2026</div></div>
+          </div>
+          <div class="stars"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+        </div>
+        <p class="review-text">"The River House was so relaxing and peaceful. Surrounded by nature on the river. The house itself was very nice, clean and located in a quiet cul-de-sac in a very nice neighborhood close to restaurants and shopping. The access to the river via 3 Kayaks and a real nice Canoe was great. We would definitely book again."</p>
+        <span class="review-property"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg> River House</span>
+      </div>
+
+      <!-- Lauren - Dockside Dreams (repeat guest!) -->
+      <div class="review-card">
+        <div class="review-header">
+          <div class="review-guest">
+            <div class="guest-avatar">L</div>
+            <div><div class="guest-name">Lauren</div><div class="guest-meta">Canonsburg, PA · January 2026</div></div>
+          </div>
+          <div class="stars"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+        </div>
+        <p class="review-text">"2nd time staying here and we love it! The outside area is amazing — pool, hot tub, chairs, everything! The location is so close to the beach and numerous restaurants. So much room to hang out and relax."</p>
+        <span class="review-property"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg> Dockside Dreams · Repeat Guest</span>
+      </div>
+
+      <!-- Felipe - The Oasis -->
+      <div class="review-card">
+        <div class="review-header">
+          <div class="review-guest">
+            <div class="guest-avatar">F</div>
+            <div><div class="guest-name">Felipe</div><div class="guest-meta">January 2026 · Group trip</div></div>
+          </div>
+          <div class="stars"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+        </div>
+        <p class="review-text">"Brianne was an amazing host, always friendly, responsive and helpful. The place was very nice allowing our family of 6 to be completely comfortable enjoying all parts inside and outside of the house. We all had an amazing time!"</p>
+        <span class="review-property"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg> The Oasis</span>
+      </div>
+
+      <!-- Milan - River House -->
+      <div class="review-card">
+        <div class="review-header">
+          <div class="review-guest">
+            <div class="guest-avatar">M</div>
+            <div><div class="guest-name">Milan</div><div class="guest-meta">January 2026</div></div>
+          </div>
+          <div class="stars"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+        </div>
+        <p class="review-text">"Jim has a beautiful home. It is well equipped and as described. It was spotlessly clean. The view over the river was so peaceful — great with a morning cup of coffee. Jim was a fantastic host. He was very responsive in answering any questions. We wholeheartedly recommend this home."</p>
+        <span class="review-property"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg> River House</span>
+      </div>
+
+      <!-- Caleb - Dockside Dreams -->
+      <div class="review-card">
+        <div class="review-header">
+          <div class="review-guest">
+            <div class="guest-avatar">C</div>
+            <div><div class="guest-name">Caleb</div><div class="guest-meta">January 2026 · Family trip</div></div>
+          </div>
+          <div class="stars"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+        </div>
+        <p class="review-text">"Our family stayed here with kids. There were six adults and five children. We had plenty of space and the kids enjoyed the pool and hot tub. The TVs outside were an excellent touch and the whole outdoor area was incredible."</p>
+        <span class="review-property"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg> Dockside Dreams</span>
+      </div>
+
+      <!-- Haley - Sarasota Luxe -->
+      <div class="review-card">
+        <div class="review-header">
+          <div class="review-guest">
+            <div class="guest-avatar">H</div>
+            <div><div class="guest-name">Haley</div><div class="guest-meta">Davenport, IA · June 2025</div></div>
+          </div>
+          <div class="stars"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+        </div>
+        <p class="review-text">"Leyssl was a fantastic host! The house was absolutely perfect for our group of 12. It was well-stocked with plenty of towels, blankets, kitchen supplies, pool floats, and more. The location was also ideal — just a few minutes from the airport, and a short drive to downtown Sarasota and Lido Beach. Would definitely recommend!"</p>
+        <span class="review-property"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg> Sarasota Luxe</span>
+      </div>
+
+      <!-- Daniel - The Oasis -->
+      <div class="review-card">
+        <div class="review-header">
+          <div class="review-guest">
+            <div class="guest-avatar">D</div>
+            <div><div class="guest-name">Daniel</div><div class="guest-meta">Navarre, FL · December 2025</div></div>
+          </div>
+          <div class="stars"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+        </div>
+        <p class="review-text">"Great house, plenty of space, nicely remodeled. The pool and jacuzzi were great. Comfortable beds and large TVs in every room. Spacious kitchen with plentiful cookware and utensils. Neighborhood is nice too."</p>
+        <span class="review-property"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg> The Oasis</span>
+      </div>
+
+      <!-- Andres - River House -->
+      <div class="review-card">
+        <div class="review-header">
+          <div class="review-guest">
+            <div class="guest-avatar">A</div>
+            <div><div class="guest-name">Andres</div><div class="guest-meta">Tampa, FL · December 2025</div></div>
+          </div>
+          <div class="stars"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+        </div>
+        <p class="review-text">"We had a wonderful stay! The place was exactly as described, clean, comfortable, and thoughtfully prepared. The host was responsive, friendly, and made everything easy from check-in to check-out. The location was perfect and the space felt like home. We would absolutely stay here again and highly recommend it."</p>
+        <span class="review-property"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg> River House</span>
+      </div>
+
+      <!-- Lucy - Dockside Dreams -->
+      <div class="review-card">
+        <div class="review-header">
+          <div class="review-guest">
+            <div class="guest-avatar">L</div>
+            <div><div class="guest-name">Lucy</div><div class="guest-meta">December 2025</div></div>
+          </div>
+          <div class="stars"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+        </div>
+        <p class="review-text">"A fantastic base to explore Bradenton and the surrounding beautiful beaches. We could have moved in! Everything was spotless, well-equipped, and the outdoor space with the pool and dock was the highlight of our trip."</p>
+        <span class="review-property"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg> Dockside Dreams</span>
+      </div>
+
+      <!-- Emily - The Oasis -->
+      <div class="review-card">
+        <div class="review-header">
+          <div class="review-guest">
+            <div class="guest-avatar">E</div>
+            <div><div class="guest-name">Emily</div><div class="guest-meta">Clermont, FL · August 2025</div></div>
+          </div>
+          <div class="stars"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+        </div>
+        <p class="review-text">"We had a great weekend trip! I honestly wish we could have stayed longer! This house is very spacious and clean. The pool was beautiful and refreshing. Everything you could need was readily available! Neighborhood was quiet and not too far from all of the things we wanted to do. Would definitely recommend."</p>
+        <span class="review-property"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg> The Oasis</span>
+      </div>
+
+      <!-- Alondra - Sarasota Luxe -->
+      <div class="review-card">
+        <div class="review-header">
+          <div class="review-guest">
+            <div class="guest-avatar">A</div>
+            <div><div class="guest-name">Alondra</div><div class="guest-meta">St. Cloud, FL · October 2025</div></div>
+          </div>
+          <div class="stars"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+        </div>
+        <p class="review-text">"Excellent place to stay for a large family or group of friends. This is a very family friendly home with beds and high chairs for the little ones. Convenient location right next to a park and 15 minutes from the beach. Highly recommend!"</p>
+        <span class="review-property"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg> Sarasota Luxe</span>
+      </div>
+
+      <!-- Mckenzie - Bradenton Pool Home -->
+      <div class="review-card">
+        <div class="review-header">
+          <div class="review-guest">
+            <div class="guest-avatar">M</div>
+            <div><div class="guest-name">Mckenzie</div><div class="guest-meta">Metamora, MI · March 2026</div></div>
+          </div>
+          <div class="stars"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+        </div>
+        <p class="review-text">"We had a great stay! The house was great for both nice weather and a little on the colder side. Very kid friendly and accommodating all the way around! Ashley was very responsive throughout our stay. We would definitely recommend staying here!"</p>
+        <span class="review-property"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg> Bradenton Pool Home</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="cta">
+  <div class="container">
+    <h2>Ready to Book Your Gulf Coast Getaway?</h2>
+    <p>Skip the platform fees. Book direct with Seascape Vacations and save 10–15% on your next stay.</p>
+    <a href="/properties/" class="btn btn-gold">Browse Properties</a>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div style="font-family:'Playfair Display',serif;font-size:18px;color:#fff;margin-bottom:16px">Seascape Vacations</div>
+    <div class="footer-links">
+      <a href="/guides/">Guides</a>
+      <a href="/property-management/">For Owners</a>
+      <a href="/contact/">Contact</a>
+      <a href="/about-us/">About</a>
+    </div>
+    <p>&copy; 2026 Seascape Vacations. All rights reserved.</p>
+  </div>
+</footer>
+
+</main></body></html>
