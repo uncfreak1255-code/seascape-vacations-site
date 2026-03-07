@@ -1,0 +1,59 @@
+Found 48 guide files to scan
+
+→ guides/2026-bradenton-vacation-rental-market-analysis.html: Already has FAQPage schema
+→ guides/anna-maria-city.html: Already has FAQPage schema
+→ guides/anna-maria-island-area-guide/index.html: Already has FAQPage schema
+→ guides/anna-maria-island-beaches.html: Already has FAQPage schema
+→ guides/anna-maria-island-noise-ordinance-guide.html: Already has FAQPage schema
+→ guides/anna-maria-island-vacation-cost-guide-2026/index.html: Already has FAQPage schema
+→ guides/anna-maria-island-vacation-cost.html: Already has FAQPage schema
+→ guides/anna-maria-island-vs-clearwater-beach.html: Already has FAQPage schema
+→ guides/anna-maria-island-vs-longboat-key.html: Already has FAQPage schema
+→ guides/anna-maria-island-vs-siesta-key.html: Already has FAQPage schema
+→ guides/anna-maria-island-weather.html: Already has FAQPage schema
+→ guides/best-restaurants-anna-maria-island.html: Already has FAQPage schema
+→ guides/best-time-to-visit-anna-maria-island/index.html: Already has FAQPage schema
+→ guides/best-time-visit-anna-maria-island.html: Already has FAQPage schema
+→ guides/best-vacation-rental-companies-ami.html: Already has FAQPage schema
+→ guides/best-waterfront-restaurants-with-boat-dock.html: Already has FAQPage schema
+→ guides/booking-direct-vacation-rentals.html: Already has FAQPage schema
+→ guides/bradenton-area-guide/index.html: Already has FAQPage schema
+→ guides/bradenton-beach-area-guide/index.html: Already has FAQPage schema
+→ guides/bradenton-beach.html: Already has FAQPage schema
+→ guides/bradenton-insider-guide.html: Already has FAQPage schema
+→ guides/bradenton-vs-sarasota-vacation-rental-comparison/index.html: Already has FAQPage schema
+→ guides/bradenton-vs-sarasota.html: Already has FAQPage schema
+→ guides/bradenton-vs-tampa-vacation-rentals.html: Already has FAQPage schema
+→ guides/do-you-need-a-car-anna-maria-island.html: Already has FAQPage schema
+→ guides/dolphins-manatees-bradenton.html: Already has FAQPage schema
+→ guides/family-vacation-anna-maria-island.html: Already has FAQPage schema
+→ guides/fishing-guide-anna-maria-sarasota.html: Already has FAQPage schema
+→ guides/florida-gulf-coast-vacation-rental-market-report-2026.html: Already has FAQPage schema
+→ guides/holmes-beach-area-guide/index.html: Already has FAQPage schema
+→ guides/holmes-beach-vs-bradenton-beach.html: Already has FAQPage schema
+→ guides/holmes-beach.html: Already has FAQPage schema
+→ guides/how-to-get-to-anna-maria-island.html: Already has FAQPage schema
+- guides/index.html: No FAQ content detected
+→ guides/is-anna-maria-island-worth-visiting.html: Already has FAQPage schema
+→ guides/longboat-key-area-guide/index.html: Already has FAQPage schema
+→ guides/pet-friendly-anna-maria-island.html: Already has FAQPage schema
+→ guides/rainy-day-activities-bradenton-sarasota.html: Already has FAQPage schema
+→ guides/sarasota-area-guide/index.html: Already has FAQPage schema
+→ guides/shelling-guide-florida.html: Already has FAQPage schema
+→ guides/siesta-key-area-guide/index.html: Already has FAQPage schema
+→ guides/siesta-key-beach-guide.html: Already has FAQPage schema
+→ guides/siesta-key-vs-anna-maria-island-families.html: Already has FAQPage schema
+→ guides/snowbirds-guide-extended-stays-florida.html: Already has FAQPage schema
+→ guides/srq-airport-to-anna-maria-island.html: Already has FAQPage schema
+→ guides/things-to-do-bradenton-fl.html: Already has FAQPage schema
+→ guides/vacation-rental-income-anna-maria.html: Already has FAQPage schema
+→ guides/where-to-stay-near-anna-maria-island/index.html: Already has FAQPage schema
+
+============================================================
+SUMMARY
+============================================================
+Added FAQPage schema:  0 files
+Skipped (already has): 47 files
+No FAQ content:        1 files
+FAQ found, no Q&A:     0 files
+Errors:                0 files
