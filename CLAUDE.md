@@ -54,37 +54,49 @@ Use these MCP tools when available — they're already authenticated:
 
 | Tool | Use For |
 |------|---------|
-| **Ahrefs** | Keyword research, SERP overview, keyword difficulty. **FREE PLAN** — most Site Explorer and Brand Radar endpoints unavailable |
+| **Serpbear** (self-hosted) | Daily rank tracking for target keywords. Running at `http://localhost:3000` via Docker. Start: `cd ~/Projects/serpbear && docker compose up -d` |
+| **Google Search Console** (via Chrome browser) | Crawl data, indexing status, keyword impressions, CTR, position tracking. PRIMARY source for real ranking data |
+| **Ahrefs** | ⚠️ **COMPLETELY BROKEN** as of March 2026 — ALL endpoints return "Insufficient plan" including keywords-explorer. Do NOT rely on Ahrefs for any data |
 | **Netlify** | Deploy site, check deploy status, manage env vars, check build logs |
 | **Gmail** | Create drafts, search messages, read threads (for outreach coordination) |
 | **Desktop Commander** | File system access on Mac: read/write/edit files, list directories, run processes, search files |
-| **Google Search Console** (via Graphed.com MCP if connected) | Crawl data, indexing status, keyword impressions, CTR, position tracking |
 | **Google Analytics 4** (if connected) | Traffic data, user behavior, conversion tracking |
 
-### Ahrefs API — FREE PLAN LIMITATIONS
-**CRITICAL: This account is on the Ahrefs FREE plan.** Most API endpoints return `{"error": "Insufficient plan"}`.
+### Ahrefs API — COMPLETELY BROKEN (March 2026)
+**ALL Ahrefs API endpoints now return `{"error": "Insufficient plan"}`.** This includes keywords-explorer-overview and serp-overview that previously worked on the free plan. Do not attempt Ahrefs API calls — they waste time and tokens.
 
-**What WORKS on free plan:**
-- `keywords-explorer-overview` — keyword volume, difficulty, CPC
-- `keywords-explorer-matching-terms` — keyword ideas
-- `keywords-explorer-related-terms` — related keyword suggestions
-- `serp-overview` — top 10 results for a keyword
-- `doc` — API documentation
+### Keyword & Rank Data Strategy (No Ahrefs)
 
-**What DOES NOT WORK (returns "Insufficient plan"):**
-- `site-explorer-*` — ALL site explorer endpoints (domain rating, organic keywords, backlinks, referring domains, etc.)
-- `brand-radar-*` — ALL Brand Radar endpoints (AI mentions, share of voice, cited pages, etc.)
-- `subscription-info-limits-and-usage` — even checking your own plan fails
-- `batch-analysis`, `rank-tracker-*` — unavailable
+**Rank Tracking:**
+1. **Serpbear** (PRIMARY) — self-hosted at `http://localhost:3000`, tracks daily positions for 25+ target keywords. Start with `cd ~/Projects/serpbear && docker compose up -d`
+2. **Google Search Console** (SECONDARY) — real impression/click/position data for pages already ranking. Access via Chrome browser
+3. **Web search** (FALLBACK) — search `site:seascape-vacations.com [keyword]` to verify indexing, then search the keyword to estimate position
 
-**Fallback strategy for ALL tasks:** Use web search as the PRIMARY method for any data that Ahrefs free plan can't provide:
-- **Rank checking:** Search `site:seascape-vacations.com [keyword]` to verify indexing, then search the keyword to estimate position
-- **Competitor research:** Web search for target keywords and note who ranks
-- **Backlink discovery:** Web search for competitor brand mentions and link opportunities
-- **AI citation tracking:** Manually test queries in ChatGPT, Perplexity, Google AI Overviews
-- **Domain metrics:** Use free web tools or web search for "[domain] domain authority"
+**Keyword Research:**
+1. **Google Keyword Planner** — free with Google Ads account (no spend required). User accesses manually for volume data
+2. **Google Autocomplete scraping** — use web search to find autocomplete suggestions for any seed keyword
+3. **AlsoAsked.com / AnswerThePublic** — 3 free searches/day each, great for question keywords and FAQs
+4. **Keywords Everywhere** ($10/year browser extension) — volume + difficulty overlay on Google searches
 
-When building scheduled tasks: ALWAYS try Ahrefs keywords-explorer/serp-overview first (these work on free plan), use web search for everything else. Never let a task fail silently because Ahrefs returned "Insufficient plan".
+**Competitor Research:**
+- Web search for target keywords and note who ranks in top 10
+- Check competitor sites manually for content gaps
+- Read `bradenton-vs-sarasota-cluster-research.md` for latest competitive intelligence
+
+**AI Citation Tracking:**
+- Manually test queries in ChatGPT, Perplexity, Google AI Overviews
+- Run bi-monthly per GEO Testing Protocol below
+
+### Research Files (Cross-Task Coordination)
+All agents should check these files before acting:
+| File | Contents | Updated |
+|------|----------|---------|
+| `rank-tracker-latest.md` | GSC audit: 334 clicks, 53K impressions, top queries, indexing status | 2026-03-08 |
+| `bradenton-vs-sarasota-cluster-research.md` | 5 cluster pages to build (families, beaches, restaurants, retirement, cost-of-living) | 2026-03-08 |
+| `link-building-targets.md` | 15 targets + 3 outreach email templates | 2026-03-08 |
+| `mailchimp-welcome-sequence.md` | 3-email drip automation ready for Mailchimp setup | 2026-03-08 |
+| `content-priorities-YYYY-MM.md` | Monthly seasonal content calendar | Rolling |
+| `task-log-YYYY-MM.md` | Cross-task coordination log | Rolling |
 
 ---
 
@@ -97,7 +109,7 @@ Before writing ANY content, identify the search intent:
 - **Transactional** → property pages, book-direct pages (drive conversions)
 - **Local** → location-specific pages with Google Business Profile signals
 
-Never write content without knowing which intent it serves. If you're unsure, check the SERP first using Ahrefs `serp-overview` or web search.
+Never write content without knowing which intent it serves. If you're unsure, check the SERP first using web search.
 
 ### 2. Keyword Strategy
 - **Primary keyword:** 1 per page, in title tag, H1, first 100 words, meta description, one H2
@@ -229,7 +241,7 @@ When creating content designed to get cited by AI engines:
 The site has 86+ stays pages, 46+ guides, and 31 property-management pages generated programmatically. Follow this pattern for new pages:
 
 ### Creating New Programmatic Pages
-1. **Keyword research first:** Use Ahrefs `keywords-explorer-matching-terms` or `keywords-explorer-related-terms` (these work on free plan) to find long-tail opportunities with difficulty < 30 and volume > 50/month. If Ahrefs unavailable, use web search to assess keyword competitiveness.
+1. **Keyword research first:** Use web search + Google Autocomplete to find long-tail opportunities. Check Serpbear (localhost:3000) for tracked keyword positions. Assess competitiveness by checking DR of top-ranking sites in web search results.
 2. **Check SERP:** Use `serp-overview` (works on free plan) to see what's ranking — if it's all DR 70+ sites, skip it. Alternatively, web search the keyword and check the top 10 manually.
 3. **Template consistency:** Match the existing HTML template structure in `/stays/` or `/property-management/`
 4. **Unique content:** Each page must have genuinely unique body content (not just swapped keywords). Include specific local knowledge, property recommendations, area tips
@@ -266,13 +278,13 @@ Organize content in topical clusters to build authority:
 ## Link Building Playbook
 
 ### Competitor Backlink Gap Analysis
-Find link opportunities using web search (Ahrefs Site Explorer unavailable on free plan):
+Find link opportunities using web search:
 1. Identify top 5 organic competitors by web searching target keywords and noting who ranks consistently
 2. Web search each competitor's brand name to find who mentions/links to them
 3. Find sites linking to competitors but NOT to seascape-vacations.com
 4. For each opportunity: check the linking page, assess relevance, draft outreach email
 5. Priority targets: local tourism sites, travel blogs, Florida business directories, real estate publications
-6. If Ahrefs plan is upgraded, use `site-explorer-organic-competitors` and `site-explorer-referring-domains` for more precise data
+6. Read `link-building-targets.md` for pre-researched targets and outreach templates
 
 ### Local Link Building (High Priority for Low-DR Sites)
 - Bradenton Area Convention and Visitors Bureau
@@ -336,7 +348,7 @@ Each task above runs its own full workflow. Key workflow patterns:
 
 ### Key Metrics to Track
 - Organic traffic (Google Analytics — connect via Graphed.com MCP)
-- Keyword positions for target terms (web search `site:` checks — Ahrefs rank tracker unavailable on free plan)
+- Keyword positions for target terms (Serpbear daily tracking at localhost:3000, GSC for impression data, web search `site:` checks as fallback)
 - AI engine citations (test bi-monthly per GEO Testing Protocol above — manual web search method)
 - Direct booking conversions from SEO pages
 - Pages indexed (Google Search Console or `site:seascape-vacations.com` count)
@@ -392,7 +404,8 @@ After any correction from the user, append the lesson to this section:
 - **Deploy workaround for new files:** If a new file returns 404 after deploy, append a comment like `<!-- deploy-force: YYYY-MM-DD -->` to the file so Netlify's diff engine detects it as "changed" and uploads it. Only needed for files that never existed in a previous successful deploy.
 - Netlify site is connected to `seascape-vacations-site` on GitHub (not `seascape-vacations-2026` which is the local remote) — commit URLs in deploy data reference the former
 - Property photo images use Hostaway CDN (`bookingenginecdn.hostaway.com/listing/51916-{listingID}-{hash}`). **Dockside Dreams = listing 189511, The Oasis = listing 206016.** Both `bookingenginecdn` (CDN display images) and `hostaway-platform.s3` (schema images) must use the same listing ID per property. When they mismatch, photos appear swapped on the live site.
-- **Ahrefs FREE plan limitation:** Most Site Explorer, Brand Radar, and Rank Tracker API endpoints return "Insufficient plan". Only Keywords Explorer and SERP Overview work. Always use web search as primary fallback for rank checking, competitor research, and backlink analysis.
+- **Ahrefs is completely dead (March 2026):** ALL endpoints return "Insufficient plan" including keywords-explorer and serp-overview that previously worked. Do not attempt any Ahrefs API calls. Use Serpbear + GSC + web search instead.
+- **Serpbear** self-hosted rank tracker at ~/Projects/serpbear/ — start with `cd ~/Projects/serpbear && docker compose up -d`, access at localhost:3000. Tracks 25+ target keywords daily.
 - Cross-task coordination via shared `task-log-YYYY-MM.md` prevents duplicate content creation and keeps the monthly summary accurate
 - Seasonal content alignment (via `content-priorities-YYYY-MM.md`) outperforms random keyword selection — always check the priorities file before creating content
 - Conversion elements (CTAs, book-direct messaging, trust signals) are as important as traffic generation — audit them bi-monthly
