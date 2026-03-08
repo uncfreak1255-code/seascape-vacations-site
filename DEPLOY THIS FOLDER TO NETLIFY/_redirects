@@ -10,8 +10,9 @@
 # Old/legacy paths (from previous site or bots) mapped to the closest current content
 /blog/*   /guides/   301
 /blog   /guides/   301
-/experiences/*   /about-us/   301
-/experiences   /about-us/   301
+/experiences/*   /guides/   301
+/experiences/   /guides/   301
+/experiences   /guides/   301
 /travel-spot-guide/*   /guides/   301
 /what-awaits-you-at-seascape-vacations/*   /guides/   301
 /contact-us   /contact/   301
@@ -102,3 +103,8 @@
 
 # High-impression 404 — weather page exists at /guides/ path
 /anna-maria-island-weather.html   /guides/anna-maria-island-weather.html  301
+
+# Duplicate guide consolidation — old .html pages → newer directory versions
+/guides/anna-maria-island-vacation-cost  /guides/anna-maria-island-vacation-cost-guide-2026/  301
+/guides/best-time-visit-anna-maria-island  /guides/best-time-to-visit-anna-maria-island/  301
+/guides/bradenton-vs-sarasota  /guides/bradenton-vs-sarasota-vacation-rental-comparison/  301

@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hero Gallery Mockup — The Oasis</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --brand: #5F8A8B;
+  --brand-light: #7BA3A4;
+  --brand-dark: #3D5C5D;
+  --cream: #F5EED6;
+  --cream-dark: #EBE4CC;
+  --gold: #C9A962;
+  --stone: #3A3A3A;
+  --stone-light: #6A6A6A;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: Poppins, sans-serif; background: #fafaf7; color: var(--stone); }
+
+/* Mockup Navigation */
+.mockup-nav {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--stone);
+  padding: 16px 24px;
+  display: flex; gap: 12px; align-items: center; justify-content: center;
+  flex-wrap: wrap;
+}
+.mockup-nav h2 { color: #fff; font-size: 14px; font-weight: 500; margin-right: 12px; }
+.mockup-btn {
+  background: transparent; border: 1.5px solid rgba(255,255,255,.3);
+  color: #fff; padding: 8px 20px; border-radius: 100px;
+  font-family: Poppins, sans-serif; font-size: 13px; font-weight: 500;
+  cursor: pointer; transition: all .2s;
+}
+.mockup-btn:hover { border-color: var(--gold); color: var(--gold); }
+.mockup-btn.active { background: var(--brand); border-color: var(--brand); color: #fff; }
+
+.mockup-section { display: none; }
+.mockup-section.active { display: block; }
+
+.section-label {
+  text-align: center; padding: 32px 24px 12px;
+  font-family: 'Playfair Display', serif;
+  font-size: 24px; color: var(--stone);
+}
+.section-desc {
+  text-align: center; padding: 0 24px 24px;
+  color: var(--stone-light); font-size: 14px; max-width: 600px; margin: 0 auto;
+}
+
+/* ========================= */
+/* OPTION A: CURRENT DESIGN  */
+/* ========================= */
+.mosaic-wrap { max-width: 1200px; margin: 0 auto; padding: 24px 24px 0; }
+.mosaic-grid {
+  display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; grid-template-rows: 1fr 1fr;
+  gap: 6px; height: 55vh; min-height: 380px; max-height: 520px;
+  border-radius: 16px; overflow: hidden; position: relative;
+}
+.mosaic-grid .mimg { position: relative; overflow: hidden; cursor: pointer; }
+.mosaic-grid .mimg img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s ease; }
+.mosaic-grid .mimg::after {
+  content: ''; position: absolute; inset: 0; background: rgba(0,0,0,.04);
+  transition: background .3s; pointer-events: none;
+}
+.mosaic-grid .mimg:hover img { transform: scale(1.04); }
+.mosaic-grid .mimg:hover::after { background: transparent; }
+.mosaic-grid .mimg:first-child { grid-column: 1/3; grid-row: 1/3; }
+.mosaic-show-all {
+  position: absolute; bottom: 20px; right: 20px; z-index: 10;
+  background: #fff; color: var(--stone); padding: 10px 20px; border-radius: 8px;
+  font-size: 13px; font-weight: 600; border: 1px solid rgba(0,0,0,.15);
+  cursor: pointer; box-shadow: 0 2px 12px rgba(0,0,0,.12);
+  font-family: Poppins, sans-serif; display: flex; align-items: center; gap: 8px;
+  transition: all .2s;
+}
+.mosaic-show-all:hover { transform: scale(1.03); box-shadow: 0 4px 20px rgba(0,0,0,.18); }
+
+/* ========================= */
+/* OPTION B: CINEMATIC HERO  */
+/* ========================= */
+.hero-cinema-wrap { max-width: 1400px; margin: 0 auto; padding: 24px 24px 0; }
+.hero-cinema {
+  position: relative; border-radius: 20px; overflow: hidden;
+  height: 70vh; min-height: 480px; max-height: 640px;
+}
+.hero-cinema-main {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: opacity .6s ease;
+}
+.hero-cinema-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,.55) 0%, rgba(0,0,0,.1) 40%, transparent 70%);
+  pointer-events: none;
+}
+.hero-cinema-content {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  padding: 40px 48px; z-index: 2;
+}
+.hero-cinema-content h1 {
+  font-family: 'Playfair Display', serif; color: #fff;
+  font-size: 42px; font-weight: 600; margin-bottom: 8px;
+  text-shadow: 0 2px 20px rgba(0,0,0,.3);
+}
+.hero-cinema-content p {
+  color: rgba(255,255,255,.85); font-size: 16px; font-weight: 400;
+}
+.hero-cinema-thumbstrip {
+  position: absolute; bottom: 24px; right: 48px; z-index: 3;
+  display: flex; gap: 8px; align-items: center;
+}
+.hero-cinema-thumb {
+  width: 72px; height: 52px; border-radius: 8px; overflow: hidden;
+  border: 2px solid transparent; cursor: pointer; opacity: .7;
+  transition: all .3s;
+}
+.hero-cinema-thumb:hover, .hero-cinema-thumb.active {
+  opacity: 1; border-color: #fff; transform: scale(1.05);
+  box-shadow: 0 2px 12px rgba(0,0,0,.4);
+}
+.hero-cinema-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.hero-cinema-showAll {
+  background: rgba(255,255,255,.15); backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,.25); color: #fff;
+  padding: 10px 18px; border-radius: 8px; font-size: 12px; font-weight: 600;
+  cursor: pointer; font-family: Poppins, sans-serif;
+  display: flex; align-items: center; gap: 6px; transition: all .2s;
+}
+.hero-cinema-showAll:hover { background: rgba(255,255,255,.25); }
+
+/* ========================= */
+/* OPTION C: SPLIT GALLERY   */
+/* ========================= */
+.hero-split-wrap { max-width: 1400px; margin: 0 auto; padding: 24px 24px 0; }
+.hero-split {
+  display: grid; grid-template-columns: 3fr 2fr; gap: 8px;
+  height: 70vh; min-height: 480px; max-height: 640px;
+  border-radius: 20px; overflow: hidden; position: relative;
+}
+.hero-split-main {
+  position: relative; overflow: hidden; cursor: pointer;
+}
+.hero-split-main img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s; }
+.hero-split-main:hover img { transform: scale(1.03); }
+.hero-split-main .hero-split-badge {
+  position: absolute; top: 24px; left: 24px; z-index: 2;
+  background: var(--brand); color: #fff; padding: 8px 16px; border-radius: 100px;
+  font-size: 12px; font-weight: 600; letter-spacing: .5px; text-transform: uppercase;
+  display: flex; align-items: center; gap: 6px;
+}
+.hero-split-side {
+  display: grid; grid-template-rows: 1fr 1fr 1fr; gap: 8px;
+}
+.hero-split-side .ss-img {
+  position: relative; overflow: hidden; cursor: pointer;
+}
+.hero-split-side .ss-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s; }
+.hero-split-side .ss-img:hover img { transform: scale(1.05); }
+.hero-split-side .ss-img:last-child { position: relative; }
+.hero-split-counter {
+  position: absolute; bottom: 16px; right: 16px; z-index: 2;
+  background: rgba(0,0,0,.65); backdrop-filter: blur(8px);
+  color: #fff; padding: 8px 16px; border-radius: 8px;
+  font-size: 13px; font-weight: 500; cursor: pointer;
+  display: flex; align-items: center; gap: 6px; transition: all .2s;
+}
+.hero-split-counter:hover { background: rgba(0,0,0,.8); }
+
+/* Property info bar below galleries */
+.prop-info-bar {
+  max-width: 1200px; margin: 0 auto; padding: 24px 24px 0;
+}
+.prop-info-bar h1 {
+  font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 600;
+  color: var(--stone); margin-bottom: 4px;
+}
+.prop-info-bar p { color: var(--stone-light); font-size: 15px; }
+
+/* Footer spacer */
+.spacer { height: 200px; }
+
+@media (max-width: 768px) {
+  .hero-cinema { height: 50vh; min-height: 320px; }
+  .hero-cinema-content { padding: 24px; }
+  .hero-cinema-content h1 { font-size: 28px; }
+  .hero-cinema-thumbstrip { display: none; }
+  .hero-split { grid-template-columns: 1fr; height: auto; }
+  .hero-split-main { height: 45vh; min-height: 280px; }
+  .hero-split-side { grid-template-rows: auto; grid-template-columns: 1fr 1fr 1fr; height: 120px; }
+  .mockup-nav { gap: 8px; }
+  .mockup-btn { padding: 6px 14px; font-size: 12px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Toggle Bar -->
+<nav class="mockup-nav">
+  <h2>Gallery Mockup:</h2>
+  <button class="mockup-btn active" onclick="showOption('current')">A: Current Design</button>
+  <button class="mockup-btn" onclick="showOption('cinema')">B: Cinematic Hero</button>
+  <button class="mockup-btn" onclick="showOption('split')">C: Split Gallery</button>
+</nav>
+
+<!-- ============================== -->
+<!-- OPTION A: Current Mosaic Grid  -->
+<!-- ============================== -->
+<section id="opt-current" class="mockup-section active">
+  <div class="section-label">A: Current Design — Mosaic Grid</div>
+  <div class="section-desc">Your existing 2×4 mosaic. Large hero left, 4 thumbnails right. Clean and functional.</div>
+
+  <div class="mosaic-wrap">
+    <div class="mosaic-grid">
+      <div class="mimg"><img src="https://bookingenginecdn.hostaway.com/listing/51916-189511-g2tWgjqFm-DXPRc0ll2k1u87aWIKNZm6tOyz9KhGrnc-64dfdf914c559?width=1200&quality=80&format=webp&v=2" alt="The Oasis hero"></div>
+      <div class="mimg"><img src="https://bookingenginecdn.hostaway.com/listing/51916-189511-nitpZTl7tc027s3c6fWxtHLNuBZKytwSSjlz4TbXaEQ-64dffd0b4ef94?width=800&quality=80&format=webp&v=2" alt="Photo 2"></div>
+      <div class="mimg"><img src="https://bookingenginecdn.hostaway.com/listing/51916-189511-aHV3Wyi83yrNT6dPnJVox7aZjJMatTbxV5jS1pbu3ms-64dffd17771bc?width=800&quality=80&format=webp&v=2" alt="Photo 3"></div>
+      <div class="mimg"><img src="https://bookingenginecdn.hostaway.com/listing/51916-189511-1DisjsStArEcF0nSzJh-XT9lpqfg7-Z7WNFMgbYg0Cg-64dfdf9460e52?width=800&quality=80&format=webp&v=2" alt="Photo 4"></div>
+      <div class="mimg"><img src="https://bookingenginecdn.hostaway.com/listing/51916-189511-qSgdap0W5mSjCx2pUQ6KxgnnAmE-sIhrzaDZo8XbOz8-64dfde50d9940?width=800&quality=80&format=webp&v=2" alt="Photo 5"></div>
+      <button type="button" class="mosaic-show-all">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="9" y="1" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="1" y="9" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="9" y="9" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/></svg>
+        Show all 10 photos
+      </button>
+    </div>
+  </div>
+  <div class="prop-info-bar">
+    <h1>The Oasis</h1>
+    <p>Pool, 2 Hot Tubs & Putting Green · Bradenton, FL</p>
+  </div>
+</section>
+
+<!-- ============================== -->
+<!-- OPTION B: Cinematic Full-Width -->
+<!-- ============================== -->
+<section id="opt-cinema" class="mockup-section">
+  <div class="section-label">B: Cinematic Hero</div>
+  <div class="section-desc">Full-width hero image with gradient overlay, property title overlaid, and a thumbnail strip for quick browsing. More immersive, luxury feel.</div>
+
+  <div class="hero-cinema-wrap">
+    <div class="hero-cinema">
+      <img id="cinema-main" class="hero-cinema-main" src="https://bookingenginecdn.hostaway.com/listing/51916-189511-g2tWgjqFm-DXPRc0ll2k1u87aWIKNZm6tOyz9KhGrnc-64dfdf914c559?width=1400&quality=85&format=webp&v=2" alt="The Oasis">
+      <div class="hero-cinema-overlay"></div>
+      <div class="hero-cinema-content">
+        <h1>The Oasis</h1>
+        <p>Pool, 2 Hot Tubs & Putting Green · Bradenton, FL</p>
+      </div>
+      <div class="hero-cinema-thumbstrip">
+        <div class="hero-cinema-thumb active" onclick="switchCinema(0)"><img src="https://bookingenginecdn.hostaway.com/listing/51916-189511-g2tWgjqFm-DXPRc0ll2k1u87aWIKNZm6tOyz9KhGrnc-64dfdf914c559?width=200&quality=70&format=webp&v=2" alt="1"></div>
+        <div class="hero-cinema-thumb" onclick="switchCinema(1)"><img src="https://bookingenginecdn.hostaway.com/listing/51916-189511-nitpZTl7tc027s3c6fWxtHLNuBZKytwSSjlz4TbXaEQ-64dffd0b4ef94?width=200&quality=70&format=webp&v=2" alt="2"></div>
+        <div class="hero-cinema-thumb" onclick="switchCinema(2)"><img src="https://bookingenginecdn.hostaway.com/listing/51916-189511-aHV3Wyi83yrNT6dPnJVox7aZjJMatTbxV5jS1pbu3ms-64dffd17771bc?width=200&quality=70&format=webp&v=2" alt="3"></div>
+        <div class="hero-cinema-thumb" onclick="switchCinema(3)"><img src="https://bookingenginecdn.hostaway.com/listing/51916-189511-1DisjsStArEcF0nSzJh-XT9lpqfg7-Z7WNFMgbYg0Cg-64dfdf9460e52?width=200&quality=70&format=webp&v=2" alt="4"></div>
+        <div class="hero-cinema-thumb" onclick="switchCinema(4)"><img src="https://bookingenginecdn.hostaway.com/listing/51916-189511-qSgdap0W5mSjCx2pUQ6KxgnnAmE-sIhrzaDZo8XbOz8-64dfde50d9940?width=200&quality=70&format=webp&v=2" alt="5"></div>
+        <button class="hero-cinema-showAll">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="9" y="1" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="1" y="9" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="9" y="9" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/></svg>
+          +5 more
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== -->
+<!-- OPTION C: 60/40 Split Gallery  -->
+<!-- ============================== -->
+<section id="opt-split" class="mockup-section">
+  <div class="section-label">C: Split Gallery</div>
+  <div class="section-desc">Large hero (60%) with 3 stacked side images (40%). Badge overlay for branding. Balances immersion with content density — shows 4 photos without scrolling.</div>
+
+  <div class="hero-split-wrap">
+    <div class="hero-split">
+      <div class="hero-split-main">
+        <div class="hero-split-badge">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          Superhost · Direct Book & Save
+        </div>
+        <img src="https://bookingenginecdn.hostaway.com/listing/51916-189511-g2tWgjqFm-DXPRc0ll2k1u87aWIKNZm6tOyz9KhGrnc-64dfdf914c559?width=1400&quality=85&format=webp&v=2" alt="The Oasis hero">
+      </div>
+      <div class="hero-split-side">
+        <div class="ss-img"><img src="https://bookingenginecdn.hostaway.com/listing/51916-189511-nitpZTl7tc027s3c6fWxtHLNuBZKytwSSjlz4TbXaEQ-64dffd0b4ef94?width=800&quality=80&format=webp&v=2" alt="Photo 2"></div>
+        <div class="ss-img"><img src="https://bookingenginecdn.hostaway.com/listing/51916-189511-aHV3Wyi83yrNT6dPnJVox7aZjJMatTbxV5jS1pbu3ms-64dffd17771bc?width=800&quality=80&format=webp&v=2" alt="Photo 3"></div>
+        <div class="ss-img">
+          <img src="https://bookingenginecdn.hostaway.com/listing/51916-189511-1DisjsStArEcF0nSzJh-XT9lpqfg7-Z7WNFMgbYg0Cg-64dfdf9460e52?width=800&quality=80&format=webp&v=2" alt="Photo 4">
+          <div class="hero-split-counter">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="9" y="1" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="1" y="9" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="9" y="9" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/></svg>
+            +6 more photos
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="prop-info-bar">
+    <h1>The Oasis</h1>
+    <p>Pool, 2 Hot Tubs & Putting Green · Bradenton, FL</p>
+  </div>
+</section>
+
+<div class="spacer"></div>
+
+<script>
+// Cinematic hero image URLs
+var cinemaImages = [
+  "https://bookingenginecdn.hostaway.com/listing/51916-189511-g2tWgjqFm-DXPRc0ll2k1u87aWIKNZm6tOyz9KhGrnc-64dfdf914c559?width=1400&quality=85&format=webp&v=2",
+  "https://bookingenginecdn.hostaway.com/listing/51916-189511-nitpZTl7tc027s3c6fWxtHLNuBZKytwSSjlz4TbXaEQ-64dffd0b4ef94?width=1400&quality=85&format=webp&v=2",
+  "https://bookingenginecdn.hostaway.com/listing/51916-189511-aHV3Wyi83yrNT6dPnJVox7aZjJMatTbxV5jS1pbu3ms-64dffd17771bc?width=1400&quality=85&format=webp&v=2",
+  "https://bookingenginecdn.hostaway.com/listing/51916-189511-1DisjsStArEcF0nSzJh-XT9lpqfg7-Z7WNFMgbYg0Cg-64dfdf9460e52?width=1400&quality=85&format=webp&v=2",
+  "https://bookingenginecdn.hostaway.com/listing/51916-189511-qSgdap0W5mSjCx2pUQ6KxgnnAmE-sIhrzaDZo8XbOz8-64dfde50d9940?width=1400&quality=85&format=webp&v=2"
+];
+
+function showOption(opt) {
+  document.querySelectorAll('.mockup-section').forEach(function(s) { s.classList.remove('active'); });
+  document.querySelectorAll('.mockup-btn').forEach(function(b) { b.classList.remove('active'); });
+  document.getElementById('opt-' + opt).classList.add('active');
+  event.target.classList.add('active');
+}
+
+function switchCinema(idx) {
+  document.getElementById('cinema-main').src = cinemaImages[idx];
+  document.querySelectorAll('.hero-cinema-thumb').forEach(function(t, i) {
+    t.classList.toggle('active', i === idx);
+  });
+}
+</script>
+</body>
+</html>
