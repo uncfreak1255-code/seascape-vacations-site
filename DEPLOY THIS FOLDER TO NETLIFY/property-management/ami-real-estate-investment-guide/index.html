@@ -48,7 +48,7 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" media="print" onload='this.media="all"'><noscript><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet"></noscript>
     
     <!-- Service Schema -->
     <script type="application/ld+json">
@@ -165,7 +165,7 @@
     <nav class="nav">
         <div class="nav-inner">
             <a href="/" class="nav-logo">
-                <img src="/logo-optimized.png" alt="Seascape Vacations" height="40">
+                <img decoding="async" loading="lazy" src="/logo-optimized.png" alt="Seascape Vacations" height="40">
                 <div>
                     <div class="nav-logo-text">SEASCAPE</div>
                     <div class="nav-logo-sub">Vacations</div>
@@ -553,27 +553,7 @@
     <script defer src="https://www.googletagmanager.com/gtag/js?id=G-3VDV66S3DK"></script>
     <script>window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());gtag('config', 'G-3VDV66S3DK');</script>
 <!-- Email Capture Popup -->
-<style>
-.email-popup-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.6);backdrop-filter:blur(8px);z-index:2000;display:none;justify-content:center;align-items:center;opacity:0;transition:transform .4s ease,opacity .4s ease;overscroll-behavior:contain}
-.email-popup-overlay.active{display:flex;opacity:1}
-.email-popup{background:linear-gradient(135deg,rgba(255,255,255,.95) 0,rgba(245,243,240,.98) 100%);width:90%;max-width:480px;border-radius:24px;padding:48px 40px;box-shadow:0 25px 80px -12px rgba(0,0,0,.35);position:relative;z-index:2;transform:translateY(30px) scale(.95);transition:transform .4s cubic-bezier(.175,.885,.32,1.275),opacity .4s cubic-bezier(.175,.885,.32,1.275);text-align:center}
-.email-popup-overlay.active .email-popup{transform:translateY(0) scale(1)}
-.email-popup-close{position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:50%;background:#EBE4CC;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:20px;color:#6A6A6A;transition:transform .2s ease,opacity .2s ease}
-.email-popup-close:hover{background:#5F8A8B;color:#fff}
-.email-popup-badge{display:inline-block;background:linear-gradient(135deg,#C9A962 0,#E8D5A3 100%);color:#fff;padding:6px 16px;border-radius:20px;font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;margin-bottom:20px}
-.email-popup-title{font-family:"Playfair Display",Georgia,serif;font-size:32px;color:#3D5C5D;margin-bottom:12px;line-height:1.2}
-.email-popup-subtitle{color:#3A3A3A;font-size:16px;margin-bottom:28px;line-height:1.6}
-.email-popup-form{display:flex;flex-direction:column;gap:12px}
-.email-popup-input{width:100%;padding:16px 20px;border:2px solid #EBE4CC;border-radius:12px;font-size:16px;font-family:Poppins,sans-serif;background:#fff}
-.email-popup-input:focus{outline:0;border-color:#5F8A8B;box-shadow:0 0 0 4px rgba(95,138,139,.1)}
-.email-popup-btn{width:100%;padding:16px 24px;background:linear-gradient(135deg,#5F8A8B 0,#3D5C5D 100%);color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:600;cursor:pointer;font-family:Poppins,sans-serif}
-.email-popup-btn:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(95,138,139,.35)}
-.email-popup-privacy{font-size:12px;color:#6A6A6A;margin-top:16px}
-.email-popup-success{display:none;text-align:center}
-.email-popup-success.show{display:block}
-.email-popup-success-icon{width:64px;height:64px;background:linear-gradient(135deg,#5F8A8B 0,#3D5C5D 100%);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:28px;color:#fff}
-@media(max-width:600px){.email-popup{padding:36px 24px;margin:20px}.email-popup-title{font-size:26px}}
-</style>
+<link rel="stylesheet" href="/css/email-popup.css">
 <div id="email-popup" class="email-popup-overlay" onclick="closeEmailPopup()">
 <div class="email-popup" onclick="event.stopPropagation()">
 <button class="email-popup-close" onclick="closeEmailPopup()">&times;</button>
