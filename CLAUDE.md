@@ -370,10 +370,12 @@ Each task above runs its own full workflow. Key workflow patterns:
 1. Make changes in the `DEPLOY THIS FOLDER TO NETLIFY/` directory
 2. Update `sitemap.xml` if any new pages or significant content changes
 3. Stage and commit: `git add -A && git commit -m "descriptive message"`
-4. **Push to GitHub FIRST** — Netlify MCP deploy caches based on remote git commit hash. If you don't push, Netlify serves stale cached files.
-5. Deploy via Netlify MCP: `deploy-site` with siteId `380fdf4b-91dd-4c6d-a31c-252c07aade81`
-6. Verify: curl 3 changed pages, confirm new content appears (not just HTTP 200 — check for a unique string)
-7. If new files return 404 after deploy, add `<!-- deploy-force: YYYY-MM-DD -->` comment and redeploy
+4. **Push to GitHub** — this triggers Netlify auto-deploy via GitHub integration
+5. Wait 60 seconds, then verify with `curl -sL` (always follow redirects — site uses trailing-slash redirects)
+6. Verify 3 changed pages: confirm new content appears (not just HTTP 200 — check for a unique string)
+7. If pages aren't updated after 90s, deploy manually via Netlify MCP: `deploy-site` with siteId `380fdf4b-91dd-4c6d-a31c-252c07aade81`
+8. If MCP also fails (502), log `⚠️ DEPLOY FAILED` in task-log and wait for GitHub auto-deploy to complete
+9. If new files return 404 after deploy, add `<!-- deploy-force: YYYY-MM-DD -->` comment and redeploy
 
 ---
 
@@ -397,3 +399,5 @@ After any correction from the user, append the lesson to this section:
 - Deploy verification must include content checking (not just HTTP 200) — verify a unique string from the new content appears in the curl response
 - H2 uniqueness audit (March 2026): 298 unique H2s across 70 pages, 0 duplicates — current site passes
 - Internal linking rebuild (March 2026): 11 new contextual links added across topic clusters
+- **Always use `curl -sL` for Netlify verification** — the site has trailing-slash redirects via `_redirects`. Without `-L`, curl returns redirect HTML instead of page content, wasting a round-trip.
+- **After `git push` succeeds, Netlify auto-deploys via GitHub integration** — the MCP `deploy-site` command is only needed if auto-deploy doesn't trigger. Don't run MCP as a mandatory step after every push.

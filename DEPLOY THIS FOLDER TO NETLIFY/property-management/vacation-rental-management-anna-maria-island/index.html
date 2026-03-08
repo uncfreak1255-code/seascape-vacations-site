@@ -52,23 +52,48 @@
     
     <!-- Service Schema -->
     <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "Service",
-        "name": "Anna Maria Island Vacation Rental Management",
-        "description": "Maximize your AMI rental income with full-service management. Dynamic pricing, guest support, direct booking.",
-        "provider": {
-            "@type": "LocalBusiness",
-            "name": "Seascape Vacations",
-            "url": "https://seascape-vacations.com"
+{
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": "Anna Maria Island Vacation Rental Management",
+    "description": "Maximize your AMI rental income with full-service management. Dynamic pricing, guest support, direct booking.",
+    "provider": {
+        "@type": "LocalBusiness",
+        "name": "Seascape Vacations",
+        "url": "https://seascape-vacations.com"
+    },
+    "areaServed": [
+        {
+            "@type": "City",
+            "name": "Anna Maria Island",
+            "sameAs": "https://www.wikidata.org/wiki/Q616223"
         },
-        "areaServed": {
-            "@type": "State",
-            "name": "Florida"
+        {
+            "@type": "City",
+            "name": "Holmes Beach"
         },
-        "serviceType": "Vacation Rental Property Management"
-    }
-    </script>
+        {
+            "@type": "City",
+            "name": "Bradenton Beach"
+        },
+        {
+            "@type": "City",
+            "name": "Bradenton",
+            "sameAs": "https://www.wikidata.org/wiki/Q754488"
+        },
+        {
+            "@type": "City",
+            "name": "Sarasota",
+            "sameAs": "https://www.wikidata.org/wiki/Q180962"
+        },
+        {
+            "@type": "City",
+            "name": "Longboat Key"
+        }
+    ],
+    "serviceType": "Vacation Rental Property Management"
+}
+</script>
     
     <!-- Breadcrumb Schema -->
     <script type="application/ld+json">
@@ -155,6 +180,33 @@
         ]
     }
     </script>
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Anna Maria Island Vacation Rental Management \u2014 Seascape Vacations",
+    "url": "https://seascape-vacations.com/property-management/vacation-rental-management-anna-maria-island/",
+    "speakable": {
+        "@type": "SpeakableSpecification",
+        "cssSelector": [
+            ".hero-section",
+            "meta[name=description]"
+        ]
+    },
+    "about": [
+        {
+            "@type": "Place",
+            "name": "Anna Maria Island",
+            "sameAs": "https://www.wikidata.org/wiki/Q616223"
+        },
+        {
+            "@type": "Place",
+            "name": "Bradenton, Florida",
+            "sameAs": "https://www.wikidata.org/wiki/Q754488"
+        }
+    ]
+}
+</script>
     
     
     <style>

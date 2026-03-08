@@ -13,9 +13,250 @@
 /experiences/*   /guides/   301
 /experiences/   /guides/   301
 /experiences   /guides/   301
+
+# --- Specific /travel-spot-guide/ redirects (GSC 404 cleanup, 2026-03-08) ---
+# Maps old platform activity/restaurant/attraction pages to closest current content
+
+# Beaches & Beach Activities
+/travel-spot-guide/bean-point-anna-maria-island   /guides/anna-maria-island-beaches.html   301
+/travel-spot-guide/bean-point-anna-maria-island/   /guides/anna-maria-island-beaches.html   301
+/travel-spot-guide/coquina-beach   /guides/anna-maria-island-beaches.html   301
+/travel-spot-guide/coquina-beach/   /guides/anna-maria-island-beaches.html   301
+/travel-spot-guide/manatee-public-beach   /guides/anna-maria-island-beaches.html   301
+/travel-spot-guide/manatee-public-beach/   /guides/anna-maria-island-beaches.html   301
+/travel-spot-guide/bradenton-beach   /guides/bradenton-beach.html   301
+/travel-spot-guide/bradenton-beach/   /guides/bradenton-beach.html   301
+/travel-spot-guide/cortez-beach   /guides/bradenton-beach.html   301
+/travel-spot-guide/cortez-beach/   /guides/bradenton-beach.html   301
+/travel-spot-guide/siesta-key-beach   /guides/siesta-key-beach-guide.html   301
+/travel-spot-guide/siesta-key-beach/   /guides/siesta-key-beach-guide.html   301
+/travel-spot-guide/lido-beach   /guides/sarasota-area-guide/   301
+/travel-spot-guide/lido-beach/   /guides/sarasota-area-guide/   301
+/travel-spot-guide/longboat-key-beach   /guides/longboat-key-area-guide/   301
+/travel-spot-guide/longboat-key-beach/   /guides/longboat-key-area-guide/   301
+
+# Fishing & Charters
+/travel-spot-guide/highliner-charters   /stays/fishing-vacation-rentals-bradenton/   301
+/travel-spot-guide/highliner-charters/   /stays/fishing-vacation-rentals-bradenton/   301
+/travel-spot-guide/anna-maria-fishing-charters   /stays/fishing-vacation-rentals-bradenton/   301
+/travel-spot-guide/anna-maria-fishing-charters/   /stays/fishing-vacation-rentals-bradenton/   301
+/travel-spot-guide/captain-louie-fishing   /stays/fishing-vacation-rentals-bradenton/   301
+/travel-spot-guide/captain-louie-fishing/   /stays/fishing-vacation-rentals-bradenton/   301
+/travel-spot-guide/fishing-charters   /stays/fishing-vacation-rentals-bradenton/   301
+/travel-spot-guide/fishing-charters/   /stays/fishing-vacation-rentals-bradenton/   301
+/travel-spot-guide/bradenton-fishing   /guides/fishing-guide-anna-maria-sarasota.html   301
+/travel-spot-guide/bradenton-fishing/   /guides/fishing-guide-anna-maria-sarasota.html   301
+
+# Water Sports & Boat Rentals
+/travel-spot-guide/bluwave-boat-rental   /stays/waterfront-vacation-rentals-with-kayaks/   301
+/travel-spot-guide/bluwave-boat-rental/   /stays/waterfront-vacation-rentals-with-kayaks/   301
+/travel-spot-guide/cortez-watersports   /stays/waterfront-vacation-rentals-with-kayaks/   301
+/travel-spot-guide/cortez-watersports/   /stays/waterfront-vacation-rentals-with-kayaks/   301
+/travel-spot-guide/yolo-parasailing-adventures   /guides/things-to-do-bradenton-fl.html   301
+/travel-spot-guide/yolo-parasailing-adventures/   /guides/things-to-do-bradenton-fl.html   301
+/travel-spot-guide/shore-thing-tiki-cruises   /guides/things-to-do-bradenton-fl.html   301
+/travel-spot-guide/shore-thing-tiki-cruises/   /guides/things-to-do-bradenton-fl.html   301
+/travel-spot-guide/desoto-kayak-tours   /stays/kayaking-vacation-rentals-bradenton/   301
+/travel-spot-guide/desoto-kayak-tours/   /stays/kayaking-vacation-rentals-bradenton/   301
+/travel-spot-guide/paddleboarding   /stays/paddleboarding-vacation-rentals-florida/   301
+/travel-spot-guide/paddleboarding/   /stays/paddleboarding-vacation-rentals-florida/   301
+
+# Bike & Equipment Rentals
+/travel-spot-guide/better-on-bikes   /guides/do-you-need-a-car-anna-maria-island.html   301
+/travel-spot-guide/better-on-bikes/   /guides/do-you-need-a-car-anna-maria-island.html   301
+/travel-spot-guide/beach-n-rides-and-rentals   /stays/equipment-rentals-florida-vacation/   301
+/travel-spot-guide/beach-n-rides-and-rentals/   /stays/equipment-rentals-florida-vacation/   301
+/travel-spot-guide/beach-bums-ami   /stays/equipment-rentals-florida-vacation/   301
+/travel-spot-guide/beach-bums-ami/   /stays/equipment-rentals-florida-vacation/   301
+
+# Restaurants & Dining
+/travel-spot-guide/dry-dock-waterfront-grill   /guides/best-waterfront-restaurants-with-boat-dock.html   301
+/travel-spot-guide/dry-dock-waterfront-grill/   /guides/best-waterfront-restaurants-with-boat-dock.html   301
+/travel-spot-guide/beach-house-waterfront-restaurant   /guides/best-waterfront-restaurants-with-boat-dock.html   301
+/travel-spot-guide/beach-house-waterfront-restaurant/   /guides/best-waterfront-restaurants-with-boat-dock.html   301
+/travel-spot-guide/mar-vista-dockside-restaurant-pub   /guides/best-waterfront-restaurants-with-boat-dock.html   301
+/travel-spot-guide/mar-vista-dockside-restaurant-pub/   /guides/best-waterfront-restaurants-with-boat-dock.html   301
+/travel-spot-guide/anna-maria-oyster-bar   /guides/best-restaurants-anna-maria-island.html   301
+/travel-spot-guide/anna-maria-oyster-bar/   /guides/best-restaurants-anna-maria-island.html   301
+/travel-spot-guide/sandbar-restaurant   /guides/best-restaurants-anna-maria-island.html   301
+/travel-spot-guide/sandbar-restaurant/   /guides/best-restaurants-anna-maria-island.html   301
+/travel-spot-guide/the-waterfront-restaurant   /guides/best-restaurants-anna-maria-island.html   301
+/travel-spot-guide/the-waterfront-restaurant/   /guides/best-restaurants-anna-maria-island.html   301
+/travel-spot-guide/bridge-street-bistro   /guides/best-restaurants-anna-maria-island.html   301
+/travel-spot-guide/bridge-street-bistro/   /guides/best-restaurants-anna-maria-island.html   301
+/travel-spot-guide/star-fish-company   /guides/best-restaurants-anna-maria-island.html   301
+/travel-spot-guide/star-fish-company/   /guides/best-restaurants-anna-maria-island.html   301
+/travel-spot-guide/skinny-s-place   /guides/best-restaurants-anna-maria-island.html   301
+/travel-spot-guide/skinny-s-place/   /guides/best-restaurants-anna-maria-island.html   301
+/travel-spot-guide/popi-s-place   /guides/best-restaurants-anna-maria-island.html   301
+/travel-spot-guide/popi-s-place/   /guides/best-restaurants-anna-maria-island.html   301
+/travel-spot-guide/ugly-grouper   /guides/best-restaurants-anna-maria-island.html   301
+/travel-spot-guide/ugly-grouper/   /guides/best-restaurants-anna-maria-island.html   301
+
+# Outdoor Activities & Attractions
+/travel-spot-guide/treeumph-adventure-course   /guides/things-to-do-bradenton-fl.html   301
+/travel-spot-guide/treeumph-adventure-course/   /guides/things-to-do-bradenton-fl.html   301
+/travel-spot-guide/robinson-preserve   /guides/things-to-do-bradenton-fl.html   301
+/travel-spot-guide/robinson-preserve/   /guides/things-to-do-bradenton-fl.html   301
+/travel-spot-guide/de-soto-national-memorial   /stays/de-soto-national-memorial-vacation-rentals/   301
+/travel-spot-guide/de-soto-national-memorial/   /stays/de-soto-national-memorial-vacation-rentals/   301
+/travel-spot-guide/emerson-point-preserve   /guides/things-to-do-bradenton-fl.html   301
+/travel-spot-guide/emerson-point-preserve/   /guides/things-to-do-bradenton-fl.html   301
+/travel-spot-guide/riverwalk-bradenton   /stays/riverwalk-bradenton-vacation-rentals/   301
+/travel-spot-guide/riverwalk-bradenton/   /stays/riverwalk-bradenton-vacation-rentals/   301
+
+# Wildlife & Nature
+/travel-spot-guide/dolphins-manatees   /guides/dolphins-manatees-bradenton.html   301
+/travel-spot-guide/dolphins-manatees/   /guides/dolphins-manatees-bradenton.html   301
+/travel-spot-guide/dolphin-watching   /stays/dolphin-watching-vacation-rentals-florida/   301
+/travel-spot-guide/dolphin-watching/   /stays/dolphin-watching-vacation-rentals-florida/   301
+/travel-spot-guide/manatee-viewing-center   /guides/dolphins-manatees-bradenton.html   301
+/travel-spot-guide/manatee-viewing-center/   /guides/dolphins-manatees-bradenton.html   301
+/travel-spot-guide/birdwatching   /stays/birdwatching-vacation-rentals-florida/   301
+/travel-spot-guide/birdwatching/   /stays/birdwatching-vacation-rentals-florida/   301
+
+# Shelling
+/travel-spot-guide/shelling   /guides/shelling-guide-florida.html   301
+/travel-spot-guide/shelling/   /guides/shelling-guide-florida.html   301
+/travel-spot-guide/shelling-guide   /guides/shelling-guide-florida.html   301
+/travel-spot-guide/shelling-guide/   /guides/shelling-guide-florida.html   301
+
+# Tide & Weather Info
+/travel-spot-guide/tide-tables   /guides/anna-maria-island-weather.html   301
+/travel-spot-guide/tide-tables/   /guides/anna-maria-island-weather.html   301
+
+# Pet-Friendly
+/travel-spot-guide/pet-friendly   /stays/pet-friendly-vacation-rentals-anna-maria-island/   301
+/travel-spot-guide/pet-friendly/   /stays/pet-friendly-vacation-rentals-anna-maria-island/   301
+/travel-spot-guide/dog-beach   /stays/pet-friendly-vacation-rentals-anna-maria-island/   301
+/travel-spot-guide/dog-beach/   /stays/pet-friendly-vacation-rentals-anna-maria-island/   301
+
+# Sarasota-Specific Attractions
+/travel-spot-guide/ringling-museum   /guides/sarasota-area-guide/   301
+/travel-spot-guide/ringling-museum/   /guides/sarasota-area-guide/   301
+/travel-spot-guide/st-armands-circle   /guides/sarasota-area-guide/   301
+/travel-spot-guide/st-armands-circle/   /guides/sarasota-area-guide/   301
+/travel-spot-guide/mote-marine-laboratory   /guides/sarasota-area-guide/   301
+/travel-spot-guide/mote-marine-laboratory/   /guides/sarasota-area-guide/   301
+/travel-spot-guide/marie-selby-botanical-gardens   /guides/sarasota-area-guide/   301
+/travel-spot-guide/marie-selby-botanical-gardens/   /guides/sarasota-area-guide/   301
+
+# Numeric/ID-based travel-spot-guide pages (old platform generated)
+/travel-spot-guide/196111   /guides/   301
+/travel-spot-guide/196111/   /guides/   301
+
+# Cortez Village
+/travel-spot-guide/cortez-village   /stays/cortez-village-vacation-rentals/   301
+/travel-spot-guide/cortez-village/   /stays/cortez-village-vacation-rentals/   301
+
+# Golf
+/travel-spot-guide/golf   /stays/golf-vacation-rentals-bradenton/   301
+/travel-spot-guide/golf/   /stays/golf-vacation-rentals-bradenton/   301
+
+# Sunset Cruises
+/travel-spot-guide/sunset-cruise   /stays/sunset-cruise-vacation-rentals-bradenton/   301
+/travel-spot-guide/sunset-cruise/   /stays/sunset-cruise-vacation-rentals-bradenton/   301
+
+# Catch-all wildcard (must come AFTER specific rules — Netlify matches top-to-bottom)
 /travel-spot-guide/*   /guides/   301
+
 /what-awaits-you-at-seascape-vacations/*   /guides/   301
+/what-awaits-you-at-seascape-vacations   /guides/   301
 /contact-us   /contact/   301
+/contact-us/   /contact/   301
+
+# --- Additional old platform routes (GSC 404 cleanup, 2026-03-08) ---
+
+# Old city pages not yet covered
+/city/bradenton   /guides/bradenton-area-guide/   301
+/city/bradenton/   /guides/bradenton-area-guide/   301
+/city/bradenton/*   /guides/bradenton-area-guide/   301
+/city/anna-maria-island   /guides/anna-maria-island-area-guide/   301
+/city/anna-maria-island/   /guides/anna-maria-island-area-guide/   301
+/city/anna-maria-island/*   /guides/anna-maria-island-area-guide/   301
+/city/holmes-beach   /guides/holmes-beach-area-guide/   301
+/city/holmes-beach/   /guides/holmes-beach-area-guide/   301
+/city/holmes-beach/*   /guides/holmes-beach-area-guide/   301
+/city/bradenton-beach   /guides/bradenton-beach-area-guide/   301
+/city/bradenton-beach/   /guides/bradenton-beach-area-guide/   301
+/city/bradenton-beach/*   /guides/bradenton-beach-area-guide/   301
+/city/longboat-key   /guides/longboat-key-area-guide/   301
+/city/longboat-key/   /guides/longboat-key-area-guide/   301
+/city/longboat-key/*   /guides/longboat-key-area-guide/   301
+/city/siesta-key   /guides/siesta-key-area-guide/   301
+/city/siesta-key/   /guides/siesta-key-area-guide/   301
+/city/siesta-key/*   /guides/siesta-key-area-guide/   301
+/city/palmetto   /stays/palmetto-vacation-rentals-florida/   301
+/city/palmetto/   /stays/palmetto-vacation-rentals-florida/   301
+/city/palmetto/*   /stays/palmetto-vacation-rentals-florida/   301
+/city/anna-maria   /guides/anna-maria-city.html   301
+/city/anna-maria/   /guides/anna-maria-city.html   301
+/city/anna-maria/*   /guides/anna-maria-city.html   301
+/city/*   /guides/   301
+
+# Old platform user/account routes
+/account   /   301
+/account/   /   301
+/account/*   /   301
+/profile   /   301
+/profile/   /   301
+/login   /   301
+/login/   /   301
+/signup   /   301
+/signup/   /   301
+/register   /   301
+/register/   /   301
+/verify-email   /   301
+/verify-email/   /   301
+/forgot-password   /   301
+/forgot-password/   /   301
+/checkout   /   301
+/checkout/   /   301
+/cart   /   301
+/cart/   /   301
+/wishlist   /   301
+/wishlist/   /   301
+/favorites   /   301
+/favorites/   /   301
+/saved   /   301
+/saved/   /   301
+/inbox   /   301
+/inbox/   /   301
+/notifications   /   301
+/notifications/   /   301
+/settings   /   301
+/settings/   /   301
+/booking   /   301
+/booking/   /   301
+/booking/*   /   301
+/reservations   /   301
+/reservations/   /   301
+/reservations/*   /   301
+
+# Old platform content routes
+/pages/*   /   301
+/page/*   /   301
+/category/*   /guides/   301
+/categories/*   /guides/   301
+/tag/*   /guides/   301
+/tags/*   /guides/   301
+/search   /   301
+/search/   /   301
+/search/*   /   301
+
+# Common WordPress/CMS probes (bots + crawlers)
+# /wp-content/* already handled above
+/wp-includes/*   /   301
+/wp-json/*   /   301
+/xmlrpc.php   /   301
+/feed   /   301
+/feed/   /   301
+/rss   /   301
+/rss/   /   301
+
+# Old /destinations/ catch-all (supplement existing specific rules)
+/destinations/*   /guides/   301
+/destinations   /guides/   301
 
 # Legacy listing pages (singular)
 /listing/*   /?rental=:splat   301
