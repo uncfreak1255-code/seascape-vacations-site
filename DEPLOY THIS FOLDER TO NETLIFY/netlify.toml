@@ -1,3 +1,15 @@
+# --- Query parameter stripping (GSC crawl budget cleanup, 2026-03-09) ---
+# Old platform left ?nocache= params on ~150 URLs. Google crawls them
+# but canonical tags prevent indexing. This 301 strips the param entirely
+# so Google stops wasting crawl budget on them.
+[[redirects]]
+  from = "/*"
+  to = "/:splat"
+  status = 301
+  force = false
+  [redirects.query]
+    nocache = ":nocache"
+
 [[headers]]
   for = "/*"
   [headers.values]

@@ -345,6 +345,24 @@
 # High-impression 404 — weather page exists at /guides/ path
 /anna-maria-island-weather.html   /guides/anna-maria-island-weather.html  301
 
+# --- Nested guide URL 404s (GSC cleanup, 2026-03-09) ---
+# Old platform generated cross-linked guide subpages that don't exist
+/guides/bradenton-beach-area-guide/area-guide-sarasota.html   /guides/sarasota-area-guide/   301
+/guides/bradenton-beach-area-guide/area-guide-holmes-beach.html   /guides/holmes-beach-area-guide/   301
+/guides/bradenton-beach-area-guide/area-guide-ami.html   /guides/anna-maria-island-area-guide/   301
+/guides/longboat-key-area-guide/area-guide-sarasota.html   /guides/sarasota-area-guide/   301
+/guides/longboat-key-area-guide/area-guide-siesta-key.html   /guides/siesta-key-area-guide/   301
+/guides/longboat-key-area-guide/area-guide-ami.html   /guides/anna-maria-island-area-guide/   301
+/guides/longboat-key-area-guide/properties/index.html   /properties/   301
+/guides/holmes-beach-area-guide/area-guide-bradenton-beach.html   /guides/bradenton-beach-area-guide/   301
+/guides/holmes-beach-area-guide/area-guide-ami.html   /guides/anna-maria-island-area-guide/   301
+/guides/siesta-key-area-guide/area-guide-sarasota.html   /guides/sarasota-area-guide/   301
+/guides/anna-maria-island-area-guide/area-guide-holmes-beach.html   /guides/holmes-beach-area-guide/   301
+/guides/sarasota-area-guide/area-guide-siesta-key.html   /guides/siesta-key-area-guide/   301
+# Catch-all for any nested guide subpages we missed
+/guides/*/area-guide-*.html   /guides/   301
+/guides/*/properties/index.html   /properties/   301
+
 # Duplicate guide consolidation — old .html pages → newer directory versions
 /guides/anna-maria-island-vacation-cost  /guides/anna-maria-island-vacation-cost-guide-2026/  301
 /guides/best-time-visit-anna-maria-island  /guides/best-time-to-visit-anna-maria-island/  301
