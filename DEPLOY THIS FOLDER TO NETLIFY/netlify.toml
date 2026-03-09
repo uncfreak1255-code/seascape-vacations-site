@@ -6,7 +6,7 @@
   from = "/*"
   to = "/:splat"
   status = 301
-  force = false
+  force = true
   [redirects.query]
     nocache = ":nocache"
 
