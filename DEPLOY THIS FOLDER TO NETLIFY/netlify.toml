@@ -1,14 +1,15 @@
 # --- Query parameter stripping (GSC crawl budget cleanup, 2026-03-09) ---
-# Old platform left ?nocache= params on ~150 URLs. Google crawls them
-# but canonical tags prevent indexing. This 301 strips the param entirely
-# so Google stops wasting crawl budget on them.
-[[redirects]]
-  from = "/*"
-  to = "/:splat"
-  status = 301
-  force = true
-  [redirects.query]
-    nocache = ":nocache"
+# NOTE: Netlify TOML redirect with [redirects.query] doesn't actually strip
+# the param from the Location header — creates a redirect loop. Canonical tags
+# already prevent indexing of ?nocache= URLs. Left here as documentation;
+# if Netlify fixes query param stripping, set force = true to activate.
+# [[redirects]]
+#   from = "/*"
+#   to = "/:splat"
+#   status = 301
+#   force = true
+#   [redirects.query]
+#     nocache = ":nocache"
 
 [[headers]]
   for = "/*"
