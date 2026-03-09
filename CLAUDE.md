@@ -136,6 +136,17 @@ Before presenting any content as done, ask yourself:
 
 If the answer to any is "no" — rewrite. Thin content hurts the entire domain.
 
+### 4b. AI Citability Gate (run `/geo-citability` to score)
+Every page should score 65+ on citability before publishing. Key criteria:
+
+**Opening paragraph (134-167 words):** Must be a self-contained answer block using definition pattern ("X is...", "X refers to..."). Include 2+ specific facts. This single paragraph should make sense if quoted by an AI with zero surrounding context. Definition patterns increase citation rate by 2.1x.
+
+**Statistical density:** Minimum 10 specific data points per page. Each stat must be concrete ("$250/night", "12 minutes from Bradenton Beach", "4.8-star average") not vague ("affordable", "nearby", "highly rated"). Adding statistics boosts citation probability by 40%.
+
+**Self-containment:** Every H2 section should be quotable on its own — no "it", "this", "they" without explicit subjects. Name entities explicitly every time ("Anna Maria Island" not "the island").
+
+**Passage length:** AI systems prefer 134-167 word passages. Structure paragraphs in this range for maximum extractability.
+
 ### 5. Content Writing Rules (Anti-AI Detection)
 Google's detection systems flag predictable AI patterns. Every piece of content must feel human-written:
 
@@ -181,7 +192,8 @@ When making changes to the site, always verify:
 - [ ] Mobile-responsive (all pages use existing responsive CSS)
 - [ ] HTTPS everywhere (no mixed content)
 - [ ] Canonical tags point to correct URLs
-- [ ] `robots.txt` allows all important crawlers including AI bots
+- [ ] `robots.txt` allows all important crawlers including AI bots (see 3-tier list in GEO section)
+- [ ] `llms.txt` updated if pages are added/removed (run `/llms-txt update`)
 - [ ] `_redirects` updated if any URLs change (301 only, never 302)
 
 ---
@@ -197,12 +209,23 @@ AI search engines (ChatGPT, Perplexity, Google AI Overviews, Claude) are now a p
 4. **Freshness signals** — recent dates, updated statistics, current pricing
 5. **Entity-rich content** — mention specific places, businesses, landmarks by name
 
+### AI Crawler 3-Tier System
+Manage which AI bots can crawl the site. All are currently allowed in `robots.txt`.
+
+| Tier | Bots | Purpose | Priority |
+|------|------|---------|----------|
+| **Tier 1: Live AI Search** | GPTBot, OAI-SearchBot, ChatGPT-User, ClaudeBot, PerplexityBot | Powers real-time AI search answers | **Critical** — never block |
+| **Tier 2: Ecosystem** | Google-Extended, Applebot-Extended, Amazonbot, FacebookBot, Meta-ExternalAgent | Feeds AI features in Google, Apple, Amazon, Meta | High — keep allowed |
+| **Tier 3: Training** | CCBot, anthropic-ai, cohere-ai, Bytespider, Timespider | Corpus training for AI models | Medium — allow for now |
+
+**llms.txt:** Deployed at `/llms.txt` — tells AI systems what matters most on the site. Update with `/llms-txt update` after adding/removing pages.
+
 ### GEO Content Rules
 - Every guide and stays page should include at least one **comparison table** or **data table**
 - Use **FAQ sections** with `FAQPage` schema on every informational page
 - Include **specific local data**: distances ("12 minutes from Bradenton Beach"), prices ("from $250/night"), ratings
 - Frame content as **reports or guides**, not blog posts: "Anna Maria Island Vacation Cost Guide 2026" beats "Planning Your AMI Trip"
-- **Allow AI crawlers** in robots.txt (already done: GPTBot, ClaudeBot, PerplexityBot, etc.)
+- **Allow AI crawlers** in robots.txt — all 3 tiers currently allowed (see table above)
 - Create **structured data snippets** that AI can directly quote (concise 2-3 sentence summaries at top of each page)
 - Add `<meta name="description">` that reads like an AI-friendly summary, not just a click-bait teaser
 
@@ -223,6 +246,15 @@ Test these queries across ChatGPT, Perplexity, and Google AI Overviews:
 - "where to stay near Anna Maria Island 2026"
 - "Bradenton vs Sarasota for vacation rental"
 Record: Was Seascape cited? Which competitors were? What content format did the AI pull from?
+
+### Brand Authority Tracking (Monthly)
+Run `/brand-authority "Seascape Vacations" --competitors "Anna Maria Vacations, Island Real Estate"` monthly to track brand presence across AI-weighted platforms:
+- **YouTube** (25%) — brand channel, third-party mentions, view counts
+- **Reddit** (25%) — mentions in r/florida, r/vacationrentals, recommendation context
+- **Wikipedia/Wikidata** (20%) — entity presence, mentions in related articles
+- **LinkedIn** (15%) — company page completeness, employee profiles
+- **Other** (15%) — Google Business Profile, TripAdvisor, Yelp, local directories
+Track the composite score (0-100) month-over-month. Unlinked brand mentions correlate ~3x more with AI visibility than traditional backlinks.
 
 ### Digital PR for AI Visibility (Press Release Strategy)
 When creating content designed to get cited by AI engines:
