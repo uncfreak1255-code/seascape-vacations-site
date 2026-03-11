@@ -44,3 +44,20 @@
 
 **Deploy:** ✅ (2 commits pushed, all changes verified live on 3 sample pages)
 **Plan file:** ~/.claude/plans/humming-drifting-wigderson.md
+
+### False Property Claims Cleanup — 2026-03-11
+- **Problem:** Homepage and 13+ pages falsely claimed all 5 properties are "waterfront" with "boat docks." Only Dockside Dreams is waterfront with a dock.
+- **Scope:** ~61 replacements across 14 files (homepage + 12 stays pages + 1 property-management page)
+- **Key fixes:**
+  - Homepage title: "5 Waterfront Homes" → "5 Luxury Vacation Homes"
+  - Homepage comparison table: The Oasis corrected from 10→16 guests, "waterfront"→"Bradenton", "Deep water dock"→"2 Hot Tubs"
+  - River House tags: ["Waterfront"] → ["Near River"] across all appearances
+  - All plural "waterfront homes/properties" claims → specific Dockside Dreams references
+  - Replaced "boat docks" with real amenities (heated pools, hot tubs, game rooms)
+- **Commits:** 95e8996 (26 fixes across 13 pages), 735958d (35 more fixes including homepage + 13 additional pages)
+- **Deploy:** ✅ (git push → Netlify auto-deploy, homepage title verified live)
+
+### Link Building Progress — 2026-03-11
+- **Yelp:** Business account created ✅ (local citation, NAP consistency)
+- **Pending outreach:** AMI Chamber, Manatee Chamber, 941area, FLARBO (Gmail drafts created 2026-03-09, awaiting user review/send)
+- **Hostaway support:** Gmail draft created re: Google Vacation Rentals — 2 listings won't publish (The Oasis #189511, Bradenton Pool Home #487798)
