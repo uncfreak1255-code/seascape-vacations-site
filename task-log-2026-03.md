@@ -20,3 +20,27 @@
 - Internal links added: 11 (from existing related pages)
 - Sitemap updated: ✅ (3 new URLs)
 - Deploy: ✅ (git push to main → Netlify auto-deploy, all 3 pages confirmed live with 200 status)
+
+### 90-Day SEO Plan — Phase 1 Quick Wins — 2026-03-09
+
+**CTR Optimization (5 pages):**
+- bradenton-vs-sarasota.html: title rewrite ("A Local's Honest Take"), meta adds "25-35% cheaper" data point. 19,874 imp × projected 1.5% CTR = +218 clicks/mo
+- anna-maria-island-vs-siesta-key.html: title rewrite ("AMI vs Siesta Key"), meta adds "#1-ranked sand vs zero high-rises + 30% lower prices". 12,162 imp × projected 1.8% = +146 clicks/mo
+- index.html: title adds property count ("5 Waterfront Homes"), meta adds "4.8-star reviews" social proof
+- best-time-visit-anna-maria-island.html: meta adds "80°F, rates drop 30%, book 3 months ahead" specifics
+- best-vacation-rental-companies-ami.html: title uses full "Anna Maria Island", meta adds fee range "(8-20%)" and curiosity hook
+- All 5 pages: og/twitter tags updated, dateModified → 2026-03-09
+
+**Freshness Badges (9 pages):**
+- Added visible "Updated March 2026" badge (inline-styled) after H1 on 7 guide pages
+- 2 pages already had date text — left unchanged
+- Badge style: #5F8A8B background, white text, 0.85rem, rounded
+
+**Link Building Outreach (Gmail drafts created):**
+- Master action-item email with 4 Tier 1 targets (AMI Chamber, Manatee Chamber, 941area, FLARBO)
+- 941area.com submission guide with NAP details and description copy
+- FLARBO listing guide with property recommendations and pricing
+- Mailchimp welcome sequence setup instructions (30-min one-time task)
+
+**Deploy:** ✅ (2 commits pushed, all changes verified live on 3 sample pages)
+**Plan file:** ~/.claude/plans/humming-drifting-wigderson.md
