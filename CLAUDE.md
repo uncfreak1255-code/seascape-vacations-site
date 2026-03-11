@@ -8,10 +8,32 @@
 ## Project Context
 
 **Business:** Seascape Vacations — luxury vacation rental management in Florida's Gulf Coast
+**Phone:** (941) 704-8545 | **Email:** info@seascape-vacations.com
 **Properties:** 5 homes (4 in Bradenton, 1 in Sarasota) — The Oasis, Dockside Dreams, River House, Bradenton Pool Home, Sarasota Luxe
 **Two audiences:**
 1. **Vacationers** — searching for rentals in AMI, Bradenton, Sarasota, Siesta Key, Longboat Key
 2. **Property owners** — considering management services for their vacation rental
+
+### Property Quick Reference (Verified via Hostaway API 2026-03-11)
+> **EVERY agent MUST use this data when writing content. Do NOT invent amenities.**
+
+| Property | ID | BR/BA | Guests | Pool | Hot Tub | Waterfront | Pets |
+|----------|--------|-------|--------|------|---------|------------|------|
+| The Oasis | 189511 | 5/3 | 16 | Yes ($40/n) | 2 hot tubs | No | Dogs <30lb |
+| Dockside Dreams | 206016 | 4/3 | 12 | Yes ($40/n) | Yes | **Yes** — dock + bay | Dogs <30lb |
+| River House | 135880 | 4/3 | 12 | Yes | Yes | Near river (not on water) | Dogs <30lb |
+| Bradenton Pool Home | 487798 | 3/3.5 | 10 | Yes | In-ground spa | No | **No** ($1K fine) |
+| Sarasota Luxe | 135881 | 4/3 | 12 | Yes ($40/n) | Yes (screened lanai) | No | Dogs <30lb |
+
+**CRITICAL — Things That Are FALSE (Never Write These):**
+- ❌ NO complimentary kayaks, paddleboards, fishing gear, or bikes at ANY property
+- ❌ Only 1 property is waterfront (Dockside Dreams) — never say "waterfront homes" plural
+- ❌ Never say "all homes sleep 12+" — Bradenton Pool Home sleeps 10
+- ❌ Never claim equipment is included beyond beach chairs + cooler
+
+**What IS included at every property:** Beach chairs, cooler, fully stocked kitchen, WiFi, TVs in every bedroom, Pack N Play
+
+**Full property database with addresses, distances, amenity lists:** See `memory/property-database.md`
 
 **Live site:** https://seascape-vacations.com
 **GitHub:** https://github.com/uncfreak1255-code/seascape-vacations-site.git
