@@ -1,102 +1,55 @@
-# Competitor Intelligence + Action Report — March 2026
+# Competitor Intelligence Report — March 2026
 
-*Generated: 2026-03-12 | Monthly automated audit*
-
----
-
-## Top Competitors This Month
-
-| Competitor | Domain | Key Rankings | Strength | Weakness |
-|-----------|--------|-------------|----------|----------|
-| Anna Maria Beach Life Rentals | annamariabeachlife.com | AMI vacation rentals, AMI homes | Local boutique, similar size, good review volume | Smaller content library, limited large-group inventory |
-| Island Real Estate | islandrealestate.com | AMI vacation rentals, AMI real estate | Strong local brand, dual RE+rental authority | Primary biz is RE — rental service depth inconsistent |
-| Vacasa | vacasa.com | Nearly all AMI/Bradenton rental terms | Massive DR, OTA ubiquity, broad inventory | Corporate/remote, high fees, guest experience complaints |
-| Evolve Vacation Rental | evolve.com | Rental management terms, owner recruitment | Lower PM fees, growing brand | Contractor model, inconsistent local quality |
-| Anchor Down Vacation Rentals | (local AMI operator) | Spring break activities content | Activity guide content competing on informational terms | Smaller rental inventory |
-| Renjoy / Awning.com | renjoy.com / awning.com | PM/owner acquisition terms | Tech-forward, competitive fees | Limited local Bradenton/AMI presence established |
+## Date: 2026-03-12
+## Source: Manual SERP analysis + live search audit
 
 ---
 
-## Content Gaps Found: 3 → Closed: 3
+## KEY FINDING: Non-Branded Search Visibility Gap
 
-- **Gap:** "spring break vacation rentals Florida Gulf Coast" (broader Gulf Coast term, not just AMI) → **Created:** `/stays/spring-break-vacation-rentals-florida-gulf-coast/`  
-  *Format: Type D (FAQ-style). Target: 500–800 searches/mo. Competitor ranking: Vacasa, Evolve generic pages — no boutique local content.*
+Seascape Vacations dominates branded search ("seascape vacations bradenton" — 6+ positions) but is **invisible in top 10 for all tested non-branded terms**:
 
-- **Gap:** "large group vacation rentals Anna Maria Island" (AMI-specific large group; only had Bradenton version) → **Created:** `/stays/large-group-vacation-rentals-anna-maria-island/`  
-  *Format: Type C (local story). Target: 200–400 searches/mo. No direct competitor page found for AMI-specific large group rentals.*
+| Search Term | Our Position | Top Competitors |
+|---|---|---|
+| "vacation rentals bradenton florida book direct" | Not in top 10 | OwnerDirect, Island Dreams Realty, Mike Norman Realty, Evolve, Airbnb |
+| "bradenton vs sarasota vacation" | Not in top 10 | TripAdvisor, RealNet Florida, MIDFLORIDA, FLARBO, RelativitySEO |
+| "anna maria island vacation rental book direct save" | Not in top 10 | AnnaMariaIsland.com, Island Dreams, SeaBreeze, AnnaMariaLife, BeachBoutique |
 
-- **Gap:** "spring break activities Bradenton Anna Maria Island" (activities guide competing with Anchor Down's content) → **Created:** `/guides/spring-break-activities-bradenton-anna-maria-island/`  
-  *Format: Type A (comparison table). Target: 300–600 searches/mo. Anchor Down has thin content here; no definitive local guide existed.*
+## Priority Competitors (Local Direct-Book VRMs)
 
----
+1. **Island Dreams Realty** (island-dreams-realty.com) — ~60 rentals, AMI/Bradenton/Holmes Beach. Ranks for "book direct" terms. Founded 2015.
+2. **Anchor Down Vacation Rentals** (anchordownvacationrentals.com) — Boutique, AMI-focused. Claims 10%+ savings. Locally owned.
+3. **AnnaMariaIsland.com** — 100% locally owned, Holmes Beach. Strong domain authority from exact-match domain.
+4. **SeaBreeze Vacation** (seabreezevacation.com) — Full-service PM, 24/7 maintenance.
+5. **Mike Norman Realty** (mikenormanrealty.com) — Bradenton Beach specialist. Old brand, high trust.
+6. **FLARBO** (floridarentalbyowners.com) — Aggregator with blog content ranking for comparison queries.
+7. **RelativitySEO** (relativityseo.com) — SEO agency publishing BvS comparison content that outranks us.
 
-## Pages Improved: 5
+## Content Gaps to Exploit
 
-- **`/guides/anna-maria-island-weather.html`**: dateModified 2026-02-08 → 2026-03-12; added spring 2026 GEO block with current March data (78–83°F highs, 69–74°F water, spring break context + AMI Trolley hours). High-impression page (2,243 impressions, pos 6.6) — freshness signal important for CTR improvement.
+### Gap 1: "Book Direct" Landing Page Optimization
+Our /book-direct/ page exists but doesn't rank for "book direct vacation rental bradenton/AMI" terms. Competitors like Island Dreams and Anchor Down rank because they have strong "why book direct" content with specific dollar savings calculations.
 
-- **`/guides/best-vacation-rental-companies-ami.html`**: dateModified 2026-03-09 → 2026-03-12; added "Named AMI Rental Companies" section with specific intelligence on Anna Maria Beach Life, Island Real Estate, Vacasa, and Evolve — replacing generic copy with cite-ready competitor analysis.
+**Action**: Strengthen /book-direct/ page with real savings calculations, comparison tables, testimonials.
 
-- **`/stays/anna-maria-island-vacation-rentals/index.html`**: dateModified 2026-03-07 → 2026-03-12; injected GEO summary block with current pricing ($250–$950/night), spring break availability notice, and cross-links to 2 new pages. Priority transactional page (1,900/mo search volume).
+### Gap 2: BvS Cluster Not Ranking Despite 6 Pages
+We have 6 BvS pages but rank for NONE of the "bradenton vs sarasota" queries. RelativitySEO (an SEO agency!) outranks us with 2 blog posts. Their content likely has better topical authority signals.
 
-- **`/stays/spring-break-rentals-anna-maria-island/index.html`**: dateModified 2026-03-07 → 2026-03-12; added cross-link callout box pointing to new Gulf Coast comparison page — captures broader spring break intent.
+**Action**: The BvS hub page (/guides/bradenton-vs-sarasota.html) needs strengthening as pillar content. Add internal links FROM all 6 cluster pages TO the hub. Add "Related Comparisons" section on each cluster page linking to siblings.
 
-- **`/property-management/vacation-rental-management-bradenton/index.html`**: dateModified 2026-03-07 → 2026-03-12; added full competitor comparison section (Vacasa, iTrip, Evolve, Renjoy/Awning) with honest positioning — addresses owner-facing search queries where national operators dominate.
+### Gap 3: AMI Rental Search Terms
+AnnaMariaIsland.com dominates with exact-match domain advantage. Island Dreams ranks #3. We don't appear despite having AMI-area properties.
 
----
+**Action**: Create or strengthen a dedicated "Anna Maria Island Vacation Rentals" landing page under /stays/ with strong local content, property showcase, and AMI-specific schema markup.
 
-## AI Citation Status
+## Backlink Opportunities Identified
+- VisitFlorida.com references Bradenton/Sarasota area — potential partnership/listing
+- TripAdvisor forum threads — add helpful answers linking back
+- MIDFLORIDA.com (credit union blog) — guest content opportunity
 
-- **Queries where competitors are cited but we aren't:** ~4 identified (Vacasa and Evolve dominate AI responses for general "vacation rental management Florida" queries; Island Real Estate cited for AMI local knowledge queries)
-- **Action taken:** Added GEO-ready summary blocks with self-contained data points to 3 pages. The best-vacation-rental-companies-ami.html now has cite-ready competitor comparisons with specific data (fee ranges, model descriptions) that match AI summarization patterns.
-
----
-
-## New Competitor Threats
-
-- **Renjoy / Awning.com**: Tech-forward national operators beginning to target Bradenton/AMI owner-acquisition keywords. Low DR currently but growing content library. Monitor quarterly.
-- **Anchor Down Vacation Rentals**: Ranking for activities/guide content in the AMI spring break space — not a direct rental competitor but competes on informational terms that drive booking intent.
-
----
-
-## Link Opportunities (requires manual outreach)
-
-- **annamariabeachlife.com**: Cross-referral angle for large-group overflow — outreach template saved in `outreach-templates-2026-03.md` (Template A)
-- **Anchor Down Vacation Rentals**: Content cross-promotion for spring break activities guide — Template B
-- **AMI Chamber / Manatee Chamber**: Local business directory + "places to stay" resource page — Template C
-
----
-
-## Deploy: ✅ Verified Live
-
-- `spring-break-vacation-rentals-florida-gulf-coast/` → 200 ✅
-- `large-group-vacation-rentals-anna-maria-island/` → 200 ✅  
-- `spring-break-activities-bradenton-anna-maria-island/` → 200 ✅
-- `anna-maria-island-weather.html` dateModified: 2026-03-12 confirmed ✅
-
----
-
-## Trend vs Last Month (February 2026)
-
-- Content gaps closed: 3 of 3 identified
-- Pages improved: 5
-- New competitor threats: 2 (Renjoy/Awning.com owner acquisition; Anchor Down activities content)
-- Outreach templates ready: 3
-- Sitemap updated: +3 URLs (total ~1,160+ entries)
-
----
-
-## Internal Cross-Links Added This Session
-
-| Source Page | Destination | Anchor Text |
-|-------------|-------------|-------------|
-| spring-break-rentals-ami | spring-break-vacation-rentals-florida-gulf-coast | Gulf Coast Spring Break Rentals comparison |
-| anna-maria-island-vacation-rentals | spring-break-vacation-rentals-florida-gulf-coast | Gulf Coast Spring Break Rentals |
-| anna-maria-island-vacation-rentals | large-group-vacation-rentals-anna-maria-island | Large Group Rentals AMI |
-| anna-maria-island-weather | spring-break-rentals-ami | spring break rental availability |
-| spring-break-gulf-coast | spring-break-rentals-ami | Spring Break Rentals — Anna Maria Island Specifically |
-| spring-break-gulf-coast | large-group-vacation-rentals-ami | Large Group Vacation Rentals Anna Maria Island |
-| spring-break-gulf-coast | spring-break-activities guide | Spring Break Activities — Bradenton & Anna Maria Island |
-| large-group-ami | spring-break-gulf-coast | Spring Break Vacation Rentals Florida Gulf Coast |
-| spring-break-activities | spring-break-rentals-ami | Spring Break Rentals — Anna Maria Island |
-| spring-break-activities | spring-break-gulf-coast | Spring Break Vacation Rentals Gulf Coast |
-| spring-break-activities | large-group-ami | Large Group Rentals AMI |
+## Recommendations for Next Content Cycle
+1. **HIGHEST PRIORITY**: Strengthen /book-direct/ page content quality and internal linking
+2. Strengthen BvS hub page as pillar content with better internal linking architecture
+3. Create or enhance AMI-specific stays page
+4. Target "vacation rental near [landmark]" long-tail terms where we have existing content
+5. Monitor RelativitySEO — they're an SEO agency creating content in our niche
