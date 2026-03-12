@@ -94,6 +94,21 @@
 
 ### Outreach Monitor — 2026-03-12: Checking Gmail for replies from AMI Chamber, Manatee Chamber, 941area, FLARBO
 
+### Rank Performance Tracker — 2026-03-12
+- GSC 28-day totals: 409 clicks (+22.5%), 61K impressions (+15.1%), 0.7% CTR, pos 7.5
+- GSC 7-day (Mar 4-10): 100 clicks, 13.1K impressions, 0.8% CTR, pos 8.4
+- GSC 7-day (Feb 25-Mar 3): 141 clicks, 21.8K impressions, 0.6% CTR, pos 8.5
+- WoW: -29% clicks / -40% impressions — attributed to GSC 2-3 day data lag, not actual decline. 28-day trend is the signal.
+- Pages indexed: 241 (was 204 on Mar 8) → **+37 new pages indexed** ✅
+- 404 count: 94 (was 90) → +4 new 404s, investigate for backlinks
+- New pages discovered by Google: 12 (was 2) → pSEO pages from Mar 6 being found
+- Keywords tracked via Serpbear: 0 — domain not configured in Serpbear UI ⚠️
+- Top performer: /guides/bradenton-vs-sarasota at 110 clicks (+24%), 22K impressions, pos ~2.4
+- High imp/low CTR flags: bradenton-vs-sarasota (0.5%), ami-weather (0.4%), srq-airport (0.5%)
+- CTR optimization upside: bradenton-vs-sarasota alone at 22K imp → going 0.5%→1.5% = +220 clicks/mo
+- Action: Set up Serpbear domain tracking (seascape-vacations.com + 25 target keywords via localhost:3000)
+- Files: rank-tracker-latest.md overwritten, rank-tracker-2026-03-12.md archived
+
 ### Mailchimp Welcome Sequence — 2026-03-12
 - **Automation:** Customer Journey #8592, 3-email welcome sequence — **ACTIVE**
 - **Email 1** (immediate): Welcome + SAVE50 coupon code, from "Sawyer from Seascape Vacations"
