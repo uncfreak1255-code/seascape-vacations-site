@@ -117,3 +117,14 @@
 - **Trigger:** Contact signs up to "Seascape Vacations" list (95e5a594d1)
 - **Old automation** (March 8): Paused — had 0 sends, replaced by new sequence
 - **Status:** Live and ready for new subscribers
+
+### Competitor Intelligence + GEO Audit — 2026-03-12
+- Competitors analyzed: 6 (Anna Maria Beach Life, Island Real Estate, Vacasa, Evolve, Anchor Down, Renjoy/Awning)
+- Content gaps found: 3 | Gaps closed (new pages): 3
+- Pages improved: 5 (weather, best-companies-ami, ami-vacation-rentals, spring-break-ami, pm-bradenton)
+- Outreach templates created: 3 (saved: outreach-templates-2026-03.md)
+- AI citation opportunities identified: 4
+- New competitor threats flagged: 2 (Renjoy/Awning owner acq; Anchor Down activities content)
+- Sitemap: +3 URLs
+- Deploy: ✅ All 3 new pages live, verified 200
+- Full report: competitor-intel-2026-03.md
