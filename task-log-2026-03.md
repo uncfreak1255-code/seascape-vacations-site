@@ -77,7 +77,20 @@
 - **Hostaway support:** Gmail draft created re: Google Vacation Rentals — 2 listings won't publish (The Oasis #189511, Bradenton Pool Home #487798)
 
 ### Internal Linking Rebuild — 2026-03-12
-- Status: STARTED
+- Rank-tracker data used: ✅ (5 striking-distance pages boosted, 0 new pages needed links, 0 dropping pages reinforced)
+- Total pages: 191 | Orphans found: 7 | Orphans fixed: 7 (3 zero-inbound + 4 low-inbound)
+- Broken links found/fixed: 9 URL corrections (simple href fixes for .html extensions, area-guide self-refs, trailing-quote typos). 62 remaining broken links point to non-existent guide pages (snowbirds, market-analysis, beaches, restaurants, fishing) — these need content creation, not link fixes.
+- Generic anchors improved: 0 (none found)
+- New internal links added: 24 across 21 pages
+- Key link additions:
+  - 3 orphan pages de-orphaned: book-direct-vs-airbnb-vrbo (0→3), anna-maria-island-vs-clearwater-beach (0→3), book-direct (0→3)
+  - 4 low-inbound pages boosted: siesta-key-beach rentals, elevator rentals, flights-to-ami
+  - 5 striking-distance pages reinforced: best-vacation-rental-companies-ami (pos 14.6, +5 links), SRQ-to-AMI (pos 6.7, +2), is-AMI-worth-visiting (pos 4.9, +2), best-time-visit-AMI (pos 4.4, +1), bradenton-vs-sarasota (pos 2.4, +1 outbound to orphan)
+  - 2 top-performer pages used as link equity sources: bradenton-vs-sarasota, ami-vs-siesta-key
+- Cluster health: Bradenton 17.5%, AMI 15.6%, PM 15.7% (up from 48/7/16 last week — note: methodology refined to count all cluster-internal links, not just new additions)
+- Still broken (need content creation): /guides/snowbirds-guide-extended-stays-florida/, /guides/2026-bradenton-vacation-rental-market-analysis/, /guides/florida-gulf-coast-vacation-rental-market-report-2026/, /guides/anna-maria-island-beaches/, /guides/best-restaurants-anna-maria-island/, /guides/fishing-guide-anna-maria-sarasota/, /guides/where-to-stay-anna-maria-island/
+- Still missing: /property-management/ and /stays/ hub index pages (220 nav links point to these)
+- Deploy: ✅ (git push 5b0e63b → Netlify auto-deploy, 3 pages verified live)
 
 ### Outreach Monitor — 2026-03-12: Checking Gmail for replies from AMI Chamber, Manatee Chamber, 941area, FLARBO
 
