@@ -75,3 +75,17 @@
 - **Yelp:** Business account created ✅ (local citation, NAP consistency)
 - **Pending outreach:** AMI Chamber, Manatee Chamber, 941area, FLARBO (Gmail drafts created 2026-03-09, awaiting user review/send)
 - **Hostaway support:** Gmail draft created re: Google Vacation Rentals — 2 listings won't publish (The Oasis #189511, Bradenton Pool Home #487798)
+
+### Internal Linking Rebuild — 2026-03-12
+- Status: STARTED
+
+### Outreach Monitor — 2026-03-12: Checking Gmail for replies from AMI Chamber, Manatee Chamber, 941area, FLARBO
+
+### Mailchimp Welcome Sequence — 2026-03-12
+- **Automation:** Customer Journey #8592, 3-email welcome sequence — **ACTIVE**
+- **Email 1** (immediate): Welcome + SAVE50 coupon code, from "Sawyer from Seascape Vacations"
+- **Email 2** (3 days later): Social proof — guest reviews, area guides, property highlights
+- **Email 3** (7 days after signup): Urgency — "$50 code expiring soon," direct booking push, phone number
+- **Trigger:** Contact signs up to "Seascape Vacations" list (95e5a594d1)
+- **Old automation** (March 8): Paused — had 0 sends, replaced by new sequence
+- **Status:** Live and ready for new subscribers
