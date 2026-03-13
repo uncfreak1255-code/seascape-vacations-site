@@ -53,5 +53,6 @@ Allow: /
 User-agent: Timespider
 Allow: /
 
-# Sitemap location
+# Sitemap and LLM content
 Sitemap: https://seascape-vacations.com/sitemap.xml
+LLMs-txt: https://seascape-vacations.com/llms.txt
