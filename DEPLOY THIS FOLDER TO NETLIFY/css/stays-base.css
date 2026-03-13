@@ -20,6 +20,7 @@
         .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(245, 238, 214, 0.98); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(0, 0, 0, 0.06); box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08); }
         .nav-inner { display: flex; justify-content: space-between; align-items: center; padding: 16px 24px; max-width: 1400px; margin: 0 auto; }
         .nav-logo { display: flex; align-items: center; gap: 14px; }
+        .nav-logo img { height: 40px; width: auto; }
         .nav-logo-text { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 500; color: var(--brand); letter-spacing: 0.05em; }
         .nav-logo-sub { font-size: 9px; letter-spacing: 0.2em; color: var(--stone-light); text-transform: uppercase; margin-top: -2px; }
         .btn { background: linear-gradient(135deg, var(--brand) 0%, var(--brand-dark) 100%); color: white; padding: 14px 32px; border-radius: 50px; font-weight: 600; font-size: 14px; border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 4px 15px rgba(61, 107, 109, 0.3); }
