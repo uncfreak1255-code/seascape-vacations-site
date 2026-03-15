@@ -1,0 +1,16 @@
+# Sitemap and robots.txt for Seascape Vacations SEO
+User-agent: *
+Allow: /
+
+# AI Crawlers (allow for GEO optimization)
+User-agent: GPTBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+# Sitemap location
+Sitemap: https://seascape-vacations.com/sitemap.xml

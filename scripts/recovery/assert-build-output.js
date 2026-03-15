@@ -70,6 +70,11 @@ if (phase === "remediation") {
   );
   expectContains("_site/stays/anna-maria-island-vacation-rentals/index.html", "srcset=");
   expectContains("_site/stays/anna-maria-island-vacation-rentals/index.html", 'width="800"');
+  expectExists("_site/properties/dockside-dreams/index.html");
+  expectNotContains(
+    "_site/stays/anna-maria-island-vacation-rentals/index.html",
+    'href="/" class="btn" style="padding: 10px 20px; font-size: 13px;">View Details</a>'
+  );
   expectNotContains(
     "_site/property-management/vacation-rental-management-sarasota/index.html",
     "!function (f, b, e, v, n, t, s) {"

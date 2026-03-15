@@ -1,6 +1,6 @@
 [build]
-  publish = "DEPLOY THIS FOLDER TO NETLIFY"
-  command = "echo 'Static deploy - no build needed'"
+  publish = "_site"
+  command = "npm run build"
 
 [[headers]]
   for = "/*"
