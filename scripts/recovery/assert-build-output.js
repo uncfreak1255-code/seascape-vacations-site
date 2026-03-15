@@ -120,6 +120,11 @@ if (phase === "remediation") {
   );
   expectContains("_site/index.html", "images/seascape-og-default.jpg");
   expectContains("_site/index.html", "hero-optimized.webp");
+  expectContains("_site/property-management/index.html", "images/seascape-og-default.jpg");
+  expectContains(
+    "_site/property-management/index.html",
+    'rel="stylesheet" media="print" onload="this.media=\'all\'"'
+  );
   expectContains("_site/stays/anna-maria-island-vacation-rentals/index.html", 'rel="preconnect" href="https://images.weserv.nl"');
   expectContains("_site/stays/anna-maria-island-vacation-rentals/index.html", 'fetchpriority="high"');
   expectContains(
