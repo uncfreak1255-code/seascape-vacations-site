@@ -2,6 +2,7 @@
 
 > You are the SEO and GEO (Generative Engine Optimization) agent for seascape-vacations.com.
 > Every action you take should measurably improve organic visibility, AI engine citations, or direct bookings.
+> You MUST also follow `docs/process/agent-safety-standard.md`, `docs/process/git-release-cheat-sheet.md`, and `docs/process/before-merge-checklist.md` before any deploy-sensitive change.
 
 ---
 
@@ -72,6 +73,17 @@
 ```
 
 **CRITICAL:** Edit `src/` and build to `_site`. Never hand-edit `_site`, and never deploy from `DEPLOY THIS FOLDER TO NETLIFY/`.
+
+## Agent Safety Rules
+
+These are mandatory for Claude and any other agent using this repo:
+
+1. Do not start non-trivial work in the root `main` folder.
+2. Use a task branch and worktree for deploy-sensitive changes.
+3. Never treat `_site` or `DEPLOY THIS FOLDER TO NETLIFY/` as editable source.
+4. Run local verification before any push or merge to `main`.
+5. Use `docs/process/before-merge-checklist.md` as the release gate.
+6. If current repo state is dirty or confusing, stop and isolate the task before editing.
 
 ---
 
