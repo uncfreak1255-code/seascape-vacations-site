@@ -22,6 +22,13 @@ These rules apply to any coding or content agent working in this repo: Codex, Cl
 6. Review the diff for unrelated churn.
 7. Only then push or merge `main`.
 
+## Installed enforcement
+
+- Local hook installer: `npm run setup:hooks`
+- Local protected-branch gate: `.githooks/pre-push`
+- Shared verifier: `npm run verify:release`
+- GitHub Actions gate on `main`: `Release Safety`
+
 ## Required checks before `main`
 
 At minimum, an agent must use the repo checklist in:

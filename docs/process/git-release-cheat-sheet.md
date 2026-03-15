@@ -17,6 +17,8 @@ This repo is not a sandbox. `main` is the production line.
 - Netlify publishes from `_site`
 - Do not hand-edit `_site`
 - Do not deploy from `DEPLOY THIS FOLDER TO NETLIFY/`
+- Install local enforcement once with `npm run setup:hooks`
+- Use `npm run verify:release` before anything risky
 
 ## Default workflow
 
