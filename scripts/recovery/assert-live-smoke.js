@@ -12,7 +12,11 @@ const targets = [
   { path: "/stays/anna-maria-island-vacation-rentals/", status: 200 },
   { path: "/property-management/vacation-rental-management-sarasota/", status: 200 },
   { path: "/guides/anna-maria-island-area-guide/", status: 200 },
-  { path: "/property-owners/", status: 301 }
+  { path: "/property-owners/", status: 301 },
+  { path: "/hero-mobile.webp", status: 200 },
+  { path: "/hero-optimized.webp", status: 200 },
+  { path: "/images/seascape-og-default.jpg", status: 200 },
+  { path: "/images/anna-maria-island-og.jpg", status: 200 }
 ];
 
 function check(target) {
