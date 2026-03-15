@@ -27,6 +27,21 @@ function expectContains(file, needle) {
   }
 }
 
+function listHtmlFiles(dir) {
+  const absolute = path.resolve(dir);
+  if (!fs.existsSync(absolute)) {
+    return [];
+  }
+
+  return fs.readdirSync(absolute, { withFileTypes: true }).flatMap((entry) => {
+    const fullPath = path.join(absolute, entry.name);
+    if (entry.isDirectory()) {
+      return listHtmlFiles(fullPath);
+    }
+    return fullPath.endsWith(".html") ? [fullPath] : [];
+  });
+}
+
 if (phase === "p0") {
   expectExists("_site/index.html");
   expectExists("_site/property-management/index.html");
@@ -43,6 +58,10 @@ if (phase === "guides") {
   expectExists("_site/guides/anna-maria-island-area-guide/index.html");
   expectExists("_site/llms.txt");
   expectExists("_site/_redirects");
+  expectExists("_site/images/anna-maria-island-og.jpg");
+  expectExists("_site/images/bradenton-og.jpg");
+  expectExists("_site/images/sarasota-og.jpg");
+  expectExists("_site/images/siesta-key-og.jpg");
   expectNotContains("_site/_redirects", "/property-management   /property-management/   301");
   expectContains(
     "_site/guides/anna-maria-island-area-guide/index.html",
@@ -60,6 +79,14 @@ if (phase === "guides") {
     "_site/guides/anna-maria-island-area-guide/index.html",
     'href=/stays/anna-maria-island-homes-with-pool/"'
   );
+
+  const guideFiles = listHtmlFiles("_site/guides");
+  for (const file of guideFiles) {
+    expectContains(file, '<meta property="og:image"');
+    expectContains(file, '<meta name="twitter:image"');
+    expectNotContains(file, "images.unsplash.com");
+    expectNotContains(file, "/images/logo.png");
+  }
 }
 
 if (phase === "remediation") {
@@ -93,6 +120,12 @@ if (phase === "remediation") {
   );
   expectContains("_site/index.html", "images/seascape-og-default.jpg");
   expectContains("_site/index.html", "hero-optimized.webp");
+  expectContains("_site/stays/anna-maria-island-vacation-rentals/index.html", 'rel="preconnect" href="https://images.weserv.nl"');
+  expectContains("_site/stays/anna-maria-island-vacation-rentals/index.html", 'fetchpriority="high"');
+  expectContains(
+    "_site/property-management/vacation-rental-management-sarasota/index.html",
+    'rel="stylesheet" media="print" onload="this.media=\'all\'"'
+  );
   expectNotContains("_site/robots.txt", "LLMs-txt:");
 }
 

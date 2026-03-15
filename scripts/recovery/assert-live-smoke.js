@@ -16,7 +16,10 @@ const targets = [
   { path: "/hero-mobile.webp", status: 200 },
   { path: "/hero-optimized.webp", status: 200 },
   { path: "/images/seascape-og-default.jpg", status: 200 },
-  { path: "/images/anna-maria-island-og.jpg", status: 200 }
+  { path: "/images/anna-maria-island-og.jpg", status: 200 },
+  { path: "/images/bradenton-og.jpg", status: 200 },
+  { path: "/images/sarasota-og.jpg", status: 200 },
+  { path: "/images/siesta-key-og.jpg", status: 200 }
 ];
 
 function check(target) {
