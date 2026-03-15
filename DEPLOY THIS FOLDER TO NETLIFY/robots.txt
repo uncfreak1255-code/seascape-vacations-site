@@ -1,6 +1,17 @@
 # Sitemap and robots.txt for Seascape Vacations SEO
 User-agent: *
 Allow: /
+Disallow: /*?nocache=
+Disallow: /*?ids&nocache=
+Disallow: /*?ids=
+Disallow: /*?guest=
+Disallow: /add-listing/
+Disallow: /woocommerce/
+Disallow: /search-results/
+Disallow: /comments/
+Disallow: /author/
+Disallow: /state/
+Disallow: /listing/
 
 # Tier 1: Live AI Search (Critical — never block)
 User-agent: GPTBot

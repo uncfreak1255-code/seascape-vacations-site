@@ -354,3 +354,32 @@
 /guides/anna-maria-island-vacation-cost  /guides/anna-maria-island-vacation-cost-guide-2026/  301
 /guides/best-time-visit-anna-maria-island  /guides/best-time-to-visit-anna-maria-island/  301
 /guides/bradenton-vs-sarasota  /guides/bradenton-vs-sarasota-vacation-rental-comparison/  301
+
+# --- Crawled-not-indexed cleanup (2026-03-15) ---
+# Old CMS pages that return 404 - redirect to closest current content
+/faq/   /guides/   301
+/faq   /guides/   301
+/terms-and-conditions/   /about-us/   301
+/terms-and-conditions   /about-us/   301
+/thank-you/   /   301
+/thank-you   /   301
+/search-results/   /   301
+/search-results   /   301
+
+# Old WordPress/WooCommerce platform remnants
+/author/*   /about-us/   301
+/state/*   /   301
+/comments/feed/   /   301
+/comments/feed   /   301
+
+# Old /listing/ pages (individual property on old CMS)
+/listing/dockside-dreams-w-pool-and-spa/   /properties/dockside-dreams/   301
+/listing/dockside-dreams-w-pool-and-spa   /properties/dockside-dreams/   301
+/listing/spacious-pool-house2-spasminigolfturfbackyard/   /properties/bradenton-pool-home/   301
+/listing/spacious-pool-house2-spasminigolfturfbackyard   /properties/bradenton-pool-home/   301
+/listing/*   /properties/   301
+
+# Old CMS destination/guidebook paths
+/destinations/*   /guides/   301
+/guidebook/   /guides/   301
+/guidebook   /guides/   301
