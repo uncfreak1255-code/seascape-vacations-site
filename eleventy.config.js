@@ -5,6 +5,8 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.addPassthroughCopy("js");
   eleventyConfig.addPassthroughCopy("*.jpg");
   eleventyConfig.addPassthroughCopy("*.png");
+  eleventyConfig.addPassthroughCopy("*.webp");
+  eleventyConfig.addPassthroughCopy("*.avif");
   eleventyConfig.addPassthroughCopy("netlify");
   eleventyConfig.addPassthroughCopy("_headers");
   eleventyConfig.addPassthroughCopy({ "src/_redirects": "_redirects" });

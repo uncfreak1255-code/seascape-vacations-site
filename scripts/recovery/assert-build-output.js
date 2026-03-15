@@ -64,6 +64,10 @@ if (phase === "guides") {
 
 if (phase === "remediation") {
   expectExists("_site/robots.txt");
+  expectExists("_site/hero-mobile.webp");
+  expectExists("_site/hero-optimized.webp");
+  expectExists("_site/images/seascape-og-default.jpg");
+  expectExists("_site/images/anna-maria-island-og.jpg");
   expectNotContains(
     "_site/stays/anna-maria-island-vacation-rentals/index.html",
     '"text": "Manatee Public Beach in <a href='
@@ -83,6 +87,12 @@ if (phase === "remediation") {
     "_site/property-management/vacation-rental-management-sarasota/index.html",
     "/property-owners/"
   );
+  expectNotContains(
+    "_site/index.html",
+    "wp-content/uploads/2025/03/51916-206016-xNIrPl9kvF0vllYFzSL7Lm0Gl4eOGxLIN--wmPlCT3NY-6536bca493945.jpg"
+  );
+  expectContains("_site/index.html", "images/seascape-og-default.jpg");
+  expectContains("_site/index.html", "hero-optimized.webp");
   expectNotContains("_site/robots.txt", "LLMs-txt:");
 }
 
