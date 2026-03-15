@@ -145,7 +145,37 @@ Seascape Vacations sounds like a knowledgeable local friend who happens to manag
 ### Example Voice (Bad — AI-sounding, do not write like this)
 "In today's competitive vacation rental landscape, finding the perfect dining experience can be a daunting task. The island boasts a comprehensive array of culinary establishments that cater to diverse palates. Whether you're a seafood enthusiast, a casual diner, or a fine dining aficionado, Anna Maria Island delivers an unparalleled gastronomic journey."
 
-## 8. Website & Technical Details
+## 8. Property Details (Source of Truth)
+
+All tasks referencing specific properties MUST use these verified details.
+
+| Property | Bedrooms | Bathrooms | Sleeps | Key Amenities | URL Slug |
+|----------|:--------:|:---------:|:------:|---------------|----------|
+| **Bradenton Pool Home** | 3 | 4 | 10 | Heated pool, spa/hot tub, near IMG Academy | /properties/bradenton-pool-home/ |
+| **The Oasis** | 5 | 3 | 16 | Heated pool, 2 hot tubs, putting green | /properties/the-oasis/ |
+| **Dockside Dreams** | 4 | 3 | 12 | Heated pool, hot tub, dock access, bayfront | /properties/dockside-dreams/ |
+| **River House** | 4 | 3 | 12 | Heated pool, spa, gameroom, kayak launch, near AMI | /properties/river-house/ |
+| **Sarasota Luxe** | 4 | 3 | 12 | Heated pool, hot tub, designer finishes, near downtown Sarasota | /properties/sarasota-luxe/ |
+
+**Total capacity**: 5 properties, 20 bedrooms, 62 guests max
+
+### Business Contact Info
+- **Phone**: (941) 704-8545
+- **Email**: info@seascape-vacations.com
+- **Booking URL**: https://book.seascape-vacations.com
+- **Physical location**: Bradenton, FL (no public office address)
+- **Facebook**: https://www.facebook.com/p/Seascape-Vacations-61556781251558/
+- **Owner**: Saw Beck — (304) 634-7211 (personal, not for public use)
+
+### Key Business Facts
+- Rating: 4.98 stars, 650+ reviews (verify periodically)
+- All properties have heated private pools and hot tubs/spas
+- All properties are in Bradenton except Sarasota Luxe (downtown Sarasota)
+- 10-15 minutes from Anna Maria Island beaches (Bradenton properties)
+- Direct booking saves guests 10-20% vs Airbnb/VRBO
+- Property management: 20-25% management fee structure
+
+## 9. Website & Technical Details (renumbered from 8)
 
 - **Domain**: seascape-vacations.com
 - **Hosting**: Netlify (static HTML, auto-deploys from git push to main)
@@ -158,7 +188,7 @@ Seascape Vacations sounds like a knowledgeable local friend who happens to manag
 - **Git repo**: github.com/uncfreak1255-code/seascape-vacations-site
 - **Deploy folder**: "DEPLOY THIS FOLDER TO NETLIFY" (inside repo root)
 
-## 9. Content Writing Workflow
+## 10. Content Writing Workflow
 
 When writing or expanding any content for seascape-vacations.com:
 
