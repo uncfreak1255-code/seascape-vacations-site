@@ -49,10 +49,11 @@
 /                               # Source repo root
 ├── DEPLOY THIS FOLDER TO NETLIFY/  # ← THIS is what gets deployed to Netlify
 │   ├── index.html              # Homepage
-│   ├── stays/                  # 86+ programmatic SEO pages (vacationer-facing)
-│   ├── guides/                 # 46+ area guides (informational content)
+│   ├── stays/                  # 96 programmatic SEO pages (vacationer-facing)
+│   ├── guides/                 # 55 area guides (informational content)
+│   ├── travel-spot-guide/        # 8 restored restaurant/activity pages (high-traffic from old platform)
 │   ├── properties/             # 5 individual property pages
-│   ├── property-management/    # 31 pages (property owner-facing)
+│   ├── property-management/    # 32 pages (property owner-facing)
 │   ├── about-us/               # About page
 │   ├── sitemap.xml             # XML sitemap
 │   ├── robots.txt              # Crawler directives (AI bots allowed)
@@ -82,6 +83,7 @@ Use these MCP tools when available — they're already authenticated:
 | **Netlify** | Deploy site, check deploy status, manage env vars, check build logs |
 | **Gmail** | Create drafts, search messages, read threads (for outreach coordination) |
 | **Desktop Commander** | File system access on Mac: read/write/edit files, list directories, run processes, search files |
+| **DataforSEO** | SEO intelligence API — ranked keywords, competitor analysis, SERP data, on-page audits. Login: sawyer@becksbnb.com. ~$50 budget (balance ~$49.82 as of 2026-03-15) |
 | **Google Analytics 4** (if connected) | Traffic data, user behavior, conversion tracking |
 
 ### Ahrefs API — COMPLETELY BROKEN (March 2026)
@@ -292,7 +294,7 @@ When creating content designed to get cited by AI engines:
 
 ## Programmatic SEO Playbook
 
-The site has 86+ stays pages, 46+ guides, and 31 property-management pages generated programmatically. Follow this pattern for new pages:
+The site has 96 stays pages, 55 guides, 32 property-management pages, and 8 travel-spot-guide pages (203 total) generated programmatically. Follow this pattern for new pages:
 
 ### Creating New Programmatic Pages
 1. **Keyword research first:** Use web search + Google Autocomplete to find long-tail opportunities. Check Serpbear (localhost:3000) for tracked keyword positions. Assess competitiveness by checking DR of top-ranking sites in web search results.
@@ -354,51 +356,59 @@ Find link opportunities using web search:
 
 ### Scheduled Tasks (Configured in Cowork)
 
-**Daily Operations:**
+> **IMPORTANT (Updated 2026-03-15):** Most code-modifying tasks have been DISABLED after the March 8 redirect disaster.
+> All SEO content work (new pages, redirects, internal linking, content rewrites) should be done in manual chat sessions with the site owner.
+> Only read-only monitoring tasks and the daily-deploy batch remain active.
 
-| Day | Time | Task ID | What It Does |
-|-----|------|---------|-------------|
-| Monday | 7am | `seo-weekly-health-check` | Technical patrol: broken links, schema, meta tags, sitemap sync |
-| Tuesday | 7am | `content-quality-patrol` | AI detection: banned phrases, heading patterns, flat rhythm |
-| Wednesday | 8am | `seo-content-creation` | New content page targeting seasonal keyword priority |
-| Thursday | 7am | `internal-linking-rebuild` | Link architecture: orphan pages, cluster health, anchor text |
-| Friday | 8am | `pseo-page-builder` | Programmatic SEO: 2-3 new long-tail pages |
-| Friday | 5pm | `outreach-execution-reminder` | Formats link-building emails ready to send |
-| Saturday | 8am | `rank-performance-tracker` | Checks if recent pages are ranking, fixes underperformers |
-
-**Monthly/Periodic:**
+**ACTIVE Tasks (read-only monitoring + deploy):**
 
 | Schedule | Task ID | What It Does |
 |----------|---------|-------------|
-| 1st of month, 6am | `seasonal-content-calendar` | Sets monthly content theme based on booking seasonality |
-| 1st of month, 9am | `seo-monthly-competitor-geo-audit` | Competitor intelligence + content gap closing |
-| 1st & 15th, 9am | `geo-citation-audit` | AI citation tracking (web search testing) + content fixes |
-| 1st & 15th, 9am | `conversion-optimization-patrol` | CTA, booking flow, trust signal, mobile UX audit |
-| 1st & 15th, 10am | `page-speed-monitor` | File size, image, schema bloat monitoring |
+| Daily 6pm | `daily-deploy` | Single daily deploy — pushes accumulated commits. ONLY task allowed to git push. 15 credits/day max. |
+| Wed 7am | `rank-performance-tracker` | Pulls GSC clicks/impressions/CTR, tracks keyword positions, saves data |
+| Sat 8am | `weekly-task-supervisor` | Reviews week's task activity, texts Saw a status report |
+| 1st of month, 6am | `seasonal-content-calendar` | Sets monthly content theme (writes planning file, doesn't touch site code) |
+| 1st & 15th, 10am | `page-speed-monitor` | Checks page file sizes, image optimization, flags issues |
+| 1st & 15th, 11am | `indexation-health-monitor` | Monitors GSC coverage, identifies crawled-not-indexed pages |
 | Last day of month | `monthly-seo-summary` | Plain-English monthly digest for owner |
-| Quarterly | `seo-quarterly-full-audit` | Full SEO + GEO re-audit with benchmarking |
 
-**Cross-Task Coordination:**
-All tasks append to `task-log-YYYY-MM.md` in workspace. Content creation tasks read the log and `content-priorities-YYYY-MM.md` before picking keywords. Monthly summary reads the log as its primary data source. This prevents duplicate content creation and keeps reporting accurate.
+**DISABLED Tasks (were modifying site code autonomously — too risky):**
+
+| Task ID | Why Disabled |
+|---------|-------------|
+| `seo-weekly-health-check` | Was auto-fixing links/schema/meta — risk of unintended changes |
+| `seo-content-creation` | Was writing new pages autonomously |
+| `pseo-page-builder` | Was building long-tail pages autonomously |
+| `content-quality-patrol` | Was rewriting content autonomously |
+| `internal-linking-rebuild` | Was modifying internal links autonomously |
+| `conversion-optimization-patrol` | Was changing CTAs/layouts autonomously |
+| `geo-citation-audit` | Was adding structured data autonomously |
+| `seo-orchestrator` | Was writing coordination directives |
+| `outreach-execution-reminder` | Was drafting outreach emails |
+| `seo-monthly-competitor-geo-audit` | Was making strategy changes autonomously |
+| `seo-quarterly-full-audit` | Was making strategy changes autonomously |
+
+**ReviewGuard Tasks (separate business, still active):**
+5 tasks for lead scraping, email drafting, follow-up, reply monitoring, and contact finding. Not related to Seascape SEO.
 
 ### Automated Workflow Summary
 
-Each task above runs its own full workflow. Key workflow patterns:
+> **Post-cleanup (March 2026):** Most automated workflows are disabled. The remaining active tasks focus on monitoring and reporting only.
 
-**Content Creation Flow:** seasonal-content-calendar (1st) → content tasks read `content-priorities-YYYY-MM.md` → seo-content-creation (Wed) and pseo-page-builder (Fri) create pages aligned with seasonal themes → rank-performance-tracker (Sat) checks if they're ranking 30-60 days later
+**Active Monitoring Loop:** rank-performance-tracker (Wed) pulls GSC data → page-speed-monitor (bi-monthly) flags bloat → indexation-health-monitor (bi-monthly) checks coverage → weekly-task-supervisor (Sat) reports status → monthly-seo-summary aggregates everything
 
-**Quality Loop:** content-quality-patrol (Tue) fixes AI detection issues → seo-weekly-health-check (Mon) catches technical issues → page-speed-monitor (bi-monthly) prevents bloat → conversion-optimization-patrol (bi-monthly) ensures pages convert
+**Content & Optimization (MANUAL ONLY):** All content creation, internal linking, redirect changes, CTA optimization, and competitive strategy work is done in manual chat sessions with the site owner. This prevents autonomous tasks from making harmful changes (see: March 8 redirect disaster).
 
-**Competitive Loop:** seo-monthly-competitor-geo-audit (1st) identifies gaps → geo-citation-audit (1st & 15th) tracks AI citations → outreach-execution-reminder (Fri) formats link-building emails → monthly-seo-summary aggregates everything
+**Deploy Workflow:**
+> **For scheduled tasks:** Commit changes but DO NOT push. The `daily-deploy` task handles pushing at 6pm daily (15 credits/day).
+> **For manual chat sessions:** Commit AND push directly — manual deploys are fine.
 
-**Deploy Workflow (ALL tasks that deploy):**
-1. Stage changes: `git add -A`
+1. Stage changes: `git add [specific files]` (avoid `git add -A` to prevent accidental commits)
 2. Commit with descriptive message
-3. **Push to GitHub FIRST** (Netlify caches based on remote git commit hash)
-4. Deploy via Netlify MCP (`deploy-site`, siteId: `380fdf4b-91dd-4c6d-a31c-252c07aade81`)
-5. Verify: curl 3 changed pages, confirm new content is live
-6. If verification fails: wait 60s, re-push, re-deploy, re-verify
-7. If still fails: log `⚠️ DEPLOY FAILED` in task-log for manual intervention
+3. **If manual session:** Push to GitHub (`git push origin main`) — Netlify auto-deploys
+4. **If scheduled task:** STOP here. Do NOT push. `daily-deploy` handles it.
+5. Verify (manual sessions only): curl 3 changed pages, confirm new content is live
+6. If verification fails: wait 60s, re-push, re-verify
 
 ### Key Metrics to Track
 - Organic traffic (Google Analytics — connect via Graphed.com MCP)
@@ -468,3 +478,8 @@ After any correction from the user, append the lesson to this section:
 - Internal linking rebuild (March 2026): 11 new contextual links added across topic clusters
 - **Always use `curl -sL` for Netlify verification** — the site has trailing-slash redirects via `_redirects`. Without `-L`, curl returns redirect HTML instead of page content, wasting a round-trip.
 - **After `git push` succeeds, Netlify auto-deploys via GitHub integration** — the MCP `deploy-site` command is only needed if auto-deploy doesn't trigger. Don't run MCP as a mandatory step after every push.
+- **CRITICAL — March 8 redirect disaster (2026-03-08):** A scheduled task ("GSC 404 cleanup") added 113 x 301 redirects for `/travel-spot-guide/*` URLs, sending them to generic pages. These travel-spot-guide pages were from an OLD PLATFORM and were the site's BEST ranking content (~42,000 monthly searches combined, multiple page-1 rankings). The 301s told Google the content permanently moved to non-matching pages, destroying all rankings. **Fix (2026-03-15):** Created 8 dedicated HTML pages at the original URLs, removed 14 harmful redirect entries. Recovery expected in 1-3 weeks. **Lesson: NEVER redirect a ranking URL to a non-matching page. NEVER automate redirect decisions. Always check if a 404 URL is actually ranking in Google before redirecting it.**
+- **Scheduled task risk (2026-03-15):** Disabled 11 code-modifying scheduled tasks. Autonomous tasks cannot understand SEO nuance — they make "logical" decisions that can be catastrophically wrong. Only read-only monitoring tasks should be automated. All content and code changes should be manual sessions with the site owner.
+- **Netlify credit management:** Personal plan = 1,000 credits/month, each deploy = 15 credits. 24 scheduled tasks were burning ~180 credits/day. Implemented daily-deploy batch system: tasks commit but don't push, single `daily-deploy` task pushes at 6pm daily (15 credits/day max).
+- **DataforSEO setup (2026-03-15):** API access configured. Login: sawyer@becksbnb.com. Key findings: site has 362 keywords ranking but ZERO money keywords. On-page score 90.76/100. Competitors have 10-15x more keywords. Primary gap: no rankings for "vacation rentals [location]" terms.
+- **Travel-spot-guide pages are HIGH VALUE:** These old-platform URLs rank for restaurant/attraction names with massive search volume (e.g., "beach house waterfront restaurant" = 18,100/mo). They are NOT throwaway 404s — they are the site's best organic assets. Never redirect or remove them.
