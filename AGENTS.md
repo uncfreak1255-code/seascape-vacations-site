@@ -7,13 +7,18 @@
 seascape-vacations-site
 
 ## Architecture Patterns
-<!-- Patterns will be added here -->
+- Homepage source lives in `src/index.njk`
+- pSEO stays/property pages are generated from `src/stays/stays.njk` and `src/property-management/property-management.njk`
+- Legacy guides now live under `src/guides/` and are copied to `guides/` at build time
+- Netlify redirects come from `src/_redirects`
 
 ## Known Gotchas
-<!-- Gotchas will be added here -->
+- Do not edit `_site/`; it is generated output
+- Do not deploy from `DEPLOY THIS FOLDER TO NETLIFY/`
+- `/property-management/` must resolve to a real landing page; do not reintroduce self-redirect rules
 
 ## Recent Learnings
-<!-- Learnings appended here -->
+- Production had drifted away from repo source; local build verification is mandatory before deploy
 
 ---
 *Last updated: Auto-updated by compound engineering*

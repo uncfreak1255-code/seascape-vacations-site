@@ -38,8 +38,13 @@
 **Live site:** https://seascape-vacations.com
 **GitHub:** https://github.com/uncfreak1255-code/seascape-vacations-site.git
 **Hosting:** Netlify (site ID: `380fdf4b-91dd-4c6d-a31c-252c07aade81`)
-**Stack:** Static HTML site deployed to Netlify
+**Stack:** Eleventy static site deployed to Netlify
 **Domain authority:** Low (new site) — prioritize low-competition long-tail keywords
+
+| Project Fact | Value |
+|---|---|
+| **Site** | seascape-vacations.com (Eleventy build to `_site`, Netlify publish from `_site`) |
+| **Deploy dir** | `_site` (generated only; never edit directly) |
 
 ---
 
@@ -47,19 +52,18 @@
 
 ```
 /                               # Source repo root
-├── DEPLOY THIS FOLDER TO NETLIFY/  # ← THIS is what gets deployed to Netlify
-│   ├── index.html              # Homepage
-│   ├── stays/                  # 96 programmatic SEO pages (vacationer-facing)
-│   ├── guides/                 # 55 area guides (informational content)
-│   ├── travel-spot-guide/        # 8 restored restaurant/activity pages (high-traffic from old platform)
-│   ├── properties/             # 5 individual property pages
-│   ├── property-management/    # 32 pages (property owner-facing)
-│   ├── about-us/               # About page
-│   ├── sitemap.xml             # XML sitemap
-│   ├── robots.txt              # Crawler directives (AI bots allowed)
-│   ├── _redirects              # Netlify redirects
-│   ├── _headers                # Security/cache headers
-│   └── netlify.toml            # Build config
+├── src/                        # Editable site source
+│   ├── index.njk               # Homepage source
+│   ├── stays/                  # Programmatic stay pages from source template
+│   ├── guides/                 # Repo-owned guide corpus
+│   ├── property-management/    # Owner pages + landing page
+│   ├── _includes/              # Layouts and reusable partials
+│   ├── _data/                  # Shared site/page/property data
+│   ├── _redirects              # Netlify redirects source
+│   ├── llms.txt                # AI crawler guidance source
+│   └── robots.txt              # Robots source
+├── _site/                      # Generated build output for deploys
+├── DEPLOY THIS FOLDER TO NETLIFY/  # Legacy archival snapshot only
 ├── CLAUDE.md                   # This file — SEO agent strategy doc
 ├── SEO-IMPLEMENTATION-PLAN.md  # Tracks what's been built
 ├── task-log-YYYY-MM.md         # Shared cross-task coordination log (monthly)
@@ -67,7 +71,7 @@
 └── docs/plans/                 # Implementation plans
 ```
 
-**CRITICAL:** Only the `DEPLOY THIS FOLDER TO NETLIFY/` directory goes to production. All other files are source/build files.
+**CRITICAL:** Edit `src/` and build to `_site`. Never hand-edit `_site`, and never deploy from `DEPLOY THIS FOLDER TO NETLIFY/`.
 
 ---
 
@@ -443,15 +447,13 @@ Find link opportunities using web search:
 7. Update internal links on related existing pages
 
 ### When Deploying Changes
-1. Make changes in the `DEPLOY THIS FOLDER TO NETLIFY/` directory
-2. Update `sitemap.xml` if any new pages or significant content changes
-3. Stage and commit: `git add -A && git commit -m "descriptive message"`
-4. **Push to GitHub** — this triggers Netlify auto-deploy via GitHub integration
-5. Wait 60 seconds, then verify with `curl -sL` (always follow redirects — site uses trailing-slash redirects)
-6. Verify 3 changed pages: confirm new content appears (not just HTTP 200 — check for a unique string)
-7. If pages aren't updated after 90s, deploy manually via Netlify MCP: `deploy-site` with siteId `380fdf4b-91dd-4c6d-a31c-252c07aade81`
-8. If MCP also fails (502), log `⚠️ DEPLOY FAILED` in task-log and wait for GitHub auto-deploy to complete
-9. If new files return 404 after deploy, add `<!-- deploy-force: YYYY-MM-DD -->` comment and redeploy
+1. Make changes in repo-owned source files (`src/`, `eleventy.config.js`, `package.json`, `netlify.toml`)
+2. Run `npm run build`
+3. Verify the changed output in `_site/` before claiming success
+4. Stage and commit source changes with a descriptive message
+5. Prefer direct Netlify deploy from `_site` when validating recovery work
+6. Smoke test changed pages with `curl -sL` after deploy and verify unique strings, not just `200`
+7. If production does not match the verified local build, stop and debug deploy config instead of editing generated output by hand
 
 ---
 
