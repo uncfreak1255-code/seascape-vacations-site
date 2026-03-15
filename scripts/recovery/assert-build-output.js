@@ -44,6 +44,22 @@ if (phase === "guides") {
   expectExists("_site/llms.txt");
   expectExists("_site/_redirects");
   expectNotContains("_site/_redirects", "/property-management   /property-management/   301");
+  expectContains(
+    "_site/guides/anna-maria-island-area-guide/index.html",
+    '<link rel="canonical" href="https://seascape-vacations.com/guides/anna-maria-island-area-guide/">'
+  );
+  expectNotContains(
+    "_site/guides/anna-maria-island-area-guide/index.html",
+    'content="https://seascape-vacations.com/area-guide-ami"'
+  );
+  expectNotContains(
+    "_site/guides/anna-maria-island-area-guide/index.html",
+    'href=/guides/best-time-visit-anna-maria-island'
+  );
+  expectNotContains(
+    "_site/guides/anna-maria-island-area-guide/index.html",
+    'href=/stays/anna-maria-island-homes-with-pool/"'
+  );
 }
 
 if (phase === "remediation") {
