@@ -247,8 +247,12 @@
 /destinations/*   /guides/   301
 /destinations   /guides/   301
 
-# Legacy listing pages (singular)
-/listing/*   /?rental=:splat   301
+# Legacy listing pages (singular) - specific redirects first
+/listing/dockside-dreams-w-pool-and-spa/   /properties/dockside-dreams/   301
+/listing/dockside-dreams-w-pool-and-spa   /properties/dockside-dreams/   301
+/listing/spacious-pool-house2-spasminigolfturfbackyard/   /properties/bradenton-pool-home/   301
+/listing/spacious-pool-house2-spasminigolfturfbackyard   /properties/bradenton-pool-home/   301
+/listing/*   /properties/   301
 
 # Legacy author pages (WordPress)
 /author/*   /about-us/   301
@@ -366,20 +370,9 @@
 /search-results/   /   301
 /search-results   /   301
 
-# Old WordPress/WooCommerce platform remnants
-/author/*   /about-us/   301
+# Old WordPress/WooCommerce platform remnants (author/*, listing/*, destinations/* handled above)
 /state/*   /   301
 /comments/feed/   /   301
 /comments/feed   /   301
-
-# Old /listing/ pages (individual property on old CMS)
-/listing/dockside-dreams-w-pool-and-spa/   /properties/dockside-dreams/   301
-/listing/dockside-dreams-w-pool-and-spa   /properties/dockside-dreams/   301
-/listing/spacious-pool-house2-spasminigolfturfbackyard/   /properties/bradenton-pool-home/   301
-/listing/spacious-pool-house2-spasminigolfturfbackyard   /properties/bradenton-pool-home/   301
-/listing/*   /properties/   301
-
-# Old CMS destination/guidebook paths
-/destinations/*   /guides/   301
 /guidebook/   /guides/   301
 /guidebook   /guides/   301
