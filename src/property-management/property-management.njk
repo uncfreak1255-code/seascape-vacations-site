@@ -25,7 +25,7 @@ eleventyComputed:
     <meta property="og:url" content="{{ site.url }}/property-management/{{ seoPage.slug }}/">
     <meta property="og:title" content="{{ seoPage.title }}">
     <meta property="og:description" content="{{ seoPage.description }}">
-    <meta property="og:image" content="{{ site.url }}/hero-optimized.jpg">
+    <meta property="og:image" content="{{ site.url }}/images/seascape-og-default.jpg">
     <meta property="og:locale" content="en_US">
     <meta property="og:site_name" content="Seascape Vacations">
     
@@ -33,14 +33,18 @@ eleventyComputed:
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="{{ seoPage.title }}">
     <meta name="twitter:description" content="{{ seoPage.description }}">
-    <meta name="twitter:image" content="{{ site.url }}/hero-optimized.jpg">
+    <meta name="twitter:image" content="{{ site.url }}/images/seascape-og-default.jpg">
     
     {% include "partials/deferred-meta-pixel.njk" %}
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    </noscript>
     
     <!-- Service Schema -->
     <script type="application/ld+json">
@@ -82,6 +86,7 @@ eleventyComputed:
         "@type": "Article",
         "headline": "{{ seoPage.title }}",
         "description": "{{ seoPage.description }}",
+        "image": "{{ site.url }}/images/seascape-og-default.jpg",
         "author": {
             "@type": "Organization",
             "name": "{{ site.author }}",

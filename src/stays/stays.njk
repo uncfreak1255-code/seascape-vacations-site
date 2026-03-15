@@ -25,7 +25,7 @@ eleventyComputed:
     <meta property="og:url" content="{{ site.url }}/stays/{{ seoPage.slug }}/">
     <meta property="og:title" content="{{ seoPage.title }}">
     <meta property="og:description" content="{{ seoPage.description }}">
-    <meta property="og:image" content="{{ site.url }}/hero-optimized.jpg">
+    <meta property="og:image" content="{{ site.url }}/images/seascape-og-default.jpg">
     <meta property="og:locale" content="en_US">
     <meta property="og:site_name" content="Seascape Vacations">
     
@@ -33,14 +33,30 @@ eleventyComputed:
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="{{ seoPage.title }}">
     <meta name="twitter:description" content="{{ seoPage.description }}">
-    <meta name="twitter:image" content="{{ site.url }}/hero-optimized.jpg">
-    
+    <meta name="twitter:image" content="{{ site.url }}/images/seascape-og-default.jpg">
+
     {% include "partials/deferred-meta-pixel.njk" %}
     
     <!-- Fonts -->
+    {% set featuredProperty = properties[0] %}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://images.weserv.nl" crossorigin>
+    <link rel="dns-prefetch" href="https://images.weserv.nl">
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    </noscript>
+    {% if featuredProperty %}
+    <link
+        rel="preload"
+        as="image"
+        href="{{ featuredProperty.image | imgProxy(800) }}"
+        imagesrcset="{{ featuredProperty.image | imgProxy(400) }} 400w, {{ featuredProperty.image | imgProxy(800) }} 800w, {{ featuredProperty.image | imgProxy(1200) }} 1200w"
+        imagesizes="(min-width: 1100px) 33vw, (min-width: 768px) 50vw, 100vw"
+        fetchpriority="high">
+    {% endif %}
     
     <!-- Breadcrumb Schema -->
     <script type="application/ld+json">
@@ -62,6 +78,7 @@ eleventyComputed:
         "headline": "{{ seoPage.title }}",
         "description": "{{ seoPage.description }}",
         "url": "{{ site.url }}/stays/{{ seoPage.slug }}/",
+        "image": "{{ site.url }}/images/seascape-og-default.jpg",
         "datePublished": "2025-01-22",
         "dateModified": "{{ site.dateUpdated }}",
         "author": {
@@ -274,10 +291,12 @@ eleventyComputed:
                 <div class="properties-grid">
                     {% for property in properties %}
                     <article class="property-card">
-                        {% set badge = "⭐ " ~ property.rating %}
+                    {% set badge = "⭐ " ~ property.rating %}
                         {% set loading = "lazy" %}
+                        {% set fetchpriority = "" %}
                         {% if loop.index == 1 %}
                         {% set loading = "eager" %}
+                        {% set fetchpriority = "high" %}
                         {% endif %}
                         {% include "partials/property-card-image.njk" %}
                         <div class="property-body">
