@@ -1,0 +1,48 @@
+---
+layout: layouts/base.njk
+permalink: "/property-management/"
+pageTitle: "Vacation Rental Property Management | Seascape Vacations"
+pageDescription: "Full-service vacation rental property management for owners in Bradenton, Sarasota, Anna Maria Island, Siesta Key, and Longboat Key."
+---
+{% block content %}
+<nav class="breadcrumbs" aria-label="Breadcrumb">
+  <ol>
+    <li><a href="/">Home</a></li>
+    <li><span>›</span></li>
+    <li><span aria-current="page">Property Management</span></li>
+  </ol>
+</nav>
+
+<section class="section" style="background: linear-gradient(135deg, var(--brand-dark) 0%, #1a3a3c 100%); color: white;">
+  <div class="container" style="text-align: center;">
+    <p class="section-tag" style="color: var(--gold);">For Property Owners</p>
+    <h1 style="font-size: clamp(32px, 5vw, 48px); margin-bottom: 20px; color: white;">Vacation Rental Property Management</h1>
+    <p style="max-width: 700px; margin: 0 auto; opacity: 0.9; font-size: 18px;">Local, full-service management for Gulf Coast vacation rentals with hands-on guest support, revenue strategy, and owner reporting.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="properties-grid">
+      <a class="property-card" href="/property-management/vacation-rental-management-sarasota/">
+        <div class="property-body">
+          <h2 class="property-title">Sarasota Property Management</h2>
+          <p class="property-meta">Owner services for Sarasota vacation rentals</p>
+        </div>
+      </a>
+      <a class="property-card" href="/property-management/vacation-rental-management-bradenton/">
+        <div class="property-body">
+          <h2 class="property-title">Bradenton Property Management</h2>
+          <p class="property-meta">Local operations, guest support, and revenue optimization</p>
+        </div>
+      </a>
+      <a class="property-card" href="/property-management/vacation-rental-management-anna-maria-island/">
+        <div class="property-body">
+          <h2 class="property-title">Anna Maria Island Property Management</h2>
+          <p class="property-meta">Management support for AMI-area owners</p>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+{% endblock %}

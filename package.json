@@ -5,7 +5,11 @@
   "scripts": {
     "start": "npx @11ty/eleventy --serve",
     "build": "npx @11ty/eleventy",
-    "build:prod": "NODE_ENV=production npx @11ty/eleventy"
+    "build:prod": "NODE_ENV=production npx @11ty/eleventy",
+    "verify:recovery:p0": "node scripts/recovery/assert-build-output.js p0",
+    "verify:recovery:guides": "node scripts/recovery/assert-build-output.js guides",
+    "verify:recovery:remediation": "node scripts/recovery/assert-build-output.js remediation",
+    "verify:recovery:live": "node scripts/recovery/assert-live-smoke.js https://seascape-vacations.com"
   },
   "devDependencies": {
     "@11ty/eleventy": "^3.0.0",

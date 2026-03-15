@@ -1,0 +1,63 @@
+const fs = require("fs");
+const path = require("path");
+
+const phase = process.argv[2] || "p0";
+
+function read(file) {
+  return fs.readFileSync(path.resolve(file), "utf8");
+}
+
+function expectExists(file) {
+  if (!fs.existsSync(path.resolve(file))) {
+    throw new Error(`Missing expected file: ${file}`);
+  }
+}
+
+function expectNotContains(file, needle) {
+  const contents = read(file);
+  if (contents.includes(needle)) {
+    throw new Error(`Unexpected content in ${file}: ${needle}`);
+  }
+}
+
+function expectContains(file, needle) {
+  const contents = read(file);
+  if (!contents.includes(needle)) {
+    throw new Error(`Missing expected content in ${file}: ${needle}`);
+  }
+}
+
+if (phase === "p0") {
+  expectExists("_site/index.html");
+  expectExists("_site/property-management/index.html");
+  expectNotContains("eleventy.config.js", 'addPassthroughCopy({"index.html": "index.html"})');
+  expectNotContains(
+    "_site/index.html",
+    "wp-content/uploads/2025/03/51916-135881-kgzZJ5KWwcw1HTE3EKwE6qxVSHBXCzEjbQjloKZayik-63ac665e899b2.jpg"
+  );
+  expectContains("_site/index.html", "Partner With Seascape Vacations");
+  expectContains("_site/property-management/index.html", "Property Management");
+}
+
+if (phase === "guides") {
+  expectExists("_site/guides/anna-maria-island-area-guide/index.html");
+  expectExists("_site/llms.txt");
+  expectExists("_site/_redirects");
+  expectNotContains("_site/_redirects", "/property-management   /property-management/   301");
+}
+
+if (phase === "remediation") {
+  expectNotContains(
+    "_site/stays/anna-maria-island-vacation-rentals/index.html",
+    '"text": "Manatee Public Beach in <a href='
+  );
+  expectContains("_site/stays/anna-maria-island-vacation-rentals/index.html", "srcset=");
+  expectContains("_site/stays/anna-maria-island-vacation-rentals/index.html", 'width="800"');
+  expectNotContains(
+    "_site/property-management/vacation-rental-management-sarasota/index.html",
+    "/property-owners/"
+  );
+  expectNotContains("_site/robots.txt", "LLMs-txt:");
+}
+
+console.log(`assert-build-output: ${phase} checks passed`);

@@ -1,6 +1,5 @@
 module.exports = function(eleventyConfig) {
   // Pass through static assets (preserves current design)
-  eleventyConfig.addPassthroughCopy({"index.html": "index.html"});
   eleventyConfig.addPassthroughCopy("images");
   eleventyConfig.addPassthroughCopy("css");
   eleventyConfig.addPassthroughCopy("js");
@@ -8,6 +7,9 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.addPassthroughCopy("*.png");
   eleventyConfig.addPassthroughCopy("netlify");
   eleventyConfig.addPassthroughCopy("_headers");
+  eleventyConfig.addPassthroughCopy({ "src/_redirects": "_redirects" });
+  eleventyConfig.addPassthroughCopy({ "src/llms.txt": "llms.txt" });
+  eleventyConfig.addPassthroughCopy({ "src/guides": "guides" });
   
   // Watch for changes during development
   eleventyConfig.addWatchTarget("./_data/");
