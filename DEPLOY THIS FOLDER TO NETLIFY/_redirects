@@ -175,6 +175,9 @@
 /city/palmetto   /stays/palmetto-vacation-rentals-florida/   301
 /city/palmetto/   /stays/palmetto-vacation-rentals-florida/   301
 /city/palmetto/*   /stays/palmetto-vacation-rentals-florida/   301
+/city/sarasota   /guides/sarasota-area-guide/   301
+/city/sarasota/   /guides/sarasota-area-guide/   301
+/city/sarasota/*   /guides/sarasota-area-guide/   301
 /city/anna-maria   /guides/anna-maria-city.html   301
 /city/anna-maria/   /guides/anna-maria-city.html   301
 /city/anna-maria/*   /guides/anna-maria-city.html   301
@@ -251,8 +254,6 @@
 /author/*   /about-us/   301
 
 # Legacy city/destination URLs -> current guides
-/city/sarasota/*   /guides/sarasota-area-guide/   301
-/city/sarasota   /guides/sarasota-area-guide/   301
 /destinations/siesta-key/*   /guides/siesta-key-area-guide/   301
 /destinations/siesta-key   /guides/siesta-key-area-guide/   301
 /destinations/sarasota/*   /guides/sarasota-area-guide/   301
