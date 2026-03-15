@@ -35,25 +35,7 @@ eleventyComputed:
     <meta name="twitter:description" content="{{ seoPage.description }}">
     <meta name="twitter:image" content="{{ site.url }}/hero-optimized.jpg">
     
-    <!-- Meta Pixel Code -->
-    <script>
-        !function (f, b, e, v, n, t, s) {
-            if (f.fbq) return; n = f.fbq = function () {
-                n.callMethod ?
-                    n.callMethod.apply(n, arguments) : n.queue.push(arguments)
-            };
-            if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0';
-            n.queue = []; t = b.createElement(e); t.async = !0;
-            t.src = v; s = b.getElementsByTagName(e)[0];
-            s.parentNode.insertBefore(t, s)
-        }(window, document, 'script',
-            'https://connect.facebook.net/en_US/fbevents.js');
-        fbq('init', '2748551298816267');
-        fbq('track', 'PageView');
-    </script>
-    <noscript><img height="1" width="1" style="display:none"
-            src="https://www.facebook.com/tr?id=2748551298816267&ev=PageView&noscript=1" /></noscript>
-    <!-- End Meta Pixel Code -->
+    {% include "partials/deferred-meta-pixel.njk" %}
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -128,7 +110,7 @@ eleventyComputed:
             {
                 "@type": "Question",
                 "name": "{{ faq.q }}",
-                "acceptedAnswer": { "@type": "Answer", "text": "{{ faq.a }}" }
+                "acceptedAnswer": { "@type": "Answer", "text": "{{ faq.a | stripHtml | escape }}" }
             }{% if not loop.last %},{% endif %}
             {% endfor %}
         ]
@@ -193,7 +175,7 @@ eleventyComputed:
             <ol>
                 <li><a href="/">Home</a></li>
                 <li><span>›</span></li>
-                <li><a href="/property-management/">Property Owners</a></li>
+                <li><a href="/property-management/">Property Management</a></li>
                 <li><span>›</span></li>
                 <li><span aria-current="page">{{ seoPage.h1 }}</span></li>
             </ol>
@@ -378,7 +360,7 @@ eleventyComputed:
                 <a href="/destinations/anna-maria-island/">Anna Maria Island</a>
                 <a href="/destinations/bradenton/">Bradenton</a>
                 <a href="/destinations/sarasota/">Sarasota</a>
-                <a href="/property-management/">Property Owners</a>
+                <a href="/property-management/">Property Management</a>
             </div>
             <div class="footer-copyright">© 2026 Seascape Vacations. All rights reserved. | Book Direct & Save</div>
         </div>

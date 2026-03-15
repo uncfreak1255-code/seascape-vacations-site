@@ -9,6 +9,7 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.addPassthroughCopy("_headers");
   eleventyConfig.addPassthroughCopy({ "src/_redirects": "_redirects" });
   eleventyConfig.addPassthroughCopy({ "src/llms.txt": "llms.txt" });
+  eleventyConfig.addPassthroughCopy({ "src/robots.txt": "robots.txt" });
   eleventyConfig.addPassthroughCopy({ "src/guides": "guides" });
   
   // Watch for changes during development
@@ -25,6 +26,18 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.addFilter("seoDescription", function(description) {
     if (!description) return "Luxury vacation rentals on Florida's Gulf Coast. Book direct and save.";
     return description;
+  });
+
+  eleventyConfig.addFilter("stripHtml", function(input) {
+    return String(input || "")
+      .replace(/<[^>]*>/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+  });
+
+  eleventyConfig.addFilter("imgProxy", function(url, width = 800) {
+    const clean = String(url || "").replace(/^https?:\/\//, "");
+    return `https://images.weserv.nl/?url=${encodeURIComponent(clean)}&w=${width}&output=webp&q=82`;
   });
 
   return {

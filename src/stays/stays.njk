@@ -35,25 +35,7 @@ eleventyComputed:
     <meta name="twitter:description" content="{{ seoPage.description }}">
     <meta name="twitter:image" content="{{ site.url }}/hero-optimized.jpg">
     
-    <!-- Meta Pixel Code -->
-    <script>
-        !function (f, b, e, v, n, t, s) {
-            if (f.fbq) return; n = f.fbq = function () {
-                n.callMethod ?
-                    n.callMethod.apply(n, arguments) : n.queue.push(arguments)
-            };
-            if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0';
-            n.queue = []; t = b.createElement(e); t.async = !0;
-            t.src = v; s = b.getElementsByTagName(e)[0];
-            s.parentNode.insertBefore(t, s)
-        }(window, document, 'script',
-            'https://connect.facebook.net/en_US/fbevents.js');
-        fbq('init', '2748551298816267');
-        fbq('track', 'PageView');
-    </script>
-    <noscript><img height="1" width="1" style="display:none"
-            src="https://www.facebook.com/tr?id=2748551298816267&ev=PageView&noscript=1" /></noscript>
-    <!-- End Meta Pixel Code -->
+    {% include "partials/deferred-meta-pixel.njk" %}
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -111,7 +93,7 @@ eleventyComputed:
                 "name": "{{ faq.question }}",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "{{ faq.answer }}"
+                    "text": "{{ faq.answer | stripHtml | escape }}"
                 }
             }{% if not loop.last %},{% endif %}
             {% endfor %}
@@ -292,10 +274,12 @@ eleventyComputed:
                 <div class="properties-grid">
                     {% for property in properties %}
                     <article class="property-card">
-                        <div class="property-img" style="background-image: url('{{ property.image }}')">
-                            <img src="{{ property.image }}" alt="{{ property.name }} - {{ property.specs }} vacation rental in {{ property.city }}, Florida" loading="lazy" style="position:absolute;width:100%;height:100%;object-fit:cover;top:0;left:0;">
-                            <span class="property-badge">⭐ {{ property.rating }}</span>
-                        </div>
+                        {% set badge = "⭐ " ~ property.rating %}
+                        {% set loading = "lazy" %}
+                        {% if loop.index == 1 %}
+                        {% set loading = "eager" %}
+                        {% endif %}
+                        {% include "partials/property-card-image.njk" %}
                         <div class="property-body">
                             <h3 class="property-title">{{ property.name }}</h3>
                             <p class="property-meta">{{ property.specs }}</p>
