@@ -29,9 +29,16 @@ function request(path) {
   return new Promise((resolve, reject) => {
     https
       .get(`${baseUrl}${path}`, (res) => {
-        resolve({
-          statusCode: res.statusCode,
-          location: res.headers.location || null
+        let body = "";
+        res.on("data", (chunk) => {
+          body += chunk;
+        });
+        res.on("end", () => {
+          resolve({
+            statusCode: res.statusCode,
+            location: res.headers.location || null,
+            body
+          });
         });
       })
       .on("error", reject);
@@ -60,6 +67,16 @@ async function check(target, currentPath = target.path, redirectDepth = 0) {
 
   if (response.statusCode !== target.status) {
     throw new Error(`${target.path} expected ${target.status}, got ${response.statusCode}`);
+  }
+
+  if (target.path === "/") {
+    if (!response.body.includes("Dockside Dreams") || !response.body.includes("/properties/dockside-dreams/")) {
+      throw new Error("homepage is missing stable featured property markup");
+    }
+
+    if (response.body.includes("undefined BR")) {
+      throw new Error("homepage featured properties still contain undefined specs");
+    }
   }
 }
 

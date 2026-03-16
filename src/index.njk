@@ -889,13 +889,17 @@
         /* Property Cards - 3D Effect */
         .prop-card {
             position: relative;
+            display: block;
             border-radius: 24px;
             overflow: hidden;
             cursor: pointer;
             height: 450px;
             margin-bottom: 32px;
+            isolation: isolate;
             transform-style: preserve-3d;
             transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
         }
 
         .prop-card::before {
@@ -935,6 +939,9 @@
         }
 
         .prop-card img {
+            position: absolute;
+            inset: 0;
+            display: block;
             width: 100%;
             height: 100%;
             object-fit: cover;
@@ -948,6 +955,7 @@
         .prop-card-overlay {
             position: absolute;
             inset: 0;
+            z-index: 2;
             background: linear-gradient(135deg,
                     rgba(0, 0, 0, 0.8) 0%,
                     rgba(0, 0, 0, 0.5) 40%,
@@ -958,10 +966,16 @@
         .prop-card-content {
             position: absolute;
             inset: 0;
+            z-index: 3;
             padding: 32px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+        }
+
+        .prop-card-link {
+            text-decoration: none;
+            color: inherit;
         }
 
         .prop-card-top {
@@ -3041,8 +3055,41 @@
                     <span style="color:var(--brand);cursor:pointer;font-weight:500"
                         onclick="showPage('properties')">View all →</span>
                 </div>
-                <div id="featured-property-grid"
-                    style="display: grid; gap: 32px; grid-template-columns: repeat(2, 1fr);"></div>
+                <div style="display:grid;gap:32px;grid-template-columns:repeat(2,1fr);">
+                    {% for property in properties.slice(0, 2) %}
+                    <a class="prop-card prop-card-link scroll-reveal revealed" href="/properties/{{ property.slug }}/">
+                        <div class="prop-card-shadow"></div>
+                        <img
+                            loading="lazy"
+                            decoding="async"
+                            src="{{ property.image }}"
+                            alt="{{ property.name }}">
+                        <div class="prop-card-overlay"></div>
+                        <div class="prop-card-content">
+                            <div class="prop-card-top">
+                                <div>
+                                    <h3 class="prop-title">{{ property.name }}</h3>
+                                    <p class="prop-location">{{ property.city }} · {{ property.specs }}</p>
+                                </div>
+                                <div class="prop-badge"><span class="star">★</span> {{ property.rating }}</div>
+                            </div>
+                            <div>
+                                <p class="prop-desc-snippet" style="font-size:15px;color:rgba(255,255,255,0.95);margin-bottom:20px;line-height:1.6;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;text-shadow:0 1px 12px rgba(0,0,0,0.8);">
+                                    {{ property.description }}
+                                </p>
+                                <div class="prop-highlights">
+                                    {% for highlight in property.highlights %}
+                                    <div class="prop-highlight"><span class="prop-dot"></span>{{ highlight }}</div>
+                                    {% endfor %}
+                                </div>
+                                <div class="prop-bottom">
+                                    <span class="prop-btn">View Details →</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    {% endfor %}
+                </div>
             </div>
         </section>
 
@@ -5176,9 +5223,37 @@
         function optimizePropertyImages(data) {
             return data.map(p => ({
                 ...p,
+                id: String(p.id),
                 image: optimizeImage(p.image, 400),
                 images: (p.images || []).map(img => optimizeImage(img, 400))
             }));
+        }
+
+        function firstDefined(...values) {
+            return values.find(value => value !== undefined && value !== null && value !== '');
+        }
+
+        function summarizeDescription(description, fallbackDescription = '') {
+            if (typeof description !== 'string' || !description.trim()) {
+                return fallbackDescription;
+            }
+
+            const firstParagraph = description
+                .replace(/\r/g, '')
+                .split('\n\n')
+                .map(part => part.trim())
+                .find(Boolean) || description.trim();
+
+            if (firstParagraph.length <= 260) {
+                return firstParagraph;
+            }
+
+            const firstSentence = firstParagraph.match(/^(.{0,260}?[.!?])(\s|$)/);
+            if (firstSentence && firstSentence[1]) {
+                return firstSentence[1].trim();
+            }
+
+            return `${firstParagraph.slice(0, 257).trim()}...`;
         }
 
         // ===== PROPERTY DATA ENGINE =====
@@ -5266,6 +5341,40 @@
             }
         ];
 
+        const fallbackDataById = new Map(fallbackData.map(property => [String(property.id), property]));
+
+        function normalizeApiProperty(raw) {
+            const id = String(raw.id);
+            const fallback = fallbackDataById.get(id);
+            const bedrooms = firstDefined(raw.bedrooms, raw.bedroomsNumber, raw.bedroomNumber, raw.numberBedrooms, fallback?.bedrooms);
+            const bathrooms = firstDefined(raw.bathrooms, raw.bathroomsNumber, raw.bathroomNumber, raw.guestBathroomsNumber, raw.numberBathrooms, fallback?.bathrooms);
+            const guests = firstDefined(raw.guests, raw.personCapacity, raw.maxGuests, fallback?.guests, 0);
+            const amenities = Array.isArray(raw.amenities) ? raw.amenities.filter(Boolean) : [];
+            const highlights = Array.isArray(raw.highlights) && raw.highlights.length
+                ? raw.highlights.filter(Boolean)
+                : fallback?.highlights || amenities.slice(0, 3);
+
+            return {
+                ...raw,
+                id,
+                title: fallback?.title || raw.title || raw.name,
+                location: raw.location || raw.city || fallback?.location || '',
+                guests,
+                bedrooms,
+                bathrooms,
+                rating: firstDefined(raw.rating, fallback?.rating, 5.0),
+                image: raw.image || fallback?.image || '',
+                images: Array.isArray(raw.images) && raw.images.length ? raw.images : (fallback?.images || []),
+                description: fallback?.description || summarizeDescription(raw.description, fallback?.description || ''),
+                highlights,
+                amenities: amenities.length ? amenities : (fallback?.amenities || []),
+                specs: fallback?.specs || `${bedrooms ?? 0} BR · ${bathrooms ?? 0} BA · Sleeps ${guests}`,
+                tags: Array.isArray(raw.tags) && raw.tags.length ? raw.tags : (fallback?.tags || ['All Stays']),
+                bookingUrl: raw.bookingUrl || fallback?.bookingUrl,
+                pageUrl: raw.pageUrl || fallback?.pageUrl
+            };
+        }
+
         let propertyData = optimizePropertyImages([...fallbackData]); // Start with optimized fallback
 
         async function fetchProperties() {
@@ -5277,13 +5386,12 @@
                 apiData.forEach(p => {
                     p.bookingUrl = `https://book.seascape-vacations.com/listings/${p.id}`;
                 });
-                propertyData = optimizePropertyImages(apiData);
+                propertyData = optimizePropertyImages(apiData.map(normalizeApiProperty));
             } catch (err) {
                 console.warn('Using fallback property data (API unavailable):', err.message);
                 // Keep using optimized fallbackData which is already loaded
             }
             renderProperties(); // Render properties page grid
-            renderFeaturedProperties(); // Render home page featured section
         }
 
         
@@ -5357,52 +5465,6 @@
 
             // Re-init observer for new elements
             document.querySelectorAll('.scroll-reveal').forEach(el => revealObserver.observe(el));
-        }
-
-        // Render Featured Properties on Home Page (first 2 properties)
-        function renderFeaturedProperties() {
-            const container = document.getElementById('featured-property-grid');
-            if (!container) return;
-
-            container.innerHTML = '';
-
-            propertyData.slice(0, 2).forEach(p => {
-                const card = document.createElement('div');
-                card.className = 'prop-card scroll-reveal revealed';
-                card.onclick = () => showPropertyDetail(p.id);
-                card.innerHTML = `
-                    <div class="prop-card-shadow"></div>
-                    <div class="prop-card-carousel" style="position:absolute;inset:0;z-index:1;">
-                        ${p.images && p.images.length > 0 
-                            ? p.images.map((img, i) => `<img loading="lazy" src="${img}" alt="${p.title} - Image ${i+1}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity 0.5s ease;opacity:${i===0?'1':'0'};" class="carousel-img-${p.id}" data-index="${i}">`).join('')
-                            : `<img loading="lazy" src="${p.image}" alt="${p.title}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">`
-                        }
-                        ${p.images && p.images.length > 1 ? `
-                        <button onclick="event.stopPropagation(); nextCardImage(this, '${p.id}', -1)" style="position:absolute;left:10px;top:50%;transform:translateY(-50%);background:rgba(255,255,255,0.8);border:none;border-radius:50%;width:32px;height:32px;cursor:pointer;z-index:10;">‹</button>
-                        <button onclick="event.stopPropagation(); nextCardImage(this, '${p.id}', 1)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:rgba(255,255,255,0.8);border:none;border-radius:50%;width:32px;height:32px;cursor:pointer;z-index:10;">›</button>
-                        ` : ''}
-                    </div>
-                    <div class="prop-card-overlay"></div>
-                    <div class="prop-card-content">
-                        <div class="prop-card-top">
-                            <div>
-                                <h3 class="prop-title">${p.title}</h3>
-                                <p class="prop-location">${p.location} · ${p.specs}</p>
-                            </div>
-                            <div class="prop-badge"><span class="star">★</span> ${p.rating}</div>
-                        </div>
-                        <div>
-                            <div class="prop-highlights">
-                                ${p.highlights.map(h => `<div class="prop-highlight"><span class="prop-dot"></span>${h}</div>`).join('')}
-                            </div>
-                            <div class="prop-bottom">
-                                <span class="prop-btn">View Details →</span>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                container.appendChild(card);
-            });
         }
 
         // Carousel state
