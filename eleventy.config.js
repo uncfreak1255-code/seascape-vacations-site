@@ -56,6 +56,10 @@ module.exports = function(eleventyConfig) {
       .trim();
   });
 
+  eleventyConfig.addFilter("json", function(input) {
+    return JSON.stringify(input || null);
+  });
+
   eleventyConfig.addFilter("imgProxy", function(url, width = 800) {
     return toHostawayCdn(url, width, 82);
   });
