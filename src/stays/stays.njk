@@ -43,8 +43,8 @@ eleventyComputed:
     {% set featuredProperty = properties[0] %}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://images.weserv.nl" crossorigin>
-    <link rel="dns-prefetch" href="https://images.weserv.nl">
+    <link rel="preconnect" href="https://bookingenginecdn.hostaway.com" crossorigin>
+    <link rel="dns-prefetch" href="https://bookingenginecdn.hostaway.com">
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
     <noscript>
@@ -139,7 +139,7 @@ eleventyComputed:
                     "@id": "{{ site.url }}/#{{ property.slug }}",
                     "name": "{{ property.name }}",
                     "description": "{{ property.description }}",
-                    "image": "{{ property.image }}",
+                    "image": "{{ property.image | imgProxy(1200) }}",
                     "numberOfBedrooms": {{ property.bedrooms }},
                     "numberOfBathroomsTotal": {{ property.bathrooms }},
                     "occupancy": {
@@ -208,7 +208,7 @@ eleventyComputed:
         .properties-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; }
         .property-card { background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); transition: transform 0.3s ease; }
         .property-card:hover { transform: translateY(-5px); }
-        .property-img { height: 220px; background-size: cover; background-position: center; position: relative; }
+        .property-img { height: 220px; background: linear-gradient(135deg, rgba(95, 138, 139, 0.16), rgba(201, 169, 98, 0.22)); background-size: cover; background-position: center; position: relative; }
         .property-badge { position: absolute; top: 12px; left: 12px; background: var(--gold); color: var(--stone); padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 600; }
         .property-body { padding: 20px; }
         .property-title { font-size: 20px; font-weight: 600; color: var(--stone); margin-bottom: 8px; }

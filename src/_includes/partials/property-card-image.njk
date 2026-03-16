@@ -9,6 +9,7 @@
     {% if fetchpriority %}fetchpriority="{{ fetchpriority }}"{% endif %}
     decoding="async"
     alt="{{ property.name }} - {{ property.specs }} vacation rental in {{ property.city }}, Florida"
+    onerror="this.onerror=null;this.src='/images/seascape-og-default.jpg';this.srcset='';"
     style="position:absolute;width:100%;height:100%;object-fit:cover;top:0;left:0;">
   {% if badge %}
   <span class="property-badge">{{ badge }}</span>

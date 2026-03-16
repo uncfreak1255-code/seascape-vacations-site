@@ -140,6 +140,8 @@ if (phase === "remediation") {
   expectContains("_site/index.html", "images/seascape-og-default.jpg");
   expectContains("_site/index.html", "hero-optimized.webp");
   expectContains("_site/index.html", "kgmid=%2Fg%2F11y4vdnsfp");
+  expectContains("_site/index.html", "bookingenginecdn.hostaway.com");
+  expectNotContains("_site/index.html", "images.weserv.nl");
   expectContains("_site/property-management/index.html", "images/seascape-og-default.jpg");
   expectContains(
     "_site/property-management/index.html",
@@ -149,7 +151,9 @@ if (phase === "remediation") {
     "_site/guides/bradenton-vs-sarasota/index.html",
     "kgmid=%2Fg%2F11y4vdnsfp"
   );
-  expectContains("_site/stays/anna-maria-island-vacation-rentals/index.html", 'rel="preconnect" href="https://images.weserv.nl"');
+  expectContains("_site/stays/anna-maria-island-vacation-rentals/index.html", 'rel="preconnect" href="https://bookingenginecdn.hostaway.com"');
+  expectContains("_site/stays/anna-maria-island-vacation-rentals/index.html", "bookingenginecdn.hostaway.com");
+  expectNotContains("_site/stays/anna-maria-island-vacation-rentals/index.html", "images.weserv.nl");
   expectContains("_site/stays/anna-maria-island-vacation-rentals/index.html", 'fetchpriority="high"');
   expectContains(
     "_site/property-management/vacation-rental-management-sarasota/index.html",

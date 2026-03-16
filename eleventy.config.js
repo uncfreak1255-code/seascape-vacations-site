@@ -1,3 +1,22 @@
+function toHostawayCdn(url, width = 800, quality = 82) {
+  const value = String(url || "").trim();
+  if (!value) return value;
+
+  const cleanValue = value.split("?")[0];
+
+  if (cleanValue.includes("bookingenginecdn.hostaway.com/")) {
+    return `${cleanValue}?width=${width}&quality=${quality}&format=webp&v=2`;
+  }
+
+  const hostawayPrefix = "https://hostaway-platform.s3.us-west-2.amazonaws.com/";
+  if (cleanValue.startsWith(hostawayPrefix)) {
+    const assetPath = cleanValue.slice(hostawayPrefix.length);
+    return `https://bookingenginecdn.hostaway.com/${assetPath}?width=${width}&quality=${quality}&format=webp&v=2`;
+  }
+
+  return value;
+}
+
 module.exports = function(eleventyConfig) {
   // Pass through static assets (preserves current design)
   eleventyConfig.addPassthroughCopy("images");
@@ -38,8 +57,7 @@ module.exports = function(eleventyConfig) {
   });
 
   eleventyConfig.addFilter("imgProxy", function(url, width = 800) {
-    const clean = String(url || "").replace(/^https?:\/\//, "");
-    return `https://images.weserv.nl/?url=${encodeURIComponent(clean)}&w=${width}&output=webp&q=82`;
+    return toHostawayCdn(url, width, 82);
   });
 
   return {
