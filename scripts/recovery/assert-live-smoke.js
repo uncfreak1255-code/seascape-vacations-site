@@ -86,6 +86,26 @@ async function check(target, currentPath = target.path, redirectDepth = 0) {
       throw new Error("homepage still depends on the external weserv image proxy");
     }
   }
+
+  if (target.path === "/guides/anna-maria-island-area-guide/" || target.path === "/guides/bradenton-vs-sarasota/" || target.path === "/guides/anna-maria-island-vs-siesta-key/") {
+    if (response.body.includes("hostaway-platform.s3.us-west-2.amazonaws.com")) {
+      throw new Error(`${target.path} still depends on raw Hostaway S3 image URLs`);
+    }
+
+    if (/(?:src|href)=["']images\//i.test(response.body) || /url\((["']?)images\//i.test(response.body)) {
+      throw new Error(`${target.path} still contains broken relative images/ asset paths`);
+    }
+  }
+
+  if (target.path === "/guides/anna-maria-island-area-guide/" || target.path === "/guides/bradenton-area-guide/" || target.path === "/guides/sarasota-area-guide/" || target.path === "/guides/siesta-key-area-guide/") {
+    if (response.body.includes('href="index.html"') || response.body.includes('href="#destinations"') || response.body.includes("area-guide-")) {
+      throw new Error(`${target.path} still contains legacy relative guide links`);
+    }
+
+    if (/\bhref=\/[^"'\s>]+/i.test(response.body)) {
+      throw new Error(`${target.path} still contains unquoted absolute href attributes`);
+    }
+  }
 }
 
 Promise.all(targets.map((target) => check(target)))

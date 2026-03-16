@@ -27,6 +27,13 @@ function expectContains(file, needle) {
   }
 }
 
+function expectNotMatches(file, pattern, description) {
+  const contents = read(file);
+  if (pattern.test(contents)) {
+    throw new Error(`Unexpected pattern in ${file}: ${description}`);
+  }
+}
+
 function listHtmlFiles(dir) {
   const absolute = path.resolve(dir);
   if (!fs.existsSync(absolute)) {
@@ -105,6 +112,13 @@ if (phase === "guides") {
     expectContains(file, '<meta name="twitter:image"');
     expectNotContains(file, "images.unsplash.com");
     expectNotContains(file, "/images/logo.png");
+    expectNotContains(file, "hostaway-platform.s3.us-west-2.amazonaws.com");
+    expectNotContains(file, 'href="index.html"');
+    expectNotContains(file, 'href="#destinations"');
+    expectNotContains(file, "area-guide-");
+    expectNotMatches(file, /(?:src|href)=["']images\//i, "relative images/ asset path");
+    expectNotMatches(file, /url\((["']?)images\//i, "relative images/ CSS url");
+    expectNotMatches(file, /\bhref=\/[^"'\s>]+/i, "unquoted absolute href");
   }
 }
 

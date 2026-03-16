@@ -23,11 +23,31 @@ exports.handler = async function (event, context) {
 
         // 3. Transform Data for Frontend
         const mappedData = listings.map(p => {
+            const bedrooms = firstDefined(
+                p.bedrooms,
+                p.bedroomsNumber,
+                p.bedroomNumber,
+                p.numberBedrooms
+            );
+            const bathrooms = firstDefined(
+                p.bathrooms,
+                p.bathroomsNumber,
+                p.bathroomNumber,
+                p.guestBathroomsNumber,
+                p.numberBathrooms
+            );
+            const guests = firstDefined(
+                p.personCapacity,
+                p.guests,
+                p.maxGuests
+            );
             // Extract image
             const image = p.listingImages && p.listingImages.length > 0 ? p.listingImages[0].url : '';
 
             // Extract amenities (simplified)
-            const amenities = p.amenities ? p.amenities.map(a => a.name).slice(0, 6) : [];
+            const amenities = Array.isArray(p.amenities)
+                ? p.amenities.map(a => typeof a === 'string' ? a : a.name).filter(Boolean).slice(0, 6)
+                : [];
 
             // Extract tags (infer from amenities or type)
             const tags = [];
@@ -35,12 +55,12 @@ exports.handler = async function (event, context) {
             if (p.amenities && p.amenities.some(a => a.name.includes('Pool'))) tags.push('Private Pool');
 
             return {
-                id: p.id,
+                id: String(p.id),
                 title: p.name,
                 location: p.city,
-                guests: p.personCapacity,
-                bedrooms: p.bedrooms,
-                bathrooms: p.bathrooms,
+                guests: guests,
+                bedrooms: bedrooms,
+                bathrooms: bathrooms,
                 price: p.listingPrice || 350, // Fallback if price is missing
                 rating: 5.0, // Hostaway doesn't always send rating in simple listing view
                 image: image,
@@ -49,7 +69,7 @@ exports.handler = async function (event, context) {
                 description: p.description,
                 highlights: amenities.slice(0, 2),
                 amenities: amenities,
-                specs: `${p.bedrooms} BR · ${p.bathrooms} BA · Sleeps ${p.personCapacity}`,
+                specs: `${bedrooms ?? 0} BR · ${bathrooms ?? 0} BA · Sleeps ${guests ?? 0}`,
                 tags: tags.length > 0 ? tags : ['All Stays']
             };
         });
@@ -70,6 +90,10 @@ exports.handler = async function (event, context) {
         };
     }
 };
+
+function firstDefined(...values) {
+    return values.find(value => value !== undefined && value !== null && value !== '');
+}
 
 function getAccessToken() {
     return new Promise((resolve, reject) => {
