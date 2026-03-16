@@ -49,6 +49,13 @@ function listHtmlFiles(dir) {
   });
 }
 
+function expectNotContainsInHtml(dir, needle) {
+  const files = listHtmlFiles(dir);
+  for (const file of files) {
+    expectNotContains(file, needle);
+  }
+}
+
 if (phase === "p0") {
   expectExists("_site/index.html");
   expectExists("_site/property-management/index.html");
@@ -67,6 +74,12 @@ if (phase === "p0") {
   expectContains("_site/index.html", "The Oasis");
   expectContains("_site/index.html", "prop-desc-snippet");
   expectContains("_site/property-management/index.html", "Property Management");
+}
+
+if (["p0", "guides", "remediation"].includes(phase)) {
+  expectNotContainsInHtml("_site", "/.netlify/functions/get-properties");
+  expectNotContainsInHtml("_site", "api.hostaway.com");
+  expectNotContainsInHtml("_site", "hostaway-platform.s3.us-west-2.amazonaws.com");
 }
 
 if (phase === "guides") {
