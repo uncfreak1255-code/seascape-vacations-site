@@ -13,6 +13,12 @@ function expectExists(file) {
   }
 }
 
+function expectNotExists(file) {
+  if (fs.existsSync(path.resolve(file))) {
+    throw new Error(`Unexpected stale file remains in build output: ${file}`);
+  }
+}
+
 function expectNotContains(file, needle) {
   const contents = read(file);
   if (contents.includes(needle)) {
@@ -51,11 +57,21 @@ function listHtmlFiles(dir) {
 
 if (phase === "p0") {
   expectExists("_site/index.html");
+  expectExists("_site/properties/index.html");
   expectExists("_site/property-management/index.html");
+  expectNotExists("_site/netlify/functions/get-properties.js");
+  expectNotExists("_site/stays/hurricane-preparedness-florida-vacation/index.html");
+  expectNotExists("_site/stays/concierge-luxury-services/index.html");
+  expectNotExists("_site/stays/travel-insurance-florida-vacation/index.html");
+  expectNotExists("_site/stays/vacation-rentals-with-heated-pool/index.html");
   expectNotContains("eleventy.config.js", 'addPassthroughCopy({"index.html": "index.html"})');
   expectNotContains("_site/index.html", 'id="featured-property-grid"');
   expectNotContains("_site/index.html", "prop-card-carousel");
   expectNotContains("_site/index.html", "nextCardImage(");
+  expectNotContains("_site/index.html", "/.netlify/functions/get-properties");
+  expectNotContains("_site/index.html", "api.hostaway.com");
+  expectNotContains("_site/index.html", "hostaway-platform.s3.us-west-2.amazonaws.com");
+  expectNotContains("_site/index.html", "images.unsplash.com");
   expectNotContains(
     "_site/index.html",
     "wp-content/uploads/2025/03/51916-135881-kgzZJ5KWwcw1HTE3EKwE6qxVSHBXCzEjbQjloKZayik-63ac665e899b2.jpg"
@@ -66,6 +82,13 @@ if (phase === "p0") {
   expectContains("_site/index.html", "Dockside Dreams");
   expectContains("_site/index.html", "The Oasis");
   expectContains("_site/index.html", "prop-desc-snippet");
+  expectContains("_site/index.html", "bookingenginecdn.hostaway.com");
+  expectContains("_site/properties/index.html", "Florida Gulf Coast homes, controlled from one catalog.");
+  expectContains("_site/properties/index.html", 'href="/properties/dockside-dreams/"');
+  expectContains("_site/properties/index.html", 'href="https://book.seascape-vacations.com/listings/206016"');
+  expectNotContains("_site/properties/index.html", "/.netlify/functions/get-properties");
+  expectNotContains("_site/properties/index.html", "api.hostaway.com");
+  expectNotContains("_site/properties/index.html", "hostaway-platform.s3.us-west-2.amazonaws.com");
   expectContains("_site/property-management/index.html", "Property Management");
 }
 
@@ -126,6 +149,10 @@ if (phase === "remediation") {
   expectExists("_site/robots.txt");
   expectExists("_site/hero-mobile.webp");
   expectExists("_site/hero-optimized.webp");
+  expectContains("_site/_redirects", "/stays/hurricane-preparedness-florida-vacation/  /stays/hurricane-preparedness-guide/  301");
+  expectContains("_site/_redirects", "/stays/travel-insurance-florida-vacation/  /stays/hurricane-preparedness-guide/  301");
+  expectContains("_site/_redirects", "/stays/vacation-rentals-with-heated-pool/  /stays/vacation-rentals-with-pool-and-hot-tub/  301");
+  expectContains("_site/_redirects", "/stays/concierge-luxury-services/  /stays/luxury-concierge-services/  301");
   expectExists("_site/images/seascape-og-default.jpg");
   expectExists("_site/images/anna-maria-island-og.jpg");
   expectNotContains(
@@ -156,6 +183,11 @@ if (phase === "remediation") {
   expectContains("_site/index.html", "kgmid=%2Fg%2F11y4vdnsfp");
   expectContains("_site/index.html", "bookingenginecdn.hostaway.com");
   expectNotContains("_site/index.html", "images.weserv.nl");
+  expectNotContains("_site/index.html", "images.unsplash.com");
+  expectContains("_site/properties/index.html", "Book direct");
+  expectContains("_site/properties/index.html", "stable listing data");
+  expectContains("_site/properties/index.html", "bookingenginecdn.hostaway.com");
+  expectNotContains("_site/properties/index.html", "images.unsplash.com");
   expectContains("_site/property-management/index.html", "images/seascape-og-default.jpg");
   expectContains(
     "_site/property-management/index.html",

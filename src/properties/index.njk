@@ -1,3 +1,6 @@
+---
+templateEngineOverride: njk
+---
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,43 +10,22 @@
   <title>Gulf Coast Vacation Rentals | Seascape Vacations</title>
   <meta name="description" content="Browse Seascape Vacations homes in Bradenton and Sarasota. Stable, curated direct-booking inventory with private pools, waterfront homes, and owner-trusted service.">
   <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://seascape-vacations.com/properties/">
+  <link rel="canonical" href="{{ site.url }}/properties/">
 
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://seascape-vacations.com/properties/">
+  <meta property="og:url" content="{{ site.url }}/properties/">
   <meta property="og:title" content="Gulf Coast Vacation Rentals">
   <meta property="og:description" content="Browse Seascape Vacations homes in Bradenton and Sarasota. Stable, curated direct-booking inventory with private pools, waterfront homes, and owner-trusted service.">
-  <meta property="og:image" content="https://seascape-vacations.com/hero-optimized.webp">
+  <meta property="og:image" content="{{ site.url }}/hero-optimized.webp">
   <meta property="og:locale" content="en_US">
   <meta property="og:site_name" content="Seascape Vacations">
 
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Gulf Coast Vacation Rentals">
   <meta name="twitter:description" content="Browse Seascape Vacations homes in Bradenton and Sarasota. Stable, curated direct-booking inventory with private pools, waterfront homes, and owner-trusted service.">
-  <meta name="twitter:image" content="https://seascape-vacations.com/hero-optimized.webp">
+  <meta name="twitter:image" content="{{ site.url }}/hero-optimized.webp">
 
-  <script type="application/ld+json">
-{
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "Seascape Vacations",
-    "url": "https://seascape-vacations.com",
-    "description": "Luxury vacation rentals on Florida&#39;s Gulf Coast. Anna Maria Island, Bradenton, Sarasota, and Siesta Key.",
-    "telephone": "+1-941-704-8545",
-    "email": "info@seascape-vacations.com",
-    "logo": "https://seascape-vacations.com/logo-optimized.png",
-    "sameAs": [
-        
-        "https://www.facebook.com/SeascapeVacations",
-        
-        "https://www.instagram.com/seascapevacations",
-        
-        "https://www.google.com/search?kgmid=%2Fg%2F11y4vdnsfp&amp;q=Seascape+Vacations"
-        
-    ]
-}
-</script>
-
+  {% include "partials/organization-schema.njk" %}
 
   <script type="application/ld+json">
   {
@@ -51,129 +33,33 @@
     "@type": "ItemList",
     "name": "Seascape Vacations Properties",
     "description": "Curated Gulf Coast vacation rentals from Seascape Vacations.",
-    "numberOfItems": 5,
+    "numberOfItems": {{ properties | length }},
     "itemListElement": [
-      
+      {% for property in properties %}
       {
         "@type": "ListItem",
-        "position": 1,
-        "url": "https://seascape-vacations.com/properties/dockside-dreams/",
+        "position": {{ loop.index }},
+        "url": "{{ site.url }}{{ property.pageUrl }}",
         "item": {
           "@type": "VacationRental",
-          "name": "Dockside Dreams",
-          "description": "Wake up to stunning water views and watch dolphins play right from your private dock. This magnificent waterfront home features a heated pool and spa, gourmet kitchen, and direct water access.",
-          "image": "https://bookingenginecdn.hostaway.com/listing/51916-206016-xNIrPl9kvF0vllYFzSL7Lm0Gl4eOGxLIN--wmPlCT3NY-6536bca493945?width=1200&amp;quality=82&amp;format=webp&amp;v=2",
+          "name": "{{ property.name }}",
+          "description": "{{ property.description }}",
+          "image": "{{ property.image | imgProxy(1200) }}",
           "occupancy": {
             "@type": "QuantitativeValue",
-            "maxValue": 12
+            "maxValue": {{ property.guests }}
           },
-          "numberOfBedrooms": 4,
-          "numberOfBathroomsTotal": 3,
+          "numberOfBedrooms": {{ property.bedrooms }},
+          "numberOfBathroomsTotal": {{ property.bathrooms }},
           "address": {
             "@type": "PostalAddress",
-            "addressLocality": "Bradenton",
+            "addressLocality": "{{ property.city }}",
             "addressRegion": "FL",
             "addressCountry": "US"
           }
         }
-      },
-      
-      {
-        "@type": "ListItem",
-        "position": 2,
-        "url": "https://seascape-vacations.com/properties/the-oasis/",
-        "item": {
-          "@type": "VacationRental",
-          "name": "The Oasis",
-          "description": "The ultimate gathering spot features a massive pool, TWO hot tubs, private mini golf course, pool table, and endless entertainment options.",
-          "image": "https://bookingenginecdn.hostaway.com/listing/51916-189511-g2tWgjqFm-DXPRc0ll2k1u87aWIKNZm6tOyz9KhGrnc-64dfdf914c559?width=1200&amp;quality=82&amp;format=webp&amp;v=2",
-          "occupancy": {
-            "@type": "QuantitativeValue",
-            "maxValue": 16
-          },
-          "numberOfBedrooms": 5,
-          "numberOfBathroomsTotal": 3,
-          "address": {
-            "@type": "PostalAddress",
-            "addressLocality": "Bradenton",
-            "addressRegion": "FL",
-            "addressCountry": "US"
-          }
-        }
-      },
-      
-      {
-        "@type": "ListItem",
-        "position": 3,
-        "url": "https://seascape-vacations.com/properties/sarasota-luxe/",
-        "item": {
-          "@type": "VacationRental",
-          "name": "Sarasota Luxe",
-          "description": "Sophisticated Florida living in downtown Sarasota. Walk to St. Armands Circle, visit the Ringling Museum, then retreat to your private pool oasis.",
-          "image": "https://bookingenginecdn.hostaway.com/listing/51916-135881-kgzZJ5KWwcw1HTE3EKwE6qxVSHBXCzEjbQjloKZayik-63ac665e899b2?width=1200&amp;quality=82&amp;format=webp&amp;v=2",
-          "occupancy": {
-            "@type": "QuantitativeValue",
-            "maxValue": 12
-          },
-          "numberOfBedrooms": 4,
-          "numberOfBathroomsTotal": 3,
-          "address": {
-            "@type": "PostalAddress",
-            "addressLocality": "Sarasota",
-            "addressRegion": "FL",
-            "addressCountry": "US"
-          }
-        }
-      },
-      
-      {
-        "@type": "ListItem",
-        "position": 4,
-        "url": "https://seascape-vacations.com/properties/river-house/",
-        "item": {
-          "@type": "VacationRental",
-          "name": "River House",
-          "description": "Escape to this tranquil riverfront retreat featuring a private pool, spa, and game room. Watch stunning sunsets over the water from your private backyard paradise.",
-          "image": "https://bookingenginecdn.hostaway.com/listing/51916-135880-O6JS9DHvtg7g5gc5ZAe7--55PGx3-0ELuuNJ4T1dsz7s-67620f804f296?width=1200&amp;quality=82&amp;format=webp&amp;v=2",
-          "occupancy": {
-            "@type": "QuantitativeValue",
-            "maxValue": 12
-          },
-          "numberOfBedrooms": 4,
-          "numberOfBathroomsTotal": 3,
-          "address": {
-            "@type": "PostalAddress",
-            "addressLocality": "Bradenton",
-            "addressRegion": "FL",
-            "addressCountry": "US"
-          }
-        }
-      },
-      
-      {
-        "@type": "ListItem",
-        "position": 5,
-        "url": "https://seascape-vacations.com/properties/bradenton-pool-home/",
-        "item": {
-          "@type": "VacationRental",
-          "name": "Bradenton Pool Home",
-          "description": "Vacation rental in Bradenton with heated pool, inground spa, outdoor grill area, dual laundry, and kitchenette. Sleeps 10 and sits just 2.6 miles from IMG Academy.",
-          "image": "https://bookingenginecdn.hostaway.com/listing/51916-487798-V0NBY--NCCpIEyYp6re-PPCPp-D1YJjHS25PWR9-gUzg-6992505e1bcdd?width=1200&amp;quality=82&amp;format=webp&amp;v=2",
-          "occupancy": {
-            "@type": "QuantitativeValue",
-            "maxValue": 10
-          },
-          "numberOfBedrooms": 3,
-          "numberOfBathroomsTotal": 4,
-          "address": {
-            "@type": "PostalAddress",
-            "addressLocality": "Bradenton",
-            "addressRegion": "FL",
-            "addressCountry": "US"
-          }
-        }
-      }
-      
+      }{% if not loop.last %},{% endif %}
+      {% endfor %}
     ]
   }
   </script>
@@ -188,10 +74,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
   </noscript>
 
-  <script>
-!function(){function e(){var e,n,t,o,a,d;window.__seascapeMetaPixelLoaded||(window.__seascapeMetaPixelLoaded=!0,e=window,n=document,t="script",e.fbq||(o=e.fbq=function(){o.callMethod?o.callMethod.apply(o,arguments):o.queue.push(arguments)},e._fbq||(e._fbq=o),o.push=o,o.loaded=!0,o.version="2.0",o.queue=[],(a=n.createElement(t)).async=!0,a.src="https://connect.facebook.net/en_US/fbevents.js",(d=n.getElementsByTagName(t)[0]).parentNode.insertBefore(a,d)),fbq("init","2748551298816267"),fbq("track","PageView"))}window.addEventListener("pointerdown",e,{once:!0,passive:!0}),window.addEventListener("keydown",e,{once:!0}),window.addEventListener("scroll",e,{once:!0,passive:!0})}();
-</script>
-
+  {% include "partials/deferred-meta-pixel.njk" %}
 
   <style>
     :root {
@@ -757,217 +640,45 @@
         </div>
 
         <div class="catalog-grid" id="catalog-grid">
-          
-          
-          
-          <article class="catalog-card" data-filters="all stays|waterfront|private pool|hot tub|bradenton|bradenton">
+          {% for property in properties %}
+          {% set filterTokens = ((property.tags or []) | join('|') ~ '|' ~ property.destination ~ '|' ~ property.city) | lower %}
+          {% set primaryTag = property.tags[1] if property.tags and property.tags[1] else (property.destination | replace('-', ' ') | title) %}
+          <article class="catalog-card" data-filters="{{ filterTokens }}">
             <div class="catalog-media">
               <img
-                src="https://bookingenginecdn.hostaway.com/listing/51916-206016-xNIrPl9kvF0vllYFzSL7Lm0Gl4eOGxLIN--wmPlCT3NY-6536bca493945?width=900&amp;quality=82&amp;format=webp&amp;v=2"
-                srcset="https://bookingenginecdn.hostaway.com/listing/51916-206016-xNIrPl9kvF0vllYFzSL7Lm0Gl4eOGxLIN--wmPlCT3NY-6536bca493945?width=500&amp;quality=82&amp;format=webp&amp;v=2 500w, https://bookingenginecdn.hostaway.com/listing/51916-206016-xNIrPl9kvF0vllYFzSL7Lm0Gl4eOGxLIN--wmPlCT3NY-6536bca493945?width=900&amp;quality=82&amp;format=webp&amp;v=2 900w, https://bookingenginecdn.hostaway.com/listing/51916-206016-xNIrPl9kvF0vllYFzSL7Lm0Gl4eOGxLIN--wmPlCT3NY-6536bca493945?width=1200&amp;quality=82&amp;format=webp&amp;v=2 1200w"
+                src="{{ property.image | imgProxy(900) }}"
+                srcset="{{ property.image | imgProxy(500) }} 500w, {{ property.image | imgProxy(900) }} 900w, {{ property.image | imgProxy(1200) }} 1200w"
                 sizes="(min-width: 1100px) 33vw, (min-width: 768px) 50vw, 100vw"
-                alt="Dockside Dreams"
+                alt="{{ property.name }}"
                 loading="lazy"
                 decoding="async">
               <div class="catalog-pill-row">
-                <span class="catalog-pill">Waterfront</span>
-                <span class="catalog-pill catalog-rating">★ 5</span>
+                <span class="catalog-pill">{{ primaryTag }}</span>
+                <span class="catalog-pill catalog-rating">★ {{ property.rating }}</span>
               </div>
             </div>
             <div class="catalog-body">
               <div>
-                <h3>Dockside Dreams</h3>
-                <p class="catalog-meta">Bradenton, Florida</p>
+                <h3>{{ property.name }}</h3>
+                <p class="catalog-meta">{{ property.city }}, Florida</p>
               </div>
-              <p class="catalog-specs">4 BR · 3 BA · Sleeps 12</p>
-              <p class="catalog-copy">Wake up to stunning water views and watch dolphins play right from your private dock. This magnificent waterfront home features a heated pool and spa, gourmet kitchen, and direct water access.</p>
+              <p class="catalog-specs">{{ property.specs }}</p>
+              <p class="catalog-copy">{{ property.description }}</p>
               <div class="catalog-feature-list">
-                
-                <span class="catalog-feature">Private Heated Pool &amp; Spa</span>
-                
-                <span class="catalog-feature">Waterfront with Private Dock</span>
-                
-                <span class="catalog-feature">See Dolphins &amp; Manatees Daily</span>
-                
+                {% for highlight in property.highlights %}
+                <span class="catalog-feature">{{ highlight }}</span>
+                {% endfor %}
               </div>
               <div class="catalog-card-footer">
-                <div class="catalog-price"><strong>$450</strong>avg nightly</div>
+                <div class="catalog-price"><strong>${{ property.price }}</strong>avg nightly</div>
                 <div class="catalog-card-actions">
-                  <a class="catalog-secondary" href="https://book.seascape-vacations.com/listings/206016" target="_blank" rel="noopener noreferrer">Book direct</a>
-                  <a class="btn" href="/properties/dockside-dreams/">View property</a>
+                  <a class="catalog-secondary" href="{{ property.bookingUrl }}" target="_blank" rel="noopener noreferrer">Book direct</a>
+                  <a class="btn" href="{{ property.pageUrl }}">View property</a>
                 </div>
               </div>
             </div>
           </article>
-          
-          
-          
-          <article class="catalog-card" data-filters="all stays|private pool|hot tub|pet friendly|bradenton|bradenton">
-            <div class="catalog-media">
-              <img
-                src="https://bookingenginecdn.hostaway.com/listing/51916-189511-g2tWgjqFm-DXPRc0ll2k1u87aWIKNZm6tOyz9KhGrnc-64dfdf914c559?width=900&amp;quality=82&amp;format=webp&amp;v=2"
-                srcset="https://bookingenginecdn.hostaway.com/listing/51916-189511-g2tWgjqFm-DXPRc0ll2k1u87aWIKNZm6tOyz9KhGrnc-64dfdf914c559?width=500&amp;quality=82&amp;format=webp&amp;v=2 500w, https://bookingenginecdn.hostaway.com/listing/51916-189511-g2tWgjqFm-DXPRc0ll2k1u87aWIKNZm6tOyz9KhGrnc-64dfdf914c559?width=900&amp;quality=82&amp;format=webp&amp;v=2 900w, https://bookingenginecdn.hostaway.com/listing/51916-189511-g2tWgjqFm-DXPRc0ll2k1u87aWIKNZm6tOyz9KhGrnc-64dfdf914c559?width=1200&amp;quality=82&amp;format=webp&amp;v=2 1200w"
-                sizes="(min-width: 1100px) 33vw, (min-width: 768px) 50vw, 100vw"
-                alt="The Oasis"
-                loading="lazy"
-                decoding="async">
-              <div class="catalog-pill-row">
-                <span class="catalog-pill">Private Pool</span>
-                <span class="catalog-pill catalog-rating">★ 5</span>
-              </div>
-            </div>
-            <div class="catalog-body">
-              <div>
-                <h3>The Oasis</h3>
-                <p class="catalog-meta">Bradenton, Florida</p>
-              </div>
-              <p class="catalog-specs">5 BR · 3 BA · Sleeps 16</p>
-              <p class="catalog-copy">The ultimate gathering spot features a massive pool, TWO hot tubs, private mini golf course, pool table, and endless entertainment options.</p>
-              <div class="catalog-feature-list">
-                
-                <span class="catalog-feature">Large Pool + 2 Hot Tubs</span>
-                
-                <span class="catalog-feature">Private Mini Golf Course</span>
-                
-                <span class="catalog-feature">Game Room &amp; Fire Pit</span>
-                
-              </div>
-              <div class="catalog-card-footer">
-                <div class="catalog-price"><strong>$550</strong>avg nightly</div>
-                <div class="catalog-card-actions">
-                  <a class="catalog-secondary" href="https://book.seascape-vacations.com/listings/189511" target="_blank" rel="noopener noreferrer">Book direct</a>
-                  <a class="btn" href="/properties/the-oasis/">View property</a>
-                </div>
-              </div>
-            </div>
-          </article>
-          
-          
-          
-          <article class="catalog-card" data-filters="all stays|private pool|downtown|sarasota|sarasota">
-            <div class="catalog-media">
-              <img
-                src="https://bookingenginecdn.hostaway.com/listing/51916-135881-kgzZJ5KWwcw1HTE3EKwE6qxVSHBXCzEjbQjloKZayik-63ac665e899b2?width=900&amp;quality=82&amp;format=webp&amp;v=2"
-                srcset="https://bookingenginecdn.hostaway.com/listing/51916-135881-kgzZJ5KWwcw1HTE3EKwE6qxVSHBXCzEjbQjloKZayik-63ac665e899b2?width=500&amp;quality=82&amp;format=webp&amp;v=2 500w, https://bookingenginecdn.hostaway.com/listing/51916-135881-kgzZJ5KWwcw1HTE3EKwE6qxVSHBXCzEjbQjloKZayik-63ac665e899b2?width=900&amp;quality=82&amp;format=webp&amp;v=2 900w, https://bookingenginecdn.hostaway.com/listing/51916-135881-kgzZJ5KWwcw1HTE3EKwE6qxVSHBXCzEjbQjloKZayik-63ac665e899b2?width=1200&amp;quality=82&amp;format=webp&amp;v=2 1200w"
-                sizes="(min-width: 1100px) 33vw, (min-width: 768px) 50vw, 100vw"
-                alt="Sarasota Luxe"
-                loading="lazy"
-                decoding="async">
-              <div class="catalog-pill-row">
-                <span class="catalog-pill">Private Pool</span>
-                <span class="catalog-pill catalog-rating">★ 5</span>
-              </div>
-            </div>
-            <div class="catalog-body">
-              <div>
-                <h3>Sarasota Luxe</h3>
-                <p class="catalog-meta">Sarasota, Florida</p>
-              </div>
-              <p class="catalog-specs">4 BR · 3 BA · Sleeps 12</p>
-              <p class="catalog-copy">Sophisticated Florida living in downtown Sarasota. Walk to St. Armands Circle, visit the Ringling Museum, then retreat to your private pool oasis.</p>
-              <div class="catalog-feature-list">
-                
-                <span class="catalog-feature">Downtown Location</span>
-                
-                <span class="catalog-feature">Near St. Armands Circle</span>
-                
-                <span class="catalog-feature">Walk to Shops &amp; Dining</span>
-                
-              </div>
-              <div class="catalog-card-footer">
-                <div class="catalog-price"><strong>$425</strong>avg nightly</div>
-                <div class="catalog-card-actions">
-                  <a class="catalog-secondary" href="https://book.seascape-vacations.com/listings/135881" target="_blank" rel="noopener noreferrer">Book direct</a>
-                  <a class="btn" href="/properties/sarasota-luxe/">View property</a>
-                </div>
-              </div>
-            </div>
-          </article>
-          
-          
-          
-          <article class="catalog-card" data-filters="all stays|waterfront|private pool|hot tub|bradenton|bradenton">
-            <div class="catalog-media">
-              <img
-                src="https://bookingenginecdn.hostaway.com/listing/51916-135880-O6JS9DHvtg7g5gc5ZAe7--55PGx3-0ELuuNJ4T1dsz7s-67620f804f296?width=900&amp;quality=82&amp;format=webp&amp;v=2"
-                srcset="https://bookingenginecdn.hostaway.com/listing/51916-135880-O6JS9DHvtg7g5gc5ZAe7--55PGx3-0ELuuNJ4T1dsz7s-67620f804f296?width=500&amp;quality=82&amp;format=webp&amp;v=2 500w, https://bookingenginecdn.hostaway.com/listing/51916-135880-O6JS9DHvtg7g5gc5ZAe7--55PGx3-0ELuuNJ4T1dsz7s-67620f804f296?width=900&amp;quality=82&amp;format=webp&amp;v=2 900w, https://bookingenginecdn.hostaway.com/listing/51916-135880-O6JS9DHvtg7g5gc5ZAe7--55PGx3-0ELuuNJ4T1dsz7s-67620f804f296?width=1200&amp;quality=82&amp;format=webp&amp;v=2 1200w"
-                sizes="(min-width: 1100px) 33vw, (min-width: 768px) 50vw, 100vw"
-                alt="River House"
-                loading="lazy"
-                decoding="async">
-              <div class="catalog-pill-row">
-                <span class="catalog-pill">Waterfront</span>
-                <span class="catalog-pill catalog-rating">★ 5</span>
-              </div>
-            </div>
-            <div class="catalog-body">
-              <div>
-                <h3>River House</h3>
-                <p class="catalog-meta">Bradenton, Florida</p>
-              </div>
-              <p class="catalog-specs">4 BR · 3 BA · Sleeps 12</p>
-              <p class="catalog-copy">Escape to this tranquil riverfront retreat featuring a private pool, spa, and game room. Watch stunning sunsets over the water from your private backyard paradise.</p>
-              <div class="catalog-feature-list">
-                
-                <span class="catalog-feature">Riverfront Setting</span>
-                
-                <span class="catalog-feature">Private Pool &amp; Spa</span>
-                
-                <span class="catalog-feature">Stunning Sunset Views</span>
-                
-              </div>
-              <div class="catalog-card-footer">
-                <div class="catalog-price"><strong>$400</strong>avg nightly</div>
-                <div class="catalog-card-actions">
-                  <a class="catalog-secondary" href="https://book.seascape-vacations.com/listings/135880" target="_blank" rel="noopener noreferrer">Book direct</a>
-                  <a class="btn" href="/properties/river-house/">View property</a>
-                </div>
-              </div>
-            </div>
-          </article>
-          
-          
-          
-          <article class="catalog-card" data-filters="all stays|private pool|hot tub|bradenton|bradenton">
-            <div class="catalog-media">
-              <img
-                src="https://bookingenginecdn.hostaway.com/listing/51916-487798-V0NBY--NCCpIEyYp6re-PPCPp-D1YJjHS25PWR9-gUzg-6992505e1bcdd?width=900&amp;quality=82&amp;format=webp&amp;v=2"
-                srcset="https://bookingenginecdn.hostaway.com/listing/51916-487798-V0NBY--NCCpIEyYp6re-PPCPp-D1YJjHS25PWR9-gUzg-6992505e1bcdd?width=500&amp;quality=82&amp;format=webp&amp;v=2 500w, https://bookingenginecdn.hostaway.com/listing/51916-487798-V0NBY--NCCpIEyYp6re-PPCPp-D1YJjHS25PWR9-gUzg-6992505e1bcdd?width=900&amp;quality=82&amp;format=webp&amp;v=2 900w, https://bookingenginecdn.hostaway.com/listing/51916-487798-V0NBY--NCCpIEyYp6re-PPCPp-D1YJjHS25PWR9-gUzg-6992505e1bcdd?width=1200&amp;quality=82&amp;format=webp&amp;v=2 1200w"
-                sizes="(min-width: 1100px) 33vw, (min-width: 768px) 50vw, 100vw"
-                alt="Bradenton Pool Home"
-                loading="lazy"
-                decoding="async">
-              <div class="catalog-pill-row">
-                <span class="catalog-pill">Private Pool</span>
-                <span class="catalog-pill catalog-rating">★ 5</span>
-              </div>
-            </div>
-            <div class="catalog-body">
-              <div>
-                <h3>Bradenton Pool Home</h3>
-                <p class="catalog-meta">Bradenton, Florida</p>
-              </div>
-              <p class="catalog-specs">3 BR · 3.5 BA · Sleeps 10</p>
-              <p class="catalog-copy">Vacation rental in Bradenton with heated pool, inground spa, outdoor grill area, dual laundry, and kitchenette. Sleeps 10 and sits just 2.6 miles from IMG Academy.</p>
-              <div class="catalog-feature-list">
-                
-                <span class="catalog-feature">Closest Home to IMG Academy</span>
-                
-                <span class="catalog-feature">Heated Pool &amp; Spa</span>
-                
-                <span class="catalog-feature">Outdoor Grill Area</span>
-                
-              </div>
-              <div class="catalog-card-footer">
-                <div class="catalog-price"><strong>$375</strong>avg nightly</div>
-                <div class="catalog-card-actions">
-                  <a class="catalog-secondary" href="https://book.seascape-vacations.com/listings/487798" target="_blank" rel="noopener noreferrer">Book direct</a>
-                  <a class="btn" href="/properties/bradenton-pool-home/">View property</a>
-                </div>
-              </div>
-            </div>
-          </article>
-          
+          {% endfor %}
         </div>
 
         <div class="catalog-empty" id="catalog-empty">
@@ -1001,16 +712,7 @@
     </div>
   </footer>
 
-  
-<script defer src="https://www.googletagmanager.com/gtag/js?id=G-3VDV66S3DK"></script>
-<script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-3VDV66S3DK');
-</script>
-
-
+  {% include "partials/analytics-ga4.njk" %}
 
   <script>
     (function () {

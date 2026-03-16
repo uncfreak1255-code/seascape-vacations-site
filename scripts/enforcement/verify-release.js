@@ -1,6 +1,10 @@
 const fs = require("fs");
 const { spawnSync } = require("child_process");
-const { findForbiddenSourcePaths, findPlaceholderAnalyticsPaths } = require("./lib");
+const {
+  findForbiddenPublicRuntimePaths,
+  findForbiddenSourcePaths,
+  findPlaceholderAnalyticsPaths
+} = require("./lib");
 
 function run(command, args, options = {}) {
   const result = spawnSync(command, args, {
@@ -103,6 +107,22 @@ function assertNoPlaceholderAnalytics() {
   throw new Error(message);
 }
 
+function assertNoForbiddenPublicRuntime() {
+  const violations = findForbiddenPublicRuntimePaths("src");
+
+  if (!violations.length) {
+    return;
+  }
+
+  const message = [
+    "Release gate blocked: public source still references forbidden runtime dependencies.",
+    "Use repo-owned images and local data sources instead:",
+    ...violations.map((file) => `- ${file}`)
+  ].join("\n");
+
+  throw new Error(message);
+}
+
 function main() {
   const args = parseArgs(process.argv.slice(2));
 
@@ -110,6 +130,7 @@ function main() {
     assertNetlifyBuildTruth();
     assertNoForbiddenSourceChanges(args.range);
     assertNoPlaceholderAnalytics();
+    assertNoForbiddenPublicRuntime();
   } catch (error) {
     console.error(error.message);
     process.exit(1);
