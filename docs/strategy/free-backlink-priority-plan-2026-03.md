@@ -131,13 +131,13 @@ This is not about begging for links. It is about converting existing referral re
 ### Day 1-2
 
 - set up one daily journalist-query routine
-- prepare 3 quote blocks from the market analysis and comparison guides
+- use [journalist-quote-bank-2026-03.md](/Users/sawbeck/Projects/seascape-vacations-site/docs/strategy/journalist-quote-bank-2026-03.md#L1) as the base for responses
 - finalize the first 8 free targets in [free-backlink-priority-targets-2026-03.csv](/Users/sawbeck/Projects/seascape-vacations-site/docs/strategy/free-backlink-priority-targets-2026-03.csv#L1)
 
 ### Day 3-5
 
-- send 4 resource-link reversal emails
-- send 4 creator/resource inclusion pitches
+- send 4 resource-link reversal emails using [free-outreach-drafts-2026-03.md](/Users/sawbeck/Projects/seascape-vacations-site/docs/strategy/free-outreach-drafts-2026-03.md#L1)
+- send 4 creator/resource inclusion pitches using the same draft pack
 - log every touch in [backlink-outreach-tracker-template.csv](/Users/sawbeck/Projects/seascape-vacations-site/docs/strategy/backlink-outreach-tracker-template.csv#L1)
 
 ### Day 6-10
