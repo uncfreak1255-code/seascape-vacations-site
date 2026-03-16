@@ -2829,8 +2829,8 @@
         });
     </script>
     <!-- Preconnect to image optimization CDN -->
-    <link rel="preconnect" href="https://images.weserv.nl" crossorigin>
-    <link rel="dns-prefetch" href="https://images.weserv.nl">
+    <link rel="preconnect" href="https://bookingenginecdn.hostaway.com" crossorigin>
+    <link rel="dns-prefetch" href="https://bookingenginecdn.hostaway.com">
 </head>
 
 <body>
@@ -3074,7 +3074,10 @@
                         <img
                             loading="lazy"
                             decoding="async"
-                            src="{{ property.image }}"
+                            src="{{ property.image | imgProxy(800) }}"
+                            srcset="{{ property.image | imgProxy(400) }} 400w, {{ property.image | imgProxy(800) }} 800w, {{ property.image | imgProxy(1200) }} 1200w"
+                            sizes="(min-width: 1100px) 50vw, 100vw"
+                            onerror="this.onerror=null;this.src='/images/seascape-og-default.jpg';this.srcset='';"
                             alt="{{ property.name }}">
                         <div class="prop-card-overlay"></div>
                         <div class="prop-card-content">
@@ -5224,11 +5227,16 @@
 
 
         // ===== IMAGE OPTIMIZATION ENGINE =====
-        // Proxy Hostaway S3 images through wsrv.nl for WebP, resize & quality
+        // Serve Hostaway listing media through Hostaway's own CDN for more reliable delivery.
         function optimizeImage(url, width = 400) {
             if (!url || typeof url !== 'string') return url;
-            if (!url.includes('hostaway-platform.s3')) return url;
-            return `https://images.weserv.nl/?url=${encodeURIComponent(url)}&w=${width}&output=webp&q=75&il`;
+            const cleanUrl = url.split('?')[0];
+            if (cleanUrl.includes('bookingenginecdn.hostaway.com/')) {
+                return `${cleanUrl}?width=${width}&quality=78&format=webp&v=2`;
+            }
+            const hostawayPrefix = 'https://hostaway-platform.s3.us-west-2.amazonaws.com/';
+            if (!cleanUrl.startsWith(hostawayPrefix)) return url;
+            return `https://bookingenginecdn.hostaway.com/${cleanUrl.slice(hostawayPrefix.length)}?width=${width}&quality=78&format=webp&v=2`;
         }
 
         // Transform all image URLs in property data for performance

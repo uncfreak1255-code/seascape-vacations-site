@@ -81,6 +81,10 @@ async function check(target, currentPath = target.path, redirectDepth = 0) {
     if (response.body.includes("prop-card-carousel") || response.body.includes("nextCardImage(")) {
       throw new Error("properties card renderer still includes the brittle in-card carousel stack");
     }
+
+    if (response.body.includes("images.weserv.nl")) {
+      throw new Error("homepage still depends on the external weserv image proxy");
+    }
   }
 }
 
