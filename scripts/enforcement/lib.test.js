@@ -1,10 +1,14 @@
+const fs = require("fs");
+const os = require("os");
+const path = require("path");
 const test = require("node:test");
 const assert = require("node:assert/strict");
 
 const {
   parsePushRefs,
   isProtectedPush,
-  findForbiddenSourcePaths
+  findForbiddenSourcePaths,
+  findPlaceholderAnalyticsPaths
 } = require("./lib");
 
 test("parsePushRefs converts pre-push stdin lines into structured refs", () => {
@@ -65,4 +69,17 @@ test("findForbiddenSourcePaths flags legacy source-of-truth violations only", ()
     "stays/example/index.html",
     "property-management/example/index.html"
   ]);
+});
+
+test("findPlaceholderAnalyticsPaths finds GA placeholder ids in source files", () => {
+  const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "seascape-analytics-"));
+  const cleanFile = path.join(tempRoot, "clean.html");
+  const brokenFile = path.join(tempRoot, "broken.html");
+
+  fs.writeFileSync(cleanFile, "<script>gtag('config', 'G-3VDV66S3DK');</script>");
+  fs.writeFileSync(brokenFile, "<script>gtag('config', 'G-XXXXXXXXXX');</script>");
+
+  const matches = findPlaceholderAnalyticsPaths(tempRoot);
+
+  assert.deepEqual(matches, [brokenFile]);
 });

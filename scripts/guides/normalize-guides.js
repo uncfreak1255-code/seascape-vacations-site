@@ -3,6 +3,10 @@ const path = require("path");
 
 const SITE_URL = "https://seascape-vacations.com";
 const GUIDE_ROOT = path.resolve(__dirname, "../../src/guides");
+const SITE_DATA = JSON.parse(
+  fs.readFileSync(path.resolve(__dirname, "../../src/_data/site.json"), "utf8")
+);
+const GA_MEASUREMENT_ID = SITE_DATA.analytics?.ga4MeasurementId || "G-3VDV66S3DK";
 
 const LOCAL_OG_IMAGES = {
   ami: "/images/anna-maria-island-og.jpg",
@@ -123,6 +127,8 @@ function normalizeGuide(file) {
   const ogUrl = `${SITE_URL}${ogPath}`;
 
   let html = fs.readFileSync(file, "utf8");
+
+  html = html.replace(/G-XXXXXXXXXX/g, GA_MEASUREMENT_ID);
 
   // Convert brittle or missing local image references to the stable repo assets.
   html = html

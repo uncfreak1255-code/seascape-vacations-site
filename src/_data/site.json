@@ -8,6 +8,13 @@
     "facebook": "https://www.facebook.com/SeascapeVacations",
     "instagram": "https://www.instagram.com/seascapevacations"
   },
+  "sameAsLinks": [
+    "https://www.facebook.com/SeascapeVacations",
+    "https://www.instagram.com/seascapevacations"
+  ],
+  "analytics": {
+    "ga4MeasurementId": "G-3VDV66S3DK"
+  },
   "bookingMessage": "Book direct and save 10-15% compared to Airbnb & VRBO",
   "ownerCTA": "Free Property Evaluation",
   "author": "Seascape Vacations Team",

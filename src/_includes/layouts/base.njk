@@ -28,6 +28,8 @@
     <meta name="twitter:title" content="{{ pageTitle }}">
     <meta name="twitter:description" content="{{ pageDescription }}">
     <meta name="twitter:image" content="{{ pageImage or site.url + '/images/seascape-og-default.jpg' }}">
+
+    {% include "partials/organization-schema.njk" %}
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -410,13 +412,6 @@
         </div>
     </footer>
 
-    <!-- Google Analytics -->
-    <script defer src="https://www.googletagmanager.com/gtag/js?id=G-3VDV66S3DK"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-3VDV66S3DK');
-    </script>
+    {% include "partials/analytics-ga4.njk" %}
 </body>
 </html>

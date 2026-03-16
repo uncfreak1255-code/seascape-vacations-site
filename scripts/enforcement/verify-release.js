@@ -1,6 +1,6 @@
 const fs = require("fs");
 const { spawnSync } = require("child_process");
-const { findForbiddenSourcePaths } = require("./lib");
+const { findForbiddenSourcePaths, findPlaceholderAnalyticsPaths } = require("./lib");
 
 function run(command, args, options = {}) {
   const result = spawnSync(command, args, {
@@ -87,12 +87,29 @@ function assertNoForbiddenSourceChanges(range) {
   throw new Error(message);
 }
 
+function assertNoPlaceholderAnalytics() {
+  const violations = findPlaceholderAnalyticsPaths("src");
+
+  if (!violations.length) {
+    return;
+  }
+
+  const message = [
+    "Release gate blocked: placeholder GA analytics ids remain in source.",
+    "Replace G-XXXXXXXXXX with the real site.analytics.ga4MeasurementId in:",
+    ...violations.map((file) => `- ${file}`)
+  ].join("\n");
+
+  throw new Error(message);
+}
+
 function main() {
   const args = parseArgs(process.argv.slice(2));
 
   try {
     assertNetlifyBuildTruth();
     assertNoForbiddenSourceChanges(args.range);
+    assertNoPlaceholderAnalytics();
   } catch (error) {
     console.error(error.message);
     process.exit(1);
