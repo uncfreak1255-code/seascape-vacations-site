@@ -9,9 +9,12 @@ if (!baseUrl) {
 const targets = [
   { path: "/", status: 200 },
   { path: "/property-management/", status: 200 },
+  { path: "/guides/", status: 200 },
   { path: "/stays/anna-maria-island-vacation-rentals/", status: 200 },
   { path: "/property-management/vacation-rental-management-sarasota/", status: 200 },
   { path: "/guides/anna-maria-island-area-guide/", status: 200 },
+  { path: "/guides/bradenton-vs-sarasota/", status: 200 },
+  { path: "/guides/anna-maria-island-vs-siesta-key/", status: 200 },
   { path: "/property-owners/", status: 301 },
   { path: "/hero-mobile.webp", status: 200 },
   { path: "/hero-optimized.webp", status: 200 },

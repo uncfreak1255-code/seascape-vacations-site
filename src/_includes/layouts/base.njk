@@ -7,6 +7,7 @@
     <!-- Primary SEO -->
     <title>{{ pageTitle | seoTitle }}</title>
     <meta name="description" content="{{ pageDescription | seoDescription }}">
+    <meta name="author" content="{{ pageAuthor or site.author }}">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="{{ site.url }}{{ page.url }}">
     
@@ -18,6 +19,9 @@
     <meta property="og:image" content="{{ pageImage or site.url + '/images/seascape-og-default.jpg' }}">
     <meta property="og:locale" content="en_US">
     <meta property="og:site_name" content="Seascape Vacations">
+    {% if pageUpdated %}
+    <meta property="article:modified_time" content="{{ pageUpdated }}">
+    {% endif %}
     
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
@@ -34,7 +38,7 @@
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
     </noscript>
     
-    {% block head %}{% endblock %}
+    {{ headExtra | safe }}
     
     <!-- Preserved Original Styles -->
     <style>
@@ -386,7 +390,7 @@
     </nav>
 
     <main class="main-content">
-        {% block content %}{% endblock %}
+        {{ content | safe }}
     </main>
 
     <!-- Footer -->

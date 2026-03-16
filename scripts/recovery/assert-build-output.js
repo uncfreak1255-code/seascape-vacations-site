@@ -56,6 +56,8 @@ if (phase === "p0") {
 
 if (phase === "guides") {
   expectExists("_site/guides/anna-maria-island-area-guide/index.html");
+  expectExists("_site/guides/bradenton-vs-sarasota/index.html");
+  expectExists("_site/guides/anna-maria-island-vs-siesta-key/index.html");
   expectExists("_site/llms.txt");
   expectExists("_site/_redirects");
   expectExists("_site/images/anna-maria-island-og.jpg");
@@ -79,6 +81,15 @@ if (phase === "guides") {
     "_site/guides/anna-maria-island-area-guide/index.html",
     'href=/stays/anna-maria-island-homes-with-pool/"'
   );
+  expectContains("_site/guides/index.html", "Start Here");
+  expectContains("_site/guides/index.html", '<meta property="og:title"');
+  expectContains("_site/guides/index.html", '<meta property="og:description"');
+  expectNotContains("_site/guides/index.html", '<a" class="btn"');
+  expectNotContains("_site/guides/index.html", 'href=/property-management/');
+  expectContains("_site/guides/bradenton-vs-sarasota/index.html", "<main>");
+  expectContains("_site/guides/bradenton-vs-sarasota/index.html", "Why trust this comparison:");
+  expectContains("_site/guides/anna-maria-island-vs-siesta-key/index.html", "<main>");
+  expectContains("_site/guides/anna-maria-island-vs-siesta-key/index.html", "Direct answer:");
 
   const guideFiles = listHtmlFiles("_site/guides");
   for (const file of guideFiles) {
@@ -131,6 +142,15 @@ if (phase === "remediation") {
     "_site/property-management/vacation-rental-management-sarasota/index.html",
     'rel="stylesheet" media="print" onload="this.media=\'all\'"'
   );
+  expectContains("_site/property-management/index.html", "Updated March 2026");
+  expectContains("_site/property-management/index.html", "What Is Vacation Rental Property Management?");
+  expectContains("_site/property-management/index.html", "Owner Questions");
+  expectContains("_site/robots.txt", "OAI-SearchBot");
+  expectContains("_site/robots.txt", "ChatGPT-User");
+  expectContains("_site/robots.txt", "ClaudeBot");
+  expectContains("_site/robots.txt", "Google-Extended");
+  expectContains("_site/llms.txt", "## Property Management");
+  expectContains("_site/llms.txt", "## Comparison Guides");
   expectNotContains("_site/robots.txt", "LLMs-txt:");
 }
 
