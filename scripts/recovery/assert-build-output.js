@@ -47,6 +47,8 @@ if (phase === "p0") {
   expectExists("_site/property-management/index.html");
   expectNotContains("eleventy.config.js", 'addPassthroughCopy({"index.html": "index.html"})');
   expectNotContains("_site/index.html", 'id="featured-property-grid"');
+  expectNotContains("_site/index.html", "prop-card-carousel");
+  expectNotContains("_site/index.html", "nextCardImage(");
   expectNotContains(
     "_site/index.html",
     "wp-content/uploads/2025/03/51916-135881-kgzZJ5KWwcw1HTE3EKwE6qxVSHBXCzEjbQjloKZayik-63ac665e899b2.jpg"
@@ -56,6 +58,7 @@ if (phase === "p0") {
   expectContains("_site/index.html", 'href="/properties/the-oasis/"');
   expectContains("_site/index.html", "Dockside Dreams");
   expectContains("_site/index.html", "The Oasis");
+  expectContains("_site/index.html", "prop-desc-snippet");
   expectContains("_site/property-management/index.html", "Property Management");
 }
 

@@ -77,6 +77,10 @@ async function check(target, currentPath = target.path, redirectDepth = 0) {
     if (response.body.includes("undefined BR")) {
       throw new Error("homepage featured properties still contain undefined specs");
     }
+
+    if (response.body.includes("prop-card-carousel") || response.body.includes("nextCardImage(")) {
+      throw new Error("properties card renderer still includes the brittle in-card carousel stack");
+    }
   }
 }
 
