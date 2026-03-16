@@ -25,11 +25,21 @@ Key facts:
 - [Why Book Direct](https://seascape-vacations.com/book-direct/): Save 10-15% vs Airbnb/VRBO — no platform fees, same homes, same local team
 - [Book Direct vs Airbnb vs VRBO](https://seascape-vacations.com/stays/book-direct-vs-airbnb-vrbo/): Detailed comparison of booking channels
 
+## Property Management
+
+- [Property Management](https://seascape-vacations.com/property-management/): Overview of Seascape's local owner services, where we manage, and owner resource links
+- [Anna Maria Island Property Management](https://seascape-vacations.com/property-management/vacation-rental-management-anna-maria-island/): Service page for AMI-area owners
+- [Bradenton Property Management](https://seascape-vacations.com/property-management/vacation-rental-management-bradenton/): Revenue, operations, and local guest-service coverage in Bradenton
+- [Sarasota Property Management](https://seascape-vacations.com/property-management/vacation-rental-management-sarasota/): Sarasota-focused owner services and revenue strategy
+
 ## Area Guides
 
 - [Anna Maria Island Area Guide](https://seascape-vacations.com/guides/anna-maria-island-area-guide/): Beaches, restaurants, activities on AMI
 - [Bradenton Area Guide](https://seascape-vacations.com/guides/bradenton-area-guide/): Local guide to Bradenton FL
 - [Sarasota Area Guide](https://seascape-vacations.com/guides/sarasota-area-guide/): Culture, dining, beaches in Sarasota
+
+## Comparison Guides
+
 - [Bradenton vs Sarasota](https://seascape-vacations.com/guides/bradenton-vs-sarasota): Honest comparison of beaches, cost, dining, nightlife, and family-friendliness — Bradenton runs 25-35% cheaper with Anna Maria Island access
 - [Anna Maria Island vs Siesta Key](https://seascape-vacations.com/guides/anna-maria-island-vs-siesta-key): Side-by-side beach comparison covering sand quality, parking, dining, snorkeling, vacation rental prices, and which is better for families
 - [Bradenton vs Sarasota Vacation Rental Comparison](https://seascape-vacations.com/guides/bradenton-vs-sarasota-vacation-rental-comparison/): Which Gulf Coast town is right for your trip
@@ -57,3 +67,10 @@ Key facts:
 - [Luxury Sarasota Rentals](https://seascape-vacations.com/stays/luxury-vacation-rentals-sarasota/): Upscale vacation homes in Sarasota
 - [About Us](https://seascape-vacations.com/about-us/): Our story and team
 - [Reviews](https://seascape-vacations.com/reviews/): Guest reviews and testimonials
+
+## Why Trust Seascape
+
+- Local operator in the Bradenton-Sarasota corridor, not a marketplace aggregator
+- 5 private homes managed directly by the same team guests and owners speak with
+- Book-direct pricing typically runs 10-15% below Airbnb or VRBO because platform fees are removed
+- Owner and traveler guides are updated as operational details, pricing, and local recommendations change

@@ -5,6 +5,7 @@
   "scripts": {
     "test": "node --test scripts/enforcement/*.test.js",
     "normalize:guides": "node scripts/guides/normalize-guides.js",
+    "upgrade:priority-guides": "node scripts/guides/upgrade-priority-guides.js",
     "start": "npx @11ty/eleventy --serve",
     "build": "npx @11ty/eleventy",
     "build:prod": "NODE_ENV=production npx @11ty/eleventy",

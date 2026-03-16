@@ -102,6 +102,20 @@ function upsertArticleField(html, fieldName, value) {
   return html.replace(articleScript, script);
 }
 
+function ensureMainLandmark(html) {
+  if (/<main[\s>]/i.test(html) || !/<article[\s>]/i.test(html)) {
+    return html;
+  }
+
+  if (/<\/nav>\s*<section class="hero">/i.test(html)) {
+    return html
+      .replace(/<\/nav>(\s*)<section class="hero">/i, "</nav>$1<main><section class=\"hero\">")
+      .replace(/<\/article>/i, "</article></main>");
+  }
+
+  return html;
+}
+
 function normalizeGuide(file) {
   const route = getGuideRoute(file);
   const region = getGuideRegion(route);
@@ -132,6 +146,7 @@ function normalizeGuide(file) {
 
   const title = (html.match(/<meta property="og:title" content="([^"]+)"/i) || html.match(/<title>([^<]+)<\/title>/i) || [null, "Seascape Vacations Guide"])[1];
   const description = (html.match(/<meta property="og:description" content="([^"]+)"/i) || html.match(/<meta name="description" content="([^"]+)"/i) || [null, "Local travel and vacation rental guidance from Seascape Vacations."])[1];
+  const ogType = route === "/guides/" ? "website" : "article";
 
   html = upsertTag(
     html,
@@ -142,9 +157,30 @@ function normalizeGuide(file) {
 
   html = upsertTag(
     html,
+    /<meta property="og:type" content="[^"]*"\s*\/?>/i,
+    `<meta property="og:type" content="${ogType}">`,
+    /<link rel="canonical" href="[^"]*"\s*\/?>/i
+  );
+
+  html = upsertTag(
+    html,
     /<meta property="og:url" content="[^"]*"\s*\/?>/i,
     `<meta property="og:url" content="${SITE_URL}${route}">`,
-    /<link rel="canonical" href="[^"]*"\s*\/?>/i
+    /<meta property="og:type" content="[^"]*"\s*\/?>/i
+  );
+
+  html = upsertTag(
+    html,
+    /<meta property="og:title" content="[^"]*"\s*\/?>/i,
+    `<meta property="og:title" content="${title}">`,
+    /<meta property="og:url" content="[^"]*"\s*\/?>/i
+  );
+
+  html = upsertTag(
+    html,
+    /<meta property="og:description" content="[^"]*"\s*\/?>/i,
+    `<meta property="og:description" content="${description}">`,
+    /<meta property="og:title" content="[^"]*"\s*\/?>/i
   );
 
   html = upsertTag(
@@ -205,6 +241,7 @@ function normalizeGuide(file) {
 
   html = upsertArticleField(html, "image", ogUrl);
   html = upsertArticleField(html, "mainEntityOfPage", `${SITE_URL}${route}`);
+  html = ensureMainLandmark(html);
 
   fs.writeFileSync(file, html);
   return { file, route, ogUrl };

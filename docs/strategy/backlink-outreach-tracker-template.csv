@@ -1,0 +1,13 @@
+priority,channel,target,target_url,contact_name,contact_method,link_target,template,status,last_contacted,next_step,notes
+1,Chamber,Anna Maria Island Chamber,https://www.annamariaislandchamber.org/,,,,Chamber listing,Not started,,,Membership likely required
+1,Chamber,Manatee Chamber of Commerce,https://business.manateechamber.com/,,,,Chamber listing,Not started,,,Submit business profile
+1,CVB,Bradenton Area CVB,https://www.bradentongulfislands.com/,,,,Chamber listing,Not started,,,Check lodging/partner form
+1,CVB,Visit Sarasota County,https://www.visitsarasota.com/,,,,Chamber listing,Not started,,,Check accommodations listing path
+1,Directory,Google Business Profile,https://www.google.com/business/,,,,Self-submit,Not started,,,Verify site URL and phone
+1,Directory,Yelp,https://biz.yelp.com/,,,,Self-submit,Not started,,,Claim page if it already exists
+1,Directory,TripAdvisor,https://www.tripadvisor.com/Owners,,,,Self-submit,Not started,,,Use vacation rental manager category
+1,Directory,Apple Business Connect,https://businessconnect.apple.com/,,,,Self-submit,Not started,,,Citation-only but still useful
+2,Local partner,Mote Marine Laboratory,https://mote.org/,,,Email,/guides/anna-maria-island-vs-siesta-key/,Local business cross-promotion,Not started,,,Referenced in area/comparison guides
+2,Local partner,Ringling Museum,https://www.ringling.org/,,,Email,/guides/bradenton-vs-sarasota/,Local business cross-promotion,Not started,,,Referenced in Bradenton vs Sarasota guide
+2,Local partner,The Bishop Museum of Science and Nature,https://bishopscience.org/,,,Email,/guides/things-to-do-bradenton-fl/,Local business cross-promotion,Not started,,,Referenced in Bradenton content
+2,Travel blogger,Florida Gulf Coast travel creators,Research list needed,,,Email,/guides/bradenton-vs-sarasota/,Travel blogger pitch,Not started,,,Personalize to each creator
