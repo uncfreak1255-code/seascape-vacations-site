@@ -13,13 +13,13 @@
     <meta property="og:url" content="https://seascape-vacations.com/">
     <meta property="og:title" content="Seascape Vacations | Luxury Florida Vacation Rentals">
     <meta property="og:description" content="Book direct and save on luxury vacation rentals in Anna Maria Island, Bradenton, and Sarasota Florida. Private pools, waterfront homes, pet-friendly options.">
-    <meta property="og:image" content="https://seascape-vacations.com/hero-optimized.webp">
+    <meta property="og:image" content="https://seascape-vacations.com/images/seascape-og-default.jpg">
     
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Seascape Vacations | Luxury Florida Vacation Rentals">
     <meta name="twitter:description" content="Book direct and save on luxury vacation rentals in Anna Maria Island, Bradenton, and Sarasota. Private pools, waterfront homes.">
-    <meta name="twitter:image" content="https://seascape-vacations.com/hero-optimized.webp">
+    <meta name="twitter:image" content="https://seascape-vacations.com/images/seascape-og-default.jpg">
     
     <!-- Additional SEO -->
     <meta name="robots" content="index, follow">
@@ -33,8 +33,8 @@
     <link rel="dns-prefetch" href="https://www.googletagmanager.com">
     <link rel="dns-prefetch" href="https://images.unsplash.com">
     <!-- Preload critical assets - responsive hero images -->
-    <link rel="preload" href="hero-mobile.jpg" as="image" fetchpriority="high" media="(max-width: 768px)">
-    <link rel="preload" href="hero-optimized.jpg" as="image" fetchpriority="high" media="(min-width: 769px)">
+    <link rel="preload" href="hero-mobile.webp" as="image" type="image/webp" fetchpriority="high" media="(max-width: 768px)">
+    <link rel="preload" href="hero-optimized.webp" as="image" type="image/webp" fetchpriority="high" media="(min-width: 769px)">
     
     <!-- LocalBusiness Schema -->
     <script type="application/ld+json">
@@ -45,7 +45,7 @@
         "description": "Luxury vacation rental property management company serving Anna Maria Island, Bradenton, Sarasota, and Siesta Key, Florida.",
         "url": "https://seascape-vacations.com",
         "logo": "https://seascape-vacations.com/logo-optimized.png",
-        "image": "https://seascape-vacations.com/hero-optimized.webp",
+        "image": "https://seascape-vacations.com/images/seascape-og-default.jpg",
         "telephone": "+1-941-704-8545",
         "email": "info@seascape-vacations.com",
         "address": {
@@ -69,8 +69,13 @@
             "closes": "23:59"
         },
         "sameAs": [
+            
             "https://www.facebook.com/SeascapeVacations",
-            "https://www.instagram.com/seascapevacations"
+            
+            "https://www.instagram.com/seascapevacations",
+            
+            "https://www.google.com/search?kgmid=%2Fg%2F11y4vdnsfp&amp;q=Seascape+Vacations"
+            
         ]
     }
     </script>
@@ -721,12 +726,22 @@
             transform: scale(1.1);
             animation: heroZoom 20s ease-in-out infinite alternate;
             background-image: url('hero-optimized.jpg');
+            background-image: image-set(
+                url('hero-optimized.avif') type('image/avif') 1x,
+                url('hero-optimized.webp') type('image/webp') 1x,
+                url('hero-optimized.jpg') type('image/jpeg') 1x
+            );
         }
 
         /* Mobile hero - smaller image for faster LCP */
         @media (max-width: 768px) {
             .hero-bg {
-                background-image: url('hero-mobile.webp');
+                background-image: url('hero-mobile.jpg');
+                background-image: image-set(
+                    url('hero-mobile.avif') type('image/avif') 1x,
+                    url('hero-mobile.webp') type('image/webp') 1x,
+                    url('hero-mobile.jpg') type('image/jpeg') 1x
+                );
             }
         }
 
@@ -878,13 +893,17 @@
         /* Property Cards - 3D Effect */
         .prop-card {
             position: relative;
+            display: block;
             border-radius: 24px;
             overflow: hidden;
             cursor: pointer;
             height: 450px;
             margin-bottom: 32px;
+            isolation: isolate;
             transform-style: preserve-3d;
             transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
         }
 
         .prop-card::before {
@@ -924,6 +943,9 @@
         }
 
         .prop-card img {
+            position: absolute;
+            inset: 0;
+            display: block;
             width: 100%;
             height: 100%;
             object-fit: cover;
@@ -937,6 +959,7 @@
         .prop-card-overlay {
             position: absolute;
             inset: 0;
+            z-index: 2;
             background: linear-gradient(135deg,
                     rgba(0, 0, 0, 0.8) 0%,
                     rgba(0, 0, 0, 0.5) 40%,
@@ -947,10 +970,16 @@
         .prop-card-content {
             position: absolute;
             inset: 0;
+            z-index: 3;
             padding: 32px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+        }
+
+        .prop-card-link {
+            text-decoration: none;
+            color: inherit;
         }
 
         .prop-card-top {
@@ -994,6 +1023,18 @@
 
         .prop-highlights {
             margin-bottom: 24px;
+        }
+
+        .prop-desc-snippet {
+            font-size: 15px;
+            color: rgba(255, 255, 255, 0.95);
+            margin-bottom: 20px;
+            line-height: 1.6;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-shadow: 0 1px 12px rgba(0, 0, 0, 0.8);
         }
 
         .prop-highlight {
@@ -2792,8 +2833,8 @@
         });
     </script>
     <!-- Preconnect to image optimization CDN -->
-    <link rel="preconnect" href="https://images.weserv.nl" crossorigin>
-    <link rel="dns-prefetch" href="https://images.weserv.nl">
+    <link rel="preconnect" href="https://bookingenginecdn.hostaway.com" crossorigin>
+    <link rel="dns-prefetch" href="https://bookingenginecdn.hostaway.com">
 </head>
 
 <body>
@@ -3030,8 +3071,83 @@
                     <span style="color:var(--brand);cursor:pointer;font-weight:500"
                         onclick="showPage('properties')">View all →</span>
                 </div>
-                <div id="featured-property-grid"
-                    style="display: grid; gap: 32px; grid-template-columns: repeat(2, 1fr);"></div>
+                <div style="display:grid;gap:32px;grid-template-columns:repeat(2,1fr);">
+                    
+                    <a class="prop-card prop-card-link scroll-reveal revealed" href="/properties/dockside-dreams/">
+                        <div class="prop-card-shadow"></div>
+                        <img
+                            loading="lazy"
+                            decoding="async"
+                            src="https://bookingenginecdn.hostaway.com/listing/51916-206016-xNIrPl9kvF0vllYFzSL7Lm0Gl4eOGxLIN--wmPlCT3NY-6536bca493945?width=800&amp;quality=82&amp;format=webp&amp;v=2"
+                            srcset="https://bookingenginecdn.hostaway.com/listing/51916-206016-xNIrPl9kvF0vllYFzSL7Lm0Gl4eOGxLIN--wmPlCT3NY-6536bca493945?width=400&amp;quality=82&amp;format=webp&amp;v=2 400w, https://bookingenginecdn.hostaway.com/listing/51916-206016-xNIrPl9kvF0vllYFzSL7Lm0Gl4eOGxLIN--wmPlCT3NY-6536bca493945?width=800&amp;quality=82&amp;format=webp&amp;v=2 800w, https://bookingenginecdn.hostaway.com/listing/51916-206016-xNIrPl9kvF0vllYFzSL7Lm0Gl4eOGxLIN--wmPlCT3NY-6536bca493945?width=1200&amp;quality=82&amp;format=webp&amp;v=2 1200w"
+                            sizes="(min-width: 1100px) 50vw, 100vw"
+                            onerror="this.onerror=null;this.src='/images/seascape-og-default.jpg';this.srcset='';"
+                            alt="Dockside Dreams">
+                        <div class="prop-card-overlay"></div>
+                        <div class="prop-card-content">
+                            <div class="prop-card-top">
+                                <div>
+                                    <h3 class="prop-title">Dockside Dreams</h3>
+                                    <p class="prop-location">Bradenton · 4 BR · 3 BA · Sleeps 12</p>
+                                </div>
+                                <div class="prop-badge"><span class="star">★</span> 5</div>
+                            </div>
+                            <div>
+                                <p class="prop-desc-snippet">
+                                    Wake up to stunning water views and watch dolphins play right from your private dock. This magnificent waterfront home features a heated pool and spa, gourmet kitchen, and direct water access.
+                                </p>
+                                <div class="prop-highlights">
+                                    
+                                    <div class="prop-highlight"><span class="prop-dot"></span>Private Pool &amp; Spa</div>
+                                    
+                                    <div class="prop-highlight"><span class="prop-dot"></span>Waterfront Dock</div>
+                                    
+                                </div>
+                                <div class="prop-bottom">
+                                    <span class="prop-btn">View Details →</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <a class="prop-card prop-card-link scroll-reveal revealed" href="/properties/the-oasis/">
+                        <div class="prop-card-shadow"></div>
+                        <img
+                            loading="lazy"
+                            decoding="async"
+                            src="https://bookingenginecdn.hostaway.com/listing/51916-189511-g2tWgjqFm-DXPRc0ll2k1u87aWIKNZm6tOyz9KhGrnc-64dfdf914c559?width=800&amp;quality=82&amp;format=webp&amp;v=2"
+                            srcset="https://bookingenginecdn.hostaway.com/listing/51916-189511-g2tWgjqFm-DXPRc0ll2k1u87aWIKNZm6tOyz9KhGrnc-64dfdf914c559?width=400&amp;quality=82&amp;format=webp&amp;v=2 400w, https://bookingenginecdn.hostaway.com/listing/51916-189511-g2tWgjqFm-DXPRc0ll2k1u87aWIKNZm6tOyz9KhGrnc-64dfdf914c559?width=800&amp;quality=82&amp;format=webp&amp;v=2 800w, https://bookingenginecdn.hostaway.com/listing/51916-189511-g2tWgjqFm-DXPRc0ll2k1u87aWIKNZm6tOyz9KhGrnc-64dfdf914c559?width=1200&amp;quality=82&amp;format=webp&amp;v=2 1200w"
+                            sizes="(min-width: 1100px) 50vw, 100vw"
+                            onerror="this.onerror=null;this.src='/images/seascape-og-default.jpg';this.srcset='';"
+                            alt="The Oasis">
+                        <div class="prop-card-overlay"></div>
+                        <div class="prop-card-content">
+                            <div class="prop-card-top">
+                                <div>
+                                    <h3 class="prop-title">The Oasis</h3>
+                                    <p class="prop-location">Bradenton · 5 BR · 3 BA · Sleeps 16</p>
+                                </div>
+                                <div class="prop-badge"><span class="star">★</span> 5</div>
+                            </div>
+                            <div>
+                                <p class="prop-desc-snippet">
+                                    The ultimate gathering spot features a massive pool, TWO hot tubs, private mini golf course, pool table, and endless entertainment options.
+                                </p>
+                                <div class="prop-highlights">
+                                    
+                                    <div class="prop-highlight"><span class="prop-dot"></span>Large Pool + 2 Hot Tubs</div>
+                                    
+                                    <div class="prop-highlight"><span class="prop-dot"></span>Mini Golf Course</div>
+                                    
+                                </div>
+                                <div class="prop-bottom">
+                                    <span class="prop-btn">View Details →</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    
+                </div>
             </div>
         </section>
 
@@ -3147,8 +3263,9 @@
                 <div class="blog-grid">
                     <div class="blog-card" onclick="showPage('blog-1')">
                         <div class="blog-card-img"><img
-                                src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400&h=250&fit=crop&fm=webp&q=75"
-                                alt="Anna Maria Island beaches"></div>
+                                src="/images/ami-hero.webp"
+                                alt="Anna Maria Island beaches" width="400" height="250" loading="lazy"
+                                decoding="async"></div>
                         <div class="blog-card-body">
                             <span class="blog-tag">Beach Guide</span>
                             <h3 class="blog-card-title">The Ultimate Guide to Anna Maria Island Beaches</h3>
@@ -3159,8 +3276,9 @@
                     </div>
                     <div class="blog-card" onclick="showPage('blog-2')">
                         <div class="blog-card-img"><img
-                                src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=400&h=250&fit=crop&fm=webp&q=75"
-                                alt="Book direct vacation rental"></div>
+                                src="/hero-optimized.webp"
+                                alt="Book direct vacation rental" width="400" height="250" loading="lazy"
+                                decoding="async"></div>
                         <div class="blog-card-body">
                             <span class="blog-tag">Travel Tips</span>
                             <h3 class="blog-card-title">Why Booking Direct Saves You Hundreds</h3>
@@ -3171,8 +3289,9 @@
                     </div>
                     <div class="blog-card" onclick="showPage('blog-3')">
                         <div class="blog-card-img"><img
-                                src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&h=250&fit=crop&fm=webp&q=75"
-                                alt="Restaurants Anna Maria Island"></div>
+                                src="/images/ami-colorful-cottages.jpg"
+                                alt="Restaurants Anna Maria Island" width="400" height="250" loading="lazy"
+                                decoding="async"></div>
                         <div class="blog-card-body">
                             <span class="blog-tag">Food & Dining</span>
                             <h3 class="blog-card-title">15 Best Restaurants Near Anna Maria Island</h3>
@@ -3190,7 +3309,7 @@
     <div id="page-properties" class="page">
         <div class="page-hero" style="margin-top:70px">
             <div class="page-hero-bg"
-                style="background-image:url('https://seascape-vacations.com/wp-content/uploads/2025/03/51916-206016-xNIrPl9kvF0vllYFzSL7Lm0Gl4eOGxLIN--wmPlCT3NY-6536bca493945.jpg')">
+                style="background-image:url('hero-optimized.webp')">
             </div>
             <div class="page-hero-overlay"></div>
             <div class="page-hero-content">
@@ -3282,7 +3401,7 @@
     <div id="page-experiences" class="page">
         <div class="page-hero" style="margin-top:70px">
             <div class="page-hero-bg"
-                style="background-image:url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&h=450&fit=crop&fm=webp&q=75')">
+                style="background-image:url('/images/ami-hero.webp')">
             </div>
             <div class="page-hero-overlay"></div>
             <div class="page-hero-content">
@@ -3370,7 +3489,7 @@
     <div id="page-homeowners" class="page">
         <div class="page-hero" style="margin-top:70px">
             <div class="page-hero-bg"
-                style="background-image:url('https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&h=450&fit=crop&fm=webp&q=75')">
+                style="background-image:url('hero-optimized.webp')">
             </div>
             <div class="page-hero-overlay"></div>
             <div class="page-hero-content">
@@ -3811,7 +3930,7 @@
     <div id="page-blog" class="page">
         <div class="page-hero" style="margin-top:70px">
             <div class="page-hero-bg"
-                style="background-image:url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&h=450&fit=crop&fm=webp&q=75')">
+                style="background-image:url('/images/ami-hero.webp')">
             </div>
             <div class="page-hero-overlay"></div>
             <div class="page-hero-content">
@@ -4754,7 +4873,7 @@
     <div id="page-contact" class="page">
         <div class="page-hero" style="margin-top:70px;height:350px">
             <div class="page-hero-bg"
-                style="background-image:url('https://seascape-vacations.com/wp-content/uploads/2025/03/51916-206016-xNIrPl9kvF0vllYFzSL7Lm0Gl4eOGxLIN--wmPlCT3NY-6536bca493945.jpg')">
+                style="background-image:url('hero-optimized.webp')">
             </div>
             <div class="page-hero-overlay"></div>
             <div class="page-hero-content">
@@ -4809,10 +4928,14 @@
                         <div class="contact-card">
                             <h3 style="font-size:18px;color:var(--brand-dark);margin-bottom:16px">Follow Us</h3>
                             <div class="footer-social">
-                                <a href="https://www.instagram.com/seascapevacations/" target="_blank"
+                                <a href="https://www.instagram.com/seascapevacations" target="_blank" rel="noopener noreferrer"
                                     class="footer-social-link" style="background:var(--brand)">IG</a>
-                                <a href="https://www.facebook.com/profile.php?id=61556781251558" target="_blank"
+                                <a href="https://www.facebook.com/SeascapeVacations" target="_blank" rel="noopener noreferrer"
                                     class="footer-social-link" style="background:var(--brand)">FB</a>
+                                
+                                <a href="https://www.google.com/search?kgmid=%2Fg%2F11y4vdnsfp&amp;q=Seascape+Vacations" target="_blank" rel="noopener noreferrer"
+                                    class="footer-social-link" style="background:var(--brand)">G</a>
+                                
                             </div>
                         </div>
                     </div>
@@ -4873,10 +4996,14 @@
                 <div>
                     <p class="footer-heading">Follow Us</p>
                     <div class="footer-social">
-                        <a href="https://www.facebook.com/profile.php?id=61556781251558" target="_blank"
+                        <a href="https://www.facebook.com/SeascapeVacations" target="_blank" rel="noopener noreferrer"
                             class="footer-social-link" title="Facebook">FB</a>
-                        <a href="https://www.instagram.com/seascapevacations/" target="_blank"
+                        <a href="https://www.instagram.com/seascapevacations" target="_blank" rel="noopener noreferrer"
                             class="footer-social-link" title="Instagram">IG</a>
+                        
+                        <a href="https://www.google.com/search?kgmid=%2Fg%2F11y4vdnsfp&amp;q=Seascape+Vacations" target="_blank" rel="noopener noreferrer"
+                            class="footer-social-link" title="Google Business Profile">G</a>
+                        
                     </div>
                 </div>
             </div>
@@ -5143,20 +5270,53 @@
 
 
         // ===== IMAGE OPTIMIZATION ENGINE =====
-        // Proxy Hostaway S3 images through wsrv.nl for WebP, resize & quality
+        // Serve Hostaway listing media through Hostaway's own CDN for more reliable delivery.
         function optimizeImage(url, width = 400) {
             if (!url || typeof url !== 'string') return url;
-            if (!url.includes('hostaway-platform.s3')) return url;
-            return `https://images.weserv.nl/?url=${encodeURIComponent(url)}&w=${width}&output=webp&q=75&il`;
+            const cleanUrl = url.split('?')[0];
+            if (cleanUrl.includes('bookingenginecdn.hostaway.com/')) {
+                return `${cleanUrl}?width=${width}&quality=78&format=webp&v=2`;
+            }
+            const hostawayPrefix = 'https://hostaway-platform.s3.us-west-2.amazonaws.com/';
+            if (!cleanUrl.startsWith(hostawayPrefix)) return url;
+            return `https://bookingenginecdn.hostaway.com/${cleanUrl.slice(hostawayPrefix.length)}?width=${width}&quality=78&format=webp&v=2`;
         }
 
         // Transform all image URLs in property data for performance
         function optimizePropertyImages(data) {
             return data.map(p => ({
                 ...p,
+                id: String(p.id),
                 image: optimizeImage(p.image, 400),
                 images: (p.images || []).map(img => optimizeImage(img, 400))
             }));
+        }
+
+        function firstDefined(...values) {
+            return values.find(value => value !== undefined && value !== null && value !== '');
+        }
+
+        function summarizeDescription(description, fallbackDescription = '') {
+            if (typeof description !== 'string' || !description.trim()) {
+                return fallbackDescription;
+            }
+
+            const firstParagraph = description
+                .replace(/\r/g, '')
+                .split('\n\n')
+                .map(part => part.trim())
+                .find(Boolean) || description.trim();
+
+            if (firstParagraph.length <= 260) {
+                return firstParagraph;
+            }
+
+            const firstSentence = firstParagraph.match(/^(.{0,260}?[.!?])(\s|$)/);
+            if (firstSentence && firstSentence[1]) {
+                return firstSentence[1].trim();
+            }
+
+            return `${firstParagraph.slice(0, 257).trim()}...`;
         }
 
         // ===== PROPERTY DATA ENGINE =====
@@ -5244,6 +5404,40 @@
             }
         ];
 
+        const fallbackDataById = new Map(fallbackData.map(property => [String(property.id), property]));
+
+        function normalizeApiProperty(raw) {
+            const id = String(raw.id);
+            const fallback = fallbackDataById.get(id);
+            const bedrooms = firstDefined(raw.bedrooms, raw.bedroomsNumber, raw.bedroomNumber, raw.numberBedrooms, fallback?.bedrooms);
+            const bathrooms = firstDefined(raw.bathrooms, raw.bathroomsNumber, raw.bathroomNumber, raw.guestBathroomsNumber, raw.numberBathrooms, fallback?.bathrooms);
+            const guests = firstDefined(raw.guests, raw.personCapacity, raw.maxGuests, fallback?.guests, 0);
+            const amenities = Array.isArray(raw.amenities) ? raw.amenities.filter(Boolean) : [];
+            const highlights = Array.isArray(raw.highlights) && raw.highlights.length
+                ? raw.highlights.filter(Boolean)
+                : fallback?.highlights || amenities.slice(0, 3);
+
+            return {
+                ...raw,
+                id,
+                title: fallback?.title || raw.title || raw.name,
+                location: raw.location || raw.city || fallback?.location || '',
+                guests,
+                bedrooms,
+                bathrooms,
+                rating: firstDefined(raw.rating, fallback?.rating, 5.0),
+                image: raw.image || fallback?.image || '',
+                images: Array.isArray(raw.images) && raw.images.length ? raw.images : (fallback?.images || []),
+                description: fallback?.description || summarizeDescription(raw.description, fallback?.description || ''),
+                highlights,
+                amenities: amenities.length ? amenities : (fallback?.amenities || []),
+                specs: fallback?.specs || `${bedrooms ?? 0} BR · ${bathrooms ?? 0} BA · Sleeps ${guests}`,
+                tags: Array.isArray(raw.tags) && raw.tags.length ? raw.tags : (fallback?.tags || ['All Stays']),
+                bookingUrl: raw.bookingUrl || fallback?.bookingUrl,
+                pageUrl: raw.pageUrl || fallback?.pageUrl
+            };
+        }
+
         let propertyData = optimizePropertyImages([...fallbackData]); // Start with optimized fallback
 
         async function fetchProperties() {
@@ -5255,35 +5449,14 @@
                 apiData.forEach(p => {
                     p.bookingUrl = `https://book.seascape-vacations.com/listings/${p.id}`;
                 });
-                propertyData = optimizePropertyImages(apiData);
+                propertyData = optimizePropertyImages(apiData.map(normalizeApiProperty));
             } catch (err) {
                 console.warn('Using fallback property data (API unavailable):', err.message);
                 // Keep using optimized fallbackData which is already loaded
             }
             renderProperties(); // Render properties page grid
-            renderFeaturedProperties(); // Render home page featured section
         }
 
-        
-        function nextCardImage(btn, id, dir) {
-            const container = btn.closest('.prop-card-carousel');
-            const images = container.querySelectorAll('.carousel-img-' + id);
-            if (!images.length) return;
-            
-            let currentIndex = 0;
-            // find currently visible
-            images.forEach((img, i) => {
-                if (img.style.opacity === '1') currentIndex = i;
-                img.style.opacity = '0';
-            });
-            
-            let nextIndex = currentIndex + dir;
-            if (nextIndex < 0) nextIndex = images.length - 1;
-            if (nextIndex >= images.length) nextIndex = 0;
-            
-            images[nextIndex].style.opacity = '1';
-        }
-        
         function renderProperties(filter = 'All Stays') {
             const container = document.getElementById('property-grid');
             if (!container) return;
@@ -5298,18 +5471,21 @@
                 const card = document.createElement('div');
                 card.className = 'prop-card scroll-reveal revealed';
                 card.onclick = () => showPropertyDetail(p.id);
+                card.setAttribute('role', 'link');
+                card.setAttribute('tabindex', '0');
+                card.onkeydown = (event) => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                        event.preventDefault();
+                        showPropertyDetail(p.id);
+                    }
+                };
+
+                const primaryImage = Array.isArray(p.images) && p.images.length > 0 ? p.images[0] : p.image;
+                const highlights = Array.isArray(p.highlights) ? p.highlights.slice(0, 3) : [];
+                const description = p.description || '';
                 card.innerHTML = `
                     <div class="prop-card-shadow"></div>
-                    <div class="prop-card-carousel" style="position:absolute;inset:0;z-index:1;">
-                        ${p.images && p.images.length > 0 
-                            ? p.images.map((img, i) => `<img loading="lazy" src="${img}" alt="${p.title} - Image ${i+1}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity 0.5s ease;opacity:${i===0?'1':'0'};" class="carousel-img-${p.id}" data-index="${i}">`).join('')
-                            : `<img loading="lazy" src="${p.image}" alt="${p.title}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">`
-                        }
-                        ${p.images && p.images.length > 1 ? `
-                        <button onclick="event.stopPropagation(); nextCardImage(this, '${p.id}', -1)" style="position:absolute;left:10px;top:50%;transform:translateY(-50%);background:rgba(255,255,255,0.8);border:none;border-radius:50%;width:32px;height:32px;cursor:pointer;z-index:10;">‹</button>
-                        <button onclick="event.stopPropagation(); nextCardImage(this, '${p.id}', 1)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:rgba(255,255,255,0.8);border:none;border-radius:50%;width:32px;height:32px;cursor:pointer;z-index:10;">›</button>
-                        ` : ''}
-                    </div>
+                    <img loading="lazy" decoding="async" src="${primaryImage}" alt="${p.title}">
                     <div class="prop-card-overlay"></div>
                     <div class="prop-card-content">
                         <div class="prop-card-top">
@@ -5320,8 +5496,9 @@
                             <div class="prop-badge"><span class="star">★</span> ${p.rating}</div>
                         </div>
                         <div>
+                            ${description ? `<p class="prop-desc-snippet">${description}</p>` : ''}
                             <div class="prop-highlights">
-                                ${p.highlights.map(h => `<div class="prop-highlight"><span class="prop-dot"></span>${h}</div>`).join('')}
+                                ${highlights.map(h => `<div class="prop-highlight"><span class="prop-dot"></span>${h}</div>`).join('')}
                             </div>
                             <div class="prop-bottom">
                                 <span class="prop-btn" onclick="openQuickView(event, '${p.id}')" style="background:transparent;border:2px solid white;color:white;margin-right:8px;">Quick View</span>
@@ -5335,52 +5512,6 @@
 
             // Re-init observer for new elements
             document.querySelectorAll('.scroll-reveal').forEach(el => revealObserver.observe(el));
-        }
-
-        // Render Featured Properties on Home Page (first 2 properties)
-        function renderFeaturedProperties() {
-            const container = document.getElementById('featured-property-grid');
-            if (!container) return;
-
-            container.innerHTML = '';
-
-            propertyData.slice(0, 2).forEach(p => {
-                const card = document.createElement('div');
-                card.className = 'prop-card scroll-reveal revealed';
-                card.onclick = () => showPropertyDetail(p.id);
-                card.innerHTML = `
-                    <div class="prop-card-shadow"></div>
-                    <div class="prop-card-carousel" style="position:absolute;inset:0;z-index:1;">
-                        ${p.images && p.images.length > 0 
-                            ? p.images.map((img, i) => `<img loading="lazy" src="${img}" alt="${p.title} - Image ${i+1}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity 0.5s ease;opacity:${i===0?'1':'0'};" class="carousel-img-${p.id}" data-index="${i}">`).join('')
-                            : `<img loading="lazy" src="${p.image}" alt="${p.title}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">`
-                        }
-                        ${p.images && p.images.length > 1 ? `
-                        <button onclick="event.stopPropagation(); nextCardImage(this, '${p.id}', -1)" style="position:absolute;left:10px;top:50%;transform:translateY(-50%);background:rgba(255,255,255,0.8);border:none;border-radius:50%;width:32px;height:32px;cursor:pointer;z-index:10;">‹</button>
-                        <button onclick="event.stopPropagation(); nextCardImage(this, '${p.id}', 1)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:rgba(255,255,255,0.8);border:none;border-radius:50%;width:32px;height:32px;cursor:pointer;z-index:10;">›</button>
-                        ` : ''}
-                    </div>
-                    <div class="prop-card-overlay"></div>
-                    <div class="prop-card-content">
-                        <div class="prop-card-top">
-                            <div>
-                                <h3 class="prop-title">${p.title}</h3>
-                                <p class="prop-location">${p.location} · ${p.specs}</p>
-                            </div>
-                            <div class="prop-badge"><span class="star">★</span> ${p.rating}</div>
-                        </div>
-                        <div>
-                            <div class="prop-highlights">
-                                ${p.highlights.map(h => `<div class="prop-highlight"><span class="prop-dot"></span>${h}</div>`).join('')}
-                            </div>
-                            <div class="prop-bottom">
-                                <span class="prop-btn">View Details →</span>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                container.appendChild(card);
-            });
         }
 
         // Carousel state

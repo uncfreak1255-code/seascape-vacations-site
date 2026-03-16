@@ -24,6 +24,39 @@ const LOCAL_OG_IMAGES = {
   default: "/images/seascape-og-default.jpg"
 };
 
+const LEGACY_GUIDE_PATHS = new Map([
+  ["area-guide-ami.html", "/guides/anna-maria-island-area-guide/"],
+  ["area-guide-bradenton.html", "/guides/bradenton-area-guide/"],
+  ["area-guide-bradenton", "/guides/bradenton-area-guide/"],
+  ["area-guide-bradenton-beach.html", "/guides/bradenton-beach-area-guide/"],
+  ["area-guide-holmes-beach.html", "/guides/holmes-beach-area-guide/"],
+  ["area-guide-longboat-key.html", "/guides/longboat-key-area-guide/"],
+  ["area-guide-sarasota.html", "/guides/sarasota-area-guide/"],
+  ["area-guide-sarasota", "/guides/sarasota-area-guide/"],
+  ["area-guide-siesta-key.html", "/guides/siesta-key-area-guide/"],
+  ["area-guide-siesta-key", "/guides/siesta-key-area-guide/"],
+  ["properties/index.html", "/properties/"]
+]);
+
+function toHostawayCdn(url, width = 1200, quality = 82) {
+  const value = String(url || "").trim();
+  if (!value) return value;
+
+  const cleanValue = value.split("?")[0];
+
+  if (cleanValue.includes("bookingenginecdn.hostaway.com/")) {
+    return `${cleanValue}?width=${width}&quality=${quality}&format=webp&v=2`;
+  }
+
+  const hostawayPrefix = "https://hostaway-platform.s3.us-west-2.amazonaws.com/";
+  if (cleanValue.startsWith(hostawayPrefix)) {
+    const assetPath = cleanValue.slice(hostawayPrefix.length);
+    return `https://bookingenginecdn.hostaway.com/${assetPath}?width=${width}&quality=${quality}&format=webp&v=2`;
+  }
+
+  return value;
+}
+
 const UNSPLASH_TO_LOCAL = new Map([
   ["photo-1414235077428-338989a2e8c0", "/images/ami-colorful-cottages.jpg"],
   ["photo-1476514525535-07fb3b4ae5f1", "/images/sarasota-sunset-hero.jpg"],
@@ -138,6 +171,42 @@ function normalizeBusinessSameAs(html) {
   });
 }
 
+function normalizeGuideImages(html) {
+  return html
+    .replace(
+      /((?:src|href)=["'])images\//gi,
+      "$1/images/"
+    )
+    .replace(
+      /(url\((["']?))images\//gi,
+      "$1/images/"
+    )
+    .replace(
+      /https:\/\/hostaway-platform\.s3\.us-west-2\.amazonaws\.com\/[^"' )]+/gi,
+      (url) => toHostawayCdn(url)
+    );
+}
+
+function normalizeGuideLinks(html) {
+  let normalized = html
+    .replace(/\bhref=(\/[^"'\s>]+)/gi, 'href="$1"')
+    .replace(/\bhref="index\.html"/gi, 'href="/"')
+    .replace(/\bhref="#destinations"/gi, 'href="/guides/"')
+    .replace(/\bhref="area-guide-ami(?:\.html)?"/gi, 'href="/guides/anna-maria-island-area-guide/"')
+    .replace(/\bhref="area-guide-holmes-beach(?:\.html)?"/gi, 'href="/guides/holmes-beach-area-guide/"')
+    .replace(/\bhref="area-guide-bradenton(?:\.html)?"/gi, 'href="/guides/bradenton-area-guide/"')
+    .replace(/\bhref="area-guide-sarasota(?:\.html)?"/gi, 'href="/guides/sarasota-area-guide/"')
+    .replace(/\bhref="area-guide-siesta-key(?:\.html)?"/gi, 'href="/guides/siesta-key-area-guide/"')
+    .replace(/\bhref="properties\/index\.html"/gi, 'href="/properties/"');
+
+  for (const [legacyPath, normalizedPath] of LEGACY_GUIDE_PATHS.entries()) {
+    const absoluteLegacy = `https://seascape-vacations.com/${legacyPath}`;
+    normalized = normalized.replaceAll(absoluteLegacy, `${SITE_URL}${normalizedPath}`);
+  }
+
+  return normalized;
+}
+
 function normalizeGuide(file) {
   const route = getGuideRoute(file);
   const region = getGuideRegion(route);
@@ -148,6 +217,8 @@ function normalizeGuide(file) {
 
   html = html.replace(/G-XXXXXXXXXX/g, GA_MEASUREMENT_ID);
   html = normalizeBusinessSameAs(html);
+  html = normalizeGuideImages(html);
+  html = normalizeGuideLinks(html);
 
   // Convert brittle or missing local image references to the stable repo assets.
   html = html
