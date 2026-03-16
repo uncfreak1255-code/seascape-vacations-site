@@ -7,6 +7,14 @@ const SITE_DATA = JSON.parse(
   fs.readFileSync(path.resolve(__dirname, "../../src/_data/site.json"), "utf8")
 );
 const GA_MEASUREMENT_ID = SITE_DATA.analytics?.ga4MeasurementId || "G-3VDV66S3DK";
+const SAME_AS_LINKS = SITE_DATA.sameAsLinks || [];
+const SAME_AS_BLOCK = [
+  '        "sameAs": [',
+  ...SAME_AS_LINKS.map(
+    (profile, index) => `            "${profile}"${index < SAME_AS_LINKS.length - 1 ? "," : ""}`
+  ),
+  "        ]"
+].join("\n");
 
 const LOCAL_OG_IMAGES = {
   ami: "/images/anna-maria-island-og.jpg",
@@ -120,6 +128,16 @@ function ensureMainLandmark(html) {
   return html;
 }
 
+function normalizeBusinessSameAs(html) {
+  return html.replace(/"sameAs":\s*\[\s*([\s\S]*?)\s*\]/g, (match, inner) => {
+    const lower = inner.toLowerCase();
+    if (!lower.includes("facebook.com") && !lower.includes("instagram.com")) {
+      return match;
+    }
+    return SAME_AS_BLOCK;
+  });
+}
+
 function normalizeGuide(file) {
   const route = getGuideRoute(file);
   const region = getGuideRegion(route);
@@ -129,6 +147,7 @@ function normalizeGuide(file) {
   let html = fs.readFileSync(file, "utf8");
 
   html = html.replace(/G-XXXXXXXXXX/g, GA_MEASUREMENT_ID);
+  html = normalizeBusinessSameAs(html);
 
   // Convert brittle or missing local image references to the stable repo assets.
   html = html

@@ -8,9 +8,13 @@
     "facebook": "https://www.facebook.com/SeascapeVacations",
     "instagram": "https://www.instagram.com/seascapevacations"
   },
+  "businessProfiles": {
+    "googleBusinessProfile": "https://www.google.com/search?kgmid=%2Fg%2F11y4vdnsfp&q=Seascape+Vacations"
+  },
   "sameAsLinks": [
     "https://www.facebook.com/SeascapeVacations",
-    "https://www.instagram.com/seascapevacations"
+    "https://www.instagram.com/seascapevacations",
+    "https://www.google.com/search?kgmid=%2Fg%2F11y4vdnsfp&q=Seascape+Vacations"
   ],
   "analytics": {
     "ga4MeasurementId": "G-3VDV66S3DK"
@@ -19,5 +23,5 @@
   "ownerCTA": "Free Property Evaluation",
   "author": "Seascape Vacations Team",
   "authorDescription": "Local vacation rental experts with deep knowledge of Bradenton, Sarasota, and Anna Maria Island. We live here, play here, and know every hidden gem on Florida's Gulf Coast.",
-  "dateUpdated": "2026-03-15"
+  "dateUpdated": "2026-03-16"
 }
