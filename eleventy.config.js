@@ -26,7 +26,6 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.addPassthroughCopy("*.png");
   eleventyConfig.addPassthroughCopy("*.webp");
   eleventyConfig.addPassthroughCopy("*.avif");
-  eleventyConfig.addPassthroughCopy("netlify");
   eleventyConfig.addPassthroughCopy("_headers");
   eleventyConfig.addPassthroughCopy({ "src/_redirects": "_redirects" });
   eleventyConfig.addPassthroughCopy({ "src/llms.txt": "llms.txt" });
@@ -54,6 +53,10 @@ module.exports = function(eleventyConfig) {
       .replace(/<[^>]*>/g, " ")
       .replace(/\s+/g, " ")
       .trim();
+  });
+
+  eleventyConfig.addFilter("json", function(input) {
+    return JSON.stringify(input);
   });
 
   eleventyConfig.addFilter("imgProxy", function(url, width = 800) {

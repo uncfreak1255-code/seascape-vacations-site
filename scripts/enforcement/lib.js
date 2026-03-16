@@ -10,6 +10,7 @@ const FORBIDDEN_SOURCE_PATH_PATTERNS = [
 
 const PROTECTED_REMOTE_REFS = new Set(["refs/heads/main"]);
 const PLACEHOLDER_ANALYTICS_PATTERN = /G-XXXXXXXXXX/;
+const FORBIDDEN_PUBLIC_RUNTIME_PATTERN = /\/\.netlify\/functions\/get-properties|api\.hostaway\.com|images\.unsplash\.com/;
 
 function parsePushRefs(input) {
   return String(input || "")
@@ -33,6 +34,14 @@ function findForbiddenSourcePaths(changedFiles) {
 }
 
 function findPlaceholderAnalyticsPaths(rootDir) {
+  return findMatchingContentPaths(rootDir, PLACEHOLDER_ANALYTICS_PATTERN);
+}
+
+function findForbiddenPublicRuntimePaths(rootDir) {
+  return findMatchingContentPaths(rootDir, FORBIDDEN_PUBLIC_RUNTIME_PATTERN);
+}
+
+function findMatchingContentPaths(rootDir, pattern) {
   const matches = [];
 
   function walk(currentDir) {
@@ -44,7 +53,7 @@ function findPlaceholderAnalyticsPaths(rootDir) {
       }
 
       const content = fs.readFileSync(fullPath, "utf8");
-      if (PLACEHOLDER_ANALYTICS_PATTERN.test(content)) {
+      if (pattern.test(content)) {
         matches.push(fullPath);
       }
     }
@@ -56,6 +65,8 @@ function findPlaceholderAnalyticsPaths(rootDir) {
 
 module.exports = {
   findForbiddenSourcePaths,
+  findForbiddenPublicRuntimePaths,
+  findMatchingContentPaths,
   findPlaceholderAnalyticsPaths,
   isProtectedPush,
   parsePushRefs
