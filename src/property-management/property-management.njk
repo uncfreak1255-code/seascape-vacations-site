@@ -34,6 +34,8 @@ eleventyComputed:
     <meta name="twitter:title" content="{{ seoPage.title }}">
     <meta name="twitter:description" content="{{ seoPage.description }}">
     <meta name="twitter:image" content="{{ site.url }}/images/seascape-og-default.jpg">
+
+    {% include "partials/organization-schema.njk" %}
     
     {% include "partials/deferred-meta-pixel.njk" %}
     
@@ -371,7 +373,6 @@ eleventyComputed:
         </div>
     </footer>
 
-    <script defer src="https://www.googletagmanager.com/gtag/js?id=G-3VDV66S3DK"></script>
-    <script>window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());gtag('config', 'G-3VDV66S3DK');</script>
+    {% include "partials/analytics-ga4.njk" %}
 </body>
 </html>

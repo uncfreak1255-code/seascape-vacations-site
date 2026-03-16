@@ -1,0 +1,17 @@
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "{{ site.name }}",
+    "url": "{{ site.url }}",
+    "description": "{{ site.description }}",
+    "telephone": "{{ site.phone }}",
+    "email": "{{ site.email }}",
+    "logo": "{{ site.url }}/logo-optimized.png",
+    "sameAs": [
+        {% for profile in site.sameAsLinks %}
+        "{{ profile }}"{% if not loop.last %},{% endif %}
+        {% endfor %}
+    ]
+}
+</script>
