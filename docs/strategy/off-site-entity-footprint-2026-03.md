@@ -1,5 +1,5 @@
 # Seascape Vacations Off-Site Entity Footprint
-Date: 2026-03-15
+Date: 2026-03-16
 Status: Active
 
 ## What This Is
@@ -16,6 +16,7 @@ These are the only organization-level profiles or identity endpoints confirmed f
 - Booking engine: `https://book.seascape-vacations.com`
 - Facebook: `https://www.facebook.com/SeascapeVacations`
 - Instagram: `https://www.instagram.com/seascapevacations`
+- Google Business Profile: `https://www.google.com/search?kgmid=%2Fg%2F11y4vdnsfp&q=Seascape+Vacations`
 
 These are now centralized in [site.json](/Users/sawbeck/Projects/seascape-vacations-site/src/_data/site.json#L1) so the public `sameAs` footprint can be updated in one place instead of being copy-pasted across pages.
 
@@ -25,7 +26,6 @@ No public organization-level URLs were found for:
 
 - LinkedIn company page
 - YouTube channel
-- Public Google Business Profile URL
 - Chamber / CVB listings
 - BBB listing
 
@@ -42,8 +42,9 @@ Do not add any of these to schema until the public URLs exist.
 
 1. LinkedIn company page
 2. YouTube channel
-3. Public Google Business Profile short URL
-4. Chamber / CVB listing URLs once approved
+3. LinkedIn company page
+4. YouTube channel
+5. Chamber / CVB listing URLs once approved
 
 ## Exact Standard For New Entity URLs
 

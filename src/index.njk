@@ -69,8 +69,9 @@
             "closes": "23:59"
         },
         "sameAs": [
-            "https://www.facebook.com/SeascapeVacations",
-            "https://www.instagram.com/seascapevacations"
+            {% for profile in site.sameAsLinks %}
+            "{{ profile }}"{% if not loop.last %},{% endif %}
+            {% endfor %}
         ]
     }
     </script>
@@ -4822,10 +4823,14 @@
                         <div class="contact-card">
                             <h3 style="font-size:18px;color:var(--brand-dark);margin-bottom:16px">Follow Us</h3>
                             <div class="footer-social">
-                                <a href="https://www.instagram.com/seascapevacations/" target="_blank"
+                                <a href="{{ site.socialLinks.instagram }}" target="_blank" rel="noopener noreferrer"
                                     class="footer-social-link" style="background:var(--brand)">IG</a>
-                                <a href="https://www.facebook.com/profile.php?id=61556781251558" target="_blank"
+                                <a href="{{ site.socialLinks.facebook }}" target="_blank" rel="noopener noreferrer"
                                     class="footer-social-link" style="background:var(--brand)">FB</a>
+                                {% if site.businessProfiles and site.businessProfiles.googleBusinessProfile %}
+                                <a href="{{ site.businessProfiles.googleBusinessProfile }}" target="_blank" rel="noopener noreferrer"
+                                    class="footer-social-link" style="background:var(--brand)">G</a>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
@@ -4886,10 +4891,14 @@
                 <div>
                     <p class="footer-heading">Follow Us</p>
                     <div class="footer-social">
-                        <a href="https://www.facebook.com/profile.php?id=61556781251558" target="_blank"
+                        <a href="{{ site.socialLinks.facebook }}" target="_blank" rel="noopener noreferrer"
                             class="footer-social-link" title="Facebook">FB</a>
-                        <a href="https://www.instagram.com/seascapevacations/" target="_blank"
+                        <a href="{{ site.socialLinks.instagram }}" target="_blank" rel="noopener noreferrer"
                             class="footer-social-link" title="Instagram">IG</a>
+                        {% if site.businessProfiles and site.businessProfiles.googleBusinessProfile %}
+                        <a href="{{ site.businessProfiles.googleBusinessProfile }}" target="_blank" rel="noopener noreferrer"
+                            class="footer-social-link" title="Google Business Profile">G</a>
+                        {% endif %}
                     </div>
                 </div>
             </div>
