@@ -2,11 +2,88 @@ const fs = require("fs");
 const path = require("path");
 const { getStore } = require("@netlify/blobs");
 
-const FALLBACK_PATH = path.join(__dirname, "properties.json");
+const FALLBACK_PATH = path.join(__dirname, "properties-fallback.json");
 const CACHE_KEY = "properties_cache_v1.json";
 const STORE_NAME = "seascape-cache";
 const HOSTAWAY_PREFIX = "https://hostaway-platform.s3.us-west-2.amazonaws.com/";
 const CDN_PREFIX = "https://bookingenginecdn.hostaway.com/";
+const BOOKING_ENGINE_PREFIX = "https://book.seascape-vacations.com/listings/";
+const LISTING_ID_BY_SLUG = {
+  "dockside-dreams": "206016",
+  "the-oasis": "189511",
+  "sarasota-luxe": "135881",
+  "river-house": "135880",
+  "bradenton-pool-home": "487798"
+};
+
+function deriveSlug(property) {
+  if (property && typeof property.slug === "string" && property.slug.trim()) {
+    return property.slug.trim();
+  }
+
+  const base = property && typeof property.name === "string" ? property.name : "seascape-property";
+  return base
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+}
+
+function normalizePrice(price) {
+  if (typeof price === "number" && Number.isFinite(price)) {
+    return price;
+  }
+
+  if (price && typeof price === "object") {
+    const amount = Number(price.amount);
+    if (Number.isFinite(amount)) {
+      return amount;
+    }
+  }
+
+  const numeric = Number(price);
+  return Number.isFinite(numeric) ? numeric : 0;
+}
+
+function normalizeCount(value) {
+  const numeric = Number(value);
+  return Number.isFinite(numeric) ? numeric : 0;
+}
+
+function deriveListingId(property, slug) {
+  if (property && property.listingId !== undefined && property.listingId !== null && `${property.listingId}`.trim()) {
+    return String(property.listingId);
+  }
+
+  if (property && property.id !== undefined && property.id !== null) {
+    const id = String(property.id).trim();
+    if (/^\d+$/.test(id)) {
+      return id;
+    }
+  }
+
+  return LISTING_ID_BY_SLUG[slug] || (property && property.id ? String(property.id).trim() : slug);
+}
+
+function deriveBookingUrl(property, slug, listingId) {
+  if (property && typeof property.bookingUrl === "string" && property.bookingUrl.trim()) {
+    return property.bookingUrl.trim();
+  }
+
+  if (/^\d+$/.test(listingId)) {
+    return `${BOOKING_ENGINE_PREFIX}${listingId}`;
+  }
+
+  const mappedListingId = LISTING_ID_BY_SLUG[slug];
+  return mappedListingId ? `${BOOKING_ENGINE_PREFIX}${mappedListingId}` : "";
+}
+
+function deriveSpecs(property) {
+  if (property && typeof property.specs === "string" && property.specs.trim()) {
+    return property.specs.trim();
+  }
+
+  return `${normalizeCount(property.bedrooms)} BR · ${normalizeCount(property.bathrooms)} BA · Sleeps ${normalizeCount(property.guests)}`;
+}
 
 async function loadFromCache() {
   const store = getStore(STORE_NAME);
@@ -39,17 +116,39 @@ function toHostawayCdn(url, width = 1600) {
 function normalizeProperties(list) {
   return list
     .filter((property) => property.status !== "inactive")
-    .map((property) => ({
-      ...property,
-      image: toHostawayCdn(property.image),
-      heroImage: toHostawayCdn(property.heroImage),
-      gallery: Array.isArray(property.gallery)
+    .map((property) => {
+      const slug = deriveSlug(property);
+      const listingId = deriveListingId(property, slug);
+      const image = toHostawayCdn(property.image);
+      const heroImage = toHostawayCdn(property.heroImage || property.image);
+      const gallery = Array.isArray(property.gallery)
         ? property.gallery.map((url) => toHostawayCdn(url))
-        : property.gallery
-    }));
+        : Array.isArray(property.images)
+          ? property.images.map((url) => toHostawayCdn(url))
+          : heroImage
+            ? [heroImage]
+            : [];
+
+      return {
+        ...property,
+        id: listingId,
+        slug,
+        pageUrl: property.pageUrl || `/properties/${slug}/`,
+        bookingUrl: deriveBookingUrl(property, slug, listingId),
+        price: normalizePrice(property.price),
+        bedrooms: normalizeCount(property.bedrooms),
+        bathrooms: normalizeCount(property.bathrooms),
+        guests: normalizeCount(property.guests),
+        rating: normalizeCount(property.rating) || 5,
+        specs: deriveSpecs(property),
+        image,
+        heroImage,
+        gallery
+      };
+    });
 }
 
-module.exports = async function () {
+async function getProperties() {
   try {
     if (process.env.NETLIFY_BLOBS_CONTEXT || global.netlifyBlobsContext) {
       const cached = await loadFromCache();
@@ -62,4 +161,8 @@ module.exports = async function () {
   }
 
   return loadFallback();
-};
+}
+
+module.exports = getProperties;
+module.exports.normalizeProperties = normalizeProperties;
+module.exports.toHostawayCdn = toHostawayCdn;
