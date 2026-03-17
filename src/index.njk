@@ -3199,8 +3199,8 @@
                     <span style="color:var(--brand);cursor:pointer;font-weight:500"
                         onclick="showPage('properties')">View all →</span>
                 </div>
-                <div style="display:grid;gap:32px;grid-template-columns:repeat(2,1fr);">
-                    {% for property in properties.slice(0, 2) %}
+                <div style="display:grid;gap:32px;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));">
+                    {% for property in properties %}
                     <a class="prop-card prop-card-link scroll-reveal revealed" href="/properties/{{ property.slug }}/">
                         <div class="prop-card-shadow"></div>
                         <img
