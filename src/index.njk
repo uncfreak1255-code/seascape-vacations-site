@@ -5839,15 +5839,21 @@
         // ===== EMAIL CAPTURE POPUP LOGIC =====
         const EMAIL_POPUP_KEY = 'seascape_email_popup_shown';
         const EMAIL_POPUP_DELAY = 30000; // 30 seconds
+        let emailPopupReady = false; // Gate exit-intent until delay elapsed
+        let emailPopupShown = false; // Prevent showing more than once per session
 
         function showEmailPopup() {
+            if (emailPopupShown) return;
+
             // Don't show if already captured or dismissed recently
             const lastShown = localStorage.getItem(EMAIL_POPUP_KEY);
+            if (lastShown === 'subscribed') return;
             if (lastShown) {
                 const daysSince = (Date.now() - parseInt(lastShown)) / (1000 * 60 * 60 * 24);
                 if (daysSince < 7) return; // Don't show for 7 days after dismiss
             }
 
+            emailPopupShown = true;
             const popup = document.getElementById('email-popup');
             popup.style.display = 'flex';
             setTimeout(() => popup.classList.add('active'), 10);
@@ -5894,16 +5900,17 @@
             console.log('Email submitted to Mailchimp:', { name, email });
         }
 
-        // Trigger popup after delay (only on homepage)
+        // Trigger popup after 30s delay (only on homepage)
         setTimeout(() => {
+            emailPopupReady = true;
             if (document.getElementById('page-home')?.classList.contains('active')) {
                 showEmailPopup();
             }
         }, EMAIL_POPUP_DELAY);
 
-        // Also trigger on exit intent (desktop only)
-        document.addEventListener('mouseout', (e) => {
-            if (e.clientY < 10 && !localStorage.getItem(EMAIL_POPUP_KEY)) {
+        // Also trigger on exit intent (desktop only) — only after delay has elapsed
+        document.addEventListener('mouseleave', (e) => {
+            if (emailPopupReady && e.clientY <= 0) {
                 showEmailPopup();
             }
         });
