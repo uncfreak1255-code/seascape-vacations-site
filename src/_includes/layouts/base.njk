@@ -28,6 +28,7 @@
     <meta name="twitter:title" content="{{ pageTitle }}">
     <meta name="twitter:description" content="{{ pageDescription }}">
     <meta name="twitter:image" content="{{ pageImage or site.url + '/images/seascape-og-default.jpg' }}">
+    <link rel="icon" href="/logo-optimized.png" type="image/png">
 
     {% include "partials/organization-schema.njk" %}
     
@@ -114,6 +115,14 @@
             display: flex;
             align-items: center;
             gap: 14px;
+        }
+
+        .nav-logo img {
+            width: auto;
+            height: 40px;
+            max-width: none;
+            flex: 0 0 auto;
+            display: block;
         }
 
         .nav-logo-text {
@@ -387,7 +396,12 @@
                     <div class="nav-logo-sub">Vacations</div>
                 </div>
             </a>
-            <a href="/" class="btn">View All Properties</a>
+            <a
+              href="{{ navButtonHref or '/' }}"
+              class="btn"
+              {% if navButtonTarget %}target="{{ navButtonTarget }}"{% endif %}
+              {% if navButtonRel %}rel="{{ navButtonRel }}"{% endif %}
+            >{{ navButtonLabel or "View All Properties" }}</a>
         </div>
     </nav>
 
