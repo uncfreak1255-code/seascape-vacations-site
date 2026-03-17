@@ -21,3 +21,9 @@ Thumbs.db
 *.log
 .skills
 .worktrees/
+
+# Local scratch artifacts
+.superpowers/
+lh-live-baseline.report.html
+lh-live-baseline.report.json
+_site/research/
