@@ -3195,11 +3195,10 @@
                         <p class="section-tag" style="text-align:left">Our Collection</p>
                         <h2 class="section-title" style="margin-bottom:0">Featured Properties</h2>
                     </div>
-                    <span style="color:var(--brand);cursor:pointer;font-weight:500"
-                        onclick="showPage('properties')">View all →</span>
+                    <a href="/properties/" style="display:inline-block;padding:10px 24px;background:var(--brand);color:white;border-radius:8px;font-weight:600;font-size:14px;text-decoration:none;letter-spacing:0.02em;transition:opacity 0.2s">View All Properties →</a>
                 </div>
-                <div style="display:grid;gap:32px;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));">
-                    {% for property in properties %}
+                <div style="display:grid;gap:32px;grid-template-columns:repeat(3,1fr);">
+                    {% for property in properties.slice(0, 3) %}
                     <a class="prop-card prop-card-link scroll-reveal revealed" href="/properties/{{ property.slug }}/">
                         <div class="prop-card-shadow"></div>
                         <img
