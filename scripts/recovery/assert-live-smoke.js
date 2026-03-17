@@ -8,6 +8,7 @@ if (!baseUrl) {
 
 const targets = [
   { path: "/", status: 200 },
+  { path: "/properties/", status: 200 },
   { path: "/property-management/", status: 200 },
   { path: "/guides/", status: 200 },
   { path: "/stays/anna-maria-island-vacation-rentals/", status: 200 },
@@ -84,6 +85,24 @@ async function check(target, currentPath = target.path, redirectDepth = 0) {
 
     if (response.body.includes("images.weserv.nl")) {
       throw new Error("homepage still depends on the external weserv image proxy");
+    }
+  }
+
+  if (target.path === "/properties/") {
+    if (!response.body.includes("Florida Gulf Coast homes, controlled from one catalog.")) {
+      throw new Error("properties page is missing the new static catalog copy");
+    }
+
+    if (!response.body.includes("/properties/dockside-dreams/")) {
+      throw new Error("properties page is missing stable property detail links");
+    }
+
+    if (response.body.includes("/.netlify/functions/get-properties") || response.body.includes("api.hostaway.com")) {
+      throw new Error("properties page still depends on a public runtime property API");
+    }
+
+    if (response.body.includes("hostaway-platform.s3.us-west-2.amazonaws.com")) {
+      throw new Error("properties page still leaks raw Hostaway S3 URLs");
     }
   }
 

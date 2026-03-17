@@ -5,6 +5,7 @@ const test = require("node:test");
 const assert = require("node:assert/strict");
 
 const {
+  findForbiddenPublicRuntimePaths,
   parsePushRefs,
   isProtectedPush,
   findForbiddenSourcePaths,
@@ -85,6 +86,21 @@ test("findPlaceholderAnalyticsPaths finds GA placeholder ids in source files", (
   const matches = findPlaceholderAnalyticsPaths(tempRoot);
 
   assert.deepEqual(matches, [brokenFile]);
+});
+
+test("findForbiddenPublicRuntimePaths flags live PMS calls and remote placeholder imagery", () => {
+  const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "seascape-runtime-"));
+  const cleanFile = path.join(tempRoot, "clean.html");
+  const pmsFile = path.join(tempRoot, "pms.html");
+  const placeholderFile = path.join(tempRoot, "placeholder.html");
+
+  fs.writeFileSync(cleanFile, '<img src="/images/bradenton-og.jpg">');
+  fs.writeFileSync(pmsFile, '<script>fetch("/.netlify/functions/get-properties")</script>');
+  fs.writeFileSync(placeholderFile, '<img src="https://images.unsplash.com/photo-123">');
+
+  const matches = findForbiddenPublicRuntimePaths(tempRoot).sort();
+
+  assert.deepEqual(matches, [placeholderFile, pmsFile].sort());
 });
 
 test("findStandaloneShellMarkers flags legacy SPA shell markers in standalone HTML", () => {

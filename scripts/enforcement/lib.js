@@ -12,6 +12,7 @@ const PROTECTED_REMOTE_REFS = new Set(["refs/heads/main"]);
 const PLACEHOLDER_ANALYTICS_PATTERN = /G-XXXXXXXXXX/;
 const STANDALONE_SHELL_MARKERS = ['id="page-home"', "showPage("];
 const TEMPLATE_LEAK_MARKERS = ["{{", "{%"];
+const FORBIDDEN_PUBLIC_RUNTIME_PATTERN = /\/\.netlify\/functions\/get-properties|api\.hostaway\.com|images\.unsplash\.com/;
 
 function findMarkerMatches(contents, markers) {
   return (markers || []).filter((marker) => String(contents || "").includes(marker));
@@ -39,6 +40,14 @@ function findForbiddenSourcePaths(changedFiles) {
 }
 
 function findPlaceholderAnalyticsPaths(rootDir) {
+  return findMatchingContentPaths(rootDir, PLACEHOLDER_ANALYTICS_PATTERN);
+}
+
+function findForbiddenPublicRuntimePaths(rootDir) {
+  return findMatchingContentPaths(rootDir, FORBIDDEN_PUBLIC_RUNTIME_PATTERN);
+}
+
+function findMatchingContentPaths(rootDir, pattern) {
   const matches = [];
 
   function walk(currentDir) {
@@ -50,7 +59,7 @@ function findPlaceholderAnalyticsPaths(rootDir) {
       }
 
       const content = fs.readFileSync(fullPath, "utf8");
-      if (PLACEHOLDER_ANALYTICS_PATTERN.test(content)) {
+      if (pattern.test(content)) {
         matches.push(fullPath);
       }
     }
@@ -71,6 +80,8 @@ function findTemplateLeakMarkers(contents) {
 module.exports = {
   findForbiddenSourcePaths,
   findMarkerMatches,
+  findForbiddenPublicRuntimePaths,
+  findMatchingContentPaths,
   findPlaceholderAnalyticsPaths,
   findTemplateLeakMarkers,
   findStandaloneShellMarkers,
