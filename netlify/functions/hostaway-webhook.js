@@ -9,7 +9,7 @@ const CACHE_KEY = "properties_cache_v1.json";
 const TEMP_KEY = "properties_cache_v1.tmp.json";
 const EVENT_KEY = "hostaway_webhook_events_v1.json";
 const STORE_NAME = "seascape-cache";
-const SLUG_MAP_PATH = path.join(process.cwd(), "src", "_data", "properties.json");
+const SLUG_MAP_PATH = path.join(process.cwd(), "src", "_data", "properties-fallback.json");
 
 function loadSlugMap() {
   if (!fs.existsSync(SLUG_MAP_PATH)) return {};

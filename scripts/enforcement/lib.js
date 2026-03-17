@@ -10,6 +10,12 @@ const FORBIDDEN_SOURCE_PATH_PATTERNS = [
 
 const PROTECTED_REMOTE_REFS = new Set(["refs/heads/main"]);
 const PLACEHOLDER_ANALYTICS_PATTERN = /G-XXXXXXXXXX/;
+const STANDALONE_SHELL_MARKERS = ['id="page-home"', "showPage("];
+const TEMPLATE_LEAK_MARKERS = ["{{", "{%"];
+
+function findMarkerMatches(contents, markers) {
+  return (markers || []).filter((marker) => String(contents || "").includes(marker));
+}
 
 function parsePushRefs(input) {
   return String(input || "")
@@ -54,9 +60,20 @@ function findPlaceholderAnalyticsPaths(rootDir) {
   return matches;
 }
 
+function findStandaloneShellMarkers(contents) {
+  return findMarkerMatches(contents, STANDALONE_SHELL_MARKERS);
+}
+
+function findTemplateLeakMarkers(contents) {
+  return findMarkerMatches(contents, TEMPLATE_LEAK_MARKERS);
+}
+
 module.exports = {
   findForbiddenSourcePaths,
+  findMarkerMatches,
   findPlaceholderAnalyticsPaths,
+  findTemplateLeakMarkers,
+  findStandaloneShellMarkers,
   isProtectedPush,
   parsePushRefs
 };
