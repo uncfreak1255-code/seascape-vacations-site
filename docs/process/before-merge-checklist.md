@@ -35,9 +35,10 @@ Open or `curl` the changed routes locally or on a preview deploy.
 Minimum expectation:
 
 - [ ] the route returns the expected status
-- [ ] the page shows the new content, not old cached content
+- [ ] the page shows the new content, not old cached content or stale local output
 - [ ] redirects go where they should
 - [ ] no obvious broken CTA or dead-end link was introduced
+- [ ] any user-review route already passed `docs/process/before-user-review-checklist.md`
 
 Examples:
 

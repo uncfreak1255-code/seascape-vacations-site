@@ -1,7 +1,61 @@
 const fs = require("fs");
 const path = require("path");
+const {
+  findMarkerMatches,
+  findStandaloneShellMarkers,
+  findTemplateLeakMarkers
+} = require("../enforcement/lib");
 
 const phase = process.argv[2] || "p0";
+const HOMEPAGE_PUBLIC_EMOJI_MARKERS = ["📞", "✉", "✉️", "📍", "⭐ TOP 1% OCCUPANCY IN MANATEE COUNTY", "5.0 ⭐"];
+const STAY_TEMPLATE_EMOJI_MARKERS = ["✍️", "⭐ "];
+const PROPERTY_PAGE_EMOJI_MARKERS = [
+  "🛏️",
+  "🚿",
+  "👥",
+  "🏖️",
+  "🏟️",
+  "⚽",
+  "✈️",
+  "🏊",
+  "♨️",
+  "⚓",
+  "🎱",
+  "📺",
+  "🍳",
+  "🎮",
+  "🔥",
+  "👶",
+  "📶",
+  "👗",
+  "👕",
+  "⛳",
+  "🎲",
+  "🌴",
+  "🎯",
+  "🌽",
+  "🍽️",
+  "🏠",
+  "🔒",
+  "🚫",
+  "📞",
+  "✉",
+  "✉️",
+  "📍"
+];
+const PROPERTY_STALE_LINK_MARKERS = [
+  "/stays/img-academy-vacation-rentals-bradenton/",
+  "/stays/coquina-beach-vacation-rentals/",
+  "/stays/vacation-rentals-with-heated-pool/",
+  "/reviews/"
+];
+const PROPERTY_PAGE_FILES = [
+  "_site/properties/bradenton-pool-home/index.html",
+  "_site/properties/dockside-dreams/index.html",
+  "_site/properties/river-house/index.html",
+  "_site/properties/sarasota-luxe/index.html",
+  "_site/properties/the-oasis/index.html"
+];
 
 function read(file) {
   return fs.readFileSync(path.resolve(file), "utf8");
@@ -40,6 +94,38 @@ function expectNotMatches(file, pattern, description) {
   }
 }
 
+function expectMatches(file, pattern, description) {
+  const contents = read(file);
+  if (!pattern.test(contents)) {
+    throw new Error(`Missing expected pattern in ${file}: ${description}`);
+  }
+}
+
+function expectNoMarkers(file, markers, description) {
+  const matches = findMarkerMatches(read(file), markers);
+  if (matches.length) {
+    throw new Error(`Unexpected ${description} in ${file}: ${matches.join(", ")}`);
+  }
+}
+
+function expectNoStandaloneShellMarkers(file) {
+  const markers = findStandaloneShellMarkers(read(file));
+  if (markers.length) {
+    throw new Error(
+      `Standalone route leaked legacy SPA shell markers in ${file}: ${markers.join(", ")}`
+    );
+  }
+}
+
+function expectNoTemplateLeakMarkers(file) {
+  const markers = findTemplateLeakMarkers(read(file));
+  if (markers.length) {
+    throw new Error(
+      `Generated output leaked raw template markers in ${file}: ${markers.join(", ")}`
+    );
+  }
+}
+
 function listHtmlFiles(dir) {
   const absolute = path.resolve(dir);
   if (!fs.existsSync(absolute)) {
@@ -53,6 +139,13 @@ function listHtmlFiles(dir) {
     }
     return fullPath.endsWith(".html") ? [fullPath] : [];
   });
+}
+
+function expectNotContainsInHtml(dir, needle) {
+  const files = listHtmlFiles(dir);
+  for (const file of files) {
+    expectNotContains(file, needle);
+  }
 }
 
 if (phase === "p0") {
@@ -83,13 +176,46 @@ if (phase === "p0") {
   expectContains("_site/index.html", "The Oasis");
   expectContains("_site/index.html", "prop-desc-snippet");
   expectContains("_site/index.html", "bookingenginecdn.hostaway.com");
-  expectContains("_site/properties/index.html", "Florida Gulf Coast homes, controlled from one catalog.");
   expectContains("_site/properties/index.html", 'href="/properties/dockside-dreams/"');
-  expectContains("_site/properties/index.html", 'href="https://book.seascape-vacations.com/listings/206016"');
   expectNotContains("_site/properties/index.html", "/.netlify/functions/get-properties");
   expectNotContains("_site/properties/index.html", "api.hostaway.com");
   expectNotContains("_site/properties/index.html", "hostaway-platform.s3.us-west-2.amazonaws.com");
   expectContains("_site/property-management/index.html", "Property Management");
+  expectContains("_site/properties/index.html", ".nav-logo img");
+  expectContains("_site/stays/anna-maria-island-vacation-rentals/index.html", ".nav-logo img");
+  expectContains("_site/property-management/index.html", ".nav-logo img");
+  expectNotContains("_site/index.html", '<button class="mobile-btn" onclick="toggleMenu()">☰</button>');
+  expectNotContains("_site/index.html", '<span class="star">★</span>');
+  expectNotContains("_site/index.html", "<div class=\"review-stars\">★★★★★</div>");
+  expectNotContains("_site/index.html", "<div class=\"email-popup-success-icon\">✓</div>");
+  expectNotContains("_site/index.html", "checkboxSpan.innerHTML = '✓'");
+  expectNotContains("_site/index.html", "btn.textContent = '✓ Request Sent!'");
+  expectNotContains("_site/index.html", "btn.textContent = '✓ Sent!'");
+  expectNotContains("_site/index.html", "const icons = { success: '✓', error: '✕', info: 'ℹ' };");
+  expectNotContains("_site/index.html", '<span style="color:var(--gold)">✓</span>');
+  expectNotContainsInHtml("_site/properties", "content:'✓'");
+  expectNotContainsInHtml("_site/properties", "&#10003;");
+  expectNotContainsInHtml("_site/properties", "&#9989;");
+  expectNotContainsInHtml("_site/properties", "&#10060;");
+  expectNotContainsInHtml("_site/properties", 'aria-controls="mobileMenu">☰</button>');
+  expectNotContainsInHtml("_site/properties", 'onclick="closeGallery()">✕</button>');
+  expectNotContains("_site/property-management/index.html", ">✓<");
+  expectNotContains("_site/property-management/index.html", "5.0★");
+  expectNoStandaloneShellMarkers("_site/properties/index.html");
+  expectNoTemplateLeakMarkers("_site/properties/index.html");
+  expectNotContains("_site/properties/index.html", "rendered from one source of truth");
+  expectNotContains("_site/properties/index.html", "Every home is rendered at build time");
+  expectNotContains("_site/properties/index.html", "No client-side card injection");
+  expectNotContains("_site/properties/index.html", "Use this table before opening detail pages");
+  expectNotContains("_site/properties/index.html", "collection-strip");
+  expectNotContains("_site/properties/index.html", "compare-table");
+  expectNotContains("_site/properties/index.html", "decision-panel");
+}
+
+if (["p0", "guides", "remediation"].includes(phase)) {
+  expectNotContainsInHtml("_site", "/.netlify/functions/get-properties");
+  expectNotContainsInHtml("_site", "api.hostaway.com");
+  expectNotContainsInHtml("_site", "hostaway-platform.s3.us-west-2.amazonaws.com");
 }
 
 if (phase === "guides") {
@@ -155,13 +281,49 @@ if (phase === "remediation") {
   expectContains("_site/_redirects", "/stays/concierge-luxury-services/  /stays/luxury-concierge-services/  301");
   expectExists("_site/images/seascape-og-default.jpg");
   expectExists("_site/images/anna-maria-island-og.jpg");
+  expectMatches("_site/index.html", /4\.98[\s\S]{0,120}Airbnb Rating/, "homepage 4.98 Airbnb Rating stat");
+  expectMatches("_site/index.html", /650\+[\s\S]{0,120}5-Star Reviews/, "homepage 650+ 5-Star Reviews stat");
+  expectMatches("_site/index.html", /10-15%[\s\S]{0,120}Book Direct Savings/, "homepage 10-15% Book Direct Savings stat");
+  expectMatches("_site/index.html", /24\/7[\s\S]{0,120}Local Support/, "homepage 24/7 Local Support stat");
+  expectNotMatches(
+    "_site/index.html",
+    /class="stat-value">0<\/div>\s*<div class="stat-label">Airbnb Rating<\/div>/,
+    "homepage Airbnb Rating zero fallback"
+  );
+  expectNotMatches(
+    "_site/index.html",
+    /class="stat-value">0<\/div>\s*<div class="stat-label">5-Star Reviews<\/div>/,
+    "homepage 5-Star Reviews zero fallback"
+  );
+  expectNotMatches(
+    "_site/index.html",
+    /class="stat-value">0<\/div>\s*<div class="stat-label">Book Direct Savings<\/div>/,
+    "homepage Book Direct Savings zero fallback"
+  );
+  expectNotMatches(
+    "_site/index.html",
+    /class="stat-value">0<\/div>\s*<div class="stat-label">Local Support<\/div>/,
+    "homepage Local Support zero fallback"
+  );
+  expectNoMarkers("_site/index.html", HOMEPAGE_PUBLIC_EMOJI_MARKERS, "homepage emoji markers");
   expectNotContains(
     "_site/stays/anna-maria-island-vacation-rentals/index.html",
     '"text": "Manatee Public Beach in <a href='
   );
   expectContains("_site/stays/anna-maria-island-vacation-rentals/index.html", "srcset=");
   expectContains("_site/stays/anna-maria-island-vacation-rentals/index.html", 'width="800"');
+  expectNoMarkers(
+    "_site/stays/anna-maria-island-vacation-rentals/index.html",
+    STAY_TEMPLATE_EMOJI_MARKERS,
+    "stay template emoji markers"
+  );
   expectExists("_site/properties/dockside-dreams/index.html");
+  for (const file of PROPERTY_PAGE_FILES) {
+    expectNoMarkers(file, PROPERTY_PAGE_EMOJI_MARKERS, "property page emoji markers");
+    expectNoMarkers(file, PROPERTY_STALE_LINK_MARKERS, "stale property-page related links");
+    expectNotMatches(file, /\/guides\/[^"'\s>]+\.html/i, "legacy .html guide link");
+    expectNoTemplateLeakMarkers(file);
+  }
   expectNotContains(
     "_site/stays/anna-maria-island-vacation-rentals/index.html",
     'href="/" class="btn" style="padding: 10px 20px; font-size: 13px;">View Details</a>'
@@ -184,8 +346,6 @@ if (phase === "remediation") {
   expectContains("_site/index.html", "bookingenginecdn.hostaway.com");
   expectNotContains("_site/index.html", "images.weserv.nl");
   expectNotContains("_site/index.html", "images.unsplash.com");
-  expectContains("_site/properties/index.html", "Book direct");
-  expectContains("_site/properties/index.html", "stable listing data");
   expectContains("_site/properties/index.html", "bookingenginecdn.hostaway.com");
   expectNotContains("_site/properties/index.html", "images.unsplash.com");
   expectContains("_site/property-management/index.html", "images/seascape-og-default.jpg");

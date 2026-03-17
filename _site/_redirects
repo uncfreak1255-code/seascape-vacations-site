@@ -63,8 +63,8 @@
 # Bike & Equipment Rentals
 /travel-spot-guide/better-on-bikes   /guides/do-you-need-a-car-anna-maria-island.html   301
 /travel-spot-guide/better-on-bikes/   /guides/do-you-need-a-car-anna-maria-island.html   301
-/travel-spot-guide/beach-n-rides-and-rentals   /guides/anna-maria-island-area-guide/   301
-/travel-spot-guide/beach-n-rides-and-rentals/   /guides/anna-maria-island-area-guide/   301
+/travel-spot-guide/beach-n-rides-and-rentals   /stays/equipment-rentals-florida-vacation/   301
+/travel-spot-guide/beach-n-rides-and-rentals/   /stays/equipment-rentals-florida-vacation/   301
 
 # Restaurants & Dining
 /travel-spot-guide/the-waterfront-restaurant   /guides/best-restaurants-anna-maria-island.html   301
@@ -289,18 +289,6 @@
 /area-guide-siesta-key.html  /guides/siesta-key-area-guide/  301
 
 /stays/rentals-with-elevators/  /stays/vacation-rentals-with-elevator/  301
-/stays/concierge-luxury-services/  /stays/luxury-concierge-services/  301
-/stays/hurricane-preparedness-florida-vacation/  /stays/hurricane-preparedness-guide/  301
-/stays/travel-insurance-florida-vacation/  /stays/hurricane-preparedness-guide/  301
-/stays/vacation-rentals-with-heated-pool/  /stays/vacation-rentals-with-pool-and-hot-tub/  301
-/stays/equipment-rentals-florida-vacation/  /guides/anna-maria-island-area-guide/  301
-/stays/coquina-beach-vacation-rentals/  /stays/anna-maria-island-beachfront-rentals/  301
-/stays/college-recruitment-visit-rentals-bradenton/  /stays/large-group-vacation-rentals-bradenton/  301
-/stays/img-academy-vacation-rentals-bradenton/  /stays/large-group-vacation-rentals-bradenton/  301
-/stays/tennis-parents-vacation-rentals-bradenton/  /stays/large-group-vacation-rentals-bradenton/  301
-/stays/youth-sports-tournament-housing-bradenton/  /stays/large-group-vacation-rentals-bradenton/  301
-/stays/christmas-vacation-rentals-florida-gulf-coast/  /stays/holiday-vacation-rentals-anna-maria-island/  301
-/stays/thanksgiving-vacation-rentals-florida/  /stays/holiday-vacation-rentals-anna-maria-island/  301
 
 # Broken link redirects added 2026-03-03
 /stays/bradenton-beach-vacation-rentals  /stays/bradenton-vacation-rentals-near-beaches  301

@@ -1,208 +1,41 @@
 ---
-templateEngineOverride: njk
----
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>Gulf Coast Vacation Rentals | Seascape Vacations</title>
-  <meta name="description" content="Browse Seascape Vacations homes in Bradenton and Sarasota. Stable, curated direct-booking inventory with private pools, waterfront homes, and owner-trusted service.">
-  <meta name="robots" content="index, follow">
-  <link rel="canonical" href="{{ site.url }}/properties/">
-
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="{{ site.url }}/properties/">
-  <meta property="og:title" content="Gulf Coast Vacation Rentals">
-  <meta property="og:description" content="Browse Seascape Vacations homes in Bradenton and Sarasota. Stable, curated direct-booking inventory with private pools, waterfront homes, and owner-trusted service.">
-  <meta property="og:image" content="{{ site.url }}/hero-optimized.webp">
-  <meta property="og:locale" content="en_US">
-  <meta property="og:site_name" content="Seascape Vacations">
-
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Gulf Coast Vacation Rentals">
-  <meta name="twitter:description" content="Browse Seascape Vacations homes in Bradenton and Sarasota. Stable, curated direct-booking inventory with private pools, waterfront homes, and owner-trusted service.">
-  <meta name="twitter:image" content="{{ site.url }}/hero-optimized.webp">
-
-  {% include "partials/organization-schema.njk" %}
-
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "ItemList",
-    "name": "Seascape Vacations Properties",
-    "description": "Curated Gulf Coast vacation rentals from Seascape Vacations.",
-    "numberOfItems": {{ properties | length }},
-    "itemListElement": [
-      {% for property in properties %}
-      {
-        "@type": "ListItem",
-        "position": {{ loop.index }},
-        "url": "{{ site.url }}{{ property.pageUrl }}",
-        "item": {
-          "@type": "VacationRental",
-          "name": "{{ property.name }}",
-          "description": "{{ property.description }}",
-          "image": "{{ property.image | imgProxy(1200) }}",
-          "occupancy": {
-            "@type": "QuantitativeValue",
-            "maxValue": {{ property.guests }}
-          },
-          "numberOfBedrooms": {{ property.bedrooms }},
-          "numberOfBathroomsTotal": {{ property.bathrooms }},
-          "address": {
-            "@type": "PostalAddress",
-            "addressLocality": "{{ property.city }}",
-            "addressRegion": "FL",
-            "addressCountry": "US"
-          }
-        }
-      }{% if not loop.last %},{% endif %}
-      {% endfor %}
-    ]
-  }
-  </script>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+layout: layouts/base.njk
+permalink: "/properties/"
+templateEngineOverride: "njk"
+pageTitle: "Vacation Rentals | Seascape Vacations"
+pageDescription: "Browse luxury vacation rentals in Bradenton and Sarasota with direct booking links, premium amenities, and dedicated property pages."
+pageImage: "https://seascape-vacations.com/images/seascape-og-default.jpg"
+pageUpdated: "2026-03-17T17:45:00-04:00"
+navButtonLabel: "Book Direct"
+navButtonHref: "https://book.seascape-vacations.com"
+navButtonTarget: "_blank"
+navButtonRel: "noopener noreferrer"
+headExtra: |
   <link rel="preconnect" href="https://bookingenginecdn.hostaway.com" crossorigin>
   <link rel="dns-prefetch" href="https://bookingenginecdn.hostaway.com">
-  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-  <noscript>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
-  </noscript>
-
-  {% include "partials/deferred-meta-pixel.njk" %}
-
   <style>
-    :root {
-      --brand: #5F8A8B;
-      --brand-light: #7BA3A4;
-      --brand-dark: #3D5C5D;
-      --brand-darker: #2D4647;
-      --gold: #C9A962;
-      --gold-light: #E8D5A3;
-      --cream: #F5EED6;
-      --cream-dark: #EBE4CC;
-      --cream-light: #FAF7EE;
-      --stone: #3A3A3A;
-      --stone-light: #6A6A6A;
-      --white: #FFFFFF;
-    }
-
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-
-    body {
-      font-family: 'Poppins', -apple-system, sans-serif;
-      background: var(--cream);
-      color: var(--stone);
-      line-height: 1.7;
-    }
-
-    h1, h2, h3, h4 {
-      font-family: 'Playfair Display', Georgia, serif;
-      font-weight: 500;
-      letter-spacing: -0.02em;
-    }
-
-    img { max-width: 100%; height: auto; }
-    a { text-decoration: none; color: inherit; }
-
-    .nav {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 100;
-      background: rgba(245, 238, 214, 0.98);
-      backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08);
-    }
-
-    .nav-inner {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 16px 24px;
-      max-width: 1400px;
-      margin: 0 auto;
-    }
-
-    .nav-logo {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-
-    .nav-logo-text {
-      font-family: 'Playfair Display', serif;
-      font-size: 20px;
-      font-weight: 500;
-      color: var(--brand);
-      letter-spacing: 0.05em;
-    }
-
-    .nav-logo-sub {
-      font-size: 9px;
-      letter-spacing: 0.2em;
-      color: var(--stone-light);
-      text-transform: uppercase;
-      margin-top: -2px;
-    }
-
-    .btn {
-      background: linear-gradient(135deg, var(--brand) 0%, var(--brand-dark) 100%);
-      color: white;
-      padding: 14px 32px;
-      border-radius: 50px;
-      font-weight: 600;
-      font-size: 14px;
-      border: none;
-      cursor: pointer;
+    .ui-icon {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      transition: all 0.25s ease;
-      box-shadow: 0 4px 15px rgba(61, 107, 109, 0.3);
+      justify-content: center;
+      line-height: 0;
+      flex-shrink: 0;
     }
 
-    .btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(61, 107, 109, 0.4);
+    .ui-icon svg {
+      width: 1em;
+      height: 1em;
+      display: block;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.9;
+      stroke-linecap: round;
+      stroke-linejoin: round;
     }
-
-    .btn-gold {
-      background: linear-gradient(135deg, var(--gold) 0%, #B8943A 100%);
-      color: var(--stone);
-      box-shadow: 0 4px 15px rgba(201, 169, 98, 0.3);
-    }
-
-    .main-content { padding-top: 80px; }
-
-    .breadcrumbs {
-      background: white;
-      padding: 12px 24px;
-      border-bottom: 1px solid var(--cream-dark);
-    }
-
-    .breadcrumbs ol {
-      display: flex;
-      gap: 8px;
-      list-style: none;
-      max-width: 1100px;
-      margin: 0 auto;
-      font-size: 13px;
-    }
-
-    .breadcrumbs a { color: var(--brand); }
-    .breadcrumbs span { color: var(--stone-light); }
 
     .catalog-hero {
       background:
-        linear-gradient(135deg, rgba(61, 92, 93, 0.88), rgba(45, 70, 71, 0.76)),
+        linear-gradient(135deg, rgba(45, 70, 71, 0.82) 0%, rgba(61, 92, 93, 0.68) 48%, rgba(201, 169, 98, 0.24) 100%),
         image-set(
           url('/hero-optimized.avif') type('image/avif'),
           url('/hero-optimized.webp') type('image/webp')
@@ -212,13 +45,14 @@ templateEngineOverride: njk
     }
 
     .catalog-hero-inner,
-    .container,
-    .footer-inner {
+    .catalog-shell .container {
       max-width: 1180px;
       margin: 0 auto;
     }
 
-    .catalog-hero-copy { max-width: 760px; }
+    .catalog-hero-copy {
+      max-width: 760px;
+    }
 
     .catalog-kicker {
       display: inline-flex;
@@ -243,9 +77,10 @@ templateEngineOverride: njk
     }
 
     .catalog-hero p {
-      max-width: 640px;
-      color: rgba(255, 255, 255, 0.88);
+      max-width: 680px;
+      color: rgba(255, 255, 255, 0.9);
       font-size: 18px;
+      line-height: 1.8;
     }
 
     .catalog-highlights {
@@ -259,7 +94,7 @@ templateEngineOverride: njk
       padding: 18px 20px;
       border-radius: 18px;
       background: rgba(255, 255, 255, 0.12);
-      border: 1px solid rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.14);
       backdrop-filter: blur(18px);
     }
 
@@ -269,25 +104,17 @@ templateEngineOverride: njk
       letter-spacing: 0.16em;
       text-transform: uppercase;
       margin-bottom: 8px;
-      color: rgba(255, 255, 255, 0.7);
+      color: rgba(255, 255, 255, 0.74);
     }
 
     .catalog-highlight span {
-      font-size: 17px;
-      line-height: 1.5;
+      font-size: 16px;
+      line-height: 1.55;
       color: white;
     }
 
-    .catalog-shell { padding: 64px 24px 88px; }
-
-    .section-tag {
-      display: inline-block;
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--brand);
-      margin-bottom: 12px;
+    .catalog-shell {
+      padding: 60px 24px 88px;
     }
 
     .catalog-toolbar {
@@ -299,16 +126,29 @@ templateEngineOverride: njk
       flex-wrap: wrap;
     }
 
-    .catalog-toolbar-copy { max-width: 680px; }
+    .catalog-toolbar-copy {
+      max-width: 680px;
+    }
 
     .catalog-toolbar-copy h2 {
       font-size: clamp(28px, 4vw, 40px);
       margin-bottom: 10px;
+      color: var(--stone);
     }
 
-    .catalog-toolbar-copy p { color: var(--stone-light); }
-    .catalog-actions { display: flex; gap: 12px; flex-wrap: wrap; }
-    .catalog-link { color: var(--brand); font-weight: 600; }
+    .catalog-toolbar-copy p {
+      color: var(--stone-light);
+      line-height: 1.8;
+    }
+
+    .catalog-toolbar-copy .section-tag {
+      margin-bottom: 14px;
+    }
+
+    .catalog-toolbar-link {
+      color: var(--brand);
+      font-weight: 600;
+    }
 
     .catalog-filters {
       display: flex;
@@ -345,37 +185,59 @@ templateEngineOverride: njk
     }
 
     .catalog-card {
-      background: white;
-      border-radius: 26px;
-      overflow: hidden;
-      box-shadow: 0 18px 48px rgba(28, 38, 39, 0.09);
-      border: 1px solid rgba(61, 92, 93, 0.08);
-      display: flex;
-      flex-direction: column;
-      min-height: 100%;
-    }
-
-    .catalog-card[hidden] { display: none; }
-
-    .catalog-media {
       position: relative;
-      aspect-ratio: 16 / 11;
+      min-height: 560px;
+      border-radius: 28px;
       overflow: hidden;
-      background: linear-gradient(135deg, rgba(95, 138, 139, 0.16), rgba(201, 169, 98, 0.24));
+      border: 1px solid rgba(61, 92, 93, 0.08);
+      box-shadow: 0 18px 48px rgba(28, 38, 39, 0.1);
+      background: linear-gradient(135deg, rgba(95, 138, 139, 0.18), rgba(201, 169, 98, 0.22));
+      display: flex;
+      align-items: flex-end;
+      isolation: isolate;
     }
 
-    .catalog-media img {
+    .catalog-card[hidden] {
+      display: none;
+    }
+
+    .catalog-card img {
+      position: absolute;
+      inset: 0;
       width: 100%;
       height: 100%;
       object-fit: cover;
-      display: block;
+      transition: transform 0.45s ease;
+      z-index: -2;
+    }
+
+    .catalog-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, rgba(10, 14, 14, 0.06) 0%, rgba(10, 14, 14, 0.16) 28%, rgba(10, 14, 14, 0.68) 72%, rgba(10, 14, 14, 0.9) 100%);
+      z-index: -1;
+    }
+
+    .catalog-card:hover img {
+      transform: scale(1.04);
+    }
+
+    .catalog-card-inner {
+      width: 100%;
+      padding: 22px 22px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      color: white;
     }
 
     .catalog-pill-row {
       position: absolute;
-      top: 14px;
-      left: 14px;
-      right: 14px;
+      top: 16px;
+      left: 16px;
+      right: 16px;
       display: flex;
       justify-content: space-between;
       gap: 10px;
@@ -389,100 +251,98 @@ templateEngineOverride: njk
       padding: 8px 12px;
       border-radius: 999px;
       background: rgba(255, 255, 255, 0.9);
-      font-size: 12px;
-      font-weight: 700;
       color: var(--stone);
       box-shadow: 0 10px 18px rgba(0, 0, 0, 0.08);
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 1;
     }
 
     .catalog-rating {
-      background: rgba(33, 48, 49, 0.84);
+      background: rgba(33, 48, 49, 0.86);
       color: white;
     }
 
-    .catalog-body {
-      padding: 22px 22px 24px;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-      flex: 1;
+    .catalog-rating .ui-icon svg {
+      width: 14px;
+      height: 14px;
+      fill: currentColor;
+      stroke: none;
     }
 
-    .catalog-body h3 {
-      font-size: 28px;
-      line-height: 1;
-      color: var(--brand-dark);
-    }
-
-    .catalog-meta {
-      color: var(--stone-light);
+    .catalog-location {
       font-size: 14px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.74);
+    }
+
+    .catalog-card h3 {
+      font-size: clamp(34px, 4vw, 52px);
+      line-height: 0.95;
+      color: white;
     }
 
     .catalog-specs {
-      color: var(--stone);
       font-size: 15px;
-      font-weight: 500;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.86);
     }
 
     .catalog-copy {
-      color: var(--stone-light);
+      color: rgba(255, 255, 255, 0.88);
       font-size: 15px;
+      line-height: 1.7;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      min-height: 76px;
     }
 
     .catalog-feature-list {
-      display: flex;
-      flex-wrap: wrap;
+      display: grid;
       gap: 10px;
     }
 
     .catalog-feature {
-      font-size: 13px;
-      color: var(--brand-dark);
-      background: var(--cream-light);
-      border-radius: 999px;
-      padding: 8px 12px;
-      font-weight: 600;
-    }
-
-    .catalog-card-footer {
-      display: flex;
-      justify-content: space-between;
+      display: inline-flex;
       align-items: center;
-      gap: 14px;
-      flex-wrap: wrap;
-      margin-top: auto;
-      padding-top: 6px;
+      gap: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.92);
     }
 
-    .catalog-price {
-      color: var(--stone);
+    .catalog-feature .ui-icon {
+      color: var(--gold-light);
       font-size: 14px;
     }
 
-    .catalog-price strong {
-      color: var(--brand-dark);
-      font-size: 20px;
-      margin-right: 6px;
+    .catalog-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: auto;
+      padding-top: 4px;
     }
 
-    .catalog-card-actions {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
+    .catalog-actions .btn,
+    .catalog-secondary {
+      padding: 12px 18px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 600;
     }
 
     .catalog-secondary {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      border: 1px solid rgba(61, 92, 93, 0.18);
-      color: var(--brand-dark);
-      background: white;
-      padding: 12px 16px;
-      border-radius: 999px;
-      font-size: 14px;
-      font-weight: 600;
+      background: rgba(255, 255, 255, 0.06);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.34);
+      backdrop-filter: blur(14px);
     }
 
     .catalog-empty {
@@ -494,9 +354,12 @@ templateEngineOverride: njk
       color: var(--stone-light);
       text-align: center;
       box-shadow: 0 18px 48px rgba(28, 38, 39, 0.06);
+      margin-top: 20px;
     }
 
-    .catalog-empty.visible { display: block; }
+    .catalog-empty.visible {
+      display: block;
+    }
 
     .catalog-owner-cta {
       margin-top: 42px;
@@ -517,41 +380,14 @@ templateEngineOverride: njk
     }
 
     .catalog-owner-cta p {
-      color: rgba(255, 255, 255, 0.82);
-      max-width: 720px;
+      color: rgba(255, 255, 255, 0.84);
+      max-width: 700px;
+      line-height: 1.8;
     }
 
-    .footer {
-      background: var(--brand-darker);
-      color: rgba(255, 255, 255, 0.8);
-      padding: 60px 24px 30px;
-    }
-
-    .footer-logo {
-      font-family: 'Playfair Display', serif;
-      font-size: 24px;
-      color: white;
-      margin-bottom: 16px;
-      text-align: center;
-    }
-
-    .footer-links {
-      display: flex;
-      justify-content: center;
-      gap: 24px;
-      margin-bottom: 24px;
-      flex-wrap: wrap;
-    }
-
-    .footer-links a {
+    .catalog-owner-cta .section-tag {
       color: rgba(255, 255, 255, 0.7);
-      font-size: 14px;
-    }
-
-    .footer-copyright {
-      font-size: 13px;
-      opacity: 0.6;
-      text-align: center;
+      margin-bottom: 14px;
     }
 
     @media (max-width: 900px) {
@@ -559,192 +395,247 @@ templateEngineOverride: njk
       .catalog-owner-cta {
         grid-template-columns: 1fr;
       }
+
+      .catalog-card {
+        min-height: 520px;
+      }
     }
 
     @media (max-width: 680px) {
-      .catalog-hero { padding-top: 96px; }
-      .catalog-card-footer { align-items: start; flex-direction: column; }
-      .nav-inner { flex-wrap: wrap; gap: 16px; }
-    }
-  </style>
-</head>
-<body>
-  <nav class="nav">
-    <div class="nav-inner">
-      <a href="/" class="nav-logo">
-        <img src="/logo-optimized.png" alt="Seascape Vacations" height="40">
-        <div>
-          <div class="nav-logo-text">SEASCAPE</div>
-          <div class="nav-logo-sub">Vacations</div>
-        </div>
-      </a>
-      <a href="/property-management/" class="btn">For Property Owners</a>
-    </div>
-  </nav>
-
-  <main class="main-content">
-    <nav class="breadcrumbs" aria-label="Breadcrumb">
-      <ol>
-        <li><a href="/">Home</a></li>
-        <li><span>›</span></li>
-        <li><span aria-current="page">Properties</span></li>
-      </ol>
-    </nav>
-
-    <section class="catalog-hero">
-      <div class="catalog-hero-inner">
-        <div class="catalog-hero-copy">
-          <span class="catalog-kicker">Curated Direct Booking Inventory</span>
-          <h1>Vacation rentals built to convert, not break.</h1>
-          <p>Browse Seascape homes with stable listing data, direct-booking links, and the same guest-first design language you already use across the site.</p>
-        </div>
-        <div class="catalog-highlights">
-          <div class="catalog-highlight">
-            <strong>Direct booking</strong>
-            <span>Stable property cards, clean handoff to booking, no runtime PMS failures.</span>
-          </div>
-          <div class="catalog-highlight">
-            <strong>Guest trust</strong>
-            <span>Private pools, waterfront homes, and clear property detail pages for high-intent guests.</span>
-          </div>
-          <div class="catalog-highlight">
-            <strong>Owner signal</strong>
-            <span>Professional inventory presentation that supports direct bookings and owner acquisition.</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="catalog-shell">
-      <div class="container">
-        <div class="catalog-toolbar">
-          <div class="catalog-toolbar-copy">
-            <p class="section-tag">Our Collection</p>
-            <h2>Florida Gulf Coast homes, controlled from one catalog.</h2>
-            <p>This page now renders from Seascape’s local normalized property dataset instead of a live PMS call. That is the point: same design, fewer failure modes.</p>
-          </div>
-          <div class="catalog-actions">
-            <a class="catalog-link" href="/guides/">Explore local guides →</a>
-            <a class="btn btn-gold" href="/property-management/">For property owners</a>
-          </div>
-        </div>
-
-        <div class="catalog-filters" aria-label="Property filters">
-          <button class="catalog-filter active" type="button" data-filter="all">All stays</button>
-          <button class="catalog-filter" type="button" data-filter="waterfront">Waterfront</button>
-          <button class="catalog-filter" type="button" data-filter="private pool">Private pool</button>
-          <button class="catalog-filter" type="button" data-filter="hot tub">Hot tub</button>
-          <button class="catalog-filter" type="button" data-filter="pet friendly">Pet friendly</button>
-          <button class="catalog-filter" type="button" data-filter="bradenton">Bradenton</button>
-          <button class="catalog-filter" type="button" data-filter="sarasota">Sarasota</button>
-        </div>
-
-        <div class="catalog-grid" id="catalog-grid">
-          {% for property in properties %}
-          {% set filterTokens = ((property.tags or []) | join('|') ~ '|' ~ property.destination ~ '|' ~ property.city) | lower %}
-          {% set primaryTag = property.tags[1] if property.tags and property.tags[1] else (property.destination | replace('-', ' ') | title) %}
-          <article class="catalog-card" data-filters="{{ filterTokens }}">
-            <div class="catalog-media">
-              <img
-                src="{{ property.image | imgProxy(900) }}"
-                srcset="{{ property.image | imgProxy(500) }} 500w, {{ property.image | imgProxy(900) }} 900w, {{ property.image | imgProxy(1200) }} 1200w"
-                sizes="(min-width: 1100px) 33vw, (min-width: 768px) 50vw, 100vw"
-                alt="{{ property.name }}"
-                loading="lazy"
-                decoding="async">
-              <div class="catalog-pill-row">
-                <span class="catalog-pill">{{ primaryTag }}</span>
-                <span class="catalog-pill catalog-rating">★ {{ property.rating }}</span>
-              </div>
-            </div>
-            <div class="catalog-body">
-              <div>
-                <h3>{{ property.name }}</h3>
-                <p class="catalog-meta">{{ property.city }}, Florida</p>
-              </div>
-              <p class="catalog-specs">{{ property.specs }}</p>
-              <p class="catalog-copy">{{ property.description }}</p>
-              <div class="catalog-feature-list">
-                {% for highlight in property.highlights %}
-                <span class="catalog-feature">{{ highlight }}</span>
-                {% endfor %}
-              </div>
-              <div class="catalog-card-footer">
-                <div class="catalog-price"><strong>${{ property.price }}</strong>avg nightly</div>
-                <div class="catalog-card-actions">
-                  <a class="catalog-secondary" href="{{ property.bookingUrl }}" target="_blank" rel="noopener noreferrer">Book direct</a>
-                  <a class="btn" href="{{ property.pageUrl }}">View property</a>
-                </div>
-              </div>
-            </div>
-          </article>
-          {% endfor %}
-        </div>
-
-        <div class="catalog-empty" id="catalog-empty">
-          No properties match that filter right now. Reset to <strong>All stays</strong> instead of assuming the inventory disappeared.
-        </div>
-
-        <div class="catalog-owner-cta">
-          <div>
-            <p class="section-tag" style="color: rgba(255,255,255,0.68); margin-bottom: 14px;">For owners</p>
-            <h3>Owners judge reliability before they ever ask about management.</h3>
-            <p>If the public site feels unstable, it undercuts trust before your pitch starts. The property management side should feel as controlled as the homes themselves.</p>
-          </div>
-          <div>
-            <a class="btn btn-gold" href="/property-management/">See owner services</a>
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <footer class="footer">
-    <div class="footer-inner">
-      <div class="footer-logo">Seascape Vacations</div>
-      <div class="footer-links">
-        <a href="/">Home</a>
-        <a href="/properties/">Properties</a>
-        <a href="/guides/">Guides</a>
-        <a href="/property-management/">Property Owners</a>
-      </div>
-      <div class="footer-copyright">© 2026 Seascape Vacations. All rights reserved. | Book Direct & Save</div>
-    </div>
-  </footer>
-
-  {% include "partials/analytics-ga4.njk" %}
-
-  <script>
-    (function () {
-      const buttons = Array.from(document.querySelectorAll('.catalog-filter'));
-      const cards = Array.from(document.querySelectorAll('.catalog-card'));
-      const emptyState = document.getElementById('catalog-empty');
-
-      function applyFilter(filter) {
-        let visibleCount = 0;
-
-        cards.forEach((card) => {
-          const haystack = (card.dataset.filters || '').toLowerCase();
-          const matches = filter === 'all' || haystack.includes(filter);
-          card.hidden = !matches;
-          if (matches) {
-            visibleCount += 1;
-          }
-        });
-
-        emptyState.classList.toggle('visible', visibleCount === 0);
+      .catalog-hero {
+        padding-top: 96px;
       }
 
-      buttons.forEach((button) => {
-        button.addEventListener('click', () => {
-          buttons.forEach((candidate) => candidate.classList.remove('active'));
-          button.classList.add('active');
-          applyFilter(button.dataset.filter || 'all');
-        });
+      .catalog-card {
+        min-height: 500px;
+      }
+
+      .catalog-card-inner {
+        padding: 18px 18px 20px;
+      }
+
+      .catalog-card h3 {
+        font-size: 32px;
+      }
+
+      .catalog-actions {
+        flex-direction: column;
+      }
+
+      .catalog-actions .btn,
+      .catalog-secondary {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  </style>
+---
+{% from "partials/ui-icon.njk" import uiIcon %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "{{ site.url }}" },
+    { "@type": "ListItem", "position": 2, "name": "Properties", "item": "{{ site.url }}/properties/" }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "Seascape Vacations Properties",
+  "description": "Luxury vacation rentals in Bradenton and Sarasota from Seascape Vacations.",
+  "numberOfItems": {{ properties | length }},
+  "itemListElement": [
+    {% for property in properties %}
+    {
+      "@type": "ListItem",
+      "position": {{ loop.index }},
+      "url": "{{ site.url }}{{ property.pageUrl }}",
+      "name": "{{ property.name }}",
+      "description": "{{ property.description | stripHtml | escape }}",
+      "image": "{{ property.image | imgProxy(1200) }}"
+    }{% if not loop.last %},{% endif %}
+    {% endfor %}
+  ]
+}
+</script>
+
+<nav class="breadcrumbs" aria-label="Breadcrumb">
+  <ol>
+    <li><a href="/">Home</a></li>
+    <li><span>></span></li>
+    <li><span aria-current="page">Properties</span></li>
+  </ol>
+</nav>
+
+<section class="catalog-hero">
+  <div class="catalog-hero-inner">
+    <div class="catalog-hero-copy">
+      <span class="catalog-kicker">Seascape Collection</span>
+      <h1>Luxury Gulf Coast vacation rentals for direct booking.</h1>
+      <p>
+        Browse private-pool homes, standout Bradenton stays, and a Sarasota escape designed for longer family trips,
+        group getaways, and guests who want a polished booking experience from the first click.
+      </p>
+    </div>
+    <div class="catalog-highlights">
+      <div class="catalog-highlight">
+        <strong>Book Direct</strong>
+        <span>Go straight to Seascape booking pages and save 10-15% compared to major OTA fees.</span>
+      </div>
+      <div class="catalog-highlight">
+        <strong>Guest Favorites</strong>
+        <span>Private pools, memorable amenities, and homes chosen to feel as good as they photograph.</span>
+      </div>
+      <div class="catalog-highlight">
+        <strong>Local Service</strong>
+        <span>Every stay is backed by a local host team serving Bradenton, Sarasota, and the surrounding coast.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="catalog-shell">
+  <div class="container">
+    <div class="catalog-toolbar">
+      <div class="catalog-toolbar-copy">
+        <p class="section-tag">Our Collection</p>
+        <h2>Find the home that fits your trip, then book with confidence.</h2>
+        <p>
+          Filter by stay style or location, compare the homes visually, and jump straight into the property page or booking flow that fits your getaway best.
+        </p>
+      </div>
+      <a class="catalog-toolbar-link" href="/guides/">Explore local guides →</a>
+    </div>
+
+    <div class="catalog-filters" aria-label="Property filters">
+      <button class="catalog-filter active" type="button" data-filter="all">All stays</button>
+      <button class="catalog-filter" type="button" data-filter="waterfront">Waterfront</button>
+      <button class="catalog-filter" type="button" data-filter="pool">Private Pool</button>
+      <button class="catalog-filter" type="button" data-filter="hot-tub">Hot Tub</button>
+      <button class="catalog-filter" type="button" data-filter="pet-friendly">Pet Friendly</button>
+      <button class="catalog-filter" type="button" data-filter="bradenton">Bradenton</button>
+      <button class="catalog-filter" type="button" data-filter="sarasota">Sarasota</button>
+    </div>
+
+    <div class="catalog-grid" id="catalog-grid">
+      {% for property in properties %}
+      {% set filterTokens = ((property.amenities or []) | join('|') ~ '|' ~ property.destination ~ '|' ~ property.city ~ '|' ~ property.slug) | lower %}
+      {% if property.slug == "dockside-dreams" %}
+        {% set primaryTag = "Waterfront" %}
+      {% elif property.slug == "the-oasis" %}
+        {% set primaryTag = "Sleeps 16" %}
+      {% elif property.slug == "sarasota-luxe" %}
+        {% set primaryTag = "Downtown Sarasota" %}
+      {% elif property.slug == "river-house" %}
+        {% set primaryTag = "Guest Favorite" %}
+      {% elif property.slug == "bradenton-pool-home" %}
+        {% set primaryTag = "Near IMG" %}
+      {% else %}
+        {% set primaryTag = property.city %}
+      {% endif %}
+      {% set bookingHref = property.bookingUrl or property.pageUrl + '#check-availability' %}
+      {% if loop.first %}
+        {% set loading = "eager" %}
+        {% set fetchpriority = "high" %}
+      {% else %}
+        {% set loading = "lazy" %}
+        {% set fetchpriority = "" %}
+      {% endif %}
+      <article class="catalog-card" data-filters="{{ filterTokens }}">
+        <img
+          src="{{ property.image | imgProxy(900) }}"
+          srcset="{{ property.image | imgProxy(500) }} 500w, {{ property.image | imgProxy(900) }} 900w, {{ property.image | imgProxy(1200) }} 1200w"
+          sizes="(min-width: 1100px) 33vw, (min-width: 768px) 50vw, 100vw"
+          alt="{{ property.name }} - {{ property.specs }} vacation rental in {{ property.city }}, Florida"
+          loading="{{ loading }}"
+          {% if fetchpriority %}fetchpriority="{{ fetchpriority }}"{% endif %}
+          decoding="async"
+          width="900"
+          height="620"
+          onerror="this.onerror=null;this.src='/images/seascape-og-default.jpg';this.srcset='';">
+        <div class="catalog-pill-row">
+          <span class="catalog-pill">{{ primaryTag }}</span>
+          <span class="catalog-pill catalog-rating">{{ uiIcon('star') }} <span>{{ property.rating }}</span></span>
+        </div>
+        <div class="catalog-card-inner">
+          <p class="catalog-location">{{ property.city }}, Florida</p>
+          <h3>{{ property.name }}</h3>
+          <p class="catalog-specs">{{ property.specs }}</p>
+          <p class="catalog-copy">{{ property.description }}</p>
+          <div class="catalog-feature-list">
+            {% for highlight in property.highlights %}
+              {% if loop.index <= 3 %}
+              <span class="catalog-feature">{{ uiIcon('check') }} <span>{{ highlight }}</span></span>
+              {% endif %}
+            {% endfor %}
+          </div>
+          <div class="catalog-actions">
+            <a
+              class="catalog-secondary"
+              href="{{ bookingHref }}"
+              {% if property.bookingUrl %}target="_blank" rel="noopener noreferrer"{% endif %}
+            >Book Direct</a>
+            <a class="btn btn-gold" href="{{ property.pageUrl }}">View Details</a>
+          </div>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+
+    <div class="catalog-empty" id="catalog-empty">
+      No homes match that filter right now. Reset to <strong>All stays</strong> instead of assuming the collection disappeared.
+    </div>
+
+    <div class="catalog-owner-cta">
+      <div>
+        <p class="section-tag">For Owners</p>
+        <h3>Owners notice presentation before they ever ask about management.</h3>
+        <p>
+          See how Seascape positions premium homes for direct bookings, stronger guest trust, and a cleaner owner experience from inquiry to arrival.
+        </p>
+      </div>
+      <div>
+        <a class="btn btn-gold" href="/property-management/">Explore Owner Services</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  (function () {
+    const buttons = Array.from(document.querySelectorAll(".catalog-filter"));
+    const cards = Array.from(document.querySelectorAll(".catalog-card"));
+    const emptyState = document.getElementById("catalog-empty");
+
+    function applyFilter(filter) {
+      let visibleCount = 0;
+
+      cards.forEach((card) => {
+        const haystack = (card.dataset.filters || "").toLowerCase();
+        const matches = filter === "all" || haystack.includes(filter);
+        card.hidden = !matches;
+        if (matches) {
+          visibleCount += 1;
+        }
       });
 
-      applyFilter('all');
-    })();
-  </script>
-</body>
-</html>
+      if (emptyState) {
+        emptyState.classList.toggle("visible", visibleCount === 0);
+      }
+    }
+
+    buttons.forEach((button) => {
+      button.addEventListener("click", () => {
+        buttons.forEach((candidate) => candidate.classList.remove("active"));
+        button.classList.add("active");
+        applyFilter(button.dataset.filter || "all");
+      });
+    });
+
+    applyFilter("all");
+  })();
+</script>

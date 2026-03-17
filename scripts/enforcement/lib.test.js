@@ -9,7 +9,10 @@ const {
   parsePushRefs,
   isProtectedPush,
   findForbiddenSourcePaths,
-  findPlaceholderAnalyticsPaths
+  findMarkerMatches,
+  findPlaceholderAnalyticsPaths,
+  findTemplateLeakMarkers,
+  findStandaloneShellMarkers
 } = require("./lib");
 
 test("parsePushRefs converts pre-push stdin lines into structured refs", () => {
@@ -98,4 +101,34 @@ test("findForbiddenPublicRuntimePaths flags live PMS calls and remote placeholde
   const matches = findForbiddenPublicRuntimePaths(tempRoot).sort();
 
   assert.deepEqual(matches, [placeholderFile, pmsFile].sort());
+});
+
+test("findStandaloneShellMarkers flags legacy SPA shell markers in standalone HTML", () => {
+  const html = `
+    <div id="page-home" class="page"></div>
+    <button onclick="showPage('properties')">Properties</button>
+  `;
+
+  assert.deepEqual(findStandaloneShellMarkers(html), ['id="page-home"', "showPage("]);
+});
+
+test("findTemplateLeakMarkers flags raw template syntax in generated HTML", () => {
+  const html = `
+    <section>{{ properties | length }}</section>
+    {% for property in properties %}
+  `;
+
+  assert.deepEqual(findTemplateLeakMarkers(html), ["{{", "{%"]);
+});
+
+test("findMarkerMatches returns only the disallowed markers present in content", () => {
+  const html = `
+    <span>✍️ By Seascape Vacations</span>
+    <a href="/stays/img-academy-vacation-rentals-bradenton/">IMG rentals</a>
+  `;
+
+  assert.deepEqual(
+    findMarkerMatches(html, ["✍️", "/stays/img-academy-vacation-rentals-bradenton/", "📞"]),
+    ["✍️", "/stays/img-academy-vacation-rentals-bradenton/"]
+  );
 });

@@ -1,3 +1,4 @@
+{% from "partials/ui-icon.njk" import uiIcon %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -25,11 +26,10 @@
     <meta name="robots" content="index, follow">
     <meta name="author" content="Seascape Vacations">
     <link rel="canonical" href="https://seascape-vacations.com/">
+    <link rel="icon" href="/logo-optimized.png" type="image/png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <!-- DNS Prefetch for third-party resources (improves mobile performance) -->
-    <link rel="preconnect" href="https://bookingenginecdn.hostaway.com" crossorigin>
-    <link rel="dns-prefetch" href="https://bookingenginecdn.hostaway.com">
     <link rel="dns-prefetch" href="https://connect.facebook.net">
     <link rel="dns-prefetch" href="https://www.googletagmanager.com">
     <!-- Preload critical assets - responsive hero images -->
@@ -84,8 +84,6 @@
     </noscript>
 
     <!-- Meta Pixel & GA4 - Deferred until after page load for performance -->
-    <script id="public-property-catalog" type="application/json">{{ properties | json | safe }}</script>
-
     <script>
         // Load tracking scripts after page is interactive (non-blocking)
         window.addEventListener('load', function() {
@@ -165,6 +163,111 @@
         a {
             text-decoration: none;
             color: inherit;
+        }
+
+        .ui-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 1em;
+            height: 1em;
+            color: currentColor;
+            flex: 0 0 auto;
+        }
+
+        .ui-icon svg {
+            width: 100%;
+            height: 100%;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 1.85;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .ui-icon--contact {
+            width: 20px;
+            height: 20px;
+            color: var(--brand);
+        }
+
+        .ui-icon--footer {
+            width: 16px;
+            height: 16px;
+            color: rgba(255, 255, 255, 0.82);
+        }
+
+        .ui-icon--inline {
+            width: 14px;
+            height: 14px;
+            vertical-align: -2px;
+        }
+
+        .ui-icon--star svg,
+        .ui-icon--heart-filled svg {
+            fill: currentColor;
+            stroke: none;
+        }
+
+        .ui-icon--mobile-toggle {
+            width: 22px;
+            height: 22px;
+        }
+
+        .ui-icon--control {
+            width: 18px;
+            height: 18px;
+        }
+
+        .ui-icon--carousel {
+            width: 18px;
+            height: 18px;
+        }
+
+        .ui-icon--highlight {
+            width: 14px;
+            height: 14px;
+            color: var(--gold);
+        }
+
+        .ui-icon--toast {
+            width: 18px;
+            height: 18px;
+        }
+
+        .ui-icon--success {
+            width: 28px;
+            height: 28px;
+            color: white;
+        }
+
+        .ui-icon--checkbox {
+            width: 10px;
+            height: 10px;
+            color: white;
+        }
+
+        .ui-icon--review-star {
+            width: 16px;
+            height: 16px;
+            color: var(--gold);
+        }
+
+        .ui-icon--heart {
+            width: 18px;
+            height: 18px;
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
         }
 
         .page {
@@ -355,12 +458,16 @@
         }
 
         .mobile-btn {
-            font-size: 24px;
             background: none;
             border: none;
             cursor: pointer;
             color: var(--stone);
             padding: 8px;
+            width: 44px;
+            height: 44px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .mobile-menu {
@@ -488,7 +595,11 @@
         }
 
         .toast-icon {
-            font-size: 20px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
         }
 
         .toast-message {
@@ -502,7 +613,9 @@
             border: none;
             cursor: pointer;
             color: var(--stone-light);
-            font-size: 18px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .toast.hiding {
@@ -633,8 +746,10 @@
             background: rgba(255,255,255,0.9);
             border: none;
             cursor: pointer;
-            font-size: 20px;
             z-index: 10;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .quick-view-title {
@@ -661,7 +776,11 @@
             margin-bottom: 20px;
         }
 
-        .quick-view-rating .star { color: var(--gold); }
+        .quick-view-rating .ui-icon--star {
+            width: 14px;
+            height: 14px;
+            color: var(--gold);
+        }
 
         .quick-view-highlights {
             margin-bottom: 24px;
@@ -787,6 +906,9 @@
         }
 
         .hero-badge .stars {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
             color: var(--gold);
         }
 
@@ -1015,7 +1137,9 @@
             gap: 6px;
         }
 
-        .prop-badge .star {
+        .prop-badge .ui-icon--star {
+            width: 14px;
+            height: 14px;
             color: var(--gold);
         }
 
@@ -1301,6 +1425,8 @@
         }
 
         .review-stars {
+            display: inline-flex;
+            gap: 4px;
             color: var(--gold);
             font-size: 18px;
             margin-bottom: 20px;
@@ -1919,10 +2045,12 @@
             width: 44px;
             height: 44px;
             border-radius: 50%;
-            font-size: 18px;
             cursor: pointer;
             transition: all 0.2s;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .carousel-arrow:hover {
@@ -2698,7 +2826,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 20px;
             color: var(--stone-light);
             transition: all 0.2s;
         }
@@ -2802,7 +2929,7 @@
             align-items: center;
             justify-content: center;
             margin: 0 auto 20px;
-            font-size: 28px;
+            color: white;
         }
 
         @media (max-width: 600px) {
@@ -2877,7 +3004,7 @@
                 <button class="btn" onclick="window.open('https://book.seascape-vacations.com', '_blank')">Book
                     Direct</button>
             </div>
-            <button class="mobile-btn" onclick="toggleMenu()">☰</button>
+            <button class="mobile-btn" onclick="toggleMenu()" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">{{ uiIcon('menu', 'ui-icon--mobile-toggle') }}</button>
         </div>
         <div id="mobileMenu" class="mobile-menu">
             <span class="mobile-item" onclick="showPage('home'); toggleMenu()">Home</span>
@@ -2905,7 +3032,7 @@
     <!-- Quick View Modal -->
     <div class="quick-view-overlay" id="quick-view-overlay" onclick="closeQuickView(event)">
         <div class="quick-view-modal" onclick="event.stopPropagation()">
-            <button class="quick-view-close" onclick="closeQuickView(event)">×</button>
+            <button class="quick-view-close" type="button" aria-label="Close quick view" onclick="closeQuickView(event)">{{ uiIcon('close', 'ui-icon--control') }}</button>
             <div class="quick-view-gallery" id="quick-view-gallery">
                 <img id="quick-view-img" src="" alt="Property photo">
                 <button class="quick-view-nav prev" onclick="quickViewNav(-1)">‹</button>
@@ -2916,7 +3043,7 @@
                 <h2 class="quick-view-title" id="quick-view-title"></h2>
                 <p class="quick-view-location" id="quick-view-location"></p>
                 <div class="quick-view-rating">
-                    <span class="star">★</span>
+                    {{ uiIcon('star', 'ui-icon--star') }}
                     <span id="quick-view-rating">5.0</span>
                 </div>
                 <div class="quick-view-highlights" id="quick-view-highlights"></div>
@@ -2975,7 +3102,7 @@
             <div class="hero-overlay"></div>
             <div class="hero-content">
                 <div class="hero-badge">
-                    <span class="stars">★★★★★</span>
+                    <span class="stars">{{ uiIcon('star', 'ui-icon--star') }}{{ uiIcon('star', 'ui-icon--star') }}{{ uiIcon('star', 'ui-icon--star') }}{{ uiIcon('star', 'ui-icon--star') }}{{ uiIcon('star', 'ui-icon--star') }}</span>
                     <span>Rated Excellent by 500+ Guests</span>
                 </div>
                 <h1 class="hero-title">
@@ -3026,20 +3153,20 @@
             <div class="container">
                 <div class="stats-bar">
                     <div class="stat-item">
-                        <div class="stat-value">5.0</div>
-                        <div class="stat-label">Guest Rating</div>
+                        <div class="stat-value">4.98</div>
+                        <div class="stat-label">Airbnb Rating</div>
                     </div>
                     <div class="stat-item">
-                        <div class="stat-value">500+</div>
-                        <div class="stat-label">Happy Guests</div>
+                        <div class="stat-value">650+</div>
+                        <div class="stat-label">5-Star Reviews</div>
                     </div>
                     <div class="stat-item">
-                        <div class="stat-value">1%</div>
-                        <div class="stat-label">Top Occupancy</div>
+                        <div class="stat-value">10-15%</div>
+                        <div class="stat-label">Book Direct Savings</div>
                     </div>
                     <div class="stat-item">
                         <div class="stat-value">24/7</div>
-                        <div class="stat-label">Support</div>
+                        <div class="stat-label">Local Support</div>
                     </div>
                 </div>
             </div>
@@ -3088,7 +3215,7 @@
                                     <h3 class="prop-title">{{ property.name }}</h3>
                                     <p class="prop-location">{{ property.city }} · {{ property.specs }}</p>
                                 </div>
-                                <div class="prop-badge"><span class="star">★</span> {{ property.rating }}</div>
+                                <div class="prop-badge">{{ uiIcon('star', 'ui-icon--star') }} {{ property.rating }}</div>
                             </div>
                             <div>
                                 <p class="prop-desc-snippet">
@@ -3149,7 +3276,7 @@
                 </div>
                 <div class="review-grid">
                     <div class="review-card">
-                        <div class="review-stars">★★★★★</div>
+                        <div class="review-stars">{{ uiIcon('star', 'ui-icon--review-star') }}{{ uiIcon('star', 'ui-icon--review-star') }}{{ uiIcon('star', 'ui-icon--review-star') }}{{ uiIcon('star', 'ui-icon--review-star') }}{{ uiIcon('star', 'ui-icon--review-star') }}</div>
                         <p class="review-text">"This home was by far the best we have ever rented. We saw Manatees and
                             Dolphins right from the back porch!! The home was absolutely beautiful, and decorated to a
                             T!"</p>
@@ -3162,7 +3289,7 @@
                         </div>
                     </div>
                     <div class="review-card">
-                        <div class="review-stars">★★★★★</div>
+                        <div class="review-stars">{{ uiIcon('star', 'ui-icon--review-star') }}{{ uiIcon('star', 'ui-icon--review-star') }}{{ uiIcon('star', 'ui-icon--review-star') }}{{ uiIcon('star', 'ui-icon--review-star') }}{{ uiIcon('star', 'ui-icon--review-star') }}</div>
                         <p class="review-text">"Hands down the best rental we've ever experienced. The place was
                             spotlessly clean and the hosts responded to every question immediately!"</p>
                         <div class="review-author">
@@ -3174,7 +3301,7 @@
                         </div>
                     </div>
                     <div class="review-card">
-                        <div class="review-stars">★★★★★</div>
+                        <div class="review-stars">{{ uiIcon('star', 'ui-icon--review-star') }}{{ uiIcon('star', 'ui-icon--review-star') }}{{ uiIcon('star', 'ui-icon--review-star') }}{{ uiIcon('star', 'ui-icon--review-star') }}{{ uiIcon('star', 'ui-icon--review-star') }}</div>
                         <p class="review-text">"Absolutely perfect for our family vacation! The property is stunning and
                             had everything we needed. Can't wait to come back!"</p>
                         <div class="review-author">
@@ -3333,8 +3460,8 @@
             <div class="photo-carousel">
                 <div class="carousel-main">
                     <img id="carousel-main-img" src="" alt="Property photo">
-                    <button class="carousel-arrow carousel-prev" onclick="changeCarouselImage(-1)">❮</button>
-                    <button class="carousel-arrow carousel-next" onclick="changeCarouselImage(1)">❯</button>
+                    <button class="carousel-arrow carousel-prev" type="button" aria-label="Previous photo" onclick="changeCarouselImage(-1)">{{ uiIcon('chevron-left', 'ui-icon--carousel') }}</button>
+                    <button class="carousel-arrow carousel-next" type="button" aria-label="Next photo" onclick="changeCarouselImage(1)">{{ uiIcon('chevron-right', 'ui-icon--carousel') }}</button>
                     <div class="carousel-counter"><span id="carousel-current">1</span> / <span
                             id="carousel-total">5</span></div>
                 </div>
@@ -3375,7 +3502,7 @@
                 <div class="blog-grid">
                     <div class="blog-card">
                         <div class="blog-card-img"><img
-                                src="/images/anna-maria-island-og.jpg"
+                                src="/images/ami-beach-hero.webp"
                                 alt="Beach"></div>
                         <div class="blog-card-body">
                             <span class="blog-tag">Beaches</span>
@@ -3386,7 +3513,7 @@
                     </div>
                     <div class="blog-card">
                         <div class="blog-card-img"><img
-                                src="/images/bradenton-og.jpg"
+                                src="/images/bradenton-beach.webp"
                                 alt="Wildlife"></div>
                         <div class="blog-card-body">
                             <span class="blog-tag">Wildlife</span>
@@ -3397,7 +3524,7 @@
                     </div>
                     <div class="blog-card">
                         <div class="blog-card-img"><img
-                                src="/images/sarasota-og.jpg"
+                                src="/images/sarasota-hero.webp"
                                 alt="Shopping"></div>
                         <div class="blog-card-body">
                             <span class="blog-tag">Shopping</span>
@@ -3408,7 +3535,7 @@
                     </div>
                     <div class="blog-card">
                         <div class="blog-card-img"><img
-                                src="/images/bradenton-beach.webp"
+                                src="/images/ami-hero.webp"
                                 alt="Kayak"></div>
                         <div class="blog-card-body">
                             <span class="blog-tag">Water Sports</span>
@@ -3419,7 +3546,7 @@
                     </div>
                     <div class="blog-card">
                         <div class="blog-card-img"><img
-                                src="/images/bradenton-beach.jpg"
+                                src="/images/bradenton-beach.webp"
                                 alt="Fishing"></div>
                         <div class="blog-card-body">
                             <span class="blog-tag">Fishing</span>
@@ -3454,7 +3581,7 @@
             <div class="page-hero-content">
                 <div
                     style="display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);color:white;padding:8px 20px;border-radius:30px;font-size:13px;font-weight:600;letter-spacing:0.05em;margin-bottom:20px;">
-                    ⭐ TOP 1% OCCUPANCY IN MANATEE COUNTY
+                    {{ uiIcon('star', 'ui-icon--inline ui-icon--star') }} Top 1% Occupancy In Manatee County
                 </div>
                 <h1 class="page-hero-title">Your Property. Our Expertise.<br>Proven Results.</h1>
                 <p class="page-hero-subtitle">We don't just manage properties—we maximize them. Our hands-on approach
@@ -3497,7 +3624,7 @@
                             style="display:grid;grid-template-columns:1fr 1fr 1fr;text-align:center;border-bottom:1px solid var(--cream-dark);">
                             <div style="padding:20px;font-weight:500;color:var(--stone);">Guest Rating</div>
                             <div style="padding:20px;color:var(--stone-light);">4.5-4.7</div>
-                            <div style="padding:20px;font-weight:700;color:var(--brand);font-size:18px;">5.0 ⭐</div>
+                            <div style="padding:20px;font-weight:700;color:var(--brand);font-size:18px;display:inline-flex;justify-content:center;align-items:center;gap:6px;">5.0 {{ uiIcon('star', 'ui-icon--inline ui-icon--star') }}</div>
                         </div>
                         <div
                             style="display:grid;grid-template-columns:1fr 1fr 1fr;text-align:center;border-bottom:1px solid var(--cream-dark);">
@@ -3876,7 +4003,7 @@
                         </div>
                         <button type="submit" class="btn btn-white" style="width:100%;padding:18px;font-size:16px;">Get
                             My Free Revenue Estimate →</button>
-                        <p style="text-align:center;color:rgba(255,255,255,0.6);font-size:12px;margin-top:16px;">📞
+                        <p style="text-align:center;color:rgba(255,255,255,0.6);font-size:12px;margin-top:16px;">{{ uiIcon('phone', 'ui-icon--inline') }}
                             Prefer to talk? Call <a href="tel:9417048545"
                                 style="color:white;text-decoration:underline;">(941) 704-8545</a></p>
                     </form>
@@ -3904,7 +4031,7 @@
                 <div class="blog-grid">
                     <div class="blog-card" onclick="showPage('blog-1')">
                         <div class="blog-card-img"><img
-                                src="/images/anna-maria-island-og.jpg"
+                                src="/images/ami-beach-hero.webp"
                                 alt="Anna Maria Island beaches"></div>
                         <div class="blog-card-body">
                             <span class="blog-tag">Beach Guide</span>
@@ -3916,7 +4043,7 @@
                     </div>
                     <div class="blog-card" onclick="showPage('blog-2')">
                         <div class="blog-card-img"><img
-                                src="/images/seascape-og-default.jpg"
+                                src="/hero-optimized.webp"
                                 alt="Book direct vacation rental"></div>
                         <div class="blog-card-body">
                             <span class="blog-tag">Travel Tips</span>
@@ -3928,7 +4055,7 @@
                     </div>
                     <div class="blog-card" onclick="showPage('blog-3')">
                         <div class="blog-card-img"><img
-                                src="/images/sarasota-sunset-hero.jpg"
+                                src="/images/ami-colorful-cottages.jpg"
                                 alt="Restaurants Anna Maria Island"></div>
                         <div class="blog-card-body">
                             <span class="blog-tag">Food & Dining</span>
@@ -3952,7 +4079,7 @@
                     </div>
                     <div class="blog-card" onclick="showPage('blog-5')">
                         <div class="blog-card-img"><img
-                                src="/images/ami-beach-hero.webp"
+                                src="/images/sarasota-sunset-hero.jpg"
                                 alt="Best time visit Florida"></div>
                         <div class="blog-card-body">
                             <span class="blog-tag">Travel Planning</span>
@@ -3964,7 +4091,7 @@
                     </div>
                     <div class="blog-card" onclick="showPage('blog-6')">
                         <div class="blog-card-img"><img
-                                src="/images/bradenton-og.jpg"
+                                src="/images/bradenton-beach.jpg"
                                 alt="Dolphins Florida"></div>
                         <div class="blog-card-body">
                             <span class="blog-tag">Wildlife</span>
@@ -3976,7 +4103,7 @@
                     </div>
                     <div class="blog-card" onclick="showPage('blog-7')">
                         <div class="blog-card-img"><img
-                                src="/images/holmes-beach.jpg"
+                                src="/images/bradenton-beach.jpg"
                                 alt="Seashells Florida beaches"></div>
                         <div class="blog-card-body">
                             <span class="blog-tag">Shelling</span>
@@ -3988,7 +4115,7 @@
                     </div>
                     <div class="blog-card" onclick="showPage('blog-8')">
                         <div class="blog-card-img"><img
-                                src="/images/bradenton-beach.jpg"
+                                src="/images/bradenton-beach.webp"
                                 alt="Fishing Anna Maria Island"></div>
                         <div class="blog-card-body">
                             <span class="blog-tag">Fishing</span>
@@ -4014,7 +4141,7 @@
                     </div>
                     <div class="blog-card" onclick="showPage('blog-10')" style="border:2px solid var(--gold);">
                         <div class="blog-card-img"><img
-                                src="/images/seascape-og-default.jpg"
+                                src="/hero-optimized.webp"
                                 alt="Vacation rental income Anna Maria Island"></div>
                         <div class="blog-card-body">
                             <span class="blog-tag"
@@ -4042,7 +4169,7 @@
                 <h1 style="font-size:clamp(32px,5vw,48px);color:var(--brand-dark);margin-bottom:16px;line-height:1.2">
                     The Ultimate Guide to Anna Maria Island Beaches</h1>
                 <p style="color:var(--stone-light);margin-bottom:32px">Updated January 2025 • 8 min read</p>
-                <img loading="lazy" src="/images/anna-maria-island-og.jpg"
+                <img loading="lazy" src="/images/ami-beach-hero.webp"
                     alt="Anna Maria Island beach"
                     style="width:100%;height:400px;object-fit:cover;border-radius:24px;margin-bottom:40px">
 
@@ -4113,7 +4240,7 @@
                 <h1 style="font-size:clamp(32px,5vw,48px);color:var(--brand-dark);margin-bottom:16px;line-height:1.2">
                     Why Booking Direct Saves You Hundreds on Vacation Rentals</h1>
                 <p style="color:var(--stone-light);margin-bottom:32px">Updated January 2025 • 6 min read</p>
-                <img loading="lazy" src="/images/seascape-og-default.jpg"
+                <img loading="lazy" src="/hero-optimized.webp"
                     alt="Luxury vacation home"
                     style="width:100%;height:400px;object-fit:cover;border-radius:24px;margin-bottom:40px">
 
@@ -4184,7 +4311,7 @@
                 <h1 style="font-size:clamp(32px,5vw,48px);color:var(--brand-dark);margin-bottom:16px;line-height:1.2">15
                     Best Restaurants Near Anna Maria Island</h1>
                 <p style="color:var(--stone-light);margin-bottom:32px">Updated January 2025 • 10 min read</p>
-                <img loading="lazy" src="/images/sarasota-sunset-hero.jpg"
+                <img loading="lazy" src="/images/ami-colorful-cottages.jpg"
                     alt="Fresh seafood"
                     style="width:100%;height:400px;object-fit:cover;border-radius:24px;margin-bottom:40px">
                 <div style="font-size:17px;line-height:1.9;color:var(--stone)">
@@ -4263,7 +4390,7 @@
                 <h1 style="font-size:clamp(32px,5vw,48px);color:var(--brand-dark);margin-bottom:16px;line-height:1.2">
                     Best Time to Visit Anna Maria Island: A Month-by-Month Guide</h1>
                 <p style="color:var(--stone-light);margin-bottom:32px">Updated January 2025 • 9 min read</p>
-                <img loading="lazy" src="/images/ami-beach-hero.webp"
+                <img loading="lazy" src="/images/sarasota-sunset-hero.jpg"
                     alt="Sunset beach"
                     style="width:100%;height:400px;object-fit:cover;border-radius:24px;margin-bottom:40px">
                 <div style="font-size:17px;line-height:1.9;color:var(--stone)">
@@ -4302,7 +4429,7 @@
                 <h1 style="font-size:clamp(32px,5vw,48px);color:var(--brand-dark);margin-bottom:16px;line-height:1.2">
                     Where to See Dolphins and Manatees Near Bradenton</h1>
                 <p style="color:var(--stone-light);margin-bottom:32px">Updated January 2025 • 7 min read</p>
-                <img loading="lazy" src="/images/bradenton-og.jpg"
+                <img loading="lazy" src="/images/bradenton-beach.webp"
                     alt="Dolphins"
                     style="width:100%;height:400px;object-fit:cover;border-radius:24px;margin-bottom:40px">
                 <div style="font-size:17px;line-height:1.9;color:var(--stone)">
@@ -4342,7 +4469,7 @@
                 <h1 style="font-size:clamp(32px,5vw,48px);color:var(--brand-dark);margin-bottom:16px;line-height:1.2">
                     Ultimate Shelling Guide: Anna Maria Island, Siesta Key & Sanibel</h1>
                 <p style="color:var(--stone-light);margin-bottom:32px">Updated January 2025 • 10 min read</p>
-                <img loading="lazy" src="/images/holmes-beach.jpg"
+                <img loading="lazy" src="/images/bradenton-beach.jpg"
                     alt="Seashells on Florida beach"
                     style="width:100%;height:400px;object-fit:cover;border-radius:24px;margin-bottom:40px">
 
@@ -4433,7 +4560,7 @@
                 <h1 style="font-size:clamp(32px,5vw,48px);color:var(--brand-dark);margin-bottom:16px;line-height:1.2">
                     Complete Fishing Guide: Anna Maria, Bradenton & Sarasota</h1>
                 <p style="color:var(--stone-light);margin-bottom:32px">Updated January 2025 • 12 min read</p>
-                <img loading="lazy" src="/images/bradenton-beach.jpg"
+                <img loading="lazy" src="/images/bradenton-beach.webp"
                     alt="Fishing Florida Gulf Coast"
                     style="width:100%;height:400px;object-fit:cover;border-radius:24px;margin-bottom:40px">
 
@@ -4638,7 +4765,7 @@
                 <h1 style="font-size:clamp(32px,5vw,48px);color:var(--brand-dark);margin-bottom:16px;line-height:1.2">
                     How Much Can You Make Renting Your House on Anna Maria Island?</h1>
                 <p style="color:var(--stone-light);margin-bottom:32px">Updated January 2026 • 10 min read</p>
-                <img loading="lazy" src="/images/seascape-og-default.jpg"
+                <img loading="lazy" src="/hero-optimized.webp"
                     alt="Luxury vacation rental Anna Maria Island"
                     style="width:100%;height:400px;object-fit:cover;border-radius:24px;margin-bottom:40px">
 
@@ -4858,7 +4985,7 @@
                             <a href="tel:9417048545"
                                 style="display:flex;align-items:center;gap:16px;padding:16px 0;border-bottom:1px solid var(--cream-dark);color:var(--stone)">
                                 <span
-                                    style="width:44px;height:44px;background:var(--cream);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px">📞</span>
+                                    style="width:44px;height:44px;background:var(--cream);border-radius:12px;display:flex;align-items:center;justify-content:center;">{{ uiIcon('phone', 'ui-icon--contact') }}</span>
                                 <div>
                                     <div style="font-size:13px;color:var(--stone-light);margin-bottom:4px">Phone</div>
                                     <div style="font-weight:600">(941) 704-8545</div>
@@ -4867,7 +4994,7 @@
                             <a href="mailto:info@seascape-vacations.com"
                                 style="display:flex;align-items:center;gap:16px;padding:16px 0;color:var(--stone)">
                                 <span
-                                    style="width:44px;height:44px;background:var(--cream);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px">✉️</span>
+                                    style="width:44px;height:44px;background:var(--cream);border-radius:12px;display:flex;align-items:center;justify-content:center;">{{ uiIcon('email', 'ui-icon--contact') }}</span>
                                 <div>
                                     <div style="font-size:13px;color:var(--stone-light);margin-bottom:4px">Email</div>
                                     <div style="font-weight:600">info@seascape-vacations.com</div>
@@ -4923,12 +5050,12 @@
                         Sarasota-Bradenton area. Experience exceptional service and unforgettable stays.</p>
                     <div style="margin-top: 16px;">
                         <a href="tel:9417048545" class="footer-link"
-                            style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">📞 (941)
+                            style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">{{ uiIcon('phone', 'ui-icon--footer') }} (941)
                             704-8545</a>
                         <a href="mailto:info@seascape-vacations.com" class="footer-link"
-                            style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">✉
+                            style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">{{ uiIcon('email', 'ui-icon--footer') }}
                             info@seascape-vacations.com</a>
-                        <span class="footer-link" style="display: flex; align-items: center; gap: 8px;">📍
+                        <span class="footer-link" style="display: flex; align-items: center; gap: 8px;">{{ uiIcon('location', 'ui-icon--footer') }}
                             Sarasota-Bradenton, FL</span>
                     </div>
                 </div>
@@ -4983,12 +5110,30 @@
             }
         }
 
+        function createIconMarkup(name, className = '') {
+            const icons = {
+                menu: '<path d="M4 7h16"/><path d="M4 12h16"/><path d="M4 17h16"/>',
+                close: '<path d="M6 6 18 18"/><path d="m6 18 12-12"/>',
+                check: '<path d="m5 12 4 4L19 6"/>',
+                info: '<circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 8h.01"/>',
+                heart: '<path d="m12 20-1.45-1.32C5.4 14.03 2 10.97 2 7.25 2 4.42 4.24 2.2 7.05 2.2c1.6 0 3.13.75 4.1 1.94.97-1.19 2.5-1.94 4.1-1.94C18.76 2.2 21 4.42 21 7.25c0 3.72-3.4 6.78-8.55 11.43L12 20Z"/>',
+                star: '<path d="m12 3.5 2.78 5.63 6.22.91-4.5 4.39 1.06 6.19L12 17.7l-5.56 2.92 1.06-6.19L3 10.04l6.22-.91L12 3.5Z"/>'
+            };
+            const extraClass = className ? ` ${className}` : '';
+            return `<span class="ui-icon${extraClass}" aria-hidden="true"><svg viewBox="0 0 24 24">${icons[name] || icons.info}</svg></span>`;
+        }
+
         // Mobile Menu
         function toggleMenu() {
             const menu = document.getElementById('mobileMenu');
             const btn = document.querySelector('.mobile-btn');
             menu.classList.toggle('active');
-            btn.textContent = menu.classList.contains('active') ? '✕' : '☰';
+            const isExpanded = menu.classList.contains('active');
+            btn.innerHTML = isExpanded
+                ? createIconMarkup('close', 'ui-icon--mobile-toggle')
+                : createIconMarkup('menu', 'ui-icon--mobile-toggle');
+            btn.setAttribute('aria-label', isExpanded ? 'Close menu' : 'Open menu');
+            btn.setAttribute('aria-expanded', isExpanded ? 'true' : 'false');
         }
 
         // Scroll Effect for Nav
@@ -5104,7 +5249,7 @@
         }, { threshold: 0.5 });
 
         function initCounters() {
-            document.querySelectorAll('.stat-value').forEach(stat => {
+            document.querySelectorAll('[data-animate-counter="true"]').forEach(stat => {
                 const text = stat.textContent.trim();
                 stat.dataset.target = text;
                 stat.textContent = '0';
@@ -5249,15 +5394,65 @@
             }));
         }
 
-        // ===== PROPERTY DATA ENGINE =====
-        const propertyCatalogNode = document.getElementById('public-property-catalog');
-        let propertyData = [];
-
-        try {
-            propertyData = optimizePropertyImages(JSON.parse(propertyCatalogNode?.textContent || '[]'));
-        } catch (error) {
-            console.error('Failed to parse public property catalog:', error);
+        function firstDefined(...values) {
+            return values.find(value => value !== undefined && value !== null && value !== '');
         }
+
+        function summarizeDescription(description, fallbackDescription = '') {
+            if (typeof description !== 'string' || !description.trim()) {
+                return fallbackDescription;
+            }
+
+            const firstParagraph = description
+                .replace(/\r/g, '')
+                .split('\n\n')
+                .map(part => part.trim())
+                .find(Boolean) || description.trim();
+
+            if (firstParagraph.length <= 260) {
+                return firstParagraph;
+            }
+
+            const firstSentence = firstParagraph.match(/^(.{0,260}?[.!?])(\s|$)/);
+            if (firstSentence && firstSentence[1]) {
+                return firstSentence[1].trim();
+            }
+
+            return `${firstParagraph.slice(0, 257).trim()}...`;
+        }
+
+        // ===== PROPERTY DATA ENGINE =====
+        const propertySeed = {{ properties | json | safe }};
+
+        function deriveTags(amenities = []) {
+            const tags = new Set();
+            const list = amenities.map(a => String(a).toLowerCase());
+            if (list.some(a => a.includes('waterfront'))) tags.add('Waterfront');
+            if (list.some(a => a.includes('pool'))) tags.add('Private Pool');
+            if (list.some(a => a.includes('pet'))) tags.add('Pet Friendly');
+            if (list.some(a => a.includes('hot') || a.includes('spa'))) tags.add('Hot Tub');
+            return tags.size ? Array.from(tags) : ['All Stays'];
+        }
+        const propertyData = optimizePropertyImages(
+            (propertySeed || []).map(p => ({
+                ...p,
+                id: String(p.id || p.slug),
+                title: p.title || p.name,
+                location: p.location || p.city || "",
+                guests: p.guests || 0,
+                bedrooms: p.bedrooms || 0,
+                bathrooms: p.bathrooms || 0,
+                rating: p.rating || 5.0,
+                image: p.heroImage || p.image || "",
+                images: Array.isArray(p.gallery) && p.gallery.length ? p.gallery : (p.images || []),
+                description: p.description ? summarizeDescription(p.description, "") : "",
+                highlights: Array.isArray(p.highlights) ? p.highlights : [],
+                amenities: Array.isArray(p.amenities) ? p.amenities : [],
+                specs: p.specs || (String(p.bedrooms || 0) + " BR · " + String(p.bathrooms || 0) + " BA · Sleeps " + String(p.guests || 0)),
+                tags: Array.isArray(p.tags) && p.tags.length ? p.tags : deriveTags(p.amenities || []),
+                bookingUrl: p.bookingUrl || ""
+            }))
+        );
 
         function renderProperties(filter = 'All Stays') {
             const container = document.getElementById('property-grid');
@@ -5295,7 +5490,7 @@
                                 <h3 class="prop-title">${p.title}</h3>
                                 <p class="prop-location">${p.location} · ${p.specs}</p>
                             </div>
-                            <div class="prop-badge"><span class="star">★</span> ${p.rating}</div>
+                            <div class="prop-badge">${createIconMarkup('star', 'ui-icon--star')} ${p.rating}</div>
                         </div>
                         <div>
                             ${description ? `<p class="prop-desc-snippet">${description}</p>` : ''}
@@ -5344,7 +5539,7 @@
             // Highlights
             const highlightsContainer = document.getElementById('quick-view-highlights');
             highlightsContainer.innerHTML = (p.amenities || p.highlights || []).slice(0,5).map(h => 
-                `<div class="quick-view-highlight"><span style="color:var(--gold)">✓</span> ${h}</div>`
+                `<div class="quick-view-highlight">${createIconMarkup('check', 'ui-icon--highlight')} ${h}</div>`
             ).join('');
 
             // Gallery dots
@@ -5420,13 +5615,17 @@
                 document.body.appendChild(container);
             }
 
-            const icons = { success: '✓', error: '✕', info: 'ℹ' };
+            const icons = {
+                success: createIconMarkup('check', 'ui-icon--toast'),
+                error: createIconMarkup('close', 'ui-icon--toast'),
+                info: createIconMarkup('info', 'ui-icon--toast')
+            };
             const toast = document.createElement('div');
             toast.className = `toast ${type}`;
             toast.innerHTML = `
-                <span class="toast-icon">${icons[type] || 'ℹ'}</span>
+                <span class="toast-icon">${icons[type] || icons.info}</span>
                 <span class="toast-message">${message}</span>
-                <button class="toast-close" onclick="this.parentElement.classList.add('hiding'); setTimeout(() => this.parentElement.remove(), 300)">×</button>
+                <button class="toast-close" type="button" aria-label="Dismiss notification" onclick="this.parentElement.classList.add('hiding'); setTimeout(() => this.parentElement.remove(), 300)">${createIconMarkup('close', 'ui-icon--control')}</button>
             `;
 
             container.appendChild(toast);
@@ -5448,14 +5647,14 @@
                 const index = favorites.indexOf(propertyId);
                 favorites.splice(index, 1);
                 btn.classList.remove('active');
-                heart.textContent = '♡';
+                heart.innerHTML = createIconMarkup('heart', 'ui-icon--heart');
                 showToast('Removed from favorites', 'info');
             } else {
                 // Add to favorites
                 favorites.push(propertyId);
                 btn.classList.add('active');
-                heart.textContent = '♥';
-                showToast('Added to favorites! ❤️', 'success');
+                heart.innerHTML = createIconMarkup('heart', 'ui-icon--heart-filled');
+                showToast('Added to favorites.', 'success');
             }
             
             localStorage.setItem('seascape_favorites', JSON.stringify(favorites));
@@ -5468,7 +5667,7 @@
                 const propertyId = btn.getAttribute('onclick').match(/'([^']+)'/)?.[1];
                 if (propertyId && favorites.includes(propertyId)) {
                     btn.classList.add('active');
-                    btn.querySelector('.heart').textContent = '♥';
+                    btn.querySelector('.heart').innerHTML = createIconMarkup('heart', 'ui-icon--heart-filled');
                 }
             });
         }
@@ -5555,7 +5754,7 @@
             },
             'support': {
                 title: 'Support Center',
-                content: `<p>Need help? Our local team is available 24/7.</p><p>📞 <strong>(941) 555-0123</strong></p><p>✉️ <a href="mailto:support@seascape-vacations.com" style="color:var(--brand)">support@seascape-vacations.com</a></p><p>For urgent maintenance issues, please call the emergency line provided in your check-in instructions.</p>`
+                content: `<p>Need help? Our local team is available 24/7.</p><p><strong>Phone:</strong> (941) 555-0123</p><p><strong>Email:</strong> <a href="mailto:support@seascape-vacations.com" style="color:var(--brand)">support@seascape-vacations.com</a></p><p>For urgent maintenance issues, please call the emergency line provided in your check-in instructions.</p>`
             }
         };
 
@@ -5605,11 +5804,11 @@
     <!-- EMAIL CAPTURE POPUP -->
     <div id="email-popup" class="email-popup-overlay" onclick="closeEmailPopup()">
         <div class="email-popup" onclick="event.stopPropagation()">
-            <button class="email-popup-close" onclick="closeEmailPopup()">&times;</button>
+            <button class="email-popup-close" type="button" aria-label="Close offer popup" onclick="closeEmailPopup()">{{ uiIcon('close', 'ui-icon--control') }}</button>
 
             <!-- Form Content -->
             <div id="email-form-content">
-                <span class="email-popup-badge">✨ Exclusive Offer</span>
+                <span class="email-popup-badge">Exclusive Offer</span>
                 <h3 class="email-popup-title">Get $50 Off Your Next Stay</h3>
                 <p class="email-popup-subtitle">Join our list for exclusive deals, local tips, and priority access to
                     new properties. Book direct and save more.</p>
@@ -5621,12 +5820,12 @@
                     <button type="submit" class="email-popup-btn">Get My $50 Credit →</button>
                 </form>
 
-                <p class="email-popup-privacy">🔒 No spam, ever. Unsubscribe anytime.</p>
+                <p class="email-popup-privacy">{{ uiIcon('secure', 'ui-icon--inline') }} No spam, ever. Unsubscribe anytime.</p>
             </div>
 
             <!-- Success Content -->
             <div id="email-success-content" class="email-popup-success">
-                <div class="email-popup-success-icon">✓</div>
+                <div class="email-popup-success-icon">{{ uiIcon('check', 'ui-icon--success') }}</div>
                 <h3 class="email-popup-title">You're In!</h3>
                 <p class="email-popup-subtitle">Check your inbox for your exclusive $50 credit code. We'll only send
                     you the good stuff.</p>
@@ -5728,7 +5927,7 @@
             // Show success state
             const submitBtn = form.querySelector('button[type="submit"]');
             const originalText = submitBtn.textContent;
-            submitBtn.textContent = '✓ Request Sent!';
+            submitBtn.textContent = 'Request Sent';
             submitBtn.style.background = 'var(--gold)';
             submitBtn.disabled = true;
 
@@ -5758,9 +5957,8 @@
                 if (checkbox.checked) {
                     checkboxSpan.style.background = 'var(--brand)';
                     checkboxSpan.style.borderColor = 'var(--brand)';
-                    checkboxSpan.innerHTML = '✓';
+                    checkboxSpan.innerHTML = createIconMarkup('check', 'ui-icon--checkbox');
                     checkboxSpan.style.color = 'white';
-                    checkboxSpan.style.fontSize = '11px';
                 } else {
                     checkboxSpan.style.background = '';
                     checkboxSpan.style.borderColor = '#ccc';
@@ -5827,7 +6025,7 @@
             console.log('Calculator lead captured:', email);
 
             const btn = this.querySelector('button[type="submit"]');
-            btn.textContent = '✓ Sent!';
+            btn.textContent = 'Sent!';
             btn.style.background = 'var(--brand)';
             btn.style.color = 'white';
             this.reset();

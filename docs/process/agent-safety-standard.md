@@ -18,9 +18,10 @@ These rules apply to any coding or content agent working in this repo: Codex, Cl
 2. Make source changes.
 3. Run `npm run build`.
 4. Run the task-specific checks.
-5. Smoke test the changed routes.
-6. Review the diff for unrelated churn.
-7. Only then push or merge `main`.
+5. Complete the pre-review gate in `docs/process/before-user-review-checklist.md` before asking a human to review UI or content.
+6. Smoke test the changed routes.
+7. Review the diff for unrelated churn.
+8. Only then push or merge `main`.
 
 ## Installed enforcement
 
@@ -33,6 +34,7 @@ These rules apply to any coding or content agent working in this repo: Codex, Cl
 
 At minimum, an agent must use the repo checklist in:
 
+- `docs/process/before-user-review-checklist.md`
 - `docs/process/before-merge-checklist.md`
 
 If the task touches recovered site areas, run:
