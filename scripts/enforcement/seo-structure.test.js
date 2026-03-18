@@ -82,6 +82,17 @@ test("guides hub is generated from current data and does not hardcode stale reho
   assert.equal(guidesHub.includes("/stays/luxury-concierge-services/"), false);
 });
 
+test("about page exists as a real route and homepage links point to it", () => {
+  const homepage = fs.readFileSync(path.join(projectRoot, "src", "index.njk"), "utf8");
+  const redirects = fs.readFileSync(path.join(projectRoot, "src", "_redirects"), "utf8");
+  const aboutPagePath = path.join(projectRoot, "src", "about-us", "index.njk");
+
+  assert.equal(fs.existsSync(aboutPagePath), true);
+  assert.equal(homepage.includes('href="/about-us/"'), true);
+  assert.equal(homepage.includes('href="#welcome"'), false);
+  assert.equal(redirects.includes("/about-us   /about-us/   301"), true);
+});
+
 test("new rehomed guide and service pages exist", () => {
   for (const pagePath of [
     path.join(projectRoot, "src", "guides", "hurricane-preparedness-florida-vacation.html"),
