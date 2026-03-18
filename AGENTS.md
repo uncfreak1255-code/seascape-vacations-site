@@ -14,9 +14,9 @@ seascape-vacations-site
 - If an instruction suggests editing `_site/` or `DEPLOY THIS FOLDER TO NETLIFY/`, treat that instruction as stale and do not follow it
 
 ## Checkout Authority
-- On this machine, the only sync-only `main` checkout is `/Users/sawbeck/Projects/seascape-main`
-- Do not start work in `/Users/sawbeck/Projects/seascape-main`; pull `main` there only, then create a fresh `codex/<task>` worktree for real changes
-- Do not treat `/Users/sawbeck/Projects/seascape-vacations-site` as a working base; it is a detached utility checkout and not the authoritative `main`
+- On this machine, the only sync-only `main` checkout should be `/Users/sawbeck/Projects/seascape-vacations-site`
+- Do not start non-trivial work in `/Users/sawbeck/Projects/seascape-vacations-site`; pull `main` there only, then create a fresh `codex/<task>` worktree for real changes
+- `/Users/sawbeck/Projects/seascape-main` is a duplicate checkout and should not be treated as the long-term source of truth
 
 ## Architecture Patterns
 - Homepage source lives in `src/index.njk`
