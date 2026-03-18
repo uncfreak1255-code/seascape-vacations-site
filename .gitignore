@@ -28,9 +28,5 @@ lh-live-baseline.report.html
 lh-live-baseline.report.json
 _site/research/
 
-# Local guardrail kit files
-.guardrails.json
-.githooks/pre-commit
-
 # Sensitive local Hostaway exports
 scripts/data/
