@@ -90,3 +90,70 @@ test("new rehomed guide and service pages exist", () => {
     assert.equal(fs.existsSync(pagePath), true);
   }
 });
+
+test("retired duplicate guides are excluded and redirect to canonical guide paths", () => {
+  const redirects = fs.readFileSync(path.join(projectRoot, "src", "_redirects"), "utf8");
+  const eleventyConfig = fs.readFileSync(path.join(projectRoot, "eleventy.config.js"), "utf8");
+
+  for (const retiredGuidePath of [
+    path.join(projectRoot, "src", "guides", "anna-maria-island-vacation-cost-guide-2026", "index.html"),
+    path.join(projectRoot, "src", "guides", "best-time-to-visit-anna-maria-island", "index.html"),
+    path.join(projectRoot, "src", "guides", "bradenton-vs-sarasota-vacation-rental-comparison", "index.html")
+  ]) {
+    const retiredGuide = fs.readFileSync(retiredGuidePath, "utf8");
+    assert.equal(retiredGuide.includes("permalink: false"), true);
+    assert.equal(retiredGuide.includes("eleventyExcludeFromCollections: true"), true);
+  }
+
+  for (const redirectRule of [
+    "/guides/anna-maria-island-vacation-cost-guide-2026/  /guides/anna-maria-island-vacation-cost/  301",
+    "/guides/best-time-to-visit-anna-maria-island/  /guides/best-time-visit-anna-maria-island/  301",
+    "/guides/bradenton-vs-sarasota-vacation-rental-comparison/  /guides/bradenton-vs-sarasota/  301"
+  ]) {
+    assert.equal(redirects.includes(redirectRule), true);
+  }
+
+  for (const ignoredGuideDir of [
+    'src/guides/anna-maria-island-vacation-cost-guide-2026/**',
+    'src/guides/best-time-to-visit-anna-maria-island/**',
+    'src/guides/bradenton-vs-sarasota-vacation-rental-comparison/**'
+  ]) {
+    assert.equal(eleventyConfig.includes(ignoredGuideDir), true);
+  }
+
+  assert.equal(
+    eleventyConfig.includes('addPassthroughCopy({ "src/guides": "guides" });'),
+    false
+  );
+});
+
+test("live sources no longer promote retired duplicate guide paths", () => {
+  const sourceFiles = [
+    path.join(projectRoot, "src", "llms.txt"),
+    path.join(projectRoot, "src", "properties", "sarasota-luxe", "index.njk"),
+    path.join(projectRoot, "src", "guides", "anna-maria-island-area-guide", "index.html"),
+    path.join(projectRoot, "src", "guides", "flights-to-anna-maria-island", "index.html"),
+    path.join(projectRoot, "src", "guides", "bradenton-vs-sarasota-beaches", "index.html"),
+    path.join(projectRoot, "src", "guides", "bradenton-vs-sarasota-cost-of-living", "index.html"),
+    path.join(projectRoot, "src", "guides", "bradenton-vs-sarasota-for-families", "index.html"),
+    path.join(projectRoot, "src", "guides", "bradenton-vs-sarasota-restaurants", "index.html"),
+    path.join(projectRoot, "src", "guides", "bradenton-vs-sarasota-retirement", "index.html")
+  ];
+
+  const staleGuidePaths = [
+    "/guides/anna-maria-island-vacation-cost-guide-2026/",
+    "/guides/best-time-to-visit-anna-maria-island/",
+    "/guides/bradenton-vs-sarasota-vacation-rental-comparison/"
+  ];
+
+  for (const sourceFile of sourceFiles) {
+    const source = fs.readFileSync(sourceFile, "utf8");
+    for (const staleGuidePath of staleGuidePaths) {
+      assert.equal(
+        source.includes(staleGuidePath),
+        false,
+        `${path.relative(projectRoot, sourceFile)} should not include ${staleGuidePath}`
+      );
+    }
+  }
+});
