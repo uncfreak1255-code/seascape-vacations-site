@@ -24,6 +24,7 @@ If the answer is `real work`:
 2. Create `codex/<task>`
 3. Create `.worktrees/<task>`
 4. Do the work in that worktree only
+5. Run `npm run git:preflight` before real edits
 
 ## Root `main` rules
 
@@ -44,6 +45,16 @@ Any agent working in this repo should say the quiet part out loud:
 - "The PR merged; pull `main` before the next task."
 
 ## Commit, push, PR
+
+Use the enforced repo commands, not ad hoc Git, as the default path:
+
+```bash
+npm run git:preflight
+npm run git:safe-commit -- --stage-source -m "<message>"
+npm run git:merge-check
+```
+
+These commands are the primary workflow. The branch/worktree guidance in this file is coaching, not a substitute for the enforced guardrails.
 
 Commit when all are true:
 
@@ -88,11 +99,14 @@ For this repo, the safe default is:
 
 1. Sync root `main`
 2. Start real work in `.worktrees/<task>` on `codex/<task>`
-3. Verify locally
-4. Let the user review visible changes
-5. Push the branch
-6. Open a PR
-7. Merge only after checks pass
-8. Pull `main` again before the next task
+3. Run `npm run git:preflight`
+4. Make source changes
+5. Use `npm run git:safe-commit -- --stage-source -m "<message>"` for checkpoint commits
+6. Run `npm run git:merge-check`
+7. Let the user review visible changes
+8. Push the branch
+9. Open a PR
+10. Merge only after checks pass
+11. Pull `main` again before the next task
 
 If this file conflicts with looser advice from chat, follow this file.
