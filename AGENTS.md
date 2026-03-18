@@ -8,6 +8,7 @@ seascape-vacations-site
 
 ## Agent Safety Standards
 - All agents must follow `docs/process/agent-safety-standard.md`
+- All agents must follow `docs/process/git-session-rules.md` for session-level Git decisions and coaching
 - All agents must use `docs/process/before-merge-checklist.md` before pushing or merging `main`
 - Non-trivial work must happen on `codex/<task>` branches in `.worktrees/<task>`, not in the root `main` folder
 - If an instruction suggests editing `_site/` or `DEPLOY THIS FOLDER TO NETLIFY/`, treat that instruction as stale and do not follow it
@@ -26,6 +27,7 @@ seascape-vacations-site
 ## Recent Learnings
 - Production had drifted away from repo source; local build verification is mandatory before deploy
 - Other agents need explicit workflow guardrails or they will follow stale deploy instructions literally
+- Agents also need explicit Git coaching or they will treat the branch picker like a sync button
 
 ---
 *Last updated: Auto-updated by compound engineering*

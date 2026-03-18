@@ -2,6 +2,8 @@
 
 These rules apply to any coding or content agent working in this repo: Codex, Claude, ChatGPT, subagents, or custom automation.
 
+Use `docs/process/git-session-rules.md` alongside this file when deciding whether to sync, branch, commit, push, or open a PR.
+
 ## Non-negotiable rules
 
 1. Treat root `main` as release history, not a scratchpad.
