@@ -281,7 +281,7 @@ eleventyComputed:
                 <p style="max-width: 700px; margin: 0 auto; opacity: 0.9; font-size: 18px;">{{ seoPage.intro }}</p>
                 <!-- Author + Date for E-E-A-T and GEO freshness signals -->
                 <div style="margin-top: 24px; display: flex; justify-content: center; align-items: center; gap: 16px; font-size: 13px; opacity: 0.8;">
-                    <span>✍️ By {{ site.author }}</span>
+                    <span>By {{ site.author }}</span>
                     <span>|</span>
                     <time datetime="{{ site.dateUpdated }}">Last Updated: {{ site.dateUpdated }}</time>
                 </div>
@@ -311,7 +311,7 @@ eleventyComputed:
                 <div class="properties-grid">
                     {% for property in properties %}
                     <article class="property-card">
-                    {% set badge = "⭐ " ~ property.rating %}
+                    {% set badge = "Rated " ~ property.rating %}
                         {% set loading = "lazy" %}
                         {% set fetchpriority = "" %}
                         {% if loop.index == 1 %}
