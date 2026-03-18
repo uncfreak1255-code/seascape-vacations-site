@@ -4,50 +4,22 @@ eleventyExcludeFromCollections: true
 ---
 <?xml version="1.0" encoding="utf-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  {% set excludedUrls = [
+    '/guides/anna-maria-island-vacation-cost-guide-2026/',
+    '/guides/best-time-to-visit-anna-maria-island/',
+    '/guides/bradenton-vs-sarasota-vacation-rental-comparison/'
+  ] %}
+  {% for entry in collections.all %}
+  {% set url = entry.url %}
+  {% set entryIndexable = entry.data.seoIndexable %}
+  {% set shouldIndex = entryIndexable != false and entryIndexable != 'false' %}
+  {% if url and url != '/404.html' and url != '/sitemap.xml' and url not in excludedUrls and shouldIndex %}
   <url>
-    <loc>{{ site.url }}/</loc>
+    <loc>{{ site.url }}{{ url }}</loc>
     <lastmod>{{ site.dateUpdated }}</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
+    <changefreq>{% if url == '/' or '/guides/' in url or '/properties/' in url %}weekly{% else %}monthly{% endif %}</changefreq>
+    <priority>{% if url == '/' %}1.0{% elif '/guides/' in url or '/properties/' in url %}0.8{% else %}0.7{% endif %}</priority>
   </url>
-
-  {# Destination Pages #}
-  {% for destination in destinations %}
-  <url>
-    <loc>{{ site.url }}/destinations/{{ destination.slug }}/</loc>
-    <lastmod>{{ site.dateUpdated }}</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  {% endfor %}
-
-  {# Property Pages #}
-  {% for property in properties %}
-  <url>
-    <loc>{{ site.url }}/rentals/{{ property.slug }}/</loc>
-    <lastmod>{{ site.dateUpdated }}</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  {% endfor %}
-
-  {# Vacationer SEO Pages #}
-  {% for page in seoPages.vacationer %}
-  <url>
-    <loc>{{ site.url }}/stays/{{ page.slug }}/</loc>
-    <lastmod>{{ site.dateUpdated }}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  {% endfor %}
-
-  {# Owner SEO Pages #}
-  {% for page in seoPages.owner %}
-  <url>
-    <loc>{{ site.url }}/property-management/{{ page.slug }}/</loc>
-    <lastmod>{{ site.dateUpdated }}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
+  {% endif %}
   {% endfor %}
 </urlset>
