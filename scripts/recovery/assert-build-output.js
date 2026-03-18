@@ -49,6 +49,18 @@ const PROPERTY_STALE_LINK_MARKERS = [
   "/stays/vacation-rentals-with-heated-pool/",
   "/reviews/"
 ];
+const PROPERTY_NAV_STALE_ROUTE_MARKERS = [
+  'href="/stays/" class="nav-link">Local Guide</a>',
+  'href="/stays/" class="mobile-item">Local Guide</a>',
+  'href="/about-us/" class="nav-link">Contact</a>',
+  'href="/about-us/" class="mobile-item">Contact</a>',
+  'href="/property-management/vacation-rental-management-anna-maria-island/" class="nav-link">Property Owners</a>',
+  'href="/property-management/vacation-rental-management-anna-maria-island/" class="mobile-item">Property Owners</a>',
+  'href="/property-management/vacation-rental-management-anna-maria-island/" class="footer-link">For Owners</a>',
+  'href="/about-us/" class="footer-link">Contact</a>',
+  'href="/stays/anna-maria-island-homes-with-pool/" role="menuitem">Anna Maria Island</a>',
+  'href="/stays/anna-maria-island-homes-with-pool/" class="mobile-item">Anna Maria Island</a>'
+];
 const PROPERTY_PAGE_FILES = [
   "_site/properties/bradenton-pool-home/index.html",
   "_site/properties/dockside-dreams/index.html",
@@ -99,6 +111,21 @@ function expectMatches(file, pattern, description) {
   if (!pattern.test(contents)) {
     throw new Error(`Missing expected pattern in ${file}: ${description}`);
   }
+}
+
+function escapeRegex(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function buildAnchorPattern({ href, className, text, extraAttributes = "" }) {
+  const hrefPattern = `href="${escapeRegex(href)}"`;
+  const classPattern = className ? `(?=[^>]*class="${escapeRegex(className)}")` : "";
+  const extraPattern = extraAttributes ? `(?=[^>]*${extraAttributes})` : "";
+  const textPattern = escapeRegex(text);
+
+  return new RegExp(
+    `<a\\b(?=[^>]*${hrefPattern})${classPattern}${extraPattern}[^>]*>${textPattern}<\\/a>`
+  );
 }
 
 function expectNoMarkers(file, markers, description) {
@@ -321,8 +348,109 @@ if (phase === "remediation") {
   for (const file of PROPERTY_PAGE_FILES) {
     expectNoMarkers(file, PROPERTY_PAGE_EMOJI_MARKERS, "property page emoji markers");
     expectNoMarkers(file, PROPERTY_STALE_LINK_MARKERS, "stale property-page related links");
+    expectNoMarkers(file, PROPERTY_NAV_STALE_ROUTE_MARKERS, "stale property-page navigation/footer routes");
     expectNotMatches(file, /\/guides\/[^"'\s>]+\.html/i, "legacy .html guide link");
+    expectNotMatches(
+      file,
+      /<a\b(?=[^>]*href="\/stays\/")(?=[^>]*class="(?:nav-link|mobile-item)")/i,
+      "stale local guide nav route"
+    );
+    expectNotMatches(
+      file,
+      /<a\b(?=[^>]*href="\/about-us\/")(?=[^>]*class="(?:nav-link|mobile-item|footer-link)")/i,
+      "stale contact route"
+    );
+    expectNotMatches(
+      file,
+      /<a\b(?=[^>]*href="\/property-management\/vacation-rental-management-anna-maria-island\/")(?=[^>]*class="(?:nav-link|mobile-item|footer-link)")/i,
+      "stale deep owner route"
+    );
+    expectNotMatches(
+      file,
+      /<a\b(?=[^>]*href="\/stays\/anna-maria-island-homes-with-pool\/")(?=[^>]*role="menuitem"|[^>]*class="mobile-item")/i,
+      "stale Anna Maria destination route"
+    );
     expectNoTemplateLeakMarkers(file);
+    expectMatches(
+      file,
+      buildAnchorPattern({
+        href: "/property-management/",
+        className: "nav-link",
+        text: "Property Owners"
+      }),
+      "property owners nav link"
+    );
+    expectMatches(
+      file,
+      buildAnchorPattern({
+        href: "/property-management/",
+        className: "mobile-item",
+        text: "Property Owners"
+      }),
+      "property owners mobile link"
+    );
+    expectMatches(
+      file,
+      buildAnchorPattern({
+        href: "/property-management/",
+        className: "footer-link",
+        text: "For Owners"
+      }),
+      "property owners footer link"
+    );
+    expectMatches(
+      file,
+      buildAnchorPattern({
+        href: "/guides/",
+        className: "nav-link",
+        text: "Guides"
+      }),
+      "guides nav link"
+    );
+    expectMatches(
+      file,
+      buildAnchorPattern({
+        href: "/guides/",
+        className: "mobile-item",
+        text: "Guides"
+      }),
+      "guides mobile link"
+    );
+    expectMatches(
+      file,
+      buildAnchorPattern({
+        href: "mailto:info@seascape-vacations.com",
+        className: "nav-link",
+        text: "Contact"
+      }),
+      "contact nav link"
+    );
+    expectMatches(
+      file,
+      buildAnchorPattern({
+        href: "mailto:info@seascape-vacations.com",
+        className: "mobile-item",
+        text: "Contact"
+      }),
+      "contact mobile link"
+    );
+    expectMatches(
+      file,
+      buildAnchorPattern({
+        href: "mailto:info@seascape-vacations.com",
+        className: "footer-link",
+        text: "Contact"
+      }),
+      "contact footer link"
+    );
+    expectMatches(
+      file,
+      buildAnchorPattern({
+        href: "/guides/anna-maria-island-area-guide/",
+        text: "Anna Maria Island"
+      }),
+      "Anna Maria destination menu link"
+    );
   }
   expectNotContains(
     "_site/stays/anna-maria-island-vacation-rentals/index.html",
@@ -368,6 +496,20 @@ if (phase === "remediation") {
   expectContains("_site/property-management/index.html", "Updated March 2026");
   expectContains("_site/property-management/index.html", "What Is Vacation Rental Property Management?");
   expectContains("_site/property-management/index.html", "Owner Questions");
+  expectMatches(
+    "_site/property-management/index.html",
+    buildAnchorPattern({
+      href: "/properties/",
+      className: "btn",
+      text: "View All Properties"
+    }),
+    "property management nav CTA"
+  );
+  expectNotMatches(
+    "_site/property-management/index.html",
+    /<a\b(?=[^>]*href="\/")(?=[^>]*class="btn")[^>]*>View All Properties<\/a>/,
+    "stale property management nav CTA target"
+  );
   expectContains("_site/robots.txt", "OAI-SearchBot");
   expectContains("_site/robots.txt", "ChatGPT-User");
   expectContains("_site/robots.txt", "ClaudeBot");

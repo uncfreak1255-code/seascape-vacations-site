@@ -89,12 +89,16 @@ async function check(target, currentPath = target.path, redirectDepth = 0) {
   }
 
   if (target.path === "/properties/") {
-    if (!response.body.includes("Florida Gulf Coast homes, controlled from one catalog.")) {
-      throw new Error("properties page is missing the new static catalog copy");
+    if (!response.body.includes("Dockside Dreams") || !response.body.includes("The Oasis")) {
+      throw new Error("properties page is missing premium catalog property cards");
     }
 
-    if (!response.body.includes("/properties/dockside-dreams/")) {
+    if (!response.body.includes("/properties/dockside-dreams/") || !response.body.includes("View Details")) {
       throw new Error("properties page is missing stable property detail links");
+    }
+
+    if (!response.body.includes("Book Direct")) {
+      throw new Error("properties page is missing direct-book CTAs");
     }
 
     if (response.body.includes("/.netlify/functions/get-properties") || response.body.includes("api.hostaway.com")) {
@@ -103,6 +107,25 @@ async function check(target, currentPath = target.path, redirectDepth = 0) {
 
     if (response.body.includes("hostaway-platform.s3.us-west-2.amazonaws.com")) {
       throw new Error("properties page still leaks raw Hostaway S3 URLs");
+    }
+
+    if (
+      response.body.includes("Florida Gulf Coast homes, controlled from one catalog.") ||
+      response.body.includes("Use this table before opening detail pages") ||
+      response.body.includes("collection-strip") ||
+      response.body.includes("compare-table")
+    ) {
+      throw new Error("properties page still exposes the old utility/catalog-copy surface");
+    }
+  }
+
+  if (target.path === "/property-management/") {
+    if (!response.body.includes("What Is Vacation Rental Property Management?")) {
+      throw new Error("property-management hub is missing the owner explainer content");
+    }
+
+    if (!response.body.includes('href="/properties/"') || !response.body.includes("View All Properties")) {
+      throw new Error("property-management hub is missing the corrected view-all-properties CTA");
     }
   }
 
