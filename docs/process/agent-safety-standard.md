@@ -58,7 +58,7 @@ An agent must stop and fix workflow first if any of these are true:
 - the agent is editing `DEPLOY THIS FOLDER TO NETLIFY/`
 - the next push target is unclear
 - the changed routes have not been checked
-- the agent is using `/Users/sawbeck/Projects/seascape-vacations-site` as if it were the authoritative `main` checkout
+- the agent is using `/Users/sawbeck/Projects/seascape-main` as if it were the authoritative `main` checkout
 
 ## Repo-specific truth
 
@@ -66,7 +66,7 @@ An agent must stop and fix workflow first if any of these are true:
 - Generated output: `_site/`
 - Netlify publish directory: `_site`
 - Legacy archival content only: `DEPLOY THIS FOLDER TO NETLIFY/`
-- On this machine, the only sync-only `main` checkout is `/Users/sawbeck/Projects/seascape-main`
-- `/Users/sawbeck/Projects/seascape-vacations-site` is a detached utility checkout, not the sync target for `main`
+- On this machine, the only sync-only `main` checkout should be `/Users/sawbeck/Projects/seascape-vacations-site`
+- `/Users/sawbeck/Projects/seascape-main` is a duplicate checkout, not the long-term sync target for `main`
 
 If any older instruction conflicts with this document, follow the stricter safety rule.
