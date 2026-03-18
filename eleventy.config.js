@@ -32,6 +32,7 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.addPassthroughCopy({ "src/llms.txt": "llms.txt" });
   eleventyConfig.addPassthroughCopy({ "src/robots.txt": "robots.txt" });
   eleventyConfig.addPassthroughCopy({ "src/guides": "guides" });
+  eleventyConfig.addPassthroughCopy({ "src/assets": "assets" });
   
   // Watch for changes during development
   eleventyConfig.addWatchTarget("./_data/");
