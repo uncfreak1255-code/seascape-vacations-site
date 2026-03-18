@@ -369,10 +369,13 @@
 /guides/*/area-guide-*.html   /guides/   301
 /guides/*/properties/index.html   /properties/   301
 
-# Duplicate guide consolidation — old .html pages → newer directory versions
-/guides/anna-maria-island-vacation-cost  /guides/anna-maria-island-vacation-cost-guide-2026/  301
-/guides/best-time-visit-anna-maria-island  /guides/best-time-to-visit-anna-maria-island/  301
-/guides/bradenton-vs-sarasota  /guides/bradenton-vs-sarasota-vacation-rental-comparison/  301
+# Duplicate guide consolidation — retired duplicate guide directories → canonical paths
+/guides/anna-maria-island-vacation-cost-guide-2026  /guides/anna-maria-island-vacation-cost/  301
+/guides/anna-maria-island-vacation-cost-guide-2026/  /guides/anna-maria-island-vacation-cost/  301
+/guides/best-time-to-visit-anna-maria-island  /guides/best-time-visit-anna-maria-island/  301
+/guides/best-time-to-visit-anna-maria-island/  /guides/best-time-visit-anna-maria-island/  301
+/guides/bradenton-vs-sarasota-vacation-rental-comparison  /guides/bradenton-vs-sarasota/  301
+/guides/bradenton-vs-sarasota-vacation-rental-comparison/  /guides/bradenton-vs-sarasota/  301
 
 # --- Crawled-not-indexed cleanup (2026-03-15) ---
 # Old CMS pages that return 404 - redirect to closest current content
