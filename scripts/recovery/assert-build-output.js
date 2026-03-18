@@ -302,10 +302,10 @@ if (phase === "remediation") {
   expectExists("_site/robots.txt");
   expectExists("_site/hero-mobile.webp");
   expectExists("_site/hero-optimized.webp");
-  expectContains("_site/_redirects", "/stays/hurricane-preparedness-florida-vacation/  /stays/hurricane-preparedness-guide/  301");
-  expectContains("_site/_redirects", "/stays/travel-insurance-florida-vacation/  /stays/hurricane-preparedness-guide/  301");
+  expectContains("_site/_redirects", "/stays/hurricane-preparedness-florida-vacation/  /guides/hurricane-preparedness-florida-vacation/  301");
+  expectContains("_site/_redirects", "/stays/travel-insurance-florida-vacation/  /guides/hurricane-preparedness-florida-vacation/  301");
   expectContains("_site/_redirects", "/stays/vacation-rentals-with-heated-pool/  /stays/vacation-rentals-with-pool-and-hot-tub/  301");
-  expectContains("_site/_redirects", "/stays/concierge-luxury-services/  /stays/luxury-concierge-services/  301");
+  expectContains("_site/_redirects", "/stays/concierge-luxury-services/  /services/concierge-services/  301");
   expectExists("_site/images/seascape-og-default.jpg");
   expectExists("_site/images/anna-maria-island-og.jpg");
   expectMatches("_site/index.html", /4\.98[\s\S]{0,120}Airbnb Rating/, "homepage 4.98 Airbnb Rating stat");

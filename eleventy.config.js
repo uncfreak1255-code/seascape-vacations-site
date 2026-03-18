@@ -1,3 +1,6 @@
+const fs = require("fs");
+const path = require("path");
+
 function toHostawayCdn(url, width = 800, quality = 82) {
   const value = String(url || "").trim();
   if (!value) return value;
@@ -31,8 +34,23 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.addPassthroughCopy({ "src/_redirects": "_redirects" });
   eleventyConfig.addPassthroughCopy({ "src/llms.txt": "llms.txt" });
   eleventyConfig.addPassthroughCopy({ "src/robots.txt": "robots.txt" });
-  eleventyConfig.addPassthroughCopy({ "src/guides": "guides" });
   eleventyConfig.addPassthroughCopy({ "src/assets": "assets" });
+  eleventyConfig.ignores.add("src/guides/anna-maria-island-vacation-cost-guide-2026/**");
+  eleventyConfig.ignores.add("src/guides/best-time-to-visit-anna-maria-island/**");
+  eleventyConfig.ignores.add("src/guides/bradenton-vs-sarasota-vacation-rental-comparison/**");
+
+  eleventyConfig.on("eleventy.after", () => {
+    const root = process.cwd();
+    for (const [source, target] of [
+      [path.join(root, "src", "_redirects"), path.join(root, "_site", "_redirects")],
+      [path.join(root, "src", "llms.txt"), path.join(root, "_site", "llms.txt")],
+      [path.join(root, "src", "robots.txt"), path.join(root, "_site", "robots.txt")]
+    ]) {
+      if (fs.existsSync(source)) {
+        fs.copyFileSync(source, target);
+      }
+    }
+  });
   
   // Watch for changes during development
   eleventyConfig.addWatchTarget("./_data/");
