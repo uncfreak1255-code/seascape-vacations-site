@@ -2294,6 +2294,7 @@
     },
     {
       "slug": "hurricane-preparedness-guide",
+      "rehomeTo": "/guides/hurricane-preparedness-florida-vacation/",
       "destination": null,
       "title": "Hurricane Preparedness for Florida Vacation Rentals",
       "h1": "What to Know About Hurricanes and Your Vacation",
@@ -2335,6 +2336,7 @@
     },
     {
       "slug": "luxury-concierge-services",
+      "rehomeTo": "/services/concierge-services/",
       "destination": null,
       "title": "Concierge Services for Florida Vacation Rentals",
       "h1": "Luxury Concierge Services",
