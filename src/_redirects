@@ -1,6 +1,10 @@
 # Canonicalize common trailing-slash variants
 /about-us   /about-us/   301
 /properties   /properties/   301
+/stays/hurricane-preparedness-guide   /guides/hurricane-preparedness-florida-vacation/   301
+/stays/hurricane-preparedness-guide/   /guides/hurricane-preparedness-florida-vacation/   301
+/stays/luxury-concierge-services   /services/concierge-services/   301
+/stays/luxury-concierge-services/   /services/concierge-services/   301
 
 # Friendly alias for owner-focused landing
 /property-owners   /property-management/   301
@@ -289,9 +293,9 @@
 /area-guide-siesta-key.html  /guides/siesta-key-area-guide/  301
 
 /stays/rentals-with-elevators/  /stays/vacation-rentals-with-elevator/  301
-/stays/concierge-luxury-services/  /stays/luxury-concierge-services/  301
-/stays/hurricane-preparedness-florida-vacation/  /stays/hurricane-preparedness-guide/  301
-/stays/travel-insurance-florida-vacation/  /stays/hurricane-preparedness-guide/  301
+/stays/concierge-luxury-services/  /services/concierge-services/  301
+/stays/hurricane-preparedness-florida-vacation/  /guides/hurricane-preparedness-florida-vacation/  301
+/stays/travel-insurance-florida-vacation/  /guides/hurricane-preparedness-florida-vacation/  301
 /stays/vacation-rentals-with-heated-pool/  /stays/vacation-rentals-with-pool-and-hot-tub/  301
 /stays/equipment-rentals-florida-vacation/  /guides/anna-maria-island-area-guide/  301
 /stays/coquina-beach-vacation-rentals/  /stays/anna-maria-island-beachfront-rentals/  301
