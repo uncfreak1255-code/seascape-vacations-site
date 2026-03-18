@@ -1,14 +1,14 @@
 ---
 pagination:
-  data: seoPages.vacationer
+  data: staysPages
   size: 1
   alias: seoPage
 permalink: "/stays/{{ seoPage.slug }}/"
 eleventyComputed:
   pageTitle: "{{ seoPage.title }}"
   pageDescription: "{{ seoPage.description }}"
+  seoIndexable: "{{ seoGovernance.staysNoindexSlugs.indexOf(seoPage.slug) === -1 }}"
 ---
-{% from "partials/ui-icon.njk" import uiIcon %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,9 +18,8 @@ eleventyComputed:
     <!-- Primary SEO -->
     <title>{{ seoPage.title }} | Seascape Vacations</title>
     <meta name="description" content="{{ seoPage.description }}">
-    <meta name="robots" content="index, follow">
+    <meta name="robots" content="{% if seoIndexable == 'true' or seoIndexable === true %}index, follow{% else %}noindex, follow{% endif %}">
     <link rel="canonical" href="{{ site.url }}/stays/{{ seoPage.slug }}/">
-    <link rel="icon" href="/logo-optimized.png" type="image/png">
     
     <!-- Open Graph -->
     <meta property="og:type" content="website">
@@ -124,6 +123,7 @@ eleventyComputed:
     {% endif %}
     
     <!-- VacationRental Schema (ItemList for properties) -->
+    {% if properties and properties | length %}
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
@@ -167,6 +167,7 @@ eleventyComputed:
         ]
     }
     </script>
+    {% endif %}
     
     <style>
         :root {
@@ -191,7 +192,6 @@ eleventyComputed:
         .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(245, 238, 214, 0.98); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(0, 0, 0, 0.06); box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08); }
         .nav-inner { display: flex; justify-content: space-between; align-items: center; padding: 16px 24px; max-width: 1400px; margin: 0 auto; }
         .nav-logo { display: flex; align-items: center; gap: 14px; }
-        .nav-logo img { width: auto; height: 40px; max-width: none; flex: 0 0 auto; display: block; }
         .nav-logo-text { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 500; color: var(--brand); letter-spacing: 0.05em; }
         .nav-logo-sub { font-size: 9px; letter-spacing: 0.2em; color: var(--stone-light); text-transform: uppercase; margin-top: -2px; }
         .btn { background: linear-gradient(135deg, var(--brand) 0%, var(--brand-dark) 100%); color: white; padding: 14px 32px; border-radius: 50px; font-weight: 600; font-size: 14px; border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 4px 15px rgba(61, 107, 109, 0.3); }
@@ -217,13 +217,6 @@ eleventyComputed:
         .property-title { font-size: 20px; font-weight: 600; color: var(--stone); margin-bottom: 8px; }
         .property-meta { font-size: 13px; color: var(--stone-light); margin-bottom: 12px; }
         .property-price { font-size: 16px; color: var(--brand); font-weight: 600; }
-        .ui-icon { display: inline-flex; align-items: center; justify-content: center; width: 1em; height: 1em; color: currentColor; flex: 0 0 auto; }
-        .ui-icon svg { width: 100%; height: 100%; stroke: currentColor; fill: none; stroke-width: 1.85; stroke-linecap: round; stroke-linejoin: round; }
-        .eyebrow-meta { display: inline-flex; align-items: center; gap: 8px; }
-        .eyebrow-meta .ui-icon { width: 14px; height: 14px; opacity: 0.9; }
-        .property-badge { display: inline-flex; align-items: center; gap: 6px; }
-        .property-badge .ui-icon { width: 12px; height: 12px; }
-        .property-badge .ui-icon svg { fill: currentColor; stroke: none; }
         .faq-section { background: var(--cream-dark); }
         .faq-item { background: white; border-radius: 12px; padding: 24px; margin-bottom: 16px; }
         .faq-question { font-size: 18px; font-weight: 600; color: var(--brand-dark); margin-bottom: 12px; }
@@ -260,7 +253,20 @@ eleventyComputed:
                 <li><a href="/">Home</a></li>
                 <li><span>›</span></li>
                 {% if seoPage.destination %}
-                <li><a href="/destinations/{{ seoPage.destination }}/">{{ seoPage.destination | replace("-", " ") | title }}</a></li>
+                {% set destinationGuideMap = {
+                    "anna-maria-island": "/guides/anna-maria-island-area-guide/",
+                    "bradenton": "/guides/bradenton-area-guide/",
+                    "sarasota": "/guides/sarasota-area-guide/",
+                    "siesta-key": "/guides/siesta-key-area-guide/"
+                } %}
+                {% set destinationGuideHref = destinationGuideMap[seoPage.destination] %}
+                <li>
+                    {% if destinationGuideHref %}
+                    <a href="{{ destinationGuideHref }}">{{ seoPage.destination | replace("-", " ") | title }}</a>
+                    {% else %}
+                    <span>{{ seoPage.destination | replace("-", " ") | title }}</span>
+                    {% endif %}
+                </li>
                 <li><span>›</span></li>
                 {% endif %}
                 <li><span aria-current="page">{{ seoPage.h1 }}</span></li>
@@ -274,7 +280,7 @@ eleventyComputed:
                 <p style="max-width: 700px; margin: 0 auto; opacity: 0.9; font-size: 18px;">{{ seoPage.intro }}</p>
                 <!-- Author + Date for E-E-A-T and GEO freshness signals -->
                 <div style="margin-top: 24px; display: flex; justify-content: center; align-items: center; gap: 16px; font-size: 13px; opacity: 0.8;">
-                    <span class="eyebrow-meta">{{ uiIcon('author') }} <span>By {{ site.author }}</span></span>
+                    <span>✍️ By {{ site.author }}</span>
                     <span>|</span>
                     <time datetime="{{ site.dateUpdated }}">Last Updated: {{ site.dateUpdated }}</time>
                 </div>
@@ -300,10 +306,11 @@ eleventyComputed:
                     <p class="section-subtitle">Book direct and save 10-15% compared to Airbnb & VRBO</p>
                 </div>
                 
+                {% if properties and properties | length %}
                 <div class="properties-grid">
                     {% for property in properties %}
                     <article class="property-card">
-                    {% set badge = uiIcon('star') ~ '<span>' ~ property.rating ~ '</span>' %}
+                    {% set badge = "⭐ " ~ property.rating %}
                         {% set loading = "lazy" %}
                         {% set fetchpriority = "" %}
                         {% if loop.index == 1 %}
@@ -323,6 +330,13 @@ eleventyComputed:
                     </article>
                     {% endfor %}
                 </div>
+                {% else %}
+                <div style="max-width: 720px; margin: 0 auto; background: white; border-radius: 20px; padding: 32px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); text-align: center;">
+                    <p style="font-size: 16px; color: var(--stone); margin-bottom: 16px;">We are keeping this page live as a planning resource, but we do not have a strong enough matching rental set to present a featured inventory list here yet.</p>
+                    <p style="font-size: 14px; color: var(--stone-light); margin-bottom: 24px;">Browse our real availability instead of a thin template list.</p>
+                    <a href="/properties/" class="btn">Browse All Properties</a>
+                </div>
+                {% endif %}
             </div>
         </section>
 
@@ -395,9 +409,9 @@ eleventyComputed:
             <div class="footer-logo">Seascape Vacations</div>
             <div class="footer-links">
                 <a href="/">Home</a>
-                <a href="/destinations/anna-maria-island/">Anna Maria Island</a>
-                <a href="/destinations/bradenton/">Bradenton</a>
-                <a href="/destinations/sarasota/">Sarasota</a>
+                <a href="/guides/anna-maria-island-area-guide/">Anna Maria Island</a>
+                <a href="/guides/bradenton-area-guide/">Bradenton</a>
+                <a href="/guides/sarasota-area-guide/">Sarasota</a>
                 <a href="/property-management/">Property Owners</a>
             </div>
             <div class="footer-copyright">© 2026 Seascape Vacations. All rights reserved. | Book Direct & Save</div>

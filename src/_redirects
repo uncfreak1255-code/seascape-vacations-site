@@ -47,10 +47,10 @@
 /travel-spot-guide/bradenton-fishing/   /guides/fishing-guide-anna-maria-sarasota.html   301
 
 # Water Sports & Boat Rentals
-/travel-spot-guide/bluwave-boat-rental   /stays/waterfront-vacation-rentals-with-kayaks/   301
-/travel-spot-guide/bluwave-boat-rental/   /stays/waterfront-vacation-rentals-with-kayaks/   301
-/travel-spot-guide/cortez-watersports   /stays/waterfront-vacation-rentals-with-kayaks/   301
-/travel-spot-guide/cortez-watersports/   /stays/waterfront-vacation-rentals-with-kayaks/   301
+/travel-spot-guide/bluwave-boat-rental   /stays/gulf-coast-vacation-homes-with-dock/   301
+/travel-spot-guide/bluwave-boat-rental/   /stays/gulf-coast-vacation-homes-with-dock/   301
+/travel-spot-guide/cortez-watersports   /stays/kayaking-vacation-rentals-bradenton/   301
+/travel-spot-guide/cortez-watersports/   /stays/kayaking-vacation-rentals-bradenton/   301
 /travel-spot-guide/yolo-parasailing-adventures   /guides/things-to-do-bradenton-fl.html   301
 /travel-spot-guide/yolo-parasailing-adventures/   /guides/things-to-do-bradenton-fl.html   301
 /travel-spot-guide/shore-thing-tiki-cruises   /guides/things-to-do-bradenton-fl.html   301
@@ -83,8 +83,8 @@
 /travel-spot-guide/treeumph-adventure-course/   /guides/things-to-do-bradenton-fl.html   301
 /travel-spot-guide/robinson-preserve   /guides/things-to-do-bradenton-fl.html   301
 /travel-spot-guide/robinson-preserve/   /guides/things-to-do-bradenton-fl.html   301
-/travel-spot-guide/de-soto-national-memorial   /stays/de-soto-national-memorial-vacation-rentals/   301
-/travel-spot-guide/de-soto-national-memorial/   /stays/de-soto-national-memorial-vacation-rentals/   301
+/travel-spot-guide/de-soto-national-memorial   /guides/things-to-do-bradenton-fl.html   301
+/travel-spot-guide/de-soto-national-memorial/   /guides/things-to-do-bradenton-fl.html   301
 /travel-spot-guide/emerson-point-preserve   /guides/things-to-do-bradenton-fl.html   301
 /travel-spot-guide/emerson-point-preserve/   /guides/things-to-do-bradenton-fl.html   301
 /travel-spot-guide/riverwalk-bradenton   /stays/riverwalk-bradenton-vacation-rentals/   301
@@ -111,10 +111,10 @@
 /travel-spot-guide/tide-tables/   /guides/anna-maria-island-weather.html   301
 
 # Pet-Friendly
-/travel-spot-guide/pet-friendly   /stays/pet-friendly-vacation-rentals-anna-maria-island/   301
-/travel-spot-guide/pet-friendly/   /stays/pet-friendly-vacation-rentals-anna-maria-island/   301
-/travel-spot-guide/dog-beach   /stays/pet-friendly-vacation-rentals-anna-maria-island/   301
-/travel-spot-guide/dog-beach/   /stays/pet-friendly-vacation-rentals-anna-maria-island/   301
+/travel-spot-guide/pet-friendly   /stays/pet-friendly-vacation-rentals-bradenton/   301
+/travel-spot-guide/pet-friendly/   /stays/pet-friendly-vacation-rentals-bradenton/   301
+/travel-spot-guide/dog-beach   /stays/pet-friendly-vacation-rentals-bradenton/   301
+/travel-spot-guide/dog-beach/   /stays/pet-friendly-vacation-rentals-bradenton/   301
 
 # Sarasota-Specific Attractions
 /travel-spot-guide/ringling-museum   /guides/sarasota-area-guide/   301
@@ -131,8 +131,8 @@
 /travel-spot-guide/196111/   /guides/   301
 
 # Cortez Village
-/travel-spot-guide/cortez-village   /stays/cortez-village-vacation-rentals/   301
-/travel-spot-guide/cortez-village/   /stays/cortez-village-vacation-rentals/   301
+/travel-spot-guide/cortez-village   /stays/bradenton-vacation-rentals-near-beaches/   301
+/travel-spot-guide/cortez-village/   /stays/bradenton-vacation-rentals-near-beaches/   301
 
 # Golf
 /travel-spot-guide/golf   /stays/golf-vacation-rentals-bradenton/   301
@@ -171,9 +171,9 @@
 /city/siesta-key   /guides/siesta-key-area-guide/   301
 /city/siesta-key/   /guides/siesta-key-area-guide/   301
 /city/siesta-key/*   /guides/siesta-key-area-guide/   301
-/city/palmetto   /stays/palmetto-vacation-rentals-florida/   301
-/city/palmetto/   /stays/palmetto-vacation-rentals-florida/   301
-/city/palmetto/*   /stays/palmetto-vacation-rentals-florida/   301
+/city/palmetto   /guides/bradenton-area-guide/   301
+/city/palmetto/   /guides/bradenton-area-guide/   301
+/city/palmetto/*   /guides/bradenton-area-guide/   301
 /city/sarasota   /guides/sarasota-area-guide/   301
 /city/sarasota/   /guides/sarasota-area-guide/   301
 /city/sarasota/*   /guides/sarasota-area-guide/   301
