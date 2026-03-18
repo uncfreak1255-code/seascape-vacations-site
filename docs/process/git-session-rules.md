@@ -32,6 +32,8 @@ If the answer is `real work`:
 - Root `main` is not a scratchpad
 - If `git status --short` on root `main` is noisy, do not start work there
 - If the next safe command is unclear, stop and fix workflow before editing
+- On this machine, `/Users/sawbeck/Projects/seascape-main` is the only sync-only `main` checkout
+- `/Users/sawbeck/Projects/seascape-vacations-site` is a detached utility checkout; do not use it as the source for new work or for `main` sync
 
 ## Session coaching rules
 
@@ -97,7 +99,7 @@ Changing branches in the UI does not replace `git pull origin main`.
 
 For this repo, the safe default is:
 
-1. Sync root `main`
+1. Sync root `main` at `/Users/sawbeck/Projects/seascape-main`
 2. Start real work in `.worktrees/<task>` on `codex/<task>`
 3. Run `npm run git:preflight`
 4. Make source changes
@@ -108,5 +110,7 @@ For this repo, the safe default is:
 9. Open a PR
 10. Merge only after checks pass
 11. Pull `main` again before the next task
+
+If you are standing in `/Users/sawbeck/Projects/seascape-vacations-site`, stop. That checkout is not the authoritative `main`.
 
 If this file conflicts with looser advice from chat, follow this file.
