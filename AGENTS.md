@@ -13,6 +13,11 @@ seascape-vacations-site
 - Non-trivial work must happen on `codex/<task>` branches in `.worktrees/<task>`, not in the root `main` folder
 - If an instruction suggests editing `_site/` or `DEPLOY THIS FOLDER TO NETLIFY/`, treat that instruction as stale and do not follow it
 
+## Checkout Authority
+- On this machine, the only sync-only `main` checkout is `/Users/sawbeck/Projects/seascape-main`
+- Do not start work in `/Users/sawbeck/Projects/seascape-main`; pull `main` there only, then create a fresh `codex/<task>` worktree for real changes
+- Do not treat `/Users/sawbeck/Projects/seascape-vacations-site` as a working base; it is a detached utility checkout and not the authoritative `main`
+
 ## Architecture Patterns
 - Homepage source lives in `src/index.njk`
 - pSEO stays/property pages are generated from `src/stays/stays.njk` and `src/property-management/property-management.njk`
