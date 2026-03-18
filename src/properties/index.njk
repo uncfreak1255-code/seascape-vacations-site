@@ -186,7 +186,7 @@ headExtra: |
 
     .catalog-card {
       position: relative;
-      min-height: 560px;
+      min-height: 540px;
       border-radius: 28px;
       overflow: hidden;
       border: 1px solid rgba(61, 92, 93, 0.08);
@@ -216,7 +216,7 @@ headExtra: |
       position: absolute;
       inset: 0;
       background:
-        linear-gradient(180deg, rgba(10, 14, 14, 0.06) 0%, rgba(10, 14, 14, 0.16) 28%, rgba(10, 14, 14, 0.68) 72%, rgba(10, 14, 14, 0.9) 100%);
+        linear-gradient(180deg, rgba(10, 14, 14, 0.04) 0%, rgba(10, 14, 14, 0.12) 28%, rgba(10, 14, 14, 0.52) 72%, rgba(10, 14, 14, 0.78) 100%);
       z-index: -1;
     }
 
@@ -397,7 +397,7 @@ headExtra: |
       }
 
       .catalog-card {
-        min-height: 520px;
+        min-height: 500px;
       }
     }
 
@@ -407,25 +407,47 @@ headExtra: |
       }
 
       .catalog-card {
-        min-height: 500px;
+        min-height: 440px;
       }
 
       .catalog-card-inner {
-        padding: 18px 18px 20px;
+        padding: 16px 16px 18px;
       }
 
       .catalog-card h3 {
-        font-size: 32px;
+        font-size: 28px;
+        line-height: 1;
+      }
+
+      .catalog-specs,
+      .catalog-copy,
+      .catalog-feature {
+        font-size: 14px;
+      }
+
+      .catalog-copy {
+        -webkit-line-clamp: 2;
+        min-height: auto;
+      }
+
+      .catalog-feature-list {
+        gap: 8px;
+      }
+
+      .catalog-feature:nth-child(n + 3) {
+        display: none;
       }
 
       .catalog-actions {
         flex-direction: column;
+        gap: 10px;
       }
 
       .catalog-actions .btn,
       .catalog-secondary {
         width: 100%;
         justify-content: center;
+        padding: 11px 16px;
       }
     }
   </style>
