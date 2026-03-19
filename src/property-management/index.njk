@@ -196,8 +196,16 @@ headExtra: |
       justify-content: center;
       flex: 0 0 auto;
       margin-top: 2px;
-      font-size: 12px;
-      font-weight: 700;
+      position: relative;
+    }
+
+    .owner-check::after {
+      content: "";
+      width: 5px;
+      height: 9px;
+      border-right: 2px solid var(--gold-light);
+      border-bottom: 2px solid var(--gold-light);
+      transform: rotate(45deg) translate(-1px, -1px);
     }
 
     .owner-proof-band {
@@ -388,9 +396,9 @@ headExtra: |
       <h2>Less guessing. More oversight.</h2>
       <p>The strongest owners usually are not asking for generic management. They are asking for tighter standards, better pricing discipline, and a team close enough to the property to actually protect the guest experience.</p>
       <ul class="owner-panel-list">
-        <li><span class="owner-check">✓</span><span>Hands-on local response instead of remote escalation loops</span></li>
-        <li><span class="owner-check">✓</span><span>Revenue decisions tied to real demand, seasonality, and market position</span></li>
-        <li><span class="owner-check">✓</span><span>Guest standards that protect reviews, repeat stays, and owner margin</span></li>
+        <li><span class="owner-check" aria-hidden="true"></span><span>Hands-on local response instead of remote escalation loops</span></li>
+        <li><span class="owner-check" aria-hidden="true"></span><span>Revenue decisions tied to real demand, seasonality, and market position</span></li>
+        <li><span class="owner-check" aria-hidden="true"></span><span>Guest standards that protect reviews, repeat stays, and owner margin</span></li>
       </ul>
     </aside>
   </div>
