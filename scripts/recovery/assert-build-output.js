@@ -493,15 +493,21 @@ if (phase === "remediation") {
     "_site/property-management/vacation-rental-management-sarasota/index.html",
     'rel="stylesheet" media="print" onload="this.media=\'all\'"'
   );
-  expectContains("_site/property-management/index.html", "Updated March 2026");
-  expectContains("_site/property-management/index.html", "What Is Vacation Rental Property Management?");
-  expectContains("_site/property-management/index.html", "Owner Questions");
+  expectContains(
+    "_site/property-management/index.html",
+    "Luxury property management with local eyes on every stay"
+  );
+  expectContains("_site/property-management/index.html", "Why Owners Choose Seascape");
+  expectContains("_site/property-management/index.html", "What Gulf Coast owners usually ask first");
+  expectContains("_site/property-management/index.html", "Local Support");
+  expectNotContains("_site/property-management/index.html", "What Is Vacation Rental Property Management?");
+  expectNotContains("_site/property-management/index.html", "Owner Questions");
   expectMatches(
     "_site/property-management/index.html",
     buildAnchorPattern({
-      href: "/properties/",
+      href: "#owner-cta",
       className: "btn",
-      text: "View All Properties"
+      text: "Free Property Evaluation"
     }),
     "property management nav CTA"
   );
