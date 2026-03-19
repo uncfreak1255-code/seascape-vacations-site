@@ -2,19 +2,19 @@
 layout: layouts/base.njk
 permalink: "/property-management/"
 pageTitle: "Vacation Rental Property Management | Seascape Vacations"
-pageDescription: "Full-service vacation rental property management for owners in Bradenton, Sarasota, Anna Maria Island, Siesta Key, and Longboat Key."
+pageDescription: "Premium local vacation rental property management for owners in Bradenton, Sarasota, Anna Maria Island, Siesta Key, and Longboat Key."
 pageAuthor: "Seascape Vacations Team"
 pageImage: "https://seascape-vacations.com/images/seascape-og-default.jpg"
-pageUpdated: "2026-03-15T12:00:00-04:00"
-navButtonHref: "/properties/"
-navButtonLabel: "View All Properties"
+pageUpdated: "2026-03-19T09:00:00-04:00"
+navButtonHref: "#owner-cta"
+navButtonLabel: "Free Property Evaluation"
 headExtra: |
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "Service",
     "name": "Vacation Rental Property Management",
-    "description": "Local, full-service vacation rental property management for owners in Bradenton, Sarasota, Anna Maria Island, Siesta Key, and Longboat Key.",
+    "description": "Premium local vacation rental property management for owners in Bradenton, Sarasota, Anna Maria Island, Siesta Key, and Longboat Key.",
     "provider": {
       "@type": "Organization",
       "name": "Seascape Vacations",
@@ -36,14 +36,15 @@ headExtra: |
     "@type": "WebPage",
     "name": "Vacation Rental Property Management | Seascape Vacations",
     "url": "https://seascape-vacations.com/property-management/",
-    "description": "Owner resource hub for Seascape Vacations property management coverage, local expertise, and operational guidance.",
-    "dateModified": "2026-03-15T12:00:00-04:00",
+    "description": "Owner-facing property management page for local service coverage, revenue strategy, guest standards, and evaluation requests.",
+    "dateModified": "2026-03-19T09:00:00-04:00",
     "author": {
       "@type": "Organization",
       "name": "Seascape Vacations Team"
     },
     "about": [
       { "@type": "Thing", "name": "Vacation rental management" },
+      { "@type": "Thing", "name": "Guest experience operations" },
       { "@type": "Place", "name": "Bradenton-Sarasota corridor" }
     ]
   }
@@ -53,11 +54,323 @@ headExtra: |
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     "itemListElement": [
-      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://seascape-vacations.com" },
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://seascape-vacations.com/" },
       { "@type": "ListItem", "position": 2, "name": "Property Management", "item": "https://seascape-vacations.com/property-management/" }
     ]
   }
   </script>
+  <style>
+    .owner-hero {
+      position: relative;
+      overflow: hidden;
+      background:
+        linear-gradient(135deg, rgba(26, 58, 60, 0.92) 0%, rgba(61, 92, 93, 0.82) 45%, rgba(26, 58, 60, 0.9) 100%),
+        url("/images/sarasota-sunset-hero.jpg") center/cover;
+      color: white;
+    }
+
+    .owner-hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(0, 0, 0, 0.12));
+      pointer-events: none;
+    }
+
+    .owner-hero-grid,
+    .owner-choice-grid,
+    .owner-coverage-grid,
+    .owner-proof-grid,
+    .owner-resource-grid {
+      display: grid;
+      gap: 20px;
+    }
+
+    .owner-hero-grid,
+    .owner-choice-grid {
+      grid-template-columns: 1.2fr 0.8fr;
+      align-items: center;
+    }
+
+    .owner-hero-copy,
+    .owner-hero-panel,
+    .owner-proof-card,
+    .owner-choice-card,
+    .owner-coverage-card,
+    .owner-resource-card,
+    .owner-cta-panel {
+      position: relative;
+      z-index: 1;
+      border-radius: 24px;
+    }
+
+    .owner-hero-copy h1 {
+      font-size: clamp(36px, 5vw, 58px);
+      line-height: 1.02;
+      color: white;
+      margin-bottom: 18px;
+    }
+
+    .owner-hero-lead {
+      max-width: 700px;
+      font-size: 18px;
+      opacity: 0.92;
+      margin-bottom: 26px;
+    }
+
+    .owner-hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .owner-ghost-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0 24px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      color: white;
+      font-weight: 600;
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(10px);
+    }
+
+    .owner-hero-panel {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      backdrop-filter: blur(12px);
+      padding: 24px;
+      box-shadow: 0 24px 50px rgba(0, 0, 0, 0.18);
+    }
+
+    .owner-panel-label,
+    .owner-proof-label {
+      display: inline-block;
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold-light);
+      margin-bottom: 12px;
+      font-weight: 700;
+    }
+
+    .owner-hero-panel h2 {
+      color: white;
+      font-size: 28px;
+      margin-bottom: 12px;
+    }
+
+    .owner-hero-panel p {
+      color: rgba(255, 255, 255, 0.84);
+      margin-bottom: 16px;
+    }
+
+    .owner-panel-list {
+      list-style: none;
+      display: grid;
+      gap: 10px;
+      margin: 0;
+      padding: 0;
+    }
+
+    .owner-panel-list li {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      color: rgba(255, 255, 255, 0.92);
+      font-size: 15px;
+    }
+
+    .owner-check {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: rgba(201, 169, 98, 0.22);
+      border: 1px solid rgba(201, 169, 98, 0.45);
+      color: var(--gold-light);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex: 0 0 auto;
+      margin-top: 2px;
+      position: relative;
+    }
+
+    .owner-check::after {
+      content: "";
+      width: 5px;
+      height: 9px;
+      border-right: 2px solid var(--gold-light);
+      border-bottom: 2px solid var(--gold-light);
+      transform: rotate(45deg) translate(-1px, -1px);
+    }
+
+    .owner-proof-band {
+      margin-top: -36px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .owner-proof-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .owner-proof-card {
+      background: white;
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      padding: 24px;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.08);
+    }
+
+    .owner-proof-card h3 {
+      color: var(--brand-dark);
+      margin-bottom: 10px;
+      font-size: 22px;
+    }
+
+    .owner-proof-card p {
+      color: var(--stone-light);
+      font-size: 15px;
+    }
+
+    .owner-choice-card {
+      background: white;
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      padding: 28px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+    }
+
+    .owner-choice-card h3 {
+      color: var(--brand-dark);
+      margin-bottom: 12px;
+      font-size: 24px;
+    }
+
+    .owner-choice-card p {
+      color: var(--stone);
+      margin-bottom: 12px;
+    }
+
+    .owner-choice-card ul {
+      padding-left: 18px;
+      color: var(--stone);
+      display: grid;
+      gap: 8px;
+    }
+
+    .owner-proof-stat {
+      background: linear-gradient(180deg, var(--cream-light) 0%, white 100%);
+      border: 1px solid rgba(95, 138, 139, 0.14);
+      padding: 26px;
+    }
+
+    .owner-proof-stat strong {
+      display: block;
+      font-size: 40px;
+      line-height: 1;
+      color: var(--brand-dark);
+      margin-bottom: 8px;
+      font-family: "Playfair Display", Georgia, serif;
+    }
+
+    .owner-proof-stat p {
+      color: var(--stone-light);
+      margin: 0;
+    }
+
+    .owner-coverage-grid,
+    .owner-resource-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .owner-coverage-card,
+    .owner-resource-card {
+      background: white;
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      padding: 24px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+    }
+
+    .owner-coverage-card span,
+    .owner-resource-card span {
+      display: inline-block;
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--brand);
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+
+    .owner-coverage-card h3,
+    .owner-resource-card h3 {
+      color: var(--brand-dark);
+      margin-bottom: 10px;
+      font-size: 23px;
+    }
+
+    .owner-coverage-card p,
+    .owner-resource-card p {
+      color: var(--stone-light);
+      margin-bottom: 14px;
+    }
+
+    .owner-link {
+      color: var(--brand);
+      font-weight: 700;
+    }
+
+    .owner-faq-note {
+      max-width: 760px;
+      margin: 0 auto 36px;
+      text-align: center;
+      color: var(--stone-light);
+    }
+
+    .owner-cta-panel {
+      background: linear-gradient(135deg, var(--brand-dark) 0%, #1f4648 100%);
+      color: white;
+      padding: 38px;
+      text-align: center;
+      box-shadow: 0 24px 50px rgba(61, 92, 93, 0.24);
+    }
+
+    .owner-cta-panel h2 {
+      color: white;
+      margin-bottom: 12px;
+      font-size: clamp(30px, 4vw, 42px);
+    }
+
+    .owner-cta-panel p {
+      max-width: 700px;
+      margin: 0 auto 24px;
+      opacity: 0.9;
+    }
+
+    .owner-cta-actions {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 920px) {
+      .owner-hero-grid,
+      .owner-choice-grid,
+      .owner-proof-grid,
+      .owner-coverage-grid,
+      .owner-resource-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .owner-proof-band {
+        margin-top: 0;
+      }
+    }
+  </style>
 ---
 <nav class="breadcrumbs" aria-label="Breadcrumb">
   <ol>
@@ -67,38 +380,68 @@ headExtra: |
   </ol>
 </nav>
 
-<section class="section" style="background: linear-gradient(135deg, var(--brand-dark) 0%, #1a3a3c 100%); color: white;">
-  <div class="container" style="text-align: center;">
-    <p class="section-tag" style="color: var(--gold);">For Property Owners</p>
-    <h1 style="font-size: clamp(32px, 5vw, 48px); margin-bottom: 20px; color: white;">Vacation Rental Property Management</h1>
-    <p style="max-width: 700px; margin: 0 auto 18px; opacity: 0.9; font-size: 18px;">Local, full-service management for Gulf Coast vacation rentals with hands-on guest support, revenue strategy, and owner reporting.</p>
-    <p style="display: inline-block; background: rgba(255,255,255,0.12); color: white; font-size: 0.9rem; padding: 8px 14px; border-radius: 999px;">Updated March 2026 | Written by Seascape Vacations Team</p>
+<section class="section owner-hero">
+  <div class="container owner-hero-grid">
+    <div class="owner-hero-copy">
+      <p class="section-tag" style="color: var(--gold-light);">For Property Owners</p>
+      <h1>Luxury property management with local eyes on every stay</h1>
+      <p class="owner-hero-lead">Seascape Vacations combines premium guest presentation, revenue strategy, and in-market response so owners do not have to choose between brand quality and operational control.</p>
+      <div class="owner-hero-actions">
+        <a class="btn btn-gold" href="#owner-cta">Free Property Evaluation</a>
+        <a class="owner-ghost-btn" href="tel:+19417048545">Call (941) 704-8545</a>
+      </div>
+    </div>
+    <aside class="owner-hero-panel">
+      <span class="owner-panel-label">What owners want fixed</span>
+      <h2>Less guessing. More oversight.</h2>
+      <p>The strongest owners usually are not asking for generic management. They are asking for tighter standards, better pricing discipline, and a team close enough to the property to actually protect the guest experience.</p>
+      <ul class="owner-panel-list">
+        <li><span class="owner-check" aria-hidden="true"></span><span>Hands-on local response instead of remote escalation loops</span></li>
+        <li><span class="owner-check" aria-hidden="true"></span><span>Revenue decisions tied to real demand, seasonality, and market position</span></li>
+        <li><span class="owner-check" aria-hidden="true"></span><span>Guest standards that protect reviews, repeat stays, and owner margin</span></li>
+      </ul>
+    </aside>
+  </div>
+</section>
+
+<section class="section owner-proof-band" style="padding-top: 0;">
+  <div class="container owner-proof-grid">
+    <div class="owner-proof-card">
+      <span class="owner-proof-label">Local Support</span>
+      <h3>Local Support</h3>
+      <p>Cleaning quality control, maintenance triage, guest issues, and property checks all move faster when the team is operating in the market instead of forwarding problems from somewhere else.</p>
+    </div>
+    <div class="owner-proof-card">
+      <span class="owner-proof-label">Revenue Strategy</span>
+      <h3>Revenue Strategy</h3>
+      <p>Pricing is not a one-time setup. We treat rate strategy, channel mix, and direct-booking positioning like active levers, not background admin work.</p>
+    </div>
+    <div class="owner-proof-card">
+      <span class="owner-proof-label">Guest Experience Standards</span>
+      <h3>Guest Experience Standards</h3>
+      <p>Better guest communication, stronger stays, and fewer avoidable misses are what protect review quality and long-term owner income.</p>
+    </div>
   </div>
 </section>
 
 <section class="section">
-  <div class="container">
-    <div style="background: #f0f7f7; border-left: 4px solid var(--brand); border-radius: 0 14px 14px 0; padding: 24px; margin-bottom: 32px;">
-      <h2 style="font-size: clamp(28px, 4vw, 36px); margin-bottom: 14px; color: var(--brand-dark);">What Is Vacation Rental Property Management?</h2>
-      <p style="margin-bottom: 0; font-size: 16px; line-height: 1.85;">Vacation rental property management means handling the operational, revenue, guest-service, and compliance work that keeps a short-term rental profitable without burning out the owner. For Gulf Coast owners, that usually includes dynamic pricing, listing optimization, professional cleaning and maintenance coordination, guest screening, local support, and reporting that shows what the property is actually earning. At Seascape Vacations, we focus on the Bradenton-Sarasota corridor, where owners often need a manager who understands both beach-driven traveler demand and the neighborhood-level rules that affect Anna Maria Island, Bradenton, Sarasota, Siesta Key, and Longboat Key. If you want the location-specific detail, start with our <a href="/property-management/vacation-rental-management-bradenton/">Bradenton</a>, <a href="/property-management/vacation-rental-management-sarasota/">Sarasota</a>, and <a href="/property-management/vacation-rental-management-anna-maria-island/">Anna Maria Island</a> service pages.</p>
+  <div class="container owner-choice-grid">
+    <div class="owner-choice-card">
+      <p class="section-tag">Why Owners Choose Seascape</p>
+      <h2 class="section-title" style="margin-bottom: 14px;">Why Owners Choose Seascape</h2>
+      <p>Owners in the Bradenton-Sarasota corridor usually are not looking for a lecture on what property management is. They are trying to decide who will actually watch the details, protect the guest experience, and keep revenue decisions grounded in the local market.</p>
+      <p>That is the gap Seascape is built to close. We combine premium guest-facing presentation with local operating discipline, so the page does not promise luxury while the back end runs like a spreadsheet project.</p>
+      <ul>
+        <li>Local vendor coordination and response instead of distant “ticketing” culture</li>
+        <li>Pricing and positioning decisions based on Gulf Coast demand, not generic national averages</li>
+        <li>Owner visibility into what is driving bookings, reviews, and margins</li>
+      </ul>
     </div>
-
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px;margin-bottom:32px;">
-      <div style="background:white;border-radius:18px;padding:24px;box-shadow:0 4px 20px rgba(0,0,0,0.06);">
-        <p class="section-tag" style="margin-bottom:10px;">Revenue</p>
-        <h2 style="font-size:24px;margin-bottom:12px;color:var(--brand-dark);">Pricing + Occupancy Strategy</h2>
-        <p style="color:var(--stone-light);margin-bottom:0;">We manage nightly rates, minimum stays, and seasonality so owners stop leaving money on the table during peak Gulf Coast demand.</p>
-      </div>
-      <div style="background:white;border-radius:18px;padding:24px;box-shadow:0 4px 20px rgba(0,0,0,0.06);">
-        <p class="section-tag" style="margin-bottom:10px;">Operations</p>
-        <h2 style="font-size:24px;margin-bottom:12px;color:var(--brand-dark);">Local Guest + Vendor Support</h2>
-        <p style="color:var(--stone-light);margin-bottom:0;">Owners need real local coverage for turnovers, guest issues, inspections, and maintenance coordination. That is where remote managers usually break down.</p>
-      </div>
-      <div style="background:white;border-radius:18px;padding:24px;box-shadow:0 4px 20px rgba(0,0,0,0.06);">
-        <p class="section-tag" style="margin-bottom:10px;">Reporting</p>
-        <h2 style="font-size:24px;margin-bottom:12px;color:var(--brand-dark);">Clear Owner Visibility</h2>
-        <p style="color:var(--stone-light);margin-bottom:0;">Performance only matters if owners can understand it. We treat reporting as an operating tool, not a monthly afterthought.</p>
-      </div>
+    <div class="owner-choice-card owner-proof-stat">
+      <span class="owner-proof-label" style="color: var(--brand);">Why it matters</span>
+      <strong>650+</strong>
+      <p>Five-star reviews across guest stays. That is not just social proof. It is a direct signal that operational discipline and guest care are working together instead of fighting each other.</p>
+      <p style="margin-top: 18px;">The same standards that keep guests calm and informed are what keep owner revenue from leaking through bad handoffs, weak communication, and preventable stay issues.</p>
     </div>
   </div>
 </section>
@@ -106,35 +449,29 @@ headExtra: |
 <section class="section" style="background: var(--cream-dark);">
   <div class="container">
     <div class="section-header">
-      <p class="section-tag">Where We Focus</p>
-      <h2 class="section-title">Local Management Coverage</h2>
-      <p class="section-subtitle">These are the owner pages that matter most if your home sits in the Bradenton-Sarasota vacation corridor.</p>
+      <p class="section-tag">Service Coverage</p>
+      <h2 class="section-title">Local-market expertise where owners actually need it</h2>
+      <p class="section-subtitle">We kept the strongest owner proof: specific coverage, local market understanding, and pages that explain the differences between management by market.</p>
     </div>
 
-    <div class="properties-grid">
-      <a class="property-card" href="/property-management/vacation-rental-management-bradenton/">
-        <div class="property-body">
-          <h3 class="property-title">Bradenton Property Management</h3>
-          <p class="property-meta">Revenue strategy, guest support, and mainland beach-access positioning</p>
-        </div>
+    <div class="owner-coverage-grid">
+      <a class="owner-coverage-card" href="/property-management/vacation-rental-management-anna-maria-island/">
+        <span>Island Market</span>
+        <h3>Anna Maria Island</h3>
+        <p>Management for owners balancing island demand, regulation pressure, premium summer pricing, and strong guest expectations.</p>
+        <span class="owner-link">See AMI coverage →</span>
       </a>
-      <a class="property-card" href="/property-management/vacation-rental-management-sarasota/">
-        <div class="property-body">
-          <h3 class="property-title">Sarasota Property Management</h3>
-          <p class="property-meta">Upscale guest expectations, downtown demand, and Sarasota seasonality</p>
-        </div>
+      <a class="owner-coverage-card" href="/property-management/vacation-rental-management-bradenton/">
+        <span>Growth Corridor</span>
+        <h3>Bradenton</h3>
+        <p>Useful for owners focused on value-driven family demand, sports travel, and better revenue control outside pure island inventory.</p>
+        <span class="owner-link">See Bradenton coverage →</span>
       </a>
-      <a class="property-card" href="/property-management/vacation-rental-management-anna-maria-island/">
-        <div class="property-body">
-          <h3 class="property-title">Anna Maria Island Property Management</h3>
-          <p class="property-meta">Island-specific turnover pressure, beach demand, and owner expectations</p>
-        </div>
-      </a>
-      <a class="property-card" href="/property-management/vacation-rental-management-siesta-key/">
-        <div class="property-body">
-          <h3 class="property-title">Siesta Key Property Management</h3>
-          <p class="property-meta">Search demand around Siesta Key and the nearby mainland inventory mix</p>
-        </div>
+      <a class="owner-coverage-card" href="/property-management/vacation-rental-management-sarasota/">
+        <span>Premium Urban-Coastal</span>
+        <h3>Sarasota</h3>
+        <p>For owners who need stronger brand positioning, premium guest communication, and tighter control over upscale stay standards.</p>
+        <span class="owner-link">See Sarasota coverage →</span>
       </a>
     </div>
   </div>
@@ -143,10 +480,10 @@ headExtra: |
 <section class="section">
   <div class="container">
     <div class="section-header">
-      <p class="section-tag">Owner Questions</p>
-      <h2 class="section-title">What Gulf Coast Owners Usually Ask First</h2>
-      <p class="section-subtitle">These are the questions that drive the hiring decision, and they are the same questions AI systems tend to extract when the page is structured clearly.</p>
+      <p class="section-tag">Selected FAQ</p>
+      <h2 class="section-title">What Gulf Coast owners usually ask first</h2>
     </div>
+    <p class="owner-faq-note">These are the strongest owner questions from the current page. We kept them because they help real hiring decisions, not because they pad the page.</p>
 
     <div class="faq-item">
       <div class="faq-question">How do I know if my market can support professional management fees?</div>
@@ -154,40 +491,56 @@ headExtra: |
     </div>
     <div class="faq-item">
       <div class="faq-question">What should a local manager handle that a remote operator usually misses?</div>
-      <div class="faq-answer">The short answer is local response time. Cleaning quality control, maintenance triage, guest screening, and property checks are all weaker when the manager is not operating in-market. Our owner service pages break down how that changes between <a href="/property-management/vacation-rental-management-bradenton/">Bradenton</a>, <a href="/property-management/vacation-rental-management-sarasota/">Sarasota</a>, and <a href="/property-management/vacation-rental-management-anna-maria-island/">Anna Maria Island</a>.</div>
+      <div class="faq-answer">The short answer is local response time. Cleaning quality control, maintenance triage, guest screening, and property checks are all weaker when the manager is not operating in-market. Our market-specific service pages break down how that changes between <a href="/property-management/vacation-rental-management-bradenton/">Bradenton</a>, <a href="/property-management/vacation-rental-management-sarasota/">Sarasota</a>, and <a href="/property-management/vacation-rental-management-anna-maria-island/">Anna Maria Island</a>.</div>
     </div>
     <div class="faq-item">
       <div class="faq-question">What should I read before choosing a vacation rental manager?</div>
-      <div class="faq-answer">Three good starting points are our <a href="/guides/best-vacation-rental-companies-ami.html">AMI rental company comparison</a>, the <a href="/guides/2026-bradenton-vacation-rental-market-analysis/">2026 Bradenton market report</a>, and the <a href="/guides/booking-direct-vacation-rentals.html">book-direct guide</a> that explains how pricing and distribution decisions affect margin.</div>
+      <div class="faq-answer">Three strong starting points are our <a href="/guides/best-vacation-rental-companies-ami.html">AMI rental company comparison</a>, the <a href="/guides/2026-bradenton-vacation-rental-market-analysis/">Bradenton market report</a>, and the <a href="/guides/booking-direct-vacation-rentals.html">book-direct guide</a> that explains how pricing and distribution decisions affect margin.</div>
     </div>
   </div>
 </section>
 
-<section class="section" style="background: var(--cream-dark);">
+<section class="section" style="background: var(--cream-light);">
   <div class="container">
     <div class="section-header">
-      <p class="section-tag">Owner Resources</p>
-      <h2 class="section-title">Read These Before You Hire Anyone</h2>
-      <p class="section-subtitle">These guide pages already rank, and they now feed authority back into the owner hub instead of floating as disconnected content.</p>
+      <p class="section-tag">Owner Reading</p>
+      <h2 class="section-title">Useful context before you hire anyone</h2>
+      <p class="section-subtitle">Small resource row. Strongest links only. No giant warehouse.</p>
     </div>
 
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;">
-      <a href="/guides/2026-bradenton-vacation-rental-market-analysis/" style="background:white;border-radius:16px;padding:20px;box-shadow:0 4px 18px rgba(0,0,0,0.05);">
-        <strong style="display:block;color:var(--brand-dark);margin-bottom:8px;">Bradenton Market Analysis</strong>
-        <span style="color:var(--stone-light);font-size:14px;">Use this when you want pricing and demand context before signing a management agreement.</span>
+    <div class="owner-resource-grid">
+      <a class="owner-resource-card" href="/guides/2026-bradenton-vacation-rental-market-analysis/">
+        <span>Market Data</span>
+        <h3>Bradenton Market Analysis</h3>
+        <p>Use this when you want pricing and demand context before you sign a management agreement.</p>
+        <span class="owner-link">Read the analysis →</span>
       </a>
-      <a href="/guides/vacation-rental-income-anna-maria.html" style="background:white;border-radius:16px;padding:20px;box-shadow:0 4px 18px rgba(0,0,0,0.05);">
-        <strong style="display:block;color:var(--brand-dark);margin-bottom:8px;">AMI Income Guide</strong>
-        <span style="color:var(--stone-light);font-size:14px;">A realistic owner-facing look at what vacation rental income can look like on and around Anna Maria Island.</span>
+      <a class="owner-resource-card" href="/guides/vacation-rental-income-anna-maria.html">
+        <span>Revenue Context</span>
+        <h3>AMI Income Guide</h3>
+        <p>A more realistic owner-facing look at what vacation rental income can look like on and around Anna Maria Island.</p>
+        <span class="owner-link">Read the guide →</span>
       </a>
-      <a href="/guides/best-vacation-rental-companies-ami.html" style="background:white;border-radius:16px;padding:20px;box-shadow:0 4px 18px rgba(0,0,0,0.05);">
-        <strong style="display:block;color:var(--brand-dark);margin-bottom:8px;">AMI Company Comparison</strong>
-        <span style="color:var(--stone-light);font-size:14px;">Useful if you are still comparing boutique local operators against larger managers and marketplace-driven options.</span>
+      <a class="owner-resource-card" href="/guides/best-vacation-rental-companies-ami.html">
+        <span>Competitive Review</span>
+        <h3>AMI Company Comparison</h3>
+        <p>Useful if you are still comparing boutique local operators against larger managers and marketplace-driven options.</p>
+        <span class="owner-link">Read the comparison →</span>
       </a>
-      <a href="/guides/booking-direct-vacation-rentals.html" style="background:white;border-radius:16px;padding:20px;box-shadow:0 4px 18px rgba(0,0,0,0.05);">
-        <strong style="display:block;color:var(--brand-dark);margin-bottom:8px;">Book-Direct Margin Guide</strong>
-        <span style="color:var(--stone-light);font-size:14px;">Shows why direct distribution and guest acquisition strategy matter to owner revenue, not just guest savings.</span>
-      </a>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="owner-cta-panel" id="owner-cta">
+      <p class="section-tag" style="color: var(--gold-light);">Next Step</p>
+      <h2>Request a property evaluation</h2>
+      <p>If you are deciding between managers, the useful next step is not more generic reading. It is looking at your property, your market position, and what operational changes would actually move revenue and review quality.</p>
+      <div class="owner-cta-actions">
+        <a class="btn btn-gold" href="mailto:info@seascape-vacations.com?subject=Property%20Evaluation%20Request">Email Our Team</a>
+        <a class="owner-ghost-btn" href="tel:+19417048545">Call (941) 704-8545</a>
+      </div>
     </div>
   </div>
 </section>

@@ -82,6 +82,41 @@ test("guides hub is generated from current data and does not hardcode stale reho
   assert.equal(guidesHub.includes("/stays/luxury-concierge-services/"), false);
 });
 
+test("about page exists as a real route and homepage links point to it", () => {
+  const homepage = fs.readFileSync(path.join(projectRoot, "src", "index.njk"), "utf8");
+  const redirects = fs.readFileSync(path.join(projectRoot, "src", "_redirects"), "utf8");
+  const aboutPagePath = path.join(projectRoot, "src", "about-us", "index.njk");
+
+  assert.equal(fs.existsSync(aboutPagePath), true);
+  assert.equal(homepage.includes('href="/about-us/"'), true);
+  assert.equal(homepage.includes('href="#welcome"'), false);
+  assert.equal(redirects.includes("/about-us   /about-us/   301"), true);
+});
+
+test("property owners page leads with premium proof instead of explainer-hub copy", () => {
+  const ownerPage = fs.readFileSync(path.join(projectRoot, "src", "property-management", "index.njk"), "utf8");
+
+  assert.equal(ownerPage.includes("Why Owners Choose Seascape"), true);
+  assert.equal(ownerPage.includes("Local Support"), true);
+  assert.equal(ownerPage.includes("Revenue Strategy"), true);
+  assert.equal(ownerPage.includes("Guest Experience Standards"), true);
+  assert.equal(ownerPage.includes("What Is Vacation Rental Property Management?"), false);
+  assert.equal(ownerPage.includes("Read These Before You Hire Anyone"), false);
+});
+
+test("guides hub behaves like an editorial blog front door with hierarchy", () => {
+  const guidesHub = fs.readFileSync(path.join(projectRoot, "src", "guides", "index.njk"), "utf8");
+
+  assert.equal(guidesHub.includes("Featured Story"), true);
+  assert.equal(guidesHub.includes("Start Here"), true);
+  assert.equal(guidesHub.includes("Comparisons"), true);
+  assert.equal(guidesHub.includes("Area Guides"), true);
+  assert.equal(guidesHub.includes("Trip Planning"), true);
+  assert.equal(guidesHub.includes("Owner Insights"), true);
+  assert.equal(guidesHub.includes("staysPages"), true);
+  assert.equal(guidesHub.includes("seoPages.owner"), true);
+});
+
 test("new rehomed guide and service pages exist", () => {
   for (const pagePath of [
     path.join(projectRoot, "src", "guides", "hurricane-preparedness-florida-vacation.html"),
