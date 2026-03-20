@@ -58,19 +58,65 @@ eleventyComputed:
 {% set comparisonLinks = [
   { "url": "/guides/bradenton-vs-sarasota/", "label": "Bradenton vs Sarasota" },
   { "url": "/guides/anna-maria-island-vs-siesta-key/", "label": "Anna Maria Island vs Siesta Key" },
-  { "url": "/guides/bradenton-vs-sarasota-beaches/", "label": "Bradenton vs Sarasota Beaches" }
+  { "url": "/guides/bradenton-vs-sarasota-beaches/", "label": "Bradenton vs Sarasota Beaches" },
+  { "url": "/guides/bradenton-vs-tampa-vacation-rentals/", "label": "Bradenton vs Tampa Vacation Rentals" },
+  { "url": "/guides/holmes-beach-vs-bradenton-beach/", "label": "Holmes Beach vs Bradenton Beach" }
 ] %}
 {% set areaGuides = [
   { "url": "/guides/anna-maria-island-area-guide/", "label": "Anna Maria Island" },
+  { "url": "/guides/anna-maria-city/", "label": "Anna Maria City" },
+  { "url": "/guides/holmes-beach/", "label": "Holmes Beach" },
+  { "url": "/guides/bradenton-beach/", "label": "Bradenton Beach" },
   { "url": "/guides/bradenton-area-guide/", "label": "Bradenton" },
+  { "url": "/guides/bradenton-insider-guide/", "label": "Bradenton Insider Guide" },
   { "url": "/guides/sarasota-area-guide/", "label": "Sarasota" },
-  { "url": "/guides/siesta-key-area-guide/", "label": "Siesta Key" }
+  { "url": "/guides/siesta-key-area-guide/", "label": "Siesta Key" },
+  { "url": "/guides/siesta-key-beach-guide/", "label": "Siesta Key Beach Guide" }
 ] %}
 {% set tripPlanning = [
   { "url": "/guides/anna-maria-island-beaches/", "label": "Best AMI Beaches" },
   { "url": "/guides/best-restaurants-anna-maria-island/", "label": "Best Restaurants Near AMI" },
   { "url": "/guides/best-time-visit-anna-maria-island/", "label": "Best Time to Visit Anna Maria Island" },
-  { "url": "/guides/how-to-get-to-anna-maria-island/", "label": "How to Get to Anna Maria Island" }
+  { "url": "/guides/how-to-get-to-anna-maria-island/", "label": "How to Get to Anna Maria Island" },
+  { "url": "/guides/where-to-stay-near-anna-maria-island/", "label": "Where To Stay Near Anna Maria Island" },
+  { "url": "/guides/fishing-guide-anna-maria-sarasota/", "label": "Fishing Guide: Anna Maria to Sarasota" },
+  { "url": "/guides/family-vacation-anna-maria-island/", "label": "Family Vacation on Anna Maria Island" },
+  { "url": "/guides/spring-break-activities-bradenton-anna-maria-island/", "label": "Spring Break Activities Near AMI" },
+  { "url": "/guides/dolphins-manatees-bradenton/", "label": "Where to Spot Dolphins and Manatees" },
+  { "url": "/guides/srq-airport-to-anna-maria-island/", "label": "SRQ Airport to Anna Maria Island" },
+  { "url": "/guides/anna-maria-island-noise-ordinance-guide/", "label": "Anna Maria Island Noise Ordinance Guide" },
+  { "url": "/guides/snowbirds-guide-extended-stays-florida/", "label": "Snowbirds Guide to Extended Stays" }
+] %}
+{% set ownerInsightSlugs = [
+  "maximize-vacation-rental-income-florida",
+  "switch-vacation-rental-management-company",
+  "new-vacation-rental-owner-guide-florida",
+  "increase-vacation-rental-bookings",
+  "vacation-rental-cleaning-services-florida",
+  "vacation-rental-guest-screening",
+  "vacation-rental-insurance-florida",
+  "vacation-rental-taxes-florida",
+  "buy-vacation-rental-property-florida"
+] %}
+{% set stayUtilitySlugs = [
+  "holmes-beach-vacation-rentals",
+  "vacation-rentals-with-elevator",
+  "week-long-vacation-rentals-florida",
+  "accessible-vacation-rentals-florida",
+  "canal-homes-with-boat-dock",
+  "golf-vacation-rentals-bradenton",
+  "5-bedroom-vacation-rentals-florida",
+  "vacation-rentals-sleeps-12-florida",
+  "vacation-rentals-sleeps-16-florida",
+  "vacation-rentals-with-fire-pit",
+  "vacation-rentals-with-outdoor-grill"
+] %}
+{% set marketIntelLinks = [
+  { "url": "/guides/florida-gulf-coast-vacation-rental-market-report-2026/", "label": "Florida Gulf Coast Market Report" },
+  { "url": "/guides/vacation-rental-income-anna-maria/", "label": "Anna Maria Island Income Guide" },
+  { "url": "/guides/2026-bradenton-vacation-rental-market-analysis/", "label": "Bradenton Market Analysis" },
+  { "url": "/guides/pet-friendly-anna-maria-island/", "label": "Pet-Friendly Anna Maria Guide" },
+  { "url": "/services/concierge-services/", "label": "Concierge Services" }
 ] %}
 <!doctype html>
 <html lang="en">
@@ -725,7 +771,7 @@ eleventyComputed:
             <p class="category-intro">For owners or investors trying to understand market reality, management decisions, and revenue logic before hiring anyone.</p>
             <ul class="category-links">
               {% for page in seoPages.owner %}
-              {% if loop.index <= 3 %}
+              {% if ownerInsightSlugs.indexOf(page.slug) !== -1 %}
               <li><a href="/property-management/{{ page.slug }}/">{{ page.title }}</a></li>
               {% endif %}
               {% endfor %}
@@ -744,7 +790,7 @@ eleventyComputed:
             <p>These links still matter. They just no longer get to pretend they are the lead experience of the whole page.</p>
             <ul class="utility-pills">
               {% for page in staysPages %}
-              {% if seoGovernance.staysNoindexSlugs.indexOf(page.slug) === -1 and loop.index <= 10 %}
+              {% if stayUtilitySlugs.indexOf(page.slug) !== -1 %}
               <li><a href="/stays/{{ page.slug }}/">{{ page.title }}</a></li>
               {% endif %}
               {% endfor %}
@@ -754,14 +800,12 @@ eleventyComputed:
 
         <div class="utility-card">
           <div class="utility-card-body">
-            <p class="section-tag">Owner Deep Dives</p>
-            <h3>Owner Insights</h3>
-            <p>The owner material still lives underneath the blog hub. It now reads like a deliberate lane, not random spillover.</p>
+            <p class="section-tag">Market & Service Layer</p>
+            <h3>Market Intel & Direct Help</h3>
+            <p>The blog hub also has to route people into research and service pages that answer the next real question, not just the first click.</p>
             <ul class="utility-links">
-              {% for page in seoPages.owner %}
-              {% if loop.index <= 5 %}
-              <li><a href="/property-management/{{ page.slug }}/">{{ page.title }}</a></li>
-              {% endif %}
+              {% for page in marketIntelLinks %}
+              <li><a href="{{ page.url }}">{{ page.label }}</a></li>
               {% endfor %}
             </ul>
           </div>
