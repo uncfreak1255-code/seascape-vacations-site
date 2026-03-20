@@ -5,5 +5,10 @@
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
     gtag('config', '{{ site.analytics.ga4MeasurementId }}');
+    window.seascapeTrackEvent = function(eventName, params) {
+        if (!eventName) return;
+        gtag('event', eventName, params || {});
+    };
 </script>
 {% endif %}
+<script defer src="/assets/js/conversion-tracking.js"></script>

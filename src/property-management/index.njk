@@ -7,7 +7,8 @@ pageAuthor: "Seascape Vacations Team"
 pageImage: "https://seascape-vacations.com/images/seascape-og-default.jpg"
 pageUpdated: "2026-03-19T09:00:00-04:00"
 navButtonHref: "#owner-cta"
-navButtonLabel: "Free Property Evaluation"
+navButtonLabel: "Get Your Revenue Teardown"
+navButtonAttributes: 'data-track-event="owner_primary_cta_click" data-page-slug="property-management"'
 headExtra: |
   <script type="application/ld+json">
   {
@@ -215,7 +216,7 @@ headExtra: |
     }
 
     .owner-proof-grid {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     }
 
     .owner-proof-card {
@@ -283,7 +284,7 @@ headExtra: |
 
     .owner-coverage-grid,
     .owner-resource-grid {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
     }
 
     .owner-coverage-card,
@@ -357,12 +358,80 @@ headExtra: |
       flex-wrap: wrap;
     }
 
+    .owner-lead-form {
+      display: grid;
+      gap: 18px;
+      text-align: left;
+      max-width: 760px;
+      margin: 0 auto;
+    }
+
+    .owner-form-eyebrow {
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold-light);
+      font-weight: 700;
+      margin: 0;
+    }
+
+    .owner-form-title {
+      color: white;
+      font-size: clamp(30px, 4vw, 42px);
+      margin: 0;
+    }
+
+    .owner-form-copy,
+    .owner-form-note {
+      color: rgba(255, 255, 255, 0.84);
+      margin: 0;
+    }
+
+    .owner-form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .owner-form-field {
+      display: grid;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      color: white;
+    }
+
+    .owner-form-field input {
+      width: 100%;
+      min-height: 52px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: rgba(255, 255, 255, 0.08);
+      color: white;
+      padding: 0 16px;
+      font: inherit;
+    }
+
+    .owner-form-field input::placeholder {
+      color: rgba(255, 255, 255, 0.52);
+    }
+
+    .owner-form-field--wide {
+      grid-column: 1 / -1;
+    }
+
+    .owner-form-submit {
+      justify-content: center;
+      width: fit-content;
+    }
+
     @media (max-width: 920px) {
       .owner-hero-grid,
       .owner-choice-grid,
       .owner-proof-grid,
       .owner-coverage-grid,
-      .owner-resource-grid {
+      .owner-resource-grid,
+      .owner-form-grid {
         grid-template-columns: 1fr;
       }
 
@@ -372,6 +441,7 @@ headExtra: |
     }
   </style>
 ---
+{% from "partials/owner-evaluation-form.njk" import ownerEvaluationForm %}
 <nav class="breadcrumbs" aria-label="Breadcrumb">
   <ol>
     <li><a href="/">Home</a></li>
@@ -384,21 +454,21 @@ headExtra: |
   <div class="container owner-hero-grid">
     <div class="owner-hero-copy">
       <p class="section-tag" style="color: var(--gold-light);">For Property Owners</p>
-      <h1>Luxury property management with local eyes on every stay</h1>
-      <p class="owner-hero-lead">Seascape Vacations combines premium guest presentation, revenue strategy, and in-market response so owners do not have to choose between brand quality and operational control.</p>
+      <h1>Property management for owners who care about net revenue</h1>
+      <p class="owner-hero-lead">Seascape's current Gulf Coast portfolio runs at $1.4M in annual rental revenue, 10-15% management fees, and $119,923 in direct bookings. The useful next question is whether your current setup is leaking money through fees, OTA dependence, or weak execution.</p>
       <div class="owner-hero-actions">
-        <a class="btn btn-gold" href="#owner-cta">Free Property Evaluation</a>
-        <a class="owner-ghost-btn" href="tel:+19417048545">Call (941) 704-8545</a>
+        <a class="btn btn-gold" href="#owner-cta" data-track-event="owner_primary_cta_click" data-page-slug="property-management">Get Your Revenue Teardown</a>
+        <a class="owner-ghost-btn" href="tel:+19417048545" data-track-event="owner_phone_click" data-page-slug="property-management">Call (941) 704-8545</a>
       </div>
     </div>
     <aside class="owner-hero-panel">
       <span class="owner-panel-label">What owners want fixed</span>
-      <h2>Less guessing. More oversight.</h2>
-      <p>The strongest owners usually are not asking for generic management. They are asking for tighter standards, better pricing discipline, and a team close enough to the property to actually protect the guest experience.</p>
+      <h2>Less fee drag. More clarity.</h2>
+      <p>The strongest owners usually are not shopping for a prettier brochure. They are trying to figure out whether the current manager is protecting premium nights, reducing commission leakage, and operating close enough to the home to prevent expensive misses.</p>
       <ul class="owner-panel-list">
-        <li><span class="owner-check" aria-hidden="true"></span><span>Hands-on local response instead of remote escalation loops</span></li>
-        <li><span class="owner-check" aria-hidden="true"></span><span>Revenue decisions tied to real demand, seasonality, and market position</span></li>
-        <li><span class="owner-check" aria-hidden="true"></span><span>Guest standards that protect reviews, repeat stays, and owner margin</span></li>
+        <li><span class="owner-check" aria-hidden="true"></span><span>10-15% management fees instead of the 20-35% owner take common in the local comp set</span></li>
+        <li><span class="owner-check" aria-hidden="true"></span><span>Pricing decisions tied to real demand, seasonality, and market position instead of blanket discounts</span></li>
+        <li><span class="owner-check" aria-hidden="true"></span><span>Local operating response that protects reviews, repeat stays, and owner margin</span></li>
       </ul>
     </aside>
   </div>
@@ -407,19 +477,24 @@ headExtra: |
 <section class="section owner-proof-band" style="padding-top: 0;">
   <div class="container owner-proof-grid">
     <div class="owner-proof-card">
-      <span class="owner-proof-label">Local Support</span>
-      <h3>Local Support</h3>
-      <p>Cleaning quality control, maintenance triage, guest issues, and property checks all move faster when the team is operating in the market instead of forwarding problems from somewhere else.</p>
+      <span class="owner-proof-label">Portfolio Revenue</span>
+      <h3>$1.4M</h3>
+      <p>Current annual rental revenue across Seascape's five active Gulf Coast homes.</p>
     </div>
     <div class="owner-proof-card">
-      <span class="owner-proof-label">Revenue Strategy</span>
-      <h3>Revenue Strategy</h3>
-      <p>Pricing is not a one-time setup. We treat rate strategy, channel mix, and direct-booking positioning like active levers, not background admin work.</p>
+      <span class="owner-proof-label">Fee Model</span>
+      <h3>10-15%</h3>
+      <p>Seascape's management fee band versus local and national operators often charging 18-35%.</p>
     </div>
     <div class="owner-proof-card">
-      <span class="owner-proof-label">Guest Experience Standards</span>
-      <h3>Guest Experience Standards</h3>
-      <p>Better guest communication, stronger stays, and fewer avoidable misses are what protect review quality and long-term owner income.</p>
+      <span class="owner-proof-label">Direct Channel</span>
+      <h3>$119,923</h3>
+      <p>Direct booking revenue already shifted away from OTA commissions and back toward owner economics.</p>
+    </div>
+    <div class="owner-proof-card">
+      <span class="owner-proof-label">Per-Home Benchmark</span>
+      <h3>3-4x</h3>
+      <p>Internal Seascape benchmark versus local market-median revenue per property.</p>
     </div>
   </div>
 </section>
@@ -427,21 +502,21 @@ headExtra: |
 <section class="section">
   <div class="container owner-choice-grid">
     <div class="owner-choice-card">
-      <p class="section-tag">Why Owners Choose Seascape</p>
-      <h2 class="section-title" style="margin-bottom: 14px;">Why Owners Choose Seascape</h2>
-      <p>Owners in the Bradenton-Sarasota corridor usually are not looking for a lecture on what property management is. They are trying to decide who will actually watch the details, protect the guest experience, and keep revenue decisions grounded in the local market.</p>
-      <p>That is the gap Seascape is built to close. We combine premium guest-facing presentation with local operating discipline, so the page does not promise luxury while the back end runs like a spreadsheet project.</p>
+      <p class="section-tag">Owner Math</p>
+      <h2 class="section-title" style="margin-bottom: 14px;">Why the fee conversation usually gets distorted</h2>
+      <p>Owners love to compare one manager at 10%, another at 15%, and another at 20%. That matters, but it is not the full bill. OTA commissions, rate discounting, and weak local execution can erase more owner income than a few fee points either way.</p>
+      <p>That is the real Seascape pitch: lower fees alone are not the moat. Lower fees plus stronger pricing discipline, more direct demand, and tighter local operations are what change net owner income.</p>
       <ul>
-        <li>Local vendor coordination and response instead of distant “ticketing” culture</li>
-        <li>Pricing and positioning decisions based on Gulf Coast demand, not generic national averages</li>
-        <li>Owner visibility into what is driving bookings, reviews, and margins</li>
+        <li>Competitor fee band often lands around 20-35% while Seascape stays at 10-15%</li>
+        <li>Observed Airbnb host fees average roughly 13.4% versus direct payment cost closer to 2.9%</li>
+        <li>Owner reporting should explain what changed in revenue, channel mix, and margin instead of just listing activity</li>
       </ul>
     </div>
     <div class="owner-choice-card owner-proof-stat">
-      <span class="owner-proof-label" style="color: var(--brand);">Why it matters</span>
-      <strong>650+</strong>
-      <p>Five-star reviews across guest stays. That is not just social proof. It is a direct signal that operational discipline and guest care are working together instead of fighting each other.</p>
-      <p style="margin-top: 18px;">The same standards that keep guests calm and informed are what keep owner revenue from leaking through bad handoffs, weak communication, and preventable stay issues.</p>
+      <span class="owner-proof-label" style="color: var(--brand);">Commission Reality</span>
+      <strong>13.4% → 2.9%</strong>
+      <p>That is the difference between Seascape's observed Airbnb host-fee average and a direct payment cost. Owners who ignore channel mix are usually leaving real margin behind.</p>
+      <p style="margin-top: 18px;">The teardown is designed to show whether your current manager is protecting rate, reducing fee drag, and tightening execution enough to justify what they charge.</p>
     </div>
   </div>
 </section>
@@ -449,28 +524,28 @@ headExtra: |
 <section class="section" style="background: var(--cream-dark);">
   <div class="container">
     <div class="section-header">
-      <p class="section-tag">Service Coverage</p>
-      <h2 class="section-title">Local-market expertise where owners actually need it</h2>
-      <p class="section-subtitle">We kept the strongest owner proof: specific coverage, local market understanding, and pages that explain the differences between management by market.</p>
+      <p class="section-tag">Start With Your Market</p>
+      <h2 class="section-title">Choose the owner page that matches your situation</h2>
+      <p class="section-subtitle">The local pages are where the market differences show up. Start there if you are evaluating fit by property location.</p>
     </div>
 
     <div class="owner-coverage-grid">
       <a class="owner-coverage-card" href="/property-management/vacation-rental-management-anna-maria-island/">
         <span>Island Market</span>
         <h3>Anna Maria Island</h3>
-        <p>Management for owners balancing island demand, regulation pressure, premium summer pricing, and strong guest expectations.</p>
+        <p>Start here if your concern is premium-week protection, OTA leakage, and whether the operator is sharp enough for island inventory.</p>
         <span class="owner-link">See AMI coverage →</span>
       </a>
       <a class="owner-coverage-card" href="/property-management/vacation-rental-management-bradenton/">
         <span>Growth Corridor</span>
         <h3>Bradenton</h3>
-        <p>Useful for owners focused on value-driven family demand, sports travel, and better revenue control outside pure island inventory.</p>
+        <p>Start here if your home wins on size, pool value, family travel, and stronger group positioning than generic beach-adjacent inventory.</p>
         <span class="owner-link">See Bradenton coverage →</span>
       </a>
       <a class="owner-coverage-card" href="/property-management/vacation-rental-management-sarasota/">
         <span>Premium Urban-Coastal</span>
         <h3>Sarasota</h3>
-        <p>For owners who need stronger brand positioning, premium guest communication, and tighter control over upscale stay standards.</p>
+        <p>Start here if your property needs premium positioning, stronger guest standards, and tighter control over upscale stay quality.</p>
         <span class="owner-link">See Sarasota coverage →</span>
       </a>
     </div>
@@ -495,7 +570,7 @@ headExtra: |
     </div>
     <div class="faq-item">
       <div class="faq-question">What should I read before choosing a vacation rental manager?</div>
-      <div class="faq-answer">Three strong starting points are our <a href="/guides/best-vacation-rental-companies-ami.html">AMI rental company comparison</a>, the <a href="/guides/2026-bradenton-vacation-rental-market-analysis/">Bradenton market report</a>, and the <a href="/guides/booking-direct-vacation-rentals.html">book-direct guide</a> that explains how pricing and distribution decisions affect margin.</div>
+      <div class="faq-answer">Start with the page that matches your market, then read the <a href="/property-management/maximize-vacation-rental-income-florida/">revenue leak breakdown</a> and the <a href="/property-management/switch-vacation-rental-management-company/">switch-management page</a> if you think the current setup is the real problem.</div>
     </div>
   </div>
 </section>
@@ -503,28 +578,28 @@ headExtra: |
 <section class="section" style="background: var(--cream-light);">
   <div class="container">
     <div class="section-header">
-      <p class="section-tag">Owner Reading</p>
-      <h2 class="section-title">Useful context before you hire anyone</h2>
-      <p class="section-subtitle">Small resource row. Strongest links only. No giant warehouse.</p>
+      <p class="section-tag">Money Pages</p>
+      <h2 class="section-title">Read these before you hire or fire anyone</h2>
+      <p class="section-subtitle">These are the pages that directly change the owner decision. Everything else is supporting material.</p>
     </div>
 
     <div class="owner-resource-grid">
-      <a class="owner-resource-card" href="/guides/2026-bradenton-vacation-rental-market-analysis/">
-        <span>Market Data</span>
-        <h3>Bradenton Market Analysis</h3>
-        <p>Use this when you want pricing and demand context before you sign a management agreement.</p>
-        <span class="owner-link">Read the analysis →</span>
+      <a class="owner-resource-card" href="/property-management/maximize-vacation-rental-income-florida/">
+        <span>Revenue Teardown</span>
+        <h3>Where Revenue Actually Leaks</h3>
+        <p>Use this if you want the fee math, OTA math, and the real reasons net owner income underperforms.</p>
+        <span class="owner-link">Read the teardown →</span>
       </a>
-      <a class="owner-resource-card" href="/guides/vacation-rental-income-anna-maria.html">
-        <span>Revenue Context</span>
-        <h3>AMI Income Guide</h3>
-        <p>A more realistic owner-facing look at what vacation rental income can look like on and around Anna Maria Island.</p>
-        <span class="owner-link">Read the guide →</span>
+      <a class="owner-resource-card" href="/property-management/switch-vacation-rental-management-company/">
+        <span>Switching Managers</span>
+        <h3>How To Switch Without Wrecking Momentum</h3>
+        <p>Use this if the current manager is the issue and you need to know whether the switching cost is real or just inertia.</p>
+        <span class="owner-link">Read the switch guide →</span>
       </a>
       <a class="owner-resource-card" href="/guides/best-vacation-rental-companies-ami.html">
         <span>Competitive Review</span>
         <h3>AMI Company Comparison</h3>
-        <p>Useful if you are still comparing boutique local operators against larger managers and marketplace-driven options.</p>
+        <p>Use this if you still need to compare boutique operators against bigger names before you decide who gets the home.</p>
         <span class="owner-link">Read the comparison →</span>
       </a>
     </div>
@@ -534,12 +609,18 @@ headExtra: |
 <section class="section">
   <div class="container">
     <div class="owner-cta-panel" id="owner-cta">
-      <p class="section-tag" style="color: var(--gold-light);">Next Step</p>
-      <h2>Request a property evaluation</h2>
-      <p>If you are deciding between managers, the useful next step is not more generic reading. It is looking at your property, your market position, and what operational changes would actually move revenue and review quality.</p>
+      {{ ownerEvaluationForm({
+        eyebrow: "Next Step",
+        title: "Get Your Revenue Teardown",
+        intro: "If you are comparing managers, the useful next step is not another brochure. It is a hard look at fee drag, OTA leakage, and what would actually move revenue for your specific home.",
+        pageSlug: "property-management",
+        market: "florida-gulf-coast",
+        leadType: "owner-revenue-teardown",
+        buttonLabel: "Get Your Revenue Teardown",
+        note: "We review fee structure, channel mix, direct-booking upside, and the operational issues currently costing you money."
+      }) }}
       <div class="owner-cta-actions">
-        <a class="btn btn-gold" href="mailto:info@seascape-vacations.com?subject=Property%20Evaluation%20Request">Email Our Team</a>
-        <a class="owner-ghost-btn" href="tel:+19417048545">Call (941) 704-8545</a>
+        <a class="owner-ghost-btn" href="tel:+19417048545" data-track-event="owner_phone_click" data-page-slug="property-management">Call (941) 704-8545</a>
       </div>
     </div>
   </div>
