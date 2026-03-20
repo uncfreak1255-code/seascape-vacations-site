@@ -495,11 +495,14 @@ if (phase === "remediation") {
   );
   expectContains(
     "_site/property-management/index.html",
-    "Luxury property management with local eyes on every stay"
+    "Property management for owners who care about net revenue"
   );
-  expectContains("_site/property-management/index.html", "Why Owners Choose Seascape");
+  expectContains(
+    "_site/property-management/index.html",
+    "Why the fee conversation usually gets distorted"
+  );
   expectContains("_site/property-management/index.html", "What Gulf Coast owners usually ask first");
-  expectContains("_site/property-management/index.html", "Local Support");
+  expectContains("_site/property-management/index.html", "Commission Reality");
   expectNotContains("_site/property-management/index.html", "What Is Vacation Rental Property Management?");
   expectNotContains("_site/property-management/index.html", "Owner Questions");
   expectMatches(
@@ -507,7 +510,7 @@ if (phase === "remediation") {
     buildAnchorPattern({
       href: "#owner-cta",
       className: "btn",
-      text: "Free Property Evaluation"
+      text: "Get Your Revenue Teardown"
     }),
     "property management nav CTA"
   );
