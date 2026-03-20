@@ -225,7 +225,7 @@ Google's detection systems flag predictable AI patterns. Every piece of content 
 
 ### 5. Technical SEO Checklist
 When making changes to the site, always verify:
-- [ ] All new pages added to `sitemap.xml` with correct `<lastmod>` date
+- [ ] `src/sitemap.njk` will emit the new page into built `_site/sitemap.xml` after `npm run build`
 - [ ] No broken internal links (check with crawl or manual review)
 - [ ] Images are optimized (WebP/AVIF with JPG fallback, compressed)
 - [ ] Page loads under 3 seconds (check Netlify build logs for asset sizes)
@@ -319,7 +319,7 @@ The site has 96 stays pages, 55 guides, 32 property-management pages, and 8 trav
 4. **Unique content:** Each page must have genuinely unique body content (not just swapped keywords). Include specific local knowledge, property recommendations, area tips
 5. **Schema markup:** Every new page gets `VacationRental` or `LocalBusiness` schema + `BreadcrumbList` + `FAQPage`
 6. **Internal linking:** Link from 3-5 existing related pages to the new page, and link from the new page to relevant properties and guides
-7. **Add to sitemap:** Update `sitemap.xml` with the new URL and today's date
+7. **Verify sitemap coverage:** Confirm the page is emitted by `src/sitemap.njk` into built `_site/sitemap.xml` after `npm run build`. Do not hand-edit root `sitemap.xml`.
 
 ### Content Cluster Strategy
 Organize content in topical clusters to build authority:

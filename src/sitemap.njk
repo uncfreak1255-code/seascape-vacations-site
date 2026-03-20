@@ -13,12 +13,36 @@ eleventyExcludeFromCollections: true
   {% set url = entry.url %}
   {% set entryIndexable = entry.data.seoIndexable %}
   {% set shouldIndex = entryIndexable != false and entryIndexable != 'false' %}
-  {% if url and url != '/404.html' and url != '/sitemap.xml' and url not in excludedUrls and shouldIndex %}
+  {% set isNonPaginatedStay = url.indexOf('/stays/') === -1 %}
+  {% set isNonPaginatedPropertyManagement = url == '/property-management/' or url.indexOf('/property-management/') === -1 %}
+  {% if url and url != '/404.html' and url != '/sitemap.xml' and url not in excludedUrls and shouldIndex and isNonPaginatedStay and isNonPaginatedPropertyManagement %}
   <url>
     <loc>{{ site.url }}{{ url }}</loc>
     <lastmod>{{ site.dateUpdated }}</lastmod>
     <changefreq>{% if url == '/' or '/guides/' in url or '/properties/' in url %}weekly{% else %}monthly{% endif %}</changefreq>
     <priority>{% if url == '/' %}1.0{% elif '/guides/' in url or '/properties/' in url %}0.8{% else %}0.7{% endif %}</priority>
+  </url>
+  {% endif %}
+  {% endfor %}
+  {% for seoPage in staysPages %}
+  {% set stayIndexable = seoGovernance.staysNoindexSlugs.indexOf(seoPage.slug) === -1 %}
+  {% if stayIndexable %}
+  <url>
+    <loc>{{ site.url }}/stays/{{ seoPage.slug }}/</loc>
+    <lastmod>{{ site.dateUpdated }}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  {% endif %}
+  {% endfor %}
+  {% for seoPage in seoPages.owner %}
+  {% set ownerIndexable = seoPage.seoIndexable != false and seoPage.seoIndexable != 'false' %}
+  {% if ownerIndexable %}
+  <url>
+    <loc>{{ site.url }}/property-management/{{ seoPage.slug }}/</loc>
+    <lastmod>{{ site.dateUpdated }}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
   {% endif %}
   {% endfor %}
