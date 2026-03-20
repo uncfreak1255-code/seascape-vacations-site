@@ -1,0 +1,84 @@
+const fs = require("fs");
+const path = require("path");
+const test = require("node:test");
+const assert = require("node:assert/strict");
+
+const projectRoot = path.resolve(__dirname, "..", "..");
+
+test("guide sources stop linking to the retired hurricane-preparedness stay path", () => {
+  for (const sourcePath of [
+    path.join(projectRoot, "src", "guides", "best-time-visit-anna-maria-island.html"),
+    path.join(projectRoot, "src", "guides", "booking-direct-vacation-rentals.html")
+  ]) {
+    const source = fs.readFileSync(sourcePath, "utf8");
+    assert.equal(source.includes("/stays/hurricane-preparedness-guide/"), false);
+    assert.equal(source.includes("/guides/hurricane-preparedness-florida-vacation/"), true);
+  }
+});
+
+test("guides hub surfaces the stranded guide and stay clusters instead of capping them", () => {
+  const guidesHub = fs.readFileSync(path.join(projectRoot, "src", "guides", "index.njk"), "utf8");
+
+  for (const marker of [
+    "/guides/spring-break-activities-bradenton-anna-maria-island/",
+    "/guides/fishing-guide-anna-maria-sarasota/",
+    "/guides/where-to-stay-near-anna-maria-island/",
+    "/guides/florida-gulf-coast-vacation-rental-market-report-2026/",
+    "/guides/holmes-beach/",
+    "/services/concierge-services/",
+    "holmes-beach-vacation-rentals",
+    "vacation-rentals-with-elevator",
+    "week-long-vacation-rentals-florida"
+  ]) {
+    assert.equal(guidesHub.includes(marker), true, `guides hub missing ${marker}`);
+  }
+
+  assert.equal(guidesHub.includes("loop.index <= 10"), false);
+  assert.equal(guidesHub.includes("loop.index <= 5"), false);
+  assert.equal(guidesHub.includes("loop.index <= 3"), false);
+});
+
+test("owner hub links to the long-tail owner pages that were previously orphaned", () => {
+  const ownerHub = fs.readFileSync(path.join(projectRoot, "src", "property-management", "index.njk"), "utf8");
+
+  for (const marker of [
+    "/property-management/new-vacation-rental-owner-guide-florida/",
+    "/property-management/increase-vacation-rental-bookings/",
+    "/property-management/vacation-rental-cleaning-services-florida/",
+    "/property-management/vacation-rental-guest-screening/",
+    "/property-management/vacation-rental-insurance-florida/",
+    "/property-management/vacation-rental-taxes-florida/",
+    "/property-management/buy-vacation-rental-property-florida/"
+  ]) {
+    assert.equal(ownerHub.includes(marker), true, `owner hub missing ${marker}`);
+  }
+});
+
+test("remaining orphan guides, stays, and owner scenarios are routed into the hub pages", () => {
+  const guidesHub = fs.readFileSync(path.join(projectRoot, "src", "guides", "index.njk"), "utf8");
+  const ownerHub = fs.readFileSync(path.join(projectRoot, "src", "property-management", "index.njk"), "utf8");
+
+  for (const marker of [
+    "/guides/anna-maria-island-noise-ordinance-guide/",
+    "/guides/bradenton-insider-guide/",
+    "/guides/snowbirds-guide-extended-stays-florida/",
+    "5-bedroom-vacation-rentals-florida",
+    "vacation-rentals-sleeps-16-florida",
+    "vacation-rentals-with-outdoor-grill"
+  ]) {
+    assert.equal(guidesHub.includes(marker), true, `guides hub still missing ${marker}`);
+  }
+
+  for (const marker of [
+    "/property-management/sell-vacation-rental-property-florida/",
+    "/property-management/switch-from-airbnb-self-manage/",
+    "/property-management/vacation-rental-interior-design-florida/",
+    "/property-management/vacation-rental-licensing-florida/",
+    "/property-management/vacation-rental-maintenance-florida/",
+    "/property-management/vacation-rental-management-siesta-key/",
+    "/property-management/vacation-rental-photography-florida/",
+    "/property-management/vrbo-management-services-florida/"
+  ]) {
+    assert.equal(ownerHub.includes(marker), true, `owner hub still missing ${marker}`);
+  }
+});
