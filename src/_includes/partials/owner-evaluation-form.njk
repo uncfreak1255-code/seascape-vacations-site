@@ -40,15 +40,15 @@
     </label>
     <label class="owner-form-field">
       <span>Phone</span>
-      <input type="tel" name="phone" autocomplete="tel" placeholder="(941) 555-1234" required>
+      <input type="tel" name="phone" autocomplete="tel" placeholder="(941) 555-1234">
     </label>
     <label class="owner-form-field owner-form-field--wide">
-      <span>Property Address</span>
-      <input type="text" name="property_address" autocomplete="street-address" placeholder="Rental address or neighborhood" required>
+      <span>Property address or listing URL</span>
+      <input type="text" name="property_address" autocomplete="street-address" placeholder="123 Palm Ave or airbnb.com/h/your-listing" required>
     </label>
   </div>
 
   <button class="btn btn-gold owner-form-submit" type="submit">{{ options.buttonLabel or "Get Your Revenue Teardown" }}</button>
-  <p class="owner-form-note">{{ options.note or "We use this to compare your current setup, fee drag, and market-specific revenue upside." }}</p>
+  <p class="owner-form-note">{{ options.note or "Send the address or listing URL. We will show you where fee drag, OTA mix, and operating misses are costing you money." }}</p>
 </form>
 {% endmacro %}
