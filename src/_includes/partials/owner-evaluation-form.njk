@@ -1,0 +1,54 @@
+{% macro ownerEvaluationForm(options = {}) %}
+<form
+  class="owner-lead-form"
+  name="owner-revenue-teardown"
+  method="POST"
+  data-netlify="true"
+  netlify-honeypot="bot-field"
+  data-track-form="owner"
+  data-form-start-event="owner_form_start"
+  data-form-submit-event="owner_form_submit"
+  data-page-slug="{{ options.pageSlug or 'property-management' }}"
+  data-market="{{ options.market or 'florida-gulf-coast' }}"
+>
+  <input type="hidden" name="form-name" value="owner-revenue-teardown">
+  <input type="hidden" name="page_slug" value="{{ options.pageSlug or 'property-management' }}">
+  <input type="hidden" name="market" value="{{ options.market or 'florida-gulf-coast' }}">
+  <input type="hidden" name="lead_type" value="{{ options.leadType or 'owner-revenue-teardown' }}">
+  <p hidden>
+    <label>Do not fill this out if you are human: <input name="bot-field"></label>
+  </p>
+
+  {% if options.eyebrow %}
+  <p class="owner-form-eyebrow">{{ options.eyebrow }}</p>
+  {% endif %}
+  {% if options.title %}
+  <h3 class="owner-form-title">{{ options.title }}</h3>
+  {% endif %}
+  {% if options.intro %}
+  <p class="owner-form-copy">{{ options.intro }}</p>
+  {% endif %}
+
+  <div class="owner-form-grid">
+    <label class="owner-form-field">
+      <span>Your Name</span>
+      <input type="text" name="name" autocomplete="name" placeholder="First and last name" required>
+    </label>
+    <label class="owner-form-field">
+      <span>Email</span>
+      <input type="email" name="email" autocomplete="email" placeholder="you@example.com" required>
+    </label>
+    <label class="owner-form-field">
+      <span>Phone</span>
+      <input type="tel" name="phone" autocomplete="tel" placeholder="(941) 555-1234" required>
+    </label>
+    <label class="owner-form-field owner-form-field--wide">
+      <span>Property Address</span>
+      <input type="text" name="property_address" autocomplete="street-address" placeholder="Rental address or neighborhood" required>
+    </label>
+  </div>
+
+  <button class="btn btn-gold owner-form-submit" type="submit">{{ options.buttonLabel or "Get Your Revenue Teardown" }}</button>
+  <p class="owner-form-note">{{ options.note or "We use this to compare your current setup, fee drag, and market-specific revenue upside." }}</p>
+</form>
+{% endmacro %}

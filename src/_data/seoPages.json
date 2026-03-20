@@ -2542,7 +2542,74 @@
         "Licensed cleaning and maintenance",
         "Monthly statements and tax docs"
       ],
-      "cta": "Free Property Evaluation",
+      "proofStats": [
+        {
+          "value": "$1.4M",
+          "label": "Annual portfolio rental revenue",
+          "detail": "Current Seascape revenue across five active Bradenton-Sarasota homes."
+        },
+        {
+          "value": "10-15%",
+          "label": "Seascape management fee",
+          "detail": "Below Seascape research on local boutique and national operators charging roughly 18-35%."
+        },
+        {
+          "value": "$119,923",
+          "label": "Direct booking revenue",
+          "detail": "Revenue already shifted away from marketplace commissions and back toward owner economics."
+        },
+        {
+          "value": "3-4x",
+          "label": "Market-median revenue per home",
+          "detail": "Internal Seascape benchmark versus local market median estimates in the operating model."
+        }
+      ],
+      "switchReasons": [
+        {
+          "title": "Premium weeks get discounted too fast",
+          "body": "On AMI, the expensive mistake is not a single vacancy. It is a manager training the market to wait for discounts on the dates that should carry the year."
+        },
+        {
+          "title": "Remote oversight misses local problems",
+          "body": "Island inventory punishes slow cleaning follow-up, weak maintenance triage, and vague owner visibility faster than mainland inventory does."
+        },
+        {
+          "title": "The owner statement shows activity, not answers",
+          "body": "If you still cannot tell whether pricing, channel mix, and guest standards are improving, then you are paying for motion instead of management."
+        }
+      ],
+      "processSteps": [
+        {
+          "title": "Revenue teardown",
+          "body": "We compare your current fee stack, channel mix, and pricing discipline against what premium Gulf Coast inventory should be doing."
+        },
+        {
+          "title": "Operational gap review",
+          "body": "We look at vendor response, stay-quality risk, and where guest experience is quietly eroding rate power."
+        },
+        {
+          "title": "Transition plan",
+          "body": "If the fit is right, we map the takeover around reservations already on the books so you do not wreck momentum just to change operators."
+        }
+      ],
+      "objections": [
+        {
+          "question": "A lower management fee sounds nice. Does service drop with it?",
+          "answer": "Not if the operation is designed correctly. The point of Seascape's 10-15% structure is not \"cheap management.\" It is avoiding bloated overhead while still putting money into pricing discipline, local vendor response, and guest standards that protect owner revenue."
+        },
+        {
+          "question": "What if I already have peak-season bookings on the calendar?",
+          "answer": "That is normal. The handoff plan should preserve confirmed reservations, transfer operating context, and improve the setup around those stays rather than forcing a needless reset."
+        },
+        {
+          "question": "How do I know you will not just underprice the home to look busy?",
+          "answer": "The teardown starts with rate integrity, not occupancy theater. If the manager cannot explain why a discount is happening and what it should buy you in occupancy or review quality, it is probably the wrong discount."
+        }
+      ],
+      "cta": "Get Your Revenue Teardown",
+      "primaryCta": "Get Your Revenue Teardown",
+      "ctaSubcopy": "We compare your fee structure, channel mix, and premium-week strategy before you make a management decision.",
+      "ctaNote": "Send the address and current setup. We will tell you where margin is leaking before we ask for the business.",
       "geoIntro": "<p>Managing a vacation rental on Anna Maria Island requires deep knowledge of Manatee County's short-term rental regulations, seasonal market dynamics, and the unique expectations of Gulf Coast vacationers. At Seascape Vacations, we've spent years perfecting our approach to maximize revenue for property owners across Anna Maria Island's most desirable neighborhoods. Our team understands the specific challenges of this market\u2014from hurricane season planning to competing with thousands of listings on Airbnb, VRBO, and Booking.com\u2014and we leverage dynamic pricing algorithms, professional photography, and multi-channel distribution to keep your occupancy rates high and your income optimized.</p><p>Anna Maria Island's real estate market attracts serious investors who demand professional management. We provide comprehensive property management services including 24/7 guest support, professional cleaning coordination with vetted local vendors, preventative maintenance scheduling, and detailed financial reporting. Our integration with Hostaway PMS and advanced channel management tools ensures your property appears optimized across all major booking platforms. Whether you own a beachfront condo, mid-island home, or rental cottage, Seascape Vacations handles the operational burden so you can focus on growing your real estate portfolio.</p><p>Our experience managing hundreds of properties in the Bradenton, Sarasota, and surrounding Gulf Coast communities means we understand local market positioning, competitive pricing, and what drives booking conversions. We monitor occupancy trends, adjust availability strategically, and implement targeted marketing to maximize your annual rental income.</p>",
       "faqs": [
         {
@@ -2586,7 +2653,74 @@
         "Dynamic pricing optimization",
         "Guest screening"
       ],
-      "cta": "Free Property Evaluation",
+      "proofStats": [
+        {
+          "value": "$1.4M",
+          "label": "Annual portfolio rental revenue",
+          "detail": "Current Seascape revenue across five active Bradenton-Sarasota homes."
+        },
+        {
+          "value": "10-15%",
+          "label": "Seascape management fee",
+          "detail": "Below Seascape research on local boutique and national operators charging roughly 18-35%."
+        },
+        {
+          "value": "$119,923",
+          "label": "Direct booking revenue",
+          "detail": "Revenue already shifted away from marketplace commissions and back toward owner economics."
+        },
+        {
+          "value": "3-4x",
+          "label": "Market-median revenue per home",
+          "detail": "Internal Seascape benchmark versus local market median estimates in the operating model."
+        }
+      ],
+      "switchReasons": [
+        {
+          "title": "Calendar gaps show up despite a healthy market",
+          "body": "When Bradenton inventory sits empty, the problem is often positioning, pricing discipline, or guest-trust signals rather than a total lack of demand."
+        },
+        {
+          "title": "Family homes take more operational wear",
+          "body": "Larger homes and group stays create more cleaning, maintenance, and guest-communication risk. Sloppy follow-through becomes expensive fast."
+        },
+        {
+          "title": "Too much revenue still depends on OTA commissions",
+          "body": "If every booking still comes through the same expensive channels, the manager is not building much leverage for the owner."
+        }
+      ],
+      "processSteps": [
+        {
+          "title": "Revenue baseline",
+          "body": "We review current gross revenue, fee stack, and whether the home is being priced and positioned for the right demand."
+        },
+        {
+          "title": "Operational audit",
+          "body": "We check for the common Bradenton leak points: turnover slippage, maintenance drag, and weak guest communication."
+        },
+        {
+          "title": "90-day takeover plan",
+          "body": "If the fit is right, we map pricing, listing, vendor, and guest-communication changes around your live calendar rather than starting from zero."
+        }
+      ],
+      "objections": [
+        {
+          "question": "My home is not beachfront. Can it still produce strong numbers?",
+          "answer": "Yes, if the property is positioned correctly. Bradenton inventory often wins on size, privacy, pool value, and trip fit for groups. That requires tighter positioning than generic \"near the beach\" copy."
+        },
+        {
+          "question": "Do I need a big national manager to keep occupancy high?",
+          "answer": "No. Bigger does not automatically mean better. Many national operators charge materially more and still push owners through remote support loops. The useful question is who can protect net owner income at your property level."
+        },
+        {
+          "question": "Will professional management just add cost to a mid-market home?",
+          "answer": "Only if the manager adds fee without improving execution. The actual comparison is management fee versus vacancy drag, rate mistakes, OTA dependence, and operational errors that are already costing you money."
+        }
+      ],
+      "cta": "Get Your Revenue Teardown",
+      "primaryCta": "Get Your Revenue Teardown",
+      "ctaSubcopy": "We show where the current setup is suppressing net owner income before you decide whether to switch.",
+      "ctaNote": "Useful if you want a hard read on positioning, OTA leakage, and the real cost of operational misses.",
       "geoIntro": "<p>Bradenton's vacation rental market has experienced tremendous growth, attracting property owners seeking solid income from the area's consistent tourism and business travel. Seascape Vacations brings deep expertise managing properties throughout Bradenton and Manatee County, understanding local demand patterns, seasonal peaks, and the specific regulatory environment that impacts property owners. With our comprehensive property management services, we help you navigate Florida's short-term rental landscape while maximizing occupancy and revenue across all major booking platforms including Airbnb, VRBO, and Booking.com.</p><p>Professional property management in Bradenton requires hands-on expertise and local market knowledge. Our team coordinates guest communications, schedules professional cleaning between bookings, manages preventative maintenance with trusted local vendors, and handles all the operational details that separate successful rentals from vacant properties. We leverage dynamic pricing strategies powered by market data and occupancy trends, ensuring your Bradenton property is competitively positioned to attract quality guests while maximizing nightly rates. Seascape Vacations handles emergency responses 24/7, so you never have to worry about guest issues disrupting your passive income.</p><p>Managing your own rental property in Bradenton can quickly become overwhelming, especially if you own multiple properties or live out of state. Our Hostaway PMS integration, channel management expertise, and proven marketing strategies ensure your property operates efficiently and generates consistent monthly income while you focus on other priorities.</p>",
       "faqs": [
         {
@@ -2630,7 +2764,74 @@
         "Monthly reports",
         "Tax documentation"
       ],
-      "cta": "Free Revenue Analysis",
+      "proofStats": [
+        {
+          "value": "$1.4M",
+          "label": "Annual portfolio rental revenue",
+          "detail": "Current Seascape revenue across five active Gulf Coast homes."
+        },
+        {
+          "value": "$142,300",
+          "label": "Management-fee revenue",
+          "detail": "Seascape's management revenue at a portfolio-level effective fee just over 10%."
+        },
+        {
+          "value": "$119,923",
+          "label": "Direct booking revenue",
+          "detail": "Revenue already routed through lower-cost direct channel instead of pure OTA dependence."
+        },
+        {
+          "value": "~13.4%",
+          "label": "Airbnb effective host fee",
+          "detail": "Observed Seascape average after October 2025 versus 2.9% direct payment cost."
+        }
+      ],
+      "switchReasons": [
+        {
+          "title": "Fee-only comparisons hide worse pricing mistakes",
+          "body": "A manager charging fewer points can still cost more if they underprice the home, miss demand spikes, or let stay quality erode."
+        },
+        {
+          "title": "Every OTA-heavy booking carries commission drag",
+          "body": "If your mix never improves beyond Airbnb and Vrbo, commissions keep taxing the property even when demand is strong."
+        },
+        {
+          "title": "Weak operations quietly reduce rate power",
+          "body": "Bad turnovers, maintenance lag, and guest frustration do not just create headaches. They lower what the market will keep paying for the home."
+        }
+      ],
+      "processSteps": [
+        {
+          "title": "Fee and channel audit",
+          "body": "We break down management fee, OTA commissions, direct-booking mix, and what each part of the stack is costing you."
+        },
+        {
+          "title": "Rate and occupancy review",
+          "body": "We look at whether pricing is protecting premium demand or just masking weak positioning."
+        },
+        {
+          "title": "Net-income action plan",
+          "body": "If there is real upside, we outline where it comes from before talking about a management switch."
+        }
+      ],
+      "objections": [
+        {
+          "question": "Is a lower management fee enough to make one manager better?",
+          "answer": "No. Fee matters, but only alongside gross revenue, channel mix, and operational quality. Lower fee on a weaker operation can still leave the owner behind."
+        },
+        {
+          "question": "Can direct bookings really matter at my scale?",
+          "answer": "Yes. The gap between roughly 13.4% Airbnb host fee and 2.9% direct payment cost is too large to ignore. Even modest channel shifts create real owner savings."
+        },
+        {
+          "question": "How much upside is realistic?",
+          "answer": "That depends on where the leaks are. Some owners have pricing leakage, some have commission leakage, and some have operational leakage. The useful answer comes from the teardown, not a canned percentage promise."
+        }
+      ],
+      "cta": "Get Your Revenue Teardown",
+      "primaryCta": "Get Your Revenue Teardown",
+      "ctaSubcopy": "We show where your current setup is leaking margin before we talk about switching anything.",
+      "ctaNote": "Useful if you want hard fee math, OTA commission math, and a cleaner view of real owner upside.",
       "geoIntro": "<p>Maximizing vacation rental income in Florida requires a strategic approach that goes far beyond simply listing your property online. Seascape Vacations has worked with hundreds of property owners across the Florida Gulf Coast\u2014from Anna Maria Island to Sarasota, Bradenton to Siesta Key\u2014perfecting the science of revenue optimization. We understand that successful rental properties balance multiple factors: strategic pricing that adapts to market demand, compelling property presentation that converts browsers into bookers, efficient operations that reduce vacancy periods, and exceptional guest experiences that generate positive reviews and repeat bookings.</p><p>Our data-driven approach to vacation rental income maximization combines dynamic pricing algorithms, professional photography and descriptions, multi-channel distribution across Airbnb, VRBO, Booking.com, and direct booking optimization, plus hands-on marketing to drive visibility. We analyze your property's competitive positioning, identify revenue gaps, and implement targeted strategies to increase average nightly rates and occupancy simultaneously. With our Hostaway PMS integration, we monitor hundreds of comparable properties across Florida to ensure your pricing remains competitive while maximizing yield per available night.</p><p>Most Florida property owners leave 20-35% of potential income on the table through suboptimal pricing, poor presentation, limited distribution, or operational inefficiencies. Seascape Vacations eliminates these costly mistakes through professional management, proven strategies, and hands-on optimization that treats your property like our own investment.</p>",
       "faqs": [
         {
@@ -2656,6 +2857,109 @@
         {
           "q": "How can I reduce operational costs while maintaining quality and guest satisfaction?",
           "a": "Operational efficiency comes from streamlined processes, vendor relationships with competitive pricing, and preventative maintenance that avoids expensive emergency repairs. We negotiate rates with cleaning services, maintenance contractors, and suppliers across Manatee and Sarasota counties, passing savings to your property's bottom line. Our attention to detail prevents issues that damage reputation and lead to lost bookings."
+        }
+      ]
+    },
+    {
+      "slug": "switch-vacation-rental-management-company",
+      "destination": null,
+      "title": "Switch Vacation Rental Management Company",
+      "h1": "How To Switch Vacation Rental Management Companies Without Losing Booking Momentum",
+      "description": "Thinking about firing your current vacation rental manager? See the warning signs, the takeover process, and what Seascape audits first.",
+      "intro": "Most owners wait too long to switch because they assume the handoff will wreck the calendar. The bigger risk is usually staying with an operator that keeps leaking rate, reviews, and owner trust.",
+      "benefits": [
+        "Takeover plan built to preserve confirmed reservations where possible",
+        "Audit of pricing, channel mix, guest messaging, and vendor handoffs before day one",
+        "Owner reporting that shows what changed in the first 30, 60, and 90 days",
+        "10-15% management fees instead of paying more for the same misses",
+        "Local operating team rather than remote escalation loops and vague ticketing",
+        "Direct-booking and OTA strategy rebuilt around net owner income rather than platform dependency"
+      ],
+      "proofStats": [
+        {
+          "value": "$1.4M",
+          "label": "Annual portfolio rental revenue",
+          "detail": "Current Seascape revenue across five active Bradenton-Sarasota homes."
+        },
+        {
+          "value": "10-15%",
+          "label": "Seascape management fee",
+          "detail": "Below Seascape research on local boutique and national operators charging roughly 18-35%."
+        },
+        {
+          "value": "$119,923",
+          "label": "Direct booking revenue",
+          "detail": "Revenue already shifted away from marketplace commissions and back toward owner economics."
+        },
+        {
+          "value": "3-4x",
+          "label": "Market-median revenue per home",
+          "detail": "Internal Seascape benchmark versus local market median estimates in the operating model."
+        }
+      ],
+      "switchReasons": [
+        {
+          "title": "Reservations are on the books but confidence is gone",
+          "body": "The calendar may not look disastrous, but the owner no longer believes the operator is protecting rate, standards, or margin."
+        },
+        {
+          "title": "Statements show movement without clarity",
+          "body": "If occupancy, fees, and payouts are moving but no one can explain why, the owner is flying blind while still paying for management."
+        },
+        {
+          "title": "The property keeps working harder than the owner income shows",
+          "body": "Too many stays, too much wear, too much commission drag, and not enough confidence that the operator is improving the system."
+        }
+      ],
+      "processSteps": [
+        {
+          "title": "Current-state audit",
+          "body": "We review reservations, channel access, vendor setup, pricing behavior, and the main reasons the owner is considering a switch."
+        },
+        {
+          "title": "Transition map",
+          "body": "We set the handoff around active reservations, guest communication, and the operational risks tied to the property."
+        },
+        {
+          "title": "First-90-day cleanup",
+          "body": "We tighten reporting, pricing, and local execution so the owner can tell quickly whether the switch is actually improving results."
+        }
+      ],
+      "objections": [
+        {
+          "question": "Will I lose current bookings if I switch managers?",
+          "answer": "Not if the transition is handled correctly. The handoff should be built around confirmed reservations, guest communication continuity, and careful access transfer rather than a reset for the sake of a reset."
+        },
+        {
+          "question": "Do I have to relist everything from scratch?",
+          "answer": "Usually no. The better approach is to audit what already exists, keep what is working, and fix the pricing, listing, and operational pieces that are clearly underperforming."
+        },
+        {
+          "question": "How fast will I know whether the switch worked?",
+          "answer": "You should see leading indicators quickly: clearer reporting, tighter response, and a better handle on pricing and channel mix. Full financial readout takes longer, but the operation should stop feeling foggy early."
+        }
+      ],
+      "cta": "Get Your Revenue Teardown",
+      "primaryCta": "Get Your Revenue Teardown",
+      "ctaSubcopy": "We will tell you whether the current manager is leaking enough value to justify a switch before you create more churn.",
+      "ctaNote": "Useful if you are stuck between staying with an underperforming operator and risking a messy handoff.",
+      "geoIntro": "<p>Owners usually do not look for a new manager because of one isolated mistake. They start looking because the misses stack up: pricing feels reactive, owner reporting stays vague, vendors seem unmanaged, and the property works harder than the income suggests it should.</p><p>Seascape's operating model runs at <strong>$1.4M in annual rental revenue</strong>, <strong>$119,923 in direct booking revenue</strong>, and a <strong>10-15%</strong> fee structure. That makes the takeover conversation much simpler: is the current operator earning the premium they are charging, or just hiding behind switching friction?</p>",
+      "faqs": [
+        {
+          "q": "When should I seriously consider switching management companies?",
+          "a": "When reporting stays vague, the fee feels high relative to results, pricing decisions are hard to explain, or the operation keeps missing the same details without fixing them."
+        },
+        {
+          "q": "What should a new manager review before taking over?",
+          "a": "Reservations on the books, channel access, pricing behavior, vendor setup, guest communication standards, and the owner's main sources of distrust with the current operator."
+        },
+        {
+          "q": "How do I compare switching risk against staying put?",
+          "a": "Compare the friction of a controlled handoff against the cost of another season of underpricing, OTA leakage, weak reporting, or poor operational follow-through. Staying put is not the risk-free option."
+        },
+        {
+          "q": "What does Seascape focus on first after a switch?",
+          "a": "Calendar continuity, clearer reporting, pricing cleanup, and local execution. The first objective is to stop the obvious leaks before chasing anything more ambitious."
         }
       ]
     },
@@ -2762,7 +3066,74 @@
         "Maintenance coordination",
         "Revenue optimization"
       ],
-      "cta": "Free Property Evaluation",
+      "proofStats": [
+        {
+          "value": "$1.4M",
+          "label": "Annual portfolio rental revenue",
+          "detail": "Current Seascape revenue across five active Bradenton-Sarasota homes."
+        },
+        {
+          "value": "10-15%",
+          "label": "Seascape management fee",
+          "detail": "Below Seascape research on local boutique and national operators charging roughly 18-35%."
+        },
+        {
+          "value": "$119,923",
+          "label": "Direct booking revenue",
+          "detail": "Revenue already shifted away from marketplace commissions and back toward owner economics."
+        },
+        {
+          "value": "3-4x",
+          "label": "Market-median revenue per home",
+          "detail": "Internal Seascape benchmark versus local market median estimates in the operating model."
+        }
+      ],
+      "switchReasons": [
+        {
+          "title": "The property is premium but the operation feels generic",
+          "body": "Upscale guests notice sloppy arrival experience, slower response, and listings that undersell the actual home. That shows up in rate resistance and review softness."
+        },
+        {
+          "title": "The manager does not understand parcel-level constraints",
+          "body": "Sarasota demand and stay rules vary by neighborhood and municipality. If the operator treats the market like one blob, owners end up with the wrong strategy."
+        },
+        {
+          "title": "Owner visibility drops as fees stay high",
+          "body": "A premium asset deserves clearer reporting, not a more expensive version of the same generic monthly summary."
+        }
+      ],
+      "processSteps": [
+        {
+          "title": "Positioning review",
+          "body": "We look at how the home is currently sold, where the premium story is weak, and whether the listing is earning the rates it is asking for."
+        },
+        {
+          "title": "Operating-standard audit",
+          "body": "We check communication, maintenance, turnover, and owner visibility for the kinds of misses that premium guests punish first."
+        },
+        {
+          "title": "Controlled takeover",
+          "body": "If the fit is right, we map the changeover around active bookings and the specific operating risks tied to the property."
+        }
+      ],
+      "objections": [
+        {
+          "question": "Does Sarasota really support premium nightly rates year-round?",
+          "answer": "Not evenly. Sarasota still has seasonality, but well-positioned homes can defend stronger rates because of the guest mix, neighborhood appeal, and overall trip quality. The manager's job is to protect that positioning instead of flattening it."
+        },
+        {
+          "question": "How do you protect a higher-end guest experience?",
+          "answer": "Through tighter operations, clearer communication, and faster issue response. Premium guests do not forgive generic execution just because the house looks good in photos."
+        },
+        {
+          "question": "My property is in a stricter area. Does that kill the economics?",
+          "answer": "Not automatically. It changes the operating model. The useful question is whether the manager understands the specific parcel context well enough to build around the actual stay rules and demand pattern."
+        }
+      ],
+      "cta": "Get Your Revenue Teardown",
+      "primaryCta": "Get Your Revenue Teardown",
+      "ctaSubcopy": "We pressure-test the current rate strategy, guest standards, and channel mix before you hand a premium asset to the wrong operator.",
+      "ctaNote": "Useful if you want a clean read on whether the current setup is actually premium or just priced like it is.",
       "geoIntro": "<p>Sarasota represents one of Florida's most desirable vacation rental markets, attracting wealthy tourists, winter seasonal residents, and business travelers seeking quality accommodations. Managing vacation rental properties in Sarasota County requires sophisticated market knowledge, understanding of local regulations, expertise in positioning properties across major platforms like Airbnb, VRBO, and Booking.com, and hands-on operational excellence. Seascape Vacations brings deep experience managing properties throughout Sarasota and surrounding Gulf Coast communities, optimizing for the specific demographics, seasonal patterns, and competitive dynamics that drive success in this premium market.</p><p>Professional property management in Sarasota goes beyond basic operations\u2014it involves strategic positioning of your property within an increasingly competitive marketplace. Our team coordinates with professional photographers to showcase your property's best features, implements pricing strategies that capture premium rates while maintaining strong occupancy, manages guest communications across all platforms with professionalism that builds reputation, and coordinates with vetted Sarasota-area vendors for cleaning, maintenance, and repairs. We understand Sarasota County's regulatory requirements for short-term rentals and ensure full compliance with local licensing, occupancy limits, and parking regulations.</p><p>Sarasota's property owners deserve professional-grade management from experienced partners who understand the market, respect the investment, and consistently deliver results. Seascape Vacations has built our reputation managing properties in Sarasota's most desirable neighborhoods.</p>",
       "faqs": [
         {
