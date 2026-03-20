@@ -8,6 +8,7 @@ eleventyComputed:
   pageTitle: "{{ seoPage.title }}"
   pageDescription: "{{ seoPage.description }}"
 ---
+{% from "partials/owner-evaluation-form.njk" import ownerEvaluationForm %}
 {% from "partials/ui-icon.njk" import uiIcon %}
 <!DOCTYPE html>
 <html lang="en">
@@ -156,6 +157,17 @@ eleventyComputed:
         .cta-section { background: linear-gradient(135deg, var(--brand) 0%, var(--brand-dark) 100%); padding: 80px 24px; text-align: center; color: white; }
         .cta-title { font-size: clamp(28px, 4vw, 40px); margin-bottom: 16px; }
         .cta-subtitle { opacity: 0.9; max-width: 500px; margin: 0 auto 32px; }
+        .owner-lead-form { display: grid; gap: 18px; text-align: left; max-width: 760px; margin: 0 auto; }
+        .owner-form-eyebrow { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-light); font-weight: 700; margin: 0; text-align: center; }
+        .owner-form-title { color: white; font-size: clamp(28px, 4vw, 38px); margin: 0; text-align: center; }
+        .owner-form-copy,
+        .owner-form-note { color: rgba(255, 255, 255, 0.84); margin: 0; text-align: center; }
+        .owner-form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+        .owner-form-field { display: grid; gap: 8px; font-size: 14px; font-weight: 600; color: white; }
+        .owner-form-field input { width: 100%; min-height: 52px; border-radius: 14px; border: 1px solid rgba(255, 255, 255, 0.14); background: rgba(255, 255, 255, 0.08); color: white; padding: 0 16px; font: inherit; }
+        .owner-form-field input::placeholder { color: rgba(255, 255, 255, 0.52); }
+        .owner-form-field--wide { grid-column: 1 / -1; }
+        .owner-form-submit { justify-content: center; width: fit-content; margin: 0 auto; }
         .footer { background: var(--brand-darker); color: rgba(255, 255, 255, 0.8); padding: 60px 24px 30px; }
         .footer-inner { max-width: 1100px; margin: 0 auto; text-align: center; }
         .footer-logo { font-family: 'Playfair Display', serif; font-size: 24px; color: white; margin-bottom: 16px; }
@@ -167,6 +179,7 @@ eleventyComputed:
         .ui-icon svg { width: 100%; height: 100%; stroke: currentColor; fill: none; stroke-width: 1.85; stroke-linecap: round; stroke-linejoin: round; }
         .ui-icon--benefit { width: 20px; height: 20px; color: white; }
         .ui-icon--metric { width: 34px; height: 34px; color: var(--brand); vertical-align: -6px; margin-left: 6px; }
+        @media (max-width: 720px) { .owner-form-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
@@ -179,7 +192,7 @@ eleventyComputed:
                     <div class="nav-logo-sub">Vacations</div>
                 </div>
             </a>
-            <a href="/properties/" class="btn">View All Properties</a>
+            <a href="#owner-cta" class="btn" data-track-event="owner_primary_cta_click" data-page-slug="{{ seoPage.slug }}">{{ seoPage.primaryCta or "Get Your Revenue Teardown" }}</a>
         </div>
     </nav>
 
@@ -202,27 +215,28 @@ eleventyComputed:
             </div>
         </section>
 
-        <section class="section">
+        {% if seoPage.proofStats and seoPage.proofStats | length %}
+        <section class="section" style="background: var(--cream-dark);">
             <div class="container">
                 <div class="section-header">
-                    <p class="section-tag">Why Choose Seascape</p>
-                    <h2 class="section-title">Full-Service Property Management</h2>
-                    <p class="section-subtitle">We handle everything so you can enjoy passive income without the stress.</p>
+                    <p class="section-tag">{{ seoPage.proofTag or "Proof" }}</p>
+                    <h2 class="section-title">{{ seoPage.proofTitle or "What the numbers say before the pitch starts" }}</h2>
+                    <p class="section-subtitle">{{ seoPage.proofSubtitle or "Fee percentages are not the whole story. Revenue quality, direct mix, and execution discipline decide what owners actually keep." }}</p>
                 </div>
-                
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px;">
-                    {% for benefit in seoPage.benefits %}
-                    <div style="background: white; border-radius: 16px; padding: 24px; box-shadow: 0 4px 20px rgba(0,0,0,0.06);">
-                        <div style="width: 48px; height: 48px; background: linear-gradient(135deg, var(--brand) 0%, var(--brand-dark) 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px;">
-                            {{ uiIcon('secure', 'ui-icon--benefit') }}
-                        </div>
-                        <p style="font-size: 16px; font-weight: 500; color: var(--stone);">{{ benefit }}</p>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 24px;">
+                    {% for stat in seoPage.proofStats %}
+                    <div style="background: white; border-radius: 18px; padding: 28px; box-shadow: 0 8px 26px rgba(0,0,0,0.06);">
+                        <div style="font-size: clamp(34px, 5vw, 46px); font-family: 'Playfair Display', serif; color: var(--brand-dark); margin-bottom: 10px;">{{ stat.value }}</div>
+                        <div style="font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--brand); font-weight: 700; margin-bottom: 10px;">{{ stat.label }}</div>
+                        {% if stat.detail %}
+                        <p style="font-size: 14px; color: var(--stone-light); margin: 0;">{{ stat.detail }}</p>
+                        {% endif %}
                     </div>
                     {% endfor %}
                 </div>
             </div>
         </section>
-
+        {% else %}
         <section class="section" style="background: var(--cream-dark);">
             <div class="container">
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 32px; text-align: center;">
@@ -245,7 +259,106 @@ eleventyComputed:
                 </div>
             </div>
         </section>
+        {% endif %}
 
+        {% if seoPage.switchReasons and seoPage.switchReasons | length %}
+        <section class="section">
+            <div class="container">
+                <div class="section-header">
+                    <p class="section-tag">{{ seoPage.switchTag or "What Usually Breaks First" }}</p>
+                    <h2 class="section-title">{{ seoPage.switchTitle or "Why owners start shopping for a different manager" }}</h2>
+                    <p class="section-subtitle">{{ seoPage.switchSubtitle or "The trigger is rarely one bad month. It is a stack of missed details that keeps showing up in revenue, reviews, and owner trust." }}</p>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px;">
+                    {% for reason in seoPage.switchReasons %}
+                    <div style="background: white; border-radius: 18px; padding: 28px; box-shadow: 0 8px 24px rgba(0,0,0,0.06); border: 1px solid rgba(61, 92, 93, 0.08);">
+                        <h3 style="font-size: 22px; margin-bottom: 12px; color: var(--brand-dark);">{{ reason.title }}</h3>
+                        <p style="font-size: 15px; color: var(--stone-light); margin: 0;">{{ reason.body }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+        {% endif %}
+
+        {% if seoPage.benefits and seoPage.benefits | length %}
+        <section class="section">
+            <div class="container">
+                <div class="section-header">
+                    <p class="section-tag">{{ seoPage.benefitsTag or "Execution Gap" }}</p>
+                    <h2 class="section-title">{{ seoPage.benefitsTitle or "Where Seascape closes the gap" }}</h2>
+                    <p class="section-subtitle">{{ seoPage.benefitsSubtitle or "Owners do not need a definition of management. They need evidence that the right operator fixes the expensive parts." }}</p>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px;">
+                    {% for benefit in seoPage.benefits %}
+                    <div style="background: white; border-radius: 16px; padding: 24px; box-shadow: 0 4px 20px rgba(0,0,0,0.06);">
+                        <div style="width: 48px; height: 48px; background: linear-gradient(135deg, var(--brand) 0%, var(--brand-dark) 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px;">
+                            {{ uiIcon('secure', 'ui-icon--benefit') }}
+                        </div>
+                        <p style="font-size: 16px; font-weight: 500; color: var(--stone);">{{ benefit }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+        {% endif %}
+
+        {% if seoPage.marketReality %}
+        <section class="section" style="background: white;">
+            <div class="container">
+                <div style="max-width: 820px; margin: 0 auto;">
+                    <p class="section-tag">{{ seoPage.marketReality.tag or "Market Reality" }}</p>
+                    <h2 class="section-title" style="margin-bottom: 18px;">{{ seoPage.marketReality.title }}</h2>
+                    <div style="font-size: 16px; line-height: 1.8; color: var(--stone);">
+                        {{ seoPage.marketReality.body | safe }}
+                    </div>
+                </div>
+            </div>
+        </section>
+        {% endif %}
+
+        {% if seoPage.revenueLevers and seoPage.revenueLevers | length %}
+        <section class="section" style="background: var(--cream-light);">
+            <div class="container">
+                <div class="section-header">
+                    <p class="section-tag">{{ seoPage.revenueTag or "Revenue Levers" }}</p>
+                    <h2 class="section-title">{{ seoPage.revenueTitle or "What actually moves owner revenue" }}</h2>
+                    <p class="section-subtitle">{{ seoPage.revenueSubtitle or "Better outcomes usually come from compounding improvements, not one trick or one software tool." }}</p>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px;">
+                    {% for lever in seoPage.revenueLevers %}
+                    <div style="background: white; border-radius: 18px; padding: 28px; box-shadow: 0 8px 24px rgba(0,0,0,0.06);">
+                        <h3 style="font-size: 22px; margin-bottom: 12px; color: var(--brand-dark);">{{ lever.title }}</h3>
+                        <p style="font-size: 15px; color: var(--stone-light); margin: 0;">{{ lever.body }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+        {% endif %}
+
+        {% if seoPage.processSteps and seoPage.processSteps | length %}
+        <section class="section">
+            <div class="container">
+                <div class="section-header">
+                    <p class="section-tag">{{ seoPage.processTag or "Getting Started" }}</p>
+                    <h2 class="section-title">{{ seoPage.processTitle or "How the takeover works" }}</h2>
+                    <p class="section-subtitle">{{ seoPage.processSubtitle or "The goal is to improve the operation without blowing up existing booking momentum." }}</p>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 32px;">
+                    {% for step in seoPage.processSteps %}
+                    <div style="text-align: center; background: white; border-radius: 20px; padding: 28px; box-shadow: 0 8px 24px rgba(0,0,0,0.05);">
+                        <div style="width: 64px; height: 64px; background: var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 28px; font-weight: 600; color: var(--stone);">{{ loop.index }}</div>
+                        <h3 style="font-size: 20px; margin-bottom: 12px;">{{ step.title }}</h3>
+                        <p style="color: var(--stone-light); font-size: 14px; margin: 0;">{{ step.body }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+        {% else %}
         <section class="section">
             <div class="container">
                 <div class="section-header">
@@ -272,6 +385,7 @@ eleventyComputed:
                 </div>
             </div>
         </section>
+        {% endif %}
 
         <!-- GEO Intro - AI-citeable rich content -->
         {% if seoPage.geoIntro %}
@@ -302,6 +416,31 @@ eleventyComputed:
                     <div style="font-size: 16px; line-height: 1.8; color: var(--stone);">
                         {{ seoPage.longContent | safe }}
                     </div>
+                </div>
+            </div>
+        </section>
+        {% endif %}
+
+        {% if seoPage.objections and seoPage.objections | length %}
+        <section class="section" style="background: white;">
+            <div class="container">
+                <div style="max-width: 840px; margin: 0 auto;">
+                    <div class="section-header" style="text-align: left;">
+                        <p class="section-tag">{{ seoPage.objectionsTag or "Owner Objections" }}</p>
+                        <h2 class="section-title" style="font-size: 28px;">{{ seoPage.objectionsTitle or "The questions that usually stall the decision" }}</h2>
+                        <p class="section-subtitle" style="max-width: none; margin: 0;">{{ seoPage.objectionsSubtitle or "Good owners do not buy on vibe. They pressure-test switching cost, revenue risk, and whether the manager actually knows the market." }}</p>
+                    </div>
+                    {% for objection in seoPage.objections %}
+                    <details style="margin-bottom: 16px; background: var(--cream-light); border-radius: 12px; overflow: hidden;" {% if loop.first %}open{% endif %}>
+                        <summary style="padding: 20px 24px; cursor: pointer; font-weight: 600; font-size: 16px; color: var(--stone); list-style: none; display: flex; justify-content: space-between; align-items: center;">
+                            {{ objection.question }}
+                            <span style="color: var(--brand); font-size: 20px; flex-shrink: 0; margin-left: 16px;">+</span>
+                        </summary>
+                        <div style="padding: 0 24px 20px; font-size: 15px; line-height: 1.7; color: var(--stone-light);">
+                            {{ objection.answer }}
+                        </div>
+                    </details>
+                    {% endfor %}
                 </div>
             </div>
         </section>
@@ -358,9 +497,21 @@ eleventyComputed:
 
         <section class="cta-section">
             <div class="container">
-                <h2 class="cta-title">{{ seoPage.cta }}</h2>
-                <p class="cta-subtitle">No obligation. Get a revenue estimate for your property and learn how we can help.</p>
-                <a href="/property-management/" class="btn btn-gold" style="font-size: 16px; padding: 16px 40px;">Get Your Free Evaluation →</a>
+                <div id="owner-cta">
+                    {{ ownerEvaluationForm({
+                        eyebrow: "Owner Review",
+                        title: seoPage.primaryCta or seoPage.cta,
+                        intro: seoPage.ctaSubcopy or "We break down fee structure, channel mix, and what your current setup is actually costing you before you decide anything.",
+                        pageSlug: seoPage.slug,
+                        market: seoPage.destination or "florida-gulf-coast",
+                        leadType: "owner-revenue-teardown",
+                        buttonLabel: seoPage.primaryCta or "Get Your Revenue Teardown",
+                        note: seoPage.ctaNote or "No generic pitch deck. We use your market, your property type, and your current operating model."
+                    }) }}
+                    <p style="margin-top: 18px; text-align: center;">
+                        <a href="tel:+19417048545" style="color: white; font-weight: 600;" data-track-event="owner_phone_click" data-page-slug="{{ seoPage.slug }}">Call (941) 704-8545</a>
+                    </p>
+                </div>
             </div>
         </section>
     </main>

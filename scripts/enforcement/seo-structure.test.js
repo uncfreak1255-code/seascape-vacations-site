@@ -105,12 +105,12 @@ test("about page exists as a real route and homepage links point to it", () => {
 test("property owners page leads with premium proof instead of explainer-hub copy", () => {
   const ownerPage = fs.readFileSync(path.join(projectRoot, "src", "property-management", "index.njk"), "utf8");
 
-  assert.equal(ownerPage.includes("Why Owners Choose Seascape"), true);
-  assert.equal(ownerPage.includes("Local Support"), true);
-  assert.equal(ownerPage.includes("Revenue Strategy"), true);
-  assert.equal(ownerPage.includes("Guest Experience Standards"), true);
+  assert.equal(ownerPage.includes("Property management for owners who care about net revenue"), true);
+  assert.equal(ownerPage.includes("$119,923"), true);
+  assert.equal(ownerPage.includes("13.4% → 2.9%"), true);
+  assert.equal(ownerPage.includes("Where Revenue Actually Leaks"), true);
   assert.equal(ownerPage.includes("What Is Vacation Rental Property Management?"), false);
-  assert.equal(ownerPage.includes("Read These Before You Hire Anyone"), false);
+  assert.equal(ownerPage.includes("Request a property evaluation"), false);
 });
 
 test("guides hub behaves like an editorial blog front door with hierarchy", () => {

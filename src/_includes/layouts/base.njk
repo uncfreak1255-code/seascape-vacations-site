@@ -406,6 +406,7 @@
               class="btn"
               {% if navButtonTarget %}target="{{ navButtonTarget }}"{% endif %}
               {% if navButtonRel %}rel="{{ navButtonRel }}"{% endif %}
+              {% if navButtonAttributes %}{{ navButtonAttributes | safe }}{% endif %}
             >{{ navButtonLabel or "View All Properties" }}</a>
         </div>
     </nav>
