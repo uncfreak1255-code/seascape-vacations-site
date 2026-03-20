@@ -212,6 +212,11 @@ eleventyComputed:
                 <p class="section-tag" style="color: var(--gold);">For Property Owners</p>
                 <h1 style="font-size: clamp(32px, 5vw, 48px); margin-bottom: 20px; color: white;">{{ seoPage.h1 }}</h1>
                 <p style="max-width: 700px; margin: 0 auto; opacity: 0.9; font-size: 18px;">{{ seoPage.intro }}</p>
+                <div style="margin-top: 26px; display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;">
+                    <a href="#owner-cta" class="btn btn-gold" data-track-event="owner_primary_cta_click" data-page-slug="{{ seoPage.slug }}">{{ seoPage.primaryCta or "Get Your Revenue Teardown" }}</a>
+                    <a href="tel:+19417048545" class="btn" style="background: rgba(255, 255, 255, 0.1); color: white; border: 1px solid rgba(255, 255, 255, 0.18);" data-track-event="owner_phone_click" data-page-slug="{{ seoPage.slug }}">Call (941) 704-8545</a>
+                </div>
+                <p style="max-width: 760px; margin: 18px auto 0; opacity: 0.82; font-size: 15px;">{{ seoPage.ctaSubcopy or "We break down fee structure, channel mix, and what your current setup is actually costing you before you decide anything." }}</p>
             </div>
         </section>
 
