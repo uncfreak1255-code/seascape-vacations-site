@@ -4,18 +4,13 @@ eleventyExcludeFromCollections: true
 ---
 <?xml version="1.0" encoding="utf-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  {% set excludedUrls = [
-    '/guides/anna-maria-island-vacation-cost-guide-2026/',
-    '/guides/best-time-to-visit-anna-maria-island/',
-    '/guides/bradenton-vs-sarasota-vacation-rental-comparison/'
-  ] %}
   {% for entry in collections.all %}
   {% set url = entry.url %}
   {% set entryIndexable = entry.data.seoIndexable %}
   {% set shouldIndex = entryIndexable != false and entryIndexable != 'false' %}
   {% set isNonPaginatedStay = url.indexOf('/stays/') === -1 %}
   {% set isNonPaginatedPropertyManagement = url == '/property-management/' or url.indexOf('/property-management/') === -1 %}
-  {% if url and url != '/404.html' and url != '/sitemap.xml' and url not in excludedUrls and shouldIndex and isNonPaginatedStay and isNonPaginatedPropertyManagement %}
+  {% if url and url != '/404.html' and url != '/sitemap.xml' and shouldIndex and isNonPaginatedStay and isNonPaginatedPropertyManagement %}
   <url>
     <loc>{{ site.url }}{{ url }}</loc>
     <lastmod>{{ site.dateUpdated }}</lastmod>
