@@ -42,6 +42,14 @@ const guideFiles = [
     ]
   },
   {
+    slug: "best-vacation-rental-companies-ami",
+    file: path.join(projectRoot, "src", "guides", "best-vacation-rental-companies-ami.html"),
+    requiredLinks: [
+      "/stays/anna-maria-island-vacation-rentals/",
+      "/stays/book-direct-anna-maria-island/"
+    ]
+  },
+  {
     slug: "best-time-visit-anna-maria-island",
     file: path.join(projectRoot, "src", "guides", "best-time-visit-anna-maria-island.html"),
     requiredLinks: [
@@ -215,6 +223,72 @@ test("priority guide stay links resolve to real vacationer SEO pages", () => {
         undefined,
         `${guide.slug} stay link ${href} should map to a real vacationer entry in seoPages.json`
       );
+    }
+  }
+});
+
+test("week 2 booking guides use named authorship and retire legacy conversion clutter", () => {
+  const weekTwoGuides = [
+    {
+      slug: "best-vacation-rental-companies-ami",
+      file: path.join(projectRoot, "src", "guides", "best-vacation-rental-companies-ami.html"),
+      requiredMarkers: [
+        '<meta name="author" content="Sawyer Beck">',
+        '"@type": "Person"',
+        '"name": "Sawyer Beck"',
+        'data-guide-author="sawyer-beck"',
+        "How We Ranked These Companies",
+        "If You Are Booking a Stay",
+        "If You Own on Anna Maria Island"
+      ],
+      forbiddenMarkers: [
+        'id="email-popup"',
+        "showEmailPopup",
+        "handleEmailSubmit",
+        "guide-related-stays",
+        "/stays/luxury-vacation-rentals-sarasota/"
+      ]
+    },
+    {
+      slug: "booking-direct-vacation-rentals",
+      file: path.join(projectRoot, "src", "guides", "booking-direct-vacation-rentals.html"),
+      requiredMarkers: [
+        '<meta name="author" content="Sawyer Beck">',
+        '"@type":"Person"',
+        '"name":"Sawyer Beck"',
+        'data-guide-author="sawyer-beck"'
+      ],
+      forbiddenMarkers: [
+        "guide-related-stays",
+        "/stays/last-minute-vacation-rentals-florida/"
+      ]
+    },
+    {
+      slug: "anna-maria-island-vacation-cost",
+      file: path.join(projectRoot, "src", "guides", "anna-maria-island-vacation-cost.html"),
+      requiredMarkers: [
+        '<title>How Much Does a Vacation to Anna Maria Island Cost? (2026 Budget Guide)</title>',
+        '<meta name="author" content="Sawyer Beck">',
+        '"@type": "Person"',
+        '"name": "Sawyer Beck"',
+        'data-guide-author="sawyer-beck"'
+      ],
+      forbiddenMarkers: [
+        "guide-related-stays",
+        "/property-management/vacation-rental-pricing-strategy/"
+      ]
+    }
+  ];
+
+  for (const guide of weekTwoGuides) {
+    const source = fs.readFileSync(guide.file, "utf8");
+
+    for (const marker of guide.requiredMarkers) {
+      assert.equal(source.includes(marker), true, `${guide.slug} should include ${marker}`);
+    }
+
+    for (const marker of guide.forbiddenMarkers) {
+      assert.equal(source.includes(marker), false, `${guide.slug} should not keep ${marker}`);
     }
   }
 });
