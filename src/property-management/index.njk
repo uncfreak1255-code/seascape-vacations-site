@@ -125,20 +125,6 @@ headExtra: |
       gap: 14px;
     }
 
-    .owner-ghost-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 48px;
-      padding: 0 24px;
-      border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.28);
-      color: white;
-      font-weight: 600;
-      background: rgba(255, 255, 255, 0.08);
-      backdrop-filter: blur(10px);
-    }
-
     .owner-hero-panel {
       background: rgba(255, 255, 255, 0.1);
       border: 1px solid rgba(255, 255, 255, 0.18);
@@ -351,11 +337,16 @@ headExtra: |
       opacity: 0.9;
     }
 
-    .owner-cta-actions {
-      display: flex;
-      gap: 14px;
-      justify-content: center;
-      flex-wrap: wrap;
+    .owner-secondary-contact {
+      margin-top: 18px;
+      text-align: center;
+      color: rgba(255, 255, 255, 0.82);
+      font-size: 15px;
+    }
+
+    .owner-secondary-contact a {
+      color: white;
+      font-weight: 600;
     }
 
     .owner-lead-form {
@@ -455,10 +446,9 @@ headExtra: |
     <div class="owner-hero-copy">
       <p class="section-tag" style="color: var(--gold-light);">For Property Owners</p>
       <h1>Property management for owners who care about net revenue</h1>
-      <p class="owner-hero-lead">Seascape's current Gulf Coast portfolio runs at $1.4M in annual rental revenue, 10-15% management fees, and $119,923 in direct bookings. The useful next step is a hard read on whether your current manager is leaking owner income through fee drag, OTA dependence, or weak local execution.</p>
+      <p class="owner-hero-lead">Seascape's current Gulf Coast portfolio runs at $1.4M in annual rental revenue and $119,923 in direct bookings. We price management around property fit, revenue potential, and local operating demands, then show owners where fee drag, OTA dependence, and weak execution are suppressing real net income.</p>
       <div class="owner-hero-actions">
         <a class="btn btn-gold" href="#owner-cta" data-track-event="owner_primary_cta_click" data-page-slug="property-management">Get Your Revenue Teardown</a>
-        <a class="owner-ghost-btn" href="tel:+19417048545" data-track-event="owner_phone_click" data-page-slug="property-management">Call (941) 704-8545</a>
       </div>
     </div>
     <aside class="owner-hero-panel">
@@ -482,9 +472,9 @@ headExtra: |
       <p>Current annual rental revenue across Seascape's five active Gulf Coast homes.</p>
     </div>
     <div class="owner-proof-card">
-      <span class="owner-proof-label">Fee Model</span>
-      <h3>10-15%</h3>
-      <p>Seascape's management fee band versus local and national operators often charging 18-35%.</p>
+      <span class="owner-proof-label">Pricing Model</span>
+      <h3>Tailored</h3>
+      <p>We do not use one flat management fee for every home. Higher-performing homes can qualify for lower fees when the economics support it.</p>
     </div>
     <div class="owner-proof-card">
       <span class="owner-proof-label">Direct Channel</span>
@@ -504,10 +494,10 @@ headExtra: |
     <div class="owner-choice-card">
       <p class="section-tag">Owner Math</p>
       <h2 class="section-title" style="margin-bottom: 14px;">Why the fee conversation usually gets distorted</h2>
-      <p>Owners love to compare one manager at 10%, another at 15%, and another at 20%. That matters, but it is not the full bill. OTA commissions, discount-heavy pricing, and weak local execution can erase more owner income than a few fee points either way.</p>
-      <p>That is the real Seascape pitch: lower fees are not enough by themselves. Lower fees plus stronger pricing discipline, more direct demand, and tighter local operations are what change net owner income.</p>
+      <p>Owners love to compare one manager at 15%, another at 20%, and another at 25% as if that settles the decision. It does not. OTA commissions, discount-heavy pricing, and weak local execution can erase more owner income than the headline fee alone.</p>
+      <p>The useful question is not "who is cheapest?" It is "who protects net owner income once pricing discipline, channel mix, guest standards, and local response all hit the same property?"</p>
       <ul>
-        <li>Competitor fee band often lands around 20-35% while Seascape stays at 10-15%</li>
+        <li>Competitor fee bands often land around 18-35%, but the management percentage is only one part of the owner math</li>
         <li>Observed Airbnb host fees average roughly 13.4% versus direct payment cost closer to 2.9%</li>
         <li>Owner reporting should explain what changed in revenue, channel mix, and margin instead of just listing activity</li>
       </ul>
@@ -524,9 +514,9 @@ headExtra: |
 <section class="section" style="background: var(--cream-dark);">
   <div class="container">
     <div class="section-header">
-      <p class="section-tag">Start With Your Market</p>
-      <h2 class="section-title">Choose the owner page that matches your situation</h2>
-      <p class="section-subtitle">The local pages are where the market differences show up. Start there if you are evaluating fit by property location.</p>
+      <p class="section-tag">Start With Your Situation</p>
+      <h2 class="section-title">Choose the owner path that matches the actual problem</h2>
+      <p class="section-subtitle">Most owners are dealing with one of four things: a market-fit problem, a switching problem, or a manager that is not protecting the economics of the home.</p>
     </div>
 
     <div class="owner-coverage-grid">
@@ -548,10 +538,16 @@ headExtra: |
         <p>Start here if your property needs premium positioning, stronger guest standards, and tighter control over upscale stay quality.</p>
         <span class="owner-link">See Sarasota coverage →</span>
       </a>
+      <a class="owner-coverage-card" href="/property-management/switch-vacation-rental-management-company/">
+        <span>Transition Risk</span>
+        <h3>Switch Managers Without Killing Momentum</h3>
+        <p>Start here if the current operator is the issue and you need to know whether the switching cost is real or just inertia protecting a bad setup.</p>
+        <span class="owner-link">See the switch path →</span>
+      </a>
       <a class="owner-coverage-card" href="/property-management/vacation-rental-management-siesta-key/">
-        <span>Beach Luxury</span>
+        <span>Beach Premium</span>
         <h3>Siesta Key</h3>
-        <p>Start here if the home depends on beach-premium positioning, elevated guest expectations, and stronger control over luxury presentation.</p>
+        <p>Start here if the home depends on beach-premium positioning, elevated guest expectations, and tighter control over luxury presentation.</p>
         <span class="owner-link">See Siesta Key coverage →</span>
       </a>
     </div>
@@ -602,9 +598,7 @@ headExtra: |
         buttonLabel: "Get Your Revenue Teardown",
         note: "You get a hard read on management fees, channel mix, direct-booking upside, and the operating misses that matter."
       }) }}
-      <div class="owner-cta-actions">
-        <a class="owner-ghost-btn" href="tel:+19417048545" data-track-event="owner_phone_click" data-page-slug="property-management">Call (941) 704-8545</a>
-      </div>
+      <p class="owner-secondary-contact">Prefer to talk first? <a href="tel:+19417048545" data-track-event="owner_phone_click" data-page-slug="property-management">Call (941) 704-8545</a></p>
     </div>
   </div>
 </section>
