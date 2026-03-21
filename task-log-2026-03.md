@@ -138,3 +138,16 @@
 - **Word count**: 1,978 (target: 1,800+) ✅
 - **Deployed**: yes — git push succeeded, both homepage and Easter page return 200
 - **Issues**: none
+
+### 2026-03-19 07:00 — rank-performance-tracker
+- **Status**: partial (GSC/Ahrefs unavailable — web search fallback used)
+- **Actions**: Web search rank checks for 15 core keywords. Page inventory audit (215 deployed vs 68 in sitemap). Saved rank-tracker-latest.md + rank-tracker-2026-03-19.md.
+- **Key findings**:
+  - 🔴 SITEMAP CRITICAL: 147 pages missing from sitemap.xml (95 stays, 30 PM, 22 other). Google can't discover 68% of site content.
+  - 2/15 keywords in top 10: bradenton-vs-sarasota (#2), vacation-rentals-bradenton-fl (~#7)
+  - 215 HTML pages deployed (96 stays, 55 guides, 32 PM, 32 other)
+  - GSC Chrome browser timed out, Ahrefs returned "Insufficient plan" on all endpoints
+  - No fresh click/impression data — carried forward Mar 12 baseline
+- **Pages affected**: N/A (reporting only, no content changes)
+- **Deployed**: no (no code changes)
+- **Issues**: GSC browser timeout, Ahrefs plan insufficient, Serpbear still unconfigured (0 domains). Sitemap needs urgent regeneration.
