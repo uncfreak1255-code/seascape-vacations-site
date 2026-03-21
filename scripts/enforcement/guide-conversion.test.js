@@ -4,6 +4,9 @@ const test = require("node:test");
 const assert = require("node:assert/strict");
 
 const projectRoot = path.resolve(__dirname, "..", "..");
+const seoPages = JSON.parse(
+  fs.readFileSync(path.join(projectRoot, "src", "_data", "seoPages.json"), "utf8")
+);
 
 const guideFiles = [
   {
@@ -19,7 +22,7 @@ const guideFiles = [
     file: path.join(projectRoot, "src", "guides", "anna-maria-island-vs-siesta-key.html"),
     requiredLinks: [
       "/stays/anna-maria-island-vacation-rentals/",
-      "/stays/vacation-rentals-near-siesta-key-beach/"
+      "/stays/siesta-key-area-vacation-rentals/"
     ]
   },
   {
@@ -195,6 +198,64 @@ test("priority guides use the shared conversion kit with page-specific stay link
 
     for (const href of guide.requiredLinks) {
       assert.equal(source.includes(href), true, `${guide.slug} should include ${href}`);
+    }
+  }
+});
+
+test("priority guide stay links resolve to real vacationer SEO pages", () => {
+  for (const guide of guideFiles) {
+    for (const href of guide.requiredLinks) {
+      const match = href.match(/^\/stays\/([^/]+)\/$/);
+      assert.notEqual(match, null, `${guide.slug} stay link should use a canonical /stays/<slug>/ route`);
+
+      const staySlug = match[1];
+      const matchingSeoPage = (seoPages.vacationer || []).find((page) => page.slug === staySlug);
+      assert.notEqual(
+        matchingSeoPage,
+        undefined,
+        `${guide.slug} stay link ${href} should map to a real vacationer entry in seoPages.json`
+      );
+    }
+  }
+});
+
+test("winner guides surface the shared conversion kit before late-stage related content", () => {
+  const winnerGuides = [
+    {
+      slug: "bradenton-vs-sarasota",
+      file: path.join(projectRoot, "src", "guides", "bradenton-vs-sarasota.html"),
+      mustAppearBefore: ['<section id="faq"', '<div class="related-guides"'],
+      forbiddenMarkers: ["guide-related-stays", "Gulf Coast Vacation Rentals", "Downtown Sarasota Rentals"]
+    },
+    {
+      slug: "anna-maria-island-vs-siesta-key",
+      file: path.join(projectRoot, "src", "guides", "anna-maria-island-vs-siesta-key.html"),
+      mustAppearBefore: ['<div class="related-guides"', '<div class="container" style="padding-bottom:20px;">'],
+      forbiddenMarkers: ["/stays/vacation-rentals-near-siesta-key-beach/"]
+    }
+  ];
+
+  for (const guide of winnerGuides) {
+    const source = fs.readFileSync(guide.file, "utf8");
+    const conversionIndex = source.indexOf("{{ guideConversionKit({");
+    assert.notEqual(conversionIndex, -1, `${guide.slug} should include the shared conversion kit`);
+
+    for (const marker of guide.mustAppearBefore) {
+      const markerIndex = source.indexOf(marker);
+      assert.notEqual(markerIndex, -1, `${guide.slug} should still include ${marker}`);
+      assert.equal(
+        conversionIndex < markerIndex,
+        true,
+        `${guide.slug} should place the shared conversion kit before ${marker}`
+      );
+    }
+
+    for (const forbiddenMarker of guide.forbiddenMarkers) {
+      assert.equal(
+        source.includes(forbiddenMarker),
+        false,
+        `${guide.slug} should not keep ${forbiddenMarker} once the shared conversion kit is the primary booking handoff`
+      );
     }
   }
 });

@@ -21,6 +21,10 @@ test("sitemap is built from rendered pages instead of legacy route assumptions",
   assert.equal(sitemap.includes("entry.data.seoIndexable"), true);
   assert.equal(sitemap.includes("/destinations/"), false);
   assert.equal(sitemap.includes("/rentals/"), false);
+  assert.equal(sitemap.includes("excludedUrls"), false);
+  assert.equal(sitemap.includes("/guides/bradenton-vs-sarasota-vacation-rental-comparison/"), false);
+  assert.equal(sitemap.includes("/guides/anna-maria-island-vacation-cost-guide-2026/"), false);
+  assert.equal(sitemap.includes("/guides/best-time-to-visit-anna-maria-island/"), false);
 });
 
 test("sitemap explicitly includes paginated stay and owner inventories", () => {
