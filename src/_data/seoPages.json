@@ -162,8 +162,8 @@
       "destination": "anna-maria-island",
       "title": "Book Direct AMI Vacation Rentals - Save 10-15%",
       "h1": "Book Direct on Anna Maria Island & Save",
-      "description": "Skip the Airbnb fees! Book directly with Seascape Vacations and save 10-15%.",
-      "intro": "Why pay extra fees to Airbnb or VRBO? Book direct and save 10-15%.",
+      "description": "Skip the OTA fee stack and book Gulf Coast homes near Anna Maria Island directly. Keep $300-$600 in the trip budget instead of paying Airbnb or Vrbo fees.",
+      "intro": "A $3,000 to $4,500 Gulf Coast stay can lose a few hundred dollars at checkout if you let Airbnb or Vrbo own the last click. Book direct and keep the same trip shape with a cleaner total, a local support team, and better control over the booking itself.",
       "faqs": [
         {
           "question": "How much do I really save booking direct vs Airbnb?",
@@ -193,7 +193,6 @@
       "matchingProperties": [
         "dockside-dreams",
         "the-oasis",
-        "sarasota-luxe",
         "river-house"
       ],
       "geoIntro": "<p>If you're searching for Anna Maria Island vacation rentals on Airbnb or VRBO, you're about to pay 12\u201315% more than you need to. Those platforms charge hefty service fees on top of the rental price \u2014 fees that go straight to Silicon Valley, not to your vacation experience. When you book direct with <strong>Seascape Vacations</strong>, every dollar goes toward your stay, and you save $200\u2013$500+ on a typical week-long rental.</p><p>But saving money is just the beginning. Direct booking means you're working directly with a local team that lives and breathes the Anna Maria Island and Bradenton area. You get personalized recommendations for restaurants, activities, and hidden gems. You get flexible booking policies. You get a dedicated local contact who can help with anything during your stay \u2014 not a call center in another state.</p><p>Our properties include luxury homes with private pools, heated hot tubs, waterfront locations with boat docks, and spacious layouts sleeping 4\u201316 guests. Every home is professionally cleaned, fully stocked, and ready for your arrival. Book direct at <strong>seascape-vacations.com</strong> and experience the difference that local hospitality makes.</p>"
@@ -793,8 +792,8 @@
       "destination": "bradenton",
       "title": "Bradenton Vacation Rentals Near Beaches",
       "h1": "Bradenton Homes Near Gulf Beaches",
-      "description": "Stay in Bradenton, play on the beaches. Vacation rentals minutes from AMI and Gulf beaches.",
-      "intro": "Bradenton offers the best of both worlds: affordable stays with easy beach access.",
+      "description": "Stay in Bradenton, keep easy Anna Maria Island access, and avoid the island price premium on every night of the trip.",
+      "intro": "Use Bradenton when you want Anna Maria Island beach access without paying island pricing every night. This is the value base for guests who care more about total trip cost than bragging rights on the map pin.",
       "faqs": [
         {
           "question": "How far to Anna Maria Island from Bradenton?",
@@ -1825,8 +1824,8 @@
       "destination": null,
       "title": "Extended Stay Vacation Rentals Florida",
       "h1": "Extended Stay Monthly Rentals Florida",
-      "description": "Stay longer and save. Monthly vacation rentals on Florida's Gulf Coast for extended stays.",
-      "intro": "Extended stays offer the best value. Settle in and live the Florida lifestyle for a month or more.",
+      "description": "Stay longer and save. Monthly Gulf Coast vacation rentals with utilities included and lower per-night math for 28+ night stays.",
+      "intro": "Extended stays flatten the per-night cost, spread fixed fees over more nights, and make the direct-booking math much stronger. If the trip is flexible, this is usually where the budget improves fastest.",
       "faqs": [
         {
           "question": "What qualifies as an extended stay?",
@@ -1986,8 +1985,8 @@
       "destination": "bradenton",
       "title": "Affordable Vacation Rentals Florida Gulf Coast",
       "h1": "Budget-Friendly Florida Vacation Homes",
-      "description": "Luxury doesn't have to cost a fortune. Affordable vacation rentals with pools on the Gulf Coast.",
-      "intro": "Get more for your money with our vacation rentals\u2014private pools, full kitchens, and space to spread out.",
+      "description": "Budget-smart Gulf Coast vacation rentals with pools, full kitchens, and direct-booking savings near Anna Maria Island.",
+      "intro": "Use shoulder-season dates, a mainland base, and direct booking to keep the trip affordable without downgrading the stay itself.",
       "faqs": [
         {
           "question": "How do I get the best rate on a Gulf Coast vacation rental?",
@@ -2381,8 +2380,8 @@
       "destination": "anna-maria-island",
       "title": "Anna Maria Island Vacation Rentals \u2014 Book Direct & Save 15%",
       "h1": "Anna Maria Island Vacation Rentals",
-      "description": "Book luxury vacation rentals near Anna Maria Island directly from Seascape Vacations. Private pools, waterfront views, boat docks \u2014 save 10\u201315% vs Airbnb.",
-      "intro": "Anna Maria Island is the Florida Gulf Coast at its best \u2014 seven miles of white-sand beaches, no high-rises, and a pace that makes you forget you ever checked email. Our vacation rentals sit minutes from AMI's top beaches with private pools, waterfront locations, and the kind of space a hotel room can't touch. Book direct with Seascape Vacations and save 10\u201315% compared to Airbnb or VRBO.",
+      "description": "Book direct homes near Anna Maria Island with private pools, local support, and a cleaner total than the OTA checkout path.",
+      "intro": "Use this page when you want the island-first version of the trip but still need the total to make sense. Our Anna Maria Island corridor homes sit 5-15 minutes from the beaches and book direct with a local team instead of a platform support queue.",
       "faqs": [
         {
           "question": "What is there to do on Anna Maria Island?",
@@ -2410,7 +2409,9 @@
         }
       ],
       "matchingProperties": [
-        "all"
+        "dockside-dreams",
+        "the-oasis",
+        "river-house"
       ],
       "geoIntro": "<p><strong>Anna Maria Island</strong> is a seven-mile barrier island on Florida's Gulf Coast, connected to the mainland by two bridges from Bradenton. The island is divided into three communities \u2014 Anna Maria at the north end, Holmes Beach in the center, and Bradenton Beach at the south end \u2014 each with its own character but sharing the same stunning white-sand coastline. AMI is known for its strict building codes that prohibit high-rises and chain restaurants, preserving the Old Florida charm that makes it one of the most sought-after vacation destinations on the Gulf Coast. Water temperatures range from the low 70s in winter to the mid-80s in summer, and the sunsets over the Gulf are legendary.</p>"
     },
