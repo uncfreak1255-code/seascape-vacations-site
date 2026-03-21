@@ -82,3 +82,38 @@ test("owner revenue teardown form lowers friction without losing tracking or int
   assert.equal(ownerFormPartial.includes('data-track-form="owner"'), true);
   assert.equal(ownerFormPartial.includes('data-form-submit-event="owner_form_submit"'), true);
 });
+
+test("owner pages keep phone as a lower-trust fallback instead of a competing hero CTA", () => {
+  const landingHeroStart = ownerLanding.indexOf('<section class="section owner-hero">');
+  const landingHeroEnd = ownerLanding.indexOf("</section>", landingHeroStart);
+  const landingHero = ownerLanding.slice(landingHeroStart, landingHeroEnd);
+
+  const templateHeroStart = ownerTemplate.indexOf('<section class="section" style="background: linear-gradient(135deg, var(--brand-dark) 0%, #1a3a3c 100%); color: white;">');
+  const templateHeroEnd = ownerTemplate.indexOf("</section>", templateHeroStart);
+  const templateHero = ownerTemplate.slice(templateHeroStart, templateHeroEnd);
+
+  assert.notEqual(landingHeroStart, -1, "owner landing hero should exist");
+  assert.notEqual(templateHeroStart, -1, "owner template hero should exist");
+  assert.equal(landingHero.includes('data-track-event="owner_phone_click"'), false, "landing hero should not compete with the teardown CTA");
+  assert.equal(templateHero.includes('data-track-event="owner_phone_click"'), false, "owner page hero should not compete with the teardown CTA");
+  assert.equal((ownerLanding.match(/data-track-event="owner_phone_click"/g) || []).length, 1, "landing page should keep one lower-trust phone fallback");
+  assert.equal((ownerTemplate.match(/data-track-event="owner_phone_click"/g) || []).length, 1, "owner template should keep one lower-trust phone fallback");
+  assert.equal(ownerLanding.includes("Prefer to talk first?"), true, "landing page should frame phone as a fallback");
+  assert.equal(ownerTemplate.includes("Prefer to talk first?"), true, "owner template should frame phone as a fallback");
+});
+
+test("week 3 owner pages do not collapse back into fake flat-fee messaging", () => {
+  const switchPage = ownerData.find((entry) => entry.slug === "switch-vacation-rental-management-company");
+  const sarasotaPage = ownerData.find((entry) => entry.slug === "vacation-rental-management-sarasota");
+
+  assert.ok(switchPage, "switch-manager page should exist");
+  assert.ok(sarasotaPage, "Sarasota owner page should exist");
+  assert.equal(ownerLanding.includes("10-15% management fees"), false, "owner landing should not hard-code a flat fee band");
+  assert.equal(ownerLanding.includes("We do not use one flat management fee for every home."), true, "owner landing should explain the tailored pricing model");
+  assert.equal(switchPage.benefits.includes("10-15% management fees instead of paying more for the same misses"), false, "switch page should not claim a flat fee band");
+  assert.equal(switchPage.geoIntro.includes("10-15%"), false, "switch page GEO intro should not hard-code a flat fee");
+  assert.ok(switchPage.marketReality && switchPage.marketReality.title.includes("risk-free option"), "switch page should frame the cost of staying put");
+  assert.equal(sarasotaPage.proofStats.some((stat) => stat.label === "Management pricing" && stat.value === "Tailored"), true, "Sarasota page should describe pricing as tailored");
+  assert.ok(Array.isArray(sarasotaPage.revenueLevers) && sarasotaPage.revenueLevers.length >= 3, "Sarasota page should expose revenue levers");
+  assert.equal(sarasotaPage.geoIntro.includes("one flat management fee"), true, "Sarasota GEO intro should explain variable pricing");
+});
