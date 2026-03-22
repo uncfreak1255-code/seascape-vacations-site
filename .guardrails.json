@@ -1,0 +1,18 @@
+{
+  "workflow": "codex-worktree",
+  "protectedBranches": [
+    "main",
+    "master"
+  ],
+  "generatedPaths": [
+    "_site/",
+    "_site_verify",
+    "_site_verify_fresh",
+    "tmp/",
+    "dist/",
+    "build/"
+  ],
+  "testCommand": "npm test",
+  "buildCommand": "npm run build",
+  "mergeBase": "origin/main...HEAD"
+}
