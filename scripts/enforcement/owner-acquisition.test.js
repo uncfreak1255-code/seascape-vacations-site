@@ -117,3 +117,34 @@ test("week 3 owner pages do not collapse back into fake flat-fee messaging", () 
   assert.ok(Array.isArray(sarasotaPage.revenueLevers) && sarasotaPage.revenueLevers.length >= 3, "Sarasota page should expose revenue levers");
   assert.equal(sarasotaPage.geoIntro.includes("one flat management fee"), true, "Sarasota GEO intro should explain variable pricing");
 });
+
+test("owner fee messaging stays tailored instead of reviving stale flat-fee claims", () => {
+  const amiPage = ownerData.find((entry) => entry.slug === "vacation-rental-management-anna-maria-island");
+  const bradentonPage = ownerData.find((entry) => entry.slug === "vacation-rental-management-bradenton");
+  const siestaPage = ownerData.find((entry) => entry.slug === "vacation-rental-management-siesta-key");
+  const selfManagePage = ownerData.find((entry) => entry.slug === "self-manage-vs-property-management-florida");
+  const switchFromSelfManagePage = ownerData.find((entry) => entry.slug === "switch-from-airbnb-self-manage");
+
+  for (const [slug, page] of Object.entries({
+    "vacation-rental-management-anna-maria-island": amiPage,
+    "vacation-rental-management-bradenton": bradentonPage,
+    "vacation-rental-management-siesta-key": siestaPage,
+    "self-manage-vs-property-management-florida": selfManagePage,
+    "switch-from-airbnb-self-manage": switchFromSelfManagePage
+  })) {
+    assert.ok(page, `${slug} should exist`);
+  }
+
+  assert.equal(ownerTemplate.includes(">10-15%</div>"), false, "fallback owner proof block should not hard-code a flat percentage");
+  assert.equal(ownerTemplate.includes("Tailored"), true, "fallback owner proof block should explain tailored pricing");
+
+  for (const page of [amiPage, bradentonPage, siestaPage]) {
+    assert.equal(page.proofStats.some((stat) => stat.label === "Seascape management fee"), false, `${page.slug} should not use a flat management-fee proof stat`);
+    assert.equal(page.proofStats.some((stat) => stat.label === "Management pricing" && stat.value === "Tailored"), true, `${page.slug} should describe pricing as tailored`);
+  }
+
+  assert.equal(JSON.stringify(amiPage).includes("10-15% structure"), false, "AMI page should not describe pricing as a 10-15% structure");
+  assert.equal(JSON.stringify(amiPage).includes("28-32%"), false, "AMI page should not quote stale 28-32% management fees");
+  assert.equal(JSON.stringify(selfManagePage).includes("28-32%"), false, "self-manage comparison page should not quote stale 28-32% management fees");
+  assert.equal(JSON.stringify(switchFromSelfManagePage).includes("28-32%"), false, "switch-from-self-manage page should not quote stale 28-32% management fees");
+});
