@@ -76,6 +76,23 @@
         ]
     }
     </script>
+    <!-- WebSite SearchAction Schema -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Seascape Vacations",
+        "url": "https://seascape-vacations.com/",
+        "potentialAction": {
+            "@type": "SearchAction",
+            "target": {
+                "@type": "EntryPoint",
+                "urlTemplate": "https://seascape-vacations.com/properties/?area={search_term_string}"
+            },
+            "query-input": "required name=search_term_string"
+        }
+    }
+    </script>
     <!-- Homepage FAQ Schema -->
     <script type="application/ld+json">
     {
