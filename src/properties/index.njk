@@ -532,9 +532,9 @@ headExtra: |
     <div class="catalog-toolbar">
       <div class="catalog-toolbar-copy">
         <p class="section-tag">Our Collection</p>
-        <h2>Find the home that fits your trip, then book with confidence.</h2>
+        <h2>Pick the right home fast, then move straight into direct dates.</h2>
         <p>
-          Filter by stay style or location, compare the homes visually, and jump straight into the property page or booking flow that fits your getaway best.
+          Use the filters to cut to the right fit, then choose between the fast path into direct booking or the property page if you need one more look before committing.
         </p>
       </div>
       <a class="catalog-toolbar-link" href="/guides/">Explore local guides →</a>
@@ -604,11 +604,22 @@ headExtra: |
           </div>
           <div class="catalog-actions">
             <a
-              class="catalog-secondary"
+              class="btn btn-gold"
               href="{{ bookingHref }}"
+              data-track-event="catalog_book_direct_click"
+              data-page-slug="{{ property.slug }}"
+              data-placement="catalog_card"
+              data-track-label="{{ property.name }}"
               {% if property.bookingUrl %}target="_blank" rel="noopener noreferrer"{% endif %}
             >Book Direct</a>
-            <a class="btn btn-gold" href="{{ property.pageUrl }}">View Details</a>
+            <a
+              class="catalog-secondary"
+              href="{{ property.pageUrl }}"
+              data-track-event="catalog_view_details_click"
+              data-page-slug="{{ property.slug }}"
+              data-placement="catalog_card"
+              data-track-label="{{ property.name }}"
+            >View Details</a>
           </div>
         </div>
       </article>
@@ -617,19 +628,6 @@ headExtra: |
 
     <div class="catalog-empty" id="catalog-empty">
       No homes match that filter right now. Reset to <strong>All stays</strong> instead of assuming the collection disappeared.
-    </div>
-
-    <div class="catalog-owner-cta">
-      <div>
-        <p class="section-tag">For Owners</p>
-        <h3>Owners notice presentation before they ever ask about management.</h3>
-        <p>
-          See how Seascape positions premium homes for direct bookings, stronger guest trust, and a cleaner owner experience from inquiry to arrival.
-        </p>
-      </div>
-      <div>
-        <a class="btn btn-gold" href="/property-management/">Explore Owner Services</a>
-      </div>
     </div>
   </div>
 </section>
