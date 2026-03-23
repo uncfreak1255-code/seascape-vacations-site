@@ -244,7 +244,13 @@ eleventyComputed:
                     <div class="nav-logo-sub">Vacations</div>
                 </div>
             </a>
-            <a href="/properties/" class="btn">View All Properties</a>
+            <a
+                href="/properties/"
+                class="btn"
+                data-track-event="catalog_book_direct_click"
+                data-placement="stay_nav"
+                data-track-label="{{ seoPage.slug }}"
+            >Open Direct-Book Collection</a>
         </div>
     </nav>
 
@@ -323,9 +329,17 @@ eleventyComputed:
                             <h3 class="property-title">{{ property.name }}</h3>
                             <p class="property-meta">{{ property.specs }}</p>
                             <p style="font-size: 14px; color: var(--stone-light); margin-bottom: 16px;">{{ property.highlights | join(" · ") }}</p>
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; gap: 16px;">
                                 <span class="property-price">From ${{ property.price }}/night</span>
-                                <a href="/properties/{{ property.slug }}/" class="btn" style="padding: 10px 20px; font-size: 13px;">View Details</a>
+                                <a
+                                    href="/properties/{{ property.slug }}/"
+                                    class="btn"
+                                    style="padding: 10px 20px; font-size: 13px;"
+                                    data-track-event="stay_view_property_click"
+                                    data-page-slug="{{ property.slug }}"
+                                    data-placement="stay_property_card"
+                                    data-track-label="{{ property.name }}"
+                                >Check Direct Dates</a>
                             </div>
                         </div>
                     </article>
@@ -335,7 +349,13 @@ eleventyComputed:
                 <div style="max-width: 720px; margin: 0 auto; background: white; border-radius: 20px; padding: 32px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); text-align: center;">
                     <p style="font-size: 16px; color: var(--stone); margin-bottom: 16px;">We are keeping this page live as a planning resource, but we do not have a strong enough matching rental set to present a featured inventory list here yet.</p>
                     <p style="font-size: 14px; color: var(--stone-light); margin-bottom: 24px;">Browse our real availability instead of a thin template list.</p>
-                    <a href="/properties/" class="btn">Browse All Properties</a>
+                    <a
+                        href="/properties/"
+                        class="btn"
+                        data-track-event="catalog_book_direct_click"
+                        data-placement="stay_empty_state"
+                        data-track-label="{{ seoPage.slug }}"
+                    >See Matching Direct-Book Homes</a>
                 </div>
                 {% endif %}
             </div>
@@ -398,9 +418,16 @@ eleventyComputed:
 
         <section class="cta-section">
             <div class="container">
-                <h2 class="cta-title">Ready to Book Your Getaway?</h2>
-                <p class="cta-subtitle">Skip the booking fees. Book directly with Seascape Vacations and save 10-15% on your vacation rental.</p>
-                <a href="/" class="btn btn-gold" style="font-size: 16px; padding: 16px 40px;">View All Properties →</a>
+                <h2 class="cta-title">Need the wider Seascape collection?</h2>
+                <p class="cta-subtitle">This stay page is the filtered view. If the fit is close but not perfect, jump into the full direct-book collection instead of restarting on Airbnb.</p>
+                <a
+                    href="/properties/"
+                    class="btn btn-gold"
+                    style="font-size: 16px; padding: 16px 40px;"
+                    data-track-event="catalog_book_direct_click"
+                    data-placement="stay_bottom_cta"
+                    data-track-label="{{ seoPage.slug }}"
+                >Open the Full Direct-Book Collection →</a>
             </div>
         </section>
     </main>

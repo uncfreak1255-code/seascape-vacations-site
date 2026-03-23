@@ -11,7 +11,12 @@
     "guide_stay_click",
     "guide_book_direct_click",
     "email_capture_submit",
-    "booking_engine_handoff"
+    "booking_engine_handoff",
+    "catalog_book_direct_click",
+    "catalog_view_details_click",
+    "stay_view_property_click",
+    "property_check_availability_click",
+    "property_booking_page_click"
   ];
 
   function ensureDataLayer() {
