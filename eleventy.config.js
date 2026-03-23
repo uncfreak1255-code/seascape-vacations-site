@@ -37,7 +37,6 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.addPassthroughCopy({ "src/assets": "assets" });
   eleventyConfig.ignores.add("src/guides/anna-maria-island-vacation-cost-guide-2026/**");
   eleventyConfig.ignores.add("src/guides/best-time-to-visit-anna-maria-island/**");
-  eleventyConfig.ignores.add("src/guides/bradenton-vs-sarasota-vacation-rental-comparison/**");
 
   eleventyConfig.on("eleventy.after", () => {
     const root = process.cwd();
