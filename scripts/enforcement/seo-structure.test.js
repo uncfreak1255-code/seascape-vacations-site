@@ -145,13 +145,18 @@ test("retired duplicate guides are excluded and redirect to canonical guide path
 
   for (const retiredGuidePath of [
     path.join(projectRoot, "src", "guides", "anna-maria-island-vacation-cost-guide-2026", "index.html"),
-    path.join(projectRoot, "src", "guides", "best-time-to-visit-anna-maria-island", "index.html"),
-    path.join(projectRoot, "src", "guides", "bradenton-vs-sarasota-vacation-rental-comparison", "index.html")
+    path.join(projectRoot, "src", "guides", "best-time-to-visit-anna-maria-island", "index.html")
   ]) {
     const retiredGuide = fs.readFileSync(retiredGuidePath, "utf8");
     assert.equal(retiredGuide.includes("permalink: false"), true);
     assert.equal(retiredGuide.includes("eleventyExcludeFromCollections: true"), true);
   }
+
+  assert.equal(
+    fs.existsSync(path.join(projectRoot, "src", "guides", "bradenton-vs-sarasota-vacation-rental-comparison", "index.html")),
+    false,
+    "Expected the retired duplicate comparison source route to be removed entirely"
+  );
 
   for (const redirectRule of [
     "/guides/anna-maria-island-vacation-cost-guide-2026/  /guides/anna-maria-island-vacation-cost/  301",
@@ -163,11 +168,16 @@ test("retired duplicate guides are excluded and redirect to canonical guide path
 
   for (const ignoredGuideDir of [
     'src/guides/anna-maria-island-vacation-cost-guide-2026/**',
-    'src/guides/best-time-to-visit-anna-maria-island/**',
-    'src/guides/bradenton-vs-sarasota-vacation-rental-comparison/**'
+    'src/guides/best-time-to-visit-anna-maria-island/**'
   ]) {
     assert.equal(eleventyConfig.includes(ignoredGuideDir), true);
   }
+
+  assert.equal(
+    eleventyConfig.includes('src/guides/bradenton-vs-sarasota-vacation-rental-comparison/**'),
+    false,
+    "Expected Eleventy to stop carrying an ignore for a deleted duplicate comparison guide"
+  );
 
   assert.equal(
     eleventyConfig.includes('addPassthroughCopy({ "src/guides": "guides" });'),
