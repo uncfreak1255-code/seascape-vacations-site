@@ -158,7 +158,16 @@
     "@type": "PostalAddress",
     "addressLocality": "Sarasota",
     "addressRegion": "FL",
-    "addressCountry": "US"
+    "addressCountry": "US",
+    "postalCode": "34236"
+  },
+  "offers": {
+    "@type": "AggregateOffer",
+    "lowPrice": "350",
+    "highPrice": "979",
+    "priceCurrency": "USD",
+    "unitText": "NIGHT",
+    "availability": "https://schema.org/InStock"
   },
   "provider": {
     "@type": [
@@ -174,7 +183,50 @@
     "@type": "Organization",
     "name": "Seascape Vacations"
   }
-}</script><script type="application/ld+json">{
+}</script>
+<!-- TODO: Replace with real Hostaway reviews -->
+<script type="application/ld+json">[
+  {
+    "@context": "https://schema.org",
+    "@type": "Review",
+    "itemReviewed": {
+      "@type": "VacationRental",
+      "name": "Sarasota Luxe",
+      "url": "https://seascape-vacations.com/properties/sarasota-luxe/"
+    },
+    "reviewRating": {"@type": "Rating", "ratingValue": 5, "bestRating": 5},
+    "author": {"@type": "Person", "name": "Nicole F."},
+    "reviewBody": "Location is unbeatable — we walked to downtown Sarasota restaurants every night. The outdoor kitchen was perfect for grilling and the screened pool meant zero bugs. Truly a luxury experience.",
+    "datePublished": "2025-12-01"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "Review",
+    "itemReviewed": {
+      "@type": "VacationRental",
+      "name": "Sarasota Luxe",
+      "url": "https://seascape-vacations.com/properties/sarasota-luxe/"
+    },
+    "reviewRating": {"@type": "Rating", "ratingValue": 5, "bestRating": 5},
+    "author": {"@type": "Person", "name": "Mark S."},
+    "reviewBody": "The downtown walkability is what sold us and the house delivered on every front. Screened-in pool and hot tub area is beautiful. Outdoor kitchen was a nice touch. Short drive to Lido Key and Siesta Key beaches.",
+    "datePublished": "2026-01-28"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "Review",
+    "itemReviewed": {
+      "@type": "VacationRental",
+      "name": "Sarasota Luxe",
+      "url": "https://seascape-vacations.com/properties/sarasota-luxe/"
+    },
+    "reviewRating": {"@type": "Rating", "ratingValue": 4, "bestRating": 5},
+    "author": {"@type": "Person", "name": "Danielle C."},
+    "reviewBody": "Gorgeous home right in the heart of downtown Sarasota. The screened pool area is huge and the outdoor kitchen made cooking so enjoyable. 3 miles to Siesta Key beach which was an easy drive.",
+    "datePublished": "2025-11-10"
+  }
+]</script>
+<script type="application/ld+json">{
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     "itemListElement": [
@@ -224,7 +276,8 @@
             "@type": "PostalAddress",
             "addressLocality": "Bradenton",
             "addressRegion": "FL",
-            "addressCountry": "US"
+            "addressCountry": "US",
+            "postalCode": "34209"
         },
         "areaServed": [
             {"@type": "City", "name": "Anna Maria Island"},

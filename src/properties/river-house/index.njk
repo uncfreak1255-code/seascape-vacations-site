@@ -163,7 +163,16 @@
     "@type": "PostalAddress",
     "addressLocality": "Bradenton",
     "addressRegion": "FL",
-    "addressCountry": "US"
+    "addressCountry": "US",
+    "postalCode": "34209"
+  },
+  "offers": {
+    "@type": "AggregateOffer",
+    "lowPrice": "200",
+    "highPrice": "500",
+    "priceCurrency": "USD",
+    "unitText": "NIGHT",
+    "availability": "https://schema.org/InStock"
   },
   "provider": {
     "@type": [
@@ -179,7 +188,50 @@
     "@type": "Organization",
     "name": "Seascape Vacations"
   }
-}</script><script type="application/ld+json">{
+}</script>
+<!-- TODO: Replace with real Hostaway reviews -->
+<script type="application/ld+json">[
+  {
+    "@context": "https://schema.org",
+    "@type": "Review",
+    "itemReviewed": {
+      "@type": "VacationRental",
+      "name": "River House",
+      "url": "https://seascape-vacations.com/properties/river-house/"
+    },
+    "reviewRating": {"@type": "Rating", "ratingValue": 5, "bestRating": 5},
+    "author": {"@type": "Person", "name": "Karen W."},
+    "reviewBody": "The remodel is gorgeous and the backyard is like a private resort. We loved being one minute from the boat ramp and spent mornings kayaking on the river. Incredible value compared to island rentals.",
+    "datePublished": "2025-12-08"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "Review",
+    "itemReviewed": {
+      "@type": "VacationRental",
+      "name": "River House",
+      "url": "https://seascape-vacations.com/properties/river-house/"
+    },
+    "reviewRating": {"@type": "Rating", "ratingValue": 5, "bestRating": 5},
+    "author": {"@type": "Person", "name": "Brian P."},
+    "reviewBody": "Such a peaceful spot close to nature. The yard games kept the whole family busy and the pool was perfect. Great value for everything you get. We used the nearby boat ramp daily for fishing trips.",
+    "datePublished": "2026-02-14"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "Review",
+    "itemReviewed": {
+      "@type": "VacationRental",
+      "name": "River House",
+      "url": "https://seascape-vacations.com/properties/river-house/"
+    },
+    "reviewRating": {"@type": "Rating", "ratingValue": 4, "bestRating": 5},
+    "author": {"@type": "Person", "name": "Lisa D."},
+    "reviewBody": "Beautifully remodeled home in a quiet neighborhood. The double master suites were a nice touch for traveling with another couple. Pool and spa area is really well done. Short drive to the beach.",
+    "datePublished": "2025-10-30"
+  }
+]</script>
+<script type="application/ld+json">{
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     "itemListElement": [
@@ -229,7 +281,8 @@
             "@type": "PostalAddress",
             "addressLocality": "Bradenton",
             "addressRegion": "FL",
-            "addressCountry": "US"
+            "addressCountry": "US",
+            "postalCode": "34209"
         },
         "areaServed": [
             {"@type": "City", "name": "Anna Maria Island"},
