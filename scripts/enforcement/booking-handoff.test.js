@@ -13,6 +13,7 @@ test("conversion tracking supports post-guide booking handoff events", () => {
 
   for (const eventName of [
     "catalog_book_direct_click",
+    "catalog_collection_click",
     "catalog_view_details_click",
     "stay_view_property_click",
     "property_check_availability_click",
@@ -52,9 +53,61 @@ test("stay pages push into tracked property actions instead of generic browse es
   const staysTemplate = fs.readFileSync(path.join(projectRoot, "src", "stays", "stays.njk"), "utf8");
 
   assert.equal(staysTemplate.includes('data-track-event="stay_view_property_click"'), true);
+  assert.equal(staysTemplate.includes("seoPage.decisionHighlights"), true);
+  assert.equal(staysTemplate.includes("seoPage.relatedStaySlugs"), true);
+  assert.equal(staysTemplate.includes('href="#featured-homes"'), true);
   assert.equal(staysTemplate.includes("View All Properties"), false);
   assert.equal(staysTemplate.includes("Browse All Properties"), false);
   assert.equal(staysTemplate.includes("Ready to Book Your Getaway?"), false);
+});
+
+test("properties catalog routes into direct-booking stay collections instead of only raw property cards", () => {
+  const propertiesTemplate = fs.readFileSync(
+    path.join(projectRoot, "src", "properties", "index.njk"),
+    "utf8"
+  );
+
+  assert.equal(propertiesTemplate.includes("Start with the right booking path"), true);
+  assert.equal(propertiesTemplate.includes('data-track-event="catalog_collection_click"'), true);
+
+  for (const href of [
+    '/stays/book-direct-anna-maria-island/',
+    '/stays/anna-maria-island-vacation-rentals/',
+    '/stays/bradenton-vacation-rentals-near-beaches/',
+    '/stays/sarasota-vacation-rentals-with-pool/',
+    '/stays/last-minute-vacation-rentals-florida/'
+  ]) {
+    assert.equal(
+      propertiesTemplate.includes(`href="${href}"`),
+      true,
+      `properties catalog missing ${href}`
+    );
+  }
+});
+
+test("priority stay pages carry page-specific trip math and fallback routing metadata", () => {
+  const stayPages = JSON.parse(
+    fs.readFileSync(path.join(projectRoot, "src", "_data", "seoPages.json"), "utf8")
+  ).vacationer;
+
+  for (const slug of [
+    "book-direct-anna-maria-island",
+    "anna-maria-island-vacation-rentals",
+    "bradenton-vacation-rentals-near-beaches",
+    "sarasota-vacation-rentals-with-pool",
+    "last-minute-vacation-rentals-florida"
+  ]) {
+    const page = stayPages.find((entry) => entry.slug === slug);
+
+    assert.ok(page, `missing stay page ${slug}`);
+    assert.equal(Array.isArray(page.decisionHighlights), true, `${slug} missing decisionHighlights`);
+    assert.equal(page.decisionHighlights.length, 3, `${slug} should carry 3 decisionHighlights`);
+    assert.equal(typeof page.collectionCtaHref, "string", `${slug} missing collectionCtaHref`);
+    assert.equal(typeof page.collectionCtaLabel, "string", `${slug} missing collectionCtaLabel`);
+    assert.equal(typeof page.collectionCtaTitle, "string", `${slug} missing collectionCtaTitle`);
+    assert.equal(Array.isArray(page.relatedStaySlugs), true, `${slug} missing relatedStaySlugs`);
+    assert.equal(page.relatedStaySlugs.length >= 3, true, `${slug} needs at least 3 relatedStaySlugs`);
+  }
 });
 
 test("top property pages instrument both availability and booking-page handoff CTAs", () => {
