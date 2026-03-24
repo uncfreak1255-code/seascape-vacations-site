@@ -525,7 +525,7 @@ if (phase === "remediation") {
   expectContains("_site/robots.txt", "Google-Extended");
   expectContains("_site/llms.txt", "## Property Management");
   expectContains("_site/llms.txt", "## Comparison Guides");
-  expectNotContains("_site/robots.txt", "LLMs-txt:");
+  expectContains("_site/robots.txt", "LLMs-txt:");
 }
 
 console.log(`assert-build-output: ${phase} checks passed`);
