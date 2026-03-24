@@ -639,8 +639,8 @@ headExtra: |
     const emptyState = document.getElementById("catalog-empty");
     const heading = document.getElementById("catalog-heading");
     const copy = document.getElementById("catalog-copy");
-    const areaParams = new URLSearchParams(window.location.search);
-    const requestedArea = (areaParams.get("area") || "").toLowerCase();
+    const params = new URLSearchParams(window.location.search);
+    const requestedArea = (params.get("area") || "").toLowerCase();
     const areaFilterMap = {
       "anna-maria-island": "bradenton",
       "ami": "bradenton",
@@ -715,13 +715,34 @@ headExtra: |
       }
     }
 
+    function resolveInitialFilter() {
+      if (!requestedArea) {
+        return "all";
+      }
+
+      if (requestedArea.includes("anna-maria-island") || requestedArea.includes("ami")) {
+        return "bradenton";
+      }
+
+      if (requestedArea.includes("sarasota")) {
+        return "sarasota";
+      }
+
+      const exactMatch = buttons.find((button) => (button.dataset.filter || "").toLowerCase() === requestedArea);
+      return exactMatch ? requestedArea : "all";
+    }
+
     buttons.forEach((button) => {
       button.addEventListener("click", () => {
         applyFilter(button.dataset.filter || "all", { sync: true });
       });
     });
 
-    const initialFilter = areaFilterMap[requestedArea] || "all";
-    applyFilter(initialFilter, { sync: requestedArea.length > 0 });
+    const initialFilter = resolveInitialFilter();
+    applyFilter(initialFilter);
+
+    if (requestedArea.length > 0) {
+      syncAreaParam(initialFilter);
+    }
   })();
 </script>

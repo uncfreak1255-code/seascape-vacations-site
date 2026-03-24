@@ -10,7 +10,8 @@ Key facts:
 - Proximity: 10-15 minutes from Anna Maria Island beaches
 - Pricing: From $250/night, 10-15% less than Airbnb/VRBO when booking direct
 - Guest capacity: 8-16 per home
-- Contact: info@seascape-vacations.com | https://seascape-vacations.com/
+<<<<<<< HEAD
+- Contact: info@seascape-vacations.com
 
 ## Properties
 
@@ -41,7 +42,7 @@ Key facts:
 ## Comparison Guides
 
 - [Bradenton vs Sarasota](https://seascape-vacations.com/guides/bradenton-vs-sarasota/): Honest comparison of beaches, cost, dining, nightlife, and family-friendliness — Bradenton runs 25-35% cheaper with Anna Maria Island access
-- [Anna Maria Island vs Siesta Key](https://seascape-vacations.com/guides/anna-maria-island-vs-siesta-key): Side-by-side beach comparison covering sand quality, parking, dining, snorkeling, vacation rental prices, and which is better for families
+- [Anna Maria Island vs Siesta Key](https://seascape-vacations.com/guides/anna-maria-island-vs-siesta-key/): Side-by-side beach comparison covering sand quality, parking, dining, snorkeling, vacation rental prices, and which is better for families
 - [Best Time to Visit Anna Maria Island](https://seascape-vacations.com/guides/best-time-visit-anna-maria-island/): Seasonal weather, crowds, and pricing
 - [Flights to Anna Maria Island](https://seascape-vacations.com/guides/flights-to-anna-maria-island/): Airport options — TPA vs SRQ
 - [AMI Vacation Cost Guide 2026](https://seascape-vacations.com/guides/anna-maria-island-vacation-cost/): What to budget for an AMI trip
