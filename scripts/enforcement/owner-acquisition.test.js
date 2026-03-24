@@ -148,3 +148,30 @@ test("owner fee messaging stays tailored instead of reviving stale flat-fee clai
   assert.equal(JSON.stringify(selfManagePage).includes("28-32%"), false, "self-manage comparison page should not quote stale 28-32% management fees");
   assert.equal(JSON.stringify(switchFromSelfManagePage).includes("28-32%"), false, "switch-from-self-manage page should not quote stale 28-32% management fees");
 });
+
+test("owner hub restores the fee page and keeps pricing framed as tailored", () => {
+  const feePage = ownerData.find((entry) => entry.slug === "vacation-rental-management-fees-florida");
+
+  assert.ok(feePage, "owner fee page should exist");
+  assert.equal(
+    ownerLanding.includes('/property-management/vacation-rental-management-fees-florida/'),
+    true,
+    "owner hub should link to the fee page"
+  );
+  assert.ok(Array.isArray(feePage.proofStats) && feePage.proofStats.length >= 3, "fee page should expose proof stats");
+  assert.equal(
+    feePage.proofStats.some((stat) => stat.label === "Management pricing" && stat.value === "Tailored"),
+    true,
+    "fee page should explain pricing as tailored"
+  );
+  assert.equal(
+    feePage.geoIntro.includes("We do not use one flat management fee for every home."),
+    true,
+    "fee page GEO intro should explain the tailored pricing model"
+  );
+  assert.equal(
+    feePage.faqs.some((faq) => /fee|charge/i.test(faq.q)),
+    true,
+    "fee page should answer fee-comparison questions directly"
+  );
+});

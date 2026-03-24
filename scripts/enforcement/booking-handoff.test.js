@@ -37,6 +37,17 @@ test("properties catalog behaves like a buyer handoff surface, not a generic dir
   assert.equal(propertiesTemplate.includes("Explore Owner Services"), false);
 });
 
+test("properties catalog honors homepage area handoff params instead of always resetting to all stays", () => {
+  const propertiesTemplate = fs.readFileSync(
+    path.join(projectRoot, "src", "properties", "index.njk"),
+    "utf8"
+  );
+
+  assert.equal(propertiesTemplate.includes("new URLSearchParams(window.location.search)"), true);
+  assert.equal(propertiesTemplate.includes('"anna-maria-island": "bradenton"'), true);
+  assert.equal(propertiesTemplate.includes("history.replaceState"), true);
+});
+
 test("stay pages push into tracked property actions instead of generic browse escapes", () => {
   const staysTemplate = fs.readFileSync(path.join(projectRoot, "src", "stays", "stays.njk"), "utf8");
 

@@ -5,6 +5,7 @@ const assert = require("node:assert/strict");
 
 const projectRoot = path.resolve(__dirname, "..", "..");
 const homepage = fs.readFileSync(path.join(projectRoot, "src", "index.njk"), "utf8");
+const llms = fs.readFileSync(path.join(projectRoot, "src", "llms.txt"), "utf8");
 const robots = fs.readFileSync(path.join(projectRoot, "src", "robots.txt"), "utf8");
 const propertyPages = [
   "bradenton-pool-home",
@@ -93,4 +94,27 @@ test("guide pages only claim Sawyer authorship when the page visibly supports it
       `${guide.path} claims Sawyer Beck in JSON-LD without visible page-level authorship support`
     );
   }
+});
+
+test("llms.txt avoids known dead targets and stale duplicate guide references", () => {
+  for (const deadUrl of [
+    "https://seascape-vacations.com/contact/",
+    "https://seascape-vacations.com/reviews/",
+    "https://seascape-vacations.com/book-direct/",
+    "https://seascape-vacations.com/stays/book-direct-vs-airbnb-vrbo/",
+    "https://seascape-vacations.com/stays/vacation-rentals-bradenton-florida/"
+  ]) {
+    assert.equal(llms.includes(deadUrl), false, `llms.txt should not point at dead URL ${deadUrl}`);
+  }
+
+  assert.equal(
+    llms.includes("[Bradenton vs Sarasota Vacation Rental Comparison]"),
+    false,
+    "llms.txt should not duplicate the retired Bradenton vs Sarasota comparison label"
+  );
+  assert.equal(
+    llms.includes("[Bradenton vs Sarasota](https://seascape-vacations.com/guides/bradenton-vs-sarasota):"),
+    false,
+    "llms.txt should use the canonical slash route for Bradenton vs Sarasota"
+  );
 });
