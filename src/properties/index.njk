@@ -637,6 +637,8 @@ headExtra: |
     const buttons = Array.from(document.querySelectorAll(".catalog-filter"));
     const cards = Array.from(document.querySelectorAll(".catalog-card"));
     const emptyState = document.getElementById("catalog-empty");
+    const params = new URLSearchParams(window.location.search);
+    const requestedArea = (params.get("area") || "").toLowerCase();
 
     function applyFilter(filter) {
       let visibleCount = 0;
@@ -655,14 +657,40 @@ headExtra: |
       }
     }
 
+    function setActiveButton(filter) {
+      buttons.forEach((candidate) => {
+        candidate.classList.toggle("active", (candidate.dataset.filter || "all") === filter);
+      });
+    }
+
+    function resolveInitialFilter() {
+      if (!requestedArea) {
+        return "all";
+      }
+
+      // Homepage "Anna Maria Area" inventory lives in Bradenton-adjacent homes.
+      if (requestedArea.includes("anna-maria-island") || requestedArea.includes("ami")) {
+        return "bradenton";
+      }
+
+      if (requestedArea.includes("sarasota")) {
+        return "sarasota";
+      }
+
+      const exactMatch = buttons.find((button) => (button.dataset.filter || "").toLowerCase() === requestedArea);
+      return exactMatch ? requestedArea : "all";
+    }
+
     buttons.forEach((button) => {
       button.addEventListener("click", () => {
-        buttons.forEach((candidate) => candidate.classList.remove("active"));
-        button.classList.add("active");
-        applyFilter(button.dataset.filter || "all");
+        const filter = button.dataset.filter || "all";
+        setActiveButton(filter);
+        applyFilter(filter);
       });
     });
 
-    applyFilter("all");
+    const initialFilter = resolveInitialFilter();
+    setActiveButton(initialFilter);
+    applyFilter(initialFilter);
   })();
 </script>
