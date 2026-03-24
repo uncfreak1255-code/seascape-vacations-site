@@ -45,8 +45,5 @@ Allow: /
 User-agent: Timespider
 Allow: /
 
-# LLMs.txt
-LLMs-txt: https://seascape-vacations.com/llms.txt
-
 # Sitemap location
 Sitemap: https://seascape-vacations.com/sitemap.xml
