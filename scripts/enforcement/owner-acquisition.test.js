@@ -175,3 +175,35 @@ test("owner hub restores the fee page and keeps pricing framed as tailored", () 
     "fee page should answer fee-comparison questions directly"
   );
 });
+
+test("owner fee cluster pages stay in teardown mode instead of reverting to brochure copy", () => {
+  const feePage = ownerData.find((entry) => entry.slug === "vacation-rental-management-fees-florida");
+  const selfManagePage = ownerData.find((entry) => entry.slug === "self-manage-vs-property-management-florida");
+  const amiPage = ownerData.find((entry) => entry.slug === "vacation-rental-management-anna-maria-island");
+  const bradentonPage = ownerData.find((entry) => entry.slug === "vacation-rental-management-bradenton");
+
+  for (const [slug, page] of Object.entries({
+    "vacation-rental-management-fees-florida": feePage,
+    "self-manage-vs-property-management-florida": selfManagePage,
+    "vacation-rental-management-anna-maria-island": amiPage,
+    "vacation-rental-management-bradenton": bradentonPage
+  })) {
+    assert.ok(page, `${slug} should exist`);
+  }
+
+  assert.equal(selfManagePage.primaryCta, "Get Your Revenue Teardown", "self-manage page should use the teardown CTA");
+  assert.ok(Array.isArray(selfManagePage.proofStats) && selfManagePage.proofStats.length >= 4, "self-manage page should expose owner proof stats");
+  assert.ok(selfManagePage.marketReality && /fee|self-manag/i.test(JSON.stringify(selfManagePage.marketReality)), "self-manage page should frame the cost of staying self-managed");
+  assert.ok(Array.isArray(selfManagePage.revenueLevers) && selfManagePage.revenueLevers.length >= 3, "self-manage page should explain what actually changes owner income");
+  assert.equal(selfManagePage.intro.includes("Self-management saves fees but often costs more in lost revenue and time."), false, "self-manage page should not keep the old generic intro");
+  assert.equal(JSON.stringify(selfManagePage).includes("Professional property management from Seascape Vacations handles the operational complexity"), false, "self-manage page should not keep generic brochure GEO copy");
+
+  assert.equal(JSON.stringify(amiPage).includes("dynamic pricing algorithms, professional photography, and multi-channel distribution"), false, "AMI page should not use generic operator filler");
+  assert.equal(JSON.stringify(amiPage).includes("24/7 guest support"), false, "AMI page should not lead with commodity management bullet points");
+  assert.equal(JSON.stringify(bradentonPage).includes("Airbnb, VRBO, and direct booking integration"), false, "Bradenton page should not use generic channel-stack bullets");
+  assert.equal(JSON.stringify(bradentonPage).includes("Property managers like Seascape Vacations typically increase occupancy by 15-25%"), false, "Bradenton page should not make canned occupancy claims");
+  assert.equal(amiPage.primaryCta, "Get Your Revenue Teardown", "AMI page should keep the teardown CTA");
+  assert.equal(bradentonPage.primaryCta, "Get Your Revenue Teardown", "Bradenton page should keep the teardown CTA");
+  assert.ok(/ota|fee|rate|owner|revenue|direct/i.test(amiPage.geoIntro), "AMI GEO intro should sound like an owner economics page");
+  assert.ok(/ota|fee|rate|owner|revenue|direct/i.test(bradentonPage.geoIntro), "Bradenton GEO intro should sound like an owner economics page");
+});
