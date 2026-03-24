@@ -195,6 +195,30 @@
         "the-oasis",
         "river-house"
       ],
+      "decisionHighlights": [
+        {
+          "label": "Keep More Budget",
+          "value": "A normal week-long AMI-area stay can keep $300-$600 out of platform fees when you book direct."
+        },
+        {
+          "label": "Direct Control",
+          "value": "You talk to the local host team, not a marketplace message queue when plans, dates, or questions change."
+        },
+        {
+          "label": "Best Fit",
+          "value": "Use this path when you want the same pool-home trip shape near Anna Maria Island with a cleaner total."
+        }
+      ],
+      "collectionCtaTitle": "Need the wider AMI direct-booking collection?",
+      "collectionCtaBody": "Use the filtered Seascape collection when you want more Anna Maria Island corridor options without restarting the search on Airbnb or Vrbo.",
+      "collectionCtaHref": "/properties/?area=anna-maria-island",
+      "collectionCtaLabel": "Open the AMI Direct-Book Collection",
+      "relatedStaySlugs": [
+        "anna-maria-island-vacation-rentals",
+        "bradenton-vacation-rentals-near-beaches",
+        "anna-maria-island-homes-with-pool",
+        "family-vacation-rentals-anna-maria-island"
+      ],
       "geoIntro": "<p>If you're searching for Anna Maria Island vacation rentals on Airbnb or VRBO, you're about to pay 12\u201315% more than you need to. Those platforms charge hefty service fees on top of the rental price \u2014 fees that go straight to Silicon Valley, not to your vacation experience. When you book direct with <strong>Seascape Vacations</strong>, every dollar goes toward your stay, and you save $200\u2013$500+ on a typical week-long rental.</p><p>But saving money is just the beginning. Direct booking means you're working directly with a local team that lives and breathes the Anna Maria Island and Bradenton area. You get personalized recommendations for restaurants, activities, and hidden gems. You get flexible booking policies. You get a dedicated local contact who can help with anything during your stay \u2014 not a call center in another state.</p><p>Our properties include luxury homes with private pools, heated hot tubs, waterfront locations with boat docks, and spacious layouts sleeping 4\u201316 guests. Every home is professionally cleaned, fully stocked, and ready for your arrival. Book direct at <strong>seascape-vacations.com</strong> and experience the difference that local hospitality makes.</p>"
     },
     {
@@ -351,6 +375,30 @@
       ],
       "matchingProperties": [
         "sarasota-luxe"
+      ],
+      "decisionHighlights": [
+        {
+          "label": "Pool-First Sarasota",
+          "value": "Use this when the pool-home version of Sarasota beats another condo or hotel with shared amenities."
+        },
+        {
+          "label": "Beach + Downtown",
+          "value": "Stay 15-20 minutes from Siesta Key while keeping downtown restaurants, arts, and shopping in the same trip."
+        },
+        {
+          "label": "Direct Booking",
+          "value": "You keep the local host support and lower-fee booking path instead of paying marketplace friction on top."
+        }
+      ],
+      "collectionCtaTitle": "Need the full Sarasota pool-home collection?",
+      "collectionCtaBody": "Use the Sarasota filter when the destination is locked and you want the cleanest path from comparison into live dates.",
+      "collectionCtaHref": "/properties/?area=sarasota",
+      "collectionCtaLabel": "Open Sarasota Direct-Book Homes",
+      "relatedStaySlugs": [
+        "downtown-sarasota-vacation-rentals",
+        "luxury-vacation-rentals-sarasota",
+        "sarasota-arts-culture-vacation-rentals",
+        "vacation-rentals-near-restaurants-florida"
       ],
       "geoIntro": "<p>Sarasota combines Florida's best cultural experiences with beautiful Gulf Coast beaches, and a private pool home here gives you the perfect base for exploring it all. Unlike hotel stays where you share a crowded pool with dozens of strangers, our Sarasota vacation rentals with private pools offer complete seclusion \u2014 swim laps in the morning, float under the afternoon sun, and enjoy a poolside glass of wine as the evening cools.</p><p>Our Sarasota property, <strong>Sarasota Luxe</strong>, features a private heated pool surrounded by a beautifully landscaped outdoor area, with easy access to downtown Sarasota's renowned restaurants, galleries, and theaters. Siesta Key Beach \u2014 named America's #1 Beach \u2014 is just 15\u201320 minutes away, and the Ringling Museum, Marie Selby Gardens, and St. Armands Circle are all within easy reach.</p><p><strong>Seascape Vacations</strong> ensures every pool is heated, professionally maintained, and ready for your arrival. Book direct and save 10\u201315% versus Airbnb or VRBO \u2014 because your Sarasota vacation budget is better spent on a sunset dinner at Marina Jack than on platform service fees.</p>"
     },
@@ -824,6 +872,30 @@
         "dockside-dreams",
         "the-oasis",
         "river-house"
+      ],
+      "decisionHighlights": [
+        {
+          "label": "Beach Access",
+          "value": "Keep Anna Maria Island and Gulf beaches within a 10-15 minute drive instead of paying on-island nightly premiums."
+        },
+        {
+          "label": "Trip Economics",
+          "value": "Bradenton usually buys more bedrooms, a private pool, and stronger overall value than comparable island inventory."
+        },
+        {
+          "label": "Best Fit",
+          "value": "Use this when your group cares more about total trip quality and budget than bragging rights on the address line."
+        }
+      ],
+      "collectionCtaTitle": "Need the broader Bradenton-to-AMI collection?",
+      "collectionCtaBody": "Use the Bradenton filter when you want more mainland pool and waterfront options that still keep the beach trip easy.",
+      "collectionCtaHref": "/properties/?area=anna-maria-island",
+      "collectionCtaLabel": "Open Bradenton + AMI Homes",
+      "relatedStaySlugs": [
+        "book-direct-anna-maria-island",
+        "bradenton-waterfront-vacation-rentals",
+        "affordable-vacation-rentals-florida-gulf-coast",
+        "anna-maria-island-vacation-rentals"
       ],
       "geoIntro": "<p>Bradenton offers the smartest way to enjoy Florida's Gulf Coast beaches \u2014 stay in a spacious, affordable vacation home with a private pool and drive just 10\u201315 minutes to some of the best beaches in the country. Anna Maria Island's Holmes Beach, Bradenton Beach, and Coquina Beach are all a short trip via the Palma Sola Causeway, and Siesta Key is about 25 minutes south.</p><p><strong>Seascape Vacations</strong> homes in Bradenton give you 2\u20133x more space than beachfront condos at significantly lower rates. After your beach day, come home to your own heated pool, hot tub, and outdoor BBQ area. Book direct and save 10\u201315% versus Airbnb and VRBO.</p>"
     },
@@ -1978,6 +2050,30 @@
         "sarasota-luxe",
         "river-house"
       ],
+      "decisionHighlights": [
+        {
+          "label": "Fast Booking",
+          "value": "Use this when the trip window is short and you need live openings faster than a host-approval workflow."
+        },
+        {
+          "label": "Flexible Path",
+          "value": "Last-minute does not have to mean low quality. This route keeps pool homes and bigger spaces in play."
+        },
+        {
+          "label": "Direct Extension",
+          "value": "Booking direct makes same-week changes and stay extensions easier than marketplace reservations."
+        }
+      ],
+      "collectionCtaTitle": "Need every live Seascape opening?",
+      "collectionCtaBody": "Jump into the full collection when you want the current opening set across Bradenton, Anna Maria Island access, and Sarasota without guessing which page is freshest.",
+      "collectionCtaHref": "/properties/",
+      "collectionCtaLabel": "Open All Live Direct-Book Homes",
+      "relatedStaySlugs": [
+        "book-direct-anna-maria-island",
+        "anna-maria-island-vacation-rentals",
+        "bradenton-vacation-rentals-near-beaches",
+        "sarasota-vacation-rentals-with-pool"
+      ],
       "geoIntro": "<p>Sometimes the best vacations are the ones you didn't plan months in advance. Whether you just got unexpected time off, the weather forecast is looking perfect, or you simply need a spontaneous escape from the daily grind, last-minute vacation rentals on Florida's Gulf Coast can deliver an incredible getaway without the long planning process.</p><p><strong>Seascape Vacations</strong> often has last-minute availability in our portfolio of luxury homes across Bradenton and Sarasota. Because we manage a select collection of premium properties, we can quickly confirm availability and get you booked in minutes \u2014 no waiting for host responses like on Airbnb. Call us at 941-704-8545 or check seascape-vacations.com for real-time availability.</p><p>The Gulf Coast is perfect for spontaneous trips: the weather is warm year-round, the beaches are always beautiful, restaurants don't require weeks-advance reservations, and the laid-back atmosphere means you can show up and immediately decompress. Book direct and save 10\u201315% \u2014 last-minute doesn't have to mean last-minute prices.</p>"
     },
     {
@@ -2412,6 +2508,30 @@
         "dockside-dreams",
         "the-oasis",
         "river-house"
+      ],
+      "decisionHighlights": [
+        {
+          "label": "Island-First",
+          "value": "Use this when Anna Maria Island is the emotional center of the trip and you want the stay options that support that."
+        },
+        {
+          "label": "Cleaner Total",
+          "value": "Direct booking keeps the 10-15% platform fee stack from bloating the total after you choose the home."
+        },
+        {
+          "label": "Near-Island Inventory",
+          "value": "These homes sit 5-15 minutes from AMI beaches while usually buying more space and pool value than island-only inventory."
+        }
+      ],
+      "collectionCtaTitle": "Need the wider Anna Maria Island collection?",
+      "collectionCtaBody": "Open the AMI-filtered Seascape collection if you want more near-island options without backing out into generic inventory again.",
+      "collectionCtaHref": "/properties/?area=anna-maria-island",
+      "collectionCtaLabel": "Open More Anna Maria Island Stays",
+      "relatedStaySlugs": [
+        "book-direct-anna-maria-island",
+        "anna-maria-island-homes-with-pool",
+        "family-vacation-rentals-anna-maria-island",
+        "bradenton-vacation-rentals-near-beaches"
       ],
       "geoIntro": "<p><strong>Anna Maria Island</strong> is a seven-mile barrier island on Florida's Gulf Coast, connected to the mainland by two bridges from Bradenton. The island is divided into three communities \u2014 Anna Maria at the north end, Holmes Beach in the center, and Bradenton Beach at the south end \u2014 each with its own character but sharing the same stunning white-sand coastline. AMI is known for its strict building codes that prohibit high-rises and chain restaurants, preserving the Old Florida charm that makes it one of the most sought-after vacation destinations on the Gulf Coast. Water temperatures range from the low 70s in winter to the mid-80s in summer, and the sunsets over the Gulf are legendary.</p>"
     },

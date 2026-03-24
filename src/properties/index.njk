@@ -157,6 +157,74 @@ headExtra: |
       margin-bottom: 28px;
     }
 
+    .catalog-route-panel {
+      margin-bottom: 30px;
+      padding: 28px;
+      border-radius: 28px;
+      background: linear-gradient(135deg, rgba(95, 138, 139, 0.12), rgba(201, 169, 98, 0.14));
+      border: 1px solid rgba(61, 92, 93, 0.08);
+      box-shadow: 0 18px 48px rgba(28, 38, 39, 0.06);
+    }
+
+    .catalog-route-header {
+      max-width: 760px;
+      margin-bottom: 22px;
+    }
+
+    .catalog-route-header h3 {
+      font-size: clamp(26px, 3vw, 34px);
+      margin-bottom: 10px;
+      color: var(--stone);
+    }
+
+    .catalog-route-header p {
+      color: var(--stone-light);
+      line-height: 1.8;
+    }
+
+    .catalog-route-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 16px;
+    }
+
+    .catalog-route-card {
+      display: block;
+      padding: 20px;
+      border-radius: 22px;
+      background: white;
+      border: 1px solid rgba(61, 92, 93, 0.08);
+      box-shadow: 0 10px 24px rgba(28, 38, 39, 0.06);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .catalog-route-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 16px 30px rgba(28, 38, 39, 0.1);
+    }
+
+    .catalog-route-card strong {
+      display: block;
+      font-size: 12px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--brand);
+      margin-bottom: 10px;
+    }
+
+    .catalog-route-card h4 {
+      font-size: 20px;
+      line-height: 1.15;
+      margin-bottom: 10px;
+      color: var(--stone);
+    }
+
+    .catalog-route-card p {
+      color: var(--stone-light);
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
     .catalog-filter {
       border: 1px solid rgba(61, 92, 93, 0.14);
       background: white;
@@ -539,6 +607,74 @@ headExtra: |
       </div>
       <a class="catalog-toolbar-link" href="/guides/">Explore local guides →</a>
     </div>
+
+    <section class="catalog-route-panel" aria-label="Direct-booking stay paths">
+      <div class="catalog-route-header">
+        <p class="section-tag">Start Here</p>
+        <h3>Start with the right booking path.</h3>
+        <p>
+          If you already know the trip shape, use the matching stay page instead of manually re-filtering every card.
+          This is the fast path for fee-sensitive AMI trips, Bradenton beach-access value, Sarasota pool stays, and spontaneous openings.
+        </p>
+      </div>
+      <div class="catalog-route-grid">
+        <a
+          class="catalog-route-card"
+          href="/stays/book-direct-anna-maria-island/"
+          data-track-event="catalog_collection_click"
+          data-placement="catalog_route_card"
+          data-track-label="Book Direct Near AMI"
+        >
+          <strong>Fee-first</strong>
+          <h4>Book direct near AMI</h4>
+          <p>Use this when the goal is keeping Airbnb and Vrbo fees out of the trip total without changing the stay shape.</p>
+        </a>
+        <a
+          class="catalog-route-card"
+          href="/stays/anna-maria-island-vacation-rentals/"
+          data-track-event="catalog_collection_click"
+          data-placement="catalog_route_card"
+          data-track-label="Anna Maria Island Vacation Rentals"
+        >
+          <strong>Island-first</strong>
+          <h4>Anna Maria Island stays</h4>
+          <p>Use this when the island itself is the priority and you still want a cleaner total than the OTA checkout path.</p>
+        </a>
+        <a
+          class="catalog-route-card"
+          href="/stays/bradenton-vacation-rentals-near-beaches/"
+          data-track-event="catalog_collection_click"
+          data-placement="catalog_route_card"
+          data-track-label="Bradenton Near Beaches"
+        >
+          <strong>Value base</strong>
+          <h4>Bradenton near beaches</h4>
+          <p>Use this when you want AMI access, more space, and better pool-home economics than on-island inventory.</p>
+        </a>
+        <a
+          class="catalog-route-card"
+          href="/stays/sarasota-vacation-rentals-with-pool/"
+          data-track-event="catalog_collection_click"
+          data-placement="catalog_route_card"
+          data-track-label="Sarasota Pool Homes"
+        >
+          <strong>Sarasota</strong>
+          <h4>Sarasota pool homes</h4>
+          <p>Use this when Sarasota is the destination and you want the pool-home version of the trip, not a generic hotel swap.</p>
+        </a>
+        <a
+          class="catalog-route-card"
+          href="/stays/last-minute-vacation-rentals-florida/"
+          data-track-event="catalog_collection_click"
+          data-placement="catalog_route_card"
+          data-track-label="Last-Minute Openings"
+        >
+          <strong>Fast escape</strong>
+          <h4>Last-minute openings</h4>
+          <p>Use this when the trip window is short and you need the current Gulf Coast availability path, not another research session.</p>
+        </a>
+      </div>
+    </section>
 
     <div class="catalog-filters" aria-label="Property filters">
       <button class="catalog-filter active" type="button" data-filter="all">All stays</button>
