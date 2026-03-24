@@ -2,8 +2,8 @@
 layout: layouts/base.njk
 permalink: "/properties/"
 templateEngineOverride: "njk"
-pageTitle: "Vacation Rentals | Seascape Vacations"
-pageDescription: "Browse luxury vacation rentals in Bradenton and Sarasota with direct booking links, premium amenities, and dedicated property pages."
+pageTitle: "Direct Booking Vacation Rentals Near Anna Maria Island & Sarasota | Seascape Vacations"
+pageDescription: "Browse direct-booking vacation rentals near Anna Maria Island and in Sarasota with private pools, local support, and fast paths into live availability."
 pageImage: "https://seascape-vacations.com/images/seascape-og-default.jpg"
 pageUpdated: "2026-03-17T17:45:00-04:00"
 navButtonLabel: "Book Direct"
@@ -532,8 +532,8 @@ headExtra: |
     <div class="catalog-toolbar">
       <div class="catalog-toolbar-copy">
         <p class="section-tag">Our Collection</p>
-        <h2>Pick the right home fast, then move straight into direct dates.</h2>
-        <p>
+        <h2 id="catalog-heading">Pick the right home fast, then move straight into direct dates.</h2>
+        <p id="catalog-copy">
           Use the filters to cut to the right fit, then choose between the fast path into direct booking or the property page if you need one more look before committing.
         </p>
       </div>
@@ -546,7 +546,7 @@ headExtra: |
       <button class="catalog-filter" type="button" data-filter="pool">Private Pool</button>
       <button class="catalog-filter" type="button" data-filter="hot-tub">Hot Tub</button>
       <button class="catalog-filter" type="button" data-filter="pet-friendly">Pet Friendly</button>
-      <button class="catalog-filter" type="button" data-filter="bradenton">Bradenton</button>
+      <button class="catalog-filter" type="button" data-filter="bradenton">Near AMI</button>
       <button class="catalog-filter" type="button" data-filter="sarasota">Sarasota</button>
     </div>
 
@@ -637,10 +637,61 @@ headExtra: |
     const buttons = Array.from(document.querySelectorAll(".catalog-filter"));
     const cards = Array.from(document.querySelectorAll(".catalog-card"));
     const emptyState = document.getElementById("catalog-empty");
+    const heading = document.getElementById("catalog-heading");
+    const copy = document.getElementById("catalog-copy");
     const params = new URLSearchParams(window.location.search);
     const requestedArea = (params.get("area") || "").toLowerCase();
+    const areaFilterMap = {
+      "anna-maria-island": "bradenton",
+      "ami": "bradenton",
+      "bradenton": "bradenton",
+      "sarasota": "sarasota"
+    };
+    const filterUrlMap = {
+      bradenton: "anna-maria-island",
+      sarasota: "sarasota"
+    };
+    const filterCopy = {
+      all: {
+        heading: "Pick the right home fast, then move straight into direct dates.",
+        body: "Use the filters to cut to the right fit, then choose between the fast path into direct booking or the property page if you need one more look before committing."
+      },
+      bradenton: {
+        heading: "Near Anna Maria Island stays with the fastest path into direct dates.",
+        body: "Use this when you want Bradenton-based homes that still keep Anna Maria Island, the beaches, and group-trip logistics easy."
+      },
+      sarasota: {
+        heading: "Sarasota stays for travelers who want a cleaner downtown-to-coast setup.",
+        body: "Use this when Sarasota is the real destination and you want to move straight from comparison into live availability."
+      }
+    };
 
-    function applyFilter(filter) {
+    function setActiveButton(filter) {
+      buttons.forEach((button) => {
+        button.classList.toggle("active", (button.dataset.filter || "all") === filter);
+      });
+    }
+
+    function updateCopy(filter) {
+      const content = filterCopy[filter] || filterCopy.all;
+      if (heading) heading.textContent = content.heading;
+      if (copy) copy.textContent = content.body;
+    }
+
+    function syncAreaParam(filter) {
+      const url = new URL(window.location.href);
+      const nextArea = filterUrlMap[filter];
+
+      if (nextArea) {
+        url.searchParams.set("area", nextArea);
+      } else {
+        url.searchParams.delete("area");
+      }
+
+      history.replaceState({}, "", `${url.pathname}${url.search}`);
+    }
+
+    function applyFilter(filter, { sync = false } = {}) {
       let visibleCount = 0;
 
       cards.forEach((card) => {
@@ -655,12 +706,13 @@ headExtra: |
       if (emptyState) {
         emptyState.classList.toggle("visible", visibleCount === 0);
       }
-    }
 
-    function setActiveButton(filter) {
-      buttons.forEach((candidate) => {
-        candidate.classList.toggle("active", (candidate.dataset.filter || "all") === filter);
-      });
+      setActiveButton(filter);
+      updateCopy(filter);
+
+      if (sync) {
+        syncAreaParam(filter);
+      }
     }
 
     function resolveInitialFilter() {
@@ -668,7 +720,6 @@ headExtra: |
         return "all";
       }
 
-      // Homepage "Anna Maria Area" inventory lives in Bradenton-adjacent homes.
       if (requestedArea.includes("anna-maria-island") || requestedArea.includes("ami")) {
         return "bradenton";
       }
@@ -683,14 +734,15 @@ headExtra: |
 
     buttons.forEach((button) => {
       button.addEventListener("click", () => {
-        const filter = button.dataset.filter || "all";
-        setActiveButton(filter);
-        applyFilter(filter);
+        applyFilter(button.dataset.filter || "all", { sync: true });
       });
     });
 
     const initialFilter = resolveInitialFilter();
-    setActiveButton(initialFilter);
     applyFilter(initialFilter);
+
+    if (requestedArea.length > 0) {
+      syncAreaParam(initialFilter);
+    }
   })();
 </script>

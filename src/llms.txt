@@ -10,6 +10,7 @@ Key facts:
 - Proximity: 10-15 minutes from Anna Maria Island beaches
 - Pricing: From $250/night, 10-15% less than Airbnb/VRBO when booking direct
 - Guest capacity: 8-16 per home
+<<<<<<< HEAD
 - Contact: info@seascape-vacations.com
 
 ## Properties
@@ -22,8 +23,8 @@ Key facts:
 
 ## Book Direct
 
-- [Why Book Direct](https://seascape-vacations.com/book-direct/): Save 10-15% vs Airbnb/VRBO — no platform fees, same homes, same local team
-- [Book Direct vs Airbnb vs VRBO](https://seascape-vacations.com/stays/book-direct-vs-airbnb-vrbo/): Detailed comparison of booking channels
+- [Why Book Direct](https://seascape-vacations.com/guides/booking-direct-vacation-rentals/): Save 10-15% versus Airbnb or VRBO by booking the same homes directly with the local team
+- [Book Direct Vacation Rentals Near Anna Maria Island](https://seascape-vacations.com/stays/book-direct-anna-maria-island/): Pool homes with lower-fee direct-booking paths instead of marketplace checkout
 
 ## Property Management
 
@@ -49,7 +50,7 @@ Key facts:
 ## Vacation Rental Search Pages
 
 - [Anna Maria Island Vacation Rentals](https://seascape-vacations.com/stays/anna-maria-island-vacation-rentals/): Pool homes near AMI from $250/night
-- [Bradenton Vacation Rentals](https://seascape-vacations.com/stays/vacation-rentals-bradenton-florida/): Vacation homes in Bradenton FL
+- [Bradenton Vacation Rentals Near Beaches](https://seascape-vacations.com/stays/bradenton-vacation-rentals-near-beaches/): Bradenton homes that keep Anna Maria Island and the beaches within an easy drive
 - [Sarasota Vacation Rentals with Pool](https://seascape-vacations.com/stays/sarasota-vacation-rentals-with-pool/): Heated pool homes in Sarasota
 - [Family Vacation Rentals AMI](https://seascape-vacations.com/stays/family-vacation-rentals-anna-maria-island/): Family-friendly homes near Anna Maria Island
 - [Affordable Gulf Coast Rentals](https://seascape-vacations.com/stays/affordable-vacation-rentals-florida-gulf-coast/): Budget-friendly pool homes from $250/night
