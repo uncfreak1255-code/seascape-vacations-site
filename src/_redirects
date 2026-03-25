@@ -350,6 +350,7 @@
 
 # High-impression 404 — weather page exists at /guides/ path
 /anna-maria-island-weather.html   /guides/anna-maria-island-weather/  301
+/guides/anna-maria-island-weather.html  /guides/anna-maria-island-weather/  301
 
 # --- Nested guide URL 404s (GSC cleanup, 2026-03-09) ---
 # Old platform generated cross-linked guide subpages that don't exist
@@ -370,10 +371,12 @@
 /guides/*/properties/index.html   /properties/   301
 
 # Duplicate guide consolidation — retired duplicate guide directories → canonical paths
+/guides/best-time-visit-anna-maria-island.html  /guides/best-time-visit-anna-maria-island/  301
 /guides/anna-maria-island-vacation-cost-guide-2026  /guides/anna-maria-island-vacation-cost/  301
 /guides/anna-maria-island-vacation-cost-guide-2026/  /guides/anna-maria-island-vacation-cost/  301
 /guides/best-time-to-visit-anna-maria-island  /guides/best-time-visit-anna-maria-island/  301
 /guides/best-time-to-visit-anna-maria-island/  /guides/best-time-visit-anna-maria-island/  301
+/guides/srq-airport-to-anna-maria-island.html  /guides/srq-airport-to-anna-maria-island/  301
 /guides/bradenton-vs-sarasota-vacation-rental-comparison  /guides/bradenton-vs-sarasota/  301
 /guides/bradenton-vs-sarasota-vacation-rental-comparison/  /guides/bradenton-vs-sarasota/  301
 
