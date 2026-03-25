@@ -55,3 +55,45 @@ test("highest-priority weather redirects point to the canonical slash route", ()
     assert.equal(redirects.includes(redirectRule), true, `Expected redirects to include ${redirectRule}`);
   }
 });
+
+test("priority canonical guide families 301 their .html aliases to the slash route", () => {
+  const redirects = fs.readFileSync(path.join(sourceRoot, "_redirects"), "utf8");
+
+  for (const redirectRule of [
+    "/guides/best-time-visit-anna-maria-island.html  /guides/best-time-visit-anna-maria-island/  301",
+    "/guides/srq-airport-to-anna-maria-island.html  /guides/srq-airport-to-anna-maria-island/  301",
+    "/guides/anna-maria-island-weather.html  /guides/anna-maria-island-weather/  301"
+  ]) {
+    assert.equal(redirects.includes(redirectRule), true, `Expected redirects to include ${redirectRule}`);
+  }
+});
+
+test("priority canonical guide families keep schema and breadcrumb copy aligned with route intent", () => {
+  const bestTimeGuide = fs.readFileSync(path.join(sourceRoot, "guides", "best-time-visit-anna-maria-island.html"), "utf8");
+  const srqGuide = fs.readFileSync(path.join(sourceRoot, "guides", "srq-airport-to-anna-maria-island.html"), "utf8");
+  const weatherGuide = fs.readFileSync(path.join(sourceRoot, "guides", "anna-maria-island-weather.html"), "utf8");
+
+  assert.equal(
+    bestTimeGuide.includes('"name":"Best Time to Visit Anna Maria Island","item":"https://seascape-vacations.com/guides/best-time-visit-anna-maria-island/"'),
+    true
+  );
+  assert.equal(bestTimeGuide.includes(">Best Time to Visit Anna Maria Island</div>"), true);
+
+  assert.equal(
+    srqGuide.includes('"headline": "SRQ Airport to Anna Maria Island: 30-Min Route & Tips"'),
+    true
+  );
+  assert.equal(
+    srqGuide.includes('"name": "SRQ Airport to Anna Maria Island", "item": "https://seascape-vacations.com/guides/srq-airport-to-anna-maria-island/"'),
+    true
+  );
+  assert.equal(srqGuide.includes("Anna Maria Island Beaches"), false);
+  assert.equal(srqGuide.includes("What are the best beaches on Anna Maria Island?"), false);
+
+  assert.equal(
+    weatherGuide.includes('"name": "Anna Maria Island Weather", "item": "https://seascape-vacations.com/guides/anna-maria-island-weather/"'),
+    true
+  );
+  assert.equal(weatherGuide.includes(">Anna Maria Island Weather</li>"), true);
+  assert.equal(weatherGuide.includes("AMI Weather"), false);
+});
