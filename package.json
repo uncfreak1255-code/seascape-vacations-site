@@ -19,6 +19,8 @@
     "verify:recovery:guides": "node scripts/recovery/assert-build-output.js guides",
     "verify:recovery:remediation": "node scripts/recovery/assert-build-output.js remediation",
     "verify:recovery:live": "node scripts/recovery/assert-live-smoke.js https://seascape-vacations.com",
+    "verify:links": "node scripts/enforcement/validate-internal-links.js",
+    "verify:jsonld": "node scripts/enforcement/validate-jsonld.js",
     "verify:release": "node scripts/enforcement/verify-release.js"
   },
   "devDependencies": {
