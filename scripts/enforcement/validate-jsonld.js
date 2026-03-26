@@ -88,41 +88,59 @@ function getSchemaType(obj) {
   return [String(raw)];
 }
 
-function validateSchema(obj, errors, filePath) {
+// Properties whose values are compact references, not full entities.
+// Objects under these keys get recursed but skip required-field checks.
+const REFERENCE_PROPERTIES = new Set([
+  "itemReviewed", "author", "provider", "brand", "publisher",
+  "creator", "contributor", "editor", "funder", "sponsor",
+  "reviewRating", "aggregateRating"
+]);
+
+function validateSchema(obj, errors, filePath, visited, parentKey) {
+  if (!obj || typeof obj !== "object") return;
+  if (!visited) visited = new Set();
+
+  // Guard against circular references
+  if (visited.has(obj)) return;
+  visited.add(obj);
+
+  const isReference = REFERENCE_PROPERTIES.has(parentKey);
+
+  // Validate @type rules on this node (skip for reference objects)
   const types = getSchemaType(obj);
-  if (!types) return;
+  if (types && !isReference) {
+    for (const type of types) {
+      const rule = SCHEMA_RULES[type];
+      if (!rule) continue;
 
-  for (const type of types) {
-    const rule = SCHEMA_RULES[type];
-    if (!rule) continue;
-
-    for (const field of rule.required) {
-      if (obj[field] === undefined || obj[field] === null || obj[field] === "") {
-        errors.push({
-          file: filePath,
-          type: rule.label,
-          message: `missing required field "${field}"`
-        });
+      for (const field of rule.required) {
+        if (obj[field] === undefined || obj[field] === null || obj[field] === "") {
+          errors.push({
+            file: filePath,
+            type: rule.label,
+            message: `missing required field "${field}"`
+          });
+        }
       }
-    }
 
-    // Nested validation (e.g., FAQPage mainEntity items need acceptedAnswer)
-    if (rule.nested) {
-      for (const [parentField, nestedRule] of Object.entries(rule.nested)) {
-        const value = obj[parentField];
-        if (!value) continue;
-        const items = Array.isArray(value) ? value : [value];
-        for (let i = 0; i < items.length; i++) {
-          const item = items[i];
-          if (!item || typeof item !== "object") continue;
-          if (nestedRule.arrayItemFields) {
-            for (const nestedField of nestedRule.arrayItemFields) {
-              if (item[nestedField] === undefined || item[nestedField] === null) {
-                errors.push({
-                  file: filePath,
-                  type: rule.label,
-                  message: `mainEntity[${i}] missing required field "${nestedField}"`
-                });
+      // Nested validation (e.g., FAQPage mainEntity items need acceptedAnswer)
+      if (rule.nested) {
+        for (const [parentField, nestedRule] of Object.entries(rule.nested)) {
+          const value = obj[parentField];
+          if (!value) continue;
+          const items = Array.isArray(value) ? value : [value];
+          for (let i = 0; i < items.length; i++) {
+            const item = items[i];
+            if (!item || typeof item !== "object") continue;
+            if (nestedRule.arrayItemFields) {
+              for (const nestedField of nestedRule.arrayItemFields) {
+                if (item[nestedField] === undefined || item[nestedField] === null) {
+                  errors.push({
+                    file: filePath,
+                    type: rule.label,
+                    message: `mainEntity[${i}] missing required field "${nestedField}"`
+                  });
+                }
               }
             }
           }
@@ -131,10 +149,17 @@ function validateSchema(obj, errors, filePath) {
     }
   }
 
-  // Recurse into @graph if present
-  if (Array.isArray(obj["@graph"])) {
-    for (const node of obj["@graph"]) {
-      validateSchema(node, errors, filePath);
+  // Recurse into every nested object and array value
+  for (const key of Object.keys(obj)) {
+    const value = obj[key];
+    if (Array.isArray(value)) {
+      for (const item of value) {
+        if (item && typeof item === "object") {
+          validateSchema(item, errors, filePath, visited, key);
+        }
+      }
+    } else if (value && typeof value === "object") {
+      validateSchema(value, errors, filePath, visited, key);
     }
   }
 }
