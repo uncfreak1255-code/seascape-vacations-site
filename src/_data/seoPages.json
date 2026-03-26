@@ -2653,38 +2653,44 @@
       "destination": "anna-maria-island",
       "title": "Anna Maria Island Vacation Rental Management",
       "h1": "Anna Maria Island Vacation Rental Management",
-      "description": "Owner-focused Anna Maria Island vacation rental management for homes losing margin through discounting, OTA drag, or weak island execution.",
-      "intro": "If your Anna Maria Island home is booking but owner income still feels soft, the usual culprits are premium weeks getting discounted, too much OTA mix, or a manager treating island inventory like commodity stock.",
+      "description": "Switcher-first Anna Maria Island vacation rental management for owners losing premium-week pricing, direct margin, or island execution control.",
+      "intro": "If your Anna Maria Island home stays busy but owner payouts still feel too soft, the leak is usually premium weeks discounted too early, OTA-heavy channel mix, or island operations that keep the calendar alive while margin quietly slips.",
       "benefits": [
-        "Premium-week pricing that protects island demand instead of discounting it away",
-        "Direct-booking and OTA mix review tied to owner margin, not vanity occupancy",
-        "Local turnover and maintenance response built for high-expectation island guests",
-        "Property-specific pricing instead of a flat AMI fee promise",
-        "Owner reporting that explains rate power, channel drag, and execution gaps",
-        "Transition planning around live reservations so the switch does not kill momentum"
+        "Protect premium-week pricing before the market gets trained to wait for discounts",
+        "Use direct-booking and OTA mix to protect owner margin instead of occupancy optics",
+        "Run island-grade turnover and maintenance follow-up for higher-expectation guests",
+        "Quote management structure to the home's fit instead of flattening every AMI property into one fee",
+        "Give owner reporting that explains rate integrity, channel drag, and execution misses",
+        "Map the switch around booked stays so the fix does not wreck seasonality"
       ],
+      "proofTag": "Owner Math",
+      "proofTitle": "Island demand is strong enough to hide bad owner math",
+      "proofSubtitle": "AMI homes can look healthy on the surface while fee drag, early discounting, and soft local execution keep the owner behind.",
       "proofStats": [
         {
-          "value": "$1.4M",
-          "label": "Annual portfolio rental revenue",
-          "detail": "Current Seascape revenue across five active Bradenton-Sarasota homes."
+          "value": "13.4%",
+          "label": "Observed Airbnb host fee",
+          "detail": "Average effective host-fee drag inside the current Seascape operating set."
+        },
+        {
+          "value": "2.9%",
+          "label": "Direct payment cost",
+          "detail": "Approximate payment-processing cost when a booking shifts off marketplace commissions."
         },
         {
           "value": "Tailored",
           "label": "Management pricing",
-          "detail": "Structured around property fit, revenue potential, location, and operating demands instead of one flat fee."
+          "detail": "Structured around property fit, revenue potential, location, and operating load instead of one flat fee."
         },
         {
           "value": "$119,923",
           "label": "Direct booking revenue",
           "detail": "Revenue already shifted away from marketplace commissions and back toward owner economics."
-        },
-        {
-          "value": "3-4x",
-          "label": "Market-median revenue per home",
-          "detail": "Internal Seascape benchmark versus local market median estimates in the operating model."
         }
       ],
+      "switchTag": "What Starts Breaking",
+      "switchTitle": "Why AMI owners stop trusting the current setup",
+      "switchSubtitle": "The island can still book while the owner loses confidence in pricing discipline, local standards, and fee efficiency.",
       "switchReasons": [
         {
           "title": "Premium weeks get discounted too fast",
@@ -2699,11 +2705,17 @@
           "body": "If you still cannot tell whether pricing, channel mix, and guest standards are improving, then you are paying for motion instead of management."
         }
       ],
+      "benefitsTag": "What Changes",
+      "benefitsTitle": "Where the right island operator protects margin",
+      "benefitsSubtitle": "This is not a beach-brochure service list. It is the set of fixes that decides whether an AMI owner keeps more of premium demand.",
       "marketReality": {
         "tag": "AMI Reality",
-        "title": "Island demand can hide a weak operation for longer than it should",
+        "title": "Busy does not mean optimized on Anna Maria Island",
         "body": "<p>Anna Maria Island homes can stay busy and still underperform. Strong demand masks weak pricing decisions, OTA dependence, and local execution misses long enough for owners to think the operation is fine.</p><p>The useful question is not whether the island can book. It is whether the manager is protecting premium weeks, reducing avoidable fee drag, and giving the owner a cleaner net result than a generic operator would.</p>"
       },
+      "revenueTag": "Owner Math",
+      "revenueTitle": "The three levers that decide what an AMI owner actually keeps",
+      "revenueSubtitle": "When island demand is already there, the leak is almost never traffic. It is rate discipline, channel cost, and local execution.",
       "revenueLevers": [
         {
           "title": "Protect premium weeks instead of chasing false occupancy wins",
@@ -2718,6 +2730,9 @@
           "body": "Slow maintenance follow-up, weak cleaning quality control, and vague guest communication all show up later as pricing problems."
         }
       ],
+      "processTag": "Teardown Path",
+      "processTitle": "How we stress-test an island takeover",
+      "processSubtitle": "The goal is to see whether switching protects more owner income than staying put.",
       "processSteps": [
         {
           "title": "Revenue teardown",
@@ -2732,6 +2747,9 @@
           "body": "If the fit is right, we map the takeover around reservations already on the books so you do not wreck momentum just to change operators."
         }
       ],
+      "objectionsTag": "Owner Objections",
+      "objectionsTitle": "The AMI objections that actually matter",
+      "objectionsSubtitle": "Good island owners worry about handoff risk, rate integrity, and whether lower fees just mean thinner service.",
       "objections": [
         {
           "question": "A lower management fee sounds nice. Does service drop with it?",
@@ -2748,9 +2766,9 @@
       ],
       "cta": "Get Your Revenue Teardown",
       "primaryCta": "Get Your Revenue Teardown",
-      "ctaSubcopy": "We compare fee structure, channel mix, and premium-week strategy before you make a management decision.",
-      "ctaNote": "Send the address or listing URL. We will tell you where island margin is leaking before we ask for the business.",
-      "geoIntro": "<p>Anna Maria Island owners usually do not have a demand problem. They have a margin-protection problem. Premium weeks get discounted too early, OTA dependence stays too high, and the owner statement hides how much money is slipping away through channel drag and soft execution.</p><p>Seascape's current Gulf Coast operating model runs at <strong>$1.4M in annual rental revenue</strong> and <strong>$119,923 in direct booking revenue</strong> across five active homes. On AMI, the right question is not whether the island can book. It is whether your manager is protecting premium demand, direct mix, and guest standards well enough to justify the fee stack.</p><p>We do not use one flat management fee for every island home. Pricing depends on revenue potential, location, home quality, and operating load. The teardown shows whether the current manager is treating your home like premium inventory or just moving it like another listing.</p>",
+      "ctaSubcopy": "We compare premium-week pricing, OTA drag, and island execution before you hand another season to the wrong manager.",
+      "ctaNote": "Send the address or listing URL. We will tell you whether the current operator is protecting island margin or hiding behind demand.",
+      "geoIntro": "<p>Anna Maria Island owners usually do not have a demand problem. They have a margin-protection problem. Premium weeks get discounted too early, OTA dependence stays too high, and the owner statement hides how much money is slipping away through channel drag and soft execution.</p><p>Seascape's current Gulf Coast operating model has already shifted <strong>$119,923 in revenue into direct bookings</strong>, which matters because the fee gap between marketplace drag and direct payment cost is real. On AMI, the useful question is not whether the island can book. It is whether your manager is protecting premium demand, direct mix, and guest standards well enough to justify the fee stack.</p><p>We do not use one flat management fee for every island home. The structure depends on revenue potential, location, home quality, and how much operational work the property requires. The teardown shows whether the current manager is treating your home like premium inventory or just moving it like another listing.</p>",
       "faqs": [
         {
           "q": "What usually hurts owner income most on Anna Maria Island?",
@@ -2758,11 +2776,11 @@
         },
         {
           "q": "How do you decide whether an Anna Maria Island home can justify a lower management fee?",
-          "a": "We look at revenue potential, home quality, location, and operating complexity. Cleaner, higher-performing homes with stronger economics can justify leaner pricing than homes that need more hands-on operational work to produce the same outcome."
+          "a": "We review revenue potential, location, home quality, and how much operational work the property requires. Cleaner, higher-performing homes with stronger economics can justify leaner pricing than homes that need more hands-on operational work to produce the same outcome."
         },
         {
           "q": "What does professional property management typically cost, and is it worth the investment?",
-          "a": "We do not use one flat management fee for every home. The structure depends on the property's revenue potential, location, home quality, and operational complexity. Higher-performing homes can qualify for lower fees. After we review the property, we will show you the exact structure and whether the fit makes sense on both sides."
+          "a": "We do not charge the same management fee for every home. The structure depends on revenue potential, location, home quality, and how much operational work the property requires. Higher-performing homes can qualify for lower fees. After we review the property, we will show you the exact structure and whether it makes sense for both sides."
         },
         {
           "q": "What happens if I already have high-season bookings on the calendar?",
@@ -2783,31 +2801,34 @@
       "destination": "bradenton",
       "title": "Bradenton Vacation Rental Property Management",
       "h1": "Bradenton Vacation Rental Management",
-      "description": "Owner-focused Bradenton vacation rental management for pool homes and group inventory that need stronger positioning, cleaner execution, and better owner math.",
-      "intro": "If your Bradenton home has the right size, pool, and family appeal but still underperforms, the gap is usually positioning, fee drag, or a manager who is too generic for group-heavy demand.",
+      "description": "Switcher-first Bradenton vacation rental management for pool homes and family inventory leaking money through generic positioning, OTA drag, or sloppy execution.",
+      "intro": "If your Bradenton home has the right size, pool, and group appeal but owner net still feels average, the leak is usually generic positioning, too much OTA cost, or an operator treating a group-heavy asset like commodity inventory.",
       "benefits": [
-        "Group-trip positioning that protects rate power for pool homes and family inventory",
-        "Direct-booking and OTA mix strategy tied to owner net, not just calendar fill",
-        "Local turnover, maintenance, and guest response for higher-wear family stays",
-        "Property-specific pricing instead of a canned Bradenton fee pitch",
-        "Reporting that explains where revenue is leaking instead of just showing activity",
-        "A takeover path built around live reservations and seasonal demand"
+        "Position pool homes and family inventory for the right trip type instead of generic beach overflow",
+        "Use direct-booking and OTA mix strategy tied to owner net, not just calendar fill",
+        "Run tighter turnover, maintenance, and guest response for higher-wear group stays",
+        "Quote the fee structure to the home's fit instead of using a canned Bradenton pitch",
+        "Show where revenue is leaking instead of sending another statement full of activity and no answers",
+        "Build the takeover around live reservations and seasonal demand instead of resetting the operation"
       ],
+      "proofTag": "Owner Math",
+      "proofTitle": "Broad demand does not guarantee strong owner income",
+      "proofSubtitle": "Bradenton pool homes can stay busy enough to hide soft pricing, channel drag, and operational slippage.",
       "proofStats": [
         {
-          "value": "$1.4M",
-          "label": "Annual portfolio rental revenue",
-          "detail": "Current Seascape revenue across five active Bradenton-Sarasota homes."
+          "value": "13.4%",
+          "label": "Observed Airbnb host fee",
+          "detail": "Average effective host-fee drag inside the current Seascape operating set."
+        },
+        {
+          "value": "2.9%",
+          "label": "Direct payment cost",
+          "detail": "Approximate payment-processing cost when a booking shifts off marketplace commissions."
         },
         {
           "value": "Tailored",
           "label": "Management pricing",
-          "detail": "Structured around property fit, revenue potential, location, and operating demands instead of one flat fee."
-        },
-        {
-          "value": "$119,923",
-          "label": "Direct booking revenue",
-          "detail": "Revenue already shifted away from marketplace commissions and back toward owner economics."
+          "detail": "Structured around property fit, revenue potential, location, and how much operational work the property requires."
         },
         {
           "value": "3-4x",
@@ -2815,6 +2836,9 @@
           "detail": "Internal Seascape benchmark versus local market median estimates in the operating model."
         }
       ],
+      "switchTag": "What Starts Breaking",
+      "switchTitle": "Why Bradenton owners start looking elsewhere",
+      "switchSubtitle": "The trigger is usually not a dead calendar. It is a house that should outperform still getting managed like beach overflow.",
       "switchReasons": [
         {
           "title": "Calendar gaps show up despite a healthy market",
@@ -2829,11 +2853,17 @@
           "body": "If every booking still comes through the same expensive channels, the manager is not building much leverage for the owner."
         }
       ],
+      "benefitsTag": "What Changes",
+      "benefitsTitle": "Where the right Bradenton operator changes the math",
+      "benefitsSubtitle": "Group-heavy homes need stronger positioning, tighter operations, and cleaner channel economics than generic managers usually deliver.",
       "marketReality": {
         "tag": "Bradenton Reality",
-        "title": "A broad demand base can make underperformance look normal",
+        "title": "Broad demand can make underperformance look normal",
         "body": "<p>Bradenton homes can stay occupied and still under-earn. Group and family demand keeps the calendar moving long enough for owners to miss how much margin is disappearing through generic positioning, weak rate discipline, and fee drag.</p><p>The useful comparison is not whether the market is active. It is whether your manager is turning that demand into stronger owner net income than a competent local operator should.</p>"
       },
+      "revenueTag": "Owner Math",
+      "revenueTitle": "What actually moves Bradenton owner net",
+      "revenueSubtitle": "The money usually shifts when the home is sold to the right trip type, not when another manager promises broader exposure.",
       "revenueLevers": [
         {
           "title": "Position the home for the right group demand instead of generic beach overflow",
@@ -2848,6 +2878,9 @@
           "body": "Pool homes and family properties take more wear. Weak turnover follow-up, maintenance lag, and guest communication mistakes become expensive fast."
         }
       ],
+      "processTag": "Teardown Path",
+      "processTitle": "How we audit a Bradenton takeover",
+      "processSubtitle": "We pressure-test the current setup against group demand, fee drag, and the operating wear larger stays create.",
       "processSteps": [
         {
           "title": "Revenue baseline",
@@ -2862,6 +2895,9 @@
           "body": "If the fit is right, we map pricing, listing, vendor, and guest-communication changes around your live calendar rather than starting from zero."
         }
       ],
+      "objectionsTag": "Owner Objections",
+      "objectionsTitle": "The Bradenton questions worth asking",
+      "objectionsSubtitle": "The real concern is not whether a manager can keep the calendar moving. It is whether they can protect net income on a group-heavy home.",
       "objections": [
         {
           "question": "My home is not beachfront. Can it still produce strong numbers?",
@@ -2878,9 +2914,9 @@
       ],
       "cta": "Get Your Revenue Teardown",
       "primaryCta": "Get Your Revenue Teardown",
-      "ctaSubcopy": "We show where the current setup is suppressing net owner income before you decide whether to switch.",
-      "ctaNote": "Send the address or listing URL if you want a hard read on positioning, OTA leakage, and the real cost of operational misses.",
-      "geoIntro": "<p>Bradenton owners often get told the market is easy because demand is broad. That is exactly how margin leaks start. Family and group homes can stay occupied while still under-earning if the home is positioned generically, peak weekends are priced too softly, or every booking still arrives through high-fee channels.</p><p>Seascape's current Gulf Coast operating model runs at <strong>$1.4M in annual rental revenue</strong> and <strong>$119,923 in direct booking revenue</strong> across five active homes. For Bradenton owners, the useful question is not whether a manager can keep the calendar moving. It is whether the manager can protect owner net income after fee stack, channel mix, and operational misses are counted.</p><p>We do not use one flat management fee for every home. Pricing depends on the property's fit, revenue potential, and day-to-day operating demands. The teardown shows whether the current setup is actually built for group-heavy Bradenton demand or just getting by on base market traffic.</p>",
+      "ctaSubcopy": "We show where the current setup is flattening rate power, overpaying for channels, or getting lazy on execution before you switch.",
+      "ctaNote": "Send the address or listing URL if you want a hard read on positioning, OTA leakage, and whether the home is being sold like generic beach overflow.",
+      "geoIntro": "<p>Bradenton owners get told the market is easy because demand is broad. That is exactly how margin leaks start. Family and group homes can stay occupied while still under-earning if the home is positioned generically, peak weekends are priced too softly, or every booking still arrives through high-fee channels.</p><p>Seascape's current Gulf Coast operating model has already shifted <strong>$119,923 in revenue into direct bookings</strong>, which matters because the difference between marketplace drag and direct payment cost is not theoretical. For Bradenton owners, the useful question is not whether a manager can keep the calendar moving. It is whether the manager can protect owner net income after fee stack, channel mix, and operational misses are counted.</p><p>We do not use one flat management fee for every home. The structure depends on revenue potential, location, home quality, and how much operational work the property requires. The teardown shows whether the current setup is actually built for group-heavy Bradenton demand or just getting by on base market traffic.</p>",
       "faqs": [
         {
           "q": "Why do some Bradenton homes underperform even when the market looks busy?",
@@ -2896,7 +2932,7 @@
         },
         {
           "q": "How do you decide whether a Bradenton home should carry a lower management fee?",
-          "a": "We review fit, revenue potential, home quality, and operating load. Cleaner, higher-performing homes can justify leaner pricing than homes that require more support to produce the same owner outcome."
+          "a": "We review revenue potential, location, home quality, and how much operational work the property requires. Cleaner, higher-performing homes can justify leaner pricing than homes that require more support to produce the same owner outcome."
         },
         {
           "q": "How do I know my current Bradenton manager is too generic for the property?",
@@ -3437,43 +3473,55 @@
       "destination": "sarasota",
       "title": "Sarasota Vacation Rental Property Management",
       "h1": "Sarasota Vacation Rental Management",
-      "description": "Owner-focused Sarasota vacation rental management for premium homes that need tighter pricing, stronger guest standards, and cleaner reporting.",
-      "intro": "Sarasota owners usually do not switch managers because occupancy disappears. They switch when a premium home is being sold like a generic one and the fee stack is no longer justified by execution.",
+      "description": "Switcher-first Sarasota vacation rental management for premium homes losing rate power through generic pricing, weak guest standards, or lazy channel mix.",
+      "intro": "Sarasota owners usually do not switch because occupancy vanishes. They switch when a premium home is being sold too generically, the fee stack keeps rising, and the operation no longer feels worthy of the asset.",
       "benefits": [
-        "Neighborhood-aware pricing and stay strategy for Sarasota demand pockets",
-        "Premium listing and guest-positioning that protects nightly-rate power",
-        "Local turnover, maintenance, and vendor control for higher-end inventory",
-        "Property-specific fee structure based on home fit and operating demands",
-        "Channel mix strategy that protects direct margin, not just occupancy",
-        "Owner reporting tied to rate, channel mix, and net income"
+        "Use neighborhood-aware pricing and stay strategy instead of flattening Sarasota into one rate model",
+        "Protect premium listing quality and guest positioning so nightly-rate power does not erode",
+        "Run tighter local turnover, maintenance, and vendor control for higher-end inventory",
+        "Quote management structure to the home's fit and operating load instead of faking one universal fee",
+        "Build channel mix around direct margin instead of just keeping occupancy respectable",
+        "Give owners cleaner reporting tied to rate, channel mix, and net income"
       ],
+      "proofTag": "Owner Math",
+      "proofTitle": "Premium homes lose money when the operation gets flattened",
+      "proofSubtitle": "The Sarasota leak is usually not demand. It is generic pricing, parcel-blind stay strategy, and high-fee channel mix hiding inside decent occupancy.",
       "proofStats": [
         {
-          "value": "$1.4M",
-          "label": "Annual portfolio rental revenue",
-          "detail": "Current Seascape revenue across five active Bradenton-Sarasota homes."
+          "value": "13.4%",
+          "label": "Observed Airbnb host fee",
+          "detail": "Average effective host-fee drag inside the current Seascape operating set."
+        },
+        {
+          "value": "2.9%",
+          "label": "Direct payment cost",
+          "detail": "Approximate payment-processing cost when a booking shifts off marketplace commissions."
         },
         {
           "value": "Tailored",
           "label": "Management pricing",
-          "detail": "Structured around property fit, revenue potential, and operating demands instead of one flat fee."
+          "detail": "Structured around property fit, revenue potential, and how much operational work the property requires."
         },
         {
           "value": "$119,923",
           "label": "Direct booking revenue",
           "detail": "Revenue already shifted away from marketplace commissions and back toward owner economics."
-        },
-        {
-          "value": "3-4x",
-          "label": "Market-median revenue per home",
-          "detail": "Internal Seascape benchmark versus local market median estimates in the operating model."
         }
       ],
+      "switchTag": "What Starts Breaking",
+      "switchTitle": "Why premium Sarasota owners start shopping for a new manager",
+      "switchSubtitle": "The trigger is usually a premium asset getting managed like average inventory, with vague reporting covering the gap.",
+      "benefitsTag": "What Changes",
+      "benefitsTitle": "Where the right Sarasota operator protects a premium asset",
+      "benefitsSubtitle": "Higher-end Sarasota homes need parcel-aware pricing, tighter guest execution, and clearer owner math than a generic county-wide playbook.",
       "marketReality": {
         "tag": "Sarasota Reality",
         "title": "Premium homes lose money when the operation gets flattened",
         "body": "<p>Sarasota is not one uniform market. Downtown condos, near-beach homes, and higher-end family inventory do not respond to the same pricing, stay rules, or guest expectations. A manager who treats the market like one blob usually flattens rate power and hides it under generic occupancy reports.</p><p>Premium homes rarely lose value because nobody wants them. They lose value because the operator turns a differentiated asset into average inventory.</p>"
       },
+      "revenueTag": "Owner Math",
+      "revenueTitle": "What preserves Sarasota rate power",
+      "revenueSubtitle": "Premium owners win when the operator respects neighborhood context, channel cost, and guest standards instead of flattening the market into one rule set.",
       "revenueLevers": [
         {
           "title": "Neighborhood-aware rate control",
@@ -3502,6 +3550,9 @@
           "body": "A premium asset deserves clearer reporting, not a more expensive version of the same generic monthly summary."
         }
       ],
+      "processTag": "Teardown Path",
+      "processTitle": "How we pressure-test a Sarasota takeover",
+      "processSubtitle": "We look at positioning, stay-rule fit, service risk, and the fee stack before anyone talks about switching.",
       "processSteps": [
         {
           "title": "Positioning review",
@@ -3516,6 +3567,9 @@
           "body": "If the fit is right, we map the changeover around active bookings and the specific operating risks tied to the property."
         }
       ],
+      "objectionsTag": "Owner Objections",
+      "objectionsTitle": "The Sarasota objections that actually matter",
+      "objectionsSubtitle": "The real question is whether the operator understands parcel-level constraints and premium guest expectations well enough to justify the fee.",
       "objections": [
         {
           "question": "Does Sarasota really support premium nightly rates year-round?",
@@ -3532,9 +3586,9 @@
       ],
       "cta": "Get Your Revenue Teardown",
       "primaryCta": "Get Your Revenue Teardown",
-      "ctaSubcopy": "We pressure-test the current rate strategy, guest standards, and channel mix before you hand a premium asset to the wrong operator.",
-      "ctaNote": "Send the address or listing URL if you want a clean read on whether the current setup is actually premium or just priced like it is.",
-      "geoIntro": "<p>Sarasota can support premium vacation-rental performance, but premium demand does not automatically create premium owner economics. Homes lose margin when the manager underprices shoulder periods, leans too hard on high-fee channels, or lets generic operations weaken review quality.</p><p>Seascape's current operating model runs at <strong>$1.4M in annual rental revenue</strong> and <strong>$119,923 in direct booking revenue</strong> across five active homes. That matters because the goal is not just occupancy. The goal is protecting rate, channel mix, and owner net.</p><p>We do not use one flat management fee for every Sarasota property. Pricing depends on the home's revenue potential, fit, and day-to-day operating demands, which is why the first step is a teardown instead of a canned proposal.</p>",
+      "ctaSubcopy": "We pressure-test the current rate strategy, parcel fit, guest standards, and channel mix before you hand a premium asset to the wrong operator.",
+      "ctaNote": "Send the address or listing URL if you want a straight read on whether the current setup is truly premium or just charging like it is.",
+      "geoIntro": "<p>Sarasota can support premium vacation-rental performance, but premium demand does not automatically create premium owner economics. Homes lose margin when the manager underprices shoulder periods, leans too hard on high-fee channels, or lets generic operations weaken review quality.</p><p>Seascape's current operating model has already shifted <strong>$119,923 in revenue into direct bookings</strong>, which matters because the goal is not just occupancy. The goal is protecting rate, channel mix, and owner net.</p><p>We do not use one flat management fee for every Sarasota property. The structure depends on revenue potential, location, home quality, and how much operational work the property requires, which is why the first step is a teardown instead of a canned proposal.</p>",
       "faqs": [
         {
           "q": "What usually goes wrong when a Sarasota home is managed like generic inventory?",
@@ -3542,7 +3596,7 @@
         },
         {
           "q": "How do you decide whether a Sarasota property should carry a lower management fee?",
-          "a": "We look at revenue potential, fit, home quality, and operating complexity. A cleaner, higher-performing home with stronger economics can justify a lower fee than a property that needs more hands-on operational work to produce the same result."
+          "a": "We review revenue potential, location, home quality, and how much operational work the property requires. A cleaner, higher-performing home with stronger economics can justify a lower fee than a property that needs more hands-on operational work to produce the same result."
         },
         {
           "q": "Does Sarasota really support premium nightly rates year-round?",

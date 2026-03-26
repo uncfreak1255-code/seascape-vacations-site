@@ -207,3 +207,45 @@ test("owner fee cluster pages stay in teardown mode instead of reverting to broc
   assert.ok(/ota|fee|rate|owner|revenue|direct/i.test(amiPage.geoIntro), "AMI GEO intro should sound like an owner economics page");
   assert.ok(/ota|fee|rate|owner|revenue|direct/i.test(bradentonPage.geoIntro), "Bradenton GEO intro should sound like an owner economics page");
 });
+
+test("remaining local owner pages keep custom owner-math framing instead of falling back to generic section copy", () => {
+  const expectations = {
+    "vacation-rental-management-anna-maria-island": {
+      proofTitle: "Island demand is strong enough to hide bad owner math",
+      switchTitle: "Why AMI owners stop trusting the current setup",
+      revenueTitle: "The three levers that decide what an AMI owner actually keeps"
+    },
+    "vacation-rental-management-bradenton": {
+      proofTitle: "Broad demand does not guarantee strong owner income",
+      switchTitle: "Why Bradenton owners start looking elsewhere",
+      revenueTitle: "What actually moves Bradenton owner net"
+    },
+    "vacation-rental-management-sarasota": {
+      proofTitle: "Premium homes lose money when the operation gets flattened",
+      switchTitle: "Why premium Sarasota owners start shopping for a new manager",
+      revenueTitle: "What preserves Sarasota rate power"
+    }
+  };
+
+  for (const [slug, expected] of Object.entries(expectations)) {
+    const page = ownerData.find((entry) => entry.slug === slug);
+
+    assert.ok(page, `${slug} should exist`);
+    assert.equal(page.proofTitle, expected.proofTitle, `${slug} should keep its custom proof title`);
+    assert.equal(page.switchTitle, expected.switchTitle, `${slug} should keep its custom switch title`);
+    assert.equal(page.revenueTitle, expected.revenueTitle, `${slug} should keep its custom revenue title`);
+    assert.ok(page.benefitsTitle && page.benefitsTitle.length > 20, `${slug} should keep a custom benefits title`);
+    assert.ok(page.processTitle && page.processTitle.length > 15, `${slug} should keep a custom process title`);
+    assert.ok(page.objectionsTitle && page.objectionsTitle.length > 15, `${slug} should keep a custom objections title`);
+    assert.equal(
+      page.proofStats.some((stat) => stat.label === "Observed Airbnb host fee" && stat.value === "13.4%"),
+      true,
+      `${slug} should keep owner fee-drag proof up front`
+    );
+    assert.equal(
+      page.proofStats.some((stat) => stat.label === "Direct payment cost" && stat.value === "2.9%"),
+      true,
+      `${slug} should keep direct-payment economics up front`
+    );
+  }
+});
