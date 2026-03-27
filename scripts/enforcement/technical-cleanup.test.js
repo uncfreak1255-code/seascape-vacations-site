@@ -68,6 +68,17 @@ test("priority canonical guide families 301 their .html aliases to the slash rou
   }
 });
 
+test("retired Bradenton money slug 301s to the current canonical stay page", () => {
+  const redirects = fs.readFileSync(path.join(sourceRoot, "_redirects"), "utf8");
+
+  for (const redirectRule of [
+    "/stays/vacation-rentals-bradenton-florida  /stays/bradenton-vacation-rentals-near-beaches  301",
+    "/stays/vacation-rentals-bradenton-florida/  /stays/bradenton-vacation-rentals-near-beaches/  301"
+  ]) {
+    assert.equal(redirects.includes(redirectRule), true, `Expected redirects to include ${redirectRule}`);
+  }
+});
+
 test("priority canonical guide families keep schema and breadcrumb copy aligned with route intent", () => {
   const bestTimeGuide = fs.readFileSync(path.join(sourceRoot, "guides", "best-time-visit-anna-maria-island.html"), "utf8");
   const srqGuide = fs.readFileSync(path.join(sourceRoot, "guides", "srq-airport-to-anna-maria-island.html"), "utf8");
