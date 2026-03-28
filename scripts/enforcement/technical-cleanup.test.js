@@ -68,6 +68,19 @@ test("priority canonical guide families 301 their .html aliases to the slash rou
   }
 });
 
+test("priority canonical guide families 301 plain guide aliases to the slash route", () => {
+  const redirects = fs.readFileSync(path.join(sourceRoot, "_redirects"), "utf8");
+
+  for (const redirectRule of [
+    "/guides/best-time-visit-anna-maria-island  /guides/best-time-visit-anna-maria-island/  301",
+    "/guides/srq-airport-to-anna-maria-island  /guides/srq-airport-to-anna-maria-island/  301",
+    "/guides/anna-maria-island-weather  /guides/anna-maria-island-weather/  301",
+    "/guides/bradenton-vs-sarasota  /guides/bradenton-vs-sarasota/  301"
+  ]) {
+    assert.equal(redirects.includes(redirectRule), true, `Expected redirects to include ${redirectRule}`);
+  }
+});
+
 test("retired Bradenton money slug 301s to the current canonical stay page", () => {
   const redirects = fs.readFileSync(path.join(sourceRoot, "_redirects"), "utf8");
 
@@ -83,6 +96,7 @@ test("priority canonical guide families keep schema and breadcrumb copy aligned 
   const bestTimeGuide = fs.readFileSync(path.join(sourceRoot, "guides", "best-time-visit-anna-maria-island.html"), "utf8");
   const srqGuide = fs.readFileSync(path.join(sourceRoot, "guides", "srq-airport-to-anna-maria-island.html"), "utf8");
   const weatherGuide = fs.readFileSync(path.join(sourceRoot, "guides", "anna-maria-island-weather.html"), "utf8");
+  const bradentonGuide = fs.readFileSync(path.join(sourceRoot, "guides", "bradenton-vs-sarasota.html"), "utf8");
 
   assert.equal(
     bestTimeGuide.includes('"name":"Best Time to Visit Anna Maria Island","item":"https://seascape-vacations.com/guides/best-time-visit-anna-maria-island/"'),
@@ -107,4 +121,38 @@ test("priority canonical guide families keep schema and breadcrumb copy aligned 
   );
   assert.equal(weatherGuide.includes(">Anna Maria Island Weather</li>"), true);
   assert.equal(weatherGuide.includes("AMI Weather"), false);
+
+  assert.equal(
+    bradentonGuide.includes('"item": "https://seascape-vacations.com/guides/bradenton-vs-sarasota/"'),
+    true
+  );
+  assert.equal(
+    bradentonGuide.includes('"url": "https://seascape-vacations.com/guides/bradenton-vs-sarasota/"'),
+    true
+  );
+  assert.equal(
+    bradentonGuide.includes('"item": "https://seascape-vacations.com/guides/bradenton-vs-sarasota"'),
+    false
+  );
+  assert.equal(
+    bradentonGuide.includes('"url": "https://seascape-vacations.com/guides/bradenton-vs-sarasota"'),
+    false
+  );
+});
+
+test("guide hubs link priority canonical winners directly instead of through redirect aliases", () => {
+  const bradentonAreaGuide = fs.readFileSync(path.join(sourceRoot, "guides", "bradenton-area-guide", "index.html"), "utf8");
+
+  assert.equal(
+    bradentonAreaGuide.includes('href="/guides/bradenton-vs-sarasota/"'),
+    true
+  );
+  assert.equal(
+    bradentonAreaGuide.includes('href="/guides/bradenton-vs-sarasota"'),
+    false
+  );
+  assert.equal(
+    bradentonAreaGuide.includes('href="/stays/bradenton-vacation-rentals-near-beaches/""'),
+    false
+  );
 });

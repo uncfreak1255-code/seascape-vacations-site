@@ -373,12 +373,16 @@
 /guides/*/properties/index.html   /properties/   301
 
 # Duplicate guide consolidation — retired duplicate guide directories → canonical paths
+/guides/best-time-visit-anna-maria-island  /guides/best-time-visit-anna-maria-island/  301
 /guides/best-time-visit-anna-maria-island.html  /guides/best-time-visit-anna-maria-island/  301
 /guides/anna-maria-island-vacation-cost-guide-2026  /guides/anna-maria-island-vacation-cost/  301
 /guides/anna-maria-island-vacation-cost-guide-2026/  /guides/anna-maria-island-vacation-cost/  301
 /guides/best-time-to-visit-anna-maria-island  /guides/best-time-visit-anna-maria-island/  301
 /guides/best-time-to-visit-anna-maria-island/  /guides/best-time-visit-anna-maria-island/  301
+/guides/srq-airport-to-anna-maria-island  /guides/srq-airport-to-anna-maria-island/  301
 /guides/srq-airport-to-anna-maria-island.html  /guides/srq-airport-to-anna-maria-island/  301
+/guides/anna-maria-island-weather  /guides/anna-maria-island-weather/  301
+/guides/bradenton-vs-sarasota  /guides/bradenton-vs-sarasota/  301
 /guides/bradenton-vs-sarasota-vacation-rental-comparison  /guides/bradenton-vs-sarasota/  301
 /guides/bradenton-vs-sarasota-vacation-rental-comparison/  /guides/bradenton-vs-sarasota/  301
 
