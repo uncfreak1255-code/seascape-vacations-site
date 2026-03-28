@@ -139,3 +139,20 @@ test("priority canonical guide families keep schema and breadcrumb copy aligned 
     false
   );
 });
+
+test("guide hubs link priority canonical winners directly instead of through redirect aliases", () => {
+  const bradentonAreaGuide = fs.readFileSync(path.join(sourceRoot, "guides", "bradenton-area-guide", "index.html"), "utf8");
+
+  assert.equal(
+    bradentonAreaGuide.includes('href="/guides/bradenton-vs-sarasota/"'),
+    true
+  );
+  assert.equal(
+    bradentonAreaGuide.includes('href="/guides/bradenton-vs-sarasota"'),
+    false
+  );
+  assert.equal(
+    bradentonAreaGuide.includes('href="/stays/bradenton-vacation-rentals-near-beaches/""'),
+    false
+  );
+});
