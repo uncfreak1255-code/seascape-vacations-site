@@ -131,5 +131,18 @@ test("top property pages instrument both availability and booking-page handoff C
       true,
       `${path.basename(path.dirname(file))} missing tracked booking-page CTA`
     );
+    for (const placement of [
+      'data-placement="property_nav"',
+      'data-placement="property_mobile_menu"',
+      'data-placement="property_intro"',
+      'data-placement="property_intro_booking_panel"',
+      'data-placement="property_reviews"'
+    ]) {
+      assert.equal(
+        source.includes(placement),
+        true,
+        `${path.basename(path.dirname(file))} missing ${placement}`
+      );
+    }
   }
 });
