@@ -5,6 +5,7 @@ const test = require("node:test");
 const assert = require("node:assert/strict");
 
 const {
+  findDeploySensitivePaths,
   findForbiddenPublicRuntimePaths,
   parsePushRefs,
   isProtectedPush,
@@ -72,6 +73,30 @@ test("findForbiddenSourcePaths flags legacy source-of-truth violations only", ()
     "index.html",
     "stays/example/index.html",
     "property-management/example/index.html"
+  ]);
+});
+
+test("findDeploySensitivePaths catches source and build-critical files only", () => {
+  const violations = findDeploySensitivePaths([
+    "src/guides/bradenton-area-guide/index.html",
+    "src/_redirects",
+    "netlify.toml",
+    "eleventy.config.js",
+    "package.json",
+    "package-lock.json",
+    "scripts/enforcement/pre-push.js",
+    "docs/process/before-merge-checklist.md",
+    "rank-tracker-latest.md"
+  ]);
+
+  assert.deepEqual(violations, [
+    "src/guides/bradenton-area-guide/index.html",
+    "src/_redirects",
+    "netlify.toml",
+    "eleventy.config.js",
+    "package.json",
+    "package-lock.json",
+    "scripts/enforcement/pre-push.js"
   ]);
 });
 

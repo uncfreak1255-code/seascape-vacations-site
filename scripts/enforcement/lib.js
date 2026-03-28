@@ -7,6 +7,14 @@ const FORBIDDEN_SOURCE_PATH_PATTERNS = [
   /^stays\//,
   /^property-management\//
 ];
+const DEPLOY_SENSITIVE_PATH_PATTERNS = [
+  /^src\//,
+  /^netlify\.toml$/,
+  /^eleventy\.config\.(?:js|cjs|mjs)$/,
+  /^package\.json$/,
+  /^package-lock\.json$/,
+  /^scripts\/enforcement\//
+];
 
 const PROTECTED_REMOTE_REFS = new Set(["refs/heads/main"]);
 const PLACEHOLDER_ANALYTICS_PATTERN = /G-XXXXXXXXXX/;
@@ -36,6 +44,12 @@ function isProtectedPush(refs) {
 function findForbiddenSourcePaths(changedFiles) {
   return changedFiles.filter((file) =>
     FORBIDDEN_SOURCE_PATH_PATTERNS.some((pattern) => pattern.test(file))
+  );
+}
+
+function findDeploySensitivePaths(changedFiles) {
+  return changedFiles.filter((file) =>
+    DEPLOY_SENSITIVE_PATH_PATTERNS.some((pattern) => pattern.test(file))
   );
 }
 
@@ -78,6 +92,7 @@ function findTemplateLeakMarkers(contents) {
 }
 
 module.exports = {
+  findDeploySensitivePaths,
   findForbiddenSourcePaths,
   findMarkerMatches,
   findForbiddenPublicRuntimePaths,
