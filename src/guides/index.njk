@@ -1,8 +1,8 @@
 ---
 permalink: "/guides/"
 eleventyComputed:
-  pageTitle: "The Seascape Blog"
-  pageDescription: "Editorial travel guides, destination comparisons, trip-planning advice, and owner insights for Florida's Gulf Coast."
+  pageTitle: "Florida Gulf Coast Travel Guides"
+  pageDescription: "Travel guides, destination comparisons, and local planning advice for Anna Maria Island, Bradenton, Sarasota, and Florida's Gulf Coast."
 ---
 {% set featuredStory = {
   "url": "/guides/bradenton-vs-sarasota/",
@@ -145,7 +145,7 @@ eleventyComputed:
     "@type": "BreadcrumbList",
     "itemListElement": [
       {"@type": "ListItem", "position": 1, "name": "Home", "item": "{{ site.url }}/"},
-      {"@type": "ListItem", "position": 2, "name": "Blog", "item": "{{ site.url }}/guides/"}
+      {"@type": "ListItem", "position": 2, "name": "Guides", "item": "{{ site.url }}/guides/"}
     ]
   }
   </script>
@@ -642,7 +642,7 @@ eleventyComputed:
         <a href="/properties/">Stays</a>
         <a href="/about-us/">About Us</a>
         <a href="/property-management/">Property Owners</a>
-        <a href="/guides/" aria-current="page">Blog</a>
+        <a href="/guides/" aria-current="page">Guides</a>
       </div>
       <a class="btn" href="/properties/">Browse Homes</a>
     </div>
@@ -651,14 +651,14 @@ eleventyComputed:
   <main id="main">
     <header class="hero">
       <div>
-        <p class="hero-tag">The Seascape Blog</p>
-        <h1 class="hero-title">Guides for choosing the right coast, stay, and trip plan</h1>
-        <p class="hero-subtitle">Real destination comparisons, local planning advice, and owner-side insights for the Sarasota-Bradenton corridor. The structure stays SEO-clean. The presentation finally feels worth browsing.</p>
+        <p class="hero-tag">Travel Guides</p>
+        <h1 class="hero-title">Florida Gulf Coast guides for choosing where to stay and what to do</h1>
+        <p class="hero-subtitle">Local advice on Anna Maria Island, Bradenton, Sarasota, and Siesta Key. Use these guides to compare destinations, plan the trip, and book with more confidence.</p>
       </div>
       <aside class="hero-note">
-        <strong>Editorial note</strong>
-        <p>This page is the front door. Not the filing cabinet. Start with the featured story if you are still deciding where to stay, then drop into categories once you know your question.</p>
-        <small>Updated {{ site.dateUpdated }} • Canonical URL: /guides/ • User-facing label: Blog</small>
+        <strong>Where to start</strong>
+        <p>Start with the featured story if you are still choosing between destinations. If you already know the area, jump to the section that matches the part of the trip you still need to sort out.</p>
+        <small>Updated {{ site.dateUpdated }}</small>
       </aside>
     </header>
 
@@ -671,7 +671,7 @@ eleventyComputed:
             <p class="card-kicker">{{ featuredStory.eyebrow }}</p>
             <h2>{{ featuredStory.title }}</h2>
             <p>{{ featuredStory.excerpt }}</p>
-            <p class="feature-meta">{{ featuredStory.meta }} • Start here if the destination itself is still undecided</p>
+            <p class="feature-meta">{{ featuredStory.meta }} • Best for travelers still deciding where to base their trip</p>
           </div>
         </a>
 
@@ -696,7 +696,7 @@ eleventyComputed:
           <p class="section-tag">Start Here</p>
           <h2>Start Here</h2>
         </div>
-        <p class="section-note">These are the highest-intent entry points if you are comparing destinations, trying to save money, or removing uncertainty before you book.</p>
+        <p class="section-note">Start here for the biggest booking questions: where to stay, how to save money, and what to know before you book.</p>
       </div>
 
       <div class="start-grid">
@@ -721,7 +721,7 @@ eleventyComputed:
           <p class="section-tag">Browse by Category</p>
           <h2>Browse by category</h2>
         </div>
-        <p class="section-note">Magazine-first on the surface. Utility underneath. The categories tell you what kind of question each section answers before you click.</p>
+        <p class="section-note">Choose the section that matches what you still need to decide, from destination comparisons to trip logistics and owner-side research.</p>
       </div>
 
       <div class="category-grid">
@@ -742,7 +742,7 @@ eleventyComputed:
           <div class="category-card-body">
             <span class="card-kicker">Area Guides</span>
             <h3>Area Guides</h3>
-            <p class="category-intro">Use these when the destination is narrowed down and you want neighborhood-level orientation and planning context.</p>
+            <p class="category-intro">Use these once you know the destination and want neighborhood context, beach access, and local planning details.</p>
             <ul class="category-links">
               {% for guide in areaGuides %}
               <li><a href="{{ guide.url }}">{{ guide.label }}</a></li>
@@ -768,7 +768,7 @@ eleventyComputed:
           <div class="category-card-body">
             <span class="card-kicker">Owner Insights</span>
             <h3>Owner Insights</h3>
-            <p class="category-intro">For owners or investors trying to understand market reality, management decisions, and revenue logic before hiring anyone.</p>
+            <p class="category-intro">For owners and investors comparing markets, management options, and revenue questions before making a move.</p>
             <ul class="category-links">
               {% for page in seoPages.owner %}
               {% if ownerInsightSlugs.indexOf(page.slug) !== -1 %}
@@ -785,9 +785,9 @@ eleventyComputed:
       <div class="utility-grid">
         <div class="utility-card">
           <div class="utility-card-body">
-            <p class="section-tag">Long-Tail Utility</p>
-            <h3>Stay Filters & Property Fit</h3>
-            <p>These links still matter. They just no longer get to pretend they are the lead experience of the whole page.</p>
+            <p class="section-tag">Stay Collections</p>
+            <h3>Stay collections by trip type</h3>
+            <p>Looking for a specific feature or travel style? These stay collections help you jump straight to the homes that fit.</p>
             <ul class="utility-pills">
               {% for page in staysPages %}
               {% if stayUtilitySlugs.indexOf(page.slug) !== -1 %}
@@ -800,9 +800,9 @@ eleventyComputed:
 
         <div class="utility-card">
           <div class="utility-card-body">
-            <p class="section-tag">Market & Service Layer</p>
-            <h3>Market Intel & Direct Help</h3>
-            <p>The blog hub also has to route people into research and service pages that answer the next real question, not just the first click.</p>
+            <p class="section-tag">Local Resources</p>
+            <h3>Market reports and local help</h3>
+            <p>Use these for market context, concierge planning, and trip questions that go beyond picking the destination.</p>
             <ul class="utility-links">
               {% for page in marketIntelLinks %}
               <li><a href="{{ page.url }}">{{ page.label }}</a></li>

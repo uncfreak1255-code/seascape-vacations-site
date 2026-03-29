@@ -332,9 +332,9 @@ eleventyComputed:
         <section class="section" style="padding-top: 44px; padding-bottom: 28px;">
             <div class="container">
                 <div class="section-header" style="margin-bottom: 28px;">
-                    <p class="section-tag">Trip Math</p>
+                    <p class="section-tag">Best Fit</p>
                     <h2 class="section-title">Why these homes fit this trip</h2>
-                    <p class="section-subtitle">This page is meant to narrow the right options fast, not send you back into generic browsing.</p>
+                    <p class="section-subtitle">Use these highlights to decide whether this trip, location, and home style line up before you start comparing listings.</p>
                 </div>
                 <div class="decision-grid">
                     {% for point in seoPage.decisionHighlights %}
@@ -390,8 +390,8 @@ eleventyComputed:
                 </div>
                 {% else %}
                 <div style="max-width: 720px; margin: 0 auto; background: white; border-radius: 20px; padding: 32px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); text-align: center;">
-                    <p style="font-size: 16px; color: var(--stone); margin-bottom: 16px;">We are keeping this page live as a planning resource, but we do not have a strong enough matching rental set to present a featured inventory list here yet.</p>
-                    <p style="font-size: 14px; color: var(--stone-light); margin-bottom: 24px;">Browse our real availability instead of a thin template list.</p>
+                    <p style="font-size: 16px; color: var(--stone); margin-bottom: 16px;">We do not have enough strong matches to feature a curated list on this page right now.</p>
+                    <p style="font-size: 14px; color: var(--stone-light); margin-bottom: 24px;">Browse current direct-book homes to see the closest available fits.</p>
                     <a
                         href="/properties/"
                         class="btn"
@@ -474,8 +474,8 @@ eleventyComputed:
 
         <section class="cta-section">
             <div class="container">
-                <h2 class="cta-title">{{ seoPage.collectionCtaTitle or "Need the wider Seascape collection?" }}</h2>
-                <p class="cta-subtitle">{{ seoPage.collectionCtaBody or "This stay page is the filtered view. If the fit is close but not perfect, jump into the full direct-book collection instead of restarting on Airbnb." }}</p>
+                <h2 class="cta-title">{{ seoPage.collectionCtaTitle or "Need the full Seascape collection?" }}</h2>
+                <p class="cta-subtitle">{{ seoPage.collectionCtaBody or "If these homes are close but not quite right, open the full Seascape collection and compare the rest of the portfolio in one place." }}</p>
                 <a
                     href="{{ seoPage.collectionCtaHref or '/properties/' }}"
                     class="btn btn-gold"
