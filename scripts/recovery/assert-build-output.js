@@ -499,7 +499,7 @@ if (phase === "remediation") {
   );
   expectContains(
     "_site/property-management/index.html",
-    "Why the fee conversation usually gets distorted"
+    "What owners miss when they compare management fees"
   );
   expectContains("_site/property-management/index.html", "What Gulf Coast owners usually ask first");
   expectContains("_site/property-management/index.html", "Commission Reality");
