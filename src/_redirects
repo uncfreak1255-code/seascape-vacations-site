@@ -21,18 +21,18 @@
 # Maps old platform activity/restaurant/attraction pages to closest current content
 
 # Beaches & Beach Activities
-/travel-spot-guide/bean-point-anna-maria-island   /guides/anna-maria-island-beaches.html   301
-/travel-spot-guide/bean-point-anna-maria-island/   /guides/anna-maria-island-beaches.html   301
-/travel-spot-guide/coquina-beach   /guides/anna-maria-island-beaches.html   301
-/travel-spot-guide/coquina-beach/   /guides/anna-maria-island-beaches.html   301
-/travel-spot-guide/manatee-public-beach   /guides/anna-maria-island-beaches.html   301
-/travel-spot-guide/manatee-public-beach/   /guides/anna-maria-island-beaches.html   301
-/travel-spot-guide/bradenton-beach   /guides/bradenton-beach.html   301
-/travel-spot-guide/bradenton-beach/   /guides/bradenton-beach.html   301
-/travel-spot-guide/cortez-beach   /guides/bradenton-beach.html   301
-/travel-spot-guide/cortez-beach/   /guides/bradenton-beach.html   301
-/travel-spot-guide/siesta-key-beach   /guides/siesta-key-beach-guide.html   301
-/travel-spot-guide/siesta-key-beach/   /guides/siesta-key-beach-guide.html   301
+/travel-spot-guide/bean-point-anna-maria-island   /guides/anna-maria-island-beaches/   301
+/travel-spot-guide/bean-point-anna-maria-island/   /guides/anna-maria-island-beaches/   301
+/travel-spot-guide/coquina-beach   /guides/anna-maria-island-beaches/   301
+/travel-spot-guide/coquina-beach/   /guides/anna-maria-island-beaches/   301
+/travel-spot-guide/manatee-public-beach   /guides/anna-maria-island-beaches/   301
+/travel-spot-guide/manatee-public-beach/   /guides/anna-maria-island-beaches/   301
+/travel-spot-guide/bradenton-beach   /guides/bradenton-beach/   301
+/travel-spot-guide/bradenton-beach/   /guides/bradenton-beach/   301
+/travel-spot-guide/cortez-beach   /guides/bradenton-beach/   301
+/travel-spot-guide/cortez-beach/   /guides/bradenton-beach/   301
+/travel-spot-guide/siesta-key-beach   /guides/siesta-key-beach-guide/   301
+/travel-spot-guide/siesta-key-beach/   /guides/siesta-key-beach-guide/   301
 /travel-spot-guide/lido-beach   /guides/sarasota-area-guide/   301
 /travel-spot-guide/lido-beach/   /guides/sarasota-area-guide/   301
 /travel-spot-guide/longboat-key-beach   /guides/longboat-key-area-guide/   301
@@ -47,68 +47,68 @@
 /travel-spot-guide/captain-louie-fishing/   /stays/fishing-vacation-rentals-bradenton/   301
 /travel-spot-guide/fishing-charters   /stays/fishing-vacation-rentals-bradenton/   301
 /travel-spot-guide/fishing-charters/   /stays/fishing-vacation-rentals-bradenton/   301
-/travel-spot-guide/bradenton-fishing   /guides/fishing-guide-anna-maria-sarasota.html   301
-/travel-spot-guide/bradenton-fishing/   /guides/fishing-guide-anna-maria-sarasota.html   301
+/travel-spot-guide/bradenton-fishing   /guides/fishing-guide-anna-maria-sarasota/   301
+/travel-spot-guide/bradenton-fishing/   /guides/fishing-guide-anna-maria-sarasota/   301
 
 # Water Sports & Boat Rentals
 /travel-spot-guide/bluwave-boat-rental   /stays/gulf-coast-vacation-homes-with-dock/   301
 /travel-spot-guide/bluwave-boat-rental/   /stays/gulf-coast-vacation-homes-with-dock/   301
 /travel-spot-guide/cortez-watersports   /stays/kayaking-vacation-rentals-bradenton/   301
 /travel-spot-guide/cortez-watersports/   /stays/kayaking-vacation-rentals-bradenton/   301
-/travel-spot-guide/yolo-parasailing-adventures   /guides/things-to-do-bradenton-fl.html   301
-/travel-spot-guide/yolo-parasailing-adventures/   /guides/things-to-do-bradenton-fl.html   301
-/travel-spot-guide/shore-thing-tiki-cruises   /guides/things-to-do-bradenton-fl.html   301
-/travel-spot-guide/shore-thing-tiki-cruises/   /guides/things-to-do-bradenton-fl.html   301
+/travel-spot-guide/yolo-parasailing-adventures   /guides/things-to-do-bradenton-fl/   301
+/travel-spot-guide/yolo-parasailing-adventures/   /guides/things-to-do-bradenton-fl/   301
+/travel-spot-guide/shore-thing-tiki-cruises   /guides/things-to-do-bradenton-fl/   301
+/travel-spot-guide/shore-thing-tiki-cruises/   /guides/things-to-do-bradenton-fl/   301
 /travel-spot-guide/desoto-kayak-tours   /stays/kayaking-vacation-rentals-bradenton/   301
 /travel-spot-guide/desoto-kayak-tours/   /stays/kayaking-vacation-rentals-bradenton/   301
-/travel-spot-guide/paddleboarding   /stays/paddleboarding-vacation-rentals-florida/   301
-/travel-spot-guide/paddleboarding/   /stays/paddleboarding-vacation-rentals-florida/   301
+/travel-spot-guide/paddleboarding   /stays/kayaking-vacation-rentals-bradenton/   301
+/travel-spot-guide/paddleboarding/   /stays/kayaking-vacation-rentals-bradenton/   301
 
 # Bike & Equipment Rentals
-/travel-spot-guide/better-on-bikes   /guides/do-you-need-a-car-anna-maria-island.html   301
-/travel-spot-guide/better-on-bikes/   /guides/do-you-need-a-car-anna-maria-island.html   301
+/travel-spot-guide/better-on-bikes   /guides/do-you-need-a-car-anna-maria-island/   301
+/travel-spot-guide/better-on-bikes/   /guides/do-you-need-a-car-anna-maria-island/   301
 /travel-spot-guide/beach-n-rides-and-rentals   /guides/anna-maria-island-area-guide/   301
 /travel-spot-guide/beach-n-rides-and-rentals/   /guides/anna-maria-island-area-guide/   301
 
 # Restaurants & Dining
-/travel-spot-guide/the-waterfront-restaurant   /guides/best-restaurants-anna-maria-island.html   301
-/travel-spot-guide/the-waterfront-restaurant/   /guides/best-restaurants-anna-maria-island.html   301
-/travel-spot-guide/star-fish-company   /guides/best-restaurants-anna-maria-island.html   301
-/travel-spot-guide/star-fish-company/   /guides/best-restaurants-anna-maria-island.html   301
-/travel-spot-guide/skinny-s-place   /guides/best-restaurants-anna-maria-island.html   301
-/travel-spot-guide/skinny-s-place/   /guides/best-restaurants-anna-maria-island.html   301
-/travel-spot-guide/popi-s-place   /guides/best-restaurants-anna-maria-island.html   301
-/travel-spot-guide/popi-s-place/   /guides/best-restaurants-anna-maria-island.html   301
-/travel-spot-guide/ugly-grouper   /guides/best-restaurants-anna-maria-island.html   301
-/travel-spot-guide/ugly-grouper/   /guides/best-restaurants-anna-maria-island.html   301
+/travel-spot-guide/the-waterfront-restaurant   /guides/best-restaurants-anna-maria-island/   301
+/travel-spot-guide/the-waterfront-restaurant/   /guides/best-restaurants-anna-maria-island/   301
+/travel-spot-guide/star-fish-company   /guides/best-restaurants-anna-maria-island/   301
+/travel-spot-guide/star-fish-company/   /guides/best-restaurants-anna-maria-island/   301
+/travel-spot-guide/skinny-s-place   /guides/best-restaurants-anna-maria-island/   301
+/travel-spot-guide/skinny-s-place/   /guides/best-restaurants-anna-maria-island/   301
+/travel-spot-guide/popi-s-place   /guides/best-restaurants-anna-maria-island/   301
+/travel-spot-guide/popi-s-place/   /guides/best-restaurants-anna-maria-island/   301
+/travel-spot-guide/ugly-grouper   /guides/best-restaurants-anna-maria-island/   301
+/travel-spot-guide/ugly-grouper/   /guides/best-restaurants-anna-maria-island/   301
 
 # Outdoor Activities & Attractions
-/travel-spot-guide/treeumph-adventure-course   /guides/things-to-do-bradenton-fl.html   301
-/travel-spot-guide/treeumph-adventure-course/   /guides/things-to-do-bradenton-fl.html   301
-/travel-spot-guide/robinson-preserve   /guides/things-to-do-bradenton-fl.html   301
-/travel-spot-guide/robinson-preserve/   /guides/things-to-do-bradenton-fl.html   301
-/travel-spot-guide/de-soto-national-memorial   /guides/things-to-do-bradenton-fl.html   301
-/travel-spot-guide/de-soto-national-memorial/   /guides/things-to-do-bradenton-fl.html   301
-/travel-spot-guide/emerson-point-preserve   /guides/things-to-do-bradenton-fl.html   301
-/travel-spot-guide/emerson-point-preserve/   /guides/things-to-do-bradenton-fl.html   301
-/travel-spot-guide/riverwalk-bradenton   /stays/riverwalk-bradenton-vacation-rentals/   301
-/travel-spot-guide/riverwalk-bradenton/   /stays/riverwalk-bradenton-vacation-rentals/   301
+/travel-spot-guide/treeumph-adventure-course   /guides/things-to-do-bradenton-fl/   301
+/travel-spot-guide/treeumph-adventure-course/   /guides/things-to-do-bradenton-fl/   301
+/travel-spot-guide/robinson-preserve   /guides/things-to-do-bradenton-fl/   301
+/travel-spot-guide/robinson-preserve/   /guides/things-to-do-bradenton-fl/   301
+/travel-spot-guide/de-soto-national-memorial   /guides/things-to-do-bradenton-fl/   301
+/travel-spot-guide/de-soto-national-memorial/   /guides/things-to-do-bradenton-fl/   301
+/travel-spot-guide/emerson-point-preserve   /guides/things-to-do-bradenton-fl/   301
+/travel-spot-guide/emerson-point-preserve/   /guides/things-to-do-bradenton-fl/   301
+/travel-spot-guide/riverwalk-bradenton   /guides/things-to-do-bradenton-fl/   301
+/travel-spot-guide/riverwalk-bradenton/   /guides/things-to-do-bradenton-fl/   301
 
 # Wildlife & Nature
-/travel-spot-guide/dolphins-manatees   /guides/dolphins-manatees-bradenton.html   301
-/travel-spot-guide/dolphins-manatees/   /guides/dolphins-manatees-bradenton.html   301
+/travel-spot-guide/dolphins-manatees   /guides/dolphins-manatees-bradenton/   301
+/travel-spot-guide/dolphins-manatees/   /guides/dolphins-manatees-bradenton/   301
 /travel-spot-guide/dolphin-watching   /stays/dolphin-watching-vacation-rentals-florida/   301
 /travel-spot-guide/dolphin-watching/   /stays/dolphin-watching-vacation-rentals-florida/   301
-/travel-spot-guide/manatee-viewing-center   /guides/dolphins-manatees-bradenton.html   301
-/travel-spot-guide/manatee-viewing-center/   /guides/dolphins-manatees-bradenton.html   301
-/travel-spot-guide/birdwatching   /stays/birdwatching-vacation-rentals-florida/   301
-/travel-spot-guide/birdwatching/   /stays/birdwatching-vacation-rentals-florida/   301
+/travel-spot-guide/manatee-viewing-center   /guides/dolphins-manatees-bradenton/   301
+/travel-spot-guide/manatee-viewing-center/   /guides/dolphins-manatees-bradenton/   301
+/travel-spot-guide/birdwatching   /guides/things-to-do-bradenton-fl/   301
+/travel-spot-guide/birdwatching/   /guides/things-to-do-bradenton-fl/   301
 
 # Shelling
-/travel-spot-guide/shelling   /guides/shelling-guide-florida.html   301
-/travel-spot-guide/shelling/   /guides/shelling-guide-florida.html   301
-/travel-spot-guide/shelling-guide   /guides/shelling-guide-florida.html   301
-/travel-spot-guide/shelling-guide/   /guides/shelling-guide-florida.html   301
+/travel-spot-guide/shelling   /guides/shelling-guide-florida/   301
+/travel-spot-guide/shelling/   /guides/shelling-guide-florida/   301
+/travel-spot-guide/shelling-guide   /guides/shelling-guide-florida/   301
+/travel-spot-guide/shelling-guide/   /guides/shelling-guide-florida/   301
 
 # Tide & Weather Info
 /travel-spot-guide/tide-tables   /guides/anna-maria-island-weather/   301
@@ -143,16 +143,16 @@
 /travel-spot-guide/golf/   /stays/golf-vacation-rentals-bradenton/   301
 
 # Sunset Cruises
-/travel-spot-guide/sunset-cruise   /stays/sunset-cruise-vacation-rentals-bradenton/   301
-/travel-spot-guide/sunset-cruise/   /stays/sunset-cruise-vacation-rentals-bradenton/   301
+/travel-spot-guide/sunset-cruise   /guides/things-to-do-bradenton-fl/   301
+/travel-spot-guide/sunset-cruise/   /guides/things-to-do-bradenton-fl/   301
 
 # Catch-all wildcard (must come AFTER specific rules — Netlify matches top-to-bottom)
 /travel-spot-guide/*   /guides/   301
 
 /what-awaits-you-at-seascape-vacations/*   /guides/   301
 /what-awaits-you-at-seascape-vacations   /guides/   301
-/contact-us   /contact/   301
-/contact-us/   /contact/   301
+/contact-us   /#contact   301
+/contact-us/   /#contact   301
 
 # --- Additional old platform routes (GSC 404 cleanup, 2026-03-08) ---
 
@@ -181,9 +181,9 @@
 /city/sarasota   /guides/sarasota-area-guide/   301
 /city/sarasota/   /guides/sarasota-area-guide/   301
 /city/sarasota/*   /guides/sarasota-area-guide/   301
-/city/anna-maria   /guides/anna-maria-city.html   301
-/city/anna-maria/   /guides/anna-maria-city.html   301
-/city/anna-maria/*   /guides/anna-maria-city.html   301
+/city/anna-maria   /guides/anna-maria-city/   301
+/city/anna-maria/   /guides/anna-maria-city/   301
+/city/anna-maria/*   /guides/anna-maria-city/   301
 /city/*   /guides/   301
 
 # Old platform user/account routes

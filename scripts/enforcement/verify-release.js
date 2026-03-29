@@ -145,6 +145,7 @@ function main() {
   withWorktreeLock({ name: "repo-build" }, () => {
     run("npm", ["test"]);
     run("npm", ["run", "build"]);
+    run("npm", ["run", "verify:redirects"]);
     run("npm", ["run", "verify:recovery:p0"]);
     run("npm", ["run", "verify:recovery:guides"]);
     run("npm", ["run", "verify:recovery:remediation"]);

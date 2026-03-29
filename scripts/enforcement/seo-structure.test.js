@@ -49,7 +49,12 @@ test("redirects avoid the known missing legacy target pages", () => {
     "/stays/de-soto-national-memorial-vacation-rentals/",
     "/stays/pet-friendly-vacation-rentals-anna-maria-island/",
     "/stays/cortez-village-vacation-rentals/",
-    "/stays/palmetto-vacation-rentals-florida/"
+    "/stays/palmetto-vacation-rentals-florida/",
+    "/stays/paddleboarding-vacation-rentals-florida/",
+    "/stays/riverwalk-bradenton-vacation-rentals/",
+    "/stays/birdwatching-vacation-rentals-florida/",
+    "/stays/sunset-cruise-vacation-rentals-bradenton/",
+    "/contact/"
   ]) {
     assert.equal(redirects.includes(missingTarget), false);
   }
@@ -57,12 +62,46 @@ test("redirects avoid the known missing legacy target pages", () => {
   for (const safeTarget of [
     "/stays/gulf-coast-vacation-homes-with-dock/",
     "/stays/kayaking-vacation-rentals-bradenton/",
-    "/guides/things-to-do-bradenton-fl.html",
+    "/guides/things-to-do-bradenton-fl/",
     "/stays/pet-friendly-vacation-rentals-bradenton/",
     "/stays/bradenton-vacation-rentals-near-beaches/",
     "/guides/bradenton-area-guide/"
   ]) {
     assert.equal(redirects.includes(safeTarget), true);
+  }
+});
+
+test("legacy guide alias redirects point directly at slash canonicals instead of .html hops", () => {
+  const redirects = fs.readFileSync(path.join(projectRoot, "src", "_redirects"), "utf8");
+
+  for (const staleTarget of [
+    "/guides/anna-maria-island-beaches.html",
+    "/guides/bradenton-beach.html",
+    "/guides/siesta-key-beach-guide.html",
+    "/guides/fishing-guide-anna-maria-sarasota.html",
+    "/guides/things-to-do-bradenton-fl.html",
+    "/guides/do-you-need-a-car-anna-maria-island.html",
+    "/guides/best-restaurants-anna-maria-island.html",
+    "/guides/dolphins-manatees-bradenton.html",
+    "/guides/shelling-guide-florida.html",
+    "/guides/anna-maria-city.html"
+  ]) {
+    assert.equal(redirects.includes(staleTarget), false, `Expected redirects to stop targeting ${staleTarget}`);
+  }
+
+  for (const canonicalTarget of [
+    "/guides/anna-maria-island-beaches/",
+    "/guides/bradenton-beach/",
+    "/guides/siesta-key-beach-guide/",
+    "/guides/fishing-guide-anna-maria-sarasota/",
+    "/guides/things-to-do-bradenton-fl/",
+    "/guides/do-you-need-a-car-anna-maria-island/",
+    "/guides/best-restaurants-anna-maria-island/",
+    "/guides/dolphins-manatees-bradenton/",
+    "/guides/shelling-guide-florida/",
+    "/guides/anna-maria-city/"
+  ]) {
+    assert.equal(redirects.includes(canonicalTarget), true, `Expected redirects to include ${canonicalTarget}`);
   }
 });
 
