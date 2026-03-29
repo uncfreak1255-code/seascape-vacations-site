@@ -146,3 +146,43 @@ test("top property pages instrument both availability and booking-page handoff C
     }
   }
 });
+
+test("top property pages use semantic hero headings and stay pages explain fit in guest language", () => {
+  const propertyPages = [
+    path.join(projectRoot, "src", "properties", "dockside-dreams", "index.njk"),
+    path.join(projectRoot, "src", "properties", "the-oasis", "index.njk"),
+    path.join(projectRoot, "src", "properties", "sarasota-luxe", "index.njk"),
+    path.join(projectRoot, "src", "properties", "river-house", "index.njk"),
+    path.join(projectRoot, "src", "properties", "bradenton-pool-home", "index.njk")
+  ];
+
+  for (const file of propertyPages) {
+    const source = fs.readFileSync(file, "utf8");
+
+    assert.equal(
+      /<div class="hero-cinema-content">\s*<h1>/m.test(source),
+      true,
+      `${path.basename(path.dirname(file))} should expose an h1 inside the hero`
+    );
+    assert.equal(
+      /<div class="hero-cinema-content">\s*<h2>/m.test(source),
+      false,
+      `${path.basename(path.dirname(file))} should not hide the main title inside an h2`
+    );
+  }
+
+  const staysTemplate = fs.readFileSync(path.join(projectRoot, "src", "stays", "stays.njk"), "utf8");
+
+  assert.equal(staysTemplate.includes("Why these homes fit this trip"), true);
+  assert.equal(
+    staysTemplate.includes(
+      "This page is meant to narrow the right options fast, not send you back into generic browsing."
+    ),
+    true
+  );
+  assert.equal(staysTemplate.includes("Why this booking path works"), false);
+  assert.equal(
+    staysTemplate.includes("This page should help you narrow the trip fast, not send you back into generic inventory scrolling."),
+    false
+  );
+});
