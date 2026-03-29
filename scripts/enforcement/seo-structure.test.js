@@ -117,7 +117,7 @@ test("property owners page leads with premium proof instead of explainer-hub cop
   assert.equal(ownerPage.includes("Property management for owners who care about net revenue"), true);
   assert.equal(ownerPage.includes("$119,923"), true);
   assert.equal(ownerPage.includes("13.4% → 2.9%"), true);
-  assert.equal(ownerPage.includes("Where Revenue Actually Leaks"), true);
+  assert.equal(ownerPage.includes("Where Owner Revenue Actually Leaks"), true);
   assert.equal(ownerPage.includes("What Is Vacation Rental Property Management?"), false);
   assert.equal(ownerPage.includes("Request a property evaluation"), false);
 });

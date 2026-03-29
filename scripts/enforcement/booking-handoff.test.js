@@ -176,13 +176,17 @@ test("top property pages use semantic hero headings and stay pages explain fit i
   assert.equal(staysTemplate.includes("Why these homes fit this trip"), true);
   assert.equal(
     staysTemplate.includes(
-      "This page is meant to narrow the right options fast, not send you back into generic browsing."
+      "Use these highlights to decide whether this trip, location, and home style line up before you start comparing listings."
     ),
     true
   );
   assert.equal(staysTemplate.includes("Why this booking path works"), false);
   assert.equal(
     staysTemplate.includes("This page should help you narrow the trip fast, not send you back into generic inventory scrolling."),
+    false
+  );
+  assert.equal(
+    staysTemplate.includes("This page is meant to narrow the right options fast, not send you back into generic browsing."),
     false
   );
 });

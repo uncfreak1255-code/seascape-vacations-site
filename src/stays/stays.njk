@@ -332,9 +332,9 @@ eleventyComputed:
         <section class="section" style="padding-top: 44px; padding-bottom: 28px;">
             <div class="container">
                 <div class="section-header" style="margin-bottom: 28px;">
-                    <p class="section-tag">Trip Math</p>
+                    <p class="section-tag">Best Fit</p>
                     <h2 class="section-title">Why these homes fit this trip</h2>
-                    <p class="section-subtitle">This page is meant to narrow the right options fast, not send you back into generic browsing.</p>
+                    <p class="section-subtitle">Use these highlights to decide whether this trip, location, and home style line up before you start comparing listings.</p>
                 </div>
                 <div class="decision-grid">
                     {% for point in seoPage.decisionHighlights %}
@@ -474,8 +474,8 @@ eleventyComputed:
 
         <section class="cta-section">
             <div class="container">
-                <h2 class="cta-title">{{ seoPage.collectionCtaTitle or "Need the wider Seascape collection?" }}</h2>
-                <p class="cta-subtitle">{{ seoPage.collectionCtaBody or "This stay page is the filtered view. If the fit is close but not perfect, jump into the full direct-book collection instead of restarting on Airbnb." }}</p>
+                <h2 class="cta-title">{{ seoPage.collectionCtaTitle or "Need the full Seascape collection?" }}</h2>
+                <p class="cta-subtitle">{{ seoPage.collectionCtaBody or "If these homes are close but not quite right, open the full Seascape collection and compare the rest of the portfolio in one place." }}</p>
                 <a
                     href="{{ seoPage.collectionCtaHref or '/properties/' }}"
                     class="btn btn-gold"

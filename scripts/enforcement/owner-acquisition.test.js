@@ -29,8 +29,8 @@ test("owner landing page uses a real revenue teardown form instead of generic ev
 test("owner landing page keeps the revenue teardown close to the sales argument instead of burying it under the library", () => {
   const teardownIndex = ownerLanding.indexOf('id="owner-cta"');
   const faqIndex = ownerLanding.indexOf("Selected FAQ");
-  const libraryIndex = ownerLanding.indexOf("Operational Library");
-  const specialSituationsIndex = ownerLanding.indexOf("Special Situations");
+  const libraryIndex = ownerLanding.indexOf("Owner Guides");
+  const specialSituationsIndex = ownerLanding.indexOf("Specific Situations");
 
   assert.notEqual(teardownIndex, -1, "owner hub needs the teardown anchor");
   assert.equal(ownerLanding.includes("What the teardown gives you"), true);
