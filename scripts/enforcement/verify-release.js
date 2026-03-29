@@ -150,6 +150,7 @@ function main() {
     run("npm", ["run", "verify:recovery:remediation"]);
     run("npm", ["run", "verify:links"]);
     run("npm", ["run", "verify:jsonld"]);
+    run("npm", ["run", "verify:redirects"]);
 
     console.log("verify-release: all checks passed");
   });

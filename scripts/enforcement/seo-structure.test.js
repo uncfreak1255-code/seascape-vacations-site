@@ -57,7 +57,7 @@ test("redirects avoid the known missing legacy target pages", () => {
   for (const safeTarget of [
     "/stays/gulf-coast-vacation-homes-with-dock/",
     "/stays/kayaking-vacation-rentals-bradenton/",
-    "/guides/things-to-do-bradenton-fl.html",
+    "/guides/things-to-do-bradenton-fl/",
     "/stays/pet-friendly-vacation-rentals-bradenton/",
     "/stays/bradenton-vacation-rentals-near-beaches/",
     "/guides/bradenton-area-guide/"
