@@ -1,5 +1,7 @@
 const test = require("node:test");
 const assert = require("node:assert/strict");
+const fs = require("node:fs");
+const path = require("node:path");
 
 const {
   classifyUntrackedFiles,
@@ -64,5 +66,16 @@ test("getNextSafeCommand falls back to git status for non-main workspaces", () =
       localMainBehindOrigin: false
     }),
     "git status --short"
+  );
+});
+
+test("llms source does not contain unresolved merge markers", () => {
+  const llmsPath = path.join(__dirname, "../../src/llms.txt");
+  const contents = fs.readFileSync(llmsPath, "utf8");
+
+  assert.equal(
+    /^(<<<<<<<|=======|>>>>>>>)/m.test(contents),
+    false,
+    "src/llms.txt still contains unresolved merge markers"
   );
 });
