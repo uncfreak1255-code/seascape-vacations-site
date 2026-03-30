@@ -322,196 +322,7 @@
             }
         }
 
-        /* Glass morphism nav */
-        .nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 100;
-            background: rgba(245, 238, 214, 0.92);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-            transition: all 0.4s ease;
-        }
-
-        .nav.scrolled {
-            background: rgba(245, 238, 214, 0.98);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08);
-        }
-
-        .nav-inner {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 16px 24px;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .nav-logo {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-        }
-
-        .nav-logo:hover {
-            transform: scale(1.02);
-        }
-
-        .nav-logo-text {
-            font-family: 'Playfair Display', serif;
-            font-size: 20px;
-            font-weight: 500;
-            color: var(--brand);
-            letter-spacing: 0.05em;
-        }
-
-        .nav-logo-sub {
-            font-size: 9px;
-            letter-spacing: 0.2em;
-            color: var(--stone-light);
-            text-transform: uppercase;
-            margin-top: -2px;
-        }
-
-        .nav-links {
-            display: none;
-            align-items: center;
-            gap: 28px;
-            margin-left: 48px;
-        }
-
-        .nav-link {
-            font-size: 14px;
-            font-weight: 500;
-            color: var(--stone-light);
-            cursor: pointer;
-            position: relative;
-            padding: 8px 0;
-            transition: color 0.3s ease;
-        }
-
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: linear-gradient(90deg, var(--brand), var(--gold));
-            transition: width 0.3s ease;
-        }
-
-        .nav-link:hover {
-            color: var(--brand);
-        }
-
-        .nav-link:hover::after {
-            width: 100%;
-        }
-
-        /* Destinations Dropdown */
-        .nav-dropdown {
-            position: relative;
-            display: flex;
-            align-items: center;
-        }
-
-        .nav-dropdown>.nav-link {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .nav-dropdown>.nav-link::after {
-            display: none;
-            /* Remove underline animation from dropdown trigger */
-        }
-
-        .nav-dropdown-content {
-            display: none;
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            background: white;
-            min-width: 200px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
-            border-radius: 12px;
-            padding: 16px 0 8px 0;
-            z-index: 1000;
-        }
-
-        .nav-dropdown-content::before {
-            content: '';
-            position: absolute;
-            top: -6px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 12px;
-            height: 12px;
-            background: white;
-            transform: translateX(-50%) rotate(45deg);
-            box-shadow: -2px -2px 4px rgba(0, 0, 0, 0.04);
-        }
-
-        .nav-dropdown:hover .nav-dropdown-content {
-            display: block;
-        }
-
-        .nav-dropdown-content a {
-            display: block;
-            padding: 12px 20px;
-            color: var(--stone);
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            transition: all 0.2s ease;
-            border-left: 3px solid transparent;
-        }
-
-        .nav-dropdown-content a:hover {
-            background: var(--cream);
-            color: var(--brand);
-            border-left-color: var(--brand);
-        }
-
-        .mobile-btn {
-            background: none;
-            border: none;
-            cursor: pointer;
-            color: var(--stone);
-            padding: 8px;
-            width: 44px;
-            height: 44px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .mobile-menu {
-            display: none;
-            padding: 24px;
-            background: white;
-            border-top: 1px solid rgba(0, 0, 0, 0.06);
-        }
-
-        .mobile-menu.active {
-            display: block;
-        }
-
-        .mobile-item {
-            display: block;
-            padding: 16px 0;
-            color: var(--stone);
-            font-weight: 500;
-            cursor: pointer;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-        }
+        {% include "partials/site-header-styles.njk" %}
 
         /* Premium Buttons */
         .btn {
@@ -1896,14 +1707,6 @@
         }
 
         @media (min-width: 768px) {
-            .nav-links {
-                display: flex;
-            }
-
-            .mobile-btn {
-                display: none;
-            }
-
             .feature-grid {
                 grid-template-columns: repeat(3, 1fr);
             }
@@ -3028,69 +2831,13 @@
 <body>
 
     <!-- NAV -->
-    <nav class="nav" id="mainNav">
-        <div class="nav-inner">
-            <a class="nav-logo" href="/">
-                <svg viewBox="0 0 100 100" width="44" height="44" fill="none" stroke="#5F8A8B" stroke-width="3"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <!-- Rounded triangle outline -->
-                    <path d="M50 12 L88 78 Q92 86 84 88 L16 88 Q8 86 12 78 Z" />
-                    <!-- Crashing wave -->
-                    <path d="M20 72 Q32 50 48 56 Q62 62 72 52 Q78 46 82 48" stroke-width="3.5" />
-                    <!-- Water spray marks -->
-                    <path d="M26 62 Q32 54 38 58" stroke-width="2.5" />
-                    <path d="M30 70 Q36 62 42 66" stroke-width="2.5" />
-                    <path d="M22 78 Q28 70 34 74" stroke-width="2.5" />
-                </svg>
-                <div>
-                    <div class="nav-logo-text">SEASCAPE</div>
-                    <div class="nav-logo-sub">Vacations</div>
-                </div>
-            </a>
-            <div class="nav-links">
-                <a class="nav-link" href="/">Home</a>
-                <a class="nav-link" href="/properties/">Properties</a>
-                <div class="nav-dropdown">
-                    <span class="nav-link">Destinations ▾</span>
-                    <div class="nav-dropdown-content">
-                        <a href="/guides/anna-maria-island-area-guide/">Anna Maria Island</a>
-                        <a href="/guides/bradenton-area-guide/">Bradenton</a>
-                        <a href="/guides/sarasota-area-guide/">Sarasota</a>
-                        <a href="/guides/siesta-key-area-guide/">Siesta Key</a>
-                    </div>
-                </div>
-                <a class="nav-link" href="/about-us/">About Us</a>
-                <a class="nav-link" href="/property-management/">Property Owners</a>
-                <a class="nav-link" href="/guides/">Guides</a>
-                <a class="nav-link" href="#contact">Contact</a>
-
-                <button class="btn" onclick="window.open('https://book.seascape-vacations.com', '_blank')">Book
-                    Direct</button>
-            </div>
-            <button class="mobile-btn" onclick="toggleMenu()" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">{{ uiIcon('menu', 'ui-icon--mobile-toggle') }}</button>
-        </div>
-        <div id="mobileMenu" class="mobile-menu">
-            <a href="/" class="mobile-item" onclick="toggleMenu()">Home</a>
-            <a href="/properties/" class="mobile-item" onclick="toggleMenu()">Properties</a>
-            <span class="mobile-item" style="color:var(--brand);font-weight:600;">Destinations</span>
-            <a href="/guides/anna-maria-island-area-guide/" class="mobile-item" style="padding-left:24px;font-size:14px;" onclick="toggleMenu()">› Anna Maria
-                Island</a>
-            <a href="/guides/bradenton-area-guide/" class="mobile-item" style="padding-left:24px;font-size:14px;" onclick="toggleMenu()">›
-                Bradenton</a>
-            <a href="/guides/sarasota-area-guide/" class="mobile-item" style="padding-left:24px;font-size:14px;" onclick="toggleMenu()">›
-                Sarasota</a>
-            <a href="/guides/siesta-key-area-guide/" class="mobile-item" style="padding-left:24px;font-size:14px;" onclick="toggleMenu()">› Siesta
-                Key</a>
-            <a href="/about-us/" class="mobile-item" onclick="toggleMenu()">About Us</a>
-            <a href="/property-management/" class="mobile-item" onclick="toggleMenu()">Property Owners</a>
-            <a href="/guides/" class="mobile-item" onclick="toggleMenu()">Guides</a>
-            <a href="#contact" class="mobile-item" onclick="toggleMenu()">Contact</a>
-
-            <button class="btn" style="width:100%;margin-top:16px"
-                onclick="window.open('https://book.seascape-vacations.com', '_blank'); toggleMenu()">Book
-                Direct</button>
-        </div>
-    </nav>
+    {% set navActive = "home" %}
+    {% set navButtonHref = "https://book.seascape-vacations.com" %}
+    {% set navButtonLabel = "Book Direct" %}
+    {% set navButtonTarget = "_blank" %}
+    {% set navButtonRel = "noopener noreferrer" %}
+    {% set navContactHref = "#contact" %}
+    {% include "partials/site-header.njk" %}
 
     <!-- Quick View Modal -->
     <div class="quick-view-overlay" id="quick-view-overlay" onclick="closeQuickView(event)">
@@ -3528,29 +3275,6 @@
             const extraClass = className ? ` ${className}` : '';
             return `<span class="ui-icon${extraClass}" aria-hidden="true"><svg viewBox="0 0 24 24">${icons[name] || icons.info}</svg></span>`;
         }
-
-        // Mobile Menu
-        function toggleMenu() {
-            const menu = document.getElementById('mobileMenu');
-            const btn = document.querySelector('.mobile-btn');
-            menu.classList.toggle('active');
-            const isExpanded = menu.classList.contains('active');
-            btn.innerHTML = isExpanded
-                ? createIconMarkup('close', 'ui-icon--mobile-toggle')
-                : createIconMarkup('menu', 'ui-icon--mobile-toggle');
-            btn.setAttribute('aria-label', isExpanded ? 'Close menu' : 'Open menu');
-            btn.setAttribute('aria-expanded', isExpanded ? 'true' : 'false');
-        }
-
-        // Scroll Effect for Nav
-        window.addEventListener('scroll', () => {
-            const nav = document.getElementById('mainNav');
-            if (window.scrollY > 50) {
-                nav.classList.add('scrolled');
-            } else {
-                nav.classList.remove('scrolled');
-            }
-        });
 
         // ===== SCROLL REVEAL ANIMATIONS =====
         // Use Intersection Observer for performance
@@ -4409,6 +4133,7 @@
             }, 3000);
         });
     </script>
+    {% include "partials/site-header-script.njk" %}
 
 </body>
 
