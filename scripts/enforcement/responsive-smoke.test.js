@@ -67,7 +67,7 @@ const PAGE_TYPES = [
     minCTA: 3,
     minInternalLinks: 5,
     minStyleBlocks: 0,
-    minH2: 2,
+    minH2: 1,
     requireSchema: false,
   },
   {

@@ -26,8 +26,20 @@ Use this agent for any visual, CSS, responsive, or layout work. It enforces blas
 3. Verify at least 3 other pages that share modified selectors
 4. Check heading hierarchy (H1 > H2 > H3 order preserved)
 5. Confirm no internal links were displaced
-6. Run responsive smoke test if available: `npm test`
+6. Run responsive smoke test: `npm test`
 7. `git diff --stat` — confirm no unrelated files changed
+
+## Browser Verification (Chrome Extension)
+
+When the Claude Code Chrome extension is connected, use it to visually verify CSS changes:
+
+1. Start the local dev server or open built HTML files
+2. Check the changed page at mobile (375px), tablet (768px), and desktop (1200px) widths
+3. Verify no overlapping elements, broken spacing, or invisible text
+4. Compare against the pre-change state if possible
+5. Iterate on visual issues until the result looks correct at all breakpoints
+
+Browser verification catches visual regressions that DOM-only smoke tests miss. Use it every time you make layout or responsive changes.
 
 ## Required Quality Gate Skills
 
