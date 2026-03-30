@@ -397,21 +397,18 @@ headExtra: |
     }
 
     .catalog-actions {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      display: flex;
       gap: 12px;
-      align-items: stretch;
     }
 
     .catalog-actions .btn,
     .catalog-secondary {
-      padding: 12px 18px;
+      padding: 14px 22px;
       border-radius: 999px;
       font-size: 14px;
       font-weight: 600;
-      width: 100%;
-      min-height: 54px;
-      justify-content: center;
+      text-align: center;
+      white-space: nowrap;
     }
 
     .catalog-secondary {
