@@ -67,7 +67,7 @@ test("properties catalog routes into direct-booking stay collections instead of 
     "utf8"
   );
 
-  assert.equal(propertiesTemplate.includes("Start with the right booking path"), true);
+  assert.equal(propertiesTemplate.includes("Looking for something specific?"), true);
   assert.equal(propertiesTemplate.includes('data-track-event="catalog_collection_click"'), true);
 
   for (const href of [
