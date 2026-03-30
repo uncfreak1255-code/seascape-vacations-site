@@ -729,22 +729,22 @@
             background-position: center;
             transform: scale(1.1);
             animation: heroZoom 20s ease-in-out infinite alternate;
-            background-image: url('hero-optimized.jpg');
+            background-image: url('/hero-optimized.jpg');
             background-image: image-set(
-                url('hero-optimized.avif') type('image/avif') 1x,
-                url('hero-optimized.webp') type('image/webp') 1x,
-                url('hero-optimized.jpg') type('image/jpeg') 1x
+                url('/hero-optimized.avif') type('image/avif') 1x,
+                url('/hero-optimized.webp') type('image/webp') 1x,
+                url('/hero-optimized.jpg') type('image/jpeg') 1x
             );
         }
 
         /* Mobile hero - smaller image for faster LCP */
         @media (max-width: 768px) {
             .hero-bg {
-                background-image: url('hero-mobile.jpg');
+                background-image: url('/hero-mobile.jpg');
                 background-image: image-set(
-                    url('hero-mobile.avif') type('image/avif') 1x,
-                    url('hero-mobile.webp') type('image/webp') 1x,
-                    url('hero-mobile.jpg') type('image/jpeg') 1x
+                    url('/hero-mobile.avif') type('image/avif') 1x,
+                    url('/hero-mobile.webp') type('image/webp') 1x,
+                    url('/hero-mobile.jpg') type('image/jpeg') 1x
                 );
             }
         }
