@@ -94,57 +94,7 @@
             color: inherit;
         }
 
-        /* Navigation - Same as main site */
-        .nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 100;
-            background: rgba(245, 238, 214, 0.98);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08);
-        }
-
-        .nav-inner {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 16px 24px;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .nav-logo {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-        }
-
-        .nav-logo img {
-            width: auto;
-            height: 40px;
-            max-width: none;
-            flex: 0 0 auto;
-            display: block;
-        }
-
-        .nav-logo-text {
-            font-family: 'Playfair Display', serif;
-            font-size: 20px;
-            font-weight: 500;
-            color: var(--brand);
-            letter-spacing: 0.05em;
-        }
-
-        .nav-logo-sub {
-            font-size: 9px;
-            letter-spacing: 0.2em;
-            color: var(--stone-light);
-            text-transform: uppercase;
-            margin-top: -2px;
-        }
+        {% include "partials/site-header-styles.njk" %}
 
         /* Buttons */
         .btn {
@@ -391,25 +341,7 @@
     </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="nav">
-        <div class="nav-inner">
-            <a href="/" class="nav-logo">
-                <img src="/logo-optimized.png" alt="Seascape Vacations" height="40">
-                <div>
-                    <div class="nav-logo-text">SEASCAPE</div>
-                    <div class="nav-logo-sub">Vacations</div>
-                </div>
-            </a>
-            <a
-              href="{{ navButtonHref or '/' }}"
-              class="btn"
-              {% if navButtonTarget %}target="{{ navButtonTarget }}"{% endif %}
-              {% if navButtonRel %}rel="{{ navButtonRel }}"{% endif %}
-              {% if navButtonAttributes %}{{ navButtonAttributes | safe }}{% endif %}
-            >{{ navButtonLabel or "View All Properties" }}</a>
-        </div>
-    </nav>
+    {% include "partials/site-header.njk" %}
 
     <main class="main-content">
         {{ content | safe }}
@@ -432,6 +364,7 @@
         </div>
     </footer>
 
+    {% include "partials/site-header-script.njk" %}
     {% include "partials/analytics-ga4.njk" %}
 </body>
 </html>
