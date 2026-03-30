@@ -229,58 +229,7 @@ eleventyComputed:
       padding-right: 24px;
     }
 
-    .nav-inner {
-      min-height: 78px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 20px;
-    }
-
-    .nav-logo {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .nav-logo-text {
-      font-family: "Playfair Display", serif;
-      font-size: 21px;
-      color: var(--brand-dark);
-      letter-spacing: 0.05em;
-    }
-
-    .nav-logo-sub {
-      font-size: 9px;
-      text-transform: uppercase;
-      letter-spacing: 0.22em;
-      color: var(--stone-light);
-    }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-      flex-wrap: wrap;
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--stone-light);
-    }
-
-    .nav-links a[aria-current="page"] {
-      color: var(--brand-dark);
-      position: relative;
-    }
-
-    .nav-links a[aria-current="page"]::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: -10px;
-      height: 2px;
-      background: linear-gradient(90deg, var(--brand), var(--gold));
-      border-radius: 999px;
-    }
+    {% include "partials/site-header-styles.njk" %}
 
     .btn {
       display: inline-flex;
@@ -297,7 +246,7 @@ eleventyComputed:
     }
 
     .hero {
-      padding-top: 64px;
+      padding-top: 112px;
       padding-bottom: 28px;
       display: grid;
       grid-template-columns: 1.25fr 0.75fr;
@@ -631,22 +580,10 @@ eleventyComputed:
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
 
-  <nav class="nav" aria-label="Primary">
-    <div class="nav-inner">
-      <a href="/" class="nav-logo">
-        <span class="nav-logo-text">Seascape Vacations</span>
-        <span class="nav-logo-sub">Luxury Coastal Stays</span>
-      </a>
-      <div class="nav-links">
-        <a href="/">Home</a>
-        <a href="/properties/">Stays</a>
-        <a href="/about-us/">About Us</a>
-        <a href="/property-management/">Property Owners</a>
-        <a href="/guides/" aria-current="page">Guides</a>
-      </div>
-      <a class="btn" href="/properties/">Browse Homes</a>
-    </div>
-  </nav>
+  {% set navActive = "guides" %}
+  {% set navButtonHref = "/properties/" %}
+  {% set navButtonLabel = "Browse Homes" %}
+  {% include "partials/site-header.njk" %}
 
   <main id="main">
     <header class="hero">
@@ -821,6 +758,7 @@ eleventyComputed:
     </div>
   </footer>
 
+  {% include "partials/site-header-script.njk" %}
   {% include "partials/analytics-ga4.njk" %}
 </body>
 </html>

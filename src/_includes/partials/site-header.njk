@@ -1,0 +1,69 @@
+{% set resolvedNavActive = navActive or "" %}
+{% set resolvedNavButtonHref = navButtonHref or "/properties/" %}
+{% set resolvedNavButtonLabel = navButtonLabel or "Browse Homes" %}
+{% if navContactHref %}
+  {% set resolvedNavContactHref = navContactHref %}
+{% elif page and page.url == "/" %}
+  {% set resolvedNavContactHref = "#contact" %}
+{% else %}
+  {% set resolvedNavContactHref = "/#contact" %}
+{% endif %}
+<nav class="nav" id="mainNav" aria-label="Primary">
+    <div class="nav-inner">
+        <a class="nav-logo" href="/">
+            <img src="/logo-optimized.png" alt="Seascape Vacations" height="40">
+            <div class="nav-logo-copy">
+                <div class="nav-logo-text">SEASCAPE</div>
+                <div class="nav-logo-sub">Vacations</div>
+            </div>
+        </a>
+        <div class="nav-links">
+            <a class="nav-link{% if resolvedNavActive == 'home' %} is-current{% endif %}" href="/" {% if resolvedNavActive == 'home' %}aria-current="page"{% endif %}>Home</a>
+            <a class="nav-link{% if resolvedNavActive == 'properties' %} is-current{% endif %}" href="/properties/" {% if resolvedNavActive == 'properties' %}aria-current="page"{% endif %}>Properties</a>
+            <div class="nav-dropdown">
+                <button class="nav-link nav-link--trigger{% if resolvedNavActive == 'destinations' %} is-current{% endif %}" type="button" {% if resolvedNavActive == 'destinations' %}aria-current="page"{% endif %} aria-haspopup="true">Destinations <span aria-hidden="true">▾</span></button>
+                <div class="nav-dropdown-content">
+                    <a href="/guides/anna-maria-island-area-guide/">Anna Maria Island</a>
+                    <a href="/guides/bradenton-area-guide/">Bradenton</a>
+                    <a href="/guides/sarasota-area-guide/">Sarasota</a>
+                    <a href="/guides/siesta-key-area-guide/">Siesta Key</a>
+                </div>
+            </div>
+            <a class="nav-link{% if resolvedNavActive == 'about' %} is-current{% endif %}" href="/about-us/" {% if resolvedNavActive == 'about' %}aria-current="page"{% endif %}>About Us</a>
+            <a class="nav-link{% if resolvedNavActive == 'owners' %} is-current{% endif %}" href="/property-management/" {% if resolvedNavActive == 'owners' %}aria-current="page"{% endif %}>Property Owners</a>
+            <a class="nav-link{% if resolvedNavActive == 'guides' %} is-current{% endif %}" href="/guides/" {% if resolvedNavActive == 'guides' %}aria-current="page"{% endif %}>Guides</a>
+            <a class="nav-link{% if resolvedNavActive == 'contact' %} is-current{% endif %}" href="{{ resolvedNavContactHref }}" {% if resolvedNavActive == 'contact' %}aria-current="page"{% endif %}>Contact</a>
+            <a
+              href="{{ resolvedNavButtonHref }}"
+              class="btn"
+              {% if navButtonTarget %}target="{{ navButtonTarget }}"{% endif %}
+              {% if navButtonRel %}rel="{{ navButtonRel }}"{% endif %}
+              {% if navButtonAttributes %}{{ navButtonAttributes | safe }}{% endif %}
+            >{{ resolvedNavButtonLabel }}</a>
+        </div>
+        <button class="mobile-btn" onclick="toggleSiteMenu()" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </button>
+    </div>
+    <div id="mobileMenu" class="mobile-menu">
+        <a href="/" class="mobile-item{% if resolvedNavActive == 'home' %} mobile-item--current{% endif %}" onclick="toggleSiteMenu()">Home</a>
+        <a href="/properties/" class="mobile-item{% if resolvedNavActive == 'properties' %} mobile-item--current{% endif %}" onclick="toggleSiteMenu()">Properties</a>
+        <span class="mobile-item mobile-section-label">Destinations</span>
+        <a href="/guides/anna-maria-island-area-guide/" class="mobile-item mobile-item--sub" onclick="toggleSiteMenu()">Anna Maria Island</a>
+        <a href="/guides/bradenton-area-guide/" class="mobile-item mobile-item--sub" onclick="toggleSiteMenu()">Bradenton</a>
+        <a href="/guides/sarasota-area-guide/" class="mobile-item mobile-item--sub" onclick="toggleSiteMenu()">Sarasota</a>
+        <a href="/guides/siesta-key-area-guide/" class="mobile-item mobile-item--sub" onclick="toggleSiteMenu()">Siesta Key</a>
+        <a href="/about-us/" class="mobile-item{% if resolvedNavActive == 'about' %} mobile-item--current{% endif %}" onclick="toggleSiteMenu()">About Us</a>
+        <a href="/property-management/" class="mobile-item{% if resolvedNavActive == 'owners' %} mobile-item--current{% endif %}" onclick="toggleSiteMenu()">Property Owners</a>
+        <a href="/guides/" class="mobile-item{% if resolvedNavActive == 'guides' %} mobile-item--current{% endif %}" onclick="toggleSiteMenu()">Guides</a>
+        <a href="{{ resolvedNavContactHref }}" class="mobile-item{% if resolvedNavActive == 'contact' %} mobile-item--current{% endif %}" onclick="toggleSiteMenu()">Contact</a>
+        <a
+          href="{{ resolvedNavButtonHref }}"
+          class="btn"
+          onclick="toggleSiteMenu()"
+          {% if navButtonTarget %}target="{{ navButtonTarget }}"{% endif %}
+          {% if navButtonRel %}rel="{{ navButtonRel }}"{% endif %}
+          {% if navButtonAttributes %}{{ navButtonAttributes | safe }}{% endif %}
+        >{{ resolvedNavButtonLabel }}</a>
+    </div>
+</nav>
