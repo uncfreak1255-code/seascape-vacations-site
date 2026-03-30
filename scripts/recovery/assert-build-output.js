@@ -511,7 +511,7 @@ if (phase === "remediation") {
     buildAnchorPattern({
       href: "#owner-cta",
       className: "btn",
-      text: "Get Your Revenue Teardown"
+      text: "Request Your Revenue Review"
     }),
     "property management nav CTA"
   );
