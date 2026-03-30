@@ -24,6 +24,7 @@ module.exports = function(eleventyConfig) {
   // Pass through static assets (preserves current design)
   eleventyConfig.addPassthroughCopy("images");
   eleventyConfig.addPassthroughCopy("css");
+  eleventyConfig.addPassthroughCopy({ "src/css": "css" });
   eleventyConfig.addPassthroughCopy("js");
   eleventyConfig.addPassthroughCopy("*.jpg");
   eleventyConfig.addPassthroughCopy("*.png");

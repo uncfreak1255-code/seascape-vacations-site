@@ -208,9 +208,10 @@ if (phase === "p0") {
   expectNotContains("_site/properties/index.html", "api.hostaway.com");
   expectNotContains("_site/properties/index.html", "hostaway-platform.s3.us-west-2.amazonaws.com");
   expectContains("_site/property-management/index.html", "Property Management");
-  expectContains("_site/properties/index.html", ".nav-logo img");
+  expectContains("_site/properties/index.html", 'href="/css/base.css"');
   expectContains("_site/stays/anna-maria-island-vacation-rentals/index.html", ".nav-logo img");
-  expectContains("_site/property-management/index.html", ".nav-logo img");
+  expectContains("_site/property-management/index.html", 'href="/css/base.css"');
+  expectContains("_site/css/base.css", ".nav-logo img");
   expectNotContains("_site/index.html", '<button class="mobile-btn" onclick="toggleMenu()">☰</button>');
   expectNotContains("_site/index.html", '<span class="star">★</span>');
   expectNotContains("_site/index.html", "<div class=\"review-stars\">★★★★★</div>");
