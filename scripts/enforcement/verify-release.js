@@ -5,6 +5,7 @@ const {
   findForbiddenSourcePaths,
   findPlaceholderAnalyticsPaths
 } = require("./lib");
+const { withWorktreeLock } = require("./worktree-lock");
 
 function run(command, args, options = {}) {
   const result = spawnSync(command, args, {
@@ -141,15 +142,18 @@ function main() {
     return;
   }
 
-  run("npm", ["test"]);
-  run("npm", ["run", "build"]);
-  run("npm", ["run", "verify:recovery:p0"]);
-  run("npm", ["run", "verify:recovery:guides"]);
-  run("npm", ["run", "verify:recovery:remediation"]);
-  run("npm", ["run", "verify:links"]);
-  run("npm", ["run", "verify:jsonld"]);
+  withWorktreeLock({ name: "repo-build" }, () => {
+    run("npm", ["run", "build"]);
+    run("npm", ["test"]);
+    run("npm", ["run", "verify:redirects"]);
+    run("npm", ["run", "verify:recovery:p0"]);
+    run("npm", ["run", "verify:recovery:guides"]);
+    run("npm", ["run", "verify:recovery:remediation"]);
+    run("npm", ["run", "verify:links"]);
+    run("npm", ["run", "verify:jsonld"]);
 
-  console.log("verify-release: all checks passed");
+    console.log("verify-release: all checks passed");
+  });
 }
 
 main();

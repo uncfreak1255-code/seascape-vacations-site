@@ -5,6 +5,7 @@
     "master"
   ],
   "generatedPaths": [
+    "DEPLOY THIS FOLDER TO NETLIFY/",
     "_site/",
     "_site_verify",
     "_site_verify_fresh",

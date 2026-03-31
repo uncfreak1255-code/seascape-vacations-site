@@ -5,6 +5,11 @@ const assert = require("node:assert/strict");
 
 const projectRoot = path.resolve(__dirname, "..", "..");
 
+function getFirstMatch(source, regex) {
+  const match = source.match(regex);
+  return match ? match[1] : "";
+}
+
 test("stays template can noindex weak template pages and avoids empty inventory schema", () => {
   const staysTemplate = fs.readFileSync(path.join(projectRoot, "src", "stays", "stays.njk"), "utf8");
 
@@ -44,7 +49,12 @@ test("redirects avoid the known missing legacy target pages", () => {
     "/stays/de-soto-national-memorial-vacation-rentals/",
     "/stays/pet-friendly-vacation-rentals-anna-maria-island/",
     "/stays/cortez-village-vacation-rentals/",
-    "/stays/palmetto-vacation-rentals-florida/"
+    "/stays/palmetto-vacation-rentals-florida/",
+    "/stays/paddleboarding-vacation-rentals-florida/",
+    "/stays/riverwalk-bradenton-vacation-rentals/",
+    "/stays/birdwatching-vacation-rentals-florida/",
+    "/stays/sunset-cruise-vacation-rentals-bradenton/",
+    "/contact/"
   ]) {
     assert.equal(redirects.includes(missingTarget), false);
   }
@@ -52,12 +62,46 @@ test("redirects avoid the known missing legacy target pages", () => {
   for (const safeTarget of [
     "/stays/gulf-coast-vacation-homes-with-dock/",
     "/stays/kayaking-vacation-rentals-bradenton/",
-    "/guides/things-to-do-bradenton-fl.html",
+    "/guides/things-to-do-bradenton-fl/",
     "/stays/pet-friendly-vacation-rentals-bradenton/",
     "/stays/bradenton-vacation-rentals-near-beaches/",
     "/guides/bradenton-area-guide/"
   ]) {
     assert.equal(redirects.includes(safeTarget), true);
+  }
+});
+
+test("legacy guide alias redirects point directly at slash canonicals instead of .html hops", () => {
+  const redirects = fs.readFileSync(path.join(projectRoot, "src", "_redirects"), "utf8");
+
+  for (const staleTarget of [
+    "/guides/anna-maria-island-beaches.html",
+    "/guides/bradenton-beach.html",
+    "/guides/siesta-key-beach-guide.html",
+    "/guides/fishing-guide-anna-maria-sarasota.html",
+    "/guides/things-to-do-bradenton-fl.html",
+    "/guides/do-you-need-a-car-anna-maria-island.html",
+    "/guides/best-restaurants-anna-maria-island.html",
+    "/guides/dolphins-manatees-bradenton.html",
+    "/guides/shelling-guide-florida.html",
+    "/guides/anna-maria-city.html"
+  ]) {
+    assert.equal(redirects.includes(staleTarget), false, `Expected redirects to stop targeting ${staleTarget}`);
+  }
+
+  for (const canonicalTarget of [
+    "/guides/anna-maria-island-beaches/",
+    "/guides/bradenton-beach/",
+    "/guides/siesta-key-beach-guide/",
+    "/guides/fishing-guide-anna-maria-sarasota/",
+    "/guides/things-to-do-bradenton-fl/",
+    "/guides/do-you-need-a-car-anna-maria-island/",
+    "/guides/best-restaurants-anna-maria-island/",
+    "/guides/dolphins-manatees-bradenton/",
+    "/guides/shelling-guide-florida/",
+    "/guides/anna-maria-city/"
+  ]) {
+    assert.equal(redirects.includes(canonicalTarget), true, `Expected redirects to include ${canonicalTarget}`);
   }
 });
 
@@ -112,7 +156,7 @@ test("property owners page leads with premium proof instead of explainer-hub cop
   assert.equal(ownerPage.includes("Property management for owners who care about net revenue"), true);
   assert.equal(ownerPage.includes("$119,923"), true);
   assert.equal(ownerPage.includes("13.4% → 2.9%"), true);
-  assert.equal(ownerPage.includes("Where Revenue Actually Leaks"), true);
+  assert.equal(ownerPage.includes("Where Owner Revenue Actually Leaks"), true);
   assert.equal(ownerPage.includes("What Is Vacation Rental Property Management?"), false);
   assert.equal(ownerPage.includes("Request a property evaluation"), false);
 });
@@ -213,5 +257,64 @@ test("live sources no longer promote retired duplicate guide paths", () => {
         `${path.relative(projectRoot, sourceFile)} should not include ${staleGuidePath}`
       );
     }
+  }
+});
+
+test("priority guides ship complete metadata instead of truncated titles or broken descriptions", () => {
+  const guideExpectations = [
+    {
+      relativePath: ["src", "guides", "2026-bradenton-vacation-rental-market-analysis.html"],
+      expectedTitle: "2026 Bradenton Beach Vacation Rental Market: Pricing, Occupancy & Top Areas"
+    },
+    {
+      relativePath: ["src", "guides", "anna-maria-island-vs-longboat-key.html"],
+      expectedTitle: "Anna Maria Island vs Longboat Key — Which Beach Is Right for You?"
+    },
+    {
+      relativePath: ["src", "guides", "best-waterfront-restaurants-with-boat-dock.html"],
+      expectedTitle: "Best Waterfront Restaurants with Boat Dock Access Near AMI | 2026",
+      expectedDescription:
+        "The best waterfront restaurants near Bradenton and Anna Maria Island where you can pull up by boat. Dockside dining with Gulf views and fresh seafood."
+    },
+    {
+      relativePath: ["src", "guides", "fishing-guide-anna-maria-sarasota.html"],
+      expectedTitle: "Complete Fishing Guide: Anna Maria Island, Bradenton & Sarasota",
+      expectedDescription:
+        "Complete fishing guide for Anna Maria Island, Bradenton, and Sarasota. Inshore, offshore, pier fishing, best charters, seasonal species, and license tips."
+    },
+    {
+      relativePath: ["src", "guides", "florida-gulf-coast-vacation-rental-market-report-2026.html"],
+      expectedTitle: "2026 Gulf Coast Vacation Rental Market Report — Pricing & Trends"
+    }
+  ];
+
+  for (const expectation of guideExpectations) {
+    const source = fs.readFileSync(path.join(projectRoot, ...expectation.relativePath), "utf8");
+    const title = getFirstMatch(source, /<title>([\s\S]*?)<\/title>/i);
+    const description = getFirstMatch(source, /<meta name="description" content="([\s\S]*?)"/i);
+
+    assert.equal(title, expectation.expectedTitle);
+
+    if (expectation.expectedDescription) {
+      assert.equal(description, expectation.expectedDescription);
+    }
+  }
+});
+
+test("guide metadata no longer ships stale 2025 date tags on current travel pages", () => {
+  const freshnessGuidePaths = [
+    path.join(projectRoot, "src", "guides", "anna-maria-island-beaches.html"),
+    path.join(projectRoot, "src", "guides", "best-restaurants-anna-maria-island.html"),
+    path.join(projectRoot, "src", "guides", "dolphins-manatees-bradenton.html"),
+    path.join(projectRoot, "src", "guides", "siesta-key-beach-guide.html")
+  ];
+
+  for (const guidePath of freshnessGuidePaths) {
+    const source = fs.readFileSync(guidePath, "utf8");
+    assert.equal(
+      source.includes("(2025)"),
+      false,
+      `${path.relative(projectRoot, guidePath)} should not still ship 2025 tags`
+    );
   }
 });
