@@ -143,6 +143,7 @@ function main() {
   }
 
   withWorktreeLock({ name: "repo-build" }, () => {
+    // Build MUST run before test: responsive-smoke.test.js reads _site/ output
     run("npm", ["run", "build"]);
     run("npm", ["test"]);
     run("npm", ["run", "verify:redirects"]);
