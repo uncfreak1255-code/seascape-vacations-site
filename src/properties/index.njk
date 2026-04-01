@@ -248,7 +248,7 @@ headExtra: |
 
     .catalog-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
       gap: 24px;
     }
 
@@ -521,7 +521,8 @@ headExtra: |
 
       .catalog-actions .btn,
       .catalog-secondary {
-        padding: 11px 16px;
+        padding: 14px 18px;
+        min-height: 44px;
       }
     }
   </style>

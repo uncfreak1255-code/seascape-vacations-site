@@ -37,6 +37,12 @@ headExtra: |
   }
   </script>
 ---
+<style>
+@media (max-width: 768px) {
+  .about-two-col { grid-template-columns: 1fr !important; }
+  .about-two-col img { min-height: 240px !important; }
+}
+</style>
 <nav class="breadcrumbs" aria-label="Breadcrumb">
   <ol>
     <li><a href="/">Home</a></li>
@@ -62,7 +68,7 @@ headExtra: |
       <p class="section-subtitle">Seascape Vacations serves travelers and property owners across Anna Maria Island, Bradenton, Sarasota, and Siesta Key with hands-on local support, carefully selected homes, and fast response when something matters.</p>
     </div>
 
-    <div style="display:grid;grid-template-columns:1.15fr .85fr;gap:32px;align-items:center;">
+    <div style="display:grid;grid-template-columns:1.15fr .85fr;gap:32px;align-items:center;" class="about-two-col">
       <div style="display:grid;gap:18px;">
         <div style="background:white;border-radius:20px;padding:28px;box-shadow:0 8px 28px rgba(0,0,0,0.06);">
           <h3 style="margin-bottom:12px;color:var(--brand-dark);">What guests can expect</h3>

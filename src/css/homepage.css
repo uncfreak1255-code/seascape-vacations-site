@@ -1399,7 +1399,12 @@
             inset: 0;
             background-size: cover;
             background-position: center;
-            background-attachment: fixed;
+        }
+
+        @media (min-width: 769px) {
+            .cta-bg {
+                background-attachment: fixed;
+            }
         }
 
         .cta-overlay {
@@ -2393,6 +2398,7 @@
             transform: skewX(-15deg);
             transition: left 0.8s ease;
             z-index: 6;
+            pointer-events: none;
         }
 
         .prop-card:hover::after {
