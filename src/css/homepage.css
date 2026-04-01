@@ -1399,7 +1399,12 @@
             inset: 0;
             background-size: cover;
             background-position: center;
-            background-attachment: fixed;
+        }
+
+        @media (min-width: 769px) {
+            .cta-bg {
+                background-attachment: fixed;
+            }
         }
 
         .cta-overlay {

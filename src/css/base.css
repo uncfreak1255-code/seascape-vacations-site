@@ -32,6 +32,7 @@ body {
     background: var(--cream);
     color: var(--stone);
     line-height: 1.7;
+    overflow-x: hidden;
 }
 
 h1, h2, h3, h4 {
@@ -201,7 +202,7 @@ a {
 /* Property Cards */
 .properties-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
     gap: 24px;
 }
 
