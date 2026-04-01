@@ -26,7 +26,7 @@ Thumbs.db
 .superpowers/
 lh-live-baseline.report.html
 lh-live-baseline.report.json
-_site/research/
+_site/
 
 # Sensitive local Hostaway exports
 scripts/data/
