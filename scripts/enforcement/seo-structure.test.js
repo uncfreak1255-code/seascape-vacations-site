@@ -126,8 +126,18 @@ test("rehomed stay outliers point at their new guide and service homes", () => {
     redirects.includes("/stays/travel-insurance-florida-vacation/  /guides/hurricane-preparedness-florida-vacation/  301"),
     true
   );
+  assert.equal(
+    redirects.includes("/stays/holiday-vacation-rentals-anna-maria-island/  /stays/anna-maria-island-vacation-rentals/  301"),
+    true
+  );
+  assert.equal(
+    redirects.includes("/stays/birthday-celebration-rentals-florida/  /stays/large-group-vacation-rentals-bradenton/  301"),
+    true
+  );
   assert.equal(seoPages.includes('"rehomeTo": "/guides/hurricane-preparedness-florida-vacation/"'), true);
   assert.equal(seoPages.includes('"rehomeTo": "/services/concierge-services/"'), true);
+  assert.equal(seoPages.includes('"rehomeTo": "/stays/anna-maria-island-vacation-rentals/"'), true);
+  assert.equal(seoPages.includes('"rehomeTo": "/stays/large-group-vacation-rentals-bradenton/"'), true);
   assert.equal(staysPages.includes("!page.rehomeTo"), true);
 });
 

@@ -14,6 +14,11 @@ const LEGACY_GUIDE_PATHS = [
   "/guides/bradenton-vs-sarasota-vacation-rental-comparison/"
 ];
 
+const RETIRED_STAY_PATHS = [
+  "/stays/holiday-vacation-rentals-anna-maria-island/",
+  "/stays/birthday-celebration-rentals-florida/"
+];
+
 function collectSourceFiles(dir) {
   const files = [];
 
@@ -41,6 +46,19 @@ test("priority legacy guide families are not linked from live source files", () 
       offenders,
       [],
       `Expected no live source file to include ${legacyPath}, found: ${offenders.map((filePath) => path.relative(projectRoot, filePath)).join(", ")}`
+    );
+  }
+});
+
+test("retired low-value stay pages are not linked from live source files", () => {
+  const sourceFiles = collectSourceFiles(sourceRoot).filter((filePath) => !filePath.endsWith(path.join("src", "_redirects")));
+
+  for (const retiredPath of RETIRED_STAY_PATHS) {
+    const offenders = sourceFiles.filter((filePath) => fs.readFileSync(filePath, "utf8").includes(retiredPath));
+    assert.deepEqual(
+      offenders,
+      [],
+      `Expected no live source file to include ${retiredPath}, found: ${offenders.map((filePath) => path.relative(projectRoot, filePath)).join(", ")}`
     );
   }
 });
@@ -100,6 +118,19 @@ test("stale owner licensing aliases 301 to the canonical licensing route", () =>
   for (const redirectRule of [
     "/property-management/vacation-rental-management-licensing-florida  /property-management/vacation-rental-licensing-florida/  301",
     "/property-management/vacation-rental-management-licensing-florida/  /property-management/vacation-rental-licensing-florida/  301"
+  ]) {
+    assert.equal(redirects.includes(redirectRule), true, `Expected redirects to include ${redirectRule}`);
+  }
+});
+
+test("retired low-value stay slugs 301 to stronger commercial replacements", () => {
+  const redirects = fs.readFileSync(path.join(sourceRoot, "_redirects"), "utf8");
+
+  for (const redirectRule of [
+    "/stays/holiday-vacation-rentals-anna-maria-island/  /stays/anna-maria-island-vacation-rentals/  301",
+    "/stays/christmas-vacation-rentals-florida-gulf-coast/  /stays/anna-maria-island-vacation-rentals/  301",
+    "/stays/thanksgiving-vacation-rentals-florida/  /stays/anna-maria-island-vacation-rentals/  301",
+    "/stays/birthday-celebration-rentals-florida/  /stays/large-group-vacation-rentals-bradenton/  301"
   ]) {
     assert.equal(redirects.includes(redirectRule), true, `Expected redirects to include ${redirectRule}`);
   }
