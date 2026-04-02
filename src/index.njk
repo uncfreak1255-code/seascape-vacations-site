@@ -26,15 +26,12 @@
     <meta name="robots" content="index, follow">
     <meta name="author" content="Seascape Vacations">
     <link rel="canonical" href="https://seascape-vacations.com/">
-    <link rel="icon" href="/logo-optimized.png" type="image/png">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!-- DNS Prefetch for third-party resources (improves mobile performance) -->
-    <link rel="dns-prefetch" href="https://connect.facebook.net">
-    <link rel="dns-prefetch" href="https://www.googletagmanager.com">
-    <!-- Preload critical assets - responsive hero images -->
-    <link rel="preload" href="hero-mobile.webp" as="image" type="image/webp" fetchpriority="high" media="(max-width: 768px)">
-    <link rel="preload" href="hero-optimized.webp" as="image" type="image/webp" fetchpriority="high" media="(min-width: 769px)">
+    <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
+    <link rel="preload" href="/hero-mobile.avif" as="image" type="image/avif" fetchpriority="high" media="(max-width: 768px)">
+    <link rel="preload" href="/hero-optimized.avif" as="image" type="image/avif" fetchpriority="high" media="(min-width: 769px)">
+    <link rel="preload" href="/assets/fonts/homepage/poppins-400-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="/assets/fonts/homepage/poppins-600-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="/assets/fonts/homepage/playfair-display-latin.woff2" as="font" type="font/woff2" crossorigin>
     
     <!-- LocalBusiness Schema -->
     <script type="application/ld+json">
@@ -93,67 +90,14 @@
         }
     }
     </script>
-    <!-- Non-blocking Google Fonts (fixes LCP issue) -->
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" media="print" onload="this.media='all'"
-    >
-    <noscript>
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
-    </noscript>
-
-    <!-- Meta Pixel & GA4 - Deferred until after page load for performance -->
-    <script>
-        // Load tracking scripts after page is interactive (non-blocking)
-        window.addEventListener('load', function() {
-            // Meta Pixel - load asynchronously after paint
-            setTimeout(function() {
-                !function(f,b,e,v,n,t,s){
-                    if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-                    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-                    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-                    n.queue=[];t=b.createElement(e);t.async=!0;
-                    t.src=v;s=b.getElementsByTagName(e)[0];
-                    s.parentNode.insertBefore(t,s)
-                }(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
-                fbq('init','2748551298816267');
-                fbq('track','PageView');
-            }, 100);
-            
-            // GA4 - load asynchronously after paint
-            setTimeout(function() {
-                var s=document.createElement('script');
-                s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-3VDV66S3DK';
-                document.head.appendChild(s);
-                window.dataLayer=window.dataLayer||[];
-                function gtag(){dataLayer.push(arguments);}
-                gtag('js',new Date());gtag('config','G-3VDV66S3DK');
-            }, 200);
-        });
-    </script>
     <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=2748551298816267&ev=PageView&noscript=1"/></noscript>
-    <!-- End Tracking Scripts -->
 
     <link rel="stylesheet" href="/css/homepage.css">
     <style>
         {% include "partials/site-header-styles.njk" %}
     </style>
-    <!-- EmailJS SDK - Deferred for performance -->
-    <script>
-        // Load EmailJS after page is interactive (non-blocking)
-        window.addEventListener('load', function() {
-            setTimeout(function() {
-                var s = document.createElement('script');
-                s.src = 'https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js';
-                s.onload = function() {
-                    emailjs.init("YOUR_PUBLIC_KEY");
-                };
-                document.head.appendChild(s);
-            }, 500);
-        });
-    </script>
     <!-- Preconnect to image optimization CDN -->
     <link rel="preconnect" href="https://bookingenginecdn.hostaway.com" crossorigin>
-    <link rel="dns-prefetch" href="https://bookingenginecdn.hostaway.com">
 </head>
 
 <body>
@@ -166,32 +110,6 @@
     {% set navButtonRel = "noopener noreferrer" %}
     {% set navContactHref = "#contact" %}
     {% include "partials/site-header.njk" %}
-
-    <!-- Quick View Modal -->
-    <div class="quick-view-overlay" id="quick-view-overlay" onclick="closeQuickView(event)">
-        <div class="quick-view-modal" onclick="event.stopPropagation()">
-            <button class="quick-view-close" type="button" aria-label="Close quick view" onclick="closeQuickView(event)">{{ uiIcon('close', 'ui-icon--control') }}</button>
-            <div class="quick-view-gallery" id="quick-view-gallery">
-                <img id="quick-view-img" src="" alt="Property photo">
-                <button class="quick-view-nav prev" onclick="quickViewNav(-1)">‹</button>
-                <button class="quick-view-nav next" onclick="quickViewNav(1)">›</button>
-                <div class="quick-view-dots" id="quick-view-dots"></div>
-            </div>
-            <div class="quick-view-content">
-                <h2 class="quick-view-title" id="quick-view-title"></h2>
-                <p class="quick-view-location" id="quick-view-location"></p>
-                <div class="quick-view-rating">
-                    {{ uiIcon('star', 'ui-icon--star') }}
-                    <span id="quick-view-rating">5.0</span>
-                </div>
-                <div class="quick-view-highlights" id="quick-view-highlights"></div>
-                <div class="quick-view-actions">
-                    <button class="btn btn-gold" onclick="openQuickViewProperty()">View Full Details</button>
-                    <button class="btn" onclick="closeQuickView(event)">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <!-- Mobile CTA Bar (visible on mobile only) -->
     <div class="mobile-cta-bar">
@@ -236,7 +154,21 @@
     <div id="page-home" class="page active">
         <!-- Hero -->
         <section class="hero">
-            <div class="hero-bg">
+            <div class="hero-bg" aria-hidden="true">
+                <picture>
+                    <source media="(max-width: 768px)" srcset="/hero-mobile.avif" type="image/avif">
+                    <source media="(max-width: 768px)" srcset="/hero-mobile.webp" type="image/webp">
+                    <source srcset="/hero-optimized.avif" type="image/avif">
+                    <source srcset="/hero-optimized.webp" type="image/webp">
+                    <img
+                        class="hero-image"
+                        src="/hero-optimized.jpg"
+                        alt=""
+                        width="2400"
+                        height="1340"
+                        fetchpriority="high"
+                        decoding="async">
+                </picture>
             </div>
             <div class="hero-overlay"></div>
             <div class="hero-content">
@@ -269,21 +201,12 @@
                             </select>
                         </div>
 
-                        <button class="btn" onclick="handleSearch()"
+                        <button class="btn btn-primary" onclick="handleSearch()"
                             style="height:100%;border-radius:12px">Search</button>
                     </div>
                 </div>
             </div>
         </section>
-
-    <script>
-        function handleSearch() {
-            const location = document.getElementById('location-select').value;
-            window.location.href = location === 'sarasota'
-                ? '/properties/?area=sarasota'
-                : '/properties/?area=anna-maria-island';
-        }
-    </script>
 
         <!-- Stats Bar -->
         <div style="padding-top:100px">
@@ -334,7 +257,7 @@
                 </div>
                 <div class="property-grid">
                     {% for property in properties.slice(0, 3) %}
-                    <a class="prop-card prop-card-link scroll-reveal revealed" href="/properties/{{ property.slug }}/">
+                    <a class="prop-card prop-card-link" href="/properties/{{ property.slug }}/">
                         <div class="prop-card-shadow"></div>
                         <img
                             loading="lazy"
@@ -454,8 +377,16 @@
 
         <!-- CTA Section -->
         <section class="cta-section">
-            <div class="cta-bg"
-                style="background-image:url('/images/sarasota-sunset-hero.jpg')">
+            <div class="cta-bg" aria-hidden="true">
+                <img
+                    class="cta-bg-image"
+                    src="/images/sarasota-sunset-hero.jpg"
+                    alt=""
+                    width="1024"
+                    height="1024"
+                    loading="lazy"
+                    decoding="async"
+                    fetchpriority="low">
             </div>
             <div class="cta-overlay"></div>
             <div class="cta-content">
@@ -590,624 +521,6 @@
         </div>
     </footer>
 
-    <script>
-        function createIconMarkup(name, className = '') {
-            const icons = {
-                menu: '<path d="M4 7h16"/><path d="M4 12h16"/><path d="M4 17h16"/>',
-                close: '<path d="M6 6 18 18"/><path d="m6 18 12-12"/>',
-                check: '<path d="m5 12 4 4L19 6"/>',
-                info: '<circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 8h.01"/>',
-                heart: '<path d="m12 20-1.45-1.32C5.4 14.03 2 10.97 2 7.25 2 4.42 4.24 2.2 7.05 2.2c1.6 0 3.13.75 4.1 1.94.97-1.19 2.5-1.94 4.1-1.94C18.76 2.2 21 4.42 21 7.25c0 3.72-3.4 6.78-8.55 11.43L12 20Z"/>',
-                star: '<path d="m12 3.5 2.78 5.63 6.22.91-4.5 4.39 1.06 6.19L12 17.7l-5.56 2.92 1.06-6.19L3 10.04l6.22-.91L12 3.5Z"/>'
-            };
-            const extraClass = className ? ` ${className}` : '';
-            return `<span class="ui-icon${extraClass}" aria-hidden="true"><svg viewBox="0 0 24 24">${icons[name] || icons.info}</svg></span>`;
-        }
-
-        // ===== SCROLL REVEAL ANIMATIONS =====
-        // Use Intersection Observer for performance
-        const revealObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('revealed');
-                    // Optional: stop observing after revealed for performance
-                    // revealObserver.unobserve(entry.target);
-                }
-            });
-        }, {
-            threshold: 0.15,
-            rootMargin: '0px 0px -50px 0px'
-        });
-
-        function initScrollReveal() {
-            // Add scroll-reveal class to elements
-            const selectors = [
-                '.section-header',
-                '.stats-bar',
-                '.feature-card',
-                '.prop-card',
-                '.review-card',
-                '.blog-card',
-                '.contact-card',
-                '.cta-content'
-            ];
-
-            selectors.forEach(selector => {
-                document.querySelectorAll(selector).forEach(el => {
-                    el.classList.add('scroll-reveal');
-                    revealObserver.observe(el);
-                });
-            });
-
-            // Stagger reveal for grids
-            document.querySelectorAll('.feature-grid, .review-grid, .blog-grid').forEach(grid => {
-                grid.classList.add('stagger-reveal');
-                revealObserver.observe(grid);
-            });
-        }
-
-        function checkScrollReveal() {
-            document.querySelectorAll('.scroll-reveal').forEach(el => {
-                const rect = el.getBoundingClientRect();
-                if (rect.top < window.innerHeight * 0.85) {
-                    el.classList.add('revealed');
-                }
-            });
-            document.querySelectorAll('.stagger-reveal').forEach(el => {
-                const rect = el.getBoundingClientRect();
-                if (rect.top < window.innerHeight * 0.85) {
-                    el.classList.add('revealed');
-                }
-            });
-        }
-
-        // ===== ANIMATED COUNTERS =====
-        function animateCounter(element, target, duration = 2000) {
-            const start = 0;
-            const startTime = performance.now();
-            const isDecimal = target.includes('.');
-            const numericTarget = parseFloat(target);
-            const suffix = target.replace(/[\d.]/g, '');
-
-            // If target is not a number, just display it directly (e.g., "Top 1%", "24/7")
-            if (isNaN(numericTarget)) {
-                element.textContent = target;
-                return;
-            }
-
-            function update(currentTime) {
-                const elapsed = currentTime - startTime;
-                const progress = Math.min(elapsed / duration, 1);
-                // Ease out cubic
-                const eased = 1 - Math.pow(1 - progress, 3);
-                const current = start + (numericTarget - start) * eased;
-
-                if (isDecimal) {
-                    element.textContent = current.toFixed(1) + suffix;
-                } else {
-                    element.textContent = Math.round(current) + suffix;
-                }
-
-                if (progress < 1) {
-                    requestAnimationFrame(update);
-                }
-            }
-
-            requestAnimationFrame(update);
-        }
-
-        const counterObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting && !entry.target.dataset.counted) {
-                    entry.target.dataset.counted = 'true';
-                    const target = entry.target.dataset.target || entry.target.textContent;
-                    animateCounter(entry.target, target);
-                }
-            });
-        }, { threshold: 0.5 });
-
-        function initCounters() {
-            document.querySelectorAll('[data-animate-counter="true"]').forEach(stat => {
-                const text = stat.textContent.trim();
-                stat.dataset.target = text;
-                stat.textContent = '0';
-                counterObserver.observe(stat);
-            });
-        }
-
-        // ===== FLOATING PARTICLES =====
-        function createParticles() {
-            const heroes = document.querySelectorAll('.hero, .page-hero');
-
-            heroes.forEach(hero => {
-                // Check if particles already exist
-                if (hero.querySelector('.hero-particles')) return;
-
-                const particleContainer = document.createElement('div');
-                particleContainer.className = 'hero-particles';
-
-                // Create 12 particles for subtle effect
-                for (let i = 0; i < 12; i++) {
-                    const particle = document.createElement('div');
-                    particle.className = 'hero-particle';
-                    particle.style.left = Math.random() * 100 + '%';
-                    particle.style.animationDelay = Math.random() * 15 + 's';
-                    particle.style.animationDuration = (12 + Math.random() * 8) + 's';
-                    particle.style.opacity = 0.2 + Math.random() * 0.3;
-                    particle.style.width = (2 + Math.random() * 4) + 'px';
-                    particle.style.height = particle.style.width;
-                    particleContainer.appendChild(particle);
-                }
-
-                hero.appendChild(particleContainer);
-            });
-        }
-
-        // ===== INTERACTIVE HOVER EFFECTS =====
-        function initHoverEffects() {
-            // Magnetic button effect for CTAs
-            document.querySelectorAll('.btn').forEach(btn => {
-                btn.addEventListener('mousemove', (e) => {
-                    const rect = btn.getBoundingClientRect();
-                    const x = e.clientX - rect.left - rect.width / 2;
-                    const y = e.clientY - rect.top - rect.height / 2;
-                    btn.style.transform = `translate(${x * 0.1}px, ${y * 0.1}px)`;
-                });
-
-                btn.addEventListener('mouseleave', () => {
-                    btn.style.transform = '';
-                });
-            });
-
-            // Parallax effect on property cards (subtle)
-            document.querySelectorAll('.prop-card').forEach(card => {
-                card.addEventListener('mousemove', (e) => {
-                    const rect = card.getBoundingClientRect();
-                    const x = (e.clientX - rect.left) / rect.width - 0.5;
-                    const y = (e.clientY - rect.top) / rect.height - 0.5;
-
-                    const img = card.querySelector('img');
-                    if (img) {
-                        img.style.transform = `scale(1.08) translate(${x * 10}px, ${y * 10}px)`;
-                    }
-                });
-
-                card.addEventListener('mouseleave', () => {
-                    const img = card.querySelector('img');
-                    if (img) {
-                        img.style.transform = '';
-                    }
-                });
-            });
-        }
-
-        // ===== SMOOTH PARALLAX ON SCROLL =====
-        let ticking = false;
-        function handleParallax() {
-            if (!ticking) {
-                requestAnimationFrame(() => {
-                    const scrolled = window.scrollY;
-
-                    // Subtle parallax on hero backgrounds
-                    document.querySelectorAll('.hero-bg, .page-hero-bg, .cta-bg').forEach(bg => {
-                        const speed = 0.3;
-                        bg.style.transform = `translateY(${scrolled * speed}px) scale(1.1)`;
-                    });
-
-                    ticking = false;
-                });
-                ticking = true;
-            }
-        }
-
-        // ===== INITIALIZATION =====
-        document.addEventListener('DOMContentLoaded', () => {
-            // Check for reduced motion preference
-            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-            if (!prefersReducedMotion) {
-                initScrollReveal();
-                initCounters();
-                createParticles();
-                initHoverEffects();
-                window.addEventListener('scroll', handleParallax, { passive: true });
-            }
-
-            // Initial check for elements in view
-            setTimeout(checkScrollReveal, 200);
-        });
-
-        // Smooth scroll polyfill for older browsers
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth' });
-                }
-            });
-        });
-
-
-
-
-        // ===== IMAGE OPTIMIZATION ENGINE =====
-        // Serve Hostaway listing media through Hostaway's own CDN for more reliable delivery.
-        function optimizeImage(url, width = 400) {
-            if (!url || typeof url !== 'string') return url;
-            const cleanUrl = url.split('?')[0];
-            if (cleanUrl.includes('bookingenginecdn.hostaway.com/')) {
-                return `${cleanUrl}?width=${width}&quality=78&format=webp&v=2`;
-            }
-            return url;
-        }
-
-        // Transform all image URLs in property data for performance
-        function optimizePropertyImages(data) {
-            return data.map(p => ({
-                ...p,
-                id: String(p.id),
-                image: optimizeImage(p.image, 400),
-                images: (p.images || []).map(img => optimizeImage(img, 400))
-            }));
-        }
-
-        function firstDefined(...values) {
-            return values.find(value => value !== undefined && value !== null && value !== '');
-        }
-
-        function summarizeDescription(description, fallbackDescription = '') {
-            if (typeof description !== 'string' || !description.trim()) {
-                return fallbackDescription;
-            }
-
-            const firstParagraph = description
-                .replace(/\r/g, '')
-                .split('\n\n')
-                .map(part => part.trim())
-                .find(Boolean) || description.trim();
-
-            if (firstParagraph.length <= 260) {
-                return firstParagraph;
-            }
-
-            const firstSentence = firstParagraph.match(/^(.{0,260}?[.!?])(\s|$)/);
-            if (firstSentence && firstSentence[1]) {
-                return firstSentence[1].trim();
-            }
-
-            return `${firstParagraph.slice(0, 257).trim()}...`;
-        }
-
-        // ===== PROPERTY DATA ENGINE =====
-        const propertySeed = {{ properties | json | safe }};
-
-        function deriveTags(amenities = []) {
-            const tags = new Set();
-            const list = amenities.map(a => String(a).toLowerCase());
-            if (list.some(a => a.includes('waterfront'))) tags.add('Waterfront');
-            if (list.some(a => a.includes('pool'))) tags.add('Private Pool');
-            if (list.some(a => a.includes('pet'))) tags.add('Pet Friendly');
-            if (list.some(a => a.includes('hot') || a.includes('spa'))) tags.add('Hot Tub');
-            return tags.size ? Array.from(tags) : ['All Stays'];
-        }
-        const propertyData = optimizePropertyImages(
-            (propertySeed || []).map(p => ({
-                ...p,
-                id: String(p.id || p.slug),
-                slug: p.slug || "",
-                title: p.title || p.name,
-                location: p.location || p.city || "",
-                guests: p.guests || 0,
-                bedrooms: p.bedrooms || 0,
-                bathrooms: p.bathrooms || 0,
-                rating: p.rating || 5.0,
-                image: p.heroImage || p.image || "",
-                images: Array.isArray(p.gallery) && p.gallery.length ? p.gallery : (p.images || []),
-                description: p.description ? summarizeDescription(p.description, "") : "",
-                highlights: Array.isArray(p.highlights) ? p.highlights : [],
-                amenities: Array.isArray(p.amenities) ? p.amenities : [],
-                specs: p.specs || (String(p.bedrooms || 0) + " BR · " + String(p.bathrooms || 0) + " BA · Sleeps " + String(p.guests || 0)),
-                tags: Array.isArray(p.tags) && p.tags.length ? p.tags : deriveTags(p.amenities || []),
-                bookingUrl: p.bookingUrl || ""
-            }))
-        );
-
-        function renderProperties(filter = 'All Stays') {
-            const container = document.getElementById('property-grid');
-            if (!container) return;
-
-            container.innerHTML = '';
-
-            const filtered = filter === 'All Stays'
-                ? propertyData
-                : propertyData.filter(p => p.tags.includes(filter));
-
-            filtered.forEach(p => {
-                const card = document.createElement('div');
-                card.className = 'prop-card scroll-reveal revealed';
-                card.onclick = () => showPropertyDetail(p.id);
-                card.setAttribute('role', 'link');
-                card.setAttribute('tabindex', '0');
-                card.onkeydown = (event) => {
-                    if (event.key === 'Enter' || event.key === ' ') {
-                        event.preventDefault();
-                        showPropertyDetail(p.id);
-                    }
-                };
-
-                const primaryImage = Array.isArray(p.images) && p.images.length > 0 ? p.images[0] : p.image;
-                const highlights = Array.isArray(p.highlights) ? p.highlights.slice(0, 3) : [];
-                const description = p.description || '';
-                card.innerHTML = `
-                    <div class="prop-card-shadow"></div>
-                    <img loading="lazy" decoding="async" src="${primaryImage}" alt="${p.title}">
-                    <div class="prop-card-overlay"></div>
-                    <div class="prop-card-content">
-                        <div class="prop-card-top">
-                            <div>
-                                <h3 class="prop-title">${p.title}</h3>
-                                <p class="prop-location">${p.location} · ${p.specs}</p>
-                            </div>
-                            <div class="prop-badge">${createIconMarkup('star', 'ui-icon--star')} ${p.rating}</div>
-                        </div>
-                        <div>
-                            ${description ? `<p class="prop-desc-snippet">${description}</p>` : ''}
-                            <div class="prop-highlights">
-                                ${highlights.map(h => `<div class="prop-highlight"><span class="prop-dot"></span>${h}</div>`).join('')}
-                            </div>
-                            <div class="prop-bottom">
-                                <span class="prop-btn" onclick="openQuickView(event, '${p.id}')" style="background:transparent;border:2px solid white;color:white;margin-right:8px;">Quick View</span>
-                                <span class="prop-btn">View Details →</span>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                container.appendChild(card);
-            });
-
-            // Re-init observer for new elements
-            document.querySelectorAll('.scroll-reveal').forEach(el => revealObserver.observe(el));
-        }
-
-        // Carousel state
-        let currentCarouselImages = [];
-        let currentCarouselIndex = 0;
-
-        // Quick View Modal State
-        let quickViewImages = [];
-        let quickViewIndex = 0;
-        let quickViewPropertyId = null;
-        let touchStartX = 0;
-        let touchEndX = 0;
-
-        function openQuickView(event, propertyId) {
-            event.stopPropagation();
-            const p = propertyData.find(prop => prop.id === propertyId);
-            if (!p) return;
-
-            quickViewPropertyId = propertyId;
-            quickViewImages = p.images || [p.image];
-            quickViewIndex = 0;
-
-            // Populate modal
-            document.getElementById('quick-view-title').textContent = p.title;
-            document.getElementById('quick-view-location').textContent = p.location + ', FL · ' + p.specs;
-            document.getElementById('quick-view-rating').textContent = p.rating;
-            
-            // Highlights
-            const highlightsContainer = document.getElementById('quick-view-highlights');
-            highlightsContainer.innerHTML = (p.amenities || p.highlights || []).slice(0,5).map(h => 
-                `<div class="quick-view-highlight">${createIconMarkup('check', 'ui-icon--highlight')} ${h}</div>`
-            ).join('');
-
-            // Gallery dots
-            const dotsContainer = document.getElementById('quick-view-dots');
-            dotsContainer.innerHTML = quickViewImages.slice(0,6).map((_, i) => 
-                `<div class="quick-view-dot ${i === 0 ? 'active' : ''}" onclick="quickViewGoTo(${i})"></div>`
-            ).join('');
-
-            updateQuickViewImage();
-
-            // Show modal
-            document.getElementById('quick-view-overlay').classList.add('active');
-            document.body.style.overflow = 'hidden';
-
-            // Setup swipe gestures
-            const gallery = document.getElementById('quick-view-gallery');
-            gallery.addEventListener('touchstart', handleTouchStart, { passive: true });
-            gallery.addEventListener('touchend', handleTouchEnd, { passive: true });
-        }
-
-        function closeQuickView(event) {
-            if (event) event.stopPropagation();
-            document.getElementById('quick-view-overlay').classList.remove('active');
-            document.body.style.overflow = '';
-        }
-
-        function quickViewNav(direction) {
-            quickViewIndex += direction;
-            if (quickViewIndex < 0) quickViewIndex = quickViewImages.length - 1;
-            if (quickViewIndex >= quickViewImages.length) quickViewIndex = 0;
-            updateQuickViewImage();
-        }
-
-        function quickViewGoTo(index) {
-            quickViewIndex = index;
-            updateQuickViewImage();
-        }
-
-        function updateQuickViewImage() {
-            document.getElementById('quick-view-img').src = quickViewImages[quickViewIndex];
-            document.querySelectorAll('.quick-view-dot').forEach((dot, i) => {
-                dot.classList.toggle('active', i === quickViewIndex);
-            });
-        }
-
-        function openQuickViewProperty() {
-            closeQuickView();
-            if (quickViewPropertyId) showPropertyDetail(quickViewPropertyId);
-        }
-
-        // Swipe gesture handlers
-        function handleTouchStart(e) {
-            touchStartX = e.changedTouches[0].screenX;
-        }
-
-        function handleTouchEnd(e) {
-            touchEndX = e.changedTouches[0].screenX;
-            handleSwipe();
-        }
-
-        function handleSwipe() {
-            const threshold = 50;
-            if (touchEndX < touchStartX - threshold) quickViewNav(1);  // Swipe left = next
-            if (touchEndX > touchStartX + threshold) quickViewNav(-1); // Swipe right = prev
-        }
-
-        // Toast Notification System
-        function showToast(message, type = 'info') {
-            let container = document.querySelector('.toast-container');
-            if (!container) {
-                container = document.createElement('div');
-                container.className = 'toast-container';
-                document.body.appendChild(container);
-            }
-
-            const icons = {
-                success: createIconMarkup('check', 'ui-icon--toast'),
-                error: createIconMarkup('close', 'ui-icon--toast'),
-                info: createIconMarkup('info', 'ui-icon--toast')
-            };
-            const toast = document.createElement('div');
-            toast.className = `toast ${type}`;
-            toast.innerHTML = `
-                <span class="toast-icon">${icons[type] || icons.info}</span>
-                <span class="toast-message">${message}</span>
-                <button class="toast-close" type="button" aria-label="Dismiss notification" onclick="this.parentElement.classList.add('hiding'); setTimeout(() => this.parentElement.remove(), 300)">${createIconMarkup('close', 'ui-icon--control')}</button>
-            `;
-
-            container.appendChild(toast);
-            setTimeout(() => {
-                toast.classList.add('hiding');
-                setTimeout(() => toast.remove(), 300);
-            }, 3000);
-        }
-
-        // Favorites functionality
-        function toggleFavorite(event, propertyId) {
-            event.stopPropagation();
-            const btn = event.currentTarget;
-            const heart = btn.querySelector('.heart');
-            const favorites = JSON.parse(localStorage.getItem('seascape_favorites') || '[]');
-            
-            if (favorites.includes(propertyId)) {
-                // Remove from favorites
-                const index = favorites.indexOf(propertyId);
-                favorites.splice(index, 1);
-                btn.classList.remove('active');
-                heart.innerHTML = createIconMarkup('heart', 'ui-icon--heart');
-                showToast('Removed from favorites', 'info');
-            } else {
-                // Add to favorites
-                favorites.push(propertyId);
-                btn.classList.add('active');
-                heart.innerHTML = createIconMarkup('heart', 'ui-icon--heart-filled');
-                showToast('Added to favorites.', 'success');
-            }
-            
-            localStorage.setItem('seascape_favorites', JSON.stringify(favorites));
-        }
-
-        // Check and restore favorite states on page load
-        function initFavorites() {
-            const favorites = JSON.parse(localStorage.getItem('seascape_favorites') || '[]');
-            document.querySelectorAll('.favorite-btn').forEach(btn => {
-                const propertyId = btn.getAttribute('onclick').match(/'([^']+)'/)?.[1];
-                if (propertyId && favorites.includes(propertyId)) {
-                    btn.classList.add('active');
-                    btn.querySelector('.heart').innerHTML = createIconMarkup('heart', 'ui-icon--heart-filled');
-                }
-            });
-        }
-
-        function showPropertyDetail(id) {
-            const p = propertyData.find(prop => prop.id === id);
-            if (!p) return;
-            window.location.href = p.slug ? `/properties/${p.slug}/` : '/properties/';
-        }
-
-        function changeCarouselImage(direction) {
-            let newIndex = currentCarouselIndex + direction;
-            if (newIndex < 0) newIndex = currentCarouselImages.length - 1;
-            if (newIndex >= currentCarouselImages.length) newIndex = 0;
-            setCarouselImage(newIndex);
-        }
-
-        function setCarouselImage(index) {
-            currentCarouselIndex = index;
-            document.getElementById('carousel-main-img').src = currentCarouselImages[index];
-            document.getElementById('carousel-current').textContent = index + 1;
-
-            // Update thumbnail active states
-            document.querySelectorAll('.carousel-thumb').forEach((thumb, i) => {
-                thumb.classList.toggle('active', i === index);
-            });
-        }
-
-        // ===== LEGAL & SUPPORT MODALS =====
-        const legalContent = {
-            'privacy': {
-                title: 'Privacy Policy',
-                content: `<p>At Seascape Vacations, we prioritize your privacy. We collect only necessary information to process your bookings and improve your experience. We do not sell your data to third parties.</p><p><strong>Data Collection:</strong> We collect name, email, and phone number for booking purposes.</p><p><strong>Security:</strong> Your data is encrypted and stored securely.</p>`
-            },
-            'terms': {
-                title: 'Terms of Service',
-                content: `<p>By using this website, you agree to our terms. Bookings are subject to availability and confirmation.</p><p><strong>Cancellations:</strong> Please review the cancellation policy on the booking checkout page.</p><p><strong>Check-in/Out:</strong> Standard check-in is 4PM, check-out is 10AM.</p>`
-            },
-            'cookies': {
-                title: 'Cookie Policy',
-                content: `<p>We use cookies to enhance your browsing experience and analyze site traffic. By continuing to use our site, you consent to our use of cookies.</p>`
-            },
-            'support': {
-                title: 'Support Center',
-                content: `<p>Need help? Our local team is available 24/7.</p><p><strong>Phone:</strong> (941) 555-0123</p><p><strong>Email:</strong> <a href="mailto:support@seascape-vacations.com" style="color:var(--brand)">support@seascape-vacations.com</a></p><p>For urgent maintenance issues, please call the emergency line provided in your check-in instructions.</p>`
-            }
-        };
-
-        window.openLegalModal = function (type) {
-            const modal = document.getElementById('legal-modal');
-            const data = legalContent[type];
-            if (data) {
-                document.getElementById('modal-title').textContent = data.title;
-                document.getElementById('modal-body').innerHTML = data.content;
-                modal.style.display = 'flex';
-                setTimeout(() => modal.classList.add('active'), 10);
-            }
-        }
-
-        window.closeLegalModal = function () {
-            const modal = document.getElementById('legal-modal');
-            modal.classList.remove('active');
-            setTimeout(() => modal.style.display = 'none', 300);
-        }
-
-        // Initialize Engine
-        document.addEventListener('DOMContentLoaded', () => {
-            renderProperties();
-            setTimeout(initFavorites, 1000); // Init favorites after properties load
-
-            // Filter Logic
-            document.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                    e.target.classList.add('active');
-                    renderProperties(e.target.textContent);
-                });
-            });
-        });
-    </script>
-
     <!-- LEGAL MODAL -->
     <div id="legal-modal" class="modal-overlay" onclick="closeLegalModal()">
         <div class="modal-content" onclick="event.stopPropagation()">
@@ -1252,215 +565,7 @@
         </div>
     </div>
 
-    <script>
-        // ===== EMAIL CAPTURE POPUP LOGIC =====
-        const EMAIL_POPUP_KEY = 'seascape_email_popup_shown';
-        const EMAIL_POPUP_DELAY = 30000; // 30 seconds
-        let emailPopupReady = false; // Gate exit-intent until delay elapsed
-        let emailPopupShown = false; // Prevent showing more than once per session
-
-        function showEmailPopup() {
-            if (emailPopupShown) return;
-
-            // Don't show if already captured or dismissed recently
-            const lastShown = localStorage.getItem(EMAIL_POPUP_KEY);
-            if (lastShown === 'subscribed') return;
-            if (lastShown) {
-                const daysSince = (Date.now() - parseInt(lastShown)) / (1000 * 60 * 60 * 24);
-                if (daysSince < 7) return; // Don't show for 7 days after dismiss
-            }
-
-            emailPopupShown = true;
-            const popup = document.getElementById('email-popup');
-            popup.style.display = 'flex';
-            setTimeout(() => popup.classList.add('active'), 10);
-        }
-
-        function closeEmailPopup() {
-            const popup = document.getElementById('email-popup');
-            popup.classList.remove('active');
-            setTimeout(() => popup.style.display = 'none', 400);
-
-            // Mark as shown for 7 days
-            localStorage.setItem(EMAIL_POPUP_KEY, Date.now().toString());
-        }
-
-        function handleEmailSubmit(event) {
-            event.preventDefault();
-            const form = event.target;
-            const formData = new FormData(form);
-            const name = formData.get('name');
-            const email = formData.get('email');
-
-            // Mailchimp form URL (from your Mailchimp embedded form)
-            const MAILCHIMP_URL = 'https://seascape-vacations.us6.list-manage.com/subscribe/post?u=48f234eebd9cb530fd2f217fe&id=95e5a594d1&f_id=008996e5f0';
-
-            // Create form data for Mailchimp
-            const mailchimpData = new FormData();
-            mailchimpData.append('EMAIL', email);
-            mailchimpData.append('FNAME', name);
-
-            // Submit to Mailchimp (using no-cors mode for cross-origin)
-            fetch(MAILCHIMP_URL, {
-                method: 'POST',
-                body: mailchimpData,
-                mode: 'no-cors'
-            }).catch(err => console.log('Mailchimp submission:', err));
-
-            // Mark as subscribed permanently
-            localStorage.setItem(EMAIL_POPUP_KEY, 'subscribed');
-
-            // Show success message
-            document.getElementById('email-form-content').style.display = 'none';
-            document.getElementById('email-success-content').classList.add('show');
-
-            console.log('Email submitted to Mailchimp:', { name, email });
-        }
-
-        // Trigger popup after 30s delay (only on homepage)
-        setTimeout(() => {
-            emailPopupReady = true;
-            if (document.getElementById('page-home')?.classList.contains('active')) {
-                showEmailPopup();
-            }
-        }, EMAIL_POPUP_DELAY);
-
-        // Also trigger on exit intent (desktop only) — only after delay has elapsed
-        document.addEventListener('mouseleave', (e) => {
-            if (emailPopupReady && e.clientY <= 0) {
-                showEmailPopup();
-            }
-        });
-
-        // ===== OWNER LEAD FORM HANDLER =====
-        function handleOwnerLead(event) {
-            event.preventDefault();
-            const form = event.target;
-            const formData = new FormData(form);
-
-            const leadData = {
-                name: formData.get('owner_name'),
-                phone: formData.get('owner_phone'),
-                email: formData.get('owner_email'),
-                property_address: formData.get('property_address'),
-                timestamp: new Date().toISOString()
-            };
-
-            console.log('Owner lead captured:', leadData);
-
-            // Show success state
-            const submitBtn = form.querySelector('button[type="submit"]');
-            const originalText = submitBtn.textContent;
-            submitBtn.textContent = 'Request Sent';
-            submitBtn.style.background = 'var(--gold)';
-            submitBtn.disabled = true;
-
-            // Reset form
-            form.reset();
-
-            // Reset button after 3 seconds
-            setTimeout(() => {
-                submitBtn.textContent = originalText;
-                submitBtn.style.background = '';
-                submitBtn.disabled = false;
-            }, 3000);
-
-            // In production, send to email service or CRM here:
-            // Example: emailjs.send('service_id', 'owner_template_id', leadData);
-        }
-
-        // ===== REVENUE CALCULATOR =====
-        // Toggle amenity selection
-        document.querySelectorAll('.calc-amenity-toggle').forEach(toggle => {
-            toggle.addEventListener('click', function () {
-                const checkbox = this.querySelector('input[type="checkbox"]');
-                checkbox.checked = !checkbox.checked;
-                this.style.background = checkbox.checked ? 'white' : 'var(--cream)';
-                this.style.borderColor = checkbox.checked ? 'var(--brand)' : 'transparent';
-                const checkboxSpan = this.querySelector('.calc-checkbox');
-                if (checkbox.checked) {
-                    checkboxSpan.style.background = 'var(--brand)';
-                    checkboxSpan.style.borderColor = 'var(--brand)';
-                    checkboxSpan.innerHTML = createIconMarkup('check', 'ui-icon--checkbox');
-                    checkboxSpan.style.color = 'white';
-                } else {
-                    checkboxSpan.style.background = '';
-                    checkboxSpan.style.borderColor = '#ccc';
-                    checkboxSpan.innerHTML = '';
-                }
-            });
-        });
-
-        // Revenue data based on market research
-        const calcBaseRevenue = {
-            'anna-maria': { 1: 65000, 2: 95000, 3: 145000, 4: 190000, 5: 240000 },
-            'holmes-beach': { 1: 60000, 2: 88000, 3: 135000, 4: 175000, 5: 220000 },
-            'bradenton-beach': { 1: 55000, 2: 82000, 3: 125000, 4: 165000, 5: 205000 },
-            'bradenton': { 1: 45000, 2: 68000, 3: 100000, 4: 135000, 5: 170000 },
-            'sarasota': { 1: 52000, 2: 78000, 3: 115000, 4: 155000, 5: 195000 },
-            'siesta-key': { 1: 62000, 2: 92000, 3: 140000, 4: 185000, 5: 235000 }
-        };
-
-        const calcPropertyMultipliers = { 'house': 1.0, 'condo': 0.85, 'cottage': 0.92, 'townhouse': 0.90 };
-        const calcAmenityPremiums = { 'pool': 0.22, 'waterfront': 0.30, 'hottub': 0.08, 'dock': 0.18, 'pets': 0.06, 'beach': 0.12 };
-        const calcOccupancyRates = { 'anna-maria': 82, 'holmes-beach': 80, 'bradenton-beach': 78, 'bradenton': 72, 'sarasota': 75, 'siesta-key': 79 };
-
-        document.getElementById('owner-calculator-form')?.addEventListener('submit', function (e) {
-            e.preventDefault();
-            const location = document.getElementById('calc-location').value;
-            const propertyType = document.getElementById('calc-property-type').value;
-            const bedrooms = parseInt(document.getElementById('calc-bedrooms').value);
-            const selectedAmenities = document.querySelectorAll('.calc-amenity-toggle input:checked');
-
-            if (!location || !bedrooms || !propertyType) {
-                alert('Please fill in all required fields');
-                return;
-            }
-
-            let revenue = calcBaseRevenue[location][bedrooms] || 100000;
-            revenue = revenue * (calcPropertyMultipliers[propertyType] || 1);
-
-            let amenityBoost = 0;
-            selectedAmenities.forEach(input => { amenityBoost += calcAmenityPremiums[input.value] || 0; });
-            amenityBoost = Math.min(amenityBoost, 0.60);
-            revenue = revenue * (1 + amenityBoost);
-            revenue = Math.round(revenue / 1000) * 1000;
-
-            const lowRange = Math.round(revenue * 0.88 / 1000) * 1000;
-            const highRange = Math.round(revenue * 1.12 / 1000) * 1000;
-            const baseOccupancy = calcOccupancyRates[location] || 75;
-            const occupancy = Math.min(baseOccupancy + selectedAmenities.length, 92);
-            const avgNightly = Math.round(revenue / 365 / (occupancy / 100));
-            const netIncome = Math.round(revenue * 0.55);
-
-            document.getElementById('calc-revenue-amount').textContent = '$' + revenue.toLocaleString();
-            document.getElementById('calc-revenue-range').textContent = `Range: $${lowRange.toLocaleString()} - $${highRange.toLocaleString()}/year`;
-            document.getElementById('calc-avg-nightly').textContent = '$' + avgNightly.toLocaleString();
-            document.getElementById('calc-occupancy').textContent = occupancy + '%';
-            document.getElementById('calc-net-income').textContent = '$' + netIncome.toLocaleString();
-
-            document.getElementById('calc-results').style.display = 'block';
-            document.getElementById('calc-results').scrollIntoView({ behavior: 'smooth' });
-        });
-
-        document.getElementById('calc-lead-form')?.addEventListener('submit', function (e) {
-            e.preventDefault();
-            const email = this.querySelector('input[type="email"]').value;
-            console.log('Calculator lead captured:', email);
-
-            const btn = this.querySelector('button[type="submit"]');
-            btn.textContent = 'Sent!';
-            btn.style.background = 'var(--brand)';
-            btn.style.color = 'white';
-            this.reset();
-
-            setTimeout(() => {
-                btn.textContent = 'Get Report';
-                btn.style.background = 'var(--gold)';
-                btn.style.color = 'var(--stone)';
-            }, 3000);
-        });
-    </script>
+    <script defer src="/assets/js/homepage.js"></script>
     {% include "partials/site-header-script.njk" %}
 
 </body>
