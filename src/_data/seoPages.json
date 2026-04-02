@@ -1177,6 +1177,7 @@
     },
     {
       "slug": "holiday-vacation-rentals-anna-maria-island",
+      "rehomeTo": "/stays/anna-maria-island-vacation-rentals/",
       "destination": "anna-maria-island",
       "title": "Holiday Vacation Rentals Anna Maria Island",
       "h1": "Thanksgiving & Christmas Rentals AMI",
@@ -1415,6 +1416,7 @@
     },
     {
       "slug": "birthday-celebration-rentals-florida",
+      "rehomeTo": "/stays/large-group-vacation-rentals-bradenton/",
       "destination": null,
       "title": "Birthday Celebration Vacation Rentals Florida",
       "h1": "Celebrate Birthdays in Paradise",

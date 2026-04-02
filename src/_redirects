@@ -303,8 +303,10 @@
 /stays/img-academy-vacation-rentals-bradenton/  /stays/large-group-vacation-rentals-bradenton/  301
 /stays/tennis-parents-vacation-rentals-bradenton/  /stays/large-group-vacation-rentals-bradenton/  301
 /stays/youth-sports-tournament-housing-bradenton/  /stays/large-group-vacation-rentals-bradenton/  301
-/stays/christmas-vacation-rentals-florida-gulf-coast/  /stays/holiday-vacation-rentals-anna-maria-island/  301
-/stays/thanksgiving-vacation-rentals-florida/  /stays/holiday-vacation-rentals-anna-maria-island/  301
+/stays/holiday-vacation-rentals-anna-maria-island/  /stays/anna-maria-island-vacation-rentals/  301
+/stays/christmas-vacation-rentals-florida-gulf-coast/  /stays/anna-maria-island-vacation-rentals/  301
+/stays/thanksgiving-vacation-rentals-florida/  /stays/anna-maria-island-vacation-rentals/  301
+/stays/birthday-celebration-rentals-florida/  /stays/large-group-vacation-rentals-bradenton/  301
 
 # Broken link redirects added 2026-03-03
 /stays/bradenton-beach-vacation-rentals  /stays/bradenton-vacation-rentals-near-beaches  301
