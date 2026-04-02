@@ -10,6 +10,7 @@ const LEGACY_GUIDE_PATHS = [
   "/guides/best-time-visit-anna-maria-island.html",
   "/guides/srq-airport-to-anna-maria-island.html",
   "/guides/anna-maria-island-weather.html",
+  "/guides/bradenton-vs-sarasota.html",
   "/guides/bradenton-vs-sarasota-vacation-rental-comparison/"
 ];
 
@@ -62,7 +63,8 @@ test("priority canonical guide families 301 their .html aliases to the slash rou
   for (const redirectRule of [
     "/guides/best-time-visit-anna-maria-island.html  /guides/best-time-visit-anna-maria-island/  301",
     "/guides/srq-airport-to-anna-maria-island.html  /guides/srq-airport-to-anna-maria-island/  301",
-    "/guides/anna-maria-island-weather.html  /guides/anna-maria-island-weather/  301"
+    "/guides/anna-maria-island-weather.html  /guides/anna-maria-island-weather/  301",
+    "/guides/bradenton-vs-sarasota.html  /guides/bradenton-vs-sarasota/  301"
   ]) {
     assert.equal(redirects.includes(redirectRule), true, `Expected redirects to include ${redirectRule}`);
   }
@@ -87,6 +89,17 @@ test("retired Bradenton money slug 301s to the current canonical stay page", () 
   for (const redirectRule of [
     "/stays/vacation-rentals-bradenton-florida  /stays/bradenton-vacation-rentals-near-beaches  301",
     "/stays/vacation-rentals-bradenton-florida/  /stays/bradenton-vacation-rentals-near-beaches/  301"
+  ]) {
+    assert.equal(redirects.includes(redirectRule), true, `Expected redirects to include ${redirectRule}`);
+  }
+});
+
+test("stale owner licensing aliases 301 to the canonical licensing route", () => {
+  const redirects = fs.readFileSync(path.join(sourceRoot, "_redirects"), "utf8");
+
+  for (const redirectRule of [
+    "/property-management/vacation-rental-management-licensing-florida  /property-management/vacation-rental-licensing-florida/  301",
+    "/property-management/vacation-rental-management-licensing-florida/  /property-management/vacation-rental-licensing-florida/  301"
   ]) {
     assert.equal(redirects.includes(redirectRule), true, `Expected redirects to include ${redirectRule}`);
   }
