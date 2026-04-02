@@ -13,6 +13,7 @@ const ownerTemplate = fs.readFileSync(
   "utf8"
 );
 const ownerData = require(path.join(projectRoot, "src", "_data", "seoPages.json")).owner;
+const ownerProofAssets = require(path.join(projectRoot, "src", "_data", "ownerProofAssets.json"));
 const ownerFormPath = path.join(projectRoot, "src", "_includes", "partials", "owner-evaluation-form.njk");
 
 test("owner landing page uses a real owner revenue review form instead of generic evaluation copy", () => {
@@ -46,6 +47,15 @@ test("owner template supports proof-first sections for high-intent owner pages",
   assert.equal(ownerTemplate.includes("seoPage.objections"), true);
   assert.equal(ownerTemplate.includes("seoPage.processSteps"), true);
   assert.equal(ownerTemplate.includes('data-track-event="owner_primary_cta_click"'), true);
+});
+
+test("owner template supports shared proof citations and curated owner-resource routing", () => {
+  assert.equal(ownerTemplate.includes("ownerProofAssets[seoPage.proofAssetKey]"), true);
+  assert.equal(ownerTemplate.includes("proofAsset.reviewedBy"), true);
+  assert.equal(ownerTemplate.includes("proofAsset.reviewedDate"), true);
+  assert.equal(ownerTemplate.includes("proofAsset.sourceLabel"), true);
+  assert.equal(ownerTemplate.includes("proofAsset.sourceUrl"), true);
+  assert.equal(ownerTemplate.includes("seoPage.relatedOwnerResources"), true);
 });
 
 test("top local owner pages expose proof-first fields and non-generic owner copy", () => {
@@ -174,6 +184,81 @@ test("owner hub restores the fee page and keeps pricing framed as tailored", () 
     true,
     "fee page should answer fee-comparison questions directly"
   );
+});
+
+test("priority owner proof-cluster pages cite the shared benchmark asset and avoid generic brochure copy", () => {
+  const sharedBenchmark = ownerProofAssets["gulf-coast-owner-benchmark-2026"];
+  const feePage = ownerData.find((entry) => entry.slug === "vacation-rental-management-fees-florida");
+  const licensingPage = ownerData.find((entry) => entry.slug === "vacation-rental-licensing-florida");
+  const vrboPage = ownerData.find((entry) => entry.slug === "vrbo-management-services-florida");
+
+  assert.ok(sharedBenchmark, "shared owner benchmark asset should exist");
+  assert.match(sharedBenchmark.title, /benchmark/i);
+  assert.ok(sharedBenchmark.reviewedBy, "shared benchmark should name a reviewer");
+  assert.ok(sharedBenchmark.reviewedDate, "shared benchmark should include a reviewed date");
+  assert.ok(sharedBenchmark.sourceLabel, "shared benchmark should include a source label");
+  assert.equal(
+    sharedBenchmark.sourceUrl,
+    "/guides/florida-gulf-coast-vacation-rental-market-report-2026/",
+    "shared benchmark should point at the published market report"
+  );
+
+  for (const [slug, page] of Object.entries({
+    "vacation-rental-management-fees-florida": feePage,
+    "vacation-rental-licensing-florida": licensingPage,
+    "vrbo-management-services-florida": vrboPage
+  })) {
+    assert.ok(page, `${slug} should exist`);
+    assert.equal(page.proofAssetKey, "gulf-coast-owner-benchmark-2026", `${slug} should cite the shared benchmark`);
+    assert.ok(Array.isArray(page.processSteps) && page.processSteps.length >= 3, `${slug} should expose a real process`);
+    assert.ok(Array.isArray(page.objections) && page.objections.length >= 3, `${slug} should answer owner objections`);
+    assert.equal(page.primaryCta, "Request Your Revenue Review", `${slug} should keep the review CTA`);
+    assert.ok(/review/i.test(page.ctaSubcopy), `${slug} CTA subcopy should reinforce review intent`);
+  }
+
+  assert.equal(licensingPage.intro.includes("We ensure compliance."), false, "licensing page should not keep the old generic intro");
+  assert.equal(vrboPage.intro.includes("We optimize your listing for both."), false, "VRBO page should not keep the old generic intro");
+  assert.equal(
+    licensingPage.geoIntro.includes("Seascape Vacations handles all licensing and regulatory requirements, ensuring your property operates in full legal compliance from launch."),
+    false,
+    "licensing page should not keep generic launch-copy filler"
+  );
+  assert.equal(
+    vrboPage.geoIntro.includes("VRBO management requires specialized expertise in platform optimization"),
+    false,
+    "VRBO page should not keep the old generic platform-ops intro"
+  );
+});
+
+test("market-report and operator-education pages route owners into the Phase 2 money pages", () => {
+  const marketReport = fs.readFileSync(
+    path.join(projectRoot, "src", "guides", "florida-gulf-coast-vacation-rental-market-report-2026.html"),
+    "utf8"
+  );
+  const maximizeRevenuePage = ownerData.find((entry) => entry.slug === "maximize-vacation-rental-income-florida");
+  const newOwnerGuidePage = ownerData.find((entry) => entry.slug === "new-vacation-rental-owner-guide-florida");
+  const bookingsPage = ownerData.find((entry) => entry.slug === "increase-vacation-rental-bookings");
+
+  assert.equal(marketReport.includes("/property-management/vacation-rental-management-fees-florida/"), true);
+  assert.equal(marketReport.includes("/property-management/vacation-rental-licensing-florida/"), true);
+  assert.equal(marketReport.includes("/property-management/vrbo-management-services-florida/"), true);
+
+  for (const [slug, page] of Object.entries({
+    "maximize-vacation-rental-income-florida": maximizeRevenuePage,
+    "new-vacation-rental-owner-guide-florida": newOwnerGuidePage,
+    "increase-vacation-rental-bookings": bookingsPage
+  })) {
+    assert.ok(page, `${slug} should exist`);
+    assert.deepEqual(
+      page.relatedOwnerResources,
+      [
+        "vacation-rental-management-fees-florida",
+        "vacation-rental-licensing-florida",
+        "vrbo-management-services-florida"
+      ],
+      `${slug} should route owners into the fee, licensing, and VRBO money pages`
+    );
+  }
 });
 
 test("owner fee cluster pages stay in review mode instead of reverting to brochure copy", () => {

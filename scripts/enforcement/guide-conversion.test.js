@@ -22,6 +22,7 @@ const guideFiles = [
     file: path.join(projectRoot, "src", "guides", "anna-maria-island-vs-siesta-key.html"),
     requiredLinks: [
       "/stays/anna-maria-island-vacation-rentals/",
+      "/stays/anna-maria-island-beachfront-rentals/",
       "/stays/siesta-key-area-vacation-rentals/"
     ]
   },
@@ -53,8 +54,8 @@ const guideFiles = [
     slug: "best-time-visit-anna-maria-island",
     file: path.join(projectRoot, "src", "guides", "best-time-visit-anna-maria-island.html"),
     requiredLinks: [
-      "/stays/winter-vacation-rentals-florida-gulf-coast/",
-      "/stays/summer-vacation-rentals-florida-gulf-coast/"
+      "/stays/anna-maria-island-vacation-rentals/",
+      "/stays/anna-maria-island-beachfront-rentals/"
     ]
   }
 ];
