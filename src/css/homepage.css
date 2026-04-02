@@ -1,3 +1,43 @@
+        @font-face {
+            font-family: 'Poppins';
+            font-style: normal;
+            font-weight: 400;
+            font-display: swap;
+            src: url('/assets/fonts/homepage/poppins-400-latin.woff2') format('woff2');
+        }
+
+        @font-face {
+            font-family: 'Poppins';
+            font-style: normal;
+            font-weight: 500;
+            font-display: swap;
+            src: url('/assets/fonts/homepage/poppins-500-latin.woff2') format('woff2');
+        }
+
+        @font-face {
+            font-family: 'Poppins';
+            font-style: normal;
+            font-weight: 600;
+            font-display: swap;
+            src: url('/assets/fonts/homepage/poppins-600-latin.woff2') format('woff2');
+        }
+
+        @font-face {
+            font-family: 'Poppins';
+            font-style: normal;
+            font-weight: 700;
+            font-display: swap;
+            src: url('/assets/fonts/homepage/poppins-700-latin.woff2') format('woff2');
+        }
+
+        @font-face {
+            font-family: 'Playfair Display';
+            font-style: normal;
+            font-weight: 400 700;
+            font-display: swap;
+            src: url('/assets/fonts/homepage/playfair-display-latin.woff2') format('woff2');
+        }
+
         :root {
             /* Updated color scheme to match reference design */
             --brand: #5F8A8B;
@@ -26,7 +66,7 @@
         }
 
         body {
-            font-family: 'Poppins', -apple-system, sans-serif;
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             background: var(--cream);
             color: var(--stone);
             line-height: 1.7;
@@ -649,13 +689,13 @@
             color: white;
             font-size: 28px;
             font-weight: 300;
-            font-family: 'Playfair Display', serif;
+            font-family: 'Playfair Display', Georgia, serif;
         }
 
         .prop-price span {
             font-size: 14px;
             opacity: 0.7;
-            font-family: 'Inter', sans-serif;
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
         }
 
         .prop-btn {
@@ -831,7 +871,7 @@
             top: 24px;
             right: 32px;
             font-size: 80px;
-            font-family: 'Playfair Display', serif;
+            font-family: 'Playfair Display', Georgia, serif;
             color: var(--cream-dark);
             line-height: 1;
         }
@@ -979,7 +1019,7 @@
             font-size: 42px;
             font-weight: 300;
             color: var(--brand);
-            font-family: 'Playfair Display', serif;
+            font-family: 'Playfair Display', Georgia, serif;
             margin-bottom: 8px;
         }
 
@@ -1112,7 +1152,7 @@
         }
 
         .footer-logo-text {
-            font-family: 'Playfair Display', serif;
+            font-family: 'Playfair Display', Georgia, serif;
             font-size: 22px;
             color: white;
         }
@@ -1580,13 +1620,13 @@
             font-size: 32px;
             font-weight: 300;
             color: var(--brand);
-            font-family: 'Playfair Display', serif;
+            font-family: 'Playfair Display', Georgia, serif;
         }
 
         .booking-price span {
             font-size: 14px;
             color: var(--stone-light);
-            font-family: 'Inter', sans-serif;
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
         }
 
         /* Detail Stats */
@@ -1606,7 +1646,7 @@
             font-size: 32px;
             font-weight: 300;
             color: var(--brand);
-            font-family: 'Playfair Display', serif;
+            font-family: 'Playfair Display', Georgia, serif;
         }
 
         .detail-stat-label {
@@ -2001,30 +2041,7 @@
             opacity: 1;
         }
 
-        /* Subtle text animation on hero */
-        .hero-title {
-            animation: heroText 1s ease-out;
-        }
-
-        @keyframes heroText {
-            0% {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .hero-subtitle {
-            animation: heroText 1s ease-out 0.2s backwards;
-        }
-
-        .hero-badge {
-            animation: heroText 1s ease-out 0.4s backwards;
-        }
+        /* Do not animate LCP text; it only delays the first meaningful paint. */
 
         /* Reduce motion for accessibility */
         @media (prefers-reduced-motion: reduce) {
@@ -2175,7 +2192,7 @@
         }
 
         .email-popup-title {
-            font-family: 'Playfair Display', serif;
+            font-family: 'Playfair Display', Georgia, serif;
             font-size: 32px;
             color: var(--brand-dark);
             margin-bottom: 12px;
@@ -2201,7 +2218,7 @@
             border: 2px solid var(--cream-dark);
             border-radius: 12px;
             font-size: 16px;
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             transition: border-color 0.3s, box-shadow 0.3s;
             background: white;
         }
@@ -2222,7 +2239,7 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
         }
 
         .email-popup-btn:hover {

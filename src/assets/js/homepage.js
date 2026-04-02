@@ -8,6 +8,51 @@ function handleSearch() {
         : '/properties/?area=anna-maria-island';
 }
 
+(function deferGa4() {
+    var measurementId = 'G-3VDV66S3DK';
+
+    window.__seascapeGaQueue = window.__seascapeGaQueue || [];
+    window.seascapeTrackEvent = function(eventName, params) {
+        if (!eventName) return;
+        if (typeof window.gtag === 'function') {
+            window.gtag('event', eventName, params || {});
+            return;
+        }
+        window.__seascapeGaQueue.push([eventName, params || {}]);
+    };
+
+    function loadGa4() {
+        if (window.__seascapeGaLoaded) return;
+        window.__seascapeGaLoaded = true;
+
+        window.dataLayer = window.dataLayer || [];
+        window.gtag = function() {
+            window.dataLayer.push(arguments);
+        };
+
+        var script = document.createElement('script');
+        script.async = true;
+        script.src = 'https://www.googletagmanager.com/gtag/js?id=' + measurementId;
+        script.onload = function() {
+            window.gtag('js', new Date());
+            window.gtag('config', measurementId);
+            (window.__seascapeGaQueue || []).forEach(function(entry) {
+                window.gtag('event', entry[0], entry[1]);
+            });
+            window.__seascapeGaQueue = [];
+        };
+        document.head.appendChild(script);
+    }
+
+    ['pointerdown', 'keydown', 'submit'].forEach(function(eventName) {
+        window.addEventListener(eventName, loadGa4, { once: true, passive: eventName === 'pointerdown' });
+    });
+
+    window.addEventListener('load', function() {
+        window.setTimeout(loadGa4, 4000);
+    }, { once: true });
+})();
+
 (function deferMetaPixel() {
     function loadMetaPixel() {
         if (window.__seascapeMetaPixelLoaded) return;
