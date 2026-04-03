@@ -59,6 +59,7 @@ Latest live baseline available on 2026-04-01:
 - Owner pages rank without enough proof to earn the click.
 - Stay pages exist without enough commercial depth to compete.
 - Entity clarity is still soft: thin `sameAs`, inconsistent visible reviewer treatment, and too few Person-backed pages.
+- Shared truth is drifting across the site: homepage, about page, property pages, reused guide schema, and stay FAQs still contradict each other on review counts, price ranges, and even some equipment claims.
 
 ## Strategic Thesis
 
@@ -162,6 +163,8 @@ The GEO strategy is:
 - Stop broad metadata cleanup on pages with no impressions.
 - Stop building owner page variants unless GSC or DataForSEO proves the term cluster.
 - Stop doing off-site entity work before the owner and stay pages are stronger.
+- Stop hardcoding proof numbers and pricing claims across multiple templates without one source of truth.
+- Stop letting shared FAQ data make promises that conflict with the verified property table in `CLAUDE.md`.
 
 ## Decision Rule
 
@@ -171,5 +174,7 @@ Before any new SEO build, ask:
 2. Is the current failure identity, click yield, or topical depth?
 3. Does the page strengthen a money page or just create another URL?
 4. Can the current test layer catch the most likely regression?
+5. Does the claim set match the rest of the site, or are we about to create another trust contradiction?
 
 If question 3 is "mostly another URL," do not build it yet.
+If question 5 is "probably contradictory," fix the truth layer before shipping anything new.
