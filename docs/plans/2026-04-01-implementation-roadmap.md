@@ -88,6 +88,35 @@ Timeline: Weeks 6-8
 - AMI beachfront page no longer reads like faux beachfront inventory positioning
 - comparison guides route into the stay pages intentionally
 
+## Phase 3b: Truth normalization and shared-data pass
+
+Timeline: immediately after Phase 3 readback starts
+
+### Objectives
+
+- stop shipping contradictory trust signals across homepage, about, property pages, guides, and schema
+- remove live claims that violate the repo's own verified property truth
+- clean up source artifacts that can quietly reintroduce crawl or trust noise later
+
+### Workstreams
+
+1. reconcile review, rating, and price-range claims across:
+   - homepage copy + schema
+   - about page copy
+   - property-page review language
+   - reused guide/home schema blocks
+2. remove unverified stay FAQ claims from shared data, especially equipment and amenity copy that conflicts with `CLAUDE.md`
+3. delete or neutralize stale source artifacts that are no longer authoritative, especially the root `sitemap.xml`
+4. add enforcement for shared proof-number drift and banned property claims
+5. treat `/stays/` hub evaluation as an architecture choice, not a fake emergency, and only prioritize it if guide routing plus GSC readback show a real discovery gap
+
+### Exit criteria
+
+- homepage, about page, property pages, and reused schema no longer contradict each other on proof or pricing
+- banned equipment claims are gone from live stay FAQs and shared source data
+- the repo has one obvious sitemap source of truth
+- shared-truth checks exist so the same drift does not come back next week
+
 ## Phase 4: Entity clarity and authority pass
 
 Timeline: Weeks 9-10
@@ -170,6 +199,7 @@ Each phase requires:
 | canonical cleanup remains partial | redirects update without source-surface cleanup | treat discoverability as one system, not one file |
 | owner copy drifts back to generic | no reusable proof asset | make proof infrastructure mandatory |
 | stay pages get longer but not stronger | word-count thinking replaces commercial-fit thinking | enforce value-fit and inventory honesty |
+| trust signals contradict each other | proof numbers and amenity claims are hardcoded across multiple templates and data files | add a shared-truth pass plus enforcement before entity expansion |
 | entity work dilutes execution | off-site work starts before on-site pages are strong | sequence entity work after commercial-page hardening |
 
 ## Success Criteria
