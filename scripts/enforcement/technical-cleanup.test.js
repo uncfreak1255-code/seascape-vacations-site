@@ -19,6 +19,14 @@ const RETIRED_STAY_PATHS = [
   "/stays/birthday-celebration-rentals-florida/"
 ];
 
+test("repo root does not keep a stale checked-in sitemap artifact", () => {
+  assert.equal(
+    fs.existsSync(path.join(projectRoot, "sitemap.xml")),
+    false,
+    "root sitemap.xml should not exist because the generated sitemap is built from src/sitemap.njk"
+  );
+});
+
 function collectSourceFiles(dir) {
   const files = [];
 

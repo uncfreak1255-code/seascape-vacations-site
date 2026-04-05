@@ -59,7 +59,6 @@
             {"@type": "City", "name": "Siesta Key"},
             {"@type": "City", "name": "Longboat Key"}
         ],
-        "priceRange": "$400-$800/night",
         "openingHoursSpecification": {
             "@type": "OpeningHoursSpecification",
             "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
@@ -141,12 +140,11 @@
             "latitude": "27.4989",
             "longitude": "-82.5748"
         },
-        "aggregateRating": {
-            "@type": "AggregateRating",
-            "ratingValue": "5.0",
-            "reviewCount": "500"
-        },
-        "priceRange": "$$$"
+        "sameAs": [
+            {% for profile in site.sameAsLinks %}
+            "{{ profile }}"{% if not loop.last %},{% endif %}
+            {% endfor %}
+        ]
     }
     </script>
 
@@ -174,7 +172,7 @@
             <div class="hero-content">
                 <div class="hero-badge">
                     <span class="stars">{{ uiIcon('star', 'ui-icon--star') }}{{ uiIcon('star', 'ui-icon--star') }}{{ uiIcon('star', 'ui-icon--star') }}{{ uiIcon('star', 'ui-icon--star') }}{{ uiIcon('star', 'ui-icon--star') }}</span>
-                    <span>Rated Excellent by 500+ Guests</span>
+                    <span>Local Gulf Coast hosting team</span>
                 </div>
                 <h1 class="hero-title">
                     Your Gulf Coast Paradise Awaits
@@ -213,12 +211,12 @@
             <div class="container">
                 <div class="stats-bar">
                     <div class="stat-item">
-                        <div class="stat-value">4.98</div>
-                        <div class="stat-label">Airbnb Rating</div>
+                        <div class="stat-value">5</div>
+                        <div class="stat-label">Managed Homes</div>
                     </div>
                     <div class="stat-item">
-                        <div class="stat-value">650+</div>
-                        <div class="stat-label">5-Star Reviews</div>
+                        <div class="stat-value">4-16</div>
+                        <div class="stat-label">Guests Per Stay</div>
                     </div>
                     <div class="stat-item">
                         <div class="stat-value">10-15%</div>
