@@ -32,6 +32,18 @@ const guideFiles = listGuideFiles(guideDir).map((fullPath) => ({
   path: path.relative(projectRoot, fullPath),
   source: fs.readFileSync(fullPath, "utf8")
 }));
+const areaGuideFiles = [
+  "src/guides/anna-maria-island-area-guide/index.html",
+  "src/guides/bradenton-area-guide/index.html",
+  "src/guides/bradenton-beach-area-guide/index.html",
+  "src/guides/holmes-beach-area-guide/index.html",
+  "src/guides/longboat-key-area-guide/index.html",
+  "src/guides/sarasota-area-guide/index.html",
+  "src/guides/siesta-key-area-guide/index.html"
+].map((relativePath) => ({
+  path: relativePath,
+  source: fs.readFileSync(path.join(projectRoot, relativePath), "utf8")
+}));
 
 test("robots.txt stays within supported directives", () => {
   assert.equal(
@@ -105,6 +117,16 @@ test("property pages with AggregateOffer do not also ship a stale priceRange", (
   }
 });
 
+test("property pages no longer advertise an invented sitewide 420+ review total", () => {
+  for (const page of propertyPages) {
+    assert.equal(
+      page.source.includes("Read all 420+ guest reviews"),
+      false,
+      `${page.slug} should not advertise a made-up cross-property review total`
+    );
+  }
+});
+
 test("property schema uses public Hostaway-backed reviews where available", () => {
   const expectations = [
     {
@@ -162,6 +184,24 @@ test("bradenton pool home does not claim structured review proof that is not pub
   assert.equal(source.includes("TODO: Replace with real Hostaway reviews"), false);
   assert.equal(source.includes('"@type": "Review"'), false);
   assert.equal(source.includes('"@type": "AggregateRating"'), false);
+});
+
+test("guide schema avoids stale generic price ranges and fake destination review totals", () => {
+  for (const guide of guideFiles) {
+    assert.equal(
+      guide.source.includes('"priceRange"'),
+      false,
+      `${guide.path} should not ship generic priceRange schema`
+    );
+  }
+
+  for (const guide of areaGuideFiles) {
+    assert.equal(
+      guide.source.includes('"aggregateRating"'),
+      false,
+      `${guide.path} should not claim destination-level aggregate ratings`
+    );
+  }
 });
 
 test("guide pages only claim Sawyer authorship when the page visibly supports it", () => {

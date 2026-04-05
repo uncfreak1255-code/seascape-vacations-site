@@ -309,8 +309,9 @@ if (phase === "remediation") {
   expectContains("_site/_redirects", "/stays/concierge-luxury-services/  /services/concierge-services/  301");
   expectExists("_site/images/seascape-og-default.jpg");
   expectExists("_site/images/anna-maria-island-og.jpg");
-  expectMatches("_site/index.html", /4\.98[\s\S]{0,120}Airbnb Rating/, "homepage 4.98 Airbnb Rating stat");
-  expectMatches("_site/index.html", /650\+[\s\S]{0,120}5-Star Reviews/, "homepage 650+ 5-Star Reviews stat");
+  expectMatches("_site/index.html", /Local Gulf Coast hosting team/, "homepage local-hosting trust badge");
+  expectMatches("_site/index.html", /5[\s\S]{0,120}Managed Homes/, "homepage managed homes stat");
+  expectMatches("_site/index.html", /4-16[\s\S]{0,120}Guests Per Stay/, "homepage guests-per-stay stat");
   expectMatches("_site/index.html", /10-15%[\s\S]{0,120}Book Direct Savings/, "homepage 10-15% Book Direct Savings stat");
   expectMatches("_site/index.html", /24\/7[\s\S]{0,120}Local Support/, "homepage 24/7 Local Support stat");
   expectNotMatches(
@@ -333,6 +334,8 @@ if (phase === "remediation") {
     /class="stat-value">0<\/div>\s*<div class="stat-label">Local Support<\/div>/,
     "homepage Local Support zero fallback"
   );
+  expectNotMatches("_site/index.html", /4\.98[\s\S]{0,120}Airbnb Rating/, "homepage fake Airbnb rating stat");
+  expectNotMatches("_site/index.html", /650\+[\s\S]{0,120}5-Star Reviews/, "homepage fake 5-star review stat");
   expectNoMarkers("_site/index.html", HOMEPAGE_PUBLIC_EMOJI_MARKERS, "homepage emoji markers");
   expectNotContains(
     "_site/stays/anna-maria-island-vacation-rentals/index.html",

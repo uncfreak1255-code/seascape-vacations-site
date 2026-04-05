@@ -57,6 +57,19 @@ test("AMI beachfront page stays honest about near-island positioning instead of 
   );
 });
 
+test("AMI vacation rentals page does not promise free water-sports gear that is not actually included", () => {
+  const amiPage = getStayPage("anna-maria-island-vacation-rentals");
+  const serialized = JSON.stringify(amiPage).toLowerCase();
+
+  for (const staleClaim of [
+    "complimentary kayaks",
+    "complimentary beach gear, kayaks, and fishing equipment",
+    "we also provide complimentary beach gear, kayaks, and fishing equipment"
+  ]) {
+    assert.equal(serialized.includes(staleClaim), false, `AMI stay page should not include ${staleClaim}`);
+  }
+});
+
 test("AMI comparison and planning guides route into the rebuilt AMI stay money pages", () => {
   const guides = [
     "src/guides/anna-maria-island-vs-siesta-key.html",

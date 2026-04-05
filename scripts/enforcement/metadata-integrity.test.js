@@ -34,6 +34,28 @@ test("anna-maria-city ships parseable primary head tags", () => {
   assert.equal(ogDescription, "AMI's quietest gem — Bean Point, Rod & Reel Pier, and true Old Florida.");
 });
 
+test("homepage and about page do not ship invented review totals or stale pricing trust claims", () => {
+  const homepage = readSource("src", "index.njk");
+  const about = readSource("src", "about-us", "index.njk");
+
+  for (const staleClaim of [
+    "Rated Excellent by 500+ Guests",
+    "4.98 Airbnb Rating",
+    "650+ 5-Star Reviews",
+    "650+ five-star reviews"
+  ]) {
+    assert.equal(homepage.includes(staleClaim), false, `homepage should not include ${staleClaim}`);
+    assert.equal(about.includes(staleClaim), false, `about page should not include ${staleClaim}`);
+  }
+
+  assert.equal(/"reviewCount"\s*:\s*500/.test(homepage), false, "homepage should not ship an invented 500-review count");
+  assert.equal(
+    /"priceRange"\s*:\s*"\$400-\$800\/night"/.test(homepage),
+    false,
+    "homepage should not ship a stale LocalBusiness priceRange"
+  );
+});
+
 test("priority owner money-page metadata stays non-empty and query-aligned", () => {
   const feePage = ownerData.find((entry) => entry.slug === "vacation-rental-management-fees-florida");
   const licensingPage = ownerData.find((entry) => entry.slug === "vacation-rental-licensing-florida");
