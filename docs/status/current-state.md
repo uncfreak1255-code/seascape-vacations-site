@@ -21,9 +21,11 @@
 - the April 4 GSC reread kept Phase 4 premature: all 8 tracked URLs are indexed and self-canonical, but AMI stay pages and owner pages are still not converting visibility into clicks strongly enough to justify entity expansion
 - homepage performance cleanup is live: the hero animation and asset cleanup shipped, production Lighthouse materially improved, and homepage crawl state now reflects the faster build rather than the old LCP path
 - a fresh external audit on April 3 surfaced a real gap the roadmap had underweighted: shared trust and truth drift across homepage, about page, property pages, reused guide schema, and stay FAQs
-- the truth-normalization pass is now complete locally: contradictory homepage/about/property review-count claims are removed from source, stale homepage price-range schema is removed, false AMI equipment claims are replaced with truthful FAQ copy, stale guide destination schema is trimmed, and the stale root `sitemap.xml` artifact is deleted
-- the trust-normalization enforcement layer is stronger locally: metadata, stay money-page, AI-discovery schema, technical cleanup, recovery, redirects, links, and JSON-LD checks all pass in `verify:release`
-- those trust fixes are not live yet; they exist on the current implementation branch and still need merge/deploy before the production site stops contradicting itself
+- the truth-normalization pass is live: contradictory homepage/about/property review-count claims are removed from source, stale homepage price-range schema is removed, false AMI equipment claims are replaced with truthful FAQ copy, stale guide destination schema is trimmed, and the stale root `sitemap.xml` artifact is deleted
+- the weekly operator report in `seascape-analytics` shifted the next measured bottleneck from abstract authority work to winner-guide family leakage
+- the winner-guide consolidation pass now exists on the current implementation branch: explicit redirects cover the AMI-vs-Siesta and family-guide aliases, the AMI-vs-Siesta guide no longer emits mixed slash/non-slash schema URLs, the Clearwater comparison guide no longer links to the redirect-landing alias, and new enforcement tests lock those regressions down
+- the enforcement layer is strong on this branch: metadata, guide governance, technical cleanup, full test suite, redirects, links, JSON-LD, `verify:release`, and `guardrail-merge-check` all pass
+- this guide-family fix is still branch-local until it is merged and deployed
 
 ## What This Repo Should Optimize For
 

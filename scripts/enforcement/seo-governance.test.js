@@ -6,10 +6,12 @@ const assert = require("node:assert/strict");
 const homepagePath = path.resolve(__dirname, "../../src/index.njk");
 const bradentonGuidePath = path.resolve(__dirname, "../../src/guides/bradenton-vs-sarasota.html");
 const amiVsSiestaGuidePath = path.resolve(__dirname, "../../src/guides/anna-maria-island-vs-siesta-key.html");
+const clearwaterComparisonGuidePath = path.resolve(__dirname, "../../src/guides/anna-maria-island-vs-clearwater-beach.html");
 
 const homepageTemplate = fs.readFileSync(homepagePath, "utf8");
 const bradentonGuide = fs.readFileSync(bradentonGuidePath, "utf8");
 const amiVsSiestaGuide = fs.readFileSync(amiVsSiestaGuidePath, "utf8");
+const clearwaterComparisonGuide = fs.readFileSync(clearwaterComparisonGuidePath, "utf8");
 
 const HOMEPAGE_ALIAS_LINKS = [
   "area-guide-ami.html",
@@ -61,6 +63,20 @@ test("priority guides stop emitting internal .html guide links", () => {
     countMatches(amiVsSiestaGuide, /href="\/guides\/[^"]+\.html"/g),
     0,
     "Expected Anna Maria Island vs Siesta Key to stop linking internal .html guide routes"
+  );
+});
+
+test("winner comparisons link priority guide families directly to the slash canonical route", () => {
+  assert.equal(
+    clearwaterComparisonGuide.includes('href="/guides/anna-maria-island-vs-siesta-key/"'),
+    true,
+    "Expected Clearwater comparison guide to link the AMI vs Siesta Key winner via the slash canonical route"
+  );
+
+  assert.equal(
+    clearwaterComparisonGuide.includes('href="/guides/anna-maria-island-vs-siesta-key">'),
+    false,
+    "Expected Clearwater comparison guide to stop linking the AMI vs Siesta Key winner through a redirect-landing alias"
   );
 });
 

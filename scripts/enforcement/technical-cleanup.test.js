@@ -10,8 +10,45 @@ const LEGACY_GUIDE_PATHS = [
   "/guides/best-time-visit-anna-maria-island.html",
   "/guides/srq-airport-to-anna-maria-island.html",
   "/guides/anna-maria-island-weather.html",
+  "/guides/anna-maria-island-vs-siesta-key.html",
   "/guides/bradenton-vs-sarasota.html",
-  "/guides/bradenton-vs-sarasota-vacation-rental-comparison/"
+  "/guides/bradenton-vs-sarasota-vacation-rental-comparison/",
+  "/guides/siesta-key-vs-anna-maria-island-families.html"
+];
+
+const NON_CANONICAL_WINNER_GUIDE_PATTERNS = [
+  {
+    label: "/guides/anna-maria-island-vs-siesta-key",
+    pattern: /\/guides\/anna-maria-island-vs-siesta-key(?=["'<])/,
+  },
+  {
+    label: "https://seascape-vacations.com/guides/anna-maria-island-vs-siesta-key",
+    pattern: /https:\/\/seascape-vacations\.com\/guides\/anna-maria-island-vs-siesta-key(?=["'<])/,
+  },
+  {
+    label: "/guides/siesta-key-vs-anna-maria-island-families",
+    pattern: /\/guides\/siesta-key-vs-anna-maria-island-families(?=["'<])/,
+  },
+  {
+    label: "https://seascape-vacations.com/guides/siesta-key-vs-anna-maria-island-families",
+    pattern: /https:\/\/seascape-vacations\.com\/guides\/siesta-key-vs-anna-maria-island-families(?=["'<])/,
+  },
+  {
+    label: "/guides/best-time-visit-anna-maria-island",
+    pattern: /\/guides\/best-time-visit-anna-maria-island(?=["'<])/,
+  },
+  {
+    label: "https://seascape-vacations.com/guides/best-time-visit-anna-maria-island",
+    pattern: /https:\/\/seascape-vacations\.com\/guides\/best-time-visit-anna-maria-island(?=["'<])/,
+  },
+  {
+    label: "/guides/bradenton-vs-sarasota",
+    pattern: /\/guides\/bradenton-vs-sarasota(?=["'<])/,
+  },
+  {
+    label: "https://seascape-vacations.com/guides/bradenton-vs-sarasota",
+    pattern: /https:\/\/seascape-vacations\.com\/guides\/bradenton-vs-sarasota(?=["'<])/,
+  }
 ];
 
 const RETIRED_STAY_PATHS = [
@@ -58,6 +95,19 @@ test("priority legacy guide families are not linked from live source files", () 
   }
 });
 
+test("winner-guide families never emit redirect-landing aliases from live source files", () => {
+  const sourceFiles = collectSourceFiles(sourceRoot).filter((filePath) => !filePath.endsWith(path.join("src", "_redirects")));
+
+  for (const { label, pattern } of NON_CANONICAL_WINNER_GUIDE_PATTERNS) {
+    const offenders = sourceFiles.filter((filePath) => pattern.test(fs.readFileSync(filePath, "utf8")));
+    assert.deepEqual(
+      offenders,
+      [],
+      `Expected no live source file to emit ${label} without the trailing slash, found: ${offenders.map((filePath) => path.relative(projectRoot, filePath)).join(", ")}`
+    );
+  }
+});
+
 test("retired low-value stay pages are not linked from live source files", () => {
   const sourceFiles = collectSourceFiles(sourceRoot).filter((filePath) => !filePath.endsWith(path.join("src", "_redirects")));
 
@@ -88,6 +138,8 @@ test("priority canonical guide families 301 their .html aliases to the slash rou
 
   for (const redirectRule of [
     "/guides/best-time-visit-anna-maria-island.html  /guides/best-time-visit-anna-maria-island/  301",
+    "/guides/anna-maria-island-vs-siesta-key.html  /guides/anna-maria-island-vs-siesta-key/  301",
+    "/guides/siesta-key-vs-anna-maria-island-families.html  /guides/siesta-key-vs-anna-maria-island-families/  301",
     "/guides/srq-airport-to-anna-maria-island.html  /guides/srq-airport-to-anna-maria-island/  301",
     "/guides/anna-maria-island-weather.html  /guides/anna-maria-island-weather/  301",
     "/guides/bradenton-vs-sarasota.html  /guides/bradenton-vs-sarasota/  301"
@@ -101,6 +153,8 @@ test("priority canonical guide families 301 plain guide aliases to the slash rou
 
   for (const redirectRule of [
     "/guides/best-time-visit-anna-maria-island  /guides/best-time-visit-anna-maria-island/  301",
+    "/guides/anna-maria-island-vs-siesta-key  /guides/anna-maria-island-vs-siesta-key/  301",
+    "/guides/siesta-key-vs-anna-maria-island-families  /guides/siesta-key-vs-anna-maria-island-families/  301",
     "/guides/srq-airport-to-anna-maria-island  /guides/srq-airport-to-anna-maria-island/  301",
     "/guides/anna-maria-island-weather  /guides/anna-maria-island-weather/  301",
     "/guides/bradenton-vs-sarasota  /guides/bradenton-vs-sarasota/  301"
@@ -146,6 +200,7 @@ test("retired low-value stay slugs 301 to stronger commercial replacements", () 
 
 test("priority canonical guide families keep schema and breadcrumb copy aligned with route intent", () => {
   const bestTimeGuide = fs.readFileSync(path.join(sourceRoot, "guides", "best-time-visit-anna-maria-island.html"), "utf8");
+  const amiVsSiestaGuide = fs.readFileSync(path.join(sourceRoot, "guides", "anna-maria-island-vs-siesta-key.html"), "utf8");
   const srqGuide = fs.readFileSync(path.join(sourceRoot, "guides", "srq-airport-to-anna-maria-island.html"), "utf8");
   const weatherGuide = fs.readFileSync(path.join(sourceRoot, "guides", "anna-maria-island-weather.html"), "utf8");
   const bradentonGuide = fs.readFileSync(path.join(sourceRoot, "guides", "bradenton-vs-sarasota.html"), "utf8");
@@ -155,6 +210,23 @@ test("priority canonical guide families keep schema and breadcrumb copy aligned 
     true
   );
   assert.equal(bestTimeGuide.includes(">Best Time to Visit Anna Maria Island</div>"), true);
+
+  assert.equal(
+    amiVsSiestaGuide.includes('"item": "https://seascape-vacations.com/guides/anna-maria-island-vs-siesta-key/"'),
+    true
+  );
+  assert.equal(
+    amiVsSiestaGuide.includes('"url": "https://seascape-vacations.com/guides/anna-maria-island-vs-siesta-key/"'),
+    true
+  );
+  assert.equal(
+    amiVsSiestaGuide.includes('"item": "https://seascape-vacations.com/guides/anna-maria-island-vs-siesta-key"'),
+    false
+  );
+  assert.equal(
+    amiVsSiestaGuide.includes('"url": "https://seascape-vacations.com/guides/anna-maria-island-vs-siesta-key"'),
+    false
+  );
 
   assert.equal(
     srqGuide.includes('"headline": "SRQ Airport to Anna Maria Island: 30-Min Route & Tips"'),
