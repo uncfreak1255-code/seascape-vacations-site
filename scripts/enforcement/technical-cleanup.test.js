@@ -56,6 +56,13 @@ const RETIRED_STAY_PATHS = [
   "/stays/birthday-celebration-rentals-florida/"
 ];
 
+const WINNER_GUIDE_SOURCE_FILES = [
+  path.join(sourceRoot, "guides", "bradenton-vs-sarasota.html"),
+  path.join(sourceRoot, "guides", "anna-maria-island-vs-siesta-key.html"),
+  path.join(sourceRoot, "guides", "siesta-key-vs-anna-maria-island-families.html"),
+  path.join(sourceRoot, "guides", "best-time-visit-anna-maria-island.html")
+];
+
 test("repo root does not keep a stale checked-in sitemap artifact", () => {
   assert.equal(
     fs.existsSync(path.join(projectRoot, "sitemap.xml")),
@@ -119,6 +126,53 @@ test("retired low-value stay pages are not linked from live source files", () =>
       `Expected no live source file to include ${retiredPath}, found: ${offenders.map((filePath) => path.relative(projectRoot, filePath)).join(", ")}`
     );
   }
+});
+
+test("winner-guide families avoid generic booking detours in live source", () => {
+  for (const filePath of WINNER_GUIDE_SOURCE_FILES) {
+    const file = fs.readFileSync(filePath, "utf8");
+
+    assert.equal(
+      file.includes('href="/properties/"'),
+      false,
+      `Expected ${path.relative(projectRoot, filePath)} to avoid the generic /properties/ CTA detour`
+    );
+    assert.equal(
+      file.includes('href="https://book.seascape-vacations.com"'),
+      false,
+      `Expected ${path.relative(projectRoot, filePath)} to avoid the generic booking-engine detour`
+    );
+    assert.equal(
+      file.includes('id="sticky-book-bar"'),
+      false,
+      `Expected ${path.relative(projectRoot, filePath)} to avoid the stale generic sticky CTA`
+    );
+  }
+});
+
+test("guide conversion kit primary CTA falls back to the first stay winner before /properties/", () => {
+  const conversionKit = fs.readFileSync(path.join(sourceRoot, "_includes", "partials", "guide-conversion-kit.njk"), "utf8");
+
+  assert.equal(
+    conversionKit.includes("config.stays[0].href if config.stays and config.stays[0] else '/properties/'"),
+    true,
+    "Expected guideConversionKit to prefer the first stay href before falling back to /properties/"
+  );
+});
+
+test("supporting family comparison guide now uses the tracked guide conversion flow", () => {
+  const familyGuide = fs.readFileSync(path.join(sourceRoot, "guides", "siesta-key-vs-anna-maria-island-families.html"), "utf8");
+
+  assert.equal(familyGuide.includes('{% from "partials/guide-conversion-kit.njk" import guideConversionKit %}'), true);
+  assert.equal(familyGuide.includes('guideSlug: "siesta-key-vs-anna-maria-island-families"'), true);
+  assert.equal(familyGuide.includes('{% include "partials/analytics-ga4.njk" %}'), true);
+});
+
+test("legacy best-time-to-visit source stays excluded from output", () => {
+  const legacyBestTimeSource = fs.readFileSync(path.join(sourceRoot, "guides", "best-time-to-visit-anna-maria-island", "index.html"), "utf8");
+
+  assert.equal(legacyBestTimeSource.includes("permalink: false"), true);
+  assert.equal(legacyBestTimeSource.includes("eleventyExcludeFromCollections: true"), true);
 });
 
 test("highest-priority weather redirects point to the canonical slash route", () => {
