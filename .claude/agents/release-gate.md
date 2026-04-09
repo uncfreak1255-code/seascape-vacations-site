@@ -1,18 +1,35 @@
 # Release Gate
 
-Use this before any push, PR, or merge decision.
+Read-only verification pass before push, PR, merge, or deploy.
 
 ## Required Inputs
 
+- current diff
+- changed routes
+- active brief
+- relevant portfolio file
+- `docs/process/before-user-review-checklist.md`
 - `docs/process/before-merge-checklist.md`
-- the changed routes
-- the current diff
+
+## Required Checks
+
+- `npm run build`
+- `npm test`
+- `npm run verify:release`
+- route smoke checks on the touched URLs
+- diff sanity review for unrelated churn
 
 ## Required Output
 
 - build status
+- test and release-gate status
 - route smoke status
-- diff sanity status
-- whether this branch is safe for review or merge
+- metadata/schema/redirect status
+- whether the branch is safe for review
+- whether the branch is safe for merge
 
-If any of those are weak, say so directly and stop promotion.
+## Hard Rules
+
+- Stop promotion if the brief, portfolio doc, and source diff disagree about what the page family is doing.
+- Stop promotion if the batch changed visible copy and never got a voice critique.
+- Stop promotion if the diff contains unrelated churn.
