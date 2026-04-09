@@ -1,3 +1,4 @@
+{% from "partials/guide-conversion-kit.njk" import guideConversionKit %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -641,12 +642,52 @@
             <li><a href="https://seascape-vacations.com/stays/bradenton-waterfront-vacation-rentals/">Bradenton Waterfront Homes</a> — For families interested in boating or fishing</li>
         </ul>
 
-        <div class="cta-section">
-            <h2>Ready to Book Your Family Beach Vacation?</h2>
-            <p>Whether you choose Anna Maria Island for calm waters and small-town charm, or Siesta Key for lively beach town energy, Seascape Vacations has the perfect family home waiting.</p>
-            <p>Our properties feature full kitchens to save on dining costs, spacious yards for kids to play safely, and direct beach access or short walks to the water.</p>
-            <a href="https://book.seascape-vacations.com" class="cta-button">Browse Family Vacation Rentals</a>
-        </div>
+        {{ guideConversionKit({
+            guideSlug: "siesta-key-vs-anna-maria-island-families",
+            title: "Pick the calmer family base, then move straight to the right stay",
+            copy: "If this page already settled the beach question, do not send the trip back through generic search or OTA filters. Move straight into the AMI-first or Siesta-side stay that fits the age mix and budget.",
+            savingsBullets: [
+                {
+                    title: "Keep the family comparison tied to the real stay cost",
+                    copy: "The wrong booking path makes these two beaches look closer in price than they really are once platform fees land."
+                },
+                {
+                    title: "Book the beach rhythm that fits your kids",
+                    copy: "Use Anna Maria Island for calmer younger-family days. Use the Siesta side when older kids need more action and Sarasota access."
+                }
+            ],
+            stays: [
+                {
+                    href: "/stays/anna-maria-island-vacation-rentals/",
+                    title: "Anna Maria Island vacation rentals",
+                    copy: "For families prioritizing calmer water, easier beach routines, and a cleaner direct-book total."
+                },
+                {
+                    href: "/stays/anna-maria-island-beachfront-rentals/",
+                    title: "Anna Maria Island beachfront alternative",
+                    copy: "For families who want beach-first days and a pool-home setup without paying true beachfront pricing."
+                },
+                {
+                    href: "/stays/siesta-key-area-vacation-rentals/",
+                    title: "Siesta Key area vacation rentals",
+                    copy: "For families who want Sarasota access and the Siesta side without defaulting to condo-tower inventory."
+                }
+            ],
+            repeatLinks: [
+                {
+                    href: "/guides/anna-maria-island-vs-siesta-key/",
+                    title: "See the broader beach comparison",
+                    copy: "Use the general comparison if the family verdict is clear but the wider trip tradeoffs still are not."
+                },
+                {
+                    href: "/guides/family-vacation-anna-maria-island/",
+                    title: "Plan the AMI family trip in detail",
+                    copy: "Use the family trip guide for logistics, rainy-day backups, and kid-specific planning."
+                }
+            ],
+            primaryCtaLabel: "Browse Direct Family Beach Homes",
+            bookingEngineLabel: "Open Direct Availability"
+        }) }}
 
         <div class="meta-info">
             <p><strong>Published:</strong> March 3, 2026 | <strong>Updated:</strong> March 2026</p>
@@ -822,8 +863,7 @@
     <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=2748551298816267&ev=PageView&noscript=1" / alt=""></noscript>
 
     <!-- deploy-force: 2026-03-03 -->
-<div style="position:fixed;bottom:0;left:0;right:0;z-index:99;background:linear-gradient(135deg,var(--brand-dark) 0,var(--brand-darker,#2D4647) 100%);padding:12px 20px;display:flex;justify-content:center;align-items:center;gap:16px;box-shadow:0 -4px 20px rgba(0,0,0,.15);transform:translateY(100%);animation:slideUp .4s ease .5s forwards" id="sticky-book-bar"><style>#sticky-book-bar{transform:translateY(100%)}@keyframes slideUp{to{transform:translateY(0)}}</style><span style="color:#fff;font-size:14px;font-weight:500">Book Direct & Save 10-15%</span><a href="/properties/" style="background:linear-gradient(135deg,#C9A962 0,#b8943a 100%);color:#3A3A3A;padding:10px 22px;border-radius:50px;font-weight:600;font-size:13px;text-decoration:none;white-space:nowrap">Browse Our Homes →</a></div>
-
+{% include "partials/analytics-ga4.njk" %}
 {% include "partials/email-popup.njk" %}
 </body>
 </html>
