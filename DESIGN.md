@@ -175,6 +175,12 @@ All: Poppins 14px weight 600. Pill shape (50px radius). Padding: 14px 32px.
 - Centered layout. Gold or white CTA button.
 - Padding: 80px vertical.
 
+### "Book Direct" Trust Signal
+- Position the savings message ("Book Direct & Save 10-15%") as a trust signal alongside a real operator photo and name, not as an urgency tactic.
+- This is a trust pattern, not a discount banner. Think Plum Guide's "Trusted for a reason" — the business model IS the trust signal.
+- Pair with: locally managed badge, guest review count, response-time promise.
+- Never use countdown timers, fake scarcity ("Only 1 left!"), or strikethrough pricing.
+
 ## Anti-Patterns — Never Do These
 1. **Never replace the cream background with white or gray.** Cream is the brand's visual signature. It separates Seascape from every Airbnb clone.
 2. **Never use system fonts or generic sans-serif** for headings. Playfair Display is the brand identity.
