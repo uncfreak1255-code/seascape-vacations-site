@@ -76,3 +76,9 @@ That is enough. Extra agent personas are overhead unless they own a real surface
 6. the source file you are about to touch
 
 If any of those are stale, fix the doc layer before you scale the batch.
+
+## Design System
+Always read `DESIGN.md` before touching any CSS, template, or layout file.
+All colors, fonts, spacing, component patterns, and visual rules are defined there.
+Do not deviate without explicit user approval.
+For UI/visual work, dispatch subagents with `model: "sonnet"`.
