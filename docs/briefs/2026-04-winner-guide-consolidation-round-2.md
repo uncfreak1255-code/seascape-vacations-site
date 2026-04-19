@@ -4,6 +4,7 @@
 
 - the live weekly operator report chose `winner-guide-consolidation` after the money-page thresholds failed to clear
 - the comparison-guide cluster is still the strongest nonbrand organic asset, but multiple guide families still leak demand across slash, `.html`, and retired comparison aliases
+- the stale owner-hub smoke assertion now belongs in this same branch because release evidence is worthless if the trusted gate is still checking retired owner-hub copy
 - owner rewrite, stay-money CRO, Holmes Beach, and Phase 4 stay frozen until `/seo-os` clears those branches later
 
 ## Search Operator Read
@@ -19,6 +20,8 @@
   - `/guides/anna-maria-island-vs-siesta-key/` showed `1566` impressions with `2` URL variants
   - `/guides/siesta-key-vs-anna-maria-island-families/` showed `471` impressions with `2` URL variants
   - `/guides/best-time-visit-anna-maria-island/` showed `98` impressions with `3` URL variants
+- baseline note:
+  - this brief uses the 7-day operator read total of `5768` impressions, while the April 18 strategy refresh references `10,591` impressions for the broader winner-guide cluster; the branch must record which window/cluster definition it is using before the reread is judged
 
 ## Cluster In Scope
 
@@ -53,6 +56,7 @@
 - do not create new guide pages in this batch
 - do not rewrite the whole guide templates just because a few families still leak authority
 - do not change owner-page copy or stay-page value props in this branch
+- do not "fix" the owner smoke failure by restoring retired explainer-hub copy or broadening the owner page
 - do not invent new aliases; remove or reroute the ones that already exist
 - keep guide-to-stay handoff language tied to real money destinations already defined in `docs/portfolio/winner-guides.md`
 
@@ -61,6 +65,8 @@
 - audit and clean internal links still reinforcing noncanonical guide variants
 - tighten redirects in `src/_redirects` where guide-family aliases still hop or drift
 - verify canonical tags, breadcrumb/schema URLs, and guide-hub links on the in-scope guide families
+- reconcile the `5768` vs `10,591` guide-winner baseline mismatch in branch notes before the reread window starts
+- update `scripts/recovery/assert-live-smoke.js` so `/property-management/` checks current owner-hub truth instead of retired explainer-hub expectations
 - add or tighten enforcement coverage where the current tests do not block this leakage from returning
 - only touch source files needed for winner-guide routing, linking, or instrumentation sanity
 
@@ -78,6 +84,7 @@
   - `/guides/anna-maria-island-vs-siesta-key/`
   - `/guides/siesta-key-vs-anna-maria-island-families/`
   - `/guides/best-time-visit-anna-maria-island/`
+  - `/property-management/`
 - run:
   - `npm test`
   - `npm run build`
@@ -93,6 +100,8 @@
 - the in-scope winner-guide families route all known aliases directly to one canonical slash URL
 - live source no longer links to the alias URLs owned by this batch
 - schema, breadcrumb, and visible guide links all agree on the canonical route
+- the release smoke gate checks the current proof-first owner hub instead of retired explainer-hub copy
+- the branch notes explain whether `5768` or `10,591` is the governing winner-guide baseline for the post-reread judgment
 - enforcement tests would catch the leakage if it reappears
 
 ## Post-Reread Outcome
@@ -106,6 +115,7 @@
 ## Not In Scope
 
 - owner money-page rewrites
+- owner hub copy rewrites
 - stay money-page CRO
 - Holmes Beach expansion
 - Phase 4 entity work
