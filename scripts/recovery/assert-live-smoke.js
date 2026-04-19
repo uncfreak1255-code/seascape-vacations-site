@@ -1,11 +1,5 @@
 const https = require("https");
 
-const baseUrl = process.argv[2];
-
-if (!baseUrl) {
-  throw new Error("Usage: node scripts/recovery/assert-live-smoke.js <base-url>");
-}
-
 const targets = [
   { path: "/", status: 200 },
   { path: "/properties/", status: 200 },
@@ -26,7 +20,7 @@ const targets = [
   { path: "/images/siesta-key-og.jpg", status: 200 }
 ];
 
-function request(path) {
+function request(baseUrl, path) {
   return new Promise((resolve, reject) => {
     https
       .get(`${baseUrl}${path}`, (res) => {
@@ -46,26 +40,7 @@ function request(path) {
   });
 }
 
-async function check(target, currentPath = target.path, redirectDepth = 0) {
-  const response = await request(currentPath);
-
-  if (
-    target.followRedirects !== false &&
-    response.statusCode >= 300 &&
-    response.statusCode < 400 &&
-    response.location
-  ) {
-    if (redirectDepth >= 5) {
-      throw new Error(`${target.path} exceeded redirect limit`);
-    }
-
-    const nextPath = response.location.startsWith("http")
-      ? response.location.replace(baseUrl, "")
-      : response.location;
-
-    return check(target, nextPath, redirectDepth + 1);
-  }
-
+function validateTargetResponse(target, response) {
   if (response.statusCode !== target.status) {
     throw new Error(`${target.path} expected ${target.status}, got ${response.statusCode}`);
   }
@@ -120,12 +95,25 @@ async function check(target, currentPath = target.path, redirectDepth = 0) {
   }
 
   if (target.path === "/property-management/") {
-    if (!response.body.includes("What Is Vacation Rental Property Management?")) {
-      throw new Error("property-management hub is missing the owner explainer content");
+    const hasProofFirstOwnerSurface =
+      response.body.includes("Property management for owners who care about net revenue")
+      && response.body.includes("$119,923")
+      && response.body.includes("13.4%")
+      && response.body.includes("2.9%")
+      && response.body.includes("Where Owner Revenue Actually Leaks")
+      && response.body.includes("Request Your Revenue Review")
+      && response.body.includes('href="#owner-cta"');
+
+    if (!hasProofFirstOwnerSurface) {
+      throw new Error("property-management hub is missing the proof-first owner revenue surface");
     }
 
-    if (!response.body.includes('href="/properties/"') || !response.body.includes("View All Properties")) {
-      throw new Error("property-management hub is missing the corrected view-all-properties CTA");
+    if (
+      response.body.includes("What Is Vacation Rental Property Management?")
+      || response.body.includes("View All Properties")
+      || response.body.includes("Request a property evaluation")
+    ) {
+      throw new Error("property-management hub is still serving the retired explainer-hub surface");
     }
   }
 
@@ -150,9 +138,50 @@ async function check(target, currentPath = target.path, redirectDepth = 0) {
   }
 }
 
-Promise.all(targets.map((target) => check(target)))
-  .then(() => console.log("assert-live-smoke: all targets passed"))
-  .catch((error) => {
-    console.error(error.message);
-    process.exit(1);
-  });
+async function check(baseUrl, target, currentPath = target.path, redirectDepth = 0) {
+  const response = await request(baseUrl, currentPath);
+
+  if (
+    target.followRedirects !== false &&
+    response.statusCode >= 300 &&
+    response.statusCode < 400 &&
+    response.location
+  ) {
+    if (redirectDepth >= 5) {
+      throw new Error(`${target.path} exceeded redirect limit`);
+    }
+
+    const nextPath = response.location.startsWith("http")
+      ? response.location.replace(baseUrl, "")
+      : response.location;
+
+    return check(baseUrl, target, nextPath, redirectDepth + 1);
+  }
+
+  validateTargetResponse(target, response);
+}
+
+async function run(baseUrl) {
+  if (!baseUrl) {
+    throw new Error("Usage: node scripts/recovery/assert-live-smoke.js <base-url>");
+  }
+
+  await Promise.all(targets.map((target) => check(baseUrl, target)));
+}
+
+if (require.main === module) {
+  run(process.argv[2])
+    .then(() => console.log("assert-live-smoke: all targets passed"))
+    .catch((error) => {
+      console.error(error.message);
+      process.exit(1);
+    });
+}
+
+module.exports = {
+  targets,
+  request,
+  validateTargetResponse,
+  check,
+  run
+};
