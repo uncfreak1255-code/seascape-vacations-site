@@ -158,6 +158,161 @@
       "geoIntro": "<p>Planning a vacation for a large group \u2014 whether it's an extended family, a friends' reunion, or a team retreat \u2014 comes with one universal challenge: finding a place where everyone can be together without feeling cramped. Hotels scatter your group across multiple rooms on different floors. Vacation condos offer tiny kitchens and no common space. That's where our large group vacation homes in Bradenton change the equation entirely.</p><p><strong>Seascape Vacations</strong> offers spacious vacation homes sleeping 10\u201316 guests with open floor plans designed for togetherness: large living rooms where the whole group can gather, dining areas that seat everyone at one table, chef-ready kitchens for group meals, and outdoor entertaining spaces with private heated pools, BBQ grills, and covered patios.</p><p>Our largest property, <strong>The Oasis</strong>, sleeps up to 16 guests with 5 bedrooms, 4 bathrooms, a resort-style pool, hot tub, game room, and a massive outdoor living area. <strong>Dockside Dreams</strong> offers 5 bedrooms plus a private boat dock for groups who want water access. These are real homes built for gathering, not hotels with adjoining rooms. And when you book direct with Seascape Vacations, you save 10\u201315% versus Airbnb \u2014 savings that add up fast when you're splitting the cost among a big group.</p>"
     },
     {
+      "slug": "large-group-vacation-rentals-anna-maria-island",
+      "destination": "anna-maria-island",
+      "title": "Large Group Vacation Rentals Near Anna Maria Island with Private Pools",
+      "h1": "Large Group Vacation Rentals Near Anna Maria Island with Private Pools",
+      "description": "Bradenton vacation rentals near Anna Maria Island for groups of 10-16. Private pools, hot tubs, beach-distance facts, and direct booking links.",
+      "intro": "Private-pool Bradenton homes beside Anna Maria Island for groups that need more space than most on-island rentals can give them.",
+      "bluntAnswer": "These homes are in Bradenton, not on Anna Maria Island, but they are 10-15 minutes from AMI beaches and sleep 10-16 guests.",
+      "faqs": [
+        {
+          "question": "Are these homes on Anna Maria Island?",
+          "answer": "No. These Seascape homes are in Bradenton, beside Anna Maria Island, not on the island itself. The tradeoff is intentional: you give up walk-out-the-door island placement and get larger private-pool homes with more bedrooms, parking, outdoor space, and lower direct-booking friction."
+        },
+        {
+          "question": "How far are they from AMI beaches?",
+          "answer": "Dockside Dreams is 2.9 miles from Bradenton Beach, 3.4 miles from Cortez Beach, and 5.1 miles from Holmes Beach. The Oasis is 5.4 miles from Holmes Beach, 5.7 miles from Bradenton Beach, and 6.2 miles from Cortez Beach. River House is about 5 miles, or roughly 15 minutes, from Anna Maria Island and Manatee Public Beach. Bradenton Pool Home is 6.9 miles from Bradenton Beach and 8.7 miles from Holmes Beach."
+        },
+        {
+          "question": "Which Seascape home is best for a 12-16 person group?",
+          "answer": "Choose The Oasis for the largest group because it sleeps 16 and has 5 bedrooms, 3 bathrooms, a heated pool, 2 hot tubs, and a putting green. Choose Dockside Dreams for a 12-person waterfront trip with a private dock, heated pool, spa, and faster access to Bradenton Beach and Cortez Beach."
+        },
+        {
+          "question": "Is Bradenton better than staying on AMI for large groups?",
+          "answer": "Bradenton is better when your group values private pools, more parking, larger homes, hot tubs, kitchens, and lower direct-booking costs over being directly on the island. Stay on AMI if your top priority is walking to Pine Avenue, Holmes Beach, or Bradenton Beach without driving."
+        }
+      ],
+      "matchingProperties": [
+        "the-oasis",
+        "dockside-dreams",
+        "river-house",
+        "bradenton-pool-home"
+      ],
+      "geoIntro": "<p><strong>Seascape Vacations offers large private-pool homes near Anna Maria Island for groups of 10-16 guests.</strong> The homes are in Bradenton, not on Anna Maria Island, which matters if your group wants to walk everywhere on the island. It also matters in the other direction: Bradenton gives large groups more space, easier parking, bigger outdoor areas, private pools, hot tubs, and direct booking paths without the same on-island inventory squeeze.</p><p>The best fit is a group that wants AMI beach days without forcing everyone into smaller island condos or multiple separate bookings. <strong>The Oasis</strong> sleeps 16 with a heated pool, 2 hot tubs, putting green, and gameroom. <strong>Dockside Dreams</strong> sleeps 12 with a private dock, heated pool, spa, and the shortest drive to Bradenton Beach. <strong>River House</strong> works for active 12-person groups that want a pool, spa, gameroom, and river access nearby. <strong>Bradenton Pool Home</strong> fits smaller 10-person groups that want a pool, inground spa, 3.5 baths, and IMG convenience.</p><p>If you need a true on-island address, Seascape is not the right answer. If you want a larger private home right beside Anna Maria Island with a pool, hot tub options, verified property pages, and direct booking links, this is the cleaner fit.</p>",
+      "choiceTradeoffs": [
+        {
+          "label": "Choose Seascape if",
+          "title": "Your group needs space more than an island address",
+          "copy": "Pick Seascape when 10-16 guests need real bedrooms, private pools, hot tubs, parking, group kitchens, and direct booking links. The homes are close enough for AMI beach days without paying the space penalty of many on-island options."
+        },
+        {
+          "label": "Choose on-island if",
+          "title": "Walking everywhere matters more than house size",
+          "copy": "Book an Anna Maria Island operator if your group wants to walk to the beach, Pine Avenue, or island restaurants without driving. You may trade down on house size, parking, or pool privacy, but the location is the point."
+        }
+      ],
+      "propertyFacts": [
+        {
+          "name": "The Oasis",
+          "city": "Bradenton",
+          "pageUrl": "/properties/the-oasis/",
+          "bookingUrl": "https://book.seascape-vacations.com/listings/189511",
+          "image": "https://bookingenginecdn.hostaway.com/listing/51916-189511-g2tWgjqFm-DXPRc0ll2k1u87aWIKNZm6tOyz9KhGrnc-64dfdf914c559",
+          "schemaDescription": "Bradenton vacation rental near Anna Maria Island with 5 bedrooms, 3 bathrooms, heated pool, 2 hot tubs, putting green, gameroom, and space for 16 guests.",
+          "bedrooms": 5,
+          "bathrooms": 3,
+          "guests": 16,
+          "price": 550,
+          "specs": "5 BR / 3 BA / sleeps 16",
+          "poolSpa": "Heated pool, 2 hot tubs, putting green",
+          "beachDistance": "Holmes Beach 5.4 mi; Bradenton Beach 5.7 mi; Cortez Beach 6.2 mi",
+          "bestFor": "Best Seascape fit for 14-16 guests."
+        },
+        {
+          "name": "Dockside Dreams",
+          "city": "Bradenton",
+          "pageUrl": "/properties/dockside-dreams/",
+          "bookingUrl": "https://book.seascape-vacations.com/listings/206016",
+          "image": "https://bookingenginecdn.hostaway.com/listing/51916-206016-xNIrPl9kvF0vllYFzSL7Lm0Gl4eOGxLIN--wmPlCT3NY-6536bca493945",
+          "schemaDescription": "Bradenton waterfront vacation rental near Anna Maria Island with 4 bedrooms, 3 bathrooms, private dock, heated pool, spa, gameroom, and space for 12 guests.",
+          "bedrooms": 4,
+          "bathrooms": 3,
+          "guests": 12,
+          "price": 450,
+          "specs": "4 BR / 3 BA / sleeps 12",
+          "poolSpa": "Heated pool/spa, waterfront dock",
+          "beachDistance": "Bradenton Beach 2.9 mi; Cortez Beach 3.4 mi; Holmes Beach 5.1 mi",
+          "bestFor": "Best fit for 12 guests who want water access."
+        },
+        {
+          "name": "River House",
+          "city": "Bradenton",
+          "pageUrl": "/properties/river-house/",
+          "bookingUrl": "https://book.seascape-vacations.com/listings/135880",
+          "image": "https://bookingenginecdn.hostaway.com/listing/51916-135880-O6JS9DHvtg7g5gc5ZAe7--55PGx3-0ELuuNJ4T1dsz7s-67620f804f296",
+          "schemaDescription": "Bradenton vacation rental near Anna Maria Island with 4 bedrooms, 3 bathrooms, heated pool, spa, gameroom, yard games, and space for 12 guests.",
+          "bedrooms": 4,
+          "bathrooms": 3,
+          "guests": 12,
+          "price": 400,
+          "specs": "4 BR / 3 BA / sleeps 12",
+          "poolSpa": "Heated pool, spa, gameroom, yard games",
+          "beachDistance": "Anna Maria Island and Manatee Public Beach about 5 mi / 15 min",
+          "bestFor": "Best fit for active 12-person groups."
+        },
+        {
+          "name": "Bradenton Pool Home",
+          "city": "Bradenton",
+          "pageUrl": "/properties/bradenton-pool-home/",
+          "bookingUrl": "https://book.seascape-vacations.com/listings/487798",
+          "image": "https://bookingenginecdn.hostaway.com/listing/51916-487798-V0NBY--NCCpIEyYp6re-PPCPp-D1YJjHS25PWR9-gUzg-6992505e1bcdd",
+          "schemaDescription": "Bradenton vacation rental near Anna Maria Island with 3 bedrooms, 3.5 bathrooms, heated pool, inground spa, outdoor grill area, and space for 10 guests.",
+          "bedrooms": 3,
+          "bathrooms": 3.5,
+          "guests": 10,
+          "price": 200,
+          "specs": "3 BR / 3.5 BA / sleeps 10",
+          "poolSpa": "Heated pool, inground spa, outdoor grill area",
+          "beachDistance": "Bradenton Beach 6.9 mi; Cortez Beach 7.4 mi; Holmes Beach 8.7 mi",
+          "bestFor": "Best fit for 10 guests who also want IMG convenience."
+        }
+      ],
+      "reviewProof": [
+        {
+          "property": "The Oasis",
+          "author": "David Kohley",
+          "date": "2026-02-03",
+          "quote": "House was very well stocked and plenty of room for everyone staying. Backyard was very nice setup with pool and hot tub. Highly recommend."
+        },
+        {
+          "property": "Dockside Dreams",
+          "author": "Tracy Bunce",
+          "date": "2025-08-10",
+          "quote": "We could not have been happier with our stay! The house was beautiful, spacious and so comfortable!"
+        },
+        {
+          "property": "River House",
+          "author": "Florian Lasserre",
+          "date": "2025-08-14",
+          "quote": "We really enjoyed our stay, we were two family of 5 and it was perfect."
+        },
+        {
+          "property": "Bradenton Pool Home",
+          "author": "Mckenzie",
+          "date": "2026-03",
+          "quote": "Very kid friendly and accommodating all the way around! Ashley was very responsive. Would definitely recommend!"
+        }
+      ],
+      "relatedGuideLinks": [
+        {
+          "href": "/guides/anna-maria-island-beaches/",
+          "title": "Anna Maria Island Beaches",
+          "copy": "Use the beach guide to choose between Bradenton Beach, Holmes Beach, Cortez Beach, Coquina Beach, and Bean Point."
+        },
+        {
+          "href": "/guides/where-to-stay-near-anna-maria-island/",
+          "title": "Where to Stay Near AMI",
+          "copy": "Compare the mainland side, island towns, and nearby beach bases before you lock dates."
+        },
+        {
+          "href": "/stays/bradenton-vacation-rentals-near-beaches/",
+          "title": "Bradenton Rentals Near Beaches",
+          "copy": "Use the Bradenton page if you want the wider mainland pool-home collection near AMI."
+        }
+      ]
+    },
+    {
       "slug": "book-direct-anna-maria-island",
       "destination": "anna-maria-island",
       "title": "Book Direct AMI Vacation Rentals - Save 10-15%",

@@ -123,7 +123,53 @@ eleventyComputed:
     {% endif %}
     
     <!-- VacationRental Schema (ItemList for properties) -->
-    {% if properties and properties | length %}
+    {% if seoPage.propertyFacts and seoPage.propertyFacts.length > 0 %}
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        "name": "{{ seoPage.h1 }}",
+        "description": "{{ seoPage.description }}",
+        "numberOfItems": {{ seoPage.propertyFacts | length }},
+        "itemListElement": [
+            {% for property in seoPage.propertyFacts %}
+            {
+                "@type": "ListItem",
+                "position": {{ loop.index }},
+                "item": {
+                    "@type": "VacationRental",
+                    "@id": "{{ site.url }}{{ property.pageUrl }}#vacation-rental",
+                    "name": "{{ property.name }}",
+                    "description": "{{ property.schemaDescription }}",
+                    "url": "{{ site.url }}{{ property.pageUrl }}",
+                    "image": "{{ property.image }}",
+                    "numberOfBedrooms": {{ property.bedrooms }},
+                    "numberOfBathroomsTotal": {{ property.bathrooms }},
+                    "occupancy": {
+                        "@type": "QuantitativeValue",
+                        "maxValue": {{ property.guests }}
+                    },
+                    "address": {
+                        "@type": "PostalAddress",
+                        "addressLocality": "{{ property.city }}",
+                        "addressRegion": "FL",
+                        "addressCountry": "US"
+                    },
+                    "offers": {
+                        "@type": "Offer",
+                        "price": "{{ property.price }}",
+                        "priceCurrency": "USD",
+                        "unitText": "NIGHT",
+                        "availability": "https://schema.org/InStock",
+                        "url": "{{ property.bookingUrl }}"
+                    }
+                }
+            }{% if not loop.last %},{% endif %}
+            {% endfor %}
+        ]
+    }
+    </script>
+    {% elif properties and properties | length %}
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
@@ -206,11 +252,23 @@ eleventyComputed:
         .section-tag { display: inline-block; font-size: 12px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--brand); margin-bottom: 12px; }
         .section-title { font-size: clamp(28px, 4vw, 38px); color: var(--stone); margin-bottom: 12px; }
         .section-subtitle { color: var(--stone-light); max-width: 600px; margin: 0 auto; }
+        .answer-box { background: white; border-left: 5px solid var(--gold); border-radius: 0 14px 14px 0; padding: 24px; box-shadow: 0 8px 26px rgba(28, 38, 39, 0.08); }
+        .answer-box p { font-size: 18px; line-height: 1.75; color: var(--stone); margin: 0; }
         .hero-actions { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; margin-top: 28px; }
         .decision-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px; }
         .decision-card { background: white; border-radius: 18px; padding: 22px; box-shadow: 0 8px 26px rgba(28, 38, 39, 0.08); border: 1px solid rgba(61, 92, 93, 0.08); }
         .decision-label { display: block; font-size: 12px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--brand); margin-bottom: 10px; }
         .decision-value { font-size: 18px; line-height: 1.5; color: var(--stone); }
+        .property-facts-wrap { overflow-x: auto; border-radius: 16px; box-shadow: 0 8px 26px rgba(28, 38, 39, 0.08); background: white; }
+        .property-facts { width: 100%; min-width: 840px; border-collapse: collapse; background: white; }
+        .property-facts th { background: var(--brand-dark); color: white; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; text-align: left; padding: 16px; }
+        .property-facts td { padding: 16px; border-bottom: 1px solid rgba(61, 92, 93, 0.12); vertical-align: top; font-size: 14px; line-height: 1.6; }
+        .property-facts tr:last-child td { border-bottom: 0; }
+        .property-facts a { color: var(--brand-dark); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+        .review-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px; }
+        .review-card { background: white; border-radius: 16px; padding: 22px; box-shadow: 0 8px 26px rgba(28, 38, 39, 0.08); border: 1px solid rgba(61, 92, 93, 0.08); }
+        .review-copy { color: var(--stone); font-size: 15px; line-height: 1.7; margin-bottom: 14px; }
+        .review-source { color: var(--stone-light); font-size: 13px; font-weight: 600; }
         .comparison-grid { display: grid; gap: 18px; }
         .comparison-row { display: grid; grid-template-columns: minmax(140px, 0.85fr) 1.2fr 1.2fr; gap: 18px; align-items: stretch; }
         .comparison-label { background: linear-gradient(135deg, rgba(95, 138, 139, 0.12), rgba(201, 169, 98, 0.14)); border-radius: 18px; padding: 22px; font-size: 18px; color: var(--brand-dark); display: flex; align-items: center; justify-content: center; text-align: center; }
@@ -332,12 +390,79 @@ eleventyComputed:
             </div>
         </section>
 
+        {% if seoPage.bluntAnswer %}
+        <section class="section" style="background: var(--cream-light); padding: 42px 24px;">
+            <div class="container" style="max-width: 900px;">
+                <div class="answer-box">
+                    <p>{{ seoPage.bluntAnswer }}</p>
+                </div>
+            </div>
+        </section>
+        {% endif %}
+
         <!-- GEO-optimized intro content (first 200 words answer the query directly) -->
         {% if seoPage.geoIntro %}
         <section class="section" style="background: white; padding: 48px 24px;">
             <div class="container" style="max-width: 800px;">
                 <div style="font-size: 17px; line-height: 1.9; color: var(--stone);">
                     {{ seoPage.geoIntro | safe }}
+                </div>
+            </div>
+        </section>
+        {% endif %}
+
+        {% if seoPage.choiceTradeoffs and seoPage.choiceTradeoffs.length > 0 %}
+        <section class="section" style="background: white; padding-top: 28px;">
+            <div class="container">
+                <div class="section-header" style="margin-bottom: 28px;">
+                    <p class="section-tag">Location Tradeoff</p>
+                    <h2 class="section-title">Choose the right side of the bridge</h2>
+                    <p class="section-subtitle">The honest choice is not island versus bad. It is tight on-island access versus larger private-pool homes beside AMI.</p>
+                </div>
+                <div class="decision-grid">
+                    {% for tradeoff in seoPage.choiceTradeoffs %}
+                    <article class="decision-card">
+                        <span class="decision-label">{{ tradeoff.label }}</span>
+                        <h3 style="font-size: 20px; color: var(--brand-dark); margin-bottom: 10px;">{{ tradeoff.title }}</h3>
+                        <p style="font-size: 15px; color: var(--stone); line-height: 1.7;">{{ tradeoff.copy }}</p>
+                    </article>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+        {% endif %}
+
+        {% if seoPage.propertyFacts and seoPage.propertyFacts.length > 0 %}
+        <section class="section" style="background: var(--cream-light); padding-top: 44px;">
+            <div class="container">
+                <div class="section-header" style="margin-bottom: 28px;">
+                    <p class="section-tag">Property Facts</p>
+                    <h2 class="section-title">Large-group homes near Anna Maria Island</h2>
+                    <p class="section-subtitle">Every row below is written for quick comparison: capacity, pool setup, beach distance, and the direct booking path.</p>
+                </div>
+                <div class="property-facts-wrap">
+                    <table class="property-facts">
+                        <thead>
+                            <tr>
+                                <th>Home</th>
+                                <th>Facts</th>
+                                <th>Pool / Spa</th>
+                                <th>AMI Beach Distance</th>
+                                <th>Direct Booking</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for property in seoPage.propertyFacts %}
+                            <tr>
+                                <td><strong>{{ property.name }}</strong><br>{{ property.city }}, FL</td>
+                                <td>{{ property.specs }}<br>{{ property.bestFor }}</td>
+                                <td>{{ property.poolSpa }}</td>
+                                <td>{{ property.beachDistance }}</td>
+                                <td><a href="{{ property.bookingUrl }}" target="_blank" rel="noopener noreferrer">Check direct dates</a></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </section>
@@ -439,6 +564,26 @@ eleventyComputed:
                 {% endif %}
             </div>
         </section>
+
+        {% if seoPage.reviewProof and seoPage.reviewProof.length > 0 %}
+        <section class="section" style="background: white; padding-top: 44px;">
+            <div class="container">
+                <div class="section-header" style="margin-bottom: 28px;">
+                    <p class="section-tag">Review Proof</p>
+                    <h2 class="section-title">Why the large-group fit is believable</h2>
+                    <p class="section-subtitle">These are property-level reviews, not a recycled sitewide review count.</p>
+                </div>
+                <div class="review-grid">
+                    {% for review in seoPage.reviewProof %}
+                    <article class="review-card">
+                        <p class="review-copy">"{{ review.quote }}"</p>
+                        <p class="review-source">{{ review.author }} · {{ review.property }} · {{ review.date }}</p>
+                    </article>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+        {% endif %}
 
         {% if seoPage.valueComparison and seoPage.valueComparison.rows and seoPage.valueComparison.rows.length > 0 %}
         <section class="section" style="background: white; padding-top: 24px;">
