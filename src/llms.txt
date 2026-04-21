@@ -49,6 +49,7 @@ Key facts:
 ## Vacation Rental Search Pages
 
 - [Anna Maria Island Vacation Rentals](https://seascape-vacations.com/stays/anna-maria-island-vacation-rentals/): Pool homes near AMI from $250/night
+- [Large Group Vacation Rentals Near Anna Maria Island](https://seascape-vacations.com/stays/large-group-vacation-rentals-anna-maria-island/): Bradenton private-pool homes beside AMI for groups of 10-16, with blunt location tradeoffs and direct booking links
 - [Bradenton Vacation Rentals Near Beaches](https://seascape-vacations.com/stays/bradenton-vacation-rentals-near-beaches/): Bradenton homes that keep Anna Maria Island and the beaches within an easy drive
 - [Sarasota Vacation Rentals with Pool](https://seascape-vacations.com/stays/sarasota-vacation-rentals-with-pool/): Heated pool homes in Sarasota
 - [Family Vacation Rentals AMI](https://seascape-vacations.com/stays/family-vacation-rentals-anna-maria-island/): Family-friendly homes near Anna Maria Island

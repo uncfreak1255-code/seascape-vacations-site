@@ -7,6 +7,8 @@ const projectRoot = path.resolve(__dirname, "..", "..");
 const homepage = fs.readFileSync(path.join(projectRoot, "src", "index.njk"), "utf8");
 const llms = fs.readFileSync(path.join(projectRoot, "src", "llms.txt"), "utf8");
 const robots = fs.readFileSync(path.join(projectRoot, "src", "robots.txt"), "utf8");
+const seoPages = require(path.join(projectRoot, "src", "_data", "seoPages.json"));
+const staysTemplate = fs.readFileSync(path.join(projectRoot, "src", "stays", "stays.njk"), "utf8");
 const propertyPages = [
   "bradenton-pool-home",
   "dockside-dreams",
@@ -75,6 +77,59 @@ test("llms inventory only advertises live canonical URLs", () => {
       `${url} should use the canonical trailing-slash route`
     );
   }
+});
+
+test("AMI large-group page is source-managed and truthful about near-island location", () => {
+  const page = seoPages.vacationer.find(
+    (candidate) => candidate.slug === "large-group-vacation-rentals-anna-maria-island"
+  );
+
+  assert.ok(page, "AMI large-group stay page must live in src/_data/seoPages.json");
+  assert.equal(page.title, "Large Group Vacation Rentals Near Anna Maria Island with Private Pools");
+  assert.equal(page.h1, "Large Group Vacation Rentals Near Anna Maria Island with Private Pools");
+  assert.equal(
+    page.bluntAnswer,
+    "These homes are in Bradenton, not on Anna Maria Island, but they are 10-15 minutes from AMI beaches and sleep 10-16 guests."
+  );
+  assert.deepEqual(page.matchingProperties, [
+    "the-oasis",
+    "dockside-dreams",
+    "river-house",
+    "bradenton-pool-home"
+  ]);
+
+  const serializedPage = JSON.stringify(page);
+  for (const bannedClaim of [
+    "largest private vacation rental on the island",
+    "Anna Maria Island's largest",
+    "owns and manages two of the largest private vacation rentals on the island"
+  ]) {
+    assert.equal(
+      serializedPage.includes(bannedClaim),
+      false,
+      `AMI large-group page should not claim Bradenton homes are ${bannedClaim}`
+    );
+  }
+
+  assert.equal(page.propertyFacts.length, 4);
+  for (const property of page.propertyFacts) {
+    assert.equal(property.city, "Bradenton", `${property.name} should declare the real city`);
+    assert.match(property.bookingUrl, /^https:\/\/book\.seascape-vacations\.com\/listings\/\d+$/);
+    assert.match(property.beachDistance, /(Beach|Anna Maria Island)/);
+  }
+
+  assert.equal(
+    llms.includes("https://seascape-vacations.com/stays/large-group-vacation-rentals-anna-maria-island/"),
+    true,
+    "llms.txt should advertise the canonical AMI large-group page"
+  );
+});
+
+test("stays template can render citation-ready property facts with booking offers", () => {
+  assert.equal(staysTemplate.includes("seoPage.propertyFacts"), true);
+  assert.equal(staysTemplate.includes('"@type": "Offer"'), true);
+  assert.equal(staysTemplate.includes('"url": "{{ property.bookingUrl }}"'), true);
+  assert.equal(staysTemplate.includes("Check direct dates"), true);
 });
 
 test("homepage schema advertises a real searchable website target", () => {
