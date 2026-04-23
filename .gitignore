@@ -24,6 +24,7 @@ Thumbs.db
 
 # Local scratch artifacts
 .superpowers/
+.gstack/
 lh-live-baseline.report.html
 lh-live-baseline.report.json
 _site/research/
