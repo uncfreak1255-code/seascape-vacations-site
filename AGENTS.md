@@ -9,7 +9,8 @@ Read in this order:
 3. `docs/process/agent-safety-standard.md`
 4. `docs/process/git-session-rules.md`
 5. `docs/status/current-state.md`
-6. one task-relevant file from `docs/briefs/`, `docs/portfolio/`, `docs/style/`, or source
+6. `DESIGN.md` before UI, CSS, template, or layout work
+7. one task-relevant file from `docs/briefs/`, `docs/portfolio/`, `docs/style/`, or source
 
 ## This Repo Owns
 
@@ -54,6 +55,12 @@ Read in this order:
 - process rules live in `docs/process/`
 - current execution context lives in `docs/status/`
 - the five SEO OS role cards live in `.claude/agents/`
+
+## Design System
+
+Before UI work, read `DESIGN.md`; treat it as the visual source of truth.
+Do not invent colors, fonts, spacing, border radius, shadows, or component styles unless Sawyer explicitly asks for a design-system change.
+If Claude Design, Stitch, designmd.directory, or another design tool produces a new direction, propose it as a `DESIGN.md` change first.
 
 ## Writeback Boundary
 

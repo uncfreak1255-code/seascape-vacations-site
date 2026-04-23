@@ -79,6 +79,9 @@ If any of those are stale, fix the doc layer before you scale the batch.
 
 ## Design System
 Always read `DESIGN.md` before touching any CSS, template, or layout file.
-All colors, fonts, spacing, component patterns, and visual rules are defined there.
-Do not deviate without explicit user approval.
+Treat `DESIGN.md` as the visual source of truth.
+Do not invent new colors, fonts, spacing, border radius, shadows, or component styles without explicit user approval.
+If Claude Design, Stitch, designmd.directory, or another design tool produces a new direction, propose it as a `DESIGN.md` change first.
+Use Stitch/designmd.directory only as inspiration, not source truth.
+Subjective visual changes need desktop and mobile screenshots until an automated visual regression gate exists.
 For UI/visual work, dispatch subagents with `model: "sonnet"`.

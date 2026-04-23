@@ -1,3 +1,99 @@
+---
+version: "alpha"
+name: "Seascape Vacations Marketing Site"
+description: "Public Seascape Vacations website design system for owner acquisition, direct booking, and Gulf Coast SEO pages."
+colors:
+  primary: "#3D5C5D"
+  brand: "#5F8A8B"
+  brand-light: "#7BA3A4"
+  brand-dark: "#3D5C5D"
+  brand-darker: "#2D4647"
+  gold: "#C9A962"
+  gold-dark: "#B8943A"
+  gold-light: "#E8D5A3"
+  cream: "#F5EED6"
+  cream-dark: "#EBE4CC"
+  cream-light: "#FAF7EE"
+  stone: "#3A3A3A"
+  stone-light: "#6A6A6A"
+  white: "#FFFFFF"
+typography:
+  display-xl:
+    fontFamily: "Playfair Display"
+    fontSize: "56px"
+    fontWeight: 500
+    lineHeight: "1.05"
+    letterSpacing: "-0.02em"
+  display-md:
+    fontFamily: "Playfair Display"
+    fontSize: "38px"
+    fontWeight: 500
+    lineHeight: "1.15"
+    letterSpacing: "-0.02em"
+  body:
+    fontFamily: "Poppins"
+    fontSize: "16px"
+    fontWeight: 400
+    lineHeight: "1.7"
+    letterSpacing: "0em"
+  label:
+    fontFamily: "Poppins"
+    fontSize: "12px"
+    fontWeight: 600
+    lineHeight: "1.2"
+    letterSpacing: "0.2em"
+rounded:
+  sm: "12px"
+  md: "20px"
+  pill: "50px"
+spacing:
+  xs: "8px"
+  sm: "12px"
+  md: "16px"
+  lg: "24px"
+  xl: "32px"
+  section: "80px"
+components:
+  button-primary:
+    backgroundColor: "{colors.primary}"
+    textColor: "{colors.white}"
+    typography: "{typography.label}"
+    rounded: "{rounded.pill}"
+    padding: "14px 32px"
+  button-gold:
+    backgroundColor: "{colors.gold}"
+    textColor: "{colors.stone}"
+    typography: "{typography.label}"
+    rounded: "{rounded.pill}"
+    padding: "14px 32px"
+  property-card:
+    backgroundColor: "{colors.white}"
+    textColor: "{colors.stone}"
+    rounded: "{rounded.md}"
+    padding: "20px"
+  section-tag:
+    textColor: "{colors.brand}"
+    typography: "{typography.label}"
+  page-surface:
+    backgroundColor: "{colors.cream}"
+    textColor: "{colors.stone}"
+    typography: "{typography.body}"
+    rounded: "{rounded.sm}"
+    padding: "80px 24px"
+  nav-surface:
+    backgroundColor: "{colors.cream-light}"
+    textColor: "{colors.brand-dark}"
+    typography: "{typography.body}"
+    rounded: "{rounded.sm}"
+    padding: "16px 24px"
+  property-badge:
+    backgroundColor: "{colors.gold}"
+    textColor: "{colors.stone}"
+    typography: "{typography.label}"
+    rounded: "{rounded.pill}"
+    padding: "4px 12px"
+---
+
 # Design System — Seascape Vacations
 
 ## Product Context
@@ -195,12 +291,17 @@ All: Poppins 14px weight 600. Pill shape (50px radius). Padding: 14px 32px.
 
 ## Agent Instructions
 - **Before touching any CSS, template, or layout file,** read this DESIGN.md first.
+- **Treat the YAML front matter as the visual source of truth.** The prose explains why the tokens exist and how to apply them.
+- **Do not invent new colors, fonts, border radius, shadows, spacing, or component styles** unless the user explicitly asks for a design-system change.
+- **If Claude Design, Stitch, designmd.directory, or another design tool produces a new direction,** propose it as a DESIGN.md change first. Do not copy a generated screen directly into source.
+- **Use Stitch/designmd.directory only as inspiration.** They are not source truth for Seascape's brand or page patterns.
 - **For UI/visual work,** dispatch subagents with `model: "sonnet"`. Sonnet produces better visual code.
 - **Read `docs/style/voice.md` before writing any copy.** Voice and visual design are inseparable.
 - **Read `docs/style/banned-patterns.md` before adding any new sections.** Some common patterns are explicitly banned.
 - **Property data comes from Hostaway** via `src/_data/properties.js`. Do not hardcode property details.
 - **Test all changes at 375px (mobile), 768px (tablet), and 1200px+ (desktop).**
 - **Run `npx @11ty/eleventy --serve` to preview changes locally.**
+- **Visual regression screenshots are required before calling a subjective visual change "better."** Until an automated screenshot gate exists, attach desktop and mobile screenshots to the review or PR.
 
 ## Decisions Log
 | Date | Decision | Rationale |
