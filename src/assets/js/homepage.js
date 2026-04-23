@@ -128,6 +128,12 @@ window.closeLegalModal = function() {
     }, 300);
 };
 
+document.querySelectorAll('[data-legal-modal]').forEach(function(trigger) {
+    trigger.addEventListener('click', function() {
+        window.openLegalModal(trigger.getAttribute('data-legal-modal'));
+    });
+});
+
 var EMAIL_POPUP_KEY = 'seascape_email_popup_shown';
 var EMAIL_POPUP_DELAY = 30000;
 var emailPopupReady = false;
