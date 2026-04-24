@@ -92,6 +92,7 @@
     <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=2748551298816267&ev=PageView&noscript=1"/></noscript>
 
     <link rel="stylesheet" href="/css/homepage.css">
+    <link rel="stylesheet" href="/css/cards.css">
     <style>
         {% include "partials/site-header-styles.njk" %}
     </style>
@@ -253,42 +254,9 @@
                     </div>
                     <a href="/properties/" class="property-section-cta">View All Properties →</a>
                 </div>
-                <div class="property-grid">
+                <div class="pc-editorial-grid">
                     {% for property in properties.slice(0, 3) %}
-                    <a class="prop-card prop-card-link" href="/properties/{{ property.slug }}/">
-                        <div class="prop-card-shadow"></div>
-                        <img
-                            loading="lazy"
-                            decoding="async"
-                            src="{{ property.image | imgProxy(800) }}"
-                            srcset="{{ property.image | imgProxy(400) }} 400w, {{ property.image | imgProxy(800) }} 800w, {{ property.image | imgProxy(1200) }} 1200w"
-                            sizes="(min-width: 1100px) 50vw, 100vw"
-                            onerror="this.onerror=null;this.src='/images/seascape-og-default.jpg';this.srcset='';"
-                            alt="{{ property.name }}">
-                        <div class="prop-card-overlay"></div>
-                        <div class="prop-card-content">
-                            <div class="prop-card-top">
-                                <div>
-                                    <h3 class="prop-title">{{ property.name }}</h3>
-                                    <p class="prop-location">{{ property.city }} · {{ property.specs }}</p>
-                                </div>
-                                <div class="prop-badge">{{ uiIcon('star', 'ui-icon--star') }} {{ property.rating }}</div>
-                            </div>
-                            <div>
-                                <p class="prop-desc-snippet">
-                                    {{ property.description }}
-                                </p>
-                                <div class="prop-highlights">
-                                    {% for highlight in property.highlights %}
-                                    <div class="prop-highlight"><span class="prop-dot"></span>{{ highlight }}</div>
-                                    {% endfor %}
-                                </div>
-                                <div class="prop-bottom">
-                                    <span class="prop-btn">View Details →</span>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
+                        {% include "partials/card-editorial.njk" %}
                     {% endfor %}
                 </div>
             </div>
