@@ -102,33 +102,88 @@ a {
     margin-top: -2px;
 }
 
-/* Buttons */
+/* ---------------- Buttons (premium set — v1 design-system update) ----------------
+   Bare .btn retains a default teal fill for backward compatibility; use
+   .btn.btn-brand when you want the gold hairline frame. */
 .btn {
-    background: linear-gradient(135deg, var(--brand) 0%, var(--brand-dark) 100%);
-    color: white;
-    padding: 14px 32px;
-    border-radius: 50px;
-    font-weight: 600;
-    font-size: 14px;
-    border: none;
-    cursor: pointer;
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    box-shadow: 0 4px 15px rgba(61, 107, 109, 0.3);
+    justify-content: center;
+    gap: 10px;
+    padding: 15px 32px;
+    border-radius: 50px;
+    font-weight: 500;
+    font-size: 12.5px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    font-family: inherit;
+    border: none;
+    cursor: pointer;
+    transition: all .35s cubic-bezier(.22,.9,.28,1);
+    white-space: nowrap;
+    position: relative;
+    text-decoration: none;
+    background: var(--brand-dark, #3D5C5D);
+    color: #fff;
 }
+.btn:hover { background: #2A4447; }
 
-.btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(61, 107, 109, 0.4);
+/* Primary — dark-teal pill with gold hairline frame */
+.btn-brand::after {
+    content: '';
+    position: absolute;
+    inset: 4px;
+    border: 1px solid rgba(201, 169, 98, .45);
+    border-radius: 50px;
+    pointer-events: none;
+    transition: border-color .35s;
 }
+.btn-brand:hover::after { border-color: var(--gold, #C9A962); }
 
+/* Secondary — hairline link with arrow */
+.btn-link {
+    padding: 8px 0;
+    background: transparent;
+    color: var(--brand-dark, #3D5C5D);
+    border-radius: 0;
+    border-bottom: 1px solid var(--gold, #C9A962);
+    font-weight: 600;
+    letter-spacing: .2em;
+}
+.btn-link:hover { background: transparent; }
+.btn-link .arr { transition: transform .3s; display: inline-block; }
+.btn-link:hover .arr { transform: translateX(4px); }
+
+/* Rare-use — gold foil (ONE per page MAX) */
 .btn-gold {
-    background: linear-gradient(135deg, var(--gold) 0%, #B8943A 100%);
-    color: var(--stone);
-    box-shadow: 0 4px 15px rgba(201, 169, 98, 0.3);
+    background: linear-gradient(135deg, #E3C47A 0%, #C9A962 38%, #8E6D28 62%, #C9A962 100%);
+    color: #2A2014;
+    font-weight: 600;
+    box-shadow:
+        0 2px 0 rgba(0, 0, 0, .08),
+        0 10px 24px rgba(168, 132, 56, .28),
+        inset 0 1px 0 rgba(255, 255, 255, .35);
 }
+.btn-gold:hover { transform: translateY(-2px); }
+
+/* Over-imagery — ghost */
+.btn-outline-light {
+    background: transparent;
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, .4);
+}
+.btn-outline-light:hover {
+    background: rgba(255, 255, 255, .08);
+    border-color: var(--gold, #C9A962);
+}
+
+/* Over-imagery — solid gold (paired with ghost) */
+.btn-solid-gold {
+    background: var(--gold, #C9A962);
+    color: #2A2014;
+    font-weight: 600;
+}
+.btn-solid-gold:hover { background: #D4B370; }
 
 /* Main Content Area */
 .main-content {

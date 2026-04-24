@@ -35,7 +35,7 @@
             <a class="nav-link{% if resolvedNavActive == 'contact' %} is-current{% endif %}" href="{{ resolvedNavContactHref }}" {% if resolvedNavActive == 'contact' %}aria-current="page"{% endif %}>Contact</a>
             <a
               href="{{ resolvedNavButtonHref }}"
-              class="btn"
+              class="btn btn-brand"
               {% if navButtonTarget %}target="{{ navButtonTarget }}"{% endif %}
               {% if navButtonRel %}rel="{{ navButtonRel }}"{% endif %}
               {% if navButtonAttributes %}{{ navButtonAttributes | safe }}{% endif %}
@@ -59,7 +59,7 @@
         <a href="{{ resolvedNavContactHref }}" class="mobile-item{% if resolvedNavActive == 'contact' %} mobile-item--current{% endif %}" onclick="toggleSiteMenu()">Contact</a>
         <a
           href="{{ resolvedNavButtonHref }}"
-          class="btn"
+          class="btn btn-brand"
           onclick="toggleSiteMenu()"
           {% if navButtonTarget %}target="{{ navButtonTarget }}"{% endif %}
           {% if navButtonRel %}rel="{{ navButtonRel }}"{% endif %}

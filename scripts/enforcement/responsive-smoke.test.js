@@ -148,7 +148,7 @@ for (const pageType of PAGE_TYPES) {
     if (!html) return;
     const ctaCount = countOccurrences(
       html,
-      'btn-gold|btn-primary|book-btn|cta-btn|check-availability|guide-cta-btn'
+      'btn-brand|btn-gold|btn-primary|btn-solid-gold|btn-outline-light|book-btn|cta-btn|check-availability|guide-cta-btn'
     );
     assert.ok(
       ctaCount >= pageType.minCTA,

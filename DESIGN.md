@@ -55,17 +55,39 @@ spacing:
   section: "80px"
 components:
   button-primary:
-    backgroundColor: "{colors.primary}"
+    backgroundColor: "{colors.brand-dark}"
     textColor: "{colors.white}"
     typography: "{typography.label}"
     rounded: "{rounded.pill}"
-    padding: "14px 32px"
+    padding: "15px 32px"
+    hairline: "1px rgba(201,169,98,.45) inset 4px, hover {colors.gold}"
+  button-link:
+    backgroundColor: "transparent"
+    textColor: "{colors.brand-dark}"
+    typography: "{typography.label}"
+    underline: "1px {colors.gold} bottom"
+    padding: "8px 0"
   button-gold:
-    backgroundColor: "{colors.gold}"
-    textColor: "{colors.stone}"
+    backgroundColor: "linear-gradient(135deg,#E3C47A 0%,{colors.gold} 38%,#8E6D28 62%,{colors.gold} 100%)"
+    textColor: "#2A2014"
     typography: "{typography.label}"
     rounded: "{rounded.pill}"
-    padding: "14px 32px"
+    padding: "15px 32px"
+    usage: "rare — one per page max"
+  button-solid-gold:
+    backgroundColor: "{colors.gold}"
+    textColor: "#2A2014"
+    typography: "{typography.label}"
+    rounded: "{rounded.pill}"
+    padding: "15px 32px"
+  button-outline-light:
+    backgroundColor: "transparent"
+    textColor: "{colors.white}"
+    border: "1px rgba(255,255,255,.4)"
+    typography: "{typography.label}"
+    rounded: "{rounded.pill}"
+    padding: "15px 32px"
+    usage: "over-imagery ghost, pairs with button-solid-gold"
   property-card:
     backgroundColor: "{colors.white}"
     textColor: "{colors.stone}"
@@ -254,12 +276,19 @@ If Playfair Display ever needs replacing, consider: Fraunces (more personality),
 - Optional gold badge for featured/premium properties.
 - Hover: lift 5px with enhanced shadow.
 
-### Buttons
-Three variants:
-1. **Primary (teal):** Gradient from `--brand` to `--brand-dark`. White text. Shadow: `rgba(61,107,109,0.3)`.
-2. **Gold:** Gradient from `--gold` to `#B8943A`. Stone text. For secondary CTAs, "Book Now" emphasis.
-3. **Outline:** Transparent bg, `--brand` border+text. For tertiary actions.
-All: Poppins 14px weight 600. Pill shape (50px radius). Padding: 14px 32px.
+### Buttons — premium set v1
+
+All shared base: inline-flex, pill (50px), padding 15px 32px, Poppins, weight 500, 12.5px, letter-spacing .12em, uppercase, 0.35s cubic-bezier(.22,.9,.28,1) transition.
+
+1. **Primary `.btn-brand` (dark-teal pill with gold hairline frame):** Solid `--brand-dark` fill, white text, inset 4px `rgba(201,169,98,.45)` border that brightens to `--gold` on hover. This is the default premium CTA — nav, hero search, money pages.
+2. **Secondary `.btn-link` (hairline link with arrow):** Transparent bg, `--brand-dark` text, 1px gold underline, weight 600, letter-spacing .2em. Uses `<span class="arr">→</span>` for a hover-translate arrow. Use for inline editorial CTAs, not stacked button pairs.
+3. **Rare-use `.btn-gold` (gold foil — ONE per page max):** Metallic foil gradient `#E3C47A → #C9A962 → #8E6D28 → #C9A962` at 135deg, dark ink `#2A2014`, weight 600. Layered box-shadow for depth. Reserve for one high-value moment per page (sticky book bar, hero primary on a property page).
+4. **Over-imagery ghost `.btn-outline-light`:** Transparent bg, white text, 1px `rgba(255,255,255,.4)` border. Hover fills to `rgba(255,255,255,.08)` with gold border. Pairs with `.btn-solid-gold` on dark/photo backgrounds.
+5. **Over-imagery solid gold `.btn-solid-gold`:** `--gold` fill, dark ink, weight 600. The paired primary on photo backgrounds where the foil would be too much.
+
+Legacy bare `.btn` (no modifier) falls back to the same visual as `.btn-brand` minus the hairline frame — kept for backward compatibility across ~40 existing call sites. New work should pick a modifier explicitly.
+
+**Do not:** use `→` arrows inside button labels. The only retained arrow pattern is `.btn-link .arr` which animates on hover.
 
 ### Section Headers
 - Tag above title: 12px uppercase Poppins, `--brand` color, 0.2em tracking.
@@ -311,3 +340,4 @@ All: Poppins 14px weight 600. Pill shape (50px radius). Padding: 14px 32px.
 | 2026-04-13 | Light mode only | Vacation rental browsing context is daytime/mobile. Dark mode would undermine the warm brand feel. |
 | 2026-04-13 | No scroll animations | Speed and simplicity signal professionalism. Animations add loading delay and distract from content. |
 | 2026-04-13 | Cream background is non-negotiable | The single most distinctive visual element. Removing it would make Seascape look like every other rental site. |
+| 2026-04-24 | Premium buttons v1: retire teal gradient, introduce hairline-framed primary + foil rare-use + ghost/solid-gold pair | Plum Guide-level editorial restraint needed more type discipline (uppercase, tighter size, .12em tracking) and a one-per-page gold foil. Bare `.btn` keeps teal fallback so existing call sites don't break while templates migrate to explicit modifiers. |
