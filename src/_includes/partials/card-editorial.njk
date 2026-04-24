@@ -1,0 +1,41 @@
+{#
+  Editorial property card — homepage "Our Collection" featured grid.
+  Expects `property` with: slug, name, tagline, city, specs, rating,
+  image, featuredReview { text, author, stayedMonth }.
+#}
+<a class="pc-editorial" href="/properties/{{ property.slug }}/" aria-label="View {{ property.name }}">
+    <div class="pc-editorial__media">
+        <img
+            loading="lazy"
+            decoding="async"
+            src="{{ property.image | imgProxy(800) }}"
+            srcset="{{ property.image | imgProxy(400) }} 400w, {{ property.image | imgProxy(800) }} 800w, {{ property.image | imgProxy(1200) }} 1200w"
+            sizes="(min-width: 1100px) 33vw, (min-width: 640px) 50vw, 100vw"
+            onerror="this.onerror=null;this.src='/images/seascape-og-default.jpg';this.srcset='';"
+            alt="{{ property.name }}">
+        {% if property.rating %}
+        <span class="pc-editorial__rating">
+            <span class="pc-editorial__star" aria-hidden="true">★</span>
+            <span>{{ property.rating }}</span>
+        </span>
+        {% endif %}
+    </div>
+    <div class="pc-editorial__body">
+        <p class="pc-editorial__eyebrow">{{ property.city }}</p>
+        <h3 class="pc-editorial__name">{{ property.name }}</h3>
+        {% if property.tagline %}
+        <p class="pc-editorial__tagline">{{ property.tagline }}</p>
+        {% endif %}
+        <p class="pc-editorial__specs">{{ property.specs }}</p>
+        {% if property.featuredReview and property.featuredReview.text %}
+        <blockquote class="pc-editorial__quote">
+            <p>&ldquo;{{ property.featuredReview.text | truncate(140) }}&rdquo;</p>
+            <cite>{{ property.featuredReview.author }}{% if property.featuredReview.stayedMonth %} · {{ property.featuredReview.stayedMonth }}{% endif %}</cite>
+        </blockquote>
+        {% endif %}
+        <span class="pc-editorial__cta">
+            <span class="pc-editorial__cta-line" aria-hidden="true"></span>
+            View Home
+        </span>
+    </div>
+</a>
