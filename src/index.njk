@@ -153,6 +153,7 @@
     <div id="page-home" class="page active">
         <!-- Hero -->
         <section class="hero hero-v2" data-hero-v2>
+            <div class="hero-v2-grain" aria-hidden="true"></div>
             <div class="hero-bg hero-v2-bg" aria-hidden="true">
                 <picture>
                     <source media="(max-width: 768px)" srcset="/hero-mobile.avif" type="image/avif">
@@ -170,38 +171,49 @@
                 </picture>
             </div>
             <div class="hero-overlay hero-v2-overlay"></div>
+            <div class="hero-v2-grade" aria-hidden="true"></div>
             <div class="hero-v2-haze" aria-hidden="true"></div>
             <div class="hero-v2-content">
-                <p class="hero-v2-eyebrow">Seascape Vacations</p>
+                <div class="hero-v2-eyebrow">
+                    <span class="hero-v2-hairline" aria-hidden="true"></span>
+                    <span class="hero-v2-eyebrow-dot" aria-hidden="true">◆</span>
+                    <span>Luxury vacation rentals · Est. 2019</span>
+                    <span class="hero-v2-eyebrow-dot" aria-hidden="true">◆</span>
+                    <span class="hero-v2-hairline hero-v2-hairline--right" aria-hidden="true"></span>
+                </div>
                 <h1 class="hero-v2-title">
-                    Ten minutes to
+                    Ten minutes to<br>
                     <span class="hero-v2-phrase-wrap" aria-live="polite">
-                        <span class="hero-v2-phrase is-active">white sand</span>
-                        <span class="hero-v2-phrase">quiet mornings</span>
-                        <span class="hero-v2-phrase">private pool days</span>
-                    </span>
+                        <em class="hero-v2-phrase is-active">the whitest sand</em>
+                        <em class="hero-v2-phrase">dolphins at sunrise</em>
+                        <em class="hero-v2-phrase">your quietest morning</em>
+                    </span><br>
                     on Florida's Gulf.
                 </h1>
                 <div class="hero-v2-rule" aria-hidden="true"></div>
                 <p class="hero-v2-subtitle">
-                    Five private pool homes across Anna Maria Island, Bradenton, and Sarasota.
-                    <strong>Book direct and save 10-15%</strong> over Airbnb and Vrbo.
+                    Five private pool homes on Florida's Gulf Coast.<br>
+                    <strong>Book direct — save 10-15%</strong> over Airbnb &amp; VRBO.
                 </p>
-                <div class="hero-v2-actions" aria-label="Primary homepage actions">
-                    <a class="btn btn-gold hero-v2-main-cta" href="/properties/">Explore Homes</a>
-                    <a class="hero-v2-text-cta" href="#contact">Ask a local host</a>
-                </div>
-            </div>
-            <div class="hero-v2-side-note" aria-hidden="true">
-                <span>Book Direct</span>
-                <strong>No platform fees</strong>
             </div>
             <div class="hero-v2-ticker" aria-label="Seascape booking notes">
-                <div class="hero-v2-ticker-track" data-hero-ticker>
-                    <span class="is-active">Direct booking saves 10-15%</span>
-                    <span>Five private pool homes</span>
-                    <span>Local Gulf Coast hosting team</span>
-                    <span>Anna Maria, Bradenton, Sarasota</span>
+                <div class="hero-v2-ticker-badge">
+                    <span class="hero-v2-live-dot" aria-hidden="true"></span>
+                    <span>Local</span>
+                </div>
+                <div class="hero-v2-ticker-stage" data-hero-ticker>
+                    <div class="hero-v2-ticker-fact is-active">
+                        <span>Direct booking</span>
+                        <strong>Save 10-15%</strong>
+                    </div>
+                    <div class="hero-v2-ticker-fact">
+                        <span>Portfolio</span>
+                        <strong>5 private pool homes</strong>
+                    </div>
+                    <div class="hero-v2-ticker-fact">
+                        <span>Local base</span>
+                        <strong>Anna Maria · Bradenton · Sarasota</strong>
+                    </div>
                 </div>
             </div>
             <form class="hero-booking-v2" data-hero-booking onsubmit="handleSearch(event)" aria-label="Search Seascape homes">
@@ -215,11 +227,11 @@
                 </div>
                 <div class="hero-booking-v2-field">
                     <label for="hero-checkin">Arrive</label>
-                    <input id="hero-checkin" name="checkin" type="date" data-hero-checkin>
+                    <input id="hero-checkin" name="checkin" type="text" inputmode="numeric" pattern="\d{4}-\d{2}-\d{2}" placeholder="Select dates" data-hero-checkin>
                 </div>
                 <div class="hero-booking-v2-field">
                     <label for="hero-checkout">Depart</label>
-                    <input id="hero-checkout" name="checkout" type="date" data-hero-checkout>
+                    <input id="hero-checkout" name="checkout" type="text" inputmode="numeric" pattern="\d{4}-\d{2}-\d{2}" placeholder="-" data-hero-checkout>
                 </div>
                 <div class="hero-booking-v2-field hero-booking-v2-field--guests">
                     <label for="hero-guests">Guests</label>
@@ -234,8 +246,7 @@
                     </select>
                 </div>
                 <button class="hero-booking-v2-submit" type="submit">
-                    <span>Search</span>
-                    <span aria-hidden="true">&rarr;</span>
+                    <span>Search Homes</span>
                 </button>
             </form>
             <div class="hero-v2-scroll" aria-hidden="true">

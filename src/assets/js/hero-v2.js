@@ -15,7 +15,7 @@
     }
 
     rotateActive(Array.from(document.querySelectorAll('.hero-v2-phrase')), 5200);
-    rotateActive(Array.from(document.querySelectorAll('[data-hero-ticker] span')), 4200);
+    rotateActive(Array.from(document.querySelectorAll('[data-hero-ticker] .hero-v2-ticker-fact')), 4200);
 
     if (hero && !reducedMotion) {
         var scheduled = false;

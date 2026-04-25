@@ -17,11 +17,16 @@
     }
 
     .home-shell .nav:not(.scrolled) {
-        background: linear-gradient(180deg, rgba(24, 31, 31, 0.62), rgba(24, 31, 31, 0.30));
-        border-bottom: 1px solid rgba(255, 255, 255, 0.11);
+        background: linear-gradient(180deg, rgba(10, 26, 28, 0.55) 0%, rgba(10, 26, 28, 0.25) 60%, rgba(10, 26, 28, 0) 100%);
+        border-bottom: 0;
         box-shadow: none;
-        backdrop-filter: blur(18px);
-        -webkit-backdrop-filter: blur(18px);
+        backdrop-filter: blur(2px);
+        -webkit-backdrop-filter: blur(2px);
+    }
+
+    .home-shell .nav:not(.scrolled) .nav-inner {
+        min-height: 0;
+        padding: 24px 48px;
     }
 
     .nav-inner {
@@ -66,7 +71,9 @@
 
     .home-shell .nav:not(.scrolled) .nav-logo-text {
         color: white;
-        letter-spacing: 0;
+        font-size: 20px;
+        letter-spacing: 0.32em;
+        line-height: 1;
         text-shadow: 0 10px 28px rgba(0, 0, 0, 0.28);
     }
 
@@ -79,8 +86,34 @@
     }
 
     .home-shell .nav:not(.scrolled) .nav-logo-sub {
-        color: rgba(245, 238, 214, 0.76);
-        letter-spacing: 0;
+        color: #E8C77A;
+        font-family: "Playfair Display", serif;
+        font-size: 12px;
+        font-style: italic;
+        letter-spacing: 0.16em;
+        line-height: 1;
+        margin-top: 4px;
+        text-transform: none;
+        text-shadow: 0 1px 8px rgba(0, 0, 0, 0.4);
+    }
+
+    .home-shell .nav:not(.scrolled) .nav-logo {
+        gap: 12px;
+    }
+
+    .home-shell .nav:not(.scrolled) .nav-logo img {
+        display: none;
+    }
+
+    .home-shell .nav:not(.scrolled) .nav-logo::before {
+        content: "";
+        flex: 0 0 32px;
+        width: 32px;
+        height: 32px;
+        background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'><circle cx='16' cy='16' r='15' fill='none' stroke='%23C9A962' stroke-width='1'/><path d='M6 20 Q10 17 14 20 T22 20 T30 20' fill='none' stroke='%23C9A962' stroke-width='1' stroke-linecap='round'/><path d='M6 23 Q10 20 14 23 T22 23 T30 23' fill='none' stroke='%23C9A962' stroke-width='1' stroke-linecap='round' opacity='.6'/></svg>");
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
     }
 
     .nav-links {
@@ -88,6 +121,11 @@
         align-items: center;
         gap: 24px;
         margin-left: 32px;
+    }
+
+    .home-shell .nav:not(.scrolled) .nav-links {
+        gap: 36px;
+        margin-left: 0;
     }
 
     .nav-link {
@@ -100,8 +138,12 @@
     }
 
     .home-shell .nav:not(.scrolled) .nav-link {
-        color: rgba(255, 255, 255, 0.82);
-        letter-spacing: 0;
+        color: white;
+        font-size: 11.5px;
+        font-weight: 600;
+        letter-spacing: 0.22em;
+        text-shadow: 0 1px 10px rgba(0, 0, 0, 0.5);
+        text-transform: uppercase;
     }
 
     button.nav-link {
@@ -135,20 +177,30 @@
     }
 
     .home-shell .nav:not(.scrolled) .nav-link::after {
-        background: linear-gradient(90deg, var(--gold-light), var(--gold));
+        display: none;
     }
 
     .home-shell .nav:not(.scrolled) .nav-links .btn-brand {
-        background: rgba(232, 213, 163, 0.94);
-        color: var(--stone);
-        border: 1px solid rgba(255, 255, 255, 0.42);
-        box-shadow: 0 16px 42px rgba(0, 0, 0, 0.26);
+        padding: 13px 26px;
+        background: var(--gold);
+        color: #2A2014;
+        border: 0;
+        font-size: 11.5px;
+        font-weight: 700;
+        letter-spacing: 0.2em;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.35);
     }
 
     .home-shell .nav:not(.scrolled) .nav-links .btn-brand:hover,
     .home-shell .nav:not(.scrolled) .nav-links .btn-brand:focus-visible {
-        background: var(--gold);
-        color: var(--stone);
+        background: #D4B370;
+        color: #2A2014;
+        transform: translateY(-1px);
+    }
+
+    .home-shell .nav:not(.scrolled) .nav-links .btn-brand::after {
+        inset: 3px;
+        border-color: rgba(42, 32, 20, 0.25);
     }
 
     .nav-link:hover::after,
@@ -301,6 +353,10 @@
     }
 
     @media (max-width: 767px) {
+        .home-shell .nav:not(.scrolled) .nav-inner {
+            padding: 18px 16px;
+        }
+
         .nav-inner {
             padding-top: 14px;
             padding-bottom: 14px;
