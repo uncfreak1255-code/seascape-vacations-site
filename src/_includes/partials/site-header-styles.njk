@@ -135,6 +135,7 @@
         position: relative;
         padding: 8px 0;
         transition: color 0.25s ease;
+        white-space: nowrap;
     }
 
     .home-shell .nav:not(.scrolled) .nav-link {
@@ -270,6 +271,7 @@
 
     .nav-links .btn {
         margin-left: 8px;
+        white-space: nowrap;
     }
 
     .mobile-btn {
@@ -341,7 +343,7 @@
         margin-top: 16px;
     }
 
-    @media (min-width: 768px) {
+    @media (min-width: 1200px) {
         .nav-links {
             display: flex;
         }
@@ -352,7 +354,31 @@
         }
     }
 
-    @media (max-width: 767px) {
+    @media (min-width: 1200px) and (max-width: 1399px) {
+        .home-shell .nav:not(.scrolled) .nav-inner {
+            padding: 22px 28px;
+        }
+
+        .home-shell .nav:not(.scrolled) .nav-links {
+            gap: 20px;
+        }
+
+        .home-shell .nav:not(.scrolled) .nav-link {
+            font-size: 10.5px;
+            letter-spacing: 0.16em;
+        }
+
+        .home-shell .nav:not(.scrolled) .nav-logo-text {
+            letter-spacing: 0.22em;
+        }
+
+        .home-shell .nav:not(.scrolled) .nav-links .btn-brand {
+            padding: 12px 22px;
+            letter-spacing: 0.16em;
+        }
+    }
+
+    @media (max-width: 1199px) {
         .home-shell .nav:not(.scrolled) .nav-inner {
             padding: 18px 16px;
         }

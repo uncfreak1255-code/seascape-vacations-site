@@ -154,24 +154,6 @@
 
     hydrateLiveTicker();
 
-    if (hero && !reducedMotion) {
-        var scheduled = false;
-
-        hero.addEventListener('pointermove', function (event) {
-            if (scheduled) return;
-
-            scheduled = true;
-            window.requestAnimationFrame(function () {
-                var rect = hero.getBoundingClientRect();
-                var x = ((event.clientX - rect.left) / rect.width) * 100;
-                var y = ((event.clientY - rect.top) / rect.height) * 100;
-                hero.style.setProperty('--hero-haze-x', x.toFixed(2) + '%');
-                hero.style.setProperty('--hero-haze-y', y.toFixed(2) + '%');
-                scheduled = false;
-            });
-        }, { passive: true });
-    }
-
     function parseDate(value) {
         if (!/^\d{4}-\d{2}-\d{2}$/.test(value || '')) return null;
 
