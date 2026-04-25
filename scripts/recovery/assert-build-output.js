@@ -202,6 +202,14 @@ if (phase === "p0") {
   expectContains("_site/index.html", "Dockside Dreams");
   expectContains("_site/index.html", "The Oasis");
   expectContains("_site/index.html", "prop-desc-snippet");
+  // Content-aware homepage SEO copy guards. Keep the homepage carrying
+  // crawlable property descriptions + highlights even if a future card
+  // redesign renames the class fingerprints again. Each phrase is pulled
+  // verbatim from src/_data/properties-fallback.json.
+  expectContains("_site/index.html", "Wake up to stunning water views");
+  expectContains("_site/index.html", "ultimate gathering spot");
+  expectContains("_site/index.html", "Sophisticated Florida living");
+  expectContains("_site/index.html", "Private Pool &amp; Spa");
   expectContains("_site/index.html", "bookingenginecdn.hostaway.com");
   expectContains("_site/properties/index.html", 'href="/properties/dockside-dreams/"');
   expectNotContains("_site/properties/index.html", "/.netlify/functions/get-properties");

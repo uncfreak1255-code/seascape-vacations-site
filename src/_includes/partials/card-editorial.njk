@@ -1,7 +1,9 @@
 {#
   Editorial property card — homepage "Our Collection" featured grid.
   Expects `property` with: slug, name, tagline, city, specs, rating,
-  image, featuredReview { text, author, stayedMonth }.
+  image, description, highlights, featuredReview { text, author, stayedMonth }.
+  Description + highlights stay in DOM unconditionally so the homepage
+  preserves the indexable property copy the SEO suite asserts on.
 #}
 <a class="pc-editorial" href="/properties/{{ property.slug }}/" aria-label="View {{ property.name }}">
     <div class="pc-editorial__media">
@@ -27,6 +29,16 @@
         <p class="pc-editorial__tagline">{{ property.tagline }}</p>
         {% endif %}
         <p class="pc-editorial__specs">{{ property.specs }}</p>
+        {% if property.description %}
+        <p class="pc-editorial__description prop-desc-snippet">{{ property.description }}</p>
+        {% endif %}
+        {% if property.highlights and property.highlights.length %}
+        <ul class="pc-editorial__highlights prop-highlights">
+            {% for highlight in property.highlights %}
+            <li class="pc-editorial__highlight prop-highlight">{{ highlight }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
         {% if property.featuredReview and property.featuredReview.text %}
         <blockquote class="pc-editorial__quote">
             <p>&ldquo;{{ property.featuredReview.text | truncate(140) }}&rdquo;</p>
