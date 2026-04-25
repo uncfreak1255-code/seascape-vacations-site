@@ -49,9 +49,9 @@ test("homepage hero ticker uses live weather only after fetching real current da
   assert.match(homepage, /data-hero-ticker-badge-label>Local<\/span>/);
   assert.match(homepage, /data-hero-ticker-location>Anna Maria Island<\/span>/);
   assert.match(homepage, /data-hero-ticker-value>Local Gulf Coast conditions<\/strong>/);
+  assert.equal(homepage.includes("your quietest morning"), true);
   assert.equal(homepage.includes("data-hero-ticker-static"), false);
   assert.equal(homepage.includes("dolphins at sunrise"), false);
-  assert.equal(homepage.includes("your quietest morning"), false);
 
   assert.equal(heroScript.includes("https://api.open-meteo.com/v1/forecast"), true);
   assert.equal(heroScript.includes("temperature_2m,weather_code,is_day"), true);
