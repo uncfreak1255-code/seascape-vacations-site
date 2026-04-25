@@ -92,6 +92,7 @@
     <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=2748551298816267&ev=PageView&noscript=1"/></noscript>
 
     <link rel="stylesheet" href="/css/homepage.css">
+    <link rel="stylesheet" href="/css/hero-v2.css">
     <style>
         {% include "partials/site-header-styles.njk" %}
     </style>
@@ -150,59 +151,125 @@
 
     <!-- HOME PAGE -->
     <div id="page-home" class="page active">
-        <!-- Hero -->
-        <section class="hero">
-            <div class="hero-bg" aria-hidden="true">
+        <!-- Hero v2 -->
+        <section class="hero" aria-label="Seascape Vacations hero">
+            <div class="hero-img-wrap" aria-hidden="true">
                 <picture>
                     <source media="(max-width: 768px)" srcset="/hero-mobile.avif" type="image/avif">
                     <source media="(max-width: 768px)" srcset="/hero-mobile.webp" type="image/webp">
                     <source srcset="/hero-optimized.avif" type="image/avif">
                     <source srcset="/hero-optimized.webp" type="image/webp">
                     <img
-                        class="hero-image"
+                        class="hero-img"
                         src="/hero-optimized.jpg"
                         alt=""
-                        width="2400"
-                        height="1340"
+                        width="2400" height="1340"
                         fetchpriority="high"
                         decoding="async">
                 </picture>
+                <div class="hero-grade"></div>
             </div>
-            <div class="hero-overlay"></div>
-            <div class="hero-content">
-                <div class="hero-badge">
-                    <span class="stars">{{ uiIcon('star', 'ui-icon--star') }}{{ uiIcon('star', 'ui-icon--star') }}{{ uiIcon('star', 'ui-icon--star') }}{{ uiIcon('star', 'ui-icon--star') }}{{ uiIcon('star', 'ui-icon--star') }}</span>
-                    <span>Local Gulf Coast hosting team</span>
-                </div>
-                <h1 class="hero-title">
-                    Your Gulf Coast Paradise Awaits
-                    <span>ANNA MARIA ISLAND • BRADENTON • SARASOTA</span>
-                </h1>
-                <p class="hero-subtitle">Handpicked luxury vacation rentals with private pools, waterfront views, and
-                    five-star service.</p>
-                <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap">
-                    <a class="btn btn-gold" href="/properties/">Explore Properties</a>
-                    <a class="btn btn-outline" href="#contact">Contact Us</a>
-                </div>
-            </div>
-            <div class="search-container">
-                <div class="search-box">
-                    <div class="search-header">
-                        <p>Find your perfect getaway</p>
-                    </div>
-                    <div class="search-fields">
-                        <div class="search-field">
-                            <label for="location-select" class="search-label">Location</label>
-                            <select id="location-select" style="border:none; background:transparent; font-size:15px; font-weight:500; color:var(--stone); width:100%; font-family:inherit; cursor:pointer; padding:0;">
-                                <option value="ami">Anna Maria Area</option>
-                                <option value="sarasota">Sarasota</option>
-                            </select>
-                        </div>
 
-                        <button class="btn btn-brand" onclick="handleSearch()"
-                            style="height:100%;border-radius:12px">Search</button>
+            <div class="hero-scrim" aria-hidden="true"></div>
+            <div class="hero-haze" aria-hidden="true"></div>
+            <div class="hero-grain" aria-hidden="true"></div>
+
+            <div class="hero-content">
+                <p class="hero-eyebrow">
+                    <span class="hero-eyebrow-hairline" aria-hidden="true"></span>
+                    <span class="hero-eyebrow-dot" aria-hidden="true">&#9670;</span>
+                    <span>Local Gulf Coast hosting team &middot; Est. 2019</span>
+                    <span class="hero-eyebrow-dot" aria-hidden="true">&#9670;</span>
+                    <span class="hero-eyebrow-hairline hero-eyebrow-hairline--right" aria-hidden="true"></span>
+                </p>
+
+                <h1 class="hero-h1">
+                    Ten minutes to<br>
+                    <span class="hero-phrase-wrap" aria-live="polite">
+                        <em class="hero-phrase is-active">the whitest sand</em>
+                        <em class="hero-phrase">dolphins at sunrise</em>
+                        <em class="hero-phrase">your quietest morning</em>
+                    </span><br>
+                    on Florida's Gulf.
+                </h1>
+
+                <div class="hero-rule" aria-hidden="true"></div>
+
+                <p class="hero-sub">
+                    Five private pool homes on Florida's Gulf Coast.<br>
+                    <strong>Book direct &mdash; save 10&ndash;15%</strong> over Airbnb &amp; VRBO.
+                </p>
+            </div>
+
+            <!-- Rotating fact ticker (evergreen, source-truthful) -->
+            <div class="hero-ticker">
+                <div class="hero-ticker-badge">
+                    <span class="hero-ticker-dot" aria-hidden="true"></span>
+                    <span class="hero-ticker-label">SEASCAPE</span>
+                </div>
+                <div class="hero-ticker-stage">
+                    <div class="hero-ticker-fact is-active">
+                        <span class="hero-ticker-k">Destinations</span>
+                        <span class="hero-ticker-v">Anna Maria Island &middot; Bradenton &middot; Sarasota</span>
+                    </div>
+                    <div class="hero-ticker-fact">
+                        <span class="hero-ticker-k">Collection</span>
+                        <span class="hero-ticker-v">5 private-pool homes &middot; Book direct</span>
+                    </div>
+                    <div class="hero-ticker-fact">
+                        <span class="hero-ticker-k">Locally owned</span>
+                        <span class="hero-ticker-v">5-star reviewed &middot; Direct support</span>
+                    </div>
+                    <div class="hero-ticker-fact">
+                        <span class="hero-ticker-k">Direct savings</span>
+                        <span class="hero-ticker-v">10&ndash;15% under Airbnb &amp; VRBO</span>
                     </div>
                 </div>
+            </div>
+
+            <!-- Booking bar (cream pill) -->
+            <form class="hero-booking" onsubmit="event.preventDefault(); if (typeof handleSearch === 'function') { handleSearch(event); }" role="search" aria-label="Find a vacation rental">
+                <div class="hero-booking-inner">
+                    <label class="hero-booking-field hero-booking-field--primary">
+                        <span class="hero-booking-hint">Book direct &middot; save 10&ndash;15%</span>
+                        <span class="hero-booking-label">Where</span>
+                        <span class="hero-booking-value">
+                            <select id="location-select" name="location" style="background:transparent;border:none;font:inherit;color:inherit;font-weight:600;cursor:pointer;padding:0;">
+                                <option value="ami">Anna Maria area</option>
+                                <option value="sarasota">Sarasota</option>
+                                <option value="any">Any Gulf Coast</option>
+                            </select>
+                        </span>
+                    </label>
+                    <div class="hero-booking-sep" aria-hidden="true"></div>
+                    <label class="hero-booking-field">
+                        <span class="hero-booking-label">Arrive</span>
+                        <input class="hero-booking-value" type="date" name="arrive" style="background:transparent;border:none;font:inherit;color:inherit;padding:0;">
+                    </label>
+                    <div class="hero-booking-sep" aria-hidden="true"></div>
+                    <label class="hero-booking-field">
+                        <span class="hero-booking-label">Depart</span>
+                        <input class="hero-booking-value" type="date" name="depart" style="background:transparent;border:none;font:inherit;color:inherit;padding:0;">
+                    </label>
+                    <div class="hero-booking-sep" aria-hidden="true"></div>
+                    <label class="hero-booking-field">
+                        <span class="hero-booking-label">Guests</span>
+                        <select class="hero-booking-value" name="guests" style="background:transparent;border:none;font:inherit;color:inherit;padding:0;">
+                            <option>2 guests</option>
+                            <option>4 guests</option>
+                            <option>6 guests</option>
+                            <option selected>8 guests</option>
+                            <option>10+ guests</option>
+                        </select>
+                    </label>
+                    <button type="submit" class="hero-booking-cta">Search Homes</button>
+                </div>
+            </form>
+
+            <!-- Scroll indicator -->
+            <div class="hero-scroll" aria-hidden="true">
+                <div class="hero-scroll-line"></div>
+                <div class="hero-scroll-text">SCROLL</div>
             </div>
         </section>
 
@@ -564,6 +631,7 @@
     </div>
 
     <script defer src="/assets/js/homepage.js"></script>
+    <script defer src="/assets/js/hero-v2.js"></script>
     {% include "partials/site-header-script.njk" %}
 
 </body>
