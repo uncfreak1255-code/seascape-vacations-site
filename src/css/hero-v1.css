@@ -59,16 +59,10 @@
     margin-top: 8px;
 }
 .hero-live-dot {
-    width: 8px; height: 8px; border-radius: 50%;
-    background: #6FCF97;
-    box-shadow: 0 0 0 4px rgba(111,207,151,0.18);
-    animation: hero-pulse 2.4s ease-in-out infinite;
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--gold, #C9A962);
 }
 .hero-live-divider { opacity: 0.4; }
-@keyframes hero-pulse {
-    0%, 100% { box-shadow: 0 0 0 4px rgba(111,207,151,0.18); }
-    50%      { box-shadow: 0 0 0 8px rgba(111,207,151,0.06); }
-}
 
 /* New booking strip — replaces the old search-container/search-box */
 .hero-booking {
@@ -93,7 +87,7 @@
 }
 .hero-booking-hint::before {
     content: ''; width: 6px; height: 6px; border-radius: 50%;
-    background: #6FCF97;
+    background: var(--gold, #C9A962);
 }
 .hero-booking-strip {
     background: #fff;
