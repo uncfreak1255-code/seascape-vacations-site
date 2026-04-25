@@ -38,3 +38,24 @@ test("Bradenton vs Sarasota comparison table is wrapped for mobile scrolling", (
   assert.match(guide, /<div class="compare-table-wrap"[\s\S]*?<table class="compare-table">/);
   assert.match(guide, /@media\(max-width:600px\)\{\.compare-table\{min-width:560px/);
 });
+
+test("homepage hero ticker uses live weather only after fetching real current data", () => {
+  const homepage = readSource("src", "index.njk");
+  const heroScript = readSource("src", "assets", "js", "hero-v2.js");
+  const heroStyles = readSource("src", "css", "hero-v2.css");
+
+  assert.equal(homepage.includes("78\u00b0F"), false);
+  assert.equal(homepage.includes("SUNNY"), false);
+  assert.match(homepage, /data-hero-ticker-badge-label>Local<\/span>/);
+  assert.match(homepage, /data-hero-ticker-static/);
+  assert.match(homepage, /\{\{ properties \| length \}\} private pool homes/);
+
+  assert.equal(heroScript.includes("https://api.open-meteo.com/v1/forecast"), true);
+  assert.equal(heroScript.includes("temperature_2m,weather_code,is_day"), true);
+  assert.equal(heroScript.includes("temperature_unit', 'fahrenheit'"), true);
+  assert.equal(heroScript.includes("Number.isFinite(temperature)"), true);
+  assert.equal(heroScript.includes("setTickerBadge('Live')"), true);
+
+  assert.match(heroStyles, /\.hero-v2-ticker-badge\[data-hero-ticker-live\]/);
+  assert.match(heroStyles, /\.hero-v2-ticker-badge\[data-hero-ticker-live\] \.hero-v2-live-dot/);
+});

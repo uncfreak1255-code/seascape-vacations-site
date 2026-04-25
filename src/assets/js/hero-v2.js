@@ -2,20 +2,157 @@
     var hero = document.querySelector('[data-hero-v2]');
     var form = document.querySelector('[data-hero-booking]');
     var reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var WEATHER_ENDPOINT = 'https://api.open-meteo.com/v1/forecast';
+    var WEATHER_LOCATIONS = [
+        { label: 'Anna Maria Island', latitude: 27.5311, longitude: -82.7334 },
+        { label: 'Bradenton', latitude: 27.4989, longitude: -82.5748 },
+        { label: 'Sarasota', latitude: 27.3364, longitude: -82.5307 }
+    ];
+    var WEATHER_CODE_LABELS = {
+        0: { day: 'Sunny', night: 'Clear' },
+        1: { day: 'Mostly sunny', night: 'Mostly clear' },
+        2: 'Partly cloudy',
+        3: 'Cloudy',
+        45: 'Fog',
+        48: 'Fog',
+        51: 'Light drizzle',
+        53: 'Drizzle',
+        55: 'Heavy drizzle',
+        56: 'Freezing drizzle',
+        57: 'Freezing drizzle',
+        61: 'Light rain',
+        63: 'Rain',
+        65: 'Heavy rain',
+        66: 'Freezing rain',
+        67: 'Freezing rain',
+        71: 'Light snow',
+        73: 'Snow',
+        75: 'Heavy snow',
+        77: 'Snow grains',
+        80: 'Rain showers',
+        81: 'Rain showers',
+        82: 'Heavy showers',
+        85: 'Snow showers',
+        86: 'Snow showers',
+        95: 'Thunderstorms',
+        96: 'Thunderstorms',
+        99: 'Thunderstorms'
+    };
 
-    function rotateActive(items, intervalMs) {
-        if (!items.length || reducedMotion) return;
+    function rotateActive(selector, intervalMs) {
+        if (reducedMotion) return;
 
         var index = 0;
         window.setInterval(function () {
+            var items = Array.from(document.querySelectorAll(selector));
+            if (!items.length) return;
+
+            index = Math.min(index, items.length - 1);
             items[index].classList.remove('is-active');
             index = (index + 1) % items.length;
             items[index].classList.add('is-active');
         }, intervalMs);
     }
 
-    rotateActive(Array.from(document.querySelectorAll('.hero-v2-phrase')), 5200);
-    rotateActive(Array.from(document.querySelectorAll('[data-hero-ticker] .hero-v2-ticker-fact')), 4200);
+    rotateActive('.hero-v2-phrase', 5200);
+    rotateActive('[data-hero-ticker] .hero-v2-ticker-fact', 4200);
+
+    function getWeatherCondition(code, isDay) {
+        var label = WEATHER_CODE_LABELS[code];
+        if (!label) return 'Current';
+        if (typeof label === 'string') return label;
+        return isDay ? label.day : label.night;
+    }
+
+    function buildWeatherUrl(location) {
+        var url = new URL(WEATHER_ENDPOINT);
+        url.searchParams.set('latitude', location.latitude);
+        url.searchParams.set('longitude', location.longitude);
+        url.searchParams.set('current', 'temperature_2m,weather_code,is_day');
+        url.searchParams.set('temperature_unit', 'fahrenheit');
+        url.searchParams.set('timezone', 'auto');
+        url.searchParams.set('forecast_days', '1');
+        return url;
+    }
+
+    function createTickerFact(label, value) {
+        var fact = document.createElement('div');
+        var labelNode = document.createElement('span');
+        var valueNode = document.createElement('strong');
+
+        fact.className = 'hero-v2-ticker-fact';
+        fact.setAttribute('data-hero-ticker-weather', '');
+        labelNode.textContent = label;
+        valueNode.textContent = value;
+        fact.append(labelNode, valueNode);
+        return fact;
+    }
+
+    function readWeatherPayload(location, payload) {
+        var current = payload && payload.current;
+        var temperature = current && Number(current.temperature_2m);
+        var code = current && Number(current.weather_code);
+
+        if (!Number.isFinite(temperature) || !Number.isFinite(code)) return null;
+
+        return {
+            label: location.label,
+            value: Math.round(temperature) + '\u00b0F' + ' \u2022 ' + getWeatherCondition(code, Number(current.is_day) === 1)
+        };
+    }
+
+    function fetchLocationWeather(location) {
+        if (!window.fetch || !window.URL) return Promise.resolve(null);
+
+        return window.fetch(buildWeatherUrl(location).toString(), { cache: 'no-store' })
+            .then(function (response) {
+                if (!response.ok) return null;
+                return response.json();
+            })
+            .then(function (payload) {
+                return readWeatherPayload(location, payload);
+            })
+            .catch(function () {
+                return null;
+            });
+    }
+
+    function setTickerBadge(label) {
+        var badge = document.querySelector('[data-hero-ticker-badge]');
+        var badgeLabel = badge && badge.querySelector('[data-hero-ticker-badge-label]');
+        if (!badge || !badgeLabel) return;
+
+        badgeLabel.textContent = label;
+        badge.toggleAttribute('data-hero-ticker-live', label === 'Live');
+    }
+
+    function hydrateLiveTicker() {
+        var ticker = document.querySelector('[data-hero-ticker]');
+        if (!ticker) return;
+
+        Promise.all(WEATHER_LOCATIONS.map(fetchLocationWeather)).then(function (weatherFacts) {
+            var liveFacts = weatherFacts.filter(Boolean);
+            if (!liveFacts.length) return;
+
+            var staticFacts = Array.from(ticker.querySelectorAll('[data-hero-ticker-static]'));
+            var fragment = document.createDocumentFragment();
+
+            liveFacts.forEach(function (fact) {
+                fragment.appendChild(createTickerFact(fact.label, fact.value));
+            });
+
+            staticFacts.forEach(function (fact) {
+                fact.classList.remove('is-active');
+                fragment.appendChild(fact);
+            });
+
+            ticker.replaceChildren(fragment);
+            ticker.querySelector('.hero-v2-ticker-fact').classList.add('is-active');
+            setTickerBadge('Live');
+        });
+    }
+
+    hydrateLiveTicker();
 
     if (hero && !reducedMotion) {
         var scheduled = false;
@@ -137,7 +274,9 @@
 
     window.SeascapeHeroV2 = {
         buildSearchUrl: buildSearchUrl,
-        normalizeDateRange: normalizeDateRange
+        normalizeDateRange: normalizeDateRange,
+        buildWeatherUrl: buildWeatherUrl,
+        getWeatherCondition: getWeatherCondition
     };
 
     if (!window.handleSearch) {

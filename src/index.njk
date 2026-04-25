@@ -197,20 +197,20 @@
                 </p>
             </div>
             <div class="hero-v2-ticker" aria-label="Seascape booking notes">
-                <div class="hero-v2-ticker-badge">
+                <div class="hero-v2-ticker-badge" data-hero-ticker-badge>
                     <span class="hero-v2-live-dot" aria-hidden="true"></span>
-                    <span>Local</span>
+                    <span data-hero-ticker-badge-label>Local</span>
                 </div>
                 <div class="hero-v2-ticker-stage" data-hero-ticker>
-                    <div class="hero-v2-ticker-fact is-active">
+                    <div class="hero-v2-ticker-fact is-active" data-hero-ticker-static>
                         <span>Direct booking</span>
                         <strong>Save 10-15%</strong>
                     </div>
-                    <div class="hero-v2-ticker-fact">
+                    <div class="hero-v2-ticker-fact" data-hero-ticker-static>
                         <span>Portfolio</span>
-                        <strong>5 private pool homes</strong>
+                        <strong>{{ properties | length }} private pool homes</strong>
                     </div>
-                    <div class="hero-v2-ticker-fact">
+                    <div class="hero-v2-ticker-fact" data-hero-ticker-static>
                         <span>Local base</span>
                         <strong>Local Gulf Coast hosting team</strong>
                     </div>

@@ -198,7 +198,8 @@
     display: flex;
     align-items: center;
     gap: 14px;
-    min-width: 440px;
+    min-width: 474px;
+    max-width: calc(100% - 64px);
     padding: 9px 20px 9px 12px;
     color: rgba(255, 255, 255, 0.92);
     background: rgba(10, 26, 28, 0.55);
@@ -219,17 +220,28 @@
     flex-shrink: 0;
     gap: 8px;
     padding: 4px 10px 4px 8px;
-    color: #7fdba4;
-    background: rgba(127, 219, 164, 0.12);
-    border: 1px solid rgba(127, 219, 164, 0.25);
+    color: rgba(232, 213, 163, 0.96);
+    background: rgba(201, 169, 98, 0.12);
+    border: 1px solid rgba(201, 169, 98, 0.25);
     border-radius: 50px;
     font-size: 9.5px;
+}
+
+.hero-v2-ticker-badge[data-hero-ticker-live] {
+    color: #7fdba4;
+    background: rgba(127, 219, 164, 0.12);
+    border-color: rgba(127, 219, 164, 0.25);
 }
 
 .hero-v2-live-dot {
     width: 6px;
     height: 6px;
     border-radius: 50%;
+    background: var(--gold);
+    box-shadow: none;
+}
+
+.hero-v2-ticker-badge[data-hero-ticker-live] .hero-v2-live-dot {
     background: #7fdba4;
     box-shadow: 0 0 0 3px rgba(127, 219, 164, 0.30);
     animation: heroV2Pulse 2s infinite;
