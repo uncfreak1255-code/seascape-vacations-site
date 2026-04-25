@@ -657,8 +657,9 @@ headExtra: |
           </div>
           <div class="catalog-actions">
             <a
-              class="btn btn-gold"
+              class="btn btn-gold catalog-booking-link"
               href="{{ bookingHref }}"
+              data-booking-url="{{ bookingHref }}"
               data-track-event="catalog_book_direct_click"
               data-page-slug="{{ property.slug }}"
               data-placement="catalog_card"
@@ -761,6 +762,9 @@ headExtra: |
     const copy = document.getElementById("catalog-copy");
     const params = new URLSearchParams(window.location.search);
     const requestedArea = (params.get("area") || "").toLowerCase();
+    const requestedCheckin = normalizeDateParam(params.get("checkin") || "");
+    const requestedCheckout = normalizeDateParam(params.get("checkout") || "");
+    const requestedGuests = /^\d+$/.test(params.get("guests") || "") ? params.get("guests") : "";
     const areaFilterMap = {
       "anna-maria-island": "bradenton",
       "ami": "bradenton",
@@ -785,6 +789,46 @@ headExtra: |
         body: "Use this when Sarasota is the real destination and you want to move straight from comparison into live availability."
       }
     };
+
+    function normalizeDateParam(value) {
+      return /^\d{4}-\d{2}-\d{2}$/.test(value || "") ? value : "";
+    }
+
+    function syncBookingLinks() {
+      const bookingLinks = Array.from(document.querySelectorAll(".catalog-booking-link[data-booking-url]"));
+
+      bookingLinks.forEach((link) => {
+        const rawHref = link.dataset.bookingUrl || link.getAttribute("href") || "";
+        if (!rawHref) return;
+
+        let nextUrl;
+        try {
+          nextUrl = new URL(rawHref, window.location.origin);
+        } catch (error) {
+          return;
+        }
+
+        if (requestedCheckin) {
+          nextUrl.searchParams.set("checkin", requestedCheckin);
+        }
+
+        if (requestedCheckout) {
+          nextUrl.searchParams.set("checkout", requestedCheckout);
+        }
+
+        link.href = nextUrl.origin === window.location.origin
+          ? `${nextUrl.pathname}${nextUrl.search}${nextUrl.hash}`
+          : nextUrl.toString();
+
+        if (requestedCheckin || requestedCheckout || requestedGuests) {
+          link.dataset.searchState = JSON.stringify({
+            checkin: requestedCheckin,
+            checkout: requestedCheckout,
+            guests: requestedGuests
+          });
+        }
+      });
+    }
 
     function setActiveButton(filter) {
       buttons.forEach((button) => {
@@ -860,6 +904,7 @@ headExtra: |
 
     const initialFilter = resolveInitialFilter();
     applyFilter(initialFilter);
+    syncBookingLinks();
 
     if (requestedArea.length > 0) {
       syncAreaParam(initialFilter);

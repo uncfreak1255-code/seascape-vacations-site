@@ -16,6 +16,14 @@
         box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08);
     }
 
+    .home-shell .nav:not(.scrolled) {
+        background: linear-gradient(180deg, rgba(24, 31, 31, 0.62), rgba(24, 31, 31, 0.30));
+        border-bottom: 1px solid rgba(255, 255, 255, 0.11);
+        box-shadow: none;
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+    }
+
     .nav-inner {
         min-height: 78px;
         display: flex;
@@ -56,12 +64,23 @@
         letter-spacing: 0.05em;
     }
 
+    .home-shell .nav:not(.scrolled) .nav-logo-text {
+        color: white;
+        letter-spacing: 0;
+        text-shadow: 0 10px 28px rgba(0, 0, 0, 0.28);
+    }
+
     .nav-logo-sub {
         font-size: 9px;
         letter-spacing: 0.2em;
         color: var(--stone-light);
         text-transform: uppercase;
         margin-top: -2px;
+    }
+
+    .home-shell .nav:not(.scrolled) .nav-logo-sub {
+        color: rgba(245, 238, 214, 0.76);
+        letter-spacing: 0;
     }
 
     .nav-links {
@@ -78,6 +97,11 @@
         position: relative;
         padding: 8px 0;
         transition: color 0.25s ease;
+    }
+
+    .home-shell .nav:not(.scrolled) .nav-link {
+        color: rgba(255, 255, 255, 0.82);
+        letter-spacing: 0;
     }
 
     button.nav-link {
@@ -102,6 +126,29 @@
     .nav-link:focus-visible,
     .nav-link.is-current {
         color: var(--brand-dark);
+    }
+
+    .home-shell .nav:not(.scrolled) .nav-link:hover,
+    .home-shell .nav:not(.scrolled) .nav-link:focus-visible,
+    .home-shell .nav:not(.scrolled) .nav-link.is-current {
+        color: white;
+    }
+
+    .home-shell .nav:not(.scrolled) .nav-link::after {
+        background: linear-gradient(90deg, var(--gold-light), var(--gold));
+    }
+
+    .home-shell .nav:not(.scrolled) .nav-links .btn-brand {
+        background: rgba(232, 213, 163, 0.94);
+        color: var(--stone);
+        border: 1px solid rgba(255, 255, 255, 0.42);
+        box-shadow: 0 16px 42px rgba(0, 0, 0, 0.26);
+    }
+
+    .home-shell .nav:not(.scrolled) .nav-links .btn-brand:hover,
+    .home-shell .nav:not(.scrolled) .nav-links .btn-brand:focus-visible {
+        background: var(--gold);
+        color: var(--stone);
     }
 
     .nav-link:hover::after,
@@ -184,6 +231,10 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
+    }
+
+    .home-shell .nav:not(.scrolled) .mobile-btn {
+        color: white;
     }
 
     .mobile-btn svg {

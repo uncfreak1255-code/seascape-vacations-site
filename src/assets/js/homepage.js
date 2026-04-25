@@ -1,4 +1,17 @@
-function handleSearch() {
+function handleSearch(event) {
+    if (event && typeof event.preventDefault === 'function') {
+        event.preventDefault();
+    }
+
+    if (window.SeascapeHeroV2 && typeof window.SeascapeHeroV2.normalizeDateRange === 'function') {
+        window.SeascapeHeroV2.normalizeDateRange();
+    }
+
+    if (window.SeascapeHeroV2 && typeof window.SeascapeHeroV2.buildSearchUrl === 'function') {
+        window.location.href = window.SeascapeHeroV2.buildSearchUrl();
+        return;
+    }
+
     var locationSelect = document.getElementById('location-select');
     if (!locationSelect) return;
 
@@ -7,6 +20,8 @@ function handleSearch() {
         ? '/properties/?area=sarasota'
         : '/properties/?area=anna-maria-island';
 }
+
+window.handleSearch = handleSearch;
 
 (function deferGa4() {
     var measurementId = 'G-3VDV66S3DK';
