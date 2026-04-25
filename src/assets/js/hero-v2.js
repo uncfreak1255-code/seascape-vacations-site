@@ -1,13 +1,11 @@
 (function () {
-    var hero = document.querySelector('[data-hero-v2]');
     var form = document.querySelector('[data-hero-booking]');
-    var reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     var WEATHER_ENDPOINT = 'https://api.open-meteo.com/v1/forecast';
-    var WEATHER_LOCATIONS = [
-        { label: 'Anna Maria Island', latitude: 27.5311, longitude: -82.7334 },
-        { label: 'Bradenton', latitude: 27.4989, longitude: -82.5748 },
-        { label: 'Sarasota', latitude: 27.3364, longitude: -82.5307 }
-    ];
+    var WEATHER_LOCATIONS = {
+        'anna-maria-island': { label: 'Anna Maria Island', latitude: 27.5311, longitude: -82.7334 },
+        sarasota: { label: 'Sarasota', latitude: 27.3364, longitude: -82.5307 }
+    };
+    var tickerRequestId = 0;
     var WEATHER_CODE_LABELS = {
         0: { day: 'Sunny', night: 'Clear' },
         1: { day: 'Mostly sunny', night: 'Mostly clear' },
@@ -39,24 +37,6 @@
         99: 'Thunderstorms'
     };
 
-    function rotateActive(selector, intervalMs) {
-        if (reducedMotion) return;
-
-        var index = 0;
-        window.setInterval(function () {
-            var items = Array.from(document.querySelectorAll(selector));
-            if (!items.length) return;
-
-            index = Math.min(index, items.length - 1);
-            items[index].classList.remove('is-active');
-            index = (index + 1) % items.length;
-            items[index].classList.add('is-active');
-        }, intervalMs);
-    }
-
-    rotateActive('.hero-v2-phrase', 5200);
-    rotateActive('[data-hero-ticker] .hero-v2-ticker-fact', 4200);
-
     function getWeatherCondition(code, isDay) {
         var label = WEATHER_CODE_LABELS[code];
         if (!label) return 'Current';
@@ -73,19 +53,6 @@
         url.searchParams.set('timezone', 'auto');
         url.searchParams.set('forecast_days', '1');
         return url;
-    }
-
-    function createTickerFact(label, value) {
-        var fact = document.createElement('div');
-        var labelNode = document.createElement('span');
-        var valueNode = document.createElement('strong');
-
-        fact.className = 'hero-v2-ticker-fact';
-        fact.setAttribute('data-hero-ticker-weather', '');
-        labelNode.textContent = label;
-        valueNode.textContent = value;
-        fact.append(labelNode, valueNode);
-        return fact;
     }
 
     function readWeatherPayload(location, payload) {
@@ -126,33 +93,31 @@
         badge.toggleAttribute('data-hero-ticker-live', label === 'Live');
     }
 
-    function hydrateLiveTicker() {
+    function setTickerValue(location, value) {
         var ticker = document.querySelector('[data-hero-ticker]');
         if (!ticker) return;
 
-        Promise.all(WEATHER_LOCATIONS.map(fetchLocationWeather)).then(function (weatherFacts) {
-            var liveFacts = weatherFacts.filter(Boolean);
-            if (!liveFacts.length) return;
+        var labelNode = ticker.querySelector('[data-hero-ticker-location]');
+        var valueNode = ticker.querySelector('[data-hero-ticker-value]');
+        if (labelNode) labelNode.textContent = location.label;
+        if (valueNode) valueNode.textContent = value;
+    }
 
-            var staticFacts = Array.from(ticker.querySelectorAll('[data-hero-ticker-static]'));
-            var fragment = document.createDocumentFragment();
+    function hydrateLiveTicker(areaValue) {
+        var location = WEATHER_LOCATIONS[areaValue] || WEATHER_LOCATIONS['anna-maria-island'];
+        var requestId = ++tickerRequestId;
 
-            liveFacts.forEach(function (fact) {
-                fragment.appendChild(createTickerFact(fact.label, fact.value));
-            });
+        setTickerValue(location, 'Local Gulf Coast conditions');
+        setTickerBadge('Local');
 
-            staticFacts.forEach(function (fact) {
-                fact.classList.remove('is-active');
-                fragment.appendChild(fact);
-            });
+        fetchLocationWeather(location).then(function (weatherFact) {
+            if (requestId !== tickerRequestId) return;
+            if (!weatherFact) return;
 
-            ticker.replaceChildren(fragment);
-            ticker.querySelector('.hero-v2-ticker-fact').classList.add('is-active');
+            setTickerValue(location, weatherFact.value);
             setTickerBadge('Live');
         });
     }
-
-    hydrateLiveTicker();
 
     function parseDate(value) {
         if (!/^\d{4}-\d{2}-\d{2}$/.test(value || '')) return null;
@@ -240,8 +205,11 @@
     }
 
     if (form) {
+        var areaField = form.querySelector('[data-hero-area]');
+
         normalizeDateRange();
         updateAreaStatus();
+        hydrateLiveTicker(areaField && areaField.value);
 
         form.addEventListener('change', function (event) {
             if (event.target.matches('[data-hero-checkin], [data-hero-checkout]')) {
@@ -250,8 +218,11 @@
 
             if (event.target.matches('[data-hero-area]')) {
                 updateAreaStatus();
+                hydrateLiveTicker(event.target.value);
             }
         });
+    } else {
+        hydrateLiveTicker('anna-maria-island');
     }
 
     window.SeascapeHeroV2 = {

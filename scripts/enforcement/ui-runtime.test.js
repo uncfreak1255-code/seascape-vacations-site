@@ -47,15 +47,20 @@ test("homepage hero ticker uses live weather only after fetching real current da
   assert.equal(homepage.includes("78\u00b0F"), false);
   assert.equal(homepage.includes("SUNNY"), false);
   assert.match(homepage, /data-hero-ticker-badge-label>Local<\/span>/);
-  assert.match(homepage, /data-hero-ticker-static/);
-  assert.match(homepage, /\{\{ properties \| length \}\} private pool homes/);
+  assert.match(homepage, /data-hero-ticker-location>Anna Maria Island<\/span>/);
+  assert.match(homepage, /data-hero-ticker-value>Local Gulf Coast conditions<\/strong>/);
+  assert.equal(homepage.includes("data-hero-ticker-static"), false);
+  assert.equal(homepage.includes("dolphins at sunrise"), false);
+  assert.equal(homepage.includes("your quietest morning"), false);
 
   assert.equal(heroScript.includes("https://api.open-meteo.com/v1/forecast"), true);
   assert.equal(heroScript.includes("temperature_2m,weather_code,is_day"), true);
   assert.equal(heroScript.includes("temperature_unit', 'fahrenheit'"), true);
   assert.equal(heroScript.includes("Number.isFinite(temperature)"), true);
   assert.equal(heroScript.includes("setTickerBadge('Live')"), true);
+  assert.equal(heroScript.includes("rotateActive"), false);
 
   assert.match(heroStyles, /\.hero-v2-ticker-badge\[data-hero-ticker-live\]/);
   assert.match(heroStyles, /\.hero-v2-ticker-badge\[data-hero-ticker-live\] \.hero-v2-live-dot/);
+  assert.match(heroStyles, /\.hero-v2-ticker-main/);
 });

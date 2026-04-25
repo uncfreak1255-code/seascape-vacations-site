@@ -142,32 +142,12 @@
     background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.20) 0%, rgba(0, 0, 0, 0) 70%);
 }
 
-.hero-v2-phrase-wrap {
-    position: relative;
-    display: inline-block;
-    min-width: 11ch;
-    height: 1.1em;
-    color: #f5e4b0;
-    vertical-align: baseline;
-}
-
 .hero-v2-phrase {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    display: block;
-    white-space: nowrap;
+    display: inline;
     color: #f5e4b0;
     font-style: italic;
     font-weight: 500;
-    opacity: 0;
-    transform: translateX(-50%);
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.34), 0 6px 22px rgba(0, 0, 0, 0.36);
-    transition: opacity 1s ease-in-out;
-}
-
-.hero-v2-phrase.is-active {
-    opacity: 1;
 }
 
 .hero-v2-rule {
@@ -199,7 +179,7 @@
     display: flex;
     align-items: center;
     gap: 14px;
-    min-width: 474px;
+    min-width: 430px;
     max-width: calc(100% - 64px);
     padding: 9px 20px 9px 12px;
     color: rgba(255, 255, 255, 0.92);
@@ -248,34 +228,20 @@
     animation: heroV2Pulse 2s infinite;
 }
 
-.hero-v2-ticker-stage {
-    position: relative;
-    flex: 1;
-    height: 16px;
-    overflow: hidden;
-}
-
-.hero-v2-ticker-fact {
-    position: absolute;
-    inset: 0;
+.hero-v2-ticker-main {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
+    min-width: 0;
     white-space: nowrap;
-    opacity: 0;
-    transition: opacity 0.6s ease-in-out;
 }
 
-.hero-v2-ticker-fact.is-active {
-    opacity: 1;
-}
-
-.hero-v2-ticker-fact span {
+.hero-v2-ticker-main span {
     color: rgba(255, 255, 255, 0.60);
 }
 
-.hero-v2-ticker-fact strong {
+.hero-v2-ticker-main strong {
     color: var(--white);
     font-weight: 500;
 }
@@ -523,8 +489,6 @@
 
 @media (prefers-reduced-motion: reduce) {
     .hero-v2-image,
-    .hero-v2-phrase,
-    .hero-v2-ticker-fact,
     .hero-v2-live-dot,
     .hero-booking-v2-status::before,
     .hero-v2-scroll span,
@@ -593,17 +557,6 @@
 
     .hero-v2-title::before {
         inset: -24px -28px;
-    }
-
-    .hero-v2-phrase-wrap {
-        display: block;
-        width: 100%;
-        min-width: 0;
-    }
-
-    .hero-v2-phrase {
-        left: 0;
-        transform: none;
     }
 
     .hero-v2-rule {
@@ -719,11 +672,6 @@
     .hero-v2-title {
         font-size: 40px;
         line-height: 1.05;
-    }
-
-    .hero-v2-phrase-wrap {
-        min-width: 0;
-        height: 1.12em;
     }
 
     .hero-v2-subtitle {
