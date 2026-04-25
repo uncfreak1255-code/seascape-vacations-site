@@ -92,6 +92,7 @@
     <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=2748551298816267&ev=PageView&noscript=1"/></noscript>
 
     <link rel="stylesheet" href="/css/homepage.css">
+    <link rel="stylesheet" href="/css/hero-v1.css">
     <style>
         {% include "partials/site-header-styles.njk" %}
     </style>
@@ -170,40 +171,54 @@
             </div>
             <div class="hero-overlay"></div>
             <div class="hero-content">
-                <div class="hero-badge">
-                    <span class="stars">{{ uiIcon('star', 'ui-icon--star') }}{{ uiIcon('star', 'ui-icon--star') }}{{ uiIcon('star', 'ui-icon--star') }}{{ uiIcon('star', 'ui-icon--star') }}{{ uiIcon('star', 'ui-icon--star') }}</span>
-                    <span>Local Gulf Coast hosting team</span>
-                </div>
+                <p class="hero-eyebrow">Luxury Vacation Rentals · Est 2019</p>
                 <h1 class="hero-title">
-                    Your Gulf Coast Paradise Awaits
-                    <span>ANNA MARIA ISLAND • BRADENTON • SARASOTA</span>
+                    Ten minutes to <em>your quietest morning</em> on Florida's Gulf.
                 </h1>
-                <p class="hero-subtitle">Handpicked luxury vacation rentals with private pools, waterfront views, and
-                    five-star service.</p>
-                <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap">
-                    <a class="btn btn-gold" href="/properties/">Explore Properties</a>
-                    <a class="btn btn-outline" href="#contact">Contact Us</a>
+                <p class="hero-subtitle">Five private-pool homes on Anna Maria Island, Bradenton &amp; Sarasota. Book direct &mdash; save 10&ndash;15% over Airbnb &amp; VRBO.</p>
+                <div class="hero-live" aria-live="polite">
+                    <span class="hero-live-dot" aria-hidden="true"></span>
+                    <span>LIVE</span>
+                    <span class="hero-live-divider">·</span>
+                    <span>Anna Maria Island</span>
+                    <span class="hero-live-divider">·</span>
+                    <span>78&deg;F &middot; Sunny</span>
                 </div>
             </div>
-            <div class="search-container">
-                <div class="search-box">
-                    <div class="search-header">
-                        <p>Find your perfect getaway</p>
-                    </div>
-                    <div class="search-fields">
-                        <div class="search-field">
-                            <label for="location-select" class="search-label">Location</label>
-                            <select id="location-select" style="border:none; background:transparent; font-size:15px; font-weight:500; color:var(--stone); width:100%; font-family:inherit; cursor:pointer; padding:0;">
-                                <option value="ami">Anna Maria Area</option>
-                                <option value="sarasota">Sarasota</option>
-                            </select>
-                        </div>
 
-                        <button class="btn btn-brand" onclick="handleSearch()"
-                            style="height:100%;border-radius:12px">Search</button>
-                    </div>
+            <!-- Booking strip -->
+            <form class="hero-booking" onsubmit="event.preventDefault(); handleSearch();" role="search" aria-label="Find a vacation rental">
+                <div class="hero-booking-hint">3 homes available this week</div>
+                <div class="hero-booking-strip">
+                    <label class="hero-booking-field">
+                        <span class="hero-booking-label">Where</span>
+                        <select id="location-select" class="hero-booking-value" name="location">
+                            <option value="ami">Anna Maria area</option>
+                            <option value="sarasota">Sarasota</option>
+                            <option value="any">Any Gulf Coast</option>
+                        </select>
+                    </label>
+                    <label class="hero-booking-field">
+                        <span class="hero-booking-label">Arrive</span>
+                        <input class="hero-booking-value" type="date" name="arrive" placeholder="Select dates">
+                    </label>
+                    <label class="hero-booking-field">
+                        <span class="hero-booking-label">Depart</span>
+                        <input class="hero-booking-value" type="date" name="depart" placeholder="Select dates">
+                    </label>
+                    <label class="hero-booking-field">
+                        <span class="hero-booking-label">Guests</span>
+                        <select class="hero-booking-value" name="guests">
+                            <option>2 guests</option>
+                            <option>4 guests</option>
+                            <option>6 guests</option>
+                            <option>8 guests</option>
+                            <option>10+ guests</option>
+                        </select>
+                    </label>
+                    <button class="hero-booking-cta" type="submit">Search Homes</button>
                 </div>
-            </div>
+            </form>
         </section>
 
         <!-- Stats Bar -->
