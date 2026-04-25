@@ -284,8 +284,8 @@
     font-size: 9.5px; letter-spacing: 0.3em; font-weight: 600;
 }
 
-/* --- Tablet (641-900): compact horizontal pill, lift above mobile-cta-bar --- */
-@media (max-width: 900px) and (min-width: 641px) {
+/* --- Tablet/small-desktop (641-1100): compact horizontal pill, lift above mobile-cta-bar --- */
+@media (max-width: 1100px) and (min-width: 641px) {
     .hero-booking { padding: 12px 14px 12px 22px; }
     .hero-booking-inner { gap: 14px; }
     .hero-booking-field { padding-right: 0; }
