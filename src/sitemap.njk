@@ -8,14 +8,14 @@ eleventyExcludeFromCollections: true
   {% set url = entry.url %}
   {% set entryIndexable = entry.data.seoIndexable %}
   {% set shouldIndex = entryIndexable != false and entryIndexable != 'false' %}
-  {% set isNonPaginatedStay = url.indexOf('/stays/') === -1 %}
+  {% set isNonPaginatedStay = url === '/stays/' or url.indexOf('/stays/') === -1 %}
   {% set isNonPaginatedPropertyManagement = url == '/property-management/' or url.indexOf('/property-management/') === -1 %}
   {% if url and url != '/404.html' and url != '/sitemap.xml' and shouldIndex and isNonPaginatedStay and isNonPaginatedPropertyManagement %}
   <url>
     <loc>{{ site.url }}{{ url }}</loc>
     <lastmod>{{ site.dateUpdated }}</lastmod>
     <changefreq>{% if url == '/' or '/guides/' in url or '/properties/' in url %}weekly{% else %}monthly{% endif %}</changefreq>
-    <priority>{% if url == '/' %}1.0{% elif '/guides/' in url or '/properties/' in url %}0.8{% else %}0.7{% endif %}</priority>
+    <priority>{% if url == '/' %}1.0{% elif '/guides/' in url or '/properties/' in url or url == '/stays/' %}0.8{% else %}0.7{% endif %}</priority>
   </url>
   {% endif %}
   {% endfor %}
