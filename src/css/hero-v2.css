@@ -227,6 +227,7 @@
 .hero-booking-value {
     font-size: 13.5px; font-weight: 500; margin-top: 3px; color: #2A2A2A;
     display: flex; align-items: center; gap: 8px;
+    white-space: nowrap;
 }
 .hero-booking-region { font-weight: 600; }
 .hero-booking-caret { font-size: 10px; color: #8A7A4A; }
@@ -291,6 +292,7 @@
     .hero-booking-field { padding-right: 0; }
     .hero-booking-cta { padding: 12px 22px; font-size: 10.5px; }
     .hero-ticker { min-width: 0; width: auto; max-width: calc(100vw - 48px); padding: 8px 16px 8px 10px; }
+    .hero-ticker-stage { min-width: 300px; }
 }
 
 /* The site ships a fixed .mobile-cta-bar at <=768px. Lift hero pieces above it. */
@@ -346,7 +348,7 @@
 
     .hero-scroll { display: none; }
     .hero-ticker {
-        bottom: 270px;
+        bottom: 392px;
         min-width: 0;
         width: calc(100vw - 32px);
         padding: 8px 14px 8px 10px;
