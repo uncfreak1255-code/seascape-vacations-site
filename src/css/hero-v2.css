@@ -155,7 +155,7 @@
 
 /* --- Live ticker --- */
 .hero-ticker {
-    position: absolute; bottom: 126px; left: 50%; transform: translateX(-50%); z-index: 8;
+    position: absolute; bottom: 152px; left: 50%; transform: translateX(-50%); z-index: 8;
     display: flex; align-items: center; gap: 14px;
     background: rgba(10, 26, 28, 0.55); backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
