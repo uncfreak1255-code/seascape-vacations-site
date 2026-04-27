@@ -1,0 +1,104 @@
+---
+permalink: /404.html
+eleventyExcludeFromCollections: true
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Not Found | Seascape Vacations</title>
+    <meta name="robots" content="noindex, follow">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet"></noscript>
+
+    <style>
+        :root {
+            --brand: #5F8A8B;
+            --brand-light: #7BA3A4;
+            --brand-dark: #3D5C5D;
+            --brand-darker: #2D4647;
+            --gold: #C9A962;
+            --cream: #F5EED6;
+            --stone: #3A3A3A;
+            --stone-light: #595959;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Poppins, sans-serif; background: var(--cream); color: var(--stone); min-height: 100vh; display: flex; flex-direction: column; }
+
+        .nav { background: rgba(255,255,255,0.95); border-bottom: 1px solid rgba(0,0,0,0.05); }
+        .nav-inner { max-width: 1100px; margin: 0 auto; padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; }
+        .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+        .nav-logo-text { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; color: var(--brand-dark); letter-spacing: 2px; }
+        .nav-logo-sub { font-size: 10px; color: var(--brand); letter-spacing: 3px; text-transform: uppercase; }
+        .btn { display: inline-block; background: var(--brand); color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px; transition: background 0.2s; }
+        .btn:hover { background: var(--brand-dark); }
+        .btn-gold { background: var(--gold); color: var(--stone); }
+        .btn-gold:hover { background: #b89550; color: var(--stone); }
+        .btn-outline { background: transparent; color: var(--brand); border: 2px solid var(--brand); }
+        .btn-outline:hover { background: var(--brand); color: white; }
+
+        .main { flex: 1; display: flex; align-items: center; justify-content: center; padding: 60px 24px; }
+        .card { background: white; border-radius: 24px; padding: 56px 48px; max-width: 560px; width: 100%; text-align: center; box-shadow: 0 4px 24px rgba(0,0,0,0.08); }
+        .error-num { font-family: 'Playfair Display', serif; font-size: 80px; font-weight: 700; color: var(--brand); line-height: 1; margin-bottom: 12px; }
+        .error-title { font-family: 'Playfair Display', serif; font-size: 28px; color: var(--brand-dark); margin-bottom: 16px; }
+        .error-body { font-size: 16px; color: var(--stone-light); line-height: 1.6; margin-bottom: 36px; }
+        .actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+
+        .footer { background: var(--brand-darker); color: rgba(255,255,255,0.8); padding: 32px 24px; text-align: center; }
+        .footer-inner { max-width: 1100px; margin: 0 auto; }
+        .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 12px; flex-wrap: wrap; }
+        .footer-links a { color: rgba(255,255,255,0.7); font-size: 13px; text-decoration: none; }
+        .footer-links a:hover { color: white; }
+        .footer-copyright { font-size: 12px; opacity: 0.5; }
+
+        @media (max-width: 600px) {
+            .card { padding: 40px 24px; }
+            .error-num { font-size: 60px; }
+            .actions { flex-direction: column; }
+            .actions .btn { width: 100%; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <div class="nav-inner">
+            <a href="/" class="nav-logo">
+                <img src="/logo-optimized.png" alt="Seascape Vacations" height="40">
+                <div>
+                    <div class="nav-logo-text">SEASCAPE</div>
+                    <div class="nav-logo-sub">Vacations</div>
+                </div>
+            </a>
+            <a href="/properties/" class="btn">Open Direct-Book Collection</a>
+        </div>
+    </nav>
+
+    <main class="main">
+        <div class="card">
+            <div class="error-num">404</div>
+            <h1 class="error-title">Page Not Found</h1>
+            <p class="error-body">That page doesn't exist or may have moved. Try browsing our Gulf Coast rentals or heading back home.</p>
+            <div class="actions">
+                <a href="/stays/" class="btn btn-gold">Browse Vacation Rentals</a>
+                <a href="/" class="btn btn-outline">Back to Home</a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="footer-links">
+                <a href="/">Home</a>
+                <a href="/stays/">Vacation Rentals</a>
+                <a href="/guides/anna-maria-island-area-guide/">Anna Maria Island</a>
+                <a href="/property-management/">Property Owners</a>
+            </div>
+            <div class="footer-copyright">© 2026 Seascape Vacations. All rights reserved.</div>
+        </div>
+    </footer>
+</body>
+</html>
