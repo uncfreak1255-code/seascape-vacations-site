@@ -5,6 +5,7 @@ const targets = [
   { path: "/properties/", status: 200 },
   { path: "/property-management/", status: 200 },
   { path: "/guides/", status: 200 },
+  { path: "/stays/", status: 200 },
   { path: "/stays/anna-maria-island-vacation-rentals/", status: 200 },
   { path: "/property-management/vacation-rental-management-sarasota/", status: 200 },
   { path: "/guides/anna-maria-island-area-guide/", status: 200 },
@@ -114,6 +115,19 @@ function validateTargetResponse(target, response) {
       || response.body.includes("Request a property evaluation")
     ) {
       throw new Error("property-management hub is still serving the retired explainer-hub surface");
+    }
+  }
+
+  if (target.path === "/stays/") {
+    const hasStayHubSurface =
+      response.body.includes("Stay Collections")
+      && response.body.includes("Destination collections")
+      && response.body.includes("/stays/anna-maria-island-vacation-rentals/")
+      && response.body.includes("/stays/bradenton-vacation-rentals-near-beaches/")
+      && response.body.includes("/properties/");
+
+    if (!hasStayHubSurface) {
+      throw new Error("/stays/ is missing the live stay-collection hub surface");
     }
   }
 

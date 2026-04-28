@@ -67,8 +67,9 @@ eleventyComputed:
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
         "itemListElement": [
-            {"@type": "ListItem", "position": 1, "name": "Home", "item": "{{ site.url }}"},
-            {"@type": "ListItem", "position": 2, "name": "{{ seoPage.title }}", "item": "{{ site.url }}/stays/{{ seoPage.slug }}/"}
+            {"@type": "ListItem", "position": 1, "name": "Home", "item": "{{ site.url }}/"},
+            {"@type": "ListItem", "position": 2, "name": "Stay Collections", "item": "{{ site.url }}/stays/"},
+            {"@type": "ListItem", "position": 3, "name": "{{ seoPage.title }}", "item": "{{ site.url }}/stays/{{ seoPage.slug }}/"}
         ]
     }
     </script>
@@ -342,6 +343,8 @@ eleventyComputed:
         <nav class="breadcrumbs" aria-label="Breadcrumb">
             <ol>
                 <li><a href="/">Home</a></li>
+                <li><span>›</span></li>
+                <li><a href="/stays/">Stay Collections</a></li>
                 <li><span>›</span></li>
                 {% if seoPage.destination %}
                 {% set destinationGuideMap = {
@@ -721,6 +724,7 @@ eleventyComputed:
             <div class="footer-logo">Seascape Vacations</div>
             <div class="footer-links">
                 <a href="/">Home</a>
+                <a href="/stays/">Stay Collections</a>
                 <a href="/guides/anna-maria-island-area-guide/">Anna Maria Island</a>
                 <a href="/guides/bradenton-area-guide/">Bradenton</a>
                 <a href="/guides/sarasota-area-guide/">Sarasota</a>
