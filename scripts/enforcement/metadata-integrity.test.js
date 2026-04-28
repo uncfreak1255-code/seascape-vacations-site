@@ -88,7 +88,15 @@ test("winner guide snippets stay decision-forward without body rewrites", () => 
   );
   assert.match(
     amiVsSiesta,
-    /"headline": "Anna Maria Island vs Siesta Key: Beaches, Crowds, Parking, and Where to Stay"/
+    /"headline": "Anna Maria Island vs Siesta Key: Which Should You Choose\?"/
+  );
+  assert.match(
+    amiVsSiesta,
+    /"dateModified": "2026-04-28T12:00:00-04:00"/
+  );
+  assert.match(
+    amiVsSiesta,
+    /Updated April 2026/
   );
 
   assert.equal(
@@ -109,7 +117,15 @@ test("winner guide snippets stay decision-forward without body rewrites", () => 
   );
   assert.match(
     bradentonVsSarasota,
-    /"headline": "Bradenton vs Sarasota: Costs, Beaches, Dining, and Where to Stay"/
+    /"headline": "Bradenton vs Sarasota: Which Base Fits Your Trip\?"/
+  );
+  assert.match(
+    bradentonVsSarasota,
+    /"dateModified": "2026-04-28T12:00:00-04:00"/
+  );
+  assert.match(
+    bradentonVsSarasota,
+    /Updated April 2026/
   );
 });
 
