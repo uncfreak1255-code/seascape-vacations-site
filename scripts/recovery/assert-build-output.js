@@ -179,6 +179,7 @@ if (phase === "p0") {
   expectExists("_site/index.html");
   expectExists("_site/properties/index.html");
   expectExists("_site/property-management/index.html");
+  expectExists("_site/stays/index.html");
   expectNotExists("_site/netlify/functions/get-properties.js");
   expectNotExists("_site/stays/hurricane-preparedness-florida-vacation/index.html");
   expectNotExists("_site/stays/concierge-luxury-services/index.html");
@@ -208,6 +209,10 @@ if (phase === "p0") {
   expectNotContains("_site/properties/index.html", "api.hostaway.com");
   expectNotContains("_site/properties/index.html", "hostaway-platform.s3.us-west-2.amazonaws.com");
   expectContains("_site/property-management/index.html", "Property Management");
+  expectContains("_site/stays/index.html", "Stay Collections");
+  expectContains("_site/stays/index.html", 'href="/stays/anna-maria-island-vacation-rentals/"');
+  expectContains("_site/stays/index.html", 'href="/stays/bradenton-vacation-rentals-near-beaches/"');
+  expectContains("_site/sitemap.xml", "<loc>https://seascape-vacations.com/stays/</loc>");
   expectContains("_site/properties/index.html", 'href="/css/base.css"');
   expectContains("_site/stays/anna-maria-island-vacation-rentals/index.html", ".nav-logo img");
   expectContains("_site/property-management/index.html", 'href="/css/base.css"');
@@ -513,7 +518,7 @@ if (phase === "remediation") {
     "_site/property-management/index.html",
     buildAnchorPattern({
       href: "#owner-cta",
-      className: "btn",
+      className: "btn btn-brand",
       text: "Request Your Revenue Review"
     }),
     "property management nav CTA"

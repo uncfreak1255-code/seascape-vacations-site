@@ -34,11 +34,16 @@ test("sitemap is built from rendered pages instead of legacy route assumptions",
 
 test("sitemap explicitly includes paginated stay and owner inventories", () => {
   const sitemap = fs.readFileSync(path.join(projectRoot, "src", "sitemap.njk"), "utf8");
+  const staysHub = fs.readFileSync(path.join(projectRoot, "src", "stays", "index.njk"), "utf8");
 
   assert.equal(sitemap.includes("staysPages"), true);
   assert.equal(sitemap.includes("seoPages.owner"), true);
+  assert.equal(sitemap.includes("url == '/stays/'"), true);
   assert.equal(sitemap.includes("url.indexOf('/stays/') === -1"), true);
   assert.equal(sitemap.includes("url == '/property-management/' or url.indexOf('/property-management/') === -1"), true);
+  assert.equal(staysHub.includes('permalink: "/stays/"'), true);
+  assert.equal(staysHub.includes("staysPages"), true);
+  assert.equal(staysHub.includes("seoGovernance.staysNoindexSlugs.indexOf(page.slug) === -1"), true);
 });
 
 test("redirects avoid the known missing legacy target pages", () => {

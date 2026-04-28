@@ -82,3 +82,22 @@ test("remaining orphan guides, stays, and owner scenarios are routed into the hu
     assert.equal(ownerHub.includes(marker), true, `owner hub still missing ${marker}`);
   }
 });
+
+test("stay hub exists and child stay pages link back to it", () => {
+  const staysHub = fs.readFileSync(path.join(projectRoot, "src", "stays", "index.njk"), "utf8");
+  const staysTemplate = fs.readFileSync(path.join(projectRoot, "src", "stays", "stays.njk"), "utf8");
+
+  for (const marker of [
+    "Destination collections",
+    "Use-case collections",
+    '/stays/{{ page.slug }}/',
+    'page.destination == section.key',
+    "/properties/",
+    "/guides/where-to-stay-near-anna-maria-island/"
+  ]) {
+    assert.equal(staysHub.includes(marker), true, `stay hub missing ${marker}`);
+  }
+
+  assert.equal(staysTemplate.includes('href="/stays/"'), true, "stay template should link back to the /stays/ hub");
+  assert.equal(staysTemplate.includes('"name": "Stay Collections"'), true, "stay breadcrumb schema should include the hub");
+});

@@ -66,3 +66,31 @@ test("property-management smoke rejects the retired explainer-hub surface", () =
     });
   }, /property-management hub is missing the proof-first owner revenue surface/);
 });
+
+test("stays smoke follows the live stay-collection hub instead of a dead prefix", () => {
+  const smoke = loadSmokeModule();
+  const target = smoke.targets.find((entry) => entry.path === "/stays/");
+
+  assert.notEqual(target, undefined, "expected /stays/ to stay in the smoke target list");
+
+  const currentStayHubBody = `
+    <main>
+      <p>Stay Collections</p>
+      <h1>Use the live stay pages as a real collection hub, not a dead prefix</h1>
+      <section>
+        <h2>Destination collections</h2>
+        <a href="/stays/anna-maria-island-vacation-rentals/">Anna Maria Island Vacation Rentals</a>
+        <a href="/stays/bradenton-vacation-rentals-near-beaches/">Bradenton Vacation Rentals Near Beaches</a>
+      </section>
+      <a href="/properties/">Browse Direct-Book Homes</a>
+    </main>
+  `;
+
+  assert.doesNotThrow(() => {
+    smoke.validateTargetResponse(target, {
+      statusCode: 200,
+      location: null,
+      body: currentStayHubBody
+    });
+  });
+});
