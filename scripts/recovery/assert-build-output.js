@@ -119,7 +119,9 @@ function escapeRegex(value) {
 
 function buildAnchorPattern({ href, className, text, extraAttributes = "" }) {
   const hrefPattern = `href="${escapeRegex(href)}"`;
-  const classPattern = className ? `(?=[^>]*class="${escapeRegex(className)}")` : "";
+  const classPattern = className
+    ? `(?=[^>]*class="(?:[^"]*\\s)?${escapeRegex(className)}(?:\\s[^"]*)?")`
+    : "";
   const extraPattern = extraAttributes ? `(?=[^>]*${extraAttributes})` : "";
   const textPattern = escapeRegex(text);
 
