@@ -14,7 +14,7 @@ eleventyExcludeFromCollections: true
   {% if url and url != '/404.html' and url != '/sitemap.xml' and shouldIndex and isNonPaginatedStay and isNonPaginatedPropertyManagement %}
   <url>
     <loc>{{ site.url }}{{ url }}</loc>
-    <lastmod>{{ site.dateUpdated }}</lastmod>
+    <lastmod>{{ gitLastModifiedDate(entry.inputPath) }}</lastmod>
     <changefreq>{% if url == '/' or '/guides/' in url or '/properties/' in url %}weekly{% else %}monthly{% endif %}</changefreq>
     <priority>{% if url == '/' %}1.0{% elif '/guides/' in url or '/properties/' in url %}0.8{% else %}0.7{% endif %}</priority>
   </url>
@@ -25,7 +25,7 @@ eleventyExcludeFromCollections: true
   {% if stayIndexable %}
   <url>
     <loc>{{ site.url }}/stays/{{ seoPage.slug }}/</loc>
-    <lastmod>{{ site.dateUpdated }}</lastmod>
+    <lastmod>{{ gitLastModifiedDate('src/stays/stays.njk', 'src/_data/seoPages.json', 'src/_data/staysPages.js', 'src/_data/seoGovernance.js') }}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -36,7 +36,7 @@ eleventyExcludeFromCollections: true
   {% if ownerIndexable %}
   <url>
     <loc>{{ site.url }}/property-management/{{ seoPage.slug }}/</loc>
-    <lastmod>{{ site.dateUpdated }}</lastmod>
+    <lastmod>{{ gitLastModifiedDate('src/property-management/property-management.njk', 'src/_data/seoPages.json', 'src/_data/ownerProofAssets.json') }}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>

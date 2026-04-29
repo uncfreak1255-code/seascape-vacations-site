@@ -1,5 +1,15 @@
 const fs = require("fs");
 const path = require("path");
+const { execFileSync } = require("child_process");
+
+function formatDateLabel(isoString) {
+  if (!isoString) return null;
+  return new Intl.DateTimeFormat("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  }).format(new Date(isoString));
+}
 
 function toHostawayCdn(url, width = 800, quality = 82) {
   const value = String(url || "").trim();
@@ -21,6 +31,60 @@ function toHostawayCdn(url, width = 800, quality = 82) {
 }
 
 module.exports = function(eleventyConfig) {
+  const root = process.cwd();
+  const gitTimestampCache = new Map();
+
+  function readLatestGitTimestamp(...candidatePaths) {
+    let latestTimestamp = null;
+
+    for (const candidatePath of candidatePaths.flat().filter(Boolean)) {
+      const resolvedPath = path.isAbsolute(candidatePath)
+        ? candidatePath
+        : path.join(root, candidatePath);
+
+      if (!fs.existsSync(resolvedPath)) {
+        continue;
+      }
+
+      let isoString = gitTimestampCache.get(resolvedPath);
+
+      if (isoString === undefined) {
+        try {
+          const relativePath = path.relative(root, resolvedPath);
+          isoString = execFileSync("git", ["log", "-1", "--format=%cI", "--", relativePath], {
+            cwd: root,
+            encoding: "utf8",
+          }).trim();
+        } catch {
+          isoString = "";
+        }
+
+        if (!isoString) {
+          isoString = new Date(fs.statSync(resolvedPath).mtimeMs).toISOString();
+        }
+
+        gitTimestampCache.set(resolvedPath, isoString);
+      }
+
+      if (!latestTimestamp || new Date(isoString) > new Date(latestTimestamp)) {
+        latestTimestamp = isoString;
+      }
+    }
+
+    return latestTimestamp;
+  }
+
+  eleventyConfig.addNunjucksGlobal("gitLastModifiedIso", (...candidatePaths) =>
+    readLatestGitTimestamp(...candidatePaths)
+  );
+  eleventyConfig.addNunjucksGlobal("gitLastModifiedDate", (...candidatePaths) => {
+    const isoString = readLatestGitTimestamp(...candidatePaths);
+    return isoString ? isoString.slice(0, 10) : null;
+  });
+  eleventyConfig.addNunjucksGlobal("gitLastModifiedLabel", (...candidatePaths) =>
+    formatDateLabel(readLatestGitTimestamp(...candidatePaths))
+  );
+
   // Pass through static assets (preserves current design)
   eleventyConfig.addPassthroughCopy("images");
   eleventyConfig.addPassthroughCopy("css");
