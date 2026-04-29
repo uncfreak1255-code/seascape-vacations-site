@@ -1,3 +1,6 @@
+{% set pageUpdatedIso = gitLastModifiedIso(page.inputPath) %}
+{% set pageUpdatedDate = gitLastModifiedDate(page.inputPath) %}
+{% set pageUpdatedLabel = gitLastModifiedLabel(page.inputPath) %}
 <!doctype html>
 <html lang="en">
 <head>
@@ -28,7 +31,7 @@
     "mainEntityOfPage":"https://seascape-vacations.com/guides/hurricane-preparedness-florida-vacation/",
     "image":"https://seascape-vacations.com/images/seascape-og-default.jpg",
     "datePublished":"2026-03-17",
-    "dateModified":"{{ site.dateUpdated }}",
+    "dateModified":"{{ pageUpdatedIso or pageUpdatedDate }}",
     "author":{"@type":"Organization","name":"Seascape Vacations","url":"https://seascape-vacations.com"},
     "publisher":{"@type":"Organization","name":"{{ site.name }}","logo":{"@type":"ImageObject","url":"{{ site.url }}/logo-optimized.png"}}
   }
@@ -84,7 +87,7 @@
       <span class="badge">Travel Planning Guide</span>
       <h1>Florida Hurricane Preparedness for Vacation Travelers</h1>
       <p>Hurricane season is a planning issue, not an automatic reason to avoid the Gulf Coast. What matters is understanding forecast timing, how your host communicates, and how you protect your trip if plans change.</p>
-      <p class="meta">Updated {{ site.dateUpdated }} · By {{ site.author }}</p>
+      <p class="meta">Updated {{ pageUpdatedLabel }} · By {{ site.author }}</p>
     </section>
     <section class="card">
       <h2>What actually matters before you book</h2>

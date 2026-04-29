@@ -9,6 +9,9 @@ eleventyComputed:
   pageDescription: "{{ seoPage.description }}"
   seoIndexable: "{{ seoGovernance.staysNoindexSlugs.indexOf(seoPage.slug) === -1 }}"
 ---
+{% set pageUpdatedIso = gitLastModifiedIso(page.inputPath, "src/_data/seoPages.json", "src/_data/staysPages.js", "src/_data/seoGovernance.js") %}
+{% set pageUpdatedDate = gitLastModifiedDate(page.inputPath, "src/_data/seoPages.json", "src/_data/staysPages.js", "src/_data/seoGovernance.js") %}
+{% set pageUpdatedLabel = gitLastModifiedLabel(page.inputPath, "src/_data/seoPages.json", "src/_data/staysPages.js", "src/_data/seoGovernance.js") %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -84,7 +87,7 @@ eleventyComputed:
         "url": "{{ site.url }}/stays/{{ seoPage.slug }}/",
         "image": "{{ site.url }}/images/seascape-og-default.jpg",
         "datePublished": "2025-01-22",
-        "dateModified": "{{ site.dateUpdated }}",
+        "dateModified": "{{ pageUpdatedIso or pageUpdatedDate }}",
         "author": {
             "@type": "Organization",
             "name": "{{ site.author }}",
@@ -194,12 +197,6 @@ eleventyComputed:
                     "occupancy": {
                         "@type": "QuantitativeValue",
                         "maxValue": {{ property.guests }}
-                    },
-                    "aggregateRating": {
-                        "@type": "AggregateRating",
-                        "ratingValue": "{{ property.rating }}",
-                        "bestRating": "5",
-                        "ratingCount": "1"
                     },
                     "address": {
                         "@type": "PostalAddress",
@@ -388,7 +385,7 @@ eleventyComputed:
                 <div style="margin-top: 24px; display: flex; justify-content: center; align-items: center; gap: 16px; font-size: 13px; opacity: 0.8;">
                     <span>By {{ site.author }}</span>
                     <span>|</span>
-                    <time datetime="{{ site.dateUpdated }}">Last Updated: {{ site.dateUpdated }}</time>
+                    <time datetime="{{ pageUpdatedDate }}">Last Updated: {{ pageUpdatedLabel }}</time>
                 </div>
             </div>
         </section>

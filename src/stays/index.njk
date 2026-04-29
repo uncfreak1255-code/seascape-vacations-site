@@ -26,6 +26,7 @@ eleventyComputed:
     "intro": "The narrower Siesta Key lane. Keep this section tight because the inventory and fit are tighter."
   }
 ] %}
+{% set pageUpdatedLabel = gitLastModifiedLabel(page.inputPath) %}
 <!doctype html>
 <html lang="en">
 <head>
@@ -390,7 +391,7 @@ eleventyComputed:
         <strong>How to use this page</strong>
         <p>If you already know the market, start with the destination sections. If the trip shape matters more than the map, use the amenity and use-case links below.</p>
         <p>This is the parent hub for the live `/stays/&lt;slug&gt;/` pages, so the collection pages can finally point to each other cleanly.</p>
-        <small>Updated {{ site.dateUpdated }}</small>
+        <small>Updated {{ pageUpdatedLabel }}</small>
       </aside>
     </header>
 

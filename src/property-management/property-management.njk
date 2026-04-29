@@ -10,6 +10,9 @@ eleventyComputed:
 ---
 {% from "partials/owner-evaluation-form.njk" import ownerEvaluationForm %}
 {% from "partials/ui-icon.njk" import uiIcon %}
+{% set pageUpdatedIso = gitLastModifiedIso(page.inputPath, "src/_data/seoPages.json", "src/_data/ownerProofAssets.json") %}
+{% set pageUpdatedDate = gitLastModifiedDate(page.inputPath, "src/_data/seoPages.json", "src/_data/ownerProofAssets.json") %}
+{% set pageUpdatedLabel = gitLastModifiedLabel(page.inputPath, "src/_data/seoPages.json", "src/_data/ownerProofAssets.json") %}
 {% set proofAsset = seoPage.proofAssetKey and ownerProofAssets[seoPage.proofAssetKey] %}
 {% set pageProofStats = seoPage.proofStats or (proofAsset and proofAsset.stats) %}
 <!DOCTYPE html>
@@ -114,7 +117,7 @@ eleventyComputed:
             "logo": { "@type": "ImageObject", "url": "{{ site.url }}/logo-optimized.png" }
         },
         "datePublished": "{{ seoPage.datePublished | default('2025-01-15') }}",
-        "dateModified": "{{ (proofAsset and proofAsset.reviewedDate) or site.dateUpdated }}",
+        "dateModified": "{{ pageUpdatedIso or pageUpdatedDate }}",
         "mainEntityOfPage": "{{ site.url }}/property-management/{{ seoPage.slug }}/"
     }
     </script>
@@ -428,7 +431,7 @@ eleventyComputed:
                         <div>
                             <div style="font-weight: 600; font-size: 14px; color: var(--stone);">{{ (proofAsset and proofAsset.reviewedBy) or site.author }}</div>
                             <div style="font-size: 12px; color: var(--stone-light);">
-                                {% if proofAsset and proofAsset.reviewerRole %}{{ proofAsset.reviewerRole }} • {% endif %}Updated {{ (proofAsset and (proofAsset.reviewedDateLabel or proofAsset.reviewedDate)) or site.dateUpdated }}
+                                {% if proofAsset and proofAsset.reviewerRole %}{{ proofAsset.reviewerRole }} • {% endif %}Updated {{ pageUpdatedLabel }}
                             </div>
                             {% if proofAsset %}
                             <div style="font-size: 12px; color: var(--stone-light);"><a href="{{ proofAsset.sourceUrl }}" style="color: var(--brand-dark); text-decoration: underline;">Source: {{ proofAsset.sourceLabel }}</a></div>

@@ -118,6 +118,7 @@ eleventyComputed:
   { "url": "/guides/pet-friendly-anna-maria-island/", "label": "Pet-Friendly Anna Maria Guide" },
   { "url": "/services/concierge-services/", "label": "Concierge Services" }
 ] %}
+{% set pageUpdatedLabel = gitLastModifiedLabel(page.inputPath) %}
 <!doctype html>
 <html lang="en">
 <head>
@@ -595,7 +596,7 @@ eleventyComputed:
       <aside class="hero-note">
         <strong>Where to start</strong>
         <p>Start with the featured guide if you are still deciding where to stay. If you already know the area, jump to the section that matches the question you want to answer next.</p>
-        <small>Updated {{ site.dateUpdated }}</small>
+        <small>Updated {{ pageUpdatedLabel }}</small>
       </aside>
     </header>
 
