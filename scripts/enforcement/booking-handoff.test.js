@@ -131,6 +131,11 @@ test("top property pages instrument both availability and booking-page handoff C
       true,
       `${path.basename(path.dirname(file))} missing tracked booking-page CTA`
     );
+    assert.equal(
+      source.includes('src="/assets/js/conversion-tracking.js"'),
+      true,
+      `${path.basename(path.dirname(file))} missing shared conversion tracking runtime`
+    );
     for (const placement of [
       'data-placement="property_nav"',
       'data-placement="property_mobile_menu"',
