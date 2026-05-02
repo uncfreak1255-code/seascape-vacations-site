@@ -173,6 +173,9 @@ test("legacy best-time-to-visit source stays excluded from output", () => {
 
   assert.equal(legacyBestTimeSource.includes("permalink: false"), true);
   assert.equal(legacyBestTimeSource.includes("eleventyExcludeFromCollections: true"), true);
+  assert.equal(legacyBestTimeSource.includes('<meta name="robots" content="noindex, follow">'), true);
+  assert.equal(legacyBestTimeSource.includes("https://seascape-vacations.com/guides/best-time-to-visit-anna-maria-island/"), false);
+  assert.equal(legacyBestTimeSource.includes("https://seascape-vacations.com/guides/best-time-visit-anna-maria-island/"), true);
 });
 
 test("highest-priority weather redirects point to the canonical slash route", () => {
