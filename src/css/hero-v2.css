@@ -1,8 +1,6 @@
 /* Hero v2 — faithful port of explorations/hero.html */
 /* Loaded after homepage.css so it wins the cascade. */
 
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,300;0,400;0,500;1,400&family=Poppins:wght@300;400;500;600&display=swap');
-
 .hero {
     position: relative;
     width: 100%;
@@ -218,6 +216,7 @@
     background: transparent; border: none; padding: 0; text-align: left;
     font-family: inherit; cursor: pointer;
 }
+.hero-booking-field--display { cursor: default; }
 .hero-booking-field--primary { padding-right: 8px; }
 .hero-booking-label {
     font-size: 9px; letter-spacing: 0.28em;
@@ -355,6 +354,26 @@
         font-size: 9.5px;
     }
     .hero-ticker-label { font-size: 9px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .hero-img,
+    .hero-ticker-dot,
+    .hero-booking-hint::before,
+    .hero-scroll-line {
+        animation: none;
+    }
+
+    .hero-phrase,
+    .hero-ticker-fact,
+    .hero-haze,
+    .hero-booking-cta {
+        transition: none;
+    }
+
+    .hero-img-wrap {
+        will-change: auto;
+    }
 }
 
 /* Hide the legacy .hero-* selectors that homepage.css ships, so they don't conflict */

@@ -185,7 +185,7 @@
 
                 <h1 class="hero-h1">
                     Ten minutes to<br>
-                    <span class="hero-phrase-wrap" aria-live="polite">
+                    <span class="hero-phrase-wrap">
                         <em class="hero-phrase is-active">the whitest sand</em>
                         <em class="hero-phrase">dolphins at sunrise</em>
                         <em class="hero-phrase">your quietest morning</em>
@@ -201,37 +201,44 @@
                 </p>
             </div>
 
-            <!-- Live ticker (faithful port of design — static rotation, marketing copy) -->
+            <script id="hero-live-source" type="application/json">
+            {
+                "weatherUrl": "https://api.open-meteo.com/v1/forecast?latitude=27.4989&longitude=-82.5748&current=temperature_2m,weather_code&temperature_unit=fahrenheit&timezone=America%2FNew_York",
+                "sunsetUrl": "https://api.open-meteo.com/v1/forecast?latitude=27.4989&longitude=-82.5748&daily=sunset&timezone=America%2FNew_York&forecast_days=1"
+            }
+            </script>
+
+            <!-- Live ticker: API-hydrated weather/sunset with repo-backed fallback facts -->
             <div class="hero-ticker">
                 <div class="hero-ticker-badge">
                     <span class="hero-ticker-dot" aria-hidden="true"></span>
                     <span class="hero-ticker-label">LIVE</span>
                 </div>
                 <div class="hero-ticker-stage">
-                    <div class="hero-ticker-fact is-active">
-                        <span class="hero-ticker-k">Anna Maria Island</span>
-                        <span class="hero-ticker-v">78&deg;F &middot; sunny</span>
+                    <div class="hero-ticker-fact is-active" data-live-fact="weather" data-source-label="LIVE">
+                        <span class="hero-ticker-k">Anna Maria area</span>
+                        <span class="hero-ticker-v">Loading current weather</span>
                     </div>
-                    <div class="hero-ticker-fact">
+                    <div class="hero-ticker-fact" data-live-fact="sunset" data-source-label="LIVE">
                         <span class="hero-ticker-k">Sunset tonight</span>
-                        <span class="hero-ticker-v">7:42 PM</span>
+                        <span class="hero-ticker-v">Loading local time</span>
                     </div>
-                    <div class="hero-ticker-fact">
-                        <span class="hero-ticker-k">This weekend</span>
-                        <span class="hero-ticker-v">2 homes open</span>
+                    <div class="hero-ticker-fact" data-source-label="SITE DATA">
+                        <span class="hero-ticker-k">Seascape collection</span>
+                        <span class="hero-ticker-v">{{ properties.length }} homes</span>
                     </div>
-                    <div class="hero-ticker-fact">
-                        <span class="hero-ticker-k">Guest rating</span>
-                        <span class="hero-ticker-v">5.0 &middot; 312 stays</span>
+                    <div class="hero-ticker-fact" data-source-label="SITE DATA">
+                        <span class="hero-ticker-k">Book direct</span>
+                        <span class="hero-ticker-v">Save 10&ndash;15%</span>
                     </div>
                 </div>
             </div>
 
-            <!-- Booking bar (cream pill — design-faithful, ARRIVE/DEPART/GUESTS are visual placeholders) -->
+            <!-- Booking bar (cream pill; non-area cells are display text, not fake controls) -->
             <form class="hero-booking" onsubmit="event.preventDefault(); if (typeof handleSearch === 'function') { handleSearch(); }" role="search" aria-label="Find a vacation rental">
                 <div class="hero-booking-inner">
                     <label class="hero-booking-field hero-booking-field--primary">
-                        <span class="hero-booking-hint">3 homes available</span>
+                        <span class="hero-booking-hint">{{ properties.length }} homes direct</span>
                         <span class="hero-booking-label">Where</span>
                         <span class="hero-booking-value">
                             <select id="location-select" name="location" style="background:transparent;border:none;font:inherit;color:inherit;font-weight:600;cursor:pointer;padding:0;">
@@ -243,20 +250,20 @@
                         </span>
                     </label>
                     <div class="hero-booking-sep" aria-hidden="true"></div>
-                    <button type="button" class="hero-booking-field">
+                    <div class="hero-booking-field hero-booking-field--display" aria-hidden="true">
                         <span class="hero-booking-label">Arrive</span>
                         <span class="hero-booking-value hero-booking-value--empty">Select dates</span>
-                    </button>
+                    </div>
                     <div class="hero-booking-sep" aria-hidden="true"></div>
-                    <button type="button" class="hero-booking-field">
+                    <div class="hero-booking-field hero-booking-field--display" aria-hidden="true">
                         <span class="hero-booking-label">Depart</span>
                         <span class="hero-booking-value hero-booking-value--empty">&mdash;</span>
-                    </button>
+                    </div>
                     <div class="hero-booking-sep" aria-hidden="true"></div>
-                    <button type="button" class="hero-booking-field">
+                    <div class="hero-booking-field hero-booking-field--display" aria-hidden="true">
                         <span class="hero-booking-label">Guests</span>
                         <span class="hero-booking-value">8 guests</span>
-                    </button>
+                    </div>
                     <button type="submit" class="hero-booking-cta">Search Homes</button>
                 </div>
             </form>

@@ -13,16 +13,6 @@ function handleSearch() {
     // 'any' (Any Gulf Coast) intentionally sends no area filter so /properties/
     // shows the full collection instead of silently routing to a single region.
 
-    var form = document.querySelector('.hero-booking');
-    if (form) {
-        var arriveEl = form.querySelector('[name="arrive"]');
-        var departEl = form.querySelector('[name="depart"]');
-        var guestsEl = form.querySelector('[name="guests"]');
-        if (arriveEl && arriveEl.value) params.set('arrive', arriveEl.value);
-        if (departEl && departEl.value) params.set('depart', departEl.value);
-        if (guestsEl && guestsEl.value) params.set('guests', guestsEl.value);
-    }
-
     var qs = params.toString();
     window.location.href = qs ? '/properties/?' + qs : '/properties/';
 }
