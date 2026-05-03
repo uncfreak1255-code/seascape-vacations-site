@@ -6,39 +6,66 @@ const assert = require("node:assert/strict");
 const propertiesTemplatePath = path.resolve(__dirname, "../../src/properties/index.njk");
 const propertiesTemplate = fs.readFileSync(propertiesTemplatePath, "utf8");
 
-test("properties catalog keeps filtered result cards compact and scannable", () => {
+test("properties catalog implements Property Card E with truthful listing data", () => {
   assert.match(
     propertiesTemplate,
-    /\.catalog-grid\s*\{[\s\S]*grid-template-columns:\s*repeat\(auto-fill,\s*minmax\(min\(100%, 340px\), 1fr\)\);/
+    /\.catalog-grid\s*\{[\s\S]*grid-template-columns:\s*repeat\(auto-fill,\s*minmax\(min\(100%, 360px\), 440px\)\);/
   );
 
   assert.match(
     propertiesTemplate,
-    /\.catalog-card\s*\{[\s\S]*border-radius:\s*8px;[\s\S]*background:\s*white;[\s\S]*flex-direction:\s*column;/
+    /\.catalog-card\s*\{[\s\S]*width:\s*min\(100%, 440px\);[\s\S]*border-radius:\s*20px;[\s\S]*box-shadow:\s*0 20px 60px rgba\(0, 0, 0, 0\.08\);/
   );
 
   assert.match(
     propertiesTemplate,
-    /\.catalog-card img\s*\{[\s\S]*height:\s*238px;[\s\S]*object-fit:\s*cover;/
+    /\.catalog-card-media\s*\{[\s\S]*height:\s*280px;[\s\S]*overflow:\s*hidden;/
   );
 
   assert.match(
     propertiesTemplate,
-    /\.catalog-card-inner\s*\{[\s\S]*display:\s*flex;[\s\S]*flex-direction:\s*column;/
+    /\.catalog-card-scrim\s*\{[\s\S]*linear-gradient\(180deg,[\s\S]*rgba\(0, 0, 0, 0\.6\)\);/
   );
 
   assert.match(
     propertiesTemplate,
-    /\.catalog-card h3\s*\{[\s\S]*-webkit-line-clamp:\s*2;[\s\S]*min-height:\s*2\.16em;/
+    /\.catalog-live-pill::before\s*\{[\s\S]*animation:\s*catalogPulse 2s infinite;/
   );
 
   assert.match(
     propertiesTemplate,
-    /\.catalog-actions\s*\{[\s\S]*display:\s*flex;[\s\S]*margin-top:\s*auto;/
+    /\.catalog-next\s*\{[\s\S]*background:\s*#F5FBF2;[\s\S]*border:\s*1px solid rgba\(127, 219, 164, 0\.35\);/
   );
 
   assert.match(
     propertiesTemplate,
-    /\.catalog-actions \.btn,[\s\S]*?\.catalog-secondary\s*\{[\s\S]*border-radius:\s*8px;/
+    /\.catalog-card-foot\s*\{[\s\S]*display:\s*flex;[\s\S]*justify-content:\s*space-between;/
   );
+
+  for (const token of [
+    "{{ property.image | imgProxy(900) }}",
+    "{{ property.rating }}",
+    "{{ property.bedrooms }}",
+    "{{ property.bathrooms }}",
+    "{{ property.guests }}",
+    "{{ property.price }}",
+    "{{ bookingHref }}"
+  ]) {
+    assert.equal(propertiesTemplate.includes(token), true, `template missing ${token}`);
+  }
+
+  for (const fakeAvailabilityCopy of [
+    "Booked 2 hours ago",
+    "Mar 28",
+    "NIGHTS IN MAR",
+    "NIGHTS IN APR",
+    "WEEKENDS LEFT",
+    "Save $476"
+  ]) {
+    assert.equal(
+      propertiesTemplate.includes(fakeAvailabilityCopy),
+      false,
+      `template should not hardcode ${fakeAvailabilityCopy}`
+    );
+  }
 });
