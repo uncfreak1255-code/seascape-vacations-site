@@ -207,6 +207,17 @@
                 "sunsetUrl": "https://api.open-meteo.com/v1/forecast?latitude=27.4989&longitude=-82.5748&daily=sunset&timezone=America%2FNew_York&forecast_days=1"
             }
             </script>
+            <script id="hero-property-source" type="application/json">
+            [
+                {% for property in properties %}
+                {
+                    "slug": {{ property.slug | json | safe }},
+                    "area": {{ (property.destination or property.city or "") | lower | json | safe }},
+                    "guests": {{ property.guests | json | safe }}
+                }{% if not loop.last %},{% endif %}
+                {% endfor %}
+            ]
+            </script>
 
             <!-- Live ticker: API-hydrated weather/sunset with repo-backed fallback facts -->
             <div class="hero-ticker">

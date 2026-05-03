@@ -172,16 +172,40 @@
     var booking = hero.querySelector('.hero-booking');
     if (!booking) return;
 
-    // Property data — kept in sync with src/_data/properties-fallback.json.
-    // Used for live "N homes available" counts and guest-clamp.
-    // If properties are added/removed, update this list.
-    var HOMES = [
-        { slug: 'dockside-dreams',     area: 'bradenton', guests: 12 },
-        { slug: 'the-oasis',           area: 'bradenton', guests: 16 },
-        { slug: 'river-house',         area: 'bradenton', guests: 12 },
-        { slug: 'bradenton-pool-home', area: 'bradenton', guests: 10 },
-        { slug: 'sarasota-luxe',       area: 'sarasota',  guests: 12 }
-    ];
+    function normalizeHomeArea(value) {
+        var area = String(value || '').toLowerCase();
+        if (area.indexOf('sarasota') !== -1) return 'sarasota';
+        if (
+            area.indexOf('bradenton') !== -1 ||
+            area.indexOf('anna maria') !== -1 ||
+            area === 'ami'
+        ) {
+            return 'bradenton';
+        }
+        return area;
+    }
+
+    function getHomes() {
+        var source = document.getElementById('hero-property-source');
+        if (!source) return [];
+        try {
+            var data = JSON.parse(source.textContent || '[]');
+            if (!Array.isArray(data)) return [];
+            return data.map(function (home) {
+                return {
+                    slug: home.slug || '',
+                    area: normalizeHomeArea(home.area),
+                    guests: Number(home.guests) || 0
+                };
+            }).filter(function (home) {
+                return home.slug && home.area && home.guests > 0;
+            });
+        } catch (error) {
+            return [];
+        }
+    }
+
+    var homes = getHomes();
     var AREAS = [
         { value: 'all',       label: 'All Gulf Coast',  param: '' },
         { value: 'bradenton', label: 'Anna Maria area', param: 'anna-maria-island' },
@@ -203,7 +227,7 @@
     var guestsValue = guestsField.querySelector('.hero-booking-value');
 
     function homesMatching(area, guests) {
-        return HOMES.filter(function (h) {
+        return homes.filter(function (h) {
             if (area !== 'all' && h.area !== area) return false;
             if (guests && h.guests < guests) return false;
             return true;
@@ -280,11 +304,24 @@
         popover.className = 'hero-booking-popover';
         popover.appendChild(contentEl);
         var rect = anchor.getBoundingClientRect();
+        var gap = 12;
+        var viewportPad = 16;
         popover.style.position = 'fixed';
-        popover.style.top = (rect.bottom + 12) + 'px';
-        popover.style.left = Math.max(16, Math.min(rect.left, window.innerWidth - 320)) + 'px';
         popover.style.zIndex = '50';
         document.body.appendChild(popover);
+        var pRect = popover.getBoundingClientRect();
+        var top = rect.bottom + gap;
+        var left = rect.left;
+
+        if (top + pRect.height > window.innerHeight - viewportPad) {
+            top = rect.top - pRect.height - gap;
+        }
+
+        top = Math.max(viewportPad, Math.min(top, window.innerHeight - pRect.height - viewportPad));
+        left = Math.max(viewportPad, Math.min(left, window.innerWidth - pRect.width - viewportPad));
+
+        popover.style.top = top + 'px';
+        popover.style.left = left + 'px';
         setTimeout(function () {
             document.addEventListener('click', onDocClick, true);
             document.addEventListener('keydown', onEsc, true);
@@ -367,7 +404,8 @@
         if (popover && popover.dataset.kind === 'guests') { closePopover(); return; }
         var stepper = document.createElement('div');
         stepper.className = 'hero-booking-stepper';
-        var maxGuests = Math.max.apply(null, HOMES.map(function (h) { return h.guests; }));
+        var maxGuests = Math.max.apply(null, homes.map(function (h) { return h.guests; }));
+        if (!Number.isFinite(maxGuests) || maxGuests < 1) maxGuests = state.guests;
         function render() {
             stepper.innerHTML =
                 '<div class="hero-booking-stepper-row">' +
