@@ -123,6 +123,7 @@ function findNextAvailable(days, fallbackPrice, preferredNights) {
     const rangeDays = days.slice(index, index + nights);
     const endDate = addDays(startDay.date, nights);
     const rate = averageNightlyRate(rangeDays, fallbackPrice);
+    const nightLabel = nights === 1 ? "night" : "nights";
 
     return {
       startDate: startDay.date,
@@ -131,8 +132,8 @@ function findNextAvailable(days, fallbackPrice, preferredNights) {
       nights,
       nightlyRate: rate,
       subcopy: rate
-        ? `${nights} nights from $${rate}/night - Direct booking`
-        : `${nights} nights - Direct booking`
+        ? `${nights} ${nightLabel} from $${rate}/night - Direct booking`
+        : `${nights} ${nightLabel} - Direct booking`
     };
   }
 

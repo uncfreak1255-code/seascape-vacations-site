@@ -64,6 +64,22 @@ test("normalizeAvailability refuses to invent next dates when available runs mis
   assert.equal(availability.nextAvailable, null);
 });
 
+test("normalizeAvailability uses singular night copy for one-night openings", () => {
+  const availability = normalizeAvailability(
+    [
+      { date: "2026-05-11", isAvailable: 1, price: 370, minimumStay: 1 },
+      { date: "2026-05-12", isAvailable: 0, price: 370, minimumStay: 1 }
+    ],
+    {
+      syncedAt: "2026-05-03T22:00:00.000Z",
+      windowStart: "2026-05-03",
+      windowEnd: "2026-05-13"
+    }
+  );
+
+  assert.equal(availability.nextAvailable.subcopy, "1 night from $370/night - Direct booking");
+});
+
 test("normalizeAvailability requires contiguous calendar days for a displayed range", () => {
   const availability = normalizeAvailability(
     [
