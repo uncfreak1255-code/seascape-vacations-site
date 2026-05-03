@@ -57,7 +57,7 @@ async function normalizeListingWithAvailability(token, listing, slugMap, window,
   }
 }
 
-exports.handler = async () => {
+async function syncHostawayCache() {
   const token = await getAccessToken();
   const listings = await fetchListings(token);
   const slugMap = loadSlugMap();
@@ -78,6 +78,14 @@ exports.handler = async () => {
 
   await store.set(TEMP_KEY, payload);
   await store.set(CACHE_KEY, payload);
+
+  return payload;
+}
+
+exports.syncHostawayCache = syncHostawayCache;
+
+exports.handler = async () => {
+  await syncHostawayCache();
 
   return { statusCode: 200, body: "sync complete" };
 };
