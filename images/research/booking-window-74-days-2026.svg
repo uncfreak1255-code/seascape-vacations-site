@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-labelledby="title desc">
+  <title id="title">74-day Gulf Coast vacation rental booking window</title>
+  <desc id="desc">Seascape's analyzed Gulf Coast vacation rental bookings show a 74-day average booking lead time and 62-day median booking lead time.</desc>
+  <rect width="960" height="540" fill="#FAF7EE"/>
+  <text x="60" y="74" font-family="Georgia, serif" font-size="34" fill="#2D4647">Guests Book About 10 Weeks Ahead</text>
+  <text x="60" y="108" font-family="Arial, sans-serif" font-size="17" fill="#595959">Booking lead time across 545 confirmed Gulf Coast reservations</text>
+  <line x1="120" y1="300" x2="820" y2="300" stroke="#D9D0B8" stroke-width="8" stroke-linecap="round"/>
+  <circle cx="554" cy="300" r="84" fill="#3D5C5D"/>
+  <text x="554" y="292" text-anchor="middle" font-family="Georgia, serif" font-size="56" fill="#FFFFFF">74</text>
+  <text x="554" y="326" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#E8D5A3">AVERAGE DAYS</text>
+  <circle cx="482" cy="300" r="54" fill="#C9A962"/>
+  <text x="482" y="296" text-anchor="middle" font-family="Georgia, serif" font-size="34" fill="#2D4647">62</text>
+  <text x="482" y="320" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#2D4647">MEDIAN</text>
+  <text x="120" y="350" font-family="Arial, sans-serif" font-size="15" fill="#595959">Check-in day</text>
+  <text x="690" y="350" font-family="Arial, sans-serif" font-size="15" fill="#595959">Trip planning starts</text>
+  <rect x="60" y="410" width="840" height="70" rx="14" fill="#FFFFFF" stroke="#EBE4CC"/>
+  <text x="84" y="444" font-family="Arial, sans-serif" font-size="18" fill="#3A3A3A">Practical read: price strategy and inventory positioning need to be set roughly 3 months before arrival.</text>
+  <text x="60" y="512" font-family="Arial, sans-serif" font-size="14" fill="#595959">Source: Seascape Vacations analysis of 545 confirmed bookings, June 2022-March 2026.</text>
+</svg>

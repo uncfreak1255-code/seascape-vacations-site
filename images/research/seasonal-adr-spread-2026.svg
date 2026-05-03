@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-labelledby="title desc">
+  <title id="title">Seasonal ADR spread for Gulf Coast vacation rentals</title>
+  <desc id="desc">Average nightly rates are 686 dollars in spring, 680 dollars in winter, 623 dollars in summer, and 499 dollars in fall.</desc>
+  <rect width="960" height="540" fill="#FAF7EE"/>
+  <text x="60" y="74" font-family="Georgia, serif" font-size="34" fill="#2D4647">Fall Is 27% Cheaper Than Spring</text>
+  <text x="60" y="108" font-family="Arial, sans-serif" font-size="17" fill="#595959">Average nightly rate by season across Seascape's analyzed Gulf Coast bookings</text>
+  <line x1="120" y1="420" x2="860" y2="420" stroke="#D9D0B8" stroke-width="2"/>
+  <rect x="130" y="130" width="128" height="290" rx="10" fill="#3D5C5D"/>
+  <rect x="310" y="133" width="128" height="287" rx="10" fill="#5F8A8B"/>
+  <rect x="490" y="157" width="128" height="263" rx="10" fill="#7BA3A4"/>
+  <rect x="670" y="210" width="128" height="210" rx="10" fill="#C9A962"/>
+  <text x="194" y="112" text-anchor="middle" font-family="Georgia, serif" font-size="34" fill="#2D4647">$686</text>
+  <text x="374" y="115" text-anchor="middle" font-family="Georgia, serif" font-size="34" fill="#2D4647">$680</text>
+  <text x="554" y="139" text-anchor="middle" font-family="Georgia, serif" font-size="34" fill="#2D4647">$623</text>
+  <text x="734" y="192" text-anchor="middle" font-family="Georgia, serif" font-size="34" fill="#2D4647">$499</text>
+  <text x="194" y="455" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#3A3A3A">Spring</text>
+  <text x="374" y="455" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#3A3A3A">Winter</text>
+  <text x="554" y="455" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#3A3A3A">Summer</text>
+  <text x="734" y="455" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#3A3A3A">Fall</text>
+  <text x="60" y="512" font-family="Arial, sans-serif" font-size="14" fill="#595959">Source: Seascape Vacations analysis of 545 confirmed bookings, June 2022-March 2026.</text>
+</svg>
