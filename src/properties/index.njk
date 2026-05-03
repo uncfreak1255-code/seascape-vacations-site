@@ -45,9 +45,13 @@ headExtra: |
       padding: 112px 24px 84px;
     }
 
-    .catalog-hero-inner,
-    .catalog-shell .container {
+    .catalog-hero-inner {
       max-width: 1180px;
+      margin: 0 auto;
+    }
+
+    .catalog-shell .container {
+      max-width: 1400px;
       margin: 0 auto;
     }
 
@@ -248,12 +252,14 @@ headExtra: |
     }
 
     .catalog-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(min(100%, 360px), 440px));
-      gap: 24px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 28px;
     }
 
     .catalog-card {
+      flex: 0 1 440px;
       width: min(100%, 440px);
       min-height: 100%;
       background: var(--white);

@@ -9,7 +9,12 @@ const propertiesTemplate = fs.readFileSync(propertiesTemplatePath, "utf8");
 test("properties catalog implements Property Card E with truthful listing data", () => {
   assert.match(
     propertiesTemplate,
-    /\.catalog-grid\s*\{[\s\S]*grid-template-columns:\s*repeat\(auto-fill,\s*minmax\(min\(100%, 360px\), 440px\)\);/
+    /\.catalog-grid\s*\{[\s\S]*display:\s*flex;[\s\S]*flex-wrap:\s*wrap;[\s\S]*justify-content:\s*center;[\s\S]*gap:\s*28px;/
+  );
+
+  assert.match(
+    propertiesTemplate,
+    /\.catalog-card\s*\{[\s\S]*flex:\s*0 1 440px;[\s\S]*width:\s*min\(100%, 440px\);/
   );
 
   assert.match(
