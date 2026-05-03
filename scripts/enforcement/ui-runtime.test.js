@@ -85,6 +85,9 @@ test("hero booking pill exposes real controls, not inert fakes", () => {
   assert.match(heroScript, /departField\.addEventListener\('click'/);
   assert.match(heroScript, /guestsField\.addEventListener\('click'/);
   assert.match(heroScript, /document\.getElementById\('hero-property-source'\)/);
+  assert.match(heroScript, /home match/);
+  assert.equal(heroScript.includes("home available"), false);
+  assert.equal(homepage.includes("{{ properties.length }} homes direct"), false);
   assert.equal(heroScript.includes("var HOMES = ["), false);
   assert.equal(heroScript.includes("dockside-dreams',"), false);
   // homepage.js never tried to wire fake form fields.

@@ -271,7 +271,7 @@
 
         var matches = homesMatching(state.area, state.guests);
         if (hint) {
-            hint.textContent = matches.length + (matches.length === 1 ? ' home available' : ' homes available');
+            hint.textContent = matches.length + (matches.length === 1 ? ' home match' : ' homes match');
             hint.style.opacity = matches.length === 0 ? '0.55' : '1';
         }
 
