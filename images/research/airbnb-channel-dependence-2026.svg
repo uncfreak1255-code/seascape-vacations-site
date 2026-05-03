@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-labelledby="title desc">
+  <title id="title">Airbnb channel dependence in Gulf Coast vacation rental bookings</title>
+  <desc id="desc">Airbnb accounts for 87 percent of Seascape's analyzed Gulf Coast vacation rental bookings, followed by VRBO and HomeAway at 9.2 percent, direct bookings at 2.8 percent, Booking.com at 1.1 percent, and Google at 0.2 percent.</desc>
+  <rect width="960" height="540" fill="#FAF7EE"/>
+  <text x="60" y="72" font-family="Georgia, serif" font-size="34" fill="#2D4647">Airbnb Owns the Booking Mix</text>
+  <text x="60" y="106" font-family="Arial, sans-serif" font-size="17" fill="#595959">Channel share across 545 confirmed Gulf Coast vacation rental bookings</text>
+  <rect x="60" y="150" width="780" height="62" rx="10" fill="#3D5C5D"/>
+  <text x="76" y="188" font-family="Arial, sans-serif" font-size="22" font-weight="700" fill="#FFFFFF">Airbnb</text>
+  <text x="785" y="188" text-anchor="end" font-family="Arial, sans-serif" font-size="24" font-weight="700" fill="#FFFFFF">87%</text>
+  <rect x="60" y="230" width="82" height="46" rx="8" fill="#5F8A8B"/>
+  <text x="154" y="259" font-family="Arial, sans-serif" font-size="18" fill="#3A3A3A">VRBO/HomeAway 9.2%</text>
+  <rect x="60" y="294" width="25" height="46" rx="8" fill="#C9A962"/>
+  <text x="154" y="323" font-family="Arial, sans-serif" font-size="18" fill="#3A3A3A">Direct bookings 2.8%</text>
+  <rect x="60" y="358" width="10" height="46" rx="5" fill="#7BA3A4"/>
+  <text x="154" y="387" font-family="Arial, sans-serif" font-size="18" fill="#3A3A3A">Booking.com 1.1%</text>
+  <rect x="60" y="422" width="4" height="46" rx="2" fill="#E8D5A3"/>
+  <text x="154" y="451" font-family="Arial, sans-serif" font-size="18" fill="#3A3A3A">Google 0.2%</text>
+  <text x="60" y="502" font-family="Arial, sans-serif" font-size="14" fill="#595959">Source: Seascape Vacations analysis of 545 confirmed bookings, June 2022-March 2026.</text>
+</svg>
