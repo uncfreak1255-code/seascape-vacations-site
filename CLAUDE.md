@@ -41,6 +41,18 @@ If a detail ages fast, it belongs in `docs/status/`, `docs/briefs/`, or `docs/po
 
 That is enough. Extra agent personas are overhead unless they own a real surface the five roles do not.
 
+## Local Skills
+
+The active local skill layer is intentionally small and site-specific:
+
+- `accessibility`
+- `page-cro`
+- `schema-markup`
+- `site-architecture`
+- `web-design-guidelines`
+
+Use those as helpers under the five-role workflow, not as another operating system. Stale deploy, monthly-reset, broad marketing, and generic SEO skills stay out of active discovery unless a new `agent-surface-audit` proves they should return.
+
 ## Required Batch Workflow
 
 1. Search Operator reads the latest operator evidence.

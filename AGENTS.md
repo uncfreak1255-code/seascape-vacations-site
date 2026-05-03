@@ -55,6 +55,8 @@ Read in this order:
 - process rules live in `docs/process/`
 - current execution context lives in `docs/status/`
 - the five SEO OS role cards live in `.claude/agents/`
+- active repo-local skills are limited to `.agents/skills/accessibility`, `.agents/skills/page-cro`, `.agents/skills/schema-markup`, `.agents/skills/site-architecture`, and `.agents/skills/web-design-guidelines`
+- `.claude/skills/` should mirror only those active site/design skills; copied marketing, deploy, monthly reset, and generic SEO skills are not live authority
 
 ## Design System
 
