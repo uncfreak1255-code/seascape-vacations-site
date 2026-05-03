@@ -56,12 +56,34 @@ test("hero ticker uses real data hooks instead of hardcoded live theater", () =>
   assert.match(heroScript, /data-source-label/);
 });
 
-test("hero booking pill does not expose inert fake controls", () => {
+test("hero booking pill exposes real controls, not inert fakes", () => {
   const homepage = readSource("src", "index.njk");
+  const heroScript = readSource("src", "assets", "js", "hero-v2.js");
   const homepageScript = readSource("src", "assets", "js", "homepage.js");
 
-  assert.equal(homepage.includes('<button type="button" class="hero-booking-field"'), false);
-  assert.match(homepage, /<div class="hero-booking-field hero-booking-field--display" aria-hidden="true">/);
+  // The Where field is a real <button>, not a <label> wrapping a <select>.
+  assert.match(
+    homepage,
+    /<button type="button" class="hero-booking-field hero-booking-field--primary"/
+  );
+  // Arrive / Depart / Guests are real <button> elements that open popovers.
+  const fieldButtonCount = (
+    homepage.match(/<button type="button" class="hero-booking-field"[^-]/g) || []
+  ).length;
+  assert.equal(fieldButtonCount, 3);
+  // No aria-hidden inert markers on field cells.
+  assert.equal(
+    homepage.includes('class="hero-booking-field hero-booking-field--display"'),
+    false
+  );
+  assert.equal(homepage.includes('id="location-select"'), false);
+  // Real interaction handlers are wired in hero-v2.js.
+  assert.match(heroScript, /booking\.addEventListener\('submit'/);
+  assert.match(heroScript, /whereField\.addEventListener\('click'/);
+  assert.match(heroScript, /arriveField\.addEventListener\('click'/);
+  assert.match(heroScript, /departField\.addEventListener\('click'/);
+  assert.match(heroScript, /guestsField\.addEventListener\('click'/);
+  // homepage.js never tried to wire fake form fields.
   assert.equal(homepageScript.includes('[name="arrive"]'), false);
   assert.equal(homepageScript.includes('[name="depart"]'), false);
   assert.equal(homepageScript.includes('[name="guests"]'), false);

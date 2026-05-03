@@ -627,7 +627,7 @@ headExtra: |
         {% set loading = "lazy" %}
         {% set fetchpriority = "" %}
       {% endif %}
-      <article class="catalog-card" data-filters="{{ filterTokens }}">
+      <article class="catalog-card" data-filters="{{ filterTokens }}" data-max-guests="{{ property.guests }}">
         <img
           src="{{ property.image | imgProxy(900) }}"
           srcset="{{ property.image | imgProxy(500) }} 500w, {{ property.image | imgProxy(900) }} 900w, {{ property.image | imgProxy(1200) }} 1200w"
@@ -811,12 +811,42 @@ headExtra: |
       history.replaceState({}, "", `${url.pathname}${url.search}`);
     }
 
+    // Pull arrive/depart/guests from the URL and propagate them into
+    // (a) the Hostaway "Book Direct" links so dates carry through, and
+    // (b) a guests filter that hides cards whose max occupancy is too low.
+    const requestedArrive = (params.get("arrive") || "").trim();
+    const requestedDepart = (params.get("depart") || "").trim();
+    const requestedGuests = parseInt(params.get("guests") || "", 10) || 0;
+
+    function cardMaxGuests(card) {
+      return parseInt(card.dataset.maxGuests || "0", 10) || 0;
+    }
+
+    function decorateBookDirectLinks() {
+      if (!requestedArrive && !requestedDepart && !requestedGuests) return;
+      cards.forEach((card) => {
+        const link = card.querySelector('a[data-track-event="catalog_book_direct_click"]');
+        if (!link) return;
+        const href = link.getAttribute("href") || "";
+        if (!href.startsWith("https://book.seascape-vacations.com/listings/")) return;
+        const url = new URL(href);
+        if (requestedArrive) url.searchParams.set("startingDate", requestedArrive);
+        if (requestedDepart) url.searchParams.set("endingDate", requestedDepart);
+        if (requestedGuests) url.searchParams.set("numberOfGuests", String(requestedGuests));
+        link.setAttribute("href", url.toString());
+      });
+    }
+    decorateBookDirectLinks();
+
     function applyFilter(filter, { sync = false } = {}) {
       let visibleCount = 0;
 
       cards.forEach((card) => {
         const haystack = (card.dataset.filters || "").toLowerCase();
-        const matches = filter === "all" || haystack.includes(filter);
+        let matches = filter === "all" || haystack.includes(filter);
+        if (matches && requestedGuests && cardMaxGuests(card) < requestedGuests) {
+          matches = false;
+        }
         card.hidden = !matches;
         if (matches) {
           visibleCount += 1;

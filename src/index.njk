@@ -235,35 +235,31 @@
             </div>
 
             <!-- Booking bar (cream pill; non-area cells are display text, not fake controls) -->
-            <form class="hero-booking" onsubmit="event.preventDefault(); if (typeof handleSearch === 'function') { handleSearch(); }" role="search" aria-label="Find a vacation rental">
+            <form class="hero-booking" role="search" aria-label="Find a vacation rental">
                 <div class="hero-booking-inner">
-                    <label class="hero-booking-field hero-booking-field--primary">
+                    <button type="button" class="hero-booking-field hero-booking-field--primary" aria-haspopup="listbox">
                         <span class="hero-booking-hint">{{ properties.length }} homes direct</span>
                         <span class="hero-booking-label">Where</span>
                         <span class="hero-booking-value">
-                            <select id="location-select" name="location" style="background:transparent;border:none;font:inherit;color:inherit;font-weight:600;cursor:pointer;padding:0;">
-                                <option value="ami">Anna Maria area</option>
-                                <option value="sarasota">Sarasota</option>
-                                <option value="any">Any Gulf Coast</option>
-                            </select>
+                            <span class="hero-booking-region">Anna Maria area</span>
                             <span class="hero-booking-caret" aria-hidden="true">&#9662;</span>
                         </span>
-                    </label>
+                    </button>
                     <div class="hero-booking-sep" aria-hidden="true"></div>
-                    <div class="hero-booking-field hero-booking-field--display" aria-hidden="true">
+                    <button type="button" class="hero-booking-field" aria-haspopup="dialog">
                         <span class="hero-booking-label">Arrive</span>
                         <span class="hero-booking-value hero-booking-value--empty">Select dates</span>
-                    </div>
+                    </button>
                     <div class="hero-booking-sep" aria-hidden="true"></div>
-                    <div class="hero-booking-field hero-booking-field--display" aria-hidden="true">
+                    <button type="button" class="hero-booking-field" aria-haspopup="dialog">
                         <span class="hero-booking-label">Depart</span>
                         <span class="hero-booking-value hero-booking-value--empty">&mdash;</span>
-                    </div>
+                    </button>
                     <div class="hero-booking-sep" aria-hidden="true"></div>
-                    <div class="hero-booking-field hero-booking-field--display" aria-hidden="true">
+                    <button type="button" class="hero-booking-field" aria-haspopup="dialog">
                         <span class="hero-booking-label">Guests</span>
                         <span class="hero-booking-value">8 guests</span>
-                    </div>
+                    </button>
                     <button type="submit" class="hero-booking-cta">Search Homes</button>
                 </div>
             </form>

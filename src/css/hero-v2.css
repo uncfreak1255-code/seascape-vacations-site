@@ -382,3 +382,85 @@
     /* These are the old hero's helpers — replaced by hero-v2 markup. */
     /* If they appear inside our new .hero, they're not in the new tree. */
 }
+
+/* --- Booking bar interactivity (popovers, menus, stepper) --- */
+.hero-booking-popover {
+    background: #FFFDF6;
+    color: #2A2A2A;
+    border-radius: 18px;
+    border: 1px solid rgba(201,169,98,0.32);
+    box-shadow: 0 24px 64px rgba(0,0,0,0.28);
+    padding: 12px;
+    min-width: 260px;
+    max-width: 320px;
+    font-family: 'Poppins', sans-serif;
+    animation: hero-popover-in 0.18s ease-out;
+}
+@keyframes hero-popover-in {
+    from { opacity: 0; transform: translateY(-4px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+.hero-booking-menu {
+    display: flex; flex-direction: column;
+}
+.hero-booking-menu-item {
+    display: flex; justify-content: space-between; align-items: center;
+    background: transparent; border: 0;
+    padding: 11px 14px; border-radius: 10px;
+    font: inherit; cursor: pointer; text-align: left;
+    color: #2A2A2A;
+    transition: background 0.15s;
+}
+.hero-booking-menu-item:hover { background: rgba(201,169,98,0.12); }
+.hero-booking-menu-item[aria-current="true"] {
+    background: rgba(42, 75, 77, 0.08);
+    font-weight: 600;
+}
+.hero-booking-menu-label { font-size: 14px; }
+.hero-booking-menu-count {
+    font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: #8A7A4A; font-weight: 600;
+}
+.hero-booking-datewrap {
+    display: flex; flex-direction: column; gap: 8px; padding: 6px 8px;
+}
+.hero-booking-datewrap-label {
+    font-size: 9.5px; letter-spacing: 0.22em; text-transform: uppercase;
+    color: #8A7A4A; font-weight: 600;
+}
+.hero-booking-dateinput {
+    font: inherit; font-size: 15px;
+    padding: 10px 12px; border-radius: 10px;
+    border: 1px solid rgba(201,169,98,0.4);
+    background: #fff; color: #2A2A2A;
+}
+.hero-booking-stepper {
+    padding: 6px 8px;
+}
+.hero-booking-stepper-row {
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 16px;
+}
+.hero-booking-stepper-label {
+    font-size: 14px; font-weight: 600;
+}
+.hero-booking-stepper-controls {
+    display: flex; align-items: center; gap: 12px;
+}
+.hero-booking-stepper-controls button {
+    width: 32px; height: 32px; border-radius: 50%;
+    border: 1px solid rgba(201,169,98,0.45);
+    background: #fff; color: #2A4B4D;
+    font: inherit; font-size: 16px; line-height: 1;
+    cursor: pointer; transition: all 0.15s;
+}
+.hero-booking-stepper-controls button:hover { background: rgba(201,169,98,0.12); }
+.hero-booking-stepper-count {
+    min-width: 24px; text-align: center; font-weight: 600;
+}
+.hero-booking-stepper-hint {
+    margin: 10px 0 0; font-size: 11px; color: #8A7A4A;
+}
+
+/* Disabled CTA state */
+.hero-booking-cta:disabled { background: #6A7E80; }
