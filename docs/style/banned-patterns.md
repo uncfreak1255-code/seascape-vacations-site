@@ -4,6 +4,7 @@
 
 - generic tourism-board adjectives that say nothing
 - AI-sludge phrasing like `curated`, `nestled`, `elevate`, `boasts`, `myriad`, `seamless`, `unparalleled`
+- gray internal-documentation phrasing in visible page copy, including `keeps X separate`, `planning math`, `marketplace-fee exposure`, `source-bounded`, `accepted formulas`, and `proof boundaries`
 - fake certainty when the proof is missing
 - owner pages that say `full service` five different ways and still never explain the leak
 
@@ -14,6 +15,7 @@
 - plural waterfront language when only one property is actually waterfront
 - direct-beach claims on near-island pages that are intentionally not beachfront
 - random stat insertion that is not backed by current source or approved proof assets
+- putting proof disclaimers, methodology notes, or quote limitations in the opening paragraph when they belong in a source/proof box below the visitor-facing hook
 
 ## Workflow Bans
 

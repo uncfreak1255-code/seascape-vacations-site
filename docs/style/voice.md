@@ -14,6 +14,7 @@ That means:
 ## Core Voice Rules
 
 - Answer the real question fast. The first paragraph should make the page useful even if the reader bounces after 20 seconds.
+- Lead visible page intros with the visitor's problem, decision, or tradeoff. Do not open guest or owner pages with methodology-note language.
 - Name the tradeoff. Good Seascape copy says what you gain and what you give up.
 - Use trip-shape logic for guest pages: beach-first, family-heavy, near-island value, direct-book math, culture-first, and so on.
 - Use owner-economics logic for owner pages: fee drag, rate discipline, channel mix, turnover quality, premium-week protection.
@@ -25,6 +26,7 @@ That means:
 - Help the reader decide where to stay, not just admire the destination.
 - Keep the framing practical: drive time, beach access, parking friction, group fit, booking-fee math.
 - When comparing locations, explain who should choose which base and why.
+- Keep proof language below the hook. "This is a planning estimate, not a quote" belongs in a source/proof box, not the first paragraph.
 
 ## Owner Voice
 
@@ -39,3 +41,4 @@ That means:
 - Tables are good when the choice is comparative or financial.
 - Reused proof should come from one approved asset, not from ad hoc stat sprinkling.
 - If the page cannot say what its money destination is, the draft is still fuzzy.
+- For research pages and tools, separate reader copy from proof copy: lead with the practical decision, then show methodology, source limits, and proof boundaries in a clearly labeled section.
