@@ -49,7 +49,13 @@ test("properties catalog implements Property Card E with truthful listing data",
     "{{ property.bathrooms }}",
     "{{ property.guests }}",
     "{{ property.price }}",
-    "{{ bookingHref }}"
+    "{{ bookingHref }}",
+    "{% set availability = property.availability %}",
+    "{{ availability.nextAvailable.label }}",
+    "{{ availability.nextAvailable.subcopy }}",
+    "{{ month.value }}",
+    "{{ availability.weekendsLeft }}",
+    "startingDate="
   ]) {
     assert.equal(propertiesTemplate.includes(token), true, `template missing ${token}`);
   }
@@ -59,7 +65,6 @@ test("properties catalog implements Property Card E with truthful listing data",
     "Mar 28",
     "NIGHTS IN MAR",
     "NIGHTS IN APR",
-    "WEEKENDS LEFT",
     "Save $476"
   ]) {
     assert.equal(

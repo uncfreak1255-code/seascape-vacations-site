@@ -697,7 +697,15 @@ headExtra: |
       {% else %}
         {% set primaryTag = property.city %}
       {% endif %}
+      {% set availability = property.availability %}
       {% set bookingHref = property.bookingUrl or property.pageUrl + '#check-availability' %}
+      {% if availability and availability.nextAvailable and property.bookingUrl %}
+        {% set bookingSeparator = "?" %}
+        {% if "?" in bookingHref %}
+          {% set bookingSeparator = "&" %}
+        {% endif %}
+        {% set bookingHref = bookingHref ~ bookingSeparator ~ "startingDate=" ~ availability.nextAvailable.startDate ~ "&endingDate=" ~ availability.nextAvailable.endDate %}
+      {% endif %}
       {% if loop.first %}
         {% set loading = "eager" %}
         {% set fetchpriority = "high" %}
@@ -739,10 +747,30 @@ headExtra: |
         </div>
         <div class="catalog-card-body">
           <div class="catalog-next">
+            {% if availability and availability.nextAvailable %}
+            <div class="catalog-next-lbl">Next available</div>
+            <div class="catalog-next-dates">{{ availability.nextAvailable.label }}</div>
+            <div class="catalog-next-sub">{{ availability.nextAvailable.subcopy }}</div>
+            {% else %}
             <div class="catalog-next-lbl">Live calendar</div>
             <div class="catalog-next-dates">Check available dates</div>
             <div class="catalog-next-sub">Real-time rates and minimum stays open on the secure booking page.</div>
+            {% endif %}
           </div>
+          {% if availability and availability.nextAvailable %}
+          <div class="catalog-chips" aria-label="{{ property.name }} availability details">
+            {% for month in availability.monthNights %}
+            <div class="catalog-chip">
+              <div class="catalog-chip-val">{{ month.value }}</div>
+              <div class="catalog-chip-lbl">{{ month.label }}</div>
+            </div>
+            {% endfor %}
+            <div class="catalog-chip">
+              <div class="catalog-chip-val gold">{{ availability.weekendsLeft }}</div>
+              <div class="catalog-chip-lbl">Weekends left</div>
+            </div>
+          </div>
+          {% else %}
           <div class="catalog-chips" aria-label="{{ property.name }} listing details">
             <div class="catalog-chip">
               <div class="catalog-chip-val">{{ property.bedrooms }}</div>
@@ -757,6 +785,7 @@ headExtra: |
               <div class="catalog-chip-lbl">Sleeps</div>
             </div>
           </div>
+          {% endif %}
         </div>
         <div class="catalog-card-hairline"></div>
         <div class="catalog-card-foot">
