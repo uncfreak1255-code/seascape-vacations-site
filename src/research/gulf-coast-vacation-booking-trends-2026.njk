@@ -253,6 +253,65 @@ a { text-decoration: none; color: inherit; }
 }
 .methodology strong { font-size: 13px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--brand); display: block; margin-bottom: 8px; }
 
+/* Citation assets */
+.citation-panel {
+    background: white;
+    border: 1px solid rgba(95,138,139,0.25);
+    border-radius: 16px;
+    padding: 28px;
+    margin: 0 0 40px 0;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+.citation-panel h2 { margin: 0 0 12px 0; font-size: 24px; }
+.citation-panel p { font-size: 15px; line-height: 1.7; margin-bottom: 16px; }
+.source-note {
+    background: var(--cream-light);
+    border-radius: 10px;
+    padding: 14px 16px;
+    font-size: 14px;
+    color: var(--stone-light);
+    margin: 18px 0;
+}
+.quote-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 14px;
+    margin: 20px 0;
+}
+.quote-card {
+    background: #f0f7f7;
+    border-left: 4px solid var(--brand);
+    border-radius: 0 10px 10px 0;
+    padding: 16px;
+    font-size: 14px;
+    line-height: 1.6;
+}
+.quote-card strong {
+    display: block;
+    color: var(--brand-dark);
+    font-size: 18px;
+    margin-bottom: 6px;
+}
+.asset-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 18px;
+}
+.asset-links a {
+    background: var(--brand);
+    color: white;
+    border-radius: 999px;
+    padding: 10px 14px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+}
+.asset-links a.secondary {
+    background: var(--cream-dark);
+    color: var(--brand-dark);
+}
+
 /* CTA */
 .guide-cta { background: var(--brand); padding: 48px; border-radius: 24px; text-align: center; color: #fff; margin-top: 60px; }
 .guide-cta h3 { font-size: 28px; margin-bottom: 16px; color: #fff; }
@@ -294,6 +353,8 @@ a { text-decoration: none; color: inherit; }
     .data-table { font-size: 13px; }
     .data-table th, .data-table td { padding: 8px 10px; }
     .author-box { flex-direction: column; text-align: center; }
+    .citation-panel { padding: 22px; }
+    .asset-links { display: grid; }
 }
 </style>
 </head>
@@ -359,6 +420,26 @@ a { text-decoration: none; color: inherit; }
     <strong>Methodology</strong>
     We analyzed 1,492 reservations (545 confirmed bookings) across 5 vacation rental properties managed by Seascape Vacations in Bradenton and Sarasota, Florida. The data spans June 2022 through March 2026 and was pulled directly from our property management system (Hostaway). Properties range from a 3-bedroom/10-guest inland pool home to a 5-bedroom/16-guest estate and include 1 waterfront property with private dock and bay access. All revenue figures are actual collected amounts, not projections.
 </div>
+
+<section class="citation-panel" aria-labelledby="cite-report">
+    <h2 id="cite-report">Cite This Report</h2>
+    <p><strong>Suggested citation:</strong> Seascape Vacations, "What 545 Bookings Reveal About Bradenton &amp; Sarasota Vacation Trends (2026)," published March 16, 2026, based on Hostaway transaction data from 5 Gulf Coast vacation rentals.</p>
+    <p><strong>Canonical URL:</strong> https://seascape-vacations.com/research/gulf-coast-vacation-booking-trends-2026/</p>
+    <div class="source-note"><strong>Proof boundary:</strong> Use these figures as Seascape portfolio data, not as a claim about every Florida vacation rental. The dataset covers 545 confirmed bookings from June 2022 through March 2026 across Bradenton and Sarasota homes managed by Seascape.</div>
+    <div class="quote-grid">
+        <div class="quote-card"><strong>87% Airbnb share</strong> Airbnb generated 87% of confirmed bookings in this Gulf Coast portfolio.</div>
+        <div class="quote-card"><strong>74-day booking window</strong> Guests booked an average of 74 days before arrival, with a 62-day median.</div>
+        <div class="quote-card"><strong>27% fall savings</strong> Fall averaged $499/night, 27% below the $686/night spring peak.</div>
+        <div class="quote-card"><strong>82% waterfront premium</strong> The waterfront home averaged about $715/night versus about $394/night for the inland pool home.</div>
+    </div>
+    <p><strong>Share snippet:</strong> Seascape's 2026 Gulf Coast booking benchmark found 87% Airbnb dependence, a 74-day booking window, 27% fall savings, and an 82% waterfront rate premium across 545 confirmed Bradenton/Sarasota bookings.</p>
+    <div class="asset-links">
+        <a href="/research/real-cost-florida-beach-vacation-bradenton-sarasota-ami-2026/">Compare Trip Costs</a>
+        <a href="/stays/bradenton-vacation-rentals-near-beaches/" class="secondary">Bradenton Stay Page</a>
+        <a href="/stays/anna-maria-island-vacation-rentals/" class="secondary">AMI Stay Page</a>
+        <a href="/property-management/" class="secondary">Owner Revenue Review</a>
+    </div>
+</section>
 
 <p>Gulf Coast vacation rental trends in 2026 reflect a market that peaked in 2023 and has since normalized with higher nightly rates but lower booking volume. An analysis of 545 confirmed bookings across 5 Bradenton and Sarasota, Florida vacation rental properties &mdash; totaling $1.7 million in revenue from June 2022 through March 2026 &mdash; reveals that spring commands the highest rates at $686/night, fall offers a 27% discount at $499/night, Airbnb controls 87% of all bookings, and guests book an average of 74 days in advance. The average group size is 7.5 guests with a 5.0-night stay, and waterfront properties with dock access command an 82% premium over comparable inland homes. These findings are based on actual collected revenue, not scraped listing prices or survey estimates.</p>
 
