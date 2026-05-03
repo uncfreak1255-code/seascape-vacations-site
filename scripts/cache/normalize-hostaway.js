@@ -139,10 +139,10 @@ function findNextAvailable(days, fallbackPrice, preferredNights) {
   return null;
 }
 
-function countWeekends(daysByDate, days) {
+function countWeekends(daysByDate, days, monthKeys) {
   return days.reduce((count, day) => {
     const date = dateFromStamp(day.date);
-    if (date.getUTCDay() !== 5 || !day.isAvailable) return count;
+    if (date.getUTCDay() !== 5 || !day.isAvailable || !monthKeys.has(day.date.slice(0, 7))) return count;
     const saturday = daysByDate.get(addDays(day.date, 1));
     return saturday && saturday.isAvailable ? count + 1 : count;
   }, 0);
@@ -166,7 +166,9 @@ function normalizeAvailability(calendarDays, options = {}) {
   const fallbackPrice = normalizeNumber(options.basePrice);
   const preferredNights = Math.max(1, Math.round(normalizeNumber(options.preferredNights) || 7));
   const daysByDate = new Map(days.map((day) => [day.date, day]));
-  const monthNights = firstTwoMonthKeys(windowStart).map((month) => ({
+  const calendarMonths = firstTwoMonthKeys(windowStart);
+  const monthKeySet = new Set(calendarMonths.map((month) => month.key));
+  const monthNights = calendarMonths.map((month) => ({
     label: month.label,
     value: days.filter((day) => day.date.startsWith(month.key) && day.isAvailable).length
   }));
@@ -179,7 +181,7 @@ function normalizeAvailability(calendarDays, options = {}) {
     windowEnd,
     nextAvailable,
     monthNights,
-    weekendsLeft: countWeekends(daysByDate, days)
+    weekendsLeft: countWeekends(daysByDate, days, monthKeySet)
   };
 }
 

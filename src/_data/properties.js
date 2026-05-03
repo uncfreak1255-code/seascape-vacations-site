@@ -1,6 +1,8 @@
 const fs = require("fs");
 const path = require("path");
 const { getStore } = require("@netlify/blobs");
+const { fetchBookingEngineCalendar } = require("../../scripts/cache/booking-engine-calendar");
+const { normalizeAvailability } = require("../../scripts/cache/normalize-hostaway");
 
 const FALLBACK_PATH = path.join(__dirname, "properties-fallback.json");
 const CACHE_KEY = "properties_cache_v1.json";
@@ -129,6 +131,44 @@ function normalizeAvailabilitySummary(availability, now = Date.now()) {
   };
 }
 
+function todayStamp(date = new Date()) {
+  return date.toISOString().slice(0, 10);
+}
+
+function shouldFetchPublicAvailability() {
+  return process.env.SEASCAPE_DISABLE_PUBLIC_AVAILABILITY !== "1" && process.env.GITHUB_ACTIONS !== "true";
+}
+
+async function enrichMissingAvailability(properties) {
+  if (!shouldFetchPublicAvailability()) return properties;
+
+  const syncedAt = new Date().toISOString();
+  const windowStart = todayStamp(new Date(syncedAt));
+
+  return Promise.all(
+    properties.map(async (property) => {
+      if (property.availability || !/^\d+$/.test(property.id)) {
+        return property;
+      }
+
+      try {
+        const calendar = await fetchBookingEngineCalendar(property.id, windowStart);
+        const availability = normalizeAvailability(calendar, {
+          syncedAt,
+          windowStart,
+          basePrice: property.price
+        });
+        return {
+          ...property,
+          availability: normalizeAvailabilitySummary(availability)
+        };
+      } catch (error) {
+        return property;
+      }
+    })
+  );
+}
+
 async function loadFromCache() {
   const store = getStore(STORE_NAME);
   const cached = await store.get(CACHE_KEY, { type: "json" });
@@ -198,17 +238,18 @@ async function getProperties() {
     if (process.env.NETLIFY_BLOBS_CONTEXT || global.netlifyBlobsContext) {
       const cached = await loadFromCache();
       if (cached) {
-        return cached;
+        return enrichMissingAvailability(cached);
       }
     }
   } catch (error) {
     // Fallback to local seed if cache is unavailable.
   }
 
-  return loadFallback();
+  return enrichMissingAvailability(loadFallback());
 }
 
 module.exports = getProperties;
 module.exports.normalizeProperties = normalizeProperties;
 module.exports.toHostawayCdn = toHostawayCdn;
 module.exports.normalizeAvailabilitySummary = normalizeAvailabilitySummary;
+module.exports.enrichMissingAvailability = enrichMissingAvailability;

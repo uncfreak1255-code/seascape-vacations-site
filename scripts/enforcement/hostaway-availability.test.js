@@ -2,6 +2,10 @@ const test = require("node:test");
 const assert = require("node:assert/strict");
 
 const { normalizeAvailability } = require("../cache/normalize-hostaway");
+const {
+  calendarDaysFromBookingEngineResponse,
+  toBookingEngineHostname
+} = require("../cache/booking-engine-calendar");
 
 test("normalizeAvailability derives the next bookable card range from Hostaway calendar days", () => {
   const calendarDays = [
@@ -75,4 +79,20 @@ test("normalizeAvailability requires contiguous calendar days for a displayed ra
   );
 
   assert.equal(availability.nextAvailable, null);
+});
+
+test("booking engine calendar adapter exposes Hostaway day objects without private API credentials", () => {
+  const days = calendarDaysFromBookingEngineResponse({
+    status: "success",
+    result: {
+      "2026-05-03": { date: "2026-05-03", isAvailable: 0 },
+      "2026-05-04": { date: "2026-05-04", isAvailable: 1 }
+    }
+  });
+
+  assert.deepEqual(days, [
+    { date: "2026-05-03", isAvailable: 0 },
+    { date: "2026-05-04", isAvailable: 1 }
+  ]);
+  assert.equal(toBookingEngineHostname("https://book.seascape-vacations.com"), "book.seascape-vacations.com");
 });
