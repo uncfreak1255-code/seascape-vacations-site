@@ -1,22 +1,3 @@
-function handleSearch() {
-    var locationSelect = document.getElementById('location-select');
-    if (!locationSelect) return;
-
-    var area = locationSelect.value;
-    var params = new URLSearchParams();
-
-    if (area === 'sarasota') {
-        params.set('area', 'sarasota');
-    } else if (area === 'ami') {
-        params.set('area', 'anna-maria-island');
-    }
-    // 'any' (Any Gulf Coast) intentionally sends no area filter so /properties/
-    // shows the full collection instead of silently routing to a single region.
-
-    var qs = params.toString();
-    window.location.href = qs ? '/properties/?' + qs : '/properties/';
-}
-
 (function deferGa4() {
     var measurementId = 'G-3VDV66S3DK';
 
