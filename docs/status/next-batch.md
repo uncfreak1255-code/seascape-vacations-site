@@ -31,6 +31,26 @@
 9. if any tracked page has GSC impressions `< 100` in the 7-day window, treat that page as too thin to call and do not let it drive the branch choice
 10. keep Phase 4 and other entity-expansion work frozen unless the measured gates above move
 
+## Planned Later: Real Stay Alerts
+
+The shared guide conversion kit currently has an inline email capture labeled
+`Stay Alerts`, but repo evidence only proves Mailchimp signup plus
+`email_capture_submit` tracking. Do not treat it as a real alert product yet.
+
+Keep the idea, but build it deliberately after the current proof-clean,
+owner-benchmark, and chart-pack work:
+
+- rename visible copy to a simpler direct-booking list unless the real alert
+  workflow exists
+- collect actual trip intent fields: travel month or date range, area,
+  guest count, and needs such as pool, dock, pet-friendly, or large group
+- pass guide/page context and trip-intent fields to the email/CRM destination,
+  not only GA4
+- prove the downstream workflow: tag/segment creation, first email, owner of
+  follow-up, unsubscribe path, and test submission evidence
+- only then use language like `Stay Alerts`, `matching homes`, or
+  `date alerts`
+
 ## Do Not Start With
 
 - another site-wide SEO audit
