@@ -93,6 +93,16 @@ test("hero booking pill exposes real controls, not inert fakes", () => {
   assert.equal(homepageScript.includes('[name="guests"]'), false);
 });
 
+test("hero booking popovers stay in the viewport when the booking bar sits low", () => {
+  const heroScript = readSource("src", "assets", "js", "hero-v2.js");
+
+  assert.match(heroScript, /document\.body\.appendChild\(popover\);[\s\S]*?popover\.getBoundingClientRect\(\)/);
+  assert.match(heroScript, /top \+ pRect\.height > window\.innerHeight - viewportPad/);
+  assert.match(heroScript, /top = rect\.top - pRect\.height - gap/);
+  assert.match(heroScript, /Math\.min\(top, window\.innerHeight - pRect\.height - viewportPad\)/);
+  assert.match(heroScript, /Math\.min\(left, window\.innerWidth - pRect\.width - viewportPad\)/);
+});
+
 test("hero v2 uses local fonts and respects reduced motion", () => {
   const heroStyles = readSource("src", "css", "hero-v2.css");
   const heroScript = readSource("src", "assets", "js", "hero-v2.js");
