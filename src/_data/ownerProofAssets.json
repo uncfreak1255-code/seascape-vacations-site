@@ -1,14 +1,15 @@
 {
   "gulf-coast-owner-benchmark-2026": {
     "title": "2026 Gulf Coast owner benchmark",
-    "summary": "Shared owner benchmark built from Seascape's live Gulf Coast operating data and the published 2026 market report so fee, licensing, and channel decisions can cite the same facts.",
+    "summary": "Shared owner benchmark built from Seascape's Gulf Coast operating data so fee, channel, and revenue-leak pages cite the same owner-economics facts.",
     "reviewedBy": "Sawyer Beck",
     "reviewerRole": "Founder, Seascape Vacations",
-    "reviewedDate": "2026-03-30",
-    "reviewedDateLabel": "March 30, 2026",
+    "reviewedDate": "2026-05-03",
+    "reviewedDateLabel": "May 3, 2026",
     "sourceLabel": "2026 Gulf Coast vacation rental market report + Seascape operating benchmark",
     "sourceUrl": "/guides/florida-gulf-coast-vacation-rental-market-report-2026/",
-    "methodology": "Benchmark combines live performance data across five active Seascape-managed Gulf Coast homes with the published 2026 market report used to contextualize pricing, occupancy, and channel mix decisions.",
+    "benchmarkUrl": "/research/owner-fee-revenue-leak-benchmark-2026/",
+    "methodology": "Benchmark combines current Seascape operating data across five active Gulf Coast homes with owner-side fee-stack analysis. Scenario math is labelled separately from observed operating facts.",
     "stats": [
       {
         "value": "$1.4M",
