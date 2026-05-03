@@ -32,6 +32,19 @@ test("sitemap is built from rendered pages instead of legacy route assumptions",
   assert.equal(sitemap.includes("/guides/best-time-to-visit-anna-maria-island/"), false);
 });
 
+test("design lab pages stay preview-only and outside the public sitemap", () => {
+  const baseLayout = fs.readFileSync(path.join(projectRoot, "src", "_includes", "layouts", "base.njk"), "utf8");
+  const designLabPage = fs.readFileSync(path.join(projectRoot, "src", "design-lab", "why-book-direct", "index.njk"), "utf8");
+  const sitemap = fs.readFileSync(path.join(projectRoot, "src", "sitemap.njk"), "utf8");
+
+  assert.equal(designLabPage.includes('permalink: "/design-lab/why-book-direct/"'), true);
+  assert.equal(designLabPage.includes("eleventyExcludeFromCollections: true"), true);
+  assert.equal(designLabPage.includes("seoIndexable: false"), true);
+  assert.equal(baseLayout.includes("seoIndexable == false or seoIndexable == 'false'"), true);
+  assert.equal(baseLayout.includes('noindex, nofollow'), true);
+  assert.equal(sitemap.includes("entry.data.seoIndexable"), true);
+});
+
 test("sitemap explicitly includes paginated stay and owner inventories", () => {
   const sitemap = fs.readFileSync(path.join(projectRoot, "src", "sitemap.njk"), "utf8");
 

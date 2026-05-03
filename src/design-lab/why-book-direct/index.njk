@@ -1,0 +1,123 @@
+---
+layout: layouts/base.njk
+permalink: "/design-lab/why-book-direct/"
+eleventyExcludeFromCollections: true
+seoIndexable: false
+pageTitle: "Why Book Direct Receipt Design Lab"
+pageDescription: "Preview-only Seascape direct-booking receipt comparison for the homepage Why Book Direct section."
+pageAuthor: "Seascape Vacations Team"
+pageImage: "https://seascape-vacations.com/images/seascape-og-default.jpg"
+navActive: "home"
+navButtonHref: "https://book.seascape-vacations.com"
+navButtonLabel: "Book Direct"
+navButtonTarget: "_blank"
+navButtonRel: "noopener noreferrer"
+headExtra: |
+  <link rel="stylesheet" href="/css/design-lab-why-book-direct.css">
+---
+{% from "partials/ui-icon.njk" import uiIcon %}
+
+<section class="direct-lab-hero" aria-labelledby="direct-lab-hero-title">
+  <div class="direct-lab-hero__image" aria-hidden="true"></div>
+  <div class="direct-lab-hero__inner">
+    <p class="direct-lab-eyebrow">Book direct preview</p>
+    <h1 id="direct-lab-hero-title">Why Book Direct</h1>
+    <p>Same Seascape homes, local support, and clearer pricing before the guest leaves the site.</p>
+  </div>
+</section>
+
+<section class="direct-receipt" aria-labelledby="direct-receipt-title">
+  <div class="direct-receipt__shell">
+    <div class="direct-receipt__intro">
+      <p class="direct-receipt__eyebrow">Why Book Direct</p>
+      <h2 id="direct-receipt-title">Same home. Same dates. $386 less.</h2>
+      <p class="direct-receipt__lede">The savings are not a vague promise. They come from removing platform fees and keeping the booking relationship with the local team that actually hosts the stay.</p>
+    </div>
+
+    <div class="direct-receipt__comparison" aria-label="Direct booking savings comparison">
+      <article class="receipt-card receipt-card--platform" aria-labelledby="platform-receipt-title">
+        <div class="receipt-card__topline">
+          <p id="platform-receipt-title">Booking on Airbnb</p>
+          <span>Estimated</span>
+        </div>
+        <div class="receipt-card__rows">
+          <div class="receipt-row">
+            <span>7 nights at $450</span>
+            <strong>$3,150</strong>
+          </div>
+          <div class="receipt-row receipt-row--fee">
+            <span>Airbnb service fee</span>
+            <strong>$441</strong>
+          </div>
+          <div class="receipt-row receipt-row--fee">
+            <span>Cleaning fee with platform markup</span>
+            <strong>$245</strong>
+          </div>
+          <div class="receipt-row">
+            <span>Occupancy taxes</span>
+            <strong>$221</strong>
+          </div>
+        </div>
+        <div class="receipt-total">
+          <span>Total</span>
+          <strong>$3,721</strong>
+        </div>
+      </article>
+
+      <div class="savings-lockup" aria-label="Savings summary">
+        <span class="savings-lockup__label">You save</span>
+        <strong>$386</strong>
+        <span class="savings-lockup__note">about 10% on the same stay</span>
+      </div>
+
+      <article class="receipt-card receipt-card--direct" aria-labelledby="direct-receipt-card-title">
+        <div class="receipt-card__topline">
+          <p id="direct-receipt-card-title">Booking direct</p>
+          <span>Seascape</span>
+        </div>
+        <div class="receipt-card__rows">
+          <div class="receipt-row">
+            <span>7 nights at $450</span>
+            <strong>$3,150</strong>
+          </div>
+          <div class="receipt-row receipt-row--zero">
+            <span>Platform service fee</span>
+            <strong>$0</strong>
+          </div>
+          <div class="receipt-row">
+            <span>Cleaning fee at actual cost</span>
+            <strong>$185</strong>
+          </div>
+          <div class="receipt-row">
+            <span>Occupancy taxes</span>
+            <strong>$221</strong>
+          </div>
+        </div>
+        <div class="receipt-total receipt-total--direct">
+          <span>Total</span>
+          <strong>$3,335</strong>
+        </div>
+      </article>
+    </div>
+
+    <div class="direct-proof">
+      <div class="direct-proof__item">
+        <span>{{ uiIcon('check', 'direct-proof__icon') }}</span>
+        <p>No platform service fee</p>
+      </div>
+      <div class="direct-proof__item">
+        <span>{{ uiIcon('phone', 'direct-proof__icon') }}</span>
+        <p>Local host support before and during the stay</p>
+      </div>
+      <div class="direct-proof__item">
+        <span>{{ uiIcon('star', 'direct-proof__icon direct-proof__icon--star') }}</span>
+        <p>Five-star homes guests already review by name</p>
+      </div>
+    </div>
+
+    <blockquote class="direct-review">
+      <p>"Hands down the best rental we've ever experienced. The place was spotlessly clean and the hosts responded to every question immediately."</p>
+      <footer>Kurt Jones · Dockside Dreams</footer>
+    </blockquote>
+  </div>
+</section>

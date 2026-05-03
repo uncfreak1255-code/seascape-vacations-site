@@ -8,7 +8,13 @@
     <title>{{ pageTitle | seoTitle }}</title>
     <meta name="description" content="{{ pageDescription | seoDescription }}">
     <meta name="author" content="{{ pageAuthor or site.author }}">
-    <meta name="robots" content="index, follow">
+    {% set robotsContent = "index, follow" %}
+    {% if robots %}
+    {% set robotsContent = robots %}
+    {% elif seoIndexable == false or seoIndexable == 'false' %}
+    {% set robotsContent = "noindex, nofollow" %}
+    {% endif %}
+    <meta name="robots" content="{{ robotsContent }}">
     <link rel="canonical" href="{{ site.url }}{{ page.url }}">
     
     <!-- Open Graph -->
