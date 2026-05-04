@@ -4,9 +4,12 @@ This repo's local skill surface was pruned down to the active set that actually 
 
 Active repo-local skills:
 - `accessibility`
+- `deploy`
+- `monthly-reset`
 - `page-cro`
 - `schema-markup`
 - `site-architecture`
-- `web-design-guidelines`
+
+`.claude/skills/` is a thin compatibility layer and should mirror only these approved local skills.
 
 Everything else from the old local skill pile was moved here to get it out of active Codex discovery without deleting it.
