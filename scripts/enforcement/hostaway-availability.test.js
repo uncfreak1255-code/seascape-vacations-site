@@ -7,6 +7,10 @@ const {
   validateHostawayAvailabilityPayload
 } = require("../cache/sync-hostaway-build-cache");
 const {
+  shouldRequirePropertiesAvailabilityOutput,
+  validatePropertiesAvailabilityOutput
+} = require("./validate-properties-availability-output");
+const {
   calendarDaysFromBookingEngineResponse,
   toBookingEngineHostname
 } = require("../cache/booking-engine-calendar");
@@ -117,10 +121,37 @@ test("booking engine calendar adapter exposes Hostaway day objects without priva
   assert.equal(toBookingEngineHostname("https://book.seascape-vacations.com"), "book.seascape-vacations.com");
 });
 
-test("Netlify builds require the Hostaway build cache freshness gate", () => {
-  assert.equal(shouldRequireHostawayCache({ NETLIFY: "true" }), true);
+test("Hostaway API cache is only hard-required when explicitly requested", () => {
   assert.equal(shouldRequireHostawayCache({ SEASCAPE_REQUIRE_HOSTAWAY_CACHE: "1" }), true);
+  assert.equal(shouldRequireHostawayCache({ NETLIFY: "true" }), false);
   assert.equal(shouldRequireHostawayCache({}), false);
+});
+
+test("Netlify builds require rendered live availability cards", () => {
+  assert.equal(shouldRequirePropertiesAvailabilityOutput({ NETLIFY: "true" }), true);
+  assert.equal(shouldRequirePropertiesAvailabilityOutput({ SEASCAPE_REQUIRE_PROPERTIES_AVAILABILITY: "1" }), true);
+  assert.equal(shouldRequirePropertiesAvailabilityOutput({}), false);
+});
+
+test("rendered availability output gate rejects stale fallback cards", () => {
+  const liveHtml = `
+    <article class="catalog-card"><span>Availability · live</span><div class="catalog-next-lbl">Next available</div></article>
+    <article class="catalog-card"><span>Availability · live</span><div class="catalog-next-lbl">Next available</div></article>
+  `;
+
+  assert.equal(
+    validatePropertiesAvailabilityOutput(liveHtml, { expectedCards: 2 }).nextAvailableCount,
+    2
+  );
+
+  assert.throws(
+    () =>
+      validatePropertiesAvailabilityOutput(
+        `<article class="catalog-card"><span>Calendar · secure</span><div class="catalog-next-lbl">Live calendar</div></article>`,
+        { expectedCards: 1 }
+      ),
+    /availability output check failed/
+  );
 });
 
 test("Hostaway build cache freshness gate rejects missing or stale card availability", () => {

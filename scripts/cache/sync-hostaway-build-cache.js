@@ -10,7 +10,7 @@ const REQUIRED_PROPERTY_SLUGS = [
 ];
 
 function shouldRequireHostawayCache(env = process.env) {
-  return env.SEASCAPE_REQUIRE_HOSTAWAY_CACHE === "1" || env.NETLIFY === "true";
+  return env.SEASCAPE_REQUIRE_HOSTAWAY_CACHE === "1";
 }
 
 function validateHostawayAvailabilityPayload(payload, options = {}) {
@@ -64,7 +64,8 @@ async function main() {
     if (requireHostawayCache) {
       throw new Error(message);
     }
-    console.log(`${message}; skipped`);
+    const log = process.env.NETLIFY === "true" ? console.warn : console.log;
+    log(`${message}; falling back to booking-engine availability hydration`);
     return;
   }
 
