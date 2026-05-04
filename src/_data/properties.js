@@ -1,6 +1,8 @@
 const fs = require("fs");
 const path = require("path");
 const { getStore } = require("@netlify/blobs");
+const { fetchBookingEngineCalendar } = require("../../scripts/cache/booking-engine-calendar");
+const { normalizeAvailability } = require("../../scripts/cache/normalize-hostaway");
 
 const FALLBACK_PATH = path.join(__dirname, "properties-fallback.json");
 const CACHE_KEY = "properties_cache_v1.json";
@@ -8,6 +10,7 @@ const STORE_NAME = "seascape-cache";
 const HOSTAWAY_PREFIX = "https://hostaway-platform.s3.us-west-2.amazonaws.com/";
 const CDN_PREFIX = "https://bookingenginecdn.hostaway.com/";
 const BOOKING_ENGINE_PREFIX = "https://book.seascape-vacations.com/listings/";
+const AVAILABILITY_MAX_AGE_MS = 36 * 60 * 60 * 1000;
 const LISTING_ID_BY_SLUG = {
   "dockside-dreams": "206016",
   "the-oasis": "189511",
@@ -85,6 +88,87 @@ function deriveSpecs(property) {
   return `${normalizeCount(property.bedrooms)} BR · ${normalizeCount(property.bathrooms)} BA · Sleeps ${normalizeCount(property.guests)}`;
 }
 
+function normalizeAvailabilitySummary(availability, now = Date.now()) {
+  if (!availability || typeof availability !== "object") return null;
+  const nextAvailable = availability.nextAvailable;
+  if (!nextAvailable || typeof nextAvailable !== "object") return null;
+
+  const syncedAtMs = Date.parse(availability.syncedAt || "");
+  if (!Number.isFinite(syncedAtMs) || now - syncedAtMs > AVAILABILITY_MAX_AGE_MS) {
+    return null;
+  }
+
+  const startDate = typeof nextAvailable.startDate === "string" ? nextAvailable.startDate : "";
+  const endDate = typeof nextAvailable.endDate === "string" ? nextAvailable.endDate : "";
+  const label = typeof nextAvailable.label === "string" ? nextAvailable.label : "";
+  const subcopy = typeof nextAvailable.subcopy === "string" ? nextAvailable.subcopy : "";
+  const nights = normalizeCount(nextAvailable.nights);
+  if (!startDate || !endDate || !label || !nights) return null;
+
+  const monthNights = Array.isArray(availability.monthNights)
+    ? availability.monthNights
+        .map((item) => ({
+          label: typeof item.label === "string" ? item.label : "",
+          value: normalizeCount(item.value)
+        }))
+        .filter((item) => item.label)
+        .slice(0, 2)
+    : [];
+
+  return {
+    source: availability.source || "hostaway",
+    syncedAt: availability.syncedAt,
+    nextAvailable: {
+      startDate,
+      endDate,
+      label,
+      nights,
+      nightlyRate: normalizeCount(nextAvailable.nightlyRate),
+      subcopy
+    },
+    monthNights,
+    weekendsLeft: normalizeCount(availability.weekendsLeft)
+  };
+}
+
+function todayStamp(date = new Date()) {
+  return date.toISOString().slice(0, 10);
+}
+
+function shouldFetchPublicAvailability() {
+  return process.env.SEASCAPE_DISABLE_PUBLIC_AVAILABILITY !== "1" && process.env.GITHUB_ACTIONS !== "true";
+}
+
+async function enrichMissingAvailability(properties) {
+  if (!shouldFetchPublicAvailability()) return properties;
+
+  const syncedAt = new Date().toISOString();
+  const windowStart = todayStamp(new Date(syncedAt));
+
+  return Promise.all(
+    properties.map(async (property) => {
+      if (property.availability || !/^\d+$/.test(property.id)) {
+        return property;
+      }
+
+      try {
+        const calendar = await fetchBookingEngineCalendar(property.id, windowStart);
+        const availability = normalizeAvailability(calendar, {
+          syncedAt,
+          windowStart,
+          basePrice: property.price
+        });
+        return {
+          ...property,
+          availability: normalizeAvailabilitySummary(availability)
+        };
+      } catch (error) {
+        return property;
+      }
+    })
+  );
+}
+
 async function loadFromCache() {
   const store = getStore(STORE_NAME);
   const cached = await store.get(CACHE_KEY, { type: "json" });
@@ -143,7 +227,8 @@ function normalizeProperties(list) {
         specs: deriveSpecs(property),
         image,
         heroImage,
-        gallery
+        gallery,
+        availability: normalizeAvailabilitySummary(property.availability)
       };
     });
 }
@@ -153,16 +238,18 @@ async function getProperties() {
     if (process.env.NETLIFY_BLOBS_CONTEXT || global.netlifyBlobsContext) {
       const cached = await loadFromCache();
       if (cached) {
-        return cached;
+        return enrichMissingAvailability(cached);
       }
     }
   } catch (error) {
     // Fallback to local seed if cache is unavailable.
   }
 
-  return loadFallback();
+  return enrichMissingAvailability(loadFallback());
 }
 
 module.exports = getProperties;
 module.exports.normalizeProperties = normalizeProperties;
 module.exports.toHostawayCdn = toHostawayCdn;
+module.exports.normalizeAvailabilitySummary = normalizeAvailabilitySummary;
+module.exports.enrichMissingAvailability = enrichMissingAvailability;

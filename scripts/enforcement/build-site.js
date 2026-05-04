@@ -15,7 +15,9 @@ function run(command, args, options = {}) {
 
 function buildSite() {
   fs.rmSync("_site", { recursive: true, force: true });
+  run(process.execPath, ["scripts/cache/sync-hostaway-build-cache.js"]);
   run("npx", ["@11ty/eleventy"]);
+  run(process.execPath, ["scripts/enforcement/validate-properties-availability-output.js"]);
 }
 
 function main() {

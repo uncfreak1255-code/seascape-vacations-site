@@ -103,8 +103,40 @@ function fetchListing(token, id) {
   });
 }
 
+function fetchListingCalendar(token, id, startDate, endDate) {
+  return new Promise((resolve, reject) => {
+    const params = new URLSearchParams();
+    if (startDate) params.set("startDate", startDate);
+    if (endDate) params.set("endDate", endDate);
+    const query = params.toString();
+    const options = {
+      hostname: "api.hostaway.com",
+      path: `/v1/listings/${id}/calendar${query ? `?${query}` : ""}`,
+      method: "GET",
+      headers: { Authorization: `Bearer ${token}` }
+    };
+
+    const req = https.request(options, (res) => {
+      let data = "";
+      res.on("data", (chunk) => (data += chunk));
+      res.on("end", () => {
+        try {
+          const json = JSON.parse(data);
+          resolve(json.result || json);
+        } catch (err) {
+          reject(err);
+        }
+      });
+    });
+
+    req.on("error", reject);
+    req.end();
+  });
+}
+
 module.exports = {
   getAccessToken,
   fetchListings,
-  fetchListing
+  fetchListing,
+  fetchListingCalendar
 };

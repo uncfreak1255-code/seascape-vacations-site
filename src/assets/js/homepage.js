@@ -1,13 +1,3 @@
-function handleSearch() {
-    var locationSelect = document.getElementById('location-select');
-    if (!locationSelect) return;
-
-    var location = locationSelect.value;
-    window.location.href = location === 'sarasota'
-        ? '/properties/?area=sarasota'
-        : '/properties/?area=anna-maria-island';
-}
-
 (function deferGa4() {
     var measurementId = 'G-3VDV66S3DK';
 

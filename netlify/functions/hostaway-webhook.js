@@ -1,6 +1,6 @@
 const { getStore } = require("@netlify/blobs");
-const { normalizeListing } = require("../../scripts/cache/normalize-hostaway");
-const { fetchListing, getAccessToken } = require("./_hostaway");
+const { normalizeAvailability, normalizeListing } = require("../../scripts/cache/normalize-hostaway");
+const { fetchListing, fetchListingCalendar, getAccessToken } = require("./_hostaway");
 const fs = require("fs");
 const path = require("path");
 
@@ -10,6 +10,8 @@ const TEMP_KEY = "properties_cache_v1.tmp.json";
 const EVENT_KEY = "hostaway_webhook_events_v1.json";
 const STORE_NAME = "seascape-cache";
 const SLUG_MAP_PATH = path.join(process.cwd(), "src", "_data", "properties-fallback.json");
+const AVAILABILITY_WINDOW_DAYS = 180;
+const DAY_MS = 24 * 60 * 60 * 1000;
 
 function loadSlugMap() {
   if (!fs.existsSync(SLUG_MAP_PATH)) return {};
@@ -22,6 +24,16 @@ function loadSlugMap() {
   } catch (err) {
     return {};
   }
+}
+
+function toDateStamp(date) {
+  return date.toISOString().slice(0, 10);
+}
+
+function availabilityWindow(now = new Date()) {
+  const startDate = toDateStamp(now);
+  const endDate = toDateStamp(new Date(now.getTime() + AVAILABILITY_WINDOW_DAYS * DAY_MS));
+  return { startDate, endDate };
 }
 
 exports.handler = async (event) => {
@@ -59,7 +71,29 @@ exports.handler = async (event) => {
   const token = await getAccessToken();
   const listing = await fetchListing(token, listingId);
   const slugMap = loadSlugMap();
-  const normalized = normalizeListing(listing, slugMap);
+  const syncedAt = new Date().toISOString();
+  const window = availabilityWindow(new Date(syncedAt));
+  const normalizedListing = normalizeListing(listing, slugMap);
+  let normalized = normalizedListing;
+
+  try {
+    const calendar = await fetchListingCalendar(token, normalizedListing.id, window.startDate, window.endDate);
+    normalized = {
+      ...normalizedListing,
+      availability: normalizeAvailability(calendar, {
+        syncedAt,
+        windowStart: window.startDate,
+        windowEnd: window.endDate,
+        basePrice: normalizedListing.price.amount
+      })
+    };
+  } catch (error) {
+    normalized = {
+      ...normalizedListing,
+      availability: null,
+      availabilityError: "calendar_sync_failed"
+    };
+  }
 
   const cache = (await store.get(CACHE_KEY, { type: "json" })) || {
     properties: []
@@ -71,7 +105,7 @@ exports.handler = async (event) => {
     ...cache,
     properties: next,
     syncStatus: "success",
-    lastSuccessfulSync: new Date().toISOString()
+    lastSuccessfulSync: syncedAt
   };
 
   await store.set(TEMP_KEY, nextCache);
