@@ -4,11 +4,22 @@ This repo's local skill surface was pruned down to the active set that actually 
 
 Active repo-local skills:
 - `accessibility`
+- `core-web-vitals`
+- `copy-editing`
+- `copywriting`
 - `deploy`
+- `design-review`
+- `frontend-design`
 - `monthly-reset`
 - `page-cro`
 - `schema-markup`
+- `seo-audit`
+- `seo-content`
+- `seo-geo`
+- `seo-page`
+- `seo-technical`
 - `site-architecture`
+- `web-quality-audit`
 
 `.claude/skills/` is a thin compatibility layer and should mirror only these approved local skills.
 
