@@ -86,3 +86,26 @@ test("properties catalog implements Property Card E with truthful listing data",
     );
   }
 });
+
+test("properties catalog keeps mobile rhythm before the first card compact", () => {
+  assert.equal(
+    propertiesTemplate.includes('class="catalog-hero" style='),
+    false,
+    "catalog hero spacing must stay in CSS so mobile breakpoints can override it"
+  );
+
+  assert.match(
+    propertiesTemplate,
+    /@media \(max-width: 680px\)\s*\{[\s\S]*\.catalog-hero\s*\{[\s\S]*padding:\s*42px 20px 34px;/
+  );
+
+  assert.match(
+    propertiesTemplate,
+    /\.catalog-filters\s*\{[\s\S]*flex-wrap:\s*nowrap;[\s\S]*overflow-x:\s*auto;/
+  );
+
+  assert.match(
+    propertiesTemplate,
+    /\.catalog-filter\s*\{[\s\S]*flex:\s*0 0 auto;[\s\S]*white-space:\s*nowrap;/
+  );
+});
