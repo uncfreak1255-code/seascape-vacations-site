@@ -42,7 +42,7 @@ headExtra: |
           url('/hero-optimized.webp') type('image/webp')
         ) center/cover;
       color: white;
-      padding: 112px 24px 84px;
+      padding: 96px 24px 56px;
     }
 
     .catalog-hero-inner {
@@ -159,6 +159,7 @@ headExtra: |
       display: flex;
       gap: 10px;
       flex-wrap: wrap;
+      align-items: center;
       margin-bottom: 28px;
     }
 
@@ -578,12 +579,78 @@ headExtra: |
 
     @media (max-width: 680px) {
       .catalog-hero {
-        padding-top: 96px;
+        padding: 42px 20px 34px;
+      }
+
+      .catalog-kicker {
+        margin-bottom: 12px;
+        padding: 7px 11px;
+        font-size: 9.5px;
+        letter-spacing: 0.16em;
+      }
+
+      .catalog-hero h1 {
+        font-size: clamp(36px, 9.5vw, 40px);
+        line-height: 1.02;
+        margin-bottom: 12px;
+      }
+
+      .catalog-hero p {
+        font-size: 15px;
+        line-height: 1.5;
+      }
+
+      .catalog-shell {
+        padding: 28px 18px 72px;
+      }
+
+      .catalog-toolbar {
+        gap: 14px;
+        margin-bottom: 14px;
+      }
+
+      .catalog-toolbar-copy .section-tag {
+        margin-bottom: 10px;
+      }
+
+      .catalog-toolbar-copy h2 {
+        font-size: clamp(28px, 8vw, 31px);
+        line-height: 1.1;
+        margin-bottom: 8px;
+      }
+
+      .catalog-toolbar-copy p {
+        font-size: 15px;
+        line-height: 1.45;
+      }
+
+      .catalog-toolbar-link {
+        font-size: 14px;
+        margin-top: 2px;
+      }
+
+      .catalog-filters {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        margin: 0 -18px 22px;
+        padding: 0 18px 8px;
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .catalog-filters::-webkit-scrollbar {
+        display: none;
+      }
+
+      .catalog-filter {
+        flex: 0 0 auto;
+        padding: 10px 15px;
+        white-space: nowrap;
       }
 
       .catalog-grid {
-        grid-template-columns: minmax(0, 1fr);
-        justify-items: center;
+        justify-content: center;
+        gap: 24px;
       }
 
       .catalog-card h3 {
@@ -658,7 +725,7 @@ headExtra: |
   </ol>
 </nav>
 
-<section class="catalog-hero" style="padding:96px 24px 56px">
+<section class="catalog-hero">
   <div class="catalog-hero-inner">
     <div class="catalog-hero-copy">
       <span class="catalog-kicker">Seascape Collection</span>
@@ -675,9 +742,9 @@ headExtra: |
     <div class="catalog-toolbar">
       <div class="catalog-toolbar-copy">
         <p class="section-tag">Our Collection</p>
-        <h2 id="catalog-heading">Pick the right home fast, then move straight into direct dates.</h2>
+        <h2 id="catalog-heading">Pick the right home, then jump into direct dates.</h2>
         <p id="catalog-copy">
-          Every home has a private pool, full kitchen, and local host team. Use the filters or scroll to find your fit.
+          Filter by fit, then open dates or the property page for one more look.
         </p>
       </div>
       <a class="catalog-toolbar-link" href="/guides/">Explore local guides →</a>
@@ -915,8 +982,8 @@ headExtra: |
     };
     const filterCopy = {
       all: {
-        heading: "Pick the right home fast, then move straight into direct dates.",
-        body: "Use the filters to cut to the right fit, then choose between the fast path into direct booking or the property page if you need one more look before committing."
+        heading: "Pick the right home, then jump into direct dates.",
+        body: "Filter by fit, then open dates or the property page for one more look."
       },
       bradenton: {
         heading: "Near Anna Maria Island stays with the fastest path into direct dates.",
