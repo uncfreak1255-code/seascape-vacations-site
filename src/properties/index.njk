@@ -352,6 +352,12 @@ headExtra: |
       flex: 0 0 auto;
     }
 
+    .catalog-live-pill.is-muted::before {
+      background: rgba(255, 255, 255, 0.72);
+      box-shadow: none;
+      animation: none;
+    }
+
     @keyframes catalogPulse {
       0% {
         box-shadow: 0 0 0 0 rgba(127, 219, 164, 0.6);
@@ -734,7 +740,9 @@ headExtra: |
             onerror="this.onerror=null;this.src='/images/seascape-og-default.jpg';this.srcset='';">
           <div class="catalog-card-scrim"></div>
           <div class="catalog-card-top">
-            <span class="catalog-eyebrow catalog-live-pill">Availability · live</span>
+            <span class="catalog-eyebrow catalog-live-pill{% if not (availability and availability.nextAvailable) %} is-muted{% endif %}">
+              {% if availability and availability.nextAvailable %}Availability · live{% else %}Calendar · secure{% endif %}
+            </span>
             <span class="catalog-eyebrow catalog-rating-pill">{{ uiIcon('star') }} <span>{{ property.rating }}</span></span>
           </div>
           <div class="catalog-card-bottom">

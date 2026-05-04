@@ -3,6 +3,10 @@ const assert = require("node:assert/strict");
 
 const { normalizeAvailability } = require("../cache/normalize-hostaway");
 const {
+  shouldRequireHostawayCache,
+  validateHostawayAvailabilityPayload
+} = require("../cache/sync-hostaway-build-cache");
+const {
   calendarDaysFromBookingEngineResponse,
   toBookingEngineHostname
 } = require("../cache/booking-engine-calendar");
@@ -111,4 +115,60 @@ test("booking engine calendar adapter exposes Hostaway day objects without priva
     { date: "2026-05-04", isAvailable: 1 }
   ]);
   assert.equal(toBookingEngineHostname("https://book.seascape-vacations.com"), "book.seascape-vacations.com");
+});
+
+test("Netlify builds require the Hostaway build cache freshness gate", () => {
+  assert.equal(shouldRequireHostawayCache({ NETLIFY: "true" }), true);
+  assert.equal(shouldRequireHostawayCache({ SEASCAPE_REQUIRE_HOSTAWAY_CACHE: "1" }), true);
+  assert.equal(shouldRequireHostawayCache({}), false);
+});
+
+test("Hostaway build cache freshness gate rejects missing or stale card availability", () => {
+  const freshPayload = {
+    properties: [
+      {
+        slug: "dockside-dreams",
+        availability: {
+          syncedAt: "2026-05-03T22:00:00.000Z",
+          nextAvailable: { startDate: "2026-05-08", endDate: "2026-05-10" }
+        }
+      },
+      {
+        slug: "the-oasis",
+        availability: {
+          syncedAt: "2026-05-03T22:00:00.000Z",
+          nextAvailable: { startDate: "2026-05-18", endDate: "2026-05-20" }
+        }
+      }
+    ]
+  };
+
+  assert.deepEqual(
+    validateHostawayAvailabilityPayload(freshPayload, {
+      now: Date.parse("2026-05-04T00:00:00.000Z"),
+      requiredSlugs: ["dockside-dreams", "the-oasis"]
+    }),
+    { checked: 2 }
+  );
+
+  assert.throws(
+    () =>
+      validateHostawayAvailabilityPayload(freshPayload, {
+        now: Date.parse("2026-05-06T12:00:00.000Z"),
+        requiredSlugs: ["dockside-dreams", "the-oasis"]
+      }),
+    /stale availability/
+  );
+
+  assert.throws(
+    () =>
+      validateHostawayAvailabilityPayload(
+        { properties: [{ slug: "dockside-dreams", availability: null }] },
+        {
+          now: Date.parse("2026-05-04T00:00:00.000Z"),
+          requiredSlugs: ["dockside-dreams", "the-oasis"]
+        }
+      ),
+    /missing next availability.*the-oasis: missing listing/
+  );
 });

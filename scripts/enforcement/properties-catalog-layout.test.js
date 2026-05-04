@@ -39,6 +39,11 @@ test("properties catalog implements Property Card E with truthful listing data",
 
   assert.match(
     propertiesTemplate,
+    /\.catalog-live-pill\.is-muted::before\s*\{[\s\S]*animation:\s*none;/
+  );
+
+  assert.match(
+    propertiesTemplate,
     /\.catalog-next\s*\{[\s\S]*background:\s*#F5FBF2;[\s\S]*border:\s*1px solid rgba\(127, 219, 164, 0\.35\);/
   );
 
@@ -60,6 +65,8 @@ test("properties catalog implements Property Card E with truthful listing data",
     "{{ availability.nextAvailable.subcopy }}",
     "{{ month.value }}",
     "{{ availability.weekendsLeft }}",
+    "Availability · live",
+    "Calendar · secure",
     "startingDate="
   ]) {
     assert.equal(propertiesTemplate.includes(token), true, `template missing ${token}`);
