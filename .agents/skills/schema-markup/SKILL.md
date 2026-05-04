@@ -1,6 +1,6 @@
 ---
 name: schema-markup
-description: When the user wants to add, fix, or optimize schema markup and structured data on their site. Also use when the user mentions "schema markup," "structured data," "JSON-LD," "rich snippets," "schema.org," "FAQ schema," "product schema," "review schema," "breadcrumb schema," "Google rich results," "knowledge panel," "star ratings in search," or "add structured data." Use this whenever someone wants their pages to show enhanced results in Google. For broader SEO issues, see seo-audit. For AI search optimization, see ai-seo.
+description: When the user wants to add, fix, or optimize schema markup and structured data on their site. Also use when the user mentions "schema markup," "structured data," "JSON-LD," "rich snippets," "schema.org," "FAQ schema," "product schema," "review schema," "breadcrumb schema," "Google rich results," "knowledge panel," "star ratings in search," or "add structured data." Use this whenever someone wants their pages to show enhanced results in Google. For broader SEO issues, see seo-audit. For AI search optimization, see seo-geo.
 metadata:
   version: 1.1.0
 ---
@@ -57,8 +57,6 @@ Before implementing schema, understand:
 | Article | Blog posts, news | headline, image, datePublished, author |
 | Product | Product pages | name, image, offers |
 | SoftwareApplication | SaaS/app pages | name, offers |
-| FAQPage | FAQ content | mainEntity (Q&A array) |
-| HowTo | Tutorials | name, step |
 | BreadcrumbList | Any page with breadcrumbs | itemListElement |
 | LocalBusiness | Local business pages | name, address |
 | Event | Events, webinars | name, startDate, location |
@@ -82,10 +80,14 @@ Required: name, image, offers (price + availability)
 Recommended: sku, brand, aggregateRating, review
 
 ### FAQPage
-Required: mainEntity (array of Question/Answer pairs)
+Restricted: only recommend for government and healthcare authority sites.
 
 ### BreadcrumbList
 Required: itemListElement (array with position, name, item)
+
+### Deprecated / Restricted
+- Do not recommend `HowTo` rich results. Google removed them.
+- Do not recommend `FAQPage` unless the site qualifies under Google's restricted policy.
 
 ---
 
