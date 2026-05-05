@@ -53,6 +53,14 @@ The active local skill layer is intentionally small and site-specific:
 
 Use those as helpers under the five-role workflow, not as another operating system. Stale deploy, monthly-reset, broad marketing, and generic SEO skills stay out of active discovery unless a new `agent-surface-audit` proves they should return.
 
+Global marketing skills in `/Users/sawbeck/.codex/skills/` are allowed as
+advisory lenses when the task calls for them, especially `customer-research`,
+`marketing-psychology`, `content-strategy`, `copywriting`, `copy-editing`,
+`seo-audit`, `ai-seo`, `analytics-tracking`, `ab-test-setup`, and
+`pricing-strategy`. They help structure thinking; they do not create new local
+authority, bypass the five roles, or replace Seascape Hub as the source of
+business context.
+
 ## Required Batch Workflow
 
 1. Search Operator reads the latest operator evidence.
