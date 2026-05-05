@@ -20,7 +20,7 @@ Would you be open to adding it as a local planning resource anywhere on your vis
 
 If useful, I can also send a tighter description written for your audience.
 
-Sawyer Beck
+Sawyer Beckett
 Seascape Vacations
 https://seascape-vacations.com
 
@@ -46,7 +46,7 @@ If you have a visitor-resources, local-planning, or nearby-stays section, would 
 
 Happy to send over a one-sentence description if that makes it easier.
 
-Sawyer Beck
+Sawyer Beckett
 Seascape Vacations
 https://seascape-vacations.com
 
@@ -66,7 +66,7 @@ Would you be open to including it?
 
 If helpful, I can send a shorter blurb formatted for your site.
 
-Sawyer Beck
+Sawyer Beckett
 Seascape Vacations
 https://seascape-vacations.com
 
@@ -114,7 +114,7 @@ If you’re open to it, I’d love to either:
 
 Happy to tailor this to whatever format is most useful.
 
-Sawyer Beck
+Sawyer Beckett
 
 ## Draft 6: Next Stop Adventures
 
@@ -134,7 +134,7 @@ If you ever maintain Florida planning resources, comparison roundups, or collabo
 
 If that’s interesting, I can send a short summary written for your readers.
 
-Sawyer Beck
+Sawyer Beckett
 Seascape Vacations
 https://seascape-vacations.com
 

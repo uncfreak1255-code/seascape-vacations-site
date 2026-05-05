@@ -26,7 +26,7 @@ We just finished analyzing 545 real bookings across the Bradenton-Sarasota-AMI c
 
 I can hold this data for 48 hours if you'd like first crack at writing it up. I can also send the full report as a PDF, plus the underlying booking data as a spreadsheet if you want to run your own analysis.
 
-— Sawyer Beck
+— Sawyer Beckett
 Seascape Vacations | seascape-vacations.com
 
 ### Email 2 (Day 3)
@@ -57,7 +57,7 @@ One thing I can offer anytime: raw booking data for any Florida vacation rental 
 
 Standing invite. Feel free to file this away.
 
-— Sawyer Beck
+— Sawyer Beckett
 sawyer@seascape-vacations.com
 
 ### Journalist Target Categories
@@ -108,7 +108,7 @@ We just published a cost breakdown comparing AMI, Bradenton, and Sarasota for fa
 
 I can hold this data for 48 hours if you'd like first crack at writing it up. I can also send the full report as a PDF, plus the underlying booking data as a spreadsheet if you want to run your own analysis.
 
-— Sawyer Beck
+— Sawyer Beckett
 Seascape Vacations | seascape-vacations.com
 
 ### Email 2 (Day 3)
@@ -139,7 +139,7 @@ We also have a free trolley map and dining price comparisons across the three ar
 
 Just reply whenever. Happy to be a source.
 
-— Sawyer Beck
+— Sawyer Beckett
 sawyer@seascape-vacations.com
 
 ### Journalist Target Categories

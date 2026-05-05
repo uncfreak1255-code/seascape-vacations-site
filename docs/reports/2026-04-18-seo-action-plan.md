@@ -118,7 +118,7 @@ Why:
 
 Do:
 
-- use the `Reviewed by Sawyer Beck` / updated-date pattern from the strongest guide winners
+- use the `Reviewed by Sawyer Beckett` / updated-date pattern from the strongest guide winners
 - prioritize pages that already rank or drive real impressions
 
 ### 7. Tighten image-output discipline in the templates

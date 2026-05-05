@@ -84,4 +84,4 @@ Support:
 
 ## Bio Line
 
-Sawyer Beck is the owner of Seascape Vacations, a Gulf Coast Florida vacation rental operator serving Bradenton, Anna Maria Island, and Sarasota through direct bookings, local travel guides, and owner management services.
+Sawyer Beckett is the owner of Seascape Vacations, a Gulf Coast Florida vacation rental operator serving Bradenton, Anna Maria Island, and Sarasota through direct bookings, local travel guides, and owner management services.
