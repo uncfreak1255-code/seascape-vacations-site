@@ -21,6 +21,14 @@ const targets = [
   { path: "/images/siesta-key-og.jpg", status: 200 }
 ];
 
+const stablePropertyDetailLinks = [
+  { href: "/properties/dockside-dreams/", label: "View Dockside Dreams details" },
+  { href: "/properties/the-oasis/", label: "View The Oasis details" },
+  { href: "/properties/sarasota-luxe/", label: "View Sarasota Luxe details" },
+  { href: "/properties/river-house/", label: "View River House details" },
+  { href: "/properties/bradenton-pool-home/", label: "View Bradenton Pool Home details" }
+];
+
 function request(baseUrl, path) {
   return new Promise((resolve, reject) => {
     https
@@ -69,7 +77,8 @@ function validateTargetResponse(target, response) {
       throw new Error("properties page is missing premium catalog property cards");
     }
 
-    if (!response.body.includes("/properties/dockside-dreams/") || !response.body.includes("View Details")) {
+    const missingPropertyLinks = stablePropertyDetailLinks.filter((link) => !response.body.includes(link.href));
+    if (missingPropertyLinks.length > 0) {
       throw new Error("properties page is missing stable property detail links");
     }
 
@@ -196,6 +205,7 @@ module.exports = {
   targets,
   request,
   validateTargetResponse,
+  stablePropertyDetailLinks,
   check,
   run
 };

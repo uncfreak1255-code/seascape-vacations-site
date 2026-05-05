@@ -67,6 +67,53 @@ test("property-management smoke rejects the retired explainer-hub surface", () =
   }, /property-management hub is missing the proof-first owner revenue surface/);
 });
 
+test("properties smoke checks durable property detail hrefs instead of old CTA copy", () => {
+  const smoke = loadSmokeModule();
+  const target = smoke.targets.find((entry) => entry.path === "/properties/");
+
+  assert.notEqual(target, undefined, "expected /properties/ to stay in the smoke target list");
+
+  const currentPropertiesBody = `
+    <main>
+      <article><a href="/properties/dockside-dreams/">Dockside Dreams</a></article>
+      <article><a href="/properties/the-oasis/">The Oasis</a></article>
+      <article><a href="/properties/sarasota-luxe/">Sarasota Luxe</a></article>
+      <article><a href="/properties/river-house/">River House</a></article>
+      <article><a href="/properties/bradenton-pool-home/">Bradenton Pool Home</a></article>
+      <a href="https://book.seascape-vacations.com">Book Direct</a>
+    </main>
+  `;
+
+  assert.doesNotThrow(() => {
+    smoke.validateTargetResponse(target, {
+      statusCode: 200,
+      location: null,
+      body: currentPropertiesBody
+    });
+  });
+
+  assert.equal(currentPropertiesBody.includes("View Details"), false);
+});
+
+test("properties smoke rejects missing stable property detail hrefs", () => {
+  const smoke = loadSmokeModule();
+  const target = smoke.targets.find((entry) => entry.path === "/properties/");
+
+  assert.throws(() => {
+    smoke.validateTargetResponse(target, {
+      statusCode: 200,
+      location: null,
+      body: `
+        <main>
+          <article>Dockside Dreams</article>
+          <article>The Oasis</article>
+          <a href="https://book.seascape-vacations.com">Book Direct</a>
+        </main>
+      `
+    });
+  }, /properties page is missing stable property detail links/);
+});
+
 test("stays smoke follows the live stay-collection hub instead of a dead prefix", () => {
   const smoke = loadSmokeModule();
   const target = smoke.targets.find((entry) => entry.path === "/stays/");
