@@ -60,9 +60,10 @@ const guideFiles = [
   }
 ];
 
-function loadConversionTrackingWithStubs() {
+function withConversionTrackingStubs(callback) {
   const trackingScriptPath = path.join(projectRoot, "src", "assets", "js", "conversion-tracking.js");
   delete require.cache[require.resolve(trackingScriptPath)];
+  const listeners = {};
 
   global.window = {
     dataLayer: [],
@@ -75,7 +76,9 @@ function loadConversionTrackingWithStubs() {
   };
   global.document = {
     readyState: "loading",
-    addEventListener() {},
+    addEventListener(eventName, handler) {
+      listeners[eventName] = handler;
+    },
     querySelectorAll() {
       return [];
     }
@@ -93,13 +96,19 @@ function loadConversionTrackingWithStubs() {
   require(trackingScriptPath);
   const api = global.window.SeascapeConversionTracking;
 
-  delete global.window;
-  delete global.document;
-  delete global.localStorage;
-  delete global.fetch;
-  delete global.FormData;
+  try {
+    return callback({ api, listeners, window: global.window });
+  } finally {
+    delete global.window;
+    delete global.document;
+    delete global.localStorage;
+    delete global.fetch;
+    delete global.FormData;
+  }
+}
 
-  return api;
+function loadConversionTrackingWithStubs() {
+  return withConversionTrackingStubs(({ api }) => api);
 }
 
 test("shared guide conversion kit exposes savings, stay, repeat-stay, and email capture modules", () => {
@@ -195,6 +204,54 @@ test("shared conversion tracking exposes navigation-safe tracked-link helpers", 
     api.shouldDelayTrackedNavigation(sameTabGuideLink, { button: 0, metaKey: true, ctrlKey: false, shiftKey: false, altKey: false }),
     false
   );
+});
+
+test("booking-engine handoff click emits the GA4 event with the target booking URL", () => {
+  const observed = withConversionTrackingStubs(({ listeners, window }) => {
+    assert.equal(typeof listeners.DOMContentLoaded, "function", "tracking script should wait for DOM ready");
+    listeners.DOMContentLoaded();
+    assert.equal(typeof listeners.click, "function", "tracking script should bind click tracking");
+
+    const bookingLink = {
+      tagName: "A",
+      href: "https://book.seascape-vacations.com",
+      target: "_blank",
+      textContent: "Open Direct Availability",
+      dataset: {
+        trackEvent: "booking_engine_handoff",
+        guideSlug: "best-time-visit-anna-maria-island",
+        trackLabel: "Open Direct Availability"
+      },
+      hasAttribute() {
+        return false;
+      },
+      getAttribute(name) {
+        if (name === "href") return this.href;
+        if (name === "target") return this.target;
+        return null;
+      }
+    };
+
+    listeners.click({
+      target: {
+        closest(selector) {
+          return selector === "[data-track-event]" ? bookingLink : null;
+        }
+      },
+      button: 0,
+      metaKey: false,
+      ctrlKey: false,
+      shiftKey: false,
+      altKey: false
+    });
+
+    return window.dataLayer[0];
+  });
+
+  assert.equal(observed.event, "booking_engine_handoff");
+  assert.equal(observed.payload.guide_slug, "best-time-visit-anna-maria-island");
+  assert.equal(observed.payload.link_url, "https://book.seascape-vacations.com");
+  assert.equal(observed.payload.link_text, "Open Direct Availability");
 });
 
 test("priority guides use the shared conversion kit with page-specific stay links", () => {
