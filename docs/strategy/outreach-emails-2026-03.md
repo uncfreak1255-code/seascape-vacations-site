@@ -1,5 +1,5 @@
 # Backlink Outreach Email Templates
-**Created:** March 15, 2026 | **Owner:** Sawyer Beck, Seascape Vacations
+**Created:** March 15, 2026 | **Owner:** Sawyer Beckett, Seascape Vacations
 
 ---
 
@@ -16,7 +16,7 @@ I'd like to submit our vacation rental management company for your member direct
 - **Business Name:** Seascape Vacations
 - **Website:** https://seascape-vacations.com
 - **Phone:** (941) 704-8545
-- **Contact:** Sawyer Beck
+- **Contact:** Sawyer Beckett
 - **Email:** sawyerbeck25@gmail.com
 - **Category:** Vacation Rentals / Accommodations / Lodging
 - **Service Area:** Bradenton, Anna Maria Island, Holmes Beach, Bradenton Beach, Longboat Key, Sarasota
@@ -30,7 +30,7 @@ We'd love to be included in your accommodations directory and any visitor resour
 Thank you for supporting local tourism businesses!
 
 Best regards,
-Sawyer Beck
+Sawyer Beckett
 Seascape Vacations
 (941) 704-8545
 seascape-vacations.com
@@ -44,7 +44,7 @@ seascape-vacations.com
 
 Hi [Business Name] Team,
 
-I'm Sawyer Beck, owner of Seascape Vacations — we manage vacation rental properties in the Bradenton and Anna Maria Island area. We already recommend your business to our guests through our online area guides:
+I'm Sawyer Beckett, owner of Seascape Vacations — we manage vacation rental properties in the Bradenton and Anna Maria Island area. We already recommend your business to our guests through our online area guides:
 
 - **Bradenton vs. Sarasota guide:** https://seascape-vacations.com/guides/bradenton-vs-sarasota/
 - **Anna Maria Island vs. Siesta Key guide:** https://seascape-vacations.com/guides/anna-maria-island-vs-siesta-key/
@@ -61,7 +61,7 @@ No pressure at all — just thought it could be a win-win since we're already se
 
 Thanks for everything you do for the local community!
 
-Sawyer Beck
+Sawyer Beckett
 Seascape Vacations
 (941) 704-8545
 seascape-vacations.com
@@ -107,7 +107,7 @@ A few ideas if you're interested in collaborating:
 No strings attached on any of these — just looking to connect with fellow Florida travel enthusiasts. Let me know if any of these sound interesting, or if you have a different idea for working together.
 
 Cheers,
-Sawyer Beck
+Sawyer Beckett
 Seascape Vacations
 (941) 704-8545
 seascape-vacations.com
@@ -128,7 +128,7 @@ seascape-vacations.com
 
 Hi [Reporter Name],
 
-I'm Sawyer Beck, owner of Seascape Vacations — we manage vacation rental properties along Florida's Gulf Coast (Bradenton, Anna Maria Island, and Sarasota). Happy to help with your piece on [topic].
+I'm Sawyer Beckett, owner of Seascape Vacations — we manage vacation rental properties along Florida's Gulf Coast (Bradenton, Anna Maria Island, and Sarasota). Happy to help with your piece on [topic].
 
 **[Answer their specific question here — keep it to 2-3 concise paragraphs with real data, specific examples, and quotable lines.]**
 
@@ -139,7 +139,7 @@ I'm Sawyer Beck, owner of Seascape Vacations — we manage vacation rental prope
 > We're seeing a clear shift toward longer stays and "workcation" bookings. About 40% of our 2025-2026 bookings are 7+ nights, up from roughly 25% two years ago. Guests want a home base — full kitchen, reliable WiFi, a real neighborhood feel — not just a hotel room. The Gulf Coast of Florida is perfect for this because the cost of living is lower than Miami or the Keys, and there's genuine local character.
 
 **Bio line (include at the end of every HARO response):**
-Sawyer Beck is the owner of Seascape Vacations (https://seascape-vacations.com), a vacation rental management company specializing in Gulf Coast Florida properties across Bradenton, Anna Maria Island, and Sarasota.
+Sawyer Beckett is the owner of Seascape Vacations (https://seascape-vacations.com), a vacation rental management company specializing in Gulf Coast Florida properties across Bradenton, Anna Maria Island, and Sarasota.
 
 **HARO tips:**
 - Respond within 2 hours of the query going live (morning emails go out ~5:35am ET)

@@ -1,5 +1,31 @@
 # Next Batch
 
+## Latest Execution Read
+
+Run date: 2026-05-06.
+
+The targeted joined operator read was executed in `seascape-analytics` for the
+five tracked money pages plus the existing report context pages.
+
+- Requested last-7-complete-day window: 2026-04-29 to 2026-05-05.
+- Latest BigQuery GSC `data_date`: 2026-05-03.
+- Site work gate: `blocked` because the GSC export does not cover the requested
+  window.
+- Report recommendation: `hold-and-reread`.
+- Sanity fallback using the latest GSC-covered 7-day window, 2026-04-27 to
+  2026-05-03, was `clear` from a data-availability standpoint but still
+  recommended `hold-and-reread`.
+- Covered-window owner-money result: 342 impressions, 0.29% weighted CTR, 4.35
+  weighted position, 0 owner form submits.
+- Covered-window stay-money result: 2 impressions and 0 stay-to-property clicks.
+- Guide winner variants still appear in GSC, but the report's consolidation
+  branch trigger is 5000 guide-variant impressions; the covered window showed
+  1748 total guide-winner impressions.
+
+Do not open `owner-ctr-rewrite-round-2`, `stay-money-cro-round-2`, Holmes Beach
+expansion, or fresh guide consolidation from this read. Rerun the same joined
+report after BigQuery GSC covers the requested last-7-complete-day window.
+
 ## Likely Priorities
 
 1. rerun the targeted operator read on the five tracked money pages after more recrawl time using the last 7 complete days:
@@ -33,14 +59,15 @@
 
 ## Planned Later: Real Stay Alerts
 
-The shared guide conversion kit currently has an inline email capture labeled
-`Stay Alerts`, but repo evidence only proves Mailchimp signup plus
-`email_capture_submit` tracking. Do not treat it as a real alert product yet.
+The shared guide conversion kit now uses a simpler `Direct Booking List`
+offer because repo evidence only proves Mailchimp signup plus
+`email_capture_submit` tracking. Do not treat the capture as a real alert
+product yet.
 
 Keep the idea, but build it deliberately after the current proof-clean,
 owner-benchmark, and chart-pack work:
 
-- rename visible copy to a simpler direct-booking list unless the real alert
+- keep visible copy on the simpler direct-booking list unless the real alert
   workflow exists
 - collect actual trip intent fields: travel month or date range, area,
   guest count, and needs such as pool, dock, pet-friendly, or large group

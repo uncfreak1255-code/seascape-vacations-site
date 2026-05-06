@@ -126,9 +126,19 @@ test("shared guide conversion kit exposes savings, stay, repeat-stay, and email 
     'data-track-event=\"guide_book_direct_click\"',
     'data-track-event=\"booking_engine_handoff\"',
     'data-email-capture-form',
-    "repeat-guest offers"
+    "Direct Booking List",
+    "Join The Direct-Booking List",
+    "email_capture_submit"
   ]) {
     assert.equal(partial.includes(marker), true, `guide conversion kit missing ${marker}`);
+  }
+
+  for (const staleOfferLanguage of ["Stay Alerts", "date alerts", "matching homes"]) {
+    assert.equal(
+      partial.includes(staleOfferLanguage),
+      false,
+      `guide conversion kit should not promise ${staleOfferLanguage}`
+    );
   }
 });
 
@@ -291,9 +301,9 @@ test("week 2 booking guides use named authorship and retire legacy conversion cl
       slug: "best-vacation-rental-companies-ami",
       file: path.join(projectRoot, "src", "guides", "best-vacation-rental-companies-ami.html"),
       requiredMarkers: [
-        '<meta name="author" content="Sawyer Beck">',
+        '<meta name="author" content="Sawyer Beckett">',
         '"@type": "Person"',
-        '"name": "Sawyer Beck"',
+        '"name": "Sawyer Beckett"',
         'data-guide-author="sawyer-beck"',
         "How We Ranked These Companies",
         "If You Are Booking a Stay",
@@ -311,9 +321,9 @@ test("week 2 booking guides use named authorship and retire legacy conversion cl
       slug: "booking-direct-vacation-rentals",
       file: path.join(projectRoot, "src", "guides", "booking-direct-vacation-rentals.html"),
       requiredMarkers: [
-        '<meta name="author" content="Sawyer Beck">',
+        '<meta name="author" content="Sawyer Beckett">',
         '"@type":"Person"',
-        '"name":"Sawyer Beck"',
+        '"name":"Sawyer Beckett"',
         'data-guide-author="sawyer-beck"'
       ],
       forbiddenMarkers: [
@@ -326,9 +336,9 @@ test("week 2 booking guides use named authorship and retire legacy conversion cl
       file: path.join(projectRoot, "src", "guides", "anna-maria-island-vacation-cost.html"),
       requiredMarkers: [
         '<title>How Much Does a Vacation to Anna Maria Island Cost? (2026 Budget Guide)</title>',
-        '<meta name="author" content="Sawyer Beck">',
+        '<meta name="author" content="Sawyer Beckett">',
         '"@type": "Person"',
-        '"name": "Sawyer Beck"',
+        '"name": "Sawyer Beckett"',
         'data-guide-author="sawyer-beck"'
       ],
       forbiddenMarkers: [
