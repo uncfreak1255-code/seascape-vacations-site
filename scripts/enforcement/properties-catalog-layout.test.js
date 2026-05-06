@@ -72,6 +72,12 @@ test("properties catalog implements Property Card E with truthful listing data",
     assert.equal(propertiesTemplate.includes(token), true, `template missing ${token}`);
   }
 
+  assert.equal(
+    propertiesTemplate.includes('aria-label="View {{ property.name }} details"'),
+    true,
+    "property detail links should have accessible labels that describe the destination"
+  );
+
   for (const fakeAvailabilityCopy of [
     "Booked 2 hours ago",
     "Mar 28",
