@@ -226,7 +226,7 @@ Quick details:
 What's the process to get listed? Happy to fill out whatever forms you need or jump on a quick call.
 
 Thanks,
-Sawyer Beck
+Sawyer Beckett
 Seascape Vacations
 seascape-vacations.com
 ```
@@ -254,7 +254,7 @@ If you'd prefer, I'm also open to hosting you (or a writer on your team) for a c
 
 Let me know if any of this sounds interesting.
 
-Sawyer Beck
+Sawyer Beckett
 Seascape Vacations
 seascape-vacations.com
 ```
@@ -281,7 +281,7 @@ No contracts, no cost — just two local businesses helping each other out. If i
 
 Worth a conversation?
 
-Sawyer Beck
+Sawyer Beckett
 Seascape Vacations
 seascape-vacations.com
 ```

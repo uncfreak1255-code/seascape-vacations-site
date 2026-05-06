@@ -237,7 +237,7 @@ Evidence from the build scan:
 
 Example split:
 
-- `/guides/bradenton-vs-sarasota/` has visible `Reviewed by Sawyer Beck` treatment and an updated-date badge
+- `/guides/bradenton-vs-sarasota/` has visible `Reviewed by Sawyer Beckett` treatment and an updated-date badge
 - `/guides/is-anna-maria-island-worth-visiting/` still uses Organization authorship in schema and does not expose the same visible author-treatment pattern
 
 What this means:

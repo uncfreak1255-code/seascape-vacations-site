@@ -262,20 +262,20 @@ test("guide schema avoids stale generic price ranges and fake destination review
 test("guide pages only claim Sawyer authorship when the page visibly supports it", () => {
   for (const guide of guideFiles) {
     const claimsSawyer =
-      guide.source.includes('"author": {"@type": "Person", "name": "Sawyer Beck"') ||
-      guide.source.includes('"author":{"@type":"Person","name":"Sawyer Beck"');
+      guide.source.includes('"author": {"@type": "Person", "name": "Sawyer Beckett"') ||
+      guide.source.includes('"author":{"@type":"Person","name":"Sawyer Beckett"');
 
     if (!claimsSawyer) continue;
 
     const showsSawyer =
-      guide.source.includes('meta name="author" content="Sawyer Beck"') ||
+      guide.source.includes('meta name="author" content="Sawyer Beckett"') ||
       guide.source.includes('data-guide-author="sawyer-beck"') ||
-      guide.source.includes("By Sawyer Beck");
+      guide.source.includes("By Sawyer Beckett");
 
     assert.equal(
       showsSawyer,
       true,
-      `${guide.path} claims Sawyer Beck in JSON-LD without visible page-level authorship support`
+      `${guide.path} claims Sawyer Beckett in JSON-LD without visible page-level authorship support`
     );
   }
 });

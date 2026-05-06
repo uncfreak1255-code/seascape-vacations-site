@@ -23,7 +23,7 @@ If you're ever turning away a booking for a 12-16 person group (outside your inv
 
 Happy to return the favor when we're at capacity.
 
-Sawyer Beck  
+Sawyer Beckett
 Seascape Vacations  
 [phone]
 
@@ -64,7 +64,7 @@ Seascape Vacations
 
 Hi [Name],
 
-I'm Sawyer Beck, founder of Seascape Vacations (seascape-vacations.com). We're a boutique vacation rental management company based in Bradenton, managing 5 properties across the Bradenton/Anna Maria Island corridor.
+I'm Sawyer Beckett, founder of Seascape Vacations (seascape-vacations.com). We're a boutique vacation rental management company based in Bradenton, managing 5 properties across the Bradenton/Anna Maria Island corridor.
 
 We've been operating for [X years] and recently expanded our content and online presence to better serve Gulf Coast visitors. We're reaching out to local chambers and business associations to make sure we're properly listed in local business directories and resource pages.
 
@@ -76,7 +76,7 @@ We're not a national chain — we're local, boutique, and focused on Bradenton a
 
 Happy to provide business details, photos, or a member application.
 
-Sawyer Beck  
+Sawyer Beckett
 Seascape Vacations  
 seascape-vacations.com  
 [phone]

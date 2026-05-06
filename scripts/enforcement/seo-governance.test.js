@@ -87,8 +87,8 @@ test("priority guides add named author treatment and evidence blocks", () => {
   ]) {
     assert.match(
       html,
-      /<meta name="author" content="Sawyer Beck">/,
-      `Expected ${label} to expose Sawyer Beck in meta author`
+      /<meta name="author" content="Sawyer Beckett">/,
+      `Expected ${label} to expose Sawyer Beckett in meta author`
     );
 
     assert.match(
@@ -105,8 +105,8 @@ test("priority guides add named author treatment and evidence blocks", () => {
 
     assert.match(
       html,
-      /"@type": "Person"[\s\S]*"name": "Sawyer Beck"/,
-      `Expected ${label} to upgrade article schema author to Sawyer Beck`
+      /"@type": "Person"[\s\S]*"name": "Sawyer Beckett"/,
+      `Expected ${label} to upgrade article schema author to Sawyer Beckett`
     );
   }
 });
