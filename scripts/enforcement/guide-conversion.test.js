@@ -126,9 +126,19 @@ test("shared guide conversion kit exposes savings, stay, repeat-stay, and email 
     'data-track-event=\"guide_book_direct_click\"',
     'data-track-event=\"booking_engine_handoff\"',
     'data-email-capture-form',
-    "repeat-guest offers"
+    "Direct Booking List",
+    "Join The Direct-Booking List",
+    "email_capture_submit"
   ]) {
     assert.equal(partial.includes(marker), true, `guide conversion kit missing ${marker}`);
+  }
+
+  for (const staleOfferLanguage of ["Stay Alerts", "date alerts", "matching homes"]) {
+    assert.equal(
+      partial.includes(staleOfferLanguage),
+      false,
+      `guide conversion kit should not promise ${staleOfferLanguage}`
+    );
   }
 });
 

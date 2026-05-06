@@ -249,9 +249,9 @@
     </div>
 
     <div class="guide-email-capture">
-      <p class="guide-conversion-label">{{ config.emailLabel or "Stay Alerts" }}</p>
-      <h3 class="guide-conversion-title" style="font-size: clamp(24px, 3vw, 32px);">{{ config.emailTitle or "Get first shot at new stay dates and repeat-guest offers" }}</h3>
-      <p class="guide-email-capture-copy">{{ config.emailCopy or "Tell us your timing and we will send direct-booking deals, shoulder-season date ideas, and matching homes without the OTA fee stack." }}</p>
+      <p class="guide-conversion-label">{{ config.emailLabel or "Direct Booking List" }}</p>
+      <h3 class="guide-conversion-title" style="font-size: clamp(24px, 3vw, 32px);">{{ config.emailTitle or "Get practical direct-booking tips for your Gulf Coast stay" }}</h3>
+      <p class="guide-email-capture-copy">{{ config.emailCopy or "Join the list for direct-booking savings, shoulder-season ideas, and Seascape stay options without the OTA fee stack." }}</p>
 
       <form
         class="guide-email-capture-form"
@@ -265,12 +265,12 @@
         <input type="hidden" name="guide_slug" value="{{ config.guideSlug }}">
         <input type="text" name="name" placeholder="First name" autocomplete="name" required>
         <input type="email" name="email" placeholder="Email address" autocomplete="email" required>
-        <button type="submit">{{ config.emailButtonLabel or "Send Me Direct-Booking Dates" }}</button>
+        <button type="submit">{{ config.emailButtonLabel or "Join The Direct-Booking List" }}</button>
       </form>
       <div class="guide-email-capture-success" data-email-capture-success>
-        You are on the list. We will send direct-booking dates, repeat-guest offers, and matching homes tied to this guide.
+        You are on the list. We will send direct-booking savings and useful Gulf Coast stay ideas tied to this guide.
       </div>
-      <p class="guide-email-capture-note">{{ config.emailNote or "No OTA spam. Just date alerts, direct-booking savings, and repeat-guest offers." }}</p>
+      <p class="guide-email-capture-note">{{ config.emailNote or "No OTA spam. Just direct-booking savings and useful Gulf Coast stay ideas." }}</p>
 
       <div class="guide-repeat-stay-links">
         <p class="guide-conversion-label">{{ config.repeatLabel or "Plan The Stay" }}</p>

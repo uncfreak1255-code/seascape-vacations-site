@@ -59,14 +59,15 @@ report after BigQuery GSC covers the requested last-7-complete-day window.
 
 ## Planned Later: Real Stay Alerts
 
-The shared guide conversion kit currently has an inline email capture labeled
-`Stay Alerts`, but repo evidence only proves Mailchimp signup plus
-`email_capture_submit` tracking. Do not treat it as a real alert product yet.
+The shared guide conversion kit now uses a simpler `Direct Booking List`
+offer because repo evidence only proves Mailchimp signup plus
+`email_capture_submit` tracking. Do not treat the capture as a real alert
+product yet.
 
 Keep the idea, but build it deliberately after the current proof-clean,
 owner-benchmark, and chart-pack work:
 
-- rename visible copy to a simpler direct-booking list unless the real alert
+- keep visible copy on the simpler direct-booking list unless the real alert
   workflow exists
 - collect actual trip intent fields: travel month or date range, area,
   guest count, and needs such as pool, dock, pet-friendly, or large group
