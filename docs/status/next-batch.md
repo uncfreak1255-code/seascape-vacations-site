@@ -2,26 +2,26 @@
 
 ## Latest Execution Read
 
-Run date: 2026-05-06.
+Run date: 2026-05-08.
 
 The targeted joined operator read was executed in `seascape-analytics` for the
 five tracked money pages plus the existing report context pages.
 
 - Requested last-7-complete-day window: 2026-04-29 to 2026-05-05.
-- Latest BigQuery GSC `data_date`: 2026-05-04.
-- Site work gate: `blocked` because the GSC export does not cover the requested
-  window.
+- Latest BigQuery GSC `data_date`: 2026-05-06.
+- Site work gate: `clear` because the joined GSC + GA4 read covers the
+  requested window.
 - Report recommendation: `hold-and-reread`.
-- Partial-window owner-money result: 355 impressions, 0.28% weighted CTR, 4.60
+- Owner-money result: 413 impressions, 0.24% weighted CTR, 4.71
   weighted position, 0 owner form submits.
-- Partial-window stay-money result: 2 impressions and 0 stay-to-property clicks.
+- Stay-money result: 9 impressions and 0 stay-to-property clicks.
 - Guide winner variants still appear in GSC, but the report's consolidation
-  branch trigger is 5000 guide-variant impressions; the partial window showed
-  1028 total guide-winner impressions.
+  branch trigger is 5000 guide-variant impressions; the completed window showed
+  1165 total guide-winner impressions.
 
 Do not open `owner-ctr-rewrite-round-2`, `stay-money-cro-round-2`, Holmes Beach
-expansion, or fresh guide consolidation from this read. Rerun the same joined
-report after BigQuery GSC covers the requested last-7-complete-day window.
+expansion, or fresh guide consolidation from this read. The data is now fresh
+enough to call, and the correct branch decision is still `hold-and-reread`.
 
 ## Likely Priorities
 
