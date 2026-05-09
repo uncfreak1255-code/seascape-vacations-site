@@ -101,31 +101,31 @@ test("winner guide snippets stay decision-forward without body rewrites", () => 
 
   assert.equal(
     findMetaContent(bradentonVsSarasota, /<title>([^<]+)<\/title>/i),
-    "Bradenton vs Sarasota: Which Base Fits Your Trip?"
+    "Bradenton vs Sarasota: Which Is Better for Vacation?"
   );
   assert.equal(
     findMetaContent(bradentonVsSarasota, /<meta\s+name="description"\s+content="([^"]+)">/i),
-    "Bradenton usually wins on lower rates, easier AMI beach access, and parking. Sarasota wins on dining, arts, and Siesta Key energy."
+    "Compare Bradenton and Sarasota for vacation: beaches, cost, parking, dining, family fit, and where to stay if AMI access or Siesta Key matters most."
   );
   assert.equal(
     findMetaContent(bradentonVsSarasota, /<meta\s+property="og:title"\s+content="([^"]+)">/i),
-    "Bradenton vs Sarasota: Which Base Fits Your Trip?"
+    "Bradenton vs Sarasota: Which Is Better for Vacation?"
   );
   assert.match(
     bradentonVsSarasota,
-    /<h1>Bradenton vs Sarasota:<br>Costs, Beaches, Dining, and Where to Stay<\/h1>/
+    /<h1>Bradenton vs Sarasota:<br>Which Is Better for Vacation\?<\/h1>/
   );
   assert.match(
     bradentonVsSarasota,
-    /"headline": "Bradenton vs Sarasota: Which Base Fits Your Trip\?"/
+    /"headline": "Bradenton vs Sarasota: Which Is Better for Vacation\?"/
   );
   assert.match(
     bradentonVsSarasota,
-    /"dateModified": "2026-04-28T12:00:00-04:00"/
+    /"dateModified": "2026-05-09T12:00:00-04:00"/
   );
   assert.match(
     bradentonVsSarasota,
-    /Updated April 2026/
+    /Updated May 2026/
   );
 });
 
