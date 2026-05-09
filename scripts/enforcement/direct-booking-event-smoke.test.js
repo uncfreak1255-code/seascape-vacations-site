@@ -20,6 +20,12 @@ test("direct-booking event smoke is exposed as an operator command", () => {
   );
 });
 
+test("direct-booking event smoke runs inside the release safety flow", () => {
+  const releaseGate = fs.readFileSync(path.join(projectRoot, "scripts", "enforcement", "verify-release.js"), "utf8");
+
+  assert.match(releaseGate, /run\("npm", \["run", "verify:direct-booking-events"\]\)/);
+});
+
 test("direct-booking event smoke validates the three funnel event surfaces", () => {
   const smoke = loadSmokeModule();
 

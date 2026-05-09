@@ -149,6 +149,7 @@ function main() {
     run("npm", ["run", "verify:recovery:p0"]);
     run("npm", ["run", "verify:recovery:guides"]);
     run("npm", ["run", "verify:recovery:remediation"]);
+    run("npm", ["run", "verify:direct-booking-events"]);
     run("npm", ["run", "verify:links"]);
     run("npm", ["run", "verify:jsonld"]);
 
