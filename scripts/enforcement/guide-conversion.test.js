@@ -216,9 +216,11 @@ test("shared conversion tracking exposes navigation-safe tracked-link helpers", 
   );
 });
 
-test("booking-engine handoff click emits the GA4 event with the target booking URL", () => {
+test("booking-engine handoff click preserves repeat-guest campaign on the tagged booking URL", () => {
   const observed = withConversionTrackingStubs(({ listeners, window }) => {
     assert.equal(typeof listeners.DOMContentLoaded, "function", "tracking script should wait for DOM ready");
+    window.location.href =
+      "http://localhost/guides/bradenton-vs-sarasota/?utm_campaign=repeat_guest_direct&utm_content=day_3_the_oasis";
     listeners.DOMContentLoaded();
     assert.equal(typeof listeners.click, "function", "tracking script should bind click tracking");
 
@@ -260,7 +262,13 @@ test("booking-engine handoff click emits the GA4 event with the target booking U
 
   assert.equal(observed.event, "booking_engine_handoff");
   assert.equal(observed.payload.guide_slug, "best-time-visit-anna-maria-island");
-  assert.equal(observed.payload.link_url, "https://book.seascape-vacations.com");
+  assert.match(observed.payload.link_url, /^https:\/\/book\.seascape-vacations\.com\/\?/);
+  assert.match(observed.payload.link_url, /utm_source=seascape_site/);
+  assert.match(observed.payload.link_url, /utm_medium=direct_booking_link/);
+  assert.match(observed.payload.link_url, /utm_campaign=repeat_guest_direct/);
+  assert.match(observed.payload.link_url, /utm_content=day_3_the_oasis/);
+  assert.equal(observed.payload.utm_campaign, "repeat_guest_direct");
+  assert.equal(observed.payload.utm_content, "day_3_the_oasis");
   assert.equal(observed.payload.link_text, "Open Direct Availability");
 });
 

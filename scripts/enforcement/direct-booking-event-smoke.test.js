@@ -55,4 +55,10 @@ test("direct-booking event smoke validates the three funnel event surfaces", () 
     observedEvents.map((entry) => entry.event),
     ["email_capture_submit", "guide_book_direct_click", "booking_engine_handoff"]
   );
+
+  const handoffEvent = observedEvents.find((entry) => entry.event === "booking_engine_handoff");
+  assert.equal(handoffEvent.payload.utm_campaign, "direct_booking_site_handoff");
+  assert.match(handoffEvent.payload.link_url, /utm_source=seascape_site/);
+  assert.match(handoffEvent.payload.link_url, /utm_medium=direct_booking_link/);
+  assert.match(handoffEvent.payload.link_url, /utm_campaign=direct_booking_site_handoff/);
 });

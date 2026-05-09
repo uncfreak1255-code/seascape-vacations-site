@@ -3,6 +3,8 @@
 
   var MAILCHIMP_ENDPOINT = "https://seascape-vacations.us6.list-manage.com/subscribe/post";
   var MAILCHIMP_QUERY = "u=48f234eebd9cb530fd2f217fe&id=95e5a594d1&f_id=008996e5f0";
+  var BOOKING_ENGINE_HOST = "book.seascape-vacations.com";
+  var DEFAULT_BOOKING_CAMPAIGN = "direct_booking_site_handoff";
   var SUPPORTED_EVENTS = [
     "owner_primary_cta_click",
     "owner_phone_click",
@@ -114,6 +116,69 @@
     return (node && node.textContent ? node.textContent : "").replace(/\s+/g, " ").trim();
   }
 
+  function slugify(value) {
+    return String(value || "")
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "_")
+      .replace(/^_+|_+$/g, "");
+  }
+
+  function isBookingEngineUrl(href) {
+    if (!href) return false;
+
+    try {
+      return new URL(href, window.location.href).hostname === BOOKING_ENGINE_HOST;
+    } catch (error) {
+      return false;
+    }
+  }
+
+  function buildUtmContent(payload) {
+    return (
+      [
+        payload.page_slug || payload.guide_slug || "site",
+        payload.placement || "unknown",
+        payload.link_text || "booking_link"
+      ]
+        .map(slugify)
+        .filter(Boolean)
+        .join("_")
+        .slice(0, 120) || "booking_link"
+    );
+  }
+
+  function getCurrentUtmParam(name) {
+    try {
+      return new URL(window.location.href).searchParams.get(name) || "";
+    } catch (error) {
+      return "";
+    }
+  }
+
+  function appendBookingUtmParams(href, payload) {
+    if (!isBookingEngineUrl(href)) return href || "";
+
+    try {
+      var url = new URL(href, window.location.href);
+      var params = {
+        utm_source: getCurrentUtmParam("utm_source") || "seascape_site",
+        utm_medium: getCurrentUtmParam("utm_medium") || "direct_booking_link",
+        utm_campaign: getCurrentUtmParam("utm_campaign") || DEFAULT_BOOKING_CAMPAIGN,
+        utm_content: getCurrentUtmParam("utm_content") || buildUtmContent(payload || {})
+      };
+
+      Object.keys(params).forEach(function (key) {
+        if (!url.searchParams.has(key)) {
+          url.searchParams.set(key, params[key]);
+        }
+      });
+
+      return url.toString();
+    } catch (error) {
+      return href || "";
+    }
+  }
+
   function getPayloadFromElement(node) {
     var href = node && node.getAttribute ? node.getAttribute("href") : "";
     return {
@@ -126,16 +191,44 @@
     };
   }
 
+  function prepareTrackedPayload(node) {
+    var payload = getPayloadFromElement(node);
+    var href = getNavigationHref(node);
+    var taggedHref = appendBookingUtmParams(href, payload);
+
+    if (taggedHref && taggedHref !== href) {
+      payload.link_url = taggedHref;
+      if (node && typeof node.setAttribute === "function") {
+        node.setAttribute("href", taggedHref);
+      } else if (node) {
+        node.href = taggedHref;
+      }
+
+      try {
+        var url = new URL(taggedHref, window.location.href);
+        payload.utm_source = url.searchParams.get("utm_source") || "";
+        payload.utm_medium = url.searchParams.get("utm_medium") || "";
+        payload.utm_campaign = url.searchParams.get("utm_campaign") || "";
+        payload.utm_content = url.searchParams.get("utm_content") || "";
+      } catch (error) {
+        // Keep the click event if URL parsing fails.
+      }
+    }
+
+    return payload;
+  }
+
   function bindTrackedClicks() {
     document.addEventListener("click", function (event) {
       if (!event.target || typeof event.target.closest !== "function") return;
 
       var target = event.target.closest("[data-track-event]");
       if (!target) return;
+      var payload = prepareTrackedPayload(target);
 
       if (shouldDelayTrackedNavigation(target, event)) {
         event.preventDefault();
-        trackEvent(target.dataset.trackEvent, getPayloadFromElement(target), {
+        trackEvent(target.dataset.trackEvent, payload, {
           onComplete: function () {
             continueTrackedNavigation(target);
           }
@@ -143,7 +236,7 @@
         return;
       }
 
-      trackEvent(target.dataset.trackEvent, getPayloadFromElement(target));
+      trackEvent(target.dataset.trackEvent, payload);
     });
   }
 
@@ -227,6 +320,7 @@
   window.SeascapeConversionTracking = {
     trackEvent: trackEvent,
     shouldDelayTrackedNavigation: shouldDelayTrackedNavigation,
-    continueTrackedNavigation: continueTrackedNavigation
+    continueTrackedNavigation: continueTrackedNavigation,
+    appendBookingUtmParams: appendBookingUtmParams
   };
 })();
