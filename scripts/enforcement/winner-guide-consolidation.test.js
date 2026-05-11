@@ -43,3 +43,35 @@ test("winner-guide aliases stay out of the documented winner set", () => {
     }
   }
 });
+
+test("best-time guide variants are documented and redirected to the slash canonical", () => {
+  const bestTimeEntry = winnerGuideEntries.find(
+    (entry) => entry.winnerUrl === "/guides/best-time-visit-anna-maria-island/"
+  );
+
+  assert.ok(bestTimeEntry, "best-time guide should be tracked as a winner guide");
+
+  for (const alias of [
+    "/guides/best-time-visit-anna-maria-island",
+    "/guides/best-time-visit-anna-maria-island.html",
+    "/guides/best-time-visit-anna-maria-island/index.html",
+    "/guides/best-time-to-visit-anna-maria-island",
+    "/guides/best-time-to-visit-anna-maria-island/",
+    "/guides/best-time-to-visit-anna-maria-island.html",
+    "/guides/best-time-to-visit-anna-maria-island/index.html"
+  ]) {
+    assert.ok(
+      bestTimeEntry.aliases.includes(alias),
+      `${alias} should be documented as a best-time guide alias`
+    );
+
+    const rule = redirects.find((redirect) => redirect.from === alias);
+    assert.ok(rule, `Expected redirects to include ${alias}`);
+    assert.equal(rule.code, "301", `${alias} should be a permanent redirect`);
+    assert.equal(
+      normalizeComparablePath(rule.to),
+      normalizeComparablePath(bestTimeEntry.winnerUrl),
+      `${alias} should redirect directly to ${bestTimeEntry.winnerUrl}`
+    );
+  }
+});

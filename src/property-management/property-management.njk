@@ -260,6 +260,9 @@ eleventyComputed:
                     <p style="font-size: 14px; color: var(--stone); margin: 0 0 8px;"><strong>Reviewed by:</strong> {{ proofAsset.reviewedBy }}{% if proofAsset.reviewerRole %}, {{ proofAsset.reviewerRole }}{% endif %}</p>
                     <p style="font-size: 14px; color: var(--stone); margin: 0 0 8px;"><strong>Updated:</strong> {{ proofAsset.reviewedDateLabel or proofAsset.reviewedDate }}</p>
                     <p style="font-size: 14px; color: var(--stone); margin: 0 0 8px;"><strong>Source:</strong> <a href="{{ proofAsset.sourceUrl }}" style="color: var(--brand-dark); text-decoration: underline;">{{ proofAsset.sourceLabel }}</a></p>
+                    {% if proofAsset.benchmarkUrl %}
+                    <p style="font-size: 14px; color: var(--stone); margin: 0 0 8px;"><strong>Owner benchmark:</strong> <a href="{{ proofAsset.benchmarkUrl }}" style="color: var(--brand-dark); text-decoration: underline;">Read the owner fee + revenue leak benchmark</a></p>
+                    {% endif %}
                     {% if proofAsset.methodology %}
                     <p style="font-size: 14px; color: var(--stone-light); margin: 0;"><strong>Methodology:</strong> {{ proofAsset.methodology }}</p>
                     {% endif %}
