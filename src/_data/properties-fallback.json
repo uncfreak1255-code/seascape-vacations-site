@@ -14,7 +14,8 @@
     "amenities": ["pool", "waterfront", "dock", "hot-tub"],
     "highlights": ["Private Pool & Spa", "Waterfront Dock"],
     "description": "Wake up to stunning water views and watch dolphins play right from your private dock. This magnificent waterfront home features a heated pool and spa, gourmet kitchen, and direct water access.",
-    "specs": "4 BR · 3 BA · Sleeps 12"
+    "specs": "4 BR · 3 BA · Sleeps 12",
+    "marketing_amenities": ["private-heated-pool", "hot-tub-spa", "private-dock", "waterfront", "game-room", "outdoor-kitchen", "fast-wifi", "pet-friendly", "single-level", "outdoor-living"]
   },
   {
     "id": "the-oasis",
@@ -29,9 +30,10 @@
     "price": 550,
     "image": "https://bookingenginecdn.hostaway.com/listing/51916-189511-g2tWgjqFm-DXPRc0ll2k1u87aWIKNZm6tOyz9KhGrnc-64dfdf914c559?width=1600&quality=80&format=webp&v=2",
     "amenities": ["pool", "hot-tub", "outdoor-grill", "pet-friendly"],
-    "highlights": ["Large Pool + 2 Hot Tubs", "Mini Golf Course"],
-    "description": "The ultimate gathering spot features a massive pool, TWO hot tubs, private mini golf course, pool table, and endless entertainment options.",
-    "specs": "5 BR · 3 BA · Sleeps 16"
+    "highlights": ["Large Pool + 2 Hot Tubs", "Putting Green + Kid Putters"],
+    "description": "The ultimate gathering spot features a massive pool, TWO hot tubs, a private putting green with kid putters included, pool table, and endless entertainment options.",
+    "specs": "5 BR · 3 BA · Sleeps 16",
+    "marketing_amenities": ["private-heated-pool", "hot-tub-spa", "putting-green", "game-room", "fast-wifi", "pet-friendly", "single-level", "outdoor-living", "grill", "fenced-yard"]
   },
   {
     "id": "sarasota-luxe",
@@ -48,7 +50,8 @@
     "amenities": ["pool", "downtown"],
     "highlights": ["Downtown Location", "Near St. Armands"],
     "description": "Sophisticated Florida living in downtown Sarasota. Walk to St. Armands Circle, visit the Ringling Museum, then retreat to your private pool oasis.",
-    "specs": "4 BR · 3 BA · Sleeps 12"
+    "specs": "4 BR · 3 BA · Sleeps 12",
+    "marketing_amenities": ["private-heated-pool", "hot-tub-spa", "outdoor-kitchen", "fast-wifi", "pet-friendly", "downtown", "single-level", "grill", "fenced-yard", "kid-friendly"]
   },
   {
     "id": "river-house",
@@ -62,10 +65,11 @@
     "rating": 5.0,
     "price": 400,
     "image": "https://bookingenginecdn.hostaway.com/listing/51916-135880-O6JS9DHvtg7g5gc5ZAe7--55PGx3-0ELuuNJ4T1dsz7s-67620f804f296?width=1600&quality=80&format=webp&v=2",
-    "amenities": ["pool", "spa", "waterfront"],
-    "highlights": ["Pool & Spa", "Sunset Views"],
-    "description": "Escape to this tranquil riverfront retreat featuring a private pool, spa, and game room. Watch stunning sunsets over the water from your private backyard paradise.",
-    "specs": "4 BR · 3 BA · Sleeps 12"
+    "amenities": ["pool", "spa"],
+    "highlights": ["Pool & Spa", "1 Min to Boat Ramp"],
+    "description": "Escape to this tranquil retreat one minute from the Warner Bayou boat ramp, featuring a private heated pool, spa, and game room — a peaceful backyard paradise five miles from Anna Maria Island beaches.",
+    "specs": "4 BR · 3 BA · Sleeps 12",
+    "marketing_amenities": ["private-heated-pool", "hot-tub-spa", "game-room", "fast-wifi", "pet-friendly", "single-level", "outdoor-living", "grill", "fenced-yard", "kid-friendly"]
   },
   {
     "id": "487798",
@@ -82,6 +86,7 @@
     "amenities": ["pool", "spa", "outdoor-grill"],
     "highlights": ["Heated Pool & In-Ground Spa", "Closest Home to IMG Academy"],
     "description": "Book this Bradenton pool home direct and save 10-15%. Three bedrooms, 3.5 baths, a heated pool, in-ground spa, outdoor grill area, and easy access to IMG Academy.",
-    "specs": "3 BR · 3.5 BA · Sleeps 10"
+    "specs": "3 BR · 3.5 BA · Sleeps 10",
+    "marketing_amenities": ["private-heated-pool", "hot-tub-spa", "outdoor-kitchen", "fast-wifi", "single-level", "outdoor-living", "grill", "fenced-yard", "kid-friendly", "smart-tv"]
   }
 ]
