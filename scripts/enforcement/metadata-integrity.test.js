@@ -5,6 +5,7 @@ const assert = require("node:assert/strict");
 
 const projectRoot = path.resolve(__dirname, "..", "..");
 const ownerData = require(path.join(projectRoot, "src", "_data", "seoPages.json")).owner;
+const ownerProofAssets = require(path.join(projectRoot, "src", "_data", "ownerProofAssets.json"));
 
 function readSource(...parts) {
   return fs.readFileSync(path.join(projectRoot, ...parts), "utf8");
@@ -72,15 +73,15 @@ test("winner guide snippets stay decision-forward without body rewrites", () => 
 
   assert.equal(
     findMetaContent(amiVsSiesta, /<title>([^<]+)<\/title>/i),
-    "Anna Maria Island vs Siesta Key: Which Should You Choose?"
+    "Anna Maria Island vs Siesta Key: Which Beach Fits?"
   );
   assert.equal(
     findMetaContent(amiVsSiesta, /<meta\s+name="description"\s+content="([^"]+)">/i),
-    "Choose Anna Maria Island for quieter family beach days and easier parking; choose Siesta Key for famous quartz sand, nightlife, and Sarasota dining."
+    "AMI fits quieter family beach days and easier parking; Siesta Key fits famous quartz sand, nightlife, and Sarasota dining. Compare the tradeoff."
   );
   assert.equal(
     findMetaContent(amiVsSiesta, /<meta\s+property="og:title"\s+content="([^"]+)">/i),
-    "Anna Maria Island vs Siesta Key: Which Should You Choose?"
+    "Anna Maria Island vs Siesta Key: Which Beach Fits?"
   );
   assert.match(
     amiVsSiesta,
@@ -88,7 +89,7 @@ test("winner guide snippets stay decision-forward without body rewrites", () => 
   );
   assert.match(
     amiVsSiesta,
-    /"headline": "Anna Maria Island vs Siesta Key: Which Should You Choose\?"/
+    /"headline": "Anna Maria Island vs Siesta Key: Which Beach Fits\?"/
   );
   assert.match(
     amiVsSiesta,
@@ -101,15 +102,15 @@ test("winner guide snippets stay decision-forward without body rewrites", () => 
 
   assert.equal(
     findMetaContent(bradentonVsSarasota, /<title>([^<]+)<\/title>/i),
-    "Bradenton vs Sarasota: Which Is Better for Vacation?"
+    "Bradenton vs Sarasota for Vacation: Which Base Wins?"
   );
   assert.equal(
     findMetaContent(bradentonVsSarasota, /<meta\s+name="description"\s+content="([^"]+)">/i),
-    "Compare Bradenton and Sarasota for vacation: beaches, cost, parking, dining, family fit, and where to stay if AMI access or Siesta Key matters most."
+    "Bradenton wins on AMI access, parking, and value; Sarasota wins on Siesta Key, dining, and arts. Compare beaches, cost, and where to stay."
   );
   assert.equal(
     findMetaContent(bradentonVsSarasota, /<meta\s+property="og:title"\s+content="([^"]+)">/i),
-    "Bradenton vs Sarasota: Which Is Better for Vacation?"
+    "Bradenton vs Sarasota for Vacation: Which Base Wins?"
   );
   assert.match(
     bradentonVsSarasota,
@@ -117,7 +118,7 @@ test("winner guide snippets stay decision-forward without body rewrites", () => 
   );
   assert.match(
     bradentonVsSarasota,
-    /"headline": "Bradenton vs Sarasota: Which Is Better for Vacation\?"/
+    /"headline": "Bradenton vs Sarasota for Vacation: Which Base Wins\?"/
   );
   assert.match(
     bradentonVsSarasota,
@@ -161,11 +162,20 @@ test("priority owner money-page metadata stays non-empty and query-aligned", () 
   assert.ok(vrboPage, "VRBO page should exist");
 
   assert.match(feePage.title, /fees/i);
-  assert.match(feePage.title, /hidden costs/i);
-  assert.match(feePage.description, /average/i);
-  assert.match(feePage.description, /charge/i);
+  assert.equal(feePage.title, "Florida Vacation Rental Management Fees: What Owners Net");
+  assert.equal(
+    feePage.description,
+    "See Florida vacation rental management fees, OTA fee drag, and when a lower percentage still leaves owners with less net revenue."
+  );
+  assert.match(feePage.description, /OTA fee drag/i);
+  assert.match(feePage.description, /net revenue/i);
 
   assert.match(licensingPage.title, /DBPR/i);
+  assert.equal(licensingPage.title, "Florida Vacation Rental License Rules: DBPR + County Risk");
+  assert.equal(
+    licensingPage.description,
+    "DBPR is one layer. See Florida vacation rental license rules, county registration, tax setup, and launch risks before bookings go live."
+  );
   assert.match(licensingPage.description, /DBPR/i);
   assert.match(licensingPage.description, /county/i);
 
@@ -173,4 +183,24 @@ test("priority owner money-page metadata stays non-empty and query-aligned", () 
   assert.match(vrboPage.title, /owners/i);
   assert.match(vrboPage.description, /owners/i);
   assert.match(vrboPage.description, /Florida/i);
+});
+
+test("owner proof benchmark is promoted as the conquest asset", () => {
+  const template = readSource("src", "property-management", "property-management.njk");
+  const llms = readSource("src", "llms.txt");
+  const benchmark = ownerProofAssets["gulf-coast-owner-benchmark-2026"];
+
+  assert.equal(
+    benchmark.benchmarkUrl,
+    "/research/owner-fee-revenue-leak-benchmark-2026/"
+  );
+  assert.match(
+    template,
+    /href="{{ proofAsset\.benchmarkUrl }}"/,
+    "owner template should link directly to the owner fee benchmark when proofAsset.benchmarkUrl exists"
+  );
+  assert.match(
+    llms,
+    /\[Owner Fee \+ Revenue Leak Benchmark\]\(https:\/\/seascape-vacations\.com\/research\/owner-fee-revenue-leak-benchmark-2026\/\)/
+  );
 });
