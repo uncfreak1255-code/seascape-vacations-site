@@ -6,19 +6,17 @@ const {
   mergeOwnerLeadMetrics
 } = require("./_owner-lead-metrics");
 
-function resolveWritableStore(candidateStore) {
+function resolveWritableStore(event, candidateStore) {
   if (candidateStore && typeof candidateStore.get === "function" && typeof candidateStore.set === "function") {
     return candidateStore;
   }
 
+  connectLambda(event);
   return getStore(OWNER_LEAD_STORE_NAME);
 }
 
-async function handleSubmissionCreated(event, contextOrStore, injectedStore) {
-  if (!injectedStore && !(contextOrStore && typeof contextOrStore.get === "function")) {
-    connectLambda(event);
-  }
-  const store = resolveWritableStore(injectedStore || contextOrStore);
+async function handleSubmissionCreated(event, _context, injectedStore) {
+  const store = resolveWritableStore(event, injectedStore);
   const payload = JSON.parse(event.body || "{}");
   const receipt = buildOwnerLeadReceipt(payload);
 

@@ -8,19 +8,17 @@ const {
 
 const OWNER_LEAD_METRICS_TOKEN = process.env.OWNER_LEAD_METRICS_TOKEN;
 
-function resolveReadableStore(candidateStore) {
+function resolveReadableStore(event, candidateStore) {
   if (candidateStore && typeof candidateStore.get === "function") {
     return candidateStore;
   }
 
+  connectLambda(event);
   return getStore(OWNER_LEAD_STORE_NAME);
 }
 
-async function handleOwnerLeadMetricsRequest(event, contextOrStore, injectedStore) {
-  if (!injectedStore && !(contextOrStore && typeof contextOrStore.get === "function")) {
-    connectLambda(event);
-  }
-  const store = resolveReadableStore(injectedStore || contextOrStore);
+async function handleOwnerLeadMetricsRequest(event, _context, injectedStore) {
+  const store = resolveReadableStore(event, injectedStore);
   if (event.httpMethod !== "GET") {
     return { statusCode: 405, body: "Method Not Allowed" };
   }
