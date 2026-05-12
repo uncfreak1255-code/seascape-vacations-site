@@ -140,6 +140,46 @@ function getOwnerLeadBlobsConfig() {
   };
 }
 
+function parseStoredMetrics(value) {
+  if (!value) return null;
+
+  if (typeof value === "string") {
+    try {
+      return JSON.parse(value);
+    } catch (_error) {
+      return null;
+    }
+  }
+
+  if (typeof value === "object") {
+    return value;
+  }
+
+  return null;
+}
+
+async function readOwnerLeadMetrics(store) {
+  try {
+    return parseStoredMetrics(await store.get(OWNER_LEAD_METRICS_KEY, { type: "json" }));
+  } catch (_error) {
+    if (!store || typeof store.get !== "function") return null;
+  }
+
+  try {
+    return parseStoredMetrics(await store.get(OWNER_LEAD_METRICS_KEY, { type: "text" }));
+  } catch (_error) {
+    return null;
+  }
+}
+
+async function writeOwnerLeadMetrics(store, metrics) {
+  await store.set(
+    OWNER_LEAD_METRICS_KEY,
+    JSON.stringify(metrics),
+    { contentType: "application/json; charset=utf-8" }
+  );
+}
+
 module.exports = {
   OWNER_LEAD_FORM_NAME,
   OWNER_LEAD_STORE_NAME,
@@ -148,5 +188,8 @@ module.exports = {
   mergeOwnerLeadMetrics,
   formatOwnerLeadSummary,
   readAuthToken,
-  getOwnerLeadBlobsConfig
+  getOwnerLeadBlobsConfig,
+  parseStoredMetrics,
+  readOwnerLeadMetrics,
+  writeOwnerLeadMetrics
 };
