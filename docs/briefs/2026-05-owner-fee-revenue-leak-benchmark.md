@@ -38,11 +38,11 @@ Scenario math:
 
 ## CTA Pattern
 
-Primary CTA stays:
+Primary CTA becomes:
 
-- `Request Your Revenue Review`
+- `Request Your Revenue Teardown`
 
-The benchmark should make the owner ask for a property-specific fee-stack review, not chase the lowest management percentage.
+The benchmark should make the owner ask for a property-specific teardown, not chase the lowest management percentage.
 
 ## Follow-Up
 

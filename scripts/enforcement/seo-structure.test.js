@@ -168,7 +168,7 @@ test("about page exists as a real route and homepage links point to it", () => {
 test("property owners page leads with premium proof instead of explainer-hub copy", () => {
   const ownerPage = fs.readFileSync(path.join(projectRoot, "src", "property-management", "index.njk"), "utf8");
 
-  assert.equal(ownerPage.includes("Property management for owners who care about net revenue"), true);
+  assert.equal(ownerPage.includes("Property management for owners who care about what they actually keep"), true);
   assert.equal(ownerPage.includes("$119,923"), true);
   assert.equal(ownerPage.includes("13.4% → 2.9%"), true);
   assert.equal(ownerPage.includes("Where Owner Revenue Actually Leaks"), true);

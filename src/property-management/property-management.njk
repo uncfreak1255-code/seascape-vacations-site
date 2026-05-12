@@ -206,7 +206,7 @@ eleventyComputed:
                     <div class="nav-logo-sub">Vacations</div>
                 </div>
             </a>
-            <a href="#owner-cta" class="btn" data-track-event="owner_primary_cta_click" data-page-slug="{{ seoPage.slug }}">{{ seoPage.primaryCta or "Request Your Revenue Review" }}</a>
+            <a href="#owner-cta" class="btn" data-track-event="owner_primary_cta_click" data-page-slug="{{ seoPage.slug }}">{{ seoPage.primaryCta or "Request Your Revenue Teardown" }}</a>
         </div>
     </nav>
 
@@ -227,7 +227,7 @@ eleventyComputed:
                 <h1 style="font-size: clamp(32px, 5vw, 48px); margin-bottom: 20px; color: white;">{{ seoPage.h1 }}</h1>
                 <p style="max-width: 700px; margin: 0 auto; opacity: 0.9; font-size: 18px;">{{ seoPage.intro }}</p>
                 <div style="margin-top: 26px; display: flex; justify-content: center; flex-wrap: wrap;">
-                    <a href="#owner-cta" class="btn btn-gold" data-track-event="owner_primary_cta_click" data-page-slug="{{ seoPage.slug }}">{{ seoPage.primaryCta or "Request Your Revenue Review" }}</a>
+                    <a href="#owner-cta" class="btn btn-gold" data-track-event="owner_primary_cta_click" data-page-slug="{{ seoPage.slug }}">{{ seoPage.primaryCta or "Request Your Revenue Teardown" }}</a>
                 </div>
                 <p style="max-width: 760px; margin: 18px auto 0; opacity: 0.82; font-size: 15px;">{{ seoPage.ctaSubcopy or "We break down fee structure, channel mix, and what your current setup is actually costing you before you decide anything." }}</p>
             </div>
@@ -551,13 +551,13 @@ eleventyComputed:
             <div class="container">
                 <div id="owner-cta">
                     {{ ownerEvaluationForm({
-                        eyebrow: "Owner Review",
+                        eyebrow: "Owner Teardown",
                         title: seoPage.primaryCta or seoPage.cta,
                         intro: seoPage.ctaSubcopy or "We break down fee structure, channel mix, and what your current setup is actually costing you before you decide anything.",
                         pageSlug: seoPage.slug,
                         market: seoPage.destination or "florida-gulf-coast",
                         leadType: "owner-revenue-teardown",
-                        buttonLabel: seoPage.primaryCta or "Request Your Revenue Review",
+                        buttonLabel: seoPage.primaryCta or "Request Your Revenue Teardown",
                         note: seoPage.ctaNote or "No generic pitch deck. We use your market, your property type, and your current operating model."
                     }) }}
                     <p style="margin-top: 18px; text-align: center; color: rgba(255, 255, 255, 0.82); font-size: 15px;">
