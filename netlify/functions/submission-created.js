@@ -1,10 +1,11 @@
 const { connectLambda, getStore } = require("@netlify/blobs");
 const {
   OWNER_LEAD_STORE_NAME,
-  OWNER_LEAD_METRICS_KEY,
   buildOwnerLeadReceipt,
   getOwnerLeadBlobsConfig,
-  mergeOwnerLeadMetrics
+  mergeOwnerLeadMetrics,
+  readOwnerLeadMetrics,
+  writeOwnerLeadMetrics
 } = require("./_owner-lead-metrics");
 
 function resolveWritableStore(event, candidateStore) {
@@ -33,9 +34,9 @@ async function handleSubmissionCreated(event, _context, injectedStore) {
     };
   }
 
-  const existingMetrics = (await store.get(OWNER_LEAD_METRICS_KEY, { type: "json" })) || null;
+  const existingMetrics = await readOwnerLeadMetrics(store);
   const nextMetrics = mergeOwnerLeadMetrics(existingMetrics, receipt);
-  await store.set(OWNER_LEAD_METRICS_KEY, nextMetrics);
+  await writeOwnerLeadMetrics(store, nextMetrics);
 
   return {
     statusCode: 200,

@@ -10,7 +10,9 @@ const {
   mergeOwnerLeadMetrics,
   formatOwnerLeadSummary,
   getOwnerLeadBlobsConfig,
-  readAuthToken
+  parseStoredMetrics,
+  readAuthToken,
+  readOwnerLeadMetrics
 } = require("../../netlify/functions/_owner-lead-metrics");
 const {
   handleSubmissionCreated
@@ -242,9 +244,10 @@ test("submission-created stores sanitized owner lead metrics and ignores duplica
     stored: false,
     reason: "ignored_form"
   });
-  assert.equal(storedMetrics.totalSubmissions, 1);
-  assert.equal(storedMetrics.receipts[0].sourcePageSlug, "owner-fee-revenue-leak-benchmark-2026");
-  assert.equal("email" in storedMetrics.receipts[0], false);
+  const parsedMetrics = JSON.parse(storedMetrics);
+  assert.equal(parsedMetrics.totalSubmissions, 1);
+  assert.equal(parsedMetrics.receipts[0].sourcePageSlug, "owner-fee-revenue-leak-benchmark-2026");
+  assert.equal("email" in parsedMetrics.receipts[0], false);
 });
 
 test("submission-created ignores the Netlify context object and still uses an injected mock store when provided separately", async () => {
@@ -277,7 +280,43 @@ test("submission-created ignores the Netlify context object and still uses an in
   );
 
   assert.equal(response.statusCode, 200);
-  assert.equal(storedMetrics.totalSubmissions, 1);
+  assert.equal(JSON.parse(storedMetrics).totalSubmissions, 1);
+});
+
+test("stored owner lead metrics parse only valid JSON payloads", () => {
+  const metrics = {
+    totalSubmissions: 1,
+    bySourcePageSlug: {
+      "owner-fee-revenue-leak-benchmark-2026": 1
+    },
+    receipts: [
+      {
+        submissionId: "submission-1",
+        createdAt: "2026-05-12T12:00:00.000Z",
+        pageSlug: "property-management",
+        sourcePageSlug: "owner-fee-revenue-leak-benchmark-2026",
+        market: "florida-gulf-coast",
+        leadType: "owner-revenue-teardown"
+      }
+    ]
+  };
+
+  assert.deepEqual(parseStoredMetrics(JSON.stringify(metrics)), metrics);
+  assert.equal(parseStoredMetrics("[object Object]"), null);
+});
+
+test("owner lead metrics reader falls back safely when stored blob is malformed", async () => {
+  const mockStore = {
+    async get(_key, options) {
+      if (options.type === "json") {
+        throw new SyntaxError('"[object Object]" is not valid JSON');
+      }
+
+      return "[object Object]";
+    }
+  };
+
+  assert.equal(await readOwnerLeadMetrics(mockStore), null);
 });
 
 test("owner lead metrics handler requires auth token and returns sanitized summary", async () => {

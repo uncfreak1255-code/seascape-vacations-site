@@ -1,10 +1,10 @@
 const { connectLambda, getStore } = require("@netlify/blobs");
 const {
   OWNER_LEAD_STORE_NAME,
-  OWNER_LEAD_METRICS_KEY,
   formatOwnerLeadSummary,
   getOwnerLeadBlobsConfig,
-  readAuthToken
+  readAuthToken,
+  readOwnerLeadMetrics
 } = require("./_owner-lead-metrics");
 
 const OWNER_LEAD_METRICS_TOKEN = process.env.OWNER_LEAD_METRICS_TOKEN;
@@ -37,7 +37,7 @@ async function handleOwnerLeadMetricsRequest(event, _context, injectedStore) {
     return { statusCode: 401, body: "Unauthorized" };
   }
 
-  const metrics = (await store.get(OWNER_LEAD_METRICS_KEY, { type: "json" })) || null;
+  const metrics = await readOwnerLeadMetrics(store);
   return {
     statusCode: 200,
     headers: { "content-type": "application/json; charset=utf-8" },
