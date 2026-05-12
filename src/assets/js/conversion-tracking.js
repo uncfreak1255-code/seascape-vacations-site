@@ -114,11 +114,57 @@
     return (node && node.textContent ? node.textContent : "").replace(/\s+/g, " ").trim();
   }
 
+  function getHiddenInputValue(form, name) {
+    if (!form || typeof form.querySelector !== "function") return "";
+    var field = form.querySelector('input[name="' + name + '"]');
+    if (!field || typeof field.value !== "string") return "";
+    return field.value.trim();
+  }
+
+  function setHiddenInputValue(form, name, value) {
+    if (!form || typeof form.querySelector !== "function") return;
+    var field = form.querySelector('input[name="' + name + '"]');
+    if (!field) return;
+    field.value = value;
+  }
+
+  function getOwnerSourceFromLocation() {
+    if (!window.location || typeof window.location.search !== "string" || typeof URLSearchParams !== "function") {
+      return "";
+    }
+
+    var params = new URLSearchParams(window.location.search);
+    return (params.get("owner_source") || "").trim();
+  }
+
+  function syncOwnerSourcePage(form) {
+    if (!form || !form.dataset) return;
+
+    var sourcePageSlug =
+      getOwnerSourceFromLocation() ||
+      getHiddenInputValue(form, "source_page_slug") ||
+      form.dataset.sourcePageSlug ||
+      form.dataset.pageSlug ||
+      "";
+
+    if (!sourcePageSlug) return;
+
+    form.dataset.sourcePageSlug = sourcePageSlug;
+    setHiddenInputValue(form, "source_page_slug", sourcePageSlug);
+  }
+
   function getPayloadFromElement(node) {
     var href = node && node.getAttribute ? node.getAttribute("href") : "";
+    var sourcePageSlug = node && node.dataset ? node.dataset.sourcePageSlug || "" : "";
+
+    if (!sourcePageSlug && node && String(node.tagName || "").toUpperCase() === "FORM") {
+      sourcePageSlug = getHiddenInputValue(node, "source_page_slug");
+    }
+
     return {
       guide_slug: node && node.dataset ? node.dataset.guideSlug || "" : "",
       page_slug: node && node.dataset ? node.dataset.pageSlug || "" : "",
+      source_page_slug: sourcePageSlug,
       market: node && node.dataset ? node.dataset.market || "" : "",
       placement: node && node.dataset ? node.dataset.formPlacement || node.dataset.placement || "" : "",
       link_text: node && node.dataset && node.dataset.trackLabel ? node.dataset.trackLabel : getText(node),
@@ -150,6 +196,7 @@
   function bindOwnerFormStarts() {
     var ownerForms = document.querySelectorAll('form[data-track-form="owner"]');
     ownerForms.forEach(function (form) {
+      syncOwnerSourcePage(form);
       var started = false;
       form.addEventListener("focusin", function () {
         if (started) return;
@@ -203,6 +250,7 @@
       var form = event.target;
       if (!form || !form.matches("form[data-track-form]")) return;
 
+      syncOwnerSourcePage(form);
       trackEvent(form.dataset.formSubmitEvent, getPayloadFromElement(form));
 
       if (form.dataset.inlineEmailCapture === "true") {

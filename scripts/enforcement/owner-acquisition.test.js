@@ -91,6 +91,21 @@ test("owner revenue review form lowers friction without losing tracking or inten
   assert.equal(ownerFormPartial.includes("Send the property address or listing URL. We will review fee drag, channel mix, and operating gaps that may be costing you revenue."), true);
   assert.equal(ownerFormPartial.includes('data-track-form="owner"'), true);
   assert.equal(ownerFormPartial.includes('data-form-submit-event="owner_form_submit"'), true);
+  assert.equal(ownerFormPartial.includes('data-source-page-slug="{{ options.sourcePageSlug or options.pageSlug or \'property-management\' }}"'), true);
+  assert.equal(ownerFormPartial.includes('name="source_page_slug" value="{{ options.sourcePageSlug or options.pageSlug or \'property-management\' }}"'), true);
+});
+
+test("owner benchmark CTA carries source attribution into the revenue review form path", () => {
+  const ownerBenchmark = fs.readFileSync(
+    path.join(projectRoot, "src", "research", "owner-fee-revenue-leak-benchmark-2026.njk"),
+    "utf8"
+  );
+
+  assert.equal(
+    ownerBenchmark.includes('/property-management/?owner_source=owner-fee-revenue-leak-benchmark-2026#owner-cta'),
+    true,
+    "benchmark CTA should preserve benchmark origin on the owner review path"
+  );
 });
 
 test("owner pages keep phone as a lower-trust fallback instead of a competing hero CTA", () => {

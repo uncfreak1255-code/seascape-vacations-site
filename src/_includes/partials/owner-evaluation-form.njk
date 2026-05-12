@@ -9,10 +9,12 @@
   data-form-start-event="owner_form_start"
   data-form-submit-event="owner_form_submit"
   data-page-slug="{{ options.pageSlug or 'property-management' }}"
+  data-source-page-slug="{{ options.sourcePageSlug or options.pageSlug or 'property-management' }}"
   data-market="{{ options.market or 'florida-gulf-coast' }}"
 >
   <input type="hidden" name="form-name" value="owner-revenue-teardown">
   <input type="hidden" name="page_slug" value="{{ options.pageSlug or 'property-management' }}">
+  <input type="hidden" name="source_page_slug" value="{{ options.sourcePageSlug or options.pageSlug or 'property-management' }}">
   <input type="hidden" name="market" value="{{ options.market or 'florida-gulf-coast' }}">
   <input type="hidden" name="lead_type" value="{{ options.leadType or 'owner-revenue-teardown' }}">
   <p hidden>

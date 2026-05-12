@@ -264,6 +264,58 @@ test("booking-engine handoff click emits the GA4 event with the target booking U
   assert.equal(observed.payload.link_text, "Open Direct Availability");
 });
 
+test("owner form tracking preserves owner_source attribution on start and submit", () => {
+  const observed = withConversionTrackingStubs(({ listeners, window }) => {
+    const hiddenSourceField = { value: "property-management" };
+    const ownerForm = {
+      tagName: "FORM",
+      dataset: {
+        formStartEvent: "owner_form_start",
+        formSubmitEvent: "owner_form_submit",
+        pageSlug: "property-management",
+        sourcePageSlug: "property-management",
+        market: "florida-gulf-coast"
+      },
+      addEventListener(eventName, handler) {
+        if (eventName === "focusin") {
+          this.focusinHandler = handler;
+        }
+      },
+      querySelector(selector) {
+        if (selector === 'input[name="source_page_slug"]') {
+          return hiddenSourceField;
+        }
+        return null;
+      },
+      matches(selector) {
+        return selector === "form[data-track-form]";
+      }
+    };
+
+    window.location.href = "http://localhost/property-management/?owner_source=owner-fee-revenue-leak-benchmark-2026#owner-cta";
+    window.location.search = "?owner_source=owner-fee-revenue-leak-benchmark-2026";
+    global.document.querySelectorAll = function (selector) {
+      return selector === 'form[data-track-form="owner"]' ? [ownerForm] : [];
+    };
+
+    listeners.DOMContentLoaded();
+    ownerForm.focusinHandler();
+    listeners.submit({ target: ownerForm });
+
+    return {
+      hiddenValue: hiddenSourceField.value,
+      startEvent: window.dataLayer[0],
+      submitEvent: window.dataLayer[1]
+    };
+  });
+
+  assert.equal(observed.hiddenValue, "owner-fee-revenue-leak-benchmark-2026");
+  assert.equal(observed.startEvent.event, "owner_form_start");
+  assert.equal(observed.startEvent.payload.source_page_slug, "owner-fee-revenue-leak-benchmark-2026");
+  assert.equal(observed.submitEvent.event, "owner_form_submit");
+  assert.equal(observed.submitEvent.payload.source_page_slug, "owner-fee-revenue-leak-benchmark-2026");
+});
+
 test("priority guides use the shared conversion kit with page-specific stay links", () => {
   for (const guide of guideFiles) {
     const source = fs.readFileSync(guide.file, "utf8");
