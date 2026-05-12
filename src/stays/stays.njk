@@ -173,6 +173,50 @@ eleventyComputed:
         ]
     }
     </script>
+    {% elif properties and properties | length and seoPage.matchingProperties and seoPage.matchingProperties.length > 0 %}
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        "name": "{{ seoPage.h1 }}",
+        "description": "{{ seoPage.description }}",
+        "numberOfItems": {{ seoPage.matchingProperties | length }},
+        "itemListElement": [
+            {% for matchingSlug in seoPage.matchingProperties %}
+            {% set listPosition = loop.index %}
+            {% set isLastMatch = loop.last %}
+            {% for property in properties %}
+            {% if property.slug == matchingSlug %}
+            {
+                "@type": "ListItem",
+                "position": {{ listPosition }},
+                "item": {
+                    "@type": "VacationRental",
+                    "@id": "{{ site.url }}/#{{ property.slug }}",
+                    "name": "{{ property.name }}",
+                    "description": "{{ property.description }}",
+                    "image": "{{ property.image | imgProxy(1200) }}",
+                    "numberOfBedrooms": {{ property.bedrooms }},
+                    "numberOfBathroomsTotal": {{ property.bathrooms }},
+                    "occupancy": {
+                        "@type": "QuantitativeValue",
+                        "maxValue": {{ property.guests }}
+                    },
+                    "address": {
+                        "@type": "PostalAddress",
+                        "addressLocality": "{{ property.city }}",
+                        "addressRegion": "FL",
+                        "addressCountry": "US"
+                    },
+                    "priceRange": "From ${{ property.price }}/night"
+                }
+            }{% if not isLastMatch %},{% endif %}
+            {% endif %}
+            {% endfor %}
+            {% endfor %}
+        ]
+    }
+    </script>
     {% elif properties and properties | length %}
     <script type="application/ld+json">
     {
@@ -517,7 +561,43 @@ eleventyComputed:
                     <p class="section-subtitle">Book direct and save 10-15% compared to Airbnb & VRBO</p>
                 </div>
                 
-                {% if properties and properties | length %}
+                {% if properties and properties | length and seoPage.matchingProperties and seoPage.matchingProperties.length > 0 %}
+                <div class="properties-grid">
+                    {% for matchingSlug in seoPage.matchingProperties %}
+                    {% for property in properties %}
+                    {% if property.slug == matchingSlug %}
+                    <article class="property-card">
+                    {% set badge = "Rated " ~ property.rating %}
+                        {% set loading = "lazy" %}
+                        {% set fetchpriority = "" %}
+                        {% if loop.index == 1 %}
+                        {% set loading = "eager" %}
+                        {% set fetchpriority = "high" %}
+                        {% endif %}
+                        {% include "partials/property-card-image.njk" %}
+                        <div class="property-body">
+                            <h3 class="property-title">{{ property.name }}</h3>
+                            <p class="property-meta">{{ property.specs }}</p>
+                            <p style="font-size: 14px; color: var(--stone-light); margin-bottom: 16px;">{{ property.highlights | join(" · ") }}</p>
+                            <div style="display: flex; justify-content: space-between; align-items: center; gap: 16px;">
+                                <span class="property-price">From ${{ property.price }}/night</span>
+                                <a
+                                    href="/properties/{{ property.slug }}/"
+                                    class="btn"
+                                    style="padding: 10px 20px; font-size: 13px;"
+                                    data-track-event="stay_view_property_click"
+                                    data-page-slug="{{ property.slug }}"
+                                    data-placement="stay_property_card"
+                                    data-track-label="{{ property.name }}"
+                                >Check Direct Dates</a>
+                            </div>
+                        </div>
+                    </article>
+                    {% endif %}
+                    {% endfor %}
+                    {% endfor %}
+                </div>
+                {% elif properties and properties | length %}
                 <div class="properties-grid">
                     {% for property in properties %}
                     <article class="property-card">
