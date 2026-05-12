@@ -2,10 +2,21 @@ const OWNER_LEAD_FORM_NAME = "owner-revenue-teardown";
 const OWNER_LEAD_STORE_NAME = "seascape-owner-leads";
 const OWNER_LEAD_METRICS_KEY = "owner_lead_metrics_v1.json";
 const MAX_RECEIPTS = 200;
+const MAX_PROOF_LABEL_LENGTH = 64;
 
 function normalizeText(value) {
   if (typeof value !== "string") return "";
   return value.trim();
+}
+
+function normalizeProofLabel(value) {
+  const normalized = normalizeText(value)
+    .toLowerCase()
+    .replace(/[^a-z0-9_-]+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^[-_]+|[-_]+$/g, "");
+
+  return normalized.slice(0, MAX_PROOF_LABEL_LENGTH);
 }
 
 function readSubmissionPayload(rawPayload) {
@@ -45,7 +56,8 @@ function buildOwnerLeadReceipt(rawPayload) {
   const submissionId = getSubmissionId(payload);
   if (!submissionId) return null;
 
-  return {
+  const proofLabel = normalizeProofLabel(data.proof_label || data.proofLabel);
+  const receipt = {
     submissionId,
     createdAt: getCreatedAt(payload),
     formName: OWNER_LEAD_FORM_NAME,
@@ -57,6 +69,12 @@ function buildOwnerLeadReceipt(rawPayload) {
     market: normalizeText(data.market) || "florida-gulf-coast",
     leadType: normalizeText(data.lead_type) || OWNER_LEAD_FORM_NAME
   };
+
+  if (proofLabel) {
+    receipt.proofLabel = proofLabel;
+  }
+
+  return receipt;
 }
 
 function emptyMetrics() {
@@ -108,14 +126,22 @@ function formatOwnerLeadSummary(metrics) {
   return {
     totalSubmissions: safeMetrics.totalSubmissions,
     bySourcePageSlug: safeMetrics.bySourcePageSlug,
-    receipts: safeMetrics.receipts.map((receipt) => ({
-      submissionId: receipt.submissionId,
-      createdAt: receipt.createdAt,
-      pageSlug: receipt.pageSlug,
-      sourcePageSlug: receipt.sourcePageSlug,
-      market: receipt.market,
-      leadType: receipt.leadType
-    }))
+    receipts: safeMetrics.receipts.map((receipt) => {
+      const safeReceipt = {
+        submissionId: receipt.submissionId,
+        createdAt: receipt.createdAt,
+        pageSlug: receipt.pageSlug,
+        sourcePageSlug: receipt.sourcePageSlug,
+        market: receipt.market,
+        leadType: receipt.leadType
+      };
+
+      if (normalizeProofLabel(receipt.proofLabel)) {
+        safeReceipt.proofLabel = normalizeProofLabel(receipt.proofLabel);
+      }
+
+      return safeReceipt;
+    })
   };
 }
 
