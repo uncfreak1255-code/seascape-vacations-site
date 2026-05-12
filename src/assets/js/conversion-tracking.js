@@ -3,6 +3,7 @@
 
   var MAILCHIMP_ENDPOINT = "https://seascape-vacations.us6.list-manage.com/subscribe/post";
   var MAILCHIMP_QUERY = "u=48f234eebd9cb530fd2f217fe&id=95e5a594d1&f_id=008996e5f0";
+  var GUEST_EMAIL_CAPTURE_ENDPOINT = "/.netlify/functions/guest-email-capture";
   var SUPPORTED_EVENTS = [
     "owner_primary_cta_click",
     "owner_phone_click",
@@ -172,6 +173,28 @@
     };
   }
 
+  function getCurrentPagePath() {
+    var path = window.location && typeof window.location.pathname === "string"
+      ? window.location.pathname
+      : "/";
+
+    if (!path) return "/";
+    if (path.charAt(0) !== "/") return "/" + path;
+    return path;
+  }
+
+  function slugFromPath(path) {
+    if (!path || path === "/") return "home";
+    var normalized = path;
+    if (/\.html$/i.test(normalized)) {
+      normalized = normalized.replace(/\.html$/i, "");
+    }
+    normalized = normalized.replace(/^\/+|\/+$/g, "");
+    if (!normalized) return "home";
+    var segments = normalized.split("/");
+    return segments[segments.length - 1] || "home";
+  }
+
   function bindTrackedClicks() {
     document.addEventListener("click", function (event) {
       if (!event.target || typeof event.target.closest !== "function") return;
@@ -235,7 +258,7 @@
 
     if (!email || !name) return;
 
-    var endpoint =
+    var mailchimpEndpoint =
       MAILCHIMP_ENDPOINT +
       "?" +
       MAILCHIMP_QUERY +
@@ -244,11 +267,34 @@
       "&FNAME=" +
       encodeURIComponent(name);
 
-    fetch(endpoint, {
+    var currentPagePath = getCurrentPagePath();
+    var trackingPayload = getPayloadFromElement(form);
+    var submissionPayload = {
+      formName: form.dataset.trackForm || "email_capture",
+      name: name,
+      email: email,
+      pagePath: currentPagePath,
+      pageSlug: trackingPayload.page_slug || slugFromPath(currentPagePath),
+      guideSlug: trackingPayload.guide_slug || "",
+      sourcePageSlug: trackingPayload.source_page_slug || trackingPayload.page_slug || trackingPayload.guide_slug || slugFromPath(currentPagePath),
+      market: trackingPayload.market || "florida-gulf-coast",
+      placement: trackingPayload.placement || "inline"
+    };
+
+    fetch(GUEST_EMAIL_CAPTURE_ENDPOINT, {
       method: "POST",
-      mode: "no-cors"
+      headers: {
+        "content-type": "application/json; charset=utf-8"
+      },
+      body: JSON.stringify(submissionPayload),
+      keepalive: true
     }).catch(function () {
-      return null;
+      return fetch(mailchimpEndpoint, {
+        method: "POST",
+        mode: "no-cors"
+      }).catch(function () {
+        return null;
+      });
     }).finally(function () {
       try {
         localStorage.setItem("seascape_email_popup_shown", "subscribed");
