@@ -33,7 +33,8 @@ test("owner lead helper only accepts the owner revenue review form and strips PI
       page_slug: "property-management",
       source_page_slug: "owner-fee-revenue-leak-benchmark-2026",
       market: "florida-gulf-coast",
-      lead_type: "owner-revenue-teardown"
+      lead_type: "owner-revenue-teardown",
+      proof_label: " Codex Owner Proof 2026 "
     }
   });
 
@@ -44,7 +45,8 @@ test("owner lead helper only accepts the owner revenue review form and strips PI
     pageSlug: "property-management",
     sourcePageSlug: "owner-fee-revenue-leak-benchmark-2026",
     market: "florida-gulf-coast",
-    leadType: "owner-revenue-teardown"
+    leadType: "owner-revenue-teardown",
+    proofLabel: "codex-owner-proof-2026"
   });
   assert.equal("email" in receipt, false);
   assert.equal("name" in receipt, false);
@@ -129,7 +131,8 @@ test("owner lead summary exposes only aggregate counts and sanitized receipts", 
         pageSlug: "property-management",
         sourcePageSlug: "owner-fee-revenue-leak-benchmark-2026",
         market: "florida-gulf-coast",
-        leadType: "owner-revenue-teardown"
+        leadType: "owner-revenue-teardown",
+        proofLabel: "codex-owner-proof-2026"
       }
     ]
   });
@@ -146,7 +149,8 @@ test("owner lead summary exposes only aggregate counts and sanitized receipts", 
         pageSlug: "property-management",
         sourcePageSlug: "owner-fee-revenue-leak-benchmark-2026",
         market: "florida-gulf-coast",
-        leadType: "owner-revenue-teardown"
+        leadType: "owner-revenue-teardown",
+        proofLabel: "codex-owner-proof-2026"
       }
     ]
   });
@@ -207,6 +211,7 @@ test("submission-created stores sanitized owner lead metrics and ignores duplica
           source_page_slug: "owner-fee-revenue-leak-benchmark-2026",
           market: "florida-gulf-coast",
           lead_type: "owner-revenue-teardown",
+          proof_label: "Codex Owner Proof 2026",
           email: "hidden@example.com"
         }
       }
@@ -247,6 +252,7 @@ test("submission-created stores sanitized owner lead metrics and ignores duplica
   const parsedMetrics = JSON.parse(storedMetrics);
   assert.equal(parsedMetrics.totalSubmissions, 1);
   assert.equal(parsedMetrics.receipts[0].sourcePageSlug, "owner-fee-revenue-leak-benchmark-2026");
+  assert.equal(parsedMetrics.receipts[0].proofLabel, "codex-owner-proof-2026");
   assert.equal("email" in parsedMetrics.receipts[0], false);
 });
 
