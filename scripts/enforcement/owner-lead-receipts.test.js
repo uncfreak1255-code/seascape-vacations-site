@@ -213,6 +213,39 @@ test("submission-created stores sanitized owner lead metrics and ignores duplica
   assert.equal("email" in storedMetrics.receipts[0], false);
 });
 
+test("submission-created ignores the Netlify context object and still uses an injected mock store when provided separately", async () => {
+  let storedMetrics = null;
+  const mockStore = {
+    async get() {
+      return storedMetrics;
+    },
+    async set(_key, value) {
+      storedMetrics = value;
+    }
+  };
+
+  const response = await handleSubmissionCreated(
+    {
+      body: JSON.stringify({
+        payload: {
+          id: "submission-context",
+          created_at: "2026-05-12T12:00:00.000Z",
+          form_name: OWNER_LEAD_FORM_NAME,
+          data: {
+            page_slug: "property-management",
+            source_page_slug: "owner-fee-revenue-leak-benchmark-2026"
+          }
+        }
+      })
+    },
+    { account: { slug: "seascape" } },
+    mockStore
+  );
+
+  assert.equal(response.statusCode, 200);
+  assert.equal(storedMetrics.totalSubmissions, 1);
+});
+
 test("owner lead metrics handler requires auth token and returns sanitized summary", async () => {
   process.env.OWNER_LEAD_METRICS_TOKEN = "owner-secret";
   const metricsModulePath = require.resolve("../../netlify/functions/owner-lead-metrics");
@@ -272,6 +305,43 @@ test("owner lead metrics handler requires auth token and returns sanitized summa
         leadType: "owner-revenue-teardown"
       }
     ]
+  });
+
+  delete process.env.OWNER_LEAD_METRICS_TOKEN;
+  delete require.cache[metricsModulePath];
+});
+
+test("owner lead metrics handler ignores Netlify context objects and still honors an injected mock store", async () => {
+  process.env.OWNER_LEAD_METRICS_TOKEN = "owner-secret";
+  const metricsModulePath = require.resolve("../../netlify/functions/owner-lead-metrics");
+  delete require.cache[metricsModulePath];
+  const { handleOwnerLeadMetricsRequest } = require("../../netlify/functions/owner-lead-metrics");
+
+  const mockStore = {
+    async get() {
+      return {
+        totalSubmissions: 0,
+        bySourcePageSlug: {},
+        receipts: []
+      };
+    }
+  };
+
+  const response = await handleOwnerLeadMetricsRequest(
+    {
+      httpMethod: "GET",
+      headers: { authorization: "Bearer owner-secret" },
+      queryStringParameters: null
+    },
+    { site: { name: "cozy-licorice-e83928" } },
+    mockStore
+  );
+
+  assert.equal(response.statusCode, 200);
+  assert.deepEqual(JSON.parse(response.body), {
+    totalSubmissions: 0,
+    bySourcePageSlug: {},
+    receipts: []
   });
 
   delete process.env.OWNER_LEAD_METRICS_TOKEN;

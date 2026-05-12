@@ -6,7 +6,16 @@ const {
   mergeOwnerLeadMetrics
 } = require("./_owner-lead-metrics");
 
-async function handleSubmissionCreated(event, store = getStore(OWNER_LEAD_STORE_NAME)) {
+function resolveWritableStore(candidateStore) {
+  if (candidateStore && typeof candidateStore.get === "function" && typeof candidateStore.set === "function") {
+    return candidateStore;
+  }
+
+  return getStore(OWNER_LEAD_STORE_NAME);
+}
+
+async function handleSubmissionCreated(event, contextOrStore, injectedStore) {
+  const store = resolveWritableStore(injectedStore || contextOrStore);
   const payload = JSON.parse(event.body || "{}");
   const receipt = buildOwnerLeadReceipt(payload);
 
