@@ -520,10 +520,19 @@ if (phase === "remediation") {
     "_site/property-management/index.html",
     buildAnchorPattern({
       href: "#owner-cta",
-      className: "btn btn-brand",
+      className: "nav-owner-cta",
+      text: "Revenue Review"
+    }),
+    "property management compact nav CTA"
+  );
+  expectMatches(
+    "_site/property-management/index.html",
+    buildAnchorPattern({
+      href: "#owner-cta",
+      className: "btn btn-gold",
       text: "Request Your Revenue Teardown"
     }),
-    "property management nav CTA"
+    "property management hero CTA"
   );
   expectNotMatches(
     "_site/property-management/index.html",
