@@ -37,6 +37,9 @@ const {
 const {
   handleGuestEmailCapture
 } = require("../../netlify/functions/guest-email-capture");
+const {
+  handleGuestEmailCaptureProofLabelRequest
+} = require("../../netlify/functions/guest-email-capture-proof-label");
 
 const projectRoot = path.resolve(__dirname, "..", "..");
 
@@ -58,6 +61,22 @@ test("guest capture helper strips PII and normalizes page fields", () => {
   assert.equal(receipt.guideSlug, "bradenton-vs-sarasota");
   assert.equal(receipt.sourcePageSlug, "bradenton-vs-sarasota");
   assert.equal(receipt.placement, "popup");
+  assert.equal(receipt.proofLabel, undefined);
+  assert.equal("email" in receipt, false);
+  assert.equal("name" in receipt, false);
+});
+
+test("guest capture helper preserves a sanitized proof label without storing PII", () => {
+  const receipt = buildGuestEmailCaptureReceipt({
+    name: "Sawyer Beck",
+    email: "sawyer@example.com",
+    pagePath: "/",
+    placement: "popup",
+    createdAt: "2026-05-12T12:00:00.000Z",
+    proofLabel: "Codex Guest Proof 2026"
+  });
+
+  assert.equal(receipt.proofLabel, "codex-guest-proof-2026");
   assert.equal("email" in receipt, false);
   assert.equal("name" in receipt, false);
 });
@@ -120,7 +139,8 @@ test("guest capture summary exposes only aggregate counts and sanitized receipts
         guideSlug: "bradenton-vs-sarasota",
         sourcePageSlug: "bradenton-vs-sarasota",
         market: "florida-gulf-coast",
-        placement: "inline"
+        placement: "inline",
+        proofLabel: "codex-guest-proof-2026"
       }
     ]
   });
@@ -142,7 +162,8 @@ test("guest capture summary exposes only aggregate counts and sanitized receipts
         guideSlug: "bradenton-vs-sarasota",
         sourcePageSlug: "bradenton-vs-sarasota",
         market: "florida-gulf-coast",
-        placement: "inline"
+        placement: "inline",
+        proofLabel: "codex-guest-proof-2026"
       }
     ]
   });
@@ -222,6 +243,43 @@ test("guest email capture stores sanitized metrics after a successful Mailchimp 
   assert.equal(parsedMetrics.totalCaptures, 1);
   assert.equal(parsedMetrics.receipts[0].pagePath, "/guides/bradenton-vs-sarasota/");
   assert.equal("email" in parsedMetrics.receipts[0], false);
+});
+
+test("guest capture relabel updates only matching submission ids", () => {
+  const firstReceipt = buildGuestEmailCaptureReceipt({
+    submissionId: "capture-1",
+    name: "Sawyer",
+    email: "sawyer@example.com",
+    pagePath: "/",
+    placement: "popup",
+    createdAt: "2026-05-12T12:00:00.000Z"
+  });
+  const secondReceipt = buildGuestEmailCaptureReceipt({
+    submissionId: "capture-2",
+    name: "Sawyer",
+    email: "sawyer@example.com",
+    pagePath: "/guides/bradenton-vs-sarasota/",
+    placement: "inline",
+    createdAt: "2026-05-12T13:00:00.000Z"
+  });
+
+  const initialMetrics = mergeGuestEmailCaptureMetrics(
+    mergeGuestEmailCaptureMetrics(null, firstReceipt),
+    secondReceipt
+  );
+
+  const {
+    relabelGuestEmailCaptureReceipts
+  } = require("../../netlify/functions/_guest-email-capture-metrics");
+  const relabeled = relabelGuestEmailCaptureReceipts(
+    initialMetrics,
+    ["capture-2"],
+    "Codex Guest Proof 2026"
+  );
+
+  assert.equal(relabeled.updatedCount, 1);
+  assert.equal(relabeled.metrics.receipts[0].proofLabel, undefined);
+  assert.equal(relabeled.metrics.receipts[1].proofLabel, "codex-guest-proof-2026");
 });
 
 test("guest email capture returns invalid payload when name/email are missing", async () => {
@@ -323,4 +381,50 @@ test("guest capture metrics endpoint falls back to the owner metrics token", asy
   assert.equal(response.statusCode, 200);
   delete process.env.OWNER_LEAD_METRICS_TOKEN;
   delete require.cache[metricsModulePath];
+});
+
+test("guest capture proof-label endpoint relabels matching receipts behind owner token fallback", async () => {
+  process.env.OWNER_LEAD_METRICS_TOKEN = "owner-secret";
+
+  const response = await handleGuestEmailCaptureProofLabelRequest(
+    {
+      httpMethod: "POST",
+      headers: { authorization: "Bearer owner-secret" },
+      body: JSON.stringify({
+        submissionIds: ["capture-1"],
+        proofLabel: "Codex Guest Proof 2026"
+      })
+    },
+    undefined,
+    {
+      async get() {
+        return {
+          totalCaptures: 1,
+          byPagePath: { "/": 1 },
+          byPlacement: { popup: 1 },
+          receipts: [
+            {
+              submissionId: "capture-1",
+              createdAt: "2026-05-12T12:00:00.000Z",
+              pagePath: "/",
+              pageSlug: "home",
+              guideSlug: "",
+              sourcePageSlug: "home",
+              market: "florida-gulf-coast",
+              placement: "popup"
+            }
+          ]
+        };
+      },
+      async set() {}
+    }
+  );
+
+  const body = JSON.parse(response.body);
+  assert.equal(response.statusCode, 200);
+  assert.equal(body.updated, true);
+  assert.equal(body.updatedCount, 1);
+  assert.equal(body.summary.receipts[0].proofLabel, "codex-guest-proof-2026");
+
+  delete process.env.OWNER_LEAD_METRICS_TOKEN;
 });
