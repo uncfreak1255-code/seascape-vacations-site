@@ -506,7 +506,7 @@ if (phase === "remediation") {
   );
   expectContains(
     "_site/property-management/index.html",
-    "Property management for owners who care about net revenue"
+    "Property management for owners who care about what they actually keep"
   );
   expectContains(
     "_site/property-management/index.html",
@@ -521,7 +521,7 @@ if (phase === "remediation") {
     buildAnchorPattern({
       href: "#owner-cta",
       className: "btn btn-brand",
-      text: "Request Your Revenue Review"
+      text: "Request Your Revenue Teardown"
     }),
     "property management nav CTA"
   );
