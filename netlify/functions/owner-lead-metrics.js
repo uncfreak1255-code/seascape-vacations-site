@@ -3,6 +3,7 @@ const {
   OWNER_LEAD_STORE_NAME,
   OWNER_LEAD_METRICS_KEY,
   formatOwnerLeadSummary,
+  getOwnerLeadBlobsConfig,
   readAuthToken
 } = require("./_owner-lead-metrics");
 
@@ -11,6 +12,11 @@ const OWNER_LEAD_METRICS_TOKEN = process.env.OWNER_LEAD_METRICS_TOKEN;
 function resolveReadableStore(event, candidateStore) {
   if (candidateStore && typeof candidateStore.get === "function") {
     return candidateStore;
+  }
+
+  const explicitConfig = getOwnerLeadBlobsConfig();
+  if (explicitConfig) {
+    return getStore(explicitConfig);
   }
 
   connectLambda(event);
