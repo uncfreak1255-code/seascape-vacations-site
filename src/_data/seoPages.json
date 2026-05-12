@@ -2966,12 +2966,13 @@
       "h1": "Anna Maria Island Vacation Rental Management",
       "description": "Switcher-first Anna Maria Island vacation rental management for owners losing premium-week pricing, direct margin, or island execution control.",
       "intro": "If your Anna Maria Island home stays busy but owner payouts still feel too soft, the leak is usually premium weeks discounted too early, OTA-heavy channel mix, or island operations that keep the calendar alive while margin quietly slips.",
+      "proofAssetKey": "gulf-coast-owner-benchmark-2026",
       "benefits": [
         "Protect premium-week pricing before the market gets trained to wait for discounts",
         "Use direct-booking and OTA mix to protect owner margin instead of occupancy optics",
         "Run island-grade turnover and maintenance follow-up for higher-expectation guests",
         "Quote management structure to the home's fit instead of flattening every AMI property into one fee",
-        "Give owner reporting that explains rate integrity, channel drag, and execution misses",
+        "Give owner reporting that shows whether your rates are holding, how much you are losing to Airbnb fees, and which local handoffs are dropping balls",
         "Map the switch around booked stays so the fix does not wreck seasonality"
       ],
       "proofTag": "Owner Economics",
@@ -3114,6 +3115,7 @@
       "h1": "Bradenton Vacation Rental Management",
       "description": "Switcher-first Bradenton vacation rental management for pool homes and family inventory leaking money through generic positioning, OTA drag, or sloppy execution.",
       "intro": "If your Bradenton home has the right size, pool, and group appeal but owner net still feels average, the leak is usually generic positioning, too much OTA cost, or an operator treating a group-heavy asset like commodity inventory.",
+      "proofAssetKey": "gulf-coast-owner-benchmark-2026",
       "benefits": [
         "Position pool homes and family inventory for the right trip type instead of generic beach overflow",
         "Use direct-booking and OTA mix strategy tied to owner net, not just calendar fill",
@@ -3140,11 +3142,6 @@
           "value": "Tailored",
           "label": "Management pricing",
           "detail": "Structured around property fit, revenue potential, location, and how much operational work the property requires."
-        },
-        {
-          "value": "3-4x",
-          "label": "Market-median revenue per home",
-          "detail": "Internal Seascape benchmark versus local market median estimates in the operating model."
         }
       ],
       "switchTag": "What Starts Breaking",
@@ -3525,6 +3522,7 @@
       "h1": "How To Switch Vacation Rental Management Companies Without Losing Booking Momentum",
       "description": "Planning to replace your vacation rental manager? See the warning signs, handoff risks, and the owner-income leaks Seascape audits before any transition.",
       "intro": "Most owners wait too long to switch because they assume the handoff will wreck the calendar. The bigger risk is usually staying with an operator that keeps leaking rate, reviews, and owner trust.",
+      "proofAssetKey": "gulf-coast-owner-benchmark-2026",
       "benefits": [
         "Transition map built around confirmed reservations and guest continuity",
         "Audit of pricing, channel mix, statements, and vendor handoffs before day one",
@@ -3548,11 +3546,6 @@
           "value": "5",
           "label": "Active homes in the operating set",
           "detail": "A deliberately small operating footprint so transitions and standards stay local and visible."
-        },
-        {
-          "value": "3-4x",
-          "label": "Market-median revenue per home",
-          "detail": "Internal Seascape benchmark versus local market median estimates in the operating model."
         }
       ],
       "marketReality": {
@@ -3677,6 +3670,7 @@
       "h1": "Should You Self-Manage Your Vacation Rental?",
       "description": "See when self-managing a Florida vacation rental still makes sense, when it starts costing more than it saves, and how to compare the math honestly.",
       "intro": "Self-management only looks cheaper when you ignore underpriced nights, OTA drag, slow operational decisions, and the hours it takes to keep the home running well.",
+      "proofAssetKey": "gulf-coast-owner-benchmark-2026",
       "benefits": [
         "Owner math that compares fee savings against real revenue leakage",
         "Time-cost reality instead of fake passive-income language",
@@ -3688,8 +3682,8 @@
       "proofStats": [
         {
           "value": "15-30 hrs",
-          "label": "Weekly owner time",
-          "detail": "A realistic workload range once guest messaging, cleaner coordination, pricing, and issue resolution are included."
+          "label": "Weekly owner time (Seascape estimate)",
+          "detail": "Seascape's operator estimate from running five Gulf Coast homes — covers guest messaging, cleaner coordination, pricing, and issue resolution. Not benchmark-derived."
         },
         {
           "value": "13.4%",
@@ -3793,6 +3787,7 @@
       "h1": "Sarasota Vacation Rental Management",
       "description": "Switcher-first Sarasota vacation rental management for premium homes losing rate power through generic pricing, weak guest standards, or lazy channel mix.",
       "intro": "Sarasota owners usually do not switch because occupancy vanishes. They switch when a premium home is being sold too generically, the fee stack keeps rising, and the operation no longer feels worthy of the asset.",
+      "proofAssetKey": "gulf-coast-owner-benchmark-2026",
       "benefits": [
         "Use neighborhood-aware pricing and stay strategy instead of flattening Sarasota into one rate model",
         "Protect premium listing quality and guest positioning so nightly-rate power does not erode",
@@ -3937,6 +3932,7 @@
       "h1": "Siesta Key Property Management",
       "description": "Property management for Siesta Key vacation rentals. Near America's #1 beach.",
       "intro": "Siesta Key owners pay for premium positioning whether the current manager earns it or not. If rates look strong on paper but margin still leaks through OTA mix, service misses, or soft rate discipline, the beach address is not the problem.",
+      "proofAssetKey": "gulf-coast-owner-benchmark-2026",
       "benefits": [
         "Premium beach market",
         "High-demand location",
@@ -3960,11 +3956,6 @@
           "value": "$119,923",
           "label": "Direct booking revenue",
           "detail": "Revenue already shifted away from marketplace commissions and back toward owner economics."
-        },
-        {
-          "value": "3-4x",
-          "label": "Market-median revenue per home",
-          "detail": "Internal Seascape benchmark versus local market median estimates in the operating model."
         }
       ],
       "switchReasons": [
