@@ -208,9 +208,23 @@
 
   function showInlineEmailSuccess(form) {
     var success = form.parentElement && form.parentElement.querySelector("[data-email-capture-success]");
+    if (!success && typeof form.closest === "function") {
+      var captureRoot = form.closest("[data-email-capture-root]");
+      if (captureRoot && typeof captureRoot.querySelector === "function") {
+        success = captureRoot.querySelector("[data-email-capture-success]");
+      }
+    }
     if (!success) return;
 
+    if (typeof form.closest === "function") {
+      var captureContent = form.closest("[data-email-capture-content]");
+      if (captureContent && captureContent.style) {
+        captureContent.style.display = "none";
+      }
+    }
+
     success.classList.add("is-visible");
+    success.classList.add("show");
     form.reset();
   }
 

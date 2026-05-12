@@ -606,18 +606,18 @@
     </div>
 
     <!-- EMAIL CAPTURE POPUP -->
-    <div id="email-popup" class="email-popup-overlay" onclick="closeEmailPopup()">
+    <div id="email-popup" class="email-popup-overlay" data-email-capture-root onclick="closeEmailPopup()">
         <div class="email-popup" onclick="event.stopPropagation()">
             <button class="email-popup-close" type="button" aria-label="Close offer popup" onclick="closeEmailPopup()">{{ uiIcon('close', 'ui-icon--control') }}</button>
 
             <!-- Form Content -->
-            <div id="email-form-content">
+            <div id="email-form-content" data-email-capture-content>
                 <span class="email-popup-badge">Exclusive Offer</span>
                 <h3 class="email-popup-title">Get $50 Off Your Next Stay</h3>
                 <p class="email-popup-subtitle">Join our list for exclusive deals, local tips, and priority access to
                     new properties. Book direct and save more.</p>
 
-                <form class="email-popup-form" id="email-capture-form" onsubmit="handleEmailSubmit(event)">
+                <form class="email-popup-form" id="email-capture-form" data-track-form="email_capture" data-form-submit-event="email_capture_submit" data-inline-email-capture="true" data-form-placement="popup">
                     <input type="text" name="name" class="email-popup-input" placeholder="Your first name" required>
                     <input type="email" name="email" class="email-popup-input" placeholder="Your email address"
                         required>
@@ -628,7 +628,7 @@
             </div>
 
             <!-- Success Content -->
-            <div id="email-success-content" class="email-popup-success">
+            <div id="email-success-content" class="email-popup-success" data-email-capture-success>
                 <div class="email-popup-success-icon">{{ uiIcon('check', 'ui-icon--success') }}</div>
                 <h3 class="email-popup-title">You're In! Here's Your Code</h3>
                 <p style="font-size:2rem;font-weight:700;letter-spacing:4px;color:#5F8A8B;background:#f0f7f7;padding:12px 24px;border-radius:8px;border:2px dashed #5F8A8B;display:inline-block;margin:12px 0;">SAVE50</p>
