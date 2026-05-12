@@ -9,6 +9,7 @@ const {
   buildOwnerLeadReceipt,
   mergeOwnerLeadMetrics,
   formatOwnerLeadSummary,
+  getOwnerLeadBlobsConfig,
   readAuthToken
 } = require("../../netlify/functions/_owner-lead-metrics");
 const {
@@ -164,6 +165,20 @@ test("owner lead auth token reader accepts bearer header or query token", () => 
     }),
     "query-token"
   );
+});
+
+test("owner lead blobs config helper reads explicit server-side fallback credentials", () => {
+  process.env.OWNER_LEAD_BLOBS_SITE_ID = "site-123";
+  process.env.OWNER_LEAD_BLOBS_TOKEN = "token-abc";
+
+  assert.deepEqual(getOwnerLeadBlobsConfig(), {
+    name: "seascape-owner-leads",
+    siteID: "site-123",
+    token: "token-abc"
+  });
+
+  delete process.env.OWNER_LEAD_BLOBS_SITE_ID;
+  delete process.env.OWNER_LEAD_BLOBS_TOKEN;
 });
 
 test("submission-created stores sanitized owner lead metrics and ignores duplicates", async () => {

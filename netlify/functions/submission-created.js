@@ -3,12 +3,18 @@ const {
   OWNER_LEAD_STORE_NAME,
   OWNER_LEAD_METRICS_KEY,
   buildOwnerLeadReceipt,
+  getOwnerLeadBlobsConfig,
   mergeOwnerLeadMetrics
 } = require("./_owner-lead-metrics");
 
 function resolveWritableStore(event, candidateStore) {
   if (candidateStore && typeof candidateStore.get === "function" && typeof candidateStore.set === "function") {
     return candidateStore;
+  }
+
+  const explicitConfig = getOwnerLeadBlobsConfig();
+  if (explicitConfig) {
+    return getStore(explicitConfig);
   }
 
   connectLambda(event);

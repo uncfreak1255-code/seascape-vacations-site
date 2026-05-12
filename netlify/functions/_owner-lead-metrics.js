@@ -128,6 +128,18 @@ function readAuthToken(event) {
   return normalizeText(event?.queryStringParameters?.token);
 }
 
+function getOwnerLeadBlobsConfig() {
+  const siteID = normalizeText(process.env.OWNER_LEAD_BLOBS_SITE_ID || process.env.NETLIFY_SITE_ID);
+  const token = normalizeText(process.env.OWNER_LEAD_BLOBS_TOKEN || process.env.NETLIFY_AUTH_TOKEN);
+  if (!siteID || !token) return null;
+
+  return {
+    name: OWNER_LEAD_STORE_NAME,
+    siteID,
+    token
+  };
+}
+
 module.exports = {
   OWNER_LEAD_FORM_NAME,
   OWNER_LEAD_STORE_NAME,
@@ -135,5 +147,6 @@ module.exports = {
   buildOwnerLeadReceipt,
   mergeOwnerLeadMetrics,
   formatOwnerLeadSummary,
-  readAuthToken
+  readAuthToken,
+  getOwnerLeadBlobsConfig
 };
