@@ -16,6 +16,10 @@ const siteHeader = fs.readFileSync(
   path.join(projectRoot, "src", "_includes", "partials", "site-header.njk"),
   "utf8"
 );
+const siteHeaderStyles = fs.readFileSync(
+  path.join(projectRoot, "src", "_includes", "partials", "site-header-styles.njk"),
+  "utf8"
+);
 const ownerData = require(path.join(projectRoot, "src", "_data", "seoPages.json")).owner;
 const ownerProofAssets = require(path.join(projectRoot, "src", "_data", "ownerProofAssets.json"));
 const ownerFormPath = path.join(projectRoot, "src", "_includes", "partials", "owner-evaluation-form.njk");
@@ -51,6 +55,9 @@ test("owner landing page keeps the owner revenue teardown close to the sales arg
 test("owner landing page opts into owner-only nav instead of the guest browse header", () => {
   assert.equal(ownerLanding.includes("ownerNavOnly: true"), true, "owner landing should declare owner-only nav mode");
   assert.equal(siteHeader.includes("{% if resolvedOwnerNavOnly %}"), true, "site header should support owner-only nav mode");
+  assert.equal(siteHeader.includes('class="nav-links nav-links--owner"'), true, "owner-only nav should use its own CTA container");
+  assert.equal(siteHeaderStyles.includes(".nav-links--owner {"), true, "owner-only nav needs CSS that keeps the CTA visible below desktop");
+  assert.equal(siteHeaderStyles.includes("margin-left: auto;"), true, "owner-only nav should push the CTA to the right without guest links");
   assert.equal(siteHeader.includes("href=\"/properties/\""), true, "shared header still needs guest-nav links for non-owner pages");
   assert.equal(siteHeader.includes("Request Your Revenue Teardown"), false, "shared header should stay page-driven, not hard-code owner CTA copy");
 });
