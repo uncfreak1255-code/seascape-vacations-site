@@ -48,6 +48,17 @@ function normalizeNumber(value) {
   return Number.isFinite(numeric) ? numeric : null;
 }
 
+function normalizeBathroomCount(listing) {
+  const fullBathrooms = normalizeNumber(listing.bathrooms ?? listing.bathroomsNumber);
+  const guestBathrooms = normalizeNumber(listing.guestBathrooms);
+
+  if (fullBathrooms !== null || guestBathrooms !== null) {
+    return (fullBathrooms || 0) + (guestBathrooms || 0);
+  }
+
+  return 0;
+}
+
 function normalizeCalendarDay(day) {
   if (!day || typeof day !== "object") return null;
   const date = parseDateStamp(day.date || day.startDate || day.calendarDate);
@@ -207,7 +218,7 @@ function normalizeListing(listing, slugMap = {}) {
     city: listing.city || "Bradenton",
     destination: (listing.city || "bradenton").toLowerCase().replace(/\s+/g, "-"),
     bedrooms: listing.bedroomsNumber ?? listing.bedrooms ?? 0,
-    bathrooms: listing.bathroomsNumber ?? listing.bathrooms ?? 0,
+    bathrooms: normalizeBathroomCount(listing),
     guests: listing.personCapacity ?? listing.guests ?? 0,
     rating: listing.reviewAverageRating ?? null,
     price: { amount: listing.listingPrice || 0, currency: "USD", unit: "night" },
@@ -223,4 +234,4 @@ function normalizeListing(listing, slugMap = {}) {
   };
 }
 
-module.exports = { normalizeListing, normalizeImage, normalizeAvailability };
+module.exports = { normalizeListing, normalizeImage, normalizeAvailability, normalizeBathroomCount };
