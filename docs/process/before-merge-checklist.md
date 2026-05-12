@@ -48,13 +48,22 @@ curl -I -s http://localhost:8080/guides/anna-maria-island-area-guide/ | sed -n '
 curl -I -s http://localhost:8080/properties/dockside-dreams/ | sed -n '1,20p'
 ```
 
-## 5. Diff check
+## 5. Visual evidence check
+
+If the task changed layout, CSS, spacing, typography, imagery, component structure, or visual hierarchy:
+
+- [ ] I captured fresh desktop screenshots for every changed route or changed visual section
+- [ ] I captured fresh mobile screenshots for every changed route or changed visual section
+- [ ] For long pages, I used enough screenshots to cover the changed sections instead of trusting one giant full-page image
+- [ ] I reviewed the screenshots myself and verified any capture artifact in a live browser before merge
+
+## 6. Diff check
 
 - [ ] `git diff --stat` matches the task I think I did
 - [ ] no unrelated files are being pulled in
 - [ ] generated churn is understood, not accidental
 
-## 6. Release decision
+## 7. Release decision
 
 Only merge or push `main` if this sentence is true:
 
@@ -62,7 +71,7 @@ Only merge or push `main` if this sentence is true:
 
 If that sentence feels too strong, do not merge.
 
-## 7. After merge
+## 8. After merge
 
 - [ ] watch the Netlify deploy complete
 - [ ] smoke test the live domain

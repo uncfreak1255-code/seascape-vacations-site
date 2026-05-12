@@ -35,6 +35,9 @@ Minimum expectation for UI review:
 - [ ] Primary cards, titles, and CTA buttons render.
 - [ ] Key images load.
 - [ ] The reviewed route does not rely on placeholder, empty, or broken components.
+- [ ] If I changed layout, CSS, spacing, typography, imagery, component structure, or visual hierarchy, I captured fresh desktop and mobile screenshots before asking for review.
+- [ ] For long pages, I captured enough screenshots to cover each changed visual section when one full-page capture is not trustworthy.
+- [ ] I reviewed the screenshots myself and called out any capture artifact before asking the user to look.
 - [ ] The user is being asked for design feedback, not bug discovery.
 
 ## 5. Copy sanity check
@@ -50,6 +53,7 @@ When asking for review, state:
 
 - what changed
 - which exact URLs to review
+- which desktop and mobile screenshots back the review
 - what is still known-bad, if anything
 
 Do not ask for review if the honest status is "probably works."
