@@ -1,4 +1,4 @@
-const { getStore } = require("@netlify/blobs");
+const { connectLambda, getStore } = require("@netlify/blobs");
 const {
   OWNER_LEAD_STORE_NAME,
   OWNER_LEAD_METRICS_KEY,
@@ -15,6 +15,9 @@ function resolveWritableStore(candidateStore) {
 }
 
 async function handleSubmissionCreated(event, contextOrStore, injectedStore) {
+  if (!injectedStore && !(contextOrStore && typeof contextOrStore.get === "function")) {
+    connectLambda(event);
+  }
   const store = resolveWritableStore(injectedStore || contextOrStore);
   const payload = JSON.parse(event.body || "{}");
   const receipt = buildOwnerLeadReceipt(payload);

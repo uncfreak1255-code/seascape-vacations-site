@@ -1,5 +1,7 @@
 const test = require("node:test");
 const assert = require("node:assert/strict");
+const fs = require("fs");
+const path = require("path");
 
 const {
   OWNER_LEAD_FORM_NAME,
@@ -12,6 +14,8 @@ const {
 const {
   handleSubmissionCreated
 } = require("../../netlify/functions/submission-created");
+
+const projectRoot = path.resolve(__dirname, "..", "..");
 
 test("owner lead helper only accepts the owner revenue review form and strips PII", () => {
   const receipt = buildOwnerLeadReceipt({
@@ -42,6 +46,20 @@ test("owner lead helper only accepts the owner revenue review form and strips PI
   assert.equal("email" in receipt, false);
   assert.equal("name" in receipt, false);
   assert.equal("property_address" in receipt, false);
+});
+
+test("owner lead Netlify handlers initialize blobs lambda compatibility before calling getStore", () => {
+  const metricsHandler = fs.readFileSync(
+    path.join(projectRoot, "netlify", "functions", "owner-lead-metrics.js"),
+    "utf8"
+  );
+  const submissionHandler = fs.readFileSync(
+    path.join(projectRoot, "netlify", "functions", "submission-created.js"),
+    "utf8"
+  );
+
+  assert.equal(metricsHandler.includes("connectLambda(event);"), true);
+  assert.equal(submissionHandler.includes("connectLambda(event);"), true);
 });
 
 test("owner lead helper ignores non-owner forms", () => {
