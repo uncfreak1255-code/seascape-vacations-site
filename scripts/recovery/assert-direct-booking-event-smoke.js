@@ -1,3 +1,4 @@
+const http = require("http");
 const https = require("https");
 const path = require("path");
 
@@ -8,10 +9,13 @@ const REQUIRED_EVENTS = [
 ];
 
 const TARGET_GUIDE_PATH = "/guides/best-time-visit-anna-maria-island/";
+const POPUP_GUIDE_PATH = "/guides/bradenton-area-guide/";
+const HOMEPAGE_PATH = "/";
 
 function request(baseUrl, targetPath) {
+  const client = baseUrl.startsWith("http://") ? http : https;
   return new Promise((resolve, reject) => {
-    https
+    client
       .get(`${baseUrl}${targetPath}`, (res) => {
         let body = "";
         res.on("data", (chunk) => {
@@ -35,6 +39,27 @@ function validateGuideEventMarkup(body, targetPath = TARGET_GUIDE_PATH) {
 
   if (missingEvents.length > 0) {
     throw new Error(`${targetPath} is missing direct-booking event markup: ${missingEvents.join(", ")}`);
+  }
+}
+
+function validatePopupMarkup(body, targetPath) {
+  const requiredMarkers = [
+    'data-email-capture-root',
+    'data-email-capture-content',
+    'data-track-form="email_capture"',
+    'data-form-submit-event="email_capture_submit"',
+    'data-inline-email-capture="true"',
+    'data-email-capture-success'
+  ];
+
+  for (const marker of requiredMarkers) {
+    if (!body.includes(marker)) {
+      throw new Error(`${targetPath} is missing popup email capture marker: ${marker}`);
+    }
+  }
+
+  if (body.includes('onsubmit="handleEmailSubmit(event)"')) {
+    throw new Error(`${targetPath} still uses legacy popup submit handling instead of shared conversion tracking`);
   }
 }
 
@@ -78,6 +103,55 @@ function buildTrackedEmailForm() {
     },
     matches(selector) {
       return selector === "form[data-track-form]";
+    },
+    getAttribute() {
+      return "";
+    },
+    reset() {}
+  };
+}
+
+function buildTrackedPopupForm() {
+  const successNode = {
+    classList: {
+      added: [],
+      add(name) {
+        this.added.push(name);
+      }
+    }
+  };
+
+  const popupRoot = {
+    querySelector(selector) {
+      return selector === "[data-email-capture-success]" ? successNode : null;
+    }
+  };
+
+  const popupContent = {
+    style: {}
+  };
+
+  return {
+    tagName: "FORM",
+    textContent: "Popup email capture",
+    dataset: {
+      trackForm: "email_capture",
+      formSubmitEvent: "email_capture_submit",
+      inlineEmailCapture: "true",
+      formPlacement: "popup"
+    },
+    parentElement: {
+      querySelector() {
+        return null;
+      }
+    },
+    matches(selector) {
+      return selector === "form[data-track-form]";
+    },
+    closest(selector) {
+      if (selector === "[data-email-capture-root]") return popupRoot;
+      if (selector === "[data-email-capture-content]") return popupContent;
+      return null;
     },
     getAttribute() {
       return "";
@@ -173,9 +247,50 @@ function simulateDirectBookingEvents() {
   });
 }
 
-async function run(baseUrl) {
+function simulatePopupEmailCaptureEvent() {
+  return withTrackingRuntime(({ listeners, window }) => {
+    if (typeof listeners.DOMContentLoaded !== "function") {
+      throw new Error("conversion tracking did not register DOMContentLoaded");
+    }
+
+    listeners.DOMContentLoaded();
+
+    if (typeof listeners.submit !== "function") {
+      throw new Error("conversion tracking did not bind submit listener");
+    }
+
+    listeners.submit({
+      target: buildTrackedPopupForm(),
+      preventDefault() {}
+    });
+
+    return window.dataLayer;
+  });
+}
+
+function parseArgs(argv) {
+  const parsed = {
+    baseUrl: "",
+    requirePopupCapture: false
+  };
+
+  for (const arg of argv) {
+    if (arg === "--require-popup-capture") {
+      parsed.requirePopupCapture = true;
+      continue;
+    }
+
+    if (!parsed.baseUrl) {
+      parsed.baseUrl = arg;
+    }
+  }
+
+  return parsed;
+}
+
+async function run(baseUrl, options = {}) {
   if (!baseUrl) {
-    throw new Error("Usage: node scripts/recovery/assert-direct-booking-event-smoke.js <base-url>");
+    throw new Error("Usage: node scripts/recovery/assert-direct-booking-event-smoke.js <base-url> [--require-popup-capture]");
   }
 
   const response = await request(baseUrl, TARGET_GUIDE_PATH);
@@ -191,10 +306,28 @@ async function run(baseUrl) {
       throw new Error(`conversion tracking did not emit ${eventName}`);
     }
   }
+
+  if (options.requirePopupCapture) {
+    for (const popupPath of [POPUP_GUIDE_PATH, HOMEPAGE_PATH]) {
+      const popupResponse = await request(baseUrl, popupPath);
+      if (popupResponse.statusCode !== 200) {
+        throw new Error(`${popupPath} expected 200, got ${popupResponse.statusCode}`);
+      }
+
+      validatePopupMarkup(popupResponse.body, popupPath);
+    }
+
+    const popupEvents = simulatePopupEmailCaptureEvent().map((entry) => entry.event);
+    if (!popupEvents.includes("email_capture_submit")) {
+      throw new Error("conversion tracking did not emit email_capture_submit for the popup capture path");
+    }
+  }
 }
 
 if (require.main === module) {
-  run(process.argv[2])
+  const parsed = parseArgs(process.argv.slice(2));
+
+  run(parsed.baseUrl, { requirePopupCapture: parsed.requirePopupCapture })
     .then(() => console.log("assert-direct-booking-event-smoke: all events passed"))
     .catch((error) => {
       console.error(error.message);
@@ -205,8 +338,11 @@ if (require.main === module) {
 module.exports = {
   REQUIRED_EVENTS,
   TARGET_GUIDE_PATH,
+  parseArgs,
   request,
   validateGuideEventMarkup,
+  validatePopupMarkup,
   simulateDirectBookingEvents,
+  simulatePopupEmailCaptureEvent,
   run
 };

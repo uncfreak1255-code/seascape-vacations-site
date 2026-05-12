@@ -161,39 +161,7 @@ function closeEmailPopup() {
     localStorage.setItem(EMAIL_POPUP_KEY, Date.now().toString());
 }
 
-function handleEmailSubmit(event) {
-    event.preventDefault();
-
-    var form = event.target;
-    var formData = new FormData(form);
-    var name = formData.get('name');
-    var email = formData.get('email');
-    var mailchimpUrl = 'https://seascape-vacations.us6.list-manage.com/subscribe/post?u=48f234eebd9cb530fd2f217fe&id=95e5a594d1&f_id=008996e5f0';
-    var mailchimpData = new FormData();
-
-    mailchimpData.append('EMAIL', email);
-    mailchimpData.append('FNAME', name);
-
-    fetch(mailchimpUrl, {
-        method: 'POST',
-        body: mailchimpData,
-        mode: 'no-cors'
-    }).catch(function(err) {
-        console.log('Mailchimp submission:', err);
-    });
-
-    localStorage.setItem(EMAIL_POPUP_KEY, 'subscribed');
-
-    var formContent = document.getElementById('email-form-content');
-    var successContent = document.getElementById('email-success-content');
-    if (formContent) formContent.style.display = 'none';
-    if (successContent) successContent.classList.add('show');
-
-    console.log('Email submitted to Mailchimp:', { name: name, email: email });
-}
-
 window.closeEmailPopup = closeEmailPopup;
-window.handleEmailSubmit = handleEmailSubmit;
 
 window.setTimeout(function() {
     emailPopupReady = true;

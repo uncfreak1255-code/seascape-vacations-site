@@ -26,6 +26,20 @@ test("direct-booking event smoke runs inside the release safety flow", () => {
   assert.match(releaseGate, /run\("npm", \["run", "verify:direct-booking-events"\]\)/);
 });
 
+test("direct-booking event smoke supports optional popup enforcement", () => {
+  const smoke = loadSmokeModule();
+
+  assert.deepEqual(smoke.parseArgs(["https://seascape-vacations.com"]), {
+    baseUrl: "https://seascape-vacations.com",
+    requirePopupCapture: false
+  });
+
+  assert.deepEqual(smoke.parseArgs(["http://127.0.0.1:8123", "--require-popup-capture"]), {
+    baseUrl: "http://127.0.0.1:8123",
+    requirePopupCapture: true
+  });
+});
+
 test("direct-booking event smoke validates the three funnel event surfaces", () => {
   const smoke = loadSmokeModule();
 
@@ -50,9 +64,41 @@ test("direct-booking event smoke validates the three funnel event surfaces", () 
     smoke.validateGuideEventMarkup(guideBody, "/guides/best-time-visit-anna-maria-island/");
   });
 
+  const popupBody = `
+    <div data-email-capture-root>
+      <div data-email-capture-content>
+        <form data-track-form="email_capture" data-form-submit-event="email_capture_submit" data-inline-email-capture="true"></form>
+      </div>
+      <div data-email-capture-success></div>
+    </div>
+  `;
+
+  assert.doesNotThrow(() => {
+    smoke.validatePopupMarkup(popupBody, "/guides/bradenton-area-guide/");
+  });
+
   const observedEvents = smoke.simulateDirectBookingEvents();
   assert.deepEqual(
     observedEvents.map((entry) => entry.event),
     ["email_capture_submit", "guide_book_direct_click", "booking_engine_handoff"]
   );
+
+  const popupEvents = smoke.simulatePopupEmailCaptureEvent();
+  assert.deepEqual(
+    popupEvents.map((entry) => entry.event),
+    ["email_capture_submit"]
+  );
+});
+
+test("homepage and shared popup partial use the tracked email capture path", () => {
+  const homepage = fs.readFileSync(path.join(projectRoot, "src", "index.njk"), "utf8");
+  const popupPartial = fs.readFileSync(path.join(projectRoot, "src", "_includes", "partials", "email-popup.njk"), "utf8");
+
+  for (const source of [homepage, popupPartial]) {
+    assert.match(source, /data-track-form="email_capture"/);
+    assert.match(source, /data-form-submit-event="email_capture_submit"/);
+    assert.match(source, /data-inline-email-capture="true"/);
+    assert.match(source, /data-email-capture-success/);
+    assert.doesNotMatch(source, /onsubmit="handleEmailSubmit\(event\)"/);
+  }
 });
