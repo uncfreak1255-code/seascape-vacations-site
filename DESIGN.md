@@ -142,6 +142,8 @@ Studied: Plum Guide, AvantStay, onefinestay, Vacasa, Evolve.
 - **AvantStay:** Clean modern sans-serif, lifestyle photography, group-travel positioning. Less luxury, more "design hotel" vibe.
 - **Generic Airbnb clones:** Blue/white palette, system fonts, dense property grids, no editorial voice. This is what to avoid.
 
+**Crowding rule:** When a Seascape page feels crowded, compare it to Plum Guide first and remove, simplify, or add spacing before adding more styling.
+
 ### Seascape's Design Differentiation
 1. **Warm palette, not cool.** Most rental sites use white/blue (Airbnb) or white/gray (Plum Guide). Seascape's cream + teal + gold is warmer, more Gulf Coast, more approachable than the "minimalist luxury" competitors.
 2. **Editorial serif personality.** Playfair Display gives the headings a magazine quality that generic sans-serif sites lack.
