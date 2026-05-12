@@ -1,4 +1,4 @@
-const { getStore } = require("@netlify/blobs");
+const { connectLambda, getStore } = require("@netlify/blobs");
 const {
   OWNER_LEAD_STORE_NAME,
   OWNER_LEAD_METRICS_KEY,
@@ -17,6 +17,9 @@ function resolveReadableStore(candidateStore) {
 }
 
 async function handleOwnerLeadMetricsRequest(event, contextOrStore, injectedStore) {
+  if (!injectedStore && !(contextOrStore && typeof contextOrStore.get === "function")) {
+    connectLambda(event);
+  }
   const store = resolveReadableStore(injectedStore || contextOrStore);
   if (event.httpMethod !== "GET") {
     return { statusCode: 405, body: "Method Not Allowed" };
