@@ -16,6 +16,7 @@
 - direct-beach claims on near-island pages that are intentionally not beachfront
 - random stat insertion that is not backed by current source or approved proof assets
 - putting proof disclaimers, methodology notes, or quote limitations in the opening paragraph when they belong in a source/proof box below the visitor-facing hook
+- amenity labels, bedroom or bathroom counts, or feature claims that differ between `src/_data/properties-fallback.json`, `src/properties/<slug>/index.njk`, and `src/llms.txt` — pick one authority and propagate, do not let those three files tell LLMs three different stories
 
 ## Workflow Bans
 
