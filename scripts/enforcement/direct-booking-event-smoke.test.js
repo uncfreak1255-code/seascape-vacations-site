@@ -26,6 +26,20 @@ test("direct-booking event smoke runs inside the release safety flow", () => {
   assert.match(releaseGate, /run\("npm", \["run", "verify:direct-booking-events"\]\)/);
 });
 
+test("direct-booking event smoke supports optional popup enforcement", () => {
+  const smoke = loadSmokeModule();
+
+  assert.deepEqual(smoke.parseArgs(["https://seascape-vacations.com"]), {
+    baseUrl: "https://seascape-vacations.com",
+    requirePopupCapture: false
+  });
+
+  assert.deepEqual(smoke.parseArgs(["http://127.0.0.1:8123", "--require-popup-capture"]), {
+    baseUrl: "http://127.0.0.1:8123",
+    requirePopupCapture: true
+  });
+});
+
 test("direct-booking event smoke validates the three funnel event surfaces", () => {
   const smoke = loadSmokeModule();
 

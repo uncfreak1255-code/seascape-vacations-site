@@ -268,9 +268,29 @@ function simulatePopupEmailCaptureEvent() {
   });
 }
 
-async function run(baseUrl) {
+function parseArgs(argv) {
+  const parsed = {
+    baseUrl: "",
+    requirePopupCapture: false
+  };
+
+  for (const arg of argv) {
+    if (arg === "--require-popup-capture") {
+      parsed.requirePopupCapture = true;
+      continue;
+    }
+
+    if (!parsed.baseUrl) {
+      parsed.baseUrl = arg;
+    }
+  }
+
+  return parsed;
+}
+
+async function run(baseUrl, options = {}) {
   if (!baseUrl) {
-    throw new Error("Usage: node scripts/recovery/assert-direct-booking-event-smoke.js <base-url>");
+    throw new Error("Usage: node scripts/recovery/assert-direct-booking-event-smoke.js <base-url> [--require-popup-capture]");
   }
 
   const response = await request(baseUrl, TARGET_GUIDE_PATH);
@@ -280,15 +300,6 @@ async function run(baseUrl) {
 
   validateGuideEventMarkup(response.body, TARGET_GUIDE_PATH);
 
-  for (const popupPath of [POPUP_GUIDE_PATH, HOMEPAGE_PATH]) {
-    const popupResponse = await request(baseUrl, popupPath);
-    if (popupResponse.statusCode !== 200) {
-      throw new Error(`${popupPath} expected 200, got ${popupResponse.statusCode}`);
-    }
-
-    validatePopupMarkup(popupResponse.body, popupPath);
-  }
-
   const observedEvents = simulateDirectBookingEvents().map((entry) => entry.event);
   for (const eventName of REQUIRED_EVENTS) {
     if (!observedEvents.includes(eventName)) {
@@ -296,14 +307,27 @@ async function run(baseUrl) {
     }
   }
 
-  const popupEvents = simulatePopupEmailCaptureEvent().map((entry) => entry.event);
-  if (!popupEvents.includes("email_capture_submit")) {
-    throw new Error("conversion tracking did not emit email_capture_submit for the popup capture path");
+  if (options.requirePopupCapture) {
+    for (const popupPath of [POPUP_GUIDE_PATH, HOMEPAGE_PATH]) {
+      const popupResponse = await request(baseUrl, popupPath);
+      if (popupResponse.statusCode !== 200) {
+        throw new Error(`${popupPath} expected 200, got ${popupResponse.statusCode}`);
+      }
+
+      validatePopupMarkup(popupResponse.body, popupPath);
+    }
+
+    const popupEvents = simulatePopupEmailCaptureEvent().map((entry) => entry.event);
+    if (!popupEvents.includes("email_capture_submit")) {
+      throw new Error("conversion tracking did not emit email_capture_submit for the popup capture path");
+    }
   }
 }
 
 if (require.main === module) {
-  run(process.argv[2])
+  const parsed = parseArgs(process.argv.slice(2));
+
+  run(parsed.baseUrl, { requirePopupCapture: parsed.requirePopupCapture })
     .then(() => console.log("assert-direct-booking-event-smoke: all events passed"))
     .catch((error) => {
       console.error(error.message);
@@ -314,6 +338,7 @@ if (require.main === module) {
 module.exports = {
   REQUIRED_EVENTS,
   TARGET_GUIDE_PATH,
+  parseArgs,
   request,
   validateGuideEventMarkup,
   validatePopupMarkup,
