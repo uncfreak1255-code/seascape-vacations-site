@@ -5,6 +5,7 @@ const {
   findForbiddenSourcePaths,
   findPlaceholderAnalyticsPaths
 } = require("./lib");
+const { assertRepoHtmlCachePolicyConsistency } = require("./release-cache-policy");
 const { withWorktreeLock } = require("./worktree-lock");
 
 function run(command, args, options = {}) {
@@ -75,6 +76,10 @@ function assertNetlifyBuildTruth() {
   }
 }
 
+function assertCachePolicyTruth() {
+  assertRepoHtmlCachePolicyConsistency();
+}
+
 function assertNoForbiddenSourceChanges(range) {
   const changedFiles = getChangedFiles(range);
   const violations = findForbiddenSourcePaths(changedFiles);
@@ -129,6 +134,7 @@ function main() {
 
   try {
     assertNetlifyBuildTruth();
+    assertCachePolicyTruth();
     assertNoForbiddenSourceChanges(args.range);
     assertNoPlaceholderAnalytics();
     assertNoForbiddenPublicRuntime();
