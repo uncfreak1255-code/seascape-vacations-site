@@ -196,8 +196,8 @@ test("submission-created stores sanitized owner lead metrics and ignores duplica
     })
   };
 
-  const firstResponse = await handleSubmissionCreated(ownerEvent, mockStore);
-  const duplicateResponse = await handleSubmissionCreated(ownerEvent, mockStore);
+  const firstResponse = await handleSubmissionCreated(ownerEvent, undefined, mockStore);
+  const duplicateResponse = await handleSubmissionCreated(ownerEvent, undefined, mockStore);
   const ignoredResponse = await handleSubmissionCreated(
     {
       body: JSON.stringify({
@@ -209,6 +209,7 @@ test("submission-created stores sanitized owner lead metrics and ignores duplica
         }
       })
     },
+    undefined,
     mockStore
   );
 
@@ -295,6 +296,7 @@ test("owner lead metrics handler requires auth token and returns sanitized summa
 
   const unauthorized = await handleOwnerLeadMetricsRequest(
     { httpMethod: "GET", headers: {}, queryStringParameters: null },
+    undefined,
     mockStore
   );
   const authorized = await handleOwnerLeadMetricsRequest(
@@ -303,6 +305,7 @@ test("owner lead metrics handler requires auth token and returns sanitized summa
       headers: { authorization: "Bearer owner-secret" },
       queryStringParameters: null
     },
+    undefined,
     mockStore
   );
 
