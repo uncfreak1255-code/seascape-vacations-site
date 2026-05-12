@@ -8,7 +8,16 @@ const {
 
 const OWNER_LEAD_METRICS_TOKEN = process.env.OWNER_LEAD_METRICS_TOKEN;
 
-async function handleOwnerLeadMetricsRequest(event, store = getStore(OWNER_LEAD_STORE_NAME)) {
+function resolveReadableStore(candidateStore) {
+  if (candidateStore && typeof candidateStore.get === "function") {
+    return candidateStore;
+  }
+
+  return getStore(OWNER_LEAD_STORE_NAME);
+}
+
+async function handleOwnerLeadMetricsRequest(event, contextOrStore, injectedStore) {
+  const store = resolveReadableStore(injectedStore || contextOrStore);
   if (event.httpMethod !== "GET") {
     return { statusCode: 405, body: "Method Not Allowed" };
   }
