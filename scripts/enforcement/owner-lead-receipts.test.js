@@ -8,6 +8,7 @@ const {
   OWNER_LEAD_METRICS_KEY,
   buildOwnerLeadReceipt,
   mergeOwnerLeadMetrics,
+  relabelOwnerLeadReceipts,
   formatOwnerLeadSummary,
   getOwnerLeadBlobsConfig,
   parseStoredMetrics,
@@ -17,6 +18,9 @@ const {
 const {
   handleSubmissionCreated
 } = require("../../netlify/functions/submission-created");
+const {
+  handleOwnerLeadProofLabelRequest
+} = require("../../netlify/functions/owner-lead-proof-label");
 
 const projectRoot = path.resolve(__dirname, "..", "..");
 
@@ -156,6 +160,42 @@ test("owner lead summary exposes only aggregate counts and sanitized receipts", 
   });
 });
 
+test("owner lead receipt relabel helper applies a sanitized proof label only to requested submission ids", () => {
+  const relabeled = relabelOwnerLeadReceipts(
+    {
+      totalSubmissions: 2,
+      bySourcePageSlug: {
+        "owner-fee-revenue-leak-benchmark-2026": 2
+      },
+      receipts: [
+        {
+          submissionId: "submission-1",
+          createdAt: "2026-05-12T12:00:00.000Z",
+          pageSlug: "property-management",
+          sourcePageSlug: "owner-fee-revenue-leak-benchmark-2026",
+          market: "florida-gulf-coast",
+          leadType: "owner-revenue-teardown"
+        },
+        {
+          submissionId: "submission-2",
+          createdAt: "2026-05-12T12:05:00.000Z",
+          pageSlug: "property-management",
+          sourcePageSlug: "owner-fee-revenue-leak-benchmark-2026",
+          market: "florida-gulf-coast",
+          leadType: "owner-revenue-teardown"
+        }
+      ]
+    },
+    ["submission-2"],
+    " Codex Owner Proof 2026 "
+  );
+
+  assert.equal(relabeled.updatedCount, 1);
+  assert.deepEqual(relabeled.updatedSubmissionIds, ["submission-2"]);
+  assert.equal(relabeled.metrics.receipts[0].proofLabel, undefined);
+  assert.equal(relabeled.metrics.receipts[1].proofLabel, "codex-owner-proof-2026");
+});
+
 test("owner lead auth token reader accepts bearer header or query token", () => {
   assert.equal(
     readAuthToken({
@@ -185,6 +225,79 @@ test("owner lead blobs config helper reads explicit server-side fallback credent
 
   delete process.env.OWNER_LEAD_BLOBS_SITE_ID;
   delete process.env.OWNER_LEAD_BLOBS_TOKEN;
+});
+
+test("owner lead proof label handler requires auth and relabels the requested stored receipts", async () => {
+  let storedMetrics = JSON.stringify({
+    totalSubmissions: 2,
+    bySourcePageSlug: {
+      "owner-fee-revenue-leak-benchmark-2026": 2
+    },
+    receipts: [
+      {
+        submissionId: "submission-1",
+        createdAt: "2026-05-12T12:00:00.000Z",
+        pageSlug: "property-management",
+        sourcePageSlug: "owner-fee-revenue-leak-benchmark-2026",
+        market: "florida-gulf-coast",
+        leadType: "owner-revenue-teardown"
+      },
+      {
+        submissionId: "submission-2",
+        createdAt: "2026-05-12T12:05:00.000Z",
+        pageSlug: "property-management",
+        sourcePageSlug: "owner-fee-revenue-leak-benchmark-2026",
+        market: "florida-gulf-coast",
+        leadType: "owner-revenue-teardown"
+      }
+    ]
+  });
+
+  const mockStore = {
+    async get() {
+      return storedMetrics;
+    },
+    async set(_key, value) {
+      storedMetrics = value;
+    }
+  };
+
+  process.env.OWNER_LEAD_METRICS_TOKEN = "owner-secret";
+
+  const unauthorized = await handleOwnerLeadProofLabelRequest(
+    {
+      httpMethod: "POST",
+      headers: { authorization: "Bearer wrong-secret" },
+      body: JSON.stringify({
+        submissionIds: ["submission-1"],
+        proofLabel: "Codex Owner Proof 2026"
+      })
+    },
+    undefined,
+    mockStore
+  );
+
+  const response = await handleOwnerLeadProofLabelRequest(
+    {
+      httpMethod: "POST",
+      headers: { authorization: "Bearer owner-secret" },
+      body: JSON.stringify({
+        submissionIds: ["submission-1", "missing-id"],
+        proofLabel: "Codex Owner Proof 2026"
+      })
+    },
+    undefined,
+    mockStore
+  );
+
+  delete process.env.OWNER_LEAD_METRICS_TOKEN;
+
+  assert.equal(unauthorized.statusCode, 401);
+  assert.equal(response.statusCode, 200);
+  assert.deepEqual(JSON.parse(response.body).updatedSubmissionIds, ["submission-1"]);
+  const parsedMetrics = JSON.parse(storedMetrics);
+  assert.equal(parsedMetrics.receipts[0].proofLabel, "codex-owner-proof-2026");
+  assert.equal(parsedMetrics.receipts[1].proofLabel, undefined);
 });
 
 test("submission-created stores sanitized owner lead metrics and ignores duplicates", async () => {

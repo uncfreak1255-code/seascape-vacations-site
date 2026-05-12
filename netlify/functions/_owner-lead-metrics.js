@@ -115,6 +115,60 @@ function mergeOwnerLeadMetrics(existingMetrics, receipt) {
   return base;
 }
 
+function relabelOwnerLeadReceipts(existingMetrics, submissionIds, proofLabel) {
+  const base = {
+    ...emptyMetrics(),
+    ...(existingMetrics || {}),
+    bySourcePageSlug: { ...((existingMetrics && existingMetrics.bySourcePageSlug) || {}) },
+    receipts: Array.isArray(existingMetrics && existingMetrics.receipts)
+      ? [...existingMetrics.receipts]
+      : []
+  };
+
+  const normalizedLabel = normalizeProofLabel(proofLabel);
+  if (!normalizedLabel) {
+    return { metrics: base, updatedCount: 0, updatedSubmissionIds: [] };
+  }
+
+  const wantedSubmissionIds = new Set(
+    (Array.isArray(submissionIds) ? submissionIds : [])
+      .map((value) => normalizeText(String(value || "")))
+      .filter(Boolean)
+  );
+
+  if (wantedSubmissionIds.size === 0) {
+    return { metrics: base, updatedCount: 0, updatedSubmissionIds: [] };
+  }
+
+  const updatedSubmissionIds = [];
+  base.receipts = base.receipts.map((receipt) => {
+    if (!wantedSubmissionIds.has(receipt.submissionId)) {
+      return receipt;
+    }
+
+    if (normalizeProofLabel(receipt.proofLabel) === normalizedLabel) {
+      updatedSubmissionIds.push(receipt.submissionId);
+      return receipt;
+    }
+
+    updatedSubmissionIds.push(receipt.submissionId);
+    return {
+      ...receipt,
+      proofLabel: normalizedLabel
+    };
+  });
+
+  if (updatedSubmissionIds.length > 0) {
+    base.updatedAt = new Date().toISOString();
+  }
+
+  return {
+    metrics: base,
+    updatedCount: updatedSubmissionIds.length,
+    updatedSubmissionIds
+  };
+}
+
 function formatOwnerLeadSummary(metrics) {
   const safeMetrics = {
     ...emptyMetrics(),
@@ -212,6 +266,7 @@ module.exports = {
   OWNER_LEAD_METRICS_KEY,
   buildOwnerLeadReceipt,
   mergeOwnerLeadMetrics,
+  relabelOwnerLeadReceipts,
   formatOwnerLeadSummary,
   readAuthToken,
   getOwnerLeadBlobsConfig,
