@@ -12,6 +12,10 @@ const ownerTemplate = fs.readFileSync(
   path.join(projectRoot, "src", "property-management", "property-management.njk"),
   "utf8"
 );
+const siteHeader = fs.readFileSync(
+  path.join(projectRoot, "src", "_includes", "partials", "site-header.njk"),
+  "utf8"
+);
 const ownerData = require(path.join(projectRoot, "src", "_data", "seoPages.json")).owner;
 const ownerProofAssets = require(path.join(projectRoot, "src", "_data", "ownerProofAssets.json"));
 const ownerFormPath = path.join(projectRoot, "src", "_includes", "partials", "owner-evaluation-form.njk");
@@ -42,6 +46,13 @@ test("owner landing page keeps the owner revenue teardown close to the sales arg
   assert.ok(reviewIndex < faqIndex, "owner CTA should land before FAQ filler");
   assert.ok(reviewIndex < libraryIndex, "owner CTA should land before the operational library");
   assert.ok(reviewIndex < specialSituationsIndex, "owner CTA should land before special-situations content");
+});
+
+test("owner landing page opts into owner-only nav instead of the guest browse header", () => {
+  assert.equal(ownerLanding.includes("ownerNavOnly: true"), true, "owner landing should declare owner-only nav mode");
+  assert.equal(siteHeader.includes("{% if resolvedOwnerNavOnly %}"), true, "site header should support owner-only nav mode");
+  assert.equal(siteHeader.includes("href=\"/properties/\""), true, "shared header still needs guest-nav links for non-owner pages");
+  assert.equal(siteHeader.includes("Request Your Revenue Teardown"), false, "shared header should stay page-driven, not hard-code owner CTA copy");
 });
 
 test("owner template supports proof-first sections for high-intent owner pages", () => {

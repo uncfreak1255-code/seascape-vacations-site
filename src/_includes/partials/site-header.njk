@@ -1,4 +1,5 @@
 {% set resolvedNavActive = navActive or "" %}
+{% set resolvedOwnerNavOnly = ownerNavOnly or false %}
 {% set resolvedNavButtonHref = navButtonHref or "/properties/" %}
 {% set resolvedNavButtonLabel = navButtonLabel or "Browse Homes" %}
 {% if navContactHref %}
@@ -17,6 +18,17 @@
                 <div class="nav-logo-sub">Vacations</div>
             </div>
         </a>
+        {% if resolvedOwnerNavOnly %}
+        <div class="nav-links">
+            <a
+              href="{{ resolvedNavButtonHref }}"
+              class="btn btn-brand"
+              {% if navButtonTarget %}target="{{ navButtonTarget }}"{% endif %}
+              {% if navButtonRel %}rel="{{ navButtonRel }}"{% endif %}
+              {% if navButtonAttributes %}{{ navButtonAttributes | safe }}{% endif %}
+            >{{ resolvedNavButtonLabel }}</a>
+        </div>
+        {% else %}
         <div class="nav-links">
             <a class="nav-link{% if resolvedNavActive == 'home' %} is-current{% endif %}" href="/" {% if resolvedNavActive == 'home' %}aria-current="page"{% endif %}>Home</a>
             <a class="nav-link{% if resolvedNavActive == 'properties' %} is-current{% endif %}" href="/properties/" {% if resolvedNavActive == 'properties' %}aria-current="page"{% endif %}>Properties</a>
@@ -41,10 +53,14 @@
               {% if navButtonAttributes %}{{ navButtonAttributes | safe }}{% endif %}
             >{{ resolvedNavButtonLabel }}</a>
         </div>
+        {% endif %}
+        {% if not resolvedOwnerNavOnly %}
         <button class="mobile-btn" onclick="toggleSiteMenu()" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
         </button>
+        {% endif %}
     </div>
+    {% if not resolvedOwnerNavOnly %}
     <div id="mobileMenu" class="mobile-menu">
         <a href="/" class="mobile-item{% if resolvedNavActive == 'home' %} mobile-item--current{% endif %}" onclick="toggleSiteMenu()">Home</a>
         <a href="/properties/" class="mobile-item{% if resolvedNavActive == 'properties' %} mobile-item--current{% endif %}" onclick="toggleSiteMenu()">Properties</a>
@@ -66,4 +82,5 @@
           {% if navButtonAttributes %}{{ navButtonAttributes | safe }}{% endif %}
         >{{ resolvedNavButtonLabel }}</a>
     </div>
+    {% endif %}
 </nav>
