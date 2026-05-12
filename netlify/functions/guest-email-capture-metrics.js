@@ -7,7 +7,9 @@ const {
   readGuestEmailCaptureMetrics
 } = require("./_guest-email-capture-metrics");
 
-const GUEST_EMAIL_CAPTURE_METRICS_TOKEN = process.env.GUEST_EMAIL_CAPTURE_METRICS_TOKEN;
+const GUEST_EMAIL_CAPTURE_METRICS_TOKEN =
+  process.env.GUEST_EMAIL_CAPTURE_METRICS_TOKEN ||
+  process.env.OWNER_LEAD_METRICS_TOKEN;
 
 function resolveReadableStore(event, candidateStore) {
   if (candidateStore && typeof candidateStore.get === "function") {

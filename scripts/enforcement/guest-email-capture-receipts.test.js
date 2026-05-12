@@ -293,3 +293,34 @@ test("guest capture metrics are readable from stored JSON strings", async () => 
   assert.equal(metrics.totalCaptures, 1);
   assert.equal(metrics.receipts[0].pageSlug, "home");
 });
+
+test("guest capture metrics endpoint falls back to the owner metrics token", async () => {
+  process.env.OWNER_LEAD_METRICS_TOKEN = "owner-secret";
+  delete process.env.GUEST_EMAIL_CAPTURE_METRICS_TOKEN;
+
+  const metricsModulePath = require.resolve("../../netlify/functions/guest-email-capture-metrics");
+  delete require.cache[metricsModulePath];
+  const { handleGuestEmailCaptureMetricsRequest } = require("../../netlify/functions/guest-email-capture-metrics");
+
+  const response = await handleGuestEmailCaptureMetricsRequest(
+    {
+      httpMethod: "GET",
+      headers: { authorization: "Bearer owner-secret" }
+    },
+    undefined,
+    {
+      async get() {
+        return {
+          totalCaptures: 0,
+          byPagePath: {},
+          byPlacement: {},
+          receipts: []
+        };
+      }
+    }
+  );
+
+  assert.equal(response.statusCode, 200);
+  delete process.env.OWNER_LEAD_METRICS_TOKEN;
+  delete require.cache[metricsModulePath];
+});
