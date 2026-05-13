@@ -1,6 +1,6 @@
 # Current State
 
-*Updated: 2026-05-06*
+*Updated: 2026-05-11*
 
 ## Source of Truth
 
@@ -23,6 +23,7 @@
 - the latest GSC-covered 7-day fallback window, 2026-04-27 to 2026-05-03, was readable but still below action thresholds: owner-money had 342 impressions, stay-money had 2 impressions, and guide-variant demand did not clear the 5000-impression consolidation trigger
 - the weekly operator report in `seascape-analytics` is the read that should decide the next batch, not another site-wide audit
 - the repo now has a lean SEO OS: five roles only, one brief per serious batch, and dedicated style and portfolio docs instead of stale root markdown acting like live truth
+- source-truth drift surfaced on 2026-05-11 SEO audit: amenity and BR/BA claims diverged across `src/_data/properties-fallback.json`, the per-property templates, and `src/llms.txt` — reconciliation belongs on its own short worktree before any new owner or stay batch opens
 
 ## What This Repo Should Optimize For
 
