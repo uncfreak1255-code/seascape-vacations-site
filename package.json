@@ -5,6 +5,7 @@
   "scripts": {
     "clean:site": "node -e \"require('fs').rmSync('_site', { recursive: true, force: true })\"",
     "test": "node --test scripts/enforcement/*.test.js",
+    "test:review": "python3 -m unittest discover -s scripts/review -p 'test_*.py'",
     "git:preflight": "/Users/sawbeck/bin/guardrail-preflight",
     "git:safe-commit": "/Users/sawbeck/bin/guardrail-safe-commit",
     "git:merge-check": "/Users/sawbeck/bin/guardrail-merge-check",
@@ -25,7 +26,9 @@
     "verify:redirects": "node scripts/enforcement/validate-redirect-targets.js",
     "verify:links": "node scripts/enforcement/validate-internal-links.js",
     "verify:jsonld": "node scripts/enforcement/validate-jsonld.js",
-    "verify:release": "node scripts/enforcement/verify-release.js"
+    "verify:release": "node scripts/enforcement/verify-release.js",
+    "review:pick-design-references": "python3 scripts/review/pick_design_references.py",
+    "review:build-screenshot-board": "python3 scripts/review/build_screenshot_board.py"
   },
   "devDependencies": {
     "@11ty/eleventy": "^3.0.0",
