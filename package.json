@@ -14,6 +14,8 @@
     "build": "node scripts/enforcement/build-site.js",
     "build:prod": "NODE_ENV=production node scripts/enforcement/build-site.js",
     "setup:hooks": "node scripts/enforcement/install-hooks.js",
+    "property:truth:regen": "node scripts/regenerate-property-surfaces.js",
+    "property:truth:check": "node scripts/regenerate-property-surfaces.js --check",
     "repo:hygiene": "node scripts/enforcement/repo-hygiene.js",
     "repo:graveyard:audit": "node scripts/enforcement/graveyard-prune.js",
     "repo:graveyard:apply": "node scripts/enforcement/graveyard-prune.js --apply",
