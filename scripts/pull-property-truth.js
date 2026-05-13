@@ -3,6 +3,7 @@
 const fs = require("fs");
 const path = require("path");
 const { normalizeImage } = require("./cache/normalize-hostaway");
+const { regeneratePropertySurfaces } = require("./regenerate-property-surfaces");
 
 const projectRoot = path.resolve(__dirname, "..");
 const DEFAULT_OUTPUT = path.join(projectRoot, "src", "_data", "properties-fallback.json");
@@ -271,6 +272,15 @@ async function main(argv = process.argv.slice(2)) {
   console.log(result.changed ? "Diff:" : "No output changes.");
   if (result.diff) console.log(result.diff);
   console.log(result.wroteOutput ? `Wrote ${args.outputPath}` : "Output not written.");
+
+  if (result.wroteOutput) {
+    const regenerated = regeneratePropertySurfaces({});
+    console.log(
+      regenerated.changed.length
+        ? `Regenerated property truth surfaces:\n${regenerated.changed.join("\n")}`
+        : "Property truth surfaces already matched fallback data."
+    );
+  }
 }
 
 if (require.main === module) {

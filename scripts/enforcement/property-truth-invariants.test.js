@@ -8,13 +8,7 @@ const fallbackProperties = require("../../src/_data/properties-fallback.json");
 const seoPages = require("../../src/_data/seoPages.json");
 const { normalizeListing } = require("../../scripts/cache/normalize-hostaway");
 
-const PROPERTY_TRUTH = new Map([
-  ["dockside-dreams", { bedrooms: 4, bathrooms: 3, guests: 12, waterfront: true, dock: true }],
-  ["the-oasis", { bedrooms: 5, bathrooms: 3, guests: 16, puttingGreen: true }],
-  ["sarasota-luxe", { bedrooms: 4, bathrooms: 3, guests: 12 }],
-  ["river-house", { bedrooms: 4, bathrooms: 3, guests: 12, waterfront: false, dock: false }],
-  ["bradenton-pool-home", { bedrooms: 3, bathrooms: 3.5, guests: 10 }]
-]);
+const DOCKSIDE_ONLY_CLAIM_SLUG = "dockside-dreams";
 
 const STRICT_DOCK_OR_WATER_SLUGS = new Set([
   "bradenton-waterfront-vacation-rentals",
@@ -60,15 +54,9 @@ test("Hostaway listing normalization sums full and guest bathroom fields", () =>
 
 test("fallback property facts keep waterfront and dock claims limited to Dockside Dreams", () => {
   for (const property of fallbackProperties) {
-    const truth = PROPERTY_TRUTH.get(property.slug);
-    assert.ok(truth, `Missing truth contract for ${property.slug}`);
-
-    assert.equal(property.bedrooms, truth.bedrooms, `${property.slug} bedrooms drifted`);
-    assert.equal(property.bathrooms, truth.bathrooms, `${property.slug} bathrooms drifted`);
-    assert.equal(property.guests, truth.guests, `${property.slug} guest capacity drifted`);
     assert.equal(
       property.specs,
-      `${truth.bedrooms} BR · ${truth.bathrooms} BA · Sleeps ${truth.guests}`,
+      `${property.bedrooms} BR · ${property.bathrooms} BA · Sleeps ${property.guests}`,
       `${property.slug} specs must match fallback counts`
     );
 
@@ -80,7 +68,7 @@ test("fallback property facts keep waterfront and dock claims limited to Docksid
       specs: property.specs
     });
 
-    if (property.slug === "dockside-dreams") {
+    if (property.slug === DOCKSIDE_ONLY_CLAIM_SLUG) {
       assert.match(text, /\b(waterfront|dock|bayfront)\b/i);
       continue;
     }
@@ -178,13 +166,12 @@ test("fallback, llms, and property templates agree on property specs", () => {
   const llms = readSource("src/llms.txt");
 
   for (const property of fallbackProperties) {
-    const truth = PROPERTY_TRUTH.get(property.slug);
-    const compactSpec = `${truth.bedrooms}BR/${truth.bathrooms}BA`;
+    const compactSpec = `${property.bedrooms}BR/${property.bathrooms}BA`;
     const template = readSource(`src/properties/${property.slug}/index.njk`);
 
     assert.match(llms, new RegExp(`${property.name}[\\s\\S]*${compactSpec.replace(".", "\\.")}`));
-    assert.match(template, new RegExp(`<div class="stat-val">${truth.bedrooms}</div>[\\s\\S]*Bedrooms`));
-    assert.match(template, new RegExp(`<div class="stat-val">${String(truth.bathrooms).replace(".", "\\.")}</div>[\\s\\S]*Bathrooms`));
-    assert.match(template, new RegExp(`<div class="stat-val">${truth.guests}</div>[\\s\\S]*Max Guests`));
+    assert.match(template, new RegExp(`<div class="stat-val">${property.bedrooms}</div>[\\s\\S]*Bedrooms`));
+    assert.match(template, new RegExp(`<div class="stat-val">${String(property.bathrooms).replace(".", "\\.")}</div>[\\s\\S]*Bathrooms`));
+    assert.match(template, new RegExp(`<div class="stat-val">${property.guests}</div>[\\s\\S]*Max Guests`));
   }
 });
