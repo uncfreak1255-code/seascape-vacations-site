@@ -135,6 +135,23 @@ test("owner benchmark CTA carries source attribution into the revenue review for
   );
 });
 
+test("owner benchmark page stays in the leak-stack lane and keeps visible proof labels", () => {
+  const ownerBenchmark = fs.readFileSync(
+    path.join(projectRoot, "src", "research", "owner-fee-revenue-leak-benchmark-2026.njk"),
+    "utf8"
+  );
+
+  assert.equal(ownerBenchmark.includes("Your fee is not the only leak."), true);
+  assert.equal(ownerBenchmark.includes("5-property Gulf Coast scope"), true);
+  assert.equal(ownerBenchmark.includes("Observed Seascape portfolio data"), true);
+  assert.equal(ownerBenchmark.includes("Observed property example"), true);
+  assert.equal(ownerBenchmark.includes("Scenario math, not a forecast"), true);
+  assert.equal(ownerBenchmark.includes("Request Your Revenue Teardown"), true);
+  assert.equal(ownerBenchmark.includes("passive income"), false);
+  assert.equal(ownerBenchmark.includes("sit back while we manage"), false);
+  assert.equal(ownerBenchmark.includes("full service"), false);
+});
+
 test("owner pages keep phone as a lower-trust fallback instead of a competing hero CTA", () => {
   const landingHeroStart = ownerLanding.indexOf('<section class="section owner-hero">');
   const landingHeroEnd = ownerLanding.indexOf("</section>", landingHeroStart);
