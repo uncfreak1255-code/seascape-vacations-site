@@ -141,7 +141,7 @@ test("owner benchmark page stays in the leak-stack lane and keeps visible proof 
     "utf8"
   );
 
-  assert.equal(ownerBenchmark.includes("Your fee is not the only leak."), true);
+  assert.equal(ownerBenchmark.includes("Your management fee is not the whole revenue leak."), true);
   assert.equal(ownerBenchmark.includes("5-property Gulf Coast scope"), true);
   assert.equal(ownerBenchmark.includes("Observed Seascape portfolio data"), true);
   assert.equal(ownerBenchmark.includes("Observed property example"), true);
