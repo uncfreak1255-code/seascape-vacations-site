@@ -1,7 +1,7 @@
 {
   "name": "Seascape Vacations",
   "url": "https://seascape-vacations.com",
-  "description": "Luxury vacation rentals on Florida's Gulf Coast. Anna Maria Island, Bradenton, Sarasota, and Siesta Key.",
+  "description": "Locally managed private-pool vacation rentals in Bradenton and Sarasota, Florida, near Anna Maria Island, Siesta Key, and Lido Key beaches.",
   "phone": "+1-941-704-8545",
   "email": "info@seascape-vacations.com",
   "socialLinks": {
@@ -9,12 +9,14 @@
     "instagram": "https://www.instagram.com/seascapevacations"
   },
   "businessProfiles": {
-    "googleBusinessProfile": "https://www.google.com/search?kgmid=%2Fg%2F11y4vdnsfp&q=Seascape+Vacations"
+    "googleBusinessProfile": "https://www.google.com/search?kgmid=%2Fg%2F11y4vdnsfp&q=Seascape+Vacations",
+    "bradentonGulfIslands": "https://www.bradentongulfislands.com/listing/seascape-vacations/"
   },
   "sameAsLinks": [
     "https://www.facebook.com/SeascapeVacations",
     "https://www.instagram.com/seascapevacations",
-    "https://www.google.com/search?kgmid=%2Fg%2F11y4vdnsfp&q=Seascape+Vacations"
+    "https://www.google.com/search?kgmid=%2Fg%2F11y4vdnsfp&q=Seascape+Vacations",
+    "https://www.bradentongulfislands.com/listing/seascape-vacations/"
   ],
   "analytics": {
     "ga4MeasurementId": "G-3VDV66S3DK"
