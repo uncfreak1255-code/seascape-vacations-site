@@ -21,6 +21,9 @@ Thumbs.db
 *.log
 .skills
 .worktrees/
+playwright-report/
+test-results/
+blob-report/
 
 # Local scratch artifacts
 .superpowers/
