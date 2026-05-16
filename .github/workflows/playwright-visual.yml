@@ -1,0 +1,40 @@
+name: Playwright Visual Gate
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "src/**"
+      - "eleventy.config.js"
+      - "playwright.config.js"
+      - "tests/visual/**"
+      - "scripts/enforcement/serve-static.js"
+      - "package.json"
+      - "package-lock.json"
+      - ".github/workflows/playwright-visual.yml"
+
+jobs:
+  visual-regression:
+    runs-on: macos-latest
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - run: npm ci
+      - run: npm run test:visual:install
+      - run: npm run test:visual
+
+      - name: Upload Playwright report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: |
+            playwright-report/
+            test-results/

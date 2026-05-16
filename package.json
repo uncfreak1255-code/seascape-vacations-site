@@ -28,10 +28,15 @@
     "verify:redirects": "node scripts/enforcement/validate-redirect-targets.js",
     "verify:links": "node scripts/enforcement/validate-internal-links.js",
     "verify:jsonld": "node scripts/enforcement/validate-jsonld.js",
-    "verify:release": "node scripts/enforcement/verify-release.js"
+    "verify:release": "node scripts/enforcement/verify-release.js",
+    "test:visual": "playwright test",
+    "test:visual:update": "playwright test --update-snapshots",
+    "test:visual:install": "playwright install chromium"
   },
   "devDependencies": {
     "@11ty/eleventy": "^3.0.0",
+    "@axe-core/playwright": "^4.11.3",
+    "@playwright/test": "^1.60.0",
     "html-minifier-terser": "^7.2.0"
   },
   "dependencies": {
