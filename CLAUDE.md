@@ -44,10 +44,14 @@ That is enough. Extra agent personas are overhead unless they own a real surface
 
 ## Local Skills
 
-The active local skill layer is intentionally small and site-specific:
+The active local skill layer is intentionally lean and site-specific:
 
 - `accessibility`
+- `design-review`
+- `next-batch-gate`
+- `owner-proof-integrity`
 - `page-cro`
+- `property-truth-regeneration`
 - `schema-markup`
 - `site-architecture`
 - `web-design-guidelines`
