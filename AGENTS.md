@@ -8,9 +8,10 @@ Read in this order:
 2. `CLAUDE.md`
 3. `docs/process/agent-safety-standard.md`
 4. `docs/process/git-session-rules.md`
-5. `docs/status/current-state.md`
-6. `DESIGN.md` before UI, CSS, template, or layout work
-7. one task-relevant file from `docs/briefs/`, `docs/portfolio/`, `docs/style/`, or source
+5. `docs/process/content-quality-gate.md` before content or SEO copy work
+6. `docs/status/current-state.md`
+7. `DESIGN.md` before UI, CSS, template, or layout work
+8. one task-relevant file from `docs/briefs/`, `docs/portfolio/`, `docs/style/`, or source
 
 ## This Repo Owns
 
@@ -36,6 +37,7 @@ Read in this order:
 - edit source, not `_site`
 - never use `DEPLOY THIS FOLDER TO NETLIFY/` as the source of truth
 - one serious SEO cluster at a time, with one brief driving it
+- no public content PR without one active brief, the content gate read, and `npm run lint:content`
 - review the diff before push, PR, or merge
 
 ## Repo Truth
@@ -58,6 +60,15 @@ Read in this order:
 - active repo-local skills are limited to `.agents/skills/accessibility`, `.agents/skills/page-cro`, `.agents/skills/schema-markup`, `.agents/skills/site-architecture`, and `.agents/skills/web-design-guidelines`
 - `.claude/skills/` should mirror only those active site/design skills; copied marketing, deploy, monthly reset, and generic SEO skills are not live authority
 - global marketing skills in `/Users/sawbeck/.codex/skills/` may be used as advisory helpers for CRO, SEO, copy, psychology, analytics, and growth decisions, but they do not override this repo's source files, briefs, status docs, or five-role workflow
+
+## Content Gate
+
+For any PR that changes public copy in `src/`:
+
+- read the active brief plus `docs/process/content-quality-gate.md`
+- read `docs/style/voice.md`, `docs/style/banned-patterns.md`, and `docs/style/approved-examples.md`
+- keep reader copy, proof copy, and agent copy separate
+- run `npm run lint:content` before push, PR, or merge
 
 ## Design System
 

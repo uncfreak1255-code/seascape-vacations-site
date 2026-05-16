@@ -5,6 +5,7 @@
   "scripts": {
     "clean:site": "node -e \"require('fs').rmSync('_site', { recursive: true, force: true })\"",
     "test": "node --test scripts/enforcement/*.test.js",
+    "lint:content": "node --test scripts/enforcement/content-voice.test.js",
     "git:preflight": "/Users/sawbeck/bin/guardrail-preflight",
     "git:safe-commit": "/Users/sawbeck/bin/guardrail-safe-commit",
     "git:merge-check": "/Users/sawbeck/bin/guardrail-merge-check",
