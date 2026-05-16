@@ -1,6 +1,10 @@
 # Owner Fee + Revenue Leak Benchmark
 
-Date: 2026-05-03
+Date: 2026-05-15
+Hub handoff: `/Users/sawbeck/Projects/seascape-hub/projects/owner-fee-revenue-leak-benchmark-execution-package-2026-05-15.md`
+Site route: `/research/owner-fee-revenue-leak-benchmark-2026/`
+Figma capture: `https://www.figma.com/design/glZRIUzGbQlw0KJhtAGUWP?node-id=3-2`
+Figma frames: `Owner Fee + Revenue Leak Benchmark - Desktop`, `Owner Fee + Revenue Leak Benchmark - Mobile`
 
 ## Decision
 
@@ -14,6 +18,33 @@ This is the source-backed citation page for:
 - OTA host-fee drag
 - direct-booking leakage
 - owner net-income risk
+
+This site brief now defers to the merged Hub execution package for exact
+section copy, proof labels, chart captions, CTA wording, and the Figma-ready
+desktop/mobile frame plan. Do not invent replacement proof while building the
+site page or Figma frame.
+
+## Exact Public Argument
+
+`The management percentage is only one part of owner net. The real comparison is the full leak stack: management fee, OTA drag, direct mix, pricing discipline, and operating clarity.`
+
+## Required Hero Copy
+
+Eyebrow:
+
+`Owner Fee + Revenue Leak Benchmark`
+
+H1:
+
+`Your management fee is not the whole revenue leak.`
+
+Subhead:
+
+`Most owners compare 15%, 20%, and 25% management fees. That misses the bigger stack: OTA drag, direct-booking mix, pricing discipline, and how clearly your manager explains what is happening to owner net.`
+
+CTA:
+
+`Request Your Revenue Teardown`
 
 ## Proof Boundary
 
@@ -30,6 +61,22 @@ Scenario math:
 - scenario rows are not forecasts or guarantees
 - property-level upside still requires a revenue review
 
+Visible proof labels:
+
+- `Observed Seascape portfolio data`
+- `Observed property example`
+- `Scenario math, not a forecast`
+- `5-property Gulf Coast scope`
+- `Last refreshed: May 2026`
+
+Claims to keep out:
+
+- benchmark-path test receipts as owner demand
+- market-wide authority from a 5-home sample
+- blanket `15%` quote for every home
+- review-count, Superhost, or Premier Host stat blocks unless freshly verified
+- AI, dashboard, or automation language as the owner-facing reason to switch
+
 ## Pages Fed
 
 - `/property-management/`
@@ -43,6 +90,25 @@ Primary CTA becomes:
 - `Request Your Revenue Teardown`
 
 The benchmark should make the owner ask for a property-specific teardown, not chase the lowest management percentage.
+
+Form route:
+
+- primary CTA should preserve benchmark source attribution:
+  `/property-management/?owner_source=owner-fee-revenue-leak-benchmark-2026#owner-cta`
+- form submit button stays `Send My Teardown Request`
+- proof note should say missing statements, calendars, reviews, or fee terms are marked unknown
+
+## Figma / Site Handoff
+
+Use the Hub package's frame plan directly:
+
+1. Desktop frame: `Owner Fee + Revenue Leak Benchmark - Desktop`
+2. Mobile frame: `Owner Fee + Revenue Leak Benchmark - Mobile`
+3. Sections: hero, wrong-comparison intro, fee stack, channel-cost comparison,
+   scenario math, observed examples, fit boundary, teardown CTA, method rail
+4. Proof chips must stay visible in Figma and in the live page.
+5. Chart captions are real page text, not hidden design notes.
+6. Do not turn v1 into an interactive calculator.
 
 ## Follow-Up
 
