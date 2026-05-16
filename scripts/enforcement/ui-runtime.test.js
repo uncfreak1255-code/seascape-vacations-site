@@ -9,6 +9,22 @@ function readSource(...segments) {
   return fs.readFileSync(path.join(projectRoot, ...segments), "utf8");
 }
 
+function walkFiles(dir) {
+  const entries = fs.readdirSync(dir, { withFileTypes: true });
+  const files = [];
+
+  for (const entry of entries) {
+    const fullPath = path.join(dir, entry.name);
+    if (entry.isDirectory()) {
+      files.push(...walkFiles(fullPath));
+      continue;
+    }
+    files.push(fullPath);
+  }
+
+  return files;
+}
+
 test("homepage footer legal links use semantic buttons wired through data attributes", () => {
   const homepage = readSource("src", "index.njk");
   const homepageScript = readSource("src", "assets", "js", "homepage.js");
@@ -30,13 +46,45 @@ test("homepage footer legal links use semantic buttons wired through data attrib
   assert.equal(homepageStyles.includes(".footer-link--button"), true);
 });
 
-test("Bradenton vs Sarasota comparison table is wrapped for mobile scrolling", () => {
+test("Bradenton vs Sarasota comparison table fits mobile width without forced horizontal overflow", () => {
   const guide = readSource("src", "guides", "bradenton-vs-sarasota.html");
 
   assert.equal(guide.includes(".compare-table-wrap"), true);
   assert.match(guide, /<div class="compare-table-wrap"[^>]*aria-label="Quick comparison table"[^>]*>/);
   assert.match(guide, /<div class="compare-table-wrap"[\s\S]*?<table class="compare-table">/);
-  assert.match(guide, /@media\(max-width:600px\)\{\.compare-table\{min-width:560px/);
+  assert.equal(guide.includes("min-width:560px"), false);
+  assert.match(
+    guide,
+    /@media\(max-width:600px\)\{\.compare-table\{table-layout:fixed;font-size:12px\}/
+  );
+  assert.match(
+    guide,
+    /\.compare-table td,\.compare-table th\{padding:10px 8px;white-space:normal;overflow-wrap:anywhere\}/
+  );
+});
+
+test("visible source templates do not ship emoji glyphs", () => {
+  const allowedSymbols = new Set(["©"]);
+  const emojiPattern =
+    /\p{Extended_Pictographic}(?:\uFE0F|\uFE0E)?(?:\u200D\p{Extended_Pictographic}(?:\uFE0F|\uFE0E)?)*?/gu;
+  const offenders = [];
+
+  for (const filePath of walkFiles(path.join(projectRoot, "src"))) {
+    const relativePath = path.relative(projectRoot, filePath);
+    const source = fs.readFileSync(filePath, "utf8");
+    const lines = source.split(/\r?\n/);
+
+    for (const [index, line] of lines.entries()) {
+      const matches = [...line.matchAll(emojiPattern)].map((match) => match[0]);
+      const disallowed = [...new Set(matches)].filter((match) => !allowedSymbols.has(match));
+      if (!disallowed.length) {
+        continue;
+      }
+      offenders.push(`${relativePath}:${index + 1} -> ${disallowed.join(" ")}`);
+    }
+  }
+
+  assert.deepEqual(offenders, []);
 });
 
 test("hero ticker uses real data hooks instead of hardcoded live theater", () => {

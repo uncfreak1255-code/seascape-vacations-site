@@ -1,3 +1,4 @@
+{% from "partials/ui-icon.njk" import uiIcon, uiLabel %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -417,7 +418,7 @@
         <a href="/">Home</a> / <a href="/guides/">Guides</a> / Bradenton Insider Guide
     </div>
     <div class="hero">
-        <span class="hero-badge">📍 LOCAL GUIDE</span>
+        <span class="hero-badge">{{ uiLabel('location', 'LOCAL GUIDE') }}</span>
         <h1>The Bradenton Insider Guide: A Local's Complete Handbook 2026</h1>
         <p class="hero-subtitle">Neighborhoods, beaches, hidden gems, and practical tips for planning your Gulf Coast getaway.</p>
     </div>
