@@ -1,3 +1,4 @@
+{% from "partials/ui-icon.njk" import uiIcon, uiLabel %}
 ---
 permalink: false
 eleventyExcludeFromCollections: true
@@ -92,7 +93,7 @@ eleventyExcludeFromCollections: true
 <nav class="guide-nav"><a href="https://seascape-vacations.com">← Back to Seascape</a> <span class="logo">Seascape Vacations</span></nav>
 <div class="guide-container">
 <div class="breadcrumb"><a href="/">Home</a> <span>›</span> <a href="/guides/">Guides</a> <span>›</span> AMI Vacation Cost Guide</div>
-<span class="guide-tag">💰 Budget Planning</span>
+<span class="guide-tag">{{ uiLabel('dollar', 'Budget Planning') }}</span>
 <h1 class="guide-title">Anna Maria Island Vacation Cost Guide 2026</h1>
 <p class="guide-meta">Updated March 2026 · Real pricing from local property managers · 8 min read</p>
 

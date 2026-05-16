@@ -108,5 +108,7 @@ Treat `DESIGN.md` as the visual source of truth.
 Do not invent new colors, fonts, spacing, border radius, shadows, or component styles without explicit user approval.
 If Claude Design, Stitch, designmd.directory, or another design tool produces a new direction, propose it as a `DESIGN.md` change first.
 Use Stitch/designmd.directory only as inspiration, not source truth.
+Meaningful visual changes also need the repo flow in `docs/process/design-review-workflow.md`.
+Run the global `design-review` skill against the affected routes after implementation and before asking for human review.
 Subjective visual changes need desktop and mobile screenshots until an automated visual regression gate exists.
 For UI/visual work, dispatch subagents with `model: "sonnet"`.

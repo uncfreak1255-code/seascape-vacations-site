@@ -11,7 +11,8 @@ Read in this order:
 5. `docs/process/content-quality-gate.md` before content or SEO copy work
 6. `docs/status/current-state.md`
 7. `DESIGN.md` before UI, CSS, template, or layout work
-8. one task-relevant file from `docs/briefs/`, `docs/portfolio/`, `docs/style/`, or source
+8. `docs/process/design-review-workflow.md` for any visual or layout change
+9. one task-relevant file from `docs/briefs/`, `docs/portfolio/`, `docs/style/`, or source
 
 ## This Repo Owns
 
@@ -69,6 +70,13 @@ For any PR that changes public copy in `src/`:
 - read `docs/style/voice.md`, `docs/style/banned-patterns.md`, and `docs/style/approved-examples.md`
 - keep reader copy, proof copy, and agent copy separate
 - run `npm run lint:content` before push, PR, or merge
+
+## Design Review Workflow
+
+- `DESIGN.md` is the visual law. Figma, Claude Design, Stitch, or any outside design tool can inform direction, but they do not override repo truth.
+- For any meaningful visual change, including layout, spacing, typography, color, imagery, iconography, CTA treatment, or motion, run the repo flow in `docs/process/design-review-workflow.md`.
+- The required rendered QA loop for visual changes is the global `design-review` skill. Use it after implementation and before human review so the review surface is screenshots plus live route checks, not code alone.
+- If an outside design tool introduces a new pattern or style direction, propose it as a `DESIGN.md` change first, then implement after that design law is explicit.
 
 ## Design System
 

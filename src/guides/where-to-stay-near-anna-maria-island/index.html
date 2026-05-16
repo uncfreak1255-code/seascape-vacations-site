@@ -1,3 +1,4 @@
+{% from "partials/ui-icon.njk" import uiIcon, uiLabel %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -101,7 +102,7 @@
 <nav class="guide-nav"><a href="https://seascape-vacations.com">← Back to Seascape</a> <span class="logo">Seascape Vacations</span></nav>
 <div class="guide-container">
 <div class="breadcrumb"><a href="/">Home</a> <span>›</span> <a href="/guides/">Guides</a> <span>›</span> Where to Stay Near AMI</div>
-<span class="guide-tag">📍 Neighborhood Guide</span>
+<span class="guide-tag">{{ uiLabel('location', 'Neighborhood Guide') }}</span>
 <h1 class="guide-title">Where to Stay Near Anna Maria Island: A Local's Neighborhood Guide</h1>
 <p class="guide-meta">Updated March 2026 · Written by local property managers · 10 min read</p>
 
