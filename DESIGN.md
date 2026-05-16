@@ -308,6 +308,11 @@ Legacy bare `.btn` (no modifier) falls back to the same visual as `.btn-brand` m
 - Pair with: locally managed badge, guest review count, response-time promise.
 - Never use countdown timers, fake scarcity ("Only 1 left!"), or strikethrough pricing.
 
+## Iconography
+- Use SVG icons only on the live site. Preferred source is the shared repo icon system in `src/_includes/partials/ui-icon.njk`.
+- If the needed icon does not exist in the repo yet, pull or export an approved SVG from the design system or Figma and add it to source. Do not fall back to emoji glyphs.
+- Never use emoji as bullets, badges, stat markers, CTA decoration, or section icons on desktop or mobile.
+
 ## Anti-Patterns — Never Do These
 1. **Never replace the cream background with white or gray.** Cream is the brand's visual signature. It separates Seascape from every Airbnb clone.
 2. **Never use system fonts or generic sans-serif** for headings. Playfair Display is the brand identity.
@@ -332,6 +337,7 @@ Legacy bare `.btn` (no modifier) falls back to the same visual as `.btn-brand` m
 - **Property data comes from Hostaway** via `src/_data/properties.js`. Do not hardcode property details.
 - **Test all changes at 375px (mobile), 768px (tablet), and 1200px+ (desktop).**
 - **Run `npx @11ty/eleventy --serve` to preview changes locally.**
+- **For meaningful visual changes, run `docs/process/design-review-workflow.md`.** The rendered QA loop includes the `design-review` skill, fresh screenshots, and changed-route review before asking Sawyer to look.
 - **Visual regression screenshots are required before calling a subjective visual change "better."** Until an automated screenshot gate exists, attach desktop and mobile screenshots to the review or PR.
 
 ## Decisions Log
@@ -343,3 +349,5 @@ Legacy bare `.btn` (no modifier) falls back to the same visual as `.btn-brand` m
 | 2026-04-13 | No scroll animations | Speed and simplicity signal professionalism. Animations add loading delay and distract from content. |
 | 2026-04-13 | Cream background is non-negotiable | The single most distinctive visual element. Removing it would make Seascape look like every other rental site. |
 | 2026-04-24 | Premium buttons v1: retire teal gradient, introduce hairline-framed primary + foil rare-use + ghost/solid-gold pair | Plum Guide-level editorial restraint needed more type discipline (uppercase, tighter size, .12em tracking) and a one-per-page gold foil. Bare `.btn` keeps teal fallback so existing call sites don't break while templates migrate to explicit modifiers. |
+| 2026-05-15 | SVG-only iconography on the live site | Emoji decoration reads cheap and inconsistent across devices. Live site iconography now comes from shared SVGs in source or approved design-system exports. |
+| 2026-05-15 | `design-review` is the required rendered QA loop for meaningful visual changes | Visual work in this repo must be reviewed on the rendered surface with desktop/mobile screenshots and live route checks before human review. |
