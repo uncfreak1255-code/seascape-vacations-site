@@ -6,7 +6,11 @@
 
 Current curated focus:
 - `accessibility`
+- `design-review`
+- `next-batch-gate`
+- `owner-proof-integrity`
 - `page-cro`
+- `property-truth-regeneration`
 - `schema-markup`
 - `site-architecture`
 - `web-design-guidelines`

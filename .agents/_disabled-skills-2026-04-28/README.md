@@ -1,8 +1,19 @@
 # Disabled Local Skills — 2026-04-28
 
-This repo's local skill surface was pruned down to the active set that actually fits repeated site work.
+This folder is an archived dump from the 2026-04-28 cleanup pass, not the current local skill authority.
 
-Active repo-local skills:
+Current active local skills are defined in `AGENTS.md`, `CLAUDE.md`, and `.claude/skills/README.md`. As of the current repo surface, that active set is:
+- `accessibility`
+- `design-review`
+- `next-batch-gate`
+- `owner-proof-integrity`
+- `page-cro`
+- `property-truth-regeneration`
+- `schema-markup`
+- `site-architecture`
+- `web-design-guidelines`
+
+Archived snapshot moved here during the cleanup:
 - `accessibility`
 - `core-web-vitals`
 - `copy-editing`
