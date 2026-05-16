@@ -87,6 +87,29 @@ test("visible source templates do not ship emoji glyphs", () => {
   assert.deepEqual(offenders, []);
 });
 
+test("area guides with hero stats keep the guarded mobile CTA reveal", () => {
+  const guardedAreaGuides = [
+    ["anna-maria-island-area-guide", "index.html"],
+    ["bradenton-area-guide", "index.html"],
+    ["sarasota-area-guide", "index.html"],
+    ["siesta-key-area-guide", "index.html"],
+  ];
+
+  const partial = readSource("src", "_includes", "partials", "area-guide-mobile-cta-guard.njk");
+  assert.match(partial, /mobile-cta-visible/);
+  assert.match(partial, /#sticky-book-bar/);
+  assert.match(partial, /querySelector\("\.quick-stats"\)/);
+
+  for (const segments of guardedAreaGuides) {
+    const guide = readSource("src", "guides", ...segments);
+    assert.match(
+      guide,
+      /\{% include "partials\/area-guide-mobile-cta-guard\.njk" %\}/,
+      `${segments.join("/")} is missing the guarded mobile CTA include`
+    );
+  }
+});
+
 test("hero ticker uses real data hooks instead of hardcoded live theater", () => {
   const homepage = readSource("src", "index.njk");
   const heroScript = readSource("src", "assets", "js", "hero-v2.js");
