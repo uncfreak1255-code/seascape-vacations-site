@@ -1,8 +1,10 @@
 {% macro ownerEvaluationForm(options = {}) %}
 <form
-  class="owner-lead-form"
-  name="owner-revenue-teardown"
+  class="owner-lead-form{% if options.className %} {{ options.className }}{% endif %}"
+  {% if options.id %}id="{{ options.id }}"{% endif %}
+  name="{{ options.formName or 'owner-revenue-teardown' }}"
   method="POST"
+  {% if options.allowFileUpload %}enctype="multipart/form-data"{% endif %}
   data-netlify="true"
   netlify-honeypot="bot-field"
   data-track-form="owner"
@@ -11,8 +13,9 @@
   data-page-slug="{{ options.pageSlug or 'property-management' }}"
   data-source-page-slug="{{ options.sourcePageSlug or options.pageSlug or 'property-management' }}"
   data-market="{{ options.market or 'florida-gulf-coast' }}"
+  {% if options.formPlacement %}data-form-placement="{{ options.formPlacement }}"{% endif %}
 >
-  <input type="hidden" name="form-name" value="owner-revenue-teardown">
+  <input type="hidden" name="form-name" value="{{ options.formName or 'owner-revenue-teardown' }}">
   <input type="hidden" name="page_slug" value="{{ options.pageSlug or 'property-management' }}">
   <input type="hidden" name="source_page_slug" value="{{ options.sourcePageSlug or options.pageSlug or 'property-management' }}">
   <input type="hidden" name="market" value="{{ options.market or 'florida-gulf-coast' }}">
@@ -31,7 +34,7 @@
   <p class="owner-form-copy">{{ options.intro }}</p>
   {% endif %}
 
-  <div class="owner-form-grid">
+  <div class="owner-form-grid{% if options.gridClassName %} {{ options.gridClassName }}{% endif %}">
     <label class="owner-form-field">
       <span>Your Name</span>
       <input type="text" name="name" autocomplete="name" placeholder="First and last name" required>
@@ -45,12 +48,37 @@
       <input type="tel" name="phone" autocomplete="tel" placeholder="(941) 555-1234">
     </label>
     <label class="owner-form-field owner-form-field--wide">
-      <span>Property address or listing URL</span>
-      <input type="text" name="property_address" autocomplete="street-address" placeholder="123 Palm Ave or airbnb.com/h/your-listing" required>
+      <span>{{ options.propertyFieldLabel or "Property address or listing URL" }}</span>
+      <input type="text" name="property_address" autocomplete="street-address" placeholder="{{ options.propertyFieldPlaceholder or '123 Palm Ave or airbnb.com/h/your-listing' }}" required>
     </label>
+    {% if options.showBenchmarkFields %}
+    <label class="owner-form-field">
+      <span>Listing URL</span>
+      <input type="url" name="listing_url" inputmode="url" placeholder="airbnb.com/h/your-listing or vrbo.com/...">
+    </label>
+    <label class="owner-form-field">
+      <span>Current manager or self-managed</span>
+      <input type="text" name="current_manager" placeholder="Manager name or self-managed">
+    </label>
+    <label class="owner-form-field">
+      <span>Current fee quote, if known</span>
+      <input type="text" name="current_fee_quote" placeholder="15%, 20%, 25%, or fee terms">
+    </label>
+    <label class="owner-form-field owner-form-field--wide">
+      <span>What feels off right now?</span>
+      <textarea name="current_setup_concern" rows="3" placeholder="Example: too Airbnb-heavy, weak reporting, discounting, maintenance misses, or review-quality drift"></textarea>
+    </label>
+    <label class="owner-form-field owner-form-field--wide owner-form-field--file">
+      <span>Upload owner statement, optional</span>
+      <input type="file" name="owner_statement" accept="{{ options.fileAccept or '.pdf,.csv,.xls,.xlsx,.png,.jpg,.jpeg' }}">
+      <small class="owner-form-help">{{ options.fileHelp or "PDF, spreadsheet, or screenshot. Missing source material will be marked unknown." }}</small>
+    </label>
+    {% endif %}
   </div>
 
   <button class="btn btn-gold owner-form-submit" type="submit">{{ options.buttonLabel or "Request Your Revenue Teardown" }}</button>
+  {% if not options.suppressNote %}
   <p class="owner-form-note">{{ options.note or "Send the property address or listing URL. We will benchmark fee drag, channel mix, and the operating gaps that may be costing you owner income." }}</p>
+  {% endif %}
 </form>
 {% endmacro %}
