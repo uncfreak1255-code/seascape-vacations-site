@@ -1,0 +1,65 @@
+{
+    "version": "0.1.20260430",
+    "status_code": 20000,
+    "status_message": "Ok.",
+    "time": "0 sec.",
+    "cost": 0,
+    "tasks_count": 1,
+    "tasks_error": 1,
+    "tasks": [
+        {
+            "id": "05172024-1445-0634-0000-88942a6cd1b7",
+            "status_code": 40204,
+            "status_message": "Access denied. Visit Plans and Subscriptions to activate your subscription and get access to this API.",
+            "time": "0 sec.",
+            "cost": 0,
+            "result_count": 0,
+            "path": [
+                "v3",
+                "ai_optimization",
+                "llm_mentions",
+                "search",
+                "live"
+            ],
+            "data": {
+                "api": "ai_optimization",
+                "function": "search",
+                "language_code": "en",
+                "location_code": 2840,
+                "platform": "google",
+                "target": [
+                    {
+                        "domain": "seascape-vacations.com",
+                        "search_filter": "include",
+                        "search_scope": [
+                            "sources"
+                        ]
+                    },
+                    {
+                        "keyword": "bradenton vacation rentals near beaches",
+                        "search_scope": [
+                            "answer",
+                            "question",
+                            "fan_out_queries"
+                        ],
+                        "match_type": "word_match"
+                    }
+                ],
+                "filters": [
+                    [
+                        "ai_search_volume",
+                        ">",
+                        0
+                    ]
+                ],
+                "order_by": [
+                    "ai_search_volume,desc"
+                ],
+                "offset": 0,
+                "limit": 10,
+                "tag": "p2-mentions-bradenton-near-beaches"
+            },
+            "result": null
+        }
+    ]
+}
