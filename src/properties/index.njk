@@ -2,10 +2,10 @@
 layout: layouts/base.njk
 permalink: "/properties/"
 templateEngineOverride: "njk"
-pageTitle: "Direct Booking Vacation Rentals Near Anna Maria Island & Sarasota | Seascape Vacations"
-pageDescription: "Browse direct-booking vacation rentals near Anna Maria Island and in Sarasota with private pools, local support, and fast paths into live availability."
+pageTitle: "Vacation Rentals Near Anna Maria Island | Bradenton & Sarasota Pool Homes"
+pageDescription: "Browse Bradenton and Sarasota vacation rentals near Anna Maria Island. Compare the real tradeoff: more space and private pools off-island, or Sarasota stays when the city is the destination."
 pageImage: "https://seascape-vacations.com/images/seascape-og-default.jpg"
-pageUpdated: "2026-03-17T17:45:00-04:00"
+pageUpdated: "2026-05-16T12:00:00-04:00"
 navActive: "properties"
 navButtonLabel: "Book Direct"
 navButtonHref: "https://book.seascape-vacations.com"
@@ -700,7 +700,7 @@ headExtra: |
   "@context": "https://schema.org",
   "@type": "ItemList",
   "name": "Seascape Vacations Properties",
-  "description": "Luxury vacation rentals in Bradenton and Sarasota from Seascape Vacations.",
+  "description": "Private-pool vacation rentals in Bradenton and Sarasota, including near-AMI options from Seascape Vacations.",
   "numberOfItems": {{ properties | length }},
   "itemListElement": [
     {% for property in properties %}
@@ -729,10 +729,24 @@ headExtra: |
   <div class="catalog-hero-inner">
     <div class="catalog-hero-copy">
       <span class="catalog-kicker">Seascape Collection</span>
-      <h1>Luxury Gulf Coast vacation rentals for direct booking.</h1>
+      <h1>Vacation rentals near Anna Maria Island, with the tradeoff stated clearly.</h1>
       <p>
-        5 private-pool homes in Bradenton and Sarasota. Book direct and save 10-15% vs. Airbnb and VRBO.
+        These homes are in Bradenton and Sarasota, not on Anna Maria Island itself. Use this page when you want more space, private pools, and a faster path into direct dates without pretending every stay is on-island.
       </p>
+      <div class="catalog-highlights" aria-label="Properties page quick answer">
+        <div class="catalog-highlight">
+          <strong>Best fit</strong>
+          <span>Choose Bradenton when AMI beach access matters most and you want better pool-home value.</span>
+        </div>
+        <div class="catalog-highlight">
+          <strong>Tradeoff</strong>
+          <span>These are off-island or city-base homes, so you give up walk-out beach claims and gain space, pricing, and easier logistics.</span>
+        </div>
+        <div class="catalog-highlight">
+          <strong>Next move</strong>
+          <span>Start with the route cards below if your real question is near AMI, book direct, Bradenton near beaches, or Sarasota with a pool.</span>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -742,13 +756,80 @@ headExtra: |
     <div class="catalog-toolbar">
       <div class="catalog-toolbar-copy">
         <p class="section-tag">Our Collection</p>
-        <h2 id="catalog-heading">Pick the right home, then jump into direct dates.</h2>
+        <h2 id="catalog-heading">Start with the right base, then jump into direct dates.</h2>
         <p id="catalog-copy">
-          Filter by fit, then open dates or the property page for one more look.
+          Bradenton is the better lane when you want easier Anna Maria Island beach days. Sarasota is the better lane when the city is the destination and a pool-home setup still matters.
         </p>
       </div>
       <a class="catalog-toolbar-link" href="/guides/">Explore local guides →</a>
     </div>
+
+    <section class="catalog-route-panel" aria-label="Explore by trip type">
+      <div class="catalog-route-header">
+        <p class="section-tag">Explore by Trip Type</p>
+      <h3>Looking for something specific?</h3>
+        <p>
+          This page is broad on purpose. If your real search is near Anna Maria Island, book direct, Bradenton near beaches, or Sarasota with a pool, use one of these routes first.
+        </p>
+      </div>
+      <div class="catalog-route-grid">
+        <a
+          class="catalog-route-card"
+          href="/stays/book-direct-anna-maria-island/"
+          data-track-event="catalog_collection_click"
+          data-placement="catalog_route_card"
+          data-track-label="Book Direct Near AMI"
+        >
+          <strong>Fee-first</strong>
+          <h4>Book direct near AMI</h4>
+          <p>Bradenton-based homes with lower-fee booking paths and a cleaner route into live dates.</p>
+        </a>
+        <a
+          class="catalog-route-card"
+          href="/stays/anna-maria-island-vacation-rentals/"
+          data-track-event="catalog_collection_click"
+          data-placement="catalog_route_card"
+          data-track-label="Anna Maria Island Vacation Rentals"
+        >
+          <strong>Near-island</strong>
+          <h4>Near Anna Maria Island stays</h4>
+          <p>Use this when you want homes that keep AMI beach days easy without pretending they sit on the island.</p>
+        </a>
+        <a
+          class="catalog-route-card"
+          href="/stays/bradenton-vacation-rentals-near-beaches/"
+          data-track-event="catalog_collection_click"
+          data-placement="catalog_route_card"
+          data-track-label="Bradenton Near Beaches"
+        >
+          <strong>Value base</strong>
+          <h4>Bradenton near beaches</h4>
+          <p>More space, easier parking, and better pool-home value than tighter on-island inventory.</p>
+        </a>
+        <a
+          class="catalog-route-card"
+          href="/stays/sarasota-vacation-rentals-with-pool/"
+          data-track-event="catalog_collection_click"
+          data-placement="catalog_route_card"
+          data-track-label="Sarasota Pool Homes"
+        >
+          <strong>City-first</strong>
+          <h4>Sarasota pool homes</h4>
+          <p>Use this when Sarasota is the destination and you want a cleaner downtown-to-coast setup.</p>
+        </a>
+        <a
+          class="catalog-route-card"
+          href="/stays/last-minute-vacation-rentals-florida/"
+          data-track-event="catalog_collection_click"
+          data-placement="catalog_route_card"
+          data-track-label="Last-Minute Openings"
+        >
+          <strong>Fast escape</strong>
+          <h4>Last-minute openings</h4>
+          <p>Current Gulf Coast availability for short booking windows when dates matter more than route research.</p>
+        </a>
+      </div>
+    </section>
 
     <div class="catalog-filters" aria-label="Property filters">
       <button class="catalog-filter active" type="button" data-filter="all">All stays</button>
@@ -892,73 +973,6 @@ headExtra: |
     <div class="catalog-empty" id="catalog-empty">
       No homes match that filter right now. Reset to <strong>All stays</strong> instead of assuming the collection disappeared.
     </div>
-
-    <section class="catalog-route-panel" aria-label="Explore by trip type" style="margin-top:48px">
-      <div class="catalog-route-header">
-        <p class="section-tag">Explore by Trip Type</p>
-        <h3>Looking for something specific?</h3>
-        <p>
-          Browse curated stay collections by trip type — each page matches you with the right home for your goals.
-        </p>
-      </div>
-      <div class="catalog-route-grid">
-        <a
-          class="catalog-route-card"
-          href="/stays/book-direct-anna-maria-island/"
-          data-track-event="catalog_collection_click"
-          data-placement="catalog_route_card"
-          data-track-label="Book Direct Near AMI"
-        >
-          <strong>Fee-first</strong>
-          <h4>Book direct near AMI</h4>
-          <p>Skip Airbnb and Vrbo fees — same homes, lower total.</p>
-        </a>
-        <a
-          class="catalog-route-card"
-          href="/stays/anna-maria-island-vacation-rentals/"
-          data-track-event="catalog_collection_click"
-          data-placement="catalog_route_card"
-          data-track-label="Anna Maria Island Vacation Rentals"
-        >
-          <strong>Island-first</strong>
-          <h4>Anna Maria Island stays</h4>
-          <p>Homes near the island with direct booking savings.</p>
-        </a>
-        <a
-          class="catalog-route-card"
-          href="/stays/bradenton-vacation-rentals-near-beaches/"
-          data-track-event="catalog_collection_click"
-          data-placement="catalog_route_card"
-          data-track-label="Bradenton Near Beaches"
-        >
-          <strong>Value base</strong>
-          <h4>Bradenton near beaches</h4>
-          <p>More space and better pool-home value than on-island inventory.</p>
-        </a>
-        <a
-          class="catalog-route-card"
-          href="/stays/sarasota-vacation-rentals-with-pool/"
-          data-track-event="catalog_collection_click"
-          data-placement="catalog_route_card"
-          data-track-label="Sarasota Pool Homes"
-        >
-          <strong>Sarasota</strong>
-          <h4>Sarasota pool homes</h4>
-          <p>Downtown Sarasota location with resort-style amenities.</p>
-        </a>
-        <a
-          class="catalog-route-card"
-          href="/stays/last-minute-vacation-rentals-florida/"
-          data-track-event="catalog_collection_click"
-          data-placement="catalog_route_card"
-          data-track-label="Last-Minute Openings"
-        >
-          <strong>Fast escape</strong>
-          <h4>Last-minute openings</h4>
-          <p>Current Gulf Coast availability for short booking windows.</p>
-        </a>
-      </div>
-    </section>
   </div>
 </section>
 
@@ -983,16 +997,16 @@ headExtra: |
     };
     const filterCopy = {
       all: {
-        heading: "Pick the right home, then jump into direct dates.",
-        body: "Filter by fit, then open dates or the property page for one more look."
+        heading: "Start with the right base, then jump into direct dates.",
+        body: "Use Bradenton when Anna Maria Island beach access matters most. Use Sarasota when the city is the destination and the pool-home setup still matters."
       },
       bradenton: {
-        heading: "Near Anna Maria Island stays with the fastest path into direct dates.",
-        body: "Use this when you want Bradenton-based homes that still keep Anna Maria Island, the beaches, and group-trip logistics easy."
+        heading: "Bradenton homes near Anna Maria Island, with the tradeoff stated clearly.",
+        body: "These homes are off-island, but they usually make more sense when you want better pool-home value, easier parking, and a shorter drive to AMI beaches."
       },
       sarasota: {
-        heading: "Sarasota stays for travelers who want a cleaner downtown-to-coast setup.",
-        body: "Use this when Sarasota is the real destination and you want to move straight from comparison into live availability."
+        heading: "Sarasota stays for travelers who want the city first and the coast second.",
+        body: "Use this when Sarasota is the real destination and you want to move from that decision straight into live availability."
       }
     };
 
