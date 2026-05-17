@@ -16,6 +16,7 @@ That means:
 - Answer the real question fast. The first paragraph should make the page useful even if the reader bounces after 20 seconds.
 - Lead visible page intros with the visitor's problem, decision, or tradeoff. Do not open guest or owner pages with methodology-note language.
 - Name the tradeoff. Good Seascape copy says what you gain and what you give up.
+- Do not narrate the page's own structure or explain the information architecture to the visitor. Say which option fits instead of writing lines like `this page is...` or `if your real search is...`.
 - Use trip-shape logic for guest pages: beach-first, family-heavy, near-island value, direct-book math, culture-first, and so on.
 - Use owner-economics logic for owner pages: fee drag, rate discipline, channel mix, turnover quality, premium-week protection.
 - Prefer route, timing, price, and operational specifics over adjectives.

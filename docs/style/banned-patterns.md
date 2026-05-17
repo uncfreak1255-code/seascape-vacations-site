@@ -5,6 +5,7 @@
 - generic tourism-board adjectives that say nothing
 - AI-sludge phrasing like `curated`, `nestled`, `elevate`, `boasts`, `myriad`, `seamless`, `unparalleled`
 - gray internal-documentation phrasing in visible page copy, including `keeps X separate`, `planning math`, `marketplace-fee exposure`, `source-bounded`, `accepted formulas`, and `proof boundaries`
+- page-self-explanatory meta copy like `this page is broad on purpose`, `this page is here to`, `this page is built around`, `use this page when`, `if your real search is`, `if your real question is`, or `tradeoff stated clearly`
 - fake certainty when the proof is missing
 - owner pages that say `full service` five different ways and still never explain the leak
 

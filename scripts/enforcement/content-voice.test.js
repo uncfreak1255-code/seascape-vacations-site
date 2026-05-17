@@ -25,6 +25,14 @@ const BANNED_GENERIC_PATTERNS = [
   /\bmyriad\b/i,
   /\bseamless\b/i,
   /\bunparalleled\b/i,
+  /\bthis page is broad on purpose\b/i,
+  /\bthis page is here to\b/i,
+  /\bthis page is built around\b/i,
+  /\bthis page is scoped to\b/i,
+  /\buse this page when\b/i,
+  /\bif your real search is\b/i,
+  /\bif your real question is\b/i,
+  /\btradeoff stated clearly\b/i,
   /\battentive local operations\b/i,
   /\bclearer owner communication\b/i,
   /\bfewer quiet misses\b/i
@@ -42,6 +50,7 @@ const PUBLIC_CONTENT_PATTERNS = [
   /^src\/guides\/.+\.(html|njk)$/i,
   /^src\/research\/.+\.njk$/i,
   /^src\/property-management\/.+\.njk$/i,
+  /^src\/properties\/.+\.njk$/i,
   /^src\/stays\/.+\.njk$/i,
   /^src\/index\.njk$/i
 ];
@@ -244,6 +253,11 @@ test("approved owner research sample passes the new public-copy guardrails", () 
   assert.deepEqual(violations, []);
 });
 
+test("properties templates are treated as public content files", () => {
+  assert.equal(isPublicContentFile("src/properties/index.njk"), true);
+  assert.equal(isPublicContentFile("src/properties/dockside-dreams/index.njk"), true);
+});
+
 test("lint catches internal-process language and detached owner voice in a sample owner page", () => {
   const failingSample = `
     <main>
@@ -273,6 +287,30 @@ test("lint catches internal-process language and detached owner voice in a sampl
   );
   assert.equal(
     violations.some((entry) => entry.includes("first paragraph should not lead with proof language")),
+    true
+  );
+});
+
+test("lint catches page-explaining meta copy in guest pages", () => {
+  const failingSample = `
+    <main>
+      <section>
+        <p>This page is broad on purpose. If your real search is near Anna Maria Island, use one of these routes first.</p>
+      </section>
+    </main>
+  `;
+
+  const violations = lintPublicContent("src/properties/index.njk", failingSample, [
+    "/guides/",
+    "/stays/book-direct-anna-maria-island/"
+  ]);
+
+  assert.equal(
+    violations.some((entry) => entry.includes('banned generic phrasing "This page is broad on purpose"')),
+    true
+  );
+  assert.equal(
+    violations.some((entry) => entry.includes('banned generic phrasing "If your real search is"')),
     true
   );
 });

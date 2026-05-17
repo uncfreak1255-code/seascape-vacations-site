@@ -36,6 +36,7 @@ These fields exist so the page builder, voice editor, and release gate are readi
 - Keep proof language below the hook. Dataset limits, scenario labels, and methodology notes belong in proof copy, not the first paragraph.
 - Prefer concrete operating moves over adjectives. Name channel mix, price protection, review follow-up, turnover scheduling, and maintenance follow-through.
 - Do not ship internal workflow language like `approved inputs`, `accepted formulas`, or review-facing caveats in public body copy.
+- Do not explain the page's own routing or structure to the visitor. Replace `this page is...` and `if your real search is...` with the actual recommendation.
 
 ## SEO, GEO, And AEO Checks
 
@@ -51,6 +52,7 @@ These fields exist so the page builder, voice editor, and release gate are readi
 
 - banned generic phrasing called out in `docs/style/banned-patterns.md`
 - internal-process phrases like `approved benchmark` or `approved inputs` in public copy
+- page-explaining meta copy like `this page is broad on purpose`, `this page is here to`, `use this page when`, `if your real search is`, `if your real question is`, or `tradeoff stated clearly`
 - `observed`, `scenario`, or `methodology` in the first visible paragraph
 - detached owner voice where `the owner` outnumbers `you/your`
 - vague owner claims like `attentive local operations`, `clearer owner communication`, or `quiet misses`

@@ -36,6 +36,11 @@ test("properties catalog behaves like a buyer handoff surface, not a generic dir
   assert.equal(propertiesTemplate.includes('data-track-event="catalog_book_direct_click"'), true);
   assert.equal(propertiesTemplate.includes('data-track-event="catalog_view_details_click"'), true);
   assert.equal(propertiesTemplate.includes("Explore Owner Services"), false);
+  assert.equal(propertiesTemplate.includes("This page is broad on purpose"), false);
+  assert.equal(propertiesTemplate.includes("If your real search is"), false);
+  assert.equal(propertiesTemplate.includes("Use this page when"), false);
+  assert.equal(propertiesTemplate.includes("If your real question is"), false);
+  assert.equal(propertiesTemplate.includes("tradeoff stated clearly"), false);
 });
 
 test("properties catalog honors homepage area handoff params instead of always resetting to all stays", () => {
