@@ -57,6 +57,8 @@ Read in this order:
 
 - process rules live in `docs/process/`
 - current execution context lives in `docs/status/`
+- `docs/status/next-batch.md` is the canonical reread handoff surface for volatile measurement truth; after every reread it must say exactly one of `blocked by freshness`, `fresh but below threshold`, or `open next batch`, plus one concrete next move
+- `docs/status/current-state.md` should keep durable repo truth only and must not duplicate volatile reread windows or `data_date` details that belong in `docs/status/next-batch.md`
 - the five SEO OS role cards live in `.claude/agents/`
 - active repo-local skills are limited to `.agents/skills/accessibility`, `.agents/skills/design-review`, `.agents/skills/next-batch-gate`, `.agents/skills/owner-proof-integrity`, `.agents/skills/page-cro`, `.agents/skills/property-truth-regeneration`, `.agents/skills/schema-markup`, `.agents/skills/site-architecture`, and `.agents/skills/web-design-guidelines`
 - `.claude/skills/` should mirror only those active site/design skills; copied marketing, deploy, monthly reset, and generic SEO skills are not live authority

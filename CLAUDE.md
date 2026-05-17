@@ -30,6 +30,16 @@ If a detail ages fast, it belongs in `docs/status/`, `docs/briefs/`, or `docs/po
 - Batch briefs: `docs/briefs/`
 - Page-family routing and canonical ownership: `docs/portfolio/`
 
+## Reread Status Contract
+
+- `docs/status/next-batch.md` is the only canonical operator-read status surface.
+- Every reread update must write exactly one `Reread status` and exactly one `Concrete next move`.
+- Allowed reread statuses are only:
+  - `blocked by freshness`
+  - `fresh but below threshold`
+  - `open next batch`
+- `docs/status/current-state.md` should summarize durable repo truth and point back to `docs/status/next-batch.md`; it should not duplicate volatile reread windows, `data_date` values, or stale blocked-window narration.
+
 ## Five Roles
 
 | Role | Write Access | Job |
