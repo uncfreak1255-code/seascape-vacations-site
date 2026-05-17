@@ -1,7 +1,8 @@
 {% macro ownerEvaluationForm(options = {}) %}
 <form
-  class="owner-lead-form"
-  name="owner-revenue-teardown"
+  class="owner-lead-form{% if options.className %} {{ options.className }}{% endif %}"
+  {% if options.id %}id="{{ options.id }}"{% endif %}
+  name="{{ options.formName or 'owner-revenue-teardown' }}"
   method="POST"
   enctype="multipart/form-data"
   data-netlify="true"
@@ -12,8 +13,9 @@
   data-page-slug="{{ options.pageSlug or 'property-management' }}"
   data-source-page-slug="{{ options.sourcePageSlug or options.pageSlug or 'property-management' }}"
   data-market="{{ options.market or 'florida-gulf-coast' }}"
+  {% if options.formPlacement %}data-form-placement="{{ options.formPlacement }}"{% endif %}
 >
-  <input type="hidden" name="form-name" value="owner-revenue-teardown">
+  <input type="hidden" name="form-name" value="{{ options.formName or 'owner-revenue-teardown' }}">
   <input type="hidden" name="page_slug" value="{{ options.pageSlug or 'property-management' }}">
   <input type="hidden" name="source_page_slug" value="{{ options.sourcePageSlug or options.pageSlug or 'property-management' }}">
   <input type="hidden" name="market" value="{{ options.market or 'florida-gulf-coast' }}">
@@ -22,6 +24,7 @@
     <label>Do not fill this out if you are human: <input name="bot-field"></label>
   </p>
 
+  {% if options.eyebrow or options.title or options.intro %}
   <div class="owner-form-context">
     {% if options.eyebrow %}
     <p class="owner-form-eyebrow">{{ options.eyebrow }}</p>
@@ -33,7 +36,9 @@
     <p class="owner-form-copy">{{ options.intro }}</p>
     {% endif %}
   </div>
+  {% endif %}
 
+  {% if options.formTitle or options.formIntro or options.proofNote or options.detailCopy or options.confirmation %}
   <div class="owner-form-card">
     <div class="owner-form-card-copy">
       <h4 class="owner-form-card-title">{{ options.formTitle or "Request a Revenue Teardown" }}</h4>
@@ -47,9 +52,10 @@
     </div>
 
     <div class="owner-form-fieldset">
-      <div class="owner-form-grid">
+  {% endif %}
+      <div class="owner-form-grid{% if options.gridClassName %} {{ options.gridClassName }}{% endif %}">
         <label class="owner-form-field">
-          <span>Name</span>
+          <span>Your Name</span>
           <input type="text" name="name" autocomplete="name" placeholder="First and last name" required>
         </label>
         <label class="owner-form-field">
@@ -60,13 +66,14 @@
           <span>Phone</span>
           <input type="tel" name="phone" autocomplete="tel" placeholder="(941) 555-1234">
         </label>
-        <label class="owner-form-field">
-          <span>Property address or market</span>
-          <input type="text" name="property_address" autocomplete="street-address" placeholder="123 Palm Ave, Bradenton, or Anna Maria Island">
+        <label class="owner-form-field owner-form-field--wide">
+          <span>{{ options.propertyFieldLabel or "Property address or listing URL" }}</span>
+          <input type="text" name="property_address" autocomplete="street-address" placeholder="{{ options.propertyFieldPlaceholder or '123 Palm Ave or airbnb.com/h/your-listing' }}" required>
         </label>
+        {% if options.showBenchmarkFields %}
         <label class="owner-form-field">
           <span>Listing URL</span>
-          <input type="text" name="listing_url" inputmode="url" placeholder="https://airbnb.com/h/your-listing">
+          <input type="url" name="listing_url" inputmode="url" placeholder="airbnb.com/h/your-listing or vrbo.com/...">
         </label>
         <label class="owner-form-field">
           <span>Current manager or self-managed</span>
@@ -74,22 +81,32 @@
         </label>
         <label class="owner-form-field">
           <span>Current fee quote, if known</span>
-          <input type="text" name="current_fee_quote" placeholder="15%, 20%, 25%, or unknown">
+          <input type="text" name="current_fee_quote" placeholder="15%, 20%, 25%, or fee terms">
         </label>
         <label class="owner-form-field owner-form-field--wide">
           <span>What feels off right now?</span>
-          <textarea name="what_feels_off" placeholder="Low direct mix, rate cuts, vague reporting, review risk, or something else."></textarea>
+          <textarea name="what_feels_off" rows="3" placeholder="Example: too Airbnb-heavy, weak reporting, discounting, maintenance misses, or review-quality drift"></textarea>
         </label>
-        <label class="owner-form-field owner-form-field--wide">
+        <label class="owner-form-field owner-form-field--wide owner-form-field--file">
           <span>Upload owner statement, optional</span>
-          <input type="file" name="owner_statement" accept=".pdf,.jpg,.jpeg,.png,.webp">
+          <input type="file" name="owner_statement" accept="{{ options.fileAccept or '.pdf,.csv,.xls,.xlsx,.png,.jpg,.jpeg,.webp' }}">
+          <small class="owner-form-help">{{ options.fileHelp or "PDF, spreadsheet, or screenshot. Missing source material will be marked unknown." }}</small>
         </label>
+        {% endif %}
       </div>
 
+  {% if options.formTitle or options.formIntro or options.proofNote or options.detailCopy or options.confirmation %}
       <div class="owner-form-actions">
         <button class="btn btn-gold owner-form-submit" type="submit">{{ options.buttonLabel or "Send My Teardown Request" }}</button>
       </div>
     </div>
   </div>
+  {% else %}
+  <button class="btn btn-gold owner-form-submit" type="submit">{{ options.buttonLabel or "Request Your Revenue Teardown" }}</button>
+  {% endif %}
+
+  {% if not options.suppressNote %}
+  <p class="owner-form-note">{{ options.note or "Send the property address or listing URL. We will benchmark fee drag, channel mix, and the operating gaps that may be costing you owner income." }}</p>
+  {% endif %}
 </form>
 {% endmacro %}

@@ -110,8 +110,9 @@ test("owner revenue teardown form lowers friction without losing tracking or int
 
   assert.equal(ownerFormPartial.includes('name="phone"'), true);
   assert.equal(ownerFormPartial.includes('name="phone" autocomplete="tel" placeholder="(941) 555-1234" required'), false);
+  assert.equal(ownerFormPartial.includes('options.propertyFieldLabel or "Property address or listing URL"'), true);
+  assert.equal(ownerFormPartial.includes("options.propertyFieldPlaceholder or '123 Palm Ave or airbnb.com/h/your-listing'"), true);
   assert.equal(ownerFormPartial.includes('enctype="multipart/form-data"'), true);
-  assert.equal(ownerFormPartial.includes(">Property address or market<"), true);
   assert.equal(ownerFormPartial.includes('name="listing_url"'), true);
   assert.equal(ownerFormPartial.includes('name="current_manager"'), true);
   assert.equal(ownerFormPartial.includes('name="current_fee_quote"'), true);
@@ -136,10 +137,18 @@ test("owner benchmark CTA carries source attribution into the revenue review for
     "utf8"
   );
 
+  assert.equal(ownerBenchmark.includes('id="owner-cta"'), true);
+  assert.equal(ownerBenchmark.includes('sourcePageSlug: "owner-fee-revenue-leak-benchmark-2026"'), true);
+  assert.equal(ownerBenchmark.includes('formPlacement: "benchmark-teardown"'), true);
   assert.equal(
-    ownerBenchmark.includes('/property-management/?owner_source=owner-fee-revenue-leak-benchmark-2026#owner-cta'),
+    ownerBenchmark.indexOf('id="benchmark-math"') < ownerBenchmark.indexOf('<div class="hero-mobile-actions mobile-only">'),
     true,
-    "benchmark CTA should preserve benchmark origin on the owner review path"
+    "mobile teardown CTA should appear after the worked math"
+  );
+  assert.equal(
+    /<div class="hero-mobile-actions mobile-only">\s*<a class="btn btn-gold" href="#owner-cta"/.test(ownerBenchmark),
+    true,
+    "mobile teardown CTA should point to the embedded owner form"
   );
 });
 
@@ -155,6 +164,8 @@ test("owner benchmark page stays in the leak-stack lane and keeps visible proof 
   assert.equal(ownerBenchmark.includes("Observed property example"), true);
   assert.equal(ownerBenchmark.includes("Scenario math, not a forecast"), true);
   assert.equal(ownerBenchmark.includes("Request Your Revenue Teardown"), true);
+  assert.equal(ownerBenchmark.includes("Patrick portfolio"), false);
+  assert.equal(ownerBenchmark.includes("decision aid"), false);
   assert.equal(ownerBenchmark.includes("passive income"), false);
   assert.equal(ownerBenchmark.includes("sit back while we manage"), false);
   assert.equal(ownerBenchmark.includes("full service"), false);

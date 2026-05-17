@@ -2,14 +2,14 @@
 
 ## Content Gate Inputs
 
-- persona: Florida Gulf Coast vacation-rental owner comparing management economics and deciding whether the current setup is leaking net income
-- primary keyword: owner fee revenue leak benchmark
-- secondary keywords: vacation rental management fees florida, revenue teardown, owner statement review, property management benchmark
-- audience pattern: high-intent owner decision page and benchmark-fed teardown CTA path
-- proof source: Seascape five-home Gulf Coast operating set plus the published owner fee and revenue leak benchmark page
-- required internal links: #owner-cta, /
-- CTA target: Request a property-specific revenue teardown from the benchmark or owner management surfaces
-- anti-claims: do not imply a market-wide benchmark beyond the five-home proof set, do not promise one flat 15 percent fee, do not treat missing statements or fee terms as proven facts
+- persona: premium Gulf Coast vacation-rental owner comparing management fee, channel mix, and owner-net outcomes before a switch conversation
+- primary keyword: vacation rental management fees Florida
+- secondary keywords: owner revenue teardown, direct booking revenue, Airbnb host fee drag, vacation rental owner net
+- audience pattern: skeptical owner who has seen fee quotes but needs proof that the full leak stack matters more than headline percentage alone
+- proof source: Seascape five-home benchmark sample, observed Airbnb host-fee drag, direct-payment cost reference, and labeled scenario math
+- required internal links: /property-management/, /property-management/vacation-rental-management-fees-florida/, /property-management/maximize-vacation-rental-income-florida/
+- CTA target: /property-management/?owner_source=owner-fee-revenue-leak-benchmark-2026#owner-cta
+- anti-claims: no portfolio-wide guarantee, no market-wide fee survey claim, no invented review totals, no passive-income or full-service fluff
 
 Date: 2026-05-15
 Hub handoff: `/Users/sawbeck/Projects/seascape-hub/projects/owner-fee-revenue-leak-benchmark-execution-package-2026-05-15.md`
