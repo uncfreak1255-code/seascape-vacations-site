@@ -15,12 +15,13 @@
 
 - The May 16 DataForSEO read on `/properties/` showed the weakest page/query fit in the first pass.
 - The SERP for `vacation rentals near anna maria island` was dominated by a hotels pack and AMI-focused local operators, with `seascape-vacations.com` absent from page 1.
+- The May 17 phase 2 read confirmed the same shape in newer surfaces: AI Mode organized the answer around on-island neighborhoods, Maps mixed Bradenton pool-home operators with VRBO listings, Local Finder produced no useful expansion, and Seascape never surfaced as the obvious answer.
 - The right response is not homepage surgery or a fake on-island rewrite. It is a tighter `/properties/` angle that states the tradeoff early and routes guests to the narrower stay pages that better match their real intent.
 
 What should wait:
 
 - homepage/entity changes
-- AI Mode conclusions before phase 2 is filled
+- LLM-citation conclusions until `LLM Mentions` access is enabled on the current DataForSEO plan
 - new stay-page sprawl
 - local-pack or GBP work that belongs to a separate entity lane
 
@@ -78,11 +79,11 @@ What should wait:
 
 ## Post-Reread Outcome
 
-- reread window used: pending after merge and crawl freshness
-- crawl freshness result: pending
-- actual impressions, CTR, position, and downstream event counts: pending
-- decision taken: hold, expand, or kill after phase 2 and post-merge reread
-- next branch slug or explicit wait state: wait for phase 2 AI/local evidence before any broader `/properties/` expansion
+- reread window used: 2026-05-17 phase 2 DataForSEO packet across AI Mode, Maps, Local Finder, and attempted LLM Mentions
+- crawl freshness result: n/a for this packet; this is live SERP/API surface research, not a GSC reread
+- actual impressions, CTR, position, and downstream event counts: still pending the normal joined operator reread in `seascape-analytics`
+- decision taken: keep the `/properties/` angle-tightening branch active; do not open broader stay-page expansion from this packet
+- next branch slug or explicit wait state: `codex/properties-near-ami-angle` stays live as the single bounded page-angle fix; all other guest-page work waits on either local/entity follow-through or missing phase 1 organic reads
 
 ## Not In Scope
 
