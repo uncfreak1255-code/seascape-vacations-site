@@ -68,8 +68,18 @@ For any PR that changes public copy in `src/`:
 
 - read the active brief plus `docs/process/content-quality-gate.md`
 - read `docs/style/voice.md`, `docs/style/banned-patterns.md`, and `docs/style/approved-examples.md`
+- read `.agents/product-marketing-context.md` — ICP, personas, customer language, proof points, and objections; simulate a real guest decision before writing a single sentence
+- read `docs/style/brand-voice-guidelines.md` — annotated before/after examples; if your draft matches a "before" example, rewrite it
 - keep reader copy, proof copy, and agent copy separate
 - run `npm run lint:content` before push, PR, or merge
+
+## Keyword and Content Direction
+
+For any new page, heading restructure, or cluster-level copy change:
+
+- read `docs/seo/keyword-ownership-map.md` — cluster ownership, gaps, cannibalization risks
+- read `docs/strategy/content-strategy-2026.md` — Now/Next/Later priorities and the standing brief for AI agents
+- do not create a new page if the keyword-ownership-map shows the cluster is already owned or frozen
 
 ## Design Review Workflow
 

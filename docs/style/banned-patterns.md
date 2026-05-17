@@ -5,6 +5,10 @@
 - generic tourism-board adjectives that say nothing
 - AI-sludge phrasing like `curated`, `nestled`, `elevate`, `boasts`, `myriad`, `seamless`, `unparalleled`
 - gray internal-documentation phrasing in visible page copy, including `keeps X separate`, `planning math`, `marketplace-fee exposure`, `source-bounded`, `accepted formulas`, and `proof boundaries`
+- funnel-mechanics language written as guest copy: `fastest path into direct dates`, `move straight from comparison into live availability`, `filter by fit`, `jump into direct dates`
+- agent meta-commentary on the page's own positioning: `with the tradeoff stated clearly`, `without pretending every stay is on-island`
+- generic hospitality filler: `resort-style amenities` (name the actual amenities), `luxury` as a standalone descriptor
+- UI logic narrated at the user: `instead of assuming the collection disappeared`, `short booking windows` (say "book this week" not "short booking window")
 - fake certainty when the proof is missing
 - owner pages that say `full service` five different ways and still never explain the leak
 
