@@ -98,6 +98,16 @@ Form route:
 - form submit button stays `Send My Teardown Request`
 - proof note should say missing statements, calendars, reviews, or fee terms are marked unknown
 
+Live teardown funnel implementation:
+
+- shared owner form partial should use the benchmark teardown fields from the
+  `Owner Benchmark Exploration` Figma file
+- owner hub and shared owner-page CTA surfaces should ask for property address
+  or market, listing URL, current manager, current fee quote, what feels off,
+  and optional owner-statement upload
+- keep the private-teardown framing and proven leak / likely leak / unknown copy
+  consistent between the benchmark CTA path and owner CTA surfaces
+
 ## Figma / Site Handoff
 
 Use the Hub package's frame plan directly:
