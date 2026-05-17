@@ -1,0 +1,117 @@
+{
+  "dockside-dreams": {
+    "source": "hostaway",
+    "syncedAt": "2026-05-17T15:39:21.311Z",
+    "nextAvailable": {
+      "startDate": "2026-06-08",
+      "endDate": "2026-06-10",
+      "label": "Jun 08 - Jun 10",
+      "nights": 2,
+      "nightlyRate": 370,
+      "subcopy": "2 nights from $370/night - Direct booking"
+    },
+    "monthNights": [
+      {
+        "label": "NIGHTS IN MAY",
+        "value": 1
+      },
+      {
+        "label": "NIGHTS IN JUN",
+        "value": 2
+      }
+    ],
+    "weekendsLeft": 0
+  },
+  "the-oasis": {
+    "source": "hostaway",
+    "syncedAt": "2026-05-17T15:39:21.311Z",
+    "nextAvailable": {
+      "startDate": "2026-05-18",
+      "endDate": "2026-05-20",
+      "label": "May 18 - May 20",
+      "nights": 2,
+      "nightlyRate": 264,
+      "subcopy": "2 nights from $264/night - Direct booking"
+    },
+    "monthNights": [
+      {
+        "label": "NIGHTS IN MAY",
+        "value": 2
+      },
+      {
+        "label": "NIGHTS IN JUN",
+        "value": 2
+      }
+    ],
+    "weekendsLeft": 0
+  },
+  "sarasota-luxe": {
+    "source": "hostaway",
+    "syncedAt": "2026-05-17T15:39:21.311Z",
+    "nextAvailable": {
+      "startDate": "2026-05-30",
+      "endDate": "2026-06-06",
+      "label": "May 30 - Jun 06",
+      "nights": 7,
+      "nightlyRate": 264,
+      "subcopy": "7 nights from $264/night - Direct booking"
+    },
+    "monthNights": [
+      {
+        "label": "NIGHTS IN MAY",
+        "value": 2
+      },
+      {
+        "label": "NIGHTS IN JUN",
+        "value": 5
+      }
+    ],
+    "weekendsLeft": 0
+  },
+  "river-house": {
+    "source": "hostaway",
+    "syncedAt": "2026-05-17T15:39:21.311Z",
+    "nextAvailable": {
+      "startDate": "2026-08-21",
+      "endDate": "2026-08-23",
+      "label": "Aug 21 - Aug 23",
+      "nights": 2,
+      "nightlyRate": 179,
+      "subcopy": "2 nights from $179/night - Direct booking"
+    },
+    "monthNights": [
+      {
+        "label": "NIGHTS IN MAY",
+        "value": 0
+      },
+      {
+        "label": "NIGHTS IN JUN",
+        "value": 1
+      }
+    ],
+    "weekendsLeft": 0
+  },
+  "bradenton-pool-home": {
+    "source": "hostaway",
+    "syncedAt": "2026-05-17T15:39:21.311Z",
+    "nextAvailable": {
+      "startDate": "2026-05-18",
+      "endDate": "2026-05-19",
+      "label": "May 18 - May 19",
+      "nights": 1,
+      "nightlyRate": 370,
+      "subcopy": "1 night from $370/night - Direct booking"
+    },
+    "monthNights": [
+      {
+        "label": "NIGHTS IN MAY",
+        "value": 1
+      },
+      {
+        "label": "NIGHTS IN JUN",
+        "value": 5
+      }
+    ],
+    "weekendsLeft": 0
+  }
+}
