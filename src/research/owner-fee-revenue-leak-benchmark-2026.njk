@@ -222,6 +222,7 @@ a{color:var(--brand);text-decoration:underline}
   color:rgba(255,255,255,.76);
   font-size:15px;
 }
+.mobile-proof-summary,
 .mobile-intro-actions,
 .mobile-method-notes{
   display:none;
@@ -462,34 +463,55 @@ a{color:var(--brand);text-decoration:underline}
   text-transform:uppercase;
   font-weight:700;
 }
-.scenario-table-wrap{
-  overflow-x:auto;
+.math-example{
+  margin-top:18px;
+  background:var(--cream-light);
+  border:1px solid rgba(61,92,93,.12);
+  border-radius:22px;
+  padding:24px;
+}
+.math-example p{
+  font-size:15px;
+  color:var(--stone-light);
+}
+.math-card-grid,
+.math-read-grid{
+  display:grid;
+  gap:16px;
   margin-top:18px;
 }
-.scenario-table{
-  width:100%;
-  border-collapse:collapse;
-  min-width:720px;
+.math-card-grid{
+  grid-template-columns:repeat(4,minmax(0,1fr));
 }
-.scenario-table th,
-.scenario-table td{
-  padding:14px 16px;
-  text-align:left;
-  vertical-align:top;
+.math-read-grid{
+  grid-template-columns:repeat(3,minmax(0,1fr));
 }
-.scenario-table thead th{
-  background:var(--brand-dark);
-  color:var(--white);
-  font-size:13px;
-  letter-spacing:.08em;
-  text-transform:uppercase;
-}
-.scenario-table tbody td{
-  border-bottom:1px solid rgba(61,92,93,.12);
-  background:var(--cream-light);
-}
-.scenario-table tbody tr:nth-child(even) td{
+.math-card,
+.math-read-card{
   background:var(--white);
+  border:1px solid rgba(61,92,93,.12);
+  border-radius:20px;
+  padding:20px;
+}
+.math-card h3,
+.math-read-card h3{
+  font-size:20px;
+  line-height:1.12;
+  color:var(--brand-dark);
+  margin:10px 0 12px;
+}
+.math-card p,
+.math-read-card p{
+  font-size:14px;
+  color:var(--stone-light);
+}
+.math-value{
+  display:block;
+  font-family:"Playfair Display",Georgia,serif;
+  font-size:34px;
+  line-height:1;
+  color:var(--gold);
+  margin-bottom:10px;
 }
 .fit-grid{
   display:grid;
@@ -591,8 +613,12 @@ a{color:var(--brand);text-decoration:underline}
   .fit-grid{
     grid-template-columns:1fr;
   }
+  .math-card-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
   .stack-grid,
-  .example-grid{
+  .example-grid,
+  .math-read-grid{
     grid-template-columns:repeat(2,minmax(0,1fr));
   }
 }
@@ -603,6 +629,7 @@ a{color:var(--brand);text-decoration:underline}
   .section,
   .cta,
   .source-note,
+  .mobile-proof-summary,
   .mobile-intro-actions,
   .mobile-method-notes{padding:24px 20px}
   .hero{
@@ -612,6 +639,7 @@ a{color:var(--brand);text-decoration:underline}
   .proof-rail{
     display:none;
   }
+  .mobile-proof-summary,
   .mobile-intro-actions,
   .mobile-method-notes{
     display:block;
@@ -619,6 +647,32 @@ a{color:var(--brand);text-decoration:underline}
     background:var(--white);
     border:1px solid rgba(61,92,93,.12);
     border-radius:20px;
+  }
+  .mobile-proof-summary .proof-rail{
+    display:flex;
+  }
+  .mobile-proof-summary .stats-grid{
+    margin-top:16px;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+  .mobile-proof-summary .stat-card{
+    background:var(--cream-light);
+    border:1px solid rgba(61,92,93,.12);
+    padding:16px;
+  }
+  .mobile-proof-summary .stat-card strong{
+    font-size:28px;
+    color:var(--brand-dark);
+    margin-bottom:6px;
+  }
+  .mobile-proof-summary .stat-card span{
+    color:var(--brand);
+    margin-bottom:6px;
+  }
+  .mobile-proof-summary .stat-card p{
+    display:block;
+    font-size:13px;
+    color:var(--stone-light);
   }
   .mobile-intro-actions .btn{
     width:100%;
@@ -636,7 +690,9 @@ a{color:var(--brand);text-decoration:underline}
   }
   .stats-grid,
   .stack-grid,
-  .example-grid{
+  .example-grid,
+  .math-card-grid,
+  .math-read-grid{
     grid-template-columns:1fr;
   }
   .scope-pill{
@@ -648,9 +704,6 @@ a{color:var(--brand);text-decoration:underline}
   }
   .bar-value{
     text-align:left;
-  }
-  .scenario-table{
-    min-width:640px;
   }
 }
 </style>
@@ -668,7 +721,7 @@ a{color:var(--brand);text-decoration:underline}
       <span class="scope-pill">5-property Gulf Coast scope</span>
       <h1>Your management fee is not the whole revenue leak.</h1>
       <p class="hero-lead">Most owners compare 15%, 20%, and 25% management fees. That misses the bigger stack: OTA drag, direct-booking mix, pricing discipline, and how clearly your manager explains what is happening to owner net.</p>
-      <p class="hero-support">Built from Seascape's current 5-home Gulf Coast portfolio, with scenario math labeled separately from observed operating data.</p>
+      <p class="hero-support">Use the observed fee gap, direct-booking lift, and property examples below to see where a busy calendar can still leak owner net.</p>
       <div class="proof-rail">
         {% for label in proofLabels %}
         <span class="proof-chip">{{ label }}</span>
@@ -699,10 +752,27 @@ a{color:var(--brand);text-decoration:underline}
     </div>
   </section>
 
+  <section class="mobile-proof-summary">
+    <div class="proof-rail">
+      {% for label in proofLabels %}
+      <span class="proof-chip-light">{{ label }}</span>
+      {% endfor %}
+    </div>
+    <div class="stats-grid">
+      {% for stat in benchmark.stats %}
+      <div class="stat-card">
+        <strong>{{ stat.value }}</strong>
+        <span>{{ stat.label }}</span>
+        <p>{{ stat.detail }}</p>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+
   <section class="mobile-intro-actions">
     <span class="proof-chip-light">5-property Gulf Coast scope</span>
     <a class="btn" href="/property-management/?owner_source=owner-fee-revenue-leak-benchmark-2026#owner-cta" data-track-event="owner_primary_cta_click" data-page-slug="owner-fee-revenue-leak-benchmark-2026">Request Your Revenue Teardown</a>
-    <a class="text-link" href="#benchmark-math">See the benchmark math</a>
+    <a class="text-link" href="#benchmark-math">See the worked example</a>
   </section>
 
   <section class="source-note">
@@ -783,41 +853,51 @@ a{color:var(--brand);text-decoration:underline}
   <section class="section" id="benchmark-math">
     <div class="section-intro">
       <span class="eyebrow">Sample leak math</span>
-      <h2>The same management fee can produce different owner outcomes.</h2>
-      <p>Use this as a simple way to read the leak stack. The point is not to forecast a specific home's revenue. The point is to show why management fee, channel drag, and direct mix should be evaluated together.</p>
+      <h2>A $10,000 booking can leak about $1,050 before the management fee even enters the conversation.</h2>
+      <p>Here is the simplest version of the benchmark math. It uses Seascape's observed 13.4% Airbnb host-fee drag and the 2.9% direct payment cost reference on the same booking subtotal.</p>
     </div>
-    <div class="scenario-table-wrap">
-      <table class="scenario-table">
-        <thead>
-          <tr>
-            <th>Scenario</th>
-            <th>What changes</th>
-            <th>Owner-net implication</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Headline fee only</td>
-            <td>You compare management percentage alone.</td>
-            <td>Misses channel drag and direct-mix differences.</td>
-          </tr>
-          <tr>
-            <td>OTA-heavy mix</td>
-            <td>More bookings carry higher platform drag.</td>
-            <td>A lower fee can still leave you paying through the channel stack.</td>
-          </tr>
-          <tr>
-            <td>Better direct mix</td>
-            <td>More qualified bookings move through lower-drag direct payment.</td>
-            <td>You may keep more even before changing the headline fee.</td>
-          </tr>
-          <tr>
-            <td>Clear reporting</td>
-            <td>Manager explains rate, channel, cleaning, review, and maintenance movement.</td>
-            <td>You can see what is proven, what is likely, and what is unknown.</td>
-          </tr>
-        </tbody>
-      </table>
+    <div class="math-example">
+      <p>Use this as worked scenario math, not as a quote or forecast. The point is to show how much owner margin can move when the booking stays in a high-drag channel instead of a lower-drag direct-payment path.</p>
+      <div class="math-card-grid">
+        <article class="math-card">
+          <span class="stack-metric">Scenario math, not a forecast</span>
+          <span class="math-value">$10,000</span>
+          <h3>Booking subtotal</h3>
+          <p>One illustrative booking subtotal so the fee gap is easy to see.</p>
+        </article>
+        <article class="math-card">
+          <span class="stack-metric">Scenario math using observed Airbnb rate</span>
+          <span class="math-value">$1,340</span>
+          <h3>Airbnb-like drag</h3>
+          <p>13.4% applied to the same $10,000 subtotal.</p>
+        </article>
+        <article class="math-card">
+          <span class="stack-metric">Scenario math using current direct cost reference</span>
+          <span class="math-value">$290</span>
+          <h3>Direct payment cost</h3>
+          <p>2.9% applied to the same $10,000 subtotal.</p>
+        </article>
+        <article class="math-card">
+          <span class="stack-metric">Scenario math, not a forecast</span>
+          <span class="math-value">$1,050</span>
+          <h3>Gap before management fee</h3>
+          <p>That is the margin difference still in play before the management-fee quote even gets compared.</p>
+        </article>
+      </div>
+      <div class="math-read-grid">
+        <article class="math-read-card">
+          <h3>Same fee, different owner net</h3>
+          <p>If two managers charge the same percentage but one leaves more bookings inside high-drag channels, the owner statement still lands differently.</p>
+        </article>
+        <article class="math-read-card">
+          <h3>Direct mix changes the math fast</h3>
+          <p>One qualified direct booking can move more owner margin than small headline-fee differences that look dramatic in a sales pitch.</p>
+        </article>
+        <article class="math-read-card">
+          <h3>Clear reporting makes the leak visible</h3>
+          <p>Owners need to see what is proven, what is likely leaking, and what is still unknown before they decide whether to switch.</p>
+        </article>
+      </div>
     </div>
     <p class="mini-note">Scenario math showing how channel mix and fee drag can change owner net. It is not a forecast, guarantee, or property-specific quote.</p>
   </section>
@@ -857,16 +937,16 @@ a{color:var(--brand);text-decoration:underline}
     <div class="section-intro">
       <span class="eyebrow">Fit</span>
       <h2>Best fit: premium Gulf Coast homes where owner net deserves close attention.</h2>
-      <p>Seascape is built for owners who want revenue visibility, strong guest care, local operating attention, and plain-English owner communication. The best fit is a premium Gulf Coast home, especially in the $110k-$150k+ gross lane.</p>
+      <p>Seascape is built for owners who want cleaner owner-net reporting, stronger direct-booking mix, tighter rate discipline, and local follow-through when the calendar looks full but the statement still underperforms. The best fit is a premium Gulf Coast home, especially in the $110k-$150k+ gross lane.</p>
     </div>
     <div class="fit-grid">
       <div class="fit-card">
         <span class="eyebrow">Best Fit</span>
         <ul class="quick-list">
           <li>Premium Gulf Coast homes projected around $110k-$150k+ gross.</li>
-          <li>Airbnb-heavy homes where OTA drag may be doing more damage than the fee quote suggests.</li>
-          <li>Owners who want clearer reporting on revenue, channel mix, reviews, and maintenance follow-through.</li>
-          <li>Homes where pricing discipline and guest standards matter more than raw activity reports.</li>
+          <li>Airbnb-heavy homes where channel drag may be doing more damage than the fee quote suggests.</li>
+          <li>Owners who want direct mix, payout reporting, and pricing decisions explained in plain English.</li>
+          <li>Homes where revenue discipline, guest standards, and maintenance follow-through need one operator view.</li>
         </ul>
       </div>
       <div class="boundary-note">
