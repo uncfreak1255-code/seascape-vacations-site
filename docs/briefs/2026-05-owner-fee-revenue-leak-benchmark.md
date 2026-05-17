@@ -6,6 +6,15 @@ Site route: `/research/owner-fee-revenue-leak-benchmark-2026/`
 Figma capture: `https://www.figma.com/design/glZRIUzGbQlw0KJhtAGUWP?node-id=3-2`
 Figma frames: `Owner Fee + Revenue Leak Benchmark - Desktop`, `Owner Fee + Revenue Leak Benchmark - Mobile`
 
+- `persona:` Gulf Coast vacation-rental owners already questioning whether the current manager is leaking owner net
+- `primary keyword:` owner fee revenue leak benchmark
+- `secondary keywords:` vacation rental management fees, owner net income, Airbnb host fee drag, direct booking revenue, Gulf Coast property management
+- `audience pattern:` switcher-first owner economics page that should move a skeptical owner from fee comparison into a teardown request
+- `proof source:` `src/_data/ownerProofAssets.json` using `gulf-coast-owner-benchmark-2026`
+- `required internal links:` `/property-management/`, `/property-management/vacation-rental-management-fees-florida/`, `/property-management/maximize-vacation-rental-income-florida/`
+- `CTA target:` `/property-management/?owner_source=owner-fee-revenue-leak-benchmark-2026#owner-cta`
+- `anti-claims:` no benchmark-path test receipts as owner demand; no market-wide authority from a 5-home sample; no blanket fee quote; no AI/dashboard positioning as the reason to switch
+
 ## Decision
 
 Create a standalone owner-acquisition research asset:
@@ -109,6 +118,14 @@ Use the Hub package's frame plan directly:
 4. Proof chips must stay visible in Figma and in the live page.
 5. Chart captions are real page text, not hidden design notes.
 6. Do not turn v1 into an interactive calculator.
+
+## Resolved Drift To Ship
+
+- Do not build a standalone duplicate fee-stack section; absorb that logic into the wrong-comparison cards plus the channel-drag / leak list.
+- Ship `Sample leak math` before `Observed examples` on both desktop and mobile.
+- Do not embed a teardown form on the benchmark page; route the CTA to the owner hub target above.
+- Do not ship the Figma `What Seascape Is Really Selling` box; the fit section ends with the approved boundary note instead.
+- Keep the desktop `How To Read This` rail and the mobile scope / early CTA / method-note treatment from the chosen Figma frames.
 
 ## Follow-Up
 
