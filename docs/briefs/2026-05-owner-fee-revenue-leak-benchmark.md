@@ -1,5 +1,16 @@
 # Owner Fee + Revenue Leak Benchmark
 
+## Content Gate Inputs
+
+- persona: Florida Gulf Coast vacation-rental owner comparing management economics and deciding whether the current setup is leaking net income
+- primary keyword: owner fee revenue leak benchmark
+- secondary keywords: vacation rental management fees florida, revenue teardown, owner statement review, property management benchmark
+- audience pattern: high-intent owner decision page and benchmark-fed teardown CTA path
+- proof source: Seascape five-home Gulf Coast operating set plus the published owner fee and revenue leak benchmark page
+- required internal links: #owner-cta, /
+- CTA target: Request a property-specific revenue teardown from the benchmark or owner management surfaces
+- anti-claims: do not imply a market-wide benchmark beyond the five-home proof set, do not promise one flat 15 percent fee, do not treat missing statements or fee terms as proven facts
+
 Date: 2026-05-15
 Hub handoff: `/Users/sawbeck/Projects/seascape-hub/projects/owner-fee-revenue-leak-benchmark-execution-package-2026-05-15.md`
 Site route: `/research/owner-fee-revenue-leak-benchmark-2026/`
@@ -97,6 +108,16 @@ Form route:
   `/property-management/?owner_source=owner-fee-revenue-leak-benchmark-2026#owner-cta`
 - form submit button stays `Send My Teardown Request`
 - proof note should say missing statements, calendars, reviews, or fee terms are marked unknown
+
+Live teardown funnel implementation:
+
+- shared owner form partial should use the benchmark teardown fields from the
+  `Owner Benchmark Exploration` Figma file
+- owner hub and shared owner-page CTA surfaces should ask for property address
+  or market, listing URL, current manager, current fee quote, what feels off,
+  and optional owner-statement upload
+- keep the private-teardown framing and proven leak / likely leak / unknown copy
+  consistent between the benchmark CTA path and owner CTA surfaces
 
 ## Figma / Site Handoff
 

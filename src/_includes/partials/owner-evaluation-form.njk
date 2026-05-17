@@ -3,6 +3,7 @@
   class="owner-lead-form"
   name="owner-revenue-teardown"
   method="POST"
+  enctype="multipart/form-data"
   data-netlify="true"
   netlify-honeypot="bot-field"
   data-track-form="owner"
@@ -21,36 +22,74 @@
     <label>Do not fill this out if you are human: <input name="bot-field"></label>
   </p>
 
-  {% if options.eyebrow %}
-  <p class="owner-form-eyebrow">{{ options.eyebrow }}</p>
-  {% endif %}
-  {% if options.title %}
-  <h3 class="owner-form-title">{{ options.title }}</h3>
-  {% endif %}
-  {% if options.intro %}
-  <p class="owner-form-copy">{{ options.intro }}</p>
-  {% endif %}
-
-  <div class="owner-form-grid">
-    <label class="owner-form-field">
-      <span>Your Name</span>
-      <input type="text" name="name" autocomplete="name" placeholder="First and last name" required>
-    </label>
-    <label class="owner-form-field">
-      <span>Email</span>
-      <input type="email" name="email" autocomplete="email" placeholder="you@example.com" required>
-    </label>
-    <label class="owner-form-field">
-      <span>Phone</span>
-      <input type="tel" name="phone" autocomplete="tel" placeholder="(941) 555-1234">
-    </label>
-    <label class="owner-form-field owner-form-field--wide">
-      <span>Property address or listing URL</span>
-      <input type="text" name="property_address" autocomplete="street-address" placeholder="123 Palm Ave or airbnb.com/h/your-listing" required>
-    </label>
+  <div class="owner-form-context">
+    {% if options.eyebrow %}
+    <p class="owner-form-eyebrow">{{ options.eyebrow }}</p>
+    {% endif %}
+    {% if options.title %}
+    <h3 class="owner-form-title">{{ options.title }}</h3>
+    {% endif %}
+    {% if options.intro %}
+    <p class="owner-form-copy">{{ options.intro }}</p>
+    {% endif %}
   </div>
 
-  <button class="btn btn-gold owner-form-submit" type="submit">{{ options.buttonLabel or "Request Your Revenue Teardown" }}</button>
-  <p class="owner-form-note">{{ options.note or "Send the property address or listing URL. We will benchmark fee drag, channel mix, and the operating gaps that may be costing you owner income." }}</p>
+  <div class="owner-form-card">
+    <div class="owner-form-card-copy">
+      <h4 class="owner-form-card-title">{{ options.formTitle or "Request a Revenue Teardown" }}</h4>
+      <p class="owner-form-card-intro">{{ options.formIntro or "Share whichever source is easiest. A listing URL is enough to start; an owner statement or fee quote makes the teardown sharper." }}</p>
+      <p class="owner-form-proof-note">{{ options.proofNote or "The teardown is a review of available evidence. Missing statements, calendars, reviews, or fee terms will be marked unknown." }}</p>
+      <p class="owner-form-detail-label">{{ options.detailLabel or "What the teardown separates" }}</p>
+      <p class="owner-form-detail-copy">{{ options.detailCopy or "The private teardown separates proven leak, likely leak, and unknown before recommending whether to stay put, fix the current setup, or talk about transition." }}</p>
+      <div class="owner-form-confirmation">
+        <p>{{ options.confirmation or "Got it. Seascape will review the source material and send back the clearest next step: stay put, fix the current setup, or talk about a transition." }}</p>
+      </div>
+    </div>
+
+    <div class="owner-form-fieldset">
+      <div class="owner-form-grid">
+        <label class="owner-form-field">
+          <span>Name</span>
+          <input type="text" name="name" autocomplete="name" placeholder="First and last name" required>
+        </label>
+        <label class="owner-form-field">
+          <span>Email</span>
+          <input type="email" name="email" autocomplete="email" placeholder="you@example.com" required>
+        </label>
+        <label class="owner-form-field">
+          <span>Phone</span>
+          <input type="tel" name="phone" autocomplete="tel" placeholder="(941) 555-1234">
+        </label>
+        <label class="owner-form-field">
+          <span>Property address or market</span>
+          <input type="text" name="property_address" autocomplete="street-address" placeholder="123 Palm Ave, Bradenton, or Anna Maria Island">
+        </label>
+        <label class="owner-form-field">
+          <span>Listing URL</span>
+          <input type="text" name="listing_url" inputmode="url" placeholder="https://airbnb.com/h/your-listing">
+        </label>
+        <label class="owner-form-field">
+          <span>Current manager or self-managed</span>
+          <input type="text" name="current_manager" placeholder="Manager name or self-managed">
+        </label>
+        <label class="owner-form-field">
+          <span>Current fee quote, if known</span>
+          <input type="text" name="current_fee_quote" placeholder="15%, 20%, 25%, or unknown">
+        </label>
+        <label class="owner-form-field owner-form-field--wide">
+          <span>What feels off right now?</span>
+          <textarea name="what_feels_off" placeholder="Low direct mix, rate cuts, vague reporting, review risk, or something else."></textarea>
+        </label>
+        <label class="owner-form-field owner-form-field--wide">
+          <span>Upload owner statement, optional</span>
+          <input type="file" name="owner_statement" accept=".pdf,.jpg,.jpeg,.png,.webp">
+        </label>
+      </div>
+
+      <div class="owner-form-actions">
+        <button class="btn btn-gold owner-form-submit" type="submit">{{ options.buttonLabel or "Send My Teardown Request" }}</button>
+      </div>
+    </div>
+  </div>
 </form>
 {% endmacro %}

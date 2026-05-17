@@ -171,17 +171,7 @@ eleventyComputed:
         .cta-section { background: linear-gradient(135deg, var(--brand) 0%, var(--brand-dark) 100%); padding: 80px 24px; text-align: center; color: white; }
         .cta-title { font-size: clamp(28px, 4vw, 40px); margin-bottom: 16px; }
         .cta-subtitle { opacity: 0.9; max-width: 500px; margin: 0 auto 32px; }
-        .owner-lead-form { display: grid; gap: 18px; text-align: left; max-width: 760px; margin: 0 auto; }
-        .owner-form-eyebrow { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-light); font-weight: 700; margin: 0; text-align: center; }
-        .owner-form-title { color: white; font-size: clamp(28px, 4vw, 38px); margin: 0; text-align: center; }
-        .owner-form-copy,
-        .owner-form-note { color: rgba(255, 255, 255, 0.84); margin: 0; text-align: center; }
-        .owner-form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
-        .owner-form-field { display: grid; gap: 8px; font-size: 14px; font-weight: 600; color: white; }
-        .owner-form-field input { width: 100%; min-height: 52px; border-radius: 14px; border: 1px solid rgba(255, 255, 255, 0.14); background: rgba(255, 255, 255, 0.08); color: white; padding: 0 16px; font: inherit; }
-        .owner-form-field input::placeholder { color: rgba(255, 255, 255, 0.52); }
-        .owner-form-field--wide { grid-column: 1 / -1; }
-        .owner-form-submit { justify-content: center; width: fit-content; margin: 0 auto; }
+        {% include "partials/owner-form-styles.njk" %}
         .footer { background: var(--brand-darker); color: rgba(255, 255, 255, 0.8); padding: 60px 24px 30px; }
         .footer-inner { max-width: 1100px; margin: 0 auto; text-align: center; }
         .footer-logo { font-family: 'Playfair Display', serif; font-size: 24px; color: white; margin-bottom: 16px; }
@@ -193,7 +183,6 @@ eleventyComputed:
         .ui-icon svg { width: 100%; height: 100%; stroke: currentColor; fill: none; stroke-width: 1.85; stroke-linecap: round; stroke-linejoin: round; }
         .ui-icon--benefit { width: 20px; height: 20px; color: white; }
         .ui-icon--metric { width: 34px; height: 34px; color: var(--brand); vertical-align: -6px; margin-left: 6px; }
-        @media (max-width: 720px) { .owner-form-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
@@ -551,14 +540,19 @@ eleventyComputed:
             <div class="container">
                 <div id="owner-cta">
                     {{ ownerEvaluationForm({
-                        eyebrow: "Owner Teardown",
-                        title: seoPage.primaryCta or seoPage.cta,
-                        intro: seoPage.ctaSubcopy or "We break down fee structure, channel mix, and what your current setup is actually costing you before you decide anything.",
+                        eyebrow: "Private teardown",
+                        title: "Want the same leak scan on your home?",
+                        intro: seoPage.ctaSubcopy or "Send the listing URL, owner statement, fee quote, or property address. Seascape will run a short Revenue Teardown that separates what is proven, what is likely leaking, and what is still unknown before any switch conversation.",
+                        formTitle: seoPage.primaryCta or seoPage.cta or "Request a Revenue Teardown",
+                        formIntro: "Share whichever source is easiest. A listing URL is enough to start; an owner statement or fee quote makes the teardown sharper.",
+                        proofNote: "The teardown is a review of available evidence. Missing statements, calendars, reviews, or fee terms will be marked unknown.",
+                        detailLabel: "What the teardown separates",
+                        detailCopy: "The private teardown separates proven leak, likely leak, and unknown before recommending whether to stay put, fix the current setup, or talk about transition.",
+                        confirmation: "Got it. Seascape will review the source material and send back the clearest next step: stay put, fix the current setup, or talk about a transition.",
                         pageSlug: seoPage.slug,
                         market: seoPage.destination or "florida-gulf-coast",
                         leadType: "owner-revenue-teardown",
-                        buttonLabel: seoPage.primaryCta or "Request Your Revenue Teardown",
-                        note: seoPage.ctaNote or "No generic pitch deck. We use your market, your property type, and your current operating model."
+                        buttonLabel: "Send My Teardown Request"
                     }) }}
                     <p style="margin-top: 18px; text-align: center; color: rgba(255, 255, 255, 0.82); font-size: 15px;">
                         Prefer to talk first? <a href="tel:+19417048545" style="color: white; font-weight: 600;" data-track-event="owner_phone_click" data-page-slug="{{ seoPage.slug }}">Call (941) 704-8545</a>

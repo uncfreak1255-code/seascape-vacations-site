@@ -110,12 +110,20 @@ test("owner revenue teardown form lowers friction without losing tracking or int
 
   assert.equal(ownerFormPartial.includes('name="phone"'), true);
   assert.equal(ownerFormPartial.includes('name="phone" autocomplete="tel" placeholder="(941) 555-1234" required'), false);
-  assert.equal(ownerFormPartial.includes(">Property address or listing URL<"), true);
-  assert.equal(ownerFormPartial.includes('placeholder="123 Palm Ave or airbnb.com/h/your-listing"'), true);
+  assert.equal(ownerFormPartial.includes('enctype="multipart/form-data"'), true);
+  assert.equal(ownerFormPartial.includes(">Property address or market<"), true);
+  assert.equal(ownerFormPartial.includes('name="listing_url"'), true);
+  assert.equal(ownerFormPartial.includes('name="current_manager"'), true);
+  assert.equal(ownerFormPartial.includes('name="current_fee_quote"'), true);
+  assert.equal(ownerFormPartial.includes('name="what_feels_off"'), true);
+  assert.equal(ownerFormPartial.includes('name="owner_statement"'), true);
+  assert.equal(ownerFormPartial.includes("Share whichever source is easiest. A listing URL is enough to start; an owner statement or fee quote makes the teardown sharper."), true);
   assert.equal(
-    ownerFormPartial.includes("Send the property address or listing URL. We will benchmark fee drag, channel mix, and the operating gaps that may be costing you owner income."),
+    ownerFormPartial.includes("The teardown is a review of available evidence. Missing statements, calendars, reviews, or fee terms will be marked unknown."),
     true
   );
+  assert.equal(ownerFormPartial.includes("The private teardown separates proven leak, likely leak, and unknown"), true);
+  assert.equal(ownerFormPartial.includes("Send My Teardown Request"), true);
   assert.equal(ownerFormPartial.includes('data-track-form="owner"'), true);
   assert.equal(ownerFormPartial.includes('data-form-submit-event="owner_form_submit"'), true);
   assert.equal(ownerFormPartial.includes('data-source-page-slug="{{ options.sourcePageSlug or options.pageSlug or \'property-management\' }}"'), true);
