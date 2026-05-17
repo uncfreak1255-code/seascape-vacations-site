@@ -25,9 +25,20 @@ If a detail ages fast, it belongs in `docs/status/`, `docs/briefs/`, or `docs/po
 - Property truth: `src/_data/properties.js` and `src/_data/properties-fallback.json`
 - Owner proof assets: `src/_data/ownerProofAssets.json`
 - Execution state: `docs/status/current-state.md`, `docs/status/next-batch.md`, `docs/status/open-risks.md`
+- Content gate: `docs/process/content-quality-gate.md`
 - Voice and copy rules: `docs/style/voice.md`, `docs/style/approved-examples.md`, `docs/style/banned-patterns.md`
 - Batch briefs: `docs/briefs/`
 - Page-family routing and canonical ownership: `docs/portfolio/`
+
+## Reread Status Contract
+
+- `docs/status/next-batch.md` is the only canonical operator-read status surface.
+- Every reread update must write exactly one `Reread status` and exactly one `Concrete next move`.
+- Allowed reread statuses are only:
+  - `blocked by freshness`
+  - `fresh but below threshold`
+  - `open next batch`
+- `docs/status/current-state.md` should summarize durable repo truth and point back to `docs/status/next-batch.md`; it should not duplicate volatile reread windows, `data_date` values, or stale blocked-window narration.
 
 ## Five Roles
 
@@ -43,10 +54,14 @@ That is enough. Extra agent personas are overhead unless they own a real surface
 
 ## Local Skills
 
-The active local skill layer is intentionally small and site-specific:
+The active local skill layer is intentionally lean and site-specific:
 
 - `accessibility`
+- `design-review`
+- `next-batch-gate`
+- `owner-proof-integrity`
 - `page-cro`
+- `property-truth-regeneration`
 - `schema-markup`
 - `site-architecture`
 - `web-design-guidelines`
@@ -67,11 +82,12 @@ business context.
 2. One cluster gets chosen.
 3. One brief gets written or updated in `docs/briefs/`.
 4. Work starts on `codex/<batch>` in `.worktrees/<batch>`.
-5. Page Builder edits source and only the docs needed to support that batch.
-6. Voice Editor critiques the changed copy.
-7. Release Gate runs verification.
-8. Deploy.
-9. Reread after the crawl window instead of inventing a new batch too early.
+5. Page Builder reads the active brief, `docs/process/content-quality-gate.md`, `docs/style/voice.md`, `docs/style/banned-patterns.md`, and `docs/style/approved-examples.md` before source edits.
+6. Page Builder edits source and only the docs needed to support that batch.
+7. Voice Editor critiques the changed copy against the same brief and content gate.
+8. Release Gate runs `npm run lint:content` plus the rest of verification.
+9. Deploy.
+10. Reread after the crawl window instead of inventing a new batch too early.
 
 ## Hard Rules
 
@@ -79,6 +95,7 @@ business context.
 - Non-trivial work belongs in `.worktrees/<task>` on `codex/<task>`.
 - Edit source, not `_site/`.
 - Do not use `DEPLOY THIS FOLDER TO NETLIFY/` as source truth.
+- No public content PR without exactly one active brief and a passing `npm run lint:content`.
 - Do not import seomachine code, publishing assumptions, or folder structure directly into this repo.
 - Use seomachine only as reference for context rules, brief shape, rewrite workflow, and prioritization concepts.
 - One serious SEO batch at a time. If the batch cannot fit in one brief, it is too wide.
@@ -90,10 +107,12 @@ business context.
 
 1. `docs/status/current-state.md`
 2. the active brief in `docs/briefs/`
-3. the relevant page-family file in `docs/portfolio/`
-4. `docs/style/voice.md`
-5. `docs/style/banned-patterns.md`
-6. the source file you are about to touch
+3. `docs/process/content-quality-gate.md`
+4. the relevant page-family file in `docs/portfolio/`
+5. `docs/style/voice.md`
+6. `docs/style/banned-patterns.md`
+7. `docs/style/approved-examples.md`
+8. the source file you are about to touch
 
 If any of those are stale, fix the doc layer before you scale the batch.
 
@@ -103,5 +122,7 @@ Treat `DESIGN.md` as the visual source of truth.
 Do not invent new colors, fonts, spacing, border radius, shadows, or component styles without explicit user approval.
 If Claude Design, Stitch, designmd.directory, or another design tool produces a new direction, propose it as a `DESIGN.md` change first.
 Use Stitch/designmd.directory only as inspiration, not source truth.
+Meaningful visual changes also need the repo flow in `docs/process/design-review-workflow.md`.
+Run the global `design-review` skill against the affected routes after implementation and before asking for human review.
 Subjective visual changes need desktop and mobile screenshots until an automated visual regression gate exists.
 For UI/visual work, dispatch subagents with `model: "sonnet"`.

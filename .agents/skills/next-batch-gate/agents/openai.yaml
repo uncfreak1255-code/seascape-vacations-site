@@ -1,0 +1,4 @@
+interface:
+  display_name: "Next Batch Gate"
+  short_description: "Decide if a Seascape SEO branch should open"
+  default_prompt: "Use $next-batch-gate to decide whether this proposed SEO/GEO batch clears the current repo gate."

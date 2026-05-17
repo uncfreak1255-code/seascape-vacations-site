@@ -1,0 +1,13 @@
+html {
+  scroll-behavior: auto !important;
+}
+
+*,
+*::before,
+*::after {
+  caret-color: transparent !important;
+}
+
+img[height="1"][width="1"] {
+  opacity: 0 !important;
+}

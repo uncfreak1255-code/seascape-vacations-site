@@ -1,5 +1,16 @@
 # Brief: <cluster name>
 
+## Content Gate Inputs
+
+- persona:
+- primary keyword:
+- secondary keywords:
+- audience pattern:
+- proof source:
+- required internal links:
+- CTA target:
+- anti-claims:
+
 ## Why This Batch
 
 - what changed in the data

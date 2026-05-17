@@ -1,3 +1,4 @@
+{% from "partials/ui-icon.njk" import uiIcon, uiLabel %}
 <!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Holmes Beach vs Bradenton Beach: Which AMI Town Fits You?</title><meta name="description" content="Holmes Beach or Bradenton Beach? Compare restaurants, beach access, rentals, and vibe on Anna Maria Island. A local's honest breakdown for 2026."><meta name="keywords" content="Holmes Beach vs Bradenton Beach, Holmes Beach or Bradenton Beach, Anna Maria Island towns compared, where to stay AMI"><meta name="author" content="Seascape Vacations"><meta name="robots" content="index, follow"><link rel="canonical" href="https://seascape-vacations.com/guides/holmes-beach-vs-bradenton-beach/"><meta property="og:type" content="article"><meta property="og:url" content="https://seascape-vacations.com/guides/holmes-beach-vs-bradenton-beach/"><meta property="og:title" content="Holmes Beach vs Bradenton Beach — Which AMI Town Is Right for You?"><meta property="og:description" content="Local comparison of the two most popular towns on Anna Maria Island. Restaurants, beach access, nightlife, rental prices, and honest picks."><meta property="og:locale" content="en_US"><meta property="og:site_name" content="Seascape Vacations"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Holmes Beach vs Bradenton Beach — Which AMI Town Is Right for You?"><meta name="twitter:description" content="Local comparison of the two most popular towns on Anna Maria Island. Restaurants, beach access, nightlife, rental prices, and honest picks."><meta name="twitter:image" content="https://seascape-vacations.com/images/bradenton-og.jpg"><meta property="og:image" content="https://seascape-vacations.com/images/bradenton-og.jpg"><script type="application/ld+json">{
     "@context": "https://schema.org",
     "@type": "Article",
@@ -104,7 +105,7 @@
 </head><body>
 <nav class="breadcrumb" aria-label="Breadcrumb"><ol><li><a href="/">Home</a></li><li style="color:var(--stone-light)">›</li><li><a href="/guides/">Guides</a></li><li style="color:var(--stone-light)">›</li><li style="color:var(--stone)" aria-current="page">Holmes Beach vs Bradenton Beach</li></ol></nav>
 
-<main><section class="hero"><span class="hero-badge">🏝️ Island Town Showdown</span><h1>Holmes Beach vs Bradenton Beach:<br>Which Side of AMI?</h1><p>Two towns, one island. Here's how they actually compare — from someone who walks both beaches every week.</p></section>
+<main><section class="hero"><span class="hero-badge">{{ uiLabel('scales', 'Island Town Showdown') }}</span><h1>Holmes Beach vs Bradenton Beach:<br>Which Side of AMI?</h1><p>Two towns, one island. Here's how they actually compare — from someone who walks both beaches every week.</p></section>
 
 <article class="container section article-text">
 
@@ -123,14 +124,14 @@
 <tr><td>Nightlife</td><td class="winner">Skinnys Place, Duffy's, bars on Gulf Dr</td><td>Bridge St Bistro, a couple bars</td><td>Holmes Beach ✓</td></tr>
 <tr><td>Grocery Access</td><td class="winner">Publix on the island</td><td>Drive to Holmes Beach Publix</td><td>Holmes Beach ✓</td></tr>
 <tr><td>Fishing</td><td>Charter docks, wade fishing</td><td class="winner">Bridge Street Pier, Cortez village nearby</td><td>Bradenton Beach ✓</td></tr>
-<tr><td>Family Friendliness</td><td class="winner">More kid-focused activities</td><td>Quieter for young kids</td><td>Tie ⚖️</td></tr>
+<tr><td>Family Friendliness</td><td class="winner">More kid-focused activities</td><td>Quieter for young kids</td><td>Tie {{ uiIcon('scales') }}</td></tr>
 <tr><td>Getting Off-Island</td><td>Manatee Ave bridge (north)</td><td class="winner">Cortez Bridge — quick to Cortez Village & mainland</td><td>Bradenton Beach ✓</td></tr>
 </tbody></table>
 
 <h2>Where to Eat (This Decides It for Some People)</h2>
 
 <div class="category-card"><span class="category-winner">HOLMES BEACH WINS</span>
-<h3>🍽️ Restaurant Scene</h3>
+<h3>{{ uiLabel('dining', 'Restaurant Scene') }}</h3>
 <p>Not even close on quantity. Holmes Beach has the island's Publix, the two biggest breakfast spots (Sun & Surf Cafe, plus The Donut Experiment that always has a line out the door), and Gulf Drive is basically a restaurant row. You can eat somewhere different every night for a week.</p>
 
 <p>The standouts: <strong>Eat Here</strong> does creative coastal dishes that would cost double in Sarasota. <strong>Mr. Bones BBQ</strong> is the island's best-kept secret for smoked ribs. <strong>Duffy's Tavern</strong> is dive-bar perfection — cheap beer, good burgers, zero pretense.</p>
@@ -141,7 +142,7 @@
 <h2>Beach Access and Crowds</h2>
 
 <div class="category-card"><span class="category-winner">DEPENDS WHAT YOU WANT</span>
-<h3>🏖️ The Sand Situation</h3>
+<h3>{{ uiLabel('beach', 'The Sand Situation') }}</h3>
 <p>Holmes Beach has <strong>Manatee Public Beach</strong> — the island's biggest and most popular beach with a parking lot, lifeguards, restrooms, and a playground. It's the go-to for families, and it shows. Peak season weekends? You're setting up your chair early or you're in the back row.</p>
 
 <p>Bradenton Beach has <strong>Coquina Beach</strong> at the very southern tip, which is a gorgeous, wider stretch that somehow stays less packed. There's a nice nature trail that loops through the dunes. The vibe is calmer. If you want to read a book in peace without someone's Bluetooth speaker three towels over, this is your spot.</p>
@@ -165,7 +166,7 @@
 <h2>The Nightlife Situation</h2>
 
 <div class="category-card"><span class="category-winner">HOLMES BEACH</span>
-<h3>🌅 After Dark</h3>
+<h3>{{ uiLabel('sunset', 'After Dark') }}</h3>
 <p>Let's be real — nobody picks AMI for the nightlife. But if you want a drink after dinner without driving to the mainland, Holmes Beach has more options. <strong>Skinnys Place</strong> is a legendary tiki bar that's been there forever. <strong>Duffy's</strong> has live music some nights. There are a handful of spots along Gulf Drive where you can grab a cocktail and watch the sunset without planning ahead.</p>
 
 <p>Bradenton Beach nightlife is basically Bridge Street after dark. A couple of bars, sometimes live music, and then it's quiet. Which, for a lot of our guests, is exactly the point. If you wanted clubs and cocktail lounges, you'd be in Sarasota.</p>
@@ -182,7 +183,7 @@
 <h2>Fishing — Bradenton Beach Takes This One</h2>
 
 <div class="category-card"><span class="category-winner">BRADENTON BEACH</span>
-<h3>🎣 Lines in the Water</h3>
+<h3>{{ uiLabel('fish', 'Lines in the Water') }}</h3>
 <p>The <strong>Historic Bridge Street Pier</strong> is one of the best free fishing spots on the Gulf Coast. Snook, redfish, sheepshead, mackerel — depending on the season, something's always biting. No license needed to fish from the pier.</p>
 
 <p>Plus, <strong>Cortez Village</strong> is right across the bridge. It's a real working fishing village — not a tourist recreation of one. Charter boats, bait shops, the <a href="/stays/fishing-vacation-rentals-bradenton/">fishing culture</a> is baked into the place. Some of our guests in <a href="/properties/dockside-dreams/">Dockside Dreams</a> launch their kayaks right from the dock and fish the flats at sunrise.</p>
@@ -199,7 +200,7 @@
 <p>Honestly, with the trolley running between both towns, your family gets access to everything regardless of where you stay. It really comes down to whether you want your front door closer to the action (Holmes Beach) or closer to the quiet (Bradenton Beach).</p>
 
 <div class="verdict-card">
-<h3>🏆 The Verdict</h3>
+<h3>{{ uiLabel('award', 'The Verdict') }}</h3>
 <p>There's no wrong answer here — just a better fit for your trip.</p>
 <ul>
 <li><strong>Pick Holmes Beach if:</strong> You want walkable restaurants, don't mind crowds, love convenience, and plan to eat out most nights. Best for first-timers to AMI and social travelers.</li>

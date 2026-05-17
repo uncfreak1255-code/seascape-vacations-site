@@ -1,5 +1,15 @@
 # Next Batch
 
+## Reread Contract
+
+- `docs/status/next-batch.md` is the only canonical reread handoff surface.
+- Every reread update must write exactly one `Reread status` line and exactly one `Concrete next move` line in `Latest Execution Read`.
+- Allowed reread statuses:
+  - `blocked by freshness`
+  - `fresh but below threshold`
+  - `open next batch`
+- `docs/status/current-state.md` should not repeat volatile reread windows or `data_date` details from this file.
+
 ## Latest Execution Read
 
 Run date: 2026-05-08.
@@ -11,7 +21,8 @@ five tracked money pages plus the existing report context pages.
 - Latest BigQuery GSC `data_date`: 2026-05-06.
 - Site work gate: `clear` because the joined GSC + GA4 read covers the
   requested window.
-- Report recommendation: `hold-and-reread`.
+- Reread status: `fresh but below threshold`.
+- Concrete next move: rerun the targeted operator read on the five tracked money pages after more recrawl time using the last 7 complete days.
 - Owner-money result: 413 impressions, 0.24% weighted CTR, 4.71
   weighted position, 0 owner form submits.
 - Stay-money result: 9 impressions and 0 stay-to-property clicks.
@@ -21,7 +32,8 @@ five tracked money pages plus the existing report context pages.
 
 Do not open `owner-ctr-rewrite-round-2`, `stay-money-cro-round-2`, Holmes Beach
 expansion, or fresh guide consolidation from this read. The data is now fresh
-enough to call, and the correct branch decision is still `hold-and-reread`.
+enough to call, but it is still below the thresholds required to open a new
+batch.
 
 ## Likely Priorities
 

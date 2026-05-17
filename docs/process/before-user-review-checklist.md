@@ -36,6 +36,7 @@ Minimum expectation for UI review:
 - [ ] Key images load.
 - [ ] The reviewed route does not rely on placeholder, empty, or broken components.
 - [ ] If I changed layout, CSS, spacing, typography, imagery, component structure, or visual hierarchy, I captured fresh desktop and mobile screenshots before asking for review.
+- [ ] If I changed layout, CSS, spacing, typography, imagery, iconography, motion, CTA treatment, or visual hierarchy, I ran the repo `design-review` workflow on the affected route family before asking for review.
 - [ ] For long pages, I captured enough screenshots to cover each changed visual section when one full-page capture is not trustworthy.
 - [ ] I reviewed the screenshots myself and called out any capture artifact before asking the user to look.
 - [ ] The user is being asked for design feedback, not bug discovery.
