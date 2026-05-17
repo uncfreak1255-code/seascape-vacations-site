@@ -1,5 +1,16 @@
 # Owner Fee + Revenue Leak Benchmark
 
+## Content Gate Inputs
+
+- persona: Florida Gulf Coast vacation-rental owner comparing management economics and deciding whether the current setup is leaking net income
+- primary keyword: owner fee revenue leak benchmark
+- secondary keywords: vacation rental management fees florida, revenue teardown, owner statement review, property management benchmark
+- audience pattern: high-intent owner decision page and benchmark-fed teardown CTA path
+- proof source: Seascape five-home Gulf Coast operating set plus the published owner fee and revenue leak benchmark page
+- required internal links: #owner-cta, /
+- CTA target: Request a property-specific revenue teardown from the benchmark or owner management surfaces
+- anti-claims: do not imply a market-wide benchmark beyond the five-home proof set, do not promise one flat 15 percent fee, do not treat missing statements or fee terms as proven facts
+
 Date: 2026-05-15
 Hub handoff: `/Users/sawbeck/Projects/seascape-hub/projects/owner-fee-revenue-leak-benchmark-execution-package-2026-05-15.md`
 Site route: `/research/owner-fee-revenue-leak-benchmark-2026/`
