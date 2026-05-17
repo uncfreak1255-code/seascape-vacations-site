@@ -5,6 +5,7 @@ const { fetchBookingEngineCalendar } = require("../../scripts/cache/booking-engi
 const { normalizeAvailability } = require("../../scripts/cache/normalize-hostaway");
 
 const FALLBACK_PATH = path.join(__dirname, "properties-fallback.json");
+const VISUAL_TEST_AVAILABILITY_PATH = path.join(__dirname, "..", "..", "tests", "visual", "fixtures", "properties-availability.json");
 const CACHE_KEY = "properties_cache_v1.json";
 const STORE_NAME = "seascape-cache";
 const HOSTAWAY_PREFIX = "https://hostaway-platform.s3.us-west-2.amazonaws.com/";
@@ -135,8 +136,39 @@ function todayStamp(date = new Date()) {
   return date.toISOString().slice(0, 10);
 }
 
+function isVisualTestMode() {
+  return process.env.SEASCAPE_VISUAL_TEST === "1";
+}
+
 function shouldFetchPublicAvailability() {
   return process.env.SEASCAPE_DISABLE_PUBLIC_AVAILABILITY !== "1" && process.env.GITHUB_ACTIONS !== "true";
+}
+
+function loadVisualTestAvailabilityFixture() {
+  if (!fs.existsSync(VISUAL_TEST_AVAILABILITY_PATH)) {
+    return {};
+  }
+
+  try {
+    const fixture = JSON.parse(fs.readFileSync(VISUAL_TEST_AVAILABILITY_PATH, "utf8"));
+    return fixture && typeof fixture === "object" ? fixture : {};
+  } catch (error) {
+    return {};
+  }
+}
+
+function applyAvailabilityFixture(properties, fixtureBySlug) {
+  return properties.map((property) => {
+    const fixture = fixtureBySlug[property.slug];
+    if (!fixture) {
+      return property;
+    }
+
+    return {
+      ...property,
+      availability: normalizeAvailabilitySummary(fixture)
+    };
+  });
 }
 
 async function enrichMissingAvailability(properties) {
@@ -234,6 +266,10 @@ function normalizeProperties(list) {
 }
 
 async function getProperties() {
+  if (isVisualTestMode()) {
+    return applyAvailabilityFixture(loadFallback(), loadVisualTestAvailabilityFixture());
+  }
+
   try {
     if (process.env.NETLIFY_BLOBS_CONTEXT || global.netlifyBlobsContext) {
       const cached = await loadFromCache();

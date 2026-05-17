@@ -3,12 +3,14 @@
     var hero = document.querySelector('.hero');
     if (!hero) return;
 
+    var search = new URLSearchParams(window.location.search);
+    var visualTestMode = search.get('visual-test') === '1';
     var phrases = hero.querySelectorAll('.hero-phrase');
     var facts = hero.querySelectorAll('.hero-ticker-fact');
     var tickerLabel = hero.querySelector('.hero-ticker-label');
     var haze = hero.querySelector('.hero-haze');
     var imgWrap = hero.querySelector('.hero-img-wrap');
-    var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var reducedMotion = visualTestMode || window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     function setTickerLabel(fact) {
         if (!tickerLabel || !fact) return;

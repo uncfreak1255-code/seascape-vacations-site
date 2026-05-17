@@ -32,7 +32,7 @@ module.exports = defineConfig({
     video: "off",
   },
   webServer: {
-    command: "npm run build && node scripts/enforcement/serve-static.js --root _site --port 4173",
+    command: "SEASCAPE_VISUAL_TEST=1 npm run build && SEASCAPE_VISUAL_TEST=1 node scripts/enforcement/serve-static.js --root _site --port 4173",
     url: "http://127.0.0.1:4173",
     reuseExistingServer: !isCI,
     stdout: "ignore",
