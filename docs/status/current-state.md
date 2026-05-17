@@ -1,6 +1,6 @@
 # Current State
 
-*Updated: 2026-05-11*
+*Updated: 2026-05-17*
 
 ## Source of Truth
 
@@ -19,8 +19,8 @@
 - the winner-guide consolidation pass is live on `main` as merge `edf6e791`; guide-family aliases now have explicit redirect ownership and stronger enforcement coverage
 - Phase 2 owner proof pages are live and indexed, but owner CTR is still weaker than rankings suggest
 - Phase 3 stay money pages are live and self-canonical, but click yield is still not strong enough to justify fresh stay sprawl
-- latest joined operator read on 2026-05-06 kept the next branch at `hold-and-reread`; the requested 2026-04-29 to 2026-05-05 window was blocked because BigQuery GSC data was current only through 2026-05-03
-- the latest GSC-covered 7-day fallback window, 2026-04-27 to 2026-05-03, was readable but still below action thresholds: owner-money had 342 impressions, stay-money had 2 impressions, and guide-variant demand did not clear the 5000-impression consolidation trigger
+- `docs/status/next-batch.md` is the canonical operator-read status surface; it must carry exactly one reread status and one concrete next move after every reread
+- no measured owner, stay, or guide expansion branch has cleared the repo's branch-opening thresholds yet; use `docs/status/next-batch.md` for the latest reread status, evidence, thresholds, and next move
 - the weekly operator report in `seascape-analytics` is the read that should decide the next batch, not another site-wide audit
 - the repo now has a lean SEO OS: five roles only, one brief per serious batch, and dedicated style and portfolio docs instead of stale root markdown acting like live truth
 - the deployed owner metrics endpoint can now be turned into a bounded hub receipt with `node scripts/enforcement/emit-hub-verification-receipt.js owner-lead-metrics`; that receipt still proves measurement surface truth, not booked teardowns or validated owner demand by itself
