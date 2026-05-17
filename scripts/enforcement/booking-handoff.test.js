@@ -46,6 +46,7 @@ test("properties catalog behaves like a buyer handoff surface, not a generic dir
   assert.equal(propertiesTemplate.includes("move straight from comparison"), false);
   assert.equal(propertiesTemplate.includes("assuming the collection disappeared"), false);
   assert.equal(propertiesTemplate.includes("resort-style amenities"), false);
+  assert.equal(propertiesTemplate.includes("without pretending"), false);
 });
 
 test("properties catalog honors homepage area handoff params instead of always resetting to all stays", () => {

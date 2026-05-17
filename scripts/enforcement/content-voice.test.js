@@ -41,6 +41,7 @@ const BANNED_GENERIC_PATTERNS = [
   /\bstraight from comparison into live availability\b/i,
   /\bassuming the collection disappeared\b/i,
   /\bresort-style amenities\b/i,
+  /\bwithout pretending\b/i,
   /\battentive local operations\b/i,
   /\bclearer owner communication\b/i,
   /\bfewer quiet misses\b/i
