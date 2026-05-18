@@ -142,6 +142,21 @@ test("homepage schema advertises a real searchable website target", () => {
   assert.equal(homepage.includes('"query-input": "required name=search_term_string"'), true);
 });
 
+test("homepage brand signals stay consistent on title, visible hero copy, and website schema", () => {
+  assert.match(
+    homepage,
+    /<title>Seascape Vacations \| Bradenton & Sarasota Vacation Rentals Near Anna Maria Island<\/title>/
+  );
+  assert.match(
+    homepage,
+    /<span>Seascape Vacations<\/span>/
+  );
+  assert.equal(
+    homepage.includes('"alternateName": "seascape-vacations.com"'),
+    true
+  );
+});
+
 test("homepage does not ship hidden FAQ schema without visible FAQ content", () => {
   assert.equal(
     homepage.includes('"@type": "FAQPage"'),
