@@ -42,7 +42,7 @@ function validateGuideEventMarkup(body, targetPath = TARGET_GUIDE_PATH) {
   }
 }
 
-function validatePopupMarkup(body, targetPath) {
+function validatePopupMarkup(body, targetPath, options = {}) {
   const requiredMarkers = [
     'data-email-capture-root',
     'data-email-capture-content',
@@ -62,9 +62,22 @@ function validatePopupMarkup(body, targetPath) {
     throw new Error(`${targetPath} still uses legacy popup submit handling instead of shared conversion tracking`);
   }
 
-  if (!body.includes('/assets/js/conversion-tracking.js')) {
+  if (!body.includes('/assets/js/conversion-tracking.js') && !options.hasRuntimeLoader) {
     throw new Error(`${targetPath} has popup email capture markup but does not load shared conversion tracking`);
   }
+}
+
+async function validatePopupRuntime(baseUrl, body, targetPath) {
+  let hasRuntimeLoader = false;
+
+  if (targetPath === HOMEPAGE_PATH && !body.includes('/assets/js/conversion-tracking.js') && body.includes('/assets/js/homepage.js')) {
+    const homepageScript = await request(baseUrl, "/assets/js/homepage.js");
+    hasRuntimeLoader =
+      homepageScript.statusCode === 200 &&
+      homepageScript.body.includes('/assets/js/conversion-tracking.js');
+  }
+
+  validatePopupMarkup(body, targetPath, { hasRuntimeLoader });
 }
 
 function buildTrackedLink(eventName, href) {
@@ -318,7 +331,7 @@ async function run(baseUrl, options = {}) {
         throw new Error(`${popupPath} expected 200, got ${popupResponse.statusCode}`);
       }
 
-      validatePopupMarkup(popupResponse.body, popupPath);
+      await validatePopupRuntime(baseUrl, popupResponse.body, popupPath);
     }
 
     const popupEvents = simulatePopupEmailCaptureEvent().map((entry) => entry.event);
@@ -346,6 +359,7 @@ module.exports = {
   request,
   validateGuideEventMarkup,
   validatePopupMarkup,
+  validatePopupRuntime,
   simulateDirectBookingEvents,
   simulatePopupEmailCaptureEvent,
   run
