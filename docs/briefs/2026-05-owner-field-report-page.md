@@ -2,7 +2,7 @@
 
 ## Content Gate Inputs
 
-- persona: Gulf Coast vacation rental owner comparing manager economics, channel mix, and operating proof before a switch conversation.
+- persona: Gulf Coast vacation rental owner comparing manager economics, booking sources, and operating proof before a switch conversation.
 - primary keyword: vacation rental property management
 - secondary keywords: Florida vacation rental management, owner revenue teardown, vacation rental management fees, Bradenton property management, Sarasota property management
 - audience pattern: High-intent owner wants evidence, not a brochure; the page must help them see what they keep after fees, channels, and execution.
