@@ -344,9 +344,6 @@ headExtra: |
       color: white;
       font-weight: 600;
     }
-
-    {% include "partials/owner-form-styles.njk" %}
-
     @media (max-width: 920px) {
       .owner-hero-grid,
       .owner-choice-grid,
@@ -363,6 +360,9 @@ headExtra: |
   </style>
 ---
 {% from "partials/owner-evaluation-form.njk" import ownerEvaluationForm %}
+<style>
+  {% include "partials/owner-form-styles.njk" %}
+</style>
 <nav class="breadcrumbs" aria-label="Breadcrumb">
   <ol>
     <li><a href="/">Home</a></li>
