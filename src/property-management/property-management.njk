@@ -251,6 +251,7 @@ eleventyComputed:
                     <p style="font-size: 14px; color: var(--stone); margin: 0 0 8px;"><strong>Source:</strong> <a href="{{ proofAsset.sourceUrl }}" style="color: var(--brand-dark); text-decoration: underline;">{{ proofAsset.sourceLabel }}</a></p>
                     {% if proofAsset.benchmarkUrl %}
                     <p style="font-size: 14px; color: var(--stone); margin: 0 0 8px;"><strong>Owner benchmark:</strong> <a href="{{ proofAsset.benchmarkUrl }}" style="color: var(--brand-dark); text-decoration: underline;">Read the owner fee + revenue leak benchmark</a></p>
+                    <p style="font-size: 14px; color: var(--stone); margin: 0 0 8px;">Read the <a href="/property-management/vacation-rental-management-fees-florida/" style="color: var(--brand-dark); text-decoration: underline;">fee reality page</a> and the <a href="/property-management/maximize-vacation-rental-income-florida/" style="color: var(--brand-dark); text-decoration: underline;">revenue leak breakdown</a> before you compare managers on headline percentage alone.</p>
                     {% endif %}
                     {% if proofAsset.methodology %}
                     <p style="font-size: 14px; color: var(--stone-light); margin: 0;"><strong>Methodology:</strong> {{ proofAsset.methodology }}</p>
@@ -310,7 +311,7 @@ eleventyComputed:
                 <div class="section-header">
                     <p class="section-tag">{{ seoPage.benefitsTag or "Execution Gap" }}</p>
                     <h2 class="section-title">{{ seoPage.benefitsTitle or "Where Seascape closes the gap" }}</h2>
-                    <p class="section-subtitle">{{ seoPage.benefitsSubtitle or "Owners do not need a definition of management. They need evidence that the right operator fixes the expensive parts." }}</p>
+                    <p class="section-subtitle">{{ seoPage.benefitsSubtitle or "Owners do not need a definition of management. They need evidence that the right manager fixes the expensive parts." }}</p>
                 </div>
                 
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px;">
@@ -410,7 +411,7 @@ eleventyComputed:
         </section>
         {% endif %}
 
-        <!-- GEO Intro - AI-citeable rich content -->
+        <!-- GEO Intro - citation-ready rich content -->
         {% if seoPage.geoIntro %}
         <section class="section" style="background: white;">
             <div class="container">
@@ -542,17 +543,21 @@ eleventyComputed:
                     {{ ownerEvaluationForm({
                         eyebrow: "Private teardown",
                         title: "Want the same leak scan on your home?",
-                        intro: seoPage.ctaSubcopy or "Send the listing URL, owner statement, fee quote, or property address. Seascape will run a short Revenue Teardown that separates what is proven, what is likely leaking, and what is still unknown before any switch conversation.",
+                        intro: seoPage.ctaSubcopy or "Send the listing URL, owner statement, fee quote, or property address. Seascape will review the available numbers and show what is clear, what looks expensive, and what still needs verification before any switch conversation.",
                         formTitle: seoPage.primaryCta or seoPage.cta or "Request a Revenue Teardown",
                         formIntro: "Share whichever source is easiest. A listing URL is enough to start; an owner statement or fee quote makes the teardown sharper.",
-                        proofNote: "The teardown is a review of available evidence. Missing statements, calendars, reviews, or fee terms will be marked unknown.",
-                        detailLabel: "What the teardown separates",
-                        detailCopy: "The private teardown separates proven leak, likely leak, and unknown before recommending whether to stay put, fix the current setup, or talk about transition.",
-                        confirmation: "Got it. Seascape will review the source material and send back the clearest next step: stay put, fix the current setup, or talk about a transition.",
+                        proofNote: "The review uses the evidence available. Missing statements, calendars, reviews, or fee terms will be marked as missing instead of guessed.",
+                        detailLabel: "What the review separates",
+                        detailCopy: "The private review separates proven cost, likely cost, and missing information before recommending whether to stay put, fix the current setup, or talk about transition.",
+                        confirmation: "Got it. Seascape will review what you send and return the clearest next step: stay put, fix the current setup, or talk about a transition.",
                         pageSlug: seoPage.slug,
                         market: seoPage.destination or "florida-gulf-coast",
                         leadType: "owner-revenue-teardown",
-                        buttonLabel: "Send My Teardown Request"
+                        buttonLabel: "Send My Teardown Request",
+                        propertyFieldLabel: "Property address or market",
+                        propertyFieldPlaceholder: "Anna Maria Island, Bradenton, Sarasota, or full street address",
+                        showBenchmarkFields: true,
+                        fileHelp: "PDF, spreadsheet, or screenshot. Missing statements, calendars, reviews, or fee terms will be marked as missing."
                     }) }}
                     <p style="margin-top: 18px; text-align: center; color: rgba(255, 255, 255, 0.82); font-size: 15px;">
                         Prefer to talk first? <a href="tel:+19417048545" style="color: white; font-weight: 600;" data-track-event="owner_phone_click" data-page-slug="{{ seoPage.slug }}">Call (941) 704-8545</a>

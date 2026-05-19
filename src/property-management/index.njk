@@ -395,7 +395,7 @@ headExtra: |
     <aside class="owner-hero-panel">
       <span class="owner-panel-label">Benchmark + Teardown</span>
       <h2>What to look at before you change managers</h2>
-      <p>Marketplace fees, expensive booking channels, review-risk signals, and uneven owner communication rarely show up clearly in an owner statement. The teardown shows what the current setup is still protecting, where costs are building up, and whether a switch is worth the disruption.</p>
+      <p>Platform costs, expensive booking sources, review-risk signals, and uneven owner communication rarely show up clearly in an owner statement. The revenue review shows what the current setup is still protecting, what may be costing you money, and whether a switch is worth the disruption.</p>
       <ul class="owner-panel-list">
         <li><span class="owner-check" aria-hidden="true"></span><span>Where premium nights are getting discounted too quickly or shifted into costly third-party channels</span></li>
         <li><span class="owner-check" aria-hidden="true"></span><span>Whether the current manager is protecting owner margin or mostly reporting activity</span></li>
@@ -425,7 +425,7 @@ headExtra: |
     <div class="owner-proof-card">
       <span class="owner-proof-label">Cost Example</span>
       <h3>16.4%</h3>
-      <p>Bradenton Pool's effective March 2026 Airbnb host-fee cost, showing how cleaning-heavy turnover can push total costs above the 13.4% portfolio average.</p>
+      <p>Bradenton Pool's effective March 2026 Airbnb host-fee cost, showing how cleaning-heavy turnover can push fees above the 13.4% portfolio average.</p>
     </div>
   </div>
 </section>
@@ -436,18 +436,18 @@ headExtra: |
       <p class="section-tag">Owner Economics</p>
       <h2 class="section-title" style="margin-bottom: 14px;">What owners miss when they compare management fees</h2>
       <p>Owners often compare one manager at 15%, another at 20%, and another at 25% as if that settles the decision. It usually doesn't. OTA commissions, discount-heavy pricing, and weak local execution can cost more than the headline fee.</p>
-      <p>The better question is which manager protects what the owner actually keeps once pricing, booking channels, guest standards, and local response all affect the same property.</p>
+      <p>The better question is which manager protects owner income once rates, booking sources, guest standards, and local response all affect the same property.</p>
       <ul>
         <li>Competitor fee bands often land around 18-35%, but percentage alone does not tell you what the owner actually keeps</li>
         <li>Observed Airbnb host fees average roughly 13.4% versus direct payment cost closer to 2.9%</li>
-        <li>Owner reporting should explain what changed in revenue, booking channels, and margin, not just list activity</li>
+        <li>Owner reporting should explain what changed in revenue, booking sources, and margin, not just list activity</li>
       </ul>
     </div>
     <div class="owner-choice-card owner-proof-stat">
       <span class="owner-proof-label" style="color: var(--brand);">Commission Reality</span>
       <strong>13.4% → 2.9%</strong>
-      <p>That is the gap between Seascape's observed Airbnb host-fee average and a direct payment cost. If booking channels are ignored, owners often give up margin without realizing it.</p>
-      <p style="margin-top: 18px;">The teardown helps you see whether your current setup is protecting rate, reducing booking costs, and earning what it costs.</p>
+      <p>That is the gap between Seascape's observed Airbnb host-fee average and a direct payment cost. If booking source is ignored, owners often give up margin without realizing it.</p>
+      <p style="margin-top: 18px;">The teardown helps you see whether your current setup is protecting rate, reducing platform costs, and earning what it costs.</p>
     </div>
   </div>
 </section>
@@ -507,7 +507,7 @@ headExtra: |
       <a class="owner-resource-card" href="/property-management/maximize-vacation-rental-income-florida/">
         <span>Revenue Teardown</span>
         <h3>What Cuts Into Owner Income</h3>
-        <p>Start here if you want a clearer read on management fees, booking costs, and the operating issues cutting into owner income before you request a property-specific teardown.</p>
+        <p>Start here if you want a clearer read on fees, OTA mix, and the operating issues cutting into owner income before you request a property-specific teardown.</p>
         <span class="owner-link">Read the teardown guide →</span>
       </a>
       <a class="owner-resource-card" href="/research/owner-fee-revenue-leak-benchmark-2026/">
@@ -544,17 +544,21 @@ headExtra: |
       {{ ownerEvaluationForm({
         eyebrow: "Private teardown",
         title: "Want this same review for your home?",
-        intro: "Send the listing URL, owner statement, fee quote, or property address. Seascape will run a short Revenue Teardown that separates what is proven, what looks likely, and what is still unknown before any switch conversation.",
+        intro: "Send the listing URL, owner statement, fee quote, or property address. Seascape will review the available numbers and show what is clear, what looks expensive, and what still needs verification before any switch conversation.",
         formTitle: "Request a Revenue Teardown",
         formIntro: "Share whichever source is easiest. A listing URL is enough to start; an owner statement or fee quote makes the teardown sharper.",
-        proofNote: "The teardown is a review of available evidence. Missing statements, calendars, reviews, or fee terms will be marked unknown.",
-        detailLabel: "What the teardown separates",
-        detailCopy: "The private teardown separates what is proven, what looks likely, and what is unknown before recommending whether to stay put, fix the current setup, or talk about transition.",
-        confirmation: "Got it. Seascape will review the source material and send back the clearest next step: stay put, fix the current setup, or talk about a transition.",
+        proofNote: "The review uses the evidence available. Missing statements, calendars, reviews, or fee terms will be marked as missing instead of guessed.",
+        detailLabel: "What the review separates",
+        detailCopy: "The private review separates proven cost, likely cost, and missing information before recommending whether to stay put, fix the current setup, or talk about transition.",
+        confirmation: "Got it. Seascape will review what you send and return the clearest next step: stay put, fix the current setup, or talk about a transition.",
         pageSlug: "property-management",
         market: "florida-gulf-coast",
         leadType: "owner-revenue-teardown",
         buttonLabel: "Send My Teardown Request",
+        propertyFieldLabel: "Property address or market",
+        propertyFieldPlaceholder: "Anna Maria Island, Bradenton, Sarasota, or full street address",
+        showBenchmarkFields: true,
+        fileHelp: "PDF, spreadsheet, or screenshot. Missing statements, calendars, reviews, or fee terms will be marked as missing.",
         note: "Send the property address or listing URL. We will compare fees, booking costs, and operating issues that may be reducing owner income."
       }) }}
       <p class="owner-secondary-contact">Prefer to talk first? <a href="tel:+19417048545" data-track-event="owner_phone_click" data-page-slug="property-management">Call (941) 704-8545</a></p>
@@ -641,7 +645,7 @@ headExtra: |
       <a class="owner-resource-card" href="/property-management/vrbo-management-services-florida/">
         <span>Platform Strategy</span>
         <h3>VRBO Management Services</h3>
-        <p>Use this if most of your bookings lean VRBO-heavy and you need platform-specific expectations instead of generic marketplace talk.</p>
+        <p>Use this if your bookings lean VRBO-heavy and you need platform-specific expectations instead of generic marketplace talk.</p>
         <span class="owner-link">Read the VRBO guide →</span>
       </a>
       <a class="owner-resource-card" href="/property-management/vacation-rental-licensing-florida/">
@@ -685,7 +689,7 @@ headExtra: |
       <div class="faq-answer">Start with real demand and rate context, not generic national averages. Our <a href="/guides/2026-bradenton-vacation-rental-market-analysis/">Bradenton market analysis</a> and <a href="/guides/vacation-rental-income-anna-maria/">Anna Maria Island income guide</a> show the type of local data owners should compare against projected fees.</div>
     </div>
     <div class="faq-item">
-      <div class="faq-question">What should a local manager handle that a remote operator usually misses?</div>
+      <div class="faq-question">What should a local manager handle that a remote manager usually misses?</div>
       <div class="faq-answer">The short answer is local response time. Cleaning quality control, maintenance triage, guest screening, and property checks are all weaker when the manager is not operating in-market. Our market-specific service pages break down how that changes between <a href="/property-management/vacation-rental-management-bradenton/">Bradenton</a>, <a href="/property-management/vacation-rental-management-sarasota/">Sarasota</a>, and <a href="/property-management/vacation-rental-management-anna-maria-island/">Anna Maria Island</a>.</div>
     </div>
     <div class="faq-item">
