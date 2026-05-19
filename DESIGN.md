@@ -156,6 +156,9 @@ Studied: Plum Guide, AvantStay, onefinestay, Vacasa, Evolve.
 - **Decoration level:** Intentional — warm cream textures, subtle shadows, gold accent details. Not minimal (too cold for vacation rentals), not expressive (too busy for luxury).
 - **Reference vibe:** Plum Guide's editorial restraint + Seascape's existing warmth
 
+### Field Report Standard
+The owner-page "Field Report" direction is the new quality bar for future high-value Seascape page design. Pages should feel like a premium Gulf Coast editorial report: cinematic real photography, issue-style section framing, disciplined cream/teal/gold surfaces, serif-led hierarchy, useful proof, and one memorable interaction that helps the visitor decide. Do not copy the exact owner-page layout onto every route; copy the level of taste, restraint, specificity, and rendered polish.
+
 ## Typography
 - **Display/Headlines:** Playfair Display (weight 500) — Serif with editorial authority. Used for all h1-h4 headings, property names, and section titles. The -0.02em letter-spacing is important for density at large sizes.
 - **Body:** Poppins (weight 400-600) — Clean geometric sans. Readable body copy, navigation labels, metadata. Weights: 400 (body), 500 (UI labels), 600 (buttons, emphasis), 700 (price callouts).
