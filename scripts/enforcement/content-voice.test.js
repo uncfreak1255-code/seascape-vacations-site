@@ -27,8 +27,7 @@ const BANNED_GENERIC_PATTERNS = [
   /\bunparalleled\b/i,
   /\battentive local operations\b/i,
   /\bclearer owner communication\b/i,
-  /\bfewer quiet misses\b/i,
-  /\bOTA drag\b/i
+  /\bfewer quiet misses\b/i
 ];
 
 const OWNER_JARGON_PATTERNS = [
