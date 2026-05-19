@@ -79,13 +79,109 @@ headExtra: |
     border-bottom: 1px solid rgba(0, 0, 0, 0.06);
   }
 
-  .nav:not(.scrolled) .nav-logo-text,
-  .nav:not(.scrolled) .nav-owner-cta {
+  .nav .nav-logo {
+    gap: 12px;
+  }
+
+  .nav .nav-logo img {
+    display: none;
+  }
+
+  .nav .nav-logo::before {
+    content: "";
+    display: inline-flex;
+    width: 34px;
+    height: 34px;
+    align-items: center;
+    justify-content: center;
+    border: 1.5px solid rgba(245, 228, 176, 0.86);
+    border-radius: 50%;
+    background:
+      url("data:image/svg+xml,%3Csvg viewBox='0 0 28 28' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6.2 15.8c2.4-3 5.3-3 7.7 0s5.3 3 7.9-.1' fill='none' stroke='%23F5E4B0' stroke-width='1.7' stroke-linecap='round'/%3E%3Cpath d='M7.4 19.5c2-2.2 4.1-2.2 6.2 0 2.1 2.2 4.3 2.2 6.5-.1' fill='none' stroke='%23F5E4B0' stroke-width='1.35' stroke-linecap='round' opacity='.78'/%3E%3C/svg%3E") center / 23px 23px no-repeat,
+      radial-gradient(circle at 32% 24%, rgba(245, 228, 176, 0.18), rgba(10, 26, 28, 0.08));
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08), 0 0 28px rgba(245, 228, 176, 0.1);
+  }
+
+  .nav.scrolled .nav-logo::before {
+    border-color: rgba(201, 169, 98, 0.72);
+    background:
+      url("data:image/svg+xml,%3Csvg viewBox='0 0 28 28' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6.2 15.8c2.4-3 5.3-3 7.7 0s5.3 3 7.9-.1' fill='none' stroke='%232D4647' stroke-width='1.7' stroke-linecap='round'/%3E%3Cpath d='M7.4 19.5c2-2.2 4.1-2.2 6.2 0 2.1 2.2 4.3 2.2 6.5-.1' fill='none' stroke='%232D4647' stroke-width='1.35' stroke-linecap='round' opacity='.72'/%3E%3C/svg%3E") center / 23px 23px no-repeat,
+      linear-gradient(145deg, rgba(245, 238, 214, 0.92), rgba(255, 255, 255, 0.7));
+    box-shadow: inset 0 0 0 1px rgba(201, 169, 98, 0.18);
+  }
+
+  .nav .nav-logo-text {
     color: var(--white);
+    font-size: 20px;
+    letter-spacing: 0.12em;
+    line-height: 1;
+  }
+
+  .nav .nav-logo-sub {
+    color: rgba(255, 255, 255, 0.64);
+    letter-spacing: 0.34em;
+    margin-top: 1px;
+  }
+
+  .nav.scrolled .nav-logo-text {
+    color: var(--brand-dark);
+  }
+
+  .nav.scrolled .nav-logo-sub {
+    color: var(--stone-light);
+  }
+
+  .nav:not(.scrolled) .nav-logo-text,
+  .nav:not(.scrolled) .nav-owner-cta,
+  .nav:not(.scrolled) .nav-owner-link {
+    color: var(--white);
+  }
+
+  .nav:not(.scrolled) .nav-owner-link {
+    color: rgba(255, 255, 255, 0.78);
+  }
+
+  .nav:not(.scrolled) .nav-owner-link:hover,
+  .nav:not(.scrolled) .nav-owner-link:focus-visible,
+  .nav:not(.scrolled) .nav-owner-link--current {
+    color: var(--white);
+  }
+
+  .nav:not(.scrolled) .nav-owner-link::after {
+    background: var(--owner-gold-hot);
   }
 
   .nav:not(.scrolled) .nav-logo-sub {
     color: rgba(255, 255, 255, 0.72);
+  }
+
+  .nav .nav-owner-cta {
+    min-height: 44px;
+    padding: 12px 22px;
+    border: 1px solid rgba(255, 255, 255, 0.42);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--white);
+    letter-spacing: 0.08em;
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+  }
+
+  .nav .nav-owner-cta::after {
+    display: none;
+  }
+
+  .nav .nav-owner-cta:hover,
+  .nav .nav-owner-cta:focus-visible {
+    border-color: rgba(245, 228, 176, 0.76);
+    background: rgba(255, 255, 255, 0.14);
+    color: var(--owner-gold-hot);
+  }
+
+  .nav.scrolled .nav-owner-cta {
+    border-color: rgba(45, 70, 71, 0.22);
+    background: rgba(45, 70, 71, 0.05);
+    color: var(--brand-dark);
   }
 
   .owner-field {
@@ -162,7 +258,20 @@ headExtra: |
   }
 
   .owner-field-masthead span:nth-child(2) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
     color: var(--owner-gold-hot);
+  }
+
+  .owner-field-masthead span:nth-child(2)::before,
+  .owner-field-masthead span:nth-child(2)::after {
+    content: "";
+    width: 5px;
+    height: 5px;
+    border: 1px solid currentColor;
+    border-radius: 50%;
   }
 
   .owner-field-hero-grid {
@@ -197,13 +306,13 @@ headExtra: |
   }
 
   .owner-hero h1 {
-    max-width: 720px;
+    max-width: 760px;
     margin: 0 0 34px;
     color: var(--white);
-    font-size: clamp(48px, 6.2vw, 84px);
+    font-size: clamp(56px, 7vw, 112px);
     font-weight: 400;
     letter-spacing: -0.018em;
-    line-height: 0.98;
+    line-height: 0.92;
     text-shadow: 0 2px 30px rgba(0, 0, 0, 0.4);
   }
 
@@ -1229,13 +1338,13 @@ headExtra: |
   <section class="section owner-hero">
     <div class="owner-field-masthead" aria-hidden="true">
       <span>Vol. III · Owner Field Report</span>
-      <span>Bradenton · Sarasota · Anna Maria Island</span>
+      <span>Bradenton · Sarasota Corridor</span>
       <span>Spring 2026 · Issue 04</span>
     </div>
     <div class="owner-field-shell owner-field-hero-grid">
       <div>
         <div class="owner-field-kicker">The Property Management Brief</div>
-        <h1 id="owner-field-title">What does your <em>pool home</em><br> actually keep?</h1>
+        <h1 id="owner-field-title">What does<br>your<br><em>island rental</em><br> actually keep?</h1>
         <p class="owner-field-hero-copy">A dispatch from a five-home Gulf Coast portfolio: what we actually see in fees, channels, pricing, and execution. Send us your listing; we will send back a one-page teardown.</p>
         <div class="owner-field-actions">
           <a class="btn btn-gold owner-field-btn" href="#owner-cta" data-track-event="owner_primary_cta_click" data-page-slug="property-management">Request Your Revenue Teardown</a>
