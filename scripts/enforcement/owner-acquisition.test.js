@@ -44,7 +44,7 @@ test("owner landing page keeps the owner revenue teardown close to the sales arg
   assert.notEqual(reviewIndex, -1, "owner hub needs the revenue teardown anchor");
   assert.equal(ownerLanding.includes("Benchmark + Teardown"), true);
   assert.equal(
-    ownerLanding.includes("Fee drag, OTA dependence, review-risk signals, and uneven owner communication rarely show up clearly in an owner statement."),
+    ownerLanding.includes("Platform costs, OTA dependence, review-risk signals, and uneven owner communication rarely show up clearly in an owner statement."),
     true
   );
   assert.ok(reviewIndex < faqIndex, "owner CTA should land before FAQ filler");
@@ -118,12 +118,12 @@ test("owner revenue teardown form lowers friction without losing tracking or int
   assert.equal(ownerFormPartial.includes('name="current_fee_quote"'), true);
   assert.equal(ownerFormPartial.includes('name="what_feels_off"'), true);
   assert.equal(ownerFormPartial.includes('name="owner_statement"'), true);
-  assert.equal(ownerFormPartial.includes("Share whichever source is easiest. A listing URL is enough to start; an owner statement or fee quote makes the teardown sharper."), true);
+  assert.equal(ownerFormPartial.includes("Share whichever source is easiest. A listing URL is enough to start; an owner statement or fee quote makes the revenue review sharper."), true);
   assert.equal(
-    ownerFormPartial.includes("The teardown is a review of available evidence. Missing statements, calendars, reviews, or fee terms will be marked unknown."),
+    ownerFormPartial.includes("The review uses the evidence available. Missing statements, calendars, reviews, or fee terms will be marked as missing instead of guessed."),
     true
   );
-  assert.equal(ownerFormPartial.includes("The private teardown separates proven leak, likely leak, and unknown"), true);
+  assert.equal(ownerFormPartial.includes("The private review separates proven cost, likely cost, and missing information"), true);
   assert.equal(ownerFormPartial.includes("Send My Teardown Request"), true);
   assert.equal(ownerFormPartial.includes('data-track-form="owner"'), true);
   assert.equal(ownerFormPartial.includes('data-form-submit-event="owner_form_submit"'), true);
@@ -164,7 +164,7 @@ test("owner benchmark CTA carries source attribution into the revenue review for
   );
 });
 
-test("owner benchmark page stays in the leak-stack lane and keeps visible proof labels", () => {
+test("owner benchmark page stays in the fee-and-revenue lane and keeps visible proof labels", () => {
   const ownerBenchmark = fs.readFileSync(
     path.join(projectRoot, "src", "research", "owner-fee-revenue-leak-benchmark-2026.njk"),
     "utf8"
@@ -174,7 +174,7 @@ test("owner benchmark page stays in the leak-stack lane and keeps visible proof 
   assert.equal(ownerBenchmark.includes("5-property Gulf Coast scope"), true);
   assert.equal(ownerBenchmark.includes("Observed Seascape portfolio data"), true);
   assert.equal(ownerBenchmark.includes("Observed property example"), true);
-  assert.equal(ownerBenchmark.includes("Scenario math, not a forecast"), true);
+  assert.equal(ownerBenchmark.includes("Example math, not a forecast"), true);
   assert.equal(ownerBenchmark.includes("Request Your Revenue Teardown"), true);
   assert.equal(ownerBenchmark.includes("Patrick portfolio"), true);
   assert.equal(ownerBenchmark.includes("This benchmark is a decision aid, not a revenue forecast or market-wide fee survey."), true);

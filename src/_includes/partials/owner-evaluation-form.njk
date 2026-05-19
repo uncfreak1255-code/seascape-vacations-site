@@ -42,12 +42,12 @@
   <div class="owner-form-card">
     <div class="owner-form-card-copy">
       <h4 class="owner-form-card-title">{{ options.formTitle or "Request a Revenue Teardown" }}</h4>
-      <p class="owner-form-card-intro">{{ options.formIntro or "Share whichever source is easiest. A listing URL is enough to start; an owner statement or fee quote makes the teardown sharper." }}</p>
-      <p class="owner-form-proof-note">{{ options.proofNote or "The teardown is a review of available evidence. Missing statements, calendars, reviews, or fee terms will be marked unknown." }}</p>
-      <p class="owner-form-detail-label">{{ options.detailLabel or "What the teardown separates" }}</p>
-      <p class="owner-form-detail-copy">{{ options.detailCopy or "The private teardown separates proven leak, likely leak, and unknown before recommending whether to stay put, fix the current setup, or talk about transition." }}</p>
+      <p class="owner-form-card-intro">{{ options.formIntro or "Share whichever source is easiest. A listing URL is enough to start; an owner statement or fee quote makes the revenue review sharper." }}</p>
+      <p class="owner-form-proof-note">{{ options.proofNote or "The review uses the evidence available. Missing statements, calendars, reviews, or fee terms will be marked as missing instead of guessed." }}</p>
+      <p class="owner-form-detail-label">{{ options.detailLabel or "What the review separates" }}</p>
+      <p class="owner-form-detail-copy">{{ options.detailCopy or "The private review separates proven cost, likely cost, and missing information before recommending whether to stay put, fix the current setup, or talk about transition." }}</p>
       <div class="owner-form-confirmation">
-        <p>{{ options.confirmation or "Got it. Seascape will review the source material and send back the clearest next step: stay put, fix the current setup, or talk about a transition." }}</p>
+        <p>{{ options.confirmation or "Got it. Seascape will review what you send and return the clearest next step: stay put, fix the current setup, or talk about a transition." }}</p>
       </div>
     </div>
 
@@ -90,7 +90,7 @@
         <label class="owner-form-field owner-form-field--wide owner-form-field--file">
           <span>Upload owner statement, optional</span>
           <input type="file" name="owner_statement" accept="{{ options.fileAccept or '.pdf,.csv,.xls,.xlsx,.png,.jpg,.jpeg,.webp' }}">
-          <small class="owner-form-help">{{ options.fileHelp or "PDF, spreadsheet, or screenshot. Missing source material will be marked unknown." }}</small>
+          <small class="owner-form-help">{{ options.fileHelp or "PDF, spreadsheet, or screenshot. Missing statements, calendars, reviews, or fee terms will be marked as missing." }}</small>
         </label>
         {% endif %}
       </div>
@@ -106,7 +106,7 @@
   {% endif %}
 
   {% if not options.suppressNote %}
-  <p class="owner-form-note">{{ options.note or "Send the property address or listing URL. We will benchmark fee drag, channel mix, and the operating gaps that may be costing you owner income." }}</p>
+  <p class="owner-form-note">{{ options.note or "Send the property address or listing URL. We will review management fees, booking sources, and operating gaps that may be costing you owner income." }}</p>
   {% endif %}
 </form>
 {% endmacro %}
