@@ -155,6 +155,13 @@ function expectNoTemplateLeakMarkers(file) {
   }
 }
 
+function expectNoLeakedFrontMatter(file) {
+  const contents = read(file);
+  if (/^\s*---\s*\r?\n(?:[^\n]*\r?\n){0,5}permalink:/i.test(contents)) {
+    throw new Error(`Generated output leaked raw front matter in ${file}`);
+  }
+}
+
 function listHtmlFiles(dir) {
   const absolute = path.resolve(dir);
   if (!fs.existsSync(absolute)) {
@@ -294,6 +301,7 @@ if (phase === "guides") {
   for (const file of guideFiles) {
     expectContains(file, '<meta property="og:image"');
     expectContains(file, '<meta name="twitter:image"');
+    expectNoLeakedFrontMatter(file);
     expectNotContains(file, "images.unsplash.com");
     expectNotContains(file, "/images/logo.png");
     expectNotContains(file, "hostaway-platform.s3.us-west-2.amazonaws.com");
