@@ -125,6 +125,55 @@ test("AMI large-group page is source-managed and truthful about near-island loca
   );
 });
 
+test("AI discovery inventory answers proven buyer-intent misses without overclaiming island inventory", () => {
+  const requiredPhrases = [
+    "Sarasota private-pool vacation rental",
+    "Bradenton private-pool rental near the beach",
+    "Dockside Dreams private dock rental",
+    "Book direct Bradenton/Sarasota vacation rental",
+    "Sarasota vacation rental management",
+    "Seascape's inventory is near Anna Maria Island"
+  ];
+
+  for (const phrase of requiredPhrases) {
+    assert.equal(llms.includes(phrase), true, `llms.txt missing buyer-intent phrase: ${phrase}`);
+  }
+
+  const site = require(path.join(projectRoot, "src", "_data", "site.json"));
+  assert.equal(
+    site.description,
+    "Locally managed private-pool vacation rentals in Bradenton and Sarasota, Florida, near Anna Maria Island, Siesta Key, and Lido Key beaches."
+  );
+  assert.equal(
+    site.sameAsLinks.includes("https://www.bradentongulfislands.com/listing/seascape-vacations/"),
+    true,
+    "sameAsLinks should include the verified Bradenton Gulf Islands profile"
+  );
+
+  const nearAmiPoolPage = seoPages.vacationer.find(
+    (candidate) => candidate.slug === "anna-maria-island-homes-with-pool"
+  );
+  const familyNearAmiPage = seoPages.vacationer.find(
+    (candidate) => candidate.slug === "family-vacation-rentals-anna-maria-island"
+  );
+  const nearAmiPage = seoPages.vacationer.find(
+    (candidate) => candidate.slug === "anna-maria-island-vacation-rentals"
+  );
+
+  assert.equal(nearAmiPoolPage.title, "Vacation Rentals Near Anna Maria Island with Private Pools");
+  assert.equal(familyNearAmiPage.title, "Family Vacation Rentals Near Anna Maria Island");
+  assert.equal(nearAmiPage.h1, "Vacation Rentals Near Anna Maria Island");
+
+  for (const page of [nearAmiPoolPage, familyNearAmiPage, nearAmiPage]) {
+    const serializedPage = JSON.stringify(page);
+    assert.equal(
+      serializedPage.includes("vacation rentals on Anna Maria Island"),
+      false,
+      `${page.slug} should say near Anna Maria Island when describing Seascape inventory`
+    );
+  }
+});
+
 test("stays template can render citation-ready property facts with booking offers", () => {
   assert.equal(staysTemplate.includes("seoPage.propertyFacts"), true);
   assert.equal(staysTemplate.includes('"@type": "Offer"'), true);

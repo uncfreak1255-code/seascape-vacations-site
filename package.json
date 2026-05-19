@@ -29,8 +29,8 @@
     "verify:links": "node scripts/enforcement/validate-internal-links.js",
     "verify:jsonld": "node scripts/enforcement/validate-jsonld.js",
     "verify:release": "node scripts/enforcement/verify-release.js",
-    "test:visual": "playwright test",
-    "test:visual:update": "playwright test --update-snapshots",
+    "test:visual": "node scripts/enforcement/run-visual-tests.js",
+    "test:visual:update": "node scripts/enforcement/run-visual-tests.js --update-snapshots",
     "test:visual:install": "playwright install chromium"
   },
   "devDependencies": {

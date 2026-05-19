@@ -8,6 +8,7 @@ on:
       - "eleventy.config.js"
       - "playwright.config.js"
       - "tests/visual/**"
+      - "scripts/enforcement/run-visual-tests.js"
       - "scripts/enforcement/serve-static.js"
       - "package.json"
       - "package-lock.json"

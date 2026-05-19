@@ -2,6 +2,8 @@ const path = require("node:path");
 const { defineConfig, devices } = require("@playwright/test");
 
 const isCI = Boolean(process.env.CI);
+const visualBaseUrl = process.env.PLAYWRIGHT_VISUAL_BASE_URL || "http://127.0.0.1:4173";
+const useManagedVisualBaseUrl = Boolean(process.env.PLAYWRIGHT_VISUAL_BASE_URL);
 
 module.exports = defineConfig({
   testDir: "./tests/visual",
@@ -24,21 +26,23 @@ module.exports = defineConfig({
     },
   },
   use: {
-    baseURL: "http://127.0.0.1:4173",
+    baseURL: visualBaseUrl,
     colorScheme: "light",
     reducedMotion: "reduce",
     screenshot: "only-on-failure",
     trace: "on-first-retry",
     video: "off",
   },
-  webServer: {
-    command: "SEASCAPE_VISUAL_TEST=1 npm run build && SEASCAPE_VISUAL_TEST=1 node scripts/enforcement/serve-static.js --root _site --port 4173",
-    url: "http://127.0.0.1:4173",
-    reuseExistingServer: !isCI,
-    stdout: "ignore",
-    stderr: "pipe",
-    timeout: 120_000,
-  },
+  webServer: useManagedVisualBaseUrl
+    ? undefined
+    : {
+        command: "SEASCAPE_VISUAL_TEST=1 npm run build && SEASCAPE_VISUAL_TEST=1 node scripts/enforcement/serve-static.js --root _site --port 4173",
+        url: `${visualBaseUrl}/__health`,
+        reuseExistingServer: false,
+        stdout: "ignore",
+        stderr: "pipe",
+        timeout: 120_000,
+      },
   projects: [
     {
       name: "desktop-chromium",
