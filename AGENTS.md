@@ -57,10 +57,14 @@ Read in this order:
 
 - process rules live in `docs/process/`
 - current execution context lives in `docs/status/`
+- `docs/status/next-batch.md` is the canonical reread handoff surface for volatile measurement truth; after every reread it must say exactly one of `blocked by freshness`, `fresh but below threshold`, or `open next batch`, plus one concrete next move
+- `docs/status/current-state.md` should keep durable repo truth only and must not duplicate volatile reread windows or `data_date` details that belong in `docs/status/next-batch.md`
 - the five SEO OS role cards live in `.claude/agents/`
 - active repo-local skills are limited to `.agents/skills/accessibility`, `.agents/skills/design-review`, `.agents/skills/next-batch-gate`, `.agents/skills/owner-proof-integrity`, `.agents/skills/page-cro`, `.agents/skills/property-truth-regeneration`, `.agents/skills/schema-markup`, `.agents/skills/site-architecture`, and `.agents/skills/web-design-guidelines`
 - `.claude/skills/` should mirror only those active site/design skills; copied marketing, deploy, monthly reset, and generic SEO skills are not live authority
 - global marketing skills in `/Users/sawbeck/.codex/skills/` may be used as advisory helpers for CRO, SEO, copy, psychology, analytics, and growth decisions, but they do not override this repo's source files, briefs, status docs, or five-role workflow
+- if work writes durable state into another repo, route it through a clean
+  keeper branch or PR from that repo's current `origin/main`
 
 ## Content Gate
 
@@ -68,18 +72,8 @@ For any PR that changes public copy in `src/`:
 
 - read the active brief plus `docs/process/content-quality-gate.md`
 - read `docs/style/voice.md`, `docs/style/banned-patterns.md`, and `docs/style/approved-examples.md`
-- read `.agents/product-marketing-context.md` — ICP, personas, customer language, proof points, and objections; simulate a real guest decision before writing a single sentence
-- read `docs/style/brand-voice-guidelines.md` — annotated before/after examples; if your draft matches a "before" example, rewrite it
 - keep reader copy, proof copy, and agent copy separate
 - run `npm run lint:content` before push, PR, or merge
-
-## Keyword and Content Direction
-
-For any new page, heading restructure, or cluster-level copy change:
-
-- read `docs/seo/keyword-ownership-map.md` — cluster ownership, gaps, cannibalization risks
-- read `docs/strategy/content-strategy-2026.md` — Now/Next/Later priorities and the standing brief for AI agents
-- do not create a new page if the keyword-ownership-map shows the cluster is already owned or frozen
 
 ## Design Review Workflow
 
@@ -101,3 +95,12 @@ If the work changes Seascape’s business understanding, write back to:
 - `/Users/sawbeck/Projects/seascape-hub`
 
 Do not dump full implementation logs there.
+Do not mutate whatever local sibling checkout happens to exist on disk; land
+durable writebacks through a clean keeper branch or PR in the target repo.
+
+## Closeout Rule
+
+Agents may not hand site work back as local dirt. A task is not complete
+because a checkout is dirty, a worktree is left on detached `HEAD`, or cleanup
+is left for Sawyer. The worker owns verification, keeper branch or PR, and
+branch/worktree cleanup unless a named blocker stops the lane.
