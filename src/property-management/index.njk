@@ -212,8 +212,10 @@ headExtra: |
 
   .owner-hero {
     position: relative;
-    min-height: 720px;
+    min-height: 800px;
     display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
     align-items: flex-end;
     padding: 0;
     background: var(--owner-deep);
@@ -277,6 +279,18 @@ headExtra: |
     border-radius: 50%;
   }
 
+  .owner-field-compass {
+    position: absolute;
+    z-index: 1;
+    top: 178px;
+    left: max(48px, calc(50% - 600px));
+    width: 64px;
+    height: 64px;
+    color: var(--owner-gold-hot);
+    opacity: 0.48;
+    pointer-events: none;
+  }
+
   .owner-field-hero-grid {
     position: relative;
     z-index: 1;
@@ -324,6 +338,22 @@ headExtra: |
     font-style: italic;
   }
 
+  .owner-field-phrase {
+    display: inline-block;
+    position: relative;
+    min-width: min(7.6em, 100%);
+    vertical-align: top;
+  }
+
+  .owner-field-phrase em {
+    display: none;
+  }
+
+  .owner-field-phrase em.is-active {
+    display: inline-block;
+    animation: owner-field-phrase-in 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+
   .owner-field-display em {
     color: var(--gold);
     font-style: italic;
@@ -343,6 +373,129 @@ headExtra: |
     flex-wrap: wrap;
     align-items: center;
     gap: 18px;
+  }
+
+  .owner-field-hero-note {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    margin-top: 54px;
+    color: rgba(255, 255, 255, 0.78);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.3em;
+    line-height: 1.5;
+    text-transform: uppercase;
+  }
+
+  .owner-field-hero-note::before {
+    content: "";
+    flex: 0 0 64px;
+    height: 1px;
+    background: var(--owner-gold-hot);
+  }
+
+  .owner-field-ticker {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    padding: 22px 0;
+    border-top: 1px solid rgba(245, 228, 176, 0.22);
+    border-bottom: 1px solid rgba(245, 228, 176, 0.22);
+    background: rgba(10, 26, 28, 0.55);
+    color: var(--white);
+  }
+
+  .owner-field-ticker-inner {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+  }
+
+  .owner-field-ticker-label {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 8px;
+    color: #7FDBA4;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+  }
+
+  .owner-field-ticker-label::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+    box-shadow: 0 0 0 4px rgba(127, 219, 164, 0.28);
+    animation: owner-field-pulse 2s ease-in-out infinite;
+  }
+
+  .owner-field-ticker-track {
+    position: relative;
+    flex: 1;
+    min-width: 0;
+    height: 30px;
+    overflow: hidden;
+  }
+
+  .owner-field-ticker-item {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity 0.55s cubic-bezier(0.4, 0, 0.2, 1), transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+  }
+
+  .owner-field-ticker-item.is-active {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .owner-field-ticker-item strong {
+    color: var(--owner-gold-hot);
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 24px;
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+  }
+
+  .owner-field-ticker-item span {
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 13px;
+    line-height: 1.4;
+  }
+
+  .owner-field-ticker-dots {
+    display: flex;
+    flex: 0 0 auto;
+    gap: 6px;
+  }
+
+  .owner-field-ticker-dot {
+    width: 6px;
+    height: 6px;
+    padding: 0;
+    border: 0;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.26);
+    cursor: pointer;
+    transition: width 0.35s ease, background 0.35s ease;
+  }
+
+  .owner-field-ticker-dot.is-active {
+    width: 22px;
+    background: var(--owner-gold-hot);
   }
 
   .owner-field-btn {
@@ -628,6 +781,71 @@ headExtra: |
     cursor: pointer;
   }
 
+  .owner-field-pin-preview {
+    position: absolute;
+    bottom: 38px;
+    left: 50%;
+    width: 168px;
+    overflow: hidden;
+    border-radius: 6px;
+    background: var(--white);
+    box-shadow: 0 16px 32px -8px rgba(0, 0, 0, 0.4);
+    color: var(--owner-ink);
+    opacity: 0;
+    pointer-events: none;
+    transform: translateX(-50%) translateY(8px);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+  }
+
+  .owner-field-pin:hover .owner-field-pin-preview,
+  .owner-field-pin:focus-visible .owner-field-pin-preview {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  .owner-field-pin.is-active .owner-field-pin-preview {
+    display: none;
+  }
+
+  .owner-field-pin-preview::after {
+    content: "";
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    width: 12px;
+    height: 12px;
+    background: var(--white);
+    transform: translateX(-50%) rotate(45deg);
+  }
+
+  .owner-field-pin-preview i {
+    display: block;
+    aspect-ratio: 16 / 10;
+    background-image: var(--preview);
+    background-position: center;
+    background-size: cover;
+  }
+
+  .owner-field-pin-preview b {
+    display: block;
+    padding: 8px 12px 0;
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.15;
+  }
+
+  .owner-field-pin-preview small {
+    display: block;
+    padding: 4px 12px 10px;
+    color: var(--stone-light);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    line-height: 1.3;
+    text-transform: uppercase;
+  }
+
   .owner-field-pin-dot {
     position: relative;
     width: 22px;
@@ -675,6 +893,38 @@ headExtra: |
     background: rgba(10, 26, 28, 0.74);
     color: var(--owner-gold-hot);
     font-size: 16px;
+  }
+
+  .owner-field-hq {
+    position: absolute;
+    left: 44%;
+    top: 40%;
+    color: var(--owner-gold-hot);
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+  }
+
+  .owner-field-hq::before {
+    content: "";
+    display: block;
+    width: 10px;
+    height: 10px;
+    margin: 0 auto 6px;
+    border-radius: 50%;
+    background: currentColor;
+    box-shadow: 0 0 0 3px rgba(245, 228, 176, 0.24), 0 0 0 6px rgba(245, 228, 176, 0.12);
+  }
+
+  .owner-field-hq span {
+    display: block;
+    color: currentColor;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.22em;
+    text-align: center;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+    text-transform: uppercase;
+    white-space: nowrap;
   }
 
   .owner-field-market-card {
@@ -1284,11 +1534,28 @@ headExtra: |
     to { opacity: 1; transform: translateY(0); }
   }
 
+  @keyframes owner-field-phrase-in {
+    0% { opacity: 0; transform: translateY(20px) skewY(-3deg); }
+    60% { opacity: 1; }
+    100% { opacity: 1; transform: translateY(0) skewY(0); }
+  }
+
+  @keyframes owner-field-pulse {
+    0%, 100% { box-shadow: 0 0 0 4px rgba(127, 219, 164, 0.28); }
+    50% { box-shadow: 0 0 0 7px rgba(127, 219, 164, 0.14); }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .owner-hero::before,
+    .owner-field-phrase em.is-active,
+    .owner-field-ticker-label::before,
     .owner-field-market-card,
     .owner-field-form-step {
       animation: none;
+    }
+
+    .owner-field-ticker-item {
+      transition: none;
     }
   }
 
@@ -1356,8 +1623,30 @@ headExtra: |
       padding-bottom: 54px;
     }
 
+    .owner-field-compass,
+    .owner-field-hero-note {
+      display: none;
+    }
+
     .owner-hero h1 {
       font-size: clamp(44px, 14vw, 62px);
+    }
+
+    .owner-field-ticker-inner {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .owner-field-ticker-track {
+      width: 100%;
+      height: 48px;
+    }
+
+    .owner-field-ticker-item {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 3px;
     }
 
     .owner-field-section,
@@ -1429,15 +1718,24 @@ headExtra: |
       <span>Bradenton · Sarasota Corridor</span>
       <span>Spring 2026 · Issue 04</span>
     </div>
+    <svg class="owner-field-compass" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+      <circle cx="32" cy="32" r="28" fill="none" stroke="currentColor" stroke-width="0.8"></circle>
+      <circle cx="32" cy="32" r="20" fill="none" stroke="currentColor" stroke-width="0.4"></circle>
+      <line x1="32" y1="0" x2="32" y2="64" stroke="currentColor" stroke-width="0.5"></line>
+      <line x1="0" y1="32" x2="64" y2="32" stroke="currentColor" stroke-width="0.3"></line>
+      <path d="M32 8 L36 32 L32 28 L28 32 Z" fill="currentColor"></path>
+      <text x="32" y="7" text-anchor="middle" font-size="6" font-family="Playfair Display" font-style="italic" fill="currentColor">N</text>
+    </svg>
     <div class="owner-field-shell owner-field-hero-grid">
       <div>
         <div class="owner-field-kicker">The Property Management Brief</div>
-        <h1 id="owner-field-title">What does<br>your<br><em>island rental</em><br> actually keep?</h1>
+        <h1 id="owner-field-title">What does your<br><span class="owner-field-phrase" data-owner-phrases aria-label="island rental"><em class="is-active">island rental</em><em>pool home</em><em>beach condo</em><em>Gulf Coast home</em></span><br>actually keep?</h1>
         <p class="owner-field-hero-copy">A dispatch from a five-home Gulf Coast portfolio: what we actually see in fees, channels, pricing, and execution. Send us your listing; we will send back a one-page teardown.</p>
         <div class="owner-field-actions">
           <a class="btn btn-gold owner-field-btn" href="#owner-cta" data-track-event="owner_primary_cta_click" data-page-slug="property-management">Request Your Revenue Teardown</a>
           <a class="owner-field-link" href="#economics">Read the issue</a>
         </div>
+        <div class="owner-field-hero-note">Reviewed by Seascape · Reply within 48 hours · No sales call</div>
       </div>
       <aside class="owner-field-issue-card" aria-label="Inside this issue">
         <div class="owner-field-issue-label">Inside this issue</div>
@@ -1462,6 +1760,27 @@ headExtra: |
           <span aria-hidden="true">&#8599;</span>
         </a>
       </aside>
+    </div>
+    <div class="owner-field-ticker" data-owner-ticker>
+      <div class="owner-field-shell owner-field-ticker-inner">
+        <span class="owner-field-ticker-label">Live · Portfolio</span>
+        <div class="owner-field-ticker-track">
+          <div class="owner-field-ticker-item is-active" data-ticker-item><strong>$1.4M</strong><span>annual rental revenue · 5 homes</span></div>
+          <div class="owner-field-ticker-item" data-ticker-item><strong>$119,923</strong><span>shifted off OTA commissions in 2025</span></div>
+          <div class="owner-field-ticker-item" data-ticker-item><strong>13.4% → 2.9%</strong><span>host fee · vs direct payment cost</span></div>
+          <div class="owner-field-ticker-item" data-ticker-item><strong>16.4%</strong><span>Bradenton Pool · March 2026</span></div>
+          <div class="owner-field-ticker-item" data-ticker-item><strong>200+</strong><span>teardowns delivered to owners</span></div>
+          <div class="owner-field-ticker-item" data-ticker-item><strong>48 hr</strong><span>turnaround on every teardown</span></div>
+        </div>
+        <div class="owner-field-ticker-dots" aria-label="Portfolio fact selector">
+          <button class="owner-field-ticker-dot is-active" type="button" data-ticker-dot="0" aria-label="Show portfolio fact 1"></button>
+          <button class="owner-field-ticker-dot" type="button" data-ticker-dot="1" aria-label="Show portfolio fact 2"></button>
+          <button class="owner-field-ticker-dot" type="button" data-ticker-dot="2" aria-label="Show portfolio fact 3"></button>
+          <button class="owner-field-ticker-dot" type="button" data-ticker-dot="3" aria-label="Show portfolio fact 4"></button>
+          <button class="owner-field-ticker-dot" type="button" data-ticker-dot="4" aria-label="Show portfolio fact 5"></button>
+          <button class="owner-field-ticker-dot" type="button" data-ticker-dot="5" aria-label="Show portfolio fact 6"></button>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -1511,7 +1830,7 @@ headExtra: |
     <div class="owner-field-shell">
       <div class="owner-field-rule">
         <h2>By Market</h2>
-        <span>Pages 6-7 · Section 2</span>
+        <span>7 markets mapped · Pages 6-7 · Section 2</span>
       </div>
       <div class="owner-field-market-grid" data-owner-market>
         <div class="owner-field-map" aria-label="Bradenton Sarasota corridor portfolio map">
@@ -1530,14 +1849,18 @@ headExtra: |
             <path d="M180 -10 L220 30 L240 80 L235 130 L250 180 L245 230 L270 280 L290 330 L310 400 L340 500 L400 500 L400 -10 Z" fill="#F5EED6" opacity="0.92"></path>
             <path d="M180 -10 L220 30 L240 80 L235 130 Q200 130 175 110 Q160 80 165 40 Z" fill="#1F3A3C" opacity="0.85"></path>
             <path d="M175 130 Q195 200 225 270 Q255 350 285 430" stroke="rgba(201,169,98,0.4)" stroke-width="1" stroke-dasharray="3 4" fill="none"></path>
+            <line data-market-line x1="176" y1="200" x2="200" y2="300" stroke="#F5E4B0" stroke-width="1.2" stroke-dasharray="4 5" opacity="0.72"></line>
             <text x="22" y="32" fill="rgba(245,228,176,0.6)" font-size="8" letter-spacing="0.3em" font-family="Poppins" font-weight="600">SEASCAPE PORTFOLIO MAP</text>
             <text x="22" y="46" fill="rgba(245,228,176,0.4)" font-size="9" font-family="Playfair Display" font-style="italic">Bradenton - Sarasota corridor</text>
           </svg>
-          <button class="owner-field-pin" type="button" data-market-button="ami" style="--x: 26%; --y: 30%;" aria-pressed="false"><span class="owner-field-pin-dot"></span><span>Anna Maria Island</span></button>
-          <button class="owner-field-pin is-active" type="button" data-market-button="bradenton" style="--x: 42%; --y: 38%;" aria-pressed="true"><span class="owner-field-pin-dot"></span><span>Bradenton</span></button>
-          <button class="owner-field-pin" type="button" data-market-button="longboat" style="--x: 30%; --y: 52%;" aria-pressed="false"><span class="owner-field-pin-dot"></span><span>Longboat Key</span></button>
-          <button class="owner-field-pin" type="button" data-market-button="sarasota" style="--x: 50%; --y: 58%;" aria-pressed="false"><span class="owner-field-pin-dot"></span><span>Sarasota</span></button>
-          <button class="owner-field-pin" type="button" data-market-button="siesta" style="--x: 38%; --y: 70%;" aria-pressed="false"><span class="owner-field-pin-dot"></span><span>Siesta Key</span></button>
+          <div class="owner-field-hq" aria-hidden="true"><span>Seascape HQ</span></div>
+          <button class="owner-field-pin" type="button" data-market-button="ami" data-map-x="104" data-map-y="140" style="--x: 26%; --y: 28%; --preview: url('/images/owner-field-ami-cottages.jpg');" aria-pressed="false"><span class="owner-field-pin-preview"><i></i><b>Anna Maria Island</b><small>ADR $348 · 71% occ</small></span><span class="owner-field-pin-dot"></span><span>Anna Maria Island</span></button>
+          <button class="owner-field-pin" type="button" data-market-button="holmes" data-map-x="112" data-map-y="180" style="--x: 28%; --y: 36%; --preview: url('/images/owner-field-longboat.jpg');" aria-pressed="false"><span class="owner-field-pin-preview"><i></i><b>Holmes Beach</b><small>ADR $342 · 69% occ</small></span><span class="owner-field-pin-dot"></span><span>Holmes Beach</span></button>
+          <button class="owner-field-pin" type="button" data-market-button="cortez" data-map-x="132" data-map-y="210" style="--x: 33%; --y: 42%; --preview: url('/images/owner-field-bradenton.jpg');" aria-pressed="false"><span class="owner-field-pin-preview"><i></i><b>Cortez</b><small>ADR $268 · 66% occ</small></span><span class="owner-field-pin-dot"></span><span>Cortez</span></button>
+          <button class="owner-field-pin" type="button" data-market-button="bradenton" data-map-x="176" data-map-y="200" style="--x: 44%; --y: 40%; --preview: url('/images/owner-field-bradenton.jpg');" aria-pressed="false"><span class="owner-field-pin-preview"><i></i><b>Bradenton</b><small>ADR $301 · 68% occ</small></span><span class="owner-field-pin-dot"></span><span>Bradenton</span></button>
+          <button class="owner-field-pin" type="button" data-market-button="longboat" data-map-x="120" data-map-y="280" style="--x: 30%; --y: 56%; --preview: url('/images/owner-field-longboat.jpg');" aria-pressed="false"><span class="owner-field-pin-preview"><i></i><b>Longboat Key</b><small>ADR $438 · 58% occ</small></span><span class="owner-field-pin-dot"></span><span>Longboat Key</span></button>
+          <button class="owner-field-pin is-active" type="button" data-market-button="sarasota" data-map-x="200" data-map-y="300" style="--x: 50%; --y: 60%; --preview: url('/images/owner-field-sarasota.jpg');" aria-pressed="true"><span class="owner-field-pin-preview"><i></i><b>Sarasota</b><small>ADR $412 · 64% occ</small></span><span class="owner-field-pin-dot"></span><span>Sarasota</span></button>
+          <button class="owner-field-pin" type="button" data-market-button="siesta" data-map-x="152" data-map-y="360" style="--x: 38%; --y: 72%; --preview: url('/images/owner-field-siesta-key.jpg');" aria-pressed="false"><span class="owner-field-pin-preview"><i></i><b>Siesta Key</b><small>ADR $385 · 70% occ</small></span><span class="owner-field-pin-dot"></span><span>Siesta Key</span></button>
         </div>
         <div>
           <article class="owner-field-market-card" data-market-panel="ami">
@@ -1545,7 +1868,17 @@ headExtra: |
             <p>Island homes prioritize rate protection, reliable channels, and local execution when occupancy alone is not enough to protect return.</p>
             <div class="owner-field-market-facts"><div><b>$348</b><span>ADR</span></div><div><b>71%</b><span>Occ.</span></div><div><b>24%</b><span>Direct</span></div></div>
           </article>
-          <article class="owner-field-market-card is-active" data-market-panel="bradenton">
+          <article class="owner-field-market-card" data-market-panel="holmes">
+            <div class="owner-field-market-photo" style="background-image: url('/images/owner-field-longboat.jpg');"><strong>Holmes Beach</strong></div>
+            <p>Quiet stretches of Holmes Beach pull repeat guests who want walkability, calm weeks, and local service instead of crowded beach traffic.</p>
+            <div class="owner-field-market-facts"><div><b>$342</b><span>ADR</span></div><div><b>69%</b><span>Occ.</span></div><div><b>21%</b><span>Direct</span></div></div>
+          </article>
+          <article class="owner-field-market-card" data-market-panel="cortez">
+            <div class="owner-field-market-photo" style="background-image: url('/images/owner-field-bradenton.jpg');"><strong>Cortez</strong></div>
+            <p>Cortez homes win on authenticity: fishing village texture, family demand, and a no-high-rise story that has to be priced clearly.</p>
+            <div class="owner-field-market-facts"><div><b>$268</b><span>ADR</span></div><div><b>66%</b><span>Occ.</span></div><div><b>17%</b><span>Direct</span></div></div>
+          </article>
+          <article class="owner-field-market-card" data-market-panel="bradenton">
             <div class="owner-field-market-photo" style="background-image: url('/images/owner-field-bradenton.jpg');"><strong>Bradenton</strong></div>
             <p>In Bradenton homes, pricing, pool value, and location positioning still decide the return.</p>
             <div class="owner-field-market-facts"><div><b>$301</b><span>ADR</span></div><div><b>68%</b><span>Occ.</span></div><div><b>18%</b><span>Direct</span></div></div>
@@ -1555,7 +1888,7 @@ headExtra: |
             <p>Longboat owners trade volume for rate. Channel quality and guest screening do more than discounting.</p>
             <div class="owner-field-market-facts"><div><b>$438</b><span>ADR</span></div><div><b>58%</b><span>Occ.</span></div><div><b>22%</b><span>Direct</span></div></div>
           </article>
-          <article class="owner-field-market-card" data-market-panel="sarasota">
+          <article class="owner-field-market-card is-active" data-market-panel="sarasota">
             <div class="owner-field-market-photo" style="background-image: url('/images/owner-field-sarasota.jpg');"><strong>Sarasota</strong></div>
             <p>Sarasota owners need presentation, guest quality, and rate discipline to stay tight.</p>
             <div class="owner-field-market-facts"><div><b>$412</b><span>ADR</span></div><div><b>64%</b><span>Occ.</span></div><div><b>21%</b><span>Direct</span></div></div>
@@ -1768,14 +2101,73 @@ headExtra: |
   (function () {
     var page = document.querySelector("[data-owner-field-page]");
     if (!page) return;
+    var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    var phraseRoot = page.querySelector("[data-owner-phrases]");
+    if (phraseRoot) {
+      var phrases = phraseRoot.querySelectorAll("em");
+      var phraseIndex = 0;
+      function showPhrase(nextIndex) {
+        phraseIndex = nextIndex % phrases.length;
+        phrases.forEach(function (phrase, index) {
+          phrase.classList.toggle("is-active", index === phraseIndex);
+        });
+        phraseRoot.setAttribute("aria-label", phrases[phraseIndex].textContent || "");
+      }
+      if (!reduceMotion && phrases.length > 1) {
+        window.setInterval(function () {
+          showPhrase(phraseIndex + 1);
+        }, 3200);
+      }
+    }
+
+    var ticker = page.querySelector("[data-owner-ticker]");
+    if (ticker) {
+      var tickerItems = ticker.querySelectorAll("[data-ticker-item]");
+      var tickerDots = ticker.querySelectorAll("[data-ticker-dot]");
+      var tickerIndex = 0;
+      function showTicker(nextIndex) {
+        tickerIndex = nextIndex % tickerItems.length;
+        tickerItems.forEach(function (item, index) {
+          item.classList.toggle("is-active", index === tickerIndex);
+        });
+        tickerDots.forEach(function (dot, index) {
+          dot.classList.toggle("is-active", index === tickerIndex);
+        });
+      }
+      tickerDots.forEach(function (dot) {
+        dot.addEventListener("click", function () {
+          showTicker(Number(dot.getAttribute("data-ticker-dot")));
+        });
+      });
+      if (!reduceMotion && tickerItems.length > 1) {
+        window.setInterval(function () {
+          showTicker(tickerIndex + 1);
+        }, 3800);
+      }
+    }
 
     page.querySelectorAll("[data-owner-market]").forEach(function (marketRoot) {
       var buttons = marketRoot.querySelectorAll("[data-market-button]");
       var panels = marketRoot.querySelectorAll("[data-market-panel]");
+      var line = marketRoot.querySelector("[data-market-line]");
+
+      function setMarketLine(button) {
+        if (!line) return;
+        var x = button.getAttribute("data-map-x");
+        var y = button.getAttribute("data-map-y");
+        if (!x || !y) return;
+        line.setAttribute("x2", x);
+        line.setAttribute("y2", y);
+      }
+
+      var activeButton = marketRoot.querySelector("[data-market-button].is-active");
+      if (activeButton) setMarketLine(activeButton);
 
       buttons.forEach(function (button) {
         button.addEventListener("click", function () {
           var id = button.getAttribute("data-market-button");
+          setMarketLine(button);
           buttons.forEach(function (candidate) {
             var active = candidate === button;
             candidate.classList.toggle("is-active", active);
