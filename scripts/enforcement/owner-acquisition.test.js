@@ -22,6 +22,7 @@ const siteHeaderStyles = fs.readFileSync(
 );
 const ownerData = require(path.join(projectRoot, "src", "_data", "seoPages.json")).owner;
 const ownerProofAssets = require(path.join(projectRoot, "src", "_data", "ownerProofAssets.json"));
+const ownerOperatorProofAssets = require(path.join(projectRoot, "src", "_data", "ownerOperatorProofAssets.json"));
 const ownerFormPath = path.join(projectRoot, "src", "_includes", "partials", "owner-evaluation-form.njk");
 
 test("owner landing page uses a real owner revenue teardown form instead of generic evaluation copy", () => {
@@ -170,6 +171,47 @@ test("owner benchmark page stays in the fee-and-revenue lane and keeps visible p
   assert.equal(ownerBenchmark.includes("passive income"), false);
   assert.equal(ownerBenchmark.includes("sit back while we manage"), false);
   assert.equal(ownerBenchmark.includes("full service"), false);
+});
+
+test("owner operator proof pack uses approved redacted modules and preserves teardown attribution", () => {
+  const proofPack = fs.readFileSync(
+    path.join(projectRoot, "src", "research", "how-seascape-protects-owner-net-2026.njk"),
+    "utf8"
+  );
+
+  assert.equal(ownerOperatorProofAssets.proofPackUrl, "/research/how-seascape-protects-owner-net-2026/");
+  assert.equal(ownerOperatorProofAssets.modules.length >= 3, true, "proof pack needs at least three reusable modules");
+  assert.equal(
+    ownerOperatorProofAssets.modules.every((module) => module.evidencePath.includes("seascape-hub/")),
+    true,
+    "proof modules should keep Hub evidence paths visible"
+  );
+  assert.equal(proofPack.includes("How Seascape protects what an owner actually keeps."), true);
+  assert.equal(proofPack.includes("/research/owner-fee-revenue-leak-benchmark-2026/"), true);
+  assert.equal(proofPack.includes("/property-management/?owner_source=how-seascape-protects-owner-net-2026#owner-cta"), true);
+  assert.equal(proofPack.includes('sourcePageSlug: "how-seascape-protects-owner-net-2026"'), true);
+  assert.equal(proofPack.includes('formPlacement: "operator-proof-pack-teardown"'), true);
+  assert.equal(
+    ownerOperatorProofAssets.demandBoundary.includes("Current benchmark-path receipts prove measurement wiring only"),
+    true
+  );
+  assert.equal(proofPack.includes("we always outperform"), false);
+  assert.equal(proofPack.includes("passive income"), false);
+  assert.equal(proofPack.includes("full service"), false);
+});
+
+test("owner hub and benchmark feed the operator proof pack without changing the teardown CTA path", () => {
+  const ownerBenchmark = fs.readFileSync(
+    path.join(projectRoot, "src", "research", "owner-fee-revenue-leak-benchmark-2026.njk"),
+    "utf8"
+  );
+
+  assert.equal(ownerLanding.includes("/research/how-seascape-protects-owner-net-2026/"), true);
+  assert.equal(ownerLanding.includes("How Seascape Protects Owner Revenue"), true);
+  assert.equal(ownerBenchmark.includes("/research/how-seascape-protects-owner-net-2026/"), true);
+  assert.equal(ownerBenchmark.includes("The benchmark shows the math. The proof pack shows the operation."), true);
+  assert.equal(ownerLanding.includes("Request Your Revenue Teardown"), true);
+  assert.equal(ownerBenchmark.includes("Request Your Revenue Teardown"), true);
 });
 
 test("owner pages keep phone as a lower-trust fallback instead of a competing hero CTA", () => {
