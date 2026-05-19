@@ -25,6 +25,7 @@ const MIME_TYPES = {
 
 function parseArgs(argv) {
   const options = {
+    host: "127.0.0.1",
     port: 4173,
     root: "_site",
   };
@@ -33,6 +34,12 @@ function parseArgs(argv) {
     const value = argv[index];
     if (value === "--port") {
       options.port = Number(argv[index + 1]) || options.port;
+      index += 1;
+      continue;
+    }
+
+    if (value === "--host") {
+      options.host = argv[index + 1] || options.host;
       index += 1;
       continue;
     }
@@ -79,41 +86,169 @@ function resolveFile(root, pathname) {
   return null;
 }
 
-const options = parseArgs(process.argv.slice(2));
-const root = path.resolve(process.cwd(), options.root);
-
-if (!fs.existsSync(root)) {
-  console.error(`Static root does not exist: ${root}`);
-  process.exit(1);
-}
-
-const server = http.createServer((request, response) => {
-  const requestUrl = new URL(request.url || "/", "http://127.0.0.1");
-  const pathname = decodeURIComponent(requestUrl.pathname);
-  const filePath = resolveFile(root, pathname);
-
-  if (!filePath) {
-    response.writeHead(404, { "content-type": "text/plain; charset=utf-8" });
-    response.end("Not found");
-    return;
+function validateRoot(root) {
+  if (!fs.existsSync(root)) {
+    throw new Error(`Static root does not exist: ${root}`);
   }
 
-  const extension = path.extname(filePath).toLowerCase();
-  const contentType = MIME_TYPES[extension] || "application/octet-stream";
-  const stream = fs.createReadStream(filePath);
+  return root;
+}
 
-  response.writeHead(200, {
-    "cache-control": "no-store",
-    "content-type": contentType,
+function createRequestHandler(root) {
+  return (request, response) => {
+    const requestUrl = new URL(request.url || "/", "http://127.0.0.1");
+    const pathname = decodeURIComponent(requestUrl.pathname);
+
+    if (pathname === "/__health") {
+      response.writeHead(200, {
+        "cache-control": "no-store",
+        "content-type": "application/json; charset=utf-8",
+      });
+      response.end(JSON.stringify({ ok: true, root }));
+      return;
+    }
+
+    const filePath = resolveFile(root, pathname);
+
+    if (!filePath) {
+      response.writeHead(404, { "content-type": "text/plain; charset=utf-8" });
+      response.end("Not found");
+      return;
+    }
+
+    const extension = path.extname(filePath).toLowerCase();
+    const contentType = MIME_TYPES[extension] || "application/octet-stream";
+    const stream = fs.createReadStream(filePath);
+
+    response.writeHead(200, {
+      "cache-control": "no-store",
+      "content-type": contentType,
+    });
+
+    stream.on("error", () => {
+      if (response.headersSent) {
+        response.destroy();
+        return;
+      }
+
+      response.writeHead(500, { "content-type": "text/plain; charset=utf-8" });
+      response.end("Failed to read file");
+    });
+
+    stream.pipe(response);
+  };
+}
+
+function startStaticServer(options = {}) {
+  const host = options.host || "127.0.0.1";
+  const port = Number.isInteger(options.port) ? options.port : Number(options.port) || 4173;
+  const root = validateRoot(path.resolve(process.cwd(), options.root || "_site"));
+  const server = http.createServer(createRequestHandler(root));
+
+  server.keepAliveTimeout = 5_000;
+  server.headersTimeout = 6_000;
+  server.on("clientError", (_error, socket) => {
+    if (socket.writable) {
+      socket.end("HTTP/1.1 400 Bad Request\r\n\r\n");
+      return;
+    }
+
+    socket.destroy();
   });
 
-  stream.pipe(response);
-  stream.on("error", () => {
-    response.writeHead(500, { "content-type": "text/plain; charset=utf-8" });
-    response.end("Failed to read file");
-  });
-});
+  return new Promise((resolve, reject) => {
+    const handleError = (error) => {
+      reject(error);
+    };
 
-server.listen(options.port, "127.0.0.1", () => {
-  console.log(`Serving ${root} at http://127.0.0.1:${options.port}`);
-});
+    server.once("error", handleError);
+    server.listen(port, host, () => {
+      server.off("error", handleError);
+
+      const address = server.address();
+      const actualPort = typeof address === "object" && address ? address.port : port;
+      resolve({
+        host,
+        port: actualPort,
+        root,
+        server,
+        url: `http://${host}:${actualPort}`,
+      });
+    });
+  });
+}
+
+function closeServer(server) {
+  return new Promise((resolve, reject) => {
+    server.close((error) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+
+      resolve();
+    });
+  });
+}
+
+async function main() {
+  let closing = false;
+  let started;
+
+  const shutdown = async (exitCode, reason) => {
+    if (closing) {
+      return;
+    }
+
+    closing = true;
+
+    if (reason) {
+      console.log(`Stopping static server after ${reason}`);
+    }
+
+    if (started) {
+      await closeServer(started.server).catch(() => {});
+    }
+
+    process.exit(exitCode);
+  };
+
+  process.once("SIGINT", () => {
+    void shutdown(0, "SIGINT");
+  });
+  process.once("SIGTERM", () => {
+    void shutdown(0, "SIGTERM");
+  });
+  process.once("uncaughtException", (error) => {
+    console.error(error);
+    void shutdown(1, "uncaughtException");
+  });
+  process.once("unhandledRejection", (error) => {
+    console.error(error);
+    void shutdown(1, "unhandledRejection");
+  });
+
+  try {
+    const options = parseArgs(process.argv.slice(2));
+    started = await startStaticServer(options);
+    started.server.on("error", (error) => {
+      console.error(`Static server error: ${error.message}`);
+    });
+    console.log(`Serving ${started.root} at ${started.url}`);
+  } catch (error) {
+    console.error(error instanceof Error ? error.message : error);
+    process.exit(1);
+  }
+}
+
+if (require.main === module) {
+  void main();
+}
+
+module.exports = {
+  closeServer,
+  parseArgs,
+  resolveFile,
+  safeJoin,
+  startStaticServer,
+};
