@@ -2,10 +2,10 @@
 
 ## Content Gate Inputs
 
-- persona: premium Gulf Coast vacation-rental owner comparing management fee, channel mix, and owner-net outcomes before a switch conversation
+- persona: premium Gulf Coast vacation-rental owner comparing management fee, booking channels, and take-home results before a switch conversation
 - primary keyword: vacation rental management fees Florida
-- secondary keywords: owner revenue teardown, direct booking revenue, Airbnb host fee drag, vacation rental owner net
-- audience pattern: skeptical owner who has seen fee quotes but needs proof that the full leak stack matters more than headline percentage alone
+- secondary keywords: owner revenue teardown, direct booking revenue, Airbnb host fees, vacation rental owner income
+- audience pattern: skeptical owner who has seen fee quotes but needs proof that pricing, booking channels, and operating costs matter more than headline percentage alone
 - proof source: Seascape five-home benchmark sample, observed Airbnb host-fee drag, direct-payment cost reference, and labeled scenario math
 - required internal links: /property-management/, /property-management/vacation-rental-management-fees-florida/, /property-management/maximize-vacation-rental-income-florida/
 - CTA target: /property-management/?owner_source=owner-fee-revenue-leak-benchmark-2026#owner-cta
@@ -26,9 +26,9 @@ Create a standalone owner-acquisition research asset:
 This is the source-backed citation page for:
 
 - management fee comparisons
-- OTA host-fee drag
-- direct-booking leakage
-- owner net-income risk
+- marketplace booking costs
+- direct-booking savings
+- take-home income risk
 
 This site brief now defers to the merged Hub execution package for exact
 section copy, proof labels, chart captions, CTA wording, and the Figma-ready
@@ -37,7 +37,7 @@ site page or Figma frame.
 
 ## Exact Public Argument
 
-`The management percentage is only one part of owner net. The real comparison is the full leak stack: management fee, OTA drag, direct mix, pricing discipline, and operating clarity.`
+`Your management fee is only part of the picture. What really matters is how pricing, booking channels, and operating costs affect what you actually keep.`
 
 ## Required Hero Copy
 
@@ -47,11 +47,11 @@ Eyebrow:
 
 H1:
 
-`Your management fee is not the whole revenue leak.`
+`Your management fee is only part of the picture.`
 
 Subhead:
 
-`Most owners compare 15%, 20%, and 25% management fees. That misses the bigger stack: OTA drag, direct-booking mix, pricing discipline, and how clearly your manager explains what is happening to owner net.`
+`What really matters is how pricing, booking channels, and operating costs affect what you actually keep.`
 
 CTA:
 
