@@ -1014,43 +1014,104 @@ headExtra: |
   }
 
   .owner-field-directory {
-    margin-top: 56px;
-    padding-top: 34px;
-    border-top: 1px solid rgba(45, 70, 71, 0.16);
+    margin-top: 76px;
+    padding: 40px 0 0;
+    border-top: 2px solid var(--owner-ink);
   }
 
   .owner-field-directory h2 {
-    margin: 0 0 22px;
+    margin: 0;
     color: var(--owner-ink);
     font-family: "Playfair Display", Georgia, serif;
-    font-size: 30px;
+    font-size: clamp(30px, 3vw, 42px);
     font-style: italic;
     font-weight: 400;
     letter-spacing: -0.015em;
   }
 
+  .owner-field-directory-head {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 42px;
+  }
+
+  .owner-field-directory-head span {
+    color: var(--stone-light);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+  }
+
   .owner-field-directory-grid {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 12px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 72px;
+  }
+
+  .owner-field-directory-group-label {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 12px;
+    color: var(--owner-ink);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  .owner-field-directory-group-label::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: rgba(201, 169, 98, 0.42);
+  }
+
+  .owner-field-directory-list {
+    display: grid;
+    gap: 0;
   }
 
   .owner-field-directory-grid a {
-    min-height: 64px;
-    padding: 16px;
-    border: 1px solid rgba(201, 169, 98, 0.22);
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.62);
+    display: grid;
+    grid-template-columns: 40px minmax(0, 1fr) 22px;
+    gap: 16px;
+    align-items: baseline;
+    padding: 18px 0;
+    border-bottom: 1px solid rgba(45, 70, 71, 0.1);
     color: var(--owner-ink);
-    font-size: 13px;
-    font-weight: 700;
-    line-height: 1.35;
+    transition: color 0.2s ease, padding-left 0.2s ease;
+  }
+
+  .owner-field-directory-grid a span:first-child {
+    color: var(--gold);
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 14px;
+    font-style: italic;
+  }
+
+  .owner-field-directory-grid a strong {
+    color: var(--owner-ink);
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 18px;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    line-height: 1.25;
+  }
+
+  .owner-field-directory-grid a span:last-child {
+    color: var(--gold);
+    font-size: 18px;
+    text-align: right;
   }
 
   .owner-field-directory-grid a:hover,
   .owner-field-directory-grid a:focus-visible {
-    border-color: rgba(201, 169, 98, 0.56);
-    background: var(--white);
+    padding-left: 8px;
+    color: var(--gold-dark);
   }
 
   .owner-field-guide {
@@ -1241,6 +1302,17 @@ headExtra: |
       grid-template-columns: 1fr;
     }
 
+    .owner-field-directory-grid {
+      grid-template-columns: 1fr;
+      gap: 52px;
+    }
+
+    .owner-field-directory-grid a {
+      grid-template-columns: 40px minmax(0, 1fr) 18px;
+      gap: 16px;
+      padding: 17px 0;
+    }
+
     .owner-field-stat--large {
       min-height: auto;
     }
@@ -1283,8 +1355,15 @@ headExtra: |
       font-size: 28px;
     }
 
-    .owner-field-directory-grid {
-      grid-template-columns: 1fr;
+    .owner-field-directory-head {
+      display: grid;
+      gap: 14px;
+      margin-bottom: 34px;
+    }
+
+    .owner-field-directory-head span {
+      justify-self: end;
+      letter-spacing: 0.26em;
     }
 
     .owner-field-market-facts,
@@ -1517,7 +1596,7 @@ headExtra: |
           <p>A listing URL, an address, or the property name. If you would rather just describe it, that is fine too.</p>
           <input class="owner-field-input" type="text" name="property_address" autocomplete="street-address" placeholder="airbnb.com/h/your-listing · or · 4250 Palm Ave, Bradenton" required>
           <div class="owner-field-form-actions">
-            <button class="owner-field-btn btn-gold" type="button" data-form-next>Continue <span aria-hidden="true">-></span></button>
+            <button class="owner-field-btn btn-gold" type="button" data-form-next>Continue <span aria-hidden="true">→</span></button>
             <button class="owner-field-muted-button" type="button" data-form-next>Skip, I would rather describe it</button>
           </div>
         </div>
@@ -1534,7 +1613,7 @@ headExtra: |
             <button class="owner-field-choice" type="button" data-concern="Just curious">Just curious</button>
           </div>
           <div class="owner-field-form-actions">
-            <button class="owner-field-btn btn-gold" type="button" data-form-next>Continue <span aria-hidden="true">-></span></button>
+            <button class="owner-field-btn btn-gold" type="button" data-form-next>Continue <span aria-hidden="true">→</span></button>
             <button class="owner-field-muted-button" type="button" data-form-back>Back</button>
           </div>
         </div>
@@ -1544,7 +1623,7 @@ headExtra: |
           <p>Current manager, rough fee quote, self-management pain, calendar gaps, or the moment that made you start looking.</p>
           <textarea class="owner-field-textarea" name="what_feels_off" rows="4" placeholder="Example: too Airbnb-heavy, weak reporting, discounting, maintenance misses, or review-quality drift"></textarea>
           <div class="owner-field-form-actions">
-            <button class="owner-field-btn btn-gold" type="button" data-form-next>Continue <span aria-hidden="true">-></span></button>
+            <button class="owner-field-btn btn-gold" type="button" data-form-next>Continue <span aria-hidden="true">→</span></button>
             <button class="owner-field-muted-button" type="button" data-form-back>Back</button>
           </div>
         </div>
@@ -1583,47 +1662,60 @@ headExtra: |
       <div class="owner-field-guides">
         <a class="owner-field-guide" href="/property-management/maximize-vacation-rental-income-florida/">
           <div class="owner-field-guide-photo" style="background-image: url('/images/owner-field-bradenton.jpg');"><span>Revenue</span></div>
-          <div class="owner-field-guide-body"><h3>What Cuts Into Owner Income</h3><p>Start here for a clearer read on fees, OTA mix, and operating issues before a property-specific teardown.</p><b>Read guide <span aria-hidden="true">-></span></b></div>
+          <div class="owner-field-guide-body"><h3>What Cuts Into Owner Income</h3><p>Start here for a clearer read on fees, OTA mix, and operating issues before a property-specific teardown.</p><b>Read guide <span aria-hidden="true">→</span></b></div>
         </a>
         <a class="owner-field-guide" href="/research/owner-fee-revenue-leak-benchmark-2026/">
           <div class="owner-field-guide-photo" style="background-image: url('/images/owner-field-sarasota.jpg');"><span>Benchmark</span></div>
-          <div class="owner-field-guide-body"><h3>Owner Fee + Revenue Gap Benchmark</h3><p>The source-backed math behind management fees, marketplace booking costs, and direct-booking savings.</p><b>Read benchmark <span aria-hidden="true">-></span></b></div>
+          <div class="owner-field-guide-body"><h3>Owner Fee + Revenue Gap Benchmark</h3><p>The source-backed math behind management fees, marketplace booking costs, and direct-booking savings.</p><b>Read benchmark <span aria-hidden="true">→</span></b></div>
         </a>
         <a class="owner-field-guide" href="/property-management/switch-vacation-rental-management-company/">
           <div class="owner-field-guide-photo" style="background-image: url('/images/owner-field-ami-cottages.jpg');"><span>Switching</span></div>
-          <div class="owner-field-guide-body"><h3>How To Switch Without Wrecking Momentum</h3><p>Use this if the current setup may be fixable, or if it is time to change managers cleanly.</p><b>Read switch guide <span aria-hidden="true">-></span></b></div>
+          <div class="owner-field-guide-body"><h3>How To Switch Without Wrecking Momentum</h3><p>Use this if the current setup may be fixable, or if it is time to change managers cleanly.</p><b>Read switch guide <span aria-hidden="true">→</span></b></div>
         </a>
         <a class="owner-field-guide" href="/property-management/vacation-rental-cleaning-services-florida/">
           <div class="owner-field-guide-photo" style="background-image: url('/images/owner-field-anna-maria.jpg');"><span>Turnover</span></div>
-          <div class="owner-field-guide-body"><h3>Cleaning Services That Protect Reviews</h3><p>For bad turns, inspection misses, and housekeeping control issues that cost repeat bookings.</p><b>Read cleaning guide <span aria-hidden="true">-></span></b></div>
+          <div class="owner-field-guide-body"><h3>Cleaning Services That Protect Reviews</h3><p>For bad turns, inspection misses, and housekeeping control issues that cost repeat bookings.</p><b>Read cleaning guide <span aria-hidden="true">→</span></b></div>
         </a>
         <a class="owner-field-guide" href="/property-management/vacation-rental-guest-screening/">
           <div class="owner-field-guide-photo" style="background-image: url('/images/owner-field-siesta-key.jpg');"><span>Risk</span></div>
-          <div class="owner-field-guide-body"><h3>Guest Screening Standards</h3><p>Open this page if your real concern is property damage, neighbor friction, or low-quality bookings.</p><b>Read screening guide <span aria-hidden="true">-></span></b></div>
+          <div class="owner-field-guide-body"><h3>Guest Screening Standards</h3><p>Open this page if your real concern is property damage, neighbor friction, or low-quality bookings.</p><b>Read screening guide <span aria-hidden="true">→</span></b></div>
         </a>
         <a class="owner-field-guide" href="/property-management/buy-vacation-rental-property-florida/">
           <div class="owner-field-guide-photo" style="background-image: url('/images/owner-field-longboat.jpg');"><span>Buying</span></div>
-          <div class="owner-field-guide-body"><h3>Buy the Right Vacation Rental Property</h3><p>Use this before you buy another home because a listing agent called it a short-term rental opportunity.</p><b>Read acquisition guide <span aria-hidden="true">-></span></b></div>
+          <div class="owner-field-guide-body"><h3>Buy the Right Vacation Rental Property</h3><p>Use this before you buy another home because a listing agent called it a short-term rental opportunity.</p><b>Read acquisition guide <span aria-hidden="true">→</span></b></div>
         </a>
       </div>
       <div class="owner-field-directory">
-        <h2>Specific Situations</h2>
+        <div class="owner-field-directory-head">
+          <h2>Specific Situations</h2>
+          <span>Index · Section 5</span>
+        </div>
         <div class="owner-field-directory-grid">
-          <a href="/property-management/new-vacation-rental-owner-guide-florida/">New vacation rental owner guide</a>
-          <a href="/property-management/increase-vacation-rental-bookings/">Increase vacation rental bookings</a>
-          <a href="/property-management/vacation-rental-cleaning-services-florida/">Cleaning services</a>
-          <a href="/property-management/vacation-rental-guest-screening/">Guest screening</a>
-          <a href="/property-management/vacation-rental-insurance-florida/">Insurance questions</a>
-          <a href="/property-management/vacation-rental-taxes-florida/">Vacation rental taxes</a>
-          <a href="/property-management/buy-vacation-rental-property-florida/">Buy a rental property</a>
-          <a href="/property-management/sell-vacation-rental-property-florida/">Sell a rental property</a>
-          <a href="/property-management/switch-from-airbnb-self-manage/">Switch from self-management</a>
-          <a href="/property-management/vacation-rental-interior-design-florida/">Interior design</a>
-          <a href="/property-management/vacation-rental-licensing-florida/">Licensing</a>
-          <a href="/property-management/vacation-rental-maintenance-florida/">Maintenance</a>
-          <a href="/property-management/vacation-rental-management-siesta-key/">Siesta Key management</a>
-          <a href="/property-management/vacation-rental-photography-florida/">Photography</a>
-          <a href="/property-management/vrbo-management-services-florida/">VRBO management services</a>
+          <div>
+            <div class="owner-field-directory-group-label">Operations</div>
+            <div class="owner-field-directory-list">
+              <a href="/property-management/new-vacation-rental-owner-guide-florida/"><span>01</span><strong>New vacation rental owner guide</strong><span aria-hidden="true">→</span></a>
+              <a href="/property-management/increase-vacation-rental-bookings/"><span>02</span><strong>Increase vacation rental bookings</strong><span aria-hidden="true">→</span></a>
+              <a href="/property-management/vacation-rental-cleaning-services-florida/"><span>03</span><strong>Cleaning services that protect reviews</strong><span aria-hidden="true">→</span></a>
+              <a href="/property-management/vacation-rental-guest-screening/"><span>04</span><strong>Guest screening standards</strong><span aria-hidden="true">→</span></a>
+              <a href="/property-management/vacation-rental-insurance-florida/"><span>05</span><strong>Florida vacation rental insurance</strong><span aria-hidden="true">→</span></a>
+              <a href="/property-management/vacation-rental-taxes-florida/"><span>06</span><strong>Florida vacation rental taxes</strong><span aria-hidden="true">→</span></a>
+              <a href="/property-management/buy-vacation-rental-property-florida/"><span>07</span><strong>Buy the right vacation rental property</strong><span aria-hidden="true">→</span></a>
+            </div>
+          </div>
+          <div>
+            <div class="owner-field-directory-group-label">Situation Desk</div>
+            <div class="owner-field-directory-list">
+              <a href="/property-management/sell-vacation-rental-property-florida/"><span>08</span><strong>Sell a vacation rental in Florida</strong><span aria-hidden="true">→</span></a>
+              <a href="/property-management/switch-from-airbnb-self-manage/"><span>09</span><strong>Switch from Airbnb self-management</strong><span aria-hidden="true">→</span></a>
+              <a href="/property-management/vacation-rental-interior-design-florida/"><span>10</span><strong>Interior design for vacation rentals</strong><span aria-hidden="true">→</span></a>
+              <a href="/property-management/vacation-rental-licensing-florida/"><span>11</span><strong>Florida licensing requirements</strong><span aria-hidden="true">→</span></a>
+              <a href="/property-management/vacation-rental-maintenance-florida/"><span>12</span><strong>Maintenance that preserves revenue</strong><span aria-hidden="true">→</span></a>
+              <a href="/property-management/vacation-rental-management-siesta-key/"><span>13</span><strong>Siesta Key management</strong><span aria-hidden="true">→</span></a>
+              <a href="/property-management/vacation-rental-photography-florida/"><span>14</span><strong>Vacation rental photography</strong><span aria-hidden="true">→</span></a>
+              <a href="/property-management/vrbo-management-services-florida/"><span>15</span><strong>VRBO management services</strong><span aria-hidden="true">→</span></a>
+            </div>
+          </div>
         </div>
       </div>
     </div>
