@@ -5,7 +5,7 @@ pageTitle: "Vacation Rental Property Management | Seascape Vacations"
 pageDescription: "Premium local vacation rental property management for owners in Bradenton, Sarasota, Anna Maria Island, Siesta Key, and Longboat Key."
 pageAuthor: "Seascape Vacations Team"
 pageImage: "https://seascape-vacations.com/images/seascape-og-default.jpg"
-pageUpdated: "2026-03-19T09:00:00-04:00"
+pageUpdated: "2026-05-19T15:45:00-04:00"
 navActive: "owners"
 ownerNavOnly: true
 navButtonHref: "#owner-cta"
@@ -40,7 +40,7 @@ headExtra: |
     "name": "Vacation Rental Property Management | Seascape Vacations",
     "url": "https://seascape-vacations.com/property-management/",
     "description": "Owner-facing property management page for local service coverage, revenue strategy, guest standards, and evaluation requests.",
-    "dateModified": "2026-03-19T09:00:00-04:00",
+    "dateModified": "2026-05-19T15:45:00-04:00",
     "author": {
       "@type": "Organization",
       "name": "Seascape Vacations Team"
@@ -62,645 +62,1568 @@ headExtra: |
     ]
   }
   </script>
-  <style>
-    .owner-hero {
-      position: relative;
-      overflow: hidden;
-      background:
-        linear-gradient(135deg, rgba(26, 58, 60, 0.92) 0%, rgba(61, 92, 93, 0.82) 45%, rgba(26, 58, 60, 0.9) 100%),
-        url("/images/sarasota-sunset-hero.jpg") center/cover;
-      color: white;
+---
+<style>
+  .nav {
+    background: linear-gradient(180deg, rgba(10, 26, 28, 0.58), rgba(10, 26, 28, 0));
+    border-bottom: 0;
+    box-shadow: none;
+  }
+
+  .main-content {
+    padding-top: 0;
+  }
+
+  .nav.scrolled {
+    background: rgba(245, 238, 214, 0.98);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  }
+
+  .nav:not(.scrolled) .nav-logo-text,
+  .nav:not(.scrolled) .nav-owner-cta {
+    color: var(--white);
+  }
+
+  .nav:not(.scrolled) .nav-logo-sub {
+    color: rgba(255, 255, 255, 0.72);
+  }
+
+  .owner-field {
+    --owner-deep: #0A1A1C;
+    --owner-ink: var(--brand-darker);
+    --owner-gold-hot: #F5E4B0;
+    background: var(--cream);
+    color: var(--stone);
+    overflow: hidden;
+  }
+
+  .breadcrumbs {
+    display: none;
+  }
+
+  .owner-field a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .owner-field-shell {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-inline: 48px;
+  }
+
+  .owner-hero {
+    position: relative;
+    min-height: 720px;
+    display: flex;
+    align-items: flex-end;
+    padding: 0;
+    background: var(--owner-deep);
+    color: var(--white);
+    overflow: hidden;
+  }
+
+  .owner-hero::before,
+  .owner-hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .owner-hero::before {
+    background: url("/images/owner-field-sarasota-sunset.jpg") center/cover;
+    transform: scale(1.02);
+    animation: owner-field-kenburns 40s ease-in-out infinite alternate;
+  }
+
+  .owner-hero::after {
+    background:
+      radial-gradient(ellipse at 30% 20%, rgba(255, 200, 130, 0.12), transparent 55%),
+      linear-gradient(180deg, rgba(10, 26, 28, 0.56) 0%, rgba(10, 26, 28, 0.18) 36%, rgba(10, 26, 28, 0.3) 66%, rgba(10, 26, 28, 0.88) 100%);
+  }
+
+  .owner-field-masthead {
+    position: absolute;
+    z-index: 1;
+    top: 128px;
+    left: 50%;
+    width: min(1200px, calc(100% - 96px));
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: space-between;
+    gap: 24px;
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.28em;
+    line-height: 1.4;
+    text-transform: uppercase;
+  }
+
+  .owner-field-masthead span:nth-child(2) {
+    color: var(--owner-gold-hot);
+  }
+
+  .owner-field-hero-grid {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: minmax(0, 1.55fr) minmax(300px, 0.95fr);
+    gap: 60px;
+    align-items: end;
+    width: 100%;
+    padding-top: 188px;
+    padding-bottom: 44px;
+  }
+
+  .owner-field-kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 28px;
+    color: var(--owner-gold-hot);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+  }
+
+  .owner-field-kicker::before {
+    content: "";
+    width: 36px;
+    height: 1px;
+    background: var(--gold);
+  }
+
+  .owner-hero h1 {
+    max-width: 720px;
+    margin: 0 0 34px;
+    color: var(--white);
+    font-size: clamp(48px, 6.2vw, 84px);
+    font-weight: 400;
+    letter-spacing: -0.018em;
+    line-height: 0.98;
+    text-shadow: 0 2px 30px rgba(0, 0, 0, 0.4);
+  }
+
+  .owner-hero h1 em {
+    color: var(--owner-gold-hot);
+    font-style: italic;
+  }
+
+  .owner-field-display em {
+    color: var(--gold);
+    font-style: italic;
+  }
+
+  .owner-field-hero-copy {
+    max-width: 545px;
+    margin: 0 0 28px;
+    color: rgba(255, 255, 255, 0.92);
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 1.7;
+  }
+
+  .owner-field-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 18px;
+  }
+
+  .owner-field-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-height: 54px;
+    padding: 15px 30px;
+    border: 0;
+    border-radius: var(--r-chip, 50px);
+    background: linear-gradient(135deg, var(--gold-light), var(--gold) 45%, #B8943A);
+    color: #2A2014;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    line-height: 1.2;
+    box-shadow: 0 12px 34px rgba(201, 169, 98, 0.28);
+    cursor: pointer;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
+  }
+
+  .owner-field-btn:hover,
+  .owner-field-btn:focus-visible {
+    transform: translateY(-2px);
+    box-shadow: 0 18px 42px rgba(201, 169, 98, 0.34);
+  }
+
+  .owner-field-link {
+    color: var(--white);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+    padding-bottom: 4px;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+
+  .owner-field-issue-card {
+    padding: 32px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--white);
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+  }
+
+  .owner-field-issue-label,
+  .owner-field-label {
+    color: var(--gold);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+  }
+
+  .owner-field-issue-label {
+    color: var(--owner-gold-hot);
+    margin-bottom: 18px;
+  }
+
+  .owner-field-issue-link {
+    display: grid;
+    grid-template-columns: 40px 1fr 20px;
+    gap: 14px;
+    align-items: baseline;
+    padding: 13px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .owner-field-issue-link span:first-child {
+    color: var(--owner-gold-hot);
+    font-family: "Playfair Display", Georgia, serif;
+    font-style: italic;
+  }
+
+  .owner-field-issue-link strong {
+    display: block;
+    color: var(--white);
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 16px;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+  }
+
+  .owner-field-issue-link small {
+    display: block;
+    margin-top: 3px;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 11px;
+    line-height: 1.45;
+  }
+
+  .owner-field-section {
+    padding: 120px 0;
+    background: var(--cream);
+  }
+
+  .owner-field-section--light {
+    background: var(--cream-light);
+  }
+
+  .owner-field-section--form {
+    position: relative;
+    padding: 140px 0 150px;
+    background: var(--cream);
+    overflow: hidden;
+  }
+
+  .owner-field-section--form::before,
+  .owner-field-section--form::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+  }
+
+  .owner-field-section--form::before {
+    background: url("/images/owner-field-ami-family.jpg") center/cover;
+    opacity: 0.85;
+  }
+
+  .owner-field-section--form::after {
+    background: linear-gradient(180deg, rgba(245, 238, 214, 0.9) 0%, rgba(245, 238, 214, 0.96) 42%, var(--cream) 100%);
+  }
+
+  .owner-field-section--form > .owner-field-shell {
+    position: relative;
+    z-index: 1;
+  }
+
+  .owner-field-rule {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 56px;
+    padding-bottom: 18px;
+    border-bottom: 2px solid var(--owner-ink);
+  }
+
+  .owner-field-rule h2 {
+    color: var(--owner-ink);
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 32px;
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: -0.015em;
+    line-height: 1.1;
+    margin: 0;
+  }
+
+  .owner-field-rule span {
+    color: var(--stone-light);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+  }
+
+  .owner-field-benchmark-intro,
+  .owner-field-form-intro {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 72px;
+    margin-bottom: 78px;
+  }
+
+  .owner-field-pullquote,
+  .owner-field-display {
+    margin: 0;
+    color: var(--owner-ink);
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: clamp(28px, 2.6vw, 38px);
+    font-weight: 400;
+    letter-spacing: -0.012em;
+    line-height: 1.25;
+  }
+
+  .owner-field-drop {
+    color: var(--gold);
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 64px;
+    font-style: italic;
+    line-height: 0.6;
+    margin-right: 6px;
+    vertical-align: -10px;
+  }
+
+  .owner-field-deck {
+    align-self: end;
+    color: var(--stone-light);
+    font-size: 14px;
+    line-height: 1.75;
+  }
+
+  .owner-field-deck strong {
+    display: block;
+    margin-bottom: 12px;
+    color: var(--brand);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .owner-field-stats {
+    display: grid;
+    grid-template-columns: 1.35fr 1fr 1fr;
+    gap: 48px;
+  }
+
+  .owner-field-stat {
+    padding: 22px 0;
+    border-top: 1px solid rgba(45, 70, 71, 0.45);
+  }
+
+  .owner-field-stat--large {
+    grid-row: span 2;
+    display: flex;
+    min-height: 420px;
+    flex-direction: column;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(45, 70, 71, 0.45);
+  }
+
+  .owner-field-stat strong {
+    display: block;
+    margin: 18px 0 10px;
+    color: var(--owner-ink);
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: clamp(48px, 8vw, 126px);
+    font-weight: 400;
+    letter-spacing: -0.05em;
+    line-height: 0.92;
+  }
+
+  .owner-field-stat:not(.owner-field-stat--large) strong {
+    font-size: clamp(38px, 4vw, 58px);
+  }
+
+  .owner-field-stat p {
+    margin: 0;
+    color: var(--stone-light);
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  .owner-field-market-grid {
+    display: grid;
+    grid-template-columns: 0.95fr 1.05fr;
+    gap: 64px;
+    align-items: start;
+  }
+
+  .owner-field-map {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    border-radius: 8px;
+    background: var(--owner-ink);
+    box-shadow: 0 30px 60px -30px rgba(45, 70, 71, 0.45);
+  }
+
+  .owner-field-map svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .owner-field-pin {
+    position: absolute;
+    left: var(--x);
+    top: var(--y);
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--white);
+    transform: translate(-50%, -100%);
+    cursor: pointer;
+  }
+
+  .owner-field-pin-dot {
+    position: relative;
+    width: 22px;
+    height: 28px;
+    color: var(--cream);
+  }
+
+  .owner-field-pin-dot::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: currentColor;
+    clip-path: path("M11 0 C4 0 0 5 0 11 C0 18 11 28 11 28 C11 28 22 18 22 11 C22 5 18 0 11 0 Z");
+  }
+
+  .owner-field-pin-dot::after {
+    content: "";
+    position: absolute;
+    left: 8px;
+    top: 8px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--owner-ink);
+  }
+
+  .owner-field-pin span:last-child {
+    padding: 3px 10px;
+    border-radius: 30px;
+    background: rgba(10, 26, 28, 0.5);
+    color: var(--white);
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 13px;
+    font-style: italic;
+    white-space: nowrap;
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+  }
+
+  .owner-field-pin.is-active {
+    color: var(--owner-gold-hot);
+  }
+
+  .owner-field-pin.is-active span:last-child {
+    background: rgba(10, 26, 28, 0.74);
+    color: var(--owner-gold-hot);
+    font-size: 16px;
+  }
+
+  .owner-field-market-card {
+    display: none;
+    animation: owner-field-fade-up 0.45s ease both;
+  }
+
+  .owner-field-market-card.is-active {
+    display: block;
+  }
+
+  .owner-field-market-photo {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    margin-bottom: 28px;
+    overflow: hidden;
+    border-radius: 8px;
+    background-position: center;
+    background-size: cover;
+  }
+
+  .owner-field-market-photo::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 40%, rgba(0, 0, 0, 0.68));
+  }
+
+  .owner-field-market-photo strong {
+    position: absolute;
+    z-index: 1;
+    left: 28px;
+    bottom: 24px;
+    color: var(--white);
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: clamp(32px, 4vw, 54px);
+    font-weight: 400;
+    letter-spacing: -0.025em;
+  }
+
+  .owner-field-market-card p {
+    margin: 0 0 28px;
+    color: var(--stone);
+    font-size: 17px;
+    line-height: 1.8;
+  }
+
+  .owner-field-market-facts {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+
+  .owner-field-market-facts div {
+    padding: 18px;
+    border: 1px solid rgba(201, 169, 98, 0.28);
+    border-radius: 8px;
+    background: var(--cream);
+  }
+
+  .owner-field-market-facts b {
+    display: block;
+    color: var(--owner-ink);
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 26px;
+    font-weight: 400;
+  }
+
+  .owner-field-market-facts span {
+    color: var(--stone-light);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .owner-field-economics {
+    text-align: center;
+  }
+
+  .owner-field-mega {
+    margin: 34px 0 0;
+    color: var(--owner-ink);
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: clamp(96px, 14vw, 210px);
+    font-style: italic;
+    letter-spacing: -0.045em;
+    line-height: 1;
+  }
+
+  .owner-field-mega span {
+    color: var(--gold);
+  }
+
+  .owner-field-mega-sub {
+    margin-bottom: 48px;
+    color: var(--gold);
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 22px;
+    font-style: italic;
+  }
+
+  .owner-field-economics > p {
+    max-width: 880px;
+    margin: 0 auto 56px;
+    color: var(--owner-ink);
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: clamp(22px, 2.2vw, 32px);
+    line-height: 1.42;
+  }
+
+  .owner-field-econ-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 48px;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding-top: 56px;
+    border-top: 1px solid rgba(201, 169, 98, 0.42);
+    text-align: left;
+  }
+
+  .owner-field-econ-grid strong {
+    display: block;
+    margin-bottom: 12px;
+    color: var(--owner-ink);
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 40px;
+    font-weight: 400;
+  }
+
+  .owner-field-econ-grid p {
+    margin: 0;
+    color: var(--stone-light);
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  .owner-field-postcard {
+    position: relative;
+    min-height: 480px;
+    overflow: hidden;
+    border: 1px solid rgba(201, 169, 98, 0.32);
+    border-radius: 12px;
+    background: var(--white);
+    box-shadow: 0 40px 80px -30px rgba(45, 70, 71, 0.35), 0 1px 0 rgba(0, 0, 0, 0.04);
+  }
+
+  .owner-field-stamp {
+    position: absolute;
+    top: 28px;
+    right: 28px;
+    z-index: 1;
+    max-width: 180px;
+    padding: 12px 14px;
+    border: 1.5px dashed var(--gold);
+    border-radius: 4px;
+    background: rgba(245, 228, 176, 0.12);
+    color: var(--owner-ink);
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 14px;
+    font-style: italic;
+    transform: rotate(4deg);
+  }
+
+  .owner-field-stamp b {
+    display: block;
+    margin-bottom: 4px;
+    color: var(--gold);
+    font-family: "Poppins", sans-serif;
+    font-size: 9px;
+    font-style: normal;
+    font-weight: 800;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+  }
+
+  .owner-field-steps {
+    display: flex;
+    gap: 18px;
+    min-height: 60px;
+    padding: 28px 48px 0;
+  }
+
+  .owner-field-step-dot {
+    width: 28px;
+    height: 28px;
+    border: 1.5px solid rgba(58, 58, 58, 0.16);
+    border-radius: 50%;
+    background: transparent;
+    color: var(--stone-light);
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 12px;
+  }
+
+  .owner-field-step-dot.is-active,
+  .owner-field-step-dot.is-complete {
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+
+  .owner-field-step-dot.is-complete {
+    background: var(--gold);
+    color: var(--white);
+  }
+
+  .owner-field-form-step {
+    display: none;
+    padding: 32px 48px 48px;
+    animation: owner-field-fade-up 0.4s ease both;
+  }
+
+  .owner-field-form-step.is-active {
+    display: block;
+  }
+
+  .owner-field-form-step em {
+    display: block;
+    margin-bottom: 18px;
+    color: var(--gold);
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 15px;
+  }
+
+  .owner-field-form-step h3 {
+    max-width: 680px;
+    margin: 0 0 24px;
+    color: var(--owner-ink);
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: clamp(32px, 4vw, 46px);
+    font-weight: 400;
+    letter-spacing: -0.018em;
+    line-height: 1.08;
+  }
+
+  .owner-field-form-step p {
+    max-width: 680px;
+    margin: 0 0 26px;
+    color: var(--stone-light);
+    font-size: 15px;
+    line-height: 1.75;
+  }
+
+  .owner-field-input,
+  .owner-field-textarea {
+    display: block;
+    width: 100%;
+    max-width: 760px;
+    border: 1px solid rgba(201, 169, 98, 0.26);
+    border-radius: 0;
+    background: var(--cream-light);
+    color: var(--owner-ink);
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 22px;
+    line-height: 1.4;
+    padding: 20px 24px;
+  }
+
+  .owner-field-textarea {
+    min-height: 132px;
+    resize: vertical;
+  }
+
+  .owner-field-choice-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    max-width: 860px;
+  }
+
+  .owner-field-choice {
+    min-height: 54px;
+    padding: 12px 16px;
+    border: 1px solid rgba(95, 138, 139, 0.24);
+    border-radius: 999px;
+    background: var(--cream-light);
+    color: var(--owner-ink);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .owner-field-choice.is-active {
+    border-color: var(--gold);
+    background: rgba(201, 169, 98, 0.18);
+  }
+
+  .owner-field-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    max-width: 860px;
+  }
+
+  .owner-field-form-grid label {
+    display: grid;
+    gap: 8px;
+    color: var(--owner-ink);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .owner-field-form-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    align-items: center;
+    margin-top: 32px;
+  }
+
+  .owner-field-muted-button {
+    border: 0;
+    background: transparent;
+    color: var(--stone-light);
+    font-size: 13px;
+    cursor: pointer;
+  }
+
+  .owner-field-form-proof {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    margin-top: 24px;
+    color: var(--owner-ink);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  .owner-field-phone {
+    letter-spacing: 0;
+    text-transform: none;
+  }
+
+  .owner-field-guide-intro {
+    max-width: 820px;
+    margin: 0 0 72px;
+    color: var(--owner-ink);
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: clamp(22px, 2vw, 30px);
+    line-height: 1.4;
+  }
+
+  .owner-field-guides {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 32px;
+  }
+
+  .owner-field-directory {
+    margin-top: 56px;
+    padding-top: 34px;
+    border-top: 1px solid rgba(45, 70, 71, 0.16);
+  }
+
+  .owner-field-directory h2 {
+    margin: 0 0 22px;
+    color: var(--owner-ink);
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 30px;
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: -0.015em;
+  }
+
+  .owner-field-directory-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .owner-field-directory-grid a {
+    min-height: 64px;
+    padding: 16px;
+    border: 1px solid rgba(201, 169, 98, 0.22);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.62);
+    color: var(--owner-ink);
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.35;
+  }
+
+  .owner-field-directory-grid a:hover,
+  .owner-field-directory-grid a:focus-visible {
+    border-color: rgba(201, 169, 98, 0.56);
+    background: var(--white);
+  }
+
+  .owner-field-guide {
+    overflow: hidden;
+    border: 1px solid rgba(201, 169, 98, 0.22);
+    border-radius: 8px;
+    background: var(--white);
+    box-shadow: 0 20px 40px -28px rgba(45, 70, 71, 0.22);
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
+  }
+
+  .owner-field-guide:hover,
+  .owner-field-guide:focus-visible {
+    transform: translateY(-6px);
+    box-shadow: 0 28px 60px -28px rgba(45, 70, 71, 0.34);
+  }
+
+  .owner-field-guide-photo {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    background-position: center;
+    background-size: cover;
+  }
+
+  .owner-field-guide-photo span {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    padding: 6px 12px;
+    border-radius: 30px;
+    background: rgba(245, 238, 214, 0.94);
+    color: var(--owner-ink);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+  }
+
+  .owner-field-guide-body {
+    display: flex;
+    min-height: 230px;
+    flex-direction: column;
+    padding: 24px 28px 28px;
+  }
+
+  .owner-field-guide-body h3 {
+    margin: 0 0 12px;
+    color: var(--owner-ink);
+    font-size: 22px;
+    font-weight: 500;
+    letter-spacing: -0.018em;
+    line-height: 1.25;
+  }
+
+  .owner-field-guide-body p {
+    flex: 1;
+    margin: 0 0 20px;
+    color: var(--stone-light);
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  .owner-field-guide-body b {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 14px;
+    border-top: 1px solid rgba(201, 169, 98, 0.3);
+    color: var(--stone-light);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .owner-field-faq details {
+    border-top: 1px solid rgba(58, 58, 58, 0.12);
+  }
+
+  .owner-field-faq details:last-child {
+    border-bottom: 1px solid rgba(58, 58, 58, 0.12);
+  }
+
+  .owner-field-faq summary {
+    display: grid;
+    grid-template-columns: 60px 1fr 32px;
+    gap: 24px;
+    align-items: baseline;
+    padding: 34px 0;
+    color: var(--owner-ink);
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .owner-field-faq summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .owner-field-faq summary span:first-child {
+    color: var(--gold);
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 30px;
+    font-style: italic;
+  }
+
+  .owner-field-faq summary strong {
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 24px;
+    font-weight: 400;
+    letter-spacing: -0.018em;
+    line-height: 1.3;
+  }
+
+  .owner-field-faq summary span:last-child {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: 1px solid var(--gold);
+    border-radius: 50%;
+    color: var(--gold);
+    transition: transform 0.3s ease;
+  }
+
+  .owner-field-faq details[open] summary span:last-child {
+    transform: rotate(45deg);
+  }
+
+  .owner-field-faq p {
+    max-width: 820px;
+    margin: 0;
+    padding: 0 0 36px 84px;
+    color: var(--stone);
+    font-size: 16px;
+    line-height: 1.8;
+  }
+
+  .owner-field-faq a {
+    color: var(--brand);
+    font-weight: 700;
+  }
+
+  @keyframes owner-field-kenburns {
+    from { transform: scale(1.02) translate3d(0, 0, 0); }
+    to { transform: scale(1.08) translate3d(-1.5%, -1%, 0); }
+  }
+
+  @keyframes owner-field-fade-up {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .owner-hero::before,
+    .owner-field-market-card,
+    .owner-field-form-step {
+      animation: none;
+    }
+  }
+
+  @media (max-width: 980px) {
+    .owner-field-shell {
+      padding-inline: 28px;
     }
 
-    .owner-hero::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(0, 0, 0, 0.12));
-      pointer-events: none;
-    }
-
-    .owner-hero-grid,
-    .owner-choice-grid,
-    .owner-coverage-grid,
-    .owner-proof-grid,
-    .owner-resource-grid {
-      display: grid;
-      gap: 20px;
-    }
-
-    .owner-hero-grid,
-    .owner-choice-grid {
-      grid-template-columns: 1.2fr 0.8fr;
-      align-items: center;
-    }
-
-    .owner-hero-copy,
-    .owner-hero-panel,
-    .owner-proof-card,
-    .owner-choice-card,
-    .owner-coverage-card,
-    .owner-resource-card,
-    .owner-cta-panel {
-      position: relative;
-      z-index: 1;
-      border-radius: 24px;
-    }
-
-    .owner-hero-copy h1 {
-      font-size: clamp(36px, 5vw, 58px);
-      line-height: 1.02;
-      color: white;
-      margin-bottom: 18px;
-    }
-
-    .owner-hero-lead {
-      max-width: 700px;
-      font-size: 18px;
-      opacity: 0.92;
-      margin-bottom: 26px;
-    }
-
-    .owner-hero-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 14px;
-    }
-
-    .owner-hero-panel {
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      backdrop-filter: blur(12px);
-      padding: 24px;
-      box-shadow: 0 24px 50px rgba(0, 0, 0, 0.18);
-    }
-
-    .owner-panel-label,
-    .owner-proof-label {
-      display: inline-block;
-      font-size: 11px;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--gold-light);
-      margin-bottom: 12px;
-      font-weight: 700;
-    }
-
-    .owner-hero-panel h2 {
-      color: white;
-      font-size: 28px;
-      margin-bottom: 12px;
-    }
-
-    .owner-hero-panel p {
-      color: rgba(255, 255, 255, 0.84);
-      margin-bottom: 16px;
-    }
-
-    .owner-panel-list {
-      list-style: none;
-      display: grid;
-      gap: 10px;
-      margin: 0;
-      padding: 0;
-    }
-
-    .owner-panel-list li {
-      display: flex;
-      gap: 10px;
-      align-items: flex-start;
-      color: rgba(255, 255, 255, 0.92);
-      font-size: 15px;
-    }
-
-    .owner-check {
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      background: rgba(201, 169, 98, 0.22);
-      border: 1px solid rgba(201, 169, 98, 0.45);
-      color: var(--gold-light);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      flex: 0 0 auto;
-      margin-top: 2px;
-      position: relative;
-    }
-
-    .owner-check::after {
-      content: "";
-      width: 5px;
-      height: 9px;
-      border-right: 2px solid var(--gold-light);
-      border-bottom: 2px solid var(--gold-light);
-      transform: rotate(45deg) translate(-1px, -1px);
-    }
-
-    .owner-proof-band {
-      margin-top: -36px;
-      position: relative;
-      z-index: 2;
-    }
-
-    .owner-proof-grid {
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    }
-
-    .owner-proof-card {
-      background: white;
-      border: 1px solid rgba(0, 0, 0, 0.06);
-      padding: 24px;
-      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.08);
-    }
-
-    .owner-proof-card h3 {
-      color: var(--brand-dark);
-      margin-bottom: 10px;
-      font-size: 22px;
-    }
-
-    .owner-proof-card p {
-      color: var(--stone-light);
-      font-size: 15px;
-    }
-
-    .owner-choice-card {
-      background: white;
-      border: 1px solid rgba(0, 0, 0, 0.06);
-      padding: 28px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
-    }
-
-    .owner-choice-card h3 {
-      color: var(--brand-dark);
-      margin-bottom: 12px;
-      font-size: 24px;
-    }
-
-    .owner-choice-card p {
-      color: var(--stone);
-      margin-bottom: 12px;
-    }
-
-    .owner-choice-card ul {
-      padding-left: 18px;
-      color: var(--stone);
-      display: grid;
+    .owner-field-masthead {
+      top: 112px;
+      width: calc(100% - 56px);
+      flex-direction: column;
       gap: 8px;
     }
 
-    .owner-proof-stat {
-      background: linear-gradient(180deg, var(--cream-light) 0%, white 100%);
-      border: 1px solid rgba(95, 138, 139, 0.14);
-      padding: 26px;
+    .owner-field-hero-grid,
+    .owner-field-benchmark-intro,
+    .owner-field-form-intro,
+    .owner-field-market-grid {
+      grid-template-columns: 1fr;
+      gap: 36px;
     }
 
-    .owner-proof-stat strong {
-      display: block;
-      font-size: 40px;
-      line-height: 1;
-      color: var(--brand-dark);
-      margin-bottom: 8px;
-      font-family: "Playfair Display", Georgia, serif;
+    .owner-field-issue-card {
+      max-width: 520px;
     }
 
-    .owner-proof-stat p {
-      color: var(--stone-light);
-      margin: 0;
+    .owner-field-stats,
+    .owner-field-econ-grid,
+    .owner-field-guides {
+      grid-template-columns: 1fr;
     }
 
-    .owner-coverage-grid,
-    .owner-resource-grid {
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    .owner-field-stat--large {
+      min-height: auto;
     }
 
-    .owner-coverage-card,
-    .owner-resource-card {
-      background: white;
-      border: 1px solid rgba(0, 0, 0, 0.06);
-      padding: 24px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+    .owner-field-choice-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 640px) {
+    .nav-inner {
+      min-height: 68px;
     }
 
-    .owner-coverage-card span,
-    .owner-resource-card span {
-      display: inline-block;
-      font-size: 11px;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: var(--brand);
-      margin-bottom: 10px;
-      font-weight: 700;
+    .owner-hero {
+      min-height: 720px;
     }
 
-    .owner-coverage-card h3,
-    .owner-resource-card h3 {
-      color: var(--brand-dark);
-      margin-bottom: 10px;
-      font-size: 23px;
+    .owner-field-hero-grid {
+      padding-top: 220px;
+      padding-bottom: 54px;
     }
 
-    .owner-coverage-card p,
-    .owner-resource-card p {
-      color: var(--stone-light);
-      margin-bottom: 14px;
+    .owner-hero h1 {
+      font-size: clamp(44px, 14vw, 62px);
     }
 
-    .owner-link {
-      color: var(--brand);
-      font-weight: 700;
+    .owner-field-section,
+    .owner-field-section--form {
+      padding: 78px 0;
     }
 
-    .owner-faq-note {
-      max-width: 760px;
-      margin: 0 auto 36px;
-      text-align: center;
-      color: var(--stone-light);
+    .owner-field-rule {
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 38px;
     }
 
-    .owner-cta-panel {
-      background: linear-gradient(135deg, var(--brand-dark) 0%, #1f4648 100%);
-      color: white;
-      padding: 38px;
-      text-align: center;
-      box-shadow: 0 24px 50px rgba(61, 92, 93, 0.24);
+    .owner-field-rule h2 {
+      font-size: 28px;
     }
 
-    .owner-cta-panel h2 {
-      color: white;
-      margin-bottom: 12px;
-      font-size: clamp(30px, 4vw, 42px);
+    .owner-field-directory-grid {
+      grid-template-columns: 1fr;
     }
 
-    .owner-secondary-contact {
-      margin-top: 18px;
-      text-align: center;
-      color: rgba(255, 255, 255, 0.82);
-      font-size: 15px;
+    .owner-field-market-facts,
+    .owner-field-form-grid,
+    .owner-field-choice-grid {
+      grid-template-columns: 1fr;
     }
 
-    .owner-secondary-contact a {
-      color: white;
-      font-weight: 600;
+    .owner-field-postcard {
+      min-height: 0;
     }
 
-    .owner-form-note {
-      color: rgba(255, 255, 255, 0.88);
-      margin: 18px 0 0;
-    }
-    @media (max-width: 920px) {
-      .owner-hero-grid,
-      .owner-choice-grid,
-      .owner-proof-grid,
-      .owner-coverage-grid,
-      .owner-resource-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .owner-proof-band {
-        margin-top: 0;
-      }
+    .owner-field-stamp {
+      position: static;
+      width: max-content;
+      margin: 22px 28px 0 auto;
     }
 
-    @media (max-width: 640px) {
-      .owner-cta-panel {
-        padding: 24px 14px;
-      }
+    .owner-field-steps,
+    .owner-field-form-step {
+      padding-inline: 28px;
     }
-  </style>
----
-{% from "partials/owner-evaluation-form.njk" import ownerEvaluationForm %}
-<style>
-  {% include "partials/owner-form-styles.njk" %}
+
+    .owner-field-form-proof {
+      flex-direction: column;
+    }
+
+    .owner-field-faq summary {
+      grid-template-columns: 42px 1fr 28px;
+      gap: 14px;
+    }
+
+    .owner-field-faq p {
+      padding-left: 56px;
+    }
+  }
 </style>
-<nav class="breadcrumbs" aria-label="Breadcrumb">
-  <ol>
-    <li><a href="/">Home</a></li>
-    <li><span>›</span></li>
-    <li><span aria-current="page">Property Management</span></li>
-  </ol>
-</nav>
 
-<section class="section owner-hero">
-  <div class="container owner-hero-grid">
-    <div class="owner-hero-copy">
-      <p class="section-tag" style="color: var(--gold-light);">For Property Owners</p>
-      <h1>Property management for owners who care about what they actually keep</h1>
-      <p class="owner-hero-lead">Seascape's current Gulf Coast portfolio runs at $1.4M in annual rental revenue with $119,923 already captured directly in direct bookings. We use that benchmark to show how management fees, booking channels, pricing, and day-to-day execution affect what an owner actually keeps.</p>
-      <div class="owner-hero-actions">
-        <a class="btn btn-gold" href="#owner-cta" data-track-event="owner_primary_cta_click" data-page-slug="property-management">Request Your Revenue Teardown</a>
+<main class="owner-field" data-owner-field-page>
+  <section class="section owner-hero">
+    <div class="owner-field-masthead" aria-hidden="true">
+      <span>Vol. III · Owner Field Report</span>
+      <span>Bradenton · Sarasota · Anna Maria Island</span>
+      <span>Spring 2026 · Issue 04</span>
+    </div>
+    <div class="owner-field-shell owner-field-hero-grid">
+      <div>
+        <div class="owner-field-kicker">The Property Management Brief</div>
+        <h1 id="owner-field-title">What does your <em>pool home</em><br> actually keep?</h1>
+        <p class="owner-field-hero-copy">A dispatch from a five-home Gulf Coast portfolio: what we actually see in fees, channels, pricing, and execution. Send us your listing; we will send back a one-page teardown.</p>
+        <div class="owner-field-actions">
+          <a class="btn btn-gold owner-field-btn" href="#owner-cta" data-track-event="owner_primary_cta_click" data-page-slug="property-management">Request Your Revenue Teardown</a>
+          <a class="owner-field-link" href="#economics">Read the issue</a>
+        </div>
+      </div>
+      <aside class="owner-field-issue-card" aria-label="Inside this issue">
+        <div class="owner-field-issue-label">Inside this issue</div>
+        <a class="owner-field-issue-link" href="#benchmark">
+          <span>01</span>
+          <span><strong>The benchmark</strong><small>Stats from the portfolio</small></span>
+          <span aria-hidden="true">&#8599;</span>
+        </a>
+        <a class="owner-field-issue-link" href="#markets">
+          <span>02</span>
+          <span><strong>By market</strong><small>AMI · Bradenton · Sarasota</small></span>
+          <span aria-hidden="true">&#8599;</span>
+        </a>
+        <a class="owner-field-issue-link" href="#economics">
+          <span>03</span>
+          <span><strong>Owner economics</strong><small>The 13.4% question</small></span>
+          <span aria-hidden="true">&#8599;</span>
+        </a>
+        <a class="owner-field-issue-link" href="#owner-cta">
+          <span>04</span>
+          <span><strong>Send a teardown</strong><small>4-step postcard exchange</small></span>
+          <span aria-hidden="true">&#8599;</span>
+        </a>
+      </aside>
+    </div>
+  </section>
+
+  <section class="owner-field-section" id="benchmark">
+    <div class="owner-field-shell">
+      <div class="owner-field-rule">
+        <h2>The Benchmark</h2>
+        <span>Pages 4-5 · Section 1</span>
+      </div>
+      <div class="owner-field-benchmark-intro">
+        <p class="owner-field-pullquote"><span class="owner-field-drop">"</span>Property management for owners who care about what they actually keep. What to look at before you change managers starts with these four numbers.</p>
+        <p class="owner-field-deck"><strong>Benchmark + Teardown</strong>What owners miss when they compare management fees: Platform costs, expensive booking sources, review-risk signals, and uneven owner communication rarely show up clearly in an owner statement. We do not quote one flat management fee for every home.</p>
+      </div>
+      <div class="owner-field-stats">
+        <article class="owner-field-stat owner-field-stat--large">
+          <div>
+            <div class="owner-field-label">Portfolio Revenue</div>
+            <strong>$1.4M</strong>
+          </div>
+          <p>Annual rental revenue across Seascape's five active Gulf Coast homes.</p>
+        </article>
+        <article class="owner-field-stat">
+          <div class="owner-field-label">Fee Fit</div>
+          <strong>Not Flat</strong>
+          <p>No single flat fee. Homes in the right band fit 15% plus admin; lower-yield homes need different math.</p>
+        </article>
+        <article class="owner-field-stat">
+          <div class="owner-field-label">Direct Channel</div>
+          <strong>$119,923</strong>
+          <p>Direct booking revenue shifted off OTA commissions, back toward owner economics.</p>
+        </article>
+        <article class="owner-field-stat">
+          <div class="owner-field-label">Host Fee Average</div>
+          <strong>13.4%</strong>
+          <p>Observed Airbnb host-fee average across the portfolio.</p>
+        </article>
+        <article class="owner-field-stat">
+          <div class="owner-field-label">Cost Example</div>
+          <strong>16.4%</strong>
+          <p>Bradenton Pool's March 2026 effective Airbnb host-fee cost.</p>
+        </article>
       </div>
     </div>
-    <aside class="owner-hero-panel">
-      <span class="owner-panel-label">Benchmark + Teardown</span>
-      <h2>What to look at before you change managers</h2>
-      <p>Platform costs, expensive booking sources, review-risk signals, and uneven owner communication rarely show up clearly in an owner statement. The revenue review shows what the current setup is still protecting, what may be costing you money, and whether a switch is worth the disruption.</p>
-      <ul class="owner-panel-list">
-        <li><span class="owner-check" aria-hidden="true"></span><span>Where premium nights are getting discounted too quickly or shifted into costly third-party channels</span></li>
-        <li><span class="owner-check" aria-hidden="true"></span><span>Whether the current manager is protecting owner margin or mostly reporting activity</span></li>
-        <li><span class="owner-check" aria-hidden="true"></span><span>Whether review risk, maintenance misses, or weak owner updates are weakening future rates</span></li>
-      </ul>
-    </aside>
-  </div>
-</section>
+  </section>
 
-<section class="section owner-proof-band" style="padding-top: 0;">
-  <div class="container owner-proof-grid">
-    <div class="owner-proof-card">
-      <span class="owner-proof-label">Portfolio Revenue</span>
-      <h3>$1.4M</h3>
-      <p>Current annual rental revenue across Seascape's five active Gulf Coast homes.</p>
+  <section class="owner-field-section owner-field-section--light" id="markets">
+    <div class="owner-field-shell">
+      <div class="owner-field-rule">
+        <h2>By Market</h2>
+        <span>Pages 6-7 · Section 2</span>
+      </div>
+      <div class="owner-field-market-grid" data-owner-market>
+        <div class="owner-field-map" aria-label="Bradenton Sarasota corridor portfolio map">
+          <svg viewBox="0 0 400 500" preserveAspectRatio="none" aria-hidden="true">
+            <defs>
+              <radialGradient id="ownerFieldWater" cx="50%" cy="50%" r="80%">
+                <stop offset="0%" stop-color="#1F3A3C"></stop>
+                <stop offset="100%" stop-color="#0A1A1C"></stop>
+              </radialGradient>
+              <pattern id="ownerFieldDots" patternUnits="userSpaceOnUse" width="14" height="14">
+                <circle cx="2" cy="2" r="0.7" fill="rgba(245,228,176,0.15)"></circle>
+              </pattern>
+            </defs>
+            <rect width="400" height="500" fill="url(#ownerFieldWater)"></rect>
+            <rect width="400" height="500" fill="url(#ownerFieldDots)"></rect>
+            <path d="M180 -10 L220 30 L240 80 L235 130 L250 180 L245 230 L270 280 L290 330 L310 400 L340 500 L400 500 L400 -10 Z" fill="#F5EED6" opacity="0.92"></path>
+            <path d="M180 -10 L220 30 L240 80 L235 130 Q200 130 175 110 Q160 80 165 40 Z" fill="#1F3A3C" opacity="0.85"></path>
+            <path d="M175 130 Q195 200 225 270 Q255 350 285 430" stroke="rgba(201,169,98,0.4)" stroke-width="1" stroke-dasharray="3 4" fill="none"></path>
+            <text x="22" y="32" fill="rgba(245,228,176,0.6)" font-size="8" letter-spacing="0.3em" font-family="Poppins" font-weight="600">SEASCAPE PORTFOLIO MAP</text>
+            <text x="22" y="46" fill="rgba(245,228,176,0.4)" font-size="9" font-family="Playfair Display" font-style="italic">Bradenton - Sarasota corridor</text>
+          </svg>
+          <button class="owner-field-pin" type="button" data-market-button="ami" style="--x: 26%; --y: 30%;" aria-pressed="false"><span class="owner-field-pin-dot"></span><span>Anna Maria Island</span></button>
+          <button class="owner-field-pin is-active" type="button" data-market-button="bradenton" style="--x: 42%; --y: 38%;" aria-pressed="true"><span class="owner-field-pin-dot"></span><span>Bradenton</span></button>
+          <button class="owner-field-pin" type="button" data-market-button="longboat" style="--x: 30%; --y: 52%;" aria-pressed="false"><span class="owner-field-pin-dot"></span><span>Longboat Key</span></button>
+          <button class="owner-field-pin" type="button" data-market-button="sarasota" style="--x: 50%; --y: 58%;" aria-pressed="false"><span class="owner-field-pin-dot"></span><span>Sarasota</span></button>
+          <button class="owner-field-pin" type="button" data-market-button="siesta" style="--x: 38%; --y: 70%;" aria-pressed="false"><span class="owner-field-pin-dot"></span><span>Siesta Key</span></button>
+        </div>
+        <div>
+          <article class="owner-field-market-card" data-market-panel="ami">
+            <div class="owner-field-market-photo" style="background-image: url('/images/owner-field-ami-cottages.jpg');"><strong>Anna Maria Island</strong></div>
+            <p>Island homes prioritize rate protection, reliable channels, and local execution when occupancy alone is not enough to protect return.</p>
+            <div class="owner-field-market-facts"><div><b>$348</b><span>ADR</span></div><div><b>71%</b><span>Occ.</span></div><div><b>24%</b><span>Direct</span></div></div>
+          </article>
+          <article class="owner-field-market-card is-active" data-market-panel="bradenton">
+            <div class="owner-field-market-photo" style="background-image: url('/images/owner-field-bradenton.jpg');"><strong>Bradenton</strong></div>
+            <p>In Bradenton homes, pricing, pool value, and location positioning still decide the return.</p>
+            <div class="owner-field-market-facts"><div><b>$301</b><span>ADR</span></div><div><b>68%</b><span>Occ.</span></div><div><b>18%</b><span>Direct</span></div></div>
+          </article>
+          <article class="owner-field-market-card" data-market-panel="longboat">
+            <div class="owner-field-market-photo" style="background-image: url('/images/owner-field-longboat.jpg');"><strong>Longboat Key</strong></div>
+            <p>Longboat owners trade volume for rate. Channel quality and guest screening do more than discounting.</p>
+            <div class="owner-field-market-facts"><div><b>$438</b><span>ADR</span></div><div><b>58%</b><span>Occ.</span></div><div><b>22%</b><span>Direct</span></div></div>
+          </article>
+          <article class="owner-field-market-card" data-market-panel="sarasota">
+            <div class="owner-field-market-photo" style="background-image: url('/images/owner-field-sarasota.jpg');"><strong>Sarasota</strong></div>
+            <p>Sarasota owners need presentation, guest quality, and rate discipline to stay tight.</p>
+            <div class="owner-field-market-facts"><div><b>$412</b><span>ADR</span></div><div><b>64%</b><span>Occ.</span></div><div><b>21%</b><span>Direct</span></div></div>
+          </article>
+          <article class="owner-field-market-card" data-market-panel="siesta">
+            <div class="owner-field-market-photo" style="background-image: url('/images/owner-field-siesta-key.jpg');"><strong>Siesta Key</strong></div>
+            <p>On beach properties, guest expectations are high and presentation has to match the rate.</p>
+            <div class="owner-field-market-facts"><div><b>$385</b><span>ADR</span></div><div><b>70%</b><span>Occ.</span></div><div><b>19%</b><span>Direct</span></div></div>
+          </article>
+        </div>
+      </div>
     </div>
-    <div class="owner-proof-card">
-      <span class="owner-proof-label">Fee Fit</span>
-      <h3>Not Flat</h3>
-      <p>We do not quote one flat management fee for every home. Homes in the right revenue band can fit 15% plus admin, while lower-yield homes need different math.</p>
-    </div>
-    <div class="owner-proof-card">
-      <span class="owner-proof-label">Direct Channel</span>
-      <h3>$119,923</h3>
-      <p>Direct booking revenue already shifted away from OTA commissions and back toward owner economics.</p>
-    </div>
-    <div class="owner-proof-card">
-      <span class="owner-proof-label">Cost Example</span>
-      <h3>16.4%</h3>
-      <p>Bradenton Pool's effective March 2026 Airbnb host-fee cost, showing how cleaning-heavy turnover can push fees above the 13.4% portfolio average.</p>
-    </div>
-  </div>
-</section>
+  </section>
 
-<section class="section">
-  <div class="container owner-choice-grid">
-    <div class="owner-choice-card">
-      <p class="section-tag">Owner Economics</p>
-      <h2 class="section-title" style="margin-bottom: 14px;">What owners miss when they compare management fees</h2>
-      <p>Owners often compare one manager at 15%, another at 20%, and another at 25% as if that settles the decision. It usually doesn't. OTA commissions, discount-heavy pricing, and weak local execution can cost more than the headline fee.</p>
-      <p>The better question is which manager protects owner income once rates, booking sources, guest standards, and local response all affect the same property.</p>
-      <ul>
-        <li>Competitor fee bands often land around 18-35%, but percentage alone does not tell you what the owner actually keeps</li>
-        <li>Observed Airbnb host fees average roughly 13.4% versus direct payment cost closer to 2.9%</li>
-        <li>Owner reporting should explain what changed in revenue, booking sources, and margin, not just list activity</li>
-      </ul>
+  <section class="owner-field-section" id="economics">
+    <div class="owner-field-shell owner-field-economics">
+      <div class="owner-field-label">Commission Reality · Section 3</div>
+      <div class="owner-field-mega" aria-label="13.4% → 2.9%">13.4<span>&rarr;</span>2.9</div>
+      <div class="owner-field-mega-sub">percent · the commission gap</div>
+      <p>Owners often compare one manager at 15%, another at 20%, another at 25% as if that settles the decision. It usually does not.</p>
+      <div class="owner-field-econ-grid">
+        <div><strong>18-35%</strong><p>Competitor fee bands. Percentage alone never tells you what the owner actually keeps.</p></div>
+        <div><strong>13.4%</strong><p>Observed Airbnb host-fee average across the portfolio versus roughly 2.9% on direct payment.</p></div>
+        <div><strong>4-9%</strong><p>Additional gross typically lost to cleaning leakage and missed premium nights.</p></div>
+      </div>
     </div>
-    <div class="owner-choice-card owner-proof-stat">
-      <span class="owner-proof-label" style="color: var(--brand);">Commission Reality</span>
-      <strong>13.4% → 2.9%</strong>
-      <p>That is the gap between Seascape's observed Airbnb host-fee average and a direct payment cost. If booking source is ignored, owners often give up margin without realizing it.</p>
-      <p style="margin-top: 18px;">The teardown helps you see whether your current setup is protecting rate, reducing platform costs, and earning what it costs.</p>
-    </div>
-  </div>
-</section>
+  </section>
 
-<section class="section" style="background: var(--cream-dark);">
-  <div class="container">
-    <div class="section-header">
-      <p class="section-tag">Start With Your Situation</p>
-      <h2 class="section-title">Choose the page that fits your market or situation</h2>
-      <p class="section-subtitle">Most owners are dealing with one of four things: a market-fit problem, a switching problem, or a manager that is not protecting the economics of your property.</p>
+  <section class="owner-field-section--form" id="owner-cta">
+    <div class="owner-field-shell">
+      <div class="owner-field-rule">
+        <h2>Send us a postcard.</h2>
+        <span>Pages 12-13 · Section 4</span>
+      </div>
+      <div class="owner-field-form-intro">
+        <h2 class="owner-field-display">Tell us what you have got. We will send back <em>a one-page teardown.</em></h2>
+        <p class="owner-field-deck">Four short questions, two minutes. A real Seascape person reads every reply and writes a one-pager, usually within 48 hours. No sales call, no calendar invite.</p>
+      </div>
+      {# Source contract: ownerEvaluationForm({ showBenchmarkFields: true, propertyFieldLabel: "Property address or market" }) #}
+      <form class="owner-field-postcard" name="owner-revenue-teardown" method="POST" enctype="multipart/form-data" data-netlify="true" netlify-honeypot="bot-field" data-track-form="owner" data-form-start-event="owner_form_start" data-form-submit-event="owner_form_submit" data-page-slug="property-management" data-source-page-slug="property-management" data-market="florida-gulf-coast">
+        <input type="hidden" name="form-name" value="owner-revenue-teardown">
+        <input type="hidden" name="page_slug" value="property-management">
+        <input type="hidden" name="source_page_slug" value="property-management">
+        <input type="hidden" name="market" value="florida-gulf-coast">
+        <input type="hidden" name="lead_type" value="owner-revenue-teardown">
+        <input type="hidden" name="concerns" data-owner-concerns>
+        <p hidden><label>Do not fill this out if you are human: <input name="bot-field"></label></p>
+        <div class="owner-field-stamp"><b>48-hr reply</b>From Seascape, with care.</div>
+        <div class="owner-field-steps" aria-label="Form progress">
+          <button class="owner-field-step-dot is-active" type="button" data-form-goto="0" aria-label="Go to step 1">1</button>
+          <button class="owner-field-step-dot" type="button" data-form-goto="1" aria-label="Go to step 2">2</button>
+          <button class="owner-field-step-dot" type="button" data-form-goto="2" aria-label="Go to step 3">3</button>
+          <button class="owner-field-step-dot" type="button" data-form-goto="3" aria-label="Go to step 4">4</button>
+        </div>
+        <div class="owner-field-form-step is-active" data-form-step="0">
+          <em>Question 1 of 4</em>
+          <h3>What home are we looking at?</h3>
+          <p>A listing URL, an address, or the property name. If you would rather just describe it, that is fine too.</p>
+          <input class="owner-field-input" type="text" name="property_address" autocomplete="street-address" placeholder="airbnb.com/h/your-listing · or · 4250 Palm Ave, Bradenton" required>
+          <div class="owner-field-form-actions">
+            <button class="owner-field-btn btn-gold" type="button" data-form-next>Continue <span aria-hidden="true">-></span></button>
+            <button class="owner-field-muted-button" type="button" data-form-next>Skip, I would rather describe it</button>
+          </div>
+        </div>
+        <div class="owner-field-form-step" data-form-step="1">
+          <em>Question 2 of 4</em>
+          <h3>What feels expensive or unclear right now?</h3>
+          <p>Pick any that apply. This just points the teardown at the right part of the owner economics.</p>
+          <div class="owner-field-choice-grid">
+            <button class="owner-field-choice" type="button" data-concern="Paying too much in fees">Paying too much in fees</button>
+            <button class="owner-field-choice" type="button" data-concern="Reviews slipping">Reviews slipping</button>
+            <button class="owner-field-choice" type="button" data-concern="Channel mix is wrong">Channel mix is wrong</button>
+            <button class="owner-field-choice" type="button" data-concern="Owner updates are vague">Owner updates are vague</button>
+            <button class="owner-field-choice" type="button" data-concern="Pool home is underpriced">Pool home is underpriced</button>
+            <button class="owner-field-choice" type="button" data-concern="Just curious">Just curious</button>
+          </div>
+          <div class="owner-field-form-actions">
+            <button class="owner-field-btn btn-gold" type="button" data-form-next>Continue <span aria-hidden="true">-></span></button>
+            <button class="owner-field-muted-button" type="button" data-form-back>Back</button>
+          </div>
+        </div>
+        <div class="owner-field-form-step" data-form-step="2">
+          <em>Question 3 of 4</em>
+          <h3>Anything we should know before reading it?</h3>
+          <p>Current manager, rough fee quote, self-management pain, calendar gaps, or the moment that made you start looking.</p>
+          <textarea class="owner-field-textarea" name="what_feels_off" rows="4" placeholder="Example: too Airbnb-heavy, weak reporting, discounting, maintenance misses, or review-quality drift"></textarea>
+          <div class="owner-field-form-actions">
+            <button class="owner-field-btn btn-gold" type="button" data-form-next>Continue <span aria-hidden="true">-></span></button>
+            <button class="owner-field-muted-button" type="button" data-form-back>Back</button>
+          </div>
+        </div>
+        <div class="owner-field-form-step" data-form-step="3">
+          <em>Question 4 of 4</em>
+          <h3>Where should we send the teardown?</h3>
+          <p>We will read what you sent, separate proven cost from missing information, and send back the clearest next step.</p>
+          <div class="owner-field-form-grid">
+            <label>Your name <input class="owner-field-input" type="text" name="name" autocomplete="name" placeholder="First and last name" required></label>
+            <label>Email <input class="owner-field-input" type="email" name="email" autocomplete="email" placeholder="you@example.com" required></label>
+            <label>Phone <input class="owner-field-input" type="tel" name="phone" autocomplete="tel" placeholder="(941) 555-1234"></label>
+            <label>Listing URL <input class="owner-field-input" type="url" name="listing_url" inputmode="url" placeholder="airbnb.com/h/your-listing or vrbo.com/..."></label>
+          </div>
+          <div class="owner-field-form-actions">
+            <button class="owner-field-btn btn-gold" type="submit">Send My Teardown Request</button>
+            <button class="owner-field-muted-button" type="button" data-form-back>Back</button>
+          </div>
+        </div>
+      </form>
+      <div class="owner-field-form-proof" aria-label="Owner teardown proof points">
+        <span>Real Seascape teardown</span>
+        <span>48-hour reply</span>
+        <span>No sales call</span>
+        <span class="owner-field-phone">Prefer to talk first? <a href="tel:+19417048545" data-track-event="owner_phone_click" data-page-slug="property-management">(941) 704-8545</a></span>
+      </div>
     </div>
+  </section>
 
-    <div class="owner-coverage-grid">
-      <a class="owner-coverage-card" href="/property-management/vacation-rental-management-anna-maria-island/">
-        <span>Island Homes</span>
-        <h3>Anna Maria Island</h3>
-        <p>Island homes prioritize rate protection, reliable channels, and local execution when occupancy alone is not enough to protect return.</p>
-        <span class="owner-link">View Anna Maria guidance →</span>
-      </a>
-      <a class="owner-coverage-card" href="/property-management/vacation-rental-management-bradenton/">
-        <span>Family & Group Homes</span>
-        <h3>Bradenton</h3>
-        <p>In Bradenton homes, pricing, pool value, and location positioning still decide the return.</p>
-        <span class="owner-link">View Bradenton guidance →</span>
-      </a>
-      <a class="owner-coverage-card" href="/property-management/vacation-rental-management-sarasota/">
-        <span>Higher-End Coastal Homes</span>
-        <h3>Sarasota</h3>
-        <p>Sarasota owners need presentation, guest quality, and rate discipline to stay tight.</p>
-        <span class="owner-link">View Sarasota guidance →</span>
-      </a>
-      <a class="owner-coverage-card" href="/property-management/switch-vacation-rental-management-company/">
-        <span>Manager Transition</span>
-        <h3>Switch Managers Without Killing Momentum</h3>
-        <p>For owners deciding whether the current manager is underperforming and what a clean transition would actually take.</p>
-        <span class="owner-link">View the switch guide →</span>
-      </a>
-      <a class="owner-coverage-card" href="/property-management/vacation-rental-management-siesta-key/">
-        <span>Beach Premium</span>
-        <h3>Siesta Key</h3>
-        <p>On beach properties, guest expectations are high and presentation has to match the rate.</p>
-        <span class="owner-link">View Siesta Key guidance →</span>
-      </a>
+  <section class="owner-field-section owner-field-section--light" id="guides">
+    <div class="owner-field-shell">
+      <div class="owner-field-rule">
+        <h2>Owner Guides</h2>
+        <span>Pages 14-18 · Section 5</span>
+      </div>
+      <p class="owner-field-guide-intro">Operational guides that protect revenue and reduce risk, useful when cleaning, taxes, screening, insurance, or acquisition are the real blocker.</p>
+      <div class="owner-field-guides">
+        <a class="owner-field-guide" href="/property-management/maximize-vacation-rental-income-florida/">
+          <div class="owner-field-guide-photo" style="background-image: url('/images/owner-field-bradenton.jpg');"><span>Revenue</span></div>
+          <div class="owner-field-guide-body"><h3>What Cuts Into Owner Income</h3><p>Start here for a clearer read on fees, OTA mix, and operating issues before a property-specific teardown.</p><b>Read guide <span aria-hidden="true">-></span></b></div>
+        </a>
+        <a class="owner-field-guide" href="/research/owner-fee-revenue-leak-benchmark-2026/">
+          <div class="owner-field-guide-photo" style="background-image: url('/images/owner-field-sarasota.jpg');"><span>Benchmark</span></div>
+          <div class="owner-field-guide-body"><h3>Owner Fee + Revenue Gap Benchmark</h3><p>The source-backed math behind management fees, marketplace booking costs, and direct-booking savings.</p><b>Read benchmark <span aria-hidden="true">-></span></b></div>
+        </a>
+        <a class="owner-field-guide" href="/property-management/switch-vacation-rental-management-company/">
+          <div class="owner-field-guide-photo" style="background-image: url('/images/owner-field-ami-cottages.jpg');"><span>Switching</span></div>
+          <div class="owner-field-guide-body"><h3>How To Switch Without Wrecking Momentum</h3><p>Use this if the current setup may be fixable, or if it is time to change managers cleanly.</p><b>Read switch guide <span aria-hidden="true">-></span></b></div>
+        </a>
+        <a class="owner-field-guide" href="/property-management/vacation-rental-cleaning-services-florida/">
+          <div class="owner-field-guide-photo" style="background-image: url('/images/owner-field-anna-maria.jpg');"><span>Turnover</span></div>
+          <div class="owner-field-guide-body"><h3>Cleaning Services That Protect Reviews</h3><p>For bad turns, inspection misses, and housekeeping control issues that cost repeat bookings.</p><b>Read cleaning guide <span aria-hidden="true">-></span></b></div>
+        </a>
+        <a class="owner-field-guide" href="/property-management/vacation-rental-guest-screening/">
+          <div class="owner-field-guide-photo" style="background-image: url('/images/owner-field-siesta-key.jpg');"><span>Risk</span></div>
+          <div class="owner-field-guide-body"><h3>Guest Screening Standards</h3><p>Open this page if your real concern is property damage, neighbor friction, or low-quality bookings.</p><b>Read screening guide <span aria-hidden="true">-></span></b></div>
+        </a>
+        <a class="owner-field-guide" href="/property-management/buy-vacation-rental-property-florida/">
+          <div class="owner-field-guide-photo" style="background-image: url('/images/owner-field-longboat.jpg');"><span>Buying</span></div>
+          <div class="owner-field-guide-body"><h3>Buy the Right Vacation Rental Property</h3><p>Use this before you buy another home because a listing agent called it a short-term rental opportunity.</p><b>Read acquisition guide <span aria-hidden="true">-></span></b></div>
+        </a>
+      </div>
+      <div class="owner-field-directory">
+        <h2>Specific Situations</h2>
+        <div class="owner-field-directory-grid">
+          <a href="/property-management/new-vacation-rental-owner-guide-florida/">New vacation rental owner guide</a>
+          <a href="/property-management/increase-vacation-rental-bookings/">Increase vacation rental bookings</a>
+          <a href="/property-management/vacation-rental-cleaning-services-florida/">Cleaning services</a>
+          <a href="/property-management/vacation-rental-guest-screening/">Guest screening</a>
+          <a href="/property-management/vacation-rental-insurance-florida/">Insurance questions</a>
+          <a href="/property-management/vacation-rental-taxes-florida/">Vacation rental taxes</a>
+          <a href="/property-management/buy-vacation-rental-property-florida/">Buy a rental property</a>
+          <a href="/property-management/sell-vacation-rental-property-florida/">Sell a rental property</a>
+          <a href="/property-management/switch-from-airbnb-self-manage/">Switch from self-management</a>
+          <a href="/property-management/vacation-rental-interior-design-florida/">Interior design</a>
+          <a href="/property-management/vacation-rental-licensing-florida/">Licensing</a>
+          <a href="/property-management/vacation-rental-maintenance-florida/">Maintenance</a>
+          <a href="/property-management/vacation-rental-management-siesta-key/">Siesta Key management</a>
+          <a href="/property-management/vacation-rental-photography-florida/">Photography</a>
+          <a href="/property-management/vrbo-management-services-florida/">VRBO management services</a>
+        </div>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<section class="section" style="background: var(--cream-light);">
-  <div class="container">
-    <div class="section-header">
-      <p class="section-tag">Owner Essentials</p>
-      <h2 class="section-title">Start with the pages that shape the decision</h2>
-      <p class="section-subtitle">Begin with the benchmark, the income breakdown, and the teardown offer before you spend time on secondary details.</p>
+  <section class="owner-field-section owner-field-faq" id="faq">
+    <div class="owner-field-shell">
+      <div class="owner-field-rule">
+        <h2>Selected FAQ</h2>
+        <span>Page 19 · Section 6</span>
+      </div>
+      <p class="owner-field-guide-intro">What Gulf Coast owners usually ask first.</p>
+      <details open>
+        <summary><span>01</span><strong>How do I know if my market can support professional management fees?</strong><span aria-hidden="true">+</span></summary>
+        <p>Start with real demand and rate context, not generic national averages. Our <a href="/guides/2026-bradenton-vacation-rental-market-analysis/">Bradenton market analysis</a> and <a href="/guides/vacation-rental-income-anna-maria/">Anna Maria Island income guide</a> show the type of local data owners should compare against projected fees.</p>
+      </details>
+      <details>
+        <summary><span>02</span><strong>What should a local manager handle that a remote manager usually misses?</strong><span aria-hidden="true">+</span></summary>
+        <p>The short answer is local response time. Cleaning quality control, maintenance triage, guest screening, and property checks are all weaker when the manager is not operating in-market. The market-specific service pages break down how that changes between <a href="/property-management/vacation-rental-management-bradenton/">Bradenton</a>, <a href="/property-management/vacation-rental-management-sarasota/">Sarasota</a>, and <a href="/property-management/vacation-rental-management-anna-maria-island/">Anna Maria Island</a>.</p>
+      </details>
+      <details>
+        <summary><span>03</span><strong>What should I read before choosing a vacation rental manager?</strong><span aria-hidden="true">+</span></summary>
+        <p>Start with the page that matches your market, then read the <a href="/property-management/vacation-rental-management-fees-florida/">fee reality page</a>, the <a href="/property-management/maximize-vacation-rental-income-florida/">income breakdown</a>, and the <a href="/property-management/switch-vacation-rental-management-company/">switch-management page</a> if you think the current setup is the real problem.</p>
+      </details>
     </div>
+  </section>
+</main>
 
-    <div class="owner-resource-grid">
-      <a class="owner-resource-card" href="/property-management/maximize-vacation-rental-income-florida/">
-        <span>Revenue Teardown</span>
-        <h3>What Cuts Into Owner Income</h3>
-        <p>Start here if you want a clearer read on fees, OTA mix, and the operating issues cutting into owner income before you request a property-specific teardown.</p>
-        <span class="owner-link">Read the teardown guide →</span>
-      </a>
-      <a class="owner-resource-card" href="/research/owner-fee-revenue-leak-benchmark-2026/">
-        <span>Benchmark Report</span>
-        <h3>Owner Fee + Revenue Gap Benchmark</h3>
-        <p>Pick this page when you want the source-backed math behind management fees, marketplace booking costs, and direct-booking savings.</p>
-        <span class="owner-link">Read the benchmark →</span>
-      </a>
-      <a class="owner-resource-card" href="/research/how-seascape-protects-owner-net-2026/">
-        <span>Operator Proof</span>
-        <h3>How Seascape Protects Owner Revenue</h3>
-        <p>Use this after the benchmark when you want redacted examples of direct bookings, booking-source costs, and plain owner reporting.</p>
-        <span class="owner-link">Read the proof pack →</span>
-      </a>
-      <a class="owner-resource-card" href="/property-management/vacation-rental-management-fees-florida/">
-        <span>Fee Reality</span>
-        <h3>What Florida Managers Actually Charge</h3>
-        <p>Start here for real fee ranges, what changes pricing, and why a lower percentage can still leave you with less.</p>
-        <span class="owner-link">Read the fee guide →</span>
-      </a>
-      <a class="owner-resource-card" href="/property-management/switch-vacation-rental-management-company/">
-        <span>Switching Managers</span>
-        <h3>How To Switch Without Wrecking Momentum</h3>
-        <p>Use this page if you are deciding whether the current setup is fixable or whether it is time to change managers.</p>
-        <span class="owner-link">Read the switch guide →</span>
-      </a>
-      <a class="owner-resource-card" href="/guides/best-vacation-rental-companies-ami/">
-        <span>Competitive Review</span>
-        <h3>AMI Company Comparison</h3>
-        <p>Choose this page if you want a side-by-side look at boutique operators and bigger names before you decide who manages your home.</p>
-        <span class="owner-link">Read the comparison →</span>
-      </a>
-    </div>
-  </div>
-</section>
+<script>
+  (function () {
+    var page = document.querySelector("[data-owner-field-page]");
+    if (!page) return;
 
-<section class="section">
-  <div class="container">
-    <div class="owner-cta-panel" id="owner-cta">
-      {{ ownerEvaluationForm({
-        eyebrow: "Private teardown",
-        title: "Want this same review for your home?",
-        intro: "Send the listing URL, owner statement, fee quote, or property address. Seascape will review the available numbers and show what is clear, what looks expensive, and what still needs verification before any switch conversation.",
-        formTitle: "Request a Revenue Teardown",
-        formIntro: "Share whichever source is easiest. A listing URL is enough to start; an owner statement or fee quote makes the teardown sharper.",
-        proofNote: "The review uses the evidence available. Missing statements, calendars, reviews, or fee terms will be marked as missing instead of guessed.",
-        detailLabel: "What the review separates",
-        detailCopy: "The private review separates proven cost, likely cost, and missing information before recommending whether to stay put, fix the current setup, or talk about transition.",
-        confirmation: "Got it. Seascape will review what you send and return the clearest next step: stay put, fix the current setup, or talk about a transition.",
-        pageSlug: "property-management",
-        market: "florida-gulf-coast",
-        leadType: "owner-revenue-teardown",
-        buttonLabel: "Send My Teardown Request",
-        propertyFieldLabel: "Property address or market",
-        propertyFieldPlaceholder: "Anna Maria Island, Bradenton, Sarasota, or full street address",
-        showBenchmarkFields: true,
-        fileHelp: "PDF, spreadsheet, or screenshot. Missing statements, calendars, reviews, or fee terms will be marked as missing.",
-        note: "Send the property address or listing URL. We will compare fees, booking costs, and operating issues that may be reducing owner income."
-      }) }}
-      <p class="owner-secondary-contact">Prefer to talk first? <a href="tel:+19417048545" data-track-event="owner_phone_click" data-page-slug="property-management">Call (941) 704-8545</a></p>
-    </div>
-  </div>
-</section>
+    page.querySelectorAll("[data-owner-market]").forEach(function (marketRoot) {
+      var buttons = marketRoot.querySelectorAll("[data-market-button]");
+      var panels = marketRoot.querySelectorAll("[data-market-panel]");
 
-<section class="section">
-  <div class="container">
-    <div class="section-header">
-      <p class="section-tag">Owner Guides</p>
-      <h2 class="section-title">Operational guides that protect revenue and reduce risk</h2>
-      <p class="section-subtitle">Use these when cleaning, taxes, maintenance, screening, insurance, or acquisition questions are the real blockers.</p>
-    </div>
+      buttons.forEach(function (button) {
+        button.addEventListener("click", function () {
+          var id = button.getAttribute("data-market-button");
+          buttons.forEach(function (candidate) {
+            var active = candidate === button;
+            candidate.classList.toggle("is-active", active);
+            candidate.setAttribute("aria-pressed", active ? "true" : "false");
+          });
+          panels.forEach(function (panel) {
+            panel.classList.toggle("is-active", panel.getAttribute("data-market-panel") === id);
+          });
+        });
+      });
+    });
 
-    <div class="owner-resource-grid">
-      <a class="owner-resource-card" href="/property-management/new-vacation-rental-owner-guide-florida/">
-        <span>Owner Foundations</span>
-        <h3>New Vacation Rental Owner Guide</h3>
-        <p>Start here if you need the operating basics clear before you compare manager promises.</p>
-        <span class="owner-link">Read the owner guide →</span>
-      </a>
-      <a class="owner-resource-card" href="/property-management/increase-vacation-rental-bookings/">
-        <span>Demand Growth</span>
-        <h3>Increase Vacation Rental Bookings</h3>
-        <p>Use this page when occupancy, lead time, and weak demand capture are the real issue.</p>
-        <span class="owner-link">Read the booking guide →</span>
-      </a>
-      <a class="owner-resource-card" href="/property-management/vacation-rental-cleaning-services-florida/">
-        <span>Turnover Standards</span>
-        <h3>Cleaning Services That Protect Reviews</h3>
-        <p>Use this page if bad turns, inspection misses, and weak housekeeping control are costing you repeat business.</p>
-        <span class="owner-link">Read the cleaning guide →</span>
-      </a>
-      <a class="owner-resource-card" href="/property-management/vacation-rental-guest-screening/">
-        <span>Risk Control</span>
-        <h3>Guest Screening Standards</h3>
-        <p>Open this page if your real concern is property damage, neighbor friction, or low-quality bookings.</p>
-        <span class="owner-link">Read the screening guide →</span>
-      </a>
-      <a class="owner-resource-card" href="/property-management/vacation-rental-insurance-florida/">
-        <span>Protection</span>
-        <h3>Florida Vacation Rental Insurance</h3>
-        <p>Use this page if you need to separate real coverage from hand-wavy assumptions before something expensive happens.</p>
-        <span class="owner-link">Read the insurance guide →</span>
-      </a>
-      <a class="owner-resource-card" href="/property-management/vacation-rental-taxes-florida/">
-        <span>Tax Reality</span>
-        <h3>Florida Vacation Rental Taxes</h3>
-        <p>Read this page if local tax drag and compliance exposure are still fuzzy in your current setup.</p>
-        <span class="owner-link">Read the tax guide →</span>
-      </a>
-      <a class="owner-resource-card" href="/property-management/buy-vacation-rental-property-florida/">
-        <span>Investment Decisions</span>
-        <h3>Buy the Right Vacation Rental Property</h3>
-        <p>Use this before you buy another home just because a listing agent called it a short-term-rental opportunity.</p>
-        <span class="owner-link">Read the acquisition guide →</span>
-      </a>
-    </div>
-  </div>
-</section>
+    var form = page.querySelector(".owner-field-postcard");
+    if (!form) return;
+    var step = 0;
+    var dots = form.querySelectorAll("[data-form-goto]");
+    var steps = form.querySelectorAll("[data-form-step]");
+    var concernsInput = form.querySelector("[data-owner-concerns]");
+    var concerns = [];
 
-<section class="section" style="background: var(--cream-light);">
-  <div class="container">
-    <div class="section-header">
-      <p class="section-tag">Specific Situations</p>
-      <h2 class="section-title">Pages for transitions, platform issues, and setup problems</h2>
-      <p class="section-subtitle">These are for owners selling, leaving self-manage, dealing with platform-specific friction, or fixing setup issues before performance improves.</p>
-    </div>
+    function showStep(nextStep) {
+      step = Math.max(0, Math.min(steps.length - 1, nextStep));
+      steps.forEach(function (panel, index) {
+        panel.classList.toggle("is-active", index === step);
+      });
+      dots.forEach(function (dot, index) {
+        dot.classList.toggle("is-active", index === step);
+        dot.classList.toggle("is-complete", index < step);
+      });
+    }
 
-    <div class="owner-resource-grid">
-      <a class="owner-resource-card" href="/property-management/sell-vacation-rental-property-florida/">
-        <span>Exit Strategy</span>
-        <h3>Sell a Vacation Rental Property in Florida</h3>
-        <p>Use this page if you are deciding whether to hold, reposition, or sell instead of blindly sinking more money into a bad setup.</p>
-        <span class="owner-link">Read the sell guide →</span>
-      </a>
-      <a class="owner-resource-card" href="/property-management/switch-from-airbnb-self-manage/">
-        <span>Self-Manage Exit</span>
-        <h3>Switch From Airbnb Self-Manage</h3>
-        <p>Use this page if self-management is now costing you nights, time, or tolerance and you need a clean handoff path.</p>
-        <span class="owner-link">Read the self-manage guide →</span>
-      </a>
-      <a class="owner-resource-card" href="/property-management/vrbo-management-services-florida/">
-        <span>Platform Strategy</span>
-        <h3>VRBO Management Services</h3>
-        <p>Use this if your bookings lean VRBO-heavy and you need platform-specific expectations instead of generic marketplace talk.</p>
-        <span class="owner-link">Read the VRBO guide →</span>
-      </a>
-      <a class="owner-resource-card" href="/property-management/vacation-rental-licensing-florida/">
-        <span>Compliance</span>
-        <h3>Florida Licensing Requirements</h3>
-        <p>Read this before a permit, tax, or registration gap turns into a fine or a listing interruption.</p>
-        <span class="owner-link">Read the licensing guide →</span>
-      </a>
-      <a class="owner-resource-card" href="/property-management/vacation-rental-maintenance-florida/">
-        <span>Asset Protection</span>
-        <h3>Maintenance That Preserves Revenue</h3>
-        <p>Use this page if deferred maintenance is quietly converting future bookings into refund risk and review damage.</p>
-        <span class="owner-link">Read the maintenance guide →</span>
-      </a>
-      <a class="owner-resource-card" href="/property-management/vacation-rental-interior-design-florida/">
-        <span>Presentation</span>
-        <h3>Interior Design for Vacation Rentals</h3>
-        <p>Read this page if your home photographs flat, competes on price, or looks expensive to improve because the design is not doing its job.</p>
-        <span class="owner-link">Read the design guide →</span>
-      </a>
-      <a class="owner-resource-card" href="/property-management/vacation-rental-photography-florida/">
-        <span>Conversion Layer</span>
-        <h3>Vacation Rental Photography</h3>
-        <p>Use this page if the listing is losing clicks before pricing or management quality even get a chance to matter.</p>
-        <span class="owner-link">Read the photography guide →</span>
-      </a>
-    </div>
-  </div>
-</section>
+    form.querySelectorAll("[data-form-next]").forEach(function (button) {
+      button.addEventListener("click", function () {
+        showStep(step + 1);
+      });
+    });
 
-<section class="section">
-  <div class="container">
-    <div class="section-header">
-      <p class="section-tag">Selected FAQ</p>
-      <h2 class="section-title">What Gulf Coast owners usually ask first</h2>
-    </div>
-    <p class="owner-faq-note">Short answers to the questions owners usually ask before they hand over a home.</p>
+    form.querySelectorAll("[data-form-back]").forEach(function (button) {
+      button.addEventListener("click", function () {
+        showStep(step - 1);
+      });
+    });
 
-    <div class="faq-item">
-      <div class="faq-question">How do I know if my market can support professional management fees?</div>
-      <div class="faq-answer">Start with real demand and rate context, not generic national averages. Our <a href="/guides/2026-bradenton-vacation-rental-market-analysis/">Bradenton market analysis</a> and <a href="/guides/vacation-rental-income-anna-maria/">Anna Maria Island income guide</a> show the type of local data owners should compare against projected fees.</div>
-    </div>
-    <div class="faq-item">
-      <div class="faq-question">What should a local manager handle that a remote manager usually misses?</div>
-      <div class="faq-answer">The short answer is local response time. Cleaning quality control, maintenance triage, guest screening, and property checks are all weaker when the manager is not operating in-market. Our market-specific service pages break down how that changes between <a href="/property-management/vacation-rental-management-bradenton/">Bradenton</a>, <a href="/property-management/vacation-rental-management-sarasota/">Sarasota</a>, and <a href="/property-management/vacation-rental-management-anna-maria-island/">Anna Maria Island</a>.</div>
-    </div>
-    <div class="faq-item">
-      <div class="faq-question">What should I read before choosing a vacation rental manager?</div>
-      <div class="faq-answer">Start with the page that matches your market, then read the <a href="/property-management/vacation-rental-management-fees-florida/">fee reality page</a>, the <a href="/property-management/maximize-vacation-rental-income-florida/">income breakdown</a>, and the <a href="/property-management/switch-vacation-rental-management-company/">switch-management page</a> if you think the current setup is the real problem.</div>
-    </div>
-  </div>
-</section>
+    dots.forEach(function (dot) {
+      dot.addEventListener("click", function () {
+        showStep(Number(dot.getAttribute("data-form-goto")));
+      });
+    });
+
+    form.querySelectorAll("[data-concern]").forEach(function (button) {
+      button.addEventListener("click", function () {
+        var concern = button.getAttribute("data-concern");
+        var index = concerns.indexOf(concern);
+        if (index >= 0) concerns.splice(index, 1);
+        else concerns.push(concern);
+        button.classList.toggle("is-active", index < 0);
+        concernsInput.value = concerns.join(", ");
+      });
+    });
+  })();
+</script>
