@@ -344,6 +344,11 @@ headExtra: |
       color: white;
       font-weight: 600;
     }
+
+    .owner-form-note {
+      color: rgba(255, 255, 255, 0.88);
+      margin: 18px 0 0;
+    }
     @media (max-width: 920px) {
       .owner-hero-grid,
       .owner-choice-grid,
@@ -355,6 +360,12 @@ headExtra: |
 
       .owner-proof-band {
         margin-top: 0;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .owner-cta-panel {
+        padding: 24px 14px;
       }
     }
   </style>
@@ -543,7 +554,8 @@ headExtra: |
         pageSlug: "property-management",
         market: "florida-gulf-coast",
         leadType: "owner-revenue-teardown",
-        buttonLabel: "Send My Teardown Request"
+        buttonLabel: "Send My Teardown Request",
+        note: "Send the property address or listing URL. We will compare fees, booking costs, and operating issues that may be reducing owner income."
       }) }}
       <p class="owner-secondary-contact">Prefer to talk first? <a href="tel:+19417048545" data-track-event="owner_phone_click" data-page-slug="property-management">Call (941) 704-8545</a></p>
     </div>
