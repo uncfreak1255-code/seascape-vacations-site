@@ -11,6 +11,16 @@
 - UI logic narrated at the user: `instead of assuming the collection disappeared`, `short booking windows` (say "book this week" not "short booking window")
 - fake certainty when the proof is missing
 - owner pages that say `full service` five different ways and still never explain the leak
+- `routed through`
+- `OTA drag`
+- `rate power`
+- `channel mix`
+- `leak` / `leakage`
+- `fee stack`
+- `the home` (prefer `your home`/`your property` when clear)
+- `Use this when…`
+- `Read this if…`
+- `For homes where X, Y, and Z matter more than…`
 
 ## Proof Bans
 
