@@ -74,7 +74,46 @@
     .nav-links--owner {
         display: flex;
         margin-left: auto;
-        gap: 0;
+        gap: 24px;
+    }
+
+    .nav-owner-link {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        padding: 10px 0 9px;
+        color: var(--stone-light);
+        font-size: 13px;
+        font-weight: 500;
+        line-height: 1.2;
+        text-decoration: none;
+        white-space: nowrap;
+        transition: color 0.25s ease;
+    }
+
+    .nav-owner-link::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 4px;
+        height: 1px;
+        background: linear-gradient(90deg, var(--gold), rgba(201, 169, 98, 0.22));
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.25s ease;
+    }
+
+    .nav-owner-link:hover,
+    .nav-owner-link:focus-visible,
+    .nav-owner-link--current {
+        color: var(--brand-dark);
+    }
+
+    .nav-owner-link:hover::after,
+    .nav-owner-link:focus-visible::after,
+    .nav-owner-link--current::after {
+        transform: scaleX(1);
     }
 
     .nav-owner-cta {
@@ -307,6 +346,14 @@
             padding-bottom: 8px;
             font-size: 11px;
             letter-spacing: 0.12em;
+        }
+
+        .nav-owner-link {
+            display: none;
+        }
+
+        .nav-links--owner {
+            gap: 0;
         }
 
         .nav-logo img {
