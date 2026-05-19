@@ -190,6 +190,7 @@ headExtra: |
     --owner-deep: #0A1A1C;
     --owner-ink: var(--brand-darker);
     --owner-gold-hot: #F5E4B0;
+    --owner-paper: #FCF8E8;
     background: var(--cream);
     color: var(--stone);
     overflow: hidden;
@@ -234,14 +235,17 @@ headExtra: |
   .owner-hero::before {
     background: url("/images/owner-field-sarasota-sunset.jpg?v=claude-bplus") center/cover;
     transform: scale(1.01);
-    animation: owner-field-kenburns 40s ease-in-out infinite alternate;
+    animation: owner-field-kenburns 50s ease-in-out infinite alternate;
   }
 
   .owner-hero::after {
     background:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 240'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='2' seed='7'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23g)' opacity='0.42'/%3E%3C/svg%3E") center/220px 220px repeat,
       radial-gradient(ellipse at 72% 18%, rgba(245, 228, 176, 0.18), transparent 52%),
       radial-gradient(ellipse at 14% 92%, rgba(20, 60, 70, 0.28), transparent 60%),
       linear-gradient(180deg, rgba(10, 26, 28, 0.62) 0%, rgba(10, 26, 28, 0.28) 34%, rgba(10, 26, 28, 0.36) 64%, rgba(10, 26, 28, 0.9) 100%);
+    opacity: 0.93;
+    mix-blend-mode: overlay;
   }
 
   .owner-field-masthead {
@@ -352,6 +356,10 @@ headExtra: |
   .owner-field-phrase em.is-active {
     display: inline-block;
     animation: owner-field-phrase-in 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+
+  .sv-pm-h1-phrase-item {
+    font-style: italic;
   }
 
   .owner-field-display em {
@@ -655,6 +663,36 @@ headExtra: |
     text-transform: uppercase;
   }
 
+  .sv-magazine-header,
+  .owner-field-directory-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 56px;
+    padding-bottom: 18px;
+    border-bottom: 2px solid var(--owner-ink);
+  }
+
+  .sv-magazine-header-title {
+    color: var(--owner-ink);
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 32px;
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: -0.015em;
+    line-height: 1.1;
+    margin: 0;
+  }
+
+  .sv-magazine-header-meta {
+    color: var(--stone-light);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+  }
+
   .owner-field-benchmark-intro,
   .owner-field-form-intro {
     display: grid;
@@ -708,8 +746,13 @@ headExtra: |
   }
 
   .owner-field-stat {
-    padding: 22px 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 8px;
+    padding: 24px 0 20px;
     border-top: 1px solid rgba(45, 70, 71, 0.45);
+    border-bottom: 1px solid rgba(45, 70, 71, 0.45);
   }
 
   .owner-field-stat--large {
@@ -718,12 +761,11 @@ headExtra: |
     min-height: 420px;
     flex-direction: column;
     justify-content: space-between;
-    border-bottom: 1px solid rgba(45, 70, 71, 0.45);
   }
 
   .owner-field-stat strong {
     display: block;
-    margin: 18px 0 10px;
+    margin: 10px 0 0;
     color: var(--owner-ink);
     font-family: "Playfair Display", Georgia, serif;
     font-size: clamp(48px, 8vw, 126px);
@@ -736,10 +778,18 @@ headExtra: |
     font-size: clamp(38px, 4vw, 58px);
   }
 
+  .owner-field-stat-caption {
+    color: var(--gold);
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: clamp(18px, 2vw, 24px);
+    font-style: italic;
+    line-height: 1.2;
+  }
+
   .owner-field-stat p {
-    margin: 0;
+    margin: 4px 0 0;
     color: var(--stone-light);
-    font-size: 14px;
+    font-size: 13px;
     line-height: 1.7;
   }
 
@@ -756,7 +806,7 @@ headExtra: |
     overflow: hidden;
     border-radius: 8px;
     background: var(--owner-ink);
-    box-shadow: 0 30px 60px -30px rgba(45, 70, 71, 0.45);
+    box-shadow: inset 0 0 0 1px rgba(245, 228, 176, 0.15), 0 30px 60px -30px rgba(45, 70, 71, 0.45);
   }
 
   .owner-field-map svg {
@@ -764,6 +814,10 @@ headExtra: |
     inset: 0;
     width: 100%;
     height: 100%;
+  }
+
+  .owner-field-map-line.is-animating {
+    animation: owner-field-line-draw 0.7s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .owner-field-pin {
@@ -795,6 +849,7 @@ headExtra: |
     pointer-events: none;
     transform: translateX(-50%) translateY(8px);
     transition: opacity 0.25s ease, transform 0.25s ease;
+    animation: owner-field-preview-in 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   }
 
   .owner-field-pin:hover .owner-field-pin-preview,
@@ -851,6 +906,20 @@ headExtra: |
     width: 22px;
     height: 28px;
     color: var(--cream);
+  }
+
+  .owner-field-pin-ring {
+    position: absolute;
+    inset: -6px;
+    border: 1px solid var(--owner-gold-hot);
+    border-radius: 50%;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .owner-field-pin.is-active .owner-field-pin-ring {
+    opacity: 1;
+    animation: owner-field-pin-pulse 1.6s ease-out infinite;
   }
 
   .owner-field-pin-dot::before {
@@ -965,6 +1034,35 @@ headExtra: |
     letter-spacing: -0.025em;
   }
 
+  .owner-field-market-badge {
+    position: absolute;
+    z-index: 1;
+    top: 18px;
+    left: 18px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: rgba(10, 26, 28, 0.62);
+    color: var(--owner-gold-hot);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+  }
+
+  .owner-field-market-badge-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #7FDBA4;
+    box-shadow: 0 0 0 4px rgba(127, 219, 164, 0.18);
+    animation: owner-field-pulse 1.6s ease-in-out infinite;
+  }
+
   .owner-field-market-card p {
     max-width: 640px;
     margin: 0 0 32px;
@@ -981,14 +1079,16 @@ headExtra: |
   .owner-field-market-facts {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 14px;
+    gap: 24px;
+    padding: 24px 0;
+    border-top: 1px solid rgba(45, 70, 71, 0.9);
+    border-bottom: 1px solid rgba(45, 70, 71, 0.9);
   }
 
   .owner-field-market-facts div {
-    padding: 18px;
-    border: 1px solid rgba(201, 169, 98, 0.28);
-    border-radius: 8px;
-    background: var(--cream);
+    padding: 0;
+    border: 0;
+    background: transparent;
   }
 
   .owner-field-market-facts b {
@@ -1005,6 +1105,19 @@ headExtra: |
     font-weight: 800;
     letter-spacing: 0.18em;
     text-transform: uppercase;
+  }
+
+  .owner-field-market-guidance {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 26px;
+    color: var(--brand-dark);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    border-bottom: 1px solid var(--gold);
+    padding-bottom: 4px;
   }
 
   .owner-field-economics {
@@ -1071,59 +1184,144 @@ headExtra: |
 
   .owner-field-postcard {
     position: relative;
-    min-height: 480px;
+    min-height: 520px;
     overflow: hidden;
     border: 1px solid rgba(201, 169, 98, 0.32);
     border-radius: 12px;
-    background: var(--white);
+    background: var(--owner-paper);
     box-shadow: 0 40px 80px -30px rgba(45, 70, 71, 0.35), 0 1px 0 rgba(0, 0, 0, 0.04);
+  }
+
+  .owner-field-postcard-grain,
+  .owner-field-postcard-inner,
+  .owner-field-postcard-divider {
+    position: absolute;
+    pointer-events: none;
+  }
+
+  .owner-field-postcard-grain {
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.5;
+    mix-blend-mode: multiply;
+  }
+
+  .owner-field-postcard-inner {
+    inset: 14px;
+    border: 1px dashed var(--gold);
+    border-radius: 6px;
+    opacity: 0.32;
+  }
+
+  .owner-field-postcard-divider {
+    top: 36px;
+    right: 36%;
+    bottom: 36px;
+    width: 1px;
+    background: rgba(201, 169, 98, 0.25);
   }
 
   .owner-field-stamp {
     position: absolute;
     top: 28px;
-    right: 28px;
-    z-index: 1;
-    max-width: 180px;
-    padding: 12px 14px;
-    border: 1.5px dashed var(--gold);
+    right: 36px;
+    z-index: 2;
+    width: 110px;
+    height: 130px;
+    padding: 10px;
     border-radius: 4px;
-    background: rgba(245, 228, 176, 0.12);
-    color: var(--owner-ink);
-    font-family: "Playfair Display", Georgia, serif;
-    font-size: 14px;
-    font-style: italic;
+    background:
+      radial-gradient(circle at 0 0, transparent 0 4px, rgba(245, 228, 176, 0.08) 4px) 0 0 / 12px 12px repeat;
+    box-shadow: inset 0 0 0 1.5px var(--gold);
     transform: rotate(4deg);
   }
 
-  .owner-field-stamp b {
-    display: block;
+  .owner-field-stamp-inner {
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: 2px;
+    background: linear-gradient(135deg, #2D4647, #1F3A3C);
+    color: var(--owner-gold-hot);
+  }
+
+  .owner-field-stamp-label {
     margin-bottom: 4px;
-    color: var(--gold);
-    font-family: "Poppins", sans-serif;
-    font-size: 9px;
-    font-style: normal;
-    font-weight: 800;
+    font-size: 8px;
+    font-weight: 700;
     letter-spacing: 0.32em;
     text-transform: uppercase;
   }
 
+  .owner-field-stamp-time {
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 26px;
+    font-style: italic;
+    line-height: 1;
+  }
+
+  .owner-field-stamp-copy {
+    margin-top: 4px;
+    font-size: 7px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    opacity: 0.75;
+  }
+
+  .owner-field-stamp-cancel,
+  .owner-field-stamp-ring {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+  }
+
+  .owner-field-postcard[data-stamped="true"] .owner-field-stamp-cancel {
+    opacity: 1;
+    animation: owner-field-cancel-in 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.2s both;
+  }
+
+  .owner-field-postcard[data-stamped="true"] .owner-field-stamp-ring {
+    top: 4px;
+    left: 4px;
+    right: auto;
+    bottom: auto;
+    width: 22px;
+    height: 22px;
+    border: 1.5px solid var(--owner-gold-hot);
+    border-radius: 50%;
+    opacity: 0.6;
+    animation: owner-field-cancel-in 0.4s cubic-bezier(0.4, 0, 0.2, 1) 0.4s both;
+  }
+
   .owner-field-steps {
     display: flex;
-    gap: 18px;
+    align-items: center;
+    gap: 10px;
     min-height: 60px;
     padding: 28px 48px 0;
   }
 
   .owner-field-step-dot {
-    width: 28px;
-    height: 28px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
     border: 1.5px solid rgba(58, 58, 58, 0.16);
     border-radius: 50%;
+    padding: 0;
     background: transparent;
     color: var(--stone-light);
     font-family: "Playfair Display", Georgia, serif;
     font-size: 12px;
+    font-style: italic;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   }
 
   .owner-field-step-dot.is-active,
@@ -1132,27 +1330,80 @@ headExtra: |
     color: var(--gold);
   }
 
+  .owner-field-step-dot.is-active {
+    transform: scale(1.08);
+    box-shadow: 0 4px 14px rgba(201, 169, 98, 0.35);
+  }
+
   .owner-field-step-dot.is-complete {
     background: var(--gold);
     color: var(--white);
   }
 
+  .owner-field-step-line {
+    width: 36px;
+    height: 1px;
+    background: rgba(58, 58, 58, 0.15);
+    transition: background 0.4s ease;
+  }
+
+  .owner-field-step-line.is-complete {
+    background: var(--gold);
+  }
+
+  .owner-field-step-meta {
+    margin-left: auto;
+    padding-right: 4px;
+    color: var(--brand-dark);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .owner-field-step-meta::before {
+    content: "";
+    width: 18px;
+    height: 1px;
+    background: var(--gold);
+  }
+
   .owner-field-form-step {
     display: none;
     padding: 32px 48px 48px;
-    animation: owner-field-fade-up 0.4s ease both;
   }
 
   .owner-field-form-step.is-active {
     display: block;
+    animation: owner-field-step-in-fwd 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .owner-field-postcard[data-form-direction="back"] .owner-field-form-step.is-active {
+    animation-name: owner-field-step-in-back;
   }
 
   .owner-field-form-step em {
-    display: block;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
     margin-bottom: 18px;
-    color: var(--gold);
-    font-family: "Playfair Display", Georgia, serif;
-    font-size: 15px;
+    color: var(--brand-dark);
+    font-family: "Poppins", sans-serif;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+  }
+
+  .owner-field-form-step em::before {
+    content: "";
+    width: 18px;
+    height: 1px;
+    background: var(--gold);
   }
 
   .owner-field-form-step h3 {
@@ -1181,12 +1432,18 @@ headExtra: |
     max-width: 760px;
     border: 1px solid rgba(201, 169, 98, 0.26);
     border-radius: 0;
-    background: var(--cream-light);
+    background: rgba(250, 247, 238, 0.82);
     color: var(--owner-ink);
     font-family: "Playfair Display", Georgia, serif;
     font-size: 22px;
     line-height: 1.4;
     padding: 20px 24px;
+  }
+
+  .owner-field-input::placeholder,
+  .owner-field-textarea::placeholder {
+    font-style: italic;
+    color: rgba(58, 58, 58, 0.48);
   }
 
   .owner-field-textarea {
@@ -1202,20 +1459,40 @@ headExtra: |
   }
 
   .owner-field-choice {
+    position: relative;
     min-height: 54px;
     padding: 12px 16px;
     border: 1px solid rgba(95, 138, 139, 0.24);
     border-radius: 999px;
-    background: var(--cream-light);
+    background: rgba(252, 248, 232, 0.6);
     color: var(--owner-ink);
     font-size: 13px;
     font-weight: 600;
     cursor: pointer;
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .owner-field-choice:hover,
+  .owner-field-choice:focus-visible {
+    transform: translateY(-1px);
+    border-color: var(--gold);
+    box-shadow: 0 4px 12px rgba(201, 169, 98, 0.18);
   }
 
   .owner-field-choice.is-active {
     border-color: var(--gold);
-    background: rgba(201, 169, 98, 0.18);
+    background: rgba(201, 169, 98, 0.16);
+    box-shadow: inset 0 0 0 1px var(--gold);
+  }
+
+  .owner-field-choice.is-active::before {
+    content: "";
+    position: absolute;
+    inset: -6px;
+    border: 1.5px solid rgba(201, 169, 98, 0.4);
+    border-radius: 40px;
+    opacity: 0;
+    animation: owner-field-chip-stamp 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .owner-field-form-grid {
@@ -1268,6 +1545,79 @@ headExtra: |
     text-transform: none;
   }
 
+  .owner-field-seal {
+    position: absolute;
+    right: 56px;
+    bottom: -24px;
+    z-index: 4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 78px;
+    height: 78px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 32% 30%, #E8C875, #B8943A 60%, #8A6E2A 100%);
+    box-shadow: 0 10px 22px rgba(138, 110, 42, 0.35), inset 0 -3px 6px rgba(0, 0, 0, 0.18), inset 0 3px 6px rgba(255, 255, 255, 0.2);
+    color: var(--brand-darker);
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 30px;
+    font-style: italic;
+    transform: rotate(-8deg) scale(1);
+  }
+
+  .owner-field-postcard[data-stamped="true"] .owner-field-seal {
+    animation: owner-field-seal-stamp 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+    transform: rotate(-12deg) scale(1);
+  }
+
+  .owner-field-seal-ring {
+    position: absolute;
+    inset: -8px;
+    border: 2px solid #B8943A;
+    border-radius: 50%;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .owner-field-postcard[data-stamped="true"] .owner-field-seal-ring {
+    opacity: 0.4;
+    animation: owner-field-ink-ring 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .owner-field-confirm {
+    max-width: 760px;
+    padding: 28px 30px;
+    border: 1px solid rgba(201, 169, 98, 0.28);
+    background: rgba(250, 247, 238, 0.7);
+  }
+
+  .owner-field-confirm-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px 24px;
+    margin-top: 24px;
+  }
+
+  .owner-field-confirm-grid div {
+    display: grid;
+    gap: 6px;
+  }
+
+  .owner-field-confirm-grid b {
+    color: var(--stone-light);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .owner-field-confirm-grid span {
+    color: var(--owner-ink);
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 20px;
+    line-height: 1.3;
+  }
+
   .owner-field-guide-intro {
     max-width: 820px;
     margin: 0 0 72px;
@@ -1300,10 +1650,6 @@ headExtra: |
   }
 
   .owner-field-directory-head {
-    display: flex;
-    align-items: end;
-    justify-content: space-between;
-    gap: 24px;
     margin-bottom: 42px;
   }
 
@@ -1540,9 +1886,56 @@ headExtra: |
     100% { opacity: 1; transform: translateY(0) skewY(0); }
   }
 
+  @keyframes owner-field-step-in-fwd {
+    0% { opacity: 0; transform: translateX(40px) rotate(0.6deg); }
+    100% { opacity: 1; transform: translateX(0) rotate(0); }
+  }
+
+  @keyframes owner-field-step-in-back {
+    0% { opacity: 0; transform: translateX(-30px); }
+    100% { opacity: 1; transform: translateX(0); }
+  }
+
   @keyframes owner-field-pulse {
     0%, 100% { box-shadow: 0 0 0 4px rgba(127, 219, 164, 0.28); }
     50% { box-shadow: 0 0 0 7px rgba(127, 219, 164, 0.14); }
+  }
+
+  @keyframes owner-field-pin-pulse {
+    0% { transform: scale(1); opacity: 1; }
+    100% { transform: scale(2.4); opacity: 0; }
+  }
+
+  @keyframes owner-field-preview-in {
+    from { opacity: 0; transform: translateX(-50%) translateY(6px); }
+    to { opacity: 1; transform: translateX(-50%) translateY(0); }
+  }
+
+  @keyframes owner-field-line-draw {
+    from { stroke-dashoffset: 200; opacity: 0; }
+    to { stroke-dashoffset: 0; opacity: 0.7; }
+  }
+
+  @keyframes owner-field-seal-stamp {
+    0% { transform: rotate(-8deg) scale(2.4); opacity: 0; }
+    40% { transform: rotate(-8deg) scale(1.18); opacity: 1; }
+    60% { transform: rotate(-14deg) scale(0.92); }
+    100% { transform: rotate(-12deg) scale(1); }
+  }
+
+  @keyframes owner-field-ink-ring {
+    0% { transform: scale(0.5); opacity: 0.6; }
+    100% { transform: scale(2.2); opacity: 0; }
+  }
+
+  @keyframes owner-field-cancel-in {
+    from { opacity: 0; transform: translateX(-6px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  @keyframes owner-field-chip-stamp {
+    0% { transform: scale(0.85); opacity: 0.6; }
+    100% { transform: scale(1); opacity: 0; }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -1556,6 +1949,15 @@ headExtra: |
 
     .owner-field-ticker-item {
       transition: none;
+    }
+
+    .owner-field-postcard[data-stamped="true"] .owner-field-seal,
+    .owner-field-postcard[data-stamped="true"] .owner-field-seal-ring,
+    .owner-field-postcard[data-stamped="true"] .owner-field-stamp-cancel,
+    .owner-field-postcard[data-stamped="true"] .owner-field-stamp-ring,
+    .owner-field-pin.is-active .owner-field-pin-ring,
+    .owner-field-choice.is-active::before {
+      animation: none;
     }
   }
 
@@ -1606,6 +2008,29 @@ headExtra: |
 
     .owner-field-choice-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 900px) {
+    .owner-field-market-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .owner-field-map {
+      display: none;
+    }
+
+    .owner-field-market-card {
+      display: block;
+      padding-bottom: 34px;
+      margin-bottom: 34px;
+      border-bottom: 1px solid rgba(45, 70, 71, 0.14);
+    }
+
+    .owner-field-market-card:last-child {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: 0;
     }
   }
 
@@ -1670,7 +2095,8 @@ headExtra: |
       margin-bottom: 34px;
     }
 
-    .owner-field-directory-head span {
+    .owner-field-directory-head span,
+    .sv-magazine-header-meta {
       justify-self: end;
       letter-spacing: 0.26em;
     }
@@ -1687,13 +2113,34 @@ headExtra: |
 
     .owner-field-stamp {
       position: static;
-      width: max-content;
       margin: 22px 28px 0 auto;
+    }
+
+    .owner-field-postcard-divider {
+      display: none;
     }
 
     .owner-field-steps,
     .owner-field-form-step {
       padding-inline: 28px;
+    }
+
+    .owner-field-steps {
+      flex-wrap: wrap;
+    }
+
+    .owner-field-step-meta {
+      width: 100%;
+      margin-left: 0;
+      padding-right: 0;
+    }
+
+    .owner-field-confirm-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .owner-field-seal {
+      right: 24px;
     }
 
     .owner-field-form-proof {
@@ -1729,7 +2176,7 @@ headExtra: |
     <div class="owner-field-shell owner-field-hero-grid">
       <div>
         <div class="owner-field-kicker">The Property Management Brief</div>
-        <h1 id="owner-field-title">What does your<br><span class="owner-field-phrase" data-owner-phrases aria-label="island rental"><em class="is-active">island rental</em><em>pool home</em><em>beach condo</em><em>Gulf Coast home</em></span><br>actually keep?</h1>
+        <h1 id="owner-field-title">What does your<br><span class="owner-field-phrase" data-owner-phrases aria-label="island rental"><em class="sv-pm-h1-phrase-item is-active">island rental</em><em class="sv-pm-h1-phrase-item">pool home</em><em class="sv-pm-h1-phrase-item">beach condo</em><em class="sv-pm-h1-phrase-item">Gulf Coast home</em></span><br>actually keep?</h1>
         <p class="owner-field-hero-copy">A dispatch from a five-home Gulf Coast portfolio: what we actually see in fees, channels, pricing, and execution. Send us your listing; we will send back a one-page teardown.</p>
         <div class="owner-field-actions">
           <a class="btn btn-gold owner-field-btn" href="#owner-cta" data-track-event="owner_primary_cta_click" data-page-slug="property-management">Request Your Revenue Teardown</a>
@@ -1765,12 +2212,12 @@ headExtra: |
       <div class="owner-field-shell owner-field-ticker-inner">
         <span class="owner-field-ticker-label">Live · Portfolio</span>
         <div class="owner-field-ticker-track">
-          <div class="owner-field-ticker-item is-active" data-ticker-item><strong>$1.4M</strong><span>annual rental revenue · 5 homes</span></div>
-          <div class="owner-field-ticker-item" data-ticker-item><strong>$119,923</strong><span>shifted off OTA commissions in 2025</span></div>
-          <div class="owner-field-ticker-item" data-ticker-item><strong>13.4% → 2.9%</strong><span>host fee · vs direct payment cost</span></div>
-          <div class="owner-field-ticker-item" data-ticker-item><strong>16.4%</strong><span>Bradenton Pool · March 2026</span></div>
-          <div class="owner-field-ticker-item" data-ticker-item><strong>200+</strong><span>teardowns delivered to owners</span></div>
-          <div class="owner-field-ticker-item" data-ticker-item><strong>48 hr</strong><span>turnaround on every teardown</span></div>
+          <div class="owner-field-ticker-item sv-pm-ticker-fact is-active" data-ticker-item><strong>$1.4M</strong><span>annual rental revenue · 5 homes</span></div>
+          <div class="owner-field-ticker-item sv-pm-ticker-fact" data-ticker-item><strong>$119,923</strong><span>shifted off OTA commissions in 2025</span></div>
+          <div class="owner-field-ticker-item sv-pm-ticker-fact" data-ticker-item><strong>13.4% → 2.9%</strong><span>host fee · vs direct payment cost</span></div>
+          <div class="owner-field-ticker-item sv-pm-ticker-fact" data-ticker-item><strong>16.4%</strong><span>Bradenton Pool · March 2026</span></div>
+          <div class="owner-field-ticker-item sv-pm-ticker-fact" data-ticker-item><strong>200+</strong><span>teardowns delivered to owners</span></div>
+          <div class="owner-field-ticker-item sv-pm-ticker-fact" data-ticker-item><strong>48 hr</strong><span>turnaround on every teardown</span></div>
         </div>
         <div class="owner-field-ticker-dots" aria-label="Portfolio fact selector">
           <button class="owner-field-ticker-dot is-active" type="button" data-ticker-dot="0" aria-label="Show portfolio fact 1"></button>
@@ -1786,9 +2233,9 @@ headExtra: |
 
   <section class="owner-field-section" id="benchmark">
     <div class="owner-field-shell">
-      <div class="owner-field-rule">
-        <h2>The Benchmark</h2>
-        <span>Pages 4-5 · Section 1</span>
+      <div class="owner-field-rule sv-magazine-header">
+        <h2 class="sv-magazine-header-title">The Benchmark</h2>
+        <span class="sv-magazine-header-meta">Pages 4-5 · §1</span>
       </div>
       <div class="owner-field-benchmark-intro">
         <p class="owner-field-pullquote"><span class="owner-field-drop">"</span>Property management for owners who care about what they actually keep. What to look at before you change managers starts with these four numbers.</p>
@@ -1798,29 +2245,28 @@ headExtra: |
         <article class="owner-field-stat owner-field-stat--large">
           <div>
             <div class="owner-field-label">Portfolio Revenue</div>
-            <strong>$1.4M</strong>
+            <strong><span data-countup-value="1.4" data-countup-prefix="$" data-countup-suffix="M">0</span></strong>
+            <div class="owner-field-stat-caption">annual Gulf Coast portfolio</div>
           </div>
           <p>Annual rental revenue across Seascape's five active Gulf Coast homes.</p>
         </article>
         <article class="owner-field-stat">
           <div class="owner-field-label">Fee Fit</div>
           <strong>Not Flat</strong>
+          <div class="owner-field-stat-caption">management math changes by home</div>
           <p>No single flat fee. Homes in the right band fit 15% plus admin; lower-yield homes need different math.</p>
         </article>
         <article class="owner-field-stat">
           <div class="owner-field-label">Direct Channel</div>
           <strong>$119,923</strong>
+          <div class="owner-field-stat-caption">moved off OTA commissions</div>
           <p>Direct booking revenue shifted off OTA commissions, back toward owner economics.</p>
         </article>
         <article class="owner-field-stat">
           <div class="owner-field-label">Host Fee Average</div>
           <strong>13.4%</strong>
-          <p>Observed Airbnb host-fee average across the portfolio.</p>
-        </article>
-        <article class="owner-field-stat">
-          <div class="owner-field-label">Cost Example</div>
-          <strong>16.4%</strong>
-          <p>Bradenton Pool's March 2026 effective Airbnb host-fee cost.</p>
+          <div class="owner-field-stat-caption">vs roughly 2.9% on direct payment</div>
+          <p>Observed Airbnb host-fee average across the portfolio; Bradenton Pool hit 16.4% in March 2026.</p>
         </article>
       </div>
     </div>
@@ -1828,9 +2274,9 @@ headExtra: |
 
   <section class="owner-field-section owner-field-section--light" id="markets">
     <div class="owner-field-shell">
-      <div class="owner-field-rule">
-        <h2>By Market</h2>
-        <span>7 markets mapped · Pages 6-7 · Section 2</span>
+      <div class="owner-field-rule sv-magazine-header">
+        <h2 class="sv-magazine-header-title">By Market</h2>
+        <span class="sv-magazine-header-meta">Pages 6-7 · §2</span>
       </div>
       <div class="owner-field-market-grid" data-owner-market>
         <div class="owner-field-map" aria-label="Bradenton Sarasota corridor portfolio map">
@@ -1849,54 +2295,61 @@ headExtra: |
             <path d="M180 -10 L220 30 L240 80 L235 130 L250 180 L245 230 L270 280 L290 330 L310 400 L340 500 L400 500 L400 -10 Z" fill="#F5EED6" opacity="0.92"></path>
             <path d="M180 -10 L220 30 L240 80 L235 130 Q200 130 175 110 Q160 80 165 40 Z" fill="#1F3A3C" opacity="0.85"></path>
             <path d="M175 130 Q195 200 225 270 Q255 350 285 430" stroke="rgba(201,169,98,0.4)" stroke-width="1" stroke-dasharray="3 4" fill="none"></path>
-            <line data-market-line x1="176" y1="200" x2="200" y2="300" stroke="#F5E4B0" stroke-width="1.2" stroke-dasharray="4 5" opacity="0.72"></line>
+            <line class="owner-field-map-line is-animating" data-market-line x1="176" y1="200" x2="200" y2="300" stroke="#F5E4B0" stroke-width="1.2" stroke-dasharray="4 5" stroke-dashoffset="0" opacity="0.72"></line>
             <text x="22" y="32" fill="rgba(245,228,176,0.6)" font-size="8" letter-spacing="0.3em" font-family="Poppins" font-weight="600">SEASCAPE PORTFOLIO MAP</text>
             <text x="22" y="46" fill="rgba(245,228,176,0.4)" font-size="9" font-family="Playfair Display" font-style="italic">Bradenton - Sarasota corridor</text>
           </svg>
           <div class="owner-field-hq" aria-hidden="true"><span>Seascape HQ</span></div>
-          <button class="owner-field-pin" type="button" data-market-button="ami" data-map-x="104" data-map-y="140" style="--x: 26%; --y: 28%; --preview: url('/images/owner-field-ami-cottages.jpg');" aria-pressed="false"><span class="owner-field-pin-preview"><i></i><b>Anna Maria Island</b><small>ADR $348 · 71% occ</small></span><span class="owner-field-pin-dot"></span><span>Anna Maria Island</span></button>
-          <button class="owner-field-pin" type="button" data-market-button="holmes" data-map-x="112" data-map-y="180" style="--x: 28%; --y: 36%; --preview: url('/images/owner-field-longboat.jpg');" aria-pressed="false"><span class="owner-field-pin-preview"><i></i><b>Holmes Beach</b><small>ADR $342 · 69% occ</small></span><span class="owner-field-pin-dot"></span><span>Holmes Beach</span></button>
-          <button class="owner-field-pin" type="button" data-market-button="cortez" data-map-x="132" data-map-y="210" style="--x: 33%; --y: 42%; --preview: url('/images/owner-field-bradenton.jpg');" aria-pressed="false"><span class="owner-field-pin-preview"><i></i><b>Cortez</b><small>ADR $268 · 66% occ</small></span><span class="owner-field-pin-dot"></span><span>Cortez</span></button>
-          <button class="owner-field-pin" type="button" data-market-button="bradenton" data-map-x="176" data-map-y="200" style="--x: 44%; --y: 40%; --preview: url('/images/owner-field-bradenton.jpg');" aria-pressed="false"><span class="owner-field-pin-preview"><i></i><b>Bradenton</b><small>ADR $301 · 68% occ</small></span><span class="owner-field-pin-dot"></span><span>Bradenton</span></button>
-          <button class="owner-field-pin" type="button" data-market-button="longboat" data-map-x="120" data-map-y="280" style="--x: 30%; --y: 56%; --preview: url('/images/owner-field-longboat.jpg');" aria-pressed="false"><span class="owner-field-pin-preview"><i></i><b>Longboat Key</b><small>ADR $438 · 58% occ</small></span><span class="owner-field-pin-dot"></span><span>Longboat Key</span></button>
-          <button class="owner-field-pin is-active" type="button" data-market-button="sarasota" data-map-x="200" data-map-y="300" style="--x: 50%; --y: 60%; --preview: url('/images/owner-field-sarasota.jpg');" aria-pressed="true"><span class="owner-field-pin-preview"><i></i><b>Sarasota</b><small>ADR $412 · 64% occ</small></span><span class="owner-field-pin-dot"></span><span>Sarasota</span></button>
-          <button class="owner-field-pin" type="button" data-market-button="siesta" data-map-x="152" data-map-y="360" style="--x: 38%; --y: 72%; --preview: url('/images/owner-field-siesta-key.jpg');" aria-pressed="false"><span class="owner-field-pin-preview"><i></i><b>Siesta Key</b><small>ADR $385 · 70% occ</small></span><span class="owner-field-pin-dot"></span><span>Siesta Key</span></button>
+          <button class="owner-field-pin sv-pinmap-pin" type="button" data-market-button="ami" data-map-x="104" data-map-y="140" style="--x: 26%; --y: 28%; --preview: url('/images/owner-field-ami-cottages.jpg');" aria-pressed="false"><span class="owner-field-pin-preview"><i></i><b>Anna Maria Island</b><small>ADR $348 · 71% occ</small></span><span class="owner-field-pin-dot"><span class="owner-field-pin-ring"></span></span><span>Anna Maria Island</span></button>
+          <button class="owner-field-pin sv-pinmap-pin" type="button" data-market-button="holmes" data-map-x="112" data-map-y="180" style="--x: 28%; --y: 36%; --preview: url('/images/owner-field-longboat.jpg');" aria-pressed="false"><span class="owner-field-pin-preview"><i></i><b>Holmes Beach</b><small>ADR $342 · 69% occ</small></span><span class="owner-field-pin-dot"><span class="owner-field-pin-ring"></span></span><span>Holmes Beach</span></button>
+          <button class="owner-field-pin sv-pinmap-pin" type="button" data-market-button="cortez" data-map-x="132" data-map-y="210" style="--x: 33%; --y: 42%; --preview: url('/images/owner-field-bradenton.jpg');" aria-pressed="false"><span class="owner-field-pin-preview"><i></i><b>Cortez</b><small>ADR $268 · 66% occ</small></span><span class="owner-field-pin-dot"><span class="owner-field-pin-ring"></span></span><span>Cortez</span></button>
+          <button class="owner-field-pin sv-pinmap-pin" type="button" data-market-button="bradenton" data-map-x="176" data-map-y="200" style="--x: 44%; --y: 40%; --preview: url('/images/owner-field-bradenton.jpg');" aria-pressed="false"><span class="owner-field-pin-preview"><i></i><b>Bradenton</b><small>ADR $301 · 68% occ</small></span><span class="owner-field-pin-dot"><span class="owner-field-pin-ring"></span></span><span>Bradenton</span></button>
+          <button class="owner-field-pin sv-pinmap-pin" type="button" data-market-button="longboat" data-map-x="120" data-map-y="280" style="--x: 30%; --y: 56%; --preview: url('/images/owner-field-longboat.jpg');" aria-pressed="false"><span class="owner-field-pin-preview"><i></i><b>Longboat Key</b><small>ADR $438 · 58% occ</small></span><span class="owner-field-pin-dot"><span class="owner-field-pin-ring"></span></span><span>Longboat Key</span></button>
+          <button class="owner-field-pin sv-pinmap-pin is-active" type="button" data-market-button="sarasota" data-map-x="200" data-map-y="300" style="--x: 50%; --y: 60%; --preview: url('/images/owner-field-sarasota.jpg');" aria-pressed="true"><span class="owner-field-pin-preview"><i></i><b>Sarasota</b><small>ADR $412 · 64% occ</small></span><span class="owner-field-pin-dot"><span class="owner-field-pin-ring"></span></span><span>Sarasota</span></button>
+          <button class="owner-field-pin sv-pinmap-pin" type="button" data-market-button="siesta" data-map-x="152" data-map-y="360" style="--x: 38%; --y: 72%; --preview: url('/images/owner-field-siesta-key.jpg');" aria-pressed="false"><span class="owner-field-pin-preview"><i></i><b>Siesta Key</b><small>ADR $385 · 70% occ</small></span><span class="owner-field-pin-dot"><span class="owner-field-pin-ring"></span></span><span>Siesta Key</span></button>
         </div>
         <div>
           <article class="owner-field-market-card" data-market-panel="ami">
-            <div class="owner-field-market-photo" style="background-image: url('/images/owner-field-ami-cottages.jpg');"><strong>Anna Maria Island</strong></div>
+            <div class="owner-field-market-photo" style="background-image: url('/images/owner-field-ami-cottages.jpg');"><span class="owner-field-market-badge"><span class="owner-field-market-badge-dot"></span>GPS lock · AMI</span><strong>Anna Maria Island</strong></div>
             <p>Island homes prioritize rate protection, reliable channels, and local execution when occupancy alone is not enough to protect return.</p>
             <div class="owner-field-market-facts"><div><b>$348</b><span>ADR</span></div><div><b>71%</b><span>Occ.</span></div><div><b>24%</b><span>Direct</span></div></div>
+            <a class="owner-field-market-guidance" href="/property-management/vacation-rental-management-anna-maria-island/">View Anna Maria Island guidance <span aria-hidden="true">→</span></a>
           </article>
           <article class="owner-field-market-card" data-market-panel="holmes">
-            <div class="owner-field-market-photo" style="background-image: url('/images/owner-field-longboat.jpg');"><strong>Holmes Beach</strong></div>
+            <div class="owner-field-market-photo" style="background-image: url('/images/owner-field-longboat.jpg');"><span class="owner-field-market-badge"><span class="owner-field-market-badge-dot"></span>GPS lock · HOLMES</span><strong>Holmes Beach</strong></div>
             <p>Quiet stretches of Holmes Beach pull repeat guests who want walkability, calm weeks, and local service instead of crowded beach traffic.</p>
             <div class="owner-field-market-facts"><div><b>$342</b><span>ADR</span></div><div><b>69%</b><span>Occ.</span></div><div><b>21%</b><span>Direct</span></div></div>
+            <a class="owner-field-market-guidance" href="/guides/holmes-beach-area-guide/">View Holmes Beach guidance <span aria-hidden="true">→</span></a>
           </article>
           <article class="owner-field-market-card" data-market-panel="cortez">
-            <div class="owner-field-market-photo" style="background-image: url('/images/owner-field-bradenton.jpg');"><strong>Cortez</strong></div>
+            <div class="owner-field-market-photo" style="background-image: url('/images/owner-field-bradenton.jpg');"><span class="owner-field-market-badge"><span class="owner-field-market-badge-dot"></span>GPS lock · CORTEZ</span><strong>Cortez</strong></div>
             <p>Cortez homes win on authenticity: fishing village texture, family demand, and a no-high-rise story that has to be priced clearly.</p>
             <div class="owner-field-market-facts"><div><b>$268</b><span>ADR</span></div><div><b>66%</b><span>Occ.</span></div><div><b>17%</b><span>Direct</span></div></div>
+            <a class="owner-field-market-guidance" href="/guides/bradenton-area-guide/">View Cortez guidance <span aria-hidden="true">→</span></a>
           </article>
           <article class="owner-field-market-card" data-market-panel="bradenton">
-            <div class="owner-field-market-photo" style="background-image: url('/images/owner-field-bradenton.jpg');"><strong>Bradenton</strong></div>
+            <div class="owner-field-market-photo" style="background-image: url('/images/owner-field-bradenton.jpg');"><span class="owner-field-market-badge"><span class="owner-field-market-badge-dot"></span>GPS lock · BRADENTON</span><strong>Bradenton</strong></div>
             <p>In Bradenton homes, pricing, pool value, and location positioning still decide the return.</p>
             <div class="owner-field-market-facts"><div><b>$301</b><span>ADR</span></div><div><b>68%</b><span>Occ.</span></div><div><b>18%</b><span>Direct</span></div></div>
+            <a class="owner-field-market-guidance" href="/property-management/vacation-rental-management-bradenton/">View Bradenton guidance <span aria-hidden="true">→</span></a>
           </article>
           <article class="owner-field-market-card" data-market-panel="longboat">
-            <div class="owner-field-market-photo" style="background-image: url('/images/owner-field-longboat.jpg');"><strong>Longboat Key</strong></div>
+            <div class="owner-field-market-photo" style="background-image: url('/images/owner-field-longboat.jpg');"><span class="owner-field-market-badge"><span class="owner-field-market-badge-dot"></span>GPS lock · LONGBOAT</span><strong>Longboat Key</strong></div>
             <p>Longboat owners trade volume for rate. Channel quality and guest screening do more than discounting.</p>
             <div class="owner-field-market-facts"><div><b>$438</b><span>ADR</span></div><div><b>58%</b><span>Occ.</span></div><div><b>22%</b><span>Direct</span></div></div>
+            <a class="owner-field-market-guidance" href="/guides/longboat-key-area-guide/">View Longboat Key guidance <span aria-hidden="true">→</span></a>
           </article>
           <article class="owner-field-market-card is-active" data-market-panel="sarasota">
-            <div class="owner-field-market-photo" style="background-image: url('/images/owner-field-sarasota.jpg');"><strong>Sarasota</strong></div>
+            <div class="owner-field-market-photo" style="background-image: url('/images/owner-field-sarasota.jpg');"><span class="owner-field-market-badge"><span class="owner-field-market-badge-dot"></span>GPS lock · SARASOTA</span><strong>Sarasota</strong></div>
             <p>Sarasota owners need presentation, guest quality, and rate discipline to stay tight.</p>
             <div class="owner-field-market-facts"><div><b>$412</b><span>ADR</span></div><div><b>64%</b><span>Occ.</span></div><div><b>21%</b><span>Direct</span></div></div>
+            <a class="owner-field-market-guidance" href="/property-management/vacation-rental-management-sarasota/">View Sarasota guidance <span aria-hidden="true">→</span></a>
           </article>
           <article class="owner-field-market-card" data-market-panel="siesta">
-            <div class="owner-field-market-photo" style="background-image: url('/images/owner-field-siesta-key.jpg');"><strong>Siesta Key</strong></div>
+            <div class="owner-field-market-photo" style="background-image: url('/images/owner-field-siesta-key.jpg');"><span class="owner-field-market-badge"><span class="owner-field-market-badge-dot"></span>GPS lock · SIESTA</span><strong>Siesta Key</strong></div>
             <p>On beach properties, guest expectations are high and presentation has to match the rate.</p>
             <div class="owner-field-market-facts"><div><b>$385</b><span>ADR</span></div><div><b>70%</b><span>Occ.</span></div><div><b>19%</b><span>Direct</span></div></div>
+            <a class="owner-field-market-guidance" href="/property-management/vacation-rental-management-siesta-key/">View Siesta Key guidance <span aria-hidden="true">→</span></a>
           </article>
         </div>
       </div>
@@ -1905,7 +2358,11 @@ headExtra: |
 
   <section class="owner-field-section" id="economics">
     <div class="owner-field-shell owner-field-economics">
-      <div class="owner-field-label">Commission Reality · Section 3</div>
+      <div class="owner-field-rule sv-magazine-header">
+        <h2 class="sv-magazine-header-title">Owner Economics</h2>
+        <span class="sv-magazine-header-meta">Pages 8-11 · §3</span>
+      </div>
+      <div class="owner-field-label">Commission Reality</div>
       <div class="owner-field-mega" aria-label="13.4% → 2.9%">13.4<span>&rarr;</span>2.9</div>
       <div class="owner-field-mega-sub">percent · the commission gap</div>
       <p>Owners often compare one manager at 15%, another at 20%, another at 25% as if that settles the decision. It usually does not.</p>
@@ -1919,41 +2376,63 @@ headExtra: |
 
   <section class="owner-field-section--form" id="owner-cta">
     <div class="owner-field-shell">
-      <div class="owner-field-rule">
-        <h2>Send us a postcard.</h2>
-        <span>Pages 12-13 · Section 4</span>
+      <div class="owner-field-rule sv-magazine-header">
+        <h2 class="sv-magazine-header-title">Send us a postcard.</h2>
+        <span class="sv-magazine-header-meta">Pages 12-13 · §4</span>
       </div>
       <div class="owner-field-form-intro">
         <h2 class="owner-field-display">Tell us what you have got. We will send back <em>a one-page teardown.</em></h2>
         <p class="owner-field-deck">Four short questions, two minutes. A real Seascape person reads every reply and writes a one-pager, usually within 48 hours. No sales call, no calendar invite.</p>
       </div>
       {# Source contract: ownerEvaluationForm({ showBenchmarkFields: true, propertyFieldLabel: "Property address or market" }) #}
-      <form class="owner-field-postcard" name="owner-revenue-teardown" method="POST" enctype="multipart/form-data" data-netlify="true" netlify-honeypot="bot-field" data-track-form="owner" data-form-start-event="owner_form_start" data-form-submit-event="owner_form_submit" data-page-slug="property-management" data-source-page-slug="property-management" data-market="florida-gulf-coast">
+      <form class="owner-field-postcard" name="owner-revenue-teardown" method="POST" enctype="multipart/form-data" data-netlify="true" netlify-honeypot="bot-field" data-track-form="owner" data-form-start-event="owner_form_start" data-form-submit-event="owner_form_submit" data-page-slug="property-management" data-source-page-slug="property-management" data-market="florida-gulf-coast" data-form-direction="forward" data-stamped="false">
         <input type="hidden" name="form-name" value="owner-revenue-teardown">
         <input type="hidden" name="page_slug" value="property-management">
         <input type="hidden" name="source_page_slug" value="property-management">
         <input type="hidden" name="market" value="florida-gulf-coast">
         <input type="hidden" name="lead_type" value="owner-revenue-teardown">
         <input type="hidden" name="concerns" data-owner-concerns>
+        <input type="hidden" name="listing_url" data-owner-listing-mirror>
         <p hidden><label>Do not fill this out if you are human: <input name="bot-field"></label></p>
-        <div class="owner-field-stamp"><b>48-hr reply</b>From Seascape, with care.</div>
+        <svg class="owner-field-postcard-grain" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><filter id="ownerFieldPaper"><feTurbulence type="fractalNoise" baseFrequency="1.4" numOctaves="2" seed="3"></feTurbulence><feColorMatrix type="matrix" values="0 0 0 0 0.85 0 0 0 0 0.78 0 0 0 0 0.62 0 0 0 0.08 0"></feColorMatrix></filter><rect width="100" height="100" filter="url(#ownerFieldPaper)"></rect></svg>
+        <div class="owner-field-postcard-inner" aria-hidden="true"></div>
+        <div class="owner-field-postcard-divider" aria-hidden="true"></div>
+        <div class="owner-field-stamp" aria-hidden="true">
+          <div class="owner-field-stamp-inner">
+            <div class="owner-field-stamp-label">Seascape</div>
+            <div class="owner-field-stamp-time">48hr</div>
+            <div class="owner-field-stamp-copy">Reply guaranteed</div>
+            <div class="owner-field-stamp-cancel">
+              <svg width="100%" height="100%" viewBox="0 0 100 120" preserveAspectRatio="none">
+                <path d="M -10 30 Q 30 26, 50 32 T 110 28" stroke="#F5E4B0" stroke-width="1.2" fill="none" opacity="0.7"></path>
+                <path d="M -10 60 Q 30 56, 50 62 T 110 58" stroke="#F5E4B0" stroke-width="1.2" fill="none" opacity="0.7"></path>
+                <path d="M -10 88 Q 30 84, 50 90 T 110 86" stroke="#F5E4B0" stroke-width="1.2" fill="none" opacity="0.7"></path>
+              </svg>
+            </div>
+            <div class="owner-field-stamp-ring"></div>
+          </div>
+        </div>
         <div class="owner-field-steps" aria-label="Form progress">
           <button class="owner-field-step-dot is-active" type="button" data-form-goto="0" aria-label="Go to step 1">1</button>
+          <span class="owner-field-step-line" aria-hidden="true"></span>
           <button class="owner-field-step-dot" type="button" data-form-goto="1" aria-label="Go to step 2">2</button>
+          <span class="owner-field-step-line" aria-hidden="true"></span>
           <button class="owner-field-step-dot" type="button" data-form-goto="2" aria-label="Go to step 3">3</button>
+          <span class="owner-field-step-line" aria-hidden="true"></span>
           <button class="owner-field-step-dot" type="button" data-form-goto="3" aria-label="Go to step 4">4</button>
+          <div class="owner-field-step-meta" data-form-meta>Question 1 of 4</div>
         </div>
-        <div class="owner-field-form-step is-active" data-form-step="0">
+        <div class="owner-field-form-step sv-postcard-panel is-active" data-form-step="0">
           <em>Question 1 of 4</em>
           <h3>What home are we looking at?</h3>
           <p>A listing URL, an address, or the property name. If you would rather just describe it, that is fine too.</p>
-          <input class="owner-field-input" type="text" name="property_address" autocomplete="street-address" placeholder="airbnb.com/h/your-listing · or · 4250 Palm Ave, Bradenton" required>
+          <input class="owner-field-input" type="text" name="property_address" autocomplete="street-address" placeholder="airbnb.com/h/your-listing · or · 4250 Palm Ave, Bradenton">
           <div class="owner-field-form-actions">
             <button class="owner-field-btn btn-gold" type="button" data-form-next>Continue <span aria-hidden="true">→</span></button>
             <button class="owner-field-muted-button" type="button" data-form-next>Skip, I would rather describe it</button>
           </div>
         </div>
-        <div class="owner-field-form-step" data-form-step="1">
+        <div class="owner-field-form-step sv-postcard-panel" data-form-step="1" hidden>
           <em>Question 2 of 4</em>
           <h3>What feels expensive or unclear right now?</h3>
           <p>Pick any that apply. This just points the teardown at the right part of the owner economics.</p>
@@ -1970,31 +2449,40 @@ headExtra: |
             <button class="owner-field-muted-button" type="button" data-form-back>Back</button>
           </div>
         </div>
-        <div class="owner-field-form-step" data-form-step="2">
+        <div class="owner-field-form-step sv-postcard-panel" data-form-step="2" hidden>
           <em>Question 3 of 4</em>
-          <h3>Anything we should know before reading it?</h3>
-          <p>Current manager, rough fee quote, self-management pain, calendar gaps, or the moment that made you start looking.</p>
-          <textarea class="owner-field-textarea" name="what_feels_off" rows="4" placeholder="Example: too Airbnb-heavy, weak reporting, discounting, maintenance misses, or review-quality drift"></textarea>
+          <h3>Where should we send the teardown?</h3>
+          <p>Name, email, and a phone number if you want us to text when it is ready.</p>
+          <div class="owner-field-form-grid">
+            <label>Your name <input class="owner-field-input" type="text" name="name" autocomplete="name" placeholder="First and last name" required></label>
+            <label>Email <input class="owner-field-input" type="email" name="email" autocomplete="email" placeholder="you@example.com" required></label>
+            <label style="grid-column: 1 / -1;">Phone <input class="owner-field-input" type="tel" name="phone" autocomplete="tel" placeholder="(941) 555-1234"></label>
+          </div>
           <div class="owner-field-form-actions">
             <button class="owner-field-btn btn-gold" type="button" data-form-next>Continue <span aria-hidden="true">→</span></button>
             <button class="owner-field-muted-button" type="button" data-form-back>Back</button>
           </div>
         </div>
-        <div class="owner-field-form-step" data-form-step="3">
+        <div class="owner-field-form-step sv-postcard-panel" data-form-step="3" hidden>
           <em>Question 4 of 4</em>
-          <h3>Where should we send the teardown?</h3>
+          <h3>Ready to stamp this and send it?</h3>
           <p>We will read what you sent, separate proven cost from missing information, and send back the clearest next step.</p>
-          <div class="owner-field-form-grid">
-            <label>Your name <input class="owner-field-input" type="text" name="name" autocomplete="name" placeholder="First and last name" required></label>
-            <label>Email <input class="owner-field-input" type="email" name="email" autocomplete="email" placeholder="you@example.com" required></label>
-            <label>Phone <input class="owner-field-input" type="tel" name="phone" autocomplete="tel" placeholder="(941) 555-1234"></label>
-            <label>Listing URL <input class="owner-field-input" type="url" name="listing_url" inputmode="url" placeholder="airbnb.com/h/your-listing or vrbo.com/..."></label>
+          <div class="owner-field-confirm">
+            <div class="owner-field-label">Postcard recap</div>
+            <div class="owner-field-confirm-grid">
+              <div><b>Listing</b><span data-confirm-url>Not added yet</span></div>
+              <div><b>Concerns</b><span data-confirm-concerns>None selected</span></div>
+              <div><b>Name</b><span data-confirm-name>Not added yet</span></div>
+              <div><b>Email</b><span data-confirm-email>Not added yet</span></div>
+              <div style="grid-column: 1 / -1;"><b>Phone</b><span data-confirm-phone>Optional</span></div>
+            </div>
           </div>
           <div class="owner-field-form-actions">
-            <button class="owner-field-btn btn-gold" type="submit">Send My Teardown Request</button>
+            <button class="owner-field-btn btn-gold" type="submit">Stamp &amp; send</button>
             <button class="owner-field-muted-button" type="button" data-form-back>Back</button>
           </div>
         </div>
+        <div class="owner-field-seal" aria-hidden="true">SV<span class="owner-field-seal-ring"></span></div>
       </form>
       <div class="owner-field-form-proof" aria-label="Owner teardown proof points">
         <span>Real Seascape teardown</span>
@@ -2007,9 +2495,9 @@ headExtra: |
 
   <section class="owner-field-section owner-field-section--light" id="guides">
     <div class="owner-field-shell">
-      <div class="owner-field-rule">
-        <h2>Owner Guides</h2>
-        <span>Pages 14-18 · Section 5</span>
+      <div class="owner-field-rule sv-magazine-header">
+        <h2 class="sv-magazine-header-title">Owner Guides</h2>
+        <span class="sv-magazine-header-meta">Pages 14-18 · §5</span>
       </div>
       <p class="owner-field-guide-intro">Operational guides that protect revenue and reduce risk, useful when cleaning, taxes, screening, insurance, or acquisition are the real blocker.</p>
       <div class="owner-field-guides">
@@ -2039,9 +2527,9 @@ headExtra: |
         </a>
       </div>
       <div class="owner-field-directory">
-        <div class="owner-field-directory-head">
-          <h2>Specific Situations</h2>
-          <span>Index · Section 5</span>
+        <div class="owner-field-directory-head sv-magazine-header">
+          <h2 class="sv-magazine-header-title">Specific Situations</h2>
+          <span class="sv-magazine-header-meta">Index · §5</span>
         </div>
         <div class="owner-field-directory-grid">
           <div>
@@ -2076,9 +2564,9 @@ headExtra: |
 
   <section class="owner-field-section owner-field-faq" id="faq">
     <div class="owner-field-shell">
-      <div class="owner-field-rule">
-        <h2>Selected FAQ</h2>
-        <span>Page 19 · Section 6</span>
+      <div class="owner-field-rule sv-magazine-header">
+        <h2 class="sv-magazine-header-title">Selected FAQ</h2>
+        <span class="sv-magazine-header-meta">Page 19 · §6</span>
       </div>
       <p class="owner-field-guide-intro">What Gulf Coast owners usually ask first.</p>
       <details open>
@@ -2102,10 +2590,26 @@ headExtra: |
     var page = document.querySelector("[data-owner-field-page]");
     if (!page) return;
     var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var conversionTracking = window.SeascapeConversionTracking;
+
+    function track(eventName, payload) {
+      if (!eventName) return;
+      if (conversionTracking && typeof conversionTracking.trackEvent === "function") {
+        conversionTracking.trackEvent(eventName, payload || {});
+        return;
+      }
+      if (typeof window.seascapeTrackEvent === "function") {
+        window.seascapeTrackEvent(eventName, payload || {});
+        return;
+      }
+      if (typeof window.gtag === "function") {
+        window.gtag("event", eventName, payload || {});
+      }
+    }
 
     var phraseRoot = page.querySelector("[data-owner-phrases]");
     if (phraseRoot) {
-      var phrases = phraseRoot.querySelectorAll("em");
+      var phrases = phraseRoot.querySelectorAll(".sv-pm-h1-phrase-item");
       var phraseIndex = 0;
       function showPhrase(nextIndex) {
         phraseIndex = nextIndex % phrases.length;
@@ -2123,7 +2627,7 @@ headExtra: |
 
     var ticker = page.querySelector("[data-owner-ticker]");
     if (ticker) {
-      var tickerItems = ticker.querySelectorAll("[data-ticker-item]");
+      var tickerItems = ticker.querySelectorAll(".sv-pm-ticker-fact");
       var tickerDots = ticker.querySelectorAll("[data-ticker-dot]");
       var tickerIndex = 0;
       function showTicker(nextIndex) {
@@ -2159,6 +2663,9 @@ headExtra: |
         if (!x || !y) return;
         line.setAttribute("x2", x);
         line.setAttribute("y2", y);
+        line.classList.remove("is-animating");
+        void line.getBoundingClientRect();
+        line.classList.add("is-animating");
       }
 
       var activeButton = marketRoot.querySelector("[data-market-button].is-active");
@@ -2180,40 +2687,150 @@ headExtra: |
       });
     });
 
+    var countups = page.querySelectorAll("[data-countup-value]");
+    if (countups.length) {
+      function formatCountup(node, current) {
+        var decimals = current % 1 === 0 ? 0 : 1;
+        var value = current.toFixed(decimals);
+        node.textContent = (node.getAttribute("data-countup-prefix") || "") + value + (node.getAttribute("data-countup-suffix") || "");
+      }
+
+      function runCountup(node) {
+        if (node.getAttribute("data-countup-done") === "true") return;
+        node.setAttribute("data-countup-done", "true");
+        var target = Number(node.getAttribute("data-countup-value") || "0");
+        if (reduceMotion || !target) {
+          formatCountup(node, target);
+          return;
+        }
+        var started = null;
+        function tick(timestamp) {
+          if (!started) started = timestamp;
+          var progress = Math.min((timestamp - started) / 1400, 1);
+          formatCountup(node, target * progress);
+          if (progress < 1) window.requestAnimationFrame(tick);
+        }
+        window.requestAnimationFrame(tick);
+      }
+
+      if ("IntersectionObserver" in window) {
+        var countupObserver = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (!entry.isIntersecting) return;
+            runCountup(entry.target);
+            countupObserver.unobserve(entry.target);
+          });
+        }, { threshold: 0.45 });
+        countups.forEach(function (node) { countupObserver.observe(node); });
+      } else {
+        countups.forEach(runCountup);
+      }
+    }
+
     var form = page.querySelector(".owner-field-postcard");
     if (!form) return;
     var step = 0;
     var dots = form.querySelectorAll("[data-form-goto]");
+    var lines = form.querySelectorAll(".owner-field-step-line");
     var steps = form.querySelectorAll("[data-form-step]");
+    var meta = form.querySelector("[data-form-meta]");
     var concernsInput = form.querySelector("[data-owner-concerns]");
+    var listingMirror = form.querySelector("[data-owner-listing-mirror]");
+    var listingField = form.querySelector('input[name="property_address"]');
+    var nameField = form.querySelector('input[name="name"]');
+    var emailField = form.querySelector('input[name="email"]');
+    var phoneField = form.querySelector('input[name="phone"]');
+    var confirmUrl = form.querySelector("[data-confirm-url]");
+    var confirmConcerns = form.querySelector("[data-confirm-concerns]");
+    var confirmName = form.querySelector("[data-confirm-name]");
+    var confirmEmail = form.querySelector("[data-confirm-email]");
+    var confirmPhone = form.querySelector("[data-confirm-phone]");
     var concerns = [];
+    var submitting = false;
 
-    function showStep(nextStep) {
+    function syncListingMirror() {
+      if (!listingMirror || !listingField) return;
+      listingMirror.value = listingField.value.trim();
+    }
+
+    function syncConfirmPanel() {
+      syncListingMirror();
+      if (confirmUrl) confirmUrl.textContent = listingField && listingField.value.trim() ? listingField.value.trim() : "Not added yet";
+      if (confirmConcerns) confirmConcerns.textContent = concerns.length ? concerns.join(", ") : "None selected";
+      if (confirmName) confirmName.textContent = nameField && nameField.value.trim() ? nameField.value.trim() : "Not added yet";
+      if (confirmEmail) confirmEmail.textContent = emailField && emailField.value.trim() ? emailField.value.trim() : "Not added yet";
+      if (confirmPhone) confirmPhone.textContent = phoneField && phoneField.value.trim() ? phoneField.value.trim() : "Optional";
+    }
+
+    function getFormPayload(extra) {
+      return Object.assign({
+        page_slug: form.dataset.pageSlug || "property-management",
+        source_page_slug: form.dataset.sourcePageSlug || "property-management",
+        market: form.dataset.market || "",
+        step_number: step + 1
+      }, extra || {});
+    }
+
+    function currentPanelFieldsAreValid() {
+      var panel = steps[step];
+      if (!panel) return true;
+      var requiredFields = panel.querySelectorAll("input[required], textarea[required]");
+      for (var i = 0; i < requiredFields.length; i += 1) {
+        if (!requiredFields[i].checkValidity()) {
+          requiredFields[i].reportValidity();
+          return false;
+        }
+      }
+      return true;
+    }
+
+    function showStep(nextStep, direction, options) {
+      options = options || {};
       step = Math.max(0, Math.min(steps.length - 1, nextStep));
+      form.setAttribute("data-form-direction", direction || "forward");
       steps.forEach(function (panel, index) {
-        panel.classList.toggle("is-active", index === step);
+        var active = index === step;
+        panel.classList.toggle("is-active", active);
+        panel.hidden = !active;
       });
       dots.forEach(function (dot, index) {
         dot.classList.toggle("is-active", index === step);
         dot.classList.toggle("is-complete", index < step);
+        dot.textContent = index < step ? "✓" : String(index + 1);
       });
+      lines.forEach(function (line, index) {
+        line.classList.toggle("is-complete", index < step);
+      });
+      if (meta) {
+        meta.textContent = step < steps.length ? "Question " + (step + 1) + " of 4" : "Postcard sent";
+      }
+      if (step === 3) syncConfirmPanel();
+      if (!options.silent) {
+        track("owner_form_step_view", getFormPayload({ viewed_step: step + 1 }));
+      }
     }
 
     form.querySelectorAll("[data-form-next]").forEach(function (button) {
       button.addEventListener("click", function () {
-        showStep(step + 1);
+        if (!currentPanelFieldsAreValid()) return;
+        var nextStep = Math.min(step + 1, steps.length - 1);
+        track("owner_form_step_continue", getFormPayload({ from_step: step + 1, to_step: nextStep + 1 }));
+        showStep(nextStep, "forward");
       });
     });
 
     form.querySelectorAll("[data-form-back]").forEach(function (button) {
       button.addEventListener("click", function () {
-        showStep(step - 1);
+        var nextStep = Math.max(step - 1, 0);
+        track("owner_form_step_back", getFormPayload({ from_step: step + 1, to_step: nextStep + 1 }));
+        showStep(nextStep, "back");
       });
     });
 
     dots.forEach(function (dot) {
       dot.addEventListener("click", function () {
-        showStep(Number(dot.getAttribute("data-form-goto")));
+        var targetStep = Number(dot.getAttribute("data-form-goto"));
+        showStep(targetStep, targetStep < step ? "back" : "forward");
       });
     });
 
@@ -2225,7 +2842,41 @@ headExtra: |
         else concerns.push(concern);
         button.classList.toggle("is-active", index < 0);
         concernsInput.value = concerns.join(", ");
+        track("owner_form_concern_toggle", getFormPayload({
+          concern: concern,
+          selected: index < 0 ? "true" : "false"
+        }));
       });
     });
+
+    if (listingField) {
+      listingField.addEventListener("input", syncListingMirror);
+    }
+    if (nameField) nameField.addEventListener("input", syncConfirmPanel);
+    if (emailField) emailField.addEventListener("input", syncConfirmPanel);
+    if (phoneField) phoneField.addEventListener("input", syncConfirmPanel);
+
+    form.addEventListener("submit", function (event) {
+      if (submitting) return;
+      if (!form.checkValidity()) return;
+      event.preventDefault();
+      submitting = true;
+      syncConfirmPanel();
+      form.setAttribute("data-stamped", "true");
+      track("owner_form_submit", getFormPayload({
+        concerns_count: String(concerns.length),
+        listing_present: listingField && listingField.value.trim() ? "true" : "false"
+      }));
+      window.setTimeout(function () {
+        if (typeof HTMLFormElement !== "undefined" && HTMLFormElement.prototype.submit) {
+          HTMLFormElement.prototype.submit.call(form);
+          return;
+        }
+        form.submit();
+      }, reduceMotion ? 1 : 720);
+    });
+
+    showStep(0, "forward", { silent: true });
+    track("owner_form_step_view", getFormPayload({ viewed_step: 1 }));
   })();
 </script>
