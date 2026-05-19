@@ -65,9 +65,17 @@ headExtra: |
 ---
 <style>
   .nav {
-    background: linear-gradient(180deg, rgba(10, 26, 28, 0.58), rgba(10, 26, 28, 0));
+    background: linear-gradient(180deg, rgba(10, 26, 28, 0.5) 0%, rgba(10, 26, 28, 0.18) 48%, rgba(10, 26, 28, 0) 100%);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
     border-bottom: 0;
     box-shadow: none;
+  }
+
+  .nav .nav-inner {
+    max-width: 1200px;
+    min-height: 72px;
+    padding: 18px 48px 16px;
   }
 
   .main-content {
@@ -76,18 +84,23 @@ headExtra: |
 
   .nav.scrolled {
     background: rgba(245, 238, 214, 0.98);
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
     border-bottom: 1px solid rgba(0, 0, 0, 0.06);
   }
 
   .nav .nav-logo {
-    gap: 12px;
+    gap: 13px;
   }
 
   .nav .nav-owner-mark {
-    border: 1.5px solid rgba(245, 228, 176, 0.86);
-    background: radial-gradient(circle at 32% 24%, rgba(245, 228, 176, 0.18), rgba(10, 26, 28, 0.08));
+    width: 36px;
+    height: 36px;
+    flex-basis: 36px;
+    border: 1.5px solid rgba(245, 228, 176, 0.92);
+    background: transparent;
     color: var(--owner-gold-hot);
-    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08), 0 0 28px rgba(245, 228, 176, 0.1);
+    box-shadow: none;
   }
 
   .nav.scrolled .nav-owner-mark {
@@ -99,7 +112,7 @@ headExtra: |
 
   .nav .nav-logo-text {
     color: var(--white);
-    font-size: 20px;
+    font-size: 21px;
     letter-spacing: 0.12em;
     line-height: 1;
   }
@@ -144,15 +157,15 @@ headExtra: |
 
   .nav .nav-owner-cta {
     min-height: 44px;
-    padding: 12px 24px;
-    border: 1px solid rgba(255, 255, 255, 0.5);
+    padding: 12px 25px;
+    border: 1px solid rgba(255, 255, 255, 0.42);
     border-radius: 999px;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.055));
+    background: rgba(255, 255, 255, 0.12);
     color: var(--white);
     letter-spacing: 0.1em;
-    -webkit-backdrop-filter: blur(14px);
-    backdrop-filter: blur(14px);
-    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08), 0 14px 34px rgba(0, 0, 0, 0.12);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    box-shadow: none;
   }
 
   .nav .nav-owner-cta::after {
@@ -217,15 +230,16 @@ headExtra: |
   }
 
   .owner-hero::before {
-    background: url("/images/owner-field-sarasota-sunset.jpg") center/cover;
-    transform: scale(1.02);
+    background: url("/images/owner-field-hero.webp") center 48%/cover;
+    transform: scale(1.01);
     animation: owner-field-kenburns 40s ease-in-out infinite alternate;
   }
 
   .owner-hero::after {
     background:
-      radial-gradient(ellipse at 30% 20%, rgba(255, 200, 130, 0.12), transparent 55%),
-      linear-gradient(180deg, rgba(10, 26, 28, 0.56) 0%, rgba(10, 26, 28, 0.18) 36%, rgba(10, 26, 28, 0.3) 66%, rgba(10, 26, 28, 0.88) 100%);
+      radial-gradient(ellipse at 72% 18%, rgba(245, 228, 176, 0.18), transparent 52%),
+      radial-gradient(ellipse at 14% 92%, rgba(20, 60, 70, 0.28), transparent 60%),
+      linear-gradient(180deg, rgba(10, 26, 28, 0.62) 0%, rgba(10, 26, 28, 0.28) 34%, rgba(10, 26, 28, 0.36) 64%, rgba(10, 26, 28, 0.9) 100%);
   }
 
   .owner-field-masthead {
