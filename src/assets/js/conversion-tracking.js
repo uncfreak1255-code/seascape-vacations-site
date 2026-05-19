@@ -1,6 +1,9 @@
 (function () {
   "use strict";
 
+  if (window.__seascapeConversionTrackingLoaded) return;
+  window.__seascapeConversionTrackingLoaded = true;
+
   var MAILCHIMP_ENDPOINT = "https://seascape-vacations.us6.list-manage.com/subscribe/post";
   var MAILCHIMP_QUERY = "u=48f234eebd9cb530fd2f217fe&id=95e5a594d1&f_id=008996e5f0";
   var GUEST_EMAIL_CAPTURE_ENDPOINT = "/.netlify/functions/guest-email-capture";
