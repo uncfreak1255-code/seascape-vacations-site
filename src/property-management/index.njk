@@ -702,10 +702,16 @@ headExtra: |
   }
 
   .owner-field-market-card p {
-    margin: 0 0 28px;
-    color: var(--stone);
-    font-size: 17px;
-    line-height: 1.8;
+    max-width: 640px;
+    margin: 0 0 32px;
+    padding-left: 22px;
+    border-left: 2px solid rgba(201, 169, 98, 0.58);
+    color: var(--owner-ink);
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: clamp(22px, 2.2vw, 30px);
+    font-weight: 400;
+    letter-spacing: -0.018em;
+    line-height: 1.35;
   }
 
   .owner-field-market-facts {
