@@ -552,7 +552,11 @@ eleventyComputed:
                         pageSlug: seoPage.slug,
                         market: seoPage.destination or "florida-gulf-coast",
                         leadType: "owner-revenue-teardown",
-                        buttonLabel: "Send My Teardown Request"
+                        buttonLabel: "Send My Teardown Request",
+                        propertyFieldLabel: "Property address or market",
+                        propertyFieldPlaceholder: "Anna Maria Island, Bradenton, Sarasota, or full street address",
+                        showBenchmarkFields: true,
+                        fileHelp: "PDF, spreadsheet, or screenshot. Missing statements, calendars, reviews, or fee terms will be marked unknown."
                     }) }}
                     <p style="margin-top: 18px; text-align: center; color: rgba(255, 255, 255, 0.82); font-size: 15px;">
                         Prefer to talk first? <a href="tel:+19417048545" style="color: white; font-weight: 600;" data-track-event="owner_phone_click" data-page-slug="{{ seoPage.slug }}">Call (941) 704-8545</a>

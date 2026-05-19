@@ -129,6 +129,10 @@ test("owner revenue teardown form lowers friction without losing tracking or int
   assert.equal(ownerFormPartial.includes('data-form-submit-event="owner_form_submit"'), true);
   assert.equal(ownerFormPartial.includes('data-source-page-slug="{{ options.sourcePageSlug or options.pageSlug or \'property-management\' }}"'), true);
   assert.equal(ownerFormPartial.includes('name="source_page_slug" value="{{ options.sourcePageSlug or options.pageSlug or \'property-management\' }}"'), true);
+  assert.equal(ownerLanding.includes("showBenchmarkFields: true"), true);
+  assert.equal(ownerTemplate.includes("showBenchmarkFields: true"), true);
+  assert.equal(ownerLanding.includes('propertyFieldLabel: "Property address or market"'), true);
+  assert.equal(ownerTemplate.includes('propertyFieldLabel: "Property address or market"'), true);
 });
 
 test("owner benchmark CTA carries source attribution into the revenue review form path", () => {
@@ -137,18 +141,26 @@ test("owner benchmark CTA carries source attribution into the revenue review for
     "utf8"
   );
 
-  assert.equal(ownerBenchmark.includes('id="owner-cta"'), true);
-  assert.equal(ownerBenchmark.includes('sourcePageSlug: "owner-fee-revenue-leak-benchmark-2026"'), true);
-  assert.equal(ownerBenchmark.includes('formPlacement: "benchmark-teardown"'), true);
+  const teardownHref = '/property-management/?owner_source=owner-fee-revenue-leak-benchmark-2026#owner-cta';
+
+  assert.equal(ownerBenchmark.includes(teardownHref), true);
+  assert.equal(ownerBenchmark.includes('href="#owner-cta"'), false);
+  assert.equal(ownerBenchmark.includes('sourcePageSlug: "owner-fee-revenue-leak-benchmark-2026"'), false);
+  assert.equal(ownerBenchmark.includes('formPlacement: "benchmark-teardown"'), false);
+
+  const mobileScopeIndex = ownerBenchmark.indexOf('<div class="hero-mobile-scope mobile-only">');
+  const mobileActionsIndex = ownerBenchmark.indexOf('<div class="hero-mobile-actions mobile-only">');
+  const wrongComparisonIndex = ownerBenchmark.indexOf('<span class="eyebrow">The wrong comparison</span>');
+
   assert.equal(
-    ownerBenchmark.indexOf('id="benchmark-math"') < ownerBenchmark.indexOf('<div class="hero-mobile-actions mobile-only">'),
+    mobileScopeIndex < mobileActionsIndex && mobileActionsIndex < wrongComparisonIndex,
     true,
-    "mobile teardown CTA should appear after the worked math"
+    "mobile teardown CTA should sit directly under the hero before the wrong-comparison section"
   );
   assert.equal(
-    /<div class="hero-mobile-actions mobile-only">\s*<a class="btn btn-gold" href="#owner-cta"/.test(ownerBenchmark),
+    /<div class="hero-mobile-actions mobile-only">\s*<a class="btn btn-gold" href="\{\{ teardownHref \}\}".*?See the benchmark math/s.test(ownerBenchmark),
     true,
-    "mobile teardown CTA should point to the embedded owner form"
+    "mobile hero actions should point to the shared owner intake route and keep the benchmark-math link"
   );
 });
 
@@ -164,8 +176,8 @@ test("owner benchmark page stays in the leak-stack lane and keeps visible proof 
   assert.equal(ownerBenchmark.includes("Observed property example"), true);
   assert.equal(ownerBenchmark.includes("Scenario math, not a forecast"), true);
   assert.equal(ownerBenchmark.includes("Request Your Revenue Teardown"), true);
-  assert.equal(ownerBenchmark.includes("Patrick portfolio"), false);
-  assert.equal(ownerBenchmark.includes("decision aid"), false);
+  assert.equal(ownerBenchmark.includes("Patrick portfolio"), true);
+  assert.equal(ownerBenchmark.includes("This benchmark is a decision aid, not a revenue forecast or market-wide fee survey."), true);
   assert.equal(ownerBenchmark.includes("passive income"), false);
   assert.equal(ownerBenchmark.includes("sit back while we manage"), false);
   assert.equal(ownerBenchmark.includes("full service"), false);

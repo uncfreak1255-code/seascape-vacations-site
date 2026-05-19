@@ -15,7 +15,8 @@ Date: 2026-05-15
 Hub handoff: `/Users/sawbeck/Projects/seascape-hub/projects/owner-fee-revenue-leak-benchmark-execution-package-2026-05-15.md`
 Site route: `/research/owner-fee-revenue-leak-benchmark-2026/`
 Figma capture: `https://www.figma.com/design/glZRIUzGbQlw0KJhtAGUWP?node-id=3-2`
-Figma frames: `Owner Fee + Revenue Leak Benchmark - Desktop`, `Owner Fee + Revenue Leak Benchmark - Mobile`
+Reference-only frame: `3:2`
+Implementation frames: `9:2` desktop, `11:2` mobile
 
 ## Decision
 

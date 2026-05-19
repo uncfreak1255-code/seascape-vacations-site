@@ -10,6 +10,11 @@ const moneyRoutes = [
     readySelector: "#owner-cta",
   },
   {
+    slug: "owner-fee-revenue-leak-benchmark-2026",
+    path: "/research/owner-fee-revenue-leak-benchmark-2026/",
+    readySelector: "main h1",
+  },
+  {
     slug: "properties-catalog",
     path: "/properties/",
     readySelector: "main h1",

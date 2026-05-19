@@ -1,7 +1,6 @@
 ---
 permalink: "/research/owner-fee-revenue-leak-benchmark-2026/"
 ---
-{% from "partials/owner-evaluation-form.njk" import ownerEvaluationForm %}
 {% set benchmark = ownerProofAssets["gulf-coast-owner-benchmark-2026"] %}
 {% set proofLabels = [
   "Observed Seascape portfolio data",
@@ -9,10 +8,38 @@ permalink: "/research/owner-fee-revenue-leak-benchmark-2026/"
   "Scenario math, not a forecast",
   "Last refreshed: May 2026"
 ] %}
+{% set teardownHref = "/property-management/?owner_source=owner-fee-revenue-leak-benchmark-2026#owner-cta" %}
 {% set heroMethodNotes = [
   "The benchmark uses Seascape's 5-home Gulf Coast operating data where observed.",
   "Scenario math is labeled separately from observed operating data.",
   "It frames the owner-net conversation before a property-specific teardown."
+] %}
+{% set feeLayers = [
+  {
+    "metric": "Headline fee",
+    "title": "Management fee",
+    "copy": "The visible percentage you usually compare first."
+  },
+  {
+    "metric": "Observed Seascape portfolio data",
+    "title": "OTA drag",
+    "copy": "Channel cost on platform bookings, including observed Airbnb host-fee drag."
+  },
+  {
+    "metric": "Observed Seascape portfolio data",
+    "title": "Direct payment cost",
+    "copy": "Lower processing cost when qualified bookings move through the direct path."
+  },
+  {
+    "metric": "Owner-net review",
+    "title": "Channel mix",
+    "copy": "The share of bookings coming through OTA versus direct or lower-drag sources."
+  },
+  {
+    "metric": "Owner-net review",
+    "title": "Operating clarity",
+    "copy": "Whether pricing, maintenance, reviews, and reporting make the money story understandable."
+  }
 ] %}
 {% set scenarioRows = [
   {
@@ -35,6 +62,12 @@ permalink: "/research/owner-fee-revenue-leak-benchmark-2026/"
     "change": "Manager explains rate, channel, cleaning, review, and maintenance movement.",
     "implication": "Owner can see what is proven, what is likely, and what is unknown."
   }
+] %}
+{% set fitBullets = [
+  "Premium Gulf Coast homes projected around $110k-$150k+ gross.",
+  "Airbnb-heavy homes where OTA drag may be doing more damage than the fee quote suggests.",
+  "Owners who want clearer reporting on revenue, channel mix, reviews, and maintenance follow-through.",
+  "Homes where pricing discipline and guest standards matter more than raw activity reports."
 ] %}
 <!doctype html>
 <html lang="en">
@@ -68,7 +101,7 @@ permalink: "/research/owner-fee-revenue-leak-benchmark-2026/"
   "mainEntityOfPage": "https://seascape-vacations.com/research/owner-fee-revenue-leak-benchmark-2026/",
   "image": "https://seascape-vacations.com/images/seascape-og-default.jpg",
   "datePublished": "2026-05-03",
-  "dateModified": "2026-05-16",
+  "dateModified": "2026-05-19",
   "author": {
     "@type": "Person",
     "name": "Sawyer Beckett",
@@ -324,6 +357,87 @@ a{color:var(--brand);text-decoration:underline}
   flex-direction:column;
   gap:16px;
 }
+.hero-stack-panel,
+.method-rail{
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.14);
+  border-radius:22px;
+}
+.hero-stack-panel{
+  padding:22px;
+}
+.hero-stack-title{
+  font-size:30px;
+  line-height:1.14;
+  color:var(--white);
+  margin:16px 0 14px;
+}
+.hero-stack-copy{
+  font-size:14px;
+  line-height:1.58;
+  color:rgba(255,255,255,.84);
+}
+.hero-stack-list{
+  margin-top:18px;
+  display:grid;
+  gap:14px;
+  padding:18px;
+  border-radius:18px;
+  background:rgba(61,92,93,.35);
+  border:1px solid rgba(255,255,255,.14);
+}
+.hero-stack-row{
+  display:grid;
+  grid-template-columns:148px minmax(0,1fr) 48px;
+  gap:12px;
+  align-items:center;
+}
+.hero-stack-copy-group{
+  display:grid;
+  gap:2px;
+}
+.hero-stack-label{
+  font-size:12px;
+  line-height:1.2;
+  font-weight:700;
+  color:var(--white);
+}
+.hero-stack-detail{
+  font-size:10px;
+  line-height:1.3;
+  color:rgba(255,255,255,.76);
+}
+.hero-stack-bar{
+  height:12px;
+  border-radius:999px;
+  background:rgba(255,255,255,.16);
+  overflow:hidden;
+}
+.hero-stack-bar span{
+  display:block;
+  height:100%;
+  border-radius:999px;
+}
+.hero-stack-value{
+  font-size:11px;
+  line-height:1.2;
+  font-weight:700;
+  color:var(--gold-light);
+}
+.hero-stack-note{
+  margin-top:18px;
+  font-size:12px;
+  line-height:1.5;
+  color:var(--gold-light);
+}
+.method-rail{
+  padding:24px 22px 22px;
+}
+.method-rail-title{
+  display:block;
+  margin-bottom:12px;
+  color:var(--gold-light);
+}
 .side-panel{
   background:rgba(255,255,255,.08);
   border:1px solid rgba(255,255,255,.14);
@@ -404,17 +518,6 @@ a{color:var(--brand);text-decoration:underline}
 .hero-mobile-actions{
   display:none;
 }
-.source-note{
-  margin-top:26px;
-  background:var(--cream-light);
-  border:1px solid rgba(61,92,93,.12);
-  border-radius:20px;
-  padding:20px 22px;
-}
-.source-note p{
-  font-size:14px;
-  color:var(--stone-light);
-}
 .section{
   margin-top:32px;
   background:var(--white);
@@ -444,7 +547,7 @@ a{color:var(--brand);text-decoration:underline}
 }
 .stack-grid{
   display:grid;
-  grid-template-columns:repeat(4,minmax(0,1fr));
+  grid-template-columns:repeat(5,minmax(0,1fr));
   gap:16px;
 }
 .stack-card{
@@ -643,6 +746,10 @@ a{color:var(--brand);text-decoration:underline}
   border-radius:20px;
   padding:24px;
 }
+.fit-boundary-copy{
+  font-size:14px !important;
+  color:var(--brand-dark);
+}
 .cta-shell{
   margin-top:32px;
   background:linear-gradient(156deg,var(--brand-darker) 6%, var(--brand-dark) 94%);
@@ -662,6 +769,16 @@ a{color:var(--brand);text-decoration:underline}
   color:rgba(255,255,255,.88);
   max-width:760px;
   margin-top:12px;
+}
+.cta-shell .btn{
+  margin-top:20px;
+}
+.cta-route-note{
+  margin-top:18px;
+  max-width:760px;
+  font-size:13px !important;
+  line-height:1.54;
+  color:var(--gold-light) !important;
 }
 .cta-card{
   margin-top:20px;
@@ -824,7 +941,6 @@ a{color:var(--brand);text-decoration:underline}
   .proof-rail,
   .scope-pill,
   .source-note,
-  .stack-grid,
   .compare-grid,
   .scenario-table-wrap{
     display:none;
@@ -843,11 +959,20 @@ a{color:var(--brand);text-decoration:underline}
   }
   .hero-mobile-actions .hero-secondary{
     width:max-content;
+    color:var(--brand);
+    border-color:rgba(95,138,139,.3);
+  }
+  .hero-mobile-actions .hero-secondary:hover{
+    color:var(--brand-dark);
+    border-color:rgba(61,92,93,.42);
   }
   .compare-mobile,
   .scenario-cards{
     display:grid;
     gap:12px;
+  }
+  .stack-grid{
+    grid-template-columns:1fr;
   }
   .scenario-cards{
     grid-template-columns:repeat(2,minmax(0,1fr));
@@ -914,9 +1039,9 @@ a{color:var(--brand);text-decoration:underline}
       <h1>Your management fee is not the whole revenue leak.</h1>
       <p class="hero-lead">Most owners compare 15%, 20%, and 25% management fees. That misses the bigger stack: OTA drag, direct-booking mix, pricing discipline, and how clearly your manager explains what is happening to owner net.</p>
       <p class="hero-support desktop-only">Built from Seascape's current 5-home Gulf Coast portfolio, with scenario math labeled separately from observed operating data.</p>
-      <p class="hero-decision-note mobile-only">Built from Seascape's 5-home operating data, with scenario math labeled separately.</p>
+      <p class="hero-decision-note mobile-only">This benchmark is a decision aid, not a revenue forecast or market-wide fee survey.</p>
       <div class="hero-actions desktop-only">
-        <a class="btn btn-gold" href="#owner-cta" data-track-event="owner_primary_cta_click" data-page-slug="owner-fee-revenue-leak-benchmark-2026">Request Your Revenue Teardown</a>
+        <a class="btn btn-gold" href="{{ teardownHref }}" data-track-event="owner_primary_cta_click" data-page-slug="owner-fee-revenue-leak-benchmark-2026">Request Your Revenue Teardown</a>
         <a class="hero-secondary" href="#benchmark-math">See the benchmark math</a>
       </div>
       <div class="proof-rail desktop-only">
@@ -926,20 +1051,56 @@ a{color:var(--brand);text-decoration:underline}
       </div>
     </div>
     <div class="hero-side desktop-only">
-      <div class="side-panel">
+      <div class="hero-stack-panel">
         <span class="eyebrow">Observed Seascape portfolio data</span>
-        <div class="stats-grid">
-          {% for stat in benchmark.stats %}
-          <div class="stat-card">
-            <strong>{{ stat.value }}</strong>
-            <span>{{ stat.label }}</span>
-            <p>{{ stat.detail }}</p>
+        <h2 class="hero-stack-title">Fee stack quick read</h2>
+        <p class="hero-stack-copy">Fee, channel drag, direct mix, and operating clarity all hit the same owner statement. This quick read shows why a lower-looking fee can still leave you behind.</p>
+        <div class="hero-stack-list">
+          <div class="hero-stack-row">
+            <div class="hero-stack-copy-group">
+              <span class="hero-stack-label">Management fee</span>
+              <span class="hero-stack-detail">10-15% company-level range, not a blanket quote</span>
+            </div>
+            <div class="hero-stack-bar"><span style="width:58%;background:var(--gold)"></span></div>
+            <span class="hero-stack-value">range</span>
           </div>
-          {% endfor %}
+          <div class="hero-stack-row">
+            <div class="hero-stack-copy-group">
+              <span class="hero-stack-label">OTA drag</span>
+              <span class="hero-stack-detail">13.4% observed Airbnb host-fee drag</span>
+            </div>
+            <div class="hero-stack-bar"><span style="width:78%;background:var(--white)"></span></div>
+            <span class="hero-stack-value">13.4%</span>
+          </div>
+          <div class="hero-stack-row">
+            <div class="hero-stack-copy-group">
+              <span class="hero-stack-label">Direct payment cost</span>
+              <span class="hero-stack-detail">2.9% direct processing reference</span>
+            </div>
+            <div class="hero-stack-bar"><span style="width:22%;background:var(--gold-light)"></span></div>
+            <span class="hero-stack-value">2.9%</span>
+          </div>
+          <div class="hero-stack-row">
+            <div class="hero-stack-copy-group">
+              <span class="hero-stack-label">Channel mix</span>
+              <span class="hero-stack-detail">Direct vs. OTA share changes what you keep</span>
+            </div>
+            <div class="hero-stack-bar"><span style="width:50%;background:#8db1b2"></span></div>
+            <span class="hero-stack-value">audit</span>
+          </div>
+          <div class="hero-stack-row">
+            <div class="hero-stack-copy-group">
+              <span class="hero-stack-label">Operating clarity</span>
+              <span class="hero-stack-detail">Pricing, reviews, maintenance, and reporting</span>
+            </div>
+            <div class="hero-stack-bar"><span style="width:62%;background:var(--gold)"></span></div>
+            <span class="hero-stack-value">audit</span>
+          </div>
         </div>
+        <p class="hero-stack-note">Start here if you want the short version first, then use the sections below to check the math, the examples, and the fit boundary.</p>
       </div>
-      <div class="side-panel">
-        <span class="eyebrow">How To Read This</span>
+      <div class="method-rail">
+        <span class="eyebrow method-rail-title">How To Read This</span>
         <ul class="method-list">
           {% for note in heroMethodNotes %}
           <li>{{ note }}</li>
@@ -952,10 +1113,10 @@ a{color:var(--brand);text-decoration:underline}
   <div class="hero-mobile-scope mobile-only">
     <span class="proof-chip proof-chip--soft">5-property Gulf Coast scope</span>
   </div>
-
-  <section class="source-note">
-    <p><strong>Source note:</strong> {{ benchmark.sourceLabel }}. This benchmark is a practical reference built from Seascape's 5-home operating data. Scenario math is labeled separately from observed operating facts.</p>
-  </section>
+  <div class="hero-mobile-actions mobile-only">
+    <a class="btn btn-gold" href="{{ teardownHref }}" data-track-event="owner_primary_cta_click" data-page-slug="owner-fee-revenue-leak-benchmark-2026">Request Your Revenue Teardown</a>
+    <a class="hero-secondary" href="#benchmark-math">See the benchmark math</a>
+  </div>
 
   <section class="section">
     <div class="section-intro">
@@ -967,28 +1128,27 @@ a{color:var(--brand);text-decoration:underline}
         <span class="proof-chip proof-chip--soft">Observed Seascape portfolio data</span>
       </div>
     </div>
-    <div class="stack-grid">
-      <article class="stack-card">
-        <span class="stack-metric">Headline fee</span>
-        <h3>Management fee</h3>
-        <p>Your fee still matters, but it is only one piece of the owner-net equation. A lower-looking manager can still underperform if the calendar, channel mix, or operations are weak.</p>
-      </article>
-      <article class="stack-card">
-        <span class="stack-metric">Observed Seascape portfolio data</span>
-        <h3>OTA host drag</h3>
-        <p>Airbnb's fee is not just a platform line item. The observed Seascape benchmark shows 13.4% host-fee drag on post-October 2025 bookings, including fees applied to the full subtotal.</p>
-      </article>
-      <article class="stack-card">
-        <span class="stack-metric">Observed Seascape portfolio data</span>
-        <h3>Direct payment cost</h3>
-        <p>Direct processing at about 2.9% does not solve everything by itself. It does show how much owner margin can move when a booking is acquired without the heavier OTA layer.</p>
-      </article>
-      <article class="stack-card">
-        <span class="stack-metric">Property-level review</span>
-        <h3>Rate and operations discipline</h3>
-        <p>Discount-heavy fills, weak premium-week protection, turnover misses, and poor owner communication rarely show up cleanly in a flat management-fee comparison. They still hit the same payout.</p>
-      </article>
+  </section>
+
+  <section class="section">
+    <div class="section-intro">
+      <span class="eyebrow">Where the leak shows up</span>
+      <h2>Owner net gets hit in layers.</h2>
+      <p>The management fee is only the first layer. OTA fees, direct payment cost, channel mix, pricing softness, and weak reporting can all change what you keep.</p>
+      <div class="section-proof-rail">
+        <span class="proof-chip proof-chip--soft">Observed Seascape portfolio data</span>
+      </div>
     </div>
+    <div class="stack-grid">
+      {% for layer in feeLayers %}
+      <article class="stack-card">
+        <span class="stack-metric">{{ layer.metric }}</span>
+        <h3>{{ layer.title }}</h3>
+        <p>{{ layer.copy }}</p>
+      </article>
+      {% endfor %}
+    </div>
+    <p class="mini-note">Airbnb fee drag can apply to the full booking subtotal, including cleaning. That is why cleaning-heavy bookings can carry a higher effective commission than you might expect.</p>
   </section>
 
   <section class="section">
@@ -1052,7 +1212,7 @@ a{color:var(--brand);text-decoration:underline}
     <div class="section-intro">
       <span class="eyebrow">Sample leak math</span>
       <h2>The same management fee can produce different owner outcomes.</h2>
-      <p>The owner-net gap appears when management fee, channel drag, and direct mix are evaluated together instead of one line item at a time.</p>
+      <p>Use this as a simple way to read the leak stack. The point is not to forecast a specific home's revenue. The point is to show why management fee, channel drag, and direct mix should be evaluated together.</p>
       <div class="section-proof-rail">
         <span class="proof-chip proof-chip--soft">Scenario math, not a forecast</span>
       </div>
@@ -1089,10 +1249,6 @@ a{color:var(--brand);text-decoration:underline}
     <p class="mini-note">Scenario math showing how channel mix and fee drag can change owner net. It is not a forecast, guarantee, or property-specific quote.</p>
   </section>
 
-  <div class="hero-mobile-actions mobile-only">
-    <a class="btn btn-gold" href="#owner-cta" data-track-event="owner_primary_cta_click" data-page-slug="owner-fee-revenue-leak-benchmark-2026">Request Your Revenue Teardown</a>
-  </div>
-
   <section class="section">
     <div class="section-intro">
       <span class="eyebrow">Observed Seascape examples</span>
@@ -1109,9 +1265,9 @@ a{color:var(--brand);text-decoration:underline}
       </article>
       <article class="example-card">
         <span class="eyebrow">Observed property example</span>
-        <h3>AMI Portfolio</h3>
+        <h3>Patrick portfolio</h3>
         <span class="example-metric">5.7%</span>
-        <p>In March 2026, the AMI Portfolio had 5.7% direct booking share. One direct booking saved about <strong>$450</strong> versus Airbnb.</p>
+        <p>In March 2026, the Patrick portfolio had 5.7% direct booking share. One direct booking saved about <strong>$450</strong> versus Airbnb.</p>
         <div class="mini-note">Observed March 2026 portfolio example. Direct mix was real, but still limited.</div>
       </article>
       <article class="example-card">
@@ -1127,7 +1283,7 @@ a{color:var(--brand);text-decoration:underline}
   <section class="section">
     <div class="section-intro">
       <span class="eyebrow">Fit</span>
-      <h2>Where owner-net economics need an honest look.</h2>
+      <h2>Best fit: premium Gulf Coast homes where owner net deserves close attention.</h2>
       <p><a href="/property-management/">Seascape property management</a> is built for owners who want revenue visibility, strong guest care, local operating attention, and plain-English owner communication. The best fit is a premium Gulf Coast home, especially in the $110k-$150k+ gross lane.</p>
       <div class="section-proof-rail">
         <span class="proof-chip proof-chip--soft">5-property Gulf Coast scope</span>
@@ -1137,60 +1293,24 @@ a{color:var(--brand);text-decoration:underline}
       <div class="fit-card">
         <span class="eyebrow">Best Fit</span>
         <ul class="quick-list">
-          <li>Premium Gulf Coast homes projected around $110k-$150k+ gross.</li>
-          <li>Airbnb-heavy homes where OTA drag may be doing more damage than the fee quote suggests.</li>
-          <li>Owners who want clearer reporting on revenue, channel mix, reviews, and maintenance follow-through.</li>
-          <li>Homes where pricing discipline and guest standards matter more than raw activity reports.</li>
+          {% for bullet in fitBullets %}
+          <li>{{ bullet }}</li>
+          {% endfor %}
         </ul>
       </div>
       <div class="fit-card">
-        <span class="eyebrow">What Seascape Is Really Selling</span>
-        <ul class="quick-list">
-          <li>Local follow-through when rates, reviews, maintenance, or guest issues start affecting owner net.</li>
-          <li>Revenue visibility before small channel, pricing, or review problems become expensive misses.</li>
-          <li>A teardown that separates <strong>proven leak</strong>, <strong>likely leak</strong>, and <strong>unknown</strong> before an owner makes a switch decision.</li>
-          <li>Homes projected below $110k gross may need a fee above 15% unless there is a strategic reason to approve the fit.</li>
-        </ul>
+        <span class="eyebrow">Fit boundary</span>
+        <p class="fit-boundary-copy">Homes projected below $110k gross may need a fee above 15% unless there is a strategic reason to approve the fit. Seascape's current fee structure is 10-15% at the company level, but this benchmark is not a blanket quote for every home.</p>
       </div>
     </div>
   </section>
 
-  <section class="cta-shell" id="owner-cta">
+  <section class="cta-shell">
     <span class="eyebrow">Private teardown</span>
     <h2>Want the same leak scan on your home?</h2>
-    <p>The useful question is whether your channel mix and fee stack are quietly pulling owner net below the headline fee.</p>
-    <div class="cta-card">
-      <div class="cta-grid">
-        <div class="cta-copy">
-          <h3>Request a Revenue Teardown</h3>
-          <p>Share whichever source is easiest. A listing URL is enough to start; an owner statement or fee quote makes the teardown sharper.</p>
-          <p class="cta-proof-note">The teardown is a review of available evidence. Missing statements, calendars, reviews, or fee terms will be marked unknown.</p>
-          <div>
-            <span class="cta-kicker">What the teardown separates</span>
-            <p class="cta-copy-small">The private teardown separates proven leak, likely leak, and unknown before recommending whether to stay put, fix the current setup, or talk about transition.</p>
-          </div>
-          <div class="cta-confirmation">
-            <p>Got it. Seascape will review the source material and send back the clearest next step: stay put, fix the current setup, or talk about a transition.</p>
-          </div>
-        </div>
-        {{ ownerEvaluationForm({
-          className: "owner-lead-form--benchmark",
-          formPlacement: "benchmark-teardown",
-          pageSlug: "owner-fee-revenue-leak-benchmark-2026",
-          sourcePageSlug: "owner-fee-revenue-leak-benchmark-2026",
-          market: "florida-gulf-coast",
-          leadType: "owner-revenue-teardown",
-          buttonLabel: "Send My Teardown Request",
-          propertyFieldLabel: "Property address or market",
-          propertyFieldPlaceholder: "Anna Maria Island, Bradenton, Sarasota, or full street address",
-          showBenchmarkFields: true,
-          allowFileUpload: true,
-          suppressNote: true,
-          gridClassName: "owner-form-grid--benchmark",
-          fileHelp: "PDF, spreadsheet, or screenshot. Missing statements, calendars, reviews, or fee terms will be marked unknown."
-        }) }}
-      </div>
-    </div>
+    <p>Send the listing URL, owner statement, fee quote, or property address. Seascape will run a short Revenue Teardown that separates what is proven, what is likely leaking, and what is still unknown before any switch conversation.</p>
+    <a class="btn btn-gold" href="{{ teardownHref }}" data-track-event="owner_primary_cta_click" data-page-slug="owner-fee-revenue-leak-benchmark-2026">Request Your Revenue Teardown</a>
+    <p class="cta-route-note">This button opens the teardown intake. Missing statements, calendars, reviews, or fee terms stay marked unknown until Seascape can verify them.</p>
   </section>
 
   <section class="section method-mobile mobile-only">
