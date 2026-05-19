@@ -44,7 +44,7 @@ test("owner landing page keeps the owner revenue teardown close to the sales arg
   assert.notEqual(reviewIndex, -1, "owner hub needs the revenue teardown anchor");
   assert.equal(ownerLanding.includes("Benchmark + Teardown"), true);
   assert.equal(
-    ownerLanding.includes("Fee drag, OTA dependence, review-risk signals, and uneven owner communication rarely show up clearly in an owner statement."),
+    ownerLanding.includes("Marketplace fees, expensive booking channels, review-risk signals, and uneven owner communication rarely show up clearly in an owner statement."),
     true
   );
   assert.ok(reviewIndex < faqIndex, "owner CTA should land before FAQ filler");
@@ -152,13 +152,13 @@ test("owner benchmark CTA carries source attribution into the revenue review for
   );
 });
 
-test("owner benchmark page stays in the leak-stack lane and keeps visible proof labels", () => {
+test("owner benchmark page keeps the benchmark framing and visible proof labels", () => {
   const ownerBenchmark = fs.readFileSync(
     path.join(projectRoot, "src", "research", "owner-fee-revenue-leak-benchmark-2026.njk"),
     "utf8"
   );
 
-  assert.equal(ownerBenchmark.includes("Your management fee is not the whole revenue leak."), true);
+  assert.equal(ownerBenchmark.includes("Your management fee is only part of the picture."), true);
   assert.equal(ownerBenchmark.includes("5-property Gulf Coast scope"), true);
   assert.equal(ownerBenchmark.includes("Observed Seascape portfolio data"), true);
   assert.equal(ownerBenchmark.includes("Observed property example"), true);
@@ -385,7 +385,7 @@ test("remaining local owner pages keep custom owner-math framing instead of fall
     "vacation-rental-management-bradenton": {
       proofTitle: "Broad demand does not guarantee strong owner income",
       switchTitle: "Why Bradenton owners start looking elsewhere",
-      revenueTitle: "What actually moves Bradenton owner net"
+      revenueTitle: "What actually moves Bradenton owner income"
     },
     "vacation-rental-management-sarasota": {
       proofTitle: "Premium homes lose money when the operation gets flattened",
