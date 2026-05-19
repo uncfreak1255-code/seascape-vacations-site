@@ -6,54 +6,47 @@ const assert = require("node:assert/strict");
 const projectRoot = path.resolve(__dirname, "..", "..");
 const ownerData = require(path.join(projectRoot, "src", "_data", "seoPages.json")).owner;
 const ownerProofAssets = require(path.join(projectRoot, "src", "_data", "ownerProofAssets.json"));
+const {
+  assertRequiredHeadTags,
+  readRouteSource
+} = require("./rendered-route-contract");
 
 function readSource(...parts) {
   return fs.readFileSync(path.join(projectRoot, ...parts), "utf8");
 }
 
-function findMetaContent(source, pattern) {
-  const match = source.match(pattern);
-  return match ? match[1] : null;
+function readSourceContract(...parts) {
+  return readRouteSource(projectRoot, path.join(...parts));
 }
 
 test("anna-maria-city ships parseable primary head tags", () => {
-  const source = readSource("src", "guides", "anna-maria-city.html");
+  const contract = readSourceContract("src", "guides", "anna-maria-city.html");
 
-  const title = findMetaContent(source, /<title>([^<]+)<\/title>/i);
-  const description = findMetaContent(source, /<meta\s+name="description"\s+content="([^"]+)">/i);
-  const canonical = findMetaContent(source, /<link\s+rel="canonical"\s+href="([^"]+)">/i);
-  const ogTitle = findMetaContent(source, /<meta\s+property="og:title"\s+content="([^"]+)">/i);
-  const ogDescription = findMetaContent(source, /<meta\s+property="og:description"\s+content="([^"]+)">/i);
-
-  assert.equal(title, "Anna Maria City Guide & Vacation Rentals (2026)");
+  assertRequiredHeadTags(contract);
+  assert.equal(contract.head.title, "Anna Maria City Guide & Vacation Rentals (2026)");
   assert.equal(
-    description,
+    contract.head.description,
     "Discover Anna Maria City at the northern tip of Anna Maria Island — secluded Bean Point, the historic Rod & Reel Pier, Pine Avenue shops, and vacation rentals. AMI's quietest gem."
   );
-  assert.equal(canonical, "https://seascape-vacations.com/guides/anna-maria-city/");
-  assert.equal(ogTitle, "Anna Maria City Guide & Vacation Rentals (2026)");
-  assert.equal(ogDescription, "AMI's quietest gem — Bean Point, Rod & Reel Pier, and true Old Florida.");
+  assert.equal(contract.head.canonical, "https://seascape-vacations.com/guides/anna-maria-city/");
+  assert.equal(contract.head.ogTitle, "Anna Maria City Guide & Vacation Rentals (2026)");
+  assert.equal(contract.head.ogDescription, "AMI's quietest gem — Bean Point, Rod & Reel Pier, and true Old Florida.");
 });
 
 test("rainy-day guide answers current Sarasota and Bradenton rain intent", () => {
+  const contract = readSourceContract("src", "guides", "rainy-day-activities-bradenton-sarasota.html");
   const source = readSource("src", "guides", "rainy-day-activities-bradenton-sarasota.html");
 
-  const title = findMetaContent(source, /<title>([^<]+)<\/title>/i);
-  const description = findMetaContent(source, /<meta\s+name="description"\s+content="([^"]+)">/i);
-  const canonical = findMetaContent(source, /<link\s+rel="canonical"\s+href="([^"]+)">/i);
-  const ogTitle = findMetaContent(source, /<meta\s+property="og:title"\s+content="([^"]+)">/i);
-  const ogDescription = findMetaContent(source, /<meta\s+property="og:description"\s+content="([^"]+)">/i);
-  const twitterTitle = findMetaContent(source, /<meta\s+name="twitter:title"\s+content="([^"]+)">/i);
-
-  assert.equal(title, "Rainy Day Activities in Sarasota & Bradenton");
+  assertRequiredHeadTags(contract);
+  assert.equal(contract.head.title, "Rainy Day Activities in Sarasota & Bradenton");
   assert.equal(
-    description,
+    contract.head.description,
     "Rain in Sarasota or Bradenton? Compare indoor picks: Mote SEA, The Ringling, Sarasota Art Museum, arcades, shopping, and AMI backup plans."
   );
-  assert.equal(canonical, "https://seascape-vacations.com/guides/rainy-day-activities-bradenton-sarasota/");
-  assert.equal(ogTitle, title);
-  assert.equal(ogDescription, description);
-  assert.equal(twitterTitle, title);
+  assert.equal(contract.head.canonical, "https://seascape-vacations.com/guides/rainy-day-activities-bradenton-sarasota/");
+  assert.equal(contract.head.ogTitle, contract.head.title);
+  assert.equal(contract.head.ogDescription, contract.head.description);
+  assert.equal(contract.head.twitterTitle, contract.head.title);
   assert.match(source, /<h1 class="guide-title">Rainy Day Activities in Sarasota & Bradenton<\/h1>/);
   assert.match(source, /"@type": "FAQPage"/);
   assert.match(source, /"dateModified": "2026-04-22"/);
@@ -70,19 +63,15 @@ test("rainy-day guide answers current Sarasota and Bradenton rain intent", () =>
 test("winner guide snippets stay decision-forward without body rewrites", () => {
   const amiVsSiesta = readSource("src", "guides", "anna-maria-island-vs-siesta-key.html");
   const bradentonVsSarasota = readSource("src", "guides", "bradenton-vs-sarasota.html");
+  const amiContract = readSourceContract("src", "guides", "anna-maria-island-vs-siesta-key.html");
+  const bradentonContract = readSourceContract("src", "guides", "bradenton-vs-sarasota.html");
 
+  assert.equal(amiContract.head.title, "Anna Maria Island vs Siesta Key: Which Beach Fits?");
   assert.equal(
-    findMetaContent(amiVsSiesta, /<title>([^<]+)<\/title>/i),
-    "Anna Maria Island vs Siesta Key: Which Beach Fits?"
-  );
-  assert.equal(
-    findMetaContent(amiVsSiesta, /<meta\s+name="description"\s+content="([^"]+)">/i),
+    amiContract.head.description,
     "AMI fits quieter family beach days and easier parking; Siesta Key fits famous quartz sand, nightlife, and Sarasota dining. Compare the tradeoff."
   );
-  assert.equal(
-    findMetaContent(amiVsSiesta, /<meta\s+property="og:title"\s+content="([^"]+)">/i),
-    "Anna Maria Island vs Siesta Key: Which Beach Fits?"
-  );
+  assert.equal(amiContract.head.ogTitle, "Anna Maria Island vs Siesta Key: Which Beach Fits?");
   assert.match(
     amiVsSiesta,
     /<h1>Anna Maria Island vs Siesta Key<br>Beaches, Crowds, Parking, and Where to Stay<\/h1>/
@@ -100,18 +89,12 @@ test("winner guide snippets stay decision-forward without body rewrites", () => 
     /Updated April 2026/
   );
 
+  assert.equal(bradentonContract.head.title, "Bradenton vs Sarasota for Vacation: Which Base Wins?");
   assert.equal(
-    findMetaContent(bradentonVsSarasota, /<title>([^<]+)<\/title>/i),
-    "Bradenton vs Sarasota for Vacation: Which Base Wins?"
-  );
-  assert.equal(
-    findMetaContent(bradentonVsSarasota, /<meta\s+name="description"\s+content="([^"]+)">/i),
+    bradentonContract.head.description,
     "Bradenton wins on AMI access, parking, and value; Sarasota wins on Siesta Key, dining, and arts. Compare beaches, cost, and where to stay."
   );
-  assert.equal(
-    findMetaContent(bradentonVsSarasota, /<meta\s+property="og:title"\s+content="([^"]+)">/i),
-    "Bradenton vs Sarasota for Vacation: Which Base Wins?"
-  );
+  assert.equal(bradentonContract.head.ogTitle, "Bradenton vs Sarasota for Vacation: Which Base Wins?");
   assert.match(
     bradentonVsSarasota,
     /<h1>Bradenton vs Sarasota:<br>Which Is Better for Vacation\?<\/h1>/
