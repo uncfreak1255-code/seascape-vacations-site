@@ -5,6 +5,7 @@ const assert = require("node:assert/strict");
 
 const projectRoot = path.resolve(__dirname, "..", "..");
 const smokeScriptPath = path.join(projectRoot, "scripts", "recovery", "assert-direct-booking-event-smoke.js");
+const { buildRouteContract } = require("./rendered-route-contract");
 
 function loadSmokeModule() {
   delete require.cache[require.resolve(smokeScriptPath)];
@@ -96,15 +97,26 @@ test("homepage and shared popup partial use the tracked email capture path", () 
   const homepageScript = fs.readFileSync(path.join(projectRoot, "src", "assets", "js", "homepage.js"), "utf8");
   const popupPartial = fs.readFileSync(path.join(projectRoot, "src", "_includes", "partials", "email-popup.njk"), "utf8");
   const trackingScript = fs.readFileSync(path.join(projectRoot, "src", "assets", "js", "conversion-tracking.js"), "utf8");
+  const homepageContract = buildRouteContract({
+    html: homepage,
+    routePath: "/",
+    sourcePath: "src/index.njk"
+  });
+  const popupContract = buildRouteContract({
+    html: popupPartial,
+    routePath: "/partials/email-popup/",
+    sourcePath: "src/_includes/partials/email-popup.njk"
+  });
 
   for (const source of [homepage, popupPartial]) {
     assert.match(source, /data-track-form="email_capture"/);
-    assert.match(source, /data-form-submit-event="email_capture_submit"/);
     assert.match(source, /data-inline-email-capture="true"/);
     assert.match(source, /data-email-capture-success/);
     assert.doesNotMatch(source, /onsubmit="handleEmailSubmit\(event\)"/);
   }
 
+  assert.ok(homepageContract.trackedEvents.includes("email_capture_submit"));
+  assert.ok(popupContract.trackedEvents.includes("email_capture_submit"));
   assert.match(homepage, /\/assets\/js\/homepage\.js/);
   assert.match(homepageScript, /\/assets\/js\/conversion-tracking\.js/);
   assert.match(popupPartial, /\/assets\/js\/conversion-tracking\.js/);
