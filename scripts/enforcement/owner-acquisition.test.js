@@ -44,7 +44,7 @@ test("owner landing page keeps the owner revenue teardown close to the sales arg
   assert.notEqual(reviewIndex, -1, "owner hub needs the revenue teardown anchor");
   assert.equal(ownerLanding.includes("Benchmark + Teardown"), true);
   assert.equal(
-    ownerLanding.includes("Fee drag, OTA dependence, review-risk signals, and uneven owner communication rarely show up clearly in an owner statement."),
+    ownerLanding.includes("Platform costs, expensive booking sources, review-risk signals, and uneven owner communication rarely show up clearly in an owner statement."),
     true
   );
   assert.ok(reviewIndex < faqIndex, "owner CTA should land before FAQ filler");
@@ -118,17 +118,21 @@ test("owner revenue teardown form lowers friction without losing tracking or int
   assert.equal(ownerFormPartial.includes('name="current_fee_quote"'), true);
   assert.equal(ownerFormPartial.includes('name="what_feels_off"'), true);
   assert.equal(ownerFormPartial.includes('name="owner_statement"'), true);
-  assert.equal(ownerFormPartial.includes("Share whichever source is easiest. A listing URL is enough to start; an owner statement or fee quote makes the teardown sharper."), true);
+  assert.equal(ownerFormPartial.includes("Share whichever source is easiest. A listing URL is enough to start; an owner statement or fee quote makes the revenue review sharper."), true);
   assert.equal(
-    ownerFormPartial.includes("The teardown is a review of available evidence. Missing statements, calendars, reviews, or fee terms will be marked unknown."),
+    ownerFormPartial.includes("The review uses the evidence available. Missing statements, calendars, reviews, or fee terms will be marked as missing instead of guessed."),
     true
   );
-  assert.equal(ownerFormPartial.includes("The private teardown separates proven leak, likely leak, and unknown"), true);
+  assert.equal(ownerFormPartial.includes("The private review separates proven cost, likely cost, and missing information"), true);
   assert.equal(ownerFormPartial.includes("Send My Teardown Request"), true);
   assert.equal(ownerFormPartial.includes('data-track-form="owner"'), true);
   assert.equal(ownerFormPartial.includes('data-form-submit-event="owner_form_submit"'), true);
   assert.equal(ownerFormPartial.includes('data-source-page-slug="{{ options.sourcePageSlug or options.pageSlug or \'property-management\' }}"'), true);
   assert.equal(ownerFormPartial.includes('name="source_page_slug" value="{{ options.sourcePageSlug or options.pageSlug or \'property-management\' }}"'), true);
+  assert.equal(ownerLanding.includes("showBenchmarkFields: true"), true);
+  assert.equal(ownerTemplate.includes("showBenchmarkFields: true"), true);
+  assert.equal(ownerLanding.includes('propertyFieldLabel: "Property address or market"'), true);
+  assert.equal(ownerTemplate.includes('propertyFieldLabel: "Property address or market"'), true);
 });
 
 test("owner benchmark CTA carries source attribution into the revenue review form path", () => {
@@ -140,32 +144,29 @@ test("owner benchmark CTA carries source attribution into the revenue review for
   assert.equal(ownerBenchmark.includes('id="owner-cta"'), true);
   assert.equal(ownerBenchmark.includes('sourcePageSlug: "owner-fee-revenue-leak-benchmark-2026"'), true);
   assert.equal(ownerBenchmark.includes('formPlacement: "benchmark-teardown"'), true);
+  assert.equal(ownerBenchmark.includes('showBenchmarkFields: true'), true);
+  assert.equal(ownerBenchmark.includes('allowFileUpload: true'), true);
   assert.equal(
-    ownerBenchmark.indexOf('id="benchmark-math"') < ownerBenchmark.indexOf('<div class="hero-mobile-actions mobile-only">'),
+    /ownerEvaluationForm\(\{[\s\S]*formPlacement: "benchmark-teardown"[\s\S]*sourcePageSlug: "owner-fee-revenue-leak-benchmark-2026"[\s\S]*buttonLabel: "Send My Teardown Request"/.test(ownerBenchmark),
     true,
-    "mobile teardown CTA should appear after the worked math"
-  );
-  assert.equal(
-    /<div class="hero-mobile-actions mobile-only">\s*<a class="btn btn-gold" href="#owner-cta"/.test(ownerBenchmark),
-    true,
-    "mobile teardown CTA should point to the embedded owner form"
+    "benchmark page should embed the shared teardown form with source attribution"
   );
 });
 
-test("owner benchmark page stays in the leak-stack lane and keeps visible proof labels", () => {
+test("owner benchmark page stays in the fee-and-revenue lane and keeps visible proof labels", () => {
   const ownerBenchmark = fs.readFileSync(
     path.join(projectRoot, "src", "research", "owner-fee-revenue-leak-benchmark-2026.njk"),
     "utf8"
   );
 
-  assert.equal(ownerBenchmark.includes("Your management fee is not the whole revenue leak."), true);
+  assert.equal(ownerBenchmark.includes("Your management fee is only part of the picture."), true);
   assert.equal(ownerBenchmark.includes("5-property Gulf Coast scope"), true);
   assert.equal(ownerBenchmark.includes("Observed Seascape portfolio data"), true);
   assert.equal(ownerBenchmark.includes("Observed property example"), true);
-  assert.equal(ownerBenchmark.includes("Scenario math, not a forecast"), true);
+  assert.equal(ownerBenchmark.includes("Example math, not a forecast"), true);
   assert.equal(ownerBenchmark.includes("Request Your Revenue Teardown"), true);
-  assert.equal(ownerBenchmark.includes("Patrick portfolio"), false);
-  assert.equal(ownerBenchmark.includes("decision aid"), false);
+  assert.equal(ownerBenchmark.includes("AMI Portfolio"), true);
+  assert.equal(ownerBenchmark.includes("This chart is not a market-wide fee survey."), true);
   assert.equal(ownerBenchmark.includes("passive income"), false);
   assert.equal(ownerBenchmark.includes("sit back while we manage"), false);
   assert.equal(ownerBenchmark.includes("full service"), false);
@@ -385,7 +386,7 @@ test("remaining local owner pages keep custom owner-math framing instead of fall
     "vacation-rental-management-bradenton": {
       proofTitle: "Broad demand does not guarantee strong owner income",
       switchTitle: "Why Bradenton owners start looking elsewhere",
-      revenueTitle: "What actually moves Bradenton owner net"
+      revenueTitle: "What actually moves Bradenton owner income"
     },
     "vacation-rental-management-sarasota": {
       proofTitle: "Premium homes lose money when the operation gets flattened",

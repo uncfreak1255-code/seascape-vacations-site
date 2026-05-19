@@ -7,7 +7,7 @@
 - secondary keywords: owner revenue teardown, direct booking revenue, Airbnb host fee drag, vacation rental owner net
 - audience pattern: skeptical owner who has seen fee quotes but needs proof that the full leak stack matters more than headline percentage alone
 - proof source: Seascape five-home benchmark sample, observed Airbnb host-fee drag, direct-payment cost reference, and labeled scenario math
-- required internal links: /property-management/, /property-management/vacation-rental-management-fees-florida/, /property-management/maximize-vacation-rental-income-florida/
+- required internal links: /property-management/vacation-rental-management-fees-florida/, /property-management/maximize-vacation-rental-income-florida/
 - CTA target: /property-management/?owner_source=owner-fee-revenue-leak-benchmark-2026#owner-cta
 - anti-claims: no portfolio-wide guarantee, no market-wide fee survey claim, no invented review totals, no passive-income or full-service fluff
 
@@ -15,7 +15,8 @@ Date: 2026-05-15
 Hub handoff: `/Users/sawbeck/Projects/seascape-hub/projects/owner-fee-revenue-leak-benchmark-execution-package-2026-05-15.md`
 Site route: `/research/owner-fee-revenue-leak-benchmark-2026/`
 Figma capture: `https://www.figma.com/design/glZRIUzGbQlw0KJhtAGUWP?node-id=3-2`
-Figma frames: `Owner Fee + Revenue Leak Benchmark - Desktop`, `Owner Fee + Revenue Leak Benchmark - Mobile`
+Reference-only frame: `3:2`
+Implementation frames: `9:2` desktop, `11:2` mobile
 
 ## Decision
 

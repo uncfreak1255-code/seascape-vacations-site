@@ -43,6 +43,16 @@
     }, { once: true });
 })();
 
+(function loadConversionTracking() {
+    if (window.__seascapeConversionTrackingLoaded) return;
+    if (document.querySelector('script[src="/assets/js/conversion-tracking.js"]')) return;
+
+    var script = document.createElement('script');
+    script.src = '/assets/js/conversion-tracking.js';
+    script.defer = true;
+    document.head.appendChild(script);
+})();
+
 (function deferMetaPixel() {
     function loadMetaPixel() {
         if (window.__seascapeMetaPixelLoaded) return;
