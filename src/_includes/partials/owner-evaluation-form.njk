@@ -1,6 +1,7 @@
 {% macro ownerEvaluationForm(options = {}) %}
+{% set hasFormCard = options.formTitle or options.formIntro or options.proofNote or options.detailCopy or options.confirmation %}
 <form
-  class="owner-lead-form{% if options.className %} {{ options.className }}{% endif %}"
+  class="owner-lead-form{% if hasFormCard %} owner-lead-form--editorial{% endif %}{% if options.className %} {{ options.className }}{% endif %}"
   {% if options.id %}id="{{ options.id }}"{% endif %}
   name="{{ options.formName or 'owner-revenue-teardown' }}"
   method="POST"
@@ -35,20 +36,21 @@
     {% if options.intro %}
     <p class="owner-form-copy">{{ options.intro }}</p>
     {% endif %}
+    {% if hasFormCard %}
+    <ul class="owner-form-proof-list">
+      <li>{{ options.formIntro or "Share whichever source is easiest. A listing URL is enough to start; an owner statement or fee quote makes the revenue review sharper." }}</li>
+      <li>{{ options.proofNote or "The review uses the evidence available. Missing statements, calendars, reviews, or fee terms will be marked as missing instead of guessed." }}</li>
+      <li><strong>{{ options.detailLabel or "What the review separates" }}</strong>{{ options.detailCopy or "The private review separates proven cost, likely cost, and missing information before recommending whether to stay put, fix the current setup, or talk about transition." }}</li>
+      <li>{{ options.confirmation or "Got it. Seascape will review what you send and return the clearest next step: stay put, fix the current setup, or talk about a transition." }}</li>
+    </ul>
+    {% endif %}
   </div>
   {% endif %}
 
-  {% if options.formTitle or options.formIntro or options.proofNote or options.detailCopy or options.confirmation %}
+  {% if hasFormCard %}
   <div class="owner-form-card">
     <div class="owner-form-card-copy">
       <h4 class="owner-form-card-title">{{ options.formTitle or "Request a Revenue Teardown" }}</h4>
-      <p class="owner-form-card-intro">{{ options.formIntro or "Share whichever source is easiest. A listing URL is enough to start; an owner statement or fee quote makes the revenue review sharper." }}</p>
-      <p class="owner-form-proof-note">{{ options.proofNote or "The review uses the evidence available. Missing statements, calendars, reviews, or fee terms will be marked as missing instead of guessed." }}</p>
-      <p class="owner-form-detail-label">{{ options.detailLabel or "What the review separates" }}</p>
-      <p class="owner-form-detail-copy">{{ options.detailCopy or "The private review separates proven cost, likely cost, and missing information before recommending whether to stay put, fix the current setup, or talk about transition." }}</p>
-      <div class="owner-form-confirmation">
-        <p>{{ options.confirmation or "Got it. Seascape will review what you send and return the clearest next step: stay put, fix the current setup, or talk about a transition." }}</p>
-      </div>
     </div>
 
     <div class="owner-form-fieldset">
@@ -95,7 +97,7 @@
         {% endif %}
       </div>
 
-  {% if options.formTitle or options.formIntro or options.proofNote or options.detailCopy or options.confirmation %}
+  {% if hasFormCard %}
       <div class="owner-form-actions">
         <button class="btn btn-gold owner-form-submit" type="submit">{{ options.buttonLabel or "Send My Teardown Request" }}</button>
       </div>
