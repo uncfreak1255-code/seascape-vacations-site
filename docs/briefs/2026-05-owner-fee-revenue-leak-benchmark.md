@@ -11,11 +11,16 @@
 - CTA target: /property-management/?owner_source=owner-fee-revenue-leak-benchmark-2026#owner-cta
 - anti-claims: no portfolio-wide guarantee, no market-wide fee survey claim, no invented review totals, no passive-income or full-service fluff
 
-Date: 2026-05-15
+Date: 2026-05-19
 Hub handoff: `/Users/sawbeck/Projects/seascape-hub/projects/owner-fee-revenue-leak-benchmark-execution-package-2026-05-15.md`
-Site route: `/research/owner-fee-revenue-leak-benchmark-2026/`
+Site route: `/research/owner-fee-revenue-leak-benchmark-2026/` (legacy path), `/research/owner-fee-revenue-gap-benchmark-2026/` (property-management copy-safe alias)
 Figma capture: `https://www.figma.com/design/glZRIUzGbQlw0KJhtAGUWP?node-id=3-2`
 Figma frames: `Owner Fee + Revenue Leak Benchmark - Desktop`, `Owner Fee + Revenue Leak Benchmark - Mobile`
+
+## What Changed in This Batch
+
+- Updated property-management copy to avoid new banned phrasing, remove owner-detached wording, and align CTA/benefit language to the property-focused intent.
+- Introduced the new redirect alias route `/research/owner-fee-revenue-gap-benchmark-2026/` so visible text can use the “gap” framing while preserving the current legacy route.
 
 ## Decision
 
@@ -93,6 +98,7 @@ Claims to keep out:
 - `/property-management/`
 - `/property-management/vacation-rental-management-fees-florida/`
 - `/property-management/maximize-vacation-rental-income-florida/`
+- `/research/owner-fee-revenue-gap-benchmark-2026/`
 
 ## CTA Pattern
 
