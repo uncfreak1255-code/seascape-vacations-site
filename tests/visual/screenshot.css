@@ -14,7 +14,7 @@ img[height="1"][width="1"] {
 
 /* The benchmark guide uses a blurred fixed nav that can flicker in mobile full-page captures.
    Freeze it to a solid surface for screenshot determinism without changing live styling. */
-.guide-nav {
+html[data-visual-route="owner-fee-revenue-leak-benchmark-2026"] .guide-nav {
   position: absolute !important;
   background: rgb(255, 255, 255) !important;
   backdrop-filter: none !important;
