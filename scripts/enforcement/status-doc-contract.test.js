@@ -45,6 +45,22 @@ test("next-batch documents the only allowed reread statuses", () => {
   }
 });
 
+test("next-batch contract points updates through the analytics receipt sync script", () => {
+  const nextBatch = read(path.join("docs", "status", "next-batch.md"));
+  const syncScript = read(path.join("scripts", "enforcement", "sync-next-batch-from-analytics-receipt.js"));
+
+  assert.equal(
+    nextBatch.includes("sync-next-batch-from-analytics-receipt.js"),
+    true,
+    "next-batch should name the receipt sync script instead of inviting hand-written status updates"
+  );
+  assert.equal(
+    syncScript.includes("receipt_type next_batch_decision"),
+    true,
+    "sync script should validate next_batch_decision receipts"
+  );
+});
+
 test("current-state defers volatile reread detail to next-batch", () => {
   const currentState = read(path.join("docs", "status", "current-state.md"));
 

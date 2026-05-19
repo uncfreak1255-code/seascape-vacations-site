@@ -1,19 +1,28 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
   <title id="title">74-day Gulf Coast vacation rental booking window</title>
-  <desc id="desc">Seascape's analyzed Gulf Coast vacation rental bookings show a 74-day average booking lead time and 62-day median booking lead time.</desc>
-  <rect width="960" height="540" fill="#FAF7EE"/>
-  <text x="60" y="74" font-family="Georgia, serif" font-size="34" fill="#2D4647">Guests Book About 10 Weeks Ahead</text>
-  <text x="60" y="108" font-family="Arial, sans-serif" font-size="17" fill="#595959">Booking lead time across 545 confirmed Gulf Coast reservations</text>
-  <line x1="120" y1="300" x2="820" y2="300" stroke="#D9D0B8" stroke-width="8" stroke-linecap="round"/>
-  <circle cx="554" cy="300" r="84" fill="#3D5C5D"/>
-  <text x="554" y="292" text-anchor="middle" font-family="Georgia, serif" font-size="56" fill="#FFFFFF">74</text>
-  <text x="554" y="326" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#E8D5A3">AVERAGE DAYS</text>
-  <circle cx="482" cy="300" r="54" fill="#C9A962"/>
-  <text x="482" y="296" text-anchor="middle" font-family="Georgia, serif" font-size="34" fill="#2D4647">62</text>
-  <text x="482" y="320" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#2D4647">MEDIAN</text>
-  <text x="120" y="350" font-family="Arial, sans-serif" font-size="15" fill="#595959">Check-in day</text>
-  <text x="690" y="350" font-family="Arial, sans-serif" font-size="15" fill="#595959">Trip planning starts</text>
-  <rect x="60" y="410" width="840" height="70" rx="14" fill="#FFFFFF" stroke="#EBE4CC"/>
-  <text x="84" y="444" font-family="Arial, sans-serif" font-size="18" fill="#3A3A3A">Practical read: price strategy and inventory positioning need to be set roughly 3 months before arrival.</text>
-  <text x="60" y="512" font-family="Arial, sans-serif" font-size="14" fill="#595959">Source: Seascape Vacations analysis of 545 confirmed bookings, June 2022-March 2026.</text>
+  <desc id="desc">Average booking lead time is 74 days and median lead time is 62 days.</desc>
+  <rect width="1200" height="720" fill="#FAF7EE"/>
+  <rect x="40" y="40" width="1120" height="640" rx="32" fill="#F5EED6" stroke="#D9CFB2"/>
+  <text x="86" y="112" fill="#5F8A8B" font-family="Poppins, Arial, sans-serif" font-size="18" font-weight="700" letter-spacing="3">BOOKING WINDOW</text>
+  <text x="86" y="174" fill="#3D5C5D" font-family="Playfair Display, Georgia, serif" font-size="54" font-weight="500">Guests plan about two months ahead.</text>
+  <text x="86" y="222" fill="#595959" font-family="Poppins, Arial, sans-serif" font-size="24">Lead time from booking date to check-in across 545 confirmed bookings.</text>
+  <g transform="translate(104 306)">
+    <rect x="0" y="0" width="448" height="230" rx="28" fill="#2D4647"/>
+    <text x="36" y="74" fill="#E8D5A3" font-family="Playfair Display, Georgia, serif" font-size="86" font-weight="700">74</text>
+    <text x="167" y="74" fill="#E8D5A3" font-family="Poppins, Arial, sans-serif" font-size="24" font-weight="700">days</text>
+    <text x="36" y="126" fill="#FFFFFF" font-family="Poppins, Arial, sans-serif" font-size="24" font-weight="700">Average lead time</text>
+    <text x="36" y="166" fill="#DDEAEA" font-family="Poppins, Arial, sans-serif" font-size="20">Early planners pull this above the median.</text>
+  </g>
+  <g transform="translate(648 306)">
+    <rect x="0" y="0" width="448" height="230" rx="28" fill="#FFFFFF" stroke="#D9CFB2"/>
+    <text x="36" y="74" fill="#C9A962" font-family="Playfair Display, Georgia, serif" font-size="86" font-weight="700">62</text>
+    <text x="167" y="74" fill="#C9A962" font-family="Poppins, Arial, sans-serif" font-size="24" font-weight="700">days</text>
+    <text x="36" y="126" fill="#3D5C5D" font-family="Poppins, Arial, sans-serif" font-size="24" font-weight="700">Median lead time</text>
+    <text x="36" y="164" fill="#595959" font-family="Poppins, Arial, sans-serif" font-size="19">Median booking point:</text>
+    <text x="36" y="196" fill="#595959" font-family="Poppins, Arial, sans-serif" font-size="19">about nine weeks out.</text>
+  </g>
+  <path d="M116 594 H1084" stroke="#EBE4CC" stroke-width="18" stroke-linecap="round"/>
+  <path d="M116 594 H712" stroke="#3D5C5D" stroke-width="18" stroke-linecap="round"/>
+  <circle cx="712" cy="594" r="18" fill="#C9A962"/>
+  <text x="86" y="642" fill="#5F8A8B" font-family="Poppins, Arial, sans-serif" font-size="17" font-weight="700" letter-spacing="1.5">SOURCE: BOOKING TRENDS REPORT. 545 CONFIRMED BOOKINGS. PEAK WEEKS CAN BOOK EARLIER.</text>
 </svg>

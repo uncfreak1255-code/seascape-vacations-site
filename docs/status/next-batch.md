@@ -4,6 +4,7 @@
 
 - `docs/status/next-batch.md` is the only canonical reread handoff surface.
 - Every reread update must write exactly one `Reread status` line and exactly one `Concrete next move` line in `Latest Execution Read`.
+- Reread updates should be generated from a `seascape-analytics` next-batch decision receipt with `node scripts/enforcement/sync-next-batch-from-analytics-receipt.js --receipt <path>`.
 - Allowed reread statuses:
   - `blocked by freshness`
   - `fresh but below threshold`
@@ -12,28 +13,37 @@
 
 ## Latest Execution Read
 
-Run date: 2026-05-08.
+Run date: 2026-05-17.
 
-The targeted joined operator read was executed in `seascape-analytics` for the
-five tracked money pages plus the existing report context pages.
+The targeted joined operator read was executed in `seascape-analytics` and
+rendered here from its machine-readable next-batch decision receipt.
 
-- Requested last-7-complete-day window: 2026-04-29 to 2026-05-05.
-- Latest BigQuery GSC `data_date`: 2026-05-06.
-- Site work gate: `clear` because the joined GSC + GA4 read covers the
-  requested window.
-- Reread status: `fresh but below threshold`.
-- Concrete next move: rerun the targeted operator read on the five tracked money pages after more recrawl time using the last 7 complete days.
-- Owner-money result: 413 impressions, 0.24% weighted CTR, 4.71
-  weighted position, 0 owner form submits.
-- Stay-money result: 9 impressions and 0 stay-to-property clicks.
-- Guide winner variants still appear in GSC, but the report's consolidation
-  branch trigger is 5000 guide-variant impressions; the completed window showed
-  1165 total guide-winner impressions.
+- Requested last-7-complete-day window: 2026-05-10 to 2026-05-16.
+- Latest BigQuery GSC `data_date`: 2026-05-15.
+- Site work gate: `blocked` - GSC export freshness does not cover the requested window.
+- Reread status: `blocked by freshness`.
+- Concrete next move: rerun the targeted operator read after BigQuery GSC covers 2026-05-16.
+- Report recommendation: `hold-and-reread`.
+- Reason: No cluster cleared the bar for a stronger next branch than holding for more readback.
+- GSC freshness warning: Requested window ends `2026-05-16`, but BigQuery GSC data is only current through `2026-05-15`. Treat the trailing day as unavailable.
 
-Do not open `owner-ctr-rewrite-round-2`, `stay-money-cro-round-2`, Holmes Beach
-expansion, or fresh guide consolidation from this read. The data is now fresh
-enough to call, but it is still below the thresholds required to open a new
-batch.
+Cluster read from the analytics receipt:
+
+| cluster | pages | gsc_clicks | gsc_impressions | gsc_ctr | gsc_position | ga4_sessions |
+|---|---:|---:|---:|---:|---:|---:|
+| brand | 1 | 2 | 200 | 1.00% | 12.31 | 34 |
+| catalog | 1 | 0 | 19 | 0.00% | 10.47 | 15 |
+| guide_support | 1 | 0 | 793 | 0.00% | 5.50 | 5 |
+| guide_winners | 4 | 9 | 1351 | 0.67% | 5.63 | 35 |
+| owner_hub | 1 | 0 | 34 | 0.00% | 7.85 | 10 |
+| owner_money | 4 | 0 | 146 | 0.00% | 5.32 | 1 |
+| owner_support | 1 | 0 | 0 | 0.00% | 0.00 | 0 |
+| property_pages | 1 | 0 | 0 | 0.00% | 0.00 | 1 |
+| stay_money | 2 | 0 | 7 | 0.00% | 32.57 | 3 |
+| stay_support | 2 | 0 | 58 | 0.00% | 47.98 | 2 |
+
+Do not open a new owner, stay, guide, GEO, or SEO expansion branch from this read.
+`docs/status/next-batch.md` should move to `open next batch` only when the analytics receipt says so.
 
 ## Likely Priorities
 

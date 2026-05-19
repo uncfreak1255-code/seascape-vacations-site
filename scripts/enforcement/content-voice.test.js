@@ -30,6 +30,17 @@ const BANNED_GENERIC_PATTERNS = [
   /\bfewer quiet misses\b/i
 ];
 
+const OWNER_JARGON_PATTERNS = [
+  /\bowner net\b/i,
+  /\bleak stack\b/i,
+  /\bOTA dependence\b/i,
+  /\bchannel drag\b/i,
+  /\bchannel mix\b/i,
+  /\bdirect mix\b/i,
+  /\boperating clarity\b/i,
+  /\bpricing discipline\b/i
+];
+
 const INTERNAL_PROCESS_PATTERNS = [
   /\bapproved benchmark\b/i,
   /\bapproved inputs?\b/i,
@@ -111,6 +122,20 @@ function parseMissingBriefFields(briefContent) {
   });
 }
 
+function getCurrentRoute(relativePath, source) {
+  const permalinkMatch = source.match(/^permalink:\s*["']([^"']+)["']/m);
+  if (permalinkMatch) {
+    return permalinkMatch[1];
+  }
+
+  const withoutSrc = relativePath.replace(/^src/, "").replace(/\.njk$/i, "");
+  if (withoutSrc.endsWith("/index")) {
+    return `${withoutSrc.slice(0, -"/index".length)}/`;
+  }
+
+  return `${withoutSrc}/`;
+}
+
 function getChangedFiles() {
   try {
     const mergeBase = execSync("git merge-base HEAD origin/main", {
@@ -144,6 +169,7 @@ function lintPublicContent(relativePath, source, requiredLinks) {
   const violations = [];
   const visibleText = normalizeVisibleText(source);
   const firstParagraph = getFirstParagraphText(source);
+  const currentRoute = getCurrentRoute(relativePath, source);
 
   for (const pattern of BANNED_GENERIC_PATTERNS) {
     const match = visibleText.match(pattern);
@@ -167,6 +193,13 @@ function lintPublicContent(relativePath, source, requiredLinks) {
   }
 
   if (isOwnerContentFile(relativePath)) {
+    for (const pattern of OWNER_JARGON_PATTERNS) {
+      const match = visibleText.match(pattern);
+      if (match) {
+        violations.push(`${relativePath}: banned owner jargon "${match[0]}"`);
+      }
+    }
+
     const youMatches = visibleText.match(/\b(you|your)\b/gi) || [];
     const detachedOwnerMatches = visibleText.match(/\bthe owner\b(?!-)/gi) || [];
 
@@ -181,6 +214,10 @@ function lintPublicContent(relativePath, source, requiredLinks) {
     violations.push(`${relativePath}: active brief must list at least two required internal links`);
   } else {
     for (const link of requiredLinks) {
+      if (link === currentRoute) {
+        continue;
+      }
+
       if (!source.includes(`href="${link}"`) && !source.includes(`href='${link}'`)) {
         violations.push(`${relativePath}: missing required internal link ${link}`);
       }
@@ -226,10 +263,10 @@ test("approved owner research sample passes the new public-copy guardrails", () 
   const approvedSample = `
     <main>
       <section>
-        <h1>Your management fee is not the whole revenue leak.</h1>
-        <p>Most owners compare 15%, 20%, and 25% management fees. That misses OTA drag, direct-booking mix, and pricing discipline.</p>
-        <p><a href="/property-management/vacation-rental-management-fees-florida/">Management fee</a> is only one part of owner net.</p>
-        <p>That is why <a href="/property-management/maximize-vacation-rental-income-florida/">direct mix</a> belongs in your owner-net conversation.</p>
+        <h1>Your management fee is only part of the picture.</h1>
+        <p>Most owners compare 15%, 20%, and 25% management fees and stop there.</p>
+        <p><a href="/property-management/vacation-rental-management-fees-florida/">Management fee</a> is only one part of what you actually keep.</p>
+        <p>That is why <a href="/property-management/maximize-vacation-rental-income-florida/">booking channels</a> belong in the conversation.</p>
         <p><a href="/property-management/">Seascape property management</a> starts with a revenue teardown, not a generic service list.</p>
       </section>
     </main>
@@ -249,7 +286,7 @@ test("lint catches internal-process language and detached owner voice in a sampl
     <main>
       <section>
         <p>Approved benchmark inputs help the owner understand the methodology before switching.</p>
-        <p>Attentive local operations and clearer owner communication reduce quiet misses.</p>
+        <p>Attentive local operations and clearer owner communication reduce quiet misses while improving owner net through better pricing discipline.</p>
       </section>
     </main>
   `;
@@ -272,9 +309,54 @@ test("lint catches internal-process language and detached owner voice in a sampl
     true
   );
   assert.equal(
+    violations.some((entry) => entry.includes("banned owner jargon")),
+    true
+  );
+  assert.equal(
     violations.some((entry) => entry.includes("first paragraph should not lead with proof language")),
     true
   );
+});
+
+test("content lint does not require a page to link to itself", () => {
+  const sample = `
+    ---
+    permalink: "/property-management/"
+    ---
+    <main>
+      <section>
+        <p>You are comparing management fees and booking channels.</p>
+        <p><a href="/property-management/vacation-rental-management-fees-florida/">Fee guide</a></p>
+        <p><a href="/property-management/maximize-vacation-rental-income-florida/">Income guide</a></p>
+      </section>
+    </main>
+  `;
+
+  const violations = lintPublicContent("src/property-management/index.njk", sample, [
+    "/property-management/",
+    "/property-management/vacation-rental-management-fees-florida/",
+    "/property-management/maximize-vacation-rental-income-florida/"
+  ]);
+
+  assert.deepEqual(violations, []);
+});
+
+test("owner seo page data avoids banned owner jargon", () => {
+  const seoPages = JSON.parse(read(path.join("src", "_data", "seoPages.json")));
+  const violations = [];
+
+  for (const entry of seoPages.owner) {
+    const visibleText = JSON.stringify(entry);
+
+    for (const pattern of OWNER_JARGON_PATTERNS) {
+      const match = visibleText.match(pattern);
+      if (match) {
+        violations.push(`${entry.slug}: banned owner jargon "${match[0]}"`);
+      }
+    }
+  }
+
+  assert.deepEqual(violations, []);
 });
 
 test("changed public content files require one active brief and pass brief-linked checks", () => {

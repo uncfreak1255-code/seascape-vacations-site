@@ -1,9 +1,21 @@
 # Brief: winner-guide consolidation round 2
 
+## Content Gate Inputs
+
+- persona: Florida Gulf Coast trip planners comparing Bradenton, Sarasota, Anna Maria Island, and timing questions before booking
+- primary keyword: bradenton vs sarasota
+- secondary keywords: anna maria island vs siesta key, anna maria island weather
+- audience pattern: guests choosing between nearby beach bases or checking seasonality before they click into a stay page
+- proof source: existing repo-owned guide facts, current winner-guide routing docs, and rendered output verification that the live guide HTML no longer leaks raw front matter
+- required internal links: /, /guides/
+- CTA target: keep the existing winner-stay handoffs inside each guide intact
+- anti-claims: no invented rankings, no fake pricing precision, no unsupported weather promises, and no leaked template/front matter output
+
 ## Why This Batch
 
 - the live weekly operator report chose `winner-guide-consolidation` after the money-page thresholds failed to clear
 - the comparison-guide cluster is still the strongest nonbrand organic asset, but multiple guide families still leak demand across slash, `.html`, and retired comparison aliases
+- the rendered-output guardrail missed a source-level front matter leak on three live guide pages, so this branch needs both the source fix and a recovery assertion that blocks a repeat
 - the stale owner-hub smoke assertion now belongs in this same branch because release evidence is worthless if the trusted gate is still checking retired owner-hub copy
 - owner rewrite, stay-money CRO, Holmes Beach, and Phase 4 stay frozen until `/seo-os` clears those branches later
 
@@ -31,6 +43,7 @@
 - supporting guide-family cleanup:
   - `/guides/siesta-key-vs-anna-maria-island-families/`
   - `/guides/best-time-visit-anna-maria-island/`
+  - `/guides/anna-maria-island-weather/`
 - feeder pages:
   - `/guides/bradenton-vs-sarasota-beaches/`
   - `/guides/bradenton-vs-sarasota-cost-of-living/`

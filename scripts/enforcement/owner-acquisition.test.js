@@ -44,7 +44,7 @@ test("owner landing page keeps the owner revenue teardown close to the sales arg
   assert.notEqual(reviewIndex, -1, "owner hub needs the revenue teardown anchor");
   assert.equal(ownerLanding.includes("Benchmark + Teardown"), true);
   assert.equal(
-    ownerLanding.includes("Platform costs, OTA dependence, review-risk signals, and uneven owner communication rarely show up clearly in an owner statement."),
+    ownerLanding.includes("Platform costs, expensive booking sources, review-risk signals, and uneven owner communication rarely show up clearly in an owner statement."),
     true
   );
   assert.ok(reviewIndex < faqIndex, "owner CTA should land before FAQ filler");
@@ -141,26 +141,15 @@ test("owner benchmark CTA carries source attribution into the revenue review for
     "utf8"
   );
 
-  const teardownHref = '/property-management/?owner_source=owner-fee-revenue-leak-benchmark-2026#owner-cta';
-
-  assert.equal(ownerBenchmark.includes(teardownHref), true);
-  assert.equal(ownerBenchmark.includes('href="#owner-cta"'), false);
-  assert.equal(ownerBenchmark.includes('sourcePageSlug: "owner-fee-revenue-leak-benchmark-2026"'), false);
-  assert.equal(ownerBenchmark.includes('formPlacement: "benchmark-teardown"'), false);
-
-  const mobileScopeIndex = ownerBenchmark.indexOf('<div class="hero-mobile-scope mobile-only">');
-  const mobileActionsIndex = ownerBenchmark.indexOf('<div class="hero-mobile-actions mobile-only">');
-  const wrongComparisonIndex = ownerBenchmark.indexOf('<span class="eyebrow">The wrong comparison</span>');
-
+  assert.equal(ownerBenchmark.includes('id="owner-cta"'), true);
+  assert.equal(ownerBenchmark.includes('sourcePageSlug: "owner-fee-revenue-leak-benchmark-2026"'), true);
+  assert.equal(ownerBenchmark.includes('formPlacement: "benchmark-teardown"'), true);
+  assert.equal(ownerBenchmark.includes('showBenchmarkFields: true'), true);
+  assert.equal(ownerBenchmark.includes('allowFileUpload: true'), true);
   assert.equal(
-    mobileScopeIndex < mobileActionsIndex && mobileActionsIndex < wrongComparisonIndex,
+    /ownerEvaluationForm\(\{[\s\S]*formPlacement: "benchmark-teardown"[\s\S]*sourcePageSlug: "owner-fee-revenue-leak-benchmark-2026"[\s\S]*buttonLabel: "Send My Teardown Request"/.test(ownerBenchmark),
     true,
-    "mobile teardown CTA should sit directly under the hero before the wrong-comparison section"
-  );
-  assert.equal(
-    /<div class="hero-mobile-actions mobile-only">\s*<a class="btn btn-gold" href="\{\{ teardownHref \}\}".*?See the benchmark math/s.test(ownerBenchmark),
-    true,
-    "mobile hero actions should point to the shared owner intake route and keep the benchmark-math link"
+    "benchmark page should embed the shared teardown form with source attribution"
   );
 });
 
@@ -170,14 +159,14 @@ test("owner benchmark page stays in the fee-and-revenue lane and keeps visible p
     "utf8"
   );
 
-  assert.equal(ownerBenchmark.includes("Your management fee is not the whole revenue leak."), true);
+  assert.equal(ownerBenchmark.includes("Your management fee is only part of the picture."), true);
   assert.equal(ownerBenchmark.includes("5-property Gulf Coast scope"), true);
   assert.equal(ownerBenchmark.includes("Observed Seascape portfolio data"), true);
   assert.equal(ownerBenchmark.includes("Observed property example"), true);
   assert.equal(ownerBenchmark.includes("Example math, not a forecast"), true);
   assert.equal(ownerBenchmark.includes("Request Your Revenue Teardown"), true);
-  assert.equal(ownerBenchmark.includes("Patrick portfolio"), true);
-  assert.equal(ownerBenchmark.includes("This benchmark is a decision aid, not a revenue forecast or market-wide fee survey."), true);
+  assert.equal(ownerBenchmark.includes("AMI Portfolio"), true);
+  assert.equal(ownerBenchmark.includes("This chart is not a market-wide fee survey."), true);
   assert.equal(ownerBenchmark.includes("passive income"), false);
   assert.equal(ownerBenchmark.includes("sit back while we manage"), false);
   assert.equal(ownerBenchmark.includes("full service"), false);
@@ -397,7 +386,7 @@ test("remaining local owner pages keep custom owner-math framing instead of fall
     "vacation-rental-management-bradenton": {
       proofTitle: "Broad demand does not guarantee strong owner income",
       switchTitle: "Why Bradenton owners start looking elsewhere",
-      revenueTitle: "What actually moves Bradenton owner net"
+      revenueTitle: "What actually moves Bradenton owner income"
     },
     "vacation-rental-management-sarasota": {
       proofTitle: "Premium homes lose money when the operation gets flattened",

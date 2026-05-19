@@ -158,6 +158,8 @@ function loadVisualTestAvailabilityFixture() {
 }
 
 function applyAvailabilityFixture(properties, fixtureBySlug) {
+  const syncedAt = new Date().toISOString();
+
   return properties.map((property) => {
     const fixture = fixtureBySlug[property.slug];
     if (!fixture) {
@@ -166,7 +168,10 @@ function applyAvailabilityFixture(properties, fixtureBySlug) {
 
     return {
       ...property,
-      availability: normalizeAvailabilitySummary(fixture)
+      availability: normalizeAvailabilitySummary({
+        ...fixture,
+        syncedAt
+      })
     };
   });
 }

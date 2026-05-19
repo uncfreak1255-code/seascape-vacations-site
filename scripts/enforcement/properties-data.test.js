@@ -123,3 +123,28 @@ test("normalizeAvailabilitySummary drops stale or incomplete calendar summaries"
     null
   );
 });
+
+test("visual test mode keeps fixture availability live for deterministic snapshots", async () => {
+  const previousVisualTestValue = process.env.SEASCAPE_VISUAL_TEST;
+  process.env.SEASCAPE_VISUAL_TEST = "1";
+
+  try {
+    const properties = await propertiesData();
+    const availabilityLabels = properties.map((property) => property.availability?.nextAvailable?.label ?? null);
+
+    assert.equal(properties.length, 5);
+    assert.deepEqual(availabilityLabels, [
+      "Jun 08 - Jun 10",
+      "May 18 - May 20",
+      "May 30 - Jun 06",
+      "Aug 21 - Aug 23",
+      "May 18 - May 19"
+    ]);
+  } finally {
+    if (previousVisualTestValue === undefined) {
+      delete process.env.SEASCAPE_VISUAL_TEST;
+    } else {
+      process.env.SEASCAPE_VISUAL_TEST = previousVisualTestValue;
+    }
+  }
+});

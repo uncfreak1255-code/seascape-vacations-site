@@ -24,7 +24,7 @@
 - the weekly operator report in `seascape-analytics` is the read that should decide the next batch, not another site-wide audit
 - the repo now has a lean SEO OS: five roles only, one brief per serious batch, and dedicated style and portfolio docs instead of stale root markdown acting like live truth
 - the deployed owner metrics endpoint can now be turned into a bounded hub receipt with `node scripts/enforcement/emit-hub-verification-receipt.js owner-lead-metrics`; that receipt still proves measurement surface truth, not booked teardowns or validated owner demand by itself
-- source-truth drift surfaced on 2026-05-11 SEO audit: amenity and BR/BA claims diverged across `src/_data/properties-fallback.json`, the per-property templates, and `src/llms.txt` — reconciliation belongs on its own short worktree before any new owner or stay batch opens
+- the 2026-05-11 property source-truth drift has been reconciled: `src/_data/properties-fallback.json` remains the editable authority, `npm run property:truth:regen` derives the per-property templates and `src/llms.txt`, and enforcement now checks exact llms bullets plus VacationRental BR/BA/guest and amenity schema facts against fallback data
 
 ## What This Repo Should Optimize For
 

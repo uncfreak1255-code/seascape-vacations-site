@@ -162,13 +162,13 @@ test("priority owner money-page metadata stays non-empty and query-aligned", () 
   assert.ok(vrboPage, "VRBO page should exist");
 
   assert.match(feePage.title, /fees/i);
-  assert.equal(feePage.title, "Florida Vacation Rental Management Fees: What Owners Net");
+  assert.equal(feePage.title, "Florida Vacation Rental Management Fees: What Owners Keep");
   assert.equal(
     feePage.description,
-    "See Florida vacation rental management fees, OTA fee drag, and when a lower percentage still leaves owners with less net revenue."
+    "See Florida vacation rental management fees, marketplace booking costs, and when a lower percentage still leaves owners with less income."
   );
-  assert.match(feePage.description, /OTA fee drag/i);
-  assert.match(feePage.description, /net revenue/i);
+  assert.match(feePage.description, /marketplace booking costs/i);
+  assert.match(feePage.description, /less income/i);
 
   assert.match(licensingPage.title, /DBPR/i);
   assert.equal(licensingPage.title, "Florida Vacation Rental License Rules: DBPR + County Risk");

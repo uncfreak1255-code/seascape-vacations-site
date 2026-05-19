@@ -356,6 +356,39 @@
     .hero-ticker-label { font-size: 9px; }
 }
 
+@media (max-width: 380px) {
+    .hero-eyebrow {
+        justify-content: center;
+        max-width: calc(100vw - 32px);
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .hero-eyebrow-dot,
+    .hero-eyebrow span:nth-child(n+4) {
+        display: none;
+    }
+    .hero-phrase:not(:first-child) {
+        display: none;
+    }
+
+    .hero-ticker {
+        gap: 8px;
+        padding: 8px 10px;
+        letter-spacing: 0.12em;
+    }
+    .hero-ticker-badge {
+        gap: 6px;
+        padding: 4px 8px 4px 7px;
+    }
+    .hero-ticker-fact {
+        justify-content: flex-start;
+        gap: 7px;
+    }
+    .hero-ticker-k {
+        display: none;
+    }
+}
+
 @media (prefers-reduced-motion: reduce) {
     .hero-img,
     .hero-ticker-dot,
