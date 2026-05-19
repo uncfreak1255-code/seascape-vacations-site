@@ -61,6 +61,10 @@ function validatePopupMarkup(body, targetPath) {
   if (body.includes('onsubmit="handleEmailSubmit(event)"')) {
     throw new Error(`${targetPath} still uses legacy popup submit handling instead of shared conversion tracking`);
   }
+
+  if (!body.includes('/assets/js/conversion-tracking.js')) {
+    throw new Error(`${targetPath} has popup email capture markup but does not load shared conversion tracking`);
+  }
 }
 
 function buildTrackedLink(eventName, href) {

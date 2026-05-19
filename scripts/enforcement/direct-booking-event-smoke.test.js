@@ -71,6 +71,7 @@ test("direct-booking event smoke validates the three funnel event surfaces", () 
       </div>
       <div data-email-capture-success></div>
     </div>
+    <script defer src="/assets/js/conversion-tracking.js"></script>
   `;
 
   assert.doesNotThrow(() => {
@@ -93,6 +94,7 @@ test("direct-booking event smoke validates the three funnel event surfaces", () 
 test("homepage and shared popup partial use the tracked email capture path", () => {
   const homepage = fs.readFileSync(path.join(projectRoot, "src", "index.njk"), "utf8");
   const popupPartial = fs.readFileSync(path.join(projectRoot, "src", "_includes", "partials", "email-popup.njk"), "utf8");
+  const trackingScript = fs.readFileSync(path.join(projectRoot, "src", "assets", "js", "conversion-tracking.js"), "utf8");
 
   for (const source of [homepage, popupPartial]) {
     assert.match(source, /data-track-form="email_capture"/);
@@ -101,4 +103,8 @@ test("homepage and shared popup partial use the tracked email capture path", () 
     assert.match(source, /data-email-capture-success/);
     assert.doesNotMatch(source, /onsubmit="handleEmailSubmit\(event\)"/);
   }
+
+  assert.match(homepage, /include "partials\/analytics-ga4\.njk"/);
+  assert.match(popupPartial, /\/assets\/js\/conversion-tracking\.js/);
+  assert.match(trackingScript, /__seascapeConversionTrackingLoaded/);
 });
