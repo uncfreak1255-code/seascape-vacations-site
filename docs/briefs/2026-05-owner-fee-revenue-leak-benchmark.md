@@ -2,12 +2,12 @@
 
 ## Content Gate Inputs
 
-- persona: premium Gulf Coast vacation-rental owner comparing management fee, booking channels, and take-home results before a switch conversation
+- persona: premium Gulf Coast vacation-rental owner comparing management fee, channel mix, and owner-net outcomes before a switch conversation
 - primary keyword: vacation rental management fees Florida
-- secondary keywords: owner revenue teardown, direct booking revenue, Airbnb host fees, vacation rental owner income
-- audience pattern: skeptical owner who has seen fee quotes but needs proof that pricing, booking channels, and operating costs matter more than headline percentage alone
+- secondary keywords: owner revenue teardown, direct booking revenue, Airbnb host fee drag, vacation rental owner net
+- audience pattern: skeptical owner who has seen fee quotes but needs proof that the full leak stack matters more than headline percentage alone
 - proof source: Seascape five-home benchmark sample, observed Airbnb host-fee drag, direct-payment cost reference, and labeled scenario math
-- required internal links: /property-management/, /property-management/vacation-rental-management-fees-florida/, /property-management/maximize-vacation-rental-income-florida/
+- required internal links: /property-management/vacation-rental-management-fees-florida/, /property-management/maximize-vacation-rental-income-florida/
 - CTA target: /property-management/?owner_source=owner-fee-revenue-leak-benchmark-2026#owner-cta
 - anti-claims: no portfolio-wide guarantee, no market-wide fee survey claim, no invented review totals, no passive-income or full-service fluff
 
@@ -15,7 +15,8 @@ Date: 2026-05-15
 Hub handoff: `/Users/sawbeck/Projects/seascape-hub/projects/owner-fee-revenue-leak-benchmark-execution-package-2026-05-15.md`
 Site route: `/research/owner-fee-revenue-leak-benchmark-2026/`
 Figma capture: `https://www.figma.com/design/glZRIUzGbQlw0KJhtAGUWP?node-id=3-2`
-Figma frames: `Owner Fee + Revenue Leak Benchmark - Desktop`, `Owner Fee + Revenue Leak Benchmark - Mobile`
+Reference-only frame: `3:2`
+Implementation frames: `9:2` desktop, `11:2` mobile
 
 ## Decision
 
@@ -26,9 +27,9 @@ Create a standalone owner-acquisition research asset:
 This is the source-backed citation page for:
 
 - management fee comparisons
-- marketplace booking costs
-- direct-booking savings
-- take-home income risk
+- OTA host-fee drag
+- direct-booking leakage
+- owner net-income risk
 
 This site brief now defers to the merged Hub execution package for exact
 section copy, proof labels, chart captions, CTA wording, and the Figma-ready
@@ -37,7 +38,7 @@ site page or Figma frame.
 
 ## Exact Public Argument
 
-`Your management fee is only part of the picture. What really matters is how pricing, booking channels, and operating costs affect what you actually keep.`
+`The management percentage is only one part of owner net. The real comparison is the full leak stack: management fee, OTA drag, direct mix, pricing discipline, and operating clarity.`
 
 ## Required Hero Copy
 
@@ -47,11 +48,11 @@ Eyebrow:
 
 H1:
 
-`Your management fee is only part of the picture.`
+`Your management fee is not the whole revenue leak.`
 
 Subhead:
 
-`What really matters is how pricing, booking channels, and operating costs affect what you actually keep.`
+`Most owners compare 15%, 20%, and 25% management fees. That misses the bigger stack: OTA drag, direct-booking mix, pricing discipline, and how clearly your manager explains what is happening to owner net.`
 
 CTA:
 

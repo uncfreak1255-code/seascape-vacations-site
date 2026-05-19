@@ -54,6 +54,9 @@ async function gotoMarketingRoute(page, routeConfig) {
   await registerStableNetwork(page);
   const separator = routeConfig.path.includes("?") ? "&" : "?";
   await page.goto(`${routeConfig.path}${separator}visual-test=1`, { waitUntil: "networkidle" });
+  await page.evaluate((slug) => {
+    document.documentElement.dataset.visualRoute = slug;
+  }, routeConfig.slug);
 
   const readySelector = routeConfig.readySelector || "main h1";
   await page.locator(readySelector).first().waitFor({ state: "visible" });
