@@ -532,10 +532,28 @@ headExtra: |
     box-shadow: 0 18px 42px rgba(201, 169, 98, 0.34);
   }
 
+  .owner-field-btn:focus-visible,
+  .owner-field-link:focus-visible,
+  .owner-field-muted-button:focus-visible,
+  .owner-field-input:focus-visible,
+  .owner-field-textarea:focus-visible,
+  .owner-field-step-dot:focus-visible,
+  .owner-field-ticker-dot:focus-visible,
+  .owner-field-guide:focus-visible,
+  .owner-field-market-guidance:focus-visible,
+  .owner-field-directory-grid a:focus-visible,
+  .owner-field-faq summary:focus-visible {
+    outline: 3px solid var(--owner-gold-hot);
+    outline-offset: 4px;
+  }
+
   .owner-field-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
     color: var(--white);
     border-bottom: 1px solid rgba(255, 255, 255, 0.5);
-    padding-bottom: 4px;
+    padding-block: 4px;
     font-size: 14px;
     font-weight: 600;
     letter-spacing: 0.04em;
@@ -620,7 +638,7 @@ headExtra: |
     inset: 0;
   }
 
-  .owner-field-section--form::before {
+  .owner-field-section--form.is-bg-loaded::before {
     background: url("/images/owner-field-ami-family.jpg") center/cover;
     opacity: 0.85;
   }
@@ -827,7 +845,8 @@ headExtra: |
     display: flex;
     align-items: center;
     gap: 7px;
-    padding: 0;
+    min-height: 44px;
+    padding: 4px;
     border: 0;
     background: transparent;
     color: var(--white);
@@ -876,9 +895,13 @@ headExtra: |
   .owner-field-pin-preview i {
     display: block;
     aspect-ratio: 16 / 10;
-    background-image: var(--preview);
+    background: linear-gradient(135deg, rgba(245, 238, 214, 0.94), rgba(201, 169, 98, 0.52));
     background-position: center;
     background-size: cover;
+  }
+
+  .owner-field-pin-preview.is-loaded i {
+    background-image: var(--preview);
   }
 
   .owner-field-pin-preview b {
@@ -1011,8 +1034,13 @@ headExtra: |
     margin-bottom: 28px;
     overflow: hidden;
     border-radius: 8px;
+    background: linear-gradient(135deg, rgba(31, 58, 60, 0.86), rgba(201, 169, 98, 0.46));
     background-position: center;
     background-size: cover;
+  }
+
+  .owner-field-market-photo.is-loaded {
+    background-image: var(--market-photo);
   }
 
   .owner-field-market-photo::after {
@@ -1112,12 +1140,13 @@ headExtra: |
     align-items: center;
     gap: 8px;
     margin-top: 26px;
+    min-height: 44px;
     color: var(--brand-dark);
     font-size: 14px;
     font-weight: 600;
     letter-spacing: 0.04em;
     border-bottom: 1px solid var(--gold);
-    padding-bottom: 4px;
+    padding-block: 8px;
   }
 
   .owner-field-economics {
@@ -1311,8 +1340,8 @@ headExtra: |
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 30px;
-    height: 30px;
+    width: 38px;
+    height: 38px;
     border: 1.5px solid rgba(58, 58, 58, 0.16);
     border-radius: 50%;
     padding: 0;
@@ -1440,6 +1469,45 @@ headExtra: |
     padding: 20px 24px;
   }
 
+  .owner-field-input:focus-visible,
+  .owner-field-textarea:focus-visible {
+    border-color: var(--gold);
+    background: var(--white);
+  }
+
+  .owner-field-file {
+    display: grid;
+    gap: 8px;
+    max-width: 760px;
+    margin-top: 18px;
+    color: var(--owner-ink);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .owner-field-file input {
+    width: 100%;
+    min-height: 48px;
+    border: 1px dashed rgba(201, 169, 98, 0.5);
+    background: rgba(250, 247, 238, 0.82);
+    color: var(--owner-ink);
+    font-size: 13px;
+    letter-spacing: 0;
+    padding: 13px 16px;
+    text-transform: none;
+  }
+
+  .owner-field-file small {
+    color: var(--stone-light);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 1.5;
+    text-transform: none;
+  }
+
   .owner-field-input::placeholder,
   .owner-field-textarea::placeholder {
     font-style: italic;
@@ -1525,6 +1593,8 @@ headExtra: |
     background: transparent;
     color: var(--stone-light);
     font-size: 13px;
+    min-height: 44px;
+    padding: 8px 0;
     cursor: pointer;
   }
 
@@ -1543,6 +1613,12 @@ headExtra: |
   .owner-field-phone {
     letter-spacing: 0;
     text-transform: none;
+  }
+
+  .owner-field-phone a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
   }
 
   .owner-field-seal {
@@ -1748,8 +1824,13 @@ headExtra: |
   .owner-field-guide-photo {
     position: relative;
     aspect-ratio: 16 / 10;
+    background: linear-gradient(135deg, rgba(31, 58, 60, 0.86), rgba(201, 169, 98, 0.46));
     background-position: center;
     background-size: cover;
+  }
+
+  .owner-field-guide-photo.is-loaded {
+    background-image: var(--guide-photo);
   }
 
   .owner-field-guide-photo span {
@@ -2213,10 +2294,9 @@ headExtra: |
         <span class="owner-field-ticker-label">Live · Portfolio</span>
         <div class="owner-field-ticker-track">
           <div class="owner-field-ticker-item sv-pm-ticker-fact is-active" data-ticker-item><strong>$1.4M</strong><span>annual rental revenue · 5 homes</span></div>
-          <div class="owner-field-ticker-item sv-pm-ticker-fact" data-ticker-item><strong>$119,923</strong><span>shifted off OTA commissions in 2025</span></div>
+          <div class="owner-field-ticker-item sv-pm-ticker-fact" data-ticker-item><strong>$119,923</strong><span>direct booking revenue in the owner benchmark</span></div>
           <div class="owner-field-ticker-item sv-pm-ticker-fact" data-ticker-item><strong>13.4% → 2.9%</strong><span>host fee · vs direct payment cost</span></div>
-          <div class="owner-field-ticker-item sv-pm-ticker-fact" data-ticker-item><strong>16.4%</strong><span>Bradenton Pool · March 2026</span></div>
-          <div class="owner-field-ticker-item sv-pm-ticker-fact" data-ticker-item><strong>200+</strong><span>teardowns delivered to owners</span></div>
+          <div class="owner-field-ticker-item sv-pm-ticker-fact" data-ticker-item><strong>Tailored</strong><span>management math changes by property fit</span></div>
           <div class="owner-field-ticker-item sv-pm-ticker-fact" data-ticker-item><strong>48 hr</strong><span>turnaround on every teardown</span></div>
         </div>
         <div class="owner-field-ticker-dots" aria-label="Portfolio fact selector">
@@ -2225,7 +2305,6 @@ headExtra: |
           <button class="owner-field-ticker-dot" type="button" data-ticker-dot="2" aria-label="Show portfolio fact 3"></button>
           <button class="owner-field-ticker-dot" type="button" data-ticker-dot="3" aria-label="Show portfolio fact 4"></button>
           <button class="owner-field-ticker-dot" type="button" data-ticker-dot="4" aria-label="Show portfolio fact 5"></button>
-          <button class="owner-field-ticker-dot" type="button" data-ticker-dot="5" aria-label="Show portfolio fact 6"></button>
         </div>
       </div>
     </div>
@@ -2266,7 +2345,7 @@ headExtra: |
           <div class="owner-field-label">Host Fee Average</div>
           <strong>13.4%</strong>
           <div class="owner-field-stat-caption">vs roughly 2.9% on direct payment</div>
-          <p>Observed Airbnb host-fee average across the portfolio; Bradenton Pool hit 16.4% in March 2026.</p>
+          <p>Observed Airbnb host-fee average across the portfolio, compared with the approximate direct payment cost in the benchmark.</p>
         </article>
       </div>
     </div>
@@ -2300,55 +2379,55 @@ headExtra: |
             <text x="22" y="46" fill="rgba(245,228,176,0.4)" font-size="9" font-family="Playfair Display" font-style="italic">Bradenton - Sarasota corridor</text>
           </svg>
           <div class="owner-field-hq" aria-hidden="true"><span>Seascape HQ</span></div>
-          <button class="owner-field-pin sv-pinmap-pin" type="button" data-market-button="ami" data-map-x="104" data-map-y="140" style="--x: 26%; --y: 28%; --preview: url('/images/owner-field-ami-cottages.jpg');" aria-pressed="false"><span class="owner-field-pin-preview"><i></i><b>Anna Maria Island</b><small>ADR $348 · 71% occ</small></span><span class="owner-field-pin-dot"><span class="owner-field-pin-ring"></span></span><span>Anna Maria Island</span></button>
-          <button class="owner-field-pin sv-pinmap-pin" type="button" data-market-button="holmes" data-map-x="112" data-map-y="180" style="--x: 28%; --y: 36%; --preview: url('/images/owner-field-longboat.jpg');" aria-pressed="false"><span class="owner-field-pin-preview"><i></i><b>Holmes Beach</b><small>ADR $342 · 69% occ</small></span><span class="owner-field-pin-dot"><span class="owner-field-pin-ring"></span></span><span>Holmes Beach</span></button>
-          <button class="owner-field-pin sv-pinmap-pin" type="button" data-market-button="cortez" data-map-x="132" data-map-y="210" style="--x: 33%; --y: 42%; --preview: url('/images/owner-field-bradenton.jpg');" aria-pressed="false"><span class="owner-field-pin-preview"><i></i><b>Cortez</b><small>ADR $268 · 66% occ</small></span><span class="owner-field-pin-dot"><span class="owner-field-pin-ring"></span></span><span>Cortez</span></button>
-          <button class="owner-field-pin sv-pinmap-pin" type="button" data-market-button="bradenton" data-map-x="176" data-map-y="200" style="--x: 44%; --y: 40%; --preview: url('/images/owner-field-bradenton.jpg');" aria-pressed="false"><span class="owner-field-pin-preview"><i></i><b>Bradenton</b><small>ADR $301 · 68% occ</small></span><span class="owner-field-pin-dot"><span class="owner-field-pin-ring"></span></span><span>Bradenton</span></button>
-          <button class="owner-field-pin sv-pinmap-pin" type="button" data-market-button="longboat" data-map-x="120" data-map-y="280" style="--x: 30%; --y: 56%; --preview: url('/images/owner-field-longboat.jpg');" aria-pressed="false"><span class="owner-field-pin-preview"><i></i><b>Longboat Key</b><small>ADR $438 · 58% occ</small></span><span class="owner-field-pin-dot"><span class="owner-field-pin-ring"></span></span><span>Longboat Key</span></button>
-          <button class="owner-field-pin sv-pinmap-pin is-active" type="button" data-market-button="sarasota" data-map-x="200" data-map-y="300" style="--x: 50%; --y: 60%; --preview: url('/images/owner-field-sarasota.jpg');" aria-pressed="true"><span class="owner-field-pin-preview"><i></i><b>Sarasota</b><small>ADR $412 · 64% occ</small></span><span class="owner-field-pin-dot"><span class="owner-field-pin-ring"></span></span><span>Sarasota</span></button>
-          <button class="owner-field-pin sv-pinmap-pin" type="button" data-market-button="siesta" data-map-x="152" data-map-y="360" style="--x: 38%; --y: 72%; --preview: url('/images/owner-field-siesta-key.jpg');" aria-pressed="false"><span class="owner-field-pin-preview"><i></i><b>Siesta Key</b><small>ADR $385 · 70% occ</small></span><span class="owner-field-pin-dot"><span class="owner-field-pin-ring"></span></span><span>Siesta Key</span></button>
+          <button class="owner-field-pin sv-pinmap-pin" type="button" data-market-button="ami" data-map-x="104" data-map-y="140" data-preview="/images/owner-field-ami-cottages.jpg" style="--x: 26%; --y: 28%;" aria-pressed="false"><span class="owner-field-pin-preview"><i></i><b>Anna Maria Island</b><small>Premium weeks · local execution</small></span><span class="owner-field-pin-dot"><span class="owner-field-pin-ring"></span></span><span>Anna Maria Island</span></button>
+          <button class="owner-field-pin sv-pinmap-pin" type="button" data-market-button="holmes" data-map-x="112" data-map-y="180" data-preview="/images/owner-field-longboat.jpg" style="--x: 28%; --y: 36%;" aria-pressed="false"><span class="owner-field-pin-preview"><i></i><b>Holmes Beach</b><small>Repeat guests · walkability</small></span><span class="owner-field-pin-dot"><span class="owner-field-pin-ring"></span></span><span>Holmes Beach</span></button>
+          <button class="owner-field-pin sv-pinmap-pin" type="button" data-market-button="cortez" data-map-x="132" data-map-y="210" data-preview="/images/owner-field-bradenton.jpg" style="--x: 33%; --y: 42%;" aria-pressed="false"><span class="owner-field-pin-preview"><i></i><b>Cortez</b><small>Story · pricing clarity</small></span><span class="owner-field-pin-dot"><span class="owner-field-pin-ring"></span></span><span>Cortez</span></button>
+          <button class="owner-field-pin sv-pinmap-pin" type="button" data-market-button="bradenton" data-map-x="176" data-map-y="200" data-preview="/images/owner-field-bradenton.jpg" style="--x: 44%; --y: 40%;" aria-pressed="false"><span class="owner-field-pin-preview"><i></i><b>Bradenton</b><small>Pool value · group demand</small></span><span class="owner-field-pin-dot"><span class="owner-field-pin-ring"></span></span><span>Bradenton</span></button>
+          <button class="owner-field-pin sv-pinmap-pin" type="button" data-market-button="longboat" data-map-x="120" data-map-y="280" data-preview="/images/owner-field-longboat.jpg" style="--x: 30%; --y: 56%;" aria-pressed="false"><span class="owner-field-pin-preview"><i></i><b>Longboat Key</b><small>Rate quality · guest fit</small></span><span class="owner-field-pin-dot"><span class="owner-field-pin-ring"></span></span><span>Longboat Key</span></button>
+          <button class="owner-field-pin sv-pinmap-pin is-active" type="button" data-market-button="sarasota" data-map-x="200" data-map-y="300" data-preview="/images/owner-field-sarasota.jpg" style="--x: 50%; --y: 60%;" aria-pressed="true"><span class="owner-field-pin-preview"><i></i><b>Sarasota</b><small>Presentation · guest quality</small></span><span class="owner-field-pin-dot"><span class="owner-field-pin-ring"></span></span><span>Sarasota</span></button>
+          <button class="owner-field-pin sv-pinmap-pin" type="button" data-market-button="siesta" data-map-x="152" data-map-y="360" data-preview="/images/owner-field-siesta-key.jpg" style="--x: 38%; --y: 72%;" aria-pressed="false"><span class="owner-field-pin-preview"><i></i><b>Siesta Key</b><small>Beach standards · rate fit</small></span><span class="owner-field-pin-dot"><span class="owner-field-pin-ring"></span></span><span>Siesta Key</span></button>
         </div>
         <div>
           <article class="owner-field-market-card" data-market-panel="ami">
-            <div class="owner-field-market-photo" style="background-image: url('/images/owner-field-ami-cottages.jpg');"><span class="owner-field-market-badge"><span class="owner-field-market-badge-dot"></span>GPS lock · AMI</span><strong>Anna Maria Island</strong></div>
+            <div class="owner-field-market-photo" data-market-photo="/images/owner-field-ami-cottages.jpg"><span class="owner-field-market-badge"><span class="owner-field-market-badge-dot"></span>GPS lock · AMI</span><strong>Anna Maria Island</strong></div>
             <p>Island homes prioritize rate protection, reliable channels, and local execution when occupancy alone is not enough to protect return.</p>
-            <div class="owner-field-market-facts"><div><b>$348</b><span>ADR</span></div><div><b>71%</b><span>Occ.</span></div><div><b>24%</b><span>Direct</span></div></div>
+            <div class="owner-field-market-facts"><div><b>Price</b><span>Premium weeks</span></div><div><b>Protect</b><span>Owner margin</span></div><div><b>Check</b><span>Local response</span></div></div>
             <a class="owner-field-market-guidance" href="/property-management/vacation-rental-management-anna-maria-island/">View Anna Maria Island guidance <span aria-hidden="true">→</span></a>
           </article>
           <article class="owner-field-market-card" data-market-panel="holmes">
-            <div class="owner-field-market-photo" style="background-image: url('/images/owner-field-longboat.jpg');"><span class="owner-field-market-badge"><span class="owner-field-market-badge-dot"></span>GPS lock · HOLMES</span><strong>Holmes Beach</strong></div>
+            <div class="owner-field-market-photo" data-market-photo="/images/owner-field-longboat.jpg"><span class="owner-field-market-badge"><span class="owner-field-market-badge-dot"></span>GPS lock · HOLMES</span><strong>Holmes Beach</strong></div>
             <p>Quiet stretches of Holmes Beach pull repeat guests who want walkability, calm weeks, and local service instead of crowded beach traffic.</p>
-            <div class="owner-field-market-facts"><div><b>$342</b><span>ADR</span></div><div><b>69%</b><span>Occ.</span></div><div><b>21%</b><span>Direct</span></div></div>
+            <div class="owner-field-market-facts"><div><b>Fit</b><span>Repeat guests</span></div><div><b>Watch</b><span>Quiet weeks</span></div><div><b>Check</b><span>Walkability</span></div></div>
             <a class="owner-field-market-guidance" href="/guides/holmes-beach-area-guide/">View Holmes Beach guidance <span aria-hidden="true">→</span></a>
           </article>
           <article class="owner-field-market-card" data-market-panel="cortez">
-            <div class="owner-field-market-photo" style="background-image: url('/images/owner-field-bradenton.jpg');"><span class="owner-field-market-badge"><span class="owner-field-market-badge-dot"></span>GPS lock · CORTEZ</span><strong>Cortez</strong></div>
+            <div class="owner-field-market-photo" data-market-photo="/images/owner-field-bradenton.jpg"><span class="owner-field-market-badge"><span class="owner-field-market-badge-dot"></span>GPS lock · CORTEZ</span><strong>Cortez</strong></div>
             <p>Cortez homes win on authenticity: fishing village texture, family demand, and a no-high-rise story that has to be priced clearly.</p>
-            <div class="owner-field-market-facts"><div><b>$268</b><span>ADR</span></div><div><b>66%</b><span>Occ.</span></div><div><b>17%</b><span>Direct</span></div></div>
+            <div class="owner-field-market-facts"><div><b>Story</b><span>Village fit</span></div><div><b>Price</b><span>Family demand</span></div><div><b>Check</b><span>Positioning</span></div></div>
             <a class="owner-field-market-guidance" href="/guides/bradenton-area-guide/">View Cortez guidance <span aria-hidden="true">→</span></a>
           </article>
           <article class="owner-field-market-card" data-market-panel="bradenton">
-            <div class="owner-field-market-photo" style="background-image: url('/images/owner-field-bradenton.jpg');"><span class="owner-field-market-badge"><span class="owner-field-market-badge-dot"></span>GPS lock · BRADENTON</span><strong>Bradenton</strong></div>
+            <div class="owner-field-market-photo" data-market-photo="/images/owner-field-bradenton.jpg"><span class="owner-field-market-badge"><span class="owner-field-market-badge-dot"></span>GPS lock · BRADENTON</span><strong>Bradenton</strong></div>
             <p>In Bradenton homes, pricing, pool value, and location positioning still decide the return.</p>
-            <div class="owner-field-market-facts"><div><b>$301</b><span>ADR</span></div><div><b>68%</b><span>Occ.</span></div><div><b>18%</b><span>Direct</span></div></div>
+            <div class="owner-field-market-facts"><div><b>Pool</b><span>Value story</span></div><div><b>Group</b><span>Trip fit</span></div><div><b>Check</b><span>Discounting</span></div></div>
             <a class="owner-field-market-guidance" href="/property-management/vacation-rental-management-bradenton/">View Bradenton guidance <span aria-hidden="true">→</span></a>
           </article>
           <article class="owner-field-market-card" data-market-panel="longboat">
-            <div class="owner-field-market-photo" style="background-image: url('/images/owner-field-longboat.jpg');"><span class="owner-field-market-badge"><span class="owner-field-market-badge-dot"></span>GPS lock · LONGBOAT</span><strong>Longboat Key</strong></div>
+            <div class="owner-field-market-photo" data-market-photo="/images/owner-field-longboat.jpg"><span class="owner-field-market-badge"><span class="owner-field-market-badge-dot"></span>GPS lock · LONGBOAT</span><strong>Longboat Key</strong></div>
             <p>Longboat owners trade volume for rate. Channel quality and guest screening do more than discounting.</p>
-            <div class="owner-field-market-facts"><div><b>$438</b><span>ADR</span></div><div><b>58%</b><span>Occ.</span></div><div><b>22%</b><span>Direct</span></div></div>
+            <div class="owner-field-market-facts"><div><b>Rate</b><span>Quality first</span></div><div><b>Guest</b><span>Screening fit</span></div><div><b>Check</b><span>Channel cost</span></div></div>
             <a class="owner-field-market-guidance" href="/guides/longboat-key-area-guide/">View Longboat Key guidance <span aria-hidden="true">→</span></a>
           </article>
           <article class="owner-field-market-card is-active" data-market-panel="sarasota">
-            <div class="owner-field-market-photo" style="background-image: url('/images/owner-field-sarasota.jpg');"><span class="owner-field-market-badge"><span class="owner-field-market-badge-dot"></span>GPS lock · SARASOTA</span><strong>Sarasota</strong></div>
+            <div class="owner-field-market-photo" data-market-photo="/images/owner-field-sarasota.jpg"><span class="owner-field-market-badge"><span class="owner-field-market-badge-dot"></span>GPS lock · SARASOTA</span><strong>Sarasota</strong></div>
             <p>Sarasota owners need presentation, guest quality, and rate discipline to stay tight.</p>
-            <div class="owner-field-market-facts"><div><b>$412</b><span>ADR</span></div><div><b>64%</b><span>Occ.</span></div><div><b>21%</b><span>Direct</span></div></div>
+            <div class="owner-field-market-facts"><div><b>Show</b><span>Presentation</span></div><div><b>Guest</b><span>Quality</span></div><div><b>Check</b><span>Rate fit</span></div></div>
             <a class="owner-field-market-guidance" href="/property-management/vacation-rental-management-sarasota/">View Sarasota guidance <span aria-hidden="true">→</span></a>
           </article>
           <article class="owner-field-market-card" data-market-panel="siesta">
-            <div class="owner-field-market-photo" style="background-image: url('/images/owner-field-siesta-key.jpg');"><span class="owner-field-market-badge"><span class="owner-field-market-badge-dot"></span>GPS lock · SIESTA</span><strong>Siesta Key</strong></div>
+            <div class="owner-field-market-photo" data-market-photo="/images/owner-field-siesta-key.jpg"><span class="owner-field-market-badge"><span class="owner-field-market-badge-dot"></span>GPS lock · SIESTA</span><strong>Siesta Key</strong></div>
             <p>On beach properties, guest expectations are high and presentation has to match the rate.</p>
-            <div class="owner-field-market-facts"><div><b>$385</b><span>ADR</span></div><div><b>70%</b><span>Occ.</span></div><div><b>19%</b><span>Direct</span></div></div>
+            <div class="owner-field-market-facts"><div><b>Beach</b><span>Expectations</span></div><div><b>Photo</b><span>Rate support</span></div><div><b>Check</b><span>Service gaps</span></div></div>
             <a class="owner-field-market-guidance" href="/property-management/vacation-rental-management-siesta-key/">View Siesta Key guidance <span aria-hidden="true">→</span></a>
           </article>
         </div>
@@ -2369,7 +2448,7 @@ headExtra: |
       <div class="owner-field-econ-grid">
         <div><strong>18-35%</strong><p>Competitor fee bands. Percentage alone never tells you what the owner actually keeps.</p></div>
         <div><strong>13.4%</strong><p>Observed Airbnb host-fee average across the portfolio versus roughly 2.9% on direct payment.</p></div>
-        <div><strong>4-9%</strong><p>Additional gross typically lost to cleaning leakage and missed premium nights.</p></div>
+        <div><strong>48 hr</strong><p>Usual turnaround for a one-page teardown that marks proven cost, likely cost, and missing information separately.</p></div>
       </div>
     </div>
   </section>
@@ -2385,13 +2464,15 @@ headExtra: |
         <p class="owner-field-deck">Four short questions, two minutes. A real Seascape person reads every reply and writes a one-pager, usually within 48 hours. No sales call, no calendar invite.</p>
       </div>
       {# Source contract: ownerEvaluationForm({ showBenchmarkFields: true, propertyFieldLabel: "Property address or market" }) #}
-      <form class="owner-field-postcard" name="owner-revenue-teardown" method="POST" enctype="multipart/form-data" data-netlify="true" netlify-honeypot="bot-field" data-track-form="owner" data-form-start-event="owner_form_start" data-form-submit-event="owner_form_submit" data-page-slug="property-management" data-source-page-slug="property-management" data-market="florida-gulf-coast" data-form-direction="forward" data-stamped="false">
+      <form class="owner-field-postcard" name="owner-revenue-teardown" method="POST" enctype="multipart/form-data" data-netlify="true" netlify-honeypot="bot-field" data-track-form="owner" data-form-start-event="owner_form_start" data-form-submit-event="owner_form_submit" data-page-slug="property-management" data-source-page-slug="property-management" data-market="florida-gulf-coast" data-form-placement="field-report-postcard" data-form-direction="forward" data-stamped="false">
         <input type="hidden" name="form-name" value="owner-revenue-teardown">
         <input type="hidden" name="page_slug" value="property-management">
         <input type="hidden" name="source_page_slug" value="property-management">
         <input type="hidden" name="market" value="florida-gulf-coast">
         <input type="hidden" name="lead_type" value="owner-revenue-teardown">
+        <input type="hidden" name="form_placement" value="field-report-postcard">
         <input type="hidden" name="concerns" data-owner-concerns>
+        <input type="hidden" name="what_feels_off" data-owner-concerns-mirror>
         <input type="hidden" name="listing_url" data-owner-listing-mirror>
         <p hidden><label>Do not fill this out if you are human: <input name="bot-field"></label></p>
         <svg class="owner-field-postcard-grain" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><filter id="ownerFieldPaper"><feTurbulence type="fractalNoise" baseFrequency="1.4" numOctaves="2" seed="3"></feTurbulence><feColorMatrix type="matrix" values="0 0 0 0 0.85 0 0 0 0 0.78 0 0 0 0 0.62 0 0 0 0.08 0"></feColorMatrix></filter><rect width="100" height="100" filter="url(#ownerFieldPaper)"></rect></svg>
@@ -2427,6 +2508,10 @@ headExtra: |
           <h3>What home are we looking at?</h3>
           <p>A listing URL, an address, or the property name. If you would rather just describe it, that is fine too.</p>
           <input class="owner-field-input" type="text" name="property_address" autocomplete="street-address" placeholder="airbnb.com/h/your-listing · or · 4250 Palm Ave, Bradenton">
+          <label class="owner-field-file">Upload an owner statement, optional
+            <input type="file" name="owner_statement" accept=".pdf,.csv,.xls,.xlsx,.png,.jpg,.jpeg,.webp">
+            <small>PDF, spreadsheet, or screenshot. Missing statements, calendars, reviews, or fee terms will be marked as missing.</small>
+          </label>
           <div class="owner-field-form-actions">
             <button class="owner-field-btn btn-gold" type="button" data-form-next>Continue <span aria-hidden="true">→</span></button>
             <button class="owner-field-muted-button" type="button" data-form-next>Skip, I would rather describe it</button>
@@ -2457,6 +2542,8 @@ headExtra: |
             <label>Your name <input class="owner-field-input" type="text" name="name" autocomplete="name" placeholder="First and last name" required></label>
             <label>Email <input class="owner-field-input" type="email" name="email" autocomplete="email" placeholder="you@example.com" required></label>
             <label style="grid-column: 1 / -1;">Phone <input class="owner-field-input" type="tel" name="phone" autocomplete="tel" placeholder="(941) 555-1234"></label>
+            <label>Current manager <input class="owner-field-input" type="text" name="current_manager" placeholder="Manager name or self-managed"></label>
+            <label>Fee quote, if known <input class="owner-field-input" type="text" name="current_fee_quote" placeholder="15%, 20%, 25%, or fee terms"></label>
           </div>
           <div class="owner-field-form-actions">
             <button class="owner-field-btn btn-gold" type="button" data-form-next>Continue <span aria-hidden="true">→</span></button>
@@ -2502,27 +2589,27 @@ headExtra: |
       <p class="owner-field-guide-intro">Operational guides that protect revenue and reduce risk, useful when cleaning, taxes, screening, insurance, or acquisition are the real blocker.</p>
       <div class="owner-field-guides">
         <a class="owner-field-guide" href="/property-management/maximize-vacation-rental-income-florida/">
-          <div class="owner-field-guide-photo" style="background-image: url('/images/owner-field-bradenton.jpg');"><span>Revenue</span></div>
+          <div class="owner-field-guide-photo" data-guide-photo="/images/owner-field-bradenton.jpg"><span>Revenue</span></div>
           <div class="owner-field-guide-body"><h3>What Cuts Into Owner Income</h3><p>Start here for a clearer read on fees, OTA mix, and operating issues before a property-specific teardown.</p><b>Read guide <span aria-hidden="true">→</span></b></div>
         </a>
         <a class="owner-field-guide" href="/research/owner-fee-revenue-leak-benchmark-2026/">
-          <div class="owner-field-guide-photo" style="background-image: url('/images/owner-field-sarasota.jpg');"><span>Benchmark</span></div>
+          <div class="owner-field-guide-photo" data-guide-photo="/images/owner-field-sarasota.jpg"><span>Benchmark</span></div>
           <div class="owner-field-guide-body"><h3>Owner Fee + Revenue Gap Benchmark</h3><p>The source-backed math behind management fees, marketplace booking costs, and direct-booking savings.</p><b>Read benchmark <span aria-hidden="true">→</span></b></div>
         </a>
         <a class="owner-field-guide" href="/property-management/switch-vacation-rental-management-company/">
-          <div class="owner-field-guide-photo" style="background-image: url('/images/owner-field-ami-cottages.jpg');"><span>Switching</span></div>
+          <div class="owner-field-guide-photo" data-guide-photo="/images/owner-field-ami-cottages.jpg"><span>Switching</span></div>
           <div class="owner-field-guide-body"><h3>How To Switch Without Wrecking Momentum</h3><p>Use this if the current setup may be fixable, or if it is time to change managers cleanly.</p><b>Read switch guide <span aria-hidden="true">→</span></b></div>
         </a>
         <a class="owner-field-guide" href="/property-management/vacation-rental-cleaning-services-florida/">
-          <div class="owner-field-guide-photo" style="background-image: url('/images/owner-field-anna-maria.jpg');"><span>Turnover</span></div>
+          <div class="owner-field-guide-photo" data-guide-photo="/images/owner-field-anna-maria.jpg"><span>Turnover</span></div>
           <div class="owner-field-guide-body"><h3>Cleaning Services That Protect Reviews</h3><p>For bad turns, inspection misses, and housekeeping control issues that cost repeat bookings.</p><b>Read cleaning guide <span aria-hidden="true">→</span></b></div>
         </a>
         <a class="owner-field-guide" href="/property-management/vacation-rental-guest-screening/">
-          <div class="owner-field-guide-photo" style="background-image: url('/images/owner-field-siesta-key.jpg');"><span>Risk</span></div>
+          <div class="owner-field-guide-photo" data-guide-photo="/images/owner-field-siesta-key.jpg"><span>Risk</span></div>
           <div class="owner-field-guide-body"><h3>Guest Screening Standards</h3><p>Open this page if your real concern is property damage, neighbor friction, or low-quality bookings.</p><b>Read screening guide <span aria-hidden="true">→</span></b></div>
         </a>
         <a class="owner-field-guide" href="/property-management/buy-vacation-rental-property-florida/">
-          <div class="owner-field-guide-photo" style="background-image: url('/images/owner-field-longboat.jpg');"><span>Buying</span></div>
+          <div class="owner-field-guide-photo" data-guide-photo="/images/owner-field-longboat.jpg"><span>Buying</span></div>
           <div class="owner-field-guide-body"><h3>Buy the Right Vacation Rental Property</h3><p>Use this before you buy another home because a listing agent called it a short-term rental opportunity.</p><b>Read acquisition guide <span aria-hidden="true">→</span></b></div>
         </a>
       </div>
@@ -2651,6 +2738,50 @@ headExtra: |
       }
     }
 
+    function loadDeferredBackground(node, dataAttribute, cssVariable, loadedClass) {
+      if (!node || node.getAttribute("data-bg-loaded") === "true") return;
+      var source = node.getAttribute(dataAttribute);
+      if (!source) return;
+      node.style.setProperty(cssVariable, "url('" + source + "')");
+      node.classList.add(loadedClass);
+      node.setAttribute("data-bg-loaded", "true");
+    }
+
+    function loadMarketButtonPreview(button) {
+      var preview = button && button.querySelector(".owner-field-pin-preview");
+      loadDeferredBackground(button, "data-preview", "--preview", "is-loaded");
+      if (preview) preview.classList.add("is-loaded");
+    }
+
+    function loadMarketPanel(panel) {
+      loadDeferredBackground(panel && panel.querySelector("[data-market-photo]"), "data-market-photo", "--market-photo", "is-loaded");
+    }
+
+    var lazyBackgrounds = page.querySelectorAll("[data-guide-photo], .owner-field-section--form");
+    if ("IntersectionObserver" in window) {
+      var backgroundObserver = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          var target = entry.target;
+          if (target.hasAttribute("data-guide-photo")) {
+            loadDeferredBackground(target, "data-guide-photo", "--guide-photo", "is-loaded");
+          } else {
+            target.classList.add("is-bg-loaded");
+          }
+          backgroundObserver.unobserve(target);
+        });
+      }, { rootMargin: "420px 0px" });
+      lazyBackgrounds.forEach(function (node) { backgroundObserver.observe(node); });
+    } else {
+      lazyBackgrounds.forEach(function (node) {
+        if (node.hasAttribute("data-guide-photo")) {
+          loadDeferredBackground(node, "data-guide-photo", "--guide-photo", "is-loaded");
+        } else {
+          node.classList.add("is-bg-loaded");
+        }
+      });
+    }
+
     page.querySelectorAll("[data-owner-market]").forEach(function (marketRoot) {
       var buttons = marketRoot.querySelectorAll("[data-market-button]");
       var panels = marketRoot.querySelectorAll("[data-market-panel]");
@@ -2671,9 +2802,30 @@ headExtra: |
       var activeButton = marketRoot.querySelector("[data-market-button].is-active");
       if (activeButton) setMarketLine(activeButton);
 
+      function loadActiveMarket() {
+        var activePanel = marketRoot.querySelector("[data-market-panel].is-active");
+        if (activePanel) loadMarketPanel(activePanel);
+      }
+
+      if ("IntersectionObserver" in window) {
+        var marketObserver = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (!entry.isIntersecting) return;
+            loadActiveMarket();
+            marketObserver.unobserve(marketRoot);
+          });
+        }, { rootMargin: "260px 0px" });
+        marketObserver.observe(marketRoot);
+      } else {
+        loadActiveMarket();
+      }
+
       buttons.forEach(function (button) {
+        button.addEventListener("pointerenter", function () { loadMarketButtonPreview(button); });
+        button.addEventListener("focus", function () { loadMarketButtonPreview(button); });
         button.addEventListener("click", function () {
           var id = button.getAttribute("data-market-button");
+          loadMarketButtonPreview(button);
           setMarketLine(button);
           buttons.forEach(function (candidate) {
             var active = candidate === button;
@@ -2681,7 +2833,9 @@ headExtra: |
             candidate.setAttribute("aria-pressed", active ? "true" : "false");
           });
           panels.forEach(function (panel) {
-            panel.classList.toggle("is-active", panel.getAttribute("data-market-panel") === id);
+            var active = panel.getAttribute("data-market-panel") === id;
+            panel.classList.toggle("is-active", active);
+            if (active) loadMarketPanel(panel);
           });
         });
       });
@@ -2735,6 +2889,7 @@ headExtra: |
     var steps = form.querySelectorAll("[data-form-step]");
     var meta = form.querySelector("[data-form-meta]");
     var concernsInput = form.querySelector("[data-owner-concerns]");
+    var concernsMirror = form.querySelector("[data-owner-concerns-mirror]");
     var listingMirror = form.querySelector("[data-owner-listing-mirror]");
     var listingField = form.querySelector('input[name="property_address"]');
     var nameField = form.querySelector('input[name="name"]');
@@ -2784,6 +2939,19 @@ headExtra: |
       return true;
     }
 
+    function validateAllRequiredFields() {
+      var requiredFields = form.querySelectorAll("input[required], textarea[required]");
+      for (var i = 0; i < requiredFields.length; i += 1) {
+        if (requiredFields[i].checkValidity()) continue;
+        var invalidPanel = requiredFields[i].closest("[data-form-step]");
+        var invalidStep = invalidPanel ? Number(invalidPanel.getAttribute("data-form-step")) : step;
+        showStep(invalidStep, invalidStep < step ? "back" : "forward", { silent: true });
+        requiredFields[i].reportValidity();
+        return false;
+      }
+      return true;
+    }
+
     function showStep(nextStep, direction, options) {
       options = options || {};
       step = Math.max(0, Math.min(steps.length - 1, nextStep));
@@ -2807,6 +2975,14 @@ headExtra: |
       if (step === 3) syncConfirmPanel();
       if (!options.silent) {
         track("owner_form_step_view", getFormPayload({ viewed_step: step + 1 }));
+        if (window.matchMedia && window.matchMedia("(max-width: 700px)").matches && steps[step]) {
+          window.setTimeout(function () {
+            steps[step].scrollIntoView({
+              block: "start",
+              behavior: reduceMotion ? "auto" : "smooth"
+            });
+          }, 40);
+        }
       }
     }
 
@@ -2830,6 +3006,7 @@ headExtra: |
     dots.forEach(function (dot) {
       dot.addEventListener("click", function () {
         var targetStep = Number(dot.getAttribute("data-form-goto"));
+        if (targetStep > step && !currentPanelFieldsAreValid()) return;
         showStep(targetStep, targetStep < step ? "back" : "forward");
       });
     });
@@ -2842,6 +3019,7 @@ headExtra: |
         else concerns.push(concern);
         button.classList.toggle("is-active", index < 0);
         concernsInput.value = concerns.join(", ");
+        if (concernsMirror) concernsMirror.value = concerns.join(", ");
         track("owner_form_concern_toggle", getFormPayload({
           concern: concern,
           selected: index < 0 ? "true" : "false"
@@ -2858,8 +3036,8 @@ headExtra: |
 
     form.addEventListener("submit", function (event) {
       if (submitting) return;
-      if (!form.checkValidity()) return;
       event.preventDefault();
+      if (!validateAllRequiredFields()) return;
       submitting = true;
       syncConfirmPanel();
       form.setAttribute("data-stamped", "true");
