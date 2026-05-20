@@ -22,30 +22,44 @@ That includes:
 ## Design Authority
 
 - `DESIGN.md` is the visual source of truth.
-- Figma, Claude Design, Stitch, and other outside tools are reference surfaces only.
+- Claude Design is the required first-pass design lane for meaningful Seascape
+  website visual changes, including homepage, owner pages, guide pages, research
+  pages, article/blog-style pages, landers, and reusable page-section patterns.
+- Figma, Stitch, and other outside tools are reference surfaces only unless
+  Sawyer explicitly approves them as the design source for a specific task.
+- Once Sawyer approves a Claude Design mockup, that approved mockup becomes the
+  implementation contract for the visual change. Codex should implement it
+  closely, not reinterpret it, simplify it into a generic site pattern, or swap
+  in a different art direction.
+- Any necessary deviation from an approved Claude Design mockup must be named
+  before or during implementation and limited to repo truth, `DESIGN.md`,
+  accessibility, performance, responsive behavior, or source constraints.
 - If a new pattern, visual direction, or design-system rule is needed, update `DESIGN.md` first.
 
 ## Required Execution Loop
 
 1. Work on a `codex/<task>` branch in a worktree, not root `main`.
 2. Read `DESIGN.md` before touching CSS, layout, templates, or imagery.
-3. If the task is a Seascape mockup, marketing-page direction, homepage/lander
-   concept, or other meaningful visual direction change, run the global
-   `claude-design` skill before implementation so Claude Design handles the
-   design thinking and Codex gets back a reviewable direction or implementation
-   spec.
-4. If the chosen direction changes the visual law, update `DESIGN.md` first.
-5. Implement the source change.
-6. Rebuild the branch output locally.
-7. Run the global `design-review` skill against the affected routes, or use its
+3. For meaningful visual changes, run the global `claude-design` skill before
+   implementation. The output should be a reviewable mockup, direction, or
+   implementation spec, not just verbal styling advice.
+4. Wait for Sawyer approval when the Claude Design output changes layout,
+   hierarchy, art direction, or component treatment. Do not implement a
+   materially different visual direction after approval.
+5. If the approved direction changes the visual law, update `DESIGN.md` first.
+6. Implement the approved mockup closely in source. Preserve the approved
+   hierarchy, spacing intent, imagery direction, CTA treatment, and interaction
+   intent unless a named constraint requires adjustment.
+7. Rebuild the branch output locally.
+8. Run the global `design-review` skill against the affected routes, or use its
    diff-aware mode when the change scope is branch-specific.
-8. Fix any high- or medium-impact rendered issues it finds before asking for
+9. Fix any high- or medium-impact rendered issues it finds before asking for
    human review.
-9. Capture fresh desktop and mobile screenshots for every changed route. If a
+10. Capture fresh desktop and mobile screenshots for every changed route. If a
    full-page capture lies about a fixed or sticky element, also capture
    viewport-level screenshots that show the real behavior.
-10. Run the relevant build and release checks for the lane.
-11. Use `docs/process/before-user-review-checklist.md` before asking Sawyer to
+11. Run the relevant build and release checks for the lane.
+12. Use `docs/process/before-user-review-checklist.md` before asking Sawyer to
     review.
 
 ## Iconography Rule

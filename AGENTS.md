@@ -78,8 +78,14 @@ For any PR that changes public copy in `src/`:
 ## Design Review Workflow
 
 - For Seascape mockups, marketing page concepts, homepage/lander direction
-  work, or any meaningful website visual change, the default design-thinking
-  lane is the global `claude-design` skill.
+  work, guide/article/blog-style pages, owner pages, research pages, or any
+  meaningful website visual change, the default design-thinking lane is the
+  global `claude-design` skill before implementation.
+- If Sawyer approves a Claude Design mockup, implement that approved mockup
+  closely. Do not reinterpret it into a different layout, art direction,
+  hierarchy, CTA treatment, or component style. Any deviation must be named and
+  justified by repo truth, `DESIGN.md`, accessibility, performance, responsive
+  behavior, or source constraints.
 - Codex still owns repo truth, `DESIGN.md`, implementation, and verification.
   Claude Design informs direction; it does not override repo truth or bypass
   the rendered QA loop.
