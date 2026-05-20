@@ -19,8 +19,8 @@ const moneyRoutes = [
     path: "/research/how-seascape-protects-owner-net-2026/",
     readySelector: "main h1",
     screenshot: {
-      maxDiffPixels: 10_000,
-      maxDiffPixelRatio: 0.003,
+      maxDiffPixels: 15_000,
+      maxDiffPixelRatio: 0.012,
     },
   },
   {

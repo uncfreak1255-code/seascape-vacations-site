@@ -23,6 +23,19 @@
     "property_check_availability_click",
     "property_booking_page_click"
   ];
+  var AI_SOURCE_HOSTS = [
+    "chatgpt.com",
+    "perplexity.ai",
+    "claude.ai",
+    "gemini.google.com",
+    "copilot.microsoft.com"
+  ];
+  var ORGANIC_SEARCH_HOSTS = [
+    "google.",
+    "bing.com",
+    "duckduckgo.com",
+    "yahoo.com"
+  ];
 
   function ensureDataLayer() {
     window.dataLayer = window.dataLayer || [];
@@ -165,7 +178,7 @@
       sourcePageSlug = getHiddenInputValue(node, "source_page_slug");
     }
 
-    return {
+    return Object.assign({
       guide_slug: node && node.dataset ? node.dataset.guideSlug || "" : "",
       page_slug: node && node.dataset ? node.dataset.pageSlug || "" : "",
       source_page_slug: sourcePageSlug,
@@ -173,7 +186,7 @@
       placement: node && node.dataset ? node.dataset.formPlacement || node.dataset.placement || "" : "",
       link_text: node && node.dataset && node.dataset.trackLabel ? node.dataset.trackLabel : getText(node),
       link_url: href || ""
-    };
+    }, getSourceContext());
   }
 
   function getCurrentPagePath() {
@@ -184,6 +197,55 @@
     if (!path) return "/";
     if (path.charAt(0) !== "/") return "/" + path;
     return path;
+  }
+
+  function getHostname(url) {
+    if (!url || typeof URL !== "function") return "";
+    try {
+      return new URL(url).hostname.replace(/^www\./, "").toLowerCase();
+    } catch (error) {
+      return "";
+    }
+  }
+
+  function getSourceContext() {
+    var search = window.location && typeof window.location.search === "string" ? window.location.search : "";
+    var params = typeof URLSearchParams === "function" ? new URLSearchParams(search) : null;
+    var utmSource = params ? (params.get("utm_source") || "").trim().toLowerCase() : "";
+    var referrerHost = typeof document !== "undefined" ? getHostname(document.referrer) : "";
+    var sourceHost = utmSource || referrerHost;
+    var aiPlatform = "";
+    var sourceType = "direct_or_unknown";
+
+    for (var i = 0; i < AI_SOURCE_HOSTS.length; i += 1) {
+      if (sourceHost.indexOf(AI_SOURCE_HOSTS[i]) !== -1) {
+        aiPlatform = AI_SOURCE_HOSTS[i];
+        sourceType = "ai_referral";
+        break;
+      }
+    }
+
+    if (!aiPlatform && /^(chatgpt|perplexity|claude|gemini|copilot|ai_mode|google_ai)$/i.test(utmSource)) {
+      aiPlatform = utmSource;
+      sourceType = "ai_referral";
+    }
+
+    if (sourceType === "direct_or_unknown") {
+      for (var j = 0; j < ORGANIC_SEARCH_HOSTS.length; j += 1) {
+        if (referrerHost.indexOf(ORGANIC_SEARCH_HOSTS[j]) !== -1) {
+          sourceType = "organic_search";
+          break;
+        }
+      }
+    }
+
+    return {
+      source_context: sourceType,
+      ai_platform: aiPlatform,
+      referrer_host: referrerHost,
+      utm_source: utmSource,
+      landing_page_path: getCurrentPagePath()
+    };
   }
 
   function slugFromPath(path) {
@@ -338,6 +400,7 @@
   window.SeascapeConversionTracking = {
     trackEvent: trackEvent,
     shouldDelayTrackedNavigation: shouldDelayTrackedNavigation,
-    continueTrackedNavigation: continueTrackedNavigation
+    continueTrackedNavigation: continueTrackedNavigation,
+    getSourceContext: getSourceContext
   };
 })();
