@@ -7,6 +7,7 @@ const projectRoot = path.resolve(__dirname, "..", "..");
 const homepage = fs.readFileSync(path.join(projectRoot, "src", "index.njk"), "utf8");
 const llms = fs.readFileSync(path.join(projectRoot, "src", "llms.txt"), "utf8");
 const robots = fs.readFileSync(path.join(projectRoot, "src", "robots.txt"), "utf8");
+const aiDiscovery = fs.readFileSync(path.join(projectRoot, "src", "ai-discovery.json.njk"), "utf8");
 const seoPages = require(path.join(projectRoot, "src", "_data", "seoPages.json"));
 const staysTemplate = fs.readFileSync(path.join(projectRoot, "src", "stays", "stays.njk"), "utf8");
 const propertyPages = [
@@ -171,6 +172,22 @@ test("AI discovery inventory answers proven buyer-intent misses without overclai
       false,
       `${page.slug} should say near Anna Maria Island when describing Seascape inventory`
     );
+  }
+});
+
+test("AI discovery contract exposes proof-gated conversion surfaces", () => {
+  assert.equal(homepage.includes('rel="alternate" type="application/json"'), true);
+  assert.equal(homepage.includes("https://seascape-vacations.com/ai-discovery.json"), true);
+  assert.equal(llms.includes("https://seascape-vacations.com/ai-discovery.json"), true);
+
+  for (const marker of [
+    '"guest_capture": ["email_capture_submit"]',
+    '"booking_engine_handoff": ["booking_engine_handoff", "property_booking_page_click"]',
+    '"owner_lead": ["owner_form_submit"]',
+    '"source_context_parameters": ["source_context", "ai_platform", "referrer_host", "utm_source", "landing_page_path"]',
+    "direct-booking revenue requires reviewed attributed reservation rows"
+  ]) {
+    assert.equal(aiDiscovery.includes(marker), true, `ai-discovery.json missing ${marker}`);
   }
 });
 

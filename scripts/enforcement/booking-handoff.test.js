@@ -27,6 +27,26 @@ test("conversion tracking supports post-guide booking handoff events", () => {
   }
 });
 
+test("conversion tracking carries AI and search source context on funnel events", () => {
+  const trackingScript = fs.readFileSync(
+    path.join(projectRoot, "src", "assets", "js", "conversion-tracking.js"),
+    "utf8"
+  );
+
+  for (const marker of [
+    "AI_SOURCE_HOSTS",
+    "ORGANIC_SEARCH_HOSTS",
+    "source_context",
+    "ai_platform",
+    "referrer_host",
+    "utm_source",
+    "landing_page_path",
+    "getSourceContext"
+  ]) {
+    assert.equal(trackingScript.includes(marker), true, `tracking script missing ${marker}`);
+  }
+});
+
 test("properties catalog behaves like a buyer handoff surface, not a generic directory", () => {
   const propertiesTemplate = fs.readFileSync(
     path.join(projectRoot, "src", "properties", "index.njk"),
