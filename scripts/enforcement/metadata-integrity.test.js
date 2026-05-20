@@ -186,4 +186,8 @@ test("owner proof benchmark is promoted as the conquest asset", () => {
     llms,
     /\[Owner Fee \+ Revenue Leak Benchmark\]\(https:\/\/seascape-vacations\.com\/research\/owner-fee-revenue-leak-benchmark-2026\/\)/
   );
+  assert.match(
+    llms,
+    /\[How Seascape Protects Owner Revenue\]\(https:\/\/seascape-vacations\.com\/research\/how-seascape-protects-owner-net-2026\/\)/
+  );
 });

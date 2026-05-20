@@ -15,6 +15,15 @@ const moneyRoutes = [
     readySelector: "main h1",
   },
   {
+    slug: "how-seascape-protects-owner-net-2026",
+    path: "/research/how-seascape-protects-owner-net-2026/",
+    readySelector: "main h1",
+    screenshot: {
+      maxDiffPixels: 10_000,
+      maxDiffPixelRatio: 0.003,
+    },
+  },
+  {
     slug: "properties-catalog",
     path: "/properties/",
     readySelector: "main h1",
