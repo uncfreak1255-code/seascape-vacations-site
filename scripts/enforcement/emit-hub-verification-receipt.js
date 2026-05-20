@@ -3,6 +3,7 @@
 const fs = require("fs");
 const os = require("os");
 const path = require("path");
+const { readEnvFileValue } = require("./repo-env");
 
 const projectRoot = path.resolve(__dirname, "..", "..");
 const DEFAULT_OWNER_METRICS_URL =
@@ -37,29 +38,6 @@ function dateStamp(value) {
 function addDays(value, days) {
   const parsed = Date.parse(toIso(value));
   return new Date(parsed + days * 86400000).toISOString().slice(0, 10);
-}
-
-function readEnvFileValue(key) {
-  const candidates = [
-    path.join(projectRoot, ".secrets.env"),
-    path.join(projectRoot, ".env"),
-  ];
-
-  for (const candidate of candidates) {
-    if (!fs.existsSync(candidate)) {
-      continue;
-    }
-    const lines = fs.readFileSync(candidate, "utf8").split(/\r?\n/);
-    for (let index = lines.length - 1; index >= 0; index -= 1) {
-      const line = lines[index];
-      if (!line.startsWith(`${key}=`)) {
-        continue;
-      }
-      return normalizeText(line.slice(key.length + 1)).replace(/^['"]|['"]$/g, "");
-    }
-  }
-
-  return "";
 }
 
 function ensureDir(dirPath) {
@@ -159,12 +137,12 @@ async function emitOwnerLeadMetricsReceipt({
   const resolvedMetricsUrl =
     metricsUrl ||
     process.env.OWNER_LEAD_METRICS_URL ||
-    readEnvFileValue("OWNER_LEAD_METRICS_URL") ||
+    readEnvFileValue("OWNER_LEAD_METRICS_URL", { projectRoot, cwd: projectRoot }) ||
     DEFAULT_OWNER_METRICS_URL;
   const resolvedToken =
     token ||
     process.env.OWNER_LEAD_METRICS_TOKEN ||
-    readEnvFileValue("OWNER_LEAD_METRICS_TOKEN");
+    readEnvFileValue("OWNER_LEAD_METRICS_TOKEN", { projectRoot, cwd: projectRoot });
 
   const summary = await fetchOwnerLeadSummary({
     fetchImpl,

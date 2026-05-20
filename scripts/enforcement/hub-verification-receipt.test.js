@@ -8,6 +8,7 @@ const {
   buildOwnerLeadMetricsReceipt,
   emitOwnerLeadMetricsReceipt,
 } = require("./emit-hub-verification-receipt");
+const { readEnvFileValue } = require("./repo-env");
 
 test("owner lead hub receipt keeps measurement boundary explicit", () => {
   const hubPath = path.join(os.tmpdir(), "hub-receipt-boundary");
@@ -86,4 +87,24 @@ test("owner lead hub receipt emitter fetches summary and writes hub artifact", a
   const written = JSON.parse(fs.readFileSync(result.receiptPath, "utf8"));
   assert.equal(written.details.total_submissions, 1);
   assert.equal(written.details.unlabeled_submissions, 1);
+});
+
+test("owner lead hub receipt env lookup can fall back from a worktree to the shared repo root", () => {
+  const repoRoot = fs.mkdtempSync(path.join(os.tmpdir(), "hub-receipt-env-"));
+  const worktreeRoot = path.join(repoRoot, ".worktrees", "proof");
+  fs.mkdirSync(worktreeRoot, { recursive: true });
+  fs.writeFileSync(path.join(repoRoot, ".secrets.env"), "OWNER_LEAD_METRICS_TOKEN=shared-secret\n");
+
+  const value = readEnvFileValue("OWNER_LEAD_METRICS_TOKEN", {
+    projectRoot: worktreeRoot,
+    cwd: worktreeRoot,
+    spawnSyncImpl() {
+      return {
+        status: 0,
+        stdout: `${path.join(repoRoot, ".git")}\n`,
+      };
+    },
+  });
+
+  assert.equal(value, "shared-secret");
 });
