@@ -63,6 +63,10 @@ Read in this order:
 - active repo-local skills are limited to `.agents/skills/accessibility`, `.agents/skills/design-review`, `.agents/skills/next-batch-gate`, `.agents/skills/owner-proof-integrity`, `.agents/skills/page-cro`, `.agents/skills/property-truth-regeneration`, `.agents/skills/schema-markup`, `.agents/skills/site-architecture`, and `.agents/skills/web-design-guidelines`
 - `.claude/skills/` should mirror only those active site/design skills; copied marketing, deploy, monthly reset, and generic SEO skills are not live authority
 - global marketing skills in `/Users/sawbeck/.codex/skills/` may be used as advisory helpers for CRO, SEO, copy, psychology, analytics, and growth decisions, but they do not override this repo's source files, briefs, status docs, or five-role workflow
+- for any agent-authored email copy or email automation copy, use the global
+  `cold-email` skill first and the global `humanizer` skill second before the
+  email is drafted, templated, saved, or sent
+- do not skip either skill or replace them with a generic rewrite pass
 - if work writes durable state into another repo, route it through a clean
   keeper branch or PR from that repo's current `origin/main`
 
