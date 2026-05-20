@@ -77,6 +77,12 @@ For any PR that changes public copy in `src/`:
 
 ## Design Review Workflow
 
+- For Seascape mockups, marketing page concepts, homepage/lander direction
+  work, or any meaningful website visual change, the default design-thinking
+  lane is the global `claude-design` skill.
+- Codex still owns repo truth, `DESIGN.md`, implementation, and verification.
+  Claude Design informs direction; it does not override repo truth or bypass
+  the rendered QA loop.
 - `DESIGN.md` is the visual law. Figma, Claude Design, Stitch, or any outside design tool can inform direction, but they do not override repo truth.
 - For any meaningful visual change, including layout, spacing, typography, color, imagery, iconography, CTA treatment, or motion, run the repo flow in `docs/process/design-review-workflow.md`.
 - The required rendered QA loop for visual changes is the global `design-review` skill. Use it after implementation and before human review so the review surface is screenshots plus live route checks, not code alone.
