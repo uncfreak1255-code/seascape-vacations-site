@@ -12,6 +12,12 @@ navButtonHref: "#owner-cta"
 navButtonLabel: "Revenue Review"
 navButtonAttributes: 'data-track-event="owner_primary_cta_click" data-page-slug="property-management"'
 headExtra: |
+  <link rel="preload"
+        as="image"
+        href="/.netlify/images?url=/images/hero-sunset-source.jpg&amp;w=1600&amp;fm=avif&amp;q=76"
+        type="image/avif"
+        imagesrcset="/.netlify/images?url=/images/hero-sunset-source.jpg&amp;w=640&amp;fm=avif&amp;q=76 640w, /.netlify/images?url=/images/hero-sunset-source.jpg&amp;w=1024&amp;fm=avif&amp;q=76 1024w, /.netlify/images?url=/images/hero-sunset-source.jpg&amp;w=1600&amp;fm=avif&amp;q=76 1600w, /.netlify/images?url=/images/hero-sunset-source.jpg&amp;w=2400&amp;fm=avif&amp;q=76 2400w, /.netlify/images?url=/images/hero-sunset-source.jpg&amp;w=3840&amp;fm=avif&amp;q=76 3840w"
+        imagesizes="100vw">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -224,7 +230,6 @@ headExtra: |
     overflow: hidden;
   }
 
-  .owner-hero::before,
   .owner-hero::after {
     content: "";
     position: absolute;
@@ -232,10 +237,21 @@ headExtra: |
     pointer-events: none;
   }
 
-  .owner-hero::before {
-    background: url("/images/owner-field-sarasota-sunset.jpg?v=claude-bplus") center/cover;
+  .owner-hero-media {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
     transform: scale(1.01);
     animation: owner-field-kenburns 50s ease-in-out infinite alternate;
+  }
+
+  .owner-hero-media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 40%;
+    filter: contrast(1.08);
   }
 
   .owner-hero::after {
@@ -2020,7 +2036,7 @@ headExtra: |
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .owner-hero::before,
+    .owner-hero-media,
     .owner-field-phrase em.is-active,
     .owner-field-ticker-label::before,
     .owner-field-market-card,
@@ -2116,8 +2132,38 @@ headExtra: |
   }
 
   @media (max-width: 640px) {
-    .nav-inner {
+    .nav .nav-inner {
       min-height: 68px;
+      gap: 10px;
+      padding: 14px 18px 12px;
+    }
+
+    .nav .nav-logo {
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .nav .nav-owner-mark {
+      width: 32px;
+      height: 32px;
+      flex-basis: 32px;
+    }
+
+    .nav .nav-logo-text {
+      font-size: 18px;
+      letter-spacing: 0.08em;
+    }
+
+    .nav .nav-logo-sub {
+      font-size: 8px;
+      letter-spacing: 0.22em;
+    }
+
+    .nav .nav-owner-cta {
+      min-height: 40px;
+      padding: 9px 16px 8px;
+      font-size: 10px;
+      letter-spacing: 0.08em;
     }
 
     .owner-hero {
@@ -2237,10 +2283,34 @@ headExtra: |
       padding-left: 56px;
     }
   }
+
+  @media (max-width: 360px) {
+    .nav .nav-inner {
+      padding-inline: 14px;
+    }
+
+    .nav .nav-logo-text {
+      font-size: 16px;
+    }
+
+    .nav .nav-logo-sub {
+      display: none;
+    }
+
+    .nav .nav-owner-cta {
+      padding-inline: 12px;
+    }
+  }
 </style>
 
 <main class="owner-field" data-owner-field-page>
-  <section class="section owner-hero">
+  <section class="section owner-hero sv-pm-hero">
+    <picture class="owner-hero-media" aria-hidden="true">
+      <source type="image/avif" sizes="100vw" srcset="/.netlify/images?url=/images/hero-sunset-source.jpg&amp;w=640&amp;fm=avif&amp;q=76 640w, /.netlify/images?url=/images/hero-sunset-source.jpg&amp;w=1024&amp;fm=avif&amp;q=76 1024w, /.netlify/images?url=/images/hero-sunset-source.jpg&amp;w=1600&amp;fm=avif&amp;q=76 1600w, /.netlify/images?url=/images/hero-sunset-source.jpg&amp;w=2400&amp;fm=avif&amp;q=76 2400w, /.netlify/images?url=/images/hero-sunset-source.jpg&amp;w=3840&amp;fm=avif&amp;q=76 3840w">
+      <source type="image/webp" sizes="100vw" srcset="/.netlify/images?url=/images/hero-sunset-source.jpg&amp;w=640&amp;fm=webp&amp;q=82 640w, /.netlify/images?url=/images/hero-sunset-source.jpg&amp;w=1024&amp;fm=webp&amp;q=82 1024w, /.netlify/images?url=/images/hero-sunset-source.jpg&amp;w=1600&amp;fm=webp&amp;q=82 1600w, /.netlify/images?url=/images/hero-sunset-source.jpg&amp;w=2400&amp;fm=webp&amp;q=82 2400w, /.netlify/images?url=/images/hero-sunset-source.jpg&amp;w=3840&amp;fm=webp&amp;q=82 3840w">
+      <source type="image/jpeg" sizes="100vw" srcset="/.netlify/images?url=/images/hero-sunset-source.jpg&amp;w=640&amp;fm=jpg&amp;q=86 640w, /.netlify/images?url=/images/hero-sunset-source.jpg&amp;w=1024&amp;fm=jpg&amp;q=86 1024w, /.netlify/images?url=/images/hero-sunset-source.jpg&amp;w=1600&amp;fm=jpg&amp;q=86 1600w, /.netlify/images?url=/images/hero-sunset-source.jpg&amp;w=2400&amp;fm=jpg&amp;q=86 2400w, /.netlify/images?url=/images/hero-sunset-source.jpg&amp;w=3840&amp;fm=jpg&amp;q=86 3840w">
+      <img src="/.netlify/images?url=/images/hero-sunset-source.jpg&amp;w=1600&amp;fm=jpg&amp;q=86" width="6624" height="4399" alt="" fetchpriority="high" decoding="async">
+    </picture>
     <div class="owner-field-masthead" aria-hidden="true">
       <span>Vol. III · Owner Field Report</span>
       <span>Bradenton · Sarasota Corridor</span>

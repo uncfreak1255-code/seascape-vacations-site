@@ -215,7 +215,8 @@ test("owner hub and benchmark feed the operator proof pack without changing the 
 });
 
 test("owner pages keep phone as a lower-trust fallback instead of a competing hero CTA", () => {
-  const landingHeroStart = ownerLanding.indexOf('<section class="section owner-hero">');
+  const landingHeroMatch = ownerLanding.match(/<section class="[^"]*\bowner-hero\b[^"]*">/);
+  const landingHeroStart = landingHeroMatch ? landingHeroMatch.index : -1;
   const landingHeroEnd = ownerLanding.indexOf("</section>", landingHeroStart);
   const landingHero = ownerLanding.slice(landingHeroStart, landingHeroEnd);
 
