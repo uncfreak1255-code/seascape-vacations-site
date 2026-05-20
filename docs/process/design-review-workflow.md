@@ -29,13 +29,24 @@ That includes:
 
 1. Work on a `codex/<task>` branch in a worktree, not root `main`.
 2. Read `DESIGN.md` before touching CSS, layout, templates, or imagery.
-3. Implement the source change.
-4. Rebuild the branch output locally.
-5. Run the global `design-review` skill against the affected routes, or use its diff-aware mode when the change scope is branch-specific.
-6. Fix any high- or medium-impact rendered issues it finds before asking for human review.
-7. Capture fresh desktop and mobile screenshots for every changed route. If a full-page capture lies about a fixed or sticky element, also capture viewport-level screenshots that show the real behavior.
-8. Run the relevant build and release checks for the lane.
-9. Use `docs/process/before-user-review-checklist.md` before asking Sawyer to review.
+3. If the task is a Seascape mockup, marketing-page direction, homepage/lander
+   concept, or other meaningful visual direction change, run the global
+   `claude-design` skill before implementation so Claude Design handles the
+   design thinking and Codex gets back a reviewable direction or implementation
+   spec.
+4. If the chosen direction changes the visual law, update `DESIGN.md` first.
+5. Implement the source change.
+6. Rebuild the branch output locally.
+7. Run the global `design-review` skill against the affected routes, or use its
+   diff-aware mode when the change scope is branch-specific.
+8. Fix any high- or medium-impact rendered issues it finds before asking for
+   human review.
+9. Capture fresh desktop and mobile screenshots for every changed route. If a
+   full-page capture lies about a fixed or sticky element, also capture
+   viewport-level screenshots that show the real behavior.
+10. Run the relevant build and release checks for the lane.
+11. Use `docs/process/before-user-review-checklist.md` before asking Sawyer to
+    review.
 
 ## Iconography Rule
 
