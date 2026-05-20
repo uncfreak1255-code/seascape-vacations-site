@@ -8,6 +8,11 @@ const moneyRoutes = [
     slug: "property-management",
     path: "/property-management/",
     readySelector: "#owner-cta",
+    screenshot: {
+      maxDiffPixels: 30_000,
+      maxDiffPixelRatio: 0.003,
+      timeout: 20_000,
+    },
   },
   {
     slug: "owner-fee-revenue-leak-benchmark-2026",

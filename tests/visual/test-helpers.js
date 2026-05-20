@@ -1,3 +1,5 @@
+const path = require("node:path");
+
 const HERO_WEATHER_RESPONSE = {
   current: {
     temperature_2m: 78.2,
@@ -31,6 +33,18 @@ async function registerStableNetwork(page) {
       return;
     }
 
+    if ((url.hostname === "127.0.0.1" || url.hostname === "localhost") && url.pathname === "/.netlify/images") {
+      const sourcePath = url.searchParams.get("url");
+      if (sourcePath && sourcePath.startsWith("/images/")) {
+        await route.fulfill({
+          status: 200,
+          contentType: "image/jpeg",
+          path: path.join(process.cwd(), sourcePath.slice(1)),
+        });
+        return;
+      }
+    }
+
     if (url.hostname === "127.0.0.1" || url.hostname === "localhost") {
       await route.continue();
       return;
@@ -47,6 +61,30 @@ async function waitForFonts(page) {
     }
 
     await document.fonts.ready;
+  });
+}
+
+async function waitForStableLayout(page) {
+  await page.waitForFunction(async () => {
+    const readHeight = () => Math.max(
+      document.documentElement.scrollHeight,
+      document.body ? document.body.scrollHeight : 0
+    );
+    let previousHeight = readHeight();
+    let stableFrames = 0;
+
+    while (stableFrames < 6) {
+      await new Promise((resolve) => window.requestAnimationFrame(resolve));
+      const nextHeight = readHeight();
+      if (nextHeight === previousHeight) {
+        stableFrames += 1;
+      } else {
+        stableFrames = 0;
+        previousHeight = nextHeight;
+      }
+    }
+
+    return true;
   });
 }
 
@@ -83,9 +121,17 @@ async function prepareFullPageScreenshot(page) {
   });
 
   await page.waitForFunction(() =>
-    Array.from(document.images).every((image) => image.complete && (!image.currentSrc || image.naturalWidth > 0))
+    Array.from(document.images).every((image) => {
+      const isRendered = image.getClientRects().length > 0;
+      if (!isRendered && !image.currentSrc) {
+        return true;
+      }
+
+      return image.complete && (!image.currentSrc || image.naturalWidth > 0);
+    })
   );
   await waitForFonts(page);
+  await waitForStableLayout(page);
 }
 
 module.exports = {
