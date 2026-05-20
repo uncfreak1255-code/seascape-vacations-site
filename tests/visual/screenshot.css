@@ -20,3 +20,53 @@ html[data-visual-route="owner-fee-revenue-leak-benchmark-2026"] .guide-nav {
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
 }
+
+/* The owner field-report page uses a transparent fixed nav, lazy media, and hero motion.
+   Pin those surfaces for deterministic full-page visual baselines. */
+html[data-visual-route="property-management"] *,
+html[data-visual-route="property-management"] *::before,
+html[data-visual-route="property-management"] *::after {
+  animation: none !important;
+  transition: none !important;
+}
+
+html[data-visual-route="property-management"] .nav,
+html[data-visual-route="property-management"] .nav.scrolled {
+  position: absolute !important;
+  background: rgba(245, 238, 214, 0.98) !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+html[data-visual-route="property-management"] .nav .nav-logo-text,
+html[data-visual-route="property-management"] .nav.scrolled .nav-logo-text,
+html[data-visual-route="property-management"] .nav:not(.scrolled) .nav-logo-text,
+html[data-visual-route="property-management"] .nav .nav-owner-cta,
+html[data-visual-route="property-management"] .nav.scrolled .nav-owner-cta,
+html[data-visual-route="property-management"] .nav:not(.scrolled) .nav-owner-cta {
+  color: var(--brand-dark) !important;
+}
+
+html[data-visual-route="property-management"] .nav .nav-logo-sub,
+html[data-visual-route="property-management"] .nav.scrolled .nav-logo-sub,
+html[data-visual-route="property-management"] .nav:not(.scrolled) .nav-logo-sub {
+  color: var(--stone-light) !important;
+}
+
+html[data-visual-route="property-management"] .nav .nav-owner-mark,
+html[data-visual-route="property-management"] .nav.scrolled .nav-owner-mark {
+  border-color: rgba(201, 169, 98, 0.72) !important;
+  background: linear-gradient(145deg, rgba(245, 238, 214, 0.92), rgba(255, 255, 255, 0.7)) !important;
+  color: var(--brand-dark) !important;
+  box-shadow: inset 0 0 0 1px rgba(201, 169, 98, 0.18) !important;
+}
+
+html[data-visual-route="property-management"] .owner-hero-media,
+html[data-visual-route="property-management"] .owner-field-market-card,
+html[data-visual-route="property-management"] .owner-field-form-step {
+  animation: none !important;
+  transform: none !important;
+}
