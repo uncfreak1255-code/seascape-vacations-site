@@ -9,6 +9,7 @@ for (const routeConfig of moneyRoutes) {
 
     await expect(page).toHaveScreenshot(`${routeConfig.slug}.png`, {
       fullPage: true,
+      ...(routeConfig.screenshot || {}),
     });
   });
 }
