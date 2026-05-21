@@ -514,8 +514,9 @@ if (phase === "remediation") {
   );
   expectContains(
     "_site/property-management/index.html",
-    "Property management for owners who care about what they actually keep"
+    "Before you renew,"
   );
+  expectContains("_site/property-management/index.html", "actually keep?");
   expectContains(
     "_site/property-management/index.html",
     "What owners miss when they compare management fees"
@@ -538,7 +539,7 @@ if (phase === "remediation") {
     buildAnchorPattern({
       href: "#owner-cta",
       className: "btn btn-gold",
-      text: "Request Your Revenue Teardown"
+      text: "Start Your 48-Hour Revenue Review"
     }),
     "property management hero CTA"
   );

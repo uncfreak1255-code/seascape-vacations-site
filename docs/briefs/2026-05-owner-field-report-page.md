@@ -16,6 +16,12 @@
 - Claude Design produced a stronger owner-page direction than the current explainer hub.
 - The page should become a premium proof-and-teardown front door for owner acquisition.
 - The batch should not expand into new owner claims or rewrite the child owner pages.
+- 2026-05-21 CRO follow-up: pressure-test the owner hub against skeptical STR owner/operator language from X-style discourse without turning the page into generic AI or property-management copy.
+
+## Current CRO Test Focus
+
+- Test 1: pre-renewal hero framing should beat a generic owner-brief intro by making the switch decision explicit earlier.
+- Test 2: `48-hour revenue review` should outperform `revenue teardown` as the visible CTA language on the owner hub while preserving the same form and tracking path underneath.
 
 ## Search Operator Read
 
@@ -43,7 +49,7 @@
 
 ## Page Builder Tasks
 
-- source files likely to change: src/property-management/index.njk, DESIGN.md, owner field report images, and this brief.
+- source files likely to change: src/property-management/index.njk and this brief.
 - redirect or schema work: Keep existing owner page schema and canonical route.
 - internal-link or CTA work: Preserve owner proof links, owner long-tail links, and tracked owner CTA.
 - money CTA and downstream tracking event to verify: #owner-cta with data-track-event="owner_primary_cta_click" and data-track-form="owner".
@@ -51,7 +57,7 @@
 ## Voice Editor Checklist
 
 - tone risks: Avoid generic luxury brochure language and detached "the owner" phrasing.
-- generic or mechanical patterns to kill: Explainer-hub copy, passive income claims, flat-fee shortcut copy, and vague full-service promises.
+- generic or mechanical patterns to kill: Explainer-hub copy, passive income claims, flat-fee shortcut copy, vague full-service promises, and internal-feeling `teardown` language when `review` says the same thing more naturally.
 - proof or specificity checks: Keep $119,923, 13.4% to 2.9%, benchmark attribution, and missing-information caveats.
 - customer wording kept where it sounds natural; SEO-tool phrasing removed where it sounds manufactured: Keep "what does your pool home actually keep" and "what feels expensive or unclear right now."
 

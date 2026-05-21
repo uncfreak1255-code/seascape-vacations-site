@@ -106,12 +106,13 @@ function validateTargetResponse(target, response) {
 
   if (target.path === "/property-management/") {
     const hasProofFirstOwnerSurface =
-      response.body.includes("Property management for owners who care about what they actually keep")
+      response.body.includes("Before you renew,")
+      && response.body.includes("actually keep?")
       && response.body.includes("$119,923")
       && response.body.includes("13.4%")
       && response.body.includes("2.9%")
       && response.body.includes("Where Owner Revenue Actually Leaks")
-      && response.body.includes("Request Your Revenue Teardown")
+      && response.body.includes("Start Your 48-Hour Revenue Review")
       && response.body.includes('href="#owner-cta"');
 
     if (!hasProofFirstOwnerSurface) {
