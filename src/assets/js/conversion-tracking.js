@@ -535,7 +535,9 @@
         event.preventDefault();
         return;
       }
-      trackEvent(form.dataset.formSubmitEvent, getPayloadFromElement(form));
+      if (form.dataset.skipGlobalSubmitTrack !== "true") {
+        trackEvent(form.dataset.formSubmitEvent, getPayloadFromElement(form));
+      }
 
       if (form.dataset.inlineEmailCapture === "true") {
         event.preventDefault();

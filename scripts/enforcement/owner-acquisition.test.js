@@ -20,14 +20,14 @@ const siteHeaderStyles = fs.readFileSync(
   path.join(projectRoot, "src", "_includes", "partials", "site-header-styles.njk"),
   "utf8"
 );
-const ownerData = require(path.join(projectRoot, "src", "_data", "seoPages.json")).owner;
-const ownerProofAssets = require(path.join(projectRoot, "src", "_data", "ownerProofAssets.json"));
-const ownerOperatorProofAssets = require(path.join(projectRoot, "src", "_data", "ownerOperatorProofAssets.json"));
-const ownerFormPath = path.join(projectRoot, "src", "_includes", "partials", "owner-evaluation-form.njk");
 const conversionTracking = fs.readFileSync(
   path.join(projectRoot, "src", "assets", "js", "conversion-tracking.js"),
   "utf8"
 );
+const ownerData = require(path.join(projectRoot, "src", "_data", "seoPages.json")).owner;
+const ownerProofAssets = require(path.join(projectRoot, "src", "_data", "ownerProofAssets.json"));
+const ownerOperatorProofAssets = require(path.join(projectRoot, "src", "_data", "ownerOperatorProofAssets.json"));
+const ownerFormPath = path.join(projectRoot, "src", "_includes", "partials", "owner-evaluation-form.njk");
 
 test("owner landing page uses a real owner revenue review form instead of generic evaluation copy", () => {
   assert.equal(fs.existsSync(ownerFormPath), true, "owner form partial should exist");
@@ -181,6 +181,16 @@ test("Pat-like Sarasota leads are prompted for the property context and the reas
   assert.equal(ownerLanding.includes("Send the listing or address, or choose what feels expensive or unclear."), true);
   assert.equal(sarasotaPage.ctaSubcopy.includes("listing link or address plus what feels off"), true);
   assert.equal(sarasotaPage.ctaNote.includes("one thing that feels expensive or unclear"), true);
+});
+
+test("owner field report email payload avoids duplicate listing fields and submit tracking stays single-source", () => {
+  assert.equal(ownerLanding.includes('data-skip-global-submit-track="true"'), true);
+  assert.equal(ownerLanding.includes('name="listing_url" data-owner-listing-mirror'), false);
+  assert.equal(ownerLanding.includes("function getSubmitPayload(extra) {"), true);
+  assert.equal(ownerLanding.includes("conversionTracking.getSourceContext"), true);
+  assert.equal(ownerLanding.includes('placement: form.dataset.formPlacement || ""'), true);
+  assert.equal(ownerLanding.includes('track("owner_form_submit", getSubmitPayload({'), true);
+  assert.equal(conversionTracking.includes('if (form.dataset.skipGlobalSubmitTrack !== "true") {'), true);
 });
 
 test("owner benchmark CTA carries source attribution into the revenue review form path", () => {
