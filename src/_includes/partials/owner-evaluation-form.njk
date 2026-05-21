@@ -14,6 +14,7 @@
   data-page-slug="{{ options.pageSlug or 'property-management' }}"
   data-source-page-slug="{{ options.sourcePageSlug or options.pageSlug or 'property-management' }}"
   data-market="{{ options.market or 'florida-gulf-coast' }}"
+  data-owner-context-required="true"
   {% if options.formPlacement %}data-form-placement="{{ options.formPlacement }}"{% endif %}
 >
   <input type="hidden" name="form-name" value="{{ options.formName or 'owner-revenue-teardown' }}">
@@ -38,7 +39,7 @@
     {% endif %}
     {% if hasFormCard %}
     <ul class="owner-form-proof-list">
-      <li>{{ options.formIntro or "Share whichever source is easiest. A listing URL is enough to start; an owner statement or fee quote makes the revenue review sharper." }}</li>
+      <li>{{ options.formIntro or "The fastest first pass comes from two things: the listing URL or address, and one line on what feels expensive or unclear. An owner statement or fee quote makes the revenue review sharper." }}</li>
       <li>{{ options.proofNote or "The review uses the evidence available. Missing statements, calendars, reviews, or fee terms will be marked as missing instead of guessed." }}</li>
       <li><strong>{{ options.detailLabel or "What the review separates" }}</strong>{{ options.detailCopy or "The private review separates proven cost, likely cost, and missing information before recommending whether to stay put, fix the current setup, or talk about transition." }}</li>
       <li>{{ options.confirmation or "Got it. Seascape will review what you send and return the clearest next step: stay put, fix the current setup, or talk about a transition." }}</li>
@@ -69,13 +70,14 @@
           <input type="tel" name="phone" autocomplete="tel" placeholder="Best number for text updates">
         </label>
         <label class="owner-form-field owner-form-field--wide">
-          <span>{{ options.propertyFieldLabel or "Property address or listing URL" }}</span>
-          <input type="text" name="property_address" autocomplete="street-address" placeholder="{{ options.propertyFieldPlaceholder or 'Paste the listing URL, property address, or home name' }}" required>
+          <span>{{ options.propertyFieldLabel or "Listing URL or property address" }}</span>
+          <input type="text" name="property_address" autocomplete="street-address" placeholder="{{ options.propertyFieldPlaceholder or 'airbnb.com/h/your-listing, vrbo.com/..., or 123 Palm Ave' }}" data-owner-context-field>
+          <small class="owner-form-help">If you do not know the street address yet, paste the Airbnb or Vrbo link and tell us what feels expensive or unclear.</small>
         </label>
         {% if options.showBenchmarkFields %}
         <label class="owner-form-field">
           <span>Listing URL</span>
-          <input type="url" name="listing_url" inputmode="url" placeholder="Paste the Airbnb or Vrbo listing URL">
+          <input type="url" name="listing_url" inputmode="url" placeholder="Paste the Airbnb or Vrbo listing URL" data-owner-context-field>
         </label>
         <label class="owner-form-field">
           <span>Current manager or self-managed</span>
@@ -86,8 +88,8 @@
           <input type="text" name="current_fee_quote" placeholder="15%, 20%, 25%, or fee terms">
         </label>
         <label class="owner-form-field owner-form-field--wide">
-          <span>What feels off right now?</span>
-          <textarea name="what_feels_off" rows="3" placeholder="Example: too Airbnb-heavy, weak reporting, discounting, maintenance misses, or review-quality drift"></textarea>
+          <span>What feels expensive or unclear?</span>
+          <textarea name="what_feels_off" rows="3" placeholder="Example: low owner payout, too many fees, spotty reporting, booking channels feel off, or current-manager concerns" data-owner-context-field></textarea>
         </label>
         <label class="owner-form-field owner-form-field--wide owner-form-field--file">
           <span>Upload owner statement, optional</span>
@@ -108,7 +110,7 @@
   {% endif %}
 
   {% if not options.suppressNote %}
-  <p class="owner-form-note">{{ options.note or "Send the property address or listing URL. We will review management fees, booking sources, and operating gaps that may be costing you owner income." }}</p>
+  <p class="owner-form-note">{{ options.note or "Send the listing URL or property address plus the biggest concern you want reviewed. We will review management fees, booking sources, and operating gaps that may be costing you owner income." }}</p>
   {% endif %}
 </form>
 {% endmacro %}
