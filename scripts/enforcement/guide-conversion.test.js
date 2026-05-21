@@ -260,7 +260,10 @@ test("booking-engine handoff click emits the GA4 event with the target booking U
 
   assert.equal(observed.event, "booking_engine_handoff");
   assert.equal(observed.payload.guide_slug, "best-time-visit-anna-maria-island");
-  assert.equal(observed.payload.link_url, "https://book.seascape-vacations.com");
+  assert.equal(
+    observed.payload.link_url,
+    "https://book.seascape-vacations.com/?utm_content=best-time-visit-anna-maria-island"
+  );
   assert.equal(observed.payload.link_text, "Open Direct Availability");
 });
 

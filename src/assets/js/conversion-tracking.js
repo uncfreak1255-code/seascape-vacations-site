@@ -36,6 +36,17 @@
     "duckduckgo.com",
     "yahoo.com"
   ];
+  var BOOKING_ENGINE_HOST = "book.seascape-vacations.com";
+  var BOOKING_ENGINE_HANDOFF_KEYS = [
+    "utm_source",
+    "utm_medium",
+    "utm_campaign",
+    "utm_content",
+    "ref",
+    "checkin",
+    "checkout",
+    "guests"
+  ];
 
   function ensureDataLayer() {
     window.dataLayer = window.dataLayer || [];
@@ -51,11 +62,103 @@
     };
   }
 
+  function normalizeTrackingValue(value) {
+    return String(value || "")
+      .trim()
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/(^-|-$)/g, "");
+  }
+
   function getNavigationHref(node) {
     if (!node) return "";
     if (node.href) return node.href;
     if (typeof node.getAttribute === "function") return node.getAttribute("href") || "";
     return "";
+  }
+
+  function buildBookingEngineHandoffUrl(href, node) {
+    if (!href || typeof URL !== "function") return href || "";
+
+    var currentHref = window.location && typeof window.location.href === "string"
+      ? window.location.href
+      : "https://seascape-vacations.com/";
+    var locationSearch = window.location && typeof window.location.search === "string"
+      ? window.location.search
+      : "";
+    var currentParams = typeof URLSearchParams === "function"
+      ? new URLSearchParams(locationSearch)
+      : null;
+    var url;
+
+    try {
+      url = new URL(href, currentHref);
+    } catch (error) {
+      return href;
+    }
+
+    if (url.hostname.replace(/^www\./, "").toLowerCase() !== BOOKING_ENGINE_HOST) {
+      return url.toString();
+    }
+
+    if (currentParams) {
+      BOOKING_ENGINE_HANDOFF_KEYS.forEach(function (key) {
+        var value = (currentParams.get(key) || "").trim();
+        if (value && !url.searchParams.get(key)) {
+          url.searchParams.set(key, value);
+        }
+      });
+    }
+
+    var sourceContext = getSourceContext();
+    if (!url.searchParams.get("utm_source") && sourceContext.ai_platform) {
+      url.searchParams.set("utm_source", normalizeTrackingValue(sourceContext.ai_platform));
+    }
+    if (!url.searchParams.get("utm_medium") && sourceContext.source_context === "ai_referral") {
+      url.searchParams.set("utm_medium", "ai-referral");
+    }
+    if (!url.searchParams.get("utm_campaign") && sourceContext.source_context === "ai_referral") {
+      url.searchParams.set("utm_campaign", "site-handoff");
+    }
+    if (!url.searchParams.get("utm_content")) {
+      var contentSource = node && node.dataset
+        ? node.dataset.pageSlug || node.dataset.guideSlug || node.dataset.trackLabel || node.dataset.placement || ""
+        : "";
+      var normalizedContent = normalizeTrackingValue(contentSource || slugFromPath(getCurrentPagePath()));
+      if (normalizedContent) {
+        url.searchParams.set("utm_content", normalizedContent);
+      }
+    }
+    if (!url.searchParams.get("ref") && sourceContext.source_context === "ai_referral") {
+      url.searchParams.set("ref", "ai-site-handoff");
+    }
+
+    return url.toString();
+  }
+
+  function syncBookingEngineLink(node) {
+    var href = getNavigationHref(node);
+    if (!href) return "";
+
+    var nextHref = buildBookingEngineHandoffUrl(href, node);
+    if (!nextHref || nextHref === href) return href;
+
+    if (typeof node.setAttribute === "function") {
+      node.setAttribute("href", nextHref);
+    }
+    if ("href" in node) {
+      node.href = nextHref;
+    }
+
+    return nextHref;
+  }
+
+  function decorateBookingEngineLinks() {
+    if (!document || typeof document.querySelectorAll !== "function") return;
+
+    Array.prototype.forEach.call(document.querySelectorAll("a[href]"), function (node) {
+      syncBookingEngineLink(node);
+    });
   }
 
   function shouldDelayTrackedNavigation(node, event) {
@@ -75,7 +178,7 @@
   }
 
   function continueTrackedNavigation(node) {
-    var href = getNavigationHref(node);
+    var href = syncBookingEngineLink(node) || getNavigationHref(node);
     if (!href) return;
 
     if (window.location && typeof window.location.assign === "function") {
@@ -171,7 +274,7 @@
   }
 
   function getPayloadFromElement(node) {
-    var href = node && node.getAttribute ? node.getAttribute("href") : "";
+    var href = syncBookingEngineLink(node) || (node && node.getAttribute ? node.getAttribute("href") : "");
     var sourcePageSlug = node && node.dataset ? node.dataset.sourcePageSlug || "" : "";
 
     if (!sourcePageSlug && node && String(node.tagName || "").toUpperCase() === "FORM") {
@@ -212,6 +315,10 @@
     var search = window.location && typeof window.location.search === "string" ? window.location.search : "";
     var params = typeof URLSearchParams === "function" ? new URLSearchParams(search) : null;
     var utmSource = params ? (params.get("utm_source") || "").trim().toLowerCase() : "";
+    var utmMedium = params ? (params.get("utm_medium") || "").trim().toLowerCase() : "";
+    var utmCampaign = params ? (params.get("utm_campaign") || "").trim().toLowerCase() : "";
+    var utmContent = params ? (params.get("utm_content") || "").trim().toLowerCase() : "";
+    var ref = params ? (params.get("ref") || "").trim().toLowerCase() : "";
     var referrerHost = typeof document !== "undefined" ? getHostname(document.referrer) : "";
     var sourceHost = utmSource || referrerHost;
     var aiPlatform = "";
@@ -230,6 +337,11 @@
       sourceType = "ai_referral";
     }
 
+    if (!aiPlatform && /^(ai|ai-assistant|assistant|ai-referral)$/i.test(utmMedium)) {
+      aiPlatform = utmSource || "ai";
+      sourceType = "ai_referral";
+    }
+
     if (sourceType === "direct_or_unknown") {
       for (var j = 0; j < ORGANIC_SEARCH_HOSTS.length; j += 1) {
         if (referrerHost.indexOf(ORGANIC_SEARCH_HOSTS[j]) !== -1) {
@@ -244,6 +356,10 @@
       ai_platform: aiPlatform,
       referrer_host: referrerHost,
       utm_source: utmSource,
+      utm_medium: utmMedium,
+      utm_campaign: utmCampaign,
+      utm_content: utmContent,
+      ref: ref,
       landing_page_path: getCurrentPagePath()
     };
   }
@@ -266,6 +382,8 @@
 
       var target = event.target.closest("[data-track-event]");
       if (!target) return;
+
+      syncBookingEngineLink(target);
 
       if (shouldDelayTrackedNavigation(target, event)) {
         event.preventDefault();
@@ -386,6 +504,7 @@
   }
 
   function init() {
+    decorateBookingEngineLinks();
     bindTrackedClicks();
     bindOwnerFormStarts();
     bindTrackedForms();
@@ -401,6 +520,7 @@
     trackEvent: trackEvent,
     shouldDelayTrackedNavigation: shouldDelayTrackedNavigation,
     continueTrackedNavigation: continueTrackedNavigation,
-    getSourceContext: getSourceContext
+    getSourceContext: getSourceContext,
+    buildBookingEngineHandoffUrl: buildBookingEngineHandoffUrl
   };
 })();
