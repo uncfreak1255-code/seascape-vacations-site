@@ -166,13 +166,15 @@ test("owner benchmark page stays in the fee-and-revenue lane and keeps visible p
     "utf8"
   );
 
-  assert.equal(ownerBenchmark.includes("Your management fee is only part of the picture."), true);
+  assert.equal(ownerBenchmark.includes("Your management fee is not the whole revenue leak."), true);
   assert.equal(ownerBenchmark.includes("5-property Gulf Coast scope"), true);
   assert.equal(ownerBenchmark.includes("Observed Seascape portfolio data"), true);
-  assert.equal(ownerBenchmark.includes("Observed property example"), true);
+  assert.equal(ownerBenchmark.includes("Observed operating example"), true);
   assert.equal(ownerBenchmark.includes("Example math, not a forecast"), true);
   assert.equal(ownerBenchmark.includes("Request Your Revenue Teardown"), true);
-  assert.equal(ownerBenchmark.includes("AMI Portfolio"), true);
+  assert.equal(ownerBenchmark.includes("Observed May 2026 operator example"), true);
+  assert.equal(ownerBenchmark.includes("Process proof, not booked revenue"), true);
+  assert.equal(ownerBenchmark.includes("AMI Portfolio"), false);
   assert.equal(ownerBenchmark.includes("This chart is not a market-wide fee survey."), true);
   assert.equal(ownerBenchmark.includes("passive income"), false);
   assert.equal(ownerBenchmark.includes("sit back while we manage"), false);
@@ -206,7 +208,7 @@ test("owner operator proof pack uses approved redacted modules and preserves tea
   assert.equal(proofPack.includes("full service"), false);
 });
 
-test("owner hub and benchmark feed the operator proof pack without changing the teardown CTA path", () => {
+test("owner hub still feeds the operator proof pack while the benchmark stands on its own teardown path", () => {
   const ownerBenchmark = fs.readFileSync(
     path.join(projectRoot, "src", "research", "owner-fee-revenue-leak-benchmark-2026.njk"),
     "utf8"
@@ -214,8 +216,8 @@ test("owner hub and benchmark feed the operator proof pack without changing the 
 
   assert.equal(ownerLanding.includes("/research/how-seascape-protects-owner-net-2026/"), true);
   assert.equal(ownerLanding.includes("How Seascape Protects Owner Revenue"), true);
-  assert.equal(ownerBenchmark.includes("/research/how-seascape-protects-owner-net-2026/"), true);
-  assert.equal(ownerBenchmark.includes("The benchmark shows the math. The proof pack shows the operation."), true);
+  assert.equal(ownerBenchmark.includes("/research/how-seascape-protects-owner-net-2026/"), false);
+  assert.equal(ownerBenchmark.includes("A manager should be able to show exactly how a rate move is tested."), true);
   assert.equal(ownerLanding.includes("Start Your 48-Hour Revenue Review"), true);
   assert.equal(ownerBenchmark.includes("Request Your Revenue Teardown"), true);
 });
