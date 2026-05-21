@@ -376,7 +376,9 @@
       if (!form || !form.matches("form[data-track-form]")) return;
 
       syncOwnerSourcePage(form);
-      trackEvent(form.dataset.formSubmitEvent, getPayloadFromElement(form));
+      if (form.dataset.skipGlobalSubmitTrack !== "true") {
+        trackEvent(form.dataset.formSubmitEvent, getPayloadFromElement(form));
+      }
 
       if (form.dataset.inlineEmailCapture === "true") {
         event.preventDefault();
