@@ -2545,7 +2545,7 @@ headExtra: |
         <p class="owner-field-deck">Four short questions, two minutes. A real Seascape person reads every reply and sends back a one-page revenue review, usually within 48 hours. No sales call, no calendar invite.</p>
       </div>
       {# Source contract: ownerEvaluationForm({ showBenchmarkFields: true, propertyFieldLabel: "Listing URL or property address" }) #}
-      <form class="owner-field-postcard" name="owner-revenue-teardown" method="POST" enctype="multipart/form-data" data-netlify="true" netlify-honeypot="bot-field" data-track-form="owner" data-form-start-event="owner_form_start" data-form-submit-event="owner_form_submit" data-page-slug="property-management" data-source-page-slug="property-management" data-market="florida-gulf-coast" data-form-placement="field-report-postcard" data-form-direction="forward" data-stamped="false">
+      <form class="owner-field-postcard" name="owner-revenue-teardown" method="POST" enctype="multipart/form-data" data-netlify="true" netlify-honeypot="bot-field" data-track-form="owner" data-form-start-event="owner_form_start" data-form-submit-event="owner_form_submit" data-skip-global-submit-track="true" data-page-slug="property-management" data-source-page-slug="property-management" data-market="florida-gulf-coast" data-form-placement="field-report-postcard" data-form-direction="forward" data-stamped="false">
         <input type="hidden" name="form-name" value="owner-revenue-teardown">
         <input type="hidden" name="page_slug" value="property-management">
         <input type="hidden" name="source_page_slug" value="property-management">
@@ -2554,7 +2554,6 @@ headExtra: |
         <input type="hidden" name="form_placement" value="field-report-postcard">
         <input type="hidden" name="concerns" data-owner-concerns>
         <input type="hidden" name="what_feels_off" data-owner-concerns-mirror>
-        <input type="hidden" name="listing_url" data-owner-listing-mirror>
         <p hidden><label>Do not fill this out if you are human: <input name="bot-field"></label></p>
         <svg class="owner-field-postcard-grain" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><filter id="ownerFieldPaper"><feTurbulence type="fractalNoise" baseFrequency="1.4" numOctaves="2" seed="3"></feTurbulence><feColorMatrix type="matrix" values="0 0 0 0 0.85 0 0 0 0 0.78 0 0 0 0 0.62 0 0 0 0.08 0"></feColorMatrix></filter><rect width="100" height="100" filter="url(#ownerFieldPaper)"></rect></svg>
         <div class="owner-field-postcard-inner" aria-hidden="true"></div>
@@ -2975,7 +2974,6 @@ headExtra: |
     var meta = form.querySelector("[data-form-meta]");
     var concernsInput = form.querySelector("[data-owner-concerns]");
     var concernsMirror = form.querySelector("[data-owner-concerns-mirror]");
-    var listingMirror = form.querySelector("[data-owner-listing-mirror]");
     var listingField = form.querySelector('input[name="property_address"]');
     var nameField = form.querySelector('input[name="name"]');
     var emailField = form.querySelector('input[name="email"]');
@@ -2988,13 +2986,7 @@ headExtra: |
     var concerns = [];
     var submitting = false;
 
-    function syncListingMirror() {
-      if (!listingMirror || !listingField) return;
-      listingMirror.value = listingField.value.trim();
-    }
-
     function syncConfirmPanel() {
-      syncListingMirror();
       if (confirmUrl) confirmUrl.textContent = listingField && listingField.value.trim() ? listingField.value.trim() : "Not added yet";
       if (confirmConcerns) confirmConcerns.textContent = concerns.length ? concerns.join(", ") : "None selected";
       if (confirmName) confirmName.textContent = nameField && nameField.value.trim() ? nameField.value.trim() : "Not added yet";
@@ -3009,6 +3001,20 @@ headExtra: |
         market: form.dataset.market || "",
         step_number: step + 1
       }, extra || {});
+    }
+
+    function getSubmitPayload(extra) {
+      var sourceContext = {};
+      if (conversionTracking && typeof conversionTracking.getSourceContext === "function") {
+        sourceContext = conversionTracking.getSourceContext();
+      }
+      return Object.assign(
+        {},
+        sourceContext,
+        getFormPayload(Object.assign({
+          placement: form.dataset.formPlacement || ""
+        }, extra || {}))
+      );
     }
 
     function currentPanelFieldsAreValid() {
@@ -3112,9 +3118,6 @@ headExtra: |
       });
     });
 
-    if (listingField) {
-      listingField.addEventListener("input", syncListingMirror);
-    }
     if (nameField) nameField.addEventListener("input", syncConfirmPanel);
     if (emailField) emailField.addEventListener("input", syncConfirmPanel);
     if (phoneField) phoneField.addEventListener("input", syncConfirmPanel);
@@ -3126,7 +3129,7 @@ headExtra: |
       submitting = true;
       syncConfirmPanel();
       form.setAttribute("data-stamped", "true");
-      track("owner_form_submit", getFormPayload({
+      track("owner_form_submit", getSubmitPayload({
         concerns_count: String(concerns.length),
         listing_present: listingField && listingField.value.trim() ? "true" : "false"
       }));
