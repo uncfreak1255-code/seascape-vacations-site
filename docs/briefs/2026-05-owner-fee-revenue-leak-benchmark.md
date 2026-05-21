@@ -7,7 +7,7 @@
 - secondary keywords: owner revenue teardown, direct booking revenue, Airbnb host fee drag, vacation rental owner net
 - audience pattern: skeptical owner who has seen fee quotes but needs proof that the full leak stack matters more than headline percentage alone
 - proof source: Seascape five-home benchmark sample, observed Airbnb host-fee drag, direct-payment cost reference, and labeled scenario math
-- required internal links: /property-management/vacation-rental-management-fees-florida/, /property-management/maximize-vacation-rental-income-florida/
+- required internal links: /research/owner-fee-revenue-leak-benchmark-2026/, /property-management/maximize-vacation-rental-income-florida/
 - CTA target: /property-management/?owner_source=owner-fee-revenue-leak-benchmark-2026#owner-cta
 - anti-claims: no portfolio-wide guarantee, no market-wide fee survey claim, no invented review totals, no passive-income or full-service fluff
 
@@ -22,6 +22,7 @@ Implementation frames: `9:2` desktop, `11:2` mobile
 
 - Updated property-management copy to avoid new banned phrasing, remove owner-detached wording, and align CTA/benefit language to the property-focused intent.
 - Introduced the new redirect alias route `/research/owner-fee-revenue-gap-benchmark-2026/` so visible text can use the “gap” framing while preserving the current legacy route.
+- 2026-05-21 proof-clean follow-up: demoted the AMI income guide out of the owner-proof lane, removed public PriceLabs/AirDNA-style authority language from that guide, and rerouted the owner FAQ on `/property-management/` to the benchmark instead of the AMI average-income explainer.
 
 ## Decision
 
@@ -99,6 +100,7 @@ Claims to keep out:
 - `/property-management/`
 - `/property-management/vacation-rental-management-fees-florida/`
 - `/property-management/maximize-vacation-rental-income-florida/`
+- `/guides/vacation-rental-income-anna-maria/`
 - `/research/owner-fee-revenue-gap-benchmark-2026/`
 
 ## CTA Pattern
