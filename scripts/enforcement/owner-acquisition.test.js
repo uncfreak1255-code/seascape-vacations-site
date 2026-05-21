@@ -113,11 +113,8 @@ test("owner revenue teardown form lowers friction without losing tracking or int
   assert.equal(ownerFormPartial.includes('name="phone" autocomplete="tel" placeholder="(941) 555-1234" required'), false);
   assert.equal(ownerFormPartial.includes('placeholder="Best email for your review"'), true);
   assert.equal(ownerFormPartial.includes('placeholder="Best number for text updates"'), true);
-  assert.equal(ownerFormPartial.includes('options.propertyFieldLabel or "Property address or listing URL"'), true);
-  assert.equal(
-    ownerFormPartial.includes("options.propertyFieldPlaceholder or 'Paste the listing URL, property address, or home name'"),
-    true
-  );
+  assert.equal(ownerFormPartial.includes('options.propertyFieldLabel or "Listing URL or property address"'), true);
+  assert.equal(ownerFormPartial.includes("options.propertyFieldPlaceholder or 'airbnb.com/h/your-listing, vrbo.com/..., or 123 Palm Ave'"), true);
   assert.equal(ownerFormPartial.includes('placeholder="Paste the Airbnb or Vrbo listing URL"'), true);
   assert.equal(ownerFormPartial.includes('enctype="multipart/form-data"'), true);
   assert.equal(ownerFormPartial.includes('name="listing_url"'), true);
@@ -125,12 +122,24 @@ test("owner revenue teardown form lowers friction without losing tracking or int
   assert.equal(ownerFormPartial.includes('name="current_fee_quote"'), true);
   assert.equal(ownerFormPartial.includes('name="what_feels_off"'), true);
   assert.equal(ownerFormPartial.includes('name="owner_statement"'), true);
-  assert.equal(ownerFormPartial.includes("Share whichever source is easiest. A listing URL is enough to start; an owner statement or fee quote makes the revenue review sharper."), true);
+  assert.equal(
+    ownerFormPartial.includes("The fastest first pass comes from two things: the listing URL or address, and one line on what feels expensive or unclear. An owner statement or fee quote makes the revenue review sharper."),
+    true
+  );
   assert.equal(
     ownerFormPartial.includes("The review uses the evidence available. Missing statements, calendars, reviews, or fee terms will be marked as missing instead of guessed."),
     true
   );
   assert.equal(ownerFormPartial.includes("The private review separates proven cost, likely cost, and missing information"), true);
+  assert.equal(
+    ownerFormPartial.includes("If you do not know the street address yet, paste the Airbnb or Vrbo link and tell us what feels expensive or unclear."),
+    true
+  );
+  assert.equal(ownerFormPartial.includes("What feels expensive or unclear?"), true);
+  assert.equal(
+    ownerFormPartial.includes("low owner payout, too many fees, spotty reporting, booking channels feel off, or current-manager concerns"),
+    true
+  );
   assert.equal(ownerFormPartial.includes("Send My Teardown Request"), true);
   assert.equal(ownerFormPartial.includes('data-track-form="owner"'), true);
   assert.equal(ownerFormPartial.includes('data-form-submit-event="owner_form_submit"'), true);
@@ -138,8 +147,19 @@ test("owner revenue teardown form lowers friction without losing tracking or int
   assert.equal(ownerFormPartial.includes('name="source_page_slug" value="{{ options.sourcePageSlug or options.pageSlug or \'property-management\' }}"'), true);
   assert.equal(ownerLanding.includes("showBenchmarkFields: true"), true);
   assert.equal(ownerTemplate.includes("showBenchmarkFields: true"), true);
-  assert.equal(ownerLanding.includes('propertyFieldLabel: "Property address or market"'), true);
-  assert.equal(ownerTemplate.includes('propertyFieldLabel: "Property address or market"'), true);
+  assert.equal(ownerLanding.includes('propertyFieldLabel: "Listing URL or property address"'), true);
+  assert.equal(ownerTemplate.includes('propertyFieldLabel: "Listing URL or property address"'), true);
+});
+
+test("Pat-like Sarasota leads are prompted for the property context and the reason for inquiry before manual follow-up", () => {
+  const sarasotaPage = ownerData.find((entry) => entry.slug === "vacation-rental-management-sarasota");
+
+  assert.ok(sarasotaPage, "Sarasota owner page should exist");
+  assert.equal(ownerTemplate.includes("The fastest first pass comes from two things: the listing URL or address, and one sentence on what feels expensive or unclear."), true);
+  assert.equal(ownerLanding.includes("If you do not know the street address yet, paste the Airbnb or Vrbo link and tell us what feels expensive or unclear."), true);
+  assert.equal(ownerLanding.includes("Current manager concerns"), true);
+  assert.equal(sarasotaPage.ctaSubcopy.includes("listing link or address plus what feels off"), true);
+  assert.equal(sarasotaPage.ctaNote.includes("one thing that feels expensive or unclear"), true);
 });
 
 test("owner benchmark CTA carries source attribution into the revenue review form path", () => {

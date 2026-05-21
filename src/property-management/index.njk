@@ -2544,7 +2544,7 @@ headExtra: |
         <h2 class="owner-field-display">Tell us what you have got. We will send back <em>a one-page revenue review.</em></h2>
         <p class="owner-field-deck">Four short questions, two minutes. A real Seascape person reads every reply and sends back a one-page revenue review, usually within 48 hours. No sales call, no calendar invite.</p>
       </div>
-      {# Source contract: ownerEvaluationForm({ showBenchmarkFields: true, propertyFieldLabel: "Property address or market" }) #}
+      {# Source contract: ownerEvaluationForm({ showBenchmarkFields: true, propertyFieldLabel: "Listing URL or property address" }) #}
       <form class="owner-field-postcard" name="owner-revenue-teardown" method="POST" enctype="multipart/form-data" data-netlify="true" netlify-honeypot="bot-field" data-track-form="owner" data-form-start-event="owner_form_start" data-form-submit-event="owner_form_submit" data-page-slug="property-management" data-source-page-slug="property-management" data-market="florida-gulf-coast" data-form-placement="field-report-postcard" data-form-direction="forward" data-stamped="false">
         <input type="hidden" name="form-name" value="owner-revenue-teardown">
         <input type="hidden" name="page_slug" value="property-management">
@@ -2587,8 +2587,8 @@ headExtra: |
         <div class="owner-field-form-step sv-postcard-panel is-active" data-form-step="0">
           <em>Question 1 of 4</em>
           <h3>What home are we looking at?</h3>
-          <p>A listing URL, an address, or the property name. If you would rather just describe it, that is fine too.</p>
-          <input class="owner-field-input" type="text" name="property_address" autocomplete="street-address" placeholder="Paste the listing URL, property address, or home name">
+          <p>A listing URL, an address, or the property name. If you do not know the street address yet, paste the Airbnb or Vrbo link and tell us what feels expensive or unclear.</p>
+          <input class="owner-field-input" type="text" name="property_address" autocomplete="street-address" placeholder="airbnb.com/h/your-listing · or · 4250 Palm Ave, Sarasota">
           <label class="owner-field-file">Upload an owner statement, optional
             <input type="file" name="owner_statement" accept=".pdf,.csv,.xls,.xlsx,.png,.jpg,.jpeg,.webp">
             <small>PDF, spreadsheet, or screenshot. Missing statements, calendars, reviews, or fee terms will be marked as missing.</small>
@@ -2601,14 +2601,14 @@ headExtra: |
         <div class="owner-field-form-step sv-postcard-panel" data-form-step="1" hidden>
           <em>Question 2 of 4</em>
           <h3>What feels expensive or unclear right now?</h3>
-          <p>Pick any that apply. This points the review at the part of the owner economics that needs the clearest read.</p>
+          <p>Pick any that apply. This points the review at the part of the owner economics that needs the clearest read first.</p>
           <div class="owner-field-choice-grid">
             <button class="owner-field-choice" type="button" data-concern="Paying too much in fees">Paying too much in fees</button>
             <button class="owner-field-choice" type="button" data-concern="Reviews slipping">Reviews slipping</button>
             <button class="owner-field-choice" type="button" data-concern="Booking channels feel off">Booking channels feel off</button>
             <button class="owner-field-choice" type="button" data-concern="Owner updates are vague">Owner updates are vague</button>
             <button class="owner-field-choice" type="button" data-concern="Pool home is underpriced">Pool home is underpriced</button>
-            <button class="owner-field-choice" type="button" data-concern="Just curious">Just curious</button>
+            <button class="owner-field-choice" type="button" data-concern="Current manager concerns">Current manager concerns</button>
           </div>
           <div class="owner-field-form-actions">
             <button class="owner-field-btn btn-gold" type="button" data-form-next>Continue <span aria-hidden="true">→</span></button>
