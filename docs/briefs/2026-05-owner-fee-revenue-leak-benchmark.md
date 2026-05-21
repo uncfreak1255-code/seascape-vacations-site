@@ -11,7 +11,7 @@
 - CTA target: /property-management/?owner_source=owner-fee-revenue-leak-benchmark-2026#owner-cta
 - anti-claims: no portfolio-wide guarantee, no market-wide fee survey claim, no invented review totals, no passive-income or full-service fluff
 
-Date: 2026-05-19
+Date: 2026-05-21
 Hub handoff: `/Users/sawbeck/Projects/seascape-hub/projects/owner-fee-revenue-leak-benchmark-execution-package-2026-05-15.md`
 Site route: `/research/owner-fee-revenue-leak-benchmark-2026/` (legacy path), `/research/owner-fee-revenue-gap-benchmark-2026/` (property-management copy-safe alias)
 Figma capture: `https://www.figma.com/design/glZRIUzGbQlw0KJhtAGUWP?node-id=3-2`
@@ -22,6 +22,8 @@ Implementation frames: `9:2` desktop, `11:2` mobile
 
 - Updated property-management copy to avoid new banned phrasing, remove owner-detached wording, and align CTA/benefit language to the property-focused intent.
 - Introduced the new redirect alias route `/research/owner-fee-revenue-gap-benchmark-2026/` so visible text can use the “gap” framing while preserving the current legacy route.
+- Folded the pricing-discipline proof section into the benchmark page itself so the benchmark can stand on its own as the owner-facing citation asset.
+- Kept the benchmark CTA path focused on the teardown route instead of requiring owners to detour through the operator proof pack.
 
 ## Decision
 
