@@ -111,8 +111,14 @@ test("owner revenue teardown form lowers friction without losing tracking or int
 
   assert.equal(ownerFormPartial.includes('name="phone"'), true);
   assert.equal(ownerFormPartial.includes('name="phone" autocomplete="tel" placeholder="(941) 555-1234" required'), false);
+  assert.equal(ownerFormPartial.includes('placeholder="Best email for your review"'), true);
+  assert.equal(ownerFormPartial.includes('placeholder="Best number for text updates"'), true);
   assert.equal(ownerFormPartial.includes('options.propertyFieldLabel or "Property address or listing URL"'), true);
-  assert.equal(ownerFormPartial.includes("options.propertyFieldPlaceholder or '123 Palm Ave or airbnb.com/h/your-listing'"), true);
+  assert.equal(
+    ownerFormPartial.includes("options.propertyFieldPlaceholder or 'Paste the listing URL, property address, or home name'"),
+    true
+  );
+  assert.equal(ownerFormPartial.includes('placeholder="Paste the Airbnb or Vrbo listing URL"'), true);
   assert.equal(ownerFormPartial.includes('enctype="multipart/form-data"'), true);
   assert.equal(ownerFormPartial.includes('name="listing_url"'), true);
   assert.equal(ownerFormPartial.includes('name="current_manager"'), true);
