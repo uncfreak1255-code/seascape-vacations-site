@@ -2761,7 +2761,9 @@ headExtra: |
   (function () {
     var page = document.querySelector("[data-owner-field-page]");
     if (!page) return;
-    var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var searchParams = new URLSearchParams(window.location.search);
+    var isVisualTest = searchParams.get("visual-test") === "1";
+    var reduceMotion = isVisualTest || (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
     var conversionTracking = window.SeascapeConversionTracking;
 
     function track(eventName, payload) {
@@ -2790,7 +2792,9 @@ headExtra: |
         });
         phraseRoot.setAttribute("aria-label", phrases[phraseIndex].textContent || "");
       }
-      if (!reduceMotion && phrases.length > 1) {
+      if (isVisualTest && phrases.length > 1) {
+        showPhrase(Math.min(1, phrases.length - 1));
+      } else if (!reduceMotion && phrases.length > 1) {
         window.setInterval(function () {
           showPhrase(phraseIndex + 1);
         }, 3200);
@@ -2816,7 +2820,9 @@ headExtra: |
           showTicker(Number(dot.getAttribute("data-ticker-dot")));
         });
       });
-      if (!reduceMotion && tickerItems.length > 1) {
+      if (isVisualTest && tickerItems.length > 1) {
+        showTicker(Math.min(1, tickerItems.length - 1));
+      } else if (!reduceMotion && tickerItems.length > 1) {
         window.setInterval(function () {
           showTicker(tickerIndex + 1);
         }, 3800);
