@@ -111,7 +111,7 @@ function validateTargetResponse(target, response) {
       && response.body.includes("$119,923")
       && response.body.includes("13.4%")
       && response.body.includes("2.9%")
-      && response.body.includes("Where Owner Revenue Actually Leaks")
+      && response.body.includes("What owners miss when they compare management fees")
       && response.body.includes("Start Your 48-Hour Revenue Review")
       && response.body.includes('href="#owner-cta"');
 

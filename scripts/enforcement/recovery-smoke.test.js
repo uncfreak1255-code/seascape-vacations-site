@@ -33,7 +33,7 @@ test("property-management smoke follows the current proof-first owner hub", () =
       <p>Seascape's current Gulf Coast portfolio runs at $1.4M in annual rental revenue with $119,923 already routed through direct bookings.</p>
       <strong>13.4% → 2.9%</strong>
       <section>
-        <h3>Where Owner Revenue Actually Leaks</h3>
+        <p>What owners miss when they compare management fees</p>
       </section>
       <a href="#owner-cta">Start Your 48-Hour Revenue Review</a>
       <a href="/property-management/vacation-rental-management-sarasota/">Sarasota coverage</a>
