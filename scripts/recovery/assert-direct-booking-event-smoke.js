@@ -98,6 +98,9 @@ function buildTrackedLink(eventName, href) {
       if (name === "href") return this.href;
       if (name === "target") return this.target;
       return null;
+    },
+    setAttribute(name, value) {
+      if (name === "href") this.href = value;
     }
   };
 }
@@ -185,7 +188,9 @@ function withTrackingRuntime(callback) {
   global.window = {
     dataLayer: [],
     location: {
-      href: "http://localhost/guides/best-time-visit-anna-maria-island/",
+      href: "http://localhost/guides/best-time-visit-anna-maria-island/?utm_source=mcp&utm_medium=ai-assistant&utm_campaign=direct-booking-proof&utm_content=search-availability&ref=mcp-distribution&checkin=2026-06-01&checkout=2026-06-05&guests=4",
+      pathname: "/guides/best-time-visit-anna-maria-island/",
+      search: "?utm_source=mcp&utm_medium=ai-assistant&utm_campaign=direct-booking-proof&utm_content=search-availability&ref=mcp-distribution&checkin=2026-06-01&checkout=2026-06-05&guests=4",
       assign(nextHref) {
         this.href = nextHref;
       }
@@ -193,6 +198,7 @@ function withTrackingRuntime(callback) {
   };
   global.document = {
     readyState: "loading",
+    referrer: "",
     addEventListener(eventName, handler) {
       listeners[eventName] = handler;
     },

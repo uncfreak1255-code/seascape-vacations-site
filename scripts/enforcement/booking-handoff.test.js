@@ -40,8 +40,29 @@ test("conversion tracking carries AI and search source context on funnel events"
     "ai_platform",
     "referrer_host",
     "utm_source",
+    "utm_medium",
+    "utm_campaign",
+    "utm_content",
+    "ref",
     "landing_page_path",
     "getSourceContext"
+  ]) {
+    assert.equal(trackingScript.includes(marker), true, `tracking script missing ${marker}`);
+  }
+});
+
+test("conversion tracking preserves booking-engine handoff context instead of dropping AI params on outbound clicks", () => {
+  const trackingScript = fs.readFileSync(
+    path.join(projectRoot, "src", "assets", "js", "conversion-tracking.js"),
+    "utf8"
+  );
+
+  for (const marker of [
+    "BOOKING_ENGINE_HOST",
+    "BOOKING_ENGINE_HANDOFF_KEYS",
+    "buildBookingEngineHandoffUrl",
+    "syncBookingEngineLink",
+    "decorateBookingEngineLinks"
   ]) {
     assert.equal(trackingScript.includes(marker), true, `tracking script missing ${marker}`);
   }
