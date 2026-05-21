@@ -88,8 +88,44 @@ async function waitForStableLayout(page) {
   });
 }
 
+async function stabilizePropertyManagementVisualState(page, routeConfig) {
+  if (routeConfig.slug !== "property-management") {
+    return;
+  }
+
+  await page.evaluate(() => {
+    const phraseRoot = document.querySelector("[data-owner-phrases]");
+    if (phraseRoot) {
+      const phrases = Array.from(phraseRoot.querySelectorAll(".sv-pm-h1-phrase-item"));
+      const activeIndex = Math.min(1, Math.max(phrases.length - 1, 0));
+      phrases.forEach((phrase, index) => {
+        phrase.classList.toggle("is-active", index === activeIndex);
+      });
+      if (phrases[activeIndex]) {
+        phraseRoot.setAttribute("aria-label", phrases[activeIndex].textContent || "");
+      }
+    }
+
+    const ticker = document.querySelector("[data-owner-ticker]");
+    if (ticker) {
+      const tickerItems = Array.from(ticker.querySelectorAll(".sv-pm-ticker-fact"));
+      const tickerDots = Array.from(ticker.querySelectorAll("[data-ticker-dot]"));
+      const activeIndex = Math.min(1, Math.max(tickerItems.length - 1, 0));
+      tickerItems.forEach((item, index) => {
+        item.classList.toggle("is-active", index === activeIndex);
+      });
+      tickerDots.forEach((dot, index) => {
+        dot.classList.toggle("is-active", index === activeIndex);
+      });
+    }
+  });
+}
+
 async function gotoMarketingRoute(page, routeConfig) {
   await registerStableNetwork(page);
+  if (routeConfig.slug === "property-management") {
+    await page.emulateMedia({ reducedMotion: "reduce" });
+  }
   const separator = routeConfig.path.includes("?") ? "&" : "?";
   await page.goto(`${routeConfig.path}${separator}visual-test=1`, { waitUntil: "networkidle" });
   await page.evaluate((slug) => {
@@ -99,6 +135,7 @@ async function gotoMarketingRoute(page, routeConfig) {
   const readySelector = routeConfig.readySelector || "main h1";
   await page.locator(readySelector).first().waitFor({ state: "visible" });
   await waitForFonts(page);
+  await stabilizePropertyManagementVisualState(page, routeConfig);
 }
 
 async function prepareFullPageScreenshot(page) {
