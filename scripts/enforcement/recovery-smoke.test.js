@@ -29,13 +29,13 @@ test("property-management smoke follows the current proof-first owner hub", () =
 
   const currentOwnerHubBody = `
     <main>
-      <h1>Property management for owners who care about what they actually keep</h1>
+      <h1>Before you renew, what does your Gulf Coast home actually keep?</h1>
       <p>Seascape's current Gulf Coast portfolio runs at $1.4M in annual rental revenue with $119,923 already routed through direct bookings.</p>
       <strong>13.4% → 2.9%</strong>
       <section>
         <h3>Where Owner Revenue Actually Leaks</h3>
       </section>
-      <a href="#owner-cta">Request Your Revenue Teardown</a>
+      <a href="#owner-cta">Start Your 48-Hour Revenue Review</a>
       <a href="/property-management/vacation-rental-management-sarasota/">Sarasota coverage</a>
     </main>
   `;

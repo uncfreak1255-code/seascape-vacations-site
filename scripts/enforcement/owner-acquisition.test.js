@@ -25,25 +25,25 @@ const ownerProofAssets = require(path.join(projectRoot, "src", "_data", "ownerPr
 const ownerOperatorProofAssets = require(path.join(projectRoot, "src", "_data", "ownerOperatorProofAssets.json"));
 const ownerFormPath = path.join(projectRoot, "src", "_includes", "partials", "owner-evaluation-form.njk");
 
-test("owner landing page uses a real owner revenue teardown form instead of generic evaluation copy", () => {
+test("owner landing page uses a real owner revenue review form instead of generic evaluation copy", () => {
   assert.equal(fs.existsSync(ownerFormPath), true, "owner form partial should exist");
 
   const ownerFormPartial = fs.readFileSync(ownerFormPath, "utf8");
-  assert.equal(ownerLanding.includes("Request Your Revenue Teardown"), true);
+  assert.equal(ownerLanding.includes("Start Your 48-Hour Revenue Review"), true);
   assert.equal(ownerLanding.includes("ownerEvaluationForm({"), true);
   assert.equal(ownerLanding.includes('data-track-event="owner_primary_cta_click"'), true);
   assert.equal(ownerFormPartial.includes("owner-revenue-teardown"), true);
   assert.equal(ownerFormPartial.includes('data-netlify="true"'), true);
 });
 
-test("owner landing page keeps the owner revenue teardown close to the sales argument instead of burying it under the library", () => {
+test("owner landing page keeps the owner revenue review close to the sales argument instead of burying it under the library", () => {
   const reviewIndex = ownerLanding.indexOf('id="owner-cta"');
   const faqIndex = ownerLanding.indexOf("Selected FAQ");
   const libraryIndex = ownerLanding.indexOf("Owner Guides");
   const specialSituationsIndex = ownerLanding.indexOf("Specific Situations");
 
-  assert.notEqual(reviewIndex, -1, "owner hub needs the revenue teardown anchor");
-  assert.equal(ownerLanding.includes("Benchmark + Teardown"), true);
+  assert.notEqual(reviewIndex, -1, "owner hub needs the revenue review anchor");
+  assert.equal(ownerLanding.includes("Benchmark + Revenue Review"), true);
   assert.equal(
     ownerLanding.includes("Platform costs, expensive booking sources, review-risk signals, and uneven owner communication rarely show up clearly in an owner statement."),
     true
@@ -210,7 +210,7 @@ test("owner hub and benchmark feed the operator proof pack without changing the 
   assert.equal(ownerLanding.includes("How Seascape Protects Owner Revenue"), true);
   assert.equal(ownerBenchmark.includes("/research/how-seascape-protects-owner-net-2026/"), true);
   assert.equal(ownerBenchmark.includes("The benchmark shows the math. The proof pack shows the operation."), true);
-  assert.equal(ownerLanding.includes("Request Your Revenue Teardown"), true);
+  assert.equal(ownerLanding.includes("Start Your 48-Hour Revenue Review"), true);
   assert.equal(ownerBenchmark.includes("Request Your Revenue Teardown"), true);
 });
 
