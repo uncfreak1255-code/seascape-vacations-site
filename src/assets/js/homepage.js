@@ -100,7 +100,7 @@ var legalContent = {
     },
     support: {
         title: 'Support Center',
-        content: '<p>Need help? Our local team is available 24/7.</p><p><strong>Phone:</strong> (941) 555-0123</p><p><strong>Email:</strong> <a href="mailto:support@seascape-vacations.com" style="color:var(--brand)">support@seascape-vacations.com</a></p><p>For urgent maintenance issues, please call the emergency line provided in your check-in instructions.</p>'
+        content: '<p>Need help? Our local team is available 24/7.</p><p><strong>Phone:</strong> (941) 704-8545</p><p><strong>Email:</strong> <a href="mailto:info@seascape-vacations.com" style="color:var(--brand)">info@seascape-vacations.com</a></p><p>For urgent maintenance issues, please call the emergency line provided in your check-in instructions.</p>'
     }
 };
 
