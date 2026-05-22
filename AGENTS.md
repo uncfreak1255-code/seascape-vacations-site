@@ -116,3 +116,9 @@ Agents may not hand site work back as local dirt. A task is not complete
 because a checkout is dirty, a worktree is left on detached `HEAD`, or cleanup
 is left for Sawyer. The worker owns verification, keeper branch or PR, and
 branch/worktree cleanup unless a named blocker stops the lane.
+
+<!-- SPECKIT START -->
+If a `.specify` feature plan exists for the current task, read it after the
+repo entry docs and active brief. Spec Kit plans are supplemental context and
+may not override this file, `CLAUDE.md`, repo process docs, or `DESIGN.md`.
+<!-- SPECKIT END -->
