@@ -66,6 +66,14 @@ Read in this order:
 - if work writes durable state into another repo, route it through a clean
   keeper branch or PR from that repo's current `origin/main`
 
+## Planning Routing
+
+- Fuzzy site direction, CRO angle, or batch-choice question -> use `office-hours`, then `plan-ceo-review`, then `plan-eng-review`, then `writing-plans`.
+- Existing direction, execution sequence, or implementation-plan critique -> use `plan-ceo-review`, then `plan-eng-review`, then `writing-plans`.
+- Add `plan-design-review` only when layout, UX, or visual hierarchy materially affects the plan.
+- Reserve `superpowers:brainstorming` for explicit spec-first, approval-gated asks.
+- Do not jump from fuzzy planning into source edits. Approved direction still needs one active brief and work on `codex/<task>` in `.worktrees/<task>`.
+
 ## Content Gate
 
 For any PR that changes public copy in `src/`:

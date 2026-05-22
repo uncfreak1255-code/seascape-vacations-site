@@ -76,6 +76,14 @@ advisory lenses when the task calls for them, especially `customer-research`,
 authority, bypass the five roles, or replace Seascape Hub as the source of
 business context.
 
+## Planning Routing
+
+- Fuzzy batch, CRO, or page-family direction → `office-hours`, then `plan-ceo-review`, then `plan-eng-review`, then `writing-plans`.
+- Existing direction or implementation-plan critique → `plan-ceo-review`, then `plan-eng-review`, then `writing-plans`.
+- Add `plan-design-review` only when layout, UX, or visual hierarchy materially affects the plan.
+- Reserve `superpowers:brainstorming` for explicit spec-first, approval-gated asks.
+- A planning lane does not bypass the five roles: approved direction still becomes one brief, one worktree, then Page Builder, Voice Editor, and Release Gate.
+
 ## Required Batch Workflow
 
 1. Search Operator reads the latest operator evidence.
