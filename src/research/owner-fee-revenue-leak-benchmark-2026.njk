@@ -5,14 +5,14 @@ permalink: "/research/owner-fee-revenue-leak-benchmark-2026/"
 {% set benchmark = ownerProofAssets["gulf-coast-owner-benchmark-2026"] %}
 {% set proofLabels = [
   "Observed Seascape portfolio data",
-  "Observed property example",
+  "Observed operating example",
   "Example math, not a forecast",
   "Last refreshed: May 2026"
 ] %}
 {% set heroMethodNotes = [
   "Seascape data is labeled where it comes from our current 5-home Gulf Coast portfolio.",
   "Example math is separated from observed booking data.",
-  "Use it to see what to ask before a property-specific revenue review."
+  "Pricing-discipline proof is labeled separately so process proof does not get mistaken for booked revenue."
 ] %}
 {% set scenarioRows = [
   {
@@ -68,7 +68,7 @@ permalink: "/research/owner-fee-revenue-leak-benchmark-2026/"
   "mainEntityOfPage": "https://seascape-vacations.com/research/owner-fee-revenue-leak-benchmark-2026/",
   "image": "https://seascape-vacations.com/images/seascape-og-default.jpg",
   "datePublished": "2026-05-03",
-  "dateModified": "2026-05-16",
+  "dateModified": "2026-05-21",
   "author": {
     "@type": "Person",
     "name": "Sawyer Beckett",
@@ -478,11 +478,69 @@ a{color:var(--brand);text-decoration:underline}
   grid-template-columns:minmax(0,1.05fr) minmax(290px,.95fr);
   gap:20px;
 }
+.discipline-grid{
+  display:grid;
+  grid-template-columns:minmax(0,.94fr) minmax(0,1.06fr);
+  gap:20px;
+}
 .compare-panel{
   background:var(--cream-light);
   border:1px solid rgba(61,92,93,.12);
   border-radius:22px;
   padding:24px;
+}
+.discipline-card{
+  background:var(--cream-light);
+  border:1px solid rgba(61,92,93,.12);
+  border-radius:22px;
+  padding:24px;
+}
+.discipline-card--proof{
+  background:linear-gradient(180deg,rgba(95,138,139,.08) 0%, var(--cream-light) 100%);
+}
+.discipline-card h3{
+  font-size:25px;
+  line-height:1.14;
+  color:var(--brand-dark);
+  margin-bottom:12px;
+}
+.discipline-card p{
+  font-size:14px;
+  color:var(--stone-light);
+}
+.discipline-metrics{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;
+  margin:18px 0 16px;
+}
+.discipline-metric{
+  background:var(--white);
+  border:1px solid rgba(61,92,93,.12);
+  border-radius:18px;
+  padding:16px;
+}
+.discipline-metric strong{
+  display:block;
+  font-family:"Playfair Display",Georgia,serif;
+  font-size:32px;
+  line-height:1;
+  color:var(--gold);
+  margin-bottom:8px;
+}
+.discipline-metric span{
+  display:block;
+  font-size:12px;
+  line-height:1.35;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--brand-dark);
+  font-weight:700;
+}
+.discipline-boundary{
+  margin-top:14px;
+  padding-top:14px;
+  border-top:1px solid rgba(61,92,93,.12);
 }
 .compare-mobile{
   display:none;
@@ -788,7 +846,8 @@ a{color:var(--brand);text-decoration:underline}
 @media (max-width:980px){
   .hero,
   .cta-grid,
-  .fit-grid{
+  .fit-grid,
+  .discipline-grid{
     grid-template-columns:1fr;
   }
   .stack-grid,
@@ -848,6 +907,9 @@ a{color:var(--brand);text-decoration:underline}
   .scenario-cards{
     display:grid;
     gap:12px;
+  }
+  .discipline-metrics{
+    grid-template-columns:1fr;
   }
   .scenario-cards{
     grid-template-columns:repeat(2,minmax(0,1fr));
@@ -911,10 +973,10 @@ a{color:var(--brand);text-decoration:underline}
     <div class="hero-copy">
       <span class="eyebrow">Owner Fee + Revenue Leak Benchmark</span>
       <span class="scope-pill desktop-only">5-property Gulf Coast scope</span>
-      <h1>Your management fee is only part of the picture.</h1>
-      <p class="hero-lead">What really matters is how pricing, booking channels, and operating costs affect what you actually keep.</p>
-      <p class="hero-support desktop-only">Built from Seascape's current 5-home Gulf Coast portfolio, with example math labeled separately from observed booking data.</p>
-      <p class="hero-decision-note mobile-only">Built from Seascape's 5-home operating data, with example math labeled separately.</p>
+      <h1>Your management fee is not the whole revenue leak.</h1>
+      <p class="hero-lead">Most owners compare 15%, 20%, and 25% management fees. That misses the bigger stack: booking-channel costs, direct-booking mix, rate control, and how clearly your manager explains what actually reaches your payout.</p>
+      <p class="hero-support desktop-only">Built from Seascape's current 5-home Gulf Coast portfolio, with example math and pricing-discipline proof labeled separately from observed operating data.</p>
+      <p class="hero-decision-note mobile-only">Built from Seascape's 5-home operating data, with example math and process proof labeled separately.</p>
       <div class="hero-actions desktop-only">
         <a class="btn btn-gold" href="#owner-cta" data-track-event="owner_primary_cta_click" data-page-slug="owner-fee-revenue-leak-benchmark-2026">Request Your Revenue Teardown</a>
         <a class="hero-secondary" href="#benchmark-math">See the benchmark math</a>
@@ -954,7 +1016,7 @@ a{color:var(--brand);text-decoration:underline}
   </div>
 
   <section class="source-note">
-    <p><strong>Source note:</strong> {{ benchmark.sourceLabel }}. This benchmark is a practical reference built from Seascape's 5-home operating data. Example math is labeled separately from observed operating facts.</p>
+    <p><strong>Source note:</strong> {{ benchmark.sourceLabel }}. This benchmark is a practical reference built from Seascape's 5-home operating data. Example math and pricing-discipline proof are labeled separately from observed operating facts.</p>
   </section>
 
   <section class="section">
@@ -985,8 +1047,8 @@ a{color:var(--brand);text-decoration:underline}
       </article>
       <article class="stack-card">
         <span class="stack-metric">Property-level review</span>
-        <h3>Pricing and day-to-day management</h3>
-        <p>Discount-heavy fills, weak premium-week protection, turnover misses, and poor owner communication rarely show up cleanly in a flat management-fee comparison. They still affect what you take home.</p>
+        <h3>Rate control and day-to-day management</h3>
+        <p>Discount-heavy fills, weak premium-week protection, turnover misses, and vague owner communication rarely show up cleanly in a flat management-fee comparison. They still affect what you take home.</p>
       </article>
     </div>
   </section>
@@ -1095,20 +1157,48 @@ a{color:var(--brand);text-decoration:underline}
 
   <section class="section">
     <div class="section-intro">
-      <span class="eyebrow">Next proof step</span>
-      <h2>The benchmark shows the math. The proof pack shows the operation.</h2>
-      <p>If you already understand the fee and booking-source question, read <a href="/research/how-seascape-protects-owner-net-2026/">how Seascape protects owner revenue</a>. It uses redacted operating examples to show what Seascape has seen, protected, or made clearer in owner reporting.</p>
+      <span class="eyebrow">Rate control</span>
+      <h2>A manager should be able to show exactly how a rate move is tested.</h2>
+      <p>Strong pricing is not a vague promise about an algorithm. It is exact dates, the original rate, the temporary target, the review date, the fallback condition, and an honest readback before anyone calls the work done.</p>
       <div class="section-proof-rail">
-        <span class="proof-chip proof-chip--soft">Redacted operating examples</span>
-        <span class="proof-chip proof-chip--soft">Same teardown CTA</span>
+        <span class="proof-chip proof-chip--soft">Observed operator example</span>
+        <span class="proof-chip proof-chip--soft">Process proof, not booked revenue</span>
       </div>
+    </div>
+    <div class="discipline-grid">
+      <article class="discipline-card">
+        <span class="eyebrow">What owners should expect</span>
+        <h3>Pricing control should be visible before the owner ever sees the statement.</h3>
+        <ul class="quick-list">
+          <li>Specific nights, not a vague promise to “optimize pricing.”</li>
+          <li>The original rate, temporary target, and review date written down before a change is treated as real.</li>
+          <li>A fallback condition that says when the rate relaxes if the nights stay open.</li>
+          <li>A readback that confirms what is actually live instead of assuming a requested change already propagated.</li>
+        </ul>
+      </article>
+      <article class="discipline-card discipline-card--proof">
+        <span class="eyebrow">Observed May 2026 operator example</span>
+        <h3>A two-night Seascape test showed the control loop, not just the idea.</h3>
+        <div class="discipline-metrics">
+          <div class="discipline-metric">
+            <strong>2 nights</strong>
+            <span>bounded test window</span>
+          </div>
+          <div class="discipline-metric">
+            <strong>$169 -> $219</strong>
+            <span>temporary nightly-rate test</span>
+          </div>
+        </div>
+        <p>In one May 2026 Seascape pricing test, the operator preserved the original rate, raised two specific nights, kept the minimum-stay condition intact, and captured a readback instead of treating the request itself as proof.</p>
+        <p class="discipline-boundary"><strong>Boundary:</strong> this is process proof. It does not claim the nights booked, that the higher rate held, or that every downstream calendar reflected the change immediately.</p>
+      </article>
     </div>
   </section>
 
   <section class="section">
     <div class="section-intro">
       <span class="eyebrow">Observed Seascape examples</span>
-      <h2>Three examples from the current benchmark inputs.</h2>
+      <h2>Two examples from the current benchmark inputs.</h2>
       <p>These examples are narrow on purpose. They show what Seascape has observed in its own operating data, not what every Gulf Coast home should expect.</p>
     </div>
     <div class="example-grid">
@@ -1118,13 +1208,6 @@ a{color:var(--brand);text-decoration:underline}
         <span class="example-metric">32.8%</span>
         <p>In March 2026, Sarasota Luxe had 32.8% direct booking share and saved about <strong>$730</strong> versus Airbnb-like fees.</p>
         <div class="mini-note">Observed March 2026 property example. Not a promise for other homes.</div>
-      </article>
-      <article class="example-card">
-        <span class="eyebrow">Observed property example</span>
-        <h3>AMI Portfolio</h3>
-        <span class="example-metric">5.7%</span>
-        <p>In March 2026, the AMI Portfolio had 5.7% direct booking share. One direct booking saved about <strong>$450</strong> versus Airbnb.</p>
-        <div class="mini-note">Observed March 2026 portfolio example. Direct bookings were real, but still limited.</div>
       </article>
       <article class="example-card">
         <span class="eyebrow">Observed property example</span>
