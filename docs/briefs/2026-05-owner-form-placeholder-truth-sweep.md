@@ -8,17 +8,18 @@ Status: ACTIVE
 - persona: owner who is comparing managers or questioning the current setup and needs the review form to feel real instead of templated
 - primary keyword: owner revenue review form
 - secondary keywords: vacation rental owner form, property management review request, Seascape owner evaluation form
-- audience pattern: owner who is ready to submit a listing, fee quote, or contact details but loses trust when the public form shows fake example contact info
-- proof source: current owner form source in `src/property-management/index.njk`, shared owner evaluation partial, and the merged contact-truth sweep that already removed guest-facing placeholder contacts
+- audience pattern: owner who is ready to send a listing link or address plus what feels off, but loses trust when the public form feels fake, vague, or forces manual clarification later
+- proof source: current owner form source in `src/property-management/index.njk`, the shared owner evaluation partial, David's May 21 `Sarasota property` follow-up, and the fresh `New Seascape owner revenue review (18)` notification payload
 - required internal links: /property-management/vacation-rental-management-fees-florida/, /property-management/maximize-vacation-rental-income-florida/
 - CTA target: /property-management/
-- anti-claims: do not invent owner contact details, do not add fake listing URLs, do not widen into owner-page copy rewrites, and do not change form tracking or submission behavior
+- anti-claims: do not invent owner contact details, do not add fake listing URLs, do not widen into broad owner-page rewrites, and do not change form destinations or add new tracking events beyond removing duplicate postcard submit noise
 
 ## Why This Batch
 
 - The broader repo-wide placeholder audit after the guest contact fix showed the last obvious public placeholder residue on owner intake surfaces.
-- The issue is trust and truth, not messaging expansion or form redesign.
-- Guest-facing contact truth is already merged; this batch is only the owner-form residue that stayed behind.
+- Pat Reilley's Sarasota follow-up showed the first capture still missed the two inputs David had to ask for manually: the listing link or address, and what felt off.
+- The fresh `New Seascape owner revenue review (18)` payload showed the owner field-report postcard was still mirroring the street address into `Listing Url`, which pollutes the submission email and staged receipt.
+- The issue is owner-intake truth and payload clarity, not a new form design or a wider owner-page rewrite.
 
 ## Cluster In Scope
 
@@ -35,18 +36,19 @@ Status: ACTIVE
 
 ## Page Builder Tasks
 
-- source files likely to change: `src/property-management/index.njk`, `src/_includes/partials/owner-evaluation-form.njk`, `scripts/enforcement/owner-acquisition.test.js`
+- source files likely to change: `src/property-management/index.njk`, `src/property-management/property-management.njk`, `src/_includes/partials/owner-evaluation-form.njk`, `src/_data/seoPages.json`, `src/assets/js/conversion-tracking.js`, and `scripts/enforcement/owner-acquisition.test.js`
 - redirect or schema work: none
 - internal-link or CTA work: preserve existing owner hub links and form routing exactly as-is
 
 ## Release Gate Checklist
 
 - routes to smoke test: `/property-management/`, one owner route that renders the shared partial, and the owner benchmark route if the partial is used there
-- commands to run: `npm run lint:content`, `npm run build`, `npm run test:visual`, `npm run git:merge-check`
-- regression risks to watch: reintroducing fake public contact details, breaking owner form placeholders into vague unusable hints, or changing owner form tracking/submission fields
+- commands to run: `npm run lint:content`, `node --test scripts/enforcement/owner-acquisition.test.js`, `node --test scripts/enforcement/owner-lead-receipts.test.js`, `npm run build`, `npm run git:merge-check`
+- regression risks to watch: reintroducing fake public contact details, weakening the first-pass asks back into vague hints, or letting the owner field-report postcard submit two analytics events or a duplicate `listing_url` value
 
 ## Done When
 
-- no public owner intake surface ships `you@example.com`, `(941) 555-1234`, or `airbnb.com/h/your-listing`
-- the owner hub and shared owner form still tell owners what information to provide
+- no public owner intake surface ships fake contact or listing placeholders
+- the owner hub and shared owner form ask for the listing link or address plus what feels off in plain owner language
+- the owner field-report postcard no longer mirrors `property_address` into `listing_url`, and the postcard path records one `owner_form_submit`
 - guardrail tests and release checks stay green
