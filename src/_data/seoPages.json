@@ -3469,6 +3469,48 @@
           "body": "If there is a fit, we show how the fee structure compares against the current setup once booking channels and execution are included."
         }
       ],
+      "reviewDeliverable": {
+        "tag": "48-Hour Review",
+        "title": "What your 48-hour review includes",
+        "intro": "You should see what is proven, what is expensive, and what is still unclear before you compare one management offer against another.",
+        "items": [
+          {
+            "title": "Current cost map",
+            "body": "We mark the management percentage, booking costs, and payment costs that are visible in your current setup so you can stop comparing headline numbers in isolation."
+          },
+          {
+            "title": "Booking-source read",
+            "body": "We show whether Airbnb, VRBO, and direct demand are being measured clearly or blended together in a way that hides what each source is doing."
+          },
+          {
+            "title": "Execution risk list",
+            "body": "We flag where cleaning follow-through, maintenance response, or guest communication may be erasing the savings a cheaper fee promise appears to offer."
+          }
+        ]
+      },
+      "visibilityLayer": {
+        "tag": "Owner Visibility",
+        "title": "What clear owner visibility should look like",
+        "intro": "If the operation is working, you should not need a sales call to understand what changed.",
+        "items": [
+          {
+            "title": "Reporting rhythm",
+            "body": "You should see what changed in pricing, booking sources, and owner payout early instead of waiting another season to decode the results."
+          },
+          {
+            "title": "Maintenance follow-through",
+            "body": "You should know which issues were found, who owns the fix, and whether the delay is hurting the next guest or the next rate decision."
+          },
+          {
+            "title": "Guest screening and communication",
+            "body": "You should know how risky inquiries are being handled and whether guest communication is protecting your reviews."
+          },
+          {
+            "title": "Local response ownership",
+            "body": "You should know who answers the same-day property or guest problem when a remote reply is not enough."
+          }
+        ]
+      },
       "objections": [
         {
           "question": "What do Florida vacation rental managers usually charge?",
@@ -4643,6 +4685,48 @@
           "body": "Once the filing path is clear, we align house rules, listing details, and operating expectations so bookings do not outrun the compliance setup."
         }
       ],
+      "reviewDeliverable": {
+        "tag": "48-Hour Review",
+        "title": "What your 48-hour licensing review includes",
+        "intro": "The useful answer is not simply whether you need a license. It is which launch tasks are complete, which are missing, and where bookings could still stall.",
+        "items": [
+          {
+            "title": "State and county checklist",
+            "body": "We separate DBPR registration, county steps, and tax setup so you can see which layer is unfinished instead of staring at one vague compliance list."
+          },
+          {
+            "title": "Launch blocker list",
+            "body": "We flag the missing filings, address mismatches, or readiness gaps most likely to turn a rentable property into dead calendar time."
+          },
+          {
+            "title": "Owner handoff map",
+            "body": "We show what a manager should own, what still needs your signature, and where local follow-through matters more than another generic checklist."
+          }
+        ]
+      },
+      "visibilityLayer": {
+        "tag": "Owner Visibility",
+        "title": "What licensing visibility should look like",
+        "intro": "A good operator should make launch status easy to read before the first guest arrives.",
+        "items": [
+          {
+            "title": "Registration status reporting",
+            "body": "You should be able to see what is filed, what is pending, and what is still blocked without chasing updates."
+          },
+          {
+            "title": "Property-readiness follow-through",
+            "body": "You should know whether maintenance, safety fixes, or access issues can still delay launch after the paperwork looks done."
+          },
+          {
+            "title": "Guest-rule and screening setup",
+            "body": "You should know whether occupancy rules, guest screening expectations, and house policies match the way the property will actually be rented."
+          },
+          {
+            "title": "Local response ownership",
+            "body": "You should know who handles the local problem when a permit, inspection, or readiness issue threatens the first booking."
+          }
+        ]
+      },
       "objections": [
         {
           "question": "Can I just start listing the property and fix licensing later?",
@@ -4752,6 +4836,48 @@
           "body": "Once live, we track whether VRBO is producing cleaner stay length, better guest fit, and healthier net income than the generic OTA average."
         }
       ],
+      "reviewDeliverable": {
+        "tag": "48-Hour Review",
+        "title": "What your 48-hour VRBO review includes",
+        "intro": "VRBO should be measured like its own demand lane. The review shows whether the channel is being priced, screened, and reported clearly enough to justify the effort.",
+        "items": [
+          {
+            "title": "VRBO pricing read",
+            "body": "We check whether longer-stay family demand is being priced deliberately or copied from another platform."
+          },
+          {
+            "title": "Channel reporting split",
+            "body": "We show whether VRBO results are visible on their own or buried inside blended reporting that makes every booking source look the same."
+          },
+          {
+            "title": "Guest-fit review",
+            "body": "We flag whether screening, turnovers, and local response are built for the longer-stay family bookings VRBO tends to attract."
+          }
+        ]
+      },
+      "visibilityLayer": {
+        "tag": "Owner Visibility",
+        "title": "What clear VRBO visibility should look like",
+        "intro": "If VRBO is worth the work, you should be able to see why without guessing.",
+        "items": [
+          {
+            "title": "Channel-by-channel reporting",
+            "body": "You should be able to tell what VRBO is doing without comparing blended averages that hide the difference."
+          },
+          {
+            "title": "Turnover and maintenance timing",
+            "body": "You should know whether turnovers and maintenance response are protecting the next longer-stay family booking."
+          },
+          {
+            "title": "Guest screening for longer stays",
+            "body": "You should know how screening and communication change when families stay longer and ask harder fit questions."
+          },
+          {
+            "title": "Local response ownership",
+            "body": "You should know who handles the same-day issue when a longer-stay booking wobbles and a remote answer is not enough."
+          }
+        ]
+      },
       "objections": [
         {
           "question": "If I already list on Airbnb, do I really need a separate VRBO strategy?",
