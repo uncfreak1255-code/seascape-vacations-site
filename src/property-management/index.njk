@@ -3045,7 +3045,7 @@ headExtra: |
 
     function validateOwnerContext() {
       var hasListing = listingField && listingField.value.trim();
-      var hasConcern = concerns.length > 0;
+      var hasConcern = concerns.length > 0 || (concernsInput && concernsInput.value.trim()) || (concernsMirror && concernsMirror.value.trim());
       if (hasListing || hasConcern) return true;
 
       showStep(0, "back", { silent: true });

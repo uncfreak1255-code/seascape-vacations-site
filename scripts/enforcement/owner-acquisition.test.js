@@ -176,7 +176,7 @@ test("Pat-like Sarasota leads are prompted for the property context and the reas
   assert.equal(ownerLanding.includes("Current manager concerns"), true);
   assert.equal(ownerLanding.includes("function validateOwnerContext()"), true);
   assert.equal(ownerLanding.includes("var hasListing = listingField && listingField.value.trim();"), true);
-  assert.equal(ownerLanding.includes("var hasConcern = concerns.length > 0;"), true);
+  assert.equal(ownerLanding.includes("var hasConcern = concerns.length > 0 || (concernsInput && concernsInput.value.trim()) || (concernsMirror && concernsMirror.value.trim());"), true);
   assert.equal(ownerLanding.includes("if (hasListing || hasConcern) return true;"), true);
   assert.equal(ownerLanding.includes("Send the listing or address, or choose what feels expensive or unclear."), true);
   assert.equal(sarasotaPage.ctaSubcopy.includes("listing link or address plus what feels off"), true);
