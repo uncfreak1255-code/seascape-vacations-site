@@ -263,27 +263,10 @@ headExtra: |
       flex: 0 1 440px;
       width: min(100%, 440px);
       min-height: 100%;
-      position: relative;
       background: var(--white);
       border-radius: 20px;
       overflow: hidden;
       box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
-      cursor: pointer;
-    }
-
-    .catalog-card-detail-link {
-      position: absolute;
-      inset: 0;
-      z-index: 1;
-      border-radius: inherit;
-      color: inherit;
-      text-decoration: none;
-      font-size: 0;
-    }
-
-    .catalog-card-detail-link:focus-visible {
-      outline: 3px solid var(--gold);
-      outline-offset: -6px;
     }
 
     .catalog-card[hidden] {
@@ -415,8 +398,6 @@ headExtra: |
     }
 
     .catalog-title-link {
-      position: relative;
-      z-index: 2;
       color: inherit;
       text-decoration: none;
     }
@@ -537,8 +518,6 @@ headExtra: |
     }
 
     .catalog-check-dates {
-      position: relative;
-      z-index: 2;
       flex: 0 0 auto;
       padding: 11px 22px;
       font-size: 10.5px;
@@ -651,15 +630,22 @@ headExtra: |
       }
 
       .catalog-filters {
-        flex-wrap: wrap;
-        overflow: visible;
-        margin: 0 0 22px;
-        padding: 0;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        margin: 0 -18px 22px;
+        padding: 0 18px 8px;
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .catalog-filters::-webkit-scrollbar {
+        display: none;
       }
 
       .catalog-filter {
-        flex: 0 1 auto;
+        flex: 0 0 auto;
         padding: 10px 15px;
+        white-space: nowrap;
       }
 
       .catalog-grid {
@@ -806,23 +792,7 @@ headExtra: |
         {% set loading = "lazy" %}
         {% set fetchpriority = "" %}
       {% endif %}
-      <article
-        class="catalog-card"
-        data-filters="{{ filterTokens }}"
-        data-max-guests="{{ property.guests }}"
-        data-detail-url="{{ property.pageUrl }}"
-        data-page-slug="{{ property.slug }}"
-        data-detail-track-label="{{ property.name }}"
-      >
-        <a
-          class="catalog-card-detail-link"
-          href="{{ property.pageUrl }}"
-          aria-label="View {{ property.name }} details"
-          data-track-event="catalog_view_details_click"
-          data-page-slug="{{ property.slug }}"
-          data-placement="catalog_card_surface"
-          data-track-label="{{ property.name }}"
-        ></a>
+      <article class="catalog-card" data-filters="{{ filterTokens }}" data-max-guests="{{ property.guests }}">
         <div class="catalog-card-media">
           <img
             src="{{ property.image | imgProxy(900) }}"
@@ -1061,34 +1031,6 @@ headExtra: |
     function cardMaxGuests(card) {
       return parseInt(card.dataset.maxGuests || "0", 10) || 0;
     }
-
-    function isInteractiveElement(element) {
-      return Boolean(element.closest("a, button, input, select, textarea, [role='button'], [role='link']"));
-    }
-
-    function trackDetailClick(card, placement) {
-      if (!window.dataLayer) return;
-      window.dataLayer.push({
-        event: "catalog_view_details_click",
-        page_slug: card.dataset.pageSlug || "",
-        placement,
-        label: card.dataset.detailTrackLabel || ""
-      });
-    }
-
-    function openCardDetails(card, placement) {
-      const href = card.dataset.detailUrl;
-      if (!href) return;
-      trackDetailClick(card, placement);
-      window.location.href = href;
-    }
-
-    cards.forEach((card) => {
-      card.addEventListener("click", (event) => {
-        if (isInteractiveElement(event.target)) return;
-        openCardDetails(card, "catalog_card_surface");
-      });
-    });
 
     function decorateBookDirectLinks() {
       if (!requestedArrive && !requestedDepart && !requestedGuests) return;

@@ -117,34 +117,6 @@ test("area guides with hero stats keep the guarded mobile CTA reveal", () => {
   }
 });
 
-test("property catalog cards expose non-nested detail taps without swallowing Check Dates", () => {
-  const catalog = readSource("src", "properties", "index.njk");
-
-  assert.match(catalog, /\.catalog-card \{[\s\S]*?position: relative;/);
-  assert.match(catalog, /\.catalog-card-detail-link \{[\s\S]*?position: absolute;[\s\S]*?inset: 0;[\s\S]*?z-index: 1;/);
-  assert.match(catalog, /class="catalog-card"[\s\S]*?data-detail-url="\{\{ property\.pageUrl \}\}"[\s\S]*?data-detail-track-label="\{\{ property\.name \}\}"/);
-  assert.match(catalog, /class="catalog-card-detail-link"[\s\S]*?href="\{\{ property\.pageUrl \}\}"[\s\S]*?data-placement="catalog_card_surface"/);
-  assert.match(catalog, /class="catalog-title-link"[\s\S]*?data-track-event="catalog_view_details_click"/);
-  assert.match(catalog, /class="btn btn-brand catalog-check-dates"[\s\S]*?data-track-event="catalog_book_direct_click"/);
-  assert.equal(catalog.includes('<a class="catalog-card"'), false);
-  assert.equal(catalog.includes('role="link"'), false);
-  assert.match(catalog, /function isInteractiveElement\(element\)/);
-  assert.match(catalog, /if \(isInteractiveElement\(event\.target\)\) return;/);
-  assert.match(catalog, /openCardDetails\(card, "catalog_card_surface"\)/);
-});
-
-test("property catalog mobile filters wrap without horizontal scroll padding", () => {
-  const catalog = readSource("src", "properties", "index.njk");
-
-  assert.match(
-    catalog,
-    /\.catalog-filters \{[\s\S]*?flex-wrap: wrap;[\s\S]*?overflow: visible;[\s\S]*?margin: 0 0 22px;[\s\S]*?padding: 0;/
-  );
-  assert.match(catalog, /\.catalog-filter \{[\s\S]*?flex: 0 1 auto;/);
-  assert.equal(catalog.includes("overflow-x: auto;"), false);
-  assert.equal(catalog.includes("scroll-padding-inline:"), false);
-});
-
 test("guide cards expose full-card taps without breaking inline links", () => {
   const annaMariaGuide = readSource("src", "guides", "anna-maria-island-area-guide", "index.html");
   const bradentonGuide = readSource("src", "guides", "bradenton-area-guide", "index.html");
