@@ -273,6 +273,43 @@
     setHiddenInputValue(form, "source_page_slug", sourcePageSlug);
   }
 
+  function ownerContextValue(field) {
+    if (!field || typeof field.value !== "string") return "";
+    return field.value.trim();
+  }
+
+  function ownerFormHasContext(form) {
+    if (!form || typeof form.querySelectorAll !== "function") return true;
+
+    var fields = form.querySelectorAll("[data-owner-context-field]");
+    if (!fields.length) {
+      fields = form.querySelectorAll('[name="property_address"], [name="listing_url"], [name="what_feels_off"], [name="concerns"]');
+    }
+
+    for (var i = 0; i < fields.length; i += 1) {
+      if (ownerContextValue(fields[i])) return true;
+    }
+
+    return false;
+  }
+
+  function validateOwnerFormContext(form) {
+    if (!form || !form.dataset || form.dataset.trackForm !== "owner") return true;
+    if (form.dataset.ownerContextRequired !== "true") return true;
+    if (ownerFormHasContext(form)) return true;
+
+    var field = form.querySelector("[data-owner-context-field]") || form.querySelector('[name="property_address"]');
+    if (!field) return false;
+
+    field.setCustomValidity("Send the listing or address, or tell us what feels expensive or unclear.");
+    field.reportValidity();
+    field.addEventListener("input", function clearOwnerContextValidity() {
+      field.setCustomValidity("");
+      field.removeEventListener("input", clearOwnerContextValidity);
+    });
+    return false;
+  }
+
   function getPayloadFromElement(node) {
     var href = syncBookingEngineLink(node) || (node && node.getAttribute ? node.getAttribute("href") : "");
     var sourcePageSlug = node && node.dataset ? node.dataset.sourcePageSlug || "" : "";
@@ -494,6 +531,10 @@
       if (!form || !form.matches("form[data-track-form]")) return;
 
       syncOwnerSourcePage(form);
+      if (!validateOwnerFormContext(form)) {
+        event.preventDefault();
+        return;
+      }
       if (form.dataset.skipGlobalSubmitTrack !== "true") {
         trackEvent(form.dataset.formSubmitEvent, getPayloadFromElement(form));
       }
