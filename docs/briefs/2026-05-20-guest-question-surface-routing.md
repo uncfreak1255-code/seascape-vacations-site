@@ -26,9 +26,9 @@
 
 ## Source And Proof Constraints
 
-- property truth needed: current sleep counts, amenity truth, and pool-heat versus spa setup for the touched homes
+- property truth needed: current sleep counts, amenity truth, pool-heat versus spa setup, and driveway-only parking truth for the touched homes
 - owner proof asset needed: none
-- claims that are off-limits: any hard promise about traffic-proof timing, any hidden house-operating instructions, and any statement that a spa means full-pool heat is included
+- claims that are off-limits: any hard promise about traffic-proof timing, any hidden house-operating instructions, any statement that a spa means full-pool heat is included, and any suggestion that overflow street parking is fine at The Oasis or the large-group stay pages
 
 ## Page Builder Tasks
 
