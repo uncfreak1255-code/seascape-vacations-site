@@ -344,10 +344,22 @@ test("priority owner proof-cluster pages cite the shared benchmark asset and avo
   })) {
     assert.ok(page, `${slug} should exist`);
     assert.equal(page.proofAssetKey, "gulf-coast-owner-benchmark-2026", `${slug} should cite the shared benchmark`);
+    assert.ok(page.reviewDeliverable, `${slug} should define a 48-hour review deliverable`);
+    assert.equal(page.reviewDeliverable.tag, "48-Hour Review", `${slug} should label the deliverable section clearly`);
+    assert.ok(Array.isArray(page.reviewDeliverable.items) && page.reviewDeliverable.items.length >= 3, `${slug} should show at least three review deliverable items`);
+    assert.ok(page.visibilityLayer, `${slug} should define an owner visibility layer`);
+    assert.equal(page.visibilityLayer.tag, "Owner Visibility", `${slug} should label the visibility section clearly`);
+    assert.ok(Array.isArray(page.visibilityLayer.items) && page.visibilityLayer.items.length >= 4, `${slug} should show the owner visibility items`);
     assert.ok(Array.isArray(page.processSteps) && page.processSteps.length >= 3, `${slug} should expose a real process`);
     assert.ok(Array.isArray(page.objections) && page.objections.length >= 3, `${slug} should answer owner objections`);
     assert.equal(page.primaryCta, "Request Your Revenue Teardown", `${slug} should keep the teardown CTA`);
     assert.ok(/teardown|review|fee|channel|owner/i.test(page.ctaSubcopy), `${slug} CTA subcopy should reinforce owner-economics intent`);
+
+    const visibilityText = page.visibilityLayer.items.map((item) => `${item.title} ${item.body}`).join(" ");
+    assert.match(visibilityText, /report/i, `${slug} visibility layer should mention reporting`);
+    assert.match(visibilityText, /maintenance|readiness|turnover/i, `${slug} visibility layer should mention local follow-through`);
+    assert.match(visibilityText, /screen/i, `${slug} visibility layer should mention screening or guest-rule setup`);
+    assert.match(visibilityText, /local|response/i, `${slug} visibility layer should mention local response ownership`);
   }
 
   assert.equal(licensingPage.intro.includes("We ensure compliance."), false, "licensing page should not keep the old generic intro");

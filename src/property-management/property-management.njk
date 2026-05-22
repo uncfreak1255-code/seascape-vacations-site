@@ -362,6 +362,46 @@ eleventyComputed:
         </section>
         {% endif %}
 
+        {% if seoPage.reviewDeliverable %}
+        <section class="section" style="background: white;">
+            <div class="container">
+                <div class="section-header">
+                    <p class="section-tag">{{ seoPage.reviewDeliverable.tag }}</p>
+                    <h2 class="section-title">{{ seoPage.reviewDeliverable.title }}</h2>
+                    <p class="section-subtitle">{{ seoPage.reviewDeliverable.intro }}</p>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px;">
+                    {% for item in seoPage.reviewDeliverable.items %}
+                    <article style="background: var(--cream-light); border-radius: 18px; padding: 28px; box-shadow: 0 6px 20px rgba(0,0,0,0.05);">
+                        <h3 style="font-size: 20px; margin-bottom: 12px; color: var(--brand-dark);">{{ item.title }}</h3>
+                        <p style="font-size: 15px; line-height: 1.7; color: var(--stone-light); margin: 0;">{{ item.body }}</p>
+                    </article>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+        {% endif %}
+
+        {% if seoPage.visibilityLayer %}
+        <section class="section" style="background: var(--cream-light);">
+            <div class="container">
+                <div class="section-header">
+                    <p class="section-tag">{{ seoPage.visibilityLayer.tag }}</p>
+                    <h2 class="section-title">{{ seoPage.visibilityLayer.title }}</h2>
+                    <p class="section-subtitle">{{ seoPage.visibilityLayer.intro }}</p>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px;">
+                    {% for item in seoPage.visibilityLayer.items %}
+                    <article style="background: white; border-radius: 18px; padding: 28px; box-shadow: 0 8px 24px rgba(0,0,0,0.05); border: 1px solid rgba(61, 92, 93, 0.08);">
+                        <h3 style="font-size: 20px; margin-bottom: 12px; color: var(--brand-dark);">{{ item.title }}</h3>
+                        <p style="font-size: 15px; line-height: 1.7; color: var(--stone-light); margin: 0;">{{ item.body }}</p>
+                    </article>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+        {% endif %}
+
         {% if seoPage.processSteps and seoPage.processSteps | length %}
         <section class="section">
             <div class="container">
@@ -500,12 +540,42 @@ eleventyComputed:
         </section>
         {% endif %}
 
+        {% set ownerMoneyPage = seoPage.slug == "vacation-rental-management-fees-florida"
+          or seoPage.slug == "vacation-rental-licensing-florida"
+          or seoPage.slug == "vrbo-management-services-florida" %}
+
         <!-- Related Services (Cross-linking) -->
         <section class="section" style="background: var(--cream-light);">
             <div class="container">
                 <div class="section-header">
                     <p class="section-tag">Related Resources</p>
                     <h2 class="section-title">More for Property Owners</h2>
+                    {% if ownerMoneyPage %}
+                    <p class="section-subtitle" style="max-width: 760px;">Use the benchmark, the money-page comparisons, and the teardown request together instead of treating fees, licensing, and channel handling like separate decisions.</p>
+                    <div style="display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-top: 24px;">
+                    <a href="/research/owner-fee-revenue-leak-benchmark-2026/" style="display: inline-flex; align-items: center; justify-content: center; padding: 10px 18px; border-radius: 999px; border: 1px solid rgba(61, 92, 93, 0.14); background: rgba(255,255,255,0.92); color: var(--brand-dark); font-size: 13px; font-weight: 600; text-decoration: none;">
+                        Read the benchmark
+                    </a>
+                        {% if seoPage.slug != "vacation-rental-management-fees-florida" %}
+                    <a href="/property-management/vacation-rental-management-fees-florida/" style="display: inline-flex; align-items: center; justify-content: center; padding: 10px 18px; border-radius: 999px; border: 1px solid rgba(61, 92, 93, 0.14); background: rgba(255,255,255,0.92); color: var(--brand-dark); font-size: 13px; font-weight: 600; text-decoration: none;">
+                        Compare management fees
+                    </a>
+                        {% endif %}
+                        {% if seoPage.slug != "vacation-rental-licensing-florida" %}
+                    <a href="/property-management/vacation-rental-licensing-florida/" style="display: inline-flex; align-items: center; justify-content: center; padding: 10px 18px; border-radius: 999px; border: 1px solid rgba(61, 92, 93, 0.14); background: rgba(255,255,255,0.92); color: var(--brand-dark); font-size: 13px; font-weight: 600; text-decoration: none;">
+                        Check licensing risk
+                    </a>
+                        {% endif %}
+                        {% if seoPage.slug != "vrbo-management-services-florida" %}
+                    <a href="/property-management/vrbo-management-services-florida/" style="display: inline-flex; align-items: center; justify-content: center; padding: 10px 18px; border-radius: 999px; border: 1px solid rgba(61, 92, 93, 0.14); background: rgba(255,255,255,0.92); color: var(--brand-dark); font-size: 13px; font-weight: 600; text-decoration: none;">
+                        Review VRBO handling
+                    </a>
+                        {% endif %}
+                    <a href="/property-management/#owner-cta" style="display: inline-flex; align-items: center; justify-content: center; padding: 10px 18px; border-radius: 999px; border: 1px solid rgba(61, 92, 93, 0.14); background: rgba(255,255,255,0.92); color: var(--brand-dark); font-size: 13px; font-weight: 600; text-decoration: none;">
+                        Request your teardown
+                    </a>
+                    </div>
+                    {% endif %}
                 </div>
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
                     {% if seoPage.relatedOwnerResources and seoPage.relatedOwnerResources | length %}
