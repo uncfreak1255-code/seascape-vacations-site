@@ -6,6 +6,7 @@
 
 Current curated focus:
 - `accessibility`
+- `claude-design`
 - `design-review`
 - `next-batch-gate`
 - `owner-proof-integrity`
@@ -15,7 +16,10 @@ Current curated focus:
 - `site-architecture`
 - `web-design-guidelines`
 
-Use global marketing skills from `/Users/sawbeck/.codex/skills/` as advisory
+`claude-design` is the one approved vendored upstream skill in this layer because
+meaningful Seascape visual work routes through Claude Design first.
+
+Use other global marketing skills from `/Users/sawbeck/.codex/skills/` as advisory
 helpers when needed. Do not mirror broad marketing, deploy, monthly reset,
 generic SEO, or archived skills into this local compatibility layer.
 

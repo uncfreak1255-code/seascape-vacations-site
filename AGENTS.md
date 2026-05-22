@@ -60,7 +60,7 @@ Read in this order:
 - `docs/status/next-batch.md` is the canonical reread handoff surface for volatile measurement truth; after every reread it must say exactly one of `blocked by freshness`, `fresh but below threshold`, or `open next batch`, plus one concrete next move
 - `docs/status/current-state.md` should keep durable repo truth only and must not duplicate volatile reread windows or `data_date` details that belong in `docs/status/next-batch.md`
 - the five SEO OS role cards live in `.claude/agents/`
-- active repo-local skills are limited to `.agents/skills/accessibility`, `.agents/skills/design-review`, `.agents/skills/next-batch-gate`, `.agents/skills/owner-proof-integrity`, `.agents/skills/page-cro`, `.agents/skills/property-truth-regeneration`, `.agents/skills/schema-markup`, `.agents/skills/site-architecture`, and `.agents/skills/web-design-guidelines`
+- active repo-local skills are limited to `.agents/skills/accessibility`, `.agents/skills/claude-design`, `.agents/skills/design-review`, `.agents/skills/next-batch-gate`, `.agents/skills/owner-proof-integrity`, `.agents/skills/page-cro`, `.agents/skills/property-truth-regeneration`, `.agents/skills/schema-markup`, `.agents/skills/site-architecture`, and `.agents/skills/web-design-guidelines`
 - `.claude/skills/` should mirror only those active site/design skills; copied marketing, deploy, monthly reset, and generic SEO skills are not live authority
 - global marketing skills in `/Users/sawbeck/.codex/skills/` may be used as advisory helpers for CRO, SEO, copy, psychology, analytics, and growth decisions, but they do not override this repo's source files, briefs, status docs, or five-role workflow
 - if work writes durable state into another repo, route it through a clean
@@ -80,7 +80,7 @@ For any PR that changes public copy in `src/`:
 - For Seascape mockups, marketing page concepts, homepage/lander direction
   work, guide/article/blog-style pages, owner pages, research pages, or any
   meaningful website visual change, the default design-thinking lane is the
-  global `claude-design` skill before implementation.
+  repo-local `claude-design` skill before implementation.
 - If Sawyer approves a Claude Design mockup, implement that approved mockup
   closely. Do not reinterpret it into a different layout, art direction,
   hierarchy, CTA treatment, or component style. Any deviation must be named and
@@ -91,7 +91,7 @@ For any PR that changes public copy in `src/`:
   the rendered QA loop.
 - `DESIGN.md` is the visual law. Figma, Claude Design, Stitch, or any outside design tool can inform direction, but they do not override repo truth.
 - For any meaningful visual change, including layout, spacing, typography, color, imagery, iconography, CTA treatment, or motion, run the repo flow in `docs/process/design-review-workflow.md`.
-- The required rendered QA loop for visual changes is the global `design-review` skill. Use it after implementation and before human review so the review surface is screenshots plus live route checks, not code alone.
+- The required rendered QA loop for visual changes is the repo-local `design-review` skill. Use it after implementation and before human review so the review surface is screenshots plus live route checks, not code alone.
 - If an outside design tool introduces a new pattern or style direction, propose it as a `DESIGN.md` change first, then implement after that design law is explicit.
 
 ## Design System

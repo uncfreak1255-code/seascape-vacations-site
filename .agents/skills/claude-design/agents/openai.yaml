@@ -1,0 +1,4 @@
+interface:
+  display_name: "Claude Design"
+  short_description: "Claude Design web handoff loop via claude.ai/design"
+  default_prompt: "Use $claude-design to hand the design thinking to Claude Design at claude.ai/design and bring back a Codex-ready implementation brief."

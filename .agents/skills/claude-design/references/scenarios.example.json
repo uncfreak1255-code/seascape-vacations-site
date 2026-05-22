@@ -1,0 +1,31 @@
+[
+  {
+    "name": "landing-page-hero",
+    "repo": "/abs/path/to/repo",
+    "mode": "explore",
+    "task": "Design three distinct hero directions for the landing page using the existing design law.",
+    "summaries": [
+      "Current page needs a stronger hero while staying inside the existing brand system.",
+      "This product is a marketing site, not an internal dashboard."
+    ],
+    "context_paths": [
+      "DESIGN.md",
+      "src/app/page.tsx",
+      "src/components/hero.tsx"
+    ]
+  },
+  {
+    "name": "dashboard-critique",
+    "repo": "/abs/path/to/repo",
+    "mode": "critique",
+    "task": "Critique the current dashboard layout and return the top three visual fixes.",
+    "summaries": [
+      "The current dashboard is truthful but visually dense and hard to scan.",
+      "Keep the existing information architecture unless a fix truly requires movement."
+    ],
+    "context_paths": [
+      "src/app/dashboard/page.tsx",
+      "src/components/dashboard"
+    ]
+  }
+]

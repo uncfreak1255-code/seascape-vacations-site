@@ -40,9 +40,10 @@ That includes:
 
 1. Work on a `codex/<task>` branch in a worktree, not root `main`.
 2. Read `DESIGN.md` before touching CSS, layout, templates, or imagery.
-3. For meaningful visual changes, run the global `claude-design` skill before
-   implementation. The output should be a reviewable mockup, direction, or
-   implementation spec, not just verbal styling advice.
+3. For meaningful visual changes, run the repo-local `claude-design` skill before
+   implementation. It is a deliberate vendored copy of the global upstream
+   bridge and should still drive a real Claude Design handoff, not just verbal
+   styling advice.
 4. Wait for Sawyer approval when the Claude Design output changes layout,
    hierarchy, art direction, or component treatment. Do not implement a
    materially different visual direction after approval.
@@ -51,7 +52,7 @@ That includes:
    hierarchy, spacing intent, imagery direction, CTA treatment, and interaction
    intent unless a named constraint requires adjustment.
 7. Rebuild the branch output locally.
-8. Run the global `design-review` skill against the affected routes, or use its
+8. Run the repo-local `design-review` skill against the affected routes, or use its
    diff-aware mode when the change scope is branch-specific.
 9. Fix any high- or medium-impact rendered issues it finds before asking for
    human review.
