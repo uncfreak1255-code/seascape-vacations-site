@@ -394,7 +394,7 @@
 "https://bookingenginecdn.hostaway.com/listing/51916-206016-KrpAyWZVO2m-Kb1t90pR9pj0J0l64Yrg6lsnKpPVGfg-65393ce49d1f9?width=1400&quality=85&format=webp&v=2",
 "https://bookingenginecdn.hostaway.com/listing/51916-206016-DhDyCeVJqt166EzPmE1KuXbXM76CLXn8NGaq6SsZ2Tk-6537ef3d14870?width=1400&quality=85&format=webp&v=2"];
 function switchHero(i){event.stopPropagation();document.getElementById("heroMain").src=_heroUrls[i];document.querySelectorAll(".hero-cinema-thumb").forEach(function(t,j){t.classList.toggle("active",j===i)})}
-function openGallery(){var g=document.getElementById('galleryLbGrid');if(!g.children.length){_gP.forEach(function(s,i){var img=document.createElement('img');img.src=s;img.alt='Photo '+(i+1);img.loading='lazy';g.appendChild(img);});}document.getElementById('galleryLb').classList.add('active');document.body.style.overflow='hidden';}function closeGallery(){document.getElementById('galleryLb').classList.remove('active');document.body.style.overflow='';}document.addEventListener('keydown',function(e){if(e.key==='Escape')closeGallery();});</script><script>
+function openGallery(){var g=document.getElementById('galleryLbGrid');if(!g.children.length){_gP.forEach(function(s,i){var img=document.createElement('img');img.src=s;img.alt='Photo '+(i+1);img.loading='lazy';g.appendChild(img);});}document.getElementById('galleryLb').classList.add('active');document.body.style.overflow='hidden';}function closeGallery(){document.getElementById('galleryLb').classList.remove('active');document.body.style.overflow='';}document.addEventListener('keydown',function(e){if(e.key==='Escape')closeGallery();});</script>{% include "partials/hostaway-mobile-calendar-fix.njk" %}<script>
 (function(){
   var loaded=false;
   var target=document.getElementById('check-availability');
@@ -407,10 +407,11 @@ function openGallery(){var g=document.getElementById('galleryLbGrid');if(!g.chil
       s.src='https://d2q3n06xhbi0am.cloudfront.net/calendar.js';
       s.onload=function(){
         if(typeof window.hostawayCalendarWidget==='function'){
+          var numberOfMonths=window.matchMedia('(min-width:48rem)').matches?2:1;
           window.hostawayCalendarWidget({
             baseUrl:'https://book.seascape-vacations.com',
             listingId:206016,
-            numberOfMonths:2,
+            numberOfMonths:numberOfMonths,
             openInNewTab:false,
             font:'Poppins, sans-serif',
             rounded:true,

@@ -1,0 +1,92 @@
+<style>
+@media (max-width: 767px) {
+  .sticky-book {
+    transition: transform 0.25s ease, opacity 0.25s ease;
+  }
+
+  .sticky-book.sticky-book--hidden {
+    transform: translateY(calc(100% + env(safe-area-inset-bottom)));
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  #hostaway-calendar-widget .gRAtCh {
+    display: block;
+    width: 100%;
+    max-width: none;
+    margin: 0 auto;
+  }
+
+  #hostaway-calendar-widget .dvfhrq {
+    display: block;
+    width: 100%;
+    padding-top: 2.75rem;
+  }
+
+  #hostaway-calendar-widget .cZjrve {
+    display: block;
+    width: 100%;
+  }
+
+  #hostaway-calendar-widget .OodbV {
+    display: block;
+    width: 100%;
+  }
+
+  #hostaway-calendar-widget .hKhBw {
+    width: 100%;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    grid-auto-rows: 2.2rem;
+  }
+}
+</style>
+<script>
+(function () {
+  function initHostawayMobileStickyGuard() {
+    var stickyBook = document.querySelector(".sticky-book");
+    var bookingSection = document.getElementById("check-availability");
+    if (!stickyBook || !bookingSection) return;
+
+    var mobileQuery = window.matchMedia("(max-width: 767px)");
+    var observer = null;
+
+    function setHiddenState(hidden) {
+      stickyBook.classList.toggle("sticky-book--hidden", hidden);
+    }
+
+    function connectObserver() {
+      if (observer) observer.disconnect();
+      observer = null;
+
+      if (!mobileQuery.matches) {
+        setHiddenState(false);
+        return;
+      }
+
+      observer = new IntersectionObserver(function (entries) {
+        var entry = entries[0];
+        setHiddenState(Boolean(entry && entry.isIntersecting));
+      });
+
+      observer.observe(bookingSection);
+      var rect = bookingSection.getBoundingClientRect();
+      setHiddenState(rect.top < window.innerHeight && rect.bottom > 0);
+    }
+
+    connectObserver();
+    window.addEventListener("resize", connectObserver);
+
+    if (typeof mobileQuery.addEventListener === "function") {
+      mobileQuery.addEventListener("change", connectObserver);
+    } else if (typeof mobileQuery.addListener === "function") {
+      mobileQuery.addListener(connectObserver);
+    }
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initHostawayMobileStickyGuard, { once: true });
+  } else {
+    initHostawayMobileStickyGuard();
+  }
+})();
+</script>
