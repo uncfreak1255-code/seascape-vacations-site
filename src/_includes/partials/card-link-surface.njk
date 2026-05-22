@@ -1,0 +1,64 @@
+<style>
+  [data-card-link] {
+    cursor: pointer;
+  }
+
+  [data-card-link]:focus-visible {
+    outline: 3px solid var(--gold, #C9A962);
+    outline-offset: 4px;
+  }
+</style>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    var cardLinks = document.querySelectorAll("[data-card-link]");
+
+    function isInteractiveElement(element, card) {
+      var interactiveAncestor =
+        element &&
+        element.closest("a, button, input, select, textarea, summary, [role='button'], [role='link']");
+
+      return !!(interactiveAncestor && interactiveAncestor !== card);
+    }
+
+    function openCardLink(card) {
+      var href = card && card.getAttribute("data-card-link");
+
+      if (!href) {
+        return;
+      }
+
+      window.location.assign(href);
+    }
+
+    cardLinks.forEach(function (card) {
+      if (!card.hasAttribute("tabindex")) {
+        card.setAttribute("tabindex", "0");
+      }
+
+      if (!card.hasAttribute("role")) {
+        card.setAttribute("role", "link");
+      }
+
+      card.addEventListener("click", function (event) {
+        if (isInteractiveElement(event.target, card)) {
+          return;
+        }
+
+        openCardLink(card);
+      });
+
+      card.addEventListener("keydown", function (event) {
+        if (event.key !== "Enter" && event.key !== " ") {
+          return;
+        }
+
+        if (isInteractiveElement(event.target, card)) {
+          return;
+        }
+
+        event.preventDefault();
+        openCardLink(card);
+      });
+    });
+  });
+</script>

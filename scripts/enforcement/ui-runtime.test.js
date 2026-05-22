@@ -96,9 +96,16 @@ test("area guides with hero stats keep the guarded mobile CTA reveal", () => {
   ];
 
   const partial = readSource("src", "_includes", "partials", "area-guide-mobile-cta-guard.njk");
+  const cardSurface = readSource("src", "_includes", "partials", "card-link-surface.njk");
   assert.match(partial, /mobile-cta-visible/);
   assert.match(partial, /#sticky-book-bar/);
   assert.match(partial, /querySelector\("\.quick-stats"\)/);
+  assert.match(partial, /\{% include "partials\/card-link-surface\.njk" %\}/);
+  assert.match(cardSurface, /\[data-card-link\]/);
+  assert.match(cardSurface, /querySelectorAll\("\[data-card-link\]"\)/);
+  assert.match(cardSurface, /function isInteractiveElement\(element, card\)/);
+  assert.match(cardSurface, /interactiveAncestor && interactiveAncestor !== card/);
+  assert.match(cardSurface, /window\.location\.assign\(href\)/);
 
   for (const segments of guardedAreaGuides) {
     const guide = readSource("src", "guides", ...segments);
@@ -108,6 +115,90 @@ test("area guides with hero stats keep the guarded mobile CTA reveal", () => {
       `${segments.join("/")} is missing the guarded mobile CTA include`
     );
   }
+});
+
+test("guide cards expose full-card taps without breaking inline links", () => {
+  const annaMariaGuide = readSource("src", "guides", "anna-maria-island-area-guide", "index.html");
+  const bradentonGuide = readSource("src", "guides", "bradenton-area-guide", "index.html");
+  const sarasotaGuide = readSource("src", "guides", "sarasota-area-guide", "index.html");
+  const beachComparisonGuide = readSource("src", "guides", "bradenton-vs-sarasota-beaches", "index.html");
+  const familyComparisonGuide = readSource("src", "guides", "bradenton-vs-sarasota-for-families", "index.html");
+
+  assert.match(annaMariaGuide, /class="neighborhood-card" data-card-link="\/guides\/anna-maria-city\/"/);
+  assert.match(annaMariaGuide, /class="neighborhood-card" data-card-link="\/guides\/holmes-beach-area-guide\/"/);
+  assert.match(annaMariaGuide, /class="neighborhood-card" data-card-link="\/guides\/bradenton-beach-area-guide\/"/);
+  assert.match(annaMariaGuide, /class="neighborhood-card" data-card-link="\/stays\/gulf-coast-vacation-homes-with-dock\/"/);
+  assert.match(annaMariaGuide, /class="property-card" data-card-link="\/properties\/dockside-dreams\/"/);
+  assert.match(annaMariaGuide, /class="property-card" data-card-link="\/properties\/the-oasis\/"/);
+  assert.match(annaMariaGuide, /class="property-card" data-card-link="\/properties\/river-house\/"/);
+  assert.match(
+    annaMariaGuide,
+    /<p class="neighborhood-desc">The historic north end\. <a href="\/stays\/quiet-relaxing-vacation-rentals-florida\/">/
+  );
+
+  assert.match(bradentonGuide, /class="property-card" data-card-link="\/properties\/dockside-dreams\/"/);
+  assert.match(bradentonGuide, /class="property-card" data-card-link="\/properties\/the-oasis\/"/);
+  assert.match(bradentonGuide, /class="property-card" data-card-link="\/properties\/river-house\/"/);
+
+  assert.match(sarasotaGuide, /class="property-card" data-card-link="\/properties\/sarasota-luxe\/"/);
+  assert.equal(
+    sarasotaGuide.includes(`onclick='window.location.href="https://book.seascape-vacations.com/listings/135881"'`),
+    false
+  );
+
+  assert.match(beachComparisonGuide, /class="property-card" data-card-link="\/properties\/dockside-dreams\/"/);
+  assert.match(beachComparisonGuide, /class="property-card" data-card-link="\/properties\/bradenton-pool-home\/"/);
+
+  assert.match(familyComparisonGuide, /class="property-card" data-card-link="\/properties\/the-oasis\/"/);
+  assert.match(familyComparisonGuide, /class="property-card" data-card-link="\/properties\/dockside-dreams\/"/);
+});
+
+test("property booking calendars collapse cleanly on mobile without sticky CTA overlap", () => {
+  const propertyPages = [
+    ["dockside-dreams", "206016"],
+    ["the-oasis", "189511"],
+    ["river-house", "135880"],
+    ["sarasota-luxe", "135881"],
+    ["bradenton-pool-home", "487798"],
+  ];
+  const mobileCalendarFix = readSource(
+    "src",
+    "_includes",
+    "partials",
+    "hostaway-mobile-calendar-fix.njk"
+  );
+
+  assert.match(mobileCalendarFix, /\.sticky-book\.sticky-book--hidden/);
+  assert.match(mobileCalendarFix, /transform: translateY\(calc\(100% \+ env\(safe-area-inset-bottom\)\)\)/);
+  assert.match(mobileCalendarFix, /#hostaway-calendar-widget \.gRAtCh/);
+  assert.match(mobileCalendarFix, /max-width: none/);
+  assert.match(mobileCalendarFix, /#hostaway-calendar-widget \.dvfhrq/);
+  assert.match(mobileCalendarFix, /#hostaway-calendar-widget \.hKhBw/);
+  assert.match(mobileCalendarFix, /grid-template-columns: repeat\(7, minmax\(0, 1fr\)\)/);
+  assert.match(mobileCalendarFix, /grid-auto-rows: 2\.2rem/);
+  assert.match(mobileCalendarFix, /document\.querySelector\("\.sticky-book"\)/);
+  assert.match(mobileCalendarFix, /document\.getElementById\("check-availability"\)/);
+  assert.match(mobileCalendarFix, /new IntersectionObserver/);
+  assert.match(mobileCalendarFix, /stickyBook\.classList\.toggle\("sticky-book--hidden", hidden\)/);
+
+  for (const [slug, listingId] of propertyPages) {
+    const page = readSource("src", "properties", slug, "index.njk");
+    assert.match(page, /\{% include "partials\/hostaway-mobile-calendar-fix\.njk" %\}/);
+    assert.match(page, /window\.matchMedia\('\(min-width:48rem\)'\)\.matches\?2:1/);
+    assert.match(page, new RegExp(`listingId:${listingId},`));
+    assert.match(page, /numberOfMonths:numberOfMonths/);
+  }
+});
+
+test("Anna Maria mobile sticky CTAs reserve safe-area bottom space", () => {
+  const guide = readSource("src", "guides", "anna-maria-island-area-guide", "index.html");
+
+  assert.match(guide, /\.mobile-cta-bar\{[^}]*padding:12px 16px calc\(12px \+ env\(safe-area-inset-bottom\)\)/);
+  assert.match(guide, /body\{padding-bottom:calc\(70px \+ env\(safe-area-inset-bottom\)\)\}/);
+  assert.match(
+    guide,
+    /<div style="[^"]*padding:12px 20px calc\(12px \+ env\(safe-area-inset-bottom\)\)[^"]*" id="sticky-book-bar"/
+  );
 });
 
 test("hero ticker uses real data hooks instead of hardcoded live theater", () => {
