@@ -107,11 +107,14 @@ test("properties catalog keeps mobile rhythm before the first card compact", () 
 
   assert.match(
     propertiesTemplate,
-    /\.catalog-filters\s*\{[\s\S]*flex-wrap:\s*nowrap;[\s\S]*overflow-x:\s*auto;/
+    /\.catalog-filters\s*\{[\s\S]*flex-wrap:\s*wrap;[\s\S]*overflow:\s*visible;[\s\S]*margin:\s*0 0 22px;[\s\S]*padding:\s*0;/
   );
 
   assert.match(
     propertiesTemplate,
-    /\.catalog-filter\s*\{[\s\S]*flex:\s*0 0 auto;[\s\S]*white-space:\s*nowrap;/
+    /\.catalog-filter\s*\{[\s\S]*flex:\s*0 1 auto;/
   );
+
+  assert.equal(propertiesTemplate.includes("overflow-x: auto;"), false);
+  assert.equal(propertiesTemplate.includes("scroll-padding-inline:"), false);
 });
