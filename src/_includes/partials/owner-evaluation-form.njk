@@ -71,6 +71,9 @@
         <label class="owner-form-field owner-form-field--wide">
           <span>{{ options.propertyFieldLabel or "Property address or listing URL" }}</span>
           <input type="text" name="property_address" autocomplete="street-address" placeholder="{{ options.propertyFieldPlaceholder or 'Paste the listing URL, property address, or home name' }}" required>
+          {% if options.showBenchmarkFields %}
+          <small class="owner-form-help">If you have a live Airbnb or Vrbo link, paste it in the Listing URL field below. Otherwise use the address or home name here.</small>
+          {% endif %}
         </label>
         {% if options.showBenchmarkFields %}
         <label class="owner-form-field">

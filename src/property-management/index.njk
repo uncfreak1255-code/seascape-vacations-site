@@ -2554,7 +2554,6 @@ headExtra: |
         <input type="hidden" name="form_placement" value="field-report-postcard">
         <input type="hidden" name="concerns" data-owner-concerns>
         <input type="hidden" name="what_feels_off" data-owner-concerns-mirror>
-        <input type="hidden" name="listing_url" data-owner-listing-mirror>
         <p hidden><label>Do not fill this out if you are human: <input name="bot-field"></label></p>
         <svg class="owner-field-postcard-grain" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><filter id="ownerFieldPaper"><feTurbulence type="fractalNoise" baseFrequency="1.4" numOctaves="2" seed="3"></feTurbulence><feColorMatrix type="matrix" values="0 0 0 0 0.85 0 0 0 0 0.78 0 0 0 0 0.62 0 0 0 0.08 0"></feColorMatrix></filter><rect width="100" height="100" filter="url(#ownerFieldPaper)"></rect></svg>
         <div class="owner-field-postcard-inner" aria-hidden="true"></div>
@@ -2975,7 +2974,6 @@ headExtra: |
     var meta = form.querySelector("[data-form-meta]");
     var concernsInput = form.querySelector("[data-owner-concerns]");
     var concernsMirror = form.querySelector("[data-owner-concerns-mirror]");
-    var listingMirror = form.querySelector("[data-owner-listing-mirror]");
     var listingField = form.querySelector('input[name="property_address"]');
     var nameField = form.querySelector('input[name="name"]');
     var emailField = form.querySelector('input[name="email"]');
@@ -2988,13 +2986,7 @@ headExtra: |
     var concerns = [];
     var submitting = false;
 
-    function syncListingMirror() {
-      if (!listingMirror || !listingField) return;
-      listingMirror.value = listingField.value.trim();
-    }
-
     function syncConfirmPanel() {
-      syncListingMirror();
       if (confirmUrl) confirmUrl.textContent = listingField && listingField.value.trim() ? listingField.value.trim() : "Not added yet";
       if (confirmConcerns) confirmConcerns.textContent = concerns.length ? concerns.join(", ") : "None selected";
       if (confirmName) confirmName.textContent = nameField && nameField.value.trim() ? nameField.value.trim() : "Not added yet";
@@ -3112,9 +3104,6 @@ headExtra: |
       });
     });
 
-    if (listingField) {
-      listingField.addEventListener("input", syncListingMirror);
-    }
     if (nameField) nameField.addEventListener("input", syncConfirmPanel);
     if (emailField) emailField.addEventListener("input", syncConfirmPanel);
     if (phoneField) phoneField.addEventListener("input", syncConfirmPanel);

@@ -121,6 +121,10 @@ test("owner revenue teardown form lowers friction without losing tracking or int
   assert.equal(ownerFormPartial.includes('placeholder="Paste the Airbnb or Vrbo listing URL"'), true);
   assert.equal(ownerFormPartial.includes('enctype="multipart/form-data"'), true);
   assert.equal(ownerFormPartial.includes('name="listing_url"'), true);
+  assert.equal(
+    ownerFormPartial.includes("If you have a live Airbnb or Vrbo link, paste it in the Listing URL field below. Otherwise use the address or home name here."),
+    true
+  );
   assert.equal(ownerFormPartial.includes('name="current_manager"'), true);
   assert.equal(ownerFormPartial.includes('name="current_fee_quote"'), true);
   assert.equal(ownerFormPartial.includes('name="what_feels_off"'), true);
@@ -140,6 +144,11 @@ test("owner revenue teardown form lowers friction without losing tracking or int
   assert.equal(ownerTemplate.includes("showBenchmarkFields: true"), true);
   assert.equal(ownerLanding.includes('propertyFieldLabel: "Property address or market"'), true);
   assert.equal(ownerTemplate.includes('propertyFieldLabel: "Property address or market"'), true);
+});
+
+test("May 21 owner revenue review postcard flow does not mirror a street address into listing_url", () => {
+  assert.equal(ownerLanding.includes('name="listing_url" data-owner-listing-mirror'), false);
+  assert.equal(ownerLanding.includes("listingMirror.value = listingField.value.trim();"), false);
 });
 
 test("owner benchmark CTA carries source attribution into the revenue review form path", () => {
