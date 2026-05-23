@@ -257,15 +257,22 @@
     return (params.get("owner_source") || "").trim();
   }
 
+  function resolveOwnerSourcePage(node) {
+    if (!node || !node.dataset) return getOwnerSourceFromLocation();
+
+    return (
+      getOwnerSourceFromLocation() ||
+      getHiddenInputValue(node, "source_page_slug") ||
+      node.dataset.sourcePageSlug ||
+      node.dataset.pageSlug ||
+      ""
+    );
+  }
+
   function syncOwnerSourcePage(form) {
     if (!form || !form.dataset) return;
 
-    var sourcePageSlug =
-      getOwnerSourceFromLocation() ||
-      getHiddenInputValue(form, "source_page_slug") ||
-      form.dataset.sourcePageSlug ||
-      form.dataset.pageSlug ||
-      "";
+    var sourcePageSlug = resolveOwnerSourcePage(form);
 
     if (!sourcePageSlug) return;
 
@@ -312,11 +319,7 @@
 
   function getPayloadFromElement(node) {
     var href = syncBookingEngineLink(node) || (node && node.getAttribute ? node.getAttribute("href") : "");
-    var sourcePageSlug = node && node.dataset ? node.dataset.sourcePageSlug || "" : "";
-
-    if (!sourcePageSlug && node && String(node.tagName || "").toUpperCase() === "FORM") {
-      sourcePageSlug = getHiddenInputValue(node, "source_page_slug");
-    }
+    var sourcePageSlug = resolveOwnerSourcePage(node);
 
     return Object.assign({
       guide_slug: node && node.dataset ? node.dataset.guideSlug || "" : "",

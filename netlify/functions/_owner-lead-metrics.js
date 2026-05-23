@@ -3,6 +3,11 @@ const OWNER_LEAD_STORE_NAME = "seascape-owner-leads";
 const OWNER_LEAD_METRICS_KEY = "owner_lead_metrics_v1.json";
 const MAX_RECEIPTS = 200;
 const MAX_PROOF_LABEL_LENGTH = 64;
+const OWNER_FUNNEL_EVENTS = new Set([
+  "owner_primary_cta_click",
+  "owner_form_start",
+  "owner_form_submit"
+]);
 
 function normalizeText(value) {
   if (typeof value !== "string") return "";
@@ -17,6 +22,12 @@ function normalizeProofLabel(value) {
     .replace(/^[-_]+|[-_]+$/g, "");
 
   return normalized.slice(0, MAX_PROOF_LABEL_LENGTH);
+}
+
+function normalizeOwnerFunnelEvent(value) {
+  const eventName = normalizeText(value);
+  if (!eventName) return "owner_form_submit";
+  return OWNER_FUNNEL_EVENTS.has(eventName) ? eventName : "owner_form_submit";
 }
 
 function readSubmissionPayload(rawPayload) {
@@ -57,10 +68,12 @@ function buildOwnerLeadReceipt(rawPayload) {
   if (!submissionId) return null;
 
   const proofLabel = normalizeProofLabel(data.proof_label || data.proofLabel);
+  const eventName = normalizeOwnerFunnelEvent(data.event_name || data.eventName);
   const receipt = {
     submissionId,
     createdAt: getCreatedAt(payload),
     formName: OWNER_LEAD_FORM_NAME,
+    eventName,
     pageSlug: normalizeText(data.page_slug) || "property-management",
     sourcePageSlug:
       normalizeText(data.source_page_slug) ||
@@ -80,7 +93,9 @@ function buildOwnerLeadReceipt(rawPayload) {
 function emptyMetrics() {
   return {
     totalSubmissions: 0,
+    totalEvents: 0,
     bySourcePageSlug: {},
+    funnelBySourcePageSlug: {},
     receipts: [],
     updatedAt: null
   };
@@ -91,6 +106,7 @@ function mergeOwnerLeadMetrics(existingMetrics, receipt) {
     ...emptyMetrics(),
     ...(existingMetrics || {}),
     bySourcePageSlug: { ...((existingMetrics && existingMetrics.bySourcePageSlug) || {}) },
+    funnelBySourcePageSlug: { ...((existingMetrics && existingMetrics.funnelBySourcePageSlug) || {}) },
     receipts: Array.isArray(existingMetrics && existingMetrics.receipts)
       ? [...existingMetrics.receipts]
       : []
@@ -107,9 +123,15 @@ function mergeOwnerLeadMetrics(existingMetrics, receipt) {
     base.receipts = base.receipts.slice(-MAX_RECEIPTS);
   }
 
-  base.totalSubmissions = base.receipts.length;
-  base.bySourcePageSlug[receipt.sourcePageSlug] =
-    (base.bySourcePageSlug[receipt.sourcePageSlug] || 0) + 1;
+  base.totalEvents = base.receipts.length;
+  base.totalSubmissions = base.receipts.filter((entry) => normalizeOwnerFunnelEvent(entry.eventName) === "owner_form_submit").length;
+  base.bySourcePageSlug[receipt.sourcePageSlug] = base.receipts.filter((entry) => {
+    return entry.sourcePageSlug === receipt.sourcePageSlug && normalizeOwnerFunnelEvent(entry.eventName) === "owner_form_submit";
+  }).length;
+  base.funnelBySourcePageSlug[receipt.sourcePageSlug] = {
+    ...(base.funnelBySourcePageSlug[receipt.sourcePageSlug] || {}),
+    [receipt.eventName]: ((base.funnelBySourcePageSlug[receipt.sourcePageSlug] || {})[receipt.eventName] || 0) + 1
+  };
   base.updatedAt = new Date().toISOString();
 
   return base;
@@ -120,6 +142,7 @@ function relabelOwnerLeadReceipts(existingMetrics, submissionIds, proofLabel) {
     ...emptyMetrics(),
     ...(existingMetrics || {}),
     bySourcePageSlug: { ...((existingMetrics && existingMetrics.bySourcePageSlug) || {}) },
+    funnelBySourcePageSlug: { ...((existingMetrics && existingMetrics.funnelBySourcePageSlug) || {}) },
     receipts: Array.isArray(existingMetrics && existingMetrics.receipts)
       ? [...existingMetrics.receipts]
       : []
@@ -174,16 +197,20 @@ function formatOwnerLeadSummary(metrics) {
     ...emptyMetrics(),
     ...(metrics || {}),
     bySourcePageSlug: { ...((metrics && metrics.bySourcePageSlug) || {}) },
+    funnelBySourcePageSlug: { ...((metrics && metrics.funnelBySourcePageSlug) || {}) },
     receipts: Array.isArray(metrics && metrics.receipts) ? metrics.receipts : []
   };
 
   return {
     totalSubmissions: safeMetrics.totalSubmissions,
+    totalEvents: safeMetrics.totalEvents || safeMetrics.receipts.length,
     bySourcePageSlug: safeMetrics.bySourcePageSlug,
+    funnelBySourcePageSlug: safeMetrics.funnelBySourcePageSlug,
     receipts: safeMetrics.receipts.map((receipt) => {
       const safeReceipt = {
         submissionId: receipt.submissionId,
         createdAt: receipt.createdAt,
+        eventName: normalizeOwnerFunnelEvent(receipt.eventName),
         pageSlug: receipt.pageSlug,
         sourcePageSlug: receipt.sourcePageSlug,
         market: receipt.market,

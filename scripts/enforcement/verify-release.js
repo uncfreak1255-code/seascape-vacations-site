@@ -7,6 +7,10 @@ const {
 } = require("./lib");
 const { assertRepoHtmlCachePolicyConsistency } = require("./release-cache-policy");
 const { withWorktreeLock } = require("./worktree-lock");
+const {
+  assertFreshOwnerOperatorProof,
+  readOwnerOperatorProofAssets
+} = require("./owner-proof-freshness");
 
 function run(command, args, options = {}) {
   const result = spawnSync(command, args, {
@@ -138,6 +142,7 @@ function main() {
     assertNoForbiddenSourceChanges(args.range);
     assertNoPlaceholderAnalytics();
     assertNoForbiddenPublicRuntime();
+    assertFreshOwnerOperatorProof(readOwnerOperatorProofAssets());
   } catch (error) {
     console.error(error.message);
     process.exit(1);

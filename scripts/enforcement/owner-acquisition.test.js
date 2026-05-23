@@ -28,6 +28,10 @@ const ownerData = require(path.join(projectRoot, "src", "_data", "seoPages.json"
 const ownerProofAssets = require(path.join(projectRoot, "src", "_data", "ownerProofAssets.json"));
 const ownerOperatorProofAssets = require(path.join(projectRoot, "src", "_data", "ownerOperatorProofAssets.json"));
 const ownerFormPath = path.join(projectRoot, "src", "_includes", "partials", "owner-evaluation-form.njk");
+const ownerRouteCanaryPath = path.join(projectRoot, "scripts", "recovery", "assert-owner-funnel-routes.js");
+const {
+  assertFreshOwnerOperatorProof
+} = require("./owner-proof-freshness");
 
 test("owner landing page uses a real owner revenue review form instead of generic evaluation copy", () => {
   assert.equal(fs.existsSync(ownerFormPath), true, "owner form partial should exist");
@@ -193,6 +197,41 @@ test("owner field report email payload avoids duplicate listing fields and submi
   assert.equal(conversionTracking.includes('if (form.dataset.skipGlobalSubmitTrack !== "true") {'), true);
 });
 
+test("owner funnel uses one explicit source precedence contract across both owner form UIs", () => {
+  const ownerFormPartial = fs.readFileSync(ownerFormPath, "utf8");
+
+  assert.equal(conversionTracking.includes("function resolveOwnerSourcePage(node)"), true);
+  assert.ok(
+    /getOwnerSourceFromLocation\(\)[\s\S]*getHiddenInputValue\(node, "source_page_slug"\)[\s\S]*node\.dataset\.sourcePageSlug[\s\S]*node\.dataset\.pageSlug/.test(conversionTracking),
+    "source precedence should be owner_source query, hidden source_page_slug, dataset source slug, dataset page slug"
+  );
+  assert.equal(ownerLanding.includes('data-track-form="owner"'), true);
+  assert.equal(ownerLanding.includes('data-form-start-event="owner_form_start"'), true);
+  assert.equal(ownerLanding.includes('data-form-submit-event="owner_form_submit"'), true);
+  assert.equal(ownerLanding.includes('name="source_page_slug" value="property-management"'), true);
+  assert.equal(ownerFormPartial.includes('data-track-form="owner"'), true);
+  assert.equal(ownerFormPartial.includes('data-form-start-event="owner_form_start"'), true);
+  assert.equal(ownerFormPartial.includes('data-form-submit-event="owner_form_submit"'), true);
+  assert.equal(ownerFormPartial.includes('name="source_page_slug" value="{{ options.sourcePageSlug or options.pageSlug or \'property-management\' }}"'), true);
+});
+
+test("owner funnel route canary protects canonical and alternate public hosts from lander shells", () => {
+  assert.equal(fs.existsSync(ownerRouteCanaryPath), true, "owner funnel route canary should exist");
+  const canary = fs.readFileSync(ownerRouteCanaryPath, "utf8");
+
+  for (const route of [
+    "/property-management/",
+    "/research/owner-fee-revenue-leak-benchmark-2026/",
+    "/research/how-seascape-protects-owner-net-2026/"
+  ]) {
+    assert.equal(canary.includes(route), true, `${route} should be in the owner funnel canary`);
+  }
+
+  assert.equal(canary.includes("https://seascape-vacations.com"), true);
+  assert.equal(canary.includes("https://www.seascape-vacations.com"), true);
+  assert.equal(canary.includes("/lander"), true, "canary should fail loudly on the known lander shell symptom");
+});
+
 test("owner benchmark CTA carries source attribution into the revenue review form path", () => {
   const ownerBenchmark = fs.readFileSync(
     path.join(projectRoot, "src", "research", "owner-fee-revenue-leak-benchmark-2026.njk"),
@@ -257,6 +296,21 @@ test("owner operator proof pack uses approved redacted modules and preserves tea
   assert.equal(proofPack.includes("we always outperform"), false);
   assert.equal(proofPack.includes("passive income"), false);
   assert.equal(proofPack.includes("full service"), false);
+});
+
+test("owner operator proof pack fails verification after its proof freshness window", () => {
+  assert.equal(ownerOperatorProofAssets.staleAfter, "2026-05-26");
+  assert.equal(ownerOperatorProofAssets.freshnessPolicy, "fail-after-staleAfter");
+  assert.equal(conversionTracking.includes("owner_source"), true);
+  assert.ok(
+    ownerOperatorProofAssets.modules.every((module) => module.id && module.evidencePath && module.proofLabel),
+    "freshness enforcement needs stable module ids, evidence paths, and proof labels"
+  );
+  assert.doesNotThrow(() => assertFreshOwnerOperatorProof(ownerOperatorProofAssets, new Date("2026-05-26T23:59:59Z")));
+  assert.throws(
+    () => assertFreshOwnerOperatorProof(ownerOperatorProofAssets, new Date("2026-05-27T00:00:00Z")),
+    /owner operator proof is stale/
+  );
 });
 
 test("owner hub still feeds the operator proof pack while the benchmark stands on its own teardown path", () => {

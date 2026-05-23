@@ -1,6 +1,7 @@
 # Open Risks
 
 - owner pages are ranking without enough CTR, so visibility still is not reliably becoming owner leads
+- `www.seascape-vacations.com` must keep redirecting owner funnel routes to canonical `seascape-vacations.com`; keep `npm run verify:owner-funnel-routes` as the live canary so owned-host drift fails before release
 - the five tracked money pages still have measurement lag risk because crawl freshness has been slower than implementation
 - operator truth can drift if `docs/status/current-state.md` repeats volatile reread windows or `data_date` details instead of deferring to `docs/status/next-batch.md`
 - AMI stay winners are stronger than the rest of the stay cluster, but they still have not earned automatic expansion into Holmes Beach or broader stay volume

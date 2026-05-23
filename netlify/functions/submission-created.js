@@ -36,7 +36,23 @@ async function handleSubmissionCreated(event, _context, injectedStore) {
 
   const existingMetrics = await readOwnerLeadMetrics(store);
   const nextMetrics = mergeOwnerLeadMetrics(existingMetrics, receipt);
-  await writeOwnerLeadMetrics(store, nextMetrics);
+  try {
+    await writeOwnerLeadMetrics(store, nextMetrics);
+  } catch (error) {
+    console.error("owner_lead_metrics_write_failed", {
+      sourcePageSlug: receipt.sourcePageSlug,
+      submissionId: receipt.submissionId,
+      message: error && error.message ? error.message : String(error)
+    });
+    return {
+      statusCode: 200,
+      body: JSON.stringify({
+        stored: false,
+        reason: "metrics_write_failed",
+        sourcePageSlug: receipt.sourcePageSlug
+      })
+    };
+  }
 
   return {
     statusCode: 200,
