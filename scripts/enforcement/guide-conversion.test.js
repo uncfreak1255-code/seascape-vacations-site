@@ -269,10 +269,21 @@ test("booking-engine handoff click emits the GA4 event with the target booking U
 
 test("first tracked navigation click is delivered before same-tab navigation continues", () => {
   const observed = withConversionTrackingStubs(({ listeners, window }) => {
+    const timeline = [];
+    const pendingCallbacks = [];
     const navigations = [];
     window.location.assign = function (nextHref) {
+      timeline.push(`navigate:${nextHref}`);
       navigations.push(nextHref);
       this.href = nextHref;
+    };
+    window.gtag = function (command, eventName, params) {
+      if (command !== "event") return;
+      timeline.push(`track:${eventName}`);
+      pendingCallbacks.push({ eventName, callback: params && params.event_callback });
+    };
+    window.seascapeTrackEvent = function (eventName, params) {
+      window.gtag("event", eventName, params || {});
     };
     listeners.DOMContentLoaded();
 
@@ -341,41 +352,63 @@ test("first tracked navigation click is delivered before same-tab navigation con
     ];
 
     const preventedEvents = [];
+    const originalSetTimeout = global.setTimeout;
     links.forEach((link) => {
-      listeners.click({
-        target: {
-          closest(selector) {
-            return selector === "[data-track-event]" ? link : null;
+      try {
+        global.setTimeout = function () {
+          return 1;
+        };
+        listeners.click({
+          target: {
+            closest(selector) {
+              return selector === "[data-track-event]" ? link : null;
+            }
+          },
+          button: 0,
+          metaKey: false,
+          ctrlKey: false,
+          shiftKey: false,
+          altKey: false,
+          preventDefault() {
+            timeline.push(`prevent:${link.dataset.trackEvent}`);
+            preventedEvents.push(link.dataset.trackEvent);
           }
-        },
-        button: 0,
-        metaKey: false,
-        ctrlKey: false,
-        shiftKey: false,
-        altKey: false,
-        preventDefault() {
-          preventedEvents.push(link.dataset.trackEvent);
-        }
-      });
+        });
+      } finally {
+        global.setTimeout = originalSetTimeout;
+      }
+      const pending = pendingCallbacks.shift();
+      assert.equal(pending.eventName, link.dataset.trackEvent);
+      assert.equal(navigations.length, preventedEvents.length - 1);
+      pending.callback();
+      assert.equal(navigations.length, preventedEvents.length);
     });
 
     return {
-      events: window.dataLayer.map((entry) => entry.event),
+      timeline,
       navigations,
       preventedEvents
     };
   });
 
-  assert.deepEqual(observed.events, [
-    "owner_primary_cta_click",
-    "booking_engine_handoff",
-    "property_booking_page_click"
-  ]);
   assert.deepEqual(observed.preventedEvents, [
     "owner_primary_cta_click",
     "booking_engine_handoff",
     "property_booking_page_click"
   ]);
+  observed.preventedEvents.forEach((eventName, index) => {
+    const trackIndex = observed.timeline.indexOf(`track:${eventName}`);
+    const nextTrackIndex =
+      index + 1 < observed.preventedEvents.length
+        ? observed.timeline.indexOf(`track:${observed.preventedEvents[index + 1]}`)
+        : observed.timeline.length;
+    const navigateIndex = observed.timeline.findIndex(
+      (entry, entryIndex) =>
+        entryIndex > trackIndex && entryIndex < nextTrackIndex && entry.startsWith("navigate:")
+    );
+    assert.equal(trackIndex > -1, true, `${eventName} should dispatch through the GA wrapper`);
+    assert.equal(navigateIndex > trackIndex, true, `${eventName} should dispatch before navigation`);
+  });
   assert.equal(observed.navigations.length, 3);
   assert.match(observed.navigations[1], /utm_content=best-time-visit-anna-maria-island/);
   assert.match(observed.navigations[2], /utm_content=bradenton-pool-home/);
