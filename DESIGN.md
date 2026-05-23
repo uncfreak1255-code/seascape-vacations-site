@@ -332,6 +332,7 @@ Legacy bare `.btn` (no modifier) falls back to the same visual as `.btn-brand` m
 - **Before touching any CSS, template, or layout file,** read this DESIGN.md first.
 - **Treat the YAML front matter as the visual source of truth.** The prose explains why the tokens exist and how to apply them.
 - **Do not invent new colors, fonts, border radius, shadows, spacing, or component styles** unless the user explicitly asks for a design-system change.
+- **For meaningful visual work,** Codex should prepare the Claude Design handoff first: repo/source truth, page goal, audience, constraints, existing patterns, proof/copy boundaries, URLs or screenshots, implementation risks, and responsive requirements.
 - **If Claude Design, Stitch, designmd.directory, or another design tool produces a new direction,** propose it as a DESIGN.md change first. Do not copy a generated screen directly into source.
 - **Use Stitch/designmd.directory only as inspiration.** They are not source truth for Seascape's brand or page patterns.
 - **For UI/visual work,** dispatch subagents with `model: "sonnet"`. Sonnet produces better visual code.

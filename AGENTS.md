@@ -81,6 +81,10 @@ For any PR that changes public copy in `src/`:
   work, guide/article/blog-style pages, owner pages, research pages, or any
   meaningful website visual change, the default design-thinking lane is the
   global `claude-design` skill before implementation.
+- Codex should prepare the Claude Design handoff first: repo/source truth, page
+  goal, audience, `DESIGN.md` constraints, existing patterns, proof/copy
+  boundaries, URLs or screenshots, implementation risks, and responsive
+  requirements.
 - If Sawyer approves a Claude Design mockup, implement that approved mockup
   closely. Do not reinterpret it into a different layout, art direction,
   hierarchy, CTA treatment, or component style. Any deviation must be named and
