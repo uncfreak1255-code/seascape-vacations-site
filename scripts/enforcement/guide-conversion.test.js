@@ -267,6 +267,153 @@ test("booking-engine handoff click emits the GA4 event with the target booking U
   assert.equal(observed.payload.link_text, "Open Direct Availability");
 });
 
+test("first tracked navigation click is delivered before same-tab navigation continues", () => {
+  const observed = withConversionTrackingStubs(({ listeners, window }) => {
+    const timeline = [];
+    const pendingCallbacks = [];
+    const navigations = [];
+    window.location.assign = function (nextHref) {
+      timeline.push(`navigate:${nextHref}`);
+      navigations.push(nextHref);
+      this.href = nextHref;
+    };
+    window.gtag = function (command, eventName, params) {
+      if (command !== "event") return;
+      timeline.push(`track:${eventName}`);
+      pendingCallbacks.push({ eventName, callback: params && params.event_callback });
+    };
+    window.seascapeTrackEvent = function (eventName, params) {
+      window.gtag("event", eventName, params || {});
+    };
+    listeners.DOMContentLoaded();
+
+    const links = [
+      {
+        tagName: "A",
+        href: "/property-management/#owner-cta",
+        target: "",
+        textContent: "Request Your Revenue Teardown",
+        dataset: {
+          trackEvent: "owner_primary_cta_click",
+          pageSlug: "property-management",
+          trackLabel: "Request Your Revenue Teardown"
+        },
+        hasAttribute() {
+          return false;
+        },
+        getAttribute(name) {
+          if (name === "href") return this.href;
+          if (name === "target") return this.target;
+          return null;
+        }
+      },
+      {
+        tagName: "A",
+        href: "https://book.seascape-vacations.com/listings/206016",
+        target: "",
+        textContent: "Open Direct Availability",
+        dataset: {
+          trackEvent: "booking_engine_handoff",
+          guideSlug: "best-time-visit-anna-maria-island"
+        },
+        hasAttribute() {
+          return false;
+        },
+        getAttribute(name) {
+          if (name === "href") return this.href;
+          if (name === "target") return this.target;
+          return null;
+        },
+        setAttribute(name, value) {
+          if (name === "href") this.href = value;
+        }
+      },
+      {
+        tagName: "A",
+        href: "https://book.seascape-vacations.com/listings/487798",
+        target: "",
+        textContent: "Book Bradenton Pool Home",
+        dataset: {
+          trackEvent: "property_booking_page_click",
+          pageSlug: "bradenton-pool-home"
+        },
+        hasAttribute() {
+          return false;
+        },
+        getAttribute(name) {
+          if (name === "href") return this.href;
+          if (name === "target") return this.target;
+          return null;
+        },
+        setAttribute(name, value) {
+          if (name === "href") this.href = value;
+        }
+      }
+    ];
+
+    const preventedEvents = [];
+    const originalSetTimeout = global.setTimeout;
+    links.forEach((link) => {
+      try {
+        global.setTimeout = function () {
+          return 1;
+        };
+        listeners.click({
+          target: {
+            closest(selector) {
+              return selector === "[data-track-event]" ? link : null;
+            }
+          },
+          button: 0,
+          metaKey: false,
+          ctrlKey: false,
+          shiftKey: false,
+          altKey: false,
+          preventDefault() {
+            timeline.push(`prevent:${link.dataset.trackEvent}`);
+            preventedEvents.push(link.dataset.trackEvent);
+          }
+        });
+      } finally {
+        global.setTimeout = originalSetTimeout;
+      }
+      const pending = pendingCallbacks.shift();
+      assert.equal(pending.eventName, link.dataset.trackEvent);
+      assert.equal(navigations.length, preventedEvents.length - 1);
+      pending.callback();
+      assert.equal(navigations.length, preventedEvents.length);
+    });
+
+    return {
+      timeline,
+      navigations,
+      preventedEvents
+    };
+  });
+
+  assert.deepEqual(observed.preventedEvents, [
+    "owner_primary_cta_click",
+    "booking_engine_handoff",
+    "property_booking_page_click"
+  ]);
+  observed.preventedEvents.forEach((eventName, index) => {
+    const trackIndex = observed.timeline.indexOf(`track:${eventName}`);
+    const nextTrackIndex =
+      index + 1 < observed.preventedEvents.length
+        ? observed.timeline.indexOf(`track:${observed.preventedEvents[index + 1]}`)
+        : observed.timeline.length;
+    const navigateIndex = observed.timeline.findIndex(
+      (entry, entryIndex) =>
+        entryIndex > trackIndex && entryIndex < nextTrackIndex && entry.startsWith("navigate:")
+    );
+    assert.equal(trackIndex > -1, true, `${eventName} should dispatch through the GA wrapper`);
+    assert.equal(navigateIndex > trackIndex, true, `${eventName} should dispatch before navigation`);
+  });
+  assert.equal(observed.navigations.length, 3);
+  assert.match(observed.navigations[1], /utm_content=best-time-visit-anna-maria-island/);
+  assert.match(observed.navigations[2], /utm_content=bradenton-pool-home/);
+});
+
 test("owner form tracking preserves owner_source attribution on start and submit", () => {
   const observed = withConversionTrackingStubs(({ listeners, window }) => {
     const hiddenSourceField = { value: "property-management" };
