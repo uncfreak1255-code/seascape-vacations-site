@@ -120,6 +120,7 @@ If any of those are stale, fix the doc layer before you scale the batch.
 Always read `DESIGN.md` before touching any CSS, template, or layout file.
 Treat `DESIGN.md` as the visual source of truth.
 Do not invent new colors, fonts, spacing, border radius, shadows, or component styles without explicit user approval.
+For meaningful visual work, Codex should prepare a Claude Design handoff before implementation: repo/source truth, page goal, audience, `DESIGN.md` constraints, existing patterns, proof/copy boundaries, URLs or screenshots, implementation risks, and responsive requirements.
 If Claude Design, Stitch, designmd.directory, or another design tool produces a new direction, propose it as a `DESIGN.md` change first.
 Use Stitch/designmd.directory only as inspiration, not source truth.
 Meaningful visual changes also need the repo flow in `docs/process/design-review-workflow.md`.
