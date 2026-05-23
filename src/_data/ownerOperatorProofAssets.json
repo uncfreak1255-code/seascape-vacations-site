@@ -5,6 +5,7 @@
   "lastVerified": "2026-05-12",
   "lastRefreshedLabel": "May 2026",
   "staleAfter": "2026-05-26",
+  "freshnessPolicy": "fail-after-staleAfter",
   "redactionNote": "Examples are redacted summaries. Owner names, addresses, statement details, and booking-level records stay private unless Sawyer approves otherwise.",
   "demandBoundary": "Current benchmark-path receipts prove measurement wiring only. They do not prove booked teardowns, closed owner demand, or a market-wide willingness to switch managers.",
   "modules": [

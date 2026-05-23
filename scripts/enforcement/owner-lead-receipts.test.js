@@ -46,6 +46,7 @@ test("owner lead helper only accepts the owner revenue review form and strips PI
     submissionId: "submission-123",
     createdAt: "2026-05-12T12:00:00.000Z",
     formName: OWNER_LEAD_FORM_NAME,
+    eventName: "owner_form_submit",
     pageSlug: "property-management",
     sourcePageSlug: "owner-fee-revenue-leak-benchmark-2026",
     market: "florida-gulf-coast",
@@ -121,6 +122,91 @@ test("owner lead metrics dedupe repeated submission ids and keep source totals",
   ]);
 });
 
+test("owner lead metrics keep source-page funnel counts without storing PII", () => {
+  const clickReceipt = buildOwnerLeadReceipt({
+    id: "event-click-1",
+    created_at: "2026-05-12T11:50:00.000Z",
+    form_name: OWNER_LEAD_FORM_NAME,
+    data: {
+      event_name: "owner_primary_cta_click",
+      page_slug: "property-management",
+      source_page_slug: "owner-fee-revenue-leak-benchmark-2026",
+      email: "owner@example.com",
+      property_address: "123 Palm Ave"
+    }
+  });
+  const startReceipt = buildOwnerLeadReceipt({
+    id: "event-start-1",
+    created_at: "2026-05-12T11:55:00.000Z",
+    form_name: OWNER_LEAD_FORM_NAME,
+    data: {
+      event_name: "owner_form_start",
+      page_slug: "property-management",
+      source_page_slug: "owner-fee-revenue-leak-benchmark-2026"
+    }
+  });
+  const submitReceipt = buildOwnerLeadReceipt({
+    id: "submission-1",
+    created_at: "2026-05-12T12:00:00.000Z",
+    form_name: OWNER_LEAD_FORM_NAME,
+    data: {
+      event_name: "owner_form_submit",
+      page_slug: "property-management",
+      source_page_slug: "owner-fee-revenue-leak-benchmark-2026"
+    }
+  });
+
+  const metrics = [clickReceipt, startReceipt, submitReceipt].reduce(
+    (currentMetrics, receipt) => mergeOwnerLeadMetrics(currentMetrics, receipt),
+    null
+  );
+  const summary = formatOwnerLeadSummary(metrics);
+
+  assert.deepEqual(summary.funnelBySourcePageSlug["owner-fee-revenue-leak-benchmark-2026"], {
+    owner_primary_cta_click: 1,
+    owner_form_start: 1,
+    owner_form_submit: 1
+  });
+  assert.equal(summary.totalSubmissions, 1);
+  assert.equal(summary.totalEvents, 3);
+  assert.equal(summary.receipts[0].eventName, "owner_primary_cta_click");
+  assert.equal("email" in summary.receipts[0], false);
+  assert.equal("property_address" in summary.receipts[0], false);
+});
+
+test("submission-created fails open when owner metrics storage is unavailable", async () => {
+  const failingStore = {
+    async get() {
+      return null;
+    },
+    async set() {
+      throw new Error("blob write failed");
+    }
+  };
+
+  const response = await handleSubmissionCreated(
+    {
+      body: JSON.stringify({
+        id: "submission-fail-open",
+        created_at: "2026-05-12T12:00:00.000Z",
+        form_name: OWNER_LEAD_FORM_NAME,
+        data: {
+          page_slug: "property-management",
+          source_page_slug: "owner-fee-revenue-leak-benchmark-2026"
+        }
+      })
+    },
+    {},
+    failingStore
+  );
+  const body = JSON.parse(response.body);
+
+  assert.equal(response.statusCode, 200);
+  assert.equal(body.stored, false);
+  assert.equal(body.reason, "metrics_write_failed");
+  assert.equal(body.sourcePageSlug, "owner-fee-revenue-leak-benchmark-2026");
+});
+
 test("owner lead summary exposes only aggregate counts and sanitized receipts", () => {
   const summary = formatOwnerLeadSummary({
     totalSubmissions: 1,
@@ -143,13 +229,16 @@ test("owner lead summary exposes only aggregate counts and sanitized receipts", 
 
   assert.deepEqual(summary, {
     totalSubmissions: 1,
+    totalEvents: 1,
     bySourcePageSlug: {
       "owner-fee-revenue-leak-benchmark-2026": 1
     },
+    funnelBySourcePageSlug: {},
     receipts: [
       {
         submissionId: "submission-1",
         createdAt: "2026-05-12T12:00:00.000Z",
+        eventName: "owner_form_submit",
         pageSlug: "property-management",
         sourcePageSlug: "owner-fee-revenue-leak-benchmark-2026",
         market: "florida-gulf-coast",
@@ -486,13 +575,16 @@ test("owner lead metrics handler requires auth token and returns sanitized summa
   assert.equal(authorized.statusCode, 200);
   assert.deepEqual(JSON.parse(authorized.body), {
     totalSubmissions: 1,
+    totalEvents: 1,
     bySourcePageSlug: {
       "owner-fee-revenue-leak-benchmark-2026": 1
     },
+    funnelBySourcePageSlug: {},
     receipts: [
       {
         submissionId: "submission-1",
         createdAt: "2026-05-12T12:00:00.000Z",
+        eventName: "owner_form_submit",
         pageSlug: "property-management",
         sourcePageSlug: "owner-fee-revenue-leak-benchmark-2026",
         market: "florida-gulf-coast",
@@ -534,7 +626,9 @@ test("owner lead metrics handler ignores Netlify context objects and still honor
   assert.equal(response.statusCode, 200);
   assert.deepEqual(JSON.parse(response.body), {
     totalSubmissions: 0,
+    totalEvents: 0,
     bySourcePageSlug: {},
+    funnelBySourcePageSlug: {},
     receipts: []
   });
 
