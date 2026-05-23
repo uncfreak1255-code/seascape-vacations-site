@@ -267,6 +267,120 @@ test("booking-engine handoff click emits the GA4 event with the target booking U
   assert.equal(observed.payload.link_text, "Open Direct Availability");
 });
 
+test("first tracked navigation click is delivered before same-tab navigation continues", () => {
+  const observed = withConversionTrackingStubs(({ listeners, window }) => {
+    const navigations = [];
+    window.location.assign = function (nextHref) {
+      navigations.push(nextHref);
+      this.href = nextHref;
+    };
+    listeners.DOMContentLoaded();
+
+    const links = [
+      {
+        tagName: "A",
+        href: "/property-management/#owner-cta",
+        target: "",
+        textContent: "Request Your Revenue Teardown",
+        dataset: {
+          trackEvent: "owner_primary_cta_click",
+          pageSlug: "property-management",
+          trackLabel: "Request Your Revenue Teardown"
+        },
+        hasAttribute() {
+          return false;
+        },
+        getAttribute(name) {
+          if (name === "href") return this.href;
+          if (name === "target") return this.target;
+          return null;
+        }
+      },
+      {
+        tagName: "A",
+        href: "https://book.seascape-vacations.com/listings/206016",
+        target: "",
+        textContent: "Open Direct Availability",
+        dataset: {
+          trackEvent: "booking_engine_handoff",
+          guideSlug: "best-time-visit-anna-maria-island"
+        },
+        hasAttribute() {
+          return false;
+        },
+        getAttribute(name) {
+          if (name === "href") return this.href;
+          if (name === "target") return this.target;
+          return null;
+        },
+        setAttribute(name, value) {
+          if (name === "href") this.href = value;
+        }
+      },
+      {
+        tagName: "A",
+        href: "https://book.seascape-vacations.com/listings/487798",
+        target: "",
+        textContent: "Book Bradenton Pool Home",
+        dataset: {
+          trackEvent: "property_booking_page_click",
+          pageSlug: "bradenton-pool-home"
+        },
+        hasAttribute() {
+          return false;
+        },
+        getAttribute(name) {
+          if (name === "href") return this.href;
+          if (name === "target") return this.target;
+          return null;
+        },
+        setAttribute(name, value) {
+          if (name === "href") this.href = value;
+        }
+      }
+    ];
+
+    const preventedEvents = [];
+    links.forEach((link) => {
+      listeners.click({
+        target: {
+          closest(selector) {
+            return selector === "[data-track-event]" ? link : null;
+          }
+        },
+        button: 0,
+        metaKey: false,
+        ctrlKey: false,
+        shiftKey: false,
+        altKey: false,
+        preventDefault() {
+          preventedEvents.push(link.dataset.trackEvent);
+        }
+      });
+    });
+
+    return {
+      events: window.dataLayer.map((entry) => entry.event),
+      navigations,
+      preventedEvents
+    };
+  });
+
+  assert.deepEqual(observed.events, [
+    "owner_primary_cta_click",
+    "booking_engine_handoff",
+    "property_booking_page_click"
+  ]);
+  assert.deepEqual(observed.preventedEvents, [
+    "owner_primary_cta_click",
+    "booking_engine_handoff",
+    "property_booking_page_click"
+  ]);
+  assert.equal(observed.navigations.length, 3);
+  assert.match(observed.navigations[1], /utm_content=best-time-visit-anna-maria-island/);
+  assert.match(observed.navigations[2], /utm_content=bradenton-pool-home/);
+});
+
 test("owner form tracking preserves owner_source attribution on start and submit", () => {
   const observed = withConversionTrackingStubs(({ listeners, window }) => {
     const hiddenSourceField = { value: "property-management" };
