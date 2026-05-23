@@ -228,7 +228,7 @@ test("owner funnel route canary protects canonical and alternate public hosts fr
   }
 
   assert.equal(canary.includes("https://seascape-vacations.com"), true);
-  assert.equal(canary.includes("https://www.seascapevacations.com"), true);
+  assert.equal(canary.includes("https://www.seascape-vacations.com"), true);
   assert.equal(canary.includes("/lander"), true, "canary should fail loudly on the known lander shell symptom");
 });
 

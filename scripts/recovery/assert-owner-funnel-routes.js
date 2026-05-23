@@ -2,7 +2,7 @@ const https = require("https");
 
 const HOSTS = [
   "https://seascape-vacations.com",
-  "https://www.seascapevacations.com"
+  "https://www.seascape-vacations.com"
 ];
 
 const ROUTES = [
