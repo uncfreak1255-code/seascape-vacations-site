@@ -56,6 +56,9 @@ test("owner landing page keeps the owner revenue review close to the sales argum
     ownerLanding.includes("Platform costs, expensive booking sources, review-risk signals, and uneven owner communication rarely show up clearly in an owner statement."),
     true
   );
+  assert.equal(ownerLanding.includes("Observed Seascape portfolio data"), true);
+  assert.equal(ownerLanding.includes("5-property Gulf Coast scope"), true);
+  assert.equal(ownerLanding.includes('href="/research/owner-fee-revenue-leak-benchmark-2026/"'), true);
   assert.ok(reviewIndex < faqIndex, "owner CTA should land before FAQ filler");
   assert.ok(reviewIndex < libraryIndex, "owner CTA should land before the operational library");
   assert.ok(reviewIndex < specialSituationsIndex, "owner CTA should land before special-situations content");
@@ -137,6 +140,9 @@ test("owner revenue teardown form lowers friction without losing tracking or int
   assert.equal(ownerFormPartial.includes('name="what_feels_off" rows="3"'), true);
   assert.equal(ownerFormPartial.includes('data-owner-context-field></textarea>'), true);
   assert.equal(ownerFormPartial.includes('name="owner_statement"'), true);
+  assert.equal(ownerLanding.includes('name="what_feels_off" rows="4"'), true);
+  assert.equal(ownerLanding.includes("Add one line in your own words"), true);
+  assert.equal(ownerLanding.includes("Sarasota condo is staying booked, but the payout still feels light and the owner statements are hard to trust."), true);
   assert.equal(
     ownerFormPartial.includes("The fastest first pass comes from two things: the listing URL or address, and one line on what feels expensive or unclear. An owner statement or fee quote makes the revenue review sharper."),
     true
@@ -178,6 +184,8 @@ test("Pat-like Sarasota leads are prompted for the property context and the reas
   assert.equal(ownerTemplate.includes("The fastest first pass comes from two things: the listing URL or address, and one sentence on what feels expensive or unclear."), true);
   assert.equal(ownerLanding.includes("If you do not know the street address yet, paste the Airbnb or Vrbo link and tell us what feels expensive or unclear."), true);
   assert.equal(ownerLanding.includes("Current manager concerns"), true);
+  assert.equal(ownerLanding.includes("Add one line in your own words"), true);
+  assert.equal(ownerLanding.includes("If you would rather say it plainly"), true);
   assert.equal(ownerLanding.includes("function validateOwnerContext()"), true);
   assert.equal(ownerLanding.includes("var hasListing = listingField && listingField.value.trim();"), true);
   assert.equal(ownerLanding.includes("var hasConcern = concerns.length > 0 || (concernsInput && concernsInput.value.trim()) || (concernsMirror && concernsMirror.value.trim());"), true);
@@ -190,10 +198,13 @@ test("Pat-like Sarasota leads are prompted for the property context and the reas
 test("owner field report email payload avoids duplicate listing fields and submit tracking stays single-source", () => {
   assert.equal(ownerLanding.includes('data-skip-global-submit-track="true"'), true);
   assert.equal(ownerLanding.includes('name="listing_url" data-owner-listing-mirror'), false);
+  assert.equal(ownerLanding.includes('name="what_feels_off" data-owner-concerns-mirror'), false);
+  assert.equal(ownerLanding.includes('textarea class="owner-field-textarea" name="what_feels_off"'), true);
   assert.equal(ownerLanding.includes("function getSubmitPayload(extra) {"), true);
   assert.equal(ownerLanding.includes("conversionTracking.getSourceContext"), true);
   assert.equal(ownerLanding.includes('placement: form.dataset.formPlacement || ""'), true);
   assert.equal(ownerLanding.includes('track("owner_form_submit", getSubmitPayload({'), true);
+  assert.equal(ownerLanding.includes('concern_note_present: concernsMirror && concernsMirror.value.trim() ? "true" : "false"'), true);
   assert.equal(conversionTracking.includes('if (form.dataset.skipGlobalSubmitTrack !== "true") {'), true);
 });
 

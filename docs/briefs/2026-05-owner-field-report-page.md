@@ -23,6 +23,7 @@
 - Test 1: pre-renewal hero framing should beat a generic owner-brief intro by making the switch decision explicit earlier.
 - Test 2: `48-hour revenue review` should outperform `revenue teardown` as the visible CTA language on the owner hub while preserving the same form and tracking path underneath.
 - Test 3: real Sarasota owner leads should be asked for the same two first-pass inputs across the shared review surfaces: the listing or address, and what feels expensive or unclear.
+- 2026-05-24 implementation note: the owner hub postcard should keep the approved Field Report layout, add visible proof-strip links back to the benchmark/proof pack, and let owners write one plain-English note on what feels off instead of forcing a canned property-management script.
 
 ## Search Operator Read
 
