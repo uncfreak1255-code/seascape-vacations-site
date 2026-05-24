@@ -5,7 +5,7 @@ pageTitle: "Vacation Rental Property Management | Seascape Vacations"
 pageDescription: "Premium local vacation rental property management for owners in Bradenton, Sarasota, Anna Maria Island, Siesta Key, and Longboat Key."
 pageAuthor: "Seascape Vacations Team"
 pageImage: "https://seascape-vacations.com/images/seascape-og-default.jpg"
-pageUpdated: "2026-05-19T15:45:00-04:00"
+pageUpdated: "2026-05-24T11:30:00-04:00"
 navActive: "owners"
 ownerNavOnly: true
 navButtonHref: "#owner-cta"
@@ -773,6 +773,33 @@ headExtra: |
     text-transform: uppercase;
   }
 
+  .owner-field-proof-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    grid-column: 1 / -1;
+    margin-top: -18px;
+  }
+
+  .owner-field-proof-chip {
+    display: inline-flex;
+    align-items: center;
+    min-height: 36px;
+    padding: 8px 14px;
+    border: 1px solid rgba(95, 138, 139, 0.2);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.62);
+    color: var(--owner-ink);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .owner-field-proof-chip a {
+    color: inherit;
+  }
+
   .owner-field-stats {
     display: grid;
     grid-template-columns: 1.35fr 1fr 1fr;
@@ -1527,6 +1554,27 @@ headExtra: |
   }
 
   .owner-field-file small {
+    color: var(--stone-light);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 1.5;
+    text-transform: none;
+  }
+
+  .owner-field-form-note {
+    display: grid;
+    gap: 8px;
+    max-width: 760px;
+    margin-top: 22px;
+    color: var(--owner-ink);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .owner-field-form-note small {
     color: var(--stone-light);
     font-size: 12px;
     font-weight: 500;
@@ -2339,12 +2387,12 @@ headExtra: |
       <div>
         <div class="owner-field-kicker">The Property Management Brief</div>
         <h1 id="owner-field-title">Before you renew,<br>what does your<br><span class="owner-field-phrase" data-owner-phrases aria-label="island rental"><em class="sv-pm-h1-phrase-item is-active">island rental</em><em class="sv-pm-h1-phrase-item">pool home</em><em class="sv-pm-h1-phrase-item">beach condo</em><em class="sv-pm-h1-phrase-item">Gulf Coast home</em></span><br>actually keep?</h1>
-        <p class="owner-field-hero-copy">Compare your fee quote, booking sources, and pricing against what similar Gulf Coast homes actually net. Send us your listing and we will send back a one-page revenue review within 48 hours.</p>
+        <p class="owner-field-hero-copy">If the payout, fee story, or owner updates on your Sarasota condo, Bradenton pool home, or island listing do not add up, send the address or listing link. We will compare it against the same Gulf Coast benchmark and send back a one-page revenue review within 48 hours.</p>
         <div class="owner-field-actions">
           <a class="btn btn-gold owner-field-btn" href="#owner-cta" data-track-event="owner_primary_cta_click" data-page-slug="property-management">Start Your 48-Hour Revenue Review</a>
           <a class="owner-field-link" href="#economics">Read the issue</a>
         </div>
-        <div class="owner-field-hero-note">Reviewed by Seascape · 48-hour reply · No sales call</div>
+        <div class="owner-field-hero-note">Listing or address first · 48-hour reply · No sales call</div>
       </div>
       <aside class="owner-field-issue-card" aria-label="Inside this issue">
         <div class="owner-field-issue-label">Inside this issue</div>
@@ -2399,7 +2447,13 @@ headExtra: |
       </div>
       <div class="owner-field-benchmark-intro">
         <p class="owner-field-pullquote"><span class="owner-field-drop">"</span>Property management for owners who care about what they actually keep. What to look at before you change managers starts with these four numbers.</p>
-        <p class="owner-field-deck"><strong>Benchmark + Revenue Review</strong>What owners miss when they compare management fees: Platform costs, expensive booking sources, review-risk signals, and uneven owner communication rarely show up clearly in an owner statement. We do not quote one flat management fee for every home.</p>
+        <p class="owner-field-deck"><strong>Benchmark + Revenue Review</strong>What owners miss when they compare management fees: Platform costs, expensive booking sources, review-risk signals, and uneven owner communication rarely show up clearly in an owner statement. We do not quote one flat management fee for every home. If the payout or reporting on your current statement feels off, this is the same first pass we run before we talk about switching.</p>
+        <div class="owner-field-proof-strip" aria-label="Owner proof boundary">
+          <span class="owner-field-proof-chip">Observed Seascape portfolio data</span>
+          <span class="owner-field-proof-chip">5-property Gulf Coast scope</span>
+          <span class="owner-field-proof-chip"><a href="/research/owner-fee-revenue-leak-benchmark-2026/">Source: owner benchmark</a></span>
+          <span class="owner-field-proof-chip"><a href="/research/how-seascape-protects-owner-net-2026/">Redacted operating proof</a></span>
+        </div>
       </div>
       <div class="owner-field-stats">
         <article class="owner-field-stat owner-field-stat--large">
@@ -2501,7 +2555,7 @@ headExtra: |
           </article>
           <article class="owner-field-market-card is-active" data-market-panel="sarasota">
             <div class="owner-field-market-photo" data-market-photo="/images/owner-field-sarasota.jpg"><img src="/images/owner-field-sarasota.jpg" width="620" height="1024" alt="" loading="lazy" decoding="async" fetchpriority="low"><span class="owner-field-market-badge"><span class="owner-field-market-badge-dot"></span>GPS lock · SARASOTA</span><strong>Sarasota</strong></div>
-            <p>Sarasota owners need presentation, guest quality, and rate discipline to stay tight.</p>
+            <p>For Sarasota owners, the first questions are usually simple: does the payout still make sense, is the presentation earning the rate, and are the owner updates clear enough to trust.</p>
             <div class="owner-field-market-facts"><div><b>Show</b><span>Presentation</span></div><div><b>Guest</b><span>Quality</span></div><div><b>Check</b><span>Rate fit</span></div></div>
             <a class="owner-field-market-guidance" href="/property-management/vacation-rental-management-sarasota/">View Sarasota guidance <span aria-hidden="true">→</span></a>
           </article>
@@ -2541,8 +2595,8 @@ headExtra: |
         <span class="sv-magazine-header-meta">Pages 12-13 · §4</span>
       </div>
       <div class="owner-field-form-intro">
-        <h2 class="owner-field-display">Tell us what you have got. We will send back <em>a one-page revenue review.</em></h2>
-        <p class="owner-field-deck">Four short questions, two minutes. A real Seascape person reads every reply and sends back a one-page revenue review, usually within 48 hours. No sales call, no calendar invite.</p>
+        <h2 class="owner-field-display">Tell us which property and what feels off. We will send back <em>a one-page revenue review.</em></h2>
+        <p class="owner-field-deck">Four short questions, two minutes. Start with the listing or address, then tell us what feels expensive, vague, or off. A real Seascape person reads every reply and sends back a one-page revenue review, usually within 48 hours. No sales call, no calendar invite.</p>
       </div>
       {# Source contract: ownerEvaluationForm({ showBenchmarkFields: true, propertyFieldLabel: "Listing URL or property address" }) #}
       <form class="owner-field-postcard" name="owner-revenue-teardown" method="POST" enctype="multipart/form-data" data-netlify="true" netlify-honeypot="bot-field" data-track-form="owner" data-form-start-event="owner_form_start" data-form-submit-event="owner_form_submit" data-skip-global-submit-track="true" data-page-slug="property-management" data-source-page-slug="property-management" data-market="florida-gulf-coast" data-form-placement="field-report-postcard" data-form-direction="forward" data-stamped="false">
@@ -2553,7 +2607,6 @@ headExtra: |
         <input type="hidden" name="lead_type" value="owner-revenue-teardown">
         <input type="hidden" name="form_placement" value="field-report-postcard">
         <input type="hidden" name="concerns" data-owner-concerns>
-        <input type="hidden" name="what_feels_off" data-owner-concerns-mirror>
         <p hidden><label>Do not fill this out if you are human: <input name="bot-field"></label></p>
         <svg class="owner-field-postcard-grain" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><filter id="ownerFieldPaper"><feTurbulence type="fractalNoise" baseFrequency="1.4" numOctaves="2" seed="3"></feTurbulence><feColorMatrix type="matrix" values="0 0 0 0 0.85 0 0 0 0 0.78 0 0 0 0 0.62 0 0 0 0.08 0"></feColorMatrix></filter><rect width="100" height="100" filter="url(#ownerFieldPaper)"></rect></svg>
         <div class="owner-field-postcard-inner" aria-hidden="true"></div>
@@ -2600,7 +2653,7 @@ headExtra: |
         <div class="owner-field-form-step sv-postcard-panel" data-form-step="1" hidden>
           <em>Question 2 of 4</em>
           <h3>What feels expensive or unclear right now?</h3>
-          <p>Pick any that apply. This points the review at the part of the owner economics that needs the clearest read first.</p>
+          <p>Pick any that apply, then add one plain-English note if the payout, reporting, or current manager setup is the real problem.</p>
           <div class="owner-field-choice-grid">
             <button class="owner-field-choice" type="button" data-concern="Paying too much in fees">Paying too much in fees</button>
             <button class="owner-field-choice" type="button" data-concern="Reviews slipping">Reviews slipping</button>
@@ -2609,6 +2662,10 @@ headExtra: |
             <button class="owner-field-choice" type="button" data-concern="Pool home is underpriced">Pool home is underpriced</button>
             <button class="owner-field-choice" type="button" data-concern="Current manager concerns">Current manager concerns</button>
           </div>
+          <label class="owner-field-form-note">Add one line in your own words
+            <textarea class="owner-field-textarea" name="what_feels_off" rows="4" placeholder="Example: Sarasota condo is staying booked, but the payout still feels light and the owner statements are hard to trust." data-owner-concerns-mirror data-owner-context-field></textarea>
+            <small>If you would rather say it plainly, tell us the one part of the payout, fee quote, reporting, or current manager setup that feels off.</small>
+          </label>
           <div class="owner-field-form-actions">
             <button class="owner-field-btn btn-gold" type="button" data-form-next>Continue <span aria-hidden="true">→</span></button>
             <button class="owner-field-muted-button" type="button" data-form-back>Back</button>
@@ -2638,7 +2695,7 @@ headExtra: |
             <div class="owner-field-label">Postcard recap</div>
             <div class="owner-field-confirm-grid">
               <div><b>Listing</b><span data-confirm-url>Not added yet</span></div>
-              <div><b>Concerns</b><span data-confirm-concerns>None selected</span></div>
+              <div><b>What feels off</b><span data-confirm-concerns>Not added yet</span></div>
               <div><b>Name</b><span data-confirm-name>Not added yet</span></div>
               <div><b>Email</b><span data-confirm-email>Not added yet</span></div>
               <div style="grid-column: 1 / -1;"><b>Phone</b><span data-confirm-phone>Optional</span></div>
@@ -2987,8 +3044,12 @@ headExtra: |
     var submitting = false;
 
     function syncConfirmPanel() {
+      var concernSummary = concerns.length ? concerns.join(", ") : "";
+      if (concernsMirror && concernsMirror.value.trim()) {
+        concernSummary = concernSummary ? concernSummary + " | " + concernsMirror.value.trim() : concernsMirror.value.trim();
+      }
       if (confirmUrl) confirmUrl.textContent = listingField && listingField.value.trim() ? listingField.value.trim() : "Not added yet";
-      if (confirmConcerns) confirmConcerns.textContent = concerns.length ? concerns.join(", ") : "None selected";
+      if (confirmConcerns) confirmConcerns.textContent = concernSummary || "Not added yet";
       if (confirmName) confirmName.textContent = nameField && nameField.value.trim() ? nameField.value.trim() : "Not added yet";
       if (confirmEmail) confirmEmail.textContent = emailField && emailField.value.trim() ? emailField.value.trim() : "Not added yet";
       if (confirmPhone) confirmPhone.textContent = phoneField && phoneField.value.trim() ? phoneField.value.trim() : "Optional";
@@ -3123,7 +3184,7 @@ headExtra: |
         else concerns.push(concern);
         button.classList.toggle("is-active", index < 0);
         concernsInput.value = concerns.join(", ");
-        if (concernsMirror) concernsMirror.value = concerns.join(", ");
+        syncConfirmPanel();
         track("owner_form_concern_toggle", getFormPayload({
           concern: concern,
           selected: index < 0 ? "true" : "false"
@@ -3137,6 +3198,7 @@ headExtra: |
         syncConfirmPanel();
       });
     }
+    if (concernsMirror) concernsMirror.addEventListener("input", syncConfirmPanel);
     if (nameField) nameField.addEventListener("input", syncConfirmPanel);
     if (emailField) emailField.addEventListener("input", syncConfirmPanel);
     if (phoneField) phoneField.addEventListener("input", syncConfirmPanel);
@@ -3151,6 +3213,7 @@ headExtra: |
       form.setAttribute("data-stamped", "true");
       track("owner_form_submit", getSubmitPayload({
         concerns_count: String(concerns.length),
+        concern_note_present: concernsMirror && concernsMirror.value.trim() ? "true" : "false",
         listing_present: listingField && listingField.value.trim() ? "true" : "false"
       }));
       window.setTimeout(function () {
