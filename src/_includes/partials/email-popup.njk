@@ -4,7 +4,7 @@
 .email-popup-overlay.active{display:flex;opacity:1}
 .email-popup{background:linear-gradient(135deg,rgba(255,255,255,.95) 0,rgba(245,243,240,.98) 100%);width:90%;max-width:480px;border-radius:24px;padding:48px 40px;box-shadow:0 25px 80px -12px rgba(0,0,0,.35);position:relative;z-index:2;transform:translateY(30px) scale(.95);transition:transform .4s cubic-bezier(.175,.885,.32,1.275),opacity .4s cubic-bezier(.175,.885,.32,1.275);text-align:center}
 .email-popup-overlay.active .email-popup{transform:translateY(0) scale(1)}
-.email-popup-close{position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:50%;background:#EBE4CC;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:20px;color:#6A6A6A;transition:transform .2s ease,opacity .2s ease}
+.email-popup-close{position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:50%;background:#EBE4CC;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:20px;color:#6A6A6A;transition:background-color .2s ease,color .2s ease}
 .email-popup-close:hover{background:#5F8A8B;color:#fff}
 .email-popup-badge{display:inline-block;background:linear-gradient(135deg,#C9A962 0,#E8D5A3 100%);color:#fff;padding:6px 16px;border-radius:20px;font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;margin-bottom:20px}
 .email-popup-title{font-family:"Playfair Display",Georgia,serif;font-size:32px;color:#3D5C5D;margin-bottom:12px;line-height:1.2}
@@ -12,12 +12,13 @@
 .email-popup-form{display:flex;flex-direction:column;gap:12px}
 .email-popup-input{width:100%;padding:16px 20px;border:2px solid #EBE4CC;border-radius:12px;font-size:16px;font-family:Poppins,sans-serif;background:#fff}
 .email-popup-input:focus{outline:0;border-color:#5F8A8B;box-shadow:0 0 0 4px rgba(95,138,139,.1)}
-.email-popup-btn{width:100%;padding:16px 24px;background:linear-gradient(135deg,#5F8A8B 0,#3D5C5D 100%);color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:600;cursor:pointer;font-family:Poppins,sans-serif}
+.email-popup-btn{width:100%;padding:16px 24px;background:linear-gradient(135deg,#5F8A8B 0,#3D5C5D 100%);color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:600;cursor:pointer;font-family:Poppins,sans-serif;transition:transform .3s ease,box-shadow .3s ease}
 .email-popup-btn:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(95,138,139,.35)}
 .email-popup-privacy{font-size:12px;color:#6A6A6A;margin-top:16px}
 .email-popup-success{display:none;text-align:center}
 .email-popup-success.show{display:block}
 .email-popup-success-icon{width:64px;height:64px;background:linear-gradient(135deg,#5F8A8B 0,#3D5C5D 100%);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:28px;color:#fff}
+@media(prefers-reduced-motion:reduce){.email-popup-overlay,.email-popup,.email-popup-close,.email-popup-btn{transition:none}}
 @media(max-width:600px){.email-popup{padding:36px 24px;margin:20px}.email-popup-title{font-size:26px}}
 </style>
 <div id="email-popup" class="email-popup-overlay" data-email-capture-root onclick="closeEmailPopup()">

@@ -242,7 +242,6 @@ headExtra: |
     inset: 0;
     pointer-events: none;
     transform: scale(1.01);
-    animation: owner-field-kenburns 50s ease-in-out infinite alternate;
   }
 
   .owner-hero-media img {
@@ -1377,7 +1376,12 @@ headExtra: |
     font-family: "Playfair Display", Georgia, serif;
     font-size: 12px;
     font-style: italic;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition:
+      background-color 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+      border-color 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+      color 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+      box-shadow 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+      transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   }
 
   .owner-field-step-dot.is-active,
@@ -1978,11 +1982,6 @@ headExtra: |
     font-weight: 700;
   }
 
-  @keyframes owner-field-kenburns {
-    from { transform: scale(1.02) translate3d(0, 0, 0); }
-    to { transform: scale(1.08) translate3d(-1.5%, -1%, 0); }
-  }
-
   @keyframes owner-field-fade-up {
     from { opacity: 0; transform: translateY(16px); }
     to { opacity: 1; transform: translateY(0); }
@@ -2050,12 +2049,15 @@ headExtra: |
     .owner-hero-media,
     .owner-field-phrase em.is-active,
     .owner-field-ticker-label::before,
+    .owner-field-market-badge-dot,
     .owner-field-market-card,
     .owner-field-form-step {
       animation: none;
     }
 
-    .owner-field-ticker-item {
+    .owner-field-ticker-item,
+    .owner-field-step-dot,
+    .owner-field-step-line {
       transition: none;
     }
 

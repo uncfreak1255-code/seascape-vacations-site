@@ -191,22 +191,6 @@
         /* Animated gradient background */
         .gradient-bg {
             background: linear-gradient(135deg, var(--brand) 0%, var(--brand-dark) 50%, #1a3a3c 100%);
-            background-size: 200% 200%;
-            animation: gradientShift 15s ease infinite;
-        }
-
-        @keyframes gradientShift {
-            0% {
-                background-position: 0% 50%;
-            }
-
-            50% {
-                background-position: 100% 50%;
-            }
-
-            100% {
-                background-position: 0% 50%;
-            }
         }
 
 
@@ -226,7 +210,12 @@
             font-family: inherit;
             border: none;
             cursor: pointer;
-            transition: all .35s cubic-bezier(.22,.9,.28,1);
+            transition:
+                background-color .35s cubic-bezier(.22,.9,.28,1),
+                color .35s cubic-bezier(.22,.9,.28,1),
+                box-shadow .35s cubic-bezier(.22,.9,.28,1),
+                transform .35s cubic-bezier(.22,.9,.28,1),
+                border-color .35s cubic-bezier(.22,.9,.28,1);
             white-space: nowrap;
             position: relative;
             text-decoration: none;
@@ -355,22 +344,6 @@
             transform: scale(1.03);
         }
 
-        @keyframes heroZoom {
-            0% {
-                transform: scale(1.1);
-            }
-
-            100% {
-                transform: scale(1.0);
-            }
-        }
-
-        @media (min-width: 769px) and (prefers-reduced-motion: no-preference) {
-            .hero-image {
-                animation: heroZoom 20s ease-in-out infinite alternate;
-            }
-        }
-
         .hero-overlay {
             position: absolute;
             inset: 0;
@@ -483,7 +456,7 @@
             border-radius: 16px;
             background: var(--cream);
             border: 2px solid transparent;
-            transition: all 0.3s ease;
+            transition: border-color 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
             cursor: pointer;
         }
 
@@ -579,7 +552,7 @@
             height: 40px;
             background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.25) 0%, transparent 70%);
             filter: blur(15px);
-            transition: all 0.6s ease;
+            transition: bottom 0.6s ease, opacity 0.6s ease;
             z-index: -1;
         }
 
@@ -728,7 +701,7 @@
             border-radius: 50px;
             font-size: 14px;
             font-weight: 600;
-            transition: all 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
         }
 
@@ -803,7 +776,7 @@
             text-align: center;
             position: relative;
             overflow: hidden;
-            transition: all 0.4s ease;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
             box-shadow:
                 0 10px 40px rgba(0, 0, 0, 0.04),
                 0 2px 10px rgba(0, 0, 0, 0.02);
@@ -843,7 +816,7 @@
             justify-content: center;
             font-size: 32px;
             box-shadow: 0 10px 30px rgba(95, 138, 139, 0.25);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
         }
 
         .feature-icon svg {
@@ -885,7 +858,7 @@
             box-shadow:
                 0 10px 40px rgba(0, 0, 0, 0.04),
                 0 2px 10px rgba(0, 0, 0, 0.02);
-            transition: all 0.4s ease;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
         }
 
         .review-card::before {
@@ -1065,7 +1038,7 @@
             border-radius: 24px;
             overflow: hidden;
             cursor: pointer;
-            transition: all 0.4s ease;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
             box-shadow:
                 0 10px 40px rgba(0, 0, 0, 0.04),
                 0 2px 10px rgba(0, 0, 0, 0.02);
@@ -1202,7 +1175,7 @@
             font-size: 15px;
             margin-bottom: 14px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: color 0.3s ease, transform 0.3s ease;
         }
 
         .footer-link:hover {
@@ -1241,7 +1214,7 @@
             color: white;
             font-size: 14px;
             font-weight: 600;
-            transition: all 0.3s ease;
+            transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
@@ -1288,7 +1261,7 @@
             border-radius: 12px;
             font-size: 16px;
             font-family: inherit;
-            transition: all 0.3s ease;
+            transition: border-color 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
             background: var(--cream);
         }
 
@@ -1313,7 +1286,7 @@
             font-size: 14px;
             color: var(--stone);
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
-            transition: all 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
         .amenity:hover {
@@ -1570,7 +1543,7 @@
             height: 44px;
             border-radius: 50%;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
             display: inline-flex;
             align-items: center;
@@ -1618,7 +1591,7 @@
             overflow: hidden;
             cursor: pointer;
             opacity: 0.6;
-            transition: all 0.2s;
+            transition: opacity 0.2s ease, border-color 0.2s ease;
             border: 2px solid transparent;
         }
 
@@ -1709,45 +1682,7 @@
 
         /* ===== DYNAMIC ANIMATIONS ===== */
 
-        /* Bouncing Testimonial Bubbles */
-        .review-card {
-            animation: gentleBounce 6s ease-in-out infinite;
-        }
-
-        .review-card:nth-child(1) {
-            animation-delay: 0s;
-        }
-
-        .review-card:nth-child(2) {
-            animation-delay: 2s;
-        }
-
-        .review-card:nth-child(3) {
-            animation-delay: 4s;
-        }
-
-        @keyframes gentleBounce {
-
-            0%,
-            100% {
-                transform: translateY(0);
-            }
-
-            25% {
-                transform: translateY(-8px);
-            }
-
-            50% {
-                transform: translateY(-4px);
-            }
-
-            75% {
-                transform: translateY(-10px);
-            }
-        }
-
         .review-card:hover {
-            animation-play-state: paused;
             transform: translateY(-12px) scale(1.02);
         }
 
@@ -1761,44 +1696,7 @@
             width: 60%;
             height: 20px;
             background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.08) 0%, transparent 70%);
-            animation: shadowPulse 6s ease-in-out infinite;
-            opacity: 0.6;
-        }
-
-        .review-card:nth-child(1)::after {
-            animation-delay: 0s;
-        }
-
-        .review-card:nth-child(2)::after {
-            animation-delay: 2s;
-        }
-
-        .review-card:nth-child(3)::after {
-            animation-delay: 4s;
-        }
-
-        @keyframes shadowPulse {
-
-            0%,
-            100% {
-                transform: translateX(-50%) scaleX(1);
-                opacity: 0.6;
-            }
-
-            25% {
-                transform: translateX(-50%) scaleX(0.9);
-                opacity: 0.4;
-            }
-
-            50% {
-                transform: translateX(-50%) scaleX(0.95);
-                opacity: 0.5;
-            }
-
-            75% {
-                transform: translateX(-50%) scaleX(0.85);
-                opacity: 0.35;
-            }
+            opacity: 0.45;
         }
 
         /* Floating Decorative Elements */
@@ -1817,17 +1715,6 @@
             height: 120px;
             background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 120'%3E%3Cpath fill='%233D6B6D' d='M0,60 C360,120 720,0 1080,60 C1260,90 1380,60 1440,45 L1440,120 L0,120 Z'/%3E%3C/svg%3E") repeat-x;
             background-size: 1440px 120px;
-            animation: waveFlow 20s linear infinite;
-        }
-
-        @keyframes waveFlow {
-            0% {
-                background-position-x: 0;
-            }
-
-            100% {
-                background-position-x: 1440px;
-            }
         }
 
         /* Animated Stat Counter Glow */
@@ -1844,38 +1731,7 @@
             width: 40px;
             height: 3px;
             background: linear-gradient(90deg, transparent, var(--gold), transparent);
-            opacity: 0;
-            animation: statGlow 3s ease-in-out infinite;
-        }
-
-        .stat-item:nth-child(1) .stat-value::after {
-            animation-delay: 0s;
-        }
-
-        .stat-item:nth-child(2) .stat-value::after {
-            animation-delay: 0.75s;
-        }
-
-        .stat-item:nth-child(3) .stat-value::after {
-            animation-delay: 1.5s;
-        }
-
-        .stat-item:nth-child(4) .stat-value::after {
-            animation-delay: 2.25s;
-        }
-
-        @keyframes statGlow {
-
-            0%,
-            100% {
-                opacity: 0;
-                width: 20px;
-            }
-
-            50% {
-                opacity: 1;
-                width: 50px;
-            }
+            opacity: 0.35;
         }
 
         /* Feature Card Hover Enhancements */
@@ -1944,60 +1800,18 @@
             background: linear-gradient(135deg, var(--gold) 0%, #B8943A 100%);
             opacity: 0;
             z-index: -1;
-            animation: buttonPulse 2s ease-in-out infinite;
+            transform: scale(1);
+            transition: opacity 0.3s ease, transform 0.3s ease;
         }
 
-        @keyframes buttonPulse {
-
-            0%,
-            100% {
-                opacity: 0;
-                transform: scale(1);
-            }
-
-            50% {
-                opacity: 0.3;
-                transform: scale(1.05);
-            }
-        }
-
-        /* Animated Section Tags */
-        .section-tag {
-            
-        }
-
-        @keyframes tagShimmer {
-
-            0%,
-            100% {
-                opacity: 1;
-            }
-
-            50% {
-                opacity: 0.7;
-            }
-        }
-
-        .section-tag::before,
-        .section-tag::after {
-            animation: lineGrow 3s ease-in-out infinite;
-        }
-
-        @keyframes lineGrow {
-
-            0%,
-            100% {
-                width: 40px;
-            }
-
-            50% {
-                width: 60px;
-            }
+        .btn-gold:hover::after {
+            opacity: 0.18;
+            transform: scale(1.03);
         }
 
         /* Blog Card Lift Animation */
         .blog-card {
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
         }
 
         .blog-card::before {
@@ -2017,18 +1831,6 @@
         /* Animated Navigation Underline */
         .nav-link::after {
             background: linear-gradient(90deg, var(--brand), var(--gold), var(--brand));
-            background-size: 200% 100%;
-            animation: navGradient 2s linear infinite;
-        }
-
-        @keyframes navGradient {
-            0% {
-                background-position: 0% 50%;
-            }
-
-            100% {
-                background-position: 200% 50%;
-            }
         }
 
         /* Footer Wave Animation */
@@ -2037,21 +1839,10 @@
             position: absolute;
             top: -60px;
             left: 0;
-            width: 200%;
+            width: 100%;
             height: 60px;
             background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 60'%3E%3Cpath fill='%232A4B4D' d='M0,30 C180,60 360,0 540,30 C720,60 900,0 1080,30 C1260,60 1440,0 1440,30 L1440,60 L0,60 Z'/%3E%3C/svg%3E") repeat-x;
             background-size: 720px 60px;
-            animation: footerWave 10s linear infinite;
-        }
-
-        @keyframes footerWave {
-            0% {
-                transform: translateX(0);
-            }
-
-            100% {
-                transform: translateX(-720px);
-            }
         }
 
         /* Search Box Focus Animation */
@@ -2208,7 +1999,7 @@
             align-items: center;
             justify-content: center;
             color: var(--stone-light);
-            transition: all 0.2s;
+            transition: background-color 0.2s ease, color 0.2s ease;
         }
 
         .email-popup-close:hover {
@@ -2276,7 +2067,7 @@
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
         }
 
