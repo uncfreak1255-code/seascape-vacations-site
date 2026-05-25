@@ -7,7 +7,7 @@
 - secondary keywords: vacation rentals near Anna Maria Island, Bradenton vs Sarasota vacation rental, where to stay near Anna Maria Island
 - audience pattern: visitors who want a curated stay shortlist or trip-fit guidance before they commit to a booking search
 - proof source: current guide and properties routes, the approved phase 1 capture plan, existing Seascape inventory truth, and rendered route review in this branch
-- required internal links: /guides/
+- required internal links: /, /guides/
 - CTA target: /properties/
 - anti-claims: do not imply on-island inventory, do not promise a live booking discount that is not already published, do not claim listmonk itself as a guest-facing benefit, and do not disturb the homepage popup Mailchimp keeper flow
 
