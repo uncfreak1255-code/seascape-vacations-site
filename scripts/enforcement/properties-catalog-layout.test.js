@@ -115,3 +115,32 @@ test("properties catalog keeps mobile rhythm before the first card compact", () 
     /\.catalog-filter\s*\{[\s\S]*flex:\s*0 0 auto;[\s\S]*white-space:\s*nowrap;/
   );
 });
+
+test("properties catalog includes trip-type signup capture without changing the homepage popup offer", () => {
+  for (const marker of [
+    "catalog-alert-panel",
+    "Get matching openings, not a generic newsletter.",
+    'data-trip-intent-option',
+    'name="form_name" value="trip_type_optin"',
+    'name="entry_point" value="properties"',
+    'name="trip_intent" value="fee_first"',
+    'name="destination_interest" value="anna-maria-island-corridor"',
+    "Send Matching Openings"
+  ]) {
+    assert.equal(propertiesTemplate.includes(marker), true, `properties catalog missing ${marker}`);
+  }
+
+  for (const tripIntent of [
+    "fee_first",
+    "island_first",
+    "value_base",
+    "sarasota_city",
+    "fast_escape"
+  ]) {
+    assert.equal(
+      propertiesTemplate.includes(`data-trip-intent="${tripIntent}"`),
+      true,
+      `properties trip-type capture missing ${tripIntent}`
+    );
+  }
+});

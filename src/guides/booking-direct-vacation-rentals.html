@@ -2,6 +2,7 @@
 permalink: "/guides/booking-direct-vacation-rentals/"
 ---
 {% from "partials/guide-conversion-kit.njk" import guideConversionKit %}
+{% from "partials/guide-intent-optin.njk" import guideIntentOptIn %}
 <!doctype html>
 <html lang="en">
 <head>
@@ -160,6 +161,18 @@ permalink: "/guides/booking-direct-vacation-rentals/"
           This page is here to get you out of fee theory and into a better booking decision quickly.
         </p>
       </div>
+
+      {{ guideIntentOptIn({
+        guideSlug: "booking-direct-vacation-rentals",
+        label: "Fee-Stack Shortcut",
+        title: "Get the direct-book version of this guide",
+        copy: "We will send the short list of fee-saving homes, the cleaner direct-book path, and the smarter way to avoid OTA checkout drag on this trip.",
+        buttonLabel: "Send My Fee-Saving List",
+        destinationInterest: "gulf-coast-direct-booking",
+        tripIntent: "fee_first",
+        bookingStage: "planning",
+        sourcePage: "booking-direct-vacation-rentals"
+      }) }}
 
       <div class="guide-author-card" data-guide-author="sawyer-beck">
         <p style="font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--brand); margin-bottom: 6px;">Reviewed by</p>

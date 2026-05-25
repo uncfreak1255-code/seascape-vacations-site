@@ -248,6 +248,13 @@
     field.value = value;
   }
 
+  function getFormFieldValue(form, name) {
+    if (!form || typeof form.querySelector !== "function") return "";
+    var field = form.querySelector('[name="' + name + '"]');
+    if (!field || typeof field.value !== "string") return "";
+    return field.value.trim();
+  }
+
   function getOwnerSourceFromLocation() {
     if (!window.location || typeof window.location.search !== "string" || typeof URLSearchParams !== "function") {
       return "";
@@ -492,8 +499,9 @@
 
     var currentPagePath = getCurrentPagePath();
     var trackingPayload = getPayloadFromElement(form);
+    var formName = getFormFieldValue(form, "form_name") || form.dataset.trackForm || "email_capture";
     var submissionPayload = {
-      formName: form.dataset.trackForm || "email_capture",
+      formName: formName,
       name: name,
       email: email,
       pagePath: currentPagePath,
@@ -503,6 +511,25 @@
       market: trackingPayload.market || "florida-gulf-coast",
       placement: trackingPayload.placement || "inline"
     };
+
+    [
+      "entry_point",
+      "source_page",
+      "destination_interest",
+      "trip_intent",
+      "party_size_band",
+      "timing_window",
+      "property_interest",
+      "booking_stage",
+      "last_stay_property",
+      "last_checkout_month",
+      "repeat_guest",
+      "last_booking_source"
+    ].forEach(function (fieldName) {
+      var value = getFormFieldValue(form, fieldName);
+      if (!value) return;
+      submissionPayload[fieldName] = value;
+    });
 
     fetch(GUEST_EMAIL_CAPTURE_ENDPOINT, {
       method: "POST",

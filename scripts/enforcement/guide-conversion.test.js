@@ -113,9 +113,12 @@ function loadConversionTrackingWithStubs() {
 
 test("shared guide conversion kit exposes savings, stay, repeat-stay, and email capture modules", () => {
   const partialPath = path.join(projectRoot, "src", "_includes", "partials", "guide-conversion-kit.njk");
+  const topOptInPath = path.join(projectRoot, "src", "_includes", "partials", "guide-intent-optin.njk");
   assert.equal(fs.existsSync(partialPath), true, "guide conversion partial should exist");
+  assert.equal(fs.existsSync(topOptInPath), true, "top guide opt-in partial should exist");
 
   const partial = fs.readFileSync(partialPath, "utf8");
+  const topOptIn = fs.readFileSync(topOptInPath, "utf8");
   for (const marker of [
     "guide-conversion-shell",
     "guide-book-direct-savings",
@@ -128,9 +131,22 @@ test("shared guide conversion kit exposes savings, stay, repeat-stay, and email 
     'data-email-capture-form',
     "Direct Booking List",
     "Join The Direct-Booking List",
-    "email_capture_submit"
+    "email_capture_submit",
+    'name="form_name" value="guide_optin"',
+    'name="entry_point" value="{{ config.entryPoint or \'guide\' }}"',
+    'name="booking_stage" value="{{ config.bookingStage or \'planning\' }}"'
   ]) {
     assert.equal(partial.includes(marker), true, `guide conversion kit missing ${marker}`);
+  }
+
+  for (const marker of [
+    "guide-intent-optin",
+    "Trip Planning Shortcut",
+    "Send My Short List",
+    'name="form_name" value="guide_optin"',
+    'data-form-placement="{{ config.placement or \'guide-inline-top\' }}"'
+  ]) {
+    assert.equal(topOptIn.includes(marker), true, `guide intent opt-in missing ${marker}`);
   }
 
   for (const staleOfferLanguage of ["Stay Alerts", "date alerts", "matching homes"]) {
@@ -164,6 +180,17 @@ test("conversion tracking supports both guide and owner measurement events", () 
     "booking_engine_handoff"
   ]) {
     assert.equal(trackingScript.includes(eventName), true, `tracking script missing ${eventName}`);
+  }
+
+  for (const fieldName of [
+    "entry_point",
+    "source_page",
+    "destination_interest",
+    "trip_intent",
+    "timing_window",
+    "booking_stage"
+  ]) {
+    assert.equal(trackingScript.includes(fieldName), true, `tracking script should pass ${fieldName} for inline captures`);
   }
 });
 

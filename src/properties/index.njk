@@ -541,6 +541,117 @@ headExtra: |
       display: block;
     }
 
+    .catalog-alert-panel {
+      margin-top: 34px;
+      padding: 28px;
+      border-radius: 28px;
+      background: linear-gradient(135deg, rgba(45, 70, 71, 0.96), rgba(61, 92, 93, 0.92));
+      color: white;
+      box-shadow: 0 20px 48px rgba(28, 38, 39, 0.18);
+    }
+
+    .catalog-alert-panel h3 {
+      font-size: clamp(28px, 4vw, 36px);
+      color: white;
+      margin-bottom: 10px;
+    }
+
+    .catalog-alert-panel p {
+      max-width: 760px;
+      color: rgba(255, 255, 255, 0.84);
+      line-height: 1.75;
+    }
+
+    .catalog-alert-options {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin-top: 22px;
+    }
+
+    .catalog-alert-option {
+      padding: 16px;
+      border-radius: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: rgba(255, 255, 255, 0.08);
+      color: white;
+      text-align: left;
+      font: inherit;
+      cursor: pointer;
+      transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+    }
+
+    .catalog-alert-option:hover,
+    .catalog-alert-option.is-active {
+      transform: translateY(-2px);
+      background: rgba(201, 169, 98, 0.18);
+      border-color: rgba(201, 169, 98, 0.46);
+    }
+
+    .catalog-alert-option strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 12px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.78);
+    }
+
+    .catalog-alert-option span {
+      display: block;
+      font-size: 16px;
+      line-height: 1.4;
+    }
+
+    .catalog-alert-form {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .catalog-alert-form input {
+      min-height: 52px;
+      padding: 0 16px;
+      border-radius: 14px;
+      border: none;
+      font: inherit;
+    }
+
+    .catalog-alert-form button {
+      min-height: 52px;
+      padding: 0 22px;
+      border: none;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--gold) 0%, #b8943a 100%);
+      color: var(--stone);
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .catalog-alert-note {
+      margin-top: 12px;
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .catalog-alert-success {
+      display: none;
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      color: white;
+    }
+
+    .catalog-alert-success.is-visible,
+    .catalog-alert-success.show {
+      display: block;
+    }
+
     .catalog-owner-cta {
       margin-top: 42px;
       padding: 30px;
@@ -572,7 +683,8 @@ headExtra: |
 
     @media (max-width: 900px) {
       .catalog-highlights,
-      .catalog-owner-cta {
+      .catalog-owner-cta,
+      .catalog-alert-form {
         grid-template-columns: 1fr;
       }
     }
@@ -959,6 +1071,103 @@ headExtra: |
         </a>
       </div>
     </section>
+
+    <section class="catalog-alert-panel" data-email-capture-root aria-labelledby="catalog-alert-title">
+      <p class="section-tag" style="color: rgba(255, 255, 255, 0.72);">Trip-Type Alerts</p>
+      <h3 id="catalog-alert-title">Get matching openings, not a generic newsletter.</h3>
+      <p>
+        Pick the trip shape you actually want. We will send the right openings, the cleaner direct-book path, and fewer irrelevant homes.
+      </p>
+
+      <div class="catalog-alert-options" aria-label="Choose your trip type">
+        <button
+          class="catalog-alert-option is-active"
+          type="button"
+          data-trip-intent-option
+          data-trip-intent="fee_first"
+          data-destination-interest="anna-maria-island-corridor"
+          data-booking-stage="considering"
+        >
+          <strong>Fee-first</strong>
+          <span>Same Gulf trip, less checkout drag.</span>
+        </button>
+        <button
+          class="catalog-alert-option"
+          type="button"
+          data-trip-intent-option
+          data-trip-intent="island_first"
+          data-destination-interest="anna-maria-island"
+          data-booking-stage="considering"
+        >
+          <strong>Island-first</strong>
+          <span>Near-AMI stays with direct-book savings.</span>
+        </button>
+        <button
+          class="catalog-alert-option"
+          type="button"
+          data-trip-intent-option
+          data-trip-intent="value_base"
+          data-destination-interest="bradenton"
+          data-booking-stage="considering"
+        >
+          <strong>Value base</strong>
+          <span>More space, pool-home value, easier parking.</span>
+        </button>
+        <button
+          class="catalog-alert-option"
+          type="button"
+          data-trip-intent-option
+          data-trip-intent="sarasota_city"
+          data-destination-interest="sarasota"
+          data-booking-stage="considering"
+        >
+          <strong>Sarasota</strong>
+          <span>Downtown access with Gulf day trips.</span>
+        </button>
+        <button
+          class="catalog-alert-option"
+          type="button"
+          data-trip-intent-option
+          data-trip-intent="fast_escape"
+          data-destination-interest="florida-gulf-coast"
+          data-timing-window="last_minute"
+          data-booking-stage="ready_soon"
+        >
+          <strong>Fast escape</strong>
+          <span>Short-window openings worth moving on now.</span>
+        </button>
+      </div>
+
+      <form
+        class="catalog-alert-form"
+        data-track-form="email_capture"
+        data-form-submit-event="email_capture_submit"
+        data-inline-email-capture="true"
+        data-page-slug="properties"
+        data-source-page-slug="properties"
+        data-form-placement="catalog-alert-panel"
+      >
+        <input type="hidden" name="form_name" value="trip_type_optin">
+        <input type="hidden" name="source_page_slug" value="properties">
+        <input type="hidden" name="entry_point" value="properties">
+        <input type="hidden" name="source_page" value="properties">
+        <input type="hidden" name="trip_intent" value="fee_first">
+        <input type="hidden" name="destination_interest" value="anna-maria-island-corridor">
+        <input type="hidden" name="timing_window" value="">
+        <input type="hidden" name="market" value="florida-gulf-coast">
+        <input type="hidden" name="booking_stage" value="considering">
+        <input type="text" name="name" placeholder="First name" autocomplete="name" required>
+        <input type="email" name="email" placeholder="Email address" autocomplete="email" required>
+        <button type="submit">Send Matching Openings</button>
+      </form>
+
+      <div class="catalog-alert-success" data-email-capture-success>
+        You are in. We will send matching openings for the trip shape you picked, not a generic blast.
+      </div>
+      <p class="catalog-alert-note">
+        This is for matching openings and direct-book routes only. No owner promos, no filler.
+      </p>
+    </section>
   </div>
 </section>
 
@@ -1097,6 +1306,39 @@ headExtra: |
         applyFilter(button.dataset.filter || "all", { sync: true });
       });
     });
+
+    const alertOptions = Array.from(document.querySelectorAll("[data-trip-intent-option]"));
+    const alertForm = document.querySelector(".catalog-alert-form");
+
+    function setAlertField(name, value) {
+      if (!alertForm) return;
+      const field = alertForm.querySelector('[name="' + name + '"]');
+      if (!field) return;
+      field.value = value || "";
+    }
+
+    function applyAlertOption(option) {
+      if (!option) return;
+
+      alertOptions.forEach((node) => {
+        node.classList.toggle("is-active", node === option);
+      });
+
+      setAlertField("trip_intent", option.dataset.tripIntent || "");
+      setAlertField("destination_interest", option.dataset.destinationInterest || "");
+      setAlertField("timing_window", option.dataset.timingWindow || "");
+      setAlertField("booking_stage", option.dataset.bookingStage || "considering");
+    }
+
+    alertOptions.forEach((option) => {
+      option.addEventListener("click", () => {
+        applyAlertOption(option);
+      });
+    });
+
+    if (alertOptions.length > 0) {
+      applyAlertOption(alertOptions[0]);
+    }
 
     const initialFilter = resolveInitialFilter();
     applyFilter(initialFilter);

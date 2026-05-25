@@ -260,9 +260,22 @@
         data-track-form="email_capture"
         data-form-submit-event="email_capture_submit"
         data-guide-slug="{{ config.guideSlug }}"
+        data-page-slug="{{ config.pageSlug or config.guideSlug }}"
+        data-source-page-slug="{{ config.sourcePageSlug or config.guideSlug }}"
         data-form-placement="inline"
       >
+        <input type="hidden" name="form_name" value="guide_optin">
+        <input type="hidden" name="source_page_slug" value="{{ config.sourcePageSlug or config.guideSlug }}">
+        <input type="hidden" name="entry_point" value="{{ config.entryPoint or 'guide' }}">
+        <input type="hidden" name="source_page" value="{{ config.sourcePage or config.guideSlug }}">
+        <input type="hidden" name="destination_interest" value="{{ config.destinationInterest or '' }}">
         <input type="hidden" name="guide_slug" value="{{ config.guideSlug }}">
+        <input type="hidden" name="trip_intent" value="{{ config.tripIntent or '' }}">
+        <input type="hidden" name="party_size_band" value="{{ config.partySizeBand or '' }}">
+        <input type="hidden" name="timing_window" value="{{ config.timingWindow or '' }}">
+        <input type="hidden" name="property_interest" value="{{ config.propertyInterest or '' }}">
+        <input type="hidden" name="market" value="{{ config.market or 'florida-gulf-coast' }}">
+        <input type="hidden" name="booking_stage" value="{{ config.bookingStage or 'planning' }}">
         <input type="text" name="name" placeholder="First name" autocomplete="name" required>
         <input type="email" name="email" placeholder="Email address" autocomplete="email" required>
         <button type="submit">{{ config.emailButtonLabel or "Join The Direct-Booking List" }}</button>

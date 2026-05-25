@@ -16,6 +16,22 @@ function normalizeText(value) {
   return value.trim();
 }
 
+function readPayloadValue(payload, keys) {
+  if (!payload || typeof payload !== "object") return "";
+
+  for (const key of keys) {
+    if (!(key in payload)) continue;
+    const value = payload[key];
+    if (value === null || value === undefined) continue;
+    const normalized = normalizeText(String(value));
+    if (normalized) {
+      return normalized;
+    }
+  }
+
+  return "";
+}
+
 function normalizeEmail(value) {
   const email = normalizeText(value).toLowerCase();
   return email && email.includes("@") ? email : "";
@@ -87,6 +103,10 @@ function readPayload(rawPayload) {
     : rawPayload;
 }
 
+function readNormalizedToken(payload, keys, maxLength = MAX_MAILCHIMP_TAG_LENGTH) {
+  return normalizeToken(readPayloadValue(payload, keys), maxLength);
+}
+
 function buildSubmissionId(email, createdAt, pagePath, placement) {
   return crypto
     .createHash("sha1")
@@ -151,8 +171,12 @@ function sanitizeMailchimpWarnings(warnings = []) {
 function buildGuestMailchimpTags(receipt) {
   if (!receipt || typeof receipt !== "object") return [];
 
+  const isPopupCapture =
+    (receipt.formName || GUEST_EMAIL_CAPTURE_FORM_NAME) === GUEST_EMAIL_CAPTURE_FORM_NAME &&
+    (receipt.placement || "inline") === "popup";
+
   const candidateTags = [
-    "guest-capture",
+    isPopupCapture ? "guest-capture" : "guest-prospect",
     `guest-capture-form-${receipt.formName || GUEST_EMAIL_CAPTURE_FORM_NAME}`,
     "guest-capture-source-site",
     `guest-capture-placement-${receipt.placement || "inline"}`,
@@ -160,10 +184,40 @@ function buildGuestMailchimpTags(receipt) {
     `guest-capture-page-${receipt.pageSlug || slugFromPath(receipt.pagePath || "/")}`
   ];
 
+  if (receipt.entryPoint) {
+    candidateTags.push(`guest-capture-entry-${receipt.entryPoint}`);
+  }
+
+  if (receipt.sourcePage && receipt.sourcePage !== receipt.pageSlug) {
+    candidateTags.push(`guest-capture-source-${receipt.sourcePage}`);
+  }
+
   if (receipt.guideSlug) {
     candidateTags.push(`guest-capture-guide-${receipt.guideSlug}`);
+    candidateTags.push("guide-optin");
   } else if (receipt.sourcePageSlug && receipt.sourcePageSlug !== receipt.pageSlug) {
     candidateTags.push(`guest-capture-source-page-${receipt.sourcePageSlug}`);
+  }
+
+  if (receipt.destinationInterest) {
+    candidateTags.push(`guest-capture-destination-${receipt.destinationInterest}`);
+  }
+
+  if (receipt.tripIntent) {
+    candidateTags.push(receipt.tripIntent);
+    candidateTags.push(`guest-capture-intent-${receipt.tripIntent}`);
+  }
+
+  if (receipt.timingWindow) {
+    candidateTags.push(`guest-capture-timing-${receipt.timingWindow}`);
+  }
+
+  if (receipt.propertyInterest) {
+    candidateTags.push(`guest-capture-property-${receipt.propertyInterest}`);
+  }
+
+  if (receipt.bookingStage) {
+    candidateTags.push(`guest-capture-stage-${receipt.bookingStage}`);
   }
 
   return [...new Set(candidateTags.map((tag) => normalizeToken(tag)).filter(Boolean))];
@@ -181,6 +235,18 @@ function buildGuestMailchimpEvent(receipt) {
       pageSlug: receipt.pageSlug || slugFromPath(receipt.pagePath || "/"),
       guideSlug: receipt.guideSlug || "",
       sourcePageSlug: receipt.sourcePageSlug || receipt.pageSlug || "",
+      sourcePage: receipt.sourcePage || receipt.sourcePageSlug || receipt.pageSlug || "",
+      entryPoint: receipt.entryPoint || "",
+      destinationInterest: receipt.destinationInterest || "",
+      tripIntent: receipt.tripIntent || "",
+      partySizeBand: receipt.partySizeBand || "",
+      timingWindow: receipt.timingWindow || "",
+      propertyInterest: receipt.propertyInterest || "",
+      bookingStage: receipt.bookingStage || "",
+      lastStayProperty: receipt.lastStayProperty || "",
+      lastCheckoutMonth: receipt.lastCheckoutMonth || "",
+      repeatGuest: receipt.repeatGuest || "",
+      lastBookingSource: receipt.lastBookingSource || "",
       market: receipt.market || "florida-gulf-coast",
       placement: receipt.placement || "inline",
       createdAt: receipt.createdAt || ""
@@ -194,27 +260,47 @@ function buildGuestEmailCaptureReceipt(rawPayload) {
   const email = normalizeEmail(payload.email);
   if (!name || !email) return null;
 
-  const createdAt = normalizeText(payload.createdAt || payload.created_at || new Date().toISOString());
-  const pagePath = normalizePath(payload.pagePath || payload.page_path || "/");
-  const placement = normalizeText(payload.placement) || "inline";
-  const pageSlug = normalizeText(payload.pageSlug || payload.page_slug) || slugFromPath(pagePath);
-  const guideSlug = normalizeText(payload.guideSlug || payload.guide_slug) || "";
+  const createdAt = readPayloadValue(payload, ["createdAt", "created_at"]) || new Date().toISOString();
+  const pagePath = normalizePath(readPayloadValue(payload, ["pagePath", "page_path"]) || "/");
+  const placement = readNormalizedToken(payload, ["placement"], 40) || "inline";
+  const pageSlug = readNormalizedToken(payload, ["pageSlug", "page_slug"], 80) || slugFromPath(pagePath);
+  const guideSlug = readNormalizedToken(payload, ["guideSlug", "guide_slug"], 80) || "";
   const sourcePageSlug =
-    normalizeText(payload.sourcePageSlug || payload.source_page_slug) ||
+    readNormalizedToken(payload, ["sourcePageSlug", "source_page_slug"], 80) ||
     pageSlug;
+  const formName =
+    readNormalizedToken(payload, ["formName", "form_name"], 40) ||
+    GUEST_EMAIL_CAPTURE_FORM_NAME;
+  const entryPoint =
+    readNormalizedToken(payload, ["entryPoint", "entry_point"], 40) ||
+    (placement === "popup" ? "popup" : guideSlug ? "guide" : pageSlug === "properties" ? "properties" : "site");
   const proofLabel = normalizeProofLabel(payload.proofLabel || payload.proof_label);
 
   const receipt = {
     submissionId:
-      normalizeText(payload.submissionId || payload.submission_id || payload.id) ||
+      readPayloadValue(payload, ["submissionId", "submission_id", "id"]) ||
       buildSubmissionId(email, createdAt, pagePath, placement),
     createdAt,
-    formName: GUEST_EMAIL_CAPTURE_FORM_NAME,
+    formName,
     pagePath,
     pageSlug,
     guideSlug,
     sourcePageSlug,
-    market: normalizeText(payload.market) || "florida-gulf-coast",
+    sourcePage:
+      readNormalizedToken(payload, ["sourcePage", "source_page"], 80) ||
+      sourcePageSlug,
+    entryPoint,
+    destinationInterest: readNormalizedToken(payload, ["destinationInterest", "destination_interest"], 80),
+    tripIntent: readNormalizedToken(payload, ["tripIntent", "trip_intent"], 80),
+    partySizeBand: readNormalizedToken(payload, ["partySizeBand", "party_size_band"], 40),
+    timingWindow: readNormalizedToken(payload, ["timingWindow", "timing_window"], 40),
+    propertyInterest: readNormalizedToken(payload, ["propertyInterest", "property_interest"], 80),
+    market: readNormalizedToken(payload, ["market"], 80) || "florida-gulf-coast",
+    bookingStage: readNormalizedToken(payload, ["bookingStage", "booking_stage"], 40),
+    lastStayProperty: readNormalizedToken(payload, ["lastStayProperty", "last_stay_property"], 80),
+    lastCheckoutMonth: readNormalizedToken(payload, ["lastCheckoutMonth", "last_checkout_month"], 20),
+    repeatGuest: readNormalizedToken(payload, ["repeatGuest", "repeat_guest"], 20),
+    lastBookingSource: readNormalizedToken(payload, ["lastBookingSource", "last_booking_source"], 40),
     placement
   };
 
@@ -225,7 +311,7 @@ function buildGuestEmailCaptureReceipt(rawPayload) {
   return receipt;
 }
 
-function withMailchimpDelivery(receipt, delivery = {}) {
+function withEmailDelivery(receipt, delivery = {}) {
   if (!receipt || typeof receipt !== "object") return receipt;
 
   const mode = normalizeToken(delivery.mode, 40);
@@ -234,20 +320,37 @@ function withMailchimpDelivery(receipt, delivery = {}) {
     : [];
   const warnings = sanitizeMailchimpWarnings(delivery.warnings);
   const eventName = normalizeMailchimpEventName(delivery.eventName);
+  const listIds = Array.isArray(delivery.listIds)
+    ? [...new Set(delivery.listIds.map((value) => normalizeText(String(value || ""))).filter(Boolean))]
+    : [];
+  const platform =
+    normalizeToken(delivery.platform, 20) ||
+    (mode === "listmonk-api" ? "listmonk" : "mailchimp");
 
-  if (!mode && tags.length === 0 && warnings.length === 0 && !eventName) {
+  if (!mode && tags.length === 0 && warnings.length === 0 && !eventName && listIds.length === 0) {
+    return receipt;
+  }
+
+  const deliveryMeta = {
+    ...(mode ? { mode } : {}),
+    ...(eventName ? { eventName } : {}),
+    ...(tags.length > 0 ? { tags } : {}),
+    ...(warnings.length > 0 ? { warnings } : {}),
+    ...(listIds.length > 0 ? { listIds } : {})
+  };
+
+  if (Object.keys(deliveryMeta).length === 0) {
     return receipt;
   }
 
   return {
     ...receipt,
-    mailchimp: {
-      ...(mode ? { mode } : {}),
-      ...(eventName ? { eventName } : {}),
-      ...(tags.length > 0 ? { tags } : {}),
-      ...(warnings.length > 0 ? { warnings } : {})
-    }
+    [platform]: deliveryMeta
   };
+}
+
+function withMailchimpDelivery(receipt, delivery = {}) {
+  return withEmailDelivery(receipt, { ...delivery, platform: "mailchimp" });
 }
 
 function emptyMetrics() {
@@ -362,42 +465,70 @@ function formatGuestEmailCaptureSummary(metrics) {
       const safeReceipt = {
         submissionId: receipt.submissionId,
         createdAt: receipt.createdAt,
+        formName: receipt.formName,
         pagePath: receipt.pagePath,
         pageSlug: receipt.pageSlug,
         guideSlug: receipt.guideSlug,
         sourcePageSlug: receipt.sourcePageSlug,
+        sourcePage: receipt.sourcePage,
+        entryPoint: receipt.entryPoint,
+        destinationInterest: receipt.destinationInterest,
+        tripIntent: receipt.tripIntent,
+        partySizeBand: receipt.partySizeBand,
+        timingWindow: receipt.timingWindow,
+        propertyInterest: receipt.propertyInterest,
         market: receipt.market,
+        bookingStage: receipt.bookingStage,
+        lastStayProperty: receipt.lastStayProperty,
+        lastCheckoutMonth: receipt.lastCheckoutMonth,
+        repeatGuest: receipt.repeatGuest,
+        lastBookingSource: receipt.lastBookingSource,
         placement: receipt.placement
       };
+      for (const key of Object.keys(safeReceipt)) {
+        if (safeReceipt[key] === undefined || safeReceipt[key] === null || safeReceipt[key] === "") {
+          delete safeReceipt[key];
+        }
+      }
 
       if (normalizeProofLabel(receipt.proofLabel)) {
         safeReceipt.proofLabel = normalizeProofLabel(receipt.proofLabel);
       }
 
-      if (receipt.mailchimp && typeof receipt.mailchimp === "object") {
-        const mailchimp = {};
-        const mode = normalizeToken(receipt.mailchimp.mode, 40);
-        const eventName = normalizeMailchimpEventName(receipt.mailchimp.eventName);
-        const tags = Array.isArray(receipt.mailchimp.tags)
-          ? [...new Set(receipt.mailchimp.tags.map((tag) => normalizeToken(tag)).filter(Boolean))]
+      for (const platform of ["mailchimp", "listmonk"]) {
+        if (!receipt[platform] || typeof receipt[platform] !== "object") {
+          continue;
+        }
+
+        const delivery = {};
+        const mode = normalizeToken(receipt[platform].mode, 40);
+        const eventName = normalizeMailchimpEventName(receipt[platform].eventName);
+        const tags = Array.isArray(receipt[platform].tags)
+          ? [...new Set(receipt[platform].tags.map((tag) => normalizeToken(tag)).filter(Boolean))]
           : [];
-        const warnings = sanitizeMailchimpWarnings(receipt.mailchimp.warnings);
+        const warnings = sanitizeMailchimpWarnings(receipt[platform].warnings);
+        const listIds = Array.isArray(receipt[platform].listIds)
+          ? [...new Set(receipt[platform].listIds.map((value) => normalizeText(String(value || ""))).filter(Boolean))]
+          : [];
 
         if (mode) {
-          mailchimp.mode = mode;
+          delivery.mode = mode;
         }
         if (eventName) {
-          mailchimp.eventName = eventName;
+          delivery.eventName = eventName;
         }
         if (tags.length > 0) {
-          mailchimp.tags = tags;
+          delivery.tags = tags;
         }
         if (warnings.length > 0) {
-          mailchimp.warnings = warnings;
+          delivery.warnings = warnings;
+        }
+        if (listIds.length > 0) {
+          delivery.listIds = listIds;
         }
 
-        if (Object.keys(mailchimp).length > 0) {
-          safeReceipt.mailchimp = mailchimp;
+        if (Object.keys(delivery).length > 0) {
+          safeReceipt[platform] = delivery;
         }
       }
 
@@ -491,6 +622,7 @@ module.exports = {
   mergeGuestEmailCaptureMetrics,
   sanitizeMailchimpWarnings,
   splitName,
+  withEmailDelivery,
   withMailchimpDelivery,
   relabelGuestEmailCaptureReceipts,
   formatGuestEmailCaptureSummary,

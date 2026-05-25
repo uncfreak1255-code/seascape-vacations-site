@@ -1,4 +1,5 @@
 {% from "partials/ui-icon.njk" import uiIcon, uiLabel %}
+{% from "partials/guide-intent-optin.njk" import guideIntentOptIn %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -175,6 +176,18 @@ First-timers: Holmes Beach (center of AMI) for walkable restaurants and great be
 <h2>Off the Island: Where the Smart Money Stays</h2>
 
 <p>Here's a stat that surprises people: about 40% of our returning guests — the ones who've been to AMI three, four, five times — choose to stay on the Bradenton mainland now. Not because they love the island less. Because they discovered they get a bigger, nicer property for less money, and the beach is still right there.</p>
+
+{{ guideIntentOptIn({
+  guideSlug: "where-to-stay-near-anna-maria-island",
+  label: "Stay-Area Shortcut",
+  title: "Get the short list for this trip type",
+  copy: "We will send the better-fit areas for your trip, plus the homes that keep you close to AMI without paying for the wrong base.",
+  buttonLabel: "Send My Stay Short List",
+  destinationInterest: "anna-maria-island-corridor",
+  tripIntent: "where_to_stay",
+  bookingStage: "planning",
+  sourcePage: "where-to-stay-near-anna-maria-island"
+}) }}
 
 <div class="hood-grid">
 <div class="hood-card">

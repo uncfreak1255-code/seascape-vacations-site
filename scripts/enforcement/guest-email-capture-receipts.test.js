@@ -39,10 +39,12 @@ const {
   readAuthToken,
   readGuestEmailCaptureMetrics,
   splitName,
+  withEmailDelivery,
   withMailchimpDelivery
 } = require("../../netlify/functions/_guest-email-capture-metrics");
 const {
   buildMailchimpConfig,
+  buildListmonkConfig,
   handleGuestEmailCapture
 } = require("../../netlify/functions/guest-email-capture");
 const {
@@ -77,6 +79,7 @@ test("guest capture helper strips PII and normalizes page fields", () => {
   assert.equal(receipt.pageSlug, "bradenton-vs-sarasota");
   assert.equal(receipt.guideSlug, "bradenton-vs-sarasota");
   assert.equal(receipt.sourcePageSlug, "bradenton-vs-sarasota");
+  assert.equal(receipt.entryPoint, "popup");
   assert.equal(receipt.placement, "popup");
   assert.equal(receipt.proofLabel, undefined);
   assert.equal("email" in receipt, false);
@@ -110,7 +113,9 @@ test("guest capture helper builds Mailchimp-ready segmentation context", () => {
     "guest-capture-placement-popup",
     "guest-capture-market-florida-gulf-coast",
     "guest-capture-page-bradenton-vs-sarasota",
-    "guest-capture-guide-bradenton-vs-sarasota"
+    "guest-capture-entry-popup",
+    "guest-capture-guide-bradenton-vs-sarasota",
+    "guide-optin"
   ]);
   assert.deepEqual(buildGuestMailchimpEvent(receipt), {
     name: "guest_email_capture",
@@ -121,6 +126,18 @@ test("guest capture helper builds Mailchimp-ready segmentation context", () => {
       pageSlug: "bradenton-vs-sarasota",
       guideSlug: "bradenton-vs-sarasota",
       sourcePageSlug: "bradenton-vs-sarasota",
+      sourcePage: "bradenton-vs-sarasota",
+      entryPoint: "popup",
+      destinationInterest: "",
+      tripIntent: "",
+      partySizeBand: "",
+      timingWindow: "",
+      propertyInterest: "",
+      bookingStage: "",
+      lastStayProperty: "",
+      lastCheckoutMonth: "",
+      repeatGuest: "",
+      lastBookingSource: "",
       market: "florida-gulf-coast",
       placement: "popup",
       createdAt: "2026-05-12T12:00:00.000Z"
@@ -308,11 +325,14 @@ test("guest email capture stores sanitized metrics after a successful Mailchimp 
       {
         httpMethod: "POST",
         body: JSON.stringify({
+          formName: "guide_optin",
           name: "Sawyer",
           email: "sawyer@example.com",
           pagePath: "/guides/bradenton-vs-sarasota/",
           guideSlug: "bradenton-vs-sarasota",
           sourcePageSlug: "bradenton-vs-sarasota",
+          entryPoint: "guide",
+          tripIntent: "comparison_planning",
           market: "florida-gulf-coast",
           placement: "inline",
           createdAt: "2026-05-12T12:00:00.000Z"
@@ -359,9 +379,16 @@ test("guest email capture stores sanitized metrics after a successful Mailchimp 
     const parsedMetrics = JSON.parse(storedMetrics);
     assert.equal(parsedMetrics.totalCaptures, 1);
     assert.equal(parsedMetrics.receipts[0].pagePath, "/guides/bradenton-vs-sarasota/");
+    assert.equal(parsedMetrics.receipts[0].formName, "guide-optin");
+    assert.equal(parsedMetrics.receipts[0].entryPoint, "guide");
+    assert.equal(parsedMetrics.receipts[0].tripIntent, "comparison-planning");
     assert.equal(parsedMetrics.receipts[0].mailchimp.mode, "marketing-api");
     assert.equal(parsedMetrics.receipts[0].mailchimp.eventName, "guest_email_capture");
     assert.equal(parsedMetrics.receipts[0].mailchimp.tags.includes("guest-capture-page-bradenton-vs-sarasota"), true);
+    assert.equal(parsedMetrics.receipts[0].mailchimp.tags.includes("guest-prospect"), true);
+    assert.equal(parsedMetrics.receipts[0].mailchimp.tags.includes("guest-capture-intent-comparison-planning"), true);
+    assert.equal(parsedMetrics.receipts[0].mailchimp.tags.includes("guide-optin"), true);
+    assert.equal(parsedMetrics.receipts[0].mailchimp.tags.includes("guest-capture"), false);
     assert.equal("email" in parsedMetrics.receipts[0], false);
     assert.deepEqual(
       fetchCalls.map((call) => call.method),
@@ -373,13 +400,17 @@ test("guest email capture stores sanitized metrics after a successful Mailchimp 
     );
     assert.deepEqual(fetchCalls[1].body, {
       tags: [
-        { name: "guest-capture", status: "active" },
-        { name: "guest-capture-form-email-capture", status: "active" },
+        { name: "guest-prospect", status: "active" },
+        { name: "guest-capture-form-guide-optin", status: "active" },
         { name: "guest-capture-source-site", status: "active" },
         { name: "guest-capture-placement-inline", status: "active" },
         { name: "guest-capture-market-florida-gulf-coast", status: "active" },
         { name: "guest-capture-page-bradenton-vs-sarasota", status: "active" },
-        { name: "guest-capture-guide-bradenton-vs-sarasota", status: "active" }
+        { name: "guest-capture-entry-guide", status: "active" },
+        { name: "guest-capture-guide-bradenton-vs-sarasota", status: "active" },
+        { name: "guide-optin", status: "active" },
+        { name: "comparison-planning", status: "active" },
+        { name: "guest-capture-intent-comparison-planning", status: "active" }
       ]
     });
     assert.equal(fetchCalls[2].body.name, "guest_email_capture");
@@ -514,6 +545,126 @@ test("guest capture mailchimp delivery metadata is sanitized before storage", ()
     tags: ["guest-capture"],
     warnings: ["mailchimp-event-sync-failed"]
   });
+});
+
+test("guest email capture routes non-popup forms to listmonk when listmonk is configured", async () => {
+  let storedMetrics = null;
+  const fetchCalls = [];
+  const mockStore = {
+    async get() {
+      return storedMetrics;
+    },
+    async set(_key, value) {
+      storedMetrics = value;
+    }
+  };
+
+  const previousListmonkApiUrl = process.env.LISTMONK_API_URL;
+  const previousListmonkApiUser = process.env.LISTMONK_API_USER;
+  const previousListmonkApiToken = process.env.LISTMONK_API_TOKEN;
+  const previousListId = process.env.LISTMONK_GUEST_PROSPECTS_LIST_ID;
+  process.env.LISTMONK_API_URL = "https://listmonk.example.com";
+  process.env.LISTMONK_API_USER = "api-user";
+  process.env.LISTMONK_API_TOKEN = "secret-token";
+  process.env.LISTMONK_GUEST_PROSPECTS_LIST_ID = "7";
+
+  try {
+    assert.deepEqual(buildListmonkConfig(), {
+      baseUrl: "https://listmonk.example.com",
+      username: "api-user",
+      token: "secret-token",
+      guestProspectsListId: 7
+    });
+
+    const response = await handleGuestEmailCapture(
+      {
+        httpMethod: "POST",
+        body: JSON.stringify({
+          formName: "trip_type_optin",
+          name: "Sawyer",
+          email: "sawyer@example.com",
+          pagePath: "/properties/",
+          sourcePageSlug: "properties",
+          sourcePage: "properties",
+          entryPoint: "properties",
+          destinationInterest: "anna-maria-island-corridor",
+          tripIntent: "fee_first",
+          market: "florida-gulf-coast",
+          bookingStage: "considering",
+          placement: "catalog-alert-panel",
+          createdAt: "2026-05-24T18:00:00.000Z"
+        })
+      },
+      undefined,
+      mockStore,
+      async (url, options = {}) => {
+        fetchCalls.push({
+          url: String(url),
+          method: options.method || "GET",
+          body: options.body ? JSON.parse(options.body) : null
+        });
+
+        return {
+          ok: true,
+          status: 200,
+          async text() {
+            return JSON.stringify({ data: { id: 17 } });
+          }
+        };
+      }
+    );
+
+    assert.deepEqual(JSON.parse(response.body), {
+      stored: true,
+      totalCaptures: 1,
+      pagePath: "/properties/",
+      placement: "catalog-alert-panel",
+      deliveryMode: "listmonk_api"
+    });
+
+    assert.equal(fetchCalls.length, 1);
+    assert.equal(fetchCalls[0].url, "https://listmonk.example.com/api/subscribers");
+    assert.equal(fetchCalls[0].method, "POST");
+    assert.deepEqual(fetchCalls[0].body.lists, [7]);
+    assert.equal(fetchCalls[0].body.attribs.trip_intent, "fee-first");
+    assert.equal(fetchCalls[0].body.attribs.entry_point, "properties");
+
+    const parsedMetrics = JSON.parse(storedMetrics);
+    assert.deepEqual(parsedMetrics.receipts[0].listmonk, {
+      mode: "listmonk-api",
+      listIds: ["7"]
+    });
+    assert.equal(parsedMetrics.receipts[0].mailchimp, undefined);
+  } finally {
+    restoreEnvValue("LISTMONK_API_URL", previousListmonkApiUrl);
+    restoreEnvValue("LISTMONK_API_USER", previousListmonkApiUser);
+    restoreEnvValue("LISTMONK_API_TOKEN", previousListmonkApiToken);
+    restoreEnvValue("LISTMONK_GUEST_PROSPECTS_LIST_ID", previousListId);
+  }
+});
+
+test("generic email delivery helper can store listmonk metadata without mailchimp fields", () => {
+  const receipt = buildGuestEmailCaptureReceipt({
+    submissionId: "capture-4",
+    formName: "trip_type_optin",
+    name: "Sawyer",
+    email: "sawyer@example.com",
+    pagePath: "/properties/",
+    placement: "catalog-alert-panel",
+    createdAt: "2026-05-24T18:00:00.000Z"
+  });
+
+  const enriched = withEmailDelivery(receipt, {
+    platform: "listmonk",
+    mode: "listmonk_api",
+    listIds: ["7"]
+  });
+
+  assert.deepEqual(enriched.listmonk, {
+    mode: "listmonk-api",
+    listIds: ["7"]
+  });
+  assert.equal(enriched.mailchimp, undefined);
 });
 
 test("guest email capture returns invalid payload when name/email are missing", async () => {
