@@ -3390,7 +3390,7 @@
       "title": "Florida Vacation Rental Management Fees: What Owners Keep",
       "h1": "Vacation Rental Management Fees in Florida: What Owners Actually Pay",
       "description": "See Florida vacation rental management fees, marketplace booking costs, and when a lower percentage still leaves owners with less income.",
-      "intro": "Most owners ask the wrong fee question first. The useful comparison is not just whether one manager charges fewer points than another. It is whether pricing, booking channels, and local execution leave more money with the owner at the end of the month.",
+      "intro": "Most owners compare 15% versus 20% and still cannot tell what they actually keep. Start with one decision view: management percentage, booking-source costs, and execution misses, then use the 48-hour review to see whether switching changes your payout.",
       "proofAssetKey": "gulf-coast-owner-benchmark-2026",
       "benefits": [
         "Fee comparison grounded in what the owner actually keeps instead of headline percentages",
@@ -3472,26 +3472,26 @@
       "reviewDeliverable": {
         "tag": "48-Hour Review",
         "title": "What your 48-hour review includes",
-        "intro": "You should see what is proven, what is expensive, and what is still unclear before you compare one management offer against another.",
+        "intro": "You should leave this review with a decision frame, not another sales estimate.",
         "items": [
           {
             "title": "Current cost map",
-            "body": "We mark the management percentage, booking costs, and payment costs that are visible in your current setup so you can stop comparing headline numbers in isolation."
+            "body": "We separate management percentage, booking costs, payment costs, and unknowns so you can see what is proven versus assumed."
           },
           {
             "title": "Booking-source read",
-            "body": "We show whether Airbnb, VRBO, and direct demand are being measured clearly or blended together in a way that hides what each source is doing."
+            "body": "We show Airbnb, VRBO, and direct demand side by side so one channel cannot hide another."
           },
           {
             "title": "Execution risk list",
-            "body": "We flag where cleaning follow-through, maintenance response, or guest communication may be erasing the savings a cheaper fee promise appears to offer."
+            "body": "We flag cleaning follow-through, maintenance lag, and guest-response gaps that can quietly reduce payout."
           }
         ]
       },
       "visibilityLayer": {
         "tag": "Owner Visibility",
         "title": "What clear owner visibility should look like",
-        "intro": "If the operation is working, you should not need a sales call to understand what changed.",
+        "intro": "If the operation is healthy, you should be able to read what changed each week without asking for a meeting.",
         "items": [
           {
             "title": "Reporting rhythm",
@@ -3535,7 +3535,7 @@
       ],
       "cta": "Request Your Revenue Teardown",
       "primaryCta": "Request Your Revenue Teardown",
-      "ctaSubcopy": "We use the review to show the fee structure, booking costs, and property fit before talking about a management switch.",
+      "ctaSubcopy": "We map your current fee structure, booking costs, and execution gaps so you can decide whether switching is worth it.",
       "ctaNote": "Useful if you want the real fee comparison, not another flat-percentage pitch.",
       "geoIntro": "<p>We do not use one flat management fee for every home. Most full-service properties fall within a defined range based on revenue potential, location, home quality, and day-to-day operational demands. Higher-performing homes can qualify for lower fees. After we review your property, we will show you the exact structure and whether the fit makes sense on both sides.</p><p>That matters because fee comparisons get distorted fast when owners ignore booking channels and operating quality. A manager with a lower headline number can still leave the owner behind if the home stays too dependent on marketplace commissions or the local execution keeps hurting reviews and rate power.</p><p>The right fee conversation is not about finding the smallest percentage on the page. It is about understanding what the owner keeps after management fee, marketplace costs, and the hidden cost of weak execution are all accounted for.</p>",
       "faqs": [
@@ -4628,7 +4628,7 @@
       "title": "Florida Vacation Rental License Rules: DBPR + County Risk",
       "h1": "Florida Vacation Rental Licensing",
       "description": "DBPR is one layer. See Florida vacation rental license rules, county registration, tax setup, and launch risks before bookings go live.",
-      "intro": "Florida licensing is not a paperwork side quest. One missed registration, zoning mismatch, or county filing can stall launch, threaten platform status, and turn a rentable home into dead calendar time.",
+      "intro": "If licensing is unclear, every booking plan stays fragile. This page helps you confirm DBPR, county, tax, and launch-readiness steps before you publish listings.",
       "proofAssetKey": "gulf-coast-owner-benchmark-2026",
       "benefits": [
         "Launch sequencing that keeps licensing from delaying first-booking revenue",
@@ -4688,26 +4688,26 @@
       "reviewDeliverable": {
         "tag": "48-Hour Review",
         "title": "What your 48-hour licensing review includes",
-        "intro": "The useful answer is not simply whether you need a license. It is which launch tasks are complete, which are missing, and where bookings could still stall.",
+        "intro": "You should leave this review knowing what is complete, what is missing, and what can still stop launch.",
         "items": [
           {
             "title": "State and county checklist",
-            "body": "We separate DBPR registration, county steps, and tax setup so you can see which layer is unfinished instead of staring at one vague compliance list."
+            "body": "We separate DBPR registration, county registration, and tax setup so you can see each layer instead of one blended checklist."
           },
           {
             "title": "Launch blocker list",
-            "body": "We flag the missing filings, address mismatches, or readiness gaps most likely to turn a rentable property into dead calendar time."
+            "body": "We call out missing filings, address mismatches, and readiness gaps most likely to delay first bookings."
           },
           {
             "title": "Owner handoff map",
-            "body": "We show what a manager should own, what still needs your signature, and where local follow-through matters more than another generic checklist."
+            "body": "We show what your manager should own, what still needs your signature, and what local follow-through must happen before go-live."
           }
         ]
       },
       "visibilityLayer": {
         "tag": "Owner Visibility",
         "title": "What licensing visibility should look like",
-        "intro": "A good operator should make launch status easy to read before the first guest arrives.",
+        "intro": "A good operator should make launch readiness visible before the first guest arrives.",
         "items": [
           {
             "title": "Registration status reporting",
@@ -4743,7 +4743,7 @@
       ],
       "cta": "Request Your Revenue Teardown",
       "primaryCta": "Request Your Revenue Teardown",
-      "ctaSubcopy": "We use the review to map DBPR, county, and operating gaps before a bad launch creates fines or dead calendar time.",
+      "ctaSubcopy": "We map DBPR, county, and launch-readiness gaps in your review so you can clear blockers before they become downtime.",
       "ctaNote": "Useful if you are launching, relaunching, or not fully sure the current registration stack matches the home's real use.",
       "geoIntro": "<p>Florida short-term rental licensing looks simple right up until the paperwork collides with how the home is actually being operated. Owners get hurt when they treat DBPR registration, county filing, zoning, taxes, and occupancy rules like separate chores instead of one launch sequence.</p><p>That matters because the upside is real only when the property can take bookings without avoidable interruption. Seascape's current Gulf Coast operating set already runs at <strong>$1.4M in annual rental revenue</strong>, and none of that is worth much if the home enters the market on a broken compliance foundation.</p><p>The review is built to answer the owner question first: what has to be true before this home can earn safely and consistently in Manatee, Sarasota, or the surrounding Gulf Coast market. That is a better frame than vague promises about handling compliance for you.</p>",
       "faqs": [
@@ -4779,7 +4779,7 @@
       "title": "Florida VRBO Property Management for Owners: Channel-Specific Pricing",
       "h1": "Professional VRBO Management",
       "description": "Florida VRBO owners need channel-specific pricing, guest vetting, and reporting that separates longer-stay demand from blended OTA averages.",
-      "intro": "VRBO is not just Airbnb with a second logo. It is a different channel with longer-stay family demand, different discount pressure, and owner-margin opportunities that get missed when the manager runs every platform the same way.",
+      "intro": "VRBO can be a strong lane or a noisy distraction. The difference is whether your manager treats VRBO pricing, guest fit, and reporting as channel-specific work instead of copied OTA settings.",
       "proofAssetKey": "gulf-coast-owner-benchmark-2026",
       "benefits": [
         "VRBO strategy built around owner income, not copy-paste cross-posting",
@@ -4839,19 +4839,19 @@
       "reviewDeliverable": {
         "tag": "48-Hour Review",
         "title": "What your 48-hour VRBO review includes",
-        "intro": "VRBO should be measured like its own demand lane. The review shows whether the channel is being priced, screened, and reported clearly enough to justify the effort.",
+        "intro": "The review shows whether VRBO is helping your payout or just adding activity.",
         "items": [
           {
             "title": "VRBO pricing read",
-            "body": "We check whether longer-stay family demand is being priced deliberately or copied from another platform."
+            "body": "We check whether weekly and monthly settings match your stay pattern instead of copying another platform."
           },
           {
             "title": "Channel reporting split",
-            "body": "We show whether VRBO results are visible on their own or buried inside blended reporting that makes every booking source look the same."
+            "body": "We separate VRBO performance from blended OTA reporting so you can see what this channel is actually doing."
           },
           {
             "title": "Guest-fit review",
-            "body": "We flag whether screening, turnovers, and local response are built for the longer-stay family bookings VRBO tends to attract."
+            "body": "We flag where screening, turnovers, or local response are misaligned with longer-stay family bookings."
           }
         ]
       },
@@ -4894,7 +4894,7 @@
       ],
       "cta": "Request Your Revenue Teardown",
       "primaryCta": "Request Your Revenue Teardown",
-      "ctaSubcopy": "We use the review to show whether VRBO is widening owner margin or just adding another channel with the wrong discount logic.",
+      "ctaSubcopy": "We use the review to show whether VRBO channel work is improving payout for your property or just adding volume with weak margins.",
       "ctaNote": "Useful if VRBO is underperforming, reporting is too blended to trust, or you want a cleaner read on which booking channels actually fit the home.",
       "geoIntro": "<p>VRBO deserves to be treated like a separate revenue lane, not a copy of the Airbnb setup. The guests often book longer, compare family-fit details harder, and respond differently to discount structure, cancellation policy, and listing clarity.</p><p>That matters because the owner benefit does not come from having one more OTA badge on the page. It comes from whether the channel helps the home capture profitable stays without unnecessary fee drag or lazy discounting. Seascape's Gulf Coast benchmark already shows how much margin moves when channel economics are handled deliberately instead of blended into generic OTA reporting.</p><p>The review is built to answer a narrower question than most managers do: should VRBO be pushed harder for this home, cleaned up, or simply measured more honestly against Airbnb and direct demand. That is an operator question with owner-income consequences.</p>",
       "faqs": [

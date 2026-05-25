@@ -19,6 +19,12 @@
 - `docs/status/next-batch.md` currently says `blocked by freshness`, so title, description, and snippet-focused rewrites stay gated until the reread opens.
 - VRBO remains support content in this batch. It should reinforce the money lane, not mirror the sales posture of the two primary owner-money pages.
 
+## Constrained Execution Snapshot (2026-05-25)
+
+- this pass is owner-only and limited to body copy, proof framing, CTA framing, and owner-hub route prominence
+- metadata is frozen while `docs/status/next-batch.md` stays `blocked by freshness`
+- no guide-page rewrites, canonical cleanup, redirect churn, or discoverability-surface expansion in this pass
+
 ## Search Operator Read
 
 - source reads used: `docs/status/next-batch.md`, the content-brief template, the owner fee benchmark brief, and the existing owner-field-report brief.

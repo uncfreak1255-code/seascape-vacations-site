@@ -15,6 +15,9 @@ eleventyComputed:
 {% set pageUpdatedLabel = gitLastModifiedLabel(page.inputPath, "src/_data/seoPages.json", "src/_data/ownerProofAssets.json") %}
 {% set proofAsset = seoPage.proofAssetKey and ownerProofAssets[seoPage.proofAssetKey] %}
 {% set pageProofStats = seoPage.proofStats or (proofAsset and proofAsset.stats) %}
+{% set ownerMoneyPage = seoPage.slug == "vacation-rental-management-fees-florida"
+  or seoPage.slug == "vacation-rental-licensing-florida"
+  or seoPage.slug == "vrbo-management-services-florida" %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -219,6 +222,18 @@ eleventyComputed:
                     <a href="#owner-cta" class="btn btn-gold" data-track-event="owner_primary_cta_click" data-page-slug="{{ seoPage.slug }}">{{ seoPage.primaryCta or "Request Your Revenue Teardown" }}</a>
                 </div>
                 <p style="max-width: 760px; margin: 18px auto 0; opacity: 0.82; font-size: 15px;">{{ seoPage.ctaSubcopy or "We break down fee structure, channel mix, and what your current setup is actually costing you before you decide anything." }}</p>
+                {% if ownerMoneyPage %}
+                <div style="margin: 18px auto 0; max-width: 860px; border-radius: 14px; padding: 14px 16px; background: rgba(255,255,255,0.12); text-align: left;">
+                    <p style="font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(245, 228, 176, 0.92); margin: 0 0 8px;">Switcher Path</p>
+                    <p style="font-size: 14px; line-height: 1.65; margin: 0; color: rgba(255,255,255,0.92);">
+                        Start with the <a href="/research/owner-fee-revenue-leak-benchmark-2026/" style="color: #fff; text-decoration: underline;">owner benchmark</a>, then compare
+                        <a href="/property-management/vacation-rental-management-fees-florida/" style="color: #fff; text-decoration: underline;">fees</a>,
+                        <a href="/property-management/vacation-rental-licensing-florida/" style="color: #fff; text-decoration: underline;">licensing</a>, and
+                        <a href="/property-management/vrbo-management-services-florida/" style="color: #fff; text-decoration: underline;">VRBO handling</a> before you
+                        <a href="/property-management/#owner-cta" style="color: #fff; text-decoration: underline;">request your teardown</a>.
+                    </p>
+                </div>
+                {% endif %}
             </div>
         </section>
 
@@ -539,10 +554,6 @@ eleventyComputed:
             </div>
         </section>
         {% endif %}
-
-        {% set ownerMoneyPage = seoPage.slug == "vacation-rental-management-fees-florida"
-          or seoPage.slug == "vacation-rental-licensing-florida"
-          or seoPage.slug == "vrbo-management-services-florida" %}
 
         <!-- Related Services (Cross-linking) -->
         <section class="section" style="background: var(--cream-light);">
