@@ -1,4 +1,4 @@
-const { syncHostawayCache } = require("../../netlify/functions/hostaway-sync");
+const { loadSafePropertyProjection } = require("../../src/_data/properties");
 
 const AVAILABILITY_MAX_AGE_MS = 36 * 60 * 60 * 1000;
 const REQUIRED_PROPERTY_SLUGS = [
@@ -9,8 +9,16 @@ const REQUIRED_PROPERTY_SLUGS = [
   "bradenton-pool-home"
 ];
 
+function safePropertyProjectionPath(env = process.env) {
+  return env.SEASCAPE_SAFE_PROPERTY_PROJECTION_PATH || "";
+}
+
+function shouldUseLegacyHostawayCache(env = process.env) {
+  return env.SEASCAPE_ENABLE_LEGACY_HOSTAWAY_CACHE === "1";
+}
+
 function shouldRequireHostawayCache(env = process.env) {
-  return env.SEASCAPE_REQUIRE_HOSTAWAY_CACHE === "1";
+  return shouldUseLegacyHostawayCache(env) && env.SEASCAPE_REQUIRE_HOSTAWAY_CACHE === "1";
 }
 
 function validateHostawayAvailabilityPayload(payload, options = {}) {
@@ -56,7 +64,26 @@ function validateHostawayAvailabilityPayload(payload, options = {}) {
   return { checked: requiredSlugs.length };
 }
 
+function validateSafePropertyProjection(projectionPath, options = {}) {
+  const properties = loadSafePropertyProjection(projectionPath);
+  return validateHostawayAvailabilityPayload({ properties }, options);
+}
+
 async function main() {
+  const projectionPath = safePropertyProjectionPath();
+  if (projectionPath) {
+    const report = validateSafePropertyProjection(projectionPath);
+    console.log(
+      `[safe-property-projection] using ${projectionPath}; verified ${report.checked} live availability cards`
+    );
+    return;
+  }
+
+  if (!shouldUseLegacyHostawayCache()) {
+    console.log("[hostaway-cache] legacy raw Hostaway cache disabled; using booking-engine availability hydration");
+    return;
+  }
+
   const requireHostawayCache = shouldRequireHostawayCache();
 
   if (!process.env.HOSTAWAY_ID || !process.env.HOSTAWAY_SECRET) {
@@ -70,6 +97,7 @@ async function main() {
   }
 
   try {
+    const { syncHostawayCache } = require("../../netlify/functions/hostaway-sync");
     const payload = await syncHostawayCache();
     const report = validateHostawayAvailabilityPayload(payload);
     console.log(
@@ -92,6 +120,9 @@ if (require.main === module) {
 
 module.exports = {
   main,
+  safePropertyProjectionPath,
+  shouldUseLegacyHostawayCache,
   shouldRequireHostawayCache,
-  validateHostawayAvailabilityPayload
+  validateHostawayAvailabilityPayload,
+  validateSafePropertyProjection
 };
