@@ -57,9 +57,14 @@ test("owner landing page keeps the owner revenue review close to the sales argum
     true
   );
   assert.equal(
-    ownerLanding.includes("We will compare it against the same Gulf Coast benchmark, mark proven cost, likely cost, and missing information separately, and send back a one-page revenue review within 48 hours."),
+    ownerLanding.includes("We will compare it against the same Gulf Coast benchmark and send back a one-page revenue review that shows where the payout gets thin, which costs deserve a second look, and what to ask before you renew."),
     true
   );
+  assert.equal(
+    ownerLanding.includes("The review shows where the payout gets thin, what deserves a second look, and what we would check next before you switch."),
+    true
+  );
+  assert.equal(ownerLanding.includes("proven cost, likely cost, and missing information"), false);
   assert.equal(ownerLanding.includes("Observed Seascape portfolio data"), true);
   assert.equal(ownerLanding.includes("5-property Gulf Coast scope"), true);
   assert.equal(ownerLanding.includes('href="/research/owner-fee-revenue-leak-benchmark-2026/"'), true);
@@ -176,6 +181,8 @@ test("owner revenue teardown form lowers friction without losing tracking or int
   assert.equal(ownerTemplate.includes('propertyFieldLabel: "Listing URL or property address"'), true);
   assert.equal(ownerLanding.includes("Request My 48-Hour Review"), true);
   assert.equal(ownerLanding.includes("Request My Review"), false);
+  assert.equal(ownerLanding.includes("If anything is missing, we will tell you what we still need instead of filling in the blanks."), true);
+  assert.equal(ownerLanding.includes("We will read what you sent, show where the payout gets thin, and tell you what we would check next."), true);
   assert.equal(conversionTracking.includes("function validateOwnerFormContext(form)"), true);
   assert.equal(conversionTracking.includes('form.dataset.ownerContextRequired !== "true"'), true);
   assert.equal(conversionTracking.includes('form.querySelectorAll("[data-owner-context-field]")'), true);
