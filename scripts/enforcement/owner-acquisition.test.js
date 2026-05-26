@@ -53,7 +53,11 @@ test("owner landing page keeps the owner revenue review close to the sales argum
   assert.notEqual(reviewIndex, -1, "owner hub needs the revenue review anchor");
   assert.equal(ownerLanding.includes("Benchmark + Revenue Review"), true);
   assert.equal(
-    ownerLanding.includes("Platform costs, expensive booking sources, review-risk signals, and uneven owner communication rarely show up clearly in an owner statement."),
+    ownerLanding.includes("Booking-source costs, weak presentation, review-risk signals, and uneven owner updates rarely show up clearly in an owner statement."),
+    true
+  );
+  assert.equal(
+    ownerLanding.includes("We will compare it against the same Gulf Coast benchmark, mark proven cost, likely cost, and missing information separately, and send back a one-page revenue review within 48 hours."),
     true
   );
   assert.equal(ownerLanding.includes("Observed Seascape portfolio data"), true);
@@ -170,6 +174,8 @@ test("owner revenue teardown form lowers friction without losing tracking or int
   assert.equal(ownerTemplate.includes("showBenchmarkFields: true"), true);
   assert.equal(ownerLanding.includes('propertyFieldLabel: "Listing URL or property address"'), true);
   assert.equal(ownerTemplate.includes('propertyFieldLabel: "Listing URL or property address"'), true);
+  assert.equal(ownerLanding.includes("Request My 48-Hour Review"), true);
+  assert.equal(ownerLanding.includes("Request My Review"), false);
   assert.equal(conversionTracking.includes("function validateOwnerFormContext(form)"), true);
   assert.equal(conversionTracking.includes('form.dataset.ownerContextRequired !== "true"'), true);
   assert.equal(conversionTracking.includes('form.querySelectorAll("[data-owner-context-field]")'), true);
