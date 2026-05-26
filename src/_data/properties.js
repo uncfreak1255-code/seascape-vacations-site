@@ -222,6 +222,73 @@ function loadFallback() {
   return normalizeProperties(JSON.parse(fs.readFileSync(FALLBACK_PATH, "utf8")));
 }
 
+function safeProjectionPath() {
+  return process.env.SEASCAPE_SAFE_PROPERTY_PROJECTION_PATH || "";
+}
+
+function projectionRecords(payload) {
+  if (Array.isArray(payload)) return payload;
+  if (payload && Array.isArray(payload.properties)) return payload.properties;
+  if (payload && Array.isArray(payload.records)) return payload.records;
+  return [];
+}
+
+function slugFromProjection(record) {
+  if (record.slug || record.property_slug) {
+    return String(record.slug || record.property_slug).trim();
+  }
+  const listingId = record.listing_map_id || record.listingId || record.id;
+  return Object.entries(LISTING_ID_BY_SLUG).find(([, id]) => String(id) === String(listingId))?.[0] || null;
+}
+
+function safeProjectionOverlay(record) {
+  const listingId = record.listing_map_id || record.listingId || record.id || null;
+  const bookingUrls = Array.isArray(record.booking_engine_urls) ? record.booking_engine_urls : [];
+  return {
+    listingId,
+    id: listingId,
+    bookingUrl: record.bookingUrl || bookingUrls[0],
+    price: record.price || record.base_price || record.nightly_rate,
+    availability: record.availability || null,
+    projection: {
+      source: "seascape-ops",
+      sourceSystem: record.source_system || "hostaway",
+      capturedAt: record.provenance?.captured_at || record.generated_at || null,
+      staleAfter: record.provenance?.stale_after || record.stale_after || null
+    }
+  };
+}
+
+function mergeSafePropertyProjection(fallbackProperties, records) {
+  const bySlug = new Map();
+  for (const record of records) {
+    const slug = slugFromProjection(record);
+    if (slug) bySlug.set(slug, record);
+  }
+
+  return fallbackProperties.map((property) => {
+    const slug = deriveSlug(property);
+    const projection = bySlug.get(slug);
+    if (!projection) return property;
+    const overlay = safeProjectionOverlay(projection);
+    return {
+      ...property,
+      ...Object.fromEntries(Object.entries(overlay).filter(([, value]) => value !== undefined && value !== null && value !== "")),
+      slug
+    };
+  });
+}
+
+function loadSafePropertyProjection(projectionPath = safeProjectionPath()) {
+  if (!projectionPath || !fs.existsSync(projectionPath)) {
+    return null;
+  }
+  const payload = JSON.parse(fs.readFileSync(projectionPath, "utf8"));
+  const records = projectionRecords(payload);
+  if (!records.length) return null;
+  return normalizeProperties(mergeSafePropertyProjection(JSON.parse(fs.readFileSync(FALLBACK_PATH, "utf8")), records));
+}
+
 function toHostawayCdn(url, width = 1600) {
   if (!url || typeof url !== "string") return url;
   const clean = url.split("?")[0];
@@ -276,6 +343,11 @@ async function getProperties() {
   }
 
   try {
+    const projected = loadSafePropertyProjection();
+    if (projected) {
+      return projected;
+    }
+
     if (process.env.NETLIFY_BLOBS_CONTEXT || global.netlifyBlobsContext) {
       const cached = await loadFromCache();
       if (cached) {
@@ -294,3 +366,5 @@ module.exports.normalizeProperties = normalizeProperties;
 module.exports.toHostawayCdn = toHostawayCdn;
 module.exports.normalizeAvailabilitySummary = normalizeAvailabilitySummary;
 module.exports.enrichMissingAvailability = enrichMissingAvailability;
+module.exports.loadSafePropertyProjection = loadSafePropertyProjection;
+module.exports.mergeSafePropertyProjection = mergeSafePropertyProjection;
