@@ -13,14 +13,6 @@ function safePropertyProjectionPath(env = process.env) {
   return env.SEASCAPE_SAFE_PROPERTY_PROJECTION_PATH || "";
 }
 
-function shouldUseLegacyHostawayCache(env = process.env) {
-  return env.SEASCAPE_ENABLE_LEGACY_HOSTAWAY_CACHE === "1";
-}
-
-function shouldRequireHostawayCache(env = process.env) {
-  return shouldUseLegacyHostawayCache(env) && env.SEASCAPE_REQUIRE_HOSTAWAY_CACHE === "1";
-}
-
 function validateHostawayAvailabilityPayload(payload, options = {}) {
   const now = options.now || Date.now();
   const maxAgeMs = options.maxAgeMs || AVAILABILITY_MAX_AGE_MS;
@@ -79,36 +71,7 @@ async function main() {
     return;
   }
 
-  if (!shouldUseLegacyHostawayCache()) {
-    console.log("[hostaway-cache] legacy raw Hostaway cache disabled; using booking-engine availability hydration");
-    return;
-  }
-
-  const requireHostawayCache = shouldRequireHostawayCache();
-
-  if (!process.env.HOSTAWAY_ID || !process.env.HOSTAWAY_SECRET) {
-    const message = "[hostaway-cache] HOSTAWAY_ID/HOSTAWAY_SECRET not set";
-    if (requireHostawayCache) {
-      throw new Error(message);
-    }
-    const log = process.env.NETLIFY === "true" ? console.warn : console.log;
-    log(`${message}; falling back to booking-engine availability hydration`);
-    return;
-  }
-
-  try {
-    const { syncHostawayCache } = require("../../netlify/functions/hostaway-sync");
-    const payload = await syncHostawayCache();
-    const report = validateHostawayAvailabilityPayload(payload);
-    console.log(
-      `[hostaway-cache] refreshed ${payload.properties.length} properties before build; verified ${report.checked} live availability cards`
-    );
-  } catch (error) {
-    if (requireHostawayCache) {
-      throw error;
-    }
-    console.warn(`[hostaway-cache] skipped: ${error.message}`);
-  }
+  console.log("[hostaway-cache] raw Hostaway cache retired from site; using booking-engine availability hydration");
 }
 
 if (require.main === module) {
@@ -121,8 +84,6 @@ if (require.main === module) {
 module.exports = {
   main,
   safePropertyProjectionPath,
-  shouldUseLegacyHostawayCache,
-  shouldRequireHostawayCache,
   validateHostawayAvailabilityPayload,
   validateSafePropertyProjection
 };

@@ -3,8 +3,6 @@ const assert = require("node:assert/strict");
 
 const { normalizeAvailability } = require("../cache/normalize-hostaway");
 const {
-  shouldUseLegacyHostawayCache,
-  shouldRequireHostawayCache,
   validateSafePropertyProjection,
   validateHostawayAvailabilityPayload
 } = require("../cache/sync-hostaway-build-cache");
@@ -124,21 +122,6 @@ test("booking engine calendar adapter exposes Hostaway day objects without priva
     { date: "2026-05-04", isAvailable: 1 }
   ]);
   assert.equal(toBookingEngineHostname("https://book.seascape-vacations.com"), "book.seascape-vacations.com");
-});
-
-test("raw Hostaway API cache only runs through the explicit legacy gate", () => {
-  assert.equal(shouldUseLegacyHostawayCache({ SEASCAPE_ENABLE_LEGACY_HOSTAWAY_CACHE: "1" }), true);
-  assert.equal(shouldUseLegacyHostawayCache({ HOSTAWAY_ID: "id", HOSTAWAY_SECRET: "secret" }), false);
-  assert.equal(
-    shouldRequireHostawayCache({
-      SEASCAPE_ENABLE_LEGACY_HOSTAWAY_CACHE: "1",
-      SEASCAPE_REQUIRE_HOSTAWAY_CACHE: "1"
-    }),
-    true
-  );
-  assert.equal(shouldRequireHostawayCache({ SEASCAPE_REQUIRE_HOSTAWAY_CACHE: "1" }), false);
-  assert.equal(shouldRequireHostawayCache({ NETLIFY: "true" }), false);
-  assert.equal(shouldRequireHostawayCache({}), false);
 });
 
 test("Netlify builds require rendered live availability cards", () => {
