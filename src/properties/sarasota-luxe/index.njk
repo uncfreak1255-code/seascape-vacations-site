@@ -404,7 +404,7 @@ function openGallery(){var g=document.getElementById('galleryLbGrid');if(!g.chil
       s.src='https://d2q3n06xhbi0am.cloudfront.net/calendar.js';
       s.onload=function(){
         if(typeof window.hostawayCalendarWidget==='function'){
-          var numberOfMonths=window.matchMedia('(min-width:48rem)').matches?2:1;
+          var numberOfMonths=window.matchMedia('(min-width:64rem)').matches?2:1;
           window.hostawayCalendarWidget({
             baseUrl:'https://book.seascape-vacations.com',
             listingId:135881,
