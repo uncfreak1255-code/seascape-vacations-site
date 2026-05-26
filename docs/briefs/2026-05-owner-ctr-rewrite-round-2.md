@@ -25,6 +25,13 @@
 - metadata is frozen while `docs/status/next-batch.md` stays `blocked by freshness`
 - no guide-page rewrites, canonical cleanup, redirect churn, or discoverability-surface expansion in this pass
 
+## Implementation Receipt (2026-05-26)
+
+- executed in `codex/owner-ctr-constrained-slice`
+- `/property-management/` now promotes a dedicated `Current-Manager Decision Pages` block ahead of the broader owner library
+- `/property-management/vacation-rental-management-fees-florida/`, `/property-management/vacation-rental-licensing-florida/`, and `/property-management/vrbo-management-services-florida/` now use decision-first section framing plus explicit cross-links inside the owner-money cluster
+- metadata, titles, descriptions, guide refreshes, `llms.txt`, `ai-discovery.json.njk`, redirects, and canonical work stayed out of scope for this batch
+
 ## Search Operator Read
 
 - source reads used: `docs/status/next-batch.md`, the content-brief template, the owner fee benchmark brief, and the existing owner-field-report brief.
