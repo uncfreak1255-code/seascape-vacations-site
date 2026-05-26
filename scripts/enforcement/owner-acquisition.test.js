@@ -74,6 +74,37 @@ test("owner landing page keeps the owner revenue review close to the sales argum
   assert.ok(reviewIndex < specialSituationsIndex, "owner CTA should land before special-situations content");
 });
 
+test("owner landing page gives current-manager switchers a first-class decision path", () => {
+  const switcherBoxIndex = ownerLanding.indexOf("Start Here For Switchers");
+  const decisionPagesIndex = ownerLanding.indexOf("Current-Manager Decision Pages");
+  const generalLibraryIndex = ownerLanding.indexOf("Operational guides that protect revenue and reduce risk");
+
+  assert.notEqual(switcherBoxIndex, -1, "owner hub should keep the switcher path box");
+  assert.notEqual(decisionPagesIndex, -1, "owner hub should spotlight the current-manager decision pages");
+  assert.ok(decisionPagesIndex > switcherBoxIndex, "decision-page spotlight should follow the switcher sequence");
+  assert.ok(decisionPagesIndex < generalLibraryIndex, "decision-page spotlight should lead before the broader owner library");
+  assert.equal(
+    ownerLanding.includes("Compare fees, launch-readiness risk, and VRBO handling before you ask for a teardown."),
+    true,
+    "owner hub should explain why the three money pages come first"
+  );
+  assert.equal(
+    ownerLanding.includes("<h3>What you actually keep after fees and booking costs</h3>"),
+    true,
+    "owner hub should feature the fee-decision page as a card"
+  );
+  assert.equal(
+    ownerLanding.includes("<h3>Where licensing can still block revenue</h3>"),
+    true,
+    "owner hub should feature the licensing-decision page as a card"
+  );
+  assert.equal(
+    ownerLanding.includes("<h3>Whether VRBO is helping or just adding noise</h3>"),
+    true,
+    "owner hub should feature the VRBO support page as a card"
+  );
+});
+
 test("owner landing page opts into owner-only nav instead of the guest browse header", () => {
   assert.equal(ownerLanding.includes("ownerNavOnly: true"), true, "owner landing should declare owner-only nav mode");
   assert.equal(ownerLanding.includes('navButtonLabel: "Revenue Review"'), true, "owner landing should use compact owner nav CTA copy");
@@ -521,6 +552,63 @@ test("priority owner proof-cluster pages cite the shared benchmark asset and avo
     false,
     "VRBO page should not keep the old generic platform-ops intro"
   );
+});
+
+test("priority owner money pages keep decision-first section framing and explicit cross-links", () => {
+  const expectations = {
+    "vacation-rental-management-fees-florida": {
+      proofTitle: "The real fee comparison starts with what you keep",
+      switchTitle: "Why owners stop trusting the headline percentage",
+      benefitsTitle: "What a better current-manager comparison should actually surface",
+      processTitle: "How the 48-hour fee review works",
+      objectionsTitle: "The fee questions skeptical owners ask before they switch",
+      relatedOwnerResources: [
+        "vacation-rental-licensing-florida",
+        "vrbo-management-services-florida",
+        "switch-vacation-rental-management-company"
+      ]
+    },
+    "vacation-rental-licensing-florida": {
+      proofTitle: "Licensing trouble usually starts before the first fine",
+      switchTitle: "Why owners stop trusting the compliance handoff",
+      benefitsTitle: "What a launch-safe operator should make visible",
+      processTitle: "How the 48-hour licensing review works",
+      objectionsTitle: "The licensing questions that usually slow the decision",
+      relatedOwnerResources: [
+        "vacation-rental-management-fees-florida",
+        "vrbo-management-services-florida",
+        "new-vacation-rental-owner-guide-florida"
+      ]
+    },
+    "vrbo-management-services-florida": {
+      proofTitle: "VRBO only matters if it improves what you keep",
+      switchTitle: "Why owners stop trusting blended OTA reporting",
+      benefitsTitle: "What channel-specific VRBO handling should improve",
+      processTitle: "How the 48-hour VRBO review works",
+      objectionsTitle: "The VRBO questions worth settling before you add more channel work",
+      relatedOwnerResources: [
+        "vacation-rental-management-fees-florida",
+        "vacation-rental-licensing-florida",
+        "switch-vacation-rental-management-company"
+      ]
+    }
+  };
+
+  for (const [slug, expected] of Object.entries(expectations)) {
+    const page = ownerData.find((entry) => entry.slug === slug);
+
+    assert.ok(page, `${slug} should exist`);
+    assert.equal(page.proofTitle, expected.proofTitle, `${slug} should open the proof section with switcher framing`);
+    assert.equal(page.switchTitle, expected.switchTitle, `${slug} should frame the switch reasons around the real decision`);
+    assert.equal(page.benefitsTitle, expected.benefitsTitle, `${slug} should position Seascape as the answer to the actual problem`);
+    assert.equal(page.processTitle, expected.processTitle, `${slug} should keep the 48-hour review visible as the next step`);
+    assert.equal(page.objectionsTitle, expected.objectionsTitle, `${slug} should answer the decision-blocking objections directly`);
+    assert.deepEqual(page.relatedOwnerResources, expected.relatedOwnerResources, `${slug} should cross-link the in-scope owner pages on purpose`);
+  }
+
+  const feePage = ownerData.find((entry) => entry.slug === "vacation-rental-management-fees-florida");
+
+  assert.equal(JSON.stringify(feePage).includes("rate power"), false, "fee page should not use banned owner-copy phrasing");
 });
 
 test("market-report and operator-education pages route owners into the Phase 2 money pages", () => {

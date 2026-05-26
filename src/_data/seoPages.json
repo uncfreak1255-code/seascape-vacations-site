@@ -3390,8 +3390,13 @@
       "title": "Florida Vacation Rental Management Fees: What Owners Keep",
       "h1": "Vacation Rental Management Fees in Florida: What Owners Actually Pay",
       "description": "See Florida vacation rental management fees, marketplace booking costs, and when a lower percentage still leaves owners with less income.",
-      "intro": "Most owners compare 15% versus 20% and still cannot tell what they actually keep. Start with one decision view: management percentage, booking-source costs, and execution misses, then use the 48-hour review to see whether switching changes your payout.",
+      "intro": "Most owners compare 15% versus 20% and still cannot tell what they actually keep. Start with one decision view: quoted management percentage, booking-source costs, reporting clarity, and execution misses, then use the 48-hour review to see whether switching changes your payout.",
       "proofAssetKey": "gulf-coast-owner-benchmark-2026",
+      "proofTitle": "The real fee comparison starts with what you keep",
+      "switchTitle": "Why owners stop trusting the headline percentage",
+      "benefitsTitle": "What a better current-manager comparison should actually surface",
+      "processTitle": "How the 48-hour fee review works",
+      "objectionsTitle": "The fee questions skeptical owners ask before they switch",
       "benefits": [
         "Fee comparison grounded in what the owner actually keeps instead of headline percentages",
         "Clear breakdown of management fee, marketplace booking costs, and direct-booking savings",
@@ -3425,7 +3430,7 @@
       "marketReality": {
         "tag": "Fee Reality",
         "title": "The cheapest percentage is often the most expensive operating choice",
-        "body": "<p>Owners get trapped when they compare management fees in isolation. A lower headline fee can still leave the owner behind if pricing stays soft, marketplace dependence stays high, and the operator keeps missing the execution details that protect reviews and rate power.</p><p>The real question is what the owner keeps after management fee, booking costs, concessions, and preventable operating misses. That is why the fee page has to be a math page first and a sales page second.</p>"
+        "body": "<p>If you compare management fees in isolation, you can still choose the worse deal. A lower headline percentage can leave you behind when pricing stays soft, booking costs stay high, and your manager keeps missing the execution work that protects reviews and nightly pricing.</p><p>The real comparison is what you keep after management fees, booking-source costs, concessions, and preventable operating misses. That is why this page starts with the math and ends with the 48-hour review.</p>"
       },
       "switchReasons": [
         {
@@ -3452,13 +3457,13 @@
         },
         {
           "title": "Protect the standards that keep the home premium",
-          "body": "A lower fee only helps if the property keeps its review quality, rate power, and maintenance discipline at the same time."
+          "body": "A lower fee only helps if your property keeps its review quality, nightly pricing, and maintenance discipline at the same time."
         }
       ],
       "processSteps": [
         {
-          "title": "Current fee-stack review",
-          "body": "We break down management fee, marketplace costs, payment costs, and where each layer is hitting owner income."
+          "title": "Current fee review",
+          "body": "We break down management fee, booking-source costs, payment costs, and where each line is trimming your payout."
         },
         {
           "title": "Property-fit quote",
@@ -3472,7 +3477,7 @@
       "reviewDeliverable": {
         "tag": "48-Hour Review",
         "title": "What your 48-hour review includes",
-        "intro": "You should leave this review with a decision frame, not another sales estimate.",
+        "intro": "You should leave this review with a one-page fee decision frame, not another sales estimate.",
         "items": [
           {
             "title": "Current cost map",
@@ -3514,7 +3519,7 @@
       "objections": [
         {
           "question": "What do Florida vacation rental managers usually charge?",
-          "answer": "The useful answer is a range, not a fake universal number. Most full-service managers land within a band, but the right fee depends on the home, revenue potential, service burden, and whether the operator can actually protect owner income."
+          "answer": "The useful answer is a range, not a fake universal number. Most serious operators land within a band, but the right fee depends on your property, revenue potential, service burden, and whether the manager can actually protect owner income."
         },
         {
           "question": "Why is the cheapest fee not automatically the best deal?",
@@ -3535,13 +3540,18 @@
       ],
       "cta": "Request Your Revenue Teardown",
       "primaryCta": "Request Your Revenue Teardown",
-      "ctaSubcopy": "We map your current fee structure, booking costs, and execution gaps so you can decide whether switching is worth it.",
-      "ctaNote": "Useful if you want the real fee comparison, not another flat-percentage pitch.",
-      "geoIntro": "<p>We do not use one flat management fee for every home. Most full-service properties fall within a defined range based on revenue potential, location, home quality, and day-to-day operational demands. Higher-performing homes can qualify for lower fees. After we review your property, we will show you the exact structure and whether the fit makes sense on both sides.</p><p>That matters because fee comparisons get distorted fast when owners ignore booking channels and operating quality. A manager with a lower headline number can still leave the owner behind if the home stays too dependent on marketplace commissions or the local execution keeps hurting reviews and rate power.</p><p>The right fee conversation is not about finding the smallest percentage on the page. It is about understanding what the owner keeps after management fee, marketplace costs, and the hidden cost of weak execution are all accounted for.</p>",
+      "ctaSubcopy": "We map management fees, booking-source costs, reporting gaps, and execution misses so you can see whether a switch would actually improve your payout.",
+      "ctaNote": "Useful if you want the real current-manager comparison, not another flat-percentage pitch.",
+      "relatedOwnerResources": [
+        "vacation-rental-licensing-florida",
+        "vrbo-management-services-florida",
+        "switch-vacation-rental-management-company"
+      ],
+      "geoIntro": "<p>We do not use one flat management fee for every home. Most local operators land within a range based on revenue potential, location, home quality, and day-to-day operating demands. Higher-performing homes can qualify for lower fees. After we review your property, we show you the exact structure and whether the fit makes sense on both sides.</p><p>That matters because fee comparisons get distorted fast when you ignore booking sources and operating quality. A manager with a lower headline number can still leave you behind if your property stays too dependent on marketplace commissions or the local execution keeps hurting reviews and nightly pricing.</p><p>The right fee conversation is not about finding the smallest percentage on the page. It is about understanding what you keep after management fee, booking costs, and the hidden cost of weak execution are accounted for.</p>",
       "faqs": [
         {
           "q": "What do Florida vacation rental managers usually charge?",
-          "a": "There is no honest one-number answer. Most full-service managers operate within a range, but the right fee depends on revenue potential, location, home quality, amenities, and the day-to-day operational load tied to the property."
+          "a": "There is no honest one-number answer. Most local operators with hands-on oversight work within a range, but the right fee depends on revenue potential, location, home quality, amenities, and the day-to-day operating load tied to your property."
         },
         {
           "q": "Why is the cheapest fee not automatically the best deal?",
@@ -3553,7 +3563,7 @@
         },
         {
           "q": "How should I compare Seascape with Vacasa, Evolve, or local managers?",
-          "a": "Compare what the owner actually keeps. That means management fee, marketplace booking costs, direct-booking potential, clarity of reporting, and whether the operator is actually local enough to protect guest experience and rate power."
+          "a": "Compare what you actually keep. That means management fee, marketplace booking costs, direct-booking potential, clarity of reporting, and whether the operator is local enough to protect guest experience and nightly pricing."
         },
         {
           "q": "What does Seascape review before quoting a fee?",
@@ -4628,8 +4638,13 @@
       "title": "Florida Vacation Rental License Rules: DBPR + County Risk",
       "h1": "Florida Vacation Rental Licensing",
       "description": "DBPR is one layer. See Florida vacation rental license rules, county registration, tax setup, and launch risks before bookings go live.",
-      "intro": "If licensing is unclear, every booking plan stays fragile. This page helps you confirm DBPR, county, tax, and launch-readiness steps before you publish listings.",
+      "intro": "If licensing is unclear, your booking plan is still fragile. Use this page to check DBPR, county, tax, and launch-readiness steps before you publish listings or trust a new manager's handoff.",
       "proofAssetKey": "gulf-coast-owner-benchmark-2026",
+      "proofTitle": "Licensing trouble usually starts before the first fine",
+      "switchTitle": "Why owners stop trusting the compliance handoff",
+      "benefitsTitle": "What a launch-safe operator should make visible",
+      "processTitle": "How the 48-hour licensing review works",
+      "objectionsTitle": "The licensing questions that usually slow the decision",
       "benefits": [
         "Launch sequencing that keeps licensing from delaying first-booking revenue",
         "DBPR, county, and local requirement mapping in one owner review",
@@ -4655,7 +4670,7 @@
       "marketReality": {
         "tag": "Compliance Reality",
         "title": "Licensing problems are revenue problems before they become legal problems",
-        "body": "<p>Owners usually notice licensing when they fear fines. The more expensive failure is launch delay, blocked channel access, invalid insurance assumptions, or a calendar that starts with the wrong operating rules.</p><p>The first useful compliance question is whether the current registration stack matches the way the home will actually be rented. That means county registration, local rules, tax setup, occupancy expectations, and the operational policies that support them.</p>"
+        "body": "<p>Licensing trouble usually shows up first as launch delay, blocked channel access, insurance confusion, or a manager who cannot tell you what is actually complete.</p><p>The useful compliance question is whether your current registration stack matches the way your property will be rented. That means county registration, local rules, tax setup, occupancy expectations, and the local follow-through that keeps the first booking from wobbling.</p>"
       },
       "revenueLevers": [
         {
@@ -4688,7 +4703,7 @@
       "reviewDeliverable": {
         "tag": "48-Hour Review",
         "title": "What your 48-hour licensing review includes",
-        "intro": "You should leave this review knowing what is complete, what is missing, and what can still stop launch.",
+        "intro": "You should leave this review knowing what is complete, what is missing, and who still owns the launch blockers.",
         "items": [
           {
             "title": "State and county checklist",
@@ -4743,8 +4758,13 @@
       ],
       "cta": "Request Your Revenue Teardown",
       "primaryCta": "Request Your Revenue Teardown",
-      "ctaSubcopy": "We map DBPR, county, and launch-readiness gaps in your review so you can clear blockers before they become downtime.",
-      "ctaNote": "Useful if you are launching, relaunching, or not fully sure the current registration stack matches the home's real use.",
+      "ctaSubcopy": "We use the review to map DBPR, county, tax, and launch-readiness gaps so you can see what still blocks revenue and who should own the fix.",
+      "ctaNote": "Useful if you are launching, relaunching, or switching managers and do not trust the current compliance handoff.",
+      "relatedOwnerResources": [
+        "vacation-rental-management-fees-florida",
+        "vrbo-management-services-florida",
+        "new-vacation-rental-owner-guide-florida"
+      ],
       "geoIntro": "<p>Florida short-term rental licensing looks simple right up until the paperwork collides with how the home is actually being operated. Owners get hurt when they treat DBPR registration, county filing, zoning, taxes, and occupancy rules like separate chores instead of one launch sequence.</p><p>That matters because the upside is real only when the property can take bookings without avoidable interruption. Seascape's current Gulf Coast operating set already runs at <strong>$1.4M in annual rental revenue</strong>, and none of that is worth much if the home enters the market on a broken compliance foundation.</p><p>The review is built to answer the owner question first: what has to be true before this home can earn safely and consistently in Manatee, Sarasota, or the surrounding Gulf Coast market. That is a better frame than vague promises about handling compliance for you.</p>",
       "faqs": [
         {
@@ -4779,8 +4799,13 @@
       "title": "Florida VRBO Property Management for Owners: Channel-Specific Pricing",
       "h1": "Professional VRBO Management",
       "description": "Florida VRBO owners need channel-specific pricing, guest vetting, and reporting that separates longer-stay demand from blended OTA averages.",
-      "intro": "VRBO can be a strong lane or a noisy distraction. The difference is whether your manager treats VRBO pricing, guest fit, and reporting as channel-specific work instead of copied OTA settings.",
+      "intro": "VRBO should earn its place in your mix. The difference is whether your manager treats VRBO pricing, guest fit, and reporting as channel-specific work or just copies the Airbnb setup and hopes it sticks.",
       "proofAssetKey": "gulf-coast-owner-benchmark-2026",
+      "proofTitle": "VRBO only matters if it improves what you keep",
+      "switchTitle": "Why owners stop trusting blended OTA reporting",
+      "benefitsTitle": "What channel-specific VRBO handling should improve",
+      "processTitle": "How the 48-hour VRBO review works",
+      "objectionsTitle": "The VRBO questions worth settling before you add more channel work",
       "benefits": [
         "VRBO strategy built around owner income, not copy-paste cross-posting",
         "Listing and pricing treatment that matches longer-stay family demand",
@@ -4806,7 +4831,7 @@
       "marketReality": {
         "tag": "Channel Reality",
         "title": "VRBO only helps when it is managed like its own revenue lane",
-        "body": "<p>Owners often hear that more channels automatically means more revenue. That is lazy math. The useful question is whether VRBO is bringing the right stay length, fee profile, and guest mix for the home.</p><p>On the Gulf Coast, VRBO can widen owner margin when the property suits family or longer-stay demand and the manager treats pricing, listing detail, and inquiry handling as channel-specific work instead of cloned OTA admin.</p>"
+        "body": "<p>VRBO does not help just because another logo is turned on. The useful question is whether it brings the stay length, fee profile, and guest fit that actually improve your payout.</p><p>On the Gulf Coast, VRBO matters most when your property suits families or longer stays and the manager treats pricing, listing detail, screening, and response work as channel-specific execution instead of cloned OTA admin.</p>"
       },
       "revenueLevers": [
         {
@@ -4839,7 +4864,7 @@
       "reviewDeliverable": {
         "tag": "48-Hour Review",
         "title": "What your 48-hour VRBO review includes",
-        "intro": "The review shows whether VRBO is helping your payout or just adding activity.",
+        "intro": "The review shows whether VRBO deserves more weight, cleaner settings, or less attention.",
         "items": [
           {
             "title": "VRBO pricing read",
@@ -4894,8 +4919,13 @@
       ],
       "cta": "Request Your Revenue Teardown",
       "primaryCta": "Request Your Revenue Teardown",
-      "ctaSubcopy": "We use the review to show whether VRBO channel work is improving payout for your property or just adding volume with weak margins.",
-      "ctaNote": "Useful if VRBO is underperforming, reporting is too blended to trust, or you want a cleaner read on which booking channels actually fit the home.",
+      "ctaSubcopy": "We use the review to show whether VRBO pricing, screening, and response work are improving payout for your property or just adding channel activity you cannot trust.",
+      "ctaNote": "Useful if VRBO is underperforming, reporting is too blended to trust, or you want a cleaner read on whether this channel fits your property.",
+      "relatedOwnerResources": [
+        "vacation-rental-management-fees-florida",
+        "vacation-rental-licensing-florida",
+        "switch-vacation-rental-management-company"
+      ],
       "geoIntro": "<p>VRBO deserves to be treated like a separate revenue lane, not a copy of the Airbnb setup. The guests often book longer, compare family-fit details harder, and respond differently to discount structure, cancellation policy, and listing clarity.</p><p>That matters because the owner benefit does not come from having one more OTA badge on the page. It comes from whether the channel helps the home capture profitable stays without unnecessary fee drag or lazy discounting. Seascape's Gulf Coast benchmark already shows how much margin moves when channel economics are handled deliberately instead of blended into generic OTA reporting.</p><p>The review is built to answer a narrower question than most managers do: should VRBO be pushed harder for this home, cleaned up, or simply measured more honestly against Airbnb and direct demand. That is an operator question with owner-income consequences.</p>",
       "faqs": [
         {
