@@ -5,6 +5,7 @@
   {% if options.id %}id="{{ options.id }}"{% endif %}
   name="{{ options.formName or 'owner-revenue-teardown' }}"
   method="POST"
+  action="{{ options.action or '/property-management/revenue-review-requested/' }}"
   enctype="multipart/form-data"
   data-netlify="true"
   netlify-honeypot="bot-field"

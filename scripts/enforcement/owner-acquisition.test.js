@@ -28,6 +28,7 @@ const ownerData = require(path.join(projectRoot, "src", "_data", "seoPages.json"
 const ownerProofAssets = require(path.join(projectRoot, "src", "_data", "ownerProofAssets.json"));
 const ownerOperatorProofAssets = require(path.join(projectRoot, "src", "_data", "ownerOperatorProofAssets.json"));
 const ownerFormPath = path.join(projectRoot, "src", "_includes", "partials", "owner-evaluation-form.njk");
+const ownerReviewRequestedPath = path.join(projectRoot, "src", "property-management", "revenue-review-requested.njk");
 const ownerRouteCanaryPath = path.join(projectRoot, "scripts", "recovery", "assert-owner-funnel-routes.js");
 const {
   assertFreshOwnerOperatorProof
@@ -221,6 +222,22 @@ test("owner field report email payload avoids duplicate listing fields and submi
   assert.equal(conversionTracking.includes('if (form.dataset.skipGlobalSubmitTrack !== "true") {'), true);
 });
 
+test("owner teardown submit path lands on a qualified-owner confirmation route", () => {
+  const ownerFormPartial = fs.readFileSync(ownerFormPath, "utf8");
+  const ownerReviewRequested = fs.readFileSync(ownerReviewRequestedPath, "utf8");
+
+  assert.equal(ownerLanding.includes('action="/property-management/revenue-review-requested/"'), true);
+  assert.equal(ownerFormPartial.includes('action="{{ options.action or \'/property-management/revenue-review-requested/\' }}"'), true);
+  assert.equal(ownerReviewRequested.includes('permalink: "/property-management/revenue-review-requested/"'), true);
+  assert.equal(ownerReviewRequested.includes("Your 48-hour review request is in."), true);
+  assert.equal(ownerReviewRequested.includes("listing link or property address"), true);
+  assert.equal(ownerReviewRequested.includes("one sentence on what feels off"), true);
+  assert.equal(ownerReviewRequested.includes("If you skipped either one, reply to the confirmation email"), true);
+  assert.equal(ownerReviewRequested.includes("No sales call gets booked from this form."), true);
+  assert.equal(ownerReviewRequested.includes("does not prove booked teardown demand"), true);
+  assert.equal(ownerReviewRequested.includes("guaranteed revenue lift"), false);
+});
+
 test("owner funnel uses one explicit source precedence contract across both owner form UIs", () => {
   const ownerFormPartial = fs.readFileSync(ownerFormPath, "utf8");
 
@@ -245,6 +262,7 @@ test("owner funnel route canary protects canonical and alternate public hosts fr
 
   for (const route of [
     "/property-management/",
+    "/property-management/revenue-review-requested/",
     "/research/owner-fee-revenue-leak-benchmark-2026/",
     "/research/how-seascape-protects-owner-net-2026/"
   ]) {

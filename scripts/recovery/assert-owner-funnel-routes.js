@@ -7,6 +7,7 @@ const HOSTS = [
 
 const ROUTES = [
   "/property-management/",
+  "/property-management/revenue-review-requested/",
   "/research/owner-fee-revenue-leak-benchmark-2026/",
   "/research/how-seascape-protects-owner-net-2026/"
 ];
