@@ -16,9 +16,9 @@ These are reference patterns already present in the repo. Copy the thinking, not
 
 ## `src/property-management/index.njk`
 
-- Approved pattern: switcher-first owner framing.
-- Why it works: the page asks an owner to request a revenue review instead of drowning them in a generic service list.
-- Reuse when: the page is meant to convert owners who already suspect the current setup is leaking money.
+- Approved pattern: decision-first owner framing.
+- Why it works: the page asks an owner to start with a revenue review instead of drowning them in a generic service list.
+- Reuse when: the page is meant to help owners who already think the current setup is too expensive or too hard to trust.
 
 ## `src/_data/ownerProofAssets.json`
 

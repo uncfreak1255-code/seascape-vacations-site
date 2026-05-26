@@ -30,7 +30,7 @@ That means:
 
 ## Owner Voice
 
-- Speak to switchers, not casual browsers.
+- Speak to owners making a real manager decision, not casual browsers.
 - Lead with owner economics, not a service laundry list.
 - Treat "busy but underperforming" as a recurring problem pattern.
 - Never flatten every owner problem into "we offer full service."

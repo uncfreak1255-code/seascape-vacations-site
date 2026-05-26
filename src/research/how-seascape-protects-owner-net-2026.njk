@@ -178,9 +178,9 @@ a{color:inherit}
       <span class="eyebrow">Owner Operator Proof Pack</span>
       <h1>How Seascape protects what an owner actually keeps.</h1>
       <p class="hero-lead">The <a href="/research/owner-fee-revenue-leak-benchmark-2026/">owner benchmark</a> shows why the management fee is only part of the comparison. This page shows the next question: what Seascape has already seen, protected, or made clearer in real operating examples.</p>
-      <p class="hero-lead">Use it before you request the private teardown. The examples are redacted, narrow, and labeled so they do not pretend one property proves every property.</p>
+      <p class="hero-lead">Use it before you request the private review. The examples are redacted, narrow, and labeled so they do not pretend one property proves every property.</p>
       <div class="hero-actions">
-        <a class="btn btn-gold" href="/property-management/?owner_source=how-seascape-protects-owner-net-2026#owner-cta" data-track-event="owner_primary_cta_click" data-page-slug="how-seascape-protects-owner-net-2026">Request Your Revenue Teardown</a>
+        <a class="btn btn-gold" href="/property-management/?owner_source=how-seascape-protects-owner-net-2026#owner-cta" data-track-event="owner_primary_cta_click" data-page-slug="how-seascape-protects-owner-net-2026">Request Your Revenue Review</a>
         <a class="btn btn-light" href="#proof-modules">See proof modules</a>
       </div>
     </div>
@@ -190,7 +190,7 @@ a{color:inherit}
       <ul class="proof-list">
         <li><strong>{{ proofPack.modules.length }} proof modules</strong><span>Redacted operating examples from the current Hub proof library.</span></li>
         <li><strong>{{ proofPack.lastRefreshedLabel }}</strong><span>Current reuse window runs through {{ proofPack.staleAfter }} unless newer owner-report proof replaces it.</span></li>
-        <li><strong>Same teardown path</strong><span>The next step stays the property-specific review, with source attribution preserved.</span></li>
+        <li><strong>Same review path</strong><span>The next step stays the property-specific review, with source attribution preserved.</span></li>
       </ul>
     </aside>
   </section>
@@ -246,6 +246,7 @@ a{color:inherit}
         <span class="eyebrow">How this fits the benchmark</span>
         <h3>First understand the math. Then ask whether the operator can prove the work.</h3>
         <p>The <a href="/research/owner-fee-revenue-leak-benchmark-2026/">Owner Fee + Revenue Benchmark</a> explains management fee, Airbnb cost, direct payment cost, and example math. This proof pack sits one step later: it shows how Seascape reports and explains those issues when they appear in actual owner material.</p>
+        <p>If you're still in comparison mode, read the <a href="/property-management/vacation-rental-management-fees-florida/">management-fee guide</a>, <a href="/property-management/vacation-rental-licensing-florida/">Florida licensing guide</a>, and <a href="/property-management/vrbo-management-services-florida/">VRBO guide</a> before you <a href="/property-management/#owner-cta">request the property-specific review</a>.</p>
         <ul class="plain-list">
           <li>Booking-source cost should be visible, not buried inside occupancy.</li>
           <li>Direct bookings should be named as real wins without pretending they solve every channel problem.</li>
@@ -254,10 +255,10 @@ a{color:inherit}
       </div>
       <div class="boundary-card">
         <span class="eyebrow">What stays private</span>
-        <h3>The public page does not replace your teardown.</h3>
+        <h3>The public page does not replace your review.</h3>
         <div class="boundary-table">
           <div class="boundary-row"><strong>Public proof</strong><span>Redacted operating examples and benchmark facts already visible on the site.</span></div>
-          <div class="boundary-row"><strong>Private teardown</strong><span>Your listing URL, statement, fee quote, calendar, reviews, and manager context.</span></div>
+          <div class="boundary-row"><strong>Private review</strong><span>Your listing URL, statement, fee quote, calendar, reviews, and manager context.</span></div>
           <div class="boundary-row"><strong>Unknowns</strong><span>Missing statements, reviews, calendars, or fee terms get marked missing instead of guessed.</span></div>
         </div>
       </div>
@@ -267,16 +268,16 @@ a{color:inherit}
   <section class="cta-shell" id="owner-cta">
     <div class="container">
       <div class="section-intro section-intro--center">
-        <span class="eyebrow">Private teardown</span>
+        <span class="eyebrow">Private review</span>
         <h2>Want this same review for your home?</h2>
         <p>Send the easiest proof you have. A listing URL is enough to start; an owner statement or fee quote makes the review sharper.</p>
       </div>
       <div class="cta-card">
         <div class="cta-grid">
           <div class="cta-copy">
-            <h3>Request a Revenue Teardown</h3>
+            <h3>Request a Revenue Review</h3>
             <p>Seascape will separate what is proven, what is likely, and what is still missing before recommending whether to stay put, fix the current setup, or talk about transition.</p>
-            <p class="cta-proof-note">This is the same teardown path used by the owner hub. The source is tracked as this proof pack so the route can be measured separately.</p>
+            <p class="cta-proof-note">This is the same review path used by the owner hub. The source is tracked as this proof pack so the route can be measured separately.</p>
           </div>
           {{ ownerEvaluationForm({
             className: "owner-lead-form--benchmark",
@@ -285,7 +286,7 @@ a{color:inherit}
             sourcePageSlug: "how-seascape-protects-owner-net-2026",
             market: "florida-gulf-coast",
             leadType: "owner-revenue-teardown",
-            buttonLabel: "Send My Teardown Request",
+            buttonLabel: "Send My Review Request",
             propertyFieldLabel: "Property address or market",
             propertyFieldPlaceholder: "Market or street address",
             showBenchmarkFields: true,

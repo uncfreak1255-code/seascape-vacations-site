@@ -5,16 +5,16 @@
 - persona: Florida Gulf Coast vacation-rental owner comparing managers and trying to decide whether weak reporting, booking costs, licensing friction, or platform handling is the real problem.
 - primary keyword: vacation rental management fees Florida
 - secondary keywords: Florida vacation rental licensing, VRBO management services Florida, owner revenue review, current manager comparison
-- audience pattern: skeptical switcher who already sees rankings and wants a sharper reason to click before trusting a sales conversation.
+- audience pattern: skeptical owner already comparing managers and wanting a sharper reason to click before trusting a sales conversation.
 - proof source: `gulf-coast-owner-benchmark-2026` and the published owner fee benchmark.
 - workflow gate: `docs/status/next-batch.md` still controls whether metadata work is allowed.
 - required internal links: /research/owner-fee-revenue-leak-benchmark-2026/, /property-management/vacation-rental-management-fees-florida/, /property-management/vacation-rental-licensing-florida/, /property-management/vrbo-management-services-florida/, /property-management/#owner-cta
-- CTA target: `#owner-cta` on each owner money page with `Request Your Revenue Teardown`
+- CTA target: `#owner-cta` on each owner money page with `Request Your Revenue Review`
 - anti-claims: no portfolio-wide guarantee, no market-wide authority claim from five homes, no flat-fee promise, no generic full-service language, no metadata rewrite while `docs/status/next-batch.md` is still blocked.
 
 ## Why This Batch
 
-- The fees and licensing pages need to feel more like product pages for a skeptical switcher, not thin comparison explainers.
+- The fees and licensing pages need to feel more like product pages for a skeptical owner making an active manager decision, not thin comparison explainers.
 - The batch should show the exact 48-hour review deliverable plus the owner-visibility layer: reporting, maintenance follow-through, guest screening, and local response.
 - `docs/status/next-batch.md` currently says `blocked by freshness`, so title, description, and snippet-focused rewrites stay gated until the reread opens.
 - VRBO remains support content in this batch. It should reinforce the money lane, not mirror the sales posture of the two primary owner-money pages.
@@ -27,7 +27,7 @@
   - VRBO page: `diagnostic clarity`, not equal emotional weight with the two primary money pages
   - CTA: `micro-commitment`, low-pressure diagnostic, not a disguised sales call
 - strongest emotional lever: help the owner feel the cost of waiting one more renewal cycle with the current manager through missed payout, reporting blind spots, and launch risk, not hype.
-- sequencing rule: the benchmark remains the public front door, the teardown remains the only conversion ask, and the three money pages should intensify the diagnosis rather than introduce a second offer.
+- sequencing rule: the benchmark remains the public front door, the review remains the only conversion ask, and the three money pages should intensify the diagnosis rather than introduce a second offer.
 
 ## Constrained Execution Snapshot (2026-05-25)
 
@@ -76,7 +76,7 @@
   - `scripts/enforcement/owner-acquisition.test.js`
 - redirect or schema work: none in this batch.
 - internal-link or CTA work: each page should carry the required benchmark link and drive to `/property-management/#owner-cta`. The fees and licensing pages should each link to the other primary money page. The VRBO page should link to both primary money pages as support routing.
-- money CTA and downstream tracking event to verify: `#owner-cta` with visible CTA copy `Request Your Revenue Teardown`; keep the current owner CTA tracking contract intact.
+- money CTA and downstream tracking event to verify: `#owner-cta` with visible CTA copy `Request Your Revenue Review`; keep the current owner CTA tracking contract intact.
 - page-level rewrite intent:
   - fees page: make the click worth it by showing that the real comparison is owner net, reporting clarity, booking-cost drag, and the 48-hour review output.
   - licensing page: frame licensing friction as an owner-visibility and local-execution problem, not just a compliance checklist.
@@ -85,7 +85,7 @@
 ## Voice Editor Checklist
 
 - tone risks: sounding like a generic manager brochure, overclaiming from a small benchmark sample, or drifting into detached `the owner` phrasing instead of speaking to `you`.
-- generic or mechanical patterns to kill: `full-service`, vague hospitality adjectives, flat-fee shortcut copy, and generic manager-comparison filler that does not sharpen the switch decision.
+- generic or mechanical patterns to kill: `full-service`, vague hospitality adjectives, flat-fee shortcut copy, and generic manager-comparison filler that does not sharpen the actual decision.
 - proof or specificity checks: keep the 48-hour review deliverable concrete, keep the owner visibility layer concrete, and separate benchmark proof from any page-specific promise.
 - customer wording kept where it sounds natural; SEO-tool phrasing removed where it sounds manufactured: keep language around weak reporting, booking costs, licensing friction, platform handling, and current manager comparison.
 
@@ -100,7 +100,7 @@
 
 ## Done When
 
-- all three owner money pages have body-copy rewrite guidance that makes them feel like product pages for skeptical switchers.
+- all three owner money pages have body-copy rewrite guidance that makes them feel like product pages for skeptical owners already comparing managers.
 - the brief clearly separates unblocked body work from blocked snippet/title/meta work.
 - the required links, CTA target, proof sources, and anti-claims are explicit enough for page building and review.
 - the batch remains limited to these three pages and does not reopen stay work or add new owner pages.

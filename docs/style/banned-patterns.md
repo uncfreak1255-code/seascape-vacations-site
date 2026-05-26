@@ -17,6 +17,8 @@
 - `channel mix`
 - `leak` / `leakage`
 - `fee stack`
+- `switcher` / `switchers` as public audience labels
+- `teardown` as the public name of the owner review
 - `the home` (prefer `your home`/`your property` when clear)
 - `Use this when…`
 - `Read this if…`

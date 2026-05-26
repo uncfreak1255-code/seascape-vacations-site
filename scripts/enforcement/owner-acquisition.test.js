@@ -74,17 +74,17 @@ test("owner landing page keeps the owner revenue review close to the sales argum
   assert.ok(reviewIndex < specialSituationsIndex, "owner CTA should land before special-situations content");
 });
 
-test("owner landing page gives current-manager switchers a first-class decision path", () => {
-  const switcherBoxIndex = ownerLanding.indexOf("Start Here For Switchers");
+test("owner landing page gives current-manager comparisons a first-class decision path", () => {
+  const decisionStartIndex = ownerLanding.indexOf("Start Here If You're Comparing Managers");
   const decisionPagesIndex = ownerLanding.indexOf("Current-Manager Decision Pages");
   const generalLibraryIndex = ownerLanding.indexOf("Operational guides that protect revenue and reduce risk");
 
-  assert.notEqual(switcherBoxIndex, -1, "owner hub should keep the switcher path box");
+  assert.notEqual(decisionStartIndex, -1, "owner hub should keep the decision-start box");
   assert.notEqual(decisionPagesIndex, -1, "owner hub should spotlight the current-manager decision pages");
-  assert.ok(decisionPagesIndex > switcherBoxIndex, "decision-page spotlight should follow the switcher sequence");
+  assert.ok(decisionPagesIndex > decisionStartIndex, "decision-page spotlight should follow the decision-start sequence");
   assert.ok(decisionPagesIndex < generalLibraryIndex, "decision-page spotlight should lead before the broader owner library");
   assert.equal(
-    ownerLanding.includes("Compare fees, launch-readiness risk, and VRBO handling before you ask for a teardown."),
+    ownerLanding.includes("Compare fees, launch-readiness risk, and VRBO handling before you ask for a review."),
     true,
     "owner hub should explain why the three money pages come first"
   );
@@ -115,7 +115,7 @@ test("owner landing page opts into owner-only nav instead of the guest browse he
   assert.equal(siteHeaderStyles.includes(".nav-owner-cta {"), true, "owner-only nav CSS should style the compact CTA directly");
   assert.equal(siteHeaderStyles.includes("margin-left: auto;"), true, "owner-only nav should push the CTA to the right without guest links");
   assert.equal(siteHeader.includes("href=\"/properties/\""), true, "shared header still needs guest-nav links for non-owner pages");
-  assert.equal(siteHeader.includes("Request Your Revenue Teardown"), false, "shared header should stay page-driven, not hard-code owner CTA copy");
+  assert.equal(siteHeader.includes("Request Your Revenue Review"), false, "shared header should stay page-driven, not hard-code owner CTA copy");
 });
 
 test("owner template supports proof-first sections for high-intent owner pages", () => {
@@ -158,7 +158,7 @@ test("top local owner pages expose proof-first fields and non-generic owner copy
   }
 });
 
-test("owner revenue teardown form lowers friction without losing tracking or intent", () => {
+test("owner review request form lowers friction without losing tracking or intent", () => {
   const ownerFormPartial = fs.readFileSync(ownerFormPath, "utf8");
 
   assert.equal(ownerFormPartial.includes('name="phone"'), true);
@@ -202,7 +202,7 @@ test("owner revenue teardown form lowers friction without losing tracking or int
     ownerFormPartial.includes("low owner payout, too many fees, spotty reporting, booking channels feel off, or current-manager concerns"),
     true
   );
-  assert.equal(ownerFormPartial.includes("Send My Teardown Request"), true);
+  assert.equal(ownerFormPartial.includes("Send My Review Request"), true);
   assert.equal(ownerFormPartial.includes('data-track-form="owner"'), true);
   assert.equal(ownerFormPartial.includes('data-form-submit-event="owner_form_submit"'), true);
   assert.equal(ownerFormPartial.includes('data-source-page-slug="{{ options.sourcePageSlug or options.pageSlug or \'property-management\' }}"'), true);
@@ -253,7 +253,7 @@ test("owner field report email payload avoids duplicate listing fields and submi
   assert.equal(conversionTracking.includes('if (form.dataset.skipGlobalSubmitTrack !== "true") {'), true);
 });
 
-test("owner teardown submit path lands on a qualified-owner confirmation route", () => {
+test("owner review submit path lands on a qualified-owner confirmation route", () => {
   const ownerFormPartial = fs.readFileSync(ownerFormPath, "utf8");
   const ownerReviewRequested = fs.readFileSync(ownerReviewRequestedPath, "utf8");
 
@@ -265,7 +265,7 @@ test("owner teardown submit path lands on a qualified-owner confirmation route",
   assert.equal(ownerReviewRequested.includes("one sentence on what feels off"), true);
   assert.equal(ownerReviewRequested.includes("If you skipped either one, reply to the confirmation email"), true);
   assert.equal(ownerReviewRequested.includes("No sales call gets booked from this form."), true);
-  assert.equal(ownerReviewRequested.includes("does not prove booked teardown demand"), true);
+  assert.equal(ownerReviewRequested.includes("does not prove booked review demand"), true);
   assert.equal(ownerReviewRequested.includes("guaranteed revenue lift"), false);
 });
 
@@ -317,9 +317,9 @@ test("owner benchmark CTA carries source attribution into the revenue review for
   assert.equal(ownerBenchmark.includes('showBenchmarkFields: true'), true);
   assert.equal(ownerBenchmark.includes('allowFileUpload: true'), true);
   assert.equal(
-    /ownerEvaluationForm\(\{[\s\S]*formPlacement: "benchmark-teardown"[\s\S]*sourcePageSlug: "owner-fee-revenue-leak-benchmark-2026"[\s\S]*buttonLabel: "Send My Teardown Request"/.test(ownerBenchmark),
+    /ownerEvaluationForm\(\{[\s\S]*formPlacement: "benchmark-teardown"[\s\S]*sourcePageSlug: "owner-fee-revenue-leak-benchmark-2026"[\s\S]*buttonLabel: "Send My Review Request"/.test(ownerBenchmark),
     true,
-    "benchmark page should embed the shared teardown form with source attribution"
+    "benchmark page should embed the shared review form with source attribution"
   );
 });
 
@@ -334,7 +334,7 @@ test("owner benchmark page stays in the fee-and-revenue lane and keeps visible p
   assert.equal(ownerBenchmark.includes("Observed Seascape portfolio data"), true);
   assert.equal(ownerBenchmark.includes("Observed operating example"), true);
   assert.equal(ownerBenchmark.includes("Example math, not a forecast"), true);
-  assert.equal(ownerBenchmark.includes("Request Your Revenue Teardown"), true);
+  assert.equal(ownerBenchmark.includes("Request Your Revenue Review"), true);
   assert.equal(ownerBenchmark.includes("Observed May 2026 operator example"), true);
   assert.equal(ownerBenchmark.includes("Process proof, not booked revenue"), true);
   assert.equal(ownerBenchmark.includes("AMI Portfolio"), false);
@@ -344,7 +344,7 @@ test("owner benchmark page stays in the fee-and-revenue lane and keeps visible p
   assert.equal(ownerBenchmark.includes("full service"), false);
 });
 
-test("owner operator proof pack uses approved redacted modules and preserves teardown attribution", () => {
+test("owner operator proof pack uses approved redacted modules and preserves review attribution", () => {
   const proofPack = fs.readFileSync(
     path.join(projectRoot, "src", "research", "how-seascape-protects-owner-net-2026.njk"),
     "utf8"
@@ -386,7 +386,7 @@ test("owner operator proof pack fails verification after its proof freshness win
   );
 });
 
-test("owner hub still feeds the operator proof pack while the benchmark stands on its own teardown path", () => {
+test("owner hub still feeds the operator proof pack while the benchmark stands on its own review path", () => {
   const ownerBenchmark = fs.readFileSync(
     path.join(projectRoot, "src", "research", "owner-fee-revenue-leak-benchmark-2026.njk"),
     "utf8"
@@ -397,7 +397,7 @@ test("owner hub still feeds the operator proof pack while the benchmark stands o
   assert.equal(ownerBenchmark.includes("/research/how-seascape-protects-owner-net-2026/"), false);
   assert.equal(ownerBenchmark.includes("A manager should be able to show exactly how a rate move is tested."), true);
   assert.equal(ownerLanding.includes("Start Your 48-Hour Revenue Review"), true);
-  assert.equal(ownerBenchmark.includes("Request Your Revenue Teardown"), true);
+  assert.equal(ownerBenchmark.includes("Request Your Revenue Review"), true);
 });
 
 test("owner pages keep phone as a lower-trust fallback instead of a competing hero CTA", () => {
@@ -530,8 +530,8 @@ test("priority owner proof-cluster pages cite the shared benchmark asset and avo
     assert.ok(Array.isArray(page.visibilityLayer.items) && page.visibilityLayer.items.length >= 4, `${slug} should show the owner visibility items`);
     assert.ok(Array.isArray(page.processSteps) && page.processSteps.length >= 3, `${slug} should expose a real process`);
     assert.ok(Array.isArray(page.objections) && page.objections.length >= 3, `${slug} should answer owner objections`);
-    assert.equal(page.primaryCta, "Request Your Revenue Teardown", `${slug} should keep the teardown CTA`);
-    assert.ok(/teardown|review|fee|channel|owner/i.test(page.ctaSubcopy), `${slug} CTA subcopy should reinforce owner-economics intent`);
+    assert.equal(page.primaryCta, "Request Your Revenue Review", `${slug} should keep the review CTA`);
+    assert.ok(/review|fee|channel|owner/i.test(page.ctaSubcopy), `${slug} CTA subcopy should reinforce owner-economics intent`);
 
     const visibilityText = page.visibilityLayer.items.map((item) => `${item.title} ${item.body}`).join(" ");
     assert.match(visibilityText, /report/i, `${slug} visibility layer should mention reporting`);
@@ -598,7 +598,7 @@ test("priority owner money pages keep decision-first section framing and explici
     const page = ownerData.find((entry) => entry.slug === slug);
 
     assert.ok(page, `${slug} should exist`);
-    assert.equal(page.proofTitle, expected.proofTitle, `${slug} should open the proof section with switcher framing`);
+    assert.equal(page.proofTitle, expected.proofTitle, `${slug} should open the proof section with decision-first framing`);
     assert.equal(page.switchTitle, expected.switchTitle, `${slug} should frame the switch reasons around the real decision`);
     assert.equal(page.benefitsTitle, expected.benefitsTitle, `${slug} should position Seascape as the answer to the actual problem`);
     assert.equal(page.processTitle, expected.processTitle, `${slug} should keep the 48-hour review visible as the next step`);
@@ -657,7 +657,7 @@ test("owner fee cluster pages stay in review mode instead of reverting to brochu
     assert.ok(page, `${slug} should exist`);
   }
 
-  assert.equal(selfManagePage.primaryCta, "Request Your Revenue Teardown", "self-manage page should use the teardown CTA");
+  assert.equal(selfManagePage.primaryCta, "Request Your Revenue Review", "self-manage page should use the review CTA");
   assert.ok(Array.isArray(selfManagePage.proofStats) && selfManagePage.proofStats.length >= 4, "self-manage page should expose owner proof stats");
   assert.ok(selfManagePage.marketReality && /fee|self-manag/i.test(JSON.stringify(selfManagePage.marketReality)), "self-manage page should frame the cost of staying self-managed");
   assert.ok(Array.isArray(selfManagePage.revenueLevers) && selfManagePage.revenueLevers.length >= 3, "self-manage page should explain what actually changes owner income");
@@ -668,8 +668,8 @@ test("owner fee cluster pages stay in review mode instead of reverting to brochu
   assert.equal(JSON.stringify(amiPage).includes("24/7 guest support"), false, "AMI page should not lead with commodity management bullet points");
   assert.equal(JSON.stringify(bradentonPage).includes("Airbnb, VRBO, and direct booking integration"), false, "Bradenton page should not use generic channel-stack bullets");
   assert.equal(JSON.stringify(bradentonPage).includes("Property managers like Seascape Vacations typically increase occupancy by 15-25%"), false, "Bradenton page should not make canned occupancy claims");
-  assert.equal(amiPage.primaryCta, "Request Your Revenue Teardown", "AMI page should keep the teardown CTA");
-  assert.equal(bradentonPage.primaryCta, "Request Your Revenue Teardown", "Bradenton page should keep the teardown CTA");
+  assert.equal(amiPage.primaryCta, "Request Your Revenue Review", "AMI page should keep the review CTA");
+  assert.equal(bradentonPage.primaryCta, "Request Your Revenue Review", "Bradenton page should keep the review CTA");
   assert.ok(/ota|fee|rate|owner|revenue|direct/i.test(amiPage.geoIntro), "AMI GEO intro should sound like an owner economics page");
   assert.ok(/ota|fee|rate|owner|revenue|direct/i.test(bradentonPage.geoIntro), "Bradenton GEO intro should sound like an owner economics page");
 });

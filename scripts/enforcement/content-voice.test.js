@@ -47,10 +47,23 @@ const INTERNAL_PROCESS_PATTERNS = [
   /\bapproved benchmark inputs\b/i
 ];
 
+const PUBLIC_COPY_DRIFT_PATTERNS = [
+  /\bStart Here For Switchers\b/i,
+  /\bSwitcher Path\b/i,
+  /\bRequest Your Revenue Teardown\b/i,
+  /\bRequest a Revenue Teardown\b/i,
+  /\bSend My Teardown Request\b/i,
+  /\bPrivate teardown\b/i,
+  /\brequest your 48-hour teardown\b/i,
+  /\bbefore you ask for a teardown\b/i,
+  /\brequest your teardown\b/i
+];
+
 const FIRST_PARAGRAPH_PROOF_PATTERNS = [/\bobserved\b/i, /\bscenario\b/i, /\bmethodology\b/i];
 
 const PUBLIC_CONTENT_PATTERNS = [
   /^src\/guides\/.+\.(html|njk)$/i,
+  /^src\/_includes\/partials\/owner-evaluation-form\.njk$/i,
   /^src\/research\/.+\.njk$/i,
   /^src\/property-management\/.+\.njk$/i,
   /^src\/stays\/.+\.njk$/i,
@@ -58,6 +71,7 @@ const PUBLIC_CONTENT_PATTERNS = [
 ];
 
 const OWNER_CONTENT_PATTERNS = [
+  /^src\/_includes\/partials\/owner-evaluation-form\.njk$/i,
   /^src\/property-management\/.+\.njk$/i,
   /^src\/research\/owner-.+\.njk$/i,
   /^src\/research\/.+owner.+\.njk$/i
@@ -185,6 +199,13 @@ function lintPublicContent(relativePath, source, requiredLinks) {
     }
   }
 
+  for (const pattern of PUBLIC_COPY_DRIFT_PATTERNS) {
+    const match = source.match(pattern) || visibleText.match(pattern);
+    if (match) {
+      violations.push(`${relativePath}: public audience or offer language "${match[0]}" should not ship in reader copy`);
+    }
+  }
+
   for (const pattern of FIRST_PARAGRAPH_PROOF_PATTERNS) {
     const match = firstParagraph.match(pattern);
     if (match) {
@@ -208,6 +229,12 @@ function lintPublicContent(relativePath, source, requiredLinks) {
         `${relativePath}: owner copy should prefer "you/your" over detached "the owner" language`
       );
     }
+  }
+
+  const skipRequiredLinks = /^src\/_includes\/partials\//i.test(relativePath);
+
+  if (skipRequiredLinks) {
+    return violations;
   }
 
   if (requiredLinks.length < 2) {
@@ -267,7 +294,7 @@ test("approved owner research sample passes the new public-copy guardrails", () 
         <p>Most owners compare 15%, 20%, and 25% management fees and stop there.</p>
         <p><a href="/property-management/vacation-rental-management-fees-florida/">Management fee</a> is only one part of what you actually keep.</p>
         <p>That is why <a href="/property-management/maximize-vacation-rental-income-florida/">booking channels</a> belong in the conversation.</p>
-        <p><a href="/property-management/">Seascape property management</a> starts with a revenue teardown, not a generic service list.</p>
+        <p><a href="/property-management/">Seascape property management</a> starts with a revenue review, not a generic service list.</p>
       </section>
     </main>
   `;
@@ -281,11 +308,12 @@ test("approved owner research sample passes the new public-copy guardrails", () 
   assert.deepEqual(violations, []);
 });
 
-test("lint catches internal-process language and detached owner voice in a sample owner page", () => {
+test("lint catches internal-process language, detached owner voice, and public copy drift in a sample owner page", () => {
   const failingSample = `
     <main>
       <section>
         <p>Approved benchmark inputs help the owner understand the methodology before switching.</p>
+        <p>Start Here For Switchers, then request your 48-hour teardown once the benchmark is done.</p>
         <p>Attentive local operations and clearer owner communication reduce quiet misses while improving owner net through better pricing discipline.</p>
       </section>
     </main>
@@ -313,9 +341,30 @@ test("lint catches internal-process language and detached owner voice in a sampl
     true
   );
   assert.equal(
+    violations.some((entry) => entry.includes("public audience or offer language")),
+    true
+  );
+  assert.equal(
     violations.some((entry) => entry.includes("first paragraph should not lead with proof language")),
     true
   );
+});
+
+test("owner seo page data keeps review CTA language out of teardown phrasing", () => {
+  const seoPages = JSON.parse(read(path.join("src", "_data", "seoPages.json")));
+  const violations = [];
+
+  for (const entry of seoPages.owner) {
+    for (const field of ["cta", "primaryCta"]) {
+      const value = entry[field];
+
+      if (typeof value === "string" && /teardown/i.test(value)) {
+        violations.push(`${entry.slug}: ${field} still uses teardown phrasing`);
+      }
+    }
+  }
+
+  assert.deepEqual(violations, []);
 });
 
 test("content lint does not require a page to link to itself", () => {
