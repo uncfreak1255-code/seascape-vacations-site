@@ -1,167 +1,125 @@
-# Mailchimp Welcome Sequence — Seascape Vacations
+# Mailchimp Welcome Sequence - Seascape Vacations
 
 ## Overview
-- **Trigger:** New subscriber joins via email popup (SAVE50 coupon)
-- **Mailchimp account:** us6, list ID 95e5a594d1
-- **3-email sequence** with delays between each
+- **Trigger:** new subscriber joins from the SAVE50 homepage popup.
+- **Mailchimp account:** us6, list ID `95e5a594d1`.
+- **Current priority:** upgrade Email 1 with the Claude Design welcome template, then keep Emails 2 and 3 plain until the first send proves clean in Gmail and Mailchimp reporting.
+- **Primary template:** `docs/outreach/templates/save50-welcome-email.html`
+- **Plain-text fallback:** `docs/outreach/templates/save50-welcome-email.txt`
+- **Hosted email assets:** `https://seascape-vacations.com/images/email/save50/`
 
----
+## Email 1: Welcome And Coupon Delivery
+**Send:** immediately after signup
 
-## Email 1: Welcome + Coupon Delivery
-**Send:** Immediately after signup
-**Subject line:** Your $50 off code is inside 🏖️
-**Preview text:** Plus 3 things most visitors miss about Bradenton Beach
+**Subject line:** Your $50 off code is ready
 
-**Body:**
+**Preview text:** SAVE50 is ready: $50 off your first direct Seascape booking of 3 nights or more.
 
-Hey FNAME,
+**Primary CTA:** Browse all 5 homes -> `https://seascape-vacations.com/properties/`
 
-You just locked in $50 off your Gulf Coast trip. Here's your code:
+**Core offer copy:**
 
-**SAVE50**
+> Thanks for joining the Seascape list. Your welcome code is ready: $50 off your first direct booking of 3 nights or more at any of our five private pool homes between Bradenton and Sarasota.
+>
+> Your code: SAVE50
+>
+> Book direct and avoid the extra service fees Airbnb and VRBO add at checkout.
 
-Use it when you book direct at seascape-vacations.com. It works on any of our 5 waterfront homes — just need a 3-night minimum stay.
+**Property links used in the template:**
+- Dockside Dreams: `https://seascape-vacations.com/properties/dockside-dreams/`
+- The Oasis: `https://seascape-vacations.com/properties/the-oasis/`
+- Sarasota Luxe: `https://seascape-vacations.com/properties/sarasota-luxe/`
+- River House: `https://seascape-vacations.com/properties/river-house/`
+- Bradenton Pool Home: `https://seascape-vacations.com/properties/bradenton-pool-home/`
 
-Quick rundown of what we've got:
+**Implementation notes:**
+- Use the HTML template as Mailchimp custom-code email content.
+- Use the plain-text file as the Mailchimp plain-text version.
+- Keep Mailchimp merge links in place:
+  - `*|ARCHIVE|*`
+  - `*|UPDATE_PROFILE|*`
+  - `*|UNSUB|*`
+- Do not add an expiration date unless the SAVE50 coupon config proves one.
+- Do not add review counts, rating claims, price-from claims, or broad savings promises unless the proof source is current.
 
-🏡 **The Oasis** — Heated pool, 2 min to the Manatee River. Sleeps 8.
-⛵ **Dockside Dreams** — Private dock, bring your boat. Sleeps 10.
-🌊 **River House** — Right on the water with kayaks included. Sleeps 6.
-🏊 **Bradenton Pool Home** — Big backyard pool, great for families. Sleeps 8.
-✨ **Sarasota Luxe** — Upscale Sarasota pad, close to Siesta Key. Sleeps 6.
-
-**3 things most visitors don't know about this area:**
-
-1. Anna Maria Island is 15 min from our Bradenton homes — same beaches, way less crowded than Clearwater
-2. The fishing off our docks is legit. Snook, redfish, tarpon during season. No boat needed.
-3. Book direct with us and you save 10-15% vs. Airbnb/VRBO (their service fees are brutal)
-
-Browse all properties: https://seascape-vacations.com/properties/
-
-Talk soon,
-Sawyer
-Seascape Vacations
-
-P.S. — That SAVE50 code doesn't expire, but our peak season (March-April) books up fast. Just saying.
-
----
-
-**CTA Button:** Browse Our 5 Homes → https://seascape-vacations.com/properties/
-
----
-
-## Email 2: Social Proof + Area Guide
+## Email 2: Trip Fit Follow-Up
 **Send:** 3 days after Email 1
-**Subject line:** What 200+ guests keep saying about our places
-**Preview text:** Real reviews + our favorite local spots (from people who actually live here)
 
-**Body:**
+**Subject line:** Want help picking the right Seascape home?
 
-Hey FNAME,
+**Preview text:** A quick way to match the house to your group, beach plans, and dates.
 
-Quick question — have you picked your dates yet?
+**Body draft:**
 
-If you're still deciding where to stay on the Gulf Coast, here's what actual guests say about us:
+Hey `*|FNAME|*`,
 
-⭐⭐⭐⭐⭐ *"We've been coming to AMI for 10 years and this was our best stay. The dock at Dockside Dreams is perfect — we caught snook right off the back."* — Mike R.
+If you're still choosing dates, the main thing is matching the house to the trip.
 
-⭐⭐⭐⭐⭐ *"The Oasis pool was a hit with our kids. And being 10 minutes from Anna Maria Island meant we could do beach days without the bridge traffic headache."* — Sarah T.
+For the biggest groups, start with The Oasis. For a private dock and a Bradenton base, look at Dockside Dreams. If you want Sarasota as your home base, start with Sarasota Luxe. If you want the simplest family pool setup, compare River House and Bradenton Pool Home.
 
-⭐⭐⭐⭐⭐ *"Saved over $400 booking direct vs. what Airbnb wanted for the same dates. No-brainer."* — James L.
+Your code is still `SAVE50`: $50 off your first direct booking of 3 nights or more.
 
-**Our local picks (stuff the tourist blogs won't tell you):**
+Browse the homes here:
+`https://seascape-vacations.com/properties/`
 
-🍽️ **Best grouper sandwich:** Anna Maria Oyster Bar — get the blackened grouper, not the fried
-🏖️ **Best quiet beach:** Coquina Beach, south end of AMI. Parking lot is bigger, crowds are smaller
-🎣 **Best fishing spot:** The Rod & Reel Pier — show up at sunrise, bring shrimp
-🍺 **Best sunset drinks:** The Sandbar on Anna Maria — sit outside, order the mahi tacos
+If you want help choosing, reply with your group size and dates. We'll point you toward the best fit.
 
-We put together area guides for every part of the Gulf Coast:
-→ https://seascape-vacations.com/guides/bradenton-vs-sarasota/
-→ https://seascape-vacations.com/guides/anna-maria-island-vs-siesta-key/
-→ https://seascape-vacations.com/guides/best-time-visit-anna-maria-island.html
+- Sawyer and the Seascape team
 
-Still have your $50 off code? It's **SAVE50** — works on any property.
+## Email 3: Direct Booking Reminder
+**Send:** 7 days after Email 1
 
-— Sawyer
+**Subject line:** Still have your SAVE50 code
 
----
+**Preview text:** Use it when you book direct for 3 nights or more.
 
-**CTA Button:** Check Availability → https://seascape-vacations.com/properties/
+**Body draft:**
 
----
+Hey `*|FNAME|*`,
 
-## Email 3: Urgency + Direct Booking Push
-**Send:** 7 days after Email 1 (4 days after Email 2)
-**Subject line:** Dates are filling up for spring — wanted to give you a heads up
-**Preview text:** Your $50 code + why direct booking saves you way more than you think
+Quick reminder: your welcome code is `SAVE50`.
 
-**Body:**
+Use it for $50 off your first direct booking of 3 nights or more. Booking direct also means you avoid the extra service fees Airbnb and VRBO add at checkout, and you can reach us directly if you need help before your stay.
 
-Hey FNAME,
+Check the homes and dates here:
+`https://seascape-vacations.com/properties/`
 
-Not trying to create fake urgency — but our spring calendar is actually getting thin. March and April on the Gulf Coast are prime time, and our 5 homes don't last long.
+Questions? Reply here or call us at `(941) 704-8545`.
 
-Here's what's still available as of right now:
-
-→ **Check live availability:** https://seascape-vacations.com/properties/
-
-**Why book direct instead of Airbnb/VRBO:**
-
-| | Book Direct | Airbnb/VRBO |
-|--|------------|-------------|
-| Service fees | $0 | $150-400+ |
-| Your $50 code | ✅ Works | ❌ Nope |
-| Direct line to us | ✅ Text/call anytime | ❌ Through the app |
-| Flexible changes | ✅ Just call us | ❌ Subject to policies |
-| Total savings | **10-15% less** | Full price + fees |
-
-The math is real. On a 5-night stay at Dockside Dreams, you'd save roughly $350-500 vs. the OTA listing price.
-
-Your code: **SAVE50** (3-night min, any property)
-
-Book here: https://seascape-vacations.com/properties/
-
-If you have questions about which property fits your group best, just reply to this email. I personally answer every one.
-
-— Sawyer
-Founder, Seascape Vacations
-📱 (941) XXX-XXXX
-
----
-
-**CTA Button:** Book Direct & Save → https://seascape-vacations.com/properties/
-
----
+- Sawyer and the Seascape team
 
 ## Mailchimp Setup Instructions
 
-### Automation Setup
-1. Go to Mailchimp → Automations → Create → Customer Journey
-2. Starting point: "Subscribes to audience" (list 95e5a594d1)
-3. Add 3 email steps with delays:
-   - Step 1: Send immediately
-   - Step 2: Wait 3 days, then send
-   - Step 3: Wait 4 more days (7 days total), then send
+1. Go to Mailchimp -> Automations -> Customer Journeys.
+2. Open the SAVE50 popup welcome journey for audience `95e5a594d1`.
+3. Confirm the starting point is the new subscriber event for the homepage SAVE50 popup.
+4. Replace Email 1 content with `docs/outreach/templates/save50-welcome-email.html`.
+5. Paste `docs/outreach/templates/save50-welcome-email.txt` into the plain-text version.
+6. Set the Email 1 subject and preview text from this doc.
+7. Keep tracking enabled:
+   - Opens: on
+   - Clicks: on
+   - Google Analytics tracking: on
+   - Suggested UTM campaign: `save50_welcome`
+8. Send test emails before activating.
 
-### Settings
-- From name: Sawyer @ Seascape Vacations
-- Reply-to: (use actual business email)
-- Track opens and clicks: Yes
-- Google Analytics tracking: Yes (utm_source=mailchimp, utm_medium=email, utm_campaign=welcome_sequence)
+## Required Test Send Checklist
 
-### Personalization
-- Use `*|FNAME|*` merge tag (already captured in popup)
-- Fallback: "there" (so "Hey there," if no first name)
+- Gmail desktop loads the hero, logo, and property images from `https://seascape-vacations.com/images/email/save50/`.
+- Mobile preview keeps the property cards readable.
+- `SAVE50` remains visible when images are blocked.
+- Every property card opens the correct Seascape property URL.
+- The main CTA opens `https://seascape-vacations.com/properties/`.
+- The phone link opens `tel:+19417048545`.
+- `View in browser`, `Update preferences`, and `Unsubscribe` resolve through Mailchimp merge links.
+- Gmail Promotions placement is recorded as inbox placement evidence, not treated as a delivery failure.
 
-### Testing
-- Send test emails to yourself before activating
-- Check all links work
-- Verify SAVE50 code is live in Hostaway
-- Preview on mobile (most email opens are mobile)
+## Repo Verification
 
-### Success Metrics (check after 30 days)
-- Email 1: Target 60%+ open rate, 15%+ click rate
-- Email 2: Target 40%+ open rate, 10%+ click rate
-- Email 3: Target 35%+ open rate, 8%+ click rate
-- Sequence conversion: Target 2-3% of subscribers book within 30 days
+Before handing this to Mailchimp, run:
+
+```bash
+node --test scripts/enforcement/save50-welcome-email-template.test.js
+npm run lint:content
+npm run build
+```
