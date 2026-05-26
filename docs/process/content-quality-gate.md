@@ -29,6 +29,16 @@ Every active content brief must include these flat bullets with real values:
 
 These fields exist so the page builder, voice editor, and release gate are reading the same contract.
 
+## Visible Copy Lane
+
+Any PR that changes `reader copy` in `src/` must run this order before review or merge:
+
+1. `copywriting` for the argument, decision, and CTA draft
+2. `enterprise-ui-writing` to strip repo notes, internal labels, and process-heavy wording out of visible copy
+3. `humanizer` for the final anti-slop pass on rhythm, fake specificity, and obvious AI texture
+
+If the copy still sounds like a review template or repo note after step 3, rewrite it before you ask lint or a human to bless it.
+
 ## Reader Copy Rules
 
 - Answer the real decision in the first paragraph.
@@ -36,6 +46,7 @@ These fields exist so the page builder, voice editor, and release gate are readi
 - Keep proof language below the hook. Dataset limits, scenario labels, and methodology notes belong in proof copy, not the first paragraph.
 - Prefer concrete operating moves over adjectives. Name channel mix, price protection, review follow-up, turnover scheduling, and maintenance follow-through.
 - Do not ship internal workflow language like `approved inputs`, `accepted formulas`, or review-facing caveats in public body copy.
+- Do not ship classification labels like `proven cost`, `likely cost`, or `missing information` in public body copy.
 
 ## SEO, GEO, And AEO Checks
 
@@ -51,6 +62,7 @@ These fields exist so the page builder, voice editor, and release gate are readi
 
 - banned generic phrasing called out in `docs/style/banned-patterns.md`
 - internal-process phrases like `approved benchmark` or `approved inputs` in public copy
+- gray internal phrases like `planning math`, `marketplace-fee exposure`, `source-bounded`, `accepted formulas`, `proof boundaries`, `proven cost`, `likely cost`, or `missing information` in public copy
 - `observed`, `scenario`, or `methodology` in the first visible paragraph
 - detached owner voice where `the owner` outnumbers `you/your`
 - vague owner claims like `attentive local operations`, `clearer owner communication`, or `quiet misses`
