@@ -184,7 +184,7 @@ test("property booking calendars collapse cleanly on mobile without sticky CTA o
   for (const [slug, listingId] of propertyPages) {
     const page = readSource("src", "properties", slug, "index.njk");
     assert.match(page, /\{% include "partials\/hostaway-mobile-calendar-fix\.njk" %\}/);
-    assert.match(page, /window\.matchMedia\('\(min-width:48rem\)'\)\.matches\?2:1/);
+    assert.match(page, /window\.matchMedia\('\(min-width:64rem\)'\)\.matches\?2:1/);
     assert.match(page, new RegExp(`listingId:${listingId},`));
     assert.match(page, /numberOfMonths:numberOfMonths/);
   }
