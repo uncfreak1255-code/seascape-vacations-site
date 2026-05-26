@@ -19,6 +19,16 @@
 - `docs/status/next-batch.md` currently says `blocked by freshness`, so title, description, and snippet-focused rewrites stay gated until the reread opens.
 - VRBO remains support content in this batch. It should reinforce the money lane, not mirror the sales posture of the two primary owner-money pages.
 
+## Marketing Psychology Notes
+
+- trigger order for this batch:
+  - fees page: `anchoring` plus `loss aversion`
+  - licensing page: `regret aversion` plus `uncertainty reduction`
+  - VRBO page: `diagnostic clarity`, not equal emotional weight with the two primary money pages
+  - CTA: `micro-commitment`, low-pressure diagnostic, not a disguised sales call
+- strongest emotional lever: help the owner feel the cost of waiting one more renewal cycle with the current manager through missed payout, reporting blind spots, and launch risk, not hype.
+- sequencing rule: the benchmark remains the public front door, the teardown remains the only conversion ask, and the three money pages should intensify the diagnosis rather than introduce a second offer.
+
 ## Constrained Execution Snapshot (2026-05-25)
 
 - this pass is owner-only and limited to body copy, proof framing, CTA framing, and owner-hub route prominence
