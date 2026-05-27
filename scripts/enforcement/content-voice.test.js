@@ -47,6 +47,17 @@ const INTERNAL_PROCESS_PATTERNS = [
   /\bapproved benchmark inputs\b/i
 ];
 
+const GRAY_INTERNAL_COPY_PATTERNS = [
+  /\bplanning math\b/i,
+  /\bmarketplace[- ]fee exposure\b/i,
+  /\bsource[- ]bounded\b/i,
+  /\baccepted formulas?\b/i,
+  /\bproof boundar(?:y|ies)\b/i,
+  /\bproven costs?\b/i,
+  /\blikely costs?\b/i,
+  /\bmissing information\b/i
+];
+
 const FIRST_PARAGRAPH_PROOF_PATTERNS = [/\bobserved\b/i, /\bscenario\b/i, /\bmethodology\b/i];
 
 const PUBLIC_CONTENT_PATTERNS = [
@@ -165,6 +176,18 @@ function getChangedFiles() {
   }
 }
 
+function assertSkillsInOrder(source, label) {
+  const orderedSkills = ["`copywriting`", "`enterprise-ui-writing`", "`humanizer`"];
+  let lastIndex = -1;
+
+  for (const skill of orderedSkills) {
+    const currentIndex = source.indexOf(skill);
+    assert.notEqual(currentIndex, -1, `${label} should mention ${skill}`);
+    assert.ok(currentIndex > lastIndex, `${label} should mention ${skill} in visible-copy order`);
+    lastIndex = currentIndex;
+  }
+}
+
 function lintPublicContent(relativePath, source, requiredLinks) {
   const violations = [];
   const visibleText = normalizeVisibleText(source);
@@ -182,6 +205,13 @@ function lintPublicContent(relativePath, source, requiredLinks) {
     const match = visibleText.match(pattern);
     if (match) {
       violations.push(`${relativePath}: internal process language "${match[0]}" should not ship in reader copy`);
+    }
+  }
+
+  for (const pattern of GRAY_INTERNAL_COPY_PATTERNS) {
+    const match = visibleText.match(pattern);
+    if (match) {
+      violations.push(`${relativePath}: gray internal phrasing "${match[0]}" should not ship in reader copy`);
     }
   }
 
@@ -227,13 +257,15 @@ function lintPublicContent(relativePath, source, requiredLinks) {
   return violations;
 }
 
-test("content quality gate doc defines reader, proof, and agent copy plus the no-brief rule", () => {
+test("content quality gate doc defines reader, proof, and agent copy plus the visible-copy lane", () => {
   const gateDoc = read(path.join("docs", "process", "content-quality-gate.md"));
 
   assert.equal(gateDoc.includes("reader copy"), true);
   assert.equal(gateDoc.includes("proof copy"), true);
   assert.equal(gateDoc.includes("agent copy"), true);
   assert.equal(gateDoc.includes("No Brief, No Writing"), true);
+  assert.equal(gateDoc.includes("Visible Copy Lane"), true);
+  assertSkillsInOrder(gateDoc, "content quality gate doc");
   assert.equal(gateDoc.includes("npm run lint:content"), true);
 });
 
@@ -252,11 +284,16 @@ test("brief template carries the required content-gate inputs", () => {
 test("repo instructions require the content gate and lint command for content PRs", () => {
   const agents = read("AGENTS.md");
   const claude = read("CLAUDE.md");
+  const reviewChecklist = read(path.join("docs", "process", "before-user-review-checklist.md"));
+  const claudeWorkflow = claude.split("## Required Batch Workflow")[1] || "";
 
   assert.equal(agents.includes("docs/process/content-quality-gate.md"), true);
   assert.equal(agents.includes("npm run lint:content"), true);
+  assertSkillsInOrder(agents, "AGENTS content gate");
   assert.equal(claude.includes("docs/process/content-quality-gate.md"), true);
   assert.equal(claude.includes("npm run lint:content"), true);
+  assertSkillsInOrder(claudeWorkflow, "CLAUDE workflow");
+  assertSkillsInOrder(reviewChecklist, "before user review checklist");
 });
 
 test("approved owner research sample passes the new public-copy guardrails", () => {
@@ -286,6 +323,7 @@ test("lint catches internal-process language and detached owner voice in a sampl
     <main>
       <section>
         <p>Approved benchmark inputs help the owner understand the methodology before switching.</p>
+        <p>We mark proven cost, likely cost, and missing information separately before you switch.</p>
         <p>Attentive local operations and clearer owner communication reduce quiet misses while improving owner net through better pricing discipline.</p>
       </section>
     </main>
@@ -298,6 +336,10 @@ test("lint catches internal-process language and detached owner voice in a sampl
 
   assert.equal(
     violations.some((entry) => entry.includes("internal process language")),
+    true
+  );
+  assert.equal(
+    violations.some((entry) => entry.includes("gray internal phrasing")),
     true
   );
   assert.equal(

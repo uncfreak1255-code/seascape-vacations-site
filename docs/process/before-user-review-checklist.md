@@ -43,9 +43,10 @@ Minimum expectation for UI review:
 
 ## 5. Copy sanity check
 
+- [ ] I ran visible reader copy through `copywriting`, then `enterprise-ui-writing`, then `humanizer`.
 - [ ] The page intro leads with the visitor's problem, decision, or tradeoff.
 - [ ] Methodology, source limits, and "planning estimate, not a quote" language live in a proof/source section below the intro.
-- [ ] Visible guest/owner copy does not use gray internal phrasing like `keeps X separate`, `planning math`, `marketplace-fee exposure`, `source-bounded`, `accepted formulas`, or `proof boundaries`.
+- [ ] Visible guest/owner copy does not use gray internal phrasing like `keeps X separate`, `planning math`, `marketplace-fee exposure`, `source-bounded`, `accepted formulas`, `proof boundaries`, `proven cost`, `likely cost`, or `missing information`.
 - [ ] Any proof-heavy paragraph still sounds like Seascape: direct, specific, locally grounded, and useful.
 
 ## 6. Handoff standard

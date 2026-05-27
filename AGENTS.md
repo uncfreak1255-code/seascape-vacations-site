@@ -72,6 +72,7 @@ For any PR that changes public copy in `src/`:
 
 - read the active brief plus `docs/process/content-quality-gate.md`
 - read `docs/style/voice.md`, `docs/style/banned-patterns.md`, and `docs/style/approved-examples.md`
+- run the visible-copy lane in order: `copywriting` for the draft, `enterprise-ui-writing` to strip internal/process wording, then `humanizer` for the final pass on reader copy
 - keep reader copy, proof copy, and agent copy separate
 - run `npm run lint:content` before push, PR, or merge
 

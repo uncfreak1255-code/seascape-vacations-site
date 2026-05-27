@@ -28,6 +28,8 @@ npm run verify:recovery:remediation
 
 If the task does not touch all three areas, run the relevant subset and note why.
 
+- [ ] If visible `src/` copy changed, I completed `copywriting` -> `enterprise-ui-writing` -> `humanizer` and `npm run lint:content`.
+
 ## 4. Route smoke check
 
 Open or `curl` the changed routes locally or on a preview deploy.
