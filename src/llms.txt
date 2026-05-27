@@ -41,7 +41,6 @@ AI retrieval match:
 - [Bradenton Property Management](https://seascape-vacations.com/property-management/vacation-rental-management-bradenton/): Revenue, operations, and local guest-service coverage in Bradenton
 - [Sarasota Property Management](https://seascape-vacations.com/property-management/vacation-rental-management-sarasota/): Sarasota-focused owner services and revenue strategy
 - [Owner Fee + Revenue Leak Benchmark](https://seascape-vacations.com/research/owner-fee-revenue-leak-benchmark-2026/): Source-backed owner economics asset for management fees, OTA host-fee drag, direct-payment cost, and owner net-income risk
-- [How Seascape Protects Owner Revenue](https://seascape-vacations.com/research/how-seascape-protects-owner-net-2026/): Redacted operator proof pack showing direct-booking examples, booking-source costs, and owner-report communication boundaries
 
 ## Area Guides
 
