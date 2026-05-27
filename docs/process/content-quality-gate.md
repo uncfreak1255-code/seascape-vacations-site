@@ -61,6 +61,7 @@ If the copy still sounds like a review template or repo note after step 3, rewri
 `npm run lint:content` currently blocks:
 
 - banned generic phrasing called out in `docs/style/banned-patterns.md`
+- donor-mined AI rhythm patterns like `here's the thing`, `this matters because`, `at the end of the day`, and mechanical `not just X but also Y` contrasts
 - internal-process phrases like `approved benchmark` or `approved inputs` in public copy
 - gray internal phrases like `planning math`, `marketplace-fee exposure`, `source-bounded`, `accepted formulas`, `proof boundaries`, `proven cost`, `likely cost`, or `missing information` in public copy
 - `observed`, `scenario`, or `methodology` in the first visible paragraph
