@@ -17,6 +17,24 @@ function assertFreshOwnerOperatorProof(proofAssets, now = new Date()) {
     throw new Error("owner operator proof assets must be an object");
   }
 
+  if (proofAssets.freshnessPolicy === "retired-no-public-reuse") {
+    if (proofAssets.reuseStatus !== "retired-stale") {
+      throw new Error("retired owner operator proof must set reuseStatus retired-stale");
+    }
+
+    if (!proofAssets.retiredAfter || proofAssets.retiredAfter !== proofAssets.staleAfter) {
+      throw new Error("retired owner operator proof must preserve the staleAfter date as retiredAfter");
+    }
+
+    if (!proofAssets.retirementReason || !proofAssets.retirementReason.includes("archive only")) {
+      throw new Error("retired owner operator proof must explain that it is archive only");
+    }
+
+    parseDateOnly(proofAssets.staleAfter, "staleAfter");
+    assertReusableModules(proofAssets);
+    return;
+  }
+
   if (proofAssets.freshnessPolicy !== "fail-after-staleAfter") {
     throw new Error("owner operator proof freshnessPolicy must be fail-after-staleAfter");
   }
@@ -26,6 +44,10 @@ function assertFreshOwnerOperatorProof(proofAssets, now = new Date()) {
     throw new Error(`owner operator proof is stale after ${proofAssets.staleAfter}; refresh proof before reuse`);
   }
 
+  assertReusableModules(proofAssets);
+}
+
+function assertReusableModules(proofAssets) {
   if (!Array.isArray(proofAssets.modules) || proofAssets.modules.length === 0) {
     throw new Error("owner operator proof modules must be present before reuse");
   }

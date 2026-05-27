@@ -313,24 +313,27 @@ test("owner benchmark page stays in the fee-and-revenue lane and keeps visible p
   assert.equal(ownerBenchmark.includes("full service"), false);
 });
 
-test("owner operator proof pack uses approved redacted modules and preserves teardown attribution", () => {
+test("owner operator proof pack keeps approved redacted modules but retires active teardown attribution", () => {
   const proofPack = fs.readFileSync(
     path.join(projectRoot, "src", "research", "how-seascape-protects-owner-net-2026.njk"),
     "utf8"
   );
 
   assert.equal(ownerOperatorProofAssets.proofPackUrl, "/research/how-seascape-protects-owner-net-2026/");
+  assert.equal(ownerOperatorProofAssets.reuseStatus, "retired-stale");
+  assert.equal(ownerOperatorProofAssets.freshnessPolicy, "retired-no-public-reuse");
   assert.equal(ownerOperatorProofAssets.modules.length >= 3, true, "proof pack needs at least three reusable modules");
   assert.equal(
     ownerOperatorProofAssets.modules.every((module) => module.evidencePath.includes("seascape-hub/")),
     true,
     "proof modules should keep Hub evidence paths visible"
   );
-  assert.equal(proofPack.includes("How Seascape protects what an owner actually keeps."), true);
+  assert.equal(proofPack.includes("Archived April 2026 owner-report examples."), true);
+  assert.equal(proofPack.includes('meta name="robots" content="noindex, follow"'), true);
   assert.equal(proofPack.includes("/research/owner-fee-revenue-leak-benchmark-2026/"), true);
-  assert.equal(proofPack.includes("/property-management/?owner_source=how-seascape-protects-owner-net-2026#owner-cta"), true);
-  assert.equal(proofPack.includes('sourcePageSlug: "how-seascape-protects-owner-net-2026"'), true);
-  assert.equal(proofPack.includes('formPlacement: "operator-proof-pack-teardown"'), true);
+  assert.equal(proofPack.includes("/property-management/?owner_source=how-seascape-protects-owner-net-2026#owner-cta"), false);
+  assert.equal(proofPack.includes('sourcePageSlug: "how-seascape-protects-owner-net-2026"'), false);
+  assert.equal(proofPack.includes('formPlacement: "operator-proof-pack-teardown"'), false);
   assert.equal(
     ownerOperatorProofAssets.demandBoundary.includes("Current benchmark-path receipts prove measurement wiring only"),
     true
@@ -340,29 +343,28 @@ test("owner operator proof pack uses approved redacted modules and preserves tea
   assert.equal(proofPack.includes("full service"), false);
 });
 
-test("owner operator proof pack fails verification after its proof freshness window", () => {
+test("owner operator proof pack retirement preserves the stale date instead of extending freshness", () => {
   assert.equal(ownerOperatorProofAssets.staleAfter, "2026-05-26");
-  assert.equal(ownerOperatorProofAssets.freshnessPolicy, "fail-after-staleAfter");
+  assert.equal(ownerOperatorProofAssets.retiredAfter, "2026-05-26");
+  assert.equal(ownerOperatorProofAssets.freshnessPolicy, "retired-no-public-reuse");
+  assert.equal(ownerOperatorProofAssets.retirementReason.includes("archive only"), true);
   assert.equal(conversionTracking.includes("owner_source"), true);
   assert.ok(
     ownerOperatorProofAssets.modules.every((module) => module.id && module.evidencePath && module.proofLabel),
     "freshness enforcement needs stable module ids, evidence paths, and proof labels"
   );
-  assert.doesNotThrow(() => assertFreshOwnerOperatorProof(ownerOperatorProofAssets, new Date("2026-05-26T23:59:59Z")));
-  assert.throws(
-    () => assertFreshOwnerOperatorProof(ownerOperatorProofAssets, new Date("2026-05-27T00:00:00Z")),
-    /owner operator proof is stale/
-  );
+  assert.doesNotThrow(() => assertFreshOwnerOperatorProof(ownerOperatorProofAssets, new Date("2026-05-27T00:00:00Z")));
 });
 
-test("owner hub still feeds the operator proof pack while the benchmark stands on its own teardown path", () => {
+test("owner hub removes the retired operator proof pack while the benchmark stands on its own teardown path", () => {
   const ownerBenchmark = fs.readFileSync(
     path.join(projectRoot, "src", "research", "owner-fee-revenue-leak-benchmark-2026.njk"),
     "utf8"
   );
 
-  assert.equal(ownerLanding.includes("/research/how-seascape-protects-owner-net-2026/"), true);
-  assert.equal(ownerLanding.includes("How Seascape Protects Owner Revenue"), true);
+  assert.equal(ownerLanding.includes("/research/how-seascape-protects-owner-net-2026/"), false);
+  assert.equal(ownerLanding.includes("How Seascape Protects Owner Revenue"), false);
+  assert.equal(ownerLanding.includes("/property-management/vacation-rental-management-fees-florida/"), true);
   assert.equal(ownerBenchmark.includes("/research/how-seascape-protects-owner-net-2026/"), false);
   assert.equal(ownerBenchmark.includes("A manager should be able to show exactly how a rate move is tested."), true);
   assert.equal(ownerLanding.includes("Start Your 48-Hour Revenue Review"), true);
