@@ -27,7 +27,20 @@ const BANNED_GENERIC_PATTERNS = [
   /\bunparalleled\b/i,
   /\battentive local operations\b/i,
   /\bclearer owner communication\b/i,
-  /\bfewer quiet misses\b/i
+  /\bfewer quiet misses\b/i,
+  /\bhere'?s the thing\b/i,
+  /\bthis matters because\b/i,
+  /\bmake no mistake\b/i,
+  /\bat its core\b/i,
+  /\bin today'?s\b/i,
+  /\bit'?s worth noting\b/i,
+  /\bat the end of the day\b/i,
+  /\bgame[- ]changer\b/i,
+  /\bdeep dive\b/i,
+  /\bmoving forward\b/i,
+  /\bon the same page\b/i,
+  /\bnot just\b[^.!?]{1,120}\bbut(?: also)?\b/i,
+  /\b(?:the )?(?:answer|question) isn'?t\b[^.!?]{1,120}\bit'?s\b/i
 ];
 
 const OWNER_JARGON_PATTERNS = [
@@ -356,6 +369,43 @@ test("lint catches internal-process language and detached owner voice in a sampl
   );
   assert.equal(
     violations.some((entry) => entry.includes("first paragraph should not lead with proof language")),
+    true
+  );
+});
+
+test("lint catches donor-mined AI rhythm patterns before they ship in public copy", () => {
+  const failingSample = `
+    <main>
+      <section>
+        <p>Here's the thing: this matters because the page is not just a service page but also a trust signal.</p>
+        <p>At the end of the day, the question isn't whether owners need help, it's whether the offer is a game-changer.</p>
+      </section>
+    </main>
+  `;
+
+  const violations = lintPublicContent("src/property-management/example-owner-page.njk", failingSample, [
+    "/property-management/",
+    "/property-management/vacation-rental-management-fees-florida/"
+  ]);
+
+  assert.equal(
+    violations.some((entry) => entry.includes('banned generic phrasing "Here\'s the thing"')),
+    true
+  );
+  assert.equal(
+    violations.some((entry) => entry.includes('banned generic phrasing "this matters because"')),
+    true
+  );
+  assert.equal(
+    violations.some((entry) => entry.includes('banned generic phrasing "not just a service page but also"')),
+    true
+  );
+  assert.equal(
+    violations.some((entry) => entry.includes('banned generic phrasing "At the end of the day"')),
+    true
+  );
+  assert.equal(
+    violations.some((entry) => entry.includes('banned generic phrasing "the question isn\'t whether owners need help, it\'s"')),
     true
   );
 });
