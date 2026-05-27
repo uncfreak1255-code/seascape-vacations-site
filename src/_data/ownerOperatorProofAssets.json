@@ -5,7 +5,10 @@
   "lastVerified": "2026-05-12",
   "lastRefreshedLabel": "May 2026",
   "staleAfter": "2026-05-26",
-  "freshnessPolicy": "fail-after-staleAfter",
+  "freshnessPolicy": "retired-no-public-reuse",
+  "reuseStatus": "retired-stale",
+  "retiredAfter": "2026-05-26",
+  "retirementReason": "No newer owner-report proof has replaced these April 2026 owner-report examples. Keep the page as an archive only; do not route active owner acquisition or AI/search promotion through it until fresh owner-report proof lands.",
   "redactionNote": "Examples are redacted summaries. Owner names, addresses, statement details, and booking-level records stay private unless Sawyer approves otherwise.",
   "demandBoundary": "Current benchmark-path receipts prove measurement wiring only. They do not prove booked teardowns, closed owner demand, or a market-wide willingness to switch managers.",
   "modules": [

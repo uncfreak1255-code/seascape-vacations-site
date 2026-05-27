@@ -1,7 +1,7 @@
 # Brief: Owner Operator Proof Pack
 
 Date: 2026-05-19
-Status: ACTIVE
+Status: RETIRED
 
 ## Content Gate Inputs
 
@@ -11,20 +11,20 @@ Status: ACTIVE
 - audience pattern: skeptical switcher who wants specific operating proof before sending a listing URL, statement, or fee quote
 - proof source: `seascape-hub/projects/operator-performance-proof-library.md`, `seascape-hub/projects/owner-acquisition-machine.md`, and `src/_data/ownerProofAssets.json`
 - required internal links: /property-management/, /research/owner-fee-revenue-leak-benchmark-2026/
-- CTA target: /property-management/?owner_source=how-seascape-protects-owner-net-2026#owner-cta
+- CTA target: none; retired archive page after the 2026-05-26 proof freshness window
 - anti-claims: no demand proof from test receipts, no portfolio-wide guarantee, no market-wide authority from narrow examples, no review-count theater, no AI-led pitch, no generic full-service promise
 
 ## Why This Batch
 
 - The owner benchmark already proves that management percentage alone is the wrong comparison.
 - The next trust gap is execution proof: what Seascape can actually protect, explain, or flag after the owner understands the fee and booking-source math.
-- This batch creates one proof asset at `/research/how-seascape-protects-owner-net-2026/`.
+- This batch created one proof asset at `/research/how-seascape-protects-owner-net-2026/`, then retired it from active reuse after the 2026-05-26 freshness window because no newer owner-report proof replaced the April 2026 examples.
 
 ## Canonical Route
 
 - Winner URL: `/research/how-seascape-protects-owner-net-2026/`
-- Feeders: `/research/owner-fee-revenue-leak-benchmark-2026/` and `/property-management/`
-- Money destination: `/property-management/?owner_source=how-seascape-protects-owner-net-2026#owner-cta`
+- Feeders: none while retired; owner hub and AI/search surfaces should use `/research/owner-fee-revenue-leak-benchmark-2026/` instead.
+- Money destination: none while retired.
 
 ## Approved Proof Modules
 
@@ -66,3 +66,9 @@ Run:
 - `npm run verify:links`
 - `npm run verify:jsonld`
 - `node --test scripts/enforcement/owner-acquisition.test.js`
+
+## Retirement Receipt
+
+- 2026-05-27: No fresh owner-report proof replaced the April 2026 modules before the 2026-05-26 stale-after date.
+- The page is now a noindex archive, with owner hub links, AI/search promotion, and tracked teardown attribution removed.
+- Reopen this path only by replacing the modules with newer owner-report proof and setting a new freshness window from that evidence.
