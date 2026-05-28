@@ -31,6 +31,7 @@
     "verify:links": "node scripts/enforcement/validate-internal-links.js",
     "verify:jsonld": "node scripts/enforcement/validate-jsonld.js",
     "verify:release": "node scripts/enforcement/verify-release.js",
+    "seo:import-findings": "node scripts/seo/import-dataforseo-findings.js",
     "test:visual": "node scripts/enforcement/run-visual-tests.js",
     "test:visual:update": "node scripts/enforcement/run-visual-tests.js --update-snapshots",
     "test:visual:install": "playwright install chromium"
