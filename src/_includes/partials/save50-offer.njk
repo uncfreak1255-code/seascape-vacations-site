@@ -1,0 +1,170 @@
+<style>
+  .save50-offer {
+    margin: 18px auto 0;
+    max-width: 1180px;
+    padding: 0 24px;
+  }
+
+  .save50-offer[hidden] {
+    display: none;
+  }
+
+  .save50-offer-card {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 18px;
+    align-items: center;
+    padding: 18px 20px;
+    border: 1px solid rgba(61, 92, 93, 0.12);
+    border-radius: 18px;
+    background: linear-gradient(135deg, rgba(250, 247, 238, 0.96), rgba(245, 238, 214, 0.96));
+    box-shadow: 0 16px 42px rgba(28, 38, 39, 0.08);
+  }
+
+  .save50-offer-label {
+    display: block;
+    margin-bottom: 5px;
+    color: var(--brand);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+
+  .save50-offer-copy {
+    margin: 0;
+    color: var(--stone);
+    font-size: 15px;
+    line-height: 1.55;
+  }
+
+  .save50-offer-copy strong {
+    color: var(--brand-dark);
+    font-weight: 600;
+  }
+
+  .save50-offer-code {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 86px;
+    padding: 9px 13px;
+    border-radius: 999px;
+    background: var(--gold);
+    color: var(--stone);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+  }
+
+  @media (max-width: 680px) {
+    .save50-offer {
+      margin-top: 12px;
+      padding: 0 18px;
+    }
+
+    .save50-offer-card {
+      grid-template-columns: 1fr;
+      gap: 12px;
+      padding: 16px;
+    }
+
+    .save50-offer-code {
+      width: fit-content;
+    }
+  }
+</style>
+
+<aside class="save50-offer" data-save50-offer hidden>
+  <div class="save50-offer-card">
+    <div>
+      <span class="save50-offer-label">SAVE50 welcome credit</span>
+      <p class="save50-offer-copy">
+        <strong>$50 off your first direct booking</strong> of 3 nights or more.
+        Pick a home, check live dates, and enter SAVE50 on the secure booking page.
+      </p>
+    </div>
+    <span class="save50-offer-code" aria-label="Offer code SAVE50">SAVE50</span>
+  </div>
+</aside>
+
+<script>
+  (function () {
+    if (!window.location || typeof URLSearchParams !== "function" || typeof URL !== "function") return;
+
+    const SAVE50_CAMPAIGN = "save50_welcome";
+    const PRESERVED_PARAM_KEYS = [
+      "utm_source",
+      "utm_medium",
+      "utm_campaign",
+      "utm_content",
+      "utm_term",
+      "utm_id",
+      "promo"
+    ];
+    const params = new URLSearchParams(window.location.search || "");
+    const campaign = (params.get("utm_campaign") || "").trim().toLowerCase();
+    const promo = (params.get("promo") || "").trim().toLowerCase();
+    const isSave50Campaign = campaign === SAVE50_CAMPAIGN || promo === "save50";
+
+    if (!isSave50Campaign) return;
+
+    function campaignValueFor(key) {
+      const value = (params.get(key) || "").trim();
+      if (value) return value;
+      if (key === "utm_campaign") return SAVE50_CAMPAIGN;
+      return "";
+    }
+
+    function shouldDecorate(url) {
+      const host = url.hostname.replace(/^www\./, "").toLowerCase();
+      return url.origin === window.location.origin || host === "book.seascape-vacations.com";
+    }
+
+    function serializeHref(url) {
+      if (url.origin === window.location.origin) {
+        return `${url.pathname}${url.search}${url.hash}`;
+      }
+      return url.toString();
+    }
+
+    function decorateCampaignLinks() {
+      Array.prototype.forEach.call(document.querySelectorAll("a[href]"), function (link) {
+        const rawHref = link.getAttribute("href") || "";
+        if (!rawHref || rawHref.charAt(0) === "#" || /^(mailto:|tel:|javascript:)/i.test(rawHref)) return;
+
+        let url;
+        try {
+          url = new URL(rawHref, window.location.href);
+        } catch (error) {
+          return;
+        }
+
+        if (!shouldDecorate(url)) return;
+
+        PRESERVED_PARAM_KEYS.forEach(function (key) {
+          const value = campaignValueFor(key);
+          if (value && !url.searchParams.get(key)) {
+            url.searchParams.set(key, value);
+          }
+        });
+
+        link.setAttribute("href", serializeHref(url));
+      });
+    }
+
+    function activateSave50Offer() {
+      Array.prototype.forEach.call(document.querySelectorAll("[data-save50-offer]"), function (node) {
+        node.hidden = false;
+      });
+      decorateCampaignLinks();
+    }
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", activateSave50Offer);
+    } else {
+      activateSave50Offer();
+    }
+  })();
+</script>
