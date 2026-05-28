@@ -184,7 +184,7 @@ test("SAVE50 popup success state stays honest for repeat subscribers and deliver
 
   for (const source of [homepage, popupPartial]) {
     assert.doesNotMatch(source, /We also sent it to your email so you won't lose it\./);
-    assert.match(source, /Use code <strong>SAVE50<\/strong> at checkout to save \$50 on your stay \(3\+ nights\)\./);
+    assert.match(source, /Use code <strong>SAVE50<\/strong> at checkout to save \$50 on your stay \(3\+ nights\)\. Save this code before you browse\./);
   }
 
   delete require.cache[require.resolve(trackingScriptPath)];

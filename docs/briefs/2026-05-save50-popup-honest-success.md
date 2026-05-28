@@ -48,5 +48,6 @@
 
 - the success copy no longer says a new email was sent every time
 - the code is still visible immediately after a successful capture path
+- the success state keeps a short reminder to save the visible code before browsing
 - total primary-plus-fallback delivery failure does not hide the form and show success
 - focused popup/capture checks pass
