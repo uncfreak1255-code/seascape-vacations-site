@@ -414,7 +414,7 @@ test("first tracked navigation click is delivered before same-tab navigation con
   assert.match(observed.navigations[2], /utm_content=bradenton-pool-home/);
 });
 
-test("owner form tracking preserves owner_source attribution on start and submit", () => {
+test("owner form tracking preserves owner_source attribution from email follow-up on start and submit", () => {
   const observed = withConversionTrackingStubs(({ listeners, window }) => {
     const hiddenSourceField = { value: "property-management" };
     const ownerForm = {
@@ -442,8 +442,8 @@ test("owner form tracking preserves owner_source attribution on start and submit
       }
     };
 
-    window.location.href = "http://localhost/property-management/?owner_source=owner-fee-revenue-leak-benchmark-2026#owner-cta";
-    window.location.search = "?owner_source=owner-fee-revenue-leak-benchmark-2026";
+    window.location.href = "http://localhost/property-management/?owner_source=owner-revenue-review-follow-up#owner-cta";
+    window.location.search = "?owner_source=owner-revenue-review-follow-up";
     global.document.querySelectorAll = function (selector) {
       return selector === 'form[data-track-form="owner"]' ? [ownerForm] : [];
     };
@@ -459,11 +459,11 @@ test("owner form tracking preserves owner_source attribution on start and submit
     };
   });
 
-  assert.equal(observed.hiddenValue, "owner-fee-revenue-leak-benchmark-2026");
+  assert.equal(observed.hiddenValue, "owner-revenue-review-follow-up");
   assert.equal(observed.startEvent.event, "owner_form_start");
-  assert.equal(observed.startEvent.payload.source_page_slug, "owner-fee-revenue-leak-benchmark-2026");
+  assert.equal(observed.startEvent.payload.source_page_slug, "owner-revenue-review-follow-up");
   assert.equal(observed.submitEvent.event, "owner_form_submit");
-  assert.equal(observed.submitEvent.payload.source_page_slug, "owner-fee-revenue-leak-benchmark-2026");
+  assert.equal(observed.submitEvent.payload.source_page_slug, "owner-revenue-review-follow-up");
 });
 
 test("priority guides use the shared conversion kit with page-specific stay links", () => {
