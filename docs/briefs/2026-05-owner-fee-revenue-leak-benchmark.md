@@ -152,7 +152,8 @@ Next asset should be the visual/chart pack:
 
 ## Email Follow-Up Path Slice
 
-Date: 2026-05-28
+Implementation note: 2026-05-28
+Outlook evidence found: sent 2026-05-26
 
 - Handoff source: the owner revenue-review follow-up email asks for a listing URL or property address plus one plain-English note on what feels off right now.
 - Site path: `/property-management/?owner_source=owner-revenue-review-follow-up#owner-cta`
