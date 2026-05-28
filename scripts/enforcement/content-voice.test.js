@@ -29,18 +29,36 @@ const BANNED_GENERIC_PATTERNS = [
   /\bclearer owner communication\b/i,
   /\bfewer quiet misses\b/i,
   /\bhere'?s the thing\b/i,
+  /\bhere'?s (?:what|why|how)\b/i,
   /\bthis matters because\b/i,
+  /\blet me be clear\b/i,
   /\bmake no mistake\b/i,
   /\bat its core\b/i,
   /\bin today'?s\b/i,
+  /\bin a world where\b/i,
   /\bit'?s worth noting\b/i,
+  /\bwhen it comes to\b/i,
   /\bat the end of the day\b/i,
+  /\bfull stop\b/i,
   /\bgame[- ]changer\b/i,
   /\bdeep dive\b/i,
+  /\bunpack\b/i,
+  /\blean into\b/i,
+  /\blandscape\b/i,
+  /\bdouble down\b/i,
+  /\btake a step back\b/i,
+  /\bcircle back\b/i,
   /\bmoving forward\b/i,
   /\bon the same page\b/i,
+  /\bnavigat(?:e|ing) challenges\b/i,
+  /\bthe stakes are high\b/i,
+  /\bthe implications are significant\b/i,
+  /\bthe consequences are real\b/i,
+  /\bthe reasons are structural\b/i,
   /\bnot just\b[^.!?]{1,120}\bbut(?: also)?\b/i,
-  /\b(?:the )?(?:answer|question) isn'?t\b[^.!?]{1,120}\bit'?s\b/i
+  /\b(?:the )?(?:answer|question) isn'?t\b[^.!?]{1,120}\bit'?s\b/i,
+  /\b(?:[\w'-]+\s+){0,8}is not the problem\.\s+(?:[\w'-]+\s+){1,10}is\b/i,
+  /\bit feels like\b[^.!?]{1,120}\.\s*it (?:is|'?s) actually\b/i
 ];
 
 const OWNER_JARGON_PATTERNS = [
@@ -406,6 +424,93 @@ test("lint catches donor-mined AI rhythm patterns before they ship in public cop
   );
   assert.equal(
     violations.some((entry) => entry.includes('banned generic phrasing "the question isn\'t whether owners need help, it\'s"')),
+    true
+  );
+});
+
+test("lint catches donor-mined throat clearing, business jargon, and vague declarations", () => {
+  const failingSample = `
+    <main>
+      <section>
+        <p>Here's why this matters: when it comes to navigating challenges, owners need a partner who can unpack the revenue landscape.</p>
+        <p>Let me be clear: the stakes are high, and the implications are significant.</p>
+        <p>In a world where every guest expects perfection, you need to double down on seamless execution. Full stop.</p>
+      </section>
+    </main>
+  `;
+
+  const violations = lintPublicContent("src/property-management/example-owner-page.njk", failingSample, [
+    "/property-management/",
+    "/property-management/vacation-rental-management-fees-florida/"
+  ]);
+
+  assert.equal(
+    violations.some((entry) => entry.includes('banned generic phrasing "Here\'s why"')),
+    true
+  );
+  assert.equal(
+    violations.some((entry) => entry.includes('banned generic phrasing "when it comes to"')),
+    true
+  );
+  assert.equal(
+    violations.some((entry) => entry.includes('banned generic phrasing "navigating challenges"')),
+    true
+  );
+  assert.equal(
+    violations.some((entry) => entry.includes('banned generic phrasing "unpack"')),
+    true
+  );
+  assert.equal(
+    violations.some((entry) => entry.includes('banned generic phrasing "landscape"')),
+    true
+  );
+  assert.equal(
+    violations.some((entry) => entry.includes('banned generic phrasing "Let me be clear"')),
+    true
+  );
+  assert.equal(
+    violations.some((entry) => entry.includes('banned generic phrasing "the stakes are high"')),
+    true
+  );
+  assert.equal(
+    violations.some((entry) => entry.includes('banned generic phrasing "the implications are significant"')),
+    true
+  );
+  assert.equal(
+    violations.some((entry) => entry.includes('banned generic phrasing "In a world where"')),
+    true
+  );
+  assert.equal(
+    violations.some((entry) => entry.includes('banned generic phrasing "double down"')),
+    true
+  );
+  assert.equal(
+    violations.some((entry) => entry.includes('banned generic phrasing "Full stop"')),
+    true
+  );
+});
+
+test("lint catches mechanical setup-reveal structures from donor review", () => {
+  const failingSample = `
+    <main>
+      <section>
+        <p>Your manager is not the problem. The missing review cadence is.</p>
+        <p>It feels like a booking issue. It is actually a pricing follow-up problem.</p>
+      </section>
+    </main>
+  `;
+
+  const violations = lintPublicContent("src/property-management/example-owner-page.njk", failingSample, [
+    "/property-management/",
+    "/property-management/vacation-rental-management-fees-florida/"
+  ]);
+
+  assert.equal(
+    violations.some((entry) => entry.includes('banned generic phrasing "Your manager is not the problem. The missing review cadence is"')),
+    true
+  );
+  assert.equal(
+    violations.some((entry) => entry.includes('banned generic phrasing "It feels like a booking issue. It is actually"')),
     true
   );
 });
