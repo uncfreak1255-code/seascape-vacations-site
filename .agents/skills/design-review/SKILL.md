@@ -17,19 +17,32 @@ Use this only for Seascape rendered UI review.
 
 ## Review Loop
 
-1. Inspect the rendered page in Browser on desktop and mobile. Prefer localhost, the current worktree build, or the deployed page over mockups.
-2. Judge against `DESIGN.md` first. Warmth, spacing, hierarchy, and restraint are law.
-3. Check the common Seascape failure modes:
+1. Name the rendered flow under review in one sentence:
+   `The flow under review is: [route] -> [state/action] -> [expected visible result].`
+   For a general visual smoke, use:
+   `The flow under review is: route loads -> first meaningful screen renders -> primary visible controls and CTAs are present without runtime errors.`
+2. Inspect the rendered page in Browser on desktop and mobile. Prefer localhost, the current worktree build, or the deployed page over mockups.
+3. Confirm the page identity before judging taste:
+   - URL and title match the intended route
+   - the expected heading or primary page content appears above the fold
+   - the page is not blank, stale, or showing a framework/build error
+   - no blocking console error or critical image/CSS/script 404 is present
+4. Judge against `DESIGN.md` first. Warmth, spacing, hierarchy, and restraint are law.
+5. Check the common Seascape failure modes:
    - mobile clipping, overflow, or broken card stacks
    - cramped hero copy, button wraps, or CTA hierarchy drift
    - generic SaaS polish, badge spam, or invented component styles
    - owner-proof sections that feel analytical instead of editorial
    - property or stay cards that lose rate/spec/CTA clarity
-4. Note what viewport and route were reviewed. For meaningful changes, compare before/after screenshots when possible.
-5. Return findings with route, impact, and the smallest fix. Say explicitly if Figma would help or if the work should stay in browser/code only.
+6. Capture evidence that matches the claim:
+   - desktop and mobile screenshots for meaningful visual changes
+   - before/after screenshots when the branch changes an existing route
+   - a clicked or focused state check when the change claims interaction behavior
+7. Return findings with route, viewport, impact, evidence, and the smallest fix. Say explicitly if Figma would help or if the work should stay in browser/code only.
 
 ## Output
 
 - Put findings first, ordered by severity.
 - Include the route and source file when obvious.
+- Include the flow under review, viewports checked, and the proof used: screenshot, DOM/readback, console/network check, or interaction check.
 - If no issues were found, say which pages and viewports were checked.
