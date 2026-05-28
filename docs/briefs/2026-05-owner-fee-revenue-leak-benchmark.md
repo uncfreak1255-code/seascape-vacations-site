@@ -149,3 +149,13 @@ Next asset should be the visual/chart pack:
 - 74-day booking window
 - seasonal ADR spread
 - Bradenton vs Sarasota vs AMI trip cost
+
+## Email Follow-Up Path Slice
+
+Implementation note: 2026-05-28
+Outlook evidence found: sent 2026-05-26
+
+- Handoff source: the owner revenue-review follow-up email asks for a listing URL or property address plus one plain-English note on what feels off right now.
+- Site path: `/property-management/?owner_source=owner-revenue-review-follow-up#owner-cta`
+- Required preservation: the `owner_source` query value must become `source_page_slug` on owner form start and submit tracking, and the Netlify form must keep the hidden `source_page_slug` value.
+- Copy requirement: the owner CTA should mirror the email language without adding a new offer, new proof claim, or generic sales-call framing.

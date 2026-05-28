@@ -2594,8 +2594,8 @@ headExtra: |
         <span class="sv-magazine-header-meta">Pages 12-13 · §4</span>
       </div>
       <div class="owner-field-form-intro">
-        <h2 class="owner-field-display">Tell us which property and what feels off. We will send back <em>a one-page revenue review.</em></h2>
-        <p class="owner-field-deck">Four short questions, two minutes. Start with the listing or address, then tell us what feels expensive, vague, or off. A real Seascape person reads every reply and sends back a one-page revenue review that shows where the payout gets thin, what deserves a closer look, and what we would check next, usually within 48 hours. No sales call, no calendar invite.</p>
+        <h2 class="owner-field-display">Send the listing URL or property address, plus what feels off right now. We will send back <em>a one-page revenue review.</em></h2>
+        <p class="owner-field-deck">Four short questions, two minutes. Start with the listing URL or property address, then add one plain-English note on what feels off: payout, fees, reporting, bookings, reviews, or the current manager setup. A real Seascape person reads every reply and sends back a one-page revenue review that shows where the payout gets thin, what deserves a closer look, and what we would check next, usually within 48 hours. No sales call, no calendar invite.</p>
       </div>
       {# Source contract: ownerEvaluationForm({ showBenchmarkFields: true, propertyFieldLabel: "Listing URL or property address" }) #}
       <form class="owner-field-postcard" name="owner-revenue-teardown" method="POST" action="/property-management/revenue-review-requested/" enctype="multipart/form-data" data-netlify="true" netlify-honeypot="bot-field" data-track-form="owner" data-form-start-event="owner_form_start" data-form-submit-event="owner_form_submit" data-skip-global-submit-track="true" data-page-slug="property-management" data-source-page-slug="property-management" data-market="florida-gulf-coast" data-form-placement="field-report-postcard" data-form-direction="forward" data-stamped="false">
@@ -2637,8 +2637,8 @@ headExtra: |
         </div>
         <div class="owner-field-form-step sv-postcard-panel is-active" data-form-step="0">
           <em>Question 1 of 4</em>
-          <h3>What home are we looking at?</h3>
-          <p>A listing URL, an address, or the property name. If you do not know the street address yet, paste the Airbnb or Vrbo link and tell us what feels expensive or unclear.</p>
+          <h3>What listing or property should we review?</h3>
+          <p>Send the listing URL or property address. If the address is easier, use that. If the Airbnb or Vrbo link is easier, paste it here.</p>
           <input class="owner-field-input" type="text" name="property_address" autocomplete="street-address" placeholder="airbnb.com/h/your-listing · or · 4250 Palm Ave, Sarasota">
           <label class="owner-field-file">Upload an owner statement, optional
             <input type="file" name="owner_statement" accept=".pdf,.csv,.xls,.xlsx,.png,.jpg,.jpeg,.webp">
@@ -2651,8 +2651,8 @@ headExtra: |
         </div>
         <div class="owner-field-form-step sv-postcard-panel" data-form-step="1" hidden>
           <em>Question 2 of 4</em>
-          <h3>What feels expensive or unclear right now?</h3>
-          <p>Pick any that apply, then add one plain-English note if the payout, reporting, or current manager setup is the real problem.</p>
+          <h3>What feels off right now?</h3>
+          <p>Pick any that apply, then add one plain-English note if payout, fees, reporting, bookings, reviews, or the current manager setup is the real problem.</p>
           <div class="owner-field-choice-grid">
             <button class="owner-field-choice" type="button" data-concern="Paying too much in fees">Paying too much in fees</button>
             <button class="owner-field-choice" type="button" data-concern="Reviews slipping">Reviews slipping</button>
@@ -2689,7 +2689,7 @@ headExtra: |
         <div class="owner-field-form-step sv-postcard-panel" data-form-step="3" hidden>
           <em>Question 4 of 4</em>
           <h3>Ready to ask for your 48-hour review?</h3>
-          <p>We will read what you sent, show where the payout gets thin, and tell you what we would check next.</p>
+          <p>We will read the listing or address, look at what feels off, and send back what we would check next.</p>
           <div class="owner-field-confirm">
             <div class="owner-field-label">Postcard recap</div>
             <div class="owner-field-confirm-grid">
