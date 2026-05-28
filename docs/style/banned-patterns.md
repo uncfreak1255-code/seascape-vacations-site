@@ -4,9 +4,10 @@
 
 - generic tourism-board adjectives that say nothing
 - AI-sludge phrasing like `curated`, `nestled`, `elevate`, `boasts`, `myriad`, `seamless`, `unparalleled`
-- throat-clearing and formulaic AI rhythm: `here's the thing`, `this matters because`, `make no mistake`, `at its core`, `in today's`, `it's worth noting`, `at the end of the day`, `moving forward`, `on the same page`
-- generic business/research wrappers: `game-changer`, `deep dive`
-- mechanical contrast structures like `not just X but also Y` or `the question isn't X, it's Y`
+- throat-clearing and formulaic AI rhythm: `here's the thing`, `here's why`, `this matters because`, `let me be clear`, `make no mistake`, `at its core`, `in today's`, `in a world where`, `it's worth noting`, `when it comes to`, `at the end of the day`, `full stop`, `moving forward`, `on the same page`
+- generic business/research wrappers: `game-changer`, `deep dive`, `unpack`, `lean into`, `landscape`, `double down`, `take a step back`, `circle back`, and `navigate challenges`
+- vague importance claims like `the stakes are high`, `the implications are significant`, `the consequences are real`, or `the reasons are structural`
+- mechanical contrast structures like `not just X but also Y`, `the question isn't X, it's Y`, `X is not the problem. Y is.`, or `it feels like X. It is actually Y.`
 - gray internal-documentation or review-template phrasing in visible page copy, including `keeps X separate`, `planning math`, `marketplace-fee exposure`, `source-bounded`, `accepted formulas`, `proof boundaries`, `proven cost`, `likely cost`, and `missing information`
 - funnel-mechanics language written as guest copy: `fastest path into direct dates`, `move straight from comparison into live availability`, `filter by fit`, `jump into direct dates`
 - agent meta-commentary on the page's own positioning: `with the tradeoff stated clearly`, `without pretending every stay is on-island`
