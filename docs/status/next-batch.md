@@ -13,34 +13,34 @@
 
 ## Latest Execution Read
 
-Run date: 2026-05-17.
+Run date: 2026-05-28.
 
 The targeted joined operator read was executed in `seascape-analytics` and
 rendered here from its machine-readable next-batch decision receipt.
 
-- Requested last-7-complete-day window: 2026-05-10 to 2026-05-16.
-- Latest BigQuery GSC `data_date`: 2026-05-15.
+- Requested last-7-complete-day window: 2026-05-21 to 2026-05-27.
+- Latest BigQuery GSC `data_date`: 2026-05-26.
 - Site work gate: `blocked` - GSC export freshness does not cover the requested window.
 - Reread status: `blocked by freshness`.
-- Concrete next move: rerun the targeted operator read after BigQuery GSC covers 2026-05-16.
+- Concrete next move: rerun the targeted operator read after BigQuery GSC covers 2026-05-27.
 - Report recommendation: `hold-and-reread`.
 - Reason: No cluster cleared the bar for a stronger next branch than holding for more readback.
-- GSC freshness warning: Requested window ends `2026-05-16`, but BigQuery GSC data is only current through `2026-05-15`. Treat the trailing day as unavailable.
+- GSC freshness warning: Requested window ends `2026-05-27`, but BigQuery GSC data is only current through `2026-05-26`. Treat the trailing day as unavailable.
 
 Cluster read from the analytics receipt:
 
 | cluster | pages | gsc_clicks | gsc_impressions | gsc_ctr | gsc_position | ga4_sessions |
 |---|---:|---:|---:|---:|---:|---:|
-| brand | 1 | 2 | 200 | 1.00% | 12.31 | 34 |
-| catalog | 1 | 0 | 19 | 0.00% | 10.47 | 15 |
-| guide_support | 1 | 0 | 793 | 0.00% | 5.50 | 5 |
-| guide_winners | 4 | 9 | 1351 | 0.67% | 5.63 | 35 |
-| owner_hub | 1 | 0 | 34 | 0.00% | 7.85 | 10 |
-| owner_money | 4 | 0 | 146 | 0.00% | 5.32 | 1 |
+| brand | 1 | 5 | 160 | 3.13% | 11.59 | 58 |
+| catalog | 1 | 2 | 18 | 11.11% | 25.44 | 38 |
+| guide_support | 1 | 2 | 616 | 0.32% | 7.28 | 2 |
+| guide_winners | 4 | 23 | 2963 | 0.78% | 6.39 | 43 |
+| owner_hub | 1 | 0 | 30 | 0.00% | 6.43 | 16 |
+| owner_money | 4 | 0 | 42 | 0.00% | 9.50 | 0 |
 | owner_support | 1 | 0 | 0 | 0.00% | 0.00 | 0 |
-| property_pages | 1 | 0 | 0 | 0.00% | 0.00 | 1 |
-| stay_money | 2 | 0 | 7 | 0.00% | 32.57 | 3 |
-| stay_support | 2 | 0 | 58 | 0.00% | 47.98 | 2 |
+| property_pages | 1 | 0 | 0 | 0.00% | 0.00 | 9 |
+| stay_money | 2 | 1 | 5 | 20.00% | 5.40 | 7 |
+| stay_support | 2 | 0 | 36 | 0.00% | 35.14 | 1 |
 
 Do not open a new owner, stay, guide, GEO, or SEO expansion branch from this read.
 `docs/status/next-batch.md` should move to `open next batch` only when the analytics receipt says so.
