@@ -12,8 +12,9 @@ Use this only for Seascape batch selection.
 1. `docs/status/current-state.md`
 2. `docs/status/next-batch.md`
 3. `docs/status/open-risks.md`
-4. the active brief if one exists
-5. the latest joined operator read in `seascape-analytics` when freshness is part of the decision
+4. `docs/status/search-growth-map.md`
+5. the active brief if one exists
+6. the latest joined operator read in `seascape-analytics` when freshness is part of the decision
 
 ## Gate Contract
 
@@ -46,10 +47,12 @@ Use this only for Seascape batch selection.
 3. Check whether `docs/status/next-batch.md` already authorizes the proposed branch.
 4. Check `docs/status/open-risks.md` for blockers that must be resolved first.
 5. If the proposed measured branch depends on Search Console, GA4, or BigQuery freshness, state the exact missing proof.
-6. Check whether a bounded attack-lane action remains useful without the
+6. Read `docs/status/search-growth-map.md` for the matching query family,
+   current URL, proof lane, and attack lane before returning a passive hold.
+7. Check whether a bounded attack-lane action remains useful without the
    missing proof: hygiene, internal links, schema, SERP/query research,
    competitor research, or an execution-ready brief.
-7. Return one verdict matching the repo contract: `blocked by freshness`,
+8. Return one verdict matching the repo contract: `blocked by freshness`,
    `fresh but below threshold`, or `open next batch`, plus a separate
    attack-lane action when one survives.
 
@@ -62,6 +65,7 @@ Use this only for Seascape batch selection.
 - new guide or entity expansion before thresholds clear
 - branch ideas that ignore open truth or proof drift
 - passive `wait for recrawl` answers that skip available attack-lane work
+- passive `hold` answers that skip `docs/status/search-growth-map.md`
 
 ## Output
 
@@ -69,6 +73,7 @@ Include:
 - verdict
 - reread status
 - evidence lines from the status docs
+- query family and current URL from `docs/status/search-growth-map.md`
 - proof-lane block, if any
 - attack-lane action, if any
 - exact next action
