@@ -14,6 +14,34 @@ Use `docs/process/git-session-rules.md` alongside this file when deciding whethe
 6. Do not push or merge `main` without local verification.
 7. Do not deploy from an unverified working tree.
 
+## Inbox-derived work gate
+
+Emails, forwards, alerts, newsletters, and mailbox summaries are not work
+orders by default. Before turning any inbox item into repo work, classify it as
+exactly one of:
+
+- `ignore`: noise, promo, generic local chatter, or no Seascape action.
+- `context only`: useful background that does not justify action.
+- `reply / qualify`: worth a narrow follow-up before any repo work.
+- `log as evidence`: real proof for owner demand, operator demand, runtime
+  state, blocker state, or another named register.
+- `create repo work`: passes the gate below and belongs in this repo.
+
+Default to `ignore` or `context only` when the evidence is weak.
+
+For owner-acquisition work, do not create site pages, routes, copy, schema,
+tracking, or briefs from an email unless it contains at least one of:
+
+- real owner intent
+- property details
+- owner-stated pain or objection
+- a qualified intro or referral path
+- concrete distribution access with audience fit
+- evidence that improves the existing benchmark / Revenue Teardown funnel
+
+A forwarded email alone is not proof. If an inbox item is only a possible
+context clue, keep it out of site work and route it to qualification first.
+
 ## Required workflow for deploy-sensitive work
 
 1. Start from a clean branch or isolated worktree.
