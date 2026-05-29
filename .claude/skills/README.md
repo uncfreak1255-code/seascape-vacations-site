@@ -19,6 +19,10 @@ Use global marketing skills from `/Users/sawbeck/.codex/skills/` as advisory
 helpers when needed. Do not mirror broad marketing, deploy, monthly reset,
 generic SEO, or archived skills into this local compatibility layer.
 
+For AI discovery, GEO/AEO, and schema work, use global `seascape-seo` plus the
+repo-local `schema-markup` skill. Keep external SEO/GEO packs donor-only unless
+a fresh agent-surface audit proves they should become live local authority.
+
 Do not park generic skill bundles here.
 Do not keep broken symlinks here.
 Do not duplicate repo-local skill content here when a symlink will do.
