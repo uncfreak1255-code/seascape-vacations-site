@@ -7,7 +7,7 @@
 - secondary keywords: Bradenton vacation rentals, Sarasota vacation rentals, Florida vacation rental management
 - audience pattern: visitor needs clean public metadata, truthful preview copy, and no stale noindexed pages submitted as search targets.
 - proof source: `/Users/sawbeck/Projects/seascape-hub/workspace/seo-audit-2026-05-28.md`, `docs/status/next-batch.md`, and current rendered source.
-- required internal links: /property-management/, /property-management/
+- required internal links: /property-management/, /property-management/vacation-rental-management-fees-florida/
 - CTA target: `/property-management/`
 - anti-claims: new SEO batch approval, aggregateRating rollout, owner-linking batch, broad page rewrite, fresh owner demand proof, or production deployment claim.
 
