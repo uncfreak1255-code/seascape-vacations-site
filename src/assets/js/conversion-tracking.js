@@ -511,21 +511,24 @@
       },
       body: JSON.stringify(submissionPayload),
       keepalive: true
+    }).then(function (response) {
+      if (response && typeof response.ok === "boolean" && !response.ok) {
+        throw new Error("Guest email capture failed");
+      }
+      return response;
     }).catch(function () {
       return fetch(mailchimpEndpoint, {
         method: "POST",
         mode: "no-cors"
-      }).catch(function () {
-        return null;
       });
-    }).finally(function () {
+    }).then(function () {
       try {
         localStorage.setItem("seascape_email_popup_shown", "subscribed");
       } catch (error) {
         // Ignore private mode / storage failures.
       }
       showInlineEmailSuccess(form);
-    });
+    }).catch(function () {});
   }
 
   function bindTrackedForms() {
