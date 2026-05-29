@@ -8,6 +8,10 @@ const homepage = fs.readFileSync(path.join(projectRoot, "src", "index.njk"), "ut
 const llms = fs.readFileSync(path.join(projectRoot, "src", "llms.txt"), "utf8");
 const robots = fs.readFileSync(path.join(projectRoot, "src", "robots.txt"), "utf8");
 const aiDiscovery = fs.readFileSync(path.join(projectRoot, "src", "ai-discovery.json.njk"), "utf8");
+const aiWellKnown = fs.readFileSync(path.join(projectRoot, "src", ".well-known", "ai.txt.njk"), "utf8");
+const aiSummary = fs.readFileSync(path.join(projectRoot, "src", "ai", "summary.json.njk"), "utf8");
+const aiService = fs.readFileSync(path.join(projectRoot, "src", "ai", "service.json.njk"), "utf8");
+const aiFaq = fs.readFileSync(path.join(projectRoot, "src", "ai", "faq.json.njk"), "utf8");
 const seoPages = require(path.join(projectRoot, "src", "_data", "seoPages.json"));
 const staysTemplate = fs.readFileSync(path.join(projectRoot, "src", "stays", "stays.njk"), "utf8");
 const propertyPages = [
@@ -188,6 +192,38 @@ test("AI discovery contract exposes proof-gated conversion surfaces", () => {
     "direct-booking revenue requires reviewed attributed reservation rows"
   ]) {
     assert.equal(aiDiscovery.includes(marker), true, `ai-discovery.json missing ${marker}`);
+  }
+});
+
+test("AI endpoint layer advertises canonical summaries without replacing the main contract", () => {
+  for (const endpoint of [
+    "https://seascape-vacations.com/.well-known/ai.txt",
+    "https://seascape-vacations.com/ai/summary.json",
+    "https://seascape-vacations.com/ai/service.json",
+    "https://seascape-vacations.com/ai/faq.json"
+  ]) {
+    const sourceEndpoint = endpoint.replace("https://seascape-vacations.com", "{{ site.url }}");
+    assert.equal(aiDiscovery.includes(sourceEndpoint), true, `ai-discovery.json source missing ${sourceEndpoint}`);
+    assert.equal(llms.includes(endpoint), true, `llms.txt missing ${endpoint}`);
+  }
+
+  assert.equal(aiWellKnown.includes("Primary machine-readable contract: {{ site.url }}/ai-discovery.json"), true);
+  assert.equal(aiSummary.includes('"location_boundary"'), true);
+  assert.equal(aiSummary.includes("do not describe the Bradenton homes as on-island inventory"), true);
+  assert.equal(aiService.includes('"proof_boundary"'), true);
+  assert.equal(aiService.includes("direct-booking revenue requires reviewed attributed reservation rows"), true);
+  assert.equal(aiFaq.includes('"questions"'), true);
+  assert.equal(aiFaq.includes("Direct-booking revenue claims require reviewed attributed reservation rows"), true);
+});
+
+test("AI endpoint layer builds the advertised machine-readable files", () => {
+  for (const builtPath of [
+    [".well-known", "ai.txt"],
+    ["ai", "summary.json"],
+    ["ai", "service.json"],
+    ["ai", "faq.json"]
+  ]) {
+    assert.equal(fs.existsSync(path.join(projectRoot, "_site", ...builtPath)), true, `${builtPath.join("/")} should build`);
   }
 });
 

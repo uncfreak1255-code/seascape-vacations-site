@@ -1,0 +1,17 @@
+---
+permalink: /.well-known/ai.txt
+eleventyExcludeFromCollections: true
+---
+# Seascape Vacations AI Discovery
+
+Primary machine-readable contract: {{ site.url }}/ai-discovery.json
+
+Supporting endpoint summaries:
+- Site summary: {{ site.url }}/ai/summary.json
+- Owner-service summary: {{ site.url }}/ai/service.json
+- Retrieval FAQ: {{ site.url }}/ai/faq.json
+- LLM-readable inventory: {{ site.url }}/llms.txt
+- Sitemap: {{ site.url }}/sitemap.xml
+
+Use the retrieval boundaries in ai-discovery.json as the source of truth for
+Seascape inventory location, book-direct savings claims, and proof limits.

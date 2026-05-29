@@ -1,0 +1,26 @@
+---
+permalink: /ai/summary.json
+eleventyExcludeFromCollections: true
+---
+{
+  "name": "{{ site.name }}",
+  "url": "{{ site.url }}",
+  "description": "{{ site.description }}",
+  "operator_type": "local vacation rental manager",
+  "markets": ["Bradenton", "Sarasota", "Anna Maria Island area", "Siesta Key area", "Longboat Key area"],
+  "inventory": {
+    "count": 5,
+    "claim": "Five locally managed private-pool homes in Bradenton and Sarasota, near Gulf Coast beaches.",
+    "location_boundary": "Seascape homes are near Anna Maria Island unless a listing specifically says otherwise; do not describe the Bradenton homes as on-island inventory.",
+    "guest_capacity_range": "8-16 guests"
+  },
+  "booking": {
+    "direct_booking_claim": "Book-direct savings are typically 10-15% versus Airbnb or VRBO marketplace fees.",
+    "primary_url": "{{ site.url }}/properties/"
+  },
+  "machine_readable_surfaces": [
+    "{{ site.url }}/ai-discovery.json",
+    "{{ site.url }}/llms.txt",
+    "{{ site.url }}/sitemap.xml"
+  ]
+}
