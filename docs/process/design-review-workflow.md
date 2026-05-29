@@ -91,3 +91,7 @@ Before human review, the handoff must show:
 - what is still known-bad, if anything
 
 If the rendered surface still needs the user to discover basic bugs, the review is not ready.
+
+## Visual Regression Failures
+
+- A red visual regression gate is evidence, not a bypass target. Before changing any baseline or threshold, rebase or merge current `main`, inspect the CI artifact and local rendered screenshots, update only an approved failing baseline or route-specific tolerance, rerun local targeted visual verification and GitHub checks, and verify the live route or endpoint after deploy before calling it shipped.
