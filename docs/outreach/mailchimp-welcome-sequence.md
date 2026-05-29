@@ -15,7 +15,7 @@
 
 **Preview text:** SAVE50 is ready: $50 off your first direct Seascape booking of 3 nights or more.
 
-**Primary CTA:** Browse all 5 homes -> `https://seascape-vacations.com/properties/`
+**Primary CTA:** Browse all 5 homes -> `https://seascape-vacations.com/properties/?utm_source=mailchimp&utm_medium=email&utm_campaign=save50_welcome&utm_content=browse_all_homes`
 
 **Core offer copy:**
 
@@ -26,11 +26,11 @@
 > Book direct and avoid the extra service fees Airbnb and VRBO add at checkout.
 
 **Property links used in the template:**
-- Dockside Dreams: `https://seascape-vacations.com/properties/dockside-dreams/`
-- The Oasis: `https://seascape-vacations.com/properties/the-oasis/`
-- Sarasota Luxe: `https://seascape-vacations.com/properties/sarasota-luxe/`
-- River House: `https://seascape-vacations.com/properties/river-house/`
-- Bradenton Pool Home: `https://seascape-vacations.com/properties/bradenton-pool-home/`
+- Dockside Dreams: `https://seascape-vacations.com/properties/dockside-dreams/?utm_source=mailchimp&utm_medium=email&utm_campaign=save50_welcome&utm_content=dockside_dreams`
+- The Oasis: `https://seascape-vacations.com/properties/the-oasis/?utm_source=mailchimp&utm_medium=email&utm_campaign=save50_welcome&utm_content=the_oasis`
+- Sarasota Luxe: `https://seascape-vacations.com/properties/sarasota-luxe/?utm_source=mailchimp&utm_medium=email&utm_campaign=save50_welcome&utm_content=sarasota_luxe`
+- River House: `https://seascape-vacations.com/properties/river-house/?utm_source=mailchimp&utm_medium=email&utm_campaign=save50_welcome&utm_content=river_house`
+- Bradenton Pool Home: `https://seascape-vacations.com/properties/bradenton-pool-home/?utm_source=mailchimp&utm_medium=email&utm_campaign=save50_welcome&utm_content=bradenton_pool_home`
 
 **Implementation notes:**
 - Use the HTML template as Mailchimp custom-code email content.
@@ -60,7 +60,7 @@ For the biggest groups, start with The Oasis. For a private dock and a Bradenton
 Your code is still `SAVE50`: $50 off your first direct booking of 3 nights or more.
 
 Browse the homes here:
-`https://seascape-vacations.com/properties/`
+`https://seascape-vacations.com/properties/?utm_source=mailchimp&utm_medium=email&utm_campaign=save50_welcome&utm_content=email_2_browse_homes`
 
 If you want help choosing, reply with your group size and dates. We'll point you toward the best fit.
 
@@ -82,7 +82,7 @@ Quick reminder: your welcome code is `SAVE50`.
 Use it for $50 off your first direct booking of 3 nights or more. Booking direct also means you avoid the extra service fees Airbnb and VRBO add at checkout, and you can reach us directly if you need help before your stay.
 
 Check the homes and dates here:
-`https://seascape-vacations.com/properties/`
+`https://seascape-vacations.com/properties/?utm_source=mailchimp&utm_medium=email&utm_campaign=save50_welcome&utm_content=email_3_check_homes`
 
 Questions? Reply here or call us at `(941) 704-8545`.
 
@@ -100,7 +100,7 @@ Questions? Reply here or call us at `(941) 704-8545`.
    - Opens: on
    - Clicks: on
    - Google Analytics tracking: on
-   - Suggested UTM campaign: `save50_welcome`
+   - Required UTM campaign: `save50_welcome`; the template also carries explicit UTM parameters so the site does not depend on Mailchimp auto-tagging alone.
 8. Send test emails before activating.
 
 ## Required Test Send Checklist
@@ -108,8 +108,8 @@ Questions? Reply here or call us at `(941) 704-8545`.
 - Gmail desktop loads the hero, logo, and property images from `https://seascape-vacations.com/images/email/save50/`.
 - Mobile preview keeps the property cards readable.
 - `SAVE50` remains visible when images are blocked.
-- Every property card opens the correct Seascape property URL.
-- The main CTA opens `https://seascape-vacations.com/properties/`.
+- Every property card opens the correct Seascape property URL with `utm_campaign=save50_welcome`.
+- The main CTA opens `https://seascape-vacations.com/properties/?utm_source=mailchimp&utm_medium=email&utm_campaign=save50_welcome&utm_content=browse_all_homes`.
 - The phone link opens `tel:+19417048545`.
 - `View in browser`, `Update preferences`, and `Unsubscribe` resolve through Mailchimp merge links.
 - Gmail Promotions placement is recorded as inbox placement evidence, not treated as a delivery failure.

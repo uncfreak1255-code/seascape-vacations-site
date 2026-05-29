@@ -32,6 +32,11 @@ const bannedClaimPatterns = [
   /\bexpires Dec 31\b/i,
   /\bfrom \$\d+/i
 ];
+const requiredCampaignParams = {
+  utm_source: "mailchimp",
+  utm_medium: "email",
+  utm_campaign: "save50_welcome"
+};
 
 function read(filePath) {
   return fs.readFileSync(filePath, "utf8");
@@ -59,6 +64,21 @@ function assetPathForUrl(url) {
   }
 
   return path.join(projectRoot, url.slice(prefix.length));
+}
+
+function matchingSeascapeUrl(hrefs, pathname) {
+  return hrefs
+    .filter((href) => href.startsWith("https://seascape-vacations.com/"))
+    .map((href) => new URL(href))
+    .find((url) => url.pathname === pathname);
+}
+
+function assertCampaignUrl(url, label) {
+  assert.ok(url, `missing ${label}`);
+
+  for (const [key, value] of Object.entries(requiredCampaignParams)) {
+    assert.equal(url.searchParams.get(key), value, `${label} missing ${key}=${value}`);
+  }
 }
 
 test("SAVE50 welcome email uses email-safe template primitives", () => {
@@ -91,14 +111,31 @@ test("SAVE50 welcome email links are production URLs or approved Mailchimp merge
     assert.ok(isAllowed, `unexpected email link: ${href}`);
   }
 
-  assert.ok(hrefs.includes("https://seascape-vacations.com/properties/"));
+  assertCampaignUrl(matchingSeascapeUrl(hrefs, "/properties/"), "properties CTA");
   assert.ok(hrefs.includes("tel:+19417048545"));
 
   for (const slug of requiredPropertySlugs) {
-    assert.ok(
-      hrefs.includes(`https://seascape-vacations.com/properties/${slug}/`),
-      `missing property link for ${slug}`
-    );
+    assertCampaignUrl(matchingSeascapeUrl(hrefs, `/properties/${slug}/`), `property link for ${slug}`);
+  }
+});
+
+test("SAVE50 welcome email landing links carry the campaign that opens the on-site reminder", () => {
+  const htmlHrefs = extractAttributes(read(htmlPath), "href").filter((href) =>
+    href.startsWith("https://seascape-vacations.com/")
+  );
+  const textUrls = [...read(textPath).matchAll(/https:\/\/seascape-vacations\.com\/\S+/g)].map((match) => match[0]);
+  const docsUrls = [...read(docsPath).matchAll(/https:\/\/seascape-vacations\.com\/\S+/g)].map((match) =>
+    match[0].replace(/[`).,]+$/g, "")
+  );
+  const landingUrls = [...htmlHrefs, ...textUrls, ...docsUrls].filter((href) => {
+    const url = new URL(href);
+    return url.pathname === "/properties/" || requiredPropertySlugs.some((slug) => url.pathname === `/properties/${slug}/`);
+  });
+
+  assert.ok(landingUrls.length >= 12, "HTML, text, and setup docs should all include SAVE50 landing links");
+
+  for (const href of landingUrls) {
+    assertCampaignUrl(new URL(href), href);
   }
 });
 
@@ -134,10 +171,15 @@ test("SAVE50 plain text fallback keeps core offer and links", () => {
   assert.match(text, /SAVE50/);
   assert.match(text, /\$50 off your first direct booking/i);
   assert.match(text, /3 nights or more/i);
-  assert.match(text, /https:\/\/seascape-vacations\.com\/properties\//);
+  assert.match(text, /https:\/\/seascape-vacations\.com\/properties\/\?utm_source=mailchimp&utm_medium=email&utm_campaign=save50_welcome/);
 
   for (const slug of requiredPropertySlugs) {
-    assert.match(text, new RegExp(`https://seascape-vacations\\.com/properties/${slug}/`));
+    assert.match(
+      text,
+      new RegExp(
+        `https://seascape-vacations\\.com/properties/${slug}/\\?utm_source=mailchimp&utm_medium=email&utm_campaign=save50_welcome`
+      )
+    );
   }
 }
 );
