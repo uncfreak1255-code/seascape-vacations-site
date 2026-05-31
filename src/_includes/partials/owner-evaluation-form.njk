@@ -52,7 +52,7 @@
   {% if hasFormCard %}
   <div class="owner-form-card">
     <div class="owner-form-card-copy">
-      <h4 class="owner-form-card-title">{{ options.formTitle or "Request a Revenue Teardown" }}</h4>
+      <h4 class="owner-form-card-title">{{ options.formTitle or "Request a Revenue Review" }}</h4>
     </div>
 
     <div class="owner-form-fieldset">
@@ -102,12 +102,12 @@
 
   {% if hasFormCard %}
       <div class="owner-form-actions">
-        <button class="btn btn-gold owner-form-submit" type="submit">{{ options.buttonLabel or "Send My Teardown Request" }}</button>
+        <button class="btn btn-gold owner-form-submit" type="submit">{{ options.buttonLabel or "Send My Review Request" }}</button>
       </div>
     </div>
   </div>
   {% else %}
-  <button class="btn btn-gold owner-form-submit" type="submit">{{ options.buttonLabel or "Request Your Revenue Teardown" }}</button>
+  <button class="btn btn-gold owner-form-submit" type="submit">{{ options.buttonLabel or "Request Your Revenue Review" }}</button>
   {% endif %}
 
   {% if not options.suppressNote %}
