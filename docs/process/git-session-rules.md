@@ -109,7 +109,8 @@ For this repo, the safe default is:
 8. Push the branch
 9. Open a PR
 10. Merge only after checks pass
-11. Pull `main` again before the next task
+11. Complete `docs/process/post-merge-runtime-proof-checklist.md`
+12. Pull `main` again before the next task
 
 If you are standing in `/Users/sawbeck/Projects/seascape-main`, stop. That checkout is not the authoritative `main`.
 
