@@ -76,13 +76,14 @@ If that sentence feels too strong, do not merge.
 ## 8. After merge
 
 - [ ] watch the Netlify deploy complete
-- [ ] smoke test the live domain
-- [ ] confirm key routes still behave correctly
+- [ ] complete `docs/process/post-merge-runtime-proof-checklist.md`
+- [ ] capture the post-merge proof receipt in the PR comment or merge closeout note
 
 Useful production checks:
 
 ```bash
 node scripts/recovery/assert-live-smoke.js https://seascape-vacations.com
+node scripts/recovery/assert-live-entity-schema-coverage.js https://seascape-vacations.com
 curl -I -s https://seascape-vacations.com/property-management/ | sed -n '1,20p'
 curl -I -s https://seascape-vacations.com/property-owners/ | sed -n '1,20p'
 ```

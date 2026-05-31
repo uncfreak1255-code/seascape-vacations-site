@@ -30,6 +30,7 @@ This repo is not a sandbox. `main` is the production line.
 6. Commit once one meaningful unit is verified
 7. Push the branch when you want backup or review
 8. Merge or push `main` only when you are ready for Netlify to ship it
+9. Run `docs/process/post-merge-runtime-proof-checklist.md` before calling it done
 
 ## When to do what
 

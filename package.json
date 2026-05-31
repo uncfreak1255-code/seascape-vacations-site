@@ -25,6 +25,7 @@
     "verify:recovery:guides": "node scripts/recovery/assert-build-output.js guides",
     "verify:recovery:remediation": "node scripts/recovery/assert-build-output.js remediation",
     "verify:recovery:live": "node scripts/recovery/assert-live-smoke.js https://seascape-vacations.com",
+    "verify:recovery:entity-live": "node scripts/recovery/assert-live-entity-schema-coverage.js https://seascape-vacations.com",
     "verify:direct-booking-events": "node scripts/recovery/assert-direct-booking-event-smoke.js https://seascape-vacations.com",
     "verify:owner-funnel-routes": "node scripts/recovery/assert-owner-funnel-routes.js",
     "verify:redirects": "node scripts/enforcement/validate-redirect-targets.js",

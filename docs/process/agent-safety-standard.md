@@ -52,6 +52,7 @@ context clue, keep it out of site work and route it to qualification first.
 6. Smoke test the changed routes.
 7. Review the diff for unrelated churn.
 8. Only then push or merge `main`.
+9. After merge, complete `docs/process/post-merge-runtime-proof-checklist.md`.
 
 ## Installed enforcement
 
@@ -66,6 +67,7 @@ At minimum, an agent must use the repo checklist in:
 
 - `docs/process/before-user-review-checklist.md`
 - `docs/process/before-merge-checklist.md`
+- `docs/process/post-merge-runtime-proof-checklist.md` after merge/deploy
 
 If the task touches recovered site areas, run:
 
