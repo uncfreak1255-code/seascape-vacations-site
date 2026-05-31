@@ -7,6 +7,7 @@
 - **Primary template:** `docs/outreach/templates/save50-welcome-email.html`
 - **Plain-text fallback:** `docs/outreach/templates/save50-welcome-email.txt`
 - **Hosted email assets:** `https://seascape-vacations.com/images/email/save50/`
+- **Related campaign governance:** `docs/outreach/mailchimp-guest-social-proof-campaign.md`
 
 ## Email 1: Welcome And Coupon Delivery
 **Send:** immediately after signup
