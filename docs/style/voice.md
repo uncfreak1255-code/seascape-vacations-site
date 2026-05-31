@@ -20,6 +20,7 @@ That means:
 - Use owner-economics logic for owner pages: fee drag, rate discipline, channel mix, turnover quality, premium-week protection.
 - Prefer route, timing, price, and operational specifics over adjectives.
 - Write as if you have skin in the result. If a recommendation would waste the reader's time or money, say so.
+- Keep reader copy in Seascape's voice, not in role-card or session voice. Sentences like `Use this when`, `Read this if`, or `Open this page if` usually mean the sentence is still a draft note, not finished public copy.
 
 ## Guest Voice
 
