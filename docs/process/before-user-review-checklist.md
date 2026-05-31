@@ -39,6 +39,7 @@ Minimum expectation for UI review:
 - [ ] If I changed layout, CSS, spacing, typography, imagery, iconography, motion, CTA treatment, or visual hierarchy, I ran the repo `design-review` workflow on the affected route family before asking for review.
 - [ ] For long pages, I captured enough screenshots to cover each changed visual section when one full-page capture is not trustworthy.
 - [ ] I reviewed the screenshots myself and called out any capture artifact before asking the user to look.
+- [ ] If the PR is headed to merge, I included the desktop/mobile visual proof set in the PR thread before requesting merge approval.
 - [ ] The user is being asked for design feedback, not bug discovery.
 
 ## 5. Copy sanity check
