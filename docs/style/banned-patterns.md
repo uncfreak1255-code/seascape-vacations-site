@@ -9,6 +9,7 @@
 - vague importance claims like `the stakes are high`, `the implications are significant`, `the consequences are real`, or `the reasons are structural`
 - mechanical contrast structures like `not just X but also Y`, `the question isn't X, it's Y`, `X is not the problem. Y is.`, or `it feels like X. It is actually Y.`
 - gray internal-documentation or review-template phrasing in visible page copy, including `keeps X separate`, `planning math`, `marketplace-fee exposure`, `source-bounded`, `accepted formulas`, `proof boundaries`, `proven cost`, `likely cost`, and `missing information`
+- instruction-template phrasing that sounds like a role card, prompt, or session note in visible copy, including `Use this when`, `Use this if`, `Use it when`, `Read this if`, `Read this when`, `Open this page if`, `Choose this when`, `Pick this when`, and `Do not use this page if`
 - funnel-mechanics language written as guest copy: `fastest path into direct dates`, `move straight from comparison into live availability`, `filter by fit`, `jump into direct dates`
 - agent meta-commentary on the page's own positioning: `with the tradeoff stated clearly`, `without pretending every stay is on-island`
 - generic hospitality filler: `resort-style amenities` (name the actual amenities), `luxury` as a standalone descriptor
@@ -23,7 +24,12 @@
 - `fee stack`
 - `the home` (prefer `your home`/`your property` when clear)
 - `Use this when…`
+- `Use this if…`
+- `Use it when…`
 - `Read this if…`
+- `Read this when…`
+- `Open this page if…`
+- `Do not use this page if…`
 - `For homes where X, Y, and Z matter more than…`
 
 ## Proof Bans

@@ -21,7 +21,7 @@ test("stays template exposes the shared modules required for money-page landers"
     "seoPage.tripMatchCards",
     "seoPage.valueComparison",
     "seoPage.relatedGuideLinks",
-    "Choose this page if",
+    "This trip fits best when",
     "How this stay path compares",
     "Use these guides before you book"
   ]) {

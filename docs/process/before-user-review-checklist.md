@@ -48,6 +48,7 @@ Minimum expectation for UI review:
 - [ ] The page intro leads with the visitor's problem, decision, or tradeoff.
 - [ ] Methodology, source limits, and "planning estimate, not a quote" language live in a proof/source section below the intro.
 - [ ] Visible guest/owner copy does not use gray internal phrasing like `keeps X separate`, `planning math`, `marketplace-fee exposure`, `source-bounded`, `accepted formulas`, `proof boundaries`, `proven cost`, `likely cost`, or `missing information`.
+- [ ] Visible guest/owner copy does not lean on instruction-template framing like `Use this when`, `Use this if`, `Read this if`, `Open this page if`, or other helper-note phrasing that sounds like a session draft.
 - [ ] Any proof-heavy paragraph still sounds like Seascape: direct, specific, locally grounded, and useful.
 
 ## 6. Handoff standard

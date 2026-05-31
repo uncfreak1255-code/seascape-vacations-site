@@ -46,9 +46,9 @@ If a detail ages fast, it belongs in `docs/status/`, `docs/briefs/`, or `docs/po
 | --- | --- | --- |
 | Search Operator | read-only | Pull GSC, GA4, BigQuery, and weekly operator evidence. Recommend one cluster, not ten. |
 | SEO Architect | read-only | Define page roles, canonical families, feeder routing, internal-link direction, and winner/destination logic. |
-| Page Builder | writes source | Implement the chosen batch in `src/`, redirects, schema, and supporting docs. This is Codex. |
-| Voice Editor | read-only | Critique copy for tone drift, internal/process wording, fake specificity, and AI texture. Run `enterprise-ui-writing` then `humanizer` on visible reader copy. |
-| Release Gate | read-only | Verify build, schema, redirects, metadata, tests, and diff sanity before any push, PR, or merge. |
+| Page Builder | writes source | Implement the chosen batch in `src/`, redirects, schema, and supporting docs. This is Codex. Draft from the brief and approved examples, not from role-card or session phrasing. |
+| Voice Editor | read-only | Critique copy for tone drift, internal/process wording, instruction-template copy, fake specificity, and AI texture. Run `enterprise-ui-writing` then `humanizer` on visible reader copy. |
+| Release Gate | read-only | Verify `npm run lint:content`, build, schema, redirects, metadata, tests, and diff sanity before any push, PR, or merge. |
 
 That is enough. Extra agent personas are overhead unless they own a real surface the five roles do not.
 
@@ -96,10 +96,11 @@ roles, or replace Seascape Hub as the source of business context.
 4. Work starts on `codex/<batch>` in `.worktrees/<batch>`.
 5. Page Builder reads the active brief, `docs/process/content-quality-gate.md`, `docs/style/voice.md`, `docs/style/banned-patterns.md`, and `docs/style/approved-examples.md`, then uses `copywriting` when drafting or rewriting reader copy.
 6. Page Builder edits source and only the docs needed to support that batch.
-7. Voice Editor runs `enterprise-ui-writing` and then `humanizer` on changed reader copy before critiquing it against the same brief and content gate.
-8. Release Gate runs `npm run lint:content` plus the rest of verification.
-9. Deploy.
-10. Reread after the crawl window instead of inventing a new batch too early.
+7. Page Builder rewrites any sentence that still sounds like a role card, session note, or helper instruction before it lands in source.
+8. Voice Editor runs `enterprise-ui-writing` and then `humanizer` on changed reader copy before critiquing it against the same brief and content gate.
+9. Release Gate runs `npm run lint:content` and requires a visible-copy voice pass before the rest of verification.
+10. Deploy.
+11. Reread after the crawl window instead of inventing a new batch too early.
 
 ## Hard Rules
 

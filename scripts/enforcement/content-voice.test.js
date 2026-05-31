@@ -89,6 +89,12 @@ const GRAY_INTERNAL_COPY_PATTERNS = [
   /\bmissing information\b/i
 ];
 
+const INSTRUCTION_TEMPLATE_PATTERNS = [
+  /\b(?:use|read|open|choose|pick)\s+(?:this|it|this page)\s+(?:when|if|after|before)\b/i,
+  /\bdo not\s+use\s+this\s+page\s+if\b/i,
+  /\bfor homes where\b/i
+];
+
 const FIRST_PARAGRAPH_PROOF_PATTERNS = [/\bobserved\b/i, /\bscenario\b/i, /\bmethodology\b/i];
 
 const PUBLIC_CONTENT_PATTERNS = [
@@ -98,6 +104,13 @@ const PUBLIC_CONTENT_PATTERNS = [
   /^src\/stays\/.+\.njk$/i,
   /^src\/index\.njk$/i
 ];
+
+const ALWAYS_SCANNED_PUBLIC_COPY_PATH_PATTERNS = [
+  ...PUBLIC_CONTENT_PATTERNS,
+  /^src\/properties\/.+\.njk$/i
+];
+
+const ALWAYS_SCANNED_PUBLIC_COPY_DATA_FILES = [path.join("src", "_data", "seoPages.json")];
 
 const OWNER_CONTENT_PATTERNS = [
   /^src\/property-management\/.+\.njk$/i,
@@ -117,6 +130,14 @@ function isOwnerContentFile(relativePath) {
   return OWNER_CONTENT_PATTERNS.some((pattern) => pattern.test(relativePath));
 }
 
+function normalizeSourceCopyText(source) {
+  return source
+    .replace(/<!--[\s\S]*?-->/g, " ")
+    .replace(/\{#[\s\S]*?#\}/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 function normalizeVisibleText(source) {
   return source
     .replace(/<style[\s\S]*?<\/style>/gi, " ")
@@ -128,6 +149,26 @@ function normalizeVisibleText(source) {
     .replace(/&nbsp;/g, " ")
     .replace(/\s+/g, " ")
     .trim();
+}
+
+function listFilesRecursive(relativeDir) {
+  const absoluteDir = path.join(projectRoot, relativeDir);
+  const results = [];
+
+  function walk(currentDir) {
+    for (const entry of fs.readdirSync(currentDir, { withFileTypes: true })) {
+      const fullPath = path.join(currentDir, entry.name);
+      if (entry.isDirectory()) {
+        walk(fullPath);
+        continue;
+      }
+
+      results.push(path.relative(projectRoot, fullPath).split(path.sep).join("/"));
+    }
+  }
+
+  walk(absoluteDir);
+  return results;
 }
 
 function getFirstParagraphText(source) {
@@ -219,11 +260,71 @@ function assertSkillsInOrder(source, label) {
   }
 }
 
+function collectStringLeaves(value, currentPath = "", leaves = []) {
+  if (typeof value === "string") {
+    leaves.push({ path: currentPath || "<root>", value });
+    return leaves;
+  }
+
+  if (Array.isArray(value)) {
+    value.forEach((entry, index) => {
+      collectStringLeaves(entry, `${currentPath}[${index}]`, leaves);
+    });
+    return leaves;
+  }
+
+  if (value && typeof value === "object") {
+    for (const [key, entry] of Object.entries(value)) {
+      const nextPath = currentPath ? `${currentPath}.${key}` : key;
+      collectStringLeaves(entry, nextPath, leaves);
+    }
+  }
+
+  return leaves;
+}
+
+function lintInstructionTemplateSource(relativePath, source) {
+  const violations = [];
+  const sourceCopyText = normalizeSourceCopyText(source);
+
+  for (const pattern of INSTRUCTION_TEMPLATE_PATTERNS) {
+    const match = sourceCopyText.match(pattern);
+    if (match) {
+      violations.push(
+        `${relativePath}: instruction-template public copy "${match[0]}" sounds like agent/session voice`
+      );
+    }
+  }
+
+  return violations;
+}
+
+function lintInstructionTemplateData(relativePath, data) {
+  const violations = [];
+
+  for (const entry of collectStringLeaves(data)) {
+    const normalizedValue = entry.value.replace(/\s+/g, " ").trim();
+
+    for (const pattern of INSTRUCTION_TEMPLATE_PATTERNS) {
+      const match = normalizedValue.match(pattern);
+      if (match) {
+        violations.push(
+          `${relativePath}:${entry.path}: instruction-template public copy "${match[0]}" sounds like agent/session voice`
+        );
+      }
+    }
+  }
+
+  return violations;
+}
+
 function lintPublicContent(relativePath, source, requiredLinks) {
   const violations = [];
   const visibleText = normalizeVisibleText(source);
   const firstParagraph = getFirstParagraphText(source);
   const currentRoute = getCurrentRoute(relativePath, source);
+
+  violations.push(...lintInstructionTemplateSource(relativePath, source));
 
   for (const pattern of BANNED_GENERIC_PATTERNS) {
     const match = visibleText.match(pattern);
@@ -327,6 +428,21 @@ test("repo instructions require the content gate and lint command for content PR
   assertSkillsInOrder(reviewChecklist, "before user review checklist");
 });
 
+test("workflow docs and agent cards treat instruction-template public copy as a blocker", () => {
+  const gateDoc = read(path.join("docs", "process", "content-quality-gate.md"));
+  const reviewChecklist = read(path.join("docs", "process", "before-user-review-checklist.md"));
+  const pageBuilder = read(path.join(".claude", "agents", "page-builder.md"));
+  const voiceEditor = read(path.join(".claude", "agents", "voice-editor.md"));
+  const releaseGate = read(path.join(".claude", "agents", "release-gate.md"));
+
+  assert.equal(gateDoc.includes("Use this when"), true);
+  assert.equal(reviewChecklist.includes("Use this when"), true);
+  assert.equal(pageBuilder.includes("session prompts"), true);
+  assert.equal(voiceEditor.includes("Use this when"), true);
+  assert.equal(releaseGate.includes("npm run lint:content"), true);
+  assert.equal(releaseGate.includes("Voice Editor pass"), true);
+});
+
 test("approved owner research sample passes the new public-copy guardrails", () => {
   const approvedSample = `
     <main>
@@ -424,6 +540,33 @@ test("lint catches donor-mined AI rhythm patterns before they ship in public cop
   );
   assert.equal(
     violations.some((entry) => entry.includes('banned generic phrasing "the question isn\'t whether owners need help, it\'s"')),
+    true
+  );
+});
+
+test("lint catches instruction-template public copy even when it lives in source-backed helper data", () => {
+  const failingSample = `
+    <main>
+      <section>
+        <p>You can compare regions without giving up the better trip fit.</p>
+        <p><a href="/properties/">Browse homes</a></p>
+        <p><a href="/guides/booking-direct-vacation-rentals/">See the fee math</a></p>
+      </section>
+    </main>
+    <script>
+      const helperCopy = {
+        body: "Use this when direct-booking savings matter as much as the home itself."
+      };
+    </script>
+  `;
+
+  const violations = lintPublicContent("src/properties/index.njk", failingSample, [
+    "/properties/",
+    "/guides/booking-direct-vacation-rentals/"
+  ]);
+
+  assert.equal(
+    violations.some((entry) => entry.includes('instruction-template public copy "Use this when"')),
     true
   );
 });
@@ -554,6 +697,20 @@ test("owner seo page data avoids banned owner jargon", () => {
   }
 
   assert.deepEqual(violations, []);
+});
+
+test("repo public-copy source and data surfaces do not ship instruction-template public copy", () => {
+  const sourceViolations = listFilesRecursive("src")
+    .filter((relativePath) =>
+      ALWAYS_SCANNED_PUBLIC_COPY_PATH_PATTERNS.some((pattern) => pattern.test(relativePath))
+    )
+    .flatMap((relativePath) => lintInstructionTemplateSource(relativePath, read(relativePath)));
+
+  const dataViolations = ALWAYS_SCANNED_PUBLIC_COPY_DATA_FILES.flatMap((relativePath) =>
+    lintInstructionTemplateData(relativePath, JSON.parse(read(relativePath)))
+  );
+
+  assert.deepEqual([...sourceViolations, ...dataViolations], []);
 });
 
 test("changed public content files require one active brief and pass brief-linked checks", () => {
