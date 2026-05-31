@@ -9,6 +9,7 @@ on:
       - "playwright.config.js"
       - "tests/visual/**"
       - "scripts/enforcement/run-visual-tests.js"
+      - "scripts/enforcement/capture-visual-proof.js"
       - "scripts/enforcement/serve-static.js"
       - "package.json"
       - "package-lock.json"
@@ -17,7 +18,7 @@ on:
 jobs:
   visual-regression:
     runs-on: macos-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
 
     steps:
       - uses: actions/checkout@v6
@@ -30,6 +31,15 @@ jobs:
       - run: npm ci
       - run: npm run test:visual:install
       - run: npm run test:visual
+      - run: npm run proof:visual
+        if: always()
+
+      - name: Upload visual proof bundle
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: visual-proof-bundle
+          path: artifacts/visual-proof/
 
       - name: Upload Playwright report
         if: failure()

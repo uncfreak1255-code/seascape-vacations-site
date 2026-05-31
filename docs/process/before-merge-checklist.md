@@ -58,6 +58,7 @@ If the task changed layout, CSS, spacing, typography, imagery, component structu
 - [ ] I captured fresh mobile screenshots for every changed route or changed visual section
 - [ ] For long pages, I used enough screenshots to cover the changed sections instead of trusting one giant full-page image
 - [ ] I reviewed the screenshots myself and verified any capture artifact in a live browser before merge
+- [ ] Before merge, I attached or linked the visual proof set in the PR (desktop + mobile) so Sawyer can review the actual design changes.
 
 ## 6. Diff check
 
