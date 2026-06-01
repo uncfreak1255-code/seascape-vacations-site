@@ -10,6 +10,15 @@ function getFirstMatch(source, regex) {
   return match ? match[1] : "";
 }
 
+function listMarkupFiles(dir) {
+  if (!fs.existsSync(dir)) return [];
+  return fs.readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
+    const full = path.join(dir, entry.name);
+    if (entry.isDirectory()) return listMarkupFiles(full);
+    return /\.(html|njk)$/.test(entry.name) ? [full] : [];
+  });
+}
+
 test("stays template can noindex weak template pages and avoids empty inventory schema", () => {
   const staysTemplate = fs.readFileSync(path.join(projectRoot, "src", "stays", "stays.njk"), "utf8");
 
@@ -112,6 +121,32 @@ test("legacy guide alias redirects point directly at slash canonicals instead of
   ]) {
     assert.equal(redirects.includes(canonicalTarget), true, `Expected redirects to include ${canonicalTarget}`);
   }
+});
+
+test("guide redirects enforce a trailing-slash canonical shape for current guides", () => {
+  const redirects = fs.readFileSync(path.join(projectRoot, "src", "_redirects"), "utf8");
+
+  for (const redirectRule of [
+    "/guides/:slug  /guides/:slug/  301",
+    "/guides/:slug.html  /guides/:slug/  301",
+    "/guides/:slug/index.html  /guides/:slug/  301"
+  ]) {
+    assert.equal(redirects.includes(redirectRule), true, `Expected redirects to include ${redirectRule}`);
+  }
+});
+
+test("public source templates do not link to slashless or .html guide URLs", () => {
+  const offenders = [];
+  const guideHrefPattern = /href="(\/guides\/[^"/?#]+(?:\.html)?)(?="|[?#])/g;
+
+  for (const file of listMarkupFiles(path.join(projectRoot, "src"))) {
+    const source = fs.readFileSync(file, "utf8");
+    for (const match of source.matchAll(guideHrefPattern)) {
+      offenders.push(`${path.relative(projectRoot, file)} -> ${match[1]}`);
+    }
+  }
+
+  assert.deepEqual(offenders, []);
 });
 
 test("rehomed stay outliers point at their new guide and service homes", () => {

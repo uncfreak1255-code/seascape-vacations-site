@@ -23,6 +23,13 @@
 - keep scope to the three winner guides plus their known aliases and discoverability surfaces.
 - no owner-page rewrites, no stay-page CRO expansion, no phase-4 growth work.
 
+## GSC Hygiene Execution Snapshot (2026-06-01)
+
+- this branch is limited to crawl, canonical, and schema hygiene found during GSC issue triage; it does not ship CTR title/meta/snippet edits while reread status remains `blocked by freshness`.
+- source-link edits are mechanical URL-shape normalization only: guide links should point at slash-canonical routes, not `.html` or slashless legacy forms.
+- stay-page work is schema repair for `/stays/bradenton-vacation-rentals-near-beaches/` and related collection schema output, not stay-page CRO copy expansion.
+- fresh CTR triage for the five guide pages remains deferred until the weekly joined read includes 2026-05-31 in BigQuery GSC.
+
 ## Search Operator Read
 
 - source reads used: `docs/status/next-batch.md`, `docs/portfolio/winner-guides.md`, `docs/briefs/2026-04-winner-guide-consolidation-round-2.md`, and current guide/canonical enforcement files.
@@ -65,10 +72,13 @@
   - `src/guides/bradenton-vs-sarasota.html`
   - `src/guides/anna-maria-island-vs-siesta-key.html`
   - `src/guides/best-time-visit-anna-maria-island.html`
+  - live guide source files with legacy `/guides/*.html` or slashless `/guides/*` links
+  - `src/stays/stays.njk`
+  - `src/_data/properties.js`
   - `src/_redirects`
   - `src/llms.txt`
   - `src/ai-discovery.json.njk`
-- redirect or schema work: keep alias-to-canonical one-hop redirects and canonical URL/schema alignment for the in-scope guides only.
+- redirect or schema work: keep alias-to-canonical one-hop redirects, add guide placeholder redirects for `.html` and slashless variants, and keep stay collection schema aligned to canonical property URLs.
 - internal-link or CTA work: preserve winner-guide CTA routing to mapped stay destinations; remove internal links that reinforce retired alias routes.
 - money CTA and downstream tracking event to verify: `guide_book_direct_click` must remain intact and mapped to the intended stay pages.
 
@@ -92,6 +102,7 @@
   - `npm run verify:redirects`
   - `npm run verify:links`
   - `npm run verify:jsonld`
+  - `npm run verify:release`
 - regression risks to watch: alias drift, canonical mismatch across schema/meta/links, and guide CTA routing regressions.
 
 ## Done When

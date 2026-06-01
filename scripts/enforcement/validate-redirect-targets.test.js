@@ -62,3 +62,13 @@ test("validate-redirect-targets passes when redirects point directly at built ca
   const result = runValidator(tmp);
   assert.equal(result.status, 0, "should pass when redirect target resolves directly to a canonical page");
 });
+
+test("validate-redirect-targets accepts dynamic placeholder targets when built pages match the pattern", () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "redirect-target-dynamic-"));
+  makeSite(tmp, {
+    "_redirects": "/guides/:slug /guides/:slug/ 301\n/guides/:slug.html /guides/:slug/ 301\n",
+    "guides/example/index.html": "<html><body>guide</body></html>"
+  });
+  const result = runValidator(tmp);
+  assert.equal(result.status, 0, "should pass when a dynamic redirect target pattern matches built pages");
+});

@@ -19,6 +19,33 @@ const LISTING_ID_BY_SLUG = {
   "river-house": "135880",
   "bradenton-pool-home": "487798"
 };
+const STATIC_PROPERTY_SCHEMA_FACTS_BY_SLUG = {
+  "dockside-dreams": {
+    latitude: 27.4992,
+    longitude: -82.5751,
+    postalCode: "34205"
+  },
+  "the-oasis": {
+    latitude: 27.4889,
+    longitude: -82.5648,
+    postalCode: "34209"
+  },
+  "sarasota-luxe": {
+    latitude: 27.3364,
+    longitude: -82.5307,
+    postalCode: "34236"
+  },
+  "river-house": {
+    latitude: 27.4989,
+    longitude: -82.5748,
+    postalCode: "34209"
+  },
+  "bradenton-pool-home": {
+    latitude: 27.4789,
+    longitude: -82.5548,
+    postalCode: "34205"
+  }
+};
 
 function deriveSlug(property) {
   if (property && typeof property.slug === "string" && property.slug.trim()) {
@@ -307,6 +334,7 @@ function normalizeProperties(list) {
     .map((property) => {
       const slug = deriveSlug(property);
       const listingId = deriveListingId(property, slug);
+      const staticSchemaFacts = STATIC_PROPERTY_SCHEMA_FACTS_BY_SLUG[slug] || {};
       const image = toHostawayCdn(property.image);
       const heroImage = toHostawayCdn(property.heroImage || property.image);
       const gallery = Array.isArray(property.gallery)
@@ -329,6 +357,10 @@ function normalizeProperties(list) {
         guests: normalizeCount(property.guests),
         rating: normalizeCount(property.rating) || 5,
         specs: deriveSpecs(property),
+        schemaIdentifier: property.schemaIdentifier || `seascape-${listingId}`,
+        latitude: Number.isFinite(Number(property.latitude)) ? Number(property.latitude) : staticSchemaFacts.latitude || null,
+        longitude: Number.isFinite(Number(property.longitude)) ? Number(property.longitude) : staticSchemaFacts.longitude || null,
+        postalCode: property.postalCode || staticSchemaFacts.postalCode || "",
         image,
         heroImage,
         gallery,

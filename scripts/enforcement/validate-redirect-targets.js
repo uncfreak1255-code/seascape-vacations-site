@@ -8,6 +8,47 @@ function normalizeUrlPath(urlPath) {
   return String(urlPath || "").trim().split("?")[0].split("#")[0];
 }
 
+function listBuiltUrlPaths(siteDir = SITE_DIR, currentDir = siteDir) {
+  if (!fs.existsSync(currentDir)) return [];
+
+  return fs.readdirSync(currentDir, { withFileTypes: true }).flatMap((entry) => {
+    const full = path.join(currentDir, entry.name);
+    if (entry.isDirectory()) {
+      return listBuiltUrlPaths(siteDir, full);
+    }
+
+    if (!entry.isFile() || !entry.name.endsWith(".html")) {
+      return [];
+    }
+
+    const relative = path.relative(siteDir, full).replace(/\\/g, "/");
+    if (relative === "index.html") return ["/"];
+    if (relative.endsWith("/index.html")) {
+      return [`/${relative.slice(0, -"index.html".length)}`];
+    }
+    return [`/${relative}`];
+  });
+}
+
+function hasDynamicSegment(urlPath) {
+  return /(^|\/):[^/]+/.test(urlPath) || urlPath.includes("*");
+}
+
+function patternToRegex(urlPath) {
+  const normalized = normalizeUrlPath(urlPath);
+  const placeholderToken = "__DYNAMIC_SEGMENT__";
+  const wildcardToken = "__DYNAMIC_WILDCARD__";
+  const tokenized = normalized
+    .replace(/:[^/]+/g, placeholderToken)
+    .replace(/\*/g, wildcardToken);
+  const escaped = tokenized.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  return new RegExp(
+    `^${escaped
+      .replace(new RegExp(placeholderToken, "g"), "[^/]+")
+      .replace(new RegExp(wildcardToken, "g"), ".*")}$`
+  );
+}
+
 function parseRedirects(redirectsFile = REDIRECTS_FILE) {
   if (!fs.existsSync(redirectsFile)) return [];
 
@@ -33,6 +74,12 @@ function parseRedirects(redirectsFile = REDIRECTS_FILE) {
 function resolvePathInSite(urlPath, siteDir = SITE_DIR) {
   const clean = normalizeUrlPath(urlPath);
   if (!clean) return null;
+
+  if (hasDynamicSegment(clean)) {
+    const matcher = patternToRegex(clean);
+    const builtUrlPaths = listBuiltUrlPaths(siteDir);
+    return builtUrlPaths.some((candidate) => matcher.test(candidate)) ? clean : null;
+  }
 
   if (clean === "/") {
     return fs.existsSync(path.join(siteDir, "index.html")) ? "/" : null;

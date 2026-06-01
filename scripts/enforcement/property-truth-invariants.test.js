@@ -116,6 +116,37 @@ test("strict rendered dock and waterfront stay pages only feature Dockside Dream
   }
 });
 
+test("stay collection schema uses canonical property URLs and accommodation facts instead of stale priceRange strings", () => {
+  const stayPages = [
+    "stays/bradenton-vacation-rentals-near-beaches/index.html",
+    "stays/large-group-vacation-rentals-anna-maria-island/index.html"
+  ];
+
+  for (const relativePath of stayPages) {
+    const html = readBuilt(relativePath);
+    const itemList = extractJsonLdObjects(html).find((item) => item["@type"] === "ItemList");
+
+    assert.ok(itemList, `${relativePath} must publish ItemList schema`);
+    assert.ok(Array.isArray(itemList.itemListElement), `${relativePath} ItemList must contain itemListElement entries`);
+
+    for (const listItem of itemList.itemListElement) {
+      const rental = listItem.item;
+
+      assert.equal(rental["@type"], "VacationRental", `${relativePath} item must stay typed as VacationRental`);
+      assert.match(rental.url, /^https:\/\/seascape-vacations\.com\/properties\/[^/]+\/$/, `${relativePath} items must point at canonical property URLs`);
+      assert.match(rental.identifier, /^seascape-\d+$/, `${relativePath} items must include stable property identifiers`);
+      assert.equal(typeof rental.latitude, "number", `${relativePath} items must include latitude`);
+      assert.equal(typeof rental.longitude, "number", `${relativePath} items must include longitude`);
+      assert.equal(typeof rental.address?.postalCode, "string", `${relativePath} items must include postal codes`);
+      assert.equal(Boolean(rental.containsPlace), true, `${relativePath} items must include containsPlace facts`);
+      assert.equal(rental.containsPlace.occupancy.value > 0, true, `${relativePath} items must include occupancy values`);
+      assert.equal("priceRange" in rental, false, `${relativePath} items must not ship stale priceRange strings`);
+      assert.equal(rental.offers?.["@type"], "Offer", `${relativePath} items must publish Offer objects`);
+      assert.equal(rental.offers?.priceCurrency, "USD", `${relativePath} items must publish USD pricing`);
+    }
+  }
+});
+
 test("River House kayaking copy stays framed as a nearby public launch, not on-property waterfront", () => {
   const html = readBuilt("stays/kayaking-vacation-rentals-bradenton/index.html");
 
