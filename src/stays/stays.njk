@@ -126,7 +126,7 @@ eleventyComputed:
     </script>
     {% endif %}
     
-    <!-- VacationRental Schema (ItemList for properties) -->
+    <!-- Stay collection schema -->
     {% if seoPage.propertyFacts and seoPage.propertyFacts.length > 0 %}
     <script type="application/ld+json">
     {
@@ -136,28 +136,41 @@ eleventyComputed:
         "description": "{{ seoPage.description }}",
         "numberOfItems": {{ seoPage.propertyFacts | length }},
         "itemListElement": [
-            {% for property in seoPage.propertyFacts %}
+            {% for propertyFact in seoPage.propertyFacts %}
+            {% set listPosition = loop.index %}
+            {% set isLastMatch = loop.last %}
+            {% for property in properties %}
+            {% if property.pageUrl == propertyFact.pageUrl %}
             {
                 "@type": "ListItem",
-                "position": {{ loop.index }},
+                "position": {{ listPosition }},
                 "item": {
                     "@type": "VacationRental",
                     "@id": "{{ site.url }}{{ property.pageUrl }}#vacation-rental",
-                    "name": "{{ property.name }}",
-                    "description": "{{ property.schemaDescription }}",
+                    "identifier": "{{ property.schemaIdentifier }}",
+                    "name": "{{ propertyFact.name }}",
+                    "description": "{{ propertyFact.schemaDescription or property.description }}",
                     "url": "{{ site.url }}{{ property.pageUrl }}",
-                    "image": "{{ property.image }}",
-                    "numberOfBedrooms": {{ property.bedrooms }},
-                    "numberOfBathroomsTotal": {{ property.bathrooms }},
-                    "occupancy": {
-                        "@type": "QuantitativeValue",
-                        "maxValue": {{ property.guests }}
+                    "image": [
+                        "{{ property.image }}"
+                    ],
+                    "containsPlace": {
+                        "@type": "Accommodation",
+                        "numberOfBedrooms": {{ property.bedrooms }},
+                        "numberOfBathroomsTotal": {{ property.bathrooms }},
+                        "occupancy": {
+                            "@type": "QuantitativeValue",
+                            "value": {{ property.guests }}
+                        }
                     },
+                    "latitude": {{ property.latitude }},
+                    "longitude": {{ property.longitude }},
                     "address": {
                         "@type": "PostalAddress",
                         "addressLocality": "{{ property.city }}",
                         "addressRegion": "FL",
-                        "addressCountry": "US"
+                        "addressCountry": "US"{% if property.postalCode %},
+                        "postalCode": "{{ property.postalCode }}"{% endif %}
                     },
                     "offers": {
                         "@type": "Offer",
@@ -168,7 +181,9 @@ eleventyComputed:
                         "url": "{{ property.bookingUrl }}"
                     }
                 }
-            }{% if not loop.last %},{% endif %}
+            }{% if not isLastMatch %},{% endif %}
+            {% endif %}
+            {% endfor %}
             {% endfor %}
         ]
     }
@@ -192,23 +207,40 @@ eleventyComputed:
                 "position": {{ listPosition }},
                 "item": {
                     "@type": "VacationRental",
-                    "@id": "{{ site.url }}/#{{ property.slug }}",
+                    "@id": "{{ site.url }}{{ property.pageUrl }}#vacation-rental",
+                    "identifier": "{{ property.schemaIdentifier }}",
                     "name": "{{ property.name }}",
                     "description": "{{ property.description }}",
-                    "image": "{{ property.image | imgProxy(1200) }}",
-                    "numberOfBedrooms": {{ property.bedrooms }},
-                    "numberOfBathroomsTotal": {{ property.bathrooms }},
-                    "occupancy": {
-                        "@type": "QuantitativeValue",
-                        "maxValue": {{ property.guests }}
+                    "url": "{{ site.url }}{{ property.pageUrl }}",
+                    "image": [
+                        "{{ property.image | imgProxy(1200) }}"
+                    ],
+                    "containsPlace": {
+                        "@type": "Accommodation",
+                        "numberOfBedrooms": {{ property.bedrooms }},
+                        "numberOfBathroomsTotal": {{ property.bathrooms }},
+                        "occupancy": {
+                            "@type": "QuantitativeValue",
+                            "value": {{ property.guests }}
+                        }
                     },
+                    "latitude": {{ property.latitude }},
+                    "longitude": {{ property.longitude }},
                     "address": {
                         "@type": "PostalAddress",
                         "addressLocality": "{{ property.city }}",
                         "addressRegion": "FL",
-                        "addressCountry": "US"
+                        "addressCountry": "US"{% if property.postalCode %},
+                        "postalCode": "{{ property.postalCode }}"{% endif %}
                     },
-                    "priceRange": "From ${{ property.price }}/night"
+                    "offers": {
+                        "@type": "Offer",
+                        "price": "{{ property.price }}",
+                        "priceCurrency": "USD",
+                        "unitText": "NIGHT",
+                        "availability": "https://schema.org/InStock",
+                        "url": "{{ property.bookingUrl }}"
+                    }
                 }
             }{% if not isLastMatch %},{% endif %}
             {% endif %}
@@ -232,23 +264,40 @@ eleventyComputed:
                 "position": {{ loop.index }},
                 "item": {
                     "@type": "VacationRental",
-                    "@id": "{{ site.url }}/#{{ property.slug }}",
+                    "@id": "{{ site.url }}{{ property.pageUrl }}#vacation-rental",
+                    "identifier": "{{ property.schemaIdentifier }}",
                     "name": "{{ property.name }}",
                     "description": "{{ property.description }}",
-                    "image": "{{ property.image | imgProxy(1200) }}",
-                    "numberOfBedrooms": {{ property.bedrooms }},
-                    "numberOfBathroomsTotal": {{ property.bathrooms }},
-                    "occupancy": {
-                        "@type": "QuantitativeValue",
-                        "maxValue": {{ property.guests }}
+                    "url": "{{ site.url }}{{ property.pageUrl }}",
+                    "image": [
+                        "{{ property.image | imgProxy(1200) }}"
+                    ],
+                    "containsPlace": {
+                        "@type": "Accommodation",
+                        "numberOfBedrooms": {{ property.bedrooms }},
+                        "numberOfBathroomsTotal": {{ property.bathrooms }},
+                        "occupancy": {
+                            "@type": "QuantitativeValue",
+                            "value": {{ property.guests }}
+                        }
                     },
+                    "latitude": {{ property.latitude }},
+                    "longitude": {{ property.longitude }},
                     "address": {
                         "@type": "PostalAddress",
                         "addressLocality": "{{ property.city }}",
                         "addressRegion": "FL",
-                        "addressCountry": "US"
+                        "addressCountry": "US"{% if property.postalCode %},
+                        "postalCode": "{{ property.postalCode }}"{% endif %}
                     },
-                    "priceRange": "From ${{ property.price }}/night"
+                    "offers": {
+                        "@type": "Offer",
+                        "price": "{{ property.price }}",
+                        "priceCurrency": "USD",
+                        "unitText": "NIGHT",
+                        "availability": "https://schema.org/InStock",
+                        "url": "{{ property.bookingUrl }}"
+                    }
                 }
             }{% if not loop.last %},{% endif %}
             {% endfor %}
