@@ -2,14 +2,15 @@
 
 ## Purpose
 
-This file governs the outbound guest email with subject line family:
+This file governs the outbound guest email with one approved subject line:
 
-- `What 200+ Guests Love About Our Gulf Coast Homes` (live variant observed)
-- `Why Guests Keep Coming Back To Our Gulf Coast Homes` (current canonical variant)
+- `Why Guests Keep Coming Back To Our Gulf Coast Homes`
 
 Use this doc plus the template files below as source truth before editing or sending this campaign again.
 
-## Runtime Proof Receipt
+## Outlook Proof Receipt
+
+These Outlook messages prove the outbound path is live. They do not approve the drifted `200+` subject or the old placeholder-link variant.
 
 Fresh runtime evidence that this outbound path is live:
 
@@ -24,12 +25,23 @@ Fresh runtime evidence that this outbound path is live:
   - received timestamp: `2026-05-30T18:56:56Z` (Saturday, May 30, 2026)
   - message id: `AAMkADdkZmU0ZDM3LTBhMTAtNDYzYS05MjU3LTA2YWE4ZWZmZDRhNABGAAAAAACBnwxd0R02RLcf0MYdgrzPBwCmrCepJ936Qp4ckMYQKHQnAAAAAAEMAACmrCepJ936Qp4ckMYQKHQnAAM-d3WNAAA=`
 
+## Approved Mailchimp Artifact
+
+- subject: `Why Guests Keep Coming Back To Our Gulf Coast Homes`
+- preview: `Real guest notes, practical area guides, and your SAVE50 code in one place.`
+- HTML template: `docs/outreach/templates/guest-social-proof-email.html`
+- plain-text fallback: `docs/outreach/templates/guest-social-proof-email.txt`
+- canonical guide URLs:
+  - `https://seascape-vacations.com/guides/anna-maria-island-vs-siesta-key/?utm_source=mailchimp&utm_medium=email&utm_campaign=guest_social_proof`
+  - `https://seascape-vacations.com/guides/best-time-visit-anna-maria-island/?utm_source=mailchimp&utm_medium=email&utm_campaign=guest_social_proof`
+  - `https://seascape-vacations.com/guides/things-to-do-bradenton-fl/?utm_source=mailchimp&utm_medium=email&utm_campaign=guest_social_proof`
+- canonical social URLs:
+  - `https://www.facebook.com/SeascapeVacations`
+  - `https://www.instagram.com/seascapevacations`
+
 ## Canonical Repo Surface
 
-- HTML template: `docs/outreach/templates/guest-social-proof-email.html`
-- Plain-text fallback: `docs/outreach/templates/guest-social-proof-email.txt`
-
-Do not use `/emails/` as canonical governance for this campaign.
+Do not use `/emails/` or any one-off Mailchimp export as canonical governance for this campaign.
 
 ## Proof And Copy Guardrails
 
@@ -52,8 +64,7 @@ Compared with current proof rules and link integrity expectations, the live send
 
 Before re-sending or reusing this campaign:
 
-1. confirm subject line does not use unverified aggregate review-count claims
+1. confirm the subject line is exactly `Why Guests Keep Coming Back To Our Gulf Coast Homes`
 2. run `node --test scripts/enforcement/guest-social-proof-email-template.test.js`
 3. send a test to Gmail and confirm all guide links and social links resolve
 4. confirm `SAVE50` wording still matches active offer terms
-
