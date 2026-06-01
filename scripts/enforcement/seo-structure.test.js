@@ -92,7 +92,7 @@ test("redirects avoid the known missing legacy target pages", () => {
 test("legacy guide alias redirects point directly at slash canonicals instead of .html hops", () => {
   const redirects = fs.readFileSync(path.join(projectRoot, "src", "_redirects"), "utf8");
 
-  for (const staleTarget of [
+  for (const staleHtmlUrl of [
     "/guides/anna-maria-island-beaches.html",
     "/guides/bradenton-beach.html",
     "/guides/siesta-key-beach-guide.html",
@@ -104,7 +104,11 @@ test("legacy guide alias redirects point directly at slash canonicals instead of
     "/guides/shelling-guide-florida.html",
     "/guides/anna-maria-city.html"
   ]) {
-    assert.equal(redirects.includes(staleTarget), false, `Expected redirects to stop targeting ${staleTarget}`);
+    assert.equal(
+      redirects.includes(`  ${staleHtmlUrl}  `),
+      false,
+      `Expected redirects to stop targeting ${staleHtmlUrl}`
+    );
   }
 
   for (const canonicalTarget of [
@@ -127,17 +131,23 @@ test("guide redirects enforce a trailing-slash canonical shape for current guide
   const redirects = fs.readFileSync(path.join(projectRoot, "src", "_redirects"), "utf8");
 
   for (const redirectRule of [
-    "/guides/:slug.html  /guides/:slug/  301",
+    "/guides/things-to-do-bradenton-fl.html  /guides/things-to-do-bradenton-fl/  301",
     "/guides/:slug/index.html  /guides/:slug/  301!",
     "/guides/:slug  /guides/:slug/  301"
   ]) {
     assert.equal(redirects.includes(redirectRule), true, `Expected redirects to include ${redirectRule}`);
   }
 
+  assert.equal(
+    redirects.includes("/guides/:slug.html  /guides/:slug/  301"),
+    false,
+    "Dynamic .html guide redirects are unsafe on Netlify because the suffix placeholder can be shadowed or emitted literally"
+  );
+
   assert.ok(
-    redirects.indexOf("/guides/:slug.html  /guides/:slug/  301") <
+    redirects.indexOf("/guides/things-to-do-bradenton-fl.html  /guides/things-to-do-bradenton-fl/  301") <
       redirects.indexOf("/guides/:slug  /guides/:slug/  301"),
-    "Expected .html guide redirect to come before the broad slashless guide redirect"
+    "Expected explicit .html guide redirects to come before the broad slashless guide redirect"
   );
 
   assert.ok(
