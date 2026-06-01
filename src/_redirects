@@ -405,7 +405,60 @@
 /guides/bradenton-vs-sarasota-vacation-rental-comparison.html  /guides/bradenton-vs-sarasota/  301
 
 # Canonical guide shape — keep current guides on trailing-slash canonicals
-/guides/:slug.html  /guides/:slug/  301
+# Netlify cannot safely strip .html with a dynamic suffix placeholder, so keep
+# explicit .html aliases before the broad slashless placeholder rule.
+/guides/2026-bradenton-vacation-rental-market-analysis.html  /guides/2026-bradenton-vacation-rental-market-analysis/  301
+/guides/anna-maria-city.html  /guides/anna-maria-city/  301
+/guides/anna-maria-island-area-guide.html  /guides/anna-maria-island-area-guide/  301
+/guides/anna-maria-island-beaches.html  /guides/anna-maria-island-beaches/  301
+/guides/anna-maria-island-noise-ordinance-guide.html  /guides/anna-maria-island-noise-ordinance-guide/  301
+/guides/anna-maria-island-vacation-cost.html  /guides/anna-maria-island-vacation-cost/  301
+/guides/anna-maria-island-vs-clearwater-beach.html  /guides/anna-maria-island-vs-clearwater-beach/  301
+/guides/anna-maria-island-vs-longboat-key.html  /guides/anna-maria-island-vs-longboat-key/  301
+/guides/anna-maria-island-vs-siesta-key.html  /guides/anna-maria-island-vs-siesta-key/  301
+/guides/anna-maria-island-weather.html  /guides/anna-maria-island-weather/  301
+/guides/best-restaurants-anna-maria-island.html  /guides/best-restaurants-anna-maria-island/  301
+/guides/best-time-visit-anna-maria-island.html  /guides/best-time-visit-anna-maria-island/  301
+/guides/best-vacation-rental-companies-ami.html  /guides/best-vacation-rental-companies-ami/  301
+/guides/best-waterfront-restaurants-with-boat-dock.html  /guides/best-waterfront-restaurants-with-boat-dock/  301
+/guides/booking-direct-vacation-rentals.html  /guides/booking-direct-vacation-rentals/  301
+/guides/bradenton-area-guide.html  /guides/bradenton-area-guide/  301
+/guides/bradenton-beach-area-guide.html  /guides/bradenton-beach-area-guide/  301
+/guides/bradenton-beach.html  /guides/bradenton-beach/  301
+/guides/bradenton-insider-guide.html  /guides/bradenton-insider-guide/  301
+/guides/bradenton-vs-sarasota-beaches.html  /guides/bradenton-vs-sarasota-beaches/  301
+/guides/bradenton-vs-sarasota-cost-of-living.html  /guides/bradenton-vs-sarasota-cost-of-living/  301
+/guides/bradenton-vs-sarasota-for-families.html  /guides/bradenton-vs-sarasota-for-families/  301
+/guides/bradenton-vs-sarasota-restaurants.html  /guides/bradenton-vs-sarasota-restaurants/  301
+/guides/bradenton-vs-sarasota-retirement.html  /guides/bradenton-vs-sarasota-retirement/  301
+/guides/bradenton-vs-sarasota.html  /guides/bradenton-vs-sarasota/  301
+/guides/bradenton-vs-tampa-vacation-rentals.html  /guides/bradenton-vs-tampa-vacation-rentals/  301
+/guides/do-you-need-a-car-anna-maria-island.html  /guides/do-you-need-a-car-anna-maria-island/  301
+/guides/dolphins-manatees-bradenton.html  /guides/dolphins-manatees-bradenton/  301
+/guides/family-vacation-anna-maria-island.html  /guides/family-vacation-anna-maria-island/  301
+/guides/fishing-guide-anna-maria-sarasota.html  /guides/fishing-guide-anna-maria-sarasota/  301
+/guides/flights-to-anna-maria-island.html  /guides/flights-to-anna-maria-island/  301
+/guides/florida-gulf-coast-vacation-rental-market-report-2026.html  /guides/florida-gulf-coast-vacation-rental-market-report-2026/  301
+/guides/holmes-beach-area-guide.html  /guides/holmes-beach-area-guide/  301
+/guides/holmes-beach-vs-bradenton-beach.html  /guides/holmes-beach-vs-bradenton-beach/  301
+/guides/holmes-beach.html  /guides/holmes-beach/  301
+/guides/how-to-get-to-anna-maria-island.html  /guides/how-to-get-to-anna-maria-island/  301
+/guides/hurricane-preparedness-florida-vacation.html  /guides/hurricane-preparedness-florida-vacation/  301
+/guides/is-anna-maria-island-worth-visiting.html  /guides/is-anna-maria-island-worth-visiting/  301
+/guides/longboat-key-area-guide.html  /guides/longboat-key-area-guide/  301
+/guides/pet-friendly-anna-maria-island.html  /guides/pet-friendly-anna-maria-island/  301
+/guides/rainy-day-activities-bradenton-sarasota.html  /guides/rainy-day-activities-bradenton-sarasota/  301
+/guides/sarasota-area-guide.html  /guides/sarasota-area-guide/  301
+/guides/shelling-guide-florida.html  /guides/shelling-guide-florida/  301
+/guides/siesta-key-area-guide.html  /guides/siesta-key-area-guide/  301
+/guides/siesta-key-beach-guide.html  /guides/siesta-key-beach-guide/  301
+/guides/siesta-key-vs-anna-maria-island-families.html  /guides/siesta-key-vs-anna-maria-island-families/  301
+/guides/snowbirds-guide-extended-stays-florida.html  /guides/snowbirds-guide-extended-stays-florida/  301
+/guides/spring-break-activities-bradenton-anna-maria-island.html  /guides/spring-break-activities-bradenton-anna-maria-island/  301
+/guides/srq-airport-to-anna-maria-island.html  /guides/srq-airport-to-anna-maria-island/  301
+/guides/things-to-do-bradenton-fl.html  /guides/things-to-do-bradenton-fl/  301
+/guides/vacation-rental-income-anna-maria.html  /guides/vacation-rental-income-anna-maria/  301
+/guides/where-to-stay-near-anna-maria-island.html  /guides/where-to-stay-near-anna-maria-island/  301
 /guides/:slug/index.html  /guides/:slug/  301!
 /guides/:slug  /guides/:slug/  301
 
