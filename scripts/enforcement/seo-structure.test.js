@@ -127,12 +127,24 @@ test("guide redirects enforce a trailing-slash canonical shape for current guide
   const redirects = fs.readFileSync(path.join(projectRoot, "src", "_redirects"), "utf8");
 
   for (const redirectRule of [
-    "/guides/:slug  /guides/:slug/  301",
     "/guides/:slug.html  /guides/:slug/  301",
-    "/guides/:slug/index.html  /guides/:slug/  301!"
+    "/guides/:slug/index.html  /guides/:slug/  301!",
+    "/guides/:slug  /guides/:slug/  301"
   ]) {
     assert.equal(redirects.includes(redirectRule), true, `Expected redirects to include ${redirectRule}`);
   }
+
+  assert.ok(
+    redirects.indexOf("/guides/:slug.html  /guides/:slug/  301") <
+      redirects.indexOf("/guides/:slug  /guides/:slug/  301"),
+    "Expected .html guide redirect to come before the broad slashless guide redirect"
+  );
+
+  assert.ok(
+    redirects.indexOf("/guides/:slug/index.html  /guides/:slug/  301!") <
+      redirects.indexOf("/guides/:slug  /guides/:slug/  301"),
+    "Expected index.html guide redirect to come before the broad slashless guide redirect"
+  );
 });
 
 test("public source templates do not link to slashless or .html guide URLs", () => {
