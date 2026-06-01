@@ -8,7 +8,7 @@
     <title>{{ pageTitle | seoTitle }}</title>
     <meta name="description" content="{{ pageDescription | seoDescription }}">
     <meta name="author" content="{{ pageAuthor or site.author }}">
-    <meta name="robots" content="index, follow">
+    <meta name="robots" content="{{ pageRobots or 'index, follow' }}">
     <link rel="canonical" href="{{ site.url }}{{ page.url }}">
     
     <!-- Open Graph -->
