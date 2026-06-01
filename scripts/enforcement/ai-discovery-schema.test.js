@@ -76,10 +76,11 @@ test("llms inventory only advertises live canonical URLs", () => {
 
   for (const url of urls) {
     const pathname = new URL(url).pathname;
+    const isFileEndpoint = /\.(json|txt)$/.test(pathname);
     assert.equal(
-      pathname.endsWith("/"),
+      pathname.endsWith("/") || isFileEndpoint,
       true,
-      `${url} should use the canonical trailing-slash route`
+      `${url} should use the canonical route format`
     );
   }
 });
