@@ -16,6 +16,7 @@
 - The audit found a few small hygiene defects that can be fixed without opening a new SEO expansion or CRO batch.
 - Homepage social metadata still used a stale banned descriptor even though the on-page title had already moved to direct-book positioning.
 - Two noindexed legacy proof pages were still eligible for sitemap inclusion because their frontmatter did not carry the same indexability state as their rendered robots tags.
+- The owner revenue-review confirmation route is a deliberate post-submit page that should stay available to users but should not be indexable in search.
 
 What should explicitly wait:
 
@@ -28,6 +29,7 @@ What should explicitly wait:
 - homepage social metadata
 - public meta descriptions on the audited stay and owner surfaces
 - noindex/sitemap consistency for retired or demoted proof pages
+- noindex alignment for the owner revenue-review confirmation route at `/property-management/revenue-review-requested/`
 - hero ticker fallback copy that appears before client-side hydration
 
 ## Source And Proof Constraints
@@ -42,6 +44,7 @@ What should explicitly wait:
 - `npm run lint:content`
 - `npm test`
 - verify the two noindexed pages are absent from `_site/sitemap.xml`
+- verify `/property-management/revenue-review-requested/` renders `noindex, follow` and stays absent from `_site/sitemap.xml`
 - verify homepage social meta no longer contains the stale banned descriptor
 
 ## Done When
