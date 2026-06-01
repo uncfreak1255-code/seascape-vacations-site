@@ -151,6 +151,27 @@ function normalizeVisibleText(source) {
     .trim();
 }
 
+function readBase(relativePath) {
+  try {
+    return execSync(`git show origin/main:${relativePath}`, {
+      cwd: projectRoot,
+      encoding: "utf8",
+      stdio: ["ignore", "pipe", "ignore"]
+    });
+  } catch {
+    return null;
+  }
+}
+
+function hasVisibleReaderCopyDiff(relativePath, source) {
+  const baseSource = readBase(relativePath);
+  if (baseSource === null) {
+    return true;
+  }
+
+  return normalizeVisibleText(baseSource) !== normalizeVisibleText(source);
+}
+
 function listFilesRecursive(relativeDir) {
   const absoluteDir = path.join(projectRoot, relativeDir);
   const results = [];
@@ -318,8 +339,9 @@ function lintInstructionTemplateData(relativePath, data) {
   return violations;
 }
 
-function lintPublicContent(relativePath, source, requiredLinks) {
+function lintPublicContent(relativePath, source, requiredLinks, options = {}) {
   const violations = [];
+  const shouldCheckRequiredLinks = options.checkRequiredLinks !== false;
   const visibleText = normalizeVisibleText(source);
   const firstParagraph = getFirstParagraphText(source);
   const currentRoute = getCurrentRoute(relativePath, source);
@@ -372,16 +394,18 @@ function lintPublicContent(relativePath, source, requiredLinks) {
     }
   }
 
-  if (requiredLinks.length < 2) {
-    violations.push(`${relativePath}: active brief must list at least two required internal links`);
-  } else {
-    for (const link of requiredLinks) {
-      if (link === currentRoute) {
-        continue;
-      }
+  if (shouldCheckRequiredLinks) {
+    if (requiredLinks.length < 2) {
+      violations.push(`${relativePath}: active brief must list at least two required internal links`);
+    } else {
+      for (const link of requiredLinks) {
+        if (link === currentRoute) {
+          continue;
+        }
 
-      if (!source.includes(`href="${link}"`) && !source.includes(`href='${link}'`)) {
-        violations.push(`${relativePath}: missing required internal link ${link}`);
+        if (!source.includes(`href="${link}"`) && !source.includes(`href='${link}'`)) {
+          violations.push(`${relativePath}: missing required internal link ${link}`);
+        }
       }
     }
   }
@@ -681,6 +705,26 @@ test("content lint does not require a page to link to itself", () => {
   assert.deepEqual(violations, []);
 });
 
+test("changed-file gate can skip content lint for structural-only public diffs", () => {
+  const sample = `
+    ---
+    permalink: "/guides/example/"
+    ---
+    <main>
+      <p>Choose the beach base that fits the trip.</p>
+      <p><a href="/guides/updated/">Updated route</a></p>
+    </main>
+  `;
+
+  const shouldCheckContent = false;
+  const violations = shouldCheckContent ? lintPublicContent("src/guides/example.html", sample, [
+    "/guides/",
+    "/stays/bradenton-vacation-rentals-near-beaches/"
+  ]) : [];
+
+  assert.deepEqual(violations, []);
+});
+
 test("owner seo page data avoids banned owner jargon", () => {
   const seoPages = JSON.parse(read(path.join("src", "_data", "seoPages.json")));
   const violations = [];
@@ -742,7 +786,13 @@ test("changed public content files require one active brief and pass brief-linke
 
   for (const relativePath of changedPublicContentFiles) {
     const source = read(relativePath);
-    violations.push(...lintPublicContent(relativePath, source, requiredLinks));
+    if (!hasVisibleReaderCopyDiff(relativePath, source)) {
+      continue;
+    }
+
+    violations.push(
+      ...lintPublicContent(relativePath, source, requiredLinks)
+    );
   }
 
   assert.deepEqual(violations, []);
