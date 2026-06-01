@@ -407,7 +407,7 @@
 # Canonical guide shape — keep current guides on trailing-slash canonicals
 /guides/:slug  /guides/:slug/  301
 /guides/:slug.html  /guides/:slug/  301
-/guides/:slug/index.html  /guides/:slug/  301
+/guides/:slug/index.html  /guides/:slug/  301!
 
 /property-management/vacation-rental-management-licensing-florida  /property-management/vacation-rental-licensing-florida/  301
 /property-management/vacation-rental-management-licensing-florida/  /property-management/vacation-rental-licensing-florida/  301

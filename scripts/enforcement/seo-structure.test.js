@@ -129,7 +129,7 @@ test("guide redirects enforce a trailing-slash canonical shape for current guide
   for (const redirectRule of [
     "/guides/:slug  /guides/:slug/  301",
     "/guides/:slug.html  /guides/:slug/  301",
-    "/guides/:slug/index.html  /guides/:slug/  301"
+    "/guides/:slug/index.html  /guides/:slug/  301!"
   ]) {
     assert.equal(redirects.includes(redirectRule), true, `Expected redirects to include ${redirectRule}`);
   }
