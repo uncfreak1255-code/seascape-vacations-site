@@ -79,9 +79,9 @@
 <aside class="save50-offer" data-save50-offer hidden>
   <div class="save50-offer-card">
     <div>
-      <span class="save50-offer-label">SAVE50 welcome credit</span>
+      <span class="save50-offer-label">SAVE50 direct-book credit</span>
       <p class="save50-offer-copy">
-        <strong>$50 off your first direct booking</strong> of 3 nights or more.
+        <strong>Your SAVE50 code is ready</strong>: $50 off your first direct booking of 3 nights or more.
         Pick a home, check live dates, and enter SAVE50 on the secure booking page.
       </p>
     </div>
@@ -93,7 +93,8 @@
   (function () {
     if (!window.location || typeof URLSearchParams !== "function" || typeof URL !== "function") return;
 
-    const SAVE50_CAMPAIGN = "save50_welcome";
+    const SAVE50_CAMPAIGNS = ["save50_welcome", "guest_social_proof"];
+    const DEFAULT_SAVE50_CAMPAIGN = SAVE50_CAMPAIGNS[0];
     const PRESERVED_PARAM_KEYS = [
       "utm_source",
       "utm_medium",
@@ -106,14 +107,16 @@
     const params = new URLSearchParams(window.location.search || "");
     const campaign = (params.get("utm_campaign") || "").trim().toLowerCase();
     const promo = (params.get("promo") || "").trim().toLowerCase();
-    const isSave50Campaign = campaign === SAVE50_CAMPAIGN || promo === "save50";
+    const isSave50Campaign = SAVE50_CAMPAIGNS.indexOf(campaign) !== -1 || promo === "save50";
 
     if (!isSave50Campaign) return;
 
     function campaignValueFor(key) {
       const value = (params.get(key) || "").trim();
       if (value) return value;
-      if (key === "utm_campaign") return SAVE50_CAMPAIGN;
+      if (key === "utm_campaign") {
+        return SAVE50_CAMPAIGNS.indexOf(campaign) !== -1 ? campaign : DEFAULT_SAVE50_CAMPAIGN;
+      }
       return "";
     }
 
