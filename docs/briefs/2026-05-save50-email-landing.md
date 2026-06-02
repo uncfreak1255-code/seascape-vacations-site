@@ -7,7 +7,7 @@
 - secondary keywords: book direct Gulf Coast vacation rental, Bradenton vacation rental with pool, Sarasota vacation rental with pool
 - audience pattern: email subscribers who already have a welcome code and need the site to confirm the offer without turning the property pages into coupon pages
 - proof source: May 29, 2026 `Your $50 Off Code + Our 5 Best Gulf Coast Homes` Outlook proof email, May 31, 2026 `What 200+ Guests Love About Our Gulf Coast Homes` Outlook proof email, current property inventory, and existing booking-page links
-- required internal links: /properties/, /properties/dockside-dreams/, /properties/the-oasis/, /properties/sarasota-luxe/, /properties/river-house/, /properties/bradenton-pool-home/
+- required internal links: /properties/, /guides/
 - CTA target: direct booking handoff for the selected home
 - anti-claims: do not imply the stay is free, do not hide the 3-night minimum, do not invent booking-engine coupon auto-apply behavior, and do not show a promo banner to non-campaign visitors
 
