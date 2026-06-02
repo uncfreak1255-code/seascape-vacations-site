@@ -136,16 +136,75 @@ document.querySelectorAll('[data-legal-modal]').forEach(function(trigger) {
 
 var EMAIL_POPUP_KEY = 'seascape_email_popup_shown';
 var EMAIL_POPUP_DELAY = 30000;
+var SAVE50_POPUP_CAMPAIGNS = ['save50_welcome', 'guest_social_proof'];
+var SAVE50_POPUP_PARAM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'utm_id', 'promo'];
 var emailPopupReady = false;
 var emailPopupShown = false;
+
+function getSave50PopupContext() {
+    if (typeof URLSearchParams !== 'function' || !window.location) return null;
+
+    var params = new URLSearchParams(window.location.search || '');
+    var campaign = (params.get('utm_campaign') || '').trim().toLowerCase();
+    var promo = (params.get('promo') || '').trim().toLowerCase();
+
+    if (SAVE50_POPUP_CAMPAIGNS.indexOf(campaign) === -1 && promo !== 'save50') {
+        return null;
+    }
+
+    return {
+        params: params,
+        campaign: campaign
+    };
+}
+
+function applySave50PopupReminder() {
+    var context = getSave50PopupContext();
+    var popup = document.getElementById('email-popup');
+
+    if (!context || !popup) return;
+
+    var popupContent = popup.querySelector('[data-email-capture-content]');
+    var popupReminder = popup.querySelector('[data-email-capture-success]');
+    var browseLink = popup.querySelector('[data-email-capture-browse]');
+
+    if (popupContent && popupContent.style) {
+        popupContent.style.display = 'none';
+    }
+
+    if (popupReminder && popupReminder.classList) {
+        popupReminder.classList.add('is-visible');
+        popupReminder.classList.add('show');
+    }
+
+    if (!browseLink || typeof URL !== 'function') return;
+
+    var baseHref = browseLink.getAttribute('data-email-capture-default-href') || browseLink.getAttribute('href') || '/properties/';
+    var nextUrl = new URL(baseHref, window.location.href);
+
+    SAVE50_POPUP_PARAM_KEYS.forEach(function(key) {
+        var value = (context.params.get(key) || '').trim();
+
+        if (!value && key === 'utm_campaign' && SAVE50_POPUP_CAMPAIGNS.indexOf(context.campaign) !== -1) {
+            value = context.campaign;
+        }
+
+        if (value && !nextUrl.searchParams.get(key)) {
+            nextUrl.searchParams.set(key, value);
+        }
+    });
+
+    browseLink.setAttribute('href', nextUrl.pathname + nextUrl.search + nextUrl.hash);
+}
 
 function showEmailPopup() {
     if (emailPopupShown) return;
 
+    var campaignContext = getSave50PopupContext();
     var lastShown = localStorage.getItem(EMAIL_POPUP_KEY);
-    if (lastShown === 'subscribed') return;
+    if (!campaignContext && lastShown === 'subscribed') return;
 
-    if (lastShown) {
+    if (!campaignContext && lastShown) {
         var daysSince = (Date.now() - parseInt(lastShown, 10)) / (1000 * 60 * 60 * 24);
         if (daysSince < 7) return;
     }
@@ -153,6 +212,7 @@ function showEmailPopup() {
     var popup = document.getElementById('email-popup');
     if (!popup) return;
 
+    applySave50PopupReminder();
     emailPopupShown = true;
     popup.style.display = 'flex';
     window.requestAnimationFrame(function() {

@@ -184,7 +184,9 @@ test("SAVE50 popup success state stays honest for repeat subscribers and deliver
 
   for (const source of [homepage, popupPartial]) {
     assert.doesNotMatch(source, /We also sent it to your email so you won't lose it\./);
-    assert.match(source, /Use code <strong>SAVE50<\/strong> at checkout to save \$50 on your stay \(3\+ nights\)\. Save this code before you browse\./);
+    assert.match(source, /Use code <strong>SAVE50<\/strong> on your first direct booking of 3 nights or more\. Enter it on the secure booking page, and save this code before you browse\./);
+    assert.match(source, /data-email-capture-browse/);
+    assert.match(source, /href="\/properties\/\?promo=save50"/);
   }
 
   delete require.cache[require.resolve(trackingScriptPath)];

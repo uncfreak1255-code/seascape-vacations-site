@@ -109,7 +109,8 @@ test("SAVE50 offer copy matches the welcome email without overstating the bookin
   const partial = read(save50PartialPath);
 
   for (const marker of [
-    "SAVE50 welcome credit",
+    "SAVE50 direct-book credit",
+    "Your SAVE50 code is ready",
     "$50 off your first direct booking",
     "3 nights or more",
     "data-save50-offer"
@@ -122,10 +123,11 @@ test("SAVE50 offer copy matches the welcome email without overstating the bookin
   assert.equal(partial.includes("no minimum"), false);
 });
 
-test("SAVE50 offer only opens from the email campaign query and preserves campaign parameters", () => {
+test("SAVE50 offer only opens from the approved email campaign queries and preserves campaign parameters", () => {
   const partial = read(save50PartialPath);
 
-  assert.match(partial, /campaign\s*===\s*SAVE50_CAMPAIGN/);
+  assert.equal(partial.includes('"save50_welcome"'), true);
+  assert.equal(partial.includes('"guest_social_proof"'), true);
   assert.match(partial, /promo\s*===\s*"save50"/);
   assert.equal(partial.includes("PRESERVED_PARAM_KEYS"), true);
   assert.equal(partial.includes('"utm_campaign"'), true);
@@ -152,6 +154,24 @@ test("SAVE50 campaign visitors see the reminder and keep campaign attribution th
     "booking-page handoff should preserve SAVE50 campaign parameters"
   );
   assert.equal(links[2].href, "https://example.com/outside", "external non-booking links should not be decorated");
+});
+
+test("guest social-proof visitors keep that campaign through SAVE50 reminder handoffs", () => {
+  const { offerNode, links } = runOfferScript(
+    "https://seascape-vacations.com/properties/?utm_source=mailchimp&utm_medium=email&utm_campaign=guest_social_proof&utm_content=guides"
+  );
+
+  assert.equal(offerNode.hidden, false, "guest social-proof visitor should see the SAVE50 reminder");
+  assert.equal(
+    links[0].href,
+    "/properties/the-oasis/?utm_source=mailchimp&utm_medium=email&utm_campaign=guest_social_proof&utm_content=guides",
+    "same-site property link should preserve guest social-proof campaign parameters"
+  );
+  assert.equal(
+    links[1].href,
+    "https://book.seascape-vacations.com/listings/189511?utm_source=mailchimp&utm_medium=email&utm_campaign=guest_social_proof&utm_content=guides",
+    "booking-page handoff should preserve guest social-proof campaign parameters"
+  );
 });
 
 test("SAVE50 reminder stays hidden for normal property visitors", () => {

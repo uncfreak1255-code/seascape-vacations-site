@@ -2267,6 +2267,7 @@
         }
 
         .email-popup-btn {
+            display: block;
             width: 100%;
             padding: 16px 24px;
             background: linear-gradient(135deg, var(--brand) 0%, var(--brand-dark) 100%);
@@ -2278,6 +2279,8 @@
             cursor: pointer;
             transition: all 0.3s;
             font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            text-align: center;
+            text-decoration: none;
         }
 
         .email-popup-btn:hover {
