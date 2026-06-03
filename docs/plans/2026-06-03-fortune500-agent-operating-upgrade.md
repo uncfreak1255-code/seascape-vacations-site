@@ -46,7 +46,7 @@ This repo is already operating well above the median agent-run marketing site. T
 - **Publishing safety is enforced deterministically, not by vibes.** `scripts/enforcement/` has ~40 test/validate scripts: redirect targets, internal links, JSON-LD, schema-truth, property-truth invariants, owner-proof clean/freshness, status-doc contract, page-family inventory, indexation link graph. `npm run lint:content`, `verify:release`, and the recovery smoke checks give a genuine release gate.
 - **The content lane is gated correctly.** No public copy PR without exactly one active brief, the content gate read, the `copywriting -> enterprise-ui-writing -> humanizer` order, and a passing voice lint. `docs/style/banned-patterns.md` is unusually disciplined about AI texture and internal-process leakage.
 - **A visual regression gate already exists and is mature.** `tests/visual/` has committed desktop and mobile baselines for the money routes, per-route diff tolerances in `playwright.config.js`, an axe-core accessibility spec, and CI reporters. `npm run test:visual` builds, serves `_site`, and diffs.
-- **PR #277 already closed two real gaps:** a `Stop` hook (`scripts/enforcement/claude-content-gate.js`) that runs the voice lint automatically and blocks turn completion on failure (closing the "agent forgot to run lint" gap from ~70% to ~100% per 2026 hook practice), generated-path `Read` deny rules in `.claude/settings.json`, and a portable `seascape-seo-os` plugin so a fresh clone reproduces the agents, skills, and hook in one install.
+- **PR #277 already closed two real gaps:** a repo-owned `Stop` hook (`scripts/enforcement/claude-content-gate.js`) that runs the voice lint automatically and blocks turn completion on failure (closing the "agent forgot to run lint" gap from ~70% to ~100% per 2026 hook practice), and a portable `seascape-seo-os` plugin so a fresh clone reproduces the agents and skills without hand-wiring them.
 - **Status discipline is encoded.** The reread contract forces exactly one status (`blocked by freshness` / `fresh but below threshold` / `open next batch`) and one concrete next move, generated from a `seascape-analytics` receipt. This is better governance than most teams have.
 
 ### The real gaps, tied to the two bottlenecks
@@ -100,7 +100,7 @@ Cost flags: **OSS/free** = no recurring cost; **API metered** = pay-per-call aga
 | # | Recommendation | Why (bottleneck/gap) | Cost | Effort | Risk | Reconciles with CLAUDE.md |
 |---|---|---|---|---|---|---|
 | a1 | **Correct stale governance text** in `CLAUDE.md` and `DESIGN.md` (visual regression gate exists; reconcile the 9-vs-11 skill list against `AGENTS.md`). | Agents follow the contract ~70% even when correct; a wrong contract guarantees wrong behavior. Highest-leverage, zero-cost. | OSS/free | Low | Low | This *is* the lean ethos — fix the doc layer before scaling, per the reading-order rule. |
-| a2 | **Resolve the double Stop hook.** PR #277's plugin and `.claude/settings.json` both register the content gate; pick one source of truth (the plugin README already flags this). | Avoids confusing duplicate runs; keeps the harness legible for a solo operator. | OSS/free | Low | Low | Pure hygiene, no new surface. |
+| a2 | **Keep the repo `Stop` hook single-sourced in `.claude/settings.json` and keep the plugin hook-free.** The hook is repo-coupled; the plugin should stay portable. | Avoids duplicate runs and keeps the plugin install surface honest. | OSS/free | Low | Low | Pure hygiene, no new surface. |
 | a3 | **Keep subagents at `model: sonnet` for UI/visual work** (already the rule) and add the same default for the eval-judge runs to control cost. | Cost discipline at headcount one. | OSS/free | Low | Low | Already an explicit rule. |
 | a4 | **Do NOT add Figma MCP, LSP, or background-agent infra as standing deps.** | No Figma source of truth; LSP already judged low-value; background agents add an autonomy surface a solo operator must babysit. | n/a | n/a | n/a | Honors "no new surface without a proven site-specific need." |
 
@@ -212,7 +212,7 @@ Each phase respects the current `next-batch.md` status (`blocked by freshness`).
 | Step | Owner | Success criteria | Dependency |
 |---|---|---|---|
 | Correct stale governance text: visual regression gate exists; reconcile the 9-vs-11 active-skill list between `CLAUDE.md` and `AGENTS.md`. | Operator + Release Gate review | `CLAUDE.md`/`DESIGN.md` no longer claim the gate is missing; skill lists match. | None |
-| Resolve the duplicate content-gate Stop hook (pick plugin or `.claude/settings.json` as the single source). | Operator | One registration; gate runs once. | PR #277 merged |
+| Keep the content-gate Stop hook single-sourced in `.claude/settings.json` and keep the plugin hook-free. | Operator | One registration; gate runs once and the plugin stays portable. | PR #277 merged |
 | Document the one-line rollback path in `git-release-cheat-sheet.md`. | Release Gate | Cheat sheet has an explicit revert + re-verify sequence. | None |
 | Build the eval "golden set" from `approved-examples.md` + current winner guides. | Voice Editor (read) + operator | A small fixture of known-good Seascape pages exists for calibration. | None |
 

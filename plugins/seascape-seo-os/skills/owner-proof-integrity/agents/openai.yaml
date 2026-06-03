@@ -1,0 +1,4 @@
+interface:
+  display_name: "Owner Proof Integrity"
+  short_description: "Keep owner proof claims aligned across source"
+  default_prompt: "Use $owner-proof-integrity to check owner proof claims against approved assets before editing copy."

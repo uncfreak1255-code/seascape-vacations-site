@@ -1,0 +1,4 @@
+interface:
+  display_name: "Property Truth Regen"
+  short_description: "Regenerate property surfaces from one truth source"
+  default_prompt: "Use $property-truth-regeneration to update property facts from the fallback authority and verify drift."

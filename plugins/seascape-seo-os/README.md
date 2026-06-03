@@ -10,11 +10,12 @@ hand-wiring agents and skills.
   SEO Architect, Page Builder, Voice Editor, Release Gate.
 - **Skills** (`skills/`) — the eleven active site-specific skills.
 
-The `agents/` and `skills/` entries are **symlinks** to the canonical sources
-(`.claude/agents/` and `.agents/skills/`). There is no second copy to keep in
-sync: editing the canonical file is the only edit. Because the symlink targets
-live inside this marketplace (the repo), Claude Code dereferences them into the
-plugin cache on install.
+The `agents/` and `skills/` entries are committed plugin copies of the canonical
+sources in `.claude/agents/` and `.agents/skills/`. They are duplicated on
+purpose: Claude Code preserves the directories during install but drops symlink
+targets from the plugin cache, which leaves an "installed" plugin empty. Keep
+these copies in sync with the canonical repo files whenever the active role or
+skill surface changes.
 
 ## Why there is no hook here
 
@@ -43,4 +44,5 @@ From a clone of this repo (or a fork):
   `.agents/skills/` in a local clone. The plugin's job is reproducible
   distribution, not new behavior.
 - The eleven skills here track `AGENTS.md` and `CLAUDE.md`. If the active-skill
-  set changes, update the symlinks in `skills/` and bump the plugin version.
+  set changes, update the copied plugin files in `skills/` and bump the plugin
+  version.
