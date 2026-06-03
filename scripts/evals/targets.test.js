@@ -83,6 +83,20 @@ test("filterByLane: matches multiple globs (union)", () => {
   ]);
 });
 
+test("filterByLane: owner lane includes data-backed seoPages copy", () => {
+  const files = [
+    "src/_data/seoPages.json",
+    "src/property-management/property-management.njk",
+    "src/stays/stays.njk",
+  ];
+  const globs = ["src/property-management/**/*.njk", "src/_data/seoPages.json"];
+  const result = filterByLane(files, globs);
+  assert.deepEqual(result, [
+    "src/_data/seoPages.json",
+    "src/property-management/property-management.njk",
+  ]);
+});
+
 test("filterByLane: does not double-count a file matching multiple globs", () => {
   const files = ["src/guides/page.njk"];
   const globs = ["src/guides/**/*.njk", "src/guides/**/*.{njk,html}"];
@@ -117,4 +131,22 @@ test("resolveTargets: with explicit files, returns empty array (no warning neede
   const files = ["src/other/page.html"];
   const result = resolveTargets(lane, files);
   assert.deepEqual(result, []);
+});
+
+test("resolveTargets: warns on stderr when git target resolution fails", () => {
+  const lane = { targets: ["src/guides/**/*.njk"] };
+  let warning = "";
+  const result = resolveTargets(lane, [], {
+    execSync: () => {
+      throw new Error("git unavailable");
+    },
+    stderr: {
+      write(chunk) {
+        warning += chunk;
+      },
+    },
+  });
+
+  assert.deepEqual(result, []);
+  assert.match(warning, /could not resolve changed files/);
 });
