@@ -29,6 +29,16 @@ npm run verify:recovery:remediation
 If the task does not touch all three areas, run the relevant subset and note why.
 
 - [ ] If visible `src/` copy changed, I completed `copywriting` -> `enterprise-ui-writing` -> `humanizer` and `npm run lint:content`.
+- [ ] If I changed `src/llms.txt`, `src/ai-discovery.json.njk`, `src/robots.txt`, or a citation-oriented intro/module, I used `docs/process/ai-citation-audit-usage.md` and ran the relevant AI-surface checks.
+- [ ] I did not claim AI citation lift, booking lift, or owner-demand lift without analytics-owned proof.
+
+AI-search / citation surface checks:
+
+```bash
+node --test scripts/enforcement/ai-discovery-schema.test.js
+npm run verify:jsonld
+npm run verify:links
+```
 
 ## 4. Route smoke check
 
