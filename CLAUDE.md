@@ -120,7 +120,7 @@ roles, or replace Seascape Hub as the source of business context.
 
 ## Execution Defaults
 
-- Think before coding: state assumptions explicitly, ask instead of guessing, push back when a simpler approach exists, and stop when confused.
+- Think before coding: state assumptions explicitly, ask when the missing fact matters, push back when a simpler approach exists, and stop to clarify before editing when the path is unclear.
 - Simplicity first: make the minimum change that solves the problem. Nothing speculative. No abstractions for single-use code.
 - Surgical changes: touch only what you must, match existing style, and do not refactor adjacent code that is not broken unless the task requires it.
 - Goal-driven execution: define success criteria early, then loop until the right proof gate verifies the work.
