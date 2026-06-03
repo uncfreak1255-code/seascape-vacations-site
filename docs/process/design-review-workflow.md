@@ -67,11 +67,14 @@ That includes:
    diff-aware mode when the change scope is branch-specific.
 10. Fix any high- or medium-impact rendered issues it finds before asking for
    human review.
-11. Capture fresh desktop and mobile screenshots for every changed route. If a
-   full-page capture lies about a fixed or sticky element, also capture
-   viewport-level screenshots that show the real behavior.
-12. Run the relevant build and release checks for the lane.
-13. Use `docs/process/before-user-review-checklist.md` before asking Sawyer to
+11. If the change is being justified as `citation-ready` or `AI-search-ready`,
+   pair the rendered review with `docs/process/ai-citation-audit-usage.md`.
+   Screenshot proof alone is not enough for that claim.
+12. Capture fresh desktop and mobile screenshots for every changed route. If a
+    full-page capture lies about a fixed or sticky element, also capture
+    viewport-level screenshots that show the real behavior.
+13. Run the relevant build and release checks for the lane.
+14. Use `docs/process/before-user-review-checklist.md` before asking Sawyer to
     review.
 
 ## Iconography Rule
@@ -88,6 +91,8 @@ Before human review, the handoff must show:
 - fresh desktop and mobile screenshots
 - any known screenshot artifact called out plainly
 - what changed visually
+- if AI-search or citation fit is part of the claim, whether that proof is
+  visible route copy, a machine-readable surface, or analytics-later work
 - what is still known-bad, if anything
 
 If the rendered surface still needs the user to discover basic bugs, the review is not ready.

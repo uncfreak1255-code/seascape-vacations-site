@@ -37,6 +37,7 @@ Minimum expectation for UI review:
 - [ ] The reviewed route does not rely on placeholder, empty, or broken components.
 - [ ] If I changed layout, CSS, spacing, typography, imagery, component structure, or visual hierarchy, I captured fresh desktop and mobile screenshots before asking for review.
 - [ ] If I changed layout, CSS, spacing, typography, imagery, iconography, motion, CTA treatment, or visual hierarchy, I ran the repo `design-review` workflow on the affected route family before asking for review.
+- [ ] If I am calling the change `AI-search-ready` or `citation-ready`, I can point to the visible answer-first block or source module and the machine-readable surface separately.
 - [ ] For long pages, I captured enough screenshots to cover each changed visual section when one full-page capture is not trustworthy.
 - [ ] I reviewed the screenshots myself and called out any capture artifact before asking the user to look.
 - [ ] If the PR is headed to merge, I included the desktop/mobile visual proof set in the PR thread before requesting merge approval.
@@ -58,6 +59,7 @@ When asking for review, state:
 - what changed
 - which exact URLs to review
 - which desktop and mobile screenshots back the review
+- whether any AI-search proof in this review is visible, machine-readable, or still analytics-only
 - what is still known-bad, if anything
 
 Do not ask for review if the honest status is "probably works."
