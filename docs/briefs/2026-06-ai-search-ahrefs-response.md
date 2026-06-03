@@ -32,6 +32,15 @@ This brief turns those findings into one bounded Seascape response. It is a plan
 - The strongest existing comparison-guide assets remain `/guides/bradenton-vs-sarasota/` and `/guides/anna-maria-island-vs-siesta-key/`.
 - Schema remains useful for entity clarity, crawl eligibility, rich-result hygiene, and enforcement, but not as a standalone AI-citation growth tactic.
 
+## Experiment And Readback Contract
+
+- hypothesis: If an analytics-owned AI visibility receipt shows listicle, comparison, or proof-asset formats winning the target query family, then one bounded answer-first or proof-asset hardening batch should improve Seascape's citation readiness without implying any lift before the reread.
+- primary event: analytics-owned AI visibility readback on the target query set, with cited URL and mentioned-brand movement read separately from downstream `booking_engine_handoff` and `owner_form_submit`.
+- guardrail event: no public claim that schema, AI visibility, or cited placement already caused ranking, booking, or owner-demand lift, and no branch that drifts into broad AI-search page volume while `docs/status/next-batch.md` remains blocked.
+- entry criteria: one machine-readable AI visibility receipt exists in `seascape-analytics`, the receipt recommends a bounded site or distribution action, and the chosen batch can name one target query family plus one target page family.
+- readback window: the next weekly AI visibility receipt after the bounded batch ships plus the first post-crawl analytics reread that can separate cited URL, mentioned brand, referral click, and downstream conversion.
+- decision rule: expand only if the reread shows cleaner cited-URL or mention movement on the target family without business-truth contradictions; otherwise rewrite the same asset once, hold, or kill the batch instead of opening new volume.
+
 ## Decision
 
 Run a selective expansion, not a site-wide AI-search rebuild.

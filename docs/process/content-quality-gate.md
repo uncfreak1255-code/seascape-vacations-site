@@ -29,6 +29,20 @@ Every active content brief must include these flat bullets with real values:
 
 These fields exist so the page builder, voice editor, and release gate are reading the same contract.
 
+For AI-search, experimentation, or reread-driven batches, the active brief must
+also carry these flat bullets with real values:
+
+- `hypothesis:`
+- `primary event:`
+- `guardrail event:`
+- `entry criteria:`
+- `readback window:`
+- `decision rule:`
+
+These fields keep Page Builder, Release Gate, and the analytics reread on the
+same measurement contract instead of letting a batch improvise proof after the
+fact.
+
 ## Visible Copy Lane
 
 Any PR that changes `reader copy` in `src/` must run this order before review or merge:

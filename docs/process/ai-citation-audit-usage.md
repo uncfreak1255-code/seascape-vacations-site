@@ -93,6 +93,8 @@ This repo may consume the receipt. It does not become the receipt.
 
 ## Site-Lane Checklist
 
+- Does the active AI-search or experiment brief name a hypothesis, primary
+  event, guardrail event, entry criteria, readback window, and decision rule?
 - Does the first paragraph answer the decision fast enough to stand alone?
 - Are methodology and source notes below the hook instead of buried in the lead?
 - If the page compares companies or destinations, is the treatment fair enough
