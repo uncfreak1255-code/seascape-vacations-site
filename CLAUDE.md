@@ -149,3 +149,44 @@ Meaningful visual changes also need the repo flow in `docs/process/design-review
 Run the global `design-review` skill against the affected routes after implementation and before asking for human review.
 The automated visual regression gate already exists: `npm run test:visual` diffs committed desktop and mobile baselines in `tests/visual/__screenshots__/` (with an axe accessibility spec). Run it for visual changes, and still attach desktop and mobile screenshots to the review or PR for subjective changes.
 For UI/visual work, dispatch subagents with `model: "sonnet"`.
+
+## Commands
+
+- Dev: `npm run start`
+- Build: `npm run build`
+- Full tests: `npm test`
+- Content gate: `npm run lint:content`
+- Release verify: `npm run verify:release`
+- Visual regression: `npm run test:visual`
+- Visual proof capture: `npm run proof:visual`
+- Safe commit: `npm run git:safe-commit`
+- Merge check: `npm run git:merge-check`
+
+## Testing
+
+- Fast gate for copy-only work: `npm run lint:content`
+- Fast gate for structural source work: `npm run build`
+- Full pre-PR gate: `npm run lint:content && npm test && npm run verify:release`
+- Visual changes also require: `npm run test:visual` and fresh desktop/mobile screenshot proof
+- Live post-merge smoke when the release surface matters: `npm run verify:recovery:live && npm run verify:direct-booking-events && npm run verify:owner-funnel-routes`
+
+## Deploy Configuration
+
+- Deployable: `yes`
+- Deploy surface: `Netlify`
+- Production URL: `https://seascape-vacations.com`
+- Build command: `npm run build`
+- Publish directory: `_site`
+- Post-deploy proof: `npm run verify:recovery:live && npm run verify:direct-booking-events && npm run verify:owner-funnel-routes`
+- "Shipped" means: merged to `main`, Netlify built successfully, and the relevant live smoke checks passed
+
+## Skill routing
+
+- Batch planning and scope: `plan-ceo-review` plus one active brief in `docs/briefs/`
+- Internal-link family routing: `internal-link-targeting`
+- Schema, GEO, and AEO implementation: `seascape-seo` plus `schema-markup`
+- Owner-page CRO: `page-cro`
+- Visual planning and review: `claude-design` before implementation, then `design-review`
+- Accessibility: `accessibility`
+- Code review and diff check: `review`
+- Ship, deploy, and PR flow: `ship`
