@@ -120,15 +120,14 @@ test("lint-evals.js: missing-rubric skip exits 0", () => {
 });
 
 test("lint-evals.js: --require with no API key exits nonzero for blocking lane (if rubric exists)", () => {
-  // This test only fires if the owner rubric exists. If it doesn't, the skip
-  // happens before the key check, so exit is still 0.
-  // We use a temp script that creates a minimal rubric, runs the lane, then cleans up.
-  // For now, confirm that when no rubric exists, exit is 0 even with --require.
+  // The owner rubric (docs/process/owner-copy-eval-rubric.md) is authored, so the
+  // blocking owner lane reaches the key check; --require with no key must fail it.
+  // The repo-state-independent version of this is covered by the
+  // "run-lane: --require ... returns failure for blocking lane" test below.
   const { status, stdout } = runScript(path.join(EVALS_DIR, "lint-evals.js"), ["--require"], {
     ANTHROPIC_API_KEY: "",
   });
-  // With no rubrics authored: both lanes skip before key check → still exit 0
-  assert.equal(status, 0, `Expected exit 0 when rubrics absent even with --require, got ${status}. stdout: ${stdout}`);
+  assert.notEqual(status, 0, `Expected nonzero exit with --require and no key when the owner rubric exists, got ${status}. stdout: ${stdout}`);
 });
 
 test("run-lane: missing/undefined lane config results in skip exit 0 for run-owner-eval", () => {

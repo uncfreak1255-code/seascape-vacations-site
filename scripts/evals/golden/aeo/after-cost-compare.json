@@ -1,0 +1,7 @@
+{
+  "name": "aeo-cost-compare-after",
+  "lane": "aeo",
+  "sourceCite": "docs/style/approved-examples.md:61 (Guest Research Page Intros, After)",
+  "copy": "Compare Bradenton, Sarasota, and Anna Maria Island trip costs before you book, then use the source notes below to see what the estimate can and cannot claim.",
+  "expect": { "band": "high", "minOverall": 70 }
+}
