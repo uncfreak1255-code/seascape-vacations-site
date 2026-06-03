@@ -118,6 +118,13 @@ roles, or replace Seascape Hub as the source of business context.
 - Owner proof claims must trace to approved proof assets or current source truth. Do not reuse old sitewide review-count theater.
 - If a workflow doc conflicts with repo safety docs, the stricter repo rule wins.
 
+## Execution Defaults
+
+- Think before coding: state assumptions explicitly, ask when the missing fact matters, push back when a simpler approach exists, and stop to clarify before editing when the path is unclear.
+- Simplicity first: make the minimum change that solves the problem. Nothing speculative. No abstractions for single-use code.
+- Surgical changes: touch only what you must, match existing style, and do not refactor adjacent code that is not broken unless the task requires it.
+- Goal-driven execution: define success criteria early, then loop until the right proof gate verifies the work.
+
 ## Reading Order For SEO Work
 
 1. `docs/status/current-state.md`
