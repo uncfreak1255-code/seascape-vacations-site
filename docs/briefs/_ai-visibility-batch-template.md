@@ -69,6 +69,15 @@
 - target engines/surfaces:
 - what success should look like next reread:
 
+## Experiment And Readback Contract
+
+- hypothesis:
+- primary event:
+- guardrail event:
+- entry criteria:
+- readback window:
+- decision rule:
+
 ## Evidence And Constraints
 
 - proof source required:

@@ -6,7 +6,7 @@
 - primary keyword: book direct Bradenton Sarasota vacation rental
 - secondary keywords: AI search vacation rental, Bradenton private pool rental, Sarasota vacation rental management
 - audience pattern: AI-referred visitors and search visitors who need factual inventory, booking handoff, or owner proof before converting
-- proof source: existing `llms.txt`, current property/stay/owner money routes, existing conversion events, and the analytics AI/search referral read
+- proof source: existing `llms.txt`, current property/stay/owner money routes, existing conversion events, and the analytics AI/search referral read from `seascape-analytics`
 - required internal links: /properties/, /property-management/
 - CTA target: direct-booking handoff, guest email capture, or owner form submit
 - anti-claims: do not claim AI visibility proves revenue, do not claim direct bookings without reviewed attributed reservation rows, do not describe Bradenton homes as on Anna Maria Island inventory
@@ -16,6 +16,15 @@
 - Google AI Mode and AI referral surfaces make raw SEO traffic less reliable as the success metric.
 - The site already has buyer and owner conversion events; this batch makes the AI-readable contract and event source context explicit so analytics can measure capture, booking-engine handoff, and owner leads.
 - This is not a broad content expansion batch. It is a proof surface and measurement handoff batch.
+
+## Experiment And Readback Contract
+
+- hypothesis: If Seascape exposes one machine-readable AI discovery contract plus source-context tagging on existing conversion events, `seascape-analytics` can separate AI/search guest capture, booking-engine handoff, and owner-lead activity without turning that instrumentation into a revenue claim.
+- primary event: AI/search-attributed `booking_engine_handoff`, with the same source-context contract also preserved on `email_capture_submit` and `owner_form_submit`.
+- guardrail event: no regression in source-context coverage on `email_capture_submit`, `booking_engine_handoff`, or `owner_form_submit`, and no new copy claim that AI visibility already proves bookings or owner demand.
+- entry criteria: existing conversion events are live, the analytics AI/search referral read exists, and the batch stays limited to `llms.txt`, `/ai-discovery.json`, and existing conversion-event context instead of new page volume.
+- readback window: first analytics-owned AI/search attribution reread after the contract ships and enough traffic exists to inspect source-context rows cleanly.
+- decision rule: keep the contract if the analytics read can cleanly separate AI/search-attributed capture, handoff, and owner-lead activity with no funnel regression; hold or repair if source-context rows are missing, mixed, or still too weak to support a bounded readback.
 
 ## Cluster In Scope
 
