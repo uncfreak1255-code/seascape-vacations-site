@@ -1,0 +1,7 @@
+{
+  "name": "aeo-fluff-intro",
+  "lane": "aeo",
+  "sourceCite": "synthetic anti-pattern: fluff intro (in today's, when it comes to, myriad)",
+  "copy": "In today's world, when it comes to vacation rentals, there are a myriad of options to consider before making a decision.",
+  "expect": { "band": "low", "maxOverall": 25 }
+}

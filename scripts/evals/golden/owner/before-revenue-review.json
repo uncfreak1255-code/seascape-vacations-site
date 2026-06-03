@@ -1,0 +1,7 @@
+{
+  "name": "owner-review-before",
+  "lane": "owner",
+  "sourceCite": "docs/style/approved-examples.md:31 (Owner Review Copy, Before — internal-worksheet tone)",
+  "copy": "We mark proven cost, likely cost, and missing information separately before you switch.",
+  "expect": { "band": "low", "maxOverall": 62 }
+}

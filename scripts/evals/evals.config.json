@@ -1,0 +1,18 @@
+{
+  "lanes": [
+    {
+      "id": "owner",
+      "rubric": "docs/process/owner-copy-eval-rubric.md",
+      "targets": ["src/property-management/**/*.njk"],
+      "golden": "scripts/evals/golden/owner",
+      "blocking": true
+    },
+    {
+      "id": "aeo",
+      "rubric": "docs/process/aeo-citability-rubric.md",
+      "targets": ["src/guides/**/*.{njk,html,md}"],
+      "golden": "scripts/evals/golden/aeo",
+      "blocking": false
+    }
+  ]
+}

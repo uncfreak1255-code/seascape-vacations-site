@@ -1,0 +1,18 @@
+{
+  "name": "seascape-vacations",
+  "owner": {
+    "name": "Seascape Vacations"
+  },
+  "metadata": {
+    "description": "Marketplace for the Seascape SEO OS plugin that packages the repo's five-role workflow and active local skills.",
+    "version": "1.1.3"
+  },
+  "plugins": [
+    {
+      "name": "seascape-seo-os",
+      "source": "./plugins/seascape-seo-os",
+      "description": "Seascape SEO OS: the five-role workflow (Search Operator, SEO Architect, Page Builder, Voice Editor, Release Gate) and the eleven active site-specific skills, packaged for portable install across machines and forks. The content-voice gate hook is intentionally excluded: it is repo-coupled and lives in the committed .claude/settings.json.",
+      "version": "1.1.3"
+    }
+  ]
+}

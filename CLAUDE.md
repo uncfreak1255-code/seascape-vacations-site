@@ -58,11 +58,13 @@ The active local skill layer is intentionally lean and site-specific:
 
 - `accessibility`
 - `design-review`
+- `internal-link-targeting`
 - `next-batch-gate`
 - `owner-proof-integrity`
 - `page-cro`
 - `property-truth-regeneration`
 - `schema-markup`
+- `serp-ctr-title-rewrite`
 - `site-architecture`
 - `web-design-guidelines`
 
@@ -138,5 +140,5 @@ If Claude Design, Stitch, designmd.directory, or another design tool produces a 
 Use Stitch/designmd.directory only as inspiration, not source truth.
 Meaningful visual changes also need the repo flow in `docs/process/design-review-workflow.md`.
 Run the global `design-review` skill against the affected routes after implementation and before asking for human review.
-Subjective visual changes need desktop and mobile screenshots until an automated visual regression gate exists.
+The automated visual regression gate already exists: `npm run test:visual` diffs committed desktop and mobile baselines in `tests/visual/__screenshots__/` (with an axe accessibility spec). Run it for visual changes, and still attach desktop and mobile screenshots to the review or PR for subjective changes.
 For UI/visual work, dispatch subagents with `model: "sonnet"`.
