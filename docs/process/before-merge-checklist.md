@@ -32,6 +32,7 @@ If the task does not touch all three areas, run the relevant subset and note why
 - [ ] If I changed `src/llms.txt`, `src/ai-discovery.json.njk`, `src/robots.txt`, or a citation-oriented intro/module, I used `docs/process/ai-citation-audit-usage.md` and ran the relevant AI-surface checks.
 - [ ] If this is an AI-search or experiment batch, the active brief names a `hypothesis`, `primary event`, `guardrail event`, `entry criteria`, `readback window`, and `decision rule`.
 - [ ] I did not claim AI citation lift, booking lift, or owner-demand lift without analytics-owned proof.
+- [ ] If schema, AI discovery, or JSON-LD verification failed at any point, I used `docs/runbooks/failed-schema-smoke.md` before retrying the gate.
 
 AI-search / citation surface checks:
 
@@ -70,6 +71,7 @@ If the task changed layout, CSS, spacing, typography, imagery, component structu
 - [ ] For long pages, I used enough screenshots to cover the changed sections instead of trusting one giant full-page image
 - [ ] I reviewed the screenshots myself and verified any capture artifact in a live browser before merge
 - [ ] Before merge, I attached or linked the visual proof set in the PR (desktop + mobile) so Sawyer can review the actual design changes.
+- [ ] If the visual gate or screenshot proof failed, I used `docs/runbooks/failed-visual-gate.md` before calling the branch merge-ready.
 
 ## 6. Diff check
 
@@ -84,6 +86,8 @@ Only merge or push `main` if this sentence is true:
 > I am comfortable with this exact branch becoming production.
 
 If that sentence feels too strong, do not merge.
+
+- [ ] If public legal or trust copy is blocked on approval, I followed `docs/runbooks/legal-approval-blocked.md` and did not merge on guesswork.
 
 ## 8. After merge
 

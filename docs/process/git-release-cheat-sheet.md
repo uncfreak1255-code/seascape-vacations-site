@@ -89,6 +89,15 @@ Only do this when all are true:
 - the changed pages/routes were smoke-tested
 - you are willing for Netlify to deploy it
 
+## If The Release Goes Sideways
+
+- If Netlify fails before production is healthy, use
+  `docs/runbooks/failed-netlify-deploy.md`.
+- If the deploy succeeds but live behavior is broken, use
+  `docs/runbooks/release-incident.md`.
+- Do not improvise a recovery flow from memory. Use the matching runbook, then
+  complete `docs/process/post-merge-runtime-proof-checklist.md`.
+
 ## Repo-specific stop signs
 
 Stop and fix the workflow first if:
