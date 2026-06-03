@@ -3,7 +3,19 @@
     {
       "id": "owner",
       "rubric": "docs/process/owner-copy-eval-rubric.md",
-      "targets": ["src/property-management/**/*.njk"],
+      "targets": ["src/property-management/**/*.njk", "src/_data/seoPages.json"],
+      "dataSources": [
+        {
+          "path": "src/_data/seoPages.json",
+          "arrayPath": "owner",
+          "labelKey": "slug",
+          "onlySlugs": [
+            "vacation-rental-management-fees-florida",
+            "vacation-rental-licensing-florida",
+            "vrbo-management-services-florida"
+          ]
+        }
+      ],
       "golden": "scripts/evals/golden/owner",
       "blocking": true
     },

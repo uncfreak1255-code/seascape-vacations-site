@@ -107,8 +107,10 @@ function filterByLane(files, globs) {
  * Else: run `git diff --name-only` against merge-base with origin/main
  *       (fallback to HEAD~1) and filter.
  */
-function resolveTargets(lane, explicitFiles = []) {
+function resolveTargets(lane, explicitFiles = [], options = {}) {
   const globs = lane.targets || [];
+  const exec = options.execSync || execSync;
+  const stderr = options.stderr || process.stderr;
 
   if (explicitFiles.length > 0) {
     return filterByLane(explicitFiles, globs);
@@ -118,11 +120,11 @@ function resolveTargets(lane, explicitFiles = []) {
   let changedFiles = [];
   let resolved = false;
   try {
-    const mergeBase = execSync("git merge-base HEAD origin/main 2>/dev/null || git merge-base HEAD HEAD~1", {
+    const mergeBase = exec("git merge-base HEAD origin/main 2>/dev/null || git merge-base HEAD HEAD~1", {
       cwd: projectRoot,
       encoding: "utf8",
     }).trim();
-    const diffOutput = execSync(`git diff --name-only ${mergeBase}`, {
+    const diffOutput = exec(`git diff --name-only ${mergeBase}`, {
       cwd: projectRoot,
       encoding: "utf8",
     });
@@ -130,7 +132,7 @@ function resolveTargets(lane, explicitFiles = []) {
     resolved = true;
   } catch {
     try {
-      const diffOutput = execSync("git diff --name-only HEAD~1", {
+      const diffOutput = exec("git diff --name-only HEAD~1", {
         cwd: projectRoot,
         encoding: "utf8",
       });
@@ -142,7 +144,7 @@ function resolveTargets(lane, explicitFiles = []) {
   }
 
   if (!resolved) {
-    process.stderr.write(
+    stderr.write(
       "[warn] could not resolve changed files vs origin/main; no targets evaluated\n"
     );
   }

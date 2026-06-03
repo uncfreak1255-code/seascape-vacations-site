@@ -99,6 +99,11 @@ test("evals.config.json: has correct structure", () => {
   assert.equal(aeo.blocking, false, "aeo lane must be non-blocking");
   assert.ok(Array.isArray(owner.targets), "owner targets must be array");
   assert.ok(Array.isArray(aeo.targets), "aeo targets must be array");
+  assert.ok(
+    owner.targets.includes("src/_data/seoPages.json"),
+    "owner lane must include data-backed owner page copy"
+  );
+  assert.ok(Array.isArray(owner.dataSources), "owner lane must define dataSources");
   assert.ok(typeof owner.rubric === "string");
   assert.ok(typeof aeo.rubric === "string");
 });

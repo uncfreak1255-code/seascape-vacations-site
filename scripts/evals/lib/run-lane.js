@@ -24,12 +24,12 @@ const fs = require("node:fs");
 const path = require("node:path");
 
 const { loadRubric } = require("./rubric.js");
-const { extractReaderCopy } = require("./extract-copy.js");
 const { computeOverall } = require("./score.js");
 const { resolveTargets } = require("./targets.js");
 const { loadGoldenDir } = require("./golden.js");
 const { judge } = require("./judge.js");
 const { createClient } = require("./anthropic-client.js");
+const { collectLaneCopies } = require("./lane-copy.js");
 
 const projectRoot = path.resolve(__dirname, "..", "..", "..");
 
@@ -123,44 +123,60 @@ async function runLane(lane, options = {}) {
       continue;
     }
 
-    const raw = fs.readFileSync(absPath, "utf8");
-    const copy = extractReaderCopy(raw, { type: path.extname(absPath).slice(1) });
-
-    if (!copy.trim()) {
-      console.log(`[skip] lane ${laneId}: ${relPath}: no reader copy extracted`);
-      continue;
-    }
-
-    console.log(`\n[judging] lane ${laneId}: ${relPath}`);
-
-    let dimScores;
+    let laneCopies;
     try {
-      dimScores = await judge({ copy, rubric, client });
+      const raw = fs.readFileSync(absPath, "utf8");
+      laneCopies = collectLaneCopies(lane, relPath, raw);
     } catch (e) {
-      console.error(`[error] lane ${laneId}: judge failed for ${relPath}: ${e.message}`);
+      console.error(`[error] lane ${laneId}: could not extract copy from ${relPath}: ${e.message}`);
       if (lane.blocking) {
         failures.push(relPath);
       }
       continue;
     }
 
-    const result = computeOverall(dimScores, rubric, copy);
-    const passLabel = lane.blocking
-      ? result.pass ? "[PASS]" : "[FAIL]"
-      : "[score-only]";
-
-    console.log(`  overall: ${result.overall} ${passLabel}`);
-    for (const d of result.perDimension) {
-      const dimDef = rubric.dimensions.find((x) => x.id === d.id);
-      console.log(`  ${d.id}: ${d.raw}/${dimDef.max} (norm: ${d.normalized.toFixed(2)}, weight: ${d.weight})`);
-    }
-    if (result.autoFails.length > 0) {
-      const label = lane.blocking ? "autoFails" : "autoFails (non-blocking)";
-      console.log(`  ${label}: ${result.autoFails.join(", ")}`);
+    if (laneCopies.length === 0) {
+      console.log(`[skip] lane ${laneId}: ${relPath}: no lane entries extracted`);
+      continue;
     }
 
-    if (lane.blocking && !result.pass) {
-      failures.push(relPath);
+    for (const { label, copy } of laneCopies) {
+      if (!copy.trim()) {
+        console.log(`[skip] lane ${laneId}: ${label}: no reader copy extracted`);
+        continue;
+      }
+
+      console.log(`\n[judging] lane ${laneId}: ${label}`);
+
+      let dimScores;
+      try {
+        dimScores = await judge({ copy, rubric, client });
+      } catch (e) {
+        console.error(`[error] lane ${laneId}: judge failed for ${label}: ${e.message}`);
+        if (lane.blocking) {
+          failures.push(label);
+        }
+        continue;
+      }
+
+      const result = computeOverall(dimScores, rubric, copy);
+      const passLabel = lane.blocking
+        ? result.pass ? "[PASS]" : "[FAIL]"
+        : "[score-only]";
+
+      console.log(`  overall: ${result.overall} ${passLabel}`);
+      for (const d of result.perDimension) {
+        const dimDef = rubric.dimensions.find((x) => x.id === d.id);
+        console.log(`  ${d.id}: ${d.raw}/${dimDef.max} (norm: ${d.normalized.toFixed(2)}, weight: ${d.weight})`);
+      }
+      if (result.autoFails.length > 0) {
+        const label = lane.blocking ? "autoFails" : "autoFails (non-blocking)";
+        console.log(`  ${label}: ${result.autoFails.join(", ")}`);
+      }
+
+      if (lane.blocking && !result.pass) {
+        failures.push(label);
+      }
     }
   }
 
