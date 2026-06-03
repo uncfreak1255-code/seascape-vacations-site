@@ -37,6 +37,8 @@
     "proof:visual": "node scripts/enforcement/capture-visual-proof.js",
     "test:visual:update": "node scripts/enforcement/run-visual-tests.js --update-snapshots",
     "test:visual:install": "playwright install chromium",
+    "perf:budget": "npm run build && lhci autorun --config=./lighthouserc.js",
+    "perf:budget:check": "lhci autorun --config=./lighthouserc.js",
     "eval:owner": "node scripts/evals/run-owner-eval.js",
     "eval:aeo": "node scripts/evals/run-aeo-eval.js",
     "lint:evals": "node scripts/evals/lint-evals.js",
@@ -45,6 +47,7 @@
   "devDependencies": {
     "@11ty/eleventy": "^3.1.5",
     "@axe-core/playwright": "^4.11.3",
+    "@lhci/cli": "^0.15.1",
     "@playwright/test": "^1.60.0",
     "html-minifier-terser": "^7.2.0"
   },
