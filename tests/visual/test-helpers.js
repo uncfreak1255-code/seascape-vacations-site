@@ -1,4 +1,6 @@
 const path = require("node:path");
+const STABLE_VISUAL_DATE = "2026-06-01";
+const STABLE_VISUAL_DATE_LABEL = "June 1, 2026";
 
 const HERO_WEATHER_RESPONSE = {
   current: {
@@ -88,6 +90,24 @@ async function waitForStableLayout(page) {
   });
 }
 
+async function stabilizeVisualFreshnessCopy(page) {
+  await page.evaluate(({ stableDate, stableLabel }) => {
+    for (const timeNode of document.querySelectorAll("time")) {
+      const text = (timeNode.textContent || "").trim();
+      if (!text.startsWith("Last Updated:")) {
+        continue;
+      }
+
+      // Freeze mutable freshness copy so visual baselines track layout, not git timestamps.
+      timeNode.setAttribute("datetime", stableDate);
+      timeNode.textContent = `Last Updated: ${stableLabel}`;
+    }
+  }, {
+    stableDate: STABLE_VISUAL_DATE,
+    stableLabel: STABLE_VISUAL_DATE_LABEL,
+  });
+}
+
 async function stabilizePropertyManagementVisualState(page, routeConfig) {
   if (routeConfig.slug !== "property-management") {
     return;
@@ -135,6 +155,7 @@ async function gotoMarketingRoute(page, routeConfig) {
   const readySelector = routeConfig.readySelector || "main h1";
   await page.locator(readySelector).first().waitFor({ state: "visible" });
   await waitForFonts(page);
+  await stabilizeVisualFreshnessCopy(page);
   await stabilizePropertyManagementVisualState(page, routeConfig);
 }
 
