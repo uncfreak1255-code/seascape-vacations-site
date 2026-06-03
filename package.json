@@ -5,7 +5,7 @@
   "scripts": {
     "clean:site": "node -e \"require('fs').rmSync('_site', { recursive: true, force: true })\"",
     "pretest": "npm run build",
-    "test": "node --test scripts/enforcement/*.test.js",
+    "test": "node --test scripts/enforcement/*.test.js scripts/evals/*.test.js",
     "lint:content": "node --test scripts/enforcement/content-voice.test.js",
     "git:preflight": "/Users/sawbeck/bin/guardrail-preflight",
     "git:safe-commit": "/Users/sawbeck/bin/guardrail-safe-commit",
@@ -36,7 +36,11 @@
     "test:visual": "node scripts/enforcement/run-visual-tests.js",
     "proof:visual": "node scripts/enforcement/capture-visual-proof.js",
     "test:visual:update": "node scripts/enforcement/run-visual-tests.js --update-snapshots",
-    "test:visual:install": "playwright install chromium"
+    "test:visual:install": "playwright install chromium",
+    "eval:owner": "node scripts/evals/run-owner-eval.js",
+    "eval:aeo": "node scripts/evals/run-aeo-eval.js",
+    "lint:evals": "node scripts/evals/lint-evals.js",
+    "test:evals": "node --test scripts/evals/*.test.js"
   },
   "devDependencies": {
     "@11ty/eleventy": "^3.1.5",
