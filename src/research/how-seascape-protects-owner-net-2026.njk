@@ -85,7 +85,8 @@ a{color:inherit}
 .logo{font-family:"Playfair Display",Georgia,serif;color:var(--brand-dark);font-size:20px;font-weight:600}
 .page{padding-top:72px}
 .hero{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(320px,.95fr);gap:32px;align-items:center;min-height:calc(100vh - 72px);padding:72px max(24px,calc((100vw - 1160px)/2)) 48px;background:linear-gradient(135deg,var(--brand-darker) 0%,var(--brand-dark) 58%,#203f40 100%);color:var(--white)}
-.eyebrow{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-light);margin-bottom:14px}
+.eyebrow{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--brand-dark);margin-bottom:14px}
+.hero .eyebrow,.hero-panel .eyebrow,.cta-shell .eyebrow{color:var(--gold-light)}
 .hero h1{font-family:"Playfair Display",Georgia,serif;font-size:clamp(40px,6vw,68px);font-weight:500;line-height:1.02;max-width:760px;margin-bottom:18px;color:var(--white)}
 .hero-lead{max-width:680px;font-size:19px;color:rgba(255,255,255,.9);margin-bottom:22px}
 .hero-copy a{color:var(--gold-light);font-weight:700}
@@ -93,6 +94,7 @@ a{color:inherit}
 .btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:15px 30px;border-radius:50px;text-decoration:none;font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;border:1px solid transparent;transition:transform .3s ease,box-shadow .3s ease,background .3s ease}
 .btn:hover{transform:translateY(-3px);box-shadow:0 14px 30px rgba(0,0,0,.18)}
 .btn-gold{background:var(--gold);color:#2A2014}
+.hero-copy .btn-gold{color:#2A2014}
 .btn-light{background:transparent;color:var(--white);border-color:rgba(255,255,255,.42)}
 .hero-panel{background:rgba(250,247,238,.1);border:1px solid rgba(255,255,255,.18);border-radius:20px;padding:26px;box-shadow:0 24px 55px rgba(0,0,0,.16)}
 .hero-panel h2{font-family:"Playfair Display",Georgia,serif;font-size:30px;font-weight:500;color:var(--white);margin-bottom:14px}

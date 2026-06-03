@@ -317,7 +317,7 @@
 
         .btn-white {
             background: white;
-            color: var(--brand);
+            color: var(--brand-dark);
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
 
@@ -520,7 +520,7 @@
         .property-section-cta {
             display: inline-block;
             padding: 10px 24px;
-            background: var(--brand);
+            background: var(--brand-dark);
             color: white;
             border-radius: 8px;
             font-weight: 600;
@@ -723,7 +723,7 @@
 
         .prop-btn {
             background: white;
-            color: var(--brand);
+            color: var(--brand-dark);
             padding: 14px 28px;
             border-radius: 50px;
             font-size: 14px;
@@ -753,7 +753,7 @@
             font-weight: 600;
             letter-spacing: 0.2em;
             text-transform: uppercase;
-            color: #4a6f70;
+            color: var(--brand-dark);
             margin-bottom: 16px;
             position: relative;
         }
@@ -952,7 +952,7 @@
 
         .review-property {
             font-size: 13px;
-            color: var(--brand);
+            color: var(--brand-dark);
             font-weight: 500;
         }
 
@@ -1115,7 +1115,7 @@
             padding: 6px 14px;
             border-radius: 50px;
             background: var(--cream);
-            color: var(--brand);
+            color: var(--brand-dark);
         }
 
         .blog-card-title {
