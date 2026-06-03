@@ -399,3 +399,19 @@ a {
     font-size: 13px;
     opacity: 0.88;
 }
+
+.footer-meta-links {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+
+.footer-meta-links a {
+    color: inherit;
+}
+
+.footer-meta-links a:hover {
+    color: white;
+}

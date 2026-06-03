@@ -85,55 +85,6 @@
     window.addEventListener('scroll', loadMetaPixel, { once: true, passive: true });
 })();
 
-var legalContent = {
-    privacy: {
-        title: 'Privacy Policy',
-        content: '<p>At Seascape Vacations, we prioritize your privacy. We collect only necessary information to process your bookings and improve your experience. We do not sell your data to third parties.</p><p><strong>Data Collection:</strong> We collect name, email, and phone number for booking purposes.</p><p><strong>Security:</strong> Your data is encrypted and stored securely.</p>'
-    },
-    terms: {
-        title: 'Terms of Service',
-        content: '<p>By using this website, you agree to our terms. Bookings are subject to availability and confirmation.</p><p><strong>Cancellations:</strong> Please review the cancellation policy on the booking checkout page.</p><p><strong>Check-in/Out:</strong> Standard check-in is 4PM, check-out is 10AM.</p>'
-    },
-    cookies: {
-        title: 'Cookie Policy',
-        content: '<p>We use cookies to enhance your browsing experience and analyze site traffic. By continuing to use our site, you consent to our use of cookies.</p>'
-    },
-    support: {
-        title: 'Support Center',
-        content: '<p>Need help? Our local team is available 24/7.</p><p><strong>Phone:</strong> (941) 704-8545</p><p><strong>Email:</strong> <a href="mailto:info@seascape-vacations.com" style="color:var(--brand)">info@seascape-vacations.com</a></p><p>For urgent maintenance issues, please call the emergency line provided in your check-in instructions.</p>'
-    }
-};
-
-window.openLegalModal = function(type) {
-    var modal = document.getElementById('legal-modal');
-    var data = legalContent[type];
-
-    if (!modal || !data) return;
-
-    document.getElementById('modal-title').textContent = data.title;
-    document.getElementById('modal-body').innerHTML = data.content;
-    modal.style.display = 'flex';
-    window.requestAnimationFrame(function() {
-        modal.classList.add('active');
-    });
-};
-
-window.closeLegalModal = function() {
-    var modal = document.getElementById('legal-modal');
-    if (!modal) return;
-
-    modal.classList.remove('active');
-    window.setTimeout(function() {
-        modal.style.display = 'none';
-    }, 300);
-};
-
-document.querySelectorAll('[data-legal-modal]').forEach(function(trigger) {
-    trigger.addEventListener('click', function() {
-        window.openLegalModal(trigger.getAttribute('data-legal-modal'));
-    });
-});
-
 var EMAIL_POPUP_KEY = 'seascape_email_popup_shown';
 var EMAIL_POPUP_DELAY = 30000;
 var SAVE50_POPUP_CAMPAIGNS = ['save50_welcome', 'guest_social_proof'];
