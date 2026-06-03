@@ -35,7 +35,26 @@
       "Edit(**/.netlify/credential*)",
       "Write(**/.netlify/credential*)",
       "Edit(**/package-lock.json)",
-      "Write(**/package-lock.json)"
+      "Write(**/package-lock.json)",
+      "Read(DEPLOY THIS FOLDER TO NETLIFY/**)",
+      "Read(_site/**)",
+      "Read(_site_verify/**)",
+      "Read(_site_verify_fresh/**)",
+      "Read(tmp/**)",
+      "Read(dist/**)",
+      "Read(build/**)"
+    ]
+  },
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/scripts/enforcement/claude-content-gate.js\""
+          }
+        ]
+      }
     ]
   }
 }

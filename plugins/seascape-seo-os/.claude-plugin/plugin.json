@@ -1,0 +1,11 @@
+{
+  "name": "seascape-seo-os",
+  "displayName": "Seascape SEO OS",
+  "version": "1.0.0",
+  "description": "Five-role SEO workflow, active site skills, and the content-voice gate hook for the Seascape Vacations website repo.",
+  "author": {
+    "name": "Seascape Vacations"
+  },
+  "repository": "https://github.com/uncfreak1255-code/seascape-vacations-site",
+  "keywords": ["seo", "geo", "content-gate", "seascape", "eleventy"]
+}
