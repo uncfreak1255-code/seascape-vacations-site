@@ -94,7 +94,7 @@ components:
     rounded: "{rounded.md}"
     padding: "20px"
   section-tag:
-    textColor: "{colors.brand}"
+    textColor: "{colors.brand-dark}"
     typography: "{typography.label}"
   page-surface:
     backgroundColor: "{colors.cream}"
@@ -204,9 +204,11 @@ If Playfair Display ever needs replacing, consider: Fraunces (more personality),
 
 ### Color Rules
 - CTA buttons use teal gradient (`--brand` to `--brand-dark` at 135deg) or gold gradient (`--gold` to `#B8943A` at 135deg).
-- Text links use `--brand` with no underline. Underline on hover or use color shift to `--brand-dark`.
-- Property price always in `--brand` at weight 600.
+- Text links on light surfaces use `--brand-dark` with no underline. Reserve `--brand` for larger accent moments, gradients, or dark-surface treatments.
+- Property price always in `--brand-dark` at weight 600.
 - Badge backgrounds use `--gold` with `--stone` text.
+- Navigation text, breadcrumbs, section tags, and other small UI labels on light surfaces use `--brand-dark`.
+- Gold is for fills, borders, stars, and large emphasis. Do not use gold as small standalone text on cream or white.
 - Never use raw hex values in templates. Always reference CSS custom properties.
 
 ## Spacing

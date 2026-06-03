@@ -20,11 +20,7 @@ for (const routeConfig of moneyRoutes) {
   test(`${routeConfig.slug} has no serious or critical accessibility violations`, async ({ page }) => {
     await gotoMarketingRoute(page, routeConfig);
 
-    const scan = await new AxeBuilder({ page })
-      // Current brand contrast debt is real, but fixing it belongs in an explicit design pass.
-      // This first browser gate focuses on new structural/accessibility regressions.
-      .disableRules(["color-contrast"])
-      .analyze();
+    const scan = await new AxeBuilder({ page }).analyze();
     const blockingViolations = scan.violations.filter((violation) =>
       ["serious", "critical"].includes(violation.impact)
     );
