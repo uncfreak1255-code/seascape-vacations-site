@@ -24,6 +24,7 @@ Thumbs.db
 playwright-report/
 test-results/
 blob-report/
+.lighthouseci/
 
 # Local scratch artifacts
 .superpowers/
