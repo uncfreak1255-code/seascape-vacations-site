@@ -41,6 +41,13 @@ Read in this order:
 - no public content PR without one active brief, the content gate read, and `npm run lint:content`
 - review the diff before push, PR, or merge
 
+## Execution Defaults
+
+- Think before coding: state assumptions explicitly, ask instead of guessing, push back when a simpler approach exists, and stop when confused.
+- Simplicity first: make the minimum change that solves the problem. Nothing speculative. No abstractions for single-use code.
+- Surgical changes: touch only what you must, match existing style, and do not refactor adjacent code that is not broken unless the task requires it.
+- Goal-driven execution: define success criteria early, then loop until the right proof gate verifies the work.
+
 ## Repo Truth
 
 - homepage source: `src/index.njk`
