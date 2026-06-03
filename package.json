@@ -37,12 +37,34 @@
     "proof:visual": "node scripts/enforcement/capture-visual-proof.js",
     "test:visual:update": "node scripts/enforcement/run-visual-tests.js --update-snapshots",
     "test:visual:install": "playwright install chromium",
+    "audit:deps": "npm audit --audit-level=moderate",
     "perf:budget": "npm run build && lhci autorun --config=./lighthouserc.js",
     "perf:budget:check": "lhci autorun --config=./lighthouserc.js",
     "eval:owner": "node scripts/evals/run-owner-eval.js",
     "eval:aeo": "node scripts/evals/run-aeo-eval.js",
     "lint:evals": "node scripts/evals/lint-evals.js",
     "test:evals": "node --test scripts/evals/*.test.js"
+  },
+  "overrides": {
+    "@11ty/eleventy": {
+      "picomatch": "4.0.4"
+    },
+    "anymatch": {
+      "picomatch": "2.3.2"
+    },
+    "readdirp": {
+      "picomatch": "2.3.2"
+    },
+    "@lhci/cli": {
+      "tmp": "0.2.7",
+      "uuid": "11.1.1"
+    },
+    "external-editor": {
+      "tmp": "0.2.7"
+    },
+    "tmp-promise": {
+      "tmp": "0.2.7"
+    }
   },
   "devDependencies": {
     "@11ty/eleventy": "^3.1.5",
