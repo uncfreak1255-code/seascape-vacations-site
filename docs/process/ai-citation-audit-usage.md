@@ -138,6 +138,7 @@ State:
 - `docs/status/next-batch.md` is blocking expansion and the task is drifting
   into broad AI-search volume
 - the work needs latest citation numbers but no current analytics receipt or
-  live prompt check exists
+  live prompt check exists; use `docs/runbooks/stale-analytics-receipt.md`
+  instead of guessing from stale proof
 - the claim depends on off-site mentions that are not live yet
 - the only "proof" is schema or `llms.txt` without a credible page behind it

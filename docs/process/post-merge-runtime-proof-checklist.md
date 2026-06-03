@@ -41,5 +41,7 @@ verify:recovery:entity-live: PASS
 If either command fails:
 
 - [ ] do not mark the task complete
+- [ ] use `docs/runbooks/failed-netlify-deploy.md` if the deploy never goes healthy
+- [ ] use `docs/runbooks/release-incident.md` if production behavior is broken after deploy
 - [ ] open a hotfix lane or rollback plan
 - [ ] include the failing output in the closeout note
