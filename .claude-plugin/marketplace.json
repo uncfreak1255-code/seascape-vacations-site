@@ -7,8 +7,8 @@
     {
       "name": "seascape-seo-os",
       "source": "./plugins/seascape-seo-os",
-      "description": "Seascape SEO OS: the five-role workflow (Search Operator, SEO Architect, Page Builder, Voice Editor, Release Gate), the active site-specific skills, and the content-voice gate hook, packaged for portable install across machines and forks.",
-      "version": "1.0.0"
+      "description": "Seascape SEO OS: the five-role workflow (Search Operator, SEO Architect, Page Builder, Voice Editor, Release Gate) and the eleven active site-specific skills, packaged for portable install across machines and forks. The content-voice gate hook is intentionally excluded: it is repo-coupled and lives in the committed .claude/settings.json.",
+      "version": "1.1.0"
     }
   ]
 }

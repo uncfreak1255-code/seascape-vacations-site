@@ -342,7 +342,7 @@ Legacy bare `.btn` (no modifier) falls back to the same visual as `.btn-brand` m
 - **Test all changes at 375px (mobile), 768px (tablet), and 1200px+ (desktop).**
 - **Run `npx @11ty/eleventy --serve` to preview changes locally.**
 - **For meaningful visual changes, run `docs/process/design-review-workflow.md`.** The rendered QA loop includes the `design-review` skill, fresh screenshots, and changed-route review before asking Sawyer to look.
-- **Visual regression screenshots are required before calling a subjective visual change "better."** Until an automated screenshot gate exists, attach desktop and mobile screenshots to the review or PR.
+- **Visual regression screenshots are required before calling a subjective visual change "better."** The automated screenshot gate already exists — `npm run test:visual` diffs committed desktop and mobile baselines in `tests/visual/__screenshots__/`; run it, and still attach desktop and mobile screenshots to the review or PR for subjective calls.
 
 ## Decisions Log
 | Date | Decision | Rationale |
@@ -355,3 +355,4 @@ Legacy bare `.btn` (no modifier) falls back to the same visual as `.btn-brand` m
 | 2026-04-24 | Premium buttons v1: retire teal gradient, introduce hairline-framed primary + foil rare-use + ghost/solid-gold pair | Plum Guide-level editorial restraint needed more type discipline (uppercase, tighter size, .12em tracking) and a one-per-page gold foil. Bare `.btn` keeps teal fallback so existing call sites don't break while templates migrate to explicit modifiers. |
 | 2026-05-15 | SVG-only iconography on the live site | Emoji decoration reads cheap and inconsistent across devices. Live site iconography now comes from shared SVGs in source or approved design-system exports. |
 | 2026-05-15 | `design-review` is the required rendered QA loop for meaningful visual changes | Visual work in this repo must be reviewed on the rendered surface with desktop/mobile screenshots and live route checks before human review. |
+| 2026-06-03 | Corrected stale "until an automated gate exists" text | The automated visual regression gate already exists (`npm run test:visual`, committed desktop/mobile baselines in `tests/visual/__screenshots__/`, axe spec). Docs now describe it as present, not pending. |
