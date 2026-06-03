@@ -1,4 +1,5 @@
 const fs = require("fs");
+const path = require("path");
 const { spawnSync } = require("child_process");
 const {
   findForbiddenPublicRuntimePaths,
@@ -11,16 +12,30 @@ const {
   assertFreshOwnerOperatorProof,
   readOwnerOperatorProofAssets
 } = require("./owner-proof-freshness");
+const { normalizeReleaseChecks } = require("./release-scorecard");
 
 function run(command, args, options = {}) {
+  const startedAt = process.hrtime.bigint();
   const result = spawnSync(command, args, {
-    stdio: "inherit",
+    encoding: "utf8",
     ...options
   });
 
-  if (result.status !== 0) {
-    process.exit(result.status || 1);
+  if (result.stdout) {
+    process.stdout.write(result.stdout);
   }
+
+  if (result.stderr) {
+    process.stderr.write(result.stderr);
+  }
+
+  return {
+    command,
+    args,
+    durationMs: Number(process.hrtime.bigint() - startedAt) / 1e6,
+    status: Number.isInteger(result.status) ? result.status : 1,
+    signal: result.signal || "",
+  };
 }
 
 function capture(command, args, options = {}) {
@@ -40,7 +55,8 @@ function capture(command, args, options = {}) {
 function parseArgs(argv) {
   const parsed = {
     pathsOnly: false,
-    range: "origin/main...HEAD"
+    range: "origin/main...HEAD",
+    receiptPath: ""
   };
 
   for (let index = 0; index < argv.length; index += 1) {
@@ -52,6 +68,12 @@ function parseArgs(argv) {
 
     if (arg === "--range") {
       parsed.range = argv[index + 1];
+      index += 1;
+      continue;
+    }
+
+    if (arg === "--receipt") {
+      parsed.receiptPath = argv[index + 1] || "";
       index += 1;
     }
   }
@@ -66,6 +88,10 @@ function getChangedFiles(range) {
 
   const output = capture("git", ["diff", "--name-only", "--diff-filter=ACMR", range]);
   return output ? output.split("\n").filter(Boolean) : [];
+}
+
+function currentGitValue(args) {
+  return capture("git", args);
 }
 
 function assertNetlifyBuildTruth() {
@@ -133,40 +159,140 @@ function assertNoForbiddenPublicRuntime() {
   throw new Error(message);
 }
 
+function buildReceipt({ args, pathAssertions, checks }) {
+  const combinedChecks = normalizeReleaseChecks({
+    path_assertions: pathAssertions,
+    checks,
+  });
+  const failedChecks = combinedChecks.filter((check) => check.status !== "passed");
+
+  return {
+    receipt_type: "release_verification",
+    generated_at: new Date().toISOString(),
+    source: "scripts/enforcement/verify-release.js",
+    repo_root: process.cwd(),
+    git: {
+      branch: currentGitValue(["branch", "--show-current"]),
+      head: currentGitValue(["rev-parse", "HEAD"]),
+      range: args.range,
+    },
+    path_assertions: pathAssertions,
+    checks,
+    summary: {
+      verdict: failedChecks.length > 0 ? "fail" : "pass",
+      total_checks: combinedChecks.length,
+      failed_checks: failedChecks.length,
+      first_failure: failedChecks[0] ? failedChecks[0].label : "",
+    }
+  };
+}
+
+function writeReceipt(receiptPath, payload) {
+  if (!receiptPath) {
+    return;
+  }
+
+  const targetPath = path.resolve(receiptPath);
+  fs.mkdirSync(path.dirname(targetPath), { recursive: true });
+  fs.writeFileSync(targetPath, `${JSON.stringify(payload, null, 2)}\n`);
+}
+
+function recordAssertion(pathAssertions, label, fn) {
+  try {
+    fn();
+    pathAssertions.push({
+      label,
+      status: "passed",
+      command: "",
+      duration_ms: 0,
+      error: "",
+    });
+  } catch (error) {
+    pathAssertions.push({
+      label,
+      status: "failed",
+      command: "",
+      duration_ms: 0,
+      error: error.message,
+    });
+    throw error;
+  }
+}
+
 function main() {
   const args = parseArgs(process.argv.slice(2));
+  const pathAssertions = [];
+  const checks = [];
+  const commandSteps = [
+    { label: "property:truth:check", command: "npm", args: ["run", "property:truth:check"] },
+    { label: "build", command: "npm", args: ["run", "build"] },
+    { label: "test", command: "npm", args: ["test"] },
+    { label: "verify:redirects", command: "npm", args: ["run", "verify:redirects"] },
+    { label: "verify:recovery:p0", command: "npm", args: ["run", "verify:recovery:p0"] },
+    { label: "verify:recovery:guides", command: "npm", args: ["run", "verify:recovery:guides"] },
+    { label: "verify:recovery:remediation", command: "npm", args: ["run", "verify:recovery:remediation"] },
+    { label: "verify:direct-booking-events", command: "npm", args: ["run", "verify:direct-booking-events"] },
+    { label: "verify:links", command: "npm", args: ["run", "verify:links"] },
+    { label: "verify:jsonld", command: "npm", args: ["run", "verify:jsonld"] },
+  ];
 
   try {
-    assertNetlifyBuildTruth();
-    assertCachePolicyTruth();
-    assertNoForbiddenSourceChanges(args.range);
-    assertNoPlaceholderAnalytics();
-    assertNoForbiddenPublicRuntime();
-    assertFreshOwnerOperatorProof(readOwnerOperatorProofAssets());
+    recordAssertion(pathAssertions, "netlify build truth", assertNetlifyBuildTruth);
+    recordAssertion(pathAssertions, "cache policy truth", assertCachePolicyTruth);
+    recordAssertion(pathAssertions, "forbidden source paths", () =>
+      assertNoForbiddenSourceChanges(args.range)
+    );
+    recordAssertion(pathAssertions, "placeholder analytics", assertNoPlaceholderAnalytics);
+    recordAssertion(pathAssertions, "forbidden public runtime", assertNoForbiddenPublicRuntime);
+    recordAssertion(pathAssertions, "fresh owner operator proof", () =>
+      assertFreshOwnerOperatorProof(readOwnerOperatorProofAssets())
+    );
   } catch (error) {
+    writeReceipt(args.receiptPath, buildReceipt({ args, pathAssertions, checks }));
     console.error(error.message);
     process.exit(1);
   }
 
   if (args.pathsOnly) {
+    writeReceipt(args.receiptPath, buildReceipt({ args, pathAssertions, checks }));
     console.log("verify-release: path checks passed");
     return;
   }
 
-  withWorktreeLock({ name: "repo-build" }, () => {
-    run("npm", ["run", "property:truth:check"]);
-    run("npm", ["run", "build"]);
-    run("npm", ["test"]);
-    run("npm", ["run", "verify:redirects"]);
-    run("npm", ["run", "verify:recovery:p0"]);
-    run("npm", ["run", "verify:recovery:guides"]);
-    run("npm", ["run", "verify:recovery:remediation"]);
-    run("npm", ["run", "verify:direct-booking-events"]);
-    run("npm", ["run", "verify:links"]);
-    run("npm", ["run", "verify:jsonld"]);
+  try {
+    withWorktreeLock({ name: "repo-build" }, () => {
+      for (const step of commandSteps) {
+        const result = run(step.command, step.args);
+        checks.push({
+          label: step.label,
+          status: result.status === 0 ? "passed" : "failed",
+          command: [step.command, ...step.args].join(" "),
+          duration_ms: result.durationMs,
+          error:
+            result.status === 0
+              ? ""
+              : result.signal
+                ? `signal ${result.signal}`
+                : `exit ${result.status}`,
+        });
 
-    console.log("verify-release: all checks passed");
-  });
+        if (result.status !== 0) {
+          throw new Error(
+            result.signal
+              ? `${step.label} failed from signal ${result.signal}`
+              : `${step.label} failed with exit code ${result.status}`
+          );
+        }
+      }
+    });
+  } catch (error) {
+    writeReceipt(args.receiptPath, buildReceipt({ args, pathAssertions, checks }));
+    console.error(error.message);
+    process.exit(1);
+  }
+
+  writeReceipt(args.receiptPath, buildReceipt({ args, pathAssertions, checks }));
+  console.log("verify-release: all checks passed");
 }
 
 main();
