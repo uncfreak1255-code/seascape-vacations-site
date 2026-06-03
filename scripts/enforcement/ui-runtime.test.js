@@ -25,25 +25,37 @@ function walkFiles(dir) {
   return files;
 }
 
-test("homepage footer legal links use semantic buttons wired through data attributes", () => {
+test("homepage footer legal and support links point to real routes", () => {
   const homepage = readSource("src", "index.njk");
   const homepageScript = readSource("src", "assets", "js", "homepage.js");
   const homepageStyles = readSource("src", "css", "homepage.css");
 
+  assert.match(homepage, /<a class="footer-link" href="\/guides\/">FAQs<\/a>/);
   assert.match(
     homepage,
-    /<button[^>]*class="footer-link footer-link--button"[^>]*data-legal-modal="support"/
+    /<a class="footer-link" href="\/terms\/#booking-and-confirmation">Booking Policy<\/a>/
   );
   assert.match(
     homepage,
-    /<button[^>]*class="footer-link footer-link--button"[^>]*data-legal-modal="privacy"/
+    /<a class="footer-link" href="\/terms\/#cancellations">Cancellation<\/a>/
   );
+  assert.match(
+    homepage,
+    /<a class="footer-link" href="\/guides\/booking-direct-vacation-rentals\/">Guest Guide<\/a>/
+  );
+  assert.match(homepage, /<a class="footer-link" href="\/privacy\/">Privacy Policy<\/a>/);
+  assert.match(homepage, /<a class="footer-link" href="\/terms\/">Terms of Service<\/a>/);
+  assert.match(homepage, /<a class="footer-link" href="\/cookies\/">Cookie Policy<\/a>/);
+  assert.equal(homepage.includes("data-legal-modal="), false);
+  assert.equal(homepage.includes('id="legal-modal"'), false);
   assert.equal(homepage.includes('<span class="footer-link" onclick="openLegalModal'), false);
   assert.equal(
     homepageScript.includes("document.querySelectorAll('[data-legal-modal]')"),
-    true
+    false
   );
-  assert.equal(homepageStyles.includes(".footer-link--button"), true);
+  assert.equal(homepageScript.includes("openLegalModal"), false);
+  assert.equal(homepageStyles.includes(".footer-link--button"), false);
+  assert.equal(homepageStyles.includes(".modal-overlay"), false);
 });
 
 test("Bradenton vs Sarasota comparison table fits mobile width without forced horizontal overflow", () => {

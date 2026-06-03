@@ -469,8 +469,14 @@
 # Old CMS pages that return 404 - redirect to closest current content
 /faq/   /guides/   301
 /faq   /guides/   301
-/terms-and-conditions/   /about-us/   301
-/terms-and-conditions   /about-us/   301
+/terms-and-conditions/   /terms/   301
+/terms-and-conditions   /terms/   301
+/terms-of-service/   /terms/   301
+/terms-of-service   /terms/   301
+/privacy-policy/   /privacy/   301
+/privacy-policy   /privacy/   301
+/cookie-policy/   /cookies/   301
+/cookie-policy   /cookies/   301
 /thank-you/   /   301
 /thank-you   /   301
 /search-results/   /   301
