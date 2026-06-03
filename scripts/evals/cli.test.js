@@ -6,7 +6,10 @@ const fs = require("node:fs");
 
 const projectRoot = path.resolve(__dirname, "..", "..");
 const EVALS_DIR = path.resolve(__dirname);
-const NODE = "/opt/node22/bin/node";
+// Use the node binary running this test, not a hardcoded path — the absolute
+// path differs across machines and CI runners (a hardcoded path makes
+// spawnSync fail with status null off this container).
+const NODE = process.execPath;
 
 function runScript(scriptPath, args = [], env = {}) {
   const result = spawnSync(NODE, [scriptPath, ...args], {
@@ -21,7 +24,7 @@ function runScript(scriptPath, args = [], env = {}) {
   };
 }
 
-test("run-owner-eval.js: exits 0 with skip message when rubric does not exist", () => {
+test("run-owner-eval.js: exits 0 with a skip message when no API key is set", () => {
   const { stdout, status } = runScript(path.join(EVALS_DIR, "run-owner-eval.js"), [], {
     ANTHROPIC_API_KEY: "",
   });
@@ -32,7 +35,7 @@ test("run-owner-eval.js: exits 0 with skip message when rubric does not exist", 
   );
 });
 
-test("run-aeo-eval.js: exits 0 with skip message when rubric does not exist", () => {
+test("run-aeo-eval.js: exits 0 with a skip message when no API key is set", () => {
   const { stdout, status } = runScript(path.join(EVALS_DIR, "run-aeo-eval.js"), [], {
     ANTHROPIC_API_KEY: "",
   });
@@ -43,7 +46,7 @@ test("run-aeo-eval.js: exits 0 with skip message when rubric does not exist", ()
   );
 });
 
-test("lint-evals.js: exits 0 when rubrics don't exist yet", () => {
+test("lint-evals.js: exits 0 when no API key is set", () => {
   const { stdout, status } = runScript(path.join(EVALS_DIR, "lint-evals.js"), [], {
     ANTHROPIC_API_KEY: "",
   });
