@@ -11,6 +11,9 @@ work. It does not authorize a measured expansion branch by itself.
 Use this map before returning a passive `hold`, `wait`, or `wait for recrawl`
 answer. A freshness block can stop impact claims and measured branch opening,
 but it should not stop bounded attack-lane work that has its own source truth.
+For generated stay and owner pSEO classification, use
+`docs/portfolio/pseo-inventory-triage.md`. For repeatable live competitor reads
+before a page edit, use `docs/process/seo-competitor-operating-loop.md`.
 
 ## Operating Rules
 
