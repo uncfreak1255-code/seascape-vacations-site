@@ -34,6 +34,7 @@
     "verify:release": "node scripts/enforcement/verify-release.js",
     "report:release-scorecard": "node scripts/enforcement/create-release-scorecard.js",
     "seo:import-findings": "node scripts/seo/import-dataforseo-findings.js",
+    "seo:triage": "node scripts/seo/generate-pseo-triage.js",
     "test:visual": "node scripts/enforcement/run-visual-tests.js",
     "proof:visual": "node scripts/enforcement/capture-visual-proof.js",
     "test:visual:update": "node scripts/enforcement/run-visual-tests.js --update-snapshots",
