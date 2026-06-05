@@ -126,18 +126,21 @@ test("shared guide conversion kit exposes savings, stay, repeat-stay, and email 
     'data-track-event=\"guide_book_direct_click\"',
     'data-track-event=\"booking_engine_handoff\"',
     'data-email-capture-form',
+    'data-email-capture-content',
     'data-utility-moment=\"{{ config.utilityMoment or \'guide_direct_booking_help\' }}\"',
     'data-utility-source-label=\"{{ config.utilitySourceLabel or \'guide_conversion_direct_booking_list\' }}\"',
     'data-requested-value=\"{{ config.requestedValue or \'direct_booking_savings_and_local_stay_ideas\' }}\"',
     'data-consent-basis=\"{{ config.consentBasis or \'guest_requested_email_followup\' }}\"',
     "Direct Booking List",
     "Join The Direct-Booking List",
-    "email_capture_submit"
+    "email_capture_submit",
+    'campaign !== "guest_social_proof"',
+    "Your SAVE50 code is ready"
   ]) {
     assert.equal(partial.includes(marker), true, `guide conversion kit missing ${marker}`);
   }
 
-  for (const staleOfferLanguage of ["Stay Alerts", "date alerts", "matching homes"]) {
+  for (const staleOfferLanguage of ["Stay Alerts", "date alerts", "matching homes", "We will send"]) {
     assert.equal(
       partial.includes(staleOfferLanguage),
       false,

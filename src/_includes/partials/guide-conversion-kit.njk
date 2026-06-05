@@ -249,6 +249,7 @@
     </div>
 
     <div class="guide-email-capture">
+      <div data-email-capture-content>
       <p class="guide-conversion-label">{{ config.emailLabel or "Direct Booking List" }}</p>
       <h3 class="guide-conversion-title" style="font-size: clamp(24px, 3vw, 32px);">{{ config.emailTitle or "Get practical direct-booking tips for your Gulf Coast stay" }}</h3>
       <p class="guide-email-capture-copy">{{ config.emailCopy or "Join the list for direct-booking savings, shoulder-season ideas, and Seascape stay options without the OTA fee stack." }}</p>
@@ -273,10 +274,11 @@
         <input type="email" name="email" placeholder="Email address" autocomplete="email" required>
         <button type="submit">{{ config.emailButtonLabel or "Join The Direct-Booking List" }}</button>
       </form>
-      <div class="guide-email-capture-success" data-email-capture-success>
-        You are on the list. We will send direct-booking savings and useful Gulf Coast stay ideas tied to this guide.
-      </div>
       <p class="guide-email-capture-note">{{ config.emailNote or "No OTA spam. Just direct-booking savings and useful Gulf Coast stay ideas." }}</p>
+      </div>
+      <div class="guide-email-capture-success" data-email-capture-success>
+        Your SAVE50 code is ready: <strong>SAVE50</strong>. Use it on your first direct booking of 3 nights or more.
+      </div>
 
       <div class="guide-repeat-stay-links">
         <p class="guide-conversion-label">{{ config.repeatLabel or "Plan The Stay" }}</p>
@@ -311,4 +313,35 @@
     </div>
   </div>
 </section>
+<script>
+(function () {
+  function showGuestSocialProofSave50() {
+    if (typeof URLSearchParams !== "function" || !window.location) return;
+
+    var params = new URLSearchParams(window.location.search || "");
+    var campaign = (params.get("utm_campaign") || "").trim().toLowerCase();
+    if (campaign !== "guest_social_proof") return;
+
+    var shell = document.querySelector('[data-guide-conversion][data-guide-slug="{{ config.guideSlug }}"]');
+    if (!shell) return;
+
+    var captureContent = shell.querySelector("[data-email-capture-content]");
+    var success = shell.querySelector("[data-email-capture-success]");
+
+    if (captureContent && captureContent.style) {
+      captureContent.style.display = "none";
+    }
+
+    if (success && success.classList) {
+      success.classList.add("is-visible");
+    }
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", showGuestSocialProofSave50);
+  } else {
+    showGuestSocialProofSave50();
+  }
+})();
+</script>
 {% endmacro %}
