@@ -126,6 +126,10 @@ test("shared guide conversion kit exposes savings, stay, repeat-stay, and email 
     'data-track-event=\"guide_book_direct_click\"',
     'data-track-event=\"booking_engine_handoff\"',
     'data-email-capture-form',
+    'data-utility-moment=\"{{ config.utilityMoment or \'guide_direct_booking_help\' }}\"',
+    'data-utility-source-label=\"{{ config.utilitySourceLabel or \'guide_conversion_direct_booking_list\' }}\"',
+    'data-requested-value=\"{{ config.requestedValue or \'direct_booking_savings_and_local_stay_ideas\' }}\"',
+    'data-consent-basis=\"{{ config.consentBasis or \'guest_requested_email_followup\' }}\"',
     "Direct Booking List",
     "Join The Direct-Booking List",
     "email_capture_submit"
@@ -165,6 +169,56 @@ test("conversion tracking supports both guide and owner measurement events", () 
   ]) {
     assert.equal(trackingScript.includes(eventName), true, `tracking script missing ${eventName}`);
   }
+});
+
+test("guide email capture carries utility context for reviewed agent-data proof", () => {
+  const observed = withConversionTrackingStubs(({ listeners, window }) => {
+    const form = {
+      tagName: "FORM",
+      textContent: "Guide email capture",
+      dataset: {
+        trackForm: "email_capture",
+        formSubmitEvent: "email_capture_submit",
+        inlineEmailCapture: "true",
+        guideSlug: "best-time-visit-anna-maria-island",
+        formPlacement: "inline",
+        utilityMoment: "guide_direct_booking_help",
+        utilitySourceLabel: "guide_conversion_direct_booking_list",
+        requestedValue: "direct_booking_savings_and_local_stay_ideas",
+        guestIntent: "planning_gulf_coast_stay",
+        deliveryChannel: "email",
+        consentBasis: "guest_requested_email_followup"
+      },
+      parentElement: {
+        querySelector() {
+          return null;
+        }
+      },
+      matches(selector) {
+        return selector === "form[data-track-form]";
+      },
+      getAttribute() {
+        return "";
+      },
+      reset() {}
+    };
+
+    listeners.DOMContentLoaded();
+    listeners.submit({
+      target: form,
+      preventDefault() {}
+    });
+
+    return window.dataLayer[0];
+  });
+
+  assert.equal(observed.event, "email_capture_submit");
+  assert.equal(observed.payload.utility_moment, "guide_direct_booking_help");
+  assert.equal(observed.payload.utility_source_label, "guide_conversion_direct_booking_list");
+  assert.equal(observed.payload.requested_value, "direct_booking_savings_and_local_stay_ideas");
+  assert.equal(observed.payload.guest_intent, "planning_gulf_coast_stay");
+  assert.equal(observed.payload.delivery_channel, "email");
+  assert.equal(observed.payload.consent_basis, "guest_requested_email_followup");
 });
 
 test("shared conversion tracking exposes navigation-safe tracked-link helpers", () => {

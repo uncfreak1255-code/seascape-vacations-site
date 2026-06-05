@@ -261,6 +261,12 @@
         data-form-submit-event="email_capture_submit"
         data-guide-slug="{{ config.guideSlug }}"
         data-form-placement="inline"
+        data-utility-moment="{{ config.utilityMoment or 'guide_direct_booking_help' }}"
+        data-utility-source-label="{{ config.utilitySourceLabel or 'guide_conversion_direct_booking_list' }}"
+        data-requested-value="{{ config.requestedValue or 'direct_booking_savings_and_local_stay_ideas' }}"
+        data-guest-intent="{{ config.guestIntent or 'planning_gulf_coast_stay' }}"
+        data-delivery-channel="{{ config.deliveryChannel or 'email' }}"
+        data-consent-basis="{{ config.consentBasis or 'guest_requested_email_followup' }}"
       >
         <input type="hidden" name="guide_slug" value="{{ config.guideSlug }}">
         <input type="text" name="name" placeholder="First name" autocomplete="name" required>

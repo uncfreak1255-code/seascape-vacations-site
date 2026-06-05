@@ -320,15 +320,22 @@
   function getPayloadFromElement(node) {
     var href = syncBookingEngineLink(node) || (node && node.getAttribute ? node.getAttribute("href") : "");
     var sourcePageSlug = resolveOwnerSourcePage(node);
+    var dataset = node && node.dataset ? node.dataset : {};
 
     return Object.assign({
-      guide_slug: node && node.dataset ? node.dataset.guideSlug || "" : "",
-      page_slug: node && node.dataset ? node.dataset.pageSlug || "" : "",
+      guide_slug: dataset.guideSlug || "",
+      page_slug: dataset.pageSlug || "",
       source_page_slug: sourcePageSlug,
-      market: node && node.dataset ? node.dataset.market || "" : "",
-      placement: node && node.dataset ? node.dataset.formPlacement || node.dataset.placement || "" : "",
-      link_text: node && node.dataset && node.dataset.trackLabel ? node.dataset.trackLabel : getText(node),
-      link_url: href || ""
+      market: dataset.market || "",
+      placement: dataset.formPlacement || dataset.placement || "",
+      link_text: dataset.trackLabel || getText(node),
+      link_url: href || "",
+      utility_moment: dataset.utilityMoment || dataset.captureMoment || "",
+      utility_source_label: dataset.utilitySourceLabel || dataset.sourceLabel || dataset.captureSourceLabel || "",
+      requested_value: dataset.requestedValue || dataset.utilityValue || "",
+      guest_intent: dataset.guestIntent || "",
+      delivery_channel: dataset.deliveryChannel || "",
+      consent_basis: dataset.consentBasis || ""
     }, getSourceContext());
   }
 
@@ -501,7 +508,13 @@
       guideSlug: trackingPayload.guide_slug || "",
       sourcePageSlug: trackingPayload.source_page_slug || trackingPayload.page_slug || trackingPayload.guide_slug || slugFromPath(currentPagePath),
       market: trackingPayload.market || "florida-gulf-coast",
-      placement: trackingPayload.placement || "inline"
+      placement: trackingPayload.placement || "inline",
+      utilityMoment: trackingPayload.utility_moment,
+      utilitySourceLabel: trackingPayload.utility_source_label,
+      requestedValue: trackingPayload.requested_value,
+      guestIntent: trackingPayload.guest_intent,
+      deliveryChannel: trackingPayload.delivery_channel,
+      consentBasis: trackingPayload.consent_basis
     };
 
     fetch(GUEST_EMAIL_CAPTURE_ENDPOINT, {
