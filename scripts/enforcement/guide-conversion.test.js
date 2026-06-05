@@ -131,22 +131,52 @@ test("shared guide conversion kit exposes savings, stay, repeat-stay, and email 
     'data-utility-source-label=\"{{ config.utilitySourceLabel or \'guide_conversion_direct_booking_list\' }}\"',
     'data-requested-value=\"{{ config.requestedValue or \'direct_booking_savings_and_local_stay_ideas\' }}\"',
     'data-consent-basis=\"{{ config.consentBasis or \'guest_requested_email_followup\' }}\"',
+    'data-save50-state=\"cold\"',
+    'data-save50-state=\"warm\"',
+    "save-module",
+    "save-chip",
+    "save-copy",
+    "save-sticky",
     "Direct Booking List",
     "Join The Direct-Booking List",
     "email_capture_submit",
     'campaign !== "guest_social_proof"',
-    "Your SAVE50 code is ready"
+    "Your <em>$50 off</em> is waiting on this trip"
   ]) {
     assert.equal(partial.includes(marker), true, `guide conversion kit missing ${marker}`);
   }
 
-  for (const staleOfferLanguage of ["Stay Alerts", "date alerts", "matching homes", "We will send"]) {
+  for (const staleOfferLanguage of ["Stay Alerts", "date alerts", "matching homes", "We will send", "check your inbox", "sent to your email"]) {
     assert.equal(
       partial.includes(staleOfferLanguage),
       false,
       `guide conversion kit should not promise ${staleOfferLanguage}`
     );
   }
+});
+
+test("guest-social-proof guide state renders a value-led SAVE50 redemption module", () => {
+  const partialPath = path.join(projectRoot, "src", "_includes", "partials", "guide-conversion-kit.njk");
+  const partial = fs.readFileSync(partialPath, "utf8");
+
+  for (const token of ["SAVE50", "first direct booking", "3 nights or more"]) {
+    assert.equal(partial.includes(token), true, `SAVE50 redemption module missing ${token}`);
+  }
+
+  for (const bannedDeliveryCopy of ["we just emailed you", "check your inbox", "sent to your email", "on its way"]) {
+    assert.equal(
+      partial.toLowerCase().includes(bannedDeliveryCopy),
+      false,
+      `SAVE50 redemption module should not imply new delivery: ${bannedDeliveryCopy}`
+    );
+  }
+
+  assert.equal(partial.includes("Welcome back &middot; code saved"), true);
+  assert.equal(partial.includes('aria-label=\"Copy code SAVE50 to clipboard\"'), true);
+  assert.equal(partial.includes("Copied"), true);
+  assert.equal(partial.includes("save50-live"), true);
+  assert.equal((partial.match(/\bsave-cta\b/g) || []).length, 1, "warm rail should define exactly one filled SAVE50 CTA");
+  assert.equal(partial.includes('class=\"guide-cta-row\" data-save50-state=\"cold\"'), true);
 });
 
 test("conversion tracking supports both guide and owner measurement events", () => {
