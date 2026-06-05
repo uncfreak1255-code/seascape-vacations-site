@@ -143,6 +143,56 @@ test("guest capture helper preserves a sanitized proof label without storing PII
   assert.equal("name" in receipt, false);
 });
 
+test("guest capture helper preserves sanitized utility context for reviewed proof loops", () => {
+  const receipt = buildGuestEmailCaptureReceipt({
+    name: "Sawyer Beck",
+    email: "sawyer@example.com",
+    pagePath: "/guides/best-time-visit-anna-maria-island/",
+    guideSlug: "best-time-visit-anna-maria-island",
+    placement: "inline",
+    utilityMoment: "Guide Direct Booking Help",
+    utilitySourceLabel: "guide_conversion_direct_booking_list",
+    requestedValue: "Direct booking savings and local stay ideas",
+    guestIntent: "Planning Gulf Coast stay",
+    deliveryChannel: "Email",
+    consentBasis: "Guest requested email follow-up",
+    createdAt: "2026-05-12T12:00:00.000Z"
+  });
+
+  assert.deepEqual(receipt.utilityContext, {
+    moment: "guide-direct-booking-help",
+    sourceLabel: "guide-conversion-direct-booking-list",
+    requestedValue: "Direct booking savings and local stay ideas",
+    guestIntent: "Planning Gulf Coast stay",
+    deliveryChannel: "email",
+    consentBasis: "guest-requested-email-follow-up"
+  });
+  assert.equal("email" in receipt, false);
+  assert.equal("name" in receipt, false);
+
+  assert.equal(
+    buildGuestMailchimpTags(receipt).includes("guest-capture-utility-guide-conversion-direct-booking-list"),
+    true
+  );
+  assert.deepEqual(buildGuestMailchimpEvent(receipt).properties, {
+    submissionId: receipt.submissionId,
+    formName: "email_capture",
+    pagePath: "/guides/best-time-visit-anna-maria-island/",
+    pageSlug: "best-time-visit-anna-maria-island",
+    guideSlug: "best-time-visit-anna-maria-island",
+    sourcePageSlug: "best-time-visit-anna-maria-island",
+    market: "florida-gulf-coast",
+    placement: "inline",
+    createdAt: "2026-05-12T12:00:00.000Z",
+    utilityMoment: "guide-direct-booking-help",
+    utilitySourceLabel: "guide-conversion-direct-booking-list",
+    requestedValue: "Direct booking savings and local stay ideas",
+    guestIntent: "Planning Gulf Coast stay",
+    deliveryChannel: "email",
+    consentBasis: "guest-requested-email-follow-up"
+  });
+});
+
 test("guest capture helper returns null without a valid email payload", () => {
   assert.equal(
     buildGuestEmailCaptureReceipt({

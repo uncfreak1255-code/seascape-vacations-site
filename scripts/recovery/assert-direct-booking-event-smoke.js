@@ -114,7 +114,13 @@ function buildTrackedEmailForm() {
       formSubmitEvent: "email_capture_submit",
       inlineEmailCapture: "true",
       guideSlug: "best-time-visit-anna-maria-island",
-      formPlacement: "guide_conversion"
+      formPlacement: "guide_conversion",
+      utilityMoment: "guide_direct_booking_help",
+      utilitySourceLabel: "guide_conversion_direct_booking_list",
+      requestedValue: "direct_booking_savings_and_local_stay_ideas",
+      guestIntent: "planning_gulf_coast_stay",
+      deliveryChannel: "email",
+      consentBasis: "guest_requested_email_followup"
     },
     parentElement: {
       querySelector() {
