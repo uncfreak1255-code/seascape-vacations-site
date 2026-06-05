@@ -21,6 +21,7 @@
 ## Cluster In Scope
 
 - canonical URLs:
+  - `/guides/anna-maria-island-vs-siesta-key/`
   - `/properties/`
   - `/properties/dockside-dreams/`
   - `/properties/the-oasis/`
@@ -34,6 +35,7 @@
 
 - Add one shared SAVE50 offer module that only appears for `utm_campaign=save50_welcome`, `utm_campaign=guest_social_proof`, or `promo=save50`.
 - Show the SAVE50 popup in reminder mode, not sign-up mode, when an existing email subscriber lands with those campaign parameters.
+- Tighten the AMI vs Siesta Key guide conversion copy so the guest-social-proof route reads like direct-booking help, not another signup ask.
 - Preserve email campaign parameters across property-detail links and booking-engine handoff links.
 - Keep the copy quiet: state the code, first direct-booking rule, and 3-night minimum once.
 
