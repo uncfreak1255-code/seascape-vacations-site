@@ -105,11 +105,11 @@ test("winner guide snippets stay decision-forward without body rewrites", () => 
   );
   assert.match(
     bradentonVsSarasota,
-    /"dateModified": "2026-05-09T12:00:00-04:00"/
+    /"dateModified": "2026-06-06T08:00:00-04:00"/
   );
   assert.match(
     bradentonVsSarasota,
-    /Updated May 2026/
+    /Reviewed June 2026/
   );
 });
 

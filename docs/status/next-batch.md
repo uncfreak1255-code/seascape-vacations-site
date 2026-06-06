@@ -10,6 +10,9 @@
   - `fresh but below threshold`
   - `open next batch`
 - `docs/status/current-state.md` should not repeat volatile reread windows or `data_date` details from this file.
+- A freshness block stops new expansion branches and impact claims. It does not
+  stop bounded rescue work for a confirmed winner or money-page regression under
+  `docs/process/ranking-regression-rescue.md`.
 
 ## Latest Execution Read
 
@@ -96,6 +99,25 @@ owner-benchmark, and chart-pack work:
   follow-up, unsubscribe path, and test submission evidence
 - only then use language like `Stay Alerts`, `matching homes`, or
   `date alerts`
+
+## Planned Later: Stays Page A/B Test
+
+Keep the A/B test as a separate CRO build task. Do not let it block bounded SEO
+regression rescue work, and do not run it on the low-volume owner page first.
+
+Open the test only after the next joined read confirms which stays URL has
+enough traffic to conclude cleanly. The current candidate is
+`/stays/anna-maria-island-vacation-rentals/`, but use the highest-impression
+direct-booking stays page if the read points elsewhere.
+
+Before implementation, write a short experiment brief with:
+
+- hypothesis, control, and one headline variant
+- primary metric tied to direct-booking action, not vanity page views
+- secondary and guardrail metrics
+- estimated sample-size or duration check from the current traffic
+- implementation path: Netlify split testing or a lightweight client-side
+  variant with sticky assignment and no layout flicker
 
 ## Do Not Start With
 

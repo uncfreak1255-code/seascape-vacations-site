@@ -56,6 +56,15 @@ test("pSEO triage inventory documents the measured branch gate", () => {
   const triage = fs.readFileSync(triagePath, "utf8");
 
   assert.match(triage, /Current decision source: `docs\/status\/next-batch\.md`/);
-  assert.match(triage, /Current reread status: `fresh but below threshold`/);
+  assert.match(
+    triage,
+    /Current reread status: read the exact status from `docs\/status\/next-batch\.md`/
+  );
   assert.match(triage, /do not open a new owner, stay, guide, GEO, or SEO expansion branch/);
+  assert.match(triage, /Regression exception: a tracked winner or money-page regression uses/);
+  assert.equal(
+    triage.includes("Current reread status: `fresh but below threshold`"),
+    false,
+    "generated triage should not duplicate volatile reread status"
+  );
 });
