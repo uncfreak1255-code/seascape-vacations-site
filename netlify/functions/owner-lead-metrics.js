@@ -45,5 +45,9 @@ async function handleOwnerLeadMetricsRequest(event, _context, injectedStore) {
   };
 }
 
+async function handler(event, context) {
+  return handleOwnerLeadMetricsRequest(event, context);
+}
+
 exports.handleOwnerLeadMetricsRequest = handleOwnerLeadMetricsRequest;
-exports.handler = handleOwnerLeadMetricsRequest;
+exports.handler = handler;

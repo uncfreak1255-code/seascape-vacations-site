@@ -46,6 +46,9 @@ const {
   handleGuestEmailCapture
 } = require("../../netlify/functions/guest-email-capture");
 const {
+  handleGuestEmailCaptureMetricsRequest
+} = require("../../netlify/functions/guest-email-capture-metrics");
+const {
   handleGuestEmailCaptureProofLabelRequest
 } = require("../../netlify/functions/guest-email-capture-proof-label");
 
@@ -601,9 +604,23 @@ test("guest email capture metrics endpoint initializes blobs lambda compatibilit
     path.join(projectRoot, "netlify", "functions", "guest-email-capture.js"),
     "utf8"
   );
+  const proofLabelHandler = fs.readFileSync(
+    path.join(projectRoot, "netlify", "functions", "guest-email-capture-proof-label.js"),
+    "utf8"
+  );
+  const guestEmailCaptureMetricsModule = require("../../netlify/functions/guest-email-capture-metrics");
+  const guestEmailCaptureModule = require("../../netlify/functions/guest-email-capture");
+  const guestEmailCaptureProofLabelModule = require("../../netlify/functions/guest-email-capture-proof-label");
 
   assert.equal(metricsHandler.includes("connectLambda(event);"), true);
   assert.equal(captureHandler.includes("connectLambda(event);"), true);
+  assert.equal(proofLabelHandler.includes("connectLambda(event);"), true);
+  assert.equal(guestEmailCaptureMetricsModule.handler.length, 2);
+  assert.equal(handleGuestEmailCaptureMetricsRequest.length, 3);
+  assert.equal(guestEmailCaptureModule.handler.length, 2);
+  assert.equal(handleGuestEmailCapture.length, 4);
+  assert.equal(guestEmailCaptureProofLabelModule.handler.length, 2);
+  assert.equal(handleGuestEmailCaptureProofLabelRequest.length, 3);
 });
 
 test("guest capture metrics are readable from stored JSON strings", async () => {

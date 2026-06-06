@@ -67,9 +67,23 @@ test("owner lead Netlify handlers initialize blobs lambda compatibility before c
     path.join(projectRoot, "netlify", "functions", "submission-created.js"),
     "utf8"
   );
+  const proofLabelHandler = fs.readFileSync(
+    path.join(projectRoot, "netlify", "functions", "owner-lead-proof-label.js"),
+    "utf8"
+  );
+  const ownerLeadMetricsModule = require("../../netlify/functions/owner-lead-metrics");
+  const submissionCreatedModule = require("../../netlify/functions/submission-created");
+  const ownerLeadProofLabelModule = require("../../netlify/functions/owner-lead-proof-label");
 
   assert.equal(metricsHandler.includes("connectLambda(event);"), true);
   assert.equal(submissionHandler.includes("connectLambda(event);"), true);
+  assert.equal(proofLabelHandler.includes("connectLambda(event);"), true);
+  assert.equal(ownerLeadMetricsModule.handler.length, 2);
+  assert.equal(ownerLeadMetricsModule.handleOwnerLeadMetricsRequest.length, 3);
+  assert.equal(submissionCreatedModule.handler.length, 2);
+  assert.equal(submissionCreatedModule.handleSubmissionCreated.length, 3);
+  assert.equal(ownerLeadProofLabelModule.handler.length, 2);
+  assert.equal(ownerLeadProofLabelModule.handleOwnerLeadProofLabelRequest.length, 3);
 });
 
 test("owner lead helper ignores non-owner forms", () => {

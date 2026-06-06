@@ -64,5 +64,9 @@ async function handleSubmissionCreated(event, _context, injectedStore) {
   };
 }
 
+async function handler(event, context) {
+  return handleSubmissionCreated(event, context);
+}
+
 exports.handleSubmissionCreated = handleSubmissionCreated;
-exports.handler = handleSubmissionCreated;
+exports.handler = handler;
