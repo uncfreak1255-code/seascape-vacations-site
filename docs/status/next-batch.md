@@ -45,6 +45,13 @@ Cluster read from the analytics receipt:
 Do not open a new owner, stay, guide, GEO, or SEO expansion branch from this read.
 `docs/status/next-batch.md` should move to `open next batch` only when the analytics receipt says so.
 
+## Corrected SEO Decision Notes
+
+- Authority order for this dispute: enforcement tests, rendered build output, live GSC/analytics, then agent opinion. `scripts/enforcement/owner-proof-clean.test.js` settles the AMI income guide: keep `src/guides/vacation-rental-income-anna-maria.html` noindexed and keep owner-income intent routed to `/research/owner-fee-revenue-leak-benchmark-2026/`.
+- Do not force-reindex the pruned URL set from the June 2026 indexing drop. The June 3 rank tracker showed clicks and CTR rising while indexed pages shrank, so export the dropped URLs first and rescue only URLs with clicks, links, owner value, or a clear canonical mistake.
+- `/guides/bradenton-vs-sarasota/` remains the defensible winner-defense target because the June 3 rank tracker recorded a #1 to #5 drop on the existing page. That supports a narrow rescue of the current page, not a new comparison page or broad expansion batch.
+- `/stays/summer-vacation-rentals-florida-gulf-coast/` needs an explicit decision before work starts: it is currently suppressed by `seoGovernance.staysNoindexSlugs`, but the June 3 rank tracker calls it a July seasonal refresh target. Either rebuild it until it earns indexing, or leave it suppressed and retire it from the near-term priority list.
+
 ## Likely Priorities
 
 1. rerun the targeted operator read on the five tracked money pages after more recrawl time using the last 7 complete days:
