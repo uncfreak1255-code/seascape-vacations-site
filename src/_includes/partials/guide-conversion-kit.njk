@@ -190,6 +190,318 @@
     display: block;
   }
 
+  .guide-email-capture [hidden],
+  .guide-save50-sticky[hidden] {
+    display: none !important;
+  }
+
+  .guide-save50-module {
+    --save-pill: #FBF5E0;
+    position: relative;
+    margin: 0 0 22px;
+    padding: 26px 26px 24px;
+    overflow: hidden;
+    background: var(--save-pill);
+    border: 1px solid rgba(201, 169, 98, 0.5);
+    border-radius: 18px;
+    box-shadow: 0 18px 48px rgba(45, 70, 71, 0.12), 0 2px 6px rgba(45, 70, 71, 0.05);
+  }
+
+  .guide-save50-module::before {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 4px;
+    background: linear-gradient(180deg, #C9A962, #8A7A4A);
+  }
+
+  .guide-save50-top {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin-bottom: 16px;
+  }
+
+  .guide-save50-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #6BAE7A;
+    box-shadow: 0 0 0 4px rgba(107, 174, 122, 0.18);
+  }
+
+  .guide-save50-label {
+    color: #4A7A5A;
+    font-size: 10px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+
+  .guide-save50-value {
+    margin: 0 0 18px;
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 25px;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    color: #2D4647;
+  }
+
+  .guide-save50-value em {
+    color: #8A7A4A;
+  }
+
+  .guide-save50-chip {
+    display: flex;
+    align-items: stretch;
+    overflow: hidden;
+    margin-bottom: 14px;
+    background: white;
+    border: 1.5px dashed rgba(138, 122, 74, 0.55);
+    border-radius: 12px;
+  }
+
+  .guide-save50-code {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 0;
+    padding: 11px 16px;
+  }
+
+  .guide-save50-code dt {
+    margin: 0;
+    color: #6A6A6A;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-weight: 600;
+    line-height: 1;
+  }
+
+  .guide-save50-code dd {
+    margin: 0;
+  }
+
+  .guide-save50-code b {
+    color: #2D4647;
+    font-family: ui-monospace, Menlo, monospace;
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    line-height: 1.25;
+  }
+
+  .guide-save50-copy {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 0 18px;
+    border: 0;
+    border-left: 1.5px dashed rgba(138, 122, 74, 0.45);
+    background: #F5EED6;
+    color: #2D4647;
+    font: inherit;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.25s ease, color 0.25s ease;
+  }
+
+  .guide-save50-copy:hover {
+    background: #E8D5A3;
+  }
+
+  .guide-save50-copy.is-copied {
+    background: #2A4B4D;
+    border-left-color: #2A4B4D;
+    color: #F5EED6;
+  }
+
+  .guide-save50-copy:focus-visible,
+  .guide-save50-cta:focus-visible {
+    outline: 2px solid #2A4B4D;
+    outline-offset: 3px;
+  }
+
+  .guide-save50-copy svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .guide-save50-eligibility {
+    margin: 0 0 20px;
+    color: #6A6A6A;
+    font-size: 12.5px;
+    line-height: 1.55;
+  }
+
+  .guide-save50-eligibility b {
+    color: #2D4647;
+    font-weight: 600;
+  }
+
+  .guide-save50-cta-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .guide-save50-cta {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    min-height: 44px;
+    padding: 16px 22px;
+    border-radius: 10px;
+    background: #2A4B4D;
+    color: #F5EED6;
+    font-size: 12px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: 700;
+    text-decoration: none;
+    box-shadow: 0 1px 2px rgba(45, 70, 71, 0.2), 0 10px 26px rgba(45, 70, 71, 0.18);
+    transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .guide-save50-cta::before {
+    content: "";
+    position: absolute;
+    inset: 3px;
+    border: 1px solid rgba(201, 169, 98, 0.5);
+    border-radius: 7px;
+    pointer-events: none;
+    transition: border-color 0.3s ease;
+  }
+
+  .guide-save50-cta:hover {
+    transform: translateY(-2px);
+    background: #1F3A3C;
+    box-shadow: 0 2px 4px rgba(45, 70, 71, 0.2), 0 16px 34px rgba(45, 70, 71, 0.24);
+  }
+
+  .guide-save50-cta:hover::before {
+    border-color: #C9A962;
+  }
+
+  .guide-save50-cta .arr,
+  .guide-save50-secondary .arr {
+    transition: transform 0.3s ease;
+  }
+
+  .guide-save50-cta:hover .arr,
+  .guide-save50-secondary:hover .arr {
+    transform: translateX(4px);
+  }
+
+  .guide-save50-secondary {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    width: max-content;
+    margin: 16px auto 0;
+    padding: 6px 2px;
+    color: #2D4647;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .guide-save50-secondary::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 1px;
+    background: #C9A962;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+  }
+
+  .guide-save50-secondary:hover::after {
+    transform: scaleX(1);
+  }
+
+  .guide-save50-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .guide-save50-sticky {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 40;
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 11px 16px calc(11px + env(safe-area-inset-bottom));
+    background: #2A4B4D;
+    color: #F5EED6;
+    text-decoration: none;
+    box-shadow: 0 -8px 24px rgba(45, 70, 71, 0.25);
+  }
+
+  .guide-save50-sticky.is-visible {
+    display: flex;
+  }
+
+  .guide-save50-sticky-code {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.1;
+  }
+
+  .guide-save50-sticky-code small {
+    color: rgba(245, 238, 214, 0.7);
+    font-size: 7.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+
+  .guide-save50-sticky-code b {
+    font-family: ui-monospace, Menlo, monospace;
+    font-size: 13px;
+    letter-spacing: 0.1em;
+  }
+
+  .guide-save50-sticky-btn {
+    flex: none;
+    padding: 12px 14px;
+    border-radius: 6px;
+    background: #C9A962;
+    color: #2A2014;
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+
   .guide-repeat-stay-links {
     margin-top: 22px;
   }
@@ -206,6 +518,36 @@
 
     .guide-conversion-grid {
       grid-template-columns: 1fr;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .guide-save50-module {
+      position: sticky;
+      top: 96px;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .guide-save50-module {
+      margin: 24px 0;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .guide-save50-sticky {
+      display: none !important;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .guide-save50-copy,
+    .guide-save50-cta,
+    .guide-save50-cta::before,
+    .guide-save50-cta .arr,
+    .guide-save50-secondary::after,
+    .guide-save50-secondary .arr {
+      transition: none;
     }
   }
 </style>
@@ -249,9 +591,51 @@
     </div>
 
     <div class="guide-email-capture">
+      <aside class="guide-save50-module save-module" data-save50-state="warm" aria-label="Your saved offer" hidden>
+        <div class="guide-save50-top">
+          <span class="guide-save50-dot" aria-hidden="true"></span>
+          <span class="guide-save50-label">Welcome back &middot; code saved</span>
+        </div>
+
+        <p class="guide-save50-value">Your <em>$50 off</em> is waiting on this trip</p>
+
+        <div class="guide-save50-chip save-chip">
+          <dl class="guide-save50-code">
+            <dt>Your code</dt>
+            <dd><b>SAVE50</b></dd>
+          </dl>
+          <button type="button" class="guide-save50-copy save-copy" aria-label="Copy code SAVE50 to clipboard">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+            <span class="guide-save50-copy-label save-copy-label">Copy</span>
+          </button>
+        </div>
+
+        <p class="guide-save50-eligibility">Applies to your <b>first direct booking</b> of <b>3 nights or more</b>. Added at checkout.</p>
+
+        <div class="guide-save50-cta-wrap">
+          <a
+            class="guide-save50-cta save-cta"
+            href="{{ primaryCtaHref }}"
+            data-track-event="guide_book_direct_click"
+            data-guide-slug="{{ config.guideSlug }}"
+            data-track-label="{{ config.primaryCtaLabel or 'Browse direct homes' }}"
+          >{{ config.primaryCtaLabel or "Browse Direct Homes" }} <span class="arr" aria-hidden="true">→</span></a>
+          <a
+            class="guide-save50-secondary"
+            href="{{ config.bookingEngineHref or 'https://book.seascape-vacations.com' }}"
+            target="_blank"
+            rel="noopener"
+            data-track-event="booking_engine_handoff"
+            data-guide-slug="{{ config.guideSlug }}"
+            data-track-label="{{ config.bookingEngineLabel or 'Open Direct Availability' }}"
+          >{{ config.bookingEngineLabel or "Open Direct Availability" }} <span class="arr" aria-hidden="true">→</span></a>
+        </div>
+      </aside>
+
+      <div data-email-capture-content data-save50-state="cold">
       <p class="guide-conversion-label">{{ config.emailLabel or "Direct Booking List" }}</p>
       <h3 class="guide-conversion-title" style="font-size: clamp(24px, 3vw, 32px);">{{ config.emailTitle or "Get practical direct-booking tips for your Gulf Coast stay" }}</h3>
-      <p class="guide-email-capture-copy">{{ config.emailCopy or "Join the list for direct-booking savings, shoulder-season ideas, and Seascape stay options without the OTA fee stack." }}</p>
+      <p class="guide-email-capture-copy">{{ config.emailCopy or "Join the list for direct-booking savings, shoulder-season ideas, and Seascape stay options without platform service fees setting the final price." }}</p>
 
       <form
         class="guide-email-capture-form"
@@ -273,10 +657,11 @@
         <input type="email" name="email" placeholder="Email address" autocomplete="email" required>
         <button type="submit">{{ config.emailButtonLabel or "Join The Direct-Booking List" }}</button>
       </form>
-      <div class="guide-email-capture-success" data-email-capture-success>
-        You are on the list. We will send direct-booking savings and useful Gulf Coast stay ideas tied to this guide.
-      </div>
       <p class="guide-email-capture-note">{{ config.emailNote or "No OTA spam. Just direct-booking savings and useful Gulf Coast stay ideas." }}</p>
+      </div>
+      <div class="guide-email-capture-success" data-email-capture-success data-save50-state="cold">
+        You're on the list. Use the stay links below while we keep the direct-booking ideas practical.
+      </div>
 
       <div class="guide-repeat-stay-links">
         <p class="guide-conversion-label">{{ config.repeatLabel or "Plan The Stay" }}</p>
@@ -290,7 +675,7 @@
         </div>
       </div>
 
-      <div class="guide-cta-row">
+      <div class="guide-cta-row" data-save50-state="cold">
         <a
           class="guide-cta-btn"
           href="{{ primaryCtaHref }}"
@@ -310,5 +695,98 @@
       </div>
     </div>
   </div>
+  <a class="guide-save50-sticky save-sticky" data-save50-state="warm" href="{{ primaryCtaHref }}" hidden>
+    <span class="guide-save50-sticky-code"><small>Code saved</small><b>SAVE50</b></span>
+    <span class="guide-save50-sticky-btn">Browse Homes</span>
+  </a>
+  <span id="save50-live-{{ config.guideSlug }}" class="guide-save50-sr-only" aria-live="polite"></span>
 </section>
+<script>
+(function () {
+  function showGuestSocialProofSave50() {
+    if (typeof URLSearchParams !== "function" || !window.location) return;
+
+    var params = new URLSearchParams(window.location.search || "");
+    var campaign = (params.get("utm_campaign") || "").trim().toLowerCase();
+
+    var shell = document.querySelector('[data-guide-conversion][data-guide-slug="{{ config.guideSlug }}"]');
+    if (!shell) return;
+
+    var show = campaign === "guest_social_proof" ? "warm" : "cold";
+    shell.querySelectorAll("[data-save50-state]").forEach(function (el) {
+      if (el.getAttribute("data-save50-state") === show) {
+        el.removeAttribute("hidden");
+      } else {
+        el.setAttribute("hidden", "");
+      }
+    });
+
+    if (campaign !== "guest_social_proof") return;
+
+    var module = shell.querySelector(".guide-save50-module");
+    var copyButton = shell.querySelector(".guide-save50-copy");
+    var copyLabel = shell.querySelector(".guide-save50-copy-label");
+    var live = shell.querySelector("[aria-live]");
+    var resetTimer;
+
+    if (module && window.matchMedia && window.matchMedia("(max-width: 640px)").matches) {
+      var guideIntro = document.querySelector(".guide-intro");
+      if (guideIntro && guideIntro.parentNode && module.parentNode !== guideIntro.parentNode) {
+        guideIntro.parentNode.insertBefore(module, guideIntro.nextSibling);
+      }
+    }
+
+    function setCopiedState() {
+      if (!copyButton) return;
+      copyButton.classList.add("is-copied");
+      if (copyLabel) copyLabel.textContent = "Copied";
+      if (live) live.textContent = "Code SAVE50 copied to clipboard";
+      clearTimeout(resetTimer);
+      resetTimer = setTimeout(function () {
+        copyButton.classList.remove("is-copied");
+        if (copyLabel) copyLabel.textContent = "Copy";
+        if (live) live.textContent = "";
+      }, 2100);
+    }
+
+    function selectCodeFallback() {
+      var code = shell.querySelector(".guide-save50-code b");
+      if (code && window.getSelection && document.createRange) {
+        var range = document.createRange();
+        range.selectNodeContents(code);
+        var selection = window.getSelection();
+        selection.removeAllRanges();
+        selection.addRange(range);
+      }
+      if (live) live.textContent = "Code SAVE50 selected. Press Cmd or Ctrl C to copy.";
+    }
+
+    if (copyButton && !copyButton.dataset.save50CopyBound) {
+      copyButton.dataset.save50CopyBound = "true";
+      copyButton.addEventListener("click", function () {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText("SAVE50").then(setCopiedState).catch(selectCodeFallback);
+        } else {
+          selectCodeFallback();
+        }
+      });
+    }
+
+    var sticky = shell.querySelector(".guide-save50-sticky");
+    if (module && sticky && "IntersectionObserver" in window && !sticky.dataset.save50StickyBound) {
+      sticky.dataset.save50StickyBound = "true";
+      var observer = new IntersectionObserver(function (entries) {
+        sticky.classList.toggle("is-visible", !entries[0].isIntersecting);
+      }, { rootMargin: "-10px 0px 0px 0px", threshold: 0 });
+      observer.observe(module);
+    }
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", showGuestSocialProofSave50);
+  } else {
+    showGuestSocialProofSave50();
+  }
+})();
+</script>
 {% endmacro %}
