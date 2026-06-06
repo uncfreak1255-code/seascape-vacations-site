@@ -4,6 +4,11 @@ This loop is for generated stay pages, generated owner pages, and page-family
 triage. It turns the pSEO inventory into action without restarting a site-wide
 SEO audit.
 
+For a known winner or money page that has already regressed, use
+`docs/process/ranking-regression-rescue.md` first. Regression rescue is not a new
+page batch. It is a bounded fix to an existing page that already proved it can
+matter.
+
 ## Source Order
 
 1. Read `docs/status/next-batch.md`.
@@ -50,6 +55,12 @@ it is not strong enough to change a page.
 Do not open a new batch brief unless `docs/status/next-batch.md` says
 `open next batch`.
 
+Exception: a confirmed ranking, CTR, indexation, or conversion regression on a
+tracked winner or money page may open a rescue brief under
+`docs/process/ranking-regression-rescue.md`. That exception does not authorize
+new page volume, broad expansion, or impact claims before the proof lane catches
+up.
+
 If the status is `fresh but below threshold`, the specialist can still do useful
 work:
 
@@ -61,7 +72,8 @@ work:
 
 If the status is `blocked by freshness`, do not claim impact or make indexation
 decisions from incomplete proof. Attack-lane research can continue, but proof
-claims wait.
+claims wait. If the attack lane is a confirmed regression rescue, use the
+rescue lane instead of returning a passive wait state.
 
 ## Tooling Rule
 

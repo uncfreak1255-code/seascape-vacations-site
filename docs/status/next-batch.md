@@ -10,6 +10,9 @@
   - `fresh but below threshold`
   - `open next batch`
 - `docs/status/current-state.md` should not repeat volatile reread windows or `data_date` details from this file.
+- A freshness block stops new expansion branches and impact claims. It does not
+  stop bounded rescue work for a confirmed winner or money-page regression under
+  `docs/process/ranking-regression-rescue.md`.
 
 ## Latest Execution Read
 
