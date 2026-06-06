@@ -15,13 +15,7 @@
   `docs/status/search-growth-map.md`, live URL readback for
   `https://seascape-vacations.com/guides/bradenton-vs-sarasota/`, and current
   Google Search Console guidance on Search data lag and traffic-drop debugging.
-- required internal links:
-  `/stays/bradenton-vacation-rentals-near-beaches/`,
-  `/stays/siesta-key-area-vacation-rentals/`,
-  `/guides/bradenton-vs-sarasota-beaches/`,
-  `/guides/bradenton-vs-sarasota-for-families/`,
-  `/guides/bradenton-vs-sarasota-restaurants/`,
-  `/guides/bradenton-vs-sarasota-cost-of-living/`
+- required internal links: /stays/bradenton-vacation-rentals-near-beaches/, /stays/siesta-key-area-vacation-rentals/, /guides/bradenton-vs-sarasota-beaches/, /guides/bradenton-vs-sarasota-for-families/, /guides/bradenton-vs-sarasota-restaurants/, /guides/bradenton-vs-sarasota-cost-of-living/
 - CTA target: keep `guideConversionKit` and `Browse Direct Gulf Coast Homes`
   routing into the mapped stay pages.
 - anti-claims: no new ranking-win claim, no AI citation claim, no unsupported
