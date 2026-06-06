@@ -438,29 +438,29 @@ if (phase === "remediation") {
     expectMatches(
       file,
       buildAnchorPattern({
-        href: "mailto:info@seascape-vacations.com",
+        href: "tel:+19417048545",
         className: "nav-link",
-        text: "Contact"
+        text: "Call"
       }),
-      "contact nav link"
+      "phone-backed contact nav link"
     );
     expectMatches(
       file,
       buildAnchorPattern({
-        href: "mailto:info@seascape-vacations.com",
+        href: "tel:+19417048545",
         className: "mobile-item",
-        text: "Contact"
+        text: "Call"
       }),
-      "contact mobile link"
+      "phone-backed contact mobile link"
     );
     expectMatches(
       file,
       buildAnchorPattern({
-        href: "mailto:info@seascape-vacations.com",
+        href: "tel:+19417048545",
         className: "footer-link",
-        text: "Contact"
+        text: "Call"
       }),
-      "contact footer link"
+      "phone-backed contact footer link"
     );
     expectMatches(
       file,
