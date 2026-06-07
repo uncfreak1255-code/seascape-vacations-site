@@ -176,6 +176,20 @@
 - decision taken: hold, rewrite, expand, or kill.
 - next branch slug or explicit wait state: fill after readback.
 
+## Execution Log
+
+- 2026-06-07: shipped the content-depth defense on the existing
+  `/guides/bradenton-vs-sarasota/` page, no new page. Added a shared-airport
+  "getting there" note (both bases use Sarasota Bradenton International, so the
+  airport is never the tiebreaker; cross-links the SRQ route guide) and a
+  seasonality note on how peak-season parking and dining pressure shifts the
+  Bradenton vs Sarasota call (cross-links the best-time guide). Title, schema,
+  and the guide conversion kit were preserved; `dateModified` moved to
+  2026-06-07. Verified: `lint:content`, `build`, `verify:jsonld`,
+  `verify:links`, `npm test`, and `verify:release` all pass. Rank, CTR, and
+  `guide_book_direct_click` readback are still pending the first seven complete
+  GSC days; this entry records execution only, not impact.
+
 ## Not In Scope
 
 - new Bradenton vs Sarasota page variants
