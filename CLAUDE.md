@@ -40,69 +40,15 @@ If a detail ages fast, it belongs in `docs/status/`, `docs/briefs/`, or `docs/po
   - `open next batch`
 - `docs/status/current-state.md` should summarize durable repo truth and point back to `docs/status/next-batch.md`; it should not duplicate volatile reread windows, `data_date` values, or stale blocked-window narration.
 
-## Five Roles
+## Five Roles, Batch Workflow, Skill Policy
 
-| Role | Write Access | Job |
-| --- | --- | --- |
-| Search Operator | read-only | Pull GSC, GA4, BigQuery, and weekly operator evidence. Recommend one cluster, not ten. |
-| SEO Architect | read-only | Define page roles, canonical families, feeder routing, internal-link direction, and winner/destination logic. |
-| Page Builder | writes source | Implement the chosen batch in `src/`, redirects, schema, and supporting docs. This is Codex. Draft from the brief and approved examples, not from role-card or session phrasing. |
-| Voice Editor | read-only | Critique copy for tone drift, internal/process wording, instruction-template copy, fake specificity, and AI texture. Run `enterprise-ui-writing` then `humanizer` on visible reader copy. |
-| Release Gate | read-only | Verify `npm run lint:content`, build, schema, redirects, metadata, tests, and diff sanity before any push, PR, or merge. |
+These three operate only while a batch is running, so they live in `docs/` and
+load on demand instead of every session:
 
-That is enough. Extra agent personas are overhead unless they own a real surface the five roles do not.
-
-## Local Skills
-
-The active local skill layer is intentionally lean and site-specific:
-
-- `accessibility`
-- `design-review`
-- `internal-link-targeting`
-- `next-batch-gate`
-- `owner-proof-integrity`
-- `page-cro`
-- `property-truth-regeneration`
-- `schema-markup`
-- `serp-ctr-title-rewrite`
-- `site-architecture`
-- `web-design-guidelines`
-
-Use those as helpers under the five-role workflow, not as another operating system. Stale deploy, monthly-reset, broad marketing, and generic SEO skills stay out of active discovery unless a new `agent-surface-audit` proves they should return.
-
-For AI discovery, GEO/AEO, and schema work, pair the global `seascape-seo`
-skill with the repo-local `schema-markup` skill. `seascape-seo` owns the
-proof-lane versus attack-lane framing; `schema-markup` owns JSON-LD and
-structured-data implementation rules inside this site repo.
-
-External SEO/GEO packs are donor references only. Do not install or mirror
-`geo-optimizer-skill`, `gtm-engineer-skills`, `searchstack-aeo`, `claude-seo`,
-`akii-seo-ai-search-optimizer`, or `aeo.js` into this repo unless a fresh
-`agent-surface-audit` shows a repeated site-specific need and the tool has a
-smoke-tested win. AI citation monitoring and GSC/GA4 proof systems belong in
-`seascape-analytics`, not in this website repo.
-
-Global marketing skills in `/Users/sawbeck/.codex/skills/` are allowed as
-advisory lenses when the task calls for them, especially `customer-research`,
-`marketing-psychology`, `content-strategy`, `copywriting`,
-`enterprise-ui-writing`, `copy-editing`, `humanizer`, `seo-audit`, `ai-seo`,
-`analytics-tracking`, `ab-test-setup`, and `pricing-strategy`. They help
-structure thinking; they do not create new local authority, bypass the five
-roles, or replace Seascape Hub as the source of business context.
-
-## Required Batch Workflow
-
-1. Search Operator reads the latest operator evidence.
-2. One cluster gets chosen.
-3. One brief gets written or updated in `docs/briefs/`.
-4. Work starts on `codex/<batch>` in `.worktrees/<batch>`.
-5. Page Builder reads the active brief, `docs/process/content-quality-gate.md`, `docs/style/voice.md`, `docs/style/banned-patterns.md`, and `docs/style/approved-examples.md`, then uses `copywriting` when drafting or rewriting reader copy.
-6. Page Builder edits source and only the docs needed to support that batch.
-7. Page Builder rewrites any sentence that still sounds like a role card, session note, or helper instruction before it lands in source.
-8. Voice Editor runs `enterprise-ui-writing` and then `humanizer` on changed reader copy before critiquing it against the same brief and content gate.
-9. Release Gate runs `npm run lint:content` and requires a visible-copy voice pass before the rest of verification.
-10. Deploy.
-11. Reread after the crawl window instead of inventing a new batch too early.
+- Five-role model (who owns what): `docs/process/five-roles.md`
+- Required batch workflow (order of operations): `docs/process/batch-workflow.md`
+- Local skill layer + external-pack policy: `docs/process/skill-policy.md`
+  (the active skill set is self-describing in `.claude/skills/`)
 
 ## Hard Rules
 
