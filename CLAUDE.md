@@ -40,15 +40,20 @@ If a detail ages fast, it belongs in `docs/status/`, `docs/briefs/`, or `docs/po
   - `open next batch`
 - `docs/status/current-state.md` should summarize durable repo truth and point back to `docs/status/next-batch.md`; it should not duplicate volatile reread windows, `data_date` values, or stale blocked-window narration.
 
-## Five Roles, Batch Workflow, Skill Policy
+## Five Roles And Skill Policy
 
-These three operate only while a batch is running, so they live in `docs/` and
-load on demand instead of every session:
+These load on demand instead of every session:
 
 - Five-role model (who owns what): `docs/process/five-roles.md`
-- Required batch workflow (order of operations): `docs/process/batch-workflow.md`
 - Local skill layer + external-pack policy: `docs/process/skill-policy.md`
   (the active skill set is self-describing in `.claude/skills/`)
+
+## Required Batch Workflow
+
+Full order of operations: `docs/process/batch-workflow.md`. The visible-copy
+voice order is non-negotiable: draft and rewrite reader copy with `copywriting`,
+then run `enterprise-ui-writing` and `humanizer` on changed copy before the
+content gate and `npm run lint:content`.
 
 ## Hard Rules
 
