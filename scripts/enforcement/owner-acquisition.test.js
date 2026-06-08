@@ -184,8 +184,10 @@ test("owner revenue teardown form lowers friction without losing tracking or int
   assert.equal(ownerTemplate.includes('propertyFieldLabel: "Listing URL or property address"'), true);
   assert.equal(ownerLanding.includes("Request My 48-Hour Review"), true);
   assert.equal(ownerLanding.includes("Request My Review"), false);
+  assert.equal(ownerLanding.includes("Sentence or two is enough"), true);
   assert.equal(ownerLanding.includes("If anything is missing, we will tell you what we still need instead of filling in the blanks."), true);
   assert.equal(ownerLanding.includes("We will read the listing or address, look at what feels off, and send back what we would check next."), true);
+  assert.equal(ownerLanding.includes("No sales call"), false);
   assert.equal(conversionTracking.includes("function validateOwnerFormContext(form)"), true);
   assert.equal(conversionTracking.includes('form.dataset.ownerContextRequired !== "true"'), true);
   assert.equal(conversionTracking.includes('form.querySelectorAll("[data-owner-context-field]")'), true);
@@ -199,6 +201,8 @@ test("Pat-like Sarasota leads are prompted for the property context and the reas
   assert.ok(sarasotaPage, "Sarasota owner page should exist");
   assert.equal(ownerTemplate.includes("The fastest first pass comes from two things: the listing URL or address, and one sentence on what feels expensive or unclear."), true);
   assert.equal(ownerLanding.includes("Send the listing URL or property address. If the address is easier, use that. If the Airbnb or Vrbo link is easier, paste it here."), true);
+  assert.equal(ownerLanding.includes("Revenue feels low for the market"), true);
+  assert.equal(ownerLanding.includes("Too much OTA fee drag"), true);
   assert.equal(ownerLanding.includes("Current manager concerns"), true);
   assert.equal(ownerLanding.includes("Add one line in your own words"), true);
   assert.equal(ownerLanding.includes("If you would rather say it plainly"), true);
@@ -232,10 +236,16 @@ test("owner teardown submit path lands on a qualified-owner confirmation route",
   assert.equal(ownerFormPartial.includes('action="{{ options.action or \'/property-management/revenue-review-requested/\' }}"'), true);
   assert.equal(ownerReviewRequested.includes('permalink: "/property-management/revenue-review-requested/"'), true);
   assert.equal(ownerReviewRequested.includes("Your 48-hour review request is in."), true);
+  assert.equal(
+    ownerReviewRequested.includes("A real Seascape person will read what you sent. If the listing or address and what feels off are there, we can take a more useful first look right away."),
+    true
+  );
   assert.equal(ownerReviewRequested.includes("listing link or property address"), true);
   assert.equal(ownerReviewRequested.includes("one sentence on what feels off"), true);
   assert.equal(ownerReviewRequested.includes("If you skipped either one, reply to the confirmation email"), true);
-  assert.equal(ownerReviewRequested.includes("No sales call gets booked from this form."), true);
+  assert.equal(ownerReviewRequested.includes("talk about a transition"), false);
+  assert.equal(ownerReviewRequested.includes("No sales call gets booked from this form."), false);
+  assert.equal(ownerReviewRequested.includes("listing link or address and a sentence or two about what feels off"), true);
   assert.equal(ownerReviewRequested.includes("does not prove booked review demand"), false);
   assert.equal(ownerReviewRequested.includes("guaranteed revenue lift"), false);
 });
