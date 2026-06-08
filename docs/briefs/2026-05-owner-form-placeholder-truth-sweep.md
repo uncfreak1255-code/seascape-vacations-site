@@ -39,6 +39,7 @@ Status: ACTIVE
 - source files likely to change: `src/property-management/index.njk`, `src/property-management/revenue-review-requested.njk`, `src/property-management/property-management.njk`, `src/_includes/partials/owner-evaluation-form.njk`, `src/_data/seoPages.json`, `src/assets/js/conversion-tracking.js`, and `scripts/enforcement/owner-acquisition.test.js`
 - redirect or schema work: none
 - internal-link or CTA work: preserve existing owner hub links, keep owner submit tracking unchanged, and route successful form posts to the owner-specific review-request confirmation page
+- follow-up email handoff mirror: the owner CTA and confirmation copy should keep the same ask as the live follow-up email, namely a listing link or address plus a short note on what feels off, without adding a sales-call frame or a new offer
 
 ## Release Gate Checklist
 
