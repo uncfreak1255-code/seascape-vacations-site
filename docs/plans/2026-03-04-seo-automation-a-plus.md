@@ -200,4 +200,3 @@ Run: `list_scheduled_tasks` and confirm `conversion-optimization-patrol` appears
 
 ```
 Plan checkpoint: Task 1 complete — conversion-optimization-patrol created
-```
