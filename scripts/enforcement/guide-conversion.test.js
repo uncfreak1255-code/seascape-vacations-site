@@ -379,11 +379,11 @@ test("first tracked navigation click is delivered before same-tab navigation con
         tagName: "A",
         href: "/property-management/#owner-cta",
         target: "",
-        textContent: "Request Your Revenue Review",
+        textContent: "Request Your Revenue Teardown",
         dataset: {
           trackEvent: "owner_primary_cta_click",
           pageSlug: "property-management",
-          trackLabel: "Request Your Revenue Review"
+          trackLabel: "Request Your Revenue Teardown"
         },
         hasAttribute() {
           return false;
