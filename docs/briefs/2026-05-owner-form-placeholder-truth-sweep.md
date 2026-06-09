@@ -6,8 +6,8 @@ Status: ACTIVE
 ## Content Gate Inputs
 
 - persona: owner who is comparing managers or questioning the current setup and needs the review form to feel real instead of templated
-- primary keyword: owner revenue review form
-- secondary keywords: vacation rental owner form, property management review request, Seascape owner evaluation form
+- primary keyword: owner revenue teardown form
+- secondary keywords: vacation rental owner form, property management teardown request, Seascape owner evaluation form
 - audience pattern: owner who is ready to send a listing link or address plus what feels off, but loses trust when the public form feels fake, vague, or forces manual clarification later
 - proof source: current owner form source in `src/property-management/index.njk`, the shared owner evaluation partial, David's May 21 `Sarasota property` follow-up, and the fresh May 21 Sarasota owner review lead notification payload
 - required internal links: /property-management/vacation-rental-management-fees-florida/, /property-management/maximize-vacation-rental-income-florida/
@@ -38,8 +38,8 @@ Status: ACTIVE
 
 - source files likely to change: `src/property-management/index.njk`, `src/property-management/revenue-review-requested.njk`, `src/property-management/property-management.njk`, `src/_includes/partials/owner-evaluation-form.njk`, `src/_data/seoPages.json`, `src/assets/js/conversion-tracking.js`, and `scripts/enforcement/owner-acquisition.test.js`
 - redirect or schema work: none
-- internal-link or CTA work: preserve existing owner hub links, keep owner submit tracking unchanged, and route successful form posts to the owner-specific review-request confirmation page
-- follow-up email handoff mirror: the owner CTA and confirmation copy should keep the same ask as the live follow-up email, namely a listing link or address plus a short note on what feels off, without adding a sales-call frame or a new offer
+- internal-link or CTA work: preserve existing owner hub links, keep owner submit tracking unchanged, and route successful form posts to the owner-specific teardown confirmation page
+- follow-up email handoff mirror: the owner CTA and confirmation copy should keep the same ask as the live follow-up email, namely a listing link or address plus a short note on what feels off, without adding a sales-call frame, reverting to `review` labels, or adding a new offer
 
 ## Release Gate Checklist
 
@@ -52,5 +52,5 @@ Status: ACTIVE
 - no public owner intake surface ships fake contact or listing placeholders
 - the owner hub and shared owner form ask for the listing link or address plus what feels off in plain owner language
 - the owner field-report postcard records one `owner_form_submit`
-- the owner post-submit route tells qualified owners to send a listing link or address plus one sentence on what feels off, without upgrading submit wiring into demand proof
+- the owner post-submit route tells qualified owners to send a listing link or address plus one sentence on what feels off, without upgrading submit wiring into demand proof or reverting to generic review-request copy
 - guardrail tests and release checks stay green

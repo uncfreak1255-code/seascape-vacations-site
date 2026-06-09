@@ -308,7 +308,7 @@
     var field = form.querySelector("[data-owner-context-field]") || form.querySelector('[name="property_address"]');
     if (!field) return false;
 
-    field.setCustomValidity("Send the listing or address, or tell us what feels expensive or unclear.");
+    field.setCustomValidity("Send the listing or address, or tell us what feels off.");
     field.reportValidity();
     field.addEventListener("input", function clearOwnerContextValidity() {
       field.setCustomValidity("");
