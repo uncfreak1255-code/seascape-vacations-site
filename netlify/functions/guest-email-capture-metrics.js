@@ -47,5 +47,9 @@ async function handleGuestEmailCaptureMetricsRequest(event, _context, injectedSt
   };
 }
 
+async function handler(event, context) {
+  return handleGuestEmailCaptureMetricsRequest(event, context);
+}
+
 exports.handleGuestEmailCaptureMetricsRequest = handleGuestEmailCaptureMetricsRequest;
-exports.handler = handleGuestEmailCaptureMetricsRequest;
+exports.handler = handler;

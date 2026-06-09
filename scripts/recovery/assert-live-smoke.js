@@ -112,7 +112,7 @@ function validateTargetResponse(target, response) {
       && response.body.includes("13.4%")
       && response.body.includes("2.9%")
       && response.body.includes("What owners miss when they compare management fees")
-      && response.body.includes("Start Your 48-Hour Revenue Review")
+      && response.body.includes("Request Your Revenue Teardown")
       && response.body.includes('href="#owner-cta"');
 
     if (!hasProofFirstOwnerSurface) {

@@ -1,8 +1,9 @@
 # Search Growth Map
 
-*Updated: 2026-05-29*
-*Last validated: 2026-05-29 against the 2026-05-28 next-batch read, current
-portfolio maps, `src/llms.txt`, and the DataForSEO keyword pass.*
+*Updated: 2026-06-06*
+*Last validated: 2026-06-06 against the 2026-06-04 next-batch read,
+`docs/reports/rank-tracker-2026-06-03.md`, current portfolio maps,
+`src/llms.txt`, and the DataForSEO keyword pass.*
 
 This is the live keyword, GEO, and AI-search strategy layer for Seascape site
 work. It does not authorize a measured expansion branch by itself.
@@ -14,6 +15,8 @@ but it should not stop bounded attack-lane work that has its own source truth.
 For generated stay and owner pSEO classification, use
 `docs/portfolio/pseo-inventory-triage.md`. For repeatable live competitor reads
 before a page edit, use `docs/process/seo-competitor-operating-loop.md`.
+For a tracked winner or money page that has already regressed, use
+`docs/process/ranking-regression-rescue.md`.
 
 ## Operating Rules
 
@@ -25,7 +28,8 @@ before a page edit, use `docs/process/seo-competitor-operating-loop.md`.
   permission to create page volume.
 - Do not edit titles, descriptions, or snippet-focused copy while
   `docs/status/next-batch.md` says `blocked by freshness`, unless Sawyer
-  explicitly overrides the gate.
+  explicitly overrides the gate or the edit is part of a confirmed regression
+  rescue brief under `docs/process/ranking-regression-rescue.md`.
 - Allowed during freshness blocks: SERP gap research, competitor/query
   research, internal-link cleanup, schema/source-truth repair, brief prep, and
   proof-safe page-quality notes.
@@ -60,7 +64,7 @@ source-backed attack lane, return:
 | book direct Anna Maria Island rentals / direct booking savings | guest booking | `/stays/book-direct-anna-maria-island/` and `/guides/booking-direct-vacation-rentals/` | `src/llms.txt`; `src/ai-discovery.json`; `docs/status/next-batch.md` run date 2026-05-28 | `llms.txt` and `ai-discovery.json` state direct booking path and 10-15% typical savings boundary | direct-book handoff is tracked, but current status does not provide a fresh numeric baseline | verify internal links from guides/stays/properties and source-safe answer coverage | direct-book revenue claims without attributed reservation rows |
 | Bradenton vacation rentals near beaches | guest booking | `/stays/bradenton-vacation-rentals-near-beaches/` | `docs/portfolio/stay-money-pages.md`; `docs/status/next-batch.md` run date 2026-05-28 | stay portfolio marks it as Bradenton-side money destination | stay_support has 36 impressions, 0 clicks, avg position 35.14 | SERP gap research around near-beach/private-pool intent and guide feeder links | new Bradenton stay expansion before AMI/stay gates clear |
 | large group private-pool rentals near AMI | guest booking | `/stays/large-group-vacation-rentals-anna-maria-island/` and `/properties/` | `src/llms.txt`; `src/_data/properties-fallback.json`; `docs/status/next-batch.md` run date 2026-05-28 | `llms.txt` states homes sleep 8-16 with private heated pools | catalog/property_pages have low impressions but real GA4 sessions in latest read | internal-link cleanup from property and guide pages, schema/property-truth verification | claims beyond property fallback data or new page sprawl |
-| Bradenton vs Sarasota | guide/research | `/guides/bradenton-vs-sarasota/` | `docs/portfolio/winner-guides.md`; `docs/status/next-batch.md` run date 2026-05-28; `docs/plans/2026-04-18-seo-strategy-refresh.md` | April strategy says comparison guides are strongest nonbrand asset; winner portfolio owns aliases and feeders | latest joined read: guide_winners 2,963 impressions, 23 clicks, CTR 0.78, avg position 6.39 | route authority harder into stay money pages, check SERP/AI citation gaps, audit alias/canonical consistency | new comparison-family expansion without handoff proof |
+| Bradenton vs Sarasota | guide/research | `/guides/bradenton-vs-sarasota/` | `docs/portfolio/winner-guides.md`; `docs/status/next-batch.md` run date 2026-06-04; `docs/reports/rank-tracker-2026-06-03.md`; `docs/plans/2026-04-18-seo-strategy-refresh.md` | April strategy says comparison guides are strongest nonbrand asset; winner portfolio owns aliases and feeders; June 3 rank tracker says this page dropped #1 to #5 and should be rescued, not replaced | latest joined read: guide_winners 3,237 impressions, 30 clicks, CTR 0.93, avg position 4.92; proof lane still blocked by freshness because BigQuery GSC only covers through 2026-06-01 | open the rescue brief, run Gate 0 against the live Bradenton vs Sarasota SERP, tighten vacation intent, route authority earlier into Bradenton and Siesta stay money pages, audit alias/canonical consistency | new comparison-family expansion; impact claims until final reread; source edits without the active rescue brief |
 | Anna Maria Island vs Siesta Key | guide/research | `/guides/anna-maria-island-vs-siesta-key/` | `docs/portfolio/winner-guides.md`; `docs/status/next-batch.md` run date 2026-05-28 | April strategy and winner portfolio mark it as a guide winner | latest joined read included in guide_winners; May GEO scorecard showed canonical residue for a variant | canonical/redirect monitoring, AI answer citation checks, internal links to AMI stay money pages | new variants or broad rewrite without guide-to-money readback |
 | best time to visit Anna Maria Island / seasonal AMI planning | guide/research | `/guides/best-time-visit-anna-maria-island/` | `docs/portfolio/winner-guides.md`; `docs/status/next-batch.md` run date 2026-05-28 | winner portfolio lists variant aliases and seasonal feeder role | May GEO scorecard showed best-time variants still reported in GSC | canonical leak checks, seasonal proof/source-date audit, feeder link review | new seasonal page volume while variants remain unresolved |
 

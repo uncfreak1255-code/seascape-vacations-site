@@ -23,6 +23,7 @@
   <input type="hidden" name="source_page_slug" value="{{ options.sourcePageSlug or options.pageSlug or 'property-management' }}">
   <input type="hidden" name="market" value="{{ options.market or 'florida-gulf-coast' }}">
   <input type="hidden" name="lead_type" value="{{ options.leadType or 'owner-revenue-teardown' }}">
+  <input type="hidden" name="proof_label" value="">
   <p hidden>
     <label>Do not fill this out if you are human: <input name="bot-field"></label>
   </p>
@@ -40,10 +41,10 @@
     {% endif %}
     {% if hasFormCard %}
     <ul class="owner-form-proof-list">
-      <li>{{ options.formIntro or "The fastest first pass comes from two things: the listing URL or address, and one line on what feels expensive or unclear. An owner statement or fee quote makes the revenue review sharper." }}</li>
-      <li>{{ options.proofNote or "The review uses the evidence available. Missing statements, calendars, reviews, or fee terms will be marked as missing instead of guessed." }}</li>
-      <li><strong>{{ options.detailLabel or "What the review separates" }}</strong>{{ options.detailCopy or "The private review separates proven cost, likely cost, and missing information before recommending whether to stay put, fix the current setup, or talk about transition." }}</li>
-      <li>{{ options.confirmation or "Got it. Seascape will review what you send and return the clearest next step: stay put, fix the current setup, or talk about a transition." }}</li>
+      <li>{{ options.formIntro or "The fastest first pass comes from two things: the listing URL or address, and one line on what feels off. An owner statement or fee quote makes the teardown sharper." }}</li>
+      <li>{{ options.proofNote or "The teardown uses the evidence available. Missing statements, calendars, guest reviews, or fee terms stay unknown until you send them." }}</li>
+      <li><strong>{{ options.detailLabel or "What the teardown checks" }}</strong>{{ options.detailCopy or "The private teardown shows what we can verify, what looks expensive, and what still needs a document before you decide whether to stay put, fix the setup, or talk about a transition." }}</li>
+      <li>{{ options.confirmation or "Got it. Seascape will read what you send and return the clearest next step: stay put, fix the current setup, or talk about a transition." }}</li>
     </ul>
     {% endif %}
   </div>
@@ -52,7 +53,7 @@
   {% if hasFormCard %}
   <div class="owner-form-card">
     <div class="owner-form-card-copy">
-      <h4 class="owner-form-card-title">{{ options.formTitle or "Request a Revenue Review" }}</h4>
+      <h4 class="owner-form-card-title">{{ options.formTitle or "Request Your Revenue Teardown" }}</h4>
     </div>
 
     <div class="owner-form-fieldset">
@@ -64,7 +65,7 @@
         </label>
         <label class="owner-form-field">
           <span>Email</span>
-          <input type="email" name="email" autocomplete="email" placeholder="Best email for your review" required>
+          <input type="email" name="email" autocomplete="email" placeholder="Best email for your teardown" required>
         </label>
         <label class="owner-form-field">
           <span>Phone</span>
@@ -73,7 +74,7 @@
         <label class="owner-form-field owner-form-field--wide">
           <span>{{ options.propertyFieldLabel or "Listing URL or property address" }}</span>
           <input type="text" name="property_address" autocomplete="street-address" placeholder="{{ options.propertyFieldPlaceholder or 'airbnb.com/h/your-listing, vrbo.com/..., or 123 Palm Ave' }}" data-owner-context-field>
-          <small class="owner-form-help">If you do not know the street address yet, paste the Airbnb or Vrbo link and tell us what feels expensive or unclear.</small>
+          <small class="owner-form-help">If you do not know the street address yet, paste the Airbnb or Vrbo link and tell us what feels off.</small>
         </label>
         {% if options.showBenchmarkFields %}
         <label class="owner-form-field">
@@ -89,29 +90,29 @@
           <input type="text" name="current_fee_quote" placeholder="15%, 20%, 25%, or fee terms">
         </label>
         <label class="owner-form-field owner-form-field--wide">
-          <span>What feels expensive or unclear?</span>
-          <textarea name="what_feels_off" rows="3" placeholder="Example: low owner payout, too many fees, spotty reporting, booking channels feel off, or current-manager concerns" data-owner-context-field></textarea>
+          <span>What feels off right now?</span>
+          <textarea name="what_feels_off" rows="3" placeholder="Example: owner payout feels light, booking-site fees look high, reporting is hard to trust, or the current manager setup feels off" data-owner-context-field></textarea>
         </label>
         <label class="owner-form-field owner-form-field--wide owner-form-field--file">
           <span>Upload owner statement, optional</span>
           <input type="file" name="owner_statement" accept="{{ options.fileAccept or '.pdf,.csv,.xls,.xlsx,.png,.jpg,.jpeg,.webp' }}">
-          <small class="owner-form-help">{{ options.fileHelp or "PDF, spreadsheet, or screenshot. Missing statements, calendars, reviews, or fee terms will be marked as missing." }}</small>
+          <small class="owner-form-help">{{ options.fileHelp or "PDF, spreadsheet, or screenshot. Missing statements, calendars, guest reviews, or fee terms stay unknown until you send them." }}</small>
         </label>
         {% endif %}
       </div>
 
   {% if hasFormCard %}
       <div class="owner-form-actions">
-        <button class="btn btn-gold owner-form-submit" type="submit">{{ options.buttonLabel or "Send My Review Request" }}</button>
+        <button class="btn btn-gold owner-form-submit" type="submit">{{ options.buttonLabel or "Send My Teardown Request" }}</button>
       </div>
     </div>
   </div>
   {% else %}
-  <button class="btn btn-gold owner-form-submit" type="submit">{{ options.buttonLabel or "Request Your Revenue Review" }}</button>
+  <button class="btn btn-gold owner-form-submit" type="submit">{{ options.buttonLabel or "Request Your Revenue Teardown" }}</button>
   {% endif %}
 
   {% if not options.suppressNote %}
-  <p class="owner-form-note">{{ options.note or "Send the listing URL or property address plus the biggest concern you want reviewed. We will review management fees, booking sources, and operating gaps that may be costing you owner income." }}</p>
+  <p class="owner-form-note">{{ options.note or "Send the listing URL or property address plus the biggest concern you want checked. We will look at management fees, booking sources, and operating gaps that may be costing you owner income." }}</p>
   {% endif %}
 </form>
 {% endmacro %}

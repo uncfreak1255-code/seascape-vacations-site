@@ -10,37 +10,39 @@
   - `fresh but below threshold`
   - `open next batch`
 - `docs/status/current-state.md` should not repeat volatile reread windows or `data_date` details from this file.
+- A freshness block stops new expansion branches and impact claims. It does not
+  stop bounded rescue work for a confirmed winner or money-page regression under
+  `docs/process/ranking-regression-rescue.md`.
 
 ## Latest Execution Read
 
-Run date: 2026-06-04.
+Run date: 2026-06-08.
 
 The targeted joined operator read was executed in `seascape-analytics` and
 rendered here from its machine-readable next-batch decision receipt.
 
-- Requested last-7-complete-day window: 2026-05-28 to 2026-06-03.
-- Latest BigQuery GSC `data_date`: 2026-06-01.
-- Site work gate: `blocked` - GSC export freshness does not cover the requested window.
-- Reread status: `blocked by freshness`.
-- Concrete next move: rerun the targeted operator read after BigQuery GSC covers 2026-06-03.
+- Requested last-7-complete-day window: 2026-05-29 to 2026-06-04.
+- Latest BigQuery GSC `data_date`: 2026-06-04.
+- Site work gate: `clear` - joined GSC + GA4 read covers the requested window.
+- Reread status: `fresh but below threshold`.
+- Concrete next move: no cluster cleared the expansion bar this window; read `queries/rank_history_deltas.sql` for a winner regression to defend, otherwise rerun on the next complete GSC window.
 - Report recommendation: `hold-and-reread`.
 - Reason: No cluster cleared the bar for a stronger next branch than holding for more readback.
-- GSC freshness warning: Requested window ends `2026-06-03`, but BigQuery GSC data is only current through `2026-06-01`. Treat the trailing day as unavailable.
 
 Cluster read from the analytics receipt:
 
 | cluster | pages | gsc_clicks | gsc_impressions | gsc_ctr | gsc_position | ga4_sessions |
 |---|---:|---:|---:|---:|---:|---:|
-| brand | 1 | 10 | 160 | 6.25% | 12.38 | 78 |
-| catalog | 1 | 0 | 25 | 0.00% | 23.00 | 45 |
-| guide_support | 1 | 0 | 542 | 0.00% | 6.72 | 3 |
-| guide_winners | 4 | 30 | 3237 | 0.93% | 4.92 | 109 |
-| owner_hub | 1 | 1 | 45 | 2.22% | 6.38 | 29 |
-| owner_money | 4 | 0 | 75 | 0.00% | 5.69 | 0 |
+| brand | 1 | 14 | 203 | 6.90% | 11.48 | 84 |
+| catalog | 1 | 0 | 35 | 0.00% | 19.29 | 51 |
+| guide_support | 1 | 2 | 742 | 0.27% | 6.71 | 3 |
+| guide_winners | 4 | 39 | 4656 | 0.84% | 4.53 | 129 |
+| owner_hub | 1 | 4 | 146 | 2.74% | 4.35 | 35 |
+| owner_money | 4 | 0 | 85 | 0.00% | 5.75 | 0 |
 | owner_support | 1 | 0 | 0 | 0.00% | 0.00 | 0 |
 | property_pages | 1 | 0 | 0 | 0.00% | 0.00 | 2 |
-| stay_money | 2 | 0 | 1 | 0.00% | 11.00 | 3 |
-| stay_support | 2 | 0 | 60 | 0.00% | 37.88 | 1 |
+| stay_money | 2 | 0 | 1 | 0.00% | 11.00 | 1 |
+| stay_support | 2 | 0 | 119 | 0.00% | 39.25 | 1 |
 
 Do not open a new owner, stay, guide, GEO, or SEO expansion branch from this read.
 `docs/status/next-batch.md` should move to `open next batch` only when the analytics receipt says so.
@@ -76,6 +78,13 @@ Do not open a new owner, stay, guide, GEO, or SEO expansion branch from this rea
 9. if any tracked page has GSC impressions `< 100` in the 7-day window, treat that page as too thin to call and do not let it drive the branch choice
 10. keep Phase 4 and other entity-expansion work frozen unless the measured gates above move
 
+## Corrected SEO Decision Notes
+
+- Authority order for this dispute: enforcement tests, rendered build output, live GSC/analytics, then agent opinion. `scripts/enforcement/owner-proof-clean.test.js` settles the AMI income guide: keep `src/guides/vacation-rental-income-anna-maria.html` noindexed and keep owner-income intent routed to `/research/owner-fee-revenue-leak-benchmark-2026/`.
+- Do not force-reindex the pruned URL set from the June 2026 indexing drop. The June 3 rank tracker showed clicks and CTR rising while indexed pages shrank, so export the dropped URLs first and rescue only URLs with clicks, links, owner value, or a clear canonical mistake.
+- `/guides/bradenton-vs-sarasota/` remains the defensible winner-defense target because the June 3 rank tracker recorded a #1 to #5 drop on the existing page. That supports a narrow rescue of the current page, not a new comparison page or broad expansion batch.
+- `/stays/summer-vacation-rentals-florida-gulf-coast/` needs an explicit decision before work starts: it is currently suppressed by `seoGovernance.staysNoindexSlugs`, but the June 3 rank tracker calls it a July seasonal refresh target. Either rebuild it until it earns indexing, or leave it suppressed and retire it from the near-term priority list.
+
 ## Planned Later: Real Stay Alerts
 
 The shared guide conversion kit now uses a simpler `Direct Booking List`
@@ -96,6 +105,25 @@ owner-benchmark, and chart-pack work:
   follow-up, unsubscribe path, and test submission evidence
 - only then use language like `Stay Alerts`, `matching homes`, or
   `date alerts`
+
+## Planned Later: Stays Page A/B Test
+
+Keep the A/B test as a separate CRO build task. Do not let it block bounded SEO
+regression rescue work, and do not run it on the low-volume owner page first.
+
+Open the test only after the next joined read confirms which stays URL has
+enough traffic to conclude cleanly. The current candidate is
+`/stays/anna-maria-island-vacation-rentals/`, but use the highest-impression
+direct-booking stays page if the read points elsewhere.
+
+Before implementation, write a short experiment brief with:
+
+- hypothesis, control, and one headline variant
+- primary metric tied to direct-booking action, not vanity page views
+- secondary and guardrail metrics
+- estimated sample-size or duration check from the current traffic
+- implementation path: Netlify split testing or a lightweight client-side
+  variant with sticky assignment and no layout flicker
 
 ## Do Not Start With
 

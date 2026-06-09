@@ -245,8 +245,12 @@ async function handleGuestEmailCapture(event, _context, injectedStore, injectedF
   };
 }
 
+async function handler(event, context) {
+  return handleGuestEmailCapture(event, context);
+}
+
 exports.buildMailchimpConfig = buildMailchimpConfig;
 exports.requestMailchimpJson = requestMailchimpJson;
 exports.submitToMailchimp = submitToMailchimp;
 exports.handleGuestEmailCapture = handleGuestEmailCapture;
-exports.handler = handleGuestEmailCapture;
+exports.handler = handler;
