@@ -19,6 +19,7 @@ Status: ACTIVE
 - The broader repo-wide placeholder audit after the guest contact fix showed the last obvious public placeholder residue on owner intake surfaces.
 - Pat Reilley's Sarasota follow-up showed the first capture still missed the two inputs David had to ask for manually: the listing link or address, and what felt off.
 - The fresh May 21 Sarasota owner review lead showed the owner follow-through still needed the listing/address plus a short reason in plain language before the review could be useful.
+- The owner benchmark intro on `/property-management/` should read cleanly as public copy; the teardown label should not run into the next sentence.
 - The issue is owner-intake truth and payload clarity, not a new form design or a wider owner-page rewrite.
 
 ## Cluster In Scope
