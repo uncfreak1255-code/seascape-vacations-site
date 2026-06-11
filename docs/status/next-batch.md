@@ -16,33 +16,33 @@
 
 ## Latest Execution Read
 
-Run date: 2026-06-08.
+Run date: 2026-06-11.
 
 The targeted joined operator read was executed in `seascape-analytics` and
 rendered here from its machine-readable next-batch decision receipt.
 
-- Requested last-7-complete-day window: 2026-05-29 to 2026-06-04.
-- Latest BigQuery GSC `data_date`: 2026-06-04.
+- Requested last-7-complete-day window: 2026-06-03 to 2026-06-09.
+- Latest BigQuery GSC `data_date`: 2026-06-09.
 - Site work gate: `clear` - joined GSC + GA4 read covers the requested window.
-- Reread status: `fresh but below threshold`.
-- Concrete next move: no cluster cleared the expansion bar this window; read `queries/rank_history_deltas.sql` for a winner regression to defend, otherwise rerun on the next complete GSC window.
-- Report recommendation: `hold-and-reread`.
-- Reason: No cluster cleared the bar for a stronger next branch than holding for more readback.
+- Reread status: `open next batch`.
+- Concrete next move: open `winner-regression-rescue` from the joined operator read.
+- Report recommendation: `winner-regression-rescue`.
+- Reason: rank_history shows /stays/anna-maria-island-vacation-rentals/ fell from position 0.5 to 16.33 (+15.83). Defend the existing winner before any new expansion; a confirmed regression rescue is allowed even under a freshness hold.
 
 Cluster read from the analytics receipt:
 
 | cluster | pages | gsc_clicks | gsc_impressions | gsc_ctr | gsc_position | ga4_sessions |
 |---|---:|---:|---:|---:|---:|---:|
-| brand | 1 | 14 | 203 | 6.90% | 11.48 | 84 |
-| catalog | 1 | 0 | 35 | 0.00% | 19.29 | 51 |
-| guide_support | 1 | 2 | 742 | 0.27% | 6.71 | 3 |
-| guide_winners | 4 | 39 | 4656 | 0.84% | 4.53 | 129 |
-| owner_hub | 1 | 4 | 146 | 2.74% | 4.35 | 35 |
-| owner_money | 4 | 0 | 85 | 0.00% | 5.75 | 0 |
+| brand | 1 | 11 | 192 | 5.73% | 9.18 | 116 |
+| catalog | 1 | 0 | 21 | 0.00% | 12.62 | 74 |
+| guide_support | 1 | 1 | 737 | 0.14% | 6.77 | 2 |
+| guide_winners | 4 | 49 | 5745 | 0.85% | 4.31 | 184 |
+| owner_hub | 1 | 2 | 76 | 2.63% | 4.11 | 56 |
+| owner_money | 4 | 0 | 39 | 0.00% | 6.95 | 0 |
 | owner_support | 1 | 0 | 0 | 0.00% | 0.00 | 0 |
 | property_pages | 1 | 0 | 0 | 0.00% | 0.00 | 2 |
-| stay_money | 2 | 0 | 1 | 0.00% | 11.00 | 1 |
-| stay_support | 2 | 0 | 119 | 0.00% | 39.25 | 1 |
+| stay_money | 2 | 0 | 3 | 0.00% | 16.33 | 1 |
+| stay_support | 2 | 0 | 88 | 0.00% | 41.60 | 1 |
 
 Do not open a new owner, stay, guide, GEO, or SEO expansion branch from this read.
 `docs/status/next-batch.md` should move to `open next batch` only when the analytics receipt says so.
