@@ -292,17 +292,17 @@ test("owner benchmark CTA carries source attribution into the revenue teardown f
     path.join(projectRoot, "src", "research", "owner-fee-revenue-leak-benchmark-2026.njk"),
     "utf8"
   );
+  const sharedBenchmark = ownerProofAssets["gulf-coast-owner-benchmark-2026"];
 
-  assert.equal(ownerBenchmark.includes('id="owner-cta"'), true);
-  assert.equal(ownerBenchmark.includes('sourcePageSlug: "owner-fee-revenue-leak-benchmark-2026"'), true);
-  assert.equal(ownerBenchmark.includes('formPlacement: "benchmark-teardown"'), true);
-  assert.equal(ownerBenchmark.includes('showBenchmarkFields: true'), true);
-  assert.equal(ownerBenchmark.includes('allowFileUpload: true'), true);
-  assert.equal(
-    /ownerEvaluationForm\(\{[\s\S]*formPlacement: "benchmark-teardown"[\s\S]*sourcePageSlug: "owner-fee-revenue-leak-benchmark-2026"[\s\S]*buttonLabel: "Send My Teardown Request"/.test(ownerBenchmark),
-    true,
-    "benchmark page should embed the shared teardown form with source attribution"
-  );
+  assert.equal(sharedBenchmark.ctaPath, "/property-management/?owner_source=owner-fee-revenue-leak-benchmark-2026#owner-cta");
+  assert.equal(ownerBenchmark.includes('{% set ctaPath = benchmark.ctaPath or "/property-management/?owner_source=owner-fee-revenue-leak-benchmark-2026#owner-cta" %}'), true);
+  assert.equal((ownerBenchmark.match(/href="\{\{ ctaPath \}\}"/g) || []).length >= 2, true);
+  assert.equal(ownerBenchmark.includes('data-track-event="owner_primary_cta_click"'), true);
+  assert.equal(ownerBenchmark.includes('data-page-slug="owner-fee-revenue-leak-benchmark-2026"'), true);
+  assert.equal(ownerBenchmark.includes("ownerEvaluationForm({"), false);
+  assert.equal(ownerBenchmark.includes('formPlacement: "benchmark-teardown"'), false);
+  assert.equal(ownerBenchmark.includes('sourcePageSlug: "owner-fee-revenue-leak-benchmark-2026"'), false);
+  assert.equal(ownerBenchmark.includes('showBenchmarkFields: true'), false);
 });
 
 test("owner benchmark page stays in the fee-and-revenue lane and keeps visible proof labels", () => {
@@ -310,15 +310,18 @@ test("owner benchmark page stays in the fee-and-revenue lane and keeps visible p
     path.join(projectRoot, "src", "research", "owner-fee-revenue-leak-benchmark-2026.njk"),
     "utf8"
   );
+  const sharedBenchmark = ownerProofAssets["gulf-coast-owner-benchmark-2026"];
 
   assert.equal(ownerBenchmark.includes("Your management fee is not the whole revenue leak."), true);
-  assert.equal(ownerBenchmark.includes("5-property Gulf Coast scope"), true);
+  assert.equal(sharedBenchmark.scopeLabel, "5-property Gulf Coast scope");
+  assert.equal(ownerBenchmark.includes("{{ benchmark.scopeLabel }}"), true);
   assert.equal(ownerBenchmark.includes("Observed Seascape portfolio data"), true);
-  assert.equal(ownerBenchmark.includes("Observed operating example"), true);
-  assert.equal(ownerBenchmark.includes("Example math, not a forecast"), true);
+  assert.equal(ownerBenchmark.includes("Observed property example"), true);
+  assert.equal(ownerBenchmark.includes("Scenario math, not a forecast"), true);
   assert.equal(ownerBenchmark.includes("Request Your Revenue Teardown"), true);
-  assert.equal(ownerBenchmark.includes("Observed May 2026 operator example"), true);
-  assert.equal(ownerBenchmark.includes("Process proof, not booked revenue"), true);
+  assert.equal(sharedBenchmark.examples.some((example) => example.title === "Patrick portfolio"), true);
+  assert.equal(ownerBenchmark.includes("{% for example in benchmark.examples %}"), true);
+  assert.equal(ownerBenchmark.includes("This page sends you into the shared teardown intake route."), true);
   assert.equal(ownerBenchmark.includes("AMI Portfolio"), false);
   assert.equal(ownerBenchmark.includes("This chart is not a market-wide fee survey."), true);
   assert.equal(ownerBenchmark.includes("passive income"), false);
@@ -379,7 +382,8 @@ test("owner hub removes the retired operator proof pack while the benchmark stan
   assert.equal(ownerLanding.includes("How Seascape Protects Owner Revenue"), false);
   assert.equal(ownerLanding.includes("/property-management/vacation-rental-management-fees-florida/"), true);
   assert.equal(ownerBenchmark.includes("/research/how-seascape-protects-owner-net-2026/"), false);
-  assert.equal(ownerBenchmark.includes("A manager should be able to show exactly how a rate move is tested."), true);
+  assert.equal(ownerBenchmark.includes("A manager should be able to show exactly how a rate move is tested."), false);
+  assert.equal(ownerBenchmark.includes("/property-management/?owner_source=owner-fee-revenue-leak-benchmark-2026#owner-cta"), true);
   assert.equal(ownerLanding.includes("Request Your Revenue Teardown"), true);
   assert.equal(ownerBenchmark.includes("Request Your Revenue Teardown"), true);
 });
