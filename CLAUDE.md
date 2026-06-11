@@ -27,6 +27,7 @@ If a detail ages fast, it belongs in `docs/status/`, `docs/briefs/`, or `docs/po
 - Execution state: `docs/status/current-state.md`, `docs/status/next-batch.md`, `docs/status/open-risks.md`
 - Content gate: `docs/process/content-quality-gate.md`
 - Voice and copy rules: `docs/style/voice.md`, `docs/style/approved-examples.md`, `docs/style/banned-patterns.md`
+- Codex working packet: `docs/style/codex-page-writing-playbook.md`
 - Batch briefs: `docs/briefs/`
 - Page-family routing and canonical ownership: `docs/portfolio/`
 
