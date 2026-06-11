@@ -129,6 +129,10 @@
 - relevant commands pass or blockers are named
 - final status says impact is still pending the post-change GSC/GA4 readback
 
+## Ship Checkpoint
+
+- 2026-06-11 checkpoint: the rescue stayed bounded to the AMI stay page and feeder links, preserved the near-island truth boundary, and still waits for the first full 7-day post-deploy GSC/GA4 readback before any performance claim.
+
 ## Post-Reread Outcome
 
 - reread window used: fill after deploy plus final GSC data window.
