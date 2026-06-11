@@ -2632,10 +2632,10 @@
     {
       "slug": "anna-maria-island-vacation-rentals",
       "destination": "anna-maria-island",
-      "title": "Near Anna Maria Island Vacation Rentals - Direct-Book Pool Homes",
-      "h1": "Vacation Rentals Near Anna Maria Island",
-      "description": "Near Anna Maria Island vacation rentals and pool homes with 5-15 minute beach access, local support, and a cleaner direct-book total.",
-      "intro": "Anna Maria Island drives the trip here, but the math still has to work. These direct-book homes sit 5-15 minutes from the beaches, keep the OTA fee stack out of the checkout, and usually buy more pool-and-space value than a same-budget island condo.",
+      "title": "Anna Maria Island Vacation Rentals - Direct-Book Near-Island Homes",
+      "h1": "Anna Maria Island Vacation Rentals Near the Beach",
+      "description": "Anna Maria Island vacation rentals with 5-15 minute beach access, private-pool space, local support, and direct booking that keeps the total cleaner.",
+      "intro": "If the trip is Anna Maria first, these direct-book homes keep the beaches 5-15 minutes away while usually buying more space, pool time, and parking ease than same-budget island inventory.",
       "faqs": [
         {
           "question": "What is there to do on Anna Maria Island?",
@@ -2670,11 +2670,11 @@
       "decisionHighlights": [
         {
           "label": "Island-First",
-          "value": "Anna Maria Island drives the trip here, with beach access leading the search instead of generic Gulf Coast inventory."
+          "value": "Beach days lead the decision here, not a generic Gulf Coast search or a forced on-island address."
         },
         {
           "label": "Cleaner Total",
-          "value": "Direct booking keeps the 10-15% platform fee stack from bloating the trip after you already picked the house."
+          "value": "Direct booking keeps 10-15% platform fees out of the total after you already picked the house."
         },
         {
           "label": "Near-Island Inventory",
@@ -2717,21 +2717,21 @@
           {
             "label": "Checkout total",
             "primary": "Direct booking keeps the comparison honest because you see the real cost before platform service fees distort it.",
-            "comparison": "OTA-first shopping makes close nightly rates look equal until the last screen adds fee drag and turns the cheaper-looking option into the worse deal."
+            "comparison": "Marketplace shopping can make close nightly rates look equal until service fees widen the gap at checkout."
           },
           {
             "label": "Trip style",
             "primary": "This page fits families and groups who want repeated beach days plus a calmer home base for pool time and dinners in.",
-            "comparison": "If your real goal is walking to the sand every morning and never driving, move to the beachfront-alternative page and make that tradeoff consciously."
+            "comparison": "If your real goal is walking to the sand every morning and never driving, move to the beachfront alternative and make that tradeoff consciously."
           }
         ]
       },
-      "collectionCtaTitle": "Need the wider Anna Maria Island collection?",
-      "collectionCtaBody": "Open the AMI-filtered Seascape collection if you want more near-island options without backing out into generic inventory again.",
+      "collectionCtaTitle": "Need more Anna Maria area homes?",
+      "collectionCtaBody": "If these homes are close but not right for your dates, compare more Anna Maria area homes without starting over on Airbnb or Vrbo.",
       "collectionCtaHref": "/properties/?area=anna-maria-island",
-      "collectionCtaLabel": "Open More Anna Maria Island Stays",
+      "collectionCtaLabel": "Compare More Anna Maria Area Homes",
       "contentTitle": "What you are really buying on this Anna Maria Island page",
-      "longContent": "<p>Most searchers coming in on <strong>Anna Maria Island vacation rentals</strong> are not asking for a generic Gulf Coast stay. They want the island to shape the trip. The mistake is assuming that means every smart option has to sit directly on the island grid. In practice, the better decision is often the house that keeps AMI easy while protecting the rest of the week from parking friction, cramped layouts, and a fee stack that shows up too late.</p><p>That is why this page is built around near-island direct-book homes instead of pretending every strong option has to be a walkable condo. If your group wants repeated beach days, family dinners back at the house, and a private pool that carries the trip when weather shifts or kids burn out early, the mainland-corridor version of Anna Maria usually wins on total value.</p><p>The discipline here is simple: pick the trip shape first, then pick the house. If the trip is beach every day with easy access and a cleaner all-in price, stay on this page. If the trip only works when the Gulf is outside the window, move to the beachfront alternative and accept the tradeoff on space and price on purpose.</p>",
+      "longContent": "<p>Most people searching <strong>Anna Maria Island vacation rentals</strong> want the island to shape the week. The real question is whether you need a walk-out island address or just need Anna Maria to stay easy all week.</p><p>That is why this page stays with near-island direct-book homes instead of pretending every strong option has to be a walkable condo. If your group wants repeated beach days, family dinners back at the house, and a private pool that helps the week feel easier, this side of the bridge often wins on space and total cost.</p><p>If the trip only works when the Gulf is outside the window, move to the <a href=\"/stays/anna-maria-island-beachfront-rentals/\">Anna Maria Island beachfront alternative</a> and make that trade on purpose. If you want to keep the same beach-first trip with fewer extra fees, compare the <a href=\"/stays/book-direct-anna-maria-island/\">book-direct Anna Maria Island path</a> before you go back to Airbnb or Vrbo.</p>",
       "relatedGuideIntro": "These guides answer the three planning questions that usually decide whether the island-first page is actually the right fit.",
       "relatedGuideLinks": [
         {
@@ -2752,11 +2752,11 @@
       ],
       "relatedStaySlugs": [
         "book-direct-anna-maria-island",
+        "anna-maria-island-beachfront-rentals",
         "anna-maria-island-homes-with-pool",
-        "family-vacation-rentals-anna-maria-island",
         "bradenton-vacation-rentals-near-beaches"
       ],
-      "geoIntro": "<p><strong>Anna Maria Island</strong> works best when the beach is the reason for the trip and your group is willing to plan around bridge timing, parking, and higher island demand. The island runs seven miles, with Anna Maria at the north end, Holmes Beach in the center, and Bradenton Beach at the south end. Each town has a different feel, but the shared decision is the same: pay more to stay closer to the island rhythm, or use a near-island home that keeps AMI easy while protecting the total trip budget.</p><p>It fits travelers who want the Anna Maria trip shape first: repeated beach days, Pine Avenue or Bridge Street time, local restaurants, and a home base close enough that the island stays part of the daily flow.</p>"
+      "geoIntro": "<p><strong>Anna Maria Island</strong> works best when the beach is the reason for the trip and your group is willing to plan around bridge timing, parking, and higher island demand. The island runs seven miles, with Anna Maria at the north end, Holmes Beach in the center, and Bradenton Beach at the south end. Each town has a different feel, but the shared decision is the same: pay more to stay closer to the island rhythm, or use a near-island home that keeps AMI easy while protecting the total trip budget.</p><p>It fits travelers who want the Anna Maria trip shape first: repeated beach days, Pine Avenue or Bridge Street time, local restaurants, and a home base close enough that the island stays part of the daily flow. If that sounds right, start with the <a href=\"#featured-homes\">matching homes below</a> before you widen the search again.</p>"
     },
     {
       "slug": "holmes-beach-vacation-rentals",
