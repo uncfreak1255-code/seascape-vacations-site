@@ -49,15 +49,6 @@ eleventyComputed:
     
     {% include "partials/deferred-meta-pixel.njk" %}
     
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-    <noscript>
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
-    </noscript>
-    
     <!-- Service Schema -->
     <script type="application/ld+json">
     {
@@ -145,6 +136,11 @@ eleventyComputed:
     {% endif %}
     
     <style>
+        @font-face { font-family: 'Poppins'; src: url('/assets/fonts/homepage/poppins-400-latin.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: optional; }
+        @font-face { font-family: 'Poppins'; src: url('/assets/fonts/homepage/poppins-500-latin.woff2') format('woff2'); font-weight: 500; font-style: normal; font-display: optional; }
+        @font-face { font-family: 'Poppins'; src: url('/assets/fonts/homepage/poppins-600-latin.woff2') format('woff2'); font-weight: 600; font-style: normal; font-display: optional; }
+        @font-face { font-family: 'Poppins'; src: url('/assets/fonts/homepage/poppins-700-latin.woff2') format('woff2'); font-weight: 700; font-style: normal; font-display: optional; }
+        @font-face { font-family: 'Playfair Display'; src: url('/assets/fonts/homepage/playfair-display-latin.woff2') format('woff2'); font-weight: 400 700; font-style: normal; font-display: optional; }
         :root { --brand: #5F8A8B; --brand-light: #7BA3A4; --brand-dark: #3D5C5D; --brand-darker: #2D4647; --gold: #C9A962; --gold-light: #E8D5A3; --cream: #F5EED6; --cream-dark: #EBE4CC; --cream-light: #FAF7EE; --stone: #3A3A3A; --stone-light: #6A6A6A; --white: #FFFFFF; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Poppins', -apple-system, sans-serif; background: var(--cream); color: var(--stone); line-height: 1.7; }
