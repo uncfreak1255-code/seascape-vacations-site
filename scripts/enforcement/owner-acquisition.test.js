@@ -55,6 +55,7 @@ test("owner landing page keeps the owner revenue review close to the sales argum
 
   assert.notEqual(reviewIndex, -1, "owner hub needs the revenue review anchor");
   assert.equal(ownerLanding.includes("Benchmark + Revenue Teardown"), true);
+  assert.equal(ownerLanding.includes("<strong>Benchmark + Revenue Teardown</strong> What owners miss"), true);
   assert.equal(
     ownerLanding.includes("Booking-source costs, weak presentation, guest-feedback risks, and uneven owner updates rarely show up clearly in an owner statement."),
     true
