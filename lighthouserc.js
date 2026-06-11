@@ -7,7 +7,7 @@ module.exports = {
     collect: {
       staticDistDir: "./_site",
       url: moneyRoutes.map((route) => `http://localhost${route}`),
-      numberOfRuns: 1,
+      numberOfRuns: 3,
       settings: {
         budgetPath: "./config/perf-budget.json",
         chromeFlags: "--headless=new --no-sandbox",
