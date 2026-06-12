@@ -31,8 +31,8 @@ const stablePropertyDetailLinks = [
 
 function request(baseUrl, path) {
   return new Promise((resolve, reject) => {
-    https
-      .get(`${baseUrl}${path}`, (res) => {
+    const request = https
+      .get(`${baseUrl}${path}`, { timeout: 10000 }, (res) => {
         let body = "";
         res.on("data", (chunk) => {
           body += chunk;
@@ -44,8 +44,12 @@ function request(baseUrl, path) {
             body
           });
         });
-      })
-      .on("error", reject);
+      });
+
+    request.on("timeout", () => {
+      request.destroy(new Error(`Timed out fetching ${baseUrl}${path}`));
+    });
+    request.on("error", reject);
   });
 }
 

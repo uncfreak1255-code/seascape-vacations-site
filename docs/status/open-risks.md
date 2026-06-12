@@ -14,6 +14,16 @@
 - `src/guides/vacation-rental-income-anna-maria.html` must stay noindexed unless the enforcement decision changes; `scripts/enforcement/owner-proof-clean.test.js` locks it out of the owner-proof lane and routes owner-income intent to `/research/owner-fee-revenue-leak-benchmark-2026/`
 - historical queue drift can accidentally reopen `/stays/summer-vacation-rentals-florida-gulf-coast/` as a July refresh target even though the current repo decision is to keep it served/noindex and out of the near-term queue. `seoGovernance.staysNoindexSlugs` suppresses it, `docs/portfolio/pseo-inventory-triage.md` keeps it in the support/noindex lane, and `docs/portfolio/stay-money-pages.md` does not assign it a winner or money-page role. Only reopen rebuild work if a separate GSC + SERP proof pack and a defined money destination justify earning indexable status
 
+## Repo-audit V1 (2026-06-12)
+
+- owner support GA4 numbers before the Task 3 tracking-gate deploy are instrumentation artifacts because `/research/owner-fee-revenue-leak-benchmark-2026/` shipped tracked owner CTAs without the shared tracking runtime; the first post-fix weekly receipt should be read as sensor repair, not owner demand.
+- Holmes Beach canonical decision still blocks V2 redirect and sitemap cleanup: either retire the slug from `seoPages.json` or remove the redirect, but do not leave both live.
+- Alerting channel choice still blocks the final live-smoke operating loop: if GitHub failure email is not enough after the drill, Telegram via Hermes moves up.
+- Meta-pixel and privacy wording still block the disclosure follow-up: confirm the intended pixel scope before changing the legal copy.
+- Stylesheet budget still blocks the homepage performance-budget gate: the current homepage CSS is already over the error-level budget, so decide whether to slim it or raise the threshold before extending the gate.
+- Legacy root residue still blocks the cleanup tranche: decide whether the old root `index.html`, `stays/`, `property-management/`, `area-guide-*.html`, `dashboard/`, and `emails/` surfaces should be archived then removed or kept quarantined.
+- V2 sequencing lives in `docs/plans/2026-06-12-repo-audit.md`.
+
 ## Indexing + Indexability (2026-06-06 forensic)
 
 See `docs/reports/indexing-and-indexability-forensic-2026-06-06.md` for the full read. The triage signal, income-guide lock, and summer-page decision are captured in the bullets above and in `next-batch.md`; the points below are the non-duplicated specifics.
