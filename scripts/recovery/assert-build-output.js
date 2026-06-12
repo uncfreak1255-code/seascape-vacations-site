@@ -530,7 +530,7 @@ if (phase === "remediation") {
     buildAnchorPattern({
       href: "#owner-cta",
       className: "nav-owner-cta",
-      text: "Revenue Teardown"
+      text: "Revenue Review"
     }),
     "property management compact nav CTA"
   );
@@ -539,7 +539,7 @@ if (phase === "remediation") {
     buildAnchorPattern({
       href: "#owner-cta",
       className: "btn btn-gold",
-      text: "Request Your Revenue Teardown"
+      text: "Request Your Revenue Review"
     }),
     "property management hero CTA"
   );

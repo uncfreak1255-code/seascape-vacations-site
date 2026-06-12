@@ -12,7 +12,7 @@ permalink: "/research/owner-fee-revenue-leak-benchmark-2026/"
 {% set methodNotes = [
   "The benchmark uses Seascape's 5-home Gulf Coast operating data where observed.",
   "Scenario math is labeled separately from observed operating data.",
-  "It frames the owner conversation before a property-specific teardown."
+  "It frames the owner-net conversation before a property-specific revenue review."
 ] %}
 {% set heroStackRows = [
   {
@@ -136,21 +136,21 @@ permalink: "/research/owner-fee-revenue-leak-benchmark-2026/"
 
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://seascape-vacations.com/research/owner-fee-revenue-leak-benchmark-2026/">
-<meta property="og:title" content="The Owner Fee + Revenue Leak Benchmark">
+<meta property="og:title" content="The Owner Fee + Net Payout Benchmark">
 <meta property="og:description" content="Most owners compare management fees and stop there. This 5-property Gulf Coast benchmark shows how pricing, booking sources, and operating costs affect what you actually keep.">
 <meta property="og:image" content="https://seascape-vacations.com/images/seascape-og-default.jpg">
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="Seascape Vacations">
 
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="The Owner Fee + Revenue Leak Benchmark">
+<meta name="twitter:title" content="The Owner Fee + Net Payout Benchmark">
 <meta name="twitter:description" content="Most owners compare management fees and stop there. This 5-property Gulf Coast benchmark shows how pricing, booking sources, and operating costs affect what you actually keep.">
 <meta name="twitter:image" content="https://seascape-vacations.com/images/seascape-og-default.jpg">
 
 <script type="application/ld+json">{
   "@context": "https://schema.org",
   "@type": "Article",
-  "headline": "Owner Fee + Revenue Leak Benchmark",
+  "headline": "Owner Fee + Net Payout Benchmark",
   "description": "Most owners compare management fees and stop there. This benchmark shows how pricing, booking sources, and operating costs affect what you actually keep.",
   "mainEntityOfPage": "https://seascape-vacations.com/research/owner-fee-revenue-leak-benchmark-2026/",
   "image": "https://seascape-vacations.com/images/seascape-og-default.jpg",
@@ -927,14 +927,14 @@ a{color:var(--brand-dark);text-decoration:underline}
 <main class="page">
   <section class="hero">
     <div class="hero-copy">
-      <span class="eyebrow">Owner Fee + Revenue Leak Benchmark</span>
+      <span class="eyebrow">Owner Fee + Net Payout Benchmark</span>
       <span class="scope-pill desktop-only">{{ benchmark.scopeLabel }}</span>
-      <h1>Your management fee is not the whole revenue leak.</h1>
+      <h1>Your management fee is not the whole payout story.</h1>
       <p class="hero-lead">Most owners compare 15%, 20%, and 25% management fees. That misses Airbnb fees, more direct bookings, rate control, and how clearly your manager explains what actually reaches your payout.</p>
       <p class="hero-support desktop-only"><strong>What actually reaches my owner statement?</strong> A lower management fee does not always mean a better result. <strong>Source note:</strong> Observed Seascape portfolio data is labeled separately from scenario math and property examples.</p>
       <p class="hero-caption mobile-only">This benchmark is a decision aid, not a revenue forecast or market-wide fee survey.</p>
       <div class="hero-actions desktop-only">
-        <a class="btn btn-gold" href="{{ ctaPath }}" data-track-event="owner_primary_cta_click" data-page-slug="owner-fee-revenue-leak-benchmark-2026">Request Your Revenue Teardown</a>
+        <a class="btn btn-gold" href="{{ ctaPath }}" data-track-event="owner_primary_cta_click" data-page-slug="owner-fee-revenue-leak-benchmark-2026">Request Your Revenue Review</a>
         <a class="hero-secondary" href="#benchmark-math">See the benchmark math</a>
       </div>
       <div class="proof-rail desktop-only">
@@ -946,7 +946,7 @@ a{color:var(--brand-dark);text-decoration:underline}
     <div class="hero-side desktop-only">
       <div class="side-panel">
         <span class="eyebrow">Observed Seascape portfolio data</span>
-        <h2 class="hero-stack-title">Fee stack quick read</h2>
+        <h2 class="hero-stack-title">Owner payout quick read</h2>
         <p class="hero-stack-copy">The benchmark opens with the fee, booking-source cost, direct path, and reporting story together so you can see the pressure points in one place.</p>
         <div class="hero-stack-list">
           {% for row in heroStackRows %}
@@ -978,7 +978,7 @@ a{color:var(--brand-dark);text-decoration:underline}
   </div>
 
   <div class="hero-mobile-actions mobile-only">
-    <a class="btn btn-gold" href="{{ ctaPath }}" data-track-event="owner_primary_cta_click" data-page-slug="owner-fee-revenue-leak-benchmark-2026">Request Your Revenue Teardown</a>
+    <a class="btn btn-gold" href="{{ ctaPath }}" data-track-event="owner_primary_cta_click" data-page-slug="owner-fee-revenue-leak-benchmark-2026">Request Your Revenue Review</a>
     <a class="hero-secondary" href="#benchmark-math">See the benchmark math</a>
   </div>
 
@@ -1167,17 +1167,17 @@ a{color:var(--brand-dark);text-decoration:underline}
   </section>
 
   <section class="cta-shell">
-    <span class="eyebrow">Private teardown</span>
+    <span class="eyebrow">Private revenue review</span>
     <h2>Want the same scan on your home?</h2>
-    <p>Send the listing URL, owner statement, fee quote, or property address. Seascape will run a short Revenue Teardown that shows what is already clear, what still deserves a closer look, and what you should ask before any switch conversation.</p>
-    <a class="btn btn-gold cta-button" href="{{ ctaPath }}" data-track-event="owner_primary_cta_click" data-page-slug="owner-fee-revenue-leak-benchmark-2026">Request Your Revenue Teardown</a>
-    <p class="cta-note">This page sends you into the shared teardown intake route. Missing statements, calendars, reviews, or fee terms stay marked unknown.</p>
+    <p>Send the listing URL, owner statement, fee quote, or property address. Seascape will send back a short revenue review that shows what is already clear, what still deserves a closer look, and what you should ask before any switch conversation.</p>
+    <a class="btn btn-gold cta-button" href="{{ ctaPath }}" data-track-event="owner_primary_cta_click" data-page-slug="owner-fee-revenue-leak-benchmark-2026">Request Your Revenue Review</a>
+    <p class="cta-note">This page sends you into the shared review intake route. Missing statements, calendars, reviews, or fee terms stay marked unknown.</p>
   </section>
 
   <section class="section method-mobile mobile-only">
     <div class="section-intro" style="margin-bottom:0">
       <span class="eyebrow">How To Read This Benchmark</span>
-      <p>The benchmark uses Seascape's 5-home Gulf Coast operating data where observed, labels scenario math separately, and helps frame the owner conversation before a property-specific teardown.</p>
+      <p>The benchmark uses Seascape's 5-home Gulf Coast operating data where observed, labels scenario math separately, and helps frame the owner conversation before a property-specific revenue review.</p>
       <div class="section-proof-rail">
         <span class="proof-chip proof-chip--soft">{{ benchmark.scopeLabel }}</span>
         <span class="proof-chip proof-chip--soft">Scenario math, not a forecast</span>

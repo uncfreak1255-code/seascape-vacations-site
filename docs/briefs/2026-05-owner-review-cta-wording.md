@@ -13,9 +13,9 @@
 
 ## Why This Batch
 
-- This is a wording-only cleanup that standardizes owner CTA language to `review` across the active owner conversion surfaces.
-- The goal is to remove mixed teardown/review phrasing without changing routing, layout, or tracking contracts.
-- Metadata, schema strategy, and broader page rewrites stay out of scope.
+- This is a wording cleanup that standardizes owner CTA language to `review` across the active owner conversion surfaces.
+- The goal is to remove mixed teardown/review phrasing and a small set of internal-sounding owner jargon from visible copy without changing routing, layout, tracking contracts, metadata, or schema strategy.
+- Broader owner-page rewrites stay out of scope.
 
 ## Search Operator Read
 
@@ -50,13 +50,13 @@
   - `src/research/owner-fee-revenue-leak-benchmark-2026.njk`
   - `src/guides/florida-gulf-coast-vacation-rental-market-report-2026.html`
 - redirect or schema work: none.
-- internal-link or CTA work: keep owner links intact and standardize visible owner CTA wording to `Request Your Revenue Review`.
+- internal-link or CTA work: keep owner links intact, standardize visible owner CTA wording to `Request Your Revenue Review`, and normalize visible helper copy to plain owner language.
 - money CTA and downstream tracking event to verify: `owner_primary_cta_click` on `#owner-cta` surfaces.
 
 ## Voice Editor Checklist
 
 - tone risks: sounding like hard-sell copy or implying guaranteed outcomes.
-- generic or mechanical patterns to kill: jargon-heavy conversion language and mixed teardown/review labels.
+- generic or mechanical patterns to kill: mixed teardown/review labels and owner-facing jargon like `fee stack`, `OTA drag`, `leak`, or `likely leaking` in visible helper copy.
 - proof or specificity checks: keep benchmark references factual and scoped.
 - customer wording kept where it sounds natural; SEO-tool phrasing removed where it sounds manufactured: keep plain owner-facing language and avoid internal process wording.
 
@@ -72,6 +72,7 @@
 ## Done When
 
 - all in-scope owner CTA surfaces use `Request Your Revenue Review` consistently.
+- visible owner CTA/helper copy on the in-scope routes uses plain owner language instead of teardown/jargon residue.
 - owner CTA tracking attributes stay unchanged.
 - content gate and test suites pass on this branch.
 
