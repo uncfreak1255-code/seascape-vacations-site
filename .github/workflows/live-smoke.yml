@@ -3,8 +3,10 @@ name: Live Smoke
 on:
   workflow_dispatch:
   schedule:
-    - cron: "17 6 * * *"
-      timezone: "America/New_York"
+    # GitHub Actions cron runs in UTC; 10:17 UTC = 06:17 ET during EDT.
+    # A `timezone:` key is not part of the documented schedule schema, so the
+    # fire time is stated explicitly in UTC instead of relying on parser leniency.
+    - cron: "17 10 * * *"
 
 permissions:
   contents: read

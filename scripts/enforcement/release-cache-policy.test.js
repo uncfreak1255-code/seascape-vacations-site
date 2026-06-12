@@ -70,3 +70,24 @@ test("cache policy guard accepts css/js routes when they match the canonical rev
     assertConsistentHtmlCachePolicy({ netlifyTomlContents, headersContents });
   });
 });
+
+test("cache policy guard rejects css/js asset drift even when HTML routes align", () => {
+  const netlifyTomlContents = `
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+`;
+
+  const headersContents = `
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+/*.js
+  Cache-Control: public, max-age=31536000, immutable
+`;
+
+  assert.throws(() => {
+    assertConsistentHtmlCachePolicy({ netlifyTomlContents, headersContents });
+  }, /HTML cache policy drift/);
+});
