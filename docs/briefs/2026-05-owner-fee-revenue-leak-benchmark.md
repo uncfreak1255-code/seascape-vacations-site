@@ -22,8 +22,9 @@ Implementation frames: `9:2` desktop, `11:2` mobile
 
 - Updated property-management copy to avoid new banned phrasing, remove owner-detached wording, and align CTA/benefit language to the property-focused intent.
 - Introduced the new redirect alias route `/research/owner-fee-revenue-gap-benchmark-2026/` so visible text can use the “gap” framing while preserving the current legacy route.
-- Folded the pricing-discipline proof section into the benchmark page itself so the benchmark can stand on its own as the owner-facing citation asset.
+- Synced the live benchmark route to the approved Figma implementation frames `9:2` desktop and `11:2` mobile, including the compact fee-stack hero, the three observed examples, the fit-boundary note, and the approved proof-chip set.
 - Kept the benchmark CTA path focused on the teardown route instead of requiring owners to detour through the operator proof pack.
+- Retired the benchmark-embedded intake form so the benchmark now links into the shared `/property-management/` teardown route while preserving benchmark `owner_source` attribution.
 - 2026-05-21 proof-clean follow-up: demoted the AMI income guide out of the owner-proof lane, removed public PriceLabs/AirDNA-style authority language from that guide, and rerouted the owner FAQ on `/property-management/` to the benchmark instead of the AMI average-income explainer.
 - 2026-06-11 Figma implementation follow-up: finished the approved implementation frames (`9:2` desktop, `11:2` mobile), replaced the embedded benchmark form with the teardown intake handoff, kept `Request Your Revenue Teardown`, and preserved the approved proof-label set.
 
