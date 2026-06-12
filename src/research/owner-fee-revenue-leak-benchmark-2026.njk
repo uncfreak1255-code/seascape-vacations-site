@@ -11,7 +11,7 @@ permalink: "/research/owner-fee-revenue-leak-benchmark-2026/"
 {% set heroMethodNotes = [
   "The benchmark uses Seascape's 5-home Gulf Coast operating data where observed.",
   "Scenario math is labeled separately from observed operating data.",
-  "It frames the owner-net conversation before a property-specific teardown."
+  "It frames the owner-net conversation before a property-specific revenue review."
 ] %}
 {% set feeLayers = [
   {
@@ -21,8 +21,8 @@ permalink: "/research/owner-fee-revenue-leak-benchmark-2026/"
     "width": "58%"
   },
   {
-    "title": "OTA drag",
-    "detail": "13.4% observed Airbnb host-fee drag",
+    "title": "Booking-source cost",
+    "detail": "13.4% observed Airbnb host-fee cost",
     "value": "13.4%",
     "width": "78%"
   },
@@ -52,9 +52,9 @@ permalink: "/research/owner-fee-revenue-leak-benchmark-2026/"
     "implication": "Misses booking-channel costs and direct-booking differences."
   },
   {
-    "title": "OTA-heavy mix",
-    "change": "More bookings carry higher platform drag.",
-    "implication": "Lower fee can still leave the owner paying through the channel stack."
+    "title": "Airbnb-heavy mix",
+    "change": "More bookings carry higher platform costs.",
+    "implication": "Lower fee can still leave the owner paying more through booking costs."
   },
   {
     "title": "Better direct-booking share",
@@ -64,7 +64,7 @@ permalink: "/research/owner-fee-revenue-leak-benchmark-2026/"
   {
     "title": "Clear reporting",
     "change": "Manager explains rate, channel, cleaning, review, and maintenance movement.",
-    "implication": "Owner can see what is proven, what is likely, and what is unknown."
+    "implication": "Owner can see what is proven, what deserves a second look, and what is unknown."
   }
 ] %}
 <!doctype html>
@@ -1120,14 +1120,14 @@ a{color:var(--brand-dark);text-decoration:underline}
 <main class="page">
   <section class="hero">
     <div class="hero-copy">
-      <span class="eyebrow">Owner Fee + Revenue Leak Benchmark</span>
+      <span class="eyebrow">Owner Fee + Net Payout Benchmark</span>
       <span class="scope-pill desktop-only">5-property Gulf Coast scope</span>
-      <h1>Your management fee is not the whole revenue leak.</h1>
-      <p class="hero-lead">Most owners compare 15%, 20%, and 25% management fees. That misses the bigger picture: OTA costs, direct bookings, rate decisions, and how clearly your manager explains what is happening to the money you keep.</p>
+      <h1>Your management fee is not the whole payout story.</h1>
+      <p class="hero-lead">Most owners compare 15%, 20%, and 25% management fees. That misses the bigger picture: booking-source costs, direct bookings, rate decisions, and how clearly your manager explains what is happening to the money you keep.</p>
       <p class="hero-support desktop-only">Built from Seascape's current 5-home Gulf Coast portfolio, with scenario math labeled separately from observed operating data.</p>
       <p class="hero-decision-note mobile-only">Built from Seascape's 5-home operating data, with scenario math labeled separately.</p>
       <div class="hero-actions desktop-only">
-        <a class="btn btn-gold" href="#owner-cta" data-track-event="owner_primary_cta_click" data-page-slug="owner-fee-revenue-leak-benchmark-2026">Request Your Revenue Teardown</a>
+        <a class="btn btn-gold" href="#owner-cta" data-track-event="owner_primary_cta_click" data-page-slug="owner-fee-revenue-leak-benchmark-2026">Request Your Revenue Review</a>
         <a class="hero-secondary" href="#benchmark-math">See the benchmark math</a>
       </div>
       <div class="proof-rail desktop-only">
@@ -1139,8 +1139,8 @@ a{color:var(--brand-dark);text-decoration:underline}
     <div class="hero-side desktop-only">
       <div class="side-panel hero-stack-visual">
         <span class="eyebrow">Observed Seascape portfolio data</span>
-        <h2>Fee stack quick read</h2>
-        <p>The benchmark opens with the full cost picture, not a stat wall. The owner sees the fee, booking-channel costs, direct bookings, and manager reporting as one decision problem.</p>
+        <h2>Owner payout quick read</h2>
+        <p>The benchmark opens with the full cost picture, not a stat wall. The owner sees the management fee, booking-source costs, direct bookings, and manager reporting as one decision problem.</p>
         <div class="hero-layer-list">
           {% for layer in feeLayers %}
           <div class="hero-layer">
@@ -1192,8 +1192,8 @@ a{color:var(--brand-dark);text-decoration:underline}
       </article>
       <article class="stack-card">
         <span class="stack-metric">Observed Seascape portfolio data</span>
-        <h3>OTA host drag</h3>
-        <p>Airbnb's fee is not just a platform line item. The observed Seascape benchmark shows 13.4% host-fee drag on post-October 2025 bookings, including fees applied to the full subtotal.</p>
+        <h3>Airbnb booking cost</h3>
+        <p>Airbnb's fee hits the full guest subtotal. In Seascape's observed post-October 2025 bookings, that averaged 13.4%.</p>
       </article>
       <article class="stack-card">
         <span class="stack-metric">Observed Seascape portfolio data</span>
@@ -1210,9 +1210,9 @@ a{color:var(--brand-dark);text-decoration:underline}
 
   <section class="section">
     <div class="section-intro">
-      <span class="eyebrow">Where the leak shows up</span>
+      <span class="eyebrow">Where payout gets thin</span>
       <h2>Owner revenue gets hit in layers.</h2>
-      <p>Management fee is only one layer. The same owner statement can also carry OTA costs, weak direct bookings, unclear rate decisions, and operating misses that make a lower-looking fee less useful than it first appears.</p>
+      <p>Management fee is only one layer. The same owner statement can also carry booking-source costs, weak direct bookings, unclear rate decisions, and operating misses that make a lower fee less helpful than it sounds.</p>
       <div class="section-proof-rail">
         <span class="proof-chip proof-chip--soft">Observed Seascape portfolio data</span>
       </div>
@@ -1225,7 +1225,7 @@ a{color:var(--brand-dark);text-decoration:underline}
       </article>
       {% endfor %}
     </div>
-    <p class="mini-note">Airbnb takes its cut on the full subtotal, including cleaning-heavy stays. That is why the channel layer belongs in the same owner-net review as the management fee.</p>
+    <p class="mini-note">Source note: Airbnb fees apply to the full subtotal, including cleaning-heavy stays. That is why booking-source cost belongs in the same owner review as the management fee.</p>
   </section>
 
   <section class="section">
@@ -1241,7 +1241,7 @@ a{color:var(--brand-dark);text-decoration:underline}
     <div class="compare-grid">
       <div class="compare-panel">
         <span class="eyebrow">Observed Seascape portfolio data</span>
-        <h3>Airbnb Drag vs Direct Payment Cost</h3>
+        <h3>Airbnb cost vs direct payment cost</h3>
         <div class="bar-list">
           <div class="bar-row">
             <div class="bar-label">Airbnb host fee</div>
@@ -1259,21 +1259,21 @@ a{color:var(--brand-dark);text-decoration:underline}
             <div class="bar-value">10.5 pts</div>
           </div>
         </div>
-        <p class="mini-note">Observed Seascape channel-cost references. Airbnb drag is an observed Seascape average; direct cost is a processing reference. This chart is not a market-wide fee survey.</p>
+        <p class="mini-note">Source note: Airbnb cost is an observed Seascape average; direct cost is a processing reference. This chart is not a market-wide fee survey.</p>
       </div>
       <div class="compare-panel">
-        <span class="eyebrow">Where Owner Revenue Actually Leaks</span>
+        <span class="eyebrow">Where owner payout gets thin</span>
         <ul class="quick-list">
           <li>Airbnb takes its cut on the full subtotal, including cleaning-heavy stays.</li>
           <li>A booking can look fine on occupancy while still losing margin through the booking source.</li>
-          <li>The owner question is not whether direct fixes everything. It is whether the current mix is more expensive than it needs to be.</li>
+          <li>Direct booking will not solve everything, but it does show when the current mix is costing more than it should.</li>
         </ul>
       </div>
     </div>
     <div class="compare-mobile mobile-only">
       <article class="compare-mobile-card">
         <h3>Airbnb booking</h3>
-        <strong>13.4% observed host-fee drag</strong>
+        <strong>13.4% observed host-fee cost</strong>
         <p>Observed Seascape average, not a universal Airbnb claim.</p>
       </article>
       <article class="compare-mobile-card">
@@ -1281,13 +1281,13 @@ a{color:var(--brand-dark);text-decoration:underline}
         <strong>2.9% direct payment cost</strong>
         <p>Direct processing reference, not a promise that every booking can move direct.</p>
       </article>
-      <p class="mini-note">Observed Seascape channel-cost references. Airbnb drag is an observed Seascape average; direct cost is a processing reference. This chart is not a market-wide fee survey.</p>
+      <p class="mini-note">Source note: Airbnb cost is an observed Seascape average; direct cost is a processing reference. This chart is not a market-wide fee survey.</p>
     </div>
   </section>
 
   <section class="section" id="benchmark-math">
     <div class="section-intro">
-      <span class="eyebrow">Sample leak math</span>
+      <span class="eyebrow">Sample owner payout math</span>
       <h2>The same management fee can lead to different outcomes.</h2>
       <p>Use this as a simple way to read the full cost picture. The point is not to forecast a specific home's revenue. The point is to show why management fee, booking-channel cost, and direct bookings should be evaluated together.</p>
       <div class="section-proof-rail">
@@ -1323,11 +1323,11 @@ a{color:var(--brand-dark);text-decoration:underline}
       </article>
       {% endfor %}
     </div>
-    <p class="mini-note">Scenario math showing how booking sources and fee drag can change what the owner keeps. It is not a forecast, guarantee, or property-specific quote.</p>
+    <p class="mini-note">Scenario note: This shows how booking sources and total costs can change what the owner keeps. It is not a forecast, guarantee, or property-specific quote.</p>
   </section>
 
   <div class="hero-mobile-actions mobile-only">
-    <a class="btn btn-gold" href="#owner-cta" data-track-event="owner_primary_cta_click" data-page-slug="owner-fee-revenue-leak-benchmark-2026">Request Your Revenue Teardown</a>
+    <a class="btn btn-gold" href="#owner-cta" data-track-event="owner_primary_cta_click" data-page-slug="owner-fee-revenue-leak-benchmark-2026">Request Your Revenue Review</a>
   </div>
 
   <section class="section">
@@ -1356,7 +1356,7 @@ a{color:var(--brand-dark);text-decoration:underline}
         <h3>Bradenton Pool Home</h3>
         <span class="example-metric">16.4%</span>
         <p>In March 2026, Bradenton Pool Home showed 16.4% effective commission because Airbnb took a cut of a cleaning-heavy subtotal.</p>
-        <div class="mini-note">Observed leakage example showing why cleaning-heavy subtotals matter.</div>
+        <div class="mini-note">Source note: Cleaning-heavy stays can raise Airbnb cost because the fee applies to the full subtotal.</div>
       </article>
     </div>
   </section>
@@ -1365,7 +1365,7 @@ a{color:var(--brand-dark);text-decoration:underline}
     <div class="section-intro">
       <span class="eyebrow">Fit</span>
       <h2>Best fit: premium Gulf Coast homes where owner revenue deserves close attention.</h2>
-      <p><a href="/property-management/">Seascape property management</a> is built for owners who want revenue visibility, strong guest care, local operating attention, and plain-English owner communication. The best fit is a premium Gulf Coast home, especially in the $110k-$150k+ gross lane. For market-specific context, compare the <a href="/property-management/vacation-rental-management-anna-maria-island/">AMI</a>, <a href="/property-management/vacation-rental-management-bradenton/">Bradenton</a>, and <a href="/property-management/vacation-rental-management-sarasota/">Sarasota</a> management pages before you request a teardown. If you are still evaluating acquisition fit, start with <a href="/property-management/buy-vacation-rental-property-florida/">buying a Florida vacation rental property</a>.</p>
+      <p><a href="/property-management/">Seascape property management</a> is built for owners who want revenue visibility, strong guest care, local operating attention, and plain-English owner communication. The best fit is a premium Gulf Coast home, especially in the $110k-$150k+ gross lane. For market-specific context, compare the <a href="/property-management/vacation-rental-management-anna-maria-island/">AMI</a>, <a href="/property-management/vacation-rental-management-bradenton/">Bradenton</a>, and <a href="/property-management/vacation-rental-management-sarasota/">Sarasota</a> management pages before you request a revenue review. If you are still evaluating acquisition fit, start with <a href="/property-management/buy-vacation-rental-property-florida/">buying a Florida vacation rental property</a>.</p>
       <div class="section-proof-rail">
         <span class="proof-chip proof-chip--soft">5-property Gulf Coast scope</span>
       </div>
@@ -1375,7 +1375,7 @@ a{color:var(--brand-dark);text-decoration:underline}
         <span class="eyebrow">Best Fit</span>
         <ul class="quick-list">
           <li>Premium Gulf Coast homes projected around $110k-$150k+ gross.</li>
-          <li>Airbnb-heavy homes where OTA drag may be doing more damage than the fee quote suggests.</li>
+          <li>Airbnb-heavy homes where booking-source costs may be taking more than the fee quote suggests.</li>
           <li>Owners who want clearer reporting on revenue, booking channels, reviews, and maintenance follow-through.</li>
           <li>Homes where rate decisions and guest standards matter more than raw activity reports.</li>
         </ul>
@@ -1390,20 +1390,20 @@ a{color:var(--brand-dark);text-decoration:underline}
   </section>
 
   <section class="cta-shell" id="owner-cta">
-    <span class="eyebrow">Private teardown</span>
+    <span class="eyebrow">Private revenue review</span>
     <h2>Want this same scan on your home?</h2>
-    <p>Send the listing URL, owner statement, fee quote, or property address. Seascape will run a short Revenue Teardown that separates what is proven, what is likely leaking, and what is still unknown before any switch conversation.</p>
+    <p>Send the listing URL, owner statement, fee quote, or property address. Seascape will send back a short revenue review that shows where the payout gets thin, which costs deserve a second look, and what still needs to be confirmed before you switch.</p>
     <div class="cta-action-row">
-      <a class="btn btn-gold" href="/property-management/#owner-cta" data-track-event="owner_primary_cta_click" data-page-slug="owner-fee-revenue-leak-benchmark-2026">Request Your Revenue Teardown</a>
+      <a class="btn btn-gold" href="/property-management/#owner-cta" data-track-event="owner_primary_cta_click" data-page-slug="owner-fee-revenue-leak-benchmark-2026">Request Your Revenue Review</a>
       <a class="hero-secondary" href="tel:+19417048545" data-track-event="owner_phone_click" data-page-slug="owner-fee-revenue-leak-benchmark-2026">Call (941) 704-8545</a>
     </div>
-    <p class="cta-proof-inline">No embedded benchmark form here. This links to the teardown intake route; missing statements, calendars, reviews, or fee terms stay marked unknown.</p>
+    <p class="cta-proof-inline">Source note: No embedded form here. If statements, calendars, reviews, or fee terms are missing, the review will mark that clearly instead of guessing.</p>
   </section>
 
   <section class="section method-mobile mobile-only">
     <div class="section-intro" style="margin-bottom:0">
       <span class="eyebrow">How To Read This Benchmark</span>
-      <p>The benchmark uses Seascape's 5-home Gulf Coast operating data where observed, and labels scenario math separately. It is built to help you ask better questions before a property-specific revenue teardown.</p>
+      <p>The benchmark uses Seascape's 5-home Gulf Coast operating data where observed, and labels scenario math separately. It is built to help you ask better questions before a property-specific revenue review.</p>
       <div class="section-proof-rail">
         <span class="proof-chip proof-chip--soft">5-property Gulf Coast scope</span>
         <span class="proof-chip proof-chip--soft">Scenario math, not a forecast</span>
