@@ -2,70 +2,126 @@
 permalink: "/research/owner-fee-revenue-leak-benchmark-2026/"
 ---
 {% set benchmark = ownerProofAssets["gulf-coast-owner-benchmark-2026"] %}
-{% set proofLabels = [
+{% set ctaPath = benchmark.ctaPath or "/property-management/?owner_source=owner-fee-revenue-leak-benchmark-2026#owner-cta" %}
+{% set proofLabels = benchmark.proofLabels or [
   "Observed Seascape portfolio data",
   "Observed property example",
   "Scenario math, not a forecast",
   "Last refreshed: May 2026"
 ] %}
-{% set heroMethodNotes = [
+{% set methodNotes = [
   "The benchmark uses Seascape's 5-home Gulf Coast operating data where observed.",
   "Scenario math is labeled separately from observed operating data.",
-  "It frames the owner-net conversation before a property-specific teardown."
+  "It frames the owner conversation before a property-specific teardown."
 ] %}
-{% set feeLayers = [
+{% set heroStackRows = [
   {
     "title": "Management fee",
     "detail": "10-15% company-level range, not a blanket quote",
     "value": "range",
-    "width": "58%"
+    "width": 58,
+    "fill": "var(--gold)"
   },
   {
-    "title": "OTA drag",
-    "detail": "13.4% observed Airbnb host-fee drag",
+    "title": "Airbnb fees",
+    "detail": "13.4% observed Airbnb host-fee cost",
     "value": "13.4%",
-    "width": "78%"
+    "width": 78,
+    "fill": "var(--white)"
   },
   {
     "title": "Direct payment cost",
-    "detail": "2.9% direct processing reference",
+    "detail": "2.9% direct payment reference",
     "value": "2.9%",
-    "width": "22%"
+    "width": 22,
+    "fill": "var(--gold-light)"
   },
   {
-    "title": "Booking source",
-    "detail": "Direct vs OTA share changes what the owner keeps",
+    "title": "Booking sources",
+    "detail": "More direct bookings can change what you keep",
     "value": "audit",
-    "width": "50%"
+    "width": 50,
+    "fill": "#8db1b2"
   },
   {
-    "title": "Manager reporting",
-    "detail": "Pricing, reviews, maintenance, and reporting",
+    "title": "Clear reporting",
+    "detail": "Rates, reviews, maintenance, and owner updates",
     "value": "audit",
-    "width": "62%"
+    "width": 62,
+    "fill": "var(--gold)"
+  }
+] %}
+{% set comparisonCards = [
+  {
+    "label": "Headline fee",
+    "title": "Management fee",
+    "copy": "The visible percentage owners usually compare first."
+  },
+  {
+    "label": "Marketplace cost",
+    "title": "Airbnb and marketplace fees",
+    "copy": "Platform costs can take more than many owners expect, especially on cleaning-heavy stays."
+  },
+  {
+    "label": "Direct payment",
+    "title": "Direct payment cost",
+    "copy": "Direct processing is lower, which changes what you keep when more stays move through the direct path."
+  },
+  {
+    "label": "Owner updates",
+    "title": "Clear reporting",
+    "copy": "Rate moves, reviews, maintenance, and owner updates should make the money story easier to follow."
+  }
+] %}
+{% set feeLayers = [
+  {
+    "title": "Management fee",
+    "copy": "The visible percentage owners usually compare first."
+  },
+  {
+    "title": "Airbnb fees",
+    "copy": "Platform costs on Airbnb bookings, including the observed host-fee average in this benchmark."
+  },
+  {
+    "title": "Direct payment cost",
+    "copy": "Lower processing cost when qualified bookings move through the direct path."
+  },
+  {
+    "title": "Booking sources",
+    "copy": "The share of stays coming through Airbnb versus direct or lower-cost channels."
+  },
+  {
+    "title": "Clear reporting",
+    "copy": "Whether rate moves, maintenance, reviews, and owner updates make the payout easier to trust."
   }
 ] %}
 {% set scenarioRows = [
   {
     "title": "Headline fee only",
-    "change": "Owner compares management percentage alone.",
-    "implication": "Misses booking-channel costs and direct-booking differences."
+    "change": "You compare management percentage alone.",
+    "implication": "Misses the difference between Airbnb fees and more direct bookings."
   },
   {
-    "title": "OTA-heavy mix",
-    "change": "More bookings carry higher platform drag.",
-    "implication": "Lower fee can still leave the owner paying through the channel stack."
+    "title": "Marketplace-heavy mix",
+    "change": "More stays come through higher-cost marketplaces.",
+    "implication": "A lower fee can still leave you paying more through the booking path."
   },
   {
-    "title": "Better direct-booking share",
-    "change": "More qualified bookings move through direct payment.",
-    "implication": "The owner may keep more even before changing the headline fee."
+    "title": "More direct bookings",
+    "change": "More qualified stays move through direct payment.",
+    "implication": "You may keep more even before changing the headline fee."
   },
   {
     "title": "Clear reporting",
-    "change": "Manager explains rate, channel, cleaning, review, and maintenance movement.",
-    "implication": "Owner can see what is proven, what is likely, and what is unknown."
+    "change": "Your manager explains rate, channel, cleaning, review, and maintenance movement.",
+    "implication": "You can see what deserves a second look before you renew."
   }
+] %}
+{% set fitBullets = [
+  "Premium Gulf Coast homes projected around $110k-$150k+ gross.",
+  "Airbnb-heavy homes where booking-source costs may be doing more damage than the fee quote suggests.",
+  "Owners who want clearer reporting on revenue, booking sources, reviews, and maintenance follow-through.",
+  "Homes where rate control and guest standards matter more than raw activity reports."
 ] %}
 <!doctype html>
 <html lang="en">
@@ -73,7 +129,7 @@ permalink: "/research/owner-fee-revenue-leak-benchmark-2026/"
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Vacation Rental Management Fees: Gulf Coast Benchmark 2026 | Seascape</title>
-<meta name="description" content="Most owners compare management fees and stop there. This 5-property Gulf Coast benchmark shows how pricing, booking channels, and operating costs affect what you actually keep.">
+<meta name="description" content="Most owners compare management fees and stop there. This 5-property Gulf Coast benchmark shows how pricing, booking sources, and operating costs affect what you actually keep.">
 <meta name="author" content="Sawyer Beckett, Seascape Vacations">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://seascape-vacations.com/research/owner-fee-revenue-leak-benchmark-2026/">
@@ -81,25 +137,25 @@ permalink: "/research/owner-fee-revenue-leak-benchmark-2026/"
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://seascape-vacations.com/research/owner-fee-revenue-leak-benchmark-2026/">
 <meta property="og:title" content="The Owner Fee + Revenue Leak Benchmark">
-<meta property="og:description" content="Most owners compare management fees and stop there. This 5-property Gulf Coast benchmark shows how pricing, booking channels, and operating costs affect what you actually keep.">
+<meta property="og:description" content="Most owners compare management fees and stop there. This 5-property Gulf Coast benchmark shows how pricing, booking sources, and operating costs affect what you actually keep.">
 <meta property="og:image" content="https://seascape-vacations.com/images/seascape-og-default.jpg">
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="Seascape Vacations">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="The Owner Fee + Revenue Leak Benchmark">
-<meta name="twitter:description" content="Most owners compare management fees and stop there. This 5-property Gulf Coast benchmark shows how pricing, booking channels, and operating costs affect what you actually keep.">
+<meta name="twitter:description" content="Most owners compare management fees and stop there. This 5-property Gulf Coast benchmark shows how pricing, booking sources, and operating costs affect what you actually keep.">
 <meta name="twitter:image" content="https://seascape-vacations.com/images/seascape-og-default.jpg">
 
 <script type="application/ld+json">{
   "@context": "https://schema.org",
   "@type": "Article",
   "headline": "Owner Fee + Revenue Leak Benchmark",
-  "description": "Most owners compare management fees and stop there. This benchmark shows how pricing, booking channels, and operating costs affect what you actually keep.",
+  "description": "Most owners compare management fees and stop there. This benchmark shows how pricing, booking sources, and operating costs affect what you actually keep.",
   "mainEntityOfPage": "https://seascape-vacations.com/research/owner-fee-revenue-leak-benchmark-2026/",
   "image": "https://seascape-vacations.com/images/seascape-og-default.jpg",
   "datePublished": "2026-05-03",
-  "dateModified": "2026-05-21",
+  "dateModified": "2026-06-11",
   "author": {
     "@type": "Person",
     "name": "Sawyer Beckett",
@@ -143,7 +199,7 @@ permalink: "/research/owner-fee-revenue-leak-benchmark-2026/"
       "name": "What is the biggest cost owners miss when comparing management fees?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "The missing cost is often not the management fee alone. It is everything around it: marketplace fees, payment costs, discounting, and day-to-day execution. Seascape's current benchmark shows an observed 13.4% Airbnb host-fee cost compared with an approximate 2.9% direct payment cost."
+        "text": "The missing cost is often not the management fee alone. It is everything around it: Airbnb fees, direct payment costs, discounting, and day-to-day execution. Seascape's current benchmark shows an observed 13.4% Airbnb host-fee cost compared with an approximate 2.9% direct payment cost."
       }
     },
     {
@@ -151,7 +207,7 @@ permalink: "/research/owner-fee-revenue-leak-benchmark-2026/"
       "name": "Can direct bookings improve what an owner keeps?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes, when they replace higher-cost marketplace bookings. Seascape's current Gulf Coast operating set has already routed $119,923 through direct bookings, but the report treats that upside as an example rather than a universal guarantee."
+        "text": "Yes, when they replace higher-cost marketplace bookings. Seascape's current Gulf Coast operating set has already routed $119,923 through direct bookings, but the benchmark treats that upside as an example rather than a universal guarantee."
       }
     },
     {
@@ -159,7 +215,7 @@ permalink: "/research/owner-fee-revenue-leak-benchmark-2026/"
       "name": "Should owners choose the lowest management fee?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Not automatically. A lower headline fee can still leave you behind if pricing is soft, booking channels are expensive, or local operations erode review quality and rate power. The better comparison is what you actually keep after management fee, booking costs, and execution risk."
+        "text": "Not automatically. A lower headline fee can still leave you behind if pricing is soft, booking sources are expensive, or local operations erode review quality and rate fit. The better comparison is what you actually keep after management fee, booking costs, and execution risk."
       }
     }
   ]
@@ -238,7 +294,7 @@ a{color:var(--brand-dark);text-decoration:underline}
 }
 .hero{
   display:grid;
-  grid-template-columns:minmax(0,1.15fr) minmax(320px,.85fr);
+  grid-template-columns:minmax(0,1.15fr) minmax(360px,.85fr);
   gap:28px;
   align-items:stretch;
   background:linear-gradient(149deg,var(--brand-darker) 6%, var(--brand-dark) 54%, #476d6f 94%);
@@ -287,9 +343,8 @@ a{color:var(--brand-dark);text-decoration:underline}
   color:rgba(255,255,255,.76);
   font-size:15px;
 }
-.hero-decision-note{
+.hero-caption{
   display:none;
-  max-width:32ch;
   color:#d6d6ce;
   font-size:12px;
   line-height:1.5;
@@ -361,111 +416,71 @@ a{color:var(--brand-dark);text-decoration:underline}
   border-radius:22px;
   padding:22px;
 }
-.side-panel h2,
-.side-panel h3{
-  color:var(--white);
-}
 .side-panel p,
 .side-panel li{
-  color:rgba(255,255,255,.82);
+  color:rgba(255,255,255,.84);
 }
 .side-panel .eyebrow{
   color:var(--gold-light);
+  margin-bottom:12px;
+}
+.hero-stack-title{
+  color:var(--white);
+  font-size:30px;
+  line-height:1.14;
   margin-bottom:10px;
 }
-.hero-stack-visual h2{
-  font-size:28px;
-  line-height:1.14;
-  margin:12px 0 12px;
-}
-.hero-stack-visual > p{
+.hero-stack-copy{
   font-size:14px;
-  line-height:1.58;
+  line-height:1.6;
+  margin-bottom:16px;
 }
-.hero-layer-list{
+.hero-stack-list{
   display:grid;
-  gap:14px;
-  margin-top:18px;
+  gap:12px;
 }
-.hero-layer{
+.hero-stack-row{
   display:grid;
-  grid-template-columns:148px minmax(0,1fr) 52px;
+  grid-template-columns:minmax(0,1fr) 140px 56px;
   gap:12px;
   align-items:center;
 }
-.hero-layer-title{
-  display:grid;
-  gap:3px;
-}
-.hero-layer-title strong{
+.hero-stack-text strong{
+  display:block;
   color:var(--white);
   font-size:12px;
   line-height:1.2;
-  letter-spacing:.1em;
-  text-transform:uppercase;
+  font-weight:700;
 }
-.hero-layer-title span{
-  color:rgba(255,255,255,.72);
-  font-size:11px;
-  line-height:1.28;
+.hero-stack-text span{
+  display:block;
+  color:rgba(255,255,255,.74);
+  font-size:10px;
+  line-height:1.4;
 }
-.hero-layer-track{
+.hero-stack-track{
   height:12px;
-  border-radius:999px;
   background:rgba(255,255,255,.16);
+  border-radius:999px;
   overflow:hidden;
 }
-.hero-layer-fill{
+.hero-stack-fill{
   display:block;
   height:100%;
   border-radius:999px;
-  background:var(--gold);
 }
-.hero-layer-value{
-  text-align:right;
+.hero-stack-value{
   color:var(--gold-light);
-  font-size:12px;
-  line-height:1.2;
-  font-weight:700;
-}
-.hero-stack-caption{
-  margin-top:18px;
-  font-size:12px;
-  line-height:1.5;
-  color:rgba(255,255,255,.7);
-}
-.stats-grid{
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:14px;
-}
-.stat-card{
-  background:rgba(255,255,255,.1);
-  border:1px solid rgba(255,255,255,.14);
-  border-radius:18px;
-  padding:18px;
-}
-.stat-card strong{
-  display:block;
-  font-family:"Playfair Display",Georgia,serif;
-  font-size:34px;
-  line-height:1;
-  color:var(--gold-light);
-  margin-bottom:8px;
-}
-.stat-card span{
-  display:block;
   font-size:11px;
   line-height:1.2;
-  letter-spacing:.14em;
-  text-transform:uppercase;
-  color:var(--gold-light);
   font-weight:700;
-  margin-bottom:8px;
+  text-align:right;
 }
-.stat-card p{
-  font-size:14px;
-  line-height:1.6;
+.hero-stack-note{
+  margin-top:16px;
+  color:var(--gold-light) !important;
+  font-size:12px !important;
+  line-height:1.5;
 }
 .method-list,
 .quick-list{
@@ -496,17 +511,6 @@ a{color:var(--brand-dark);text-decoration:underline}
 .hero-mobile-actions{
   display:none;
 }
-.source-note{
-  margin-top:26px;
-  background:var(--cream-light);
-  border:1px solid rgba(61,92,93,.12);
-  border-radius:20px;
-  padding:20px 22px;
-}
-.source-note p{
-  font-size:14px;
-  color:var(--stone-light);
-}
 .section{
   margin-top:32px;
   background:var(--white);
@@ -534,46 +538,27 @@ a{color:var(--brand-dark);text-decoration:underline}
 .section p{
   font-size:16px;
 }
-.stack-grid{
+.section-strong{
+  font-weight:700;
+}
+.section-caption{
+  margin-top:16px;
+  font-size:13px;
+  line-height:1.55;
+  color:var(--stone-light);
+}
+.comparison-grid{
   display:grid;
   grid-template-columns:repeat(4,minmax(0,1fr));
   gap:16px;
 }
-.fee-layer-grid{
-  display:grid;
-  grid-template-columns:repeat(5,minmax(0,1fr));
-  gap:12px;
-  margin-top:24px;
-}
-.fee-layer-card{
-  background:var(--cream-light);
-  border:1px solid rgba(61,92,93,.12);
-  border-radius:20px;
-  padding:18px;
-}
-.fee-layer-card h3{
-  font-size:20px;
-  line-height:1.16;
-  color:var(--brand-dark);
-  margin-bottom:10px;
-}
-.fee-layer-card p{
-  font-size:13px;
-  color:var(--stone-light);
-}
-.stack-card{
+.comparison-card{
   background:var(--cream-light);
   border:1px solid rgba(61,92,93,.12);
   border-radius:20px;
   padding:22px 20px;
 }
-.stack-card h3{
-  font-size:21px;
-  line-height:1.12;
-  color:var(--brand-dark);
-  margin-bottom:12px;
-}
-.stack-metric{
+.comparison-label{
   display:block;
   font-size:12px;
   line-height:1.2;
@@ -583,18 +568,54 @@ a{color:var(--brand-dark);text-decoration:underline}
   font-weight:700;
   margin-bottom:10px;
 }
-.stack-card p{
+.comparison-card h3{
+  font-size:21px;
+  line-height:1.12;
+  color:var(--brand-dark);
+  margin-bottom:12px;
+}
+.comparison-card p{
   font-size:14px;
   color:var(--stone-light);
+}
+.layer-grid{
+  display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:12px;
+  margin-top:18px;
+  padding:20px;
+  background:var(--cream-light);
+  border:1px solid rgba(61,92,93,.12);
+  border-radius:20px;
+}
+.layer-card{
+  background:var(--white);
+  border:1px solid rgba(61,92,93,.12);
+  border-radius:16px;
+  padding:18px;
+}
+.layer-card h3{
+  color:var(--brand-dark);
+  font-size:22px;
+  line-height:1.14;
+  margin-bottom:10px;
+}
+.layer-card p{
+  color:var(--stone-light);
+  font-size:13px;
+  line-height:1.54;
+}
+.mini-note{
+  margin-top:14px;
+  font-size:12px;
+  color:var(--brand-dark);
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  font-weight:700;
 }
 .compare-grid{
   display:grid;
   grid-template-columns:minmax(0,1.05fr) minmax(290px,.95fr);
-  gap:20px;
-}
-.discipline-grid{
-  display:grid;
-  grid-template-columns:minmax(0,.94fr) minmax(0,1.06fr);
   gap:20px;
 }
 .compare-panel{
@@ -603,86 +624,11 @@ a{color:var(--brand-dark);text-decoration:underline}
   border-radius:22px;
   padding:24px;
 }
-.discipline-card{
-  background:var(--cream-light);
-  border:1px solid rgba(61,92,93,.12);
-  border-radius:22px;
-  padding:24px;
-}
-.discipline-card--proof{
-  background:linear-gradient(180deg,rgba(95,138,139,.08) 0%, var(--cream-light) 100%);
-}
-.discipline-card h3{
+.compare-panel h3{
   font-size:25px;
   line-height:1.14;
   color:var(--brand-dark);
-  margin-bottom:12px;
-}
-.discipline-card p{
-  font-size:14px;
-  color:var(--stone-light);
-}
-.discipline-metrics{
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:12px;
-  margin:18px 0 16px;
-}
-.discipline-metric{
-  background:var(--white);
-  border:1px solid rgba(61,92,93,.12);
-  border-radius:18px;
-  padding:16px;
-}
-.discipline-metric strong{
-  display:block;
-  font-family:"Playfair Display",Georgia,serif;
-  font-size:32px;
-  line-height:1;
-  color:var(--brand-dark);
-  margin-bottom:8px;
-}
-.discipline-metric span{
-  display:block;
-  font-size:12px;
-  line-height:1.35;
-  letter-spacing:.08em;
-  text-transform:uppercase;
-  color:var(--brand-dark);
-  font-weight:700;
-}
-.discipline-boundary{
-  margin-top:14px;
-  padding-top:14px;
-  border-top:1px solid rgba(61,92,93,.12);
-}
-.compare-mobile{
-  display:none;
-}
-.compare-mobile-card{
-  background:var(--cream-light);
-  border:1px solid rgba(61,92,93,.12);
-  border-radius:16px;
-  padding:16px;
-}
-.compare-mobile-card h3{
-  font-family:Poppins,-apple-system,sans-serif;
-  font-size:14px;
-  font-weight:700;
-  color:var(--brand-dark);
-  margin-bottom:6px;
-}
-.compare-mobile-card strong{
-  display:block;
-  font-family:"Playfair Display",Georgia,serif;
-  font-size:24px;
-  line-height:1.08;
-  color:var(--brand-dark);
-  margin-bottom:6px;
-}
-.compare-mobile-card p{
-  font-size:13px;
-  color:var(--brand-dark);
+  margin:10px 0 12px;
 }
 .bar-list{
   display:grid;
@@ -716,42 +662,33 @@ a{color:var(--brand-dark);text-decoration:underline}
   height:100%;
   border-radius:999px;
 }
-.example-grid{
-  display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:16px;
+.compare-mobile{
+  display:none;
 }
-.example-card{
+.compare-mobile-card{
   background:var(--cream-light);
   border:1px solid rgba(61,92,93,.12);
-  border-radius:20px;
-  padding:22px;
+  border-radius:16px;
+  padding:16px;
 }
-.example-card h3{
-  font-size:24px;
-  line-height:1.12;
-  color:var(--brand-dark);
-  margin:10px 0 14px;
-}
-.example-card p{
+.compare-mobile-card h3{
+  font-family:Poppins,-apple-system,sans-serif;
   font-size:14px;
-  color:var(--stone-light);
-}
-.example-metric{
-  display:block;
-  font-size:30px;
-  line-height:1;
-  color:var(--brand-dark);
-  font-family:"Playfair Display",Georgia,serif;
-  margin-bottom:12px;
-}
-.mini-note{
-  margin-top:14px;
-  font-size:12px;
-  color:var(--brand-dark);
-  letter-spacing:.12em;
-  text-transform:uppercase;
   font-weight:700;
+  color:var(--brand-dark);
+  margin-bottom:6px;
+}
+.compare-mobile-card strong{
+  display:block;
+  font-family:"Playfair Display",Georgia,serif;
+  font-size:24px;
+  line-height:1.08;
+  color:var(--brand-dark);
+  margin-bottom:6px;
+}
+.compare-mobile-card p{
+  font-size:13px;
+  color:var(--brand-dark);
 }
 .scenario-table-wrap{
   overflow-x:auto;
@@ -804,9 +741,38 @@ a{color:var(--brand-dark);text-decoration:underline}
 .scenario-card .scenario-card-note{
   color:var(--brand-dark);
 }
+.example-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:16px;
+}
+.example-card{
+  background:var(--cream-light);
+  border:1px solid rgba(61,92,93,.12);
+  border-radius:20px;
+  padding:22px;
+}
+.example-card h3{
+  font-size:24px;
+  line-height:1.12;
+  color:var(--brand-dark);
+  margin:10px 0 14px;
+}
+.example-card p{
+  font-size:14px;
+  color:var(--stone-light);
+}
+.example-metric{
+  display:block;
+  font-size:30px;
+  line-height:1;
+  color:#8A6B2F;
+  font-family:"Playfair Display",Georgia,serif;
+  margin-bottom:12px;
+}
 .fit-grid{
   display:grid;
-  grid-template-columns:minmax(0,.95fr) minmax(280px,1.05fr);
+  grid-template-columns:minmax(0,.95fr) minmax(300px,.85fr);
   gap:20px;
 }
 .fit-card{
@@ -815,158 +781,41 @@ a{color:var(--brand-dark);text-decoration:underline}
   border-radius:20px;
   padding:24px;
 }
+.fit-card p{
+  font-size:14px;
+  color:var(--stone);
+}
 .cta-shell{
   margin-top:32px;
-  background:linear-gradient(156deg,var(--brand-darker) 6%, var(--brand-dark) 94%);
+  background:linear-gradient(166deg,var(--brand-darker) 6%, var(--brand-dark) 94%);
   color:var(--white);
   border-radius:28px;
   padding:34px 30px;
   box-shadow:0 20px 42px rgba(45,70,71,.18);
 }
 .cta-shell .eyebrow{
-  color:#8db1b2;
+  color:var(--gold-light);
 }
 .cta-shell h2{
   color:var(--white);
   margin-top:10px;
+  font-size:clamp(24px,4vw,40px);
+  line-height:1.08;
 }
 .cta-shell > p{
   color:rgba(255,255,255,.88);
   max-width:760px;
   margin-top:12px;
 }
-.cta-card{
-  margin-top:20px;
-  background:var(--white);
-  border:1px solid #d9d6cb;
-  border-radius:22px;
-  padding:27px;
-}
-.cta-grid{
-  display:grid;
-  grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);
-  gap:24px;
-  align-items:start;
-}
-.cta-copy{
-  display:grid;
-  gap:14px;
-}
-.cta-copy h3{
-  font-size:28px;
-  line-height:1.14;
-  color:var(--brand-dark);
-}
-.cta-copy p{
-  font-size:15px;
-  color:#4a4a4a;
-}
-.cta-proof-note{
-  font-size:13px !important;
-  color:var(--brand-dark) !important;
-}
-.cta-kicker{
-  display:block;
-  font-size:12px;
-  line-height:1.2;
-  letter-spacing:.16em;
-  text-transform:uppercase;
-  font-weight:700;
-  color:var(--brand-dark);
-  margin-bottom:6px;
-}
-.cta-copy-small{
-  font-size:14px !important;
-  color:var(--stone) !important;
-}
-.cta-action-row{
-  display:flex;
-  flex-wrap:wrap;
-  align-items:center;
-  gap:14px;
+.cta-button{
   margin-top:24px;
 }
-.cta-action-row .hero-secondary{
-  color:var(--gold-light);
-}
-.cta-action-row .hero-secondary:hover{
-  color:var(--white);
-}
-.cta-proof-inline{
+.cta-note{
+  margin-top:16px;
+  font-size:13px !important;
+  line-height:1.55 !important;
+  color:var(--gold-light) !important;
   max-width:760px;
-  margin-top:18px;
-  color:rgba(255,255,255,.8);
-  font-size:13px;
-  line-height:1.55;
-}
-.cta-confirmation{
-  background:var(--cream);
-  border:1px solid #e5dcc3;
-  border-radius:16px;
-  padding:15px;
-}
-.cta-confirmation p{
-  font-size:13px;
-  color:var(--brand-dark);
-}
-.owner-lead-form{
-  display:grid;
-  gap:14px;
-  text-align:left;
-}
-.owner-form-grid{
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:12px;
-}
-.owner-form-field{
-  display:grid;
-  gap:8px;
-  font-size:14px;
-  font-weight:600;
-  color:var(--brand-dark);
-}
-.owner-form-field span{
-  line-height:1.35;
-}
-.owner-form-field input,
-.owner-form-field textarea{
-  width:100%;
-  min-height:52px;
-  border-radius:14px;
-  border:1px solid #d9d6cb;
-  background:var(--cream-light);
-  color:var(--stone);
-  padding:14px 15px;
-  font:400 14px/1.4 Poppins,-apple-system,sans-serif;
-}
-.owner-form-field textarea{
-  min-height:72px;
-  resize:vertical;
-}
-.owner-form-field input::placeholder,
-.owner-form-field textarea::placeholder{
-  color:#7a7a73;
-}
-.owner-form-field--wide{
-  grid-column:1 / -1;
-}
-.owner-form-field--file input{
-  padding:12px 15px;
-}
-.owner-form-help{
-  font-size:12px;
-  font-weight:400;
-  color:var(--stone-light);
-}
-.owner-form-submit{
-  justify-content:center;
-  width:fit-content;
-}
-.owner-form-note{
-  font-size:13px;
-  color:var(--stone-light);
-  margin:0;
 }
 .method-mobile{
   display:none;
@@ -979,15 +828,18 @@ a{color:var(--brand-dark);text-decoration:underline}
 }
 @media (max-width:980px){
   .hero,
-  .cta-grid,
-  .fit-grid,
-  .discipline-grid{
+  .compare-grid,
+  .fit-grid{
     grid-template-columns:1fr;
   }
-  .stack-grid,
-  .fee-layer-grid,
-  .example-grid{
+  .comparison-grid{
     grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+  .layer-grid{
+    grid-template-columns:repeat(3,minmax(0,1fr));
+  }
+  .example-grid{
+    grid-template-columns:1fr;
   }
 }
 @media (max-width:720px){
@@ -1012,13 +864,10 @@ a{color:var(--brand-dark);text-decoration:underline}
     font-size:15px;
     line-height:1.6;
   }
-  .hero-decision-note{
+  .hero-caption{
     display:block;
   }
-  .proof-rail,
-  .scope-pill,
-  .source-note,
-  .stack-grid,
+  .comparison-grid,
   .compare-grid,
   .scenario-table-wrap{
     display:none;
@@ -1037,73 +886,31 @@ a{color:var(--brand-dark);text-decoration:underline}
   }
   .hero-mobile-actions .hero-secondary{
     width:max-content;
+    color:var(--brand-dark);
+    border-color:rgba(61,92,93,.32);
   }
   .compare-mobile,
   .scenario-cards{
     display:grid;
     gap:12px;
   }
-  .discipline-metrics{
+  .layer-grid{
     grid-template-columns:1fr;
-  }
-  .scenario-cards{
-    grid-template-columns:repeat(2,minmax(0,1fr));
-  }
-  .fee-layer-grid{
-    display:grid;
-    grid-template-columns:1fr;
-  }
-  .example-grid{
-    grid-template-columns:1fr;
-  }
-  .cta-shell > p{
-    font-size:14px;
-    line-height:1.6;
-  }
-  .cta-card{
-    background:transparent;
-    border:none;
     padding:0;
-    margin-top:16px;
-  }
-  .cta-copy h3{
-    font-size:24px;
-    color:var(--white);
-  }
-  .cta-copy p{
-    color:#f2f1ec;
-  }
-  .cta-proof-note{
-    color:var(--gold-light) !important;
-  }
-  .cta-kicker{
-    color:var(--gold-light);
-  }
-  .cta-copy-small{
-    color:#f2f1ec !important;
-  }
-  .cta-action-row{
-    display:grid;
+    background:none;
+    border:none;
     gap:12px;
   }
-  .cta-action-row .btn{
-    width:100%;
+  .comparison-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:12px;
   }
-  .cta-action-row .hero-secondary{
-    width:max-content;
-  }
-  .cta-confirmation{
-    background:var(--cream-light);
-    padding:16px;
-  }
-  .cta-confirmation p{
-    color:var(--brand-dark);
-  }
-  .owner-form-grid{
+  .fit-grid{
     grid-template-columns:1fr;
   }
-  .owner-form-submit{
-    width:100%;
+  .section-caption{
+    font-size:12px;
   }
   .method-mobile{
     display:block;
@@ -1121,13 +928,13 @@ a{color:var(--brand-dark);text-decoration:underline}
   <section class="hero">
     <div class="hero-copy">
       <span class="eyebrow">Owner Fee + Revenue Leak Benchmark</span>
-      <span class="scope-pill desktop-only">5-property Gulf Coast scope</span>
+      <span class="scope-pill desktop-only">{{ benchmark.scopeLabel }}</span>
       <h1>Your management fee is not the whole revenue leak.</h1>
-      <p class="hero-lead">Most owners compare 15%, 20%, and 25% management fees. That misses the bigger picture: OTA costs, direct bookings, rate decisions, and how clearly your manager explains what is happening to the money you keep.</p>
-      <p class="hero-support desktop-only">Built from Seascape's current 5-home Gulf Coast portfolio, with scenario math labeled separately from observed operating data.</p>
-      <p class="hero-decision-note mobile-only">Built from Seascape's 5-home operating data, with scenario math labeled separately.</p>
+      <p class="hero-lead">Most owners compare 15%, 20%, and 25% management fees. That misses Airbnb fees, more direct bookings, rate control, and how clearly your manager explains what actually reaches your payout.</p>
+      <p class="hero-support desktop-only"><strong>What actually reaches my owner statement?</strong> A lower management fee does not always mean a better result. <strong>Source note:</strong> Observed Seascape portfolio data is labeled separately from scenario math and property examples.</p>
+      <p class="hero-caption mobile-only">This benchmark is a decision aid, not a revenue forecast or market-wide fee survey.</p>
       <div class="hero-actions desktop-only">
-        <a class="btn btn-gold" href="#owner-cta" data-track-event="owner_primary_cta_click" data-page-slug="owner-fee-revenue-leak-benchmark-2026">Request Your Revenue Teardown</a>
+        <a class="btn btn-gold" href="{{ ctaPath }}" data-track-event="owner_primary_cta_click" data-page-slug="owner-fee-revenue-leak-benchmark-2026">Request Your Revenue Teardown</a>
         <a class="hero-secondary" href="#benchmark-math">See the benchmark math</a>
       </div>
       <div class="proof-rail desktop-only">
@@ -1137,28 +944,28 @@ a{color:var(--brand-dark);text-decoration:underline}
       </div>
     </div>
     <div class="hero-side desktop-only">
-      <div class="side-panel hero-stack-visual">
+      <div class="side-panel">
         <span class="eyebrow">Observed Seascape portfolio data</span>
-        <h2>Fee stack quick read</h2>
-        <p>The benchmark opens with the full cost picture, not a stat wall. The owner sees the fee, booking-channel costs, direct bookings, and manager reporting as one decision problem.</p>
-        <div class="hero-layer-list">
-          {% for layer in feeLayers %}
-          <div class="hero-layer">
-            <div class="hero-layer-title">
-              <strong>{{ layer.title }}</strong>
-              <span>{{ layer.detail }}</span>
+        <h2 class="hero-stack-title">Fee stack quick read</h2>
+        <p class="hero-stack-copy">The benchmark opens with the fee, booking-source cost, direct path, and reporting story together so you can see the pressure points in one place.</p>
+        <div class="hero-stack-list">
+          {% for row in heroStackRows %}
+          <div class="hero-stack-row">
+            <div class="hero-stack-text">
+              <strong>{{ row.title }}</strong>
+              <span>{{ row.detail }}</span>
             </div>
-            <div class="hero-layer-track"><span class="hero-layer-fill" style="width:{{ layer.width }}"></span></div>
-            <span class="hero-layer-value">{{ layer.value }}</span>
+            <div class="hero-stack-track"><span class="hero-stack-fill" style="width:{{ row.width }}%;background:{{ row.fill }}"></span></div>
+            <div class="hero-stack-value">{{ row.value }}</div>
           </div>
           {% endfor %}
         </div>
-        <p class="hero-stack-caption">Compact visual only: no decorative stat-card wall. Scenario math and proof captions continue below the hero.</p>
+        <p class="hero-stack-note">Compact visual only. The full comparison, scenario math, and proof notes continue below.</p>
       </div>
       <div class="side-panel">
         <span class="eyebrow">How To Read This</span>
         <ul class="method-list">
-          {% for note in heroMethodNotes %}
+          {% for note in methodNotes %}
           <li>{{ note }}</li>
           {% endfor %}
         </ul>
@@ -1167,129 +974,118 @@ a{color:var(--brand-dark);text-decoration:underline}
   </section>
 
   <div class="hero-mobile-scope mobile-only">
-    <span class="proof-chip proof-chip--soft">5-property Gulf Coast scope</span>
+    <span class="proof-chip proof-chip--soft">{{ benchmark.scopeLabel }}</span>
   </div>
 
-  <section class="source-note">
-    <p><strong>Source note:</strong> {{ benchmark.sourceLabel }}. This benchmark is a practical reference built from Seascape's 5-home operating data. Scenario math is labeled separately from observed operating facts.</p>
-  </section>
+  <div class="hero-mobile-actions mobile-only">
+    <a class="btn btn-gold" href="{{ ctaPath }}" data-track-event="owner_primary_cta_click" data-page-slug="owner-fee-revenue-leak-benchmark-2026">Request Your Revenue Teardown</a>
+    <a class="hero-secondary" href="#benchmark-math">See the benchmark math</a>
+  </div>
 
   <section class="section">
     <div class="section-intro">
       <span class="eyebrow">The wrong comparison</span>
       <h2>A lower management fee can still leave owner revenue exposed.</h2>
-      <p>The headline <a href="/property-management/vacation-rental-management-fees-florida/">management fee</a> matters, but it is not the whole economic picture. If most bookings arrive through high-cost channels, if direct bookings are weak, if cleaning-heavy subtotals inflate OTA fees, or if rate decisions are not explained clearly, the owner can lose margin even when the management fee looks competitive. Owners usually pair this with a quick check of <a href="/property-management/vacation-rental-licensing-florida/">Florida licensing exposure</a> and <a href="/property-management/vrbo-management-services-florida/">VRBO channel costs</a> before comparing fee quotes.</p>
-      <p><strong>The question is not only "What do they charge?" It is "What actually reaches my owner statement?"</strong></p>
+      <p>The headline fee matters, but it is not the whole picture. If most stays come through expensive booking paths, if rate control is soft, if cleaning-heavy subtotals push Airbnb fees higher, or if the reporting stays vague, you can still keep less even when the management fee looks competitive.</p>
+      <p class="section-strong">That is why the real comparison is what actually reaches your owner statement.</p>
       <div class="section-proof-rail">
         <span class="proof-chip proof-chip--soft">Observed Seascape portfolio data</span>
       </div>
     </div>
-    <div class="stack-grid">
-      <article class="stack-card">
-        <span class="stack-metric">Headline fee</span>
-        <h3>Management fee</h3>
-        <p>The fee still matters, but it is only one piece of what the owner keeps. A lower-looking manager can still underperform if the calendar, booking sources, or operations are weak.</p>
-      </article>
-      <article class="stack-card">
-        <span class="stack-metric">Observed Seascape portfolio data</span>
-        <h3>OTA host drag</h3>
-        <p>Airbnb's fee is not just a platform line item. The observed Seascape benchmark shows 13.4% host-fee drag on post-October 2025 bookings, including fees applied to the full subtotal.</p>
-      </article>
-      <article class="stack-card">
-        <span class="stack-metric">Observed Seascape portfolio data</span>
-        <h3>Direct payment cost</h3>
-        <p>Direct processing at about 2.9% does not solve everything by itself. It does show how much owner margin can move when a booking is acquired without the heavier OTA layer.</p>
-      </article>
-      <article class="stack-card">
-        <span class="stack-metric">Property-level review</span>
-        <h3>Rate and operations discipline</h3>
-        <p>Discount-heavy fills, weak premium-week protection, turnover misses, and poor owner communication rarely show up cleanly in a flat management-fee comparison. They still hit the same payout.</p>
-      </article>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="section-intro">
-      <span class="eyebrow">Where the leak shows up</span>
-      <h2>Owner revenue gets hit in layers.</h2>
-      <p>Management fee is only one layer. The same owner statement can also carry OTA costs, weak direct bookings, unclear rate decisions, and operating misses that make a lower-looking fee less useful than it first appears.</p>
-      <div class="section-proof-rail">
-        <span class="proof-chip proof-chip--soft">Observed Seascape portfolio data</span>
-      </div>
-    </div>
-    <div class="fee-layer-grid">
-      {% for layer in feeLayers %}
-      <article class="fee-layer-card">
-        <h3>{{ layer.title }}</h3>
-        <p>{{ layer.detail }}</p>
+    <div class="comparison-grid">
+      {% for card in comparisonCards %}
+      <article class="comparison-card">
+        <span class="comparison-label">{{ card.label }}</span>
+        <h3>{{ card.title }}</h3>
+        <p>{{ card.copy }}</p>
       </article>
       {% endfor %}
     </div>
-    <p class="mini-note">Airbnb takes its cut on the full subtotal, including cleaning-heavy stays. That is why the channel layer belongs in the same owner-net review as the management fee.</p>
+    <p class="section-caption">This benchmark is a decision aid, not a revenue forecast or market-wide fee survey.</p>
+  </section>
+
+  <section class="section" id="benchmark-math">
+    <div class="section-intro">
+      <span class="eyebrow">Where the pressure shows up</span>
+      <h2>What you keep changes in layers.</h2>
+      <p>The management fee is only the first layer. Airbnb fees, direct payment cost, booking sources, rate softness, and weak reporting can all change the amount you actually keep. If you want the longer breakdown on owner income, pair this page with <a href="/property-management/maximize-vacation-rental-income-florida/">what lowers owner income on Gulf Coast homes</a>.</p>
+      <div class="section-proof-rail">
+        <span class="proof-chip proof-chip--soft">Observed Seascape portfolio data</span>
+      </div>
+    </div>
+    <div class="layer-grid">
+      {% for layer in feeLayers %}
+      <article class="layer-card">
+        <h3>{{ layer.title }}</h3>
+        <p>{{ layer.copy }}</p>
+      </article>
+      {% endfor %}
+    </div>
+    <p class="mini-note">Airbnb fees can apply to the full booking subtotal, including cleaning. That is why cleaning-heavy stays can carry a higher effective commission than owners expect.</p>
   </section>
 
   <section class="section">
     <div class="section-intro">
-      <span class="eyebrow">Booking-channel cost</span>
-      <h2>The booking source can move owner revenue as much as the fee conversation.</h2>
-      <p>In Seascape's benchmark inputs, observed Airbnb host-fee cost averages 13.4% on post-Oct 2025 Seascape bookings. Direct payment cost is 2.9%. That gap is why <a href="/property-management/maximize-vacation-rental-income-florida/">booking sources</a> belong in the owner revenue conversation.</p>
+      <span class="eyebrow">Booking channels</span>
+      <h2>Airbnb fees can move what you keep as much as the management fee.</h2>
+      <p>In Seascape's current five-home benchmark, Airbnb host-fee cost averages 13.4% on post-October 2025 Seascape bookings. Direct payment cost is 2.9%. That gap is why booking sources belong in the conversation.</p>
       <div class="section-proof-rail">
         <span class="proof-chip proof-chip--soft">Observed Seascape portfolio data</span>
-        <span class="proof-chip proof-chip--soft">Last refreshed: May 2026</span>
+        <span class="proof-chip proof-chip--soft">{{ benchmark.refreshedLabel }}</span>
       </div>
     </div>
     <div class="compare-grid">
       <div class="compare-panel">
         <span class="eyebrow">Observed Seascape portfolio data</span>
-        <h3>Airbnb Drag vs Direct Payment Cost</h3>
+        <h3>Airbnb cost vs direct payment cost</h3>
         <div class="bar-list">
           <div class="bar-row">
-            <div class="bar-label">Airbnb host fee</div>
+            <div class="bar-label">Airbnb booking</div>
             <div class="bar-track"><span class="bar-fill" style="width:89%;background:var(--gold)"></span></div>
             <div class="bar-value">13.4%</div>
           </div>
           <div class="bar-row">
-            <div class="bar-label">Direct payment cost</div>
+            <div class="bar-label">Direct booking</div>
             <div class="bar-track"><span class="bar-fill" style="width:19%;background:var(--brand-dark)"></span></div>
             <div class="bar-value">2.9%</div>
           </div>
           <div class="bar-row">
-            <div class="bar-label">Gap to audit</div>
+            <div class="bar-label">Difference to review</div>
             <div class="bar-track"><span class="bar-fill" style="width:70%;background:rgba(95,138,139,.38)"></span></div>
             <div class="bar-value">10.5 pts</div>
           </div>
         </div>
-        <p class="mini-note">Observed Seascape channel-cost references. Airbnb drag is an observed Seascape average; direct cost is a processing reference. This chart is not a market-wide fee survey.</p>
+        <p class="mini-note">Observed Seascape cost references. Airbnb fees are an observed Seascape average; direct cost is a payment reference. This chart is not a market-wide fee survey.</p>
       </div>
       <div class="compare-panel">
-        <span class="eyebrow">Where Owner Revenue Actually Leaks</span>
+        <span class="eyebrow">What to check next</span>
         <ul class="quick-list">
-          <li>Airbnb takes its cut on the full subtotal, including cleaning-heavy stays.</li>
-          <li>A booking can look fine on occupancy while still losing margin through the booking source.</li>
-          <li>The owner question is not whether direct fixes everything. It is whether the current mix is more expensive than it needs to be.</li>
+          <li>Airbnb can take its cut on the full booking subtotal, including cleaning-heavy stays.</li>
+          <li>A calendar can look busy while the booking path still leaves too much money behind.</li>
+          <li>The point is not that direct solves everything. It is whether the current mix is more expensive than it needs to be.</li>
         </ul>
       </div>
     </div>
     <div class="compare-mobile mobile-only">
       <article class="compare-mobile-card">
         <h3>Airbnb booking</h3>
-        <strong>13.4% observed host-fee drag</strong>
+        <strong>13.4% observed host-fee cost</strong>
         <p>Observed Seascape average, not a universal Airbnb claim.</p>
       </article>
       <article class="compare-mobile-card">
         <h3>Direct booking</h3>
         <strong>2.9% direct payment cost</strong>
-        <p>Direct processing reference, not a promise that every booking can move direct.</p>
+        <p>Direct payment reference, not a promise that every stay can move direct.</p>
       </article>
-      <p class="mini-note">Observed Seascape channel-cost references. Airbnb drag is an observed Seascape average; direct cost is a processing reference. This chart is not a market-wide fee survey.</p>
+      <p class="mini-note">Observed Seascape cost references. Airbnb fees are an observed Seascape average; direct cost is a payment reference. This chart is not a market-wide fee survey.</p>
     </div>
   </section>
 
-  <section class="section" id="benchmark-math">
+  <section class="section">
     <div class="section-intro">
-      <span class="eyebrow">Sample leak math</span>
-      <h2>The same management fee can lead to different outcomes.</h2>
-      <p>Use this as a simple way to read the full cost picture. The point is not to forecast a specific home's revenue. The point is to show why management fee, booking-channel cost, and direct bookings should be evaluated together.</p>
+      <span class="eyebrow">Sample comparison</span>
+      <h2>The same management fee can still lead to different results.</h2>
+      <p>Use this as a simple way to read the money story. The point is not to forecast a specific home. The point is to show why management fee, booking-source costs, and more direct bookings should be evaluated together.</p>
       <div class="section-proof-rail">
         <span class="proof-chip proof-chip--soft">Scenario math, not a forecast</span>
       </div>
@@ -1300,7 +1096,7 @@ a{color:var(--brand-dark);text-decoration:underline}
           <tr>
             <th>Scenario</th>
             <th>What changes</th>
-            <th>Owner-net implication</th>
+            <th>What it means for your payout</th>
           </tr>
         </thead>
         <tbody>
@@ -1323,12 +1119,8 @@ a{color:var(--brand-dark);text-decoration:underline}
       </article>
       {% endfor %}
     </div>
-    <p class="mini-note">Scenario math showing how booking sources and fee drag can change what the owner keeps. It is not a forecast, guarantee, or property-specific quote.</p>
+    <p class="mini-note">Scenario math showing how booking-source costs can change what you keep. It is not a forecast, guarantee, or property-specific quote.</p>
   </section>
-
-  <div class="hero-mobile-actions mobile-only">
-    <a class="btn btn-gold" href="#owner-cta" data-track-event="owner_primary_cta_click" data-page-slug="owner-fee-revenue-leak-benchmark-2026">Request Your Revenue Teardown</a>
-  </div>
 
   <section class="section">
     <div class="section-intro">
@@ -1337,77 +1129,59 @@ a{color:var(--brand-dark);text-decoration:underline}
       <p>These examples are narrow on purpose. They show what Seascape has observed in its own operating data, not what every Gulf Coast home should expect.</p>
     </div>
     <div class="example-grid">
+      {% for example in benchmark.examples %}
       <article class="example-card">
-        <span class="eyebrow">Observed property example</span>
-        <h3>Sarasota Luxe</h3>
-        <span class="example-metric">32.8%</span>
-        <p>In March 2026, Sarasota Luxe had 32.8% direct booking share and saved about <strong>$730</strong> versus Airbnb-like fees.</p>
-        <div class="mini-note">Observed March 2026 property example. Not a promise for other homes.</div>
+        <span class="proof-chip proof-chip--soft">Observed property example</span>
+        <h3>{{ example.title }}</h3>
+        <span class="example-metric">{{ example.value }}</span>
+        <p>{{ example.summary }}</p>
+        <div class="mini-note">{{ example.note }}</div>
       </article>
-      <article class="example-card">
-        <span class="eyebrow">Observed property example</span>
-        <h3>Patrick portfolio</h3>
-        <span class="example-metric">5.7%</span>
-        <p>In March 2026, the Patrick portfolio had 5.7% direct booking share. One direct booking saved about <strong>$450</strong> versus Airbnb.</p>
-        <div class="mini-note">Observed March 2026 portfolio example. Direct bookings were real, but still limited.</div>
-      </article>
-      <article class="example-card">
-        <span class="eyebrow">Observed property example</span>
-        <h3>Bradenton Pool Home</h3>
-        <span class="example-metric">16.4%</span>
-        <p>In March 2026, Bradenton Pool Home showed 16.4% effective commission because Airbnb took a cut of a cleaning-heavy subtotal.</p>
-        <div class="mini-note">Observed leakage example showing why cleaning-heavy subtotals matter.</div>
-      </article>
+      {% endfor %}
     </div>
   </section>
 
   <section class="section">
     <div class="section-intro">
       <span class="eyebrow">Fit</span>
-      <h2>Best fit: premium Gulf Coast homes where owner revenue deserves close attention.</h2>
-      <p><a href="/property-management/">Seascape property management</a> is built for owners who want revenue visibility, strong guest care, local operating attention, and plain-English owner communication. The best fit is a premium Gulf Coast home, especially in the $110k-$150k+ gross lane. For market-specific context, compare the <a href="/property-management/vacation-rental-management-anna-maria-island/">AMI</a>, <a href="/property-management/vacation-rental-management-bradenton/">Bradenton</a>, and <a href="/property-management/vacation-rental-management-sarasota/">Sarasota</a> management pages before you request a teardown. If you are still evaluating acquisition fit, start with <a href="/property-management/buy-vacation-rental-property-florida/">buying a Florida vacation rental property</a>.</p>
+      <h2>Best fit: premium Gulf Coast homes where the payout deserves close attention.</h2>
+      <p><a href="/property-management/">Seascape property management</a> is built for owners who want revenue visibility, strong guest care, local follow-through, and plain-English owner updates. The best fit is a premium Gulf Coast home, especially in the $110k-$150k+ gross lane.</p>
       <div class="section-proof-rail">
-        <span class="proof-chip proof-chip--soft">5-property Gulf Coast scope</span>
+        <span class="proof-chip proof-chip--soft">{{ benchmark.scopeLabel }}</span>
       </div>
     </div>
     <div class="fit-grid">
-      <div class="fit-card">
+      <article class="fit-card">
         <span class="eyebrow">Best Fit</span>
         <ul class="quick-list">
-          <li>Premium Gulf Coast homes projected around $110k-$150k+ gross.</li>
-          <li>Airbnb-heavy homes where OTA drag may be doing more damage than the fee quote suggests.</li>
-          <li>Owners who want clearer reporting on revenue, booking channels, reviews, and maintenance follow-through.</li>
-          <li>Homes where rate decisions and guest standards matter more than raw activity reports.</li>
+          {% for bullet in fitBullets %}
+          <li>{{ bullet }}</li>
+          {% endfor %}
         </ul>
-      </div>
-      <div class="fit-card">
+      </article>
+      <article class="fit-card">
         <span class="eyebrow">Fit boundary</span>
-        <ul class="quick-list">
-          <li>Homes projected below $110k gross may need a fee above 15% unless there is a strategic reason to approve the fit.</li>
-        </ul>
-      </div>
+        <p>Homes projected below $110k gross may need a fee above 15% unless there is a strategic reason to approve the fit. Seascape's current fee structure is 10-15% at the company level, but this benchmark is not a blanket quote for every home.</p>
+      </article>
     </div>
   </section>
 
-  <section class="cta-shell" id="owner-cta">
+  <section class="cta-shell">
     <span class="eyebrow">Private teardown</span>
-    <h2>Want this same scan on your home?</h2>
-    <p>Send the listing URL, owner statement, fee quote, or property address. Seascape will run a short Revenue Teardown that separates what is proven, what is likely leaking, and what is still unknown before any switch conversation.</p>
-    <div class="cta-action-row">
-      <a class="btn btn-gold" href="/property-management/#owner-cta" data-track-event="owner_primary_cta_click" data-page-slug="owner-fee-revenue-leak-benchmark-2026">Request Your Revenue Teardown</a>
-      <a class="hero-secondary" href="tel:+19417048545" data-track-event="owner_phone_click" data-page-slug="owner-fee-revenue-leak-benchmark-2026">Call (941) 704-8545</a>
-    </div>
-    <p class="cta-proof-inline">No embedded benchmark form here. This links to the teardown intake route; missing statements, calendars, reviews, or fee terms stay marked unknown.</p>
+    <h2>Want the same scan on your home?</h2>
+    <p>Send the listing URL, owner statement, fee quote, or property address. Seascape will run a short Revenue Teardown that shows what is already clear, what still deserves a closer look, and what you should ask before any switch conversation.</p>
+    <a class="btn btn-gold cta-button" href="{{ ctaPath }}" data-track-event="owner_primary_cta_click" data-page-slug="owner-fee-revenue-leak-benchmark-2026">Request Your Revenue Teardown</a>
+    <p class="cta-note">This page sends you into the shared teardown intake route. Missing statements, calendars, reviews, or fee terms stay marked unknown.</p>
   </section>
 
   <section class="section method-mobile mobile-only">
     <div class="section-intro" style="margin-bottom:0">
       <span class="eyebrow">How To Read This Benchmark</span>
-      <p>The benchmark uses Seascape's 5-home Gulf Coast operating data where observed, and labels scenario math separately. It is built to help you ask better questions before a property-specific revenue teardown.</p>
+      <p>The benchmark uses Seascape's 5-home Gulf Coast operating data where observed, labels scenario math separately, and helps frame the owner conversation before a property-specific teardown.</p>
       <div class="section-proof-rail">
-        <span class="proof-chip proof-chip--soft">5-property Gulf Coast scope</span>
+        <span class="proof-chip proof-chip--soft">{{ benchmark.scopeLabel }}</span>
         <span class="proof-chip proof-chip--soft">Scenario math, not a forecast</span>
-        <span class="proof-chip proof-chip--soft">Last refreshed: May 2026</span>
+        <span class="proof-chip proof-chip--soft">{{ benchmark.refreshedLabel }}</span>
       </div>
     </div>
   </section>
