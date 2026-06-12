@@ -61,7 +61,7 @@ function parseHeadersPolicies(contents) {
 }
 
 function isHtmlLikeHeadersRoute(route) {
-  return !/\*\.(?:avif|css|jpg|js|png|svg|webp|woff2)$/i.test(route);
+  return !/\*\.(?:avif|jpg|png|svg|webp|woff2)$/i.test(route);
 }
 
 function assertConsistentHtmlCachePolicy({ netlifyTomlContents, headersContents }) {

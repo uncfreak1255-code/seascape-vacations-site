@@ -189,6 +189,7 @@ if (phase === "p0") {
   expectExists("_site/properties/index.html");
   expectExists("_site/property-management/index.html");
   expectExists("_site/stays/index.html");
+  expectNotExists("_site/netlify");
   expectNotExists("_site/netlify/functions/get-properties.js");
   expectNotExists("_site/stays/hurricane-preparedness-florida-vacation/index.html");
   expectNotExists("_site/stays/concierge-luxury-services/index.html");

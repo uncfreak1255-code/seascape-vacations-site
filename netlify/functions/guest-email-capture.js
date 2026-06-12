@@ -32,6 +32,14 @@ function resolveWritableStore(event, candidateStore) {
   return getStore(GUEST_EMAIL_CAPTURE_STORE_NAME);
 }
 
+function parseRequestBody(event) {
+  try {
+    return JSON.parse(event.body || "{}");
+  } catch (_error) {
+    return null;
+  }
+}
+
 function parseAudienceIds(value) {
   return String(value || "")
     .split(",")
@@ -162,7 +170,10 @@ async function submitToMailchimpApi(payload, receipt, config, injectedFetch) {
         },
         injectedFetch
       );
-    } catch (_error) {
+    } catch (error) {
+      console.error("mailchimp_tags_sync_failed", {
+        message: error && error.message ? error.message : String(error)
+      });
       warnings.push("mailchimp_tags_sync_failed");
     }
   }
@@ -176,7 +187,10 @@ async function submitToMailchimpApi(payload, receipt, config, injectedFetch) {
         event,
         injectedFetch
       );
-    } catch (_error) {
+    } catch (error) {
+      console.error("mailchimp_event_sync_failed", {
+        message: error && error.message ? error.message : String(error)
+      });
       warnings.push("mailchimp_event_sync_failed");
     }
   }
@@ -201,7 +215,10 @@ async function submitToMailchimp(payload, receipt, injectedFetch) {
 
   try {
     return await submitToMailchimpApi(payload, receipt, config, injectedFetch);
-  } catch (_error) {
+  } catch (error) {
+    console.error("marketing_api_submit_failed", {
+      message: error && error.message ? error.message : String(error)
+    });
     const fallbackResult = await submitToMailchimpForm(payload, injectedFetch);
     return {
       ...fallbackResult,
@@ -215,7 +232,15 @@ async function handleGuestEmailCapture(event, _context, injectedStore, injectedF
     return { statusCode: 405, body: "Method Not Allowed" };
   }
 
-  const payload = JSON.parse(event.body || "{}");
+  const payload = parseRequestBody(event);
+  if (!payload) {
+    return {
+      statusCode: 400,
+      headers: { "content-type": "application/json; charset=utf-8" },
+      body: JSON.stringify({ error: "invalid_json" })
+    };
+  }
+
   const receipt = buildGuestEmailCaptureReceipt(payload);
   if (!receipt) {
     return {
@@ -230,7 +255,24 @@ async function handleGuestEmailCapture(event, _context, injectedStore, injectedF
   const store = resolveWritableStore(event, injectedStore);
   const existingMetrics = await readGuestEmailCaptureMetrics(store);
   const nextMetrics = mergeGuestEmailCaptureMetrics(existingMetrics, storedReceipt);
-  await writeGuestEmailCaptureMetrics(store, nextMetrics);
+  try {
+    await writeGuestEmailCaptureMetrics(store, nextMetrics);
+  } catch (error) {
+    console.error("guest_capture_metrics_write_failed", {
+      submissionId: storedReceipt.submissionId,
+      message: error && error.message ? error.message : String(error)
+    });
+    return {
+      statusCode: 200,
+      headers: { "content-type": "application/json; charset=utf-8" },
+      body: JSON.stringify({
+        stored: false,
+        pagePath: storedReceipt.pagePath,
+        placement: storedReceipt.placement,
+        deliveryMode: delivery.mode
+      })
+    };
+  }
 
   return {
     statusCode: 200,

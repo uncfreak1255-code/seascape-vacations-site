@@ -35,7 +35,7 @@ test("property-management smoke follows the current proof-first owner hub", () =
       <section>
         <p>What owners miss when they compare management fees</p>
       </section>
-      <a href="#owner-cta">Request Your Revenue Teardown</a>
+      <a href="#owner-cta">Request Your Revenue Review</a>
       <a href="/property-management/vacation-rental-management-sarasota/">Sarasota coverage</a>
     </main>
   `;
