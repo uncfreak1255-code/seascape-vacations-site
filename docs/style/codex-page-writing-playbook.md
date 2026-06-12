@@ -50,6 +50,24 @@ On Seascape pages, the first screen should do four jobs fast:
 
 If a page cannot do those four things, the draft is not ready.
 
+If a draft misses one of those four jobs, stop and name the missing job before
+rewriting. Do not ship a weaker compromise just because the page already has
+copy on it.
+
+## Quantitative Limits
+
+Use these as default guardrails unless the active brief or source truth clearly
+requires otherwise:
+
+- opening paragraph: 60 words max and able to stand alone
+- visible CTAs on the first screen: 2 max, with 1 primary and 1 secondary
+- owner hub and owner money pages: 1 primary owner CTA; repeat it only once
+  lower on the page if needed
+- winner guides: keep the direct-answer block above all source notes and limit
+  early commercial exits to 1 destination CTA plus 1 direct-book CTA
+- stay money pages: keep the tradeoff block above the FAQ block
+- FAQ wall: never let FAQ outrank the first real answer or main destination CTA
+
 ## Before You Write
 
 - Name the page type: homepage, stay page, guest guide, research page, or owner page.
@@ -58,6 +76,8 @@ If a page cannot do those four things, the draft is not ready.
 - Name the proof source you are allowed to use.
 - Name the anti-claims before drafting.
 - If public `src/` copy will change and there is no active brief, stop before writing.
+- Stop and read `docs/style/approved-examples.md` before drafting. This
+  playbook is the working packet, not the example library.
 
 Keep these copy layers separate:
 
@@ -66,6 +86,22 @@ Keep these copy layers separate:
 - `agent copy` = internal instructions, review notes, workflow labels
 
 `agent copy` never ships in visible page copy.
+
+Use the real source-of-truth files when claims get specific:
+
+- stay and guide property claims: `src/_data/properties-fallback.json`
+- owner proof claims and benchmark reuse: `src/_data/ownerProofAssets.json`
+
+Standing anti-claims to keep visible while drafting:
+
+- do not call River House waterfront, riverfront, or canal-front
+- do not call The Oasis mini-golf or 9-hole golf; it has a putting green
+- do not promise complimentary kayaks, paddleboards, bikes, or fishing gear
+- do not mark Bradenton Pool Home as pet-friendly
+- do not imply multiple waterfront homes when only Dockside Dreams is actually
+  waterfront
+- do not reuse sitewide review-count trust claims unless the current proof
+  asset explicitly supports them
 
 ## Seascape Voice Rules
 
@@ -321,6 +357,17 @@ Weak CTA patterns:
 - On archive or proof-heavy routes, be explicit about whether the page is still
   an active conversion surface or only supporting proof.
 
+## SEO Surfaces
+
+- title tag: decision-first, page-family specific, and tight enough to rewrite
+  cleanly for SERP CTR if needed
+- meta description: 155 characters max, answer-first, no fluff
+- H1: match the brief's actual decision, not the title tag word for word
+- schema: use the family expectation in the relevant portfolio doc and route any
+  schema work through the repo's `schema-markup` lane
+- AI-answer extractability: every page should carry one clean quotable answer
+  sentence near the top
+
 ## Banned Phrasing Quick Kill List
 
 Delete or rewrite these on sight:
@@ -382,13 +429,15 @@ Delete or rewrite these on sight:
 4. Write one sentence for the page promise.
 5. Write the main CTA before the body copy.
 6. Draft the opening paragraph so it can stand alone.
-7. Build 3 to 5 sections that each push one argument forward.
-8. Add proof notes, tables, FAQs, and internal links after the reader-facing answer is clear.
-9. Remove anything that sounds like a prompt, worksheet, or generic destination article.
-10. Run the visible-copy lane: `copywriting` -> `enterprise-ui-writing` -> `humanizer`.
-11. For owner work, check that no stale `teardown` or `evaluation` language
+7. Confirm the CTA still matches the reader decision from step 3. If not,
+   change the CTA or the promise before drafting further.
+8. Build 3 to 5 sections that each push one argument forward.
+9. Add proof notes, tables, FAQs, and internal links after the reader-facing answer is clear.
+10. Remove anything that sounds like a prompt, worksheet, or generic destination article.
+11. Run the visible-copy lane: `copywriting` -> `enterprise-ui-writing` -> `humanizer`.
+12. For owner work, check that no stale `teardown` or `evaluation` language
     survived in data files, partials, or portfolio maps.
-12. For guide and stay pages, count CTA exits on the first screen and cut any
+13. For guide and stay pages, count CTA exits on the first screen and cut any
     extra path that competes with the main decision.
 
 ## Codex Self-Check
@@ -409,6 +458,9 @@ Before you call a draft done, ask:
   homepage validation?
 - Did I accidentally pull proof notes into the first answer block?
 - Did I leave behind stale CTA language in a shared data or partial surface?
+- Did I grep for stale terms like `Revenue Teardown`, `revenue leak`, `Free
+  Property Evaluation`, and `OTA drag` across `src/_data/`, `src/_includes/`,
+  and `docs/portfolio/` before I called this done?
 
 If public `src/` copy changed, the Release Gate is still:
 
