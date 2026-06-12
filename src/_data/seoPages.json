@@ -3031,7 +3031,7 @@
       "revenueLevers": [
         {
           "title": "Protect premium weeks instead of chasing false occupancy wins",
-          "body": "Island inventory usually leaks money when expensive dates get discounted too early and the calendar looks healthy enough to hide the mistake."
+          "body": "Island inventory usually gives away too much money when expensive dates get discounted too early and the calendar looks healthy enough to hide the mistake."
         },
         {
           "title": "Use more direct bookings where the home can support it",
@@ -3161,7 +3161,7 @@
           "body": "Larger homes and group stays create more cleaning, maintenance, and guest-communication risk. Sloppy follow-through becomes expensive fast."
         },
         {
-          "title": "Too much revenue still depends on OTA commissions",
+          "title": "Too much revenue still depends on booking-site commissions",
           "body": "If every booking still comes through the same expensive channels, the manager is not building much leverage for the owner."
         }
       ],
@@ -3196,11 +3196,11 @@
       "processSteps": [
         {
           "title": "Revenue baseline",
-          "body": "We review current gross revenue, fee stack, and whether the home is being priced and positioned for the right demand."
+          "body": "We review current gross revenue, management costs, and whether the home is being priced and positioned for the right demand."
         },
         {
           "title": "Operational audit",
-          "body": "We check for the common Bradenton leak points: turnover slippage, maintenance drag, and weak guest communication."
+          "body": "We check for the common Bradenton misses: turnover slippage, maintenance delays, and weak guest communication."
         },
         {
           "title": "90-day takeover plan",
@@ -3661,11 +3661,11 @@
         },
         {
           "q": "How do I compare switching risk against staying put?",
-          "a": "Compare the friction of a controlled handoff against the cost of another season of underpricing, OTA leakage, weak reporting, or poor operational follow-through. Staying put is not the risk-free option."
+          "a": "Compare the friction of a controlled handoff against the cost of another season of underpricing, heavy booking-site dependence, weak reporting, or poor operational follow-through. Staying put is not the risk-free option."
         },
         {
           "q": "What does Seascape focus on first after a switch?",
-          "a": "Calendar continuity, clearer reporting, pricing cleanup, and local execution. The first objective is to stop the obvious leaks before chasing anything more ambitious."
+          "a": "Calendar continuity, clearer reporting, pricing cleanup, and local execution. The first objective is to stop the obvious income problems before chasing anything more ambitious."
         }
       ]
     },
@@ -3835,7 +3835,7 @@
       "title": "Sarasota Vacation Rental Property Management",
       "h1": "Sarasota Vacation Rental Management",
       "description": "Switcher-first Sarasota vacation rental management for premium homes losing nightly-rate value through generic pricing, weak guest standards, or lazy booking-channel choices.",
-      "intro": "Sarasota owners usually do not switch because occupancy vanishes. They switch when a premium home is being sold too generically, the fee stack keeps rising, and the operation no longer feels worthy of the asset.",
+      "intro": "Sarasota owners usually do not switch because occupancy vanishes. They switch when a premium home is being sold too generically, management costs keep rising, and the operation no longer feels worthy of the asset.",
       "benefits": [
         "Use neighborhood-aware pricing and stay strategy instead of flattening Sarasota into one rate model",
         "Protect premium listing quality and guest positioning so nightly-rate power does not erode",
@@ -3913,7 +3913,7 @@
       ],
       "processTag": "Review Process",
       "processTitle": "How we pressure-test a Sarasota takeover",
-      "processSubtitle": "We look at positioning, stay-rule fit, service risk, and the fee stack before anyone talks about switching.",
+      "processSubtitle": "We look at positioning, stay-rule fit, service risk, and the management costs before anyone talks about switching.",
       "processSteps": [
         {
           "title": "Positioning review",
@@ -4055,7 +4055,7 @@
       "cta": "Request Your Revenue Review",
       "primaryCta": "Request Your Revenue Review",
       "ctaSubcopy": "We show whether the current setup is actually capturing Siesta Key premium demand or just charging you premium fees.",
-      "ctaNote": "Send the address or listing URL if you want a clear read on premium-rate protection, OTA leakage, and luxury-service execution.",
+      "ctaNote": "Send the address or listing URL if you want a clear read on premium-rate protection, booking-site dependence, and luxury-service execution.",
       "geoIntro": "<p>Siesta Key, home to consistently ranked America's best beaches and quartz-white sand, represents one of Florida's most sought-after vacation rental locations. Property owners in Siesta Key have exceptional opportunities to generate premium rental income, but success requires expertise in managing beachfront properties, understanding the sophisticated guest demographics attracted to the area, and navigating the specific regulatory environment of this premium market. Seascape Vacations specializes in Siesta Key vacation rental management, combining our deep local expertise with professional operational systems that maximize occupancy and revenue for beachfront and near-beach properties.</p><p>Siesta Key's rental market attracts affluent tourists, families seeking premium beach experiences, and seasonal snowbirds willing to pay premium rates for exceptional properties in desirable locations. We position Siesta Key properties strategically across Airbnb, VRBO, Booking.com, and direct booking channels, leveraging professional photography and compelling marketing that appeals to high-value guests. Our dynamic pricing strategy captures premium rates while maintaining the occupancy levels that generate consistent monthly income. We handle all operational details\u2014guest communications, professional cleaning by vetted Siesta Key vendors, responsive maintenance, and comprehensive guest support\u2014so your property delivers exceptional experiences that generate positive reviews and repeat bookings.</p><p>Managing a Siesta Key property requires understanding both the property market and the guest experience expectations in this premium destination. Seascape Vacations brings the expertise and local relationships that ensure your property generates optimal returns.</p>",
       "faqs": [
         {

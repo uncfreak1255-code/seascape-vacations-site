@@ -349,9 +349,12 @@ test("owner operator proof pack keeps approved redacted modules but retires acti
   assert.equal(proofPack.includes("Archived April 2026 owner-report examples."), true);
   assert.equal(proofPack.includes('meta name="robots" content="noindex, follow"'), true);
   assert.equal(proofPack.includes("/research/owner-fee-revenue-leak-benchmark-2026/"), true);
+  assert.equal(proofPack.includes("Owner Fee + Net Payout Benchmark"), true);
+  assert.equal(proofPack.includes("The public page does not replace your review."), true);
   assert.equal(proofPack.includes("/property-management/?owner_source=how-seascape-protects-owner-net-2026#owner-cta"), false);
   assert.equal(proofPack.includes('sourcePageSlug: "how-seascape-protects-owner-net-2026"'), false);
   assert.equal(proofPack.includes('formPlacement: "operator-proof-pack-teardown"'), false);
+  assert.equal(proofPack.includes("tracked teardown source"), false);
   assert.equal(
     ownerOperatorProofAssets.demandBoundary.includes("Current benchmark-path receipts prove measurement wiring only"),
     true
@@ -425,9 +428,11 @@ test("week 3 owner pages do not collapse back into fake flat-fee messaging", () 
   assert.equal(switchPage.benefits.includes("10-15% management fees instead of paying more for the same misses"), false, "switch page should not claim a flat fee band");
   assert.equal(switchPage.geoIntro.includes("10-15%"), false, "switch page GEO intro should not hard-code a flat fee");
   assert.ok(switchPage.marketReality && switchPage.marketReality.title.includes("risk-free option"), "switch page should frame the cost of staying put");
+  assert.equal(JSON.stringify(switchPage).includes("OTA leakage"), false, "switch page should use plain owner language for booking-site dependence");
   assert.equal(sarasotaPage.proofStats.some((stat) => stat.label === "Management pricing" && stat.value === "Tailored"), true, "Sarasota page should describe pricing as tailored");
   assert.ok(Array.isArray(sarasotaPage.revenueLevers) && sarasotaPage.revenueLevers.length >= 3, "Sarasota page should expose revenue levers");
   assert.equal(sarasotaPage.geoIntro.includes("one flat management fee"), true, "Sarasota GEO intro should explain variable pricing");
+  assert.equal(JSON.stringify(sarasotaPage).includes("fee stack"), false, "Sarasota page should not keep fee-stack jargon in owner-facing copy");
 });
 
 test("owner fee messaging stays tailored instead of reviving stale flat-fee claims", () => {
@@ -599,12 +604,17 @@ test("owner fee cluster pages stay in review mode instead of reverting to brochu
 
   assert.equal(JSON.stringify(amiPage).includes("dynamic pricing algorithms, professional photography, and multi-channel distribution"), false, "AMI page should not use generic operator filler");
   assert.equal(JSON.stringify(amiPage).includes("24/7 guest support"), false, "AMI page should not lead with commodity management bullet points");
+  assert.equal(JSON.stringify(amiPage).includes("leaks money"), false, "AMI page should use plain owner language instead of leak phrasing");
   assert.equal(JSON.stringify(bradentonPage).includes("Airbnb, VRBO, and direct booking integration"), false, "Bradenton page should not use generic channel-stack bullets");
   assert.equal(JSON.stringify(bradentonPage).includes("Property managers like Seascape Vacations typically increase occupancy by 15-25%"), false, "Bradenton page should not make canned occupancy claims");
+  assert.equal(JSON.stringify(bradentonPage).includes("fee stack"), false, "Bradenton page should not keep fee-stack jargon");
+  assert.equal(JSON.stringify(bradentonPage).includes("leak points"), false, "Bradenton page should not keep leak-point jargon");
   assert.equal(amiPage.primaryCta, "Request Your Revenue Review", "AMI page should keep the review CTA");
   assert.equal(bradentonPage.primaryCta, "Request Your Revenue Review", "Bradenton page should keep the review CTA");
   assert.ok(/ota|fee|rate|owner|revenue|direct/i.test(amiPage.geoIntro), "AMI GEO intro should sound like an owner economics page");
   assert.ok(/ota|fee|rate|owner|revenue|direct/i.test(bradentonPage.geoIntro), "Bradenton GEO intro should sound like an owner economics page");
+  assert.equal(ownerTemplate.includes("Read the owner fee + net payout benchmark"), true, "owner template should use the plain-language benchmark label");
+  assert.equal(ownerTemplate.includes("revenue leak breakdown"), false, "owner template should not keep leak-based helper copy");
 });
 
 test("remaining local owner pages keep custom owner-math framing instead of falling back to generic section copy", () => {
