@@ -7,7 +7,7 @@
 - secondary keywords: Anna Maria Island rental homes, AMI vacation rentals, vacation rentals near Anna Maria Island, Anna Maria Island pool homes, book direct Anna Maria Island rentals
 - audience pattern: high-intent guest booking searcher who wants island access first, then inventory fit, pool space, beach distance, booking confidence, and a clean direct-book path.
 - proof source: `docs/status/next-batch.md`, `docs/portfolio/stay-money-pages.md`, `docs/status/search-growth-map.md`, `docs/process/ranking-regression-rescue.md`, `src/_data/seoPages.json`, live Google result read for `Anna Maria Island vacation rentals` on 2026-06-11, and the analytics decision receipt at `seascape-analytics` branch `codex/weekly-ai-visibility-2026-06-11`.
-- required internal links: `/guides/best-time-visit-anna-maria-island/`, `/guides/anna-maria-island-vs-siesta-key/`, `/guides/anna-maria-island-vacation-cost/`, `/stays/anna-maria-island-beachfront-rentals/`, `/stays/book-direct-anna-maria-island/`
+- required internal links: /stays/anna-maria-island-vacation-rentals/, /guides/booking-direct-vacation-rentals/
 - CTA target: keep the AMI stay page as the money destination and preserve `Check Direct Dates` links with `stay_view_property_click` tracking.
 - anti-claims: no rank-recovery claim, no claim that Seascape has on-island inventory if the source page says near-island homes, no invented beachfront spread, no unsupported amenity or capacity claims, no booking or revenue lift claim before analytics readback, and no new Holmes Beach or broader stay expansion from this regression.
 
@@ -128,6 +128,10 @@
 - any source edit stays inside the near-island truth boundary
 - relevant commands pass or blockers are named
 - final status says impact is still pending the post-change GSC/GA4 readback
+
+## Ship Checkpoint
+
+- 2026-06-11 checkpoint: the rescue stayed bounded to the AMI stay page and feeder links, preserved the near-island truth boundary, and still waits for the first full 7-day post-deploy GSC/GA4 readback before any performance claim.
 
 ## Post-Reread Outcome
 
