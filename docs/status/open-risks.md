@@ -12,7 +12,7 @@
 - the new SEO OS docs can become another stale layer if briefs and portfolio files are not updated when source truth changes
 - the June 2026 indexed-page drop should be treated as a triage signal, not a penalty by default: clicks and CTR rose while the index shrank, so the risk is re-bloating pruned thin or duplicate URLs instead of exporting the dropped URL set and rescuing only pages with clicks, links, owner value, or a clear canonical mistake
 - `src/guides/vacation-rental-income-anna-maria.html` must stay noindexed unless the enforcement decision changes; `scripts/enforcement/owner-proof-clean.test.js` locks it out of the owner-proof lane and routes owner-income intent to `/research/owner-fee-revenue-leak-benchmark-2026/`
-- `/stays/summer-vacation-rentals-florida-gulf-coast/` is a decision conflict, not a silent page-build target: `seoGovernance.staysNoindexSlugs` suppresses it, while the June 3 rank tracker calls it a July refresh target, so decide whether to rebuild it into an indexable seasonal page or leave it suppressed before any refresh work starts
+- historical queue drift can accidentally reopen `/stays/summer-vacation-rentals-florida-gulf-coast/` as a July refresh target even though the current repo decision is to keep it served/noindex and out of the near-term queue. `seoGovernance.staysNoindexSlugs` suppresses it, `docs/portfolio/pseo-inventory-triage.md` keeps it in the support/noindex lane, and `docs/portfolio/stay-money-pages.md` does not assign it a winner or money-page role. Only reopen rebuild work if a separate GSC + SERP proof pack and a defined money destination justify earning indexable status
 
 ## Indexing + Indexability (2026-06-06 forensic)
 
