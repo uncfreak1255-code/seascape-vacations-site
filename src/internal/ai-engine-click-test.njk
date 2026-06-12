@@ -1,0 +1,135 @@
+---
+layout: layouts/base.njk
+permalink: "/internal/ai-engine-click-test/"
+pageTitle: "AI Engine Click Test"
+pageDescription: "Noindex Seascape operator page for checking AI-labeled visit tracking."
+pageRobots: "noindex, follow"
+seoIndexable: false
+eleventyExcludeFromCollections: true
+ownerNavOnly: true
+navButtonLabel: "Guides"
+navButtonHref: "/guides/"
+---
+
+<style>
+  .engine-test {
+    background: #f7f1df;
+    color: #2f4243;
+    padding: 88px 24px 72px;
+  }
+
+  .engine-test-shell {
+    max-width: 920px;
+    margin: 0 auto;
+  }
+
+  .engine-test-eyebrow {
+    color: #7c6531;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    margin: 0 0 16px;
+    text-transform: uppercase;
+  }
+
+  .engine-test h1 {
+    color: #244447;
+    font-family: "Playfair Display", serif;
+    font-size: clamp(34px, 6vw, 60px);
+    line-height: 1;
+    margin: 0 0 18px;
+    max-width: 760px;
+  }
+
+  .engine-test-lede {
+    color: #4c5f60;
+    font-size: 18px;
+    line-height: 1.7;
+    margin: 0 0 30px;
+    max-width: 760px;
+  }
+
+  .engine-test-grid {
+    display: grid;
+    gap: 16px;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    margin: 0 0 28px;
+  }
+
+  .engine-test-card {
+    background: #fffaf0;
+    border: 1px solid rgba(61, 92, 93, 0.16);
+    border-radius: 8px;
+    padding: 20px;
+  }
+
+  .engine-test-card h2 {
+    color: #244447;
+    font-size: 20px;
+    margin: 0 0 10px;
+  }
+
+  .engine-test-card p {
+    color: #536566;
+    font-size: 15px;
+    line-height: 1.6;
+    margin: 0 0 16px;
+  }
+
+  .engine-test-link {
+    background: #244447;
+    border-radius: 999px;
+    color: #fff;
+    display: inline-flex;
+    font-weight: 700;
+    padding: 11px 16px;
+    text-decoration: none;
+  }
+
+  .engine-test-note {
+    background: #fffaf0;
+    border-left: 4px solid #c9a962;
+    color: #4c5f60;
+    line-height: 1.6;
+    margin: 0;
+    padding: 18px 20px;
+  }
+</style>
+
+<section class="engine-test">
+  <div class="engine-test-shell">
+    <p class="engine-test-eyebrow">Noindex measurement check</p>
+    <h1>AI engine click test</h1>
+    <p class="engine-test-lede">
+      This page gives Seascape a controlled way to check whether AI-labeled visits
+      reach GA4 and keep their source labels when a reader moves from a guide into
+      stay pages or direct booking.
+    </p>
+
+    <div class="engine-test-grid" aria-label="AI engine test links">
+      <article class="engine-test-card">
+        <h2>Claude label</h2>
+        <p>Open the Bradenton/Sarasota guide with a Claude source label.</p>
+        <a class="engine-test-link" href="/guides/bradenton-vs-sarasota/?utm_source=claude.ai&utm_medium=ai-referral&utm_campaign=ai_engine_sanity&utm_content=bradenton_rescue">Open Claude test</a>
+      </article>
+
+      <article class="engine-test-card">
+        <h2>Perplexity label</h2>
+        <p>Open the Bradenton/Sarasota guide with a Perplexity source label.</p>
+        <a class="engine-test-link" href="/guides/bradenton-vs-sarasota/?utm_source=perplexity.ai&utm_medium=ai-referral&utm_campaign=ai_engine_sanity&utm_content=bradenton_rescue">Open Perplexity test</a>
+      </article>
+
+      <article class="engine-test-card">
+        <h2>ChatGPT label</h2>
+        <p>Open the Bradenton/Sarasota guide with the current known source label.</p>
+        <a class="engine-test-link" href="/guides/bradenton-vs-sarasota/?utm_source=chatgpt.com&utm_medium=ai-referral&utm_campaign=ai_engine_sanity&utm_content=bradenton_rescue">Open ChatGPT test</a>
+      </article>
+    </div>
+
+    <p class="engine-test-note">
+      Source note: a controlled UTM click proves the site and GA4 can carry the
+      label. It does not prove that Claude, Perplexity, or ChatGPT cited Seascape
+      in a live answer.
+    </p>
+  </div>
+</section>
