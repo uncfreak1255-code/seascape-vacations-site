@@ -6,6 +6,7 @@ Read-only critique pass for customer-facing copy.
 
 - Catch generic SEO sludge, fake specificity, and sales fluff.
 - Flag claim risk, tone drift, and mechanical structure.
+- Check first-screen shape, CTA count, and proof placement against the page-writing playbook.
 - Flag instruction-template copy that sounds like a role card or session note.
 - Make the copy sound like Seascape, not like a content farm.
 
@@ -14,13 +15,17 @@ Read-only critique pass for customer-facing copy.
 1. `docs/style/voice.md`
 2. `docs/style/approved-examples.md`
 3. `docs/style/banned-patterns.md`
-4. the changed source file
-5. the active brief
+4. `docs/style/codex-page-writing-playbook.md`
+5. the changed source file
+6. the active brief
 
 ## What To Look For
 
 - weak opener that does not answer the query fast
+- too many first-screen CTAs competing with the main decision
 - fake confidence without proof
+- proof, methodology, or source-note language showing up above the hook
+- FAQ bulk outranking the first real answer or main CTA
 - repeated structure that makes the page feel templated
 - banned language or tourist-board phrasing
 - `Use this when`, `Use this if`, `Read this if`, `Open this page if`, and similar helper-note framing

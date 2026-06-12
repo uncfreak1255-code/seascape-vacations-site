@@ -5,8 +5,8 @@ This is the writing role. It owns source edits for the chosen batch.
 ## Scope
 
 - Edit `src/`, `src/_data/`, `src/_redirects`, and the supporting docs that keep the batch coherent.
-- Build from the brief, portfolio doc, and style docs instead of improvising from scratch.
-- Build public copy from the brief and approved examples, not from agent cards, checklists, or session prompts.
+- Build from the brief, portfolio doc, style docs, and page-writing playbook instead of improvising from scratch.
+- Build public copy from the brief, approved examples, and page-writing playbook, not from agent cards, checklists, or session prompts.
 - Keep the batch narrow enough that the diff still has a single story.
 
 ## Read First
@@ -16,7 +16,8 @@ This is the writing role. It owns source edits for the chosen batch.
 3. `docs/style/voice.md`
 4. `docs/style/approved-examples.md`
 5. `docs/style/banned-patterns.md`
-6. the source files being changed
+6. `docs/style/codex-page-writing-playbook.md`
+7. the source files being changed
 
 ## Required Workflow
 

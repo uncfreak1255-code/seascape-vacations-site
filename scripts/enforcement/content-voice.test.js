@@ -5,6 +5,7 @@ const assert = require("node:assert/strict");
 const { execSync } = require("node:child_process");
 
 const projectRoot = path.resolve(__dirname, "..", "..");
+const PLAYBOOK_PATH = "docs/style/codex-page-writing-playbook.md";
 
 const REQUIRED_BRIEF_FIELDS = [
   "persona",
@@ -421,6 +422,7 @@ test("content quality gate doc defines reader, proof, and agent copy plus the vi
   assert.equal(gateDoc.includes("agent copy"), true);
   assert.equal(gateDoc.includes("No Brief, No Writing"), true);
   assert.equal(gateDoc.includes("Visible Copy Lane"), true);
+  assert.equal(gateDoc.includes(PLAYBOOK_PATH), true);
   assertSkillsInOrder(gateDoc, "content quality gate doc");
   assert.equal(gateDoc.includes("npm run lint:content"), true);
 });
@@ -460,9 +462,12 @@ test("workflow docs and agent cards treat instruction-template public copy as a 
   const releaseGate = read(path.join(".claude", "agents", "release-gate.md"));
 
   assert.equal(gateDoc.includes("Use this when"), true);
+  assert.equal(gateDoc.includes(PLAYBOOK_PATH), true);
   assert.equal(reviewChecklist.includes("Use this when"), true);
   assert.equal(pageBuilder.includes("session prompts"), true);
+  assert.equal(pageBuilder.includes(PLAYBOOK_PATH), true);
   assert.equal(voiceEditor.includes("Use this when"), true);
+  assert.equal(voiceEditor.includes(PLAYBOOK_PATH), true);
   assert.equal(releaseGate.includes("npm run lint:content"), true);
   assert.equal(releaseGate.includes("Voice Editor pass"), true);
 });

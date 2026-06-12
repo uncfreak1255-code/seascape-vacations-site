@@ -45,6 +45,10 @@ fact.
 
 ## Visible Copy Lane
 
+Use `docs/style/codex-page-writing-playbook.md` as the page-shape contract for
+first-screen jobs, CTA count, proof placement, and stale-term checks. It sits
+above this lane; it does not replace the visible-copy order below.
+
 Any PR that changes `reader copy` in `src/` must run this order before review or merge:
 
 1. `copywriting` for the argument, decision, and CTA draft
@@ -96,4 +100,5 @@ Before writing or reviewing content, read:
 - `docs/style/voice.md`
 - `docs/style/banned-patterns.md`
 - `docs/style/approved-examples.md`
+- `docs/style/codex-page-writing-playbook.md`
 - this file
