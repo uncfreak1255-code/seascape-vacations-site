@@ -34,3 +34,19 @@ the task calls for them, especially `customer-research`, `marketing-psychology`,
 `pricing-strategy`. They help structure thinking; they do not create new local
 authority, bypass the five roles, or replace Seascape Hub as the source of
 business context.
+
+## Agent-surface-audit receipts
+
+A durable record of approved changes to the local skill/agent surface. Each
+entry is the receipt the governance rule requires for any skill change.
+
+- **2026-06-13 — added `content-quality-rubric` (advisory).** Trigger: the
+  2026-06-13 AI-SEO stack audit (`docs/research/2026-06-13-ai-seo-stack-audit.md`)
+  found a repeated, site-specific gap — the content gate blocks slop but scores
+  nothing positive, so derivative, citation-invisible drafts pass
+  `npm run lint:content` clean. Decision: add exactly one advisory local skill
+  (not a pack), no CI enforcement until findings repeat. Approved by Sawyer.
+  Deferred in the same audit: pinning/vendoring `enterprise-ui-writing` and
+  `humanizer` — the global skill sources are not present in this repo or
+  environment, so there is nothing to vendor or pin here yet; revisit when their
+  source is available.
