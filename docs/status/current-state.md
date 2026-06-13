@@ -1,6 +1,37 @@
 # Current State
 
-*Updated: 2026-05-17*
+*Updated: 2026-06-13*
+
+## Operating Decision — Stop Polishing The OS (2026-06-13)
+
+The operating system is now more advanced than the business it serves. Two
+back-to-back audits (`docs/research/2026-06-13-ai-seo-stack-audit.md` and the
+2026-06-13 skill-layer audit) returned the same verdict: zero skill or tool
+swaps clear the bar, and the only sanctioned build is the already-planned
+owner-outbound pair. The skill, governance, and toolchain layer is **settled and
+frozen** — no further skill, tool, or meta audit without a new, specific trigger
+tied to an owner lead or a direct booking. Auditing the toolchain again is now a
+procrastination surface, not a growth surface.
+
+The binding constraint is unchanged and still unaddressed: owner acquisition has
+produced **zero leads**, and owner impressions are roughly 42/week and falling.
+No amount of on-site SEO, skill, or governance polish fixes a channel with
+almost no owner demand. Owner acquisition for a property manager is mostly an
+off-repo sales and relationship job — referrals from current owners, local agent
+relationships, and direct outreach to underperforming Airbnb/VRBO owners — not a
+website job. This site's honest role is the Lane A guest-to-owner referral
+(shipped, Card 1) and a proof surface, not the primary lead engine.
+
+Next founder hours go to the off-repo owner motion, not this repo:
+1. Build the named homeowner prospect list (Demand-OS Card 3 milestone — the gate
+   everything else waits on; agent-researchable now).
+2. Send a handful of real, personal outbound touches to underperforming local
+   owners. A test send is not a lead; a real reply is.
+3. Let the shipped Lane A referral run and watch for the first benchmark
+   form-submit from guide traffic.
+
+On-repo SEO work resumes only when the `seascape-analytics` receipt says a
+cluster cleared a threshold (per `next-batch.md`) or a real owner lead lands.
 
 ## Source of Truth
 
