@@ -8,6 +8,8 @@ Current curated focus:
 - `accessibility`
 - `design-review`
 - `next-batch-gate`
+- `owner-outbound-batch`
+- `owner-reply-intake`
 - `owner-proof-integrity`
 - `page-cro`
 - `property-truth-regeneration`

@@ -46,7 +46,8 @@ These load on demand instead of every session:
 
 - Five-role model (who owns what): `docs/process/five-roles.md`
 - Local skill layer + external-pack policy: `docs/process/skill-policy.md`
-  (the active skill set is self-describing in `.claude/skills/`)
+  (the active skill set is self-describing in `.agents/skills/`; `.claude/skills/`
+  is only a compatibility layer)
 
 ## Required Batch Workflow
 
