@@ -67,6 +67,8 @@ content gate and `npm run lint:content`.
 - One serious SEO batch at a time. If the batch cannot fit in one brief, it is too wide.
 - Claims about amenities must trace to property truth. No invented equipment, no fake waterfront spread, no padded sleeping-capacity claims.
 - Owner proof claims must trace to approved proof assets or current source truth. Do not reuse old sitewide review-count theater.
+- Any PR changing visible copy on smoke-asserted routes (homepage, `/properties/`, `/property-management/`, `/stays/`) must update `scripts/recovery/assert-live-smoke.js` in the same PR, or the daily live-smoke workflow goes red on a healthy site.
+- Live `/.netlify/functions/*` endpoint paths, metrics `receipts[]` field names, and `verify:*` npm script names have cross-repo consumers (seascape-ops, seascape-hub, seascape-analytics); check the contract locks in `docs/plans/2026-06-12-v1-implementation-handoff.md` before renaming any of them.
 - If a workflow doc conflicts with repo safety docs, the stricter repo rule wins.
 
 ## Execution Defaults
@@ -120,6 +122,7 @@ For UI/visual work, dispatch subagents with `model: "sonnet"`.
 - Full pre-PR gate: `npm run lint:content && npm test && npm run verify:release`
 - Visual changes also require: `npm run test:visual` and fresh desktop/mobile screenshot proof
 - Live post-merge smoke when the release surface matters: `npm run verify:recovery:live && npm run verify:direct-booking-events && npm run verify:owner-funnel-routes`
+- The same smoke trio also runs daily via `.github/workflows/live-smoke.yml` (dispatchable manually); a red scheduled run means production drift or stale smoke assertions, not necessarily an outage
 
 ## Deploy Configuration
 
