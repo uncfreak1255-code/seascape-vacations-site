@@ -46,7 +46,18 @@ entry is the receipt the governance rule requires for any skill change.
   nothing positive, so derivative, citation-invisible drafts pass
   `npm run lint:content` clean. Decision: add exactly one advisory local skill
   (not a pack), no CI enforcement until findings repeat. Approved by Sawyer.
-  Deferred in the same audit: pinning/vendoring `enterprise-ui-writing` and
-  `humanizer` — the global skill sources are not present in this repo or
-  environment, so there is nothing to vendor or pin here yet; revisit when their
-  source is available.
+  Not pursued in the same audit: pinning/vendoring `enterprise-ui-writing` and
+  `humanizer`. Correction to the original framing — these are **real global
+  advisory skills** in the Codex environment (`~/.codex/skills/enterprise-ui-writing/`
+  and `~/.codex/skills/humanizer/`, alongside `copywriting`), not missing skills.
+  They read as absent only from a fresh CI/remote checkout, which has no
+  `~/.codex/skills/`; that is not the founder's working environment. They are
+  intentionally global-advisory rather than repo-local under `.agents/skills/`,
+  consistent with the advisory-lens policy above, so vendoring them into the repo
+  would convert advisory lenses into local authority against that policy — not a
+  fix. The residual gap the audit named is real but soft: enforcement checks only
+  that the three skill names appear in voice-chain order in the docs (the regex in
+  `scripts/enforcement/content-voice.test.js`), never that an agent actually loaded
+  and ran the global skills during visible-copy work. If that gap is ever worth
+  closing, the move is a lightweight process check (the agent records that it
+  loaded the voice-chain skills on a reader-copy change), not vendoring.
