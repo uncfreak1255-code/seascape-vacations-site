@@ -7,7 +7,26 @@ const path = require("path");
 const {
   buildOwnerLeadMetricsReceipt,
   emitOwnerLeadMetricsReceipt,
+  resolveOutputRoot,
 } = require("./emit-hub-verification-receipt");
+
+test("receipt output defaults to ops staging and never the hub checkout", () => {
+  const previousHubPath = process.env.SEASCAPE_HUB_PATH;
+  process.env.SEASCAPE_HUB_PATH = path.join(os.tmpdir(), "hub-checkout-must-not-be-default");
+  try {
+    const resolved = resolveOutputRoot(null);
+    assert.match(resolved, /seascape-ops\/state\/staging\/hub-refresh/);
+    assert.doesNotMatch(resolved, /Projects\/seascape-hub/);
+    assert.doesNotMatch(resolved, /hub-checkout-must-not-be-default/);
+    assert.equal(resolveOutputRoot("/explicit/override"), "/explicit/override");
+  } finally {
+    if (previousHubPath === undefined) {
+      delete process.env.SEASCAPE_HUB_PATH;
+    } else {
+      process.env.SEASCAPE_HUB_PATH = previousHubPath;
+    }
+  }
+});
 
 test("owner lead hub receipt keeps measurement boundary explicit", () => {
   const hubPath = path.join(os.tmpdir(), "hub-receipt-boundary");
