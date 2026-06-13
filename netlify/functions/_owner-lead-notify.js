@@ -4,13 +4,17 @@
 // contact store remains the zero-silent-drop guarantee, and Netlify's native form
 // notification (parsed by ops owner-reachout-intake) stays on as the backstop.
 function buildNotificationContent(message) {
-  const contact = message && message.contact ? message.contact : {};
-  const handle = contact.email || contact.phone || contact.name || contact.submissionId || "unknown";
-  const where = contact.sourcePageSlug ? ` via ${contact.sourcePageSlug}` : "";
+  const submissionId = (message && message.submissionId) || "unknown";
+
   if (message && message.stored === false) {
-    return `⚠️ Owner lead capture FAILED to persist — follow up manually NOW: ${handle}${where}. Reason: ${message.error || "unknown"}.`;
+    const contact = message.contact || {};
+    const handle = contact.email || contact.phone || contact.name || submissionId;
+    return `⚠️ Owner lead capture FAILED to persist — follow up MANUALLY now: ${handle} (submission ${submissionId}). Reason: ${message.error || "unknown"}.`;
   }
-  return `🏠 New owner lead captured: ${handle}${where}.`;
+
+  // Success: keep PII out of the external channel — the durable contact store
+  // holds the detail. The chat message is just a "go look" ping.
+  return `🏠 New owner lead captured (submission ${submissionId}). Open the owner-leads store to follow up.`;
 }
 
 async function notifyOwnerLead(message) {
@@ -19,13 +23,19 @@ async function notifyOwnerLead(message) {
     return { notified: false, reason: "not_configured" };
   }
 
+  const stored = message ? message.stored !== false : true;
   const body = {
     content: buildNotificationContent(message),
-    stored: message ? message.stored !== false : true,
     submissionId: message ? message.submissionId : undefined,
-    contact: message ? message.contact : undefined,
-    rawPayload: message ? message.rawPayload : undefined
+    stored
   };
+  // Only attach the raw lead when persistence FAILED — the store has no copy then,
+  // so the notification is the lead's only carrier. On success the store holds the
+  // PII and we keep it out of the external channel.
+  if (!stored) {
+    body.contact = message ? message.contact : undefined;
+    body.rawPayload = message ? message.rawPayload : undefined;
+  }
 
   try {
     const response = await fetch(url, {

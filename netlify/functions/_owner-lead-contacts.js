@@ -105,7 +105,13 @@ function mergeOwnerLeadContacts(existing, contact) {
   base.contacts.push(contact);
   base.contacts.sort((left, right) => String(left.createdAt).localeCompare(String(right.createdAt)));
   if (base.contacts.length > MAX_CONTACTS) {
-    base.contacts = base.contacts.slice(-MAX_CONTACTS);
+    base.contacts = base.contacts.slice(base.contacts.length - MAX_CONTACTS);
+    // A captured contact is irreplaceable: never let cap eviction drop the lead we
+    // just added, even if its createdAt sorts older than the retained records.
+    if (!base.contacts.some((entry) => entry.submissionId === contact.submissionId)) {
+      base.contacts[0] = contact;
+      base.contacts.sort((left, right) => String(left.createdAt).localeCompare(String(right.createdAt)));
+    }
   }
 
   base.totalContacts = base.contacts.length;

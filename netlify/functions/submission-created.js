@@ -50,13 +50,22 @@ async function captureOwnerLeadContact(event, payload, injectedContactStore, not
   try {
     const contactStore = resolveContactStore(event, injectedContactStore);
     const existingContacts = await readOwnerLeadContacts(contactStore);
+    const alreadyStored = Boolean(
+      existingContacts &&
+      Array.isArray(existingContacts.contacts) &&
+      existingContacts.contacts.some((entry) => entry.submissionId === contact.submissionId)
+    );
     await writeOwnerLeadContacts(contactStore, mergeOwnerLeadContacts(existingContacts, contact));
-    await safeNotify(notify, {
-      type: "owner_lead_captured",
-      stored: true,
-      submissionId: contact.submissionId,
-      contact
-    });
+    // Idempotent: Netlify form webhooks are at-least-once, so a re-delivered
+    // submission must not re-alert a human.
+    if (!alreadyStored) {
+      await safeNotify(notify, {
+        type: "owner_lead_captured",
+        stored: true,
+        submissionId: contact.submissionId,
+        contact
+      });
+    }
   } catch (error) {
     console.error("owner_lead_contact_capture_failed", {
       submissionId: contact.submissionId,
@@ -74,7 +83,6 @@ async function captureOwnerLeadContact(event, payload, injectedContactStore, not
 }
 
 async function handleSubmissionCreated(event, _context, injectedStore, injectedContactStore = null, injectedNotify = null) {
-  const store = resolveWritableStore(event, injectedStore);
   const payload = JSON.parse(event.body || "{}");
   const receipt = buildOwnerLeadReceipt(payload);
 
@@ -85,15 +93,28 @@ async function handleSubmissionCreated(event, _context, injectedStore, injectedC
     };
   }
 
-  // Capture the durable contact + notify a human FIRST, so the lead survives
-  // even if the (independent) attribution metrics write below fails.
+  // Lead-safety FIRST: durable contact capture + human notify run before any
+  // throw-prone metrics-store resolution, so a Blobs/connect failure on the
+  // attribution path can never silently drop the lead.
   const notify = injectedNotify || notifyOwnerLead;
   await captureOwnerLeadContact(event, payload, injectedContactStore, notify);
 
-  const existingMetrics = await readOwnerLeadMetrics(store);
-  const nextMetrics = mergeOwnerLeadMetrics(existingMetrics, receipt);
+  // Attribution metrics are best-effort and fully independent of the lead record.
+  // Resolve + read + write are guarded together so any failure degrades to a
+  // metrics_write_failed response instead of throwing past the contact capture.
   try {
+    const store = resolveWritableStore(event, injectedStore);
+    const existingMetrics = await readOwnerLeadMetrics(store);
+    const nextMetrics = mergeOwnerLeadMetrics(existingMetrics, receipt);
     await writeOwnerLeadMetrics(store, nextMetrics);
+    return {
+      statusCode: 200,
+      body: JSON.stringify({
+        stored: true,
+        totalSubmissions: nextMetrics.totalSubmissions,
+        sourcePageSlug: receipt.sourcePageSlug
+      })
+    };
   } catch (error) {
     console.error("owner_lead_metrics_write_failed", {
       sourcePageSlug: receipt.sourcePageSlug,
@@ -109,15 +130,6 @@ async function handleSubmissionCreated(event, _context, injectedStore, injectedC
       })
     };
   }
-
-  return {
-    statusCode: 200,
-    body: JSON.stringify({
-      stored: true,
-      totalSubmissions: nextMetrics.totalSubmissions,
-      sourcePageSlug: receipt.sourcePageSlug
-    })
-  };
 }
 
 async function handler(event, context) {
