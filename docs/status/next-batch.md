@@ -78,6 +78,37 @@ Do not open a new owner, stay, guide, GEO, or SEO expansion branch from this rea
 9. if any tracked page has GSC impressions `< 100` in the 7-day window, treat that page as too thin to call and do not let it drive the branch choice
 10. keep Phase 4 and other entity-expansion work frozen unless the measured gates above move
 
+## Owner Outbound Escalation
+
+The owner cluster is structurally sub-gate. Owner-money impressions sit far
+below the 1000-impression gate in `## Likely Priorities`, and that gate cannot
+clear by waiting — re-reading the same deadlocked cluster only produces another
+hold. When the synced `## Latest Execution Read` shows the owner cluster
+sub-gate in the current window, the report keeps `hold-and-reread` and the
+reread status stays below threshold; it never moves to `open next batch` on the
+strength of an outbound send. The on-page loop has no lever here, so the
+escalation is to work the owner lane off-page instead of waiting for an
+impression number that is not coming.
+
+When this fires, the founder move is:
+
+- run this week's owner outbound batch instead of re-reading for more owner
+  impressions — the wait state is the deadlock, not the fix
+- treat a send as measurement only: a test send, a labeled send, or a logged
+  "SENT" row is not a lead and does not move any owner gate or demand claim
+- count only a real, unlabeled reply that meets the register Validation
+  Standard as owner demand
+- log the batch and any replies in the owner outbound runbook
+  (`docs/status/owner-outbound.md`, added when the outbound home lands in Card 3
+  of `docs/plans/2026-06-13-demand-os-handoff.md`), not in this reread surface
+
+This section is hand-authored and lives after `## Likely Priorities` on
+purpose: `scripts/enforcement/sync-next-batch-from-analytics-receipt.js` only
+rewrites `## Latest Execution Read`, so this guidance is never overwritten by a
+reread. The synced next-move line points here when the owner cluster is
+sub-gate; this section does not restate it, and it adds no second reread-status
+or next-move line of its own.
+
 ## Corrected SEO Decision Notes
 
 - Authority order for this dispute: enforcement tests, rendered build output, live GSC/analytics, then agent opinion. `scripts/enforcement/owner-proof-clean.test.js` settles the AMI income guide: keep `src/guides/vacation-rental-income-anna-maria.html` noindexed and keep owner-income intent routed to `/research/owner-fee-revenue-leak-benchmark-2026/`.
