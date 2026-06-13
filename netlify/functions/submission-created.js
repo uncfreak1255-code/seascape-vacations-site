@@ -7,6 +7,14 @@ const {
   readOwnerLeadMetrics,
   writeOwnerLeadMetrics
 } = require("./_owner-lead-metrics");
+const {
+  buildOwnerLeadContact,
+  mergeOwnerLeadContacts,
+  readOwnerLeadContacts,
+  writeOwnerLeadContacts,
+  resolveContactStore
+} = require("./_owner-lead-contacts");
+const { notifyOwnerLead } = require("./_owner-lead-notify");
 
 function resolveWritableStore(event, candidateStore) {
   if (candidateStore && typeof candidateStore.get === "function" && typeof candidateStore.set === "function") {
@@ -22,7 +30,50 @@ function resolveWritableStore(event, candidateStore) {
   return getStore(OWNER_LEAD_STORE_NAME);
 }
 
-async function handleSubmissionCreated(event, _context, injectedStore) {
+async function safeNotify(notify, message) {
+  try {
+    await notify(message);
+  } catch (error) {
+    console.error("owner_lead_notify_threw", {
+      message: error && error.message ? error.message : String(error)
+    });
+  }
+}
+
+// Durable full-contact capture for a real owner submission, kept entirely
+// separate from the PII-free attribution metrics blob. The lead must never be
+// silently dropped: if persistence fails, push the raw lead to a human via notify.
+async function captureOwnerLeadContact(event, payload, injectedContactStore, notify) {
+  const contact = buildOwnerLeadContact(payload);
+  if (!contact) return;
+
+  try {
+    const contactStore = resolveContactStore(event, injectedContactStore);
+    const existingContacts = await readOwnerLeadContacts(contactStore);
+    await writeOwnerLeadContacts(contactStore, mergeOwnerLeadContacts(existingContacts, contact));
+    await safeNotify(notify, {
+      type: "owner_lead_captured",
+      stored: true,
+      submissionId: contact.submissionId,
+      contact
+    });
+  } catch (error) {
+    console.error("owner_lead_contact_capture_failed", {
+      submissionId: contact.submissionId,
+      message: error && error.message ? error.message : String(error)
+    });
+    await safeNotify(notify, {
+      type: "owner_lead_capture_failed",
+      stored: false,
+      submissionId: contact.submissionId,
+      contact,
+      rawPayload: payload,
+      error: error && error.message ? error.message : String(error)
+    });
+  }
+}
+
+async function handleSubmissionCreated(event, _context, injectedStore, injectedContactStore = null, injectedNotify = null) {
   const store = resolveWritableStore(event, injectedStore);
   const payload = JSON.parse(event.body || "{}");
   const receipt = buildOwnerLeadReceipt(payload);
@@ -33,6 +84,11 @@ async function handleSubmissionCreated(event, _context, injectedStore) {
       body: JSON.stringify({ stored: false, reason: "ignored_form" })
     };
   }
+
+  // Capture the durable contact + notify a human FIRST, so the lead survives
+  // even if the (independent) attribution metrics write below fails.
+  const notify = injectedNotify || notifyOwnerLead;
+  await captureOwnerLeadContact(event, payload, injectedContactStore, notify);
 
   const existingMetrics = await readOwnerLeadMetrics(store);
   const nextMetrics = mergeOwnerLeadMetrics(existingMetrics, receipt);
