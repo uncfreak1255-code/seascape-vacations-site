@@ -40,6 +40,8 @@ Read in this order:
 - one serious SEO cluster at a time, with one brief driving it
 - no public content PR without one active brief, the content gate read, and `npm run lint:content`
 - review the diff before push, PR, or merge
+- any PR changing visible copy on smoke-asserted routes (homepage, `/properties/`, `/property-management/`, `/stays/`) must update `scripts/recovery/assert-live-smoke.js` in the same PR, or the daily live-smoke workflow goes red on a healthy site
+- live `/.netlify/functions/*` endpoint paths, metrics `receipts[]` field names, and `verify:*` npm script names have cross-repo consumers in seascape-ops, seascape-hub, and seascape-analytics; check the contract locks in `docs/plans/2026-06-12-v1-implementation-handoff.md` before renaming any of them
 
 ## Execution Defaults
 
