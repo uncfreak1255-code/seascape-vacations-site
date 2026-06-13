@@ -21,6 +21,7 @@ That means:
 - Prefer route, timing, price, and operational specifics over adjectives.
 - Write as if you have skin in the result. If a recommendation would waste the reader's time or money, say so.
 - Keep reader copy in Seascape's voice, not in role-card or session voice. Sentences like `Use this when`, `Read this if`, or `Open this page if` usually mean the sentence is still a draft note, not finished public copy.
+- Do not let the anti-slop pass flatten answer structure on citation-target pages. On guide, stay, and research routes, keep the standalone answer block, the comparison table, and the first-200-word direct answer intact so AI answers and snippets can still extract them. Warmth should not cost extractability. See `docs/process/content-quality-gate.md`.
 
 ## Guest Voice
 

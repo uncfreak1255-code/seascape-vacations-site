@@ -54,6 +54,15 @@ Any PR that changes `reader copy` in `src/` must run this order before review or
 If the copy still sounds like a review template or repo note after step 3, rewrite it before you ask lint or a human to bless it.
 If Page Builder can trace a sentence back to a role card, session prompt, or helper-note template more easily than to the brief, rewrite it before it lands in source.
 
+The `humanizer` pass removes AI texture; it does not get to remove answer
+structure. On guide, stay, and research pages — the routes that get cited in
+AI answers and snippets — the humanizer step may not dissolve the standalone
+answer block, the comparison table, or the first-200-word direct answer in the
+name of rhythm, and it may not reintroduce hedging like `I think` or
+`in our opinion` into a citable claim. When warmth and extractability conflict
+on a citation-target page, keep the answer extractable and find the warmth
+elsewhere in the paragraph. See `## SEO, GEO, And AEO Checks` below.
+
 ## Reader Copy Rules
 
 - Answer the real decision in the first paragraph.
