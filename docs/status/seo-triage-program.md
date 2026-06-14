@@ -8,7 +8,8 @@ Orchestrate the Seascape Vacations SEO triage program:
   or `consolidate`
 - define a lightweight competitor operating loop for owner and stay pages before
   copy changes
-- open one next-batch brief only if the analytics reread clears the gate
+- open one next-batch brief only if the analytics reread clears the gate, or one
+  rescue brief when a tracked winner or money page has already regressed
 - limit tooling cleanup to proven gaps in research, competitor capture, or
   reread sync
 
