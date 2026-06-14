@@ -102,6 +102,21 @@ function renderClusterSummary(receipt) {
   ].join("\n");
 }
 
+function renderBranchInstruction(receipt) {
+  if (receipt.reread_status === "open next batch") {
+    return [
+      `Open \`${receipt.next_branch}\` from this read, using one narrow active brief and the matching release gate.`,
+      "Do not use this as permission for unrelated owner, stay, guide, GEO, or SEO expansion."
+    ].join("\n");
+  }
+
+  return [
+    "Do not open a new owner, stay, guide, GEO, or SEO expansion branch from this read.",
+    "If a tracked winner or money page has regressed, use `docs/process/ranking-regression-rescue.md` for a bounded rescue brief instead of waiting passively.",
+    "`docs/status/next-batch.md` should move to `open next batch` only when the analytics receipt says so."
+  ].join("\n");
+}
+
 function renderLatestExecutionRead(receipt) {
   assertReceipt(receipt);
 
@@ -129,12 +144,7 @@ function renderLatestExecutionRead(receipt) {
     lines.push(`- GSC freshness warning: ${freshnessWarning}`);
   }
 
-  lines.push(
-    clusterSummary,
-    "",
-    "Do not open a new owner, stay, guide, GEO, or SEO expansion branch from this read.",
-    "`docs/status/next-batch.md` should move to `open next batch` only when the analytics receipt says so."
-  );
+  lines.push(clusterSummary, "", renderBranchInstruction(receipt));
 
   return lines.filter((line, index) => line !== "" || lines[index - 1] !== "").join("\n").trim();
 }
