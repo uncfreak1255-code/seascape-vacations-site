@@ -52,6 +52,8 @@ That includes:
    - active `DESIGN.md` constraints and existing patterns to preserve
    - proof, claim, voice, and copy boundaries
    - responsive, accessibility, performance, and implementation risks
+   Use `docs/process/seascape-design-studio.md` when the task needs a fuller
+   reusable intake and output packet before implementation.
 4. For meaningful visual changes, run the global `claude-design` skill before
    implementation. The output should be a reviewable mockup, direction, or
    implementation spec, not just verbal styling advice.
