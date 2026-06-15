@@ -65,6 +65,7 @@ Read in this order:
 ## Workflow Layer
 
 - process rules live in `docs/process/`
+- the site learning contract lives in `docs/process/learning-contract.md`; it defines what inputs the site may learn from, what approvals are required, and what receipt proves public claims or workflow promotion
 - current execution context lives in `docs/status/`
 - `docs/status/next-batch.md` is the canonical reread handoff surface for volatile measurement truth; after every reread it must say exactly one of `blocked by freshness`, `fresh but below threshold`, or `open next batch`, plus one concrete next move
 - `docs/status/current-state.md` should keep durable repo truth only and must not duplicate volatile reread windows or `data_date` details that belong in `docs/status/next-batch.md`
