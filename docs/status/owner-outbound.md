@@ -127,8 +127,9 @@ Completion proof needs:
 - whether the teardown advanced, stalled, lost, or ended the conversation
 - the evidence path in the owning repo
 
-Only this level of proof can support a later claim that the owner benchmark or
-teardown wedge is producing demand.
+Only this level of proof can flip the hub claim
+`CLM-OWNER-BENCHMARK-DEMAND-PROVEN` or support a later claim that the owner
+benchmark or teardown wedge is producing demand.
 
 ## Send Log
 
