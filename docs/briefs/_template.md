@@ -1,5 +1,11 @@
 # Brief: <cluster name>
 
+## Figma Handoff
+
+- Figma capture:
+- Figma frames:
+- Figma proof: only if `docs/briefs/figma-mcp-state.json` still says this file only exposes empty `Page 1`
+
 ## Content Gate Inputs
 
 - persona:

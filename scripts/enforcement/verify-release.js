@@ -5,6 +5,7 @@ const {
   findForbiddenSourcePaths,
   findPlaceholderAnalyticsPaths
 } = require("./lib");
+const { assertValidFigmaBriefHandoffs } = require("./figma-brief-handoff");
 const { assertRepoHtmlCachePolicyConsistency } = require("./release-cache-policy");
 const { withWorktreeLock } = require("./worktree-lock");
 
@@ -129,6 +130,10 @@ function assertNoForbiddenPublicRuntime() {
   throw new Error(message);
 }
 
+function assertValidFigmaBriefs(range) {
+  assertValidFigmaBriefHandoffs({ range });
+}
+
 function main() {
   const args = parseArgs(process.argv.slice(2));
 
@@ -138,6 +143,7 @@ function main() {
     assertNoForbiddenSourceChanges(args.range);
     assertNoPlaceholderAnalytics();
     assertNoForbiddenPublicRuntime();
+    assertValidFigmaBriefs(args.range);
   } catch (error) {
     console.error(error.message);
     process.exit(1);
