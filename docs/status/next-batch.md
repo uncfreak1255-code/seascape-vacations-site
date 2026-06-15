@@ -106,8 +106,8 @@ When this fires, the founder move is:
 - count only a real, unlabeled reply that meets the register Validation
   Standard as owner demand
 - log the batch and any replies in the owner outbound runbook
-  (`docs/status/owner-outbound.md`, added when the outbound home lands in Card 3
-  of `docs/plans/2026-06-13-demand-os-handoff.md`), not in this reread surface
+  (`docs/status/owner-outbound.md`, the Card 3 outbound home from
+  `docs/plans/2026-06-13-demand-os-handoff.md`), not in this reread surface
 
 This section is hand-authored and lives after `## Likely Priorities` on
 purpose: `scripts/enforcement/sync-next-batch-from-analytics-receipt.js` only
