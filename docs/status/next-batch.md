@@ -54,8 +54,9 @@ analytics receipt says so.
 ## Likely Priorities
 
 1. if `queries/rank_history_deltas.sql`, a rank tracker, or a live SERP read
-   confirms a tracked winner or money-page regression, open one
-   `winner-regression-rescue` brief before normal expansion thresholds
+   confirms a tracked winner or money-page regression, use
+   `docs/process/ranking-regression-rescue.md` and the exact receipt-named
+   branch before normal expansion thresholds
 2. rerun the targeted operator read on the five tracked money pages after more recrawl time using the last 7 complete days:
    - `/property-management/vacation-rental-management-fees-florida/`
    - `/property-management/vacation-rental-licensing-florida/`
