@@ -68,6 +68,9 @@ function assertReceipt(receipt) {
   if (!receipt.concrete_next_move) {
     throw new Error("Receipt must include concrete_next_move");
   }
+  if (receipt.reread_status === "open next batch" && !String(receipt.next_branch || "").trim()) {
+    throw new Error("Receipt with reread_status open next batch must include next_branch");
+  }
 }
 
 function formatNumber(value, digits = 2) {

@@ -78,6 +78,19 @@ test("renderLatestExecutionRead opens exactly the branch named by an open receip
   assert.doesNotMatch(rendered, /Do not open a new owner, stay, guide, GEO, or SEO expansion branch from this read\./);
 });
 
+test("renderLatestExecutionRead rejects an open receipt without next_branch", () => {
+  const malformedOpenReceipt = {
+    ...receipt,
+    reread_status: "open next batch",
+    next_branch: "   "
+  };
+
+  assert.throws(
+    () => renderLatestExecutionRead(malformedOpenReceipt),
+    /Receipt with reread_status open next batch must include next_branch/
+  );
+});
+
 test("replaceLatestExecutionRead updates only the latest execution read block", () => {
   const original = [
     "# Next Batch",
