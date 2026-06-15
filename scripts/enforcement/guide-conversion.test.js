@@ -2,6 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const test = require("node:test");
 const assert = require("node:assert/strict");
+const vm = require("node:vm");
 
 const projectRoot = path.resolve(__dirname, "..", "..");
 const seoPages = JSON.parse(
@@ -102,6 +103,160 @@ function loadConversionTrackingWithStubs() {
   return api;
 }
 
+function loadConversionTrackingFallbackHarness() {
+  const trackingScriptPath = path.join(projectRoot, "src", "assets", "js", "conversion-tracking.js");
+  delete require.cache[require.resolve(trackingScriptPath)];
+
+  global.window = {
+    dataLayer: [],
+    location: {
+      href: "http://localhost/property-management/",
+      assign(nextHref) {
+        this.href = nextHref;
+      }
+    }
+  };
+  global.document = {
+    readyState: "loading",
+    addEventListener() {},
+    querySelectorAll() {
+      return [];
+    }
+  };
+  global.localStorage = {
+    setItem() {}
+  };
+  global.fetch = () => Promise.resolve();
+  global.FormData = class FormDataStub {
+    get() {
+      return "";
+    }
+  };
+
+  require(trackingScriptPath);
+
+  return {
+    api: global.window.SeascapeConversionTracking,
+    window: global.window,
+    cleanup() {
+      delete require.cache[require.resolve(trackingScriptPath)];
+      delete global.window;
+      delete global.document;
+      delete global.localStorage;
+      delete global.fetch;
+      delete global.FormData;
+    }
+  };
+}
+
+function extractAnalyticsInlineScript() {
+  const analyticsPartial = fs.readFileSync(
+    path.join(projectRoot, "src", "_includes", "partials", "analytics-ga4.njk"),
+    "utf8"
+  );
+  const inlineScriptMatch = analyticsPartial.match(/<script>\s*([\s\S]*?)\s*<\/script>/);
+  assert.notEqual(inlineScriptMatch, null, "analytics partial should expose an inline tracker script");
+  return inlineScriptMatch[1].replaceAll("{{ site.analytics.ga4MeasurementId }}", "G-TEST123");
+}
+
+function loadTrackedNavigationHarness(options = {}) {
+  const trackingScriptPath = path.join(projectRoot, "src", "assets", "js", "conversion-tracking.js");
+  delete require.cache[require.resolve(trackingScriptPath)];
+
+  const originals = {};
+  for (const key of [
+    "window",
+    "document",
+    "localStorage",
+    "fetch",
+    "FormData",
+    "setTimeout",
+    "clearTimeout",
+    "location",
+    "dataLayer",
+    "gtag",
+    "seascapeTrackEvent",
+    "SeascapeConversionTracking"
+  ]) {
+    originals[key] = Object.prototype.hasOwnProperty.call(global, key) ? global[key] : undefined;
+  }
+
+  const listeners = new Map();
+  const timers = [];
+  const navigationCalls = [];
+
+  global.window = global;
+  global.location = {
+    href: "http://localhost/property-management/",
+    assign(nextHref) {
+      navigationCalls.push(nextHref);
+      this.href = nextHref;
+    }
+  };
+  global.document = {
+    readyState: "complete",
+    addEventListener(type, handler) {
+      if (!listeners.has(type)) listeners.set(type, []);
+      listeners.get(type).push(handler);
+    },
+    querySelectorAll() {
+      return [];
+    }
+  };
+  global.localStorage = {
+    setItem() {}
+  };
+  global.fetch = () => Promise.resolve();
+  global.FormData = class FormDataStub {
+    get() {
+      return "";
+    }
+  };
+  global.setTimeout = (callback, delay) => {
+    timers.push({ callback, delay, cleared: false });
+    return timers.length - 1;
+  };
+  global.clearTimeout = (timerId) => {
+    if (timers[timerId]) timers[timerId].cleared = true;
+  };
+  global.dataLayer = [];
+
+  if (options.loadAnalytics !== false) {
+    vm.runInThisContext(extractAnalyticsInlineScript(), {
+      filename: path.join(projectRoot, "src", "_includes", "partials", "analytics-ga4.inline.test.js")
+    });
+  }
+
+  require(trackingScriptPath);
+
+  return {
+    navigationCalls,
+    timers,
+    getClickHandler() {
+      const clickHandlers = listeners.get("click") || [];
+      assert.equal(clickHandlers.length > 0, true, "conversion tracking should bind a click listener");
+      return clickHandlers[0];
+    },
+    findGtagEvent(eventName) {
+      return global.dataLayer.find((entry) => {
+        if (!entry || typeof entry.length !== "number") return false;
+        const call = Array.from(entry);
+        return call[0] === "event" && call[1] === eventName;
+      });
+    },
+    cleanup() {
+      delete require.cache[require.resolve(trackingScriptPath)];
+      for (const key of Object.keys(originals)) {
+        if (originals[key] === undefined) {
+          delete global[key];
+          continue;
+        }
+        global[key] = originals[key];
+      }
+    }
+  };
+}
+
 test("shared guide conversion kit exposes savings, stay, repeat-stay, and email capture modules", () => {
   const partialPath = path.join(projectRoot, "src", "_includes", "partials", "guide-conversion-kit.njk");
   assert.equal(fs.existsSync(partialPath), true, "guide conversion partial should exist");
@@ -195,6 +350,136 @@ test("shared conversion tracking exposes navigation-safe tracked-link helpers", 
     api.shouldDelayTrackedNavigation(sameTabGuideLink, { button: 0, metaKey: true, ctrlKey: false, shiftKey: false, altKey: false }),
     false
   );
+});
+
+test("tracked owner clicks wait for analytics handoff before navigation resumes", () => {
+  const harness = loadTrackedNavigationHarness();
+  try {
+    const trackedLink = {
+      tagName: "A",
+      href: "/owners/get-started/",
+      target: "",
+      dataset: {
+        trackEvent: "owner_primary_cta_click",
+        pageSlug: "property-management",
+        placement: "hero",
+        trackLabel: "Get started"
+      },
+      textContent: "Get started",
+      hasAttribute(name) {
+        return name === "href";
+      },
+      getAttribute(name) {
+        if (name === "href") return this.href;
+        if (name === "target") return this.target;
+        return null;
+      }
+    };
+    const clickEvent = {
+      button: 0,
+      metaKey: false,
+      ctrlKey: false,
+      shiftKey: false,
+      altKey: false,
+      defaultPrevented: false,
+      preventDefault() {
+        this.defaultPrevented = true;
+      },
+      target: {
+        closest(selector) {
+          return selector === "[data-track-event]" ? trackedLink : null;
+        }
+      }
+    };
+
+    harness.getClickHandler()(clickEvent);
+
+    assert.equal(clickEvent.defaultPrevented, true, "tracked navigations should pause page exit");
+    assert.deepEqual(harness.navigationCalls, [], "navigation should not resume before analytics handoff");
+    assert.equal(harness.timers.length, 1, "tracked navigations should arm a delivery timeout");
+
+    const eventCall = harness.findGtagEvent("owner_primary_cta_click");
+    assert.notEqual(eventCall, undefined, "same click should hand off the owner CTA event to GA");
+
+    const [, , payload] = Array.from(eventCall);
+    assert.equal(payload.page_slug, "property-management");
+    assert.equal(payload.placement, "hero");
+    assert.equal(payload.transport_type, "beacon");
+    assert.equal(payload.event_timeout, 800);
+    assert.equal(typeof payload.event_callback, "function");
+
+    payload.event_callback();
+
+    assert.deepEqual(
+      harness.navigationCalls,
+      ["/owners/get-started/"],
+      "navigation should resume once the analytics callback confirms handoff"
+    );
+
+    harness.timers[0].callback();
+    assert.deepEqual(harness.navigationCalls, ["/owners/get-started/"], "callback and timeout should not double-navigate");
+  } finally {
+    harness.cleanup();
+  }
+});
+
+test("tracked navigations fall back to a dataLayer handoff instead of silently dropping events", () => {
+  const harness = loadConversionTrackingFallbackHarness();
+  try {
+    const trackedLink = {
+      tagName: "A",
+      href: "/owners/get-started/",
+      target: "",
+      hasAttribute(name) {
+        return name === "href";
+      },
+      getAttribute(name) {
+        if (name === "href") return this.href;
+        if (name === "target") return this.target;
+        return null;
+      }
+    };
+    const navigationCalls = [];
+    let capturedBeforeNavigation = false;
+    harness.window.location.assign = (nextHref) => {
+      capturedBeforeNavigation = harness.window.dataLayer.some((entry) => entry && entry.event === "owner_primary_cta_click");
+      navigationCalls.push(nextHref);
+      harness.window.location.href = nextHref;
+    };
+
+    harness.api.trackEvent(
+      "owner_primary_cta_click",
+      {
+        page_slug: "property-management",
+        placement: "hero",
+        link_text: "Get started",
+        link_url: "/owners/get-started/"
+      },
+      {
+        onComplete() {
+          harness.api.continueTrackedNavigation(trackedLink);
+        }
+      }
+    );
+
+    assert.equal(capturedBeforeNavigation, true, "fallback path should capture the event before navigation resumes");
+    assert.equal(harness.window.dataLayer.length, 1, "fallback path should persist a single event payload");
+    assert.equal(harness.window.dataLayer[0].event, "owner_primary_cta_click");
+    assert.equal(harness.window.dataLayer[0].payload.page_slug, "property-management");
+    assert.equal(harness.window.dataLayer[0].payload.placement, "hero");
+    assert.equal(harness.window.dataLayer[0].payload.link_text, "Get started");
+    assert.equal(harness.window.dataLayer[0].payload.link_url, "/owners/get-started/");
+    assert.equal(harness.window.dataLayer[0].payload.transport_type, "beacon");
+    assert.equal(harness.window.dataLayer[0].payload.event_timeout, 800);
+    assert.equal(typeof harness.window.dataLayer[0].payload.event_callback, "function");
+    assert.deepEqual(
+      navigationCalls,
+      ["/owners/get-started/"],
+      "fallback handoff should resume navigation after the payload is captured"
+    );
+  } finally {
+    harness.cleanup();
+  }
 });
 
 test("priority guides use the shared conversion kit with page-specific stay links", () => {
