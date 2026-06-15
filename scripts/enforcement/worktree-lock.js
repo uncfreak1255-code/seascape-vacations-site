@@ -11,7 +11,8 @@ function normalizeOptions(options) {
 
   return {
     lockRootDir: options && options.lockRootDir ? options.lockRootDir : undefined,
-    name: options && options.name ? options.name : "repo-build"
+    name: options && options.name ? options.name : "repo-build",
+    repoRootDir: options && options.repoRootDir ? options.repoRootDir : undefined
   };
 }
 
@@ -27,9 +28,19 @@ function getGitDir() {
   }).trim();
 }
 
+function getRepoRootDir() {
+  return execFileSync("git", ["rev-parse", "--show-toplevel"], {
+    encoding: "utf8"
+  }).trim();
+}
+
+function getDefaultLockRootDir(repoRootDir) {
+  return path.join(repoRootDir || getRepoRootDir(), ".tmp", "worktree-locks");
+}
+
 function getLockPath(options) {
-  const { lockRootDir, name } = normalizeOptions(options);
-  return path.join(lockRootDir || getGitDir(), `${name}.lock`);
+  const { lockRootDir, name, repoRootDir } = normalizeOptions(options);
+  return path.join(lockRootDir || getDefaultLockRootDir(repoRootDir), `${name}.lock`);
 }
 
 function getOwnerMetadataPath(lockPath) {
@@ -64,6 +75,8 @@ function isProcessAlive(pid) {
 }
 
 function ensureLockAvailable(lockPath) {
+  fs.mkdirSync(path.dirname(lockPath), { recursive: true });
+
   try {
     fs.mkdirSync(lockPath);
     return;
@@ -125,7 +138,9 @@ function withWorktreeLock(options, fn) {
 }
 
 module.exports = {
+  getDefaultLockRootDir,
   getGitDir,
+  getRepoRootDir,
   getLockEnvVar,
   getLockPath,
   withWorktreeLock
