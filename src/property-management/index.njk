@@ -2607,7 +2607,7 @@ headExtra: |
         <input type="hidden" name="proof_label" value="">
         <input type="hidden" name="form_placement" value="field-report-postcard">
         <input type="hidden" name="concerns" data-owner-concerns>
-        <p hidden><label>Do not fill this out if you are human: <input name="bot-field"></label></p>
+        <div hidden aria-hidden="true"><input type="text" name="bot-field" tabindex="-1" autocomplete="off"></div>
         <svg class="owner-field-postcard-grain" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><filter id="ownerFieldPaper"><feTurbulence type="fractalNoise" baseFrequency="1.4" numOctaves="2" seed="3"></feTurbulence><feColorMatrix type="matrix" values="0 0 0 0 0.85 0 0 0 0 0.78 0 0 0 0 0.62 0 0 0 0.08 0"></feColorMatrix></filter><rect width="100" height="100" filter="url(#ownerFieldPaper)"></rect></svg>
         <div class="owner-field-postcard-inner" aria-hidden="true"></div>
         <div class="owner-field-postcard-divider" aria-hidden="true"></div>
