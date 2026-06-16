@@ -1,14 +1,78 @@
 (function deferGa4() {
     var measurementId = 'G-3VDV66S3DK';
+    var SENSITIVE_ANALYTICS_KEY_PATTERN = /(^|[-_])(email|e-mail|phone|tel|mobile|first-name|last-name|full-name|guest-name|name|address|property-address|street|zip|postal|message|comment|note|concern|concerns|details|description|what-feels-off|free-text)($|[-_])/i;
+    var EMAIL_VALUE_PATTERN = /[^\s@]+@[^\s@]+\.[^\s@]+/;
+    var PHONE_VALUE_PATTERN = /(?:\+?1[\s.-]?)?(?:\(?\d{3}\)?[\s.-]?)\d{3}[\s.-]?\d{4}/;
+    var ADDRESS_VALUE_PATTERN = /\d{2,6}\s+[a-z0-9 .'-]+\s+(street|st|avenue|ave|road|rd|drive|dr|lane|ln|court|ct|boulevard|blvd|way|place|pl)\b/i;
+
+    function normalizeAnalyticsKey(key) {
+        return String(key || '').trim().toLowerCase().replace(/[^a-z0-9]+/g, '-');
+    }
+
+    function isSensitiveAnalyticsKey(key) {
+        return SENSITIVE_ANALYTICS_KEY_PATTERN.test(normalizeAnalyticsKey(key));
+    }
+
+    function sanitizeAnalyticsUrl(value) {
+        if (typeof URL !== 'function') return '';
+        try {
+            var url = new URL(String(value), window.location && window.location.href ? window.location.href : 'https://seascape-vacations.com/');
+            Array.from(url.searchParams.keys()).forEach(function(key) {
+                var paramValue = url.searchParams.get(key) || '';
+                if (isSensitiveAnalyticsKey(key) || EMAIL_VALUE_PATTERN.test(paramValue) || PHONE_VALUE_PATTERN.test(paramValue) || ADDRESS_VALUE_PATTERN.test(paramValue)) {
+                    url.searchParams.delete(key);
+                }
+            });
+            return url.toString();
+        } catch (error) {
+            return '';
+        }
+    }
+
+    function sanitizeAnalyticsValue(key, value) {
+        if (typeof value === 'function' || typeof value === 'number' || typeof value === 'boolean') return value;
+        if (value === null || typeof value === 'undefined') return value;
+        if (Array.isArray(value)) {
+            return value.map(function(item) {
+                return sanitizeAnalyticsValue(key, item);
+            }).filter(function(item) {
+                return item !== '';
+            });
+        }
+        if (typeof value === 'object') return sanitizeAnalyticsPayload(value);
+
+        var stringValue = String(value).trim();
+        if (!stringValue) return '';
+        if (/url$/i.test(key)) return sanitizeAnalyticsUrl(stringValue);
+        if (EMAIL_VALUE_PATTERN.test(stringValue) || PHONE_VALUE_PATTERN.test(stringValue) || ADDRESS_VALUE_PATTERN.test(stringValue)) return '';
+        return stringValue.slice(0, 160);
+    }
+
+    function sanitizeAnalyticsPayload(payload) {
+        var safePayload = {};
+        if (!payload || typeof payload !== 'object') return safePayload;
+
+        Object.keys(payload).forEach(function(key) {
+            if (isSensitiveAnalyticsKey(key)) return;
+            var value = sanitizeAnalyticsValue(key, payload[key]);
+            if (value === '' || typeof value === 'undefined' || value === null) return;
+            safePayload[key] = value;
+        });
+
+        return safePayload;
+    }
+
+    window.seascapeSanitizeAnalyticsPayload = window.seascapeSanitizeAnalyticsPayload || sanitizeAnalyticsPayload;
 
     window.__seascapeGaQueue = window.__seascapeGaQueue || [];
     window.seascapeTrackEvent = function(eventName, params) {
         if (!eventName) return;
+        var safeParams = window.seascapeSanitizeAnalyticsPayload(params || {});
         if (typeof window.gtag === 'function') {
-            window.gtag('event', eventName, params || {});
+            window.gtag('event', eventName, safeParams);
             return;
         }
-        window.__seascapeGaQueue.push([eventName, params || {}]);
+        window.__seascapeGaQueue.push([eventName, safeParams]);
     };
 
     function loadGa4() {
@@ -51,38 +115,6 @@
     script.src = '/assets/js/conversion-tracking.js';
     script.defer = true;
     document.head.appendChild(script);
-})();
-
-(function deferMetaPixel() {
-    function loadMetaPixel() {
-        if (window.__seascapeMetaPixelLoaded) return;
-
-        window.__seascapeMetaPixelLoaded = true;
-
-        if (!window.fbq) {
-            var fbq = function() {
-                fbq.callMethod ? fbq.callMethod.apply(fbq, arguments) : fbq.queue.push(arguments);
-            };
-
-            fbq.queue = [];
-            fbq.loaded = true;
-            fbq.version = '2.0';
-            window.fbq = fbq;
-            window._fbq = fbq;
-
-            var script = document.createElement('script');
-            script.async = true;
-            script.src = 'https://connect.facebook.net/en_US/fbevents.js';
-            document.head.appendChild(script);
-        }
-
-        window.fbq('init', '2748551298816267');
-        window.fbq('track', 'PageView');
-    }
-
-    window.addEventListener('pointerdown', loadMetaPixel, { once: true, passive: true });
-    window.addEventListener('keydown', loadMetaPixel, { once: true });
-    window.addEventListener('scroll', loadMetaPixel, { once: true, passive: true });
 })();
 
 var EMAIL_POPUP_KEY = 'seascape_email_popup_shown';
