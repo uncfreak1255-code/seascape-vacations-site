@@ -57,7 +57,9 @@
 ## Search Operator Read
 
 - source reads used:
-  - `docs/status/next-batch.md`: current proof lane is `blocked by freshness`.
+  - `docs/status/next-batch.md`: current proof lane is `fresh but below
+    threshold`; no expansion branch cleared, but the rank tracker regression
+    still authorizes bounded rescue work.
   - `docs/reports/rank-tracker-2026-06-03.md`: regression and action named.
   - `docs/portfolio/winner-guides.md`: money destinations and conversion event.
   - live route readback: page returns HTTP 200 on Netlify.
@@ -82,6 +84,19 @@
   cluster: guide_winners have current impressions and clicks, but the branch
   cannot claim final page-level impact until the freshness-blocked readback
   catches up.
+
+## Gate 0 Rescue Block
+
+| Field | Required answer |
+| --- | --- |
+| Target query family | `bradenton vs sarasota` and nearby vacation-base searches such as `bradenton vs sarasota vacation`, `bradenton or sarasota`, and `which is better Bradenton or Sarasota`. |
+| Searcher intent | Mixed comparison intent. The SERP is heavy on relocation, living, real estate, and UGC opinion results; Seascape should keep the page focused on guest booking and vacation-base decisions. |
+| Current Seascape URL | `/guides/bradenton-vs-sarasota/`. |
+| Current proof | `docs/reports/rank-tracker-2026-06-03.md` recorded a #1 to #5 drop for `bradenton vs sarasota`. `docs/status/next-batch.md` is `fresh but below threshold` as of the 2026-06-12 read, so impact claims wait. Live Netlify readback on 2026-06-16 returned HTTP 200, with canonical, Article, FAQPage, BreadcrumbList, and `guide_book_direct_click` hooks present. |
+| Top visible competitors | Reddit Sarasota discussion, MIDFLORIDA Credit Union's living/mortgage comparison, Zachos Realty's Sarasota vs Bradenton relocation guide. Supporting visible surfaces included BestPlaces housing/cost pages, TripAdvisor forum results, and DwellingWell's relocation guide. |
+| Competitor angle | UGC opinion, mortgage/living advice, relocation real estate, housing/cost data, schools, rental rules, lifestyle, and broad local amenities. |
+| Seascape gap | The page already answers the vacation question and has first-party rate/trip-shape proof, but the live SERP is still led by living and real estate frames. The smallest gap is an explicit vacation-versus-living FAQ/schema answer plus tracked links into the two mapped stay destinations. |
+| Recommended action | Add one FAQPage-backed answer that separates vacation-base intent from buying/living intent, route that answer into `/stays/bradenton-vacation-rentals-near-beaches/` and `/stays/siesta-key-area-vacation-rentals/` with `guide_book_direct_click`, update `dateModified`, then run `npm run lint:content`, `npm run build`, `npm run verify:jsonld`, and `npm run verify:links`. |
 
 ## Cluster In Scope
 
@@ -189,6 +204,13 @@
   `verify:links`, `npm test`, and `verify:release` all pass. Rank, CTR, and
   `guide_book_direct_click` readback are still pending the first seven complete
   GSC days; this entry records execution only, not impact.
+- 2026-06-16: reopened Gate 0 after the live SERP still showed relocation,
+  living, real estate, and UGC competitors around the head term. Kept the patch
+  narrow: added one vacation-versus-living FAQ answer, mirrored it into FAQPage
+  schema, linked that answer to the two mapped stay destinations with
+  `guide_book_direct_click`, and moved `dateModified` to 2026-06-16. This is
+  another winner-defense edit only; rank, CTR, clicks, and downstream event
+  impact still wait for the post-deploy GSC/GA4 readback.
 
 ## Not In Scope
 
