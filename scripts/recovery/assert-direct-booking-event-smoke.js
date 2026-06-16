@@ -301,6 +301,17 @@ function simulatePopupEmailCaptureEvent() {
   });
 }
 
+function simulateSanitizedAnalyticsPayload(payload) {
+  return withTrackingRuntime(({ window }) => {
+    if (!window.SeascapeConversionTracking || typeof window.SeascapeConversionTracking.trackEvent !== "function") {
+      throw new Error("conversion tracking did not expose the tracking runtime");
+    }
+
+    window.SeascapeConversionTracking.trackEvent("owner_form_submit", payload);
+    return window.dataLayer;
+  });
+}
+
 function parseArgs(argv) {
   const parsed = {
     baseUrl: "",
@@ -378,5 +389,6 @@ module.exports = {
   validatePopupRuntime,
   simulateDirectBookingEvents,
   simulatePopupEmailCaptureEvent,
+  simulateSanitizedAnalyticsPayload,
   run
 };
