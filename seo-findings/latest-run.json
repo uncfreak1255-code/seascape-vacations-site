@@ -1,0 +1,22 @@
+{
+  "generated_from_latest_observed_at": "2026-05-16 22:25:41 +00:00",
+  "input_dir": "workspace/dataforseo-phase1-raw",
+  "analytics_gate": {
+    "status": "blocked",
+    "label": "`blocked` - GSC export freshness does not cover the requested window.",
+    "latest_gsc_data_date": "2026-05-26",
+    "window_start": "2026-05-21",
+    "window_end": "2026-05-27",
+    "next_branch": "hold-and-reread",
+    "reread_status": "blocked by freshness",
+    "receipt_id": "REC-20260528-ANALYTICS-NEXT-BATCH-20260521to20260527"
+  },
+  "keyword_count": 5,
+  "keywords": [
+    "seascape vacations",
+    "seascape vacations bradenton",
+    "seascape vacations anna maria island",
+    "seascape vacations sarasota",
+    "vacation rentals near anna maria island"
+  ]
+}

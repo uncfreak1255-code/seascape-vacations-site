@@ -15,6 +15,9 @@ eleventyComputed:
 {% set pageUpdatedLabel = gitLastModifiedLabel(page.inputPath, "src/_data/seoPages.json", "src/_data/ownerProofAssets.json") %}
 {% set proofAsset = seoPage.proofAssetKey and ownerProofAssets[seoPage.proofAssetKey] %}
 {% set pageProofStats = seoPage.proofStats or (proofAsset and proofAsset.stats) %}
+{% set ownerMoneyPage = seoPage.slug == "vacation-rental-management-fees-florida"
+  or seoPage.slug == "vacation-rental-licensing-florida"
+  or seoPage.slug == "vrbo-management-services-florida" %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -44,18 +47,7 @@ eleventyComputed:
 
     {% include "partials/organization-schema.njk" %}
     
-    {% include "partials/deferred-meta-pixel.njk" %}
-    
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-    <noscript>
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
-    </noscript>
-    
-    <!-- Service Schema -->
+<!-- Service Schema -->
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
@@ -142,6 +134,11 @@ eleventyComputed:
     {% endif %}
     
     <style>
+        @font-face { font-family: 'Poppins'; src: url('/assets/fonts/homepage/poppins-400-latin.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: optional; }
+        @font-face { font-family: 'Poppins'; src: url('/assets/fonts/homepage/poppins-500-latin.woff2') format('woff2'); font-weight: 500; font-style: normal; font-display: optional; }
+        @font-face { font-family: 'Poppins'; src: url('/assets/fonts/homepage/poppins-600-latin.woff2') format('woff2'); font-weight: 600; font-style: normal; font-display: optional; }
+        @font-face { font-family: 'Poppins'; src: url('/assets/fonts/homepage/poppins-700-latin.woff2') format('woff2'); font-weight: 700; font-style: normal; font-display: optional; }
+        @font-face { font-family: 'Playfair Display'; src: url('/assets/fonts/homepage/playfair-display-latin.woff2') format('woff2'); font-weight: 400 700; font-style: normal; font-display: optional; }
         :root { --brand: #5F8A8B; --brand-light: #7BA3A4; --brand-dark: #3D5C5D; --brand-darker: #2D4647; --gold: #C9A962; --gold-light: #E8D5A3; --cream: #F5EED6; --cream-dark: #EBE4CC; --cream-light: #FAF7EE; --stone: #3A3A3A; --stone-light: #6A6A6A; --white: #FFFFFF; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Poppins', -apple-system, sans-serif; background: var(--cream); color: var(--stone); line-height: 1.7; }
@@ -171,17 +168,7 @@ eleventyComputed:
         .cta-section { background: linear-gradient(135deg, var(--brand) 0%, var(--brand-dark) 100%); padding: 80px 24px; text-align: center; color: white; }
         .cta-title { font-size: clamp(28px, 4vw, 40px); margin-bottom: 16px; }
         .cta-subtitle { opacity: 0.9; max-width: 500px; margin: 0 auto 32px; }
-        .owner-lead-form { display: grid; gap: 18px; text-align: left; max-width: 760px; margin: 0 auto; }
-        .owner-form-eyebrow { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-light); font-weight: 700; margin: 0; text-align: center; }
-        .owner-form-title { color: white; font-size: clamp(28px, 4vw, 38px); margin: 0; text-align: center; }
-        .owner-form-copy,
-        .owner-form-note { color: rgba(255, 255, 255, 0.84); margin: 0; text-align: center; }
-        .owner-form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
-        .owner-form-field { display: grid; gap: 8px; font-size: 14px; font-weight: 600; color: white; }
-        .owner-form-field input { width: 100%; min-height: 52px; border-radius: 14px; border: 1px solid rgba(255, 255, 255, 0.14); background: rgba(255, 255, 255, 0.08); color: white; padding: 0 16px; font: inherit; }
-        .owner-form-field input::placeholder { color: rgba(255, 255, 255, 0.52); }
-        .owner-form-field--wide { grid-column: 1 / -1; }
-        .owner-form-submit { justify-content: center; width: fit-content; margin: 0 auto; }
+        {% include "partials/owner-form-styles.njk" %}
         .footer { background: var(--brand-darker); color: rgba(255, 255, 255, 0.8); padding: 60px 24px 30px; }
         .footer-inner { max-width: 1100px; margin: 0 auto; text-align: center; }
         .footer-logo { font-family: 'Playfair Display', serif; font-size: 24px; color: white; margin-bottom: 16px; }
@@ -193,7 +180,6 @@ eleventyComputed:
         .ui-icon svg { width: 100%; height: 100%; stroke: currentColor; fill: none; stroke-width: 1.85; stroke-linecap: round; stroke-linejoin: round; }
         .ui-icon--benefit { width: 20px; height: 20px; color: white; }
         .ui-icon--metric { width: 34px; height: 34px; color: var(--brand); vertical-align: -6px; margin-left: 6px; }
-        @media (max-width: 720px) { .owner-form-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
@@ -206,7 +192,7 @@ eleventyComputed:
                     <div class="nav-logo-sub">Vacations</div>
                 </div>
             </a>
-            <a href="#owner-cta" class="btn" data-track-event="owner_primary_cta_click" data-page-slug="{{ seoPage.slug }}">{{ seoPage.primaryCta or "Request Your Revenue Teardown" }}</a>
+            <a href="#owner-cta" class="btn" data-track-event="owner_primary_cta_click" data-page-slug="{{ seoPage.slug }}">{{ seoPage.primaryCta or "Request Your Revenue Review" }}</a>
         </div>
     </nav>
 
@@ -227,9 +213,21 @@ eleventyComputed:
                 <h1 style="font-size: clamp(32px, 5vw, 48px); margin-bottom: 20px; color: white;">{{ seoPage.h1 }}</h1>
                 <p style="max-width: 700px; margin: 0 auto; opacity: 0.9; font-size: 18px;">{{ seoPage.intro }}</p>
                 <div style="margin-top: 26px; display: flex; justify-content: center; flex-wrap: wrap;">
-                    <a href="#owner-cta" class="btn btn-gold" data-track-event="owner_primary_cta_click" data-page-slug="{{ seoPage.slug }}">{{ seoPage.primaryCta or "Request Your Revenue Teardown" }}</a>
+                    <a href="#owner-cta" class="btn btn-gold" data-track-event="owner_primary_cta_click" data-page-slug="{{ seoPage.slug }}">{{ seoPage.primaryCta or "Request Your Revenue Review" }}</a>
                 </div>
-                <p style="max-width: 760px; margin: 18px auto 0; opacity: 0.82; font-size: 15px;">{{ seoPage.ctaSubcopy or "We break down fee structure, channel mix, and what your current setup is actually costing you before you decide anything." }}</p>
+                <p style="max-width: 760px; margin: 18px auto 0; opacity: 0.82; font-size: 15px;">{{ seoPage.ctaSubcopy or "We break down management fees, booking-source costs, and what your current setup is actually costing you before you decide anything." }}</p>
+                {% if ownerMoneyPage %}
+                <div style="margin: 18px auto 0; max-width: 860px; border-radius: 14px; padding: 14px 16px; background: rgba(255,255,255,0.12); text-align: left;">
+                    <p style="font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(245, 228, 176, 0.92); margin: 0 0 8px;">Switcher Path</p>
+                    <p style="font-size: 14px; line-height: 1.65; margin: 0; color: rgba(255,255,255,0.92);">
+                        Start with the <a href="/research/owner-fee-revenue-leak-benchmark-2026/" style="color: #fff; text-decoration: underline;">owner benchmark</a>, then compare
+                        <a href="/property-management/vacation-rental-management-fees-florida/" style="color: #fff; text-decoration: underline;">fees</a>,
+                        <a href="/property-management/vacation-rental-licensing-florida/" style="color: #fff; text-decoration: underline;">licensing</a>, and
+                        <a href="/property-management/vrbo-management-services-florida/" style="color: #fff; text-decoration: underline;">VRBO handling</a> before you
+                        <a href="/property-management/#owner-cta" style="color: #fff; text-decoration: underline;">request your review</a>.
+                    </p>
+                </div>
+                {% endif %}
             </div>
         </section>
 
@@ -261,7 +259,8 @@ eleventyComputed:
                     <p style="font-size: 14px; color: var(--stone); margin: 0 0 8px;"><strong>Updated:</strong> {{ proofAsset.reviewedDateLabel or proofAsset.reviewedDate }}</p>
                     <p style="font-size: 14px; color: var(--stone); margin: 0 0 8px;"><strong>Source:</strong> <a href="{{ proofAsset.sourceUrl }}" style="color: var(--brand-dark); text-decoration: underline;">{{ proofAsset.sourceLabel }}</a></p>
                     {% if proofAsset.benchmarkUrl %}
-                    <p style="font-size: 14px; color: var(--stone); margin: 0 0 8px;"><strong>Owner benchmark:</strong> <a href="{{ proofAsset.benchmarkUrl }}" style="color: var(--brand-dark); text-decoration: underline;">Read the owner fee + revenue leak benchmark</a></p>
+                    <p style="font-size: 14px; color: var(--stone); margin: 0 0 8px;"><strong>Owner benchmark:</strong> <a href="{{ proofAsset.benchmarkUrl }}" style="color: var(--brand-dark); text-decoration: underline;">Read the owner fee + net payout benchmark</a></p>
+                    <p style="font-size: 14px; color: var(--stone); margin: 0 0 8px;">Read the <a href="/property-management/vacation-rental-management-fees-florida/" style="color: var(--brand-dark); text-decoration: underline;">fee reality page</a> and the <a href="/property-management/maximize-vacation-rental-income-florida/" style="color: var(--brand-dark); text-decoration: underline;">owner income guide</a> before you compare managers on headline percentage alone.</p>
                     {% endif %}
                     {% if proofAsset.methodology %}
                     <p style="font-size: 14px; color: var(--stone-light); margin: 0;"><strong>Methodology:</strong> {{ proofAsset.methodology }}</p>
@@ -321,7 +320,7 @@ eleventyComputed:
                 <div class="section-header">
                     <p class="section-tag">{{ seoPage.benefitsTag or "Execution Gap" }}</p>
                     <h2 class="section-title">{{ seoPage.benefitsTitle or "Where Seascape closes the gap" }}</h2>
-                    <p class="section-subtitle">{{ seoPage.benefitsSubtitle or "Owners do not need a definition of management. They need evidence that the right operator fixes the expensive parts." }}</p>
+                    <p class="section-subtitle">{{ seoPage.benefitsSubtitle or "Owners do not need a definition of management. They need evidence that the right manager fixes the expensive parts." }}</p>
                 </div>
                 
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px;">
@@ -366,6 +365,46 @@ eleventyComputed:
                         <h3 style="font-size: 22px; margin-bottom: 12px; color: var(--brand-dark);">{{ lever.title }}</h3>
                         <p style="font-size: 15px; color: var(--stone-light); margin: 0;">{{ lever.body }}</p>
                     </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+        {% endif %}
+
+        {% if seoPage.reviewDeliverable %}
+        <section class="section" style="background: white;">
+            <div class="container">
+                <div class="section-header">
+                    <p class="section-tag">{{ seoPage.reviewDeliverable.tag }}</p>
+                    <h2 class="section-title">{{ seoPage.reviewDeliverable.title }}</h2>
+                    <p class="section-subtitle">{{ seoPage.reviewDeliverable.intro }}</p>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px;">
+                    {% for item in seoPage.reviewDeliverable.items %}
+                    <article style="background: var(--cream-light); border-radius: 18px; padding: 28px; box-shadow: 0 6px 20px rgba(0,0,0,0.05);">
+                        <h3 style="font-size: 20px; margin-bottom: 12px; color: var(--brand-dark);">{{ item.title }}</h3>
+                        <p style="font-size: 15px; line-height: 1.7; color: var(--stone-light); margin: 0;">{{ item.body }}</p>
+                    </article>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+        {% endif %}
+
+        {% if seoPage.visibilityLayer %}
+        <section class="section" style="background: var(--cream-light);">
+            <div class="container">
+                <div class="section-header">
+                    <p class="section-tag">{{ seoPage.visibilityLayer.tag }}</p>
+                    <h2 class="section-title">{{ seoPage.visibilityLayer.title }}</h2>
+                    <p class="section-subtitle">{{ seoPage.visibilityLayer.intro }}</p>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px;">
+                    {% for item in seoPage.visibilityLayer.items %}
+                    <article style="background: white; border-radius: 18px; padding: 28px; box-shadow: 0 8px 24px rgba(0,0,0,0.05); border: 1px solid rgba(61, 92, 93, 0.08);">
+                        <h3 style="font-size: 20px; margin-bottom: 12px; color: var(--brand-dark);">{{ item.title }}</h3>
+                        <p style="font-size: 15px; line-height: 1.7; color: var(--stone-light); margin: 0;">{{ item.body }}</p>
+                    </article>
                     {% endfor %}
                 </div>
             </div>
@@ -421,7 +460,7 @@ eleventyComputed:
         </section>
         {% endif %}
 
-        <!-- GEO Intro - AI-citeable rich content -->
+        <!-- GEO Intro - citation-ready rich content -->
         {% if seoPage.geoIntro %}
         <section class="section" style="background: white;">
             <div class="container">
@@ -516,6 +555,32 @@ eleventyComputed:
                 <div class="section-header">
                     <p class="section-tag">Related Resources</p>
                     <h2 class="section-title">More for Property Owners</h2>
+                    {% if ownerMoneyPage %}
+                    <p class="section-subtitle" style="max-width: 760px;">Use the benchmark, the money-page comparisons, and the review request together instead of treating fees, licensing, and channel handling like separate decisions.</p>
+                    <div style="display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-top: 24px;">
+                    <a href="/research/owner-fee-revenue-leak-benchmark-2026/" style="display: inline-flex; align-items: center; justify-content: center; padding: 10px 18px; border-radius: 999px; border: 1px solid rgba(61, 92, 93, 0.14); background: rgba(255,255,255,0.92); color: var(--brand-dark); font-size: 13px; font-weight: 600; text-decoration: none;">
+                        Read the benchmark
+                    </a>
+                        {% if seoPage.slug != "vacation-rental-management-fees-florida" %}
+                    <a href="/property-management/vacation-rental-management-fees-florida/" style="display: inline-flex; align-items: center; justify-content: center; padding: 10px 18px; border-radius: 999px; border: 1px solid rgba(61, 92, 93, 0.14); background: rgba(255,255,255,0.92); color: var(--brand-dark); font-size: 13px; font-weight: 600; text-decoration: none;">
+                        Compare management fees
+                    </a>
+                        {% endif %}
+                        {% if seoPage.slug != "vacation-rental-licensing-florida" %}
+                    <a href="/property-management/vacation-rental-licensing-florida/" style="display: inline-flex; align-items: center; justify-content: center; padding: 10px 18px; border-radius: 999px; border: 1px solid rgba(61, 92, 93, 0.14); background: rgba(255,255,255,0.92); color: var(--brand-dark); font-size: 13px; font-weight: 600; text-decoration: none;">
+                        Check licensing risk
+                    </a>
+                        {% endif %}
+                        {% if seoPage.slug != "vrbo-management-services-florida" %}
+                    <a href="/property-management/vrbo-management-services-florida/" style="display: inline-flex; align-items: center; justify-content: center; padding: 10px 18px; border-radius: 999px; border: 1px solid rgba(61, 92, 93, 0.14); background: rgba(255,255,255,0.92); color: var(--brand-dark); font-size: 13px; font-weight: 600; text-decoration: none;">
+                        Review VRBO handling
+                    </a>
+                        {% endif %}
+                    <a href="/property-management/#owner-cta" style="display: inline-flex; align-items: center; justify-content: center; padding: 10px 18px; border-radius: 999px; border: 1px solid rgba(61, 92, 93, 0.14); background: rgba(255,255,255,0.92); color: var(--brand-dark); font-size: 13px; font-weight: 600; text-decoration: none;">
+                        Request your review
+                    </a>
+                    </div>
+                    {% endif %}
                 </div>
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
                     {% if seoPage.relatedOwnerResources and seoPage.relatedOwnerResources | length %}
@@ -551,15 +616,27 @@ eleventyComputed:
             <div class="container">
                 <div id="owner-cta">
                     {{ ownerEvaluationForm({
-                        eyebrow: "Owner Teardown",
-                        title: seoPage.primaryCta or seoPage.cta,
-                        intro: seoPage.ctaSubcopy or "We break down fee structure, channel mix, and what your current setup is actually costing you before you decide anything.",
+                        eyebrow: "Private revenue review",
+                        title: "Want the same review on your home?",
+                        intro: "Send the listing link or property address, plus a sentence or two about what feels off. Seascape will read what you send and show what is clear, what looks expensive, and what still needs verification before any switch conversation.",
+                        formTitle: "Request Your Revenue Review",
+                        formIntro: "Start with the listing URL or address. Add one line on what feels off; an owner statement or fee quote makes the review sharper.",
+                        proofNote: "Source note: The review uses the evidence available. Missing statements, calendars, guest reviews, or fee terms stay marked unknown until you send them.",
+                        detailLabel: "What the review checks",
+                        detailCopy: "The private revenue review shows what we can verify, what looks expensive, and what still needs a document before you decide whether to stay put, fix the setup, or talk about a transition.",
+                        confirmation: "Got it. Seascape will read what you send and return the clearest next step: stay put, fix the current setup, or talk about a transition.",
                         pageSlug: seoPage.slug,
                         market: seoPage.destination or "florida-gulf-coast",
                         leadType: "owner-revenue-teardown",
-                        buttonLabel: seoPage.primaryCta or "Request Your Revenue Teardown",
-                        note: seoPage.ctaNote or "No generic pitch deck. We use your market, your property type, and your current operating model."
+                        buttonLabel: "Send My Review Request",
+                        propertyFieldLabel: "Listing URL or property address",
+                        propertyFieldPlaceholder: "airbnb.com/h/your-listing, vrbo.com/..., or full street address",
+                        showBenchmarkFields: true,
+                        fileHelp: "PDF, spreadsheet, or screenshot. Missing statements, calendars, guest reviews, or fee terms stay unknown until you send them."
                     }) }}
+                    <p style="margin-top: 14px; text-align: center; color: rgba(255, 255, 255, 0.82); font-size: 14px;">
+                        Not ready to send the review yet? Start with the <a href="/research/owner-fee-revenue-leak-benchmark-2026/" style="color: white; font-weight: 600;">owner fee + net payout benchmark</a> or the <a href="/property-management/switch-vacation-rental-management-company/" style="color: white; font-weight: 600;">switch guide</a>.
+                    </p>
                     <p style="margin-top: 18px; text-align: center; color: rgba(255, 255, 255, 0.82); font-size: 15px;">
                         Prefer to talk first? <a href="tel:+19417048545" style="color: white; font-weight: 600;" data-track-event="owner_phone_click" data-page-slug="{{ seoPage.slug }}">Call (941) 704-8545</a>
                     </p>

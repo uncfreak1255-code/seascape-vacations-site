@@ -30,6 +30,26 @@ function toHostawayCdn(url, width = 800, quality = 82) {
   return value;
 }
 
+const ENTITY_COVERAGE_OUTPUT_PATHS = new Set([
+  // Keep this list narrow to proven gaps from coverage checks.
+  "/guides/index.html",
+]);
+
+const ORGANIZATION_ENTITY_SCHEMA = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "Seascape Vacations",
+  url: "https://seascape-vacations.com",
+  logo: {
+    "@type": "ImageObject",
+    url: "https://seascape-vacations.com/logo-optimized.png",
+  },
+});
+
+function hasEntityCoverageSchema(content) {
+  return /"@type"\s*:\s*"(Organization|LocalBusiness)"/.test(content);
+}
+
 module.exports = function(eleventyConfig) {
   const root = process.cwd();
   const gitTimestampCache = new Map();
@@ -94,7 +114,6 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.addPassthroughCopy("*.png");
   eleventyConfig.addPassthroughCopy("*.webp");
   eleventyConfig.addPassthroughCopy("*.avif");
-  eleventyConfig.addPassthroughCopy("netlify");
   eleventyConfig.addPassthroughCopy("_headers");
   eleventyConfig.addPassthroughCopy({ "src/_redirects": "_redirects" });
   eleventyConfig.addPassthroughCopy({ "src/llms.txt": "llms.txt" });
@@ -145,6 +164,26 @@ module.exports = function(eleventyConfig) {
 
   eleventyConfig.addFilter("imgProxy", function(url, width = 800) {
     return toHostawayCdn(url, width, 82);
+  });
+
+  eleventyConfig.addTransform("entitySchemaCoverage", function(content, outputPath) {
+    if (!outputPath || !outputPath.endsWith(".html")) {
+      return content;
+    }
+
+    const relativeOutputPath = outputPath.split(path.sep).join("/").replace(/^.*\/_site/, "");
+    if (!ENTITY_COVERAGE_OUTPUT_PATHS.has(relativeOutputPath)) {
+      return content;
+    }
+
+    if (hasEntityCoverageSchema(content)) {
+      return content;
+    }
+
+    return content.replace(
+      /<\/head>/i,
+      `<script type="application/ld+json">${ORGANIZATION_ENTITY_SCHEMA}</script></head>`
+    );
   });
 
   return {

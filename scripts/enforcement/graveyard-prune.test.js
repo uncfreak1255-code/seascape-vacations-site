@@ -2,6 +2,7 @@ const test = require("node:test");
 const assert = require("node:assert/strict");
 
 const {
+  buildAudit,
   classifyWorkspaceDirt,
   classifyCandidate,
   extractStatusPaths
@@ -186,4 +187,49 @@ test("classifyCandidate deletes detached duplicates that are preserved by anothe
 
   assert.equal(result.decision, "safe_to_delete");
   assert.match(result.reason, /preserved by local branch/i);
+});
+
+test("buildAudit reuses git-derived dirt and ancestry reads across worktree and branch passes", () => {
+  const calls = {
+    status: 0,
+    ancestor: 0
+  };
+
+  const audit = buildAudit("/repo", {
+    getRepoRoot: () => "/repo",
+    getCurrentBranchName: () => "main",
+    getPrIndexForRoot: () => new Map(),
+    getBranchIndexForRoot: () => new Map([
+      ["main", {
+        branch: "main",
+        head: "abc123",
+        upstream: "origin/main",
+        upstreamGone: false
+      }],
+      ["codex/cache", {
+        branch: "codex/cache",
+        head: "def456",
+        upstream: "origin/codex/cache",
+        upstreamGone: false
+      }]
+    ]),
+    listWorktrees: () => [
+      { worktree: "/repo", branch: "refs/heads/main", HEAD: "abc123" },
+      { worktree: "/repo/.worktrees/cache", branch: "refs/heads/codex/cache", HEAD: "def456" }
+    ],
+    getStatusLinesForPath: (worktreePath) => {
+      calls.status += 1;
+      return worktreePath === "/repo" ? [] : [" M _site/index.html"];
+    },
+    isAncestorForHead: () => {
+      calls.ancestor += 1;
+      return true;
+    }
+  });
+
+  assert.equal(audit.worktrees.length, 2);
+  assert.equal(audit.branches.length, 2);
+  assert.equal(calls.status, 2);
+  assert.equal(calls.ancestor, 2);
+  assert.equal(audit.branches[1].dirt.generatedOnly, true);
 });

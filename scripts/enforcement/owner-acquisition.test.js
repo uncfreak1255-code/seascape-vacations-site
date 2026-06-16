@@ -20,33 +20,58 @@ const siteHeaderStyles = fs.readFileSync(
   path.join(projectRoot, "src", "_includes", "partials", "site-header-styles.njk"),
   "utf8"
 );
+const conversionTracking = fs.readFileSync(
+  path.join(projectRoot, "src", "assets", "js", "conversion-tracking.js"),
+  "utf8"
+);
 const ownerData = require(path.join(projectRoot, "src", "_data", "seoPages.json")).owner;
 const ownerProofAssets = require(path.join(projectRoot, "src", "_data", "ownerProofAssets.json"));
+const ownerOperatorProofAssets = require(path.join(projectRoot, "src", "_data", "ownerOperatorProofAssets.json"));
 const ownerFormPath = path.join(projectRoot, "src", "_includes", "partials", "owner-evaluation-form.njk");
+const ownerReviewRequestedPath = path.join(projectRoot, "src", "property-management", "revenue-review-requested.njk");
+const ownerRouteCanaryPath = path.join(projectRoot, "scripts", "recovery", "assert-owner-funnel-routes.js");
+const {
+  assertFreshOwnerOperatorProof
+} = require("./owner-proof-freshness");
 
-test("owner landing page uses a real owner revenue teardown form instead of generic evaluation copy", () => {
+test("owner landing page uses a real owner revenue review form instead of generic evaluation copy", () => {
   assert.equal(fs.existsSync(ownerFormPath), true, "owner form partial should exist");
 
   const ownerFormPartial = fs.readFileSync(ownerFormPath, "utf8");
-  assert.equal(ownerLanding.includes("Request Your Revenue Teardown"), true);
+  assert.equal(ownerLanding.includes("Request Your Revenue Review"), true);
   assert.equal(ownerLanding.includes("ownerEvaluationForm({"), true);
   assert.equal(ownerLanding.includes('data-track-event="owner_primary_cta_click"'), true);
   assert.equal(ownerFormPartial.includes("owner-revenue-teardown"), true);
   assert.equal(ownerFormPartial.includes('data-netlify="true"'), true);
+  assert.equal(ownerFormPartial.includes('name="proof_label"'), true);
+  assert.equal(ownerLanding.includes('name="proof_label"'), true);
 });
 
-test("owner landing page keeps the owner revenue teardown close to the sales argument instead of burying it under the library", () => {
+test("owner landing page keeps the owner revenue review close to the sales argument instead of burying it under the library", () => {
   const reviewIndex = ownerLanding.indexOf('id="owner-cta"');
   const faqIndex = ownerLanding.indexOf("Selected FAQ");
   const libraryIndex = ownerLanding.indexOf("Owner Guides");
   const specialSituationsIndex = ownerLanding.indexOf("Specific Situations");
 
-  assert.notEqual(reviewIndex, -1, "owner hub needs the revenue teardown anchor");
-  assert.equal(ownerLanding.includes("Benchmark + Teardown"), true);
+  assert.notEqual(reviewIndex, -1, "owner hub needs the revenue review anchor");
+  assert.equal(ownerLanding.includes("Benchmark + Revenue Review"), true);
+  assert.equal(ownerLanding.includes("<strong>Benchmark + Revenue Review</strong> What owners miss"), true);
   assert.equal(
-    ownerLanding.includes("Fee drag, OTA dependence, review-risk signals, and uneven owner communication rarely show up clearly in an owner statement."),
+    ownerLanding.includes("booking-source costs, weak presentation, guest-feedback risks, and uneven owner updates rarely show up clearly in an owner statement."),
     true
   );
+  assert.equal(
+    ownerLanding.includes("We will compare it against the same Gulf Coast benchmark and send back a one-page revenue review that shows what deserves a second look, what to ask before you renew, and what we would check next."),
+    true
+  );
+  assert.equal(
+    ownerLanding.includes("The review shows what deserves a second look and what we would check next before you switch."),
+    true
+  );
+  assert.equal(ownerLanding.includes("proven cost, likely cost, and missing information"), false);
+  assert.equal(ownerLanding.includes("Observed Seascape portfolio data"), true);
+  assert.equal(ownerLanding.includes("5-property Gulf Coast scope"), true);
+  assert.equal(ownerLanding.includes('href="/research/owner-fee-revenue-leak-benchmark-2026/"'), true);
   assert.ok(reviewIndex < faqIndex, "owner CTA should land before FAQ filler");
   assert.ok(reviewIndex < libraryIndex, "owner CTA should land before the operational library");
   assert.ok(reviewIndex < specialSituationsIndex, "owner CTA should land before special-situations content");
@@ -62,7 +87,7 @@ test("owner landing page opts into owner-only nav instead of the guest browse he
   assert.equal(siteHeaderStyles.includes(".nav-owner-cta {"), true, "owner-only nav CSS should style the compact CTA directly");
   assert.equal(siteHeaderStyles.includes("margin-left: auto;"), true, "owner-only nav should push the CTA to the right without guest links");
   assert.equal(siteHeader.includes("href=\"/properties/\""), true, "shared header still needs guest-nav links for non-owner pages");
-  assert.equal(siteHeader.includes("Request Your Revenue Teardown"), false, "shared header should stay page-driven, not hard-code owner CTA copy");
+  assert.equal(siteHeader.includes("Request Your Revenue Review"), false, "shared header should stay page-driven, not hard-code owner CTA copy");
 });
 
 test("owner template supports proof-first sections for high-intent owner pages", () => {
@@ -105,21 +130,161 @@ test("top local owner pages expose proof-first fields and non-generic owner copy
   }
 });
 
-test("owner revenue teardown form lowers friction without losing tracking or intent", () => {
+test("owner revenue review form lowers friction without losing tracking or intent", () => {
   const ownerFormPartial = fs.readFileSync(ownerFormPath, "utf8");
 
   assert.equal(ownerFormPartial.includes('name="phone"'), true);
   assert.equal(ownerFormPartial.includes('name="phone" autocomplete="tel" placeholder="(941) 555-1234" required'), false);
-  assert.equal(ownerFormPartial.includes(">Property address or listing URL<"), true);
-  assert.equal(ownerFormPartial.includes('placeholder="123 Palm Ave or airbnb.com/h/your-listing"'), true);
+  assert.equal(ownerFormPartial.includes('placeholder="Best email for your review"'), true);
+  assert.equal(ownerFormPartial.includes('placeholder="Best number for text updates"'), true);
+  assert.equal(ownerFormPartial.includes('options.propertyFieldLabel or "Listing URL or property address"'), true);
+  assert.equal(ownerFormPartial.includes("options.propertyFieldPlaceholder or 'airbnb.com/h/your-listing, vrbo.com/..., or 123 Palm Ave'"), true);
+  assert.equal(ownerFormPartial.includes('data-owner-context-required="true"'), true);
+  assert.equal(ownerFormPartial.includes('name="property_address" autocomplete="street-address"'), true);
+  assert.equal(ownerFormPartial.includes('name="property_address" autocomplete="street-address" placeholder="{{ options.propertyFieldPlaceholder or'), true);
+  assert.equal(ownerFormPartial.includes('name="property_address" autocomplete="street-address" placeholder="{{ options.propertyFieldPlaceholder or \'airbnb.com/h/your-listing, vrbo.com/..., or 123 Palm Ave\' }}" data-owner-context-field'), true);
+  assert.equal(ownerFormPartial.includes('name="property_address" autocomplete="street-address" placeholder="{{ options.propertyFieldPlaceholder or \'airbnb.com/h/your-listing, vrbo.com/..., or 123 Palm Ave\' }}" required'), false);
+  assert.equal(ownerFormPartial.includes('enctype="multipart/form-data"'), true);
+  assert.equal(ownerFormPartial.includes('name="listing_url"'), true);
+  assert.equal(ownerFormPartial.includes('name="listing_url" inputmode="url" placeholder="Paste the Airbnb or Vrbo listing URL" data-owner-context-field'), true);
+  assert.equal(ownerFormPartial.includes('name="current_manager"'), true);
+  assert.equal(ownerFormPartial.includes('name="current_fee_quote"'), true);
+  assert.equal(ownerFormPartial.includes('name="what_feels_off"'), true);
+  assert.equal(ownerFormPartial.includes('name="what_feels_off" rows="3"'), true);
+  assert.equal(ownerFormPartial.includes('data-owner-context-field></textarea>'), true);
+  assert.equal(ownerFormPartial.includes('name="owner_statement"'), true);
+  assert.equal(ownerLanding.includes('name="what_feels_off" rows="4"'), true);
+  assert.equal(ownerLanding.includes("Add one line in your own words"), true);
+  assert.equal(ownerLanding.includes("Sarasota condo is staying booked, but the payout still feels light and the owner statements are hard to trust."), true);
   assert.equal(
-    ownerFormPartial.includes("Send the property address or listing URL. We will benchmark fee drag, channel mix, and the operating gaps that may be costing you owner income."),
+    ownerFormPartial.includes("The fastest first pass comes from two things: the listing URL or address, and one line on what feels off. An owner statement or fee quote makes the review sharper."),
     true
   );
+  assert.equal(
+    ownerFormPartial.includes("Source note: The review uses the evidence available. Missing statements, calendars, guest reviews, or fee terms stay marked unknown until you send them."),
+    true
+  );
+  assert.equal(ownerFormPartial.includes("The private revenue review shows what we can verify, what looks expensive, and what still needs a document"), true);
+  assert.equal(
+    ownerFormPartial.includes("If you do not know the street address yet, paste the Airbnb or Vrbo link and tell us what feels off."),
+    true
+  );
+  assert.equal(ownerFormPartial.includes("What feels off right now?"), true);
+  assert.equal(
+    ownerFormPartial.includes("owner payout feels light, booking-site fees look high, reporting is hard to trust, or the current manager setup feels off"),
+    true
+  );
+  assert.equal(ownerFormPartial.includes("Send My Review Request"), true);
   assert.equal(ownerFormPartial.includes('data-track-form="owner"'), true);
   assert.equal(ownerFormPartial.includes('data-form-submit-event="owner_form_submit"'), true);
   assert.equal(ownerFormPartial.includes('data-source-page-slug="{{ options.sourcePageSlug or options.pageSlug or \'property-management\' }}"'), true);
   assert.equal(ownerFormPartial.includes('name="source_page_slug" value="{{ options.sourcePageSlug or options.pageSlug or \'property-management\' }}"'), true);
+  assert.equal(ownerLanding.includes("showBenchmarkFields: true"), true);
+  assert.equal(ownerTemplate.includes("showBenchmarkFields: true"), true);
+  assert.equal(ownerLanding.includes('propertyFieldLabel: "Listing URL or property address"'), true);
+  assert.equal(ownerTemplate.includes('propertyFieldLabel: "Listing URL or property address"'), true);
+  assert.equal(ownerLanding.includes("Send My Review Request"), true);
+  assert.equal(ownerLanding.includes("Request My Review"), false);
+  assert.equal(ownerLanding.includes("Sentence or two is enough"), true);
+  assert.equal(ownerLanding.includes("If anything is missing, we will tell you what we still need instead of filling in the blanks."), true);
+  assert.equal(ownerLanding.includes("We will read the listing or address, look at what feels off, and send back what we would check next."), true);
+  assert.equal(ownerLanding.includes("No sales call"), false);
+  assert.equal(conversionTracking.includes("function validateOwnerFormContext(form)"), true);
+  assert.equal(conversionTracking.includes('form.dataset.ownerContextRequired !== "true"'), true);
+  assert.equal(conversionTracking.includes('form.querySelectorAll("[data-owner-context-field]")'), true);
+  assert.equal(conversionTracking.includes("Send the listing or address, or tell us what feels off."), true);
+  assert.equal(conversionTracking.includes("if (!validateOwnerFormContext(form))"), true);
+});
+
+test("Pat-like Sarasota leads are prompted for the property context and the reason for inquiry before manual follow-up", () => {
+  const sarasotaPage = ownerData.find((entry) => entry.slug === "vacation-rental-management-sarasota");
+
+  assert.ok(sarasotaPage, "Sarasota owner page should exist");
+  assert.equal(ownerTemplate.includes("Send the listing link or property address, plus a sentence or two about what feels off."), true);
+  assert.equal(ownerLanding.includes("Send the listing URL or property address. If the address is easier, use that. If the Airbnb or Vrbo link is easier, paste it here."), true);
+  assert.equal(ownerLanding.includes("Revenue feels low for the market"), true);
+  assert.equal(ownerLanding.includes("Booking-site fees feel heavy"), true);
+  assert.equal(ownerLanding.includes("Current manager concerns"), true);
+  assert.equal(ownerLanding.includes("Add one line in your own words"), true);
+  assert.equal(ownerLanding.includes("If you would rather say it plainly"), true);
+  assert.equal(ownerLanding.includes("function validateOwnerContext()"), true);
+  assert.equal(ownerLanding.includes("var hasListing = listingField && listingField.value.trim();"), true);
+  assert.equal(ownerLanding.includes("var hasConcern = concerns.length > 0 || (concernsInput && concernsInput.value.trim()) || (concernsMirror && concernsMirror.value.trim());"), true);
+  assert.equal(ownerLanding.includes("if (hasListing || hasConcern) return true;"), true);
+  assert.equal(ownerLanding.includes("Send the listing or address, or choose what feels off."), true);
+  assert.equal(sarasotaPage.ctaSubcopy.includes("listing link or address plus what feels off"), true);
+  assert.equal(sarasotaPage.ctaNote.includes("one thing that feels off"), true);
+});
+
+test("owner field report email payload avoids duplicate listing fields and submit tracking stays single-source", () => {
+  assert.equal(ownerLanding.includes('data-skip-global-submit-track="true"'), true);
+  assert.equal(ownerLanding.includes('name="listing_url" data-owner-listing-mirror'), false);
+  assert.equal(ownerLanding.includes('name="what_feels_off" data-owner-concerns-mirror'), false);
+  assert.equal(ownerLanding.includes('textarea class="owner-field-textarea" name="what_feels_off"'), true);
+  assert.equal(ownerLanding.includes("function getSubmitPayload(extra) {"), true);
+  assert.equal(ownerLanding.includes("conversionTracking.getSourceContext"), true);
+  assert.equal(ownerLanding.includes('placement: form.dataset.formPlacement || ""'), true);
+  assert.equal(ownerLanding.includes('track("owner_form_submit", getSubmitPayload({'), true);
+  assert.equal(ownerLanding.includes('concern_note_present: concernsMirror && concernsMirror.value.trim() ? "true" : "false"'), true);
+  assert.equal(conversionTracking.includes('if (form.dataset.skipGlobalSubmitTrack !== "true") {'), true);
+});
+
+test("owner review submit path lands on a qualified-owner confirmation route", () => {
+  const ownerFormPartial = fs.readFileSync(ownerFormPath, "utf8");
+  const ownerReviewRequested = fs.readFileSync(ownerReviewRequestedPath, "utf8");
+
+  assert.equal(ownerLanding.includes('action="/property-management/revenue-review-requested/"'), true);
+  assert.equal(ownerFormPartial.includes('action="{{ options.action or \'/property-management/revenue-review-requested/\' }}"'), true);
+  assert.equal(ownerReviewRequested.includes('permalink: "/property-management/revenue-review-requested/"'), true);
+  assert.equal(ownerReviewRequested.includes("Your 48-hour review request is in."), true);
+  assert.equal(
+    ownerReviewRequested.includes("A real Seascape person will read what you sent. If the listing or address and what feels off are there, we can take a more useful first look right away."),
+    true
+  );
+  assert.equal(ownerReviewRequested.includes("listing link or property address"), true);
+  assert.equal(ownerReviewRequested.includes("one sentence on what feels off"), true);
+  assert.equal(ownerReviewRequested.includes("If you skipped either one, reply to the confirmation email"), true);
+  assert.equal(ownerReviewRequested.includes("talk about a transition"), false);
+  assert.equal(ownerReviewRequested.includes("No sales call gets booked from this form."), false);
+  assert.equal(ownerReviewRequested.includes("listing link or address and a sentence or two about what feels off"), true);
+  assert.equal(ownerReviewRequested.includes("does not prove booked review demand"), false);
+  assert.equal(ownerReviewRequested.includes("guaranteed revenue lift"), false);
+});
+
+test("owner funnel uses one explicit source precedence contract across both owner form UIs", () => {
+  const ownerFormPartial = fs.readFileSync(ownerFormPath, "utf8");
+
+  assert.equal(conversionTracking.includes("function resolveOwnerSourcePage(node)"), true);
+  assert.ok(
+    /getOwnerSourceFromLocation\(\)[\s\S]*getHiddenInputValue\(node, "source_page_slug"\)[\s\S]*node\.dataset\.sourcePageSlug[\s\S]*node\.dataset\.pageSlug/.test(conversionTracking),
+    "source precedence should be owner_source query, hidden source_page_slug, dataset source slug, dataset page slug"
+  );
+  assert.equal(ownerLanding.includes('data-track-form="owner"'), true);
+  assert.equal(ownerLanding.includes('data-form-start-event="owner_form_start"'), true);
+  assert.equal(ownerLanding.includes('data-form-submit-event="owner_form_submit"'), true);
+  assert.equal(ownerLanding.includes('name="source_page_slug" value="property-management"'), true);
+  assert.equal(ownerFormPartial.includes('data-track-form="owner"'), true);
+  assert.equal(ownerFormPartial.includes('data-form-start-event="owner_form_start"'), true);
+  assert.equal(ownerFormPartial.includes('data-form-submit-event="owner_form_submit"'), true);
+  assert.equal(ownerFormPartial.includes('name="source_page_slug" value="{{ options.sourcePageSlug or options.pageSlug or \'property-management\' }}"'), true);
+});
+
+test("owner funnel route canary protects canonical and alternate public hosts from lander shells", () => {
+  assert.equal(fs.existsSync(ownerRouteCanaryPath), true, "owner funnel route canary should exist");
+  const canary = fs.readFileSync(ownerRouteCanaryPath, "utf8");
+
+  for (const route of [
+    "/property-management/",
+    "/property-management/revenue-review-requested/",
+    "/research/owner-fee-revenue-leak-benchmark-2026/",
+    "/research/how-seascape-protects-owner-net-2026/"
+  ]) {
+    assert.equal(canary.includes(route), true, `${route} should be in the owner funnel canary`);
+  }
+
+  assert.equal(canary.includes("https://seascape-vacations.com"), true);
+  assert.equal(canary.includes("https://www.seascape-vacations.com"), true);
+  assert.equal(canary.includes("/lander"), true, "canary should fail loudly on the known lander shell symptom");
 });
 
 test("owner benchmark CTA carries source attribution into the revenue review form path", () => {
@@ -127,33 +292,105 @@ test("owner benchmark CTA carries source attribution into the revenue review for
     path.join(projectRoot, "src", "research", "owner-fee-revenue-leak-benchmark-2026.njk"),
     "utf8"
   );
+  const sharedBenchmark = ownerProofAssets["gulf-coast-owner-benchmark-2026"];
 
-  assert.equal(
-    ownerBenchmark.includes('/property-management/?owner_source=owner-fee-revenue-leak-benchmark-2026#owner-cta'),
-    true,
-    "benchmark CTA should preserve benchmark origin on the owner review path"
-  );
+  assert.equal(sharedBenchmark.ctaPath, "/property-management/?owner_source=owner-fee-revenue-leak-benchmark-2026#owner-cta");
+  assert.equal(ownerBenchmark.includes('{% set ctaPath = benchmark.ctaPath or "/property-management/?owner_source=owner-fee-revenue-leak-benchmark-2026#owner-cta" %}'), true);
+  assert.equal((ownerBenchmark.match(/href="\{\{ ctaPath \}\}"/g) || []).length >= 2, true);
+  assert.equal(ownerBenchmark.includes('data-track-event="owner_primary_cta_click"'), true);
+  assert.equal(ownerBenchmark.includes('data-page-slug="owner-fee-revenue-leak-benchmark-2026"'), true);
+  assert.equal(ownerBenchmark.includes("ownerEvaluationForm({"), false);
+  assert.equal(ownerBenchmark.includes('formPlacement: "benchmark-teardown"'), false);
+  assert.equal(ownerBenchmark.includes('sourcePageSlug: "owner-fee-revenue-leak-benchmark-2026"'), false);
+  assert.equal(ownerBenchmark.includes('showBenchmarkFields: true'), false);
 });
 
-test("owner benchmark page stays in the leak-stack lane and keeps visible proof labels", () => {
+test("owner benchmark page stays in the fee-and-revenue lane and keeps visible proof labels", () => {
   const ownerBenchmark = fs.readFileSync(
     path.join(projectRoot, "src", "research", "owner-fee-revenue-leak-benchmark-2026.njk"),
     "utf8"
   );
+  const sharedBenchmark = ownerProofAssets["gulf-coast-owner-benchmark-2026"];
 
-  assert.equal(ownerBenchmark.includes("Your management fee is not the whole revenue leak."), true);
-  assert.equal(ownerBenchmark.includes("5-property Gulf Coast scope"), true);
+  assert.equal(ownerBenchmark.includes("Your management fee is not the whole payout story."), true);
+  assert.equal(sharedBenchmark.scopeLabel, "5-property Gulf Coast scope");
+  assert.equal(ownerBenchmark.includes("{{ benchmark.scopeLabel }}"), true);
   assert.equal(ownerBenchmark.includes("Observed Seascape portfolio data"), true);
   assert.equal(ownerBenchmark.includes("Observed property example"), true);
   assert.equal(ownerBenchmark.includes("Scenario math, not a forecast"), true);
-  assert.equal(ownerBenchmark.includes("Request Your Revenue Teardown"), true);
+  assert.equal(ownerBenchmark.includes("Request Your Revenue Review"), true);
+  assert.equal(sharedBenchmark.examples.some((example) => example.title === "Patrick portfolio"), true);
+  assert.equal(ownerBenchmark.includes("{% for example in benchmark.examples %}"), true);
+  assert.equal(ownerBenchmark.includes("This page sends you into the shared review intake route."), true);
+  assert.equal(ownerBenchmark.includes("AMI Portfolio"), false);
+  assert.equal(ownerBenchmark.includes("This chart is not a market-wide fee survey."), true);
   assert.equal(ownerBenchmark.includes("passive income"), false);
   assert.equal(ownerBenchmark.includes("sit back while we manage"), false);
   assert.equal(ownerBenchmark.includes("full service"), false);
 });
 
+test("owner operator proof pack keeps approved redacted modules but retires active teardown attribution", () => {
+  const proofPack = fs.readFileSync(
+    path.join(projectRoot, "src", "research", "how-seascape-protects-owner-net-2026.njk"),
+    "utf8"
+  );
+
+  assert.equal(ownerOperatorProofAssets.proofPackUrl, "/research/how-seascape-protects-owner-net-2026/");
+  assert.equal(ownerOperatorProofAssets.reuseStatus, "retired-stale");
+  assert.equal(ownerOperatorProofAssets.freshnessPolicy, "retired-no-public-reuse");
+  assert.equal(ownerOperatorProofAssets.modules.length >= 3, true, "proof pack needs at least three reusable modules");
+  assert.equal(
+    ownerOperatorProofAssets.modules.every((module) => module.evidencePath.includes("seascape-hub/")),
+    true,
+    "proof modules should keep Hub evidence paths visible"
+  );
+  assert.equal(proofPack.includes("Archived April 2026 owner-report examples."), true);
+  assert.equal(proofPack.includes('meta name="robots" content="noindex, follow"'), true);
+  assert.equal(proofPack.includes("/research/owner-fee-revenue-leak-benchmark-2026/"), true);
+  assert.equal(proofPack.includes("/property-management/?owner_source=how-seascape-protects-owner-net-2026#owner-cta"), false);
+  assert.equal(proofPack.includes('sourcePageSlug: "how-seascape-protects-owner-net-2026"'), false);
+  assert.equal(proofPack.includes('formPlacement: "operator-proof-pack-teardown"'), false);
+  assert.equal(
+    ownerOperatorProofAssets.demandBoundary.includes("Current benchmark-path receipts prove measurement wiring only"),
+    true
+  );
+  assert.equal(proofPack.includes("we always outperform"), false);
+  assert.equal(proofPack.includes("passive income"), false);
+  assert.equal(proofPack.includes("full service"), false);
+});
+
+test("owner operator proof pack retirement preserves the stale date instead of extending freshness", () => {
+  assert.equal(ownerOperatorProofAssets.staleAfter, "2026-05-26");
+  assert.equal(ownerOperatorProofAssets.retiredAfter, "2026-05-26");
+  assert.equal(ownerOperatorProofAssets.freshnessPolicy, "retired-no-public-reuse");
+  assert.equal(ownerOperatorProofAssets.retirementReason.includes("archive only"), true);
+  assert.equal(conversionTracking.includes("owner_source"), true);
+  assert.ok(
+    ownerOperatorProofAssets.modules.every((module) => module.id && module.evidencePath && module.proofLabel),
+    "freshness enforcement needs stable module ids, evidence paths, and proof labels"
+  );
+  assert.doesNotThrow(() => assertFreshOwnerOperatorProof(ownerOperatorProofAssets, new Date("2026-05-27T00:00:00Z")));
+});
+
+test("owner hub removes the retired operator proof pack while the benchmark stands on its own review path", () => {
+  const ownerBenchmark = fs.readFileSync(
+    path.join(projectRoot, "src", "research", "owner-fee-revenue-leak-benchmark-2026.njk"),
+    "utf8"
+  );
+
+  assert.equal(ownerLanding.includes("/research/how-seascape-protects-owner-net-2026/"), false);
+  assert.equal(ownerLanding.includes("How Seascape Protects Owner Revenue"), false);
+  assert.equal(ownerLanding.includes("/property-management/vacation-rental-management-fees-florida/"), true);
+  assert.equal(ownerBenchmark.includes("/research/how-seascape-protects-owner-net-2026/"), false);
+  assert.equal(ownerBenchmark.includes("A manager should be able to show exactly how a rate move is tested."), false);
+  assert.equal(ownerBenchmark.includes("/property-management/?owner_source=owner-fee-revenue-leak-benchmark-2026#owner-cta"), true);
+  assert.equal(ownerLanding.includes("Request Your Revenue Review"), true);
+  assert.equal(ownerBenchmark.includes("Request Your Revenue Review"), true);
+});
+
 test("owner pages keep phone as a lower-trust fallback instead of a competing hero CTA", () => {
-  const landingHeroStart = ownerLanding.indexOf('<section class="section owner-hero">');
+  const landingHeroMatch = ownerLanding.match(/<section class="[^"]*\bowner-hero\b[^"]*">/);
+  const landingHeroStart = landingHeroMatch ? landingHeroMatch.index : -1;
   const landingHeroEnd = ownerLanding.indexOf("</section>", landingHeroStart);
   const landingHero = ownerLanding.slice(landingHeroStart, landingHeroEnd);
 
@@ -273,10 +510,22 @@ test("priority owner proof-cluster pages cite the shared benchmark asset and avo
   })) {
     assert.ok(page, `${slug} should exist`);
     assert.equal(page.proofAssetKey, "gulf-coast-owner-benchmark-2026", `${slug} should cite the shared benchmark`);
+    assert.ok(page.reviewDeliverable, `${slug} should define a 48-hour review deliverable`);
+    assert.equal(page.reviewDeliverable.tag, "48-Hour Review", `${slug} should label the deliverable section clearly`);
+    assert.ok(Array.isArray(page.reviewDeliverable.items) && page.reviewDeliverable.items.length >= 3, `${slug} should show at least three review deliverable items`);
+    assert.ok(page.visibilityLayer, `${slug} should define an owner visibility layer`);
+    assert.equal(page.visibilityLayer.tag, "Owner Visibility", `${slug} should label the visibility section clearly`);
+    assert.ok(Array.isArray(page.visibilityLayer.items) && page.visibilityLayer.items.length >= 4, `${slug} should show the owner visibility items`);
     assert.ok(Array.isArray(page.processSteps) && page.processSteps.length >= 3, `${slug} should expose a real process`);
     assert.ok(Array.isArray(page.objections) && page.objections.length >= 3, `${slug} should answer owner objections`);
-    assert.equal(page.primaryCta, "Request Your Revenue Teardown", `${slug} should keep the teardown CTA`);
+    assert.equal(page.primaryCta, "Request Your Revenue Review", `${slug} should keep the review CTA`);
     assert.ok(/teardown|review|fee|channel|owner/i.test(page.ctaSubcopy), `${slug} CTA subcopy should reinforce owner-economics intent`);
+
+    const visibilityText = page.visibilityLayer.items.map((item) => `${item.title} ${item.body}`).join(" ");
+    assert.match(visibilityText, /report/i, `${slug} visibility layer should mention reporting`);
+    assert.match(visibilityText, /maintenance|readiness|turnover/i, `${slug} visibility layer should mention local follow-through`);
+    assert.match(visibilityText, /screen/i, `${slug} visibility layer should mention screening or guest-rule setup`);
+    assert.match(visibilityText, /local|response/i, `${slug} visibility layer should mention local response ownership`);
   }
 
   assert.equal(licensingPage.intro.includes("We ensure compliance."), false, "licensing page should not keep the old generic intro");
@@ -339,7 +588,7 @@ test("owner fee cluster pages stay in review mode instead of reverting to brochu
     assert.ok(page, `${slug} should exist`);
   }
 
-  assert.equal(selfManagePage.primaryCta, "Request Your Revenue Teardown", "self-manage page should use the teardown CTA");
+  assert.equal(selfManagePage.primaryCta, "Request Your Revenue Review", "self-manage page should use the review CTA");
   assert.ok(Array.isArray(selfManagePage.proofStats) && selfManagePage.proofStats.length >= 4, "self-manage page should expose owner proof stats");
   assert.ok(selfManagePage.marketReality && /fee|self-manag/i.test(JSON.stringify(selfManagePage.marketReality)), "self-manage page should frame the cost of staying self-managed");
   assert.ok(Array.isArray(selfManagePage.revenueLevers) && selfManagePage.revenueLevers.length >= 3, "self-manage page should explain what actually changes owner income");
@@ -350,8 +599,8 @@ test("owner fee cluster pages stay in review mode instead of reverting to brochu
   assert.equal(JSON.stringify(amiPage).includes("24/7 guest support"), false, "AMI page should not lead with commodity management bullet points");
   assert.equal(JSON.stringify(bradentonPage).includes("Airbnb, VRBO, and direct booking integration"), false, "Bradenton page should not use generic channel-stack bullets");
   assert.equal(JSON.stringify(bradentonPage).includes("Property managers like Seascape Vacations typically increase occupancy by 15-25%"), false, "Bradenton page should not make canned occupancy claims");
-  assert.equal(amiPage.primaryCta, "Request Your Revenue Teardown", "AMI page should keep the teardown CTA");
-  assert.equal(bradentonPage.primaryCta, "Request Your Revenue Teardown", "Bradenton page should keep the teardown CTA");
+  assert.equal(amiPage.primaryCta, "Request Your Revenue Review", "AMI page should keep the review CTA");
+  assert.equal(bradentonPage.primaryCta, "Request Your Revenue Review", "Bradenton page should keep the review CTA");
   assert.ok(/ota|fee|rate|owner|revenue|direct/i.test(amiPage.geoIntro), "AMI GEO intro should sound like an owner economics page");
   assert.ok(/ota|fee|rate|owner|revenue|direct/i.test(bradentonPage.geoIntro), "Bradenton GEO intro should sound like an owner economics page");
 });
@@ -366,7 +615,7 @@ test("remaining local owner pages keep custom owner-math framing instead of fall
     "vacation-rental-management-bradenton": {
       proofTitle: "Broad demand does not guarantee strong owner income",
       switchTitle: "Why Bradenton owners start looking elsewhere",
-      revenueTitle: "What actually moves Bradenton owner net"
+      revenueTitle: "What actually moves Bradenton owner income"
     },
     "vacation-rental-management-sarasota": {
       proofTitle: "Premium homes lose money when the operation gets flattened",

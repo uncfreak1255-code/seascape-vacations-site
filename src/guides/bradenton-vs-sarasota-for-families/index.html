@@ -16,6 +16,7 @@
 .property-card-body a{display:inline-block;background:var(--brand);color:#fff;padding:10px 20px;border-radius:8px;text-decoration:none;font-weight:600;font-size:14px;margin-top:8px}
 .property-card-body a:hover{background:var(--brand-dark)}
 </style>
+{% include "partials/card-link-surface.njk" %}
 <script type="application/ld+json">{
     "@context": "https://schema.org",
     "@type": "Article",
@@ -136,7 +137,7 @@ Bradenton wins for most families. Cheaper rentals with pools, calmer beaches on 
 <p>Two of our Bradenton properties are built for families. Not "family-friendly" in the way every rental claims to be — actually set up for it.</p>
 
 <div class="property-card-grid">
-<div class="property-card">
+<div class="property-card" data-card-link="/properties/the-oasis/">
 <img src="https://bookingenginecdn.hostaway.com/listing/51916-189511-g2tWgjqFm-DXPRc0ll2k1u87aWIKNZm6tOyz9KhGrnc-64dfdf914c559?width=1200&quality=82&format=webp&v=2" alt="The Oasis vacation rental in Bradenton with pool and putting green" loading="lazy" width="600" height="400">
 <div class="property-card-body">
 <h4>The Oasis</h4>
@@ -147,7 +148,7 @@ Bradenton wins for most families. Cheaper rentals with pools, calmer beaches on 
 <a href="/properties/the-oasis/">See The Oasis &rarr;</a>
 </div>
 </div>
-<div class="property-card">
+<div class="property-card" data-card-link="/properties/dockside-dreams/">
 <img src="https://bookingenginecdn.hostaway.com/listing/51916-206016-xNIrPl9kvF0vllYFzSL7Lm0Gl4eOGxLIN--wmPlCT3NY-6536bca493945?width=1200&quality=82&format=webp&v=2" alt="Dockside Dreams vacation rental in Bradenton with private dock and pool" loading="lazy" width="600" height="400">
 <div class="property-card-body">
 <h4>Dockside Dreams</h4>

@@ -30,6 +30,18 @@ This repo is not a sandbox. `main` is the production line.
 6. Commit once one meaningful unit is verified
 7. Push the branch when you want backup or review
 8. Merge or push `main` only when you are ready for Netlify to ship it
+9. Run `docs/process/post-merge-runtime-proof-checklist.md` before calling it done
+
+## Read GitHub protection before changing it
+
+If the work touches CI, release policy, branch rules, or a GitHub-side merge
+recommendation, read the live protection state first instead of assuming it:
+
+```bash
+gh api repos/uncfreak1255-code/seascape-vacations-site/branches/main/protection
+```
+
+That readback is the proof surface for what `main` actually enforces today.
 
 ## When to do what
 
@@ -76,6 +88,15 @@ Only do this when all are true:
 - local verification passed
 - the changed pages/routes were smoke-tested
 - you are willing for Netlify to deploy it
+
+## If The Release Goes Sideways
+
+- If Netlify fails before production is healthy, use
+  `docs/runbooks/failed-netlify-deploy.md`.
+- If the deploy succeeds but live behavior is broken, use
+  `docs/runbooks/release-incident.md`.
+- Do not improvise a recovery flow from memory. Use the matching runbook, then
+  complete `docs/process/post-merge-runtime-proof-checklist.md`.
 
 ## Repo-specific stop signs
 

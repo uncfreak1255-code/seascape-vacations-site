@@ -5,8 +5,12 @@ const GUEST_EMAIL_CAPTURE_STORE_NAME = "seascape-guest-email-captures";
 const GUEST_EMAIL_CAPTURE_METRICS_KEY = "guest_email_capture_metrics_v1.json";
 const MAILCHIMP_ENDPOINT = "https://seascape-vacations.us6.list-manage.com/subscribe/post";
 const MAILCHIMP_QUERY = "u=48f234eebd9cb530fd2f217fe&id=95e5a594d1&f_id=008996e5f0";
+const MAILCHIMP_EVENT_NAME = "guest_email_capture";
 const MAX_RECEIPTS = 500;
 const MAX_PROOF_LABEL_LENGTH = 64;
+const MAX_MAILCHIMP_TAG_LENGTH = 100;
+const MAX_MAILCHIMP_WARNING_LENGTH = 64;
+const MAX_UTILITY_CONTEXT_LENGTH = 96;
 
 function normalizeText(value) {
   if (typeof value !== "string") return "";
@@ -18,6 +22,24 @@ function normalizeEmail(value) {
   return email && email.includes("@") ? email : "";
 }
 
+function normalizeToken(value, maxLength = MAX_MAILCHIMP_TAG_LENGTH) {
+  return normalizeText(value)
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, maxLength);
+}
+
+function normalizeMailchimpEventName(value) {
+  return normalizeText(value)
+    .toLowerCase()
+    .replace(/[^a-z0-9_-]+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^[-_]+|[-_]+$/g, "")
+    .slice(0, 40);
+}
+
 function normalizeProofLabel(value) {
   const normalized = normalizeText(value)
     .toLowerCase()
@@ -26,6 +48,16 @@ function normalizeProofLabel(value) {
     .replace(/^[-_]+|[-_]+$/g, "");
 
   return normalized.slice(0, MAX_PROOF_LABEL_LENGTH);
+}
+
+function normalizeContextValue(value) {
+  return normalizeText(value)
+    .replace(/\s+/g, " ")
+    .slice(0, MAX_UTILITY_CONTEXT_LENGTH);
+}
+
+function normalizeContextToken(value) {
+  return normalizeToken(value, MAX_UTILITY_CONTEXT_LENGTH);
 }
 
 function normalizePath(value) {
@@ -74,6 +106,116 @@ function buildSubmissionId(email, createdAt, pagePath, placement) {
     .slice(0, 24);
 }
 
+function buildMailchimpSubscriberHash(email) {
+  return crypto
+    .createHash("md5")
+    .update(normalizeEmail(email))
+    .digest("hex");
+}
+
+function splitName(value) {
+  const name = normalizeText(value);
+  if (!name) {
+    return {
+      firstName: "",
+      lastName: ""
+    };
+  }
+
+  const [firstName, ...rest] = name.split(/\s+/);
+  return {
+    firstName,
+    lastName: rest.join(" ")
+  };
+}
+
+function deriveMailchimpServerPrefix(apiKey, explicitPrefix) {
+  const normalizedPrefix = normalizeToken(explicitPrefix, 20);
+  if (normalizedPrefix) {
+    return normalizedPrefix;
+  }
+
+  const match = normalizeText(apiKey).match(/-([a-z0-9]+)$/i);
+  return match ? normalizeToken(match[1], 20) : "";
+}
+
+function deriveMailchimpAudienceId(explicitAudienceId) {
+  const audienceId = normalizeText(explicitAudienceId);
+  if (audienceId) {
+    return audienceId;
+  }
+
+  const params = new URLSearchParams(MAILCHIMP_QUERY);
+  return normalizeText(params.get("id"));
+}
+
+function sanitizeMailchimpWarnings(warnings = []) {
+  return [
+    ...new Set(
+      warnings
+        .map((warning) => normalizeToken(warning, MAX_MAILCHIMP_WARNING_LENGTH))
+        .filter(Boolean)
+    )
+  ];
+}
+
+function buildGuestMailchimpTags(receipt) {
+  if (!receipt || typeof receipt !== "object") return [];
+
+  const candidateTags = [
+    "guest-capture",
+    `guest-capture-form-${receipt.formName || GUEST_EMAIL_CAPTURE_FORM_NAME}`,
+    "guest-capture-source-site",
+    `guest-capture-placement-${receipt.placement || "inline"}`,
+    `guest-capture-market-${receipt.market || "florida-gulf-coast"}`,
+    `guest-capture-page-${receipt.pageSlug || slugFromPath(receipt.pagePath || "/")}`
+  ];
+
+  if (receipt.guideSlug) {
+    candidateTags.push(`guest-capture-guide-${receipt.guideSlug}`);
+  } else if (receipt.sourcePageSlug && receipt.sourcePageSlug !== receipt.pageSlug) {
+    candidateTags.push(`guest-capture-source-page-${receipt.sourcePageSlug}`);
+  }
+
+  if (receipt.utilityContext && receipt.utilityContext.sourceLabel) {
+    candidateTags.push(`guest-capture-utility-${receipt.utilityContext.sourceLabel}`);
+  }
+
+  return [...new Set(candidateTags.map((tag) => normalizeToken(tag)).filter(Boolean))];
+}
+
+function buildGuestMailchimpEvent(receipt) {
+  if (!receipt || typeof receipt !== "object") return null;
+
+  const properties = {
+    submissionId: receipt.submissionId || "",
+    formName: receipt.formName || GUEST_EMAIL_CAPTURE_FORM_NAME,
+    pagePath: receipt.pagePath || "/",
+    pageSlug: receipt.pageSlug || slugFromPath(receipt.pagePath || "/"),
+    guideSlug: receipt.guideSlug || "",
+    sourcePageSlug: receipt.sourcePageSlug || receipt.pageSlug || "",
+    market: receipt.market || "florida-gulf-coast",
+    placement: receipt.placement || "inline",
+    createdAt: receipt.createdAt || ""
+  };
+
+  if (receipt.utilityContext && typeof receipt.utilityContext === "object") {
+    Object.assign(properties, {
+      utilityMoment: receipt.utilityContext.moment || "",
+      utilitySourceLabel: receipt.utilityContext.sourceLabel || "",
+      requestedValue: receipt.utilityContext.requestedValue || "",
+      guestIntent: receipt.utilityContext.guestIntent || "",
+      deliveryChannel: receipt.utilityContext.deliveryChannel || "",
+      consentBasis: receipt.utilityContext.consentBasis || ""
+    });
+  }
+
+  return {
+    name: MAILCHIMP_EVENT_NAME,
+    properties
+  };
+}
+
 function buildGuestEmailCaptureReceipt(rawPayload) {
   const payload = readPayload(rawPayload);
   const name = normalizeText(payload.name);
@@ -89,6 +231,14 @@ function buildGuestEmailCaptureReceipt(rawPayload) {
     normalizeText(payload.sourcePageSlug || payload.source_page_slug) ||
     pageSlug;
   const proofLabel = normalizeProofLabel(payload.proofLabel || payload.proof_label);
+  const utilityContext = {
+    moment: normalizeContextToken(payload.utilityMoment || payload.utility_moment || payload.captureMoment || payload.capture_moment),
+    sourceLabel: normalizeContextToken(payload.utilitySourceLabel || payload.utility_source_label || payload.sourceLabel || payload.source_label),
+    requestedValue: normalizeContextValue(payload.requestedValue || payload.requested_value || payload.utilityValue || payload.utility_value),
+    guestIntent: normalizeContextValue(payload.guestIntent || payload.guest_intent),
+    deliveryChannel: normalizeContextToken(payload.deliveryChannel || payload.delivery_channel),
+    consentBasis: normalizeContextToken(payload.consentBasis || payload.consent_basis)
+  };
 
   const receipt = {
     submissionId:
@@ -107,8 +257,36 @@ function buildGuestEmailCaptureReceipt(rawPayload) {
   if (proofLabel) {
     receipt.proofLabel = proofLabel;
   }
+  if (Object.values(utilityContext).some(Boolean)) {
+    receipt.utilityContext = utilityContext;
+  }
 
   return receipt;
+}
+
+function withMailchimpDelivery(receipt, delivery = {}) {
+  if (!receipt || typeof receipt !== "object") return receipt;
+
+  const mode = normalizeToken(delivery.mode, 40);
+  const tags = Array.isArray(delivery.tags)
+    ? [...new Set(delivery.tags.map((tag) => normalizeToken(tag)).filter(Boolean))]
+    : [];
+  const warnings = sanitizeMailchimpWarnings(delivery.warnings);
+  const eventName = normalizeMailchimpEventName(delivery.eventName);
+
+  if (!mode && tags.length === 0 && warnings.length === 0 && !eventName) {
+    return receipt;
+  }
+
+  return {
+    ...receipt,
+    mailchimp: {
+      ...(mode ? { mode } : {}),
+      ...(eventName ? { eventName } : {}),
+      ...(tags.length > 0 ? { tags } : {}),
+      ...(warnings.length > 0 ? { warnings } : {})
+    }
+  };
 }
 
 function emptyMetrics() {
@@ -234,6 +412,46 @@ function formatGuestEmailCaptureSummary(metrics) {
       if (normalizeProofLabel(receipt.proofLabel)) {
         safeReceipt.proofLabel = normalizeProofLabel(receipt.proofLabel);
       }
+      if (receipt.utilityContext && typeof receipt.utilityContext === "object") {
+        const utilityContext = {
+          moment: normalizeContextToken(receipt.utilityContext.moment),
+          sourceLabel: normalizeContextToken(receipt.utilityContext.sourceLabel),
+          requestedValue: normalizeContextValue(receipt.utilityContext.requestedValue),
+          guestIntent: normalizeContextValue(receipt.utilityContext.guestIntent),
+          deliveryChannel: normalizeContextToken(receipt.utilityContext.deliveryChannel),
+          consentBasis: normalizeContextToken(receipt.utilityContext.consentBasis)
+        };
+        if (Object.values(utilityContext).some(Boolean)) {
+          safeReceipt.utilityContext = utilityContext;
+        }
+      }
+
+      if (receipt.mailchimp && typeof receipt.mailchimp === "object") {
+        const mailchimp = {};
+        const mode = normalizeToken(receipt.mailchimp.mode, 40);
+        const eventName = normalizeMailchimpEventName(receipt.mailchimp.eventName);
+        const tags = Array.isArray(receipt.mailchimp.tags)
+          ? [...new Set(receipt.mailchimp.tags.map((tag) => normalizeToken(tag)).filter(Boolean))]
+          : [];
+        const warnings = sanitizeMailchimpWarnings(receipt.mailchimp.warnings);
+
+        if (mode) {
+          mailchimp.mode = mode;
+        }
+        if (eventName) {
+          mailchimp.eventName = eventName;
+        }
+        if (tags.length > 0) {
+          mailchimp.tags = tags;
+        }
+        if (warnings.length > 0) {
+          mailchimp.warnings = warnings;
+        }
+
+        if (Object.keys(mailchimp).length > 0) {
+          safeReceipt.mailchimp = mailchimp;
+        }
+      }
 
       return safeReceipt;
     })
@@ -314,9 +532,18 @@ module.exports = {
   GUEST_EMAIL_CAPTURE_STORE_NAME,
   GUEST_EMAIL_CAPTURE_METRICS_KEY,
   MAILCHIMP_ENDPOINT,
+  MAILCHIMP_EVENT_NAME,
   MAILCHIMP_QUERY,
   buildGuestEmailCaptureReceipt,
+  buildGuestMailchimpEvent,
+  buildGuestMailchimpTags,
+  buildMailchimpSubscriberHash,
+  deriveMailchimpAudienceId,
+  deriveMailchimpServerPrefix,
   mergeGuestEmailCaptureMetrics,
+  sanitizeMailchimpWarnings,
+  splitName,
+  withMailchimpDelivery,
   relabelGuestEmailCaptureReceipts,
   formatGuestEmailCaptureSummary,
   readAuthToken,

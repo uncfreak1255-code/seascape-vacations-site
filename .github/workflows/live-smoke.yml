@@ -1,0 +1,41 @@
+name: Live Smoke
+
+on:
+  workflow_dispatch:
+  schedule:
+    # GitHub Actions cron runs in UTC; 10:17 UTC = 06:17 ET during EDT.
+    # A `timezone:` key is not part of the documented schedule schema, so the
+    # fire time is stated explicitly in UTC instead of relying on parser leniency.
+    - cron: "17 10 * * *"
+
+permissions:
+  contents: read
+
+jobs:
+  live-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      # Any PR changing visible copy on smoke-asserted routes must update
+      # scripts/recovery/assert-live-smoke.js in the same PR.
+      - name: Verify recovery live
+        run: npm run verify:recovery:live || (sleep 30 && npm run verify:recovery:live)
+
+      - name: Verify direct-booking events
+        run: npm run verify:direct-booking-events || (sleep 30 && npm run verify:direct-booking-events)
+
+      - name: Verify owner funnel routes
+        run: npm run verify:owner-funnel-routes || (sleep 30 && npm run verify:owner-funnel-routes)

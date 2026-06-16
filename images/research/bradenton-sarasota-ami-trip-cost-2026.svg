@@ -1,20 +1,33 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-labelledby="title desc">
-  <title id="title">Bradenton vs Sarasota vs Anna Maria Island lodging cost comparison</title>
-  <desc id="desc">Average nightly lodging rates in the Seascape cost index are 248 dollars in Bradenton, 340 dollars in Sarasota, and 783 dollars on Anna Maria Island.</desc>
-  <rect width="960" height="540" fill="#FAF7EE"/>
-  <text x="60" y="74" font-family="Georgia, serif" font-size="34" fill="#2D4647">AMI Carries the Lodging Premium</text>
-  <text x="60" y="108" font-family="Arial, sans-serif" font-size="17" fill="#595959">Average nightly lodging cost used in the Gulf Coast vacation cost index</text>
-  <rect x="80" y="170" width="242" height="230" rx="18" fill="#FFFFFF" stroke="#EBE4CC"/>
-  <rect x="359" y="140" width="242" height="260" rx="18" fill="#FFFFFF" stroke="#EBE4CC"/>
-  <rect x="638" y="92" width="242" height="308" rx="18" fill="#3D5C5D"/>
-  <text x="201" y="250" text-anchor="middle" font-family="Georgia, serif" font-size="48" fill="#2D4647">$248</text>
-  <text x="480" y="235" text-anchor="middle" font-family="Georgia, serif" font-size="48" fill="#2D4647">$340</text>
-  <text x="759" y="220" text-anchor="middle" font-family="Georgia, serif" font-size="52" fill="#FFFFFF">$783</text>
-  <text x="201" y="290" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#5F8A8B">Bradenton</text>
-  <text x="480" y="275" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#5F8A8B">Sarasota</text>
-  <text x="759" y="262" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#E8D5A3">Anna Maria Island</text>
-  <text x="201" y="330" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" fill="#595959">Mainland value base</text>
-  <text x="480" y="315" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" fill="#595959">City/coastal mix</text>
-  <text x="759" y="302" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" fill="#FFFFFF">Island scarcity premium</text>
-  <text x="60" y="512" font-family="Arial, sans-serif" font-size="14" fill="#595959">Source: Seascape Vacations 2026 Gulf Coast vacation cost index; lodging figures are area averages used in the index.</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">Bradenton vs Sarasota vs Anna Maria Island trip cost lodging comparison</title>
+  <desc id="desc">Average lodging inputs are 248 dollars per night in Bradenton, 340 in Sarasota, and 783 on Anna Maria Island.</desc>
+  <rect width="1200" height="720" fill="#FAF7EE"/>
+  <rect x="40" y="40" width="1120" height="640" rx="32" fill="#F5EED6" stroke="#D9CFB2"/>
+  <text x="86" y="112" fill="#5F8A8B" font-family="Poppins, Arial, sans-serif" font-size="18" font-weight="700" letter-spacing="3">TRIP COST</text>
+  <text x="86" y="174" fill="#3D5C5D" font-family="Playfair Display, Georgia, serif" font-size="54" font-weight="500">The cost gap is mostly lodging.</text>
+  <text x="86" y="222" fill="#595959" font-family="Poppins, Arial, sans-serif" font-size="24">Average nightly lodging input used in the 2026 cost index.</text>
+  <g transform="translate(92 290)">
+    <rect x="0" y="0" width="310" height="268" rx="28" fill="#FFFFFF" stroke="#D9CFB2"/>
+    <text x="28" y="52" fill="#5F8A8B" font-family="Poppins, Arial, sans-serif" font-size="18" font-weight="700" letter-spacing="2">BRADENTON</text>
+    <text x="28" y="132" fill="#3D5C5D" font-family="Playfair Display, Georgia, serif" font-size="76" font-weight="700">$248</text>
+    <text x="28" y="174" fill="#595959" font-family="Poppins, Arial, sans-serif" font-size="22">per night</text>
+    <text x="28" y="222" fill="#595959" font-family="Poppins, Arial, sans-serif" font-size="19">Lower-cost home base.</text>
+  </g>
+  <g transform="translate(445 290)">
+    <rect x="0" y="0" width="310" height="268" rx="28" fill="#FFFFFF" stroke="#D9CFB2"/>
+    <text x="28" y="52" fill="#5F8A8B" font-family="Poppins, Arial, sans-serif" font-size="18" font-weight="700" letter-spacing="2">SARASOTA</text>
+    <text x="28" y="132" fill="#3D5C5D" font-family="Playfair Display, Georgia, serif" font-size="76" font-weight="700">$340</text>
+    <text x="28" y="174" fill="#595959" font-family="Poppins, Arial, sans-serif" font-size="22">per night</text>
+    <text x="28" y="222" fill="#595959" font-family="Poppins, Arial, sans-serif" font-size="19">Middle of the cost curve.</text>
+  </g>
+  <g transform="translate(798 290)">
+    <rect x="0" y="0" width="310" height="268" rx="28" fill="#2D4647"/>
+    <text x="28" y="52" fill="#E8D5A3" font-family="Poppins, Arial, sans-serif" font-size="18" font-weight="700" letter-spacing="2">ANNA MARIA ISLAND</text>
+    <text x="28" y="132" fill="#E8D5A3" font-family="Playfair Display, Georgia, serif" font-size="76" font-weight="700">$783</text>
+    <text x="28" y="174" fill="#DDEAEA" font-family="Poppins, Arial, sans-serif" font-size="22">per night</text>
+    <text x="28" y="222" fill="#DDEAEA" font-family="Poppins, Arial, sans-serif" font-size="19">Island-scarcity premium.</text>
+  </g>
+  <path d="M248 592 H953" stroke="#C9A962" stroke-width="10" stroke-linecap="round"/>
+  <text x="408" y="632" fill="#3D5C5D" font-family="Poppins, Arial, sans-serif" font-size="22" font-weight="700">AMI lodging input is more than 3x Bradenton.</text>
+  <text x="86" y="672" fill="#5F8A8B" font-family="Poppins, Arial, sans-serif" font-size="17" font-weight="700" letter-spacing="1.5">SOURCE: 2026 GULF COAST VACATION COST INDEX. PLANNING COMPARISON, NOT A QUOTE.</text>
 </svg>

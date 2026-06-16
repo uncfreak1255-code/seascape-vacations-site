@@ -1,3 +1,4 @@
+{% from "partials/ui-icon.njk" import uiIcon, uiLabel %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -393,7 +394,7 @@
   "name": "Seascape Vacations",
   "description": "Luxury vacation rental management in Bradenton, Sarasota, and Anna Maria Island, Florida.",
   "url": "https://seascape-vacations.com",
-  "telephone": "+1-941-999-0000",
+  "telephone": "+1-941-704-8545",
   "address": {
     "@type": "PostalAddress",
     "addressLocality": "Bradenton",
@@ -417,7 +418,7 @@
         <a href="/">Home</a> / <a href="/guides/">Guides</a> / Bradenton Insider Guide
     </div>
     <div class="hero">
-        <span class="hero-badge">📍 LOCAL GUIDE</span>
+        <span class="hero-badge">{{ uiLabel('location', 'LOCAL GUIDE') }}</span>
         <h1>The Bradenton Insider Guide: A Local's Complete Handbook 2026</h1>
         <p class="hero-subtitle">Neighborhoods, beaches, hidden gems, and practical tips for planning your Gulf Coast getaway.</p>
     </div>
@@ -718,15 +719,6 @@
     <p>&copy; 2026 Seascape Vacations. Luxury Waterfront Vacation Rentals in Bradenton, FL & Anna Maria Island.</p>
     <p><a href="tel:+1-941-704-8545" style="color: white; text-decoration: none;">+1-941-704-8545</a></p>
 </footer>
-
-<script>
-    // Facebook Pixel (lazy load)
-    window.fbq = window.fbq || function(){(window.fbq.q=window.fbq.q||[]).push(arguments)};
-    fbq('init', '2748551298816267');
-    fbq('track', 'PageView');
-</script>
-
-<script async src="https://connect.facebook.net/en_US/fbevents.js"></script>
 
 <script>
     // JSON-LD Schema Markup

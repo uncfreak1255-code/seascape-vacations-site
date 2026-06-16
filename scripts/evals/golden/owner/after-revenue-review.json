@@ -1,0 +1,7 @@
+{
+  "name": "owner-review-after",
+  "lane": "owner",
+  "sourceCite": "docs/style/approved-examples.md:35 (Owner Review Copy, After)",
+  "copy": "We show where the payout gets thin, which costs deserve a second look, and what to ask before you renew.",
+  "expect": { "band": "high", "minOverall": 72 }
+}

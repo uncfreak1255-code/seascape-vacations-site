@@ -7,6 +7,10 @@ const projectRoot = path.resolve(__dirname, "..", "..");
 const fallbackProperties = require("../../src/_data/properties-fallback.json");
 const seoPages = require("../../src/_data/seoPages.json");
 const { normalizeListing } = require("../../scripts/cache/normalize-hostaway");
+const {
+  renderPropertySummary,
+  renderSchemaAmenityLabels
+} = require("../../scripts/regenerate-property-surfaces");
 
 const DOCKSIDE_ONLY_CLAIM_SLUG = "dockside-dreams";
 
@@ -112,6 +116,37 @@ test("strict rendered dock and waterfront stay pages only feature Dockside Dream
   }
 });
 
+test("stay collection schema uses canonical property URLs and accommodation facts instead of stale priceRange strings", () => {
+  const stayPages = [
+    "stays/bradenton-vacation-rentals-near-beaches/index.html",
+    "stays/large-group-vacation-rentals-anna-maria-island/index.html"
+  ];
+
+  for (const relativePath of stayPages) {
+    const html = readBuilt(relativePath);
+    const itemList = extractJsonLdObjects(html).find((item) => item["@type"] === "ItemList");
+
+    assert.ok(itemList, `${relativePath} must publish ItemList schema`);
+    assert.ok(Array.isArray(itemList.itemListElement), `${relativePath} ItemList must contain itemListElement entries`);
+
+    for (const listItem of itemList.itemListElement) {
+      const rental = listItem.item;
+
+      assert.equal(rental["@type"], "VacationRental", `${relativePath} item must stay typed as VacationRental`);
+      assert.match(rental.url, /^https:\/\/seascape-vacations\.com\/properties\/[^/]+\/$/, `${relativePath} items must point at canonical property URLs`);
+      assert.match(rental.identifier, /^seascape-\d+$/, `${relativePath} items must include stable property identifiers`);
+      assert.equal(typeof rental.latitude, "number", `${relativePath} items must include latitude`);
+      assert.equal(typeof rental.longitude, "number", `${relativePath} items must include longitude`);
+      assert.equal(typeof rental.address?.postalCode, "string", `${relativePath} items must include postal codes`);
+      assert.equal(Boolean(rental.containsPlace), true, `${relativePath} items must include containsPlace facts`);
+      assert.equal(rental.containsPlace.occupancy.value > 0, true, `${relativePath} items must include occupancy values`);
+      assert.equal("priceRange" in rental, false, `${relativePath} items must not ship stale priceRange strings`);
+      assert.equal(rental.offers?.["@type"], "Offer", `${relativePath} items must publish Offer objects`);
+      assert.equal(rental.offers?.priceCurrency, "USD", `${relativePath} items must publish USD pricing`);
+    }
+  }
+});
+
 test("River House kayaking copy stays framed as a nearby public launch, not on-property waterfront", () => {
   const html = readBuilt("stays/kayaking-vacation-rentals-bradenton/index.html");
 
@@ -175,3 +210,53 @@ test("fallback, llms, and property templates agree on property specs", () => {
     assert.match(template, new RegExp(`<div class="stat-val">${property.guests}</div>[\\s\\S]*Max Guests`));
   }
 });
+
+test("llms property bullets are regenerated from the fallback summary renderer", () => {
+  const llms = readSource("src/llms.txt");
+
+  for (const property of fallbackProperties) {
+    const expected = `- [${property.name}](https://seascape-vacations.com/properties/${property.slug}/): ${renderPropertySummary(property)}`;
+
+    assert.match(llms, new RegExp(`^${escapeRegExp(expected)}$`, "m"), `${property.slug} llms bullet must match fallback data`);
+  }
+});
+
+test("property template schema facts match fallback counts and amenity labels", () => {
+  for (const property of fallbackProperties) {
+    const template = readSource(`src/properties/${property.slug}/index.njk`);
+    const vacationRentalSchema = extractJsonLdObjects(template).find((item) => item["@type"] === "VacationRental");
+    const accommodation = vacationRentalSchema?.containsPlace;
+
+    assert.ok(vacationRentalSchema, `${property.slug} must publish VacationRental schema`);
+    assert.ok(accommodation, `${property.slug} VacationRental schema must include containsPlace accommodation facts`);
+    assert.equal(accommodation.numberOfBedrooms, property.bedrooms, `${property.slug} schema bedroom count must match fallback`);
+    assert.equal(
+      accommodation.numberOfBathroomsTotal,
+      property.bathrooms,
+      `${property.slug} schema bathroom count must match fallback`
+    );
+    assert.equal(accommodation.occupancy.value, property.guests, `${property.slug} schema occupancy must match fallback guests`);
+    assert.match(
+      vacationRentalSchema.description,
+      new RegExp(`${property.bedrooms} bedrooms, ${String(property.bathrooms).replace(".", "\\.")} bathrooms, sleeps ${property.guests} guests`, "i"),
+      `${property.slug} schema description must carry fallback BR/BA/guest facts`
+    );
+    assert.deepEqual(
+      accommodation.amenityFeature.map((item) => item.name),
+      renderSchemaAmenityLabels(property),
+      `${property.slug} schema amenities must match fallback structured labels`
+    );
+  }
+});
+
+function escapeRegExp(value) {
+  return String(value).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function extractJsonLdObjects(html) {
+  return [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)]
+    .flatMap((match) => {
+      const parsed = JSON.parse(match[1]);
+      return Array.isArray(parsed) ? parsed : [parsed];
+    });
+}

@@ -1,15 +1,24 @@
 # Site Scripts
 
-## `pull-property-truth.js`
+## Safe Hostaway projection path
 
-Pulls Hostaway listing data into `src/_data/properties-fallback.json`, which is the canonical local property-data authority for bedrooms, bathrooms, guest capacity, and structured amenity facts.
-
-Safe path:
+Builds should consume the ops-owned safe projection instead of raw Hostaway
+credentials:
 
 ```bash
-HOSTAWAY_API_TOKEN=... node scripts/pull-property-truth.js --dry-run
-HOSTAWAY_API_TOKEN=... node scripts/pull-property-truth.js
+SEASCAPE_SAFE_PROPERTY_PROJECTION_PATH=/path/to/properties-latest.json npm run build
 ```
+
+When that path is set, the build validates that all public property cards have
+fresh projected availability before Eleventy runs. Raw Hostaway auth, webhooks,
+broker reads, and snapshots now belong in `seascape-ops`, not this site repo.
+
+## `pull-property-truth.js`
+
+Legacy normalization helper for `src/_data/properties-fallback.json`, which is
+the canonical local property-data authority for bedrooms, bathrooms, guest
+capacity, and structured amenity facts. It no longer fetches Hostaway directly
+from this repo.
 
 Rollback:
 
@@ -17,7 +26,9 @@ Rollback:
 node scripts/pull-property-truth.js --restore-last-good
 ```
 
-The script snapshots the raw Hostaway response, prints a dry-run diff before output writes, writes JSON via temp-file rename, saves a last-good copy before overwrite, retries 429/5xx API responses with backoff, and sums Hostaway `bathrooms + guestBathrooms`. When it writes fallback data, it also regenerates the derived property facts in `src/llms.txt` and `src/properties/<slug>/index.njk`. It only uses structured amenity arrays; Hostaway description text is not mined for confident marketing amenities. Hostaway `listingPrice` is preserved as an operational fallback only, not normal nightly truth without calendar context.
+The helper still preserves the legacy normalizers and last-good rollback path
+for tests and one-time migration diffing. New Hostaway pulls should be produced
+as safe projections from `seascape-ops`.
 
 ## `regenerate-property-surfaces.js`
 

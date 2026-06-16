@@ -20,6 +20,20 @@ These are reference patterns already present in the repo. Copy the thinking, not
 - Why it works: the page asks an owner to request a revenue review instead of drowning them in a generic service list.
 - Reuse when: the page is meant to convert owners who already suspect the current setup is leaking money.
 
+## Owner Review Copy
+
+- Approved pattern: explain the decision in plain owner language, not review-template labels.
+- Why it works: it tells the owner what they will learn without sounding like an internal worksheet.
+- Reuse when: the page, CTA, or helper copy describes what a revenue review comes back with.
+
+Before:
+
+> We mark proven cost, likely cost, and missing information separately before you switch.
+
+After:
+
+> We show where the payout gets thin, which costs deserve a second look, and what to ask before you renew.
+
 ## `src/_data/ownerProofAssets.json`
 
 - Approved pattern: one shared proof asset reused across multiple owner pages.

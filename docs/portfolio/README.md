@@ -2,6 +2,10 @@
 
 These files map page families that matter enough to deserve explicit routing and canonical ownership.
 
+Use `pseo-inventory-triage.md` for generated stay and owner pSEO classification.
+Refresh it with `npm run seo:triage` after changes to `src/_data/seoPages.json`
+or `src/_data/seoGovernance.js`.
+
 Each portfolio file should say:
 
 - winner URL

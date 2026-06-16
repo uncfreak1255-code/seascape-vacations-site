@@ -80,5 +80,9 @@ async function handleGuestEmailCaptureProofLabelRequest(event, _context, injecte
   };
 }
 
+async function handler(event, context) {
+  return handleGuestEmailCaptureProofLabelRequest(event, context);
+}
+
 exports.handleGuestEmailCaptureProofLabelRequest = handleGuestEmailCaptureProofLabelRequest;
-exports.handler = handleGuestEmailCaptureProofLabelRequest;
+exports.handler = handler;

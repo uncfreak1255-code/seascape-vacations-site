@@ -37,5 +37,28 @@
       "Edit(**/package-lock.json)",
       "Write(**/package-lock.json)"
     ]
+  },
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/scripts/enforcement/claude-content-gate.js\""
+          }
+        ]
+      }
+    ]
+  },
+  "extraKnownMarketplaces": {
+    "superpowers-dev": {
+      "source": {
+        "source": "github",
+        "repo": "obra/superpowers"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "superpowers@superpowers-dev": true
   }
 }

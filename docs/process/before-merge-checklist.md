@@ -28,6 +28,20 @@ npm run verify:recovery:remediation
 
 If the task does not touch all three areas, run the relevant subset and note why.
 
+- [ ] If visible `src/` copy changed, I completed `copywriting` -> `enterprise-ui-writing` -> `humanizer` and `npm run lint:content`.
+- [ ] If I changed `src/llms.txt`, `src/ai-discovery.json.njk`, `src/robots.txt`, or a citation-oriented intro/module, I used `docs/process/ai-citation-audit-usage.md` and ran the relevant AI-surface checks.
+- [ ] If this is an AI-search or experiment batch, the active brief names a `hypothesis`, `primary event`, `guardrail event`, `entry criteria`, `readback window`, and `decision rule`.
+- [ ] I did not claim AI citation lift, booking lift, or owner-demand lift without analytics-owned proof.
+- [ ] If schema, AI discovery, or JSON-LD verification failed at any point, I used `docs/runbooks/failed-schema-smoke.md` before retrying the gate.
+
+AI-search / citation surface checks:
+
+```bash
+node --test scripts/enforcement/ai-discovery-schema.test.js
+npm run verify:jsonld
+npm run verify:links
+```
+
 ## 4. Route smoke check
 
 Open or `curl` the changed routes locally or on a preview deploy.
@@ -56,6 +70,8 @@ If the task changed layout, CSS, spacing, typography, imagery, component structu
 - [ ] I captured fresh mobile screenshots for every changed route or changed visual section
 - [ ] For long pages, I used enough screenshots to cover the changed sections instead of trusting one giant full-page image
 - [ ] I reviewed the screenshots myself and verified any capture artifact in a live browser before merge
+- [ ] Before merge, I attached or linked the visual proof set in the PR (desktop + mobile) so Sawyer can review the actual design changes.
+- [ ] If the visual gate or screenshot proof failed, I used `docs/runbooks/failed-visual-gate.md` before calling the branch merge-ready.
 
 ## 6. Diff check
 
@@ -71,16 +87,19 @@ Only merge or push `main` if this sentence is true:
 
 If that sentence feels too strong, do not merge.
 
+- [ ] If public legal or trust copy is blocked on approval, I followed `docs/runbooks/legal-approval-blocked.md` and did not merge on guesswork.
+
 ## 8. After merge
 
 - [ ] watch the Netlify deploy complete
-- [ ] smoke test the live domain
-- [ ] confirm key routes still behave correctly
+- [ ] complete `docs/process/post-merge-runtime-proof-checklist.md`
+- [ ] capture the post-merge proof receipt in the PR comment or merge closeout note
 
 Useful production checks:
 
 ```bash
 node scripts/recovery/assert-live-smoke.js https://seascape-vacations.com
+node scripts/recovery/assert-live-entity-schema-coverage.js https://seascape-vacations.com
 curl -I -s https://seascape-vacations.com/property-management/ | sed -n '1,20p'
 curl -I -s https://seascape-vacations.com/property-owners/ | sed -n '1,20p'
 ```

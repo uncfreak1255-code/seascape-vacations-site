@@ -1,0 +1,242 @@
+[
+  {
+    "domain": "www.bradentongulfislands.com",
+    "query_count": 3,
+    "queries": [
+      "seascape vacations",
+      "seascape vacations anna maria island",
+      "seascape vacations bradenton"
+    ],
+    "angles": [
+      "entity/local citation"
+    ]
+  },
+  {
+    "domain": "www.mapquest.com",
+    "query_count": 3,
+    "queries": [
+      "seascape vacations",
+      "seascape vacations bradenton",
+      "seascape vacations sarasota"
+    ],
+    "angles": [
+      "entity/local citation"
+    ]
+  },
+  {
+    "domain": "annamariaislandbeachrentals.com",
+    "query_count": 2,
+    "queries": [
+      "seascape vacations anna maria island",
+      "vacation rentals near anna maria island"
+    ],
+    "angles": [
+      "local inventory"
+    ]
+  },
+  {
+    "domain": "www.airbnb.com",
+    "query_count": 2,
+    "queries": [
+      "seascape vacations bradenton",
+      "seascape vacations sarasota"
+    ],
+    "angles": [
+      "OTA/directory"
+    ]
+  },
+  {
+    "domain": "www.anchordownvacationrentals.com",
+    "query_count": 2,
+    "queries": [
+      "seascape vacations anna maria island",
+      "vacation rentals near anna maria island"
+    ],
+    "angles": [
+      "local inventory"
+    ]
+  },
+  {
+    "domain": "www.annamarialifevacationrentals.com",
+    "query_count": 2,
+    "queries": [
+      "seascape vacations anna maria island",
+      "vacation rentals near anna maria island"
+    ],
+    "angles": [
+      "local inventory"
+    ]
+  },
+  {
+    "domain": "www.facebook.com",
+    "query_count": 2,
+    "queries": [
+      "seascape vacations anna maria island",
+      "seascape vacations bradenton"
+    ],
+    "angles": [
+      "entity/local citation"
+    ]
+  },
+  {
+    "domain": "www.instagram.com",
+    "query_count": 2,
+    "queries": [
+      "seascape vacations bradenton",
+      "seascape vacations sarasota"
+    ],
+    "angles": [
+      "organic competitor"
+    ]
+  },
+  {
+    "domain": "homes-and-villas.marriott.com",
+    "query_count": 1,
+    "queries": [
+      "seascape vacations bradenton"
+    ],
+    "angles": [
+      "organic competitor"
+    ]
+  },
+  {
+    "domain": "seabreezevacation.com",
+    "query_count": 1,
+    "queries": [
+      "seascape vacations anna maria island"
+    ],
+    "angles": [
+      "map pack/local operator"
+    ]
+  },
+  {
+    "domain": "seascapevacationhomes.com",
+    "query_count": 1,
+    "queries": [
+      "seascape vacations"
+    ],
+    "angles": [
+      "organic competitor"
+    ]
+  },
+  {
+    "domain": "www.amilocals.com",
+    "query_count": 1,
+    "queries": [
+      "vacation rentals near anna maria island"
+    ],
+    "angles": [
+      "local inventory"
+    ]
+  },
+  {
+    "domain": "www.annamaria.com",
+    "query_count": 1,
+    "queries": [
+      "vacation rentals near anna maria island"
+    ],
+    "angles": [
+      "local inventory"
+    ]
+  },
+  {
+    "domain": "www.aparadiserentals.com",
+    "query_count": 1,
+    "queries": [
+      "vacation rentals near anna maria island"
+    ],
+    "angles": [
+      "organic competitor"
+    ]
+  },
+  {
+    "domain": "www.booking.com",
+    "query_count": 1,
+    "queries": [
+      "seascape vacations sarasota"
+    ],
+    "angles": [
+      "OTA/directory"
+    ]
+  },
+  {
+    "domain": "www.google.com",
+    "query_count": 1,
+    "queries": [
+      "seascape vacations anna maria island"
+    ],
+    "angles": [
+      "map pack/local operator"
+    ]
+  },
+  {
+    "domain": "www.google.com.bz",
+    "query_count": 1,
+    "queries": [
+      "seascape vacations bradenton"
+    ],
+    "angles": [
+      "organic competitor"
+    ]
+  },
+  {
+    "domain": "www.itrip.net",
+    "query_count": 1,
+    "queries": [
+      "seascape vacations bradenton"
+    ],
+    "angles": [
+      "organic competitor"
+    ]
+  },
+  {
+    "domain": "www.onceuponabeachami.com",
+    "query_count": 1,
+    "queries": [
+      "seascape vacations anna maria island"
+    ],
+    "angles": [
+      "map pack/local operator"
+    ]
+  },
+  {
+    "domain": "www.seabreezevacation.com",
+    "query_count": 1,
+    "queries": [
+      "vacation rentals near anna maria island"
+    ],
+    "angles": [
+      "local inventory"
+    ]
+  },
+  {
+    "domain": "www.vacasa.com",
+    "query_count": 1,
+    "queries": [
+      "seascape vacations"
+    ],
+    "angles": [
+      "OTA/directory"
+    ]
+  },
+  {
+    "domain": "www.vrbo.com",
+    "query_count": 1,
+    "queries": [
+      "seascape vacations sarasota"
+    ],
+    "angles": [
+      "OTA/directory"
+    ]
+  },
+  {
+    "domain": "www.vuniquevacations.com",
+    "query_count": 1,
+    "queries": [
+      "seascape vacations sarasota"
+    ],
+    "angles": [
+      "organic competitor"
+    ]
+  }
+]

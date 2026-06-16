@@ -1,10 +1,33 @@
 # Owner Fee + Revenue Leak Benchmark
 
-Date: 2026-05-15
+## Content Gate Inputs
+
+- persona: premium Gulf Coast vacation-rental owner comparing management fee, channel mix, and owner-net outcomes before a switch conversation
+- primary keyword: vacation rental management fees Florida
+- secondary keywords: owner revenue teardown, direct booking revenue, Airbnb host fee drag, vacation rental owner net
+- audience pattern: skeptical owner who has seen fee quotes but needs proof that the full leak stack matters more than headline percentage alone
+- proof source: Seascape five-home benchmark sample, observed Airbnb host-fee drag, direct-payment cost reference, and labeled scenario math
+- required internal links: /research/owner-fee-revenue-leak-benchmark-2026/, /property-management/maximize-vacation-rental-income-florida/
+- CTA target: /property-management/#owner-cta
+- anti-claims: no portfolio-wide guarantee, no market-wide fee survey claim, no invented review totals, no passive-income or full-service fluff
+
+Date: 2026-05-21
 Hub handoff: `/Users/sawbeck/Projects/seascape-hub/projects/owner-fee-revenue-leak-benchmark-execution-package-2026-05-15.md`
-Site route: `/research/owner-fee-revenue-leak-benchmark-2026/`
+Site route: `/research/owner-fee-revenue-leak-benchmark-2026/` (legacy path), `/research/owner-fee-revenue-gap-benchmark-2026/` (property-management copy-safe alias)
 Figma capture: `https://www.figma.com/design/glZRIUzGbQlw0KJhtAGUWP?node-id=3-2`
-Figma frames: `Owner Fee + Revenue Leak Benchmark - Desktop`, `Owner Fee + Revenue Leak Benchmark - Mobile`
+Reference-only frame: `3:2`
+Implementation frames: `9:2` desktop, `11:2` mobile
+
+## What Changed in This Batch
+
+- Updated property-management copy to avoid new banned phrasing, remove owner-detached wording, and align CTA/benefit language to the property-focused intent.
+- Introduced the new redirect alias route `/research/owner-fee-revenue-gap-benchmark-2026/` so visible text can use the “gap” framing while preserving the current legacy route.
+- Synced the live benchmark route to the approved Figma implementation frames `9:2` desktop and `11:2` mobile, including the compact fee-stack hero, the three observed examples, the fit-boundary note, and the approved proof-chip set.
+- Kept the benchmark CTA path focused on the teardown route instead of requiring owners to detour through the operator proof pack.
+- Retired the benchmark-embedded intake form so the benchmark now links into the shared `/property-management/` teardown route while preserving benchmark `owner_source` attribution.
+- 2026-05-21 proof-clean follow-up: demoted the AMI income guide out of the owner-proof lane, removed public PriceLabs/AirDNA-style authority language from that guide, and rerouted the owner FAQ on `/property-management/` to the benchmark instead of the AMI average-income explainer.
+- 2026-06-11 Figma implementation follow-up: finished the approved implementation frames (`9:2` desktop, `11:2` mobile), replaced the embedded benchmark form with the teardown intake handoff, kept `Request Your Revenue Teardown`, and preserved the approved proof-label set.
+- 2026-06-12 internal-link follow-up: added source-matched links from the booking-trends research page into the chart pack, the owner benchmark, and the owner revenue guide; no new routes or proof claims were added.
 
 ## Decision
 
@@ -66,7 +89,6 @@ Visible proof labels:
 - `Observed Seascape portfolio data`
 - `Observed property example`
 - `Scenario math, not a forecast`
-- `5-property Gulf Coast scope`
 - `Last refreshed: May 2026`
 
 Claims to keep out:
@@ -82,6 +104,7 @@ Claims to keep out:
 - `/property-management/`
 - `/property-management/vacation-rental-management-fees-florida/`
 - `/property-management/maximize-vacation-rental-income-florida/`
+- `/research/owner-fee-revenue-gap-benchmark-2026/`
 
 ## CTA Pattern
 
@@ -93,17 +116,27 @@ The benchmark should make the owner ask for a property-specific teardown, not ch
 
 Form route:
 
-- primary CTA should preserve benchmark source attribution:
-  `/property-management/?owner_source=owner-fee-revenue-leak-benchmark-2026#owner-cta`
+- primary CTA should link to the owner teardown intake:
+  `/property-management/#owner-cta`
 - form submit button stays `Send My Teardown Request`
 - proof note should say missing statements, calendars, reviews, or fee terms are marked unknown
+
+Live teardown funnel implementation:
+
+- shared owner form partial should use the benchmark teardown fields from the
+  `Owner Benchmark Exploration` Figma file
+- owner hub and shared owner-page CTA surfaces should ask for property address
+  or market, listing URL, current manager, current fee quote, what feels off,
+  and optional owner-statement upload
+- keep the private-teardown framing and proven leak / likely leak / unknown copy
+  consistent between the benchmark CTA path and owner CTA surfaces
 
 ## Figma / Site Handoff
 
 Use the Hub package's frame plan directly:
 
-1. Desktop frame: `Owner Fee + Revenue Leak Benchmark - Desktop`
-2. Mobile frame: `Owner Fee + Revenue Leak Benchmark - Mobile`
+1. Desktop implementation frame: `9:2`
+2. Mobile implementation frame: `11:2`
 3. Sections: hero, wrong-comparison intro, fee stack, channel-cost comparison,
    scenario math, observed examples, fit boundary, teardown CTA, method rail
 4. Proof chips must stay visible in Figma and in the live page.
@@ -118,3 +151,13 @@ Next asset should be the visual/chart pack:
 - 74-day booking window
 - seasonal ADR spread
 - Bradenton vs Sarasota vs AMI trip cost
+
+## Email Follow-Up Path Slice
+
+Implementation note: 2026-05-28
+Outlook evidence found: sent 2026-05-26
+
+- Handoff source: the owner revenue-review follow-up email asks for a listing URL or property address plus one plain-English note on what feels off right now.
+- Site path: `/property-management/?owner_source=owner-revenue-review-follow-up#owner-cta`
+- Required preservation: the `owner_source` query value must become `source_page_slug` on owner form start and submit tracking, and the Netlify form must keep the hidden `source_page_slug` value.
+- Copy requirement: the owner CTA should mirror the email language without adding a new offer, new proof claim, or generic sales-call framing.

@@ -155,6 +155,13 @@ function expectNoTemplateLeakMarkers(file) {
   }
 }
 
+function expectNoLeakedFrontMatter(file) {
+  const contents = read(file);
+  if (/^\s*---\s*\r?\n(?:[^\n]*\r?\n){0,5}permalink:/i.test(contents)) {
+    throw new Error(`Generated output leaked raw front matter in ${file}`);
+  }
+}
+
 function listHtmlFiles(dir) {
   const absolute = path.resolve(dir);
   if (!fs.existsSync(absolute)) {
@@ -182,6 +189,7 @@ if (phase === "p0") {
   expectExists("_site/properties/index.html");
   expectExists("_site/property-management/index.html");
   expectExists("_site/stays/index.html");
+  expectNotExists("_site/netlify");
   expectNotExists("_site/netlify/functions/get-properties.js");
   expectNotExists("_site/stays/hurricane-preparedness-florida-vacation/index.html");
   expectNotExists("_site/stays/concierge-luxury-services/index.html");
@@ -294,6 +302,7 @@ if (phase === "guides") {
   for (const file of guideFiles) {
     expectContains(file, '<meta property="og:image"');
     expectContains(file, '<meta name="twitter:image"');
+    expectNoLeakedFrontMatter(file);
     expectNotContains(file, "images.unsplash.com");
     expectNotContains(file, "/images/logo.png");
     expectNotContains(file, "hostaway-platform.s3.us-west-2.amazonaws.com");
@@ -430,29 +439,29 @@ if (phase === "remediation") {
     expectMatches(
       file,
       buildAnchorPattern({
-        href: "mailto:info@seascape-vacations.com",
+        href: "tel:+19417048545",
         className: "nav-link",
-        text: "Contact"
+        text: "Call"
       }),
-      "contact nav link"
+      "phone-backed contact nav link"
     );
     expectMatches(
       file,
       buildAnchorPattern({
-        href: "mailto:info@seascape-vacations.com",
+        href: "tel:+19417048545",
         className: "mobile-item",
-        text: "Contact"
+        text: "Call"
       }),
-      "contact mobile link"
+      "phone-backed contact mobile link"
     );
     expectMatches(
       file,
       buildAnchorPattern({
-        href: "mailto:info@seascape-vacations.com",
+        href: "tel:+19417048545",
         className: "footer-link",
-        text: "Contact"
+        text: "Call"
       }),
-      "contact footer link"
+      "phone-backed contact footer link"
     );
     expectMatches(
       file,
@@ -502,12 +511,13 @@ if (phase === "remediation") {
   expectContains("_site/stays/anna-maria-island-vacation-rentals/index.html", 'fetchpriority="high"');
   expectContains(
     "_site/property-management/vacation-rental-management-sarasota/index.html",
-    'rel="stylesheet" media="print" onload="this.media=\'all\'"'
+    "font-display: optional"
   );
   expectContains(
     "_site/property-management/index.html",
-    "Property management for owners who care about what they actually keep"
+    "Before you renew,"
   );
+  expectContains("_site/property-management/index.html", "actually keep?");
   expectContains(
     "_site/property-management/index.html",
     "What owners miss when they compare management fees"
@@ -530,7 +540,7 @@ if (phase === "remediation") {
     buildAnchorPattern({
       href: "#owner-cta",
       className: "btn btn-gold",
-      text: "Request Your Revenue Teardown"
+      text: "Request Your Revenue Review"
     }),
     "property management hero CTA"
   );

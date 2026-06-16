@@ -79,9 +79,9 @@ function getChangedFiles(range, rootDir) {
 }
 
 function extractField(text, label) {
-  const pattern = new RegExp(`^${escapeRegExp(label)}:\\s*(.+?)\\s*$`, "m");
+  const pattern = new RegExp(`^\\s*(?:[-*+]\\s*)?${escapeRegExp(label)}:\\s*(.*?)\\s*$`, "m");
   const match = pattern.exec(text);
-  return match ? match[1].trim() : "";
+  return match ? match[1].trim() : null;
 }
 
 function parseFigmaFileKey(value) {
@@ -117,18 +117,19 @@ function parseBrief(rootDir, relativePath) {
   const absolutePath = path.join(rootDir, relativePath);
   const text = fs.readFileSync(absolutePath, "utf8");
   const figmaCapture = extractField(text, "Figma capture");
-  if (!figmaCapture) {
+  if (figmaCapture === null) {
     return null;
   }
+  const figmaFrames = extractField(text, "Figma frames") ?? extractField(text, "Implementation frames") ?? "";
 
   return {
     absolutePath,
     relativePath: relativePath.split(path.sep).join("/"),
     figmaCapture,
-    figmaFrames: extractField(text, "Figma frames"),
+    figmaFrames,
     figmaProof: extractField(text, "Figma proof"),
     fileKey: parseFigmaFileKey(figmaCapture),
-    frames: parseFrames(extractField(text, "Figma frames"))
+    frames: parseFrames(figmaFrames)
   };
 }
 

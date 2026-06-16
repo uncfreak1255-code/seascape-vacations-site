@@ -1,5 +1,8 @@
 const test = require("node:test");
 const assert = require("node:assert/strict");
+const fs = require("node:fs");
+const os = require("node:os");
+const path = require("node:path");
 
 const propertiesData = require("../../src/_data/properties.js");
 const fallbackProperties = require("../../src/_data/properties-fallback.json");
@@ -122,4 +125,75 @@ test("normalizeAvailabilitySummary drops stale or incomplete calendar summaries"
     }),
     null
   );
+});
+
+test("safe property projection overlays public availability without replacing curated property truth", () => {
+  assert.equal(typeof propertiesData.loadSafePropertyProjection, "function");
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "safe-property-projection-"));
+  const projectionPath = path.join(dir, "properties-latest.json");
+  const syncedAt = new Date().toISOString();
+  fs.writeFileSync(
+    projectionPath,
+    JSON.stringify({
+      records: [
+        {
+          listing_map_id: 206016,
+          booking_engine_urls: ["https://book.seascape-vacations.com/listings/206016"],
+          availability: {
+            source: "seascape-ops",
+            syncedAt,
+            nextAvailable: {
+              startDate: "2026-06-08",
+              endDate: "2026-06-10",
+              label: "Jun 08 - Jun 10",
+              nights: 2,
+              nightlyRate: 450,
+              subcopy: "2 nights from $450/night - Direct booking"
+            },
+            monthNights: [{ label: "NIGHTS IN JUN", value: 2 }],
+            weekendsLeft: 1
+          },
+          provenance: {
+            captured_at: syncedAt,
+            stale_after: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString()
+          }
+        }
+      ]
+    })
+  );
+
+  const properties = propertiesData.loadSafePropertyProjection(projectionPath);
+  const dockside = properties.find((property) => property.slug === "dockside-dreams");
+
+  assert.equal(properties.length, 5);
+  assert.equal(dockside.name, "Dockside Dreams");
+  assert.equal(dockside.id, "206016");
+  assert.equal(dockside.availability.source, "seascape-ops");
+  assert.equal(dockside.availability.nextAvailable.label, "Jun 08 - Jun 10");
+  assert.equal(dockside.projection.source, "seascape-ops");
+});
+
+test("visual test mode keeps fixture availability live for deterministic snapshots", async () => {
+  const previousVisualTestValue = process.env.SEASCAPE_VISUAL_TEST;
+  process.env.SEASCAPE_VISUAL_TEST = "1";
+
+  try {
+    const properties = await propertiesData();
+    const availabilityLabels = properties.map((property) => property.availability?.nextAvailable?.label ?? null);
+
+    assert.equal(properties.length, 5);
+    assert.deepEqual(availabilityLabels, [
+      "Jun 08 - Jun 10",
+      "May 18 - May 20",
+      "May 30 - Jun 06",
+      "Aug 21 - Aug 23",
+      "May 18 - May 19"
+    ]);
+  } finally {
+    if (previousVisualTestValue === undefined) {
+      delete process.env.SEASCAPE_VISUAL_TEST;
+    } else {
+      process.env.SEASCAPE_VISUAL_TEST = previousVisualTestValue;
+    }
+  }
 });

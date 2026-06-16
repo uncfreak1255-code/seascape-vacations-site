@@ -3,9 +3,12 @@ const assert = require("node:assert/strict");
 
 const { normalizeAvailability } = require("../cache/normalize-hostaway");
 const {
-  shouldRequireHostawayCache,
+  validateSafePropertyProjection,
   validateHostawayAvailabilityPayload
 } = require("../cache/sync-hostaway-build-cache");
+const fs = require("node:fs");
+const os = require("node:os");
+const path = require("node:path");
 const {
   shouldRequirePropertiesAvailabilityOutput,
   validatePropertiesAvailabilityOutput
@@ -121,12 +124,6 @@ test("booking engine calendar adapter exposes Hostaway day objects without priva
   assert.equal(toBookingEngineHostname("https://book.seascape-vacations.com"), "book.seascape-vacations.com");
 });
 
-test("Hostaway API cache is only hard-required when explicitly requested", () => {
-  assert.equal(shouldRequireHostawayCache({ SEASCAPE_REQUIRE_HOSTAWAY_CACHE: "1" }), true);
-  assert.equal(shouldRequireHostawayCache({ NETLIFY: "true" }), false);
-  assert.equal(shouldRequireHostawayCache({}), false);
-});
-
 test("Netlify builds require rendered live availability cards", () => {
   assert.equal(shouldRequirePropertiesAvailabilityOutput({ NETLIFY: "true" }), true);
   assert.equal(shouldRequirePropertiesAvailabilityOutput({ SEASCAPE_REQUIRE_PROPERTIES_AVAILABILITY: "1" }), true);
@@ -201,5 +198,41 @@ test("Hostaway build cache freshness gate rejects missing or stale card availabi
         }
       ),
     /missing next availability.*the-oasis: missing listing/
+  );
+});
+
+test("safe property projection is validated as the build-time availability surface", () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "safe-property-build-"));
+  const projectionPath = path.join(dir, "properties-latest.json");
+  const syncedAt = new Date().toISOString();
+  const availability = {
+    source: "seascape-ops",
+    syncedAt,
+    nextAvailable: {
+      startDate: "2026-05-08",
+      endDate: "2026-05-10",
+      label: "May 08 - May 10",
+      nights: 2,
+      nightlyRate: 425,
+      subcopy: "2 nights from $425/night - Direct booking"
+    }
+  };
+
+  fs.writeFileSync(
+    projectionPath,
+    JSON.stringify({
+      records: [
+        { property_slug: "dockside-dreams", listing_map_id: 206016, availability },
+        { property_slug: "the-oasis", listing_map_id: 189511, availability },
+        { property_slug: "sarasota-luxe", listing_map_id: 135881, availability },
+        { property_slug: "river-house", listing_map_id: 135880, availability },
+        { property_slug: "bradenton-pool-home", listing_map_id: 487798, availability }
+      ]
+    })
+  );
+
+  assert.deepEqual(
+    validateSafePropertyProjection(projectionPath),
+    { checked: 5 }
   );
 });

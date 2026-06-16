@@ -5,6 +5,7 @@ const assert = require("node:assert/strict");
 
 const projectRoot = path.resolve(__dirname, "..", "..");
 const smokeScriptPath = path.join(projectRoot, "scripts", "recovery", "assert-direct-booking-event-smoke.js");
+const { buildRouteContract } = require("./rendered-route-contract");
 
 function loadSmokeModule() {
   delete require.cache[require.resolve(smokeScriptPath)];
@@ -23,7 +24,9 @@ test("direct-booking event smoke is exposed as an operator command", () => {
 test("direct-booking event smoke runs inside the release safety flow", () => {
   const releaseGate = fs.readFileSync(path.join(projectRoot, "scripts", "enforcement", "verify-release.js"), "utf8");
 
-  assert.match(releaseGate, /run\("npm", \["run", "verify:direct-booking-events"\]\)/);
+  assert.match(releaseGate, /label:\s*"verify:direct-booking-events"/);
+  assert.match(releaseGate, /command:\s*"npm"/);
+  assert.match(releaseGate, /args:\s*\["run", "verify:direct-booking-events"\]/);
 });
 
 test("direct-booking event smoke supports optional popup enforcement", () => {
@@ -71,6 +74,7 @@ test("direct-booking event smoke validates the three funnel event surfaces", () 
       </div>
       <div data-email-capture-success></div>
     </div>
+    <script defer src="/assets/js/conversion-tracking.js"></script>
   `;
 
   assert.doesNotThrow(() => {
@@ -83,6 +87,16 @@ test("direct-booking event smoke validates the three funnel event surfaces", () 
     ["email_capture_submit", "guide_book_direct_click", "booking_engine_handoff"]
   );
 
+  const bookingHandoff = observedEvents.find((entry) => entry.event === "booking_engine_handoff");
+  assert.ok(bookingHandoff, "booking_engine_handoff event should be emitted");
+  assert.match(bookingHandoff.payload.link_url, /utm_source=mcp/);
+  assert.match(bookingHandoff.payload.link_url, /utm_medium=ai-assistant/);
+  assert.match(bookingHandoff.payload.link_url, /utm_campaign=direct-booking-proof/);
+  assert.match(bookingHandoff.payload.link_url, /utm_content=search-availability/);
+  assert.match(bookingHandoff.payload.link_url, /checkin=2026-06-01/);
+  assert.match(bookingHandoff.payload.link_url, /checkout=2026-06-05/);
+  assert.match(bookingHandoff.payload.link_url, /guests=4/);
+
   const popupEvents = smoke.simulatePopupEmailCaptureEvent();
   assert.deepEqual(
     popupEvents.map((entry) => entry.event),
@@ -90,15 +104,172 @@ test("direct-booking event smoke validates the three funnel event surfaces", () 
   );
 });
 
+test("conversion tracking scrubs obvious PII before analytics payloads reach dataLayer", () => {
+  const smoke = loadSmokeModule();
+  const events = smoke.simulateSanitizedAnalyticsPayload({
+    page_slug: "property-management",
+    source_page_slug: "owner-review",
+    email: "owner@example.com",
+    phone: "941-555-1212",
+    name: "Owner Name",
+    property_address: "123 Palm Street",
+    concerns: "Please call me about this listing.",
+    link_url: "https://book.seascape-vacations.com/listings/206016?utm_source=google&utm_content=owner%40example.com&phone=9415551212&checkin=2026-06-01&guests=4"
+  });
+  const event = events.find((entry) => entry.event === "owner_form_submit");
+
+  assert.ok(event, "owner_form_submit should still be emitted");
+  assert.equal(event.payload.page_slug, "property-management");
+  assert.equal(event.payload.source_page_slug, "owner-review");
+  assert.equal(event.payload.transport_type, "beacon");
+  assert.match(event.payload.link_url, /utm_source=google/);
+  assert.match(event.payload.link_url, /checkin=2026-06-01/);
+  assert.match(event.payload.link_url, /guests=4/);
+  assert.doesNotMatch(event.payload.link_url, /owner%40example\.com|owner@example\.com|9415551212|phone=/i);
+  assert.doesNotMatch(JSON.stringify(event.payload), /owner@example\.com|941-555-1212|Owner Name|123 Palm Street|Please call me/i);
+});
+
 test("homepage and shared popup partial use the tracked email capture path", () => {
   const homepage = fs.readFileSync(path.join(projectRoot, "src", "index.njk"), "utf8");
+  const homepageScript = fs.readFileSync(path.join(projectRoot, "src", "assets", "js", "homepage.js"), "utf8");
   const popupPartial = fs.readFileSync(path.join(projectRoot, "src", "_includes", "partials", "email-popup.njk"), "utf8");
+  const trackingScript = fs.readFileSync(path.join(projectRoot, "src", "assets", "js", "conversion-tracking.js"), "utf8");
+  const homepageContract = buildRouteContract({
+    html: homepage,
+    routePath: "/",
+    sourcePath: "src/index.njk"
+  });
+  const popupContract = buildRouteContract({
+    html: popupPartial,
+    routePath: "/partials/email-popup/",
+    sourcePath: "src/_includes/partials/email-popup.njk"
+  });
 
   for (const source of [homepage, popupPartial]) {
     assert.match(source, /data-track-form="email_capture"/);
-    assert.match(source, /data-form-submit-event="email_capture_submit"/);
     assert.match(source, /data-inline-email-capture="true"/);
     assert.match(source, /data-email-capture-success/);
     assert.doesNotMatch(source, /onsubmit="handleEmailSubmit\(event\)"/);
+  }
+
+  assert.ok(homepageContract.trackedEvents.includes("email_capture_submit"));
+  assert.ok(popupContract.trackedEvents.includes("email_capture_submit"));
+  assert.match(homepage, /\/assets\/js\/homepage\.js/);
+  assert.match(homepageScript, /\/assets\/js\/conversion-tracking\.js/);
+  assert.match(popupPartial, /\/assets\/js\/conversion-tracking\.js/);
+  assert.match(trackingScript, /__seascapeConversionTrackingLoaded/);
+});
+
+test("SAVE50 popup success state stays honest for repeat subscribers and delivery failures", async () => {
+  const homepage = fs.readFileSync(path.join(projectRoot, "src", "index.njk"), "utf8");
+  const popupPartial = fs.readFileSync(path.join(projectRoot, "src", "_includes", "partials", "email-popup.njk"), "utf8");
+  const trackingScriptPath = path.join(projectRoot, "src", "assets", "js", "conversion-tracking.js");
+  const listeners = {};
+  const successClasses = [];
+  const popupContent = { style: {} };
+  const popupSuccess = {
+    classList: {
+      add(className) {
+        successClasses.push(className);
+      }
+    }
+  };
+  const popupRoot = {
+    querySelector(selector) {
+      return selector === "[data-email-capture-success]" ? popupSuccess : null;
+    }
+  };
+  const popupForm = {
+    tagName: "FORM",
+    textContent: "Popup email capture",
+    dataset: {
+      trackForm: "email_capture",
+      formSubmitEvent: "email_capture_submit",
+      inlineEmailCapture: "true",
+      formPlacement: "popup"
+    },
+    parentElement: {
+      querySelector() {
+        return null;
+      }
+    },
+    matches(selector) {
+      return selector === "form[data-track-form]";
+    },
+    closest(selector) {
+      if (selector === "[data-email-capture-root]") return popupRoot;
+      if (selector === "[data-email-capture-content]") return popupContent;
+      return null;
+    },
+    getAttribute() {
+      return "";
+    },
+    reset() {
+      this.wasReset = true;
+    }
+  };
+
+  for (const source of [homepage, popupPartial]) {
+    assert.doesNotMatch(source, /We also sent it to your email so you won't lose it\./);
+    assert.match(source, /Use code <strong>SAVE50<\/strong> on your first direct booking of 3 nights or more\. Enter it on the secure booking page, and save this code before you browse\./);
+    assert.match(source, /data-email-capture-browse/);
+    assert.match(source, /href="\/properties\/\?promo=save50"/);
+  }
+
+  delete require.cache[require.resolve(trackingScriptPath)];
+  global.window = {
+    dataLayer: [],
+    location: {
+      href: "http://localhost/",
+      pathname: "/",
+      search: ""
+    }
+  };
+  global.document = {
+    readyState: "loading",
+    referrer: "",
+    addEventListener(eventName, handler) {
+      listeners[eventName] = handler;
+    },
+    querySelectorAll() {
+      return [];
+    }
+  };
+  global.localStorage = {
+    setItem() {
+      throw new Error("delivery failure should not mark the popup as subscribed");
+    }
+  };
+  global.fetch = () => Promise.reject(new Error("network down"));
+  global.FormData = class FormDataStub {
+    get(field) {
+      if (field === "email") return "repeat@example.com";
+      if (field === "name") return "Repeat Guest";
+      return "";
+    }
+  };
+
+  try {
+    require(trackingScriptPath);
+    listeners.DOMContentLoaded();
+    listeners.submit({
+      target: popupForm,
+      preventDefault() {}
+    });
+
+    await Promise.resolve();
+    await Promise.resolve();
+    await Promise.resolve();
+    await Promise.resolve();
+
+    assert.deepEqual(successClasses, []);
+    assert.equal(popupContent.style.display, undefined);
+    assert.equal(popupForm.wasReset, undefined);
+  } finally {
+    delete global.window;
+    delete global.document;
+    delete global.localStorage;
+    delete global.fetch;
+    delete global.FormData;
   }
 });

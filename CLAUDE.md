@@ -30,50 +30,31 @@ If a detail ages fast, it belongs in `docs/status/`, `docs/briefs/`, or `docs/po
 - Batch briefs: `docs/briefs/`
 - Page-family routing and canonical ownership: `docs/portfolio/`
 
-## Five Roles
+## Reread Status Contract
 
-| Role | Write Access | Job |
-| --- | --- | --- |
-| Search Operator | read-only | Pull GSC, GA4, BigQuery, and weekly operator evidence. Recommend one cluster, not ten. |
-| SEO Architect | read-only | Define page roles, canonical families, feeder routing, internal-link direction, and winner/destination logic. |
-| Page Builder | writes source | Implement the chosen batch in `src/`, redirects, schema, and supporting docs. This is Codex. |
-| Voice Editor | read-only | Critique copy for tone drift, fake specificity, mechanical structure, and claim risk. This is where Claude is useful. |
-| Release Gate | read-only | Verify build, schema, redirects, metadata, tests, and diff sanity before any push, PR, or merge. |
+- `docs/status/next-batch.md` is the only canonical operator-read status surface.
+- Every reread update must write exactly one `Reread status` and exactly one `Concrete next move`.
+- Allowed reread statuses are only:
+  - `blocked by freshness`
+  - `fresh but below threshold`
+  - `open next batch`
+- `docs/status/current-state.md` should summarize durable repo truth and point back to `docs/status/next-batch.md`; it should not duplicate volatile reread windows, `data_date` values, or stale blocked-window narration.
 
-That is enough. Extra agent personas are overhead unless they own a real surface the five roles do not.
+## Five Roles And Skill Policy
 
-## Local Skills
+These load on demand instead of every session:
 
-The active local skill layer is intentionally small and site-specific:
-
-- `accessibility`
-- `page-cro`
-- `schema-markup`
-- `site-architecture`
-- `web-design-guidelines`
-
-Use those as helpers under the five-role workflow, not as another operating system. Stale deploy, monthly-reset, broad marketing, and generic SEO skills stay out of active discovery unless a new `agent-surface-audit` proves they should return.
-
-Global marketing skills in `/Users/sawbeck/.codex/skills/` are allowed as
-advisory lenses when the task calls for them, especially `customer-research`,
-`marketing-psychology`, `content-strategy`, `copywriting`, `copy-editing`,
-`seo-audit`, `ai-seo`, `analytics-tracking`, `ab-test-setup`, and
-`pricing-strategy`. They help structure thinking; they do not create new local
-authority, bypass the five roles, or replace Seascape Hub as the source of
-business context.
+- Five-role model (who owns what): `docs/process/five-roles.md`
+- Local skill layer + external-pack policy: `docs/process/skill-policy.md`
+  (the active skill set is self-describing in `.agents/skills/`; `.claude/skills/`
+  is only a compatibility layer)
 
 ## Required Batch Workflow
 
-1. Search Operator reads the latest operator evidence.
-2. One cluster gets chosen.
-3. One brief gets written or updated in `docs/briefs/`.
-4. Work starts on `codex/<batch>` in `.worktrees/<batch>`.
-5. Page Builder reads the active brief, `docs/process/content-quality-gate.md`, `docs/style/voice.md`, `docs/style/banned-patterns.md`, and `docs/style/approved-examples.md` before source edits.
-6. Page Builder edits source and only the docs needed to support that batch.
-7. Voice Editor critiques the changed copy against the same brief and content gate.
-8. Release Gate runs `npm run lint:content` plus the rest of verification.
-9. Deploy.
-10. Reread after the crawl window instead of inventing a new batch too early.
+Full order of operations: `docs/process/batch-workflow.md`. The visible-copy
+voice order is non-negotiable: draft and rewrite reader copy with `copywriting`,
+then run `enterprise-ui-writing` and `humanizer` on changed copy before the
+content gate and `npm run lint:content`.
 
 ## Hard Rules
 
@@ -87,7 +68,16 @@ business context.
 - One serious SEO batch at a time. If the batch cannot fit in one brief, it is too wide.
 - Claims about amenities must trace to property truth. No invented equipment, no fake waterfront spread, no padded sleeping-capacity claims.
 - Owner proof claims must trace to approved proof assets or current source truth. Do not reuse old sitewide review-count theater.
+- Any PR changing visible copy on smoke-asserted routes (homepage, `/properties/`, `/property-management/`, `/stays/`) must update `scripts/recovery/assert-live-smoke.js` in the same PR, or the daily live-smoke workflow goes red on a healthy site.
+- Live `/.netlify/functions/*` endpoint paths, metrics `receipts[]` field names, and `verify:*` npm script names have cross-repo consumers (seascape-ops, seascape-hub, seascape-analytics); check the contract locks in `docs/plans/2026-06-12-v1-implementation-handoff.md` before renaming any of them.
 - If a workflow doc conflicts with repo safety docs, the stricter repo rule wins.
+
+## Execution Defaults
+
+- Think before coding: state assumptions explicitly, ask when the missing fact matters, push back when a simpler approach exists, and stop to clarify before editing when the path is unclear.
+- Simplicity first: make the minimum change that solves the problem. Nothing speculative. No abstractions for single-use code.
+- Surgical changes: touch only what you must, match existing style, and do not refactor adjacent code that is not broken unless the task requires it.
+- Goal-driven execution: define success criteria early, then loop until the right proof gate verifies the work.
 
 ## Reading Order For SEO Work
 
@@ -106,7 +96,52 @@ If any of those are stale, fix the doc layer before you scale the batch.
 Always read `DESIGN.md` before touching any CSS, template, or layout file.
 Treat `DESIGN.md` as the visual source of truth.
 Do not invent new colors, fonts, spacing, border radius, shadows, or component styles without explicit user approval.
+For meaningful visual work, Codex should prepare a Claude Design handoff before implementation: repo/source truth, page goal, audience, `DESIGN.md` constraints, existing patterns, proof/copy boundaries, URLs or screenshots, implementation risks, and responsive requirements.
 If Claude Design, Stitch, designmd.directory, or another design tool produces a new direction, propose it as a `DESIGN.md` change first.
 Use Stitch/designmd.directory only as inspiration, not source truth.
-Subjective visual changes need desktop and mobile screenshots until an automated visual regression gate exists.
+Meaningful visual changes also need the repo flow in `docs/process/design-review-workflow.md`.
+Run the global `design-review` skill against the affected routes after implementation and before asking for human review.
+The automated visual regression gate already exists: `npm run test:visual` diffs committed desktop and mobile baselines in `tests/visual/__screenshots__/` (with an axe accessibility spec). Run it for visual changes, and still attach desktop and mobile screenshots to the review or PR for subjective changes.
 For UI/visual work, dispatch subagents with `model: "sonnet"`.
+
+## Commands
+
+- Dev: `npm run start`
+- Build: `npm run build`
+- Full tests: `npm test`
+- Content gate: `npm run lint:content`
+- Release verify: `npm run verify:release`
+- Visual regression: `npm run test:visual`
+- Visual proof capture: `npm run proof:visual`
+- Safe commit: `npm run git:safe-commit`
+- Merge check: `npm run git:merge-check`
+
+## Testing
+
+- Fast gate for copy-only work: `npm run lint:content`
+- Fast gate for structural source work: `npm run build`
+- Full pre-PR gate: `npm run lint:content && npm test && npm run verify:release`
+- Visual changes also require: `npm run test:visual` and fresh desktop/mobile screenshot proof
+- Live post-merge smoke when the release surface matters: `npm run verify:recovery:live && npm run verify:direct-booking-events && npm run verify:owner-funnel-routes`
+- The same smoke trio also runs daily via `.github/workflows/live-smoke.yml` (dispatchable manually); a red scheduled run means production drift or stale smoke assertions, not necessarily an outage
+
+## Deploy Configuration
+
+- Deployable: `yes`
+- Deploy surface: `Netlify`
+- Production URL: `https://seascape-vacations.com`
+- Build command: `npm run build`
+- Publish directory: `_site`
+- Post-deploy proof: `npm run verify:recovery:live && npm run verify:direct-booking-events && npm run verify:owner-funnel-routes`
+- "Shipped" means: merged to `main`, Netlify built successfully, and the relevant live smoke checks passed
+
+## Skill routing
+
+- Batch planning and scope: `plan-ceo-review` plus one active brief in `docs/briefs/`
+- Internal-link family routing: `internal-link-targeting`
+- Schema, GEO, and AEO implementation: `seascape-seo` plus `schema-markup`
+- Owner-page CRO: `page-cro`
+- Visual planning and review: `claude-design` before implementation, then `design-review`
+- Accessibility: `accessibility`
+- Code review and diff check: `review`
+- Ship, deploy, and PR flow: `ship`

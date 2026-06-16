@@ -1,0 +1,7 @@
+{
+  "name": "owner-generic-service-list",
+  "lane": "owner",
+  "sourceCite": "synthetic anti-pattern: banned generics (curated, boasts, seamless, unparalleled, hospitality excellence)",
+  "copy": "Our curated, full-service management boasts seamless, unparalleled hospitality excellence for every owner we serve.",
+  "expect": { "band": "low", "maxOverall": 35 }
+}

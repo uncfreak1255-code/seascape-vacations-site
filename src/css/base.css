@@ -90,7 +90,7 @@ a {
     font-family: 'Playfair Display', serif;
     font-size: 20px;
     font-weight: 500;
-    color: var(--brand);
+    color: var(--brand-dark);
     letter-spacing: 0.05em;
 }
 
@@ -211,7 +211,7 @@ a {
     font-weight: 600;
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: var(--brand);
+    color: var(--brand-dark);
     margin-bottom: 12px;
 }
 
@@ -246,7 +246,7 @@ a {
 }
 
 .breadcrumbs a {
-    color: var(--brand);
+    color: var(--brand-dark);
 }
 
 .breadcrumbs span {
@@ -310,7 +310,7 @@ a {
 
 .property-price {
     font-size: 16px;
-    color: var(--brand);
+    color: var(--brand-dark);
     font-weight: 600;
 }
 
@@ -397,5 +397,21 @@ a {
 
 .footer-copyright {
     font-size: 13px;
-    opacity: 0.6;
+    opacity: 0.88;
+}
+
+.footer-meta-links {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+
+.footer-meta-links a {
+    color: inherit;
+}
+
+.footer-meta-links a:hover {
+    color: white;
 }

@@ -1,0 +1,7 @@
+{
+  "name": "aeo-methodology-before",
+  "lane": "aeo",
+  "sourceCite": "docs/style/approved-examples.md:57 (Guest Research Page Intros, Before — methodology-note tone)",
+  "copy": "Interactive planning estimate for Bradenton, Sarasota, and Anna Maria Island trips using the accepted cost-index formulas and proof boundaries.",
+  "expect": { "band": "low", "maxOverall": 58 }
+}

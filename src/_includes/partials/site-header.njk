@@ -12,7 +12,16 @@
 <nav class="nav" id="mainNav" aria-label="Primary">
     <div class="nav-inner">
         <a class="nav-logo" href="/">
+            {% if resolvedOwnerNavOnly %}
+            <span class="nav-owner-mark" aria-hidden="true">
+                <svg viewBox="0 0 28 28" focusable="false">
+                    <path d="M6.2 15.8c2.4-3 5.3-3 7.7 0s5.3 3 7.9-.1" />
+                    <path d="M7.4 19.5c2-2.2 4.1-2.2 6.2 0 2.1 2.2 4.3 2.2 6.5-.1" />
+                </svg>
+            </span>
+            {% else %}
             <img src="/logo-nav.png" alt="Seascape Vacations" width="40" height="40" decoding="async">
+            {% endif %}
             <div class="nav-logo-copy">
                 <div class="nav-logo-text">SEASCAPE</div>
                 <div class="nav-logo-sub">Vacations</div>
@@ -20,6 +29,10 @@
         </a>
         {% if resolvedOwnerNavOnly %}
         <div class="nav-links nav-links--owner">
+            <a class="nav-owner-link" href="/properties/">Stays</a>
+            <a class="nav-owner-link" href="/guides/anna-maria-island-area-guide/">Anna Maria</a>
+            <a class="nav-owner-link" href="/guides/sarasota-area-guide/">Sarasota</a>
+            <a class="nav-owner-link nav-owner-link--current" href="/property-management/" aria-current="page">Property Owners</a>
             <a
               href="{{ resolvedNavButtonHref }}"
               class="nav-owner-cta"

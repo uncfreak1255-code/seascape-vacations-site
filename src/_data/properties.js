@@ -5,6 +5,7 @@ const { fetchBookingEngineCalendar } = require("../../scripts/cache/booking-engi
 const { normalizeAvailability } = require("../../scripts/cache/normalize-hostaway");
 
 const FALLBACK_PATH = path.join(__dirname, "properties-fallback.json");
+const VISUAL_TEST_AVAILABILITY_PATH = path.join(__dirname, "..", "..", "tests", "visual", "fixtures", "properties-availability.json");
 const CACHE_KEY = "properties_cache_v1.json";
 const STORE_NAME = "seascape-cache";
 const HOSTAWAY_PREFIX = "https://hostaway-platform.s3.us-west-2.amazonaws.com/";
@@ -17,6 +18,33 @@ const LISTING_ID_BY_SLUG = {
   "sarasota-luxe": "135881",
   "river-house": "135880",
   "bradenton-pool-home": "487798"
+};
+const STATIC_PROPERTY_SCHEMA_FACTS_BY_SLUG = {
+  "dockside-dreams": {
+    latitude: 27.4992,
+    longitude: -82.5751,
+    postalCode: "34205"
+  },
+  "the-oasis": {
+    latitude: 27.4889,
+    longitude: -82.5648,
+    postalCode: "34209"
+  },
+  "sarasota-luxe": {
+    latitude: 27.3364,
+    longitude: -82.5307,
+    postalCode: "34236"
+  },
+  "river-house": {
+    latitude: 27.4989,
+    longitude: -82.5748,
+    postalCode: "34209"
+  },
+  "bradenton-pool-home": {
+    latitude: 27.4789,
+    longitude: -82.5548,
+    postalCode: "34205"
+  }
 };
 
 function deriveSlug(property) {
@@ -135,8 +163,44 @@ function todayStamp(date = new Date()) {
   return date.toISOString().slice(0, 10);
 }
 
+function isVisualTestMode() {
+  return process.env.SEASCAPE_VISUAL_TEST === "1";
+}
+
 function shouldFetchPublicAvailability() {
   return process.env.SEASCAPE_DISABLE_PUBLIC_AVAILABILITY !== "1" && process.env.GITHUB_ACTIONS !== "true";
+}
+
+function loadVisualTestAvailabilityFixture() {
+  if (!fs.existsSync(VISUAL_TEST_AVAILABILITY_PATH)) {
+    return {};
+  }
+
+  try {
+    const fixture = JSON.parse(fs.readFileSync(VISUAL_TEST_AVAILABILITY_PATH, "utf8"));
+    return fixture && typeof fixture === "object" ? fixture : {};
+  } catch (error) {
+    return {};
+  }
+}
+
+function applyAvailabilityFixture(properties, fixtureBySlug) {
+  const syncedAt = new Date().toISOString();
+
+  return properties.map((property) => {
+    const fixture = fixtureBySlug[property.slug];
+    if (!fixture) {
+      return property;
+    }
+
+    return {
+      ...property,
+      availability: normalizeAvailabilitySummary({
+        ...fixture,
+        syncedAt
+      })
+    };
+  });
 }
 
 async function enrichMissingAvailability(properties) {
@@ -185,6 +249,73 @@ function loadFallback() {
   return normalizeProperties(JSON.parse(fs.readFileSync(FALLBACK_PATH, "utf8")));
 }
 
+function safeProjectionPath() {
+  return process.env.SEASCAPE_SAFE_PROPERTY_PROJECTION_PATH || "";
+}
+
+function projectionRecords(payload) {
+  if (Array.isArray(payload)) return payload;
+  if (payload && Array.isArray(payload.properties)) return payload.properties;
+  if (payload && Array.isArray(payload.records)) return payload.records;
+  return [];
+}
+
+function slugFromProjection(record) {
+  if (record.slug || record.property_slug) {
+    return String(record.slug || record.property_slug).trim();
+  }
+  const listingId = record.listing_map_id || record.listingId || record.id;
+  return Object.entries(LISTING_ID_BY_SLUG).find(([, id]) => String(id) === String(listingId))?.[0] || null;
+}
+
+function safeProjectionOverlay(record) {
+  const listingId = record.listing_map_id || record.listingId || record.id || null;
+  const bookingUrls = Array.isArray(record.booking_engine_urls) ? record.booking_engine_urls : [];
+  return {
+    listingId,
+    id: listingId,
+    bookingUrl: record.bookingUrl || bookingUrls[0],
+    price: record.price || record.base_price || record.nightly_rate,
+    availability: record.availability || null,
+    projection: {
+      source: "seascape-ops",
+      sourceSystem: record.source_system || "hostaway",
+      capturedAt: record.provenance?.captured_at || record.generated_at || null,
+      staleAfter: record.provenance?.stale_after || record.stale_after || null
+    }
+  };
+}
+
+function mergeSafePropertyProjection(fallbackProperties, records) {
+  const bySlug = new Map();
+  for (const record of records) {
+    const slug = slugFromProjection(record);
+    if (slug) bySlug.set(slug, record);
+  }
+
+  return fallbackProperties.map((property) => {
+    const slug = deriveSlug(property);
+    const projection = bySlug.get(slug);
+    if (!projection) return property;
+    const overlay = safeProjectionOverlay(projection);
+    return {
+      ...property,
+      ...Object.fromEntries(Object.entries(overlay).filter(([, value]) => value !== undefined && value !== null && value !== "")),
+      slug
+    };
+  });
+}
+
+function loadSafePropertyProjection(projectionPath = safeProjectionPath()) {
+  if (!projectionPath || !fs.existsSync(projectionPath)) {
+    return null;
+  }
+  const payload = JSON.parse(fs.readFileSync(projectionPath, "utf8"));
+  const records = projectionRecords(payload);
+  if (!records.length) return null;
+  return normalizeProperties(mergeSafePropertyProjection(JSON.parse(fs.readFileSync(FALLBACK_PATH, "utf8")), records));
+}
+
 function toHostawayCdn(url, width = 1600) {
   if (!url || typeof url !== "string") return url;
   const clean = url.split("?")[0];
@@ -203,6 +334,7 @@ function normalizeProperties(list) {
     .map((property) => {
       const slug = deriveSlug(property);
       const listingId = deriveListingId(property, slug);
+      const staticSchemaFacts = STATIC_PROPERTY_SCHEMA_FACTS_BY_SLUG[slug] || {};
       const image = toHostawayCdn(property.image);
       const heroImage = toHostawayCdn(property.heroImage || property.image);
       const gallery = Array.isArray(property.gallery)
@@ -225,6 +357,10 @@ function normalizeProperties(list) {
         guests: normalizeCount(property.guests),
         rating: normalizeCount(property.rating) || 5,
         specs: deriveSpecs(property),
+        schemaIdentifier: property.schemaIdentifier || `seascape-${listingId}`,
+        latitude: Number.isFinite(Number(property.latitude)) ? Number(property.latitude) : staticSchemaFacts.latitude || null,
+        longitude: Number.isFinite(Number(property.longitude)) ? Number(property.longitude) : staticSchemaFacts.longitude || null,
+        postalCode: property.postalCode || staticSchemaFacts.postalCode || "",
         image,
         heroImage,
         gallery,
@@ -234,7 +370,16 @@ function normalizeProperties(list) {
 }
 
 async function getProperties() {
+  if (isVisualTestMode()) {
+    return applyAvailabilityFixture(loadFallback(), loadVisualTestAvailabilityFixture());
+  }
+
   try {
+    const projected = loadSafePropertyProjection();
+    if (projected) {
+      return projected;
+    }
+
     if (process.env.NETLIFY_BLOBS_CONTEXT || global.netlifyBlobsContext) {
       const cached = await loadFromCache();
       if (cached) {
@@ -253,3 +398,5 @@ module.exports.normalizeProperties = normalizeProperties;
 module.exports.toHostawayCdn = toHostawayCdn;
 module.exports.normalizeAvailabilitySummary = normalizeAvailabilitySummary;
 module.exports.enrichMissingAvailability = enrichMissingAvailability;
+module.exports.loadSafePropertyProjection = loadSafePropertyProjection;
+module.exports.mergeSafePropertyProjection = mergeSafePropertyProjection;

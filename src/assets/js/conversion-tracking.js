@@ -1,6 +1,9 @@
 (function () {
   "use strict";
 
+  if (window.__seascapeConversionTrackingLoaded) return;
+  window.__seascapeConversionTrackingLoaded = true;
+
   var MAILCHIMP_ENDPOINT = "https://seascape-vacations.us6.list-manage.com/subscribe/post";
   var MAILCHIMP_QUERY = "u=48f234eebd9cb530fd2f217fe&id=95e5a594d1&f_id=008996e5f0";
   var GUEST_EMAIL_CAPTURE_ENDPOINT = "/.netlify/functions/guest-email-capture";
@@ -20,6 +23,34 @@
     "property_check_availability_click",
     "property_booking_page_click"
   ];
+  var AI_SOURCE_HOSTS = [
+    "chatgpt.com",
+    "perplexity.ai",
+    "claude.ai",
+    "gemini.google.com",
+    "copilot.microsoft.com"
+  ];
+  var ORGANIC_SEARCH_HOSTS = [
+    "google.",
+    "bing.com",
+    "duckduckgo.com",
+    "yahoo.com"
+  ];
+  var BOOKING_ENGINE_HOST = "book.seascape-vacations.com";
+  var BOOKING_ENGINE_HANDOFF_KEYS = [
+    "utm_source",
+    "utm_medium",
+    "utm_campaign",
+    "utm_content",
+    "ref",
+    "checkin",
+    "checkout",
+    "guests"
+  ];
+  var SENSITIVE_ANALYTICS_KEY_PATTERN = /(^|[-_])(email|e-mail|phone|tel|mobile|first-name|last-name|full-name|guest-name|name|address|property-address|street|zip|postal|message|comment|note|concern|concerns|details|description|what-feels-off|free-text)($|[-_])/i;
+  var EMAIL_VALUE_PATTERN = /[^\s@]+@[^\s@]+\.[^\s@]+/;
+  var PHONE_VALUE_PATTERN = /(?:\+?1[\s.-]?)?(?:\(?\d{3}\)?[\s.-]?)\d{3}[\s.-]?\d{4}/;
+  var ADDRESS_VALUE_PATTERN = /\d{2,6}\s+[a-z0-9 .'-]+\s+(street|st|avenue|ave|road|rd|drive|dr|lane|ln|court|ct|boulevard|blvd|way|place|pl)\b/i;
 
   function ensureDataLayer() {
     window.dataLayer = window.dataLayer || [];
@@ -35,11 +66,170 @@
     };
   }
 
+  function normalizeTrackingValue(value) {
+    return String(value || "")
+      .trim()
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/(^-|-$)/g, "");
+  }
+
+  function normalizeAnalyticsKey(key) {
+    return normalizeTrackingValue(key);
+  }
+
+  function isSensitiveAnalyticsKey(key) {
+    return SENSITIVE_ANALYTICS_KEY_PATTERN.test(normalizeAnalyticsKey(key));
+  }
+
+  function sanitizeAnalyticsUrl(value) {
+    if (typeof URL !== "function") return "";
+
+    try {
+      var url = new URL(String(value), window.location && window.location.href ? window.location.href : "https://seascape-vacations.com/");
+      Array.from(url.searchParams.keys()).forEach(function (key) {
+        var paramValue = url.searchParams.get(key) || "";
+        if (
+          isSensitiveAnalyticsKey(key) ||
+          EMAIL_VALUE_PATTERN.test(paramValue) ||
+          PHONE_VALUE_PATTERN.test(paramValue) ||
+          ADDRESS_VALUE_PATTERN.test(paramValue)
+        ) {
+          url.searchParams.delete(key);
+        }
+      });
+
+      return url.toString();
+    } catch (error) {
+      return "";
+    }
+  }
+
+  function sanitizeAnalyticsValue(key, value) {
+    if (typeof value === "function" || typeof value === "number" || typeof value === "boolean") return value;
+    if (value === null || typeof value === "undefined") return value;
+    if (Array.isArray(value)) {
+      return value.map(function (item) {
+        return sanitizeAnalyticsValue(key, item);
+      }).filter(function (item) {
+        return item !== "";
+      });
+    }
+    if (typeof value === "object") return sanitizeAnalyticsPayload(value);
+
+    var stringValue = String(value).trim();
+    if (!stringValue) return "";
+    if (/url$/i.test(key)) return sanitizeAnalyticsUrl(stringValue);
+    if (EMAIL_VALUE_PATTERN.test(stringValue) || PHONE_VALUE_PATTERN.test(stringValue) || ADDRESS_VALUE_PATTERN.test(stringValue)) return "";
+
+    return stringValue.slice(0, 160);
+  }
+
+  function sanitizeAnalyticsPayload(payload) {
+    var safePayload = {};
+    if (!payload || typeof payload !== "object") return safePayload;
+
+    Object.keys(payload).forEach(function (key) {
+      if (isSensitiveAnalyticsKey(key)) return;
+      var value = sanitizeAnalyticsValue(key, payload[key]);
+      if (value === "" || typeof value === "undefined" || value === null) return;
+      safePayload[key] = value;
+    });
+
+    return safePayload;
+  }
+
+  window.seascapeSanitizeAnalyticsPayload = window.seascapeSanitizeAnalyticsPayload || sanitizeAnalyticsPayload;
+
   function getNavigationHref(node) {
     if (!node) return "";
     if (node.href) return node.href;
     if (typeof node.getAttribute === "function") return node.getAttribute("href") || "";
     return "";
+  }
+
+  function buildBookingEngineHandoffUrl(href, node) {
+    if (!href || typeof URL !== "function") return href || "";
+
+    var currentHref = window.location && typeof window.location.href === "string"
+      ? window.location.href
+      : "https://seascape-vacations.com/";
+    var locationSearch = window.location && typeof window.location.search === "string"
+      ? window.location.search
+      : "";
+    var currentParams = typeof URLSearchParams === "function"
+      ? new URLSearchParams(locationSearch)
+      : null;
+    var url;
+
+    try {
+      url = new URL(href, currentHref);
+    } catch (error) {
+      return href;
+    }
+
+    if (url.hostname.replace(/^www\./, "").toLowerCase() !== BOOKING_ENGINE_HOST) {
+      return url.toString();
+    }
+
+    if (currentParams) {
+      BOOKING_ENGINE_HANDOFF_KEYS.forEach(function (key) {
+        var value = (currentParams.get(key) || "").trim();
+        if (value && !url.searchParams.get(key)) {
+          url.searchParams.set(key, value);
+        }
+      });
+    }
+
+    var sourceContext = getSourceContext();
+    if (!url.searchParams.get("utm_source") && sourceContext.ai_platform) {
+      url.searchParams.set("utm_source", normalizeTrackingValue(sourceContext.ai_platform));
+    }
+    if (!url.searchParams.get("utm_medium") && sourceContext.source_context === "ai_referral") {
+      url.searchParams.set("utm_medium", "ai-referral");
+    }
+    if (!url.searchParams.get("utm_campaign") && sourceContext.source_context === "ai_referral") {
+      url.searchParams.set("utm_campaign", "site-handoff");
+    }
+    if (!url.searchParams.get("utm_content")) {
+      var contentSource = node && node.dataset
+        ? node.dataset.pageSlug || node.dataset.guideSlug || node.dataset.trackLabel || node.dataset.placement || ""
+        : "";
+      var normalizedContent = normalizeTrackingValue(contentSource || slugFromPath(getCurrentPagePath()));
+      if (normalizedContent) {
+        url.searchParams.set("utm_content", normalizedContent);
+      }
+    }
+    if (!url.searchParams.get("ref") && sourceContext.source_context === "ai_referral") {
+      url.searchParams.set("ref", "ai-site-handoff");
+    }
+
+    return url.toString();
+  }
+
+  function syncBookingEngineLink(node) {
+    var href = getNavigationHref(node);
+    if (!href) return "";
+
+    var nextHref = buildBookingEngineHandoffUrl(href, node);
+    if (!nextHref || nextHref === href) return href;
+
+    if (typeof node.setAttribute === "function") {
+      node.setAttribute("href", nextHref);
+    }
+    if ("href" in node) {
+      node.href = nextHref;
+    }
+
+    return nextHref;
+  }
+
+  function decorateBookingEngineLinks() {
+    if (!document || typeof document.querySelectorAll !== "function") return;
+
+    Array.prototype.forEach.call(document.querySelectorAll("a[href]"), function (node) {
+      syncBookingEngineLink(node);
+    });
   }
 
   function shouldDelayTrackedNavigation(node, event) {
@@ -59,7 +249,7 @@
   }
 
   function continueTrackedNavigation(node) {
-    var href = getNavigationHref(node);
+    var href = syncBookingEngineLink(node) || getNavigationHref(node);
     if (!href) return;
 
     if (window.location && typeof window.location.assign === "function") {
@@ -92,6 +282,7 @@
       safePayload.event_callback = completion;
       safePayload.event_timeout = timeoutMs;
     }
+    safePayload = window.seascapeSanitizeAnalyticsPayload(safePayload);
 
     if (typeof window.seascapeTrackEvent === "function") {
       window.seascapeTrackEvent(eventName, safePayload);
@@ -138,15 +329,22 @@
     return (params.get("owner_source") || "").trim();
   }
 
+  function resolveOwnerSourcePage(node) {
+    if (!node || !node.dataset) return getOwnerSourceFromLocation();
+
+    return (
+      getOwnerSourceFromLocation() ||
+      getHiddenInputValue(node, "source_page_slug") ||
+      node.dataset.sourcePageSlug ||
+      node.dataset.pageSlug ||
+      ""
+    );
+  }
+
   function syncOwnerSourcePage(form) {
     if (!form || !form.dataset) return;
 
-    var sourcePageSlug =
-      getOwnerSourceFromLocation() ||
-      getHiddenInputValue(form, "source_page_slug") ||
-      form.dataset.sourcePageSlug ||
-      form.dataset.pageSlug ||
-      "";
+    var sourcePageSlug = resolveOwnerSourcePage(form);
 
     if (!sourcePageSlug) return;
 
@@ -154,23 +352,63 @@
     setHiddenInputValue(form, "source_page_slug", sourcePageSlug);
   }
 
-  function getPayloadFromElement(node) {
-    var href = node && node.getAttribute ? node.getAttribute("href") : "";
-    var sourcePageSlug = node && node.dataset ? node.dataset.sourcePageSlug || "" : "";
+  function ownerContextValue(field) {
+    if (!field || typeof field.value !== "string") return "";
+    return field.value.trim();
+  }
 
-    if (!sourcePageSlug && node && String(node.tagName || "").toUpperCase() === "FORM") {
-      sourcePageSlug = getHiddenInputValue(node, "source_page_slug");
+  function ownerFormHasContext(form) {
+    if (!form || typeof form.querySelectorAll !== "function") return true;
+
+    var fields = form.querySelectorAll("[data-owner-context-field]");
+    if (!fields.length) {
+      fields = form.querySelectorAll('[name="property_address"], [name="listing_url"], [name="what_feels_off"], [name="concerns"]');
     }
 
-    return {
-      guide_slug: node && node.dataset ? node.dataset.guideSlug || "" : "",
-      page_slug: node && node.dataset ? node.dataset.pageSlug || "" : "",
+    for (var i = 0; i < fields.length; i += 1) {
+      if (ownerContextValue(fields[i])) return true;
+    }
+
+    return false;
+  }
+
+  function validateOwnerFormContext(form) {
+    if (!form || !form.dataset || form.dataset.trackForm !== "owner") return true;
+    if (form.dataset.ownerContextRequired !== "true") return true;
+    if (ownerFormHasContext(form)) return true;
+
+    var field = form.querySelector("[data-owner-context-field]") || form.querySelector('[name="property_address"]');
+    if (!field) return false;
+
+    field.setCustomValidity("Send the listing or address, or tell us what feels off.");
+    field.reportValidity();
+    field.addEventListener("input", function clearOwnerContextValidity() {
+      field.setCustomValidity("");
+      field.removeEventListener("input", clearOwnerContextValidity);
+    });
+    return false;
+  }
+
+  function getPayloadFromElement(node) {
+    var href = syncBookingEngineLink(node) || (node && node.getAttribute ? node.getAttribute("href") : "");
+    var sourcePageSlug = resolveOwnerSourcePage(node);
+    var dataset = node && node.dataset ? node.dataset : {};
+
+    return Object.assign({
+      guide_slug: dataset.guideSlug || "",
+      page_slug: dataset.pageSlug || "",
       source_page_slug: sourcePageSlug,
-      market: node && node.dataset ? node.dataset.market || "" : "",
-      placement: node && node.dataset ? node.dataset.formPlacement || node.dataset.placement || "" : "",
-      link_text: node && node.dataset && node.dataset.trackLabel ? node.dataset.trackLabel : getText(node),
-      link_url: href || ""
-    };
+      market: dataset.market || "",
+      placement: dataset.formPlacement || dataset.placement || "",
+      link_text: dataset.trackLabel || getText(node),
+      link_url: href || "",
+      utility_moment: dataset.utilityMoment || dataset.captureMoment || "",
+      utility_source_label: dataset.utilitySourceLabel || dataset.sourceLabel || dataset.captureSourceLabel || "",
+      requested_value: dataset.requestedValue || dataset.utilityValue || "",
+      guest_intent: dataset.guestIntent || "",
+      delivery_channel: dataset.deliveryChannel || "",
+      consent_basis: dataset.consentBasis || ""
+    }, getSourceContext());
   }
 
   function getCurrentPagePath() {
@@ -181,6 +419,68 @@
     if (!path) return "/";
     if (path.charAt(0) !== "/") return "/" + path;
     return path;
+  }
+
+  function getHostname(url) {
+    if (!url || typeof URL !== "function") return "";
+    try {
+      return new URL(url).hostname.replace(/^www\./, "").toLowerCase();
+    } catch (error) {
+      return "";
+    }
+  }
+
+  function getSourceContext() {
+    var search = window.location && typeof window.location.search === "string" ? window.location.search : "";
+    var params = typeof URLSearchParams === "function" ? new URLSearchParams(search) : null;
+    var utmSource = params ? (params.get("utm_source") || "").trim().toLowerCase() : "";
+    var utmMedium = params ? (params.get("utm_medium") || "").trim().toLowerCase() : "";
+    var utmCampaign = params ? (params.get("utm_campaign") || "").trim().toLowerCase() : "";
+    var utmContent = params ? (params.get("utm_content") || "").trim().toLowerCase() : "";
+    var ref = params ? (params.get("ref") || "").trim().toLowerCase() : "";
+    var referrerHost = typeof document !== "undefined" ? getHostname(document.referrer) : "";
+    var sourceHost = utmSource || referrerHost;
+    var aiPlatform = "";
+    var sourceType = "direct_or_unknown";
+
+    for (var i = 0; i < AI_SOURCE_HOSTS.length; i += 1) {
+      if (sourceHost.indexOf(AI_SOURCE_HOSTS[i]) !== -1) {
+        aiPlatform = AI_SOURCE_HOSTS[i];
+        sourceType = "ai_referral";
+        break;
+      }
+    }
+
+    if (!aiPlatform && /^(chatgpt|perplexity|claude|gemini|copilot|ai_mode|google_ai)$/i.test(utmSource)) {
+      aiPlatform = utmSource;
+      sourceType = "ai_referral";
+    }
+
+    if (!aiPlatform && /^(ai|ai-assistant|assistant|ai-referral)$/i.test(utmMedium)) {
+      aiPlatform = utmSource || "ai";
+      sourceType = "ai_referral";
+    }
+
+    if (sourceType === "direct_or_unknown") {
+      for (var j = 0; j < ORGANIC_SEARCH_HOSTS.length; j += 1) {
+        if (referrerHost.indexOf(ORGANIC_SEARCH_HOSTS[j]) !== -1) {
+          sourceType = "organic_search";
+          break;
+        }
+      }
+    }
+
+    return {
+      source_context: sourceType,
+      ai_platform: aiPlatform,
+      referrer_host: referrerHost,
+      utm_source: utmSource,
+      utm_medium: utmMedium,
+      utm_campaign: utmCampaign,
+      utm_content: utmContent,
+      ref: ref,
+      landing_page_path: getCurrentPagePath()
+    };
   }
 
   function slugFromPath(path) {
@@ -201,6 +501,8 @@
 
       var target = event.target.closest("[data-track-event]");
       if (!target) return;
+
+      syncBookingEngineLink(target);
 
       if (shouldDelayTrackedNavigation(target, event)) {
         event.preventDefault();
@@ -278,7 +580,13 @@
       guideSlug: trackingPayload.guide_slug || "",
       sourcePageSlug: trackingPayload.source_page_slug || trackingPayload.page_slug || trackingPayload.guide_slug || slugFromPath(currentPagePath),
       market: trackingPayload.market || "florida-gulf-coast",
-      placement: trackingPayload.placement || "inline"
+      placement: trackingPayload.placement || "inline",
+      utilityMoment: trackingPayload.utility_moment,
+      utilitySourceLabel: trackingPayload.utility_source_label,
+      requestedValue: trackingPayload.requested_value,
+      guestIntent: trackingPayload.guest_intent,
+      deliveryChannel: trackingPayload.delivery_channel,
+      consentBasis: trackingPayload.consent_basis
     };
 
     fetch(GUEST_EMAIL_CAPTURE_ENDPOINT, {
@@ -288,21 +596,24 @@
       },
       body: JSON.stringify(submissionPayload),
       keepalive: true
+    }).then(function (response) {
+      if (response && typeof response.ok === "boolean" && !response.ok) {
+        throw new Error("Guest email capture failed");
+      }
+      return response;
     }).catch(function () {
       return fetch(mailchimpEndpoint, {
         method: "POST",
         mode: "no-cors"
-      }).catch(function () {
-        return null;
       });
-    }).finally(function () {
+    }).then(function () {
       try {
         localStorage.setItem("seascape_email_popup_shown", "subscribed");
       } catch (error) {
         // Ignore private mode / storage failures.
       }
       showInlineEmailSuccess(form);
-    });
+    }).catch(function () {});
   }
 
   function bindTrackedForms() {
@@ -311,7 +622,13 @@
       if (!form || !form.matches("form[data-track-form]")) return;
 
       syncOwnerSourcePage(form);
-      trackEvent(form.dataset.formSubmitEvent, getPayloadFromElement(form));
+      if (!validateOwnerFormContext(form)) {
+        event.preventDefault();
+        return;
+      }
+      if (form.dataset.skipGlobalSubmitTrack !== "true") {
+        trackEvent(form.dataset.formSubmitEvent, getPayloadFromElement(form));
+      }
 
       if (form.dataset.inlineEmailCapture === "true") {
         event.preventDefault();
@@ -321,6 +638,7 @@
   }
 
   function init() {
+    decorateBookingEngineLinks();
     bindTrackedClicks();
     bindOwnerFormStarts();
     bindTrackedForms();
@@ -335,6 +653,9 @@
   window.SeascapeConversionTracking = {
     trackEvent: trackEvent,
     shouldDelayTrackedNavigation: shouldDelayTrackedNavigation,
-    continueTrackedNavigation: continueTrackedNavigation
+    continueTrackedNavigation: continueTrackedNavigation,
+    getSourceContext: getSourceContext,
+    buildBookingEngineHandoffUrl: buildBookingEngineHandoffUrl,
+    sanitizeAnalyticsPayload: sanitizeAnalyticsPayload
   };
 })();

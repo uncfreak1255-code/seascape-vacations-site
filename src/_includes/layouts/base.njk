@@ -8,7 +8,7 @@
     <title>{{ pageTitle | seoTitle }}</title>
     <meta name="description" content="{{ pageDescription | seoDescription }}">
     <meta name="author" content="{{ pageAuthor or site.author }}">
-    <meta name="robots" content="index, follow">
+    <meta name="robots" content="{{ pageRobots or 'index, follow' }}">
     <link rel="canonical" href="{{ site.url }}{{ page.url }}">
     
     <!-- Open Graph -->
@@ -42,6 +42,11 @@
     </noscript>
     
     {{ headExtra | safe }}
+    {% if legalPage %}
+    <style>
+        {% include "partials/legal-page-styles.njk" %}
+    </style>
+    {% endif %}
 
     <link rel="stylesheet" href="/css/base.css">
     <style>
@@ -68,6 +73,11 @@
             </div>
             <div class="footer-copyright">
                 © 2026 Seascape Vacations. All rights reserved. | Book Direct & Save
+                <div class="footer-meta-links">
+                    <a href="/privacy/">Privacy</a>
+                    <a href="/terms/">Terms</a>
+                    <a href="/cookies/">Cookies</a>
+                </div>
             </div>
         </div>
     </footer>

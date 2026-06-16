@@ -23,6 +23,15 @@
 - why this cluster wins now
 - what should explicitly wait
 
+## Experiment And Readback Contract
+
+- hypothesis:
+- primary event:
+- guardrail event:
+- entry criteria:
+- readback window:
+- decision rule:
+
 ## Search Operator Read
 
 - source reads used

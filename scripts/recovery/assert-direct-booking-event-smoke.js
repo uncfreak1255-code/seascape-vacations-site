@@ -15,8 +15,8 @@ const HOMEPAGE_PATH = "/";
 function request(baseUrl, targetPath) {
   const client = baseUrl.startsWith("http://") ? http : https;
   return new Promise((resolve, reject) => {
-    client
-      .get(`${baseUrl}${targetPath}`, (res) => {
+    const request = client
+      .get(`${baseUrl}${targetPath}`, { timeout: 10000 }, (res) => {
         let body = "";
         res.on("data", (chunk) => {
           body += chunk;
@@ -27,8 +27,12 @@ function request(baseUrl, targetPath) {
             body
           });
         });
-      })
-      .on("error", reject);
+      });
+
+    request.on("timeout", () => {
+      request.destroy(new Error(`Timed out fetching ${baseUrl}${targetPath}`));
+    });
+    request.on("error", reject);
   });
 }
 
@@ -42,7 +46,7 @@ function validateGuideEventMarkup(body, targetPath = TARGET_GUIDE_PATH) {
   }
 }
 
-function validatePopupMarkup(body, targetPath) {
+function validatePopupMarkup(body, targetPath, options = {}) {
   const requiredMarkers = [
     'data-email-capture-root',
     'data-email-capture-content',
@@ -61,6 +65,23 @@ function validatePopupMarkup(body, targetPath) {
   if (body.includes('onsubmit="handleEmailSubmit(event)"')) {
     throw new Error(`${targetPath} still uses legacy popup submit handling instead of shared conversion tracking`);
   }
+
+  if (!body.includes('/assets/js/conversion-tracking.js') && !options.hasRuntimeLoader) {
+    throw new Error(`${targetPath} has popup email capture markup but does not load shared conversion tracking`);
+  }
+}
+
+async function validatePopupRuntime(baseUrl, body, targetPath) {
+  let hasRuntimeLoader = false;
+
+  if (targetPath === HOMEPAGE_PATH && !body.includes('/assets/js/conversion-tracking.js') && body.includes('/assets/js/homepage.js')) {
+    const homepageScript = await request(baseUrl, "/assets/js/homepage.js");
+    hasRuntimeLoader =
+      homepageScript.statusCode === 200 &&
+      homepageScript.body.includes('/assets/js/conversion-tracking.js');
+  }
+
+  validatePopupMarkup(body, targetPath, { hasRuntimeLoader });
 }
 
 function buildTrackedLink(eventName, href) {
@@ -81,6 +102,9 @@ function buildTrackedLink(eventName, href) {
       if (name === "href") return this.href;
       if (name === "target") return this.target;
       return null;
+    },
+    setAttribute(name, value) {
+      if (name === "href") this.href = value;
     }
   };
 }
@@ -94,7 +118,13 @@ function buildTrackedEmailForm() {
       formSubmitEvent: "email_capture_submit",
       inlineEmailCapture: "true",
       guideSlug: "best-time-visit-anna-maria-island",
-      formPlacement: "guide_conversion"
+      formPlacement: "guide_conversion",
+      utilityMoment: "guide_direct_booking_help",
+      utilitySourceLabel: "guide_conversion_direct_booking_list",
+      requestedValue: "direct_booking_savings_and_local_stay_ideas",
+      guestIntent: "planning_gulf_coast_stay",
+      deliveryChannel: "email",
+      consentBasis: "guest_requested_email_followup"
     },
     parentElement: {
       querySelector() {
@@ -168,7 +198,9 @@ function withTrackingRuntime(callback) {
   global.window = {
     dataLayer: [],
     location: {
-      href: "http://localhost/guides/best-time-visit-anna-maria-island/",
+      href: "http://localhost/guides/best-time-visit-anna-maria-island/?utm_source=mcp&utm_medium=ai-assistant&utm_campaign=direct-booking-proof&utm_content=search-availability&ref=mcp-distribution&checkin=2026-06-01&checkout=2026-06-05&guests=4",
+      pathname: "/guides/best-time-visit-anna-maria-island/",
+      search: "?utm_source=mcp&utm_medium=ai-assistant&utm_campaign=direct-booking-proof&utm_content=search-availability&ref=mcp-distribution&checkin=2026-06-01&checkout=2026-06-05&guests=4",
       assign(nextHref) {
         this.href = nextHref;
       }
@@ -176,6 +208,7 @@ function withTrackingRuntime(callback) {
   };
   global.document = {
     readyState: "loading",
+    referrer: "",
     addEventListener(eventName, handler) {
       listeners[eventName] = handler;
     },
@@ -268,6 +301,17 @@ function simulatePopupEmailCaptureEvent() {
   });
 }
 
+function simulateSanitizedAnalyticsPayload(payload) {
+  return withTrackingRuntime(({ window }) => {
+    if (!window.SeascapeConversionTracking || typeof window.SeascapeConversionTracking.trackEvent !== "function") {
+      throw new Error("conversion tracking did not expose the tracking runtime");
+    }
+
+    window.SeascapeConversionTracking.trackEvent("owner_form_submit", payload);
+    return window.dataLayer;
+  });
+}
+
 function parseArgs(argv) {
   const parsed = {
     baseUrl: "",
@@ -314,7 +358,7 @@ async function run(baseUrl, options = {}) {
         throw new Error(`${popupPath} expected 200, got ${popupResponse.statusCode}`);
       }
 
-      validatePopupMarkup(popupResponse.body, popupPath);
+      await validatePopupRuntime(baseUrl, popupResponse.body, popupPath);
     }
 
     const popupEvents = simulatePopupEmailCaptureEvent().map((entry) => entry.event);
@@ -342,7 +386,9 @@ module.exports = {
   request,
   validateGuideEventMarkup,
   validatePopupMarkup,
+  validatePopupRuntime,
   simulateDirectBookingEvents,
   simulatePopupEmailCaptureEvent,
+  simulateSanitizedAnalyticsPayload,
   run
 };

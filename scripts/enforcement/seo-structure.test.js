@@ -10,6 +10,15 @@ function getFirstMatch(source, regex) {
   return match ? match[1] : "";
 }
 
+function listMarkupFiles(dir) {
+  if (!fs.existsSync(dir)) return [];
+  return fs.readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
+    const full = path.join(dir, entry.name);
+    if (entry.isDirectory()) return listMarkupFiles(full);
+    return /\.(html|njk)$/.test(entry.name) ? [full] : [];
+  });
+}
+
 test("stays template can noindex weak template pages and avoids empty inventory schema", () => {
   const staysTemplate = fs.readFileSync(path.join(projectRoot, "src", "stays", "stays.njk"), "utf8");
 
@@ -83,7 +92,7 @@ test("redirects avoid the known missing legacy target pages", () => {
 test("legacy guide alias redirects point directly at slash canonicals instead of .html hops", () => {
   const redirects = fs.readFileSync(path.join(projectRoot, "src", "_redirects"), "utf8");
 
-  for (const staleTarget of [
+  for (const staleHtmlUrl of [
     "/guides/anna-maria-island-beaches.html",
     "/guides/bradenton-beach.html",
     "/guides/siesta-key-beach-guide.html",
@@ -95,7 +104,11 @@ test("legacy guide alias redirects point directly at slash canonicals instead of
     "/guides/shelling-guide-florida.html",
     "/guides/anna-maria-city.html"
   ]) {
-    assert.equal(redirects.includes(staleTarget), false, `Expected redirects to stop targeting ${staleTarget}`);
+    assert.equal(
+      redirects.includes(`  ${staleHtmlUrl}  `),
+      false,
+      `Expected redirects to stop targeting ${staleHtmlUrl}`
+    );
   }
 
   for (const canonicalTarget of [
@@ -112,6 +125,50 @@ test("legacy guide alias redirects point directly at slash canonicals instead of
   ]) {
     assert.equal(redirects.includes(canonicalTarget), true, `Expected redirects to include ${canonicalTarget}`);
   }
+});
+
+test("guide redirects enforce a trailing-slash canonical shape for current guides", () => {
+  const redirects = fs.readFileSync(path.join(projectRoot, "src", "_redirects"), "utf8");
+
+  for (const redirectRule of [
+    "/guides/things-to-do-bradenton-fl.html  /guides/things-to-do-bradenton-fl/  301",
+    "/guides/:slug/index.html  /guides/:slug/  301!",
+    "/guides/:slug  /guides/:slug/  301"
+  ]) {
+    assert.equal(redirects.includes(redirectRule), true, `Expected redirects to include ${redirectRule}`);
+  }
+
+  assert.equal(
+    redirects.includes("/guides/:slug.html  /guides/:slug/  301"),
+    false,
+    "Dynamic .html guide redirects are unsafe on Netlify because the suffix placeholder can be shadowed or emitted literally"
+  );
+
+  assert.ok(
+    redirects.indexOf("/guides/things-to-do-bradenton-fl.html  /guides/things-to-do-bradenton-fl/  301") <
+      redirects.indexOf("/guides/:slug  /guides/:slug/  301"),
+    "Expected explicit .html guide redirects to come before the broad slashless guide redirect"
+  );
+
+  assert.ok(
+    redirects.indexOf("/guides/:slug/index.html  /guides/:slug/  301!") <
+      redirects.indexOf("/guides/:slug  /guides/:slug/  301"),
+    "Expected index.html guide redirect to come before the broad slashless guide redirect"
+  );
+});
+
+test("public source templates do not link to slashless or .html guide URLs", () => {
+  const offenders = [];
+  const guideHrefPattern = /href="(\/guides\/[^"/?#]+(?:\.html)?)(?="|[?#])/g;
+
+  for (const file of listMarkupFiles(path.join(projectRoot, "src"))) {
+    const source = fs.readFileSync(file, "utf8");
+    for (const match of source.matchAll(guideHrefPattern)) {
+      offenders.push(`${path.relative(projectRoot, file)} -> ${match[1]}`);
+    }
+  }
+
+  assert.deepEqual(offenders, []);
 });
 
 test("rehomed stay outliers point at their new guide and service homes", () => {
@@ -172,10 +229,11 @@ test("about page exists as a real route and homepage links point to it", () => {
 test("property owners page leads with premium proof instead of explainer-hub copy", () => {
   const ownerPage = fs.readFileSync(path.join(projectRoot, "src", "property-management", "index.njk"), "utf8");
 
-  assert.equal(ownerPage.includes("Property management for owners who care about what they actually keep"), true);
+  assert.equal(ownerPage.includes("Before you renew,"), true);
+  assert.equal(ownerPage.includes("actually keep?"), true);
   assert.equal(ownerPage.includes("$119,923"), true);
   assert.equal(ownerPage.includes("13.4% → 2.9%"), true);
-  assert.equal(ownerPage.includes("Where Owner Revenue Actually Leaks"), true);
+  assert.equal(ownerPage.includes("What to look at before you change managers"), true);
   assert.equal(ownerPage.includes("What Is Vacation Rental Property Management?"), false);
   assert.equal(ownerPage.includes("Request a property evaluation"), false);
 });

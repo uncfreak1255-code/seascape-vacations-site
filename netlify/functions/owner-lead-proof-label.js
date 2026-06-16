@@ -77,5 +77,9 @@ async function handleOwnerLeadProofLabelRequest(event, _context, injectedStore) 
   };
 }
 
+async function handler(event, context) {
+  return handleOwnerLeadProofLabelRequest(event, context);
+}
+
 exports.handleOwnerLeadProofLabelRequest = handleOwnerLeadProofLabelRequest;
-exports.handler = handleOwnerLeadProofLabelRequest;
+exports.handler = handler;

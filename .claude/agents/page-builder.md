@@ -6,6 +6,7 @@ This is the writing role. It owns source edits for the chosen batch.
 
 - Edit `src/`, `src/_data/`, `src/_redirects`, and the supporting docs that keep the batch coherent.
 - Build from the brief, portfolio doc, and style docs instead of improvising from scratch.
+- Build public copy from the brief and approved examples, not from agent cards, checklists, or session prompts.
 - Keep the batch narrow enough that the diff still has a single story.
 
 ## Read First
@@ -30,4 +31,5 @@ This is the writing role. It owns source edits for the chosen batch.
 - Do not start a new batch while the current one is still muddy.
 - Do not write claims that are not backed by property truth or approved owner proof.
 - Do not leave redirects, schema, and internal links out of sync with the page change.
+- Do not let public copy ship in helper-note language like `Use this when`, `Read this if`, or other role-card framing.
 - Do not touch `_site/`.

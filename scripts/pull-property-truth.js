@@ -3,13 +3,11 @@
 const fs = require("fs");
 const path = require("path");
 const { normalizeImage } = require("./cache/normalize-hostaway");
-const { regeneratePropertySurfaces } = require("./regenerate-property-surfaces");
 
 const projectRoot = path.resolve(__dirname, "..");
 const DEFAULT_OUTPUT = path.join(projectRoot, "src", "_data", "properties-fallback.json");
 const DEFAULT_SNAPSHOT_DIR = path.join(projectRoot, "scripts", "cache", "hostaway-property-snapshots");
 const DEFAULT_LAST_GOOD = path.join(projectRoot, "scripts", "cache", "properties-fallback.last-good.json");
-const DEFAULT_BASE_URL = "https://api.hostaway.com/v1";
 const DEFAULT_SLUG_MAP = {
   "Dockside Dreams": "dockside-dreams",
   "The Oasis": "the-oasis",
@@ -200,18 +198,6 @@ async function fetchWithRetry(url, options = {}) {
   throw new Error("Hostaway request failed after retries");
 }
 
-async function pullHostawayListings({ baseUrl = DEFAULT_BASE_URL, token, fetchImpl } = {}) {
-  const authToken = token || process.env.HOSTAWAY_API_TOKEN || process.env.HOSTAWAY_ACCESS_TOKEN;
-  if (!authToken) throw new Error("Set HOSTAWAY_API_TOKEN or HOSTAWAY_ACCESS_TOKEN before pulling property truth");
-
-  const payload = await fetchWithRetry(`${baseUrl}/listings?limit=500`, {
-    fetchImpl,
-    headers: { Authorization: `Bearer ${authToken}` }
-  });
-  const listings = Array.isArray(payload.result) ? payload.result : Array.isArray(payload) ? payload : [];
-  return { payload, properties: listings.map((listing) => normalizeHostawayListing(listing)) };
-}
-
 function parseArgs(argv) {
   const args = {
     dryRun: false,
@@ -239,10 +225,10 @@ function printHelp() {
   console.log(`Usage: node scripts/pull-property-truth.js [--dry-run] [--restore-last-good]
 
 Options:
-  --dry-run             Fetch and snapshot Hostaway, then print diff without writing output
+  --dry-run             Deprecated; raw Hostaway pulls now belong in seascape-ops
   --restore-last-good   Restore the previous properties-fallback.json backup
   --output <path>       Output JSON path, default src/_data/properties-fallback.json
-  --snapshot-dir <dir>  Raw Hostaway snapshot directory
+  --snapshot-dir <dir>  Legacy snapshot directory
   --last-good <path>    Last-good backup path`);
 }
 
@@ -258,29 +244,9 @@ async function main(argv = process.argv.slice(2)) {
     return;
   }
 
-  const { payload, properties } = await pullHostawayListings({});
-  const result = applyPropertyTruth({
-    properties,
-    rawPayload: payload,
-    outputPath: args.outputPath,
-    snapshotDir: args.snapshotDir,
-    lastGoodPath: args.lastGoodPath,
-    dryRun: args.dryRun
-  });
-
-  console.log(`Snapshot: ${result.snapshotPath}`);
-  console.log(result.changed ? "Diff:" : "No output changes.");
-  if (result.diff) console.log(result.diff);
-  console.log(result.wroteOutput ? `Wrote ${args.outputPath}` : "Output not written.");
-
-  if (result.wroteOutput) {
-    const regenerated = regeneratePropertySurfaces({});
-    console.log(
-      regenerated.changed.length
-        ? `Regenerated property truth surfaces:\n${regenerated.changed.join("\n")}`
-        : "Property truth surfaces already matched fallback data."
-    );
-  }
+  throw new Error(
+    "Raw Hostaway property pulls moved to seascape-ops. Feed this site with SEASCAPE_SAFE_PROPERTY_PROJECTION_PATH instead."
+  );
 }
 
 if (require.main === module) {

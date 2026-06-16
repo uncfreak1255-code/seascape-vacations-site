@@ -307,12 +307,53 @@ function getStatusLines(worktreePath, cwd = process.cwd()) {
   return output ? output.split("\n").filter(Boolean) : [];
 }
 
-function buildAudit(cwd = process.cwd()) {
-  const root = runGit(["rev-parse", "--show-toplevel"], cwd);
-  const currentBranch = safeRunGit(["rev-parse", "--abbrev-ref", "HEAD"], cwd) || "unknown";
-  const prIndex = getPrIndex(root);
-  const branchIndex = getBranchIndex(root);
-  const worktrees = parseWorktreeList(runGit(["worktree", "list", "--porcelain"], root));
+function createAuditReaders(cwd = process.cwd(), options = {}) {
+  const {
+    getStatusLinesForPath = getStatusLines,
+    isAncestorForHead = isAncestorOfOriginMain
+  } = options;
+
+  const dirtByWorktree = new Map();
+  const ancestorByHead = new Map();
+
+  return {
+    getWorkspaceDirt(worktreePath) {
+      if (!dirtByWorktree.has(worktreePath)) {
+        dirtByWorktree.set(
+          worktreePath,
+          classifyWorkspaceDirt(getStatusLinesForPath(worktreePath, cwd))
+        );
+      }
+
+      return dirtByWorktree.get(worktreePath);
+    },
+    getAncestorState(head) {
+      if (!ancestorByHead.has(head)) {
+        ancestorByHead.set(head, isAncestorForHead(head, cwd));
+      }
+
+      return ancestorByHead.get(head);
+    }
+  };
+}
+
+function buildAudit(cwd = process.cwd(), options = {}) {
+  const {
+    getRepoRoot = (targetCwd) => runGit(["rev-parse", "--show-toplevel"], targetCwd),
+    getCurrentBranchName = (targetCwd) =>
+      safeRunGit(["rev-parse", "--abbrev-ref", "HEAD"], targetCwd) || "unknown",
+    getPrIndexForRoot = getPrIndex,
+    getBranchIndexForRoot = getBranchIndex,
+    listWorktrees = (rootPath) =>
+      parseWorktreeList(runGit(["worktree", "list", "--porcelain"], rootPath))
+  } = options;
+
+  const root = getRepoRoot(cwd);
+  const currentBranch = getCurrentBranchName(cwd);
+  const prIndex = getPrIndexForRoot(root);
+  const branchIndex = getBranchIndexForRoot(root);
+  const worktrees = listWorktrees(root);
+  const readers = createAuditReaders(root, options);
   const worktreeByBranch = new Map();
   const worktreeReports = [];
 
@@ -320,8 +361,8 @@ function buildAudit(cwd = process.cwd()) {
     const branch = item.branch ? item.branch.replace(/^refs\/heads\//, "") : "DETACHED";
     const head = item.HEAD;
     const worktreePath = item.worktree;
-    const dirt = classifyWorkspaceDirt(getStatusLines(worktreePath, root));
-    const ancestorOfMain = isAncestorOfOriginMain(head, root);
+    const dirt = readers.getWorkspaceDirt(worktreePath);
+    const ancestorOfMain = readers.getAncestorState(head);
 
     const containedByBranches =
       branch === "DETACHED" ? getContainingBranches(head, root) : [];
@@ -349,10 +390,10 @@ function buildAudit(cwd = process.cwd()) {
   const branchReports = [];
   for (const branchData of branchIndex.values()) {
     const dirt = worktreeByBranch.has(branchData.branch)
-      ? classifyWorkspaceDirt(getStatusLines(worktreeByBranch.get(branchData.branch), root))
+      ? readers.getWorkspaceDirt(worktreeByBranch.get(branchData.branch))
       : classifyWorkspaceDirt([]);
 
-    const ancestorOfMain = isAncestorOfOriginMain(branchData.head, root);
+    const ancestorOfMain = readers.getAncestorState(branchData.head);
 
     const report = {
       kind: "branch",

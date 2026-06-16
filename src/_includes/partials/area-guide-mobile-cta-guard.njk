@@ -1,0 +1,68 @@
+{% include "partials/card-link-surface.njk" %}
+<style>
+  @media (max-width: 768px) {
+    #sticky-book-bar {
+      display: none !important;
+    }
+
+    .mobile-cta-bar {
+      bottom: 0;
+      padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+      transform: translateY(calc(100% + env(safe-area-inset-bottom, 0px)));
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: transform 0.28s ease, opacity 0.28s ease, visibility 0s linear 0.28s;
+    }
+
+    body.mobile-cta-visible .mobile-cta-bar {
+      transform: translateY(0);
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      transition: transform 0.28s ease, opacity 0.28s ease;
+    }
+
+    body {
+      padding-bottom: calc(88px + env(safe-area-inset-bottom, 0px));
+    }
+  }
+</style>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    var bar = document.querySelector(".mobile-cta-bar");
+    var stats = document.querySelector(".quick-stats");
+
+    if (!bar || !stats || !document.body || !window.matchMedia) {
+      return;
+    }
+
+    var mq = window.matchMedia("(max-width: 768px)");
+
+    function syncMobileCtaVisibility() {
+      if (!mq.matches) {
+        document.body.classList.remove("mobile-cta-visible");
+        bar.setAttribute("aria-hidden", "false");
+        return;
+      }
+
+      var barHeight = bar.offsetHeight || 88;
+      var clearance = barHeight + 20;
+      var statsBottom = stats.getBoundingClientRect().bottom;
+      var shouldShow = statsBottom <= window.innerHeight - clearance;
+
+      document.body.classList.toggle("mobile-cta-visible", shouldShow);
+      bar.setAttribute("aria-hidden", shouldShow ? "false" : "true");
+    }
+
+    syncMobileCtaVisibility();
+    window.addEventListener("scroll", syncMobileCtaVisibility, { passive: true });
+    window.addEventListener("resize", syncMobileCtaVisibility);
+
+    if (mq.addEventListener) {
+      mq.addEventListener("change", syncMobileCtaVisibility);
+    } else if (mq.addListener) {
+      mq.addListener(syncMobileCtaVisibility);
+    }
+  });
+</script>

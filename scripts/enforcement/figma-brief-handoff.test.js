@@ -91,8 +91,8 @@ test("empty Page 1 briefs fail loud with the exact proof still required", () => 
     ),
     "docs/briefs/test-brief.md": `# Brief: blocked
 
-Figma capture: \`https://www.figma.com/design/blockedKey?node-id=1-2\`
-Figma frames: \`Blocked Desktop\`, \`Blocked Mobile\`
+- Figma capture: \`https://www.figma.com/design/blockedKey?node-id=1-2\`
+- Figma frames: \`Blocked Desktop\`, \`Blocked Mobile\`
 `
   });
 
@@ -118,8 +118,8 @@ test("new Figma captures without a saved MCP snapshot fail until the repo knows 
     ),
     "docs/briefs/test-brief.md": `# Brief: unknown
 
-Figma capture: \`https://www.figma.com/design/newKey?node-id=1-2\`
-Figma frames: \`Fresh Desktop\`
+- Figma capture: \`https://www.figma.com/design/newKey?node-id=1-2\`
+- Figma frames: \`Fresh Desktop\`
 `
   });
 

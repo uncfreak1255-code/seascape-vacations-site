@@ -31,8 +31,8 @@ const stablePropertyDetailLinks = [
 
 function request(baseUrl, path) {
   return new Promise((resolve, reject) => {
-    https
-      .get(`${baseUrl}${path}`, (res) => {
+    const request = https
+      .get(`${baseUrl}${path}`, { timeout: 10000 }, (res) => {
         let body = "";
         res.on("data", (chunk) => {
           body += chunk;
@@ -44,8 +44,12 @@ function request(baseUrl, path) {
             body
           });
         });
-      })
-      .on("error", reject);
+      });
+
+    request.on("timeout", () => {
+      request.destroy(new Error(`Timed out fetching ${baseUrl}${path}`));
+    });
+    request.on("error", reject);
   });
 }
 
@@ -106,12 +110,13 @@ function validateTargetResponse(target, response) {
 
   if (target.path === "/property-management/") {
     const hasProofFirstOwnerSurface =
-      response.body.includes("Property management for owners who care about what they actually keep")
+      response.body.includes("Before you renew,")
+      && response.body.includes("actually keep?")
       && response.body.includes("$119,923")
       && response.body.includes("13.4%")
       && response.body.includes("2.9%")
-      && response.body.includes("Where Owner Revenue Actually Leaks")
-      && response.body.includes("Request Your Revenue Teardown")
+      && response.body.includes("What owners miss when they compare management fees")
+      && response.body.includes("Request Your Revenue Review")
       && response.body.includes('href="#owner-cta"');
 
     if (!hasProofFirstOwnerSurface) {

@@ -12,7 +12,7 @@
 .email-popup-form{display:flex;flex-direction:column;gap:12px}
 .email-popup-input{width:100%;padding:16px 20px;border:2px solid #EBE4CC;border-radius:12px;font-size:16px;font-family:Poppins,sans-serif;background:#fff}
 .email-popup-input:focus{outline:0;border-color:#5F8A8B;box-shadow:0 0 0 4px rgba(95,138,139,.1)}
-.email-popup-btn{width:100%;padding:16px 24px;background:linear-gradient(135deg,#5F8A8B 0,#3D5C5D 100%);color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:600;cursor:pointer;font-family:Poppins,sans-serif}
+.email-popup-btn{display:block;width:100%;padding:16px 24px;background:linear-gradient(135deg,#5F8A8B 0,#3D5C5D 100%);color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:600;cursor:pointer;font-family:Poppins,sans-serif;text-decoration:none;text-align:center}
 .email-popup-btn:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(95,138,139,.35)}
 .email-popup-privacy{font-size:12px;color:#6A6A6A;margin-top:16px}
 .email-popup-success{display:none;text-align:center}
@@ -26,7 +26,7 @@
 <div id="email-form-content" data-email-capture-content>
 <span class="email-popup-badge">&#10024; Exclusive Offer</span>
 <h3 class="email-popup-title">Get $50 Off Your Next Stay</h3>
-<p class="email-popup-subtitle">Join our list for exclusive deals, local tips, and priority access to new properties. Book direct and save more.</p>
+<p class="email-popup-subtitle">Join our list for Seascape deals, local tips, and your SAVE50 code: $50 off your first direct booking of 3 nights or more.</p>
 <form class="email-popup-form" id="email-capture-form" data-track-form="email_capture" data-form-submit-event="email_capture_submit" data-inline-email-capture="true" data-form-placement="popup">
 <input name="name" class="email-popup-input" placeholder="Your first name" required>
 <input type="email" name="email" class="email-popup-input" placeholder="Your email address" required>
@@ -36,18 +36,23 @@
 </div>
 <div id="email-success-content" class="email-popup-success" data-email-capture-success>
 <div class="email-popup-success-icon">&#10003;</div>
-<h3 class="email-popup-title">You're In! Here's Your Code</h3>
+<h3 class="email-popup-title">Your SAVE50 Code Is Ready</h3>
 <p style="font-size:2rem;font-weight:700;letter-spacing:4px;color:#5F8A8B;background:#f0f7f7;padding:12px 24px;border-radius:8px;border:2px dashed #5F8A8B;display:inline-block;margin:12px 0;">SAVE50</p>
-<p class="email-popup-subtitle">Use code <strong>SAVE50</strong> at checkout to save $50 on your stay (3+ nights). We also sent it to your email so you won't lose it.</p>
-<button class="email-popup-btn" onclick="closeEmailPopup()" style="margin-top:16px">Browse Properties &rarr;</button>
+<p class="email-popup-subtitle">Use code <strong>SAVE50</strong> on your first direct booking of 3 nights or more. Enter it on the secure booking page, and save this code before you browse.</p>
+<a class="email-popup-btn" href="/properties/?promo=save50" data-email-capture-browse data-email-capture-default-href="/properties/" style="margin-top:16px">Browse Properties &rarr;</a>
 </div>
 </div>
 </div>
 <script>
 var EMAIL_POPUP_KEY="seascape_email_popup_shown";
-function showEmailPopup(){var e=localStorage.getItem(EMAIL_POPUP_KEY);if(e==="subscribed")return;if(e){if((Date.now()-parseInt(e))/864e5<7)return}var t=document.getElementById("email-popup");if(t){t.style.display="flex";setTimeout(function(){t.classList.add("active")},10)}}
+var SAVE50_POPUP_CAMPAIGNS=["save50_welcome","guest_social_proof"];
+var SAVE50_POPUP_PARAM_KEYS=["utm_source","utm_medium","utm_campaign","utm_content","utm_term","utm_id","promo"];
+function getSave50PopupParams(){if(typeof URLSearchParams!=="function"||!window.location)return null;var e=new URLSearchParams(window.location.search||""),t=(e.get("utm_campaign")||"").trim().toLowerCase(),o=(e.get("promo")||"").trim().toLowerCase();return SAVE50_POPUP_CAMPAIGNS.indexOf(t)!==-1||o==="save50"?{params:e,campaign:t,promo:o}:null}
+function applySave50PopupReminder(){var e=getSave50PopupParams(),t=document.getElementById("email-popup");if(!e||!t)return;var o=t.querySelector("[data-email-capture-content]"),a=t.querySelector("[data-email-capture-success]"),i=t.querySelector("[data-email-capture-browse]");o&&o.style&&(o.style.display="none"),a&&a.classList&&(a.classList.add("is-visible"),a.classList.add("show"));if(!i||typeof URL!=="function")return;var r=i.getAttribute("data-email-capture-default-href")||i.getAttribute("href")||"/properties/",n=new URL(r,window.location.href);SAVE50_POPUP_PARAM_KEYS.forEach(function(t){var o=(e.params.get(t)||"").trim();!o&&t==="utm_campaign"&&SAVE50_POPUP_CAMPAIGNS.indexOf(e.campaign)!==-1&&(o=e.campaign),o&&!n.searchParams.get(t)&&n.searchParams.set(t,o)}),i.setAttribute("href",n.pathname+n.search+n.hash)}
+function showEmailPopup(){var e=getSave50PopupParams(),t=localStorage.getItem(EMAIL_POPUP_KEY);if(!e&&t==="subscribed")return;if(!e&&t){if((Date.now()-parseInt(t))/864e5<7)return}applySave50PopupReminder();var o=document.getElementById("email-popup");if(o){o.style.display="flex";setTimeout(function(){o.classList.add("active")},10)}}
 function closeEmailPopup(){var e=document.getElementById("email-popup");if(e){e.classList.remove("active");setTimeout(function(){e.style.display="none"},400);localStorage.setItem(EMAIL_POPUP_KEY,Date.now().toString())}}
 setTimeout(showEmailPopup,30000);
 document.addEventListener("mouseout",function(e){if(e.clientY<10&&!localStorage.getItem(EMAIL_POPUP_KEY)){showEmailPopup()}});
 </script>
+<script defer src="/assets/js/conversion-tracking.js"></script>
 <!-- End Email Capture Popup -->

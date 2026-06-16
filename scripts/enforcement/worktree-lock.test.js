@@ -4,7 +4,28 @@ const path = require("path");
 const test = require("node:test");
 const assert = require("node:assert/strict");
 
-const { withWorktreeLock } = require("./worktree-lock");
+const {
+  getDefaultLockRootDir,
+  getLockPath,
+  withWorktreeLock
+} = require("./worktree-lock");
+
+test("default lock path stays inside the worktree for linked worktrees", () => {
+  const repoRootDir = fs.mkdtempSync(path.join(os.tmpdir(), "seascape-worktree-"));
+  const linkedGitDir = path.join(
+    os.tmpdir(),
+    "seascape-parent-git",
+    "worktrees",
+    "linked-worktree"
+  );
+
+  const lockRootDir = getDefaultLockRootDir(repoRootDir);
+  const lockPath = getLockPath({ name: "repo-build", repoRootDir });
+
+  assert.equal(lockRootDir, path.join(repoRootDir, ".tmp", "worktree-locks"));
+  assert.equal(lockPath, path.join(repoRootDir, ".tmp", "worktree-locks", "repo-build.lock"));
+  assert.equal(lockPath.startsWith(linkedGitDir), false);
+});
 
 test("withWorktreeLock creates and removes the worktree lock", () => {
   const lockRootDir = fs.mkdtempSync(path.join(os.tmpdir(), "seascape-lock-"));

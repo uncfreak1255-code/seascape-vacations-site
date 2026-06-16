@@ -1,0 +1,4 @@
+interface:
+  display_name: "Design Review"
+  short_description: "Review Seascape pages against rendered design law"
+  default_prompt: "Use $design-review to audit this Seascape page on desktop and mobile against DESIGN.md."

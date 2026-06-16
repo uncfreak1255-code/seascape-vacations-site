@@ -317,7 +317,7 @@
 
         .btn-white {
             background: white;
-            color: var(--brand);
+            color: var(--brand-dark);
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
 
@@ -520,7 +520,7 @@
         .property-section-cta {
             display: inline-block;
             padding: 10px 24px;
-            background: var(--brand);
+            background: var(--brand-dark);
             color: white;
             border-radius: 8px;
             font-weight: 600;
@@ -723,7 +723,7 @@
 
         .prop-btn {
             background: white;
-            color: var(--brand);
+            color: var(--brand-dark);
             padding: 14px 28px;
             border-radius: 50px;
             font-size: 14px;
@@ -753,7 +753,7 @@
             font-weight: 600;
             letter-spacing: 0.2em;
             text-transform: uppercase;
-            color: #4a6f70;
+            color: var(--brand-dark);
             margin-bottom: 16px;
             position: relative;
         }
@@ -952,7 +952,7 @@
 
         .review-property {
             font-size: 13px;
-            color: var(--brand);
+            color: var(--brand-dark);
             font-weight: 500;
         }
 
@@ -1115,7 +1115,7 @@
             padding: 6px 14px;
             border-radius: 50px;
             background: var(--cream);
-            color: var(--brand);
+            color: var(--brand-dark);
         }
 
         .blog-card-title {
@@ -1208,21 +1208,6 @@
         .footer-link:hover {
             color: white;
             transform: translateX(4px);
-        }
-
-        .footer-link--button {
-            appearance: none;
-            background: none;
-            border: 0;
-            color: rgba(255, 255, 255, 0.75);
-            font: inherit;
-            padding: 0;
-            text-align: left;
-        }
-
-        .footer-link--button:focus-visible {
-            outline: 2px solid var(--gold);
-            outline-offset: 3px;
         }
 
         .footer-social {
@@ -2101,60 +2086,6 @@
             flex-wrap: wrap;
         }
 
-        /* LEGATE MODAL SYSTEM */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(5px);
-            z-index: 1000;
-            display: none;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .modal-overlay.active {
-            display: flex;
-            opacity: 1;
-        }
-
-        .modal-content {
-            background: var(--cream);
-            width: 90%;
-            max-width: 600px;
-            max-height: 80vh;
-            overflow-y: auto;
-            border-radius: 12px;
-            padding: 40px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-            position: relative;
-            transform: translateY(20px);
-            transition: transform 0.3s ease;
-        }
-
-        .modal-overlay.active .modal-content {
-            transform: translateY(0);
-        }
-
-        .close-modal {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            font-size: 24px;
-            cursor: pointer;
-            color: var(--stone-light);
-            transition: color 0.2s;
-        }
-
-        .close-modal:hover {
-            color: var(--brand);
-        }
-
         /* EMAIL CAPTURE POPUP */
         .email-popup-overlay {
             position: fixed;
@@ -2267,6 +2198,7 @@
         }
 
         .email-popup-btn {
+            display: block;
             width: 100%;
             padding: 16px 24px;
             background: linear-gradient(135deg, var(--brand) 0%, var(--brand-dark) 100%);
@@ -2278,6 +2210,8 @@
             cursor: pointer;
             transition: all 0.3s;
             font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            text-align: center;
+            text-decoration: none;
         }
 
         .email-popup-btn:hover {

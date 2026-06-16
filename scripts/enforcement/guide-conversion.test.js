@@ -126,20 +126,57 @@ test("shared guide conversion kit exposes savings, stay, repeat-stay, and email 
     'data-track-event=\"guide_book_direct_click\"',
     'data-track-event=\"booking_engine_handoff\"',
     'data-email-capture-form',
+    'data-email-capture-content',
+    'data-utility-moment=\"{{ config.utilityMoment or \'guide_direct_booking_help\' }}\"',
+    'data-utility-source-label=\"{{ config.utilitySourceLabel or \'guide_conversion_direct_booking_list\' }}\"',
+    'data-requested-value=\"{{ config.requestedValue or \'direct_booking_savings_and_local_stay_ideas\' }}\"',
+    'data-consent-basis=\"{{ config.consentBasis or \'guest_requested_email_followup\' }}\"',
+    'data-save50-state=\"cold\"',
+    'data-save50-state=\"warm\"',
+    "save-module",
+    "save-chip",
+    "save-copy",
+    "save-sticky",
     "Direct Booking List",
     "Join The Direct-Booking List",
-    "email_capture_submit"
+    "email_capture_submit",
+    'campaign !== "guest_social_proof"',
+    "Your <em>$50 off</em> is waiting on this trip"
   ]) {
     assert.equal(partial.includes(marker), true, `guide conversion kit missing ${marker}`);
   }
 
-  for (const staleOfferLanguage of ["Stay Alerts", "date alerts", "matching homes"]) {
+  for (const staleOfferLanguage of ["Stay Alerts", "date alerts", "matching homes", "We will send", "check your inbox", "sent to your email"]) {
     assert.equal(
       partial.includes(staleOfferLanguage),
       false,
       `guide conversion kit should not promise ${staleOfferLanguage}`
     );
   }
+});
+
+test("guest-social-proof guide state renders a value-led SAVE50 redemption module", () => {
+  const partialPath = path.join(projectRoot, "src", "_includes", "partials", "guide-conversion-kit.njk");
+  const partial = fs.readFileSync(partialPath, "utf8");
+
+  for (const token of ["SAVE50", "first direct booking", "3 nights or more"]) {
+    assert.equal(partial.includes(token), true, `SAVE50 redemption module missing ${token}`);
+  }
+
+  for (const bannedDeliveryCopy of ["we just emailed you", "check your inbox", "sent to your email", "on its way"]) {
+    assert.equal(
+      partial.toLowerCase().includes(bannedDeliveryCopy),
+      false,
+      `SAVE50 redemption module should not imply new delivery: ${bannedDeliveryCopy}`
+    );
+  }
+
+  assert.equal(partial.includes("Welcome back &middot; code saved"), true);
+  assert.equal(partial.includes('aria-label=\"Copy code SAVE50 to clipboard\"'), true);
+  assert.equal(partial.includes("Copied"), true);
+  assert.equal(partial.includes("save50-live"), true);
+  assert.equal((partial.match(/\bsave-cta\b/g) || []).length, 1, "warm rail should define exactly one filled SAVE50 CTA");
+  assert.equal(partial.includes('class=\"guide-cta-row\" data-save50-state=\"cold\"'), true);
 });
 
 test("conversion tracking supports both guide and owner measurement events", () => {
@@ -165,6 +202,56 @@ test("conversion tracking supports both guide and owner measurement events", () 
   ]) {
     assert.equal(trackingScript.includes(eventName), true, `tracking script missing ${eventName}`);
   }
+});
+
+test("guide email capture carries utility context for reviewed agent-data proof", () => {
+  const observed = withConversionTrackingStubs(({ listeners, window }) => {
+    const form = {
+      tagName: "FORM",
+      textContent: "Guide email capture",
+      dataset: {
+        trackForm: "email_capture",
+        formSubmitEvent: "email_capture_submit",
+        inlineEmailCapture: "true",
+        guideSlug: "best-time-visit-anna-maria-island",
+        formPlacement: "inline",
+        utilityMoment: "guide_direct_booking_help",
+        utilitySourceLabel: "guide_conversion_direct_booking_list",
+        requestedValue: "direct_booking_savings_and_local_stay_ideas",
+        guestIntent: "planning_gulf_coast_stay",
+        deliveryChannel: "email",
+        consentBasis: "guest_requested_email_followup"
+      },
+      parentElement: {
+        querySelector() {
+          return null;
+        }
+      },
+      matches(selector) {
+        return selector === "form[data-track-form]";
+      },
+      getAttribute() {
+        return "";
+      },
+      reset() {}
+    };
+
+    listeners.DOMContentLoaded();
+    listeners.submit({
+      target: form,
+      preventDefault() {}
+    });
+
+    return window.dataLayer[0];
+  });
+
+  assert.equal(observed.event, "email_capture_submit");
+  assert.equal(observed.payload.utility_moment, "guide_direct_booking_help");
+  assert.equal(observed.payload.utility_source_label, "guide_conversion_direct_booking_list");
+  assert.equal(observed.payload.requested_value, "direct_booking_savings_and_local_stay_ideas");
+  assert.equal(observed.payload.guest_intent, "planning_gulf_coast_stay");
+  assert.equal(observed.payload.delivery_channel, "email");
+  assert.equal(observed.payload.consent_basis, "guest_requested_email_followup");
 });
 
 test("shared conversion tracking exposes navigation-safe tracked-link helpers", () => {
@@ -260,11 +347,207 @@ test("booking-engine handoff click emits the GA4 event with the target booking U
 
   assert.equal(observed.event, "booking_engine_handoff");
   assert.equal(observed.payload.guide_slug, "best-time-visit-anna-maria-island");
-  assert.equal(observed.payload.link_url, "https://book.seascape-vacations.com");
+  assert.equal(
+    observed.payload.link_url,
+    "https://book.seascape-vacations.com/?utm_content=best-time-visit-anna-maria-island"
+  );
   assert.equal(observed.payload.link_text, "Open Direct Availability");
 });
 
-test("owner form tracking preserves owner_source attribution on start and submit", () => {
+test("first tracked navigation click is delivered before same-tab navigation continues", () => {
+  const observed = withConversionTrackingStubs(({ listeners, window }) => {
+    const timeline = [];
+    const pendingCallbacks = [];
+    const navigations = [];
+    window.location.assign = function (nextHref) {
+      timeline.push(`navigate:${nextHref}`);
+      navigations.push(nextHref);
+      this.href = nextHref;
+    };
+    window.gtag = function (command, eventName, params) {
+      if (command !== "event") return;
+      timeline.push(`track:${eventName}`);
+      pendingCallbacks.push({ eventName, callback: params && params.event_callback, payload: params });
+    };
+    window.seascapeTrackEvent = function (eventName, params) {
+      window.gtag("event", eventName, params || {});
+    };
+    listeners.DOMContentLoaded();
+
+    const links = [
+      {
+        tagName: "A",
+        href: "/stays/bradenton-vacation-rentals-near-beaches/",
+        target: "",
+        textContent: "See Bradenton stays",
+        dataset: {
+          trackEvent: "guide_stay_click",
+          guideSlug: "bradenton-vs-sarasota",
+          trackLabel: "See Bradenton stays"
+        },
+        hasAttribute() {
+          return false;
+        },
+        getAttribute(name) {
+          if (name === "href") return this.href;
+          if (name === "target") return this.target;
+          return null;
+        }
+      },
+      {
+        tagName: "A",
+        href: "/stays/anna-maria-island-vacation-rentals/",
+        target: "",
+        textContent: "Browse direct homes",
+        dataset: {
+          trackEvent: "guide_book_direct_click",
+          guideSlug: "best-time-visit-anna-maria-island",
+          trackLabel: "Browse direct homes"
+        },
+        hasAttribute() {
+          return false;
+        },
+        getAttribute(name) {
+          if (name === "href") return this.href;
+          if (name === "target") return this.target;
+          return null;
+        }
+      },
+      {
+        tagName: "A",
+        href: "/properties/the-oasis/",
+        target: "",
+        textContent: "Check Direct Dates",
+        dataset: {
+          trackEvent: "stay_view_property_click",
+          pageSlug: "bradenton-vacation-rentals-near-beaches",
+          trackLabel: "The Oasis"
+        },
+        hasAttribute() {
+          return false;
+        },
+        getAttribute(name) {
+          if (name === "href") return this.href;
+          if (name === "target") return this.target;
+          return null;
+        }
+      },
+      {
+        tagName: "A",
+        href: "https://book.seascape-vacations.com/listings/206016",
+        target: "",
+        textContent: "Open Direct Availability",
+        dataset: {
+          trackEvent: "booking_engine_handoff",
+          guideSlug: "best-time-visit-anna-maria-island"
+        },
+        hasAttribute() {
+          return false;
+        },
+        getAttribute(name) {
+          if (name === "href") return this.href;
+          if (name === "target") return this.target;
+          return null;
+        },
+        setAttribute(name, value) {
+          if (name === "href") this.href = value;
+        }
+      },
+      {
+        tagName: "A",
+        href: "https://book.seascape-vacations.com/listings/487798",
+        target: "",
+        textContent: "Book Bradenton Pool Home",
+        dataset: {
+          trackEvent: "property_booking_page_click",
+          pageSlug: "bradenton-pool-home"
+        },
+        hasAttribute() {
+          return false;
+        },
+        getAttribute(name) {
+          if (name === "href") return this.href;
+          if (name === "target") return this.target;
+          return null;
+        },
+        setAttribute(name, value) {
+          if (name === "href") this.href = value;
+        }
+      }
+    ];
+
+    const preventedEvents = [];
+    const originalSetTimeout = global.setTimeout;
+    links.forEach((link) => {
+      try {
+        global.setTimeout = function () {
+          return 1;
+        };
+        listeners.click({
+          target: {
+            closest(selector) {
+              return selector === "[data-track-event]" ? link : null;
+            }
+          },
+          button: 0,
+          metaKey: false,
+          ctrlKey: false,
+          shiftKey: false,
+          altKey: false,
+          preventDefault() {
+            timeline.push(`prevent:${link.dataset.trackEvent}`);
+            preventedEvents.push(link.dataset.trackEvent);
+          }
+        });
+      } finally {
+        global.setTimeout = originalSetTimeout;
+      }
+      const pending = pendingCallbacks.shift();
+      assert.equal(pending.eventName, link.dataset.trackEvent);
+      assert.equal(pending.payload.transport_type, "beacon");
+      assert.equal(pending.payload.event_timeout, 800);
+      assert.equal(typeof pending.callback, "function");
+      assert.equal(navigations.length, preventedEvents.length - 1);
+      pending.callback();
+      assert.equal(navigations.length, preventedEvents.length);
+    });
+
+    return {
+      timeline,
+      navigations,
+      preventedEvents
+    };
+  });
+
+  assert.deepEqual(observed.preventedEvents, [
+    "guide_stay_click",
+    "guide_book_direct_click",
+    "stay_view_property_click",
+    "booking_engine_handoff",
+    "property_booking_page_click"
+  ]);
+  observed.preventedEvents.forEach((eventName, index) => {
+    const trackIndex = observed.timeline.indexOf(`track:${eventName}`);
+    const nextTrackIndex =
+      index + 1 < observed.preventedEvents.length
+        ? observed.timeline.indexOf(`track:${observed.preventedEvents[index + 1]}`)
+        : observed.timeline.length;
+    const navigateIndex = observed.timeline.findIndex(
+      (entry, entryIndex) =>
+        entryIndex > trackIndex && entryIndex < nextTrackIndex && entry.startsWith("navigate:")
+    );
+    assert.equal(trackIndex > -1, true, `${eventName} should dispatch through the GA wrapper`);
+    assert.equal(navigateIndex > trackIndex, true, `${eventName} should dispatch before navigation`);
+  });
+  assert.equal(observed.navigations.length, 5);
+  assert.equal(new URL(observed.navigations[0], "http://localhost").pathname, "/stays/bradenton-vacation-rentals-near-beaches/");
+  assert.equal(new URL(observed.navigations[1], "http://localhost").pathname, "/stays/anna-maria-island-vacation-rentals/");
+  assert.equal(new URL(observed.navigations[2], "http://localhost").pathname, "/properties/the-oasis/");
+  assert.match(observed.navigations[3], /utm_content=best-time-visit-anna-maria-island/);
+  assert.match(observed.navigations[4], /utm_content=bradenton-pool-home/);
+});
+
+test("owner form tracking preserves owner_source attribution from email follow-up on start and submit", () => {
   const observed = withConversionTrackingStubs(({ listeners, window }) => {
     const hiddenSourceField = { value: "property-management" };
     const ownerForm = {
@@ -292,8 +575,8 @@ test("owner form tracking preserves owner_source attribution on start and submit
       }
     };
 
-    window.location.href = "http://localhost/property-management/?owner_source=owner-fee-revenue-leak-benchmark-2026#owner-cta";
-    window.location.search = "?owner_source=owner-fee-revenue-leak-benchmark-2026";
+    window.location.href = "http://localhost/property-management/?owner_source=owner-revenue-review-follow-up#owner-cta";
+    window.location.search = "?owner_source=owner-revenue-review-follow-up";
     global.document.querySelectorAll = function (selector) {
       return selector === 'form[data-track-form="owner"]' ? [ownerForm] : [];
     };
@@ -309,11 +592,11 @@ test("owner form tracking preserves owner_source attribution on start and submit
     };
   });
 
-  assert.equal(observed.hiddenValue, "owner-fee-revenue-leak-benchmark-2026");
+  assert.equal(observed.hiddenValue, "owner-revenue-review-follow-up");
   assert.equal(observed.startEvent.event, "owner_form_start");
-  assert.equal(observed.startEvent.payload.source_page_slug, "owner-fee-revenue-leak-benchmark-2026");
+  assert.equal(observed.startEvent.payload.source_page_slug, "owner-revenue-review-follow-up");
   assert.equal(observed.submitEvent.event, "owner_form_submit");
-  assert.equal(observed.submitEvent.payload.source_page_slug, "owner-fee-revenue-leak-benchmark-2026");
+  assert.equal(observed.submitEvent.payload.source_page_slug, "owner-revenue-review-follow-up");
 });
 
 test("priority guides use the shared conversion kit with page-specific stay links", () => {

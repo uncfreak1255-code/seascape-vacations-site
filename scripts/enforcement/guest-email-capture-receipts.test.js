@@ -27,21 +27,41 @@ const {
   GUEST_EMAIL_CAPTURE_FORM_NAME,
   GUEST_EMAIL_CAPTURE_METRICS_KEY,
   buildGuestEmailCaptureReceipt,
+  buildGuestMailchimpEvent,
+  buildGuestMailchimpTags,
+  buildMailchimpSubscriberHash,
+  deriveMailchimpAudienceId,
+  deriveMailchimpServerPrefix,
   mergeGuestEmailCaptureMetrics,
   formatGuestEmailCaptureSummary,
   getGuestEmailCaptureBlobsConfig,
   parseStoredMetrics,
   readAuthToken,
-  readGuestEmailCaptureMetrics
+  readGuestEmailCaptureMetrics,
+  splitName,
+  withMailchimpDelivery
 } = require("../../netlify/functions/_guest-email-capture-metrics");
 const {
+  buildMailchimpConfig,
   handleGuestEmailCapture
 } = require("../../netlify/functions/guest-email-capture");
+const {
+  handleGuestEmailCaptureMetricsRequest
+} = require("../../netlify/functions/guest-email-capture-metrics");
 const {
   handleGuestEmailCaptureProofLabelRequest
 } = require("../../netlify/functions/guest-email-capture-proof-label");
 
 const projectRoot = path.resolve(__dirname, "..", "..");
+
+function restoreEnvValue(name, value) {
+  if (value === undefined) {
+    delete process.env[name];
+    return;
+  }
+
+  process.env[name] = value;
+}
 
 test("guest capture helper strips PII and normalizes page fields", () => {
   const receipt = buildGuestEmailCaptureReceipt({
@@ -66,6 +86,51 @@ test("guest capture helper strips PII and normalizes page fields", () => {
   assert.equal("name" in receipt, false);
 });
 
+test("guest capture helper builds Mailchimp-ready segmentation context", () => {
+  const receipt = buildGuestEmailCaptureReceipt({
+    submissionId: "capture-1",
+    name: "Sawyer Beck",
+    email: "sawyer@example.com",
+    pagePath: "https://seascape-vacations.com/guides/bradenton-vs-sarasota/",
+    guideSlug: "bradenton-vs-sarasota",
+    sourcePageSlug: "bradenton-vs-sarasota",
+    market: "florida-gulf-coast",
+    placement: "popup",
+    createdAt: "2026-05-12T12:00:00.000Z"
+  });
+
+  assert.deepEqual(splitName("Sawyer Beck"), {
+    firstName: "Sawyer",
+    lastName: "Beck"
+  });
+  assert.equal(deriveMailchimpServerPrefix("abc123-us6"), "us6");
+  assert.equal(deriveMailchimpAudienceId(""), "95e5a594d1");
+  assert.equal(buildMailchimpSubscriberHash("Sawyer@example.com"), "cb5448be66947681b58ce50db8c055ff");
+  assert.deepEqual(buildGuestMailchimpTags(receipt), [
+    "guest-capture",
+    "guest-capture-form-email-capture",
+    "guest-capture-source-site",
+    "guest-capture-placement-popup",
+    "guest-capture-market-florida-gulf-coast",
+    "guest-capture-page-bradenton-vs-sarasota",
+    "guest-capture-guide-bradenton-vs-sarasota"
+  ]);
+  assert.deepEqual(buildGuestMailchimpEvent(receipt), {
+    name: "guest_email_capture",
+    properties: {
+      submissionId: "capture-1",
+      formName: "email_capture",
+      pagePath: "/guides/bradenton-vs-sarasota/",
+      pageSlug: "bradenton-vs-sarasota",
+      guideSlug: "bradenton-vs-sarasota",
+      sourcePageSlug: "bradenton-vs-sarasota",
+      market: "florida-gulf-coast",
+      placement: "popup",
+      createdAt: "2026-05-12T12:00:00.000Z"
+    }
+  });
+});
+
 test("guest capture helper preserves a sanitized proof label without storing PII", () => {
   const receipt = buildGuestEmailCaptureReceipt({
     name: "Sawyer Beck",
@@ -79,6 +144,56 @@ test("guest capture helper preserves a sanitized proof label without storing PII
   assert.equal(receipt.proofLabel, "codex-guest-proof-2026");
   assert.equal("email" in receipt, false);
   assert.equal("name" in receipt, false);
+});
+
+test("guest capture helper preserves sanitized utility context for reviewed proof loops", () => {
+  const receipt = buildGuestEmailCaptureReceipt({
+    name: "Sawyer Beck",
+    email: "sawyer@example.com",
+    pagePath: "/guides/best-time-visit-anna-maria-island/",
+    guideSlug: "best-time-visit-anna-maria-island",
+    placement: "inline",
+    utilityMoment: "Guide Direct Booking Help",
+    utilitySourceLabel: "guide_conversion_direct_booking_list",
+    requestedValue: "Direct booking savings and local stay ideas",
+    guestIntent: "Planning Gulf Coast stay",
+    deliveryChannel: "Email",
+    consentBasis: "Guest requested email follow-up",
+    createdAt: "2026-05-12T12:00:00.000Z"
+  });
+
+  assert.deepEqual(receipt.utilityContext, {
+    moment: "guide-direct-booking-help",
+    sourceLabel: "guide-conversion-direct-booking-list",
+    requestedValue: "Direct booking savings and local stay ideas",
+    guestIntent: "Planning Gulf Coast stay",
+    deliveryChannel: "email",
+    consentBasis: "guest-requested-email-follow-up"
+  });
+  assert.equal("email" in receipt, false);
+  assert.equal("name" in receipt, false);
+
+  assert.equal(
+    buildGuestMailchimpTags(receipt).includes("guest-capture-utility-guide-conversion-direct-booking-list"),
+    true
+  );
+  assert.deepEqual(buildGuestMailchimpEvent(receipt).properties, {
+    submissionId: receipt.submissionId,
+    formName: "email_capture",
+    pagePath: "/guides/best-time-visit-anna-maria-island/",
+    pageSlug: "best-time-visit-anna-maria-island",
+    guideSlug: "best-time-visit-anna-maria-island",
+    sourcePageSlug: "best-time-visit-anna-maria-island",
+    market: "florida-gulf-coast",
+    placement: "inline",
+    createdAt: "2026-05-12T12:00:00.000Z",
+    utilityMoment: "guide-direct-booking-help",
+    utilitySourceLabel: "guide-conversion-direct-booking-list",
+    requestedValue: "Direct booking savings and local stay ideas",
+    guestIntent: "Planning Gulf Coast stay",
+    deliveryChannel: "email",
+    consentBasis: "guest-requested-email-follow-up"
+  });
 });
 
 test("guest capture helper returns null without a valid email payload", () => {
@@ -140,7 +255,13 @@ test("guest capture summary exposes only aggregate counts and sanitized receipts
         sourcePageSlug: "bradenton-vs-sarasota",
         market: "florida-gulf-coast",
         placement: "inline",
-        proofLabel: "codex-guest-proof-2026"
+        proofLabel: "codex-guest-proof-2026",
+        mailchimp: {
+          mode: "marketing_api",
+          eventName: "guest_email_capture",
+          tags: ["guest-capture", "guest-capture-page-bradenton-vs-sarasota"],
+          warnings: ["mailchimp_event_sync_failed"]
+        }
       }
     ]
   });
@@ -163,7 +284,13 @@ test("guest capture summary exposes only aggregate counts and sanitized receipts
         sourcePageSlug: "bradenton-vs-sarasota",
         market: "florida-gulf-coast",
         placement: "inline",
-        proofLabel: "codex-guest-proof-2026"
+        proofLabel: "codex-guest-proof-2026",
+        mailchimp: {
+          mode: "marketing-api",
+          eventName: "guest_email_capture",
+          tags: ["guest-capture", "guest-capture-page-bradenton-vs-sarasota"],
+          warnings: ["mailchimp-event-sync-failed"]
+        }
       }
     ]
   });
@@ -200,8 +327,9 @@ test("guest capture blobs config helper reads explicit server-side fallback cred
   delete process.env.GUEST_EMAIL_CAPTURE_BLOBS_TOKEN;
 });
 
-test("guest email capture stores sanitized metrics after a successful Mailchimp proxy call", async () => {
+test("guest email capture stores sanitized metrics after a successful Mailchimp marketing API sync", async () => {
   let storedMetrics = null;
+  const fetchCalls = [];
   const mockStore = {
     async get(key) {
       assert.equal(key, GUEST_EMAIL_CAPTURE_METRICS_KEY);
@@ -213,36 +341,170 @@ test("guest email capture stores sanitized metrics after a successful Mailchimp 
     }
   };
 
-  const response = await handleGuestEmailCapture(
-    {
-      httpMethod: "POST",
-      body: JSON.stringify({
-        name: "Sawyer",
-        email: "sawyer@example.com",
-        pagePath: "/guides/bradenton-vs-sarasota/",
-        guideSlug: "bradenton-vs-sarasota",
-        sourcePageSlug: "bradenton-vs-sarasota",
-        market: "florida-gulf-coast",
-        placement: "inline",
-        createdAt: "2026-05-12T12:00:00.000Z"
-      })
+  const previousApiKey = process.env.MAILCHIMP_API_KEY;
+  const previousAudienceId = process.env.MAILCHIMP_AUDIENCE_ID;
+  const previousAudienceIds = process.env.MAILCHIMP_AUDIENCE_IDS;
+  const previousServerPrefix = process.env.MAILCHIMP_SERVER_PREFIX;
+  process.env.MAILCHIMP_API_KEY = "test-key-us6";
+  process.env.MAILCHIMP_AUDIENCE_ID = "95e5a594d1";
+  delete process.env.MAILCHIMP_AUDIENCE_IDS;
+  delete process.env.MAILCHIMP_SERVER_PREFIX;
+
+  try {
+    assert.deepEqual(buildMailchimpConfig(), {
+      apiKey: "test-key-us6",
+      serverPrefix: "us6",
+      audienceId: "95e5a594d1"
+    });
+
+    const response = await handleGuestEmailCapture(
+      {
+        httpMethod: "POST",
+        body: JSON.stringify({
+          name: "Sawyer",
+          email: "sawyer@example.com",
+          pagePath: "/guides/bradenton-vs-sarasota/",
+          guideSlug: "bradenton-vs-sarasota",
+          sourcePageSlug: "bradenton-vs-sarasota",
+          market: "florida-gulf-coast",
+          placement: "inline",
+          createdAt: "2026-05-12T12:00:00.000Z"
+        })
+      },
+      undefined,
+      mockStore,
+      async (url, options = {}) => {
+        fetchCalls.push({
+          url: String(url),
+          method: options.method || "GET",
+          body: options.body ? JSON.parse(options.body) : null
+        });
+
+        const parsed = new URL(url);
+        if (parsed.pathname.endsWith("/events") || parsed.pathname.endsWith("/tags")) {
+          return {
+            ok: true,
+            status: 204,
+            async text() {
+              return "";
+            }
+          };
+        }
+
+        return {
+          ok: true,
+          status: 200,
+          async text() {
+            return JSON.stringify({ id: "member-1" });
+          }
+        };
+      }
+    );
+
+    assert.deepEqual(JSON.parse(response.body), {
+      stored: true,
+      totalCaptures: 1,
+      pagePath: "/guides/bradenton-vs-sarasota/",
+      placement: "inline",
+      deliveryMode: "marketing_api"
+    });
+
+    const parsedMetrics = JSON.parse(storedMetrics);
+    assert.equal(parsedMetrics.totalCaptures, 1);
+    assert.equal(parsedMetrics.receipts[0].pagePath, "/guides/bradenton-vs-sarasota/");
+    assert.equal(parsedMetrics.receipts[0].mailchimp.mode, "marketing-api");
+    assert.equal(parsedMetrics.receipts[0].mailchimp.eventName, "guest_email_capture");
+    assert.equal(parsedMetrics.receipts[0].mailchimp.tags.includes("guest-capture-page-bradenton-vs-sarasota"), true);
+    assert.equal("email" in parsedMetrics.receipts[0], false);
+    assert.deepEqual(
+      fetchCalls.map((call) => call.method),
+      ["PUT", "POST", "POST"]
+    );
+    assert.equal(
+      fetchCalls[0].url,
+      "https://us6.api.mailchimp.com/3.0/lists/95e5a594d1/members/cb5448be66947681b58ce50db8c055ff"
+    );
+    assert.deepEqual(fetchCalls[1].body, {
+      tags: [
+        { name: "guest-capture", status: "active" },
+        { name: "guest-capture-form-email-capture", status: "active" },
+        { name: "guest-capture-source-site", status: "active" },
+        { name: "guest-capture-placement-inline", status: "active" },
+        { name: "guest-capture-market-florida-gulf-coast", status: "active" },
+        { name: "guest-capture-page-bradenton-vs-sarasota", status: "active" },
+        { name: "guest-capture-guide-bradenton-vs-sarasota", status: "active" }
+      ]
+    });
+    assert.equal(fetchCalls[2].body.name, "guest_email_capture");
+  } finally {
+    restoreEnvValue("MAILCHIMP_API_KEY", previousApiKey);
+    restoreEnvValue("MAILCHIMP_AUDIENCE_ID", previousAudienceId);
+    restoreEnvValue("MAILCHIMP_AUDIENCE_IDS", previousAudienceIds);
+    restoreEnvValue("MAILCHIMP_SERVER_PREFIX", previousServerPrefix);
+  }
+});
+
+test("guest email capture falls back to the hosted Mailchimp form when marketing API credentials are missing", async () => {
+  let storedMetrics = null;
+  const mockStore = {
+    async get() {
+      return storedMetrics;
     },
-    undefined,
-    mockStore,
-    async () => ({ ok: true, status: 200 })
-  );
+    async set(_key, value) {
+      storedMetrics = value;
+    }
+  };
 
-  assert.deepEqual(JSON.parse(response.body), {
-    stored: true,
-    totalCaptures: 1,
-    pagePath: "/guides/bradenton-vs-sarasota/",
-    placement: "inline"
-  });
+  const previousApiKey = process.env.MAILCHIMP_API_KEY;
+  const previousAudienceId = process.env.MAILCHIMP_AUDIENCE_ID;
+  const previousAudienceIds = process.env.MAILCHIMP_AUDIENCE_IDS;
+  const previousServerPrefix = process.env.MAILCHIMP_SERVER_PREFIX;
+  delete process.env.MAILCHIMP_API_KEY;
+  delete process.env.MAILCHIMP_AUDIENCE_ID;
+  delete process.env.MAILCHIMP_AUDIENCE_IDS;
+  delete process.env.MAILCHIMP_SERVER_PREFIX;
 
-  const parsedMetrics = JSON.parse(storedMetrics);
-  assert.equal(parsedMetrics.totalCaptures, 1);
-  assert.equal(parsedMetrics.receipts[0].pagePath, "/guides/bradenton-vs-sarasota/");
-  assert.equal("email" in parsedMetrics.receipts[0], false);
+  try {
+    const response = await handleGuestEmailCapture(
+      {
+        httpMethod: "POST",
+        body: JSON.stringify({
+          name: "Sawyer",
+          email: "sawyer@example.com",
+          pagePath: "/",
+          placement: "popup",
+          createdAt: "2026-05-12T12:00:00.000Z"
+        })
+      },
+      undefined,
+      mockStore,
+      async (url, options = {}) => {
+        assert.match(String(url), /seascape-vacations\.us6\.list-manage\.com\/subscribe\/post/);
+        assert.equal(options.method, "POST");
+        return {
+          ok: true,
+          status: 200
+        };
+      }
+    );
+
+    assert.deepEqual(JSON.parse(response.body), {
+      stored: true,
+      totalCaptures: 1,
+      pagePath: "/",
+      placement: "popup",
+      deliveryMode: "legacy_form"
+    });
+
+    const parsedMetrics = JSON.parse(storedMetrics);
+    assert.equal(parsedMetrics.receipts[0].mailchimp.mode, "legacy-form");
+    assert.deepEqual(parsedMetrics.receipts[0].mailchimp.warnings, ["marketing-api-unconfigured"]);
+  } finally {
+    restoreEnvValue("MAILCHIMP_API_KEY", previousApiKey);
+    restoreEnvValue("MAILCHIMP_AUDIENCE_ID", previousAudienceId);
+    restoreEnvValue("MAILCHIMP_AUDIENCE_IDS", previousAudienceIds);
+    restoreEnvValue("MAILCHIMP_SERVER_PREFIX", previousServerPrefix);
+  }
 });
 
 test("guest capture relabel updates only matching submission ids", () => {
@@ -282,6 +544,31 @@ test("guest capture relabel updates only matching submission ids", () => {
   assert.equal(relabeled.metrics.receipts[1].proofLabel, "codex-guest-proof-2026");
 });
 
+test("guest capture mailchimp delivery metadata is sanitized before storage", () => {
+  const receipt = buildGuestEmailCaptureReceipt({
+    submissionId: "capture-3",
+    name: "Sawyer",
+    email: "sawyer@example.com",
+    pagePath: "/",
+    placement: "popup",
+    createdAt: "2026-05-12T12:00:00.000Z"
+  });
+
+  const enriched = withMailchimpDelivery(receipt, {
+    mode: "marketing_api",
+    eventName: "guest_email_capture",
+    tags: ["Guest Capture", "guest-capture", "guest capture"],
+    warnings: ["mailchimp_event_sync_failed", "mailchimp event sync failed"]
+  });
+
+  assert.deepEqual(enriched.mailchimp, {
+    mode: "marketing-api",
+    eventName: "guest_email_capture",
+    tags: ["guest-capture"],
+    warnings: ["mailchimp-event-sync-failed"]
+  });
+});
+
 test("guest email capture returns invalid payload when name/email are missing", async () => {
   const response = await handleGuestEmailCapture(
     {
@@ -308,6 +595,106 @@ test("guest email capture returns invalid payload when name/email are missing", 
   });
 });
 
+test("guest email capture rejects malformed json before touching the store", async () => {
+  const response = await handleGuestEmailCapture(
+    {
+      httpMethod: "POST",
+      body: "{not json"
+    },
+    undefined,
+    {
+      async get() {
+        throw new Error("store should not be used");
+      },
+      async set() {
+        throw new Error("store should not be used");
+      }
+    },
+    async () => ({ ok: true, status: 200 })
+  );
+
+  assert.equal(response.statusCode, 400);
+  assert.deepEqual(JSON.parse(response.body), {
+    error: "invalid_json"
+  });
+});
+
+test("guest email capture returns stored false when metrics write fails after Mailchimp success", async () => {
+  const previousApiKey = process.env.MAILCHIMP_API_KEY;
+  const previousAudienceId = process.env.MAILCHIMP_AUDIENCE_ID;
+  const previousAudienceIds = process.env.MAILCHIMP_AUDIENCE_IDS;
+  const previousServerPrefix = process.env.MAILCHIMP_SERVER_PREFIX;
+  const originalConsoleError = console.error;
+  const consoleErrors = [];
+  process.env.MAILCHIMP_API_KEY = "test-key-us6";
+  process.env.MAILCHIMP_AUDIENCE_ID = "95e5a594d1";
+  delete process.env.MAILCHIMP_AUDIENCE_IDS;
+  delete process.env.MAILCHIMP_SERVER_PREFIX;
+  console.error = (...args) => {
+    consoleErrors.push(args);
+  };
+
+  try {
+    const response = await handleGuestEmailCapture(
+      {
+        httpMethod: "POST",
+        body: JSON.stringify({
+          name: "Sawyer",
+          email: "sawyer@example.com",
+          pagePath: "/",
+          placement: "popup",
+          createdAt: "2026-05-12T12:00:00.000Z"
+        })
+      },
+      undefined,
+      {
+        async get() {
+          return null;
+        },
+        async set() {
+          throw new Error("blob write failed");
+        }
+      },
+      async (url, options = {}) => {
+        const parsed = new URL(url);
+        if (parsed.pathname.endsWith("/events") || parsed.pathname.endsWith("/tags")) {
+          return {
+            ok: true,
+            status: 204,
+            async text() {
+              return "";
+            }
+          };
+        }
+
+        return {
+          ok: true,
+          status: 200,
+          async text() {
+            return JSON.stringify({ id: "member-1" });
+          }
+        };
+      }
+    );
+
+    assert.equal(response.statusCode, 200);
+    assert.deepEqual(JSON.parse(response.body), {
+      stored: false,
+      pagePath: "/",
+      placement: "popup",
+      deliveryMode: "marketing_api"
+    });
+    assert.equal(consoleErrors.length > 0, true);
+    assert.equal(consoleErrors[0][0], "guest_capture_metrics_write_failed");
+  } finally {
+    console.error = originalConsoleError;
+    restoreEnvValue("MAILCHIMP_API_KEY", previousApiKey);
+    restoreEnvValue("MAILCHIMP_AUDIENCE_ID", previousAudienceId);
+    restoreEnvValue("MAILCHIMP_AUDIENCE_IDS", previousAudienceIds);
+    restoreEnvValue("MAILCHIMP_SERVER_PREFIX", previousServerPrefix);
+  }
+});
+
 test("guest email capture metrics endpoint initializes blobs lambda compatibility before calling getStore", () => {
   const metricsHandler = fs.readFileSync(
     path.join(projectRoot, "netlify", "functions", "guest-email-capture-metrics.js"),
@@ -317,9 +704,23 @@ test("guest email capture metrics endpoint initializes blobs lambda compatibilit
     path.join(projectRoot, "netlify", "functions", "guest-email-capture.js"),
     "utf8"
   );
+  const proofLabelHandler = fs.readFileSync(
+    path.join(projectRoot, "netlify", "functions", "guest-email-capture-proof-label.js"),
+    "utf8"
+  );
+  const guestEmailCaptureMetricsModule = require("../../netlify/functions/guest-email-capture-metrics");
+  const guestEmailCaptureModule = require("../../netlify/functions/guest-email-capture");
+  const guestEmailCaptureProofLabelModule = require("../../netlify/functions/guest-email-capture-proof-label");
 
   assert.equal(metricsHandler.includes("connectLambda(event);"), true);
   assert.equal(captureHandler.includes("connectLambda(event);"), true);
+  assert.equal(proofLabelHandler.includes("connectLambda(event);"), true);
+  assert.equal(guestEmailCaptureMetricsModule.handler.length, 2);
+  assert.equal(handleGuestEmailCaptureMetricsRequest.length, 3);
+  assert.equal(guestEmailCaptureModule.handler.length, 2);
+  assert.equal(handleGuestEmailCapture.length, 4);
+  assert.equal(guestEmailCaptureProofLabelModule.handler.length, 2);
+  assert.equal(handleGuestEmailCaptureProofLabelRequest.length, 3);
 });
 
 test("guest capture metrics are readable from stored JSON strings", async () => {

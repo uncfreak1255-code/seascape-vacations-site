@@ -94,7 +94,7 @@ components:
     rounded: "{rounded.md}"
     padding: "20px"
   section-tag:
-    textColor: "{colors.brand}"
+    textColor: "{colors.brand-dark}"
     typography: "{typography.label}"
   page-surface:
     backgroundColor: "{colors.cream}"
@@ -156,6 +156,9 @@ Studied: Plum Guide, AvantStay, onefinestay, Vacasa, Evolve.
 - **Decoration level:** Intentional — warm cream textures, subtle shadows, gold accent details. Not minimal (too cold for vacation rentals), not expressive (too busy for luxury).
 - **Reference vibe:** Plum Guide's editorial restraint + Seascape's existing warmth
 
+### Field Report Standard
+The owner-page "Field Report" direction is the new quality bar for future high-value Seascape page design. Pages should feel like a premium Gulf Coast editorial report: cinematic real photography, issue-style section framing, disciplined cream/teal/gold surfaces, serif-led hierarchy, useful proof, and one memorable interaction that helps the visitor decide. Do not copy the exact owner-page layout onto every route; copy the level of taste, restraint, specificity, and rendered polish.
+
 ## Typography
 - **Display/Headlines:** Playfair Display (weight 500) — Serif with editorial authority. Used for all h1-h4 headings, property names, and section titles. The -0.02em letter-spacing is important for density at large sizes.
 - **Body:** Poppins (weight 400-600) — Clean geometric sans. Readable body copy, navigation labels, metadata. Weights: 400 (body), 500 (UI labels), 600 (buttons, emphasis), 700 (price callouts).
@@ -201,9 +204,11 @@ If Playfair Display ever needs replacing, consider: Fraunces (more personality),
 
 ### Color Rules
 - CTA buttons use teal gradient (`--brand` to `--brand-dark` at 135deg) or gold gradient (`--gold` to `#B8943A` at 135deg).
-- Text links use `--brand` with no underline. Underline on hover or use color shift to `--brand-dark`.
-- Property price always in `--brand` at weight 600.
+- Text links on light surfaces use `--brand-dark` with no underline. Reserve `--brand` for larger accent moments, gradients, or dark-surface treatments.
+- Property price always in `--brand-dark` at weight 600.
 - Badge backgrounds use `--gold` with `--stone` text.
+- Navigation text, breadcrumbs, section tags, and other small UI labels on light surfaces use `--brand-dark`.
+- Gold is for fills, borders, stars, and large emphasis. Do not use gold as small standalone text on cream or white.
 - Never use raw hex values in templates. Always reference CSS custom properties.
 
 ## Spacing
@@ -308,6 +313,11 @@ Legacy bare `.btn` (no modifier) falls back to the same visual as `.btn-brand` m
 - Pair with: locally managed badge, guest review count, response-time promise.
 - Never use countdown timers, fake scarcity ("Only 1 left!"), or strikethrough pricing.
 
+## Iconography
+- Use SVG icons only on the live site. Preferred source is the shared repo icon system in `src/_includes/partials/ui-icon.njk`.
+- If the needed icon does not exist in the repo yet, pull or export an approved SVG from the design system or Figma and add it to source. Do not fall back to emoji glyphs.
+- Never use emoji as bullets, badges, stat markers, CTA decoration, or section icons on desktop or mobile.
+
 ## Anti-Patterns — Never Do These
 1. **Never replace the cream background with white or gray.** Cream is the brand's visual signature. It separates Seascape from every Airbnb clone.
 2. **Never use system fonts or generic sans-serif** for headings. Playfair Display is the brand identity.
@@ -324,6 +334,7 @@ Legacy bare `.btn` (no modifier) falls back to the same visual as `.btn-brand` m
 - **Before touching any CSS, template, or layout file,** read this DESIGN.md first.
 - **Treat the YAML front matter as the visual source of truth.** The prose explains why the tokens exist and how to apply them.
 - **Do not invent new colors, fonts, border radius, shadows, spacing, or component styles** unless the user explicitly asks for a design-system change.
+- **For meaningful visual work,** Codex should prepare the Claude Design handoff first: repo/source truth, page goal, audience, constraints, existing patterns, proof/copy boundaries, URLs or screenshots, implementation risks, and responsive requirements.
 - **If Claude Design, Stitch, designmd.directory, or another design tool produces a new direction,** propose it as a DESIGN.md change first. Do not copy a generated screen directly into source.
 - **Use Stitch/designmd.directory only as inspiration.** They are not source truth for Seascape's brand or page patterns.
 - **For UI/visual work,** dispatch subagents with `model: "sonnet"`. Sonnet produces better visual code.
@@ -332,7 +343,10 @@ Legacy bare `.btn` (no modifier) falls back to the same visual as `.btn-brand` m
 - **Property data comes from Hostaway** via `src/_data/properties.js`. Do not hardcode property details.
 - **Test all changes at 375px (mobile), 768px (tablet), and 1200px+ (desktop).**
 - **Run `npx @11ty/eleventy --serve` to preview changes locally.**
-- **Visual regression screenshots are required before calling a subjective visual change "better."** Until an automated screenshot gate exists, attach desktop and mobile screenshots to the review or PR.
+- **For meaningful visual changes, run `docs/process/design-review-workflow.md`.** The rendered QA loop includes the `design-review` skill, in-app Browser inspection by default, saved desktop/mobile proof artifacts, and changed-route review before asking Sawyer to look.
+- **Use `docs/process/agent-evidence-routing.md` when choosing tools.** Browser explains live rendering, Chrome diagnoses browser problems, DOM confirms structure, Playwright proves gates, web search updates current external truth, and Computer Use handles edge cases.
+- **Visual regression screenshots are required before calling a subjective visual change "better."** The automated screenshot gate already exists — `npm run test:visual` diffs committed desktop and mobile baselines in `tests/visual/__screenshots__/`; run it, keep desktop/mobile screenshots or CI proof bundles as receipts, and paste screenshots into chat only when the call is subjective, surprising, or Sawyer asks to see the pixels.
+- **Use Chrome DevTools for website debugging, not visual approval.** Chrome or DevTools is a good fit for console errors, network requests, storage, authenticated browser state, extensions, and layout diagnosis, but it does not replace Playwright baselines or the visual proof gate.
 
 ## Decisions Log
 | Date | Decision | Rationale |
@@ -343,3 +357,8 @@ Legacy bare `.btn` (no modifier) falls back to the same visual as `.btn-brand` m
 | 2026-04-13 | No scroll animations | Speed and simplicity signal professionalism. Animations add loading delay and distract from content. |
 | 2026-04-13 | Cream background is non-negotiable | The single most distinctive visual element. Removing it would make Seascape look like every other rental site. |
 | 2026-04-24 | Premium buttons v1: retire teal gradient, introduce hairline-framed primary + foil rare-use + ghost/solid-gold pair | Plum Guide-level editorial restraint needed more type discipline (uppercase, tighter size, .12em tracking) and a one-per-page gold foil. Bare `.btn` keeps teal fallback so existing call sites don't break while templates migrate to explicit modifiers. |
+| 2026-05-15 | SVG-only iconography on the live site | Emoji decoration reads cheap and inconsistent across devices. Live site iconography now comes from shared SVGs in source or approved design-system exports. |
+| 2026-05-15 | `design-review` is the required rendered QA loop for meaningful visual changes | Visual work in this repo must be reviewed on the rendered surface with desktop/mobile screenshots and live route checks before human review. |
+| 2026-06-03 | Corrected stale "until an automated gate exists" text | The automated visual regression gate already exists (`npm run test:visual`, committed desktop/mobile baselines in `tests/visual/__screenshots__/`, axe spec). Docs now describe it as present, not pending. |
+| 2026-06-16 | Browser live review plus Playwright proof is the default visual QA shape | Use the in-app Browser for human route inspection, Chrome DevTools for debugging, and Playwright screenshots/proof bundles as the durable gate instead of pasting routine screenshots into chat. |
+| 2026-06-16 | Agent evidence routing defines tool choice | Choose Browser, DOM reads, screenshots, Chrome DevTools, Playwright, Computer Use, or web search by the proof needed, not by habit or tool availability. |

@@ -7,6 +7,11 @@ const projectRoot = path.resolve(__dirname, "..", "..");
 const homepage = fs.readFileSync(path.join(projectRoot, "src", "index.njk"), "utf8");
 const llms = fs.readFileSync(path.join(projectRoot, "src", "llms.txt"), "utf8");
 const robots = fs.readFileSync(path.join(projectRoot, "src", "robots.txt"), "utf8");
+const aiDiscovery = fs.readFileSync(path.join(projectRoot, "src", "ai-discovery.json.njk"), "utf8");
+const aiWellKnown = fs.readFileSync(path.join(projectRoot, "src", ".well-known", "ai.txt.njk"), "utf8");
+const aiSummary = fs.readFileSync(path.join(projectRoot, "src", "ai", "summary.json.njk"), "utf8");
+const aiService = fs.readFileSync(path.join(projectRoot, "src", "ai", "service.json.njk"), "utf8");
+const aiFaq = fs.readFileSync(path.join(projectRoot, "src", "ai", "faq.json.njk"), "utf8");
 const seoPages = require(path.join(projectRoot, "src", "_data", "seoPages.json"));
 const staysTemplate = fs.readFileSync(path.join(projectRoot, "src", "stays", "stays.njk"), "utf8");
 const propertyPages = [
@@ -71,10 +76,11 @@ test("llms inventory only advertises live canonical URLs", () => {
 
   for (const url of urls) {
     const pathname = new URL(url).pathname;
+    const isFileEndpoint = /\.(json|txt)$/.test(pathname);
     assert.equal(
-      pathname.endsWith("/"),
+      pathname.endsWith("/") || isFileEndpoint,
       true,
-      `${url} should use the canonical trailing-slash route`
+      `${url} should use the canonical route format`
     );
   }
 });
@@ -125,6 +131,103 @@ test("AMI large-group page is source-managed and truthful about near-island loca
   );
 });
 
+test("AI discovery inventory answers proven buyer-intent misses without overclaiming island inventory", () => {
+  const requiredPhrases = [
+    "Sarasota private-pool vacation rental",
+    "Bradenton private-pool rental near the beach",
+    "Dockside Dreams private dock rental",
+    "Book direct Bradenton/Sarasota vacation rental",
+    "Sarasota vacation rental management",
+    "Seascape's inventory is near Anna Maria Island"
+  ];
+
+  for (const phrase of requiredPhrases) {
+    assert.equal(llms.includes(phrase), true, `llms.txt missing buyer-intent phrase: ${phrase}`);
+  }
+
+  const site = require(path.join(projectRoot, "src", "_data", "site.json"));
+  assert.equal(
+    site.description,
+    "Locally managed private-pool vacation rentals in Bradenton and Sarasota, Florida, near Anna Maria Island, Siesta Key, and Lido Key beaches."
+  );
+  assert.equal(
+    site.sameAsLinks.includes("https://www.bradentongulfislands.com/listing/seascape-vacations/"),
+    true,
+    "sameAsLinks should include the verified Bradenton Gulf Islands profile"
+  );
+
+  const nearAmiPoolPage = seoPages.vacationer.find(
+    (candidate) => candidate.slug === "anna-maria-island-homes-with-pool"
+  );
+  const familyNearAmiPage = seoPages.vacationer.find(
+    (candidate) => candidate.slug === "family-vacation-rentals-anna-maria-island"
+  );
+  const nearAmiPage = seoPages.vacationer.find(
+    (candidate) => candidate.slug === "anna-maria-island-vacation-rentals"
+  );
+
+  assert.equal(nearAmiPoolPage.title, "Vacation Rentals Near Anna Maria Island with Private Pools");
+  assert.equal(familyNearAmiPage.title, "Family Vacation Rentals Near Anna Maria Island");
+  assert.equal(nearAmiPage.h1, "Vacation Rentals Near Anna Maria Island");
+
+  for (const page of [nearAmiPoolPage, familyNearAmiPage, nearAmiPage]) {
+    const serializedPage = JSON.stringify(page);
+    assert.equal(
+      serializedPage.includes("vacation rentals on Anna Maria Island"),
+      false,
+      `${page.slug} should say near Anna Maria Island when describing Seascape inventory`
+    );
+  }
+});
+
+test("AI discovery contract exposes proof-gated conversion surfaces", () => {
+  assert.equal(homepage.includes('rel="alternate" type="application/json"'), true);
+  assert.equal(homepage.includes("https://seascape-vacations.com/ai-discovery.json"), true);
+  assert.equal(llms.includes("https://seascape-vacations.com/ai-discovery.json"), true);
+
+  for (const marker of [
+    '"guest_capture": ["email_capture_submit"]',
+    '"booking_engine_handoff": ["booking_engine_handoff", "property_booking_page_click"]',
+    '"owner_lead": ["owner_form_submit"]',
+    '"source_context_parameters": ["source_context", "ai_platform", "referrer_host", "utm_source", "landing_page_path"]',
+    "direct-booking revenue requires reviewed attributed reservation rows"
+  ]) {
+    assert.equal(aiDiscovery.includes(marker), true, `ai-discovery.json missing ${marker}`);
+  }
+});
+
+test("AI endpoint layer advertises canonical summaries without replacing the main contract", () => {
+  for (const endpoint of [
+    "https://seascape-vacations.com/.well-known/ai.txt",
+    "https://seascape-vacations.com/ai/summary.json",
+    "https://seascape-vacations.com/ai/service.json",
+    "https://seascape-vacations.com/ai/faq.json"
+  ]) {
+    const sourceEndpoint = endpoint.replace("https://seascape-vacations.com", "{{ site.url }}");
+    assert.equal(aiDiscovery.includes(sourceEndpoint), true, `ai-discovery.json source missing ${sourceEndpoint}`);
+    assert.equal(llms.includes(endpoint), true, `llms.txt missing ${endpoint}`);
+  }
+
+  assert.equal(aiWellKnown.includes("Primary machine-readable contract: {{ site.url }}/ai-discovery.json"), true);
+  assert.equal(aiSummary.includes('"location_boundary"'), true);
+  assert.equal(aiSummary.includes("do not describe the Bradenton homes as on-island inventory"), true);
+  assert.equal(aiService.includes('"proof_boundary"'), true);
+  assert.equal(aiService.includes("direct-booking revenue requires reviewed attributed reservation rows"), true);
+  assert.equal(aiFaq.includes('"questions"'), true);
+  assert.equal(aiFaq.includes("Direct-booking revenue claims require reviewed attributed reservation rows"), true);
+});
+
+test("AI endpoint layer builds the advertised machine-readable files", () => {
+  for (const builtPath of [
+    [".well-known", "ai.txt"],
+    ["ai", "summary.json"],
+    ["ai", "service.json"],
+    ["ai", "faq.json"]
+  ]) {
+    assert.equal(fs.existsSync(path.join(projectRoot, "_site", ...builtPath)), true, `${builtPath.join("/")} should build`);
+  }
+});
+
 test("stays template can render citation-ready property facts with booking offers", () => {
   assert.equal(staysTemplate.includes("seoPage.propertyFacts"), true);
   assert.equal(staysTemplate.includes('"@type": "Offer"'), true);
@@ -140,6 +243,21 @@ test("homepage schema advertises a real searchable website target", () => {
     true
   );
   assert.equal(homepage.includes('"query-input": "required name=search_term_string"'), true);
+});
+
+test("homepage brand signals stay consistent on title, visible hero copy, and website schema", () => {
+  assert.match(
+    homepage,
+    /<title>Seascape Vacations \| Bradenton & Sarasota Vacation Rentals Near Anna Maria Island<\/title>/
+  );
+  assert.match(
+    homepage,
+    /<span>Seascape Vacations<\/span>/
+  );
+  assert.equal(
+    homepage.includes('"alternateName": "seascape-vacations.com"'),
+    true
+  );
 });
 
 test("homepage does not ship hidden FAQ schema without visible FAQ content", () => {

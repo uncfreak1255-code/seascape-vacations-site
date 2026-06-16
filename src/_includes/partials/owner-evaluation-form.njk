@@ -1,8 +1,12 @@
 {% macro ownerEvaluationForm(options = {}) %}
+{% set hasFormCard = options.formTitle or options.formIntro or options.proofNote or options.detailCopy or options.confirmation %}
 <form
-  class="owner-lead-form"
-  name="owner-revenue-teardown"
+  class="owner-lead-form{% if hasFormCard %} owner-lead-form--editorial{% endif %}{% if options.className %} {{ options.className }}{% endif %}"
+  {% if options.id %}id="{{ options.id }}"{% endif %}
+  name="{{ options.formName or 'owner-revenue-teardown' }}"
   method="POST"
+  action="{{ options.action or '/property-management/revenue-review-requested/' }}"
+  enctype="multipart/form-data"
   data-netlify="true"
   netlify-honeypot="bot-field"
   data-track-form="owner"
@@ -11,46 +15,104 @@
   data-page-slug="{{ options.pageSlug or 'property-management' }}"
   data-source-page-slug="{{ options.sourcePageSlug or options.pageSlug or 'property-management' }}"
   data-market="{{ options.market or 'florida-gulf-coast' }}"
+  data-owner-context-required="true"
+  {% if options.formPlacement %}data-form-placement="{{ options.formPlacement }}"{% endif %}
 >
-  <input type="hidden" name="form-name" value="owner-revenue-teardown">
+  <input type="hidden" name="form-name" value="{{ options.formName or 'owner-revenue-teardown' }}">
   <input type="hidden" name="page_slug" value="{{ options.pageSlug or 'property-management' }}">
   <input type="hidden" name="source_page_slug" value="{{ options.sourcePageSlug or options.pageSlug or 'property-management' }}">
   <input type="hidden" name="market" value="{{ options.market or 'florida-gulf-coast' }}">
   <input type="hidden" name="lead_type" value="{{ options.leadType or 'owner-revenue-teardown' }}">
+  <input type="hidden" name="proof_label" value="">
   <p hidden>
     <label>Do not fill this out if you are human: <input name="bot-field"></label>
   </p>
 
-  {% if options.eyebrow %}
-  <p class="owner-form-eyebrow">{{ options.eyebrow }}</p>
-  {% endif %}
-  {% if options.title %}
-  <h3 class="owner-form-title">{{ options.title }}</h3>
-  {% endif %}
-  {% if options.intro %}
-  <p class="owner-form-copy">{{ options.intro }}</p>
-  {% endif %}
-
-  <div class="owner-form-grid">
-    <label class="owner-form-field">
-      <span>Your Name</span>
-      <input type="text" name="name" autocomplete="name" placeholder="First and last name" required>
-    </label>
-    <label class="owner-form-field">
-      <span>Email</span>
-      <input type="email" name="email" autocomplete="email" placeholder="you@example.com" required>
-    </label>
-    <label class="owner-form-field">
-      <span>Phone</span>
-      <input type="tel" name="phone" autocomplete="tel" placeholder="(941) 555-1234">
-    </label>
-    <label class="owner-form-field owner-form-field--wide">
-      <span>Property address or listing URL</span>
-      <input type="text" name="property_address" autocomplete="street-address" placeholder="123 Palm Ave or airbnb.com/h/your-listing" required>
-    </label>
+  {% if options.eyebrow or options.title or options.intro %}
+  <div class="owner-form-context">
+    {% if options.eyebrow %}
+    <p class="owner-form-eyebrow">{{ options.eyebrow }}</p>
+    {% endif %}
+    {% if options.title %}
+    <h3 class="owner-form-title">{{ options.title }}</h3>
+    {% endif %}
+    {% if options.intro %}
+    <p class="owner-form-copy">{{ options.intro }}</p>
+    {% endif %}
+    {% if hasFormCard %}
+    <ul class="owner-form-proof-list">
+      <li>{{ options.formIntro or "The fastest first pass comes from two things: the listing URL or address, and one line on what feels off. An owner statement or fee quote makes the review sharper." }}</li>
+      <li>{{ options.proofNote or "Source note: The review uses the evidence available. Missing statements, calendars, guest reviews, or fee terms stay marked unknown until you send them." }}</li>
+      <li><strong>{{ options.detailLabel or "What the review checks" }}</strong>{{ options.detailCopy or "The private revenue review shows what we can verify, what looks expensive, and what still needs a document before you decide whether to stay put, fix the setup, or talk about a transition." }}</li>
+      <li>{{ options.confirmation or "Got it. Seascape will read what you send and return the clearest next step: stay put, fix the current setup, or talk about a transition." }}</li>
+    </ul>
+    {% endif %}
   </div>
+  {% endif %}
 
-  <button class="btn btn-gold owner-form-submit" type="submit">{{ options.buttonLabel or "Request Your Revenue Teardown" }}</button>
-  <p class="owner-form-note">{{ options.note or "Send the property address or listing URL. We will benchmark fee drag, channel mix, and the operating gaps that may be costing you owner income." }}</p>
+  {% if hasFormCard %}
+  <div class="owner-form-card">
+    <div class="owner-form-card-copy">
+      <h4 class="owner-form-card-title">{{ options.formTitle or "Request Your Revenue Review" }}</h4>
+    </div>
+
+    <div class="owner-form-fieldset">
+  {% endif %}
+      <div class="owner-form-grid{% if options.gridClassName %} {{ options.gridClassName }}{% endif %}">
+        <label class="owner-form-field">
+          <span>Your Name</span>
+          <input type="text" name="name" autocomplete="name" placeholder="First and last name" required>
+        </label>
+        <label class="owner-form-field">
+          <span>Email</span>
+          <input type="email" name="email" autocomplete="email" placeholder="Best email for your review" required>
+        </label>
+        <label class="owner-form-field">
+          <span>Phone</span>
+          <input type="tel" name="phone" autocomplete="tel" placeholder="Best number for text updates">
+        </label>
+        <label class="owner-form-field owner-form-field--wide">
+          <span>{{ options.propertyFieldLabel or "Listing URL or property address" }}</span>
+          <input type="text" name="property_address" autocomplete="street-address" placeholder="{{ options.propertyFieldPlaceholder or 'airbnb.com/h/your-listing, vrbo.com/..., or 123 Palm Ave' }}" data-owner-context-field>
+          <small class="owner-form-help">If you do not know the street address yet, paste the Airbnb or Vrbo link and tell us what feels off.</small>
+        </label>
+        {% if options.showBenchmarkFields %}
+        <label class="owner-form-field">
+          <span>Listing URL</span>
+          <input type="url" name="listing_url" inputmode="url" placeholder="Paste the Airbnb or Vrbo listing URL" data-owner-context-field>
+        </label>
+        <label class="owner-form-field">
+          <span>Current manager or self-managed</span>
+          <input type="text" name="current_manager" placeholder="Manager name or self-managed">
+        </label>
+        <label class="owner-form-field">
+          <span>Current fee quote, if known</span>
+          <input type="text" name="current_fee_quote" placeholder="15%, 20%, 25%, or fee terms">
+        </label>
+        <label class="owner-form-field owner-form-field--wide">
+          <span>What feels off right now?</span>
+          <textarea name="what_feels_off" rows="3" placeholder="Example: owner payout feels light, booking-site fees look high, reporting is hard to trust, or the current manager setup feels off" data-owner-context-field></textarea>
+        </label>
+        <label class="owner-form-field owner-form-field--wide owner-form-field--file">
+          <span>Upload owner statement, optional</span>
+          <input type="file" name="owner_statement" accept="{{ options.fileAccept or '.pdf,.csv,.xls,.xlsx,.png,.jpg,.jpeg,.webp' }}">
+          <small class="owner-form-help">{{ options.fileHelp or "PDF, spreadsheet, or screenshot. Missing statements, calendars, guest reviews, or fee terms stay unknown until you send them." }}</small>
+        </label>
+        {% endif %}
+      </div>
+
+  {% if hasFormCard %}
+      <div class="owner-form-actions">
+        <button class="btn btn-gold owner-form-submit" type="submit">{{ options.buttonLabel or "Send My Review Request" }}</button>
+      </div>
+    </div>
+  </div>
+  {% else %}
+  <button class="btn btn-gold owner-form-submit" type="submit">{{ options.buttonLabel or "Request Your Revenue Review" }}</button>
+  {% endif %}
+
+  {% if not options.suppressNote %}
+  <p class="owner-form-note">{{ options.note or "Send the listing URL or property address plus the biggest concern you want checked. We will look at management fees, booking sources, and operating gaps that may be costing you owner income." }}</p>
+  {% endif %}
 </form>
 {% endmacro %}
