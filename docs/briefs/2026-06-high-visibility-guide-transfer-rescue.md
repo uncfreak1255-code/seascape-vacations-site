@@ -66,3 +66,7 @@
 - Both guide pages expose earlier tracked stay-path links.
 - Local content, build, JSON-LD, and link gates pass.
 - Final closeout says this is review-ready, not shipped.
+
+## Execution Note
+
+- 2026-06-16: add one early tracked stay-link paragraph to each in-scope guide; keep title/meta/schema and the existing conversion kit unchanged.
