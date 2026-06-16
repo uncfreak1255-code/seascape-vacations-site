@@ -60,6 +60,36 @@ const guideFiles = [
   }
 ];
 
+const winnerGuideEarlyTransferLinks = [
+  {
+    slug: "bradenton-vs-sarasota",
+    file: path.join(projectRoot, "src", "guides", "bradenton-vs-sarasota.html"),
+    beforeMarker: "<h2>If You Are Vacationing, Not Moving</h2>",
+    requiredLinks: [
+      "/stays/bradenton-vacation-rentals-near-beaches/",
+      "/stays/siesta-key-area-vacation-rentals/"
+    ]
+  },
+  {
+    slug: "anna-maria-island-vs-siesta-key",
+    file: path.join(projectRoot, "src", "guides", "anna-maria-island-vs-siesta-key.html"),
+    beforeMarker: "<h2>Quick Comparison at a Glance</h2>",
+    requiredLinks: [
+      "/stays/anna-maria-island-vacation-rentals/",
+      "/stays/siesta-key-area-vacation-rentals/"
+    ]
+  },
+  {
+    slug: "best-time-visit-anna-maria-island",
+    file: path.join(projectRoot, "src", "guides", "best-time-visit-anna-maria-island.html"),
+    beforeMarker: "<h2>Peak Season: December Through April</h2>",
+    requiredLinks: [
+      "/stays/anna-maria-island-vacation-rentals/",
+      "/stays/anna-maria-island-beachfront-rentals/"
+    ]
+  }
+];
+
 function withConversionTrackingStubs(callback) {
   const trackingScriptPath = path.join(projectRoot, "src", "assets", "js", "conversion-tracking.js");
   delete require.cache[require.resolve(trackingScriptPath)];
@@ -563,6 +593,29 @@ test("priority guides use the shared conversion kit with page-specific stay link
 
     for (const href of guide.requiredLinks) {
       assert.equal(source.includes(href), true, `${guide.slug} should include ${href}`);
+    }
+  }
+});
+
+test("proven winner guides expose tracked stay-path links before the main guide body", () => {
+  for (const guide of winnerGuideEarlyTransferLinks) {
+    const source = fs.readFileSync(guide.file, "utf8");
+    const markerIndex = source.indexOf(guide.beforeMarker);
+    assert.notEqual(markerIndex, -1, `${guide.slug} should keep the expected body marker`);
+
+    const earlySource = source.slice(0, markerIndex);
+    assert.equal(
+      (earlySource.match(/data-track-event=\"guide_book_direct_click\"/g) || []).length >= guide.requiredLinks.length,
+      true,
+      `${guide.slug} should track early stay-path links as guide_book_direct_click`
+    );
+
+    for (const href of guide.requiredLinks) {
+      assert.equal(
+        earlySource.includes(`href=\"${href}\"`),
+        true,
+        `${guide.slug} should link to ${href} before the main guide body`
+      );
     }
   }
 });
