@@ -10,7 +10,11 @@ const {
 } = require("../../netlify/functions/_owner-lead-contacts");
 const { OWNER_LEAD_FORM_NAME } = require("../../netlify/functions/_owner-lead-metrics");
 const { handleSubmissionCreated } = require("../../netlify/functions/submission-created");
-const { buildNotificationContent, notifyOwnerLead } = require("../../netlify/functions/_owner-lead-notify");
+const {
+  buildNotificationContent,
+  notifyOwnerLead,
+  sanitizeNotificationText
+} = require("../../netlify/functions/_owner-lead-notify");
 
 const ownerSubmitPayload = (overrides = {}) => ({
   id: "submission-1",
@@ -222,6 +226,27 @@ test("notification content omits PII on success and signals manual follow-up on 
   assert.equal(failure.toLowerCase().includes("manual"), true);
 });
 
+test("notification content strips mention and markdown control characters from failure text", () => {
+  const failure = buildNotificationContent({
+    stored: false,
+    submissionId: "<@123>",
+    contact: { email: "@everyone@example.com" },
+    error: "**boom** <@&123> `oops`"
+  });
+
+  assert.equal(failure.includes("@everyone"), false);
+  assert.equal(failure.includes("<@"), false);
+  assert.equal(failure.includes("**"), false);
+  assert.equal(failure.includes("`"), false);
+  assert.match(failure, /\[at\]everyone\[at\]example.com/);
+});
+
+test("sanitizeNotificationText normalizes empty and long text for chat content", () => {
+  assert.equal(sanitizeNotificationText(""), "unknown");
+  assert.equal(sanitizeNotificationText(null), "unknown");
+  assert.equal(sanitizeNotificationText("a".repeat(250)).length, 200);
+});
+
 test("owner lead notify is a safe no-op when no webhook is configured", async () => {
   delete process.env.OWNER_LEAD_NOTIFY_WEBHOOK_URL;
   const result = await notifyOwnerLead({ stored: true, submissionId: "s1", contact: {} });
@@ -247,7 +272,9 @@ test("notify webhook body omits PII on success and carries the lead only on fail
 
   assert.equal("contact" in bodies[0], false);
   assert.equal("rawPayload" in bodies[0], false);
+  assert.deepEqual(bodies[0].allowed_mentions, { parse: [] });
   assert.equal(JSON.stringify(bodies[0]).includes("pat@example.com"), false);
   assert.equal(bodies[1].contact.email, "fail@example.com");
   assert.ok(bodies[1].rawPayload);
+  assert.deepEqual(bodies[1].allowed_mentions, { parse: [] });
 });
