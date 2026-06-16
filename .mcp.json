@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "dataforseo": {
+      "command": "./scripts/mcp/dataforseo-mcp.sh",
+      "args": [],
+      "env": {
+        "ENABLED_MODULES": "SERP,KEYWORDS_DATA,DATAFORSEO_LABS,BACKLINKS,DOMAIN_ANALYTICS",
+        "DATAFORSEO_FULL_RESPONSE": "false",
+        "DATAFORSEO_SIMPLE_FILTER": "false"
+      }
+    }
+  }
+}

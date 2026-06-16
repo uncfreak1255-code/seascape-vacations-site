@@ -26,12 +26,17 @@ test("guides hub surfaces the stranded guide and stay clusters instead of cappin
     "/guides/florida-gulf-coast-vacation-rental-market-report-2026/",
     "/guides/holmes-beach/",
     "/services/concierge-services/",
-    "holmes-beach-vacation-rentals",
     "vacation-rentals-with-elevator",
     "week-long-vacation-rentals-florida"
   ]) {
     assert.equal(guidesHub.includes(marker), true, `guides hub missing ${marker}`);
   }
+
+  assert.equal(
+    guidesHub.includes("holmes-beach-vacation-rentals"),
+    false,
+    "guides hub should not keep surfacing the retired Holmes Beach stay slug"
+  );
 
   assert.equal(guidesHub.includes("loop.index <= 10"), false);
   assert.equal(guidesHub.includes("loop.index <= 5"), false);

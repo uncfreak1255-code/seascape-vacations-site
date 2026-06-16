@@ -3,13 +3,23 @@
 // `content` field). When no webhook is configured it is a safe no-op: the durable
 // contact store remains the zero-silent-drop guarantee, and Netlify's native form
 // notification (parsed by ops owner-reachout-intake) stays on as the backstop.
+function sanitizeNotificationText(value) {
+  return String(value || "unknown")
+    .replace(/@/g, "[at]")
+    .replace(/[<>{}`*_~|\\]/g, "")
+    .replace(/\s+/g, " ")
+    .trim()
+    .slice(0, 200);
+}
+
 function buildNotificationContent(message) {
-  const submissionId = (message && message.submissionId) || "unknown";
+  const submissionId = sanitizeNotificationText(message && message.submissionId);
 
   if (message && message.stored === false) {
     const contact = message.contact || {};
-    const handle = contact.email || contact.phone || contact.name || submissionId;
-    return `⚠️ Owner lead capture FAILED to persist — follow up MANUALLY now: ${handle} (submission ${submissionId}). Reason: ${message.error || "unknown"}.`;
+    const handle = sanitizeNotificationText(contact.email || contact.phone || contact.name || submissionId);
+    const reason = sanitizeNotificationText(message.error);
+    return `⚠️ Owner lead capture FAILED to persist — follow up MANUALLY now: ${handle} (submission ${submissionId}). Reason: ${reason}.`;
   }
 
   // Success: keep PII out of the external channel — the durable contact store
@@ -27,7 +37,8 @@ async function notifyOwnerLead(message) {
   const body = {
     content: buildNotificationContent(message),
     submissionId: message ? message.submissionId : undefined,
-    stored
+    stored,
+    allowed_mentions: { parse: [] }
   };
   // Only attach the raw lead when persistence FAILED — the store has no copy then,
   // so the notification is the lead's only carrier. On success the store holds the
@@ -54,5 +65,6 @@ async function notifyOwnerLead(message) {
 
 module.exports = {
   buildNotificationContent,
+  sanitizeNotificationText,
   notifyOwnerLead
 };

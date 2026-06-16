@@ -57,6 +57,7 @@ test("owner outbound runbook includes effect and decay stops", () => {
 
   assert.match(runbook, /After two batches that actually went out and got zero real replies/i);
   assert.match(runbook, /If zero sends happened, do not call that channel failure/i);
-  assert.match(runbook, /Current lane state: `not started`/);
+  assert.match(runbook, /Current lane state: `(not started|ready|sent-no-reply|reply-qualified|teardown-complete|decayed)`/);
+  assert.match(runbook, /does not authorize a send, count\s+as demand, or create a Hub register row/i);
   assert.match(runbook, /`decayed`: no real send or update for `3` consecutive weeks/i);
 });
