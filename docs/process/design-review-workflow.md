@@ -16,8 +16,9 @@ That includes:
 1. `AGENTS.md`
 2. `CLAUDE.md`
 3. `DESIGN.md`
-4. this file
-5. the task-relevant source file
+4. `docs/process/agent-evidence-routing.md`
+5. this file
+6. the task-relevant source file
 
 ## Design Authority
 
@@ -101,13 +102,25 @@ If the rendered surface still needs the user to discover basic bugs, the review 
 
 ## Browser And Proof Defaults
 
+- Use `docs/process/agent-evidence-routing.md` as the tool-choice router:
+  Browser explains, Chrome diagnoses, DOM confirms structure, Playwright
+  proves, web search updates current external truth, and Computer Use handles
+  edge cases.
 - Use the in-app Browser as the default live inspection surface for website
   visual review. Keep it in the background unless Sawyer asks to watch, inspect,
   or drive the page with you.
+- Use DOM snapshots, Playwright locators, or the accessibility tree for
+  structure: headings, visible text, links, buttons, forms, hidden state, and
+  machine-readable page state.
 - Use Chrome DevTools or the Chrome browser surface when the work depends on
   real Chrome state, console output, network requests, storage, extensions,
   authenticated sessions, or CSS/layout debugging that is easier to diagnose in
   DevTools.
+- Use Computer Use only for OS-level or native-app flows, permission prompts,
+  QR-code flows, or browser surfaces that Browser and Chrome cannot control.
+- Use web search when the visual or content claim depends on live SERPs,
+  competitors, current platform docs, pricing, laws, or other volatile external
+  facts. Cite the source in the handoff when web search informs the decision.
 - Do not use Browser or Chrome as a replacement for the deterministic visual
   gate. `npm run test:visual`, committed Playwright baselines, and the CI
   visual proof bundle remain the acceptance proof.

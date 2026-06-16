@@ -7,12 +7,14 @@ Read in this order:
 1. `AGENTS.md`
 2. `CLAUDE.md`
 3. `docs/process/agent-safety-standard.md`
-4. `docs/process/git-session-rules.md`
-5. `docs/process/content-quality-gate.md` before content or SEO copy work
-6. `docs/status/current-state.md`
-7. `DESIGN.md` before UI, CSS, template, or layout work
-8. `docs/process/design-review-workflow.md` for any visual or layout change
-9. one task-relevant file from `docs/briefs/`, `docs/portfolio/`, `docs/style/`, or source
+4. `docs/process/agent-evidence-routing.md` before choosing Browser, Chrome,
+   Computer Use, DOM inspection, screenshots, Playwright, or web search
+5. `docs/process/git-session-rules.md`
+6. `docs/process/content-quality-gate.md` before content or SEO copy work
+7. `docs/status/current-state.md`
+8. `DESIGN.md` before UI, CSS, template, or layout work
+9. `docs/process/design-review-workflow.md` for any visual or layout change
+10. one task-relevant file from `docs/briefs/`, `docs/portfolio/`, `docs/style/`, or source
 
 ## This Repo Owns
 
@@ -65,6 +67,10 @@ Read in this order:
 ## Workflow Layer
 
 - process rules live in `docs/process/`
+- `docs/process/agent-evidence-routing.md` is the default tool-choice router:
+  Browser explains, Chrome diagnoses, DOM confirms structure, Playwright
+  proves, web search updates current external truth, and Computer Use handles
+  edge cases.
 - the site learning contract lives in `docs/process/learning-contract.md`; it defines what inputs the site may learn from, what approvals are required, and what receipt proves public claims or workflow promotion
 - current execution context lives in `docs/status/`
 - `docs/status/next-batch.md` is the canonical reread handoff surface for volatile measurement truth; after every reread it must say exactly one of `blocked by freshness`, `fresh but below threshold`, or `open next batch`, plus one concrete next move
