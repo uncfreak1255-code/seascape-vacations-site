@@ -6,6 +6,7 @@ const {
   findForbiddenSourcePaths,
   findPlaceholderAnalyticsPaths
 } = require("./lib");
+const { assertValidFigmaBriefHandoffs } = require("./figma-brief-handoff");
 const { assertRepoHtmlCachePolicyConsistency } = require("./release-cache-policy");
 const { withWorktreeLock } = require("./worktree-lock");
 const {
@@ -159,6 +160,10 @@ function assertNoForbiddenPublicRuntime() {
   throw new Error(message);
 }
 
+function assertValidFigmaBriefs(range) {
+  assertValidFigmaBriefHandoffs({ range });
+}
+
 function buildReceipt({ args, pathAssertions, checks }) {
   const combinedChecks = normalizeReleaseChecks({
     path_assertions: pathAssertions,
@@ -244,6 +249,9 @@ function main() {
     );
     recordAssertion(pathAssertions, "placeholder analytics", assertNoPlaceholderAnalytics);
     recordAssertion(pathAssertions, "forbidden public runtime", assertNoForbiddenPublicRuntime);
+    recordAssertion(pathAssertions, "valid figma brief handoffs", () =>
+      assertValidFigmaBriefs(args.range)
+    );
     recordAssertion(pathAssertions, "fresh owner operator proof", () =>
       assertFreshOwnerOperatorProof(readOwnerOperatorProofAssets())
     );

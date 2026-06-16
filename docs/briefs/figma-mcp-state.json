@@ -1,0 +1,29 @@
+{
+  "checkedAt": "2026-05-16",
+  "source": "Live Figma MCP get_metadata recheck via Codex Desktop",
+  "targets": [
+    {
+      "briefPath": "docs/briefs/2026-05-owner-fee-revenue-leak-benchmark.md",
+      "label": "Owner Fee + Revenue Leak Benchmark",
+      "fileKey": "glZRIUzGbQlw0KJhtAGUWP",
+      "url": "https://www.figma.com/design/glZRIUzGbQlw0KJhtAGUWP?node-id=3-2",
+      "topLevelPages": [
+        {
+          "id": "0:1",
+          "name": "Owner Benchmark Exploration"
+        }
+      ],
+      "pageProbe": {
+        "nodeId": "0:1",
+        "name": "Owner Benchmark Exploration",
+        "width": 0,
+        "height": 0,
+        "visibleChildNames": [
+          "00 Brief + Decision Rails",
+          "A - Editorial Benchmark",
+          "B - Leak Stack First"
+        ]
+      }
+    }
+  ]
+}
