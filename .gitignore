@@ -27,6 +27,7 @@ blob-report/
 .lighthouseci/
 
 # Local scratch artifacts
+.tmp/
 .superpowers/
 .gstack/
 lh-live-baseline.report.html
