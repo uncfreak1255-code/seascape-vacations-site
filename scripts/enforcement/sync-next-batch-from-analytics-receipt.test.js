@@ -53,6 +53,42 @@ test("renderLatestExecutionRead turns analytics receipt into the status contract
   assert.match(rendered, /- Reread status: `blocked by freshness`\./);
   assert.match(rendered, /- Concrete next move: rerun the targeted operator read after BigQuery GSC covers 2026-05-16\./);
   assert.match(rendered, /Do not open a new owner, stay, guide, GEO, or SEO expansion branch from this read\./);
+  assert.match(rendered, /ranking-regression-rescue\.md/);
+});
+
+test("renderLatestExecutionRead opens exactly the branch named by an open receipt", () => {
+  const openReceipt = {
+    ...receipt,
+    latest_gsc_data_date: "2026-05-16",
+    site_work_gate: {
+      status: "clear",
+      label: "`clear` - joined GSC + GA4 read covers the requested window."
+    },
+    reread_status: "open next batch",
+    next_branch: "winner-regression-rescue",
+    reason: "rank_history shows /guides/bradenton-vs-sarasota/ fell from position 1.0 to 5.0.",
+    concrete_next_move: "open `winner-regression-rescue` from the joined operator read."
+  };
+
+  const rendered = renderLatestExecutionRead(openReceipt);
+
+  assert.match(rendered, /- Reread status: `open next batch`\./);
+  assert.match(rendered, /Open `winner-regression-rescue` from this read/);
+  assert.match(rendered, /Do not use this as permission for unrelated owner, stay, guide, GEO, or SEO expansion\./);
+  assert.doesNotMatch(rendered, /Do not open a new owner, stay, guide, GEO, or SEO expansion branch from this read\./);
+});
+
+test("renderLatestExecutionRead rejects an open receipt without next_branch", () => {
+  const malformedOpenReceipt = {
+    ...receipt,
+    reread_status: "open next batch",
+    next_branch: "   "
+  };
+
+  assert.throws(
+    () => renderLatestExecutionRead(malformedOpenReceipt),
+    /Receipt with reread_status open next batch must include next_branch/
+  );
 });
 
 test("replaceLatestExecutionRead updates only the latest execution read block", () => {

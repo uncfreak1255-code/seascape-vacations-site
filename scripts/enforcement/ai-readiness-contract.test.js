@@ -36,8 +36,8 @@ const AI_PRIORITY_ROUTES = [
   {
     sourcePath: "src/research/owner-fee-revenue-leak-benchmark-2026.njk",
     answerMarkers: [
-      /What do I actually keep\?/i,
-      /A lower management fee does not always mean a better result/i
+      /What actually reaches my owner statement\?/i,
+      /A lower management fee can still leave owner revenue exposed/i
     ],
     proofMarkers: [
       /<strong>Source note:<\/strong>/i,

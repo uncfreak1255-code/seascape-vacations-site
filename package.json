@@ -48,6 +48,11 @@
     "test:evals": "node --test scripts/evals/*.test.js"
   },
   "overrides": {
+    "@opentelemetry/core": "2.8.0",
+    "@opentelemetry/resources": "2.8.0",
+    "@opentelemetry/sdk-trace-base": "2.8.0",
+    "@opentelemetry/sdk-trace-node": "2.8.0",
+    "js-yaml": "4.2.0",
     "@11ty/eleventy": {
       "picomatch": "4.0.4"
     },
@@ -69,13 +74,13 @@
     }
   },
   "devDependencies": {
-    "@11ty/eleventy": "^3.1.5",
+    "@11ty/eleventy": "^3.1.6",
     "@axe-core/playwright": "^4.11.3",
     "@lhci/cli": "^0.15.1",
     "@playwright/test": "^1.60.0",
     "html-minifier-terser": "^7.2.0"
   },
   "dependencies": {
-    "@netlify/blobs": "^10.7.8"
+    "@netlify/blobs": "^10.7.9"
   }
 }

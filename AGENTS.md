@@ -7,12 +7,14 @@ Read in this order:
 1. `AGENTS.md`
 2. `CLAUDE.md`
 3. `docs/process/agent-safety-standard.md`
-4. `docs/process/git-session-rules.md`
-5. `docs/process/content-quality-gate.md` before content or SEO copy work
-6. `docs/status/current-state.md`
-7. `DESIGN.md` before UI, CSS, template, or layout work
-8. `docs/process/design-review-workflow.md` for any visual or layout change
-9. one task-relevant file from `docs/briefs/`, `docs/portfolio/`, `docs/style/`, or source
+4. `docs/process/agent-evidence-routing.md` before choosing Browser, Chrome,
+   Computer Use, DOM inspection, screenshots, Playwright, or web search
+5. `docs/process/git-session-rules.md`
+6. `docs/process/content-quality-gate.md` before content or SEO copy work
+7. `docs/status/current-state.md`
+8. `DESIGN.md` before UI, CSS, template, or layout work
+9. `docs/process/design-review-workflow.md` for any visual or layout change
+10. one task-relevant file from `docs/briefs/`, `docs/portfolio/`, `docs/style/`, or source
 
 ## This Repo Owns
 
@@ -40,6 +42,8 @@ Read in this order:
 - one serious SEO cluster at a time, with one brief driving it
 - no public content PR without one active brief, the content gate read, and `npm run lint:content`
 - review the diff before push, PR, or merge
+- any PR changing visible copy on smoke-asserted routes (homepage, `/properties/`, `/property-management/`, `/stays/`) must update `scripts/recovery/assert-live-smoke.js` in the same PR, or the daily live-smoke workflow goes red on a healthy site
+- live `/.netlify/functions/*` endpoint paths, metrics `receipts[]` field names, and `verify:*` npm script names have cross-repo consumers in seascape-ops, seascape-hub, and seascape-analytics; check the contract locks in `docs/plans/2026-06-12-v1-implementation-handoff.md` before renaming any of them
 
 ## Execution Defaults
 
@@ -63,11 +67,16 @@ Read in this order:
 ## Workflow Layer
 
 - process rules live in `docs/process/`
+- `docs/process/agent-evidence-routing.md` is the default tool-choice router:
+  Browser explains, Chrome diagnoses, DOM confirms structure, Playwright
+  proves, web search updates current external truth, and Computer Use handles
+  edge cases.
+- the site learning contract lives in `docs/process/learning-contract.md`; it defines what inputs the site may learn from, what approvals are required, and what receipt proves public claims or workflow promotion
 - current execution context lives in `docs/status/`
 - `docs/status/next-batch.md` is the canonical reread handoff surface for volatile measurement truth; after every reread it must say exactly one of `blocked by freshness`, `fresh but below threshold`, or `open next batch`, plus one concrete next move
 - `docs/status/current-state.md` should keep durable repo truth only and must not duplicate volatile reread windows or `data_date` details that belong in `docs/status/next-batch.md`
 - the five SEO OS role cards live in `.claude/agents/`
-- active repo-local skills are limited to `.agents/skills/accessibility`, `.agents/skills/design-review`, `.agents/skills/internal-link-targeting`, `.agents/skills/next-batch-gate`, `.agents/skills/owner-proof-integrity`, `.agents/skills/page-cro`, `.agents/skills/property-truth-regeneration`, `.agents/skills/schema-markup`, `.agents/skills/serp-ctr-title-rewrite`, `.agents/skills/site-architecture`, and `.agents/skills/web-design-guidelines`
+- active repo-local skills are limited to `.agents/skills/accessibility`, `.agents/skills/content-quality-rubric`, `.agents/skills/design-review`, `.agents/skills/internal-link-targeting`, `.agents/skills/next-batch-gate`, `.agents/skills/owner-outbound-batch`, `.agents/skills/owner-reply-intake`, `.agents/skills/owner-proof-integrity`, `.agents/skills/page-cro`, `.agents/skills/property-truth-regeneration`, `.agents/skills/schema-markup`, `.agents/skills/serp-ctr-title-rewrite`, `.agents/skills/site-architecture`, and `.agents/skills/web-design-guidelines`
 - `.claude/skills/` should mirror only those active site/design skills; copied marketing, deploy, monthly reset, and generic SEO skills are not live authority
 - global marketing skills in `/Users/sawbeck/.codex/skills/` may be used as advisory helpers for CRO, SEO, copy, psychology, analytics, and growth decisions, but they do not override this repo's source files, briefs, status docs, or five-role workflow
 - canonical lane for internal-link family/page inbound planning is `.agents/skills/internal-link-targeting`

@@ -22,6 +22,7 @@ test("lighthouserc uses built site output and local money-route URLs", () => {
   const { moneyRoutes } = require(path.join(projectRoot, "scripts/perf/money-routes.js"));
 
   assert.equal(config.ci.collect.staticDistDir, "./_site");
+  assert.equal(config.ci.collect.numberOfRuns, 3);
   assert.deepEqual(
     config.ci.collect.url,
     moneyRoutes.map((route) => `http://localhost${route}`)

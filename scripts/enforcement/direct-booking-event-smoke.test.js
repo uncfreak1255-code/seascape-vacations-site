@@ -104,6 +104,31 @@ test("direct-booking event smoke validates the three funnel event surfaces", () 
   );
 });
 
+test("conversion tracking scrubs obvious PII before analytics payloads reach dataLayer", () => {
+  const smoke = loadSmokeModule();
+  const events = smoke.simulateSanitizedAnalyticsPayload({
+    page_slug: "property-management",
+    source_page_slug: "owner-review",
+    email: "owner@example.com",
+    phone: "941-555-1212",
+    name: "Owner Name",
+    property_address: "123 Palm Street",
+    concerns: "Please call me about this listing.",
+    link_url: "https://book.seascape-vacations.com/listings/206016?utm_source=google&utm_content=owner%40example.com&phone=9415551212&checkin=2026-06-01&guests=4"
+  });
+  const event = events.find((entry) => entry.event === "owner_form_submit");
+
+  assert.ok(event, "owner_form_submit should still be emitted");
+  assert.equal(event.payload.page_slug, "property-management");
+  assert.equal(event.payload.source_page_slug, "owner-review");
+  assert.equal(event.payload.transport_type, "beacon");
+  assert.match(event.payload.link_url, /utm_source=google/);
+  assert.match(event.payload.link_url, /checkin=2026-06-01/);
+  assert.match(event.payload.link_url, /guests=4/);
+  assert.doesNotMatch(event.payload.link_url, /owner%40example\.com|owner@example\.com|9415551212|phone=/i);
+  assert.doesNotMatch(JSON.stringify(event.payload), /owner@example\.com|941-555-1212|Owner Name|123 Palm Street|Please call me/i);
+});
+
 test("homepage and shared popup partial use the tracked email capture path", () => {
   const homepage = fs.readFileSync(path.join(projectRoot, "src", "index.njk"), "utf8");
   const homepageScript = fs.readFileSync(path.join(projectRoot, "src", "assets", "js", "homepage.js"), "utf8");

@@ -367,7 +367,7 @@ test("first tracked navigation click is delivered before same-tab navigation con
     window.gtag = function (command, eventName, params) {
       if (command !== "event") return;
       timeline.push(`track:${eventName}`);
-      pendingCallbacks.push({ eventName, callback: params && params.event_callback });
+      pendingCallbacks.push({ eventName, callback: params && params.event_callback, payload: params });
     };
     window.seascapeTrackEvent = function (eventName, params) {
       window.gtag("event", eventName, params || {});
@@ -377,13 +377,51 @@ test("first tracked navigation click is delivered before same-tab navigation con
     const links = [
       {
         tagName: "A",
-        href: "/property-management/#owner-cta",
+        href: "/stays/bradenton-vacation-rentals-near-beaches/",
         target: "",
-        textContent: "Request Your Revenue Teardown",
+        textContent: "See Bradenton stays",
         dataset: {
-          trackEvent: "owner_primary_cta_click",
-          pageSlug: "property-management",
-          trackLabel: "Request Your Revenue Teardown"
+          trackEvent: "guide_stay_click",
+          guideSlug: "bradenton-vs-sarasota",
+          trackLabel: "See Bradenton stays"
+        },
+        hasAttribute() {
+          return false;
+        },
+        getAttribute(name) {
+          if (name === "href") return this.href;
+          if (name === "target") return this.target;
+          return null;
+        }
+      },
+      {
+        tagName: "A",
+        href: "/stays/anna-maria-island-vacation-rentals/",
+        target: "",
+        textContent: "Browse direct homes",
+        dataset: {
+          trackEvent: "guide_book_direct_click",
+          guideSlug: "best-time-visit-anna-maria-island",
+          trackLabel: "Browse direct homes"
+        },
+        hasAttribute() {
+          return false;
+        },
+        getAttribute(name) {
+          if (name === "href") return this.href;
+          if (name === "target") return this.target;
+          return null;
+        }
+      },
+      {
+        tagName: "A",
+        href: "/properties/the-oasis/",
+        target: "",
+        textContent: "Check Direct Dates",
+        dataset: {
+          trackEvent: "stay_view_property_click",
+          pageSlug: "bradenton-vacation-rentals-near-beaches",
+          trackLabel: "The Oasis"
         },
         hasAttribute() {
           return false;
@@ -466,6 +504,9 @@ test("first tracked navigation click is delivered before same-tab navigation con
       }
       const pending = pendingCallbacks.shift();
       assert.equal(pending.eventName, link.dataset.trackEvent);
+      assert.equal(pending.payload.transport_type, "beacon");
+      assert.equal(pending.payload.event_timeout, 800);
+      assert.equal(typeof pending.callback, "function");
       assert.equal(navigations.length, preventedEvents.length - 1);
       pending.callback();
       assert.equal(navigations.length, preventedEvents.length);
@@ -479,7 +520,9 @@ test("first tracked navigation click is delivered before same-tab navigation con
   });
 
   assert.deepEqual(observed.preventedEvents, [
-    "owner_primary_cta_click",
+    "guide_stay_click",
+    "guide_book_direct_click",
+    "stay_view_property_click",
     "booking_engine_handoff",
     "property_booking_page_click"
   ]);
@@ -496,9 +539,12 @@ test("first tracked navigation click is delivered before same-tab navigation con
     assert.equal(trackIndex > -1, true, `${eventName} should dispatch through the GA wrapper`);
     assert.equal(navigateIndex > trackIndex, true, `${eventName} should dispatch before navigation`);
   });
-  assert.equal(observed.navigations.length, 3);
-  assert.match(observed.navigations[1], /utm_content=best-time-visit-anna-maria-island/);
-  assert.match(observed.navigations[2], /utm_content=bradenton-pool-home/);
+  assert.equal(observed.navigations.length, 5);
+  assert.equal(new URL(observed.navigations[0], "http://localhost").pathname, "/stays/bradenton-vacation-rentals-near-beaches/");
+  assert.equal(new URL(observed.navigations[1], "http://localhost").pathname, "/stays/anna-maria-island-vacation-rentals/");
+  assert.equal(new URL(observed.navigations[2], "http://localhost").pathname, "/properties/the-oasis/");
+  assert.match(observed.navigations[3], /utm_content=best-time-visit-anna-maria-island/);
+  assert.match(observed.navigations[4], /utm_content=bradenton-pool-home/);
 });
 
 test("owner form tracking preserves owner_source attribution from email follow-up on start and submit", () => {

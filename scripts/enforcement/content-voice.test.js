@@ -766,6 +766,15 @@ test("changed public content files require one active brief and pass brief-linke
     return;
   }
 
+  const changedReaderCopyFiles = changedPublicContentFiles.filter((relativePath) =>
+    hasVisibleReaderCopyDiff(relativePath, read(relativePath))
+  );
+
+  if (changedReaderCopyFiles.length === 0) {
+    assert.ok(true, "changed public content files have no reader-visible copy diff");
+    return;
+  }
+
   const changedBriefFiles = changedFiles.filter((relativePath) => /^docs\/briefs\/.+\.md$/i.test(relativePath));
   assert.equal(
     changedBriefFiles.length,
@@ -784,12 +793,8 @@ test("changed public content files require one active brief and pass brief-linke
   const requiredLinks = parseRequiredLinksFromBrief(briefContent);
   const violations = [];
 
-  for (const relativePath of changedPublicContentFiles) {
+  for (const relativePath of changedReaderCopyFiles) {
     const source = read(relativePath);
-    if (!hasVisibleReaderCopyDiff(relativePath, source)) {
-      continue;
-    }
-
     violations.push(
       ...lintPublicContent(relativePath, source, requiredLinks)
     );

@@ -1,4 +1,6 @@
 const staysNoindexSlugs = [
+  // Seasonal/support stay pages stay suppressed until distinct GSC + SERP
+  // demand and a defined money-page destination justify a rebuild.
   "spring-break-rentals-anna-maria-island",
   "summer-vacation-rentals-florida-gulf-coast",
   "winter-vacation-rentals-florida-gulf-coast",

@@ -16,8 +16,9 @@ That includes:
 1. `AGENTS.md`
 2. `CLAUDE.md`
 3. `DESIGN.md`
-4. this file
-5. the task-relevant source file
+4. `docs/process/agent-evidence-routing.md`
+5. this file
+6. the task-relevant source file
 
 ## Design Authority
 
@@ -52,6 +53,8 @@ That includes:
    - active `DESIGN.md` constraints and existing patterns to preserve
    - proof, claim, voice, and copy boundaries
    - responsive, accessibility, performance, and implementation risks
+   Use `docs/process/seascape-design-studio.md` when the task needs a fuller
+   reusable intake and output packet before implementation.
 4. For meaningful visual changes, run the global `claude-design` skill before
    implementation. The output should be a reviewable mockup, direction, or
    implementation spec, not just verbal styling advice.
@@ -70,9 +73,9 @@ That includes:
 11. If the change is being justified as `citation-ready` or `AI-search-ready`,
    pair the rendered review with `docs/process/ai-citation-audit-usage.md`.
    Screenshot proof alone is not enough for that claim.
-12. Capture fresh desktop and mobile screenshots for every changed route. If a
-    full-page capture lies about a fixed or sticky element, also capture
-    viewport-level screenshots that show the real behavior.
+12. Capture or retain fresh desktop and mobile proof artifacts for every changed
+    route. If a full-page capture lies about a fixed or sticky element, also
+    capture viewport-level screenshots that show the real behavior.
 13. Run the relevant build and release checks for the lane.
 14. Use `docs/process/before-user-review-checklist.md` before asking Sawyer to
     review.
@@ -88,7 +91,7 @@ That includes:
 Before human review, the handoff must show:
 
 - the exact route or routes to check
-- fresh desktop and mobile screenshots
+- fresh desktop and mobile screenshots or saved artifact paths
 - any known screenshot artifact called out plainly
 - what changed visually
 - if AI-search or citation fit is part of the claim, whether that proof is
@@ -96,6 +99,34 @@ Before human review, the handoff must show:
 - what is still known-bad, if anything
 
 If the rendered surface still needs the user to discover basic bugs, the review is not ready.
+
+## Browser And Proof Defaults
+
+- Use `docs/process/agent-evidence-routing.md` as the tool-choice router:
+  Browser explains, Chrome diagnoses, DOM confirms structure, Playwright
+  proves, web search updates current external truth, and Computer Use handles
+  edge cases.
+- Use the in-app Browser as the default live inspection surface for website
+  visual review. Keep it in the background unless Sawyer asks to watch, inspect,
+  or drive the page with you.
+- Use DOM snapshots, Playwright locators, or the accessibility tree for
+  structure: headings, visible text, links, buttons, forms, hidden state, and
+  machine-readable page state.
+- Use Chrome DevTools or the Chrome browser surface when the work depends on
+  real Chrome state, console output, network requests, storage, extensions,
+  authenticated sessions, or CSS/layout debugging that is easier to diagnose in
+  DevTools.
+- Use Computer Use only for OS-level or native-app flows, permission prompts,
+  QR-code flows, or browser surfaces that Browser and Chrome cannot control.
+- Use web search when the visual or content claim depends on live SERPs,
+  competitors, current platform docs, pricing, laws, or other volatile external
+  facts. Cite the source in the handoff when web search informs the decision.
+- Do not use Browser or Chrome as a replacement for the deterministic visual
+  gate. `npm run test:visual`, committed Playwright baselines, and the CI
+  visual proof bundle remain the acceptance proof.
+- Treat screenshots as receipts, not chat clutter. Keep them in local artifacts,
+  CI artifacts, or PR proof when needed; paste them into chat only when the
+  visual call is subjective, surprising, or Sawyer asks to see the pixels.
 
 ## Visual Regression Failures
 

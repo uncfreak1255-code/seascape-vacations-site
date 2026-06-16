@@ -189,6 +189,7 @@ if (phase === "p0") {
   expectExists("_site/properties/index.html");
   expectExists("_site/property-management/index.html");
   expectExists("_site/stays/index.html");
+  expectNotExists("_site/netlify");
   expectNotExists("_site/netlify/functions/get-properties.js");
   expectNotExists("_site/stays/hurricane-preparedness-florida-vacation/index.html");
   expectNotExists("_site/stays/concierge-luxury-services/index.html");
@@ -510,7 +511,7 @@ if (phase === "remediation") {
   expectContains("_site/stays/anna-maria-island-vacation-rentals/index.html", 'fetchpriority="high"');
   expectContains(
     "_site/property-management/vacation-rental-management-sarasota/index.html",
-    'rel="stylesheet" media="print" onload="this.media=\'all\'"'
+    "font-display: optional"
   );
   expectContains(
     "_site/property-management/index.html",
@@ -530,7 +531,7 @@ if (phase === "remediation") {
     buildAnchorPattern({
       href: "#owner-cta",
       className: "nav-owner-cta",
-      text: "Revenue Teardown"
+      text: "Revenue Review"
     }),
     "property management compact nav CTA"
   );
@@ -539,7 +540,7 @@ if (phase === "remediation") {
     buildAnchorPattern({
       href: "#owner-cta",
       className: "btn btn-gold",
-      text: "Request Your Revenue Teardown"
+      text: "Request Your Revenue Review"
     }),
     "property management hero CTA"
   );

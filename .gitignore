@@ -27,11 +27,12 @@ blob-report/
 .lighthouseci/
 
 # Local scratch artifacts
+.tmp/
 .superpowers/
 .gstack/
 lh-live-baseline.report.html
 lh-live-baseline.report.json
-_site/research/
+_site/
 
 # Sensitive local Hostaway exports
 scripts/data/

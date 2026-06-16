@@ -8,7 +8,7 @@
 - audience pattern: skeptical owner who has seen fee quotes but needs proof that the full leak stack matters more than headline percentage alone
 - proof source: Seascape five-home benchmark sample, observed Airbnb host-fee drag, direct-payment cost reference, and labeled scenario math
 - required internal links: /research/owner-fee-revenue-leak-benchmark-2026/, /property-management/maximize-vacation-rental-income-florida/
-- CTA target: /property-management/?owner_source=owner-fee-revenue-leak-benchmark-2026#owner-cta
+- CTA target: /property-management/#owner-cta
 - anti-claims: no portfolio-wide guarantee, no market-wide fee survey claim, no invented review totals, no passive-income or full-service fluff
 
 Date: 2026-05-21
@@ -22,9 +22,12 @@ Implementation frames: `9:2` desktop, `11:2` mobile
 
 - Updated property-management copy to avoid new banned phrasing, remove owner-detached wording, and align CTA/benefit language to the property-focused intent.
 - Introduced the new redirect alias route `/research/owner-fee-revenue-gap-benchmark-2026/` so visible text can use the “gap” framing while preserving the current legacy route.
-- Folded the pricing-discipline proof section into the benchmark page itself so the benchmark can stand on its own as the owner-facing citation asset.
+- Synced the live benchmark route to the approved Figma implementation frames `9:2` desktop and `11:2` mobile, including the compact fee-stack hero, the three observed examples, the fit-boundary note, and the approved proof-chip set.
 - Kept the benchmark CTA path focused on the teardown route instead of requiring owners to detour through the operator proof pack.
+- Retired the benchmark-embedded intake form so the benchmark now links into the shared `/property-management/` teardown route while preserving benchmark `owner_source` attribution.
 - 2026-05-21 proof-clean follow-up: demoted the AMI income guide out of the owner-proof lane, removed public PriceLabs/AirDNA-style authority language from that guide, and rerouted the owner FAQ on `/property-management/` to the benchmark instead of the AMI average-income explainer.
+- 2026-06-11 Figma implementation follow-up: finished the approved implementation frames (`9:2` desktop, `11:2` mobile), replaced the embedded benchmark form with the teardown intake handoff, kept `Request Your Revenue Teardown`, and preserved the approved proof-label set.
+- 2026-06-12 internal-link follow-up: added source-matched links from the booking-trends research page into the chart pack, the owner benchmark, and the owner revenue guide; no new routes or proof claims were added.
 
 ## Decision
 
@@ -86,7 +89,6 @@ Visible proof labels:
 - `Observed Seascape portfolio data`
 - `Observed property example`
 - `Scenario math, not a forecast`
-- `5-property Gulf Coast scope`
 - `Last refreshed: May 2026`
 
 Claims to keep out:
@@ -114,8 +116,8 @@ The benchmark should make the owner ask for a property-specific teardown, not ch
 
 Form route:
 
-- primary CTA should preserve benchmark source attribution:
-  `/property-management/?owner_source=owner-fee-revenue-leak-benchmark-2026#owner-cta`
+- primary CTA should link to the owner teardown intake:
+  `/property-management/#owner-cta`
 - form submit button stays `Send My Teardown Request`
 - proof note should say missing statements, calendars, reviews, or fee terms are marked unknown
 
@@ -133,8 +135,8 @@ Live teardown funnel implementation:
 
 Use the Hub package's frame plan directly:
 
-1. Desktop frame: `Owner Fee + Revenue Leak Benchmark - Desktop`
-2. Mobile frame: `Owner Fee + Revenue Leak Benchmark - Mobile`
+1. Desktop implementation frame: `9:2`
+2. Mobile implementation frame: `11:2`
 3. Sections: hero, wrong-comparison intro, fee stack, channel-cost comparison,
    scenario math, observed examples, fit boundary, teardown CTA, method rail
 4. Proof chips must stay visible in Figma and in the live page.

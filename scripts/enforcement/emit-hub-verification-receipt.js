@@ -7,6 +7,22 @@ const path = require("path");
 const projectRoot = path.resolve(__dirname, "..", "..");
 const DEFAULT_OWNER_METRICS_URL =
   "https://seascape-vacations.com/.netlify/functions/owner-lead-metrics";
+// Receipts emit to the ops staging root and reach seascape-hub only through
+// the PR-gated hub-refresh promotion lane — the live hub checkout must never
+// be a reachable default (SEASCAPE_HUB_PATH is deliberately not consulted).
+const DEFAULT_OUTPUT_ROOT = path.join(
+  os.homedir(),
+  "Library",
+  "Application Support",
+  "seascape-ops",
+  "state",
+  "staging",
+  "hub-refresh"
+);
+
+function resolveOutputRoot(hubPath) {
+  return hubPath || DEFAULT_OUTPUT_ROOT;
+}
 
 function usage(message = null) {
   if (message) {
@@ -154,8 +170,7 @@ async function emitOwnerLeadMetricsReceipt({
   fetchImpl = fetch,
   emittedAt,
 } = {}) {
-  const resolvedHubPath =
-    hubPath || process.env.SEASCAPE_HUB_PATH || path.join(os.homedir(), "Projects", "seascape-hub");
+  const resolvedHubPath = resolveOutputRoot(hubPath);
   const resolvedMetricsUrl =
     metricsUrl ||
     process.env.OWNER_LEAD_METRICS_URL ||
@@ -243,5 +258,6 @@ module.exports = {
   emitOwnerLeadMetricsReceipt,
   fetchOwnerLeadSummary,
   readEnvFileValue,
+  resolveOutputRoot,
   writeHubReceipt,
 };

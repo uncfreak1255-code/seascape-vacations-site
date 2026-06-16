@@ -15,8 +15,8 @@ const HOMEPAGE_PATH = "/";
 function request(baseUrl, targetPath) {
   const client = baseUrl.startsWith("http://") ? http : https;
   return new Promise((resolve, reject) => {
-    client
-      .get(`${baseUrl}${targetPath}`, (res) => {
+    const request = client
+      .get(`${baseUrl}${targetPath}`, { timeout: 10000 }, (res) => {
         let body = "";
         res.on("data", (chunk) => {
           body += chunk;
@@ -27,8 +27,12 @@ function request(baseUrl, targetPath) {
             body
           });
         });
-      })
-      .on("error", reject);
+      });
+
+    request.on("timeout", () => {
+      request.destroy(new Error(`Timed out fetching ${baseUrl}${targetPath}`));
+    });
+    request.on("error", reject);
   });
 }
 
@@ -297,6 +301,17 @@ function simulatePopupEmailCaptureEvent() {
   });
 }
 
+function simulateSanitizedAnalyticsPayload(payload) {
+  return withTrackingRuntime(({ window }) => {
+    if (!window.SeascapeConversionTracking || typeof window.SeascapeConversionTracking.trackEvent !== "function") {
+      throw new Error("conversion tracking did not expose the tracking runtime");
+    }
+
+    window.SeascapeConversionTracking.trackEvent("owner_form_submit", payload);
+    return window.dataLayer;
+  });
+}
+
 function parseArgs(argv) {
   const parsed = {
     baseUrl: "",
@@ -374,5 +389,6 @@ module.exports = {
   validatePopupRuntime,
   simulateDirectBookingEvents,
   simulatePopupEmailCaptureEvent,
+  simulateSanitizedAnalyticsPayload,
   run
 };

@@ -41,9 +41,9 @@
     {% endif %}
     {% if hasFormCard %}
     <ul class="owner-form-proof-list">
-      <li>{{ options.formIntro or "The fastest first pass comes from two things: the listing URL or address, and one line on what feels off. An owner statement or fee quote makes the teardown sharper." }}</li>
-      <li>{{ options.proofNote or "The teardown uses the evidence available. Missing statements, calendars, guest reviews, or fee terms stay unknown until you send them." }}</li>
-      <li><strong>{{ options.detailLabel or "What the teardown checks" }}</strong>{{ options.detailCopy or "The private teardown shows what we can verify, what looks expensive, and what still needs a document before you decide whether to stay put, fix the setup, or talk about a transition." }}</li>
+      <li>{{ options.formIntro or "The fastest first pass comes from two things: the listing URL or address, and one line on what feels off. An owner statement or fee quote makes the review sharper." }}</li>
+      <li>{{ options.proofNote or "Source note: The review uses the evidence available. Missing statements, calendars, guest reviews, or fee terms stay marked unknown until you send them." }}</li>
+      <li><strong>{{ options.detailLabel or "What the review checks" }}</strong>{{ options.detailCopy or "The private revenue review shows what we can verify, what looks expensive, and what still needs a document before you decide whether to stay put, fix the setup, or talk about a transition." }}</li>
       <li>{{ options.confirmation or "Got it. Seascape will read what you send and return the clearest next step: stay put, fix the current setup, or talk about a transition." }}</li>
     </ul>
     {% endif %}
@@ -53,7 +53,7 @@
   {% if hasFormCard %}
   <div class="owner-form-card">
     <div class="owner-form-card-copy">
-      <h4 class="owner-form-card-title">{{ options.formTitle or "Request Your Revenue Teardown" }}</h4>
+      <h4 class="owner-form-card-title">{{ options.formTitle or "Request Your Revenue Review" }}</h4>
     </div>
 
     <div class="owner-form-fieldset">
@@ -65,7 +65,7 @@
         </label>
         <label class="owner-form-field">
           <span>Email</span>
-          <input type="email" name="email" autocomplete="email" placeholder="Best email for your teardown" required>
+          <input type="email" name="email" autocomplete="email" placeholder="Best email for your review" required>
         </label>
         <label class="owner-form-field">
           <span>Phone</span>
@@ -103,12 +103,12 @@
 
   {% if hasFormCard %}
       <div class="owner-form-actions">
-        <button class="btn btn-gold owner-form-submit" type="submit">{{ options.buttonLabel or "Send My Teardown Request" }}</button>
+        <button class="btn btn-gold owner-form-submit" type="submit">{{ options.buttonLabel or "Send My Review Request" }}</button>
       </div>
     </div>
   </div>
   {% else %}
-  <button class="btn btn-gold owner-form-submit" type="submit">{{ options.buttonLabel or "Request Your Revenue Teardown" }}</button>
+  <button class="btn btn-gold owner-form-submit" type="submit">{{ options.buttonLabel or "Request Your Revenue Review" }}</button>
   {% endif %}
 
   {% if not options.suppressNote %}
