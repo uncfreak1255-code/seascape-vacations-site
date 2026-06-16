@@ -48,6 +48,11 @@
     "test:evals": "node --test scripts/evals/*.test.js"
   },
   "overrides": {
+    "@opentelemetry/core": "2.8.0",
+    "@opentelemetry/resources": "2.8.0",
+    "@opentelemetry/sdk-trace-base": "2.8.0",
+    "@opentelemetry/sdk-trace-node": "2.8.0",
+    "js-yaml": "4.2.0",
     "@11ty/eleventy": {
       "picomatch": "4.0.4"
     },
