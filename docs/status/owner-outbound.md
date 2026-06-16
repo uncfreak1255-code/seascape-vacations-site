@@ -89,6 +89,9 @@ pages, public host labels, and reopenable platform contact surfaces only. No
 private phone numbers, emails, property records, skip-tracing, scraped contact
 data, or Hub register rows were used. No send is authorized by this file.
 
+Founder review board:
+[Card 3 homeowner prospect evidence board](../reports/card-3-owner-prospect-board-2026-06-16.html).
+
 Approved proof module for every row:
 `gulf-coast-owner-benchmark-2026` from `src/_data/ownerProofAssets.json`.
 Use the benchmark as a decision aid only: 5-property Gulf Coast scope, observed
