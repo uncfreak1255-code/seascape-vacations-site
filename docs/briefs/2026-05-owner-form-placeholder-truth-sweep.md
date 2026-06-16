@@ -20,6 +20,7 @@ Status: ACTIVE
 - Pat Reilley's Sarasota follow-up showed the first capture still missed the two inputs David had to ask for manually: the listing link or address, and what felt off.
 - The fresh May 21 Sarasota owner review lead showed the owner follow-through still needed the listing/address plus a short reason in plain language before the review could be useful.
 - The owner benchmark intro on `/property-management/` should read cleanly as public copy; the teardown label should not run into the next sentence.
+- The hidden Netlify honeypot field should stay out of the keyboard path and accessibility tree so owner intake feels real to people using assistive tech.
 - The issue is owner-intake truth and payload clarity, not a new form design or a wider owner-page rewrite.
 
 ## Cluster In Scope
@@ -53,5 +54,6 @@ Status: ACTIVE
 - no public owner intake surface ships fake contact or listing placeholders
 - the owner hub and shared owner form ask for the listing link or address plus what feels off in plain owner language
 - the owner field-report postcard records one `owner_form_submit`
+- hidden honeypot fields remain invisible to users and assistive tech while preserving Netlify spam filtering
 - the owner post-submit route tells qualified owners to send a listing link or address plus one sentence on what feels off, without upgrading submit wiring into demand proof or reverting to generic review-request copy
 - guardrail tests and release checks stay green
