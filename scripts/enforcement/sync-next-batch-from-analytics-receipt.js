@@ -82,6 +82,13 @@ function formatPct(value) {
   return `${(Number(value || 0) * 100).toFixed(2)}%`;
 }
 
+function formatCell(value) {
+  if (value === null || value === undefined || value === "") {
+    return "unavailable";
+  }
+  return String(value).replace(/\|/g, "\\|");
+}
+
 function runDate(receipt) {
   const emittedAt = receipt.date_or_window?.emitted_at;
   return emittedAt ? String(emittedAt).slice(0, 10) : new Date().toISOString().slice(0, 10);
@@ -103,6 +110,73 @@ function renderClusterSummary(receipt) {
       `| ${cluster.cluster} | ${Number(cluster.pages || 0)} | ${Number(cluster.gsc_clicks || 0)} | ${Number(cluster.gsc_impressions || 0)} | ${formatPct(cluster.gsc_ctr)} | ${formatNumber(cluster.gsc_position)} | ${Number(cluster.ga4_sessions || 0)} |`
     )
   ].join("\n");
+}
+
+function renderSeoQueueSummary(receipt) {
+  const queues = Array.isArray(receipt.seo_queue_summary) ? receipt.seo_queue_summary : [];
+  if (queues.length === 0) {
+    return "";
+  }
+
+  return [
+    "",
+    "SEO queue read from the analytics receipt:",
+    "",
+    "| queue_bucket | pages | gsc_clicks | gsc_impressions | ga4_sessions |",
+    "|---|---:|---:|---:|---:|",
+    ...queues.map((queue) =>
+      `| ${formatCell(queue.seo_queue_bucket)} | ${Number(queue.pages || 0)} | ${Number(queue.gsc_clicks || 0)} | ${Number(queue.gsc_impressions || 0)} | ${Number(queue.ga4_sessions || 0)} |`
+    )
+  ].join("\n");
+}
+
+function renderSerpEvidence(receipt) {
+  const serp = receipt.serp_evidence;
+  if (!serp || typeof serp !== "object") {
+    return "";
+  }
+
+  const lines = [
+    "",
+    "SERP evidence from the analytics receipt:",
+    "",
+    `- Evidence status: \`${formatCell(serp.serp_evidence_status)}\`.`,
+    `- Mode: \`${formatCell(serp.mode)}\`.`,
+    `- Task count: ${Number(serp.task_count || 0)}.`
+  ];
+
+  if (serp.error_kind) {
+    lines.push(`- Error kind: \`${formatCell(serp.error_kind)}\`.`);
+  }
+  if (serp.requested_cost !== null && serp.requested_cost !== undefined) {
+    lines.push(`- Requested cost: ${formatNumber(serp.requested_cost, 4)}.`);
+  }
+
+  const support = Array.isArray(serp.support) ? serp.support : [];
+  if (support.length > 0) {
+    lines.push(
+      "",
+      "| query | page_path | seascape_rank | classification_support | top_visible_competitors | serp_features |",
+      "|---|---|---|---|---|---|",
+      ...support.map((target) => {
+        const competitors = Array.isArray(target.top_visible_competitors)
+          ? target.top_visible_competitors
+              .map((competitor) => competitor?.domain || competitor?.url || competitor)
+              .filter(Boolean)
+              .slice(0, 3)
+              .join(", ")
+          : "";
+        const features = Array.isArray(target.serp_features) ? target.serp_features.join(", ") : "";
+        const rank =
+          target.seascape_rank && typeof target.seascape_rank === "object"
+            ? target.seascape_rank.rank_group || target.seascape_rank.rank_absolute || target.seascape_rank.status
+            : target.seascape_rank;
+        return `| ${formatCell(target.query)} | ${formatCell(target.page_path)} | ${formatCell(rank)} | ${formatCell(target.classification_support)} | ${formatCell(competitors)} | ${formatCell(features)} |`;
+      })
+    );
+  }
+
+  return lines.join("\n");
 }
 
 function renderBranchInstruction(receipt) {
@@ -127,6 +201,8 @@ function renderLatestExecutionRead(receipt) {
   const gateLabel = receipt.site_work_gate?.label || "`blocked` - analytics receipt did not include a gate label.";
   const freshnessWarning = receipt.site_work_gate?.freshness_warning;
   const clusterSummary = renderClusterSummary(receipt);
+  const seoQueueSummary = renderSeoQueueSummary(receipt);
+  const serpEvidence = renderSerpEvidence(receipt);
 
   const lines = [
     `Run date: ${runDate(receipt)}.`,
@@ -147,7 +223,7 @@ function renderLatestExecutionRead(receipt) {
     lines.push(`- GSC freshness warning: ${freshnessWarning}`);
   }
 
-  lines.push(clusterSummary, "", renderBranchInstruction(receipt));
+  lines.push(clusterSummary, seoQueueSummary, serpEvidence, "", renderBranchInstruction(receipt));
 
   return lines.filter((line, index) => line !== "" || lines[index - 1] !== "").join("\n").trim();
 }
