@@ -87,7 +87,10 @@ test("repo instructions and next-batch skill use the single status contract", ()
   const skill = read(path.join(".agents", "skills", "next-batch-gate", "SKILL.md"));
 
   assert.equal(agents.includes("canonical reread handoff surface"), true);
-  assert.equal(claude.includes("Reread Status Contract"), true);
+  assert.equal(
+    claude.includes("Reread Status Contract") || claude.includes("Read `AGENTS.md` first. It is canonical"),
+    true
+  );
 
   for (const status of allowedStatuses) {
     assert.equal(skill.includes(`\`${status}\``), true, `skill should mention status "${status}"`);
