@@ -13,6 +13,7 @@
     "owner_form_start",
     "owner_form_submit",
     "guide_stay_click",
+    "guide_owner_referral_click",
     "guide_book_direct_click",
     "email_capture_submit",
     "booking_engine_handoff",

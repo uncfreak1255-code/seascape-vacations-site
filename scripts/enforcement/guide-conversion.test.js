@@ -196,6 +196,7 @@ test("conversion tracking supports both guide and owner measurement events", () 
     "owner_form_start",
     "owner_form_submit",
     "guide_stay_click",
+    "guide_owner_referral_click",
     "guide_book_direct_click",
     "email_capture_submit",
     "booking_engine_handoff"
@@ -352,6 +353,124 @@ test("booking-engine handoff click emits the GA4 event with the target booking U
     "https://book.seascape-vacations.com/?utm_content=best-time-visit-anna-maria-island"
   );
   assert.equal(observed.payload.link_text, "Open Direct Availability");
+});
+
+test("Bradenton guide owner benchmark referral tracks before navigation without crossing lanes", () => {
+  const guideSource = fs.readFileSync(path.join(projectRoot, "src", "guides", "bradenton-vs-sarasota.html"), "utf8");
+  const conversionTracking = fs.readFileSync(path.join(projectRoot, "src", "assets", "js", "conversion-tracking.js"), "utf8");
+  const winnerPortfolio = fs.readFileSync(path.join(projectRoot, "docs", "portfolio", "winner-guides.md"), "utf8");
+  const bradentonWinnerRow = winnerPortfolio
+    .split("\n")
+    .find((line) => line.startsWith("| `/guides/bradenton-vs-sarasota/` |"));
+  const ownerBenchmarkLink = guideSource.match(
+    /<a\b[^>]*href="\/research\/owner-fee-revenue-leak-benchmark-2026\/"[^>]*>See the owner fee benchmark/
+  );
+
+  assert.ok(ownerBenchmarkLink, "Bradenton vs Sarasota should link to the owner benchmark");
+  assert.match(ownerBenchmarkLink[0], /data-track-event="guide_owner_referral_click"/);
+  assert.match(ownerBenchmarkLink[0], /data-guide-slug="bradenton-vs-sarasota"/);
+  assert.match(ownerBenchmarkLink[0], /data-track-label="Owner fee benchmark"/);
+  assert.doesNotMatch(ownerBenchmarkLink[0], /owner_primary_cta_click|guide_book_direct_click/);
+  assert.match(conversionTracking, /"guide_owner_referral_click"/);
+  assert.ok(bradentonWinnerRow, "winner guide portfolio should still document the Bradenton row");
+  assert.match(bradentonWinnerRow, /\| `guide_book_direct_click` \|/);
+  assert.doesNotMatch(bradentonWinnerRow, /guide_owner_referral_click/);
+
+  const observed = withConversionTrackingStubs(({ listeners, window }) => {
+    const timeline = [];
+    const originalSetTimeout = global.setTimeout;
+    window.location.href = "http://localhost/guides/bradenton-vs-sarasota/";
+    window.location.pathname = "/guides/bradenton-vs-sarasota/";
+    window.location.search = "";
+    window.location.assign = function (nextHref) {
+      timeline.push(`navigate:${nextHref}`);
+      this.href = nextHref;
+    };
+
+    try {
+      global.setTimeout = function () {
+        return 1;
+      };
+      listeners.DOMContentLoaded();
+
+      const benchmarkLink = {
+        tagName: "A",
+        href: "/research/owner-fee-revenue-leak-benchmark-2026/",
+        target: "",
+        textContent: "See the owner fee benchmark",
+        dataset: {
+          trackEvent: "guide_owner_referral_click",
+          guideSlug: "bradenton-vs-sarasota",
+          trackLabel: "Owner fee benchmark"
+        },
+        hasAttribute() {
+          return false;
+        },
+        getAttribute(name) {
+          if (name === "href") return this.href;
+          if (name === "target") return this.target;
+          return null;
+        },
+        setAttribute(name, value) {
+          if (name === "href") this.href = value;
+        }
+      };
+
+      let prevented = false;
+      let trackedEvent = null;
+      let trackedPayload = null;
+      window.gtag = function (command, eventName, params) {
+        if (command !== "event") return;
+        trackedEvent = eventName;
+        trackedPayload = params;
+        timeline.push(`track:${eventName}`);
+        if (params && typeof params.event_callback === "function") {
+          params.event_callback();
+        }
+      };
+
+      listeners.click({
+        target: {
+          closest(selector) {
+            return selector === "[data-track-event]" ? benchmarkLink : null;
+          }
+        },
+        button: 0,
+        metaKey: false,
+        ctrlKey: false,
+        shiftKey: false,
+        altKey: false,
+        preventDefault() {
+          prevented = true;
+          timeline.push("prevent:guide_owner_referral_click");
+        }
+      });
+
+      return {
+        prevented,
+        trackedEvent,
+        trackedPayload,
+        timeline
+      };
+    } finally {
+      global.setTimeout = originalSetTimeout;
+    }
+  });
+
+  const trackIndex = observed.timeline.indexOf("track:guide_owner_referral_click");
+  const navigationIndex = observed.timeline.findIndex((entry) => entry.startsWith("navigate:"));
+
+  assert.equal(observed.prevented, true);
+  assert.equal(observed.trackedEvent, "guide_owner_referral_click");
+  assert.notEqual(observed.trackedEvent, "owner_primary_cta_click");
+  assert.notEqual(observed.trackedEvent, "guide_book_direct_click");
+  assert.equal(observed.trackedPayload.guide_slug, "bradenton-vs-sarasota");
+  assert.equal(Object.prototype.hasOwnProperty.call(observed.trackedPayload, "page_slug"), false);
+  assert.equal(observed.trackedPayload.link_text, "Owner fee benchmark");
+  assert.equal(observed.trackedPayload.landing_page_path, "/guides/bradenton-vs-sarasota/");
+  assert.equal(new URL(observed.trackedPayload.link_url).pathname, "/research/owner-fee-revenue-leak-benchmark-2026/");
+  assert.equal(trackIndex > -1, true, "owner referral should dispatch through GA before navigation");
+  assert.equal(navigationIndex > trackIndex, true, "owner referral should continue navigation only after the tracking callback");
 });
 
 test("first tracked navigation click is delivered before same-tab navigation continues", () => {
