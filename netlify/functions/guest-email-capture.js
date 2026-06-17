@@ -252,11 +252,22 @@ async function handleGuestEmailCapture(event, _context, injectedStore, injectedF
   const delivery = await submitToMailchimp(payload, receipt, injectedFetch);
   const storedReceipt = withMailchimpDelivery(receipt, delivery);
 
-  const store = resolveWritableStore(event, injectedStore);
-  const existingMetrics = await readGuestEmailCaptureMetrics(store);
-  const nextMetrics = mergeGuestEmailCaptureMetrics(existingMetrics, storedReceipt);
   try {
+    const store = resolveWritableStore(event, injectedStore);
+    const existingMetrics = await readGuestEmailCaptureMetrics(store);
+    const nextMetrics = mergeGuestEmailCaptureMetrics(existingMetrics, storedReceipt);
     await writeGuestEmailCaptureMetrics(store, nextMetrics);
+    return {
+      statusCode: 200,
+      headers: { "content-type": "application/json; charset=utf-8" },
+      body: JSON.stringify({
+        stored: true,
+        totalCaptures: nextMetrics.totalCaptures,
+        pagePath: storedReceipt.pagePath,
+        placement: storedReceipt.placement,
+        deliveryMode: delivery.mode
+      })
+    };
   } catch (error) {
     console.error("guest_capture_metrics_write_failed", {
       submissionId: storedReceipt.submissionId,
@@ -273,18 +284,6 @@ async function handleGuestEmailCapture(event, _context, injectedStore, injectedF
       })
     };
   }
-
-  return {
-    statusCode: 200,
-    headers: { "content-type": "application/json; charset=utf-8" },
-    body: JSON.stringify({
-      stored: true,
-      totalCaptures: nextMetrics.totalCaptures,
-      pagePath: storedReceipt.pagePath,
-      placement: storedReceipt.placement,
-      deliveryMode: delivery.mode
-    })
-  };
 }
 
 async function handler(event, context) {

@@ -695,6 +695,82 @@ test("guest email capture returns stored false when metrics write fails after Ma
   }
 });
 
+test("guest email capture returns stored false when metrics read fails after Mailchimp success", async () => {
+  const previousApiKey = process.env.MAILCHIMP_API_KEY;
+  const previousAudienceId = process.env.MAILCHIMP_AUDIENCE_ID;
+  const previousAudienceIds = process.env.MAILCHIMP_AUDIENCE_IDS;
+  const previousServerPrefix = process.env.MAILCHIMP_SERVER_PREFIX;
+  const originalConsoleError = console.error;
+  const consoleErrors = [];
+  process.env.MAILCHIMP_API_KEY = "test-key-us6";
+  process.env.MAILCHIMP_AUDIENCE_ID = "95e5a594d1";
+  delete process.env.MAILCHIMP_AUDIENCE_IDS;
+  delete process.env.MAILCHIMP_SERVER_PREFIX;
+  console.error = (...args) => {
+    consoleErrors.push(args);
+  };
+
+  try {
+    const response = await handleGuestEmailCapture(
+      {
+        httpMethod: "POST",
+        body: JSON.stringify({
+          name: "Sawyer",
+          email: "sawyer@example.com",
+          pagePath: "/",
+          placement: "popup",
+          createdAt: "2026-05-12T12:00:00.000Z"
+        })
+      },
+      undefined,
+      {
+        async get() {
+          throw new Error("blob read failed");
+        },
+        async set() {
+          throw new Error("store write should not run");
+        }
+      },
+      async (url) => {
+        const parsed = new URL(url);
+        if (parsed.pathname.endsWith("/events") || parsed.pathname.endsWith("/tags")) {
+          return {
+            ok: true,
+            status: 204,
+            async text() {
+              return "";
+            }
+          };
+        }
+
+        return {
+          ok: true,
+          status: 200,
+          async text() {
+            return JSON.stringify({ id: "member-1" });
+          }
+        };
+      }
+    );
+
+    assert.equal(response.statusCode, 200);
+    assert.deepEqual(JSON.parse(response.body), {
+      stored: false,
+      pagePath: "/",
+      placement: "popup",
+      deliveryMode: "marketing_api"
+    });
+    assert.equal(consoleErrors.length > 0, true);
+    assert.equal(consoleErrors[0][0], "guest_capture_metrics_write_failed");
+  } finally {
+    console.error = originalConsoleError;
+    restoreEnvValue("MAILCHIMP_API_KEY", previousApiKey);
+    restoreEnvValue("MAILCHIMP_AUDIENCE_ID", previousAudienceId);
+    restoreEnvValue("MAILCHIMP_AUDIENCE_IDS", previousAudienceIds);
+    restoreEnvValue("MAILCHIMP_SERVER_PREFIX", previousServerPrefix);
+  }
+});
+
 test("guest email capture metrics endpoint initializes blobs lambda compatibility before calling getStore", () => {
   const metricsHandler = fs.readFileSync(
     path.join(projectRoot, "netlify", "functions", "guest-email-capture-metrics.js"),
