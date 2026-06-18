@@ -8,6 +8,7 @@ const {
 } = require("./lib");
 const { assertValidFigmaBriefHandoffs } = require("./figma-brief-handoff");
 const { assertRepoHtmlCachePolicyConsistency } = require("./release-cache-policy");
+const { assertSearchDecisionBriefContract } = require("./search-brief-gate");
 const { withWorktreeLock } = require("./worktree-lock");
 const {
   assertFreshOwnerOperatorProof,
@@ -249,6 +250,9 @@ function main() {
     );
     recordAssertion(pathAssertions, "placeholder analytics", assertNoPlaceholderAnalytics);
     recordAssertion(pathAssertions, "forbidden public runtime", assertNoForbiddenPublicRuntime);
+    recordAssertion(pathAssertions, "search decision brief gate", () =>
+      assertSearchDecisionBriefContract({ range: args.range })
+    );
     recordAssertion(pathAssertions, "valid figma brief handoffs", () =>
       assertValidFigmaBriefs(args.range)
     );

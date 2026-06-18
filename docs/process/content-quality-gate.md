@@ -43,6 +43,24 @@ These fields keep Page Builder, Release Gate, and the analytics reread on the
 same measurement contract instead of letting a batch improvise proof after the
 fact.
 
+For search-driven page, metadata, redirect, or sitemap edits, the active brief
+must also carry one filled `## Gate 0 ...` block from
+`docs/process/seo-competitor-operating-loop.md` or
+`docs/process/ranking-regression-rescue.md` with real values for:
+
+- `Target query family`
+- `Searcher intent`
+- `Current Seascape URL`
+- `Current proof`
+- `Top visible competitors`
+- `Competitor angle`
+- `Seascape gap`
+- `Recommendation` or `Recommended action`
+
+Placeholder text like `to capture`, `fill after`, or `TBD` does not count.
+This is the repo's check that a live SERP or DataForSEO-style competitor read
+happened before search-facing source edits start moving.
+
 ## Visible Copy Lane
 
 Any PR that changes `reader copy` in `src/` must run this order before review or merge:
