@@ -82,9 +82,47 @@ test("remaining orphan guides, stays, and owner scenarios are routed into the hu
     "/property-management/vacation-rental-maintenance-florida/",
     "/property-management/vacation-rental-management-siesta-key/",
     "/property-management/vacation-rental-photography-florida/",
-    "/property-management/vrbo-management-services-florida/"
+    "/property-management/vrbo-management-services-florida/",
+    "/property-management/condo-rental-management-florida/"
   ]) {
     assert.equal(ownerHub.includes(marker), true, `owner hub still missing ${marker}`);
+  }
+});
+
+test("strong guide pages link to the selected indexation rescue targets", () => {
+  const marketReport = fs.readFileSync(
+    path.join(projectRoot, "src", "guides", "florida-gulf-coast-vacation-rental-market-report-2026.html"),
+    "utf8"
+  );
+  const bradentonVsSarasota = fs.readFileSync(
+    path.join(projectRoot, "src", "guides", "bradenton-vs-sarasota.html"),
+    "utf8"
+  );
+  const thingsToDoBradenton = fs.readFileSync(
+    path.join(projectRoot, "src", "guides", "things-to-do-bradenton-fl.html"),
+    "utf8"
+  );
+
+  for (const marker of [
+    "/property-management/condo-rental-management-florida/",
+    "/property-management/vacation-rental-maintenance-florida/",
+    "/property-management/vacation-rental-insurance-florida/"
+  ]) {
+    assert.equal(marketReport.includes(marker), true, `market report missing ${marker}`);
+  }
+
+  for (const marker of [
+    "/stays/vacation-rentals-sleeps-12-florida/",
+    "/stays/vacation-rentals-with-elevator/"
+  ]) {
+    assert.equal(bradentonVsSarasota.includes(marker), true, `Bradenton vs Sarasota missing ${marker}`);
+  }
+
+  for (const marker of [
+    "/stays/canal-homes-with-boat-dock/",
+    "/stays/vacation-rentals-with-game-room/"
+  ]) {
+    assert.equal(thingsToDoBradenton.includes(marker), true, `things to do Bradenton missing ${marker}`);
   }
 });
 

@@ -217,7 +217,41 @@ function parseRequiredLinksFromBrief(briefContent) {
   return match[1]
     .split(",")
     .map((value) => value.trim())
-    .filter(Boolean);
+    .filter((value) => value.startsWith("/"));
+}
+
+function parseRequiredLinkMapFromBrief(briefContent) {
+  const map = new Map();
+  const sectionStart = briefContent.search(/^## Required Internal Link Map\s*$/im);
+
+  if (sectionStart === -1) {
+    return map;
+  }
+
+  const sectionBodyStart = briefContent.indexOf("\n", sectionStart);
+  const sectionRemainder = briefContent.slice(sectionBodyStart + 1);
+  const nextSectionIndex = sectionRemainder.search(/^## /m);
+  const sectionBody =
+    nextSectionIndex === -1 ? sectionRemainder : sectionRemainder.slice(0, nextSectionIndex);
+
+  for (const line of sectionBody.split(/\r?\n/)) {
+    const match = line.match(/^-\s+([^:]+):\s+(.+)$/);
+    if (!match) {
+      continue;
+    }
+
+    const relativePath = match[1].trim();
+    const links = match[2]
+      .split(",")
+      .map((value) => value.trim())
+      .filter((value) => value.startsWith("/"));
+
+    if (relativePath && links.length > 0) {
+      map.set(relativePath, links);
+    }
+  }
+
+  return map;
 }
 
 function parseMissingBriefFields(briefContent) {
@@ -811,13 +845,18 @@ test("changed public content files require one active brief and pass brief-linke
     `active brief is missing required content-gate fields: ${missingBriefFields.join(", ")}`
   );
 
-  const requiredLinks = parseRequiredLinksFromBrief(briefContent);
+  const defaultRequiredLinks = parseRequiredLinksFromBrief(briefContent);
+  const requiredLinkMap = parseRequiredLinkMapFromBrief(briefContent);
   const violations = [];
 
   for (const relativePath of changedReaderCopyFiles) {
     const source = read(relativePath);
     violations.push(
-      ...lintPublicContent(relativePath, source, requiredLinks)
+      ...lintPublicContent(
+        relativePath,
+        source,
+        requiredLinkMap.get(relativePath) || defaultRequiredLinks
+      )
     );
   }
 
