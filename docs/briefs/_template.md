@@ -32,6 +32,22 @@
 - readback window:
 - decision rule:
 
+## Gate 0 Search Block
+
+Required when the branch changes search-facing page source, `src/_data/seoPages.json`,
+`src/_redirects`, or `src/sitemap.njk`.
+
+| Field | Required answer |
+| --- | --- |
+| Target query family | |
+| Searcher intent | |
+| Current Seascape URL | |
+| Current proof | |
+| Top visible competitors | |
+| Competitor angle | |
+| Seascape gap | |
+| Recommendation | |
+
 ## Search Operator Read
 
 - source reads used
