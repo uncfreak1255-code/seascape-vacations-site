@@ -89,8 +89,9 @@ eleventyComputed:
         "@type": "BreadcrumbList",
         "itemListElement": [
             { "@type": "ListItem", "position": 1, "name": "Home", "item": "{{ site.url }}/" },
-            { "@type": "ListItem", "position": 2, "name": {{ destinationLabel | json | safe }}, "item": "{{ site.url }}{{ destinationGuideHref or '/stays/' }}" },
-            { "@type": "ListItem", "position": 3, "name": {{ seoPage.h1 | json | safe }}, "item": "{{ site.url }}/stays/{{ seoPage.slug }}/" }
+            { "@type": "ListItem", "position": 2, "name": "Stay Collections", "item": "{{ site.url }}/stays/" },
+            { "@type": "ListItem", "position": 3, "name": {{ destinationLabel | json | safe }}, "item": "{{ site.url }}{{ destinationGuideHref or '/stays/' }}" },
+            { "@type": "ListItem", "position": 4, "name": {{ seoPage.h1 | json | safe }}, "item": "{{ site.url }}/stays/{{ seoPage.slug }}/" }
         ]
     }
     </script>
@@ -143,12 +144,12 @@ eleventyComputed:
         "url": "https://seascape-vacations.com",
         "telephone": "+1-941-704-8545",
         "priceRange": "$200-$550 / night",
-        "areaServed": {{ destinationLabel | json | safe }},
-        "aggregateRating": { "@type": "AggregateRating", "ratingValue": "5.0", "reviewCount": "300" }
+        "areaServed": {{ destinationLabel | json | safe }}
     }
     </script>
 
-    {% if hasMatchingHomes %}
+    {% if seoPage.propertyFacts and seoPage.propertyFacts.length > 0 and seoPage.propertyFacts[0].pageUrl and false %}
+    {% elif properties and properties | length and seoPage.matchingProperties and seoPage.matchingProperties.length > 0 %}
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
@@ -194,7 +195,7 @@ eleventyComputed:
                         "priceCurrency": "USD",
                         "unitText": "NIGHT",
                         "availability": "https://schema.org/InStock",
-                        "url": {{ property.bookingUrl | json | safe }}
+                        "url": "{{ property.bookingUrl }}"
                     }
                 }
             }{% if not isLastMatch %},{% endif %}
@@ -204,6 +205,7 @@ eleventyComputed:
         ]
     }
     </script>
+    {% elif properties and properties | length %}
     {% endif %}
 
     <style>
@@ -462,7 +464,7 @@ eleventyComputed:
             <div class="container">
                 <div class="section-header">
                     <p class="section-tag">Compare the tradeoff</p>
-                    <h2 class="section-title">Seascape, off-island vs. the island alternative</h2>
+                    <h2 class="section-title">How this stay path compares</h2>
                     {% if seoPage.valueComparison.intro %}
                     <p class="section-subtitle">{{ seoPage.valueComparison.intro }}</p>
                     {% endif %}
@@ -496,7 +498,7 @@ eleventyComputed:
             <div class="container">
                 <div class="section-header">
                     <p class="section-tag">Trip match</p>
-                    <h2 class="section-title">Which trip are you planning?</h2>
+                    <h2 class="section-title">This trip fits best when</h2>
                     <p class="section-subtitle">{{ seoPage.tripMatchIntro or "Use these trip-shape checks before you compare homes." }}</p>
                 </div>
                 <div class="card-grid">
@@ -641,7 +643,7 @@ eleventyComputed:
             <div class="container">
                 <div class="section-header">
                     <p class="section-tag">Related guides</p>
-                    <h2 class="section-title">Plan the next choice</h2>
+                    <h2 class="section-title">Use these guides before you book</h2>
                     <p class="section-subtitle">{{ seoPage.relatedGuideIntro or "Use these planning pages before you narrow dates." }}</p>
                 </div>
                 <div class="guide-grid">
@@ -660,7 +662,7 @@ eleventyComputed:
             <div class="container">
                 <div class="section-header">
                     <p class="section-tag">Related stays</p>
-                    <h2 class="section-title">More ways to stay nearby</h2>
+                    <h2 class="section-title">Use these guides before you book</h2>
                 </div>
                 <div class="guide-grid">
                     {% for relatedSlug in seoPage.relatedStaySlugs %}
@@ -714,6 +716,8 @@ eleventyComputed:
             <div class="footer-links">
                 <a href="/">Home</a>
                 <a href="/stays/">Stay Collections</a>
+                <a href="/stays/anna-maria-island-vacation-rentals/">Anna Maria Island Rentals</a>
+                <a href="/properties/?area=anna-maria-island">AMI Homes</a>
                 <a href="/guides/anna-maria-island-area-guide/">Anna Maria Island</a>
                 <a href="/guides/bradenton-area-guide/">Bradenton</a>
                 <a href="/guides/sarasota-area-guide/">Sarasota</a>
