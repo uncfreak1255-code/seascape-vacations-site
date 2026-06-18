@@ -55,6 +55,20 @@ test("AMI beachfront page stays honest about near-island positioning instead of 
     /(12-25 minutes|12\u201325 minutes|not directly on the beach|not directly on the sand|off-island|near-island)/,
     "beachfront page should explicitly explain the near-island tradeoff"
   );
+
+  assert.equal(
+    beachfrontPage.matchingProperties.includes("sarasota-luxe"),
+    false,
+    "beachfront alternative should not feature Sarasota Luxe as an AMI beach-base fit"
+  );
+
+  assert.equal(
+    Array.isArray(beachfrontPage.propertyFacts),
+    true,
+    "beachfront alternative should expose source-backed beach distance facts"
+  );
+  assert.equal(beachfrontPage.propertyFacts.length >= 3, true);
+  assert.match(serialized, /2\.9 mi|5\.4 mi|about 5 mi \/ 15 min/);
 });
 
 test("AMI vacation rentals page does not promise free water-sports gear that is not actually included", () => {

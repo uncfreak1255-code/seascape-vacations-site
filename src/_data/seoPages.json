@@ -3316,7 +3316,6 @@
       "matchingProperties": [
         "dockside-dreams",
         "the-oasis",
-        "sarasota-luxe",
         "river-house"
       ],
       "decisionHighlights": [
@@ -3378,6 +3377,23 @@
           }
         ]
       },
+      "propertyFacts": [
+        {
+          "name": "Dockside Dreams to Bradenton Beach",
+          "time": "2.9 mi",
+          "note": "The closest fit in this collection; Cortez Beach is 3.4 miles and Holmes Beach is 5.1 miles."
+        },
+        {
+          "name": "The Oasis to Holmes Beach",
+          "time": "5.4 mi",
+          "note": "A larger group base where the trade is more house, pool time, and a drive over the bridge."
+        },
+        {
+          "name": "River House to AMI and Manatee Public Beach",
+          "time": "about 5 mi / 15 min",
+          "note": "The calm north Bradenton base, one minute from Warner Bayou boat ramp and close enough for planned beach days."
+        }
+      ],
       "collectionCtaTitle": "Need the wider near-island collection?",
       "collectionCtaBody": "Open the Anna Maria Island filter if you want more homes that keep beach days easy without forcing a true beachfront premium.",
       "collectionCtaHref": "/properties/?area=anna-maria-island",
