@@ -25,6 +25,7 @@ const BANNED_GENERIC_PATTERNS = [
   /\bmyriad\b/i,
   /\bseamless\b/i,
   /\bunparalleled\b/i,
+  /\bcleaner\b/i,
   /\battentive local operations\b/i,
   /\bclearer owner communication\b/i,
   /\bfewer quiet misses\b/i,
@@ -601,7 +602,7 @@ test("lint catches donor-mined throat clearing, business jargon, and vague decla
       <section>
         <p>Here's why this matters: when it comes to navigating challenges, owners need a partner who can unpack the revenue landscape.</p>
         <p>Let me be clear: the stakes are high, and the implications are significant.</p>
-        <p>In a world where every guest expects perfection, you need to double down on seamless execution. Full stop.</p>
+        <p>In a world where every guest expects perfection, you need to double down on seamless execution and cleaner handoffs. Full stop.</p>
       </section>
     </main>
   `;
@@ -655,6 +656,26 @@ test("lint catches donor-mined throat clearing, business jargon, and vague decla
     violations.some((entry) => entry.includes('banned generic phrasing "Full stop"')),
     true
   );
+  assert.equal(
+    violations.some((entry) => entry.includes('banned generic phrasing "cleaner"')),
+    true
+  );
+});
+
+test("seo page data does not use cleaner as positioning shorthand", () => {
+  const seoPages = JSON.parse(read(path.join("src", "_data", "seoPages.json")));
+  const violations = [];
+
+  for (const entry of collectStringLeaves(seoPages)) {
+    const normalizedValue = entry.value.replace(/\s+/g, " ").trim();
+    const match = normalizedValue.match(/\bcleaner\b/i);
+
+    if (match) {
+      violations.push(`src/_data/seoPages.json:${entry.path}: banned positioning shorthand "${match[0]}"`);
+    }
+  }
+
+  assert.deepEqual(violations, []);
 });
 
 test("lint catches mechanical setup-reveal structures from donor review", () => {

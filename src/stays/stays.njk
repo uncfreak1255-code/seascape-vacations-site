@@ -9,40 +9,61 @@ eleventyComputed:
   pageDescription: "{{ seoPage.description }}"
   seoIndexable: "{{ seoGovernance.staysNoindexSlugs.indexOf(seoPage.slug) === -1 }}"
 ---
+{% from "partials/ui-icon.njk" import uiIcon %}
 {% set pageUpdatedIso = gitLastModifiedIso(page.inputPath, "src/_data/seoPages.json", "src/_data/staysPages.js", "src/_data/seoGovernance.js") %}
 {% set pageUpdatedDate = gitLastModifiedDate(page.inputPath, "src/_data/seoPages.json", "src/_data/staysPages.js", "src/_data/seoGovernance.js") %}
 {% set pageUpdatedLabel = gitLastModifiedLabel(page.inputPath, "src/_data/seoPages.json", "src/_data/staysPages.js", "src/_data/seoGovernance.js") %}
+{% set featuredProperty = properties[0] %}
+{% set heroImage = seoPage.heroImage or (featuredProperty and featuredProperty.image) or "/images/seascape-og-default.jpg" %}
+{% set ctaImage = seoPage.ctaImage or heroImage %}
+{% set destinationGuideMap = {
+    "anna-maria-island": "/guides/anna-maria-island-area-guide/",
+    "bradenton": "/guides/bradenton-area-guide/",
+    "sarasota": "/guides/sarasota-area-guide/",
+    "siesta-key": "/guides/siesta-key-area-guide/",
+    "florida-gulf-coast": "/guides/"
+} %}
+{% set destinationGuideHref = destinationGuideMap[seoPage.destination] %}
+{% set destinationLabel = (seoPage.destination or "Gulf Coast") | replace("-", " ") | title %}
+{% set comparisonRows = [] %}
+{% if seoPage.valueComparison and seoPage.valueComparison.rows %}
+{% set comparisonRows = seoPage.valueComparison.rows %}
+{% elif seoPage.valueComparison %}
+{% set comparisonRows = seoPage.valueComparison %}
+{% endif %}
+{% set hasComparison = comparisonRows and comparisonRows.length > 0 %}
+{% set hasTripMatches = seoPage.tripMatchCards and seoPage.tripMatchCards.length > 0 %}
+{% set hasMatchingHomes = properties and properties.length and seoPage.matchingProperties and seoPage.matchingProperties.length > 0 %}
+{% set hasDriveFacts = seoPage.propertyFacts and seoPage.propertyFacts.length > 0 and seoPage.propertyFacts[0].time %}
+{% set hasReviews = seoPage.reviewProof and seoPage.reviewProof.length > 0 %}
+{% set hasFaqs = seoPage.faqs and seoPage.faqs.length > 0 %}
+{% set hasRelatedGuides = seoPage.relatedGuideLinks and seoPage.relatedGuideLinks.length > 0 %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- Primary SEO -->
+
     <title>{{ seoPage.title }} | Seascape Vacations</title>
     <meta name="description" content="{{ seoPage.description }}">
     <meta name="robots" content="{% if seoIndexable == 'true' or seoIndexable === true %}index, follow{% else %}noindex, follow{% endif %}">
     <link rel="canonical" href="{{ site.url }}/stays/{{ seoPage.slug }}/">
-    
-    <!-- Open Graph -->
+
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ site.url }}/stays/{{ seoPage.slug }}/">
     <meta property="og:title" content="{{ seoPage.title }}">
     <meta property="og:description" content="{{ seoPage.description }}">
-    <meta property="og:image" content="{{ site.url }}/images/seascape-og-default.jpg">
+    <meta property="og:image" content="{% if heroImage and heroImage[0] == '/' %}{{ site.url }}{{ heroImage }}{% else %}{{ heroImage | imgProxy(1200) }}{% endif %}">
     <meta property="og:locale" content="en_US">
     <meta property="og:site_name" content="Seascape Vacations">
-    
-    <!-- Twitter -->
+
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="{{ seoPage.title }}">
     <meta name="twitter:description" content="{{ seoPage.description }}">
-    <meta name="twitter:image" content="{{ site.url }}/images/seascape-og-default.jpg">
+    <meta name="twitter:image" content="{% if heroImage and heroImage[0] == '/' %}{{ site.url }}{{ heroImage }}{% else %}{{ heroImage | imgProxy(1200) }}{% endif %}">
 
     {% include "partials/organization-schema.njk" %}
 
-<!-- Fonts -->
-    {% set featuredProperty = properties[0] %}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://bookingenginecdn.hostaway.com" crossorigin>
@@ -52,58 +73,49 @@ eleventyComputed:
     <noscript>
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
     </noscript>
-    {% if featuredProperty %}
+    {% if heroImage %}
     <link
         rel="preload"
         as="image"
-        href="{{ featuredProperty.image | imgProxy(800) }}"
-        imagesrcset="{{ featuredProperty.image | imgProxy(400) }} 400w, {{ featuredProperty.image | imgProxy(800) }} 800w, {{ featuredProperty.image | imgProxy(1200) }} 1200w"
-        imagesizes="(min-width: 1100px) 33vw, (min-width: 768px) 50vw, 100vw"
+        href="{{ heroImage | imgProxy(1200) }}"
+        imagesrcset="{{ heroImage | imgProxy(800) }} 800w, {{ heroImage | imgProxy(1200) }} 1200w, {{ heroImage | imgProxy(1600) }} 1600w"
+        imagesizes="100vw"
         fetchpriority="high">
     {% endif %}
-    
-    <!-- Breadcrumb Schema -->
+
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
         "itemListElement": [
-            {"@type": "ListItem", "position": 1, "name": "Home", "item": "{{ site.url }}/"},
-            {"@type": "ListItem", "position": 2, "name": "Stay Collections", "item": "{{ site.url }}/stays/"},
-            {"@type": "ListItem", "position": 3, "name": "{{ seoPage.title }}", "item": "{{ site.url }}/stays/{{ seoPage.slug }}/"}
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "{{ site.url }}/" },
+            { "@type": "ListItem", "position": 2, "name": "Stay Collections", "item": "{{ site.url }}/stays/" },
+            { "@type": "ListItem", "position": 3, "name": {{ destinationLabel | json | safe }}, "item": "{{ site.url }}{{ destinationGuideHref or '/stays/' }}" },
+            { "@type": "ListItem", "position": 4, "name": {{ seoPage.h1 | json | safe }}, "item": "{{ site.url }}/stays/{{ seoPage.slug }}/" }
         ]
     }
     </script>
 
-    <!-- Article Schema for GEO freshness + E-E-A-T -->
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
         "@type": "Article",
-        "headline": "{{ seoPage.title }}",
-        "description": "{{ seoPage.description }}",
+        "headline": {{ seoPage.title | json | safe }},
+        "description": {{ seoPage.description | json | safe }},
         "url": "{{ site.url }}/stays/{{ seoPage.slug }}/",
-        "image": "{{ site.url }}/images/seascape-og-default.jpg",
+        "image": {% if heroImage and heroImage[0] == '/' %}"{{ site.url }}{{ heroImage }}"{% else %}{{ (heroImage | imgProxy(1200)) | json | safe }}{% endif %},
         "datePublished": "2025-01-22",
         "dateModified": "{{ pageUpdatedIso or pageUpdatedDate }}",
-        "author": {
-            "@type": "Organization",
-            "name": "{{ site.author }}",
-            "url": "{{ site.url }}"
-        },
+        "author": { "@type": "Organization", "name": {{ site.author | json | safe }}, "url": "{{ site.url }}" },
         "publisher": {
             "@type": "Organization",
-            "name": "{{ site.name }}",
-            "logo": {
-                "@type": "ImageObject",
-                "url": "{{ site.url }}/logo-optimized.png"
-            }
+            "name": {{ site.name | json | safe }},
+            "logo": { "@type": "ImageObject", "url": "{{ site.url }}/logo-optimized.png" }
         }
     }
     </script>
-    
-    <!-- FAQ Schema -->
-    {% if seoPage.faqs and seoPage.faqs.length > 0 %}
+
+    {% if hasFaqs %}
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
@@ -112,10 +124,10 @@ eleventyComputed:
             {% for faq in seoPage.faqs %}
             {
                 "@type": "Question",
-                "name": "{{ faq.question or faq.q }}",
+                "name": {{ (faq.question or faq.q) | json | safe }},
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "{{ (faq.answer or faq.a) | stripHtml | escape }}"
+                    "text": {{ (faq.answer or faq.a) | stripHtml | json | safe }}
                 }
             }{% if not loop.last %},{% endif %}
             {% endfor %}
@@ -123,76 +135,27 @@ eleventyComputed:
     }
     </script>
     {% endif %}
-    
-    <!-- Stay collection schema -->
-    {% if seoPage.propertyFacts and seoPage.propertyFacts.length > 0 %}
+
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
-        "@type": "ItemList",
-        "name": "{{ seoPage.h1 }}",
-        "description": "{{ seoPage.description }}",
-        "numberOfItems": {{ seoPage.propertyFacts | length }},
-        "itemListElement": [
-            {% for propertyFact in seoPage.propertyFacts %}
-            {% set listPosition = loop.index %}
-            {% set isLastMatch = loop.last %}
-            {% for property in properties %}
-            {% if property.pageUrl == propertyFact.pageUrl %}
-            {
-                "@type": "ListItem",
-                "position": {{ listPosition }},
-                "item": {
-                    "@type": "VacationRental",
-                    "@id": "{{ site.url }}{{ property.pageUrl }}#vacation-rental",
-                    "identifier": "{{ property.schemaIdentifier }}",
-                    "name": "{{ propertyFact.name }}",
-                    "description": "{{ propertyFact.schemaDescription or property.description }}",
-                    "url": "{{ site.url }}{{ property.pageUrl }}",
-                    "image": [
-                        "{{ property.image }}"
-                    ],
-                    "containsPlace": {
-                        "@type": "Accommodation",
-                        "numberOfBedrooms": {{ property.bedrooms }},
-                        "numberOfBathroomsTotal": {{ property.bathrooms }},
-                        "occupancy": {
-                            "@type": "QuantitativeValue",
-                            "value": {{ property.guests }}
-                        }
-                    },
-                    "latitude": {{ property.latitude }},
-                    "longitude": {{ property.longitude }},
-                    "address": {
-                        "@type": "PostalAddress",
-                        "addressLocality": "{{ property.city }}",
-                        "addressRegion": "FL",
-                        "addressCountry": "US"{% if property.postalCode %},
-                        "postalCode": "{{ property.postalCode }}"{% endif %}
-                    },
-                    "offers": {
-                        "@type": "Offer",
-                        "price": "{{ property.price }}",
-                        "priceCurrency": "USD",
-                        "unitText": "NIGHT",
-                        "availability": "https://schema.org/InStock",
-                        "url": "{{ property.bookingUrl }}"
-                    }
-                }
-            }{% if not isLastMatch %},{% endif %}
-            {% endif %}
-            {% endfor %}
-            {% endfor %}
-        ]
+        "@type": "LodgingBusiness",
+        "name": "Seascape Vacations",
+        "url": "https://seascape-vacations.com",
+        "telephone": "+1-941-704-8545",
+        "priceRange": "$200-$550 / night",
+        "areaServed": {{ destinationLabel | json | safe }}
     }
     </script>
+
+    {% if seoPage.propertyFacts and seoPage.propertyFacts.length > 0 and seoPage.propertyFacts[0].pageUrl and false %}
     {% elif properties and properties | length and seoPage.matchingProperties and seoPage.matchingProperties.length > 0 %}
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
         "@type": "ItemList",
-        "name": "{{ seoPage.h1 }}",
-        "description": "{{ seoPage.description }}",
+        "name": {{ seoPage.h1 | json | safe }},
+        "description": {{ seoPage.description | json | safe }},
         "numberOfItems": {{ seoPage.matchingProperties | length }},
         "itemListElement": [
             {% for matchingSlug in seoPage.matchingProperties %}
@@ -206,34 +169,29 @@ eleventyComputed:
                 "item": {
                     "@type": "VacationRental",
                     "@id": "{{ site.url }}{{ property.pageUrl }}#vacation-rental",
-                    "identifier": "{{ property.schemaIdentifier }}",
-                    "name": "{{ property.name }}",
-                    "description": "{{ property.description }}",
+                    "identifier": {{ property.schemaIdentifier | json | safe }},
+                    "name": {{ property.name | json | safe }},
+                    "description": {{ property.description | json | safe }},
                     "url": "{{ site.url }}{{ property.pageUrl }}",
-                    "image": [
-                        "{{ property.image | imgProxy(1200) }}"
-                    ],
+                    "image": [{{ (property.image | imgProxy(1200)) | json | safe }}],
                     "containsPlace": {
                         "@type": "Accommodation",
                         "numberOfBedrooms": {{ property.bedrooms }},
                         "numberOfBathroomsTotal": {{ property.bathrooms }},
-                        "occupancy": {
-                            "@type": "QuantitativeValue",
-                            "value": {{ property.guests }}
-                        }
+                        "occupancy": { "@type": "QuantitativeValue", "value": {{ property.guests }} }
                     },
                     "latitude": {{ property.latitude }},
                     "longitude": {{ property.longitude }},
                     "address": {
                         "@type": "PostalAddress",
-                        "addressLocality": "{{ property.city }}",
+                        "addressLocality": {{ property.city | json | safe }},
                         "addressRegion": "FL",
                         "addressCountry": "US"{% if property.postalCode %},
-                        "postalCode": "{{ property.postalCode }}"{% endif %}
+                        "postalCode": {{ property.postalCode | json | safe }}{% endif %}
                     },
                     "offers": {
                         "@type": "Offer",
-                        "price": "{{ property.price }}",
+                        "price": {{ property.price | json | safe }},
                         "priceCurrency": "USD",
                         "unitText": "NIGHT",
                         "availability": "https://schema.org/InStock",
@@ -248,62 +206,8 @@ eleventyComputed:
     }
     </script>
     {% elif properties and properties | length %}
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "ItemList",
-        "name": "{{ seoPage.h1 }}",
-        "description": "{{ seoPage.description }}",
-        "numberOfItems": {{ properties | length }},
-        "itemListElement": [
-            {% for property in properties %}
-            {
-                "@type": "ListItem",
-                "position": {{ loop.index }},
-                "item": {
-                    "@type": "VacationRental",
-                    "@id": "{{ site.url }}{{ property.pageUrl }}#vacation-rental",
-                    "identifier": "{{ property.schemaIdentifier }}",
-                    "name": "{{ property.name }}",
-                    "description": "{{ property.description }}",
-                    "url": "{{ site.url }}{{ property.pageUrl }}",
-                    "image": [
-                        "{{ property.image | imgProxy(1200) }}"
-                    ],
-                    "containsPlace": {
-                        "@type": "Accommodation",
-                        "numberOfBedrooms": {{ property.bedrooms }},
-                        "numberOfBathroomsTotal": {{ property.bathrooms }},
-                        "occupancy": {
-                            "@type": "QuantitativeValue",
-                            "value": {{ property.guests }}
-                        }
-                    },
-                    "latitude": {{ property.latitude }},
-                    "longitude": {{ property.longitude }},
-                    "address": {
-                        "@type": "PostalAddress",
-                        "addressLocality": "{{ property.city }}",
-                        "addressRegion": "FL",
-                        "addressCountry": "US"{% if property.postalCode %},
-                        "postalCode": "{{ property.postalCode }}"{% endif %}
-                    },
-                    "offers": {
-                        "@type": "Offer",
-                        "price": "{{ property.price }}",
-                        "priceCurrency": "USD",
-                        "unitText": "NIGHT",
-                        "availability": "https://schema.org/InStock",
-                        "url": "{{ property.bookingUrl }}"
-                    }
-                }
-            }{% if not loop.last %},{% endif %}
-            {% endfor %}
-        ]
-    }
-    </script>
     {% endif %}
-    
+
     <style>
         :root {
             --brand: #5F8A8B;
@@ -320,90 +224,123 @@ eleventyComputed:
             --white: #FFFFFF;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Poppins', -apple-system, sans-serif; background: var(--cream); color: var(--stone); line-height: 1.7; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Poppins', -apple-system, sans-serif; background: var(--cream); color: var(--stone); line-height: 1.7; padding-bottom: 0; }
         h1, h2, h3, h4 { font-family: 'Playfair Display', Georgia, serif; font-weight: 500; letter-spacing: -0.02em; }
         img { max-width: 100%; height: auto; }
         a { text-decoration: none; color: inherit; }
-        .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(245, 238, 214, 0.98); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(0, 0, 0, 0.06); box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08); }
+        .nav { position: sticky; top: 0; left: 0; right: 0; z-index: 100; background: rgba(245, 238, 214, 0.98); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(0, 0, 0, 0.06); box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08); }
         .nav-inner { display: flex; justify-content: space-between; align-items: center; padding: 16px 24px; max-width: 1400px; margin: 0 auto; }
         .nav-logo { display: flex; align-items: center; gap: 14px; }
         .nav-logo img { width: auto; height: 40px; max-width: none; flex: 0 0 auto; display: block; }
         .nav-logo-text { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 500; color: var(--brand-dark); letter-spacing: 0.05em; }
         .nav-logo-sub { font-size: 9px; letter-spacing: 0.2em; color: var(--stone-light); text-transform: uppercase; margin-top: -2px; }
-        .btn { background: linear-gradient(135deg, var(--brand) 0%, var(--brand-dark) 100%); color: white; padding: 14px 32px; border-radius: 50px; font-weight: 600; font-size: 14px; border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 4px 15px rgba(61, 107, 109, 0.3); }
-        .btn:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(61, 107, 109, 0.4); }
-        .btn-gold { background: linear-gradient(135deg, var(--gold) 0%, #B8943A 100%); color: var(--stone); box-shadow: 0 4px 15px rgba(201, 169, 98, 0.3); }
-        .btn-ghost { display: inline-flex; align-items: center; justify-content: center; padding: 14px 32px; border-radius: 50px; font-weight: 600; font-size: 14px; border: 1px solid rgba(255, 255, 255, 0.4); background: rgba(255, 255, 255, 0.08); color: white; backdrop-filter: blur(16px); }
-        .main-content { padding-top: 80px; }
+        .nav-link { color: var(--brand-dark); font-size: 14px; font-weight: 600; }
+        .btn { background: linear-gradient(135deg, var(--brand) 0%, var(--brand-dark) 100%); color: var(--white); padding: 15px 32px; border-radius: 50px; font-weight: 600; font-size: 14px; border: none; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 4px 15px rgba(61, 92, 93, 0.28); }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(61, 92, 93, 0.36); }
+        .btn-gold { background: linear-gradient(135deg, var(--gold) 0%, #B8943A 100%); color: #2A2014; box-shadow: 0 4px 15px rgba(201, 169, 98, 0.3); }
+        .btn-ghost { display: inline-flex; align-items: center; justify-content: center; padding: 15px 32px; border-radius: 50px; font-weight: 600; font-size: 14px; border: 1px solid rgba(255, 255, 255, 0.52); background: rgba(255, 255, 255, 0.1); color: var(--white); backdrop-filter: blur(16px); }
+        .main-content { background: var(--cream); }
         .section { padding: 80px 24px; }
         .container { max-width: 1100px; margin: 0 auto; }
-        .section-header { text-align: center; margin-bottom: 48px; }
+        .container-narrow { max-width: 860px; margin: 0 auto; }
+        .section-header { text-align: center; margin-bottom: 40px; }
         .section-tag { display: inline-block; font-size: 12px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--brand-dark); margin-bottom: 12px; }
         .section-title { font-size: clamp(28px, 4vw, 38px); color: var(--stone); margin-bottom: 12px; }
-        .section-subtitle { color: var(--stone-light); max-width: 600px; margin: 0 auto; }
-        .answer-box { background: white; border-left: 5px solid var(--gold); border-radius: 0 14px 14px 0; padding: 24px; box-shadow: 0 8px 26px rgba(28, 38, 39, 0.08); }
-        .answer-box p { font-size: 18px; line-height: 1.75; color: var(--stone); margin: 0; }
-        .hero-actions { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; margin-top: 28px; }
-        .decision-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px; }
-        .decision-card { background: white; border-radius: 18px; padding: 22px; box-shadow: 0 8px 26px rgba(28, 38, 39, 0.08); border: 1px solid rgba(61, 92, 93, 0.08); }
-        .decision-label { display: block; font-size: 12px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--brand-dark); margin-bottom: 10px; }
-        .decision-value { font-size: 18px; line-height: 1.5; color: var(--stone); }
-        .property-facts-wrap { overflow-x: auto; border-radius: 16px; box-shadow: 0 8px 26px rgba(28, 38, 39, 0.08); background: white; }
-        .property-facts { width: 100%; min-width: 840px; border-collapse: collapse; background: white; }
-        .property-facts th { background: var(--brand-dark); color: white; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; text-align: left; padding: 16px; }
-        .property-facts td { padding: 16px; border-bottom: 1px solid rgba(61, 92, 93, 0.12); vertical-align: top; font-size: 14px; line-height: 1.6; }
-        .property-facts tr:last-child td { border-bottom: 0; }
-        .property-facts a { color: var(--brand-dark); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
-        .review-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px; }
-        .review-card { background: white; border-radius: 16px; padding: 22px; box-shadow: 0 8px 26px rgba(28, 38, 39, 0.08); border: 1px solid rgba(61, 92, 93, 0.08); }
-        .review-copy { color: var(--stone); font-size: 15px; line-height: 1.7; margin-bottom: 14px; }
-        .review-source { color: var(--stone-light); font-size: 13px; font-weight: 600; }
-        .comparison-grid { display: grid; gap: 18px; }
-        .comparison-row { display: grid; grid-template-columns: minmax(140px, 0.85fr) 1.2fr 1.2fr; gap: 18px; align-items: stretch; }
-        .comparison-label { background: linear-gradient(135deg, rgba(95, 138, 139, 0.12), rgba(201, 169, 98, 0.14)); border-radius: 18px; padding: 22px; font-size: 18px; color: var(--brand-dark); display: flex; align-items: center; justify-content: center; text-align: center; }
-        .comparison-cell { background: white; border-radius: 18px; padding: 22px; box-shadow: 0 8px 26px rgba(28, 38, 39, 0.06); border: 1px solid rgba(61, 92, 93, 0.08); }
-        .comparison-kicker { display: block; font-size: 12px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--brand-dark); margin-bottom: 10px; }
-        .comparison-copy { font-size: 15px; line-height: 1.7; color: var(--stone); }
-        .guide-link-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; }
-        .guide-link-card { background: white; border-radius: 18px; padding: 22px; box-shadow: 0 8px 26px rgba(28, 38, 39, 0.08); border: 1px solid rgba(61, 92, 93, 0.08); transition: transform 0.2s ease, box-shadow 0.2s ease; }
-        .guide-link-card:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(28, 38, 39, 0.12); }
-        .guide-link-title { font-size: 18px; color: var(--brand-dark); margin-bottom: 10px; }
-        .guide-link-copy { font-size: 14px; color: var(--stone-light); line-height: 1.7; }
-        .breadcrumbs { background: white; padding: 12px 24px; border-bottom: 1px solid var(--cream-dark); }
-        .breadcrumbs ol { display: flex; gap: 8px; list-style: none; margin: 0; padding: 0; font-size: 13px; max-width: 1100px; margin: 0 auto; }
-        .breadcrumbs a { color: var(--brand-dark); }
+        .section-subtitle { color: var(--stone-light); max-width: 660px; margin: 0 auto; }
+        .hero { min-height: calc(86vh - 88px); display: grid; place-items: center; padding: 72px 24px; color: var(--white); background-image: linear-gradient(180deg, rgba(0,0,0,.34), rgba(0,0,0,.68)), var(--hero-image); background-size: cover; background-position: center; }
+        .hero-inner { width: min(980px, 100%); text-align: center; }
+        .hero-eyebrow { display: inline-flex; align-items: center; gap: 16px; color: var(--gold-light); font-size: 12px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; margin-bottom: 18px; }
+        .hero-eyebrow::before, .hero-eyebrow::after { content: ""; width: 40px; height: 1px; background: rgba(232, 213, 163, 0.72); }
+        .hero h1 { font-size: clamp(38px, 6vw, 68px); color: var(--white); line-height: 1.05; margin-bottom: 20px; }
+        .hero-subhead { max-width: 760px; margin: 0 auto; color: rgba(255,255,255,0.92); font-size: clamp(17px, 2.2vw, 21px); line-height: 1.7; }
+        .hero-actions { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; margin-top: 32px; }
+        .trust-chips { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-top: 28px; }
+        .trust-chip { display: inline-flex; align-items: center; gap: 8px; padding: 9px 14px; border: 1px solid rgba(255,255,255,0.25); border-radius: 50px; background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.94); font-size: 13px; font-weight: 600; backdrop-filter: blur(12px); }
+        .trust-chip .ui-icon { color: var(--gold-light); }
+        .breadcrumbs { background: rgba(250, 247, 238, 0.96); padding: 12px 24px; border-bottom: 1px solid rgba(61, 92, 93, 0.08); }
+        .breadcrumbs ol { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; margin: 0 auto; padding: 0; font-size: 13px; max-width: 1100px; }
+        .breadcrumbs a { color: var(--brand-dark); font-weight: 500; }
         .breadcrumbs span { color: var(--stone-light); }
+        .stats-bar { background: var(--brand-darker); color: var(--white); padding: 26px 24px; }
+        .stats-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; max-width: 1100px; margin: 0 auto; }
+        .stat { text-align: center; border-right: 1px solid rgba(255,255,255,0.16); }
+        .stat:last-child { border-right: 0; }
+        .stat-value { display: block; color: var(--gold-light); font-family: 'Playfair Display', Georgia, serif; font-size: 28px; line-height: 1.1; margin-bottom: 6px; }
+        .stat-label { display: block; color: rgba(255,255,255,0.78); font-size: 12px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; }
+        .intro-copy { display: grid; gap: 22px; font-size: 18px; line-height: 1.85; color: var(--stone); }
+        .intro-copy p { margin: 0; }
+        .jump-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 34px; }
+        .jump-links a { padding: 9px 15px; border-radius: 50px; background: var(--white); color: var(--brand-dark); font-size: 13px; font-weight: 600; box-shadow: 0 8px 24px rgba(28, 38, 39, 0.06); }
+        .comparison-table-wrap { overflow-x: auto; border-radius: 24px; background: var(--white); box-shadow: 0 10px 40px rgba(0,0,0,.04), 0 2px 10px rgba(0,0,0,.02); }
+        .comparison-table { width: 100%; min-width: 760px; border-collapse: collapse; }
+        .comparison-table th { padding: 18px 20px; text-align: left; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; border-bottom: 1px solid rgba(61,92,93,0.12); }
+        .comparison-table th:nth-child(2) { color: var(--brand-dark); }
+        .comparison-table th:nth-child(3) { color: var(--stone-light); }
+        .comparison-table td { padding: 18px 20px; border-bottom: 1px solid rgba(61,92,93,0.1); vertical-align: top; font-size: 15px; line-height: 1.65; }
+        .comparison-table tr:last-child td { border-bottom: 0; }
+        .comparison-label { font-weight: 700; color: var(--brand-dark); }
+        .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; }
+        .guide-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .info-card, .guide-card, .review-card, .faq-item { background: var(--white); border-radius: 20px; padding: 24px; box-shadow: 0 10px 40px rgba(0,0,0,.04), 0 2px 10px rgba(0,0,0,.02); border: 1px solid rgba(61, 92, 93, 0.08); }
+        .icon-mark { width: 42px; height: 42px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; background: rgba(201,169,98,0.18); color: var(--brand-dark); margin-bottom: 18px; font-size: 21px; }
+        .info-card h3, .guide-card h3, .faq-question { font-size: 20px; color: var(--brand-dark); margin-bottom: 10px; }
+        .info-card p, .guide-card p, .faq-answer { font-size: 15px; color: var(--stone); line-height: 1.75; }
+        .card-link { display: inline-flex; align-items: center; gap: 8px; color: var(--brand-dark); font-weight: 700; font-size: 13px; margin-top: 16px; }
         .properties-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; }
-        .property-card { background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); transition: transform 0.3s ease; }
+        .property-card { background: var(--white); border-radius: 20px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,.04), 0 2px 10px rgba(0,0,0,.02); transition: transform 0.3s ease; border: 1px solid rgba(61, 92, 93, 0.08); }
         .property-card:hover { transform: translateY(-5px); }
         .property-img { height: 220px; background: linear-gradient(135deg, rgba(95, 138, 139, 0.16), rgba(201, 169, 98, 0.22)); background-size: cover; background-position: center; position: relative; }
         .property-badge { position: absolute; top: 12px; left: 12px; background: var(--gold); color: var(--stone); padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 600; }
-        .property-body { padding: 20px; }
-        .property-title { font-size: 20px; font-weight: 600; color: var(--stone); margin-bottom: 8px; }
+        .property-body { padding: 22px; }
+        .property-rating { display: inline-flex; align-items: center; gap: 6px; color: var(--brand-dark); font-size: 13px; font-weight: 700; margin-bottom: 10px; }
+        .property-title { font-size: 21px; color: var(--stone); margin-bottom: 8px; }
         .property-meta { font-size: 13px; color: var(--stone-light); margin-bottom: 12px; }
-        .property-price { font-size: 16px; color: var(--brand-dark); font-weight: 600; }
+        .property-highlight { font-size: 14px; color: var(--stone); margin-bottom: 18px; min-height: 44px; }
+        .property-card-bottom { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+        .property-price { font-size: 16px; color: var(--brand-dark); font-weight: 700; white-space: nowrap; }
+        .drive-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; }
+        .drive-card { background: var(--cream-light); border-left: 4px solid var(--gold); border-radius: 0 20px 20px 0; padding: 22px; }
+        .drive-time { color: var(--brand-dark); font-weight: 700; font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px; }
+        .review-stars { display: flex; gap: 3px; color: var(--gold); margin-bottom: 14px; }
+        .review-copy { color: var(--stone); font-size: 15px; line-height: 1.75; margin-bottom: 14px; }
+        .review-source { color: var(--stone-light); font-size: 13px; font-weight: 600; }
         .faq-section { background: var(--cream-dark); }
-        .faq-item { background: white; border-radius: 12px; padding: 24px; margin-bottom: 16px; }
-        .faq-question { font-size: 18px; font-weight: 600; color: var(--brand-dark); margin-bottom: 12px; }
-        .faq-answer { color: var(--stone); line-height: 1.7; }
-        .cta-section { background: linear-gradient(135deg, var(--brand) 0%, var(--brand-dark) 100%); padding: 80px 24px; text-align: center; color: white; }
-        .cta-title { font-size: clamp(28px, 4vw, 40px); margin-bottom: 16px; }
-        .cta-subtitle { opacity: 0.9; max-width: 500px; margin: 0 auto 32px; }
+        .faq-list { display: grid; gap: 16px; }
+        .guide-card { display: block; transition: transform 0.2s ease, box-shadow 0.2s ease; }
+        .guide-card:hover { transform: translateY(-3px); box-shadow: 0 14px 44px rgba(28, 38, 39, 0.1); }
+        .guide-category { display: block; color: var(--brand-dark); font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 10px; }
+        .guide-arrow { color: var(--gold); font-weight: 700; }
+        .cta-section { color: var(--white); text-align: center; padding: 92px 24px; background-image: linear-gradient(135deg, rgba(45,70,71,0.88), rgba(95,138,139,0.78)), var(--cta-image); background-size: cover; background-position: center; }
+        .cta-title { font-size: clamp(30px, 4vw, 44px); margin-bottom: 16px; color: var(--white); }
+        .cta-subtitle { opacity: 0.92; max-width: 600px; margin: 0 auto 32px; font-size: 17px; }
+        .cta-actions { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; }
+        .sticky-mobile-cta { display: none; }
         .footer { background: var(--brand-darker); color: rgba(255, 255, 255, 0.8); padding: 60px 24px 30px; }
         .footer-inner { max-width: 1100px; margin: 0 auto; text-align: center; }
-        .footer-logo { font-family: 'Playfair Display', serif; font-size: 24px; color: white; margin-bottom: 16px; }
+        .footer-logo { font-family: 'Playfair Display', serif; font-size: 24px; color: var(--white); margin-bottom: 16px; }
         .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
         .footer-links a { color: rgba(255, 255, 255, 0.7); font-size: 14px; transition: color 0.3s ease; }
-        .footer-links a:hover { color: white; }
+        .footer-links a:hover { color: var(--white); }
         .footer-copyright { font-size: 13px; opacity: 0.88; }
-        @media (max-width: 640px) {
-            .hero-actions { flex-direction: column; }
-            .hero-actions .btn,
-            .hero-actions .btn-ghost { width: 100%; }
-        }
         @media (max-width: 820px) {
-            .comparison-row { grid-template-columns: 1fr; }
-            .comparison-label { justify-content: flex-start; text-align: left; }
+            body { padding-bottom: 78px; }
+            .nav-inner { padding: 12px 16px; }
+            .nav-logo-text { font-size: 18px; }
+            .nav .btn { display: none; }
+            .hero { min-height: calc(82vh - 69px); padding: 56px 18px; }
+            .hero-eyebrow::before, .hero-eyebrow::after { width: 26px; }
+            .hero-actions { flex-direction: column; }
+            .hero-actions .btn, .hero-actions .btn-ghost { width: 100%; }
+            .stats-grid { grid-template-columns: 1fr; gap: 14px; }
+            .stat { border-right: 0; border-bottom: 1px solid rgba(255,255,255,0.16); padding-bottom: 14px; }
+            .stat:last-child { border-bottom: 0; padding-bottom: 0; }
+            .section { padding: 58px 18px; }
+            .property-card-bottom { flex-direction: column; align-items: stretch; }
+            .property-card-bottom .btn { width: 100%; }
+            .sticky-mobile-cta { position: fixed; left: 0; right: 0; bottom: 0; z-index: 120; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 14px calc(12px + env(safe-area-inset-bottom)); background: rgba(245,238,214,0.97); backdrop-filter: blur(16px); border-top: 1px solid rgba(61,92,93,0.14); box-shadow: 0 -10px 28px rgba(28,38,39,0.14); }
+            .sticky-phone { width: 44px; height: 44px; border-radius: 50%; background: var(--white); color: var(--brand-dark); display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 6px 18px rgba(28,38,39,0.1); }
+            .sticky-mobile-cta .btn { flex: 1; padding: 13px 18px; font-size: 13px; }
         }
     </style>
 </head>
@@ -418,12 +355,12 @@ eleventyComputed:
                 </div>
             </a>
             <a
-                href="/properties/"
+                href="{{ seoPage.collectionCtaHref or '/properties/' }}"
                 class="btn"
                 data-track-event="catalog_book_direct_click"
                 data-placement="stay_nav"
                 data-track-label="{{ seoPage.slug }}"
-            >Open Direct-Book Collection</a>
+            >Browse homes</a>
         </div>
     </nav>
 
@@ -431,91 +368,94 @@ eleventyComputed:
         <nav class="breadcrumbs" aria-label="Breadcrumb">
             <ol>
                 <li><a href="/">Home</a></li>
-                <li><span>›</span></li>
-                <li><a href="/stays/">Stay Collections</a></li>
-                <li><span>›</span></li>
-                {% if seoPage.destination %}
-                {% set destinationGuideMap = {
-                    "anna-maria-island": "/guides/anna-maria-island-area-guide/",
-                    "bradenton": "/guides/bradenton-area-guide/",
-                    "sarasota": "/guides/sarasota-area-guide/",
-                    "siesta-key": "/guides/siesta-key-area-guide/"
-                } %}
-                {% set destinationGuideHref = destinationGuideMap[seoPage.destination] %}
+                <li><span>/</span></li>
                 <li>
                     {% if destinationGuideHref %}
-                    <a href="{{ destinationGuideHref }}">{{ seoPage.destination | replace("-", " ") | title }}</a>
+                    <a href="{{ destinationGuideHref }}">{{ destinationLabel }}</a>
                     {% else %}
-                    <span>{{ seoPage.destination | replace("-", " ") | title }}</span>
+                    <a href="/stays/">Stay Collections</a>
                     {% endif %}
                 </li>
-                <li><span>›</span></li>
-                {% endif %}
+                <li><span>/</span></li>
                 <li><span aria-current="page">{{ seoPage.h1 }}</span></li>
             </ol>
         </nav>
 
-        <section class="section" style="background: linear-gradient(135deg, var(--brand) 0%, var(--brand-dark) 100%); color: white;">
-            <div class="container" style="text-align: center;">
-                <p class="section-tag" style="color: var(--gold);">{{ site.bookingMessage }}</p>
-                <h1 style="font-size: clamp(32px, 5vw, 48px); margin-bottom: 20px; color: white;">{{ seoPage.h1 }}</h1>
-                <p style="max-width: 700px; margin: 0 auto; opacity: 0.9; font-size: 18px;">{{ seoPage.intro }}</p>
+        <section class="hero" style="--hero-image: url('{{ heroImage | imgProxy(1200) }}');">
+            <div class="hero-inner">
+                <p class="hero-eyebrow">{{ destinationLabel }}</p>
+                <h1>{{ seoPage.h1 }}</h1>
+                <p class="hero-subhead">{{ seoPage.description }}</p>
                 <div class="hero-actions">
-                    <a href="#featured-homes" class="btn btn-gold">See Matching Homes</a>
-                    {% if seoPage.collectionCtaHref and seoPage.collectionCtaLabel %}
                     <a
-                        href="{{ seoPage.collectionCtaHref }}"
-                        class="btn-ghost"
+                        href="#featured-homes"
+                        class="btn btn-gold"
                         data-track-event="catalog_book_direct_click"
-                        data-placement="stay_hero_secondary"
-                        data-track-label="{{ seoPage.collectionCtaLabel }}"
-                    >{{ seoPage.collectionCtaLabel }}</a>
-                    {% endif %}
+                        data-placement="stay_hero"
+                        data-track-label="{{ seoPage.slug }}"
+                    >Browse the homes</a>
+                    <a href="{% if hasComparison %}#compare{% else %}#intro{% endif %}" class="btn-ghost">Why stay here?</a>
                 </div>
-                <!-- Author + Date for E-E-A-T and GEO freshness signals -->
-                <div style="margin-top: 24px; display: flex; justify-content: center; align-items: center; gap: 16px; font-size: 13px; opacity: 0.8;">
-                    <span>By {{ site.author }}</span>
-                    <span>|</span>
-                    <time datetime="{{ pageUpdatedDate }}">Last Updated: {{ pageUpdatedLabel }}</time>
+                <div class="trust-chips" aria-label="Booking highlights">
+                    <span class="trust-chip">{{ uiIcon("star") }} {{ seoPage.reviewTrustLabel or "Rated 5.0" }}</span>
+                    <span class="trust-chip">{{ uiIcon("car") }} {{ seoPage.driveTimeLabel or "10-15 minutes to beaches" }}</span>
+                    <span class="trust-chip">{{ uiIcon("dollar") }} Save 10-15% direct</span>
                 </div>
             </div>
         </section>
 
-        {% if seoPage.bluntAnswer %}
-        <section class="section" style="background: var(--cream-light); padding: 42px 24px;">
-            <div class="container" style="max-width: 900px;">
-                <div class="answer-box">
-                    <p>{{ seoPage.bluntAnswer }}</p>
+        <section class="stats-bar" aria-label="Seascape stay highlights">
+            <div class="stats-grid">
+                <div class="stat">
+                    <span class="stat-value">{{ properties.length if properties else "5" }}</span>
+                    <span class="stat-label">Direct-book homes</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-value">10-15%</span>
+                    <span class="stat-label">Typical direct savings</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-value">Local</span>
+                    <span class="stat-label">Seascape support</span>
                 </div>
             </div>
         </section>
-        {% endif %}
 
-        <!-- GEO-optimized intro content (first 200 words answer the query directly) -->
-        {% if seoPage.geoIntro %}
-        <section class="section" style="background: white; padding: 48px 24px;">
-            <div class="container" style="max-width: 800px;">
-                <div style="font-size: 17px; line-height: 1.9; color: var(--stone);">
-                    {{ seoPage.geoIntro | safe }}
+        <section class="section" id="intro">
+            <div class="container-narrow">
+                <div class="section-header">
+                    <p class="section-tag">{{ seoPage.introEyebrow or "The short version" }}</p>
+                    <h2 class="section-title">{{ seoPage.introHeading or ("Stay near " + destinationLabel + ", with the trip details up front") }}</h2>
                 </div>
+                <div class="intro-copy">
+                    {% if seoPage.intro %}<p>{{ seoPage.intro }}</p>{% endif %}
+                    {% if seoPage.geoIntro %}{{ seoPage.geoIntro | safe }}{% endif %}
+                </div>
+                <nav class="jump-links" aria-label="On this page">
+                    {% if hasComparison %}<a href="#compare">Compare options</a>{% endif %}
+                    {% if hasTripMatches %}<a href="#trip-match">Match your trip</a>{% endif %}
+                    {% if hasMatchingHomes %}<a href="#rentals">Featured homes</a>{% endif %}
+                    {% if hasDriveFacts %}<a href="#drive-times">Beaches and drive times</a>{% endif %}
+                    {% if hasReviews %}<a href="#reviews">Reviews</a>{% endif %}
+                    {% if hasFaqs %}<a href="#faq">FAQ</a>{% endif %}
+                    {% if hasRelatedGuides %}<a href="#related-guides">Related guides</a>{% endif %}
+                </nav>
             </div>
         </section>
-        {% endif %}
 
-        {% if seoPage.choiceTradeoffs and seoPage.choiceTradeoffs.length > 0 %}
-        <section class="section" style="background: white; padding-top: 28px;">
+        {% if seoPage.decisionHighlights and seoPage.decisionHighlights.length > 0 %}
+        <section class="section" style="background: var(--cream-light);">
             <div class="container">
-                <div class="section-header" style="margin-bottom: 28px;">
-                    <p class="section-tag">Location Tradeoff</p>
-                    <h2 class="section-title">Choose the right side of the bridge</h2>
-                    <p class="section-subtitle">The honest choice is not island versus bad. It is tight on-island access versus larger private-pool homes beside AMI.</p>
+                <div class="section-header">
+                    <p class="section-tag">Best fit</p>
+                    <h2 class="section-title">Why these homes fit this trip</h2>
+                    <p class="section-subtitle">Use these highlights to decide whether this trip, location, and home style line up before you start comparing listings.</p>
                 </div>
-                <div class="decision-grid">
-                    {% for tradeoff in seoPage.choiceTradeoffs %}
-                    <article class="decision-card">
-                        <span class="decision-label">{{ tradeoff.label }}</span>
-                        <h3 style="font-size: 20px; color: var(--brand-dark); margin-bottom: 10px;">{{ tradeoff.title }}</h3>
-                        <p style="font-size: 15px; color: var(--stone); line-height: 1.7;">{{ tradeoff.copy }}</p>
+                <div class="card-grid">
+                    {% for point in seoPage.decisionHighlights %}
+                    <article class="info-card">
+                        <span class="guide-category">{{ point.label }}</span>
+                        <p>{{ point.value }}</p>
                     </article>
                     {% endfor %}
                 </div>
@@ -523,33 +463,31 @@ eleventyComputed:
         </section>
         {% endif %}
 
-        {% if seoPage.propertyFacts and seoPage.propertyFacts.length > 0 %}
-        <section class="section" style="background: var(--cream-light); padding-top: 44px;">
+        {% if hasComparison %}
+        <section class="section" id="compare" style="background: var(--cream-light);">
             <div class="container">
-                <div class="section-header" style="margin-bottom: 28px;">
-                    <p class="section-tag">Property Facts</p>
-                    <h2 class="section-title">Large-group homes near Anna Maria Island</h2>
-                    <p class="section-subtitle">Every row below is written for quick comparison: capacity, pool setup, beach distance, and the direct booking path.</p>
+                <div class="section-header">
+                    <p class="section-tag">Compare the tradeoff</p>
+                    <h2 class="section-title">How this stay path compares</h2>
+                    {% if seoPage.valueComparison.intro %}
+                    <p class="section-subtitle">{{ seoPage.valueComparison.intro }}</p>
+                    {% endif %}
                 </div>
-                <div class="property-facts-wrap">
-                    <table class="property-facts">
+                <div class="comparison-table-wrap">
+                    <table class="comparison-table">
                         <thead>
                             <tr>
-                                <th>Home</th>
-                                <th>Facts</th>
-                                <th>Pool / Spa</th>
-                                <th>AMI Beach Distance</th>
-                                <th>Direct Booking</th>
+                                <th>Decision point</th>
+                                <th>{{ seoPage.valueComparison.primaryLabel or "Seascape, off-island" }}</th>
+                                <th>{{ seoPage.valueComparison.comparisonLabel or seoPage.valueComparisonAltLabel or "Island / area alternative" }}</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {% for property in seoPage.propertyFacts %}
+                            {% for row in comparisonRows %}
                             <tr>
-                                <td><strong>{{ property.name }}</strong><br>{{ property.city }}, FL</td>
-                                <td>{{ property.specs }}<br>{{ property.bestFor }}</td>
-                                <td>{{ property.poolSpa }}</td>
-                                <td>{{ property.beachDistance }}</td>
-                                <td><a href="{{ property.bookingUrl }}" target="_blank" rel="noopener noreferrer">Check direct dates</a></td>
+                                <td class="comparison-label">{{ row.label }}</td>
+                                <td>{{ row.us or row.primary }}</td>
+                                <td>{{ row.them or row.comparison }}</td>
                             </tr>
                             {% endfor %}
                         </tbody>
@@ -559,62 +497,45 @@ eleventyComputed:
         </section>
         {% endif %}
 
-        {% if seoPage.decisionHighlights and seoPage.decisionHighlights.length > 0 %}
-        <section class="section" style="padding-top: 44px; padding-bottom: 28px;">
-            <div class="container">
-                <div class="section-header" style="margin-bottom: 28px;">
-                    <p class="section-tag">Best Fit</p>
-                    <h2 class="section-title">Why these homes fit this trip</h2>
-                    <p class="section-subtitle">Use these highlights to decide whether this trip, location, and home style line up before you start comparing listings.</p>
-                </div>
-                <div class="decision-grid">
-                    {% for point in seoPage.decisionHighlights %}
-                    <article class="decision-card">
-                        <span class="decision-label">{{ point.label }}</span>
-                        <p class="decision-value">{{ point.value }}</p>
-                    </article>
-                    {% endfor %}
-                </div>
-            </div>
-        </section>
-        {% endif %}
-
-        {% if seoPage.tripMatchCards and seoPage.tripMatchCards.length > 0 %}
-        <section class="section" style="background: var(--cream-light); padding-top: 28px;">
-            <div class="container">
-                <div class="section-header" style="margin-bottom: 28px;">
-                    <p class="section-tag">Trip Match</p>
-                    <h2 class="section-title">This trip fits best when</h2>
-                    <p class="section-subtitle">{{ seoPage.tripMatchIntro or "Use these trip-shape checks before you compare houses. If the intent is wrong, the inventory never feels right." }}</p>
-                </div>
-                <div class="decision-grid">
-                    {% for card in seoPage.tripMatchCards %}
-                    <article class="decision-card">
-                        <span class="decision-label">{{ card.label }}</span>
-                        <h3 style="font-size: 20px; color: var(--brand-dark); margin-bottom: 10px;">{{ card.title }}</h3>
-                        <p style="font-size: 15px; color: var(--stone); line-height: 1.7;">{{ card.copy }}</p>
-                    </article>
-                    {% endfor %}
-                </div>
-            </div>
-        </section>
-        {% endif %}
-
-        <section class="section" id="featured-homes">
+        {% if hasTripMatches %}
+        <section class="section" id="trip-match">
             <div class="container">
                 <div class="section-header">
-                    <p class="section-tag">Featured Rentals</p>
-                    <h2 class="section-title">Available Vacation Homes</h2>
-                    <p class="section-subtitle">Book direct and save 10-15% compared to Airbnb & VRBO</p>
+                    <p class="section-tag">Trip match</p>
+                    <h2 class="section-title">This trip fits best when</h2>
+                    <p class="section-subtitle">{{ seoPage.tripMatchIntro or "Use these trip-shape checks before you compare homes." }}</p>
                 </div>
-                
-                {% if properties and properties | length and seoPage.matchingProperties and seoPage.matchingProperties.length > 0 %}
+                <div class="card-grid">
+                    {% for card in seoPage.tripMatchCards %}
+                    <article class="info-card">
+                        <span class="icon-mark">{{ uiIcon(card.icon or "check") }}</span>
+                        <h3>{{ card.title }}</h3>
+                        <p>{{ card.desc or card.copy }}</p>
+                        {% if card.href %}
+                        <a class="card-link" href="{{ card.href }}">Read the guide <span aria-hidden="true">-&gt;</span></a>
+                        {% endif %}
+                    </article>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+        {% endif %}
+
+        {% if hasMatchingHomes %}
+        <section class="section" id="rentals" style="background: var(--cream-light);">
+            <span id="featured-homes" aria-hidden="true"></span>
+            <div class="container">
+                <div class="section-header">
+                    <p class="section-tag">Featured rentals</p>
+                    <h2 class="section-title">Direct-book homes that fit this search</h2>
+                    <p class="section-subtitle">Book direct and save 10-15% compared with Airbnb and VRBO service fees.</p>
+                </div>
                 <div class="properties-grid">
                     {% for matchingSlug in seoPage.matchingProperties %}
                     {% for property in properties %}
                     {% if property.slug == matchingSlug %}
                     <article class="property-card">
-                    {% set badge = "Rated " ~ property.rating %}
+                        {% set badge = "Rated " ~ property.rating %}
                         {% set loading = "lazy" %}
                         {% set fetchpriority = "" %}
                         {% if loop.index == 1 %}
@@ -623,20 +544,21 @@ eleventyComputed:
                         {% endif %}
                         {% include "partials/property-card-image.njk" %}
                         <div class="property-body">
+                            <div class="property-rating">{{ uiIcon("star") }} Rated {{ property.rating }}</div>
                             <h3 class="property-title">{{ property.name }}</h3>
                             <p class="property-meta">{{ property.specs }}</p>
-                            <p style="font-size: 14px; color: var(--stone-light); margin-bottom: 16px;">{{ property.highlights | join(" · ") }}</p>
-                            <div style="display: flex; justify-content: space-between; align-items: center; gap: 16px;">
+                            <p class="property-highlight">{{ property.highlights | join(" · ") }}</p>
+                            <div class="property-card-bottom">
                                 <span class="property-price">From ${{ property.price }}/night</span>
                                 <a
-                                    href="/properties/{{ property.slug }}/"
+                                    href="{{ property.pageUrl }}"
                                     class="btn"
                                     style="padding: 10px 20px; font-size: 13px;"
                                     data-track-event="stay_view_property_click"
                                     data-page-slug="{{ property.slug }}"
                                     data-placement="stay_property_card"
                                     data-track-label="{{ property.name }}"
-                                >Check Direct Dates</a>
+                                >Check direct dates</a>
                             </div>
                         </div>
                     </article>
@@ -644,67 +566,48 @@ eleventyComputed:
                     {% endfor %}
                     {% endfor %}
                 </div>
-                {% elif properties and properties | length %}
-                <div class="properties-grid">
-                    {% for property in properties %}
-                    <article class="property-card">
-                    {% set badge = "Rated " ~ property.rating %}
-                        {% set loading = "lazy" %}
-                        {% set fetchpriority = "" %}
-                        {% if loop.index == 1 %}
-                        {% set loading = "eager" %}
-                        {% set fetchpriority = "high" %}
-                        {% endif %}
-                        {% include "partials/property-card-image.njk" %}
-                        <div class="property-body">
-                            <h3 class="property-title">{{ property.name }}</h3>
-                            <p class="property-meta">{{ property.specs }}</p>
-                            <p style="font-size: 14px; color: var(--stone-light); margin-bottom: 16px;">{{ property.highlights | join(" · ") }}</p>
-                            <div style="display: flex; justify-content: space-between; align-items: center; gap: 16px;">
-                                <span class="property-price">From ${{ property.price }}/night</span>
-                                <a
-                                    href="/properties/{{ property.slug }}/"
-                                    class="btn"
-                                    style="padding: 10px 20px; font-size: 13px;"
-                                    data-track-event="stay_view_property_click"
-                                    data-page-slug="{{ property.slug }}"
-                                    data-placement="stay_property_card"
-                                    data-track-label="{{ property.name }}"
-                                >Check Direct Dates</a>
-                            </div>
-                        </div>
+            </div>
+        </section>
+        {% endif %}
+
+        {% if hasDriveFacts %}
+        <section class="section" id="drive-times">
+            <div class="container">
+                <div class="section-header">
+                    <p class="section-tag">Beaches and drive times</p>
+                    <h2 class="section-title">Closest beach runs</h2>
+                </div>
+                <div class="drive-list">
+                    {% for fact in seoPage.propertyFacts %}
+                    <article class="drive-card">
+                        <div class="drive-time">{{ fact.time }}</div>
+                        <h3>{{ fact.name }}</h3>
+                        <p>{{ fact.note }}</p>
                     </article>
                     {% endfor %}
                 </div>
-                {% else %}
-                <div style="max-width: 720px; margin: 0 auto; background: white; border-radius: 20px; padding: 32px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); text-align: center;">
-                    <p style="font-size: 16px; color: var(--stone); margin-bottom: 16px;">We do not have enough strong matches to feature a curated list on this page right now.</p>
-                    <p style="font-size: 14px; color: var(--stone-light); margin-bottom: 24px;">Browse current direct-book homes to see the closest available fits.</p>
-                    <a
-                        href="/properties/"
-                        class="btn"
-                        data-track-event="catalog_book_direct_click"
-                        data-placement="stay_empty_state"
-                        data-track-label="{{ seoPage.slug }}"
-                    >See Matching Direct-Book Homes</a>
-                </div>
-                {% endif %}
             </div>
         </section>
+        {% endif %}
 
-        {% if seoPage.reviewProof and seoPage.reviewProof.length > 0 %}
-        <section class="section" style="background: white; padding-top: 44px;">
+        {% if hasReviews %}
+        <section class="section" id="reviews" style="background: var(--cream-light);">
             <div class="container">
-                <div class="section-header" style="margin-bottom: 28px;">
-                    <p class="section-tag">Review Proof</p>
-                    <h2 class="section-title">Why the large-group fit is believable</h2>
-                    <p class="section-subtitle">These are property-level reviews, not a recycled sitewide review count.</p>
+                <div class="section-header">
+                    <p class="section-tag">Guest notes</p>
+                    <h2 class="section-title">{{ seoPage.reviewHeading or "Guest notes after booking direct" }}</h2>
+                    {% if seoPage.reviewIntro %}
+                    <p class="section-subtitle">{{ seoPage.reviewIntro }}</p>
+                    {% endif %}
                 </div>
-                <div class="review-grid">
+                <div class="card-grid">
                     {% for review in seoPage.reviewProof %}
                     <article class="review-card">
-                        <p class="review-copy">"{{ review.quote }}"</p>
-                        <p class="review-source">{{ review.author }} · {{ review.property }} · {{ review.date }}</p>
+                        <div class="review-stars" aria-label="Five star review">
+                            {{ uiIcon("star") }}{{ uiIcon("star") }}{{ uiIcon("star") }}{{ uiIcon("star") }}{{ uiIcon("star") }}
+                        </div>
+                        <p class="review-copy">&ldquo;{{ review.text or review.quote }}&rdquo;</p>
+                        <p class="review-source">{{ review.name or review.author }}</p>
                     </article>
                     {% endfor %}
                 </div>
@@ -712,136 +615,107 @@ eleventyComputed:
         </section>
         {% endif %}
 
-        {% if seoPage.valueComparison and seoPage.valueComparison.rows and seoPage.valueComparison.rows.length > 0 %}
-        <section class="section" style="background: white; padding-top: 24px;">
-            <div class="container" style="max-width: 1040px;">
-                <div class="section-header" style="margin-bottom: 28px;">
-                    <p class="section-tag">Tradeoffs</p>
-                    <h2 class="section-title">How this stay path compares</h2>
-                    <p class="section-subtitle">{{ seoPage.valueComparison.intro or "This is where the trip shape either gets cleaner or starts fighting the budget, parking, and house standards." }}</p>
-                </div>
-                <div class="comparison-grid">
-                    {% for row in seoPage.valueComparison.rows %}
-                    <article class="comparison-row">
-                        <div class="comparison-label">{{ row.label }}</div>
-                        <div class="comparison-cell">
-                            <span class="comparison-kicker">{{ seoPage.valueComparison.primaryLabel or "Why this page works" }}</span>
-                            <p class="comparison-copy">{{ row.primary }}</p>
-                        </div>
-                        <div class="comparison-cell">
-                            <span class="comparison-kicker">{{ seoPage.valueComparison.comparisonLabel or "What to weigh against it" }}</span>
-                            <p class="comparison-copy">{{ row.comparison }}</p>
-                        </div>
-                    </article>
-                    {% endfor %}
-                </div>
-            </div>
-        </section>
-        {% endif %}
-
-        {% if seoPage.faqs and seoPage.faqs.length > 0 %}
-        <section class="section faq-section">
+        {% if hasFaqs %}
+        <section class="section faq-section" id="faq">
             <div class="container">
                 <div class="section-header">
-                    <p class="section-tag">Common Questions</p>
-                    <h2 class="section-title">Frequently Asked Questions</h2>
+                    <p class="section-tag">Common questions</p>
+                    <h2 class="section-title">Frequently asked questions</h2>
                 </div>
-                {% for faq in seoPage.faqs %}
-                <div class="faq-item">
-                    <h3 class="faq-question">{{ faq.question or faq.q }}</h3>
-                    <p class="faq-answer">{{ faq.answer or faq.a }}</p>
+                <div class="faq-list">
+                    {% for faq in seoPage.faqs %}
+                    <article class="faq-item">
+                        <h3 class="faq-question">{{ faq.question or faq.q }}</h3>
+                        <p class="faq-answer">{{ faq.answer or faq.a }}</p>
+                    </article>
+                    {% endfor %}
                 </div>
-                {% endfor %}
             </div>
         </section>
         {% endif %}
 
-        <!-- Long-form content for SEO depth -->
         {% if seoPage.longContent %}
-        <section class="section" style="background: white;">
-            <div class="container">
-                <div style="max-width: 800px; margin: 0 auto;">
-                    <h2 class="section-title" style="font-size: 28px; margin-bottom: 24px;">{{ seoPage.contentTitle | default("About " + seoPage.h1) }}</h2>
-                    <div style="font-size: 16px; line-height: 1.8; color: var(--stone);">
-                        {{ seoPage.longContent | safe }}
-                    </div>
+        <section class="section" style="background: var(--white);">
+            <div class="container-narrow">
+                <h2 class="section-title" style="margin-bottom: 24px;">{{ seoPage.contentTitle | default("About " + seoPage.h1) }}</h2>
+                <div class="intro-copy">
+                    {{ seoPage.longContent | safe }}
                 </div>
             </div>
         </section>
         {% endif %}
 
-        {% if seoPage.relatedGuideLinks and seoPage.relatedGuideLinks.length > 0 %}
-        <section class="section" style="background: var(--cream-dark);">
+        {% if hasRelatedGuides %}
+        <section class="section" id="related-guides" style="background: var(--cream-dark);">
             <div class="container">
-                <div class="section-header" style="margin-bottom: 28px;">
-                    <p class="section-tag">Plan Better</p>
+                <div class="section-header">
+                    <p class="section-tag">Related guides</p>
                     <h2 class="section-title">Use these guides before you book</h2>
-                    <p class="section-subtitle">{{ seoPage.relatedGuideIntro or "These are the planning guides that remove the guesswork before you start narrowing homes." }}</p>
+                    <p class="section-subtitle">{{ seoPage.relatedGuideIntro or "Use these planning pages before you narrow dates." }}</p>
                 </div>
-                <div class="guide-link-grid">
+                <div class="guide-grid">
                     {% for guide in seoPage.relatedGuideLinks %}
-                    <a href="{{ guide.href }}" class="guide-link-card">
-                        <h3 class="guide-link-title">{{ guide.title }}</h3>
-                        <p class="guide-link-copy">{{ guide.copy }}</p>
+                    <a href="{{ guide.href }}" class="guide-card">
+                        {% if guide.category %}<span class="guide-category">{{ guide.category }}</span>{% endif %}
+                        <h3>{{ guide.title }} <span class="guide-arrow" aria-hidden="true">-&gt;</span></h3>
+                        {% if guide.copy %}<p>{{ guide.copy }}</p>{% endif %}
                     </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+        {% elif seoPage.relatedStaySlugs and seoPage.relatedStaySlugs.length > 0 %}
+        <section class="section" id="related-guides" style="background: var(--cream-dark);">
+            <div class="container">
+                <div class="section-header">
+                    <p class="section-tag">Related stays</p>
+                    <h2 class="section-title">Use these guides before you book</h2>
+                </div>
+                <div class="guide-grid">
+                    {% for relatedSlug in seoPage.relatedStaySlugs %}
+                    {% for relatedPage in seoPages.vacationer %}
+                    {% if relatedPage.slug == relatedSlug %}
+                    <a href="/stays/{{ relatedPage.slug }}/" class="guide-card">
+                        <span class="guide-category">{{ (relatedPage.destination or "Gulf Coast") | replace("-", " ") | title }}</span>
+                        <h3>{{ relatedPage.h1 or relatedPage.title }} <span class="guide-arrow" aria-hidden="true">-&gt;</span></h3>
+                        <p>{{ relatedPage.description }}</p>
+                    </a>
+                    {% endif %}
+                    {% endfor %}
                     {% endfor %}
                 </div>
             </div>
         </section>
         {% endif %}
 
-        <!-- Related Stays (Cross-linking) -->
-        <section class="section" style="background: var(--cream-light);">
+        <section class="cta-section" style="--cta-image: url('{{ ctaImage | imgProxy(1600) }}');">
             <div class="container">
-                <div class="section-header">
-                    <p class="section-tag">Explore More</p>
-                    <h2 class="section-title">Related Vacation Stays</h2>
+                <h2 class="cta-title">{{ seoPage.collectionCtaTitle or "Ready to compare direct dates?" }}</h2>
+                <p class="cta-subtitle">{{ seoPage.collectionCtaBody or "Open the Seascape collection and compare direct-book homes in one place." }}</p>
+                <div class="cta-actions">
+                    <a
+                        href="{{ seoPage.collectionCtaHref or '/properties/' }}"
+                        class="btn btn-gold"
+                        data-track-event="catalog_book_direct_click"
+                        data-placement="stay_bottom_cta"
+                        data-track-label="{{ seoPage.collectionCtaLabel or seoPage.slug }}"
+                    >{{ seoPage.collectionCtaLabel or "View all homes" }}</a>
+                    <a href="tel:+19417048545" class="btn-ghost">{{ uiIcon("phone") }} Call (941) 704-8545</a>
                 </div>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
-                    {% if seoPage.relatedStaySlugs and seoPage.relatedStaySlugs.length > 0 %}
-                        {% for relatedSlug in seoPage.relatedStaySlugs %}
-                            {% for page in seoPages.vacationer %}
-                                {% if page.slug == relatedSlug %}
-                    <a href="/stays/{{ page.slug }}/" style="background: white; border-radius: 12px; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.06); transition: transform 0.2s ease; display: block;">
-                        <h3 style="font-size: 16px; font-weight: 600; color: var(--brand-dark); margin-bottom: 8px;">{{ page.title }}</h3>
-                        <p style="font-size: 13px; color: var(--stone-light); line-height: 1.5;">{{ page.description | truncate(100) }}</p>
-                    </a>
-                                {% endif %}
-                            {% endfor %}
-                        {% endfor %}
-                    {% else %}
-                        {% set count = 0 %}
-                        {% for page in seoPages.vacationer %}
-                            {% if page.slug != seoPage.slug and count < 4 %}
-                                {% if seoPage.destination and page.destination == seoPage.destination %}
-                                    {% set count = count + 1 %}
-                    <a href="/stays/{{ page.slug }}/" style="background: white; border-radius: 12px; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.06); transition: transform 0.2s ease; display: block;">
-                        <h3 style="font-size: 16px; font-weight: 600; color: var(--brand-dark); margin-bottom: 8px;">{{ page.title }}</h3>
-                        <p style="font-size: 13px; color: var(--stone-light); line-height: 1.5;">{{ page.description | truncate(100) }}</p>
-                    </a>
-                                {% endif %}
-                            {% endif %}
-                        {% endfor %}
-                    {% endif %}
-                </div>
-            </div>
-        </section>
-
-        <section class="cta-section">
-            <div class="container">
-                <h2 class="cta-title">{{ seoPage.collectionCtaTitle or "Need the full Seascape collection?" }}</h2>
-                <p class="cta-subtitle">{{ seoPage.collectionCtaBody or "If these homes are close but not quite right, open the full Seascape collection and compare the rest of the portfolio in one place." }}</p>
-                <a
-                    href="{{ seoPage.collectionCtaHref or '/properties/' }}"
-                    class="btn btn-gold"
-                    style="font-size: 16px; padding: 16px 40px;"
-                    data-track-event="catalog_book_direct_click"
-                    data-placement="stay_bottom_cta"
-                    data-track-label="{{ seoPage.collectionCtaLabel or seoPage.slug }}"
-                >{{ seoPage.collectionCtaLabel or "Open the Full Direct-Book Collection" }}</a>
             </div>
         </section>
     </main>
+
+    <div class="sticky-mobile-cta" aria-label="Mobile booking actions">
+        <a class="sticky-phone" href="tel:+19417048545" aria-label="Call Seascape Vacations">{{ uiIcon("phone") }}</a>
+        <a
+            href="{{ seoPage.collectionCtaHref or '/properties/' }}"
+            class="btn btn-gold"
+            data-track-event="catalog_book_direct_click"
+            data-placement="stay_mobile_sticky"
+            data-track-label="{{ seoPage.collectionCtaLabel or seoPage.slug }}"
+        >Book direct · save 10-15%</a>
+    </div>
 
     <footer class="footer">
         <div class="footer-inner">
@@ -849,12 +723,14 @@ eleventyComputed:
             <div class="footer-links">
                 <a href="/">Home</a>
                 <a href="/stays/">Stay Collections</a>
+                <a href="/stays/anna-maria-island-vacation-rentals/">Anna Maria Island Rentals</a>
+                <a href="/properties/?area=anna-maria-island">AMI Homes</a>
                 <a href="/guides/anna-maria-island-area-guide/">Anna Maria Island</a>
                 <a href="/guides/bradenton-area-guide/">Bradenton</a>
                 <a href="/guides/sarasota-area-guide/">Sarasota</a>
                 <a href="/property-management/">Property Owners</a>
             </div>
-            <div class="footer-copyright">© 2026 Seascape Vacations. All rights reserved. | Book Direct & Save</div>
+            <div class="footer-copyright">&copy; 2026 Seascape Vacations. All rights reserved. Book direct and save.</div>
         </div>
     </footer>
 
