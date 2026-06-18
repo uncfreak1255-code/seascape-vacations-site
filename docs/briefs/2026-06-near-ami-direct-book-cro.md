@@ -26,6 +26,19 @@
 - readback window: first 7 complete days after deploy once BigQuery GSC and GA4 cover the full window.
 - decision rule: keep if the page records at least one `stay_view_property_click` or `catalog_book_direct_click` without a truth, schema, or content-lint failure; if it stays flat after real sessions, add the page to the analytics target registry or test CTA placement higher in a separate branch.
 
+## Gate 0: Query And SERP Competition
+
+| Field | Answer |
+| --- | --- |
+| Target query family | Vacation rentals near Anna Maria Island, including near-island AMI beach-trip variants. |
+| Searcher intent | Guest booking. |
+| Current Seascape URL | `/stays/vacation-rentals-near-anna-maria-island/`; beachfront add-on route `/stays/anna-maria-island-beachfront-rentals/`. |
+| Current proof | Saved DataForSEO finding `seo-findings/keywords/vacation-rentals-near-anna-maria-island.md` observed Seascape absent from the captured mobile SERP; the later 2026-06-08 to 2026-06-14 operator read was clear but still below threshold, with thin stay-money sessions and only one `stay_view_property_click`. |
+| Top visible competitors | Anna Maria Vacations, Anna Maria Life Vacation Rentals, AMI Locals, SeaBreeze Vacation, and other AMI local inventory pages from the saved DataForSEO capture. |
+| Competitor angle | On-island or AMI-local inventory, larger choice sets, local inventory filters, and beachfront/island-town positioning. |
+| Seascape gap | Seascape cannot honestly claim true on-island or walk-out beachfront inventory here; the page must win only when a near-island Bradenton home, private pool space, and direct-book path are the better fit. |
+| Recommendation | Improve only the source-backed near-island/direct-book answer and tracking path. For the beachfront add-on, do proof cleanup only: remove the Sarasota-side property from the AMI beach-base set, keep the not-walk-out truth clear, and add property-source distance facts. |
+
 ## Search Operator Read
 
 - source reads used: site `docs/status/next-batch.md`, pSEO inventory, stay-money portfolio, target page source, property fallback data, and `seascape-analytics/tmp/weekly-ai-visibility-reruns/2026-06-10-to-2026-06-16/weekly-search-operator-report.md`.
