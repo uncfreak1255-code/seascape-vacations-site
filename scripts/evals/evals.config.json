@@ -25,6 +25,24 @@
       "targets": ["src/guides/**/*.{njk,html,md}"],
       "golden": "scripts/evals/golden/aeo",
       "blocking": false
+    },
+    {
+      "id": "guest",
+      "rubric": "docs/process/guest-stay-eval-rubric.md",
+      "targets": ["src/_data/seoPages.json", "src/stays/**/*.{njk,html,md}"],
+      "dataSources": [
+        {
+          "path": "src/_data/seoPages.json",
+          "arrayPath": "vacationer",
+          "labelKey": "slug",
+          "onlySlugs": [
+            "anna-maria-island-homes-with-pool",
+            "bradenton-waterfront-vacation-rentals"
+          ]
+        }
+      ],
+      "golden": "scripts/evals/golden/guest",
+      "blocking": true
     }
   ]
 }

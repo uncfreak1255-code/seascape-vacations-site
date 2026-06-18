@@ -1,0 +1,7 @@
+{
+  "name": "guest-live-ami-pool-buried-answer",
+  "lane": "guest",
+  "sourceCite": "full live src/_data/seoPages.json vacationer#anna-maria-island-homes-with-pool geoIntro (all 3 paragraphs); passes lint:content clean today; weak, not information-free — fails on a buried answer behind a generic opener",
+  "copy": "Anna Maria Island is one of Florida's most sought-after vacation destinations, and booking a private pool home nearby means getting the best of both worlds: Gulf Coast beach days and your own pool at night. Unlike crowded resort pools, Seascape's near-AMI private-pool homes offer privacy, heated water for year-round comfort, and enough space for the whole family to spread out. Located in Bradenton just minutes from Holmes Beach, Bradenton Beach, and Coquina Beach, our pool homes near Anna Maria Island range from practical family bases to spacious estates sleeping up to 16 guests. Every property is professionally managed by Seascape Vacations, a locally owned company with deep roots in the Bradenton-AMI corridor. When you book direct with us, you save 10-15% compared to Airbnb and VRBO - no service fees, no markups, just honest Gulf Coast hospitality. Whether you're planning a family beach vacation, a romantic couples getaway, or a multi-family reunion, our near-AMI pool homes deliver the space, privacy, and local support that make the trip easier to run.",
+  "expect": { "band": "low", "maxOverall": 55 }
+}

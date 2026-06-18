@@ -1,0 +1,7 @@
+{
+  "name": "guest-decision-first",
+  "lane": "guest",
+  "sourceCite": "Claude rewrite of anna-maria-island-homes-with-pool geoIntro (decision-first, named drive times, stated tradeoff)",
+  "copy": "A pool home near Anna Maria Island gets you the beach without the island's two real costs: nightly rates and parking. Seascape's homes sit in Bradenton, 10-15 minutes from Holmes Beach, Bradenton Beach, and Coquina Beach - close enough for a sunrise beach run, far enough that you get a private heated pool, a driveway that fits everyone's cars, and room for up to 16 guests instead of a tight on-island condo. The tradeoff is plain: you give up a sand-out-the-front-door address, and in return you get more house, easier parking, and a lower total at checkout. Book direct with Seascape Vacations and you pay 10-15% less than the same dates on Airbnb or VRBO.",
+  "expect": { "band": "high", "minOverall": 75 }
+}

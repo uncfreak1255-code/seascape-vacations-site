@@ -45,6 +45,7 @@
     "perf:budget:check": "lhci autorun --config=./lighthouserc.js",
     "eval:owner": "node scripts/evals/run-owner-eval.js",
     "eval:aeo": "node scripts/evals/run-aeo-eval.js",
+    "eval:guest": "node scripts/evals/run-guest-eval.js",
     "lint:evals": "node scripts/evals/lint-evals.js",
     "test:evals": "node --test scripts/evals/*.test.js"
   },
