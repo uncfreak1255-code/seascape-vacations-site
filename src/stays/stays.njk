@@ -229,7 +229,7 @@ eleventyComputed:
         h1, h2, h3, h4 { font-family: 'Playfair Display', Georgia, serif; font-weight: 500; letter-spacing: -0.02em; }
         img { max-width: 100%; height: auto; }
         a { text-decoration: none; color: inherit; }
-        .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(245, 238, 214, 0.98); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(0, 0, 0, 0.06); box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08); }
+        .nav { position: sticky; top: 0; left: 0; right: 0; z-index: 100; background: rgba(245, 238, 214, 0.98); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(0, 0, 0, 0.06); box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08); }
         .nav-inner { display: flex; justify-content: space-between; align-items: center; padding: 16px 24px; max-width: 1400px; margin: 0 auto; }
         .nav-logo { display: flex; align-items: center; gap: 14px; }
         .nav-logo img { width: auto; height: 40px; max-width: none; flex: 0 0 auto; display: block; }
@@ -248,7 +248,7 @@ eleventyComputed:
         .section-tag { display: inline-block; font-size: 12px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--brand-dark); margin-bottom: 12px; }
         .section-title { font-size: clamp(28px, 4vw, 38px); color: var(--stone); margin-bottom: 12px; }
         .section-subtitle { color: var(--stone-light); max-width: 660px; margin: 0 auto; }
-        .hero { min-height: 86vh; display: grid; place-items: center; padding: 136px 24px 72px; color: var(--white); background-image: linear-gradient(180deg, rgba(0,0,0,.34), rgba(0,0,0,.68)), var(--hero-image); background-size: cover; background-position: center; }
+        .hero { min-height: calc(86vh - 88px); display: grid; place-items: center; padding: 72px 24px; color: var(--white); background-image: linear-gradient(180deg, rgba(0,0,0,.34), rgba(0,0,0,.68)), var(--hero-image); background-size: cover; background-position: center; }
         .hero-inner { width: min(980px, 100%); text-align: center; }
         .hero-eyebrow { display: inline-flex; align-items: center; gap: 16px; color: var(--gold-light); font-size: 12px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; margin-bottom: 18px; }
         .hero-eyebrow::before, .hero-eyebrow::after { content: ""; width: 40px; height: 1px; background: rgba(232, 213, 163, 0.72); }
@@ -328,7 +328,7 @@ eleventyComputed:
             .nav-inner { padding: 12px 16px; }
             .nav-logo-text { font-size: 18px; }
             .nav .btn { display: none; }
-            .hero { min-height: 82vh; padding: 112px 18px 56px; }
+            .hero { min-height: calc(82vh - 69px); padding: 56px 18px; }
             .hero-eyebrow::before, .hero-eyebrow::after { width: 26px; }
             .hero-actions { flex-direction: column; }
             .hero-actions .btn, .hero-actions .btn-ghost { width: 100%; }
@@ -365,7 +365,23 @@ eleventyComputed:
     </nav>
 
     <main class="main-content">
-        <section class="hero" style="--hero-image: url('{{ heroImage | imgProxy(1600) }}');">
+        <nav class="breadcrumbs" aria-label="Breadcrumb">
+            <ol>
+                <li><a href="/">Home</a></li>
+                <li><span>/</span></li>
+                <li>
+                    {% if destinationGuideHref %}
+                    <a href="{{ destinationGuideHref }}">{{ destinationLabel }}</a>
+                    {% else %}
+                    <a href="/stays/">Stay Collections</a>
+                    {% endif %}
+                </li>
+                <li><span>/</span></li>
+                <li><span aria-current="page">{{ seoPage.h1 }}</span></li>
+            </ol>
+        </nav>
+
+        <section class="hero" style="--hero-image: url('{{ heroImage | imgProxy(1200) }}');">
             <div class="hero-inner">
                 <p class="hero-eyebrow">{{ destinationLabel }}</p>
                 <h1>{{ seoPage.h1 }}</h1>
@@ -388,22 +404,6 @@ eleventyComputed:
             </div>
         </section>
 
-        <nav class="breadcrumbs" aria-label="Breadcrumb">
-            <ol>
-                <li><a href="/">Home</a></li>
-                <li><span>/</span></li>
-                <li>
-                    {% if destinationGuideHref %}
-                    <a href="{{ destinationGuideHref }}">{{ destinationLabel }}</a>
-                    {% else %}
-                    <a href="/stays/">Stay Collections</a>
-                    {% endif %}
-                </li>
-                <li><span>/</span></li>
-                <li><span aria-current="page">{{ seoPage.h1 }}</span></li>
-            </ol>
-        </nav>
-
         <section class="stats-bar" aria-label="Seascape stay highlights">
             <div class="stats-grid">
                 <div class="stat">
@@ -423,6 +423,10 @@ eleventyComputed:
 
         <section class="section" id="intro">
             <div class="container-narrow">
+                <div class="section-header">
+                    <p class="section-tag">{{ seoPage.introEyebrow or "The short version" }}</p>
+                    <h2 class="section-title">{{ seoPage.introHeading or ("Stay near " + destinationLabel + ", with the trip details up front") }}</h2>
+                </div>
                 <div class="intro-copy">
                     {% if seoPage.intro %}<p>{{ seoPage.intro }}</p>{% endif %}
                     {% if seoPage.geoIntro %}{{ seoPage.geoIntro | safe }}{% endif %}
