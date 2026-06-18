@@ -26,6 +26,19 @@
 - readback window: next Search Console indexing or weekly analytics read after deploy and recrawl.
 - decision rule: keep if the targets remain valid, linked, and source-backed; if recrawl still shows non-indexation, decide page-by-page whether to strengthen, consolidate, or noindex instead of adding more broad links.
 
+## Gate 0 Rescue Block
+
+| Field | Required answer |
+| --- | --- |
+| Target query family | Florida Gulf Coast vacation rentals, Bradenton amenity vacation rentals, and Florida vacation rental management support queries. |
+| Searcher intent | Mixed guest booking and owner-management intent; this branch only changes internal routing into existing pages. |
+| Current Seascape URL | `/property-management/condo-rental-management-florida/` for the audit orphan, plus selected existing owner and stay pages named in this brief. |
+| Current proof | `workspace/technical-seo-audit-2026-06-17.md` named `/property-management/condo-rental-management-florida/` as the lone true orphan and said the smallest technical lever was contextual internal-link redistribution into thin underlinked owner and stay pages. The repo link analyzer confirmed the condo page had no useful inbound path before this rescue and source truth confirms the target URLs already exist. |
+| Top visible competitors | Live web read on 2026-06-18 surfaced broad stay marketplaces and directories such as Vrbo, FloridaRentals.com, Emerald Coast By Owner, and Florida Rental By Owners for Gulf Coast/stay amenity queries; owner-management comparison surfaces included RedAwning, Awning/Evolve/Vacasa comparisons, and host forums. |
+| Competitor angle | Large inventory, amenity filters, direct-book directory framing, owner-service fee comparisons, maintenance/operations promises, and stronger crawlable category paths. |
+| Seascape gap | Seascape should not answer that gap with new page volume while indexation is shrinking. The source-backed gap is discoverability: existing owner and stay pages need contextual paths from relevant high-authority guides and hubs so Google and readers can reach them without footer/nav-only routing. |
+| Recommended action | Improve internal links only: fix the condo management orphan from the owner hub and a relevant owner guide, add contextual links from strong guides into selected weak stay and owner pages, then hold any ranking or indexation claim until Search Console recrawl/readback. |
+
 ## Cluster In Scope
 
 - owner targets: `/property-management/condo-rental-management-florida/`, `/property-management/vacation-rental-maintenance-florida/`, `/property-management/vacation-rental-insurance-florida/`
