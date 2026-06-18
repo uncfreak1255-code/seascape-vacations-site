@@ -620,7 +620,7 @@ test("remaining local owner pages keep custom owner-math framing instead of fall
     "vacation-rental-management-sarasota": {
       proofTitle: "Premium homes lose money when the operation gets flattened",
       switchTitle: "Why premium Sarasota owners start shopping for a new manager",
-      revenueTitle: "What preserves Sarasota rate power"
+      revenueTitle: "What protects premium Sarasota rates"
     }
   };
 
