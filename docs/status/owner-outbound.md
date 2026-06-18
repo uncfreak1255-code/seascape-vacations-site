@@ -110,6 +110,19 @@ Founder send check before any outreach:
 - do not count a send as demand
 - prepare the send-log row before sending
 
+### Batch 2026-06-17: Outlook Send Evidence
+
+Outlook confirms three founder-sent benchmark emails from the Card 3 batch:
+Kiri at `2026-06-17T21:21:11Z`, Megan at `2026-06-17T21:21:21Z`,
+and Naomi at `2026-06-17T21:21:26Z`.
+
+The Hub-owned raw capture is
+`/Users/sawbeck/Projects/seascape-hub/sources/2026-06-17-owner-outbound-email-batch.md`.
+That capture, plus current Outlook searches for `Kiri`, `Megan`, and `Naomi`
+since `2026-06-17`, found only the outbound items and no owner reply. This is
+owner-outreach effort only. It is not owner-demand proof, does not move the
+owner gate, and does not upgrade any Hub benchmark-demand claim.
+
 | # | Prospect label | Public evidence | Reopenable contact path | Fit reason and pain hypothesis | Proof-rule result |
 |---:|---|---|---|---|---|
 | 1 | Kiri | Airbnb listing: [Beautiful Canal front house with heated pool & spa](https://www.airbnb.com/rooms/1477087787726582138). Public page shows an Anna Maria entire home for 12 guests, 6 bedrooms, 6.5 baths, hosted by Kiri. | Airbnb listing -> public host surface -> Message host after platform sign-in. No copied contact detail. | Premium canal-front, pool-and-spa home with enough booking value for fee percentage, Airbnb cost, direct booking cost, and owner statement clarity to matter. Pain hypothesis: first-year or new-listing revenue review. | Pass: named public host label, reopenable source, homeowner-reachable path, one approved proof module, no private data. |
@@ -180,13 +193,13 @@ Keep this table honest. Empty is better than fake progress.
 
 | Date prepared | Prospect | Contact path | Fit reason | Proof module | Draft path | Sent at | Reply status | Outcome | Evidence path |
 |---:|---|---|---|---|---|---|---|---|---|
-| 2026-06-16 | Kiri | Airbnb host message surface; no copied contact detail | 6BR canal-front Anna Maria pool/spa home; first-year or newer-listing revenue review angle | `gulf-coast-owner-benchmark-2026` | [draft](#draft-1-kiri) |  | not sent | draft only; founder review needed | [Airbnb](https://www.airbnb.com/rooms/1477087787726582138) |
-| 2026-06-16 | Megan | Airbnb host message surface; no copied contact detail | 4BR Bradenton Beach pool/dock home; mature host owner-statement review angle | `gulf-coast-owner-benchmark-2026` | [draft](#draft-2-megan) |  | not sent | draft only; founder review needed | [Airbnb](https://www.airbnb.com/rooms/1339940979581613196) |
+| 2026-06-16 | Kiri | Airbnb host message surface; no copied contact detail | 6BR canal-front Anna Maria pool/spa home; first-year or newer-listing revenue review angle | `gulf-coast-owner-benchmark-2026` | [draft](#draft-1-kiri) | 2026-06-17T21:21:11Z | no reply found | sent; owner-outreach effort only, not demand proof | `/Users/sawbeck/Projects/seascape-hub/sources/2026-06-17-owner-outbound-email-batch.md`; [Airbnb](https://www.airbnb.com/rooms/1477087787726582138) |
+| 2026-06-16 | Megan | Airbnb host message surface; no copied contact detail | 4BR Bradenton Beach pool/dock home; mature host owner-statement review angle | `gulf-coast-owner-benchmark-2026` | [draft](#draft-2-megan) | 2026-06-17T21:21:21Z | no reply found | sent; owner-outreach effort only, not demand proof | `/Users/sawbeck/Projects/seascape-hub/sources/2026-06-17-owner-outbound-email-batch.md`; [Airbnb](https://www.airbnb.com/rooms/1339940979581613196) |
 | 2026-06-16 | Ashley | Airbnb host message surface; no copied contact detail | 4BR beachside villa near Bridge Street; early-pattern revenue review angle | `gulf-coast-owner-benchmark-2026` | [draft](#draft-3-ashley) |  | not sent | draft only; founder review needed | [Airbnb](https://www.airbnb.com/rooms/1517691281023647588) |
 | 2026-06-16 | Wendy | Airbnb host message surface; no copied contact detail | 4BR Holmes Beach pool home; owner-statement clarity angle | `gulf-coast-owner-benchmark-2026` | [draft](#draft-4-wendy) |  | not sent | draft only; founder review needed | [Airbnb](https://www.airbnb.com/rooms/1025371189528255498) |
 | 2026-06-16 | Adam | Airbnb host message surface; no copied contact detail | 4BR beach/bay view home with pool/elevator; high-volume booking-source review angle | `gulf-coast-owner-benchmark-2026` | [draft](#draft-5-adam) |  | not sent | draft only; founder review needed | [Airbnb](https://www.airbnb.com/rooms/41800150) |
 | 2026-06-16 | Kate | Airbnb host message surface; no copied contact detail | 4BR heated-pool home near AMI/IMG; mainland-near-island net-payout review angle | `gulf-coast-owner-benchmark-2026` | [draft](#draft-6-kate) |  | not sent | draft only; founder review needed | [Airbnb](https://www.airbnb.com/rooms/1280439468418163165) |
-| 2026-06-16 | Naomi Ewald | Vrbo host contact surface; no copied contact detail | Owner-operated Holmes Beach pool home; owner-statement and direct-payment review angle | `gulf-coast-owner-benchmark-2026` | [draft](#draft-7-naomi-ewald) |  | not sent | draft only; founder review needed | [Vrbo](https://www.vrbo.com/4425699) |
+| 2026-06-16 | Naomi Ewald | Vrbo host contact surface; no copied contact detail | Owner-operated Holmes Beach pool home; owner-statement and direct-payment review angle | `gulf-coast-owner-benchmark-2026` | [draft](#draft-7-naomi-ewald) | 2026-06-17T21:21:26Z | no reply found | sent; owner-outreach effort only, not demand proof | `/Users/sawbeck/Projects/seascape-hub/sources/2026-06-17-owner-outbound-email-batch.md`; [Vrbo](https://www.vrbo.com/4425699) |
 | 2026-06-16 | Teresa | Airbnb host message surface; no copied contact detail | 4BR beach-walk pool/spa home; early hosting-cycle revenue review angle | `gulf-coast-owner-benchmark-2026` | [draft](#draft-8-teresa) |  | not sent | draft only; founder review needed | [Airbnb](https://www.airbnb.com/rooms/1502928363519390450) |
 | 2026-06-16 | Morgan | Airbnb host message surface; no copied contact detail | 4BR Bridge Street pool/hot-tub home; premium amenity net-payout review angle | `gulf-coast-owner-benchmark-2026` | [draft](#draft-9-morgan) |  | not sent | draft only; founder review needed | [Airbnb](https://www.airbnb.com/rooms/1384108265624016866) |
 | 2026-06-16 | Christy | Airbnb host message surface; no copied contact detail | 4BR Holmes Beach pool home; out-of-area owner/reporting clarity angle | `gulf-coast-owner-benchmark-2026` | [draft](#draft-10-christy) |  | not sent | draft only; founder review needed | [Airbnb](https://www.airbnb.com/rooms/28602630) |
