@@ -397,7 +397,7 @@ eleventyComputed:
                     <a href="{% if hasComparison %}#compare{% else %}#intro{% endif %}" class="btn-ghost">Why stay here?</a>
                 </div>
                 <div class="trust-chips" aria-label="Booking highlights">
-                    <span class="trust-chip">{{ uiIcon("star") }} Rated 5.0</span>
+                    <span class="trust-chip">{{ uiIcon("star") }} {{ seoPage.reviewTrustLabel or "Rated 5.0" }}</span>
                     <span class="trust-chip">{{ uiIcon("car") }} {{ seoPage.driveTimeLabel or "10-15 minutes to beaches" }}</span>
                     <span class="trust-chip">{{ uiIcon("dollar") }} Save 10-15% direct</span>
                 </div>
@@ -595,7 +595,10 @@ eleventyComputed:
             <div class="container">
                 <div class="section-header">
                     <p class="section-tag">Guest notes</p>
-                    <h2 class="section-title">Guest notes after booking direct</h2>
+                    <h2 class="section-title">{{ seoPage.reviewHeading or "Guest notes after booking direct" }}</h2>
+                    {% if seoPage.reviewIntro %}
+                    <p class="section-subtitle">{{ seoPage.reviewIntro }}</p>
+                    {% endif %}
                 </div>
                 <div class="card-grid">
                     {% for review in seoPage.reviewProof %}
