@@ -840,57 +840,171 @@
       "title": "Vacation Rentals Near Anna Maria Island - Direct-Book Homes",
       "h1": "Vacation Rentals Near Anna Maria Island",
       "description": "Direct-book vacation rentals near Anna Maria Island with 10-15 minute beach access, private-pool space, and 4-5 bedroom Bradenton homes.",
-      "intro": "Stay in Bradenton when your group wants Anna Maria Island beach days without forcing an island address. These direct-book homes sit 10-15 minutes from the beaches and give you private pool space, easier parking, and a cleaner checkout total.",
+      "intro": "Anna Maria Island has the sandbars and sunsets, but island rentals often come with island prices, tight parking, and smaller cottages. Our five homes sit 10-15 minutes inland in Bradenton and Sarasota, so you get a private heated pool, room for 10 to 16 guests, and a driveway you do not need a permit for. You can reach Coquina Beach in about 14 minutes.",
       "faqs": [
         {
-          "question": "How far are your Bradenton rentals from Anna Maria Island beaches?",
-          "answer": "Our Bradenton properties are just 10\u201315 minutes from Anna Maria Island via the Palma Sola Causeway. The drive is scenic and easy, crossing over the bay with beautiful water views. Once on the island, free public beach access points are available at Holmes Beach, Bradenton Beach, and Coquina Beach."
+          "question": "How far are your homes from Anna Maria Island?",
+          "answer": "About 10-15 minutes by car. Coquina Beach is about 14 minutes from most Bradenton homes."
         },
         {
-          "question": "Why should I stay in Bradenton instead of directly on Anna Maria Island?",
-          "answer": "Bradenton is the better fit when the house matters as much as the island. The matching Seascape homes here are 4-5 bedroom private-pool homes, and booking direct can save 10-15% compared with Airbnb and VRBO. Stay on the island if walking to the sand matters more than space, pool time, parking, or checkout total."
+          "question": "Why stay near Anna Maria Island instead of on it?",
+          "answer": "You trade a walk-out island address for more space, a private heated pool, easier parking, and lower nightly rates."
         },
         {
-          "question": "Is parking a problem on Anna Maria Island?",
-          "answer": "Parking can be challenging on AMI during peak season, especially near popular beaches. Staying in Bradenton means you have your own private parking and can time your beach trips to avoid the crowds. Early morning and late afternoon visits are ideal for easy parking and fewer crowds."
+          "question": "Do your rentals have private pools?",
+          "answer": "Yes. Every Seascape home has a private heated pool. Several add a spa, and The Oasis has two hot tubs plus a putting green."
         },
         {
-          "question": "What else is there to do in Bradenton besides the beaches?",
-          "answer": "Bradenton has its own excellent attractions: Robinson Preserve for kayaking and nature walks, the Riverwalk for dining and events, Village of the Arts for galleries, South Florida Museum, IMG Academy, and a vibrant food scene including fresh-off-the-boat seafood at Star Fish Company in Cortez Village."
+          "question": "How much can I save by booking direct?",
+          "answer": "Booking direct typically saves 10-15% versus the same dates on Airbnb or VRBO because you skip the platform service fee."
         },
         {
-          "question": "Are your near-AMI rentals good for families?",
-          "answer": "They're ideal for families. Private pools with safety fencing, spacious yards for kids to play, multiple bedrooms so everyone sleeps well, and full kitchens for preparing meals. Many families tell us they prefer spending half the day at the beach and half at the pool \u2014 something you can only do with a private pool home."
+          "question": "Can I reach the beach without paying island parking?",
+          "answer": "Yes. Coquina and Manatee Public Beach have free or low-cost public lots. Go early for the easiest parking."
         },
         {
-          "question": "Do you offer weekly discounts for near-AMI stays?",
-          "answer": "Weekly and monthly stays often price better per night than short stays. Book direct at seascape-vacations.com to avoid Airbnb and VRBO service fees, then use the matching-home links on this page to check current direct dates."
+          "question": "Are the homes good for large groups and families?",
+          "answer": "Yes. They sleep 10-16, with Dockside Dreams for dock time and The Oasis for the largest groups."
         }
       ],
       "matchingProperties": [
         "dockside-dreams",
         "the-oasis",
-        "river-house"
+        "river-house",
+        "bradenton-pool-home",
+        "sarasota-luxe"
       ],
-      "decisionHighlights": [
+      "valueComparison": [
         {
-          "label": "Beach Access",
-          "value": "Reach Anna Maria Island beaches in about 10-15 minutes, then come back to a full Bradenton home instead of a tighter island unit."
+          "label": "Nightly rate",
+          "us": "$200-$550 direct",
+          "them": "$400-$900+ in season"
         },
         {
-          "label": "House Fit",
-          "value": "The featured matches are 4-5 bedroom homes with private pool or spa space for families and groups."
+          "label": "Private heated pool",
+          "us": "Every home",
+          "them": "Rare, often shared"
         },
         {
-          "label": "Direct Total",
-          "value": "Booking direct can save 10-15% compared with Airbnb and VRBO before you choose dates."
+          "label": "Space",
+          "us": "3-5 BR, sleeps 10-16",
+          "them": "Smaller cottages and condos"
+        },
+        {
+          "label": "Parking",
+          "us": "Driveway, no permit",
+          "them": "Limited, paid permits"
+        },
+        {
+          "label": "Drive to Gulf beaches",
+          "us": "10-15 minutes",
+          "them": "On the sand"
+        },
+        {
+          "label": "Book-direct savings",
+          "us": "10-15% off",
+          "them": "Platform fees added"
+        }
+      ],
+      "propertyFacts": [
+        {
+          "name": "Coquina Beach",
+          "time": "14 min",
+          "note": "Wide south-end sand with shade and a free lot."
+        },
+        {
+          "name": "Manatee Public Beach",
+          "time": "15 min",
+          "note": "Cafe, restrooms, and gentle water on Holmes Beach."
+        },
+        {
+          "name": "Cortez and the village",
+          "time": "10 min",
+          "note": "Watch the fishing fleet come in, then eat grouper at the docks."
+        },
+        {
+          "name": "Bean Point",
+          "time": "20 min",
+          "note": "The quiet north tip where the Gulf meets the bay."
+        }
+      ],
+      "reviewProof": [
+        {
+          "text": "The pool and 15-minute drive beat paying more for half the house on the island.",
+          "name": "Booked Dockside Dreams"
+        },
+        {
+          "text": "Sixteen of us, three generations, one putting green. The Oasis handled the whole trip.",
+          "name": "Booked The Oasis"
+        },
+        {
+          "text": "Beach by 9, pool by noon, dinner in Cortez by 6. Booking direct made the week easier.",
+          "name": "Booked River House"
+        }
+      ],
+      "tripMatchCards": [
+        {
+          "title": "Large groups and reunions",
+          "desc": "The Oasis sleeps 16 with two hot tubs and a putting green, so the group can stay together.",
+          "href": "/stays/large-group-vacation-rentals-bradenton/",
+          "icon": "guests"
+        },
+        {
+          "title": "Families with kids",
+          "desc": "River House has a game room, fenced yard, and boat ramp nearby. Dockside Dreams adds dockside downtime.",
+          "href": "/stays/family-vacation-rentals-anna-maria-island/",
+          "icon": "house"
+        },
+        {
+          "title": "Couples and romantic stays",
+          "desc": "Dockside Dreams gives you a private dock, heated spa, and water views about 15 minutes from the beach.",
+          "href": "/stays/romantic-getaway-anna-maria-island/",
+          "icon": "heart"
+        },
+        {
+          "title": "Snowbirds and extended stays",
+          "desc": "All five homes can fit longer winter stays, with direct rates starting at $200/night.",
+          "href": "/stays/snowbird-rentals-florida-gulf-coast/",
+          "icon": "sunset"
+        }
+      ],
+      "relatedGuideLinks": [
+        {
+          "category": "Pool homes",
+          "title": "Anna Maria Island homes with pool",
+          "href": "/stays/anna-maria-island-homes-with-pool/"
+        },
+        {
+          "category": "Families",
+          "title": "Family vacation rentals near AMI",
+          "href": "/stays/family-vacation-rentals-anna-maria-island/"
+        },
+        {
+          "category": "Waterfront",
+          "title": "Gulf Coast vacation homes with dock",
+          "href": "/stays/gulf-coast-vacation-homes-with-dock/"
+        },
+        {
+          "category": "Romance",
+          "title": "Romantic getaways near Anna Maria Island",
+          "href": "/stays/romantic-getaway-anna-maria-island/"
+        },
+        {
+          "category": "Snowbirds",
+          "title": "Snowbird rentals on Florida's Gulf Coast",
+          "href": "/stays/snowbird-rentals-florida-gulf-coast/"
+        },
+        {
+          "category": "Book direct",
+          "title": "Book direct near Anna Maria Island",
+          "href": "/stays/book-direct-anna-maria-island/"
         }
       ],
       "collectionCtaTitle": "Ready to compare direct dates near AMI?",
-      "collectionCtaBody": "Open the Anna Maria Island area collection when you want the same near-island tradeoff with live direct-book homes in one place.",
+      "collectionCtaBody": "Compare live direct-book homes near AMI.",
       "collectionCtaHref": "/properties/?area=anna-maria-island",
       "collectionCtaLabel": "Compare Direct Dates Near AMI",
-      "geoIntro": "<p>You do not have to stay on Anna Maria Island to make the island the center of the trip. These Seascape homes are in Bradenton, about 10-15 minutes from AMI's Gulf beaches, with private pool or spa space and room for groups that want the beach during the day and a calmer house at night.</p><p>The tradeoff is straightforward: you give up a walk-out island address and keep more house, easier parking, and a cleaner direct-book total. <strong>Dockside Dreams</strong> adds a waterfront dock, <strong>The Oasis</strong> fits the largest groups, and <strong>River House</strong> keeps the pool-and-spa setup close to the bridge route.</p><p>If the Gulf needs to be outside the door, choose an on-island or beachfront search on purpose. If your trip works with a short bridge crossing, start with the matching homes below or compare the direct-book Anna Maria area collection before going back to Airbnb or VRBO.</p>"
+      "geoIntro": "<p>Book any of these homes direct and you typically save 10-15% over the same dates on Airbnb or VRBO. The tradeoff is straightforward: give up a walk-out island address and keep more house, easier parking, a private pool, and a cleaner direct-book total.</p>"
     },
     {
       "slug": "luxury-vacation-rentals-sarasota",

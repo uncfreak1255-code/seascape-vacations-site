@@ -1,4 +1,4 @@
-# Brief: Near-AMI Direct-Book CRO
+# Brief: Near-AMI Direct-Book CRO And Stay Template Upgrade
 
 ## Content Gate Inputs
 
@@ -14,8 +14,8 @@
 ## Why This Batch
 
 - what changed in the data: the fresh 2026-06-08 to 2026-06-14 joined read is clear but still below threshold; guide traffic is arriving without transferring into stay or booking actions, and stay pages are too thin to claim a winner.
-- why this cluster wins now: `/stays/vacation-rentals-near-anna-maria-island/` is already a kept near-AMI commercial page and the Holmes Beach redirect target, so a small direct-book CTA and truth cleanup helps an existing money path without opening new page volume.
-- what should explicitly wait: Holmes Beach rebuilds, new stay variants, broad stay-page rewrites, and any claim that this change improved bookings before the next read.
+- why this cluster wins now: `/stays/vacation-rentals-near-anna-maria-island/` is already a kept near-AMI commercial page and the Holmes Beach redirect target, so it can serve as the pilot for the richer `/stays/` guide template without opening new page volume.
+- what should explicitly wait: Holmes Beach rebuilds, new stay variants, additional page-specific copy batches, and any claim that this change improved bookings before the next read.
 
 ## Experiment And Readback Contract
 
@@ -53,9 +53,9 @@
 
 ## Page Builder Tasks
 
-- source files likely to change: `src/_data/seoPages.json` and this brief.
-- redirect or schema work: preserve the existing Holmes Beach redirects and stay-page schema.
-- internal-link or CTA work: add a tracked direct-book collection CTA and tighten the copy around matching homes.
+- source files likely to change: `src/stays/stays.njk`, `src/_data/seoPages.json`, and this brief.
+- redirect or schema work: preserve the existing Holmes Beach redirects, keep stay ItemList schema valid from `matchingProperties`, and add visible-FAQ-matched FAQPage plus LodgingBusiness schema.
+- internal-link or CTA work: add a richer guide-page template, a tracked direct-book collection CTA, and six related stay links on the pilot page.
 - money CTA and downstream tracking event to verify: rendered page keeps `stay_view_property_click` on property cards and adds `catalog_book_direct_click` on the direct-book collection CTA.
 
 ## Voice Editor Checklist
@@ -67,13 +67,20 @@
 
 ## Release Gate Checklist
 
-- routes to smoke test: `/stays/vacation-rentals-near-anna-maria-island/`, `/properties/?area=anna-maria-island`, and `/stays/anna-maria-island-vacation-rentals/`.
-- commands to run: `npm run lint:content`, `npm run build`, `node --test scripts/enforcement/booking-handoff.test.js scripts/enforcement/direct-booking-event-smoke.test.js`, and a rendered route-contract check for the target URL.
+- routes to smoke test: `/stays/vacation-rentals-near-anna-maria-island/`, `/stays/anna-maria-island-vacation-rentals/`, and `/properties/?area=anna-maria-island`.
+- commands to run: `npm run lint:content`, `npm run build`, `npm run verify:jsonld`, `npm run verify:links`, `node --test scripts/enforcement/booking-handoff.test.js scripts/enforcement/direct-booking-event-smoke.test.js`, desktop/mobile rendered checks, and a rendered route-contract check for the target URL.
 - regression risks to watch: unsupported rate-savings claims, missing `stay_view_property_click`, missing `catalog_book_direct_click`, or the next analytics read omitting this URL.
 
 ## Done When
 
-- the near-AMI page has source-backed direct-book copy, a measured direct-book collection CTA, preserved property-card tracking, passing content/build gates, and an explicit readback path for the next GA4/GSC run.
+- the near-AMI page has source-backed direct-book copy, a richer reusable stay-guide template, a measured direct-book collection CTA, preserved property-card tracking, passing content/build/schema/link gates, and an explicit readback path for the next GA4/GSC run.
+
+## Stay Page Completeness Check
+
+- rendered stay pages checked: 60.
+- pages with `intro`, `geoIntro`, `faqs`, and `matchingProperties`: 60.
+- pages still missing one of those four fields: none.
+- pilot page with expanded reference fields: `/stays/vacation-rentals-near-anna-maria-island/`.
 
 ## Post-Reread Outcome
 
