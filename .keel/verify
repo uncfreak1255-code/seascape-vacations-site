@@ -1,1 +1,1 @@
-npm run lint:content
+npm run lint:content && npm test && npm run verify:links
