@@ -78,6 +78,7 @@
 
 - source files likely to change: `src/stays/stays.njk`, `src/_data/seoPages.json`, and this brief.
 - pool-page follow-up: update only the `/stays/anna-maria-island-homes-with-pool/` `geoIntro` to use the same near-island tradeoff framing; no title, metadata, routing, or template change.
+- metadata cleanup: keep the near-AMI page title under 60 characters, sharpen the direct-book meta description, and correct stale Bishop Museum naming in related stay-page copy.
 - redirect or schema work: preserve the existing Holmes Beach redirects, keep stay ItemList schema valid from `matchingProperties`, and add visible-FAQ-matched FAQPage plus LodgingBusiness schema.
 - internal-link or CTA work: add a richer guide-page template, a tracked direct-book collection CTA, and six related stay links on the pilot page.
 - money CTA and downstream tracking event to verify: rendered page keeps `stay_view_property_click` on property cards and adds `catalog_book_direct_click` on the direct-book collection CTA.
