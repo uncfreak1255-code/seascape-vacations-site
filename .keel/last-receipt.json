@@ -1,0 +1,9 @@
+{
+  "ts": "20260618T192646Z",
+  "command": "npm run lint:content",
+  "exit_code": 0,
+  "passed": true,
+  "output_sha256": "64f23398ee157ab74adac648c24222aaeaeceb44baa54f04942abc48e5092a35",
+  "output_log": "/Users/sawbeck/Projects/seascape-vacations-site/.keel/receipts/20260618T192646Z.log",
+  "staged_diffstat": " 2 files changed, 8 insertions(+)"
+}
