@@ -28,6 +28,7 @@ Implementation frames: `9:2` desktop, `11:2` mobile
 - 2026-05-21 proof-clean follow-up: demoted the AMI income guide out of the owner-proof lane, removed public PriceLabs/AirDNA-style authority language from that guide, and rerouted the owner FAQ on `/property-management/` to the benchmark instead of the AMI average-income explainer.
 - 2026-06-11 Figma implementation follow-up: finished the approved implementation frames (`9:2` desktop, `11:2` mobile), replaced the embedded benchmark form with the teardown intake handoff, kept `Request Your Revenue Teardown`, and preserved the approved proof-label set.
 - 2026-06-12 internal-link follow-up: added source-matched links from the booking-trends research page into the chart pack, the owner benchmark, and the owner revenue guide; no new routes or proof claims were added.
+- 2026-06-18 index-rescue follow-up: tightened the owner-income bridge page to answer the owner-net payout question earlier, surfaced the benchmark/switcher path on that bridge route, and kept the proof layer anchored to the existing benchmark asset instead of adding new claims.
 
 ## Decision
 

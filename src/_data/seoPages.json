@@ -3721,10 +3721,12 @@
     {
       "slug": "maximize-vacation-rental-income-florida",
       "destination": null,
-      "title": "How to Maximize Florida Vacation Rental Income",
-      "h1": "How to Maximize Florida Vacation Rental Income Without Letting Fees and Booking Costs Eat It Up",
-      "description": "See where Florida vacation rental income gets reduced: pricing, marketplace commissions, weak turnover discipline, and generic management.",
-      "intro": "Most owners do not have one revenue problem. The money usually disappears through underpricing, marketplace commissions, too few direct bookings, and operational misses that weaken what the market will keep paying for the home.",
+      "title": "Maximize Florida Vacation Rental Income: Protect Owner Payout",
+      "h1": "Maximize Florida Vacation Rental Income by Protecting What You Keep",
+      "description": "If your calendar looks busy but your payout feels thin, check pricing, booking costs, direct bookings, and operating misses before you blame one management fee.",
+      "intro": "If your calendar looks healthy but your payout still feels thin, start with what you keep after pricing decisions, booking costs, and day-to-day execution. That is usually where owner income disappears.",
+      "proofTitle": "What your payout says before you switch anything",
+      "proofSubtitle": "A busy calendar does not tell you what you keep. Start with pricing, booking costs, and the fee gap between direct payment and marketplace bookings.",
       "benefits": [
         "Fee and channel audit tied to what the owner actually keeps instead of vanity revenue",
         "Pricing review that separates true demand from discount-driven occupancy",
@@ -3818,14 +3820,17 @@
       ],
       "cta": "Request Your Revenue Review",
       "primaryCta": "Request Your Revenue Review",
-      "ctaSubcopy": "We show what is reducing owner income before we talk about switching anything.",
-      "ctaNote": "Useful if you want hard fee math, marketplace commission math, and a clearer view of real owner upside.",
+      "ctaSubcopy": "Send the listing or address and Seascape will show whether pricing, booking costs, or execution is doing the real damage.",
+      "ctaNote": "Useful if you want fee math, booking-cost math, and a clearer read on what is trimming your payout.",
       "proofAssetKey": "gulf-coast-owner-benchmark-2026",
       "relatedOwnerResources": [
         "vacation-rental-management-fees-florida",
         "vacation-rental-licensing-florida",
         "vrbo-management-services-florida"
       ],
+      "processTag": "Review Path",
+      "processTitle": "What the review checks first",
+      "processSubtitle": "The point is to find the biggest payout problem before anyone talks about changing managers.",
       "geoIntro": "<p>Maximizing Florida vacation rental income has less to do with chasing one giant percentage increase and more to do with finding the exact places owner income is being reduced. The usual suspects are predictable: underpricing, marketplace commissions, too few direct bookings, and operational misses that soften reviews and force more discounting later.</p><p>Seascape's current Gulf Coast portfolio runs at <strong>$1.4M in annual rental revenue</strong> with <strong>$119,923 in direct bookings</strong>. The real owner decision is not whether management exists. It is whether the current operating model protects enough margin to justify its fee and booking channels.</p><p>That is why this page treats revenue as an operating problem, not a motivational one. If the home is losing income, the review should show whether the problem lives in pricing, booking costs, or execution before anyone talks about changing managers.</p>",
       "faqs": [
         {

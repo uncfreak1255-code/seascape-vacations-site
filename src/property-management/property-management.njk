@@ -15,9 +15,11 @@ eleventyComputed:
 {% set pageUpdatedLabel = gitLastModifiedLabel(page.inputPath, "src/_data/seoPages.json", "src/_data/ownerProofAssets.json") %}
 {% set proofAsset = seoPage.proofAssetKey and ownerProofAssets[seoPage.proofAssetKey] %}
 {% set pageProofStats = seoPage.proofStats or (proofAsset and proofAsset.stats) %}
+{% set ownerNetBridgePage = seoPage.slug == "maximize-vacation-rental-income-florida" %}
 {% set ownerMoneyPage = seoPage.slug == "vacation-rental-management-fees-florida"
   or seoPage.slug == "vacation-rental-licensing-florida"
   or seoPage.slug == "vrbo-management-services-florida" %}
+{% set showOwnerBenchmarkPath = ownerMoneyPage or ownerNetBridgePage %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -216,15 +218,22 @@ eleventyComputed:
                     <a href="#owner-cta" class="btn btn-gold" data-track-event="owner_primary_cta_click" data-page-slug="{{ seoPage.slug }}">{{ seoPage.primaryCta or "Request Your Revenue Review" }}</a>
                 </div>
                 <p style="max-width: 760px; margin: 18px auto 0; opacity: 0.82; font-size: 15px;">{{ seoPage.ctaSubcopy or "We break down management fees, booking-source costs, and what your current setup is actually costing you before you decide anything." }}</p>
-                {% if ownerMoneyPage %}
+                {% if showOwnerBenchmarkPath %}
                 <div style="margin: 18px auto 0; max-width: 860px; border-radius: 14px; padding: 14px 16px; background: rgba(255,255,255,0.12); text-align: left;">
-                    <p style="font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(245, 228, 176, 0.92); margin: 0 0 8px;">Switcher Path</p>
+                    <p style="font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(245, 228, 176, 0.92); margin: 0 0 8px;">{% if ownerNetBridgePage %}Owner Net Answer{% else %}Switcher Path{% endif %}</p>
                     <p style="font-size: 14px; line-height: 1.65; margin: 0; color: rgba(255,255,255,0.92);">
+                        {% if ownerNetBridgePage %}
+                        If your calendar looks active but your payout still feels thin, start with the <a href="/research/owner-fee-revenue-leak-benchmark-2026/" style="color: #fff; text-decoration: underline;">owner benchmark</a>, then compare
+                        <a href="/property-management/vacation-rental-management-fees-florida/" style="color: #fff; text-decoration: underline;">management fees</a> and
+                        <a href="/property-management/vrbo-management-services-florida/" style="color: #fff; text-decoration: underline;">booking-channel handling</a> before you
+                        <a href="/property-management/#owner-cta" style="color: #fff; text-decoration: underline;">request your review</a>.
+                        {% else %}
                         Start with the <a href="/research/owner-fee-revenue-leak-benchmark-2026/" style="color: #fff; text-decoration: underline;">owner benchmark</a>, then compare
                         <a href="/property-management/vacation-rental-management-fees-florida/" style="color: #fff; text-decoration: underline;">fees</a>,
                         <a href="/property-management/vacation-rental-licensing-florida/" style="color: #fff; text-decoration: underline;">licensing</a>, and
                         <a href="/property-management/vrbo-management-services-florida/" style="color: #fff; text-decoration: underline;">VRBO handling</a> before you
                         <a href="/property-management/#owner-cta" style="color: #fff; text-decoration: underline;">request your review</a>.
+                        {% endif %}
                     </p>
                 </div>
                 {% endif %}
@@ -555,7 +564,7 @@ eleventyComputed:
                 <div class="section-header">
                     <p class="section-tag">Related Resources</p>
                     <h2 class="section-title">More for Property Owners</h2>
-                    {% if ownerMoneyPage %}
+                    {% if showOwnerBenchmarkPath %}
                     <p class="section-subtitle" style="max-width: 760px;">Use the benchmark, the money-page comparisons, and the review request together instead of treating fees, licensing, and channel handling like separate decisions.</p>
                     <div style="display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-top: 24px;">
                     <a href="/research/owner-fee-revenue-leak-benchmark-2026/" style="display: inline-flex; align-items: center; justify-content: center; padding: 10px 18px; border-radius: 999px; border: 1px solid rgba(61, 92, 93, 0.14); background: rgba(255,255,255,0.92); color: var(--brand-dark); font-size: 13px; font-weight: 600; text-decoration: none;">
