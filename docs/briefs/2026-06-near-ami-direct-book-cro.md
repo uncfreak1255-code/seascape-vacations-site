@@ -45,6 +45,14 @@
 - money destination: matching property cards and `/properties/?area=anna-maria-island`.
 - active lane: direct-book stay intent.
 
+## Beachfront Alternative Add-On
+
+- scoped route: `/stays/anna-maria-island-beachfront-rentals/`.
+- reason for inclusion: this is the same near-island tradeoff pattern, but the route must be stricter because the query says beachfront.
+- source-backed change: keep the page explicit that these are not walk-out beachfront homes, remove Sarasota Luxe from the AMI beach-base set, and use property-source beach distance facts for Dockside Dreams, The Oasis, and River House.
+- tracking contract: preserve `stay_view_property_click` on property cards and `catalog_book_direct_click` on collection CTAs.
+- proof gate: content lint, build, JSON-LD/link checks, rendered desktop/mobile review, and a local event-hook read on `/stays/anna-maria-island-beachfront-rentals/`.
+
 ## Source And Proof Constraints
 
 - property truth needed: matching-home capacity, pool/spa, dock, and pricing claims must trace to `src/_data/properties-fallback.json` and generated property data.
