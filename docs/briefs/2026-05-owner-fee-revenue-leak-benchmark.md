@@ -18,6 +18,19 @@ Figma capture: `https://www.figma.com/design/glZRIUzGbQlw0KJhtAGUWP?node-id=3-2`
 Reference-only frame: `3:2`
 Implementation frames: `9:2` desktop, `11:2` mobile
 
+## Gate 0 Search Block
+
+| Field | Required answer |
+| --- | --- |
+| Target query family | `maximize vacation rental income florida`, `vacation rental income florida`, and owner-payout variants tied to what the owner keeps after fees and booking costs. |
+| Searcher intent | `owner-management` |
+| Current Seascape URL | `/property-management/maximize-vacation-rental-income-florida/` |
+| Current proof | 2026-06-18 live analytics readback for the June 12 alert set flagged this URL as the real owner-page problem. Search Console inspection returned `NEUTRAL` with `Crawled - currently not indexed` while live route checks stayed technically clean: `200`, `index, follow`, self-canonical, sitemap inclusion, and fresh `lastmod` dated `2026-06-18`. |
+| Top visible competitors | AirDNA vacation-rental return guide, Gulf Coast Property Management revenue page, and Key Data's vacation-rental profit-margin guide. |
+| Competitor angle | Broad revenue and payout advice: pricing, booking-channel cost, profitability math, and revenue-management framing that answers the "what do I actually keep?" question early. |
+| Seascape gap | The route was technically clean but too bridge-like. It did not surface the owner-payout benchmark path or the "what do you keep after fees and booking costs?" answer early enough versus the visible winners. |
+| Recommendation | `improve` the existing route: tighten title/H1/intro around what the owner keeps, surface the benchmark plus review path earlier, and keep all proof tied to the existing benchmark asset instead of adding new claims. |
+
 ## What Changed in This Batch
 
 - Updated property-management copy to avoid new banned phrasing, remove owner-detached wording, and align CTA/benefit language to the property-focused intent.
