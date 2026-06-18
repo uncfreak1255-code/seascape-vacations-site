@@ -28,6 +28,9 @@ blob-report/
 
 # Local scratch artifacts
 .tmp/
+
+# keel proof-gate (local receipts + proof config, never committed)
+.keel/
 .superpowers/
 .gstack/
 lh-live-baseline.report.html
