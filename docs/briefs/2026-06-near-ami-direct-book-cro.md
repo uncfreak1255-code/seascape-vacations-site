@@ -6,7 +6,7 @@
 - primary keyword: vacation rentals near Anna Maria Island
 - secondary keywords: near Anna Maria Island rentals, Bradenton vacation rentals near AMI, direct-book Anna Maria Island area homes, Anna Maria Island pool homes
 - audience pattern: high-intent guest who wants AMI beach days, more private-house space, and a clear next click into direct dates without pretending the homes are on the island.
-- proof source: `docs/status/next-batch.md`, `docs/portfolio/pseo-inventory-triage.md`, `docs/portfolio/stay-money-pages.md`, `src/_data/seoPages.json`, `src/_data/properties-fallback.json`, and the fresh `seascape-analytics` weekly search operator report for 2026-06-08 to 2026-06-14.
+- proof source: `docs/status/next-batch.md`, `docs/portfolio/pseo-inventory-triage.md`, `docs/portfolio/stay-money-pages.md`, `seo-findings/keywords/vacation-rentals-near-anna-maria-island.md`, `workspace/dataforseo-results-capture-sheet-first-5-calls.md`, `src/_data/seoPages.json`, `src/_data/properties-fallback.json`, and the fresh `seascape-analytics` weekly search operator report for 2026-06-08 to 2026-06-14.
 - required internal links: /properties/?area=anna-maria-island, /stays/anna-maria-island-vacation-rentals/
 - CTA target: keep the matching-home cards and add a measured direct-book collection path using existing `catalog_book_direct_click` and `stay_view_property_click` tracking.
 - anti-claims: no on-island inventory claim, no true beachfront claim, no invented amenity or capacity claim, no direct-book savings claim beyond the approved 10-15% boundary, and no booking or revenue impact claim before the post-change GA4/GSC readback.
@@ -32,9 +32,10 @@
 - URLs inspected: `/stays/vacation-rentals-near-anna-maria-island/`, `/stays/anna-maria-island-vacation-rentals/`, `/properties/`, and `/properties/?area=anna-maria-island`.
 - main evidence: the fresh report shows a clear read for 2026-06-08 to 2026-06-14, `hold-and-reread`, guide feeder failure, `/properties/` with 121 GA4 sessions and 12 catalog direct-book clicks, and thin stay-money sessions with only one `stay_view_property_click`.
 - targeted baseline proof: running `./scripts/weekly-search-operator-report.sh --window-start 2026-06-08 --window-end 2026-06-14 --target-page /stays/vacation-rentals-near-anna-maria-island/` returns the page separately with 3 GSC impressions, 0 GA4 sessions, 0 `catalog_book_direct_clicks`, and 0 `stay_view_property_clicks`.
-- competitor pages inspected for demand patterns, not copied topics: none in this pass; this is a source-backed CRO nudge, not a fresh SERP rewrite.
+- DataForSEO check: the saved mobile SERP finding for `vacation rentals near anna maria island` shows Seascape absent from page 1 and says `/properties/` had weak fit for this query; that supports this page-angle/direct-book nudge now that the analytics gate is open.
+- competitor pages inspected for demand patterns, not copied topics: prior DataForSEO competitor capture shows AMI-focused local operators and a hotels pack; this pass does not copy competitor topics and is not a fresh SERP rewrite.
 - question-tool language worth preserving in customer wording: near Anna Maria Island, Bradenton homes, direct-book dates, private pool, more space, 10-15 minutes to AMI beaches.
-- GSC/GA4 evidence that supports building, rewriting, holding, or killing this cluster: the default fresh report does not currently isolate this URL, so the follow-up read must include `/stays/vacation-rentals-near-anna-maria-island/` as a target page or add it to the analytics target registry.
+- GSC/GA4 evidence that supports building, rewriting, holding, or killing this cluster: the default fresh report does not currently isolate this URL, so the follow-up read must include `/stays/vacation-rentals-near-anna-maria-island/` as a target page or add it to the analytics target registry. If the post-change read stays flat after real sessions, run the next DataForSEO SERP/AI/local pass before changing title, metadata, or page angle again.
 
 ## Cluster In Scope
 
