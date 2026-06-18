@@ -19,6 +19,8 @@ Thumbs.db
 
 # Logs
 *.log
+.keel/last-receipt.json
+.keel/receipts/
 .skills
 .worktrees/
 playwright-report/
