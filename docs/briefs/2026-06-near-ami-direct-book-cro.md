@@ -65,6 +65,7 @@
 - source-backed change: keep the page explicit that these are not walk-out beachfront homes, remove Sarasota Luxe from the AMI beach-base set, and use property-source beach distance facts for Dockside Dreams, The Oasis, and River House.
 - tracking contract: preserve `stay_view_property_click` on property cards and `catalog_book_direct_click` on collection CTAs.
 - proof gate: content lint, build, JSON-LD/link checks, rendered desktop/mobile review, and a local event-hook read on `/stays/anna-maria-island-beachfront-rentals/`.
+- post-merge truth fix: live proof showed the FAQ still said the featured homes were in Bradenton and Sarasota after the route was narrowed to Bradenton homes only; update that answer to say Bradenton.
 
 ## Source And Proof Constraints
 
