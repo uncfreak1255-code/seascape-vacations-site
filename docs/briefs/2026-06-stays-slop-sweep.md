@@ -17,25 +17,48 @@
 | --- | --- |
 | Target query family | Existing stay-page amenity and trip-shape queries, including hot tub, beach house, pool plus hot tub, and quiet Florida rental searches. |
 | Searcher intent | Guests are comparing specific vacation-rental fit before they open a property or direct-book path. |
-| Current Seascape URL | `/stays/bradenton-vacation-rentals-with-hot-tub/`, `/stays/beach-house-rentals-florida-gulf-coast/`, `/stays/vacation-rentals-with-pool-and-hot-tub/`, `/stays/quiet-relaxing-vacation-rentals-florida/`. |
-| Current proof | The four source fields contain `best of both worlds` or nearby banned weak phrasing such as `the ultimate in`, `backyard oasis`, `luxury`, `resort-level amenities`, and `The result?`; the requested replacements keep the same page facts while removing that texture. |
+| Current Seascape URL | Existing stay pages in `src/_data/seoPages.json`, led by the AMI, Bradenton, Sarasota, pool/hot-tub, group, romance, snowbird, pet, and celebration stay pages touched by this patch. |
+| Current proof | Twenty-four existing stay entries still read softer than the guest lane should allow or carried stale pool-heat wording. The combined patch keeps the same source-owned routes, property sets, and CTAs while replacing generic stay texture with direct trip-fit copy and the current pool/spa heat distinction. |
 | Top visible competitors | Broad OTA and directory surfaces such as Airbnb, VRBO, FloridaRentals.com, and local Gulf Coast rental managers generally compete on large inventory, amenity filters, beachfront wording, or resort-style language. |
 | Competitor angle | Competitors tend to sell generic amenity abundance and beach-house feeling; Seascape can be clearer about the actual tradeoff: drive time, private-home space, pool/hot-tub use, quieter neighborhoods, and direct-book savings. |
 | Seascape gap | Several existing stay fields used generic phrasing that weakens the page voice and now trips the guest-lane autoFail pattern. |
-| Recommendation | Replace only the four named fields with direct guest tradeoff copy; do not change routes, schema, property sets, CTAs, or unrelated stay-page copy. |
+| Recommendation | Replace only stay-page copy fields in `src/_data/seoPages.json` with direct guest tradeoff copy; do not change routes, schema, property sets, CTAs, or unrelated owner-page copy. |
 
 ## Why This Cleanup
 
-- `best of both worlds` is now part of the guest-lane voice-judge autoFail set, and these four fields are known hits.
+- `best of both worlds` is now part of the guest-lane voice-judge autoFail set, and these fields are known hits.
 - The replacements keep each page's factual angle while dropping generic tourism and amenity filler.
+- The pool-heat cleanup replaces stale "included" phrasing with the source-backed distinction: hot tub or spa heat is included, while pool heat is an optional add-on when guests want it.
 - This is a copy-quality cleanup on existing stay pages, not a new stay-page batch.
 
 ## Cluster In Scope
 
 - canonical winner URLs:
+  - /stays/anna-maria-island-homes-with-pool/
+  - /stays/bradenton-waterfront-vacation-rentals/
   - /stays/bradenton-vacation-rentals-with-hot-tub/
-  - /stays/beach-house-rentals-florida-gulf-coast/
+  - /stays/large-group-vacation-rentals-bradenton/
+  - /stays/large-group-vacation-rentals-anna-maria-island/
+  - /stays/book-direct-anna-maria-island/
+  - /stays/romantic-getaway-anna-maria-island/
+  - /stays/sarasota-vacation-rentals-with-pool/
+  - /stays/downtown-sarasota-vacation-rentals/
+  - /stays/siesta-key-area-vacation-rentals/
+  - /stays/sarasota-arts-culture-vacation-rentals/
+  - /stays/florida-gulf-coast-vacation-rentals/
+  - /stays/pet-friendly-vacation-rentals-bradenton/
+  - /stays/snowbird-rentals-florida-gulf-coast/
+  - /stays/luxury-vacation-rentals-sarasota/
   - /stays/vacation-rentals-with-pool-and-hot-tub/
+  - /stays/beach-house-rentals-florida-gulf-coast/
+  - /stays/bradenton-vacation-rentals-near-beaches/
+  - /stays/gulf-coast-vacation-homes-with-dock/
+  - /stays/vacation-rentals-sleeps-12-florida/
+  - /stays/summer-vacation-rentals-florida-gulf-coast/
+  - /stays/retirement-celebration-rentals-florida/
+  - /stays/beach-wedding-vacation-rentals-florida/
+  - /stays/honeymoon-rentals-anna-maria-island/
+  - /stays/babymoon-vacation-rentals-florida/
   - /stays/quiet-relaxing-vacation-rentals-florida/
 - feeder pages: /stays/ and existing related stay cards.
 - aliases or retired URLs: none.
@@ -67,14 +90,15 @@
 
 ## Release Gate Checklist
 
-- routes to smoke test: the four stay URLs listed in scope.
-- commands to run: `grep -c "best of both worlds" src/_data/seoPages.json`, `npm run lint:content`, `npm run build`, `npm run eval:guest` when the voice-judge gate and `ANTHROPIC_API_KEY` are available, and `npm run verify:release`.
+- routes to smoke test: representative stay URLs listed in scope, especially the pool, hot-tub, waterfront, and large-group pages where pool/spa wording changed.
+- commands to run: `grep -c "best of both worlds" src/_data/seoPages.json`, `grep -c "Pool heating is included in your rental rate" src/_data/seoPages.json`, `npm run lint:content`, `npm run build`, `npm run eval:guest` when the voice-judge gate and `ANTHROPIC_API_KEY` are available, and `npm run verify:release`.
 - regression risks to watch: accidental JSON formatting churn, metadata drift outside the requested description field, new unsupported amenity claims, or changed related/property-card routing.
 
 ## Done When
 
-- the four requested source fields match the handoff.
+- the 24 changed stay entries match the combined patch handoff.
 - `best of both worlds` drops by four in `src/_data/seoPages.json`.
+- `Pool heating is included in your rental rate` drops to zero in `src/_data/seoPages.json`.
 - deterministic local gates pass.
 - guest eval is either run through the merged voice-judge gate with a key or explicitly marked blocked until that gate lands.
 - release safety passes with this active brief.
