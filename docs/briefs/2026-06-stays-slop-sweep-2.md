@@ -87,12 +87,12 @@
 
 ## Required Internal Link Map
 
-- `src/guides/anna-maria-island-vs-longboat-key.html`: /properties/the-oasis/, /properties/river-house/
-- `src/guides/anna-maria-island-beaches.html`: /guides/shelling-guide-florida/, /guides/how-to-get-to-anna-maria-island/
-- `src/guides/how-to-get-to-anna-maria-island.html`: /guides/bradenton-area-guide/, /guides/sarasota-area-guide/
-- `src/guides/is-anna-maria-island-worth-visiting.html`: /stays/anna-maria-island-vacation-rentals/, /guides/anna-maria-island-beaches/
-- `src/guides/bradenton-vs-sarasota.html`: /stays/bradenton-vacation-rentals-near-beaches/, /stays/siesta-key-area-vacation-rentals/
-- `src/guides/bradenton-beach.html`: /guides/bradenton-area-guide/, /guides/anna-maria-island-beaches/
+- src/guides/anna-maria-island-vs-longboat-key.html: /properties/the-oasis/, /properties/river-house/
+- src/guides/anna-maria-island-beaches.html: /guides/shelling-guide-florida/, /guides/how-to-get-to-anna-maria-island/
+- src/guides/how-to-get-to-anna-maria-island.html: /guides/bradenton-area-guide/, /guides/sarasota-area-guide/
+- src/guides/is-anna-maria-island-worth-visiting.html: /stays/anna-maria-island-vacation-rentals/, /guides/anna-maria-island-beaches/
+- src/guides/bradenton-vs-sarasota.html: /stays/bradenton-vacation-rentals-near-beaches/, /stays/siesta-key-area-vacation-rentals/
+- src/guides/bradenton-beach.html: /guides/bradenton-area-guide/, /guides/anna-maria-island-beaches/
 
 ## Done When
 
