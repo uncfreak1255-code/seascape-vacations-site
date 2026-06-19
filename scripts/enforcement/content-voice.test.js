@@ -859,6 +859,5 @@ test("changed public content files require one active brief and pass brief-linke
       )
     );
   }
-
   assert.deepEqual(violations, []);
 });
