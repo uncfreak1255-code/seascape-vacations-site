@@ -16,7 +16,7 @@ const projectRoot = path.resolve(__dirname, "..", "..");
 const CONFIG_PATH = path.join(__dirname, "evals.config.json");
 const RUBRIC_PATH = path.join(projectRoot, "docs/process/guest-stay-eval-rubric.md");
 
-test("guest deterministic fallback catches the current June 18 stay-copy slop on seoPages.json", () => {
+test("guest deterministic fallback stays clean on the current targeted seoPages entries", () => {
   const config = JSON.parse(fs.readFileSync(CONFIG_PATH, "utf8"));
   const lane = config.lanes.find((entry) => entry.id === "guest");
   const rubric = loadRubric(RUBRIC_PATH);
@@ -25,32 +25,9 @@ test("guest deterministic fallback catches the current June 18 stay-copy slop on
     explicitFiles: ["src/_data/seoPages.json"],
   });
 
-  assert.equal(result.ok, false, "current targeted stay copy should fail the fallback");
+  assert.equal(result.ok, true, "current targeted stay copy should pass the fallback");
   assert.equal(result.checked, 6, "fallback should inspect the six allowlisted stay targets");
-  assert.ok(
-    result.failures.some((failure) => failure.includes("bradenton-waterfront-vacation-rentals")),
-    "waterfront intro should fail"
-  );
-  assert.ok(
-    result.failures.some((failure) => failure.includes("wake up to shimmering water views")),
-    "waterfront phrase should be reported"
-  );
-  assert.ok(
-    result.failures.some((failure) => failure.includes("after a day exploring beaches and attractions")),
-    "hot-tub intro should be reported"
-  );
-  assert.ok(
-    result.failures.some((failure) => failure.includes("daytime swim, evening soak")),
-    "pool+hot-tub description should be reported"
-  );
-  assert.ok(
-    result.failures.some((failure) => failure.includes("live the florida beach lifestyle")),
-    "beach-house intro should be reported"
-  );
-  assert.ok(
-    result.failures.some((failure) => failure.includes("escape the noise and find your peace")),
-    "quiet-stay intro should be reported"
-  );
+  assert.deepEqual(result.failures, []);
 });
 
 test("guest deterministic fallback stays quiet on the clean decision-first rewrite fixture", () => {

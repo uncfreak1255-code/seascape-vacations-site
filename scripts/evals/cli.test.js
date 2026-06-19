@@ -130,7 +130,7 @@ test("lint-evals.js: missing-rubric skip exits 0", () => {
   assert.ok(stdout.includes("skip"), `Expected skip mention, got: ${stdout}`);
 });
 
-test("run-guest-eval.js: no-key fallback fails the current slop copy when explicitly pointed at seoPages.json", () => {
+test("run-guest-eval.js: no-key fallback passes the current targeted seoPages entries", () => {
   const { status, stdout, stderr } = runScript(
     path.join(EVALS_DIR, "run-guest-eval.js"),
     ["src/_data/seoPages.json"],
@@ -138,9 +138,9 @@ test("run-guest-eval.js: no-key fallback fails the current slop copy when explic
   );
   const combined = `${stdout}\n${stderr}`;
 
-  assert.equal(status, 1, `Expected deterministic fallback failure, got ${status}. output: ${combined}`);
+  assert.equal(status, 0, `Expected deterministic fallback pass, got ${status}. output: ${combined}`);
   assert.match(combined, /deterministic fallback/i);
-  assert.match(combined, /wake up to shimmering water views/i);
+  assert.match(combined, /deterministic fallback passed on 6 target\(s\)/i);
 });
 
 test("lint-evals.js: --require with no API key exits nonzero for blocking lane (if rubric exists)", () => {

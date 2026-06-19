@@ -17,8 +17,8 @@
 | --- | --- |
 | Target query family | Existing stay-page amenity and trip-shape queries, including hot tub, beach house, pool plus hot tub, and quiet Florida rental searches. |
 | Searcher intent | Guests are comparing specific vacation-rental fit before they open a property or direct-book path. |
-| Current Seascape URL | `/stays/bradenton-vacation-rentals-with-hot-tub/`, `/stays/beach-house-rentals-florida-gulf-coast/`, `/stays/vacation-rentals-with-pool-and-hot-tub/`, `/stays/quiet-relaxing-vacation-rentals-florida/`. |
-| Current proof | The four source fields contain `best of both worlds` or nearby banned weak phrasing such as `the ultimate in`, `backyard oasis`, `luxury`, `resort-level amenities`, and `The result?`; the requested replacements keep the same page facts while removing that texture. |
+| Current Seascape URL | `/stays/bradenton-waterfront-vacation-rentals/`, `/stays/bradenton-vacation-rentals-with-hot-tub/`, `/stays/beach-house-rentals-florida-gulf-coast/`, `/stays/vacation-rentals-with-pool-and-hot-tub/`, `/stays/quiet-relaxing-vacation-rentals-florida/`. |
+| Current proof | Five stay entries still read softer than the guest lane should allow, including exact fallback hits like `wake up to shimmering water views`, `after a day exploring beaches and attractions`, `daytime swim, evening soak`, `live the Florida beach lifestyle`, and `escape the noise and find your peace`; the replacements keep the same page facts while removing that texture. |
 | Top visible competitors | Broad OTA and directory surfaces such as Airbnb, VRBO, FloridaRentals.com, and local Gulf Coast rental managers generally compete on large inventory, amenity filters, beachfront wording, or resort-style language. |
 | Competitor angle | Competitors tend to sell generic amenity abundance and beach-house feeling; Seascape can be clearer about the actual tradeoff: drive time, private-home space, pool/hot-tub use, quieter neighborhoods, and direct-book savings. |
 | Seascape gap | Several existing stay fields used generic phrasing that weakens the page voice and now trips the guest-lane autoFail pattern. |
@@ -26,13 +26,14 @@
 
 ## Why This Cleanup
 
-- `best of both worlds` is now part of the guest-lane voice-judge autoFail set, and these four fields are known hits.
+- `best of both worlds` is now part of the guest-lane voice-judge autoFail set, and the current guest fallback also catches five additional stay strings that still sound soft.
 - The replacements keep each page's factual angle while dropping generic tourism and amenity filler.
 - This is a copy-quality cleanup on existing stay pages, not a new stay-page batch.
 
 ## Cluster In Scope
 
 - canonical winner URLs:
+  - /stays/bradenton-waterfront-vacation-rentals/
   - /stays/bradenton-vacation-rentals-with-hot-tub/
   - /stays/beach-house-rentals-florida-gulf-coast/
   - /stays/vacation-rentals-with-pool-and-hot-tub/
@@ -67,16 +68,16 @@
 
 ## Release Gate Checklist
 
-- routes to smoke test: the four stay URLs listed in scope.
-- commands to run: `grep -c "best of both worlds" src/_data/seoPages.json`, `npm run lint:content`, `npm run build`, `npm run eval:guest` when the voice-judge gate and `ANTHROPIC_API_KEY` are available, and `npm run verify:release`.
+- routes to smoke test: the five stay URLs listed in scope.
+- commands to run: `grep -c "best of both worlds" src/_data/seoPages.json`, `npm run lint:content`, `npm run build`, `npm run eval:guest -- src/_data/seoPages.json`, and `npm run verify:release`.
 - regression risks to watch: accidental JSON formatting churn, metadata drift outside the requested description field, new unsupported amenity claims, or changed related/property-card routing.
 
 ## Done When
 
-- the four requested source fields match the handoff.
+- the six requested source strings match the handoff.
 - `best of both worlds` drops by four in `src/_data/seoPages.json`.
 - deterministic local gates pass.
-- guest eval is either run through the merged voice-judge gate with a key or explicitly marked blocked until that gate lands.
+- guest eval runs locally and catches the current stay-copy slop even without an Anthropic key.
 - release safety passes with this active brief.
 
 ## Not In Scope
