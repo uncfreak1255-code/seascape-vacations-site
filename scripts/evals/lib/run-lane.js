@@ -13,7 +13,8 @@
  *   (a) lane missing/undefined          → print [skip] and return success
  *   (b) rubric file does not exist      → print [skip] rubric not authored yet and return success
  *   (c) loadRubric + loadGoldenDir validation
- *   (d) no apiKey                       → if require=true return failure; else print skip and return success
+ *   (d) no apiKey                       → if require=true return failure; guest lane runs
+ *                                        deterministic fallback; others skip
  *   (e) resolveTargets, judge+score each, print per-target report
  *   (f) return {laneId, ok, skipped, failures}
  *       blocking lane  → ok=false when any target is below floor/autoFails
@@ -24,12 +25,13 @@ const fs = require("node:fs");
 const path = require("node:path");
 
 const { loadRubric } = require("./rubric.js");
-const { computeOverall } = require("./score.js");
+const { computeOverall, findAutoFailPatterns } = require("./score.js");
 const { resolveTargets } = require("./targets.js");
 const { loadGoldenDir } = require("./golden.js");
 const { judge } = require("./judge.js");
 const { createClient } = require("./anthropic-client.js");
 const { collectLaneCopies } = require("./lane-copy.js");
+const { runDeterministicGuestFallback } = require("./deterministic-guest.js");
 
 const projectRoot = path.resolve(__dirname, "..", "..", "..");
 
@@ -95,6 +97,21 @@ async function runLane(lane, options = {}) {
       console.error(`[error] --require flag passed but ANTHROPIC_API_KEY is not set`);
       return { laneId, ok: false, skipped: false, failures: ["ANTHROPIC_API_KEY not set"] };
     }
+    if (laneId === "guest") {
+      console.log(
+        `[fallback] lane ${laneId}: no ANTHROPIC_API_KEY; checking exact blocked guest-copy patterns`
+      );
+      const fallback = runDeterministicGuestFallback(lane, rubric, { explicitFiles });
+      if (!fallback.ok) {
+        return { laneId, ok: false, skipped: false, failures: fallback.failures };
+      }
+      if (fallback.checked > 0) {
+        console.log(
+          `[ok] lane ${laneId}: deterministic fallback passed on ${fallback.checked} target(s)`
+        );
+        return { laneId, ok: true, skipped: false, failures: [] };
+      }
+    }
     console.log(`[skip judge] lane ${laneId}: no ANTHROPIC_API_KEY; validated rubric + golden only`);
     return { laneId, ok: true, skipped: true, failures: [] };
   }
@@ -110,6 +127,13 @@ async function runLane(lane, options = {}) {
   try {
     client = createClient({ apiKey, model: rubric.judgeModel });
   } catch (e) {
+    if (laneId === "guest") {
+      console.warn(
+        `[fallback] lane ${laneId}: client creation failed (${e.message}); checking exact blocked guest-copy patterns`
+      );
+      const fallback = runDeterministicGuestFallback(lane, rubric, { explicitFiles });
+      return { laneId, ok: fallback.ok, skipped: false, failures: fallback.failures };
+    }
     console.error(`[error] lane ${laneId}: client creation failed: ${e.message}`);
     return { laneId, ok: !lane.blocking, skipped: false, failures: [e.message] };
   }
@@ -152,6 +176,18 @@ async function runLane(lane, options = {}) {
       try {
         dimScores = await judge({ copy, rubric, client });
       } catch (e) {
+        if (laneId === "guest") {
+          const matches = findAutoFailPatterns(copy, rubric.autoFailPatterns);
+          if (matches.length > 0) {
+            console.error(`[error] lane ${laneId}: judge failed for ${label}: ${e.message}`);
+            console.error(`  deterministic fallback matched: ${matches.join(", ")}`);
+            failures.push(label);
+          } else {
+            console.warn(`[warn] lane ${laneId}: judge failed for ${label}: ${e.message}`);
+            console.warn("  deterministic fallback found no exact blocked patterns");
+          }
+          continue;
+        }
         console.error(`[error] lane ${laneId}: judge failed for ${label}: ${e.message}`);
         if (lane.blocking) {
           failures.push(label);

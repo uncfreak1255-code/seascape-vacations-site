@@ -23,8 +23,10 @@ answer-engine extraction. See `docs/process/content-quality-gate.md` and
   while burying the answer or restating competitor content.
 - Same judge discipline as the owner and aeo lanes: a single **Sonnet** model
   with chain-of-thought, never Opus, run only on changed targets when
-  `ANTHROPIC_API_KEY` is present. Without a key the lane validates the rubric +
-  golden fixtures and skips judging (CI enforces with `--require`).
+  `ANTHROPIC_API_KEY` is present. Without a key, or when the judge is temporarily
+  quota-blocked, the lane falls back to exact blocked-phrase checks on the
+  changed guest targets so the current known slop strings still fail locally.
+  `--require` still enforces key presence when a caller explicitly asks for it.
 - Cost control on the shared `seoPages.json` file uses an `onlySlugs` allowlist
   (same pattern as the owner lane); expand it as stay pages are rewritten.
 
@@ -69,6 +71,20 @@ floor at 2 (a score of 0 or 1 fails the page on its own).
     { "id": "named-entity", "weight": 0.12, "max": 5, "criteria": "Does the copy name the brand entity (Seascape Vacations) and the specific place (Anna Maria Island, Bradenton, Sarasota, or Siesta Key) so a citation is attributable? Score 5 for clear entity + place naming; 0 for anonymous, place-vague copy." },
     { "id": "no-fluff-intro", "weight": 0.10, "max": 5, "criteria": "Does the page get to substance without a generic tourism-board or throat-clearing opener ('one of Florida's most sought-after destinations', 'the best of both worlds')? Score 5 for no fluff preamble; 0 for a generic intro before any substance." }
   ],
-  "autoFailPatterns": ["in today's", "in a world where", "when it comes to", "it's worth noting", "at the end of the day", "best of both worlds", "something for everyone"]
+  "autoFailPatterns": [
+    "in today's",
+    "in a world where",
+    "when it comes to",
+    "it's worth noting",
+    "at the end of the day",
+    "best of both worlds",
+    "something for everyone",
+    "wake up to shimmering water views",
+    "after a day exploring beaches and attractions",
+    "daytime swim, evening soak",
+    "why choose? enjoy both",
+    "live the florida beach lifestyle",
+    "escape the noise and find your peace"
+  ]
 }
 ```

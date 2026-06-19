@@ -233,6 +233,7 @@ function main() {
     { label: "property:truth:check", command: "npm", args: ["run", "property:truth:check"] },
     { label: "build", command: "npm", args: ["run", "build"] },
     { label: "test", command: "npm", args: ["test"] },
+    { label: "eval:guest", command: "npm", args: ["run", "eval:guest"] },
     { label: "verify:redirects", command: "npm", args: ["run", "verify:redirects"] },
     { label: "verify:recovery:p0", command: "npm", args: ["run", "verify:recovery:p0"] },
     { label: "verify:recovery:guides", command: "npm", args: ["run", "verify:recovery:guides"] },

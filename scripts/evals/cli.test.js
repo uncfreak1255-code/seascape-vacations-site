@@ -130,6 +130,19 @@ test("lint-evals.js: missing-rubric skip exits 0", () => {
   assert.ok(stdout.includes("skip"), `Expected skip mention, got: ${stdout}`);
 });
 
+test("run-guest-eval.js: no-key fallback fails the current slop copy when explicitly pointed at seoPages.json", () => {
+  const { status, stdout, stderr } = runScript(
+    path.join(EVALS_DIR, "run-guest-eval.js"),
+    ["src/_data/seoPages.json"],
+    { ANTHROPIC_API_KEY: "" }
+  );
+  const combined = `${stdout}\n${stderr}`;
+
+  assert.equal(status, 1, `Expected deterministic fallback failure, got ${status}. output: ${combined}`);
+  assert.match(combined, /deterministic fallback/i);
+  assert.match(combined, /wake up to shimmering water views/i);
+});
+
 test("lint-evals.js: --require with no API key exits nonzero for blocking lane (if rubric exists)", () => {
   // The owner rubric (docs/process/owner-copy-eval-rubric.md) is authored, so the
   // blocking owner lane reaches the key check; --require with no key must fail it.

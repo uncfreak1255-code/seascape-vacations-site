@@ -15,6 +15,23 @@ function escapeRegexMeta(str) {
   return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
+function findAutoFailPatterns(copy = "", patterns = []) {
+  const autoFails = [];
+  if (!Array.isArray(patterns) || !copy) {
+    return autoFails;
+  }
+
+  for (const pattern of patterns) {
+    const escaped = escapeRegexMeta(pattern);
+    const re = new RegExp("(?<![A-Za-z0-9])" + escaped + "(?![A-Za-z0-9])", "i");
+    if (re.test(copy)) {
+      autoFails.push(pattern);
+    }
+  }
+
+  return autoFails;
+}
+
 function computeOverall(dimScores, rubric, copy = "") {
   const perDimension = rubric.dimensions.map((dim) => {
     const raw = dimScores[dim.id] !== undefined ? dimScores[dim.id] : 0;
@@ -34,16 +51,7 @@ function computeOverall(dimScores, rubric, copy = "") {
 
   // Check autoFail patterns using word-boundary matching (case-insensitive)
   // Uses lookaround assertions so patterns with hyphens (e.g. "game-changer") work correctly.
-  const autoFails = [];
-  if (Array.isArray(rubric.autoFailPatterns) && copy) {
-    for (const pattern of rubric.autoFailPatterns) {
-      const escaped = escapeRegexMeta(pattern);
-      const re = new RegExp("(?<![A-Za-z0-9])" + escaped + "(?![A-Za-z0-9])", "i");
-      if (re.test(copy)) {
-        autoFails.push(pattern);
-      }
-    }
-  }
+  const autoFails = findAutoFailPatterns(copy, rubric.autoFailPatterns);
 
   // Per-dimension hard floors. When a dimension declares autoFailBelow, a raw
   // score under that threshold fails the page outright, regardless of the
@@ -65,4 +73,4 @@ function computeOverall(dimScores, rubric, copy = "") {
   return { overall, perDimension, pass, autoFails: allAutoFails };
 }
 
-module.exports = { computeOverall };
+module.exports = { computeOverall, findAutoFailPatterns };

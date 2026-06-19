@@ -11,13 +11,14 @@
  * Unlike run-aeo-eval.js (score-only), this lane is blocking: a page with a
  * buried answer (standalone-answer below its hard floor) or zero information
  * gain (information-gain below its hard floor) exits non-zero.
+ * When the Anthropic judge is unavailable, the lane falls back to exact
+ * blocked-phrase checks so known stay-copy slop still fails locally.
  *
  * Usage:
  *   node scripts/evals/run-guest-eval.js [file1 file2 ...] [--require]
  *
  * Exit codes:
- *   0 — lane passed, or skipped (no rubric/golden/targets, or no
- *       ANTHROPIC_API_KEY without --require)
+ *   0 — lane passed, or skipped (no rubric/golden/targets)
  *   1 — blocking lane failed, or --require with no ANTHROPIC_API_KEY
  */
 
