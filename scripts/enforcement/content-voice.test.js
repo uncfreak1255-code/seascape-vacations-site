@@ -62,6 +62,15 @@ const BANNED_GENERIC_PATTERNS = [
   /\bit feels like\b[^.!?]{1,120}\.\s*it (?:is|'?s) actually\b/i
 ];
 
+const SECTION_B_HARDBLOCK_PATTERNS = [
+  /\bbest of both worlds\b/i,
+  /\bthe term ["“][^"”]+["”] captures\b/i,
+  /\bnothing says\b/i,
+  /\bpicture (?:this|yourself)\b/i,
+  /\bthe result\?\b/i,
+  /\bthere(?:'|’)s nothing (?:better|quite like)\b/i
+];
+
 const OWNER_JARGON_PATTERNS = [
   /\bowner net\b/i,
   /\bleak stack\b/i,
@@ -339,6 +348,61 @@ function collectStringLeaves(value, currentPath = "", leaves = []) {
   return leaves;
 }
 
+function normalizeLeafText(value) {
+  return value.replace(/\s+/g, " ").trim();
+}
+
+function getChangedStringLeaves(relativePath, currentValue) {
+  const currentLeaves = collectStringLeaves(currentValue).map((entry) => ({
+    path: entry.path,
+    value: normalizeLeafText(entry.value)
+  }));
+  const baseSource = readBase(relativePath);
+
+  if (baseSource === null) {
+    return currentLeaves;
+  }
+
+  try {
+    const baseLeaves = new Map(
+      collectStringLeaves(JSON.parse(baseSource)).map((entry) => [entry.path, normalizeLeafText(entry.value)])
+    );
+
+    return currentLeaves.filter((entry) => baseLeaves.get(entry.path) !== entry.value);
+  } catch {
+    return currentLeaves;
+  }
+}
+
+function lintSectionBHardblocks(relativePath, text, scopeLabel = "reader copy") {
+  const violations = [];
+
+  for (const pattern of SECTION_B_HARDBLOCK_PATTERNS) {
+    const match = text.match(pattern);
+    if (match) {
+      violations.push(`${relativePath}: ${scopeLabel} hits Section-B hard-block "${match[0]}"`);
+    }
+  }
+
+  return violations;
+}
+
+function lintChangedSeoPageCopy(relativePath, data) {
+  const violations = [];
+
+  for (const entry of getChangedStringLeaves(relativePath, data)) {
+    violations.push(
+      ...lintSectionBHardblocks(
+        `${relativePath}:${entry.path}`,
+        entry.value,
+        "source-backed copy"
+      )
+    );
+  }
+
+  return violations;
+}
+
 function lintInstructionTemplateSource(relativePath, source) {
   const violations = [];
   const sourceCopyText = normalizeSourceCopyText(source);
@@ -410,6 +474,8 @@ function lintPublicContent(relativePath, source, requiredLinks, options = {}) {
       violations.push(`${relativePath}: first paragraph should not lead with proof language like "${match[0]}"`);
     }
   }
+
+  violations.push(...lintSectionBHardblocks(relativePath, visibleText));
 
   if (isOwnerContentFile(relativePath)) {
     for (const pattern of OWNER_JARGON_PATTERNS) {
@@ -599,6 +665,31 @@ test("lint catches donor-mined AI rhythm patterns before they ship in public cop
   );
   assert.equal(
     violations.some((entry) => entry.includes('banned generic phrasing "the question isn\'t whether owners need help, it\'s"')),
+    true
+  );
+});
+
+test("lint catches Section-B hard-block phrases in public copy", () => {
+  const failingSample = `
+    <main>
+      <section>
+        <p>Nothing says easy beach planning like a page that opens with a canned line.</p>
+        <p>Picture yourself clicking through another generic vacation pitch.</p>
+      </section>
+    </main>
+  `;
+
+  const violations = lintPublicContent("src/guides/example-guide.html", failingSample, [
+    "/guides/",
+    "/properties/"
+  ]);
+
+  assert.equal(
+    violations.some((entry) => entry.includes('Section-B hard-block "Nothing says"')),
+    true
+  );
+  assert.equal(
+    violations.some((entry) => entry.includes('Section-B hard-block "Picture yourself"')),
     true
   );
 });
@@ -812,12 +903,14 @@ test("repo public-copy source and data surfaces do not ship instruction-template
   assert.deepEqual([...sourceViolations, ...dataViolations], []);
 });
 
-test("changed public content files require one active brief and pass brief-linked checks", () => {
+test("changed public content and source-backed copy files require one active brief and pass gate checks", () => {
   const changedFiles = getChangedFiles();
   const changedPublicContentFiles = changedFiles.filter(isPublicContentFile);
+  const seoPagesPath = path.join("src", "_data", "seoPages.json");
+  const changedSeoPageCopy = changedFiles.includes(seoPagesPath);
 
-  if (changedPublicContentFiles.length === 0) {
-    assert.ok(true, "no changed public content files on this branch");
+  if (changedPublicContentFiles.length === 0 && !changedSeoPageCopy) {
+    assert.ok(true, "no changed public content or source-backed copy files on this branch");
     return;
   }
 
@@ -825,7 +918,7 @@ test("changed public content files require one active brief and pass brief-linke
     hasVisibleReaderCopyDiff(relativePath, read(relativePath))
   );
 
-  if (changedReaderCopyFiles.length === 0) {
+  if (changedReaderCopyFiles.length === 0 && !changedSeoPageCopy) {
     assert.ok(true, "changed public content files have no reader-visible copy diff");
     return;
   }
@@ -858,6 +951,10 @@ test("changed public content files require one active brief and pass brief-linke
         requiredLinkMap.get(relativePath) || defaultRequiredLinks
       )
     );
+  }
+
+  if (changedSeoPageCopy) {
+    violations.push(...lintChangedSeoPageCopy(seoPagesPath, JSON.parse(read(seoPagesPath))));
   }
 
   assert.deepEqual(violations, []);
