@@ -61,6 +61,12 @@ test("sitemap explicitly includes paginated stay and owner inventories", () => {
 
 test("redirects avoid the known missing legacy target pages", () => {
   const redirects = fs.readFileSync(path.join(projectRoot, "src", "_redirects"), "utf8");
+  const redirectTargets = redirects
+    .split("\n")
+    .map((line) => line.trim())
+    .filter((line) => line && !line.startsWith("#"))
+    .map((line) => line.split(/\s+/)[1])
+    .filter(Boolean);
 
   for (const missingTarget of [
     "/stays/waterfront-vacation-rentals-with-kayaks/",
@@ -74,7 +80,7 @@ test("redirects avoid the known missing legacy target pages", () => {
     "/stays/sunset-cruise-vacation-rentals-bradenton/",
     "/contact/"
   ]) {
-    assert.equal(redirects.includes(missingTarget), false);
+    assert.equal(redirectTargets.includes(missingTarget), false);
   }
 
   for (const safeTarget of [
@@ -86,6 +92,25 @@ test("redirects avoid the known missing legacy target pages", () => {
     "/guides/bradenton-area-guide/"
   ]) {
     assert.equal(redirects.includes(safeTarget), true);
+  }
+});
+
+test("june 12 404 alert routes redirect to current live destinations", () => {
+  const redirects = fs.readFileSync(path.join(projectRoot, "src", "_redirects"), "utf8");
+
+  for (const redirectRule of [
+    "/book-direct/   /guides/booking-direct-vacation-rentals/   301",
+    "/stays/book-direct-vs-airbnb-vrbo/   /guides/booking-direct-vacation-rentals/   301",
+    "/stays/cortez-village-vacation-rentals/   /stays/bradenton-vacation-rentals-near-beaches/   301",
+    "/stays/memorial-day-weekend-rentals-florida/   /stays/long-weekend-getaway-florida/   301",
+    "/stays/palmetto-vacation-rentals-florida/   /guides/bradenton-area-guide/   301",
+    "/stays/pet-friendly-vacation-rentals-anna-maria-island/   /stays/pet-friendly-vacation-rentals-bradenton/   301",
+    "/stays/spring-break-vacation-rentals-florida-gulf-coast/   /stays/spring-break-rentals-anna-maria-island/   301",
+    "/stays/sunset-cruise-vacation-rentals-bradenton/   /guides/things-to-do-bradenton-fl/   301",
+    "/stays/vacation-rentals-with-outdoor-kitchen-florida/   /properties/   301",
+    "/stays/vacation-rentals-with-private-pool-florida/   /stays/anna-maria-island-homes-with-pool/   301"
+  ]) {
+    assert.equal(redirects.includes(redirectRule), true, `Expected redirects to include ${redirectRule}`);
   }
 });
 
