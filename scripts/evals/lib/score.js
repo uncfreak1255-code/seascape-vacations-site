@@ -45,9 +45,24 @@ function computeOverall(dimScores, rubric, copy = "") {
     }
   }
 
-  const pass = overall >= rubric.passFloor && autoFails.length === 0;
+  // Per-dimension hard floors. When a dimension declares autoFailBelow, a raw
+  // score under that threshold fails the page outright, regardless of the
+  // weighted overall. This is what lets a buried answer or a zero-information-gain
+  // page exit non-zero even when strong scores elsewhere prop overall above passFloor.
+  const dimensionFloorFails = [];
+  for (const dim of rubric.dimensions) {
+    if (Number.isInteger(dim.autoFailBelow)) {
+      const raw = dimScores[dim.id] !== undefined ? dimScores[dim.id] : 0;
+      if (raw < dim.autoFailBelow) {
+        dimensionFloorFails.push(`${dim.id} (${raw} < ${dim.autoFailBelow})`);
+      }
+    }
+  }
 
-  return { overall, perDimension, pass, autoFails };
+  const allAutoFails = autoFails.concat(dimensionFloorFails);
+  const pass = overall >= rubric.passFloor && allAutoFails.length === 0;
+
+  return { overall, perDimension, pass, autoFails: allAutoFails };
 }
 
 module.exports = { computeOverall };

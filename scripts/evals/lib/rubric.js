@@ -95,6 +95,16 @@ function loadRubric(mdPath) {
         `Rubric ${mdPath}: dimension[${i}] (id: "${dim.id}") weight must be a finite number > 0, got: ${dim.weight}`
       );
     }
+
+    // Optional per-dimension hard floor. When present, a raw score below this
+    // threshold fails the page outright (enforced in score.js). Integer in [0, max].
+    if ("autoFailBelow" in dim) {
+      if (!Number.isInteger(dim.autoFailBelow) || dim.autoFailBelow < 0 || dim.autoFailBelow > dim.max) {
+        throw new Error(
+          `Rubric ${mdPath}: dimension[${i}] (id: "${dim.id}") autoFailBelow must be an integer between 0 and ${dim.max}, got: ${dim.autoFailBelow}`
+        );
+      }
+    }
   });
 
   // Validate weights sum to ~1.0

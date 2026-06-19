@@ -25,6 +25,28 @@
       "targets": ["src/guides/**/*.{njk,html,md}"],
       "golden": "scripts/evals/golden/aeo",
       "blocking": false
+    },
+    {
+      "id": "guest",
+      "rubric": "docs/process/guest-stay-eval-rubric.md",
+      "targets": ["src/_data/seoPages.json", "src/stays/**/*.{njk,html,md}"],
+      "dataSources": [
+        {
+          "path": "src/_data/seoPages.json",
+          "arrayPath": "vacationer",
+          "labelKey": "slug",
+          "onlySlugs": [
+            "anna-maria-island-homes-with-pool",
+            "bradenton-waterfront-vacation-rentals",
+            "bradenton-vacation-rentals-with-hot-tub",
+            "beach-house-rentals-florida-gulf-coast",
+            "vacation-rentals-with-pool-and-hot-tub",
+            "quiet-relaxing-vacation-rentals-florida"
+          ]
+        }
+      ],
+      "golden": "scripts/evals/golden/guest",
+      "blocking": true
     }
   ]
 }
