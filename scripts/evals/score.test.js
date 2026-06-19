@@ -174,3 +174,82 @@ test("computeOverall: dim.max <= 0 treats normalized as 0 without dividing", () 
   assert.equal(result.overall, 0);
   assert.equal(result.pass, false);
 });
+
+// --- per-dimension autoFailBelow hard floors (guest/stay lane requirement) ---
+
+test("autoFailBelow: a dimension at/above its threshold does not hard-fail", () => {
+  const rubric = {
+    passFloor: 60,
+    dimensions: [
+      { id: "standalone-answer", weight: 0.5, max: 5, autoFailBelow: 2 },
+      { id: "information-gain", weight: 0.5, max: 5, autoFailBelow: 2 },
+    ],
+    autoFailPatterns: [],
+  };
+  const result = computeOverall(
+    { "standalone-answer": 2, "information-gain": 5 },
+    rubric,
+    "Answer present; real local specifics."
+  );
+  assert.equal(result.pass, true);
+  assert.equal(result.autoFails.length, 0);
+});
+
+test("autoFailBelow: buried answer hard-fails EVEN WHEN overall clears the pass floor", () => {
+  // Isolating proof: overall must be >= passFloor so the ONLY thing that can
+  // fail the page is the per-dimension floor.
+  const rubric = {
+    passFloor: 60,
+    dimensions: [
+      { id: "standalone-answer", weight: 0.2, max: 5, autoFailBelow: 2 },
+      { id: "rest", weight: 0.8, max: 5 },
+    ],
+    autoFailPatterns: [],
+  };
+  const scores = { "standalone-answer": 1, rest: 5 };
+  const withFloor = computeOverall(scores, rubric, "Strong everywhere, but the answer is buried.");
+  assert.equal(withFloor.overall, 84, "overall (84) clears the 60 pass floor");
+  assert.equal(withFloor.pass, false, "buried-answer dimension must hard-fail anyway");
+  assert.ok(withFloor.autoFails.some((f) => f.startsWith("standalone-answer")));
+
+  // Contrast: identical scores, no floor declared -> the same page PASSES.
+  // This is what proves the floor (not the weighted overall) is doing the work.
+  const noFloor = computeOverall(scores, {
+    passFloor: 60,
+    dimensions: [
+      { id: "standalone-answer", weight: 0.2, max: 5 },
+      { id: "rest", weight: 0.8, max: 5 },
+    ],
+    autoFailPatterns: [],
+  }, "Strong everywhere, but the answer is buried.");
+  assert.equal(noFloor.pass, true, "without the floor, overall>=passFloor passes");
+});
+
+test("autoFailBelow: zero-information-gain hard-fails EVEN WHEN overall clears the pass floor", () => {
+  const rubric = {
+    passFloor: 60,
+    dimensions: [
+      { id: "information-gain", weight: 0.2, max: 5, autoFailBelow: 2 },
+      { id: "rest", weight: 0.8, max: 5 },
+    ],
+    autoFailPatterns: [],
+  };
+  const result = computeOverall({ "information-gain": 0, rest: 5 }, rubric, "Polished, but derivative.");
+  assert.equal(result.overall, 80, "overall (80) clears the 60 pass floor");
+  assert.equal(result.pass, false, "zero-information-gain must hard-fail anyway");
+  assert.ok(result.autoFails.some((f) => f.startsWith("information-gain")));
+});
+
+test("autoFailBelow: absent field preserves legacy behavior", () => {
+  const legacy = {
+    passFloor: 70,
+    dimensions: [
+      { id: "a", weight: 0.5, max: 5 },
+      { id: "b", weight: 0.5, max: 5 },
+    ],
+    autoFailPatterns: [],
+  };
+  const result = computeOverall({ a: 5, b: 5 }, legacy, "Clean copy.");
+  assert.equal(result.pass, true);
+  assert.equal(result.autoFails.length, 0);
+});

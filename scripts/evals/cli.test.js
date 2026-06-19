@@ -90,13 +90,16 @@ test("evals.config.json: has correct structure", () => {
   assert.ok(fs.existsSync(configPath), "evals.config.json must exist");
   const config = JSON.parse(fs.readFileSync(configPath, "utf8"));
   assert.ok(Array.isArray(config.lanes), "lanes must be an array");
-  assert.equal(config.lanes.length, 2, "should have 2 lanes");
+  assert.equal(config.lanes.length, 3, "should have 3 lanes");
   const owner = config.lanes.find((l) => l.id === "owner");
   const aeo = config.lanes.find((l) => l.id === "aeo");
   assert.ok(owner, "owner lane must exist");
   assert.ok(aeo, "aeo lane must exist");
   assert.equal(owner.blocking, true, "owner lane must be blocking");
   assert.equal(aeo.blocking, false, "aeo lane must be non-blocking");
+  const guest = config.lanes.find((l) => l.id === "guest");
+  assert.ok(guest, "guest lane must exist");
+  assert.equal(guest.blocking, true, "guest lane must be blocking");
   assert.ok(Array.isArray(owner.targets), "owner targets must be array");
   assert.ok(Array.isArray(aeo.targets), "aeo targets must be array");
   assert.ok(
