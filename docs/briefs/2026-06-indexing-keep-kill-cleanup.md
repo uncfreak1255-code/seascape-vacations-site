@@ -35,6 +35,24 @@
 - question-tool language worth preserving in customer wording: compare the same trip inputs before booking.
 - GSC/GA4 evidence that supports building, rewriting, holding, or killing this cluster: GSC inspection evidence supported killing Holmes as a duplicate stay lander and rescuing the calculator with one discovery link; no evidence supports broader page rewriting.
 
+## Gate 0: Query And SERP Competition
+
+| Field | Required answer |
+| --- | --- |
+| Target query family | Holmes Beach vacation rentals and near Anna Maria Island vacation rentals cleanup. |
+| Searcher intent | guest booking |
+| Current Seascape URL | `/stays/holmes-beach-vacation-rentals/` is a retired alias; canonical destination is `/stays/vacation-rentals-near-anna-maria-island/`. |
+| SERP observed date | 2026-06-20 |
+| SERP stale after | 2026-06-27 |
+| Current proof | 2026-06-16 GSC URL inspection/session read cited in this brief plus `docs/status/open-risks.md` naming the Holmes redirect/page contradiction. |
+| Top visible competitors | Anna Maria Life Vacation Rentals, AnnaMaria.com Holmes Beach vacation rentals, Island Vacation Properties AMI/Holmes Beach guide. |
+| Competitor angle | Competitors show actual on-island Holmes/AMI inventory and island-specific rental breadth; Seascape's source truth is near-AMI Bradenton inventory. |
+| Seascape gap | Seascape should not publish a Holmes Beach stay lander as if it has Holmes inventory while the source routing already chose the near-AMI page. |
+| Search fit | Kill the duplicate generated stay URL and keep both Holmes variants redirected to the near-AMI stay page; do not rebuild Holmes Beach until the stay gate clears. |
+| Local/GBP proof | Not a GBP action: this is guest-booking canonical and redirect hygiene, with no map-pack or local-profile edit proposed. |
+| AEO/readback note | Not an AI-answer expansion: cleanup removes contradictory crawl signals and leaves the answer-ready near-AMI page as the source target. |
+| Recommendation | redirect: retire the generated Holmes Beach stay source record, keep direct 301s to `/stays/vacation-rentals-near-anna-maria-island/`, verify sitemap/output/redirects, and hold for recrawl. |
+
 ## Cluster In Scope
 
 - canonical winner URL(s): `/stays/vacation-rentals-near-anna-maria-island/`, `/research/florida-gulf-coast-vacation-cost-calculator-2026/`.
