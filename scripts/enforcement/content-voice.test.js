@@ -270,6 +270,23 @@ function parseMissingBriefFields(briefContent) {
   });
 }
 
+function briefMentionsContentFile(briefContent, relativePath, source) {
+  if (String(briefContent || "").includes(relativePath)) {
+    return true;
+  }
+
+  const route = getCurrentRoute(relativePath, source);
+  return Boolean(route && String(briefContent || "").includes(route));
+}
+
+function selectBriefForContentFile(briefs, relativePath, source) {
+  if (briefs.length === 1) {
+    return briefs[0];
+  }
+
+  return briefs.find((brief) => briefMentionsContentFile(brief.content, relativePath, source)) || null;
+}
+
 function getCurrentRoute(relativePath, source) {
   const permalinkMatch = source.match(/^permalink:\s*["']([^"']+)["']/m);
   if (permalinkMatch) {
@@ -903,7 +920,7 @@ test("repo public-copy source and data surfaces do not ship instruction-template
   assert.deepEqual([...sourceViolations, ...dataViolations], []);
 });
 
-test("changed public content and source-backed copy files require one active brief and pass gate checks", () => {
+test("changed public content and source-backed copy files require active briefs and pass gate checks", () => {
   const changedFiles = getChangedFiles();
   const changedPublicContentFiles = changedFiles.filter(isPublicContentFile);
   const seoPagesPath = path.join("src", "_data", "seoPages.json");
@@ -926,26 +943,37 @@ test("changed public content and source-backed copy files require one active bri
   const changedBriefFiles = changedFiles.filter((relativePath) =>
     /^docs\/briefs\/.+\.md$/i.test(relativePath) && !/^docs\/briefs\/_template\.md$/i.test(relativePath)
   );
-  assert.equal(
-    changedBriefFiles.length,
-    1,
-    `public content PRs must change exactly one active brief, found ${changedBriefFiles.length}`
+  assert.ok(
+    changedBriefFiles.length >= 1,
+    `public content PRs must change at least one active brief, found ${changedBriefFiles.length}`
   );
 
-  const briefContent = read(changedBriefFiles[0]);
-  const missingBriefFields = parseMissingBriefFields(briefContent);
-  assert.deepEqual(
-    missingBriefFields,
-    [],
-    `active brief is missing required content-gate fields: ${missingBriefFields.join(", ")}`
-  );
+  const briefs = changedBriefFiles.map((relativePath) => ({
+    relativePath,
+    content: read(relativePath),
+  }));
 
-  const defaultRequiredLinks = parseRequiredLinksFromBrief(briefContent);
-  const requiredLinkMap = parseRequiredLinkMapFromBrief(briefContent);
+  for (const brief of briefs) {
+    const missingBriefFields = parseMissingBriefFields(brief.content);
+    assert.deepEqual(
+      missingBriefFields,
+      [],
+      `active brief ${brief.relativePath} is missing required content-gate fields: ${missingBriefFields.join(", ")}`
+    );
+  }
+
   const violations = [];
 
   for (const relativePath of changedReaderCopyFiles) {
     const source = read(relativePath);
+    const brief = selectBriefForContentFile(briefs, relativePath, source);
+    assert.ok(
+      brief,
+      `${relativePath}: changed reader copy must be named by one changed active brief when multiple briefs are present`
+    );
+
+    const defaultRequiredLinks = parseRequiredLinksFromBrief(brief.content);
+    const requiredLinkMap = parseRequiredLinkMapFromBrief(brief.content);
     violations.push(
       ...lintPublicContent(
         relativePath,

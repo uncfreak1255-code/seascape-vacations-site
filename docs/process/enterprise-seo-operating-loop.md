@@ -53,8 +53,11 @@ Read these in order before opening SEO source work:
 3. **Decision.** Choose one of: `no action`, `research only`, `rescue existing
    winner`, `improve existing page`, `consolidate`, `redirect/noindex`, or
    `open new batch`.
-4. **Brief.** If source changes are allowed, update exactly one active brief with
-   the filled Gate 0 block required by `docs/process/content-quality-gate.md`.
+4. **Brief.** If source changes are allowed, update one active brief for the
+   active lane with the filled Gate 0 block required by
+   `docs/process/content-quality-gate.md`. If a PR intentionally carries more
+   than one active lane, each changed search-facing source file must be named in
+   the matching changed brief.
 5. **Ship the smallest fix.** Edit only the page, metadata, schema, redirect, or
    internal-link surface named in the brief.
 6. **Verify.** Run the smallest command set that proves the changed surface.

@@ -10,9 +10,13 @@ This file turns Seascape content quality from a style preference into a shipping
 
 ## No Brief, No Writing
 
-Any PR that changes public page copy in `src/` must also change exactly one active brief in `docs/briefs/`.
+Any PR that changes public page copy in `src/` must also change at least one
+active brief in `docs/briefs/`.
 
-If the page cannot point to one active brief, stop before writing.
+For the normal case, keep one active brief per PR. If a PR intentionally carries
+more than one search/content lane, every changed search-facing source file must
+be named in the matching changed brief, and every changed brief must pass this
+gate. If a page cannot point to a matching active brief, stop before writing.
 
 ## Required Brief Inputs
 

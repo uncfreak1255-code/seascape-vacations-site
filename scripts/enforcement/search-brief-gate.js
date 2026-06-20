@@ -74,6 +74,25 @@ function findChangedBriefFiles(changedFiles) {
   );
 }
 
+function briefMentionsSearchDecisionFile(briefContent, relativePath) {
+  return String(briefContent || "").includes(relativePath);
+}
+
+function findUncoveredSearchDecisionFiles(rootDir, searchDecisionFiles, changedBriefFiles) {
+  if (changedBriefFiles.length <= 1) {
+    return [];
+  }
+
+  const briefContents = changedBriefFiles.map((briefPath) => read(rootDir, briefPath));
+
+  return searchDecisionFiles.filter(
+    (relativePath) =>
+      !briefContents.some((briefContent) =>
+        briefMentionsSearchDecisionFile(briefContent, relativePath)
+      )
+  );
+}
+
 function read(rootDir, relativePath) {
   return fs.readFileSync(path.join(rootDir, relativePath), "utf8");
 }
@@ -196,19 +215,22 @@ function assertSearchDecisionBriefContract({
   }
 
   const changedBriefFiles = findChangedBriefFiles(changedFiles);
-  if (changedBriefFiles.length !== 1) {
+  if (changedBriefFiles.length === 0) {
     throw new Error(
       [
-        "Search-driven page, metadata, redirect, and sitemap edits must change exactly one active brief.",
-        `Found ${changedBriefFiles.length} changed brief file(s).`,
+        "Search-driven page, metadata, redirect, and sitemap edits must change at least one active brief.",
+        "Found 0 changed active brief files.",
         ...searchDecisionFiles.map((relativePath) => `- ${relativePath}`)
       ].join("\n")
     );
   }
 
-  const briefPath = changedBriefFiles[0];
-  const missingFields = findMissingGate0Fields(read(rootDir, briefPath));
-  if (missingFields.length > 0) {
+  for (const briefPath of changedBriefFiles) {
+    const missingFields = findMissingGate0Fields(read(rootDir, briefPath));
+    if (missingFields.length === 0) {
+      continue;
+    }
+
     throw new Error(
       [
         `Active brief \`${briefPath}\` is missing the Gate 0 search block required for search-driven source edits.`,
@@ -218,11 +240,27 @@ function assertSearchDecisionBriefContract({
     );
   }
 
+  const uncoveredSearchDecisionFiles = findUncoveredSearchDecisionFiles(
+    rootDir,
+    searchDecisionFiles,
+    changedBriefFiles
+  );
+  if (uncoveredSearchDecisionFiles.length > 0) {
+    throw new Error(
+      [
+        "Multiple active briefs changed, so each search-driven source edit must be named in at least one active brief.",
+        "Add each source path under the matching brief's source-file/task section, or split the PR into one search lane.",
+        ...uncoveredSearchDecisionFiles.map((relativePath) => `- ${relativePath}`)
+      ].join("\n")
+    );
+  }
+
   return {
     changedFiles,
     searchDecisionFiles,
     changedBriefFiles,
-    briefPath,
+    briefPath: changedBriefFiles.length === 1 ? changedBriefFiles[0] : "",
+    briefPaths: changedBriefFiles,
     missingFields: [],
     status: "passed",
   };
@@ -246,6 +284,7 @@ module.exports = {
   findChangedBriefFiles,
   findMissingGate0Fields,
   findSearchDecisionFiles,
+  findUncoveredSearchDecisionFiles,
   getChangedFiles,
   parseGate0Rows,
 };

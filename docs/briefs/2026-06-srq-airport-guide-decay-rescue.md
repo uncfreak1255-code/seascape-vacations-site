@@ -18,12 +18,7 @@
   transportation and car-rental pages reviewed 2026-06-20, the Manatee County
   AMI trolley page reviewed 2026-06-20, and live/source route smoke before
   public copy changes.
-- required internal links: /guides/flights-to-anna-maria-island/,
-  /guides/how-to-get-to-anna-maria-island/,
-  /guides/do-you-need-a-car-anna-maria-island/,
-  /stays/anna-maria-island-vacation-rentals/,
-  /stays/bradenton-vacation-rentals-near-beaches/,
-  /stays/vacation-rentals-near-anna-maria-island/
+- required internal links: /guides/flights-to-anna-maria-island/, /guides/how-to-get-to-anna-maria-island/, /guides/do-you-need-a-car-anna-maria-island/, /stays/anna-maria-island-vacation-rentals/, /stays/bradenton-vacation-rentals-near-beaches/, /stays/vacation-rentals-near-anna-maria-island/
 - CTA target: keep the direct-book home CTA and route airport-intent readers
   into the strongest AMI/near-AMI stay pages without implying Seascape owns
   on-island inventory unless the destination page says so.

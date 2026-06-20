@@ -8,7 +8,8 @@ const {
   assertSearchDecisionBriefContract,
   findChangedBriefFiles,
   findMissingGate0Fields,
-  findSearchDecisionFiles
+  findSearchDecisionFiles,
+  findUncoveredSearchDecisionFiles
 } = require("./search-brief-gate");
 
 function createFixture(files) {
@@ -47,12 +48,12 @@ test("search decision gate skips branches with no search-driven source edits", (
   assert.equal(result.status, "skipped");
 });
 
-test("search decision gate requires exactly one changed brief when search surfaces move", () => {
+test("search decision gate requires at least one changed brief when search surfaces move", () => {
   assert.throws(
     () => assertSearchDecisionBriefContract({
       changedFiles: ["src/guides/example.html"]
     }),
-    /must change exactly one active brief/i
+    /must change at least one active brief/i
   );
 });
 
@@ -201,4 +202,146 @@ test("search decision gate accepts a brief with a filled Gate 0 block", () => {
 
   assert.equal(result.status, "passed");
   assert.equal(result.briefPath, "docs/briefs/example.md");
+});
+
+test("search decision gate accepts multiple valid briefs when each search surface is named", () => {
+  const rootDir = createFixture({
+    "docs/briefs/example-stay.md": `# Brief: Stay Example
+
+## Page Builder Tasks
+
+- source files likely to change: \`src/_data/seoPages.json\`
+
+## Gate 0 Search Block
+
+| Field | Required answer |
+| --- | --- |
+| Target query family | Anna Maria Island vacation rentals |
+| Searcher intent | guest booking |
+| Current Seascape URL | /stays/anna-maria-island-vacation-rentals/ |
+| SERP observed date | 2026-06-20 |
+| SERP stale after | 2026-06-27 |
+| Current proof | 12 clicks and 88 impressions in the dated 2026-06-09 to 2026-06-16 read. |
+| Top visible competitors | Anna Maria Life Vacation Rentals, AMI Locals, and SeaBreeze Vacation. |
+| Competitor angle | on-island inventory depth and local trust |
+| Seascape gap | faster near-island explanation |
+| Search fit | Query is guest booking intent, and the stay money URL is the right page. |
+| Local/GBP proof | N/A for this organic stay-money read; no local service map-pack action needed. |
+| AEO/readback note | Not an AI-answer expansion; keep the stay page extractable. |
+| Recommendation | tighten the existing money page |
+`,
+    "docs/briefs/example-guide.md": `# Brief: Guide Example
+
+## Page Builder Tasks
+
+- source files likely to change: \`src/guides/example.html\`
+
+## Gate 0 Search Block
+
+| Field | Required answer |
+| --- | --- |
+| Target query family | Sarasota airport to Anna Maria Island |
+| Searcher intent | travel guide |
+| Current Seascape URL | /guides/example/ |
+| SERP observed date | 2026-06-20 |
+| SERP stale after | 2026-06-27 |
+| Current proof | 2026-06-20 SERP read shows route-planner competitors and a current Seascape guide. |
+| Top visible competitors | Rome2rio, Visit Florida, and AMI Chamber. |
+| Competitor angle | route planner and official visitor guidance |
+| Seascape gap | stale freshness and mixed route-cost language |
+| Search fit | Existing guide should win the route query and hand readers to stay pages. |
+| Local/GBP proof | Not a GBP action because this is organic route-guide intent. |
+| AEO/readback note | No direct AI observation row yet; treat AI answer visibility as unproven. |
+| Recommendation | update the existing guide source |
+`
+  });
+
+  const result = assertSearchDecisionBriefContract({
+    rootDir,
+    changedFiles: [
+      "src/_data/seoPages.json",
+      "src/guides/example.html",
+      "docs/briefs/example-stay.md",
+      "docs/briefs/example-guide.md",
+    ]
+  });
+
+  assert.equal(result.status, "passed");
+  assert.deepEqual(result.briefPaths, [
+    "docs/briefs/example-stay.md",
+    "docs/briefs/example-guide.md",
+  ]);
+});
+
+test("search decision gate rejects multiple briefs when a search surface is unnamed", () => {
+  const rootDir = createFixture({
+    "docs/briefs/example-stay.md": `# Brief: Stay Example
+
+## Page Builder Tasks
+
+- source files likely to change: \`src/_data/seoPages.json\`
+
+## Gate 0 Search Block
+
+| Field | Required answer |
+| --- | --- |
+| Target query family | Anna Maria Island vacation rentals |
+| Searcher intent | guest booking |
+| Current Seascape URL | /stays/anna-maria-island-vacation-rentals/ |
+| SERP observed date | 2026-06-20 |
+| SERP stale after | 2026-06-27 |
+| Current proof | 12 clicks and 88 impressions in the dated 2026-06-09 to 2026-06-16 read. |
+| Top visible competitors | Anna Maria Life Vacation Rentals, AMI Locals, and SeaBreeze Vacation. |
+| Competitor angle | on-island inventory depth and local trust |
+| Seascape gap | faster near-island explanation |
+| Search fit | Query is guest booking intent, and the stay money URL is the right page. |
+| Local/GBP proof | N/A for this organic stay-money read; no local service map-pack action needed. |
+| AEO/readback note | Not an AI-answer expansion; keep the stay page extractable. |
+| Recommendation | tighten the existing money page |
+`,
+    "docs/briefs/example-guide.md": `# Brief: Guide Example
+
+## Gate 0 Search Block
+
+| Field | Required answer |
+| --- | --- |
+| Target query family | Sarasota airport to Anna Maria Island |
+| Searcher intent | travel guide |
+| Current Seascape URL | /guides/example/ |
+| SERP observed date | 2026-06-20 |
+| SERP stale after | 2026-06-27 |
+| Current proof | 2026-06-20 SERP read shows route-planner competitors and a current Seascape guide. |
+| Top visible competitors | Rome2rio, Visit Florida, and AMI Chamber. |
+| Competitor angle | route planner and official visitor guidance |
+| Seascape gap | stale freshness and mixed route-cost language |
+| Search fit | Existing guide should win the route query and hand readers to stay pages. |
+| Local/GBP proof | Not a GBP action because this is organic route-guide intent. |
+| AEO/readback note | No direct AI observation row yet; treat AI answer visibility as unproven. |
+| Recommendation | update the existing guide source |
+`
+  });
+
+  assert.deepEqual(
+    findUncoveredSearchDecisionFiles(rootDir, [
+      "src/_data/seoPages.json",
+      "src/guides/example.html",
+    ], [
+      "docs/briefs/example-stay.md",
+      "docs/briefs/example-guide.md",
+    ]),
+    ["src/guides/example.html"]
+  );
+
+  assert.throws(
+    () => assertSearchDecisionBriefContract({
+      rootDir,
+      changedFiles: [
+        "src/_data/seoPages.json",
+        "src/guides/example.html",
+        "docs/briefs/example-stay.md",
+        "docs/briefs/example-guide.md",
+      ]
+    }),
+    /each search-driven source edit must be named/i
+  );
 });
