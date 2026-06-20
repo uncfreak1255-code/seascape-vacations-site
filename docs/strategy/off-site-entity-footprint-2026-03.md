@@ -1,6 +1,10 @@
 # Seascape Vacations Off-Site Entity Footprint
 Date: 2026-03-16
-Status: Active
+Status: Superseded as live operating guidance on June 20, 2026
+
+> Current public entity truth lives in `src/_data/site.json`. Current off-site
+> entity, citation, and GBP review work runs through the `seascape-analytics`
+> off-site authority work order. Use this file as historical March context only.
 
 ## What This Is
 
@@ -17,6 +21,7 @@ These are the only organization-level profiles or identity endpoints confirmed f
 - Facebook: `https://www.facebook.com/SeascapeVacations`
 - Instagram: `https://www.instagram.com/seascapevacations`
 - Google Business Profile: `https://www.google.com/search?kgmid=%2Fg%2F11y4vdnsfp&q=Seascape+Vacations`
+- Bradenton Gulf Islands listing: `https://www.bradentongulfislands.com/listing/seascape-vacations/`
 
 These are now centralized in [site.json](/Users/sawbeck/Projects/seascape-vacations-site/src/_data/site.json#L1) so the public `sameAs` footprint can be updated in one place instead of being copy-pasted across pages.
 
@@ -26,10 +31,13 @@ No public organization-level URLs were found for:
 
 - LinkedIn company page
 - YouTube channel
-- Chamber / CVB listings
+- Anna Maria Island Chamber listing
+- Manatee Chamber listing
+- Visit Sarasota County listing
 - BBB listing
 
-Do not add any of these to schema until the public URLs exist.
+Do not add any of these to schema until the public URLs exist and the current
+off-site authority work order or another reviewed source proves the exact URL.
 
 ## Site-Side Work Executed
 
@@ -45,6 +53,9 @@ Do not add any of these to schema until the public URLs exist.
 3. LinkedIn company page
 4. YouTube channel
 5. Chamber / CVB listing URLs once approved
+
+Current note: Bradenton Gulf Islands is already centralized in `site.json`; do
+not recreate that as a new task.
 
 ## Exact Standard For New Entity URLs
 

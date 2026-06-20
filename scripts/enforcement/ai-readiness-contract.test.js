@@ -19,7 +19,7 @@ const AI_PRIORITY_ROUTES = [
     ],
     proofMarkers: [
       /Reviewed by/i,
-      /How We Ranked These Companies/i
+      /How We (?:Ranked|Reviewed) These Companies/i
     ]
   },
   {

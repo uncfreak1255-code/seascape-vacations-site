@@ -16,40 +16,79 @@
 
 ## Latest Execution Read
 
-Run date: 2026-06-12.
+Run date: 2026-06-20.
 
-The targeted joined operator read was executed in `seascape-analytics` and
+The weekly AI visibility read was executed in `seascape-analytics` and
 rendered here from its machine-readable next-batch decision receipt.
 
-- Requested last-7-complete-day window: 2026-06-04 to 2026-06-10.
-- Latest BigQuery GSC `data_date`: 2026-06-10.
+- Requested last-7-complete-day window: 2026-06-12 to 2026-06-18.
+- Latest BigQuery GSC `data_date`: 2026-06-18.
 - Site work gate: `clear` - joined GSC + GA4 read covers the requested window.
-- Reread status: `fresh but below threshold`.
-- Concrete next move: no cluster cleared the expansion bar this window; read `queries/rank_history_deltas.sql` for a winner regression to defend, otherwise rerun on the next complete GSC window.
-- Report recommendation: `hold-and-reread`.
-- Reason: No cluster cleared the bar for a stronger next branch than holding for more readback.
+- Reread status: `open next batch`.
+- Concrete next move: open a narrow site batch around `/guides/anna-maria-island-vs-siesta-key/`
+- Report recommendation: `open distribution/content batch`.
+- Reason: `/guides/anna-maria-island-vs-siesta-key/` gained demand but still shows a page-angle or transfer gap worth a narrow site batch
 
 Cluster read from the analytics receipt:
 
 | cluster | pages | gsc_clicks | gsc_impressions | gsc_ctr | gsc_position | ga4_sessions |
 |---|---:|---:|---:|---:|---:|---:|
-| brand | 1 | 13 | 213 | 6.10% | 9.60 | 146 |
-| catalog | 1 | 0 | 18 | 0.00% | 4.28 | 104 |
-| guide_support | 1 | 0 | 757 | 0.00% | 6.62 | 1 |
-| guide_winners | 4 | 49 | 5886 | 0.83% | 4.34 | 230 |
-| owner_hub | 1 | 0 | 57 | 0.00% | 5.00 | 83 |
-| owner_money | 4 | 0 | 42 | 0.00% | 6.57 | 0 |
-| owner_support | 1 | 0 | 0 | 0.00% | 0.00 | 0 |
-| property_pages | 1 | 0 | 0 | 0.00% | 0.00 | 2 |
-| stay_money | 2 | 0 | 5 | 0.00% | 10.60 | 1 |
-| stay_support | 2 | 0 | 70 | 0.00% | 33.89 | 1 |
+| brand | 1 | 10 | 214 | 4.67% | 8.28 | 129 |
+| catalog | 1 | 0 | 32 | 0.00% | 7.59 | 107 |
+| guide_support | 1 | 1 | 410 | 0.24% | 7.50 | 2 |
+| guide_winners | 4 | 37 | 5429 | 0.68% | 4.44 | 211 |
+| owner_hub | 1 | 0 | 51 | 0.00% | 6.20 | 78 |
+| owner_money | 4 | 0 | 57 | 0.00% | 5.54 | 0 |
+| owner_support | 1 | 0 | 14 | 0.00% | 7.07 | 0 |
+| property_pages | 1 | 0 | 0 | 0.00% | 0.00 | 5 |
+| stay_money | 2 | 0 | 3 | 0.00% | 55.33 | 6 |
+| stay_support | 2 | 0 | 152 | 0.00% | 36.72 | 2 |
 
-Do not open a new owner, stay, guide, GEO, or SEO expansion branch from this read.
-If a tracked winner or money page has regressed, use
-`docs/process/ranking-regression-rescue.md` for a bounded rescue brief instead
-of waiting passively.
-`docs/status/next-batch.md` should move to `open next batch` only when the
-analytics receipt says so.
+SEO queue read from the analytics receipt:
+
+| queue_bucket | pages | gsc_clicks | gsc_impressions | ga4_sessions |
+|---|---:|---:|---:|---:|
+| measurement issue | 1 | 25 | 2502 | 104 |
+| too thin to call | 11 | 0 | 157 | 196 |
+| transfer/CRO issue | 1 | 2 | 841 | 77 |
+| wait | 5 | 21 | 2862 | 163 |
+
+SERP evidence from the analytics receipt:
+
+- Evidence status: `available`.
+- Mode: `live`.
+- Task count: 14.
+- Requested cost: 0.0280.
+
+| query | page_path | seascape_rank | classification_support | top_visible_competitors | serp_features |
+|---|---|---|---|---|---|
+| Anna Maria Island vacation rentals | /stays/anna-maria-island-vacation-rentals/ | absent | supports_ranking_regression | www.annamarialifevacationrentals.com, www.amilocals.com, www.seabreezevacation.com | organic |
+| vacation rentals near Anna Maria Island | /stays/vacation-rentals-near-anna-maria-island/ | absent | supports_ranking_regression | www.islandvacationproperties.com, www.amilocals.com, www.annamarialifevacationrentals.com | organic |
+| Seascape Vacations Bradenton Sarasota vacation rentals | / | 1 | supports_ctr_issue | www.vuniquevacations.com, www.bradentongulfislands.com, www.mapquest.com | organic |
+| vacation rental property management | /property-management/ | absent | supports_ranking_regression | www.vacasa.com, www.floridavacationhomes.com, www.funstayflorida.com | organic |
+| vacation rental management fees Florida | /property-management/vacation-rental-management-fees-florida/ | absent | supports_ranking_regression | www.funstayflorida.com, www.cascadiagetaways.com, www.lodgify.com | organic |
+| Bradenton vs Sarasota vacation | /guides/bradenton-vs-sarasota/ | 3 | supports_ctr_issue | www.reddit.com, www.midflorida.com, www.tripadvisor.com | organic |
+| Sarasota airport to Anna Maria Island | /guides/srq-airport-to-anna-maria-island/ | 6 | supports_ctr_issue | www.facebook.com, www.rome2rio.com, annamariaislandchamber.org | organic |
+| Sarasota airport to Anna Maria Island | /guides/srq-airport-to-anna-maria-island/ | absent | supports_ranking_regression | www.facebook.com, www.rome2rio.com, www.visitflorida.com | organic |
+| Anna Maria Island vs Siesta Key | /guides/anna-maria-island-vs-siesta-key/ | 6 | supports_ctr_issue | www.reddit.com, mousinaround.com, www.facebook.com | organic |
+| Bradenton vs Sarasota for families | /guides/bradenton-vs-sarasota-for-families/ | 3 | supports_ctr_issue | www.reddit.com, www.midflorida.com, www.facebook.com | organic |
+| best vacation rental companies Anna Maria Island | /guides/best-vacation-rental-companies-ami/ | absent | supports_ranking_regression | www.satorealestate.com, www.annamarialifevacationrentals.com, annamariaislandchamber.org | organic |
+| best vacation rental companies Anna Maria Island | /guides/best-vacation-rental-companies-ami/ | absent | supports_ranking_regression | www.annamarialifevacationrentals.com, www.satorealestate.com, annamariaislandchamber.org | organic |
+| luxury vacation rentals Sarasota | /stays/luxury-vacation-rentals-sarasota/ | absent | supports_ranking_regression | www.siestakeyluxuryrentalproperties.com, emeraldkite.com, www.vuniquevacations.com | organic |
+| vacation rental management Bradenton | /property-management/vacation-rental-management-bradenton/ | absent | supports_ranking_regression | www.visitflorida.com, www.choosegulfcoast.com, anchordownmanagement.com | organic |
+
+AI visibility read from the analytics receipt:
+
+- Status: `fresh`.
+- Direct AI/local measured rows: 4 of 4.
+- Explicit AI-referrer external-candidate sessions: 5.
+- Analytics quality status: `blocked`.
+- Recommended batch type: `distribution/content`.
+- Recommended page or cluster: `/guides/anna-maria-island-vs-siesta-key/`.
+- Still waiting on: broader guide rewrites and any unsupported booking claim
+
+Open `anna-maria-island-vs-siesta-key-distribution-content` from this read, using one narrow active brief and the matching release gate.
+Do not use this as permission for unrelated owner, stay, guide, GEO, or SEO expansion.
 
 ## Likely Priorities
 

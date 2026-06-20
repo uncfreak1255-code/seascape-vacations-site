@@ -8,6 +8,23 @@ const seoGovernance = require("../../src/_data/seoGovernance.js");
 
 const rootDir = path.resolve(__dirname, "../..");
 const triagePath = path.join(rootDir, "docs/portfolio/pseo-inventory-triage.md");
+const redirectsPath = path.join(rootDir, "src", "_redirects");
+
+function redirectMap() {
+  const redirects = new Map();
+  const source = fs.readFileSync(redirectsPath, "utf8");
+  for (const line of source.split(/\r?\n/)) {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith("#")) {
+      continue;
+    }
+    const parts = trimmed.split(/\s+/);
+    if (parts.length >= 3 && parts[2] === "301") {
+      redirects.set(parts[0], parts[1]);
+    }
+  }
+  return redirects;
+}
 
 test("pSEO triage inventory covers generated stay and owner pages", () => {
   const triage = fs.readFileSync(triagePath, "utf8");
@@ -48,6 +65,32 @@ test("pSEO triage inventory preserves noindex and redirect classifications", () 
       triage,
       new RegExp(`/stays/${page.slug}/ -> ${page.rehomeTo.replace(/\//g, "\\/")} \\| redirect \\|`),
       `missing redirect classification for ${page.slug}`,
+    );
+  }
+});
+
+test("retired generated stay redirects do not also build pSEO stay pages", () => {
+  const retiredGeneratedStaySlugs = [
+    "holmes-beach-vacation-rentals",
+  ];
+  const generatedStaySlugs = new Set((seoPages.vacationer || []).map((record) => record.slug));
+  const redirects = redirectMap();
+
+  for (const slug of retiredGeneratedStaySlugs) {
+    assert.equal(
+      generatedStaySlugs.has(slug),
+      false,
+      `${slug} has direct redirects and must not also render as a generated stay page`,
+    );
+    assert.equal(
+      redirects.get(`/stays/${slug}`),
+      "/stays/vacation-rentals-near-anna-maria-island/",
+      `${slug} must keep a direct 301 to the near-AMI canonical`,
+    );
+    assert.equal(
+      redirects.get(`/stays/${slug}/`),
+      "/stays/vacation-rentals-near-anna-maria-island/",
+      `${slug}/ must keep a direct 301 to the near-AMI canonical`,
     );
   }
 });

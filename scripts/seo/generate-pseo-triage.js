@@ -54,7 +54,6 @@ const stayImprove = new Map([
   ["vacation-rentals-near-restaurants-florida", "Location/amenity hybrid likely needs consolidation unless SERP proves demand."],
   ["vacation-rentals-with-elevator", "Accessibility/elevator claims need property-truth verification before promotion."],
   ["canal-homes-with-boat-dock", "High-intent water-access page but one-property support needs careful proof."],
-  ["holmes-beach-vacation-rentals", "Do not expand Holmes Beach until AMI stay winners clear the measured gate."],
 ]);
 
 const stayConsolidate = new Map([

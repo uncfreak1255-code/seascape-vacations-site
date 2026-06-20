@@ -3,6 +3,7 @@ const path = require("path");
 const test = require("node:test");
 const assert = require("node:assert/strict");
 const { execSync } = require("node:child_process");
+const { extractAuthorizedSourceSectionText } = require("./search-brief-gate");
 
 const projectRoot = path.resolve(__dirname, "..", "..");
 
@@ -268,6 +269,28 @@ function parseMissingBriefFields(briefContent) {
     const expression = new RegExp(`^- ${field}:\\s+.+$`, "im");
     return !expression.test(briefContent);
   });
+}
+
+function briefMentionsContentFile(briefContent, relativePath, source) {
+  const authorizedSourceText = extractAuthorizedSourceSectionText(briefContent);
+  if (authorizedSourceText.includes(relativePath)) {
+    return true;
+  }
+
+  const route = getCurrentRoute(relativePath, source);
+  if (route === "/") {
+    return false;
+  }
+
+  return Boolean(route && authorizedSourceText.includes(route));
+}
+
+function selectBriefForContentFile(briefs, relativePath, source) {
+  if (briefs.length === 1) {
+    return briefs[0];
+  }
+
+  return briefs.find((brief) => briefMentionsContentFile(brief.content, relativePath, source)) || null;
 }
 
 function getCurrentRoute(relativePath, source) {
@@ -871,6 +894,59 @@ test("changed-file gate can skip content lint for structural-only public diffs",
   assert.deepEqual(violations, []);
 });
 
+test("brief selection does not match the homepage against every slash link", () => {
+  const unrelatedBrief = {
+    relativePath: "docs/briefs/2026-06-ami-rental-companies-regression-rescue.md",
+    content: [
+      "- required internal links: /stays/book-direct-anna-maria-island/, /guides/anna-maria-island-vacation-cost/",
+      "- source files likely to change: `src/guides/best-vacation-rental-companies-ami.html`"
+    ].join("\n")
+  };
+  const homepageBrief = {
+    relativePath: "docs/briefs/2026-06-homepage-guide-card-freshness.md",
+    content: [
+      "- required internal links: /guides/bradenton-vs-sarasota/, /guides/anna-maria-island-vs-siesta-key/, /guides/",
+      "- source files likely to change:",
+      "  - `src/index.njk`"
+    ].join("\n")
+  };
+
+  assert.equal(
+    selectBriefForContentFile([unrelatedBrief, homepageBrief], "src/index.njk", ""),
+    homepageBrief
+  );
+});
+
+test("brief selection ignores incidental route links outside source-file sections", () => {
+  const unrelatedBrief = {
+    relativePath: "docs/briefs/2026-06-homepage-guide-card-freshness.md",
+    content: [
+      "- required internal links: /guides/example/, /guides/",
+      "- source files likely to change:",
+      "  - `src/index.njk`"
+    ].join("\n")
+  };
+  const guideBrief = {
+    relativePath: "docs/briefs/2026-06-example-guide-rescue.md",
+    content: [
+      "- required internal links: /stays/book-direct-anna-maria-island/, /guides/",
+      "- source files likely to change:",
+      "  - `src/guides/example.html`"
+    ].join("\n")
+  };
+  const source = [
+    "---",
+    "permalink: /guides/example/",
+    "---",
+    "<p>Example guide.</p>"
+  ].join("\n");
+
+  assert.equal(
+    selectBriefForContentFile([unrelatedBrief, guideBrief], "src/guides/example.html", source),
+    guideBrief
+  );
+});
+
 test("owner seo page data avoids banned owner jargon", () => {
   const seoPages = JSON.parse(read(path.join("src", "_data", "seoPages.json")));
   const violations = [];
@@ -903,7 +979,7 @@ test("repo public-copy source and data surfaces do not ship instruction-template
   assert.deepEqual([...sourceViolations, ...dataViolations], []);
 });
 
-test("changed public content and source-backed copy files require one active brief and pass gate checks", () => {
+test("changed public content and source-backed copy files require active briefs and pass gate checks", () => {
   const changedFiles = getChangedFiles();
   const changedPublicContentFiles = changedFiles.filter(isPublicContentFile);
   const seoPagesPath = path.join("src", "_data", "seoPages.json");
@@ -923,27 +999,40 @@ test("changed public content and source-backed copy files require one active bri
     return;
   }
 
-  const changedBriefFiles = changedFiles.filter((relativePath) => /^docs\/briefs\/.+\.md$/i.test(relativePath));
-  assert.equal(
-    changedBriefFiles.length,
-    1,
-    `public content PRs must change exactly one active brief, found ${changedBriefFiles.length}`
+  const changedBriefFiles = changedFiles.filter((relativePath) =>
+    /^docs\/briefs\/.+\.md$/i.test(relativePath) && !/^docs\/briefs\/_template\.md$/i.test(relativePath)
+  );
+  assert.ok(
+    changedBriefFiles.length >= 1,
+    `public content PRs must change at least one active brief, found ${changedBriefFiles.length}`
   );
 
-  const briefContent = read(changedBriefFiles[0]);
-  const missingBriefFields = parseMissingBriefFields(briefContent);
-  assert.deepEqual(
-    missingBriefFields,
-    [],
-    `active brief is missing required content-gate fields: ${missingBriefFields.join(", ")}`
-  );
+  const briefs = changedBriefFiles.map((relativePath) => ({
+    relativePath,
+    content: read(relativePath),
+  }));
 
-  const defaultRequiredLinks = parseRequiredLinksFromBrief(briefContent);
-  const requiredLinkMap = parseRequiredLinkMapFromBrief(briefContent);
+  for (const brief of briefs) {
+    const missingBriefFields = parseMissingBriefFields(brief.content);
+    assert.deepEqual(
+      missingBriefFields,
+      [],
+      `active brief ${brief.relativePath} is missing required content-gate fields: ${missingBriefFields.join(", ")}`
+    );
+  }
+
   const violations = [];
 
   for (const relativePath of changedReaderCopyFiles) {
     const source = read(relativePath);
+    const brief = selectBriefForContentFile(briefs, relativePath, source);
+    assert.ok(
+      brief,
+      `${relativePath}: changed reader copy must be named by one changed active brief when multiple briefs are present`
+    );
+
+    const defaultRequiredLinks = parseRequiredLinksFromBrief(brief.content);
+    const requiredLinkMap = parseRequiredLinkMapFromBrief(brief.content);
     violations.push(
       ...lintPublicContent(
         relativePath,

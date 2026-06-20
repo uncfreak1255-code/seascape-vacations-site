@@ -68,14 +68,24 @@ brief:
 | Target query family | Exact query family, not a page label. |
 | Searcher intent | Guest booking, owner-management, guide/research, comparison, local brand, or support. |
 | Current Seascape URL | Existing URL or `missing page`. |
-| Current proof | Latest final GSC/GA4 when available, plus rank tracker or live SERP signal. |
+| SERP observed date | Date-only `YYYY-MM-DD` from the live SERP, rank tracker, or completed SERP receipt. |
+| SERP stale after | Date-only `YYYY-MM-DD`; default to 7 days after observation unless the SERP is moving faster. |
+| Current proof | Latest final GSC/GA4 when available, plus rank tracker or live SERP signal. Name the dated receipt or say final analytics are not ready. |
 | Top visible competitors | Top 3 visible organic/local/OTA/SERP competitors. |
 | Competitor angle | Inventory, price, local trust, guide depth, real estate/living advice, reviews, map pack, OTA, directory, or UGC. |
 | Seascape gap | Concrete gap versus the visible winners. |
+| Search fit | Why the existing URL should be rescued for this query, what conversion it should support, or why the rescue should stop. |
+| Local/GBP proof | GBP/category/NAP/map-pack note for local or owner-management intent; otherwise explain why it is `N/A`. |
+| AEO/readback note | AEO score, AI-answer readback, or why it is `N/A` for this route. |
 | Recommended action | Title/meta, intro, new section, proof cleanup, internal links, schema, CTA routing, redirect/canonical fix, or hold. |
 
 If the block cannot name the query, visible competitors, and Seascape gap, the
 work is still research, not a source edit.
+
+Do not treat a generic `tmp/*latest*` analytics output as final proof when dated
+receipts disagree. Use the matching dated receipt, rerun the analytics read, or
+mark the proof lane as waiting while the attack lane handles source-safe rescue
+work.
 
 ## What Is Allowed During `blocked by freshness`
 
@@ -86,6 +96,8 @@ Allowed:
 - title/meta drafts, held until the brief and content gate authorize them
 - freshness and proof cleanup that has source truth
 - internal-link improvements into mapped money pages
+- `npm run seo:links:plan` to find rough donor-link candidates, followed by
+  route intent, indexability, and sentence-fit review before source links change
 - schema, canonical, sitemap, redirect, noindex, and route hygiene
 - source-page sections that answer the live query better without making new
   unproven claims

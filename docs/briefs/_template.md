@@ -42,10 +42,15 @@ Required when the branch changes search-facing page source, `src/_data/seoPages.
 | Target query family | |
 | Searcher intent | |
 | Current Seascape URL | |
+| SERP observed date | YYYY-MM-DD |
+| SERP stale after | YYYY-MM-DD |
 | Current proof | |
 | Top visible competitors | |
 | Competitor angle | |
 | Seascape gap | |
+| Search fit | |
+| Local/GBP proof | |
+| AEO/readback note | |
 | Recommendation | |
 
 ## Search Operator Read

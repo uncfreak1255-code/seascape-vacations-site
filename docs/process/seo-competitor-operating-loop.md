@@ -31,14 +31,23 @@ Before recommending site work, capture this block:
 | Target query family | The exact keyword family, not a vague page label. |
 | Searcher intent | `guest booking`, `owner-management`, `guide/research`, `comparison`, `local brand`, or `support`. |
 | Current Seascape URL | Existing URL, or `missing page`. |
-| Current proof | GSC clicks, impressions, CTR, average position, GA4 sessions, and tracked conversion event when available. |
+| SERP observed date | Date-only `YYYY-MM-DD` from the live SERP or completed SERP receipt. |
+| SERP stale after | Date-only `YYYY-MM-DD`; default to 7 days after observation unless a volatile event requires sooner. |
+| Current proof | GSC clicks, impressions, CTR, average position, GA4 sessions, and tracked conversion event when available. Name the dated receipt or say final analytics are not ready. |
 | Top visible competitors | Top 3 organic/local/OTA/SERP competitors from the live read. |
 | Competitor angle | Inventory, price, direct booking, local trust, owner revenue, amenities, guide depth, reviews, map pack, OTA, directory, or UGC. |
 | Seascape gap | The concrete gap versus the live winners. |
+| Search fit | Why this URL should own the query, what conversion it should drive, or why the idea should be killed/deferred. |
+| Local/GBP proof | GBP/category/NAP/map-pack note for local or owner-management intent; otherwise explain why it is `N/A`. |
+| AEO/readback note | AEO score, AI-answer readback, or why it is `N/A` for this route. |
 | Recommendation | `keep`, `improve`, `noindex`, `redirect`, or `consolidate`, plus the exact source edit only if the gate allows work. |
 
 If the competitor read cannot name the keyword, live winners, and Seascape gap,
 it is not strong enough to change a page.
+
+Do not cite a generic `tmp/*latest*` analytics output as the proof source when
+dated receipts disagree. Rerun the analytics read or use the dated receipt that
+matches the window being discussed.
 
 ## Classification To Action
 
@@ -66,6 +75,9 @@ work:
 
 - refresh the pSEO inventory
 - run Gate 0 competitor reads
+- run `npm run seo:links:plan` and capture rough donor-link candidates for
+  existing money or winner pages; verify route intent, indexability, and sentence
+  fit before changing links
 - identify likely consolidation candidates
 - flag pages that need property-truth or owner-proof verification
 - prepare a candidate brief outline without treating it as active work

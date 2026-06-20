@@ -1,7 +1,21 @@
 # Seascape Vacations — Backlink Acquisition Strategy
 **Created:** March 15, 2026  
-**Status:** Active  
-**Goal:** Build from 5 external links / 2 referring domains to 30+ links / 15+ domains by June 2026
+**Status:** Superseded as live operating guidance on June 20, 2026  
+**Original goal:** Build from 5 external links / 2 referring domains to 30+ links / 15+ domains by June 2026
+
+> This file is a historical March target pool, not the current backlink
+> operating plan. Use current analytics proof before acting:
+>
+> - `seascape-analytics/docs/offsite-authority-work-order-runbook.md`
+> - `seascape-analytics/docs/status/offsite-authority-work-order-2026-06-12-to-2026-06-18.json`
+> - `docs/process/dataforseo-mcp.md` for site-side Gate 0 DataForSEO boundaries
+>
+> Do not use the March link counts, outreach status, Ahrefs assumptions, or
+> June targets as current proof. Any backlink, local citation, GBP/entity, or
+> listing action now needs a reviewed off-site authority row with source,
+> target URL, evidence path, risk label, and recommended action. No paid link
+> placement, bulk directory submission, or public impact claim is authorized by
+> this historical plan.
 
 ## Current State (GSC, March 15 2026)
 
@@ -109,13 +123,19 @@ linking to our guide from your visitor resources or partners page?"
 ## TIER 4: Competitive Gap Analysis (Ongoing)
 
 ### 10. Steal Competitor Backlinks
-Once DataforSEO Backlinks connector is authenticated, pull backlink profiles for:
+Historical March idea. The current version is not "steal backlinks"; it is a
+reviewed competitor link-intersection and citation/NAP pass owned by
+`seascape-analytics`. Use the current off-site authority work order before
+pulling, pitching, or logging any target.
+
+March starter competitors were:
 - annamariaislandrentals.com
 - vacasa.com (Florida pages)
 - evolve.com (Florida pages)
 - islandrealestate.com
 
-Find sites linking to competitors but NOT to Seascape → pitch as alternative/addition.
+Find sites linking to competitors but NOT to Seascape only after the current
+work order says the source is legitimate, relevant, and safe to pursue.
 
 ---
 

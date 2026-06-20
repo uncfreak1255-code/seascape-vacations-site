@@ -7,13 +7,37 @@ from pathlib import Path
 
 LINK_RE = re.compile(r'href=["\']([^"\']+)["\']', re.IGNORECASE)
 TEMPLATE_TOKEN_RE = re.compile(r"{{.*?}}|{%.+?%}")
+FRONTMATTER_RE = re.compile(r"\A---\r?\n(.*?)\r?\n---", re.DOTALL)
+STAY_NOINDEX_ARRAY_RE = re.compile(r"staysNoindexSlugs\s*=\s*\[(.*?)\];", re.DOTALL)
+QUOTED_STRING_RE = re.compile(r'["\']([^"\']+)["\']')
 
 
-def source_url(path: Path, repo: Path) -> str:
+def frontmatter(text: str) -> str:
+    match = FRONTMATTER_RE.match(text)
+    return match.group(1) if match else ""
+
+
+def is_generated_template(text: str) -> bool:
+    fm = frontmatter(text)
+    return "pagination:" in fm and "permalink:" in fm and "{{" in fm
+
+
+def is_nonindexable_source(text: str) -> bool:
+    fm = frontmatter(text).lower()
+    if re.search(r"\bpermalink:\s*false\b", fm):
+        return True
+    if "noindex" in fm:
+        return True
+    return bool(re.search(r'<meta\s+name=["\']robots["\']\s+content=["\']noindex\b', text, re.IGNORECASE))
+
+
+def source_url(path: Path, repo: Path, text: str = "") -> str | None:
+    if text and is_generated_template(text):
+        return None
     rel = path.relative_to(repo)
     parts = rel.parts
     if not parts or parts[0] != "src":
-        return "/"
+        return None
     p = "/" + "/".join(parts[1:])
     for ext in (".njk", ".md", ".html"):
         if p.endswith(ext):
@@ -45,6 +69,46 @@ def normalize_href(href: str) -> str | None:
     if not href.endswith("/"):
         href += "/"
     return href
+
+
+def normalize_redirect_target(target: str) -> str | None:
+    if target.startswith(("http://", "https://")):
+        return None
+    return normalize_href(target)
+
+
+def load_redirect_sources(repo: Path) -> set[str]:
+    redirects_path = repo / "src" / "_redirects"
+    if not redirects_path.exists():
+        return set()
+
+    sources = set()
+    for line in redirects_path.read_text(encoding="utf-8", errors="ignore").splitlines():
+        stripped = line.strip()
+        if not stripped or stripped.startswith("#"):
+            continue
+        parts = stripped.split()
+        if len(parts) < 2:
+            continue
+        source = parts[0]
+        target = parts[1]
+        normalized = normalize_href(source)
+        normalized_target = normalize_redirect_target(target)
+        if normalized and normalized != normalized_target:
+            sources.add(normalized)
+    return sources
+
+
+def load_generated_stay_noindex_sources(repo: Path) -> set[str]:
+    governance_path = repo / "src" / "_data" / "seoGovernance.js"
+    if not governance_path.exists():
+        return set()
+
+    source = governance_path.read_text(encoding="utf-8", errors="ignore")
+    match = STAY_NOINDEX_ARRAY_RE.search(source)
+    if not match:
+        return set()
+    return {f"/stays/{slug}/" for slug in QUOTED_STRING_RE.findall(match.group(1))}
 
 
 def family(url: str) -> str:
@@ -88,18 +152,34 @@ def analyze(repo: Path) -> dict:
     outbounds = defaultdict(set)
     pages = set()
 
+    records = []
+    excluded_pages = load_redirect_sources(repo) | load_generated_stay_noindex_sources(repo)
+    skipped_template_sources = 0
+
     for file in files:
-        src = source_url(file, repo)
-        pages.add(src)
         text = file.read_text(encoding="utf-8", errors="ignore")
+        if is_generated_template(text):
+            skipped_template_sources += 1
+        src = source_url(file, repo, text)
+        nonindexable = is_nonindexable_source(text)
+        if src and nonindexable:
+            excluded_pages.add(src)
+        records.append((file, text, src, nonindexable))
+
+    for _file, text, src, nonindexable in records:
+        if src and not nonindexable and src not in excluded_pages:
+            pages.add(src)
         for href in LINK_RE.findall(text):
             dst = normalize_href(href)
-            if not dst or dst == src:
+            if not dst or dst == src or dst in excluded_pages:
                 continue
-            outbounds[src].add(dst)
+            if src and not nonindexable and src not in excluded_pages:
+                outbounds[src].add(dst)
 
     for destinations in outbounds.values():
         for dst in destinations:
+            if dst in excluded_pages:
+                continue
             inbound_by_page[dst] += 1
             pages.add(dst)
 
@@ -180,6 +260,8 @@ def analyze(repo: Path) -> dict:
 
     return {
         "files_scanned": len(files),
+        "excluded_pages": sorted(excluded_pages),
+        "skipped_template_sources": skipped_template_sources,
         "families": family_rows,
         "top_underlinked": underlinked[:25],
         "donor_suggestions": donor_suggestions,
@@ -199,6 +281,8 @@ def main() -> None:
 
     print("# Internal Link Graph Targeting")
     print(f"Files scanned: {result['files_scanned']}")
+    print(f"Skipped generated template sources: {result['skipped_template_sources']}")
+    print(f"Excluded noindex/redirect pages: {len(result['excluded_pages'])}")
     print()
     print("## Family Inbound Summary")
     print(fmt_table(result["families"]))

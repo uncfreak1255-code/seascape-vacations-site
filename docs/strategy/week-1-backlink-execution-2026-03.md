@@ -1,7 +1,13 @@
 # Seascape Vacations Week 1 Backlink Execution
 
 Date: 2026-03-15
-Goal: Turn the March 15 backlink strategy into concrete first actions instead of leaving it as a passive memo.
+Status: Superseded as live operating guidance on June 20, 2026
+Original goal: Turn the March 15 backlink strategy into concrete first actions instead of leaving it as a passive memo.
+
+> Historical execution packet only. Do not resume these sends or listing tasks
+> from this file. Current backlink, citation, GBP/entity, and local-pack work
+> must start from the `seascape-analytics` off-site authority work order, then
+> return here only if a reviewed row names a site-side action.
 
 ## This Week's Priority Queue
 
@@ -47,3 +53,6 @@ Goal: Turn the March 15 backlink strategy into concrete first actions instead of
 2. Do not send unpersonalized creator pitches.
 3. If a target cannot plausibly send qualified traffic or brand validation, it is not a real priority.
 4. Review outcomes weekly: links earned, replies, and which destination pages gained visibility.
+
+Current discipline adds one more gate: a reviewed off-site authority row must
+exist before any outreach, listing, or profile work is treated as active.
