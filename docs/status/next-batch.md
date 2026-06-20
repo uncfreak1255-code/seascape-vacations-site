@@ -16,16 +16,16 @@
 
 ## Latest Execution Read
 
-Run date: 2026-06-12.
+Run date: 2026-06-20.
 
 The targeted joined operator read was executed in `seascape-analytics` and
 rendered here from its machine-readable next-batch decision receipt.
 
-- Requested last-7-complete-day window: 2026-06-04 to 2026-06-10.
-- Latest BigQuery GSC `data_date`: 2026-06-10.
+- Requested last-7-complete-day window: 2026-06-12 to 2026-06-18.
+- Latest BigQuery GSC `data_date`: 2026-06-18.
 - Site work gate: `clear` - joined GSC + GA4 read covers the requested window.
 - Reread status: `fresh but below threshold`.
-- Concrete next move: no cluster cleared the expansion bar this window; read `queries/rank_history_deltas.sql` for a winner regression to defend, otherwise rerun on the next complete GSC window.
+- Concrete next move: owner cluster cannot clear by waiting - run this week's outbound batch (see the Owner Outbound Escalation section in docs/status/next-batch.md). A test send is not a lead.
 - Report recommendation: `hold-and-reread`.
 - Reason: No cluster cleared the bar for a stronger next branch than holding for more readback.
 
@@ -33,23 +33,29 @@ Cluster read from the analytics receipt:
 
 | cluster | pages | gsc_clicks | gsc_impressions | gsc_ctr | gsc_position | ga4_sessions |
 |---|---:|---:|---:|---:|---:|---:|
-| brand | 1 | 13 | 213 | 6.10% | 9.60 | 146 |
-| catalog | 1 | 0 | 18 | 0.00% | 4.28 | 104 |
-| guide_support | 1 | 0 | 757 | 0.00% | 6.62 | 1 |
-| guide_winners | 4 | 49 | 5886 | 0.83% | 4.34 | 230 |
-| owner_hub | 1 | 0 | 57 | 0.00% | 5.00 | 83 |
-| owner_money | 4 | 0 | 42 | 0.00% | 6.57 | 0 |
-| owner_support | 1 | 0 | 0 | 0.00% | 0.00 | 0 |
-| property_pages | 1 | 0 | 0 | 0.00% | 0.00 | 2 |
-| stay_money | 2 | 0 | 5 | 0.00% | 10.60 | 1 |
-| stay_support | 2 | 0 | 70 | 0.00% | 33.89 | 1 |
+| brand | 1 | 10 | 214 | 4.67% | 8.28 | 129 |
+| catalog | 1 | 0 | 32 | 0.00% | 7.59 | 107 |
+| guide_support | 1 | 1 | 410 | 0.24% | 7.50 | 2 |
+| guide_winners | 4 | 37 | 5429 | 0.68% | 4.44 | 211 |
+| owner_hub | 1 | 0 | 51 | 0.00% | 6.20 | 78 |
+| owner_money | 4 | 0 | 57 | 0.00% | 5.54 | 0 |
+| owner_support | 1 | 0 | 14 | 0.00% | 7.07 | 0 |
+| property_pages | 1 | 0 | 0 | 0.00% | 0.00 | 5 |
+| stay_money | 2 | 0 | 3 | 0.00% | 55.33 | 6 |
+| stay_support | 2 | 0 | 152 | 0.00% | 36.72 | 2 |
+
+SEO queue read from the analytics receipt:
+
+| queue_bucket | pages | gsc_clicks | gsc_impressions | ga4_sessions |
+|---|---:|---:|---:|---:|
+| measurement issue | 1 | 25 | 2502 | 104 |
+| too thin to call | 11 | 0 | 157 | 196 |
+| transfer/CRO issue | 1 | 2 | 841 | 77 |
+| wait | 5 | 21 | 2862 | 163 |
 
 Do not open a new owner, stay, guide, GEO, or SEO expansion branch from this read.
-If a tracked winner or money page has regressed, use
-`docs/process/ranking-regression-rescue.md` for a bounded rescue brief instead
-of waiting passively.
-`docs/status/next-batch.md` should move to `open next batch` only when the
-analytics receipt says so.
+If a tracked winner or money page has regressed, use `docs/process/ranking-regression-rescue.md` for a bounded rescue brief instead of waiting passively.
+`docs/status/next-batch.md` should move to `open next batch` only when the analytics receipt says so.
 
 ## Likely Priorities
 
