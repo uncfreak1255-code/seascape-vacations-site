@@ -6,6 +6,7 @@ const assert = require("node:assert/strict");
 
 const {
   assertSearchDecisionBriefContract,
+  extractAuthorizedSourceSectionText,
   findChangedBriefFiles,
   findMissingGate0Fields,
   findSearchDecisionFiles,
@@ -343,5 +344,148 @@ test("search decision gate rejects multiple briefs when a search surface is unna
       ]
     }),
     /each search-driven source edit must be named/i
+  );
+});
+
+test("search decision gate accepts changed public source file bullets", () => {
+  const rootDir = createFixture({
+    "docs/briefs/example-home.md": `# Brief: Homepage
+
+## Source And Proof Constraints
+
+- changed public source file:
+  - \`src/index.njk\`
+
+## Gate 0 Search Block
+
+| Field | Required answer |
+| --- | --- |
+| Target query family | homepage vacation rental trust |
+| Searcher intent | brand |
+| Current Seascape URL | / |
+| SERP observed date | 2026-06-20 |
+| SERP stale after | 2026-06-27 |
+| Current proof | 2026-06-20 search read says homepage labels need a freshness cleanup. |
+| Top visible competitors | Brand SERP and local rental competitors. |
+| Competitor angle | local trust and guide freshness. |
+| Seascape gap | homepage cards mention stale-looking dates. |
+| Search fit | Existing homepage is the right brand route. |
+| Local/GBP proof | Not a GBP action because this is homepage copy freshness. |
+| AEO/readback note | No direct AI observation row yet; treat AI answer visibility as unproven. |
+| Recommended action | update homepage card labels only. |
+`,
+    "docs/briefs/example-guide.md": `# Brief: Guide
+
+## Page Builder Tasks
+
+- source files likely to change: \`src/guides/example.html\`
+
+## Gate 0 Search Block
+
+| Field | Required answer |
+| --- | --- |
+| Target query family | guide query |
+| Searcher intent | guide/research |
+| Current Seascape URL | /guides/example/ |
+| SERP observed date | 2026-06-20 |
+| SERP stale after | 2026-06-27 |
+| Current proof | 2026-06-20 SERP read names the guide as the current route. |
+| Top visible competitors | Local guide competitors. |
+| Competitor angle | deeper answer structure. |
+| Seascape gap | guide needs proof cleanup. |
+| Search fit | Existing guide is the right route. |
+| Local/GBP proof | Not a GBP action because this is organic guide intent. |
+| AEO/readback note | No direct AI observation row yet; treat AI answer visibility as unproven. |
+| Recommended action | update existing guide. |
+`
+  });
+
+  assert.equal(
+    extractAuthorizedSourceSectionText(
+      fs.readFileSync(path.join(rootDir, "docs/briefs/example-home.md"), "utf8")
+    ).includes("src/index.njk"),
+    true
+  );
+
+  assert.deepEqual(
+    findUncoveredSearchDecisionFiles(rootDir, [
+      "src/index.njk",
+      "src/guides/example.html",
+    ], [
+      "docs/briefs/example-home.md",
+      "docs/briefs/example-guide.md",
+    ]),
+    []
+  );
+});
+
+test("search decision gate ignores incidental proof-source mentions outside source-file tasks", () => {
+  const rootDir = createFixture({
+    "docs/briefs/example-home.md": `# Brief: Homepage
+
+## Content Gate Inputs
+
+- proof source: current source file \`src/guides/example.html\` and existing analytics receipt.
+
+## Page Builder Tasks
+
+- source files likely to change: \`src/index.njk\`
+
+## Gate 0 Search Block
+
+| Field | Required answer |
+| --- | --- |
+| Target query family | homepage vacation rental trust |
+| Searcher intent | brand |
+| Current Seascape URL | / |
+| SERP observed date | 2026-06-20 |
+| SERP stale after | 2026-06-27 |
+| Current proof | 2026-06-20 search read says homepage labels need a freshness cleanup. |
+| Top visible competitors | Brand SERP and local rental competitors. |
+| Competitor angle | local trust and guide freshness. |
+| Seascape gap | homepage cards mention stale-looking dates. |
+| Search fit | Existing homepage is the right brand route. |
+| Local/GBP proof | Not a GBP action because this is homepage copy freshness. |
+| AEO/readback note | No direct AI observation row yet; treat AI answer visibility as unproven. |
+| Recommended action | update homepage card labels only. |
+`,
+    "docs/briefs/example-guide.md": `# Brief: Guide
+
+## Gate 0 Search Block
+
+| Field | Required answer |
+| --- | --- |
+| Target query family | guide query |
+| Searcher intent | guide/research |
+| Current Seascape URL | /guides/example/ |
+| SERP observed date | 2026-06-20 |
+| SERP stale after | 2026-06-27 |
+| Current proof | 2026-06-20 SERP read names the guide as the current route. |
+| Top visible competitors | Local guide competitors. |
+| Competitor angle | deeper answer structure. |
+| Seascape gap | guide needs proof cleanup. |
+| Search fit | Existing guide is the right route. |
+| Local/GBP proof | Not a GBP action because this is organic guide intent. |
+| AEO/readback note | No direct AI observation row yet; treat AI answer visibility as unproven. |
+| Recommended action | update existing guide after adding source-file task coverage. |
+`
+  });
+
+  assert.equal(
+    extractAuthorizedSourceSectionText(
+      fs.readFileSync(path.join(rootDir, "docs/briefs/example-home.md"), "utf8")
+    ).includes("src/guides/example.html"),
+    false
+  );
+
+  assert.deepEqual(
+    findUncoveredSearchDecisionFiles(rootDir, [
+      "src/index.njk",
+      "src/guides/example.html",
+    ], [
+      "docs/briefs/example-home.md",
+      "docs/briefs/example-guide.md",
+    ]),
+    ["src/guides/example.html"]
   );
 });

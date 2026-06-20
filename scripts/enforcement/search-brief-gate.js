@@ -38,6 +38,8 @@ const ISO_DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
 const DATE_TOKEN_PATTERN = /\b\d{4}-\d{2}-\d{2}\b/;
 const BARE_NA_PATTERN = /^(?:n\/?a|not applicable)$/i;
 const GENERIC_LATEST_PROOF_PATTERN = /\blatest\b/i;
+const AUTHORIZED_SOURCE_SECTION_PATTERN =
+  /\b(?:source files?\s+(?:likely to change|changed(?:\s+in\s+this\s+batch)?)|changed public source files?)\b/i;
 
 function capture(command, args, options = {}) {
   const result = spawnSync(command, args, {
@@ -74,8 +76,46 @@ function findChangedBriefFiles(changedFiles) {
   );
 }
 
+function extractAuthorizedSourceSectionText(briefContent) {
+  const lines = String(briefContent || "").split(/\r?\n/);
+  const collectedLines = [];
+  let collecting = false;
+
+  for (const line of lines) {
+    const trimmed = line.trim();
+    if (AUTHORIZED_SOURCE_SECTION_PATTERN.test(trimmed)) {
+      collectedLines.push(line);
+      collecting = true;
+      continue;
+    }
+
+    if (!collecting) {
+      continue;
+    }
+
+    if (/^##\s+/.test(trimmed)) {
+      collecting = false;
+      continue;
+    }
+
+    if (!trimmed) {
+      collectedLines.push(line);
+      continue;
+    }
+
+    if (/^\s+[-*]\s+/.test(line) || /^\s{2,}\S/.test(line)) {
+      collectedLines.push(line);
+      continue;
+    }
+
+    collecting = false;
+  }
+
+  return collectedLines.join("\n");
+}
+
 function briefMentionsSearchDecisionFile(briefContent, relativePath) {
-  return String(briefContent || "").includes(relativePath);
+  return extractAuthorizedSourceSectionText(briefContent).includes(relativePath);
 }
 
 function findUncoveredSearchDecisionFiles(rootDir, searchDecisionFiles, changedBriefFiles) {
@@ -281,6 +321,7 @@ module.exports = {
   SEARCH_DECISION_PATH_PATTERNS,
   assertSearchDecisionBriefContract,
   extractGate0Section,
+  extractAuthorizedSourceSectionText,
   findChangedBriefFiles,
   findMissingGate0Fields,
   findSearchDecisionFiles,

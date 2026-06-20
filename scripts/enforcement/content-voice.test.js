@@ -3,6 +3,7 @@ const path = require("path");
 const test = require("node:test");
 const assert = require("node:assert/strict");
 const { execSync } = require("node:child_process");
+const { extractAuthorizedSourceSectionText } = require("./search-brief-gate");
 
 const projectRoot = path.resolve(__dirname, "..", "..");
 
@@ -271,7 +272,8 @@ function parseMissingBriefFields(briefContent) {
 }
 
 function briefMentionsContentFile(briefContent, relativePath, source) {
-  if (String(briefContent || "").includes(relativePath)) {
+  const authorizedSourceText = extractAuthorizedSourceSectionText(briefContent);
+  if (authorizedSourceText.includes(relativePath)) {
     return true;
   }
 
@@ -280,7 +282,7 @@ function briefMentionsContentFile(briefContent, relativePath, source) {
     return false;
   }
 
-  return Boolean(route && String(briefContent || "").includes(route));
+  return Boolean(route && authorizedSourceText.includes(route));
 }
 
 function selectBriefForContentFile(briefs, relativePath, source) {
@@ -912,6 +914,36 @@ test("brief selection does not match the homepage against every slash link", () 
   assert.equal(
     selectBriefForContentFile([unrelatedBrief, homepageBrief], "src/index.njk", ""),
     homepageBrief
+  );
+});
+
+test("brief selection ignores incidental route links outside source-file sections", () => {
+  const unrelatedBrief = {
+    relativePath: "docs/briefs/2026-06-homepage-guide-card-freshness.md",
+    content: [
+      "- required internal links: /guides/example/, /guides/",
+      "- source files likely to change:",
+      "  - `src/index.njk`"
+    ].join("\n")
+  };
+  const guideBrief = {
+    relativePath: "docs/briefs/2026-06-example-guide-rescue.md",
+    content: [
+      "- required internal links: /stays/book-direct-anna-maria-island/, /guides/",
+      "- source files likely to change:",
+      "  - `src/guides/example.html`"
+    ].join("\n")
+  };
+  const source = [
+    "---",
+    "permalink: /guides/example/",
+    "---",
+    "<p>Example guide.</p>"
+  ].join("\n");
+
+  assert.equal(
+    selectBriefForContentFile([unrelatedBrief, guideBrief], "src/guides/example.html", source),
+    guideBrief
   );
 });
 
