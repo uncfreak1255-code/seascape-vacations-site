@@ -759,7 +759,7 @@ test("week 2 booking guides use named authorship and retire legacy conversion cl
         '"@type": "Person"',
         '"name": "Sawyer Beckett"',
         'data-guide-author="sawyer-beck"',
-        "How We Ranked These Companies",
+        "How We Reviewed These Companies",
         "If You Are Booking a Stay",
         "If You Own on Anna Maria Island"
       ],
