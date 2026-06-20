@@ -1,9 +1,11 @@
 const fs = require("fs");
 const path = require("path");
+const { spawnSync } = require("child_process");
 const test = require("node:test");
 const assert = require("node:assert/strict");
 
 const projectRoot = path.resolve(__dirname, "..", "..");
+const seoGovernance = require("../../src/_data/seoGovernance.js");
 
 test("guide sources stop linking to the retired hurricane-preparedness stay path", () => {
   for (const sourcePath of [
@@ -143,4 +145,34 @@ test("stay hub exists and child stay pages link back to it", () => {
 
   assert.equal(staysTemplate.includes('href="/stays/"'), true, "stay template should link back to the /stays/ hub");
   assert.equal(staysTemplate.includes('"name": "Stay Collections"'), true, "stay breadcrumb schema should include the hub");
+});
+
+test("internal link graph excludes generated noindex stay pages", () => {
+  const result = spawnSync(
+    "python3",
+    [
+      ".agents/skills/internal-link-targeting/scripts/analyze_internal_link_graph.py",
+      "--repo",
+      ".",
+      "--format",
+      "json"
+    ],
+    {
+      cwd: projectRoot,
+      encoding: "utf8"
+    }
+  );
+
+  assert.equal(result.status, 0, result.stderr);
+  const graph = JSON.parse(result.stdout);
+  const excludedPages = new Set(graph.excluded_pages || []);
+  const suggestedTargets = new Set((graph.donor_suggestions || []).map((row) => row.target_page));
+  const underlinkedPages = new Set((graph.top_underlinked || []).map((row) => row.page));
+
+  for (const slug of seoGovernance.staysNoindexSlugs) {
+    const url = `/stays/${slug}/`;
+    assert.equal(excludedPages.has(url), true, `${url} should be excluded from the link graph`);
+    assert.equal(underlinkedPages.has(url), false, `${url} should not be an underlinked target`);
+    assert.equal(suggestedTargets.has(url), false, `${url} should not receive donor suggestions`);
+  }
 });

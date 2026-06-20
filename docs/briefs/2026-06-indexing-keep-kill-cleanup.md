@@ -90,7 +90,7 @@
 
 ## Done When
 
-- Holmes Beach is classified as redirect in pSEO triage, both Holmes variants 301 directly to the canonical near-AMI stay URL, the Holmes page is absent from rendered sitemap/output, the calculator link renders from the AMI cost guide, and all release-gate commands pass.
+- Holmes Beach is retired from the generated pSEO inventory, both Holmes variants 301 directly to the canonical near-AMI stay URL, the Holmes page is absent from rendered sitemap/output, the calculator link renders from the AMI cost guide, and all release-gate commands pass.
 
 ## Post-Reread Outcome
 

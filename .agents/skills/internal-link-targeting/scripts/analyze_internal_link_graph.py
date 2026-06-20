@@ -8,6 +8,8 @@ from pathlib import Path
 LINK_RE = re.compile(r'href=["\']([^"\']+)["\']', re.IGNORECASE)
 TEMPLATE_TOKEN_RE = re.compile(r"{{.*?}}|{%.+?%}")
 FRONTMATTER_RE = re.compile(r"\A---\r?\n(.*?)\r?\n---", re.DOTALL)
+STAY_NOINDEX_ARRAY_RE = re.compile(r"staysNoindexSlugs\s*=\s*\[(.*?)\];", re.DOTALL)
+QUOTED_STRING_RE = re.compile(r'["\']([^"\']+)["\']')
 
 
 def frontmatter(text: str) -> str:
@@ -97,6 +99,18 @@ def load_redirect_sources(repo: Path) -> set[str]:
     return sources
 
 
+def load_generated_stay_noindex_sources(repo: Path) -> set[str]:
+    governance_path = repo / "src" / "_data" / "seoGovernance.js"
+    if not governance_path.exists():
+        return set()
+
+    source = governance_path.read_text(encoding="utf-8", errors="ignore")
+    match = STAY_NOINDEX_ARRAY_RE.search(source)
+    if not match:
+        return set()
+    return {f"/stays/{slug}/" for slug in QUOTED_STRING_RE.findall(match.group(1))}
+
+
 def family(url: str) -> str:
     if url.startswith("/property-management/"):
         return "owner"
@@ -139,7 +153,7 @@ def analyze(repo: Path) -> dict:
     pages = set()
 
     records = []
-    excluded_pages = load_redirect_sources(repo)
+    excluded_pages = load_redirect_sources(repo) | load_generated_stay_noindex_sources(repo)
     skipped_template_sources = 0
 
     for file in files:
