@@ -51,15 +51,28 @@ must also carry one filled `## Gate 0 ...` block from
 - `Target query family`
 - `Searcher intent`
 - `Current Seascape URL`
+- `SERP observed date`
+- `SERP stale after`
 - `Current proof`
 - `Top visible competitors`
 - `Competitor angle`
 - `Seascape gap`
+- `Search fit`
+- `Local/GBP proof`
+- `AEO/readback note`
 - `Recommendation` or `Recommended action`
 
 Placeholder text like `to capture`, `fill after`, or `TBD` does not count.
-This is the repo's check that a live SERP or DataForSEO-style competitor read
-happened before search-facing source edits start moving.
+The two SERP date fields must use `YYYY-MM-DD`, and `SERP stale after` cannot be
+before `SERP observed date`. `Current proof` must name a dated analytics or
+source receipt when one exists; generic `latest` proof without a date does not
+count. `Search fit` must say why the current URL should win the query, where the
+conversion should happen, or why the work should be killed/deferred. `Local/GBP
+proof` and `AEO/readback note` may be marked not applicable, but only when the
+brief explains why; bare `N/A` does not count.
+
+This is the repo's check that a fresh live SERP or completed DataForSEO-style
+competitor read happened before search-facing source edits start moving.
 
 ## Visible Copy Lane
 

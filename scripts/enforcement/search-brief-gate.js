@@ -18,14 +18,25 @@ const REQUIRED_GATE0_FIELDS = [
   "Target query family",
   "Searcher intent",
   "Current Seascape URL",
+  "SERP observed date",
+  "SERP stale after",
   "Current proof",
   "Top visible competitors",
   "Competitor angle",
-  "Seascape gap"
+  "Seascape gap",
+  "Search fit",
+  "Local/GBP proof",
+  "AEO/readback note"
 ];
 const ACTION_FIELD_ALIASES = ["Recommendation", "Recommended action"];
 const PLACEHOLDER_VALUE_PATTERN =
   /^(?:<.+>|tbd|todo|pending|fill(?:ed)? after|fill this in|to capture\b|capture in\b)/i;
+const DATE_GATE0_FIELDS = new Set(["SERP observed date", "SERP stale after"]);
+const EXPLAINED_NA_FIELDS = new Set(["Local/GBP proof", "AEO/readback note"]);
+const ISO_DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
+const DATE_TOKEN_PATTERN = /\b\d{4}-\d{2}-\d{2}\b/;
+const BARE_NA_PATTERN = /^(?:n\/?a|not applicable)$/i;
+const GENERIC_LATEST_PROOF_PATTERN = /\blatest\b/i;
 
 function capture(command, args, options = {}) {
   const result = spawnSync(command, args, {
@@ -113,12 +124,43 @@ function findMissingGate0Fields(briefContent) {
   const rows = parseGate0Rows(gate0Section);
   const rowMap = new Map(rows.map(({ field, value }) => [field.toLowerCase(), value]));
   const missingFields = [];
+  const dateValues = {};
 
   for (const field of REQUIRED_GATE0_FIELDS) {
     const value = rowMap.get(field.toLowerCase());
     if (!value || PLACEHOLDER_VALUE_PATTERN.test(value)) {
       missingFields.push(field);
+      continue;
     }
+
+    if (DATE_GATE0_FIELDS.has(field) && !ISO_DATE_PATTERN.test(value)) {
+      missingFields.push(`${field} (YYYY-MM-DD)`);
+      continue;
+    }
+
+    if (DATE_GATE0_FIELDS.has(field)) {
+      dateValues[field] = value;
+    }
+
+    if (EXPLAINED_NA_FIELDS.has(field) && BARE_NA_PATTERN.test(value)) {
+      missingFields.push(`${field} (explain N/A)`);
+    }
+
+    if (
+      field === "Current proof" &&
+      GENERIC_LATEST_PROOF_PATTERN.test(value) &&
+      !DATE_TOKEN_PATTERN.test(value)
+    ) {
+      missingFields.push("Current proof (dated receipt/window)");
+    }
+  }
+
+  if (
+    dateValues["SERP observed date"] &&
+    dateValues["SERP stale after"] &&
+    dateValues["SERP stale after"] < dateValues["SERP observed date"]
+  ) {
+    missingFields.push("SERP stale after (on/after observed date)");
   }
 
   const hasActionField = ACTION_FIELD_ALIASES.some((field) => {
@@ -185,7 +227,13 @@ function assertSearchDecisionBriefContract({
 
 module.exports = {
   ACTION_FIELD_ALIASES,
+  BARE_NA_PATTERN,
   BRIEF_PATH_PATTERN,
+  DATE_GATE0_FIELDS,
+  DATE_TOKEN_PATTERN,
+  EXPLAINED_NA_FIELDS,
+  GENERIC_LATEST_PROOF_PATTERN,
+  ISO_DATE_PATTERN,
   PLACEHOLDER_VALUE_PATTERN,
   REQUIRED_GATE0_FIELDS,
   SEARCH_DECISION_PATH_PATTERNS,

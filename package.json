@@ -36,6 +36,7 @@
     "dataforseo:mcp:check": "./scripts/mcp/dataforseo-mcp.sh --check",
     "seo:import-findings": "node scripts/seo/import-dataforseo-findings.js",
     "seo:triage": "node scripts/seo/generate-pseo-triage.js",
+    "seo:links:plan": "python3 .agents/skills/internal-link-targeting/scripts/analyze_internal_link_graph.py --repo . --format markdown",
     "test:visual": "node scripts/enforcement/run-visual-tests.js",
     "proof:visual": "node scripts/enforcement/capture-visual-proof.js",
     "test:visual:update": "node scripts/enforcement/run-visual-tests.js --update-snapshots",
