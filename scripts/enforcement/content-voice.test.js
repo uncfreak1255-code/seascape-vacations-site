@@ -276,6 +276,10 @@ function briefMentionsContentFile(briefContent, relativePath, source) {
   }
 
   const route = getCurrentRoute(relativePath, source);
+  if (route === "/") {
+    return false;
+  }
+
   return Boolean(route && String(briefContent || "").includes(route));
 }
 
@@ -886,6 +890,29 @@ test("changed-file gate can skip content lint for structural-only public diffs",
   ]) : [];
 
   assert.deepEqual(violations, []);
+});
+
+test("brief selection does not match the homepage against every slash link", () => {
+  const unrelatedBrief = {
+    relativePath: "docs/briefs/2026-06-ami-rental-companies-regression-rescue.md",
+    content: [
+      "- required internal links: /stays/book-direct-anna-maria-island/, /guides/anna-maria-island-vacation-cost/",
+      "- source files likely to change: `src/guides/best-vacation-rental-companies-ami.html`"
+    ].join("\n")
+  };
+  const homepageBrief = {
+    relativePath: "docs/briefs/2026-06-homepage-guide-card-freshness.md",
+    content: [
+      "- required internal links: /guides/bradenton-vs-sarasota/, /guides/anna-maria-island-vs-siesta-key/, /guides/",
+      "- source files likely to change:",
+      "  - `src/index.njk`"
+    ].join("\n")
+  };
+
+  assert.equal(
+    selectBriefForContentFile([unrelatedBrief, homepageBrief], "src/index.njk", ""),
+    homepageBrief
+  );
 });
 
 test("owner seo page data avoids banned owner jargon", () => {
