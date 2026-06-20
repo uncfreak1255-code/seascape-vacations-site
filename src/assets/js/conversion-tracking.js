@@ -16,6 +16,7 @@
     "guide_owner_referral_click",
     "guide_book_direct_click",
     "email_capture_submit",
+    "email_capture_fallback",
     "booking_engine_handoff",
     "catalog_book_direct_click",
     "catalog_collection_click",
@@ -602,7 +603,19 @@
         throw new Error("Guest email capture failed");
       }
       return response;
-    }).catch(function () {
+    }).catch(function (error) {
+      trackEvent("email_capture_fallback", Object.assign({}, trackingPayload, {
+        capture_delivery_mode: "legacy_form",
+        fallback_reason: "guest_email_capture_endpoint_failed",
+        capture_endpoint: GUEST_EMAIL_CAPTURE_ENDPOINT
+      }));
+      if (typeof console !== "undefined" && typeof console.warn === "function") {
+        console.warn("email_capture_fallback", {
+          reason: "guest_email_capture_endpoint_failed",
+          endpoint: GUEST_EMAIL_CAPTURE_ENDPOINT,
+          message: error && error.message ? error.message : "unknown"
+        });
+      }
       return fetch(mailchimpEndpoint, {
         method: "POST",
         mode: "no-cors"
