@@ -170,6 +170,48 @@ test("renderLatestExecutionRead opens exactly the branch named by an open receip
   assert.doesNotMatch(rendered, /Do not open a new owner, stay, guide, GEO, or SEO expansion branch from this read\./);
 });
 
+test("renderLatestExecutionRead renders weekly AI visibility decision receipts", () => {
+  const aiReceipt = {
+    ...receipt,
+    latest_gsc_data_date: "2026-06-18",
+    source_report: {
+      format: "weekly_ai_visibility_receipt",
+      generated_at: "2026-06-20T21:15:00Z"
+    },
+    site_work_gate: {
+      status: "clear",
+      label: "`clear` - joined GSC + GA4 read covers the requested window."
+    },
+    reread_status: "open next batch",
+    next_branch: "anna-maria-island-vs-siesta-key-distribution-content",
+    report_recommendation: "open distribution/content batch",
+    recommended_batch_type: "distribution/content",
+    recommended_page_or_cluster: "/guides/anna-maria-island-vs-siesta-key/",
+    reason:
+      "`/guides/anna-maria-island-vs-siesta-key/` gained demand but still shows a page-angle or transfer gap worth a narrow site batch",
+    concrete_next_move: "open a narrow site batch around `/guides/anna-maria-island-vs-siesta-key/`",
+    wait: "broader guide rewrites and any unsupported booking claim",
+    ai_visibility_summary: {
+      status: "fresh",
+      direct_ai_local_observation_rows: 4,
+      direct_ai_local_measured_rows: 4,
+      explicit_ai_referrers_external_candidate_sessions: 5,
+      analytics_quality_status: "blocked"
+    }
+  };
+
+  const rendered = renderLatestExecutionRead(aiReceipt);
+
+  assert.match(rendered, /The weekly AI visibility read was executed in `seascape-analytics`/);
+  assert.match(rendered, /- Report recommendation: `open distribution\/content batch`\./);
+  assert.match(rendered, /AI visibility read from the analytics receipt:/);
+  assert.match(rendered, /- Direct AI\/local measured rows: 4 of 4\./);
+  assert.match(rendered, /- Analytics quality status: `blocked`\./);
+  assert.match(rendered, /- Recommended batch type: `distribution\/content`\./);
+  assert.match(rendered, /- Recommended page or cluster: `\/guides\/anna-maria-island-vs-siesta-key\/`\./);
+  assert.match(rendered, /Open `anna-maria-island-vs-siesta-key-distribution-content` from this read/);
+});
+
 test("renderLatestExecutionRead rejects an open receipt without next_branch", () => {
   const malformedOpenReceipt = {
     ...receipt,

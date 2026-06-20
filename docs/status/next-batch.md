@@ -18,16 +18,16 @@
 
 Run date: 2026-06-20.
 
-The targeted joined operator read was executed in `seascape-analytics` and
+The weekly AI visibility read was executed in `seascape-analytics` and
 rendered here from its machine-readable next-batch decision receipt.
 
 - Requested last-7-complete-day window: 2026-06-12 to 2026-06-18.
 - Latest BigQuery GSC `data_date`: 2026-06-18.
 - Site work gate: `clear` - joined GSC + GA4 read covers the requested window.
-- Reread status: `fresh but below threshold`.
-- Concrete next move: owner cluster cannot clear by waiting - run this week's outbound batch (see the Owner Outbound Escalation section in docs/status/next-batch.md). A test send is not a lead.
-- Report recommendation: `hold-and-reread`.
-- Reason: No cluster cleared the bar for a stronger next branch than holding for more readback.
+- Reread status: `open next batch`.
+- Concrete next move: open a narrow site batch around `/guides/anna-maria-island-vs-siesta-key/`
+- Report recommendation: `open distribution/content batch`.
+- Reason: `/guides/anna-maria-island-vs-siesta-key/` gained demand but still shows a page-angle or transfer gap worth a narrow site batch
 
 Cluster read from the analytics receipt:
 
@@ -77,9 +77,18 @@ SERP evidence from the analytics receipt:
 | luxury vacation rentals Sarasota | /stays/luxury-vacation-rentals-sarasota/ | absent | supports_ranking_regression | www.siestakeyluxuryrentalproperties.com, emeraldkite.com, www.vuniquevacations.com | organic |
 | vacation rental management Bradenton | /property-management/vacation-rental-management-bradenton/ | absent | supports_ranking_regression | www.visitflorida.com, www.choosegulfcoast.com, anchordownmanagement.com | organic |
 
-Do not open a new owner, stay, guide, GEO, or SEO expansion branch from this read.
-If a tracked winner or money page has regressed, use `docs/process/ranking-regression-rescue.md` for a bounded rescue brief instead of waiting passively.
-`docs/status/next-batch.md` should move to `open next batch` only when the analytics receipt says so.
+AI visibility read from the analytics receipt:
+
+- Status: `fresh`.
+- Direct AI/local measured rows: 4 of 4.
+- Explicit AI-referrer external-candidate sessions: 5.
+- Analytics quality status: `blocked`.
+- Recommended batch type: `distribution/content`.
+- Recommended page or cluster: `/guides/anna-maria-island-vs-siesta-key/`.
+- Still waiting on: broader guide rewrites and any unsupported booking claim
+
+Open `anna-maria-island-vs-siesta-key-distribution-content` from this read, using one narrow active brief and the matching release gate.
+Do not use this as permission for unrelated owner, stay, guide, GEO, or SEO expansion.
 
 ## Likely Priorities
 

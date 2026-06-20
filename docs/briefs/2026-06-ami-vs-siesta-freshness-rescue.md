@@ -42,6 +42,8 @@
 
 - source files likely to change:
   - `src/guides/anna-maria-island-vs-siesta-key.html`
+  - `src/guides/index.njk`
+  - `docs/status/next-batch.md`
   - `docs/status/content-decay-patrol.md`
   - `scripts/enforcement/metadata-integrity.test.js`
 - routes to smoke test:

@@ -179,6 +179,52 @@ function renderSerpEvidence(receipt) {
   return lines.join("\n");
 }
 
+function renderSourceIntro(receipt) {
+  const format = receipt.source_report?.format || "";
+  if (format === "weekly_ai_visibility_receipt") {
+    return [
+      "The weekly AI visibility read was executed in `seascape-analytics` and",
+      "rendered here from its machine-readable next-batch decision receipt."
+    ].join("\n");
+  }
+
+  return [
+    "The targeted joined operator read was executed in `seascape-analytics` and",
+    "rendered here from its machine-readable next-batch decision receipt."
+  ].join("\n");
+}
+
+function renderAiVisibilitySummary(receipt) {
+  const summary = receipt.ai_visibility_summary;
+  if (!summary || typeof summary !== "object") {
+    return "";
+  }
+
+  const lines = [
+    "",
+    "AI visibility read from the analytics receipt:",
+    "",
+    `- Status: \`${formatCell(summary.status)}\`.`,
+    `- Direct AI/local measured rows: ${Number(summary.direct_ai_local_measured_rows || 0)} of ${Number(summary.direct_ai_local_observation_rows || 0)}.`,
+    `- Explicit AI-referrer external-candidate sessions: ${Number(summary.explicit_ai_referrers_external_candidate_sessions || 0)}.`
+  ];
+
+  if (summary.analytics_quality_status) {
+    lines.push(`- Analytics quality status: \`${formatCell(summary.analytics_quality_status)}\`.`);
+  }
+  if (receipt.recommended_batch_type) {
+    lines.push(`- Recommended batch type: \`${formatCell(receipt.recommended_batch_type)}\`.`);
+  }
+  if (receipt.recommended_page_or_cluster) {
+    lines.push(`- Recommended page or cluster: \`${formatCell(receipt.recommended_page_or_cluster)}\`.`);
+  }
+  if (receipt.wait) {
+    lines.push(`- Still waiting on: ${receipt.wait}`);
+  }
+
+  return lines.join("\n");
+}
+
 function renderBranchInstruction(receipt) {
   if (receipt.reread_status === "open next batch") {
     return [
@@ -203,19 +249,20 @@ function renderLatestExecutionRead(receipt) {
   const clusterSummary = renderClusterSummary(receipt);
   const seoQueueSummary = renderSeoQueueSummary(receipt);
   const serpEvidence = renderSerpEvidence(receipt);
+  const aiVisibilitySummary = renderAiVisibilitySummary(receipt);
+  const reportRecommendation = receipt.report_recommendation || receipt.next_branch;
 
   const lines = [
     `Run date: ${runDate(receipt)}.`,
     "",
-    "The targeted joined operator read was executed in `seascape-analytics` and",
-    "rendered here from its machine-readable next-batch decision receipt.",
+    renderSourceIntro(receipt),
     "",
     `- Requested last-7-complete-day window: ${receipt.date_or_window.window_start} to ${receipt.date_or_window.window_end}.`,
     `- Latest BigQuery GSC \`data_date\`: ${latestGsc}.`,
     `- Site work gate: ${gateLabel}`,
     `- Reread status: \`${receipt.reread_status}\`.`,
     `- Concrete next move: ${receipt.concrete_next_move}`,
-    `- Report recommendation: \`${receipt.next_branch}\`.`,
+    `- Report recommendation: \`${reportRecommendation}\`.`,
     `- Reason: ${receipt.reason}`
   ];
 
@@ -223,7 +270,7 @@ function renderLatestExecutionRead(receipt) {
     lines.push(`- GSC freshness warning: ${freshnessWarning}`);
   }
 
-  lines.push(clusterSummary, seoQueueSummary, serpEvidence, "", renderBranchInstruction(receipt));
+  lines.push(clusterSummary, seoQueueSummary, serpEvidence, aiVisibilitySummary, "", renderBranchInstruction(receipt));
 
   return lines.filter((line, index) => line !== "" || lines[index - 1] !== "").join("\n").trim();
 }
