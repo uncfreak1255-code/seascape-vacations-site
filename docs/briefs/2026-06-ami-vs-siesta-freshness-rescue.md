@@ -38,6 +38,11 @@
 | AEO/readback note | AEO impact is not proven. Keep the direct-answer block, comparison table, FAQPage schema, and stay links extractable for AI/search answers; wait for the next analytics/AI readback before claiming citation movement. |
 | Recommended action | Update stale proof labels, current beach-source language, FAQPage award/rate wording, visible evidence card, `dateModified`, and the content-decay patrol readback. Keep title/meta and route structure unchanged. |
 
+## Required Internal Link Map
+
+- src/guides/anna-maria-island-vs-siesta-key.html: /stays/anna-maria-island-vacation-rentals/, /stays/anna-maria-island-beachfront-rentals/, /stays/siesta-key-area-vacation-rentals/
+- src/guides/index.njk: /guides/anna-maria-island-vs-siesta-key/, /guides/bradenton-vs-sarasota/, /guides/
+
 ## Release Gate Checklist
 
 - source files likely to change:

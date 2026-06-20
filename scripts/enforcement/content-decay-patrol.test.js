@@ -1,8 +1,13 @@
 const assert = require("node:assert/strict");
+const fs = require("node:fs");
+const os = require("node:os");
+const path = require("node:path");
 const test = require("node:test");
 
 const {
+  collectStaticFindings,
   extractFindingsFromText,
+  isIndexableStaticSource,
   parseArgs,
   parseTriageClassMap,
   renderPatrol,
@@ -15,6 +20,69 @@ test("routeFromSourcePath maps common source files to public routes", () => {
   assert.equal(routeFromSourcePath("src/guides/bradenton-area-guide/index.html"), "/guides/bradenton-area-guide/");
   assert.equal(routeFromSourcePath("src/research/owner-fee-revenue-leak-benchmark-2026.njk"), "/research/owner-fee-revenue-leak-benchmark-2026/");
   assert.equal(routeFromSourcePath("src/stays/stays.njk"), "template: src/stays/stays.njk");
+});
+
+test("static source patrol skips ignored, permalink false, and noindex pages", () => {
+  assert.equal(
+    isIndexableStaticSource(
+      "src/guides/best-time-to-visit-anna-maria-island/index.html",
+      `---
+permalink: false
+eleventyExcludeFromCollections: true
+---
+<meta name="robots" content="noindex, follow">
+<p>Updated March 2026</p>`,
+    ),
+    false,
+  );
+  assert.equal(
+    isIndexableStaticSource(
+      "src/guides/live-guide.html",
+      `<meta name="robots" content="index, follow"><p>Updated March 2026</p>`,
+    ),
+    true,
+  );
+  assert.equal(
+    isIndexableStaticSource(
+      "src/guides/collection-hidden-live-guide.html",
+      `---
+eleventyExcludeFromCollections: true
+---
+<meta name="robots" content="index, follow"><p>Updated March 2026</p>`,
+    ),
+    true,
+  );
+
+  const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "content-decay-patrol-"));
+  try {
+    fs.mkdirSync(path.join(tempRoot, "src/guides/ignored-guide"), { recursive: true });
+    fs.writeFileSync(
+      path.join(tempRoot, "src/guides/ignored-guide/index.html"),
+      `---
+permalink: false
+eleventyExcludeFromCollections: true
+---
+<meta name="robots" content="noindex, follow">
+<p>Updated March 2026</p>`,
+    );
+    fs.writeFileSync(
+      path.join(tempRoot, "src/guides/live-guide.html"),
+      `<meta name="robots" content="index, follow"><p>Updated March 2026</p>`,
+    );
+
+    const findings = collectStaticFindings({
+      root: tempRoot,
+      asOf: new Date("2026-06-20T00:00:00Z"),
+      staleDays: 90,
+    });
+
+    assert.deepEqual(
+      findings.map((finding) => finding.source),
+      ["src/guides/live-guide.html"],
+    );
+  } finally {
+    fs.rmSync(tempRoot, { recursive: true, force: true });
+  }
 });
 
 test("extractFindingsFromText flags stale updated labels and dateModified values", () => {
