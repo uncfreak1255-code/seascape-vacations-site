@@ -14,6 +14,7 @@ const SEARCH_DECISION_PATH_PATTERNS = [
 ];
 
 const BRIEF_PATH_PATTERN = /^docs\/briefs\/.+\.md$/i;
+const BRIEF_TEMPLATE_PATH_PATTERN = /^docs\/briefs\/_template\.md$/i;
 const REQUIRED_GATE0_FIELDS = [
   "Target query family",
   "Searcher intent",
@@ -68,7 +69,9 @@ function findSearchDecisionFiles(changedFiles) {
 }
 
 function findChangedBriefFiles(changedFiles) {
-  return (changedFiles || []).filter((relativePath) => BRIEF_PATH_PATTERN.test(relativePath));
+  return (changedFiles || []).filter(
+    (relativePath) => BRIEF_PATH_PATTERN.test(relativePath) && !BRIEF_TEMPLATE_PATH_PATTERN.test(relativePath)
+  );
 }
 
 function read(rootDir, relativePath) {
@@ -229,6 +232,7 @@ module.exports = {
   ACTION_FIELD_ALIASES,
   BARE_NA_PATTERN,
   BRIEF_PATH_PATTERN,
+  BRIEF_TEMPLATE_PATH_PATTERN,
   DATE_GATE0_FIELDS,
   DATE_TOKEN_PATTERN,
   EXPLAINED_NA_FIELDS,

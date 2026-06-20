@@ -923,7 +923,9 @@ test("changed public content and source-backed copy files require one active bri
     return;
   }
 
-  const changedBriefFiles = changedFiles.filter((relativePath) => /^docs\/briefs\/.+\.md$/i.test(relativePath));
+  const changedBriefFiles = changedFiles.filter((relativePath) =>
+    /^docs\/briefs\/.+\.md$/i.test(relativePath) && !/^docs\/briefs\/_template\.md$/i.test(relativePath)
+  );
   assert.equal(
     changedBriefFiles.length,
     1,

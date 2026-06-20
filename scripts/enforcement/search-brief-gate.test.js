@@ -6,6 +6,7 @@ const assert = require("node:assert/strict");
 
 const {
   assertSearchDecisionBriefContract,
+  findChangedBriefFiles,
   findMissingGate0Fields,
   findSearchDecisionFiles
 } = require("./search-brief-gate");
@@ -52,6 +53,16 @@ test("search decision gate requires exactly one changed brief when search surfac
       changedFiles: ["src/guides/example.html"]
     }),
     /must change exactly one active brief/i
+  );
+});
+
+test("search decision gate does not count the brief template as an active brief", () => {
+  assert.deepEqual(
+    findChangedBriefFiles([
+      "docs/briefs/_template.md",
+      "docs/briefs/example.md",
+    ]),
+    ["docs/briefs/example.md"],
   );
 });
 
