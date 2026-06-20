@@ -52,6 +52,21 @@ test("pSEO triage inventory preserves noindex and redirect classifications", () 
   }
 });
 
+test("retired generated stay redirects do not also build pSEO stay pages", () => {
+  const retiredGeneratedStaySlugs = [
+    "holmes-beach-vacation-rentals",
+  ];
+  const generatedStaySlugs = new Set((seoPages.vacationer || []).map((record) => record.slug));
+
+  for (const slug of retiredGeneratedStaySlugs) {
+    assert.equal(
+      generatedStaySlugs.has(slug),
+      false,
+      `${slug} has direct redirects and must not also render as a generated stay page`,
+    );
+  }
+});
+
 test("pSEO triage inventory documents the measured branch gate", () => {
   const triage = fs.readFileSync(triagePath, "utf8");
 
