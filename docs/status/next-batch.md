@@ -53,6 +53,30 @@ SEO queue read from the analytics receipt:
 | transfer/CRO issue | 1 | 2 | 841 | 77 |
 | wait | 5 | 21 | 2862 | 163 |
 
+SERP evidence from the analytics receipt:
+
+- Evidence status: `available`.
+- Mode: `live`.
+- Task count: 14.
+- Requested cost: 0.0280.
+
+| query | page_path | seascape_rank | classification_support | top_visible_competitors | serp_features |
+|---|---|---|---|---|---|
+| Anna Maria Island vacation rentals | /stays/anna-maria-island-vacation-rentals/ | absent | supports_ranking_regression | www.annamarialifevacationrentals.com, www.amilocals.com, www.seabreezevacation.com | organic |
+| vacation rentals near Anna Maria Island | /stays/vacation-rentals-near-anna-maria-island/ | absent | supports_ranking_regression | www.islandvacationproperties.com, www.amilocals.com, www.annamarialifevacationrentals.com | organic |
+| Seascape Vacations Bradenton Sarasota vacation rentals | / | 1 | supports_ctr_issue | www.vuniquevacations.com, www.bradentongulfislands.com, www.mapquest.com | organic |
+| vacation rental property management | /property-management/ | absent | supports_ranking_regression | www.vacasa.com, www.floridavacationhomes.com, www.funstayflorida.com | organic |
+| vacation rental management fees Florida | /property-management/vacation-rental-management-fees-florida/ | absent | supports_ranking_regression | www.funstayflorida.com, www.cascadiagetaways.com, www.lodgify.com | organic |
+| Bradenton vs Sarasota vacation | /guides/bradenton-vs-sarasota/ | 3 | supports_ctr_issue | www.reddit.com, www.midflorida.com, www.tripadvisor.com | organic |
+| Sarasota airport to Anna Maria Island | /guides/srq-airport-to-anna-maria-island/ | 6 | supports_ctr_issue | www.facebook.com, www.rome2rio.com, annamariaislandchamber.org | organic |
+| Sarasota airport to Anna Maria Island | /guides/srq-airport-to-anna-maria-island/ | absent | supports_ranking_regression | www.facebook.com, www.rome2rio.com, www.visitflorida.com | organic |
+| Anna Maria Island vs Siesta Key | /guides/anna-maria-island-vs-siesta-key/ | 6 | supports_ctr_issue | www.reddit.com, mousinaround.com, www.facebook.com | organic |
+| Bradenton vs Sarasota for families | /guides/bradenton-vs-sarasota-for-families/ | 3 | supports_ctr_issue | www.reddit.com, www.midflorida.com, www.facebook.com | organic |
+| best vacation rental companies Anna Maria Island | /guides/best-vacation-rental-companies-ami/ | absent | supports_ranking_regression | www.satorealestate.com, www.annamarialifevacationrentals.com, annamariaislandchamber.org | organic |
+| best vacation rental companies Anna Maria Island | /guides/best-vacation-rental-companies-ami/ | absent | supports_ranking_regression | www.annamarialifevacationrentals.com, www.satorealestate.com, annamariaislandchamber.org | organic |
+| luxury vacation rentals Sarasota | /stays/luxury-vacation-rentals-sarasota/ | absent | supports_ranking_regression | www.siestakeyluxuryrentalproperties.com, emeraldkite.com, www.vuniquevacations.com | organic |
+| vacation rental management Bradenton | /property-management/vacation-rental-management-bradenton/ | absent | supports_ranking_regression | www.visitflorida.com, www.choosegulfcoast.com, anchordownmanagement.com | organic |
+
 Do not open a new owner, stay, guide, GEO, or SEO expansion branch from this read.
 If a tracked winner or money page has regressed, use `docs/process/ranking-regression-rescue.md` for a bounded rescue brief instead of waiting passively.
 `docs/status/next-batch.md` should move to `open next batch` only when the analytics receipt says so.
