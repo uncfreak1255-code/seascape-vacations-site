@@ -104,6 +104,109 @@ test("direct-booking event smoke validates the three funnel event surfaces", () 
   );
 });
 
+test("inline email capture tries the Netlify function before observable Mailchimp fallback", async () => {
+  const trackingScriptPath = path.join(projectRoot, "src", "assets", "js", "conversion-tracking.js");
+  delete require.cache[require.resolve(trackingScriptPath)];
+  const listeners = {};
+  const fetchCalls = [];
+  const warnings = [];
+  const originalWarn = console.warn;
+  const emailForm = {
+    tagName: "FORM",
+    textContent: "Email capture",
+    dataset: {
+      trackForm: "guide-email",
+      formSubmitEvent: "email_capture_submit",
+      inlineEmailCapture: "true",
+      guideSlug: "bradenton-vs-sarasota",
+      formPlacement: "guide_conversion"
+    },
+    parentElement: {
+      querySelector() {
+        return null;
+      }
+    },
+    matches(selector) {
+      return selector === "form[data-track-form]";
+    },
+    getAttribute() {
+      return "";
+    },
+    reset() {}
+  };
+
+  global.window = {
+    dataLayer: [],
+    location: {
+      href: "http://localhost/guides/bradenton-vs-sarasota/",
+      pathname: "/guides/bradenton-vs-sarasota/",
+      search: ""
+    }
+  };
+  global.document = {
+    readyState: "loading",
+    referrer: "",
+    addEventListener(eventName, handler) {
+      listeners[eventName] = handler;
+    },
+    querySelectorAll() {
+      return [];
+    }
+  };
+  global.localStorage = {
+    setItem() {}
+  };
+  global.FormData = class FormDataStub {
+    get(field) {
+      if (field === "email") return "guest@example.com";
+      if (field === "name") return "Test Guest";
+      return "";
+    }
+  };
+  global.fetch = (url, options = {}) => {
+    fetchCalls.push({ url: String(url), method: options.method || "GET", mode: options.mode || null });
+    if (String(url) === "/.netlify/functions/guest-email-capture") {
+      return Promise.reject(new Error("function unavailable"));
+    }
+    return Promise.resolve({ ok: true, status: 200 });
+  };
+  console.warn = function patchedWarn(label, payload) {
+    warnings.push({ label, payload });
+  };
+
+  try {
+    require(trackingScriptPath);
+    listeners.DOMContentLoaded();
+    listeners.submit({
+      target: emailForm,
+      preventDefault() {}
+    });
+
+    await Promise.resolve();
+    await Promise.resolve();
+    await Promise.resolve();
+
+    assert.equal(fetchCalls[0].url, "/.netlify/functions/guest-email-capture");
+    assert.equal(fetchCalls[0].method, "POST");
+    assert.match(fetchCalls[1].url, /^https:\/\/seascape-vacations\.us6\.list-manage\.com\/subscribe\/post/);
+    assert.equal(fetchCalls[1].method, "POST");
+    assert.equal(fetchCalls[1].mode, "no-cors");
+    assert.ok(
+      window.dataLayer.some((entry) => entry.event === "email_capture_fallback"),
+      "fallback should emit a visible analytics event"
+    );
+    assert.deepEqual(warnings.map((entry) => entry.label), ["email_capture_fallback"]);
+    assert.equal(warnings[0].payload.reason, "guest_email_capture_endpoint_failed");
+  } finally {
+    console.warn = originalWarn;
+    delete global.window;
+    delete global.document;
+    delete global.localStorage;
+    delete global.fetch;
+    delete global.FormData;
+  }
+});
+
 test("conversion tracking scrubs obvious PII before analytics payloads reach dataLayer", () => {
   const smoke = loadSmokeModule();
   const events = smoke.simulateSanitizedAnalyticsPayload({

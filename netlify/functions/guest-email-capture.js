@@ -203,9 +203,17 @@ async function submitToMailchimpApi(payload, receipt, config, injectedFetch) {
   };
 }
 
+function logMailchimpFallback(reason, error) {
+  console.warn("mailchimp_legacy_form_fallback", {
+    reason,
+    message: error && error.message ? error.message : undefined
+  });
+}
+
 async function submitToMailchimp(payload, receipt, injectedFetch) {
   const config = buildMailchimpConfig();
   if (!config) {
+    logMailchimpFallback("marketing_api_unconfigured");
     const fallbackResult = await submitToMailchimpForm(payload, injectedFetch);
     return {
       ...fallbackResult,
@@ -219,6 +227,7 @@ async function submitToMailchimp(payload, receipt, injectedFetch) {
     console.error("marketing_api_submit_failed", {
       message: error && error.message ? error.message : String(error)
     });
+    logMailchimpFallback("marketing_api_submit_failed", error);
     const fallbackResult = await submitToMailchimpForm(payload, injectedFetch);
     return {
       ...fallbackResult,
