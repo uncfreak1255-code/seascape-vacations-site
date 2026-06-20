@@ -29,11 +29,14 @@ Read these in order before opening SEO source work:
    winner or money page may have slipped.
 5. GSC inspection or crawl evidence for stale pages, 404s, indexation, canonical,
    noindex, or redirect questions.
-6. `npm run seo:links:plan` for rough internal-link donor candidates into
+6. `npm run seo:decay -- --as-of YYYY-MM-DD` for the content-decay patrol over
+   static guide/research pages and generated stay/owner pSEO records. Treat the
+   output as a queue for proof review, not approval to change public copy.
+7. `npm run seo:links:plan` for rough internal-link donor candidates into
    existing winner, stay-money, and owner-money pages. Treat output as candidate
    planning only; the active brief must still verify route intent, indexability,
    and conversion fit before links change.
-7. `npm run eval:aeo` or an explicit AI-answer readback note for guide/research
+8. `npm run eval:aeo` or an explicit AI-answer readback note for guide/research
    rescue work.
 
 ## Loop
