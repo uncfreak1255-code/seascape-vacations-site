@@ -1,10 +1,22 @@
 # Seascape Vacations Free Backlink Priority Plan
 Date: 2026-03-15
-Status: Active
+Status: Superseded as live operating guidance on June 20, 2026
+
+> This file is a historical free-target pool, not the active backlink workflow.
+> Current off-site authority work runs through:
+>
+> - `seascape-analytics/docs/offsite-authority-work-order-runbook.md`
+> - `seascape-analytics/docs/status/offsite-authority-work-order-2026-06-12-to-2026-06-18.json`
+> - `docs/process/dataforseo-mcp.md` for site-side Gate 0 DataForSEO boundaries
+>
+> Keep the ideas below as candidate history only. Before any outreach, listing,
+> GBP/entity, or citation action, collect a reviewed row with source, target
+> URL, evidence path, risk label, and recommended action. Do not treat March
+> outreach status or target quality as current proof.
 
 ## What This Plan Is
 
-This is the free-only backlink lane.
+This was the March free-only backlink lane.
 
 It exists because the current backlink strategy includes chamber memberships and paid directory options, but the highest-leverage next move is not more low-signal directory work. The site already has stronger assets than its backlink profile:
 
@@ -116,7 +128,7 @@ Priority relationship buckets:
 - vendors or partners who already receive guest referrals
 - guests or owners with blogs, newsletters, or company resource pages
 
-This is not about begging for links. It is about converting existing referral relationships into explicit citations.
+This is not about begging for links. It is about converting existing referral relationships into explicit citations. In the current operating model, those citations still need reviewed evidence before outreach.
 
 ## Priority Order
 
@@ -127,6 +139,9 @@ This is not about begging for links. It is about converting existing referral re
 5. Relationship-based link recovery
 
 ## 14-Day Sprint
+
+Historical sprint only. Do not resume it from this file without a current
+off-site authority work order row.
 
 ### Day 1-2
 
