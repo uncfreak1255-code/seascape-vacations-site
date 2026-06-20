@@ -211,6 +211,11 @@
   `guide_book_direct_click`, and moved `dateModified` to 2026-06-16. This is
   another winner-defense edit only; rank, CTR, clicks, and downstream event
   impact still wait for the post-deploy GSC/GA4 readback.
+- 2026-06-20: cleaned stale proof labels without changing the page target or
+  claiming impact. The page now treats older Seascape rate checks as planning
+  context rather than fresh pricing proof, removes the stale `March 2026` schema
+  label, and keeps the June review label plus `guide_book_direct_click` routing.
+  This is proof hygiene, not a rank-recovery claim.
 
 ## Not In Scope
 

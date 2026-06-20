@@ -82,11 +82,11 @@ test("winner guide snippets stay decision-forward without body rewrites", () => 
   );
   assert.match(
     amiVsSiesta,
-    /"dateModified": "2026-04-28T12:00:00-04:00"/
+    /"dateModified": "2026-06-20T14:30:00-04:00"/
   );
   assert.match(
     amiVsSiesta,
-    /Updated April 2026/
+    /Reviewed June 2026/
   );
 
   assert.equal(bradentonContract.head.title, "Bradenton vs Sarasota for Vacation: Which Base Wins?");
