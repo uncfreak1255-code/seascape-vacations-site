@@ -40,6 +40,10 @@
 
 ## Release Gate Checklist
 
+- source files likely to change:
+  - `src/guides/anna-maria-island-vs-siesta-key.html`
+  - `docs/status/content-decay-patrol.md`
+  - `scripts/enforcement/metadata-integrity.test.js`
 - routes to smoke test:
   - `/guides/anna-maria-island-vs-siesta-key/`
   - `/stays/anna-maria-island-vacation-rentals/`

@@ -92,11 +92,16 @@
 | Target query family | `bradenton vs sarasota` and nearby vacation-base searches such as `bradenton vs sarasota vacation`, `bradenton or sarasota`, and `which is better Bradenton or Sarasota`. |
 | Searcher intent | Mixed comparison intent. The SERP is heavy on relocation, living, real estate, and UGC opinion results; Seascape should keep the page focused on guest booking and vacation-base decisions. |
 | Current Seascape URL | `/guides/bradenton-vs-sarasota/`. |
-| Current proof | `docs/reports/rank-tracker-2026-06-03.md` recorded a #1 to #5 drop for `bradenton vs sarasota`. `docs/status/next-batch.md` is `fresh but below threshold` as of the 2026-06-12 read, so impact claims wait. Live Netlify readback on 2026-06-16 returned HTTP 200, with canonical, Article, FAQPage, BreadcrumbList, and `guide_book_direct_click` hooks present. |
+| SERP observed date | 2026-06-20 |
+| SERP stale after | 2026-06-27 |
+| Current proof | `docs/reports/rank-tracker-2026-06-03.md` recorded a #1 to #5 drop for `bradenton vs sarasota`. `docs/status/next-batch.md` is `fresh but below threshold` as of the 2026-06-20 read, so impact claims wait. Live Netlify readback on 2026-06-16 returned HTTP 200, with canonical, Article, FAQPage, BreadcrumbList, and `guide_book_direct_click` hooks present. |
 | Top visible competitors | Reddit Sarasota discussion, MIDFLORIDA Credit Union's living/mortgage comparison, Zachos Realty's Sarasota vs Bradenton relocation guide. Supporting visible surfaces included BestPlaces housing/cost pages, TripAdvisor forum results, and DwellingWell's relocation guide. |
 | Competitor angle | UGC opinion, mortgage/living advice, relocation real estate, housing/cost data, schools, rental rules, lifestyle, and broad local amenities. |
-| Seascape gap | The page already answers the vacation question and has first-party rate/trip-shape proof, but the live SERP is still led by living and real estate frames. The smallest gap is an explicit vacation-versus-living FAQ/schema answer plus tracked links into the two mapped stay destinations. |
-| Recommended action | Add one FAQPage-backed answer that separates vacation-base intent from buying/living intent, route that answer into `/stays/bradenton-vacation-rentals-near-beaches/` and `/stays/siesta-key-area-vacation-rentals/` with `guide_book_direct_click`, update `dateModified`, then run `npm run lint:content`, `npm run build`, `npm run verify:jsonld`, and `npm run verify:links`. |
+| Seascape gap | The page already answers the vacation question and has Seascape trip-shape context, but the live SERP is still led by living and real estate frames. The June 20 cleanup also found stale `March 2026` proof labels that needed to become historical planning context rather than fresh pricing proof. |
+| Search fit | The existing URL is the winner-guide target and feeds `/stays/bradenton-vacation-rentals-near-beaches/` plus `/stays/siesta-key-area-vacation-rentals/`. Rescue the current page; do not create a new comparison variant. |
+| Local/GBP proof | N/A for this route because the query is city-comparison research, not map-pack or local brand intent. |
+| AEO/readback note | AEO impact is not proven. Keep the direct-answer block, FAQPage schema, comparison table, and tracked stay links extractable; wait for the next analytics/AI readback before claiming citation movement. |
+| Recommended action | Preserve the June 16 vacation-versus-living answer and tracked stay routing, clean stale proof labels, keep `dateModified` and the June review label truthful, then run `npm run lint:content`, `npm run build`, `npm run verify:jsonld`, and `npm run verify:links`. |
 
 ## Cluster In Scope
 
