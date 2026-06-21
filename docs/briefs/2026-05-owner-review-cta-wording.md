@@ -15,6 +15,7 @@
 
 - This is a wording cleanup that standardizes owner CTA language to `review` across the active owner conversion surfaces.
 - The goal is to remove mixed teardown/review phrasing and a small set of internal-sounding owner jargon from visible copy without changing routing, layout, tracking contracts, metadata, or schema strategy.
+- Follow-up source artifact: `docs/status/owner-outbound.md` now gives the owner review packet a warmer second-look step around listing presentation, photo-readiness, owner-statement clarity, and renewal questions. The site-side handoff should surface only that expectation after a form submit.
 - Broader owner-page rewrites stay out of scope.
 
 ## Search Operator Read
@@ -47,6 +48,7 @@
   - `src/_data/seoPages.json`
   - `src/_includes/partials/owner-evaluation-form.njk`
   - `src/property-management/property-management.njk`
+  - `src/property-management/revenue-review-requested.njk`
   - `src/research/owner-fee-revenue-leak-benchmark-2026.njk`
   - `src/guides/florida-gulf-coast-vacation-rental-market-report-2026.html`
 - redirect or schema work: none.
