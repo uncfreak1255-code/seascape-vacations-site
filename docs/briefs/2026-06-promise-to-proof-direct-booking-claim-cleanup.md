@@ -7,9 +7,10 @@
 - secondary keywords: Bradenton vacation rentals near Anna Maria Island, direct booking vacation rentals Florida, Seascape Vacations direct booking
 - audience pattern: fee-sensitive guest who needs direct-booking savings and location claims to be clear, current, and not overstated.
 - proof source: `src/_data/site.json`, `src/_data/properties-fallback.json`, `src/_data/seoPages.json`, existing direct-booking copy at `/stays/book-direct-anna-maria-island/`, and the Promise-to-Proof loop reviewed on 2026-06-21.
-- required internal links: `/properties/`, `/stays/book-direct-anna-maria-island/`, `/stays/bradenton-waterfront-vacation-rentals/`.
+- required internal links: /properties/, /guides/
 - CTA target: keep direct booking and property browsing paths unchanged.
 - anti-claims: no best-rate guarantee, no savings range above 10-15%, no claim that Bradenton/Sarasota homes are on Anna Maria Island, no direct-beach promise, no new review-count or demand claim.
+- proof targets to preserve: /stays/book-direct-anna-maria-island/, /stays/bradenton-waterfront-vacation-rentals/
 
 ## Gate 0 Search Block
 
