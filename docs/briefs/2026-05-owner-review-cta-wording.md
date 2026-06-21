@@ -15,16 +15,35 @@
 
 - This is a wording cleanup that standardizes owner CTA language to `review` across the active owner conversion surfaces.
 - The goal is to remove mixed teardown/review phrasing and a small set of internal-sounding owner jargon from visible copy without changing routing, layout, tracking contracts, metadata, or schema strategy.
+- Follow-up source artifact: `docs/status/owner-outbound.md` now gives the owner review packet a warmer second-look step around listing presentation, photo-readiness, owner-statement clarity, and renewal questions. The site-side handoff should surface only that expectation after a form submit.
 - Broader owner-page rewrites stay out of scope.
 
 ## Search Operator Read
 
 - source reads used: active owner pages and owner research routes in `src/` plus current owner CTA tests.
-- URLs inspected: /property-management/, /research/owner-fee-revenue-leak-benchmark-2026/, /guides/florida-gulf-coast-vacation-rental-market-report-2026/
+- URLs inspected: /property-management/, /property-management/revenue-review-requested/, /research/owner-fee-revenue-leak-benchmark-2026/, /guides/florida-gulf-coast-vacation-rental-market-report-2026/
 - main evidence: these pages still drive owner CTA clicks and needed consistent `review` wording.
-- competitor pages inspected for demand patterns, not copied topics: not required for this wording-only pass.
+- competitor pages inspected for demand patterns, not copied topics: FunStay Florida, Vacasa, and AirDNA fee explainers from the 2026-06-21 live SERP read.
 - question-tool language worth preserving in customer wording: none.
 - GSC/GA4 evidence that supports building, rewriting, holding, or killing this cluster: this pass is a consistency and conversion-clarity edit, not a traffic-shape expansion.
+
+## Gate 0 Search Block
+
+| Field | Required answer |
+| --- | --- |
+| Target query family | vacation rental management fees Florida and owner revenue review |
+| Searcher intent | owner-management |
+| Current Seascape URL | /property-management/revenue-review-requested/ |
+| SERP observed date | 2026-06-21 |
+| SERP stale after | 2026-06-28 |
+| Current proof | 2026-06-21 PR #403 proof: local content lint, build, full test suite, generated-page readback, and owner-funnel route canary passed; no analytics read is required because this is a noindex post-submit handoff, not a search rewrite. |
+| Top visible competitors | FunStay Florida fee explainer, Vacasa vacation-rental management fee guide, and AirDNA Airbnb management fee guide. |
+| Competitor angle | fee ranges, service coverage, and owner cost education. |
+| Seascape gap | The public owner funnel already covers the revenue review ask; the gap was only that the thank-you step did not echo the packet's listing/photo-readiness follow-up. |
+| Search fit | This URL should not own a search query. It should keep the owner after a form submit and tell them what happens next. |
+| Local/GBP proof | Not a GBP action because this is a noindex confirmation page, not a local service landing page. |
+| AEO/readback note | Not an AI-answer target because the route is noindex and only confirms a submitted owner review request. |
+| Recommendation | keep the existing route and add only the packet-backed follow-up sentence after form submit. |
 
 ## Cluster In Scope
 
@@ -47,6 +66,7 @@
   - `src/_data/seoPages.json`
   - `src/_includes/partials/owner-evaluation-form.njk`
   - `src/property-management/property-management.njk`
+  - `src/property-management/revenue-review-requested.njk`
   - `src/research/owner-fee-revenue-leak-benchmark-2026.njk`
   - `src/guides/florida-gulf-coast-vacation-rental-market-report-2026.html`
 - redirect or schema work: none.
