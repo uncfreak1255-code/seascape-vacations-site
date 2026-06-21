@@ -52,8 +52,6 @@ a {
 
 /* Navigation */
 .nav {
-    position: fixed;
-    top: 0;
     left: 0;
     right: 0;
     z-index: 100;
@@ -70,36 +68,6 @@ a {
     padding: 16px 24px;
     max-width: 1400px;
     margin: 0 auto;
-}
-
-.nav-logo {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-}
-
-.nav-logo img {
-    width: auto;
-    height: 40px;
-    max-width: none;
-    flex: 0 0 auto;
-    display: block;
-}
-
-.nav-logo-text {
-    font-family: 'Playfair Display', serif;
-    font-size: 20px;
-    font-weight: 500;
-    color: var(--brand-dark);
-    letter-spacing: 0.05em;
-}
-
-.nav-logo-sub {
-    font-size: 9px;
-    letter-spacing: 0.2em;
-    color: var(--stone-light);
-    text-transform: uppercase;
-    margin-top: -2px;
 }
 
 /* ---------------- Buttons (premium set — v1 design-system update) ----------------
@@ -406,10 +374,6 @@ a {
     gap: 12px;
     flex-wrap: wrap;
     margin-top: 10px;
-}
-
-.footer-meta-links a {
-    color: inherit;
 }
 
 .footer-meta-links a:hover {

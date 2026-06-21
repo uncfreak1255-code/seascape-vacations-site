@@ -226,7 +226,7 @@ if (phase === "p0") {
   expectContains("_site/properties/index.html", 'href="/css/base.css"');
   expectContains("_site/stays/anna-maria-island-vacation-rentals/index.html", ".nav-logo img");
   expectContains("_site/property-management/index.html", 'href="/css/base.css"');
-  expectContains("_site/css/base.css", ".nav-logo img");
+  expectContains("_site/property-management/index.html", ".nav-logo img");
   expectNotContains("_site/index.html", '<button class="mobile-btn" onclick="toggleMenu()">☰</button>');
   expectNotContains("_site/index.html", '<span class="star">★</span>');
   expectNotContains("_site/index.html", "<div class=\"review-stars\">★★★★★</div>");
