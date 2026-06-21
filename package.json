@@ -50,7 +50,8 @@
     "eval:aeo": "node scripts/evals/run-aeo-eval.js",
     "eval:guest": "node scripts/evals/run-guest-eval.js",
     "lint:evals": "node scripts/evals/lint-evals.js",
-    "test:evals": "node --test scripts/evals/*.test.js"
+    "test:evals": "node --test scripts/evals/*.test.js",
+    "test:capability-scenarios": "npm run build && node scripts/enforcement/capability-scenarios.js"
   },
   "overrides": {
     "@opentelemetry/core": "2.8.0",
