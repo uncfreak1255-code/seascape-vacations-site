@@ -90,6 +90,9 @@ function validateTargetResponse(target, response) {
     if (response.body.includes("images.weserv.nl")) {
       throw new Error("homepage still depends on the external weserv image proxy");
     }
+
+    requireIncludes(target.path, response.body, ["Direct booking, local support", "Platform Fees Removed"]);
+    requireExcludes(target.path, response.body, ["Best rates guaranteed", "Best Price Guaranteed", "save up to 20%"]);
   }
 
   if (target.path === "/properties/") {
