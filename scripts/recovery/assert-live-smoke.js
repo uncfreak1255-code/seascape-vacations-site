@@ -11,6 +11,8 @@ const targets = [
   { path: "/guides/anna-maria-island-area-guide/", status: 200 },
   { path: "/guides/bradenton-vs-sarasota/", status: 200 },
   { path: "/guides/anna-maria-island-vs-siesta-key/", status: 200 },
+  { path: "/guides/best-vacation-rental-companies-ami/", status: 200 },
+  { path: "/guides/srq-airport-to-anna-maria-island/", status: 200 },
   { path: "/property-owners/", status: 301, followRedirects: false },
   { path: "/hero-mobile.webp", status: 200 },
   { path: "/hero-optimized.webp", status: 200 },
@@ -28,6 +30,20 @@ const stablePropertyDetailLinks = [
   { href: "/properties/river-house/", label: "View River House details" },
   { href: "/properties/bradenton-pool-home/", label: "View Bradenton Pool Home details" }
 ];
+
+function requireIncludes(path, body, fragments) {
+  const missing = fragments.filter((fragment) => !body.includes(fragment));
+  if (missing.length > 0) {
+    throw new Error(`${path} is missing current live marker(s): ${missing.join(", ")}`);
+  }
+}
+
+function requireExcludes(path, body, fragments) {
+  const present = fragments.filter((fragment) => body.includes(fragment));
+  if (present.length > 0) {
+    throw new Error(`${path} is still serving stale live marker(s): ${present.join(", ")}`);
+  }
+}
 
 function request(baseUrl, path) {
   return new Promise((resolve, reject) => {
@@ -155,6 +171,45 @@ function validateTargetResponse(target, response) {
     }
   }
 
+  if (target.path === "/guides/anna-maria-island-vs-siesta-key/") {
+    requireIncludes(target.path, response.body, [
+      "Reviewed June 20, 2026",
+      "Sarasota County",
+      "950 free parking spaces",
+      "Nearly pure quartz crystal",
+      "Early-2026 Seascape rate checks used as planning context, not a live quote"
+    ]);
+    requireExcludes(target.path, response.body, [
+      "Updated April 2026",
+      "99% pure quartz",
+      "20–30% lower",
+      "$250–$700/night",
+      "$250–$800/night"
+    ]);
+  }
+
+  if (target.path === "/guides/best-vacation-rental-companies-ami/") {
+    requireIncludes(target.path, response.body, [
+      "Reviewed June 20, 2026 using public company pages",
+      "direct-booking path that does not bury the value under platform fees",
+      "Those are not the same job, and bad guides blur them together"
+    ]);
+    requireExcludes(target.path, response.body, [
+      "March 2026 walkthroughs of public booking flows"
+    ]);
+  }
+
+  if (target.path === "/guides/srq-airport-to-anna-maria-island/") {
+    requireIncludes(target.path, response.body, [
+      "Reviewed June 2026",
+      "<strong>June 2026 review:</strong>",
+      "planning ranges, not live quotes"
+    ]);
+    requireExcludes(target.path, response.body, [
+      "Updated March 2026"
+    ]);
+  }
+
   if (target.path === "/guides/anna-maria-island-area-guide/" || target.path === "/guides/bradenton-area-guide/" || target.path === "/guides/sarasota-area-guide/" || target.path === "/guides/siesta-key-area-guide/") {
     if (response.body.includes('href="index.html"') || response.body.includes('href="#destinations"') || response.body.includes("area-guide-")) {
       throw new Error(`${target.path} still contains legacy relative guide links`);
@@ -211,6 +266,8 @@ module.exports = {
   request,
   validateTargetResponse,
   stablePropertyDetailLinks,
+  requireIncludes,
+  requireExcludes,
   check,
   run
 };

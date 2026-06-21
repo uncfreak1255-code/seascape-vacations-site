@@ -141,3 +141,119 @@ test("stays smoke follows the live stay-collection hub instead of a dead prefix"
     });
   });
 });
+
+test("live smoke locks the refreshed AMI vs Siesta SEO markers", () => {
+  const smoke = loadSmokeModule();
+  const target = smoke.targets.find((entry) => entry.path === "/guides/anna-maria-island-vs-siesta-key/");
+
+  assert.notEqual(target, undefined, "expected AMI vs Siesta to stay in the smoke target list");
+
+  assert.doesNotThrow(() => {
+    smoke.validateTargetResponse(target, {
+      statusCode: 200,
+      location: null,
+      body: `
+        <main>
+          <p>Reviewed June 20, 2026: Sarasota County still positions Siesta Beach around its quartz sand, 950 free parking spaces, and national beach awards.</p>
+          <p>Nearly pure quartz crystal</p>
+          <p>Early-2026 Seascape rate checks used as planning context, not a live quote</p>
+        </main>
+      `
+    });
+  });
+});
+
+test("live smoke rejects stale AMI vs Siesta proof and rate copy", () => {
+  const smoke = loadSmokeModule();
+  const target = smoke.targets.find((entry) => entry.path === "/guides/anna-maria-island-vs-siesta-key/");
+
+  assert.throws(() => {
+    smoke.validateTargetResponse(target, {
+      statusCode: 200,
+      location: null,
+      body: `
+        <main>
+          <p>Updated April 2026</p>
+          <p>We built this comparison from March 2026 rate checks.</p>
+          <p>Siesta Key's fame rests on 99% pure quartz.</p>
+          <p>Mainland Bradenton properties are 20–30% lower and AMI rentals run $250–$700/night.</p>
+        </main>
+      `
+    });
+  }, /missing current live marker/);
+});
+
+test("live smoke locks the refreshed AMI rental companies markers", () => {
+  const smoke = loadSmokeModule();
+  const target = smoke.targets.find((entry) => entry.path === "/guides/best-vacation-rental-companies-ami/");
+
+  assert.notEqual(target, undefined, "expected AMI rental companies guide to stay in the smoke target list");
+
+  assert.doesNotThrow(() => {
+    smoke.validateTargetResponse(target, {
+      statusCode: 200,
+      location: null,
+      body: `
+        <main>
+          <p>Reviewed June 20, 2026 using public company pages, vacation-rental category pages, owner-service pages, and the Anna Maria Island Chamber vacation-rental directory.</p>
+          <p>It is who gives guests a clear all-in price, local support when something breaks, and a direct-booking path that does not bury the value under platform fees.</p>
+          <p>This guide is for two different decisions. Those are not the same job, and bad guides blur them together.</p>
+        </main>
+      `
+    });
+  });
+});
+
+test("live smoke rejects stale AMI rental companies proof copy", () => {
+  const smoke = loadSmokeModule();
+  const target = smoke.targets.find((entry) => entry.path === "/guides/best-vacation-rental-companies-ami/");
+
+  assert.throws(() => {
+    smoke.validateTargetResponse(target, {
+      statusCode: 200,
+      location: null,
+      body: `
+        <main>
+          <p>March 2026 walkthroughs of public booking flows, cancellation language, and how quickly each company surfaces the real total.</p>
+        </main>
+      `
+    });
+  }, /missing current live marker/);
+});
+
+test("live smoke locks the refreshed SRQ airport guide markers", () => {
+  const smoke = loadSmokeModule();
+  const target = smoke.targets.find((entry) => entry.path === "/guides/srq-airport-to-anna-maria-island/");
+
+  assert.notEqual(target, undefined, "expected SRQ airport guide to stay in the smoke target list");
+
+  assert.doesNotThrow(() => {
+    smoke.validateTargetResponse(target, {
+      statusCode: 200,
+      location: null,
+      body: `
+        <main>
+          <p class="guide-meta">Reviewed June 2026 • 8 min read</p>
+          <p><strong>June 2026 review:</strong> SRQ still lists rental cars, taxis, airport shuttles, Uber, and Lyft as ground transportation options. Treat any fare ranges below as planning ranges, not live quotes.</p>
+        </main>
+      `
+    });
+  });
+});
+
+test("live smoke rejects stale SRQ airport freshness copy", () => {
+  const smoke = loadSmokeModule();
+  const target = smoke.targets.find((entry) => entry.path === "/guides/srq-airport-to-anna-maria-island/");
+
+  assert.throws(() => {
+    smoke.validateTargetResponse(target, {
+      statusCode: 200,
+      location: null,
+      body: `
+        <main>
+          <p class="guide-meta">Updated March 2026 • 8 min read</p>
+        </main>
+      `
+    });
+  }, /missing current live marker/);
+});
