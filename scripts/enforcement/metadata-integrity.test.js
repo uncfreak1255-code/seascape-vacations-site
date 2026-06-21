@@ -88,6 +88,26 @@ test("winner guide snippets stay decision-forward without body rewrites", () => 
     amiVsSiesta,
     /Reviewed June 2026/
   );
+  assert.match(
+    amiVsSiesta,
+    /data-transfer-choice="ami-vs-siesta-stay-base"/
+  );
+  assert.match(
+    amiVsSiesta,
+    /Stay-base shortcut Anna Maria Island vacation rentals/
+  );
+  assert.match(
+    amiVsSiesta,
+    /Stay-base shortcut Bradenton homes near AMI beaches/
+  );
+  assert.match(
+    amiVsSiesta,
+    /Stay-base shortcut Siesta Key area stays/
+  );
+  assert.match(
+    amiVsSiesta,
+    /primaryCtaLabel: "See Anna Maria Island Homes"/
+  );
 
   assert.equal(bradentonContract.head.title, "Bradenton vs Sarasota for Vacation: Which Base Wins?");
   assert.equal(
