@@ -32,6 +32,70 @@ This brief turns those findings into one bounded Seascape response. It is a plan
 - The strongest existing comparison-guide assets remain `/guides/bradenton-vs-sarasota/` and `/guides/anna-maria-island-vs-siesta-key/`.
 - Schema remains useful for entity clarity, crawl eligibility, rich-result hygiene, and enforcement, but not as a standalone AI-citation growth tactic.
 
+## 2026-06-22 Ahrefs Crawl Rescue
+
+Ahrefs sent a 2026-06-22 crawl alert for `seascape-vacations-site` with two new issue families:
+
+- `Slow page [New]`: 7 URLs
+- `Structured data has Google rich results validation error`: 95 URLs, +54 new
+
+This branch is a bounded rescue for owned schema and crawl-weight hygiene. It does not publish new reader copy, new route volume, or a claim that schema will increase AI citations.
+
+Source files covered by this rescue:
+
+- `scripts/enforcement/validate-jsonld.js`
+- `src/stays/stays.njk`
+- `src/property-management/property-management.njk`
+- `src/research/index.njk`
+- `src/properties/bradenton-pool-home/index.njk`
+- `src/properties/dockside-dreams/index.njk`
+- `src/properties/river-house/index.njk`
+- `src/properties/sarasota-luxe/index.njk`
+- `src/properties/the-oasis/index.njk`
+- active guide pages with missing Article image or Breadcrumb item schema:
+  - `src/guides/anna-maria-island-vacation-cost-guide-2026/index.html`
+  - `src/guides/best-time-visit-anna-maria-island.html`
+  - `src/guides/bradenton-insider-guide.html`
+  - `src/guides/dolphins-manatees-bradenton.html`
+  - `src/guides/family-vacation-anna-maria-island.html`
+  - `src/guides/fishing-guide-anna-maria-sarasota.html`
+  - `src/guides/flights-to-anna-maria-island/index.html`
+  - `src/guides/shelling-guide-florida.html`
+  - `src/guides/siesta-key-beach-guide.html`
+  - `src/guides/vacation-rental-income-anna-maria.html`
+  - `src/guides/where-to-stay-near-anna-maria-island/index.html`
+
+Local reproduction pattern:
+
+- before fix: LocalBusiness missing fields 32, LodgingBusiness missing fields 65, Article missing fields 8, Breadcrumb missing item 3
+- after fix: all four categories read back as 0 across 164 rendered HTML files
+
+Release proof for this rescue:
+
+```bash
+npm run build && npm run verify:jsonld
+npm run verify:release
+npm run perf:budget:check
+```
+
+## Gate 0 Rescue Block
+
+| Field | Required answer |
+| --- | --- |
+| Target query family | Seascape vacation rental rich-result and crawl eligibility across stay, property, guide, research, and owner-management pages. |
+| Searcher intent | Mixed guest booking, owner-management, guide/research, and comparison intent on existing public pages. |
+| Current Seascape URL | Existing public pages generated from the source files named in `2026-06-22 Ahrefs Crawl Rescue`. |
+| SERP observed date | 2026-06-22 |
+| SERP stale after | 2026-06-29 |
+| Current proof | 2026-06-22 Ahrefs crawl email reported `Slow page [New]` for 7 URLs and `Structured data has Google rich results validation error` for 95 URLs, +54 new. Final analytics impact is not ready and is not claimed. |
+| Top visible competitors | Not a live competitor SERP edit; the competing surface is Google rich-result eligibility and crawler validation for owned Seascape pages. |
+| Competitor angle | Rich-result eligibility, parseable schema, crawl weight, and page-load efficiency rather than visible copy or inventory positioning. |
+| Seascape gap | Rendered output contained incomplete LocalBusiness, LodgingBusiness, Article, and Breadcrumb JSON-LD patterns, plus large property schema image arrays that increased crawl payload. |
+| Search fit | The existing pages should stay eligible for rich-result parsing and fast crawler reads because they already serve guest, guide, and owner acquisition journeys. |
+| Local/GBP proof | Not applicable for this branch because no local-pack, GBP, NAP, or visible local ranking copy changed; this patch repairs owned structured data and crawl payload only. |
+| AEO/readback note | Not applicable as an AI-answer lift claim; schema is treated here as entity clarity and validation hygiene, not AI citation proof. |
+| Recommended action | Repair schema types and missing fields, tighten the JSON-LD gate, add Hostaway preconnects, limit schema-only property image arrays, then wait for Ahrefs recrawl before claiming the external alert cleared. |
+
 ## Experiment And Readback Contract
 
 - hypothesis: If an analytics-owned AI visibility receipt shows listicle, comparison, or proof-asset formats winning the target query family, then one bounded answer-first or proof-asset hardening batch should improve Seascape's citation readiness without implying any lift before the reread.

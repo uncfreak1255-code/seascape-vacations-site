@@ -6,8 +6,11 @@
  *   1. Valid JSON (no parse errors)
  *   2. Priority schema types have required fields:
  *      - WebSite: name, url, potentialAction
+ *      - Article: headline, image, datePublished, dateModified, author, publisher
  *      - FAQPage: mainEntity with acceptedAnswer
- *      - BreadcrumbList: itemListElement
+ *      - BreadcrumbList: itemListElement with position, name, item
+ *      - LocalBusiness: name, address, telephone
+ *      - LodgingBusiness: name, address, telephone
  *      - VacationRental: name, address
  *      - AggregateOffer: lowPrice, highPrice, priceCurrency
  *      - Review: reviewBody, author
@@ -25,6 +28,10 @@ const SITE_DIR = path.resolve("_site");
 // ---------------------------------------------------------------------------
 
 const SCHEMA_RULES = {
+  Article: {
+    required: ["headline", "image", "datePublished", "dateModified", "author", "publisher"],
+    label: "Article"
+  },
   WebSite: {
     required: ["name", "url", "potentialAction"],
     label: "WebSite"
@@ -40,7 +47,20 @@ const SCHEMA_RULES = {
   },
   BreadcrumbList: {
     required: ["itemListElement"],
+    nested: {
+      itemListElement: {
+        arrayItemFields: ["position", "name", "item"]
+      }
+    },
     label: "BreadcrumbList"
+  },
+  LocalBusiness: {
+    required: ["name", "address", "telephone"],
+    label: "LocalBusiness"
+  },
+  LodgingBusiness: {
+    required: ["name", "address", "telephone"],
+    label: "LodgingBusiness"
   },
   VacationRental: {
     required: ["name", "address"],
