@@ -136,18 +136,6 @@ eleventyComputed:
     </script>
     {% endif %}
 
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "LodgingBusiness",
-        "name": "Seascape Vacations",
-        "url": "https://seascape-vacations.com",
-        "telephone": "+1-941-704-8545",
-        "priceRange": "$200-$550 / night",
-        "areaServed": {{ destinationLabel | json | safe }}
-    }
-    </script>
-
     {% if seoPage.propertyFacts and seoPage.propertyFacts.length > 0 and seoPage.propertyFacts[0].pageUrl and false %}
     {% elif properties and properties | length and seoPage.matchingProperties and seoPage.matchingProperties.length > 0 %}
     <script type="application/ld+json">
