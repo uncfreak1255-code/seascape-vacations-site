@@ -71,6 +71,14 @@ test("repo root does not keep a stale checked-in sitemap artifact", () => {
   );
 });
 
+test("repo root does not keep a stale checked-in robots artifact", () => {
+  assert.equal(
+    fs.existsSync(path.join(projectRoot, "robots.txt")),
+    false,
+    "root robots.txt should not exist because the generated robots file is copied from src/robots.txt"
+  );
+});
+
 function collectSourceFiles(dir) {
   const files = [];
 
