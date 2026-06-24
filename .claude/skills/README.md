@@ -6,7 +6,9 @@
 
 Current curated focus:
 - `accessibility`
+- `content-quality-rubric`
 - `design-review`
+- `internal-link-targeting`
 - `next-batch-gate`
 - `owner-outbound-batch`
 - `owner-reply-intake`
@@ -14,6 +16,7 @@ Current curated focus:
 - `page-cro`
 - `property-truth-regeneration`
 - `schema-markup`
+- `serp-ctr-title-rewrite`
 - `site-architecture`
 - `web-design-guidelines`
 

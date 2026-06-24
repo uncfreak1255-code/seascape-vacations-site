@@ -163,8 +163,8 @@ The owner-page "Field Report" direction is the new quality bar for future high-v
 - **Display/Headlines:** Playfair Display (weight 500) — Serif with editorial authority. Used for all h1-h4 headings, property names, and section titles. The -0.02em letter-spacing is important for density at large sizes.
 - **Body:** Poppins (weight 400-600) — Clean geometric sans. Readable body copy, navigation labels, metadata. Weights: 400 (body), 500 (UI labels), 600 (buttons, emphasis), 700 (price callouts).
 - **Data/Specs:** Poppins weight 600 — Bedroom/bathroom counts, prices, dates. No monospace needed for this site.
-- **Section tags:** Poppins 12px, weight 600, 0.2em letter-spacing, uppercase, color `var(--brand)`. Used above section titles.
-- **Loading:** Self-hosted woff2 from `src/assets/fonts/`. Preloaded in `<head>`.
+- **Section tags:** Poppins 12px, weight 600, 0.2em letter-spacing, uppercase, usually `var(--brand-dark)` on current shared surfaces. Used above section titles.
+- **Loading:** Mixed today. The homepage and shared modern CSS self-host woff2 assets from `src/assets/fonts/homepage/`, while several older standalone guides and stay pages still load Google Fonts directly in-page. Treat self-hosted fonts as the preferred direction, not a repo-wide done state.
 - **Scale (fluid):**
   - Hero h1: clamp(36px, 5vw, 56px)
   - Section h2: clamp(28px, 4vw, 38px)
@@ -259,7 +259,7 @@ If Playfair Display ever needs replacing, consider: Fraunces (more personality),
 - **Card hover:** translateY(-5px). 0.3s ease. Subtle lift.
 - **Button active:** scale(0.98). Immediate tactile feedback.
 - **Transitions:** 0.3s default for color/opacity changes. 0.4s for transforms.
-- **No scroll-triggered animations.** Content is visible on paint. No lazy-reveal, no parallax, no scroll-jacking. Pages should feel instant.
+- **Current implementation note:** most routes avoid scroll-triggered reveal patterns, but the homepage hero still ships ambient motion effects such as animated gradients, image drift, and cursor-reactive haze, and many legacy guides use a simple sticky-bar slide-up on load. Do not document the repo as motion-free until those surfaces are actually removed.
 
 ## Photography Rules
 - **Hero images:** Full-bleed, high-resolution property or Gulf Coast lifestyle photography. Overlay with semi-transparent gradient for text readability.
@@ -323,7 +323,7 @@ Legacy bare `.btn` (no modifier) falls back to the same visual as `.btn-brand` m
 2. **Never use system fonts or generic sans-serif** for headings. Playfair Display is the brand identity.
 3. **Never add a dark mode.** This is a vacation rental site browsed in daylight.
 4. **Never use stock photography.** Real properties and real Gulf Coast locations only.
-5. **Never add parallax, scroll animations, or lazy-reveal effects.** Content loads visible. Speed and simplicity signal professionalism.
+5. **Do not add new parallax, scroll animations, or lazy-reveal effects.** Current homepage hero motion and a few legacy load-in patterns are grandfathered implementation residue, not the pattern to copy forward.
 6. **Never change the button pill shape (50px radius).** It's a brand signature.
 7. **Never flatten the cream/teal/gold palette to a generic blue.** Blue = Airbnb. Teal + gold + cream = Seascape.
 8. **Never add more than 3 font weights per family** in use at once. Poppins 400/500/600 is enough. Do not import 700/800/900.
@@ -362,3 +362,4 @@ Legacy bare `.btn` (no modifier) falls back to the same visual as `.btn-brand` m
 | 2026-06-03 | Corrected stale "until an automated gate exists" text | The automated visual regression gate already exists (`npm run test:visual`, committed desktop/mobile baselines in `tests/visual/__screenshots__/`, axe spec). Docs now describe it as present, not pending. |
 | 2026-06-16 | Browser live review plus Playwright proof is the default visual QA shape | Use the in-app Browser for human route inspection, Chrome DevTools for debugging, and Playwright screenshots/proof bundles as the durable gate instead of pasting routine screenshots into chat. |
 | 2026-06-16 | Agent evidence routing defines tool choice | Choose Browser, DOM reads, screenshots, Chrome DevTools, Playwright, Computer Use, or web search by the proof needed, not by habit or tool availability. |
+| 2026-06-24 | Corrected font-loading and motion docs to match the live implementation | Homepage/shared modern surfaces self-host fonts, but several legacy guides and stays still load Google Fonts; the homepage hero and some legacy sticky bars still use motion, so the doc now marks those as current residue instead of claiming repo-wide removal. |
