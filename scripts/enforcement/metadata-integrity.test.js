@@ -66,23 +66,23 @@ test("winner guide snippets stay decision-forward without body rewrites", () => 
   const amiContract = readSourceContract("src", "guides", "anna-maria-island-vs-siesta-key.html");
   const bradentonContract = readSourceContract("src", "guides", "bradenton-vs-sarasota.html");
 
-  assert.equal(amiContract.head.title, "Anna Maria Island vs Siesta Key: Which Beach Fits?");
+  assert.equal(amiContract.head.title, "Anna Maria Island vs Siesta Key: Where to Stay");
   assert.equal(
     amiContract.head.description,
-    "AMI fits quieter family beach days and easier parking; Siesta Key fits famous quartz sand, nightlife, and Sarasota dining. Compare the tradeoff."
+    "Compare AMI, Bradenton near AMI beaches, and Siesta Key area stays after choosing between quieter beach days and famous quartz sand."
   );
-  assert.equal(amiContract.head.ogTitle, "Anna Maria Island vs Siesta Key: Which Beach Fits?");
+  assert.equal(amiContract.head.ogTitle, "Anna Maria Island vs Siesta Key: Where to Stay");
   assert.match(
     amiVsSiesta,
     /<h1>Anna Maria Island vs Siesta Key<br>Beaches, Crowds, Parking, and Where to Stay<\/h1>/
   );
   assert.match(
     amiVsSiesta,
-    /"headline": "Anna Maria Island vs Siesta Key: Which Beach Fits\?"/
+    /"headline": "Anna Maria Island vs Siesta Key: Where to Stay"/
   );
   assert.match(
     amiVsSiesta,
-    /"dateModified": "2026-06-20T14:30:00-04:00"/
+    /"dateModified": "2026-06-24T15:20:00-04:00"/
   );
   assert.match(
     amiVsSiesta,
@@ -94,19 +94,23 @@ test("winner guide snippets stay decision-forward without body rewrites", () => 
   );
   assert.match(
     amiVsSiesta,
-    /Stay-base shortcut Anna Maria Island vacation rentals/
+    /Stay-base table Anna Maria Island vacation rentals/
   );
   assert.match(
     amiVsSiesta,
-    /Stay-base shortcut Bradenton homes near AMI beaches/
+    /Stay-base table Bradenton homes near AMI beaches/
   );
   assert.match(
     amiVsSiesta,
-    /Stay-base shortcut Siesta Key area stays/
+    /Stay-base table Anna Maria Island beachfront rentals/
   );
   assert.match(
     amiVsSiesta,
-    /primaryCtaLabel: "See Anna Maria Island Homes"/
+    /Stay-base table Siesta Key area stays/
+  );
+  assert.match(
+    amiVsSiesta,
+    /primaryCtaLabel: "Compare AMI Stay Bases"/
   );
 
   assert.equal(bradentonContract.head.title, "Bradenton vs Sarasota for Vacation: Which Base Wins?");

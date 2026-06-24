@@ -61,6 +61,14 @@
   - `npm run git:preflight`
 - regression risks to watch: top answer diluted, too many CTAs before the answer, broken event markup, vague booking-fee copy, or a page that sounds like an SEO work order.
 
+## 2026-06-24 Implementation Receipt
+
+- PR scope: improved the existing `/guides/anna-maria-island-vs-siesta-key/` page, not a new page.
+- snippet change: shifted title/meta from a generic beach-choice frame to `Anna Maria Island vs Siesta Key: Where to Stay`.
+- page change: added an early stay-base table for Anna Maria Island rentals, Bradenton homes near AMI beaches, Anna Maria Island beachfront rentals, and Siesta Key area stays.
+- CTA change: updated the guide conversion kit so the primary action says `Compare AMI Stay Bases` and includes the Bradenton-near-AMI stay path.
+- next readback: wait for the first complete post-deploy GSC/GA4 window before judging impact; do not claim lift from this PR alone.
+
 ## Done When
 
 - one active transfer brief exists
