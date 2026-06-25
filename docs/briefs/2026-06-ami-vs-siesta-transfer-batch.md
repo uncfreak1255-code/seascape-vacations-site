@@ -67,6 +67,8 @@
 - snippet change: shifted title/meta from a generic beach-choice frame to `Anna Maria Island vs Siesta Key: Where to Stay`.
 - page change: added an early stay-base table for Anna Maria Island rentals, Bradenton homes near AMI beaches, Anna Maria Island beachfront rentals, and Siesta Key area stays.
 - CTA change: updated the guide conversion kit so the primary action says `Compare AMI Stay Bases` and includes the Bradenton-near-AMI stay path.
+- second-pass transfer change: clarified the pre-kit handoff so readers know to open one stay base first, then compare direct-booking totals, pool options, bedroom count, and beach distance inside that lane.
+- second-pass copy change: tightened the guide conversion kit copy so AMI, Bradenton-near-AMI, and Siesta-side trip shapes read like distinct stay decisions instead of one generic browse action.
 - next readback: wait for the first complete post-deploy GSC/GA4 window before judging impact; do not claim lift from this PR alone.
 
 ## Done When
