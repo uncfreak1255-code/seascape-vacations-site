@@ -30,6 +30,41 @@ function resolveWritableStore(event, candidateStore) {
   return getStore(OWNER_LEAD_STORE_NAME);
 }
 
+function parseRequestBody(event) {
+  try {
+    return JSON.parse(event.body || "{}");
+  } catch (error) {
+    console.error("owner_lead_invalid_json", {
+      bodyLength: typeof event.body === "string" ? event.body.length : 0,
+      message: error && error.message ? error.message : String(error)
+    });
+    return null;
+  }
+}
+
+function readSubmissionPayload(rawPayload) {
+  if (!rawPayload || typeof rawPayload !== "object") return {};
+  return rawPayload.payload && typeof rawPayload.payload === "object"
+    ? rawPayload.payload
+    : rawPayload;
+}
+
+function getPayloadFormName(rawPayload) {
+  const payload = readSubmissionPayload(rawPayload);
+  return String(
+    payload.form_name ||
+      payload.formName ||
+      (payload.form && payload.form.name) ||
+      payload.name ||
+      ""
+  ).trim();
+}
+
+function getPayloadSubmissionId(rawPayload) {
+  const payload = readSubmissionPayload(rawPayload);
+  return String(payload.id || payload.submission_id || payload.number || payload.created_at || "").trim();
+}
+
 async function safeNotify(notify, message) {
   try {
     await notify(message);
@@ -83,10 +118,22 @@ async function captureOwnerLeadContact(event, payload, injectedContactStore, not
 }
 
 async function handleSubmissionCreated(event, _context, injectedStore, injectedContactStore = null, injectedNotify = null) {
-  const payload = JSON.parse(event.body || "{}");
+  const payload = parseRequestBody(event);
+  if (!payload) {
+    return {
+      statusCode: 400,
+      headers: { "content-type": "application/json; charset=utf-8" },
+      body: JSON.stringify({ stored: false, reason: "invalid_json" })
+    };
+  }
+
   const receipt = buildOwnerLeadReceipt(payload);
 
   if (!receipt) {
+    console.warn("owner_lead_payload_ignored", {
+      formName: getPayloadFormName(payload) || "unknown",
+      hasSubmissionId: Boolean(getPayloadSubmissionId(payload))
+    });
     return {
       statusCode: 200,
       body: JSON.stringify({ stored: false, reason: "ignored_form" })

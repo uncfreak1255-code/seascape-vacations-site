@@ -54,6 +54,12 @@ async function notifyOwnerLead(message) {
       headers: { "content-type": "application/json" },
       body: JSON.stringify(body)
     });
+    if (!response.ok) {
+      console.error("owner_lead_notify_request_failed", {
+        status: response.status,
+        message: `Webhook request failed with status ${response.status}`
+      });
+    }
     return { notified: Boolean(response && response.ok), status: response ? response.status : undefined };
   } catch (error) {
     console.error("owner_lead_notify_request_failed", {
