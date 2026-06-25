@@ -16,6 +16,8 @@ Current curated focus:
 - `page-cro`
 - `property-truth-regeneration`
 - `schema-markup`
+- `seascape-design-critic`
+- `seascape-design-specialist`
 - `serp-ctr-title-rewrite`
 - `site-architecture`
 - `web-design-guidelines`

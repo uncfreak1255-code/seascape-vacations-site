@@ -1,12 +1,11 @@
-# Seascape Design Studio Packet
+# Seascape Design Studio
 
-Use this packet before meaningful Seascape visual design work when the goal is
-to get Claude Design-quality direction without depending on Claude Design as the
-only place where the thinking can happen.
+Use this packet for the repo-local `seascape-design-specialist` lane when the
+goal is a high-bar Seascape design pass that can still borrow outside taste
+pressure without depending on a global tool bundle.
 
-This is a small process template, not a new agent or repo-local skill. Keep it
-boxed here until it has helped on 2-3 real Seascape design tasks with rendered
-proof.
+This is now a live repo-local lane. It exists because clean, functional Codex
+design work was still too willing to ship bland or generic direction.
 
 ## When To Use It
 
@@ -26,6 +25,21 @@ Do not use this for:
 - tiny visual fixes where `docs/process/design-review-workflow.md` is enough
 - broad tool, agent, MCP, or skill expansion
 
+## Launcher
+
+Use one of these commands from the repo when you want the local design lane
+prewired:
+
+- `npm run design:lane -- "<task>"`
+- `./scripts/design/codex-seascape-design "<task>"`
+- add `--prepare` to create or inspect the lane without launching Codex
+- add `--allow-fallback` only when you intentionally want a plain git worktree
+  lane after `agent-start` blocks on dirty review-worktree limits
+
+The launcher prefers `agent-start`. If the broker refuses because dirty review
+worktrees already need cleanup, the default command now stops and tells you so
+instead of silently bypassing that guardrail.
+
 ## Source Order
 
 Read these before filling the packet:
@@ -42,6 +56,22 @@ Read these before filling the packet:
 `DESIGN.md` is the visual law. This packet can propose a new design-system rule,
 but implementation waits until that rule is accepted and written into
 `DESIGN.md`.
+
+## Allowed Donor Tools
+
+Use these only when they materially improve the design pass:
+
+- global `claude-design`
+- `product-design:ideate`
+- `product-design:audit`
+- `creative-production:moodboard-explorer`
+- `creative-production:scene-explorer`
+- `creative-production:shot-explorer`
+
+Figma is optional and donor-only unless Sawyer explicitly wants it for a task.
+
+Any donor output must be rewritten into this packet and brought back under
+`DESIGN.md` plus repo truth before implementation.
 
 ## Intake Packet
 
@@ -99,6 +129,27 @@ direction.
 - Known risks:
 ```
 
+## Critique Gate
+
+Before settling on a direction, run `seascape-design-critic` on the current
+route, the proposed mockup, or the first concept.
+
+Allowed verdicts:
+
+- `Reject`
+- `Needs another pass`
+- `Approved with edge`
+- `Approved`
+
+Rules:
+
+- Do not implement from `Reject` or `Needs another pass`.
+- Do not soften the verdict because the layout is clean or already partly built.
+- Attack the real weakness first: concept, hierarchy, art direction, proof
+  treatment, CTA desirability, or mobile energy.
+- If the design is weak in concept, demand 2-3 materially different directions
+  instead of cosmetic tweaks.
+
 ## Design Output Format
 
 The design pass should return a reviewable direction, not vague styling advice.
@@ -107,9 +158,11 @@ Use this shape:
 ```markdown
 # Seascape Design Studio Output
 
-## Current State
+## Critique
+- Status:
 - What the route is trying to do:
-- Main visual or decision-making weakness:
+- What feels stale, generic, weak, or too safe:
+- What is worth keeping:
 
 ## Directions
 
@@ -157,20 +210,26 @@ Use this shape:
 - Files likely touched:
 
 ## Approval Gate
+- Sawyer approval status:
 - What Sawyer must approve before implementation:
+- Any donor-tool influence worth naming:
 - Any `DESIGN.md` change required first:
 - Any open question that would change layout, hierarchy, art direction, or CTA
   treatment:
+
+## Proof Plan
+- Routes to check:
+- Desktop screenshots needed:
+- Mobile screenshots needed:
+- Visual checks:
 ```
 
 ## Approval Gate
 
 Implementation can start only when the design output has one of these statuses:
 
-- `approved as-is`
-- `approved with named edits`
-- `needs another design pass`
-- `rejected`
+- `Approved`
+- `Approved with edge`
 
 If the approved direction changes layout, hierarchy, art direction, component
 treatment, imagery direction, or CTA treatment, treat it as the implementation
@@ -190,6 +249,7 @@ Allowed reasons to deviate:
 
 ```text
 intake packet
+  -> critic verdict
   -> design directions
   -> Sawyer approval
   -> codex/<task> worktree
@@ -231,29 +291,18 @@ Minimum checks:
 Use `docs/process/before-user-review-checklist.md` before asking Sawyer to
 review any rendered page.
 
-## Promotion Gate
+## Local Status
 
-Do not promote this packet into `.agents/skills/` after one good run.
-
-Promotion is allowed only after:
-
-- it has been used on 2-3 real Seascape design tasks
-- each task had desktop and mobile screenshot proof
-- each task avoided rework that this packet clearly prevented
-- the repeated steps are stable enough to automate
-- the proposed skill would stay repo-local and narrow
-
-If promoted, the skill should still point back to this document and
-`docs/process/design-review-workflow.md` instead of becoming a second design
-law.
+This packet now underpins the repo-local `seascape-design-specialist` and
+`seascape-design-critic` skills. Keep future expansion narrow, repo-local, and
+evidence-backed.
 
 ## NOT In Scope
 
 - copying or storing leaked system prompt text
-- replacing Claude Design, Figma, Stitch, or designmd.directory when Sawyer
-  explicitly chooses one for a task
+- replacing a tool Sawyer explicitly chooses for a task
 - changing `DESIGN.md` without explicit approval
+- turning donor tools into hard dependencies
 - adding a global Codex skill
-- adding a repo-local skill before repeated proof exists
 - changing source templates, CSS, imagery, or public copy during the design
   packet step

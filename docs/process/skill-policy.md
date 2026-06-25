@@ -25,6 +25,12 @@ drafts point at the site benchmark and approved owner proof assets, while the
 intake guard prevents site activity, test sends, labeled sends, and internal
 helper submits from being counted as real owner demand.
 
+For design direction, use the local `seascape-design-specialist` and
+`seascape-design-critic` pair. The specialist owns the concept pass and
+implementation brief. The critic owns the blunt taste verdict. They are local
+because Seascape taste, page economics, and the "do not bless bland work"
+standard are repo-specific.
+
 ## External packs — donor references only
 
 Do not install or mirror `geo-optimizer-skill`, `gtm-engineer-skills`,
@@ -32,6 +38,11 @@ Do not install or mirror `geo-optimizer-skill`, `gtm-engineer-skills`,
 this repo unless a fresh `agent-surface-audit` shows a repeated site-specific need
 and the tool has a smoke-tested win. AI citation monitoring and GSC/GA4 proof
 systems belong in `seascape-analytics`, not in this website repo.
+
+For design work, global `claude-design`, `product-design:*`, and
+`creative-production:*` skills are donor lenses only. They may sharpen a pass,
+but they do not become local authority or replace `DESIGN.md`, the local design
+pair, or the rendered proof loop.
 
 ## Global marketing skills — advisory lenses
 
@@ -81,3 +92,9 @@ entry is the receipt the governance rule requires for any skill change.
   provisional until repo-anchored evidence exists, and only the hand-authored
   `## Register` region in the Seascape Hub owner-demand register may receive a
   real row.
+- **2026-06-25 — added `seascape-design-specialist` and `seascape-design-critic`.**
+  Trigger: repeated founder dissatisfaction that Codex site design work was too
+  willing to ship clean-but-bland direction and depended too much on remembering
+  a global design bundle. Decision: promote one narrow repo-local design lane
+  plus a blunt critic gate, wire a repo-local launcher, and keep outside design
+  tools donor-only. Approved by Sawyer.

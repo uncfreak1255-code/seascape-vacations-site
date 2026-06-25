@@ -89,7 +89,7 @@ Read in this order:
 - `docs/status/next-batch.md` is the canonical reread handoff surface for volatile measurement truth; after every reread it must say exactly one of `blocked by freshness`, `fresh but below threshold`, or `open next batch`, plus one concrete next move
 - `docs/status/current-state.md` should keep durable repo truth only and must not duplicate volatile reread windows or `data_date` details that belong in `docs/status/next-batch.md`
 - the five SEO OS role cards live in `.claude/agents/`; the on-demand role model and local skill/external-pack policy load from `docs/process/five-roles.md` and `docs/process/skill-policy.md`
-- active repo-local skills are limited to `.agents/skills/accessibility`, `.agents/skills/content-quality-rubric`, `.agents/skills/design-review`, `.agents/skills/internal-link-targeting`, `.agents/skills/next-batch-gate`, `.agents/skills/owner-outbound-batch`, `.agents/skills/owner-reply-intake`, `.agents/skills/owner-proof-integrity`, `.agents/skills/page-cro`, `.agents/skills/property-truth-regeneration`, `.agents/skills/schema-markup`, `.agents/skills/serp-ctr-title-rewrite`, `.agents/skills/site-architecture`, and `.agents/skills/web-design-guidelines`
+- active repo-local skills are limited to `.agents/skills/accessibility`, `.agents/skills/content-quality-rubric`, `.agents/skills/design-review`, `.agents/skills/internal-link-targeting`, `.agents/skills/next-batch-gate`, `.agents/skills/owner-outbound-batch`, `.agents/skills/owner-reply-intake`, `.agents/skills/owner-proof-integrity`, `.agents/skills/page-cro`, `.agents/skills/property-truth-regeneration`, `.agents/skills/schema-markup`, `.agents/skills/seascape-design-critic`, `.agents/skills/seascape-design-specialist`, `.agents/skills/serp-ctr-title-rewrite`, `.agents/skills/site-architecture`, and `.agents/skills/web-design-guidelines`
 - `.claude/skills/` should mirror only those active site/design skills; copied marketing, deploy, monthly reset, and generic SEO skills are not live authority
 - global marketing skills in `/Users/sawbeck/.codex/skills/` may be used as advisory helpers for CRO, SEO, copy, psychology, analytics, and growth decisions, but they do not override this repo's source files, briefs, status docs, or five-role workflow
 - canonical lane for internal-link family/page inbound planning is `.agents/skills/internal-link-targeting`
@@ -115,29 +115,39 @@ For any PR that changes public copy in `src/`:
 - For Seascape mockups, marketing page concepts, homepage/lander direction
   work, guide/article/blog-style pages, owner pages, research pages, or any
   meaningful website visual change, the default design-thinking lane is the
-  global `claude-design` skill before implementation.
-- Codex should prepare the Claude Design handoff first: repo/source truth, page
-  goal, audience, `DESIGN.md` constraints, existing patterns, proof/copy
-  boundaries, URLs or screenshots, implementation risks, and responsive
-  requirements.
-- If Sawyer approves a Claude Design mockup, implement that approved mockup
-  closely. Do not reinterpret it into a different layout, art direction,
-  hierarchy, CTA treatment, or component style. Any deviation must be named and
-  justified by repo truth, `DESIGN.md`, accessibility, performance, responsive
-  behavior, or source constraints.
+  repo-local `seascape-design-specialist` skill before implementation.
+- `seascape-design-specialist` must run `seascape-design-critic` as the taste
+  gate before a concept is treated as good enough.
+- Codex should prepare the design packet first: repo/source truth, page goal,
+  audience, `DESIGN.md` constraints, existing patterns, proof/copy boundaries,
+  URLs or screenshots, implementation risks, and responsive requirements.
+- The specialist may optionally use donor lenses such as global
+  `claude-design`, `product-design:ideate`, `product-design:audit`,
+  `creative-production:moodboard-explorer`,
+  `creative-production:scene-explorer`, and
+  `creative-production:shot-explorer` when they materially raise the bar.
+  Those donors do not override repo truth.
+- If Sawyer approves a design direction or mockup, implement that approved
+  direction closely. Do not reinterpret it into a different layout, art
+  direction, hierarchy, CTA treatment, or component style. Any deviation must
+  be named and justified by repo truth, `DESIGN.md`, accessibility,
+  performance, responsive behavior, or source constraints.
 - Codex still owns repo truth, `DESIGN.md`, implementation, and verification.
-  Claude Design informs direction; it does not override repo truth or bypass
-  the rendered QA loop.
-- `DESIGN.md` is the visual law. Figma, Claude Design, Stitch, or any outside design tool can inform direction, but they do not override repo truth.
+- `DESIGN.md` is the visual law. Figma, Claude Design, Stitch, and other
+  outside tools are donor surfaces only unless Sawyer explicitly says
+  otherwise.
 - For any meaningful visual change, including layout, spacing, typography, color, imagery, iconography, CTA treatment, or motion, run the repo flow in `docs/process/design-review-workflow.md`.
 - The required rendered QA loop for visual changes is the global `design-review` skill. Use it after implementation and before human review so the review surface is screenshots plus live route checks, not code alone.
+- Start a fresh repo-local design worktree with `npm run design:lane -- "<task>"`
+  or `./scripts/design/codex-seascape-design "<task>"` when you want the
+  specialist/critic lane in one command.
 - If an outside design tool introduces a new pattern or style direction, propose it as a `DESIGN.md` change first, then implement after that design law is explicit.
 
 ## Design System
 
 Before UI work, read `DESIGN.md`; treat it as the visual source of truth.
 Do not invent colors, fonts, spacing, border radius, shadows, or component styles unless Sawyer explicitly asks for a design-system change.
-If Claude Design, Stitch, designmd.directory, or another design tool produces a new direction, propose it as a `DESIGN.md` change first.
+If `seascape-design-specialist`, Claude Design, Stitch, designmd.directory, or another design tool produces a new direction, propose it as a `DESIGN.md` change first when it changes the visual law.
 
 ## Writeback Boundary
 
