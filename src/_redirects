@@ -316,7 +316,8 @@
 /area-guide-siesta-key  /guides/siesta-key-area-guide/  301
 /area-guide-siesta-key.html  /guides/siesta-key-area-guide/  301
 
-/stays/rentals-with-elevators/  /stays/vacation-rentals-with-elevator/  301
+/stays/rentals-with-elevators  /stays/accessible-vacation-rentals-florida/  301
+/stays/rentals-with-elevators/  /stays/accessible-vacation-rentals-florida/  301
 /stays/concierge-luxury-services/  /services/concierge-services/  301
 /stays/hurricane-preparedness-florida-vacation/  /guides/hurricane-preparedness-florida-vacation/  301
 /stays/travel-insurance-florida-vacation/  /guides/hurricane-preparedness-florida-vacation/  301
@@ -512,3 +513,7 @@
 /comments/feed   /   301
 /guidebook/   /guides/   301
 /guidebook   /guides/   301
+/stays/vacation-rentals-with-elevator  /stays/accessible-vacation-rentals-florida/  301
+/stays/vacation-rentals-with-elevator/  /stays/accessible-vacation-rentals-florida/  301
+/stays/vacation-rentals-with-fire-pit  /stays/vacation-rentals-with-outdoor-grill/  301
+/stays/vacation-rentals-with-fire-pit/  /stays/vacation-rentals-with-outdoor-grill/  301

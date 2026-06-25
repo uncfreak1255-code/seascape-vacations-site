@@ -28,7 +28,7 @@ test("guides hub surfaces the stranded guide and stay clusters instead of cappin
     "/guides/florida-gulf-coast-vacation-rental-market-report-2026/",
     "/guides/holmes-beach/",
     "/services/concierge-services/",
-    "vacation-rentals-with-elevator",
+    "accessible-vacation-rentals-florida",
     "week-long-vacation-rentals-florida"
   ]) {
     assert.equal(guidesHub.includes(marker), true, `guides hub missing ${marker}`);
@@ -115,7 +115,7 @@ test("strong guide pages link to the selected indexation rescue targets", () => 
 
   for (const marker of [
     "/stays/vacation-rentals-sleeps-12-florida/",
-    "/stays/vacation-rentals-with-elevator/"
+    "/stays/accessible-vacation-rentals-florida/"
   ]) {
     assert.equal(bradentonVsSarasota.includes(marker), true, `Bradenton vs Sarasota missing ${marker}`);
   }
