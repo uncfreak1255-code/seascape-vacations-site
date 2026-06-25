@@ -42,14 +42,14 @@
 ## Cluster In Scope
 
 - owner targets: `/property-management/condo-rental-management-florida/`, `/property-management/vacation-rental-maintenance-florida/`, `/property-management/vacation-rental-insurance-florida/`
-- stay targets: `/stays/vacation-rentals-sleeps-12-florida/`, `/stays/vacation-rentals-with-elevator/`, `/stays/canal-homes-with-boat-dock/`, `/stays/vacation-rentals-with-game-room/`
+- stay targets: `/stays/vacation-rentals-sleeps-12-florida/`, `/stays/accessible-vacation-rentals-florida/`, `/stays/canal-homes-with-boat-dock/`, `/stays/vacation-rentals-with-game-room/`
 - donor pages: `/guides/florida-gulf-coast-vacation-rental-market-report-2026/`, `/guides/bradenton-vs-sarasota/`, `/guides/things-to-do-bradenton-fl/`, and the `/property-management/` hub for the orphan backstop.
 
 ## Required Internal Link Map
 
 - src/property-management/index.njk: /property-management/condo-rental-management-florida/, /property-management/vacation-rental-management-fees-florida/
 - src/guides/florida-gulf-coast-vacation-rental-market-report-2026.html: /property-management/condo-rental-management-florida/, /property-management/vacation-rental-maintenance-florida/, /property-management/vacation-rental-insurance-florida/
-- src/guides/bradenton-vs-sarasota.html: /stays/vacation-rentals-sleeps-12-florida/, /stays/vacation-rentals-with-elevator/
+- src/guides/bradenton-vs-sarasota.html: /stays/vacation-rentals-sleeps-12-florida/, /stays/accessible-vacation-rentals-florida/
 - src/guides/things-to-do-bradenton-fl.html: /stays/canal-homes-with-boat-dock/, /stays/vacation-rentals-with-game-room/
 
 ## Source And Proof Constraints
@@ -61,7 +61,7 @@
 ## Page Builder Tasks
 
 - source files likely to change: selected guide HTML files, `src/property-management/index.njk`, this brief, and the focused indexation link-graph test.
-- redirect or schema work: none planned.
+- redirect work: retire `/stays/vacation-rentals-with-elevator/` to `/stays/accessible-vacation-rentals-florida/` and `/stays/vacation-rentals-with-fire-pit/` to `/stays/vacation-rentals-with-outdoor-grill/`; no schema work planned.
 - internal-link or CTA work: add natural contextual links only where the surrounding paragraph already discusses the target issue.
 
 ## Voice Editor Checklist
@@ -89,7 +89,7 @@
 
 ## Not In Scope
 
-- pruning, redirects, noindex decisions, or consolidation.
+- new pruning, noindex decisions, or consolidation beyond the two weak support-page redirects named above.
 - broad owner or stay copy rewrites.
 - title/meta CTR rewrites.
 - CWV, security headers, image dimensions, or any other audit item.

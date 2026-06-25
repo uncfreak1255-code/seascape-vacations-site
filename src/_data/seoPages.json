@@ -241,7 +241,7 @@
       "relatedStaySlugs": [
         "pet-friendly-vacation-rentals-bradenton",
         "vacation-rentals-near-anna-maria-island",
-        "vacation-rentals-with-fire-pit",
+        "vacation-rentals-with-outdoor-grill",
         "vacation-rentals-with-game-room",
         "downtown-sarasota-vacation-rentals"
       ]
@@ -991,7 +991,7 @@
       "geoIntro": "<p>Pet-friendly in Florida means something specific: a fenced yard, quiet walkable streets, and pet stores and trails close by. <strong>The Oasis</strong> in Bradenton has a fully fenced turf yard where a dog can run, sidewalks in a quiet residential neighborhood, and Robinson Preserve - 682 acres of coastal trails - about 7 minutes away for morning walks.</p><p>The Oasis is a 5-bedroom home sleeping 16, so it fits a large group traveling with a dog without anyone feeling cramped. The private pool, putting green, and game room are all on the same fenced lot. PetSmart and Petco are within 10 minutes for anything you forgot to pack.</p><p>Pet-friendly homes take one small dog (under 30 lbs) with prior approval, and the pet fee is $230 plus tax per stay. Tell us the dog's size and temperament when you inquire and we'll confirm the fit. Booking direct means you talk to the people who actually manage the property, not a platform intermediary.</p>",
       "relatedStaySlugs": [
         "vacation-rentals-near-anna-maria-island",
-        "vacation-rentals-with-fire-pit",
+        "vacation-rentals-with-outdoor-grill",
         "vacation-rentals-with-game-room",
         "downtown-sarasota-vacation-rentals",
         "luxury-vacation-rentals-sarasota"
@@ -1103,7 +1103,7 @@
       "relatedStaySlugs": [
         "vacation-rentals-sleeps-12-florida",
         "vacation-rentals-sleeps-16-florida",
-        "vacation-rentals-with-elevator",
+        "accessible-vacation-rentals-florida",
         "vacation-rentals-with-outdoor-grill",
         "vacation-rentals-with-pool-and-hot-tub"
       ]
@@ -1284,7 +1284,7 @@
       "collectionCtaLabel": "Compare Direct Dates Near AMI",
       "geoIntro": "<p>Book direct and the same dates usually cost 10-15% less than Airbnb or VRBO. You give up a walk-out island address, but you keep more house, easier parking, and a private pool.</p>",
       "relatedStaySlugs": [
-        "vacation-rentals-with-fire-pit",
+        "vacation-rentals-with-outdoor-grill",
         "vacation-rentals-with-game-room",
         "downtown-sarasota-vacation-rentals",
         "luxury-vacation-rentals-sarasota",
@@ -1581,7 +1581,7 @@
         "large-group-vacation-rentals-bradenton",
         "pet-friendly-vacation-rentals-bradenton",
         "vacation-rentals-near-anna-maria-island",
-        "vacation-rentals-with-fire-pit"
+        "vacation-rentals-with-outdoor-grill"
       ]
     },
     {
@@ -1639,7 +1639,7 @@
       "geoIntro": "<p>Sleeping 12 in a single home narrows the options fast. Hotels scatter a group across rooms on different floors; most vacation condos cap at 6-8. The three Seascape homes that hold 12 each have 4 bedrooms and 3+ bathrooms, and they cover two markets: Bradenton (near Anna Maria Island) and downtown Sarasota.</p><p><strong>Dockside Dreams</strong> (Bradenton) is the waterfront option - private dock, pool, hot tub, and arcade. Bradenton Beach is 2.9 miles away. <strong>River House</strong> (Bradenton) is a minute from a public boat ramp on the Manatee River, with a pool, hot tub, and game room; AMI beaches are about 15 minutes away. <strong>Sarasota Luxe</strong> (downtown Sarasota) trades beach proximity for walkable access to Sarasota restaurants, galleries, and the Bayfront - with a pool, hot tub, and screened lanai. Lido Beach is about 3 miles, 10 minutes.</p><p>The choice between Bradenton and Sarasota is mostly about how you'll spend your time. Beach-heavy trip: the Bradenton homes are the base. Mix of beach days and city dinners: Sarasota Luxe fits better. Rates split among 12 guests bring per-person cost well below hotel alternatives, with none of the shared-hallway tradeoffs.</p>",
       "relatedStaySlugs": [
         "vacation-rentals-sleeps-16-florida",
-        "vacation-rentals-with-elevator",
+        "accessible-vacation-rentals-florida",
         "vacation-rentals-with-outdoor-grill",
         "vacation-rentals-with-pool-and-hot-tub",
         "week-long-vacation-rentals-florida"
@@ -1683,7 +1683,7 @@
       ],
       "geoIntro": "<p>When your group reaches 16 people, accommodation options shrink fast \u2014 except in vacation rentals. Our flagship property, <strong>The Oasis</strong>, sleeps up to 16 guests across 5 bedrooms and 3 bathrooms, with a resort-style pool, hot tub, game room, and massive outdoor living area designed for big groups.</p><p>At roughly $25\u2013$50 per person per night, a 16-person vacation home is a fraction of what you'd spend on hotel rooms \u2014 and infinitely more fun. Book direct with <strong>Seascape Vacations</strong> and save 10\u201315%.</p>",
       "relatedStaySlugs": [
-        "vacation-rentals-with-elevator",
+        "accessible-vacation-rentals-florida",
         "vacation-rentals-with-outdoor-grill",
         "vacation-rentals-with-pool-and-hot-tub",
         "week-long-vacation-rentals-florida",
@@ -2300,7 +2300,7 @@
         "large-group-vacation-rentals-bradenton",
         "pet-friendly-vacation-rentals-bradenton",
         "vacation-rentals-near-anna-maria-island",
-        "vacation-rentals-with-fire-pit",
+        "vacation-rentals-with-outdoor-grill",
         "vacation-rentals-with-game-room"
       ]
     },
@@ -2561,7 +2561,7 @@
         "snowbird-rentals-florida-gulf-coast",
         "vacation-rentals-sleeps-12-florida",
         "vacation-rentals-sleeps-16-florida",
-        "vacation-rentals-with-elevator"
+        "accessible-vacation-rentals-florida"
       ]
     },
     {
@@ -2851,7 +2851,7 @@
         "snowbird-rentals-florida-gulf-coast",
         "vacation-rentals-sleeps-12-florida",
         "vacation-rentals-sleeps-16-florida",
-        "vacation-rentals-with-elevator",
+        "accessible-vacation-rentals-florida",
         "vacation-rentals-with-outdoor-grill"
       ]
     },
@@ -3015,6 +3015,7 @@
     },
     {
       "slug": "vacation-rentals-with-fire-pit",
+      "rehomeTo": "/stays/vacation-rentals-with-outdoor-grill/",
       "destination": "bradenton",
       "title": "Florida Vacation Rentals with Fire Pit",
       "h1": "Vacation Homes with Outdoor Fire Pits",
@@ -3199,6 +3200,7 @@
     },
     {
       "slug": "vacation-rentals-with-elevator",
+      "rehomeTo": "/stays/accessible-vacation-rentals-florida/",
       "destination": null,
       "title": "Florida Vacation Rentals with Elevator Access",
       "h1": "Accessible Vacation Homes with Elevators",
