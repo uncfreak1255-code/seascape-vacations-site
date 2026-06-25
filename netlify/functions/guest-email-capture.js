@@ -47,6 +47,16 @@ function parseAudienceIds(value) {
     .filter(Boolean);
 }
 
+function buildGuestCaptureLogContext(payload) {
+  return {
+    hasPagePath: Boolean(payload && typeof payload.pagePath === "string" && payload.pagePath.trim()),
+    hasPlacement: Boolean(payload && typeof payload.placement === "string" && payload.placement.trim()),
+    hasSourcePageSlug: Boolean(payload && typeof payload.sourcePageSlug === "string" && payload.sourcePageSlug.trim()),
+    hasName: Boolean(payload && typeof payload.name === "string" && payload.name.trim()),
+    hasEmail: Boolean(payload && typeof payload.email === "string" && payload.email.trim())
+  };
+}
+
 function buildMailchimpConfig(env = process.env) {
   const apiKey = String(env.MAILCHIMP_API_KEY || "").trim();
   const serverPrefix = deriveMailchimpServerPrefix(apiKey, env.MAILCHIMP_SERVER_PREFIX);
@@ -126,6 +136,18 @@ async function submitToMailchimpForm(payload, injectedFetch) {
     tags: [],
     eventName: null
   };
+}
+
+async function submitToMailchimpFormWithLogging(payload, reason, injectedFetch) {
+  try {
+    return await submitToMailchimpForm(payload, injectedFetch);
+  } catch (error) {
+    console.error("mailchimp_legacy_form_submit_failed", {
+      reason,
+      message: error && error.message ? error.message : String(error)
+    });
+    throw error;
+  }
 }
 
 async function submitToMailchimpApi(payload, receipt, config, injectedFetch) {
@@ -214,7 +236,11 @@ async function submitToMailchimp(payload, receipt, injectedFetch) {
   const config = buildMailchimpConfig();
   if (!config) {
     logMailchimpFallback("marketing_api_unconfigured");
-    const fallbackResult = await submitToMailchimpForm(payload, injectedFetch);
+    const fallbackResult = await submitToMailchimpFormWithLogging(
+      payload,
+      "marketing_api_unconfigured",
+      injectedFetch
+    );
     return {
       ...fallbackResult,
       warnings: ["marketing_api_unconfigured"]
@@ -228,7 +254,11 @@ async function submitToMailchimp(payload, receipt, injectedFetch) {
       message: error && error.message ? error.message : String(error)
     });
     logMailchimpFallback("marketing_api_submit_failed", error);
-    const fallbackResult = await submitToMailchimpForm(payload, injectedFetch);
+    const fallbackResult = await submitToMailchimpFormWithLogging(
+      payload,
+      "marketing_api_submit_failed",
+      injectedFetch
+    );
     return {
       ...fallbackResult,
       warnings: ["marketing_api_submit_failed"]
@@ -238,11 +268,17 @@ async function submitToMailchimp(payload, receipt, injectedFetch) {
 
 async function handleGuestEmailCapture(event, _context, injectedStore, injectedFetch) {
   if (event.httpMethod !== "POST") {
+    console.warn("guest_capture_method_not_allowed", {
+      httpMethod: event && event.httpMethod ? event.httpMethod : "unknown"
+    });
     return { statusCode: 405, body: "Method Not Allowed" };
   }
 
   const payload = parseRequestBody(event);
   if (!payload) {
+    console.warn("guest_capture_invalid_json", {
+      bodyLength: typeof event.body === "string" ? event.body.length : 0
+    });
     return {
       statusCode: 400,
       headers: { "content-type": "application/json; charset=utf-8" },
@@ -252,6 +288,7 @@ async function handleGuestEmailCapture(event, _context, injectedStore, injectedF
 
   const receipt = buildGuestEmailCaptureReceipt(payload);
   if (!receipt) {
+    console.warn("guest_capture_invalid_payload", buildGuestCaptureLogContext(payload));
     return {
       statusCode: 400,
       body: JSON.stringify({ stored: false, reason: "invalid_payload" })

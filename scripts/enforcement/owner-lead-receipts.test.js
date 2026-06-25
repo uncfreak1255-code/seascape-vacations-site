@@ -24,6 +24,21 @@ const {
 
 const projectRoot = path.resolve(__dirname, "..", "..");
 
+function patchConsoleMethod(methodName) {
+  const original = console[methodName];
+  const calls = [];
+  console[methodName] = (...args) => {
+    calls.push(args);
+  };
+
+  return {
+    calls,
+    restore() {
+      console[methodName] = original;
+    }
+  };
+}
+
 test("owner lead helper only accepts the owner revenue review form and strips PII", () => {
   const receipt = buildOwnerLeadReceipt({
     id: "submission-123",
@@ -221,6 +236,36 @@ test("submission-created fails open when owner metrics storage is unavailable", 
   assert.equal(body.sourcePageSlug, "owner-fee-revenue-leak-benchmark-2026");
 });
 
+test("submission-created returns invalid_json and logs malformed request bodies", async () => {
+  const errorLogs = patchConsoleMethod("error");
+
+  try {
+    const response = await handleSubmissionCreated(
+      {
+        body: "{not json"
+      },
+      undefined,
+      {
+        async get() {
+          throw new Error("store should not be used");
+        }
+      }
+    );
+
+    assert.equal(response.statusCode, 400);
+    assert.deepEqual(JSON.parse(response.body), {
+      stored: false,
+      reason: "invalid_json"
+    });
+    assert.equal(errorLogs.calls.length, 1);
+    assert.equal(errorLogs.calls[0][0], "owner_lead_invalid_json");
+    assert.equal(errorLogs.calls[0][1].bodyLength, 9);
+    assert.match(errorLogs.calls[0][1].message, /Unexpected token|Expected property name/);
+  } finally {
+    errorLogs.restore();
+  }
+});
+
 test("owner lead summary exposes only aggregate counts and sanitized receipts", () => {
   const summary = formatOwnerLeadSummary({
     totalSubmissions: 1,
@@ -331,6 +376,8 @@ test("owner lead blobs config helper reads explicit server-side fallback credent
 });
 
 test("owner lead proof label handler requires auth and relabels the requested stored receipts", async () => {
+  const warningLogs = patchConsoleMethod("warn");
+  const infoLogs = patchConsoleMethod("log");
   let storedMetrics = JSON.stringify({
     totalSubmissions: 2,
     bySourcePageSlug: {
@@ -395,12 +442,28 @@ test("owner lead proof label handler requires auth and relabels the requested st
 
   delete process.env.OWNER_LEAD_METRICS_TOKEN;
 
-  assert.equal(unauthorized.statusCode, 401);
-  assert.equal(response.statusCode, 200);
-  assert.deepEqual(JSON.parse(response.body).updatedSubmissionIds, ["submission-1"]);
-  const parsedMetrics = JSON.parse(storedMetrics);
-  assert.equal(parsedMetrics.receipts[0].proofLabel, "codex-owner-proof-2026");
-  assert.equal(parsedMetrics.receipts[1].proofLabel, undefined);
+  try {
+    assert.equal(unauthorized.statusCode, 401);
+    assert.equal(response.statusCode, 200);
+    assert.deepEqual(JSON.parse(response.body).updatedSubmissionIds, ["submission-1"]);
+    const parsedMetrics = JSON.parse(storedMetrics);
+    assert.equal(parsedMetrics.receipts[0].proofLabel, "codex-owner-proof-2026");
+    assert.equal(parsedMetrics.receipts[1].proofLabel, undefined);
+    assert.deepEqual(warningLogs.calls, [[
+      "owner_lead_proof_label_unauthorized",
+      { hasAuthToken: true }
+    ]]);
+    assert.deepEqual(infoLogs.calls, [[
+      "owner_lead_proof_label_updated",
+      {
+        requestedSubmissionIdsCount: 2,
+        updatedCount: 1
+      }
+    ]]);
+  } finally {
+    warningLogs.restore();
+    infoLogs.restore();
+  }
 });
 
 test("submission-created stores sanitized owner lead metrics and ignores duplicates", async () => {
@@ -433,43 +496,55 @@ test("submission-created stores sanitized owner lead metrics and ignores duplica
       }
     })
   };
+  const warningLogs = patchConsoleMethod("warn");
 
-  const firstResponse = await handleSubmissionCreated(ownerEvent, undefined, mockStore);
-  const duplicateResponse = await handleSubmissionCreated(ownerEvent, undefined, mockStore);
-  const ignoredResponse = await handleSubmissionCreated(
-    {
-      body: JSON.stringify({
-        payload: {
-          id: "submission-2",
-          form_name: "newsletter-signup",
-          created_at: "2026-05-12T13:00:00.000Z",
-          data: { email: "guest@example.com" }
-        }
-      })
-    },
-    undefined,
-    mockStore
-  );
+  try {
+    const firstResponse = await handleSubmissionCreated(ownerEvent, undefined, mockStore);
+    const duplicateResponse = await handleSubmissionCreated(ownerEvent, undefined, mockStore);
+    const ignoredResponse = await handleSubmissionCreated(
+      {
+        body: JSON.stringify({
+          payload: {
+            id: "submission-2",
+            form_name: "newsletter-signup",
+            created_at: "2026-05-12T13:00:00.000Z",
+            data: { email: "guest@example.com" }
+          }
+        })
+      },
+      undefined,
+      mockStore
+    );
 
-  assert.deepEqual(JSON.parse(firstResponse.body), {
-    stored: true,
-    totalSubmissions: 1,
-    sourcePageSlug: "owner-fee-revenue-leak-benchmark-2026"
-  });
-  assert.deepEqual(JSON.parse(duplicateResponse.body), {
-    stored: true,
-    totalSubmissions: 1,
-    sourcePageSlug: "owner-fee-revenue-leak-benchmark-2026"
-  });
-  assert.deepEqual(JSON.parse(ignoredResponse.body), {
-    stored: false,
-    reason: "ignored_form"
-  });
-  const parsedMetrics = JSON.parse(storedMetrics);
-  assert.equal(parsedMetrics.totalSubmissions, 1);
-  assert.equal(parsedMetrics.receipts[0].sourcePageSlug, "owner-fee-revenue-leak-benchmark-2026");
-  assert.equal(parsedMetrics.receipts[0].proofLabel, "codex-owner-proof-2026");
-  assert.equal("email" in parsedMetrics.receipts[0], false);
+    assert.deepEqual(JSON.parse(firstResponse.body), {
+      stored: true,
+      totalSubmissions: 1,
+      sourcePageSlug: "owner-fee-revenue-leak-benchmark-2026"
+    });
+    assert.deepEqual(JSON.parse(duplicateResponse.body), {
+      stored: true,
+      totalSubmissions: 1,
+      sourcePageSlug: "owner-fee-revenue-leak-benchmark-2026"
+    });
+    assert.deepEqual(JSON.parse(ignoredResponse.body), {
+      stored: false,
+      reason: "ignored_form"
+    });
+    const parsedMetrics = JSON.parse(storedMetrics);
+    assert.equal(parsedMetrics.totalSubmissions, 1);
+    assert.equal(parsedMetrics.receipts[0].sourcePageSlug, "owner-fee-revenue-leak-benchmark-2026");
+    assert.equal(parsedMetrics.receipts[0].proofLabel, "codex-owner-proof-2026");
+    assert.equal("email" in parsedMetrics.receipts[0], false);
+    assert.deepEqual(warningLogs.calls, [[
+      "owner_lead_payload_ignored",
+      {
+        formName: "newsletter-signup",
+        hasSubmissionId: true
+      }
+    ]]);
+  } finally {
+    warningLogs.restore();
+  }
 });
 
 test("submission-created ignores the Netlify context object and still uses an injected mock store when provided separately", async () => {
@@ -546,6 +621,7 @@ test("owner lead metrics handler requires auth token and returns sanitized summa
   const metricsModulePath = require.resolve("../../netlify/functions/owner-lead-metrics");
   delete require.cache[metricsModulePath];
   const { handleOwnerLeadMetricsRequest } = require("../../netlify/functions/owner-lead-metrics");
+  const warningLogs = patchConsoleMethod("warn");
 
   const mockStore = {
     async get(key) {
@@ -585,30 +661,37 @@ test("owner lead metrics handler requires auth token and returns sanitized summa
     mockStore
   );
 
-  assert.equal(unauthorized.statusCode, 401);
-  assert.equal(authorized.statusCode, 200);
-  assert.deepEqual(JSON.parse(authorized.body), {
-    totalSubmissions: 1,
-    totalEvents: 1,
-    bySourcePageSlug: {
-      "owner-fee-revenue-leak-benchmark-2026": 1
-    },
-    funnelBySourcePageSlug: {},
-    receipts: [
-      {
-        submissionId: "submission-1",
-        createdAt: "2026-05-12T12:00:00.000Z",
-        eventName: "owner_form_submit",
-        pageSlug: "property-management",
-        sourcePageSlug: "owner-fee-revenue-leak-benchmark-2026",
-        market: "florida-gulf-coast",
-        leadType: "owner-revenue-teardown"
-      }
-    ]
-  });
-
-  delete process.env.OWNER_LEAD_METRICS_TOKEN;
-  delete require.cache[metricsModulePath];
+  try {
+    assert.equal(unauthorized.statusCode, 401);
+    assert.equal(authorized.statusCode, 200);
+    assert.deepEqual(JSON.parse(authorized.body), {
+      totalSubmissions: 1,
+      totalEvents: 1,
+      bySourcePageSlug: {
+        "owner-fee-revenue-leak-benchmark-2026": 1
+      },
+      funnelBySourcePageSlug: {},
+      receipts: [
+        {
+          submissionId: "submission-1",
+          createdAt: "2026-05-12T12:00:00.000Z",
+          eventName: "owner_form_submit",
+          pageSlug: "property-management",
+          sourcePageSlug: "owner-fee-revenue-leak-benchmark-2026",
+          market: "florida-gulf-coast",
+          leadType: "owner-revenue-teardown"
+        }
+      ]
+    });
+    assert.deepEqual(warningLogs.calls, [[
+      "owner_lead_metrics_unauthorized",
+      { hasAuthToken: false }
+    ]]);
+  } finally {
+    warningLogs.restore();
+    delete process.env.OWNER_LEAD_METRICS_TOKEN;
+    delete require.cache[metricsModulePath];
+  }
 });
 
 test("owner lead metrics handler ignores Netlify context objects and still honors an injected mock store", async () => {
@@ -648,4 +731,152 @@ test("owner lead metrics handler ignores Netlify context objects and still honor
 
   delete process.env.OWNER_LEAD_METRICS_TOKEN;
   delete require.cache[metricsModulePath];
+});
+
+test("owner lead metrics handler logs missing token configuration", async () => {
+  delete process.env.OWNER_LEAD_METRICS_TOKEN;
+  const metricsModulePath = require.resolve("../../netlify/functions/owner-lead-metrics");
+  delete require.cache[metricsModulePath];
+  const { handleOwnerLeadMetricsRequest } = require("../../netlify/functions/owner-lead-metrics");
+  const errorLogs = patchConsoleMethod("error");
+
+  try {
+    const response = await handleOwnerLeadMetricsRequest(
+      {
+        httpMethod: "GET",
+        headers: {}
+      },
+      undefined,
+      {
+        async get() {
+          throw new Error("store should not be used");
+        }
+      }
+    );
+
+    assert.equal(response.statusCode, 503);
+    assert.deepEqual(errorLogs.calls, [["owner_lead_metrics_token_missing"]]);
+  } finally {
+    errorLogs.restore();
+    delete require.cache[metricsModulePath];
+  }
+});
+
+test("owner lead proof label handler logs missing token configuration", async () => {
+  delete process.env.OWNER_LEAD_METRICS_TOKEN;
+  const errorLogs = patchConsoleMethod("error");
+
+  try {
+    const response = await handleOwnerLeadProofLabelRequest(
+      {
+        httpMethod: "POST",
+        headers: {},
+        body: JSON.stringify({
+          submissionIds: ["submission-1"],
+          proofLabel: "Codex Owner Proof 2026"
+        })
+      },
+      undefined,
+      {
+        async get() {
+          throw new Error("store should not be used");
+        },
+        async set() {
+          throw new Error("store should not be used");
+        }
+      }
+    );
+
+    assert.equal(response.statusCode, 503);
+    assert.deepEqual(errorLogs.calls, [["owner_lead_proof_label_token_missing"]]);
+  } finally {
+    errorLogs.restore();
+  }
+});
+
+test("owner lead proof label handler logs invalid payloads", async () => {
+  process.env.OWNER_LEAD_METRICS_TOKEN = "owner-secret";
+  const warningLogs = patchConsoleMethod("warn");
+
+  try {
+    const response = await handleOwnerLeadProofLabelRequest(
+      {
+        httpMethod: "POST",
+        headers: { authorization: "Bearer owner-secret" },
+        body: JSON.stringify({ proofLabel: "Codex Owner Proof 2026" })
+      },
+      undefined,
+      {
+        async get() {
+          throw new Error("store should not be used");
+        },
+        async set() {
+          throw new Error("store should not be used");
+        }
+      }
+    );
+
+    assert.equal(response.statusCode, 400);
+    assert.deepEqual(JSON.parse(response.body), {
+      updated: false,
+      reason: "invalid_payload"
+    });
+    assert.deepEqual(warningLogs.calls, [[
+      "owner_lead_proof_label_invalid_payload",
+      {
+        requestedSubmissionIdsCount: 0,
+        hasProofLabel: true
+      }
+    ]]);
+  } finally {
+    warningLogs.restore();
+    delete process.env.OWNER_LEAD_METRICS_TOKEN;
+  }
+});
+
+test("owner lead proof label handler logs update failures", async () => {
+  process.env.OWNER_LEAD_METRICS_TOKEN = "owner-secret";
+  const errorLogs = patchConsoleMethod("error");
+
+  try {
+    await assert.rejects(
+      handleOwnerLeadProofLabelRequest(
+        {
+          httpMethod: "POST",
+          headers: { authorization: "Bearer owner-secret" },
+          body: JSON.stringify({
+            submissionIds: ["submission-1"],
+            proofLabel: "Codex Owner Proof 2026"
+          })
+        },
+        undefined,
+        {
+          async get() {
+            return {
+              totalSubmissions: 1,
+              bySourcePageSlug: {
+                "owner-fee-revenue-leak-benchmark-2026": 1
+              },
+              receipts: []
+            };
+          },
+          async set() {
+            throw new Error("owner proof label write failed");
+          }
+        }
+      ),
+      /owner proof label write failed/
+    );
+
+    assert.deepEqual(errorLogs.calls, [[
+      "owner_lead_proof_label_update_failed",
+      {
+        requestedSubmissionIdsCount: 1,
+        message: "owner proof label write failed"
+      }
+    ]]);
+  } finally {
+    errorLogs.restore();
+    delete process.env.OWNER_LEAD_METRICS_TOKEN;
+  }
 });

@@ -63,6 +63,21 @@ function restoreEnvValue(name, value) {
   process.env[name] = value;
 }
 
+function patchConsoleMethod(methodName) {
+  const original = console[methodName];
+  const calls = [];
+  console[methodName] = (...args) => {
+    calls.push(args);
+  };
+
+  return {
+    calls,
+    restore() {
+      console[methodName] = original;
+    }
+  };
+}
+
 test("guest capture helper strips PII and normalizes page fields", () => {
   const receipt = buildGuestEmailCaptureReceipt({
     name: "Sawyer Beck",
@@ -665,53 +680,172 @@ test("guest capture mailchimp delivery metadata is sanitized before storage", ()
 });
 
 test("guest email capture returns invalid payload when name/email are missing", async () => {
-  const response = await handleGuestEmailCapture(
-    {
-      httpMethod: "POST",
-      body: JSON.stringify({
-        pagePath: "/guides/bradenton-vs-sarasota/"
-      })
-    },
-    undefined,
-    {
-      async get() {
-        throw new Error("store should not be used");
-      },
-      async set() {
-        throw new Error("store should not be used");
-      }
-    },
-    async () => ({ ok: true, status: 200 })
-  );
+  const warningLogs = patchConsoleMethod("warn");
 
-  assert.deepEqual(JSON.parse(response.body), {
-    stored: false,
-    reason: "invalid_payload"
-  });
+  try {
+    const response = await handleGuestEmailCapture(
+      {
+        httpMethod: "POST",
+        body: JSON.stringify({
+          pagePath: "/guides/bradenton-vs-sarasota/"
+        })
+      },
+      undefined,
+      {
+        async get() {
+          throw new Error("store should not be used");
+        },
+        async set() {
+          throw new Error("store should not be used");
+        }
+      },
+      async () => ({ ok: true, status: 200 })
+    );
+
+    assert.deepEqual(JSON.parse(response.body), {
+      stored: false,
+      reason: "invalid_payload"
+    });
+    assert.deepEqual(warningLogs.calls, [[
+      "guest_capture_invalid_payload",
+      {
+        hasPagePath: true,
+        hasPlacement: false,
+        hasSourcePageSlug: false,
+        hasName: false,
+        hasEmail: false
+      }
+    ]]);
+  } finally {
+    warningLogs.restore();
+  }
+});
+
+test("guest email capture logs method mismatches before returning 405", async () => {
+  const warningLogs = patchConsoleMethod("warn");
+
+  try {
+    const response = await handleGuestEmailCapture(
+      {
+        httpMethod: "GET",
+        body: ""
+      },
+      undefined,
+      {
+        async get() {
+          throw new Error("store should not be used");
+        },
+        async set() {
+          throw new Error("store should not be used");
+        }
+      },
+      async () => ({ ok: true, status: 200 })
+    );
+
+    assert.equal(response.statusCode, 405);
+    assert.deepEqual(warningLogs.calls, [[
+      "guest_capture_method_not_allowed",
+      { httpMethod: "GET" }
+    ]]);
+  } finally {
+    warningLogs.restore();
+  }
 });
 
 test("guest email capture rejects malformed json before touching the store", async () => {
-  const response = await handleGuestEmailCapture(
-    {
-      httpMethod: "POST",
-      body: "{not json"
-    },
-    undefined,
-    {
-      async get() {
-        throw new Error("store should not be used");
-      },
-      async set() {
-        throw new Error("store should not be used");
-      }
-    },
-    async () => ({ ok: true, status: 200 })
-  );
+  const warningLogs = patchConsoleMethod("warn");
 
-  assert.equal(response.statusCode, 400);
-  assert.deepEqual(JSON.parse(response.body), {
-    error: "invalid_json"
-  });
+  try {
+    const response = await handleGuestEmailCapture(
+      {
+        httpMethod: "POST",
+        body: "{not json"
+      },
+      undefined,
+      {
+        async get() {
+          throw new Error("store should not be used");
+        },
+        async set() {
+          throw new Error("store should not be used");
+        }
+      },
+      async () => ({ ok: true, status: 200 })
+    );
+
+    assert.equal(response.statusCode, 400);
+    assert.deepEqual(JSON.parse(response.body), {
+      error: "invalid_json"
+    });
+    assert.deepEqual(warningLogs.calls, [[
+      "guest_capture_invalid_json",
+      { bodyLength: 9 }
+    ]]);
+  } finally {
+    warningLogs.restore();
+  }
+});
+
+test("guest email capture logs when the legacy Mailchimp fallback submit also fails", async () => {
+  const previousApiKey = process.env.MAILCHIMP_API_KEY;
+  const previousAudienceId = process.env.MAILCHIMP_AUDIENCE_ID;
+  const previousAudienceIds = process.env.MAILCHIMP_AUDIENCE_IDS;
+  const previousServerPrefix = process.env.MAILCHIMP_SERVER_PREFIX;
+  const warningLogs = patchConsoleMethod("warn");
+  const errorLogs = patchConsoleMethod("error");
+  delete process.env.MAILCHIMP_API_KEY;
+  delete process.env.MAILCHIMP_AUDIENCE_ID;
+  delete process.env.MAILCHIMP_AUDIENCE_IDS;
+  delete process.env.MAILCHIMP_SERVER_PREFIX;
+
+  try {
+    await assert.rejects(
+      handleGuestEmailCapture(
+        {
+          httpMethod: "POST",
+          body: JSON.stringify({
+            name: "Sawyer",
+            email: "sawyer@example.com",
+            pagePath: "/",
+            placement: "popup"
+          })
+        },
+        undefined,
+        {
+          async get() {
+            throw new Error("store should not be used");
+          },
+          async set() {
+            throw new Error("store should not be used");
+          }
+        },
+        async () => ({ ok: false, status: 500 })
+      ),
+      /Mailchimp submission failed with status 500/
+    );
+
+    assert.deepEqual(warningLogs.calls, [[
+      "mailchimp_legacy_form_fallback",
+      {
+        reason: "marketing_api_unconfigured",
+        message: undefined
+      }
+    ]]);
+    assert.deepEqual(errorLogs.calls, [[
+      "mailchimp_legacy_form_submit_failed",
+      {
+        reason: "marketing_api_unconfigured",
+        message: "Mailchimp submission failed with status 500"
+      }
+    ]]);
+  } finally {
+    warningLogs.restore();
+    errorLogs.restore();
+    restoreEnvValue("MAILCHIMP_API_KEY", previousApiKey);
+    restoreEnvValue("MAILCHIMP_AUDIENCE_ID", previousAudienceId);
+    restoreEnvValue("MAILCHIMP_AUDIENCE_IDS", previousAudienceIds);
+    restoreEnvValue("MAILCHIMP_SERVER_PREFIX", previousServerPrefix);
+  }
 });
 
 test("guest email capture returns stored false when metrics write fails after Mailchimp success", async () => {
@@ -955,48 +1089,279 @@ test("guest capture metrics endpoint falls back to the owner metrics token", asy
   delete require.cache[metricsModulePath];
 });
 
+test("guest capture metrics endpoint logs missing token configuration", async () => {
+  delete process.env.OWNER_LEAD_METRICS_TOKEN;
+  delete process.env.GUEST_EMAIL_CAPTURE_METRICS_TOKEN;
+
+  const metricsModulePath = require.resolve("../../netlify/functions/guest-email-capture-metrics");
+  delete require.cache[metricsModulePath];
+  const { handleGuestEmailCaptureMetricsRequest } = require("../../netlify/functions/guest-email-capture-metrics");
+  const errorLogs = patchConsoleMethod("error");
+
+  try {
+    const response = await handleGuestEmailCaptureMetricsRequest(
+      {
+        httpMethod: "GET",
+        headers: {}
+      },
+      undefined,
+      {
+        async get() {
+          throw new Error("store should not be used");
+        }
+      }
+    );
+
+    assert.equal(response.statusCode, 503);
+    assert.deepEqual(errorLogs.calls, [["guest_capture_metrics_token_missing"]]);
+  } finally {
+    errorLogs.restore();
+    delete require.cache[metricsModulePath];
+  }
+});
+
+test("guest capture metrics endpoint logs unauthorized reads", async () => {
+  process.env.GUEST_EMAIL_CAPTURE_METRICS_TOKEN = "guest-secret";
+
+  const metricsModulePath = require.resolve("../../netlify/functions/guest-email-capture-metrics");
+  delete require.cache[metricsModulePath];
+  const { handleGuestEmailCaptureMetricsRequest } = require("../../netlify/functions/guest-email-capture-metrics");
+  const warningLogs = patchConsoleMethod("warn");
+
+  try {
+    const response = await handleGuestEmailCaptureMetricsRequest(
+      {
+        httpMethod: "GET",
+        headers: {}
+      },
+      undefined,
+      {
+        async get() {
+          throw new Error("store should not be used");
+        }
+      }
+    );
+
+    assert.equal(response.statusCode, 401);
+    assert.deepEqual(warningLogs.calls, [[
+      "guest_capture_metrics_unauthorized",
+      { hasAuthToken: false }
+    ]]);
+  } finally {
+    warningLogs.restore();
+    delete process.env.GUEST_EMAIL_CAPTURE_METRICS_TOKEN;
+    delete require.cache[metricsModulePath];
+  }
+});
+
+test("guest capture proof-label endpoint logs invalid payloads", async () => {
+  process.env.OWNER_LEAD_METRICS_TOKEN = "owner-secret";
+  const warningLogs = patchConsoleMethod("warn");
+
+  try {
+    const response = await handleGuestEmailCaptureProofLabelRequest(
+      {
+        httpMethod: "POST",
+        headers: { authorization: "Bearer owner-secret" },
+        body: JSON.stringify({ proofLabel: "Codex Guest Proof 2026" })
+      },
+      undefined,
+      {
+        async get() {
+          throw new Error("store should not be used");
+        },
+        async set() {
+          throw new Error("store should not be used");
+        }
+      }
+    );
+
+    assert.equal(response.statusCode, 400);
+    assert.deepEqual(JSON.parse(response.body), {
+      updated: false,
+      reason: "invalid_payload"
+    });
+    assert.deepEqual(warningLogs.calls, [[
+      "guest_capture_proof_label_invalid_payload",
+      {
+        requestedSubmissionIdsCount: 0,
+        hasProofLabel: true
+      }
+    ]]);
+  } finally {
+    warningLogs.restore();
+    delete process.env.OWNER_LEAD_METRICS_TOKEN;
+  }
+});
+
+test("guest capture proof-label endpoint logs missing token configuration", async () => {
+  delete process.env.OWNER_LEAD_METRICS_TOKEN;
+  delete process.env.GUEST_EMAIL_CAPTURE_METRICS_TOKEN;
+  const errorLogs = patchConsoleMethod("error");
+
+  try {
+    const response = await handleGuestEmailCaptureProofLabelRequest(
+      {
+        httpMethod: "POST",
+        headers: {},
+        body: JSON.stringify({
+          submissionIds: ["capture-1"],
+          proofLabel: "Codex Guest Proof 2026"
+        })
+      },
+      undefined,
+      {
+        async get() {
+          throw new Error("store should not be used");
+        },
+        async set() {
+          throw new Error("store should not be used");
+        }
+      }
+    );
+
+    assert.equal(response.statusCode, 503);
+    assert.deepEqual(errorLogs.calls, [["guest_capture_proof_label_token_missing"]]);
+  } finally {
+    errorLogs.restore();
+  }
+});
+
+test("guest capture proof-label endpoint logs unauthorized writes", async () => {
+  process.env.OWNER_LEAD_METRICS_TOKEN = "owner-secret";
+  const warningLogs = patchConsoleMethod("warn");
+
+  try {
+    const response = await handleGuestEmailCaptureProofLabelRequest(
+      {
+        httpMethod: "POST",
+        headers: { authorization: "Bearer wrong-secret" },
+        body: JSON.stringify({
+          submissionIds: ["capture-1"],
+          proofLabel: "Codex Guest Proof 2026"
+        })
+      },
+      undefined,
+      {
+        async get() {
+          throw new Error("store should not be used");
+        },
+        async set() {
+          throw new Error("store should not be used");
+        }
+      }
+    );
+
+    assert.equal(response.statusCode, 401);
+    assert.deepEqual(warningLogs.calls, [[
+      "guest_capture_proof_label_unauthorized",
+      { hasAuthToken: true }
+    ]]);
+  } finally {
+    warningLogs.restore();
+    delete process.env.OWNER_LEAD_METRICS_TOKEN;
+  }
+});
+
 test("guest capture proof-label endpoint relabels matching receipts behind owner token fallback", async () => {
   process.env.OWNER_LEAD_METRICS_TOKEN = "owner-secret";
+  const infoLogs = patchConsoleMethod("log");
 
-  const response = await handleGuestEmailCaptureProofLabelRequest(
-    {
-      httpMethod: "POST",
-      headers: { authorization: "Bearer owner-secret" },
-      body: JSON.stringify({
-        submissionIds: ["capture-1"],
-        proofLabel: "Codex Guest Proof 2026"
-      })
-    },
-    undefined,
-    {
-      async get() {
-        return {
-          totalCaptures: 1,
-          byPagePath: { "/": 1 },
-          byPlacement: { popup: 1 },
-          receipts: [
-            {
-              submissionId: "capture-1",
-              createdAt: "2026-05-12T12:00:00.000Z",
-              pagePath: "/",
-              pageSlug: "home",
-              guideSlug: "",
-              sourcePageSlug: "home",
-              market: "florida-gulf-coast",
-              placement: "popup"
-            }
-          ]
-        };
+  try {
+    const response = await handleGuestEmailCaptureProofLabelRequest(
+      {
+        httpMethod: "POST",
+        headers: { authorization: "Bearer owner-secret" },
+        body: JSON.stringify({
+          submissionIds: ["capture-1"],
+          proofLabel: "Codex Guest Proof 2026"
+        })
       },
-      async set() {}
-    }
-  );
+      undefined,
+      {
+        async get() {
+          return {
+            totalCaptures: 1,
+            byPagePath: { "/": 1 },
+            byPlacement: { popup: 1 },
+            receipts: [
+              {
+                submissionId: "capture-1",
+                createdAt: "2026-05-12T12:00:00.000Z",
+                pagePath: "/",
+                pageSlug: "home",
+                guideSlug: "",
+                sourcePageSlug: "home",
+                market: "florida-gulf-coast",
+                placement: "popup"
+              }
+            ]
+          };
+        },
+        async set() {}
+      }
+    );
 
-  const body = JSON.parse(response.body);
-  assert.equal(response.statusCode, 200);
-  assert.equal(body.updated, true);
-  assert.equal(body.updatedCount, 1);
-  assert.equal(body.summary.receipts[0].proofLabel, "codex-guest-proof-2026");
+    const body = JSON.parse(response.body);
+    assert.equal(response.statusCode, 200);
+    assert.equal(body.updated, true);
+    assert.equal(body.updatedCount, 1);
+    assert.equal(body.summary.receipts[0].proofLabel, "codex-guest-proof-2026");
+    assert.deepEqual(infoLogs.calls, [[
+      "guest_capture_proof_label_updated",
+      {
+        requestedSubmissionIdsCount: 1,
+        updatedCount: 1
+      }
+    ]]);
+  } finally {
+    infoLogs.restore();
+    delete process.env.OWNER_LEAD_METRICS_TOKEN;
+  }
+});
 
-  delete process.env.OWNER_LEAD_METRICS_TOKEN;
+test("guest capture proof-label endpoint logs update failures", async () => {
+  process.env.OWNER_LEAD_METRICS_TOKEN = "owner-secret";
+  const errorLogs = patchConsoleMethod("error");
+
+  try {
+    await assert.rejects(
+      handleGuestEmailCaptureProofLabelRequest(
+        {
+          httpMethod: "POST",
+          headers: { authorization: "Bearer owner-secret" },
+          body: JSON.stringify({
+            submissionIds: ["capture-1"],
+            proofLabel: "Codex Guest Proof 2026"
+          })
+        },
+        undefined,
+        {
+          async get() {
+            return {
+              totalCaptures: 1,
+              byPagePath: { "/": 1 },
+              byPlacement: { popup: 1 },
+              receipts: []
+            };
+          },
+          async set() {
+            throw new Error("guest proof label write failed");
+          }
+        }
+      ),
+      /guest proof label write failed/
+    );
+
+    assert.deepEqual(errorLogs.calls, [[
+      "guest_capture_proof_label_update_failed",
+      {
+        requestedSubmissionIdsCount: 1,
+        message: "guest proof label write failed"
+      }
+    ]]);
+  } finally {
+    errorLogs.restore();
+    delete process.env.OWNER_LEAD_METRICS_TOKEN;
+  }
 });

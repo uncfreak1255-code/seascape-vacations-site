@@ -32,10 +32,15 @@ async function handleGuestEmailCaptureMetricsRequest(event, _context, injectedSt
   }
 
   if (!GUEST_EMAIL_CAPTURE_METRICS_TOKEN) {
+    console.error("guest_capture_metrics_token_missing");
     return { statusCode: 503, body: "Guest email capture metrics token not configured" };
   }
 
-  if (readAuthToken(event) !== GUEST_EMAIL_CAPTURE_METRICS_TOKEN) {
+  const authToken = readAuthToken(event);
+  if (authToken !== GUEST_EMAIL_CAPTURE_METRICS_TOKEN) {
+    console.warn("guest_capture_metrics_unauthorized", {
+      hasAuthToken: Boolean(authToken)
+    });
     return { statusCode: 401, body: "Unauthorized" };
   }
 

@@ -31,6 +31,19 @@ function parseRequestBody(event) {
   }
 }
 
+function countRequestedSubmissionIds(body) {
+  return Array.isArray(body && body.submissionIds)
+    ? body.submissionIds
+      .map((value) => normalizeText(String(value || "")))
+      .filter(Boolean)
+      .length
+    : 0;
+}
+
+function normalizeText(value) {
+  return typeof value === "string" ? value.trim() : "";
+}
+
 async function handleOwnerLeadProofLabelRequest(event, _context, injectedStore) {
   const store = resolveWritableStore(event, injectedStore);
   const ownerLeadMetricsToken = process.env.OWNER_LEAD_METRICS_TOKEN;
@@ -39,15 +52,24 @@ async function handleOwnerLeadProofLabelRequest(event, _context, injectedStore) 
   }
 
   if (!ownerLeadMetricsToken) {
+    console.error("owner_lead_proof_label_token_missing");
     return { statusCode: 503, body: "Owner lead metrics token not configured" };
   }
 
-  if (readAuthToken(event) !== ownerLeadMetricsToken) {
+  const authToken = readAuthToken(event);
+  if (authToken !== ownerLeadMetricsToken) {
+    console.warn("owner_lead_proof_label_unauthorized", {
+      hasAuthToken: Boolean(authToken)
+    });
     return { statusCode: 401, body: "Unauthorized" };
   }
 
   const body = parseRequestBody(event);
   if (!body || !Array.isArray(body.submissionIds) || typeof body.proofLabel !== "string") {
+    console.warn("owner_lead_proof_label_invalid_payload", {
+      requestedSubmissionIdsCount: countRequestedSubmissionIds(body),
+      hasProofLabel: typeof (body && body.proofLabel) === "string"
+    });
     return {
       statusCode: 400,
       headers: { "content-type": "application/json; charset=utf-8" },
@@ -55,26 +77,38 @@ async function handleOwnerLeadProofLabelRequest(event, _context, injectedStore) 
     };
   }
 
-  const existingMetrics = await readOwnerLeadMetrics(store);
-  const { metrics, updatedCount, updatedSubmissionIds } = relabelOwnerLeadReceipts(
-    existingMetrics,
-    body.submissionIds,
-    body.proofLabel
-  );
+  try {
+    const existingMetrics = await readOwnerLeadMetrics(store);
+    const { metrics, updatedCount, updatedSubmissionIds } = relabelOwnerLeadReceipts(
+      existingMetrics,
+      body.submissionIds,
+      body.proofLabel
+    );
 
-  await writeOwnerLeadMetrics(store, metrics);
+    await writeOwnerLeadMetrics(store, metrics);
+    console.log("owner_lead_proof_label_updated", {
+      requestedSubmissionIdsCount: countRequestedSubmissionIds(body),
+      updatedCount
+    });
 
-  return {
-    statusCode: 200,
-    headers: { "content-type": "application/json; charset=utf-8" },
-    body: JSON.stringify({
-      updated: true,
-      updatedCount,
-      updatedSubmissionIds,
-      proofLabel: body.proofLabel,
-      summary: formatOwnerLeadSummary(metrics)
-    })
-  };
+    return {
+      statusCode: 200,
+      headers: { "content-type": "application/json; charset=utf-8" },
+      body: JSON.stringify({
+        updated: true,
+        updatedCount,
+        updatedSubmissionIds,
+        proofLabel: body.proofLabel,
+        summary: formatOwnerLeadSummary(metrics)
+      })
+    };
+  } catch (error) {
+    console.error("owner_lead_proof_label_update_failed", {
+      requestedSubmissionIdsCount: countRequestedSubmissionIds(body),
+      message: error && error.message ? error.message : String(error)
+    });
+    throw error;
+  }
 }
 
 async function handler(event, context) {

@@ -34,6 +34,21 @@ const ownerSubmitPayload = (overrides = {}) => ({
   }
 });
 
+function patchConsoleMethod(methodName) {
+  const original = console[methodName];
+  const calls = [];
+  console[methodName] = (...args) => {
+    calls.push(args);
+  };
+
+  return {
+    calls,
+    restore() {
+      console[methodName] = original;
+    }
+  };
+}
+
 test("owner lead contact captures full contact details on an owner form submit", () => {
   const contact = buildOwnerLeadContact(ownerSubmitPayload());
 
@@ -128,16 +143,29 @@ test("submission-created notifies with the raw lead when the contact store write
   };
   const notifications = [];
   const notify = async (message) => { notifications.push(message); };
+  const errorLogs = patchConsoleMethod("error");
 
-  const event = { body: JSON.stringify({ payload: ownerSubmitPayload({ id: "submission-x" }) }) };
-  const response = await handleSubmissionCreated(event, undefined, metricsStore, failingContactStore, notify);
+  try {
+    const payload = { ...ownerSubmitPayload(), id: "submission-x" };
+    const event = { body: JSON.stringify({ payload }) };
+    const response = await handleSubmissionCreated(event, undefined, metricsStore, failingContactStore, notify);
 
-  // The lead must NOT be silently dropped on a persistence failure.
-  assert.equal(notifications.length, 1);
-  assert.equal(notifications[0].stored, false);
-  assert.ok(notifications[0].rawPayload, "raw payload included so the lead still reaches a human");
-  assert.equal(notifications[0].contact.email, "pat@example.com");
-  assert.equal(response.statusCode, 200);
+    // The lead must NOT be silently dropped on a persistence failure.
+    assert.equal(notifications.length, 1);
+    assert.equal(notifications[0].stored, false);
+    assert.ok(notifications[0].rawPayload, "raw payload included so the lead still reaches a human");
+    assert.equal(notifications[0].contact.email, "pat@example.com");
+    assert.equal(response.statusCode, 200);
+    assert.deepEqual(errorLogs.calls, [[
+      "owner_lead_contact_capture_failed",
+      {
+        submissionId: "submission-x",
+        message: "contact blob write failed"
+      }
+    ]]);
+  } finally {
+    errorLogs.restore();
+  }
 });
 
 test("owner lead contact blobs config reads explicit fallback credentials", () => {
@@ -163,15 +191,56 @@ test("submission-created captures the lead and notifies even when the metrics st
   const invalidMetricsStore = {}; // no get/set -> resolveWritableStore falls through to connectLambda(event) and throws
   const notifications = [];
   const notify = async (message) => { notifications.push(message); };
+  const errorLogs = patchConsoleMethod("error");
 
-  const event = { body: JSON.stringify({ payload: ownerSubmitPayload({ id: "submission-resolve-fail" }) }) };
-  const response = await handleSubmissionCreated(event, undefined, invalidMetricsStore, contactStore, notify);
+  try {
+    const payload = { ...ownerSubmitPayload(), id: "submission-resolve-fail" };
+    const event = { body: JSON.stringify({ payload }) };
+    const response = await handleSubmissionCreated(event, undefined, invalidMetricsStore, contactStore, notify);
 
-  assert.equal(JSON.parse(contactBlob).contacts[0].email, "pat@example.com");
-  assert.equal(notifications.length, 1);
-  assert.equal(notifications[0].stored, true);
-  assert.equal(response.statusCode, 200);
-  assert.equal(JSON.parse(response.body).reason, "metrics_write_failed");
+    assert.equal(JSON.parse(contactBlob).contacts[0].email, "pat@example.com");
+    assert.equal(notifications.length, 1);
+    assert.equal(notifications[0].stored, true);
+    assert.equal(response.statusCode, 200);
+    assert.equal(JSON.parse(response.body).reason, "metrics_write_failed");
+    assert.equal(errorLogs.calls.length, 1);
+    assert.equal(errorLogs.calls[0][0], "owner_lead_metrics_write_failed");
+    assert.equal(errorLogs.calls[0][1].sourcePageSlug, "owner-fee-revenue-leak-benchmark-2026");
+    assert.equal(errorLogs.calls[0][1].submissionId, "submission-resolve-fail");
+    assert.match(errorLogs.calls[0][1].message, /type string|store\.get|undefined/);
+  } finally {
+    errorLogs.restore();
+  }
+});
+
+test("submission-created logs when notify throws after a lead is captured", async () => {
+  let metricsBlob = null;
+  let contactBlob = null;
+  const metricsStore = { async get() { return metricsBlob; }, async set(_k, v) { metricsBlob = v; } };
+  const contactStore = { async get() { return contactBlob; }, async set(_k, v) { contactBlob = v; } };
+  const errorLogs = patchConsoleMethod("error");
+
+  try {
+    const response = await handleSubmissionCreated(
+      { body: JSON.stringify({ payload: ownerSubmitPayload({ id: "submission-notify-throws" }) }) },
+      undefined,
+      metricsStore,
+      contactStore,
+      async () => {
+        throw new Error("notify transport blew up");
+      }
+    );
+
+    assert.equal(response.statusCode, 200);
+    assert.deepEqual(errorLogs.calls, [[
+      "owner_lead_notify_threw",
+      {
+        message: "notify transport blew up"
+      }
+    ]]);
+  } finally {
+    errorLogs.restore();
+  }
 });
 
 // Regression: Netlify form webhooks are at-least-once. A re-delivered submission
@@ -277,4 +346,45 @@ test("notify webhook body omits PII on success and carries the lead only on fail
   assert.equal(bodies[1].contact.email, "fail@example.com");
   assert.ok(bodies[1].rawPayload);
   assert.deepEqual(bodies[1].allowed_mentions, { parse: [] });
+});
+
+test("owner lead notify logs failed webhook responses and thrown requests", async () => {
+  process.env.OWNER_LEAD_NOTIFY_WEBHOOK_URL = "https://example.test/hook";
+  const originalFetch = global.fetch;
+  const errorLogs = patchConsoleMethod("error");
+  let callCount = 0;
+  global.fetch = async () => {
+    callCount += 1;
+    if (callCount === 1) {
+      return { ok: false, status: 429 };
+    }
+    throw new Error("webhook network down");
+  };
+
+  try {
+    const failedResponse = await notifyOwnerLead({ stored: true, submissionId: "s1", contact: {} });
+    const thrownResponse = await notifyOwnerLead({ stored: true, submissionId: "s2", contact: {} });
+
+    assert.deepEqual(failedResponse, { notified: false, status: 429 });
+    assert.deepEqual(thrownResponse, { notified: false, reason: "request_failed" });
+    assert.deepEqual(errorLogs.calls, [
+      [
+        "owner_lead_notify_request_failed",
+        {
+          status: 429,
+          message: "Webhook request failed with status 429"
+        }
+      ],
+      [
+        "owner_lead_notify_request_failed",
+        {
+          message: "webhook network down"
+        }
+      ]
+    ]);
+  } finally {
+    errorLogs.restore();
+    global.fetch = originalFetch;
+    delete process.env.OWNER_LEAD_NOTIFY_WEBHOOK_URL;
+  }
 });

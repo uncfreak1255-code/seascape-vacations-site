@@ -30,10 +30,15 @@ async function handleOwnerLeadMetricsRequest(event, _context, injectedStore) {
   }
 
   if (!OWNER_LEAD_METRICS_TOKEN) {
+    console.error("owner_lead_metrics_token_missing");
     return { statusCode: 503, body: "Owner lead metrics token not configured" };
   }
 
-  if (readAuthToken(event) !== OWNER_LEAD_METRICS_TOKEN) {
+  const authToken = readAuthToken(event);
+  if (authToken !== OWNER_LEAD_METRICS_TOKEN) {
+    console.warn("owner_lead_metrics_unauthorized", {
+      hasAuthToken: Boolean(authToken)
+    });
     return { statusCode: 401, body: "Unauthorized" };
   }
 
