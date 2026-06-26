@@ -499,7 +499,7 @@ if (phase === "remediation") {
   expectContains("_site/property-management/index.html", "images/seascape-og-default.jpg");
   expectContains(
     "_site/property-management/index.html",
-    'rel="stylesheet" media="print" onload="this.media=\'all\'"'
+    "assets/fonts/homepage/poppins-400-latin.woff2"
   );
   expectContains(
     "_site/guides/bradenton-vs-sarasota/index.html",
