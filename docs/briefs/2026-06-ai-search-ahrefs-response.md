@@ -70,6 +70,13 @@ Local reproduction pattern:
 - before fix: LocalBusiness missing fields 32, LodgingBusiness missing fields 65, Article missing fields 8, Breadcrumb missing item 3
 - after fix: all four categories read back as 0 across 164 rendered HTML files
 
+Slow-page remediation shipped in this branch:
+
+- replace external Google Fonts requests with local WOFF2 font declarations in `src/_includes/layouts/base.njk`, `src/stays/stays.njk`, and the five standalone property pages
+- reduce Hostaway hero and gallery image requests on the five standalone property pages from `width=1400&quality=85` to `width=1200&quality=80`
+- reduce shared stay-page hero preload and CTA background image requests from 1600-wide variants to 1200-wide variants
+- keep the branch scoped to crawl-weight hygiene only; no new routes, no new reader copy, and no reopened schema lane beyond the existing release-proof checks
+
 Release proof for this rescue:
 
 ```bash
