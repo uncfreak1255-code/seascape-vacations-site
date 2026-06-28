@@ -85,6 +85,35 @@ npm run verify:release
 npm run perf:budget:check
 ```
 
+## 2026-06-15 Ahrefs Missing Alt Text Rescue
+
+Ahrefs sent a 2026-06-15 crawl alert for `seascape-vacations-site`:
+
+- `Missing alt text`: 17 URLs
+
+The email links to the Ahrefs issue filter but does not inline the affected URL
+table. Current local and live sitemap scans reproduced remaining empty-alt hits
+only on `/` and `/property-management/`. A crawl-time snapshot before the alert
+also showed old guide-page hits from the Meta noscript tracking pixel; that
+tracking-pixel issue is already gone on current `main`.
+
+This rescue is limited to the current source-owned images that still render with
+empty `alt` attributes. It does not reopen the 2026-06-22 slow-page work or the
+structured-data repair.
+
+Source files covered by this rescue:
+
+- `src/index.njk`
+- `src/property-management/index.njk`
+
+Release proof for this rescue:
+
+```bash
+npm run lint:content
+npm run build
+node <generated-html image-alt scan>
+```
+
 ## Gate 0 Rescue Block
 
 | Field | Required answer |
