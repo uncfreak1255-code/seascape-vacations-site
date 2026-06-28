@@ -120,13 +120,36 @@ and Naomi at `2026-06-17T21:21:26Z`.
 
 The Hub-owned raw capture is
 `/Users/sawbeck/Projects/seascape-hub/sources/2026-06-17-owner-outbound-email-batch.md`.
-That capture, plus current Outlook searches for `Kiri`, `Megan`, and `Naomi`
-since `2026-06-17`, still found only the three outbound items. Connected Gmail
-searches for those names, `quick revenue review`, and
-`owner-fee-revenue-leak-benchmark-2026` after `2026-06-17` returned no matching
-threads. Treat that as no newer reply evidence, not as demand proof. This is
-owner-outreach effort only. It does not move the owner gate and does not
-upgrade any Hub benchmark-demand claim.
+That capture, plus current Outlook searches on `2026-06-26` for `Kiri`,
+`Megan`, and `Naomi` since `2026-06-17`, still found exactly those three
+outbound items. Connected Gmail searches on `2026-06-26` for those names,
+`quick revenue review`, and `owner-fee-revenue-leak-benchmark-2026` after
+`2026-06-17` returned no matching benchmark/revenue-review threads. Treat that
+as no newer reply evidence, not as demand proof. This is owner-outreach effort
+only. It does not move the owner gate and does not upgrade any Hub
+benchmark-demand claim.
+
+### Batch 2026-06-22: Patrick Handoff Failure And Warm Offer Context
+
+Gmail confirms the Emerald House property redesign package arrived on
+`2026-06-22T16:35:37`, was forwarded for Patrick review on
+`2026-06-22T19:06:30`, and bounced at `2026-06-22T19:06:45` with a delivery
+failure. Treat that as a failed Patrick handoff, not as a completed founder
+review.
+
+The reusable owner fill-out packet now exists in Hub at
+`/Users/sawbeck/Projects/seascape-hub/intelligence/drafts/2026-06-19-property-redesign-package-owner-fillout-packet.md`.
+The Emerald House signed-packet capture is
+`/Users/sawbeck/Projects/seascape-hub/sources/2026-06-22-emerald-house-property-redesign-package-signed.md`,
+and the Drive readback receipt is
+`/Users/sawbeck/Projects/seascape-hub/intelligence/verification-receipts/2026-06-26-seascape-ops-company-capture-jose-and-dunia-2026-06-22-blue-and-emerald-redesign-kickoff-20260626t175600z.json`.
+
+Use those materials only to warm the outbound offer: the seven remaining notes
+may offer a second set of eyes on listing presentation, photo-readiness,
+owner-statement clarity, and renewal questions. Do not paste agreement terms
+into outreach. Do not claim owner demand, public offer readiness, booking lift,
+ADR lift, occupancy lift, review lift, or profitability proof from the packet
+or the Emerald House materials.
 
 | # | Prospect label | Public evidence | Reopenable contact path | Fit reason and pain hypothesis | Proof-rule result |
 |---:|---|---|---|---|---|
@@ -200,30 +223,32 @@ Keep this table honest. Empty is better than fake progress.
 |---:|---|---|---|---|---|---|---|---|---|
 | 2026-06-16 | Kiri | Airbnb host message surface; no copied contact detail | 6BR canal-front Anna Maria pool/spa home; first-year or newer-listing revenue review angle | `gulf-coast-owner-benchmark-2026` | [draft](#draft-1-kiri) | 2026-06-17T21:21:11Z | no reply found | sent; owner-outreach effort only, not demand proof | `/Users/sawbeck/Projects/seascape-hub/sources/2026-06-17-owner-outbound-email-batch.md`; [Airbnb](https://www.airbnb.com/rooms/1477087787726582138) |
 | 2026-06-16 | Megan | Airbnb host message surface; no copied contact detail | 4BR Bradenton Beach pool/dock home; mature host owner-statement review angle | `gulf-coast-owner-benchmark-2026` | [draft](#draft-2-megan) | 2026-06-17T21:21:21Z | no reply found | sent; owner-outreach effort only, not demand proof | `/Users/sawbeck/Projects/seascape-hub/sources/2026-06-17-owner-outbound-email-batch.md`; [Airbnb](https://www.airbnb.com/rooms/1339940979581613196) |
-| 2026-06-16 | Ashley | Airbnb host message surface; no copied contact detail | 4BR beachside villa near Bridge Street; early-pattern revenue review angle | `gulf-coast-owner-benchmark-2026` | [draft](#draft-3-ashley) |  | not sent | draft only; founder review needed | [Airbnb](https://www.airbnb.com/rooms/1517691281023647588) |
-| 2026-06-16 | Wendy | Airbnb host message surface; no copied contact detail | 4BR Holmes Beach pool home; owner-statement clarity angle | `gulf-coast-owner-benchmark-2026` | [draft](#draft-4-wendy) |  | not sent | draft only; founder review needed | [Airbnb](https://www.airbnb.com/rooms/1025371189528255498) |
-| 2026-06-16 | Adam | Airbnb host message surface; no copied contact detail | 4BR beach/bay view home with pool/elevator; high-volume booking-source review angle | `gulf-coast-owner-benchmark-2026` | [draft](#draft-5-adam) |  | not sent | draft only; founder review needed | [Airbnb](https://www.airbnb.com/rooms/41800150) |
-| 2026-06-16 | Kate | Airbnb host message surface; no copied contact detail | 4BR heated-pool home near AMI/IMG; mainland-near-island net-payout review angle | `gulf-coast-owner-benchmark-2026` | [draft](#draft-6-kate) |  | not sent | draft only; founder review needed | [Airbnb](https://www.airbnb.com/rooms/1280439468418163165) |
+| 2026-06-26 | Ashley | Airbnb host message surface; no copied contact detail | 4BR beachside villa near Bridge Street; early-pattern revenue review plus photo-readiness second-look angle | `gulf-coast-owner-benchmark-2026` | [draft](#draft-3-ashley) |  | not sent | ready-to-send one-to-one draft; founder review needed | [Airbnb](https://www.airbnb.com/rooms/1517691281023647588); owner fill-out packet context in Hub |
+| 2026-06-26 | Wendy | Airbnb host message surface; no copied contact detail | 4BR Holmes Beach pool home; owner-statement clarity plus light listing-presentation second-look angle | `gulf-coast-owner-benchmark-2026` | [draft](#draft-4-wendy) |  | not sent | ready-to-send one-to-one draft; founder review needed | [Airbnb](https://www.airbnb.com/rooms/1025371189528255498); owner fill-out packet context in Hub |
+| 2026-06-26 | Adam | Airbnb host message surface; no copied contact detail | 4BR beach/bay view home with pool/elevator; high-volume booking-source review plus listing-story second-look angle | `gulf-coast-owner-benchmark-2026` | [draft](#draft-5-adam) |  | not sent | ready-to-send one-to-one draft; founder review needed | [Airbnb](https://www.airbnb.com/rooms/41800150); owner fill-out packet context in Hub |
+| 2026-06-26 | Kate | Airbnb host message surface; no copied contact detail | 4BR heated-pool home near AMI/IMG; mainland-near-island net-payout review plus guest-fit presentation angle | `gulf-coast-owner-benchmark-2026` | [draft](#draft-6-kate) |  | not sent | ready-to-send one-to-one draft; founder review needed | [Airbnb](https://www.airbnb.com/rooms/1280439468418163165); owner fill-out packet context in Hub |
 | 2026-06-16 | Naomi Ewald | Vrbo host contact surface; no copied contact detail | Owner-operated Holmes Beach pool home; owner-statement and direct-payment review angle | `gulf-coast-owner-benchmark-2026` | [draft](#draft-7-naomi-ewald) | 2026-06-17T21:21:26Z | no reply found | sent; owner-outreach effort only, not demand proof | `/Users/sawbeck/Projects/seascape-hub/sources/2026-06-17-owner-outbound-email-batch.md`; [Vrbo](https://www.vrbo.com/4425699) |
-| 2026-06-16 | Teresa | Airbnb host message surface; no copied contact detail | 4BR beach-walk pool/spa home; early hosting-cycle revenue review angle | `gulf-coast-owner-benchmark-2026` | [draft](#draft-8-teresa) |  | not sent | draft only; founder review needed | [Airbnb](https://www.airbnb.com/rooms/1502928363519390450) |
-| 2026-06-16 | Morgan | Airbnb host message surface; no copied contact detail | 4BR Bridge Street pool/hot-tub home; premium amenity net-payout review angle | `gulf-coast-owner-benchmark-2026` | [draft](#draft-9-morgan) |  | not sent | draft only; founder review needed | [Airbnb](https://www.airbnb.com/rooms/1384108265624016866) |
-| 2026-06-16 | Christy | Airbnb host message surface; no copied contact detail | 4BR Holmes Beach pool home; out-of-area owner/reporting clarity angle | `gulf-coast-owner-benchmark-2026` | [draft](#draft-10-christy) |  | not sent | draft only; founder review needed | [Airbnb](https://www.airbnb.com/rooms/28602630) |
+| 2026-06-26 | Teresa | Airbnb host message surface; no copied contact detail | 4BR beach-walk pool/spa home; early hosting-cycle revenue review plus photo-ready second-look angle | `gulf-coast-owner-benchmark-2026` | [draft](#draft-8-teresa) |  | not sent | ready-to-send one-to-one draft; founder review needed | [Airbnb](https://www.airbnb.com/rooms/1502928363519390450); owner fill-out packet context in Hub |
+| 2026-06-26 | Morgan | Airbnb host message surface; no copied contact detail | 4BR Bridge Street pool/hot-tub home; premium amenity net-payout review plus guest-confidence presentation angle | `gulf-coast-owner-benchmark-2026` | [draft](#draft-9-morgan) |  | not sent | ready-to-send one-to-one draft; founder review needed | [Airbnb](https://www.airbnb.com/rooms/1384108265624016866); owner fill-out packet context in Hub |
+| 2026-06-26 | Christy | Airbnb host message surface; no copied contact detail | 4BR Holmes Beach pool home; out-of-area owner/reporting clarity plus local follow-through angle | `gulf-coast-owner-benchmark-2026` | [draft](#draft-10-christy) |  | not sent | ready-to-send one-to-one draft; founder review needed | [Airbnb](https://www.airbnb.com/rooms/28602630); owner fill-out packet context in Hub |
 
 ## Next Send Packet
 
-Packet date: `2026-06-18`
+Packet date: `2026-06-26`
 
 Use this as the live founder packet for the remaining seven prospects. The
-2026-06-19 owner fill-out packet and connected agreement materials make the
-offer warmer and more practical: start with a short revenue review, then offer a
-plain second look at listing presentation, photo-readiness, owner-statement
-clarity, and the questions worth asking before renewal. Do not paste agreement
-terms, owner private details, or document language into outreach.
+2026-06-19 owner fill-out packet, the Emerald House signed-packet capture, and
+the Blue House countersigned-path readback make the offer warmer and more
+practical: start with a short revenue review, then offer a plain second look at
+listing presentation, photo-readiness, owner-statement clarity, and the
+questions worth asking before renewal. Do not paste agreement terms, owner
+private details, or document language into outreach.
 
 Keep the public proof surface fixed: `gulf-coast-owner-benchmark-2026` from
 `src/_data/ownerProofAssets.json` -> `/research/owner-fee-revenue-leak-benchmark-2026/`
 -> live CTA `Request Your Revenue Review`. Only the property-specific opener and
-pain angle should change per prospect.
+pain angle should change per prospect. The packet is ready for founder review
+and one-to-one sending, but no send is authorized by this file alone.
 
 | Send order | Prospect | Suggested subject | Sharpened opener angle | Draft |
 |---:|---|---|---|---|
@@ -241,7 +266,7 @@ Hi [Name] - happy to take a look. The easiest first step is for me to review the
 public listing, booking-source cost, direct-payment cost, and the parts of the
 listing that affect photo-readiness and owner confidence. I will send back a
 short note with what looks clear, what I would ask about before renewal, and
-whether there are any simple listing-refresh items worth pricing separately.
+whether there are any simple listing-refresh items worth discussing separately.
 
 No pressure to change anything from the first note. It is just a second set of
 eyes before you decide what to do next.
@@ -249,10 +274,11 @@ eyes before you decide what to do next.
 ## Draft Messages
 
 These are copy-paste opener drafts for founder review. Each message points to
-the owner benchmark and offers a short revenue review. They deliberately avoid
-claiming that the owner is losing money, unhappy, or ready to switch managers.
-Drafts 1, 2, and 7 are kept as the evidence-backed sent examples. Drafts 3, 4,
-5, 6, 8, 9, and 10 are the live next-send packet.
+the owner benchmark and offers a short revenue review plus a practical second
+look at the listing. They deliberately avoid claiming that the owner is losing
+money, unhappy, ready to switch managers, or asking for redesign help. Drafts 1,
+2, and 7 are kept as the evidence-backed sent examples. Drafts 3, 4, 5, 6, 8,
+9, and 10 are the live next-send packet.
 
 ### Draft 1: Kiri
 
@@ -285,40 +311,45 @@ https://seascape-vacations.com/research/owner-fee-revenue-leak-benchmark-2026/
 
 ### Draft 3: Ashley
 
+Subject: Ashley - quick revenue review for Starfish Villa East
+
 Hi Ashley - I found Starfish Villa East and the mix stood out right away:
 crosswalk-to-sand access, pool, balconies, and Bridge Street proximity. On a
-newer beachside home like that, I would want the early revenue pattern, payment
-costs, and listing presentation to be working together before the habits settle
-in.
+newer beachside home like that, it can help to look at the early revenue
+pattern, payment costs, and listing presentation before the habits settle in.
 
 I run Seascape Vacations nearby. We built a small Gulf Coast owner benchmark
 from our five-home operating data, including observed Airbnb host-fee cost and
-direct-payment cost. If useful, I can do a short revenue review on your listing
-and send back what looks clear, what I would ask before renewal, and any simple
-photo-ready or listing-refresh items I would look at before putting more money
-behind the home.
+direct-payment cost. If useful, I can send back a short revenue review for your
+listing: what looks clear, what I would ask before renewal, and any simple
+photo-ready or listing-presentation items that seem worth a second look.
 
 Benchmark:
 https://seascape-vacations.com/research/owner-fee-revenue-leak-benchmark-2026/
 
 ### Draft 4: Wendy
 
+Subject: Wendy - quick revenue review for your Holmes Beach pool home
+
 Hi Wendy - your Holmes Beach pool home stood out because it has the family-
 demand pieces in one listing: pool, walk-to-beach access, and the kind of
 location where guests can park once and stay put. Homes like that deserve an
-owner statement that is easy to understand, not only a headline management
+owner statement that is easy to understand beyond the headline management
 percentage.
 
 I am Sawyer from Seascape Vacations. We built a small Gulf Coast owner
 benchmark from our five-home operating data, including observed Airbnb host-fee
 cost and direct-payment cost. If useful, I can send back a short revenue review
-on your listing with what looks clear, what I would ask before renewal, and any
-small listing or photo-readiness questions that might be worth tightening.
+for your listing with what looks clear, what I would ask before renewal, and any
+small listing-presentation or photo-readiness questions that might be worth a
+second look.
 
 Benchmark:
 https://seascape-vacations.com/research/owner-fee-revenue-leak-benchmark-2026/
 
 ### Draft 5: Adam
+
+Subject: Adam - quick revenue review for your Bradenton Beach home
 
 Hi Adam - your Bradenton Beach place has the kind of premium mix where small
 economics changes can matter: beach and bay views, private pool, elevator, and
@@ -327,14 +358,16 @@ payment costs, and listing story to be just as strong as the amenity list.
 
 I run Seascape Vacations. We built a small Gulf Coast owner benchmark from our
 five-home operating data, including observed Airbnb host-fee cost and direct-
-payment cost. If useful, I can do a short revenue review on your listing and
-send back what looks clear, what I would ask before a renewal or pricing reset,
-and whether any listing-refresh items are worth a separate conversation.
+payment cost. If useful, I can send back a short revenue review for your
+listing: what looks clear, what I would ask before a renewal or pricing reset,
+and whether the listing story or photo-readiness deserves a second look.
 
 Benchmark:
 https://seascape-vacations.com/research/owner-fee-revenue-leak-benchmark-2026/
 
 ### Draft 6: Kate
+
+Subject: Kate - quick revenue review for your Bradenton home near AMI and IMG
 
 Hi Kate - I saw your heated-pool Bradenton home near AMI and IMG. Four
 bedrooms, two king suites, and the family/group setup make it the kind of home
@@ -343,10 +376,10 @@ change owner net.
 
 I am Sawyer with Seascape Vacations. We built a small Gulf Coast owner
 benchmark from our five-home operating data, including observed Airbnb host-fee
-cost and direct-payment cost. If useful, I can run the same short revenue
-review on your listing and send back what looks clear, what I would ask before
-renewal or pricing changes, and any photo-ready details I would tighten before
-trying to push more demand.
+cost and direct-payment cost. If useful, I can send back a short revenue review
+for your listing with what looks clear, what I would ask before renewal or
+pricing changes, and any photo-ready details I would look at before trying to
+push more demand toward the home.
 
 Benchmark:
 https://seascape-vacations.com/research/owner-fee-revenue-leak-benchmark-2026/
@@ -368,6 +401,8 @@ https://seascape-vacations.com/research/owner-fee-revenue-leak-benchmark-2026/
 
 ### Draft 8: Teresa
 
+Subject: Teresa - quick revenue review for your Bradenton Beach listing
+
 Hi Teresa - your Bradenton Beach listing looks like the kind of early-cycle
 home worth reading early: short walk to the beach, heated pool, spa, firepit,
 and enough guest capacity for strong family weeks. Before the hosting pattern
@@ -376,15 +411,17 @@ photo-ready setup are doing to the owner statement.
 
 I am Sawyer from Seascape Vacations. We built a small Gulf Coast owner
 benchmark from our five-home operating data, including observed Airbnb host-fee
-cost and direct-payment cost. If useful, I can do a short revenue review on
-your listing and send back what looks clear, what I would ask while the hosting
-pattern is still fresh, and any practical listing-refresh items I would price
-separately if they looked worth it.
+cost and direct-payment cost. If useful, I can send back a short revenue review
+for your listing with what looks clear, what I would ask while the hosting
+pattern is still fresh, and any practical photo-ready or listing-presentation
+items that seem worth a second look.
 
 Benchmark:
 https://seascape-vacations.com/research/owner-fee-revenue-leak-benchmark-2026/
 
 ### Draft 9: Morgan
+
+Subject: Morgan - quick revenue review for Bimini Breeze
 
 Hi Morgan - I came across Bimini Breeze near Bridge Street. The elevated
 layout, pool, hot tub, and beach proximity make it the kind of premium amenity
@@ -393,15 +430,17 @@ reviewing together.
 
 I run Seascape Vacations. We built a small Gulf Coast owner benchmark from our
 five-home operating data, including observed Airbnb host-fee cost and direct-
-payment cost. If useful, I can send back a short revenue review on your listing
-with what looks clear, what I would ask before the next pricing or renewal
-decision, and whether any photo-ready or guest-confidence details deserve a
-separate refresh conversation.
+payment cost. If useful, I can send back a short revenue review for your
+listing with what looks clear, what I would ask before the next pricing or
+renewal decision, and whether any photo-ready or guest-confidence details
+deserve a second look.
 
 Benchmark:
 https://seascape-vacations.com/research/owner-fee-revenue-leak-benchmark-2026/
 
 ### Draft 10: Christy
+
+Subject: Christy - quick revenue review for your Holmes Beach pool home
 
 Hi Christy - I saw your Holmes Beach pool home with the golf cart and larger
 four-bedroom setup. On an island home like that, especially with an out-of-area
@@ -412,10 +451,10 @@ book.
 
 I am Sawyer with Seascape Vacations. We built a small Gulf Coast owner
 benchmark from our five-home operating data, including observed Airbnb host-fee
-cost and direct-payment cost. If useful, I can run that short revenue review on
-your listing and send back what looks clear, what I would ask before renewal or
-pricing changes, and whether any simple listing-refresh items are worth pricing
-separately.
+cost and direct-payment cost. If useful, I can send back a short revenue review
+for your listing with what looks clear, what I would ask before renewal or
+pricing changes, and whether any simple listing-presentation or photo-readiness
+items deserve a second look.
 
 Benchmark:
 https://seascape-vacations.com/research/owner-fee-revenue-leak-benchmark-2026/
@@ -447,11 +486,13 @@ Current lane state: `sent-no-reply`.
 
 State note: the 2026-06-16 Card 3 prospect batch still clears the site-side
 homeowner-list milestone. The milestone itself does not authorize a send, count
-as demand, or create a Hub register row. As of the 2026-06-18 mailbox check,
-Outlook still shows the three June 17 sends to Kiri, Megan, and Naomi, and
-connected Gmail searches found no matching threads. That is owner-outreach
-effort only, not demand proof, and it leaves the next move as the
-founder-ready seven-send packet above.
+as demand, or create a Hub register row. As of the 2026-06-26 mailbox check,
+Outlook still shows exactly the three June 17 sends to Kiri, Megan, and Naomi,
+and connected Gmail searches found no matching benchmark/revenue-review threads.
+The Emerald House packet handoff to Patrick also bounced on 2026-06-22, so it
+cannot be treated as completed founder review. That is owner-outreach effort
+and workflow evidence only, not demand proof, and it leaves the next move as the
+ready-to-send seven-prospect packet above.
 
 ## Owner-Truth Preflight
 
