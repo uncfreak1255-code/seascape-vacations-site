@@ -64,21 +64,15 @@ eleventyComputed:
 
     {% include "partials/organization-schema.njk" %}
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://bookingenginecdn.hostaway.com" crossorigin>
     <link rel="dns-prefetch" href="https://bookingenginecdn.hostaway.com">
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-    <noscript>
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
-    </noscript>
+    {% include "partials/local-font-head.njk" %}
     {% if heroImage %}
     <link
         rel="preload"
         as="image"
         href="{{ heroImage | imgProxy(1200) }}"
-        imagesrcset="{{ heroImage | imgProxy(800) }} 800w, {{ heroImage | imgProxy(1200) }} 1200w, {{ heroImage | imgProxy(1600) }} 1600w"
+        imagesrcset="{{ heroImage | imgProxy(800) }} 800w, {{ heroImage | imgProxy(1200) }} 1200w"
         imagesizes="100vw"
         fetchpriority="high">
     {% endif %}
@@ -676,7 +670,7 @@ eleventyComputed:
         </section>
         {% endif %}
 
-        <section class="cta-section" style="--cta-image: url('{{ ctaImage | imgProxy(1600) }}');">
+        <section class="cta-section" style="--cta-image: url('{{ ctaImage | imgProxy(1200) }}');">
             <div class="container">
                 <h2 class="cta-title">{{ seoPage.collectionCtaTitle or "Ready to compare direct dates?" }}</h2>
                 <p class="cta-subtitle">{{ seoPage.collectionCtaBody or "Open the Seascape collection and compare direct-book homes in one place." }}</p>
