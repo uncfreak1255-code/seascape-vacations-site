@@ -45,6 +45,7 @@
     "test:visual:update": "node scripts/enforcement/run-visual-tests.js --update-snapshots",
     "test:visual:install": "playwright install chromium",
     "audit:deps": "npm audit --audit-level=moderate",
+    "perf:psi": "node scripts/perf/pagespeed-insights-status.js",
     "perf:budget": "npm run build && lhci autorun --config=./lighthouserc.js",
     "perf:budget:check": "lhci autorun --config=./lighthouserc.js",
     "eval:owner": "node scripts/evals/run-owner-eval.js",
