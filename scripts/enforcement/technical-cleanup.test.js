@@ -255,6 +255,7 @@ test("retired low-value stay slugs 301 to stronger commercial replacements", () 
 
   for (const redirectRule of [
     "/stays/holiday-vacation-rentals-anna-maria-island/  /stays/anna-maria-island-vacation-rentals/  301",
+    "/stays/christmas-vacation-rentals-florida/  /stays/anna-maria-island-vacation-rentals/  301",
     "/stays/christmas-vacation-rentals-florida-gulf-coast/  /stays/anna-maria-island-vacation-rentals/  301",
     "/stays/thanksgiving-vacation-rentals-florida/  /stays/anna-maria-island-vacation-rentals/  301",
     "/stays/birthday-celebration-rentals-florida/  /stays/large-group-vacation-rentals-bradenton/  301"
