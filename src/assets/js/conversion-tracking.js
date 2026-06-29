@@ -7,6 +7,8 @@
   var MAILCHIMP_ENDPOINT = "https://seascape-vacations.us6.list-manage.com/subscribe/post";
   var MAILCHIMP_QUERY = "u=48f234eebd9cb530fd2f217fe&id=95e5a594d1&f_id=008996e5f0";
   var GUEST_EMAIL_CAPTURE_ENDPOINT = "/.netlify/functions/guest-email-capture";
+  var BOOKING_HANDOFF_ENDPOINT = "/.netlify/functions/booking-handoff";
+  var BOOKING_HANDOFF_SESSION_KEY = "seascape_booking_handoff_session_id";
   var SUPPORTED_EVENTS = [
     "owner_primary_cta_click",
     "owner_phone_click",
@@ -47,7 +49,9 @@
     "ref",
     "checkin",
     "checkout",
-    "guests"
+    "guests",
+    "sv_handoff_id",
+    "sv_session_id"
   ];
   var SENSITIVE_ANALYTICS_KEY_PATTERN = /(^|[-_])(email|e-mail|phone|tel|mobile|first-name|last-name|full-name|guest-name|name|address|property-address|street|zip|postal|message|comment|note|concern|concerns|details|description|what-feels-off|free-text)($|[-_])/i;
   var EMAIL_VALUE_PATTERN = /[^\s@]+@[^\s@]+\.[^\s@]+/;
@@ -78,6 +82,39 @@
 
   function normalizeAnalyticsKey(key) {
     return normalizeTrackingValue(key);
+  }
+
+  function createTrackingId(prefix) {
+    var token = "";
+
+    if (window.crypto && typeof window.crypto.randomUUID === "function") {
+      token = window.crypto.randomUUID();
+    } else {
+      token = [
+        Date.now().toString(36),
+        Math.random().toString(36).slice(2, 10)
+      ].join("-");
+    }
+
+    return [prefix || "id", token].join("_").replace(/[^a-zA-Z0-9_-]+/g, "-").slice(0, 96);
+  }
+
+  function getStoredHandoffSessionId() {
+    var sessionId = "";
+
+    try {
+      if (window.localStorage && typeof window.localStorage.getItem === "function") {
+        sessionId = window.localStorage.getItem(BOOKING_HANDOFF_SESSION_KEY) || "";
+        if (!sessionId) {
+          sessionId = createTrackingId("svs");
+          window.localStorage.setItem(BOOKING_HANDOFF_SESSION_KEY, sessionId);
+        }
+      }
+    } catch (_error) {
+      sessionId = "";
+    }
+
+    return sessionId || createTrackingId("svs");
   }
 
   function isSensitiveAnalyticsKey(key) {
@@ -204,6 +241,12 @@
     }
     if (!url.searchParams.get("ref") && sourceContext.source_context === "ai_referral") {
       url.searchParams.set("ref", "ai-site-handoff");
+    }
+    if (!url.searchParams.get("sv_session_id")) {
+      url.searchParams.set("sv_session_id", getStoredHandoffSessionId());
+    }
+    if (!url.searchParams.get("sv_handoff_id")) {
+      url.searchParams.set("sv_handoff_id", createTrackingId("svh"));
     }
 
     return url.toString();
@@ -395,6 +438,7 @@
     var href = syncBookingEngineLink(node) || (node && node.getAttribute ? node.getAttribute("href") : "");
     var sourcePageSlug = resolveOwnerSourcePage(node);
     var dataset = node && node.dataset ? node.dataset : {};
+    var bookingHandoffContext = getBookingHandoffContext(href);
 
     return Object.assign({
       guide_slug: dataset.guideSlug || "",
@@ -409,8 +453,76 @@
       requested_value: dataset.requestedValue || dataset.utilityValue || "",
       guest_intent: dataset.guestIntent || "",
       delivery_channel: dataset.deliveryChannel || "",
-      consent_basis: dataset.consentBasis || ""
+      consent_basis: dataset.consentBasis || "",
+      booking_handoff_id: bookingHandoffContext.handoffId,
+      booking_session_id: bookingHandoffContext.sessionId,
+      booking_listing_id: bookingHandoffContext.listingId
     }, getSourceContext());
+  }
+
+  function getBookingHandoffContext(href) {
+    var context = {
+      handoffId: "",
+      sessionId: "",
+      listingId: ""
+    };
+
+    if (!href || typeof URL !== "function") return context;
+
+    try {
+      var url = new URL(href, window.location && window.location.href ? window.location.href : "https://seascape-vacations.com/");
+      if (url.hostname.replace(/^www\./, "").toLowerCase() !== BOOKING_ENGINE_HOST) return context;
+
+      context.handoffId = (url.searchParams.get("sv_handoff_id") || "").trim();
+      context.sessionId = (url.searchParams.get("sv_session_id") || "").trim();
+      var listingMatch = url.pathname.match(/\/listings\/([^/?#]+)/);
+      context.listingId = listingMatch ? listingMatch[1] : "";
+    } catch (_error) {
+      return context;
+    }
+
+    return context;
+  }
+
+  function sendBookingHandoffReceipt(payload) {
+    if (!payload || !payload.booking_handoff_id || typeof fetch !== "function") return;
+
+    var receiptPayload = {
+      handoffId: payload.booking_handoff_id,
+      sessionId: payload.booking_session_id,
+      listingId: payload.booking_listing_id,
+      linkUrl: payload.link_url,
+      linkText: payload.link_text,
+      pagePath: payload.landing_page_path,
+      pageSlug: payload.page_slug || payload.guide_slug || slugFromPath(payload.landing_page_path),
+      guideSlug: payload.guide_slug,
+      sourcePageSlug: payload.source_page_slug,
+      placement: payload.placement,
+      sourceContext: payload.source_context,
+      aiPlatform: payload.ai_platform,
+      referrerHost: payload.referrer_host,
+      utmSource: payload.utm_source,
+      utmMedium: payload.utm_medium,
+      utmCampaign: payload.utm_campaign,
+      utmContent: payload.utm_content,
+      ref: payload.ref
+    };
+
+    fetch(BOOKING_HANDOFF_ENDPOINT, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json; charset=utf-8"
+      },
+      body: JSON.stringify(receiptPayload),
+      keepalive: true
+    }).catch(function (error) {
+      if (typeof console !== "undefined" && typeof console.warn === "function") {
+        console.warn("booking_handoff_receipt_failed", {
+          endpoint: BOOKING_HANDOFF_ENDPOINT,
+          message: error && error.message ? error.message : "unknown"
+        });
+      }
+    });
   }
 
   function getCurrentPagePath() {
@@ -505,10 +617,14 @@
       if (!target) return;
 
       syncBookingEngineLink(target);
+      var payload = getPayloadFromElement(target);
+      if (target.dataset.trackEvent === "booking_engine_handoff") {
+        sendBookingHandoffReceipt(payload);
+      }
 
       if (shouldDelayTrackedNavigation(target, event)) {
         event.preventDefault();
-        trackEvent(target.dataset.trackEvent, getPayloadFromElement(target), {
+        trackEvent(target.dataset.trackEvent, payload, {
           onComplete: function () {
             continueTrackedNavigation(target);
           }
@@ -516,7 +632,7 @@
         return;
       }
 
-      trackEvent(target.dataset.trackEvent, getPayloadFromElement(target));
+      trackEvent(target.dataset.trackEvent, payload);
     });
   }
 

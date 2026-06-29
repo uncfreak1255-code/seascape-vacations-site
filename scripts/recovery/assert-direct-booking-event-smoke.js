@@ -217,6 +217,9 @@ function withTrackingRuntime(callback) {
     }
   };
   global.localStorage = {
+    getItem() {
+      return "";
+    },
     setItem() {}
   };
   global.fetch = () => Promise.resolve();
