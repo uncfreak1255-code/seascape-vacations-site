@@ -71,7 +71,6 @@
 - canonical winner URL: `/stays/anna-maria-island-vacation-rentals/`
 - aliases or retired routes:
   `/stays/holiday-vacation-rentals-anna-maria-island/`,
-  `/stays/christmas-vacation-rentals-florida/`,
   `/stays/christmas-vacation-rentals-florida-gulf-coast/`,
   `/stays/thanksgiving-vacation-rentals-florida/`
 - feeder pages:
