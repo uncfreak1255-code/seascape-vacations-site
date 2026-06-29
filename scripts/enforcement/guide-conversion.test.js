@@ -348,10 +348,12 @@ test("booking-engine handoff click emits the GA4 event with the target booking U
 
   assert.equal(observed.event, "booking_engine_handoff");
   assert.equal(observed.payload.guide_slug, "best-time-visit-anna-maria-island");
-  assert.equal(
-    observed.payload.link_url,
-    "https://book.seascape-vacations.com/?utm_content=best-time-visit-anna-maria-island"
-  );
+  assert.match(observed.payload.link_url, /^https:\/\/book\.seascape-vacations\.com\/\?/);
+  assert.match(observed.payload.link_url, /utm_content=best-time-visit-anna-maria-island/);
+  assert.match(observed.payload.link_url, /sv_session_id=svs_/);
+  assert.match(observed.payload.link_url, /sv_handoff_id=svh_/);
+  assert.match(observed.payload.booking_session_id, /^svs_/);
+  assert.match(observed.payload.booking_handoff_id, /^svh_/);
   assert.equal(observed.payload.link_text, "Open Direct Availability");
 });
 
