@@ -29,7 +29,7 @@
 | Current Seascape URL | `/guides/anna-maria-island-vs-siesta-key/`. |
 | SERP observed date | 2026-06-20 |
 | SERP stale after | 2026-06-27 |
-| Current proof | `seascape-analytics/docs/status/weekly-ai-visibility-receipt-2026-06-12-to-2026-06-18.md` says this page moved from `19 / 2598 / 121 / 0` to `25 / 2502 / 104 / 0` for GSC clicks / impressions / GA4 sessions / guide transfer events and calls it a `distribution gap`. `docs/status/next-batch.md` says `open next batch` for a narrow `anna-maria-island-vs-siesta-key-distribution-content` batch. |
+| Current proof | `seascape-analytics/docs/status/weekly-ai-visibility-receipt-2026-06-12-to-2026-06-18.md` says this page moved from `19 / 2598 / 121 / 0` to `25 / 2502 / 104 / 0` for GSC clicks / impressions / GA4 sessions / guide transfer events and calls it a `distribution gap`. `docs/status/next-batch.md` run date 2026-06-29 says the site gate is clear, the reread status is `fresh but below threshold`, the SEO queue has one `transfer/CRO issue`, and guide winners carry `62` GSC clicks, `5729` impressions, and `127` GA4 sessions. GitHub PR #422 says guide-winner traffic is the site's strongest measured organic asset and should feed direct-book CRO. |
 | Top visible competitors | Reddit discussion, Mousin' Around's Siesta Key vs Anna Maria Island vs Longboat Key guide, Facebook beach-choice discussion, Luxury Travel Diarie's Siesta Key vs Anna Maria article, and travel-blog style Sarasota beach roundups. |
 | Competitor angle | UGC opinion, sand reputation, public beach access, restaurants/nightlife, island pace, where-to-stay framing, and broad vacation-rental/value claims. |
 | Seascape gap | The page answers the beach question and has tracked stay links, but the stay decision is still easy to skim past. The page should turn AMI, Bradenton near AMI, and Siesta-side trips into a clearer stay-base shortcut before the long comparison continues. |
@@ -70,6 +70,14 @@
 - second-pass transfer change: clarified the pre-kit handoff so readers know to open one stay base first, then compare direct-booking totals, pool options, bedroom count, and beach distance inside that lane.
 - second-pass copy change: tightened the guide conversion kit copy so AMI, Bradenton-near-AMI, and Siesta-side trip shapes read like distinct stay decisions instead of one generic browse action.
 - next readback: wait for the first complete post-deploy GSC/GA4 window before judging impact; do not claim lift from this PR alone.
+
+## 2026-06-29 Direct-Book Transfer Adjustment
+
+- proof gate: `docs/status/next-batch.md` run date 2026-06-29, this brief, and GitHub PR #422.
+- scope: kept the existing `/guides/anna-maria-island-vs-siesta-key/` route, direct-answer block, stay-base shortcut, schema, and guide conversion kit.
+- page change: removed the mid-page owner-management detour from the `Where to Stay Verdict` and replaced it with tracked direct-book stay links for AMI, Bradenton near AMI beaches, Siesta Key area stays, and AMI beachfront stays.
+- tracking contract: every new verdict link uses `data-track-event="guide_book_direct_click"` and `data-guide-slug="anna-maria-island-vs-siesta-key"` so the next readback still measures guide-to-stay transfer.
+- no claim: this adjustment does not claim booking, revenue, rank, CTR, or AI-citation lift.
 
 ## Done When
 

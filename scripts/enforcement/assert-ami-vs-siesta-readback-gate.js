@@ -71,7 +71,11 @@ function main() {
     'data-transfer-choice="ami-vs-siesta-stay-base"',
     "Stay-base shortcut Anna Maria Island vacation rentals",
     "Stay-base shortcut Bradenton homes near AMI beaches",
-    "Stay-base shortcut Siesta Key area stays"
+    "Stay-base shortcut Siesta Key area stays",
+    "Verdict Anna Maria Island vacation rentals",
+    "Verdict Bradenton homes near AMI beaches",
+    "Verdict Siesta Key area stays",
+    "Verdict Anna Maria Island beachfront rentals"
   ].forEach((expected) => assertIncludes("src/guides/anna-maria-island-vs-siesta-key.html", source, expected));
 
   const shortcutBlockMatch = source.match(
@@ -96,6 +100,25 @@ function main() {
       "Stay-base shortcut Siesta Key area stays"
     ]
   ].forEach(([href, trackLabel]) => assertTrackedShortcut(shortcutBlock, href, trackLabel));
+
+  [
+    [
+      "/stays/anna-maria-island-vacation-rentals/",
+      "Verdict Anna Maria Island vacation rentals"
+    ],
+    [
+      "/stays/bradenton-vacation-rentals-near-beaches/",
+      "Verdict Bradenton homes near AMI beaches"
+    ],
+    [
+      "/stays/siesta-key-area-vacation-rentals/",
+      "Verdict Siesta Key area stays"
+    ],
+    [
+      "/stays/anna-maria-island-beachfront-rentals/",
+      "Verdict Anna Maria Island beachfront rentals"
+    ]
+  ].forEach(([href, trackLabel]) => assertTrackedShortcut(source, href, trackLabel));
 
   assertIncludes(
     "package.json scripts.verify:ami-vs-siesta-readback",
