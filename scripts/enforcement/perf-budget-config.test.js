@@ -17,7 +17,7 @@ test("perf budget watches the tracked money routes", () => {
   ]);
 });
 
-test("lighthouserc uses built site output and local money-route URLs", () => {
+test("lighthouserc uses built site output and local homepage plus money-route URLs", () => {
   const config = require(path.join(projectRoot, "lighthouserc.js"));
   const { moneyRoutes } = require(path.join(projectRoot, "scripts/perf/money-routes.js"));
 
@@ -25,7 +25,7 @@ test("lighthouserc uses built site output and local money-route URLs", () => {
   assert.equal(config.ci.collect.numberOfRuns, 3);
   assert.deepEqual(
     config.ci.collect.url,
-    moneyRoutes.map((route) => `http://localhost${route}`)
+    ["/", ...moneyRoutes].map((route) => `http://localhost${route}`)
   );
   assert.equal(config.ci.collect.settings.budgetPath, "./config/perf-budget.json");
   assert.equal(config.ci.assert.assertions["performance-budget"], "error");

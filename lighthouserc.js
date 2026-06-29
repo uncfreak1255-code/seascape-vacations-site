@@ -2,11 +2,13 @@
 
 const { moneyRoutes } = require("./scripts/perf/money-routes.js");
 
+const budgetRoutes = ["/", ...moneyRoutes];
+
 module.exports = {
   ci: {
     collect: {
       staticDistDir: "./_site",
-      url: moneyRoutes.map((route) => `http://localhost${route}`),
+      url: budgetRoutes.map((route) => `http://localhost${route}`),
       numberOfRuns: 3,
       settings: {
         budgetPath: "./config/perf-budget.json",

@@ -319,6 +319,7 @@ if (phase === "remediation") {
   expectExists("_site/robots.txt");
   expectExists("_site/hero-mobile.webp");
   expectExists("_site/hero-optimized.webp");
+  expectNotExists("_site/hero.jpg");
   expectContains("_site/_redirects", "/stays/hurricane-preparedness-florida-vacation/  /guides/hurricane-preparedness-florida-vacation/  301");
   expectContains("_site/_redirects", "/stays/travel-insurance-florida-vacation/  /guides/hurricane-preparedness-florida-vacation/  301");
   expectContains("_site/_redirects", "/stays/vacation-rentals-with-heated-pool/  /stays/vacation-rentals-with-pool-and-hot-tub/  301");

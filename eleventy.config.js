@@ -110,7 +110,8 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.addPassthroughCopy("css");
   eleventyConfig.addPassthroughCopy({ "src/css": "css" });
   eleventyConfig.addPassthroughCopy("js");
-  eleventyConfig.addPassthroughCopy("*.jpg");
+  eleventyConfig.addPassthroughCopy("hero-optimized.jpg");
+  eleventyConfig.addPassthroughCopy("hero-mobile.jpg");
   eleventyConfig.addPassthroughCopy("*.png");
   eleventyConfig.addPassthroughCopy("*.webp");
   eleventyConfig.addPassthroughCopy("*.avif");
