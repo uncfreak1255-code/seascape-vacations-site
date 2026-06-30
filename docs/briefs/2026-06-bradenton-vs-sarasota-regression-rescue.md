@@ -221,6 +221,16 @@
   context rather than fresh pricing proof, removes the stale `March 2026` schema
   label, and keeps the June review label plus `guide_book_direct_click` routing.
   This is proof hygiene, not a rank-recovery claim.
+- 2026-06-29: handled the unread Ahrefs crawl alert
+  `(Seascape-vacations) SERP title changed [New]: 1 URL`. The source mapped
+  back to `/guides/bradenton-vs-sarasota/`: the live/search title already read
+  `Bradenton vs Sarasota for Vacation: Which Base Wins?`, so the patch aligned
+  `WebPage.name` with that title surface while leaving the test-locked
+  `dateModified` value in place. The same rendered page reproduced Ahrefs' new
+  external 5XX:
+  `https://www.census.gov/quickfacts/bradentoncityflorida` returned HTTP 503,
+  so the two visible Census proof links now point to the working Census profile
+  URL at `data.census.gov`. No new SEO lane, route, or impact claim was opened.
 
 ## Not In Scope
 
