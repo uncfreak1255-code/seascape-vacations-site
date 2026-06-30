@@ -221,6 +221,14 @@
   context rather than fresh pricing proof, removes the stale `March 2026` schema
   label, and keeps the June review label plus `guide_book_direct_click` routing.
   This is proof hygiene, not a rank-recovery claim.
+- 2026-06-30: used the merged PR #422 audit finding and current
+  `docs/status/next-batch.md` read to keep the lane on direct-book conversion
+  instead of owner feeding. Replaced the bottom owner referral aside with a
+  guest stay-choice block that points only to the mapped Bradenton and Siesta
+  money destinations, preserves `guide_book_direct_click`, and moves
+  `dateModified` to 2026-06-30. This is a winner-defense/direct-book routing
+  edit only; rank, CTR, clicks, and downstream event impact still wait for the
+  post-deploy GSC/GA4 readback.
 
 ## Not In Scope
 
