@@ -231,6 +231,14 @@
   `https://www.census.gov/quickfacts/bradentoncityflorida` returned HTTP 503,
   so the two visible Census proof links now point to the working Census profile
   URL at `data.census.gov`. No new SEO lane, route, or impact claim was opened.
+- 2026-06-30: used the merged PR #422 audit finding and current
+  `docs/status/next-batch.md` read to keep the lane on direct-book conversion
+  instead of owner feeding. Replaced the bottom owner referral aside with a
+  guest stay-choice block that points only to the mapped Bradenton and Siesta
+  money destinations, preserves `guide_book_direct_click`, and moves
+  `dateModified` to 2026-06-30. This is a winner-defense/direct-book routing
+  edit only; rank, CTR, clicks, and downstream event impact still wait for the
+  post-deploy GSC/GA4 readback.
 
 ## Not In Scope
 

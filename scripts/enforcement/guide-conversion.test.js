@@ -357,24 +357,32 @@ test("booking-engine handoff click emits the GA4 event with the target booking U
   assert.equal(observed.payload.link_text, "Open Direct Availability");
 });
 
-test("Bradenton guide owner benchmark referral tracks before navigation without crossing lanes", () => {
+test("Bradenton guide bottom decision block routes to mapped stays before navigation", () => {
   const guideSource = fs.readFileSync(path.join(projectRoot, "src", "guides", "bradenton-vs-sarasota.html"), "utf8");
   const conversionTracking = fs.readFileSync(path.join(projectRoot, "src", "assets", "js", "conversion-tracking.js"), "utf8");
   const winnerPortfolio = fs.readFileSync(path.join(projectRoot, "docs", "portfolio", "winner-guides.md"), "utf8");
   const bradentonWinnerRow = winnerPortfolio
     .split("\n")
     .find((line) => line.startsWith("| `/guides/bradenton-vs-sarasota/` |"));
-  const ownerBenchmarkLink = guideSource.match(
-    /<a\b[^>]*href="\/research\/owner-fee-revenue-leak-benchmark-2026\/"[^>]*>See the owner fee benchmark/
+  const bradentonStayLink = guideSource.match(
+    /<a\b[^>]*href="\/stays\/bradenton-vacation-rentals-near-beaches\/"[^>]*data-track-label="Bottom Bradenton homes near AMI beaches"[^>]*>Bradenton homes near AMI beaches/
+  );
+  const siestaStayLink = guideSource.match(
+    /<a\b[^>]*href="\/stays\/siesta-key-area-vacation-rentals\/"[^>]*data-track-label="Bottom Siesta Key area stays"[^>]*>Siesta Key area stays/
   );
 
-  assert.ok(ownerBenchmarkLink, "Bradenton vs Sarasota should link to the owner benchmark");
-  assert.match(ownerBenchmarkLink[0], /data-track-event="guide_owner_referral_click"/);
-  assert.match(ownerBenchmarkLink[0], /data-guide-slug="bradenton-vs-sarasota"/);
-  assert.match(ownerBenchmarkLink[0], /data-track-label="Owner fee benchmark"/);
-  assert.doesNotMatch(ownerBenchmarkLink[0], /owner_primary_cta_click|guide_book_direct_click/);
-  assert.match(conversionTracking, /"guide_owner_referral_click"/);
+  assert.match(guideSource, /class="direct-book-decision-aside"/);
+  assert.doesNotMatch(guideSource, /owner-referral-aside|Owner fee benchmark|guide_owner_referral_click/);
+  assert.ok(bradentonStayLink, "Bradenton vs Sarasota should bottom-link to the mapped Bradenton stay page");
+  assert.ok(siestaStayLink, "Bradenton vs Sarasota should bottom-link to the mapped Siesta stay page");
+  assert.match(bradentonStayLink[0], /data-track-event="guide_book_direct_click"/);
+  assert.match(bradentonStayLink[0], /data-guide-slug="bradenton-vs-sarasota"/);
+  assert.match(siestaStayLink[0], /data-track-event="guide_book_direct_click"/);
+  assert.match(siestaStayLink[0], /data-guide-slug="bradenton-vs-sarasota"/);
+  assert.match(conversionTracking, /"guide_book_direct_click"/);
   assert.ok(bradentonWinnerRow, "winner guide portfolio should still document the Bradenton row");
+  assert.match(bradentonWinnerRow, /\/stays\/bradenton-vacation-rentals-near-beaches\//);
+  assert.match(bradentonWinnerRow, /\/stays\/siesta-key-area-vacation-rentals\//);
   assert.match(bradentonWinnerRow, /\| `guide_book_direct_click` \|/);
   assert.doesNotMatch(bradentonWinnerRow, /guide_owner_referral_click/);
 
@@ -395,15 +403,15 @@ test("Bradenton guide owner benchmark referral tracks before navigation without 
       };
       listeners.DOMContentLoaded();
 
-      const benchmarkLink = {
+      const bradentonBottomLink = {
         tagName: "A",
-        href: "/research/owner-fee-revenue-leak-benchmark-2026/",
+        href: "/stays/bradenton-vacation-rentals-near-beaches/",
         target: "",
-        textContent: "See the owner fee benchmark",
+        textContent: "Bradenton homes near AMI beaches",
         dataset: {
-          trackEvent: "guide_owner_referral_click",
+          trackEvent: "guide_book_direct_click",
           guideSlug: "bradenton-vs-sarasota",
-          trackLabel: "Owner fee benchmark"
+          trackLabel: "Bottom Bradenton homes near AMI beaches"
         },
         hasAttribute() {
           return false;
@@ -434,7 +442,7 @@ test("Bradenton guide owner benchmark referral tracks before navigation without 
       listeners.click({
         target: {
           closest(selector) {
-            return selector === "[data-track-event]" ? benchmarkLink : null;
+            return selector === "[data-track-event]" ? bradentonBottomLink : null;
           }
         },
         button: 0,
@@ -444,7 +452,7 @@ test("Bradenton guide owner benchmark referral tracks before navigation without 
         altKey: false,
         preventDefault() {
           prevented = true;
-          timeline.push("prevent:guide_owner_referral_click");
+          timeline.push("prevent:guide_book_direct_click");
         }
       });
 
@@ -459,20 +467,20 @@ test("Bradenton guide owner benchmark referral tracks before navigation without 
     }
   });
 
-  const trackIndex = observed.timeline.indexOf("track:guide_owner_referral_click");
+  const trackIndex = observed.timeline.indexOf("track:guide_book_direct_click");
   const navigationIndex = observed.timeline.findIndex((entry) => entry.startsWith("navigate:"));
 
   assert.equal(observed.prevented, true);
-  assert.equal(observed.trackedEvent, "guide_owner_referral_click");
+  assert.equal(observed.trackedEvent, "guide_book_direct_click");
   assert.notEqual(observed.trackedEvent, "owner_primary_cta_click");
-  assert.notEqual(observed.trackedEvent, "guide_book_direct_click");
+  assert.notEqual(observed.trackedEvent, "guide_owner_referral_click");
   assert.equal(observed.trackedPayload.guide_slug, "bradenton-vs-sarasota");
   assert.equal(Object.prototype.hasOwnProperty.call(observed.trackedPayload, "page_slug"), false);
-  assert.equal(observed.trackedPayload.link_text, "Owner fee benchmark");
+  assert.equal(observed.trackedPayload.link_text, "Bottom Bradenton homes near AMI beaches");
   assert.equal(observed.trackedPayload.landing_page_path, "/guides/bradenton-vs-sarasota/");
-  assert.equal(new URL(observed.trackedPayload.link_url).pathname, "/research/owner-fee-revenue-leak-benchmark-2026/");
-  assert.equal(trackIndex > -1, true, "owner referral should dispatch through GA before navigation");
-  assert.equal(navigationIndex > trackIndex, true, "owner referral should continue navigation only after the tracking callback");
+  assert.equal(new URL(observed.trackedPayload.link_url).pathname, "/stays/bradenton-vacation-rentals-near-beaches/");
+  assert.equal(trackIndex > -1, true, "guide direct-book click should dispatch through GA before navigation");
+  assert.equal(navigationIndex > trackIndex, true, "guide direct-book click should continue navigation only after the tracking callback");
 });
 
 test("first tracked navigation click is delivered before same-tab navigation continues", () => {

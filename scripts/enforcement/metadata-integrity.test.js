@@ -129,7 +129,7 @@ test("winner guide snippets stay decision-forward without body rewrites", () => 
   );
   assert.match(
     bradentonVsSarasota,
-    /"dateModified": "2026-06-16T14:30:00-04:00"/
+    /"dateModified": "2026-06-30T10:15:00-04:00"/
   );
   assert.match(
     bradentonVsSarasota,
