@@ -106,7 +106,7 @@ test("booking handoff receipts store only the identity bridge context needed for
   const receipt = buildBookingHandoffReceipt({
     handoffId: "svh_test_123",
     sessionId: "svs_test_456",
-    linkUrl: "https://book.seascape-vacations.com/listings/206016?utm_source=google&utm_medium=organic&utm_campaign=guide_winners&utm_content=best-time&sv_handoff_id=svh_test_123&sv_session_id=svs_test_456&email=guest@example.com",
+    linkUrl: "https://book.seascape-vacations.com/listings/206016?utm_source=google&utm_medium=organic&utm_campaign=guide_winners&utm_content=best-time&sv_handoff_id=svh_test_123&sv_session_id=svs_test_456&email=guest@example.com&payment_intent=pi_123&payment_intent_client_secret=pi_secret_123&setup_intent=seti_123&setup_intent_client_secret=seti_secret_123&client_secret=secret_123&redirect_status=succeeded",
     linkText: "Check availability",
     pagePath: "https://seascape-vacations.com/guides/best-time-visit-anna-maria-island/",
     pageSlug: "best-time-visit-anna-maria-island",
@@ -125,7 +125,7 @@ test("booking handoff receipts store only the identity bridge context needed for
   assert.equal(receipt.pageSlug, "best-time-visit-anna-maria-island");
   assert.match(receipt.linkUrl, /sv_handoff_id=svh_test_123/);
   assert.match(receipt.linkUrl, /sv_session_id=svs_test_456/);
-  assert.doesNotMatch(receipt.linkUrl, /guest@example\.com|email=/i);
+  assert.doesNotMatch(receipt.linkUrl, /guest@example\.com|email=|payment_intent|payment_intent_client_secret|setup_intent|setup_intent_client_secret|client_secret|redirect_status/i);
 });
 
 test("booking handoff metrics dedupe repeated handoff ids and keep small aggregates", () => {
