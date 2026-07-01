@@ -3,6 +3,14 @@
     window.dataLayer = window.dataLayer || [];
     (function () {
         var hostname = window.location && window.location.hostname ? window.location.hostname : "";
+        var SENSITIVE_ANALYTICS_KEYS = [
+            "setup_intent",
+            "setup_intent_client_secret",
+            "payment_intent",
+            "payment_intent_client_secret",
+            "client_secret",
+            "redirect_status"
+        ];
         var SENSITIVE_ANALYTICS_KEY_PATTERN = /(^|[-_])(email|e-mail|phone|tel|mobile|first-name|last-name|full-name|guest-name|name|address|property-address|street|zip|postal|message|comment|note|concern|concerns|details|description|what-feels-off|free-text)($|[-_])/i;
         var EMAIL_VALUE_PATTERN = /[^\s@]+@[^\s@]+\.[^\s@]+/;
         var PHONE_VALUE_PATTERN = /(?:\+?1[\s.-]?)?(?:\(?\d{3}\)?[\s.-]?)\d{3}[\s.-]?\d{4}/;
@@ -20,7 +28,9 @@
         }
 
         function isSensitiveAnalyticsKey(key) {
-            return SENSITIVE_ANALYTICS_KEY_PATTERN.test(normalizeAnalyticsKey(key));
+            var normalizedKey = normalizeAnalyticsKey(key);
+            var exactKey = normalizedKey.replace(/-/g, "_");
+            return SENSITIVE_ANALYTICS_KEYS.indexOf(exactKey) !== -1 || SENSITIVE_ANALYTICS_KEY_PATTERN.test(normalizedKey);
         }
 
         function sanitizeAnalyticsUrl(value) {
@@ -36,6 +46,21 @@
                 return url.toString();
             } catch (error) {
                 return "";
+            }
+        }
+
+        function getSanitizedPageLocation() {
+            return sanitizeAnalyticsUrl(window.location && window.location.href ? window.location.href : "https://seascape-vacations.com/");
+        }
+
+        function getSanitizedPagePath() {
+            var safeLocation = getSanitizedPageLocation();
+            if (!safeLocation || typeof URL !== "function") return window.location && window.location.pathname ? window.location.pathname : "/";
+            try {
+                var url = new URL(safeLocation);
+                return url.pathname + url.search;
+            } catch (error) {
+                return window.location && window.location.pathname ? window.location.pathname : "/";
             }
         }
 
@@ -95,7 +120,10 @@
         document.head.appendChild(analyticsScript);
 
         gtag('js', new Date());
-        gtag('config', '{{ site.analytics.ga4MeasurementId }}');
+        gtag('config', '{{ site.analytics.ga4MeasurementId }}', {
+            page_location: getSanitizedPageLocation(),
+            page_path: getSanitizedPagePath()
+        });
         window.seascapeTrackEvent = function(eventName, params) {
             if (!eventName) return;
             gtag('event', eventName, window.seascapeSanitizeAnalyticsPayload(params || {}));

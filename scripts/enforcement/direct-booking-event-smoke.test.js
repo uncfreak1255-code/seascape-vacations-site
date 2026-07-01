@@ -220,9 +220,12 @@ test("conversion tracking scrubs obvious PII before analytics payloads reach dat
     email: "owner@example.com",
     phone: "941-555-1212",
     name: "Owner Name",
+    first_name: "Owner",
+    last_name: "Guest",
+    what_feels_off: "The numbers feel off",
     property_address: "123 Palm Street",
     concerns: "Please call me about this listing.",
-    link_url: "https://book.seascape-vacations.com/listings/206016?utm_source=google&utm_content=owner%40example.com&phone=9415551212&checkin=2026-06-01&guests=4"
+    link_url: "https://book.seascape-vacations.com/listings/206016?utm_source=google&utm_content=owner%40example.com&phone=9415551212&checkin=2026-06-01&guests=4&setup_intent=seti_123&setup_intent_client_secret=seti_secret_123&payment_intent=pi_123&payment_intent_client_secret=pi_secret_123&client_secret=secret_123&redirect_status=succeeded"
   });
   const event = events.find((entry) => entry.event === "owner_form_submit");
 
@@ -233,8 +236,8 @@ test("conversion tracking scrubs obvious PII before analytics payloads reach dat
   assert.match(event.payload.link_url, /utm_source=google/);
   assert.match(event.payload.link_url, /checkin=2026-06-01/);
   assert.match(event.payload.link_url, /guests=4/);
-  assert.doesNotMatch(event.payload.link_url, /owner%40example\.com|owner@example\.com|9415551212|phone=/i);
-  assert.doesNotMatch(JSON.stringify(event.payload), /owner@example\.com|941-555-1212|Owner Name|123 Palm Street|Please call me/i);
+  assert.doesNotMatch(event.payload.link_url, /owner%40example\.com|owner@example\.com|9415551212|phone=|setup_intent|setup_intent_client_secret|payment_intent|payment_intent_client_secret|client_secret|redirect_status/i);
+  assert.doesNotMatch(JSON.stringify(event.payload), /owner@example\.com|941-555-1212|Owner Name|123 Palm Street|The numbers feel off|Please call me/i);
 });
 
 test("homepage and shared popup partial use the tracked email capture path", () => {

@@ -205,6 +205,29 @@ test("conversion tracking supports both guide and owner measurement events", () 
   }
 });
 
+test("GA4 bootstrap sanitizes payment-return params before page storage", () => {
+  const analyticsPartial = fs.readFileSync(
+    path.join(projectRoot, "src", "_includes", "partials", "analytics-ga4.njk"),
+    "utf8"
+  );
+
+  for (const marker of [
+    "SENSITIVE_ANALYTICS_KEYS",
+    "setup_intent",
+    "setup_intent_client_secret",
+    "payment_intent",
+    "payment_intent_client_secret",
+    "client_secret",
+    "redirect_status",
+    "getSanitizedPageLocation",
+    "getSanitizedPagePath",
+    "page_location: getSanitizedPageLocation()",
+    "page_path: getSanitizedPagePath()"
+  ]) {
+    assert.equal(analyticsPartial.includes(marker), true, `analytics partial missing ${marker}`);
+  }
+});
+
 test("guide email capture carries utility context for reviewed agent-data proof", () => {
   const observed = withConversionTrackingStubs(({ listeners, window }) => {
     const form = {
@@ -355,6 +378,88 @@ test("booking-engine handoff click emits the GA4 event with the target booking U
   assert.match(observed.payload.booking_session_id, /^svs_/);
   assert.match(observed.payload.booking_handoff_id, /^svh_/);
   assert.equal(observed.payload.link_text, "Open Direct Availability");
+});
+
+test("property booking-page clicks send booking handoff receipts when pointed at the booking engine", () => {
+  const observed = withConversionTrackingStubs(({ listeners, window }) => {
+    const fetchCalls = [];
+    global.fetch = (url, options = {}) => {
+      fetchCalls.push({
+        url: String(url),
+        method: options.method || "GET",
+        body: options.body || ""
+      });
+      return Promise.resolve({ ok: true, status: 200 });
+    };
+
+    window.location.href = "http://localhost/properties/bradenton-pool-home/?utm_source=google&utm_medium=organic&utm_campaign=summer&utm_content=guest%40example.com&ref=9415551212&payment_intent=pi_current";
+    window.location.pathname = "/properties/bradenton-pool-home/";
+    window.location.search = "?utm_source=google&utm_medium=organic&utm_campaign=summer&utm_content=guest%40example.com&ref=9415551212&payment_intent=pi_current";
+    listeners.DOMContentLoaded();
+
+    const bookingLink = {
+      tagName: "A",
+      href: "https://book.seascape-vacations.com/listings/487798?payment_intent=pi_123&payment_intent_client_secret=pi_secret_123&setup_intent=seti_123&setup_intent_client_secret=seti_secret_123&client_secret=secret_123&redirect_status=succeeded",
+      target: "_blank",
+      textContent: "Book Bradenton Pool Home",
+      dataset: {
+        trackEvent: "property_booking_page_click",
+        pageSlug: "bradenton-pool-home",
+        placement: "property_cta",
+        trackLabel: "Book Bradenton Pool Home"
+      },
+      hasAttribute() {
+        return false;
+      },
+      getAttribute(name) {
+        if (name === "href") return this.href;
+        if (name === "target") return this.target;
+        return null;
+      },
+      setAttribute(name, value) {
+        if (name === "href") this.href = value;
+      }
+    };
+
+    listeners.click({
+      target: {
+        closest(selector) {
+          return selector === "[data-track-event]" ? bookingLink : null;
+        }
+      },
+      button: 0,
+      metaKey: false,
+      ctrlKey: false,
+      shiftKey: false,
+      altKey: false
+    });
+
+    return {
+      analyticsEvent: window.dataLayer[0],
+      fetchCalls
+    };
+  });
+  const receipt = JSON.parse(observed.fetchCalls[0].body);
+
+  assert.equal(observed.analyticsEvent.event, "property_booking_page_click");
+  assert.equal(observed.fetchCalls[0].url, "/.netlify/functions/booking-handoff");
+  assert.equal(observed.fetchCalls[0].method, "POST");
+  assert.match(receipt.handoffId, /^svh_/);
+  assert.match(receipt.sessionId, /^svs_/);
+  assert.equal(receipt.listingId, "487798");
+  assert.equal(receipt.pageSlug, "bradenton-pool-home");
+  assert.equal(receipt.placement, "property_cta");
+  assert.equal(receipt.utmSource, "google");
+  assert.equal(receipt.utmMedium, "organic");
+  assert.equal(receipt.utmCampaign, "summer");
+  assert.equal(Object.prototype.hasOwnProperty.call(receipt, "utmContent"), false);
+  assert.equal(Object.prototype.hasOwnProperty.call(receipt, "ref"), false);
+  assert.match(receipt.linkUrl, /sv_handoff_id=svh_/);
+  assert.match(receipt.linkUrl, /sv_session_id=svs_/);
+  assert.match(receipt.linkUrl, /utm_source=google/);
+  assert.match(receipt.linkUrl, /utm_medium=organic/);
+  assert.match(receipt.linkUrl, /utm_campaign=summer/);
+  assert.doesNotMatch(receipt.linkUrl, /guest%40example\.com|guest@example\.com|9415551212|ref=|payment_intent|payment_intent_client_secret|setup_intent|setup_intent_client_secret|client_secret|redirect_status/i);
 });
 
 test("Bradenton guide bottom decision block routes to mapped stays before navigation", () => {

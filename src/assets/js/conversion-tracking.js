@@ -53,6 +53,14 @@
     "sv_handoff_id",
     "sv_session_id"
   ];
+  var SENSITIVE_ANALYTICS_KEYS = [
+    "setup_intent",
+    "setup_intent_client_secret",
+    "payment_intent",
+    "payment_intent_client_secret",
+    "client_secret",
+    "redirect_status"
+  ];
   var SENSITIVE_ANALYTICS_KEY_PATTERN = /(^|[-_])(email|e-mail|phone|tel|mobile|first-name|last-name|full-name|guest-name|name|address|property-address|street|zip|postal|message|comment|note|concern|concerns|details|description|what-feels-off|free-text)($|[-_])/i;
   var EMAIL_VALUE_PATTERN = /[^\s@]+@[^\s@]+\.[^\s@]+/;
   var PHONE_VALUE_PATTERN = /(?:\+?1[\s.-]?)?(?:\(?\d{3}\)?[\s.-]?)\d{3}[\s.-]?\d{4}/;
@@ -118,7 +126,18 @@
   }
 
   function isSensitiveAnalyticsKey(key) {
-    return SENSITIVE_ANALYTICS_KEY_PATTERN.test(normalizeAnalyticsKey(key));
+    var normalizedKey = normalizeAnalyticsKey(key);
+    var exactKey = normalizedKey.replace(/-/g, "_");
+    return SENSITIVE_ANALYTICS_KEYS.indexOf(exactKey) !== -1 || SENSITIVE_ANALYTICS_KEY_PATTERN.test(normalizedKey);
+  }
+
+  function isSensitiveAnalyticsValue(value) {
+    var stringValue = String(value || "");
+    return (
+      EMAIL_VALUE_PATTERN.test(stringValue) ||
+      PHONE_VALUE_PATTERN.test(stringValue) ||
+      ADDRESS_VALUE_PATTERN.test(stringValue)
+    );
   }
 
   function sanitizeAnalyticsUrl(value) {
@@ -128,12 +147,7 @@
       var url = new URL(String(value), window.location && window.location.href ? window.location.href : "https://seascape-vacations.com/");
       Array.from(url.searchParams.keys()).forEach(function (key) {
         var paramValue = url.searchParams.get(key) || "";
-        if (
-          isSensitiveAnalyticsKey(key) ||
-          EMAIL_VALUE_PATTERN.test(paramValue) ||
-          PHONE_VALUE_PATTERN.test(paramValue) ||
-          ADDRESS_VALUE_PATTERN.test(paramValue)
-        ) {
+        if (isSensitiveAnalyticsKey(key) || isSensitiveAnalyticsValue(paramValue)) {
           url.searchParams.delete(key);
         }
       });
@@ -159,7 +173,7 @@
     var stringValue = String(value).trim();
     if (!stringValue) return "";
     if (/url$/i.test(key)) return sanitizeAnalyticsUrl(stringValue);
-    if (EMAIL_VALUE_PATTERN.test(stringValue) || PHONE_VALUE_PATTERN.test(stringValue) || ADDRESS_VALUE_PATTERN.test(stringValue)) return "";
+    if (isSensitiveAnalyticsValue(stringValue)) return "";
 
     return stringValue.slice(0, 160);
   }
@@ -211,10 +225,17 @@
       return url.toString();
     }
 
+    Array.from(url.searchParams.keys()).forEach(function (key) {
+      var paramValue = url.searchParams.get(key) || "";
+      if (isSensitiveAnalyticsKey(key) || isSensitiveAnalyticsValue(paramValue)) {
+        url.searchParams.delete(key);
+      }
+    });
+
     if (currentParams) {
       BOOKING_ENGINE_HANDOFF_KEYS.forEach(function (key) {
         var value = (currentParams.get(key) || "").trim();
-        if (value && !url.searchParams.get(key)) {
+        if (value && !isSensitiveAnalyticsKey(key) && !isSensitiveAnalyticsValue(value) && !url.searchParams.get(key)) {
           url.searchParams.set(key, value);
         }
       });
@@ -508,6 +529,8 @@
       ref: payload.ref
     };
 
+    receiptPayload = window.seascapeSanitizeAnalyticsPayload(receiptPayload);
+
     fetch(BOOKING_HANDOFF_ENDPOINT, {
       method: "POST",
       headers: {
@@ -618,7 +641,10 @@
 
       syncBookingEngineLink(target);
       var payload = getPayloadFromElement(target);
-      if (target.dataset.trackEvent === "booking_engine_handoff") {
+      if (
+        target.dataset.trackEvent === "booking_engine_handoff" ||
+        target.dataset.trackEvent === "property_booking_page_click"
+      ) {
         sendBookingHandoffReceipt(payload);
       }
 
