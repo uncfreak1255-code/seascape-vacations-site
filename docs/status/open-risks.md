@@ -14,6 +14,21 @@
 - `src/guides/vacation-rental-income-anna-maria.html` must stay noindexed unless the enforcement decision changes; `scripts/enforcement/owner-proof-clean.test.js` locks it out of the owner-proof lane and routes owner-income intent to `/research/owner-fee-revenue-leak-benchmark-2026/`
 - historical queue drift can accidentally reopen `/stays/summer-vacation-rentals-florida-gulf-coast/` as a July refresh target even though the current repo decision is to keep it served/noindex and out of the near-term queue. `seoGovernance.staysNoindexSlugs` suppresses it, `docs/portfolio/pseo-inventory-triage.md` keeps it in the support/noindex lane, and `docs/portfolio/stay-money-pages.md` does not assign it a winner or money-page role. Only reopen rebuild work if a separate GSC + SERP proof pack and a defined money destination justify earning indexable status
 
+## GSC Pages export gap (2026-07-01)
+
+Spec: keep high-level strategy tied to the current `docs/status/next-batch.md`
+receipt, but do not treat per-URL index-loss, 404, or legacy-Google-residue
+claims as fully measured until the missing GSC Pages export is captured.
+`rank-tracker-latest.md` says the GSC Performance and Indexing totals were
+pulled, but the GSC Pages tab and Compare mode were not pullable, leaving the
+dropped URL set and new 404 list unenumerated. That means the next useful
+action belongs in `seascape-analytics` or a manual Search Console export:
+capture the Pages export, generate a receipt that names the exact URLs, then
+sync only the site-facing decision back through `docs/status/next-batch.md` if
+it changes branch authority. Until that receipt exists, use live redirects,
+rendered sitemap/indexability tests, and URL inspection spot checks for narrow
+debugging, but label broad per-URL Google claims as partial.
+
 ## Repo-audit V1 (2026-06-12)
 
 - owner support GA4 numbers before the Task 3 tracking-gate deploy are instrumentation artifacts because `/research/owner-fee-revenue-leak-benchmark-2026/` shipped tracked owner CTAs without the shared tracking runtime; the first post-fix weekly receipt should be read as sensor repair, not owner demand.

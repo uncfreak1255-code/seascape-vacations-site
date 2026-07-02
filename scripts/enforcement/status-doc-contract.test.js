@@ -81,6 +81,16 @@ test("current-state defers volatile reread detail to next-batch", () => {
   );
 });
 
+test("open risks preserves the GSC Pages export boundary for per-URL index claims", () => {
+  const openRisks = read(path.join("docs", "status", "open-risks.md"));
+
+  assert.match(openRisks, /GSC Pages export gap/i);
+  assert.match(openRisks, /GSC Pages/i);
+  assert.match(openRisks, /rank-tracker-latest\.md/);
+  assert.match(openRisks, /docs\/status\/next-batch\.md/);
+  assert.match(openRisks, /seascape-analytics/);
+});
+
 test("repo instructions and next-batch skill use the single status contract", () => {
   const agents = read("AGENTS.md");
   const claude = read("CLAUDE.md");
