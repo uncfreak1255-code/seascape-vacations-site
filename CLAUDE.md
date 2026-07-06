@@ -75,12 +75,23 @@ Two Claude-operational specifics that are easy to miss:
   screenshots for subjective changes.
 - For UI/visual work, dispatch subagents with `model: "sonnet"`.
 
-## GBrain Search Guidance (configured by /sync-gbrain)
+## GBrain Search Guidance (local, optional)
 <!-- gstack-gbrain-search-guidance:start -->
 
-GBrain is set up and synced on this machine. The agent should prefer gbrain
-over Grep when the question is semantic or when you don't know the exact
-identifier yet.
+**Applies only if GBrain is set up on the machine you're running on.** The pin
+and the local corpora below are **machine-local, not committed**. Before
+relying on any `gbrain` command, confirm it is wired here:
+
+```
+test -f .gbrain-source && gbrain --version >/dev/null 2>&1 \
+  && echo "gbrain wired" || echo "gbrain NOT set up here — use Grep/Glob"
+```
+
+If that prints "NOT set up," ignore this whole section and use Grep/Glob. Do
+not trust worktree pinning that is not present.
+
+When GBrain *is* set up, prefer it over Grep for semantic questions or when you
+don't know the exact identifier yet.
 
 **This worktree is pinned to a worktree-scoped code source** via the
 `.gbrain-source` file in the repo root (kubectl-style context).
@@ -92,10 +103,11 @@ of the same repo each have their own pin and their own indexed pages, so
 semantic results match the code on disk here.
 
 Call-graph queries (`code-callers`/`code-callees`) also need the graph to be
-built first — run `/sync-gbrain --dream` (or `--full`) if they return
-`count: 0`. This only works if this source's gbrain schema pack extracts code
-symbols; on a non-code-aware pack `--dream` completes but the graph stays empty
-and reports a WARN. `code-def`/`code-refs` need the same extraction.
+built first. If they return `count: 0`, use the approved local GBrain graph
+build/sync flow for this machine before trusting the result. This only works if
+this source's gbrain schema pack extracts code symbols; on a non-code-aware
+pack the graph can stay empty and report a WARN. `code-def`/`code-refs` need
+the same extraction.
 
 Two indexed corpora available via the `gbrain` CLI:
 - This worktree's code (auto-pinned via `.gbrain-source`).
@@ -113,14 +125,14 @@ Prefer gbrain when:
     `gbrain search "<terms>" --source gstack-brain-<user>`
 
 Grep is still right for known exact strings, regex, multiline patterns, and
-file globs. Run `/sync-gbrain` after meaningful code changes; for ongoing
-auto-sync across all worktrees, run `gbrain autopilot --install` once per
-machine — gbrain's daemon handles incremental refresh on a schedule.
+file globs. Refresh the local GBrain source after meaningful code changes only
+through the approved local setup/sync flow for this machine. For ongoing
+auto-sync across all worktrees, use the repo-approved autopilot setup rather
+than starting ad hoc sync/remediation commands.
 
-Safety: don't run `/sync-gbrain` while `gbrain autopilot` is active — the
-orchestrator refuses destructive source ops when it detects a running autopilot
-to avoid racing it (#1734). Prefer registering user repos with `gbrain sources
-add --path <dir>` (no `--url`): URL-managed sources can auto-reclone, and the
-sync code walk for them requires an explicit `--allow-reclone` opt-in.
+Safety: don't run local GBrain source sync or graph-build commands while
+`gbrain autopilot` is active. Prefer registering user repos with `gbrain
+sources add --path <dir>` (no `--url`): URL-managed sources can auto-reclone,
+and the sync code walk for them requires an explicit `--allow-reclone` opt-in.
 
 <!-- gstack-gbrain-search-guidance:end -->
