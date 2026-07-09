@@ -47,6 +47,7 @@ Required when the branch changes search-facing page source, `src/_data/seoPages.
 | Current proof | |
 | Top visible competitors | |
 | Competitor angle | |
+| Visual/format gap | |
 | Seascape gap | |
 | Search fit | |
 | Local/GBP proof | |

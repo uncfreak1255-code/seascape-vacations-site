@@ -73,6 +73,7 @@ brief:
 | Current proof | Latest final GSC/GA4 when available, plus rank tracker or live SERP signal. Name the dated receipt or say final analytics are not ready. |
 | Top visible competitors | Top 3 visible organic/local/OTA/SERP competitors. |
 | Competitor angle | Inventory, price, local trust, guide depth, real estate/living advice, reviews, map pack, OTA, directory, or UGC. |
+| Visual/format gap | Tables, maps, galleries, charts, comparison layouts, imagery, or other visible formats competitors use to make the answer easier to scan; say whether Seascape should match, skip, or answer differently. |
 | Seascape gap | Concrete gap versus the visible winners. |
 | Search fit | Why the existing URL should be rescued for this query, what conversion it should support, or why the rescue should stop. |
 | Local/GBP proof | GBP/category/NAP/map-pack note for local or owner-management intent; otherwise explain why it is `N/A`. |

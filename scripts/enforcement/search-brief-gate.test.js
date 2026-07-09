@@ -102,6 +102,7 @@ test("search decision gate flags placeholder Gate 0 values", () => {
 | Current proof | fill after analytics rerun |
 | Top visible competitors | To capture in the next branch |
 | Competitor angle | direct booking |
+| Visual/format gap | Competitors rely on listing grids; no map, chart, or comparison-table gap observed. |
 | Seascape gap | faster answer block |
 | Search fit | Query is guest booking intent and current URL is the right money page. |
 | Local/GBP proof | N/A for this guest-booking SERP; no map pack observed. |
@@ -129,6 +130,7 @@ test("search decision gate requires SERP freshness and search-fit fields", () =>
 | Current proof | Current analytics receipt is blocked, so this is a live SERP-only read. |
 | Top visible competitors | Vacasa, Evolve, and local map-pack competitors. |
 | Competitor angle | local trust and owner revenue proof |
+| Visual/format gap | Competitors show map-pack proof and service comparison blocks; Seascape needs to decide whether those belong on this page. |
 | Seascape gap | weaker local proof and fewer links into the owner money page |
 | Recommendation | prepare a rescue brief before editing source copy |
 `;
@@ -157,6 +159,7 @@ test("search decision gate rejects backwards dates, bare N/A, and undated latest
 | Current proof | latest joined read says the guide slipped. |
 | Top visible competitors | Reddit Sarasota, MIDFLORIDA, and Zachos Realty. |
 | Competitor angle | relocation pages are answering the comparison faster |
+| Visual/format gap | Competitors use comparison tables and map context; Seascape needs a faster scannable comparison. |
 | Seascape gap | vacation-rental fit appears too late |
 | Search fit | Existing winner guide should own this comparison and feed Bradenton stay clicks. |
 | Local/GBP proof | N/A |
@@ -188,6 +191,7 @@ test("search decision gate accepts a brief with a filled Gate 0 block", () => {
 | Current proof | 12 clicks, 88 impressions, 5 GA4 sessions, and 2 tracked date-clicks in the dated 2026-06-09 to 2026-06-16 final read. |
 | Top visible competitors | Anna Maria Life Vacation Rentals, AMI Locals, and SeaBreeze Vacation. |
 | Competitor angle | on-island inventory depth, local trust, and book-direct positioning |
+| Visual/format gap | Competitors win with broad property grids; Seascape should answer with a tighter near-island property comparison. |
 | Seascape gap | faster near-island explanation and earlier direct-date routing |
 | Search fit | Query is guest booking intent, the existing stay money URL is the right page, and the conversion target is property/date clicks. |
 | Local/GBP proof | N/A for this organic stay-money read; no local service map-pack action needed. |
@@ -225,6 +229,7 @@ test("search decision gate accepts multiple valid briefs when each search surfac
 | Current proof | 12 clicks and 88 impressions in the dated 2026-06-09 to 2026-06-16 read. |
 | Top visible competitors | Anna Maria Life Vacation Rentals, AMI Locals, and SeaBreeze Vacation. |
 | Competitor angle | on-island inventory depth and local trust |
+| Visual/format gap | Competitors lean on larger property grids; Seascape should keep the format focused on matching homes and tradeoffs. |
 | Seascape gap | faster near-island explanation |
 | Search fit | Query is guest booking intent, and the stay money URL is the right page. |
 | Local/GBP proof | N/A for this organic stay-money read; no local service map-pack action needed. |
@@ -249,6 +254,7 @@ test("search decision gate accepts multiple valid briefs when each search surfac
 | Current proof | 2026-06-20 SERP read shows route-planner competitors and a current Seascape guide. |
 | Top visible competitors | Rome2rio, Visit Florida, and AMI Chamber. |
 | Competitor angle | route planner and official visitor guidance |
+| Visual/format gap | Competitors use route tables and maps; Seascape should keep travel options scannable. |
 | Seascape gap | stale freshness and mixed route-cost language |
 | Search fit | Existing guide should win the route query and hand readers to stay pages. |
 | Local/GBP proof | Not a GBP action because this is organic route-guide intent. |
@@ -294,6 +300,7 @@ test("search decision gate rejects multiple briefs when a search surface is unna
 | Current proof | 12 clicks and 88 impressions in the dated 2026-06-09 to 2026-06-16 read. |
 | Top visible competitors | Anna Maria Life Vacation Rentals, AMI Locals, and SeaBreeze Vacation. |
 | Competitor angle | on-island inventory depth and local trust |
+| Visual/format gap | Competitors lean on larger property grids; Seascape should keep the format focused on matching homes and tradeoffs. |
 | Seascape gap | faster near-island explanation |
 | Search fit | Query is guest booking intent, and the stay money URL is the right page. |
 | Local/GBP proof | N/A for this organic stay-money read; no local service map-pack action needed. |
@@ -314,6 +321,7 @@ test("search decision gate rejects multiple briefs when a search surface is unna
 | Current proof | 2026-06-20 SERP read shows route-planner competitors and a current Seascape guide. |
 | Top visible competitors | Rome2rio, Visit Florida, and AMI Chamber. |
 | Competitor angle | route planner and official visitor guidance |
+| Visual/format gap | Competitors use route tables and maps; Seascape should keep travel options scannable. |
 | Seascape gap | stale freshness and mixed route-cost language |
 | Search fit | Existing guide should win the route query and hand readers to stay pages. |
 | Local/GBP proof | Not a GBP action because this is organic route-guide intent. |
@@ -368,6 +376,7 @@ test("search decision gate accepts changed public source file bullets", () => {
 | Current proof | 2026-06-20 search read says homepage labels need a freshness cleanup. |
 | Top visible competitors | Brand SERP and local rental competitors. |
 | Competitor angle | local trust and guide freshness. |
+| Visual/format gap | Competitors show simple trust blocks; no gallery, map, or chart gap observed for this source edit. |
 | Seascape gap | homepage cards mention stale-looking dates. |
 | Search fit | Existing homepage is the right brand route. |
 | Local/GBP proof | Not a GBP action because this is homepage copy freshness. |
@@ -392,6 +401,7 @@ test("search decision gate accepts changed public source file bullets", () => {
 | Current proof | 2026-06-20 SERP read names the guide as the current route. |
 | Top visible competitors | Local guide competitors. |
 | Competitor angle | deeper answer structure. |
+| Visual/format gap | Competitors use comparison tables; Seascape should keep the answer block easy to scan. |
 | Seascape gap | guide needs proof cleanup. |
 | Search fit | Existing guide is the right route. |
 | Local/GBP proof | Not a GBP action because this is organic guide intent. |
@@ -443,6 +453,7 @@ test("search decision gate ignores incidental proof-source mentions outside sour
 | Current proof | 2026-06-20 search read says homepage labels need a freshness cleanup. |
 | Top visible competitors | Brand SERP and local rental competitors. |
 | Competitor angle | local trust and guide freshness. |
+| Visual/format gap | Competitors show simple trust blocks; no gallery, map, or chart gap observed for this source edit. |
 | Seascape gap | homepage cards mention stale-looking dates. |
 | Search fit | Existing homepage is the right brand route. |
 | Local/GBP proof | Not a GBP action because this is homepage copy freshness. |
@@ -463,6 +474,7 @@ test("search decision gate ignores incidental proof-source mentions outside sour
 | Current proof | 2026-06-20 SERP read names the guide as the current route. |
 | Top visible competitors | Local guide competitors. |
 | Competitor angle | deeper answer structure. |
+| Visual/format gap | Competitors use comparison tables; Seascape should keep the answer block easy to scan. |
 | Seascape gap | guide needs proof cleanup. |
 | Search fit | Existing guide is the right route. |
 | Local/GBP proof | Not a GBP action because this is organic guide intent. |
