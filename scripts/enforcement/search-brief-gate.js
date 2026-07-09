@@ -24,6 +24,7 @@ const REQUIRED_GATE0_FIELDS = [
   "Current proof",
   "Top visible competitors",
   "Competitor angle",
+  "Visual/format gap",
   "Seascape gap",
   "Search fit",
   "Local/GBP proof",

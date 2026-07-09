@@ -36,6 +36,7 @@ Before recommending site work, capture this block:
 | Current proof | GSC clicks, impressions, CTR, average position, GA4 sessions, and tracked conversion event when available. Name the dated receipt or say final analytics are not ready. |
 | Top visible competitors | Top 3 organic/local/OTA/SERP competitors from the live read. |
 | Competitor angle | Inventory, price, direct booking, local trust, owner revenue, amenities, guide depth, reviews, map pack, OTA, directory, or UGC. |
+| Visual/format gap | Tables, maps, galleries, charts, comparison layouts, imagery, or other visible formats competitors use to make the answer easier to scan; say whether Seascape should match, skip, or answer differently. |
 | Seascape gap | The concrete gap versus the live winners. |
 | Search fit | Why this URL should own the query, what conversion it should drive, or why the idea should be killed/deferred. |
 | Local/GBP proof | GBP/category/NAP/map-pack note for local or owner-management intent; otherwise explain why it is `N/A`. |

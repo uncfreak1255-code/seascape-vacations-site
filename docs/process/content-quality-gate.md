@@ -60,6 +60,7 @@ must also carry one filled `## Gate 0 ...` block from
 - `Current proof`
 - `Top visible competitors`
 - `Competitor angle`
+- `Visual/format gap`
 - `Seascape gap`
 - `Search fit`
 - `Local/GBP proof`
