@@ -9,6 +9,7 @@
   var GUEST_EMAIL_CAPTURE_ENDPOINT = "/.netlify/functions/guest-email-capture";
   var BOOKING_HANDOFF_ENDPOINT = "/.netlify/functions/booking-handoff";
   var BOOKING_HANDOFF_SESSION_KEY = "seascape_booking_handoff_session_id";
+  var GUIDE_DIRECT_CLICK_PARAM = "sv_guide_click_id";
   var SUPPORTED_EVENTS = [
     "owner_primary_cta_click",
     "owner_phone_click",
@@ -51,7 +52,8 @@
     "checkout",
     "guests",
     "sv_handoff_id",
-    "sv_session_id"
+    "sv_session_id",
+    GUIDE_DIRECT_CLICK_PARAM
   ];
   var SENSITIVE_ANALYTICS_KEYS = [
     "setup_intent",
@@ -199,6 +201,61 @@
     if (node.href) return node.href;
     if (typeof node.getAttribute === "function") return node.getAttribute("href") || "";
     return "";
+  }
+
+  function getCurrentParamValue(key) {
+    if (!window.location || typeof window.location.search !== "string" || typeof URLSearchParams !== "function") {
+      return "";
+    }
+
+    var params = new URLSearchParams(window.location.search);
+    return (params.get(key) || "").trim();
+  }
+
+  function syncGuideDirectClickLink(node) {
+    if (!node || !node.dataset || node.dataset.trackEvent !== "guide_book_direct_click") return getNavigationHref(node);
+
+    var href = getNavigationHref(node);
+    if (!href || typeof URL !== "function") return href || "";
+
+    var currentHref = window.location && typeof window.location.href === "string"
+      ? window.location.href
+      : "https://seascape-vacations.com/";
+    var url;
+
+    try {
+      url = new URL(href, currentHref);
+    } catch (error) {
+      return href;
+    }
+
+    if (url.hostname.replace(/^www\./, "").toLowerCase() === BOOKING_ENGINE_HOST) {
+      return href;
+    }
+
+    if (typeof URLSearchParams === "function") {
+      var currentParams = new URLSearchParams(window.location && typeof window.location.search === "string" ? window.location.search : "");
+      BOOKING_ENGINE_HANDOFF_KEYS.forEach(function (key) {
+        var value = (currentParams.get(key) || "").trim();
+        if (value && !isSensitiveAnalyticsKey(key) && !isSensitiveAnalyticsValue(value) && !url.searchParams.get(key)) {
+          url.searchParams.set(key, value);
+        }
+      });
+    }
+
+    if (!url.searchParams.get(GUIDE_DIRECT_CLICK_PARAM)) {
+      url.searchParams.set(GUIDE_DIRECT_CLICK_PARAM, getCurrentParamValue(GUIDE_DIRECT_CLICK_PARAM) || createTrackingId("svg"));
+    }
+
+    var nextHref = url.toString();
+    if (typeof node.setAttribute === "function") {
+      node.setAttribute("href", nextHref);
+    }
+    if ("href" in node) {
+      node.href = nextHref;
+    }
+
+    return nextHref;
   }
 
   function buildBookingEngineHandoffUrl(href, node) {
@@ -477,6 +534,7 @@
       consent_basis: dataset.consentBasis || "",
       booking_handoff_id: bookingHandoffContext.handoffId,
       booking_session_id: bookingHandoffContext.sessionId,
+      guide_direct_click_id: bookingHandoffContext.guideDirectClickId || getCurrentParamValue(GUIDE_DIRECT_CLICK_PARAM),
       booking_listing_id: bookingHandoffContext.listingId
     }, getSourceContext());
   }
@@ -485,6 +543,7 @@
     var context = {
       handoffId: "",
       sessionId: "",
+      guideDirectClickId: "",
       listingId: ""
     };
 
@@ -496,6 +555,7 @@
 
       context.handoffId = (url.searchParams.get("sv_handoff_id") || "").trim();
       context.sessionId = (url.searchParams.get("sv_session_id") || "").trim();
+      context.guideDirectClickId = (url.searchParams.get(GUIDE_DIRECT_CLICK_PARAM) || "").trim();
       var listingMatch = url.pathname.match(/\/listings\/([^/?#]+)/);
       context.listingId = listingMatch ? listingMatch[1] : "";
     } catch (_error) {
@@ -511,6 +571,7 @@
     var receiptPayload = {
       handoffId: payload.booking_handoff_id,
       sessionId: payload.booking_session_id,
+      guideDirectClickId: payload.guide_direct_click_id,
       listingId: payload.booking_listing_id,
       linkUrl: payload.link_url,
       linkText: payload.link_text,
@@ -639,6 +700,7 @@
       var target = event.target.closest("[data-track-event]");
       if (!target) return;
 
+      syncGuideDirectClickLink(target);
       syncBookingEngineLink(target);
       var payload = getPayloadFromElement(target);
       if (

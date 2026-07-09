@@ -88,7 +88,10 @@ test("direct-booking event smoke validates the three funnel event surfaces", () 
   );
 
   const bookingHandoff = observedEvents.find((entry) => entry.event === "booking_engine_handoff");
+  const guideDirectClick = observedEvents.find((entry) => entry.event === "guide_book_direct_click");
+  assert.ok(guideDirectClick, "guide_book_direct_click event should be emitted");
   assert.ok(bookingHandoff, "booking_engine_handoff event should be emitted");
+  assert.match(guideDirectClick.payload.link_url, /sv_guide_click_id=svg_/);
   assert.match(bookingHandoff.payload.link_url, /utm_source=mcp/);
   assert.match(bookingHandoff.payload.link_url, /utm_medium=ai-assistant/);
   assert.match(bookingHandoff.payload.link_url, /utm_campaign=direct-booking-proof/);
@@ -98,8 +101,10 @@ test("direct-booking event smoke validates the three funnel event surfaces", () 
   assert.match(bookingHandoff.payload.link_url, /guests=4/);
   assert.match(bookingHandoff.payload.link_url, /sv_handoff_id=svh_/);
   assert.match(bookingHandoff.payload.link_url, /sv_session_id=svs_/);
+  assert.match(bookingHandoff.payload.link_url, /sv_guide_click_id=svg_/);
   assert.match(bookingHandoff.payload.booking_handoff_id, /^svh_/);
   assert.match(bookingHandoff.payload.booking_session_id, /^svs_/);
+  assert.match(bookingHandoff.payload.guide_direct_click_id, /^svg_/);
   assert.equal(bookingHandoff.payload.booking_listing_id, "206016");
 
   const popupEvents = smoke.simulatePopupEmailCaptureEvent();

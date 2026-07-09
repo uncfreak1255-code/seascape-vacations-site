@@ -71,7 +71,8 @@ function normalizeBookingUrl(value) {
         "checkout",
         "guests",
         "sv_handoff_id",
-        "sv_session_id"
+        "sv_session_id",
+        "sv_guide_click_id"
       ].includes(key)) {
         url.searchParams.delete(key);
       }
@@ -125,6 +126,7 @@ function buildBookingHandoffReceipt(rawPayload) {
   return {
     handoffId,
     sessionId: normalizeToken(payload.sessionId || payload.session_id || payload.booking_session_id),
+    guideDirectClickId: normalizeToken(payload.guideDirectClickId || payload.guide_direct_click_id, 96),
     createdAt,
     linkUrl,
     listingId: extractListingId(linkUrl, payload.listingId || payload.listing_id || payload.booking_listing_id),

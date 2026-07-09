@@ -261,23 +261,38 @@ function simulateDirectBookingEvents() {
       preventDefault() {}
     });
 
-    for (const link of [
-      buildTrackedLink("guide_book_direct_click", "/stays/anna-maria-island-vacation-rentals/"),
-      buildTrackedLink("booking_engine_handoff", "https://book.seascape-vacations.com/listings/206016")
-    ]) {
-      listeners.click({
-        target: {
-          closest(selector) {
-            return selector === "[data-track-event]" ? link : null;
-          }
-        },
-        button: 0,
-        metaKey: false,
-        ctrlKey: false,
-        shiftKey: false,
-        altKey: false
-      });
-    }
+    const guideLink = buildTrackedLink("guide_book_direct_click", "/stays/anna-maria-island-vacation-rentals/");
+    listeners.click({
+      target: {
+        closest(selector) {
+          return selector === "[data-track-event]" ? guideLink : null;
+        }
+      },
+      button: 0,
+      metaKey: false,
+      ctrlKey: false,
+      shiftKey: false,
+      altKey: false
+    });
+
+    const guideUrl = new URL(guideLink.href, window.location.href);
+    window.location.href = guideUrl.toString();
+    window.location.pathname = guideUrl.pathname;
+    window.location.search = guideUrl.search;
+
+    const bookingLink = buildTrackedLink("booking_engine_handoff", "https://book.seascape-vacations.com/listings/206016");
+    listeners.click({
+      target: {
+        closest(selector) {
+          return selector === "[data-track-event]" ? bookingLink : null;
+        }
+      },
+      button: 0,
+      metaKey: false,
+      ctrlKey: false,
+      shiftKey: false,
+      altKey: false
+    });
 
     return window.dataLayer;
   });
