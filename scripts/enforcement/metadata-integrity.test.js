@@ -65,6 +65,7 @@ test("winner guide snippets stay decision-forward without body rewrites", () => 
   const bradentonVsSarasota = readSource("src", "guides", "bradenton-vs-sarasota.html");
   const amiContract = readSourceContract("src", "guides", "anna-maria-island-vs-siesta-key.html");
   const bradentonContract = readSourceContract("src", "guides", "bradenton-vs-sarasota.html");
+  const bradentonWebPage = bradentonContract.jsonLdObjects.find((entry) => entry["@type"] === "WebPage");
 
   assert.equal(amiContract.head.title, "Anna Maria Island vs Siesta Key: Where to Stay");
   assert.equal(
@@ -119,6 +120,7 @@ test("winner guide snippets stay decision-forward without body rewrites", () => 
     "Bradenton wins on AMI access, parking, and value; Sarasota wins on Siesta Key, dining, and arts. Compare beaches, cost, and where to stay."
   );
   assert.equal(bradentonContract.head.ogTitle, "Bradenton vs Sarasota for Vacation: Which Base Wins?");
+  assert.equal(bradentonWebPage?.name, bradentonContract.head.title);
   assert.match(
     bradentonVsSarasota,
     /<h1>Bradenton vs Sarasota:<br>Which Is Better for Vacation\?<\/h1>/
