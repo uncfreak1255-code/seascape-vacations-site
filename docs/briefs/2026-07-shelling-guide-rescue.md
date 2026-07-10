@@ -32,6 +32,7 @@
 | Current proof | July 7, 2026 Search Console performance email: shelling guide is top growing at `+25` clicks and top performing at `49` clicks for June 2026. |
 | Top visible competitors | not re-read for this bounded email-triggered rescue |
 | Competitor angle | not applicable for this pass; the task is a current winner handoff repair, not a competitive rewrite. |
+| Visual/format gap | Keep the current TL;DR, FAQ, and shelling table intact; this pass should not add maps, galleries, or comparison modules before the stay-handoff readback. |
 | Seascape gap | The page had March 2026 freshness signals and generic `/properties/` CTAs instead of tracked stay links aligned to Bean Point, Coquina, and beach-access shelling trips. |
 | Search fit | The current guide already answers shelling timing and locations; the correct conversion step is a stay collection for AMI-area and Bradenton beach-access trips. |
 | Local/GBP proof | not applicable; this is a guide-to-stay handoff, not a local pack or GBP claim. |
