@@ -584,8 +584,118 @@ test("Bradenton guide bottom decision block routes to mapped stays before naviga
   assert.equal(observed.trackedPayload.link_text, "Bottom Bradenton homes near AMI beaches");
   assert.equal(observed.trackedPayload.landing_page_path, "/guides/bradenton-vs-sarasota/");
   assert.equal(new URL(observed.trackedPayload.link_url).pathname, "/stays/bradenton-vacation-rentals-near-beaches/");
+  assert.match(new URL(observed.trackedPayload.link_url).searchParams.get("sv_guide_click_id"), /^svg_/);
   assert.equal(trackIndex > -1, true, "guide direct-book click should dispatch through GA before navigation");
   assert.equal(navigationIndex > trackIndex, true, "guide direct-book click should continue navigation only after the tracking callback");
+});
+
+test("guide direct-book click id is carried into the later booking-engine handoff receipt", () => {
+  const observed = withConversionTrackingStubs(({ listeners, window }) => {
+    const fetchCalls = [];
+    global.fetch = (url, options = {}) => {
+      fetchCalls.push({
+        url: String(url),
+        method: options.method || "GET",
+        body: options.body || ""
+      });
+      return Promise.resolve({ ok: true, status: 200 });
+    };
+
+    listeners.DOMContentLoaded();
+
+    const guideLink = {
+      tagName: "A",
+      href: "/stays/anna-maria-island-vacation-rentals/",
+      target: "",
+      textContent: "Browse direct homes",
+      dataset: {
+        trackEvent: "guide_book_direct_click",
+        guideSlug: "best-time-visit-anna-maria-island",
+        trackLabel: "Browse direct homes"
+      },
+      hasAttribute() {
+        return false;
+      },
+      getAttribute(name) {
+        if (name === "href") return this.href;
+        if (name === "target") return this.target;
+        return null;
+      },
+      setAttribute(name, value) {
+        if (name === "href") this.href = value;
+      }
+    };
+
+    listeners.click({
+      target: {
+        closest(selector) {
+          return selector === "[data-track-event]" ? guideLink : null;
+        }
+      },
+      button: 1,
+      metaKey: false,
+      ctrlKey: false,
+      shiftKey: false,
+      altKey: false
+    });
+
+    const guideUrl = new URL(guideLink.href, "http://localhost");
+    const guideClickId = guideUrl.searchParams.get("sv_guide_click_id");
+    window.location.href = guideUrl.toString();
+    window.location.pathname = guideUrl.pathname;
+    window.location.search = guideUrl.search;
+
+    const bookingLink = {
+      tagName: "A",
+      href: "https://book.seascape-vacations.com/listings/206016",
+      target: "_blank",
+      textContent: "Open Direct Availability",
+      dataset: {
+        trackEvent: "booking_engine_handoff",
+        guideSlug: "best-time-visit-anna-maria-island",
+        placement: "guide_booking_panel",
+        trackLabel: "Open Direct Availability"
+      },
+      hasAttribute() {
+        return false;
+      },
+      getAttribute(name) {
+        if (name === "href") return this.href;
+        if (name === "target") return this.target;
+        return null;
+      },
+      setAttribute(name, value) {
+        if (name === "href") this.href = value;
+      }
+    };
+
+    listeners.click({
+      target: {
+        closest(selector) {
+          return selector === "[data-track-event]" ? bookingLink : null;
+        }
+      },
+      button: 0,
+      metaKey: false,
+      ctrlKey: false,
+      shiftKey: false,
+      altKey: false
+    });
+
+    return {
+      analyticsEvents: window.dataLayer,
+      fetchCalls,
+      guideClickId
+    };
+  });
+  const bookingEvent = observed.analyticsEvents.find((entry) => entry.event === "booking_engine_handoff");
+  const receipt = JSON.parse(observed.fetchCalls[0].body);
+
+  assert.match(observed.guideClickId, /^svg_/);
+  assert.equal(bookingEvent.payload.guide_direct_click_id, observed.guideClickId);
+  assert.match(bookingEvent.payload.link_url, new RegExp(`sv_guide_click_id=${observed.guideClickId}`));
+  assert.equal(receipt.guideDirectClickId, observed.guideClickId);
+  assert.match(receipt.linkUrl, new RegExp(`sv_guide_click_id=${observed.guideClickId}`));
 });
 
 test("first tracked navigation click is delivered before same-tab navigation continues", () => {
