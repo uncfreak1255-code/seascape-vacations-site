@@ -55,7 +55,11 @@ const DATE_TOKEN_PATTERN = /\b\d{4}-\d{2}-\d{2}\b/;
 const BARE_NA_PATTERN = /^(?:n\/?a|not applicable)$/i;
 const GENERIC_LATEST_PROOF_PATTERN = /\blatest\b/i;
 const URL_PATTERN = /https?:\/\/[^\s,|)]+/i;
-const NAMED_CHECK_PATTERN = /\b(?:source|serp|search|competitor|dataforseo|browser)\b/i;
+const REQUIRED_NAMED_CHECKS = [
+  ["source", /\b(?:current\s+)?source\b/i],
+  ["SERP", /\b(?:serp|search results?|dataforseo)\b/i],
+  ["competitor-page", /\bcompetitor(?:s|\s+(?:page|pages|url|urls|guide|guides|site|sites))?\b/i]
+];
 const AUTHORIZED_SOURCE_SECTION_PATTERN =
   /\b(?:source files?\s+(?:likely to change|changed(?:\s+in\s+this\s+batch)?)|changed public source files?)\b/i;
 
@@ -268,12 +272,12 @@ function findMissingGate0Fields(briefContent) {
   if (attackStatus === "completed" && competitorUrls && !URL_PATTERN.test(competitorUrls)) {
     missingFields.push("Competitor URLs inspected (include inspected URL)");
   }
-  if (
-    attackStatus === "none found after named checks" &&
-    competitorUrls &&
-    !NAMED_CHECK_PATTERN.test(competitorUrls)
-  ) {
-    missingFields.push("Competitor URLs inspected (name failed checks)");
+  if (attackStatus === "none found after named checks" && competitorUrls) {
+    for (const [label, pattern] of REQUIRED_NAMED_CHECKS) {
+      if (!pattern.test(competitorUrls)) {
+        missingFields.push(`Competitor URLs inspected (name ${label} check)`);
+      }
+    }
   }
 
   return missingFields;

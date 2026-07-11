@@ -296,6 +296,37 @@ test("search decision gate accepts none found after named source and competitor 
   assert.deepEqual(findMissingGate0Fields(briefContent), []);
 });
 
+test("search decision gate requires source, SERP, and competitor checks for none found", () => {
+  const briefContent = withCompletedAttackReceipt(`# Brief: Incomplete named checks
+
+## Gate 0 Search Block
+
+| Field | Required answer |
+| --- | --- |
+| Target query family | shelling Anna Maria Island |
+| Searcher intent | local travel guide |
+| Current Seascape URL | /guides/shelling-guide-florida/ |
+| SERP observed date | 2026-07-11 |
+| SERP stale after | 2026-08-11 |
+| Current proof | 2026-07-07 Search Console email named this a growing page. |
+| Top visible competitors | No viable competitor gap found after the named checks. |
+| Competitor angle | Existing pages already answer the same local decision. |
+| Visual/format gap | No defensible format gap remains. |
+| Seascape gap | No bounded source change is supported. |
+| Search fit | The existing guide remains the winner and should not change. |
+| Local/GBP proof | Not a GBP action because this is organic guide intent. |
+| AEO/readback note | Keep the existing answer and schema synchronized. |
+| Recommendation | Hold the source and record the completed research. |
+`)
+    .replace("| Attack status | completed |", "| Attack status | none found after named checks |")
+    .replace("https://example.com/competitor-guide", "Current source checked.");
+
+  assert.deepEqual(findMissingGate0Fields(briefContent), [
+    "Competitor URLs inspected (name SERP check)",
+    "Competitor URLs inspected (name competitor-page check)",
+  ]);
+});
+
 test("search decision gate accepts a brief with a filled Gate 0 block", () => {
   const rootDir = createFixture({
     "docs/briefs/example.md": `# Brief: Example
