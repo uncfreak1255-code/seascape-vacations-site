@@ -19,10 +19,31 @@ function createFixture(files) {
   for (const [relativePath, content] of Object.entries(files)) {
     const absolutePath = path.join(rootDir, relativePath);
     fs.mkdirSync(path.dirname(absolutePath), { recursive: true });
-    fs.writeFileSync(absolutePath, content);
+    const fixtureContent = relativePath.startsWith("docs/briefs/")
+      ? withCompletedAttackReceipt(content)
+      : content;
+    fs.writeFileSync(absolutePath, fixtureContent);
   }
 
   return rootDir;
+}
+
+const COMPLETED_ATTACK_ROWS = `| Attack status | completed |
+| Query variants inspected | anna maria island rentals, AMI vacation rentals |
+| SERP source | Live web SERP observed 2026-06-20. |
+| Competitor URLs inspected | https://example.com/competitor-guide |
+| Content gap and Seascape answer | Answer the local trip decision with a faster comparison. |
+| Design/format strategy | Preserve the answer block and use one scannable comparison table. |
+| Seascape proof available | Current dated analytics and existing page source. |
+| Tools/plugins used | GSC receipt, DataForSEO, browser inspection, and repo gates. |
+| Decision and reason | Rescue the existing winner because the current URL already owns the query. |`;
+
+function withCompletedAttackReceipt(content) {
+  if (!content.includes("## Gate 0") || content.includes("| Attack status |")) {
+    return content;
+  }
+
+  return `${content.trimEnd()}\n${COMPLETED_ATTACK_ROWS}\n`;
 }
 
 test("findSearchDecisionFiles targets public search surfaces and SEO routing files", () => {
@@ -88,7 +109,7 @@ test("search decision gate fails when the changed brief omits Gate 0", () => {
 });
 
 test("search decision gate flags placeholder Gate 0 values", () => {
-  const briefContent = `# Brief: Placeholder
+  const briefContent = withCompletedAttackReceipt(`# Brief: Placeholder
 
 ## Gate 0 Rescue Block
 
@@ -108,7 +129,7 @@ test("search decision gate flags placeholder Gate 0 values", () => {
 | Local/GBP proof | N/A for this guest-booking SERP; no map pack observed. |
 | AEO/readback note | AEO score not run yet because this is not a guide/research rescue. |
 | Recommended action | update title and intro |
-`;
+`);
 
   assert.deepEqual(findMissingGate0Fields(briefContent), [
     "Current proof",
@@ -117,7 +138,7 @@ test("search decision gate flags placeholder Gate 0 values", () => {
 });
 
 test("search decision gate requires SERP freshness and search-fit fields", () => {
-  const briefContent = `# Brief: Missing freshness
+  const briefContent = withCompletedAttackReceipt(`# Brief: Missing freshness
 
 ## Gate 0 Search Block
 
@@ -133,7 +154,7 @@ test("search decision gate requires SERP freshness and search-fit fields", () =>
 | Visual/format gap | Competitors show map-pack proof and service comparison blocks; Seascape needs to decide whether those belong on this page. |
 | Seascape gap | weaker local proof and fewer links into the owner money page |
 | Recommendation | prepare a rescue brief before editing source copy |
-`;
+`);
 
   assert.deepEqual(findMissingGate0Fields(briefContent), [
     "SERP observed date (YYYY-MM-DD)",
@@ -145,7 +166,7 @@ test("search decision gate requires SERP freshness and search-fit fields", () =>
 });
 
 test("search decision gate rejects backwards dates, bare N/A, and undated latest proof", () => {
-  const briefContent = `# Brief: Weak semantics
+  const briefContent = withCompletedAttackReceipt(`# Brief: Weak semantics
 
 ## Gate 0 Search Block
 
@@ -165,13 +186,144 @@ test("search decision gate rejects backwards dates, bare N/A, and undated latest
 | Local/GBP proof | N/A |
 | AEO/readback note | not applicable |
 | Recommended action | rescue existing guide intro and internal links |
-`;
+`);
 
   assert.deepEqual(findMissingGate0Fields(briefContent), [
     "Current proof (dated receipt/window)",
     "Local/GBP proof (explain N/A)",
     "AEO/readback note (explain N/A)",
     "SERP stale after (on/after observed date)",
+  ]);
+});
+
+test("search decision gate rejects a hold without a completed attack receipt", () => {
+  const briefContent = `# Brief: Passive hold
+
+## Gate 0 Search And Attack Receipt
+
+| Field | Required answer |
+| --- | --- |
+| Target query family | shelling Anna Maria Island |
+| Searcher intent | local travel guide |
+| Current Seascape URL | /guides/shelling-guide-florida/ |
+| SERP observed date | 2026-07-11 |
+| SERP stale after | 2026-08-11 |
+| Current proof | 2026-07-07 Search Console email named this a growing page. |
+| Top visible competitors | Local shelling guides. |
+| Competitor angle | Local beach advice. |
+| Visual/format gap | The current page is difficult to scan. |
+| Seascape gap | Current rules and local decision support. |
+| Search fit | The existing guide should remain the winner and feed stay pages. |
+| Local/GBP proof | Not a GBP action because this is organic guide intent. |
+| AEO/readback note | Keep the direct answer and visible FAQ synchronized. |
+| Recommendation | Hold and reread. |
+| Attack status | hold |
+| Query variants inspected | TBD |
+| SERP source | waiting for data |
+| Competitor URLs inspected | local competitors |
+| Content gap and Seascape answer | TBD |
+| Design/format strategy | TBD |
+| Seascape proof available | July email only. |
+| Tools/plugins used | none |
+| Decision and reason | Wait for the next report. |
+`;
+
+  assert.deepEqual(findMissingGate0Fields(briefContent), [
+    "Query variants inspected",
+    "Content gap and Seascape answer",
+    "Design/format strategy",
+    "Attack status (completed or none found after named checks)",
+  ]);
+});
+
+test("search decision gate requires an inspected competitor URL for completed research", () => {
+  const briefContent = withCompletedAttackReceipt(`# Brief: Missing inspected URL
+
+## Gate 0 Search Block
+
+| Field | Required answer |
+| --- | --- |
+| Target query family | shelling Anna Maria Island |
+| Searcher intent | local travel guide |
+| Current Seascape URL | /guides/shelling-guide-florida/ |
+| SERP observed date | 2026-07-11 |
+| SERP stale after | 2026-08-11 |
+| Current proof | 2026-07-07 Search Console email named this a growing page. |
+| Top visible competitors | Local shelling guides. |
+| Competitor angle | Local beach advice. |
+| Visual/format gap | The current page is difficult to scan. |
+| Seascape gap | Current rules and local decision support. |
+| Search fit | The existing guide should remain the winner and feed stay pages. |
+| Local/GBP proof | Not a GBP action because this is organic guide intent. |
+| AEO/readback note | Keep the direct answer and visible FAQ synchronized. |
+| Recommendation | Rescue the existing guide. |
+`)
+    .replace("https://example.com/competitor-guide", "Tidal Keepsakes guide");
+
+  assert.deepEqual(findMissingGate0Fields(briefContent), [
+    "Competitor URLs inspected (include inspected URL)",
+  ]);
+});
+
+test("search decision gate accepts none found after named source and competitor checks", () => {
+  const briefContent = withCompletedAttackReceipt(`# Brief: No viable attack
+
+## Gate 0 Search Block
+
+| Field | Required answer |
+| --- | --- |
+| Target query family | shelling Anna Maria Island |
+| Searcher intent | local travel guide |
+| Current Seascape URL | /guides/shelling-guide-florida/ |
+| SERP observed date | 2026-07-11 |
+| SERP stale after | 2026-08-11 |
+| Current proof | 2026-07-07 Search Console email named this a growing page. |
+| Top visible competitors | No viable competitor gap found after the named checks. |
+| Competitor angle | Existing pages already answer the same local decision. |
+| Visual/format gap | No defensible format gap remains. |
+| Seascape gap | No bounded source change is supported. |
+| Search fit | The existing guide remains the winner and should not change. |
+| Local/GBP proof | Not a GBP action because this is organic guide intent. |
+| AEO/readback note | Keep the existing answer and schema synchronized. |
+| Recommendation | Hold the source and record the completed research. |
+`)
+    .replace("| Attack status | completed |", "| Attack status | none found after named checks |")
+    .replace(
+      "https://example.com/competitor-guide",
+      "No URLs survived DataForSEO SERP, browser competitor, and current source checks."
+    );
+
+  assert.deepEqual(findMissingGate0Fields(briefContent), []);
+});
+
+test("search decision gate requires source, SERP, and competitor checks for none found", () => {
+  const briefContent = withCompletedAttackReceipt(`# Brief: Incomplete named checks
+
+## Gate 0 Search Block
+
+| Field | Required answer |
+| --- | --- |
+| Target query family | shelling Anna Maria Island |
+| Searcher intent | local travel guide |
+| Current Seascape URL | /guides/shelling-guide-florida/ |
+| SERP observed date | 2026-07-11 |
+| SERP stale after | 2026-08-11 |
+| Current proof | 2026-07-07 Search Console email named this a growing page. |
+| Top visible competitors | No viable competitor gap found after the named checks. |
+| Competitor angle | Existing pages already answer the same local decision. |
+| Visual/format gap | No defensible format gap remains. |
+| Seascape gap | No bounded source change is supported. |
+| Search fit | The existing guide remains the winner and should not change. |
+| Local/GBP proof | Not a GBP action because this is organic guide intent. |
+| AEO/readback note | Keep the existing answer and schema synchronized. |
+| Recommendation | Hold the source and record the completed research. |
+`)
+    .replace("| Attack status | completed |", "| Attack status | none found after named checks |")
+    .replace("https://example.com/competitor-guide", "Current source checked.");
+
+  assert.deepEqual(findMissingGate0Fields(briefContent), [
+    "Competitor URLs inspected (name SERP check)",
+    "Competitor URLs inspected (name competitor-page check)",
   ]);
 });
 

@@ -112,3 +112,16 @@ test("repo instructions and next-batch skill use the single status contract", ()
     "next-batch skill should align with the repo contract"
   );
 });
+
+test("a hold verdict still requires a completed attack lane", () => {
+  const workflow = read(path.join("docs", "process", "batch-workflow.md"));
+  const searchOperator = read(path.join(".claude", "agents", "search-operator.md"));
+  const briefTemplate = read(path.join("docs", "briefs", "_template.md"));
+
+  assert.match(workflow, /`hold` is incomplete/i);
+  assert.match(searchOperator, /none found after named checks/i);
+  assert.match(searchOperator, /current\s+source, SERP evidence, and competitor pages/i);
+  assert.match(briefTemplate, /Competitor URLs inspected/i);
+  assert.match(briefTemplate, /Design\/format strategy/i);
+  assert.match(briefTemplate, /Tools\/plugins used/i);
+});

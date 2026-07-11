@@ -36,6 +36,10 @@ Use this only for Seascape batch selection.
 - If attack-lane work is available, name it separately from the blocked proof
   lane. Do not collapse the answer to `wait` unless no bounded attack candidate
   survives source, SERP, and repo checks.
+- A verdict is incomplete until the attack lane is `completed` or `none found
+  after named checks`. Those named checks must cover a current source, SERP
+  evidence, and competitor pages. Analytics unavailable, below threshold, or
+  waiting for recrawl is not an attack-lane result.
 - If the status is `fresh but below threshold`, do not invent a new SEO batch just because the data is fresh.
 - Favor one bounded branch over parallel SEO lanes.
 - Route analytics freshness questions back to `seascape-analytics`, not to a site-wide audit here.
@@ -78,3 +82,5 @@ Include:
 - attack-lane action, if any
 - exact next action
 - whether a new brief should open
+- attack status, inspected query variants, dated SERP source, competitor URLs,
+  content and design strategy, tool route, and decision reason
