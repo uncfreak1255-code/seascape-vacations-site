@@ -1,10 +1,9 @@
 # Brief: Shelling Guide Existing-Page Rescue
 
-## Figma Handoff
+## Design Handoff
 
-- Figma capture: not used; the current repo handoff exposes no approved guide frame.
-- Figma frames: none.
-- Figma proof: the Sol design review and rendered desktop/mobile screenshots are the approval surfaces for this pilot.
+- Figma was not used; the current repo handoff exposes no approved guide frame.
+- Approved proof: the Sol design review and rendered desktop/mobile screenshots are the approval surfaces for this pilot.
 
 ## Content Gate Inputs
 
