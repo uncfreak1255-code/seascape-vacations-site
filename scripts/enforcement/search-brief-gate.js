@@ -31,6 +31,21 @@ const REQUIRED_GATE0_FIELDS = [
   "AEO/readback note"
 ];
 const ACTION_FIELD_ALIASES = ["Recommendation", "Recommended action"];
+const REQUIRED_ATTACK_RECEIPT_FIELDS = [
+  "Attack status",
+  "Query variants inspected",
+  "SERP source",
+  "Competitor URLs inspected",
+  "Content gap and Seascape answer",
+  "Design/format strategy",
+  "Seascape proof available",
+  "Tools/plugins used",
+  "Decision and reason"
+];
+const ALLOWED_ATTACK_STATUSES = new Set([
+  "completed",
+  "none found after named checks"
+]);
 const PLACEHOLDER_VALUE_PATTERN =
   /^(?:<.+>|tbd|todo|pending|fill(?:ed)? after|fill this in|to capture\b|capture in\b)/i;
 const DATE_GATE0_FIELDS = new Set(["SERP observed date", "SERP stale after"]);
@@ -39,6 +54,8 @@ const ISO_DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
 const DATE_TOKEN_PATTERN = /\b\d{4}-\d{2}-\d{2}\b/;
 const BARE_NA_PATTERN = /^(?:n\/?a|not applicable)$/i;
 const GENERIC_LATEST_PROOF_PATTERN = /\blatest\b/i;
+const URL_PATTERN = /https?:\/\/[^\s,|)]+/i;
+const NAMED_CHECK_PATTERN = /\b(?:source|serp|search|competitor|dataforseo|browser)\b/i;
 const AUTHORIZED_SOURCE_SECTION_PATTERN =
   /\b(?:source files?\s+(?:likely to change|changed(?:\s+in\s+this\s+batch)?)|changed public source files?)\b/i;
 
@@ -235,6 +252,30 @@ function findMissingGate0Fields(briefContent) {
     missingFields.push("Recommendation or Recommended action");
   }
 
+  for (const field of REQUIRED_ATTACK_RECEIPT_FIELDS) {
+    const value = rowMap.get(field.toLowerCase());
+    if (!value || PLACEHOLDER_VALUE_PATTERN.test(value)) {
+      missingFields.push(field);
+    }
+  }
+
+  const attackStatus = normalizeValue(rowMap.get("attack status")).toLowerCase();
+  if (attackStatus && !ALLOWED_ATTACK_STATUSES.has(attackStatus)) {
+    missingFields.push("Attack status (completed or none found after named checks)");
+  }
+
+  const competitorUrls = normalizeValue(rowMap.get("competitor urls inspected"));
+  if (attackStatus === "completed" && competitorUrls && !URL_PATTERN.test(competitorUrls)) {
+    missingFields.push("Competitor URLs inspected (include inspected URL)");
+  }
+  if (
+    attackStatus === "none found after named checks" &&
+    competitorUrls &&
+    !NAMED_CHECK_PATTERN.test(competitorUrls)
+  ) {
+    missingFields.push("Competitor URLs inspected (name failed checks)");
+  }
+
   return missingFields;
 }
 
@@ -309,6 +350,7 @@ function assertSearchDecisionBriefContract({
 
 module.exports = {
   ACTION_FIELD_ALIASES,
+  ALLOWED_ATTACK_STATUSES,
   BARE_NA_PATTERN,
   BRIEF_PATH_PATTERN,
   BRIEF_TEMPLATE_PATH_PATTERN,
@@ -318,6 +360,7 @@ module.exports = {
   GENERIC_LATEST_PROOF_PATTERN,
   ISO_DATE_PATTERN,
   PLACEHOLDER_VALUE_PATTERN,
+  REQUIRED_ATTACK_RECEIPT_FIELDS,
   REQUIRED_GATE0_FIELDS,
   SEARCH_DECISION_PATH_PATTERNS,
   assertSearchDecisionBriefContract,

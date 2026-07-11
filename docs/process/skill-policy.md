@@ -31,6 +31,24 @@ implementation brief. The critic owns the blunt taste verdict. They are local
 because Seascape taste, page economics, and the "do not bless bland work"
 standard are repo-specific.
 
+## Model And Tool Routing
+
+Choose models and plugins at task level. Do not change a global default or add
+a local skill just because a new model or marketplace package exists.
+
+| Work | Lead | Required evidence and tools | Optional challenger |
+| --- | --- | --- | --- |
+| New guide | Current Codex lead through Search Operator and SEO Architect | Analytics receipt, DataForSEO or current web SERP, inspected competitor URLs, active brief, content rubric, design specialist, copy chain, and rendered proof | Sol or another current design-capable model for a bounded concept/critic pass; Product Design or Creative Production only when format exploration materially helps |
+| Meaningful rescue | Current Codex lead through the regression-rescue lane | Current route proof, live SERP, inspected competitors, source truth, active brief, screenshots, and design specialist when hierarchy or format changes | One bounded design or content challenger when the first pass is materially uncertain |
+| Tiny fix | Codex only | Relevant source plus focused content/build/link proof | No fanout or donor plugin unless search intent, page role, or visual hierarchy changes |
+
+Figma is optional and becomes the handoff only when an actual approved Figma
+artifact exists. Image generation may explore mood, composition, or
+non-factual decorative assets; it must not fabricate a property, destination,
+field visit, shell find, or evidence image. DataForSEO supplies repeatable
+search evidence and recorded cost, not autonomous strategy. Browser inspection
+explains the page; Playwright screenshots and visual tests prove it.
+
 ## External packs — donor references only
 
 Do not install or mirror `geo-optimizer-skill`, `gtm-engineer-skills`,

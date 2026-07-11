@@ -32,7 +32,7 @@
 - readback window:
 - decision rule:
 
-## Gate 0 Search Block
+## Gate 0 Search And Attack Receipt
 
 Required when the branch changes search-facing page source, `src/_data/seoPages.json`,
 `src/_redirects`, or `src/sitemap.njk`.
@@ -53,15 +53,19 @@ Required when the branch changes search-facing page source, `src/_data/seoPages.
 | Local/GBP proof | |
 | AEO/readback note | |
 | Recommendation | |
+| Attack status | `completed` or `none found after named checks` |
+| Query variants inspected | |
+| SERP source | source and observed date |
+| Competitor URLs inspected | at least one inspected URL, or named failed checks when none were found |
+| Content gap and Seascape answer | |
+| Design/format strategy | |
+| Seascape proof available | |
+| Tools/plugins used | |
+| Decision and reason | |
 
-## Search Operator Read
-
-- source reads used
-- URLs inspected
-- main evidence
-- competitor pages inspected for demand patterns, not copied topics
-- question-tool language worth preserving in customer wording
-- GSC/GA4 evidence that supports building, rewriting, holding, or killing this cluster
+A blocked or below-threshold proof lane does not complete this receipt. Record
+the current attack research before returning `hold`, or say exactly which named
+source, SERP, and competitor checks found no viable action.
 
 ## Cluster In Scope
 

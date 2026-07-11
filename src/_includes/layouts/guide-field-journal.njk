@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>{% if guidePreserveTitle %}{{ pageTitle }}{% else %}{{ pageTitle | seoTitle }}{% endif %}</title>
+  <meta name="description" content="{{ pageDescription | seoDescription }}">
+  <meta name="author" content="{{ pageAuthor or site.author }}">
+  <meta name="robots" content="{{ pageRobots or 'index, follow' }}">
+  <link rel="canonical" href="{{ site.url }}{{ page.url }}">
+
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="{{ site.url }}{{ page.url }}">
+  <meta property="og:title" content="{{ pageTitle }}">
+  <meta property="og:description" content="{{ pageDescription }}">
+  <meta property="og:image" content="{{ site.url }}{{ guideHeroImage }}">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:site_name" content="Seascape Vacations">
+  <meta property="article:published_time" content="{{ guidePublished }}">
+  <meta property="article:modified_time" content="{{ guideModified }}">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{ pageTitle }}">
+  <meta name="twitter:description" content="{{ pageDescription }}">
+  <meta name="twitter:image" content="{{ site.url }}{{ guideHeroImage }}">
+  <link rel="icon" href="/logo-optimized.png" type="image/png">
+  <link rel="preload" as="image" href="{{ guideHeroImage }}" fetchpriority="high">
+
+  {% include "partials/organization-schema.njk" %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": {{ guideTitle | json | safe }},
+    "description": {{ pageDescription | json | safe }},
+    "datePublished": {{ guidePublished | json | safe }},
+    "dateModified": {{ guideModified | json | safe }},
+    "author": {
+      "@type": "Organization",
+      "name": "Seascape Vacations",
+      "url": "{{ site.url }}"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Seascape Vacations",
+      "url": "{{ site.url }}"
+    },
+    "image": "{{ site.url }}{{ guideHeroImage }}",
+    "mainEntityOfPage": "{{ site.url }}{{ page.url }}"
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {"@type": "ListItem", "position": 1, "name": "Home", "item": "{{ site.url }}/"},
+      {"@type": "ListItem", "position": 2, "name": "Guides", "item": "{{ site.url }}/guides/"},
+      {"@type": "ListItem", "position": 3, "name": {{ guideBreadcrumbLabel | json | safe }}, "item": "{{ site.url }}{{ page.url }}"}
+    ]
+  }
+  </script>
+  {% if guideFaqs and guideFaqs | length %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {% for faq in guideFaqs %}
+      {
+        "@type": "Question",
+        "name": {{ faq.question | json | safe }},
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": {{ faq.answer | json | safe }}
+        }
+      }{% if not loop.last %},{% endif %}
+      {% endfor %}
+    ]
+  }
+  </script>
+  {% endif %}
+
+  {% include "partials/local-font-head.njk" %}
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/guide-field-journal.css">
+  <style>
+    {% include "partials/site-header-styles.njk" %}
+  </style>
+</head>
+<body>
+  <a class="journal-skip-link" href="#guide-content">Skip to guide</a>
+  {% set navActive = "guides" %}
+  {% set navButtonHref = "/stays/anna-maria-island-vacation-rentals/" %}
+  {% set navButtonLabel = "Browse AMI Stays" %}
+  {% if guideNavPlacement %}
+    {% set navButtonAttributes = 'data-track-event="guide_book_direct_click" data-placement="' ~ guideNavPlacement ~ '"' %}
+  {% endif %}
+  {% include "partials/site-header.njk" %}
+
+  <main class="journal-page" id="main-content">
+    <article>
+      <header class="journal-cover">
+        <img
+          class="journal-cover-image"
+          src="{{ guideHeroImage }}"
+          alt="{{ guideHeroAlt }}"
+          width="550"
+          height="1024"
+          decoding="async"
+          fetchpriority="high"
+        >
+        <div class="journal-cover-shade" aria-hidden="true"></div>
+        <div class="journal-cover-inner">
+          <nav class="journal-breadcrumbs" aria-label="Breadcrumb">
+            <ol>
+              <li><a href="/">Home</a></li>
+              <li><a href="/guides/">Guides</a></li>
+              <li aria-current="page">{{ guideBreadcrumbLabel }}</li>
+            </ol>
+          </nav>
+          <div class="journal-cover-copy">
+            <p class="journal-kicker">{{ guideKicker }}</p>
+            <h1>{{ guideTitle }}</h1>
+            <p class="journal-deck">{{ guideDeck }}</p>
+            <p class="journal-byline">Updated {{ guideUpdatedLabel }} <span aria-hidden="true">·</span> {{ guideReadTime }} <span aria-hidden="true">·</span> Seascape Vacations local guide</p>
+          </div>
+          <dl class="journal-ledger" aria-label="Shelling field notes">
+            {% for note in guideFieldNotes %}
+            <div>
+              <dt>{{ note.label }}</dt>
+              <dd>{{ note.value }}</dd>
+            </div>
+            {% endfor %}
+          </dl>
+        </div>
+      </header>
+
+      <div class="journal-layout">
+        <aside class="journal-rail" aria-label="Guide contents">
+          <p class="journal-rail-label">In this field guide</p>
+          <nav>
+            <ol>
+              {% for section in guideSections %}
+              <li><a href="#{{ section.id }}">{{ section.label }}</a></li>
+              {% endfor %}
+            </ol>
+          </nav>
+          <p class="journal-rail-note">Shell conditions change daily. Use this guide to choose a beach, then check the tide and weather before leaving.</p>
+        </aside>
+
+        <div class="journal-prose" id="guide-content">
+          {{ content | safe }}
+        </div>
+      </div>
+
+      <section class="journal-stay-band" aria-labelledby="journal-stay-title">
+        <div class="journal-stay-inner">
+          <div>
+            <p class="journal-kicker journal-kicker-light">Plan the early start</p>
+            <h2 id="journal-stay-title">Stay close enough to reach the first low tide</h2>
+            <p>Choose Anna Maria Island for Bean Point and Coquina mornings, or use Bradenton as a practical base for several Gulf beaches.</p>
+          </div>
+          <div class="journal-stay-links">
+            {% for stay in guideStayLinks %}
+            <a
+              class="{% if loop.first %}btn btn-solid-gold{% else %}btn btn-outline-light{% endif %}"
+              href="{{ stay.href }}"
+              data-track-event="guide_book_direct_click"
+              data-placement="{{ stay.placement }}"
+            >{{ stay.label }}</a>
+            {% endfor %}
+          </div>
+        </div>
+      </section>
+
+      <section class="journal-related" aria-labelledby="journal-related-title">
+        <div class="journal-related-inner">
+          <p class="journal-kicker">Keep planning</p>
+          <h2 id="journal-related-title">More local guides for the same trip</h2>
+          <div class="journal-related-links">
+            {% for related in guideRelatedLinks %}
+            <a href="{{ related.href }}">
+              <span>{{ related.label }}</span>
+              <small>{{ related.copy }}</small>
+            </a>
+            {% endfor %}
+          </div>
+        </div>
+      </section>
+    </article>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-logo">Seascape Vacations</div>
+      <div class="footer-links">
+        <a href="/">Home</a>
+        <a href="/guides/anna-maria-island-area-guide/">Anna Maria Island</a>
+        <a href="/guides/bradenton-area-guide/">Bradenton</a>
+        <a href="/guides/sarasota-area-guide/">Sarasota</a>
+        <a href="/property-management/">Property Owners</a>
+      </div>
+      <div class="footer-copyright">
+        © 2026 Seascape Vacations. All rights reserved. | Book Direct & Save
+        <div class="footer-meta-links">
+          <a href="/privacy/">Privacy</a>
+          <a href="/terms/">Terms</a>
+          <a href="/cookies/">Cookies</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  {% include "partials/site-header-script.njk" %}
+  {% include "partials/analytics-ga4.njk" %}
+</body>
+</html>

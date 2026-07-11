@@ -44,6 +44,11 @@ const moneyRoutes = [
     readySelector: "main h1",
   },
   {
+    slug: "guide-shelling-florida",
+    path: "/guides/shelling-guide-florida/",
+    readySelector: ".journal-cover h1",
+  },
+  {
     slug: "stay-fishing-vacation-rentals-bradenton",
     path: "/stays/fishing-vacation-rentals-bradenton/",
     readySelector: "main h1",
