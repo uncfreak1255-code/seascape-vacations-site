@@ -58,10 +58,21 @@ async function registerStableNetwork(page) {
 
 async function waitForFonts(page) {
   await page.evaluate(async () => {
-    if (!document.fonts || document.fonts.status === "loaded") {
+    if (!document.fonts) {
       return;
     }
 
+    // font-display: optional can leave a cold visual-test page on fallback
+    // fonts even when FontFaceSet.status already reports "loaded". Load the
+    // locally hosted marketing faces explicitly before measuring the layout.
+    await Promise.all([
+      "400 1em Poppins",
+      "500 1em Poppins",
+      "600 1em Poppins",
+      "700 1em Poppins",
+      '400 1em "Playfair Display"',
+      '700 1em "Playfair Display"',
+    ].map((font) => document.fonts.load(font)));
     await document.fonts.ready;
   });
 }
