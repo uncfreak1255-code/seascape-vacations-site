@@ -1,77 +1,91 @@
 ---
 name: owner-outbound-batch
-description: Draft a small Seascape homeowner outbound batch from approved owner proof, a named homeowner prospect list, and the owner benchmark CTA. Use when the owner cluster is below the on-page gate and the next move is founder-reviewed outbound preparation. This skill drafts only; it never sends.
+description: Qualify a small, owner-direct and permissioned Seascape owner-intake list from real signals, warm relationships, explicit contact invitations, or direct inbound requests. Use when a founder needs a reviewable intake decision. This skill never sends or creates outreach drafts.
 ---
 
-# Owner Outbound Batch
+# Owner-Direct Permissioned Intake
 
-Use this to prepare one founder-reviewed owner outbound batch.
+Use this skill to qualify an owner opportunity before any outreach decision. It
+is not a lead scraper, bulk-list builder, email-draft workflow, or send tool.
 
 ## Authority
 
-- Demand OS handoff: `docs/plans/2026-06-13-demand-os-handoff.md`
-- Owner outbound home: `docs/status/owner-outbound.md`
+- Owner-direct intake home: `docs/status/owner-direct-outbound.md`
+- Archived platform research: `docs/status/owner-outbound.md`
 - Approved owner proof assets: `src/_data/ownerProofAssets.json`
 - Owner benchmark CTA: `/research/owner-fee-revenue-leak-benchmark-2026/`
-- Demand register standard: `/Users/sawbeck/Projects/seascape-hub/projects/owner-demand-trust-outcome-register.md`
+- Demand register standard:
+  `/Users/sawbeck/Projects/seascape-hub/projects/owner-demand-trust-outcome-register.md`
 
 ## Required Inputs
 
-1. A named homeowner-reachable prospect row from the hub-owned homeowner list.
-2. The prospect's reopenable contact path.
-3. The public fit reason for the benchmark-to-teardown offer.
-4. One approved quantified proof module from `src/_data/ownerProofAssets.json`.
-5. The current benchmark CTA page, verified fact-clean before use.
+1. A named owner or authorized owner representative.
+2. An owner-direct, reopenable source receipt.
+3. A clear invitation or permission to make relevant business contact.
+4. A factual property or operating fit signal.
+5. A named contact channel supplied or invited by the source.
+6. No scraped, guessed, purchased, or platform-derived private contact data.
+
+Do not treat a listing host label as verified ownership or permission.
 
 ## Workflow
 
-1. Read `docs/status/owner-outbound.md` and confirm the homeowner-list milestone is either cleared or this is a draft-only research rehearsal.
-2. Read the approved proof asset being used. Do not invent fee, revenue, review, or management-performance claims.
-3. Pair exactly one prospect with exactly one pain hypothesis and exactly one proof module.
-4. Draft a short personal opener that points to the benchmark and offers a revenue teardown.
-5. Produce a copy-paste batch for founder review.
-6. Produce the founder checklist below.
+1. Read `docs/status/owner-direct-outbound.md`.
+2. Refuse platform-only, generic, or permissionless candidates.
+3. Verify the source, identity/representative signal, fit signal, and explicit
+   contact permission can be reopened.
+4. Add only a factual intake row with status `qualifying`,
+   `permissioned`, `owner-requested`, or `closed`.
+5. Return a founder decision card: `qualify`, `hold`, or `refuse`.
+6. Stop. Do not write an opener, mailbox draft, follow-up, schedule, or send
+   instruction.
 
-## Founder Checklist
-
-Before any send:
-
-- prospect is a named homeowner or owner-reachable contact
-- contact path can be reopened by another agent
-- proof module exists in `src/_data/ownerProofAssets.json`
-- benchmark page is still fact-clean
-- no scraped or guessed private contact data is used
-- send log row is prepared in `docs/status/owner-outbound.md`
+If Sawyer later explicitly authorizes one named, one-to-one message, use that
+separate authorization as the only basis for preparing it. That later step is
+still manual and outside this skill's authority.
 
 ## Output
 
 Return:
 
-- batch date
-- prospect name or public owner/contact label
-- contact path summary, without private copied contact details
-- fit reason
-- proof module used
-- copy-paste opener
-- benchmark CTA
-- founder checklist result
-- send-log row draft
+- intake date
+- owner or representative label
+- source type and reopenable receipt
+- exact permission basis
+- factual fit signal
+- source-supplied contact channel
+- `qualify`, `hold`, or `refuse` decision
+- any missing evidence
+
+Do not return copy-paste outreach text.
 
 ## Stop Conditions
 
-Stop instead of drafting when:
+Stop and refuse instead of adding a row when:
 
-- the prospect is generic property-management outreach rather than homeowner outreach
-- the contact path is private, guessed, scraped, or not reopenable
-- no approved proof module exists
-- the benchmark page cannot be verified fact-clean
-- the user asks the agent to send, automate sending, scrape contact data, or count a send as demand
+- the only path is Airbnb, Vrbo, Booking.com, or another OTA host-message
+  surface
+- the candidate came from a property listing, directory, property record, or
+  social profile without an invitation to contact
+- contact data is private, guessed, scraped, purchased, enriched, or not
+  reopenable
+- the person is a generic property-management target rather than an owner or
+  authorized representative
+- no explicit contact permission or invitation exists
+- the user asks the agent to send, schedule, automate, or create a mailbox
+  draft
+- the user asks the agent to count a touch, draft, delivery, or test as demand
 
 ## Rules
 
 - Never send outreach.
-- Never schedule or automate sends.
-- Never create a register row.
-- Never count a draft, prepared row, sent message, test send, labeled send, or internal helper submit as owner demand.
-- Do not add a new MCP, plugin, scraper, external SEO pack, or dashboard for this lane.
-- The only real proof gate is a later reply that passes `owner-reply-intake` and the Hub register Validation Standard.
+- Never schedule or automate sends or follow-ups.
+- Never create a mailbox draft or prospect-facing outreach draft.
+- Never harvest, enrich, or export contact data.
+- Never create a Hub demand-register row from intake alone.
+- Never count an intake row, prepared message, sent message, test send,
+  delivery, page view, click, or internal helper submit as owner demand.
+- Do not add a new MCP, plugin, scraper, external SEO pack, or dashboard for
+  this lane.
+- The only real proof gate is a later reply that passes `owner-reply-intake`
+  and the Hub register Validation Standard.
