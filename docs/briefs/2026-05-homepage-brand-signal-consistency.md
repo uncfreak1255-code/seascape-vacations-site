@@ -45,6 +45,7 @@
 
 - source files likely to change: `src/index.njk`
 - redirect or schema work: add only a homepage `WebSite.alternateName` backup tied to the domain
+- entity-truth follow-up (2026-07-17): bind the homepage `LocalBusiness` and `VacationRental` descriptions to `site.description`; keep `LocalBusiness.areaServed` to the actual Bradenton and Sarasota inventory cities
 - internal-link or CTA work: preserve existing `/properties/` and `/guides/` routing
 - money CTA and downstream tracking event to verify: preserve the existing direct-book CTA behavior
 
@@ -66,6 +67,7 @@
 - the homepage title uses `Seascape Vacations`
 - the hero includes one visible plain-text `Seascape Vacations` mention near the top
 - the homepage `WebSite` schema includes the domain as a backup `alternateName`
+- the homepage entity descriptions use the canonical Bradenton/Sarasota near-beach positioning, and no nearby beach market is represented as a Seascape inventory city
 - no other homepage structure or CTA behavior changes
 
 ## Post-Reread Outcome

@@ -161,6 +161,37 @@ test("homepage and about page do not ship invented review totals or stale pricin
   );
 });
 
+test("homepage entity schema keeps Seascape inventory in Bradenton and Sarasota", () => {
+  const homepage = readSource("src", "index.njk");
+  const schemaBlocks = Array.from(
+    homepage.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g),
+    (match) => match[1]
+  );
+  const localBusiness = schemaBlocks.find((block) => block.includes('"@type": "LocalBusiness"'));
+  const vacationRental = schemaBlocks.find((block) => block.includes('"@type": "VacationRental"'));
+
+  assert.ok(localBusiness, "homepage should keep its LocalBusiness schema");
+  assert.ok(vacationRental, "homepage should keep its VacationRental schema");
+  assert.match(localBusiness, /"description": "\{\{ site\.description \}\}"/);
+  assert.match(vacationRental, /"description": "\{\{ site\.description \}\}"/);
+
+  for (const city of ["Bradenton", "Sarasota"]) {
+    assert.match(
+      localBusiness,
+      new RegExp(`\\{"@type": "City", "name": "${city}"\\}`),
+      `LocalBusiness areaServed should include ${city}`
+    );
+  }
+
+  for (const nearbyBeachMarket of ["Anna Maria Island", "Siesta Key", "Longboat Key"]) {
+    assert.equal(
+      localBusiness.includes(`{"@type": "City", "name": "${nearbyBeachMarket}"}`),
+      false,
+      `${nearbyBeachMarket} should not be represented as a Seascape inventory city`
+    );
+  }
+});
+
 test("priority owner money-page metadata stays non-empty and query-aligned", () => {
   const feePage = ownerData.find((entry) => entry.slug === "vacation-rental-management-fees-florida");
   const licensingPage = ownerData.find((entry) => entry.slug === "vacation-rental-licensing-florida");
