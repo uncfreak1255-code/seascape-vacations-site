@@ -16,24 +16,43 @@ function expectFixture(skill, fixture, expected) {
   assert.match(skill, rowPattern);
 }
 
-test("owner outbound batch skill is draft-only and uses approved owner proof", () => {
+test("owner outbound skill is permissioned-intake only and retains approved proof boundaries", () => {
   const skill = read(".agents/skills/owner-outbound-batch/SKILL.md");
 
   assert.match(skill, /^name: owner-outbound-batch$/m);
-  assert.match(skill, /This skill drafts only; it never sends/i);
+  assert.match(skill, /This skill never sends or creates outreach drafts/i);
+  assert.match(skill, /docs\/status\/owner-direct-outbound\.md/);
   assert.match(skill, /src\/_data\/ownerProofAssets\.json/);
   assert.match(skill, /\/research\/owner-fee-revenue-leak-benchmark-2026\//);
   assert.match(skill, /Never send outreach/);
-  assert.match(skill, /Never schedule or automate sends/);
-  assert.match(skill, /Never count a draft, prepared row, sent message, test send, labeled send, or internal helper submit as owner demand/);
+  assert.match(skill, /Never schedule or automate sends or follow-ups/);
+  assert.match(skill, /Never create a mailbox draft or prospect-facing outreach draft/);
+  assert.match(skill, /Never count an intake row, prepared message, sent message, test send,/);
 });
 
-test("owner outbound batch skill refuses bad prospect and tool expansion paths", () => {
+test("owner outbound skill refuses platform-only, permissionless, and tool-expansion paths", () => {
   const skill = read(".agents/skills/owner-outbound-batch/SKILL.md");
 
-  assert.match(skill, /generic property-management outreach rather than homeowner outreach/);
-  assert.match(skill, /private, guessed, scraped, or not reopenable/);
+  assert.match(skill, /Airbnb, Vrbo, Booking\.com, or another OTA host-message/);
+  assert.match(skill, /property listing, directory, property record, or[\s\S]+without an invitation to contact/);
+  assert.match(skill, /private, guessed, scraped, purchased, enriched, or not[\s\S]+reopenable/);
+  assert.match(skill, /generic property-management target rather than an owner or[\s\S]+authorized representative/);
+  assert.match(skill, /no explicit contact permission or invitation exists/);
   assert.match(skill, /Do not add a new MCP, plugin, scraper, external SEO pack, or dashboard/);
+});
+
+test("owner outbound archive holds OTA-only candidates and points to a permissioned list", () => {
+  const archive = read("docs/status/owner-outbound.md");
+  const intake = read("docs/status/owner-direct-outbound.md");
+
+  assert.match(archive, /research-only archive — HOLD \/ DO NOT SEND/);
+  assert.match(archive, /Airbnb- and Vrbo-only host-message paths are \*\*not approved outreach paths\*\*/);
+  assert.match(archive, /Previous platform-message drafts are intentionally retired/);
+  assert.match(archive, /Owner-Direct, Permissioned Outbound List/);
+  assert.match(intake, /intake-only — empty — founder review required/);
+  assert.match(intake, /No outbound message may be drafted, sent, scheduled, automated/);
+  assert.match(intake, /Airbnb, Vrbo, Booking\.com, or other OTA host-message surfaces/);
+  assert.match(intake, /No qualified owner-direct, permissioned prospect is currently recorded/);
 });
 
 test("owner reply intake skill refuses test and labeled demand evidence", () => {
