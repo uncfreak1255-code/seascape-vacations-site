@@ -2,10 +2,10 @@
 
 Status: **research-only archive — HOLD / DO NOT SEND**.
 
-This file preserves the Card 3 Airbnb/Vrbo research record and the historical
-send receipt. It is not an active outreach queue, and it does not authorize
-platform messaging, follow-up, scheduling, mailbox drafts, or any claim of
-owner demand.
+This file preserves only aggregate Card 3 Airbnb/Vrbo research counts and the
+historical send count. It is not an active outreach queue, and it does not
+authorize platform messaging, follow-up, scheduling, mailbox drafts, or any
+claim of owner demand.
 
 The active qualification rule for any future owner opportunity is the public
 [Owner-Direct Intake Policy](owner-direct-intake-policy.md). It defines the
@@ -16,8 +16,8 @@ decision gate but stores no candidate records.
 Effective 2026-07-17:
 
 - Airbnb- and Vrbo-only host-message paths are **not approved outreach paths**.
-- The seven unsent platform-only entries below are **hold / do not send**.
-- The three June 17 platform-originated sends are historical records only;
+- The seven unsent platform-only observations are **hold / do not send**.
+- The three June 17 platform-originated sends are aggregate historical records only;
   they do not authorize follow-up through an OTA.
 - Public host labels are listing observations, not verified owner identity,
   intent, availability, dissatisfaction, or permission to receive a business
@@ -36,8 +36,8 @@ signal under the separate intake policy.
 
 This archive owns:
 
-- the historical public-listing observations
-- the historical June 17 send record
+- aggregate counts of historical public-listing observations
+- the aggregate historical June 17 send count
 - the factual boundary around what those records do and do not prove
 
 This archive does not own:
@@ -50,32 +50,24 @@ This archive does not own:
 
 ## Archived Platform Research
 
-The entries below were collected from public listing pages using public host
-labels and platform contact surfaces. They were retained for provenance only.
-They do not qualify as active prospects because the only recorded contact path
-is an OTA message surface.
+The observations were collected from public listing pages using public host
+labels and platform contact surfaces. This public repository now retains only
+the aggregate record needed to explain the decision:
 
-| Prospect label | Public listing evidence | Recorded contact path | Current disposition |
-|---|---|---|---|
-| Kiri | [Airbnb listing](https://www.airbnb.com/rooms/1477087787726582138) | Airbnb host-message surface | historical send record; no follow-up |
-| Megan | [Airbnb listing](https://www.airbnb.com/rooms/1339940979581613196) | Airbnb host-message surface | historical send record; no follow-up |
-| Ashley | [Airbnb listing](https://www.airbnb.com/rooms/1517691281023647588) | Airbnb host-message surface | **hold / do not send** |
-| Wendy | [Airbnb listing](https://www.airbnb.com/rooms/1025371189528255498) | Airbnb host-message surface | **hold / do not send** |
-| Adam | [Airbnb listing](https://www.airbnb.com/rooms/41800150) | Airbnb host-message surface | **hold / do not send** |
-| Kate | [Airbnb listing](https://www.airbnb.com/rooms/1280439468418163165) | Airbnb host-message surface | **hold / do not send** |
-| Naomi Ewald | [Vrbo listing](https://www.vrbo.com/4425699) | Vrbo host-contact surface | historical send record; no follow-up |
-| Teresa | [Airbnb listing](https://www.airbnb.com/rooms/1502928363519390450) | Airbnb host-message surface | **hold / do not send** |
-| Morgan | [Airbnb listing](https://www.airbnb.com/rooms/1384108265624016866) | Airbnb host-message surface | **hold / do not send** |
-| Christy | [Airbnb listing](https://www.airbnb.com/rooms/28602630) | Airbnb host-message surface | **hold / do not send** |
+| Record class | Count | Current disposition |
+|---|---:|---|
+| Historical platform-originated sends | 3 | historical effort only; no follow-up |
+| Unsent platform-only observations | 7 | **hold / do not send** |
 
-No private phone numbers, emails, property records, skip-tracing data, or
-guessed contact details were retained in this packet.
+Named prospects, listing URLs, contact-path labels, private contact details,
+property records, and enrichment data do not belong in this public repository.
+The aggregate rows cannot be used to reconstruct an outreach list.
 
 ## Historical Send Record
 
-On 2026-06-17, three founder-sent benchmark emails were recorded for Kiri,
-Megan, and Naomi. A 2026-06-26 mailbox check documented no newer matching
-benchmark/revenue-review reply evidence.
+On 2026-06-17, three founder-sent benchmark emails were recorded. A 2026-06-26
+mailbox check documented no newer matching benchmark/revenue-review reply
+evidence.
 
 That is historical outreach effort only. It does not prove owner demand,
 does not establish permission for later outreach, and does not justify a

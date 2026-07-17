@@ -15,17 +15,20 @@ test("owner outbound archive holds OTA-only research and prevents new platform o
   assert.match(archive, /^# Owner Outbound$/m);
   assert.match(archive, /research-only archive — HOLD \/ DO NOT SEND/);
   assert.match(archive, /Airbnb- and Vrbo-only host-message paths are \*\*not approved outreach paths\*\*/);
-  assert.match(archive, /seven unsent platform-only entries below are \*\*hold \/ do not send\*\*/);
+  assert.match(archive, /seven unsent platform-only observations are \*\*hold \/ do not send\*\*/);
   assert.match(archive, /Public host labels are listing observations, not verified owner identity/);
   assert.match(archive, /never\s+constitutes owner demand/i);
   assert.match(archive, /No existing or future platform-listing observation may be converted into an/);
+  assert.match(archive, /Named prospects, listing URLs, contact-path labels/);
+  assert.doesNotMatch(archive, /https?:\/\//);
+  assert.doesNotMatch(archive, /\| Prospect label \|/);
 });
 
 test("owner outbound archive preserves historical sends without making them follow-up authority", () => {
   const archive = read("docs/status/owner-outbound.md");
 
-  assert.match(archive, /three founder-sent benchmark emails were recorded for Kiri,[\s\S]+Megan, and Naomi/);
-  assert.match(archive, /2026-06-26 mailbox check documented no newer matching/);
+  assert.match(archive, /three founder-sent benchmark emails were recorded/);
+  assert.match(archive, /2026-06-26[\s\S]+mailbox check documented no newer matching/);
   assert.match(archive, /does not establish permission for later outreach/);
   assert.match(archive, /does not justify a[\s\S]+follow-up on Airbnb, Vrbo, email, or another surface/);
 });

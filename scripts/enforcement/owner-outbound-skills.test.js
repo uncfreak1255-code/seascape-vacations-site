@@ -50,6 +50,8 @@ test("owner outbound archive holds OTA-only candidates and points to a public qu
   assert.match(archive, /Airbnb- and Vrbo-only host-message paths are \*\*not approved outreach paths\*\*/);
   assert.match(archive, /Previous platform-message drafts are intentionally retired/);
   assert.match(archive, /Owner-Direct Intake Policy/);
+  assert.match(archive, /Named prospects, listing URLs, contact-path labels/);
+  assert.doesNotMatch(archive, /https?:\/\//);
   assert.match(policy, /public policy only - no candidate records - founder review required/);
   assert.match(policy, /No outbound message may be drafted, sent, scheduled, automated/);
   assert.match(policy, /Airbnb, Vrbo, Booking\.com, or other OTA host-message surfaces/);
