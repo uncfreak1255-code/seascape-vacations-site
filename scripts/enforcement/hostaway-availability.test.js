@@ -1,7 +1,11 @@
 const test = require("node:test");
 const assert = require("node:assert/strict");
 
-const { normalizeAvailability } = require("../cache/normalize-hostaway");
+const {
+  businessDateStamp,
+  isCurrentAvailabilityRange,
+  normalizeAvailability
+} = require("../cache/normalize-hostaway");
 const {
   validateSafePropertyProjection,
   validateHostawayAvailabilityPayload
@@ -17,6 +21,54 @@ const {
   calendarDaysFromBookingEngineResponse,
   toBookingEngineHostname
 } = require("../cache/booking-engine-calendar");
+
+test("availability ranges use the New York business date and reject expired or malformed dates", () => {
+  const now = Date.parse("2026-07-17T00:30:00.000Z");
+
+  assert.equal(businessDateStamp(now), "2026-07-16");
+  assert.equal(
+    isCurrentAvailabilityRange(
+      { startDate: "2026-07-16", endDate: "2026-07-17" },
+      { now }
+    ),
+    true
+  );
+  assert.equal(
+    isCurrentAvailabilityRange(
+      { startDate: "2026-07-15", endDate: "2026-07-17" },
+      { now }
+    ),
+    false
+  );
+  assert.equal(
+    isCurrentAvailabilityRange(
+      { startDate: "not-a-date", endDate: "2026-07-17" },
+      { now }
+    ),
+    false
+  );
+  assert.equal(
+    isCurrentAvailabilityRange(
+      { startDate: "2026-07-16-extra", endDate: "2026-07-17" },
+      { now }
+    ),
+    false
+  );
+  assert.equal(
+    isCurrentAvailabilityRange(
+      { startDate: "2026-02-30", endDate: "2026-07-17" },
+      { now }
+    ),
+    false
+  );
+  assert.equal(
+    isCurrentAvailabilityRange(
+      { startDate: "2026-07-16", endDate: "2026-07-16" },
+      { now }
+    ),
+    false
+  );
+});
 
 test("normalizeAvailability derives the next bookable card range from Hostaway calendar days", () => {
   const calendarDays = [
@@ -132,14 +184,23 @@ test("Netlify builds require rendered live availability cards", () => {
 
 test("rendered availability output gate rejects stale fallback cards", () => {
   const liveHtml = `
-    <article class="catalog-card"><span>Availability · live</span><div class="catalog-next-lbl">Next available</div></article>
-    <article class="catalog-card"><span>Availability · live</span><div class="catalog-next-lbl">Next available</div></article>
+    <article
+      class="catalog-card"
+      data-next-available-start="2026-08-01"
+      data-next-available-end="2026-08-03"
+    ><span>Availability · live</span><div class="catalog-next-lbl">Next available</div></article>
+    <article
+      class="catalog-card"
+      data-next-available-start="2026-08-04"
+      data-next-available-end="2026-08-06"
+    ><span>Availability · live</span><div class="catalog-next-lbl">Next available</div></article>
+    <script>badge.textContent = "Calendar · secure";</script>
   `;
 
-  assert.equal(
-    validatePropertiesAvailabilityOutput(liveHtml, { expectedCards: 2 }).nextAvailableCount,
-    2
-  );
+  const report = validatePropertiesAvailabilityOutput(liveHtml, { expectedCards: 2 });
+  assert.equal(report.cardCount, 2);
+  assert.equal(report.nextAvailableCount, 2);
+  assert.equal(report.calendarSecureCount, 0);
 
   assert.throws(
     () =>
@@ -205,13 +266,15 @@ test("safe property projection is validated as the build-time availability surfa
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), "safe-property-build-"));
   const projectionPath = path.join(dir, "properties-latest.json");
   const syncedAt = new Date().toISOString();
+  const startDate = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
+  const endDate = new Date(Date.now() + 9 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
   const availability = {
     source: "seascape-ops",
     syncedAt,
     nextAvailable: {
-      startDate: "2026-05-08",
-      endDate: "2026-05-10",
-      label: "May 08 - May 10",
+      startDate,
+      endDate,
+      label: "Future 2-night range",
       nights: 2,
       nightlyRate: 425,
       subcopy: "2 nights from $425/night - Direct booking"

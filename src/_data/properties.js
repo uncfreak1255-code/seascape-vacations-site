@@ -2,7 +2,10 @@ const fs = require("fs");
 const path = require("path");
 const { getStore } = require("@netlify/blobs");
 const { fetchBookingEngineCalendar } = require("../../scripts/cache/booking-engine-calendar");
-const { normalizeAvailability } = require("../../scripts/cache/normalize-hostaway");
+const {
+  isCurrentAvailabilityRange,
+  normalizeAvailability
+} = require("../../scripts/cache/normalize-hostaway");
 
 const FALLBACK_PATH = path.join(__dirname, "properties-fallback.json");
 const VISUAL_TEST_AVAILABILITY_PATH = path.join(__dirname, "..", "..", "tests", "visual", "fixtures", "properties-availability.json");
@@ -131,7 +134,15 @@ function normalizeAvailabilitySummary(availability, now = Date.now()) {
   const label = typeof nextAvailable.label === "string" ? nextAvailable.label : "";
   const subcopy = typeof nextAvailable.subcopy === "string" ? nextAvailable.subcopy : "";
   const nights = normalizeCount(nextAvailable.nights);
-  if (!startDate || !endDate || !label || !nights) return null;
+  if (
+    !startDate ||
+    !endDate ||
+    !label ||
+    !nights ||
+    !isCurrentAvailabilityRange(nextAvailable, { now })
+  ) {
+    return null;
+  }
 
   const monthNights = Array.isArray(availability.monthNights)
     ? availability.monthNights
@@ -185,20 +196,19 @@ function loadVisualTestAvailabilityFixture() {
 }
 
 function applyAvailabilityFixture(properties, fixtureBySlug) {
-  const syncedAt = new Date().toISOString();
-
   return properties.map((property) => {
     const fixture = fixtureBySlug[property.slug];
     if (!fixture) {
       return property;
     }
 
+    const fixtureNow = Date.parse(fixture.syncedAt || "");
     return {
       ...property,
-      availability: normalizeAvailabilitySummary({
-        ...fixture,
-        syncedAt
-      })
+      availability: normalizeAvailabilitySummary(
+        fixture,
+        Number.isFinite(fixtureNow) ? fixtureNow : Date.now()
+      )
     };
   });
 }

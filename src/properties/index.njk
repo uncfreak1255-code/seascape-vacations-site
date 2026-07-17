@@ -448,6 +448,10 @@ headExtra: |
       font-size: 11px;
     }
 
+    .catalog-chips[hidden] {
+      display: none;
+    }
+
     .catalog-chip {
       flex: 1;
       min-width: 0;
@@ -794,7 +798,15 @@ headExtra: |
         {% set loading = "lazy" %}
         {% set fetchpriority = "" %}
       {% endif %}
-      <article class="catalog-card" data-filters="{{ filterTokens }}" data-max-guests="{{ property.guests }}">
+      <article
+        class="catalog-card"
+        data-filters="{{ filterTokens }}"
+        data-max-guests="{{ property.guests }}"
+        {% if availability and availability.nextAvailable %}
+        data-next-available-start="{{ availability.nextAvailable.startDate }}"
+        data-next-available-end="{{ availability.nextAvailable.endDate }}"
+        {% endif %}
+      >
         <div class="catalog-card-media">
           <img
             src="{{ property.image | imgProxy(900) }}"
@@ -1030,6 +1042,66 @@ headExtra: |
     const requestedDepart = (params.get("depart") || "").trim();
     const requestedGuests = parseInt(params.get("guests") || "", 10) || 0;
 
+    function newYorkDateStamp() {
+      const parts = new Intl.DateTimeFormat("en-US", {
+        timeZone: "America/New_York",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit"
+      }).formatToParts(new Date());
+      const byType = Object.fromEntries(parts.map((part) => [part.type, part.value]));
+      return `${byType.year}-${byType.month}-${byType.day}`;
+    }
+
+    function downgradeExpiredAvailabilityCards() {
+      const today = newYorkDateStamp();
+      const datePattern = /^\d{4}-\d{2}-\d{2}$/;
+      const isDateStamp = (value) => {
+        if (!datePattern.test(value)) return false;
+        const parsed = new Date(`${value}T00:00:00Z`);
+        return !Number.isNaN(parsed.getTime()) && parsed.toISOString().slice(0, 10) === value;
+      };
+
+      cards.forEach((card) => {
+        const badge = card.querySelector(".catalog-live-pill");
+        if (!badge || !badge.textContent.includes("Availability")) return;
+
+        const startDate = card.dataset.nextAvailableStart || "";
+        const endDate = card.dataset.nextAvailableEnd || "";
+        const isCurrentRange =
+          isDateStamp(startDate) &&
+          isDateStamp(endDate) &&
+          startDate >= today &&
+          endDate > startDate;
+        if (isCurrentRange) return;
+
+        badge.textContent = "Calendar · secure";
+        badge.classList.add("is-muted");
+
+        const nextLabel = card.querySelector(".catalog-next-lbl");
+        const nextDates = card.querySelector(".catalog-next-dates");
+        const nextSubcopy = card.querySelector(".catalog-next-sub");
+        if (nextLabel) nextLabel.textContent = "Live calendar";
+        if (nextDates) nextDates.textContent = "Check available dates";
+        if (nextSubcopy) {
+          nextSubcopy.textContent =
+            "Real-time rates and minimum stays open on the secure booking page.";
+        }
+
+        const availabilityChips = card.querySelector(".catalog-chips");
+        if (availabilityChips) availabilityChips.hidden = true;
+
+        const link = card.querySelector('a[data-track-event="catalog_book_direct_click"]');
+        const href = link ? link.getAttribute("href") || "" : "";
+        if (link && href.startsWith("https://book.seascape-vacations.com/listings/")) {
+          const url = new URL(href);
+          url.searchParams.delete("startingDate");
+          url.searchParams.delete("endingDate");
+          link.setAttribute("href", url.toString());
+        }
+      });
+    }
+
     function cardMaxGuests(card) {
       return parseInt(card.dataset.maxGuests || "0", 10) || 0;
     }
@@ -1048,6 +1120,7 @@ headExtra: |
         link.setAttribute("href", url.toString());
       });
     }
+    downgradeExpiredAvailabilityCards();
     decorateBookDirectLinks();
 
     function applyFilter(filter, { sync = false } = {}) {

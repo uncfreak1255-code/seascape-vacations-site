@@ -61,6 +61,8 @@ test("properties catalog implements Property Card E with truthful listing data",
     "{{ property.price }}",
     "{{ bookingHref }}",
     "{% set availability = property.availability %}",
+    'data-next-available-start="{{ availability.nextAvailable.startDate }}"',
+    'data-next-available-end="{{ availability.nextAvailable.endDate }}"',
     "{{ availability.nextAvailable.label }}",
     "{{ availability.nextAvailable.subcopy }}",
     "{{ month.value }}",
@@ -70,6 +72,25 @@ test("properties catalog implements Property Card E with truthful listing data",
     "startingDate="
   ]) {
     assert.equal(propertiesTemplate.includes(token), true, `template missing ${token}`);
+  }
+
+  for (const runtimeTruthToken of [
+    '"America/New_York"',
+    "const isDateStamp = (value) =>",
+    'badge.textContent = "Calendar · secure"',
+    'nextLabel.textContent = "Live calendar"',
+    'nextDates.textContent = "Check available dates"',
+    ".catalog-chips[hidden]",
+    "availabilityChips.hidden = true",
+    'url.searchParams.delete("startingDate")',
+    'url.searchParams.delete("endingDate")',
+    "downgradeExpiredAvailabilityCards()"
+  ]) {
+    assert.equal(
+      propertiesTemplate.includes(runtimeTruthToken),
+      true,
+      `template missing runtime availability truth guard: ${runtimeTruthToken}`
+    );
   }
 
   assert.equal(

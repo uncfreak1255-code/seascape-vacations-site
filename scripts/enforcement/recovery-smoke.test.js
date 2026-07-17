@@ -114,6 +114,42 @@ test("properties smoke rejects missing stable property detail hrefs", () => {
   }, /properties page is missing stable property detail links/);
 });
 
+test("properties smoke accepts only current New York availability metadata on live cards", () => {
+  const smoke = loadSmokeModule();
+  const now = Date.parse("2026-07-17T00:30:00.000Z");
+  const currentMarkup = `
+    <article class="catalog-card" data-next-available-start="2026-07-16" data-next-available-end="2026-07-18">
+      <span>Availability · live</span>
+    </article>
+  `;
+
+  assert.doesNotThrow(() => smoke.validateLiveAvailabilityMarkup(currentMarkup, { now }));
+  assert.throws(
+    () =>
+      smoke.validateLiveAvailabilityMarkup(
+        currentMarkup.replace("2026-07-16", "2026-07-15"),
+        { now }
+      ),
+    /expired or malformed live availability/
+  );
+  assert.throws(
+    () =>
+      smoke.validateLiveAvailabilityMarkup(
+        currentMarkup.replace('data-next-available-start="2026-07-16"', ""),
+        { now }
+      ),
+    /missing date metadata/
+  );
+  assert.throws(
+    () =>
+      smoke.validateLiveAvailabilityMarkup(
+        currentMarkup.replace("2026-07-18", "not-a-date"),
+        { now }
+      ),
+    /expired or malformed live availability/
+  );
+});
+
 test("stays smoke follows the live stay-collection hub instead of a dead prefix", () => {
   const smoke = loadSmokeModule();
   const target = smoke.targets.find((entry) => entry.path === "/stays/");
