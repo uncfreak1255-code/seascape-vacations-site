@@ -1,6 +1,6 @@
 ---
 name: owner-outbound-batch
-description: Qualify a small, owner-direct and permissioned Seascape owner-intake list from real signals, warm relationships, explicit contact invitations, or direct inbound requests. Use when a founder needs a reviewable intake decision. This skill never sends or creates outreach drafts.
+description: Qualify an owner-direct and permissioned Seascape opportunity from a real signal, warm relationship, explicit contact invitation, or direct inbound request. Use when a founder needs a reviewable intake decision. This skill never sends or creates outreach drafts and never persists a candidate in the public site repo.
 ---
 
 # Owner-Direct Permissioned Intake
@@ -10,7 +10,7 @@ is not a lead scraper, bulk-list builder, email-draft workflow, or send tool.
 
 ## Authority
 
-- Owner-direct intake home: `docs/status/owner-direct-outbound.md`
+- Public qualification policy: `docs/status/owner-direct-intake-policy.md`
 - Archived platform research: `docs/status/owner-outbound.md`
 - Approved owner proof assets: `src/_data/ownerProofAssets.json`
 - Owner benchmark CTA: `/research/owner-fee-revenue-leak-benchmark-2026/`
@@ -30,13 +30,13 @@ Do not treat a listing host label as verified ownership or permission.
 
 ## Workflow
 
-1. Read `docs/status/owner-direct-outbound.md`.
+1. Read `docs/status/owner-direct-intake-policy.md`.
 2. Refuse platform-only, generic, or permissionless candidates.
 3. Verify the source, identity/representative signal, fit signal, and explicit
    contact permission can be reopened.
-4. Add only a factual intake row with status `qualifying`,
-   `permissioned`, `owner-requested`, or `closed`.
-5. Return a founder decision card: `qualify`, `hold`, or `refuse`.
+4. Return a founder decision card: `qualify`, `hold`, or `refuse`.
+5. Persist nothing in this public repository. Do not add a candidate, source
+   URL, permission receipt, fit note, or contact channel to Git.
 6. Stop. Do not write an opener, mailbox draft, follow-up, schedule, or send
    instruction.
 
@@ -46,7 +46,7 @@ still manual and outside this skill's authority.
 
 ## Output
 
-Return:
+Return for the current founder review only:
 
 - intake date
 - owner or representative label
@@ -58,6 +58,10 @@ Return:
 - any missing evidence
 
 Do not return copy-paste outreach text.
+
+If durable tracking is requested, stop unless Sawyer has named an approved
+private owner system with access and retention rules. Contact details never
+belong in Git.
 
 ## Stop Conditions
 
@@ -72,6 +76,8 @@ Stop and refuse instead of adding a row when:
 - the person is a generic property-management target rather than an owner or
   authorized representative
 - no explicit contact permission or invitation exists
+- the user asks to persist named candidate or contact evidence in this public
+  repository
 - the user asks the agent to send, schedule, automate, or create a mailbox
   draft
 - the user asks the agent to count a touch, draft, delivery, or test as demand
@@ -82,8 +88,10 @@ Stop and refuse instead of adding a row when:
 - Never schedule or automate sends or follow-ups.
 - Never create a mailbox draft or prospect-facing outreach draft.
 - Never harvest, enrich, or export contact data.
-- Never create a Hub demand-register row from intake alone.
-- Never count an intake row, prepared message, sent message, test send,
+- Never persist a named candidate, permission receipt, fit note, or contact
+  channel in this public repository.
+- Never create a Hub demand-register row from qualification alone.
+- Never count a qualification decision, prepared message, sent message, test send,
   delivery, page view, click, or internal helper submit as owner demand.
 - Do not add a new MCP, plugin, scraper, external SEO pack, or dashboard for
   this lane.

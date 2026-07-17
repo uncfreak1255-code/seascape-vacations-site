@@ -7,9 +7,9 @@ send receipt. It is not an active outreach queue, and it does not authorize
 platform messaging, follow-up, scheduling, mailbox drafts, or any claim of
 owner demand.
 
-The active intake surface for any future owner opportunity is
-[Owner-Direct, Permissioned Outbound List](owner-direct-outbound.md). That list
-is currently empty and is intake-only.
+The active qualification rule for any future owner opportunity is the public
+[Owner-Direct Intake Policy](owner-direct-intake-policy.md). It defines the
+decision gate but stores no candidate records.
 
 ## Current Operating Decision
 
@@ -32,7 +32,7 @@ Effective 2026-07-17:
 The business goal remains a real owner conversation and a completed revenue
 teardown, but this archived packet is no longer a route to either outcome.
 The next permissible work is to qualify a real owner-direct, permissioned
-signal in the separate intake list.
+signal under the separate intake policy.
 
 This archive owns:
 
@@ -94,8 +94,8 @@ lift.
 
 ## Active Owner-Direct Intake Standard
 
-Use [Owner-Direct, Permissioned Outbound List](owner-direct-outbound.md) for
-future opportunities. A future row requires all of the following:
+Use the [Owner-Direct Intake Policy](owner-direct-intake-policy.md) for future
+opportunities. A future qualification decision requires all of the following:
 
 - a named owner or authorized owner representative
 - a reopenable, owner-direct source receipt
@@ -105,7 +105,8 @@ future opportunities. A future row requires all of the following:
 - founder review before any individual outbound message is even drafted
 
 The former ten-platform-row milestone is archived and does not clear the active
-owner-acquisition lane.
+owner-acquisition lane. This public repository must not store a named candidate
+or contact evidence.
 
 ## Proof and Register Boundary
 

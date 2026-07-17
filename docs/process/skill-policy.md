@@ -25,7 +25,9 @@ Hub register. These skills are local because the workflow is site-specific:
 the intake decision can reference the site benchmark and approved owner proof
 assets only after contact permission is proven, while the reply guard prevents
 site activity, test sends, labeled sends, and internal helper submits from being
-counted as real owner demand.
+counted as real owner demand. The website repository is public, so the intake
+skill returns a founder decision card but never persists a named candidate,
+permission receipt, fit note, contact channel, or contact detail here.
 
 For design direction, use the local `seascape-design-specialist` and
 `seascape-design-critic` pair. The specialist owns the concept pass and
@@ -118,9 +120,10 @@ entry is the receipt the governance rule requires for any skill change.
   to receive a business pitch. Agent-surface audit verdict: **KEEP** the
   existing referenced skill, change its authority in place, and create no new
   agent, skill, workflow, scraper, or automation. Decision: archive the
-  platform-only packet, retire its drafts, keep the active permissioned list
-  empty until a real source qualifies, and require Sawyer's separate approval
-  before any named one-to-one message. This supersedes the original
+  platform-only packet, retire its drafts, make the public site artifact policy
+  only with no named candidate state, and require Sawyer's separate approval
+  before any named one-to-one message. Contact evidence must remain outside
+  Git in an approved private owner system. This supersedes the original
   draft-preparation authority while preserving `owner-reply-intake` as the
   demand-validation gate.
 - **2026-06-25 — added `seascape-design-specialist` and `seascape-design-critic`.**

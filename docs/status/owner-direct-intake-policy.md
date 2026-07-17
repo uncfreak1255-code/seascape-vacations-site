@@ -1,17 +1,19 @@
-# Owner-Direct, Permissioned Outbound List
+# Owner-Direct Intake Policy
 
-Status: **intake-only — empty — founder review required**.
+Status: **public policy only - no candidate records - founder review required**.
 
-This is the only active research surface for future owner opportunities. It is
-not a bulk lead list, a campaign queue, a mailbox-draft system, or permission
-to send a message.
+This public repository defines how to qualify a future owner opportunity. It is
+not an owner database, lead list, campaign queue, mailbox-draft system, or
+permission to send a message.
 
-No outbound message may be drafted, sent, scheduled, automated, or logged as
-demand without Sawyer's explicit, individual approval.
+Do not store a named owner or representative, source URL, permission receipt,
+fit note, contact channel, contact detail, or message content in this
+repository. No outbound message may be drafted, sent, scheduled, automated, or
+logged as demand without Sawyer's explicit, individual approval.
 
 ## Allowed Source Types
 
-Add a row only when the source is owner-direct and the context expressly
+Return `qualify` only when the source is owner-direct and the context expressly
 permits a relevant business follow-up:
 
 - a named local referral or warm introduction with a documented path to the
@@ -27,7 +29,7 @@ permits a relevant business follow-up:
 A public name alone is not enough. The source must show why contact is
 appropriate; a platform listing, directory, or property record does not.
 
-## Do Not Add
+## Refuse
 
 Refuse and leave out:
 
@@ -38,35 +40,28 @@ Refuse and leave out:
 - competing property managers, generic vendor lists, or mass-campaign targets
 - any record where the owner/representative relationship cannot be supported
 
-## Required Evidence for a Row
+## Qualification Evidence
 
-Before a row enters the list, record:
+Before returning a qualification decision to Sawyer, verify:
 
 1. the named owner or authorized representative label
 2. source type and date received
-3. a reopenable public URL or a redacted receipt path
+3. a reopenable source or a redacted receipt
 4. the exact permission or invitation to contact
 5. a factual property/business fit signal
 6. the owner-direct contact channel named by the source
-7. a status of `qualifying`, `permissioned`, `owner-requested`, or
-   `closed`
 
 Do not infer dissatisfaction, a wish to change managers, a revenue problem, or
 owner demand from a source type or property details.
 
-## Active List
-
-No qualified owner-direct, permissioned prospect is currently recorded.
-
-| Date received | Owner / representative | Source type | Permission receipt | Fit signal | Contact channel | Status | Founder decision |
-|---|---|---|---|---|---|---|---|
-| _No rows yet_ |  |  |  |  |  |  |  |
+The evidence may be inspected for the current decision, but it must not be
+copied into this public repository.
 
 ## Founder Review Gate
 
-A row remains intake-only until Sawyer separately approves one specific,
-one-to-one next step. Approval must identify the person, source, channel, and
-purpose.
+A qualification decision remains intake-only until Sawyer separately approves
+one specific, one-to-one next step. Approval must identify the person, source,
+channel, and purpose.
 
 Even after approval:
 
@@ -78,12 +73,19 @@ Even after approval:
 A real reply or owner request must pass the Hub validation standard before it
 can be recorded as owner-demand evidence.
 
-## Evidence and Privacy Boundary
+## Storage and Privacy Boundary
 
-Keep public source links or redacted internal receipts only. Do not store copied
-private contact details, property records, personal profiles, or message
-content in this repository.
+This repository is public. It must never contain a named candidate record,
+source or permission receipt, contact channel, private contact detail, property
+record, personal profile, or message content.
+
+If durable candidate tracking becomes necessary, Sawyer must first name an
+approved private owner system with an access and retention rule. Contact
+details stay in that system, never in Git. Until that system is selected, this
+skill returns a decision card for the current review and persists nothing.
 
 When a qualified real owner signal exists, route durable demand proof through a
 clean `seascape-hub` branch or PR, never by editing generated receipt
-projection content by hand.
+projection content by hand. A real reply that meets the Hub validation standard
+may be recorded there with a minimal redacted identifier and a reopenable
+private evidence path; raw contact details still do not belong in Git.

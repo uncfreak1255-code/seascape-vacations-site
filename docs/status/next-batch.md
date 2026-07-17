@@ -25,7 +25,7 @@ rendered here from its machine-readable next-batch decision receipt.
 - Latest BigQuery GSC `data_date`: 2026-07-12.
 - Site work gate: `clear` - joined GSC + GA4 read covers the requested window.
 - Reread status: `fresh but below threshold`.
-- Concrete next move: owner cluster cannot clear by waiting - qualify one owner-direct, permissioned signal (see the Owner-Direct Intake Escalation section in docs/status/next-batch.md and docs/status/owner-direct-outbound.md). Do not use Airbnb or Vrbo host messaging; intake is not a lead, and any one-to-one message still requires Sawyer's separate approval.
+- Concrete next move: owner cluster cannot clear by waiting - qualify one owner-direct, permissioned signal (see the Owner-Direct Intake Escalation section in seascape-vacations-site/docs/status/next-batch.md and seascape-vacations-site/docs/status/owner-direct-intake-policy.md). Do not use Airbnb or Vrbo host messaging; qualification is not a lead, named candidate state does not belong in the public site repo, and any one-to-one message still requires Sawyer's separate approval.
 - Report recommendation: `hold-and-reread`.
 - Reason: No cluster cleared the bar for a stronger next branch than holding for more readback.
 
@@ -108,12 +108,12 @@ When this fires, the founder move is:
 
 - qualify one signal from a referral, owner form, invited public contact path,
   permissioned networking connection, or direct inbound owner request
-- record only the source, permission basis, factual fit signal, and
-  source-supplied channel in
-  `docs/status/owner-direct-outbound.md`
+- apply `docs/status/owner-direct-intake-policy.md` and return a founder
+  decision card for the current review; do not persist named candidate,
+  receipt, fit, or contact-channel state in this public repository
 - do not run an Airbnb, Vrbo, or other OTA outreach batch, and do not recreate
   drafts or follow-ups from the archived platform research
-- treat an intake row as qualification only: it is not a lead, does not move an
+- treat a qualification decision as intake only: it is not a lead, does not move an
   owner gate, and does not authorize a message
 - require Sawyer's separate approval before preparing any named, one-to-one
   next step

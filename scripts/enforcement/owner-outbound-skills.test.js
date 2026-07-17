@@ -21,13 +21,14 @@ test("owner outbound skill is permissioned-intake only and retains approved proo
 
   assert.match(skill, /^name: owner-outbound-batch$/m);
   assert.match(skill, /This skill never sends or creates outreach drafts/i);
-  assert.match(skill, /docs\/status\/owner-direct-outbound\.md/);
+  assert.match(skill, /docs\/status\/owner-direct-intake-policy\.md/);
   assert.match(skill, /src\/_data\/ownerProofAssets\.json/);
   assert.match(skill, /\/research\/owner-fee-revenue-leak-benchmark-2026\//);
   assert.match(skill, /Never send outreach/);
   assert.match(skill, /Never schedule or automate sends or follow-ups/);
   assert.match(skill, /Never create a mailbox draft or prospect-facing outreach draft/);
-  assert.match(skill, /Never count an intake row, prepared message, sent message, test send,/);
+  assert.match(skill, /Never persist a named candidate, permission receipt, fit note, or contact/);
+  assert.match(skill, /Never count a qualification decision, prepared message, sent message, test send,/);
 });
 
 test("owner outbound skill refuses platform-only, permissionless, and tool-expansion paths", () => {
@@ -41,18 +42,18 @@ test("owner outbound skill refuses platform-only, permissionless, and tool-expan
   assert.match(skill, /Do not add a new MCP, plugin, scraper, external SEO pack, or dashboard/);
 });
 
-test("owner outbound archive holds OTA-only candidates and points to a permissioned list", () => {
+test("owner outbound archive holds OTA-only candidates and points to a public qualification policy", () => {
   const archive = read("docs/status/owner-outbound.md");
-  const intake = read("docs/status/owner-direct-outbound.md");
+  const policy = read("docs/status/owner-direct-intake-policy.md");
 
   assert.match(archive, /research-only archive — HOLD \/ DO NOT SEND/);
   assert.match(archive, /Airbnb- and Vrbo-only host-message paths are \*\*not approved outreach paths\*\*/);
   assert.match(archive, /Previous platform-message drafts are intentionally retired/);
-  assert.match(archive, /Owner-Direct, Permissioned Outbound List/);
-  assert.match(intake, /intake-only — empty — founder review required/);
-  assert.match(intake, /No outbound message may be drafted, sent, scheduled, automated/);
-  assert.match(intake, /Airbnb, Vrbo, Booking\.com, or other OTA host-message surfaces/);
-  assert.match(intake, /No qualified owner-direct, permissioned prospect is currently recorded/);
+  assert.match(archive, /Owner-Direct Intake Policy/);
+  assert.match(policy, /public policy only - no candidate records - founder review required/);
+  assert.match(policy, /No outbound message may be drafted, sent, scheduled, automated/);
+  assert.match(policy, /Airbnb, Vrbo, Booking\.com, or other OTA host-message surfaces/);
+  assert.match(policy, /must never contain a named candidate record/);
 });
 
 test("skill policy records the permissioned-intake authority and audit receipt", () => {
@@ -62,6 +63,8 @@ test("skill policy records the permissioned-intake authority and audit receipt",
   assert.match(policy, /2026-07-17 — restricted `owner-outbound-batch` to permissioned intake/);
   assert.match(policy, /Agent-surface audit verdict: \*\*KEEP\*\*/);
   assert.match(policy, /create no new[\s\S]+agent, skill, workflow, scraper, or automation/);
+  assert.match(policy, /website repository is public/);
+  assert.match(policy, /never persists a named candidate/);
   assert.match(policy, /require Sawyer's separate approval/);
 });
 

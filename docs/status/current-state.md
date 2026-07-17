@@ -31,8 +31,9 @@ honest role is the Lane A guest-to-owner referral (shipped, Card 1) and a proof
 surface, not the primary lead engine.
 
 Next founder hours go to the off-repo owner motion, not this repo:
-1. Qualify the first owner-direct, permissioned signal in
-   `docs/status/owner-direct-outbound.md`; do not build an OTA host-message list.
+1. Qualify the first owner-direct, permissioned signal under
+   `docs/status/owner-direct-intake-policy.md`; do not build an OTA host-message
+   list or store named candidate state in this public repository.
 2. If a named signal qualifies, make a separate founder decision on one
    one-to-one next step. Intake does not authorize a draft or send.
 3. Let the shipped Lane A referral run and watch for the first benchmark
