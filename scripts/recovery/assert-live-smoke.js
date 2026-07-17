@@ -176,10 +176,10 @@ function validateTargetResponse(target, response) {
     const hasProofFirstOwnerSurface =
       response.body.includes("Before you renew,")
       && response.body.includes("actually keep?")
-      && response.body.includes("$119,923")
-      && response.body.includes("13.4%")
-      && response.body.includes("2.9%")
-      && response.body.includes("What owners miss when they compare management fees")
+      && response.body.includes("15.5%")
+      && response.body.includes("2.9% + 30¢")
+      && response.body.includes("Property-specific")
+      && response.body.includes("The Fee Comparison")
       && response.body.includes("Request Your Revenue Review")
       && response.body.includes('href="#owner-cta"');
 
@@ -191,8 +191,10 @@ function validateTargetResponse(target, response) {
       response.body.includes("What Is Vacation Rental Property Management?")
       || response.body.includes("View All Properties")
       || response.body.includes("Request a property evaluation")
+      || response.body.includes("$119,923")
+      || response.body.includes("13.4%")
     ) {
-      throw new Error("property-management hub is still serving the retired explainer-hub surface");
+      throw new Error("property-management hub is serving retired owner copy");
     }
   }
 

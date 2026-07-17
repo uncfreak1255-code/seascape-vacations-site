@@ -595,11 +595,11 @@ test("approved owner research sample passes the new public-copy guardrails", () 
   const approvedSample = `
     <main>
       <section>
-        <h1>Your management fee is only part of the picture.</h1>
-        <p>Most owners compare 15%, 20%, and 25% management fees and stop there.</p>
-        <p><a href="/property-management/vacation-rental-management-fees-florida/">Management fee</a> is only one part of what you actually keep.</p>
-        <p>That is why <a href="/property-management/maximize-vacation-rental-income-florida/">booking channels</a> belong in the conversation.</p>
-        <p><a href="/property-management/">Seascape property management</a> starts with a revenue teardown, not a generic service list.</p>
+        <h1>What do vacation rental fees actually cost?</h1>
+        <p>Airbnb's published host fee, Stripe's card price, and a property manager's fee cover different services.</p>
+        <p><a href="/property-management/vacation-rental-management-fees-florida/">Compare management fees</a> by checking the fee basis, included work, and separate charges.</p>
+        <p><a href="/property-management/maximize-vacation-rental-income-florida/">Review owner income</a> with the property's real agreement and statement.</p>
+        <p><a href="/property-management/">Seascape property management</a> provides a property-specific quote in writing.</p>
       </section>
     </main>
   `;

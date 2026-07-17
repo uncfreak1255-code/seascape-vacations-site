@@ -30,10 +30,12 @@ test("property-management smoke follows the current proof-first owner hub", () =
   const currentOwnerHubBody = `
     <main>
       <h1>Before you renew, what does your Gulf Coast home actually keep?</h1>
-      <p>Seascape's current Gulf Coast portfolio runs at $1.4M in annual rental revenue with $119,923 already routed through direct bookings.</p>
-      <strong>13.4% → 2.9%</strong>
+      <p>The Fee Comparison separates published platform charges from a property-specific management agreement.</p>
+      <strong>15.5%</strong>
+      <strong>2.9% + 30¢</strong>
+      <strong>Property-specific</strong>
       <section>
-        <p>What owners miss when they compare management fees</p>
+        <p>Airbnb, Stripe, and a property manager charge for different services.</p>
       </section>
       <a href="#owner-cta">Request Your Revenue Review</a>
       <a href="/property-management/vacation-rental-management-sarasota/">Sarasota coverage</a>

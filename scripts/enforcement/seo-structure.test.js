@@ -251,14 +251,17 @@ test("about page exists as a real route and homepage links point to it", () => {
   assert.equal(redirects.includes("/about-us   /about-us/   301"), true);
 });
 
-test("property owners page leads with premium proof instead of explainer-hub copy", () => {
+test("property owners page leads with sourced fee definitions instead of unsupported portfolio proof", () => {
   const ownerPage = fs.readFileSync(path.join(projectRoot, "src", "property-management", "index.njk"), "utf8");
 
   assert.equal(ownerPage.includes("Before you renew,"), true);
   assert.equal(ownerPage.includes("actually keep?"), true);
-  assert.equal(ownerPage.includes("$119,923"), true);
-  assert.equal(ownerPage.includes("13.4% → 2.9%"), true);
-  assert.equal(ownerPage.includes("What to look at before you change managers"), true);
+  assert.equal(ownerPage.includes("15.5%"), true);
+  assert.equal(ownerPage.includes("2.9% + 30¢"), true);
+  assert.equal(ownerPage.includes("Property-specific"), true);
+  assert.equal(ownerPage.includes("Not equivalent"), true);
+  assert.equal(ownerPage.includes("$119,923"), false);
+  assert.equal(ownerPage.includes("13.4%"), false);
   assert.equal(ownerPage.includes("What Is Vacation Rental Property Management?"), false);
   assert.equal(ownerPage.includes("Request a property evaluation"), false);
 });

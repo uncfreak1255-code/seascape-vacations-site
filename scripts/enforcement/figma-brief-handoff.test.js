@@ -48,7 +48,14 @@ test("isEmptyPageOneTarget only blocks the known empty Page 1 state", () => {
   );
 });
 
-test("current repo benchmark brief stays valid because its saved MCP state is inspectable", () => {
+test("current fee-guide integrity rescue does not depend on the retired Figma exploration", () => {
+  const briefPath = path.join(
+    projectRoot,
+    "docs",
+    "briefs",
+    "2026-05-owner-fee-revenue-leak-benchmark.md"
+  );
+  const brief = fs.readFileSync(briefPath, "utf8");
   const report = buildFigmaBriefReport({
     rootDir: projectRoot,
     all: true
@@ -57,10 +64,9 @@ test("current repo benchmark brief stays valid because its saved MCP state is in
     (result) => result.brief.relativePath === "docs/briefs/2026-05-owner-fee-revenue-leak-benchmark.md"
   );
 
-  assert.ok(benchmark, "expected the owner benchmark brief to be discovered");
-  assert.equal(benchmark.issues.length, 0);
-  assert.equal(benchmark.blocked, false);
-  assert.equal(benchmark.target.pageProbe.name, "Owner Benchmark Exploration");
+  assert.match(brief, /Integrity Rescue/);
+  assert.doesNotMatch(brief, /Figma capture:/);
+  assert.equal(benchmark, undefined);
 });
 
 test("empty Page 1 briefs fail loud with the exact proof still required", () => {

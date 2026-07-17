@@ -33,6 +33,9 @@ const ownerRouteCanaryPath = path.join(projectRoot, "scripts", "recovery", "asse
 const {
   assertFreshOwnerOperatorProof
 } = require("./owner-proof-freshness");
+const {
+  assertOwnerRouteResponse
+} = require("../recovery/assert-owner-funnel-routes");
 
 test("owner landing page uses a real owner revenue review form instead of generic evaluation copy", () => {
   assert.equal(fs.existsSync(ownerFormPath), true, "owner form partial should exist");
@@ -54,23 +57,23 @@ test("owner landing page keeps the owner revenue review close to the sales argum
   const specialSituationsIndex = ownerLanding.indexOf("Specific Situations");
 
   assert.notEqual(reviewIndex, -1, "owner hub needs the revenue review anchor");
-  assert.equal(ownerLanding.includes("Benchmark + Revenue Review"), true);
-  assert.equal(ownerLanding.includes("<strong>Benchmark + Revenue Review</strong> What owners miss"), true);
+  assert.equal(ownerLanding.includes("Fee Guide + Revenue Review"), true);
+  assert.equal(ownerLanding.includes("<strong>Fee Guide + Revenue Review</strong> Airbnb's host service fee"), true);
   assert.equal(
-    ownerLanding.includes("booking-source costs, weak presentation, guest-feedback risks, and uneven owner updates rarely show up clearly in an owner statement."),
+    ownerLanding.includes("We will compare the charges on your statement with the services in your agreement and send back a one-page revenue review"),
     true
   );
   assert.equal(
-    ownerLanding.includes("We will compare it against the same Gulf Coast benchmark and send back a one-page revenue review that shows what deserves a second look, what to ask before you renew, and what we would check next."),
+    ownerLanding.includes("Airbnb's host service fee, Stripe's card price, and a management agreement pay for different things."),
     true
   );
   assert.equal(
-    ownerLanding.includes("The review shows what deserves a second look and what we would check next before you switch."),
+    ownerLanding.includes("A lower card-processing rate does not by itself mean a higher owner payout."),
     true
   );
   assert.equal(ownerLanding.includes("proven cost, likely cost, and missing information"), false);
-  assert.equal(ownerLanding.includes("Observed Seascape portfolio data"), true);
-  assert.equal(ownerLanding.includes("5-property Gulf Coast scope"), true);
+  assert.equal(ownerLanding.includes("Published platform pricing"), true);
+  assert.equal(ownerLanding.includes("Property-specific management quote"), true);
   assert.equal(ownerLanding.includes('href="/research/owner-fee-revenue-leak-benchmark-2026/"'), true);
   assert.ok(reviewIndex < faqIndex, "owner CTA should land before FAQ filler");
   assert.ok(reviewIndex < libraryIndex, "owner CTA should land before the operational library");
@@ -161,7 +164,7 @@ test("owner revenue review form lowers friction without losing tracking or inten
     true
   );
   assert.equal(
-    ownerFormPartial.includes("Source note: The review uses the evidence available. Missing statements, calendars, guest reviews, or fee terms stay marked unknown until you send them."),
+    ownerFormPartial.includes("Source note: Send what you have. We will tell you if a statement, booking calendar, guest review, or fee quote would make the review more useful."),
     true
   );
   assert.equal(ownerFormPartial.includes("The private revenue review shows what we can verify, what looks expensive, and what still needs a document"), true);
@@ -287,6 +290,35 @@ test("owner funnel route canary protects canonical and alternate public hosts fr
   assert.equal(canary.includes("/lander"), true, "canary should fail loudly on the known lander shell symptom");
 });
 
+test("owner funnel route canary rejects the complete retired proof set", () => {
+  for (const marker of [
+    "$1.4M",
+    "$119,923",
+    "13.4%",
+    "32.8%",
+    "5.7%",
+    "16.4%",
+    "$730",
+    "$450",
+    "10.5 pts",
+    "Patrick portfolio",
+    "marked unknown",
+    "intake route",
+    "seascape-hub"
+  ]) {
+    assert.throws(
+      () =>
+        assertOwnerRouteResponse({
+          url: "https://seascape-vacations.com/property-management/",
+          statusCode: 200,
+          body: `<main>Property management owner fee guide ${marker}</main>`
+        }),
+      /retired proof or internal workflow language/,
+      `live owner canary should reject ${marker}`
+    );
+  }
+});
+
 test("owner benchmark CTA carries source attribution into the revenue review form path", () => {
   const ownerBenchmark = fs.readFileSync(
     path.join(projectRoot, "src", "research", "owner-fee-revenue-leak-benchmark-2026.njk"),
@@ -305,31 +337,33 @@ test("owner benchmark CTA carries source attribution into the revenue review for
   assert.equal(ownerBenchmark.includes('showBenchmarkFields: true'), false);
 });
 
-test("owner benchmark page stays in the fee-and-revenue lane and keeps visible proof labels", () => {
+test("owner fee guide stays in the fee-comparison lane with visible sources and boundaries", () => {
   const ownerBenchmark = fs.readFileSync(
     path.join(projectRoot, "src", "research", "owner-fee-revenue-leak-benchmark-2026.njk"),
     "utf8"
   );
   const sharedBenchmark = ownerProofAssets["gulf-coast-owner-benchmark-2026"];
 
-  assert.equal(ownerBenchmark.includes("Your management fee is not the whole payout story."), true);
-  assert.equal(sharedBenchmark.scopeLabel, "5-property Gulf Coast scope");
+  assert.equal(ownerBenchmark.includes("What Do Vacation Rental Fees Actually Cost?"), true);
+  assert.equal(sharedBenchmark.scopeLabel, "Published fee comparison");
   assert.equal(ownerBenchmark.includes("{{ benchmark.scopeLabel }}"), true);
-  assert.equal(ownerBenchmark.includes("Observed Seascape portfolio data"), true);
-  assert.equal(ownerBenchmark.includes("Observed property example"), true);
-  assert.equal(ownerBenchmark.includes("Scenario math, not a forecast"), true);
-  assert.equal(ownerBenchmark.includes("Request Your Revenue Review"), true);
-  assert.equal(sharedBenchmark.examples.some((example) => example.title === "Patrick portfolio"), true);
-  assert.equal(ownerBenchmark.includes("{% for example in benchmark.examples %}"), true);
-  assert.equal(ownerBenchmark.includes("This page sends you into the shared review intake route."), true);
-  assert.equal(ownerBenchmark.includes("AMI Portfolio"), false);
-  assert.equal(ownerBenchmark.includes("This chart is not a market-wide fee survey."), true);
+  assert.equal(ownerBenchmark.includes("Published platform pricing"), true);
+  assert.equal(ownerBenchmark.includes("Property-specific management pricing"), true);
+  assert.equal(sharedBenchmark.sources.some((source) => source.label === "Airbnb service fees for home hosts"), true);
+  assert.equal(sharedBenchmark.sources.some((source) => source.label === "Stripe pricing"), true);
+  assert.equal(ownerBenchmark.includes("Want the same comparison for your home?"), true);
+  assert.deepEqual(sharedBenchmark.examples, []);
+  assert.deepEqual(sharedBenchmark.stats, []);
+  assert.equal(ownerBenchmark.includes("Patrick"), false);
+  assert.equal(ownerBenchmark.includes("intake route"), false);
+  assert.match(sharedBenchmark.sourceNote, /not all-in equivalents/);
+  assert.equal(ownerBenchmark.includes("This checklist does not estimate revenue or promise a payout."), true);
   assert.equal(ownerBenchmark.includes("passive income"), false);
   assert.equal(ownerBenchmark.includes("sit back while we manage"), false);
   assert.equal(ownerBenchmark.includes("full service"), false);
 });
 
-test("owner operator proof pack keeps approved redacted modules but retires active teardown attribution", () => {
+test("retired owner-report page removes expired modules, private names, and internal evidence paths", () => {
   const proofPack = fs.readFileSync(
     path.join(projectRoot, "src", "research", "how-seascape-protects-owner-net-2026.njk"),
     "utf8"
@@ -338,22 +372,17 @@ test("owner operator proof pack keeps approved redacted modules but retires acti
   assert.equal(ownerOperatorProofAssets.proofPackUrl, "/research/how-seascape-protects-owner-net-2026/");
   assert.equal(ownerOperatorProofAssets.reuseStatus, "retired-stale");
   assert.equal(ownerOperatorProofAssets.freshnessPolicy, "retired-no-public-reuse");
-  assert.equal(ownerOperatorProofAssets.modules.length >= 3, true, "proof pack needs at least three reusable modules");
-  assert.equal(
-    ownerOperatorProofAssets.modules.every((module) => module.evidencePath.includes("seascape-hub/")),
-    true,
-    "proof modules should keep Hub evidence paths visible"
-  );
-  assert.equal(proofPack.includes("Archived April 2026 owner-report examples."), true);
+  assert.deepEqual(ownerOperatorProofAssets.modules, []);
+  assert.equal(proofPack.includes("The April 2026 owner-report examples have been removed."), true);
   assert.equal(proofPack.includes('meta name="robots" content="noindex, follow"'), true);
   assert.equal(proofPack.includes("/research/owner-fee-revenue-leak-benchmark-2026/"), true);
+  assert.equal(proofPack.includes("Patrick"), false);
+  assert.equal(proofPack.includes("seascape-hub"), false);
+  assert.equal(proofPack.includes("evidencePath"), false);
+  assert.equal(proofPack.includes("sourcePath"), false);
   assert.equal(proofPack.includes("/property-management/?owner_source=how-seascape-protects-owner-net-2026#owner-cta"), false);
   assert.equal(proofPack.includes('sourcePageSlug: "how-seascape-protects-owner-net-2026"'), false);
   assert.equal(proofPack.includes('formPlacement: "operator-proof-pack-teardown"'), false);
-  assert.equal(
-    ownerOperatorProofAssets.demandBoundary.includes("Current benchmark-path receipts prove measurement wiring only"),
-    true
-  );
   assert.equal(proofPack.includes("we always outperform"), false);
   assert.equal(proofPack.includes("passive income"), false);
   assert.equal(proofPack.includes("full service"), false);
@@ -363,12 +392,9 @@ test("owner operator proof pack retirement preserves the stale date instead of e
   assert.equal(ownerOperatorProofAssets.staleAfter, "2026-05-26");
   assert.equal(ownerOperatorProofAssets.retiredAfter, "2026-05-26");
   assert.equal(ownerOperatorProofAssets.freshnessPolicy, "retired-no-public-reuse");
-  assert.equal(ownerOperatorProofAssets.retirementReason.includes("archive only"), true);
+  assert.match(ownerOperatorProofAssets.retirementReason, /no longer current enough to publish/i);
   assert.equal(conversionTracking.includes("owner_source"), true);
-  assert.ok(
-    ownerOperatorProofAssets.modules.every((module) => module.id && module.evidencePath && module.proofLabel),
-    "freshness enforcement needs stable module ids, evidence paths, and proof labels"
-  );
+  assert.deepEqual(ownerOperatorProofAssets.modules, []);
   assert.doesNotThrow(() => assertFreshOwnerOperatorProof(ownerOperatorProofAssets, new Date("2026-05-27T00:00:00Z")));
 });
 
@@ -416,9 +442,9 @@ test("week 3 owner pages do not collapse back into fake flat-fee messaging", () 
   assert.ok(sarasotaPage, "Sarasota owner page should exist");
   assert.equal(ownerLanding.includes("10-15% management fees"), false, "owner landing should not hard-code a flat fee band");
   assert.equal(
-    ownerLanding.includes("We do not quote one flat management fee for every home."),
+    ownerLanding.includes("Seascape management pricing is set by the services and fee basis in the signed agreement."),
     true,
-    "owner landing should explain the tailored pricing model"
+    "owner landing should explain the property-specific pricing model"
   );
   assert.equal(switchPage.benefits.includes("10-15% management fees instead of paying more for the same misses"), false, "switch page should not claim a flat fee band");
   assert.equal(switchPage.geoIntro.includes("10-15%"), false, "switch page GEO intro should not hard-code a flat fee");
@@ -493,14 +519,13 @@ test("priority owner proof-cluster pages cite the shared benchmark asset and avo
   const vrboPage = ownerData.find((entry) => entry.slug === "vrbo-management-services-florida");
 
   assert.ok(sharedBenchmark, "shared owner benchmark asset should exist");
-  assert.match(sharedBenchmark.title, /benchmark/i);
+  assert.match(sharedBenchmark.title, /fee comparison guide/i);
   assert.ok(sharedBenchmark.reviewedBy, "shared benchmark should name a reviewer");
   assert.ok(sharedBenchmark.reviewedDate, "shared benchmark should include a reviewed date");
-  assert.ok(sharedBenchmark.sourceLabel, "shared benchmark should include a source label");
-  assert.equal(
-    sharedBenchmark.sourceUrl,
-    "/guides/florida-gulf-coast-vacation-rental-market-report-2026/",
-    "shared benchmark should point at the published market report"
+  assert.ok(Array.isArray(sharedBenchmark.sources), "shared fee guide should include source links");
+  assert.deepEqual(
+    sharedBenchmark.sources.map((source) => source.url),
+    ["https://www.airbnb.com/help/article/1857", "https://stripe.com/pricing"]
   );
 
   for (const [slug, page] of Object.entries({
@@ -635,14 +660,19 @@ test("remaining local owner pages keep custom owner-math framing instead of fall
     assert.ok(page.processTitle && page.processTitle.length > 15, `${slug} should keep a custom process title`);
     assert.ok(page.objectionsTitle && page.objectionsTitle.length > 15, `${slug} should keep a custom objections title`);
     assert.equal(
-      page.proofStats.some((stat) => stat.label === "Observed Airbnb host fee" && stat.value === "13.4%"),
+      page.proofStats.some((stat) => stat.label === "Published Airbnb host fee" && stat.value === "15.5%"),
       true,
-      `${slug} should keep owner fee-drag proof up front`
+      `${slug} should use Airbnb's published host-fee figure`
     );
     assert.equal(
-      page.proofStats.some((stat) => stat.label === "Direct payment cost" && stat.value === "2.9%"),
+      page.proofStats.some((stat) => stat.label === "Published Stripe card price" && stat.value === "2.9% + 30¢"),
       true,
-      `${slug} should keep direct-payment economics up front`
+      `${slug} should label Stripe card processing as a published transaction price`
+    );
+    assert.equal(
+      page.proofStats.some((stat) => stat.label === "Management pricing" && stat.value === "Tailored"),
+      true,
+      `${slug} should keep management pricing property-specific`
     );
   }
 });

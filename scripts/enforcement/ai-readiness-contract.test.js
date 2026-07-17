@@ -36,23 +36,24 @@ const AI_PRIORITY_ROUTES = [
   {
     sourcePath: "src/research/owner-fee-revenue-leak-benchmark-2026.njk",
     answerMarkers: [
-      /What actually reaches my owner statement\?/i,
-      /A lower management fee can still leave owner revenue exposed/i
+      /What Do Vacation Rental Fees Actually Cost\?/i,
+      /Published platform fees are easy to find but hard to compare/i
     ],
     proofMarkers: [
       /<strong>Source note:<\/strong>/i,
-      /Observed Seascape portfolio data/i
+      /for source in benchmark\.sources/i,
+      /href="{{ source\.url }}"/i
     ]
   },
   {
     sourcePath: "src/research/how-seascape-protects-owner-net-2026.njk",
     answerMarkers: [
-      /owner benchmark[\s\S]{0,24}remains the current public owner proof path/i,
-      /Useful history, not current reuse proof/i
+      /The April 2026 owner-report examples have been removed/i,
+      /Old figures should not look current/i
     ],
     proofMarkers: [
-      /<strong>Source note:<\/strong>/i,
-      /Archived operating examples/i
+      /<strong>Transparency note:<\/strong>/i,
+      /no longer current enough to publish/i
     ]
   }
 ];

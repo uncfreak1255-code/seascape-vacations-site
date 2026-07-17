@@ -1,65 +1,54 @@
 {
   "gulf-coast-owner-benchmark-2026": {
-    "title": "2026 Gulf Coast owner benchmark",
-    "summary": "Shared owner benchmark built from May-reviewed Seascape Gulf Coast operating data so fee, channel, and revenue-leak pages cite the same owner-economics facts.",
+    "title": "Owner fee comparison guide",
+    "summary": "A current comparison of published Airbnb host fees, Stripe card-processing pricing, and the property-specific management quote an owner should request before signing or renewing.",
     "reviewedBy": "Sawyer Beckett",
     "reviewerRole": "Founder, Seascape Vacations",
     "reviewedDate": "2026-05-03",
     "reviewedDateLabel": "May 3, 2026",
-    "sourceLabel": "2026 Gulf Coast vacation rental market report + Seascape operating benchmark",
-    "sourceUrl": "/guides/florida-gulf-coast-vacation-rental-market-report-2026/",
+    "updatedDate": "2026-07-17",
+    "updatedDateLabel": "July 17, 2026",
+    "sourceLabel": "Airbnb host fees and Stripe pricing",
+    "sourceUrl": "https://www.airbnb.com/help/article/1857",
+    "sources": [
+      {
+        "label": "Airbnb service fees for home hosts",
+        "url": "https://www.airbnb.com/help/article/1857"
+      },
+      {
+        "label": "Stripe pricing",
+        "url": "https://stripe.com/pricing"
+      }
+    ],
     "benchmarkUrl": "/research/owner-fee-revenue-leak-benchmark-2026/",
     "ctaPath": "/property-management/?owner_source=owner-fee-revenue-leak-benchmark-2026#owner-cta",
-    "scopeLabel": "5-property Gulf Coast scope",
-    "refreshedLabel": "Last refreshed: May 2026",
+    "status": "Published-pricing guide; performance proof retired",
+    "dataPeriod": "Published pricing checked July 17, 2026",
+    "pricingStatus": "active",
+    "pricingReviewedDate": "2026-07-17",
+    "pricingStaleAfter": "2026-08-16",
+    "scopeLabel": "Published fee comparison",
+    "basis": "Airbnb and Stripe published pricing",
+    "sourceNote": "Platform commission, card processing, and full-service management cover different services and are not all-in equivalents.",
+    "staleAfter": "2026-05-26",
+    "reuseStatus": "retired-stale",
+    "retiredAfter": "2026-05-26",
+    "retirementReason": "The earlier Seascape portfolio figures passed their freshness window and do not have an approved public-use receipt. Keep them out of public copy unless a new privacy-safe receipt is explicitly approved.",
+    "antiClaims": [
+      "Do not present expired portfolio totals as current performance.",
+      "Do not claim that direct booking automatically raises owner payout.",
+      "Do not compare platform commission with card processing as all-in equivalents.",
+      "Do not expose owner names, internal file paths, or private booking records."
+    ],
+    "refreshedLabel": "Sources checked: July 2026",
     "proofLabels": [
-      "Observed Seascape portfolio data",
-      "Observed property example",
-      "Scenario math, not a forecast",
-      "Last refreshed: May 2026"
+      "Published platform pricing",
+      "Property-specific management pricing",
+      "Scenario example, not a forecast",
+      "Sources checked: July 2026"
     ],
-    "methodology": "Benchmark combines May-reviewed Seascape operating data across five active Gulf Coast homes with owner-side fee-stack analysis. Scenario math is labelled separately from observed operating facts.",
-    "examples": [
-      {
-        "title": "Sarasota Luxe",
-        "value": "32.8%",
-        "summary": "In March 2026, Sarasota Luxe had 32.8% direct booking share and saved about $730 versus Airbnb-like drag.",
-        "note": "Observed March 2026 property example. Not a promise for other homes."
-      },
-      {
-        "title": "Patrick portfolio",
-        "value": "5.7%",
-        "summary": "In March 2026, the Patrick portfolio had 5.7% direct booking share. One direct booking saved about $450 versus Airbnb.",
-        "note": "Observed March 2026 portfolio example. Direct booking share was real, but still limited."
-      },
-      {
-        "title": "Bradenton Pool Home",
-        "value": "16.4%",
-        "summary": "In March 2026, Bradenton Pool Home showed 16.4% effective commission because Airbnb took a cut of a cleaning-heavy subtotal.",
-        "note": "Observed cost example showing why cleaning-heavy subtotals matter."
-      }
-    ],
-    "stats": [
-      {
-        "value": "$1.4M",
-        "label": "Annual portfolio rental revenue",
-        "detail": "May-reviewed Seascape revenue across five active Gulf Coast homes."
-      },
-      {
-        "value": "$119,923",
-        "label": "Direct booking revenue",
-        "detail": "Revenue already routed through lower-cost direct channels instead of pure OTA dependence."
-      },
-      {
-        "value": "13.4%",
-        "label": "Observed Airbnb host fee",
-        "detail": "Average effective Airbnb host-fee drag in the May-reviewed Seascape operating data."
-      },
-      {
-        "value": "2.9%",
-        "label": "Direct payment cost",
-        "detail": "Approximate payment-processing cost on direct bookings, showing how much channel mix can change owner margin."
-      }
-    ]
+    "methodology": "This guide uses Airbnb's and Stripe's published pricing pages. Seascape management pricing is property-specific and controlled by the signed management agreement.",
+    "examples": [],
+    "stats": []
   }
 }

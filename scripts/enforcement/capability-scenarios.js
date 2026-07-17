@@ -303,7 +303,11 @@ const SCENARIOS = [
         const html = readBuiltHtml("/property-management/");
         assertIncludes(html, "Before you renew,");
         assertIncludes(html, "actually keep?");
-        assertIncludes(html, "$119,923");
+        assertIncludes(html, "15.5%");
+        assertIncludes(html, "2.9% + 30¢");
+        assertIncludes(html, "Property-specific");
+        assertExcludes(html, "$119,923");
+        assertExcludes(html, "13.4%");
         assertIncludes(html, "Request Your Revenue Review");
         assertIncludes(html, 'data-track-event="owner_primary_cta_click"');
         assertIncludes(html, 'data-form-submit-event="owner_form_submit"');

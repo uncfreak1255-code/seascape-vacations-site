@@ -3,7 +3,11 @@
     {
       "id": "owner",
       "rubric": "docs/process/owner-copy-eval-rubric.md",
-      "targets": ["src/property-management/**/*.njk", "src/_data/seoPages.json"],
+      "targets": [
+        "src/property-management/**/*.njk",
+        "src/research/owner-fee-revenue-leak-benchmark-2026.njk",
+        "src/_data/seoPages.json"
+      ],
       "dataSources": [
         {
           "path": "src/_data/seoPages.json",

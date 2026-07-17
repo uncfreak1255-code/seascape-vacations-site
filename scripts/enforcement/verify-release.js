@@ -11,7 +11,9 @@ const { assertRepoHtmlCachePolicyConsistency } = require("./release-cache-policy
 const { assertSearchDecisionBriefContract } = require("./search-brief-gate");
 const { withWorktreeLock } = require("./worktree-lock");
 const {
+  assertOwnerBenchmarkProof,
   assertFreshOwnerOperatorProof,
+  readOwnerBenchmarkProofAsset,
   readOwnerOperatorProofAssets
 } = require("./owner-proof-freshness");
 const { normalizeReleaseChecks } = require("./release-scorecard");
@@ -258,6 +260,9 @@ function main() {
     );
     recordAssertion(pathAssertions, "fresh owner operator proof", () =>
       assertFreshOwnerOperatorProof(readOwnerOperatorProofAssets())
+    );
+    recordAssertion(pathAssertions, "fresh owner published pricing", () =>
+      assertOwnerBenchmarkProof(readOwnerBenchmarkProofAsset())
     );
   } catch (error) {
     writeReceipt(args.receiptPath, buildReceipt({ args, pathAssertions, checks }));
