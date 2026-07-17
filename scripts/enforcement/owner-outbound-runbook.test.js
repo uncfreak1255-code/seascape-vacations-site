@@ -9,55 +9,51 @@ function read(relativePath) {
   return fs.readFileSync(path.join(projectRoot, relativePath), "utf8");
 }
 
-test("owner outbound runbook exists and keeps sends out of the demand gate", () => {
-  const runbook = read("docs/status/owner-outbound.md");
+test("owner outbound archive holds OTA-only research and prevents new platform outreach", () => {
+  const archive = read("docs/status/owner-outbound.md");
 
-  assert.match(runbook, /^# Owner Outbound$/m);
-  assert.match(runbook, /no sends authorized by this file alone/i);
-  assert.match(runbook, /SENT means an outbound touch went to a named prospect/i);
-  assert.match(runbook, /It proves only that the lane was executed/i);
-  assert.match(runbook, /does not prove owner demand/i);
-  assert.match(runbook, /test sends/i);
-  assert.match(runbook, /labeled sends/i);
-  assert.match(runbook, /internal helper submits/i);
+  assert.match(archive, /^# Owner Outbound$/m);
+  assert.match(archive, /research-only archive — HOLD \/ DO NOT SEND/);
+  assert.match(archive, /Airbnb- and Vrbo-only host-message paths are \*\*not approved outreach paths\*\*/);
+  assert.match(archive, /seven unsent platform-only entries below are \*\*hold \/ do not send\*\*/);
+  assert.match(archive, /Public host labels are listing observations, not verified owner identity/);
+  assert.match(archive, /never\s+constitutes owner demand/i);
+  assert.match(archive, /No existing or future platform-listing observation may be converted into an/);
 });
 
-test("owner outbound runbook defines the list milestone before the lead clock starts", () => {
-  const runbook = read("docs/status/owner-outbound.md");
+test("owner outbound archive preserves historical sends without making them follow-up authority", () => {
+  const archive = read("docs/status/owner-outbound.md");
 
-  assert.match(runbook, /Homeowner-List Milestone/);
-  assert.match(runbook, /does not start its time-to-first-lead clock/i);
-  assert.match(runbook, /at least `10` named homeowner-reachable prospects/i);
-  assert.match(runbook, /contact path that another agent can re-open/i);
-  assert.match(runbook, /no scraped or guessed private contact data/i);
-  assert.match(runbook, /no send scheduled from research alone/i);
+  assert.match(archive, /three founder-sent benchmark emails were recorded for Kiri,[\s\S]+Megan, and Naomi/);
+  assert.match(archive, /2026-06-26 mailbox check documented no newer matching/);
+  assert.match(archive, /does not establish permission for later outreach/);
+  assert.match(archive, /does not justify a[\s\S]+follow-up on Airbnb, Vrbo, email, or another surface/);
 });
 
-test("owner outbound runbook routes real demand proof to the hub register only after validation", () => {
-  const runbook = read("docs/status/owner-outbound.md");
+test("owner-direct list accepts only permissioned owner-direct sources", () => {
+  const list = read("docs/status/owner-direct-outbound.md");
 
-  assert.match(runbook, /Gate 2: REAL Reply/);
-  assert.match(runbook, /owner-demand-trust-outcome-register\.md/);
-  assert.match(runbook, /dated interaction or receipt window/i);
-  assert.match(runbook, /owner pain or objection/i);
-  assert.match(runbook, /evidence path another agent can re-open/i);
-  assert.match(runbook, /Email-origin demand is provisional/i);
-  assert.match(runbook, /Do not paste private email content/i);
+  assert.match(list, /intake-only — empty — founder review required/);
+  assert.match(list, /named local referral or warm introduction/);
+  assert.match(list, /owner who submitted the Seascape revenue-review or property-management[\s\S]+form/);
+  assert.match(list, /public business or contact page that explicitly invites a relevant inquiry/);
+  assert.match(list, /networking-group or event connection where follow-up permission was[\s\S]+given/);
+  assert.match(list, /direct inbound email, call, text, or referral/);
+  assert.match(list, /A public name alone is not enough/);
+  assert.match(list, /Airbnb, Vrbo, Booking\.com, or other OTA host-message surfaces/);
+  assert.match(list, /scraped, guessed, purchased, or enriched contact data/);
+  assert.match(list, /No qualified owner-direct, permissioned prospect is currently recorded/);
 });
 
-test("owner outbound runbook keeps generated receipt projection read-only", () => {
-  const runbook = read("docs/status/owner-outbound.md");
+test("owner-direct intake remains manual and does not create demand evidence", () => {
+  const archive = read("docs/status/owner-outbound.md");
+  const list = read("docs/status/owner-direct-outbound.md");
 
-  assert.match(runbook, /Do not edit the generated `owner-receipt-projection` block by hand/);
-  assert.match(runbook, /hand-authored `## Register` section is the only durable destination/);
-});
-
-test("owner outbound runbook includes effect and decay stops", () => {
-  const runbook = read("docs/status/owner-outbound.md");
-
-  assert.match(runbook, /After two batches that actually went out and got zero real replies/i);
-  assert.match(runbook, /If zero sends happened, do not call that channel failure/i);
-  assert.match(runbook, /Current lane state: `(not started|ready|sent-no-reply|reply-qualified|teardown-complete|decayed)`/);
-  assert.match(runbook, /does not authorize a send, count\s+as demand, or create a Hub register row/i);
-  assert.match(runbook, /`decayed`: no real send or update for `3` consecutive weeks/i);
+  assert.match(archive, /Previous platform-message drafts are intentionally retired/);
+  assert.match(archive, /founder review before any individual outbound message is even drafted/);
+  assert.match(list, /No outbound message may be drafted, sent, scheduled, automated/);
+  assert.match(list, /do not create a mailbox draft or schedule a message through this repository/);
+  assert.match(list, /do not count a touch, delivery, response absence, or form test as demand/);
+  assert.match(archive, /owner-demand-trust-outcome-register\.md/);
+  assert.match(archive, /Do not edit the generated[\s\S]+owner-receipt-projection[\s\S]+by hand/);
 });
