@@ -511,6 +511,16 @@ test("owner hub restores the fee page and keeps pricing framed as tailored", () 
     "fee page GEO intro should explain the tailored pricing model"
   );
   assert.equal(
+    feePage.benefits.includes("Clear breakdown of management fee, marketplace booking costs, and direct-booking savings"),
+    false,
+    "fee page should not promise owner savings from direct booking"
+  );
+  assert.equal(
+    feePage.benefits.includes("Clear breakdown of management fees, booking-platform costs, card processing, and included services"),
+    true,
+    "fee page should separate unlike charges and services"
+  );
+  assert.equal(
     feePage.faqs.some((faq) => /fee|charge/i.test(faq.q)),
     true,
     "fee page should answer fee-comparison questions directly"

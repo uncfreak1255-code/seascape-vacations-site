@@ -114,6 +114,13 @@ test("research hub promotes the rescued fee guide instead of the retired benchma
 
   assert.match(researchHub.visibleBodyText, /Airbnb Host Fees vs Card Processing/);
   assert.match(researchHub.visibleBodyText, /not all-in equivalents/);
+  assert.match(researchHub.visibleBodyText, /Booking-trend reports use confirmed Seascape reservations/);
+  assert.match(researchHub.visibleBodyText, /fee guides name their published or local sources/);
+  assert.match(researchHub.head.description, /source-checked fee guides/);
+  assert.doesNotMatch(
+    researchHub.visibleBodyText,
+    /our data comes from actual guest bookings and local cost verification/i
+  );
   assert.doesNotMatch(researchHub.visibleBodyText, /management fee benchmark|leak(?:age)?/i);
 });
 
