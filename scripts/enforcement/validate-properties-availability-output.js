@@ -13,12 +13,18 @@ function countMatches(html, pattern) {
 }
 
 function analyzePropertiesAvailabilityOutput(html) {
+  const cards =
+    html.match(
+      /<article\b[^>]*\bclass=["'][^"']*\bcatalog-card\b[^"']*["'][^>]*>[\s\S]*?<\/article>/gi
+    ) || [];
+  const renderedCards = cards.join("\n");
+
   return {
-    cardCount: countMatches(html, /<article class="catalog-card"/g),
-    nextAvailableCount: countMatches(html, /catalog-next-lbl">\s*Next available\s*</g),
-    liveCalendarCount: countMatches(html, /catalog-next-lbl">\s*Live calendar\s*</g),
-    availabilityLiveCount: countMatches(html, /Availability · live/g),
-    calendarSecureCount: countMatches(html, /Calendar · secure/g)
+    cardCount: cards.length,
+    nextAvailableCount: countMatches(renderedCards, /catalog-next-lbl">\s*Next available\s*</g),
+    liveCalendarCount: countMatches(renderedCards, /catalog-next-lbl">\s*Live calendar\s*</g),
+    availabilityLiveCount: countMatches(renderedCards, /Availability · live/g),
+    calendarSecureCount: countMatches(renderedCards, /Calendar · secure/g)
   };
 }
 

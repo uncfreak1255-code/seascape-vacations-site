@@ -10,6 +10,8 @@ const fallbackProperties = require("../../src/_data/properties-fallback.json");
 test("normalizeProperties harmonizes fallback and cached property fields", () => {
   assert.equal(typeof propertiesData.normalizeProperties, "function");
   const syncedAt = new Date().toISOString();
+  const startDate = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
+  const endDate = new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
 
   const [fallbackProperty, cachedProperty] = propertiesData.normalizeProperties([
     {
@@ -48,9 +50,9 @@ test("normalizeProperties harmonizes fallback and cached property fields", () =>
         source: "hostaway",
         syncedAt,
         nextAvailable: {
-          startDate: "2026-05-08",
-          endDate: "2026-05-15",
-          label: "May 08 - May 15",
+          startDate,
+          endDate,
+          label: "Future 7-night range",
           nights: 7,
           nightlyRate: 425,
           subcopy: "7 nights from $425/night - Direct booking"
@@ -80,7 +82,7 @@ test("normalizeProperties harmonizes fallback and cached property fields", () =>
   assert.match(cachedProperty.image, /bookingenginecdn\.hostaway\.com/);
   assert.match(cachedProperty.heroImage, /bookingenginecdn\.hostaway\.com/);
   assert.match(cachedProperty.gallery[0], /bookingenginecdn\.hostaway\.com/);
-  assert.equal(cachedProperty.availability.nextAvailable.label, "May 08 - May 15");
+  assert.equal(cachedProperty.availability.nextAvailable.label, "Future 7-night range");
   assert.equal(cachedProperty.availability.weekendsLeft, 1);
 });
 
@@ -103,6 +105,7 @@ test("fallback property seed includes all curated homes shown in the collection"
 
 test("normalizeAvailabilitySummary drops stale or incomplete calendar summaries", () => {
   assert.equal(typeof propertiesData.normalizeAvailabilitySummary, "function");
+  const now = Date.parse("2026-07-17T00:30:00.000Z");
 
   assert.equal(
     propertiesData.normalizeAvailabilitySummary({
@@ -125,6 +128,40 @@ test("normalizeAvailabilitySummary drops stale or incomplete calendar summaries"
     }),
     null
   );
+
+  assert.equal(
+    propertiesData.normalizeAvailabilitySummary(
+      {
+        syncedAt: "2026-07-16T23:00:00.000Z",
+        nextAvailable: {
+          startDate: "2026-07-15",
+          endDate: "2026-07-17",
+          label: "Jul 15 - Jul 17",
+          nights: 2,
+          subcopy: "2 nights - Direct booking"
+        }
+      },
+      now
+    ),
+    null
+  );
+
+  assert.equal(
+    propertiesData.normalizeAvailabilitySummary(
+      {
+        syncedAt: "2026-07-16T23:00:00.000Z",
+        nextAvailable: {
+          startDate: "2026-07-16",
+          endDate: "2026-07-18",
+          label: "Jul 16 - Jul 18",
+          nights: 2,
+          subcopy: "2 nights - Direct booking"
+        }
+      },
+      now
+    )?.nextAvailable.startDate,
+    "2026-07-16"
+  );
 });
 
 test("safe property projection overlays public availability without replacing curated property truth", () => {
@@ -132,6 +169,8 @@ test("safe property projection overlays public availability without replacing cu
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), "safe-property-projection-"));
   const projectionPath = path.join(dir, "properties-latest.json");
   const syncedAt = new Date().toISOString();
+  const startDate = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
+  const endDate = new Date(Date.now() + 9 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
   fs.writeFileSync(
     projectionPath,
     JSON.stringify({
@@ -143,9 +182,9 @@ test("safe property projection overlays public availability without replacing cu
             source: "seascape-ops",
             syncedAt,
             nextAvailable: {
-              startDate: "2026-06-08",
-              endDate: "2026-06-10",
-              label: "Jun 08 - Jun 10",
+              startDate,
+              endDate,
+              label: "Future 2-night range",
               nights: 2,
               nightlyRate: 450,
               subcopy: "2 nights from $450/night - Direct booking"
@@ -169,7 +208,7 @@ test("safe property projection overlays public availability without replacing cu
   assert.equal(dockside.name, "Dockside Dreams");
   assert.equal(dockside.id, "206016");
   assert.equal(dockside.availability.source, "seascape-ops");
-  assert.equal(dockside.availability.nextAvailable.label, "Jun 08 - Jun 10");
+  assert.equal(dockside.availability.nextAvailable.label, "Future 2-night range");
   assert.equal(dockside.projection.source, "seascape-ops");
 });
 
@@ -189,6 +228,7 @@ test("visual test mode keeps fixture availability live for deterministic snapsho
       "Aug 21 - Aug 23",
       "May 18 - May 19"
     ]);
+    assert.equal(properties[0].availability.syncedAt, "2026-05-17T15:39:21.311Z");
   } finally {
     if (previousVisualTestValue === undefined) {
       delete process.env.SEASCAPE_VISUAL_TEST;
