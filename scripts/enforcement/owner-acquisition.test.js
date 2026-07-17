@@ -327,7 +327,8 @@ test("owner benchmark CTA carries source attribution into the revenue review for
   const sharedBenchmark = ownerProofAssets["gulf-coast-owner-benchmark-2026"];
 
   assert.equal(sharedBenchmark.ctaPath, "/property-management/?owner_source=owner-fee-revenue-leak-benchmark-2026#owner-cta");
-  assert.equal(ownerBenchmark.includes('{% set ctaPath = benchmark.ctaPath or "/property-management/?owner_source=owner-fee-revenue-leak-benchmark-2026#owner-cta" %}'), true);
+  assert.equal(ownerBenchmark.includes("{% set ctaPath = benchmark.ctaPath %}"), true);
+  assert.equal(ownerBenchmark.includes("{% set proofLabels = benchmark.proofLabels %}"), true);
   assert.equal((ownerBenchmark.match(/href="\{\{ ctaPath \}\}"/g) || []).length >= 2, true);
   assert.equal(ownerBenchmark.includes('data-track-event="owner_primary_cta_click"'), true);
   assert.equal(ownerBenchmark.includes('data-page-slug="owner-fee-revenue-leak-benchmark-2026"'), true);
@@ -409,7 +410,11 @@ test("owner hub removes the retired operator proof pack while the benchmark stan
   assert.equal(ownerLanding.includes("/property-management/vacation-rental-management-fees-florida/"), true);
   assert.equal(ownerBenchmark.includes("/research/how-seascape-protects-owner-net-2026/"), false);
   assert.equal(ownerBenchmark.includes("A manager should be able to show exactly how a rate move is tested."), false);
-  assert.equal(ownerBenchmark.includes("/property-management/?owner_source=owner-fee-revenue-leak-benchmark-2026#owner-cta"), true);
+  assert.equal(
+    ownerProofAssets["gulf-coast-owner-benchmark-2026"].ctaPath,
+    "/property-management/?owner_source=owner-fee-revenue-leak-benchmark-2026#owner-cta"
+  );
+  assert.equal(ownerBenchmark.includes('href="{{ ctaPath }}"'), true);
   assert.equal(ownerLanding.includes("Request Your Revenue Review"), true);
   assert.equal(ownerBenchmark.includes("Request Your Revenue Review"), true);
 });

@@ -39,6 +39,28 @@ Status: active truthfulness rescue; legacy URL retained
 | Local/GBP proof | Not applicable to the fee-definition answer; local fit belongs in the management quote and property review, not in the platform pricing facts. |
 | AEO/readback note | Keep one extractable table, primary-source links beside the claims, synchronized Article metadata, and an explicit sentence stating that the rates are not all-in equivalents. |
 | Recommended action | Rescue the existing indexed route in place, remove expired performance proof everywhere it was reused, and keep the current URL and CTA attribution. |
+| Attack status | completed |
+| Query variants inspected | vacation rental management fees Florida Gulf Coast; Airbnb host fees vs card processing; Florida vacation rental management fees guide owner 2026 |
+| SERP source | Live web search observed 2026-07-17, followed by direct reads of the Airbnb and Stripe pricing pages. |
+| Competitor URLs inspected | https://www.choosegulfcoast.com/vacation-pricing, https://www.luxehausstays.com/insights/airbnb-property-management-cost-florida/, https://www.livethegulfcoast.com/blog/compare-30a-property-management-fees/ |
+| Content gap and Seascape answer | Competitors lead with management percentages or packages. Seascape should define platform commission, card processing, direct-booking operating costs, and property-specific management as different services before an owner compares percentages. |
+| Design/format strategy | Keep an answer-first lead, one sourced three-row fee table, and one quote-review checklist. Use labeled mobile cards below 720px and avoid a magnitude chart that would make unlike percentages look equivalent. |
+| Seascape proof available | Airbnb and Stripe official pricing checked 2026-07-17, the signed property-specific management agreement as the Seascape pricing boundary, and the existing indexed route and CTA attribution contract. |
+| Tools/plugins used | Agent Reach was attempted but its backend was unavailable; official web-page fetches and live web search were used as the read-only fallback, followed by repo content/release gates, in-app browser proof, and Claude Fable review. |
+| Decision and reason | Rescue the existing indexed URL because it already holds the search history and CTA attribution, but narrow it to a sourced fee-definition comparison so it no longer competes with the management-fee money page or publishes expired internal proof. |
+
+## Required Internal Link Map
+
+The default link set above applies to the fee guide and owner-management pages. Cleanup-only supporting pages retain their existing, reader-relevant link paths:
+
+- src/guides/2026-bradenton-vacation-rental-market-analysis.html: /property-management/, /property-management/maximize-vacation-rental-income-florida/
+- src/guides/best-vacation-rental-companies-ami.html: /guides/booking-direct-vacation-rentals/, /stays/book-direct-anna-maria-island/
+- src/guides/florida-gulf-coast-vacation-rental-market-report-2026.html: /research/owner-fee-revenue-leak-benchmark-2026/, /property-management/vacation-rental-management-fees-florida/
+- src/guides/index.njk: /property-management/, /property-management/maximize-vacation-rental-income-florida/
+- src/guides/vacation-rental-income-anna-maria.html: /research/owner-fee-revenue-leak-benchmark-2026/, /property-management/vacation-rental-management-fees-florida/
+- src/research/gulf-coast-vacation-booking-trends-2026.njk: /research/owner-fee-revenue-leak-benchmark-2026/, /property-management/
+- src/research/how-seascape-protects-owner-net-2026.njk: /research/owner-fee-revenue-leak-benchmark-2026/, /property-management/
+- src/research/index.njk: /research/gulf-coast-vacation-booking-trends-2026/, /research/owner-fee-revenue-leak-benchmark-2026/
 
 ## Reader Answer
 

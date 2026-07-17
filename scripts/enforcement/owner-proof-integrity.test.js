@@ -76,6 +76,8 @@ test("retired owner benchmark proof has a complete blocking contract", () => {
   );
   assert.equal(benchmarkAsset.stats.length, 0);
   assert.equal(benchmarkAsset.examples.length, 0);
+  assert.ok(benchmarkAsset.proofLabels.includes("Definitions, not a payout forecast"));
+  assert.equal(benchmarkAsset.proofLabels.includes("Scenario example, not a forecast"), false);
   assert.throws(
     () => assertOwnerBenchmarkProof(benchmarkAsset, new Date("2026-08-17T00:00:00Z")),
     /published pricing is stale after 2026-08-16/
@@ -205,6 +207,32 @@ test("benchmark metadata, schema, byline, sources, and CTA stay synchronized", (
     html,
     /href="\/property-management\/\?owner_source=owner-fee-revenue-leak-benchmark-2026#owner-cta"/
   );
+  assert.match(
+    html,
+    /<div class="scenario-cards scenario-cards--fees" data-mobile-fee-comparison>/
+  );
+  assert.equal(
+    (html.match(/data-mobile-fee-row/g) || []).length,
+    3,
+    "mobile readers should receive every published fee row"
+  );
+  for (const mobileFieldLabel of [
+    "Published rate or quote",
+    "What it covers",
+    "What to ask",
+    "Why it matters"
+  ]) {
+    assert.match(html, new RegExp(`scenario-card-field">${mobileFieldLabel}<`));
+  }
+  for (const tableRegionLabel of [
+    "Published fee comparison",
+    "Questions to compare fee quotes"
+  ]) {
+    assert.match(
+      html,
+      new RegExp(`class="scenario-table-wrap" role="region" aria-label="${tableRegionLabel}" tabindex="0"`)
+    );
+  }
   assert.doesNotMatch(html, /seascape-og-default\.jpg/);
 });
 

@@ -82,7 +82,7 @@ npm test
 npm run verify:release
 ```
 
-- [ ] Render desktop and mobile views of the research route and `/property-management/`; inspect headings, links, citations, table overflow, CTA copy, and metadata.
+- [x] Render desktop and mobile views of the research route and `/property-management/`; inspect headings, links, citations, table overflow, CTA copy, and metadata.
 - [x] Run Claude Fable on the final diff as an independent truth/copy reviewer.
 - [ ] Run the configured Codex autoreview gate and resolve all material findings.
 - [ ] Stop before PR/merge until Sawyer has reviewed the visible copy and rendered proof, as required for public copy changes.

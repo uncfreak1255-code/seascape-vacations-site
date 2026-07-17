@@ -307,6 +307,19 @@ function getCurrentRoute(relativePath, source) {
   return `${withoutSrc}/`;
 }
 
+function normalizeChangedFileOutputs(outputs) {
+  return [
+    ...new Set(
+      outputs.flatMap((output) =>
+        output
+          .split("\n")
+          .map((line) => line.trim())
+          .filter(Boolean)
+      )
+    )
+  ].sort();
+}
+
 function getChangedFiles() {
   try {
     const mergeBase = execSync("git merge-base HEAD origin/main", {
@@ -318,19 +331,18 @@ function getChangedFiles() {
       return [];
     }
 
-    const output = execSync(`git diff --name-only --diff-filter=ACMR ${mergeBase}...HEAD`, {
-      cwd: projectRoot,
-      encoding: "utf8"
-    }).trim();
-
-    if (!output) {
-      return [];
-    }
-
-    return output
-      .split("\n")
-      .map((line) => line.trim())
-      .filter(Boolean);
+    return normalizeChangedFileOutputs(
+      [
+        `git diff --name-only --diff-filter=ACMR ${mergeBase}...HEAD`,
+        "git diff --name-only --diff-filter=ACMR",
+        "git diff --cached --name-only --diff-filter=ACMR"
+      ].map((command) =>
+        execSync(command, {
+          cwd: projectRoot,
+          encoding: "utf8"
+        })
+      )
+    );
   } catch {
     return [];
   }
@@ -892,6 +904,22 @@ test("changed-file gate can skip content lint for structural-only public diffs",
   ]) : [];
 
   assert.deepEqual(violations, []);
+});
+
+test("changed-file collection unions committed, staged, and unstaged paths", () => {
+  assert.deepEqual(
+    normalizeChangedFileOutputs([
+      "src/committed.njk\nsrc/shared.njk\n",
+      "src/unstaged.njk\nsrc/shared.njk\n",
+      "src/staged.njk\n"
+    ]),
+    [
+      "src/committed.njk",
+      "src/shared.njk",
+      "src/staged.njk",
+      "src/unstaged.njk"
+    ]
+  );
 });
 
 test("brief selection does not match the homepage against every slash link", () => {

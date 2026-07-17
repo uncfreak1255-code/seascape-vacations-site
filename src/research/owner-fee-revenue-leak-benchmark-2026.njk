@@ -2,13 +2,8 @@
 permalink: "/research/owner-fee-revenue-leak-benchmark-2026/"
 ---
 {% set benchmark = ownerProofAssets["gulf-coast-owner-benchmark-2026"] %}
-{% set ctaPath = benchmark.ctaPath or "/property-management/?owner_source=owner-fee-revenue-leak-benchmark-2026#owner-cta" %}
-{% set proofLabels = benchmark.proofLabels or [
-  "Published platform pricing",
-  "Property-specific management pricing",
-  "Scenario example, not a forecast",
-  "Sources checked: July 2026"
-] %}
+{% set ctaPath = benchmark.ctaPath %}
+{% set proofLabels = benchmark.proofLabels %}
 {% set methodNotes = [
   "Airbnb and Stripe pricing was checked on July 17, 2026.",
   "Platform commission and card processing cover different services.",
@@ -78,6 +73,23 @@ permalink: "/research/owner-fee-revenue-leak-benchmark-2026/"
   {
     "title": "Local operations",
     "copy": "Guest support, cleaning coordination, maintenance follow-through, and owner reporting are management work, not card processing."
+  }
+] %}
+{% set publishedFeeRows = [
+  {
+    "title": "Airbnb host service fee",
+    "rate": "Most single-fee hosts pay 15.5%; other hosts typically pay 14–16%",
+    "coverage": "Airbnb's booking platform, payment handling, marketing, and support."
+  },
+  {
+    "title": "Stripe card processing",
+    "rate": "2.9% + 30¢ per successful domestic online-card transaction",
+    "coverage": "Payment processing only. Marketing, software, and guest service are separate."
+  },
+  {
+    "title": "Seascape management",
+    "rate": "Property-specific quote",
+    "coverage": "The services and fee basis written into your management agreement."
   }
 ] %}
 {% set scenarioRows = [
@@ -604,6 +616,18 @@ a{color:var(--brand-dark);text-decoration:underline}
 .scenario-card p{
   font-size:13px;
 }
+.scenario-card p + p{
+  margin-top:10px;
+}
+.scenario-card-field{
+  display:block;
+  margin-bottom:4px;
+  color:var(--brand-dark);
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
 .scenario-card .scenario-card-note{
   color:var(--brand-dark);
 }
@@ -700,7 +724,6 @@ a{color:var(--brand-dark);text-decoration:underline}
   .hero-caption{
     display:block;
   }
-  .comparison-grid,
   .scenario-table-wrap{
     display:none;
   }
@@ -864,7 +887,7 @@ a{color:var(--brand-dark);text-decoration:underline}
         <span class="proof-chip proof-chip--soft">{{ benchmark.refreshedLabel }}</span>
       </div>
     </div>
-    <div class="scenario-table-wrap">
+    <div class="scenario-table-wrap" role="region" aria-label="Published fee comparison" tabindex="0">
       <table class="scenario-table">
         <thead>
           <tr>
@@ -874,23 +897,24 @@ a{color:var(--brand-dark);text-decoration:underline}
           </tr>
         </thead>
         <tbody>
+          {% for row in publishedFeeRows %}
           <tr>
-            <td>Airbnb host service fee</td>
-            <td>Most single-fee hosts pay 15.5%; other hosts typically pay 14–16%</td>
-            <td>Airbnb's booking platform, payment handling, marketing, and support.</td>
+            <td>{{ row.title }}</td>
+            <td>{{ row.rate }}</td>
+            <td>{{ row.coverage }}</td>
           </tr>
-          <tr>
-            <td>Stripe card processing</td>
-            <td>2.9% + 30¢ per successful domestic online-card transaction</td>
-            <td>Payment processing only. Marketing, software, and guest service are separate.</td>
-          </tr>
-          <tr>
-            <td>Seascape management</td>
-            <td>Property-specific quote</td>
-            <td>The services and fee basis written into your management agreement.</td>
-          </tr>
+          {% endfor %}
         </tbody>
       </table>
+    </div>
+    <div class="scenario-cards scenario-cards--fees" data-mobile-fee-comparison>
+      {% for row in publishedFeeRows %}
+      <article class="scenario-card" data-mobile-fee-row>
+        <h3>{{ row.title }}</h3>
+        <p><span class="scenario-card-field">Published rate or quote</span><strong>{{ row.rate }}</strong></p>
+        <p class="scenario-card-note"><span class="scenario-card-field">What it covers</span>{{ row.coverage }}</p>
+      </article>
+      {% endfor %}
     </div>
     <p class="mini-note">{{ benchmark.sourceNote }} See <a href="https://www.airbnb.com/help/article/1857">Airbnb's service-fee page</a> and <a href="https://stripe.com/pricing">Stripe's pricing page</a> for the current terms.</p>
   </section>
@@ -904,7 +928,7 @@ a{color:var(--brand-dark);text-decoration:underline}
         <span class="proof-chip proof-chip--soft">Property-specific review</span>
       </div>
     </div>
-    <div class="scenario-table-wrap">
+    <div class="scenario-table-wrap" role="region" aria-label="Questions to compare fee quotes" tabindex="0">
       <table class="scenario-table">
         <thead>
           <tr>
@@ -924,12 +948,12 @@ a{color:var(--brand-dark);text-decoration:underline}
         </tbody>
       </table>
     </div>
-    <div class="scenario-cards mobile-only">
+    <div class="scenario-cards">
       {% for row in scenarioRows %}
       <article class="scenario-card">
         <h3>{{ row.title }}</h3>
-        <p>{{ row.change }}</p>
-        <p class="scenario-card-note">{{ row.implication }}</p>
+        <p><span class="scenario-card-field">What to ask</span>{{ row.change }}</p>
+        <p class="scenario-card-note"><span class="scenario-card-field">Why it matters</span>{{ row.implication }}</p>
       </article>
       {% endfor %}
     </div>
