@@ -1,4 +1,5 @@
 const https = require("https");
+const { isCurrentAvailabilityRange } = require("../cache/normalize-hostaway");
 
 const targets = [
   { path: "/", status: 200 },
@@ -43,6 +44,48 @@ function requireExcludes(path, body, fragments) {
   if (present.length > 0) {
     throw new Error(`${path} is still serving stale live marker(s): ${present.join(", ")}`);
   }
+}
+
+function attributeValue(markup, name) {
+  const match = markup.match(new RegExp(`${name}=["']([^"']*)["']`, "i"));
+  return match ? match[1] : "";
+}
+
+function queryDateValue(markup, name) {
+  const match = markup.match(new RegExp(`${name}=([0-9-]+)`, "i"));
+  return match ? match[1] : "";
+}
+
+function validateLiveAvailabilityMarkup(body, options = {}) {
+  const cardMarkup = body.match(/<article\b[^>]*class=["'][^"']*\bcatalog-card\b[^"']*["'][^>]*>[\s\S]*?<\/article>/gi) || [];
+  const liveCards = cardMarkup.filter((card) => card.includes("Availability · live"));
+  const liveBadgeCount = (body.match(/Availability · live/g) || []).length;
+
+  if (liveCards.length !== liveBadgeCount) {
+    throw new Error("properties page has live availability outside a catalog card");
+  }
+
+  liveCards.forEach((card, index) => {
+    const openingTag = card.slice(0, card.indexOf(">") + 1);
+    const startDate =
+      attributeValue(openingTag, "data-next-available-start") ||
+      queryDateValue(card, "startingDate");
+    const endDate =
+      attributeValue(openingTag, "data-next-available-end") ||
+      queryDateValue(card, "endingDate");
+
+    if (!startDate || !endDate) {
+      throw new Error(`properties page live availability card ${index + 1} is missing date metadata`);
+    }
+
+    if (!isCurrentAvailabilityRange({ startDate, endDate }, options)) {
+      throw new Error(
+        `properties page live availability card ${index + 1} has expired or malformed live availability`
+      );
+    }
+  });
+
+  return { checked: liveCards.length };
 }
 
 function request(baseUrl, path) {
@@ -125,6 +168,8 @@ function validateTargetResponse(target, response) {
     ) {
       throw new Error("properties page still exposes the old utility/catalog-copy surface");
     }
+
+    validateLiveAvailabilityMarkup(response.body);
   }
 
   if (target.path === "/property-management/") {
@@ -268,6 +313,7 @@ module.exports = {
   targets,
   request,
   validateTargetResponse,
+  validateLiveAvailabilityMarkup,
   stablePropertyDetailLinks,
   requireIncludes,
   requireExcludes,

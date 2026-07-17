@@ -1,6 +1,7 @@
 const path = require("node:path");
 const STABLE_VISUAL_DATE = "2026-06-01";
 const STABLE_VISUAL_DATE_LABEL = "June 1, 2026";
+const STABLE_PROPERTY_AVAILABILITY_NOW = new Date("2026-05-17T16:00:00.000Z");
 
 const HERO_WEATHER_RESPONSE = {
   current: {
@@ -143,6 +144,9 @@ async function stabilizePropertyManagementVisualState(page, routeConfig) {
 
 async function gotoMarketingRoute(page, routeConfig) {
   await registerStableNetwork(page);
+  if (routeConfig.slug === "properties-catalog") {
+    await page.clock.setFixedTime(STABLE_PROPERTY_AVAILABILITY_NOW);
+  }
   if (routeConfig.slug === "property-management") {
     await page.emulateMedia({ reducedMotion: "reduce" });
   }
@@ -195,4 +199,5 @@ async function prepareFullPageScreenshot(page) {
 module.exports = {
   gotoMarketingRoute,
   prepareFullPageScreenshot,
+  registerStableNetwork,
 };
