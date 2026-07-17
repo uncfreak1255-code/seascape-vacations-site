@@ -24,15 +24,17 @@ produced **zero leads**, and owner impressions are roughly 42/week and falling.
 No amount of on-site SEO, skill, or governance polish fixes a channel with
 almost no owner demand. Owner acquisition for a property manager is mostly an
 off-repo sales and relationship job — referrals from current owners, local agent
-relationships, and direct outreach to underperforming Airbnb/VRBO owners — not a
-website job. This site's honest role is the Lane A guest-to-owner referral
-(shipped, Card 1) and a proof surface, not the primary lead engine.
+relationships, owner-form or direct-inbound requests, and public or in-person
+paths that expressly invite a relevant follow-up — not a website job. A
+platform listing or public host label is not contact permission. This site's
+honest role is the Lane A guest-to-owner referral (shipped, Card 1) and a proof
+surface, not the primary lead engine.
 
 Next founder hours go to the off-repo owner motion, not this repo:
-1. Build the named homeowner prospect list (Demand-OS Card 3 milestone — the gate
-   everything else waits on; agent-researchable now).
-2. Send a handful of real, personal outbound touches to underperforming local
-   owners. A test send is not a lead; a real reply is.
+1. Qualify the first owner-direct, permissioned signal in
+   `docs/status/owner-direct-outbound.md`; do not build an OTA host-message list.
+2. If a named signal qualifies, make a separate founder decision on one
+   one-to-one next step. Intake does not authorize a draft or send.
 3. Let the shipped Lane A referral run and watch for the first benchmark
    form-submit from guide traffic.
 

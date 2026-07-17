@@ -25,7 +25,7 @@ rendered here from its machine-readable next-batch decision receipt.
 - Latest BigQuery GSC `data_date`: 2026-07-12.
 - Site work gate: `clear` - joined GSC + GA4 read covers the requested window.
 - Reread status: `fresh but below threshold`.
-- Concrete next move: owner cluster cannot clear by waiting - run this week's outbound batch (see the Owner Outbound Escalation section in docs/status/next-batch.md). A test send is not a lead.
+- Concrete next move: owner cluster cannot clear by waiting - qualify one owner-direct, permissioned signal (see the Owner-Direct Intake Escalation section in docs/status/next-batch.md and docs/status/owner-direct-outbound.md). Do not use Airbnb or Vrbo host messaging; intake is not a lead, and any one-to-one message still requires Sawyer's separate approval.
 - Report recommendation: `hold-and-reread`.
 - Reason: No cluster cleared the bar for a stronger next branch than holding for more readback.
 
@@ -92,7 +92,7 @@ If a tracked winner or money page has regressed, use `docs/process/ranking-regre
 10. if any tracked page has GSC impressions `< 100` in the 7-day window, treat that page as too thin to call and do not let it drive the branch choice
 11. keep Phase 4 and other entity-expansion work frozen unless the measured gates above move
 
-## Owner Outbound Escalation
+## Owner-Direct Intake Escalation
 
 The owner cluster is structurally sub-gate. Owner-money impressions sit far
 below the 1000-impression gate in `## Likely Priorities`, and that gate cannot
@@ -100,21 +100,25 @@ clear by waiting — re-reading the same deadlocked cluster only produces anothe
 hold. When the synced `## Latest Execution Read` shows the owner cluster
 sub-gate in the current window, the report keeps `hold-and-reread` and the
 reread status stays below threshold; it never moves to `open next batch` on the
-strength of an outbound send. The on-page loop has no lever here, so the
-escalation is to work the owner lane off-page instead of waiting for an
-impression number that is not coming.
+strength of owner intake. The on-page loop has no lever here, so the next useful
+step is to qualify a real owner-direct, permissioned signal instead of waiting
+for an impression number that is not coming or using an OTA host-message path.
 
 When this fires, the founder move is:
 
-- run this week's owner outbound batch instead of re-reading for more owner
-  impressions — the wait state is the deadlock, not the fix
-- treat a send as measurement only: a test send, a labeled send, or a logged
-  "SENT" row is not a lead and does not move any owner gate or demand claim
+- qualify one signal from a referral, owner form, invited public contact path,
+  permissioned networking connection, or direct inbound owner request
+- record only the source, permission basis, factual fit signal, and
+  source-supplied channel in
+  `docs/status/owner-direct-outbound.md`
+- do not run an Airbnb, Vrbo, or other OTA outreach batch, and do not recreate
+  drafts or follow-ups from the archived platform research
+- treat an intake row as qualification only: it is not a lead, does not move an
+  owner gate, and does not authorize a message
+- require Sawyer's separate approval before preparing any named, one-to-one
+  next step
 - count only a real, unlabeled reply that meets the register Validation
   Standard as owner demand
-- log the batch and any replies in the owner outbound runbook
-  (`docs/status/owner-outbound.md`, the Card 3 outbound home from
-  `docs/plans/2026-06-13-demand-os-handoff.md`), not in this reread surface
 
 This section is hand-authored and lives after `## Likely Priorities` on
 purpose: `scripts/enforcement/sync-next-batch-from-analytics-receipt.js` only

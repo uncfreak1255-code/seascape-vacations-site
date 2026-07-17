@@ -57,3 +57,22 @@ test("owner-direct intake remains manual and does not create demand evidence", (
   assert.match(archive, /owner-demand-trust-outcome-register\.md/);
   assert.match(archive, /Do not edit the generated[\s\S]+owner-receipt-projection[\s\S]+by hand/);
 });
+
+test("next-batch routes the owner sub-gate to permissioned intake instead of OTA outreach", () => {
+  const nextBatch = read("docs/status/next-batch.md");
+
+  assert.match(nextBatch, /Owner-Direct Intake Escalation/);
+  assert.match(nextBatch, /docs\/status\/owner-direct-outbound\.md/);
+  assert.match(nextBatch, /do not run an Airbnb, Vrbo, or other OTA outreach batch/i);
+  assert.match(nextBatch, /require Sawyer's separate approval/i);
+  assert.doesNotMatch(nextBatch, /run this week's owner outbound batch/i);
+});
+
+test("current state no longer treats platform listings as outbound permission", () => {
+  const currentState = read("docs/status/current-state.md");
+
+  assert.match(currentState, /platform listing or public host label is not contact permission/i);
+  assert.match(currentState, /owner-direct, permissioned signal/i);
+  assert.match(currentState, /Intake does not authorize a draft or send/i);
+  assert.doesNotMatch(currentState, /direct outreach to underperforming Airbnb\/VRBO owners/i);
+});

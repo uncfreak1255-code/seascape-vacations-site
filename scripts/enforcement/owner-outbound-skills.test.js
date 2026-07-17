@@ -55,6 +55,16 @@ test("owner outbound archive holds OTA-only candidates and points to a permissio
   assert.match(intake, /No qualified owner-direct, permissioned prospect is currently recorded/);
 });
 
+test("skill policy records the permissioned-intake authority and audit receipt", () => {
+  const policy = read("docs/process/skill-policy.md");
+
+  assert.match(policy, /use `owner-outbound-batch` to qualify owner-direct,[\s\S]+permissioned signals without creating outreach drafts/);
+  assert.match(policy, /2026-07-17 — restricted `owner-outbound-batch` to permissioned intake/);
+  assert.match(policy, /Agent-surface audit verdict: \*\*KEEP\*\*/);
+  assert.match(policy, /create no new[\s\S]+agent, skill, workflow, scraper, or automation/);
+  assert.match(policy, /require Sawyer's separate approval/);
+});
+
 test("owner reply intake skill refuses test and labeled demand evidence", () => {
   const skill = read(".agents/skills/owner-reply-intake/SKILL.md");
 

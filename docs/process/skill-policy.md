@@ -18,12 +18,14 @@ with the repo-local `schema-markup` skill. `seascape-seo` owns the proof-lane
 versus attack-lane framing; `schema-markup` owns JSON-LD and structured-data
 implementation rules inside this site repo.
 
-For owner outbound, use `owner-outbound-batch` to prepare founder-reviewed drafts
-and `owner-reply-intake` to classify replies before any demand row reaches the
+For owner intake, use `owner-outbound-batch` to qualify owner-direct,
+permissioned signals without creating outreach drafts, and use
+`owner-reply-intake` to classify later replies before any demand row reaches the
 Hub register. These skills are local because the workflow is site-specific:
-drafts point at the site benchmark and approved owner proof assets, while the
-intake guard prevents site activity, test sends, labeled sends, and internal
-helper submits from being counted as real owner demand.
+the intake decision can reference the site benchmark and approved owner proof
+assets only after contact permission is proven, while the reply guard prevents
+site activity, test sends, labeled sends, and internal helper submits from being
+counted as real owner demand.
 
 For design direction, use the local `seascape-design-specialist` and
 `seascape-design-critic` pair. The specialist owns the concept pass and
@@ -110,6 +112,17 @@ entry is the receipt the governance rule requires for any skill change.
   provisional until repo-anchored evidence exists, and only the hand-authored
   `## Register` region in the Seascape Hub owner-demand register may receive a
   real row.
+- **2026-07-17 — restricted `owner-outbound-batch` to permissioned intake.**
+  Trigger: the active packet contained only Airbnb/Vrbo host-message paths,
+  which prove a public listing observation but not owner identity or permission
+  to receive a business pitch. Agent-surface audit verdict: **KEEP** the
+  existing referenced skill, change its authority in place, and create no new
+  agent, skill, workflow, scraper, or automation. Decision: archive the
+  platform-only packet, retire its drafts, keep the active permissioned list
+  empty until a real source qualifies, and require Sawyer's separate approval
+  before any named one-to-one message. This supersedes the original
+  draft-preparation authority while preserving `owner-reply-intake` as the
+  demand-validation gate.
 - **2026-06-25 — added `seascape-design-specialist` and `seascape-design-critic`.**
   Trigger: repeated founder dissatisfaction that Codex site design work was too
   willing to ship clean-but-bland direction and depended too much on remembering
