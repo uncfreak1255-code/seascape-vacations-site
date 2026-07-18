@@ -1,5 +1,11 @@
 # Task Log — March 2026
 
+> **Historical archive; sender instructions below are superseded.** Gmail draft
+> and Mailchimp “active/live” rows describe March state only and are not current
+> send authority. Any revived Seascape campaign must be owned by
+> `seascape-ops` and use Microsoft 365 / Outlook
+> `info@seascape-vacations.com`; the site repo does not send campaigns.
+
 ### Internal Linking Rebuild — 2026-03-05
 - Total pages: 172 | Orphans found: 43 | Orphans fixed: 42
 - Broken links found/fixed: 843 (551 old area-guide URLs, 263 missing .html extensions, 29 wrong slugs)

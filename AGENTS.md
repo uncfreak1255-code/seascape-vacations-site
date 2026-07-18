@@ -32,6 +32,10 @@ Read in this order:
 - financial planning
 - cross-project decision history
 - analytics pipeline logic that belongs in `seascape-analytics`
+- email-campaign delivery, sender credentials, schedules, or send receipts;
+  policy lives in `seascape-hub/context/operating-canon.md#business-email` and
+  execution lives in `seascape-ops`. Campaigns use Microsoft 365 / Outlook
+  `info@seascape-vacations.com`; personal Gmail is prohibited.
 
 ## Business Bottleneck
 

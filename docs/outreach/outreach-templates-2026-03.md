@@ -1,6 +1,14 @@
 # Outreach Templates — March 2026
 *Based on competitor gap analysis and link-building targets identified this month*
 
+## Sender Authority
+
+These are content drafts only. Any Seascape email campaign must use the
+Ops-owned Microsoft 365 / Outlook lane from `info@seascape-vacations.com`.
+Personal Gmail and alternate From identities are prohibited. This Site repo
+cannot authorize recipients or send; Hub owns policy and Ops owns execution and
+delivery proof.
+
 ---
 
 ## Template A — Anna Maria Beach Life Rentals (Competitor/Cross-Referral Angle)
@@ -83,5 +91,5 @@ seascape-vacations.com
 
 ---
 
-*Status as of 2026-03-12: Templates ready to send. Owner sends manually — these are outreach only, not automated.*
+*Historical status as of 2026-03-12: copy drafts were ready for review. Current sender policy and Ops authorization still apply before any send.*
 *Next step: Find direct contact names at each organization before sending.*
