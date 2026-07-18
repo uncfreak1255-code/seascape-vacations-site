@@ -220,15 +220,15 @@ eleventyComputed:
                 <p style="max-width: 760px; margin: 18px auto 0; opacity: 0.82; font-size: 15px;">{{ seoPage.ctaSubcopy or "We break down management fees, booking-source costs, and what your current setup is actually costing you before you decide anything." }}</p>
                 {% if showOwnerBenchmarkPath %}
                 <div style="margin: 18px auto 0; max-width: 860px; border-radius: 14px; padding: 14px 16px; background: rgba(255,255,255,0.12); text-align: left;">
-                    <p style="font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(245, 228, 176, 0.92); margin: 0 0 8px;">{% if ownerNetBridgePage %}Payout Answer{% else %}Switcher Path{% endif %}</p>
+                    <p style="font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(245, 228, 176, 0.92); margin: 0 0 8px;">{% if ownerNetBridgePage %}Start Here{% else %}Before You Switch{% endif %}</p>
                     <p style="font-size: 14px; line-height: 1.65; margin: 0; color: rgba(255,255,255,0.92);">
                         {% if ownerNetBridgePage %}
-                        If your calendar looks active but your payout still feels thin, start with the <a href="/research/owner-fee-revenue-leak-benchmark-2026/" style="color: #fff; text-decoration: underline;">owner benchmark</a>, then compare
+                        If your calendar looks active but your payout still feels thin, start with the <a href="/research/owner-fee-revenue-leak-benchmark-2026/" style="color: #fff; text-decoration: underline;">owner fee guide</a>, then compare
                         <a href="/property-management/vacation-rental-management-fees-florida/" style="color: #fff; text-decoration: underline;">management fees</a> and
                         <a href="/property-management/vrbo-management-services-florida/" style="color: #fff; text-decoration: underline;">booking-channel handling</a> before you
                         <a href="/property-management/#owner-cta" style="color: #fff; text-decoration: underline;">request your review</a>.
                         {% else %}
-                        Start with the <a href="/research/owner-fee-revenue-leak-benchmark-2026/" style="color: #fff; text-decoration: underline;">owner benchmark</a>, then compare
+                        Start with the <a href="/research/owner-fee-revenue-leak-benchmark-2026/" style="color: #fff; text-decoration: underline;">owner fee guide</a>, then compare
                         <a href="/property-management/vacation-rental-management-fees-florida/" style="color: #fff; text-decoration: underline;">fees</a>,
                         <a href="/property-management/vacation-rental-licensing-florida/" style="color: #fff; text-decoration: underline;">licensing</a>, and
                         <a href="/property-management/vrbo-management-services-florida/" style="color: #fff; text-decoration: underline;">VRBO handling</a> before you
@@ -261,14 +261,22 @@ eleventyComputed:
                 </div>
                 {% if proofAsset %}
                 <div style="margin-top: 24px; background: rgba(255,255,255,0.92); border-radius: 18px; padding: 24px 28px; border: 1px solid rgba(61, 92, 93, 0.12); box-shadow: 0 8px 24px rgba(0,0,0,0.04);">
-                    <p class="section-tag" style="margin-bottom: 10px;">Benchmark Source</p>
+                    <p class="section-tag" style="margin-bottom: 10px;">Fee Guide Sources</p>
                     <h3 style="font-size: 24px; margin-bottom: 12px; color: var(--brand-dark);">{{ proofAsset.title }}</h3>
                     <p style="font-size: 15px; color: var(--stone-light); margin: 0 0 12px;">{{ proofAsset.summary }}</p>
                     <p style="font-size: 14px; color: var(--stone); margin: 0 0 8px;"><strong>Reviewed by:</strong> {{ proofAsset.reviewedBy }}{% if proofAsset.reviewerRole %}, {{ proofAsset.reviewerRole }}{% endif %}</p>
-                    <p style="font-size: 14px; color: var(--stone); margin: 0 0 8px;"><strong>Updated:</strong> {{ proofAsset.reviewedDateLabel or proofAsset.reviewedDate }}</p>
+                    <p style="font-size: 14px; color: var(--stone); margin: 0 0 8px;"><strong>Updated:</strong> {{ proofAsset.updatedDateLabel or proofAsset.updatedDate or proofAsset.reviewedDateLabel or proofAsset.reviewedDate }}</p>
+                    {% if proofAsset.sources and proofAsset.sources.length %}
+                    <p style="font-size: 14px; color: var(--stone); margin: 0 0 8px;"><strong>Sources:</strong>
+                        {% for source in proofAsset.sources %}
+                        <a href="{{ source.url }}" style="color: var(--brand-dark); text-decoration: underline;">{{ source.label }}</a>{% if not loop.last %} · {% endif %}
+                        {% endfor %}
+                    </p>
+                    {% elif proofAsset.sourceUrl %}
                     <p style="font-size: 14px; color: var(--stone); margin: 0 0 8px;"><strong>Source:</strong> <a href="{{ proofAsset.sourceUrl }}" style="color: var(--brand-dark); text-decoration: underline;">{{ proofAsset.sourceLabel }}</a></p>
+                    {% endif %}
                     {% if proofAsset.benchmarkUrl %}
-                    <p style="font-size: 14px; color: var(--stone); margin: 0 0 8px;"><strong>Owner benchmark:</strong> <a href="{{ proofAsset.benchmarkUrl }}" style="color: var(--brand-dark); text-decoration: underline;">Read the owner fee + net payout benchmark</a></p>
+                    <p style="font-size: 14px; color: var(--stone); margin: 0 0 8px;"><strong>Owner fee guide:</strong> <a href="{{ proofAsset.benchmarkUrl }}" style="color: var(--brand-dark); text-decoration: underline;">Compare Airbnb, card-processing, and management charges</a></p>
                     <p style="font-size: 14px; color: var(--stone); margin: 0 0 8px;">Read the <a href="/property-management/vacation-rental-management-fees-florida/" style="color: var(--brand-dark); text-decoration: underline;">fee reality page</a> and the <a href="/property-management/maximize-vacation-rental-income-florida/" style="color: var(--brand-dark); text-decoration: underline;">owner income guide</a> before you compare managers on headline percentage alone.</p>
                     {% endif %}
                     {% if proofAsset.methodology %}
@@ -484,7 +492,14 @@ eleventyComputed:
                             <div style="font-size: 12px; color: var(--stone-light);">
                                 {% if proofAsset and proofAsset.reviewerRole %}{{ proofAsset.reviewerRole }} • {% endif %}Updated {{ pageUpdatedLabel }}
                             </div>
-                            {% if proofAsset %}
+                            {% if proofAsset and proofAsset.sources and proofAsset.sources.length %}
+                            <div style="font-size: 12px; color: var(--stone-light);">
+                                Sources:
+                                {% for source in proofAsset.sources %}
+                                <a href="{{ source.url }}" style="color: var(--brand-dark); text-decoration: underline;">{{ source.label }}</a>{% if not loop.last %} · {% endif %}
+                                {% endfor %}
+                            </div>
+                            {% elif proofAsset and proofAsset.sourceUrl %}
                             <div style="font-size: 12px; color: var(--stone-light);"><a href="{{ proofAsset.sourceUrl }}" style="color: var(--brand-dark); text-decoration: underline;">Source: {{ proofAsset.sourceLabel }}</a></div>
                             {% endif %}
                         </div>
@@ -565,10 +580,10 @@ eleventyComputed:
                     <p class="section-tag">Related Resources</p>
                     <h2 class="section-title">More for Property Owners</h2>
                     {% if showOwnerBenchmarkPath %}
-                    <p class="section-subtitle" style="max-width: 760px;">Use the benchmark, the money-page comparisons, and the review request together instead of treating fees, licensing, and channel handling like separate decisions.</p>
+                    <p class="section-subtitle" style="max-width: 760px;">Use the fee guide, management-cost pages, and review request together instead of treating fees, licensing, and booking channels like separate decisions.</p>
                     <div style="display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-top: 24px;">
                     <a href="/research/owner-fee-revenue-leak-benchmark-2026/" style="display: inline-flex; align-items: center; justify-content: center; padding: 10px 18px; border-radius: 999px; border: 1px solid rgba(61, 92, 93, 0.14); background: rgba(255,255,255,0.92); color: var(--brand-dark); font-size: 13px; font-weight: 600; text-decoration: none;">
-                        Read the benchmark
+                        Read the fee guide
                     </a>
                         {% if seoPage.slug != "vacation-rental-management-fees-florida" %}
                     <a href="/property-management/vacation-rental-management-fees-florida/" style="display: inline-flex; align-items: center; justify-content: center; padding: 10px 18px; border-radius: 999px; border: 1px solid rgba(61, 92, 93, 0.14); background: rgba(255,255,255,0.92); color: var(--brand-dark); font-size: 13px; font-weight: 600; text-decoration: none;">
@@ -630,7 +645,7 @@ eleventyComputed:
                         intro: "Send the listing link or property address, plus a sentence or two about what feels off. Seascape will read what you send and show what is clear, what looks expensive, and what still needs verification before any switch conversation.",
                         formTitle: "Request Your Revenue Review",
                         formIntro: "Start with the listing URL or address. Add one line on what feels off; an owner statement or fee quote makes the review sharper.",
-                        proofNote: "Source note: The review uses the evidence available. Missing statements, calendars, guest reviews, or fee terms stay marked unknown until you send them.",
+                        proofNote: "Source note: Send what you have. We will tell you if a statement, booking calendar, guest review, or fee quote would make the review more useful.",
                         detailLabel: "What the review checks",
                         detailCopy: "The private revenue review shows what we can verify, what looks expensive, and what still needs a document before you decide whether to stay put, fix the setup, or talk about a transition.",
                         confirmation: "Got it. Seascape will read what you send and return the clearest next step: stay put, fix the current setup, or talk about a transition.",
@@ -641,10 +656,10 @@ eleventyComputed:
                         propertyFieldLabel: "Listing URL or property address",
                         propertyFieldPlaceholder: "airbnb.com/h/your-listing, vrbo.com/..., or full street address",
                         showBenchmarkFields: true,
-                        fileHelp: "PDF, spreadsheet, or screenshot. Missing statements, calendars, guest reviews, or fee terms stay unknown until you send them."
+                        fileHelp: "PDF, spreadsheet, or screenshot. You can submit the form without an upload."
                     }) }}
                     <p style="margin-top: 14px; text-align: center; color: rgba(255, 255, 255, 0.82); font-size: 14px;">
-                        Not ready to send the review yet? Start with the <a href="/research/owner-fee-revenue-leak-benchmark-2026/" style="color: white; font-weight: 600;">owner fee + net payout benchmark</a> or the <a href="/property-management/switch-vacation-rental-management-company/" style="color: white; font-weight: 600;">switch guide</a>.
+                        Not ready to send the review yet? Start with the <a href="/research/owner-fee-revenue-leak-benchmark-2026/" style="color: white; font-weight: 600;">owner fee guide</a> or the <a href="/property-management/switch-vacation-rental-management-company/" style="color: white; font-weight: 600;">switch guide</a>.
                     </p>
                     <p style="margin-top: 18px; text-align: center; color: rgba(255, 255, 255, 0.82); font-size: 15px;">
                         Prefer to talk first? <a href="tel:+19417048545" style="color: white; font-weight: 600;" data-track-event="owner_phone_click" data-page-slug="{{ seoPage.slug }}">Call (941) 704-8545</a>

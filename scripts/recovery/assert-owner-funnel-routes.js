@@ -51,8 +51,16 @@ function assertOwnerRouteResponse(result) {
     throw new Error(`${result.url} returned the owner-route /lander shell`);
   }
 
-  if (!/owner|revenue|property management|teardown/i.test(result.body)) {
+  if (!/owner|revenue|property management|review|fee guide/i.test(result.body)) {
     throw new Error(`${result.url} did not render owner-funnel content`);
+  }
+
+  if (
+    /\$1\.4M|\$119,923|13\.4%|32\.8%|5\.7%|16\.4%|\$730|\$450|10\.5 pts|Patrick(?:'s)? portfolio|marked unknown|intake route|seascape-hub/i.test(
+      result.body
+    )
+  ) {
+    throw new Error(`${result.url} rendered retired proof or internal workflow language`);
   }
 }
 

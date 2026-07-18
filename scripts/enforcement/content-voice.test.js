@@ -307,6 +307,19 @@ function getCurrentRoute(relativePath, source) {
   return `${withoutSrc}/`;
 }
 
+function normalizeChangedFileOutputs(outputs) {
+  return [
+    ...new Set(
+      outputs.flatMap((output) =>
+        output
+          .split("\n")
+          .map((line) => line.trim())
+          .filter(Boolean)
+      )
+    )
+  ].sort();
+}
+
 function getChangedFiles() {
   try {
     const mergeBase = execSync("git merge-base HEAD origin/main", {
@@ -318,19 +331,18 @@ function getChangedFiles() {
       return [];
     }
 
-    const output = execSync(`git diff --name-only --diff-filter=ACMR ${mergeBase}...HEAD`, {
-      cwd: projectRoot,
-      encoding: "utf8"
-    }).trim();
-
-    if (!output) {
-      return [];
-    }
-
-    return output
-      .split("\n")
-      .map((line) => line.trim())
-      .filter(Boolean);
+    return normalizeChangedFileOutputs(
+      [
+        `git diff --name-only --diff-filter=ACMR ${mergeBase}...HEAD`,
+        "git diff --name-only --diff-filter=ACMR",
+        "git diff --cached --name-only --diff-filter=ACMR"
+      ].map((command) =>
+        execSync(command, {
+          cwd: projectRoot,
+          encoding: "utf8"
+        })
+      )
+    );
   } catch {
     return [];
   }
@@ -595,11 +607,11 @@ test("approved owner research sample passes the new public-copy guardrails", () 
   const approvedSample = `
     <main>
       <section>
-        <h1>Your management fee is only part of the picture.</h1>
-        <p>Most owners compare 15%, 20%, and 25% management fees and stop there.</p>
-        <p><a href="/property-management/vacation-rental-management-fees-florida/">Management fee</a> is only one part of what you actually keep.</p>
-        <p>That is why <a href="/property-management/maximize-vacation-rental-income-florida/">booking channels</a> belong in the conversation.</p>
-        <p><a href="/property-management/">Seascape property management</a> starts with a revenue teardown, not a generic service list.</p>
+        <h1>What do vacation rental fees actually cost?</h1>
+        <p>Airbnb's published host fee, Stripe's card price, and a property manager's fee cover different services.</p>
+        <p><a href="/property-management/vacation-rental-management-fees-florida/">Compare management fees</a> by checking the fee basis, included work, and separate charges.</p>
+        <p><a href="/property-management/maximize-vacation-rental-income-florida/">Review owner income</a> with the property's real agreement and statement.</p>
+        <p><a href="/property-management/">Seascape property management</a> provides a property-specific quote in writing.</p>
       </section>
     </main>
   `;
@@ -892,6 +904,22 @@ test("changed-file gate can skip content lint for structural-only public diffs",
   ]) : [];
 
   assert.deepEqual(violations, []);
+});
+
+test("changed-file collection unions committed, staged, and unstaged paths", () => {
+  assert.deepEqual(
+    normalizeChangedFileOutputs([
+      "src/committed.njk\nsrc/shared.njk\n",
+      "src/unstaged.njk\nsrc/shared.njk\n",
+      "src/staged.njk\n"
+    ]),
+    [
+      "src/committed.njk",
+      "src/shared.njk",
+      "src/staged.njk",
+      "src/unstaged.njk"
+    ]
+  );
 });
 
 test("brief selection does not match the homepage against every slash link", () => {

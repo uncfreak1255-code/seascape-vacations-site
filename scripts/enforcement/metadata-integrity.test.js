@@ -225,7 +225,7 @@ test("priority owner money-page metadata stays non-empty and query-aligned", () 
   assert.match(vrboPage.description, /Florida/i);
 });
 
-test("owner proof benchmark is promoted as the conquest asset", () => {
+test("owner fee guide is promoted with its current reader-facing label", () => {
   const template = readSource("src", "property-management", "property-management.njk");
   const llms = readSource("src", "llms.txt");
   const benchmark = ownerProofAssets["gulf-coast-owner-benchmark-2026"];
@@ -241,8 +241,9 @@ test("owner proof benchmark is promoted as the conquest asset", () => {
   );
   assert.match(
     llms,
-    /\[Owner Fee \+ Revenue Leak Benchmark\]\(https:\/\/seascape-vacations\.com\/research\/owner-fee-revenue-leak-benchmark-2026\/\)/
+    /\[Owner Fee Comparison Guide\]\(https:\/\/seascape-vacations\.com\/research\/owner-fee-revenue-leak-benchmark-2026\/\)/
   );
+  assert.doesNotMatch(llms, /Revenue Leak Benchmark/);
   assert.doesNotMatch(
     llms,
     /\[How Seascape Protects Owner Revenue\]\(https:\/\/seascape-vacations\.com\/research\/how-seascape-protects-owner-net-2026\/\)/
