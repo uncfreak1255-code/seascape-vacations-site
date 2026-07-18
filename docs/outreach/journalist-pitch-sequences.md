@@ -1,6 +1,15 @@
 # Journalist Cold Outreach Sequences
 
-Two Instantly AI sequences for pitching data reports to travel, finance, and hospitality journalists. 100-200 contacts per sequence.
+Historical draft sequences, previously shaped for Instantly, for pitching data
+reports to travel, finance, and hospitality journalists.
+
+## Current Sender Authority
+
+This repo owns copy only. Any Seascape email campaign must use the Ops-owned
+Microsoft 365 / Outlook lane from `info@seascape-vacations.com`; personal Gmail,
+`sawyer@`, and an independently configured Instantly sender are prohibited.
+Hub owns the rule. Ops owns permission, suppression, scheduling, delivery, and
+Sent Items proof. These drafts do not authorize a contact list or a live send.
 
 ---
 
@@ -58,7 +67,7 @@ One thing I can offer anytime: raw booking data for any Florida vacation rental 
 Standing invite. Feel free to file this away.
 
 — Sawyer Beckett
-sawyer@seascape-vacations.com
+info@seascape-vacations.com
 
 ### Journalist Target Categories
 
@@ -140,7 +149,7 @@ We also have a free trolley map and dining price comparisons across the three ar
 Just reply whenever. Happy to be a source.
 
 — Sawyer Beckett
-sawyer@seascape-vacations.com
+info@seascape-vacations.com
 
 ### Journalist Target Categories
 
@@ -188,7 +197,10 @@ Want me to send it over? Think your audience would eat it up.
 
 ---
 
-## Instantly AI Setup Notes
+## Historical Instantly AI Setup Notes (do not execute)
+
+These provider settings are retained only as donor material. Do not create,
+warm, schedule, or activate an independent Instantly sender from this repo.
 
 **Sending schedule:** Weekday mornings 7-9am recipient's timezone
 **Daily send limit:** Start at 30/day per account, ramp to 50 after warmup

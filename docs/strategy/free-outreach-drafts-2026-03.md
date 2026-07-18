@@ -1,8 +1,13 @@
 # Free Backlink Outreach Drafts
 Date: 2026-03-15
-Status: Ready to send with light personalization
+Status: Historical content drafts only; not send-ready
 
 These drafts are for the highest-quality free targets currently researched in [free-backlink-priority-targets-2026-03.csv](/Users/sawbeck/Projects/seascape-vacations-site/docs/strategy/free-backlink-priority-targets-2026-03.csv#L1).
+
+If revived, refresh the targets, permission and suppression evidence, and copy.
+Any approved campaign must be delivered by the Ops-owned Microsoft 365 /
+Outlook lane from `info@seascape-vacations.com`. This Site repo and personal
+Gmail have no campaign send authority.
 
 ## Draft 1: The Ringling
 
@@ -139,6 +144,8 @@ Seascape Vacations
 https://seascape-vacations.com
 
 ## Follow-Up Pattern
+
+Content pattern only. Do not schedule or send it from this repo.
 
 If no reply after 5-7 days:
 

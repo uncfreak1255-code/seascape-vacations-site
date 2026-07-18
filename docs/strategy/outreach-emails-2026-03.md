@@ -1,6 +1,10 @@
 # Backlink Outreach Email Templates
 **Created:** March 15, 2026 | **Owner:** Sawyer Beckett, Seascape Vacations
 
+> Content templates only. If used as a campaign, delivery belongs to the
+> Ops-owned Microsoft 365 / Outlook lane from
+> `info@seascape-vacations.com`; never use a personal Gmail account.
+
 ---
 
 ## 1. CHAMBER OF COMMERCE / CVB SUBMISSION
@@ -17,7 +21,7 @@ I'd like to submit our vacation rental management company for your member direct
 - **Website:** https://seascape-vacations.com
 - **Phone:** (941) 704-8545
 - **Contact:** Sawyer Beckett
-- **Email:** sawyerbeck25@gmail.com
+- **Email:** info@seascape-vacations.com
 - **Category:** Vacation Rentals / Accommodations / Lodging
 - **Service Area:** Bradenton, Anna Maria Island, Holmes Beach, Bradenton Beach, Longboat Key, Sarasota
 

@@ -1,6 +1,13 @@
 # Phase 4: Automated Marketing Flywheel
 > Created: 2026-03-07 | Budget: $0/mo fixed cost | Goal: Full automated system with minimal manual effort
 
+> **Historical plan; provider and sender instructions are superseded.** Do not
+> activate Mailchimp, Gmail, Hostaway, or any Site-owned campaign sender from
+> this document. All Seascape outbound campaigns use Microsoft 365 / Outlook
+> from `info@seascape-vacations.com` through the Ops-owned Graph lane. Personal
+> Gmail and every other role mailbox are prohibited campaign senders. This file preserves
+> content and funnel ideas only.
+
 ---
 
 ## Overview
@@ -13,22 +20,27 @@ Phase 4 builds the marketing engine that runs itself. Everything here is either 
 
 ---
 
-## Tier 1: Email Automation ($0/mo — Mailchimp Free)
+## Tier 1: Email Automation (historical provider proposal)
 
-**Status:** Mailchimp connected, SAVE50 coupon active, popup on 2 pages
+**Historical status:** Mailchimp was connected and a popup was present. This is
+not current authorization to activate a Mailchimp campaign or sender.
 
 ### Immediate Actions
 1. **Expand email popup** to all 130+ stays/guides pages (currently only homepage + /properties/)
-2. **Build Mailchimp welcome automation** (free plan supports 1 automation):
+2. **Prepare welcome-sequence content** for the Ops-owned Outlook campaign lane:
    - Email 1 (immediate): "Your $50 code is SAVE50" + top 3 properties + area guide links
    - Email 2 (Day 3): "Planning your Gulf Coast trip?" + seasonal content + booking CTA
    - Email 3 (Day 7): "Still dreaming of the beach?" + urgency/availability + direct booking link
-3. **Monthly newsletter** (manual, 30 min/mo): seasonal highlights, new content, property availability
+3. **Prepare monthly newsletter content**: seasonal highlights, new content,
+   property availability. Sending remains outside this repo.
 
-### Migration Plan
-- Stay on Mailchimp Free until 500 contacts
-- At 500+: Migrate to **Listmonk** (self-hosted, $5/mo on Railway) for unlimited contacts and automations
-- Export Mailchimp list → import to Listmonk → update popup endpoints
+### Retired Provider Migration Idea
+
+The former Mailchimp-to-Listmonk migration proposal is not executable and is
+not campaign authority. Git history preserves the old provider steps. Any
+future capture-backend change must be scoped separately in the repo that owns
+capture; campaign delivery remains exclusively Ops-owned Outlook `info@` and
+Phase 1 hard-disabled.
 
 ### Metrics
 - Email capture rate: target 3-5% of page visitors
@@ -67,10 +79,15 @@ For each new content page published (Wed + Fri scheduled tasks):
 
 ## Tier 3: Review & Reputation Flywheel ($0/mo)
 
-### Automated Review Collection
-1. **Post-checkout email** (via Hostaway): "How was your stay?" → link to Google review
-2. **Follow-up if no review** (Day 5): Personal note from "the Seascape team" with direct review link
-3. **Respond to every review** within 24 hours (scheduled task can draft responses)
+### Historical Review-Content Concepts (not executable)
+
+- post-checkout thank-you/review-request content
+- later review reminder content
+- drafts for human-reviewed public review responses
+
+These are content ideas only. They do not authorize an automation, schedule,
+canary, or send. Outlook delivery stays Phase 1 hard-disabled until Microsoft
+admin scope proof and a separate reviewed Phase 2.
 
 ### Review Amplification
 - Pull best quotes into property pages (already started in Phase 1)
@@ -120,7 +137,8 @@ Already have 31 property-management pages. Add:
 
 ### Outreach Automation
 1. **Identify targets**: Web search for VRBO/Airbnb listings in Bradenton/Sarasota with poor reviews or stale calendars
-2. **Draft personalized outreach** via scheduled task → Gmail drafts for manual review/send
+2. **Prepare personalized outreach content** for review; any approved campaign
+   is delivered only through the Ops-owned Outlook `info@` lane
 3. **Follow-up sequence**: 3 emails over 2 weeks, each with different value prop
 4. **LinkedIn outreach**: Connect with local property investors, share market insights
 
@@ -145,12 +163,12 @@ Already have 31 property-management pages. Add:
 
 | Week | Actions |
 |------|---------|
-| Week 1 | Expand email popup to all pages, build Mailchimp welcome sequence |
+| Week 1 | Historical: expand email capture and prepare welcome-sequence content; provider activation is superseded |
 | Week 2 | Set up Google Business Profile posting cadence, create first 20 Pinterest pins |
-| Week 3 | Launch post-stay review request email, draft 5 local business partnership proposals |
+| Week 3 | Prepare post-stay review-request content only; any launch waits for Microsoft admin scope proof and a reviewed Outlook Phase 2 activation change. Draft 5 local business partnership proposals |
 | Week 4 | Create referral program structure, publish first "market report" for property owners |
 | Month 2 | Optimize based on data — double down on what converts, cut what doesn't |
-| Month 3 | Evaluate Listmonk migration, expand partnership network, quarterly GEO report |
+| Month 3 | Historical provider-migration idea retired; expand partnership network and publish the quarterly GEO report |
 
 ---
 
