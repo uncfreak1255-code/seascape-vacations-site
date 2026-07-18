@@ -1,539 +1,116 @@
 # Owner Outbound
 
-Status: Card 3 execution home, no sends authorized by this file alone.
-Source plan: `docs/plans/2026-06-13-demand-os-handoff.md`.
-Owner lane: site runbook and send log here; owner-demand proof and registers stay in `seascape-hub`.
+Status: **research-only archive — HOLD / DO NOT SEND**.
 
-## Purpose
+This file preserves only aggregate Card 3 Airbnb/Vrbo research counts and the
+historical send count. It is not an active outreach queue, and it does not
+authorize platform messaging, follow-up, scheduling, mailbox drafts, or any
+claim of owner demand.
 
-This file gives the owner-outbound lane a real home without pretending that
-activity is demand. It exists because the owner-money search cluster is below
-the on-page gate and cannot clear by waiting for another reread. When
-`docs/status/next-batch.md` points here, the next useful action is owner
-outreach preparation, not another owner-page rewrite.
+The active qualification rule for any future owner opportunity is the public
+[Owner-Direct Intake Policy](owner-direct-intake-policy.md). It defines the
+decision gate but stores no candidate records.
 
-The business goal is still real owner conversations and completed revenue
-teardowns. A sent message is only a measurement event.
+## Current Operating Decision
 
-## Scope
+Effective 2026-07-17:
 
-This runbook owns:
+- Airbnb- and Vrbo-only host-message paths are **not approved outreach paths**.
+- The seven unsent platform-only observations are **hold / do not send**.
+- The three June 17 platform-originated sends are aggregate historical records only;
+  they do not authorize follow-up through an OTA.
+- Public host labels are listing observations, not verified owner identity,
+  intent, availability, dissatisfaction, or permission to receive a business
+  pitch.
+- No existing or future platform-listing observation may be converted into an
+  email, phone, social, or other off-platform contact record.
+- A send, response absence, platform page view, or internal preparation never
+  constitutes owner demand.
 
-- the owner-outbound preparation checklist
-- the empty send log
-- the proof gates for SENT, REAL reply, and completed teardown
-- the homeowner-list milestone
-- the decay rule that prevents another silent March-style stall
+## Purpose and Scope
 
-This runbook does not own:
+The business goal remains a real owner conversation and a completed revenue
+teardown, but this archived packet is no longer a route to either outcome.
+The next permissible work is to qualify a real owner-direct, permissioned
+signal under the separate intake policy.
 
-- sending outreach
-- changing the owner-demand register in `seascape-hub`
-- editing analytics receipt logic
-- adding skills, MCPs, dashboards, or runtime workers
-- marking a test, labeled send, or internal submit as owner demand
+This archive owns:
 
-## Weekly Batch Shape
+- aggregate counts of historical public-listing observations
+- the aggregate historical June 17 send count
+- the factual boundary around what those records do and do not prove
 
-Do this only after the homeowner-list milestone below has at least one
-contactable prospect.
+This archive does not own:
 
-1. Pick one named homeowner prospect.
-2. Pick one owner pain hypothesis from public evidence or a prior qualified
-   exchange.
-3. Use one approved proof module from the current owner benchmark or other
-   approved owner-proof surface.
-4. Draft one personal opener that points to the benchmark and offers a short
-   revenue teardown.
-5. Record the row in the send log before any send happens.
-6. After the send, update only the `Sent at` and `Outcome` fields.
+- sending or drafting outreach
+- platform-message or off-platform follow-up
+- candidate enrichment, scraping, or contact discovery
+- owner-demand register changes in `seascape-hub`
+- claims about owner intent, dissatisfaction, switching, or performance lift
 
-Do not batch generic property managers. The Demand OS plan rejected that lane
-because the old operator outreach list was for competing managers, not
-homeowners.
+## Archived Platform Research
 
-## Homeowner-List Milestone
+The observations were collected from public listing pages using public host
+labels and platform contact surfaces. This public repository now retains only
+the aggregate record needed to explain the decision:
 
-The outbound lane does not start its time-to-first-lead clock until this
-milestone clears.
+| Record class | Count | Current disposition |
+|---|---:|---|
+| Historical platform-originated sends | 3 | historical effort only; no follow-up |
+| Unsent platform-only observations | 7 | **hold / do not send** |
 
-Acceptance check:
+Named prospects, listing URLs, contact-path labels, private contact details,
+property records, and enrichment data do not belong in this public repository.
+The aggregate rows cannot be used to reconstruct an outreach list.
 
-- at least `10` named homeowner-reachable prospects
-- each row has a contact path that another agent can re-open
-- each row names why the prospect plausibly fits the benchmark-to-teardown offer
-- no scraped or guessed private contact data
-- no send scheduled from research alone
+## Historical Send Record
 
-Allowed research sources:
+On 2026-06-17, three founder-sent benchmark emails were recorded. A 2026-06-26
+mailbox check documented no newer matching benchmark/revenue-review reply
+evidence.
 
-- owner-direct Airbnb or VRBO listings with public host/contact surfaces
-- FSBO, landlord, or public property-owner signals where outreach is allowed
-- local owner/referral signals from public business or community surfaces
-- existing Seascape owner-demand context from `seascape-hub`
+That is historical outreach effort only. It does not prove owner demand,
+does not establish permission for later outreach, and does not justify a
+follow-up on Airbnb, Vrbo, email, or another surface.
 
-Tool decision:
+## Archived Draft Boundary
 
-- start with browser/search and manual source receipts
-- use DataForSEO only if the source already exists in repo workflows and the
-  output helps produce named homeowner-reachable prospects
-- do not add a new MCP, plugin, scraper, or external SEO pack without the
-  `agent-surface-audit` gate named in `docs/process/skill-policy.md`
+Previous platform-message drafts are intentionally retired from this file.
+They are not copy-paste text, do not carry forward as an approved offer, and
+must not be recreated from this archive.
 
-### Batch 2026-06-16: Card 3 Homeowner Prospect Batch
+The public benchmark remains a fact-checked decision aid only; it may not be
+used to imply a specific owner is losing money, unhappy with a manager, ready
+to switch, or likely to receive a revenue, ADR, occupancy, review, or profit
+lift.
 
-Milestone result: `cleared for founder review`.
+## Active Owner-Direct Intake Standard
 
-This is a draft-only research batch. It uses public Airbnb and Vrbo listing
-pages, public host labels, and reopenable platform contact surfaces only. No
-private phone numbers, emails, property records, skip-tracing, scraped contact
-data, or Hub register rows were used. No send is authorized by this file.
+Use the [Owner-Direct Intake Policy](owner-direct-intake-policy.md) for future
+opportunities. A future qualification decision requires all of the following:
 
-Research archive only:
-[Card 3 homeowner prospect evidence board](../reports/card-3-owner-prospect-board-2026-06-16.html).
-Use the board when the source evidence needs rechecking; use the next-send
-packet below when the founder is preparing the next seven outreach notes.
+- a named owner or authorized owner representative
+- a reopenable, owner-direct source receipt
+- a clear reason the source permits business contact or follow-up
+- a factual property or operating fit signal
+- no scraped, guessed, purchased, or platform-derived private contact data
+- founder review before any individual outbound message is even drafted
 
-Approved proof module for every row:
-`gulf-coast-owner-benchmark-2026` from `src/_data/ownerProofAssets.json`.
-Use the benchmark as a decision aid only: 5-property Gulf Coast scope, observed
-Airbnb host-fee cost, direct payment cost, and labeled property examples. Do
-not claim Seascape can raise revenue for any specific home.
+The former ten-platform-row milestone is archived and does not clear the active
+owner-acquisition lane. This public repository must not store a named candidate
+or contact evidence.
 
-Benchmark CTA for every row:
-`/research/owner-fee-revenue-leak-benchmark-2026/` -> shared revenue review
-intake at `/property-management/?owner_source=owner-fee-revenue-leak-benchmark-2026#owner-cta`.
-
-Founder send check before any outreach:
-
-- confirm the platform contact path is appropriate for the message
-- keep the note personal and one-to-one
-- do not imply the owner is losing money or unhappy with the current setup
-- do not count a send as demand
-- prepare the send-log row before sending
-
-### Batch 2026-06-17: Mailbox Evidence
-
-Outlook confirms three founder-sent benchmark emails from the Card 3 batch:
-Kiri at `2026-06-17T21:21:11Z`, Megan at `2026-06-17T21:21:21Z`,
-and Naomi at `2026-06-17T21:21:26Z`.
-
-The Hub-owned raw capture is
-`/Users/sawbeck/Projects/seascape-hub/sources/2026-06-17-owner-outbound-email-batch.md`.
-That capture, plus current Outlook searches on `2026-06-26` for `Kiri`,
-`Megan`, and `Naomi` since `2026-06-17`, still found exactly those three
-outbound items. Connected Gmail searches on `2026-06-26` for those names,
-`quick revenue review`, and `owner-fee-revenue-leak-benchmark-2026` after
-`2026-06-17` returned no matching benchmark/revenue-review threads. Treat that
-as no newer reply evidence, not as demand proof. This is owner-outreach effort
-only. It does not move the owner gate and does not upgrade any Hub
-benchmark-demand claim.
-
-### Batch 2026-06-22: Patrick Handoff Failure And Warm Offer Context
-
-Gmail confirms the Emerald House property redesign package arrived on
-`2026-06-22T16:35:37`, was forwarded for Patrick review on
-`2026-06-22T19:06:30`, and bounced at `2026-06-22T19:06:45` with a delivery
-failure. Treat that as a failed Patrick handoff, not as a completed founder
-review.
-
-The reusable owner fill-out packet now exists in Hub at
-`/Users/sawbeck/Projects/seascape-hub/intelligence/drafts/2026-06-19-property-redesign-package-owner-fillout-packet.md`.
-The Emerald House signed-packet capture is
-`/Users/sawbeck/Projects/seascape-hub/sources/2026-06-22-emerald-house-property-redesign-package-signed.md`,
-and the Drive readback receipt is
-`/Users/sawbeck/Projects/seascape-hub/intelligence/verification-receipts/2026-06-26-seascape-ops-company-capture-jose-and-dunia-2026-06-22-blue-and-emerald-redesign-kickoff-20260626t175600z.json`.
-
-Use those materials only to warm the outbound offer: the seven remaining notes
-may offer a second set of eyes on listing presentation, photo-readiness,
-owner-statement clarity, and renewal questions. Do not paste agreement terms
-into outreach. Do not claim owner demand, public offer readiness, booking lift,
-ADR lift, occupancy lift, review lift, or profitability proof from the packet
-or the Emerald House materials.
-
-Warm-offer proof boundary for this packet:
-
-- the 2026-06-19 owner fill-out packet plus the Emerald House signed-packet and Blue House or Emerald House redesign-package readback context only support a warmer second-look offer
-- safe offer language is limited to listing presentation, photo-readiness, owner-statement clarity, and renewal questions
-- do not imply a completed Patrick review, an active redesign engagement for these prospects, or any proven lift in revenue, ADR, occupancy, reviews, or profit
-
-| # | Prospect label | Public evidence | Reopenable contact path | Fit reason and pain hypothesis | Proof-rule result |
-|---:|---|---|---|---|---|
-| 1 | Kiri | Airbnb listing: [Beautiful Canal front house with heated pool & spa](https://www.airbnb.com/rooms/1477087787726582138). Public page shows an Anna Maria entire home for 12 guests, 6 bedrooms, 6.5 baths, hosted by Kiri. | Airbnb listing -> public host surface -> Message host after platform sign-in. No copied contact detail. | Premium canal-front, pool-and-spa home with enough booking value for fee percentage, Airbnb cost, direct booking cost, and owner statement clarity to matter. Pain hypothesis: first-year or new-listing revenue review. | Pass: named public host label, reopenable source, homeowner-reachable path, one approved proof module, no private data. |
-| 2 | Megan | Airbnb listing: [Gorgeous 4BR w/Htd Pool, Walk 2 Beach, Boat Dock](https://www.airbnb.com/rooms/1339940979581613196). Public page shows a Bradenton Beach entire home for 10 guests, 4 bedrooms, 3 baths, hosted by Megan. | Airbnb listing -> public host surface -> Message host after platform sign-in. No copied contact detail. | High-performing dock-and-pool beach home. Pain hypothesis: mature host may still benefit from a second look at what Airbnb-heavy bookings cost versus lower-cost direct demand. | Pass: named public host label, reopenable source, homeowner-reachable path, one approved proof module, no private data. |
-| 3 | Ashley | Airbnb listing: [New! 4BR Villa + Crosswalk to Sand + Beach View](https://www.airbnb.com/rooms/1517691281023647588). Public page shows a Bradenton Beach entire home for 10 guests, 4 bedrooms, 3 baths, hosted by Ashley. | Airbnb listing -> public host surface -> Message host after platform sign-in. No copied contact detail. | Newer beachside villa with pool, balconies, and Bridge Street proximity. Pain hypothesis: early operating period is a good time to compare owner payout, booking-source cost, and reporting before the pattern hardens. | Pass: named public host label, reopenable source, homeowner-reachable path, one approved proof module, no private data. |
-| 4 | Wendy | Airbnb listing: [Prime Holmes Beach Location, Pool, Walk to Beach](https://www.airbnb.com/rooms/1025371189528255498). Public page shows a Holmes Beach entire home for 8 guests, 4 bedrooms, 3.5 baths, hosted by Wendy. | Airbnb listing -> public host surface -> Message host after platform sign-in. No copied contact detail. | Walkable Holmes Beach pool home with fast public host response signals. Pain hypothesis: owner may value a clean comparison of what reaches the owner statement after platform costs and direct-payment options. | Pass: named public host label, reopenable source, homeowner-reachable path, one approved proof module, no private data. |
-| 5 | Adam | Airbnb listing: [Spectacular Beach/Bay views private pool elevator](https://www.airbnb.com/rooms/41800150). Public page shows a Bradenton Beach entire home for 10 guests, 4 bedrooms, 3.5 baths, hosted by Adam. | Airbnb listing -> public host surface -> Message host after platform sign-in. No copied contact detail. | Mature premium listing with beach/bay views, pool, elevator, and many public reviews. Pain hypothesis: high-volume homes can have meaningful owner-statement movement from booking-source cost and direct-booking share. | Pass: named public host label, reopenable source, homeowner-reachable path, one approved proof module, no private data. |
-| 6 | Kate | Airbnb listing: [Heated Pool, 4BR with 2 King Suites, Near AMI & IMG](https://www.airbnb.com/rooms/1280439468418163165). Public page shows a private Bradenton home with 4 bedrooms, 4 baths, heated pool, and public host details for Kate. | Airbnb listing -> public host surface -> Message host after platform sign-in. No copied contact detail. | Large pool home near AMI and IMG with family/group fit. Pain hypothesis: mainland-near-island homes can be busy but still need a net-payout read on direct demand versus Airbnb cost. | Pass: named public host label, reopenable source, homeowner-reachable path, one approved proof module, no private data. |
-| 7 | Naomi Ewald | Vrbo listing: [Playa Palma Private Pool Home 4 Minute Walk to Holmes Beach on AMI](https://www.vrbo.com/4425699). Public page says hosted by Naomi Ewald and notes Bill and Naomi bought the property and added the pool. | Vrbo listing -> public host section -> sign in/contact host surface. No copied contact detail. | Clear owner-operated signal, Holmes Beach pool home, and explicit ownership context on the public listing. Pain hypothesis: owner-operator may want a second set of eyes on owner statement clarity and direct-payment economics. | Pass: named public host label, reopenable source, homeowner-reachable path, one approved proof module, no private data. |
-| 8 | Teresa | Airbnb listing: [3 Minute Walk to Beach, Heated Pool, Spa, FirePit, BBQ](https://www.airbnb.com/rooms/1502928363519390450). Public page shows a Bradenton Beach entire home for 9 guests, 4 bedrooms, 2 baths, hosted by Teresa. | Airbnb listing -> public host surface -> Message host after platform sign-in. No copied contact detail. | Newer public hosting signal on a strong beach-walk pool/spa home. Pain hypothesis: early revenue patterns are easier to review before pricing, platform dependence, and reporting habits settle. | Pass: named public host label, reopenable source, homeowner-reachable path, one approved proof module, no private data. |
-| 9 | Morgan | Airbnb listing: [House with Private Pool & Hot Tub - Bridge Street](https://www.airbnb.com/rooms/1384108265624016866). Public page shows a Bradenton Beach entire home for 10 guests, 4 bedrooms, 3.5 baths, hosted by Morgan. | Airbnb listing -> public host surface -> Message host after platform sign-in. No copied contact detail. | Elevated home steps from the beach and Bridge Street, with pool and hot tub. Pain hypothesis: premium amenity homes are a fit for comparing headline fee, Airbnb booking cost, and direct-payment cost. | Pass: named public host label, reopenable source, homeowner-reachable path, one approved proof module, no private data. |
-| 10 | Christy | Airbnb listing: [New Golf cart + 4bd/3b w pool/2100 sq ft home](https://www.airbnb.com/rooms/28602630). Public page shows a Holmes Beach 4-bedroom, 3-bath pool home hosted by Christy, with Matt listed as co-host. | Airbnb listing -> public host surface -> Message host after platform sign-in. No copied contact detail. | Mature Holmes Beach host with out-of-area public host signal and a larger pool home. Pain hypothesis: owner may value clearer reporting on booking-source costs, direct demand, and local operating follow-through. | Pass: named public host label, reopenable source, homeowner-reachable path, one approved proof module, no private data. |
-
-## Proof Gates
-
-### Gate 1: SENT
-
-SENT means an outbound touch went to a named prospect.
-
-It proves only that the lane was executed. It does not prove owner demand, does
-not move the owner gate, and does not update any demand claim.
-
-Never count these as demand:
-
-- test sends
-- labeled sends
-- internal helper submits
-- generic `SENT` rows
-- page views or clicks without an owner signal
-
-### Gate 2: REAL Reply
-
-A reply can become owner-demand evidence only when it meets the validation
-standard in `seascape-hub/projects/owner-demand-trust-outcome-register.md`.
-
-Minimum bar:
-
-- dated interaction or receipt window
-- source page, asset, or outbound touch named explicitly
-- `REAL` status called out plainly
-- owner pain or objection summarized from the owner signal
-- next action or explicit stop
-- evidence path another agent can re-open
-
-Email-origin demand is provisional until a repo-anchored receipt or source note
-exists. Do not paste private email content into this file.
-
-### Gate 3: Teardown Completed
-
-A completed teardown is the first strong proof that the outbound lane produced
-real owner demand.
-
-Completion proof needs:
-
-- the real owner signal from Gate 2
-- the teardown date or delivery window
-- what the owner wanted to understand
-- whether the teardown advanced, stalled, lost, or ended the conversation
-- the evidence path in the owning repo
-
-Only this level of proof can flip the hub claim
-`CLM-OWNER-BENCHMARK-DEMAND-PROVEN` or support a later claim that the owner
-benchmark or teardown wedge is producing demand.
-
-## Send Log
-
-Keep this table honest. Empty is better than fake progress.
-
-| Date prepared | Prospect | Contact path | Fit reason | Proof module | Draft path | Sent at | Reply status | Outcome | Evidence path |
-|---:|---|---|---|---|---|---|---|---|---|
-| 2026-06-16 | Kiri | Airbnb host message surface; no copied contact detail | 6BR canal-front Anna Maria pool/spa home; first-year or newer-listing revenue review angle | `gulf-coast-owner-benchmark-2026` | [draft](#draft-1-kiri) | 2026-06-17T21:21:11Z | no reply found | sent; owner-outreach effort only, not demand proof | `/Users/sawbeck/Projects/seascape-hub/sources/2026-06-17-owner-outbound-email-batch.md`; [Airbnb](https://www.airbnb.com/rooms/1477087787726582138) |
-| 2026-06-16 | Megan | Airbnb host message surface; no copied contact detail | 4BR Bradenton Beach pool/dock home; mature host owner-statement review angle | `gulf-coast-owner-benchmark-2026` | [draft](#draft-2-megan) | 2026-06-17T21:21:21Z | no reply found | sent; owner-outreach effort only, not demand proof | `/Users/sawbeck/Projects/seascape-hub/sources/2026-06-17-owner-outbound-email-batch.md`; [Airbnb](https://www.airbnb.com/rooms/1339940979581613196) |
-| 2026-07-09 | Ashley | Airbnb host message surface; no copied contact detail | 4BR beachside villa near Bridge Street; early-pattern revenue review plus photo-readiness second-look angle | `gulf-coast-owner-benchmark-2026` | [draft](#draft-3-ashley) |  | not sent | this-week founder-review candidate; no send authorized; no demand claim | [Airbnb](https://www.airbnb.com/rooms/1517691281023647588); warm-offer context from Hub redesign-package materials |
-| 2026-07-09 | Wendy | Airbnb host message surface; no copied contact detail | 4BR Holmes Beach pool home; owner-statement clarity plus light listing-presentation second-look angle | `gulf-coast-owner-benchmark-2026` | [draft](#draft-4-wendy) |  | not sent | this-week founder-review candidate; no send authorized; no demand claim | [Airbnb](https://www.airbnb.com/rooms/1025371189528255498); warm-offer context from Hub redesign-package materials |
-| 2026-07-09 | Adam | Airbnb host message surface; no copied contact detail | 4BR beach/bay view home with pool/elevator; high-volume booking-source review plus listing-story second-look angle | `gulf-coast-owner-benchmark-2026` | [draft](#draft-5-adam) |  | not sent | this-week founder-review candidate; no send authorized; no demand claim | [Airbnb](https://www.airbnb.com/rooms/41800150); warm-offer context from Hub redesign-package materials |
-| 2026-06-30 | Kate | Airbnb host message surface; no copied contact detail | 4BR heated-pool home near AMI/IMG; mainland-near-island net-payout review plus guest-fit presentation angle | `gulf-coast-owner-benchmark-2026` | [draft](#draft-6-kate) |  | not sent | founder-ready refresh completed 2026-06-30; no demand claim | [Airbnb](https://www.airbnb.com/rooms/1280439468418163165); warm-offer context from Hub redesign-package materials |
-| 2026-06-16 | Naomi Ewald | Vrbo host contact surface; no copied contact detail | Owner-operated Holmes Beach pool home; owner-statement and direct-payment review angle | `gulf-coast-owner-benchmark-2026` | [draft](#draft-7-naomi-ewald) | 2026-06-17T21:21:26Z | no reply found | sent; owner-outreach effort only, not demand proof | `/Users/sawbeck/Projects/seascape-hub/sources/2026-06-17-owner-outbound-email-batch.md`; [Vrbo](https://www.vrbo.com/4425699) |
-| 2026-06-30 | Teresa | Airbnb host message surface; no copied contact detail | 4BR beach-walk pool/spa home; early hosting-cycle revenue review plus photo-ready second-look angle | `gulf-coast-owner-benchmark-2026` | [draft](#draft-8-teresa) |  | not sent | founder-ready refresh completed 2026-06-30; no demand claim | [Airbnb](https://www.airbnb.com/rooms/1502928363519390450); warm-offer context from Hub redesign-package materials |
-| 2026-06-30 | Morgan | Airbnb host message surface; no copied contact detail | 4BR Bridge Street pool/hot-tub home; premium amenity net-payout review plus guest-confidence presentation angle | `gulf-coast-owner-benchmark-2026` | [draft](#draft-9-morgan) |  | not sent | founder-ready refresh completed 2026-06-30; no demand claim | [Airbnb](https://www.airbnb.com/rooms/1384108265624016866); warm-offer context from Hub redesign-package materials |
-| 2026-06-30 | Christy | Airbnb host message surface; no copied contact detail | 4BR Holmes Beach pool home; out-of-area owner/reporting clarity plus local follow-through angle | `gulf-coast-owner-benchmark-2026` | [draft](#draft-10-christy) |  | not sent | founder-ready refresh completed 2026-06-30; no demand claim | [Airbnb](https://www.airbnb.com/rooms/28602630); warm-offer context from Hub redesign-package materials |
-
-## Next Send Packet
-
-Packet date: `2026-07-09`
-
-Use this as the live founder packet for the remaining seven prospects. This
-week's send-decision set is the first three unsent founder-ready rows: Ashley,
-Wendy, and Adam. Kate, Teresa, Morgan, and Christy stay ready but held until the
-founder chooses to send a larger batch or until the first three produce a reply
-or a clear no-reply signal. The
-2026-06-19 owner fill-out packet, the Emerald House signed-packet capture, and
-the Blue House countersigned-path readback make the offer warmer and more
-practical: start with a short revenue review, then offer a plain second look at
-listing presentation, photo-readiness, owner-statement clarity, and the
-questions worth asking before renewal. Do not paste agreement terms, owner
-private details, or document language into outreach.
-
-Keep the public proof surface fixed: `gulf-coast-owner-benchmark-2026` from
-`src/_data/ownerProofAssets.json` -> `/research/owner-fee-revenue-leak-benchmark-2026/`
--> live CTA `Request Your Revenue Review`. Only the property-specific opener and
-pain angle should change per prospect. The redesign-package context only earns a
-warmer second-look offer. It does not prove demand, signed-owner intent for
-these prospects, or any performance lift. The packet is founder-ready for
-one-to-one review and sending, but no send is authorized by this file alone.
-
-| Send order | Prospect | Suggested subject | Sharpened opener angle | Draft |
-|---:|---|---|---|---|
-| 1 | Ashley | `Ashley - quick revenue review for Starfish Villa East` | Newer beachside villa; lead with the owner statement early, then offer a light listing and photo second look before habits set. | [draft](#draft-3-ashley) |
-| 2 | Wendy | `Wendy - quick revenue review for your Holmes Beach pool home` | Walkable family-demand pool home; make the owner statement easier to read beyond the headline fee and flag easy presentation questions. | [draft](#draft-4-wendy) |
-| 3 | Adam | `Adam - quick revenue review for your Bradenton Beach home` | Premium view home with depth of reviews; focus on owner statement clarity, payment cost, and whether the listing is carrying the home's strongest story. | [draft](#draft-5-adam) |
-| 4 | Kate | `Kate - quick revenue review for your Bradenton home near AMI and IMG` | Mainland-near-island family home; check whether booking-source cost and guest-fit presentation are helping the owner statement. | [draft](#draft-6-kate) |
-| 5 | Teresa | `Teresa - quick revenue review for your Bradenton Beach listing` | Early-cycle beach home; review cost mix and photo-ready setup while the listing rhythm is still young. | [draft](#draft-8-teresa) |
-| 6 | Morgan | `Morgan - quick revenue review for Bimini Breeze` | Premium amenity home near Bridge Street; keep the note about net payout, payment cost, and guest-confidence presentation, not a generic fee pitch. | [draft](#draft-9-morgan) |
-| 7 | Christy | `Christy - quick revenue review for your Holmes Beach pool home` | Larger island home; stress reporting clarity, local follow-through, and any simple presentation details worth checking before renewal. | [draft](#draft-10-christy) |
-
-This week's founder send decision:
-
-| Prospect | Contact path | Proof module | Send-ready check | Decision slot |
-|---|---|---|---|---|
-| Ashley | Airbnb listing -> public host surface -> Message host after platform sign-in. No copied contact detail. | `gulf-coast-owner-benchmark-2026` | Pass: named public host label, reopenable source, benchmark CTA, no private data, no lift claim. | founder approve / hold |
-| Wendy | Airbnb listing -> public host surface -> Message host after platform sign-in. No copied contact detail. | `gulf-coast-owner-benchmark-2026` | Pass: named public host label, reopenable source, benchmark CTA, no private data, no lift claim. | founder approve / hold |
-| Adam | Airbnb listing -> public host surface -> Message host after platform sign-in. No copied contact detail. | `gulf-coast-owner-benchmark-2026` | Pass: named public host label, reopenable source, benchmark CTA, no private data, no lift claim. | founder approve / hold |
-
-Send only after founder review confirms the platform contact path is appropriate
-and the opener still feels one-to-one. If sent, update only `Sent at`, `Reply
-status`, and `Outcome`; a sent row is still measurement only, not owner demand.
-
-Warm reply follow-up wording:
-
-Hi [Name] - happy to take a look. The easiest first step is for me to review the
-public listing, booking-source cost, direct-payment cost, and the parts of the
-listing that affect photo-readiness and owner confidence. I will send back a
-short note with what looks clear, what I would ask about before renewal, and
-whether there are any simple listing-refresh items worth discussing separately.
-
-No pressure to change anything from the first note. It is just a second set of
-eyes before you decide what to do next.
-
-## Draft Messages
-
-These are copy-paste opener drafts for founder review. Each message points to
-the owner benchmark and offers a short revenue review plus a practical second
-look at the listing. They deliberately avoid claiming that the owner is losing
-money, unhappy, ready to switch managers, or asking for redesign help. Drafts 1,
-2, and 7 are kept as the evidence-backed sent examples. Drafts 3, 4, 5, 6, 8,
-9, and 10 are the live next-send packet.
-
-### Draft 1: Kiri
-
-Hi Kiri - I came across your 6-bedroom canal-front Anna Maria listing with the
-pool and spa. It looks like the kind of premium home where the management
-percentage alone would not explain what reaches the owner statement.
-
-I run Seascape Vacations, and we built a small Gulf Coast owner benchmark that
-compares Airbnb host-fee cost with lower-cost direct payment. If useful, I can
-do a short revenue review on your listing and point out what is clear, what is
-worth a second look, and what I would ask before renewing any management setup.
-
-Benchmark:
-https://seascape-vacations.com/research/owner-fee-revenue-leak-benchmark-2026/
-
-### Draft 2: Megan
-
-Hi Megan - your Bradenton Beach home caught my eye because it has the bigger
-owner-economics pieces in one place: walk-to-beach appeal, a heated pool, and a
-boat dock.
-
-I am Sawyer with Seascape Vacations. We have a Gulf Coast owner benchmark that
-looks beyond the headline management fee and compares what Airbnb-heavy bookings
-cost against lower-cost direct payment. I can send back a short revenue review
-on your listing if you want a second set of eyes before the next renewal or
-pricing reset.
-
-Benchmark:
-https://seascape-vacations.com/research/owner-fee-revenue-leak-benchmark-2026/
-
-### Draft 3: Ashley
-
-Subject: Ashley - quick revenue review for Starfish Villa East
-
-Hi Ashley - I came across Starfish Villa East and the appeal is easy to see:
-crosswalk-to-sand access, pool, balconies, and Bridge Street right there. With a
-newer beachside home like that, the early pattern can matter: booking-source
-costs, owner statement clarity, and the first few presentation choices tend to
-set the tone before the listing rhythm hardens.
-
-I run Seascape Vacations nearby. We built a small Gulf Coast owner benchmark
-from observed five-home operating data, including Airbnb host-fee cost and
-direct-payment cost. If useful, I can send back a short revenue review on your
-listing: what looks clear, what I would ask before renewal or the next pricing
-reset, and whether any simple photo or listing details deserve a second look.
-
-Benchmark:
-https://seascape-vacations.com/research/owner-fee-revenue-leak-benchmark-2026/
-
-### Draft 4: Wendy
-
-Subject: Wendy - quick revenue review for your Holmes Beach pool home
-
-Hi Wendy - your Holmes Beach pool home stood out because it has the family-
-demand pieces in one listing: pool, walk-to-beach access, and the kind of
-location where guests can park once and stay put. Homes like that can perform
-well and still leave the owner statement hard to read once platform and payment
-costs are mixed in.
-
-I am Sawyer from Seascape Vacations. We built a small Gulf Coast owner
-benchmark from observed five-home operating data, including Airbnb host-fee
-cost and direct-payment cost. If useful, I can send back a short revenue review
-on your listing with what looks clear, what I would ask before renewal, and any
-small listing or photo questions that might be worth a practical second look.
-
-Benchmark:
-https://seascape-vacations.com/research/owner-fee-revenue-leak-benchmark-2026/
-
-### Draft 5: Adam
-
-Subject: Adam - quick revenue review for your Bradenton Beach home
-
-Hi Adam - your Bradenton Beach place has the kind of premium mix where small
-economics changes can matter: beach and bay views, private pool, elevator, and
-a deep review history. On a home like that, I would want the owner statement,
-payment costs, and listing story to be as strong and clear as the amenity list.
-
-I run Seascape Vacations. We built a small Gulf Coast owner benchmark from our
-observed five-home operating data, including Airbnb host-fee cost and direct-
-payment cost. If useful, I can send back a short revenue review on your
-listing: what looks clear, what I would ask before a renewal or pricing reset,
-and whether the listing story or photo setup deserves a plain second look.
-
-Benchmark:
-https://seascape-vacations.com/research/owner-fee-revenue-leak-benchmark-2026/
-
-### Draft 6: Kate
-
-Subject: Kate - quick revenue review for your Bradenton home near AMI and IMG
-
-Hi Kate - I saw your heated-pool Bradenton home near AMI and IMG. Four
-bedrooms, two king suites, and the family/group setup make it the kind of home
-where booking-source cost, payment cost, and guest-fit presentation are worth
-looking at together.
-
-I am Sawyer with Seascape Vacations. We built a small Gulf Coast owner
-benchmark from observed five-home operating data, including Airbnb host-fee
-cost and direct-payment cost. If useful, I can send back a short revenue review
-on your listing with what looks clear, what I would ask before renewal or
-pricing changes, and any guest-fit or photo details I would check before the
-next busy stretch.
-
-Benchmark:
-https://seascape-vacations.com/research/owner-fee-revenue-leak-benchmark-2026/
-
-### Draft 7: Naomi Ewald
-
-Hi Naomi - I found the Playa Palma listing and noticed the owner story about you
-and Bill buying the property and adding the pool. That is exactly the kind of
-hands-on ownership where the owner statement should be easy to understand.
-
-I run Seascape Vacations. We built a Gulf Coast owner benchmark that compares
-Airbnb host-fee cost with lower-cost direct payment, then uses that as the
-starting point for a short property-specific revenue review. If useful, I can
-look at Playa Palma and send back the questions I would ask before making any
-management or pricing decision.
-
-Benchmark:
-https://seascape-vacations.com/research/owner-fee-revenue-leak-benchmark-2026/
-
-### Draft 8: Teresa
-
-Subject: Teresa - quick revenue review for your Bradenton Beach listing
-
-Hi Teresa - your Bradenton Beach listing looks like the kind of home worth
-reading while the hosting pattern is still young: short walk to the beach,
-heated pool, spa, firepit, and enough guest capacity for strong family weeks.
-Before the rhythm settles, it can help to see what booking-source cost, payment
-cost, and photo-ready setup are doing to the owner statement.
-
-I am Sawyer from Seascape Vacations. We built a small Gulf Coast owner
-benchmark from observed five-home operating data, including Airbnb host-fee
-cost and direct-payment cost. If useful, I can send back a short revenue review
-on your listing with what looks clear, what I would ask while the pattern is
-still fresh, and any practical photo or listing details that seem worth a
-second look.
-
-Benchmark:
-https://seascape-vacations.com/research/owner-fee-revenue-leak-benchmark-2026/
-
-### Draft 9: Morgan
-
-Subject: Morgan - quick revenue review for Bimini Breeze
-
-Hi Morgan - I came across Bimini Breeze near Bridge Street. The elevated
-layout, pool, hot tub, and beach proximity make it the kind of premium amenity
-home where owner statement clarity, payment costs, and listing presentation are
-worth reviewing together.
-
-I run Seascape Vacations. We built a small Gulf Coast owner benchmark from our
-observed five-home operating data, including Airbnb host-fee cost and direct-
-payment cost. If useful, I can send back a short revenue review on your
-listing with what looks clear, what I would ask before the next pricing or
-renewal decision, and whether any photo-ready or guest-confidence details
-deserve a second look.
-
-Benchmark:
-https://seascape-vacations.com/research/owner-fee-revenue-leak-benchmark-2026/
-
-### Draft 10: Christy
-
-Subject: Christy - quick revenue review for your Holmes Beach pool home
-
-Hi Christy - I saw your Holmes Beach pool home with the golf cart and larger
-four-bedroom setup. On an island home like that, clear owner reporting and
-local follow-through usually matter as much as the headline fee. The listing
-also looks like the kind of home where small photo-ready details can affect how
-confidently guests book.
-
-I am Sawyer with Seascape Vacations. We built a small Gulf Coast owner
-benchmark from observed five-home operating data, including Airbnb host-fee
-cost and direct-payment cost. If useful, I can send back a short revenue review
-on your listing with what looks clear, what I would ask before renewal or
-pricing changes, and whether any simple listing or photo-readiness items
-deserve a second look.
-
-Benchmark:
-https://seascape-vacations.com/research/owner-fee-revenue-leak-benchmark-2026/
-
-## Effect Rule
-
-After two batches that actually went out and got zero real replies, change the
-list, offer, or opener before sending another batch.
-
-If zero sends happened, do not call that channel failure. That is a discipline
-or execution failure.
-
-## Kill And Decay Rule
-
-At the end of each week, set the lane state:
-
-- `not started`: no homeowner-list milestone yet
-- `ready`: list milestone cleared, no sends yet
-- `sent-no-reply`: at least one real send, no real reply
-- `reply-qualified`: real reply meets Gate 2
-- `teardown-complete`: Gate 3 reached
-- `decayed`: no real send or update for `3` consecutive weeks after the list is ready
-
-If the lane reaches `decayed`, stop preserving it as a live motion. Write the
-reason in `Outcome`, then either change the list/offer or close the outbound
-lane. Do not let it sit silently as strategy.
-
-Current lane state: `sent-no-reply`.
-
-State note: the 2026-06-16 Card 3 prospect batch still clears the site-side
-homeowner-list milestone. The milestone itself does not authorize a send, count
-as demand, or create a Hub register row. As of the 2026-06-26 mailbox check,
-Outlook still shows exactly the three June 17 sends to Kiri, Megan, and Naomi,
-and connected Gmail searches found no matching benchmark/revenue-review threads.
-The Emerald House packet handoff to Patrick also bounced on 2026-06-22, so it
-cannot be treated as completed founder review. That is owner-outreach effort
-and workflow evidence only, not demand proof, and it leaves the next move as the
-ready-to-send seven-prospect packet above.
-
-## Owner-Truth Preflight
-
-Before linking any prospect to a public page, verify the linked page is still
-fact-clean:
-
-- `src/_data/ownerProofAssets.json` has the proof claim being used
-- `/research/owner-fee-revenue-leak-benchmark-2026/` is the benchmark path
-- no owner proof claim relies on test receipts, labeled sends, or internal
-  helper traffic
-- any visible claim still passes the owner-proof and content gates before reuse
-
-## Register Boundary
-
-If Gate 2 or Gate 3 fires, route the durable demand proof to
-`/Users/sawbeck/Projects/seascape-hub/projects/owner-demand-trust-outcome-register.md`
-through a clean Seascape Hub branch or PR.
-
-Do not edit the generated `owner-receipt-projection` block by hand. The
-hand-authored `## Register` section is the only durable destination for
-qualified owner-demand rows.
+## Proof and Register Boundary
+
+No prepared row, outreach attempt, delivery event, open, click, non-response,
+or test signal is owner demand.
+
+A reply can become provisional owner-demand evidence only when it has a dated,
+reopenable source, named owner pain or objection, and a next action. A
+completed teardown is the first strong proof that the lane produced real owner
+demand.
+
+If that threshold is later met, route durable proof through a clean
+`seascape-hub` branch or PR to
+`projects/owner-demand-trust-outcome-register.md`. Do not edit the generated
+`owner-receipt-projection` block by hand.
