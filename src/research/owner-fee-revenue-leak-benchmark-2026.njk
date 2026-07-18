@@ -272,6 +272,7 @@ a{color:var(--brand-dark);text-decoration:underline}
 .hero-copy{
   display:flex;
   flex-direction:column;
+  justify-content:center;
   gap:18px;
 }
 .hero .eyebrow{
@@ -375,6 +376,31 @@ a{color:var(--brand-dark);text-decoration:underline}
   display:flex;
   flex-direction:column;
   gap:16px;
+}
+.hero-media{
+  display:block;
+  overflow:hidden;
+  border-radius:22px;
+  border:1px solid rgba(255,255,255,.16);
+  background:rgba(255,255,255,.08);
+}
+.hero-media.mobile-only{
+  display:none;
+}
+.hero-media img{
+  display:block;
+  width:100%;
+  aspect-ratio:16/9;
+  object-fit:cover;
+}
+.hero-media figcaption{
+  padding:10px 14px;
+  color:rgba(255,255,255,.78);
+  font-size:11px;
+  line-height:1.45;
+}
+.hero-media--mobile{
+  margin-top:4px;
 }
 .side-panel{
   background:rgba(255,255,255,.08);
@@ -787,6 +813,13 @@ a{color:var(--brand-dark);text-decoration:underline}
       <p class="hero-lead">Published platform fees are easy to find but hard to compare. Here is what Airbnb and Stripe say they charge today, from their own pricing pages — and why a full-service management fee is a different kind of number, set per property by your agreement.</p>
       <p class="hero-support desktop-only"><strong>For homeowners around Anna Maria Island, Bradenton, and Sarasota:</strong> put each charge beside the service it buys before you sign or renew.</p>
       <p class="hero-caption mobile-only">Airbnb, card processing, and property management cover different services. Compare the terms, not only the percentages.</p>
+      <figure class="hero-media hero-media--mobile mobile-only">
+        <picture>
+          <source srcset="/images/owner-field-hero.webp" type="image/webp">
+          <img src="/images/owner-field-hero.webp" alt="Gulf Coast rental homes near the Anna Maria Island and Bradenton market" width="1200" height="675" loading="eager" decoding="async" fetchpriority="high">
+        </picture>
+        <figcaption>Local Gulf Coast management decisions should compare the service behind each charge, not just the percentage.</figcaption>
+      </figure>
       <div class="hero-actions desktop-only">
         <a class="btn" href="{{ ctaPath }}" data-track-event="owner_primary_cta_click" data-page-slug="owner-fee-revenue-leak-benchmark-2026">Request Your Revenue Review</a>
         <a class="hero-secondary" href="#published-fees">Compare published fees</a>
@@ -798,6 +831,13 @@ a{color:var(--brand-dark);text-decoration:underline}
       </div>
     </div>
     <div class="hero-side desktop-only">
+      <figure class="hero-media">
+        <picture>
+          <source srcset="/images/owner-field-hero.webp" type="image/webp">
+          <img src="/images/owner-field-hero.webp" alt="Gulf Coast rental homes near the Anna Maria Island and Bradenton market" width="1200" height="675" loading="eager" decoding="async" fetchpriority="high">
+        </picture>
+        <figcaption>Local Gulf Coast management decisions should compare the service behind each charge, not just the percentage.</figcaption>
+      </figure>
       <div class="side-panel">
         <span class="eyebrow">Published pricing quick read</span>
         <h2 class="hero-stack-title">Three charges, three different jobs</h2>

@@ -214,6 +214,8 @@ test("benchmark metadata, schema, byline, sources, and CTA stay synchronized", (
     html,
     /href="\/property-management\/\?owner_source=owner-fee-revenue-leak-benchmark-2026#owner-cta"/
   );
+  assert.match(html, /<picture>\s*<source srcset="\/images\/owner-field-hero\.webp" type="image\/webp">\s*<img src="\/images\/owner-field-hero\.webp"/);
+  assert.match(html, /alt="Gulf Coast rental homes near the Anna Maria Island and Bradenton market"/);
   assert.match(
     html,
     /<div class="scenario-cards scenario-cards--fees" data-mobile-fee-comparison>/
