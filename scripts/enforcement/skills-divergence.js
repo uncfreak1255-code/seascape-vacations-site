@@ -22,21 +22,51 @@ const CLAUDE_SKILLS_DIR = path.join(".claude", "skills");
 const MANIFEST_PATH = path.join(".agents", "skills-divergence.json");
 const VALID_SIDES = [".agents", ".claude"];
 
-function listSkillDirs(absoluteDir) {
-  return fs
-    .readdirSync(absoluteDir, { withFileTypes: true })
-    .filter((entry) => {
-      if (entry.isDirectory()) return true;
-      if (!entry.isSymbolicLink()) return false;
-      try {
-        // statSync follows symlinks; throws on broken links.
-        return fs.statSync(path.join(absoluteDir, entry.name)).isDirectory();
-      } catch {
-        return false;
+function listSkillDirs(absoluteDir, { symlinkErrors, expectTargetRoot } = {}) {
+  const names = [];
+  for (const entry of fs.readdirSync(absoluteDir, { withFileTypes: true })) {
+    if (entry.isDirectory()) {
+      names.push(entry.name);
+      continue;
+    }
+    if (!entry.isSymbolicLink()) continue;
+    const linkPath = path.join(absoluteDir, entry.name);
+    // Broken symlinks are ERRORS, never silent omissions: a deleted
+    // .agents target with its tracked .claude symlink left behind must
+    // fail the gate, not vanish from both sides (adversarial review P1).
+    let resolved;
+    try {
+      resolved = fs.realpathSync(linkPath);
+    } catch {
+      if (symlinkErrors) {
+        symlinkErrors.push(
+          `broken symlink: ${linkPath} (target missing — restore the target or remove the link)`
+        );
       }
-    })
-    .map((entry) => entry.name)
-    .sort();
+      continue;
+    }
+    if (!fs.statSync(resolved).isDirectory()) continue;
+    // A symlink must point at the SAME-NAMED skill under the expected
+    // root; a misdirected link loads the wrong skill while comparing
+    // clean by basename (adversarial review P1).
+    if (expectTargetRoot) {
+      let expected = null;
+      try {
+        expected = fs.realpathSync(path.join(expectTargetRoot, entry.name));
+      } catch {
+        // No same-named target exists at all — the link points somewhere
+        // it shouldn't, by construction.
+      }
+      if (resolved !== expected && symlinkErrors) {
+        symlinkErrors.push(
+          `misdirected symlink: ${linkPath} -> ${resolved} (expected same-named skill under ${expectTargetRoot})`
+        );
+        continue;
+      }
+    }
+    names.push(entry.name);
+  }
+  return names.sort();
 }
 
 function validateManifestEntries(entries) {
@@ -137,8 +167,14 @@ function loadManifest(repoRoot) {
 }
 
 function runCheck(repoRoot) {
-  const agentsSkills = listSkillDirs(path.join(repoRoot, AGENTS_SKILLS_DIR));
-  const claudeSkills = listSkillDirs(path.join(repoRoot, CLAUDE_SKILLS_DIR));
+  const symlinkErrors = [];
+  const agentsSkills = listSkillDirs(path.join(repoRoot, AGENTS_SKILLS_DIR), {
+    symlinkErrors
+  });
+  const claudeSkills = listSkillDirs(path.join(repoRoot, CLAUDE_SKILLS_DIR), {
+    symlinkErrors,
+    expectTargetRoot: path.join(repoRoot, AGENTS_SKILLS_DIR)
+  });
   const manifest = loadManifest(repoRoot);
 
   const comparison = compareSkillSets({
@@ -149,8 +185,9 @@ function runCheck(repoRoot) {
 
   return {
     ...comparison,
+    symlinkErrors,
     manifestErrors: manifest.errors,
-    ok: comparison.ok && manifest.errors.length === 0
+    ok: comparison.ok && manifest.errors.length === 0 && symlinkErrors.length === 0
   };
 }
 
@@ -158,6 +195,9 @@ function main() {
   const repoRoot = path.resolve(__dirname, "..", "..");
   const result = runCheck(repoRoot);
 
+  for (const message of result.symlinkErrors || []) {
+    console.error(`[SKILLS-DIVERGENCE] ${message}`);
+  }
   for (const message of result.manifestErrors) {
     console.error(`[SKILLS-DIVERGENCE] manifest error: ${message}`);
   }

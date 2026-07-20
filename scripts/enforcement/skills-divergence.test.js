@@ -13,22 +13,28 @@ const {
 
 const REPO_ROOT = path.resolve(__dirname, "..", "..");
 
-test("listSkillDirs: real dirs and symlinks-to-dirs count as skills; files and broken symlinks do not", (t) => {
+test("listSkillDirs: broken symlinks are ERRORS, not omissions; misdirected symlinks are errors too", (t) => {
+  // Adversarial review P1 pair: a deleted target with its tracked symlink
+  // left behind must FAIL the gate, and a symlink pointing at the wrong
+  // skill must not compare clean by basename.
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "skills-divergence-"));
   t.after(() => fs.rmSync(tmp, { recursive: true, force: true }));
 
   const skillsDir = path.join(tmp, "skills");
-  const targetDir = path.join(tmp, "target-skill");
+  const agentsRoot = path.join(tmp, "agents-skills");
   fs.mkdirSync(path.join(skillsDir, "real-dir-skill"), { recursive: true });
-  fs.mkdirSync(targetDir);
-  fs.symlinkSync(targetDir, path.join(skillsDir, "symlinked-skill"));
-  fs.symlinkSync(
-    path.join(tmp, "does-not-exist"),
-    path.join(skillsDir, "broken-symlink-skill")
-  );
-  fs.writeFileSync(path.join(skillsDir, "README.md"), "docs, not a skill\n");
+  fs.mkdirSync(path.join(agentsRoot, "symlinked-skill"), { recursive: true });
+  fs.mkdirSync(path.join(agentsRoot, "other-skill"), { recursive: true });
+  fs.symlinkSync(path.join(agentsRoot, "symlinked-skill"), path.join(skillsDir, "symlinked-skill"));
+  fs.symlinkSync(path.join(tmp, "does-not-exist"), path.join(skillsDir, "broken-symlink-skill"));
+  fs.symlinkSync(path.join(agentsRoot, "other-skill"), path.join(skillsDir, "misdirected-skill"));
 
-  assert.deepEqual(listSkillDirs(skillsDir), ["real-dir-skill", "symlinked-skill"]);
+  const symlinkErrors = [];
+  const names = listSkillDirs(skillsDir, { symlinkErrors, expectTargetRoot: agentsRoot });
+  assert.deepEqual(names, ["real-dir-skill", "symlinked-skill"]);
+  assert.equal(symlinkErrors.length, 2);
+  assert.ok(symlinkErrors.some((m) => m.includes("broken symlink")));
+  assert.ok(symlinkErrors.some((m) => m.includes("misdirected symlink")));
 });
 
 test("undeclared divergence fails: skill present in one dir but not in manifest", () => {
