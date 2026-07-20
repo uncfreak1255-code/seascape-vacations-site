@@ -1,15 +1,4 @@
 {
-  "description": "Declared divergences between .agents/skills/ and .claude/skills/. Every skill directory that exists in one dir but not the other must be listed here with a reason, or the test gate (scripts/enforcement/skills-divergence.test.js) fails. Scope: directories only — loose files like .claude/skills/README.md are documentation, not skills. Approved by eng-review decision D16, 2026-07-19.",
-  "divergences": [
-    {
-      "skill": "owner-outbound-batch",
-      "only_in": ".agents",
-      "reason": "listed in .claude/skills/README.md curated focus but the symlink was never created — pre-manifest drift, reason not yet recorded; tighten (create symlink or remove from README) when touched"
-    },
-    {
-      "skill": "owner-reply-intake",
-      "only_in": ".agents",
-      "reason": "listed in .claude/skills/README.md curated focus but the symlink was never created — pre-manifest drift, reason not yet recorded; tighten (create symlink or remove from README) when touched"
-    }
-  ]
+  "description": "Declared divergences between .agents/skills/ and .claude/skills/. Every skill directory that exists in one dir but not the other must be listed here with a reason, or the test gate (scripts/enforcement/skills-divergence.test.js) fails. Scope: directories only \u2014 loose files like .claude/skills/README.md are documentation, not skills. Approved by eng-review decision D16, 2026-07-19.",
+  "divergences": []
 }
