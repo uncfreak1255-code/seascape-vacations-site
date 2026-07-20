@@ -32,6 +32,7 @@
     "verify:redirects": "node scripts/enforcement/validate-redirect-targets.js",
     "verify:links": "node scripts/enforcement/validate-internal-links.js",
     "verify:jsonld": "node scripts/enforcement/validate-jsonld.js",
+    "verify:skills-divergence": "node scripts/enforcement/skills-divergence.js",
     "verify:release": "node scripts/enforcement/verify-release.js",
     "verify:ami-vs-siesta-readback": "node scripts/enforcement/assert-ami-vs-siesta-readback-gate.js",
     "report:release-scorecard": "node scripts/enforcement/create-release-scorecard.js",
