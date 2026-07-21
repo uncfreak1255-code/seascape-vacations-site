@@ -21,23 +21,38 @@ on:
         type: string
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: update-visual-baselines-${{ github.event.inputs.branch }}
   cancel-in-progress: false
 
 jobs:
-  update-baselines:
+  generate-baselines:
     # Must match the OS of the Playwright Visual Gate so regenerated pixels line up.
     runs-on: macos-latest
     timeout-minutes: 30
+    permissions:
+      contents: read
 
     steps:
+      - name: Validate target branch
+        env:
+          INPUT_BRANCH: ${{ inputs.branch }}
+        run: |
+          case "$INPUT_BRANCH" in
+            codex/*|claude/*) ;;
+            *)
+              echo "::error::Baseline updates may only target codex/* or claude/* task branches."
+              exit 1
+              ;;
+          esac
+
       - uses: actions/checkout@v7
         with:
           ref: ${{ inputs.branch }}
           fetch-depth: 0
+          persist-credentials: false
 
       - uses: actions/setup-node@v6
         with:
@@ -59,20 +74,6 @@ jobs:
           fi
           npm run test:visual:update -- --grep "$PATTERN"
 
-      - name: Commit and push updated baselines
-        env:
-          INPUT_BRANCH: ${{ inputs.branch }}
-        run: |
-          if git diff --quiet -- tests/visual/__screenshots__; then
-            echo "No baseline changes to commit."
-            exit 0
-          fi
-          git config user.name "seascape-visual-baseline-bot"
-          git config user.email "noreply@anthropic.com"
-          git add tests/visual/__screenshots__
-          git commit -m "chore(visual): regenerate committed baselines via update-visual-baselines workflow"
-          git push origin "HEAD:$INPUT_BRANCH"
-
       - name: Upload regenerated baselines as artifact
         if: always()
         uses: actions/upload-artifact@v7
@@ -80,3 +81,53 @@ jobs:
           name: updated-visual-baselines
           path: tests/visual/__screenshots__/
           if-no-files-found: warn
+
+  commit-baselines:
+    needs: generate-baselines
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+
+    steps:
+      - name: Validate target branch
+        env:
+          INPUT_BRANCH: ${{ inputs.branch }}
+        run: |
+          case "$INPUT_BRANCH" in
+            codex/*|claude/*) ;;
+            *)
+              echo "::error::Baseline updates may only target codex/* or claude/* task branches."
+              exit 1
+              ;;
+          esac
+
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ inputs.branch }}
+          fetch-depth: 0
+
+      - uses: actions/download-artifact@v8
+        with:
+          name: updated-visual-baselines
+          path: /tmp/updated-visual-baselines
+
+      - name: Apply regenerated baseline artifact
+        run: |
+          rm -rf tests/visual/__screenshots__
+          mkdir -p tests/visual/__screenshots__
+          cp -R /tmp/updated-visual-baselines/. tests/visual/__screenshots__/
+
+      - name: Commit and push updated baselines
+        env:
+          INPUT_BRANCH: ${{ inputs.branch }}
+        run: |
+          git add tests/visual/__screenshots__
+          if git diff --cached --quiet -- tests/visual/__screenshots__; then
+            echo "No baseline changes to commit."
+            exit 0
+          fi
+          git config user.name "seascape-visual-baseline-bot"
+          git config user.email "noreply@anthropic.com"
+          git -c core.hooksPath=/dev/null commit -m "chore(visual): regenerate committed baselines via update-visual-baselines workflow"
+          git push origin "HEAD:$INPUT_BRANCH"
