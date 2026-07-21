@@ -61,7 +61,9 @@
     "@opentelemetry/resources": "2.8.0",
     "@opentelemetry/sdk-trace-base": "2.8.0",
     "@opentelemetry/sdk-trace-node": "2.8.0",
-    "js-yaml": "4.2.0",
+    "js-yaml": "4.3.0",
+    "brace-expansion": "1.1.16",
+    "body-parser": "1.20.6",
     "@11ty/eleventy": {
       "picomatch": "4.0.4"
     },
