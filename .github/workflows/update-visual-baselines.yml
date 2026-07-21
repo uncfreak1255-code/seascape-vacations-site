@@ -34,6 +34,8 @@ jobs:
     timeout-minutes: 30
     permissions:
       contents: read
+    outputs:
+      generated_sha: ${{ steps.generated-ref.outputs.sha }}
 
     steps:
       - name: Validate target branch
@@ -53,6 +55,10 @@ jobs:
           ref: ${{ inputs.branch }}
           fetch-depth: 0
           persist-credentials: false
+
+      - name: Capture generated branch SHA
+        id: generated-ref
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
       - uses: actions/setup-node@v6
         with:
@@ -106,6 +112,18 @@ jobs:
         with:
           ref: ${{ inputs.branch }}
           fetch-depth: 0
+
+      - name: Verify branch did not move during generation
+        env:
+          GENERATED_SHA: ${{ needs.generate-baselines.outputs.generated_sha }}
+        run: |
+          CURRENT_SHA="$(git rev-parse HEAD)"
+          if [ "$CURRENT_SHA" != "$GENERATED_SHA" ]; then
+            echo "::error::Target branch moved during baseline generation. Rerun the workflow on the new branch tip."
+            echo "generated_sha=$GENERATED_SHA"
+            echo "current_sha=$CURRENT_SHA"
+            exit 1
+          fi
 
       - uses: actions/download-artifact@v8
         with:

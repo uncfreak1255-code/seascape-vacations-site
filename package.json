@@ -11,6 +11,7 @@
     "git:safe-commit": "/Users/sawbeck/bin/guardrail-safe-commit",
     "git:merge-check": "/Users/sawbeck/bin/guardrail-merge-check",
     "design:lane": "./scripts/design/codex-seascape-design",
+    "design:donors": "node scripts/design/design-donor-router.js",
     "normalize:guides": "node scripts/guides/normalize-guides.js",
     "upgrade:priority-guides": "node scripts/guides/upgrade-priority-guides.js",
     "start": "npm run clean:site && npx @11ty/eleventy --serve",
