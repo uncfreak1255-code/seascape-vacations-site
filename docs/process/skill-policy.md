@@ -35,6 +35,14 @@ implementation brief. The critic owns the blunt taste verdict. They are local
 because Seascape taste, page economics, and the "do not bless bland work"
 standard are repo-specific.
 
+The repo design launcher may scan locally cached Codex and Claude plugin skill
+frontmatter to find task-specific donor capabilities. That scan is read-only,
+metadata-only, and does not make a cached skill authoritative or callable. It
+must not install, copy, globally load, or promote a donor. This keeps the local
+design pair stable while allowing guide families to borrow stronger interface,
+artifact, map, chart, imagery, or prototype lenses when the current session
+actually exposes them.
+
 ## Model And Tool Routing
 
 Choose models and plugins at task level. Do not change a global default or add
@@ -65,6 +73,10 @@ For design work, global `claude-design`, `product-design:*`, and
 `creative-production:*` skills are donor lenses only. They may sharpen a pass,
 but they do not become local authority or replace `DESIGN.md`, the local design
 pair, or the rendered proof loop.
+
+Local plugin-cache discovery is the preferred first donor check. Legacy global
+donors remain optional when already available; Sawyer does not need to keep a
+bundle globally loaded for the Seascape design lane.
 
 ## Global marketing skills — advisory lenses
 
@@ -132,3 +144,11 @@ entry is the receipt the governance rule requires for any skill change.
   a global design bundle. Decision: promote one narrow repo-local design lane
   plus a blunt critic gate, wire a repo-local launcher, and keep outside design
   tools donor-only. Approved by Sawyer.
+- **2026-07-21 — extended the existing design lane with local donor routing.**
+  Trigger: repeated guide-design comparisons showed that different guide jobs
+  need different visual structures, while Sawyer should not have to maintain a
+  globally loaded design bundle. Agent-surface audit verdict: **KEEP** the
+  existing specialist/critic authority and launcher; create no new agent or
+  skill. Decision: add a metadata-only local plugin scanner plus comparison,
+  field-journal, planning, destination-overview, and general-page routing. The
+  scanner never installs, copies, invokes, or promotes a donor by itself.
