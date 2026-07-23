@@ -18,6 +18,7 @@
     "guide_stay_click",
     "guide_owner_referral_click",
     "guide_book_direct_click",
+    "guide_property_check_dates_click",
     "email_capture_submit",
     "email_capture_fallback",
     "booking_engine_handoff",
@@ -520,6 +521,7 @@
 
     return Object.assign({
       guide_slug: dataset.guideSlug || "",
+      property_slug: dataset.propertySlug || "",
       page_slug: dataset.pageSlug || "",
       source_page_slug: sourcePageSlug,
       market: dataset.market || "",

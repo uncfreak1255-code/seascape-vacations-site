@@ -198,11 +198,64 @@ test("conversion tracking supports both guide and owner measurement events", () 
     "guide_stay_click",
     "guide_owner_referral_click",
     "guide_book_direct_click",
+    "guide_property_check_dates_click",
     "email_capture_submit",
     "booking_engine_handoff"
   ]) {
     assert.equal(trackingScript.includes(eventName), true, `tracking script missing ${eventName}`);
   }
+});
+
+test("Sarasota Luxe availability click emits exact property and placement context", () => {
+  const observed = withConversionTrackingStubs(({ listeners, window }) => {
+    const link = {
+      tagName: "A",
+      textContent: "See photos & check dates",
+      target: "",
+      href: "/properties/sarasota-luxe/#check-availability",
+      dataset: {
+        trackEvent: "guide_property_check_dates_click",
+        guideSlug: "anna-maria-island-vs-siesta-key",
+        propertySlug: "sarasota-luxe",
+        placement: "before_long_comparison",
+        trackLabel: "See photos and check dates Sarasota Luxe"
+      },
+      getAttribute(name) {
+        if (name === "href") return this.href;
+        if (name === "target") return this.target;
+        return "";
+      },
+      setAttribute(name, value) {
+        if (name === "href") this.href = value;
+      },
+      hasAttribute() {
+        return false;
+      }
+    };
+
+    listeners.DOMContentLoaded();
+    listeners.click({
+      target: {
+        closest(selector) {
+          return selector === "[data-track-event]" ? link : null;
+        }
+      },
+      button: 0,
+      preventDefault() {}
+    });
+
+    return window.dataLayer[0];
+  });
+
+  assert.equal(observed.event, "guide_property_check_dates_click");
+  assert.equal(observed.payload.guide_slug, "anna-maria-island-vs-siesta-key");
+  assert.equal(observed.payload.property_slug, "sarasota-luxe");
+  assert.equal(observed.payload.placement, "before_long_comparison");
+  assert.equal(
+    observed.payload.link_url,
+    "http://localhost/properties/sarasota-luxe/#check-availability"
+  );
+  assert.equal(observed.payload.link_text, "See photos and check dates Sarasota Luxe");
 });
 
 test("GA4 bootstrap sanitizes payment-return params before page storage", () => {
@@ -1079,6 +1132,31 @@ test("winner guides surface the shared conversion kit before late-stage related 
       );
     }
   }
+});
+
+test("built AMI versus Siesta guide renders the Sarasota Luxe action before the long comparison", () => {
+  const builtGuide = path.join(
+    projectRoot,
+    "_site",
+    "guides",
+    "anna-maria-island-vs-siesta-key",
+    "index.html"
+  );
+  assert.equal(fs.existsSync(builtGuide), true, "built AMI versus Siesta guide should exist");
+
+  const html = fs.readFileSync(builtGuide, "utf8");
+  const offerIndex = html.indexOf('data-guide-property-offer="sarasota-luxe"');
+  const actionIndex = html.indexOf('href="/properties/sarasota-luxe/#check-availability"');
+  const comparisonIndex = html.indexOf("data-guide-long-comparison");
+
+  assert.ok(offerIndex >= 0, "rendered guide should include the Sarasota Luxe offer");
+  assert.ok(actionIndex >= 0, "rendered guide should include the exact availability action");
+  assert.ok(comparisonIndex >= 0, "rendered guide should mark the detailed comparison independently of its design");
+  assert.ok(offerIndex < comparisonIndex, "Sarasota Luxe offer should render before the detailed comparison");
+  assert.match(
+    html.slice(offerIndex, comparisonIndex),
+    /data-track-event="guide_property_check_dates_click"[^>]*data-property-slug="sarasota-luxe"[^>]*data-placement="before_long_comparison"/
+  );
 });
 
 test("priority guides do not keep the legacy popup email capture once the shared inline form exists", () => {
