@@ -109,7 +109,7 @@ test("june 12 404 alert routes redirect to current live destinations", () => {
     "/stays/palmetto-vacation-rentals-florida/   /guides/bradenton-area-guide/   301",
     // 2026-07-24: repointed to indexable destinations — the previous targets are
     // in staysNoindexSlugs, so the 301s were dropping legacy equity entirely.
-    "/stays/pet-friendly-vacation-rentals-anna-maria-island/   /properties/   301",
+    "/stays/pet-friendly-vacation-rentals-anna-maria-island/   /properties/?area=pet-friendly   301",
     "/stays/spring-break-vacation-rentals-florida-gulf-coast/   /stays/family-vacation-rentals-anna-maria-island/   301",
     "/stays/sunset-cruise-vacation-rentals-bradenton/   /guides/things-to-do-bradenton-fl/   301",
     "/stays/vacation-rentals-with-outdoor-kitchen-florida/   /properties/   301",

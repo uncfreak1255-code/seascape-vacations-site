@@ -24,8 +24,8 @@
 /stays/palmetto-vacation-rentals-florida   /guides/bradenton-area-guide/   301
 /stays/palmetto-vacation-rentals-florida/   /guides/bradenton-area-guide/   301
 # 2026-07-24: repointed from noindexed stay pages (equity was being dropped) to indexable equivalents
-/stays/pet-friendly-vacation-rentals-anna-maria-island   /properties/   301
-/stays/pet-friendly-vacation-rentals-anna-maria-island/   /properties/   301
+/stays/pet-friendly-vacation-rentals-anna-maria-island   /properties/?area=pet-friendly   301
+/stays/pet-friendly-vacation-rentals-anna-maria-island/   /properties/?area=pet-friendly   301
 /stays/spring-break-vacation-rentals-florida-gulf-coast   /stays/family-vacation-rentals-anna-maria-island/   301
 /stays/spring-break-vacation-rentals-florida-gulf-coast/   /stays/family-vacation-rentals-anna-maria-island/   301
 /stays/sunset-cruise-vacation-rentals-bradenton   /guides/things-to-do-bradenton-fl/   301
@@ -142,8 +142,8 @@
 # Pet-Friendly
 # 2026-07-24: repointed from the noindexed pet stay page (equity was being dropped) —
 # stay intent goes to /properties/, dog-beach informational intent to the pet guide
-/travel-spot-guide/pet-friendly   /properties/   301
-/travel-spot-guide/pet-friendly/   /properties/   301
+/travel-spot-guide/pet-friendly   /properties/?area=pet-friendly   301
+/travel-spot-guide/pet-friendly/   /properties/?area=pet-friendly   301
 /travel-spot-guide/dog-beach   /guides/pet-friendly-anna-maria-island/   301
 /travel-spot-guide/dog-beach/   /guides/pet-friendly-anna-maria-island/   301
 
