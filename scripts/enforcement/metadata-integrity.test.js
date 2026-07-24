@@ -100,7 +100,8 @@ test("winner guide metadata and conversion markers stay decision-forward", () =>
   );
   assert.match(
     amiVsSiesta,
-    /"dateModified": "2026-06-24T15:20:00-04:00"/
+    // 2026-07-24: bumped with the restored freshness markers (proof-marker rescue)
+    /"dateModified": "2026-07-24T19:30:00-04:00"/
   );
   assert.match(
     amiVsSiesta,

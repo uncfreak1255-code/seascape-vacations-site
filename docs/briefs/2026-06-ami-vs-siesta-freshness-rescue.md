@@ -38,6 +38,25 @@
 | AEO/readback note | AEO impact is not proven. Keep the direct-answer block, comparison table, FAQPage schema, and stay links extractable for AI/search answers; wait for the next analytics/AI readback before claiming citation movement. |
 | Recommended action | Update stale proof labels, current beach-source language, FAQPage award/rate wording, visible evidence card, `dateModified`, and the content-decay patrol readback. Keep title/meta and route structure unchanged. |
 
+Rows below added 2026-07-24 for the post-#465 marker restore (see the dated addendum at the end of this brief):
+
+| Field | Required answer |
+| --- | --- |
+| SERP observed date | 2026-07-24 |
+| SERP stale after | 2026-07-31 |
+| Current proof | 2026-07-24 post-deploy verify:recovery:live red on this route: "Reviewed June 20, 2026" and "950 free parking spaces" markers missing after the PR #465 redesign deploy |
+| Visual/format gap | N/A — redesign layout kept exactly as #465 shipped it; one sentence restored in the existing intro style |
+| Attack status | completed |
+| Query variants inspected | "anna maria island vs siesta key"; "siesta key or anna maria island" (existing tracked variants) |
+| SERP source | Existing rank tracking plus the 2026-07-24 post-deploy live-smoke read; no fresh SERP pull needed for an own-content restore |
+| Competitor URLs inspected | Own-route live read: https://seascape-vacations.com/guides/anna-maria-island-vs-siesta-key/ (markers absent post-#465, restored this batch) |
+| Content gap and Seascape answer | No competitor gap — self-inflicted marker loss; the answer is restoration of the dated review line and cited parking statistic, not new content |
+| Design/format strategy | Keep the #465 redesign untouched; one plain paragraph in the existing intro citation pattern |
+| Seascape proof available | Sarasota County official Siesta Beach page citation, already used elsewhere on the page |
+| Tools/plugins used | verify:recovery:live, git diff of #465, lint:content, lint:design, npm test, verify:release, test:visual |
+| Decision and reason | Restore rather than relax the smoke assertion: dated review + cited statistic are deliberate proof mechanics on a winner page; relaxing would ratify a silent regression |
+| Recommendation | Restore both markers verbatim in the redesigned intro; bump Article dateModified to match |
+
 ## Required Internal Link Map
 
 - src/guides/anna-maria-island-vs-siesta-key.html: /stays/anna-maria-island-vacation-rentals/, /stays/anna-maria-island-beachfront-rentals/, /stays/siesta-key-area-vacation-rentals/
