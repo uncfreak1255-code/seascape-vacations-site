@@ -768,7 +768,9 @@ headExtra: |
 
     <div class="catalog-grid" id="catalog-grid">
       {% for property in properties %}
-      {% set filterTokens = ((property.amenities or []) | join('|') ~ '|' ~ property.destination ~ '|' ~ property.city ~ '|' ~ property.slug) | lower %}
+      {# marketing_amenities included so flags like pet-friendly match when they
+         live there instead of amenities (true for 3 of the 4 pet homes) #}
+      {% set filterTokens = ((property.amenities or []) | join('|') ~ '|' ~ ((property.marketing_amenities or []) | join('|')) ~ '|' ~ property.destination ~ '|' ~ property.city ~ '|' ~ property.slug) | lower %}
       {% if property.slug == "dockside-dreams" %}
         {% set primaryTag = "Waterfront" %}
       {% elif property.slug == "the-oasis" %}
@@ -993,7 +995,10 @@ headExtra: |
     };
     const filterUrlMap = {
       bradenton: "anna-maria-island",
-      sarasota: "sarasota"
+      sarasota: "sarasota",
+      // keeps ?area=pet-friendly stable across load/refresh/back-forward so the
+      // rescued legacy pet URLs land and stay prefiltered
+      "pet-friendly": "pet-friendly"
     };
     const filterCopy = {
       all: {
