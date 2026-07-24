@@ -104,8 +104,10 @@ test("june 12 404 alert routes redirect to current live destinations", () => {
     "/stays/cortez-village-vacation-rentals/   /stays/bradenton-vacation-rentals-near-beaches/   301",
     "/stays/memorial-day-weekend-rentals-florida/   /stays/long-weekend-getaway-florida/   301",
     "/stays/palmetto-vacation-rentals-florida/   /guides/bradenton-area-guide/   301",
-    "/stays/pet-friendly-vacation-rentals-anna-maria-island/   /stays/pet-friendly-vacation-rentals-bradenton/   301",
-    "/stays/spring-break-vacation-rentals-florida-gulf-coast/   /stays/spring-break-rentals-anna-maria-island/   301",
+    // 2026-07-24: repointed to indexable destinations — the previous targets are
+    // in staysNoindexSlugs, so the 301s were dropping legacy equity entirely.
+    "/stays/pet-friendly-vacation-rentals-anna-maria-island/   /properties/   301",
+    "/stays/spring-break-vacation-rentals-florida-gulf-coast/   /stays/family-vacation-rentals-anna-maria-island/   301",
     "/stays/sunset-cruise-vacation-rentals-bradenton/   /guides/things-to-do-bradenton-fl/   301",
     "/stays/vacation-rentals-with-outdoor-kitchen-florida/   /properties/   301",
     "/stays/vacation-rentals-with-private-pool-florida/   /stays/anna-maria-island-homes-with-pool/   301"

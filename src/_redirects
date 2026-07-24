@@ -23,10 +23,11 @@
 /stays/memorial-day-weekend-rentals-florida/   /stays/long-weekend-getaway-florida/   301
 /stays/palmetto-vacation-rentals-florida   /guides/bradenton-area-guide/   301
 /stays/palmetto-vacation-rentals-florida/   /guides/bradenton-area-guide/   301
-/stays/pet-friendly-vacation-rentals-anna-maria-island   /stays/pet-friendly-vacation-rentals-bradenton/   301
-/stays/pet-friendly-vacation-rentals-anna-maria-island/   /stays/pet-friendly-vacation-rentals-bradenton/   301
-/stays/spring-break-vacation-rentals-florida-gulf-coast   /stays/spring-break-rentals-anna-maria-island/   301
-/stays/spring-break-vacation-rentals-florida-gulf-coast/   /stays/spring-break-rentals-anna-maria-island/   301
+# 2026-07-24: repointed from noindexed stay pages (equity was being dropped) to indexable equivalents
+/stays/pet-friendly-vacation-rentals-anna-maria-island   /properties/   301
+/stays/pet-friendly-vacation-rentals-anna-maria-island/   /properties/   301
+/stays/spring-break-vacation-rentals-florida-gulf-coast   /stays/family-vacation-rentals-anna-maria-island/   301
+/stays/spring-break-vacation-rentals-florida-gulf-coast/   /stays/family-vacation-rentals-anna-maria-island/   301
 /stays/sunset-cruise-vacation-rentals-bradenton   /guides/things-to-do-bradenton-fl/   301
 /stays/sunset-cruise-vacation-rentals-bradenton/   /guides/things-to-do-bradenton-fl/   301
 /stays/vacation-rentals-with-outdoor-kitchen-florida   /properties/   301
@@ -335,26 +336,26 @@
 /stays/birthday-celebration-rentals-florida/  /stays/large-group-vacation-rentals-bradenton/  301
 
 # Broken link redirects added 2026-03-03
-/stays/bradenton-beach-vacation-rentals  /stays/bradenton-vacation-rentals-near-beaches  301
-/stays/vacation-rentals-bradenton-florida  /stays/bradenton-vacation-rentals-near-beaches  301
+/stays/bradenton-beach-vacation-rentals  /stays/bradenton-vacation-rentals-near-beaches/  301
+/stays/vacation-rentals-bradenton-florida  /stays/bradenton-vacation-rentals-near-beaches/  301
 /stays/vacation-rentals-bradenton-florida/  /stays/bradenton-vacation-rentals-near-beaches/  301
-/stays/vacation-rentals-with-boat-dock-anna-maria  /stays/gulf-coast-vacation-homes-with-dock  301
+/stays/vacation-rentals-with-boat-dock-anna-maria  /stays/gulf-coast-vacation-homes-with-dock/  301
 /stays/holmes-beach-vacation-rentals  /stays/vacation-rentals-near-anna-maria-island/  301
 /stays/holmes-beach-vacation-rentals/  /stays/vacation-rentals-near-anna-maria-island/  301
-/stays/longboat-key-vacation-rentals  /stays/luxury-vacation-rentals-sarasota  301
-/stays/sarasota-waterfront-vacation-rentals  /stays/luxury-vacation-rentals-sarasota  301
-/stays/book-direct-vacation-rentals-anna-maria-island  /stays/family-vacation-rentals-anna-maria-island  301
-/stays/luxury-vacation-rentals-anna-maria-island  /stays/anna-maria-island-homes-with-pool  301
-/stays/anna-maria-island-vacation-rentals-book-direct  /stays/family-vacation-rentals-anna-maria-island  301
-/stays/fishing-vacation-rentals-bradenton-beach  /stays/fishing-vacation-rentals-bradenton  301
-/stays/beachfront-vacation-homes-sarasota-county  /stays/beach-house-rentals-florida-gulf-coast  301
-/stays/luxury-vacation-rentals-bradenton  /stays/bradenton-waterfront-vacation-rentals  301
+/stays/longboat-key-vacation-rentals  /stays/luxury-vacation-rentals-sarasota/  301
+/stays/sarasota-waterfront-vacation-rentals  /stays/luxury-vacation-rentals-sarasota/  301
+/stays/book-direct-vacation-rentals-anna-maria-island  /stays/family-vacation-rentals-anna-maria-island/  301
+/stays/luxury-vacation-rentals-anna-maria-island  /stays/anna-maria-island-homes-with-pool/  301
+/stays/anna-maria-island-vacation-rentals-book-direct  /stays/family-vacation-rentals-anna-maria-island/  301
+/stays/fishing-vacation-rentals-bradenton-beach  /stays/fishing-vacation-rentals-bradenton/  301
+/stays/beachfront-vacation-homes-sarasota-county  /stays/beach-house-rentals-florida-gulf-coast/  301
+/stays/luxury-vacation-rentals-bradenton  /stays/bradenton-waterfront-vacation-rentals/  301
 /property-management/ami-real-estate-investment-guide/  /property-management/buy-vacation-rental-property-florida/  301
 /property-management/rental-performance-comparison/  /property-management/maximize-vacation-rental-income-florida/  301
 /property-management/img-academy-vacation-rental-management/  /property-management/vacation-rental-management-bradenton/  301
 /property-management/design-renovations-vacation-rental/  /property-management/vacation-rental-interior-design-florida/  301
-/property-management/vacation-rental-revenue-management  /property-management/maximize-vacation-rental-income-florida  301
-/property-management/vacation-rental-marketing  /property-management/vacation-rental-marketing-florida  301
+/property-management/vacation-rental-revenue-management  /property-management/maximize-vacation-rental-income-florida/  301
+/property-management/vacation-rental-marketing  /property-management/vacation-rental-marketing-florida/  301
 # Research benchmark alias (non-legacy naming)
 /research/owner-fee-revenue-gap-benchmark-2026/  /research/owner-fee-revenue-leak-benchmark-2026/  301
 
