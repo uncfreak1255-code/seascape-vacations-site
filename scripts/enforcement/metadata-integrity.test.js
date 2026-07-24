@@ -92,7 +92,7 @@ test("winner guide metadata and conversion markers stay decision-forward", () =>
   assert.equal(amiWebPage?.name, amiContract.head.title);
   assert.match(
     amiVsSiesta,
-    /<h1>Anna Maria Island vs Siesta Key<br>Beaches, Crowds, Parking, and Where to Stay<\/h1>/
+    /<h1>Anna Maria Island vs Siesta Key<br><span class="amivs-h1-sub">Beaches, Crowds, Parking, and Where to Stay<\/span><\/h1>/
   );
   assert.match(
     amiVsSiesta,
