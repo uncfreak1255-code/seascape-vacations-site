@@ -273,7 +273,12 @@
   margin-top: 10px;
 }
 
-.journal-prose a {
+/* Prose links only. The conversion-kit CTA buttons (.guide-cta-btn /
+   --ghost) also render as <a> inside .journal-prose; excluding them keeps
+   their own pill styling (white label on the teal fill) instead of the
+   dark brand-link color, which was rendering the primary CTA text
+   invisibly dark-on-dark. */
+.journal-prose a:not(.guide-cta-btn):not(.guide-cta-btn--ghost) {
   color: var(--brand-dark);
   font-weight: 600;
   text-decoration: underline;
