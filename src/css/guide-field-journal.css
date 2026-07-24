@@ -211,8 +211,8 @@
 
 .journal-rail a::before {
   content: counter(journal-section, decimal-leading-zero);
-  color: var(--brand);
-  font-size: 10px;
+  color: var(--brand-dark);
+  font-size: 11px;
   font-weight: 600;
 }
 
@@ -278,7 +278,7 @@
    their own pill styling (white label on the teal fill) instead of the
    dark brand-link color, which was rendering the primary CTA text
    invisibly dark-on-dark. */
-.journal-prose a:not(.guide-cta-btn):not(.guide-cta-btn--ghost) {
+.journal-prose a:not(.guide-cta-btn, .guide-cta-btn--ghost, .guide-stay-card, .guide-repeat-link, .guide-save50-cta, .guide-save50-secondary, .guide-save50-sticky, .sarasota-feature-cta) {
   color: var(--brand-dark);
   font-weight: 600;
   text-decoration: underline;
@@ -717,8 +717,8 @@
 
   .journal-matrix td::before {
     content: attr(data-label);
-    color: var(--brand);
-    font-size: 10px;
+    color: var(--brand-dark);
+    font-size: 11px;
     font-weight: 600;
     letter-spacing: 0;
     text-transform: uppercase;

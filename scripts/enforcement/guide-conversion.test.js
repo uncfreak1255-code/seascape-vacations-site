@@ -1104,7 +1104,7 @@ test("winner guides surface the shared conversion kit before late-stage related 
     {
       slug: "anna-maria-island-vs-siesta-key",
       file: path.join(projectRoot, "src", "guides", "anna-maria-island-vs-siesta-key.html"),
-      mustAppearBefore: ['<div class="related-guides"', '<div class="amivs-postscript">'],
+      mustAppearBefore: ['<div class="related-guides"', '<aside class="amivs-postscript"'],
       forbiddenMarkers: ["/stays/vacation-rentals-near-siesta-key-beach/"]
     }
   ];
