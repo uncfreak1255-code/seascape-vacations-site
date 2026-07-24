@@ -48,7 +48,7 @@
     "proof:visual": "node scripts/enforcement/capture-visual-proof.js",
     "test:visual:update": "node scripts/enforcement/run-visual-tests.js --update-snapshots",
     "test:visual:install": "playwright install chromium",
-    "audit:deps": "npm audit --audit-level=moderate",
+    "audit:deps": "npm audit --audit-level=moderate --omit=dev",
     "perf:psi": "node scripts/perf/pagespeed-insights-status.js",
     "perf:budget": "npm run build && lhci autorun --config=./lighthouserc.js",
     "perf:budget:check": "lhci autorun --config=./lighthouserc.js",
@@ -57,7 +57,8 @@
     "eval:guest": "node scripts/evals/run-guest-eval.js",
     "lint:evals": "node scripts/evals/lint-evals.js",
     "test:evals": "node --test scripts/evals/*.test.js",
-    "test:capability-scenarios": "npm run build && node scripts/enforcement/capability-scenarios.js"
+    "test:capability-scenarios": "npm run build && node scripts/enforcement/capability-scenarios.js",
+    "audit:deps:all": "npm audit --audit-level=moderate"
   },
   "overrides": {
     "@opentelemetry/core": "2.8.0",
