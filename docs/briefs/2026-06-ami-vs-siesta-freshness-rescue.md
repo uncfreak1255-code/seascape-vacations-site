@@ -71,3 +71,21 @@
 - source page uses current official beach/parking/transit source language where relevant
 - content-decay patrol no longer flags this priority route for stale proof/dateModified
 - verification commands pass or a blocker is named
+
+## Post-Redesign Marker Restore (2026-07-24 addendum)
+
+- What happened: the #465 AMI-vs-Siesta editorial redesign (merged 2026-07-24) dropped
+  two live-smoke-enforced proof elements this brief originally shipped — the
+  "Reviewed June 20, 2026" dated review line and the cited "950 free parking spaces"
+  Sarasota County statistic. `verify:recovery:live` went red on the route immediately
+  after the next production deploy; the daily live-smoke cron would follow.
+- Decision: restore both markers as one sentence inside the redesigned intro,
+  reusing the page's existing Sarasota County citation style. No other copy changed;
+  the redesign's structure, sources list, and conversion kit stay as #465 shipped them.
+- Why restore rather than relax the smoke assertion: the dated-review line and the
+  cited statistic are deliberate freshness/proof mechanics on a tracked winner-family
+  page (and the statistic+citation pattern is the highest-evidence AI-citation
+  formatting per the 2026-07-24 GEO research read). Removing the assertion would have
+  ratified a silent proof regression.
+- Proof: `verify:recovery:live` green post-deploy; lint:content, npm test,
+  verify:release green pre-merge.
