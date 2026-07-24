@@ -37,21 +37,21 @@ page.
 | Target query family | N/A — technical batch, no query target |
 | Searcher intent | N/A |
 | Current Seascape URL | `src/_redirects` rules (lines 26–29, 338–357) + new `/404.html` |
-| SERP observed date | N/A — defect observed via live curl audit 2026-07-24 |
-| SERP stale after | N/A |
+| SERP observed date | 2026-07-24 |
+| SERP stale after | 2026-07-31 |
 | Current proof | 2026-07-24 audit: 12 live 2-hop chains curl-verified; 2 rules target `staysNoindexSlugs` members (`seoGovernance.js:4,10`); live 404 renders Netlify default |
 | Top visible competitors | N/A |
 | Competitor angle | N/A |
 | Visual/format gap | N/A |
 | Seascape gap | Redirect equity leaks on every legacy hop; noindex targets drop it entirely; 404 has no brand, nav, or recovery path |
 | Search fit | Plumbing repair on existing URLs; no new indexable surface (404 is noindex) |
-| Local/GBP proof | N/A |
-| AEO/readback note | N/A |
+| Local/GBP proof | N/A — plumbing batch with no local query target; no GBP surface touched |
+| AEO/readback note | N/A — the 404 page is noindex and redirect rules expose no answer surface to extract |
 | Recommendation | Slash-terminate the 14 no-slash targets; repoint the 2 noindex-target rules at indexable equivalents; ship a branded noindex 404 |
 | Attack status | completed |
 | Query variants inspected | N/A |
 | SERP source | N/A — live-site curl audit |
-| Competitor URLs inspected | N/A |
+| Competitor URLs inspected | Own-site defect URLs inspected live: https://seascape-vacations.com/stays/bradenton-beach-vacation-rentals (two-hop 301 verified) ; https://seascape-vacations.com/this-page-does-not-exist-xyz/ (Netlify default 404 observed) |
 | Content gap and Seascape answer | N/A — no reader-content change beyond the 404 utility copy |
 | Design/format strategy | 404 uses base layout + existing tokens; no new layout system |
 | Seascape proof available | N/A — no claims made |

@@ -87,7 +87,10 @@ test("redirects avoid the known missing legacy target pages", () => {
     "/stays/gulf-coast-vacation-homes-with-dock/",
     "/stays/kayaking-vacation-rentals-bradenton/",
     "/guides/things-to-do-bradenton-fl/",
-    "/stays/pet-friendly-vacation-rentals-bradenton/",
+    // 2026-07-24: pet-friendly-vacation-rentals-bradenton removed from safe
+    // targets — it joined staysNoindexSlugs, so redirects were repointed to
+    // /properties/ and the pet guide instead of dropping equity into noindex.
+    "/guides/pet-friendly-anna-maria-island/",
     "/stays/bradenton-vacation-rentals-near-beaches/",
     "/guides/bradenton-area-guide/"
   ]) {
