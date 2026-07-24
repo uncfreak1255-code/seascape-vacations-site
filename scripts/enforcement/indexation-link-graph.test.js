@@ -104,6 +104,16 @@ test("strong guide pages link to the selected indexation rescue targets", () => 
     path.join(projectRoot, "src", "guides", "things-to-do-bradenton-fl.html"),
     "utf8"
   );
+  const ownerBenchmark = fs.readFileSync(
+    path.join(projectRoot, "src", "research", "owner-fee-revenue-leak-benchmark-2026.njk"),
+    "utf8"
+  );
+
+  assert.equal(
+    ownerBenchmark.includes("/property-management/vacation-rental-licensing-florida/"),
+    true,
+    "owner benchmark must keep the licensing index-rescue inbound link (regressed in #454, re-landed via fix/relink-licensing-index-rescue)"
+  );
 
   for (const marker of [
     "/property-management/condo-rental-management-florida/",
