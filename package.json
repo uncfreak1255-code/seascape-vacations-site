@@ -7,6 +7,8 @@
     "pretest": "npm run build",
     "test": "node --test scripts/enforcement/*.test.js scripts/evals/*.test.js",
     "lint:content": "node --test scripts/enforcement/content-voice.test.js",
+    "lint:design": "node scripts/design/design-lint.js",
+    "lint:design:update": "node scripts/design/design-lint.js --update-baseline",
     "git:preflight": "/Users/sawbeck/bin/guardrail-preflight",
     "git:safe-commit": "/Users/sawbeck/bin/guardrail-safe-commit",
     "git:merge-check": "/Users/sawbeck/bin/guardrail-merge-check",
