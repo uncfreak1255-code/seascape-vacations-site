@@ -69,9 +69,9 @@ function main() {
 
   [
     'data-transfer-choice="ami-vs-siesta-stay-base"',
-    "Stay-base shortcut Anna Maria Island vacation rentals",
-    "Stay-base shortcut Bradenton homes near AMI beaches",
-    "Stay-base shortcut Siesta Key area stays",
+    "Anna Maria Island vacation rentals",
+    "Bradenton homes near AMI beaches",
+    "Siesta Key area stays",
     "Verdict Anna Maria Island vacation rentals",
     "Verdict Bradenton homes near AMI beaches",
     "Verdict Siesta Key area stays",
@@ -89,15 +89,15 @@ function main() {
   [
     [
       "/stays/anna-maria-island-vacation-rentals/",
-      "Stay-base shortcut Anna Maria Island vacation rentals"
+      "Anna Maria Island vacation rentals"
     ],
     [
       "/stays/bradenton-vacation-rentals-near-beaches/",
-      "Stay-base shortcut Bradenton homes near AMI beaches"
+      "Bradenton homes near AMI beaches"
     ],
     [
       "/stays/siesta-key-area-vacation-rentals/",
-      "Stay-base shortcut Siesta Key area stays"
+      "Siesta Key area stays"
     ]
   ].forEach(([href, trackLabel]) => assertTrackedShortcut(shortcutBlock, href, trackLabel));
 

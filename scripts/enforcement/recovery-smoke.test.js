@@ -192,9 +192,8 @@ test("live smoke locks the refreshed AMI vs Siesta SEO markers", () => {
       location: null,
       body: `
         <main>
-          <p>Reviewed June 20, 2026: Sarasota County still positions Siesta Beach around its quartz sand, 950 free parking spaces, and national beach awards.</p>
-          <p>Nearly pure quartz crystal</p>
-          <p>Early-2026 Seascape rate checks used as planning context, not a live quote</p>
+          <p>Reviewed July 22, 2026: Sarasota County still positions Siesta Beach around its quartz sand, 950 free parking spaces, and national beach awards.</p>
+          <p>Early-2026 Seascape rate checks offer context</p>
         </main>
       `
     });

@@ -26,6 +26,9 @@ Read-only critique pass for customer-facing copy.
 - `Use this when`, `Use this if`, `Read this if`, `Open this page if`, and similar helper-note framing
 - copy that sounds interchangeable with any Florida site
 - owner pages that talk about "service" instead of owner economics
+- internal planning shorthand such as `trip shape`, `stay base`, `booking path`, `named option`, `right stay`, or `research mode`
+- JavaScript-generated labels, component-generated conversion copy, recommendations, and helper copy that escape the static visible-copy pass
+- copy that explains the site's funnel instead of helping a traveler picture the vacation
 
 ## Hard Rules
 
@@ -33,3 +36,39 @@ Read-only critique pass for customer-facing copy.
 - Do not praise the draft. Find the failure modes.
 - Treat role-card or session-sounding public copy as a blocker, not a polish note.
 - If a claim smells unverified, flag it even if the sentence sounds good.
+
+## Mandatory Verdict
+
+Return exactly one of these:
+
+- `Reject`
+- `Needs rewrite`
+- `Approved`
+
+Use `Reject` when the page sounds like an SEO brief, conversion plan, role card, or generic travel article. Use `Needs rewrite` when the argument is useful but the language still sounds assembled, over-explained, or emotionally flat. Only use `Approved` when a traveler can understand the choice, picture the stay, and know what to open next without seeing the team's internal funnel language.
+
+## Output
+
+```markdown
+# Voice Editor Verdict
+
+## Status
+- Verdict:
+- Confidence:
+
+## Reader Test
+- What the traveler is deciding:
+- What feels specific and desirable:
+- What still sounds internal, generic, or over-written:
+
+## Static And Generated Copy
+- Static page copy:
+- JavaScript-generated copy:
+- Component-generated conversion copy:
+
+## Required Rewrites
+1. ...
+
+## Proof And Claim Risks
+- ...
+```

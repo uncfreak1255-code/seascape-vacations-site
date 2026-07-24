@@ -75,7 +75,7 @@ test("Bradenton beach guide uses the active Bradenton Pool Home image", () => {
   assert.equal(source.includes("51916-135879-"), false, "the guide should not retain the retired listing image");
 });
 
-test("winner guide metadata and conversion markers stay decision-forward", () => {
+test("winner guide snippets stay decision-forward without body rewrites", () => {
   const amiVsSiesta = readSource("src", "guides", "anna-maria-island-vs-siesta-key.html");
   const bradentonVsSarasota = readSource("src", "guides", "bradenton-vs-sarasota.html");
   const amiContract = readSourceContract("src", "guides", "anna-maria-island-vs-siesta-key.html");
@@ -86,13 +86,13 @@ test("winner guide metadata and conversion markers stay decision-forward", () =>
   assert.equal(amiContract.head.title, "Anna Maria Island vs Siesta Key: Where to Stay");
   assert.equal(
     amiContract.head.description,
-    "Compare AMI, Bradenton near AMI beaches, and Siesta Key area stays after choosing between quieter beach days and famous quartz sand."
+    "Compare Anna Maria Island and Siesta Key for beach feel, parking, family trips, dining, and vacation homes—including Sarasota Luxe in downtown Sarasota."
   );
   assert.equal(amiContract.head.ogTitle, "Anna Maria Island vs Siesta Key: Where to Stay");
   assert.equal(amiWebPage?.name, amiContract.head.title);
   assert.match(
     amiVsSiesta,
-    /<h1>Anna Maria Island vs Siesta Key<br>Beaches, Crowds, Parking, and Where to Stay<\/h1>/
+    /<h1>Anna Maria Island or Siesta Key\?<br>Choose quiet island days or livelier nights\.<\/h1>/
   );
   assert.match(
     amiVsSiesta,
@@ -100,11 +100,11 @@ test("winner guide metadata and conversion markers stay decision-forward", () =>
   );
   assert.match(
     amiVsSiesta,
-    /"dateModified": "2026-06-24T15:20:00-04:00"/
+    /"dateModified": "2026-07-22T12:00:00-04:00"/
   );
   assert.match(
     amiVsSiesta,
-    /Reviewed June 2026/
+    /Reviewed July 22, 2026/
   );
   assert.match(
     amiVsSiesta,
@@ -112,25 +112,32 @@ test("winner guide metadata and conversion markers stay decision-forward", () =>
   );
   assert.match(
     amiVsSiesta,
-    /Stay-base table Anna Maria Island vacation rentals/
+    /data-track-label="Anna Maria Island vacation rentals"/
   );
   assert.match(
     amiVsSiesta,
-    /Stay-base table Bradenton homes near AMI beaches/
+    /data-track-label="Bradenton homes near AMI beaches"/
   );
   assert.match(
     amiVsSiesta,
-    /Stay-base table Anna Maria Island beachfront rentals/
+    /data-track-label="Anna Maria Island beachfront rentals"/
   );
   assert.match(
     amiVsSiesta,
-    /Stay-base table Siesta Key area stays/
+    /data-track-label="Siesta Key area stays"/
   );
   assert.match(
     amiVsSiesta,
-    /primaryCtaLabel: "Compare AMI Homes"/
+    /Sarasota Luxe/
   );
-  assert.equal(amiVsSiesta.includes('primaryCtaLabel: "Compare AMI Stay Bases"'), false);
+  assert.match(
+    amiVsSiesta,
+    /primaryCtaLabel: "Browse homes by area"/
+  );
+  assert.match(
+    amiVsSiesta,
+    /primaryHref: "\/properties\/sarasota-luxe\/#check-availability",[\s\S]{0,300}primaryTrackEvent: "guide_property_check_dates_click",[\s\S]{0,100}primaryPropertySlug: "sarasota-luxe",[\s\S]{0,100}primaryPlacement: "before_long_comparison"/
+  );
 
   assert.equal(bradentonContract.head.title, "Bradenton vs Sarasota for Vacation: Which Base Wins?");
   assert.equal(

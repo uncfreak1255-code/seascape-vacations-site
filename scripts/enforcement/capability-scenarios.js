@@ -274,9 +274,9 @@ const SCENARIOS = [
       check("AMI vs Siesta guide carries current freshness markers", () => {
         const html = readBuiltHtml("/guides/anna-maria-island-vs-siesta-key/");
         for (const marker of [
-          "Reviewed June 20, 2026",
+          "Reviewed July 22, 2026",
           "950 free parking spaces",
-          "Early-2026 Seascape rate checks used as planning context, not a live quote"
+          "Early-2026 Seascape rate checks offer context"
         ]) {
           assertIncludes(html, marker);
         }

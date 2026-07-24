@@ -223,11 +223,11 @@ function validateTargetResponse(target, response) {
 
   if (target.path === "/guides/anna-maria-island-vs-siesta-key/") {
     requireIncludes(target.path, response.body, [
-      "Reviewed June 20, 2026",
+      "Reviewed July 22, 2026",
       "Sarasota County",
       "950 free parking spaces",
-      "Nearly pure quartz crystal",
-      "Early-2026 Seascape rate checks used as planning context, not a live quote"
+      "quartz sand",
+      "Early-2026 Seascape rate checks offer context"
     ]);
     requireExcludes(target.path, response.body, [
       "Updated April 2026",

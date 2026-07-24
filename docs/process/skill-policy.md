@@ -93,6 +93,8 @@ business context.
 A durable record of approved changes to the local skill/agent surface. Each
 entry is the receipt the governance rule requires for any skill change.
 
+- **2026-07-22 — strengthened the existing reader-language gate; no new skill or role.** Trigger: repeated founder rejection of public guide phrases such as `trip shape`, `stay base`, `booking path`, and `named Sarasota-side option`, followed by a clean `npm run lint:content` on PR #464. Decision: keep the five-role SEO OS and global copy chain, classify those terms as internal planning shorthand, scan static, JavaScript-generated, and component-generated reader copy, and give the existing Voice Editor a mandatory verdict. Approved by Sawyer for implementation on PR #464. This is a bounded correction to an output gate, not a new marketing control plane.
+
 - **2026-06-13 — added `content-quality-rubric` (advisory).** Trigger: the
   2026-06-13 AI-SEO stack audit (`docs/research/2026-06-13-ai-seo-stack-audit.md`)
   found a repeated, site-specific gap — the content gate blocks slop but scores
