@@ -38,7 +38,7 @@
     letter-spacing: 0.18em;
     text-transform: uppercase;
     font-weight: 700;
-    color: #5F8A8B;
+    color: var(--brand-dark);
   }
 
   .guide-conversion-title {
@@ -226,13 +226,13 @@
     width: 7px;
     height: 7px;
     border-radius: 50%;
-    background: #6BAE7A;
-    box-shadow: 0 0 0 4px rgba(107, 174, 122, 0.18);
+    background: var(--brand);
+    box-shadow: 0 0 0 4px rgba(95, 138, 139, 0.18);
   }
 
   .guide-save50-label {
-    color: #4A7A5A;
-    font-size: 10px;
+    color: var(--brand-dark);
+    font-size: 11px;
     letter-spacing: 0.24em;
     text-transform: uppercase;
     font-weight: 700;
@@ -478,15 +478,15 @@
 
   .guide-save50-sticky-code small {
     color: rgba(245, 238, 214, 0.7);
-    font-size: 7.5px;
-    letter-spacing: 0.16em;
+    font-size: 10px;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
     font-weight: 600;
   }
 
   .guide-save50-sticky-code b {
     font-family: ui-monospace, Menlo, monospace;
-    font-size: 13px;
+    font-size: 14px;
     letter-spacing: 0.1em;
   }
 
@@ -558,7 +558,7 @@
       <div class="guide-book-direct-savings">
         <p class="guide-conversion-label">{{ config.label or "Book Direct Math" }}</p>
         <h2 class="guide-conversion-title">{{ config.title or "Use this guide to save money, not just read about it" }}</h2>
-        <p class="guide-conversion-copy">{{ config.copy or "Direct booking only matters if it changes your trip economics. Use the links below to move from research mode to the right homes, at the lower fee structure, without losing local support." }}</p>
+        <p class="guide-conversion-copy">{{ config.copy or "Direct booking only matters if it changes your trip economics. The links below go straight to the homes this guide points to, with no platform service fees on the final price." }}</p>
         {% if config.savingsBullets and config.savingsBullets | length %}
         <ul class="guide-savings-bullets">
           {% for bullet in config.savingsBullets %}
@@ -653,14 +653,14 @@
         data-consent-basis="{{ config.consentBasis or 'guest_requested_email_followup' }}"
       >
         <input type="hidden" name="guide_slug" value="{{ config.guideSlug }}">
-        <input type="text" name="name" placeholder="First name" autocomplete="name" required>
-        <input type="email" name="email" placeholder="Email address" autocomplete="email" required>
+        <input type="text" name="name" placeholder="First name" aria-label="First name" autocomplete="name" required>
+        <input type="email" name="email" placeholder="Email address" aria-label="Email address" autocomplete="email" required>
         <button type="submit">{{ config.emailButtonLabel or "Join The Direct-Booking List" }}</button>
       </form>
-      <p class="guide-email-capture-note">{{ config.emailNote or "No OTA spam. Just direct-booking savings and useful Gulf Coast stay ideas." }}</p>
+      <p class="guide-email-capture-note">{{ config.emailNote or "No spam. Just direct-booking savings and useful Gulf Coast stay ideas." }}</p>
       </div>
       <div class="guide-email-capture-success" data-email-capture-success data-save50-state="cold">
-        You're on the list. Use the stay links below while we keep the direct-booking ideas practical.
+        You're on the list. In the meantime, the stay links below show which homes fit your trip.
       </div>
 
       <div class="guide-repeat-stay-links">
@@ -695,7 +695,7 @@
       </div>
     </div>
   </div>
-  <a class="guide-save50-sticky save-sticky" data-save50-state="warm" href="{{ primaryCtaHref }}" hidden>
+  <a class="guide-save50-sticky save-sticky" data-save50-state="warm" href="{{ primaryCtaHref }}" data-track-event="guide_book_direct_click" data-guide-slug="{{ config.guideSlug }}" data-track-label="{{ config.primaryCtaLabel or 'Browse direct homes' }} (sticky)" hidden>
     <span class="guide-save50-sticky-code"><small>Code saved</small><b>SAVE50</b></span>
     <span class="guide-save50-sticky-btn">Browse Homes</span>
   </a>

@@ -11,9 +11,12 @@ const {
   evaluate,
   buildPaletteAllowlist,
   lintSource,
+  lintFile,
   resolveBaseRef,
 } = require("../design/design-lint.js");
 const { designLintBaseFromRange, buildCommandSteps } = require("./verify-release.js");
+
+const AMI_GUIDE = "src/guides/anna-maria-island-vs-siesta-key.html";
 
 test("design-lint resolves the actual PR base without hardcoding main", () => {
   assert.equal(resolveBaseRef([], {}), "origin/main");
@@ -62,6 +65,23 @@ test("guide corpus has no design-law violations outside the grandfathered baseli
       .map((v) => `  ${v.file} [${v.check}]`)
       .join("\n")}`
   );
+});
+
+test("the recreated AMI vs Siesta guide passes design-lint on merit (not grandfathered)", () => {
+  const allowlist = buildPaletteAllowlist();
+  const v = lintFile(AMI_GUIDE, allowlist);
+  assert.equal(v.offBrandHex.length, 0, `expected no off-brand hex, found ${v.offBrandHex.join(", ")}`);
+  assert.equal(v.googleFonts, false, "expected self-hosted fonts, not Google Fonts in-page");
+  assert.equal(v.emoji, false, "expected SVG icons, not emoji");
+
+  const baseline = loadBaseline();
+  for (const check of ["offBrandHex", "googleFonts", "emoji"]) {
+    assert.equal(
+      (baseline[check] || []).includes(AMI_GUIDE),
+      false,
+      `${AMI_GUIDE} should pass on merit, not be grandfathered for ${check}`
+    );
+  }
 });
 
 test("design-lint detects the exact violations that shipped on the legacy page", () => {
