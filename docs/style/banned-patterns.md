@@ -11,6 +11,7 @@
 - gray internal-documentation or review-template phrasing in visible page copy, including `keeps X separate`, `planning math`, `marketplace-fee exposure`, `source-bounded`, `accepted formulas`, `proof boundaries`, `proven cost`, `likely cost`, and `missing information`
 - instruction-template phrasing that sounds like a role card, prompt, or session note in visible copy, including `Use this when`, `Use this if`, `Use it when`, `Read this if`, `Read this when`, `Open this page if`, `Choose this when`, `Pick this when`, and `Do not use this page if`
 - funnel-mechanics language written as guest copy: `fastest path into direct dates`, `move straight from comparison into live availability`, `filter by fit`, `jump into direct dates`
+- internal travel-planning shorthand written as guest copy: `trip shape`, `stay base`, `booking path`, `named Sarasota-side option`, `named home`, `right stay`, or `research mode`. Agents may use those ideas while planning, but visible copy must name the vacation the reader wants or the home they can open.
 - agent meta-commentary on the page's own positioning: `with the tradeoff stated clearly`, `without pretending every stay is on-island`
 - generic hospitality filler: `resort-style amenities` (name the actual amenities), `luxury` as a standalone descriptor
 - UI logic narrated at the user: `instead of assuming the collection disappeared`, `short booking windows` (say "book this week" not "short booking window")

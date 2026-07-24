@@ -75,7 +75,7 @@ test("Bradenton beach guide uses the active Bradenton Pool Home image", () => {
   assert.equal(source.includes("51916-135879-"), false, "the guide should not retain the retired listing image");
 });
 
-test("winner guide snippets stay decision-forward without body rewrites", () => {
+test("winner guide metadata and conversion markers stay decision-forward", () => {
   const amiVsSiesta = readSource("src", "guides", "anna-maria-island-vs-siesta-key.html");
   const bradentonVsSarasota = readSource("src", "guides", "bradenton-vs-sarasota.html");
   const amiContract = readSourceContract("src", "guides", "anna-maria-island-vs-siesta-key.html");
@@ -92,7 +92,7 @@ test("winner guide snippets stay decision-forward without body rewrites", () => 
   assert.equal(amiWebPage?.name, amiContract.head.title);
   assert.match(
     amiVsSiesta,
-    /<h1>Anna Maria Island vs Siesta Key<br>Beaches, Crowds, Parking, and Where to Stay<\/h1>/
+    /<h1>Anna Maria Island vs Siesta Key<br><span class="amivs-h1-sub">Beaches, Crowds, Parking, and Where to Stay<\/span><\/h1>/
   );
   assert.match(
     amiVsSiesta,
@@ -128,8 +128,9 @@ test("winner guide snippets stay decision-forward without body rewrites", () => 
   );
   assert.match(
     amiVsSiesta,
-    /primaryCtaLabel: "Compare AMI Stay Bases"/
+    /primaryCtaLabel: "Compare AMI Homes"/
   );
+  assert.equal(amiVsSiesta.includes('primaryCtaLabel: "Compare AMI Stay Bases"'), false);
 
   assert.equal(bradentonContract.head.title, "Bradenton vs Sarasota for Vacation: Which Base Wins?");
   assert.equal(

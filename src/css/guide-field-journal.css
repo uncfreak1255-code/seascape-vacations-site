@@ -211,8 +211,8 @@
 
 .journal-rail a::before {
   content: counter(journal-section, decimal-leading-zero);
-  color: var(--brand);
-  font-size: 10px;
+  color: var(--brand-dark);
+  font-size: 11px;
   font-weight: 600;
 }
 
@@ -273,7 +273,15 @@
   margin-top: 10px;
 }
 
-.journal-prose a {
+/* Prose links only. The conversion-kit CTA buttons (.guide-cta-btn /
+   --ghost) also render as <a> inside .journal-prose; excluding them keeps
+   their own pill styling (white label on the teal fill) instead of the
+   dark brand-link color, which was rendering the primary CTA text
+   invisibly dark-on-dark. The exclusions sit inside :where() so this
+   rule keeps its original (0,1,1) specificity — later same-specificity
+   overrides like .journal-rule-note a (gold links on the dark panel)
+   must still win by source order, as they did before the exclusions. */
+.journal-prose a:where(:not(.guide-cta-btn, .guide-cta-btn--ghost, .guide-stay-card, .guide-repeat-link, .guide-save50-cta, .guide-save50-secondary, .guide-save50-sticky, .sarasota-feature-cta)) {
   color: var(--brand-dark);
   font-weight: 600;
   text-decoration: underline;
@@ -712,8 +720,8 @@
 
   .journal-matrix td::before {
     content: attr(data-label);
-    color: var(--brand);
-    font-size: 10px;
+    color: var(--brand-dark);
+    font-size: 11px;
     font-weight: 600;
     letter-spacing: 0;
     text-transform: uppercase;
