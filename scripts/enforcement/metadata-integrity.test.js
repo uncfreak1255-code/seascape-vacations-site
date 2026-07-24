@@ -6,6 +6,7 @@ const assert = require("node:assert/strict");
 const projectRoot = path.resolve(__dirname, "..", "..");
 const ownerData = require(path.join(projectRoot, "src", "_data", "seoPages.json")).owner;
 const ownerProofAssets = require(path.join(projectRoot, "src", "_data", "ownerProofAssets.json"));
+const propertiesFallback = require(path.join(projectRoot, "src", "_data", "properties-fallback.json"));
 const {
   assertRequiredHeadTags,
   readRouteSource
@@ -60,11 +61,26 @@ test("rainy-day guide answers current Sarasota and Bradenton rain intent", () =>
   assert.match(source, /href="\/guides\/anna-maria-island-vs-siesta-key\/"/);
 });
 
+test("Bradenton beach guide uses the active Bradenton Pool Home image", () => {
+  const source = readSource("src", "guides", "bradenton-vs-sarasota-beaches", "index.html");
+  const property = propertiesFallback.find((entry) => entry.slug === "bradenton-pool-home");
+
+  assert.ok(property, "Bradenton Pool Home should exist in canonical property truth");
+  const canonicalImageBase = property.image.split("?")[0];
+
+  assert.ok(
+    source.includes(`src="${canonicalImageBase}?`),
+    "the guide card should use the active canonical property image"
+  );
+  assert.equal(source.includes("51916-135879-"), false, "the guide should not retain the retired listing image");
+});
+
 test("winner guide snippets stay decision-forward without body rewrites", () => {
   const amiVsSiesta = readSource("src", "guides", "anna-maria-island-vs-siesta-key.html");
   const bradentonVsSarasota = readSource("src", "guides", "bradenton-vs-sarasota.html");
   const amiContract = readSourceContract("src", "guides", "anna-maria-island-vs-siesta-key.html");
   const bradentonContract = readSourceContract("src", "guides", "bradenton-vs-sarasota.html");
+  const amiWebPage = amiContract.jsonLdObjects.find((entry) => entry["@type"] === "WebPage");
   const bradentonWebPage = bradentonContract.jsonLdObjects.find((entry) => entry["@type"] === "WebPage");
 
   assert.equal(amiContract.head.title, "Anna Maria Island vs Siesta Key: Where to Stay");
@@ -73,6 +89,7 @@ test("winner guide snippets stay decision-forward without body rewrites", () => 
     "Compare AMI, Bradenton near AMI beaches, and Siesta Key area stays after choosing between quieter beach days and famous quartz sand."
   );
   assert.equal(amiContract.head.ogTitle, "Anna Maria Island vs Siesta Key: Where to Stay");
+  assert.equal(amiWebPage?.name, amiContract.head.title);
   assert.match(
     amiVsSiesta,
     /<h1>Anna Maria Island vs Siesta Key<br>Beaches, Crowds, Parking, and Where to Stay<\/h1>/
