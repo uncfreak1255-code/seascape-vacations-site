@@ -104,11 +104,12 @@ its bounded action (internal link + recrawl request) is recorded above.
 
 ## Post-Reread Outcome
 
-- reread window used: pending (≥ 2026-07-24)
-- crawl freshness result: pending recrawl
-- actual impressions, CTR, position, and downstream event counts: pending — page not yet indexed
-- decision taken: pending post-recrawl read
-- next branch slug or explicit wait state: wait for post-recrawl GSC read before any owner-page content rewrite
+- reread window used: **void and reset** — the original ≥ 2026-07-24 window never opened because the inbound link was not continuously live (see regression below).
+- **Regression (2026-07-22 audit):** the rescue inbound link shipped in PR #449 (a34f4ac6, 2026-07-16) was deleted ~28 hours later by PR #454 "Fix owner benchmark integrity gaps" (7e19f6a7, 2026-07-18), which rewrote the benchmark page and removed the `Where the pressure shows up` section that hosted the link. #454 passed a full green gate (build, lint:content, verify:release, test:visual, autoreview) because no enforcement pinned this specific rescue link. Confirmed live: research page lost the link in production; licensing target still 200.
+- crawl freshness result: pending recrawl — the experiment was never validly live long enough to read.
+- actual impressions, CTR, position, and downstream event counts: pending — page not yet indexed; prior window invalidated.
+- decision taken: re-land the link against current main on a new anchor paragraph (the original host section no longer exists) and add a regression guard in `scripts/enforcement/indexation-link-graph.test.js` so a future page rewrite cannot silently drop it. Reset the readback contract.
+- next branch slug or explicit wait state: `fix/relink-licensing-index-rescue` re-lands the link + guard; then re-submit the GSC recrawl request and hold the owner-page content rewrite for the post-recrawl read (new window ≥ 7 days after the relink deploys and recrawl is requested).
 
 ## Not In Scope
 
