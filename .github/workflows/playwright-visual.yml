@@ -15,6 +15,10 @@ on:
       - "package-lock.json"
       - ".github/workflows/playwright-visual.yml"
 
+concurrency:
+  group: playwright-visual-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
 jobs:
   visual-regression:
     runs-on: macos-latest

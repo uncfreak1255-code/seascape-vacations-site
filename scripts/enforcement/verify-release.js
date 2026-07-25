@@ -243,7 +243,7 @@ function buildCommandSteps(range) {
   return [
     { label: "property:truth:check", command: "npm", args: ["run", "property:truth:check"] },
     { label: "build", command: "npm", args: ["run", "build"] },
-    { label: "test", command: "npm", args: ["test"] },
+    { label: "test", command: "npm", args: ["run", "test:unit"] },
     {
       label: "lint:design",
       command: "npm",

@@ -3,13 +3,15 @@
 const { moneyRoutes } = require("./scripts/perf/money-routes.js");
 
 const budgetRoutes = ["/", ...moneyRoutes];
+const configuredRuns = Number(process.env.LHCI_RUNS);
+const numberOfRuns = Number.isInteger(configuredRuns) && configuredRuns > 0 ? configuredRuns : 3;
 
 module.exports = {
   ci: {
     collect: {
       staticDistDir: "./_site",
       url: budgetRoutes.map((route) => `http://localhost${route}`),
-      numberOfRuns: 3,
+      numberOfRuns,
       settings: {
         budgetPath: "./config/perf-budget.json",
         chromeFlags: "--headless=new --no-sandbox",
