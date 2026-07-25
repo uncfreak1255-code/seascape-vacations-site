@@ -253,7 +253,6 @@ function buildCommandSteps(range) {
     { label: "verify:recovery:p0", command: "npm", args: ["run", "verify:recovery:p0"] },
     { label: "verify:recovery:guides", command: "npm", args: ["run", "verify:recovery:guides"] },
     { label: "verify:recovery:remediation", command: "npm", args: ["run", "verify:recovery:remediation"] },
-    { label: "verify:direct-booking-events", command: "npm", args: ["run", "verify:direct-booking-events"] },
     { label: "verify:links", command: "npm", args: ["run", "verify:links"] },
     { label: "verify:jsonld", command: "npm", args: ["run", "verify:jsonld"] },
   ];
