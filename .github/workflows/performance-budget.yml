@@ -34,8 +34,6 @@ jobs:
     name: performance-budget
     runs-on: ubuntu-latest
     timeout-minutes: 20
-    env:
-      LHCI_RUNS: ${{ github.event_name == 'pull_request' && '1' || '3' }}
 
     steps:
       - name: Check out repository

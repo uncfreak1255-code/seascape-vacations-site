@@ -4,29 +4,6 @@ const fs = require("node:fs");
 const path = require("node:path");
 
 const projectRoot = path.resolve(__dirname, "..", "..");
-const lighthouseConfigPath = path.join(projectRoot, "lighthouserc.js");
-
-function loadLighthouseConfig(lhciRuns) {
-  const previousValue = process.env.LHCI_RUNS;
-
-  if (lhciRuns === undefined) {
-    delete process.env.LHCI_RUNS;
-  } else {
-    process.env.LHCI_RUNS = lhciRuns;
-  }
-
-  try {
-    delete require.cache[require.resolve(lighthouseConfigPath)];
-    return require(lighthouseConfigPath);
-  } finally {
-    if (previousValue === undefined) {
-      delete process.env.LHCI_RUNS;
-    } else {
-      process.env.LHCI_RUNS = previousValue;
-    }
-    delete require.cache[require.resolve(lighthouseConfigPath)];
-  }
-}
 
 test("perf budget watches the tracked money routes", () => {
   const { moneyRoutes } = require(path.join(projectRoot, "scripts/perf/money-routes.js"));
@@ -41,7 +18,7 @@ test("perf budget watches the tracked money routes", () => {
 });
 
 test("lighthouserc uses built site output and local homepage plus money-route URLs", () => {
-  const config = loadLighthouseConfig();
+  const config = require(path.join(projectRoot, "lighthouserc.js"));
   const { moneyRoutes } = require(path.join(projectRoot, "scripts/perf/money-routes.js"));
 
   assert.equal(config.ci.collect.staticDistDir, "./_site");
@@ -52,13 +29,6 @@ test("lighthouserc uses built site output and local homepage plus money-route UR
   );
   assert.equal(config.ci.collect.settings.budgetPath, "./config/perf-budget.json");
   assert.equal(config.ci.assert.assertions["performance-budget"], "error");
-});
-
-test("lighthouserc accepts a positive run-count override for bounded PR checks", () => {
-  assert.equal(loadLighthouseConfig("1").ci.collect.numberOfRuns, 1);
-  assert.equal(loadLighthouseConfig("0").ci.collect.numberOfRuns, 3);
-  assert.equal(loadLighthouseConfig("1.5").ci.collect.numberOfRuns, 3);
-  assert.equal(loadLighthouseConfig("not-a-number").ci.collect.numberOfRuns, 3);
 });
 
 test("package scripts expose local and CI perf-budget commands", () => {

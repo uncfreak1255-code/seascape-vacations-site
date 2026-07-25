@@ -32,7 +32,16 @@ test("release safety audits dependency changes and runs tests without rebuilding
 
   assert.match(workflow, /Detect dependency manifest changes/);
   assert.match(workflow, /steps\.dependency_changes\.outputs\.changed == 'true'/);
+  assert.match(workflow, /run:\s*npm run audit:deps/);
   assert.match(releaseVerifier, /label:\s*"test"[\s\S]*args:\s*\["run",\s*"test:unit"\]/);
+
+  const packageJson = JSON.parse(
+    fs.readFileSync(path.join(projectRoot, "package.json"), "utf8")
+  );
+  assert.equal(
+    packageJson.scripts["audit:deps"],
+    "npm audit --audit-level=moderate --omit=dev"
+  );
 });
 
 test("performance budget keeps PR proof and full scheduled proof bounded", () => {
@@ -44,7 +53,6 @@ test("performance budget keeps PR proof and full scheduled proof bounded", () =>
   assert.match(workflow, /group:\s*performance-budget-\$\{\{ github\.event\.pull_request\.number \|\| github\.ref \}\}/);
   assert.match(workflow, /cancel-in-progress:\s*true/);
   assert.match(workflow, /timeout-minutes:\s*\d+/);
-  assert.match(workflow, /LHCI_RUNS:\s*\$\{\{ github\.event_name == 'pull_request' && '1' \|\| '3' \}\}/);
   assert.match(workflow, /run:\s*npm run build/);
   assert.match(workflow, /run:\s*npm run perf:budget:check/);
   for (const assetPath of [
