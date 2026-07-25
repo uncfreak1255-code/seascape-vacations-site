@@ -8,19 +8,12 @@ in `AGENTS.md`.
 
 ## Environment
 
-- Node: `24.14.0` (`.nvmrc`)
 - `npm run build` runs `scripts/enforcement/build-site.js`, a custom
   enforcement wrapper (worktree lock, Hostaway build-cache sync, Eleventy,
   property-availability output validation) — NOT raw Eleventy.
 
 ## Commands
 
-- Dev: `npm run start`
-- Build: `npm run build`
-- Full tests: `npm test`
-- Content gate: `npm run lint:content`
-- Release verify: `npm run verify:release`
-- Visual regression: `npm run test:visual`
 - Visual proof capture: `npm run proof:visual`
 - Safe commit: `npm run git:safe-commit`
 - Merge check: `npm run git:merge-check`
@@ -39,8 +32,6 @@ in `AGENTS.md`.
 - Deployable: `yes`
 - Deploy surface: `Netlify`
 - Production URL: `https://seascape-vacations.com`
-- Build command: `npm run build`
-- Publish directory: `_site`
 - Post-deploy proof: `npm run verify:recovery:live && npm run verify:direct-booking-events && npm run verify:owner-funnel-routes`
 - "Shipped" means: merged to `main`, Netlify built successfully, and the relevant live smoke checks passed
 
