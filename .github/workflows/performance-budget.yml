@@ -1,0 +1,63 @@
+name: Performance Budget
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "src/**"
+      - "images/**"
+      - "css/**"
+      - "js/**"
+      - "hero-optimized.jpg"
+      - "hero-mobile.jpg"
+      - "*.png"
+      - "*.webp"
+      - "*.avif"
+      - "config/perf-budget.json"
+      - "scripts/enforcement/build-site.js"
+      - "scripts/perf/**"
+      - "eleventy.config.js"
+      - "lighthouserc.js"
+      - "package.json"
+      - "package-lock.json"
+      - ".github/workflows/performance-budget.yml"
+  schedule:
+    - cron: "17 9 * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: performance-budget-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  performance-budget:
+    name: performance-budget
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build production site
+        run: npm run build
+
+      - name: Check performance budgets
+        run: npm run perf:budget:check
+
+      - name: Upload Lighthouse reports
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: lighthouse-reports
+          path: .lighthouseci/
+          if-no-files-found: ignore

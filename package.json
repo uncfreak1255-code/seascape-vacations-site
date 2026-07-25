@@ -5,7 +5,8 @@
   "scripts": {
     "clean:site": "node -e \"require('fs').rmSync('_site', { recursive: true, force: true })\"",
     "pretest": "npm run build",
-    "test": "node --test scripts/enforcement/*.test.js scripts/evals/*.test.js",
+    "test": "npm run test:unit",
+    "test:unit": "node --test scripts/enforcement/*.test.js scripts/evals/*.test.js",
     "lint:content": "node --test scripts/enforcement/content-voice.test.js",
     "lint:design": "node scripts/design/design-lint.js",
     "lint:design:update": "node scripts/design/design-lint.js --update-baseline",

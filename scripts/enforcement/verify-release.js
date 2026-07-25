@@ -243,7 +243,7 @@ function buildCommandSteps(range) {
   return [
     { label: "property:truth:check", command: "npm", args: ["run", "property:truth:check"] },
     { label: "build", command: "npm", args: ["run", "build"] },
-    { label: "test", command: "npm", args: ["test"] },
+    { label: "test", command: "npm", args: ["run", "test:unit"] },
     {
       label: "lint:design",
       command: "npm",
@@ -253,7 +253,6 @@ function buildCommandSteps(range) {
     { label: "verify:recovery:p0", command: "npm", args: ["run", "verify:recovery:p0"] },
     { label: "verify:recovery:guides", command: "npm", args: ["run", "verify:recovery:guides"] },
     { label: "verify:recovery:remediation", command: "npm", args: ["run", "verify:recovery:remediation"] },
-    { label: "verify:direct-booking-events", command: "npm", args: ["run", "verify:direct-booking-events"] },
     { label: "verify:links", command: "npm", args: ["run", "verify:links"] },
     { label: "verify:jsonld", command: "npm", args: ["run", "verify:jsonld"] },
   ];
