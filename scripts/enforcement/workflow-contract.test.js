@@ -19,6 +19,8 @@ test("release safety preserves main coverage and both required check names", () 
   assert.match(workflow, /release-safety:\s*\n\s+name:\s*release-safety/);
   assert.match(workflow, /timeout-minutes:\s*\d+/);
   assert.match(workflow, /\n  build:\s*\n\s+name:\s*build\s*\n\s+needs:\s*release-safety/);
+  assert.match(workflow, /\n\s+if:\s*always\(\)/);
+  assert.match(workflow, /needs\.release-safety\.result[^\n]+success/);
 });
 
 test("release safety audits dependency changes and runs tests without rebuilding", () => {

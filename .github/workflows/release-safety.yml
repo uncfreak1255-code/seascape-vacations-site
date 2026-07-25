@@ -64,7 +64,13 @@ jobs:
   build:
     name: build
     needs: release-safety
+    if: always()
     runs-on: ubuntu-latest
     steps:
       - name: Confirm authoritative gate passed
-        run: echo "Build and tests passed in release-safety."
+        run: |
+          if [ "${{ needs.release-safety.result }}" != "success" ]; then
+            echo "release-safety did not pass."
+            exit 1
+          fi
+          echo "Build and tests passed in release-safety."
