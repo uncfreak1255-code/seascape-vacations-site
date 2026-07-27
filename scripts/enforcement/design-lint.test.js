@@ -85,8 +85,13 @@ function legacyState(workingViolations) {
 
 const BASELINE_ALL = { offBrandHex: [LEGACY], googleFonts: [LEGACY], emoji: [LEGACY] };
 
-function violations({ hex = [], googleFonts = false, emoji = false } = {}) {
-  return { offBrandHex: hex, googleFonts, emoji };
+function violations({ hex = [], googleFonts = false, emoji = false, hexCounts = null, googleFontsCount = null, emojiCount = null } = {}) {
+  const counts = {
+    hex: hexCounts || Object.fromEntries(hex.map((h) => [h, 1])),
+    googleFonts: googleFontsCount ?? (googleFonts ? 1 : 0),
+    emoji: emojiCount ?? (emoji ? 1 : 0),
+  };
+  return { offBrandHex: hex, googleFonts, emoji, counts };
 }
 
 test("touching a grandfathered file without changing design surfaces keeps its exemption", () => {
@@ -173,6 +178,74 @@ test("a non-grandfathered file that violates still fails even when unchanged", (
 
   assert.equal(newViolations.length, 1);
   assert.equal(newViolations[0].check, "offBrandHex");
+});
+
+test("adding a SECOND Google Fonts tag to an already-violating file loses the exemption", () => {
+  // Codex review finding on #490: boolean comparison let a baselined guide add
+  // more of the same category of debt. Counts close that hole.
+  const working = violations({ googleFonts: true, googleFontsCount: 2 });
+  const base = violations({ googleFonts: true, googleFontsCount: 1 });
+
+  const { newViolations } = evaluate(legacyState(working), BASELINE_ALL, new Set([LEGACY]), {
+    [LEGACY]: base,
+  });
+
+  assert.equal(newViolations.length, 1);
+  assert.equal(newViolations[0].check, "googleFonts");
+});
+
+test("adding another emoji to an already-violating file loses the exemption", () => {
+  const working = violations({ emoji: true, emojiCount: 3 });
+  const base = violations({ emoji: true, emojiCount: 2 });
+
+  const { newViolations } = evaluate(legacyState(working), BASELINE_ALL, new Set([LEGACY]), {
+    [LEGACY]: base,
+  });
+
+  assert.equal(newViolations.length, 1);
+  assert.equal(newViolations[0].check, "emoji");
+});
+
+test("one more USE of an already-present off-brand hex loses the exemption", () => {
+  const working = violations({ hex: ["#f0f7f7"], hexCounts: { "#f0f7f7": 3 } });
+  const base = violations({ hex: ["#f0f7f7"], hexCounts: { "#f0f7f7": 2 } });
+
+  const { newViolations } = evaluate(legacyState(working), BASELINE_ALL, new Set([LEGACY]), {
+    [LEGACY]: base,
+  });
+
+  assert.equal(newViolations.length, 1);
+  assert.equal(newViolations[0].check, "offBrandHex");
+});
+
+test("equal or reduced occurrence counts keep the exemption", () => {
+  const working = violations({ hex: ["#f0f7f7"], hexCounts: { "#f0f7f7": 2 }, googleFonts: true, googleFontsCount: 1 });
+  const base = violations({ hex: ["#f0f7f7", "#f8f9fa"], hexCounts: { "#f0f7f7": 2, "#f8f9fa": 1 }, googleFonts: true, googleFontsCount: 2 });
+
+  const { newViolations } = evaluate(legacyState(working), BASELINE_ALL, new Set([LEGACY]), {
+    [LEGACY]: base,
+  });
+
+  assert.deepEqual(newViolations, [], "removing debt while keeping the rest must not fail");
+});
+
+test("lintSource reports occurrence counts, not just presence", () => {
+  const source = [
+    '<style>.a{color:#ff00ff}.b{background:#ff00ff}.c{color:#00ff00}</style>',
+    '<link href="https://fonts.googleapis.com/css2?family=X" rel="stylesheet">',
+    '<link rel="preconnect" href="https://fonts.gstatic.com">',
+    "<p>beach day 🏖️ fun ☀️</p>",
+  ].join("\n");
+
+  const result = lintSource(source, new Set());
+  assert.equal(result.counts.hex["#ff00ff"], 2);
+  assert.equal(result.counts.hex["#00ff00"], 1);
+  assert.equal(result.counts.googleFonts, 2);
+  assert.ok(result.counts.emoji >= 2);
+  // The report shape existing consumers rely on is unchanged.
+  assert.deepEqual(result.offBrandHex, ["#ff00ff", "#00ff00"]);
+  assert.equal(result.googleFonts, true);
+  assert.equal(result.emoji, true);
 });
 
 test("checkWorsened treats a missing base as worsened and compares hex sets by membership", () => {

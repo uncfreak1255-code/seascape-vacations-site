@@ -139,23 +139,35 @@ function listGuideFiles() {
 }
 
 function lintSource(source, allowlist) {
-  const violations = { offBrandHex: [], googleFonts: false, emoji: false };
+  // counts back the per-check ratchet: hexCounts maps each off-brand hex to how
+  // many times it appears in style contexts, so migrate-on-touch can tell "same
+  // debt as the base" apart from "one more use of the same debt".
+  const violations = {
+    offBrandHex: [],
+    googleFonts: false,
+    emoji: false,
+    counts: { hex: {}, googleFonts: 0, emoji: 0 },
+  };
 
   const styleContext = extractStyleContexts(source);
-  const seen = new Set();
   for (const match of styleContext.match(HEX_RE) || []) {
     const norm = normalizeHex(match);
-    if (!allowlist.has(norm) && !seen.has(norm)) {
-      seen.add(norm);
-      violations.offBrandHex.push(norm);
+    if (!allowlist.has(norm)) {
+      if (!(norm in violations.counts.hex)) {
+        violations.offBrandHex.push(norm);
+      }
+      violations.counts.hex[norm] = (violations.counts.hex[norm] || 0) + 1;
     }
   }
 
-  if (/fonts\.googleapis\.com|fonts\.gstatic\.com/i.test(source)) {
+  violations.counts.googleFonts = (source.match(/fonts\.googleapis\.com|fonts\.gstatic\.com/gi) || []).length;
+  if (violations.counts.googleFonts > 0) {
     violations.googleFonts = true;
   }
 
-  if (EMOJI_RE.test(stripToVisibleText(source))) {
+  const emojiMatches = stripToVisibleText(source).match(new RegExp(EMOJI_RE.source, "gu")) || [];
+  violations.counts.emoji = emojiMatches.length;
+  if (violations.counts.emoji > 0) {
     violations.emoji = true;
   }
 
@@ -263,15 +275,22 @@ function buildBaseReport({ files, report, allowlist }, touched, baseRef) {
 
 // True when this edit made the file WORSE for this check. A file with no base
 // version (newly added) is always treated as worsened, so new files must comply.
+// Comparison is by OCCURRENCE COUNT, not category presence: a second Google
+// Fonts tag, an additional emoji, or one more use of an already-present
+// off-brand hex all count as new debt. Counts going down or staying equal keep
+// the exemption, so partial cleanup is never punished.
 function checkWorsened(working, base, check) {
   if (!base) {
     return true;
   }
+  const workingCounts = working.counts || { hex: {}, googleFonts: 0, emoji: 0 };
+  const baseCounts = base.counts || { hex: {}, googleFonts: 0, emoji: 0 };
   if (check === "offBrandHex") {
-    const alreadyPresent = new Set(base.offBrandHex);
-    return working.offBrandHex.some((hex) => !alreadyPresent.has(hex));
+    return Object.entries(workingCounts.hex).some(
+      ([hex, count]) => count > (baseCounts.hex[hex] || 0)
+    );
   }
-  return Boolean(working[check]) && !base[check];
+  return workingCounts[check] > baseCounts[check];
 }
 
 function run() {
