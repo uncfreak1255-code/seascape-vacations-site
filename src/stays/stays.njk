@@ -10,9 +10,9 @@ eleventyComputed:
   seoIndexable: "{{ seoGovernance.staysNoindexSlugs.indexOf(seoPage.slug) === -1 }}"
 ---
 {% from "partials/ui-icon.njk" import uiIcon %}
-{% set pageUpdatedIso = seoPageLastModifiedIso("vacationer", seoPage.slug, page.inputPath, "src/_data/staysPages.js") %}
-{% set pageUpdatedDate = seoPageLastModifiedDate("vacationer", seoPage.slug, page.inputPath, "src/_data/staysPages.js") %}
-{% set pageUpdatedLabel = seoPageLastModifiedLabel("vacationer", seoPage.slug, page.inputPath, "src/_data/staysPages.js") %}
+{% set pageUpdatedIso = seoPageLastModifiedIso("vacationer", seoPage.slug, page.inputPath, "src/_data/staysPages.js", "src/_data/seoGovernance.js") %}
+{% set pageUpdatedDate = seoPageLastModifiedDate("vacationer", seoPage.slug, page.inputPath, "src/_data/staysPages.js", "src/_data/seoGovernance.js") %}
+{% set pageUpdatedLabel = seoPageLastModifiedLabel("vacationer", seoPage.slug, page.inputPath, "src/_data/staysPages.js", "src/_data/seoGovernance.js") %}
 {% set featuredProperty = properties[0] %}
 {% set heroImage = seoPage.heroImage or (featuredProperty and featuredProperty.image) or "/images/seascape-og-default.jpg" %}
 {% set ctaImage = seoPage.ctaImage or heroImage %}
@@ -64,18 +64,188 @@ eleventyComputed:
 
     {% include "partials/organization-schema.njk" %}
 
-    <link rel="prec[›™Xİˆ™YHšÎ‹ËØ›ÛÚÚ[™Ù[™Ú[™XÙ‹šÜİ]Ø^K˜ÛÛHˆÜ›ÜÜÛÜšYÚ[‚ˆ[šÈ™[H™œË\™Y™]Úˆ™YHšÎ‹ËØ›ÛÚÚ[™Ù[™Ú[™XÙ‹šÜİ]Ø^K˜ÛÛH‚ˆÉH[˜ÛYHœ\X[ËÛØØ[Y›ÛZXY›ššÈˆ	_BˆÉHYˆ\›Ò[XYÙH	_Bˆ[šÂˆ™[Hœ™[ØY‚ˆ\ÏHš[XYÙH‚ˆ™YHŞÈ\›Ò[XYÙH[YÔ›ŞJLŒ
-H_H‚ˆ[XYÙ\Ü˜ÜÙ]HŞÈ\›Ò[XYÙH[YÔ›ŞJ
-H_HËŞÈ\›Ò[XYÙH[YÔ›ŞJLŒ
-H_HLŒÈ‚ˆ[XYÙ\Ú^™\ÏHŒLÈ‚ˆ™]Úš[Üš]OHšYÚ‚ˆÉH[™Yˆ	_B‚ˆØÜš\\OH˜\XØ][Û‹Û
-ÚœÛÛˆ‚ˆÂˆÛÛ^ˆšÎ‹ËÜØÚ[XK›Ü™È‹ˆ\Hˆœ™XYÜ[X“\İ‹ˆš][S\İ[[Y[ˆÂˆÈ\Hˆ“\İ][H‹œÜÚ][ÛˆˆK›˜[YHˆ’ÛYH‹š][HˆŞÈÚ]K\›_KÈˆKˆÈ\Hˆ“\İ][H‹œÜÚ][Ûˆˆ‹›˜[YHˆ”İ^HÛÛXİ[ÛœÈ‹š][HˆŞÈÚ]K\›_KÜİ^\ËÈˆKˆÈ\Hˆ“\İ][H‹œÜÚ][ÛˆˆË›˜[YHˆŞÈ\İ[˜][Û“X™[œÛÛˆØY™H_Kš][HˆŞÈÚ]K\›_^ŞÈ\İ[˜][Û‘İZYR™YˆÜˆ	ËÜİ^\ËÉÈ_HˆKˆÈ\Hˆ“\İ][H‹œÜÚ][Ûˆˆ›˜[YHˆŞÈÙ[ÔYÙKšHœÛÛˆØY™H_Kš][HˆŞÈÚ]K\›_KÜİ^\ËŞŞÈÙ[ÔYÙKœÛYÈ_KÈˆBˆBˆBˆÜØÜš\‚‚ˆØÜš\\OH˜\XØ][Û‹Û
-ÚœÛÛˆ‚ˆÂˆÛÛ^ˆšÎ‹ËÜØÚ[XK›Ü™È‹ˆ\Hˆ\XÛH‹ˆšXY[™HˆŞÈÙ[ÔYÙK]HœÛÛˆØY™H_Kˆ™\ØÜš\[ÛˆˆŞÈÙ[ÔYÙK™\ØÜš\[ÛˆœÛÛˆØY™H_Kˆ\›ˆŞÈÚ]K\›_KÜİ^\ËŞŞÈÙ[ÔYÙKœÛYÈ_KÈ‹ˆš[XYÙHˆÉHYˆ\›Ò[XYÙH[™\›Ò[XYÙVÌHOH	ËÉÈ	_HŞÈÚ]K\›_^ŞÈ\›Ò[XYÙH_HÉH[ÙH	_^ŞÈ
-\›Ò[XYÙH[YÔ›ŞJLŒ
-JHœÛÛˆØY™H_^ÉH[™Yˆ	_Kˆ™]TX›\ÚYˆŒŒKLKLŒˆ‹ˆ™]S[ÙYšYYˆŞÈYÙU\]Y\ÛÈÜˆYÙU\]Y]H_H‹ˆ˜]]ÜˆˆÈ\Hˆ“Ü™Ø[š^˜][Ûˆ‹›˜[YHˆŞÈÚ]K˜]]ÜˆœÛÛˆØY™H_K\›ˆŞÈÚ]K\›_HˆKˆœX›\Ú\ˆˆÂˆ\Hˆ“Ü™Ø[š^˜][Ûˆ‹ˆ›˜[YHˆŞÈÚ]K›˜[YHœÛÛˆØY™H_Kˆ›ÙÛÈˆÈ\Hˆ’[XYÙSØš™Xİ‹\›ˆŞÈÚ]K\›_KÛÙÛË[Ü[Z^™Yœ™ÈˆBˆBˆBˆÜØÜš\‚‚ˆÉHYˆ\Ñ˜\\È	_BˆØÜš\\OH˜\XØ][Û‹Û
-ÚœÛÛˆ‚ˆÂˆÛÛ^ˆšÎ‹ËÜØÚ[XK›Ü™È‹ˆ\Hˆ‘TTYÙH‹ˆ›XZ[‘[]HˆÂˆÉH›Üˆ˜\H[ˆÙ[ÔYÙK™˜\\È	_BˆÂˆ\Hˆ”]Y\İ[Ûˆ‹ˆ›˜[YHˆŞÈ
-˜\Kœ]Y\İ[ÛˆÜˆ˜\KœJHœÛÛˆØY™H_Kˆ˜XØÙ\Y[œİÙ\ˆˆÂˆ\Hˆ[œİÙ\ˆ‹ˆ^ˆŞÈ
-˜\K˜[œİÙ\ˆÜˆ˜\K˜JHİš\[œÛÛˆØY™H_BˆBˆ^ÉHYˆ›İÛÜ›\İ	_KÉH[™Yˆ	_BˆÉH[™›Üˆ	_BˆBˆBˆÜØÜš\‚ˆÉH[™Yˆ	_B‚ˆÉHYˆÙ[ÔYÙKœ›Ü\Q˜XİÈ[™Ù[ÔYÙKœ›Ü\Q˜XİË›[™İˆ[™Ù[ÔYÙKœ›Ü\Q˜XİÖÌKœYÙU\›[™˜[ÙH	_BˆÉH[Yˆ›Ü\Y\È[™›Ü\Y\È[™İ[™Ù[ÔYÙK›X]Ú[™Ô›Ü\Y\È[™Ù[ÔYÙK›X]Ú[™Ô›Ü\Y\Ë›[™İˆ	_BˆØÜš\\OH˜\XØ][Û‹Û
-ÚœÛÛˆ‚ˆÂˆÛÛ^ˆšÎ‹ËÜØÚ[XK›Ü™È‹ˆ\Hˆ’][S\İ‹ˆ›˜[YHˆŞÈÙ[ÔYÙKšHœÛÛˆØY™H_Kˆ™\ØÜš\[ÛˆˆŞÈÙ[ÔYÙK™\ØÜš\[ÛˆœÛÛˆØY™H_Kˆ›[X™\“Ù’][\ÈˆŞÈÙ[ÔYÙK›X]Ú[™Ô›Ü\Y\È[™İ_Kˆš][S\İ[[Y[ˆÂˆÉH›ÜˆX]Ú[™ÔÛYÈ[ˆÙ[ÔYÙK›X]Ú[™Ô›Ü\Y\È	_BˆÉHÙ]\İÜÚ][ÛˆHÛÜš[™^	_BˆÉHÙ]\Ó\İX]ÚHÛÜ›\İ	_BˆÉH›Üˆ›Ü\H[ˆ›Ü\Y\È	_BˆÉHYˆ›Ü\KœÛYÈOHX]Ú[™ÔÛYÈ	_BˆÂˆ\Hˆ“\İ][H‹ˆœÜÚ][ÛˆˆŞÈ\İÜÚ][Ûˆ_Kˆš][HˆÂˆ\Hˆ•˜XØ][Û”™[[‹ˆYˆŞÈÚ]K\›_^ŞÈ›ÖW'G’çvUW&Â×Ò7f6F–öâ×&VçFÂ"À¢&–FVçF–f–W"#¢·²&÷W'G’ç66†VÖ–FVçF–f–W"Â§6öâÂ6fR×ÒÀ¢&æÖR#¢·²&÷W'G’ææÖRÂ§6öâÂ6fR×ÒÀ¢&FW67&—F–öâ#¢·²&÷W'G’æFW67&—F–öâÂ§6öâÂ6fR×ÒÀ¢'W&Â#¢'·²6—FRçW&Â××·²&÷W'G’çvUW&Â×Ò"À¢&–ÖvR#¢··²‡&÷W'G’æ–ÖvRÂ–Öu&÷‡’ƒ#’’Â§6öâÂ6fR×ÕÒÀ¢&6öçF–ç5Æ6R#¢°¢$G—R#¢$66öÖÖöFF–öâ"À¢&çVÖ&W$öd&VG&öö×2#¢·²&÷W'G’æ&VG&öö×2×ÒÀ¢&çVÖ&W$öd&F‡&öö×5F÷FÂ#¢·²&÷W'G’æ&F‡&öö×2×ÒÀ¢&ö67Wæ7’#¢²$G—R#¢%VçF—FF—fUfÇVR"Â'fÇVR#¢·²&÷W'G’æwVW7G2×ÒĞ¢ÒÀ¢&ÆF—GVFR#¢·²&÷W'G’æÆF—GVFR×ÒÀ¢&Æöæv—GVFR#¢·²&÷W'G’æÆöæv—GVFR×ÒÀ¢&FG&W72#¢°¢$G—R#¢%÷7FÄFG&W72"À¢&FG&W74Æö6Æ—G’#¢·²&÷W'G’æ6—G’Â§6öâÂ6fR×ÒÀ¢&FG&W75&Vv–öâ#¢$dÂ"À¢&FG&W746÷VçG'’#¢%U2'²R–b&÷W'G’ç÷7FÄ6öFRWÒÀ¢'÷7FÄ6öFR#¢·²&÷W'G’ç÷7FÄ6öFRÂ§6öâÂ6fR××²RVæF–bWĞ¢ÒÀ¢&öffW'2#¢°¢$G—R#¢$öffW""À¢'&–6R#¢·²&÷W'G’ç&–6RÂ§6öâÂ6fR×ÒÀ¢'&–6T7W'&Væ7’#¢%U4B"À¢'Væ—EFW‡B#¢$ä”t…B"À¢&f–Æ&–Æ—G’#¢&‡GG3¢ò÷66†VÖæ÷&rô–å7Fö6²"À¢'W&Â#¢'·²&÷W'G’æ&öö¶–æuW&Â×Ò ¢Ğ¢Ğ¢×²R–bæ÷B—4Æ7DÖF6‚WÒÇ²RVæF–bWĞ¢²RVæF–bWĞ¢²RVæFf÷"WĞ¢²RVæFf÷"WĞ¢Ğ¢Ğ¢Â÷67&—Cà¢²RVÆ–b&÷W'F–W2æB&÷W'F–W2ÂÆVæwF‚WĞ¢²RVæF–bWĞ ¢Ç7G–ÆSà¢§&ö÷B°¢ÒÖ'&æC¢3Tc„„#°¢ÒÖ'&æBÖÆ–v‡C¢3t$4C°¢ÒÖ'&æBÖF&³¢34CT3TC°¢ÒÖ'&æBÖF&¶W#¢3$CCcCs°¢ÒÖvöÆC¢43”“c#°¢ÒÖvöÆBÖÆ–v‡C¢4S„CT3°¢ÒÖ7&VÓ¢4cTTTCc°¢ÒÖ7&VÒÖF&³¢4T$SD43°¢ÒÖ7&VÒÖÆ–v‡C¢4dctTS°¢Ò×7FöæS¢3444°¢Ò×7FöæRÖÆ–v‡C¢3ddd°¢Ò×v†—FS¢4dddddc°¢Ğ¢¢²Ö&v–ã¢²FF–æs¢²&÷‚×6—¦–æs¢&÷&FW"Ö&÷ƒ²Ğ¢‡FÖÂ²67&öÆÂÖ&V†f–÷#¢6Öö÷Fƒ²Ğ¢&öG’²föçBÖfÖ–Ç“¢u÷–ç2rÂÖÆR×7—7FVÒÂ6ç2×6W&–c²&6¶w&÷VæC¢f"‚ÒÖ7&VÒ“²6öÆ÷#¢f"‚Ò×7FöæR“²Æ–æRÖ†V–v‡C¢ãs²FF–ærÖ&÷GFöÓ¢²Ğ¢ƒÂƒ"Âƒ2ÂƒB²föçBÖfÖ–Ç“¢uÆ–f—"F—7Æ’rÂvV÷&v–Â6W&–c²föçB×vV–v‡C¢S²ÆWGFW"×76–æs¢Óã&VÓ²Ğ¢–Ör²Ö‚×v–GFƒ¢S²†V–v‡C¢WFó²Ğ¢²FW‡BÖFV6÷&F–öã¢æöæS²6öÆ÷#¢–æ†W&—C²Ğ¢ææb²÷6—F–öã¢7F–6·“²F÷¢²ÆVgC¢²&–v‡C¢²¢Ö–æFWƒ¢²&6¶w&÷VæC¢&v&ƒ#CRÂ#3‚Â#BÂã“‚“²&6¶G&÷Öf–ÇFW#¢&ÇW"ƒ#‚“²&÷&FW"Ö&÷GFöÓ¢‚6öÆ–B&v&ƒÂÂÂãb“²&÷‚×6†F÷s¢G‚3‚&v&ƒÂÂÂã‚“²Ğ¢ææbÖ–ææW"²F—7Æ“¢fÆWƒ²§W7F–g’Ö6öçFVçC¢76RÖ&WGvVVã²Æ–vâÖ—FV×3¢6VçFW#²FF–æs¢g‚#Gƒ²Ö‚×v–GFƒ¢Cƒ²Ö&v–ã¢WFó²Ğ¢ææbÖÆövò²F—7Æ“¢fÆWƒ²Æ–vâÖ—FV×3¢6VçFW#²v¢Gƒ²Ğ¢ææbÖÆövò–Ör²v–GFƒ¢WFó²†V–v‡C¢Cƒ²Ö‚×v–GFƒ¢æöæS²fÆWƒ¢WFó²F—7Æ“¢&Æö6³²Ğ¢ææbÖÆövò×FW‡B²föçBÖfÖ–Ç“¢uÆ–f—"F—7Æ’rÂ6W&–c²föçB×6—¦S¢#ƒ²föçB×vV–v‡C¢S²6öÆ÷#¢f"‚ÒÖ'&æBÖF&²“²ÆWGFW"×76–æs¢ãVVÓ²Ğ¢ææbÖÆövò×7V"²föçB×6—¦S¢—ƒ²ÆWGFW"×76–æs¢ã&VÓ²6öÆ÷#¢f"‚Ò×7FöæRÖÆ–v‡B“²FW‡B×G&ç6f÷&Ó¢WW&66S²Ö&v–â×F÷¢Ó'ƒ²Ğ¢ææbÖÆ–æ²²6öÆ÷#¢f"‚ÒÖ'&æBÖF&²“²föçB×6—¦S¢Gƒ²föçB×vV–v‡C¢c²Ğ¢æ%¸ì‰…­É½Õ¹è±¥¹•…ÈµÉ…‘¥•¹Ğ ÄÌÕ‘•œ°Ù…È ´µ‰É…¹¤€À”°Ù…È ´µ‰É…¹µ‘…É¬¤€ÄÀÀ”¤ì½±½ÈèÙ…È ´µİ¡¥Ñ”¤ìÁ…‘‘¥¹œè€ÄÕÁà€ÌÉÁàì‰½É‘•ÈµÉ…‘¥ÕÌè€ÔÁÁàì™½¹Ğµİ•¥¡Ğè€ØÀÀì™½¹ĞµÍ¥é”è€ÄÑÁàì‰½É‘•Èè¹½¹”ìÕÉÍ½ÈèÁ½¥¹Ñ•Èì‘¥ÍÁ±…äè¥¹±¥¹”µ™±•àì…±¥¸µ¥Ñ•µÌè•¹Ñ•Èì©ÕÍÑ¥™äµ½¹Ñ•¹Ğè•¹Ñ•Èì…Àè€áÁàìÑÉ…¹Í¥Ñ¥½¸è…±°€À¸ÑÌÕ‰¥Œµ‰•é¥•È À¸ÄÜÔ°€À¸ààÔ°€À¸ÌÈ°€Ä¸ÈÜÔ¤ì‰½àµÍ¡…‘½Üè€À€ÑÁà€ÄÕÁàÉ‰„ ØÄ°€äÈ°€äÌ°€À¸Èà¤ìô(€€€€€€€€¹‰Ñ¸é¡½Ù•ÈìÑÉ…¹Í™½É´èÑÉ…¹Í±…Ñ•d ´ÍÁà¤ì‰½àµÍ¡…‘½Üè€À€áÁà€ÈÕÁàÉ‰„ ØÄ°€äÈ°€äÌ°€À¸ÌØ¤ìô(€€€€€€€€¹‰Ñ¸µ½±ì‰…­É½Õ¹è±¥¹•…ÈµÉ…‘¥•¹Ğ ÄÌÕ‘•œ°Ù…È ´µ½±¤€À”°€àäĞÍ€ÄÀÀ”¤ì½±½Èè€ŒÉÈÀÄĞì‰½àµÍ¡…‘½Üè€À€ÑÁà€ÄÕÁàÉ‰„ ÈÀÄ°€ÄØä°€äà°€À¸Ì¤ìô(€€€€€€€€¹‰Ñ¸µ¡½ÍĞì‘¥ÍÁ±…äè¥¹±¥¹”µ™±•àì…±¥¸µ¥Ñ•µÌè•¹Ñ•Èì©ÕÍÑ¥™äµ½¹Ñ•¹Ğè•¹Ñ•ÈìÁ…‘‘¥¹œè€ÄÕÁà€ÌÉÁàì‰½É‘•ÈµÉ…‘¥ÕÌè€ÔÁÁàì™½¹Ğµİ•¥¡Ğè€ØÀÀì™½¹ĞµÍ¥é”è€ÄÑÁàì‰½É‘•Èè€ÅÁàÍ½±¥É‰„ ÈÔÔ°€ÈÔÔ°€ÈÔÔ°€À¸ÔÈ¤ì‰…­É½Õ¹èÉ‰„ ÈÔÔ°€ÈÔÔ°€ÈÔÔ°€À¸Ä¤ì½±½ÈèÙ…È ´µİ¡¥Ñ”¤ì‰…­‘É½Àµ™¥±Ñ•Èè‰±ÕÈ ÄÙÁà¤ìô(€€€€€€€€¹µ…¥¸µ½¹Ñ•¹Ğì‰…­É½Õ¹èÙ…È ´µÉ•…´¤ìô(€€€€€€€€¹Í•Ñ¥½¸ìÁ…‘‘¥¹œè€àÁÁà€ÈÑÁàìô(€€€€€€€€¹½¹Ñ…¥¹•Èìµ…àµİ¥‘Ñ è€ÄÄÀÁÁàìµ…É¥¸è€À…ÕÑ¼ìô(€€€€€€€€¹½¹Ñ…¥¹•Èµ¹…ÉÉ½Üìµ…àµİ¥‘Ñ è€àØÁÁàìµ…É¥¸è€À…ÕÑ¼ìô(€€€€€€€€¹Í•Ñ¥½¸µ¡•…‘•ÈìÑ•áĞµ…±¥¸è•¹Ñ•Èìµ…É¥¸µ‰½ÑÑ½´è€ĞÁÁàìô(€€€€€€€€¹Í•Ñ¥½¸µÑ…œì‘¥ÍÁ±…äè¥¹±¥¹”µ‰±½¬ì™½¹ĞµÍ¥é”è€ÄÉÁàì™½¹Ğµİ•¥¡Ğè€ØÀÀì±•ÑÑ•ÈµÍÁ…¥¹œè€À¸É•´ìÑ•áĞµÑÉ…¹Í™½É´èÕÁÁ•É…Í”ì½±½ÈèÙ…È ´µ‰É…¹µ‘…É¬¤ìµ…É¥¸µ‰½ÑÑ½´è€ÄÉÁàìô(€€€€€€€€¹Í•Ñ¥½¸µÑ¥Ñ±”ì™½¹ĞµÍ¥é”è±…µÀ ÈáÁà°€ÑÙÜ°€ÌáÁà¤ì½±½ÈèÙ…È ´µÍÑ½¹”¤ìµ…É¥¸µ‰½ÑÑ½´è€ÄÉÁàìô(€€€€€€€€¹Í•Ñ¥½¸µÍÕ‰Ñ¥Ñ±”ì½±½ÈèÙ…È ´µÍÑ½¹”µ±¥¡Ğ¤ìµ…àµİ¥‘Ñ è€ØØÁÁàìµ…É¥¸è€À…ÕÑ¼ìô(€€€€€€€€¹¡•É¼ìµ¥¸µ¡•¥¡Ğè…±Œ àÙÙ €´€àáÁà¤ì‘¥ÍÁ±…äèÉ¥ìÁ±…”µ¥Ñ•µÌè•¹Ñ•ÈìÁ…‘‘¥¹œè€ÜÉÁà€ÈÑÁàì½±½ÈèÙ…È ´µİ¡¥Ñ”¤ì‰…­É½Õ¹µ¥µ…”è±¥¹•…ÈµÉ…‘¥•¹Ğ ÄàÁ‘•œ°É‰„ À°À°À°¸ÌĞ¤°É‰„ À°À°À°¸Øà¤¤°Ù…È ´µ¡•É¼µ¥µ…”¤ì‰…­É½Õ¹µÍ¥é”è½Ù•Èì‰…­É½Õ¹µÁ½Í¥Ñ¥½¸è•¹Ñ•Èìô(€€€€€€€€¹¡•É¼µ¥¹¹•Èìİ¥‘Ñ èµ¥¸ äàÁÁà°€ÄÀÀ”¤ìÑ•áĞµ…±¥¸è•¹Ñ•Èìô(€€€€€€€€¹¡•É¼µ•å•‰É½Üì‘¥ÍÁ±…äè¥¹±¥¹”µ™±•àì…±¥¸µ¥Ñ•µÌè•¹Ñ•Èì…Àè€ÄÙÁàì½±½ÈèÙ…È ´µ½±µ±¥¡Ğ¤ì™½¹ĞµÍ¥é”è€ÄÉÁàì™½¹Ğµİ•¥¡Ğè€ÜÀÀì±•ÑÑ•ÈµÍÁ…¥¹œè€À¸ÈÉ•´ìÑ•áĞµÑÉ…¹Í™½É´èÕÁÁ•É…Í”ìµ…É¥¸µ‰½ÑÑ½´è€ÄáÁàìô(€€€€€€€€¹¡•É¼µ•å•‰É½Üèé‰•™½É”°€¹¡•É¼µ•å•‰É½Üèé…™Ñ•Èì½¹Ñ•¹Ğè€ˆˆìİ¥‘Ñ è€ĞÁÁàì¡•¥¡Ğè€ÅÁàì‰…­É½Õ¹èÉ‰„ ÈÌÈ°€ÈÄÌ°€ÄØÌ°€À¸ÜÈ¤ìô(€€€€€€€€¹¡•É¼ Äì™½¹ĞµÍ¥é”è±…µÀ ÌáÁà°€ÙÙÜ°€ØáÁà¤ì½±½ÈèÙ…È ´µİ¡¥Ñ”¤ì±¥¹”µ¡•¥¡Ğè€Ä¸ÀÔìµ…É¥¸µ‰½ÑÑ½´è€ÈÁÁàìô(€€€€€€€€¹¡•É¼µÍÕ‰¡•…ìµ…àµİ¥‘Ñ è€ÜØÁÁàìµ…É¥¸è€À…ÕÑ¼ì½±½ÈèÉ‰„ ÈÔÔ°ÈÔÔ°ÈÔÔ°À¸äÈ¤ì™½¹ĞµÍ¥é”è±…µÀ ÄİÁà°€È¸ÉÙÜ°€ÈÅÁà¤ì±¥¹”µ¡•¥¡Ğè€Ä¸Üìô(€€€€€€€€¹¡•É¼µ…Ñ¥½¹Ìì‘¥ÍÁ±…äè™±•àì©ÕÍÑ¥™äµ½¹Ñ•¹Ğè•¹Ñ•Èì…Àè€ÄÑÁàì™±•àµİÉ…ÀèİÉ…Àìµ…É¥¸µÑ½Àè€ÌÉÁàìô(€€€€€€€€¹ÑÉÕÍĞµ¡¥ÁÌì‘¥ÍÁ±…äè™±•àì©ÕÍÑ¥™äµ½¹Ñ•¹Ğè•¹Ñ•Èì…Àè€ÄÉÁàì™±•àµİÉ…ÀèİÉ…Àìµ…É¥¸µÑ½Àè€ÈáÁàìô(€€€€€€€€¹ÑÉÕÍĞµ¡¥Àì‘¥ÍÁ±…äè¥¹±¥¹”µ™±•àì…±¥¸µ¥Ñ•µÌè•¹Ñ•Èì…Àè€áÁàìÁ…‘‘¥¹œè€åÁà€ÄÑÁàì‰½É‘•Èè€ÅÁàÍ½±¥É‰„ ÈÔÔ°ÈÔÔ°ÈÔÔ°À¸ÈÔ¤ì‰½É‘•ÈµÉ…‘¥ÕÌè€ÔÁÁàì‰…­É½Õ¹èÉ‰„ ÈÔÔ°ÈÔÔ°ÈÔÔ°À¸Ä¤ì½±½ÈèÉ‰„ ÈÔÔ°ÈÔÔ°ÈÔÔ°À¸äĞ¤ì™½¹ĞµÍ¥é”è€ÄÍÁàì™½¹Ğµİ•¥¡Ğè€ØÀÀì‰…­‘É½Àµ™¥±Ñ•Èè‰±ÕÈ ÄÉÁà¤ìô(€€€€€€€€¹ÑÉÕÍĞµ¡¥À€¹Õ¤µ¥½¸ì½±½ÈèÙ…È ´µ½±µ±¥¡Ğ¤ìô(€€€€€€€€¹‰É•…‘ÉÕµ‰Ìì‰…­É½Õ¹èÉ‰„ ÈÔÀ°€ÈĞÜ°€ÈÌà°€À¸äØ¤ìÁ…‘‘¥¹œè€ÄÉÁà€ÈÑÁàì‰½É‘•Èµ‰½ÑÑ½´è€ÅÁàÍ½±¥É‰„ ØÄ°€äÈ°€äÌ°€À¸Àà¤ìô(€€€€€€€€¹‰É•…‘ÉÕµ‰Ì½°ì‘¥ÍÁ±…äè™±•àì™±•àµİÉ…ÀèİÉ…Àì…Àè€áÁàì±¥ÍĞµÍÑå±”è¹½¹”ìµ…É¥¸è€À…ÕÑ¼ìÁ…‘‘¥¹œè€Àì™½¹ĞµÍ¥é”è€ÄÍÁàìµ…àµİ¥‘Ñ è€ÄÄÀÁÁàìô(€€€€€€€€¹‰É•…‘ÉÕµ‰Ì„ì½±½ÈèÙ…È ´µ‰É…¹µ‘…É¬¤ì™½¹Ğµİ•¥¡Ğè€ÔÀÀìô(€€€€€€€€¹‰É•…‘ÉÕµ‰ÌÍÁ…¸ì½±½ÈèÙ…È ´µÍÑ½¹”µ±¥¡Ğ¤ìô(€€€€€€€€¹ÍÑ…ÑÌµ‰…Èì‰…­É½Õ¹èÙ…È ´µ‰É…¹µ‘…É­•È¤ì½±½ÈèÙ…È ´µİ¡¥Ñ”¤ìÁ…‘‘¥¹œè€ÈÙÁà€ÈÑÁàìô(€€€€€€€€¹ÍÑ…ÑÌµÉ¥ì‘¥ÍÁ±…äèÉ¥ìÉ¥µÑ•µÁ±…Ñ”µ½±Õµ¹ÌèÉ•Á•…Ğ Ì°µ¥¹µ…à À°€Å™È¤¤ì…Àè€ÄáÁàìµ…àµİ¥th: 1100px; margin: 0 auto; }
+    <link rel="preconnect" href="https://bookingenginecdn.hostaway.com" crossorigin>
+    <link rel="dns-prefetch" href="https://bookingenginecdn.hostaway.com">
+    {% include "partials/local-font-head.njk" %}
+    {% if heroImage %}
+    <link
+        rel="preload"
+        as="image"
+        href="{{ heroImage | imgProxy(1200) }}"
+        imagesrcset="{{ heroImage | imgProxy(800) }} 800w, {{ heroImage | imgProxy(1200) }} 1200w"
+        imagesizes="100vw"
+        fetchpriority="high">
+    {% endif %}
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "{{ site.url }}/" },
+            { "@type": "ListItem", "position": 2, "name": "Stay Collections", "item": "{{ site.url }}/stays/" },
+            { "@type": "ListItem", "position": 3, "name": {{ destinationLabel | json | safe }}, "item": "{{ site.url }}{{ destinationGuideHref or '/stays/' }}" },
+            { "@type": "ListItem", "position": 4, "name": {{ seoPage.h1 | json | safe }}, "item": "{{ site.url }}/stays/{{ seoPage.slug }}/" }
+        ]
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": {{ seoPage.title | json | safe }},
+        "description": {{ seoPage.description | json | safe }},
+        "url": "{{ site.url }}/stays/{{ seoPage.slug }}/",
+        "image": {% if heroImage and heroImage[0] == '/' %}"{{ site.url }}{{ heroImage }}"{% else %}{{ (heroImage | imgProxy(1200)) | json | safe }}{% endif %},
+        "datePublished": "2025-01-22",
+        "dateModified": "{{ pageUpdatedIso or pageUpdatedDate }}",
+        "author": { "@type": "Organization", "name": {{ site.author | json | safe }}, "url": "{{ site.url }}" },
+        "publisher": {
+            "@type": "Organization",
+            "name": {{ site.name | json | safe }},
+            "logo": { "@type": "ImageObject", "url": "{{ site.url }}/logo-optimized.png" }
+        }
+    }
+    </script>
+
+    {% if hasFaqs %}
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+            {% for faq in seoPage.faqs %}
+            {
+                "@type": "Question",
+                "name": {{ (faq.question or faq.q) | json | safe }},
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": {{ (faq.answer or faq.a) | stripHtml | json | safe }}
+                }
+            }{% if not loop.last %},{% endif %}
+            {% endfor %}
+        ]
+    }
+    </script>
+    {% endif %}
+
+    {% if seoPage.propertyFacts and seoPage.propertyFacts.length > 0 and seoPage.propertyFacts[0].pageUrl and false %}
+    {% elif properties and properties | length and seoPage.matchingProperties and seoPage.matchingProperties.length > 0 %}
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        "name": {{ seoPage.h1 | json | safe }},
+        "description": {{ seoPage.description | json | safe }},
+        "numberOfItems": {{ seoPage.matchingProperties | length }},
+        "itemListElement": [
+            {% for matchingSlug in seoPage.matchingProperties %}
+            {% set listPosition = loop.index %}
+            {% set isLastMatch = loop.last %}
+            {% for property in properties %}
+            {% if property.slug == matchingSlug %}
+            {
+                "@type": "ListItem",
+                "position": {{ listPosition }},
+                "item": {
+                    "@type": "VacationRental",
+                    "@id": "{{ site.url }}{{ property.pageUrl }}#vacation-rental",
+                    "identifier": {{ property.schemaIdentifier | json | safe }},
+                    "name": {{ property.name | json | safe }},
+                    "description": {{ property.description | json | safe }},
+                    "url": "{{ site.url }}{{ property.pageUrl }}",
+                    "image": [{{ (property.image | imgProxy(1200)) | json | safe }}],
+                    "containsPlace": {
+                        "@type": "Accommodation",
+                        "numberOfBedrooms": {{ property.bedrooms }},
+                        "numberOfBathroomsTotal": {{ property.bathrooms }},
+                        "occupancy": { "@type": "QuantitativeValue", "value": {{ property.guests }} }
+                    },
+                    "latitude": {{ property.latitude }},
+                    "longitude": {{ property.longitude }},
+                    "address": {
+                        "@type": "PostalAddress",
+                        "addressLocality": {{ property.city | json | safe }},
+                        "addressRegion": "FL",
+                        "addressCountry": "US"{% if property.postalCode %},
+                        "postalCode": {{ property.postalCode | json | safe }}{% endif %}
+                    },
+                    "offers": {
+                        "@type": "Offer",
+                        "price": {{ property.price | json | safe }},
+                        "priceCurrency": "USD",
+                        "unitText": "NIGHT",
+                        "availability": "https://schema.org/InStock",
+                        "url": "{{ property.bookingUrl }}"
+                    }
+                }
+            }{% if not isLastMatch %},{% endif %}
+            {% endif %}
+            {% endfor %}
+            {% endfor %}
+        ]
+    }
+    </script>
+    {% elif properties and properties | length %}
+    {% endif %}
+
+    <style>
+        :root {
+            --brand: #5F8A8B;
+            --brand-light: #7BA3A4;
+            --brand-dark: #3D5C5D;
+            --brand-darker: #2D4647;
+            --gold: #C9A962;
+            --gold-light: #E8D5A3;
+            --cream: #F5EED6;
+            --cream-dark: #EBE4CC;
+            --cream-light: #FAF7EE;
+            --stone: #3A3A3A;
+            --stone-light: #6A6A6A;
+            --white: #FFFFFF;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Poppins', -apple-system, sans-serif; background: var(--cream); color: var(--stone); line-height: 1.7; padding-bottom: 0; }
+        h1, h2, h3, h4 { font-family: 'Playfair Display', Georgia, serif; font-weight: 500; letter-spacing: -0.02em; }
+        img { max-width: 100%; height: auto; }
+        a { text-decoration: none; color: inherit; }
+        .nav { position: sticky; top: 0; left: 0; right: 0; z-index: 100; background: rgba(245, 238, 214, 0.98); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(0, 0, 0, 0.06); box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08); }
+        .nav-inner { display: flex; justify-content: space-between; align-items: center; padding: 16px 24px; max-width: 1400px; margin: 0 auto; }
+        .nav-logo { display: flex; align-items: center; gap: 14px; }
+        .nav-logo img { width: auto; height: 40px; max-width: none; flex: 0 0 auto; display: block; }
+        .nav-logo-text { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 500; color: var(--brand-dark); letter-spacing: 0.05em; }
+        .nav-logo-sub { font-size: 9px; letter-spacing: 0.2em; color: var(--stone-light); text-transform: uppercase; margin-top: -2px; }
+        .nav-link { color: var(--brand-dark); font-size: 14px; font-weight: 600; }
+        .btn { background: linear-gradient(135deg, var(--brand) 0%, var(--brand-dark) 100%); color: var(--white); padding: 15px 32px; border-radius: 50px; font-weight: 600; font-size: 14px; border: none; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 4px 15px rgba(61, 92, 93, 0.28); }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(61, 92, 93, 0.36); }
+        .btn-gold { background: linear-gradient(135deg, var(--gold) 0%, #B8943A 100%); color: #2A2014; box-shadow: 0 4px 15px rgba(201, 169, 98, 0.3); }
+        .btn-ghost { display: inline-flex; align-items: center; justify-content: center; padding: 15px 32px; border-radius: 50px; font-weight: 600; font-size: 14px; border: 1px solid rgba(255, 255, 255, 0.52); background: rgba(255, 255, 255, 0.1); color: var(--white); backdrop-filter: blur(16px); }
+        .main-content { background: var(--cream); }
+        .section { padding: 80px 24px; }
+        .container { max-width: 1100px; margin: 0 auto; }
+        .container-narrow { max-width: 860px; margin: 0 auto; }
+        .section-header { text-align: center; margin-bottom: 40px; }
+        .section-tag { display: inline-block; font-size: 12px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--brand-dark); margin-bottom: 12px; }
+        .section-title { font-size: clamp(28px, 4vw, 38px); color: var(--stone); margin-bottom: 12px; }
+        .section-subtitle { color: var(--stone-light); max-width: 660px; margin: 0 auto; }
+        .hero { min-height: calc(86vh - 88px); display: grid; place-items: center; padding: 72px 24px; color: var(--white); background-image: linear-gradient(180deg, rgba(0,0,0,.34), rgba(0,0,0,.68)), var(--hero-image); background-size: cover; background-position: center; }
+        .hero-inner { width: min(980px, 100%); text-align: center; }
+        .hero-eyebrow { display: inline-flex; align-items: center; gap: 16px; color: var(--gold-light); font-size: 12px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; margin-bottom: 18px; }
+        .hero-eyebrow::before, .hero-eyebrow::after { content: ""; width: 40px; height: 1px; background: rgba(232, 213, 163, 0.72); }
+        .hero h1 { font-size: clamp(38px, 6vw, 68px); color: var(--white); line-height: 1.05; margin-bottom: 20px; }
+        .hero-subhead { max-width: 760px; margin: 0 auto; color: rgba(255,255,255,0.92); font-size: clamp(17px, 2.2vw, 21px); line-height: 1.7; }
+        .hero-actions { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; margin-top: 32px; }
+        .trust-chips { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-top: 28px; }
+        .trust-chip { display: inline-flex; align-items: center; gap: 8px; padding: 9px 14px; border: 1px solid rgba(255,255,255,0.25); border-radius: 50px; background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.94); font-size: 13px; font-weight: 600; backdrop-filter: blur(12px); }
+        .trust-chip .ui-icon { color: var(--gold-light); }
+        .breadcrumbs { background: rgba(250, 247, 238, 0.96); padding: 12px 24px; border-bottom: 1px solid rgba(61, 92, 93, 0.08); }
+        .breadcrumbs ol { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; margin: 0 auto; padding: 0; font-size: 13px; max-width: 1100px; }
+        .breadcrumbs a { color: var(--brand-dark); font-weight: 500; }
+        .breadcrumbs span { color: var(--stone-light); }
+        .stats-bar { background: var(--brand-darker); color: var(--white); padding: 26px 24px; }
+        .stats-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; max-width: 1100px; margin: 0 auto; }
         .stat { text-align: center; border-right: 1px solid rgba(255,255,255,0.16); }
         .stat:last-child { border-right: 0; }
         .stat-value { display: block; color: var(--gold-light); font-family: 'Playfair Display', Georgia, serif; font-size: 28px; line-height: 1.1; margin-bottom: 6px; }
@@ -104,25 +274,189 @@ JHœÛÛˆØY™H_^ÉH[™Yˆ	_Kˆ™]TX›\ÚYˆŒŒKLKLŒˆ‹ˆ™
         .property-card:hover { transform: translateY(-5px); }
         .property-img { height: 220px; background: linear-gradient(135deg, rgba(95, 138, 139, 0.16), rgba(201, 169, 98, 0.22)); background-size: cover; background-position: center; position: relative; }
         .property-badge { position: absolute; top: 12px; left: 12px; background: var(--gold); color: var(--stone); padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 600; }
-        .property-body { padding: 22pxBˆœ›Ü\K\˜][™ÈÈ\Ü^Nˆ[›[™KY›^È[YÛ‹Z][\ÎˆÙ[\ÈØ\ˆœÈÛÛÜˆ˜\ŠKXœ˜[™Y\šÊNÈ›Û\Ú^™NˆLÜÈ›Û]ÙZYÚˆÌÈX\™Ú[‹X›İÛNˆLÈBˆœ›Ü\K]]HÈ›Û\Ú^™NˆŒ\ÈÛÛÜˆ˜\ŠK\İÛ™JNÈX\™Ú[‹X›İÛNˆÈBˆœ›Ü\K[Y]HÈ›Û\Ú^™NˆLÜÈÛÛÜˆ˜\ŠK\İÛ™K[YÚ
-NÈX\™Ú[‹X›İÛNˆLœÈBˆœ›Ü\KZYÚYÚÈ›Û\Ú^™NˆMÈÛÛÜˆ˜\ŠK\İÛ™JNÈX\™Ú[‹X›İÛNˆNÈZ[‹ZZYÚˆÈBˆœ›Ü\KXØ\™X›İÛHÈ\Ü^Nˆ›^È\İYKXÛÛ[ˆÜXÙKX™]ÙY[È[YÛ‹Z][\ÎˆÙ[\ÈØ\ˆMœÈBˆœ›Ü\K\šXÙHÈ›Û\Ú^™NˆMœÈÛÛÜˆ˜\ŠKXœ˜[™Y\šÊNÈ›Û]ÙZYÚˆÌÈÚ]K\ÜXÙNˆ›İÜ˜\ÈBˆ™š]™K[\İÈ\Ü^NˆÜšYÈÜšY][\]KXÛÛ[[œÎˆ™\X]
-]]ËYš]Z[›X^
-YœŠJNÈØ\ˆNÈBˆ™š]™KXØ\™È˜XÚÙÜ›İ[™ˆ˜\ŠKXÜ™X[K[YÚ
-NÈ›Ü™\‹[YˆÛÛY˜\ŠKYÛÛ
-NÈ›Ü™\‹\˜Y]\ÎˆŒŒÈY[™ÎˆŒœÈBˆ™š]™K][YHÈÛÛÜˆ˜\ŠKXœ˜[™Y\šÊNÈ›Û]ÙZYÚˆÌÈ›Û\Ú^™NˆLÜÈ]\‹\ÜXÚ[™ÎˆŒY[NÈ^]˜[œÙ›Ü›Nˆ\\˜Ø\ÙNÈX\™Ú[‹X›İÛNˆÈBˆœ™]šY]Ë\İ\œÈÈ\Ü^Nˆ›^ÈØ\ˆÜÈÛÛÜˆ˜\ŠKYÛÛ
-NÈX\™Ú[‹X›İÛNˆMÈBˆœ™]šY]ËXÛÜHÈÛÛÜˆ˜\ŠK\İÛ™JNÈ›Û\Ú^™NˆM\È[™KZZYÚˆKÍNÈX\™Ú[‹X›İÛNˆMÈBˆœ™]šY]Ë\Ûİ\˜ÙHÈÛÛÜˆ˜\ŠK\İÛ™K[YÚ
-NÈ›Û\Ú^™NˆLÜÈ›Û]ÙZYÚˆŒÈBˆ™˜\K\ÙXİ[ÛˆÈ˜XÚÙÜ›İ[™ˆ˜\ŠKXÜ™X[KY\šÊNÈBˆ™˜\K[\İÈ\Ü^NˆÜšYÈØ\ˆMœÈBˆ™İZYKXØ\™È\Ü^Nˆ›ØÚÎÈ˜[œÚ][Ûˆ˜[œÙ›Ü›HŒœÈX\ÙK›Ş\ÚYİÈŒœÈX\ÙNÈBˆ™İZYKXØ\™šİ™\ˆÈ˜[œÙ›Ü›Nˆ˜[œÛ]VJLÜ
-NÈ›Ş\ÚYİÎˆM™Ø˜JÎÎKŒJNÈBˆ™İZYKXØ]YÛÜHÈ\Ü^Nˆ›ØÚÎÈÛÛÜˆ˜\ŠKXœ˜[™Y\šÊNÈ›Û\Ú^™NˆL\È›Û]ÙZYÚˆÌÈ]\‹\ÜXÚ[™ÎˆŒM™[NÈ^]˜[œÙ›Ü›Nˆ\\˜Ø\ÙNÈX\™Ú[‹X›İÛNˆLÈBˆ™İZYKX\œ›İÈÈÛÛÜˆ˜\ŠKYÛÛ
-NÈ›Û]ÙZYÚˆÌÈBˆ˜İK\ÙXİ[ÛˆÈÛÛÜˆ˜\ŠK]Ú]JNÈ^X[YÛˆÙ[\ÈY[™ÎˆLœÈ˜XÚÙÜ›İ[™Z[XYÙNˆ[™X\‹YÜ˜YY[
-LÍYYË™Ø˜JKÌÌK
-K™Ø˜JMKLÎLÎKÎ
-JK˜\ŠKXİKZ[XYÙJNÈ˜XÚÙÜ›İ[™\Ú^™NˆÛİ™\È˜XÚÙÜ›İ[™\ÜÚ][ÛˆÙ[\ÈBˆ˜İK]]HÈ›Û\Ú^™NˆÛ[\
-ÌË
-NÈX\™Ú[‹X›İÛNˆMœÈÛÛÜˆ˜\ŠK]Ú]JNÈBˆ˜İK\İX]HÈÜXÚ]NˆLÈX^]ÚYˆŒÈX\™Ú[ˆ]]ÈÌœÈ›Û\Ú^™NˆMÜÈBˆ˜İKXXİ[ÛœÈÈ\Ü^Nˆ›^È\İYKXÛÛ[ˆÙ[\ÈØ\ˆMÈ›^]Ü˜\ˆÜ˜\ÈBˆœİXÚŞK[[Øš[KXİHÈ\Ü^Nˆ›Û™NÈBˆ™›Ûİ\ˆÈ˜XÚÙÜ›İ[™ˆ˜\ŠKXœ˜[™Y\šÙ\ŠNÈÛÛÜˆ™Ø˜JMKMKMK
-NÈY[™ÎˆŒÌÈBˆ™›Ûİ\‹Z[›™\ˆÈX^]ÚYˆLLÈX\™Ú[ˆ]]ÎÈ^X[YÛˆÙ[\ÈBˆ™›Ûİ\‹[ÙÛÈÈ›ÛY˜[Z[Nˆ	Ô^Y˜Z\ˆ\Ü^IËÙ\šYÈ›Û\Ú^™NˆÈÛÛÜˆ˜\ŠK]Ú]JNÈX\™Ú[‹X›İÛNˆMœÈBˆ™›Ûİ\‹[[šÜÈÈ\Ü^Nˆ›^È\İYKXÛÛ[ˆÙ[\ÈØ\ˆÈX\™Ú[‹X›İÛNˆÈ›^]Ü˜\ˆÜ˜\ÈBˆ™›Ûİ\‹[[šÜÈHÈÛÛÜˆ™Ø˜JMKMKMKÊNÈ›Û\Ú^™NˆMÈ˜[œÚ][ÛˆÛÛÜˆŒÜÈX\ÙNÈBˆ™›Ûİ\‹[[šÜÈNšİ™\ˆÈÛÛÜˆ˜\ŠK]Ú]JNÈBˆ™›Ûİ\‹XÛÜ\šYÚÈ›Û\Ú^™NˆLÜÈÜXÚ]NˆÈBˆYYXH
-X^]ÚYˆŒ
-HÂˆ›ÙHÈY[™ËX›İÛNˆÎÈBˆ›˜]‹Z[›™\ˆÈY[™ÎˆLœMœÈBˆ›˜]‹[ÙÛË]^È›Û\Ú^™NˆNÈBˆ›˜]ˆ˜ˆÈ\Ü^Nˆ›Û™NÈBˆš\›ÈÈZ[‹ZZYÚˆØ[ÊšH\
-NÈY[™ÎˆMœNÈBˆš\›ËY^YXœ›İÎ˜™Y›Ü™Kš\›ËY^YXœ›İÎ˜Y\ˆÈÚYˆœÈBˆš\›ËXXİ[ÛœÈÈ›^Y\™Xİ[ÛˆÛÛ[[ÈBˆš\›ËXXİ[ÛœÈ˜‹š\›ËXXİ[ÛœÈ˜‹YÚÜİÈÚYˆL	NÈBˆœİ]ËYÜšYÈÜšY][\]KXÛÛ[[œÎˆYœÈØ\ˆMÈBˆœİ]È›Ü™\‹\šYÚˆÈ›Ü™\‹X›İÓ¢‚6öÆ–B&v&ƒ#SRÃ#SRÃ#SRÃãb“²FF–ærÖ&÷GFöÓ¢Gƒ²Ğ¢ç7FC¦Æ7BÖ6†–ÆB²&÷&FW"Ö&÷GFöÓ¢²FF–ærÖ&÷GFöÓ¢²Ğ¢ç6V7F–öâ²FF–æs¢S‡‚‡ƒ²Ğ¢ç&÷W'G’Ö6&BÖ&÷GFöÒ²fÆW‚ÖF—&V7F–öã¢6öÇVÖã²Æ–vâÖ—FV×3¢7G&WF6ƒ²Ğ¢ç&÷W'G’Ö6&BÖ&÷GFöÒæ'Fâ²v–GFƒ¢S²Ğ¢ç7F–6·’ÖÖö&–ÆRÖ7F²÷6—F–öã¢f—†VC²ÆVgC¢²&–v‡C¢²&÷GFöÓ¢²¢Ö–æFWƒ¢#²F—7Æ“¢fÆWƒ²Æ–vâÖ—FV×3¢6VçFW#²§W7F–g’Ö6öçFVçC¢76RÖ&WGvVVã²v¢'ƒ²FF–æs¢'‚G‚6Æ2ƒ'‚²Vçb‡6fRÖ&VÖ–ç6WBÖ&÷GFöÒ’“²&6¶w&÷VæC¢&v&ƒ#CRÃ#3‚Ã#BÃã“r“²&6¶G&÷Öf–ÇFW#¢&ÇW"ƒg‚“²&÷&FW"×F÷¢‚6öÆ–B&v&ƒcÃ“"Ã“2ÃãB“²&÷‚×6†F÷s¢Ó‚#‡‚&v&ƒ#‚Ã3‚Ã3’ÃãB“²Ğ¢ç7F–6·’×†öæR²v–GFƒ¢CGƒ²†V–v‡C¢CGƒ²&÷&FW"×&F—W3¢SS²&6¶w&÷VæC¢f"‚Ò×v†—FR“²6öÆ÷#¢f"‚ÒÖ'&æBÖF&²“²F—7Æ“¢–æÆ–æRÖfÆWƒ²Æ–vâÖ—FV×3¢6VçFW#²§W7F–g’Ö6öçFVçC¢6VçFW#²&÷‚×6†F÷s¢g‚‡‚&v&ƒ#‚Ã3‚Ã3’Ãã“²Ğ¢ç7F–6·’ÖÖö&–ÆRÖ7Fæ'Fâ²fÆWƒ¢²FF–æs¢7‚‡ƒ²föçB×6—¦S¢7ƒ²Ğ¢Ğ¢Â÷7G–ÆSà£Âö†VCà£Æ&öG“à¢Ææb6Æ73Ò&æb#à¢ÆF—b6Æ73Ò&æbÖ–ææW"#à¢Æ‡&VcÒ"ò"6Æ73Ò&æbÖÆövò#à¢Æ–Ör7&3Ò"öÆövòÖ÷F–Ö—¦VBçær"ÇCÒ%6V66Rf6F–öç2"†V–v‡CÒ#C#à¢ÆF—cà¢ÆF—b6Æ73Ò&æbÖÆövò×FW‡B#å4T44SÂöF—cà¢ÆF—b6Æ73Ò&æbÖÆövò×7V"#åf6F–öç3ÂöF—cà¢ÂöF—cà¢Âöà¢Æ¢‡&VcÒ'·²6VõvRæ6öÆÆV7F–öä7F‡&Vb÷"r÷&÷W'F–W2òr×Ò ¢6Æ73Ò&'Fâ ¢FF×G&6²ÖWfVçCÒ&6FÆöuö&ööµöF—&V7Eö6Æ–6² ¢FF×Æ6VÖVçCÒ'7F•öæb ¢FF×G&6²ÖÆ&VÃÒ'·²6VõvRç6ÇVr×Ò ¢ä'&÷w6R†öÖW3Âöà¢ÂöF—cà¢Âöæcà ¢ÆÖ–â6Æ73Ò&Ö–âÖ6öçFVçB#à¢Ææb6Æ73Ò&'&VF7'VÖ'2"&–ÖÆ&VÃÒ$'&VF7'VÖ"#à¢ÆöÃà¢ÆÆ“ãÆ‡&VcÒ"ò#ä†öÖSÂöãÂöÆ“à¢ÆÆ“ãÇ7ãâóÂ÷7ããÂöÆ“à¢ÆÆ“à¢²R–bFW7F–æF–öäwV–FT‡&VbWĞ¢Æ‡&VcÒ'·²FW7F–æF–öäwV–FT‡&Vb×Ò#ç·²FW7F–æF–öäÆ&VÂ×ÓÂöà¢²RVÇ6RWĞ¢Æ‡&VcÒ"÷7F—2ò#å7F’6öÆÆV7F–öç3Âöà¢²RVæF–bWĞ¢ÂöÆ“à¢ÆÆ“ãÇ7ãâóÂ÷7ããÂöÆ“à¢ÆÆ“ãÇ7â&–Ö7W'&VçCÒ'vR#ç·²6VõvRæƒ×ÓÂ÷7ããÂöÆ“à¢ÂööÃà¢Âöæcà ¢Ç6V7F–öâ6Æ73Ò&†W&ò"7G–ÆSÒ"ÒÖ†W&òÖ–ÖvS¢W&Â‚w·²†W&ô–ÖvRÂ–Öu&÷‡’ƒ#’×Òr“²#à¢ÆF—b6Æ73Ò&†W&òÖ–ææW"#à¢Ç6Æ73Ò&†W&òÖW–V'&÷r#ç·²FW7F–æF–öäÆ&VÂ×ÓÂ÷à¢Æƒç·²6VõvRæƒ×ÓÂöƒà¢Ç6Æ73Ò&†W&ò×7V&†VB#ç·²6VõvRæFW67&—F–öâ×ÓÂ÷à¢ÆF—b6Æ73Ò&†W&òÖ7F–öç2#à¢Æ¢‡&VcÒ"6fVGW&VBÖ†öÖW2 ¢6Æ73Ò&'Fâ'FâÖvöÆB ¢FF×G&6²ÖWfVçCÒ&6FÆöuö&ööµöF—&V7Eö6Æ–6² ¢FF×Æ6VÖVçCÒ'7F•ö†W&ò ¢FF×G&6²ÖÆ&VÃÒ'·²6VõvRç6ÇVr×Ò ¢ä'&÷w6RF†R†öÖW3Âöà¢Æ‡&VcÒ'²R–b†46ö×&—6öâWÒ66ö×&W²RVÇ6RWÒ6–çG&÷²RVæF–bWÒ"6Æ73Ò&'FâÖv†÷7B#åv‡’7F’†W&SóÂöà¢ÂöF—cà¢ÆF—b6Æ73Ò'G'W7BÖ6†—2"&–ÖÆ&VÃÒ$&öö¶–ær†–v†Æ–v‡G2#à¢Ç7â6Æ73Ò'G'W7BÖ6†—#ç·²V”–6öâ‚'7F""’×Ò·²6VõvRç&Wf–WuG'W7DÆ&VÂ÷"%&FVBRã"×ÓÂ÷7ãà¢Ç7â6Æ73Ò'G'W7BÖ6†—#ç·²V”–6öâ‚&6""’×Ò·²6VõvRæG&—fUF–ÖTÆ&VÂ÷"#ÓRÖ–çWFW2Fò&V6†W2"×ÓÂ÷7ãà¢Ç7â6Æ73Ò'G'W7BÖ6†—#ç·²V”–6öâ‚&FöÆÆ""’×Ò6fRÓRRF—&V7CÂ÷7ãà¢ÂöF—cà¢ÂöF—cà¢Â÷6V7F–öãà ¢Ç6V7F–öâ6Æ70‰ÍÑ…ÑÌµ‰…Èˆ…É¥„µ±…‰•°ô‰M•…Í…Á”ÍÑ…ä¡¥¡±¥¡ÑÌˆø(€€€€€€€€€€€€ñ‘¥Ø±…ÍÌô‰ÍÑ…ÑÌµÉ¥ˆø(€€€€€€€€€€€€€€€€ñ‘¥Ø±…ÍÌô‰ÍÑ…Ğˆø(€€€€€€€€€€€€€€€€€€€€ñÍÁ…¸±…ÍÌô‰ÍÑ…ĞµÙ…±Õ”ˆùíìÁÉ½Á•ÉÑ¥•Ì¹±•¹Ñ ¥˜ÁÉ½Á•ÉÑ¥•Ì•±Í”€ˆÔˆõôğ½ÍÁ…¸ø(€€€€€€€€€€€€€€€€€€€€ñÍÁ…¸±…ÍÌô‰ÍÑ…Ğµ±…‰•°ˆù¥É•Ğµ‰½½¬¡½µ•Ìğ½ÍÁ…¸ø(€€€€€€€€€€€€€€€€ğ½‘¥Øø(€€€€€€€€€€€€€€€€ñ‘¥Ø±…ÍÌô‰ÍÑ…Ğˆø(€€€€€€€€€€€€€€€€€€€€ñÍÁ…¸±…ÍÌô‰ÍÑ…ĞµÙ…±Õ”ˆøÄÀ´ÄÔ”ğ½ÍÁ…¸ø(€€€€€€€€€€€€€€€€€€€€ñÍÁ…¸±…ÍÌô‰ÍÑ…Ğµ±…‰•°ˆùQåÁ¥…°‘¥É•ĞÍ…Ù¥¹Ìğ½ÍÁ…¸ø(€€€€€€€€€€€€€€€€ğ½‘¥Øø(€€€€€€€€€€€€€€€€ñ‘¥Ø±…ÍÌô‰ÍÑ…Ğˆø(€€€€€€€€€€€€€€€€€€€€ñÍÁ…¸±…ÍÌô‰ÍÑ…ĞµÙ…±Õ”ˆù1½…°ğ½ÍÁ…¸ø(€€€€€€€€€€€€€€€€€€€€ñÍÁ…¸±…ÍÌô‰ÍÑ…Ğµ±…‰•°ˆùM•…Í…Á”ÍÕÁÁ½ÉĞğ½ÍÁ…¸ø(€€€€€€€€€€€€€€€€ğ½‘¥Øø(€€€€€€€€€€€€ğ½‘¥Øø(€€€€€€€€ğ½Í•Ñ¥½¸ø((€€€€€€€€ñÍ•Ñ¥½¸±…ÍÌô‰Í•Ñ¥½¸ˆ¥ô‰¥¹ÑÉ¼ˆø(€€€€€€€€€€€€ñ‘¥Ø±…ÍÌô‰½¹Ñ…¥¹•Èµ¹…ÉÉ½Üˆø(€€€€€€€€€€€€€€€€ñ‘¥Ø±…ÍÌô‰Í•Ñ¥½¸µ¡•…‘•Èˆø(€€€€€€€€€€€€€€€€€€€€ñÀ±…ÍÌô‰Í•Ñ¥½¸µÑ…œˆùíìÍ•½A…”¹¥¹ÑÉ½å•‰É½Ü½È€‰Q¡”Í¡½ÉĞÙ•ÉÍ¥½¸ˆõôğ½Àø(€€€€€€€€€€€€€€€€€€€€ñ È±…ÍÌô‰Í•Ñ¥½¸µÑ¥Ñ±”ˆùíìÍ•½A…”¹¥¹ÑÉ½!•…‘¥¹œ½È€ ‰MÑ…ä¹•…È€ˆ€¬‘•ÍÑ¥¹…Ñ¥½¹1…‰•°€¬€ˆ°İ¥Ñ Ñ¡”ÑÉ¥À‘•Ñ…¥±ÌÕÀ™É½¹Ğˆ¤õôğ½ Èø(€€€€€€€€€€€€€€€€ğ½‘¥Øø(€€€€€€€€€€€€€€€€ñ‘¥Ø±…ÍÌô‰¥¹ÑÉ¼µ½Áäˆø(€€€€€€€€€€€€€€€€€€€ì”¥˜Í•½A…”¹¥¹ÑÉ¼€•ôñÀùíìÍ•½A…”¹¥¹ÑÉ¼õôğ½Àùì”•¹‘¥˜€•ô(€€€€€€€€€€€€€€€€€€€ì”¥˜Í•½A…”¹•½%¹ÑÉ¼€•õíìÍ•½A…”¹•½%¹ÑÉ¼ğÍ…™”õõì”•¹‘¥˜€•ô(€€€€€€€€€€€€€€€€ğ½‘¥Øø(€€€€€€€€€€€€€€€€ñ¹…Ø±…ÍÌô‰©ÕµÀµ±¥¹­Ìˆ…É¥„µ±…‰•°ô‰=¸Ñ¡¥ÌÁ…”ˆø(€€€€€€€€€€€€€€€€€€€ì”¥˜¡…Í½µÁ…É¥Í½¸€•ôñ„¡É•˜ôˆ½µÁ…É”ˆù½µÁ…É”½ÁÑ¥½¹Ìğ½„ùì”•¹‘¥˜€•ô(€€€€€€€€€€€€€€€€€€€ì”¥˜¡…ÍQÉ¥Á5…Ñ¡•Ì€•ôñ„¡É•˜ôˆÑÉ¥Àµµ…Ñ ˆù5…Ñ å½ÕÈÑÉ¥Àğ½„ùì”•¹‘¥˜€•ô(€€€€€€€€€€€€€€€€€€€ì”¥˜¡…Í5…Ñ¡¥¹!½µ•Ì€•ôñ„¡É•˜ôˆÉ•¹Ñ…±Ìˆù•…ÑÕÉ•¡½µ•Ìğ½„ùì”•¹‘¥˜€•ô(€€€€€€€€€€€€€€€€€€€ì”¥˜¡…ÍÉ¥Ù•…ÑÌ€•ôñ„¡É•˜ôˆ‘É¥Ù”µÑ¥µ•Ìˆù	•…¡•Ì…¹‘É¥Ù”Ñ¥µ•Ìğ½„ùì”•¹‘¥˜€•ô(€€€€€€€€€€€€€€€€€€€ì”¥˜¡…ÍI•Ù¥•İÌ€•ôñ„¡É•˜ôˆÉ•Ù¥•İÌˆùI•Ù¥•İÌğ½„ùì”•¹‘¥˜€•ô(€€€€€€€€€€€€€€€€€€€ì”¥˜¡…Í…ÅÌ€•ôñ„¡É•˜ôˆ™…ÄˆùDğ½„ùì”•¹‘¥˜€•ô(€€€€€€€€€€€€€€€€€€€ì”¥˜¡…ÍI•±…Ñ•‘Õ¥‘•Ì€•ôñ„¡É•˜ôˆÉ•±…Ñ•µÕ¥‘•ÌˆùI•±…Ñ•Õ¥‘•Ìğ½„ùì”•¹‘¥˜€•ô(€€€€€€€€€€€€€€€€ğ½¹…Øø(€€€€€€€€€€€€ğ½‘¥Øø(€€€€€€€€ğ½Í•Ñ¥½¸ø((€€€€€€€ì”¥˜Í•½A…”¹‘•¥Í¥½¹!¥¡±¥¡ÑÌ…¹Í•½A…”¹‘•¥Í¥½¹!¥¡±¥¡ÑÌ¹±•¹Ñ €ø€À€•ô(€€€€€€€€ñÍ•Ñ¥½¸±…ÍÌô‰Í•Ñ¥½¸ˆÍÑå±”ô‰‰…­É½Õ¹èÙ…È ´µÉ•…´µ±¥¡Ğ¤ìˆø(€€€€€€€€€€€€ñ‘¥Ø±…ÍÌô‰½¹Ñ…¥¹•Èˆø(€€€€€€€€€€€€€€€€ñ‘¥Ø±…ÍÌô‰Í•Ñ¥½¸µ¡•…‘•Èˆø(€€€€€€€€€€€€€€€€€€€€ñÀ±…ÍÌô‰Í•Ñ¥½¸µÑ…œˆù	•ÍĞ™¥Ğğ½Àø(€€€€€€€€€€€€€€€€€€€€ñ È±…ÍÌô‰Í•Ñ¥½¸µÑ¥Ñ±”ˆù]¡äÑ¡•Í”¡½µ•Ì™¥ĞÑ¡¥ÌÑÉ¥Àğ½ Èø(€€€€€€€€€€€€€€€€€€€€ñÀ±…ÍÌô‰Í•Ñ¥½¸µÍÕ‰Ñ¥Ñ±”ˆùUÍ”Ñ¡•Í”¡¥¡±¥¡ÑÌÑ¼‘•¥‘”İ¡•Ñ¡•ÈÑ¡¥ÌÑÉ¥À°±½…Ñ¥½¸°…¹¡½µ”ÍÑå±”±¥¹”ÕÀ‰•™½É”å½ÔÍÑ…ÉĞ½µÁ…É¥¹œ±¥ÍÑ¥¹Ì¸ğ½Àø(€€€€€€€€€€€€€€€€ğ½‘¥Øø(€€€€€€€€€€€€€€€€ñ‘¥Ø±…ÍÌô‰…ÉµÉ¥ˆø(€€€€€€€€€€€€€€€€€€€ì”™½ÈÁ½¥¹Ğ¥¸Í•½A…”¹‘•¥Í¥½¹!¥¡±¥¡ÑÌ€•ô(€€€€€€€€€€€€€€€€€€€€ñ…ÉÑ¥±”±…ÍÌô‰¥¹™¼µ…Éˆø(€€€€€€€€€€€€€€€€€€€€€€€€ñÍÁ…¸±…ÍÌô‰Õ¥‘”µ…Ñ•½ÉäˆùíìÁ½¥¹Ğ¹±…‰•°õôğ½ÍÁ…¸ø(€€€€€€€€€€€€€€€€€€€€€€€€ñÀùíìÁ½¥¹Ğ¹Ù…±Õ”õôğ½Àø(€€€€€€€€€€€€€€€€€€€€ğ½…ÉÑ¥±”ø(€€€€€€€€€€€€€€€€€€€ì”•¹‘™½È€•ô(€€€€€€€€€€€€€€€€ğ½‘¥Øø(€€€€€€€€€€€€ğ½‘¥Øø(€€€€€€€€ğ½Í•Ñ¥½¸ø(€€€€€€€ì”•¹‘¥˜€•ô((€€€€€€€ì”¥˜¡…Í½µÁ…É¥Í½¸€•ô(€€€€€€€€ñÍ•Ñ¥½¸±…ÍÌô‰Í•Ñ¥½¸ˆ¥ô‰½µÁ…É”ˆÍÑå±”ô‰‰…­É½Õ¹èÙ…È ´µÉ•…´µ±¥¡Ğ¤ìˆø(€€€€€€€€€€€€ñ‘¥Ø±…ÍÌô‰½¹Ñ…¥¹•Èˆø(€€€€€€€€€€€€€€€€ñ‘¥Ø±…ÍÌô‰Í•Ñ¥½¸µ¡•…‘•Èˆø(€€€€€€€€€€€€€€€€€€€€ñÀ±…ÍÌô‰Í•Ñ¥½¸µÑ…œˆù½µÁ…É”Ñ¡”ÑÉ…‘•½™˜ğ½Àø(€€€€€€€€€€€€€€€€€€€€ñ È±…ÍÌô‰Í•Ñ¥½¸µÑ¥Ñ±”ˆù!½ÜÑ¡¥ÌÍÑ…äÁ…Ñ ½µÁ…É•Ìğ½ Èø(€€€€€€€€€€€€€€€€€€€ì”¥˜Í•½A…”¹Ù…±Õ•½µÁ…É¥Í½¸¹¥¹ÑÉ¼€•ô(€€€€€€€€€€€€€€€€€€€€ñÀ±…ÍÌô‰Í•Ñ¥½¸µÍÕ‰Ñ¥Ñ±”ˆùíìÍ•½A…”¹Ù…±Õ•½µÁ…É¥Í½¸¹¥¹ÑÉ¼õôğ½Àø(€€€€€€€€€€€€€€€€€€€ì”•¹‘¥˜€•ô(€€€€€€€€€€€€€€€€ğ½‘¥Øø(€€€€€€€€€€€€€€€€ñ‘¥Ø±…ÍÌô‰½µÁ…É¥Í½¸µÑ…‰±”µİÉ…Àˆø(€€€€€€€€€€€€€€€€   <table class="comparison-table">
+        .property-body { padding: 22px; }
+        .property-rating { display: inline-flex; align-items: center; gap: 6px; color: var(--brand-dark); font-size: 13px; font-weight: 700; margin-bottom: 10px; }
+        .property-title { font-size: 21px; color: var(--stone); margin-bottom: 8px; }
+        .property-meta { font-size: 13px; color: var(--stone-light); margin-bottom: 12px; }
+        .property-highlight { font-size: 14px; color: var(--stone); margin-bottom: 18px; min-height: 44px; }
+        .property-card-bottom { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+        .property-price { font-size: 16px; color: var(--brand-dark); font-weight: 700; white-space: nowrap; }
+        .drive-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; }
+        .drive-card { background: var(--cream-light); border-left: 4px solid var(--gold); border-radius: 0 20px 20px 0; padding: 22px; }
+        .drive-time { color: var(--brand-dark); font-weight: 700; font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px; }
+        .review-stars { display: flex; gap: 3px; color: var(--gold); margin-bottom: 14px; }
+        .review-copy { color: var(--stone); font-size: 15px; line-height: 1.75; margin-bottom: 14px; }
+        .review-source { color: var(--stone-light); font-size: 13px; font-weight: 600; }
+        .faq-section { background: var(--cream-dark); }
+        .faq-list { display: grid; gap: 16px; }
+        .guide-card { display: block; transition: transform 0.2s ease, box-shadow 0.2s ease; }
+        .guide-card:hover { transform: translateY(-3px); box-shadow: 0 14px 44px rgba(28, 38, 39, 0.1); }
+        .guide-category { display: block; color: var(--brand-dark); font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 10px; }
+        .guide-arrow { color: var(--gold); font-weight: 700; }
+        .cta-section { color: var(--white); text-align: center; padding: 92px 24px; background-image: linear-gradient(135deg, rgba(45,70,71,0.88), rgba(95,138,139,0.78)), var(--cta-image); background-size: cover; background-position: center; }
+        .cta-title { font-size: clamp(30px, 4vw, 44px); margin-bottom: 16px; color: var(--white); }
+        .cta-subtitle { opacity: 0.92; max-width: 600px; margin: 0 auto 32px; font-size: 17px; }
+        .cta-actions { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; }
+        .sticky-mobile-cta { display: none; }
+        .footer { background: var(--brand-darker); color: rgba(255, 255, 255, 0.8); padding: 60px 24px 30px; }
+        .footer-inner { max-width: 1100px; margin: 0 auto; text-align: center; }
+        .footer-logo { font-family: 'Playfair Display', serif; font-size: 24px; color: var(--white); margin-bottom: 16px; }
+        .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+        .footer-links a { color: rgba(255, 255, 255, 0.7); font-size: 14px; transition: color 0.3s ease; }
+        .footer-links a:hover { color: var(--white); }
+        .footer-copyright { font-size: 13px; opacity: 0.88; }
+        @media (max-width: 820px) {
+            body { padding-bottom: 78px; }
+            .nav-inner { padding: 12px 16px; }
+            .nav-logo-text { font-size: 18px; }
+            .nav .btn { display: none; }
+            .hero { min-height: calc(82vh - 69px); padding: 56px 18px; }
+            .hero-eyebrow::before, .hero-eyebrow::after { width: 26px; }
+            .hero-actions { flex-direction: column; }
+            .hero-actions .btn, .hero-actions .btn-ghost { width: 100%; }
+            .stats-grid { grid-template-columns: 1fr; gap: 14px; }
+            .stat { border-right: 0; border-bottom: 1px solid rgba(255,255,255,0.16); padding-bottom: 14px; }
+            .stat:last-child { border-bottom: 0; padding-bottom: 0; }
+            .section { padding: 58px 18px; }
+            .property-card-bottom { flex-direction: column; align-items: stretch; }
+            .property-card-bottom .btn { width: 100%; }
+            .sticky-mobile-cta { position: fixed; left: 0; right: 0; bottom: 0; z-index: 120; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 14px calc(12px + env(safe-area-inset-bottom)); background: rgba(245,238,214,0.97); backdrop-filter: blur(16px); border-top: 1px solid rgba(61,92,93,0.14); box-shadow: 0 -10px 28px rgba(28,38,39,0.14); }
+            .sticky-phone { width: 44px; height: 44px; border-radius: 50%; background: var(--white); color: var(--brand-dark); display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 6px 18px rgba(28,38,39,0.1); }
+            .sticky-mobile-cta .btn { flex: 1; padding: 13px 18px; font-size: 13px; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <div class="nav-inner">
+            <a href="/" class="nav-logo">
+                <img src="/logo-optimized.png" alt="Seascape Vacations" height="40">
+                <div>
+                    <div class="nav-logo-text">SEASCAPE</div>
+                    <div class="nav-logo-sub">Vacations</div>
+                </div>
+            </a>
+            <a
+                href="{{ seoPage.collectionCtaHref or '/properties/' }}"
+                class="btn"
+                data-track-event="catalog_book_direct_click"
+                data-placement="stay_nav"
+                data-track-label="{{ seoPage.slug }}"
+            >Browse homes</a>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <nav class="breadcrumbs" aria-label="Breadcrumb">
+            <ol>
+                <li><a href="/">Home</a></li>
+                <li><span>/</span></li>
+                <li>
+                    {% if destinationGuideHref %}
+                    <a href="{{ destinationGuideHref }}">{{ destinationLabel }}</a>
+                    {% else %}
+                    <a href="/stays/">Stay Collections</a>
+                    {% endif %}
+                </li>
+                <li><span>/</span></li>
+                <li><span aria-current="page">{{ seoPage.h1 }}</span></li>
+            </ol>
+        </nav>
+
+        <section class="hero" style="--hero-image: url('{{ heroImage | imgProxy(1200) }}');">
+            <div class="hero-inner">
+                <p class="hero-eyebrow">{{ destinationLabel }}</p>
+                <h1>{{ seoPage.h1 }}</h1>
+                <p class="hero-subhead">{{ seoPage.description }}</p>
+                <div class="hero-actions">
+                    <a
+                        href="#featured-homes"
+                        class="btn btn-gold"
+                        data-track-event="catalog_book_direct_click"
+                        data-placement="stay_hero"
+                        data-track-label="{{ seoPage.slug }}"
+                    >Browse the homes</a>
+                    <a href="{% if hasComparison %}#compare{% else %}#intro{% endif %}" class="btn-ghost">Why stay here?</a>
+                </div>
+                <div class="trust-chips" aria-label="Booking highlights">
+                    <span class="trust-chip">{{ uiIcon("star") }} {{ seoPage.reviewTrustLabel or "Rated 5.0" }}</span>
+                    <span class="trust-chip">{{ uiIcon("car") }} {{ seoPage.driveTimeLabel or "10-15 minutes to beaches" }}</span>
+                    <span class="trust-chip">{{ uiIcon("dollar") }} Save 10-15% direct</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="stats-bar" aria-label="Seascape stay highlights">
+            <div class="stats-grid">
+                <div class="stat">
+                    <span class="stat-value">{{ properties.length if properties else "5" }}</span>
+                    <span class="stat-label">Direct-book homes</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-value">10-15%</span>
+                    <span class="stat-label">Typical direct savings</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-value">Local</span>
+                    <span class="stat-label">Seascape support</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="intro">
+            <div class="container-narrow">
+                <div class="section-header">
+                    <p class="section-tag">{{ seoPage.introEyebrow or "The short version" }}</p>
+                    <h2 class="section-title">{{ seoPage.introHeading or ("Stay near " + destinationLabel + ", with the trip details up front") }}</h2>
+                </div>
+                <div class="intro-copy">
+                    {% if seoPage.intro %}<p>{{ seoPage.intro }}</p>{% endif %}
+                    {% if seoPage.geoIntro %}{{ seoPage.geoIntro | safe }}{% endif %}
+                </div>
+                <nav class="jump-links" aria-label="On this page">
+                    {% if hasComparison %}<a href="#compare">Compare options</a>{% endif %}
+                    {% if hasTripMatches %}<a href="#trip-match">Match your trip</a>{% endif %}
+                    {% if hasMatchingHomes %}<a href="#rentals">Featured homes</a>{% endif %}
+                    {% if hasDriveFacts %}<a href="#drive-times">Beaches and drive times</a>{% endif %}
+                    {% if hasReviews %}<a href="#reviews">Reviews</a>{% endif %}
+                    {% if hasFaqs %}<a href="#faq">FAQ</a>{% endif %}
+                    {% if hasRelatedGuides %}<a href="#related-guides">Related guides</a>{% endif %}
+                </nav>
+            </div>
+        </section>
+
+        {% if seoPage.decisionHighlights and seoPage.decisionHighlights.length > 0 %}
+        <section class="section" style="background: var(--cream-light);">
+            <div class="container">
+                <div class="section-header">
+                    <p class="section-tag">Best fit</p>
+                    <h2 class="section-title">Why these homes fit this trip</h2>
+                    <p class="section-subtitle">Use these highlights to decide whether this trip, location, and home style line up before you start comparing listings.</p>
+                </div>
+                <div class="card-grid">
+                    {% for point in seoPage.decisionHighlights %}
+                    <article class="info-card">
+                        <span class="guide-category">{{ point.label }}</span>
+                        <p>{{ point.value }}</p>
+                    </article>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+        {% endif %}
+
+        {% if hasComparison %}
+        <section class="section" id="compare" style="background: var(--cream-light);">
+            <div class="container">
+                <div class="section-header">
+                    <p class="section-tag">Compare the tradeoff</p>
+                    <h2 class="section-title">How this stay path compares</h2>
+                    {% if seoPage.valueComparison.intro %}
+                    <p class="section-subtitle">{{ seoPage.valueComparison.intro }}</p>
+                    {% endif %}
+                </div>
+                <div class="comparison-table-wrap">
+                    <table class="comparison-table">
                         <thead>
                             <tr>
                                 <th>Decision point</th>
@@ -193,6 +527,195 @@ NÈY[™ÎˆMœNÈBˆš\›ËY^YXœ›İÎ˜™Y›Ü™Kš\›ËY^YXœ›İÎ˜Y\ˆ
                         {% include "partials/property-card-image.njk" %}
                         <div class="property-body">
                             <div class="property-rating">{{ uiIcon("star") }} Rated {{ property.rating }}</div>
-                            <h3 class="property-title">{{ property.name }}</h3>Û\ÜÏHœ›Ü\K[Y]HŞÈ›Ü\KœÜXÜÈ_OÜ‚ˆÛ\ÜÏHœ›Ü\KZYÚYÚŞÈ›Ü\KšYÚYÚÈ›Ú[Šˆ0­ÈŠH_OÜ‚ˆ]ˆÛ\ÜÏHœ›Ü\KXØ\™X›İÛH‚ˆÜ[ˆÛ\ÜÏHœ›Ü\K\šXÙH‘œ›ÛH	ŞÈ›Ü\KœšXÙH_KÛšYÚÜÜ[‚ˆBˆ™YHŞÈ›Ü\KœYÙU\›_H‚ˆÛ\ÜÏH˜ˆ‚ˆİ[OHœY[™ÎˆLŒÈ›Û\Ú^™NˆLÜÈ‚ˆ]K]˜XÚËY]™[Hœİ^WİšY]×Ü›Ü\WØÛXÚÈ‚ˆ]K\YÙK\ÛYÏHŞÈ›Ü\KœÛYÈ_H‚ˆ]K\XÙ[Y[Hœİ^WÜ›Ü\WØØ\™‚ˆ]K]˜XÚË[X™[HŞÈ›Ü\K›˜[YH_H‚ˆÚXÚÈ\™Xİ]\ÏØO‚ˆÙ]‚ˆÙ]‚ˆØ\XÛO‚ˆÉH[™Yˆ	_BˆÉH[™›Üˆ	_BˆÉH[™›Üˆ	_BˆÙ]‚ˆÙ]‚ˆÜÙXİ[Û‚ˆÉH[™Yˆ	_B‚ˆÉHYˆ\Ñš]™Q˜XİÈ	_BˆÙXİ[ÛˆÛ\ÜÏHœÙXİ[ÛˆˆYH™š]™K][Y\È‚ˆ]ˆÛ\ÜÏH˜ÛÛZ[™\ˆ‚ˆ]ˆÛ\ÜÏHœÙXİ[Û‹ZXY\ˆ‚ˆÛ\ÜÏHœÙXİ[Û‹]YÈ™XXÚ\È[™š]™H[Y\ÏÜ‚ˆˆÛ\ÜÏHœÙXİ[Û‹]]HÛÜÙ\İ™XXÚ[œÏÚ‚ˆÙ]‚ˆ]ˆÛ\ÜÏH™š]™K[\İ‚ˆÉH›Üˆ˜Xİ[ˆÙ[ÔYÙKœ›Ü\Q˜XİÈ	_Bˆ\XÛHÛ\ÜÏH™š]™KXØ\™‚ˆ]ˆÛ\ÜÏH™š]™K][YHŞÈ˜Xİ[YH_OÙ]‚ˆÏŞÈ˜Xİ›˜[YH_OÚÏ‚ˆŞÈ˜Xİ››İH_OÜ‚ˆØ\XÛO‚ˆÉH[™›Üˆ	_BˆÙ]‚ˆÙ]‚ˆÜÙXİ[Û‚ˆÉH[™Yˆ	_B‚ˆÉHYˆ\Ô™]šY]ÜÈ	_BˆÙXİ[ÛˆÛ\ÜÏHœÙXİ[ÛˆˆYHœ™]šY]ÜÈˆİ[OH˜˜XÚÙÜ›İ[™ˆ˜\ŠKXÜ™X[K[YÚ
-NÈ‚ˆ]ˆÛ\ÜÏH˜ÛÛZ[™\ˆ‚ˆ]ˆÛ\ÜÏHœÙXİ[Û‹ZXY\ˆ‚ˆÛ\ÜÏHœÙXİ[Û‹]YÈ‘İY\İ›İ\ÏÜ‚ˆˆÛ\ÜÏHœÙXİ[Û‹]]HŞÈÙ[ÔYÙKœ™]šY]ÒXY[™ÈÜˆ‘İY\İ›İ\ÈY\ˆ›ÛÚÚ[™È\™Xİˆ_OÚ‚ˆÉHYˆÙ[ÔYÙKœ™]šY]Ò[›È	_BˆÛ\ÜÏHœÙXİ[Û‹\İX]HŞÈÙ[ÔYÙKœ™]šY]Ò[›È_OÜ‚ˆÉH[™Yˆ	_BˆÙ]‚ˆ]ˆÛ\ÜÏH˜Ø\™YÜšY‚ˆÉH›Üˆ™]šY]È[ˆÙ[ÔYÙKœ™]šY]Ô›ÛÙˆ	_Bˆ\XÛHÛ\ÜÏHœ™]šY]ËXØ\™‚ˆ]ˆÛ\ÜÏHœ™]šY]Ë\İ\œÈˆ\šXK[X™[H‘š]™Hİ\ˆ™]šY]È‚ˆŞÈZRXÛÛŠœİ\ˆŠH_^ŞÈZRXÛÛŠœİ\ˆŠH_^ŞÈZRXÛÛŠœİ\ˆŠH_^ŞÈZRXÛÛŠœİ\ˆŠH_^ŞÈZRXÛÛŠœİ\ˆŠH_BˆÙ]‚ˆÛ\ÜÏHœ™]šY]ËXÛÜH‰›][ÎŞŞÈ™]šY]Ë^Üˆ™]šY]Ëœ][İH_Iœ™][ÎÏÜ‚ˆÛ\ÜÏHœ™]šY]Ë\Ûİ\˜ÙHŞÈ™]šY]Ë›˜[YHÜˆ™]šY]Ë˜]]Üˆ_OÜ‚ˆØ\XÛO‚ˆÉH[™›Üˆ	_BˆÙ]‚ˆÙ]‚ˆÜÙXİ[Û‚ˆÉH[™Yˆ	_B‚ˆÉHYˆ\Ñ˜\\È	_BˆÙXİ[ÛˆÛ\ÜÏHœÙXİ[Ûˆ˜\K\ÙXİ[ÛˆˆYH™˜\H‚ˆ]ˆÛ\ÜÏH˜ÛÛZ[™\ˆ‚ˆ]ˆÛ\ÜÏHœÙXİ[Û‹ZXY\ˆ‚ˆÛ\ÜÏHœÙXİ[Û‹]YÈÛÛ[[Ûˆ]Y\İ[ÛœÏÜ‚ˆˆÛ\ÜÏHœÙXİ[Û‹]]H‘œ™\]Y[H\ÚÙY]Y\İ[ÛœÏÚ‚ˆÙ]‚ˆ]ˆÛ\ÜÏH™˜\K[\İ‚ˆÉH›Üˆ˜\H[ˆÙ[ÔYÙK™˜\\È	_Bˆ\XÛHÛ\ÜÏH™˜\KZ][H‚ˆÆƒ26Æ73Ò&f×VW7F–öâ#ç·²fçVW7F–öâ÷"fç×ÓÂöƒ3à¢Ç6Æ73Ò&fÖç7vW"#ç·²fæç7vW"÷"fæ×ÓÂ÷à¢Âö'F–6ÆSà¢²RVæFf÷"WĞ¢ÂöF—cà¢ÂöF—cà¢Â÷6V7F–öãà¢²RVæF–bWĞ ¢²R–b6VõvRæÆöæt6öçFVçBWĞ¢Ç6V7F–öâ6Æ73Ò'6V7F–öâ"7G–ÆSÒ&&6¶w&÷VæC¢f"‚Ò×v†—FR“²#à¢ÆF—b6Æ73Ò&6öçF–æW"Öæ'&÷r#à¢Æƒ"6Æ73Ò'6V7F–öâ×F—FÆR"7G–ÆSÒ&Ö&v–âÖ&÷GFöÓ¢#Gƒ²#ç·²6VõvRæ6öçFVçEF—FÆRÂFVfVÇB‚$&÷WB"²6VõvRæƒ’×ÓÂöƒ#à¢ÆF—b6Æ73Ò&–çG&òÖ6÷’#à¢·²6VõvRæÆöæt6öçFVçBÂ6fR×Ğ¢ÂöF—cà¢ÂöF—cà¢Â÷6V7F–öãà¢²RVæF–bWĞ ¢²R–b†5&VÆFVDwV–FW2WĞ¢Ç6V7F–öâ6Æ73Ò'6V7F–öâ"–CÒ'&VÆFVBÖwV–FW2"7G–ÆSÒ&&6¶w&÷VæC¢f"‚ÒÖ7&VÒÖF&²“²#à¢ÆF—b6Æ73Ò&6öçF–æW"#à¢ÆF—b6Æ73Ò'6V7F–öâÖ†VFW"#à¢Ç6Æ73Ò'6V7F–öâ×Fr#å&VÆFVBwV–FW3Â÷à¢Æƒ"6Æ73Ò'6V7F–öâ×F—FÆR#åW6RF†W6RwV–FW2&Vf÷&R–÷R&öö³Âöƒ#à¢Ç6Æ73Ò'6V7F–öâ×7V'F—FÆR#ç·²6VõvRç&VÆFVDwV–FT–çG&ò÷"%W6RF†W6RÆææ–ærvW2&Vf÷&R–÷Ræ'&÷rFFW2â"×ÓÂ÷à¢ÂöF—cà¢ÆF—b6Æ73Ò&wV–FRÖw&–B#à¢²Rf÷"wV–FR–â6VõvRç&VÆFVDwV–FTÆ–æ·2WĞ¢Æ‡&VcÒ'·²wV–FRæ‡&Vb×Ò"6Æ73Ò&wV–FRÖ6&B#à¢²R–bwV–FRæ6FVv÷'’WÓÇ7â6Æ73Ò&wV–FRÖ6FVv÷'’#ç·²wV–FRæ6FVv÷'’×ÓÂ÷7ãç²RVæF–bWĞ¢Æƒ3ç·²wV–FRçF—FÆR×ÒÇ7â6Æ73Ò&wV–FRÖ'&÷r"&–Ö†–FFVãÒ'G'VR#âÒfwC³Â÷7ããÂöƒ3à¢²R–bwV–FRæ6÷’WÓÇç·²wV–FRæ6÷’×ÓÂ÷ç²RVæF–bWĞ¢Âöà¢²RVæFf÷"WĞ¢ÂöF—cà¢ÂöF—cà¢Â÷6V7F–öãà¢²RVÆ–b6VõvRç&VÆFVE7F•6ÇVw2æB6VõvRç&VÆFVE7F•6ÇVw2æÆVæwF‚âWĞ¢Ç6V7F–öâ6Æ73Ò'6V7F–öâ"–CÒ'&VÆFVBÖwV–FW2"7G–ÆSÒ&&6¶w&÷VæC¢f"‚ÒÖ7&VÒÖF&²“²#à¢ÆF—b6Æ73Ò&6öçF–æW"#à¢ÆF—b6Æ73Ò'6V7F–öâÖ†VFW"#à¢Ç6Æ73Ò'6V7F–öâ×Fr#å&VÆFVB7F—3Â÷à¢Æƒ"6Æ73Ò'6V7F–öâ×F—FÆR#åW6RF†W6RwV–FW2&Vf÷&R–÷R&öö³Âöƒ#à¢ÂöF—cà¢ÆF—b6Æ73Ò&wV–FRÖw&–B#à¢²Rf÷"&VÆFVE6ÇVr–â6VõvRç&VÆFVE7F•6ÇVw2WĞ¢²Rf÷"&VÆFVEvR–â6VõvW2çf6F–öæW"WĞ¢²R–b&VÆFVEvRç6ÇVrÓÒ&VÆFVE6ÇVrWĞ¢Æ‡&VcÒ"÷7F—2÷·²&VÆFVEvRç6ÇVr×Òò"6Æ73Ò&wV–FRÖ6&B#à¢Ç7â6Æ73Ò&wV–FRÖ6FVv÷'’#ç·²‡&VÆFVEvRæFW7F–æF–öâ÷"$wVÆb6ö7B"’Â&WÆ6R‚"Ò"Â""’ÂF—FÆR×ÓÂ÷7ãà¢Æƒ3ç·²&VÆFVEvRæƒ÷"&VÆFVEvRçF—FÆR×ÒÇ7â6Æ73Ò&wV–FRÖ'&÷r"&–Ö†–FFVãÒ'G'VR#âÒfwC³Â÷7ããÂöƒ3à¢Çç·²&VÆFVEvRæFW67&—F–öâ×ÓÂ÷à¢Âöà¢²RVæF–bWĞ¢²RVæFf÷"WĞ¢²RVæFf÷"WĞ¢ÂöF—cà¢ÂöF—cà¢Â÷6V7F–öãà¢²RVæF–bWĞ ¢Ç6V7F–öâ6Æ73Ò&7F×6V7F–öâ"7G–ÆSÒ"ÒÖ7FÖ–ÖvS¢W&Â‚w·²7F–ÖvRÂ–Öu&÷‡’ƒ#’×Òr“²#à¢ÆF—b6Æ73Ò&6öçF–æW"#à¢Æƒ"6Æ73Ò&7F×F—FÆR#ç·²6VõvRæ6öÆÆV7F–öä7FF—FÆR÷"%&VG’Fò6ö×&RF—&V7BFFW3ò"×ÓÂöƒ#à¢Ç6Æ73Ò&7F×7V'F—FÆR#ç·²6VõvRæ6öÆÆV7F–öä7F&öG’÷"$÷VâF†R6V66R6öÆÆV7F–öâæB6ö×&RF—&V7BÖ&öö²†öÖW2–âöæRÆ6Râ"×ÓÂ÷à¢ÆF—b6Æ73Ò&7FÖ7F–öç2#à¢Æ¢‡&VcÒ'·²6VõvRæ6öÆÆV7F–öä7F‡&Vb÷"r÷&÷W'F–W2òr×Ò ¢6Æ73Ò&'Fâ'FâÖvöÆB ¢ €€€€€‘…Ñ„µÑÉ…¬µ•Ù•¹Ğô‰…Ñ…±½}‰½½­}‘¥É•Ñ}±¥¬ˆ(€€€€€€€€€€€€€€€€€€€€€€€‘…Ñ„µÁ±…•µ•¹Ğô‰ÍÑ…å}‰½ÑÑ½µ}Ñ„ˆ(€€€€€€€€€€€€€€€€€€€€€€€‘…Ñ„µÑÉ…¬µ±…‰•°ô‰íìÍ•½A…”¹½±±•Ñ¥½¹Ñ…1…‰•°½ÈÍ•½A…”¹Í±Õœõôˆ(€€€€€€€€€€€€€€€€€€€€ùíìÍ•½A…”¹½±±•Ñ¥½¹Ñ…1…‰•°½È€‰Y¥•Ü…±°¡½µ•Ìˆõôğ½„ø(€€€€€€€€€€€€€€€€€€€€ñ„¡É•˜ô‰Ñ•°è¬ÄäĞÄÜÀĞàÔĞÔˆ±…ÍÌô‰‰Ñ¸µ¡½ÍĞˆùíìÕ¥%½¸ ‰Á¡½¹”ˆ¤õô…±°€ äĞÄ¤€ÜÀĞ´àÔĞÔğ½„ø(€€€€€€€€€€€€€€€€ğ½‘¥Øø(€€€€€€€€€€€€ğ½‘¥Øø(€€€€€€€€ğ½Í•Ñ¥½¸ø(€€€€ğ½µ…¥¸ø((€€€€ñ‘¥Ø±…ÍÌô‰ÍÑ¥­äµµ½‰¥±”µÑ„ˆ…É¥„µ±…‰•°ô‰5½‰¥±”‰½½­¥¹œ…Ñ¥½¹Ìˆø(€€€€€€€€ñ„±…ÍÌô‰ÍÑ¥­äµÁ¡½¹”ˆ¡É•˜ô‰Ñ•°è¬ÄäĞÄÜÀĞàÔĞÔˆ…É¥„µ±…‰•°ô‰…±°M•…Í…Á”Y……Ñ¥½¹ÌˆùíìÕ¥%½¸ ‰Á¡½¹”ˆ¤õôğ½„ø(€€€€€€€€ñ„(€€€€€€€€€€€¡É•˜ô‰íìÍ•½A…”¹½±±•Ñ¥½¹Ñ…!É•˜½È€œ½ÁÉ½Á•ÉÑ¥•Ì¼œõôˆ(€€€€€€€€€€€±…ÍÌô‰‰Ñ¸‰Ñ¸µ½±ˆ(€€€€€€€€€€€‘…Ñ„µÑÉ…¬µ•Ù•¹Ğô‰…Ñ…±½}‰½½­}‘¥É•Ñ}±¥¬ˆ(€€€€€€€€€€€‘…Ñ„µÁ±…•µ•¹Ğô‰ÍÑ…å}µ½‰¥±•}ÍÑ¥­äˆ(€€€€€€€€€€€‘…Ñ„µÑÉ…¬µ±…‰•°ô‰íìÍ•½A…”¹½±±•Ñ¥½¹Ñ…1…‰•°½ÈÍ•½A…”¹Í±Õœõôˆ(€€€€€€€€ù	½½¬‘¥É•Ğƒ
-ÜÍ…Ù”€ÄÀ´ÄÔ”ğ½„ø(€€€€ğ½‘¥Øø((€€€€ñ™½½Ñ•È±…ÍÌô‰™½½Ñ•Èˆø(€€€€€€€€ñ‘¥Ø±…ÍÌô‰™½½Ñ•Èµ¥¹¹•Èˆø(€€€€€€€€€€€€ñ‘¥Ø±…ÍÌô‰™½½Ñ•Èµ±½¼ˆùM•…Í…Á”Y……Ñ¥½¹Ìğ½‘¥Øø(€€€€€€€€€€€€ñ‘¥Ø±…ÍÌô‰™½½Ñ•Èµ±¥¹­Ìˆø(€€€€€€€€€€€€€€€€ñ„¡É•˜ôˆ¼ˆù!½µ”ğ½„ø(€€€€€€€€€€€€€€€€ñ„¡É•˜ôˆ½ÍÑ…åÌ¼ˆùMÑ…ä½±±•Ñ¥½¹Ìğ½„ø(€€€€€€€€€€€€€€€€ñ„¡É•˜ôˆ½ÍÑ…åÌ½…¹¹„µµ…É¥„µ¥Í±…¹µÙ……Ñ¥½¸µÉ•¹Ñ…±Ì¼ˆù¹¹„5…É¥„%Í±…¹I•¹Ñ…±Ìğ½„ø(€€€€€€€€€€€€€€€€ñ„¡É•˜ôˆ½ÁÉ½Á•ÉÑ¥•Ì¼ı…É•„õ…¹¹„µµ…É¥„µ¥Í±…¹ˆù5$!½µ•Ìğ½„ø(€€€€€€€€€€€€€€€€ñ„¡É•˜ôˆ½Õ¥‘•Ì½…¹¹„µµ…É¥„µ¥Í±…¹µ…É•„µÕ¥‘”¼ˆù¹¹„5…É¥„%Í±…¹ğ½„ø(€€€€€€€€€€€€€€€€ñ„¡É•˜ôˆ½Õ¥‘•Ì½‰É…‘•¹Ñ½¸µ…É•„µÕ¥‘”¼ˆù	É…‘•¹Ñ½¸ğ½„ø(€€€€€€€€€€€€€€€€ñ„¡É•˜ôˆ½Õ¥‘•Ì½Í…É…Í½Ñ„µ…É•„µÕ¥‘”¼ˆùM…É…Í½Ñ„ğ½„ø(€€€€€€€€€€€€€€€€ñ„¡É•˜ôˆ½ÁÉ½Á•ÉÑäµµ…¹…•µ•¹Ğ¼ˆùAÉ½Á•ÉÑä=İ¹•ÉÌğ½„ø(€€€€€€€€€€€€ğ½‘¥Øø(€€€€€€€€€€€€ñ‘¥Ø±…ÍÌô‰™½½Ñ•Èµ½ÁåÉ¥¡Ğˆø™½Áäì€ÈÀÈØM•…Í…Á”Y……Ñ¥½¹Ì¸±°É¥¡ÑÌÉ•Í•ÉÙ•¸	½½¬‘¥É•Ğ…¹Í…Ù”¸ğ½‘¥Øø(€€€€€€€€ğ½‘¥Øø(€€€€ğ½™½½Ñ•Èø((€€€ì”¥¹±Õ‘”€‰Á…ÉÑ¥…±Ì½…¹…±åÑ¥Ìµ„Ğ¹¹©¬ˆ€•ô(ğ½‰½‘äø(ğ½¡Ñµ°ø
+                            <h3 class="property-title">{{ property.name }}</h3>
+                            <p class="property-meta">{{ property.specs }}</p>
+                            <p class="property-highlight">{{ property.highlights | join(" Â· ") }}</p>
+                            <div class="property-card-bottom">
+                                <span class="property-price">From ${{ property.price }}/night</span>
+                                <a
+                                    href="{{ property.pageUrl }}"
+                                    class="btn"
+                                    style="padding: 10px 20px; font-size: 13px;"
+                                    data-track-event="stay_view_property_click"
+                                    data-page-slug="{{ property.slug }}"
+                                    data-placement="stay_property_card"
+                                    data-track-label="{{ property.name }}"
+                                >Check direct dates</a>
+                            </div>
+                        </div>
+                    </article>
+                    {% endif %}
+                    {% endfor %}
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+        {% endif %}
+
+        {% if hasDriveFacts %}
+        <section class="section" id="drive-times">
+            <div class="container">
+                <div class="section-header">
+                    <p class="section-tag">Beaches and drive times</p>
+                    <h2 class="section-title">Closest beach runs</h2>
+                </div>
+                <div class="drive-list">
+                    {% for fact in seoPage.propertyFacts %}
+                    <article class="drive-card">
+                        <div class="drive-time">{{ fact.time }}</div>
+                        <h3>{{ fact.name }}</h3>
+                        <p>{{ fact.note }}</p>
+                    </article>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+        {% endif %}
+
+        {% if hasReviews %}
+        <section class="section" id="reviews" style="background: var(--cream-light);">
+            <div class="container">
+                <div class="section-header">
+                    <p class="section-tag">Guest notes</p>
+                    <h2 class="section-title">{{ seoPage.reviewHeading or "Guest notes after booking direct" }}</h2>
+                    {% if seoPage.reviewIntro %}
+                    <p class="section-subtitle">{{ seoPage.reviewIntro }}</p>
+                    {% endif %}
+                </div>
+                <div class="card-grid">
+                    {% for review in seoPage.reviewProof %}
+                    <article class="review-card">
+                        <div class="review-stars" aria-label="Five star review">
+                            {{ uiIcon("star") }}{{ uiIcon("star") }}{{ uiIcon("star") }}{{ uiIcon("star") }}{{ uiIcon("star") }}
+                        </div>
+                        <p class="review-copy">&ldquo;{{ review.text or review.quote }}&rdquo;</p>
+                        <p class="review-source">{{ review.name or review.author }}</p>
+                    </article>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+        {% endif %}
+
+        {% if hasFaqs %}
+        <section class="section faq-section" id="faq">
+            <div class="container">
+                <div class="section-header">
+                    <p class="section-tag">Common questions</p>
+                    <h2 class="section-title">Frequently asked questions</h2>
+                </div>
+                <div class="faq-list">
+                    {% for faq in seoPage.faqs %}
+                    <article class="faq-item">
+                        <h3 class="faq-question">{{ faq.question or faq.q }}</h3>
+                        <p class="faq-answer">{{ faq.answer or faq.a }}</p>
+                    </article>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+        {% endif %}
+
+        {% if seoPage.longContent %}
+        <section class="section" style="background: var(--white);">
+            <div class="container-narrow">
+                <h2 class="section-title" style="margin-bottom: 24px;">{{ seoPage.contentTitle | default("About " + seoPage.h1) }}</h2>
+                <div class="intro-copy">
+                    {{ seoPage.longContent | safe }}
+                </div>
+            </div>
+        </section>
+        {% endif %}
+
+        {% if hasRelatedGuides %}
+        <section class="section" id="related-guides" style="background: var(--cream-dark);">
+            <div class="container">
+                <div class="section-header">
+                    <p class="section-tag">Related guides</p>
+                    <h2 class="section-title">Use these guides before you book</h2>
+                    <p class="section-subtitle">{{ seoPage.relatedGuideIntro or "Use these planning pages before you narrow dates." }}</p>
+                </div>
+                <div class="guide-grid">
+                    {% for guide in seoPage.relatedGuideLinks %}
+                    <a href="{{ guide.href }}" class="guide-card">
+                        {% if guide.category %}<span class="guide-category">{{ guide.category }}</span>{% endif %}
+                        <h3>{{ guide.title }} <span class="guide-arrow" aria-hidden="true">-&gt;</span></h3>
+                        {% if guide.copy %}<p>{{ guide.copy }}</p>{% endif %}
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+        {% elif seoPage.relatedStaySlugs and seoPage.relatedStaySlugs.length > 0 %}
+        <section class="section" id="related-guides" style="background: var(--cream-dark);">
+            <div class="container">
+                <div class="section-header">
+                    <p class="section-tag">Related stays</p>
+                    <h2 class="section-title">Use these guides before you book</h2>
+                </div>
+                <div class="guide-grid">
+                    {% for relatedSlug in seoPage.relatedStaySlugs %}
+                    {% for relatedPage in seoPages.vacationer %}
+                    {% if relatedPage.slug == relatedSlug %}
+                    <a href="/stays/{{ relatedPage.slug }}/" class="guide-card">
+                        <span class="guide-category">{{ (relatedPage.destination or "Gulf Coast") | replace("-", " ") | title }}</span>
+                        <h3>{{ relatedPage.h1 or relatedPage.title }} <span class="guide-arrow" aria-hidden="true">-&gt;</span></h3>
+                        <p>{{ relatedPage.description }}</p>
+                    </a>
+                    {% endif %}
+                    {% endfor %}
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+        {% endif %}
+
+        <section class="cta-section" style="--cta-image: url('{{ ctaImage | imgProxy(1200) }}');">
+            <div class="container">
+                <h2 class="cta-title">{{ seoPage.collectionCtaTitle or "Ready to compare direct dates?" }}</h2>
+                <p class="cta-subtitle">{{ seoPage.collectionCtaBody or "Open the Seascape collection and compare direct-book homes in one place." }}</p>
+                <div class="cta-actions">
+                    <a
+                        href="{{ seoPage.collectionCtaHref or '/properties/' }}"
+                        class="btn btn-gold"
+                        data-track-event="catalog_book_direct_click"
+                        data-placement="stay_bottom_cta"
+                        data-track-label="{{ seoPage.collectionCtaLabel or seoPage.slug }}"
+                    >{{ seoPage.collectionCtaLabel or "View all homes" }}</a>
+                    <a href="tel:+19417048545" class="btn-ghost">{{ uiIcon("phone") }} Call (941) 704-8545</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div class="sticky-mobile-cta" aria-label="Mobile booking actions">
+        <a class="sticky-phone" href="tel:+19417048545" aria-label="Call Seascape Vacations">{{ uiIcon("phone") }}</a>
+        <a
+            href="{{ seoPage.collectionCtaHref or '/properties/' }}"
+            class="btn btn-gold"
+            data-track-event="catalog_book_direct_click"
+            data-placement="stay_mobile_sticky"
+            data-track-label="{{ seoPage.collectionCtaLabel or seoPage.slug }}"
+        >Book direct Â· save 10-15%</a>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="footer-logo">Seascape Vacations</div>
+            <div class="footer-links">
+                <a href="/">Home</a>
+                <a href="/stays/">Stay Collections</a>
+                <a href="/stays/anna-maria-island-vacation-rentals/">Anna Maria Island Rentals</a>
+                <a href="/properties/?area=anna-maria-island">AMI Homes</a>
+                <a href="/guides/anna-maria-island-area-guide/">Anna Maria Island</a>
+                <a href="/guides/bradenton-area-guide/">Bradenton</a>
+                <a href="/guides/sarasota-area-guide/">Sarasota</a>
+                <a href="/property-management/">Property Owners</a>
+            </div>
+            <div class="footer-copyright">&copy; 2026 Seascape Vacations. All rights reserved. Book direct and save.</div>
+        </div>
+    </footer>
+
+    {% include "partials/analytics-ga4.njk" %}
+</body>
+</html>

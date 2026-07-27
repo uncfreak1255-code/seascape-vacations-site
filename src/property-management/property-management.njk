@@ -10,11 +10,9 @@ eleventyComputed:
 ---
 {% from "partials/owner-evaluation-form.njk" import ownerEvaluationForm %}
 {% from "partials/ui-icon.njk" import uiIcon %}
-{% set ownerProofSource = "" %}
-{% if seoPage.proofAssetKey %}{% set ownerProofSource = "src/_data/ownerProofAssets.json" %}{% endif %}
-{% set pageUpdatedIso = seoPageLastModifiedIso("owner", seoPage.slug, page.inputPath, ownerProofSource) %}
-{% set pageUpdatedDate = seoPageLastModifiedDate("owner", seoPage.slug, page.inputPath, ownerProofSource) %}
-{% set pageUpdatedLabel = seoPageLastModifiedLabel("owner", seoPage.slug, page.inputPath, ownerProofSource) %}
+{% set pageUpdatedIso = seoPageLastModifiedIso("owner", seoPage.slug, page.inputPath, "src/_data/ownerProofAssets.json") %}
+{% set pageUpdatedDate = seoPageLastModifiedDate("owner", seoPage.slug, page.inputPath, "src/_data/ownerProofAssets.json") %}
+{% set pageUpdatedLabel = seoPageLastModifiedLabel("owner", seoPage.slug, page.inputPath, "src/_data/ownerProofAssets.json") %}
 {% set proofAsset = seoPage.proofAssetKey and ownerProofAssets[seoPage.proofAssetKey] %}
 {% set pageProofStats = seoPage.proofStats or (proofAsset and proofAsset.stats) %}
 {% set ownerNetBridgePage = seoPage.slug == "maximize-vacation-rental-income-florida" %}
@@ -79,22 +77,159 @@ eleventyComputed:
         "itemListElement": [
             {"@type": "ListItem", "position": 1, "name": "Home", "item": "{{ site.url }}"},
             {"@type": "ListItem", "position": 2, "name": "Property Management", "item": "{{ site.url }}/property-management/"},
-            {"@type": "ListItem", "position": 3, "name": "{{ seoPage.h1 }}", "item": "{{ site.url }}/property-management/{{ seoPage.sluH_KÈŸBˆBˆBˆÜØÜš\‚‚ˆKKH\XÛHØÚ[XH›ÜˆÑSÈœ™\Ú™\ÜÈKO‚ˆØÜš\\OH˜\XØ][Û‹Û
-ÚœÛÛˆ‚ˆÂˆÛÛ^ˆšÎ‹ËÜØÚ[XK›Ü™È‹ˆ\Hˆ\XÛH‹ˆšXY[™HˆŞÈÙ[ÔYÙK]H_H‹ˆ™\ØÜš\[ÛˆˆŞÈÙ[ÔYÙK™\ØÜš\[Ûˆ_H‹ˆš[XYÙHˆŞÈÚ]K\›_KÚ[XYÙ\ËÜÙX\ØØ\K[ÙËYY˜][šœÈ‹ˆ˜]]ÜˆˆÉHYˆ›ÛÙ\ÜÙ][™›ÛÙ\ÜÙ]œ™]šY]ÙYH	_^Âˆ\Hˆ”\œÛÛˆ‹ˆ›˜[YHˆŞÈ›ÛÙ\ÜÙ]œ™]šY]ÙYH_H‹ˆÉHYˆ›ÛÙ\ÜÙ]œ™]šY]Ù\”›ÛH	_Hš›Ø•]HˆŞÈ›ÛÙ\ÜÙ]œ™]šY]Ù\”›ÛH_H‹ˆÉH[™Yˆ	_HÛÜšÜÑ›ÜˆˆÂˆ\Hˆ“Ü™Ø[š^˜][Ûˆ‹ˆ›˜[YHˆ”ÙX\ØØ\H˜XØ][ÛœÈ‹ˆ\›ˆŞÈÚ]K\›_H‚ˆBˆ^ÉH[ÙH	_^Âˆ\Hˆ“Ü™Ø[š^˜][Ûˆ‹ˆ›˜[YHˆŞÈÚ]K˜]]Üˆ_H‹ˆ\›ˆŞÈÚ]K\›_H‚ˆ^ÉH[™Yˆ	_KˆœX›\Ú\ˆˆÂˆ\Hˆ“Ü™Ø[š^˜][Ûˆ‹ˆ›˜[YHˆ”ÙX\ØØ\H˜XØ][ÛœÈ‹ˆ\›ˆŞÈÚ]K\›_H‹ˆ›ÙÛÈˆÈ\Hˆ’[XYÙSØš™Xİ‹\›ˆŞÈÚ]K\›_KÛÙÛË[Ü[Z^™Yœ™ÈˆBˆKˆ™]TX›\ÚYˆŞÈÙ[ÔYÙK™]TX›\ÚYY˜][
-	ÌŒKLKLMIÊH_H‹ˆ™]S[ÙYšYYˆŞÈYÙU\]Y\ÛÈÜˆYÙU\]Y]H_H‹ˆ›XZ[‘[]SÙ”YÙHˆŞÈÚ]K\›_KÜ›Ü\K[X[˜YÙ[Y[ŞŞÈÙ[ÔYÙKœÛYÈ_KÈ‚ˆBˆÜØÜš\‚‚ˆÉHYˆÙ[ÔYÙK™˜\\È[™İ	_BˆKKHTTYÙHØÚ[XHKO‚ˆØÜš\\OH˜\XØ][Û‹Û
-ÚœÛÛˆ‚ˆÂˆÛÛ^ˆšÎ‹ËÜØÚ[XK›Ü™È‹ˆ\Hˆ‘TTYÙH‹ˆ›XZ[‘[]HˆÂˆÉH›Üˆ˜\H[ˆÙ[ÔYÙK™˜\\È	_BˆÂˆ\Hˆ”]Y\İ[Ûˆ‹ˆ›˜[YHˆŞÈ˜\KœH_H‹ˆ˜XØÙ\Y[œİÙ\ˆˆÈ\Hˆ[œİÙ\ˆ‹^ˆŞÈ˜\K˜Hİš\[\ØØ\H_HˆBˆ^ÉHYˆ›İÛÜ›\İ	_KÉH[™Yˆ	_BˆÉH[™›Üˆ	_BˆBˆBˆÜØÜš\‚ˆÉH[™Yˆ	_Bˆˆİ[O‚ˆ›ÛY˜XÙHÈ›ÛY˜[Z[Nˆ	ÔÜ[œÉÎÈÜ˜Îˆ\›
-	ËØ\ÜÙ]ËÙ›ÛËÚÛY\YÙKÜÜ[œËM[][‹ÛÙ™Œ‰ÊH›Ü›X]
-	İÛÙ™Œ‰ÊNÈ›Û]ÙZYÚˆÈ›Û\İ[Nˆ›Ü›X[È›ÛY\Ü^NˆÜ[Û˜[ÈBˆ›ÛY˜XÙHÈ›ÛY˜[Z[Nˆ	ÔÜ[œÉÎÈÜ˜Îˆ\›
-	ËØ\ÜÙ]ËÙ›ÛËÚÛY\YÙKÜÜ[œËML[][‹ÛÙ™Œ‰ÊH›Ü›X]
-	İÛÙ™Œ‰ÊNÈ›Û]ÙZYÚˆLÈ›Û\İ[Nˆ›Ü›X[È›ÛY\Ü^NˆÜ[Û˜[ÈBˆ›ÛY˜XÙHÈ›ÛY˜[Z[Nˆ	ÔÜ[œÉÎÈÜ˜Îˆ\›
-	ËØ\ÜÙ]ËÙ›ÛËÚÛY\YÙKÜÜ[œËMŒ[][‹ÛÙ™Œ‰ÊH›Ü›X]
-	İÛÙ™Œ‰ÊNÈ›Û]ÙZYÚˆŒÈ›Û\İ[Nˆ›Ü›X[È›ÛY\Ü^NˆÜ[Û˜[ÈBˆ›ÛY˜XÙHÈ›ÛY˜[Z[Nˆ	ÔÜ[œÉÎÈÜ˜Îˆ\›
-	ËØ\ÜÙ]ËÙ›ÛËÚÛY\YÙKÜÜ[œËMÌ[][‹ÛÙ™Œ‰ÊH›Ü›X]
-	İÛÙ™Œ‰ÊNÈ›Û]ÙZYÚˆÌÈ›Û\İ[Nˆ›Ü›X[È›ÛY\Ü^NˆÜ[Û˜[ÈBˆ›ÛY˜XÙHÈ›ÛY˜[Z[Nˆ	Ô^Y˜Z\ˆ\Ü^IÎÈÜ˜Îˆ\›
-	ËØ\ÜÙ]ËÙ›ÛËÚÛY\YÙKÜ^Y˜Z\‹Y\Ü^K[][‹ÛÙ™Œ‰ÊH›Ü›X]
-	İÛÙ™Œ‰ÊNÈ›Û]ÙZYÚˆÌÈ›Û\İ[Nˆ›Ü›X[È›ÛY\Ü^NˆÜ[Û˜[ÈBˆœ›ÛİÈKXœ˜[™ˆÍQNÈKXœ˜[™[YÚˆÍĞLĞMÈKXœ˜[™Y\šÎˆÌÑPÍQÈKXœ˜[™Y\šÙ\ˆÌ‘ÎÈKYÛÛˆĞÎPNMŒÈKYÛÛ[YÚˆÑNPLÎÈKXÜ™X[NˆÑQQQÈKXÜ™X[KY\šÎˆÑP‘MĞÎÈKXÜ™X[K[YÚˆÑQÑQNÈK\İÛ™NˆÌĞLĞLĞNÈK\İÛ™K[YÚˆÍMMNÈK]Ú]NˆÑ‘‘‘‘‘ÈBˆ
-ˆÈX\™Ú[ˆÈY[™ÎˆÈ›Ş\Ú^š[™Îˆ›Ü™\‹X›ŞÈBˆ›ÙHÈ›ÛY˜[Z[Nˆ	ÔÜ[œÉËX\K\Ş\İ[KØ[œË\Ù\šYÈ˜XÚÙÜ›İ[™ˆ˜\ŠKXÜ™X[JNÈÛÛÜˆ˜\ŠK\İÛ™JNÈ[™KZZYÚˆKÎÈBˆK‹ËÈ›ÛY˜[Z[Nˆ	Ô^Y˜Z\ˆ\Ü^IËÙ[Ü™ÚXKÙ\šYÈ›Û]ÙZYÚˆLÈ]\‹\ÜXÚ[™ÎˆLŒ™[NÈBˆ[YÈÈX^]ÚYˆL	NÈZYÚˆ]]ÎÈBˆHÈ^YXÛÜ˜][Ûˆ›Û™NÈÛÛÜˆ[š\š]ÈBˆ›˜]ˆÈÜÚ][Ûˆš^YÈÜˆÈYˆÈšYÚˆÈ‹Z[™^ˆLÈ˜XÚÙÜ›İ[™ˆ™Ø˜JKŒÎŒMN
-NÈ˜XÚÙ›ÜYšWFW#¢&ÇW"ƒ#‚“²&÷&FW"Ö&÷GFöÓ¢‚6öÆ–B&v&ƒÂÂÂãb“²&÷‚×6†F÷s¢G‚3‚&v&ƒÂÂÂã‚“²Ğ¢ææbÖ–ææW"²F—7Æ“¢fÆWƒ²§W7F–g’Ö6öçFVçC¢76RÖ&WGvVVã²Æ–vâÖ—FV×3¢6VçFW#²FF–æs¢g‚#Gƒ²Ö‚×v–GFƒ¢Cƒ²Ö&v–ã¢WFó²Ğ¢ææbÖÆövò²F—7Æ“¢fÆWƒ²Æ–vâÖ—FV×3¢6VçFW#²v¢Gƒ²Ğ¢ææbÖÆövò–Ör²v–GFƒ¢WFó²†V–v‡C¢Cƒ²Ö‚×v–GFƒ¢æöæS²fÆWƒ¢WFó²F—7Æ“¢&Æö6³²Ğ¢ææbÖÆövò×FW‡B²föçBÖfÖ–Ç“¢uÆ–f—"F—7Æ’rÂ6W&–c²föçB×6—¦S¢#ƒ²föçB×vV–v‡C¢S²6öÆ÷#¢f"‚ÒÖ'&æB“²ÆWGFW"×76–æs¢ãVVÓ²Ğ¢ææbÖÆövò×7V"²föçB×6—¦S¢—ƒ²ÆWGFW"×76–æs¢ã&VÓ²6öÆ÷#¢f"‚Ò×7FöæRÖÆ–v‡B“²FW‡B×G&ç6f÷&Ó¢WW&66S²Ö&v–â×F÷¢Ó'ƒ²Ğ¢æ'Fâ²&6¶w&÷VæC¢Æ–æV"Öw&F–VçBƒ3VFVrÂf"‚ÒÖ'&æB’RÂf"‚ÒÖ'&æBÖF&²’R“²6öÆ÷#¢v†—FS²FF–æs¢G‚3'ƒ²&÷&FW"×&F—W3¢Sƒ²föçB×vV–v‡C¢c²föçB×6—¦S¢Gƒ²&÷&FW#¢æöæS²7W'6÷#¢ö–çFW#²F—7Æ“¢–æÆ–æRÖfÆWƒ²Æ–vâÖ—FV×3¢6VçFW#²v¢‡ƒ²G&ç6—F–öã¢ÆÂãG27V&–2Ö&W¦–W"ƒãsRÂãƒƒRÂã3"Âã#sR“²&÷‚×6†F÷s¢G‚W‚&v&ƒcÂrÂ’Âã2“²Ğ¢æ'Fã¦†÷fW"²G&ç6f÷&Ó¢G&ç6ÆFU’‚Ó7‚“²&÷‚×6†F÷s¢‡‚#W‚&v&ƒcÂrÂ’ÂãB“²Ğ¢æ'FâÖvöÆB²&6¶w&÷VæC¢Æ–æV"Öw&F–VçBƒ3VFVrÂf"‚ÒÖvöÆB’RÂ4#ƒ“C4R“²6öÆ÷#¢f"‚Ò×7FöæR“²&÷‚×6†F÷s¢G‚W‚&v&ƒ#Âc’Â“‚Âã2“²Ğ¢æÖ–âÖ6öçFVçB²FF–ær×F÷¢ƒƒ²Ğ¢ç6V7F–öâ²FF–æs¢ƒ‚#Gƒ²Ğ¢æ6öçF–æW"²Ö‚×v–GFƒ¢ƒ²Ö&v–ã¢WFó²Ğ¢ç6V7F–öâÖ†VFW"²FW‡BÖÆ–vã¢6VçFW#²Ö&v–âÖ&÷GFöÓ¢C‡ƒ²Ğ¢ç6V7F–öâ×Fr²F—7Æ“¢–æÆ–æRÖ&Æö6³²föçB×6—¦S¢'ƒ²föçB×vV–v‡C¢c²ÆWGFW"×76–æs¢ã&VÓ²FW‡B×G&ç6f÷&Ó¢WW&66S²6öÆ÷#¢f"‚ÒÖ'&æB“²Ö&v–âÖ&÷GFöÓ¢'ƒ²Ğ¢ç6V7F–öâ×F—FÆR²föçB×6—¦S¢6Æ×ƒ#‡‚ÂGgrÂ3‡‚“²6öÆ÷#¢f"‚Ò×7FöæR“²Ö&v–âÖ&÷GFöÓ¢'ƒ²Ğ¢ç6V7F–öâ×7V'F—FÆR²6öÆ÷#¢f"‚Ò×7FöæRÖÆ–v‡B“²Ö‚×v–GFƒ¢cƒ²Ö&v–ã¢WFó²Ğ¢æ'&VF7'VÖ'2²&6¶w&÷VæC¢v†—FS²FF–æs¢'‚#Gƒ²&÷&FW"Ö&÷GFöÓ¢‚6öÆ–Bf"‚ÒÖ7&VÒÖF&²“²Ğ¢æ'&VF7'VÖ'2öÂ²F—7Æ“¢fÆWƒ²v¢‡ƒ²Æ—7B×7G–ÆS¢æöæS²Ö&v–ã¢²FF–æs¢²föçB×6—¦S¢7ƒ²Ö‚×v–GFƒ¢ƒ²Ö&v–ã¢WFó²Ğ¢æ'&VF7'VÖ'2²6öÆ÷#¢f"‚ÒÖ'&æB“²Ğ¢æ'&VF7'VÖ'27â²6öÆ÷#¢f"‚Ò×7FöæRÖÆ–v‡B“²Ğ¢æ7F×6V7F–öâ²&6¶w&÷VæC¢Æ–æV"Öw&F–VçBƒ3VFVrÂf"‚ÒÖ'&æB’RÂf"‚ÒÖ'&æBÖF&²’R“²FF–æs¢ƒ‚#Gƒ²FW‡BÖÆ–vã¢6VçFW#²6öÆ÷#¢v†—FS²Ğ¢æ7F×F—FÆR²föçB×6—¦S¢6Æ×ƒ#‡‚ÂGgrÂC‚“²Ö&v–âÖ&÷GFöÓ¢gƒ²Ğ¢æ7F×7V'F—FÆR²÷6—G“¢ã“²Ö‚×v–GFƒ¢Sƒ²Ö&v–ã¢WFò3'ƒ²Ğ¢²R–æ6ÇVFR''F–Ç2ö÷væW"Öf÷&Ò×7G–ÆW2ææ¦²"WĞ¢æfö÷FW"²&6¶w&÷VæC¢f"‚ÒÖ'&æBÖF&¶W"“²6öÆ÷#¢&v&ƒ#SRÂ#SRÂ#SRÂã‚“²FF–æs¢c‚#G‚3ƒ²Ğ¢æfö÷FW"Ö–ææW"²Ö‚×v–GFƒ¢ƒ²Ö&v–ã¢WFó²FW‡BÖÆ–vã¢6VçFW#²Ğ¢æfö÷FW"ÖÆövò²föçBÖfÖ–Ç“¢uÆ–f—"F—7Æ’rÂ6W&–c²föçB×6—¦S¢#Gƒ²6öÆ÷#¢v†—FS²Ö&v–âÖ&÷GFöÓ¢gƒ²Ğ¢æfö÷FW"ÖÆ–æ·2²F—7Æ“¢fÆWƒ²§W7F–g’Ö6öçFVçC¢6VçFW#²v¢#Gƒ²Ö&v–âÖ&÷GFöÓ¢#Gƒ²fÆW‚×w&¢w&²Ğ¢æfö÷FW"ÖÆ–æ·2²6öÆ÷#¢&v&ƒ#SRÂ#SRÂ#SRÂãr“²föçB×6—¦S¢Gƒ²G&ç6—F–öã¢6öÆ÷"ã72V6S²Ğ¢æfö÷FW"ÖÆ–æ·2¦†÷fW"²6öÆ÷#¢v†—FS²Ğ¢æfö÷FW"Ö6÷—&–v‡B²föçB×6—¦S¢7ƒ²÷6—G“¢ãc²Ğ¢çV’Ö–6öâ²F—7Æ“¢–æÆ–æRÖfÆWƒ²Æ–vâÖ—FV×3¢6VçFW#²§W7F–g’Ö6öçFVçC¢6VçFW#²v–GFƒ¢VÓ²†V–v‡C¢VÓ²6öÆ÷#¢7W'&VçD6öÆ÷#²fÆWƒ¢WFó²Ğ¢çV’Ö–6öâ7fr²v–GFƒ¢S²†V–v‡C¢S²7G&ö¶S¢7W'&VçD6öÆ÷#²f–ÆÃ¢æöæS²7G&ö¶R×v–GFƒ¢ãƒS²7G&ö¶RÖÆ–æV6¢&÷VæC²7G&ö¶RÖÆ–æV¦ö–ã¢&÷VæC²Ğ¢çV’Ö–6öâÒÖ&VæVf—B²v–GFƒ¢#ƒ²†V–v‡C¢#ƒ²6öÆ÷#¢v†—FS²Ğ¢çV’Ö–6öâÒÖÖWG&–2²v–GFƒ¢3Gƒ²†V–v‡C¢3Gƒ²6öÆ÷#¢f"‚ÒÖ'&æB“²•ÉÑ¥…°µ…±¥¸è€´ÙÁàìµ…É¥¸µ±•™Ğè€ÙÁàìô(€€€€ğ½ÍÑå±”ø(ğ½¡•…ø(ñ‰½‘äø(€€€€ñ¹…Ø±…ÍÌô‰¹…Øˆø(€€€€€€€€ñ‘¥Ø±…ÍÌô‰¹…Øµ¥¹¹•Èˆø(€€€€€€€€€€€€ñ„¡É•˜ôˆ¼ˆ±…ÍÌô‰¹…Øµ±½¼ˆø(€€€€€€€€€€€€€€€€ñ¥µœÍÉŒôˆ½±½¼µ½ÁÑ¥µ¥é•¹Á¹œˆ…±Ğô‰M•…Í…Á”Y……Ñ¥½¹Ìˆ¡•¥¡ĞôˆĞÀˆø(€€€€€€€€€€€€€€€€ñ‘¥Øø(€€€€€€€€€€€€€€€€€€€€ñ‘¥Ø±…ÍÌô‰¹…Øµ±½¼µÑ•áĞˆùMMAğ½‘¥Øø(€€€€€€€€€€€€€€€€€€€€ñ‘¥Ø±…ÍÌô‰¹…Øµ±½¼µÍÕˆˆùY……Ñ¥½¹Ìğ½‘¥Øø(€€€€€€€€€€€€€€€€ğ½‘¥Øø(€€€€€€€€€€€€ğ½„ø(€€€€€€€€€€€€ñ„¡É•˜ôˆ½İ¹•ÈµÑ„ˆ±…ÍÌô‰‰Ñ¸ˆ‘…Ñ„µÑÉ…¬µ•Ù•¹Ğô‰½İ¹•É}ÁÉ¥µ…Éå}Ñ…}±¥¬ˆ‘…Ñ„µÁ…”µÍ±Õœô‰íìÍ•½A…”¹Í±ÕœõôˆùíìÍ•½A…”¹ÁÉ¥µ…ÉåÑ„½È€‰I•ÅÕ•ÍĞe½ÕÈI•Ù•¹Õ”I•Ù¥•Üˆõôğ½„ø(€€€€€€€€ğ½‘¥Øø(€€€€ğ½¹…Øø((€€€€ñµ…¥¸±…ÍÌô‰µ…¥¸µ½¹Ñ•¹Ğˆø(€€€€€€€€ñ¹…Ø±…ÍÌô‰‰É•…‘ÉÕµ‰Ìˆ…É¥„µ±…‰•°ô‰	É•…‘ÉÕµˆˆø(€€€€€€€€€€€€ñ½°ø(€€€€€€€€€€€€€€€€ñ±¤øñ„¡É•˜ôˆ¼ˆù!½µ”ğ½„øğ½±¤ø(€€€€€€€€€€€€€€€€ñ±¤øñÍÁ…¸ûŠèğ½ÍÁ…¸øğ½±¤ø(€€€€€€€€€€€€€€€€ñ±¤øñ„¡É•˜ôˆ½ÁÉ½Á•ÉÑäµµ…¹…•µ•¹Ğ¼ˆùAÉ½Á•ÉÑä5…¹…•µ•¹Ğğ½„øğ½±¤ø(€€€€€€€€€€€€€€€€ñ±¤øñÍÁ…¸ûŠèğ½ÍÁ…¸øğ½±¤ø(€€€€€€€€€€€€€€€€ñ±¤øñÍÁ…¸…É¥„µÕÉÉ•¹Ğô‰Á…”ˆùíìÍ•½A…”¹ Äõôğ½ÍÁ…¸øğ½±¤ø(€€€€€€€€€€€€ğ½½°ø(€€€€€€€€ğ½¹…Øø((€€€€€€€€ñÍ•Ñ¥½¸±…ÍÌô‰Í•Ñ¥½¸ˆÍÑå±”ô‰‰…­É½Õ¹è±¥¹•…ÈµÉ…‘¥•¹Ğ ÄÌÕ‘•œ°Ù…È ´µ‰É…¹µ‘…É¬¤€À”°€ŒÅ„Í„ÍŒ€ÄÀÀ”¤ì½±½Èèİ¡¥Ñ”ìˆø(€€€€€€€€€€€€ñ‘¥Ø±…ÍÌô‰½¹Ñ…¥¹•ÈˆÍÑå±”ô‰Ñ•áĞµ…±¥¸è•¹Ñ•Èìˆø(€€€€€€€€€€€€€€€€ñÀ±…ÍÌô‰Í•Ñ¥½¸µÑ…œˆÍÑå±”ô‰½±½ÈèÙ…È ´µ½±¤ìˆù½ÈAÉ½Á•ÉÑä=İ¹•ÉÌğ½Àø(€€€€€€€€€€€€€€€€ñ ÄÍÑå±”ô‰™½¹ĞµÍ¥é”è±…µÀ ÌÉÁà°€ÕÙÜ°€ĞáÁà¤ìµ…É¥¸µ‰½ÑÑ½´è€ÈÁÁàì½±½Èèİ¡¥Ñ”ìˆùíìÍ•½A…”¹ Äõôğ½ Äø(€€€€€€€€€€€€€€€€ñÀÍÑå±”ô‰µ…àµİ¥‘Ñ è€ÜÀÁÁàìµ…É¥¸è€À…ÕÑ¼ì½Á…¥Ñäè€À¸äì™½¹ĞµÍ¥é”è€ÄáÁàìˆùíìÍ•½A…”¹¥¹ÑÉ¼õôğ½Àø(€€€€€€€€€€€€€€€€ñ‘¥ØÍÑå±”ô‰µ…É¥¸µÑ½Àè€ÈÙÁàì‘¥ÍÁ±…äè™±•àì©ÕÍÑ¥™äµ½¹Ñ•¹Ğè•¹Ñ•Èì™±•àµİÉ…ÀèİÉ…Àìˆø(€€€€€€€€€€€€€€€€€€€€ñ„¡É•˜ôˆ½İ¹•ÈµÑ„ˆ±…ÍÌô‰‰Ñ¸‰Ñ¸µ½±ˆ‘…Ñ„µÑÉ…¬µ•Ù•¹Ğô‰½İ¹•É}ÁÉ¥µ…Éå}Ñ…}±¥¬ˆ‘…Ñ„µÁ…”µÍ±Õœô‰íìÍ•½A…”¹Í±ÕœõôˆùíìÍ•½A…”¹ÁÉ¥µ…ÉåÑ„½È€‰I•ÅÕ•ÍĞe½ÕÈI•Ù•¹Õ”I•Ù¥•Üˆõôğ½„ø(€€€€€€€€€€€€€€€€ğ½‘¥Øø(€€€€€€€€€€€€€€€€ñÀÍÑå±”ô‰µ…àµİ¥‘Ñ è€ÜØÁÁàìµ…É¥¸è€ÄáÁà…ÕÑ¼€Àì½Á…¥Ñäè€À¸àÈì™½¹ĞµÍ¥é”è€ÄÕÁàìˆùíìÍ•½A…”¹Ñ…MÕ‰½Áä½È€‰]”‰É•…¬‘½İ¸µ…¹…•µ•¹Ğ™••Ì°‰½½­¥¹œµÍ½ÕÉ”½ÍÑÌ°…¹İ¡…Ğå½ÕÈÕÉÉ•¹ĞÍ•ÑÕÀ¥Ì…ÑÕ…±±ä½ÍÑ¥¹œå½Ô‰•™½É”å½Ô‘•¥‘”…¹åÑ¡¥¹œ¸ˆõôğ½Àø(€€€€€€€€€€€€€€€ì”¥˜Í¡½İ=İ¹•É	•¹¡µ…É­A…Ñ €•ô(€€€€€€€€€€€€€€€€ñ‘¥ØÍÑå±”ô‰µ…É¥¸è€ÄáÁà…ÕÑ¼€Àìµ…àµİ¥‘Ñ è€àØÁÁàì‰½É‘•ÈµÉ…‘¥ÕÌè€ÄÑÁàìÁ…‘‘¥¹œè€ÄÑÁà€ÄÙÁàì‰…­É½Õ¹èÉ‰„ ÈÔÔ°ÈÔÔ°ÈÔÔ°À¸ÄÈ¤ìÑ•áĞµ…±¥¸è±•™Ğìˆø(€€€€€€€€€€€€€€€€€€€€ñÀÍÑå±”ô‰™½¹ĞµÍ¥é”è€ÄÉÁàì±•ÑÑ•ÈµÍÁ…¥¹œè€À¸ÄÉ•´ìÑ•áĞµÑÉ…¹Í™½É´èÕÁÁ•É…Í”ì½±½ÈèÉ‰„ ÈĞÔ°€ÈÈà°€ÄÜØ°€À¸äÈ¤ìµ…É¥¸è€À€À€áÁàìˆùì”¥˜½İ¹•É9•Ñ	É¥‘•A…”€•õMÑ…ÉĞ!•É•ì”•±Í”€•õ	•™½É”e½ÔMİ¥Ñ¡ì”•¹‘¥˜€•ôğ½Àø(€€€€€€€€€€€€€€€€€€€€ñÀÍÑå±”ô‰™½¹ĞµÍ¥é”è€ÄÑÁàì±¥¹”µ¡•¥¡Ğè€Ä¸ØÔìµ…É¥¸è€Àì½±½ÈèÉ‰„ ÈÔÔ°ÈÔÔ°ÈÔÔ°À¸äÈ¤ìˆø(€€€€€€€€€€€€€€€€€€€€€€€ì”¥˜½İ¹•É9•Ñ	É¥‘•A…”€•ô(€€€€€€€€€€€€€€€€€€€€€€€%˜å½ÕÈ…±•¹‘…È±½½­Ì…Ñ¥Ù”‰ÕĞå½ÕÈÁ…å½ÕĞÍÑ¥±°™••±ÌÑ¡¥¸°ÍÑ…ÉĞİ¥Ñ Ñ¡”€ñ„¡É•˜ôˆ½É•Í•…É ½½İ¹•Èµ™•”µÉ•Ù•¹Õ”µ±•…¬µ‰•¹¡µ…É¬´ÈÀÈØ¼ˆÍÑå±”ô‰½±½Èè€™™˜ìÑ•áĞµ‘•½É…Ñ¥½¸èÕ¹‘•É±¥¹”ìˆù½İ¹•È™•”Õ¥‘”ğ½„ø°Ñ¡•¸½µÁ…É”(€€€€€€€€€€€€€€€€€€€€€€€€ñ„¡É•˜ôˆ½ÁÉ½Á•ÉÑäµµ…¹…•µ•¹Ğ½Ù……Ñ¥½¸µÉ•¹Ñ…°µµ…¹…•µ•¹Ğµ™••Ìµ™±½É¥‘„¼ˆÍÑå±”ô‰½±½Èè€™™˜ìÑ•áĞµ‘•½É…Ñ¥½¸èÕ¹‘•É±¥¹”ìˆùµ…¹…•µ•¹Ğ™••Ìğ½„ø…¹(€€€€€€€€€€€€€€€€€€€€€€€€ñ„¡É•˜ôˆ½ÁÉ½Á•ÉÑäµµ…¹…•µ•¹Ğ½ÙÉ‰¼µµ…¹…•µ•¹ĞµÍ•ÉÙ¥•Ìµ™±½É¥‘„¼ˆÍÑå±”ô‰½±½Èè€™™˜ìÑ•áĞµ‘•½É…Ñ¥½¸èÕ¹‘•É±¥¹”ìˆù‰½½­¥¹œµ¡…¹¹•°¡…¹‘±¥¹œğ½„ø‰•™½É”å½Ô(€€€€€€€€€€€€€€€€€€€€€€€€ñ„¡É•˜ôˆ½ÁÉ½Á•ÉÑäµµ…¹…•µ•¹Ğ¼½İ¹•ÈµÑ„ˆÍÑå±”ô‰½±½Èè€™™˜ìÑ•áĞµ‘•½É…Ñ¥½¸èÕ¹‘•É±¥¹”ìˆùÉ•ÅÕ•ÍĞå½ÕÈÉ•Ù¥•Üğ½„ø¸(€€€€€€€€€€€€€€€€€€€€€€€ì”•±Í”€•ô(€€€€€€€€€€€€€€€€€€€€€€€MÑ…ÉĞİ¥Ñ Ñ¡”€ñ„¡É•˜ôˆ½É•Í•…É ½½İ¹•Èµ™•”µÉ•Ù•¹Õ”µ±•…¬µ‰•¹¡µ…É¬´ÈÀÈØ¼ˆÍÑå±”ô‰½±½Èè€™™˜ìÑ•áĞµ‘•½É…Ñ¥½¸èÕ¹‘•É±¥¹”ìˆù½İ¹•È™•”Õ¥‘”ğ½„ø°Ñ¡•¸½µÁ…É”(€€€€€                  <a href="/property-management/vacation-rental-management-fees-florida/" style="color: #fff; text-decoration: underline;">fees</a>,
+            {"@type": "ListItem", "position": 3, "name": "{{ seoPage.h1 }}", "item": "{{ site.url }}/property-management/{{ seoPage.slug }}/"}
+        ]
+    }
+    </script>
+
+    <!-- Article Schema for GEO freshness -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": "{{ seoPage.title }}",
+        "description": "{{ seoPage.description }}",
+        "image": "{{ site.url }}/images/seascape-og-default.jpg",
+        "author": {% if proofAsset and proofAsset.reviewedBy %}{
+            "@type": "Person",
+            "name": "{{ proofAsset.reviewedBy }}",
+            {% if proofAsset.reviewerRole %}"jobTitle": "{{ proofAsset.reviewerRole }}",
+            {% endif %}"worksFor": {
+                "@type": "Organization",
+                "name": "Seascape Vacations",
+                "url": "{{ site.url }}"
+            }
+        }{% else %}{
+            "@type": "Organization",
+            "name": "{{ site.author }}",
+            "url": "{{ site.url }}"
+        }{% endif %},
+        "publisher": {
+            "@type": "Organization",
+            "name": "Seascape Vacations",
+            "url": "{{ site.url }}",
+            "logo": { "@type": "ImageObject", "url": "{{ site.url }}/logo-optimized.png" }
+        },
+        "datePublished": "{{ seoPage.datePublished | default('2025-01-15') }}",
+        "dateModified": "{{ pageUpdatedIso or pageUpdatedDate }}",
+        "mainEntityOfPage": "{{ site.url }}/property-management/{{ seoPage.slug }}/"
+    }
+    </script>
+
+    {% if seoPage.faqs | length %}
+    <!-- FAQPage Schema -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+            {% for faq in seoPage.faqs %}
+            {
+                "@type": "Question",
+                "name": "{{ faq.q }}",
+                "acceptedAnswer": { "@type": "Answer", "text": "{{ faq.a | stripHtml | escape }}" }
+            }{% if not loop.last %},{% endif %}
+            {% endfor %}
+        ]
+    }
+    </script>
+    {% endif %}
+    
+    <style>
+        @font-face { font-family: 'Poppins'; src: url('/assets/fonts/homepage/poppins-400-latin.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: optional; }
+        @font-face { font-family: 'Poppins'; src: url('/assets/fonts/homepage/poppins-500-latin.woff2') format('woff2'); font-weight: 500; font-style: normal; font-display: optional; }
+        @font-face { font-family: 'Poppins'; src: url('/assets/fonts/homepage/poppins-600-latin.woff2') format('woff2'); font-weight: 600; font-style: normal; font-display: optional; }
+        @font-face { font-family: 'Poppins'; src: url('/assets/fonts/homepage/poppins-700-latin.woff2') format('woff2'); font-weight: 700; font-style: normal; font-display: optional; }
+        @font-face { font-family: 'Playfair Display'; src: url('/assets/fonts/homepage/playfair-display-latin.woff2') format('woff2'); font-weight: 400 700; font-style: normal; font-display: optional; }
+        :root { --brand: #5F8A8B; --brand-light: #7BA3A4; --brand-dark: #3D5C5D; --brand-darker: #2D4647; --gold: #C9A962; --gold-light: #E8D5A3; --cream: #F5EED6; --cream-dark: #EBE4CC; --cream-light: #FAF7EE; --stone: #3A3A3A; --stone-light: #6A6A6A; --white: #FFFFFF; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', -apple-system, sans-serif; background: var(--cream); color: var(--stone); line-height: 1.7; }
+        h1, h2, h3, h4 { font-family: 'Playfair Display', Georgia, serif; font-weight: 500; letter-spacing: -0.02em; }
+        img { max-width: 100%; height: auto; }
+        a { text-decoration: none; color: inherit; }
+        .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(245, 238, 214, 0.98); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(0, 0, 0, 0.06); box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08); }
+        .nav-inner { display: flex; justify-content: space-between; align-items: center; padding: 16px 24px; max-width: 1400px; margin: 0 auto; }
+        .nav-logo { display: flex; align-items: center; gap: 14px; }
+        .nav-logo img { width: auto; height: 40px; max-width: none; flex: 0 0 auto; display: block; }
+        .nav-logo-text { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 500; color: var(--brand); letter-spacing: 0.05em; }
+        .nav-logo-sub { font-size: 9px; letter-spacing: 0.2em; color: var(--stone-light); text-transform: uppercase; margin-top: -2px; }
+        .btn { background: linear-gradient(135deg, var(--brand) 0%, var(--brand-dark) 100%); color: white; padding: 14px 32px; border-radius: 50px; font-weight: 600; font-size: 14px; border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 4px 15px rgba(61, 107, 109, 0.3); }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(61, 107, 109, 0.4); }
+        .btn-gold { background: linear-gradient(135deg, var(--gold) 0%, #B8943A 100%); color: var(--stone); box-shadow: 0 4px 15px rgba(201, 169, 98, 0.3); }
+        .main-content { padding-top: 80px; }
+        .section { padding: 80px 24px; }
+        .container { max-width: 1100px; margin: 0 auto; }
+        .section-header { text-align: center; margin-bottom: 48px; }
+        .section-tag { display: inline-block; font-size: 12px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--brand); margin-bottom: 12px; }
+        .section-title { font-size: clamp(28px, 4vw, 38px); color: var(--stone); margin-bottom: 12px; }
+        .section-subtitle { color: var(--stone-light); max-width: 600px; margin: 0 auto; }
+        .breadcrumbs { background: white; padding: 12px 24px; border-bottom: 1px solid var(--cream-dark); }
+        .breadcrumbs ol { display: flex; gap: 8px; list-style: none; margin: 0; padding: 0; font-size: 13px; max-width: 1100px; margin: 0 auto; }
+        .breadcrumbs a { color: var(--brand); }
+        .breadcrumbs span { color: var(--stone-light); }
+        .cta-section { background: linear-gradient(135deg, var(--brand) 0%, var(--brand-dark) 100%); padding: 80px 24px; text-align: center; color: white; }
+        .cta-title { font-size: clamp(28px, 4vw, 40px); margin-bottom: 16px; }
+        .cta-subtitle { opacity: 0.9; max-width: 500px; margin: 0 auto 32px; }
+        {% include "partials/owner-form-styles.njk" %}
+        .footer { background: var(--brand-darker); color: rgba(255, 255, 255, 0.8); padding: 60px 24px 30px; }
+        .footer-inner { max-width: 1100px; margin: 0 auto; text-align: center; }
+        .footer-logo { font-family: 'Playfair Display', serif; font-size: 24px; color: white; margin-bottom: 16px; }
+        .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+        .footer-links a { color: rgba(255, 255, 255, 0.7); font-size: 14px; transition: color 0.3s ease; }
+        .footer-links a:hover { color: white; }
+        .footer-copyright { font-size: 13px; opacity: 0.6; }
+        .ui-icon { display: inline-flex; align-items: center; justify-content: center; width: 1em; height: 1em; color: currentColor; flex: 0 0 auto; }
+        .ui-icon svg { width: 100%; height: 100%; stroke: currentColor; fill: none; stroke-width: 1.85; stroke-linecap: round; stroke-linejoin: round; }
+        .ui-icon--benefit { width: 20px; height: 20px; color: white; }
+        .ui-icon--metric { width: 34px; height: 34px; color: var(--brand); vertical-align: -6px; margin-left: 6px; }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <div class="nav-inner">
+            <a href="/" class="nav-logo">
+                <img src="/logo-optimized.png" alt="Seascape Vacations" height="40">
+                <div>
+                    <div class="nav-logo-text">SEASCAPE</div>
+                    <div class="nav-logo-sub">Vacations</div>
+                </div>
+            </a>
+            <a href="#owner-cta" class="btn" data-track-event="owner_primary_cta_click" data-page-slug="{{ seoPage.slug }}">{{ seoPage.primaryCta or "Request Your Revenue Review" }}</a>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <nav class="breadcrumbs" aria-label="Breadcrumb">
+            <ol>
+                <li><a href="/">Home</a></li>
+                <li><span>â€º</span></li>
+                <li><a href="/property-management/">Property Management</a></li>
+                <li><span>â€º</span></li>
+                <li><span aria-current="page">{{ seoPage.h1 }}</span></li>
+            </ol>
+        </nav>
+
+        <section class="section" style="background: linear-gradient(135deg, var(--brand-dark) 0%, #1a3a3c 100%); color: white;">
+            <div class="container" style="text-align: center;">
+                <p class="section-tag" style="color: var(--gold);">For Property Owners</p>
+                <h1 style="font-size: clamp(32px, 5vw, 48px); margin-bottom: 20px; color: white;">{{ seoPage.h1 }}</h1>
+                <p style="max-width: 700px; margin: 0 auto; opacity: 0.9; font-size: 18px;">{{ seoPage.intro }}</p>
+                <div style="margin-top: 26px; display: flex; justify-content: center; flex-wrap: wrap;">
+                    <a href="#owner-cta" class="btn btn-gold" data-track-event="owner_primary_cta_click" data-page-slug="{{ seoPage.slug }}">{{ seoPage.primaryCta or "Request Your Revenue Review" }}</a>
+                </div>
+                <p style="max-width: 760px; margin: 18px auto 0; opacity: 0.82; font-size: 15px;">{{ seoPage.ctaSubcopy or "We break down management fees, booking-source costs, and what your current setup is actually costing you before you decide anything." }}</p>
+                {% if showOwnerBenchmarkPath %}
+                <div style="margin: 18px auto 0; max-width: 860px; border-radius: 14px; padding: 14px 16px; background: rgba(255,255,255,0.12); text-align: left;">
+                    <p style="font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(245, 228, 176, 0.92); margin: 0 0 8px;">{% if ownerNetBridgePage %}Start Here{% else %}Before You Switch{% endif %}</p>
+                    <p style="font-size: 14px; line-height: 1.65; margin: 0; color: rgba(255,255,255,0.92);">
+                        {% if ownerNetBridgePage %}
+                        If your calendar looks active but your payout still feels thin, start with the <a href="/research/owner-fee-revenue-leak-benchmark-2026/" style="color: #fff; text-decoration: underline;">owner fee guide</a>, then compare
+                        <a href="/property-management/vacation-rental-management-fees-florida/" style="color: #fff; text-decoration: underline;">management fees</a> and
+                        <a href="/property-management/vrbo-management-services-florida/" style="color: #fff; text-decoration: underline;">booking-channel handling</a> before you
+                        <a href="/property-management/#owner-cta" style="color: #fff; text-decoration: underline;">request your review</a>.
+                        {% else %}
+                        Start with the <a href="/research/owner-fee-revenue-leak-benchmark-2026/" style="color: #fff; text-decoration: underline;">owner fee guide</a>, then compare
+                        <a href="/property-management/vacation-rental-management-fees-florida/" style="color: #fff; text-decoration: underline;">fees</a>,
                         <a href="/property-management/vacation-rental-licensing-florida/" style="color: #fff; text-decoration: underline;">licensing</a>, and
                         <a href="/property-management/vrbo-management-services-florida/" style="color: #fff; text-decoration: underline;">VRBO handling</a> before you
                         <a href="/property-management/#owner-cta" style="color: #fff; text-decoration: underline;">request your review</a>.
@@ -134,18 +269,172 @@ NÈ˜XÚÙ›ÜYšWFW#¢&ÇW"ƒ#‚“²&÷&FW"Ö&÷GFöÓ¢‚6öÆ–B&v&ƒÂÂÂãb“²&÷‚
                     {% if proofAsset.sources and proofAsset.sources.length %}
                     <p style="font-size: 14px; color: var(--stone); margin: 0 0 8px;"><strong>Sources:</strong>
                         {% for source in proofAsset.sources %}
-                        <a href="{{ source.url }}" style="color: var(--brand-dark); te]YXÛÜ˜][Ûˆ[™\›[™NÈŞÈÛİ\˜ÙK›X™[_OØOÉHYˆ›İÛÜ›\İ	_H0­ÈÉH[™Yˆ	_BˆÉH[™›Üˆ	_BˆÜ‚ˆÉH[Yˆ›ÛÙ\ÜÙ]œÛİ\˜ÙU\›	_Bˆİ[OH™›Û\Ú^™NˆMÈÛÛÜˆ˜\ŠK\İÛ™JNÈX\™Ú[ˆÈİ›Û™Ï”Ûİ\˜ÙNÜİ›Û™ÏˆH™YHŞÈ›ÛÙ\ÜÙ]œÛİ\˜ÙU\›_Hˆİ[OH˜ÛÛÜˆ˜\ŠKXœ˜[™Y\šÊNÈ^YXÛÜ˜][Ûˆ[™\›[™NÈŞÈ›ÛÙ\ÜÙ]œÛİ\˜ÙSX™[_OØOÜ‚ˆÉH[™Yˆ	_BˆÉHYˆ›ÛÙ\ÜÙ]˜™[˜ÚX\šÕ\›	_Bˆİ[OH™›Û\Ú^™NˆMÈÛÛÜˆ˜\ŠK\İÛ™JNÈX\™Ú[ˆÈİ›Û™Ï“İÛ™\ˆ™YHİZYNÜİ›Û™ÏˆH™YHŞÈ›ÛÙ\ÜÙ]˜™[˜ÚX\šÕ\›_Hˆİ[OH˜ÛÛÜˆ˜\ŠKXœ˜[™Y\šÊNÈ^YXÛÜ˜][Ûˆ[™\›[™NÈÛÛ\\™HZ\˜›˜‹Ø\™\›ØÙ\ÜÚ[™Ë[™X[˜YÙ[Y[Ú\™Ù\ÏØOÜ‚ˆİ[OH™›Û\Ú^™NˆMÈÛÛÜˆ˜\ŠK\İÛ™JNÈX\™Ú[ˆÈ”™XYHH™YH‹Ü›Ü\K[X[˜YÙ[Y[İ˜XØ][Û‹\™[[[X[˜YÙ[Y[Y™Y\ËY›ÜšYKÈˆİ[OH˜ÛÛÜˆ˜\ŠKXœ˜[™Y\šÊNÈ^YXÛÜ˜][Ûˆ[™\›[™NÈ™™YH™X[]HYÙOØOˆ[™HH™YH‹Ü›Ü\K[X[˜YÙ[Y[ÛX^[Z^™K]˜XØ][Û‹\™[[Z[˜ÛÛYKY›ÜšYKÈˆİ[OH˜ÛÛÜˆ˜\ŠKXœ˜[™Y\šÊNÈ^YXÛÜ˜][Ûˆ[™\›[™NÈ›İÛ™\ˆ[˜ÛÛYHİZYOØOˆ™Y›Ü™H[İHÛÛ\\™HX[˜YÙ\œÈÛˆXY[™H\˜Ù[YÙH[Û™KÜ‚ˆÉH[™Yˆ	_BˆÉHYˆ›ÛÙ\ÜÙ]›Y]ÙÛÙŞH	_Bˆİ[OH™›Û\Ú^™NˆMÈÛÛÜˆ˜\ŠK\İÛ™K[YÚ
-NÈX\™Ú[ˆÈİ›Û™Ï“Y]ÙÛÙŞNÜİ›Û™ÏˆŞÈ›ÛÙ\ÜÙ]›Y]ÙÛÙŞH_OÜ‚ˆÉH[™Yˆ	_BˆÙ]‚ˆÉH[™Yˆ	_BˆÙ]‚ˆÜÙXİ[Û‚ˆÉH[ÙH	_BˆÙXİ[ÛˆÛ\ÜÏHœÙXİ[Ûˆˆİ[OH˜˜XÚÙÜ›İ[™ˆ˜\ŠKXÜ™X[KY\šÊNÈ‚ˆ]ˆÛ\ÜÏH˜ÛÛZ[™\ˆ‚ˆ]ˆİ[OH™\Ü^NˆÜšYÈÜšY][\]KXÛÛ[[œÎˆ™\X]
-]]ËYš]Z[›X^
-ŒYœŠJNÈØ\ˆÌœÈ^X[YÛˆÙ[\È‚ˆ]‚ˆ]ˆİ[OH™›Û\Ú^™NˆÈ›ÛY˜[Z[Nˆ	Ô^Y˜Z\ˆ\Ü^IËÙ\šYÈÛÛÜˆ˜\ŠKXœ˜[™
-NÈ•Z[Ü™YÙ]‚ˆ]ˆİ[OH™›Û\Ú^™NˆMÈÛÛÜˆ˜\ŠK\İÛ™K[YÚ
-NÈ^]˜[œÙ›Ü›Nˆ\\˜Ø\ÙNÈ]\‹\ÜXÚ[™ÎˆŒY[NÈ“X[˜YÙ[Y[šXÚ[™ÏÙ]‚ˆÙ]‚ˆ]‚ˆ]ˆİ[OH™›Û\Ú^™NˆÈ›ÛY˜[Z[Nˆ	Ô^Y˜Z\ˆ\Ü^IËÙ\šYÈÛÛÜˆ˜\ŠKXœ˜[™
-NÈŒÍÏÙ]‚ˆ]ˆİ[OH™›Û\Ú^™NˆMÈÛÛÜˆ˜\ŠK\İÛ™K[YÚ
-NÈ^]˜[œÙ›Ü›Nˆ\\˜Ø\ÙNÈ]\‹\ÜXÚ[™ÎˆŒY[NÈ‘İY\İİ\ÜÙ]‚ˆÙ]‚ˆ]‚ˆ]ˆİ[OH™›Û\Ú^™NˆÈ›ÛY˜[Z[Nˆ	Ô^Y˜Z\ˆ\Ü^IËÙ\šYÈÛÛÜˆ˜\ŠKXœ˜[™
-NÈ\Ü^Nˆ[›[™KY›^È[YÛ‹Z][\ÎˆÙ[\ÈKŒŞÈZRXÛÛŠ	Üİ\‰Ë	İZKZXÛÛ‹K[Y]šXÉÊH_OÙ]‚ˆ]ˆİ[OH™›Û\Ú^™NˆMÈÛÛÜˆ˜\ŠK\İÛ™K[YÚ
-NÈ^]˜[œÙ›Ü›Nˆ\\˜Ø\ÙNÈ]\‹\ÜXÚ[™ÎˆŒY[NÈ]™\˜YÙHİY\İ˜][™ÏÙ]‚ˆÙ]‚ˆ]‚ˆ]ˆİ[OH™›Û\Ú^™NˆÈ›ÛY˜[Z[Nˆ	Ô^Y˜Z\ˆ\Ü^IËÙ\šYÈÛÛÜˆ˜\ŠKXœ˜[™
-NÈ“ØØ[Ù]‚ˆ]ˆİ[OH™›Û\Ú^™NˆMÈÛÛÜˆ˜\ŠK\İÛ™K[YÚ
-NÈ^]˜[œÙ›Ü›Nˆ\\˜Ø\ÙNÈ]\‹\ÜXÚ[™ÎˆŒY[NÈ‘İ[ˆÛØ\İX[OÙ]‚ˆÙ]‚ˆÙ]‚ˆÙ]‚ˆÜÙXİ[Û‚ˆÉH[™Yˆ	_B‚ˆÉHYˆÙ[ÔYÙKœİÚ]Ú™X\ÛÛœÈ[™Ù[ÔYÙKœİÚ]Ú™X\ÛÛœÈ[™İ	_BˆÙXİ[ÛˆÛ\ÜÏHœÙXİ[Ûˆ‚ˆ]ˆÛ\ÜÏH˜ÛÛZ[™\ˆ‚ˆ]ˆÛ\ÜÏHœÙXİ[Û‹ZXY\ˆ‚ˆÛ\ÜÏHœÙXİ[Û‹]YÈŞÈÙ[ÔYÙKœİÚ]ÚYÈÜˆ•Ú]\İX[Hœ™XZÜÈš\œİˆ_OÜ‚ˆˆÛ\ÜÏHœÙXİ[Û‹]VÆR#ç·²6VõvRç7v—F6…F—FÆR÷"%v‡’÷væW'27F'B6†÷–ærf÷"F–ffW&VçBÖævW""×ÓÂöƒ#à¢Ç6Æ73Ò'6V7F–öâ×7V'F—FÆR#ç·²6VõvRç7v—F6…7V'F—FÆR÷"%F†RG&–vvW"—2&&VÇ’öæR&BÖöçF‚â—B—27F6²öbÖ—76VBFWF–Ç2F†B¶VW26†÷v–ærW–â&WfVçVRÂ&Wf–Ww2ÂæB÷væW"G'W7Bâ"×ÓÂ÷à¢ÂöF—cà¢ÆF—b7G–ÆSÒ&F—7Æ“¢w&–C²w&–B×FV×ÆFRÖ6öÇVÖç3¢&WVB†WFòÖf—BÂÖ–æÖ‚ƒ#c‚Âg"’“²v¢#Gƒ²#à¢²Rf÷"&V6öâ–â6VõvRç7v—F6…&V6öç2WĞ¢ÆF—b7G–ÆSÒ&&6¶w&÷VæC¢v†—FS²&÷&FW"×&F—W3¢‡ƒ²FF–æs¢#‡ƒ²&÷‚×6†F÷s¢‡‚#G‚&v&ƒÃÃÃãb“²&÷&FW#¢‚6öÆ–B&v&ƒcÂ“"Â“2Âã‚“²#à¢Æƒ27G–ÆSÒ&föçB×6—¦S¢#'ƒ²Ö&v–âÖ&÷GFöÓ¢'ƒ²6öÆ÷#¢f"‚ÒÖ'&æBÖF&²“²#ç·²&V6öâçF—FÆR×ÓÂöƒ3à¢Ç7G–ÆSÒ&föçB×6—¦S¢Wƒ²6öÆ÷#¢f"‚Ò×7FöæRÖÆ–v‡B“²Ö&v–ã¢²#ç·²&V6öâæ&öG’×ÓÂ÷à¢ÂöF—cà¢²RVæFf÷"WĞ¢ÂöF—cà¢ÂöF—cà¢Â÷6V7F–öãà¢²RVæF–bWĞ ¢²R–b6VõvRæ&VæVf—G2æB6VõvRæ&VæVf—G2ÂÆVæwF‚WĞ¢Ç6V7F–öâ6Æ73Ò'6V7F–öâ#à¢ÆF—b6Æ73Ò&6öçF–æW"#à¢ÆF—b6Æ73Ò'6V7F–öâÖ†VFW"#à¢Ç6Æ73Ò'6V7F–öâ×Fr#ç·²6VõvRæ&VæVf—G5Fr÷"$W†V7WF–öâv"×ÓÂ÷à¢Æƒ"6Æ73Ò'6V7F–öâ×F—FÆR#ç·²6VõvRæ&VæVf—G5F—FÆR÷"%v†W&R6V66R6Æ÷6W2F†Rv"×ÓÂöƒ#à¢Ç6Æ73Ò'6V7F–öâ×7V'F—FÆR#ç·²6VõvRæ&VæVf—G57V'F—FÆR÷"$÷væW'2Fòæ÷BæVVBFVf–æ—F–öâöbÖævVÖVçBâF†W’æVVBWf–FVæ6RF†BF†R&–v‡BÖævW"f—†W2F†RW‡Vç6—fR'G2â"×ÓÂ÷à¢ÂöF—cà¢ ¢ÆF—b7G–ÆSÒ&F—7Æ“¢w&–C²w&–B×FV×ÆFRÖ6öÇVÖç3¢&WVB†WFòÖf—BÂÖ–æÖ‚ƒ#ƒ‚Âg"’“²v¢#Gƒ²#à¢²Rf÷"&VæVf—B–â6VõvRæ&VæVf—G2WĞ¢ÆF—b7G–ÆSÒ&&6¶w&÷VæC¢v†—FS²&÷&FW"×&F—W3¢gƒ²FF–æs¢#Gƒ²&÷‚×6†F÷s¢G‚#‚&v&ƒÃÃÃãb“²#à¢ÆF—b7G–ÆSÒ'v–GFƒ¢C‡ƒ²†V–v‡C¢C‡ƒ²&6¶w&÷VæC¢Æ–æV"Öw&F–VçBƒ3VFVrÂf"‚ÒÖ'&æB’RÂf"‚ÒÖ'&æBÖF&²’R“²&÷&FW"×&F—W3¢'ƒ²F—7Æ“¢fÆWƒ²Æ–vâÖ—FV×3¢6VçFW#²§W7F–g’Ö6öçFVçC¢6VçFW#²Ö&v–âÖ&÷GFöÓ¢gƒ²#à¢·²V”–6öâ‚w6V7W&RrÂwV’Ö–6öâÒÖ&VæVf—Br’×Ğ¢ÂöF—cà¢Ç7G–ÆSÒ&föçB×6—¦S¢gƒ²föçB×vV–v‡C¢S²6öÆ÷#¢f"‚Ò×7FöæR“²#ç·²&VæVf—B×ÓÂ÷à¢ÂöF—cà¢²RVæFf÷"WĞ¢ÂöF—cà¢ÂöF—cà¢Â÷6V7F–öãà¢²RVæF–bWĞ ¢²R–b6VõvRæÖ&¶WE&VÆ—G’WĞ¢Ç6V7F–öâ6Æ73Ò'6V7F–öâ"7G–ÆSÒ&&6¶w&÷VæC¢v†—FS²#à¢ÆF—b6Æ73Ò&6öçF–æW"#à¢ÆF—b7G–ÆSÒ&Ö‚×v–GFƒ¢ƒ#ƒ²Ö&v–ã¢WFó²#à¢Ç6Æ73Ò'6V7F–öâ×Fr#ç·²6VõvRæÖ&¶WE&VÆ—G’çFr÷"$Ö&¶WB&VÆ—G’"×ÓÂ÷à¢Æƒ"6Æ73Ò'6V7F–öâ×F—FÆR"7G–ÆSÒ&Ö&v–âÖ&÷GFöÓ¢‡ƒ²#ç·²6VõvRæÖ&¶WE&VÆ—G’çF—FÆR×ÓÂöƒ#à¢ÆF—b7G–ÆSÒ&föçB×6—¦S¢gƒ²Æ–æRÖ†V–v‡C¢ãƒ²6öÆ÷#¢f"‚Ò×7FöæR“²#à¢·²6VõvRæÖ&¶WE&VÆ—G’æ&öG’Â6fR×Ğ¢ÂöF—cà¢ÂöF—cà¢ÂöF—cà¢Â÷6V7F–öãà¢²RVæF–bWĞ ¢²R–b6VõvRç&WfVçVTÆWfW'2æB6VõvRç&WfVçVTÆWfW'2ÂÆVæwF‚WĞ¢Ç6V7F–öâ6Æ73Ò'6V7F–öâ"7G–ÆSÒ&&6¶w&÷VæC¢f"‚ÒÖ7&VÒÖÆ–v‡B“²#à¢ÆF—b6Æ73Ò&6öçF–æW"#à¢ÆF—b6Æ73Ò'6V7F–öâÖ†VFW"#à¢Ç6Æ73Ò'6V7F–öâ×Fr#ç·²6VõvRç&WfVçVUFr÷"%&WfVçVRÆWfW'2"×ÓÂ÷à¢Æƒ"6Æ73Ò'6V7F–öâ×F—FÆR#ç·²6VõvRç&WfVçVUF—FÆR÷"%v†B7GVÆÇ’Ö÷fW2÷væW"&WfVçVR"×ÓÂöƒ#à¢Ç6Æ73Ò'6V7F–öâ×7V'F—FÄˆùíìÍ•½A…”¹É•Ù•¹Õ•MÕ‰Ñ¥Ñ±”½È€‰	•ÑÑ•È½ÕÑ½µ•ÌÕÍÕ…±±ä½µ”™É½´½µÁ½Õ¹‘¥¹œ¥µÁÉ½Ù•µ•¹ÑÌ°¹½Ğ½¹”ÑÉ¥¬½È½¹”Í½™Ñİ…É”Ñ½½°¸ˆõôğ½Àø(€€€€€€€€€€€€€€€€ğ½‘¥Øø(€€€€€€€€€€€€€€€€ñ‘¥ØÍÑå±”ô‰‘¥ÍÁ±…äèÉ¥ìÉ¥µÑ•µÁ±…Ñ”µ½±Õµ¹ÌèÉ•Á•…Ğ¡…ÕÑ¼µ™¥Ğ°µ¥¹µ…à ÈØÁÁà°€Å™È¤¤ì…Àè€ÈÑÁàìˆø(€€€€€€€€€€€€€€€€€€€ì”™½È±•Ù•È¥¸Í•½A…”¹É•Ù•¹Õ•1•Ù•ÉÌ€•ô(€€€€€€€€€€€€€€€€€€€€ñ‘¥ØÍÑå±”ô‰‰…­É½Õ¹èİ¡¥Ñ”ì‰½É‘•ÈµÉ…‘¥ÕÌè€ÄáÁàìÁ…‘‘¥¹œè€ÈáÁàì‰½àµÍ¡…‘½Üè€À€áÁà€ÈÑÁàÉ‰„ À°À°À°À¸ÀØ¤ìˆø(€€€€€€€€€€€€€€€€€€€€€€€€ñ ÌÍÑå±”ô‰™½¹ĞµÍ¥é”è€ÈÉÁàìµ…É¥¸µ‰½ÑÑ½´è€ÄÉÁàì½±½ÈèÙ…È ´µ‰É…¹µ‘…É¬¤ìˆùíì±•Ù•È¹Ñ¥Ñ±”õôğ½ Ìø(€€€€€€€€€€€€€€€€€€€€€€€€ñÀÍÑå±”ô‰™½¹ĞµÍ¥é”è€ÄÕÁàì½±½ÈèÙ…È ´µÍÑ½¹”µ±¥¡Ğ¤ìµ…É¥¸è€Àìˆùíì±•Ù•È¹‰½‘äõôğ½Àø(€€€€€€€€€€€€€€€€€€€€ğ½‘¥Øø(€€€€€€€€€€€€€€€€€€€ì”•¹‘™½È€•ô(€€€€€€€€€€€€€€€€ğ½‘¥Øø(€€€€€€€€€€€€ğ½‘¥Øø(€€€€€€€€ğ½Í•Ñ¥½¸ø(€€€€€€€ì”•¹‘¥˜€•ô((€€€€€€€ì”¥˜Í•½A…”¹É•Ù¥•İ•±¥Ù•É…‰±”€•ô(€€€€€€€€ñÍ•Ñ¥½¸±…ÍÌô‰Í•Ñ¥½¸ˆÍÑå±”ô‰‰…­É½Õ¹èİ¡¥Ñ”ìˆø(€€€€€€€€€€€€ñ‘¥Ø±…ÍÌô‰½¹Ñ…¥¹•Èˆø(€€€€€€€€€€€€€€€€ñ‘¥Ø±…ÍÌô‰Í•Ñ¥½¸µ¡•…‘•Èˆø(€€€€€€€€€€€€€€€€€€€€ñÀ±…ÍÌô‰Í•Ñ¥½¸µÑ…œˆùíìÍ•½A…”¹É•Ù¥•İ•±¥Ù•É…‰±”¹Ñ…œõôğ½Àø(€€€€€€€€€€€€€€€€€€€€ñ È±…ÍÌô‰Í•Ñ¥½¸µÑ¥Ñ±”ˆùíìÍ•½A…”¹É•Ù¥•İ•±¥Ù•É…‰±”¹Ñ¥Ñ±”õôğ½ Èø(€€€€€€€€€€€€€€€€€€€€ñÀ±…ÍÌô‰Í•Ñ¥½¸µÍÕ‰Ñ¥Ñ±”ˆùíìÍ•½A…”¹É•Ù¥•İ•±¥Ù•É…‰±”¹¥¹ÑÉ¼õôğ½Àø(€€€€€€€€€€€€€€€€ğ½‘¥Øø(€€€€€€€€€€€€€€€€ñ‘¥ØÍÑå±”ô‰‘¥ÍÁ±…äèÉ¥ìÉ¥µÑ•µÁ±…Ñ”µ½±Õµ¹ÌèÉ•Á•…Ğ¡…ÕÑ¼µ™¥Ğ°µ¥¹µ…à ÈĞÁÁà°€Å™È¤¤ì…Àè€ÈÑÁàìˆø(€€€€€€€€€€€€€€€€€€€ì”™½È¥Ñ•´¥¸Í•½A…”¹É•Ù¥•İ•±¥Ù•É…‰±”¹¥Ñ•µÌ€•ô(€€€€€€€€€€€€€€€€€€€€ñ…ÉÑ¥±”ÍÑå±”ô‰‰…­É½Õ¹èÙ…È ´µÉ•…´µ±¥¡Ğ¤ì‰½É‘•ÈµÉ…‘¥ÕÌè€ÄáÁàìÁ…‘‘¥¹œè€ÈáÁàì‰½àµÍ¡…‘½Üè€À€ÙÁà€ÈÁÁàÉ‰„ À°À°À°À¸ÀÔ¤ìˆø(€€€€€€€€€€€€€€€€€€€€€€€€ñ ÌÍÑå±”ô‰™½¹ĞµÍ¥é”è€ÈÁÁàìµ…É¥¸µ‰½ÑÑ½´è€ÄÉÁàì½±½ÈèÙ…È ´µ‰É…¹µ‘…É¬¤ìˆùíì¥Ñ•´¹Ñ¥Ñ±”õôğ½ Ìø(€€€€€€€€€€€€€€€€€€€€€€€€ñÀÍÑå±”ô‰™½¹ĞµÍ¥é”è€ÄÕÁàì±¥¹”µ¡•¥¡Ğè€Ä¸Üì½±½ÈèÙ…È ´µÍÑ½¹”µ±¥¡Ğ¤ìµ…É¥¸è€Àìˆùíì¥Ñ•´¹‰½‘äõôğ½Àø(€€€€€€€€€€€€€€€€€€€€ğ½…ÉÑ¥±”ø(€€€€€€€€€€€€€€€€€€€ì”•¹‘™½È€•ô(€€€€€€€€€€€€€€€€ğ½‘¥Øø(€€€€€€€€€€€€ğ½‘¥Øø(€€€€€€€€ğ½Í•Ñ¥½¸ø(€€€€€€€ì”•¹‘¥˜€•ô((€€€€€€€ì”¥˜Í•½A…”¹Ù¥Í¥‰¥±¥Ñå1…å•È€•ô(€€€€€€€€ñÍ•Ñ¥½¸±…ÍÌô‰Í•Ñ¥½¸ˆÍÑå±”ô‰‰…­É½Õ¹èÙ…È ´µÉ•…´µ±¥¡Ğ¤ìˆø(€€€€€€€€€€€€ñ‘¥Ø±…ÍÌô‰½¹Ñ…¥¹•Èˆø(€€€€€€€€€€€€€€€€ñ‘¥Ø±…ÍÌô‰Í•Ñ¥½¸µ¡•…‘•Èˆø(€€€€€€€€€€€€€€€€€€€€ñÀ±…ÍÌô‰Í•Ñ¥½¸µÑ…œˆùíìÍ•½A…”¹Ù¥Í¥‰¥±¥Ñå1…å•È¹Ñ…œõôğ½Àø(€€€€€€€€€€€€€€€€€€€€ñ È±…ÍÌô‰Í•Ñ¥½¸µÑ¥Ñ±”ˆùíìÍ•½A…”¹Ù¥Í¥‰¥±¥Ñå1…å•È¹Ñ¥Ñ±”õôğ½ Èø(€€€€€€€€€€€€€€€€€€€€ñÀ±…ÍÌô‰Í•Ñ¥½¸µÍÕ‰Ñ¥Ñ±”ˆùíìÍ•½A…”¹Ù¥Í¥‰¥±¥Ñå1…å•È¹¥¹ÑÉ¼õôğ½Àø(€€€€€€€€€€€€€€€€ğ½‘¥Øø(€€€€€€€€€€€€€€€€ñ‘¥ØÍÑå±”ô‰‘¥ÍÁ±…äèÉ¥ìÉ¥µÑ•µÁ±…Ñ”µ½±Õµ¹ÌèÉ•Á•…Ğ¡…ÕÑ¼µ™¥Ğ°µ¥¹µ…à ÈĞÁÁà°€Å™È¤¤ì…Àè€ÈÑÁàìˆø(€€€€€€€€€€€€€€€€€€€ì”™½È¥Ñ•´¥¸Í•½A…”¹Ù¥Í¥‰¥±¥Ñå1…å•È¹¥Ñ•µÌ€•ô(€€€€€€€€€€€€€€€€€€€€ñ…ÉÑ¥±”ÍÑå±”ô‰‰…­É½Õ¹èİ¡¥Ñ”ì‰½É‘•ÈµÉ…‘¥ÕÌè€ÄáÁàìÁ…‘‘¥¹œè€ÈáÁàì‰½àµÍ¡…‘½Üè€À€áÁà€ÈÑÁàÉ‰„ À°À°À°À¸ÀÔ¤ì‰½É‘•Èè€ÅÁàÍ½±¥É‰„ ØÄ°€äÈ°€äÌ°€À¸Àà¤ìˆø(€€€€€€€€€€€€€€€€€€€€€€€€ñ ÌÍÑå±”ô‰™½¹ĞµÍ¥é”è€ÈÁÁàìµ…É¥¸µ‰½ÑÑ½´è€ÄÉÁàì½±½ÈèÙ…È ´µ‰É…¹µ‘…É¬¤ìˆùíì¥Ñ•´¹Ñ¥Ñ±”õôğ½ Ìø(€€€€€€€€€€€€€€€€€€€€€€€€ñÀÍÑå±”ô‰™½¹ĞµÍ¥é”è€ÄÕÁàì±¥¹”µ¡•¥¡Ğè€Ä¸Üì½±½ÈèÙ…È ´µÍÑ½¹”µ±¥¡Ğ¤ìµ…É¥¸è€Àìˆùíì¥Ñ•´¹‰½‘äõôğ½Àø(€€€€€€€€€€€€€€€€€€€€ğ½…ÉÑ¥±”ø(€€€€€€€€€€€€€€€€€€€ì”•¹‘™½È€•ô(€€€€€€€€€€€€€€€€ğ½‘¥Øø(€€€€€€€€€€€€ğ½‘¥Øø(€€€€€€€€ğ½Í•Ñ¥½¸ø(€€€€€€€ì”•¹‘¥˜€•ô((€€€€€€€ì”¥˜Í•½A…”¹ÁÉ½•ÍÍMÑ•ÁÌ…¹Í•½A…”¹ÁÉ½•ÍÍMÑ•ÁÌğ±•¹Ñ €•ô(€€€€€€€€ñÍ•Ñ¥½¸±…ÍÌô‰Í•Ñ¥½¸ˆø(€€€€€€€€€€€€ñ‘¥Ø±…ÍÌô‰½¹Ñ…¥¹•Èˆø(€€€€€€€€€€€€€€€€ñ‘¥Ø±…ÍÌô‰Í•Ñ¥½¸µ¡•…‘•Èˆø(€€€€€€€€€€€€€€€€€€€€ñÀ±…ÍÌô‰Í•Ñ¥½¸µÑ…œˆùíìÍ•½A…”¹ÁÉ½•ÍÍQ…œ½È€‰•ÑÑ¥¹œMÑ…ÉÑ•ˆõôğ½Àø(€€€€€€€€€€€€€€€€€€€€ñ È±…ÍÌô‰Í•Ñ¥½¸µÑ¥Ñ±”ˆùíìÍ•½A…”¹ÁÉ½•ÍÍQ¥Ñ±”½È€‰!½ÜÑ¡”Ñ…­•½Ù•Èİ½É­Ìˆõôğ½ Èø(€€€€€€€€€€€€€€€€€€€€ñÀ±…ÍÌô‰Í•Ñ¥½¸µÍÕ‰Ñ¥Ñ±”ˆùíìÍ•½A…”¹ÁÉ½•ÍÍMÕ‰Ñ¥Ñ±”½È€‰Q¡”½…°is to improve the operation without blowing up existing booking momentum." }}</p>
+                        <a href="{{ source.url }}" style="color: var(--brand-dark); text-decoration: underline;">{{ source.label }}</a>{% if not loop.last %} Â· {% endif %}
+                        {% endfor %}
+                    </p>
+                    {% elif proofAsset.sourceUrl %}
+                    <p style="font-size: 14px; color: var(--stone); margin: 0 0 8px;"><strong>Source:</strong> <a href="{{ proofAsset.sourceUrl }}" style="color: var(--brand-dark); text-decoration: underline;">{{ proofAsset.sourceLabel }}</a></p>
+                    {% endif %}
+                    {% if proofAsset.benchmarkUrl %}
+                    <p style="font-size: 14px; color: var(--stone); margin: 0 0 8px;"><strong>Owner fee guide:</strong> <a href="{{ proofAsset.benchmarkUrl }}" style="color: var(--brand-dark); text-decoration: underline;">Compare Airbnb, card-processing, and management charges</a></p>
+                    <p style="font-size: 14px; color: var(--stone); margin: 0 0 8px;">Read the <a href="/property-management/vacation-rental-management-fees-florida/" style="color: var(--brand-dark); text-decoration: underline;">fee reality page</a> and the <a href="/property-management/maximize-vacation-rental-income-florida/" style="color: var(--brand-dark); text-decoration: underline;">owner income guide</a> before you compare managers on headline percentage alone.</p>
+                    {% endif %}
+                    {% if proofAsset.methodology %}
+                    <p style="font-size: 14px; color: var(--stone-light); margin: 0;"><strong>Methodology:</strong> {{ proofAsset.methodology }}</p>
+                    {% endif %}
+                </div>
+                {% endif %}
+            </div>
+        </section>
+        {% else %}
+        <section class="section" style="background: var(--cream-dark);">
+            <div class="container">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 32px; text-align: center;">
+                    <div>
+                        <div style="font-size: 48px; font-family: 'Playfair Display', serif; color: var(--brand);">Tailored</div>
+                        <div style="font-size: 14px; color: var(--stone-light); text-transform: uppercase; letter-spacing: 0.1em;">Management Pricing</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 48px; font-family: 'Playfair Display', serif; color: var(--brand);">24/7</div>
+                        <div style="font-size: 14px; color: var(--stone-light); text-transform: uppercase; letter-spacing: 0.1em;">Guest Support</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 48px; font-family: 'Playfair Display', serif; color: var(--brand); display: inline-flex; align-items: center;">5.0 {{ uiIcon('star', 'ui-icon--metric') }}</div>
+                        <div style="font-size: 14px; color: var(--stone-light); text-transform: uppercase; letter-spacing: 0.1em;">Average Guest Rating</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 48px; font-family: 'Playfair Display', serif; color: var(--brand);">Local</div>
+                        <div style="font-size: 14px; color: var(--stone-light); text-transform: uppercase; letter-spacing: 0.1em;">Gulf Coast Team</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        {% endif %}
+
+        {% if seoPage.switchReasons and seoPage.switchReasons | length %}
+        <section class="section">
+            <div class="container">
+                <div class="section-header">
+                    <p class="section-tag">{{ seoPage.switchTag or "What Usually Breaks First" }}</p>
+                    <h2 class="section-title">{{ seoPage.switchTitle or "Why owners start shopping for a different manager" }}</h2>
+                    <p class="section-subtitle">{{ seoPage.switchSubtitle or "The trigger is rarely one bad month. It is a stack of missed details that keeps showing up in revenue, reviews, and owner trust." }}</p>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px;">
+                    {% for reason in seoPage.switchReasons %}
+                    <div style="background: white; border-radius: 18px; padding: 28px; box-shadow: 0 8px 24px rgba(0,0,0,0.06); border: 1px solid rgba(61, 92, 93, 0.08);">
+                        <h3 style="font-size: 22px; margin-bottom: 12px; color: var(--brand-dark);">{{ reason.title }}</h3>
+                        <p style="font-size: 15px; color: var(--stone-light); margin: 0;">{{ reason.body }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+        {% endif %}
+
+        {% if seoPage.benefits and seoPage.benefits | length %}
+        <section class="section">
+            <div class="container">
+                <div class="section-header">
+                    <p class="section-tag">{{ seoPage.benefitsTag or "Execution Gap" }}</p>
+                    <h2 class="section-title">{{ seoPage.benefitsTitle or "Where Seascape closes the gap" }}</h2>
+                    <p class="section-subtitle">{{ seoPage.benefitsSubtitle or "Owners do not need a definition of management. They need evidence that the right manager fixes the expensive parts." }}</p>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px;">
+                    {% for benefit in seoPage.benefits %}
+                    <div style="background: white; border-radius: 16px; padding: 24px; box-shadow: 0 4px 20px rgba(0,0,0,0.06);">
+                        <div style="width: 48px; height: 48px; background: linear-gradient(135deg, var(--brand) 0%, var(--brand-dark) 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px;">
+                            {{ uiIcon('secure', 'ui-icon--benefit') }}
+                        </div>
+                        <p style="font-size: 16px; font-weight: 500; color: var(--stone);">{{ benefit }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+        {% endif %}
+
+        {% if seoPage.marketReality %}
+        <section class="section" style="background: white;">
+            <div class="container">
+                <div style="max-width: 820px; margin: 0 auto;">
+                    <p class="section-tag">{{ seoPage.marketReality.tag or "Market Reality" }}</p>
+                    <h2 class="section-title" style="margin-bottom: 18px;">{{ seoPage.marketReality.title }}</h2>
+                    <div style="font-size: 16px; line-height: 1.8; color: var(--stone);">
+                        {{ seoPage.marketReality.body | safe }}
+                    </div>
+                </div>
+            </div>
+        </section>
+        {% endif %}
+
+        {% if seoPage.revenueLevers and seoPage.revenueLevers | length %}
+        <section class="section" style="background: var(--cream-light);">
+            <div class="container">
+                <div class="section-header">
+                    <p class="section-tag">{{ seoPage.revenueTag or "Revenue Levers" }}</p>
+                    <h2 class="section-title">{{ seoPage.revenueTitle or "What actually moves owner revenue" }}</h2>
+                    <p class="section-subtitle">{{ seoPage.revenueSubtitle or "Better outcomes usually come from compounding improvements, not one trick or one software tool." }}</p>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px;">
+                    {% for lever in seoPage.revenueLevers %}
+                    <div style="background: white; border-radius: 18px; padding: 28px; box-shadow: 0 8px 24px rgba(0,0,0,0.06);">
+                        <h3 style="font-size: 22px; margin-bottom: 12px; color: var(--brand-dark);">{{ lever.title }}</h3>
+                        <p style="font-size: 15px; color: var(--stone-light); margin: 0;">{{ lever.body }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+        {% endif %}
+
+        {% if seoPage.reviewDeliverable %}
+        <section class="section" style="background: white;">
+            <div class="container">
+                <div class="section-header">
+                    <p class="section-tag">{{ seoPage.reviewDeliverable.tag }}</p>
+                    <h2 class="section-title">{{ seoPage.reviewDeliverable.title }}</h2>
+                    <p class="section-subtitle">{{ seoPage.reviewDeliverable.intro }}</p>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px;">
+                    {% for item in seoPage.reviewDeliverable.items %}
+                    <article style="background: var(--cream-light); border-radius: 18px; padding: 28px; box-shadow: 0 6px 20px rgba(0,0,0,0.05);">
+                        <h3 style="font-size: 20px; margin-bottom: 12px; color: var(--brand-dark);">{{ item.title }}</h3>
+                        <p style="font-size: 15px; line-height: 1.7; color: var(--stone-light); margin: 0;">{{ item.body }}</p>
+                    </article>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+        {% endif %}
+
+        {% if seoPage.visibilityLayer %}
+        <section class="section" style="background: var(--cream-light);">
+            <div class="container">
+                <div class="section-header">
+                    <p class="section-tag">{{ seoPage.visibilityLayer.tag }}</p>
+                    <h2 class="section-title">{{ seoPage.visibilityLayer.title }}</h2>
+                    <p class="section-subtitle">{{ seoPage.visibilityLayer.intro }}</p>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px;">
+                    {% for item in seoPage.visibilityLayer.items %}
+                    <article style="background: white; border-radius: 18px; padding: 28px; box-shadow: 0 8px 24px rgba(0,0,0,0.05); border: 1px solid rgba(61, 92, 93, 0.08);">
+                        <h3 style="font-size: 20px; margin-bottom: 12px; color: var(--brand-dark);">{{ item.title }}</h3>
+                        <p style="font-size: 15px; line-height: 1.7; color: var(--stone-light); margin: 0;">{{ item.body }}</p>
+                    </article>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+        {% endif %}
+
+        {% if seoPage.processSteps and seoPage.processSteps | length %}
+        <section class="section">
+            <div class="container">
+                <div class="section-header">
+                    <p class="section-tag">{{ seoPage.processTag or "Getting Started" }}</p>
+                    <h2 class="section-title">{{ seoPage.processTitle or "How the takeover works" }}</h2>
+                    <p class="section-subtitle">{{ seoPage.processSubtitle or "The goal is to improve the operation without blowing up existing booking momentum." }}</p>
                 </div>
                 
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 32px;">
@@ -195,16 +484,149 @@ NÈ^]˜[œÙ›Ü›Nˆ\\˜Ø\ÙNÈ]\‹\ÜXÚ[™ÎˆŒY[NÈ‘İ[ˆÛØ\İX[OÙ]‚ˆ
                 <div style="max-width: 800px; margin: 0 auto;">
                     <div style="font-size: 16px; line-height: 1.8; color: var(--stone);">
                         {{ seoPage.geoIntro | safe }}
-                    Ù]‚ˆ]ˆİ[OH›X\™Ú[‹]ÜˆÈY[™Ë]ÜˆMœÈ›Ü™\‹]Üˆ\ÛÛY˜\ŠKXÜ™X[KY\šÊNÈ\Ü^Nˆ›^È[YÛ‹Z][\ÎˆÙ[\ÈØ\ˆLœÈ‚ˆ]ˆİ[OHÚYˆÈZYÚˆÈ˜XÚÙÜ›İ[™ˆ˜\ŠKXœ˜[™
-NÈ›Ü™\‹\˜Y]\ÎˆL	NÈ\Ü^Nˆ›^È[YÛ‹Z][\ÎˆÙ[\È\İYKXÛÛ[ˆÙ[\ÈÛÛÜˆÚ]NÈ›Û]ÙZYÚˆŒÈ›Û\Ú^™NˆMœÈ”ÏÙ]‚ˆ]‚ˆ]ˆİ[OH™›Û]ÙZYÚˆŒÈ›Û\Ú^™NˆMÈÛÛÜˆ˜\ŠK\İÛ™JNÈŞÈ
-›ÛÙ\ÜÙ][™›ÛÙ\ÜÙ]œ™]šY]ÙYJHÜˆÚ]K˜]]Üˆ_OÙ]‚ˆ]ˆİ[OH™›Û\Ú^™NˆLœÈÛÛÜˆ˜\ŠK\İÛ™K[YÚ
-NÈ‚ˆÉHYˆ›ÛÙ\ÜÙ][™›ÛÙ\ÜÙ]œ™]šY]Ù\”›ÛH	_^ŞÈ›ÛÙ\ÜÙ]œ™]šY]Ù\”›ÛH_H8 (ˆÉH[™Yˆ	_U\]YŞÈYÙU\]YX™[_BˆÙ]‚ˆÉHYˆ›ÛÙ\ÜÙ][™›ÛÙ\ÜÙ]œÛİ\˜Ù\È[™›ÛÙ\ÜÙ]œÛİ\˜Ù\Ë›[™İ	_Bˆ]ˆİ[OH™›Û\Ú^™NˆLœÈÛÛÜˆ˜\ŠK\İÛ™K[YÚ
-NÈ‚ˆÛİ\˜Ù\Î‚ˆÉH›ÜˆÛİ\˜ÙH[ˆ›ÛÙ\ÜÙ]œÛİ\˜Ù\È	_BˆH™YHŞÈÛİ\˜ÙK\›_Hˆİ[OH˜ÛÛÜˆ˜\ŠKXœ˜[™Y\šÊNÈ^YXÛÜ˜][Ûˆ[™\›[™NÈŞÈÛİ\˜ÙK›X™[_OØOÉHYˆ›İÛÜ›\İ	_H0­ÈÉH[™Yˆ	_BˆÉH[™›Üˆ	_BˆÙ]‚ˆÉH[Yˆ›ÛÙ\ÜÙ][™›ÛÙ\ÜÙ]œÛİ\˜ÙU\›	_Bˆ]ˆİ[OH™›Û\Ú^™NˆLœÈÛÛÜˆ˜\ŠK\İÛ™K[YÚ
-NÈH™YHŞÈ›ÛÙ\ÜÙ]œÛİ\˜ÙU\›_Hˆİ[OH˜ÛÛÜˆ˜\ŠKXœ˜[™Y\šÊNÈ^YXÛÜ˜][Ûˆ[™\›[™NÈ”Ûİ\˜ÙNˆŞÈ›ÛÙ\ÜÙ]œÛİ\˜ÙSX™[_OØOÙ]‚ˆÉH[™Yˆ	_BˆÙ]‚ˆÙ]‚ˆÙ]‚ˆÙ]‚ˆÜÙXİ[Û‚ˆÉH[™Yˆ	_B‚ˆKKHÛ™ËY›Ü›HÛÛ[›ÜˆÑSÈ\KO‚ˆÉHYˆÙ[ÔYÙK›Û™ĞÛÛ[	_BˆÙXİ[ÛˆÛ\ÜÏHœÙXİ[Ûˆˆİ[OH˜˜XÚÙÜ›İ[™ˆ˜\ŠKXÜ™X[K[YÚ
-NÈ‚ˆ]ˆÛ\ÜÏH˜ÛÛZ[™\ˆ‚ˆ]ˆİ[OH›X^]ÚYˆÈX\™Ú[ˆ]]ÎÈ‚ˆˆİ[OH™›ÛY˜[Z[Nˆ	Ô^Y˜Z\ˆ\Ü^IËÙ\šYÈ›Û\Ú^™NˆÈX\™Ú[‹X›İÛNˆÈÛÛÜˆ˜\ŠK\İÛ™JNÈŞÈÙ[ÔYÙK˜ÛÛ[]HY˜][
-“[Ü™HX›İ]ˆ
-ÈÙ[ÔYÙKšJH_OÚ‚ˆ]ˆİ[OH™›Û\Ú^™NˆMœÈ[™KZZYÚˆKÈÛÛÜˆ˜\ŠK\İÛ™JNÈ‚ˆŞÈÙ[ÔYÙK›Û™ĞÛÛ[ØY™H_BˆÙ]‚ˆÙ]‚ˆÙ]‚ˆÜÙXİ[Û‚ˆÉH[™Yˆ	_B‚ˆÉHYˆÙ[ÔYÙK›Øš™Xİ[ÛœÈ[™Ù[ÔYÙK›Øš™Xİ[ÛœÈ[™İ	_BˆÙXİ[ÛˆÛ\ÜÏHœÙXİ[Ûˆˆİ[OH˜˜XÚÙÜ›İ[™ˆÚ]NÈ‚ˆ]ˆÛ\ÜÏH˜ÛÛZ[™\ˆ‚ˆ]ˆİ[OH›X^]ÚYˆÈX\™Ú[ˆ]]ÎÈ‚ˆ]ˆÛ\ÜÏHœÙXİ[Û‹ZXY\ˆˆİ[OH^X[YÛˆYÈ‚ˆÛ\ÜÏHœÙXİ[Û‹]YÈŞÈÙ[ÔYÙK›Øš™Xİ[ÛœÕYÈÜˆ“İÛ™\ˆØš™Xİ[ÛœÈˆ_OÜ‚ˆˆÛ\ÜÏHœÙXİ[Û‹]]Hˆİ[OH™›Û\Ú^™NˆÈŞÈÙ[ÔYÙK›Øš™Xİ[ÛœÕ]HÜˆ•H]Y\İ[ÛœÈ]\İX[Hİ[HXÚ\Ú[Ûˆˆ_OÚ‚ˆÛ\ÜÏHœÙXİ[Û‹\İX]Hˆİ[OH›X^]ÚYˆ›Û™NÈX\™Ú[ˆÈŞÈÙ[ÔYÙK›Øš™Xİ[ÛœÔİX]HÜˆ‘ÛÛÙİÛ™\œÈÈ›İ^HÛˆšX™Kˆ^H™\Üİ\™K]\İİÚ]Ú[™ÈÛÜİ™]™[YHš\ÚË[™Ú]\ˆHX[˜YÙ\ˆXİX[HÛ›İÜÈHX\šÙ]ˆˆ_OÜ‚ˆÙ]‚ˆÉH›ÜˆØš™Xİ[Ûˆ[ˆÙ[ÔYÙK›Øš™Xİ[ÛœÈ	_Bˆ]Z[Èİ[OH›X\™Ú[‹X›İÛNˆMœÈ˜XÚÙÜ›İ[™ˆ˜\ŠKXÜ™X[K[YÚ
-NÈ›Ü™\‹\˜Y]\ÎˆLœÈİ™\™›İÎˆY[ÈˆÉHYˆÛÜ™š\œİ	_[Ü[ÉH[™Yˆ	_O‚ˆİ[[X\Hİ[OHœVF–æs¢#‚#Gƒ²7W'6÷#¢ö–çFW#²föçB×vV–v‡C¢c²föçB×6—¦S¢gƒ²6öÆ÷#¢f"‚Ò×7FöæR“²Æ—7B×7G–ÆS¢æöæS²F—7Æ“¢fÆWƒ²§W7F–g’Ö6öçFVçC¢76RÖ&WGvVVã²Æ–vâÖ—FV×3¢6VçFW#²#à¢·²ö&¦V7F–öâçVW7F–öâ×Ğ¢Ç7â7G–ÆSÒ&6öÆ÷#¢f"‚ÒÖ'&æB“²föçB×6—¦S¢#ƒ²fÆW‚×6‡&–æ³¢²Ö&v–âÖÆVgC¢gƒ²#â³Â÷7ãà¢Â÷7VÖÖ'“à¢ÆF—b7G–ÆSÒ'FF–æs¢#G‚#ƒ²föçB×6—¦S¢Wƒ²Æ–æRÖ†V–v‡C¢ãs²6öÆ÷#¢f"‚Ò×7FöæRÖÆ–v‡B“²#à¢·²ö&¦V7F–öâæç7vW"×Ğ¢ÂöF—cà¢ÂöFWF–Ç3à¢²RVæFf÷"WĞ¢ÂöF—cà¢ÂöF—cà¢Â÷6V7F–öãà¢²RVæF–bWĞ ¢ÂÒÒd6V7F–öâÒÓà¢²R–b6VõvRæf2ÂÆVæwF‚WĞ¢Ç6V7F–öâ6Æ73Ò'6V7F–öâ"7G–ÆSÒ&&6¶w&÷VæC¢v†—FS²#à¢ÆF—b6Æ73Ò&6öçF–æW"#à¢ÆF—b7G–ÆSÒ&Ö‚×v–GFƒ¢ƒƒ²Ö&v–ã¢WFó²#à¢ÆF—b6Æ73Ò'6V7F–öâÖ†VFW""7G–ÆSÒ'FW‡BÖÆ–vã¢ÆVgC²#à¢Ç6Æ73Ò'6V7F–öâ×Fr#äg&WVVçFÇ’6¶VBVW7F–öç3Â÷à¢Æƒ"6Æ73Ò'6V7F–öâ×F—FÆR"7G–ÆSÒ&föçB×6—¦S¢#‡ƒ²#ç·²6VõvRæƒ×Ò(	BdÂöƒ#à¢ÂöF—cà¢²Rf÷"f–â6VõvRæf2WĞ¢ÆFWF–Ç27G–ÆSÒ&Ö&v–âÖ&÷GFöÓ¢gƒ²&6¶w&÷VæC¢f"‚ÒÖ7&VÒÖÆ–v‡B“²&÷&FW"×&F—W3¢'ƒ²÷fW&fÆ÷s¢†–FFVã²"²R–bÆö÷æf—'7BWÖ÷Vç²RVæF–bWÓà¢Ç7VÖÖ'’7G–ÆSÒ'FF–æs¢#‚#Gƒ²7W'6÷#¢ö–çFW#²föçB×vV–v‡C¢c²föçB×6—¦S¢gƒ²6öÆ÷#¢f"‚Ò×7FöæR“²Æ—7B×7G–ÆS¢æöæS²F—7Æ“¢fÆWƒ²§W7F–g’Ö6öçFVçC¢76RÖ&WGvVVã²Æ–vâÖ—FV×3¢6VçFW#²#à¢·²fç×Ğ¢Ç7â7G–ÆSÒ&6öÆ÷#¢f"‚ÒÖ'&æB“²föçB×6—¦S¢#ƒ²fÆW‚×6‡&–æ³¢²Ö&v–âÖÆVgC¢gƒ²#â³Â÷7ãà¢Â÷7VÖÖ'“à¢ÆF—b7G–ÆSÒ'FF–æs¢#G‚#ƒ²föçB×6—¦S¢Wƒ²Æ–æRÖ†V–v‡C¢ãs²6öÆ÷#¢f"‚Ò×7FöæRÖÆ–v‡B“²#à¢·²fæ×Ğ¢ÂöF—cà¢ÂöFWF–Ç3à¢²RVæFf÷"WĞ¢ÂöF—cà¢ÂöF—cà¢Â÷6V7F–öãà¢²RVæF–bWĞ ¢ÂÒÒ&VÆFVB6W'f–6W2„7&÷72ÖÆ–æ¶–ær’ÒÓà¢Ç6V7F–öâ6Æ73Ò'6V7F–öâ"7G–ÆSÒ&&6¶w&÷VæC¢f"‚ÒÖ7&VÒÖÆ–v‡B“²#à¢ÆF—b6Æ73Ò&6öçF–æW"#à¢ÆF—b6Æ73Ò'6V7F–öâÖ†VFW"#à¢Ç6Æ73Ò'6V7F–öâ×Fr#å&VÆFVB&W6÷W&6W3Â÷à¢Æƒ"6Æ73Ò'6V7F–öâ×F—FÆR#äÖ÷&Rf÷"&÷W'G’÷væW'3Âöƒ#à¢²R–b6†÷t÷væW$&Væ6†Ö&µF‚WĞ¢Ç6Æ73Ò'6V7F–öâ×7V'F—FÆR"7G–ÆSÒ&Ö‚×v–GFƒ¢scƒ²#åW6RF†RfVRwV–FRÂÖævVÖVçBÖ6÷7BvW2ÂæB&Wf–Wr&WVW7BFövWF†W"–ç7FVBöbG&VF–ærfVW2ÂÆ–6Vç6–ærÂæB&öö¶–ær6†ææVÇ2Æ–¶R6W&FRFV6—6–öç2ãÂ÷à¢ÆF—b7G–ÆSÒ&F—7Æ“¢fÆWƒ²fÆW‚×w&¢w&²v¢'ƒ²§W7F–g’Ö6öçFVçC¢6VçFW#²Ö&v–â×F÷¢#Gƒ²#à¢Æ‡&VcÒ"÷&W6V&6‚ö÷væW"ÖfVR×&WfVçVRÖÆV²Ö&Væ6†Ö&²Ó##bò"7G–ÆSÒ&F—7Æ“¢–æÆ–æRÖfÆWƒ²Æ–vâÖ—FV×3¢6VçFW#²§W7F–g’Ö6öçFVçC¢6VçFW#²FF–æs¢‚‡ƒ²&÷&FW"×&F—W3¢““—ƒ²&÷&FW#¢‚6öÆ–B&v&ƒcÂ“"Â“2ÂãB“²&6¶w&÷VæC¢&v&ƒ#SRÃ#SRÃ#SRÃã“"“²6öÆ÷#¢f"‚ÒÖ'&æBÖF&²“²föçB×6—¦S¢7ƒ²föçB×vV–v‡C¢c²FW‡BÖFV6÷&F–öã¢æöæS²#à¢&VBF†RfVRwV–FP¢Âöà¢²R–b6VõvRç6ÇVrÒ'f6F–öâ×&VçFÂÖÖævVÖVçBÖfVW2ÖfÆ÷&–F"WĞ¢Æ‡&VcÒ"÷&÷W'G’ÖÖævVÖVçB÷f6F–öâ×&VçFÂÖÖævVÖVçBÖfVW2ÖfÆ÷&–Fò"7G–ÆSÒ&F—7Æ“¢–æÆ–æRÖfÆWƒ²Æ–vâÖ—FV×3¢6VçFW#²§W7F–g’Ö6öçFVçC¢6VçFW#²FF–æs¢‚‡ƒ²&÷&FW"×&F—W3¢““—ƒ²&÷&FW#¢‚6öÆ–B&v&ƒcÂ“"Â“2ÂãB“²&­É½Õ¹èÉ‰„ ÈÔÔ°ÈÔÔ°ÈÔÔ°À¸äÈ¤ì½±½ÈèÙ…È ´µ‰É…¹µ‘…É¬¤ì™½¹ĞµÍ¥é”è€ÄÍÁàì™½¹Ğµİ•¥¡Ğè€ØÀÀìÑ•áĞµ‘•½É…Ñ¥½¸è¹½¹”ìˆø(€€€€€€€€€€€€€€€€€€€€€€€½µÁ…É”µ…¹…•µ•¹Ğ™••Ì(€€€€€€€€€€€€€€€€€€€€ğ½„ø(€€€€€€€€€€€€€€€€€€€€€€€ì”•¹‘¥˜€•ô(€€€€€€€€€€€€€€€€€€€€€€€ì”¥˜Í•½A…”¹Í±Õœ€„ô€‰Ù……Ñ¥½¸µÉ•¹Ñ…°µ±¥•¹Í¥¹œµ™±½É¥‘„ˆ€•ô(€€€€€€€€€€€€€€€€€€€€ñ„¡É•˜ôˆ½ÁÉ½Á•ÉÑäµµ…¹…•µ•¹Ğ½Ù……Ñ¥½¸µÉ•¹Ñ…°µ±¥•¹Í¥¹œµ™±½É¥‘„¼ˆÍÑå±”ô‰‘¥ÍÁ±…äè¥¹±¥¹”µ™±•àì…±¥¸µ¥Ñ•µÌè•¹Ñ•Èì©ÕÍÑ¥™äµ½¹Ñ•¹Ğè•¹Ñ•ÈìÁ…‘‘¥¹œè€ÄÁÁà€ÄáÁàì‰½É‘•ÈµÉ…‘¥ÕÌè€ääåÁàì‰½É‘•Èè€ÅÁàÍ½±¥É‰„ ØÄ°€äÈ°€äÌ°€À¸ÄĞ¤ì‰…­É½Õ¹èÉ‰„ ÈÔÔ°ÈÔÔ°ÈÔÔ°À¸äÈ¤ì½±½ÈèÙ…È ´µ‰É…¹µ‘…É¬¤ì™½¹ĞµÍ¥é”è€ÄÍÁàì™½¹Ğµİ•¥¡Ğè€ØÀÀìÑ•áĞµ‘•½É…Ñ¥½¸è¹½¹”ìˆø(€€€€€€€€€€€€€€€€€€€€€€€¡•¬±¥•¹Í¥¹œÉ¥Í¬(€€€€€€€€€€€€€€€€€€€€ğ½„ø(€€€€€€€€€€€€€€€€€€€€€€€ì”•¹‘¥˜€•ô(€€€€€€€€€€€€€€€€€€€€€€€ì”¥˜Í•½A…”¹Í±Õœ€„ô€‰ÙÉ‰¼µµ…¹…•µ•¹ĞµÍ•ÉÙ¥•Ìµ™±½É¥‘„ˆ€•ô(€€€€€€€€€€€€€€€€€€€€ñ„¡É•˜ôˆ½ÁÉ½Á•ÉÑäµµ…¹…•µ•¹Ğ½ÙÉ‰¼µµ…¹…•µ•¹ĞµÍ•ÉÙ¥•Ìµ™±½É¥‘„¼ˆÍÑå±”ô‰‘¥ÍÁ±…äè¥¹±¥¹”µ™±•àì…±¥¸µ¥Ñ•µÌè•¹Ñ•Èì©ÕÍÑ¥™äµ½¹Ñ•¹Ğè•¹Ñ•ÈìÁ…‘‘¥¹œè€ÄÁÁà€ÄáÁàì‰½É‘•ÈµÉ…‘¥ÕÌè€ääåÁàì‰½É‘•Èè€ÅÁàÍ½±¥É‰„ ØÄ°€äÈ°€äÌ°€À¸ÄĞ¤ì‰…­É½Õ¹èÉ‰„ ÈÔÔ°ÈÔÔ°ÈÔÔ°À¸äÈ¤ì½±½ÈèÙ…È ´µ‰É…¹µ‘…É¬¤ì™½¹ĞµÍ¥é”è€ÄÍÁàì™½¹Ğµİ•¥¡Ğè€ØÀÀìÑ•áĞµ‘•½É…Ñ¥½¸è¹½¹”ìˆø(€€€€€€€€€€€€€€€€€€€€€€€I•Ù¥•ÜYI	<¡…¹‘±¥¹œ(€€€€€€€€€€€€€€€€€€€€ğ½„ø(€€€€€€€€€€€€€€€€€€€€€€€ì”•¹‘¥˜€•ô(€€€€€€€€€€€€€€€€€€€€ñ„¡É•˜ôˆ½ÁÉ½Á•ÉÑäµµ…¹…•µ•¹Ğ¼½İ¹•ÈµÑ„ˆÍÑå±”ô‰‘¥ÍÁ±…äè¥¹±¥¹”µ™±•àì…±¥¸µ¥Ñ•µÌè•¹Ñ•Èì©ÕÍÑ¥™äµ½¹Ñ•¹Ğè•¹Ñ•ÈìÁ…‘‘¥¹œè€ÄÁÁà€ÄáÁàì‰½É‘•ÈµÉ…‘¥ÕÌè€ääåÁàì‰½É‘•Èè€ÅÁàÍ½±¥É‰„ ØÄ°€äÈ°€äÌ°€À¸ÄĞ¤ì‰…­É½Õ¹èÉ‰„ ÈÔÔ°ÈÔÔ°ÈÔÔ°À¸äÈ¤ì½±½ÈèÙ…È ´µ‰É…¹µ‘…É¬¤ì™½¹ĞµÍ¥é”è€ÄÍÁàì™½¹Ğµİ•¥¡Ğè€ØÀÀìÑ•áĞµ‘•½É…Ñ¥½¸è¹½¹”ìˆø(€€€€€€€€€€€€€€€€€€€€€€€I•ÅÕ•ÍĞå½ÕÈÉ•Ù¥•Ü(€€€€€€€€€€€€€€€€€€€€ğ½„ø(€€€€€€€€€€€€€€€€€€€€ğ½‘¥Øø(€€€€€€€€€€€€€€€€€€€ì”•¹‘¥˜€•ô(€€€€€€€€€€€€€€€€ğ½‘¥Øø(€€€€€€€€€€€€€€€€ñ‘¥ØÍÑå±”ô‰‘¥ÍÁ±…äèÉ¥ìÉ¥µÑ•µÁ±…Ñ”µ½±Õµ¹ÌèÉ•Á•…Ğ¡…ÕÑ¼µ™¥Ğ°µ¥¹µ…à ÈàÁÁà°€Å™È¤¤ì…Àè€ÈÁÁàìˆø(€€€€€€€€€€€€€€€€€€€ì”¥˜Í•½A…”¹É•±…Ñ•‘=İ¹•ÉI•Í½ÕÉ•Ì…¹Í•½A…”¹É•±…Ñ•‘=İ¹•ÉI•Í½ÕÉ•Ìğ±•¹Ñ €•ô(€€€€€€€€€€€€€€€€€€€€€€€ì”™½ÈÉ•±…Ñ•‘M±Õœ¥¸Í•½A…”¹É•±…Ñ•‘=İ¹•ÉI•Í½ÕÉ•Ì€•ô(€€€€€€€€€€€€€€€€€€€€€€€€€€€ì”™½ÈÁ…”¥¸Í•½A…•Ì¹½İ¹•È€•ô(€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€ì”¥˜Á…”¹Í±Õœ€ôôÉ•±…Ñ•‘M±Õœ€•ô(€€€€€€€€€€€€€€€€€€€€ñ„¡É•˜ôˆ½ÁÉ½Á•ÉÑäµµ…¹…•µ•¹Ğ½íìÁ…”¹Í±Õœõô¼ˆÍÑå±”ô‰‰…­É½Õ¹èİ¡¥Ñ”ì‰½É‘•ÈµÉ…‘¥ÕÌè€ÄÉÁàìÁ…‘‘¥¹œè€ÈÁÁàì‰½àµÍ¡…‘½Üè€À€ÉÁà€ÄÁÁàÉ‰„ À°À°À°À¸ÀØ¤ìÑÉ…¹Í¥Ñ¥½¸èÑÉ…¹Í™½É´€À¸ÉÌ•…Í”ì‘¥ÍÁ±…äè‰±½¬ìˆø(€€€€€€€€€€€€€€€€€€€€€€€€ñ ÌÍÑå±”ô‰™½¹ĞµÍ¥é”è€ÄÙÁàì™½¹Ğµİ•¥¡Ğè€ØÀÀì½±½ÈèÙ…È ´µ‰É…¹µ‘…É¬¤ìµ…É¥¸µ‰½ÑÑ½´è€áÁàìˆùíìÁ…”¹Ñ¥Ñ±”õôğ½ Ìø(€€€€€€€€€€€€€€€€€€€€€€€€ñÀÍÑå±”ô‰™½¹ĞµÍ¥é”è€ÄÍÁàì½±½ÈèÙ…È ´µÍÑ½¹”µ±¥¡Ğ¤ì±¥¹”µ¡•¥¡Ğè€Ä¸ÔìˆùíìÁ…”¹‘•ÍÉ¥ÁÑ¥½¸ğÑÉÕ¹…Ñ” ÄÀÀ¤õôğ½Àø(€€€€€€€€€€€€€€€€€€€€ğ½„ø(€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€ì”•¹‘¥˜€•ô(€€€€€€€€€€€€€€€€€€€€€€€€€€€ì”•¹‘™½È€•ô(€€€€€€€€€€€€€€€€€€€€€€€ì”•¹‘™½È€•ô(€€€€€€€€€€€€€€€€€€€ì”•±Í”€•ô(€€€€€€€€€€€€€€€€€€€€€€€ì”Í•Ğ½Õ¹Ğ€ô€À€•ô(€€€€€€€€€€€€€€€€€€€€€€€ì”™½ÈÁ…”¥¸Í•½A…•Ì¹½İ¹•È€•ô(€€€€€€€€€€€€€€€€€€€€€€€€€€€ì”¥˜Á…”¹Í±Õœ€„ôÍ•½A…”¹Í±Õœ…¹½Õ¹Ğ€ğ€Ğ€•ô(€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€ì”¥˜€¡Í•½A…”¹‘•ÍÑ¥¹…Ñ¥½¸…¹Á…”¹‘•ÍÑ¥¹…Ñ¥½¸€ôôÍ•½A…”¹‘•ÍÑ¥¹…Ñ¥½¸¤½È€¡¹½ĞÍ•½A…”¹‘•ÍÑ¥¹…Ñ¥½¸…¹¹½ĞÁ…”¹‘•ÍÑ¥¹…Ñ¥½¸¤€•ô(€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€ì”Í•Ğ½Õ¹Ğ€ô½Õ¹Ğ€¬€Ä€•ô(€€€€€€€€€€€€€€€€€€€€ñ„¡É•˜ôˆ½ÁÉ½Á•ÉÑäµµ…¹…•µ•¹Ğ½íìÁ…”¹Í±Õœõô¼ˆÍÑå±”ô‰‰…­É½Õ¹èİ¡¥Ñ”ì‰½É‘•ÈµÉ…‘¥ÕÌè€ÄÉÁàìÁ…‘‘¥¹œè€ÈÁÁàì‰½àµÍ¡…‘½Üè€À€ÉÁà€ÄÁÁàÉ‰„ À°À°À°À¸ÀØ¤ìÑÉ…¹Í¥Ñ¥½¸èÑÉ…¹Í™½É´€À¸ÉÌ•…Í”ì‘¥ÍÁ±…äè‰±½¬ìˆø(€€€€€€€€€€€€€€€€€€€€€€€€ñ ÌÍÑå±”ô‰™½¹ĞµÍ¥é”è€ÄÙÁàì™½¹Ğµİ•¥¡Ğè€ØÀÀì½±½ÈèÙ…È ´µ‰É…¹µ‘…É¬¤ìµ…É¥¸µ‰½ÑÑ½´è€áÁàìˆùíìÁ…”¹Ñ¥Ñ±”õôğ½ Ìø(€€€€€€€€€€€€€€€€€€€€€€€€ñÀÍÑå±”ô‰™½¹ĞµÍ¥é”è€3px; color: var(--stone-light); line-height: 1.5;">{{ page.description | truncate(100) }}</p>
+                    </div>
+                    <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--cream-dark); display: flex; align-items: center; gap: 12px;">
+                        <div style="width: 40px; height: 40px; background: var(--brand); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; font-size: 16px;">S</div>
+                        <div>
+                            <div style="font-weight: 600; font-size: 14px; color: var(--stone);">{{ (proofAsset and proofAsset.reviewedBy) or site.author }}</div>
+                            <div style="font-size: 12px; color: var(--stone-light);">
+                                {% if proofAsset and proofAsset.reviewerRole %}{{ proofAsset.reviewerRole }} â€¢ {% endif %}Updated {{ pageUpdatedLabel }}
+                            </div>
+                            {% if proofAsset and proofAsset.sources and proofAsset.sources.length %}
+                            <div style="font-size: 12px; color: var(--stone-light);">
+                                Sources:
+                                {% for source in proofAsset.sources %}
+                                <a href="{{ source.url }}" style="color: var(--brand-dark); text-decoration: underline;">{{ source.label }}</a>{% if not loop.last %} Â· {% endif %}
+                                {% endfor %}
+                            </div>
+                            {% elif proofAsset and proofAsset.sourceUrl %}
+                            <div style="font-size: 12px; color: var(--stone-light);"><a href="{{ proofAsset.sourceUrl }}" style="color: var(--brand-dark); text-decoration: underline;">Source: {{ proofAsset.sourceLabel }}</a></div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        {% endif %}
+
+        <!-- Long-form content for SEO depth -->
+        {% if seoPage.longContent %}
+        <section class="section" style="background: var(--cream-light);">
+            <div class="container">
+                <div style="max-width: 800px; margin: 0 auto;">
+                    <h2 style="font-family: 'Playfair Display', serif; font-size: 28px; margin-bottom: 24px; color: var(--stone);">{{ seoPage.contentTitle | default("More About " + seoPage.h1) }}</h2>
+                    <div style="font-size: 16px; line-height: 1.8; color: var(--stone);">
+                        {{ seoPage.longContent | safe }}
+                    </div>
+                </div>
+            </div>
+        </section>
+        {% endif %}
+
+        {% if seoPage.objections and seoPage.objections | length %}
+        <section class="section" style="background: white;">
+            <div class="container">
+                <div style="max-width: 840px; margin: 0 auto;">
+                    <div class="section-header" style="text-align: left;">
+                        <p class="section-tag">{{ seoPage.objectionsTag or "Owner Objections" }}</p>
+                        <h2 class="section-title" style="font-size: 28px;">{{ seoPage.objectionsTitle or "The questions that usually stall the decision" }}</h2>
+                        <p class="section-subtitle" style="max-width: none; margin: 0;">{{ seoPage.objectionsSubtitle or "Good owners do not buy on vibe. They pressure-test switching cost, revenue risk, and whether the manager actually knows the market." }}</p>
+                    </div>
+                    {% for objection in seoPage.objections %}
+                    <details style="margin-bottom: 16px; background: var(--cream-light); border-radius: 12px; overflow: hidden;" {% if loop.first %}open{% endif %}>
+                        <summary style="padding: 20px 24px; cursor: pointer; font-weight: 600; font-size: 16px; color: var(--stone); list-style: none; display: flex; justify-content: space-between; align-items: center;">
+                            {{ objection.question }}
+                            <span style="color: var(--brand); font-size: 20px; flex-shrink: 0; margin-left: 16px;">+</span>
+                        </summary>
+                        <div style="padding: 0 24px 20px; font-size: 15px; line-height: 1.7; color: var(--stone-light);">
+                            {{ objection.answer }}
+                        </div>
+                    </details>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+        {% endif %}
+
+        <!-- FAQ Section -->
+        {% if seoPage.faqs | length %}
+        <section class="section" style="background: white;">
+            <div class="container">
+                <div style="max-width: 800px; margin: 0 auto;">
+                    <div class="section-header" style="text-align: left;">
+                        <p class="section-tag">Frequently Asked Questions</p>
+                        <h2 class="section-title" style="font-size: 28px;">{{ seoPage.h1 }} â€” FAQ</h2>
+                    </div>
+                    {% for faq in seoPage.faqs %}
+                    <details style="margin-bottom: 16px; background: var(--cream-light); border-radius: 12px; overflow: hidden;" {% if loop.first %}open{% endif %}>
+                        <summary style="padding: 20px 24px; cursor: pointer; font-weight: 600; font-size: 16px; color: var(--stone); list-style: none; display: flex; justify-content: space-between; align-items: center;">
+                            {{ faq.q }}
+                            <span style="color: var(--brand); font-size: 20px; flex-shrink: 0; margin-left: 16px;">+</span>
+                        </summary>
+                        <div style="padding: 0 24px 20px; font-size: 15px; line-height: 1.7; color: var(--stone-light);">
+                            {{ faq.a }}
+                        </div>
+                    </details>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+        {% endif %}
+
+        <!-- Related Services (Cross-linking) -->
+        <section class="section" style="background: var(--cream-light);">
+            <div class="container">
+                <div class="section-header">
+                    <p class="section-tag">Related Resources</p>
+                    <h2 class="section-title">More for Property Owners</h2>
+                    {% if showOwnerBenchmarkPath %}
+                    <p class="section-subtitle" style="max-width: 760px;">Use the fee guide, management-cost pages, and review request together instead of treating fees, licensing, and booking channels like separate decisions.</p>
+                    <div style="display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-top: 24px;">
+                    <a href="/research/owner-fee-revenue-leak-benchmark-2026/" style="display: inline-flex; align-items: center; justify-content: center; padding: 10px 18px; border-radius: 999px; border: 1px solid rgba(61, 92, 93, 0.14); background: rgba(255,255,255,0.92); color: var(--brand-dark); font-size: 13px; font-weight: 600; text-decoration: none;">
+                        Read the fee guide
+                    </a>
+                        {% if seoPage.slug != "vacation-rental-management-fees-florida" %}
+                    <a href="/property-management/vacation-rental-management-fees-florida/" style="display: inline-flex; align-items: center; justify-content: center; padding: 10px 18px; border-radius: 999px; border: 1px solid rgba(61, 92, 93, 0.14); background: rgba(255,255,255,0.92); color: var(--brand-dark); font-size: 13px; font-weight: 600; text-decoration: none;">
+                        Compare management fees
+                    </a>
+                        {% endif %}
+                        {% if seoPage.slug != "vacation-rental-licensing-florida" %}
+                    <a href="/property-management/vacation-rental-licensing-florida/" style="display: inline-flex; align-items: center; justify-content: center; padding: 10px 18px; border-radius: 999px; border: 1px solid rgba(61, 92, 93, 0.14); background: rgba(255,255,255,0.92); color: var(--brand-dark); font-size: 13px; font-weight: 600; text-decoration: none;">
+                        Check licensing risk
+                    </a>
+                        {% endif %}
+                        {% if seoPage.slug != "vrbo-management-services-florida" %}
+                    <a href="/property-management/vrbo-management-services-florida/" style="display: inline-flex; align-items: center; justify-content: center; padding: 10px 18px; border-radius: 999px; border: 1px solid rgba(61, 92, 93, 0.14); background: rgba(255,255,255,0.92); color: var(--brand-dark); font-size: 13px; font-weight: 600; text-decoration: none;">
+                        Review VRBO handling
+                    </a>
+                        {% endif %}
+                    <a href="/property-management/#owner-cta" style="display: inline-flex; align-items: center; justify-content: center; padding: 10px 18px; border-radius: 999px; border: 1px solid rgba(61, 92, 93, 0.14); background: rgba(255,255,255,0.92); color: var(--brand-dark); font-size: 13px; font-weight: 600; text-decoration: none;">
+                        Request your review
+                    </a>
+                    </div>
+                    {% endif %}
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
+                    {% if seoPage.relatedOwnerResources and seoPage.relatedOwnerResources | length %}
+                        {% for relatedSlug in seoPage.relatedOwnerResources %}
+                            {% for page in seoPages.owner %}
+                                {% if page.slug == relatedSlug %}
+                    <a href="/property-management/{{ page.slug }}/" style="background: white; border-radius: 12px; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.06); transition: transform 0.2s ease; display: block;">
+                        <h3 style="font-size: 16px; font-weight: 600; color: var(--brand-dark); margin-bottom: 8px;">{{ page.title }}</h3>
+                        <p style="font-size: 13px; color: var(--stone-light); line-height: 1.5;">{{ page.description | truncate(100) }}</p>
+                    </a>
+                                {% endif %}
+                            {% endfor %}
+                        {% endfor %}
+                    {% else %}
+                        {% set count = 0 %}
+                        {% for page in seoPages.owner %}
+                            {% if page.slug != seoPage.slug and count < 4 %}
+                                {% if (seoPage.destination and page.destination == seoPage.destination) or (not seoPage.destination and not page.destination) %}
+                                    {% set count = count + 1 %}
+                    <a href="/property-management/{{ page.slug }}/" style="background: white; border-radius: 12px; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.06); transition: transform 0.2s ease; display: block;">
+                        <h3 style="font-size: 16px; font-weight: 600; color: var(--brand-dark); margin-bottom: 8px;">{{ page.title }}</h3>
+                        <p style="font-size: 13px; color: var(--stone-light); line-height: 1.5;">{{ page.description | truncate(100) }}</p>
                     </a>
                                 {% endif %}
                             {% endif %}
@@ -255,4 +677,12 @@ NÈ›Ü™\‹\˜Y]\ÎˆLœÈİ™\™›İÎˆY[ÈˆÉHYˆÛÜ™š\œİ	_[Ü[ÉH[™Yˆ	_O‚ˆ
                 <a href="/guides/anna-maria-island-area-guide/">Anna Maria Island</a>
                 <a href="/guides/bradenton-area-guide/">Bradenton</a>
                 <a href="/guides/sarasota-area-guide/">Sarasota</a>
-             H™YH‹Ü›Ü\K[X[˜YÙ[Y[È”›Ü\HX[˜YÙ[Y[ØO‚ˆÙ]‚ˆ]ˆÛ\ÜÏH™›Ûİ\‹XÛÜ\šYÚ°ªHŒˆÙX\ØØ\H˜XØ][ÛœËˆ[šYÚÈ™\Ù\™Yˆ›ÛÚÈ\™Xİ	ˆØ]™OÙ]‚ˆÙ]‚ˆÙ›Ûİ\‚‚ˆÉH[˜ÛYHœ\X[ËØ[˜[]XÜËYØM›ššÈˆ	_BØ›ÙO‚Ú[‚
+                <a href="/property-management/">Property Management</a>
+            </div>
+            <div class="footer-copyright">Â© 2026 Seascape Vacations. All rights reserved. | Book Direct & Save</div>
+        </div>
+    </footer>
+
+    {% include "partials/analytics-ga4.njk" %}
+</body>
+</html>
