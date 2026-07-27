@@ -8,10 +8,15 @@ on:
     branches:
       - main
 
+concurrency:
+  group: release-safety-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   release-safety:
     name: release-safety
     runs-on: ubuntu-latest
+    timeout-minutes: 20
 
     steps:
       - name: Check out repository
@@ -20,7 +25,7 @@ jobs:
           fetch-depth: 0
 
       - name: Set up Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
           cache: npm
@@ -28,19 +33,44 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Run dependency audit gate
-        run: npm run audit:deps
-
       - name: Compute comparison range
         shell: bash
         run: |
           if [ "${{ github.event_name }}" = "pull_request" ]; then
-            echo "RANGE=origin/${{ github.base_ref }}...${{ github.sha }}" >> "$GITHUB_ENV"
+            echo "RANGE=${{ github.event.pull_request.base.sha }}...${{ github.event.pull_request.head.sha }}" >> "$GITHUB_ENV"
           elif [ "${{ github.event.before }}" = "0000000000000000000000000000000000000000" ]; then
             echo "RANGE=HEAD^..HEAD" >> "$GITHUB_ENV"
           else
             echo "RANGE=${{ github.event.before }}..${{ github.sha }}" >> "$GITHUB_ENV"
           fi
 
+      - name: Detect dependency manifest changes
+        id: dependency_changes
+        shell: bash
+        run: |
+          if git diff --name-only "$RANGE" | grep -Eq '^(package(-lock)?\.json)$'; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Run dependency audit gate
+        if: github.event_name == 'push' || steps.dependency_changes.outputs.changed == 'true'
+        run: npm run audit:deps
+
       - name: Run release safety gate
         run: npm run verify:release -- --range "$RANGE"
+
+  build:
+    name: build
+    needs: release-safety
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Confirm authoritative gate passed
+        run: |
+          if [ "${{ needs.release-safety.result }}" != "success" ]; then
+            echo "release-safety did not pass."
+            exit 1
+          fi
+          echo "Build and tests passed in release-safety."

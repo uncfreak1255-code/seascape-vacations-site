@@ -151,7 +151,15 @@ async function gotoMarketingRoute(page, routeConfig) {
     await page.emulateMedia({ reducedMotion: "reduce" });
   }
   const separator = routeConfig.path.includes("?") ? "&" : "?";
-  await page.goto(`${routeConfig.path}${separator}visual-test=1`, { waitUntil: "networkidle" });
+  const response = await page.goto(`${routeConfig.path}${separator}visual-test=1`, { waitUntil: "networkidle" });
+  // The static server serves the branded /404.html (with its own main h1) for
+  // missing paths, so a vanished route would otherwise produce green proof
+  // against the 404 page. Fail loudly on any non-200 instead.
+  if (!response || response.status() !== 200) {
+    throw new Error(
+      `[visual] route ${routeConfig.path} returned HTTP ${response ? response.status() : "no response"} — refusing to capture proof against a non-200 page`
+    );
+  }
   await page.evaluate((slug) => {
     document.documentElement.dataset.visualRoute = slug;
   }, routeConfig.slug);

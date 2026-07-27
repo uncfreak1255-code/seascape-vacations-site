@@ -35,12 +35,14 @@ That includes:
   risks, and responsive requirements.
 - Figma, Stitch, and other outside tools are reference surfaces only unless
   Sawyer explicitly approves them as the design source for a specific task.
-- Global donor lenses such as `claude-design`, `product-design:ideate`,
-  `product-design:audit`, `creative-production:moodboard-explorer`,
-  `creative-production:scene-explorer`, and
-  `creative-production:shot-explorer` may be used when they clearly raise the
-  quality bar, but the final answer must still be rewritten into Seascape repo
-  truth and `DESIGN.md`.
+- The design launcher classifies the page or guide family and scans local Codex
+  and Claude plugin-cache skill metadata for relevant donor capabilities.
+  `frontend-design`-style donors are preferred for distinctive interface
+  direction; `visualize`-style donors are preferred for maps, charts,
+  comparisons, and interactive artifacts. The scan is read-only and never
+  installs, copies, globally loads, or promotes a donor. Invoke a donor only
+  when it is available in the current session, and rewrite useful output into
+  Seascape repo truth and `DESIGN.md`.
 - Once Sawyer approves a design direction or mockup, that approved output
   becomes the implementation contract for the visual change. Codex should implement it
   closely, not reinterpret it, simplify it into a generic site pattern, or swap
@@ -70,7 +72,8 @@ That includes:
    implementation brief, not just verbal styling advice.
 5. Start a fresh lane with `npm run design:lane -- "<task>"` or
    `./scripts/design/codex-seascape-design "<task>"` when you want the
-   specialist and critic prompt prewired in one command.
+   specialist, critic, guide-family route, and local donor scan prewired in one
+   command. Use `npm run design:donors -- "<task>"` for a read-only route report.
 6. Wait for Sawyer approval when the design output changes layout,
    hierarchy, art direction, or component treatment. Do not implement a
    materially different visual direction after approval.

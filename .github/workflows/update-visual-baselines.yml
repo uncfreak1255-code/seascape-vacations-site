@@ -1,0 +1,151 @@
+name: Update Visual Baselines
+
+# Manual-only. Regenerates the committed Playwright visual baselines in the same
+# environment the Playwright Visual Gate runs in (macos-latest), then commits them
+# back to the target branch. Use this to re-baseline after an INTENTIONAL design
+# change, so the visual-regression gate compares against the new approved look.
+#
+# Never runs on push or pull_request — it only fires when a maintainer dispatches it.
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: "Branch to regenerate committed visual baselines on"
+        required: true
+        type: string
+      grep:
+        description: "Optional route slug to scope the re-baseline (blank = all routes)"
+        required: false
+        default: ""
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: update-visual-baselines-${{ github.event.inputs.branch }}
+  cancel-in-progress: false
+
+jobs:
+  generate-baselines:
+    # Must match the OS of the Playwright Visual Gate so regenerated pixels line up.
+    runs-on: macos-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    outputs:
+      generated_sha: ${{ steps.generated-ref.outputs.sha }}
+
+    steps:
+      - name: Validate target branch
+        env:
+          INPUT_BRANCH: ${{ inputs.branch }}
+        run: |
+          case "$INPUT_BRANCH" in
+            codex/*|claude/*) ;;
+            *)
+              echo "::error::Baseline updates may only target codex/* or claude/* task branches."
+              exit 1
+              ;;
+          esac
+
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ inputs.branch }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Capture generated branch SHA
+        id: generated-ref
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: ".nvmrc"
+          cache: "npm"
+
+      - run: npm ci
+      - run: npm run test:visual:install
+
+      - name: Regenerate baselines
+        env:
+          INPUT_GREP: ${{ inputs.grep }}
+        run: |
+          # Only re-run the screenshot spec so accessibility/availability specs
+          # cannot block a baseline refresh. Scope to one route when a slug is given.
+          PATTERN="matches the approved marketing baseline"
+          if [ -n "$INPUT_GREP" ]; then
+            PATTERN="$INPUT_GREP matches the approved marketing baseline"
+          fi
+          npm run test:visual:update -- --grep "$PATTERN"
+
+      - name: Upload regenerated baselines as artifact
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: updated-visual-baselines
+          path: tests/visual/__screenshots__/
+          if-no-files-found: warn
+
+  commit-baselines:
+    needs: generate-baselines
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+
+    steps:
+      - name: Validate target branch
+        env:
+          INPUT_BRANCH: ${{ inputs.branch }}
+        run: |
+          case "$INPUT_BRANCH" in
+            codex/*|claude/*) ;;
+            *)
+              echo "::error::Baseline updates may only target codex/* or claude/* task branches."
+              exit 1
+              ;;
+          esac
+
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ inputs.branch }}
+          fetch-depth: 0
+
+      - name: Verify branch did not move during generation
+        env:
+          GENERATED_SHA: ${{ needs.generate-baselines.outputs.generated_sha }}
+        run: |
+          CURRENT_SHA="$(git rev-parse HEAD)"
+          if [ "$CURRENT_SHA" != "$GENERATED_SHA" ]; then
+            echo "::error::Target branch moved during baseline generation. Rerun the workflow on the new branch tip."
+            echo "generated_sha=$GENERATED_SHA"
+            echo "current_sha=$CURRENT_SHA"
+            exit 1
+          fi
+
+      - uses: actions/download-artifact@v8
+        with:
+          name: updated-visual-baselines
+          path: /tmp/updated-visual-baselines
+
+      - name: Apply regenerated baseline artifact
+        run: |
+          rm -rf tests/visual/__screenshots__
+          mkdir -p tests/visual/__screenshots__
+          cp -R /tmp/updated-visual-baselines/. tests/visual/__screenshots__/
+
+      - name: Commit and push updated baselines
+        env:
+          INPUT_BRANCH: ${{ inputs.branch }}
+        run: |
+          git add tests/visual/__screenshots__
+          if git diff --cached --quiet -- tests/visual/__screenshots__; then
+            echo "No baseline changes to commit."
+            exit 0
+          fi
+          git config user.name "seascape-visual-baseline-bot"
+          git config user.email "noreply@anthropic.com"
+          git -c core.hooksPath=/dev/null commit -m "chore(visual): regenerate committed baselines via update-visual-baselines workflow"
+          git push origin "HEAD:$INPUT_BRANCH"

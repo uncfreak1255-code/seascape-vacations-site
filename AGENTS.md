@@ -125,12 +125,12 @@ For any PR that changes public copy in `src/`:
 - Codex should prepare the design packet first: repo/source truth, page goal,
   audience, `DESIGN.md` constraints, existing patterns, proof/copy boundaries,
   URLs or screenshots, implementation risks, and responsive requirements.
-- The specialist may optionally use donor lenses such as global
-  `claude-design`, `product-design:ideate`, `product-design:audit`,
-  `creative-production:moodboard-explorer`,
-  `creative-production:scene-explorer`, and
-  `creative-production:shot-explorer` when they materially raise the bar.
-  Those donors do not override repo truth.
+- The design launcher automatically classifies the page or guide family and
+  scans locally cached Codex and Claude plugin skill metadata for relevant
+  interface, product-design, imagery, map, chart, comparison, or interactive
+  artifact donors. Use a discovered donor only when the current session exposes
+  it as available. The scan never installs, copies, globally loads, or promotes
+  a donor, and donors never override repo truth.
 - If Sawyer approves a design direction or mockup, implement that approved
   direction closely. Do not reinterpret it into a different layout, art
   direction, hierarchy, CTA treatment, or component style. Any deviation must
@@ -144,7 +144,8 @@ For any PR that changes public copy in `src/`:
 - The required rendered QA loop for visual changes is the global `design-review` skill. Use it after implementation and before human review so the review surface is screenshots plus live route checks, not code alone.
 - Start a fresh repo-local design worktree with `npm run design:lane -- "<task>"`
   or `./scripts/design/codex-seascape-design "<task>"` when you want the
-  specialist/critic lane in one command.
+  specialist/critic lane, guide-family route, and local donor scan in one
+  command. Use `npm run design:donors -- "<task>"` for a read-only route report.
 - If an outside design tool introduces a new pattern or style direction, propose it as a `DESIGN.md` change first, then implement after that design law is explicit.
 
 ## Design System

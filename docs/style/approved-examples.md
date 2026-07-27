@@ -74,6 +74,28 @@ After:
 
 > See Bradenton homes near AMI.
 
+## Guest Planning Language
+
+- Approved pattern: translate internal funnel logic into the vacation a guest can picture.
+- Why it works: travelers think about quiet mornings, children, restaurants, pools, parking, and time near the beach. They do not think in `trip shapes`, `stay bases`, or `booking paths`.
+- Reuse when: a guide moves from destination advice into a relevant Seascape home or collection.
+
+Before:
+
+> Pick the trip shape, then open the right stay base.
+
+After:
+
+> Choose Anna Maria Island for quieter family days. Choose Siesta Key when famous sand, more restaurants, and livelier nights matter more.
+
+Before:
+
+> Named Sarasota-side option
+
+After:
+
+> Want Siesta beach days with your own pool?
+
 ## Source Notes
 
 - Approved pattern: proof belongs in a labeled source note below the hook.

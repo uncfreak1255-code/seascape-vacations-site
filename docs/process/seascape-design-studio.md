@@ -32,6 +32,10 @@ prewired:
 
 - `npm run design:lane -- "<task>"`
 - `./scripts/design/codex-seascape-design "<task>"`
+- `npm run design:donors -- "<task>"` to inspect the family route and local
+  donor matches without opening a worktree
+- add `--family comparison|field-journal|planning|destination-overview|site-page`
+  when automatic family detection needs an explicit override
 - add `--prepare` to create or inspect the lane without launching Codex
 - add `--allow-fallback` only when you intentionally want a plain git worktree
   lane after `agent-start` blocks on dirty review-worktree limits
@@ -57,16 +61,40 @@ Read these before filling the packet:
 but implementation waits until that rule is accepted and written into
 `DESIGN.md`.
 
-## Allowed Donor Tools
+## Guide Design Families
 
-Use these only when they materially improve the design pass:
+Guides share Seascape's design language, not a locked photo-and-copy template.
+The design lane chooses one family before concept work:
 
-- global `claude-design`
-- `product-design:ideate`
-- `product-design:audit`
-- `creative-production:moodboard-explorer`
-- `creative-production:scene-explorer`
-- `creative-production:shot-explorer`
+| Family | Visitor job | Flexible shape | Useful donor capability |
+| --- | --- | --- | --- |
+| Comparison guide | Choose between two places | Verdict-led comparison axes, flexible photography, optional map or travel-time artifact | Interface direction plus visual artifacts |
+| Field journal guide | Understand what a place or season feels like | Observation-led editorial pacing, photography, local callouts | Interface and imagery art direction |
+| Planning guide | Finish a trip-planning task | Checklist, sequence, itinerary, timeline, or map | Interface direction plus visual artifacts |
+| Destination overview guide | Orient to an area | Map-led browsing, varied photo rhythm, clear next paths | Interface, visual artifacts, and imagery |
+
+Keep brand feel, typography, palette discipline, spacing quality, CTA quality,
+mobile quality, trust/proof treatment, and booking handoff consistent. Let hero
+style, photography placement, section order, comparison/checklist/itinerary
+structure, and the memorable moment change when the guide job calls for it.
+
+## Local Donor Discovery
+
+The launcher scans locally cached Codex and Claude marketplace/plugin skill
+frontmatter on every run. This lets the lane discover a strong interface,
+product-design, imagery, map, chart, comparison, or interactive-artifact donor
+without Sawyer maintaining a global bundle.
+
+The scan is metadata-only and read-only. A discovered path is not proof that a
+skill is installed, callable, safe, or authoritative. Invoke a donor only when
+the current agent session exposes it as available; otherwise keep it as a
+candidate reference and do not claim it ran. Never auto-install, vendor, copy,
+or promote a donor from this scan.
+
+`frontend-design`-style donors are preferred for a distinctive concept pass.
+`visualize`-style donors are preferred when a map, chart, comparison artifact,
+or interactive explainer materially helps the visitor decide. Figma,
+standalone site builders, and imagery generators require an explicit task need.
 
 Figma is optional and donor-only unless Sawyer explicitly wants it for a task.
 

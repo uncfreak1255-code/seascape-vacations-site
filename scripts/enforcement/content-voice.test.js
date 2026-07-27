@@ -100,6 +100,15 @@ const GRAY_INTERNAL_COPY_PATTERNS = [
   /\bmissing information\b/i
 ];
 
+const READER_LANGUAGE_PATTERNS = [
+  /\btrip shapes?\b/i,
+  /\bstay[- ]bases?\b/i,
+  /\bbooking paths?\b/i,
+  /\bnamed\s+[^.!?]{1,40}\b(?:option|home)\b/i,
+  /\bright stay\b/i,
+  /\bresearch mode\b/i
+];
+
 const INSTRUCTION_TEMPLATE_PATTERNS = [
   /\b(?:use|read|open|choose|pick)\s+(?:this|it|this page)\s+(?:when|if|after|before)\b/i,
   /\bdo not\s+use\s+this\s+page\s+if\b/i,
@@ -162,6 +171,71 @@ function normalizeVisibleText(source) {
     .trim();
 }
 
+function decodeJavaScriptString(value) {
+  return value
+    .replace(/\\n/g, " ")
+    .replace(/\\(["'`\\])/g, "$1")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function extractJavaScriptStrings(source) {
+  const patterns = [
+    /"((?:\\.|[^"\\])*)"/g,
+    /'((?:\\.|[^'\\])*)'/g,
+    /`((?:\\.|[^`\\])*)`/g
+  ];
+
+  return patterns
+    .flatMap((pattern) =>
+      Array.from(source.matchAll(pattern), (match) => decodeJavaScriptString(match[1]))
+    )
+    .filter(Boolean);
+}
+
+function extractScriptGeneratedReaderCopy(source) {
+  const scriptBodies = Array.from(
+    source.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/gi),
+    (match) => match[1]
+  );
+
+  return scriptBodies.flatMap(extractJavaScriptStrings).join(" ");
+}
+
+function extractComponentGeneratedReaderCopy(source) {
+  const componentExpressions = Array.from(
+    source.matchAll(/\{\{([\s\S]*?)\}\}/g),
+    (match) => match[1]
+  );
+
+  return componentExpressions.flatMap(extractJavaScriptStrings).join(" ");
+}
+
+function extractReaderSurfaceText(source) {
+  return [
+    normalizeVisibleText(source),
+    extractScriptGeneratedReaderCopy(source),
+    extractComponentGeneratedReaderCopy(source)
+  ]
+    .filter(Boolean)
+    .join(" ");
+}
+
+function lintReaderLanguage(relativePath, text, scopeLabel) {
+  const violations = [];
+
+  for (const pattern of READER_LANGUAGE_PATTERNS) {
+    const match = text.match(pattern);
+    if (match) {
+      violations.push(
+        `${relativePath}: ${scopeLabel} contains internal planning language "${match[0]}"`
+      );
+    }
+  }
+
+  return violations;
+}
+
 function readBase(relativePath) {
   try {
     return execSync(`git show origin/main:${relativePath}`, {
@@ -180,7 +254,48 @@ function hasVisibleReaderCopyDiff(relativePath, source) {
     return true;
   }
 
-  return normalizeVisibleText(baseSource) !== normalizeVisibleText(source);
+  return extractReaderSurfaceText(baseSource) !== extractReaderSurfaceText(source);
+}
+
+function getBuiltPublicContentPath(relativePath, source) {
+  const route = getCurrentRoute(relativePath, source).split(/[?#]/)[0];
+  const normalizedRoute = route.replace(/^\/+|\/+$/g, "");
+
+  if (!normalizedRoute) {
+    return path.join("_site", "index.html");
+  }
+
+  if (normalizedRoute.endsWith(".html")) {
+    return path.join("_site", normalizedRoute);
+  }
+
+  return path.join("_site", normalizedRoute, "index.html");
+}
+
+function lintRenderedPublicContent(relativePath, source) {
+  const builtRelativePath = getBuiltPublicContentPath(relativePath, source);
+  const builtAbsolutePath = path.join(projectRoot, builtRelativePath);
+
+  if (!fs.existsSync(builtAbsolutePath)) {
+    return [`${relativePath}: rendered output is missing at ${builtRelativePath}`];
+  }
+
+  return lintReaderLanguage(
+    relativePath,
+    normalizeVisibleText(fs.readFileSync(builtAbsolutePath, "utf8")),
+    "rendered reader copy"
+  );
+}
+
+function ensureRenderedOutputForContentLint() {
+  if (process.env.npm_lifecycle_event !== "lint:content") {
+    return;
+  }
+
+  execSync("node scripts/enforcement/build-site.js", {
+    cwd: projectRoot,
+    stdio: "inherit"
+  });
 }
 
 function listFilesRecursive(relativeDir) {
@@ -477,10 +592,23 @@ function lintPublicContent(relativePath, source, requiredLinks, options = {}) {
   const violations = [];
   const shouldCheckRequiredLinks = options.checkRequiredLinks !== false;
   const visibleText = normalizeVisibleText(source);
+  const scriptGeneratedReaderCopy = extractScriptGeneratedReaderCopy(source);
+  const componentGeneratedReaderCopy = extractComponentGeneratedReaderCopy(source);
   const firstParagraph = getFirstParagraphText(source);
   const currentRoute = getCurrentRoute(relativePath, source);
 
   violations.push(...lintInstructionTemplateSource(relativePath, source));
+  violations.push(...lintReaderLanguage(relativePath, visibleText, "reader copy"));
+  violations.push(
+    ...lintReaderLanguage(relativePath, scriptGeneratedReaderCopy, "JavaScript-generated reader copy")
+  );
+  violations.push(
+    ...lintReaderLanguage(
+      relativePath,
+      componentGeneratedReaderCopy,
+      "component-generated reader copy"
+    )
+  );
 
   for (const pattern of BANNED_GENERIC_PATTERNS) {
     const match = visibleText.match(pattern);
@@ -588,19 +716,60 @@ test("repo instructions require the content gate and lint command for content PR
   assertSkillsInOrder(reviewChecklist, "before user review checklist");
 });
 
-test("workflow docs and agent cards treat instruction-template public copy as a blocker", () => {
-  const gateDoc = read(path.join("docs", "process", "content-quality-gate.md"));
-  const reviewChecklist = read(path.join("docs", "process", "before-user-review-checklist.md"));
-  const pageBuilder = read(path.join(".claude", "agents", "page-builder.md"));
-  const voiceEditor = read(path.join(".claude", "agents", "voice-editor.md"));
-  const releaseGate = read(path.join(".claude", "agents", "release-gate.md"));
+test("reader-language gate rejects static, JavaScript, arbitrary object-key, component, and rendered bypasses", () => {
+  const failingSample = `
+    <main>
+      <h1>Pick the trip shape before the stay base.</h1>
+      <p>Follow the booking path to our named Sarasota-side option.</p>
+      <a href="/guides/">Browse guides</a>
+      <a href="/properties/">Browse homes</a>
+    </main>
+    <script>
+      const choice = { description: "Open the right stay in research mode." };
+      document.querySelector("[data-guide-result]").textContent = "Choose the booking path";
+    </script>
+    {{ guideDecisionCard({
+      title: "Choose the stay base",
+      copy: "Follow the booking path"
+    }) }}
+  `;
 
-  assert.equal(gateDoc.includes("Use this when"), true);
-  assert.equal(reviewChecklist.includes("Use this when"), true);
-  assert.equal(pageBuilder.includes("session prompts"), true);
-  assert.equal(voiceEditor.includes("Use this when"), true);
-  assert.equal(releaseGate.includes("npm run lint:content"), true);
-  assert.equal(releaseGate.includes("Voice Editor pass"), true);
+  const violations = lintPublicContent("src/guides/example-guide.html", failingSample, [
+    "/guides/",
+    "/properties/"
+  ]);
+
+  assert.equal(violations.some((entry) => entry.includes("reader copy") && entry.includes("trip shape")), true);
+  assert.equal(violations.some((entry) => entry.includes("JavaScript-generated reader copy")), true);
+  assert.equal(violations.some((entry) => entry.includes("component-generated reader copy")), true);
+
+  const renderedViolations = lintReaderLanguage(
+    "src/guides/example-guide.html",
+    normalizeVisibleText("<main><p>Choose the trip shape before booking.</p></main>"),
+    "rendered reader copy"
+  );
+  assert.equal(renderedViolations.some((entry) => entry.includes("rendered reader copy")), true);
+});
+
+test("AMI versus Siesta guide places the exact Sarasota Luxe availability action before the long comparison", () => {
+  const source = read(path.join("src", "guides", "anna-maria-island-vs-siesta-key.html"));
+  const sarasotaAction = source.indexOf('href="/properties/sarasota-luxe/#check-availability"');
+  const longComparison = source.indexOf("data-guide-long-comparison");
+
+  assert.ok(sarasotaAction >= 0, "guide should link directly to Sarasota Luxe availability");
+  assert.ok(longComparison >= 0, "guide should mark its detailed comparison without fixing its design or heading copy");
+  assert.ok(sarasotaAction < longComparison, "Sarasota Luxe action should appear before the long comparison");
+});
+
+test("AMI versus Siesta guide is free of internal planning language across reader surfaces", () => {
+  const guidePath = path.join("src", "guides", "anna-maria-island-vs-siesta-key.html");
+  const violations = lintPublicContent(guidePath, read(guidePath), [
+    "/stays/anna-maria-island-vacation-rentals/",
+    "/stays/siesta-key-area-vacation-rentals/",
+    "/properties/sarasota-luxe/#check-availability"
+  ]).filter((entry) => entry.includes("internal planning language"));
+
+  assert.deepEqual(violations, []);
 });
 
 test("approved owner research sample passes the new public-copy guardrails", () => {
@@ -1008,6 +1177,8 @@ test("repo public-copy source and data surfaces do not ship instruction-template
 });
 
 test("changed public content and source-backed copy files require active briefs and pass gate checks", () => {
+  ensureRenderedOutputForContentLint();
+
   const changedFiles = getChangedFiles();
   const changedPublicContentFiles = changedFiles.filter(isPublicContentFile);
   const seoPagesPath = path.join("src", "_data", "seoPages.json");
@@ -1068,6 +1239,7 @@ test("changed public content and source-backed copy files require active briefs 
         requiredLinkMap.get(relativePath) || defaultRequiredLinks
       )
     );
+    violations.push(...lintRenderedPublicContent(relativePath, source));
   }
 
   if (changedSeoPageCopy) {
