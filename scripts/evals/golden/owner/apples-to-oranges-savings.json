@@ -1,0 +1,7 @@
+{
+  "name": "owner-apples-to-oranges-savings",
+  "lane": "owner",
+  "sourceCite": "synthetic regression from the retired platform-versus-processing comparison",
+  "copy": "Airbnb host fees cost 13.4% while direct payment costs only 2.9%, so moving bookings direct automatically creates owner savings.",
+  "expect": { "band": "low", "maxOverall": 25 }
+}

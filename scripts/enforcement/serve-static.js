@@ -111,6 +111,15 @@ function createRequestHandler(root) {
     const filePath = resolveFile(root, pathname);
 
     if (!filePath) {
+      // Serve the site's branded 404 page (production parity with Netlify's
+      // /404.html convention) so preview/proof tooling exercises the real
+      // dead-URL experience; fall back to plain text if it is not built.
+      const notFoundPage = resolveFile(root, "/404.html");
+      if (notFoundPage) {
+        response.writeHead(404, { "content-type": "text/html; charset=utf-8" });
+        response.end(fs.readFileSync(notFoundPage));
+        return;
+      }
       response.writeHead(404, { "content-type": "text/plain; charset=utf-8" });
       response.end("Not found");
       return;

@@ -21,12 +21,12 @@ test("direct-booking event smoke is exposed as an operator command", () => {
   );
 });
 
-test("direct-booking event smoke runs inside the release safety flow", () => {
+test("direct-booking event smoke runs in the post-deploy live-smoke flow", () => {
   const releaseGate = fs.readFileSync(path.join(projectRoot, "scripts", "enforcement", "verify-release.js"), "utf8");
+  const liveSmoke = fs.readFileSync(path.join(projectRoot, ".github", "workflows", "live-smoke.yml"), "utf8");
 
-  assert.match(releaseGate, /label:\s*"verify:direct-booking-events"/);
-  assert.match(releaseGate, /command:\s*"npm"/);
-  assert.match(releaseGate, /args:\s*\["run", "verify:direct-booking-events"\]/);
+  assert.doesNotMatch(releaseGate, /verify:direct-booking-events/);
+  assert.match(liveSmoke, /run:\s*npm run verify:direct-booking-events/);
 });
 
 test("direct-booking event smoke supports optional popup enforcement", () => {

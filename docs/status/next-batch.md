@@ -16,16 +16,16 @@
 
 ## Latest Execution Read
 
-Run date: 2026-06-29.
+Run date: 2026-07-14.
 
 The targeted joined operator read was executed in `seascape-analytics` and
 rendered here from its machine-readable next-batch decision receipt.
 
-- Requested last-7-complete-day window: 2026-06-21 to 2026-06-27.
-- Latest BigQuery GSC `data_date`: 2026-06-27.
+- Requested last-7-complete-day window: 2026-07-06 to 2026-07-12.
+- Latest BigQuery GSC `data_date`: 2026-07-12.
 - Site work gate: `clear` - joined GSC + GA4 read covers the requested window.
 - Reread status: `fresh but below threshold`.
-- Concrete next move: owner cluster cannot clear by waiting - run this week's outbound batch (see the Owner Outbound Escalation section in docs/status/next-batch.md). A test send is not a lead.
+- Concrete next move: owner cluster cannot clear by waiting - qualify one owner-direct, permissioned signal (see the Owner-Direct Intake Escalation section in seascape-vacations-site/docs/status/next-batch.md and seascape-vacations-site/docs/status/owner-direct-intake-policy.md). Do not use Airbnb or Vrbo host messaging; qualification is not a lead, named candidate state does not belong in the public site repo, and any one-to-one message still requires Sawyer's separate approval.
 - Report recommendation: `hold-and-reread`.
 - Reason: No cluster cleared the bar for a stronger next branch than holding for more readback.
 
@@ -33,24 +33,25 @@ Cluster read from the analytics receipt:
 
 | cluster | pages | gsc_clicks | gsc_impressions | gsc_ctr | gsc_position | ga4_sessions |
 |---|---:|---:|---:|---:|---:|---:|
-| brand | 1 | 9 | 302 | 2.98% | 5.87 | 66 |
-| catalog | 1 | 1 | 16 | 6.25% | 14.38 | 38 |
-| guide_support | 1 | 0 | 351 | 0.00% | 6.93 | 0 |
-| guide_winners | 4 | 62 | 5729 | 1.08% | 4.28 | 127 |
-| owner_hub | 1 | 0 | 19 | 0.00% | 5.74 | 18 |
-| owner_money | 4 | 0 | 44 | 0.00% | 5.02 | 0 |
-| owner_support | 1 | 0 | 16 | 0.00% | 8.94 | 0 |
-| property_pages | 1 | 0 | 1 | 0.00% | 2.00 | 2 |
-| stay_money | 2 | 0 | 5 | 0.00% | 3.20 | 12 |
-| stay_support | 2 | 0 | 139 | 0.00% | 53.56 | 2 |
+| brand | 1 | 6 | 215 | 2.79% | 8.53 | 73 |
+| catalog | 1 | 1 | 24 | 4.17% | 25.79 | 27 |
+| guide_support | 1 | 1 | 1037 | 0.10% | 6.76 | 4 |
+| guide_winners | 4 | 81 | 6442 | 1.26% | 4.16 | 135 |
+| owner_hub | 1 | 0 | 28 | 0.00% | 10.25 | 2 |
+| owner_money | 4 | 0 | 17 | 0.00% | 7.41 | 3 |
+| owner_support | 1 | 0 | 1 | 0.00% | 10.00 | 1 |
+| property_pages | 1 | 0 | 1 | 0.00% | 3.00 | 2 |
+| stay_money | 2 | 0 | 3 | 0.00% | 9.00 | 17 |
+| stay_support | 2 | 0 | 192 | 0.00% | 56.85 | 8 |
 
 SEO queue read from the analytics receipt:
 
 | queue_bucket | pages | gsc_clicks | gsc_impressions | ga4_sessions |
 |---|---:|---:|---:|---:|
-| too thin to call | 11 | 1 | 101 | 71 |
-| transfer/CRO issue | 1 | 7 | 759 | 27 |
-| wait | 6 | 64 | 5762 | 167 |
+| measurement issue | 1 | 56 | 2498 | 74 |
+| too thin to call | 11 | 1 | 74 | 58 |
+| transfer/CRO issue | 1 | 19 | 2255 | 38 |
+| wait | 5 | 13 | 3133 | 102 |
 
 Do not open a new owner, stay, guide, GEO, or SEO expansion branch from this read.
 If a tracked winner or money page has regressed, use `docs/process/ranking-regression-rescue.md` for a bounded rescue brief instead of waiting passively.
@@ -91,7 +92,7 @@ If a tracked winner or money page has regressed, use `docs/process/ranking-regre
 10. if any tracked page has GSC impressions `< 100` in the 7-day window, treat that page as too thin to call and do not let it drive the branch choice
 11. keep Phase 4 and other entity-expansion work frozen unless the measured gates above move
 
-## Owner Outbound Escalation
+## Owner-Direct Intake Escalation
 
 The owner cluster is structurally sub-gate. Owner-money impressions sit far
 below the 1000-impression gate in `## Likely Priorities`, and that gate cannot
@@ -99,21 +100,25 @@ clear by waiting — re-reading the same deadlocked cluster only produces anothe
 hold. When the synced `## Latest Execution Read` shows the owner cluster
 sub-gate in the current window, the report keeps `hold-and-reread` and the
 reread status stays below threshold; it never moves to `open next batch` on the
-strength of an outbound send. The on-page loop has no lever here, so the
-escalation is to work the owner lane off-page instead of waiting for an
-impression number that is not coming.
+strength of owner intake. The on-page loop has no lever here, so the next useful
+step is to qualify a real owner-direct, permissioned signal instead of waiting
+for an impression number that is not coming or using an OTA host-message path.
 
 When this fires, the founder move is:
 
-- run this week's owner outbound batch instead of re-reading for more owner
-  impressions — the wait state is the deadlock, not the fix
-- treat a send as measurement only: a test send, a labeled send, or a logged
-  "SENT" row is not a lead and does not move any owner gate or demand claim
+- qualify one signal from a referral, owner form, invited public contact path,
+  permissioned networking connection, or direct inbound owner request
+- apply `docs/status/owner-direct-intake-policy.md` and return a founder
+  decision card for the current review; do not persist named candidate,
+  receipt, fit, or contact-channel state in this public repository
+- do not run an Airbnb, Vrbo, or other OTA outreach batch, and do not recreate
+  drafts or follow-ups from the archived platform research
+- treat a qualification decision as intake only: it is not a lead, does not move an
+  owner gate, and does not authorize a message
+- require Sawyer's separate approval before preparing any named, one-to-one
+  next step
 - count only a real, unlabeled reply that meets the register Validation
   Standard as owner demand
-- log the batch and any replies in the owner outbound runbook
-  (`docs/status/owner-outbound.md`, the Card 3 outbound home from
-  `docs/plans/2026-06-13-demand-os-handoff.md`), not in this reread surface
 
 This section is hand-authored and lives after `## Likely Priorities` on
 purpose: `scripts/enforcement/sync-next-batch-from-analytics-receipt.js` only

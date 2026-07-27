@@ -87,13 +87,19 @@ test("filterByLane: owner lane includes data-backed seoPages copy", () => {
   const files = [
     "src/_data/seoPages.json",
     "src/property-management/property-management.njk",
+    "src/research/owner-fee-revenue-leak-benchmark-2026.njk",
     "src/stays/stays.njk",
   ];
-  const globs = ["src/property-management/**/*.njk", "src/_data/seoPages.json"];
+  const globs = [
+    "src/property-management/**/*.njk",
+    "src/research/owner-fee-revenue-leak-benchmark-2026.njk",
+    "src/_data/seoPages.json"
+  ];
   const result = filterByLane(files, globs);
   assert.deepEqual(result, [
     "src/_data/seoPages.json",
     "src/property-management/property-management.njk",
+    "src/research/owner-fee-revenue-leak-benchmark-2026.njk",
   ]);
 });
 

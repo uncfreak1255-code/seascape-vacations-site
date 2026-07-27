@@ -6,6 +6,7 @@ const assert = require("node:assert/strict");
 const projectRoot = path.resolve(__dirname, "..", "..");
 const ownerData = require(path.join(projectRoot, "src", "_data", "seoPages.json")).owner;
 const ownerProofAssets = require(path.join(projectRoot, "src", "_data", "ownerProofAssets.json"));
+const propertiesFallback = require(path.join(projectRoot, "src", "_data", "properties-fallback.json"));
 const {
   assertRequiredHeadTags,
   readRouteSource
@@ -60,11 +61,26 @@ test("rainy-day guide answers current Sarasota and Bradenton rain intent", () =>
   assert.match(source, /href="\/guides\/anna-maria-island-vs-siesta-key\/"/);
 });
 
-test("winner guide snippets stay decision-forward without body rewrites", () => {
+test("Bradenton beach guide uses the active Bradenton Pool Home image", () => {
+  const source = readSource("src", "guides", "bradenton-vs-sarasota-beaches", "index.html");
+  const property = propertiesFallback.find((entry) => entry.slug === "bradenton-pool-home");
+
+  assert.ok(property, "Bradenton Pool Home should exist in canonical property truth");
+  const canonicalImageBase = property.image.split("?")[0];
+
+  assert.ok(
+    source.includes(`src="${canonicalImageBase}?`),
+    "the guide card should use the active canonical property image"
+  );
+  assert.equal(source.includes("51916-135879-"), false, "the guide should not retain the retired listing image");
+});
+
+test("winner guide metadata and conversion markers stay decision-forward", () => {
   const amiVsSiesta = readSource("src", "guides", "anna-maria-island-vs-siesta-key.html");
   const bradentonVsSarasota = readSource("src", "guides", "bradenton-vs-sarasota.html");
   const amiContract = readSourceContract("src", "guides", "anna-maria-island-vs-siesta-key.html");
   const bradentonContract = readSourceContract("src", "guides", "bradenton-vs-sarasota.html");
+  const amiWebPage = amiContract.jsonLdObjects.find((entry) => entry["@type"] === "WebPage");
   const bradentonWebPage = bradentonContract.jsonLdObjects.find((entry) => entry["@type"] === "WebPage");
 
   assert.equal(amiContract.head.title, "Anna Maria Island vs Siesta Key: Where to Stay");
@@ -73,9 +89,10 @@ test("winner guide snippets stay decision-forward without body rewrites", () => 
     "Compare AMI, Bradenton near AMI beaches, and Siesta Key area stays after choosing between quieter beach days and famous quartz sand."
   );
   assert.equal(amiContract.head.ogTitle, "Anna Maria Island vs Siesta Key: Where to Stay");
+  assert.equal(amiWebPage?.name, amiContract.head.title);
   assert.match(
     amiVsSiesta,
-    /<h1>Anna Maria Island vs Siesta Key<br>Beaches, Crowds, Parking, and Where to Stay<\/h1>/
+    /<h1>Anna Maria Island vs Siesta Key<br><span class="amivs-h1-sub">Beaches, Crowds, Parking, and Where to Stay<\/span><\/h1>/
   );
   assert.match(
     amiVsSiesta,
@@ -111,8 +128,9 @@ test("winner guide snippets stay decision-forward without body rewrites", () => 
   );
   assert.match(
     amiVsSiesta,
-    /primaryCtaLabel: "Compare AMI Stay Bases"/
+    /primaryCtaLabel: "Compare AMI Homes"/
   );
+  assert.equal(amiVsSiesta.includes('primaryCtaLabel: "Compare AMI Stay Bases"'), false);
 
   assert.equal(bradentonContract.head.title, "Bradenton vs Sarasota for Vacation: Which Base Wins?");
   assert.equal(
@@ -161,6 +179,37 @@ test("homepage and about page do not ship invented review totals or stale pricin
   );
 });
 
+test("homepage entity schema keeps Seascape inventory in Bradenton and Sarasota", () => {
+  const homepage = readSource("src", "index.njk");
+  const schemaBlocks = Array.from(
+    homepage.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g),
+    (match) => match[1]
+  );
+  const localBusiness = schemaBlocks.find((block) => block.includes('"@type": "LocalBusiness"'));
+  const vacationRental = schemaBlocks.find((block) => block.includes('"@type": "VacationRental"'));
+
+  assert.ok(localBusiness, "homepage should keep its LocalBusiness schema");
+  assert.ok(vacationRental, "homepage should keep its VacationRental schema");
+  assert.match(localBusiness, /"description": "\{\{ site\.description \}\}"/);
+  assert.match(vacationRental, /"description": "\{\{ site\.description \}\}"/);
+
+  for (const city of ["Bradenton", "Sarasota"]) {
+    assert.match(
+      localBusiness,
+      new RegExp(`\\{"@type": "City", "name": "${city}"\\}`),
+      `LocalBusiness areaServed should include ${city}`
+    );
+  }
+
+  for (const nearbyBeachMarket of ["Anna Maria Island", "Siesta Key", "Longboat Key"]) {
+    assert.equal(
+      localBusiness.includes(`{"@type": "City", "name": "${nearbyBeachMarket}"}`),
+      false,
+      `${nearbyBeachMarket} should not be represented as a Seascape inventory city`
+    );
+  }
+});
+
 test("priority owner money-page metadata stays non-empty and query-aligned", () => {
   const feePage = ownerData.find((entry) => entry.slug === "vacation-rental-management-fees-florida");
   const licensingPage = ownerData.find((entry) => entry.slug === "vacation-rental-licensing-florida");
@@ -194,7 +243,7 @@ test("priority owner money-page metadata stays non-empty and query-aligned", () 
   assert.match(vrboPage.description, /Florida/i);
 });
 
-test("owner proof benchmark is promoted as the conquest asset", () => {
+test("owner fee guide is promoted with its current reader-facing label", () => {
   const template = readSource("src", "property-management", "property-management.njk");
   const llms = readSource("src", "llms.txt");
   const benchmark = ownerProofAssets["gulf-coast-owner-benchmark-2026"];
@@ -210,8 +259,9 @@ test("owner proof benchmark is promoted as the conquest asset", () => {
   );
   assert.match(
     llms,
-    /\[Owner Fee \+ Revenue Leak Benchmark\]\(https:\/\/seascape-vacations\.com\/research\/owner-fee-revenue-leak-benchmark-2026\/\)/
+    /\[Owner Fee Comparison Guide\]\(https:\/\/seascape-vacations\.com\/research\/owner-fee-revenue-leak-benchmark-2026\/\)/
   );
+  assert.doesNotMatch(llms, /Revenue Leak Benchmark/);
   assert.doesNotMatch(
     llms,
     /\[How Seascape Protects Owner Revenue\]\(https:\/\/seascape-vacations\.com\/research\/how-seascape-protects-owner-net-2026\/\)/

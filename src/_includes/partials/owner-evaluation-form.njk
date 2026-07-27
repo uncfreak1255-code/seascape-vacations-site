@@ -42,7 +42,7 @@
     {% if hasFormCard %}
     <ul class="owner-form-proof-list">
       <li>{{ options.formIntro or "The fastest first pass comes from two things: the listing URL or address, and one line on what feels off. An owner statement or fee quote makes the review sharper." }}</li>
-      <li>{{ options.proofNote or "Source note: The review uses the evidence available. Missing statements, calendars, guest reviews, or fee terms stay marked unknown until you send them." }}</li>
+      <li>{{ options.proofNote or "Source note: Send what you have. We will tell you if a statement, booking calendar, guest review, or fee quote would make the review more useful." }}</li>
       <li><strong>{{ options.detailLabel or "What the review checks" }}</strong>{{ options.detailCopy or "The private revenue review shows what we can verify, what looks expensive, and what still needs a document before you decide whether to stay put, fix the setup, or talk about a transition." }}</li>
       <li>{{ options.confirmation or "Got it. Seascape will read what you send and return the clearest next step: stay put, fix the current setup, or talk about a transition." }}</li>
     </ul>
@@ -96,7 +96,7 @@
         <label class="owner-form-field owner-form-field--wide owner-form-field--file">
           <span>Upload owner statement, optional</span>
           <input type="file" name="owner_statement" accept="{{ options.fileAccept or '.pdf,.csv,.xls,.xlsx,.png,.jpg,.jpeg,.webp' }}">
-          <small class="owner-form-help">{{ options.fileHelp or "PDF, spreadsheet, or screenshot. Missing statements, calendars, guest reviews, or fee terms stay unknown until you send them." }}</small>
+          <small class="owner-form-help">{{ options.fileHelp or "PDF, spreadsheet, or screenshot. You can submit the form without an upload." }}</small>
         </label>
         {% endif %}
       </div>

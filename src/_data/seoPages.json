@@ -3706,14 +3706,14 @@
       "proofSubtitle": "AMI homes can look healthy on the surface while booking costs, early discounting, and soft local execution keep the owner behind.",
       "proofStats": [
         {
-          "value": "13.4%",
-          "label": "Observed Airbnb host fee",
-          "detail": "Average effective host-fee cost inside the current Seascape operating set."
+          "value": "15.5%",
+          "label": "Published Airbnb host fee",
+          "detail": "Airbnb says most listings on its single-fee structure pay 15.5%; check its pricing page for current terms."
         },
         {
-          "value": "2.9%",
-          "label": "Direct payment cost",
-          "detail": "Approximate payment-processing cost when a booking shifts off marketplace commissions."
+          "value": "2.9% + 30¢",
+          "label": "Published Stripe card price",
+          "detail": "Stripe's standard domestic online-card price covers payment processing only."
         },
         {
           "value": "Tailored",
@@ -3721,9 +3721,9 @@
           "detail": "Structured around property fit, revenue potential, location, and operating load instead of one flat fee."
         },
         {
-          "value": "$119,923",
-          "label": "Direct booking revenue",
-          "detail": "Revenue already shifted away from marketplace commissions and back toward owner economics."
+          "value": "In writing",
+          "label": "Fee basis",
+          "detail": "The agreement should name the revenue base, included services, and separate charges."
         }
       ],
       "switchTag": "What Starts Breaking",
@@ -3806,7 +3806,7 @@
       "primaryCta": "Request Your Revenue Review",
       "ctaSubcopy": "We compare premium-week pricing, booking costs, and island execution before you hand another season to the wrong manager.",
       "ctaNote": "Send the address or listing URL. We will tell you whether the current operator is protecting island margin or hiding behind demand.",
-      "geoIntro": "<p>Anna Maria Island owners usually do not have a demand problem. They have a margin-protection problem. Premium weeks get discounted too early, marketplace dependence stays too high, and the owner statement hides how much money is disappearing through booking costs and soft execution.</p><p>Seascape's current Gulf Coast operating model has already shifted <strong>$119,923 in revenue into direct bookings</strong>, which matters because the fee gap between marketplace cost and direct payment cost is real. On AMI, the useful question is not whether the island can book. It is whether your manager is protecting premium demand, direct bookings, and guest standards well enough to justify the fee structure.</p><p>We do not use one flat management fee for every island home. The structure depends on revenue potential, location, home quality, and how much operational work the property requires. The review shows whether the current manager is treating your home like premium inventory or just moving it like another listing.</p>",
+      "geoIntro": "<p>Anna Maria Island owners usually do not have a demand problem. They have a margin-protection problem. Premium weeks get discounted too early, marketplace dependence stays too high, and the owner statement hides how much money is disappearing through booking costs and soft execution.</p><p>Use the fee guide to separate Airbnb's published host fee, card processing, and the property-specific management agreement. A lower processing rate does not by itself create owner savings.</p><p>We do not use one flat management fee for every island home. The structure depends on revenue potential, location, home quality, and how much operational work the property requires. The review shows whether the current manager is treating your home like premium inventory or just moving it like another listing.</p>",
       "faqs": [
         {
           "q": "What usually hurts owner income most on Anna Maria Island?",
@@ -3861,14 +3861,14 @@
       "proofSubtitle": "Bradenton pool homes can stay busy enough to hide soft pricing, expensive booking channels, and operational slippage.",
       "proofStats": [
         {
-          "value": "13.4%",
-          "label": "Observed Airbnb host fee",
-          "detail": "Average effective host-fee cost inside the current Seascape operating set."
+          "value": "15.5%",
+          "label": "Published Airbnb host fee",
+          "detail": "Airbnb says most listings on its single-fee structure pay 15.5%; check its pricing page for current terms."
         },
         {
-          "value": "2.9%",
-          "label": "Direct payment cost",
-          "detail": "Approximate payment-processing cost when a booking shifts off marketplace commissions."
+          "value": "2.9% + 30¢",
+          "label": "Published Stripe card price",
+          "detail": "Stripe's standard domestic online-card price covers payment processing only."
         },
         {
           "value": "Tailored",
@@ -3876,9 +3876,9 @@
           "detail": "Structured around property fit, revenue potential, location, and how much operational work the property requires."
         },
         {
-          "value": "3-4x",
-          "label": "Market-median revenue per home",
-          "detail": "Internal Seascape benchmark versus local market median estimates in the operating model."
+          "value": "Local",
+          "label": "Operating coverage",
+          "detail": "Pricing, guest support, and property operations are evaluated against the home's Bradenton market and workload."
         }
       ],
       "switchTag": "What Starts Breaking",
@@ -3961,7 +3961,7 @@
       "primaryCta": "Request Your Revenue Review",
       "ctaSubcopy": "We show where the current setup is flattening your nightly rates, overpaying for channels, or getting lazy on execution before you switch.",
       "ctaNote": "Send the address or listing URL if you want a clear read on positioning, booking costs, and whether the home is being sold like generic beach overflow.",
-      "geoIntro": "<p>Bradenton owners get told the market is easy because demand is broad. That is exactly how margin problems start. Family and group homes can stay occupied while still under-earning if the home is positioned generically, peak weekends are priced too softly, or every booking still arrives through high-fee channels.</p><p>Seascape's current Gulf Coast operating model has already shifted <strong>$119,923 in revenue into direct bookings</strong>, which matters because the difference between marketplace cost and direct payment cost is not theoretical. For Bradenton owners, the useful question is not whether a manager can keep the calendar moving. It is whether the manager can protect owner income after management fees, booking channels, and operational misses are counted.</p><p>We do not use one flat management fee for every home. The structure depends on revenue potential, location, home quality, and how much operational work the property requires. The review shows whether the current setup is actually built for group-heavy Bradenton demand or just getting by on base market traffic.</p>",
+      "geoIntro": "<p>Bradenton owners get told the market is easy because demand is broad. That is exactly how margin problems start. Family and group homes can stay occupied while still under-earning if the home is positioned generically, peak weekends are priced too softly, or every booking still arrives through high-fee channels.</p><p>Use the fee guide to separate Airbnb's published host fee, card processing, and the property-specific management agreement. A lower processing rate does not by itself create owner savings.</p><p>We do not use one flat management fee for every home. The structure depends on revenue potential, location, home quality, and how much operational work the property requires. The review shows whether the current setup is actually built for group-heavy Bradenton demand or just getting by on base market traffic.</p>",
       "faqs": [
         {
           "q": "Why do some Bradenton homes underperform even when the market looks busy?",
@@ -4011,24 +4011,24 @@
       ],
       "proofStats": [
         {
-          "value": "$1.4M",
-          "label": "Annual portfolio rental revenue",
-          "detail": "Current Seascape revenue across five active Gulf Coast homes."
+          "value": "Property-specific",
+          "label": "Management quote",
+          "detail": "Pricing follows the services and fee basis in the signed agreement."
         },
         {
-          "value": "$119,923",
-          "label": "Direct booking revenue",
-          "detail": "Revenue already routed through lower-cost direct channels instead of pure marketplace dependence."
+          "value": "In writing",
+          "label": "Fee basis",
+          "detail": "The agreement should name the revenue base, included services, and separate charges."
         },
         {
-          "value": "13.4%",
-          "label": "Observed Airbnb host fee",
-          "detail": "Average effective Airbnb host-fee cost in the current Seascape operating data."
+          "value": "15.5%",
+          "label": "Published Airbnb host fee",
+          "detail": "Airbnb says most listings on its single-fee structure pay 15.5%; check its pricing page for current terms."
         },
         {
-          "value": "2.9%",
-          "label": "Direct payment cost",
-          "detail": "Approximate payment-processing cost on direct bookings, showing how much booking channels can change owner margin."
+          "value": "2.9% + 30¢",
+          "label": "Published Stripe card price",
+          "detail": "Stripe's standard domestic online-card price covers payment processing only."
         }
       ],
       "switchReasons": [
@@ -4085,7 +4085,7 @@
         },
         {
           "question": "Can direct bookings really matter at my scale?",
-          "answer": "Yes. The gap between roughly 13.4% Airbnb host fee and 2.9% direct payment cost is too large to ignore. Even modest channel shifts create real owner savings."
+          "answer": "Direct booking can matter for the guest relationship and repeat business, but a card-processing rate is not an all-in direct-booking cost and does not by itself prove a higher owner payout."
         },
         {
           "question": "Should I be optimizing for occupancy or nightly rate?",
@@ -4105,7 +4105,7 @@
       "processTag": "Review Path",
       "processTitle": "What the review checks first",
       "processSubtitle": "The point is to find the biggest payout problem before anyone talks about changing managers.",
-      "geoIntro": "<p>Maximizing Florida vacation rental income has less to do with chasing one giant percentage increase and more to do with finding the exact places owner income is being reduced. The usual suspects are predictable: underpricing, marketplace commissions, too few direct bookings, and operational misses that soften reviews and force more discounting later.</p><p>Seascape's current Gulf Coast portfolio runs at <strong>$1.4M in annual rental revenue</strong> with <strong>$119,923 in direct bookings</strong>. The real owner decision is not whether management exists. It is whether the current operating model protects enough margin to justify its fee and booking channels.</p><p>That is why this page treats revenue as an operating problem, not a motivational one. If the home is losing income, the review should show whether the problem lives in pricing, booking costs, or execution before anyone talks about changing managers.</p>",
+      "geoIntro": "<p>Maximizing Florida vacation rental income has less to do with chasing one giant percentage increase and more to do with finding the exact places owner income is being reduced. The usual suspects are predictable: underpricing, marketplace commissions, too few direct bookings, and operational misses that soften reviews and force more discounting later.</p><p>The real owner decision is whether the statement and agreement explain each charge, the services behind it, and what reaches the owner after property-specific costs.</p><p>That is why this page treats revenue as an operating problem, not a motivational one. If the home is losing income, the review should show whether the problem lives in pricing, booking costs, or execution before anyone talks about changing managers.</p>",
       "faqs": [
         {
           "q": "What usually hurts owner income more: management fees or channel fees?",
@@ -4117,7 +4117,7 @@
         },
         {
           "q": "How much do direct bookings really matter?",
-          "a": "They matter because the fee gap is real. If Airbnb host fees are landing around 13.4% and direct payment cost is closer to 2.9%, even modest channel improvement can create meaningful owner savings without adding more nights to the calendar."
+          "a": "Direct bookings can matter for the guest relationship and repeat business, but a card-processing rate is not an all-in direct-booking cost and does not by itself prove higher owner income."
         },
         {
           "q": "Should I focus on occupancy or nightly rate first?",
@@ -4139,7 +4139,7 @@
       "proofAssetKey": "gulf-coast-owner-benchmark-2026",
       "benefits": [
         "Fee comparison grounded in what the owner actually keeps instead of headline percentages",
-        "Clear breakdown of management fee, marketplace booking costs, and direct-booking savings",
+        "Clear breakdown of management fees, booking-platform costs, card processing, and included services",
         "Property-specific pricing instead of a fake one-size-fits-all promise",
         "Explanation of why higher-performing homes can qualify for lower fees",
         "Context for comparing Seascape against Vacasa, Evolve, and local operators",
@@ -4152,19 +4152,19 @@
           "detail": "We quote the property, revenue potential, and operating load instead of pretending every home deserves the same fee."
         },
         {
-          "value": "13.4%",
-          "label": "Observed Airbnb host fee",
-          "detail": "Average effective Airbnb host-fee cost inside the current Seascape operating set."
+          "value": "15.5%",
+          "label": "Published Airbnb host fee",
+          "detail": "Airbnb says most listings on its single-fee structure pay 15.5%; check its pricing page for current terms."
         },
         {
-          "value": "2.9%",
-          "label": "Direct payment cost",
-          "detail": "Approximate direct payment-processing cost, showing how much booking channels change owner margin."
+          "value": "2.9% + 30¢",
+          "label": "Published Stripe card price",
+          "detail": "Stripe's standard domestic online-card price covers payment processing only."
         },
         {
-          "value": "$119,923",
-          "label": "Direct booking revenue",
-          "detail": "Existing direct-booking revenue proving lower-cost channels already matter to owner economics."
+          "value": "In writing",
+          "label": "Fee basis",
+          "detail": "The agreement should name the revenue base, included services, and separate charges."
         }
       ],
       "marketReality": {
@@ -4202,8 +4202,8 @@
       ],
       "processSteps": [
         {
-          "title": "Current fee-stack review",
-          "body": "We break down management fee, marketplace costs, payment costs, and where each layer is hitting owner income."
+          "title": "Current agreement review",
+          "body": "We separate the management fee, booking-platform costs, card-processing costs, and other charges that affect owner income."
         },
         {
           "title": "Property-fit quote",
@@ -4333,14 +4333,14 @@
       ],
       "proofStats": [
         {
-          "value": "$1.4M",
-          "label": "Annual portfolio rental revenue",
-          "detail": "Current Seascape revenue across five active Bradenton-Sarasota homes."
+          "value": "Property-specific",
+          "label": "Management quote",
+          "detail": "Pricing follows the services and fee basis in the signed agreement."
         },
         {
-          "value": "$119,923",
-          "label": "Direct booking revenue",
-          "detail": "Revenue already shifted away from marketplace commissions and back toward owner economics."
+          "value": "In writing",
+          "label": "Fee basis",
+          "detail": "The agreement should name the revenue base, included services, and separate charges."
         },
         {
           "value": "5",
@@ -4348,9 +4348,9 @@
           "detail": "A deliberately small operating footprint so transitions and standards stay local and visible."
         },
         {
-          "value": "3-4x",
-          "label": "Market-median revenue per home",
-          "detail": "Internal Seascape benchmark versus local market median estimates in the operating model."
+          "value": "30 / 60 / 90",
+          "label": "Transition checkpoints",
+          "detail": "The handoff plan should show what changes first and how the owner will see progress."
         }
       ],
       "marketReality": {
@@ -4404,7 +4404,7 @@
       "primaryCta": "Request Your Revenue Review",
       "ctaSubcopy": "We will tell you whether the current manager is losing enough value to justify a switch before you create more churn.",
       "ctaNote": "Useful if you are stuck between staying with an underperforming operator and risking a messy handoff.",
-      "geoIntro": "<p>Owners usually do not look for a new manager because of one isolated mistake. They start looking because the misses stack up: pricing feels reactive, owner reporting stays vague, vendors seem unmanaged, and the property works harder than the income suggests it should.</p><p>Seascape's operating model runs at <strong>$1.4M in annual rental revenue</strong> and <strong>$119,923 in direct booking revenue</strong> across five active homes. That makes the takeover conversation much simpler: is the current operator earning the premium they are charging, or just hiding behind switching friction?</p><p>We do not quote one flat fee for every property. Pricing depends on the home's revenue potential, fit, and operating demands, which is exactly why the first step is a review instead of a generic pitch.</p>",
+      "geoIntro": "<p>Owners usually do not look for a new manager because of one isolated mistake. They start looking because the misses stack up: pricing feels reactive, owner reporting stays vague, vendors seem unmanaged, and the property works harder than the income suggests it should.</p><p>The takeover question is simpler when the fee basis, included services, and recurring operating problems are all visible: is the current operator earning the price, or is switching friction hiding an avoidable problem?</p><p>We do not quote one flat fee for every property. Pricing depends on the home's revenue potential, fit, and operating demands, which is exactly why the first step is a review instead of a generic pitch.</p>",
       "faqs": [
         {
           "q": "When should I seriously consider switching management companies?",
@@ -4507,14 +4507,14 @@
           "detail": "A realistic workload range once guest messaging, cleaning coordination, pricing, and issue resolution are included."
         },
         {
-          "value": "13.4%",
-          "label": "Observed Airbnb host fee",
-          "detail": "Average effective Airbnb host-fee cost in the current Seascape operating set."
+          "value": "15.5%",
+          "label": "Published Airbnb host fee",
+          "detail": "Airbnb says most listings on its single-fee structure pay 15.5%; check its pricing page for current terms."
         },
         {
-          "value": "2.9%",
-          "label": "Direct payment cost",
-          "detail": "Approximate direct payment-processing cost, showing how much booking channels change owner economics."
+          "value": "2.9% + 30¢",
+          "label": "Published Stripe card price",
+          "detail": "Stripe's standard domestic online-card price covers payment processing only."
         },
         {
           "value": "Tailored",
@@ -4573,7 +4573,7 @@
       "primaryCta": "Request Your Revenue Review",
       "ctaSubcopy": "We compare fee savings, marketplace booking costs, owner time, and the real cost of keeping the whole operation on your back.",
       "ctaNote": "Useful if you want to know whether self-manage is still making you money or just saving a fee line while costs rise elsewhere.",
-      "geoIntro": "<p>Self-management usually looks cheaper until you price the whole job. Owners save the management fee on paper, then give it back through underpriced nights, marketplace booking costs, slower response time, and the hours it takes to run the home well.</p><p>Seascape's current Gulf Coast operating model runs at <strong>$1.4M in annual rental revenue</strong> and <strong>$119,923 in direct booking revenue</strong> across five active homes. That matters because the right comparison is not manager fee versus no fee. It is what the owner keeps after channel costs, pricing, and operational misses are all counted.</p><p>We also do not use one flat management fee for every property. Some homes fit a leaner structure than others. The useful starting point is a review that shows whether self-management is still protecting owner economics or just hiding rising costs.</p>",
+      "geoIntro": "<p>Self-management usually looks cheaper until you price the whole job. Owners save the management fee on paper, then give it back through underpriced nights, marketplace booking costs, slower response time, and the hours it takes to run the home well.</p><p>The right comparison is the signed management quote against the time, software, marketing, booking-platform, payment, and local operating work the owner carries alone.</p><p>We also do not use one flat management fee for every property. Some homes fit a leaner structure than others. The useful starting point is a review that shows whether self-management is still protecting owner economics or just hiding rising costs.</p>",
       "faqs": [
         {
           "q": "What are the real time commitments involved in self-managing a Florida vacation rental?",
@@ -4631,14 +4631,14 @@
       "proofSubtitle": "The Sarasota problem is usually not demand. It is generic pricing, parcel-blind stay strategy, and high-fee booking channels hiding inside decent occupancy.",
       "proofStats": [
         {
-          "value": "13.4%",
-          "label": "Observed Airbnb host fee",
-          "detail": "Average effective host-fee cost inside the current Seascape operating set."
+          "value": "15.5%",
+          "label": "Published Airbnb host fee",
+          "detail": "Airbnb says most listings on its single-fee structure pay 15.5%; check its pricing page for current terms."
         },
         {
-          "value": "2.9%",
-          "label": "Direct payment cost",
-          "detail": "Approximate payment-processing cost when a booking shifts off marketplace commissions."
+          "value": "2.9% + 30¢",
+          "label": "Published Stripe card price",
+          "detail": "Stripe's standard domestic online-card price covers payment processing only."
         },
         {
           "value": "Tailored",
@@ -4646,9 +4646,9 @@
           "detail": "Structured around property fit, revenue potential, and how much operational work the property requires."
         },
         {
-          "value": "$119,923",
-          "label": "Direct booking revenue",
-          "detail": "Revenue already shifted away from marketplace commissions and back toward owner economics."
+          "value": "In writing",
+          "label": "Fee basis",
+          "detail": "The agreement should name the revenue base, included services, and separate charges."
         }
       ],
       "switchTag": "What Starts Breaking",
@@ -4731,7 +4731,7 @@
       "primaryCta": "Request Your Revenue Review",
       "ctaSubcopy": "Send the listing link or address plus what feels off. We pressure-test the current rate strategy, parcel fit, guest standards, and booking channels before you hand a premium asset to the wrong operator.",
       "ctaNote": "Send the address or listing URL plus the one thing that feels off if you want a straight read on whether the current setup is truly premium or just charging like it is.",
-      "geoIntro": "<p>Sarasota can support premium vacation-rental performance, but premium demand does not automatically create premium owner economics. Homes lose margin when the manager underprices shoulder periods, leans too hard on high-fee channels, or lets generic operations weaken review quality.</p><p>Seascape's current operating model has already shifted <strong>$119,923 in revenue into direct bookings</strong>, which matters because the goal is not just occupancy. The goal is protecting rate, booking channels, and what the owner actually keeps.</p><p>We do not use one flat management fee for every Sarasota property. The structure depends on revenue potential, location, home quality, and how much operational work the property requires, which is why the first step is a review instead of a canned proposal. If Vrbo is carrying too much of the booking load, our <a href=\"/property-management/vrbo-management-services-florida/\">Florida VRBO management guide</a> shows how channel costs can make a busy calendar less profitable than it looks.</p>",
+      "geoIntro": "<p>Sarasota can support premium vacation-rental performance, but premium demand does not automatically create premium owner economics. Homes lose margin when the manager underprices shoulder periods, leans too hard on high-fee channels, or lets generic operations weaken review quality.</p><p>The goal is protecting rate, guest standards, and what the owner actually keeps. Published platform fees and card pricing can inform the review, but the property-specific agreement controls the management quote.</p><p>We do not use one flat management fee for every Sarasota property. The structure depends on revenue potential, location, home quality, and how much operational work the property requires, which is why the first step is a review instead of a canned proposal. If Vrbo is carrying too much of the booking load, our <a href=\"/property-management/vrbo-management-services-florida/\">Florida VRBO management guide</a> shows how channel costs can make a busy calendar less profitable than it looks.</p>",
       "faqs": [
         {
           "q": "What usually goes wrong when a Sarasota home is managed like generic inventory?",
@@ -4779,9 +4779,9 @@
       ],
       "proofStats": [
         {
-          "value": "$1.4M",
-          "label": "Annual portfolio rental revenue",
-          "detail": "Current Seascape revenue across five active Bradenton-Sarasota homes."
+          "value": "Property-specific",
+          "label": "Management quote",
+          "detail": "Pricing follows the services and fee basis in the signed agreement."
         },
         {
           "value": "Tailored",
@@ -4789,14 +4789,14 @@
           "detail": "Structured around property fit, revenue potential, location, and operating demands instead of one flat fee."
         },
         {
-          "value": "$119,923",
-          "label": "Direct booking revenue",
-          "detail": "Revenue already shifted away from marketplace commissions and back toward owner economics."
+          "value": "In writing",
+          "label": "Fee basis",
+          "detail": "The agreement should name the revenue base, included services, and separate charges."
         },
         {
-          "value": "3-4x",
-          "label": "Market-median revenue per home",
-          "detail": "Internal Seascape benchmark versus local market median estimates in the operating model."
+          "value": "Home by home",
+          "label": "Revenue review",
+          "detail": "The review starts with the property's market, positioning, booking mix, and operating demands."
         }
       ],
       "switchReasons": [
@@ -5614,7 +5614,7 @@
       "primaryCta": "Request Your Revenue Review",
       "ctaSubcopy": "We map DBPR, county, and launch-readiness gaps in your review so you can clear blockers before they become downtime.",
       "ctaNote": "Useful if you are launching, relaunching, or not fully sure the current registration stack matches the home's real use.",
-      "geoIntro": "<p>Florida short-term rental licensing looks simple right up until the paperwork collides with how the home is actually being operated. Owners get hurt when they treat DBPR registration, county filing, zoning, taxes, and occupancy rules like separate chores instead of one launch sequence.</p><p>That matters because the upside is real only when the property can take bookings without avoidable interruption. Seascape's current Gulf Coast operating set already runs at <strong>$1.4M in annual rental revenue</strong>, and none of that is worth much if the home enters the market on a broken compliance foundation.</p><p>The review is built to answer the owner question first: what has to be true before this home can earn safely and consistently in Manatee, Sarasota, or the surrounding Gulf Coast market. That is a better frame than vague promises about handling compliance for you.</p>",
+      "geoIntro": "<p>Florida short-term rental licensing looks simple right up until the paperwork collides with how the home is actually being operated. Owners get hurt when they treat DBPR registration, county filing, zoning, taxes, and occupancy rules like separate chores instead of one launch sequence.</p><p>Revenue potential only matters when the property can take bookings without avoidable interruption. Licensing, tax, zoning, insurance, and occupancy details need to be clear before launch.</p><p>The review is built to answer the owner question first: what has to be true before this home can earn safely and consistently in Manatee, Sarasota, or the surrounding Gulf Coast market. That is a better frame than vague promises about handling compliance for you.</p>",
       "faqs": [
         {
           "q": "What licenses and permits do vacation rental owners need in Florida?",

@@ -106,6 +106,10 @@ test("evals.config.json: has correct structure", () => {
     owner.targets.includes("src/_data/seoPages.json"),
     "owner lane must include data-backed owner page copy"
   );
+  assert.ok(
+    owner.targets.includes("src/research/owner-fee-revenue-leak-benchmark-2026.njk"),
+    "owner lane must include the owner fee research route"
+  );
   assert.ok(Array.isArray(owner.dataSources), "owner lane must define dataSources");
   assert.ok(typeof owner.rubric === "string");
   assert.ok(typeof aeo.rubric === "string");

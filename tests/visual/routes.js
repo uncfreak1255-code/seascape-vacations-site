@@ -44,6 +44,11 @@ const moneyRoutes = [
     readySelector: "main h1",
   },
   {
+    slug: "guide-siesta-vs-ami-families",
+    path: "/guides/siesta-key-vs-anna-maria-island-families/",
+    readySelector: "h1",
+  },
+  {
     slug: "guide-shelling-florida",
     path: "/guides/shelling-guide-florida/",
     readySelector: ".journal-cover h1",

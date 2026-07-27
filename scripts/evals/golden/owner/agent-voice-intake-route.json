@@ -1,0 +1,7 @@
+{
+  "name": "owner-agent-voice-intake-route",
+  "lane": "owner",
+  "sourceCite": "synthetic regression from the retired public benchmark CTA",
+  "copy": "This page sends you into the shared review intake route. Missing statements, calendars, reviews, or fee terms stay marked unknown.",
+  "expect": { "band": "low", "maxOverall": 15 }
+}

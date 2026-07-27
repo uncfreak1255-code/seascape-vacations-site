@@ -1,7 +1,0 @@
-.git
-*.py
-*.bak
-seo-reports
-scripts
-.netlify
-.DS_Store

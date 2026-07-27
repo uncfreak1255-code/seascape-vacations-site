@@ -162,6 +162,32 @@ test("computeOverall: autoFail pattern 'game-changer' fires on 'a game-changer f
   assert.equal(result.pass, false);
 });
 
+test("computeOverall: internal owner-workflow language fails even with perfect judge scores", () => {
+  const rubric = {
+    passFloor: 70,
+    dimensions: [{ id: "a", weight: 1.0, max: 5 }],
+    autoFailPatterns: ["intake route", "marked unknown", "this page sends"],
+  };
+  const copy = "This page sends you into the shared review intake route. Missing terms stay marked unknown.";
+  const result = computeOverall({ a: 5 }, rubric, copy);
+
+  assert.deepEqual(result.autoFails, ["intake route", "marked unknown", "this page sends"]);
+  assert.equal(result.pass, false);
+});
+
+test("computeOverall: internal repository paths fail even with perfect judge scores", () => {
+  const rubric = {
+    passFloor: 70,
+    dimensions: [{ id: "a", weight: 1.0, max: 5 }],
+    autoFailPatterns: ["seascape-hub", "/Users"],
+  };
+  const copy = "Evidence path: /Users/example/Projects/seascape-hub/private-owner-report.md";
+  const result = computeOverall({ a: 5 }, rubric, copy);
+
+  assert.deepEqual(result.autoFails, ["seascape-hub", "/Users"]);
+  assert.equal(result.pass, false);
+});
+
 // Fix 4: defensive guard for dim.max <= 0
 test("computeOverall: dim.max <= 0 treats normalized as 0 without dividing", () => {
   const rubric = {

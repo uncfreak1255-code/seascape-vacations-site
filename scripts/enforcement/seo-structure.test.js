@@ -87,7 +87,10 @@ test("redirects avoid the known missing legacy target pages", () => {
     "/stays/gulf-coast-vacation-homes-with-dock/",
     "/stays/kayaking-vacation-rentals-bradenton/",
     "/guides/things-to-do-bradenton-fl/",
-    "/stays/pet-friendly-vacation-rentals-bradenton/",
+    // 2026-07-24: pet-friendly-vacation-rentals-bradenton removed from safe
+    // targets — it joined staysNoindexSlugs, so redirects were repointed to
+    // /properties/ and the pet guide instead of dropping equity into noindex.
+    "/guides/pet-friendly-anna-maria-island/",
     "/stays/bradenton-vacation-rentals-near-beaches/",
     "/guides/bradenton-area-guide/"
   ]) {
@@ -104,8 +107,10 @@ test("june 12 404 alert routes redirect to current live destinations", () => {
     "/stays/cortez-village-vacation-rentals/   /stays/bradenton-vacation-rentals-near-beaches/   301",
     "/stays/memorial-day-weekend-rentals-florida/   /stays/long-weekend-getaway-florida/   301",
     "/stays/palmetto-vacation-rentals-florida/   /guides/bradenton-area-guide/   301",
-    "/stays/pet-friendly-vacation-rentals-anna-maria-island/   /stays/pet-friendly-vacation-rentals-bradenton/   301",
-    "/stays/spring-break-vacation-rentals-florida-gulf-coast/   /stays/spring-break-rentals-anna-maria-island/   301",
+    // 2026-07-24: repointed to indexable destinations — the previous targets are
+    // in staysNoindexSlugs, so the 301s were dropping legacy equity entirely.
+    "/stays/pet-friendly-vacation-rentals-anna-maria-island/   /properties/?area=pet-friendly   301",
+    "/stays/spring-break-vacation-rentals-florida-gulf-coast/   /stays/family-vacation-rentals-anna-maria-island/   301",
     "/stays/sunset-cruise-vacation-rentals-bradenton/   /guides/things-to-do-bradenton-fl/   301",
     "/stays/vacation-rentals-with-outdoor-kitchen-florida/   /properties/   301",
     "/stays/vacation-rentals-with-private-pool-florida/   /stays/anna-maria-island-homes-with-pool/   301"
@@ -251,14 +256,17 @@ test("about page exists as a real route and homepage links point to it", () => {
   assert.equal(redirects.includes("/about-us   /about-us/   301"), true);
 });
 
-test("property owners page leads with premium proof instead of explainer-hub copy", () => {
+test("property owners page leads with sourced fee definitions instead of unsupported portfolio proof", () => {
   const ownerPage = fs.readFileSync(path.join(projectRoot, "src", "property-management", "index.njk"), "utf8");
 
   assert.equal(ownerPage.includes("Before you renew,"), true);
   assert.equal(ownerPage.includes("actually keep?"), true);
-  assert.equal(ownerPage.includes("$119,923"), true);
-  assert.equal(ownerPage.includes("13.4% → 2.9%"), true);
-  assert.equal(ownerPage.includes("What to look at before you change managers"), true);
+  assert.equal(ownerPage.includes("15.5%"), true);
+  assert.equal(ownerPage.includes("2.9% + 30¢"), true);
+  assert.equal(ownerPage.includes("Property-specific"), true);
+  assert.equal(ownerPage.includes("Not equivalent"), true);
+  assert.equal(ownerPage.includes("$119,923"), false);
+  assert.equal(ownerPage.includes("13.4%"), false);
   assert.equal(ownerPage.includes("What Is Vacation Rental Property Management?"), false);
   assert.equal(ownerPage.includes("Request a property evaluation"), false);
 });

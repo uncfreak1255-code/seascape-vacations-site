@@ -10,6 +10,7 @@ const {
   extractJsonLdObjects,
   extractRoutePathFacts,
   extractTrackedEvents,
+  extractVisibleBodyText,
   readBuiltRoute,
   readRouteSource,
   routePathFromSourcePath
@@ -23,22 +24,28 @@ const SAMPLE_HTML = `
 <head>
   <title>Sample Guide Title</title>
   <meta name="description" content="Sample guide's description.">
+  <meta name="author" content="Sawyer Beckett, Seascape Vacations">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://seascape-vacations.com/guides/sample-guide/">
+  <meta property="og:url" content="https://seascape-vacations.com/guides/sample-guide/">
   <meta property="og:title" content="Sample OG Title">
   <meta property="og:description" content="Sample OG description.">
   <meta name="twitter:title" content="Sample Twitter Title">
   <meta name="twitter:description" content="Sample Twitter description.">
   <script type="application/ld+json">
-    {"@context":"https://schema.org","@type":"Article","headline":"Sample Guide Title"}
+    {"@context":"https://schema.org","@type":"Article","headline":"Hidden source of truth"}
   </script>
   <script type="application/ld+json">
     [{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[]}]
   </script>
+  <style>.guardrail { display: none; }</style>
+  <script>const hiddenCopy = "review intake";</script>
 </head>
 <body>
-  <a href="/stays/sample/" data-track-event="guide_book_direct_click">Browse stays</a>
+  <!-- benchmark inputs -->
+  <a href="/stays/sample/" data-track-event="guide_book_direct_click" data-agent-note="canonical">Browse stays</a>
   <form data-track-form="email_capture" data-form-submit-event="email_capture_submit"></form>
+  <p>Reader-visible guide copy &amp; details.</p>
   <div>{{ leakedTemplateMarker }}</div>
 </body>
 </html>`;
@@ -47,13 +54,22 @@ test("extractHeadTags reads primary, Open Graph, Twitter, canonical, and robots 
   assert.deepEqual(extractHeadTags(SAMPLE_HTML), {
     title: "Sample Guide Title",
     description: "Sample guide's description.",
+    author: "Sawyer Beckett, Seascape Vacations",
     canonical: "https://seascape-vacations.com/guides/sample-guide/",
     robots: "index, follow",
+    ogUrl: "https://seascape-vacations.com/guides/sample-guide/",
     ogTitle: "Sample OG Title",
     ogDescription: "Sample OG description.",
     twitterTitle: "Sample Twitter Title",
     twitterDescription: "Sample Twitter description."
   });
+});
+
+test("extractVisibleBodyText excludes head, code, comments, styles, and attributes", () => {
+  const text = extractVisibleBodyText(SAMPLE_HTML);
+
+  assert.match(text, /Browse stays Reader-visible guide copy & details/);
+  assert.doesNotMatch(text, /source of truth|guardrail|review intake|benchmark inputs|canonical/);
 });
 
 test("extractJsonLdObjects parses single objects and arrays from JSON-LD blocks", () => {
@@ -104,6 +120,7 @@ test("buildRouteContract returns the small route fact Interface", () => {
   assert.deepEqual(contract.jsonLdObjects.map((object) => object["@type"]), ["Article", "BreadcrumbList"]);
   assert.deepEqual(contract.jsonLdParseErrors, []);
   assert.deepEqual(contract.trackedEvents, ["guide_book_direct_click", "email_capture_submit"]);
+  assert.match(contract.visibleBodyText, /Reader-visible guide copy & details/);
   assert.deepEqual(contract.templateLeakMarkers, ["{{"]);
   assert.deepEqual(contract.standaloneShellMarkers, []);
   assert.equal(contract.pathFacts.isGuide, true);

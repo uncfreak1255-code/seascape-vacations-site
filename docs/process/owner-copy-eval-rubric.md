@@ -9,11 +9,12 @@ tied to bottleneck #1: owner acquisition.
 
 - The lane is **blocking**: changed owner reader copy that scores below the
   floor (or trips an auto-fail pattern) fails the Release Gate.
-- The judge is a **single Sonnet model with chain-of-thought** — never Opus
+- The judge is a **single Sonnet model** — never Opus
   (cost control is enforced in `scripts/evals/lib/anthropic-client.js`).
-- It runs **only on changed owner pages** (`src/property-management/**`), only
-  when `ANTHROPIC_API_KEY` is present; without a key the lane validates this
-  rubric and the golden set, then skips the judge so CI stays green.
+- It runs only on changed owner pages, the owner fee research route, and the
+  selected owner entries in `src/_data/seoPages.json`, and only when
+  `ANTHROPIC_API_KEY` is present; without a key the lane validates this rubric
+  and the golden set, then skips the judge so CI stays green.
 - It **augments, never replaces** the human Voice Editor pass and
   `npm run lint:content`. Calibrate against `scripts/evals/golden/owner/` and
   spot-check against `docs/style/approved-examples.md`.
@@ -27,20 +28,22 @@ weighted sum, scaled to 0–100, with a pass floor of **70**.
    decision ("should I switch managers?") in the first ~2 sentences, instead of
    a generic vacation/hospitality intro? Grounded in
    `docs/style/approved-examples.md` "switcher-first owner framing."
-2. **owner-economics-specificity (0.22)** — Does it lead with concrete owner
-   economics — fee stack, channel cost, revenue leak, net payout, local-operator
-   proof — rather than a generic service list ("full-service management, 24/7
-   support")? This is the highest-weighted dimension because the page wins on
-   the math, not the brochure.
+2. **owner-economics-specificity (0.22)** — Does it explain the fee basis,
+   included services, separate charges, and property-specific decision rather
+   than a generic service list? If it compares platform commission, card
+   processing, and management, does it say that they cover different services?
 3. **proof-traceability (0.18)** — Are claims about fees, revenue lift, homes
-   served, review counts, or local proof specific and traceable to approved
-   proof assets, not vague superlatives? Mirrors `owner-proof-integrity`.
+   served, review counts, or local proof traceable to current named sources,
+   dates, and scope? Expired portfolio figures, private owner details, and a
+   card-processing rate presented as automatic owner savings should score 0.
 4. **cta-clarity (0.15)** — Does the CTA name the next decision (e.g. "request a
    revenue review") instead of a generic "contact us" / "learn more"?
 5. **snippet-standalone (0.12)** — Are the key claims phrased so an AI answer
    engine could lift a 1–2 sentence standalone answer that attributes Seascape?
 6. **voice-no-ai-texture (0.15)** — Does it read like a local operator, free of
-   AI/marketing texture, banned generic phrasing, and internal-worksheet labels?
+   AI/marketing texture and internal workflow language? Reader copy must not
+   mention intake routes, canonical/routing decisions, frozen work, guardrails,
+   benchmark inputs, or information being "marked unknown."
 
 ## Auto-fail patterns
 
@@ -54,17 +57,17 @@ brochure tell that `approved-examples.md` warns against.
 ```json eval-spec
 {
   "id": "owner-copy",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "judgeModel": "claude-sonnet-4-6",
   "passFloor": 70,
   "dimensions": [
     { "id": "decision-answer", "weight": 0.18, "max": 5, "criteria": "Does the first paragraph answer the owner's decision question ('should I switch managers / is my current setup leaking money?') within the first 1-2 sentences? Score 5 for an immediate, specific decision frame; 0 for a generic vacation, hospitality, or company-intro opening that buries the owner question." },
-    { "id": "owner-economics-specificity", "weight": 0.22, "max": 5, "criteria": "Does the copy lead with concrete owner economics (fee stack, channel/OTA cost, revenue leak, net payout, local-operator proof) rather than a generic service list ('full-service management', '24/7 support', 'hospitality excellence')? Score 5 for specific, owner-relevant numbers and mechanisms; 0 for an undifferentiated feature/service list." },
-    { "id": "proof-traceability", "weight": 0.18, "max": 5, "criteria": "Are claims about fees, revenue lift, homes served, review counts, or local proof specific and plausibly traceable to a named proof asset, rather than vague superlatives ('best', 'leading', 'trusted')? Score 5 for concrete, attributable claims; 0 for unfalsifiable superlatives." },
+    { "id": "owner-economics-specificity", "weight": 0.22, "max": 5, "criteria": "Does the copy explain the fee basis, included services, separate charges, and property-specific owner decision rather than a generic service list? When platform commission, card processing, and management appear together, score 5 only if the copy states that they cover different services; score 0 for an all-in or automatic-savings comparison." },
+    { "id": "proof-traceability", "weight": 0.18, "max": 5, "criteria": "Are claims about fees, revenue lift, homes served, review counts, or local proof traceable to current named sources, dates, and scope? Score 5 for current attributed claims with clear limits; score 0 for expired portfolio figures, private owner details, internal evidence paths, unsupported savings, or vague superlatives." },
     { "id": "cta-clarity", "weight": 0.15, "max": 5, "criteria": "Does the CTA name the next decision the owner should take (e.g. 'request a revenue review') instead of a generic 'contact us' or 'learn more'? Score 5 for a specific, low-friction next step; 0 for a generic or missing CTA." },
     { "id": "snippet-standalone", "weight": 0.12, "max": 5, "criteria": "Could an AI answer engine quote a 1-2 sentence standalone claim from this copy that attributes Seascape and stands on its own? Score 5 for self-contained, attributable statements; 0 for copy that only makes sense with surrounding page context." },
-    { "id": "voice-no-ai-texture", "weight": 0.15, "max": 5, "criteria": "Does it read like a specific local Gulf Coast operator, free of AI/marketing texture, banned generic phrasing, and internal-process or worksheet labels ('we mark proven cost, likely cost, and missing information')? Score 5 for plain, specific operator voice; 0 for generic AI-marketing texture." }
+    { "id": "voice-no-ai-texture", "weight": 0.15, "max": 5, "criteria": "Does it read like a specific local Gulf Coast operator, free of AI/marketing texture and internal workflow language? Score 5 for plain reader language; score 0 for intake routes, canonical or routing decisions, frozen work, guardrails, review intake, benchmark inputs, or information being marked unknown." }
   ],
-  "autoFailPatterns": ["curated", "nestled", "elevate", "boasts", "myriad", "seamless", "unparalleled", "hospitality excellence", "game-changer", "when it comes to", "at the end of the day", "in today's", "this matters because"]
+  "autoFailPatterns": ["curated", "nestled", "elevate", "boasts", "myriad", "seamless", "unparalleled", "hospitality excellence", "game-changer", "when it comes to", "at the end of the day", "in today's", "this matters because", "intake route", "marked unknown", "this page sends", "source of truth", "canonical", "routing", "guardrail", "frozen", "unfrozen", "review intake", "benchmark inputs", "May-reviewed", "labeled separately", "seascape-hub", "/Users"]
 }
 ```

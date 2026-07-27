@@ -521,10 +521,14 @@ if (phase === "remediation") {
   expectContains("_site/property-management/index.html", "actually keep?");
   expectContains(
     "_site/property-management/index.html",
-    "What owners miss when they compare management fees"
+    "The Fee Comparison"
   );
   expectContains("_site/property-management/index.html", "What Gulf Coast owners usually ask first");
-  expectContains("_site/property-management/index.html", "Commission Reality");
+  expectContains("_site/property-management/index.html", "15.5%");
+  expectContains("_site/property-management/index.html", "2.9% + 30¢");
+  expectContains("_site/property-management/index.html", "Property-specific");
+  expectNotContains("_site/property-management/index.html", "$119,923");
+  expectNotContains("_site/property-management/index.html", "13.4%");
   expectNotContains("_site/property-management/index.html", "What Is Vacation Rental Property Management?");
   expectNotContains("_site/property-management/index.html", "Owner Questions");
   expectMatches(

@@ -1,177 +1,125 @@
-# Owner Fee + Revenue Leak Benchmark
+# Owner Fee Comparison Guide — Integrity Rescue
+
+Date: 2026-07-17
+Site route: `/research/owner-fee-revenue-leak-benchmark-2026/`
+Status: active truthfulness rescue; legacy URL retained
 
 ## Content Gate Inputs
 
-- persona: premium Gulf Coast vacation-rental owner comparing management fee, channel mix, and owner-net outcomes before a switch conversation
-- primary keyword: vacation rental management fees Florida
-- secondary keywords: owner revenue teardown, direct booking revenue, Airbnb host fee drag, vacation rental owner net
-- audience pattern: skeptical owner who has seen fee quotes but needs proof that the full leak stack matters more than headline percentage alone
-- proof source: Seascape five-home benchmark sample, observed Airbnb host-fee drag, direct-payment cost reference, and labeled scenario math
-- required internal links: /research/owner-fee-revenue-leak-benchmark-2026/, /property-management/maximize-vacation-rental-income-florida/
-- CTA target: /property-management/#owner-cta
-- anti-claims: no portfolio-wide guarantee, no market-wide fee survey claim, no invented review totals, no passive-income or full-service fluff
-
-Date: 2026-05-21
-Hub handoff: `/Users/sawbeck/Projects/seascape-hub/projects/owner-fee-revenue-leak-benchmark-execution-package-2026-05-15.md`
-Site route: `/research/owner-fee-revenue-leak-benchmark-2026/` (legacy path), `/research/owner-fee-revenue-gap-benchmark-2026/` (property-management copy-safe alias)
-Figma capture: `https://www.figma.com/design/glZRIUzGbQlw0KJhtAGUWP?node-id=3-2`
-Reference-only frame: `3:2`
-Implementation frames: `9:2` desktop, `11:2` mobile
+- persona: Gulf Coast vacation-rental owner comparing a management proposal with booking-platform and payment-processing charges before signing or renewing
+- primary keyword: Airbnb host fees vs card processing
+- secondary keywords: vacation rental owner fees, Airbnb host service fee, Stripe card processing fee, vacation rental management quote
+- audience pattern: owner who sees several percentages on a statement or proposal and needs to know what each charge covers before comparing them
+- proof source: Airbnb's official service-fee page, Stripe's official pricing page, and the property-specific signed Seascape management agreement
+- required internal links: /property-management/, /property-management/vacation-rental-management-fees-florida/, /property-management/maximize-vacation-rental-income-florida/
+- CTA target: /property-management/?owner_source=owner-fee-revenue-leak-benchmark-2026#owner-cta
+- anti-claims: no current Seascape performance total, no owner-savings claim from direct booking, no all-in comparison between platform commission and card processing, no universal Seascape management percentage, no private owner identity, no internal evidence path
+- hypothesis: replacing expired performance claims with primary-source fee definitions will make the page more trustworthy and more useful without opening a new owner-content batch
+- primary event: owner_primary_cta_click
+- guardrail event: owner_form_submit
+- entry criteria: confirmed public proof drift and reader-facing internal language on the existing indexed route
+- readback window: first complete 28-day Search Console and owner-funnel window after the corrected route is live
+- decision rule: retain the guide if it remains indexed and sends qualified owner activity; revisit search positioning only after the current owner-cluster threshold in docs/status/next-batch.md opens
 
 ## Gate 0 Search Block
 
 | Field | Required answer |
 | --- | --- |
-| Target query family | `maximize vacation rental income florida`, `vacation rental income florida`, and owner-payout variants tied to what the owner keeps after fees and booking costs. |
-| Searcher intent | `owner-management` |
-| Current Seascape URL | `/property-management/maximize-vacation-rental-income-florida/` |
-| Current proof | 2026-06-18 live analytics readback for the June 12 alert set flagged this URL as the real owner-page problem. Search Console inspection returned `NEUTRAL` with `Crawled - currently not indexed` while live route checks stayed technically clean: `200`, `index, follow`, self-canonical, sitemap inclusion, and fresh `lastmod` dated `2026-06-18`. |
-| Top visible competitors | AirDNA vacation-rental return guide, Gulf Coast Property Management revenue page, and Key Data's vacation-rental profit-margin guide. |
-| Competitor angle | Broad revenue and payout advice: pricing, booking-channel cost, profitability math, and revenue-management framing that answers the "what do I actually keep?" question early. |
-| Seascape gap | The route was technically clean but too bridge-like. It did not surface the owner-payout benchmark path or the "what do you keep after fees and booking costs?" answer early enough versus the visible winners. |
-| Recommendation | `improve` the existing route: tighten title/H1/intro around what the owner keeps, surface the benchmark plus review path earlier, and keep all proof tied to the existing benchmark asset instead of adding new claims. |
+| Target query family | `Airbnb host fee`, `Stripe card processing fee`, and owner questions about which vacation-rental charges are comparable. |
+| Searcher intent | Research the charges behind an owner statement or management proposal before requesting a property-specific quote. |
+| Current Seascape URL | `/research/owner-fee-revenue-leak-benchmark-2026/` |
+| SERP observed date | 2026-07-17 |
+| SERP stale after | 2026-08-16 |
+| Current proof | A July 17, 2026 live search showed this research route indexed under the broad management-fee title while `/property-management/` also described the fee guide as a conversion resource. The current route therefore overlaps the owner-money page and needs a distinct platform-fee comparison title. |
+| Top visible competitors | Gulf Coast Property Management pricing, Luxe Haus Florida management-cost guide, Emperor Rentals Florida management-fee guide, and Airbnb's own service-fee documentation. |
+| Competitor angle | Competitors lead with a management percentage or package; Airbnb defines its host service fee. Few explain why platform commission, card processing, and management are different services. |
+| Visual/format gap | The current Seascape route has a qualitative scenario table but no sourced fee-definition table. |
+| Seascape gap | The page treats expired internal observations as current proof, compares unlike costs as owner savings, and uses the same management-fee head term as the money page. |
+| Search fit | This research route should answer the fee-definition comparison. `/property-management/vacation-rental-management-fees-florida/` remains the service and quote page. |
+| Local/GBP proof | Not applicable to the fee-definition answer; local fit belongs in the management quote and property review, not in the platform pricing facts. |
+| AEO/readback note | Keep one extractable table, primary-source links beside the claims, synchronized Article metadata, and an explicit sentence stating that the rates are not all-in equivalents. |
+| Recommended action | Rescue the existing indexed route in place, remove expired performance proof everywhere it was reused, and keep the current URL and CTA attribution. |
+| Attack status | completed |
+| Query variants inspected | vacation rental management fees Florida Gulf Coast; Airbnb host fees vs card processing; Florida vacation rental management fees guide owner 2026 |
+| SERP source | Live web search observed 2026-07-17, followed by direct reads of the Airbnb and Stripe pricing pages. |
+| Competitor URLs inspected | https://www.choosegulfcoast.com/vacation-pricing, https://www.luxehausstays.com/insights/airbnb-property-management-cost-florida/, https://www.livethegulfcoast.com/blog/compare-30a-property-management-fees/ |
+| Content gap and Seascape answer | Competitors lead with management percentages or packages. Seascape should define platform commission, card processing, direct-booking operating costs, and property-specific management as different services before an owner compares percentages. |
+| Design/format strategy | Keep an answer-first lead, one sourced three-row fee table, and one quote-review checklist. Use labeled mobile cards below 720px and avoid a magnitude chart that would make unlike percentages look equivalent. |
+| Seascape proof available | Airbnb and Stripe official pricing checked 2026-07-17, the signed property-specific management agreement as the Seascape pricing boundary, and the existing indexed route and CTA attribution contract. |
+| Tools/plugins used | Agent Reach was attempted but its backend was unavailable; official web-page fetches and live web search were used as the read-only fallback, followed by repo content/release gates, in-app browser proof, and Claude Fable review. |
+| Decision and reason | Rescue the existing indexed URL because it already holds the search history and CTA attribution, but narrow it to a sourced fee-definition comparison so it no longer competes with the management-fee money page or publishes expired internal proof. |
 
-## What Changed in This Batch
+## Required Internal Link Map
 
-- Updated property-management copy to avoid new banned phrasing, remove owner-detached wording, and align CTA/benefit language to the property-focused intent.
-- Introduced the new redirect alias route `/research/owner-fee-revenue-gap-benchmark-2026/` so visible text can use the “gap” framing while preserving the current legacy route.
-- Synced the live benchmark route to the approved Figma implementation frames `9:2` desktop and `11:2` mobile, including the compact fee-stack hero, the three observed examples, the fit-boundary note, and the approved proof-chip set.
-- Kept the benchmark CTA path focused on the teardown route instead of requiring owners to detour through the operator proof pack.
-- Retired the benchmark-embedded intake form so the benchmark now links into the shared `/property-management/` teardown route while preserving benchmark `owner_source` attribution.
-- 2026-05-21 proof-clean follow-up: demoted the AMI income guide out of the owner-proof lane, removed public PriceLabs/AirDNA-style authority language from that guide, and rerouted the owner FAQ on `/property-management/` to the benchmark instead of the AMI average-income explainer.
-- 2026-06-11 Figma implementation follow-up: finished the approved implementation frames (`9:2` desktop, `11:2` mobile), replaced the embedded benchmark form with the teardown intake handoff, kept `Request Your Revenue Teardown`, and preserved the approved proof-label set.
-- 2026-06-12 internal-link follow-up: added source-matched links from the booking-trends research page into the chart pack, the owner benchmark, and the owner revenue guide; no new routes or proof claims were added.
-- 2026-06-18 index-rescue follow-up: tightened the owner-income bridge page to answer the owner-net payout question earlier, surfaced the benchmark/switcher path on that bridge route, and kept the proof layer anchored to the existing benchmark asset instead of adding new claims.
+The default link set above applies to the fee guide and owner-management pages. Cleanup-only supporting pages retain their existing, reader-relevant link paths:
 
-## Decision
+- src/guides/2026-bradenton-vacation-rental-market-analysis.html: /property-management/, /property-management/maximize-vacation-rental-income-florida/
+- src/guides/best-vacation-rental-companies-ami.html: /guides/booking-direct-vacation-rentals/, /stays/book-direct-anna-maria-island/
+- src/guides/florida-gulf-coast-vacation-rental-market-report-2026.html: /research/owner-fee-revenue-leak-benchmark-2026/, /property-management/vacation-rental-management-fees-florida/
+- src/guides/index.njk: /property-management/, /property-management/maximize-vacation-rental-income-florida/
+- src/guides/vacation-rental-income-anna-maria.html: /research/owner-fee-revenue-leak-benchmark-2026/, /property-management/vacation-rental-management-fees-florida/
+- src/research/gulf-coast-vacation-booking-trends-2026.njk: /research/owner-fee-revenue-leak-benchmark-2026/, /property-management/
+- src/research/how-seascape-protects-owner-net-2026.njk: /research/owner-fee-revenue-leak-benchmark-2026/, /property-management/
+- src/research/index.njk: /research/gulf-coast-vacation-booking-trends-2026/, /research/owner-fee-revenue-leak-benchmark-2026/
 
-Create a standalone owner-acquisition research asset:
+## Reader Answer
 
-- `/research/owner-fee-revenue-leak-benchmark-2026/`
+An owner should compare three separate things:
 
-This is the source-backed citation page for:
+1. Airbnb's published host service fee for software-connected listings.
+2. Stripe's published standard price for a successful domestic online card transaction.
+3. The property-specific management services and fee basis written into the signed agreement.
 
-- management fee comparisons
-- OTA host-fee drag
-- direct-booking leakage
-- owner net-income risk
+The first two published rates do not prove that a direct booking raises owner payout. Platform commission, payment processing, guest acquisition, software, and management work are different costs.
 
-This site brief now defers to the merged Hub execution package for exact
-section copy, proof labels, chart captions, CTA wording, and the Figma-ready
-desktop/mobile frame plan. Do not invent replacement proof while building the
-site page or Figma frame.
+## Page Contract
 
-## Exact Public Argument
+- Title tag: `Airbnb Host Fees vs Card Processing | Seascape`
+- Meta description: `Compare Airbnb's published host fee with Stripe's card-processing price, see why they are not all-in equivalents, and learn how Seascape quotes each home.`
+- Open Graph and Twitter title: `Airbnb Host Fees vs Card Processing`
+- Eyebrow: `Gulf Coast Owner Fee Guide`
+- H1: `What Do Vacation Rental Fees Actually Cost?`
+- Social image: `/images/owner-field-hero.webp`
+- On-page format: sourced fee-definition table plus a quote-review checklist; no percentage-magnitude chart or per-property performance table without approved current proof
+- Body image: not required for this fee guide; do not add decorative imagery that makes unlike percentages look comparable
+- CTA label: `Request Your Revenue Review`
+- CTA attribution: keep `owner_source=owner-fee-revenue-leak-benchmark-2026`
 
-`The management percentage is only one part of owner net. The real comparison is the full leak stack: management fee, OTA drag, direct mix, pricing discipline, and operating clarity.`
+## Approved Public Sources
 
-## Required Hero Copy
+- Airbnb service fees for home hosts: `https://www.airbnb.com/help/article/1857`
+- Stripe pricing: `https://stripe.com/pricing`
 
-Eyebrow:
+Source claims checked July 17, 2026:
 
-`Owner Fee + Revenue Leak Benchmark`
+- Airbnb says most hosts on its single-fee structure pay 15.5%, with other hosts typically paying 14–16%. The fee is deducted from the host payout and is calculated on the booking subtotal.
+- Stripe lists standard domestic online-card pricing at 2.9% + 30 cents per successful transaction.
+- Both companies may change pricing. The page must point readers to the linked source instead of presenting either rate as permanent.
 
-H1:
+## Retired Proof
 
-`Your management fee is not the whole revenue leak.`
+Earlier versions used a March 2026 planning baseline and April owner-report examples. Those figures cannot support public performance claims now:
 
-Subhead:
+- their public-use window expired
+- no approved claim-bound public receipt exists
+- direct-booking fee differences were incorrectly described as automatic owner savings
+- one example exposed a private owner name and internal evidence paths
 
-`Most owners compare 15%, 20%, and 25% management fees. That misses the bigger stack: OTA drag, direct-booking mix, pricing discipline, and how clearly your manager explains what is happening to owner net.`
+`src/_data/ownerProofAssets.json` therefore keeps the stable asset key for template compatibility but holds empty `stats` and `examples` arrays with `reuseStatus: retired-stale`. The published Airbnb and Stripe pricing has its own active freshness window (`pricingReviewedDate` through `pricingStaleAfter`) so retired performance proof cannot let external rates age forever.
 
-CTA:
+## Required Cleanup
 
-`Request Your Revenue Teardown`
+- Remove the expired owner metrics and savings language from every `src/` surface that repeats them.
+- Remove internal workflow language from the benchmark CTA and shared owner form.
+- Remove private owner naming and internal repository paths from visible archive copy.
+- Keep Article and BreadcrumbList JSON-LD, visible author/source information, self-canonical, sitemap inclusion, and CTA tracking.
+- Do not change layout, forms, redirects, or tracking field names in this rescue.
 
-## Proof Boundary
+## Verification
 
-Observed Seascape operating facts:
-
-- `$1.4M` current annual portfolio rental revenue across five active Gulf Coast homes
-- `$119,923` direct booking revenue
-- `13.4%` observed Airbnb host-fee drag
-- `2.9%` approximate direct payment cost
-
-Scenario math:
-
-- channel-cost gap examples are illustrative owner math
-- scenario rows are not forecasts or guarantees
-- property-level upside still requires a revenue review
-
-Visible proof labels:
-
-- `Observed Seascape portfolio data`
-- `Observed property example`
-- `Scenario math, not a forecast`
-- `Last refreshed: May 2026`
-
-Claims to keep out:
-
-- benchmark-path test receipts as owner demand
-- market-wide authority from a 5-home sample
-- blanket `15%` quote for every home
-- review-count, Superhost, or Premier Host stat blocks unless freshly verified
-- AI, dashboard, or automation language as the owner-facing reason to switch
-
-## Pages Fed
-
-- `/property-management/`
-- `/property-management/vacation-rental-management-fees-florida/`
-- `/property-management/maximize-vacation-rental-income-florida/`
-- `/research/owner-fee-revenue-gap-benchmark-2026/`
-
-## CTA Pattern
-
-Primary CTA becomes:
-
-- `Request Your Revenue Teardown`
-
-The benchmark should make the owner ask for a property-specific teardown, not chase the lowest management percentage.
-
-Form route:
-
-- primary CTA should link to the owner teardown intake:
-  `/property-management/#owner-cta`
-- form submit button stays `Send My Teardown Request`
-- proof note should say missing statements, calendars, reviews, or fee terms are marked unknown
-
-Live teardown funnel implementation:
-
-- shared owner form partial should use the benchmark teardown fields from the
-  `Owner Benchmark Exploration` Figma file
-- owner hub and shared owner-page CTA surfaces should ask for property address
-  or market, listing URL, current manager, current fee quote, what feels off,
-  and optional owner-statement upload
-- keep the private-teardown framing and proven leak / likely leak / unknown copy
-  consistent between the benchmark CTA path and owner CTA surfaces
-
-## Figma / Site Handoff
-
-Use the Hub package's frame plan directly:
-
-1. Desktop implementation frame: `9:2`
-2. Mobile implementation frame: `11:2`
-3. Sections: hero, wrong-comparison intro, fee stack, channel-cost comparison,
-   scenario math, observed examples, fit boundary, teardown CTA, method rail
-4. Proof chips must stay visible in Figma and in the live page.
-5. Chart captions are real page text, not hidden design notes.
-6. Do not turn v1 into an interactive calculator.
-
-## Follow-Up
-
-Next asset should be the visual/chart pack:
-
-- Airbnb channel dependence
-- 74-day booking window
-- seasonal ADR spread
-- Bradenton vs Sarasota vs AMI trip cost
-
-## Email Follow-Up Path Slice
-
-Implementation note: 2026-05-28
-Outlook evidence found: sent 2026-05-26
-
-- Handoff source: the owner revenue-review follow-up email asks for a listing URL or property address plus one plain-English note on what feels off right now.
-- Site path: `/property-management/?owner_source=owner-revenue-review-follow-up#owner-cta`
-- Required preservation: the `owner_source` query value must become `source_page_slug` on owner form start and submit tracking, and the Netlify form must keep the hidden `source_page_slug` value.
-- Copy requirement: the owner CTA should mirror the email language without adding a new offer, new proof claim, or generic sales-call framing.
+- `npm run lint:content`
+- `npm test`
+- `npm run verify:release`
+- rendered desktop and mobile review for the research route and `/property-management/`
+- Claude Fable copy/truth review
+- configured Codex autoreview

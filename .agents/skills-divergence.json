@@ -1,0 +1,4 @@
+{
+  "description": "Declared divergences between .agents/skills/ and .claude/skills/. Every skill directory that exists in one dir but not the other must be listed here with a reason, or the test gate (scripts/enforcement/skills-divergence.test.js) fails. Scope: directories only \u2014 loose files like .claude/skills/README.md are documentation, not skills. Approved by eng-review decision D16, 2026-07-19.",
+  "divergences": []
+}

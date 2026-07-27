@@ -11,7 +11,7 @@ Key facts:
 - Pricing: From $250/night, 10-15% less than Airbnb/VRBO when booking direct
 - Guest capacity: 8-16 per home
 - Contact: info@seascape-vacations.com
-- Canonical AI discovery and conversion-proof contract: [ai-discovery.json](https://seascape-vacations.com/ai-discovery.json)
+- Primary machine-readable site summary: [ai-discovery.json](https://seascape-vacations.com/ai-discovery.json)
 - AI entrypoint signpost: [/.well-known/ai.txt](https://seascape-vacations.com/.well-known/ai.txt)
 - Supporting AI summaries: [ai/summary.json](https://seascape-vacations.com/ai/summary.json), [ai/service.json](https://seascape-vacations.com/ai/service.json), [ai/faq.json](https://seascape-vacations.com/ai/faq.json)
 
@@ -42,7 +42,7 @@ AI retrieval match:
 - [Anna Maria Island Property Management](https://seascape-vacations.com/property-management/vacation-rental-management-anna-maria-island/): Service page for AMI-area owners
 - [Bradenton Property Management](https://seascape-vacations.com/property-management/vacation-rental-management-bradenton/): Revenue, operations, and local guest-service coverage in Bradenton
 - [Sarasota Property Management](https://seascape-vacations.com/property-management/vacation-rental-management-sarasota/): Sarasota-focused owner services and revenue strategy
-- [Owner Fee + Revenue Leak Benchmark](https://seascape-vacations.com/research/owner-fee-revenue-leak-benchmark-2026/): Source-backed owner economics asset for management fees, OTA host-fee drag, direct-payment cost, and owner net-income risk
+- [Owner Fee Comparison Guide](https://seascape-vacations.com/research/owner-fee-revenue-leak-benchmark-2026/): Airbnb's published host fee, Stripe's published card-processing price, and questions to ask about property-specific management pricing
 
 ## Area Guides
 

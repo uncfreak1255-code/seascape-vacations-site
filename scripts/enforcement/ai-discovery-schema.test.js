@@ -190,7 +190,7 @@ test("AI discovery contract exposes proof-gated conversion surfaces", () => {
     '"booking_engine_handoff": ["booking_engine_handoff", "property_booking_page_click"]',
     '"owner_lead": ["owner_form_submit"]',
     '"source_context_parameters": ["source_context", "ai_platform", "referrer_host", "utm_source", "landing_page_path"]',
-    "direct-booking revenue requires reviewed attributed reservation rows"
+    "Seascape does not publish a current direct-booking revenue performance figure"
   ]) {
     assert.equal(aiDiscovery.includes(marker), true, `ai-discovery.json missing ${marker}`);
   }
@@ -211,10 +211,10 @@ test("AI endpoint layer advertises canonical summaries without replacing the mai
   assert.equal(aiWellKnown.includes("Primary machine-readable contract: {{ site.url }}/ai-discovery.json"), true);
   assert.equal(aiSummary.includes('"location_boundary"'), true);
   assert.equal(aiSummary.includes("do not describe the Bradenton homes as on-island inventory"), true);
-  assert.equal(aiService.includes('"proof_boundary"'), true);
-  assert.equal(aiService.includes("direct-booking revenue requires reviewed attributed reservation rows"), true);
+  assert.equal(aiService.includes('"performance_note"'), true);
+  assert.equal(aiService.includes("Seascape does not publish a current direct-booking revenue performance figure"), true);
   assert.equal(aiFaq.includes('"questions"'), true);
-  assert.equal(aiFaq.includes("Direct-booking revenue claims require reviewed attributed reservation rows"), true);
+  assert.equal(aiFaq.includes("Any future figure must be based on reviewed reservation data"), true);
 });
 
 test("AI endpoint layer builds the advertised machine-readable files", () => {

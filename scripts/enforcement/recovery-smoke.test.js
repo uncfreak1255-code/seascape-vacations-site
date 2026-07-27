@@ -30,10 +30,12 @@ test("property-management smoke follows the current proof-first owner hub", () =
   const currentOwnerHubBody = `
     <main>
       <h1>Before you renew, what does your Gulf Coast home actually keep?</h1>
-      <p>Seascape's current Gulf Coast portfolio runs at $1.4M in annual rental revenue with $119,923 already routed through direct bookings.</p>
-      <strong>13.4% → 2.9%</strong>
+      <p>The Fee Comparison separates published platform charges from a property-specific management agreement.</p>
+      <strong>15.5%</strong>
+      <strong>2.9% + 30¢</strong>
+      <strong>Property-specific</strong>
       <section>
-        <p>What owners miss when they compare management fees</p>
+        <p>Airbnb, Stripe, and a property manager charge for different services.</p>
       </section>
       <a href="#owner-cta">Request Your Revenue Review</a>
       <a href="/property-management/vacation-rental-management-sarasota/">Sarasota coverage</a>
@@ -114,6 +116,42 @@ test("properties smoke rejects missing stable property detail hrefs", () => {
   }, /properties page is missing stable property detail links/);
 });
 
+test("properties smoke accepts only current New York availability metadata on live cards", () => {
+  const smoke = loadSmokeModule();
+  const now = Date.parse("2026-07-17T00:30:00.000Z");
+  const currentMarkup = `
+    <article class="catalog-card" data-next-available-start="2026-07-16" data-next-available-end="2026-07-18">
+      <span>Availability · live</span>
+    </article>
+  `;
+
+  assert.doesNotThrow(() => smoke.validateLiveAvailabilityMarkup(currentMarkup, { now }));
+  assert.throws(
+    () =>
+      smoke.validateLiveAvailabilityMarkup(
+        currentMarkup.replace("2026-07-16", "2026-07-15"),
+        { now }
+      ),
+    /expired or malformed live availability/
+  );
+  assert.throws(
+    () =>
+      smoke.validateLiveAvailabilityMarkup(
+        currentMarkup.replace('data-next-available-start="2026-07-16"', ""),
+        { now }
+      ),
+    /missing date metadata/
+  );
+  assert.throws(
+    () =>
+      smoke.validateLiveAvailabilityMarkup(
+        currentMarkup.replace("2026-07-18", "not-a-date"),
+        { now }
+      ),
+    /expired or malformed live availability/
+  );
+});
+
 test("stays smoke follows the live stay-collection hub instead of a dead prefix", () => {
   const smoke = loadSmokeModule();
   const target = smoke.targets.find((entry) => entry.path === "/stays/");
@@ -154,7 +192,9 @@ test("live smoke locks the refreshed AMI vs Siesta SEO markers", () => {
       location: null,
       body: `
         <main>
-          <p>Reviewed June 20, 2026: Sarasota County still positions Siesta Beach around its quartz sand, 950 free parking spaces, and national beach awards.</p>
+          <p>Reviewed June 2026</p>
+          <p>Sarasota County's Siesta Beach page for current parking, sand, and award notes</p>
+          <p>Siesta Beach has about 950 free spaces, but they can fill during busy periods.</p>
           <p>Nearly pure quartz crystal</p>
           <p>Early-2026 Seascape rate checks used as planning context, not a live quote</p>
         </main>

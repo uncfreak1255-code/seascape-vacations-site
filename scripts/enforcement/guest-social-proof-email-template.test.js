@@ -131,9 +131,23 @@ test("guest social-proof copy avoids drifted proof claims and placeholder links"
 
 test("guest social-proof campaign doc keeps runtime proof receipt and canonical template refs", () => {
   const docs = read(docsPath);
-  const approvedArtifactSection = extractMarkdownSection(docs, "Approved Mailchimp Artifact");
+  const senderAuthoritySection = extractMarkdownSection(docs, "Sender Authority");
+  const approvedArtifactSection = extractMarkdownSection(
+    docs,
+    "Approved Content Artifact (historical Mailchimp format)"
+  );
 
   assert.match(docs, /Outlook Proof Receipt/);
+  assert.match(senderAuthoritySection, /Microsoft\s+365 \/ Outlook/);
+  assert.match(senderAuthoritySection, /info@seascape-vacations\.com/);
+  assert.match(senderAuthoritySection, /personal Gmail/i);
+  assert.match(senderAuthoritySection, /seascape-ops/);
+  assert.match(senderAuthoritySection, /Phase 1 hard-disabled/i);
+  assert.match(docs, /Application `Mail\.Send` in scope for\s+`info@`/i);
+  assert.match(docs, /no additive unscoped Entra\s+`Mail\.Send`/i);
+  assert.match(docs, /separate reviewed Phase 2/i);
+  assert.match(docs, /Do not execute this checklist during Phase 1/i);
+  assert.doesNotMatch(docs, /Fresh runtime evidence that this outbound path is live/i);
   assert.match(approvedArtifactSection, new RegExp(canonicalSubject.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
   assert.match(approvedArtifactSection, /docs\/outreach\/templates\/guest-social-proof-email\.html/);
   assert.match(approvedArtifactSection, /docs\/outreach\/templates\/guest-social-proof-email\.txt/);

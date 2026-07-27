@@ -1,72 +1,13 @@
 {
   "proofPackUrl": "/research/how-seascape-protects-owner-net-2026/",
-  "sourceLabel": "Seascape operator proof library",
-  "sourcePath": "seascape-hub/projects/operator-performance-proof-library.md",
+  "sourceLabel": "Retired April 2026 owner-report examples",
   "lastVerified": "2026-05-12",
   "lastRefreshedLabel": "May 2026",
   "staleAfter": "2026-05-26",
   "freshnessPolicy": "retired-no-public-reuse",
   "reuseStatus": "retired-stale",
   "retiredAfter": "2026-05-26",
-  "retirementReason": "No newer owner-report proof has replaced these April 2026 owner-report examples. Keep the page as an archive only; do not route active owner acquisition or AI/search promotion through it until fresh owner-report proof lands.",
-  "redactionNote": "Examples are redacted summaries. Owner names, addresses, statement details, and booking-level records stay private unless Sawyer approves otherwise.",
-  "demandBoundary": "Current benchmark-path receipts prove measurement wiring only. They do not prove booked teardowns, closed owner demand, or a market-wide willingness to switch managers.",
-  "modules": [
-    {
-      "id": "OPM-2026-04-BT-DIRECT-MIX-01",
-      "type": "Direct booking example",
-      "headline": "Sarasota Luxe kept more March revenue away from higher-cost booking sources.",
-      "metric": "32.8%",
-      "metricLabel": "March 2026 direct booking share",
-      "supportingMetric": "about $730",
-      "supportingLabel": "avoided Airbnb-like cost that month",
-      "whatChanged": "Seascape could point to the share of revenue already coming through direct bookings instead of treating every reservation source as equal.",
-      "whyItMatters": "You can see whether a manager is only filling nights or also protecting what reaches the statement.",
-      "boundary": "One March 2026 property example. It is not a guarantee for other homes.",
-      "evidencePath": "seascape-hub/intelligence/owner-reports/2026-04-bt-report.md",
-      "proofLabel": "Observed property example"
-    },
-    {
-      "id": "OPM-2026-04-PATRICK-DIRECT-MIX-01",
-      "type": "Portfolio reality check",
-      "headline": "Patrick's portfolio shows the honest middle ground: real direct bookings, still limited.",
-      "metric": "5.7%",
-      "metricLabel": "March 2026 direct booking share",
-      "supportingMetric": "about $450",
-      "supportingLabel": "avoided Airbnb-like cost on one booking",
-      "whatChanged": "The report separated a real direct-booking win from the larger booking-source problem still left to solve.",
-      "whyItMatters": "You get a cleaner read on what is already working and what still needs pressure.",
-      "boundary": "Portfolio example only. Direct bookings were real, but they were not yet the dominant source.",
-      "evidencePath": "seascape-hub/intelligence/owner-reports/2026-04-patrick-report.md",
-      "proofLabel": "Observed portfolio example"
-    },
-    {
-      "id": "OPM-2026-04-BRADENTON-FEE-STACK-01",
-      "type": "Booking-source cost example",
-      "headline": "Bradenton Pool showed why cleaning-heavy stays can make platform cost harder to spot.",
-      "metric": "16.4%",
-      "metricLabel": "effective March 2026 Airbnb cost",
-      "supportingMetric": "cleaning-heavy subtotal",
-      "supportingLabel": "cost driver named in the report",
-      "whatChanged": "Seascape flagged that Airbnb's cost applied to more than nightly rent, which made the effective cost higher than the headline average.",
-      "whyItMatters": "You can ask whether your current manager explains the cost drivers behind each payout instead of only reporting occupancy.",
-      "boundary": "One property cost example. It should not be used as a universal Airbnb fee claim.",
-      "evidencePath": "seascape-hub/intelligence/owner-reports/2026-04-patrick-report.md",
-      "proofLabel": "Observed property example"
-    },
-    {
-      "id": "OPM-2026-04-OWNER-REPORT-COMMS-01",
-      "type": "Owner-report communication",
-      "headline": "The owner report explains the money, the booking source, and the next action.",
-      "metric": "4-part read",
-      "metricLabel": "revenue, booking source, cost, next action",
-      "supportingMetric": "redacted",
-      "supportingLabel": "owner names and booking details withheld",
-      "whatChanged": "The report translates activity into plain decisions: what worked, what cost more, what needs follow-up, and what is still missing.",
-      "whyItMatters": "You are not left guessing whether the manager is protecting the property or just sending a month-end activity dump.",
-      "boundary": "Redacted communication standard. It does not prove a completed external teardown outcome.",
-      "evidencePath": "seascape-hub/intelligence/owner-reports/2026-04-patrick-report.md; seascape-hub/intelligence/owner-reports/2026-04-bt-report.md",
-      "proofLabel": "Redacted owner-report example"
-    }
-  ]
+  "retirementReason": "The April 2026 examples are no longer current enough to publish.",
+  "publicNote": "The figures and property details have been removed. Current fee information is available in the owner fee guide.",
+  "modules": []
 }

@@ -28,15 +28,18 @@ still feel Seascape-native and obey repo truth.
 
 1. State the page decision the route must help the visitor make.
 2. Fill the intake in `docs/process/seascape-design-studio.md`.
-3. Run `seascape-design-critic` first on the current route, the proposed mockup,
+3. Run `npm run design:donors -- "<task>"` to classify the page family and scan
+   locally cached marketplace/plugin skill metadata for useful design donors.
+   The design-lane launcher performs this scan automatically.
+4. Run `seascape-design-critic` first on the current route, the proposed mockup,
    or the initial concept.
-4. If the critic returns `Reject` or `Needs another pass`, create 2-3 materially
+5. If the critic returns `Reject` or `Needs another pass`, create 2-3 materially
    different directions before any implementation brief.
-5. Choose one direction and explain why it best fits the page job, Seascape's
+6. Choose one direction and explain why it best fits the page job, Seascape's
    design law, and the route's proof/copy constraints.
-6. Produce an implementation brief with layout, hierarchy, surfaces, imagery,
+7. Produce an implementation brief with layout, hierarchy, surfaces, imagery,
    CTA treatment, states, and mobile behavior detailed enough for source work.
-7. If implementation happens in the same task, follow
+8. If implementation happens in the same task, follow
    `docs/process/design-review-workflow.md` and the rendered `design-review`
    gate before human review.
 
@@ -59,21 +62,28 @@ still feel Seascape-native and obey repo truth.
 - luxury claims built only from serif fonts and gold accents
 - cargo-culting a donor comp without checking `DESIGN.md`
 
-## Optional Donor Lenses
+## Optional Local Donor Routing
 
-Use these only when they materially improve the direction:
+The scanner reads only `name` and `description` frontmatter from local Codex
+and Claude plugin caches. It does not execute instructions, install plugins,
+copy skills into this repo, or change global configuration.
 
-- global `claude-design`
-- `product-design:ideate`
-- `product-design:audit`
-- `creative-production:moodboard-explorer`
-- `creative-production:scene-explorer`
-- `creative-production:shot-explorer`
+Preferred donor capabilities:
 
-These are donor lenses only. Rewrite their useful output into the Seascape
-packet and keep `DESIGN.md` plus repo truth as authority.
+- interface and art direction: a `frontend-design`-style donor
+- charts, maps, comparisons, and interactive artifacts: a `visualize`-style donor
+- imagery or composition: an image/art-direction donor only when the task needs it
+- Figma or standalone prototype donors only when the task explicitly calls for them
 
-Figma is optional. It is not a required dependency for this lane.
+Invoke a discovered donor only when the current agent session exposes it as
+available. Otherwise treat it as a candidate reference and do not claim the
+skill ran. Legacy global donors such as `claude-design`, `product-design:*`, or
+`creative-production:*` remain optional when already available, but Sawyer does
+not need to keep them loaded for this lane. Every useful donor result must be
+rewritten into the Seascape packet under `DESIGN.md` and repo truth.
+
+Figma is optional. It is not a required dependency for this lane and is never
+auto-installed.
 
 ## Direction Standard
 

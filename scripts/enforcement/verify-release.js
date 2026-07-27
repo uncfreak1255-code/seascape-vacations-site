@@ -11,7 +11,9 @@ const { assertRepoHtmlCachePolicyConsistency } = require("./release-cache-policy
 const { assertSearchDecisionBriefContract } = require("./search-brief-gate");
 const { withWorktreeLock } = require("./worktree-lock");
 const {
+  assertOwnerBenchmarkProof,
   assertFreshOwnerOperatorProof,
+  readOwnerBenchmarkProofAsset,
   readOwnerOperatorProofAssets
 } = require("./owner-proof-freshness");
 const { normalizeReleaseChecks } = require("./release-scorecard");
@@ -81,6 +83,18 @@ function parseArgs(argv) {
   }
 
   return parsed;
+}
+
+function designLintBaseFromRange(range) {
+  const candidate = String(range || "").trim();
+  if (!candidate) {
+    throw new Error("verify-release requires a non-empty range for design lint");
+  }
+
+  const threeDotIndex = candidate.indexOf("...");
+  const twoDotIndex = candidate.indexOf("..");
+  const separatorIndex = threeDotIndex > 0 ? threeDotIndex : twoDotIndex > 0 ? twoDotIndex : -1;
+  return separatorIndex === -1 ? candidate : candidate.slice(0, separatorIndex);
 }
 
 function getChangedFiles(range) {
@@ -225,22 +239,30 @@ function recordAssertion(pathAssertions, label, fn) {
   }
 }
 
-function main() {
-  const args = parseArgs(process.argv.slice(2));
-  const pathAssertions = [];
-  const checks = [];
-  const commandSteps = [
+function buildCommandSteps(range) {
+  return [
     { label: "property:truth:check", command: "npm", args: ["run", "property:truth:check"] },
     { label: "build", command: "npm", args: ["run", "build"] },
-    { label: "test", command: "npm", args: ["test"] },
+    { label: "test", command: "npm", args: ["run", "test:unit"] },
+    {
+      label: "lint:design",
+      command: "npm",
+      args: ["run", "lint:design", "--", "--base", designLintBaseFromRange(range)],
+    },
     { label: "verify:redirects", command: "npm", args: ["run", "verify:redirects"] },
     { label: "verify:recovery:p0", command: "npm", args: ["run", "verify:recovery:p0"] },
     { label: "verify:recovery:guides", command: "npm", args: ["run", "verify:recovery:guides"] },
     { label: "verify:recovery:remediation", command: "npm", args: ["run", "verify:recovery:remediation"] },
-    { label: "verify:direct-booking-events", command: "npm", args: ["run", "verify:direct-booking-events"] },
     { label: "verify:links", command: "npm", args: ["run", "verify:links"] },
     { label: "verify:jsonld", command: "npm", args: ["run", "verify:jsonld"] },
   ];
+}
+
+function main() {
+  const args = parseArgs(process.argv.slice(2));
+  const pathAssertions = [];
+  const checks = [];
+  const commandSteps = buildCommandSteps(args.range);
 
   try {
     recordAssertion(pathAssertions, "netlify build truth", assertNetlifyBuildTruth);
@@ -258,6 +280,9 @@ function main() {
     );
     recordAssertion(pathAssertions, "fresh owner operator proof", () =>
       assertFreshOwnerOperatorProof(readOwnerOperatorProofAssets())
+    );
+    recordAssertion(pathAssertions, "fresh owner published pricing", () =>
+      assertOwnerBenchmarkProof(readOwnerBenchmarkProofAsset())
     );
   } catch (error) {
     writeReceipt(args.receiptPath, buildReceipt({ args, pathAssertions, checks }));
@@ -307,4 +332,8 @@ function main() {
   console.log("verify-release: all checks passed");
 }
 
-main();
+if (require.main === module) {
+  main();
+}
+
+module.exports = { parseArgs, designLintBaseFromRange, buildCommandSteps };

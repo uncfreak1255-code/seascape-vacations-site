@@ -1,12 +1,17 @@
 # SEO Automation A+ Upgrade — Implementation Plan
 
-> **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
+> **Historical / superseded plan. Do not execute task-by-task.** Provider,
+> scheduler, deploy, and email instructions reflect a March 2026 design, not
+> current authority. Email content may be reused only as a draft; any approved
+> Seascape campaign is delivered through the Ops-owned Microsoft 365 / Outlook
+> `info@seascape-vacations.com` lane. This Site repo must not create Gmail
+> drafts or send campaigns.
 
 **Goal:** Upgrade Seascape Vacations' SEO automation system from B+ to A+ across all 5 dimensions — website traffic, direct booking conversions, SEO strategy, GEO/AI optimization, and competitive dominance — by creating 6 new scheduled tasks, upgrading 4 existing tasks, adding cross-task coordination, and building verification infrastructure.
 
 **Architecture:** Each new/upgraded task is a Cowork scheduled task (SKILL.md file in `~/Documents/Claude/Scheduled/{taskId}/`). Tasks communicate via a shared state log (`task-log-YYYY-MM.md`) in the workspace. Every task that deploys uses the standardized git-push-then-Netlify-MCP workflow. All tasks reference CLAUDE.md for site context and use Desktop Commander for file operations.
 
-**Tech Stack:** Cowork scheduled tasks (Markdown SKILL.md files), Netlify MCP deploy, Ahrefs MCP (Keywords Explorer + SERP Overview only — FREE plan), web search for rank checking/competitor analysis/AI citation tracking, Desktop Commander for file I/O, Gmail MCP for outreach drafts, Python for data processing, git for version control.
+**Historical tech stack:** Cowork scheduled tasks (Markdown SKILL.md files), Netlify MCP deploy, Ahrefs MCP (Keywords Explorer + SERP Overview only — FREE plan), web search for rank checking/competitor analysis/AI citation tracking, Desktop Commander for file I/O, file-only outreach content drafts, Python for data processing, git for version control. Current campaign delivery policy lives in `seascape-hub/context/operating-canon.md#business-email` and is enforced by `seascape-ops`.
 **Workspace:** `/Users/sawbeck/Projects/seascape-vacations-site/`
 **Deploy folder:** `DEPLOY THIS FOLDER TO NETLIFY/` (inside workspace)
 **Netlify site ID:** `380fdf4b-91dd-4c6d-a31c-252c07aade81`

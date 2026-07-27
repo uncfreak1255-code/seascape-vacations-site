@@ -1,6 +1,7 @@
 const path = require("node:path");
 const STABLE_VISUAL_DATE = "2026-06-01";
 const STABLE_VISUAL_DATE_LABEL = "June 1, 2026";
+const STABLE_PROPERTY_AVAILABILITY_NOW = new Date("2026-05-17T16:00:00.000Z");
 
 const HERO_WEATHER_RESPONSE = {
   current: {
@@ -143,11 +144,22 @@ async function stabilizePropertyManagementVisualState(page, routeConfig) {
 
 async function gotoMarketingRoute(page, routeConfig) {
   await registerStableNetwork(page);
+  if (routeConfig.slug === "properties-catalog") {
+    await page.clock.setFixedTime(STABLE_PROPERTY_AVAILABILITY_NOW);
+  }
   if (routeConfig.slug === "property-management") {
     await page.emulateMedia({ reducedMotion: "reduce" });
   }
   const separator = routeConfig.path.includes("?") ? "&" : "?";
-  await page.goto(`${routeConfig.path}${separator}visual-test=1`, { waitUntil: "networkidle" });
+  const response = await page.goto(`${routeConfig.path}${separator}visual-test=1`, { waitUntil: "networkidle" });
+  // The static server serves the branded /404.html (with its own main h1) for
+  // missing paths, so a vanished route would otherwise produce green proof
+  // against the 404 page. Fail loudly on any non-200 instead.
+  if (!response || response.status() !== 200) {
+    throw new Error(
+      `[visual] route ${routeConfig.path} returned HTTP ${response ? response.status() : "no response"} — refusing to capture proof against a non-200 page`
+    );
+  }
   await page.evaluate((slug) => {
     document.documentElement.dataset.visualRoute = slug;
   }, routeConfig.slug);
@@ -195,4 +207,5 @@ async function prepareFullPageScreenshot(page) {
 module.exports = {
   gotoMarketingRoute,
   prepareFullPageScreenshot,
+  registerStableNetwork,
 };

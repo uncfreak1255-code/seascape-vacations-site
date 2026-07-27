@@ -18,6 +18,34 @@ function decodeHtmlAttribute(value) {
     .trim();
 }
 
+function decodeVisibleText(value) {
+  return String(value || "")
+    .replace(/&nbsp;/gi, " ")
+    .replace(/&amp;/gi, "&")
+    .replace(/&quot;/gi, '"')
+    .replace(/&#34;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&#x27;/gi, "'")
+    .replace(/&#x2F;/gi, "/")
+    .replace(/&lt;/gi, "<")
+    .replace(/&gt;/gi, ">");
+}
+
+function extractVisibleBodyText(html) {
+  const source = String(html || "");
+  const bodyMatch = source.match(/<body\b[^>]*>([\s\S]*?)<\/body>/i);
+  const body = bodyMatch ? bodyMatch[1] : source;
+
+  return normalizeText(
+    decodeVisibleText(
+      body
+        .replace(/<!--[\s\S]*?-->/g, " ")
+        .replace(/<(script|style|noscript|template)\b[\s\S]*?<\/\1>/gi, " ")
+        .replace(/<[^>]+>/g, " ")
+    )
+  );
+}
+
 function findFirst(html, pattern) {
   const match = String(html || "").match(pattern);
   return match ? decodeHtmlAttribute(match[1]) : null;
@@ -61,8 +89,10 @@ function extractHeadTags(html) {
   return {
     title: findFirst(html, /<title>([\s\S]*?)<\/title>/i),
     description: findMetaContent(html, "name", "description"),
+    author: findMetaContent(html, "name", "author"),
     canonical: findLinkHref(html, "canonical"),
     robots: findMetaContent(html, "name", "robots"),
+    ogUrl: findMetaContent(html, "property", "og:url"),
     ogTitle: findMetaContent(html, "property", "og:title"),
     ogDescription: findMetaContent(html, "property", "og:description"),
     twitterTitle: findMetaContent(html, "name", "twitter:title"),
@@ -161,6 +191,7 @@ function buildRouteContract({ html, routePath = "/", sourcePath = null } = {}) {
     jsonLdObjects: parsedJsonLd.objects,
     jsonLdParseErrors: parsedJsonLd.errors,
     trackedEvents: extractTrackedEvents(contents),
+    visibleBodyText: extractVisibleBodyText(contents),
     templateLeakMarkers: findTemplateLeakMarkers(contents),
     standaloneShellMarkers: findStandaloneShellMarkers(contents),
     pathFacts: extractRoutePathFacts(normalizedRoutePath)
@@ -210,6 +241,7 @@ module.exports = {
   assertRequiredHeadTags,
   buildRouteContract,
   extractHeadTags,
+  extractVisibleBodyText,
   extractJsonLdBlocks,
   extractJsonLdObjects,
   extractRoutePathFacts,

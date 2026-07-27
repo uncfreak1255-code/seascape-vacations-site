@@ -2,6 +2,8 @@ const HOSTAWAY_PREFIX = "https://hostaway-platform.s3.us-west-2.amazonaws.com/";
 const CDN_PREFIX = "https://bookingenginecdn.hostaway.com/";
 const PLACEHOLDER_IMAGE = "/images/seascape-og-default.jpg";
 const DAY_MS = 24 * 60 * 60 * 1000;
+const BUSINESS_TIME_ZONE = "America/New_York";
+const DATE_STAMP_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
 const MONTH_FORMATTER = new Intl.DateTimeFormat("en-US", { month: "short", timeZone: "UTC" });
 const CARD_DATE_FORMATTER = new Intl.DateTimeFormat("en-US", { month: "short", day: "2-digit", timeZone: "UTC" });
 
@@ -22,7 +24,38 @@ function parseDateStamp(value) {
   const stamp = value.slice(0, 10);
   if (!/^\d{4}-\d{2}-\d{2}$/.test(stamp)) return null;
   const parsed = new Date(`${stamp}T00:00:00Z`);
-  return Number.isNaN(parsed.getTime()) ? null : stamp;
+  return Number.isNaN(parsed.getTime()) || parsed.toISOString().slice(0, 10) !== stamp ? null : stamp;
+}
+
+function businessDateStamp(value = Date.now(), timeZone = BUSINESS_TIME_ZONE) {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return null;
+
+  const parts = new Intl.DateTimeFormat("en-US", {
+    timeZone,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit"
+  }).formatToParts(date);
+  const byType = Object.fromEntries(parts.map((part) => [part.type, part.value]));
+  return `${byType.year}-${byType.month}-${byType.day}`;
+}
+
+function isCurrentAvailabilityRange(nextAvailable, options = {}) {
+  if (!nextAvailable || typeof nextAvailable !== "object") return false;
+  if (
+    typeof nextAvailable.startDate !== "string" ||
+    typeof nextAvailable.endDate !== "string" ||
+    !DATE_STAMP_PATTERN.test(nextAvailable.startDate) ||
+    !DATE_STAMP_PATTERN.test(nextAvailable.endDate)
+  ) {
+    return false;
+  }
+  const startDate = parseDateStamp(nextAvailable.startDate);
+  const endDate = parseDateStamp(nextAvailable.endDate);
+  const today = businessDateStamp(options.now ?? Date.now(), options.timeZone || BUSINESS_TIME_ZONE);
+
+  return Boolean(startDate && endDate && today && startDate >= today && endDate > startDate);
 }
 
 function dateFromStamp(stamp) {
@@ -234,4 +267,12 @@ function normalizeListing(listing, slugMap = {}) {
   };
 }
 
-module.exports = { normalizeListing, normalizeImage, normalizeAvailability, normalizeBathroomCount };
+module.exports = {
+  BUSINESS_TIME_ZONE,
+  businessDateStamp,
+  isCurrentAvailabilityRange,
+  normalizeListing,
+  normalizeImage,
+  normalizeAvailability,
+  normalizeBathroomCount
+};
