@@ -25,9 +25,16 @@
  * A one-time baseline (design-lint-baseline.json) grandfathers each currently
  * failing file per check, so the gate is green today. Any NEW violation (a file
  * not grandfathered for that check) fails. The baseline can only shrink: a file
- * that no longer violates is reported as "ready to graduate", and a page that is
- * modified on the current branch loses its exemption (migrate-on-touch), so the
- * corpus can only move toward the standard.
+ * that no longer violates is reported as "ready to graduate".
+ *
+ * MIGRATE-ON-TOUCH is per check and evidence-based. A grandfathered file keeps
+ * its exemption for a check unless the current branch made THAT CHECK worse than
+ * the merge base: a new off-brand hex, a newly added Google Fonts tag, or a newly
+ * added emoji. Editing a <title>, a meta description, or a paragraph adds no
+ * design debt, so it no longer demands a full design migration of the page.
+ * Newly added files have no base version and are never exempt. The ratchet still
+ * only turns one way — you cannot add design debt to a legacy page and stay green,
+ * and you cannot introduce a non-compliant new page at all.
  *
  * USAGE
  *   node scripts/design/design-lint.js                 # lint (exit 1 on new violations)
@@ -209,6 +216,64 @@ function changedFiles(baseRef = "origin/main") {
 
 const CHECKS = ["offBrandHex", "googleFonts", "emoji"];
 
+function resolveMergeBase(baseRef) {
+  try {
+    return execFileSync("git", ["merge-base", "HEAD", baseRef], {
+      cwd: projectRoot,
+      encoding: "utf8",
+    }).trim();
+  } catch {
+    return null;
+  }
+}
+
+function readSourceAtRef(ref, rel) {
+  if (!ref) {
+    return null;
+  }
+  try {
+    return execFileSync("git", ["show", `${ref}:${rel}`], {
+      cwd: projectRoot,
+      encoding: "utf8",
+      maxBuffer: 32 * 1024 * 1024,
+    });
+  } catch {
+    return null; // the file did not exist at that ref
+  }
+}
+
+// Lint the BASE version of each touched, still-violating file, so migrate-on-touch
+// can ask "did this edit add design debt?" instead of "was this file edited at all".
+// Only touched violating files are fetched, so this is a handful of git calls.
+function buildBaseReport({ files, report, allowlist }, touched, baseRef) {
+  const mergeBase = resolveMergeBase(baseRef);
+  const baseReport = {};
+  for (const rel of files) {
+    if (!touched.has(rel)) {
+      continue;
+    }
+    if (!CHECKS.some((check) => hasViolation(report[rel], check))) {
+      continue;
+    }
+    const baseSource = readSourceAtRef(mergeBase, rel);
+    baseReport[rel] = baseSource === null ? null : lintSource(baseSource, allowlist);
+  }
+  return baseReport;
+}
+
+// True when this edit made the file WORSE for this check. A file with no base
+// version (newly added) is always treated as worsened, so new files must comply.
+function checkWorsened(working, base, check) {
+  if (!base) {
+    return true;
+  }
+  if (check === "offBrandHex") {
+    const alreadyPresent = new Set(base.offBrandHex);
+    return working.offBrandHex.some((hex) => !alreadyPresent.has(hex));
+  }
+  return Boolean(working[check]) && !base[check];
+}
+
 function run() {
   const allowlist = buildPaletteAllowlist();
   const files = listGuideFiles();
@@ -238,7 +303,7 @@ function buildBaseline({ files, report }) {
   return baseline;
 }
 
-function evaluate({ files, report }, baseline, touched) {
+function evaluate({ files, report }, baseline, touched, baseReport = {}) {
   const newViolations = [];
   const graduated = [];
   let debt = 0;
@@ -246,7 +311,13 @@ function evaluate({ files, report }, baseline, touched) {
     const grandfathered = new Set(baseline[check] || []);
     for (const rel of files) {
       const violates = hasViolation(report[rel], check);
-      const exempt = grandfathered.has(rel) && !touched.has(rel);
+      // Migrate-on-touch is per check and evidence-based: a grandfathered file
+      // keeps its exemption for a check unless this branch made that check worse.
+      // Editing a title or a paragraph adds no design debt and must not demand a
+      // full design migration; adding an off-brand hex, a Google Fonts tag, or an
+      // emoji does, and still fails here.
+      const worsened = touched.has(rel) && checkWorsened(report[rel], baseReport[rel], check);
+      const exempt = grandfathered.has(rel) && !worsened;
       if (violates && !exempt) {
         newViolations.push({ file: rel, check, detail: report[rel] });
       } else if (violates) {
@@ -266,7 +337,7 @@ function main() {
   if (args.includes("--update-baseline")) {
     const baseline = buildBaseline(state);
     baseline._note =
-      "Grandfathered legacy design-law violations. Only shrinks: migrate a file onto the shared system, then run --update-baseline. New/edited files are not exempt.";
+      "Grandfathered legacy design-law violations. Only shrinks: migrate a file onto the shared system, then run --update-baseline. Migrate-on-touch is per check: an exemption is lost only when a branch makes that check worse than the merge base (new off-brand hex, newly added Google Fonts tag, newly added emoji). New files have no base version and are never exempt.";
     fs.writeFileSync(baselinePath, JSON.stringify(baseline, null, 2) + "\n");
     const total = CHECKS.reduce((n, c) => n + baseline[c].length, 0);
     console.log(`design-lint: baseline written with ${total} grandfathered entries across ${CHECKS.length} checks.`);
@@ -276,7 +347,8 @@ function main() {
   const baseline = loadBaseline();
   const baseRef = resolveBaseRef(args);
   const touched = changedFiles(baseRef);
-  const { newViolations, graduated, debt } = evaluate(state, baseline, touched);
+  const baseReport = buildBaseReport(state, touched, baseRef);
+  const { newViolations, graduated, debt } = evaluate(state, baseline, touched, baseReport);
 
   if (args.includes("--json")) {
     console.log(JSON.stringify({ baseRef, newViolations, graduated, debt, palette: [...state.allowlist].sort() }, null, 2));
@@ -318,4 +390,6 @@ module.exports = {
   listGuideFiles,
   resolveBaseRef,
   changedFiles,
+  buildBaseReport,
+  checkWorsened,
 };
