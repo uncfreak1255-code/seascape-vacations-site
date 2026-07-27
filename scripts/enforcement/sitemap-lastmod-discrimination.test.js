@@ -1,5 +1,6 @@
 const test = require("node:test");
 const assert = require("node:assert/strict");
+const { execFileSync } = require("node:child_process");
 const fs = require("fs");
 const path = require("path");
 
@@ -45,9 +46,43 @@ function generatedFamily(entries, prefix) {
 }
 
 const FAMILIES = [
-  { label: "owner", prefix: "/property-management/" },
-  { label: "stay", prefix: "/stays/" },
+  {
+    label: "owner",
+    prefix: "/property-management/",
+    sharedSources: [
+      "src/property-management/property-management.njk",
+      "src/_data/ownerProofAssets.json",
+    ],
+  },
+  {
+    label: "stay",
+    prefix: "/stays/",
+    sharedSources: [
+      "src/stays/stays.njk",
+      "src/_data/staysPages.js",
+      "src/_data/seoGovernance.js",
+    ],
+  },
 ];
+
+function latestGitDate(candidatePaths) {
+  const dates = candidatePaths
+    .map((candidatePath) => {
+      try {
+        const isoString = execFileSync(
+          "git",
+          ["log", "-1", "--format=%cI", "--", candidatePath],
+          { cwd: projectRoot, encoding: "utf8" }
+        ).trim();
+        return isoString ? isoString.slice(0, 10) : null;
+      } catch {
+        return null;
+      }
+    })
+    .filter(Boolean)
+    .sort();
+  return dates[dates.length - 1] || null;
+}
 
 for (const family of FAMILIES) {
   test(`${family.label} sitemap lastmod values are not all identical`, () => {
@@ -58,6 +93,18 @@ for (const family of FAMILIES) {
     );
 
     const distinct = new Set(entries.map((entry) => entry.lastmod));
+    if (distinct.size === 1) {
+      const sharedSourceDate = latestGitDate(family.sharedSources);
+      assert.equal(
+        [...distinct][0],
+        sharedSourceDate,
+        `all ${entries.length} ${family.label} URLs share <lastmod> ${[...distinct][0]}, ` +
+          `but the newest shared source date is ${sharedSourceDate}. ` +
+          "That looks like the per-file-date bug rather than a true shared-template update."
+      );
+      return;
+    }
+
     assert.ok(
       distinct.size > 1,
       `all ${entries.length} ${family.label} URLs share <lastmod> ${[...distinct][0]}. ` +
@@ -84,6 +131,18 @@ test("a page edited more recently than its siblings carries a newer lastmod", ()
   // still being useless to a crawler.
   const entries = generatedFamily(readSitemapEntries(), "/property-management/");
   const dates = [...new Set(entries.map((entry) => entry.lastmod))].sort();
+  if (dates.length === 1) {
+    const sharedSourceDate = latestGitDate(
+      FAMILIES.find((family) => family.label === "owner").sharedSources
+    );
+    assert.equal(
+      dates[0],
+      sharedSourceDate,
+      `single owner lastmod ${dates[0]} is only acceptable when a shared owner source changed`
+    );
+    return;
+  }
+
   assert.ok(
     dates.length >= 2,
     "need at least two distinct owner lastmod values to assert ordering"

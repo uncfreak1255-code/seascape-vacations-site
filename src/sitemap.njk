@@ -25,7 +25,7 @@ eleventyExcludeFromCollections: true
   {% if stayIndexable %}
   <url>
     <loc>{{ site.url }}/stays/{{ seoPage.slug }}/</loc>
-    <lastmod>{{ seoPageLastModifiedDate('vacationer', seoPage.slug, 'src/stays/stays.njk', 'src/_data/seoPages.json', 'src/_data/staysPages.js', 'src/_data/seoGovernance.js') }}</lastmod>
+    <lastmod>{{ seoPageLastModifiedDate('vacationer', seoPage.slug, 'src/stays/stays.njk', 'src/_data/staysPages.js', 'src/_data/seoGovernance.js') }}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -36,7 +36,7 @@ eleventyExcludeFromCollections: true
   {% if ownerIndexable %}
   <url>
     <loc>{{ site.url }}/property-management/{{ seoPage.slug }}/</loc>
-    <lastmod>{{ seoPageLastModifiedDate('owner', seoPage.slug, 'src/property-management/property-management.njk', 'src/_data/seoPages.json', 'src/_data/ownerProofAssets.json') }}</lastmod>
+    <lastmod>{{ seoPageLastModifiedDate('owner', seoPage.slug, 'src/property-management/property-management.njk', 'src/_data/ownerProofAssets.json') }}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>

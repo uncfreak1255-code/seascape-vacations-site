@@ -105,6 +105,19 @@ module.exports = function(eleventyConfig) {
     formatDateLabel(readLatestGitTimestamp(...candidatePaths))
   );
 
+  function latestIsoString(...candidateTimestamps) {
+    let latestTimestamp = null;
+    for (const isoString of candidateTimestamps) {
+      if (
+        isoString &&
+        (!latestTimestamp || new Date(isoString) > new Date(latestTimestamp))
+      ) {
+        latestTimestamp = isoString;
+      }
+    }
+    return latestTimestamp;
+  }
+
   // Per-entry freshness for the data-driven owner and stay pages.
   //
   // gitLastModifiedDate() resolves the mtime of whole FILES. Every owner page is
@@ -183,19 +196,48 @@ module.exports = function(eleventyConfig) {
     return entries;
   }
 
+  function seoPageRelatedKeys(doc, group, entry) {
+    if (!entry?.slug) return [];
+
+    if (group === "vacationer") {
+      return (entry.relatedStaySlugs || []).map((slug) => `${group}/${slug}`);
+    }
+
+    if (group !== "owner") return [];
+
+    if (entry.relatedOwnerResources && entry.relatedOwnerResources.length) {
+      return entry.relatedOwnerResources.map((slug) => `${group}/${slug}`);
+    }
+
+    const relatedKeys = [];
+    for (const relatedEntry of doc?.owner || []) {
+      if (relatedEntry?.slug === entry.slug || relatedKeys.length >= 4) continue;
+      if (
+        (entry.destination && relatedEntry.destination === entry.destination) ||
+        (!entry.destination && !relatedEntry.destination)
+      ) {
+        relatedKeys.push(`${group}/${relatedEntry.slug}`);
+      }
+    }
+    return relatedKeys;
+  }
+
   function buildSeoPageHistory() {
     const history = new Map();
+
+    let currentDoc = null;
+    try {
+      currentDoc = JSON.parse(fs.readFileSync(path.join(root, SEO_PAGES_PATH), "utf8"));
+    } catch {
+      currentDoc = null;
+    }
 
     // Walking all 64 revisions of a 480KB JSON file costs several seconds of
     // build time. Load the current entry set so the walk can stop as soon as
     // every live slug has a date, instead of parsing history nothing reads.
     let pending = null;
-    try {
-      pending = new Set(
-        seoPageEntryMap(JSON.parse(fs.readFileSync(path.join(root, SEO_PAGES_PATH), "utf8"))).keys()
-      );
-    } catch {
-      pending = null;
+    if (currentDoc) {
+      pending = new Set(seoPageEntryMap(currentDoc).keys());
     }
 
     let log;
@@ -259,6 +301,26 @@ module.exports = function(eleventyConfig) {
       }
     }
 
+    if (currentDoc) {
+      const historyWithRelated = new Map(history);
+      for (const group of SEO_PAGE_GROUPS) {
+        for (const entry of currentDoc?.[group] || []) {
+          if (!entry?.slug) continue;
+          const key = `${group}/${entry.slug}`;
+          const relatedTimestamp = latestIsoString(
+            history.get(key),
+            ...seoPageRelatedKeys(currentDoc, group, entry).map((relatedKey) =>
+              history.get(relatedKey)
+            )
+          );
+          if (relatedTimestamp) {
+            historyWithRelated.set(key, relatedTimestamp);
+          }
+        }
+      }
+      return historyWithRelated;
+    }
+
     return history;
   }
 
@@ -270,14 +332,19 @@ module.exports = function(eleventyConfig) {
   }
 
   eleventyConfig.addNunjucksGlobal("seoPageLastModifiedIso", (group, slug, ...fallbackPaths) =>
-    seoPageTimestamp(group, slug) || readLatestGitTimestamp(...fallbackPaths)
+    latestIsoString(seoPageTimestamp(group, slug), readLatestGitTimestamp(...fallbackPaths))
   );
   eleventyConfig.addNunjucksGlobal("seoPageLastModifiedDate", (group, slug, ...fallbackPaths) => {
-    const isoString = seoPageTimestamp(group, slug) || readLatestGitTimestamp(...fallbackPaths);
+    const isoString = latestIsoString(
+      seoPageTimestamp(group, slug),
+      readLatestGitTimestamp(...fallbackPaths)
+    );
     return isoString ? isoString.slice(0, 10) : null;
   });
   eleventyConfig.addNunjucksGlobal("seoPageLastModifiedLabel", (group, slug, ...fallbackPaths) =>
-    formatDateLabel(seoPageTimestamp(group, slug) || readLatestGitTimestamp(...fallbackPaths))
+    formatDateLabel(
+      latestIsoString(seoPageTimestamp(group, slug), readLatestGitTimestamp(...fallbackPaths))
+    )
   );
 
   // Pass through static assets (preserves current design)
