@@ -55,6 +55,7 @@ function hasEntityCoverageSchema(content) {
 module.exports = function(eleventyConfig) {
   const root = process.cwd();
   const gitTimestampCache = new Map();
+  const gitPatternTimestampCache = new Map();
 
   function readLatestGitTimestamp(...candidatePaths) {
     let latestTimestamp = null;
@@ -96,163 +97,69 @@ module.exports = function(eleventyConfig) {
     return latestTimestamp;
   }
 
+  function readLatestGitSearchTimestamp(pattern, candidatePath) {
+    const cacheKey = `${pattern}\0${candidatePath}`;
+    if (gitPatternTimestampCache.has(cacheKey)) {
+      return gitPatternTimestampCache.get(cacheKey);
+    }
+
+    let isoString = "";
+    try {
+      const relativePath = path.relative(root, path.join(root, candidatePath));
+      isoString = execFileSync(
+        "git",
+        ["log", "-1", "--format=%cI", `-S${pattern}`, "--", relativePath],
+        { cwd: root, encoding: "utf8" }
+      ).trim();
+    } catch {
+      isoString = "";
+    }
+
+    gitPatternTimestampCache.set(cacheKey, isoString || null);
+    return isoString || null;
+  }
+
   eleventyConfig.addNunjucksGlobal("gitLastModifiedIso", (...candidatePaths) =>
     readLatestGitTimestamp(...candidatePaths)
   );
   eleventyConfig.addNunjucksGlobal("gitLastModifiedDate", (...candidatePaths) => {
-    const isoString = readLatestGitTimestamp(...candidatePaths);
-    return isoString ? isoString.slice(0, 10) : null;
-  });
-  eleventyConfig.addNunjucksGlobal("gitLastModifiedLabel", (...candidatePaths) =>
-    formatDateLabel(readLatestGitTimestamp(...candidatePaths))
-  );
-
-  function latestIsoString(...candidateTimestamps) {
-    let latestTimestamp = null;
-    for (const isoString of candidateTimestamps) {
-      if (
-        isoString &&
-        (!latestTimestamp || new Date(isoString) > new Date(latestTimestamp))
-      ) {
-        latestTimestamp = isoString;
-      }
-    }
-    return latestTimestamp;
-  }
-
-  // Per-entry freshness for the data-driven owner and stay pages. The history
-  // walk (first-parent ordering, shallow-clone degradation, batched blob reads)
-  // lives in scripts/seo/seo-page-history.js so the enforcement suite can
-  // exercise it against controlled fixture repositories.
-  //
-  // Deliberately NOT included when entry history exists: page-related overlays
-  // or shared template/data timestamps. Measured against the real data, both
-  // can re-flatten generated page families and recreate the exact bug this
-  // change exists to fix. A sibling card's title tweak, template edit, or
-  // family-wide data touch is not a meaningful change to THIS page's primary
-  // content, which is what sitemap lastmod signals. Release/build proof covers
-  // shared rendering changes; this helper keeps generated SEO page dates
-  // page-content-specific.
-  const { buildSeoPageHistory: buildSeoPageEntryHistory } =
-    require("./scripts/seo/seo-page-history.js");
-  let seoPageHistory = null;
-
-  function seoPageTimestamp(group, slug) {
-    if (!seoPageHistory) {
-      seoPageHistory = buildSeoPageEntryHistory({ cwd: root, warn: console.warn });
-    }
-    return seoPageHistory.get(`${group}/${slug}`) || null;
-  }
-
-  function seoPageLastModifiedIsoString(group, slug, fallbackPaths) {
-    return (
-      seoPageTimestamp(group, slug) ||
-      readLatestGitTimestamp(SEO_PAGES_PATH, ...fallbackPaths)
-    );
-  }
-
-  eleventyConfig.addNunjucksGlobal("seoPageLastModifiedIso", (group, slug, ...fallbackPaths) =>
-    seoPageLastModifiedIsoString(group, slug, fallbackPaths)
-  );
-  eleventyConfig.addNunjucksGlobal("seoPageLastModifiedDate", (group, slug, ...fallbackPaths) => {
-    const isoString = seoPageLastModifiedIsoString(group, slug, fallbackPaths);
-    return isoString ? isoString.slice(0, 10) : null;
-  });
-  eleventyConfig.addNunjucksGlobal("seoPageLastModifiedLabel", (group, slug, ...fallbackPaths) =>
-    formatDateLabel(seoPageLastModifiedIsoString(group, slug, fallbackPaths))
-  );
-
-  // Pass through static assets (preserves current design)
-  eleventyConfig.addPassthroughCopy("images");
-  eleventyConfig.addPassthroughCopy("css");
-  eleventyConfig.addPassthroughCopy({ "src/css": "css" });
-  eleventyConfig.addPassthroughCopy("js");
-  eleventyConfig.addPassthroughCopy("hero-optimized.jpg");
-  eleventyConfig.addPassthroughCopy("hero-mobile.jpg");
-  eleventyConfig.addPassthroughCopy("*.png");
-  eleventyConfig.addPassthroughCopy("*.webp");
-  eleventyConfig.addPassthroughCopy("*.avif");
-  eleventyConfig.addPassthroughCopy("_headers");
-  eleventyConfig.addPassthroughCopy({ "src/_redirects": "_redirects" });
-  eleventyConfig.addPassthroughCopy({ "src/llms.txt": "llms.txt" });
-  eleventyConfig.addPassthroughCopy({ "src/robots.txt": "robots.txt" });
-  eleventyConfig.addPassthroughCopy({ "src/assets": "assets" });
-  eleventyConfig.ignores.add("src/guides/anna-maria-island-vacation-cost-guide-2026/**");
-  eleventyConfig.ignores.add("src/guides/best-time-to-visit-anna-maria-island/**");
-
-  eleventyConfig.on("eleventy.after", () => {
-    const root = process.cwd();
-    for (const [source, target] of [
-      [path.join(root, "src", "_redirects"), path.join(root, "_site", "_redirects")],
-      [path.join(root, "src", "llms.txt"), path.join(root, "_site", "llms.txt")],
-      [path.join(root, "src", "robots.txt"), path.join(root, "_site", "robots.txt")]
-    ]) {
-      if (fs.existsSync(source)) {
-        fs.copyFileSync(source, target);
-      }
-    }
-  });
-  
-  // Watch for changes during development
-  eleventyConfig.addWatchTarget("./_data/");
-  
-  // Simple title filter - just appends site name if not already there
-  eleventyConfig.addFilter("seoTitle", function(title) {
-    if (!title) return "Seascape Vacations | Florida Gulf Coast Vacation Rentals";
-    if (title.includes("Seascape")) return title;
-    return `${title} | Seascape Vacations`;
-  });
-  
-  // Simple description filter - provides fallback
-  eleventyConfig.addFilter("seoDescription", function(description) {
-    if (!description) return "Luxury vacation rentals on Florida's Gulf Coast. Book direct and save.";
-    return description;
-  });
-
-  eleventyConfig.addFilter("stripHtml", function(input) {
-    return String(input || "")
-      .replace(/<[^>]*>/g, " ")
-      .replace(/\s+/g, " ")
-      .trim();
-  });
-
-  eleventyConfig.addFilter("json", function(input) {
-    return JSON.stringify(input || null);
-  });
-
-  eleventyConfig.addFilter("imgProxy", function(url, width = 800) {
-    return toHostawayCdn(url, width, 82);
-  });
-
-  eleventyConfig.addTransform("entitySchemaCoverage", function(content, outputPath) {
-    if (!outputPath || !outputPath.endsWith(".html")) {
-      return content;
-    }
-
-    const relativeOutputPath = outputPath.split(path.sep).join("/").replace(/^.*\/_site/, "");
-    if (!ENTITY_COVERAGE_OUTPUT_PATHS.has(relativeOutputPath)) {
-      return content;
-    }
-
-    if (hasEntityCoverageSchema(content)) {
-      return content;
-    }
-
-    return content.replace(
-      /<\/head>/i,
-      `<script type="application/ld+json">${ORGANIZATION_ENTITY_SCHEMA}</script></head>`
-    );
-  });
-
-  return {
-    dir: {
-      input: "src",
-      output: "_site",
-      includes: "_includes",
-      data: "_data"
-    },
-    templateFormats: ["njk", "html", "md"],
-    htmlTemplateEngine: "njk",
-    markdownTemplateEngine: "njk"
-  };
-};
+    const isoString = readLatestGitTiY\İ[\
+‹‹˜Ø[™Y]T]ÊNÂˆ™]\›ˆ\ÛÔİš[™ÈÈ\ÛÔİš[™ËœÛXÙJL
+Hˆ[ÂˆJNÂˆ[]™[PÛÛ™šYË˜Y[šXÚÜÑÛØ˜[
+™Ú]\İ[ÙYšYYX™[‹
+‹‹˜Ø[™Y]T]ÊHO‚ˆ›Ü›X]]SX™[
+™XY]\İÚ][Y\İ[\
+‹‹˜Ø[™Y]T]ÊJBˆ
+NÂ‚ˆ[˜İ[Ûˆ]\İ\ÛÔİš[™Ê‹‹˜Ø[™Y]U[Y\İ[\ÊHÂˆ]]\İ[Y\İ[\H[Âˆ›Üˆ
+ÛÛœİ\ÛÔİš[™ÈÙˆØ[™Y]U[Y\İ[\ÊHÂˆYˆ
+ˆ\ÛÔİš[™È	‰‚ˆ
+[]\İ[Y\İ[\™]È]J\ÛÔİš[™ÊHˆ™]È]J]\İ[Y\İ[\
+JBˆ
+HÂˆ]\İ[Y\İ[\H\ÛÔİš[™ÎÂˆBˆBˆ™]\›ˆ]\İ[Y\İ[\ÂˆB‚ˆËÈ\‹Y[Hœ™\Ú™\ÜÈ›ÜˆH]KYš]™[ˆİÛ™\ˆ[™İ^HYÙ\ËˆH\İÜBˆËÈØ[È
+š\œİ\\™[Ü™\š[™ËÚ[İËXÛÛ™HYÜ˜Y][Û‹˜]ÚY›Øˆ™XYÊBˆËÈ]™\È[ˆØÜš\ËÜÙ[ËÜÙ[Ë\YÙKZ\İÜKšœÈÛÈH[™›Ü˜Ù[Y[İZ]HØ[‚ˆËÈ^\˜Ú\ÙH]YØZ[œİÛÛ›ÛYš^\™H™\ÜÚ]ÜšY\Ë‚ˆËÂˆËÈ[X™\˜][H“Õ[˜ÛYYÚ[ˆ[H\İÜH^\İÎˆYÙK\™[]Yİ™\›^\ÂˆËÈÜˆÚ\™Y[\]KÙ]H[Y\İ[\ËˆYX\İ\™YYØZ[œİH™X[]K›İˆËÈØ[ˆ™KY›][ˆÙ[™\˜]YYÙH˜[Z[Y\È[™™XÜ™X]HH^XİYÈ\ÂˆËÈÚ[™ÙH^\İÈÈš^ˆHÚX›[™ÈØ\™	ÜÈ]HÙXZË[\]HY]Ü‚ˆËÈ˜[Z[K]ÚYH]HİXÚ\È›İHYX[š[™Ù[Ú[™ÙHÈTÈYÙIÜÈš[X\BˆËÈÛÛ[ÚXÚ\ÈÚ]Ú][X\\İ[ÙÚYÛ˜[Ëˆ™[X\ÙKØZ[›ÛÙˆÛİ™\œÂˆËÈÚ\™Y™[™\š[™ÈÚ[™Ù\ÎÈ\È[\ˆÙY\ÈÙ[™\˜]YÑSÈYÙH]\ÂˆËÈYÙKXÛÛ[\ÜXÚYšXË‚ˆÛÛœİÈZ[Ù[ÔYÙR\İÜNˆZ[Ù[ÔYÙQ[R\İÜHHBˆ™\]Z\™J‹‹ÜØÜš\ËÜÙ[ËÜÙ[Ë\YÙKZ\İÜKšœÈŠNÂˆ]Ù[ÔYÙR\İÜHH[Â‚ˆ[˜İ[ÛˆÙ]Ù[ÔYÙR\İÜJ
+HÂˆYˆ
+\Ù[ÔYÙR\İÜJHÂˆÙ[ÔYÙR\İÜHHZ[Ù[ÔYÙQ[R\İÜJÈİÙˆ›ÛİØ\›ˆÛÛœÛÛKØ\›ˆJNÂˆBˆ™]\›ˆÙ[ÔYÙR\İÜNÂˆB‚ˆ[˜İ[ÛˆÙ[ÔYÙU[Y\İ[\
+Ü›İ\ÛYË‹‹™˜[˜XÚÔ]ÊHÂˆÛÛœİ\İÜHHÙ]Ù[ÔYÙR\İÜJ
+NÂˆÛÛœİ]Q˜[˜XÚÈH\İÜK™YÜ˜YYˆÈ™XY]\İÚ][Y\İ[\
+ÑS×ÔQÑT×ÔU
+Bˆˆ[ÂˆÛÛœİÛİ™\›˜[˜ÙU[Y\İ[\HÜ›İ\OOH˜XØ][Û™\ˆ‚ˆÈ™XY]\İÚ]ÙX\˜Ú[Y\İ[\
+‰ÜÛYßH˜œÜ˜Ë×Ù]KÜÙ[ÑÛİ™\›˜[˜ÙKšœÈŠBˆˆ[Â‚ˆ™]\›ˆ]\İ\ÛÔİš[™Êˆ\İÜK™Ù]
+	ÙÜ›İ\KÉÜÛYßX
+KˆÛİ™\›˜[˜ÙU[Y\İ[\ˆ]Q˜[˜XÚËˆ™XY]\İÚ][Y\İ[\
+‹‹™˜[˜XÚÔ]ÊBˆ
+NÂˆB‚ˆ[]™[PÛÛ™šYË˜Y[šXÚÜÑÛØ˜[
+œÙ[ÔYÙS\İ[ÙYšYY\ÛÈ‹
+Ü›İ\ÛYË‹‹™˜[˜XÚÔ]ÊHO‚ˆÙ[ÔYÙU[Y\İ[\
+Ü›İ\ÛYË‹‹™˜[˜XÚÔ]ÊBˆ
+NÂˆ[]™[PÛÛ™šYË˜Y[šXÚÜÑÛØ˜[
+œÙ[ÔYÙS\İ[ÙYšYY]H‹
+Ü›İ\ÛYË‹‹™˜[˜XÚÔ]ÊHOˆÂˆÛÛœİ\ÛÔİš[™ÈHÙ[ÔYÙU[Y\İ[\
+Ü›İ\ÛYË‹‹™˜[˜XÚÔ]ÊNÂˆ™]\›ˆ\ÛÔİš[™ÈÈ\ÛÔİš[™ËœÛXÙJL
+Hˆ[ÂˆJNÂˆ[]™[PÛÛ™šYË˜Y[šXÚÜÑÛØ˜[
+œÙ[ÔYÙS\İ[ÙYšYYX™[‹
+Ü›İ\ÛYË‹‹™˜[˜XÚÔ]ÊHO‚ˆ›Ü›X]]SX™[
+Ù[ÔYÙU[Y\İ[\
+Ü›İ\ÛYË‹‹™˜[˜XÚÔ]ÊJBˆ
+NÂ‚ˆËÈ\ÜÈ›İYÚİ]XÈ\ÜÙ]È
+™\Ù\™\Èİ\œ™[\ÚYÛŠBˆ[]™[PÛÛ™šYË˜Y\Üİ›İYÚÛÜJš[XYÙ\ÈŠNÂˆ[]™[PÛÛ™šYË˜Y\Üİ›İYÚÛÜJ˜ÜÜÈŠNÂˆ[]™[PÛÛ™šYË˜Y\Üİ›İYÚÛÜJÈœÜ˜ËØÜÜÈˆ˜ÜÜÈˆJNÂˆ[]™[PÛÛ™šYË˜Y\Üİ›İYÚÛÜJšœÈŠNÂˆ[]™[PÛÛ™šYË˜Y\Üİ›İYÚÛÜJš\›Ë[Ü[Z^™YšœÈŠNÂˆ[]™[PÛÛ™šYË˜Y\Üİ›İYÚÛÜJš\›Ë[[Øš[KšœÈŠNÂˆ[]™[PÛÛ™šYË˜Y\Üİ›İYÚÛÜJŠ‹œ™ÈŠNÂˆ[]™[PÛÛ™šYË˜Y\Üİ›İYÚÛÜJŠ‹ÙXœŠNÂˆ[]™[PÛÛ™šYË˜Y\Üİ›İYÚÛÜJŠ‹˜]šYˆŠNÂˆ[]™[PÛÛ™šYË˜Y\Üİ›İYÚÛÜJ—ÚXY\œÈŠNÂˆ[]™[PÛÛ™šYË˜Y\Üİ›İYÚÛÜJÈœÜ˜Ë×Ü™Y\™XİÈˆ—Ü™Y\™XİÈˆJNÂˆ[]™[PÛÛ™šYË˜Y\Üİ›İYÚÛÜJÈœÜ˜ËÛ\Ëˆ›\ËˆJNÂˆ[]™[PÛÛ™šYË˜Y\Üİ›İYÚÛÜJÈœÜ˜ËÜ›Ø›İËˆœ›Ø›İËˆJNÂˆ[]™[PÛÛ™šYË˜Y\Üİ›İYÚÛÜJÈœÜ˜ËØ\ÜÙ]Èˆ˜\ÜÙ]ÈˆJNÂˆ[]™[PÛÛ™šYËšYÛ›Ü™\Ë˜Y
+œÜ˜ËÙİZY\ËØ[›˜K[X\šXKZ\Û[™]˜X×F–öâÖ6÷7BÖwV–FRÓ##bò¢¢"“°¢VÆWfVçG”6öæf–ræ–væ÷&W2æFB‚'7&2öwV–FW2ö&W7B×F–ÖR×Fò×f—6—BÖææÖÖ&–Ö—6ÆæBò¢¢"“° ¢VÆWfVçG”6öæf–ræöâ‚&VÆWfVçG’ægFW""Â‚’Óâ°¢6öç7B&ö÷BÒ&ö6W72æ7vB‚“°¢f÷"†6öç7B·6÷W&6RÂF&vWEÒöb°¢·F‚æ¦ö–â‡&ö÷BÂ'7&2"Â%÷&VF—&V7G2"’ÂF‚æ¦ö–â‡&ö÷BÂ%÷6—FR"Â%÷&VF—&V7G2"•ÒÀ¢·F‚æ¦ö–â‡&ö÷BÂ'7&2"Â&ÆÆ×2çG‡B"’ÂF‚æ¦ö–â‡&ö÷BÂ%÷6—FR"Â&ÆÆ×2çG‡B"•ÒÀ¢·F‚æ¦ö–â‡&ö÷BÂ'7&2"Â'&ö&÷G2çG‡B"’ÂF‚æ¦ö–â‡&ö÷BÂ%÷6—FR"Â'&ö&÷G2çG‡B"•Ğ¢Ò’°¢–b†g2æW†—7G57–æ2‡6÷W&6R’’°¢g2æ6÷”f–ÆU7–æ2‡6÷W&6RÂF&vWB“°¢Ğ¢Ğ¢Ò“°¢ ¢òòvF6‚f÷"6†ævW2GW&–ærFWfVÆ÷ÖVç@¢VÆWfVçG”6öæf–ræFEvF6…F&vWB‚"âõöFFò"“°¢ ¢òò6–×ÆRF—FÆRf–ÇFW"Ò§W7BVæG26—FRæÖR–bæ÷BÇ&VG’F†W&P¢VÆWfVçG”6öæf–ræFDf–ÇFW"‚'6VõF—FÆR"ÂgVæ7F–öâ‡F—FÆR’°¢–b‚F—FÆR’&WGW&â%6V66Rf6F–öç2ÂfÆ÷&–FwVÆb6ö7Bf6F–öâ&VçFÇ2#°¢–b‡F—FÆRæ–æ6ÇVFW2‚%6V66R"’’&WGW&âF—FÆS°¢&WGW&âG·F—FÆWÒÂ6V66Rf6F–öç6°¢Ò“°¢ ¢òò6–×ÆRFW67&—F–öâf–ÇFW"Ò&÷f–FW2fÆÆ&6°¢VÆWfVçG”6öæf–ræFDf–ÇFW"‚'6VôFW67&—F–öâ"ÂgVæ7F–öâ†FW67&—F–öâ’°¢–b‚FW67&—F–öâ’&WGW&â$ÇW‡W'’f6F–öâ&VçFÇ2öâfÆ÷&–Fw2wVÆb6ö7Bâ&öö²F—&V7BæB6fRâ#°¢&WGW&âFW67&—F–öã°¢Ò“° ¢VÆWfVçG”6öæf–ræFDf–ÇFW"‚'7G&—‡FÖÂ"ÂgVæ7F–öâ†–çWB’°¢&WGW&â7G&–ær†–çWBÇÂ""¢ç&WÆ6R‚óÅµãåÒ£âörÂ""¢ç&WÆ6R‚õÇ2²örÂ""¢çG&–Ò‚“°¢Ò“° ¢VÆWfVçG”6öæf–ræFDf–ÇFW"‚&§6öâ"ÂgVæ7F–öâ†–çWB’°¢&WGW&â¥4ôâç7G&–æv–g’†–çWBÇÂçVÆÂ“°¢Ò“° ¢VÆWfVçG”6öæf–ræFDf–ÇFW"‚&–Öu&÷‡’"ÂgVæ7F–öâ‡W&ÂÂv–GF‚Òƒ’°¢&WGW&âFô†÷7Fv”6Fâ‡W&ÂÂv–GF‚Âƒ"“°¢Ò“° ¢VÆWfVçG”6öæf–ræFEG&ç6f÷&Ò‚&VçF—G•66†VÖ6÷fW&vR"ÂgVæ7F–öâ†6öçFVçBÂ÷WGWEF‚’°¢–b‚÷WGWEF‚ÇÂ÷WGWEF‚æVæG5v—F‚‚"æ‡FÖÂ"’’°¢&WGW&â6öçFVçC°¢Ğ ¢6öç7B&VÆF—fT÷WGWEF‚Ò÷WGWEF‚ç7Æ—B‡F‚ç6W’æ¦ö–â‚"ò"’ç&WÆ6R‚õââ¥Âõ÷6—FRòÂ""“°¢–b‚TåD•E•ô4õdU$tUôõUEUEõD…2æ†2‡&VÆF—fT÷WGWEF‚’’°¢&WGW&â6öçFVçC°¢Ğ ¢–b††4VçF—G”6÷fW&vU66†VÖ†6öçFVçB’’°¢&WGW&â6öçFVçC°¢Ğ ¢&WGW&â6öçFVçBç&WÆ6R€¢óÅÂö†VCâö’À¢Ç67&—BG—SÒ&Æ–6F–öâöÆB¶§6öâ#âG´õ$tä•¤D”ôåôTåD•E•õ44„TÔÓÂ÷67&—CãÂö†VCæ ¢“°¢Ò“° ¢&WGW&â°¢F—#¢°¢–çWC¢'7&2"À¢÷WGWC¢%÷6—FR"À¢–æ6ÇVFW3¢%ö–æ6ÇVFW2"À¢FF¢%öFF ¢ÒÀ¢FV×ÆFTf÷&ÖG3¢²&æ¦²"Â&‡FÖÂ"Â&ÖB%ÒÀ¢‡FÖÅFV×ÆFTVæv–æS¢&æ¦²"À¢Ö&¶F÷våFV×ÆFTVæv–æS¢&æ¦² ¢Ó°§Ó°

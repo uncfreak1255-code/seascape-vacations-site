@@ -7,8 +7,8 @@
  * generated from the same three files, so all 27 owner URLs used to emit one
  * identical <lastmod>, and all 58 stay URLs another. This module resolves the
  * last commit that touched each entry's own JSON in seoPages.json instead, by
- * walking that file's history once and comparing serialized entries between
- * consecutive first-parent revisions.
+ * walking that file's history once and comparing serialized entries against
+ * the actual first parent of each revision.
  *
  * Correctness notes, each of which exists because a review caught the naive
  * version being wrong:
@@ -99,122 +99,81 @@ function readBlobBatch(cwd, specs) {
     }
 
     const header = stdout.toString("utf8", cursor, newline);
-    if (header.endsWith(" missing")) {
-      results.push(null);
-      cursor = newline + 1;
-      continue;
-    }
+    if (headeK™[™ÕÚ]
+ˆZ\ÜÚ[™ÈŠJHÂˆ™\Ý[Ëœ\Ú
+[
+NÂˆÝ\œÛÜˆH™]Û[™H
+ÈNÂˆÛÛ[YNÂˆB‚ˆÛÛœÝÚ^™HH[X™\‹œ\œÙR[
+XY\‹œÛXÙJXY\‹›\Ý[™^ÙŠˆŠH
+ÈJKL
+NÂˆYˆ
+S[X™\‹š\Ñš[š]JÚ^™JJHÂˆ™\Ý[Ëœ\Ú
+[
+NÂˆÝ\œÛÜˆH™]Û[™H
+ÈNÂˆÛÛ[YNÂˆB‚ˆÛÛœÝÝ\H™]Û[™H
+ÈNÂˆ™\Ý[Ëœ\Ú
+ÝÝ]ÔÝš[™Ê]Ž‹Ý\Ý\
+ÈÚ^™JJNÂˆÝ\œÛÜˆHÝ\
+ÈÚ^™H
+ÈNÈËÈ˜Z[[™È™]Û[™HY\ˆÛÛ[ÂˆB‚ˆ™]\›ˆ™\Ý[ÎÂŸB‚™[˜Ý[Ûˆ[žSX\
+ØÊHÂˆÛÛœÝ[šY\ÈH™]ÈX\
 
-    const size = Number.parseInt(header.slice(header.lastIndexOf(" ") + 1), 10);
-    if (!Number.isFinite(size)) {
-      results.push(null);
-      cursor = newline + 1;
-      continue;
-    }
+NÂˆ›Üˆ
+ÛÛœÝÜ›Ý\ÙˆÑS×ÔQÑWÑÔ“ÕTÊHÂˆ›Üˆ
+ÛÛœÝ[žHÙˆØÏË–ÙÜ›Ý\H×JHÂˆYˆ
+[žOËœÛYÊHÂˆ[šY\ËœÙ]
+	ÙÜ›Ý\KÉÙ[žKœÛYßX”ÓÓ‹œÝš[™ÚYžJ[žJJNÂˆBˆBˆBˆ™]\›ˆ[šY\ÎÂŸB‚‹ÊŠ‚ˆ
+ˆX\Ùˆ™Ü›Ý\ÜÛYÈˆOˆTÓÈ[Y\Ý[\ÙˆH™]Ù\Ýš\œÝ\\™[™]š\Ú[Ûˆ[‚ˆ
+ˆÚXÚ][žIÜÈÙ\šX[^™Y”ÓÓˆY™™\œÈœ›ÛHH™]š[Ý\È™]š\Ú[Û‹‚ˆ
+ˆ™]\›œÈ[ˆ[\HX\
+Ú]YÜ˜YYˆYXÛˆH™\Ý[
+HÚ[ˆ\ÝÜžH\Âˆ
+ˆ[˜]˜Z[X›HÜˆÚ[ÝËÛÈØ[\œÈØ[ˆ˜[˜XÚÈ˜]\ˆ[ˆ˜XœšXØ]K‚ˆ
+‹Â™[˜Ý[ÛˆZ[Ù[ÔYÙR\ÝÜžJÈÝÙÙ[ÔYÙ\Ô]HÑS×ÔQÑT×ÔUØ\›ˆH
 
-    const start = newline + 1;
-    results.push(stdout.toString("utf8", start, start + size));
-    cursor = start + size + 1; // trailing newline after contents
-  }
+HOˆßHHHßJHÂˆÛÛœÝ\ÝÜžHH™]ÈX\
 
-  return results;
-}
+NÂ‚ˆYˆ
+\ÔÚ[ÝÔ™\ÜÚ]ÜžJÝÙ
+JHÂˆØ\›ŠˆÙ[Ë\YÙKZ\ÝÜžNˆ	ØÝÙH\ÈHÚ[ÝÈÛÛ™NÈ\‹Y[žH\Ý[Ù]\ÈØ[››Ý™H\š]™Y
+Âˆ™œ›ÛH[˜Ø]Y\ÝÜžKˆ˜[[™È˜XÚÈÈ\‹Yš[H]\Ëˆ™]Ú[\ÝÜžHˆ
+ÂˆŠÚ]™]ÚK][œÚ[ÝÊHÈ™\ÝÜ™H\‹\YÙH\ØÜš[Z[˜][Û‹ˆ‚ˆ
+NÂˆ\ÝÜžK™YÜ˜YYHYNÂˆ™]\›ˆ\ÝÜžNÂˆB‚ˆ]ÙÎÂˆžHÂˆÙÈHÚ]
+ÝÙÈ›ÙÈ‹‹KYš\œÝ\\™[‹‹KY›Ü›X]IR	T	XÒH‹‹KH‹Ù[ÔYÙ\Ô]KÂˆX^Y™™\ŽˆMˆ
+ˆL
+ˆLˆJKš[J
+NÂˆHØ]ÚÂˆ\ÝÜžK™YÜ˜YYHYNÂˆ™]\›ˆ\ÝÜžNÂˆBˆYˆ
+[ÙÊHÂˆ\ÝÜžK™YÜ˜YYHYNÂˆ™]\›ˆ\ÝÜžNÂˆB‚ˆÛÛœÝ™]š\Ú[ÛœÈHÙËœÜ]
+—ˆŠK›X\
 
-function entryMap(doc) {
-  const entries = new Map();
-  for (const group of SEO_PAGE_GROUPS) {
-    for (const entry of doc?.[group] || []) {
-      if (entry?.slug) {
-        entries.set(`${group}/${entry.slug}`, JSON.stringify(entry));
-      }
-    }
-  }
-  return entries;
-}
+[™JHOˆÂˆÛÛœÝ\ÈH[™Kš[J
+KœÜ]
+×ÊËÊNÂˆ™]\›ˆÂˆÚNˆ\ÖÌKˆ\™[Îˆ\ËœÛXÙJKLJKˆ\ÛÎˆ\ÖÜ\Ë›[™ÝHWKˆNÂˆJNÂ‚ˆÛÛœÝÜXÜÈH×NÂˆ›Üˆ
+ÛÛœÝ™]š\Ú[ÛˆÙˆ™]š\Ú[ÛœÊHÂˆÜXÜËœ\Ú
+	Ü™]š\Ú[Û‹œÚ_N‰ÜÙ[ÔYÙ\Ô]X
+NÂˆYˆ
+™]š\Ú[Û‹œ\™[ÖÌJHÂˆÜXÜËœ\Ú
+	Ü™]š\Ú[Û‹œ\™[ÖÌ_N‰ÜÙ[ÔYÙ\Ô]X
+NÂˆBˆBˆÛÛœÝ›ØœÈH™XY›Ø˜]Ú
+ÝÙÜXÜÊNÂˆÛÛœÝ›ØžTÜXÈH™]ÈX\
+ÜXÜË›X\
 
-/**
- * Map of "group/slug" -> ISO timestamp of the newest first-parent revision in
- * which that entry's serialized JSON differs from the previous revision.
- * Returns an empty map (with `degraded: true` on the result) when history is
- * unavailable or shallow, so callers can fall back rather than fabricate.
- */
-function buildSeoPageHistory({ cwd, seoPagesPath = SEO_PAGES_PATH, warn = () => {} } = {}) {
-  const history = new Map();
-
-  if (isShallowRepository(cwd)) {
-    warn(
-      `seo-page-history: ${cwd} is a shallow clone; per-entry lastmod dates cannot be derived ` +
-        "from truncated history. Falling back to per-file dates. Fetch full history " +
-        "(git fetch --unshallow) to restore per-page discrimination."
-    );
-    history.degraded = true;
-    return history;
-  }
-
-  let log;
-  try {
-    log = git(cwd, ["log", "--first-parent", "--format=%H %cI", "--", seoPagesPath], {
-      maxBuffer: 16 * 1024 * 1024,
-    }).trim();
-  } catch {
-    history.degraded = true;
-    return history;
-  }
-  if (!log) {
-    history.degraded = true;
-    return history;
-  }
-
-  const revisions = log.split("\n").map((line) => {
-    const splitAt = line.indexOf(" ");
-    return { sha: line.slice(0, splitAt), iso: line.slice(splitAt + 1) };
-  });
-
-  const blobs = readBlobBatch(
-    cwd,
-    revisions.map((revision) => `${revision.sha}:${seoPagesPath}`)
-  );
-
-  // Newest to oldest along the first-parent chain. An entry's lastmod is the
-  // newest revision in which its serialized JSON differs from the revision
-  // immediately older than it.
-  let newer = null;
-  for (let index = 0; index < revisions.length; index += 1) {
-    const revision = revisions[index];
-    let doc;
-    try {
-      doc = JSON.parse(blobs[index]);
-    } catch {
-      continue;
-    }
-
-    const older = entryMap(doc);
-    if (newer) {
-      for (const [key, value] of newer.entries.entries()) {
-        if (older.get(key) !== value && !history.has(key)) {
-          history.set(key, newer.iso);
-        }
-      }
-    }
-    newer = { entries: older, iso: revision.iso };
-  }
-
-  // Anything unchanged since it first appeared dates from the oldest revision.
-  if (newer) {
-    for (const key of newer.entries.keys()) {
-      if (!history.has(key)) {
-        history.set(key, newer.iso);
-      }
-    }
-  }
-
-  return history;
-}
-
-module.exports = {
-  SEO_PAGES_PATH,
-  SEO_PAGE_GROUPS,
-  buildSeoPageHistory,
-  isShallowRepository,
-  readBlobBatch,
-};
+ÜXË[™^
+HOˆÜÜXË›ØœÖÚ[™^WJJNÂ‚ˆËÈÛÛ\\™HXXÚ™]š\Ú[ÛˆÚ]]ÈXÝX[š\œÝ\™[ˆÛÛœÙXÝ]]™H›ÝÜÈœ›ÛBˆËÈH][[Z]YÙÈ\™H›ÝHØY™HÝXœÝ]]H›Üˆ\™[™[][ÛœÚ\Ë‚ˆ›Üˆ
+ÛÛœÝ™]š\Ú[ÛˆÙˆ™]š\Ú[ÛœÊHÂˆÛÛœÝÝ\œ™[›ØˆH›ØžTÜXË™Ù]
+	Ü™]š\Ú[Û‹œÚ_N‰ÜÙ[ÔYÙ\Ô]X
+NÂˆYˆ
+XÝ\œ™[›ØŠHÂˆÛÛ[YNÂˆB‚ˆ]Ý\œ™[ØÝ[Y[ÂˆžHÂˆÝ\œ™[ØÝ[Y[H”ÓÓ‹œ\œÙJÝ\œ™[›ØŠNÂˆHØ]ÚÂˆÛÛ[YNÂˆB‚ˆ]\™[ØÝ[Y[H[ÂˆYˆ
+™]š\Ú[Û‹œ\™[ÖÌJHÂˆÛÛœÝ\™[›ØˆH›ØžTÜXË™Ù]
+	Ü™]š\Ú[Û‹œ\™[ÖÌ_N‰ÜÙ[ÔYÙ\Ô]X
+NÂˆYˆ
+\\™[›ØŠHÂˆÛÛ[YNÂˆBˆžHÂˆ\™[ØÝ[Y[H”ÓÓ‹œ\œÙJ\™[›ØŠNÂˆHØ]ÚÂˆËÈHZ\ÜÚ[™È\™[›ØˆØ[››Ý›Ý™H[ˆ[žHÚ[™ÙY]\È™]š\Ú[Û‹‚ˆÛÛ[YNÂˆBˆB‚ˆÛÛœÝÝ\œ™[[šY\ÈH[žSX\
+Ý\œ™[ØÝ[Y[
+NÂˆÛÛœÝ\™[[šY\ÈH[žSX\
+\™[ØÝ[Y[
+NÂˆ›Üˆ
+ÛÛœÝÚÙ^K˜[YWHÙˆÝ\œ™[[šY\Ë™[šY\Ê
+JHÂˆYˆ
+\™[[šY\Ë™Ù]
+Ù^JHOOH˜[YH	‰ˆZ\ÝÜžKš\ÊÙ^JJHÂˆ\ÝÜžKœÙ]
+Ù^K™]š\Ú[Û‹š\ÛÊNÂˆBˆBˆB‚ˆ™]\›ˆ\ÝÜžNÂŸB‚›[Ù[K™^ÜÈHÂˆÑS×ÔQÑT×ÔUˆÑS×ÔQÑWÑÔ“ÕTËˆZ[Ù[ÔYÙR\ÝÜžKˆ\ÔÚ[ÝÔ™\ÜÚ]ÜžKˆ™XY›Ø˜]ÚŸNÂ
