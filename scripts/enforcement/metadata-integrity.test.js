@@ -132,12 +132,12 @@ test("winner guide metadata and conversion markers stay decision-forward", () =>
   );
   assert.equal(amiVsSiesta.includes('primaryCtaLabel: "Compare AMI Stay Bases"'), false);
 
-  assert.equal(bradentonContract.head.title, "Bradenton vs Sarasota for Vacation: Which Base Wins?");
+  assert.equal(bradentonContract.head.title, "Bradenton vs Sarasota: Which Is Better for Vacation?");
   assert.equal(
     bradentonContract.head.description,
-    "Bradenton wins on AMI access, parking, and value; Sarasota wins on Siesta Key, dining, and arts. Compare beaches, cost, and where to stay."
+    "Bradenton is cheaper, with free beach parking near Anna Maria Island. Sarasota wins on Siesta Key sand, dining, and arts. Compare both before you book."
   );
-  assert.equal(bradentonContract.head.ogTitle, "Bradenton vs Sarasota for Vacation: Which Base Wins?");
+  assert.equal(bradentonContract.head.ogTitle, "Bradenton vs Sarasota: Which Is Better for Vacation?");
   assert.equal(bradentonWebPage?.name, bradentonContract.head.title);
   assert.match(
     bradentonVsSarasota,
@@ -145,7 +145,7 @@ test("winner guide metadata and conversion markers stay decision-forward", () =>
   );
   assert.match(
     bradentonVsSarasota,
-    /"headline": "Bradenton vs Sarasota for Vacation: Which Base Wins\?"/
+    /"headline": "Bradenton vs Sarasota: Which Is Better for Vacation\?"/
   );
   assert.match(
     bradentonVsSarasota,
