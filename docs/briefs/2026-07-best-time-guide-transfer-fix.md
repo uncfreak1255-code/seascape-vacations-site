@@ -37,7 +37,16 @@
 | Search fit | Keep the existing URL, title, meta, and answer structure. Conversion belongs in the same proven guide because the searcher has already made the seasonal decision there. |
 | Local/GBP proof | Not applicable to this scoped on-page handoff test; no local-pack or GBP claim is being made. |
 | AEO/readback note | Preserve the standalone answer block and FAQ schema. Judge the new surface only through the joined GSC + GA4 read and tracked downstream events. |
-| Recommended action | Add one route-local early editorial stay-choice strip; leave the field-journal pilot and lower conversion kit unchanged. |
+| Recommendation | Add one route-local early editorial stay-choice strip; leave the field-journal pilot and lower conversion kit unchanged. |
+| Attack status | completed |
+| Query variants inspected | `best time to visit Anna Maria Island`, `Anna Maria Island weather by month`, `Anna Maria Island peak season`, and stay-choice variants around Anna Maria Island vacation rentals and near-island rentals. |
+| SERP source | DataForSEO SERP receipt `seascape-analytics/docs/status/dataforseo-serp-receipt-best-time-guide-2026-07-11-completed.json` observed 2026-07-11. |
+| Competitor URLs inspected | `https://www.islandvacationproperties.com/when-is-the-best-time-to-visit-anna-maria-island-fl/`, `https://annamariaislandbeachrentals.com/blog/best-time-of-year-to-visit-anna-maria-island`, `https://www.visitflorida.com/places-to-go/southwest/anna-maria-island/`, `https://thecoconutrentals.com/best-time-to-visit-anna-maria-island-for-vacation-weather-crowds-tips/`, and `https://www.facebook.com/groups/AMILife/posts/1839390173191123/`. |
+| Content gap and Seascape answer | Competitors answer seasonal timing and rental context, while Seascape already answers timing but buries the stay decision; Seascape's answer is one early proximity-versus-house-fit choice tied to existing approved stay pages. |
+| Design/format strategy | Use a restrained route-local two-choice editorial strip after the answer block; no new template, field-journal promotion, map, gallery, or broad design-system change. |
+| Seascape proof available | Dated GSC + GA4 receipt for 2026-07-03 to 2026-07-09, completed DataForSEO SERP receipt from 2026-07-11, existing tracked stay URLs, and existing guide direct-book tracking events. |
+| Tools/plugins used | First-party analytics receipts, completed DataForSEO SERP receipt, repo source read, and release-gate/content checks. No live posting, sends, or external account mutation. |
+| Decision and reason | improve the existing guide because it has page-one demand and zero tracked downstream guide clicks; add the smallest visible stay-choice handoff without claiming conversion lift before the post-deploy readback window. |
 
 ## Design Contract
 
