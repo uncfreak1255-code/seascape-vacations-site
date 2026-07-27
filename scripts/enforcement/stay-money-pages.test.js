@@ -87,51 +87,32 @@ test("AMI vacation rentals page does not promise free water-sports gear that is 
 test("AMI comparison and planning guides route into the rebuilt AMI stay money pages", () => {
   const guides = [
     "src/guides/anna-maria-island-vs-siesta-key.html",
-    "src/guides/siesta-key-vs-anna-maria-island-families.html",
-    "src/guides/best-time-visit-anna-maria-island.html"
-  ];
+    "src/guides/siesta-key-vs-a[˜K[X\šXKZ\Û[™Y˜[Z[Y\Ëš[‹ˆœÜ˜ËÙİZY\ËØ™\İ][YK]š\Ú]X[›˜K[X\šXKZ\Û[™š[‚ˆNÂ‚ˆ›Üˆ
+ÛÛœİİZYHÙˆİZY\ÊHÂˆÛÛœİÛİ\˜ÙHHœËœ™XYš[TŞ[˜Ê]š›Ú[Š›Ú™Xİ›ÛİİZYJK]ŠNÂ‚ˆ›Üˆ
+ÛÛœİ™YˆÙˆÂˆ‹Üİ^\ËØ[›˜K[X\šXKZ\Û[™]˜XØ][Û‹\™[[ËÈ‹ˆ‹Üİ^\ËØ[›˜K[X\šXKZ\Û[™X™XXÚœ›Û\™[[ËÈ‚ˆJHÂˆ\ÜÙ\™\]X[
+Ûİ\˜ÙKš[˜ÛY\Ê™YŠKYK	ÙİZY_HÚİ[[˜ÛYH	Ú™YŸX
+NÂˆBˆBŸJNÂ‚\İ
+˜™\İ][YHİZYH^ÜÙ\È[ˆX\›H˜XÚÙYÙX\ÛÛ˜[İ^HÚÚXÙH‹
 
-  for (const guide of guides) {
-    const source = fs.readFileSync(path.join(projectRoot, guide), "utf8");
-
-    for (const href of [
-      "/stays/anna-maria-island-vacation-rentals/",
-      "/stays/anna-maria-island-beachfront-rentals/"
-    ]) {
-      assert.equal(source.includes(href), true, `${guide} should include ${href}`);
-    }
-  }
-});
-
-test("best-time guide exposes an early tracked seasonal stay choice", () => {
-  const guidePath = path.join(
-    projectRoot,
-    "src",
-    "guides",
-    "best-time-visit-anna-maria-island.html"
-  );
-  const source = fs.readFileSync(guidePath, "utf8");
-  const decisionSurface = source.match(
-    /<section[^>]*data-season-stay-choice[^>]*>[\s\S]*?<\/section>/
-  );
-
-  assert.ok(decisionSurface, "best-time guide should expose data-season-stay-choice");
-
-  for (const href of [
-    "/stays/anna-maria-island-vacation-rentals/",
-    "/stays/anna-maria-island-beachfront-rentals/"
-  ]) {
-    assert.match(decisionSurface[0], new RegExp(`href=["']${href}["']`));
-  }
-
-  assert.equal(
-    (decisionSurface[0].match(/data-track-event="guide_book_direct_click"/g) || []).length,
-    2,
-    "both seasonal stay choices should emit guide_book_direct_click"
-  );
-  assert.equal(
-    (decisionSurface[0].match(/data-guide-slug="best-time-visit-anna-maria-island"/g) || []).length,
-    2,
-    "both seasonal stay choices should retain the guide slug"
-  );
-});
+HOˆÂˆÛÛœİİZYT]H]š›Ú[Šˆ›Ú™Xİ›ÛİˆœÜ˜È‹ˆ™İZY\È‹ˆ˜™\İ][YK]š\Ú]X[›˜K[X\šXKZ\Û[™š[‚ˆ
+NÂˆÛÛœİÛİ\˜ÙHHœËœ™XYš[TŞ[˜ÊİZYT]]ŠNÂˆÛÛœİXÚ\Ú[Û”İ\™˜XÙHHÛİ\˜ÙK›X]Ú
+ˆÏÙXİ[Û–×—J™]K\ÙX\ÛÛ‹\İ^KXÚÚXÙV×—J–×××JÏÜÙXİ[Û‹Âˆ
+NÂ‚ˆ\ÜÙ\›ÚÊXÚ\Ú[Û”İ\™˜XÙK˜™\İ][YHİZYHÚİ[^ÜÙH]K\ÙX\ÛÛ‹\İ^KXÚÚXÙHŠNÂ‚ˆ›Üˆ
+ÛÛœİ™YˆÙˆÂˆ‹Üİ^\ËØ[›˜K[X\šXKZ\Û[™]˜XØ][Û‹\™[[ËÈ‹ˆ‹Üİ^\ËØ[›˜K[X\šXKZ\Û[™X™XXÚœ›Û\™[[ËÈ‚ˆJHÂˆ\ÜÙ\›X]Ú
+XÚ\Ú[Û”İ\™˜XÙVÌK™]È™YÑ^
+™YVÈ‰×IÚ™YŸVÈ‰×X
+JNÂˆB‚ˆ\ÜÙ\™\]X[
+ˆ
+XÚ\Ú[Û”İ\™˜XÙVÌK›X]Ú
+Ù]K]˜XÚËY]™[H™İZYWØ›ÛÚ×Ù\™XİØÛXÚÈ‹ÙÊH×JK›[™İˆ‹ˆ˜›İÙX\ÛÛ˜[İ^HÚÚXÙ\ÈÚİ[[Z]İZYWØ›ÛÚ×Ù\™XİØÛXÚÈ‚ˆ
+NÂˆ\ÜÙ\™\]X[
+ˆ
+XÚ\Ú[Û”İ\™˜XÙVÌK›X]Ú
+Ù]KYİZYK\ÛYÏH˜™\İ][YK]š\Ú]X[›˜K[X\šXKZ\Û[™‹ÙÊH×JK›[™İˆ‹ˆ˜›İÙX\ÛÛ˜[İ^HÚÚXÙ\ÈÚİ[™]Z[ˆHİZYHÛYÈ‚ˆ
+NÂˆ\ÜÙ\™\]X[
+ˆ
+XÚ\Ú[Û”İ\™˜XÙVÌK›X]Ú
+Ù]K\XÙ[Y[H˜™\İİ[YWÜÙX\ÛÛ—ØÚÚXÙH‹ÙÊH×JK›[™İˆ‹ˆ›Û›HHX\›HÙX\ÛÛ˜[ÚÚXÙ\ÈÚİ[Ø\œHHØÛÜY™XY˜XÚÈXÙ[Y[‚ˆ
+NÂˆ\ÜÙ\›X]Ú
+ˆXÚ\Ú[Û”İ\™˜XÙVÌKˆÛİ™\›\[™È™X\‹Z\Û[™ÛY\Ö×××J››İ\ÈÙ\\˜]H[™[ÜHÛÛËËˆH[Ù[H]\İ›İ[\H]HÛÈ›İ]\È^ÜÙH\İ[˜İ[™[ÜHÛÛÈ‚ˆ
+NÂŸJNÂ
