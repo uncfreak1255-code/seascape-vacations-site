@@ -10,9 +10,9 @@ eleventyComputed:
 ---
 {% from "partials/owner-evaluation-form.njk" import ownerEvaluationForm %}
 {% from "partials/ui-icon.njk" import uiIcon %}
-{% set pageUpdatedIso = gitLastModifiedIso(page.inputPath, "src/_data/seoPages.json", "src/_data/ownerProofAssets.json") %}
-{% set pageUpdatedDate = gitLastModifiedDate(page.inputPath, "src/_data/seoPages.json", "src/_data/ownerProofAssets.json") %}
-{% set pageUpdatedLabel = gitLastModifiedLabel(page.inputPath, "src/_data/seoPages.json", "src/_data/ownerProofAssets.json") %}
+{% set pageUpdatedIso = seoPageLastModifiedIso("owner", seoPage.slug, page.inputPath, "src/_data/seoPages.json", "src/_data/ownerProofAssets.json") %}
+{% set pageUpdatedDate = seoPageLastModifiedDate("owner", seoPage.slug, page.inputPath, "src/_data/seoPages.json", "src/_data/ownerProofAssets.json") %}
+{% set pageUpdatedLabel = seoPageLastModifiedLabel("owner", seoPage.slug, page.inputPath, "src/_data/seoPages.json", "src/_data/ownerProofAssets.json") %}
 {% set proofAsset = seoPage.proofAssetKey and ownerProofAssets[seoPage.proofAssetKey] %}
 {% set pageProofStats = seoPage.proofStats or (proofAsset and proofAsset.stats) %}
 {% set ownerNetBridgePage = seoPage.slug == "maximize-vacation-rental-income-florida" %}

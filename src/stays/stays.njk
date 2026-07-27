@@ -10,9 +10,9 @@ eleventyComputed:
   seoIndexable: "{{ seoGovernance.staysNoindexSlugs.indexOf(seoPage.slug) === -1 }}"
 ---
 {% from "partials/ui-icon.njk" import uiIcon %}
-{% set pageUpdatedIso = gitLastModifiedIso(page.inputPath, "src/_data/seoPages.json", "src/_data/staysPages.js", "src/_data/seoGovernance.js") %}
-{% set pageUpdatedDate = gitLastModifiedDate(page.inputPath, "src/_data/seoPages.json", "src/_data/staysPages.js", "src/_data/seoGovernance.js") %}
-{% set pageUpdatedLabel = gitLastModifiedLabel(page.inputPath, "src/_data/seoPages.json", "src/_data/staysPages.js", "src/_data/seoGovernance.js") %}
+{% set pageUpdatedIso = seoPageLastModifiedIso("vacationer", seoPage.slug, page.inputPath, "src/_data/seoPages.json", "src/_data/staysPages.js", "src/_data/seoGovernance.js") %}
+{% set pageUpdatedDate = seoPageLastModifiedDate("vacationer", seoPage.slug, page.inputPath, "src/_data/seoPages.json", "src/_data/staysPages.js", "src/_data/seoGovernance.js") %}
+{% set pageUpdatedLabel = seoPageLastModifiedLabel("vacationer", seoPage.slug, page.inputPath, "src/_data/seoPages.json", "src/_data/staysPages.js", "src/_data/seoGovernance.js") %}
 {% set featuredProperty = properties[0] %}
 {% set heroImage = seoPage.heroImage or (featuredProperty and featuredProperty.image) or "/images/seascape-og-default.jpg" %}
 {% set ctaImage = seoPage.ctaImage or heroImage %}
