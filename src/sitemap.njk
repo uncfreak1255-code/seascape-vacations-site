@@ -25,7 +25,7 @@ eleventyExcludeFromCollections: true
   {% if stayIndexable %}
   <url>
     <loc>{{ site.url }}/stays/{{ seoPage.slug }}/</loc>
-    <lastmod>{{ gitLastModifiedDate('src/stays/stays.njk', 'src/_data/seoPages.json', 'src/_data/staysPages.js', 'src/_data/seoGovernance.js') }}</lastmod>
+    <lastmod>{{ seoPageSitemapLastModifiedDate('vacationer', seoPage.slug, 'src/stays/stays.njk', 'src/_data/staysPages.js') }}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -33,10 +33,12 @@ eleventyExcludeFromCollections: true
   {% endfor %}
   {% for seoPage in seoPages.owner %}
   {% set ownerIndexable = seoPage.seoIndexable != false and seoPage.seoIndexable != 'false' %}
+  {% set ownerProofSource = "" %}
+  {% if seoPage.proofAssetKey %}{% set ownerProofSource = "src/_data/ownerProofAssets.json" %}{% endif %}
   {% if ownerIndexable %}
   <url>
     <loc>{{ site.url }}/property-management/{{ seoPage.slug }}/</loc>
-    <lastmod>{{ gitLastModifiedDate('src/property-management/property-management.njk', 'src/_data/seoPages.json', 'src/_data/ownerProofAssets.json') }}</lastmod>
+    <lastmod>{{ seoPageSitemapLastModifiedDate('owner', seoPage.slug, 'src/property-management/property-management.njk', ownerProofSource) }}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
