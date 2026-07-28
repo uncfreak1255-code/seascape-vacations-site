@@ -31,6 +31,50 @@
 | SERP stale after | 2026-07-18 |
 | Current proof | The joined 2026-07-03 to 2026-07-09 GSC + GA4 receipt shows `16` clicks, `1,917` impressions, average position `5.01`, `32` sessions, and zero tracked guide or booking actions. The scoped DataForSEO receipt places Seascape at organic group rank `5` / absolute rank `8`. |
 | Top visible competitors | Island Vacation Properties, Anna Maria Island Beach Rentals, AnnaMaria.com, Visit Florida, Coconut Rentals, plus one Facebook discussion result in the sampled top ten. |
-| Competitor angle | Current results lean on local weather/season guidance, vacation-rental context[™Ù[™\˜[\İ[˜][Ûˆ]]Üš]KˆH™\ØİYHÙ\È›İÛÜHZ\ˆ^[İ]ÎÈ]ÛÛ›™XİÈÙX\ØØ\IÜÈ^\İ[™È[Z[™È[œİÙ\ˆÈ]È\›İ™Y™X\‹Z\Û[™İ^H]ËˆŸš\İX[Ù›Ü›X]Ø\ÙX\ØØ\IÜÈ[œİÙ\ˆ›ØÚÈ\ÈÛX\‹]Hš\œİ˜XÚÙYİ^HÚÚXÙH\ÈZ[ˆ›ÙHÛÜH™X\ˆH[™[™Hİ›Û™Ù\ˆÛÛ™\œÚ[ÛˆÚ]ÛÛY\ÈY\ˆHÛ™È\XÛKˆHYÙH™YYÈÛ™H™\İ˜Z[™YX\›HXÚ\Ú[Ûˆİ\™˜XÙK›İH™]È[\]KˆŸÙX\ØØ\HØ\H›İ]H^Z[œÈÚ[ˆÈÛÈ]Ù\È›İXZÙHH™^›Ş[Z]K]™\œİ\ËZİ\ÙKYš]ÚÚXÙHš\ÚX›HÚ[H[[\ÈYÚ\İˆŸÙX\˜Úš]ÙY\H^\İ[™ÈT“]KY]K[™[œİÙ\ˆİXİ\™KˆÛÛ™\œÚ[Ûˆ™[Û™ÜÈ[ˆHØ[YH›İ™[ˆİZYH™XØ]\ÙHHÙX\˜Ú\ˆ\È[™XYHXYHHÙX\ÛÛ˜[XÚ\Ú[Ûˆ\™KˆŸØØ[ÑĞ”›ÛÙˆ›İ\XØX›HÈ\ÈØÛÜYÛ‹\YÙH[™Ù™ˆ\İÈ›ÈØØ[\XÚÈÜˆĞ”ÛZ[H\È™Z[™ÈXYKˆŸQSËÜ™XY˜XÚÈ›İH™\Ù\™HHİ[™[Û™H[œİÙ\ˆ›ØÚÈ[™THØÚ[XKˆYÙHH™]Èİ\™˜XÙHÛ›H›İYÚH›Ú[™YÔĞÈ
-ÈĞM™XY[™˜XÚÙYİÛœİ™X[H]™[ËˆŸ™XÛÛ[Y[™][ÛˆYÛ™H›İ]K[ØØ[X\›HY]ÜšX[İ^KXÚÚXÙHİš\ÈX]™HHšY[Z›İ\›˜[[İ[™İÙ\ˆÛÛ™\œÚ[ÛˆÚ][˜Ú[™ÙYˆŸ]XÚÈİ]\ÈÛÛ\]YŸ]Y\H˜\šX[È[œÜXİY™\İ[YHÈš\Ú][›˜HX\šXH\Û[™[›˜HX\šXH\Û[™ÙX]\ˆH[Û[›˜HX\šXH\Û[™XZÈÙX\ÛÛ˜[™İ^KXÚÚXÙH˜\šX[È\›İ[™[›˜HX\šXH\Û[™˜XØ][Ûˆ™[[È[™™X\‹Z\Û[™™[[ËˆŸÑT”Ûİ\˜ÙH]Q›Ü”ÑSÈÑT”™XÙZ\ÙX\ØØ\KX[˜[]XÜËÙØÜËÜİ]\ËÙ]Y›ÜœÙ[Ë\Ù\œ\™XÙZ\X™\İ][YKYİZYKLŒ‹LËLLKXÛÛ\]YšœÛÛ˜ØœÙ\™YŒ‹LËLLKˆŸÛÛ\]]ÜˆT“È[œÜXİYÎ‹ËİİİËš\Û[™˜XØ][Ûœ›Ü\Y\Ë˜ÛÛKİÚ[‹Z\Ë]KX™\İ][YK]Ë]š\Ú]X[›˜K[X\šXKZ\Û[™Y›ØÎ‹ËØ[›˜[X\šXZ\Û[™™XXÚ™[[Ë˜ÛÛKØ›ÙËØ™\İ][YK[Ù‹^YX\‹]Ë]š\Ú]X[›˜K[X\šXKZ\Û[™Î‹ËİİİËš\Ú]›ÜšYK˜ÛÛKÜXÙ\Ë]ËYÛËÜÛİ]Ù\İØ[›˜K[X\šXKZ\Û[™ØÎ‹ËİXÛØÛÛ]™[[Ë˜ÛÛKØ™\İ][YK]Ë]š\Ú]X[›˜K[X\šXKZ\Û[™Y›Ü‹]˜XØ][Û‹]ÙX]\‹XÜ›İÙË]\ËØ[™Î‹ËİİİË™˜XÙX›ÛÚË˜ÛÛKÙÜ›İ\ËĞSRSY™KÜÜİËÌNÎLÎLMÌÌNLLLŒËØˆŸÛÛ[Ø\[™ÙX\ØØ\H[œİÙ\ˆÛÛ\]]ÜœÈ[œİÙ\ˆÙX\ÛÛ˜[[Z[™È[™™[[ÛÛ^Ú[HÙX\ØØ\H[™XYH[œİÙ\œÈ[Z[™È]\šY\ÈHİ^HXÚ\Ú[ÛÈÙX\ØØ\IÜÈ[œİÙ\ˆ\ÈÛ™HX\›H›Ş[Z]K]™\œİ\ËZİ\ÙKYš]ÚÚXÙHYYÈ^\İ[™È\›İ™Yİ^HYÙ\ËˆŸ\ÚYÛ‹Ù›Ü›X]İ˜]YŞH\ÙHH™\İ˜Z[™Y›İ]K[ØØ[ÛËXÚÚXÙHY]ÜšX[İš\Y\ˆH[œİÙ\ˆ›ØÚÎÈ›È™]È[\]KšY[Z›İ\›˜[›Û[İ[Û‹X\Ø[\KÜˆœ›ØY\ÚYÛ‹\Ş\İ[HÚ[™ÙKˆŸÙX\ØØ\H›ÛÙˆ]˜Z[X›H]YÔĞÈ
-ÈĞM™XÙZ\›ÜˆŒ‹LËLÈÈŒ‹LËLKÛÛ\]Y]Q›Ü”ÑSÈÑT”™XÙZ\œ›ÛHŒ‹LËLLK^\İ[™È˜XÚÙYİ^HT“Ë[™^\İ[™ÈİZYH\™XİX›ÛÚÈ˜XÚÚ[™È]™[ËˆŸÛÛËÜYÚ[œÈ\ÙYš\œİ\\H[˜[]XÜÈ™XÙZ\ËÛÛ\]Y]Q›Ü”ÑSÈÑT”™XÙZ\™\ÈÛİ\˜ÙH™XY[™™[X\ÙKYØ]KØÛÛ[ÚXÚÜËˆ›È]™HÜİ[™ËÙ[™ËÜˆ^\›˜[XØÛİ[]]][Û‹ˆŸXÚ\Ú[Ûˆ[™™X\ÛÛˆ[\›İ™HH^\İ[™ÈİZYH™XØ]\ÙH]\ÈYÙK[Û™H[X[™[™™\›È˜XÚÙYİÛœİ™X[HİZYHÛXÚÜÎÈYHÛX[\İš\ÚX›Hİ^KXÚÚXÙH[™Ù™ˆÚ]İ]ÛZ[Z[™ÈÛÛ™\œÚ[ÛˆY™Y›Ü™HHÜİY\ŞH™XY˜XÚÈÚ[™İËˆ‚ˆÈÈ™]šY]ÈÛÜœ™Xİ[Ûˆ›ÛİË]\‚‹HHX\›H[šÜÈ\™HØÛÜYÚ]]K\XÙ[Y[H˜™\İİ[YWÜÙX\ÛÛ—ØÚÚXÙH˜ÈHÙ]™[‹Y^H™XY˜XÚÈ]\İš[\ˆÛˆ]XÙ[Y[˜]\ˆ[ˆHÚ\™YİZYWØ›ÛÚ×Ù\™XİØÛXÚØ]™[[Û™K‚‹HHÛÈ\İ[˜][ÛˆYÙ\Èİ\œ™[H^ÜÙHİ™\›\[™È™X\‹Z\Û[™ÛY\ËˆH[Ù[H›İÈİ]\È]Z[›H[™œ˜[Y\ÈHÙXÛÛ™›İ]H\ÈÛÛ\\š\ÛÛˆÛÛ^›İ\İ[˜İ[™[ÜK‚‹HH[HLHÑT”[™[˜[]XÜÈ]šY[˜ÙH™[XZ[œÈ\İÜšXØ[[œ]›İHœ™\ÚYÛZ[Kˆ™Yœ™\ÚHÙX\˜Ú]šY[˜ÙH™Y›Ü™H™X][™ÈH]\ˆ^&–ÖVçBFV6—6–öâ27F—fRà ¢22FW6–vâ6öçG&7@ ¢ÒF†Rf—'7B6†ö–6R—2F†R6Æ÷6W"æV"Ö—6ÆæBFƒ¢Ô’&V6†W2vVæW&ÆÇ’RÓRÖ–çWFW2v’Âv—F‚Ö÷&R&ööÒÂööÂF–ÖRÂæBV6–W"&¶–ærF†âf÷&6–ær—6ÆæBÖöæÇ’–çfVçF÷'’à¢ÒF†R6V6öæB6†ö–6R—2F†RÆ&vW"Öw&÷WæV"Ö—6ÆæBÇFW&æF—fS¢æ÷BG'VR&V6†g&öçBÂv—F‚"Ó#RÖ–çWFR&V6‚G&—fRà¢ÒFW6·F÷W6W2&W7G&–æVBGvòÖ6öÇVÖâVF—F÷&–Â7Æ—BâÖö&–ÆR7F6·2F†R6†ö–6W2v—F‚öæRF—f–FW"æBCG‚Ö–æ–×VÒÆ–æ²F&vWG2à¢ÒW6RW†—7F–ær7&VÒÂFVÂÂvöÆBÖ†—&Æ–æRÂÆ–f—"Â÷–ç2ÂæB–ÆÂöÆ–æ²'VÆW2âFBæòæWrf—7VÂÆrà ¢22&VÆV6RvFP ¢ÒçÒ'VâÆ–çC¦6öçFVçF ¢ÒçÒ'Vâ'V–ÆF ¢ÒçÒ'VâfW&–g“¦Æ–æ·6 ¢ÒçÒ'VâfW&–g“¦§6öæÆF ¢Òfö7W6VBwV–FRöF—&V7BÖ&öö¶–ærWfVçBFW7G2æB&÷WFR6Öö¶P¢ÒçÒ'VâFW7C§f—7VÆ ¢Òg&W6‚F&vWFVBFW6·F÷æBÖö&–ÆR67&VVç6†÷G0¢ÒFW6–vâ×&Wf–WvÂ6–×Æ–g’6†V6·ö–çBÂæB6öæf–wW&VBWF÷&Wf–Wp ¢22FöæRv†Và ¢ÒF†R6÷W&6R6öçG&7B&÷fW2&÷F‚V&Ç’G&6¶VB7F’6†ö–6W0¢ÒF†RÆ÷vW"6†&VB6öçfW'6–öâ¶—B&VÖ–ç2Væ6†ævV@¢ÒÆÂ6öçFVçBÂ'V–ÆBÂÆ–æ²Â66†VÖÂ6Öö¶RÂæBf—7VÂvFW270¢ÒF†R'&æ6‚6Æ÷6V÷WBæÖW2F†R÷7BÖFWÆ÷’6WfVâÖF’&W&VBv–æF÷ræBFöW2æ÷B6Æ–ÒÆ–gB&Vf÷&RF†Bv–æF÷rÖGW&W0 
+| Competitor angle | Current results lean on local weather/season guidance, vacation-rental context, and general destination authority. The rescue does not copy their layouts; it connects Seascape's existing timing answer to its approved near-island stay paths. |
+| Visual/format gap | Seascape's answer block is clear, but the first tracked stay choice is plain body copy near the end and the stronger conversion kit comes after the long article. The page needs one restrained early decision surface, not a new template. |
+| Seascape gap | The route explains when to go but does not make the next proximity-versus-house-fit choice visible while intent is highest. |
+| Search fit | Keep the existing URL, title, meta, and answer structure. Conversion belongs in the same proven guide because the searcher has already made the seasonal decision there. |
+| Local/GBP proof | Not applicable to this scoped on-page handoff test; no local-pack or GBP claim is being made. |
+| AEO/readback note | Preserve the standalone answer block and FAQ schema. Judge the new surface only through the joined GSC + GA4 read and tracked downstream events. |
+| Recommendation | Add one route-local early editorial stay-choice strip; leave the field-journal pilot and lower conversion kit unchanged. |
+| Attack status | completed |
+| Query variants inspected | `best time to visit Anna Maria Island`, `Anna Maria Island weather by month`, `Anna Maria Island peak season`, and stay-choice variants around Anna Maria Island vacation rentals and near-island rentals. |
+| SERP source | DataForSEO SERP receipt `seascape-analytics/docs/status/dataforseo-serp-receipt-best-time-guide-2026-07-11-completed.json` observed 2026-07-11. |
+| Competitor URLs inspected | `https://www.islandvacationproperties.com/when-is-the-best-time-to-visit-anna-maria-island-fl/`, `https://annamariaislandbeachrentals.com/blog/best-time-of-year-to-visit-anna-maria-island`, `https://www.visitflorida.com/places-to-go/southwest/anna-maria-island/`, `https://thecoconutrentals.com/best-time-to-visit-anna-maria-island-for-vacation-weather-crowds-tips/`, and `https://www.facebook.com/groups/AMILife/posts/1839390173191123/`. |
+| Content gap and Seascape answer | Competitors answer seasonal timing and rental context, while Seascape already answers timing but buries the stay decision; Seascape's answer is one early proximity-versus-house-fit choice tied to existing approved stay pages. |
+| Design/format strategy | Use a restrained route-local two-choice editorial strip after the answer block; no new template, field-journal promotion, map, gallery, or broad design-system change. |
+| Seascape proof available | Dated GSC + GA4 receipt for 2026-07-03 to 2026-07-09, completed DataForSEO SERP receipt from 2026-07-11, existing tracked stay URLs, and existing guide direct-book tracking events. |
+| Tools/plugins used | First-party analytics receipts, completed DataForSEO SERP receipt, repo source read, and release-gate/content checks. No live posting, sends, or external account mutation. |
+| Decision and reason | improve the existing guide because it has page-one demand and zero tracked downstream guide clicks; add the smallest visible stay-choice handoff without claiming conversion lift before the post-deploy readback window. |
+
+## Review Correction Follow-up
+
+- The early links are scoped with `data-placement="best_time_season_choice"`; the seven-day readback must filter on that placement rather than the shared `guide_book_direct_click` event alone.
+- The two destination pages currently expose overlapping near-island homes. The module now states that plainly and frames the second route as comparison context, not distinct inventory.
+- The July 11 SERP and analytics evidence remains historical input, not a fresh lift claim. Refresh the search evidence before treating a later experiment decision as active.
+
+## Design Contract
+
+- The first choice is the closer near-island path: AMI beaches generally 5-15 minutes away, with more room, pool time, and easier parking than forcing island-only inventory.
+- The second choice is the larger-group near-island alternative: not true beachfront, with a 12-25 minute beach drive.
+- Desktop uses a restrained two-column editorial split. Mobile stacks the choices with one divider and 44px minimum link targets.
+- Use existing cream, teal, gold-hairline, Playfair, Poppins, and pill/link rules. Add no new visual law.
+
+## Release Gate
+
+- `npm run lint:content`
+- `npm run build`
+- `npm run verify:links`
+- `npm run verify:jsonld`
+- focused guide/direct-booking event tests and route smoke
+- `npm run test:visual`
+- fresh targeted desktop and mobile screenshots
+- `design-review`, simplify checkpoint, and configured autoreview
+
+## Done When
+
+- the source contract proves both early tracked stay choices
+- the lower shared conversion kit remains unchanged
+- all content, build, link, schema, smoke, and visual gates pass
+- the branch closeout names the post-deploy seven-day reread window and does not claim lift before that window matures
