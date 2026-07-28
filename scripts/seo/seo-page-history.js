@@ -7,8 +7,8 @@
  * generated from the same three files, so all 27 owner URLs used to emit one
  * identical <lastmod>, and all 58 stay URLs another. This module resolves the
  * last commit that touched each entry's own JSON in seoPages.json instead, by
- * walking that file's history once and comparing serialized entries between
- * consecutive first-parent revisions.
+ * walking that file's history once and comparing serialized entries against
+ * the actual first parent of each revision.
  *
  * Correctness notes, each of which exists because a review caught the naive
  * version being wrong:
@@ -153,7 +153,7 @@ function buildSeoPageHistory({ cwd, seoPagesPath = SEO_PAGES_PATH, warn = () => 
 
   let log;
   try {
-    log = git(cwd, ["log", "--first-parent", "--format=%H %cI", "--", seoPagesPath], {
+    log = git(cwd, ["log", "--first-parent", "--format=%H %P %cI", "--", seoPagesPath], {
       maxBuffer: 16 * 1024 * 1024,
     }).trim();
   } catch {
@@ -166,44 +166,58 @@ function buildSeoPageHistory({ cwd, seoPagesPath = SEO_PAGES_PATH, warn = () => 
   }
 
   const revisions = log.split("\n").map((line) => {
-    const splitAt = line.indexOf(" ");
-    return { sha: line.slice(0, splitAt), iso: line.slice(splitAt + 1) };
+    const parts = line.trim().split(/\s+/);
+    return {
+      sha: parts[0],
+      parents: parts.slice(1, -1),
+      iso: parts[parts.length - 1],
+    };
   });
 
-  const blobs = readBlobBatch(
-    cwd,
-    revisions.map((revision) => `${revision.sha}:${seoPagesPath}`)
-  );
+  const specs = [];
+  for (const revision of revisions) {
+    specs.push(`${revision.sha}:${seoPagesPath}`);
+    if (revision.parents[0]) {
+      specs.push(`${revision.parents[0]}:${seoPagesPath}`);
+    }
+  }
+  const blobs = readBlobBatch(cwd, specs);
+  const blobBySpec = new Map(specs.map((spec, index) => [spec, blobs[index]]));
 
-  // Newest to oldest along the first-parent chain. An entry's lastmod is the
-  // newest revision in which its serialized JSON differs from the revision
-  // immediately older than it.
-  let newer = null;
-  for (let index = 0; index < revisions.length; index += 1) {
-    const revision = revisions[index];
-    let doc;
+  // Compare each revision with its actual first parent. Consecutive rows from
+  // a path-limited log are not a safe substitute for parent relationships.
+  for (const revision of revisions) {
+    const currentBlob = blobBySpec.get(`${revision.sha}:${seoPagesPath}`);
+    if (!currentBlob) {
+      continue;
+    }
+
+    let currentDocument;
     try {
-      doc = JSON.parse(blobs[index]);
+      currentDocument = JSON.parse(currentBlob);
     } catch {
       continue;
     }
 
-    const older = entryMap(doc);
-    if (newer) {
-      for (const [key, value] of newer.entries.entries()) {
-        if (older.get(key) !== value && !history.has(key)) {
-          history.set(key, newer.iso);
-        }
+    let parentDocument = null;
+    if (revision.parents[0]) {
+      const parentBlob = blobBySpec.get(`${revision.parents[0]}:${seoPagesPath}`);
+      if (!parentBlob) {
+        continue;
+      }
+      try {
+        parentDocument = JSON.parse(parentBlob);
+      } catch {
+        // A missing parent blob cannot prove an entry changed at this revision.
+        continue;
       }
     }
-    newer = { entries: older, iso: revision.iso };
-  }
 
-  // Anything unchanged since it first appeared dates from the oldest revision.
-  if (newer) {
-    for (const key of newer.entries.keys()) {
-      if (!history.has(key)) {
-        history.set(key, newer.iso);
+    const currentEntries = entryMap(currentDocument);
+    const parentEntries = entryMap(parentDocument);
+    for (const [key, value] of currentEntries.entries()) {
+      if (parentEntries.get(key) !== value && !history.has(key)) {
+        history.set(key, revision.iso);
       }
     }
   }
