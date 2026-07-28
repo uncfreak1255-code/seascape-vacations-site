@@ -297,7 +297,7 @@ test("priority canonical guide families keep schema and breadcrumb copy aligned 
   );
 
   assert.equal(
-    srqGuide.includes('"headline": "SRQ Airport to Anna Maria Island: 30-Min Route & Tips"'),
+    srqGuide.includes('"headline": "Sarasota Airport to Anna Maria Island: What It Costs"'),
     true
   );
   assert.equal(

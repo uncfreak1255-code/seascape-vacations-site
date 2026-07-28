@@ -76,7 +76,7 @@ function upgradeBradentonVsSarasota() {
   html = replaceOnce(
     html,
     "<title>Bradenton vs Sarasota: Which Is Better for Your Vacation?</title>",
-    "<title>Bradenton vs Sarasota for Vacation: Which Base Wins?</title>",
+    "<title>Bradenton vs Sarasota: Which Is Better for Vacation?</title>",
     `${file} title`
   );
   html = replaceOnce(
@@ -94,7 +94,7 @@ function upgradeBradentonVsSarasota() {
   html = replaceOnce(
     html,
     '<meta property="og:title" content="Bradenton vs Sarasota: Which Is Better for Your Vacation?">',
-    '<meta property="og:title" content="Bradenton vs Sarasota for Vacation: Which Base Wins?">',
+    '<meta property="og:title" content="Bradenton vs Sarasota: Which Is Better for Vacation?">',
     `${file} og title`
   );
   html = replaceOnce(
@@ -106,7 +106,7 @@ function upgradeBradentonVsSarasota() {
   html = replaceOnce(
     html,
     '<meta name="twitter:title" content="Bradenton vs Sarasota: Which Is Better for Your Vacation?">',
-    '<meta name="twitter:title" content="Bradenton vs Sarasota for Vacation: Which Base Wins?">',
+    '<meta name="twitter:title" content="Bradenton vs Sarasota: Which Is Better for Vacation?">',
     `${file} twitter title`
   );
   html = replaceOnce(
@@ -118,7 +118,7 @@ function upgradeBradentonVsSarasota() {
   html = replaceOnce(
     html,
     '"headline": "Bradenton vs Sarasota: Which Florida City Is Better?"',
-    '"headline": "Bradenton vs Sarasota for Vacation: Which Base Wins?"',
+    '"headline": "Bradenton vs Sarasota: Which Is Better for Vacation?"',
     `${file} article headline`
   );
   html = replaceOnce(
@@ -130,7 +130,7 @@ function upgradeBradentonVsSarasota() {
   html = replaceOnce(
     html,
     '"name": "Bradenton vs Sarasota: Which Florida City Is Better for Vacation?"',
-    '"name": "Bradenton vs Sarasota for Vacation: Which Base Wins?"',
+    '"name": "Bradenton vs Sarasota: Which Is Better for Vacation?"',
     `${file} webpage name`
   );
   html = replaceOnce(

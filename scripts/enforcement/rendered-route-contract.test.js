@@ -161,7 +161,7 @@ test("readRouteSource builds a source contract for a current guide", () => {
 
   assert.equal(contract.routePath, "/guides/bradenton-vs-sarasota/");
   assert.equal(contract.sourcePath, "src/guides/bradenton-vs-sarasota.html");
-  assert.equal(contract.head.title, "Bradenton vs Sarasota for Vacation: Which Base Wins?");
+  assert.equal(contract.head.title, "Bradenton vs Sarasota: Which Is Better for Vacation?");
   assert.equal(contract.head.canonical, "https://seascape-vacations.com/guides/bradenton-vs-sarasota/");
   assert.equal(contract.pathFacts.isGuide, true);
 });
