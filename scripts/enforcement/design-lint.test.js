@@ -13,6 +13,7 @@ const {
   lintSource,
   lintFile,
   resolveBaseRef,
+  checkWorsened,
 } = require("../design/design-lint.js");
 const { designLintBaseFromRange, buildCommandSteps } = require("./verify-release.js");
 
@@ -47,10 +48,224 @@ test("design-lint --json writes one parseable JSON document", () => {
     encoding: "utf8",
   });
 
-  assert.equal(result.status, 0, result.stderr);
+  // This test owns ONE property: --json emits a single parseable report. It must not
+  // also assert a clean exit. `--json` exits 1 whenever it finds new violations, which
+  // is correct behaviour and is separately enforced by `npm run lint:design`. Asserting
+  // exit 0 here made the pre-commit gate unsatisfiable: the hook runs `npm test`, and
+  // with staged-but-uncommitted edits to any grandfathered file `--base HEAD` reports
+  // those edits as touched, so the run exited 1 and blocked the very commit that would
+  // have made it pass. Any edit to one of the ~52 grandfathered guides was uncommittable.
+  assert.equal(typeof result.status, "number", result.error?.message || "design-lint did not run");
+  assert.ok([0, 1].includes(result.status), `unexpected exit ${result.status}: ${result.stderr}`);
+
   const report = JSON.parse(result.stdout);
   assert.equal(report.baseRef, "HEAD");
   assert.ok(Array.isArray(report.newViolations));
+  assert.ok(Array.isArray(report.graduated));
+  assert.equal(typeof report.debt, "number");
+  // Exit code must agree with the report, so a violation can never pass silently.
+  assert.equal(result.status === 0, report.newViolations.length === 0);
+});
+
+// ---------------------------------------------------------------------------
+// Migrate-on-touch is per check and evidence-based. These tests pin BOTH
+// directions: a metadata-only edit keeps its exemption, and any added design
+// debt still fails. If the ratchet ever loosens, one of these goes red.
+// ---------------------------------------------------------------------------
+
+const LEGACY = "src/guides/legacy-page.html";
+
+function legacyState(workingViolations) {
+  return {
+    files: [LEGACY],
+    report: { [LEGACY]: workingViolations },
+    allowlist: new Set(),
+  };
+}
+
+const BASELINE_ALL = { offBrandHex: [LEGACY], googleFonts: [LEGACY], emoji: [LEGACY] };
+
+function violations({ hex = [], googleFonts = false, emoji = false, hexCounts = null, googleFontsCount = null, emojiCount = null } = {}) {
+  const counts = {
+    hex: hexCounts || Object.fromEntries(hex.map((h) => [h, 1])),
+    googleFonts: googleFontsCount ?? (googleFonts ? 1 : 0),
+    emoji: emojiCount ?? (emoji ? 1 : 0),
+  };
+  return { offBrandHex: hex, googleFonts, emoji, counts };
+}
+
+test("touching a grandfathered file without changing design surfaces keeps its exemption", () => {
+  // The exact CTR case: a <title> rewrite. Same off-brand hexes, same fonts, same emoji.
+  const working = violations({ hex: ["#f0f7f7", "#f8f9fa"], googleFonts: true });
+  const base = violations({ hex: ["#f0f7f7", "#f8f9fa"], googleFonts: true });
+
+  const { newViolations, debt } = evaluate(
+    legacyState(working),
+    BASELINE_ALL,
+    new Set([LEGACY]),
+    { [LEGACY]: base }
+  );
+
+  assert.deepEqual(newViolations, [], "a metadata-only edit must not demand a design migration");
+  assert.equal(debt, 2, "the pre-existing debt is still counted, not forgiven");
+});
+
+test("adding a new off-brand hex to a grandfathered file loses the exemption", () => {
+  const working = violations({ hex: ["#f0f7f7", "#f8f9fa", "#ff00ff"] });
+  const base = violations({ hex: ["#f0f7f7", "#f8f9fa"] });
+
+  const { newViolations } = evaluate(legacyState(working), BASELINE_ALL, new Set([LEGACY]), {
+    [LEGACY]: base,
+  });
+
+  assert.equal(newViolations.length, 1);
+  assert.equal(newViolations[0].check, "offBrandHex");
+});
+
+test("removing some off-brand hex from a grandfathered file still keeps the exemption", () => {
+  // Partial progress must not be punished, or nobody will ever start migrating.
+  const working = violations({ hex: ["#f0f7f7"] });
+  const base = violations({ hex: ["#f0f7f7", "#f8f9fa"] });
+
+  const { newViolations } = evaluate(legacyState(working), BASELINE_ALL, new Set([LEGACY]), {
+    [LEGACY]: base,
+  });
+
+  assert.deepEqual(newViolations, []);
+});
+
+test("newly adding a Google Fonts tag or an emoji loses the exemption for that check only", () => {
+  const working = violations({ hex: ["#f0f7f7"], googleFonts: true, emoji: true });
+  const base = violations({ hex: ["#f0f7f7"], googleFonts: false, emoji: false });
+
+  const { newViolations } = evaluate(legacyState(working), BASELINE_ALL, new Set([LEGACY]), {
+    [LEGACY]: base,
+  });
+
+  const failed = newViolations.map((v) => v.check).sort();
+  assert.deepEqual(failed, ["emoji", "googleFonts"]);
+  assert.ok(!failed.includes("offBrandHex"), "the untouched check keeps its exemption");
+});
+
+test("a file with no base version is never exempt, so new pages must comply", () => {
+  const working = violations({ hex: ["#ff00ff"], googleFonts: true });
+
+  const { newViolations } = evaluate(legacyState(working), BASELINE_ALL, new Set([LEGACY]), {
+    [LEGACY]: null,
+  });
+
+  assert.equal(newViolations.length, 2, "a newly added file cannot inherit a grandfathered pass");
+});
+
+test("an untouched grandfathered file stays exempt, as before", () => {
+  const working = violations({ hex: ["#f0f7f7"], googleFonts: true });
+
+  const { newViolations, debt } = evaluate(legacyState(working), BASELINE_ALL, new Set(), {});
+
+  assert.deepEqual(newViolations, []);
+  assert.equal(debt, 2);
+});
+
+test("a non-grandfathered file that violates still fails even when unchanged", () => {
+  const working = violations({ hex: ["#ff00ff"] });
+
+  const { newViolations } = evaluate(
+    legacyState(working),
+    { offBrandHex: [], googleFonts: [], emoji: [] },
+    new Set(),
+    {}
+  );
+
+  assert.equal(newViolations.length, 1);
+  assert.equal(newViolations[0].check, "offBrandHex");
+});
+
+test("adding a SECOND Google Fonts tag to an already-violating file loses the exemption", () => {
+  // Codex review finding on #490: boolean comparison let a baselined guide add
+  // more of the same category of debt. Counts close that hole.
+  const working = violations({ googleFonts: true, googleFontsCount: 2 });
+  const base = violations({ googleFonts: true, googleFontsCount: 1 });
+
+  const { newViolations } = evaluate(legacyState(working), BASELINE_ALL, new Set([LEGACY]), {
+    [LEGACY]: base,
+  });
+
+  assert.equal(newViolations.length, 1);
+  assert.equal(newViolations[0].check, "googleFonts");
+});
+
+test("adding another emoji to an already-violating file loses the exemption", () => {
+  const working = violations({ emoji: true, emojiCount: 3 });
+  const base = violations({ emoji: true, emojiCount: 2 });
+
+  const { newViolations } = evaluate(legacyState(working), BASELINE_ALL, new Set([LEGACY]), {
+    [LEGACY]: base,
+  });
+
+  assert.equal(newViolations.length, 1);
+  assert.equal(newViolations[0].check, "emoji");
+});
+
+test("one more USE of an already-present off-brand hex loses the exemption", () => {
+  const working = violations({ hex: ["#f0f7f7"], hexCounts: { "#f0f7f7": 3 } });
+  const base = violations({ hex: ["#f0f7f7"], hexCounts: { "#f0f7f7": 2 } });
+
+  const { newViolations } = evaluate(legacyState(working), BASELINE_ALL, new Set([LEGACY]), {
+    [LEGACY]: base,
+  });
+
+  assert.equal(newViolations.length, 1);
+  assert.equal(newViolations[0].check, "offBrandHex");
+});
+
+test("equal or reduced occurrence counts keep the exemption", () => {
+  const working = violations({ hex: ["#f0f7f7"], hexCounts: { "#f0f7f7": 2 }, googleFonts: true, googleFontsCount: 1 });
+  const base = violations({ hex: ["#f0f7f7", "#f8f9fa"], hexCounts: { "#f0f7f7": 2, "#f8f9fa": 1 }, googleFonts: true, googleFontsCount: 2 });
+
+  const { newViolations } = evaluate(legacyState(working), BASELINE_ALL, new Set([LEGACY]), {
+    [LEGACY]: base,
+  });
+
+  assert.deepEqual(newViolations, [], "removing debt while keeping the rest must not fail");
+});
+
+test("lintSource reports occurrence counts, not just presence", () => {
+  const source = [
+    '<style>.a{color:#ff00ff}.b{background:#ff00ff}.c{color:#00ff00}</style>',
+    '<link href="https://fonts.googleapis.com/css2?family=X" rel="stylesheet">',
+    '<link rel="preconnect" href="https://fonts.gstatic.com">',
+    "<p>beach day 🏖️ fun ☀️</p>",
+  ].join("\n");
+
+  const result = lintSource(source, new Set());
+  assert.equal(result.counts.hex["#ff00ff"], 2);
+  assert.equal(result.counts.hex["#00ff00"], 1);
+  assert.equal(result.counts.googleFonts, 2);
+  assert.ok(result.counts.emoji >= 2);
+  // The report shape existing consumers rely on is unchanged.
+  assert.deepEqual(result.offBrandHex, ["#ff00ff", "#00ff00"]);
+  assert.equal(result.googleFonts, true);
+  assert.equal(result.emoji, true);
+});
+
+test("checkWorsened treats a missing base as worsened and compares hex sets by membership", () => {
+  assert.equal(checkWorsened(violations({ hex: ["#aaa111"] }), null, "offBrandHex"), true);
+  assert.equal(
+    checkWorsened(violations({ hex: ["#aaa111"] }), violations({ hex: ["#aaa111"] }), "offBrandHex"),
+    false
+  );
+  assert.equal(
+    checkWorsened(violations({ hex: ["#aaa111", "#bbb222"] }), violations({ hex: ["#aaa111"] }), "offBrandHex"),
+    true
+  );
+  assert.equal(
+    checkWorsened(violations({ googleFonts: true }), violations({ googleFonts: true }), "googleFonts"),
+    false
+  );
+  assert.equal(
+    checkWorsened(violations({ googleFonts: true }), violations({ googleFonts: false }), "googleFonts"),
+    true
+  );
 });
 
 test("guide corpus has no design-law violations outside the grandfathered baseline", () => {
