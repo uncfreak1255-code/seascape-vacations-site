@@ -55,6 +55,7 @@ function hasEntityCoverageSchema(content) {
 module.exports = function(eleventyConfig) {
   const root = process.cwd();
   const gitTimestampCache = new Map();
+  const gitPatternTimestampCache = new Map();
 
   function readLatestGitTimestamp(...candidatePaths) {
     let latestTimestamp = null;
@@ -94,6 +95,28 @@ module.exports = function(eleventyConfig) {
     }
 
     return latestTimestamp;
+  }
+
+  function readLatestGitSearchTimestamp(pattern, candidatePath) {
+    const cacheKey = `${pattern}\0${candidatePath}`;
+    if (gitPatternTimestampCache.has(cacheKey)) {
+      return gitPatternTimestampCache.get(cacheKey);
+    }
+
+    let isoString = "";
+    try {
+      const relativePath = path.relative(root, path.join(root, candidatePath));
+      isoString = execFileSync(
+        "git",
+        ["log", "-1", "--format=%cI", `-S${pattern}`, "--", relativePath],
+        { cwd: root, encoding: "utf8" }
+      ).trim();
+    } catch {
+      isoString = "";
+    }
+
+    gitPatternTimestampCache.set(cacheKey, isoString || null);
+    return isoString || null;
   }
 
   eleventyConfig.addNunjucksGlobal("gitLastModifiedIso", (...candidatePaths) =>
@@ -137,29 +160,39 @@ module.exports = function(eleventyConfig) {
     require("./scripts/seo/seo-page-history.js");
   let seoPageHistory = null;
 
-  function seoPageTimestamp(group, slug) {
+  function getSeoPageHistory() {
     if (!seoPageHistory) {
       seoPageHistory = buildSeoPageEntryHistory({ cwd: root, warn: console.warn });
     }
-    return seoPageHistory.get(`${group}/${slug}`) || null;
+    return seoPageHistory;
   }
 
-  function seoPageLastModifiedIsoString(group, slug, fallbackPaths) {
-    return (
-      seoPageTimestamp(group, slug) ||
-      readLatestGitTimestamp(SEO_PAGES_PATH, ...fallbackPaths)
+  function seoPageTimestamp(group, slug, ...fallbackPaths) {
+    const history = getSeoPageHistory();
+    const dataFallback = history.degraded
+      ? readLatestGitTimestamp(SEO_PAGES_PATH)
+      : null;
+    const governanceTimestamp = group === "vacationer"
+      ? readLatestGitSearchTimestamp(`"${slug}"`, "src/_data/seoGovernance.js")
+      : null;
+
+    return latestIsoString(
+      history.get(`${group}/${slug}`),
+      governanceTimestamp,
+      dataFallback,
+      readLatestGitTimestamp(...fallbackPaths)
     );
   }
 
   eleventyConfig.addNunjucksGlobal("seoPageLastModifiedIso", (group, slug, ...fallbackPaths) =>
-    seoPageLastModifiedIsoString(group, slug, fallbackPaths)
+    seoPageTimestamp(group, slug, ...fallbackPaths)
   );
   eleventyConfig.addNunjucksGlobal("seoPageLastModifiedDate", (group, slug, ...fallbackPaths) => {
-    const isoString = seoPageLastModifiedIsoString(group, slug, fallbackPaths);
+    const isoString = seoPageTimestamp(group, slug, ...fallbackPaths);
     return isoString ? isoString.slice(0, 10) : null;
   });
   eleventyConfig.addNunjucksGlobal("seoPageLastModifiedLabel", (group, slug, ...fallbackPaths) =>
-    formatDateLabel(seoPageLastModifiedIsoString(group, slug, fallbackPaths))
+    formatDateLabel(seoPageTimestamp(group, slug, ...fallbackPaths))
   );
 
   // Pass through static assets (preserves current design)
