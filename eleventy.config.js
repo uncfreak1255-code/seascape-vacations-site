@@ -148,11 +148,11 @@ module.exports = function(eleventyConfig) {
   // lives in scripts/seo/seo-page-history.js so the enforcement suite can
   // exercise it against controlled fixture repositories.
   //
-  // Deliberately NOT included when entry history exists: page-related overlays
-  // or shared template/data timestamps. Measured against the real data, both
-  // can re-flatten generated page families and recreate the exact bug this
-  // change exists to fix. A sibling card's title tweak, template edit, or
-  // family-wide data touch is not a meaningful change to THIS page's primary
+  // Deliberately NOT included when page-specific history exists: page-related
+  // overlays or shared template/data timestamps. Measured against the real
+  // data, both can re-flatten generated page families and recreate the exact
+  // bug this change exists to fix. A sibling card's title tweak, template edit,
+  // or family-wide data touch is not a meaningful change to THIS page's primary
   // content, which is what sitemap lastmod signals. Release/build proof covers
   // shared rendering changes; this helper keeps generated SEO page dates
   // page-content-specific.
@@ -169,18 +169,15 @@ module.exports = function(eleventyConfig) {
 
   function seoPageTimestamp(group, slug, ...fallbackPaths) {
     const history = getSeoPageHistory();
-    const dataFallback = history.degraded
-      ? readLatestGitTimestamp(SEO_PAGES_PATH)
-      : null;
+    const entryTimestamp = history.get(`${group}/${slug}`);
     const governanceTimestamp = group === "vacationer"
       ? readLatestGitSearchTimestamp(`"${slug}"`, "src/_data/seoGovernance.js")
       : null;
+    const pageSpecificTimestamp = latestIsoString(entryTimestamp, governanceTimestamp);
 
-    return latestIsoString(
-      history.get(`${group}/${slug}`),
-      governanceTimestamp,
-      dataFallback,
-      readLatestGitTimestamp(...fallbackPaths)
+    return (
+      pageSpecificTimestamp ||
+      readLatestGitTimestamp(SEO_PAGES_PATH, ...fallbackPaths)
     );
   }
 
