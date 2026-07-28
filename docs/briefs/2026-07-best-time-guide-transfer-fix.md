@@ -54,6 +54,14 @@
 - The two destination pages currently expose overlapping near-island homes. The module now states that plainly and frames the second route as comparison context, not distinct inventory.
 - The July 11 SERP and analytics evidence remains historical input, not a fresh lift claim. Refresh the search evidence before treating a later experiment decision as active.
 
+## Post-merge Asset Repair
+
+- Current `main` was inspected at `8df02ffc0d6f78ff93d90fb70f8f1360b8cd70f7`; both JPEGs changed by #492 contained only 40-byte payloads and could not render as images.
+- Restore the shared `anna-maria-island-og.jpg` from its last valid pre-#492 blob so unrelated guides retain their prior visual.
+- Use the approved post-storm beach photo as the page-specific `anna-maria-island-seasonal-hero.jpg` for the visible hero, Open Graph, Twitter, and Article image references.
+- Set the Article `dateModified` to `2026-07-28`, matching this material page update.
+- Preserve the reviewed copy, scoped analytics placement, destination URLs, and readback contract without further changes.
+
 ## Design Contract
 
 - The first choice is the closer near-island path: AMI beaches generally 5-15 minutes away, with more room, pool time, and easier parking than forcing island-only inventory.

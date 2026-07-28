@@ -1,5 +1,7 @@
 const fs = require("fs");
+const os = require("os");
 const path = require("path");
+const { execFileSync } = require("node:child_process");
 const test = require("node:test");
 const assert = require("node:assert/strict");
 
@@ -144,4 +146,78 @@ test("best-time guide exposes an early tracked seasonal stay choice", () => {
     /show the same near-island homes[\s\S]*shows the same homes/,
     "the module must state plainly that both choices currently show the same homes"
   );
+});
+
+test("best-time guide uses its valid seasonal hero and current article metadata", () => {
+  const guidePath = path.join(
+    projectRoot,
+    "src",
+    "guides",
+    "best-time-visit-anna-maria-island.html"
+  );
+  const source = fs.readFileSync(guidePath, "utf8");
+  const seasonalHero = "anna-maria-island-seasonal-hero.jpg";
+
+  assert.equal(
+    (source.match(new RegExp(seasonalHero, "g")) || []).length,
+    4,
+    "the visible hero, Open Graph, Twitter, and Article metadata should use the seasonal image"
+  );
+  assert.equal(
+    source.includes("anna-maria-island-og.jpg"),
+    false,
+    "the guide should not replace the shared Anna Maria Island image"
+  );
+  assert.match(source, /"dateModified": "2026-07-28"/);
+
+  for (const filename of ["anna-maria-island-og.jpg", seasonalHero]) {
+    const image = fs.readFileSync(path.join(projectRoot, "images", filename));
+
+    assert.ok(image.length > 100_000, `${filename} should contain a complete image payload`);
+    assert.deepEqual(
+      Array.from(image.subarray(0, 3)),
+      [0xff, 0xd8, 0xff],
+      `${filename} should begin with a JPEG signature`
+    );
+    assert.deepEqual(
+      Array.from(image.subarray(-2)),
+      [0xff, 0xd9],
+      `${filename} should end with a JPEG marker`
+    );
+  }
+});
+
+test("guide normalization preserves all seasonal hero references on the best-time guide", (t) => {
+  const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "best-time-guide-normalize-"));
+  const tempGuideRoot = path.join(tempRoot, "src", "guides");
+  const tempDataRoot = path.join(tempRoot, "src", "_data");
+  const guideFilename = "best-time-visit-anna-maria-island.html";
+
+  t.after(() => fs.rmSync(tempRoot, { recursive: true, force: true }));
+  fs.mkdirSync(tempGuideRoot, { recursive: true });
+  fs.mkdirSync(tempDataRoot, { recursive: true });
+  fs.copyFileSync(
+    path.join(projectRoot, "src", "guides", guideFilename),
+    path.join(tempGuideRoot, guideFilename)
+  );
+  fs.copyFileSync(
+    path.join(projectRoot, "src", "_data", "site.json"),
+    path.join(tempDataRoot, "site.json")
+  );
+
+  execFileSync(
+    process.execPath,
+    [path.join(projectRoot, "scripts", "guides", "normalize-guides.js")],
+    {
+      env: { ...process.env, SEASCAPE_NORMALIZE_ROOT: tempRoot },
+      stdio: "pipe"
+    }
+  );
+
+  const normalized = fs.readFileSync(path.join(tempGuideRoot, guideFilename), "utf8");
+  assert.equal(
+    (normalized.match(/anna-maria-island-seasonal-hero\.jpg/g) || []).length,
+    4
+  );
+  assert.equal(normalized.includes("anna-maria-island-og.jpg"), false);
 });
