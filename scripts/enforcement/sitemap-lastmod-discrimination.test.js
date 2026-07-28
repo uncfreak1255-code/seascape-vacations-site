@@ -5,6 +5,7 @@ const fs = require("fs");
 const path = require("path");
 
 const { buildSeoPageHistory } = require("../seo/seo-page-history.js");
+const seoPages = require("../../src/_data/seoPages.json");
 
 const projectRoot = path.resolve(__dirname, "..", "..");
 const SITE_ORIGIN = "https://seascape-vacations.com";
@@ -90,6 +91,19 @@ function latestGovernanceDate(slug) {
   }
 }
 
+function latestFileDate(candidatePath) {
+  try {
+    const isoString = execFileSync("git", ["log", "-1", "--format=%cI", "--", candidatePath], {
+      cwd: projectRoot,
+      encoding: "utf8",
+    })
+      .trim();
+    return isoString ? isoString.slice(0, 10) : null;
+  } catch {
+    return null;
+  }
+}
+
 function historyDate(group, slug) {
   const entryHistory = getEntryHistory();
   const isoString = entryHistory.get(`${group}/${slug}`);
@@ -100,6 +114,12 @@ function expectedPageDate(family, slug) {
   const dates = [historyDate(family.group, slug)];
   if (family.group === "vacationer") {
     dates.push(latestGovernanceDate(slug));
+  }
+  if (family.group === "owner") {
+    const seoPageEntry = (seoPages.owner || []).find((page) => page.slug === slug);
+    if (seoPageEntry?.proofAssetKey) {
+      dates.push(latestFileDate("src/_data/ownerProofAssets.json"));
+    }
   }
   return dates.filter(Boolean).sort().at(-1) || null;
 }

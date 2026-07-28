@@ -173,7 +173,16 @@ module.exports = function(eleventyConfig) {
     const governanceTimestamp = group === "vacationer"
       ? readLatestGitSearchTimestamp(`"${slug}"`, "src/_data/seoGovernance.js")
       : null;
-    const pageSpecificTimestamp = latestIsoString(entryTimestamp, governanceTimestamp);
+    const ownerProofTimestamp = group === "owner"
+      ? readLatestGitTimestamp(
+        fallbackPaths.filter((candidatePath) => candidatePath === "src/_data/ownerProofAssets.json")
+      )
+      : null;
+    const pageSpecificTimestamp = latestIsoString(
+      entryTimestamp,
+      governanceTimestamp,
+      ownerProofTimestamp
+    );
 
     return (
       pageSpecificTimestamp ||
