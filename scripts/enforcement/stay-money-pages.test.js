@@ -134,4 +134,14 @@ test("best-time guide exposes an early tracked seasonal stay choice", () => {
     2,
     "both seasonal stay choices should retain the guide slug"
   );
+  assert.equal(
+    (decisionSurface[0].match(/data-placement="best_time_season_choice"/g) || []).length,
+    2,
+    "only the early seasonal choices should carry the scoped readback placement"
+  );
+  assert.match(
+    decisionSurface[0],
+    /show the same near-island homes[\s\S]*shows the same homes/,
+    "the module must state plainly that both choices currently show the same homes"
+  );
 });

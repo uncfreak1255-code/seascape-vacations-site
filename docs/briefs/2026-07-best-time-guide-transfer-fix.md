@@ -14,11 +14,11 @@
 ## Experiment And Readback Contract
 
 - hypothesis: readers understand the month tradeoff but miss the stay decision because the tracked stay paths appear too late and too quietly; one early, honest proximity-versus-house-fit choice should produce at least one `guide_book_direct_click` without adding mobile density across the full article.
-- primary event: guide_book_direct_click
+- primary event: `guide_book_direct_click` with `placement=best_time_season_choice` only
 - guardrail event: booking_engine_handoff, canonical integrity, content lint, internal-link integrity, JSON-LD validity, desktop/mobile rendering, and no horizontal overflow.
 - entry criteria: the joined 2026-07-03 to 2026-07-09 read shows `1,917` impressions, `16` GSC clicks, `32` GA4 sessions, `0` guide direct clicks, `0` booking handoffs, and one canonical URL variant for `/guides/best-time-visit-anna-maria-island/`.
 - readback window: first seven complete days after the fix deploy once final GSC data covers the full window.
-- decision rule: keep if the guide records at least one `guide_book_direct_click` without a route, schema, content, or visual regression; refine once if sessions reach `20` and tracked stay and booking actions remain at `0`; do not promote the treatment to another guide from this read alone.
+- decision rule: keep if the scoped placement records at least one `guide_book_direct_click` without a route, schema, content, or visual regression; refine once if sessions reach `20` and scoped stay and booking actions remain at `0`; do not count the unchanged lower links or promote the treatment to another guide from this read alone.
 
 ## Gate 0 — Scoped Existing-Guide CRO Rescue
 
@@ -47,6 +47,12 @@
 | Seascape proof available | Dated GSC + GA4 receipt for 2026-07-03 to 2026-07-09, completed DataForSEO SERP receipt from 2026-07-11, existing tracked stay URLs, and existing guide direct-book tracking events. |
 | Tools/plugins used | First-party analytics receipts, completed DataForSEO SERP receipt, repo source read, and release-gate/content checks. No live posting, sends, or external account mutation. |
 | Decision and reason | improve the existing guide because it has page-one demand and zero tracked downstream guide clicks; add the smallest visible stay-choice handoff without claiming conversion lift before the post-deploy readback window. |
+
+## Review Correction Follow-up
+
+- The early links are scoped with `data-placement="best_time_season_choice"`; the seven-day readback must filter on that placement rather than the shared `guide_book_direct_click` event alone.
+- The two destination pages currently expose overlapping near-island homes. The module now states that plainly and frames the second route as comparison context, not distinct inventory.
+- The July 11 SERP and analytics evidence remains historical input, not a fresh lift claim. Refresh the search evidence before treating a later experiment decision as active.
 
 ## Design Contract
 
