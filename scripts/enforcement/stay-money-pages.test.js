@@ -87,32 +87,61 @@ test("AMI vacation rentals page does not promise free water-sports gear that is 
 test("AMI comparison and planning guides route into the rebuilt AMI stay money pages", () => {
   const guides = [
     "src/guides/anna-maria-island-vs-siesta-key.html",
-    "src/guides/siesta-key-vs-a[˜K[X\šXKZ\Û[™Y˜[Z[Y\Ëš[‹ˆœÜ˜ËÙÝZY\ËØ™\Ý][YK]š\Ú]X[›˜K[X\šXKZ\Û[™š[‚ˆNÂ‚ˆ›Üˆ
-ÛÛœÝÝZYHÙˆÝZY\ÊHÂˆÛÛœÝÛÝ\˜ÙHHœËœ™XYš[TÞ[˜Ê]š›Ú[Š›Ú™XÝ›ÛÝÝZYJK]ŽŠNÂ‚ˆ›Üˆ
-ÛÛœÝ™YˆÙˆÂˆ‹ÜÝ^\ËØ[›˜K[X\šXKZ\Û[™]˜XØ][Û‹\™[[ËÈ‹ˆ‹ÜÝ^\ËØ[›˜K[X\šXKZ\Û[™X™XXÚœ›Û\™[[ËÈ‚ˆJHÂˆ\ÜÙ\™\]X[
-ÛÝ\˜ÙKš[˜ÛY\Ê™YŠKYK	ÙÝZY_HÚÝ[[˜ÛYH	Ú™YŸX
-NÂˆBˆBŸJNÂ‚\Ý
-˜™\Ý][YHÝZYH^ÜÙ\È[ˆX\›H˜XÚÙYÙX\ÛÛ˜[Ý^HÚÚXÙH‹
+    "src/guides/siesta-key-vs-anna-maria-island-families.html",
+    "src/guides/best-time-visit-anna-maria-island.html"
+  ];
 
-HOˆÂˆÛÛœÝÝZYT]H]š›Ú[Šˆ›Ú™XÝ›ÛÝˆœÜ˜È‹ˆ™ÝZY\È‹ˆ˜™\Ý][YK]š\Ú]X[›˜K[X\šXKZ\Û[™š[‚ˆ
-NÂˆÛÛœÝÛÝ\˜ÙHHœËœ™XYš[TÞ[˜ÊÝZYT]]ŽŠNÂˆÛÛœÝXÚ\Ú[Û”Ý\™˜XÙHHÛÝ\˜ÙK›X]Ú
-ˆÏÙXÝ[Û–×—J™]K\ÙX\ÛÛ‹\Ý^KXÚÚXÙV×—J–×××JÏÜÙXÝ[Û‹Âˆ
-NÂ‚ˆ\ÜÙ\›ÚÊXÚ\Ú[Û”Ý\™˜XÙK˜™\Ý][YHÝZYHÚÝ[^ÜÙH]K\ÙX\ÛÛ‹\Ý^KXÚÚXÙHŠNÂ‚ˆ›Üˆ
-ÛÛœÝ™YˆÙˆÂˆ‹ÜÝ^\ËØ[›˜K[X\šXKZ\Û[™]˜XØ][Û‹\™[[ËÈ‹ˆ‹ÜÝ^\ËØ[›˜K[X\šXKZ\Û[™X™XXÚœ›Û\™[[ËÈ‚ˆJHÂˆ\ÜÙ\›X]Ú
-XÚ\Ú[Û”Ý\™˜XÙVÌK™]È™YÑ^
-™YVÈ‰×IÚ™YŸVÈ‰×X
-JNÂˆB‚ˆ\ÜÙ\™\]X[
-ˆ
-XÚ\Ú[Û”Ý\™˜XÙVÌK›X]Ú
-Ù]K]˜XÚËY]™[H™ÝZYWØ›ÛÚ×Ù\™XÝØÛXÚÈ‹ÙÊH×JK›[™Ýˆ‹ˆ˜›ÝÙX\ÛÛ˜[Ý^HÚÚXÙ\ÈÚÝ[[Z]ÝZYWØ›ÛÚ×Ù\™XÝØÛXÚÈ‚ˆ
-NÂˆ\ÜÙ\™\]X[
-ˆ
-XÚ\Ú[Û”Ý\™˜XÙVÌK›X]Ú
-Ù]KYÝZYK\ÛYÏH˜™\Ý][YK]š\Ú]X[›˜K[X\šXKZ\Û[™‹ÙÊH×JK›[™Ýˆ‹ˆ˜›ÝÙX\ÛÛ˜[Ý^HÚÚXÙ\ÈÚÝ[™]Z[ˆHÝZYHÛYÈ‚ˆ
-NÂˆ\ÜÙ\™\]X[
-ˆ
-XÚ\Ú[Û”Ý\™˜XÙVÌK›X]Ú
-Ù]K\XÙ[Y[H˜™\ÝÝ[YWÜÙX\ÛÛ—ØÚÚXÙH‹ÙÊH×JK›[™Ýˆ‹ˆ›Û›HHX\›HÙX\ÛÛ˜[ÚÚXÙ\ÈÚÝ[Ø\œžHHØÛÜY™XY˜XÚÈXÙ[Y[‚ˆ
-NÂˆ\ÜÙ\›X]Ú
-ˆXÚ\Ú[Û”Ý\™˜XÙVÌKˆÛÝ™\›\[™È™X\‹Z\Û[™ÛY\Ö×××J››Ý\ÈÙ\\˜]H[™[ÜžHÛÛËËˆH[Ù[H]\Ý›Ý[\H]HÛÈ›Ý]\È^ÜÙH\Ý[˜Ý[™[ÜžHÛÛÈ‚ˆ
-NÂŸJNÂ
+  for (const guide of guides) {
+    const source = fs.readFileSync(path.join(projectRoot, guide), "utf8");
+
+    for (const href of [
+      "/stays/anna-maria-island-vacation-rentals/",
+      "/stays/anna-maria-island-beachfront-rentals/"
+    ]) {
+      assert.equal(source.includes(href), true, `${guide} should include ${href}`);
+    }
+  }
+});
+
+test("best-time guide exposes an early tracked seasonal stay choice", () => {
+  const guidePath = path.join(
+    projectRoot,
+    "src",
+    "guides",
+    "best-time-visit-anna-maria-island.html"
+  );
+  const source = fs.readFileSync(guidePath, "utf8");
+  const decisionSurface = source.match(
+    /<section[^>]*data-season-stay-choice[^>]*>[\s\S]*?<\/section>/
+  );
+
+  assert.ok(decisionSurface, "best-time guide should expose data-season-stay-choice");
+
+  for (const href of [
+    "/stays/anna-maria-island-vacation-rentals/",
+    "/stays/anna-maria-island-beachfront-rentals/"
+  ]) {
+    assert.match(decisionSurface[0], new RegExp(`href=["']${href}["']`));
+  }
+
+  assert.equal(
+    (decisionSurface[0].match(/data-track-event="guide_book_direct_click"/g) || []).length,
+    2,
+    "both seasonal stay choices should emit guide_book_direct_click"
+  );
+  assert.equal(
+    (decisionSurface[0].match(/data-guide-slug="best-time-visit-anna-maria-island"/g) || []).length,
+    2,
+    "both seasonal stay choices should retain the guide slug"
+  );
+  assert.equal(
+    (decisionSurface[0].match(/data-placement="best_time_season_choice"/g) || []).length,
+    2,
+    "only the early seasonal choices should carry the scoped readback placement"
+  );
+  assert.match(
+    decisionSurface[0],
+    /overlapping near-island homes[\s\S]*not as separate inventory pools/,
+    "the module must not imply that the two routes expose distinct inventory pools"
+  );
+});
