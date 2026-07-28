@@ -148,14 +148,11 @@ module.exports = function(eleventyConfig) {
   // lives in scripts/seo/seo-page-history.js so the enforcement suite can
   // exercise it against controlled fixture repositories.
   //
-  // Deliberately NOT included when page-specific history exists: page-related
-  // overlays or shared template/data timestamps. Measured against the real
-  // data, both can re-flatten generated page families and recreate the exact
-  // bug this change exists to fix. A sibling card's title tweak, template edit,
-  // or family-wide data touch is not a meaningful change to THIS page's primary
-  // content, which is what sitemap lastmod signals. Release/build proof covers
-  // shared rendering changes; this helper keeps generated SEO page dates
-  // page-content-specific.
+  // Content freshness for generated SEO pages. Sitemap <lastmod> uses this
+  // page-specific signal so shared templates cannot re-flatten every generated
+  // route. Visible page "Updated" labels and JSON-LD dateModified use the
+  // rendered helper below, which can include shared template/support files
+  // without weakening the sitemap signal.
   const { buildSeoPageHistory: buildSeoPageEntryHistory } =
     require("./scripts/seo/seo-page-history.js");
   let seoPageHistory = null;
@@ -167,7 +164,7 @@ module.exports = function(eleventyConfig) {
     return seoPageHistory;
   }
 
-  function seoPageTimestamp(group, slug, ...fallbackPaths) {
+  function seoPageContentTimestamp(group, slug, ...fallbackPaths) {
     const history = getSeoPageHistory();
     const entryTimestamp = history.get(`${group}/${slug}`);
     const governanceTimestamp = group === "vacationer"
@@ -190,16 +187,27 @@ module.exports = function(eleventyConfig) {
     );
   }
 
+  function seoPageRenderedTimestamp(group, slug, ...fallbackPaths) {
+    return latestIsoString(
+      seoPageContentTimestamp(group, slug, ...fallbackPaths),
+      readLatestGitTimestamp(...fallbackPaths)
+    );
+  }
+
   eleventyConfig.addNunjucksGlobal("seoPageLastModifiedIso", (group, slug, ...fallbackPaths) =>
-    seoPageTimestamp(group, slug, ...fallbackPaths)
+    seoPageRenderedTimestamp(group, slug, ...fallbackPaths)
   );
   eleventyConfig.addNunjucksGlobal("seoPageLastModifiedDate", (group, slug, ...fallbackPaths) => {
-    const isoString = seoPageTimestamp(group, slug, ...fallbackPaths);
+    const isoString = seoPageRenderedTimestamp(group, slug, ...fallbackPaths);
     return isoString ? isoString.slice(0, 10) : null;
   });
   eleventyConfig.addNunjucksGlobal("seoPageLastModifiedLabel", (group, slug, ...fallbackPaths) =>
-    formatDateLabel(seoPageTimestamp(group, slug, ...fallbackPaths))
+    formatDateLabel(seoPageRenderedTimestamp(group, slug, ...fallbackPaths))
   );
+  eleventyConfig.addNunjucksGlobal("seoPageSitemapLastModifiedDate", (group, slug, ...fallbackPaths) => {
+    const isoString = seoPageContentTimestamp(group, slug, ...fallbackPaths);
+    return isoString ? isoString.slice(0, 10) : null;
+  });
 
   // Pass through static assets (preserves current design)
   eleventyConfig.addPassthroughCopy("images");
