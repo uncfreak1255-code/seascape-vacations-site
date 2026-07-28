@@ -175,15 +175,21 @@ module.exports = function(eleventyConfig) {
         fallbackPaths.filter((candidatePath) => candidatePath === "src/_data/ownerProofAssets.json")
       )
       : null;
-    const pageSpecificTimestamp = latestIsoString(
+    // Callers pass only the files this page actually renders from. They omit
+    // seoPages.json because entryTimestamp already resolves that file per
+    // slug. If history is degraded, the whole-file timestamp is an honest
+    // fallback rather than a fabricated per-entry date.
+    const degradedDataTimestamp = history.degraded
+      ? readLatestGitTimestamp(SEO_PAGES_PATH)
+      : null;
+    const sharedInputTimestamp = readLatestGitTimestamp(...fallbackPaths);
+
+    return latestIsoString(
       entryTimestamp,
       governanceTimestamp,
-      ownerProofTimestamp
-    );
-
-    return (
-      pageSpecificTimestamp ||
-      readLatestGitTimestamp(SEO_PAGES_PATH, ...fallbackPaths)
+      ownerProofTimestamp,
+      degradedDataTimestamp,
+      sharedInputTimestamp
     );
   }
 
