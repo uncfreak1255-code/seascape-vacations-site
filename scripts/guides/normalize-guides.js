@@ -2,9 +2,12 @@ const fs = require("fs");
 const path = require("path");
 
 const SITE_URL = "https://seascape-vacations.com";
-const GUIDE_ROOT = path.resolve(__dirname, "../../src/guides");
+const PROJECT_ROOT = process.env.SEASCAPE_NORMALIZE_ROOT
+  ? path.resolve(process.env.SEASCAPE_NORMALIZE_ROOT)
+  : path.resolve(__dirname, "../..");
+const GUIDE_ROOT = path.join(PROJECT_ROOT, "src/guides");
 const SITE_DATA = JSON.parse(
-  fs.readFileSync(path.resolve(__dirname, "../../src/_data/site.json"), "utf8")
+  fs.readFileSync(path.join(PROJECT_ROOT, "src/_data/site.json"), "utf8")
 );
 const GA_MEASUREMENT_ID = SITE_DATA.analytics?.ga4MeasurementId || "G-3VDV66S3DK";
 const SAME_AS_LINKS = SITE_DATA.sameAsLinks || [];
@@ -23,6 +26,13 @@ const LOCAL_OG_IMAGES = {
   siesta: "/images/siesta-key-og.jpg",
   default: "/images/seascape-og-default.jpg"
 };
+
+const ROUTE_OG_IMAGES = new Map([
+  [
+    "/guides/best-time-visit-anna-maria-island/",
+    "/images/anna-maria-island-seasonal-hero.jpg"
+  ]
+]);
 
 const LEGACY_GUIDE_PATHS = new Map([
   ["area-guide-ami.html", "/guides/anna-maria-island-area-guide/"],
@@ -210,7 +220,7 @@ function normalizeGuideLinks(html) {
 function normalizeGuide(file) {
   const route = getGuideRoute(file);
   const region = getGuideRegion(route);
-  const ogPath = LOCAL_OG_IMAGES[region] || LOCAL_OG_IMAGES.default;
+  const ogPath = ROUTE_OG_IMAGES.get(route) || LOCAL_OG_IMAGES[region] || LOCAL_OG_IMAGES.default;
   const ogUrl = `${SITE_URL}${ogPath}`;
 
   let html = fs.readFileSync(file, "utf8");

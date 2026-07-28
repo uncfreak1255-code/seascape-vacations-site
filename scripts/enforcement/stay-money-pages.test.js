@@ -1,5 +1,7 @@
 const fs = require("fs");
+const os = require("os");
 const path = require("path");
+const { execFileSync } = require("node:child_process");
 const test = require("node:test");
 const assert = require("node:assert/strict");
 
@@ -183,4 +185,39 @@ test("best-time guide uses its valid seasonal hero and current article metadata"
       `${filename} should end with a JPEG marker`
     );
   }
+});
+
+test("guide normalization preserves all seasonal hero references on the best-time guide", (t) => {
+  const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "best-time-guide-normalize-"));
+  const tempGuideRoot = path.join(tempRoot, "src", "guides");
+  const tempDataRoot = path.join(tempRoot, "src", "_data");
+  const guideFilename = "best-time-visit-anna-maria-island.html";
+
+  t.after(() => fs.rmSync(tempRoot, { recursive: true, force: true }));
+  fs.mkdirSync(tempGuideRoot, { recursive: true });
+  fs.mkdirSync(tempDataRoot, { recursive: true });
+  fs.copyFileSync(
+    path.join(projectRoot, "src", "guides", guideFilename),
+    path.join(tempGuideRoot, guideFilename)
+  );
+  fs.copyFileSync(
+    path.join(projectRoot, "src", "_data", "site.json"),
+    path.join(tempDataRoot, "site.json")
+  );
+
+  execFileSync(
+    process.execPath,
+    [path.join(projectRoot, "scripts", "guides", "normalize-guides.js")],
+    {
+      env: { ...process.env, SEASCAPE_NORMALIZE_ROOT: tempRoot },
+      stdio: "pipe"
+    }
+  );
+
+  const normalized = fs.readFileSync(path.join(tempGuideRoot, guideFilename), "utf8");
+  assert.equal(
+    (normalized.match(/anna-maria-island-seasonal-hero\.jpg/g) || []).length,
+    4
+  );
+  assert.equal(normalized.includes("anna-maria-island-og.jpg"), false);
 });
