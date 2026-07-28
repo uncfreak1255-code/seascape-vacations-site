@@ -145,3 +145,42 @@ test("best-time guide exposes an early tracked seasonal stay choice", () => {
     "the module must state plainly that both choices currently show the same homes"
   );
 });
+
+test("best-time guide uses its valid seasonal hero and current article metadata", () => {
+  const guidePath = path.join(
+    projectRoot,
+    "src",
+    "guides",
+    "best-time-visit-anna-maria-island.html"
+  );
+  const source = fs.readFileSync(guidePath, "utf8");
+  const seasonalHero = "anna-maria-island-seasonal-hero.jpg";
+
+  assert.equal(
+    (source.match(new RegExp(seasonalHero, "g")) || []).length,
+    4,
+    "the visible hero, Open Graph, Twitter, and Article metadata should use the seasonal image"
+  );
+  assert.equal(
+    source.includes("anna-maria-island-og.jpg"),
+    false,
+    "the guide should not replace the shared Anna Maria Island image"
+  );
+  assert.match(source, /"dateModified": "2026-07-28"/);
+
+  for (const filename of ["anna-maria-island-og.jpg", seasonalHero]) {
+    const image = fs.readFileSync(path.join(projectRoot, "images", filename));
+
+    assert.ok(image.length > 100_000, `${filename} should contain a complete image payload`);
+    assert.deepEqual(
+      Array.from(image.subarray(0, 3)),
+      [0xff, 0xd8, 0xff],
+      `${filename} should begin with a JPEG signature`
+    );
+    assert.deepEqual(
+      Array.from(image.subarray(-2)),
+      [0xff, 0xd9],
+      `${filename} should end with a JPEG marker`
+    );
+  }
+});
