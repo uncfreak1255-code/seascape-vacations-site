@@ -141,7 +141,7 @@ test("best-time guide exposes an early tracked seasonal stay choice", () => {
   );
   assert.match(
     decisionSurface[0],
-    /overlapping near-island homes[\s\S]*not as separate inventory pools/,
-    "the module must not imply that the two routes expose distinct inventory pools"
+    /show some of the same near-island homes[\s\S]*can include some of the same homes/,
+    "the module must explain the overlap in traveler-facing language"
   );
 });
