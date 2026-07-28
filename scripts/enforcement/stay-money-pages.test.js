@@ -102,3 +102,36 @@ test("AMI comparison and planning guides route into the rebuilt AMI stay money p
     }
   }
 });
+
+test("best-time guide exposes an early tracked seasonal stay choice", () => {
+  const guidePath = path.join(
+    projectRoot,
+    "src",
+    "guides",
+    "best-time-visit-anna-maria-island.html"
+  );
+  const source = fs.readFileSync(guidePath, "utf8");
+  const decisionSurface = source.match(
+    /<section[^>]*data-season-stay-choice[^>]*>[\s\S]*?<\/section>/
+  );
+
+  assert.ok(decisionSurface, "best-time guide should expose data-season-stay-choice");
+
+  for (const href of [
+    "/stays/anna-maria-island-vacation-rentals/",
+    "/stays/anna-maria-island-beachfront-rentals/"
+  ]) {
+    assert.match(decisionSurface[0], new RegExp(`href=["']${href}["']`));
+  }
+
+  assert.equal(
+    (decisionSurface[0].match(/data-track-event="guide_book_direct_click"/g) || []).length,
+    2,
+    "both seasonal stay choices should emit guide_book_direct_click"
+  );
+  assert.equal(
+    (decisionSurface[0].match(/data-guide-slug="best-time-visit-anna-maria-island"/g) || []).length,
+    2,
+    "both seasonal stay choices should retain the guide slug"
+  );
+});

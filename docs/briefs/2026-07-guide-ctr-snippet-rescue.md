@@ -46,6 +46,15 @@ while the metadata changed.
 
 | Field | Required answer |
 | --- | --- |
+| Attack status | completed |
+| Query variants inspected | `best time to visit Anna Maria Island`; `Sarasota airport to Anna Maria Island`; `Anna Maria Island weather by month`; `Siesta Key vs Anna Maria Island for families`; `Bradenton vs Sarasota`; `is Anna Maria Island worth visiting`. |
+| SERP source | WebSearch SERP pull on 2026-07-27. DataForSEO live-SERP was unavailable in this runtime. |
+| Competitor URLs inspected | `https://www.visitflorida.com/places-to-go/southwest/anna-maria-island/`; `https://annamaria.com/`; `https://annamariaislandbeachrentals.com/`; `https://annamarialifevacationrentals.com/`; `https://thecoconutrentals.com/`; `https://www.islandvacationproperties.com/`; `https://www.rome2rio.com/`; `https://www.tripadvisor.com/`; `https://aldlimo.com/`; `https://amitransportation.com/`; `https://weatherspark.com/`; `https://weather-and-climate.com/`; `https://www.accuweather.com/`; `https://mousinaround.com/`; `https://luxurytraveldiarie.com/`; `https://www.passagekeydolphintours.com/`; `https://dwellingwell.com/`; `https://realnetflorida.com/`; `https://www.floridarentalbyowners.com/`; `https://zachosre.com/`; `https://sarasotasunshinemovers.com/`; `https://www.floridarambler.com/`; `https://www.thewalkingmermaid.com/`; `https://traveltasteclick.com/`. |
+| Content gap and Seascape answer | Competitors mostly title the broad topic or format, while Seascape's pages already contain the answer: May/November for timing, cost/logistics for SRQ transfers, monthly weather ranges, family-specific AMI vs. Siesta tradeoffs, vacation-specific Bradenton vs. Sarasota framing, and a concrete worth-visiting verdict. |
+| Design/format strategy | No visual or layout change. Rewrite only title, meta description, and matching social tags; keep existing page bodies, CTAs, and event contracts. |
+| Seascape proof available | GSC 2026-06-26 to 2026-07-23 shows the six routes rank on page one but remain below 1% CTR; each rewritten claim is already present in the page source. |
+| Tools/plugins used | Read-only GSC receipt from `seascape-analytics/scripts/gsc-search-performance.sh`, repo source inspection, and WebSearch SERP pull. |
+| Decision and reason | Ship metadata-only CTR rescue for six already-ranking guides; do not create new pages, alter body copy, or claim a lift until the post-deploy GSC readback window closes. |
 | Target query family | Destination-choice, month-choice, weather, and airport-transfer queries for Anna Maria Island, Bradenton, and Siesta Key. |
 | Searcher intent | Guide and research intent feeding a guest stay decision. |
 | Current Seascape URL | The six routes listed in Authorized Source Files. |
