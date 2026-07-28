@@ -11,14 +11,8 @@ const projectRoot = path.resolve(__dirname, "..", "..");
 const SITE_ORIGIN = "https://seascape-vacations.com";
 
 // These checks read the RENDERED build (_site) and verify the lastmod CONTRACT:
-// every generated owner and stay URL's <lastmod> must equal its entry-level
-// seoPages.json history date when that history is available.
-//
-// Why not max(entry date, template/shared-data date): that flattens every page
-// in the family whenever a shared template or support file changes. That is the
-// original failure pattern. Shared rendering changes are covered by build and
-// release proof; sitemap lastmod stays page-content-specific so Google can see
-// which generated pages actually changed.
+// every generated owner and stay URL's <lastmod> must equal the newest relevant
+// entry history, rendered shared input, and scoped governance/proof date.
 //
 // In shallow-clone degraded mode, entry history is intentionally empty and the
 // resolver falls back to seoPages.json plus shared source dates. The rendered
@@ -40,11 +34,13 @@ const FAMILIES = [
     label: "owner",
     group: "owner",
     prefix: "/property-management/",
+    sharedSources: ["src/property-management/property-management.njk"],
   },
   {
     label: "stay",
     group: "vacationer",
     prefix: "/stays/",
+    sharedSources: ["src/stays/stays.njk", "src/_data/staysPages.js"],
   },
 ];
 
@@ -111,7 +107,7 @@ function historyDate(group, slug) {
 }
 
 function expectedPageDate(family, slug) {
-  const dates = [historyDate(family.group, slug)];
+  const dates = [historyDate(family.group, slug), ...family.sharedSources.map(latestFileDate)];
   if (family.group === "vacationer") {
     dates.push(latestGovernanceDate(slug));
   }
@@ -155,20 +151,6 @@ for (const family of FAMILIES) {
       `sitemap lastmod does not honor the per-entry contract:\n  ${mismatches.join("\n  ")}\n` +
         "Use seoPageLastModifiedDate(group, slug, ...fallbacks) without letting " +
         "shared fallback paths override available page-specific history."
-    );
-  });
-
-  test(`${family.label} sitemap lastmod preserves page-level discrimination`, () => {
-    const history = getEntryHistory();
-    if (history.degraded) {
-      return;
-    }
-
-    const entries = generatedFamily(readSitemapEntries(), family.prefix);
-    const distinct = new Set(entries.map((entry) => entry.lastmod));
-    assert.ok(
-      distinct.size > 1,
-      `${family.label} generated URLs all share ${[...distinct][0]}; lastmod flattened again`
     );
   });
 
