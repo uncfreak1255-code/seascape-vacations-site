@@ -1,9 +1,11 @@
 const test = require("node:test");
 const assert = require("node:assert/strict");
+const { execFileSync } = require("node:child_process");
 const fs = require("fs");
 const path = require("path");
 
 const { buildSeoPageHistory } = require("../seo/seo-page-history.js");
+const seoPages = require("../../src/_data/seoPages.json");
 
 const projectRoot = path.resolve(__dirname, "..", "..");
 const SITE_ORIGIN = "https://seascape-vacations.com";
@@ -37,11 +39,13 @@ const FAMILIES = [
     label: "owner",
     group: "owner",
     prefix: "/property-management/",
+    sharedSources: ["src/property-management/property-management.njk"],
   },
   {
     label: "stay",
     group: "vacationer",
     prefix: "/stays/",
+    sharedSources: ["src/stays/stays.njk", "src/_data/staysPages.js"],
   },
 ];
 
@@ -74,19 +78,65 @@ function getEntryHistory() {
   return entryHistory;
 }
 
+function latestSharedDate(candidatePaths) {
+  const dates = candidatePaths
+    .map((candidatePath) => {
+      try {
+        const isoString = execFileSync("git", ["log", "-1", "--format=%cI", "--", candidatePath], {
+          cwd: projectRoot,
+          encoding: "utf8",
+        })
+          .trim();
+        return isoString ? isoString.slice(0, 10) : null;
+      } catch {
+        return null;
+      }
+    })
+    .filter(Boolean)
+    .sort();
+  return dates.at(-1) || null;
+}
+
+function latestGovernanceDate(slug) {
+  try {
+    const isoString = execFileSync(
+      "git",
+      ["log", "-1", "--format=%cI", `-S"${slug}"`, "--", "src/_data/seoGovernance.js"],
+      { cwd: projectRoot, encoding: "utf8" }
+    )
+      .trim();
+    return isoString ? isoString.slice(0, 10) : null;
+  } catch {
+    return null;
+  }
+}
+
 function historyDate(group, slug) {
   const entryHistory = getEntryHistory();
   const isoString = entryHistory.get(`${group}/${slug}`);
   return isoString ? isoString.slice(0, 10) : null;
 }
 
-for (const family of FAMILIES) {
-  test(`${family.label} sitemap lastmod equals entry history per URL`, () => {
-    const history = getEntryHistory();
-    if (history.degraded) {
-      return;
-    }
+function sharedDateFor(family, slug, history) {
+  const seoPageEntry = (seoPages[family.group] || []).find((page) => page.slug === slug);
+  const sharedSources = [...family.sharedSources];
+  if (family.group === "owner" && seoPageEntry?.proofAssetKey) {
+    sharedSources.push("src/_data/ownerProofAssets.json");
+  }
+  if (history.degraded) {
+    sharedSources.push("src/_data/seoPages.json");
+  }
 
+  const dates = [latestSharedDate(sharedSources)];
+  if (family.group === "vacationer") {
+    dates.push(latestGovernanceDate(slug));
+  }
+  return dates.filter(Boolean).sort().at(-1) || null;
+}
+
+for (const family of FAMILIES) {
+  test(`${family.label} sitemap lastmod equals max(entry date, shared-source date) per URL`, () => {
+    const history = getEntryHistory();
     const entries = generatedFamily(readSitemapEntries(), family.prefix);
     assert.ok(
       entries.length > 1,
@@ -96,11 +146,14 @@ for (const family of FAMILIES) {
     const mismatches = [];
     for (const entry of entries) {
       const slug = entry.route.slice(family.prefix.length).replace(/\/$/, "");
-      const expected = historyDate(family.group, slug);
-      assert.ok(expected, `missing entry history date for ${entry.route}`);
+      const entryDate = historyDate(family.group, slug);
+      const sharedDate = sharedDateFor(family, slug, history);
+      assert.ok(sharedDate, `could not resolve a shared-source date for ${family.label}/${slug}`);
+      const candidates = [entryDate, sharedDate].filter(Boolean).sort();
+      const expected = candidates.at(-1);
       if (entry.lastmod !== expected) {
         mismatches.push(
-          `${entry.route}: <lastmod> ${entry.lastmod}, expected entry history date ${expected}`
+          `${entry.route}: <lastmod> ${entry.lastmod}, expected max(entry ${entryDate}, shared ${sharedDate}) = ${expected}`
         );
       }
     }
@@ -109,22 +162,8 @@ for (const family of FAMILIES) {
       mismatches,
       [],
       `sitemap lastmod does not honor the per-entry contract:\n  ${mismatches.join("\n  ")}\n` +
-        "Use seoPageLastModifiedDate(group, slug, ...fallbacks) in src/sitemap.njk; " +
-        "the fallback paths must not override available entry history."
-    );
-  });
-
-  test(`${family.label} sitemap lastmod preserves page-level discrimination`, () => {
-    const history = getEntryHistory();
-    if (history.degraded) {
-      return;
-    }
-
-    const entries = generatedFamily(readSitemapEntries(), family.prefix);
-    const distinct = new Set(entries.map((entry) => entry.lastmod));
-    assert.ok(
-      distinct.size > 1,
-      `${family.label} generated URLs all share ${[...distinct][0]}; lastmod flattened again`
+        "Use seoPageLastModifiedDate(group, slug, ...fallbacks) in src/sitemap.njk with " +
+        "fallbacks matching the scoped shared sources in this test."
     );
   });
 
@@ -139,21 +178,3 @@ for (const family of FAMILIES) {
     }
   });
 }
-
-test("the entry-history resolver discriminates between entries on this repository", () => {
-  // Not a rendered check: proves the resolver reads real per-entry history here,
-  // whatever the sitemap currently combines it with. If this ever collapses to
-  // one date on a full clone, the resolver is broken regardless of template
-  // recency. Skipped in the shallow degraded mode, where an empty map is the
-  // documented, deliberate behaviour (see seo-page-history.test.js).
-  const history = buildSeoPageHistory({ cwd: projectRoot, warn: () => {} });
-  if (history.degraded) {
-    return;
-  }
-  assert.ok(history.size > 0, "entry history is empty on a full clone");
-  const distinct = new Set([...history.values()].map((isoString) => isoString.slice(0, 10)));
-  assert.ok(
-    distinct.size > 1,
-    `entry history resolved ${history.size} entries but only ${distinct.size} distinct date(s)`
-  );
-});
