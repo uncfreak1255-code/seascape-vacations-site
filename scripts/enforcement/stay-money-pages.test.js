@@ -145,3 +145,26 @@ test("best-time guide exposes an early tracked seasonal stay choice", () => {
     "the module must state plainly that both choices currently show the same homes"
   );
 });
+
+test("best-time guide uses a valid shared Anna Maria JPEG asset", () => {
+  const guidePath = path.join(
+    projectRoot,
+    "src",
+    "guides",
+    "best-time-visit-anna-maria-island.html"
+  );
+  const source = fs.readFileSync(guidePath, "utf8");
+  const imagePath = "/images/anna-maria-island-og.jpg";
+  const image = fs.readFileSync(path.join(projectRoot, imagePath.slice(1)));
+
+  assert.match(source, new RegExp(`src=["']${imagePath}["']`));
+  assert.equal(image[0], 0xff, "shared Anna Maria image must begin with JPEG SOI byte 0xff");
+  assert.equal(image[1], 0xd8, "shared Anna Maria image must begin with JPEG SOI byte 0xd8");
+  assert.equal(image.at(-2), 0xff, "shared Anna Maria image must end with JPEG EOI byte 0xff");
+  assert.equal(image.at(-1), 0xd9, "shared Anna Maria image must end with JPEG EOI byte 0xd9");
+  assert.equal(
+    image.length > 100_000,
+    true,
+    "shared Anna Maria image must contain the complete production asset"
+  );
+});
