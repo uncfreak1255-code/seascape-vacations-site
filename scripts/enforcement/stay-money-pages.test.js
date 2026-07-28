@@ -141,7 +141,7 @@ test("best-time guide exposes an early tracked seasonal stay choice", () => {
   );
   assert.match(
     decisionSurface[0],
-    /show some of the same near-island homes[\s\S]*can include some of the same homes/,
-    "the module must explain the overlap in traveler-facing language"
+    /show the same near-island homes[\s\S]*shows the same homes/,
+    "the module must state plainly that both choices currently show the same homes"
   );
 });
