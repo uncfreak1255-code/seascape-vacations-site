@@ -439,8 +439,23 @@ function main() {
   try {
     config = JSON.parse(fs.readFileSync(path.join(projectRoot, ".guardrails.json"), "utf8"));
   } catch (error) {
-    console.error(`${LOG} could not read .guardrails.json (${error.message}); allowing stop.`);
-    process.exit(0);
+    const untrustedHeadSha = git(projectRoot, ["rev-parse", "HEAD"]);
+    if (untrustedHeadSha) {
+      try {
+        invalidateHeadReceipt(projectRoot, untrustedHeadSha);
+      } catch (invalidationError) {
+        console.error(
+          `${LOG} BLOCKED [proof-receipt-invalidation-failed] ` +
+          `Could not invalidate the existing HEAD receipt (${invalidationError.message}).`,
+        );
+        process.exit(2);
+      }
+    }
+    console.error(
+      `${LOG} BLOCKED [proof-config-read-failed] ` +
+      `Could not read .guardrails.json (${error.message}).`,
+    );
+    process.exit(2);
   }
 
   const headSha = git(projectRoot, ["rev-parse", "HEAD"]);
