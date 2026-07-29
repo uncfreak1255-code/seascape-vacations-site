@@ -245,7 +245,7 @@ function evaluateStop({
   const failedOutput = failedStep ? failedStep.outputTail : primaryRun.output;
 
   return {
-    block: !passed,
+    block: !passed || !receiptMatchesHead,
     ranTests: true,
     wroteReceipt: receiptMatchesHead,
     receipt,
@@ -254,12 +254,12 @@ function evaluateStop({
       ? receiptMatchesHead
         ? `${LOG} proof recorded: \`${command}\` passed at ${headSha.slice(0, 8)}.`
         : !baseResolved
-          ? `${LOG} \`${command}\` passed, but the configured base ref is unavailable. ` +
+          ? `${LOG} BLOCKED [proof-receipt-unavailable] \`${command}\` passed, but the configured base ref is unavailable. ` +
             `No base-bound receipt was written; fetch the base ref and finish again.`
         : worktreeDirty
-          ? `${LOG} \`${command}\` passed, but the worktree is dirty. ` +
+          ? `${LOG} BLOCKED [proof-receipt-unavailable] \`${command}\` passed, but the worktree is dirty. ` +
             `No HEAD-pinned receipt was written; commit the tested changes and finish again.`
-          : `${LOG} \`${command}\` passed, but the repository changed while proof ran. ` +
+          : `${LOG} BLOCKED [proof-receipt-unavailable] \`${command}\` passed, but the repository changed while proof ran. ` +
             `No HEAD-pinned receipt was written; inspect the changes and finish again.`
       : `${LOG} BLOCKED [proof-failed]\n` +
         `  Problem: \`${failedCommand}\` exited ${failedStatus}; this turn is not done.\n` +
