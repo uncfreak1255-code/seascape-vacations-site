@@ -27,11 +27,13 @@
 "use strict";
 
 const { spawnSync } = require("node:child_process");
+const crypto = require("node:crypto");
 const fs = require("node:fs");
 const path = require("node:path");
 
 const LOG = "[proof-gate]";
 const RECEIPT_DIR = path.join(".guardrails", "receipts");
+const LOOP_STATE_FILE = path.join(RECEIPT_DIR, "proof-loop-state.json");
 const TEST_TIMEOUT_MS = 10 * 60 * 1000;
 
 /**
@@ -88,12 +90,14 @@ function evaluateStop({
   config = {},
   dirty,
   worktreeDirty = false,
+  baseResolved = true,
+  loopStateUnchanged = true,
   headSha,
   baseSha,
   runner,
   keelVerify = "",
 }) {
-  if (payload.stop_hook_active) {
+  if (payload.stop_hook_active && loopStateUnchanged) {
     return {
       block: false,
       ranTests: false,
@@ -142,7 +146,7 @@ function evaluateStop({
       : [];
   const receipt = buildReceipt({ command, status, headSha, baseSha, output, alsoSatisfies });
   const passed = receipt.status === "pass";
-  const receiptMatchesHead = !worktreeDirty;
+  const receiptMatchesHead = !worktreeDirty && baseResolved;
 
   return {
     block: !passed,
@@ -152,6 +156,9 @@ function evaluateStop({
     message: passed
       ? receiptMatchesHead
         ? `${LOG} proof recorded: \`${command}\` passed at ${headSha.slice(0, 8)}.`
+        : !baseResolved
+          ? `${LOG} \`${command}\` passed, but the configured base ref is unavailable. ` +
+            `No base-bound receipt was written; fetch the base ref and finish again.`
         : `${LOG} \`${command}\` passed, but the worktree is dirty. ` +
           `No HEAD-pinned receipt was written; commit the tested changes and finish again.`
       : `${LOG} BLOCKED [proof-failed]\n` +
@@ -180,6 +187,74 @@ function git(projectRoot, args) {
   return result.status === 0 ? String(result.stdout).trim() : "";
 }
 
+function gitBuffer(projectRoot, args) {
+  const result = spawnSync("git", args, { cwd: projectRoot });
+  return result.status === 0 ? result.stdout : null;
+}
+
+function worktreeFingerprint(projectRoot, headSha) {
+  const diff = gitBuffer(projectRoot, ["diff", "--binary", "HEAD"]);
+  const untracked = gitBuffer(projectRoot, [
+    "ls-files",
+    "--others",
+    "--exclude-standard",
+    "-z",
+  ]);
+  if (!diff || !untracked) {
+    return "";
+  }
+
+  const hash = crypto.createHash("sha256");
+  hash.update(headSha);
+  hash.update(diff);
+
+  const untrackedPaths = untracked
+    .toString("utf8")
+    .split("\0")
+    .filter(Boolean)
+    .sort();
+  for (const relativePath of untrackedPaths) {
+    const absolutePath = path.join(projectRoot, relativePath);
+    hash.update("\0");
+    hash.update(relativePath);
+    try {
+      const stats = fs.lstatSync(absolutePath);
+      hash.update(`:${stats.mode}:`);
+      if (stats.isSymbolicLink()) {
+        hash.update(fs.readlinkSync(absolutePath));
+      } else if (stats.isFile()) {
+        hash.update(fs.readFileSync(absolutePath));
+      }
+    } catch {
+      hash.update(":unreadable");
+    }
+  }
+
+  return `sha256:${hash.digest("hex")}`;
+}
+
+function readLoopState(projectRoot) {
+  try {
+    return JSON.parse(fs.readFileSync(path.join(projectRoot, LOOP_STATE_FILE), "utf8"));
+  } catch {
+    return null;
+  }
+}
+
+function writeLoopState(projectRoot, headSha, fingerprint) {
+  const statePath = path.join(projectRoot, LOOP_STATE_FILE);
+  fs.mkdirSync(path.dirname(statePath), { recursive: true });
+  fs.writeFileSync(
+    statePath,
+    `${JSON.stringify({ version: 1, headSha, fingerprint }, null, 2)}\n`,
+    { mode: 0o600 },
+  );
+}
+
+function clearLoopState(projectRoot) {
+  fs.rmSync(path.join(projectRoot, LOOP_STATE_FILE), { force: true });
+}
+
 function invalidateHeadReceipt(projectRoot, headSha) {
   fs.rmSync(path.join(projectRoot, RECEIPT_DIR, `proof-${headSha}.json`), {
     force: true,
@@ -198,22 +273,38 @@ function main() {
   }
 
   const headSha = git(projectRoot, ["rev-parse", "HEAD"]);
-  const baseSha = git(projectRoot, ["merge-base", "origin/main", "HEAD"]) || headSha;
   if (!headSha) {
     console.error(`${LOG} could not resolve HEAD; allowing stop.`);
     process.exit(0);
   }
 
+  const configuredBaseRef =
+    String(config.mergeBase || "").split("...")[0].trim() || "origin/main";
+  const resolvedBaseSha = git(projectRoot, ["rev-parse", configuredBaseRef]);
+  const baseResolved = Boolean(resolvedBaseSha);
+  const baseSha = resolvedBaseSha || headSha;
   const porcelain = git(projectRoot, ["status", "--porcelain"]);
   const worktreeDirty = Boolean(porcelain);
-  const committed = git(projectRoot, ["rev-list", "--count", `${baseSha}..HEAD`]);
-  const dirty = worktreeDirty || Number(committed) > 0;
+  const committed = baseResolved
+    ? git(projectRoot, ["rev-list", "--count", `${baseSha}..HEAD`])
+    : "";
+  const dirty = worktreeDirty || !baseResolved || Number(committed) > 0;
   const payload = readPayload();
+  const fingerprint = worktreeFingerprint(projectRoot, headSha);
+  const loopState = readLoopState(projectRoot);
+  const loopStateUnchanged = Boolean(
+    payload.stop_hook_active &&
+    fingerprint &&
+    loopState &&
+    loopState.version === 1 &&
+    loopState.headSha === headSha &&
+    loopState.fingerprint === fingerprint,
+  );
 
   // Remove any earlier clean receipt before dirty-tree tests begin. Otherwise
   // agent-finish could accept the stale file while the tested content no longer
-  // equals HEAD. The retry-loop bypass stays side-effect free.
-  if (worktreeDirty && !payload.stop_hook_active) {
+  // equals HEAD. An unchanged retry already invalidated it on the first run.
+  if (worktreeDirty && !loopStateUnchanged) {
     try {
       invalidateHeadReceipt(projectRoot, headSha);
     } catch (error) {
@@ -237,6 +328,8 @@ function main() {
     config,
     dirty,
     worktreeDirty,
+    baseResolved,
+    loopStateUnchanged,
     headSha,
     baseSha,
     keelVerify,
@@ -253,6 +346,20 @@ function main() {
       };
     },
   });
+
+  if (result.block && fingerprint) {
+    try {
+      writeLoopState(projectRoot, headSha, fingerprint);
+    } catch (error) {
+      console.error(`${LOG} could not persist loop state (${error.message}).`);
+    }
+  } else {
+    try {
+      clearLoopState(projectRoot);
+    } catch (error) {
+      console.error(`${LOG} could not clear loop state (${error.message}).`);
+    }
+  }
 
   if (result.wroteReceipt && result.receipt) {
     try {
@@ -276,4 +383,9 @@ if (require.main === module) {
   main();
 }
 
-module.exports = { evaluateStop, buildReceipt, invalidateHeadReceipt };
+module.exports = {
+  evaluateStop,
+  buildReceipt,
+  invalidateHeadReceipt,
+  worktreeFingerprint,
+};
