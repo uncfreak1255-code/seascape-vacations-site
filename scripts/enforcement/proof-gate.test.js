@@ -91,6 +91,45 @@ test("receipt matches the shape landing-evaluator accepts", () => {
   assert.equal(hasPassingCommand, true, "landing-evaluator would reject this receipt");
 });
 
+test("prefers .keel/verify over testCommand when the repo declares one", () => {
+  // The repo has already declared its proof command. .guardrails.json's
+  // testCommand (`npm test`) is a strict subset of it, so running the narrower
+  // command would record a receipt that proves less than the repo asks for.
+  const ran = [];
+  const result = evaluateStop(fixture({
+    keelVerify: "npm run lint:content && npm test && npm run verify:links",
+    runner: (command) => { ran.push(command); return { status: 0, output: "ok" }; },
+  }));
+
+  assert.deepEqual(ran, ["npm run lint:content && npm test && npm run verify:links"]);
+  assert.equal(result.receipt.status, "pass");
+});
+
+test("keel receipt still satisfies landing-evaluator's required testCommand", () => {
+  // requiredProofCommands() demands a passing step whose command is
+  // byte-identical to testCommand. When the keel chain provably contains and
+  // passed it, record it explicitly so the evaluator is satisfied honestly.
+  const result = evaluateStop(fixture({
+    keelVerify: "npm run lint:content && npm test && npm run verify:links",
+    runner: () => ({ status: 0, output: "ok" }),
+  }));
+
+  const hasTestCommand = result.receipt.steps.some(
+    (step) => step.command === "npm test" && step.status === "pass",
+  );
+  assert.equal(hasTestCommand, true, "landing-evaluator would report PROOF_MISSING");
+});
+
+test("does not fabricate a testCommand step when keel does not contain it", () => {
+  const result = evaluateStop(fixture({
+    keelVerify: "make check",
+    runner: () => ({ status: 0, output: "ok" }),
+  }));
+
+  const fabricated = result.receipt.steps.some((step) => step.command === "npm test");
+  assert.equal(fabricated, false, "must never claim a command ran that did not");
+});
+
 test("a failing run is never recorded as a passing step", () => {
   const receipt = buildReceipt({
     command: "npm test",

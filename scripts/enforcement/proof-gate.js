@@ -40,24 +40,38 @@ const TEST_TIMEOUT_MS = 10 * 60 * 1000;
  * @param {{command: string, status: number, headSha: string, baseSha: string, output?: string}} args
  * @returns {{version: 1, status: "pass"|"fail", headSha: string, baseSha: string, producedAt: string, steps: Array<object>}}
  */
-function buildReceipt({ command, status, headSha, baseSha, output = "" }) {
+function buildReceipt({ command, status, headSha, baseSha, output = "", alsoSatisfies = [] }) {
   const passed = status === 0;
+  const stepStatus = passed ? "pass" : "fail";
+  const steps = [
+    {
+      command,
+      status: stepStatus,
+      exitCode: status,
+      // Tail only: receipts are capped at 64KB by the evaluator.
+      outputTail: String(output).split("\n").slice(-20).join("\n"),
+    },
+  ];
+
+  // A command that ran as a link in a passing `&&` chain provably ran and
+  // provably succeeded — the chain could not have reached exit 0 otherwise.
+  // Recording it lets landing-evaluator's requiredProofCommands() be satisfied
+  // without running the narrower command a second time. Only ever recorded
+  // when the chain passed.
+  for (const satisfied of alsoSatisfies) {
+    if (passed && satisfied && satisfied !== command) {
+      steps.push({ command: satisfied, status: "pass", exitCode: 0, viaChain: command });
+    }
+  }
+
   return {
     version: 1,
-    status: passed ? "pass" : "fail",
+    status: stepStatus,
     headSha,
     baseSha,
     producedAt: new Date().toISOString(),
     producer: "seascape-vacations-site/proof-gate",
-    steps: [
-      {
-        command,
-        status: passed ? "pass" : "fail",
-        exitCode: status,
-        // Tail only: receipts are capped at 64KB by the evaluator.
-        outputTail: String(output).split("\n").slice(-20).join("\n"),
-      },
-    ],
+    steps,
   };
 }
 
@@ -67,7 +81,7 @@ function buildReceipt({ command, status, headSha, baseSha, output = "" }) {
  *
  * @returns {{block: boolean, ranTests: boolean, wroteReceipt: boolean, receipt: object|null, message: string}}
  */
-function evaluateStop({ payload = {}, config = {}, dirty, headSha, baseSha, runner }) {
+function evaluateStop({ payload = {}, config = {}, dirty, headSha, baseSha, runner, keelVerify = "" }) {
   if (payload.stop_hook_active) {
     return {
       block: false,
@@ -88,7 +102,15 @@ function evaluateStop({ payload = {}, config = {}, dirty, headSha, baseSha, runn
     };
   }
 
-  const command = String(config.testCommand || "").trim();
+  // A repo that ships .keel/verify has already declared its proof command.
+  // Prefer it: .guardrails.json's testCommand is frequently a strict subset
+  // (here, `npm test` vs `lint:content && npm test && verify:links`), so
+  // running the narrower one would record a receipt proving less than the repo
+  // asks for.
+  const testCommand = String(config.testCommand || "").trim();
+  const declared = String(keelVerify || "").trim();
+  const command = declared || testCommand;
+
   if (!command) {
     return {
       block: false,
@@ -96,13 +118,18 @@ function evaluateStop({ payload = {}, config = {}, dirty, headSha, baseSha, runn
       wroteReceipt: false,
       receipt: null,
       message:
-        `${LOG} .guardrails.json declares no testCommand, so this repo has no ` +
-        `proof to give. A receipt written now would pass vacuously. Not writing one.`,
+        `${LOG} no .keel/verify and .guardrails.json declares no testCommand, so ` +
+        `this repo has no proof to give. A receipt written now would pass ` +
+        `vacuously. Not writing one.`,
     };
   }
 
   const { status, output } = runner(command);
-  const receipt = buildReceipt({ command, status, headSha, baseSha, output });
+  const alsoSatisfies =
+    testCommand && command !== testCommand && command.includes(testCommand)
+      ? [testCommand]
+      : [];
+  const receipt = buildReceipt({ command, status, headSha, baseSha, output, alsoSatisfies });
   const passed = receipt.status === "pass";
 
   return {
@@ -160,12 +187,20 @@ function main() {
   const committed = git(projectRoot, ["rev-list", "--count", `${baseSha}..HEAD`]);
   const dirty = Boolean(porcelain) || Number(committed) > 0;
 
+  let keelVerify = "";
+  try {
+    keelVerify = fs.readFileSync(path.join(projectRoot, ".keel", "verify"), "utf8").trim();
+  } catch {
+    keelVerify = "";
+  }
+
   const result = evaluateStop({
     payload: readPayload(),
     config,
     dirty,
     headSha,
     baseSha,
+    keelVerify,
     runner: (command) => {
       const run = spawnSync(command, {
         cwd: projectRoot,
