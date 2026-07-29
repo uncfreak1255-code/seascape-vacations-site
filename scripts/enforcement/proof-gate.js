@@ -79,6 +79,30 @@ function buildReceipt({ command, status, headSha, baseSha, output = "", alsoSati
   };
 }
 
+function receiptProves({ receipt, headSha, baseSha, command, testCommand }) {
+  if (
+    !receipt ||
+    receipt.version !== 1 ||
+    receipt.status !== "pass" ||
+    receipt.headSha !== headSha ||
+    receipt.baseSha !== baseSha ||
+    !Array.isArray(receipt.steps)
+  ) {
+    return false;
+  }
+
+  const requiredCommands = [command];
+  if (testCommand && testCommand !== command) {
+    requiredCommands.push(testCommand);
+  }
+
+  return requiredCommands.every((required) =>
+    receipt.steps.some(
+      (step) => step && step.command === required && step.status === "pass",
+    ),
+  );
+}
+
 /**
  * Decide whether this stop may proceed. Pure: all IO is injected, so the
  * decision table is testable without a git repo or a 30-second test run.
@@ -96,6 +120,7 @@ function evaluateStop({
   baseSha,
   runner,
   keelVerify = "",
+  existingReceipt = null,
 }) {
   if (payload.stop_hook_active && loopStateUnchanged) {
     return {
@@ -136,6 +161,22 @@ function evaluateStop({
         `${LOG} no .keel/verify and .guardrails.json declares no testCommand, so ` +
         `this repo has no proof to give. A receipt written now would pass ` +
         `vacuously. Not writing one.`,
+    };
+  }
+
+  if (
+    !worktreeDirty &&
+    baseResolved &&
+    receiptProves({ receipt: existingReceipt, headSha, baseSha, command, testCommand })
+  ) {
+    return {
+      block: false,
+      ranTests: false,
+      wroteReceipt: false,
+      receipt: existingReceipt,
+      message:
+        `${LOG} existing proof is valid for head ${headSha.slice(0, 8)} ` +
+        `and base ${baseSha.slice(0, 8)}; reusing it.`,
     };
   }
 
@@ -255,6 +296,19 @@ function clearLoopState(projectRoot) {
   fs.rmSync(path.join(projectRoot, LOOP_STATE_FILE), { force: true });
 }
 
+function readHeadReceipt(projectRoot, headSha) {
+  try {
+    return JSON.parse(
+      fs.readFileSync(
+        path.join(projectRoot, RECEIPT_DIR, `proof-${headSha}.json`),
+        "utf8",
+      ),
+    );
+  } catch {
+    return null;
+  }
+}
+
 function invalidateHeadReceipt(projectRoot, headSha) {
   fs.rmSync(path.join(projectRoot, RECEIPT_DIR, `proof-${headSha}.json`), {
     force: true,
@@ -280,9 +334,12 @@ function main() {
 
   const configuredBaseRef =
     String(config.mergeBase || "").split("...")[0].trim() || "origin/main";
-  const resolvedBaseSha = git(projectRoot, ["rev-parse", configuredBaseRef]);
-  const baseResolved = Boolean(resolvedBaseSha);
-  const baseSha = resolvedBaseSha || headSha;
+  const resolvedBaseTip = git(projectRoot, ["rev-parse", configuredBaseRef]);
+  const mergeBaseSha = resolvedBaseTip
+    ? git(projectRoot, ["merge-base", configuredBaseRef, "HEAD"])
+    : "";
+  const baseResolved = Boolean(resolvedBaseTip && mergeBaseSha);
+  const baseSha = mergeBaseSha || headSha;
   const porcelain = git(projectRoot, ["status", "--porcelain"]);
   const worktreeDirty = Boolean(porcelain);
   const committed = baseResolved
@@ -333,6 +390,7 @@ function main() {
     headSha,
     baseSha,
     keelVerify,
+    existingReceipt: readHeadReceipt(projectRoot, headSha),
     runner: (command) => {
       const run = spawnSync(command, {
         cwd: projectRoot,
@@ -387,5 +445,6 @@ module.exports = {
   evaluateStop,
   buildReceipt,
   invalidateHeadReceipt,
+  receiptProves,
   worktreeFingerprint,
 };
