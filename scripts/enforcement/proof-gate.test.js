@@ -16,6 +16,7 @@ const {
   evaluateStop,
   buildReceipt,
   invalidateHeadReceipt,
+  outputTail,
   receiptProves,
   worktreeIsDirty,
   worktreeFingerprint,
@@ -214,6 +215,19 @@ test("every actual proof rerun invalidates the existing receipt first", () => {
   assert.deepEqual(events, ["invalidate", "run"]);
   assert.equal(result.block, true);
   assert.equal(result.receipt.status, "fail");
+});
+
+test("receipt invalidation failures remain blocking and are never loop-retryable", () => {
+  const result = evaluateStop(fixture({
+    beforeRun: () => {
+      throw new Error("read-only receipt directory");
+    },
+  }));
+
+  assert.equal(result.block, true);
+  assert.equal(result.loopRetryable, false);
+  assert.equal(result.ranTests, false);
+  assert.match(result.message, /proof-receipt-invalidation-failed/i);
 });
 
 test("passing dirty-tree tests do not emit a receipt falsely pinned to HEAD", () => {
@@ -516,6 +530,28 @@ test("receipt matches the shape landing-evaluator accepts", () => {
     (step) => step && step.command === "npm test" && step.status === "pass",
   );
   assert.equal(hasPassingCommand, true, "landing-evaluator would reject this receipt");
+});
+
+test("receipt output tails stay below the evaluator byte limit", () => {
+  const hostileOutput = `first line\n${"\u0000".repeat(100_000)}`;
+  const receipt = buildReceipt({
+    command: "npm run proof",
+    status: 0,
+    headSha: HEAD,
+    baseSha: BASE,
+    output: hostileOutput,
+    additionalSteps: [{
+      command: "npm test",
+      status: 0,
+      output: hostileOutput,
+    }],
+  });
+
+  assert.match(outputTail(hostileOutput), /output truncated/i);
+  assert.ok(
+    Buffer.byteLength(JSON.stringify(receipt), "utf8") < 64 * 1024,
+    "landing-evaluator would reject an oversized receipt",
+  );
 });
 
 test("receipt reuse validation mirrors evaluator identity and command checks", () => {
