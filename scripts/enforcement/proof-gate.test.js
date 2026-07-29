@@ -563,6 +563,33 @@ test("CLI blocks when the declared proof command cannot be read", (t) => {
   assert.doesNotMatch(gate.stderr, /proof recorded/i);
 });
 
+test("CLI blocks malformed guardrail config and invalidates same-HEAD proof", (t) => {
+  const repo = createCliRepo(t, "node -e \"process.exit(0)\"");
+  const receiptPath = path.join(
+    repo.projectRoot,
+    ".guardrails",
+    "receipts",
+    `proof-${repo.headSha}.json`,
+  );
+  fs.mkdirSync(path.dirname(receiptPath), { recursive: true });
+  fs.writeFileSync(
+    receiptPath,
+    `${JSON.stringify(buildReceipt({
+      command: "node -e \"process.exit(0)\"",
+      status: 0,
+      headSha: repo.headSha,
+      baseSha: repo.headSha,
+    }), null, 2)}\n`,
+  );
+  fs.writeFileSync(path.join(repo.projectRoot, ".guardrails.json"), "{\n");
+
+  const gate = runGate(repo);
+  assert.equal(gate.status, 2, gate.stderr);
+  assert.match(gate.stderr, /proof-config-read-failed/i);
+  assert.equal(fs.existsSync(receiptPath), false);
+  assert.doesNotMatch(gate.stderr, /allowing stop/i);
+});
+
 test("receipt matches the shape landing-evaluator accepts", () => {
   // Mirrors evaluateProof(): version === 1, status === "pass", headSha/baseSha
   // must equal the snapshot, and steps must contain a passing entry whose
