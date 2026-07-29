@@ -271,10 +271,14 @@ function git(projectRoot, args) {
 }
 
 function worktreeIsDirty(projectRoot) {
-  const result = spawnSync("git", ["status", "--porcelain"], {
-    cwd: projectRoot,
-    encoding: "utf8",
-  });
+  const result = spawnSync(
+    "git",
+    ["status", "--porcelain", "--untracked-files=all"],
+    {
+      cwd: projectRoot,
+      encoding: "utf8",
+    },
+  );
   return result.status !== 0 || Boolean(String(result.stdout).trim());
 }
 
