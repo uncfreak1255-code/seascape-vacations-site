@@ -173,6 +173,20 @@ function evaluateStop({
   const command = declared || testCommand;
 
   if (!command) {
+    try {
+      beforeRun();
+    } catch (error) {
+      return {
+        block: true,
+        ranTests: false,
+        wroteReceipt: false,
+        receipt: null,
+        loopRetryable: false,
+        message:
+          `${LOG} BLOCKED [proof-receipt-invalidation-failed] ` +
+          `Could not invalidate the existing HEAD receipt (${error.message}).`,
+      };
+    }
     return {
       block: false,
       ranTests: false,
@@ -247,7 +261,10 @@ function evaluateStop({
   return {
     block: !passed || !receiptMatchesHead,
     ranTests: true,
-    wroteReceipt: receiptMatchesHead,
+    // Failed receipts are safe to persist even for dirty snapshots: the
+    // landing evaluator rejects them, while the loop guard can require proof
+    // that the exact fingerprint already failed before allowing one retry.
+    wroteReceipt: !passed || receiptMatchesHead,
     receipt,
     loopRetryable: !passed,
     message: passed
@@ -480,13 +497,18 @@ function main() {
   const payload = readPayload();
   const fingerprint = worktreeFingerprint(projectRoot, headSha);
   const loopState = readLoopState(projectRoot);
+  const existingReceipt = readHeadReceipt(projectRoot, headSha);
   const loopStateUnchanged = Boolean(
     payload.stop_hook_active &&
     fingerprint &&
     loopState &&
     loopState.version === 1 &&
     loopState.headSha === headSha &&
-    loopState.fingerprint === fingerprint,
+    loopState.fingerprint === fingerprint &&
+    existingReceipt &&
+    existingReceipt.version === 1 &&
+    existingReceipt.status === "fail" &&
+    existingReceipt.headSha === headSha,
   );
 
   let keelVerify = "";
@@ -520,7 +542,7 @@ function main() {
     headSha,
     baseSha,
     keelVerify,
-    existingReceipt: readHeadReceipt(projectRoot, headSha),
+    existingReceipt,
     beforeRun: () => invalidateHeadReceipt(projectRoot, headSha),
     inspectWorktree: () =>
       worktreeIsDirty(projectRoot) ||
@@ -529,6 +551,23 @@ function main() {
         git(projectRoot, ["merge-base", configuredBaseRef, "HEAD"]) !== baseSha),
     runner,
   });
+
+  if (result.wroteReceipt && result.receipt) {
+    try {
+      writeHeadReceipt(projectRoot, headSha, result.receipt);
+    } catch (error) {
+      try {
+        clearLoopState(projectRoot);
+      } catch (clearError) {
+        console.error(`${LOG} could not clear loop state (${clearError.message}).`);
+      }
+      console.error(
+        `${LOG} BLOCKED [proof-receipt-write-failed] ` +
+        `Could not persist the proof receipt (${error.message}).`,
+      );
+      process.exit(2);
+    }
+  }
 
   if (result.block && result.loopRetryable && fingerprint) {
     try {
@@ -541,18 +580,6 @@ function main() {
       clearLoopState(projectRoot);
     } catch (error) {
       console.error(`${LOG} could not clear loop state (${error.message}).`);
-    }
-  }
-
-  if (result.wroteReceipt && result.receipt) {
-    try {
-      writeHeadReceipt(projectRoot, headSha, result.receipt);
-    } catch (error) {
-      console.error(
-        `${LOG} BLOCKED [proof-receipt-write-failed] ` +
-        `Could not persist the passing HEAD receipt (${error.message}).`,
-      );
-      process.exit(2);
     }
   }
 
