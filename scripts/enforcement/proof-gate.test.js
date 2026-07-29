@@ -191,9 +191,11 @@ test("proof run that dirties a clean tree cannot emit a HEAD receipt", () => {
     inspectWorktree: () => true,
   }));
 
-  assert.equal(result.block, false);
+  assert.equal(result.block, true);
+  assert.equal(result.loopRetryable, false);
   assert.equal(result.ranTests, true);
   assert.equal(result.wroteReceipt, false);
+  assert.match(result.message, /proof-receipt-unavailable/i);
   assert.match(result.message, /repository changed while proof ran/i);
 });
 
@@ -233,18 +235,22 @@ test("receipt invalidation failures remain blocking and are never loop-retryable
 
 test("passing dirty-tree tests do not emit a receipt falsely pinned to HEAD", () => {
   const result = evaluateStop(fixture({ worktreeDirty: true }));
-  assert.equal(result.block, false);
+  assert.equal(result.block, true);
+  assert.equal(result.loopRetryable, false);
   assert.equal(result.ranTests, true);
   assert.equal(result.wroteReceipt, false);
+  assert.match(result.message, /proof-receipt-unavailable/i);
   assert.match(result.message, /worktree is dirty/i);
   assert.match(result.message, /No HEAD-pinned receipt/i);
 });
 
 test("unresolved base still runs proof but cannot emit a base-bound receipt", () => {
   const result = evaluateStop(fixture({ baseResolved: false }));
-  assert.equal(result.block, false);
+  assert.equal(result.block, true);
+  assert.equal(result.loopRetryable, false);
   assert.equal(result.ranTests, true);
   assert.equal(result.wroteReceipt, false);
+  assert.match(result.message, /proof-receipt-unavailable/i);
   assert.match(result.message, /base ref is unavailable/i);
   assert.match(result.message, /No base-bound receipt/i);
 });
@@ -291,9 +297,15 @@ test("CLI with a dirty fresh clone passes tests but removes and writes no HEAD r
 
   const gate = runGate(repo);
 
-  assert.equal(gate.status, 0, gate.stderr);
+  assert.equal(gate.status, 2, gate.stderr);
+  assert.match(gate.stderr, /proof-receipt-unavailable/i);
   assert.match(gate.stderr, /worktree is dirty/i);
   assert.equal(fs.existsSync(receiptPath), false);
+
+  const unchangedRetry = runGate(repo, { stop_hook_active: true });
+  assert.equal(unchangedRetry.status, 2, unchangedRetry.stderr);
+  assert.match(unchangedRetry.stderr, /proof-receipt-unavailable/i);
+  assert.doesNotMatch(unchangedRetry.stderr, /already retried/i);
 });
 
 test("untracked files stay dirty when status.showUntrackedFiles is disabled", (t) => {
@@ -304,7 +316,8 @@ test("untracked files stay dirty when status.showUntrackedFiles is disabled", (t
 
   assert.equal(worktreeIsDirty(repo.projectRoot), true);
   const gate = runGate(repo);
-  assert.equal(gate.status, 0, gate.stderr);
+  assert.equal(gate.status, 2, gate.stderr);
+  assert.match(gate.stderr, /proof-receipt-unavailable/i);
   assert.match(gate.stderr, /worktree is dirty/i);
   assert.equal(
     fs.existsSync(
@@ -348,7 +361,8 @@ test("CLI treats a clean checkout with no configured base ref as needing proof",
   );
 
   const gate = runGate(repo);
-  assert.equal(gate.status, 0, gate.stderr);
+  assert.equal(gate.status, 2, gate.stderr);
+  assert.match(gate.stderr, /proof-receipt-unavailable/i);
   assert.match(gate.stderr, /base ref is unavailable/i);
   assert.equal(fs.existsSync(receiptPath), false);
 });
@@ -444,7 +458,8 @@ test("CLI suppresses a receipt when a successful proof dirties the tree", (t) =>
   );
 
   const gate = runGate(repo);
-  assert.equal(gate.status, 0, gate.stderr);
+  assert.equal(gate.status, 2, gate.stderr);
+  assert.match(gate.stderr, /proof-receipt-unavailable/i);
   assert.match(gate.stderr, /repository changed while proof ran/i);
   assert.equal(fs.existsSync(receiptPath), false);
 });
@@ -466,7 +481,8 @@ test("CLI suppresses a receipt when proof moves HEAD with a clean tree", (t) => 
   );
 
   const gate = runGate(repo);
-  assert.equal(gate.status, 0, gate.stderr);
+  assert.equal(gate.status, 2, gate.stderr);
+  assert.match(gate.stderr, /proof-receipt-unavailable/i);
   assert.match(gate.stderr, /repository changed while proof ran/i);
   assert.notEqual(runGit(repo.projectRoot, ["rev-parse", "HEAD"]), testedHead);
   assert.equal(fs.existsSync(receiptPath), false);
