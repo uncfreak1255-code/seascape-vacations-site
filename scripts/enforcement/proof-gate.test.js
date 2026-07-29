@@ -122,9 +122,16 @@ test("empty testCommand does not silently pass as proof", () => {
   // landing-evaluator's requiredProofCommands() returns [] for an empty
   // testCommand, which makes the receipt vacuously valid. The gate must say so
   // out loud rather than emitting a receipt that proves nothing.
-  const result = evaluateStop(fixture({ config: { testCommand: "" } }));
+  let invalidated = false;
+  const result = evaluateStop(fixture({
+    config: { testCommand: "" },
+    beforeRun: () => {
+      invalidated = true;
+    },
+  }));
   assert.equal(result.block, false);
   assert.equal(result.wroteReceipt, false);
+  assert.equal(invalidated, true);
   assert.match(result.message, /no testCommand/i);
 });
 
@@ -257,14 +264,14 @@ test("unresolved base still runs proof but cannot emit a base-bound receipt", ()
   assert.match(result.message, /No base-bound receipt/i);
 });
 
-test("failing dirty-tree tests still block and do not emit a HEAD receipt", () => {
+test("failing dirty-tree tests block and persist only a failed receipt", () => {
   const result = evaluateStop(fixture({
     worktreeDirty: true,
     runner: () => ({ status: 1, output: "1 failing" }),
   }));
   assert.equal(result.block, true);
   assert.equal(result.ranTests, true);
-  assert.equal(result.wroteReceipt, false);
+  assert.equal(result.wroteReceipt, true);
   assert.equal(result.receipt.status, "fail");
 });
 
@@ -544,6 +551,26 @@ test("CLI blocks when passing proof cannot persist its receipt", (t) => {
   assert.equal(gate.status, 2, gate.stderr);
   assert.match(gate.stderr, /proof-receipt-write-failed/i);
   assert.doesNotMatch(gate.stderr, /proof recorded/i);
+});
+
+test("receipt write failure cannot enable the unchanged-failure bypass", (t) => {
+  const command =
+    "node -e \"const fs=require('node:fs');fs.mkdirSync('.guardrails',{recursive:true});fs.writeFileSync('.guardrails/receipts','not a directory');process.exit(1)\"";
+  const repo = createCliRepo(t, command);
+  const baseSha = repo.headSha;
+  runGit(repo.projectRoot, ["update-ref", "refs/remotes/origin/main", baseSha]);
+
+  fs.writeFileSync(path.join(repo.projectRoot, "feature.txt"), "feature\n");
+  runGit(repo.projectRoot, ["add", "feature.txt"]);
+  runGit(repo.projectRoot, ["commit", "-m", "feature"]);
+
+  const first = runGate(repo);
+  assert.equal(first.status, 2, first.stderr);
+  assert.match(first.stderr, /proof-receipt-write-failed/i);
+
+  const retry = runGate(repo, { stop_hook_active: true });
+  assert.equal(retry.status, 2, retry.stderr);
+  assert.doesNotMatch(retry.stderr, /already retried/i);
 });
 
 test("CLI blocks when the declared proof command cannot be read", (t) => {
