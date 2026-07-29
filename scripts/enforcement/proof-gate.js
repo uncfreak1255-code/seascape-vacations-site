@@ -380,6 +380,16 @@ function readHeadReceipt(projectRoot, headSha) {
   }
 }
 
+function writeHeadReceipt(projectRoot, headSha, receipt) {
+  const dir = path.join(projectRoot, RECEIPT_DIR);
+  fs.mkdirSync(dir, { recursive: true });
+  fs.writeFileSync(
+    path.join(dir, `proof-${headSha}.json`),
+    `${JSON.stringify(receipt, null, 2)}\n`,
+    { mode: 0o600 },
+  );
+}
+
 function invalidateHeadReceipt(projectRoot, headSha) {
   fs.rmSync(path.join(projectRoot, RECEIPT_DIR, `proof-${headSha}.json`), {
     force: true,
@@ -479,15 +489,13 @@ function main() {
 
   if (result.wroteReceipt && result.receipt) {
     try {
-      const dir = path.join(projectRoot, RECEIPT_DIR);
-      fs.mkdirSync(dir, { recursive: true });
-      fs.writeFileSync(
-        path.join(dir, `proof-${headSha}.json`),
-        `${JSON.stringify(result.receipt, null, 2)}\n`,
-        { mode: 0o600 },
-      );
+      writeHeadReceipt(projectRoot, headSha, result.receipt);
     } catch (error) {
-      console.error(`${LOG} receipt write failed: ${error.message}`);
+      console.error(
+        `${LOG} BLOCKED [proof-receipt-write-failed] ` +
+        `Could not persist the passing HEAD receipt (${error.message}).`,
+      );
+      process.exit(2);
     }
   }
 
@@ -505,6 +513,7 @@ module.exports = {
   invalidateHeadReceipt,
   outputTail,
   receiptProves,
+  writeHeadReceipt,
   worktreeIsDirty,
   worktreeFingerprint,
 };
