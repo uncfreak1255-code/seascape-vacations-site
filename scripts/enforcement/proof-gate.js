@@ -438,6 +438,9 @@ function main() {
   let config;
   try {
     config = JSON.parse(fs.readFileSync(path.join(projectRoot, ".guardrails.json"), "utf8"));
+    if (!config || typeof config !== "object" || Array.isArray(config)) {
+      throw new TypeError(".guardrails.json must contain a top-level object");
+    }
   } catch (error) {
     const untrustedHeadSha = git(projectRoot, ["rev-parse", "HEAD"]);
     if (untrustedHeadSha) {
@@ -490,6 +493,15 @@ function main() {
   try {
     keelVerify = readKeelVerify(projectRoot);
   } catch (error) {
+    try {
+      invalidateHeadReceipt(projectRoot, headSha);
+    } catch (invalidationError) {
+      console.error(
+        `${LOG} BLOCKED [proof-receipt-invalidation-failed] ` +
+        `Could not invalidate the existing HEAD receipt (${invalidationError.message}).`,
+      );
+      process.exit(2);
+    }
     console.error(
       `${LOG} BLOCKED [proof-command-read-failed] ` +
       `Could not read the declared .keel/verify command (${error.message}).`,
