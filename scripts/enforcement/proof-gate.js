@@ -421,6 +421,17 @@ function createProofRunner(
   };
 }
 
+function readKeelVerify(projectRoot) {
+  try {
+    return fs.readFileSync(path.join(projectRoot, ".keel", "verify"), "utf8").trim();
+  } catch (error) {
+    if (error && error.code === "ENOENT") {
+      return "";
+    }
+    throw error;
+  }
+}
+
 function main() {
   const projectRoot = path.resolve(__dirname, "..", "..");
 
@@ -462,9 +473,13 @@ function main() {
 
   let keelVerify = "";
   try {
-    keelVerify = fs.readFileSync(path.join(projectRoot, ".keel", "verify"), "utf8").trim();
-  } catch {
-    keelVerify = "";
+    keelVerify = readKeelVerify(projectRoot);
+  } catch (error) {
+    console.error(
+      `${LOG} BLOCKED [proof-command-read-failed] ` +
+      `Could not read the declared .keel/verify command (${error.message}).`,
+    );
+    process.exit(2);
   }
 
   const runner = createProofRunner(projectRoot);
@@ -528,6 +543,7 @@ module.exports = {
   createProofRunner,
   invalidateHeadReceipt,
   outputTail,
+  readKeelVerify,
   receiptProves,
   writeHeadReceipt,
   worktreeIsDirty,
