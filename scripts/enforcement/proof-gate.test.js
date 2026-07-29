@@ -15,6 +15,7 @@ const path = require("node:path");
 const {
   evaluateStop,
   buildReceipt,
+  createProofRunner,
   invalidateHeadReceipt,
   outputTail,
   receiptProves,
@@ -703,6 +704,23 @@ test("a separately executed required test failure blocks the stop", () => {
   assert.equal(result.block, true);
   assert.equal(result.receipt.status, "fail");
   assert.match(result.message, /required test failed/);
+});
+
+test("both proof commands share one timeout deadline", () => {
+  const observedTimeouts = [];
+  const timestamps = [1_000, 1_200, 1_700];
+  const runner = createProofRunner("/repo", {
+    now: () => timestamps.shift(),
+    timeoutMs: 1_000,
+    spawn: (_command, options) => {
+      observedTimeouts.push(options.timeout);
+      return { status: 0, stdout: "ok", stderr: "" };
+    },
+  });
+
+  assert.equal(runner("npm run proof").status, 0);
+  assert.equal(runner("npm test").status, 0);
+  assert.deepEqual(observedTimeouts, [800, 300]);
 });
 
 test("a failing run is never recorded as a passing step", () => {
