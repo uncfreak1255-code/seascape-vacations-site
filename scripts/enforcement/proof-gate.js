@@ -41,36 +41,41 @@ const TEST_TIMEOUT_MS = 10 * 60 * 1000;
  * accepts. Any drift here silently degrades the receipt to PROOF_MISSING, so
  * the shape is asserted in proof-gate.test.js.
  *
- * @param {{command: string, status: number, headSha: string, baseSha: string, output?: string}} args
+ * @param {{command: string, status: number, headSha: string, baseSha: string, output?: string, additionalSteps?: Array<object>}} args
  * @returns {{version: 1, status: "pass"|"fail", headSha: string, baseSha: string, producedAt: string, steps: Array<object>}}
  */
-function buildReceipt({ command, status, headSha, baseSha, output = "", alsoSatisfies = [] }) {
-  const passed = status === 0;
-  const stepStatus = passed ? "pass" : "fail";
+function buildReceipt({
+  command,
+  status,
+  headSha,
+  baseSha,
+  output = "",
+  additionalSteps = [],
+}) {
+  const primaryPassed = status === 0;
   const steps = [
     {
       command,
-      status: stepStatus,
+      status: primaryPassed ? "pass" : "fail",
       exitCode: status,
       // Tail only: receipts are capped at 64KB by the evaluator.
       outputTail: String(output).split("\n").slice(-20).join("\n"),
     },
   ];
 
-  // A command that ran as a link in a passing `&&` chain provably ran and
-  // provably succeeded — the chain could not have reached exit 0 otherwise.
-  // Recording it lets landing-evaluator's requiredProofCommands() be satisfied
-  // without running the narrower command a second time. Only ever recorded
-  // when the chain passed.
-  for (const satisfied of alsoSatisfies) {
-    if (passed && satisfied && satisfied !== command) {
-      steps.push({ command: satisfied, status: "pass", exitCode: 0, viaChain: command });
-    }
+  for (const step of additionalSteps) {
+    steps.push({
+      command: step.command,
+      status: step.status === 0 ? "pass" : "fail",
+      exitCode: step.status,
+      outputTail: String(step.output || "").split("\n").slice(-20).join("\n"),
+    });
   }
 
+  const passed = primaryPassed && steps.every((step) => step.status === "pass");
   return {
     version: 1,
-    status: stepStatus,
+    status: passed ? "pass" : "fail",
     headSha,
     baseSha,
     producedAt: new Date().toISOString(),
@@ -121,6 +126,8 @@ function evaluateStop({
   runner,
   keelVerify = "",
   existingReceipt = null,
+  beforeRun = () => {},
+  inspectWorktree = () => worktreeDirty,
 }) {
   if (payload.stop_hook_active && loopStateUnchanged) {
     return {
@@ -180,14 +187,46 @@ function evaluateStop({
     };
   }
 
-  const { status, output } = runner(command);
-  const alsoSatisfies =
-    testCommand && command !== testCommand && command.includes(testCommand)
-      ? [testCommand]
-      : [];
-  const receipt = buildReceipt({ command, status, headSha, baseSha, output, alsoSatisfies });
+  try {
+    beforeRun();
+  } catch (error) {
+    return {
+      block: true,
+      ranTests: false,
+      wroteReceipt: false,
+      receipt: null,
+      message:
+        `${LOG} BLOCKED [proof-receipt-invalidation-failed] ` +
+        `Could not invalidate the existing HEAD receipt (${error.message}).`,
+    };
+  }
+
+  const primaryRun = runner(command);
+  const additionalSteps = [];
+  if (primaryRun.status === 0 && testCommand && command !== testCommand) {
+    additionalSteps.push({ ...runner(testCommand), command: testCommand });
+  }
+  const receipt = buildReceipt({
+    command,
+    status: primaryRun.status,
+    headSha,
+    baseSha,
+    output: primaryRun.output,
+    additionalSteps,
+  });
   const passed = receipt.status === "pass";
-  const receiptMatchesHead = !worktreeDirty && baseResolved;
+  let worktreeDirtyAfterRun = true;
+  try {
+    worktreeDirtyAfterRun = Boolean(inspectWorktree());
+  } catch {
+    worktreeDirtyAfterRun = true;
+  }
+  const receiptMatchesHead =
+    !worktreeDirty && !worktreeDirtyAfterRun && baseResolved;
+  const failedStep = receipt.steps.find((step) => step.status === "fail");
+  const failedCommand = failedStep ? failedStep.command : command;
+  const failedStatus = failedStep ? failedStep.exitCode : primaryRun.status;
+  const failedOutput = failedStep ? failedStep.outputTail : primaryRun.output;
 
   return {
     block: !passed,
@@ -200,13 +239,16 @@ function evaluateStop({
         : !baseResolved
           ? `${LOG} \`${command}\` passed, but the configured base ref is unavailable. ` +
             `No base-bound receipt was written; fetch the base ref and finish again.`
-        : `${LOG} \`${command}\` passed, but the worktree is dirty. ` +
+        : worktreeDirty
+          ? `${LOG} \`${command}\` passed, but the worktree is dirty. ` +
           `No HEAD-pinned receipt was written; commit the tested changes and finish again.`
+          : `${LOG} \`${command}\` passed, but the repository changed while proof ran. ` +
+            `No HEAD-pinned receipt was written; inspect the changes and finish again.`
       : `${LOG} BLOCKED [proof-failed]\n` +
-        `  Problem: \`${command}\` exited ${status}; this turn is not done.\n` +
+        `  Problem: \`${failedCommand}\` exited ${failedStatus}; this turn is not done.\n` +
         `  Next:    fix the failure, then finish the turn again.\n` +
-        `  Repro:   ${command}\n` +
-        `  Evidence:\n${String(output).split("\n").slice(-20).map((l) => `    ${l}`).join("\n")}`,
+        `  Repro:   ${failedCommand}\n` +
+        `  Evidence:\n${String(failedOutput).split("\n").slice(-20).map((l) => `    ${l}`).join("\n")}`,
   };
 }
 
@@ -226,6 +268,14 @@ function readPayload() {
 function git(projectRoot, args) {
   const result = spawnSync("git", args, { cwd: projectRoot, encoding: "utf8" });
   return result.status === 0 ? String(result.stdout).trim() : "";
+}
+
+function worktreeIsDirty(projectRoot) {
+  const result = spawnSync("git", ["status", "--porcelain"], {
+    cwd: projectRoot,
+    encoding: "utf8",
+  });
+  return result.status !== 0 || Boolean(String(result.stdout).trim());
 }
 
 function gitBuffer(projectRoot, args) {
@@ -340,12 +390,8 @@ function main() {
     : "";
   const baseResolved = Boolean(resolvedBaseTip && mergeBaseSha);
   const baseSha = mergeBaseSha || headSha;
-  const porcelain = git(projectRoot, ["status", "--porcelain"]);
-  const worktreeDirty = Boolean(porcelain);
-  const committed = baseResolved
-    ? git(projectRoot, ["rev-list", "--count", `${baseSha}..HEAD`])
-    : "";
-  const dirty = worktreeDirty || !baseResolved || Number(committed) > 0;
+  const worktreeDirty = worktreeIsDirty(projectRoot);
+  const dirty = worktreeDirty || !baseResolved || headSha !== baseSha;
   const payload = readPayload();
   const fingerprint = worktreeFingerprint(projectRoot, headSha);
   const loopState = readLoopState(projectRoot);
@@ -357,21 +403,6 @@ function main() {
     loopState.headSha === headSha &&
     loopState.fingerprint === fingerprint,
   );
-
-  // Remove any earlier clean receipt before dirty-tree tests begin. Otherwise
-  // agent-finish could accept the stale file while the tested content no longer
-  // equals HEAD. An unchanged retry already invalidated it on the first run.
-  if (worktreeDirty && !loopStateUnchanged) {
-    try {
-      invalidateHeadReceipt(projectRoot, headSha);
-    } catch (error) {
-      console.error(
-        `${LOG} BLOCKED [proof-receipt-invalidation-failed] ` +
-        `Could not invalidate the stale HEAD receipt (${error.message}).`,
-      );
-      process.exit(2);
-    }
-  }
 
   let keelVerify = "";
   try {
@@ -391,6 +422,12 @@ function main() {
     baseSha,
     keelVerify,
     existingReceipt: readHeadReceipt(projectRoot, headSha),
+    beforeRun: () => invalidateHeadReceipt(projectRoot, headSha),
+    inspectWorktree: () =>
+      worktreeIsDirty(projectRoot) ||
+      git(projectRoot, ["rev-parse", "HEAD"]) !== headSha ||
+      (baseResolved &&
+        git(projectRoot, ["merge-base", configuredBaseRef, "HEAD"]) !== baseSha),
     runner: (command) => {
       const run = spawnSync(command, {
         cwd: projectRoot,
@@ -446,5 +483,6 @@ module.exports = {
   buildReceipt,
   invalidateHeadReceipt,
   receiptProves,
+  worktreeIsDirty,
   worktreeFingerprint,
 };
