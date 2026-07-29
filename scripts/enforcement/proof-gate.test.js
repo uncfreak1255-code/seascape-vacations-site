@@ -554,16 +554,34 @@ test("CLI blocks when the declared proof command cannot be read", (t) => {
   fs.writeFileSync(path.join(repo.projectRoot, "feature.txt"), "feature\n");
   runGit(repo.projectRoot, ["add", "feature.txt"]);
   runGit(repo.projectRoot, ["commit", "-m", "feature"]);
+  const headSha = runGit(repo.projectRoot, ["rev-parse", "HEAD"]);
   fs.mkdirSync(path.join(repo.projectRoot, ".keel", "verify"), { recursive: true });
+  const receiptPath = path.join(
+    repo.projectRoot,
+    ".guardrails",
+    "receipts",
+    `proof-${headSha}.json`,
+  );
+  fs.mkdirSync(path.dirname(receiptPath), { recursive: true });
+  fs.writeFileSync(
+    receiptPath,
+    `${JSON.stringify(buildReceipt({
+      command: "node -e \"process.exit(0)\"",
+      status: 0,
+      headSha,
+      baseSha,
+    }), null, 2)}\n`,
+  );
 
   assert.throws(() => readKeelVerify(repo.projectRoot), /EISDIR/);
   const gate = runGate(repo);
   assert.equal(gate.status, 2, gate.stderr);
   assert.match(gate.stderr, /proof-command-read-failed/i);
+  assert.equal(fs.existsSync(receiptPath), false);
   assert.doesNotMatch(gate.stderr, /proof recorded/i);
 });
 
-test("CLI blocks malformed guardrail config and invalidates same-HEAD proof", (t) => {
+test("CLI blocks non-object guardrail config and invalidates same-HEAD proof", (t) => {
   const repo = createCliRepo(t, "node -e \"process.exit(0)\"");
   const receiptPath = path.join(
     repo.projectRoot,
@@ -581,7 +599,7 @@ test("CLI blocks malformed guardrail config and invalidates same-HEAD proof", (t
       baseSha: repo.headSha,
     }), null, 2)}\n`,
   );
-  fs.writeFileSync(path.join(repo.projectRoot, ".guardrails.json"), "{\n");
+  fs.writeFileSync(path.join(repo.projectRoot, ".guardrails.json"), "null\n");
 
   const gate = runGate(repo);
   assert.equal(gate.status, 2, gate.stderr);
