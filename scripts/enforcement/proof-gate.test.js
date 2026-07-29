@@ -17,6 +17,7 @@ const {
   buildReceipt,
   invalidateHeadReceipt,
   receiptProves,
+  worktreeIsDirty,
   worktreeFingerprint,
 } = require("./proof-gate.js");
 
@@ -278,6 +279,29 @@ test("CLI with a dirty fresh clone passes tests but removes and writes no HEAD r
   assert.equal(gate.status, 0, gate.stderr);
   assert.match(gate.stderr, /worktree is dirty/i);
   assert.equal(fs.existsSync(receiptPath), false);
+});
+
+test("untracked files stay dirty when status.showUntrackedFiles is disabled", (t) => {
+  const repo = createCliRepo(t, "node -e \"process.exit(0)\"");
+  runGit(repo.projectRoot, ["update-ref", "refs/remotes/origin/main", "HEAD"]);
+  runGit(repo.projectRoot, ["config", "status.showUntrackedFiles", "no"]);
+  fs.writeFileSync(path.join(repo.projectRoot, "untracked-source.js"), "changed\n");
+
+  assert.equal(worktreeIsDirty(repo.projectRoot), true);
+  const gate = runGate(repo);
+  assert.equal(gate.status, 0, gate.stderr);
+  assert.match(gate.stderr, /worktree is dirty/i);
+  assert.equal(
+    fs.existsSync(
+      path.join(
+        repo.projectRoot,
+        ".guardrails",
+        "receipts",
+        `proof-${repo.headSha}.json`,
+      ),
+    ),
+    false,
+  );
 });
 
 test("CLI re-proves an edited retry, then bypasses only the unchanged failure", (t) => {
