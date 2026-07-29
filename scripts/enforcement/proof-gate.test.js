@@ -18,6 +18,7 @@ const {
   invalidateHeadReceipt,
   outputTail,
   receiptProves,
+  writeHeadReceipt,
   worktreeIsDirty,
   worktreeFingerprint,
 } = require("./proof-gate.js");
@@ -58,7 +59,7 @@ function createCliRepo(t, testCommand) {
     path.join(projectRoot, ".guardrails.json"),
     `${JSON.stringify({ testCommand })}\n`,
   );
-  fs.writeFileSync(path.join(projectRoot, ".gitignore"), ".guardrails/receipts/\n");
+  fs.writeFileSync(path.join(projectRoot, ".gitignore"), ".guardrails/receipts\n");
   fs.writeFileSync(path.join(projectRoot, "tracked.txt"), "committed\n");
 
   runGit(projectRoot, ["init"]);
@@ -510,6 +511,23 @@ test("CLI replaces stale passing proof before a clean rerun fails", (t) => {
   assert.notEqual(replacement.steps[0].status, "pass");
 });
 
+test("CLI blocks when passing proof cannot persist its receipt", (t) => {
+  const command =
+    "node -e \"const fs=require('node:fs');fs.mkdirSync('.guardrails',{recursive:true});fs.writeFileSync('.guardrails/receipts','not a directory')\"";
+  const repo = createCliRepo(t, command);
+  const baseSha = repo.headSha;
+  runGit(repo.projectRoot, ["update-ref", "refs/remotes/origin/main", baseSha]);
+
+  fs.writeFileSync(path.join(repo.projectRoot, "feature.txt"), "feature\n");
+  runGit(repo.projectRoot, ["add", "feature.txt"]);
+  runGit(repo.projectRoot, ["commit", "-m", "feature"]);
+
+  const gate = runGate(repo);
+  assert.equal(gate.status, 2, gate.stderr);
+  assert.match(gate.stderr, /proof-receipt-write-failed/i);
+  assert.doesNotMatch(gate.stderr, /proof recorded/i);
+});
+
 test("receipt matches the shape landing-evaluator accepts", () => {
   // Mirrors evaluateProof(): version === 1, status === "pass", headSha/baseSha
   // must equal the snapshot, and steps must contain a passing entry whose
@@ -551,6 +569,23 @@ test("receipt output tails stay below the evaluator byte limit", () => {
   assert.ok(
     Buffer.byteLength(JSON.stringify(receipt), "utf8") < 64 * 1024,
     "landing-evaluator would reject an oversized receipt",
+  );
+});
+
+test("receipt persistence surfaces filesystem failures", (t) => {
+  const projectRoot = fs.mkdtempSync(path.join(os.tmpdir(), "proof-write-"));
+  t.after(() => fs.rmSync(projectRoot, { recursive: true, force: true }));
+  fs.mkdirSync(path.join(projectRoot, ".guardrails"), { recursive: true });
+  fs.writeFileSync(path.join(projectRoot, ".guardrails", "receipts"), "not a directory");
+
+  assert.throws(
+    () => writeHeadReceipt(projectRoot, HEAD, buildReceipt({
+      command: "npm test",
+      status: 0,
+      headSha: HEAD,
+      baseSha: BASE,
+    })),
+    /EEXIST|ENOTDIR/,
   );
 });
 
