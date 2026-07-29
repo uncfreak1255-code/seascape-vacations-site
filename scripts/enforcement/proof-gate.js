@@ -15,12 +15,14 @@
 //   nothing changed       -> allow, run nothing (conversational turns stay fast)
 //   empty testCommand     -> allow, but say so loudly and write no receipt
 //   tests fail            -> exit 2, blocking the stop, with the failure fed back
-//   tests pass            -> exit 0, receipt written to .guardrails/receipts/
+//   tests pass, dirty tree-> exit 0, but no receipt falsely pinned to HEAD
+//   tests pass, clean tree-> exit 0, receipt written to .guardrails/receipts/
 //
-// Deliberately fail-open on hook infrastructure errors (missing git, unreadable
-// config): a crashed gate that wedges every session is a worse failure than an
-// unproven turn, and Claude Code overrides a Stop hook after 8 consecutive
-// blocks anyway. Test FAILURE is always fail-closed.
+// Deliberately fail-open on general hook infrastructure errors (missing git,
+// unreadable config): a crashed gate that wedges every session is a worse
+// failure than an unproven turn. Receipt invalidation is the one exception:
+// leaving a stale passing receipt at a dirty HEAD would be false proof. Test
+// FAILURE is always fail-closed.
 
 "use strict";
 
@@ -81,7 +83,16 @@ function buildReceipt({ command, status, headSha, baseSha, output = "", alsoSati
  *
  * @returns {{block: boolean, ranTests: boolean, wroteReceipt: boolean, receipt: object|null, message: string}}
  */
-function evaluateStop({ payload = {}, config = {}, dirty, headSha, baseSha, runner, keelVerify = "" }) {
+function evaluateStop({
+  payload = {},
+  config = {},
+  dirty,
+  worktreeDirty = false,
+  headSha,
+  baseSha,
+  runner,
+  keelVerify = "",
+}) {
   if (payload.stop_hook_active) {
     return {
       block: false,
@@ -131,14 +142,18 @@ function evaluateStop({ payload = {}, config = {}, dirty, headSha, baseSha, runn
       : [];
   const receipt = buildReceipt({ command, status, headSha, baseSha, output, alsoSatisfies });
   const passed = receipt.status === "pass";
+  const receiptMatchesHead = !worktreeDirty;
 
   return {
     block: !passed,
     ranTests: true,
-    wroteReceipt: true,
+    wroteReceipt: receiptMatchesHead,
     receipt,
     message: passed
-      ? `${LOG} proof recorded: \`${command}\` passed at ${headSha.slice(0, 8)}.`
+      ? receiptMatchesHead
+        ? `${LOG} proof recorded: \`${command}\` passed at ${headSha.slice(0, 8)}.`
+        : `${LOG} \`${command}\` passed, but the worktree is dirty. ` +
+          `No HEAD-pinned receipt was written; commit the tested changes and finish again.`
       : `${LOG} BLOCKED [proof-failed]\n` +
         `  Problem: \`${command}\` exited ${status}; this turn is not done.\n` +
         `  Next:    fix the failure, then finish the turn again.\n` +
@@ -165,6 +180,12 @@ function git(projectRoot, args) {
   return result.status === 0 ? String(result.stdout).trim() : "";
 }
 
+function invalidateHeadReceipt(projectRoot, headSha) {
+  fs.rmSync(path.join(projectRoot, RECEIPT_DIR, `proof-${headSha}.json`), {
+    force: true,
+  });
+}
+
 function main() {
   const projectRoot = path.resolve(__dirname, "..", "..");
 
@@ -184,8 +205,25 @@ function main() {
   }
 
   const porcelain = git(projectRoot, ["status", "--porcelain"]);
+  const worktreeDirty = Boolean(porcelain);
   const committed = git(projectRoot, ["rev-list", "--count", `${baseSha}..HEAD`]);
-  const dirty = Boolean(porcelain) || Number(committed) > 0;
+  const dirty = worktreeDirty || Number(committed) > 0;
+  const payload = readPayload();
+
+  // Remove any earlier clean receipt before dirty-tree tests begin. Otherwise
+  // agent-finish could accept the stale file while the tested content no longer
+  // equals HEAD. The retry-loop bypass stays side-effect free.
+  if (worktreeDirty && !payload.stop_hook_active) {
+    try {
+      invalidateHeadReceipt(projectRoot, headSha);
+    } catch (error) {
+      console.error(
+        `${LOG} BLOCKED [proof-receipt-invalidation-failed] ` +
+        `Could not invalidate the stale HEAD receipt (${error.message}).`,
+      );
+      process.exit(2);
+    }
+  }
 
   let keelVerify = "";
   try {
@@ -195,9 +233,10 @@ function main() {
   }
 
   const result = evaluateStop({
-    payload: readPayload(),
+    payload,
     config,
     dirty,
+    worktreeDirty,
     headSha,
     baseSha,
     keelVerify,
@@ -237,4 +276,4 @@ if (require.main === module) {
   main();
 }
 
-module.exports = { evaluateStop, buildReceipt };
+module.exports = { evaluateStop, buildReceipt, invalidateHeadReceipt };
