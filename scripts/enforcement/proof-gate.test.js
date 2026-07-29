@@ -16,6 +16,7 @@ const {
   evaluateStop,
   buildReceipt,
   invalidateHeadReceipt,
+  receiptProves,
   worktreeFingerprint,
 } = require("./proof-gate.js");
 
@@ -138,6 +139,50 @@ test("passing tests allow the stop and emit an evaluator-shaped receipt", () => 
   assert.equal(result.receipt.status, "pass");
 });
 
+test("valid proof for the same clean head and merge base is reused", () => {
+  let called = false;
+  const existingReceipt = buildReceipt({
+    command: "npm test",
+    status: 0,
+    headSha: HEAD,
+    baseSha: BASE,
+  });
+  const result = evaluateStop(fixture({
+    existingReceipt,
+    runner: () => {
+      called = true;
+      return { status: 0, output: "" };
+    },
+  }));
+
+  assert.equal(result.block, false);
+  assert.equal(result.ranTests, false);
+  assert.equal(result.wroteReceipt, false);
+  assert.equal(called, false);
+  assert.match(result.message, /reusing/i);
+});
+
+test("proof for a different merge base is not reused", () => {
+  let called = false;
+  const existingReceipt = buildReceipt({
+    command: "npm test",
+    status: 0,
+    headSha: HEAD,
+    baseSha: "c".repeat(40),
+  });
+  const result = evaluateStop(fixture({
+    existingReceipt,
+    runner: () => {
+      called = true;
+      return { status: 0, output: "fresh proof" };
+    },
+  }));
+
+  assert.equal(called, true);
+  assert.equal(result.ranTests, true);
+  assert.equal(result.wroteReceipt, true);
+});
+
 test("passing dirty-tree tests do not emit a receipt falsely pinned to HEAD", () => {
   const result = evaluateStop(fixture({ worktreeDirty: true }));
   assert.equal(result.block, false);
@@ -237,6 +282,78 @@ test("CLI treats a clean checkout with no configured base ref as needing proof",
   assert.equal(fs.existsSync(receiptPath), false);
 });
 
+test("CLI receipt records the merge base when origin/main has advanced", (t) => {
+  const repo = createCliRepo(t, "node -e \"process.exit(0)\"");
+  const branchPoint = repo.headSha;
+
+  runGit(repo.projectRoot, ["checkout", "-b", "feature"]);
+  fs.writeFileSync(path.join(repo.projectRoot, "tracked.txt"), "feature\n");
+  runGit(repo.projectRoot, ["add", "tracked.txt"]);
+  runGit(repo.projectRoot, ["commit", "-m", "feature"]);
+  const featureHead = runGit(repo.projectRoot, ["rev-parse", "HEAD"]);
+
+  runGit(repo.projectRoot, ["checkout", "-b", "advanced-main", branchPoint]);
+  fs.writeFileSync(path.join(repo.projectRoot, "main.txt"), "main advanced\n");
+  runGit(repo.projectRoot, ["add", "main.txt"]);
+  runGit(repo.projectRoot, ["commit", "-m", "advance main"]);
+  const mainTip = runGit(repo.projectRoot, ["rev-parse", "HEAD"]);
+  runGit(repo.projectRoot, ["update-ref", "refs/remotes/origin/main", mainTip]);
+  runGit(repo.projectRoot, ["checkout", "feature"]);
+
+  const gate = runGate(repo);
+  assert.equal(gate.status, 0, gate.stderr);
+
+  const receipt = JSON.parse(
+    fs.readFileSync(
+      path.join(
+        repo.projectRoot,
+        ".guardrails",
+        "receipts",
+        `proof-${featureHead}.json`,
+      ),
+      "utf8",
+    ),
+  );
+  assert.equal(receipt.headSha, featureHead);
+  assert.equal(receipt.baseSha, branchPoint);
+  assert.notEqual(receipt.baseSha, mainTip);
+});
+
+test("CLI reuses an evaluator-valid receipt for an unchanged feature head", (t) => {
+  const command = "node -e \"process.exit(0)\"";
+  const repo = createCliRepo(t, command);
+  const baseSha = repo.headSha;
+  runGit(repo.projectRoot, ["update-ref", "refs/remotes/origin/main", baseSha]);
+
+  fs.writeFileSync(path.join(repo.projectRoot, "tracked.txt"), "feature\n");
+  runGit(repo.projectRoot, ["add", "tracked.txt"]);
+  runGit(repo.projectRoot, ["commit", "-m", "feature"]);
+  const headSha = runGit(repo.projectRoot, ["rev-parse", "HEAD"]);
+  const receiptPath = path.join(
+    repo.projectRoot,
+    ".guardrails",
+    "receipts",
+    `proof-${headSha}.json`,
+  );
+  fs.mkdirSync(path.dirname(receiptPath), { recursive: true });
+  const existingReceipt = buildReceipt({
+    command,
+    status: 0,
+    headSha,
+    baseSha,
+    output: "sentinel proof",
+  });
+  fs.writeFileSync(receiptPath, `${JSON.stringify(existingReceipt, null, 2)}\n`);
+
+  const gate = runGate(repo);
+  assert.equal(gate.status, 0, gate.stderr);
+  assert.match(gate.stderr, /reusing/i);
+  assert.equal(
+    fs.readFileSync(receiptPath, "utf8"),
+    `${JSON.stringify(existingReceipt, null, 2)}\n`,
+  );
+});
+
 test("receipt matches the shape landing-evaluator accepts", () => {
   // Mirrors evaluateProof(): version === 1, status === "pass", headSha/baseSha
   // must equal the snapshot, and steps must contain a passing entry whose
@@ -257,6 +374,37 @@ test("receipt matches the shape landing-evaluator accepts", () => {
     (step) => step && step.command === "npm test" && step.status === "pass",
   );
   assert.equal(hasPassingCommand, true, "landing-evaluator would reject this receipt");
+});
+
+test("receipt reuse validation mirrors evaluator identity and command checks", () => {
+  const receipt = buildReceipt({
+    command: "npm run lint:content && npm test",
+    status: 0,
+    headSha: HEAD,
+    baseSha: BASE,
+    alsoSatisfies: ["npm test"],
+  });
+
+  assert.equal(
+    receiptProves({
+      receipt,
+      headSha: HEAD,
+      baseSha: BASE,
+      command: "npm run lint:content && npm test",
+      testCommand: "npm test",
+    }),
+    true,
+  );
+  assert.equal(
+    receiptProves({
+      receipt,
+      headSha: HEAD,
+      baseSha: "c".repeat(40),
+      command: "npm run lint:content && npm test",
+      testCommand: "npm test",
+    }),
+    false,
+  );
 });
 
 test("prefers .keel/verify over testCommand when the repo declares one", () => {
