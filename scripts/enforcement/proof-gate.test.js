@@ -18,6 +18,7 @@ const {
   createProofRunner,
   invalidateHeadReceipt,
   outputTail,
+  readKeelVerify,
   receiptProves,
   writeHeadReceipt,
   worktreeIsDirty,
@@ -542,6 +543,23 @@ test("CLI blocks when passing proof cannot persist its receipt", (t) => {
   const gate = runGate(repo);
   assert.equal(gate.status, 2, gate.stderr);
   assert.match(gate.stderr, /proof-receipt-write-failed/i);
+  assert.doesNotMatch(gate.stderr, /proof recorded/i);
+});
+
+test("CLI blocks when the declared proof command cannot be read", (t) => {
+  const repo = createCliRepo(t, "node -e \"process.exit(0)\"");
+  const baseSha = repo.headSha;
+  runGit(repo.projectRoot, ["update-ref", "refs/remotes/origin/main", baseSha]);
+
+  fs.writeFileSync(path.join(repo.projectRoot, "feature.txt"), "feature\n");
+  runGit(repo.projectRoot, ["add", "feature.txt"]);
+  runGit(repo.projectRoot, ["commit", "-m", "feature"]);
+  fs.mkdirSync(path.join(repo.projectRoot, ".keel", "verify"), { recursive: true });
+
+  assert.throws(() => readKeelVerify(repo.projectRoot), /EISDIR/);
+  const gate = runGate(repo);
+  assert.equal(gate.status, 2, gate.stderr);
+  assert.match(gate.stderr, /proof-command-read-failed/i);
   assert.doesNotMatch(gate.stderr, /proof recorded/i);
 });
 
