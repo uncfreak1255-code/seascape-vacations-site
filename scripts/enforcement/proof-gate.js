@@ -396,6 +396,31 @@ function invalidateHeadReceipt(projectRoot, headSha) {
   });
 }
 
+function createProofRunner(
+  projectRoot,
+  {
+    now = Date.now,
+    spawn = spawnSync,
+    timeoutMs = TEST_TIMEOUT_MS,
+  } = {},
+) {
+  const deadline = now() + timeoutMs;
+  return (command) => {
+    const run = spawn(command, {
+      cwd: projectRoot,
+      shell: true,
+      encoding: "utf8",
+      // .keel/verify and testCommand share one deadline so the hook's outer
+      // timeout always has room to report the result and persist the receipt.
+      timeout: Math.max(1, deadline - now()),
+    });
+    return {
+      status: run.status === null ? 1 : run.status,
+      output: `${run.stdout || ""}${run.stderr || ""}`,
+    };
+  };
+}
+
 function main() {
   const projectRoot = path.resolve(__dirname, "..", "..");
 
@@ -442,6 +467,7 @@ function main() {
     keelVerify = "";
   }
 
+  const runner = createProofRunner(projectRoot);
   const result = evaluateStop({
     payload,
     config,
@@ -459,18 +485,7 @@ function main() {
       git(projectRoot, ["rev-parse", "HEAD"]) !== headSha ||
       (baseResolved &&
         git(projectRoot, ["merge-base", configuredBaseRef, "HEAD"]) !== baseSha),
-    runner: (command) => {
-      const run = spawnSync(command, {
-        cwd: projectRoot,
-        shell: true,
-        encoding: "utf8",
-        timeout: TEST_TIMEOUT_MS,
-      });
-      return {
-        status: run.status === null ? 1 : run.status,
-        output: `${run.stdout || ""}${run.stderr || ""}`,
-      };
-    },
+    runner,
   });
 
   if (result.block && result.loopRetryable && fingerprint) {
@@ -510,6 +525,7 @@ if (require.main === module) {
 module.exports = {
   evaluateStop,
   buildReceipt,
+  createProofRunner,
   invalidateHeadReceipt,
   outputTail,
   receiptProves,
