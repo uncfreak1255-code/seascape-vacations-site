@@ -49,3 +49,6 @@ _site/
 
 # Sensitive local Hostaway exports
 scripts/data/
+
+# Generated proof receipts (per-commit, not source)
+.guardrails/receipts/
