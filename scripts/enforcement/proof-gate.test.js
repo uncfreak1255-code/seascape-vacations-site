@@ -16,6 +16,7 @@ const {
   evaluateStop,
   buildReceipt,
   invalidateHeadReceipt,
+  worktreeFingerprint,
 } = require("./proof-gate.js");
 
 const HEAD = "a".repeat(40);
@@ -34,11 +35,70 @@ function fixture(overrides = {}) {
   };
 }
 
+function runGit(projectRoot, args) {
+  const git = spawnSync("git", args, { cwd: projectRoot, encoding: "utf8" });
+  assert.equal(git.status, 0, git.stderr);
+  return git.stdout.trim();
+}
+
+function createCliRepo(t, testCommand) {
+  const projectRoot = fs.mkdtempSync(path.join(os.tmpdir(), "proof-gate-cli-"));
+  t.after(() => fs.rmSync(projectRoot, { recursive: true, force: true }));
+
+  const scriptDir = path.join(projectRoot, "scripts", "enforcement");
+  fs.mkdirSync(scriptDir, { recursive: true });
+  fs.copyFileSync(
+    path.join(__dirname, "proof-gate.js"),
+    path.join(scriptDir, "proof-gate.js"),
+  );
+  fs.writeFileSync(
+    path.join(projectRoot, ".guardrails.json"),
+    `${JSON.stringify({ testCommand })}\n`,
+  );
+  fs.writeFileSync(path.join(projectRoot, ".gitignore"), ".guardrails/receipts/\n");
+  fs.writeFileSync(path.join(projectRoot, "tracked.txt"), "committed\n");
+
+  runGit(projectRoot, ["init"]);
+  runGit(projectRoot, ["config", "user.email", "proof-gate@example.test"]);
+  runGit(projectRoot, ["config", "user.name", "Proof Gate Test"]);
+  runGit(projectRoot, ["add", "."]);
+  runGit(projectRoot, ["commit", "-m", "fixture"]);
+
+  return {
+    projectRoot,
+    scriptDir,
+    headSha: runGit(projectRoot, ["rev-parse", "HEAD"]),
+  };
+}
+
+function runGate({ projectRoot, scriptDir }, payload = {}) {
+  return spawnSync(process.execPath, [path.join(scriptDir, "proof-gate.js")], {
+    cwd: projectRoot,
+    encoding: "utf8",
+    input: JSON.stringify(payload),
+  });
+}
+
 test("loop guard: never blocks twice for the same stop", () => {
   const result = evaluateStop(fixture({ payload: { stop_hook_active: true } }));
   assert.equal(result.block, false);
   assert.equal(result.ranTests, false);
   assert.match(result.message, /already retried/i);
+});
+
+test("loop retry with changed tree state runs proof again", () => {
+  let called = false;
+  const result = evaluateStop(fixture({
+    payload: { stop_hook_active: true },
+    loopStateUnchanged: false,
+    runner: () => {
+      called = true;
+      return { status: 1, output: "still failing" };
+    },
+  }));
+  assert.equal(called, true);
+  assert.equal(result.block, true);
+  assert.match(result.message, /proof-failed/i);
 });
 
 test("clean tree is a no-op: does not spend 30s proving nothing changed", () => {
@@ -87,6 +147,15 @@ test("passing dirty-tree tests do not emit a receipt falsely pinned to HEAD", ()
   assert.match(result.message, /No HEAD-pinned receipt/i);
 });
 
+test("unresolved base still runs proof but cannot emit a base-bound receipt", () => {
+  const result = evaluateStop(fixture({ baseResolved: false }));
+  assert.equal(result.block, false);
+  assert.equal(result.ranTests, true);
+  assert.equal(result.wroteReceipt, false);
+  assert.match(result.message, /base ref is unavailable/i);
+  assert.match(result.message, /No base-bound receipt/i);
+});
+
 test("failing dirty-tree tests still block and do not emit a HEAD receipt", () => {
   const result = evaluateStop(fixture({
     worktreeDirty: true,
@@ -114,50 +183,57 @@ test("a dirty-tree run invalidates a stale receipt for the same HEAD", (t) => {
 });
 
 test("CLI with a dirty fresh clone passes tests but removes and writes no HEAD receipt", (t) => {
-  const projectRoot = fs.mkdtempSync(path.join(os.tmpdir(), "proof-gate-cli-"));
-  t.after(() => fs.rmSync(projectRoot, { recursive: true, force: true }));
-
-  const scriptDir = path.join(projectRoot, "scripts", "enforcement");
-  fs.mkdirSync(scriptDir, { recursive: true });
-  fs.copyFileSync(
-    path.join(__dirname, "proof-gate.js"),
-    path.join(scriptDir, "proof-gate.js"),
-  );
-  fs.writeFileSync(
-    path.join(projectRoot, ".guardrails.json"),
-    `${JSON.stringify({ testCommand: "node -e \"process.exit(0)\"" })}\n`,
-  );
-  fs.writeFileSync(path.join(projectRoot, "tracked.txt"), "committed\n");
-
-  for (const args of [
-    ["init"],
-    ["config", "user.email", "proof-gate@example.test"],
-    ["config", "user.name", "Proof Gate Test"],
-    ["add", "."],
-    ["commit", "-m", "fixture"],
-  ]) {
-    const git = spawnSync("git", args, { cwd: projectRoot, encoding: "utf8" });
-    assert.equal(git.status, 0, git.stderr);
-  }
-
-  const headSha = spawnSync("git", ["rev-parse", "HEAD"], {
-    cwd: projectRoot,
-    encoding: "utf8",
-  }).stdout.trim();
+  const repo = createCliRepo(t, "node -e \"process.exit(0)\"");
+  const { projectRoot, headSha } = repo;
+  runGit(projectRoot, ["update-ref", "refs/remotes/origin/main", "HEAD"]);
   const receiptDir = path.join(projectRoot, ".guardrails", "receipts");
   const receiptPath = path.join(receiptDir, `proof-${headSha}.json`);
   fs.mkdirSync(receiptDir, { recursive: true });
   fs.writeFileSync(receiptPath, "{\"status\":\"pass\"}\n");
-  fs.writeFileSync(path.join(projectRoot, "tracked.txt"), "dirty\n");
 
-  const gate = spawnSync(process.execPath, [path.join(scriptDir, "proof-gate.js")], {
-    cwd: projectRoot,
-    encoding: "utf8",
-    input: "{}",
-  });
+  const cleanFingerprint = worktreeFingerprint(projectRoot, headSha);
+  fs.writeFileSync(path.join(projectRoot, "tracked.txt"), "dirty\n");
+  const dirtyFingerprint = worktreeFingerprint(projectRoot, headSha);
+  assert.notEqual(dirtyFingerprint, cleanFingerprint);
+
+  const gate = runGate(repo);
 
   assert.equal(gate.status, 0, gate.stderr);
   assert.match(gate.stderr, /worktree is dirty/i);
+  assert.equal(fs.existsSync(receiptPath), false);
+});
+
+test("CLI re-proves an edited retry, then bypasses only the unchanged failure", (t) => {
+  const repo = createCliRepo(t, "node -e \"process.exit(1)\"");
+  runGit(repo.projectRoot, ["update-ref", "refs/remotes/origin/main", "HEAD"]);
+
+  fs.writeFileSync(path.join(repo.projectRoot, "tracked.txt"), "first edit\n");
+  const first = runGate(repo);
+  assert.equal(first.status, 2, first.stderr);
+
+  fs.writeFileSync(path.join(repo.projectRoot, "tracked.txt"), "second edit\n");
+  const editedRetry = runGate(repo, { stop_hook_active: true });
+  assert.equal(editedRetry.status, 2, editedRetry.stderr);
+  assert.match(editedRetry.stderr, /proof-failed/i);
+  assert.doesNotMatch(editedRetry.stderr, /already retried/i);
+
+  const unchangedRetry = runGate(repo, { stop_hook_active: true });
+  assert.equal(unchangedRetry.status, 0, unchangedRetry.stderr);
+  assert.match(unchangedRetry.stderr, /already retried/i);
+});
+
+test("CLI treats a clean checkout with no configured base ref as needing proof", (t) => {
+  const repo = createCliRepo(t, "node -e \"process.exit(0)\"");
+  const receiptPath = path.join(
+    repo.projectRoot,
+    ".guardrails",
+    "receipts",
+    `proof-${repo.headSha}.json`,
+  );
+
+  const gate = runGate(repo);
+  assert.equal(gate.status, 0, gate.stderr);
+  assert.match(gate.stderr, /base ref is unavailable/i);
   assert.equal(fs.existsSync(receiptPath), false);
 });
 
