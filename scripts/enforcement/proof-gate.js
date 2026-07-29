@@ -34,7 +34,21 @@ const path = require("node:path");
 const LOG = "[proof-gate]";
 const RECEIPT_DIR = path.join(".guardrails", "receipts");
 const LOOP_STATE_FILE = path.join(RECEIPT_DIR, "proof-loop-state.json");
+const OUTPUT_TAIL_SOURCE_BYTES = 4 * 1024;
 const TEST_TIMEOUT_MS = 10 * 60 * 1000;
+
+function outputTail(output) {
+  const tail = String(output).split("\n").slice(-20).join("\n");
+  const bytes = Buffer.from(tail, "utf8");
+  if (bytes.length <= OUTPUT_TAIL_SOURCE_BYTES) {
+    return tail;
+  }
+
+  const prefix = "[output truncated]\n";
+  const budget = OUTPUT_TAIL_SOURCE_BYTES - Buffer.byteLength(prefix);
+  const suffix = bytes.subarray(bytes.length - budget).toString("utf8");
+  return `${prefix}${suffix.startsWith("\uFFFD") ? suffix.slice(1) : suffix}`;
+}
 
 /**
  * Build a proof receipt in the shape landing-evaluator's evaluateProof()
@@ -59,7 +73,7 @@ function buildReceipt({
       status: primaryPassed ? "pass" : "fail",
       exitCode: status,
       // Tail only: receipts are capped at 64KB by the evaluator.
-      outputTail: String(output).split("\n").slice(-20).join("\n"),
+      outputTail: outputTail(output),
     },
   ];
 
@@ -68,7 +82,7 @@ function buildReceipt({
       command: step.command,
       status: step.status === 0 ? "pass" : "fail",
       exitCode: step.status,
-      outputTail: String(step.output || "").split("\n").slice(-20).join("\n"),
+      outputTail: outputTail(step.output || ""),
     });
   }
 
@@ -164,6 +178,7 @@ function evaluateStop({
       ranTests: false,
       wroteReceipt: false,
       receipt: null,
+      loopRetryable: false,
       message:
         `${LOG} no .keel/verify and .guardrails.json declares no testCommand, so ` +
         `this repo has no proof to give. A receipt written now would pass ` +
@@ -195,6 +210,7 @@ function evaluateStop({
       ranTests: false,
       wroteReceipt: false,
       receipt: null,
+      loopRetryable: false,
       message:
         `${LOG} BLOCKED [proof-receipt-invalidation-failed] ` +
         `Could not invalidate the existing HEAD receipt (${error.message}).`,
@@ -233,6 +249,7 @@ function evaluateStop({
     ranTests: true,
     wroteReceipt: receiptMatchesHead,
     receipt,
+    loopRetryable: !passed,
     message: passed
       ? receiptMatchesHead
         ? `${LOG} proof recorded: \`${command}\` passed at ${headSha.slice(0, 8)}.`
@@ -241,7 +258,7 @@ function evaluateStop({
             `No base-bound receipt was written; fetch the base ref and finish again.`
         : worktreeDirty
           ? `${LOG} \`${command}\` passed, but the worktree is dirty. ` +
-          `No HEAD-pinned receipt was written; commit the tested changes and finish again.`
+            `No HEAD-pinned receipt was written; commit the tested changes and finish again.`
           : `${LOG} \`${command}\` passed, but the repository changed while proof ran. ` +
             `No HEAD-pinned receipt was written; inspect the changes and finish again.`
       : `${LOG} BLOCKED [proof-failed]\n` +
@@ -446,7 +463,7 @@ function main() {
     },
   });
 
-  if (result.block && fingerprint) {
+  if (result.block && result.loopRetryable && fingerprint) {
     try {
       writeLoopState(projectRoot, headSha, fingerprint);
     } catch (error) {
@@ -486,6 +503,7 @@ module.exports = {
   evaluateStop,
   buildReceipt,
   invalidateHeadReceipt,
+  outputTail,
   receiptProves,
   worktreeIsDirty,
   worktreeFingerprint,
