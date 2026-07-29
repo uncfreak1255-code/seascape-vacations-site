@@ -183,6 +183,38 @@ test("proof for a different merge base is not reused", () => {
   assert.equal(result.wroteReceipt, true);
 });
 
+test("proof run that dirties a clean tree cannot emit a HEAD receipt", () => {
+  const result = evaluateStop(fixture({
+    inspectWorktree: () => true,
+  }));
+
+  assert.equal(result.block, false);
+  assert.equal(result.ranTests, true);
+  assert.equal(result.wroteReceipt, false);
+  assert.match(result.message, /repository changed while proof ran/i);
+});
+
+test("every actual proof rerun invalidates the existing receipt first", () => {
+  const events = [];
+  const result = evaluateStop(fixture({
+    existingReceipt: buildReceipt({
+      command: "old proof command",
+      status: 0,
+      headSha: HEAD,
+      baseSha: BASE,
+    }),
+    beforeRun: () => events.push("invalidate"),
+    runner: () => {
+      events.push("run");
+      return { status: 1, output: "failed" };
+    },
+  }));
+
+  assert.deepEqual(events, ["invalidate", "run"]);
+  assert.equal(result.block, true);
+  assert.equal(result.receipt.status, "fail");
+});
+
 test("passing dirty-tree tests do not emit a receipt falsely pinned to HEAD", () => {
   const result = evaluateStop(fixture({ worktreeDirty: true }));
   assert.equal(result.block, false);
@@ -354,6 +386,92 @@ test("CLI reuses an evaluator-valid receipt for an unchanged feature head", (t) 
   );
 });
 
+test("CLI suppresses a receipt when a successful proof dirties the tree", (t) => {
+  const command =
+    "node -e \"require('node:fs').writeFileSync('tracked.txt', 'changed by proof\\\\n')\"";
+  const repo = createCliRepo(t, command);
+  const baseSha = repo.headSha;
+  runGit(repo.projectRoot, ["update-ref", "refs/remotes/origin/main", baseSha]);
+
+  fs.writeFileSync(path.join(repo.projectRoot, "feature.txt"), "feature\n");
+  runGit(repo.projectRoot, ["add", "feature.txt"]);
+  runGit(repo.projectRoot, ["commit", "-m", "feature"]);
+  const headSha = runGit(repo.projectRoot, ["rev-parse", "HEAD"]);
+  const receiptPath = path.join(
+    repo.projectRoot,
+    ".guardrails",
+    "receipts",
+    `proof-${headSha}.json`,
+  );
+
+  const gate = runGate(repo);
+  assert.equal(gate.status, 0, gate.stderr);
+  assert.match(gate.stderr, /repository changed while proof ran/i);
+  assert.equal(fs.existsSync(receiptPath), false);
+});
+
+test("CLI suppresses a receipt when proof moves HEAD with a clean tree", (t) => {
+  const repo = createCliRepo(t, "git commit --allow-empty -m proof-moved-head");
+  const baseSha = repo.headSha;
+  runGit(repo.projectRoot, ["update-ref", "refs/remotes/origin/main", baseSha]);
+
+  fs.writeFileSync(path.join(repo.projectRoot, "feature.txt"), "feature\n");
+  runGit(repo.projectRoot, ["add", "feature.txt"]);
+  runGit(repo.projectRoot, ["commit", "-m", "feature"]);
+  const testedHead = runGit(repo.projectRoot, ["rev-parse", "HEAD"]);
+  const receiptPath = path.join(
+    repo.projectRoot,
+    ".guardrails",
+    "receipts",
+    `proof-${testedHead}.json`,
+  );
+
+  const gate = runGate(repo);
+  assert.equal(gate.status, 0, gate.stderr);
+  assert.match(gate.stderr, /repository changed while proof ran/i);
+  assert.notEqual(runGit(repo.projectRoot, ["rev-parse", "HEAD"]), testedHead);
+  assert.equal(fs.existsSync(receiptPath), false);
+});
+
+test("CLI replaces stale passing proof before a clean rerun fails", (t) => {
+  const testCommand = "node -e \"process.exit(0)\"";
+  const repo = createCliRepo(t, testCommand);
+  const baseSha = repo.headSha;
+  runGit(repo.projectRoot, ["update-ref", "refs/remotes/origin/main", baseSha]);
+
+  const keelDir = path.join(repo.projectRoot, ".keel");
+  fs.mkdirSync(keelDir, { recursive: true });
+  fs.writeFileSync(
+    path.join(keelDir, "verify"),
+    "node -e \"process.exit(1)\"\n",
+  );
+  runGit(repo.projectRoot, ["add", ".keel/verify"]);
+  runGit(repo.projectRoot, ["commit", "-m", "feature proof"]);
+  const headSha = runGit(repo.projectRoot, ["rev-parse", "HEAD"]);
+  const receiptPath = path.join(
+    repo.projectRoot,
+    ".guardrails",
+    "receipts",
+    `proof-${headSha}.json`,
+  );
+  fs.mkdirSync(path.dirname(receiptPath), { recursive: true });
+  fs.writeFileSync(
+    receiptPath,
+    `${JSON.stringify(buildReceipt({
+      command: testCommand,
+      status: 0,
+      headSha,
+      baseSha,
+    }), null, 2)}\n`,
+  );
+
+  const gate = runGate(repo);
+  assert.equal(gate.status, 2, gate.stderr);
+  const replacement = JSON.parse(fs.readFileSync(receiptPath, "utf8"));
+  assert.equal(replacement.status, "fail");
+  assert.notEqual(replacement.steps[0].status, "pass");
+});
+
 test("receipt matches the shape landing-evaluator accepts", () => {
   // Mirrors evaluateProof(): version === 1, status === "pass", headSha/baseSha
   // must equal the snapshot, and steps must contain a passing entry whose
@@ -382,7 +500,7 @@ test("receipt reuse validation mirrors evaluator identity and command checks", (
     status: 0,
     headSha: HEAD,
     baseSha: BASE,
-    alsoSatisfies: ["npm test"],
+    additionalSteps: [{ command: "npm test", status: 0, output: "ok" }],
   });
 
   assert.equal(
@@ -417,33 +535,63 @@ test("prefers .keel/verify over testCommand when the repo declares one", () => {
     runner: (command) => { ran.push(command); return { status: 0, output: "ok" }; },
   }));
 
-  assert.deepEqual(ran, ["npm run lint:content && npm test && npm run verify:links"]);
+  assert.deepEqual(ran, [
+    "npm run lint:content && npm test && npm run verify:links",
+    "npm test",
+  ]);
   assert.equal(result.receipt.status, "pass");
 });
 
 test("keel receipt still satisfies landing-evaluator's required testCommand", () => {
   // requiredProofCommands() demands a passing step whose command is
-  // byte-identical to testCommand. When the keel chain provably contains and
-  // passed it, record it explicitly so the evaluator is satisfied honestly.
+  // byte-identical to testCommand. Run it explicitly rather than inferring
+  // execution from text inside the keel command.
+  const ran = [];
   const result = evaluateStop(fixture({
     keelVerify: "npm run lint:content && npm test && npm run verify:links",
-    runner: () => ({ status: 0, output: "ok" }),
+    runner: (command) => {
+      ran.push(command);
+      return { status: 0, output: "ok" };
+    },
   }));
 
+  assert.deepEqual(ran, [
+    "npm run lint:content && npm test && npm run verify:links",
+    "npm test",
+  ]);
   const hasTestCommand = result.receipt.steps.some(
     (step) => step.command === "npm test" && step.status === "pass",
   );
   assert.equal(hasTestCommand, true, "landing-evaluator would report PROOF_MISSING");
 });
 
-test("does not fabricate a testCommand step when keel does not contain it", () => {
+test("runs testCommand separately even when keel only mentions it as text", () => {
+  const ran = [];
   const result = evaluateStop(fixture({
-    keelVerify: "make check",
-    runner: () => ({ status: 0, output: "ok" }),
+    keelVerify: "echo npm test",
+    runner: (command) => {
+      ran.push(command);
+      return { status: 0, output: "ok" };
+    },
   }));
 
-  const fabricated = result.receipt.steps.some((step) => step.command === "npm test");
-  assert.equal(fabricated, false, "must never claim a command ran that did not");
+  assert.deepEqual(ran, ["echo npm test", "npm test"]);
+  const testStep = result.receipt.steps.find((step) => step.command === "npm test");
+  assert.equal(testStep.status, "pass");
+});
+
+test("a separately executed required test failure blocks the stop", () => {
+  const result = evaluateStop(fixture({
+    keelVerify: "echo npm test",
+    runner: (command) =>
+      command === "npm test"
+        ? { status: 1, output: "required test failed" }
+        : { status: 0, output: "keel passed" },
+  }));
+
+  assert.equal(result.block, true);
+  assert.equal(result.receipt.status, "fail");
+  assert.match(result.message, /required test failed/);
 });
 
 test("a failing run is never recorded as a passing step", () => {
