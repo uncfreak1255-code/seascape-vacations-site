@@ -7,8 +7,16 @@
 
 const test = require("node:test");
 const assert = require("node:assert/strict");
+const { spawnSync } = require("node:child_process");
+const fs = require("node:fs");
+const os = require("node:os");
+const path = require("node:path");
 
-const { evaluateStop, buildReceipt } = require("./proof-gate.js");
+const {
+  evaluateStop,
+  buildReceipt,
+  invalidateHeadReceipt,
+} = require("./proof-gate.js");
 
 const HEAD = "a".repeat(40);
 const BASE = "b".repeat(40);
@@ -18,6 +26,7 @@ function fixture(overrides = {}) {
     payload: {},
     config: { testCommand: "npm test" },
     dirty: true,
+    worktreeDirty: false,
     headSha: HEAD,
     baseSha: BASE,
     runner: () => ({ status: 0, output: "713 passing" }),
@@ -67,6 +76,89 @@ test("passing tests allow the stop and emit an evaluator-shaped receipt", () => 
   assert.equal(result.block, false);
   assert.equal(result.wroteReceipt, true);
   assert.equal(result.receipt.status, "pass");
+});
+
+test("passing dirty-tree tests do not emit a receipt falsely pinned to HEAD", () => {
+  const result = evaluateStop(fixture({ worktreeDirty: true }));
+  assert.equal(result.block, false);
+  assert.equal(result.ranTests, true);
+  assert.equal(result.wroteReceipt, false);
+  assert.match(result.message, /worktree is dirty/i);
+  assert.match(result.message, /No HEAD-pinned receipt/i);
+});
+
+test("failing dirty-tree tests still block and do not emit a HEAD receipt", () => {
+  const result = evaluateStop(fixture({
+    worktreeDirty: true,
+    runner: () => ({ status: 1, output: "1 failing" }),
+  }));
+  assert.equal(result.block, true);
+  assert.equal(result.ranTests, true);
+  assert.equal(result.wroteReceipt, false);
+  assert.equal(result.receipt.status, "fail");
+});
+
+test("a dirty-tree run invalidates a stale receipt for the same HEAD", (t) => {
+  const projectRoot = fs.mkdtempSync(path.join(os.tmpdir(), "proof-gate-"));
+  t.after(() => fs.rmSync(projectRoot, { recursive: true, force: true }));
+
+  const receiptDir = path.join(projectRoot, ".guardrails", "receipts");
+  const receiptPath = path.join(receiptDir, `proof-${HEAD}.json`);
+  fs.mkdirSync(receiptDir, { recursive: true });
+  fs.writeFileSync(receiptPath, "{\"status\":\"pass\"}\n");
+
+  invalidateHeadReceipt(projectRoot, HEAD);
+  assert.equal(fs.existsSync(receiptPath), false);
+
+  assert.doesNotThrow(() => invalidateHeadReceipt(projectRoot, HEAD));
+});
+
+test("CLI with a dirty fresh clone passes tests but removes and writes no HEAD receipt", (t) => {
+  const projectRoot = fs.mkdtempSync(path.join(os.tmpdir(), "proof-gate-cli-"));
+  t.after(() => fs.rmSync(projectRoot, { recursive: true, force: true }));
+
+  const scriptDir = path.join(projectRoot, "scripts", "enforcement");
+  fs.mkdirSync(scriptDir, { recursive: true });
+  fs.copyFileSync(
+    path.join(__dirname, "proof-gate.js"),
+    path.join(scriptDir, "proof-gate.js"),
+  );
+  fs.writeFileSync(
+    path.join(projectRoot, ".guardrails.json"),
+    `${JSON.stringify({ testCommand: "node -e \"process.exit(0)\"" })}\n`,
+  );
+  fs.writeFileSync(path.join(projectRoot, "tracked.txt"), "committed\n");
+
+  for (const args of [
+    ["init"],
+    ["config", "user.email", "proof-gate@example.test"],
+    ["config", "user.name", "Proof Gate Test"],
+    ["add", "."],
+    ["commit", "-m", "fixture"],
+  ]) {
+    const git = spawnSync("git", args, { cwd: projectRoot, encoding: "utf8" });
+    assert.equal(git.status, 0, git.stderr);
+  }
+
+  const headSha = spawnSync("git", ["rev-parse", "HEAD"], {
+    cwd: projectRoot,
+    encoding: "utf8",
+  }).stdout.trim();
+  const receiptDir = path.join(projectRoot, ".guardrails", "receipts");
+  const receiptPath = path.join(receiptDir, `proof-${headSha}.json`);
+  fs.mkdirSync(receiptDir, { recursive: true });
+  fs.writeFileSync(receiptPath, "{\"status\":\"pass\"}\n");
+  fs.writeFileSync(path.join(projectRoot, "tracked.txt"), "dirty\n");
+
+  const gate = spawnSync(process.execPath, [path.join(scriptDir, "proof-gate.js")], {
+    cwd: projectRoot,
+    encoding: "utf8",
+    input: "{}",
+  });
+
+  assert.equal(gate.status, 0, gate.stderr);
+  assert.match(gate.stderr, /worktree is dirty/i);
+  assert.equal(fs.existsSync(receiptPath), false);
 });
 
 test("receipt matches the shape landing-evaluator accepts", () => {
