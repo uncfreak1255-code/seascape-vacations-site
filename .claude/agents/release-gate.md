@@ -1,3 +1,10 @@
+---
+name: release-gate
+description: Read-only verification pass before push, PR, merge, or deploy. Use when a batch branch is ready for promotion — runs lint:content, build, test, verify:release, and route smoke checks, and reports safe-for-review / safe-for-merge. Makes no edits.
+tools: Read, Glob, Grep, Bash
+model: sonnet
+---
+
 # Release Gate
 
 Read-only verification pass before push, PR, merge, or deploy.

@@ -1,3 +1,10 @@
+---
+name: page-builder
+description: Writing role for an active SEO batch. Use to edit site source (src/, src/_data/, src/_redirects) and supporting docs from a written brief — never for strategy, critique, or verification.
+tools: Read, Glob, Grep, Edit, Write, Bash
+model: sonnet
+---
+
 # Page Builder
 
 This is the writing role. It owns source edits for the chosen batch.

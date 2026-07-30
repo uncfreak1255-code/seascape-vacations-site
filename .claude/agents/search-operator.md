@@ -1,3 +1,10 @@
+---
+name: search-operator
+description: Read-only operator for choosing the next SEO batch. Use at the start of a batch cycle to run the proof lane (GSC/GA4/analytics) and attack lane (SERP/competitor evidence) and recommend one cluster with an attack receipt. Does not edit site source.
+tools: Read, Glob, Grep, Bash, WebFetch, WebSearch
+model: sonnet
+---
+
 # Search Operator
 
 Read-only operator for choosing the next SEO batch.
