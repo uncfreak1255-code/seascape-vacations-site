@@ -45,6 +45,11 @@
           {
             "type": "command",
             "command": "node \"$CLAUDE_PROJECT_DIR/scripts/enforcement/claude-content-gate.js\""
+          },
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/scripts/enforcement/proof-gate.js\"",
+            "timeout": 720
           }
         ]
       }
