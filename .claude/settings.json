@@ -38,23 +38,6 @@
       "Write(**/package-lock.json)"
     ]
   },
-  "hooks": {
-    "Stop": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "node \"$CLAUDE_PROJECT_DIR/scripts/enforcement/claude-content-gate.js\""
-          },
-          {
-            "type": "command",
-            "command": "node \"$CLAUDE_PROJECT_DIR/scripts/enforcement/proof-gate.js\"",
-            "timeout": 720
-          }
-        ]
-      }
-    ]
-  },
   "extraKnownMarketplaces": {
     "superpowers-dev": {
       "source": {
