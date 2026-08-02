@@ -101,6 +101,51 @@ function runGate({ projectRoot, scriptDir }, payload = {}) {
   });
 }
 
+// Regression: these fixtures ran green under `node --test` but failed under
+// the pre-commit hook with "fatal: this operation must be run in a work tree",
+// because the hook's GIT_DIR/GIT_WORK_TREE pointed every fixture git command at
+// the outer repository. The gate that guards commits has to pass while running
+// inside a commit.
+test("git fixtures ignore hook-exported GIT_* env", (t) => {
+  const fixtureRepo = fs.mkdtempSync(path.join(os.tmpdir(), "proof-gate-env-"));
+  t.after(() => fs.rmSync(fixtureRepo, { recursive: true, force: true }));
+
+  runGit(fixtureRepo, ["init"]);
+
+  const outerRoot = path.resolve(__dirname, "..", "..");
+  const hookEnv = {
+    ...CLEAN_ENV,
+    GIT_DIR: path.join(outerRoot, ".git"),
+    GIT_WORK_TREE: outerRoot,
+  };
+  const strippedEnv = Object.fromEntries(
+    Object.entries(hookEnv).filter(([key]) => !key.startsWith("GIT_"))
+  );
+
+  const leaked = spawnSync("git", ["rev-parse", "--show-toplevel"], {
+    cwd: fixtureRepo,
+    encoding: "utf8",
+    env: hookEnv,
+  });
+  const stripped = spawnSync("git", ["rev-parse", "--show-toplevel"], {
+    cwd: fixtureRepo,
+    encoding: "utf8",
+    env: strippedEnv,
+  });
+
+  assert.equal(stripped.status, 0, stripped.stderr);
+  assert.equal(
+    fs.realpathSync(stripped.stdout.trim()),
+    fs.realpathSync(fixtureRepo),
+    "stripped env must resolve to the fixture repo"
+  );
+  assert.notEqual(
+    leaked.stdout.trim(),
+    stripped.stdout.trim(),
+    "inherited GIT_* must be what breaks the fixture, or this test proves nothing"
+  );
+});
+
 test("loop guard: never blocks twice for the same stop", () => {
   const result = evaluateStop(fixture({ payload: { stop_hook_active: true } }));
   assert.equal(result.block, false);

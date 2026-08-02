@@ -299,8 +299,21 @@ function readPayload() {
   }
 }
 
+// An inherited GIT_DIR / GIT_WORK_TREE / GIT_INDEX_FILE - exported by every git
+// hook - overrides `cwd` and points these commands at whatever repository
+// invoked us. worktreeFingerprint then returns "" for both the clean and the
+// dirty state, so the gate stops being able to tell them apart. Always resolve
+// the repository from projectRoot alone.
+const GIT_ENV = Object.fromEntries(
+  Object.entries(process.env).filter(([key]) => !key.startsWith("GIT_")),
+);
+
 function git(projectRoot, args) {
-  const result = spawnSync("git", args, { cwd: projectRoot, encoding: "utf8" });
+  const result = spawnSync("git", args, {
+    cwd: projectRoot,
+    encoding: "utf8",
+    env: GIT_ENV,
+  });
   return result.status === 0 ? String(result.stdout).trim() : "";
 }
 
@@ -311,13 +324,14 @@ function worktreeIsDirty(projectRoot) {
     {
       cwd: projectRoot,
       encoding: "utf8",
+      env: GIT_ENV,
     },
   );
   return result.status !== 0 || Boolean(String(result.stdout).trim());
 }
 
 function gitBuffer(projectRoot, args) {
-  const result = spawnSync("git", args, { cwd: projectRoot });
+  const result = spawnSync("git", args, { cwd: projectRoot, env: GIT_ENV });
   return result.status === 0 ? result.stdout : null;
 }
 
