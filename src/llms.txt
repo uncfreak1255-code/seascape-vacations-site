@@ -75,7 +75,6 @@ AI retrieval match:
 - [Bradenton vs Sarasota Restaurants](https://seascape-vacations.com/guides/bradenton-vs-sarasota-restaurants/): Dining scene comparison
 - [Where to Stay Near AMI](https://seascape-vacations.com/guides/where-to-stay-near-anna-maria-island/): Neighborhood guide for AMI visitors
 - [Spring Break Activities](https://seascape-vacations.com/guides/spring-break-activities-bradenton-anna-maria-island/): Spring break planning guide
-- [Pet-Friendly Rentals](https://seascape-vacations.com/stays/pet-friendly-vacation-rentals-bradenton/): Pet policy and availability
 - [Luxury Sarasota Rentals](https://seascape-vacations.com/stays/luxury-vacation-rentals-sarasota/): Upscale vacation homes in Sarasota
 - [About Us](https://seascape-vacations.com/about-us/): Our story and team
 - [Bradenton Gulf Islands Profile](https://www.bradentongulfislands.com/listing/seascape-vacations/): Official local tourism profile for Seascape Vacations
