@@ -17,16 +17,17 @@ targets from the plugin cache, which leaves an "installed" plugin empty. Keep
 these copies in sync with the canonical repo files whenever the active role or
 skill surface changes.
 
-## Why there is no hook here
+## Why there is no Stop hook
 
 Earlier versions bundled the content-voice `Stop` hook. It has been **removed
 on purpose**. The hook calls `scripts/enforcement/claude-content-gate.js` and
 the `lint:content` npm script, so it only works inside this repo or a fork that
-keeps those — it is not portable. It already lives in the repo's committed
-`.claude/settings.json`, which any clone or fork inherits without installing
-this plugin. Keeping it in both places made the gate run twice. The repo's
-`.claude/settings.json` is now the single source of truth for the gate; this
-plugin distributes only the portable pieces (agents + skills).
+keeps those — it is not portable. More importantly, a `Stop` hook can delay or
+block the agent's final response. The repo therefore does not register a
+`Stop` hook in either the plugin or `.claude/settings.json`. Content and release
+verification remain explicit commands in `CLAUDE.md`; the dormant hook scripts
+stay available as tested implementation references. This plugin distributes
+only the portable pieces (agents + skills).
 
 ## Install
 

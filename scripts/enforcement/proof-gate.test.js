@@ -28,6 +28,17 @@ const {
 const HEAD = "a".repeat(40);
 const BASE = "b".repeat(40);
 
+// Guarded commits export GIT_DIR / GIT_INDEX_FILE / GIT_WORK_TREE for the
+// outer repository. Fixture repositories must not inherit that identity.
+const CLEAN_ENV = Object.fromEntries(
+  Object.entries(process.env).filter(([key]) => !key.startsWith("GIT_")),
+);
+for (const key of Object.keys(process.env)) {
+  if (key.startsWith("GIT_")) {
+    delete process.env[key];
+  }
+}
+
 function fixture(overrides = {}) {
   return {
     payload: {},
@@ -42,7 +53,11 @@ function fixture(overrides = {}) {
 }
 
 function runGit(projectRoot, args) {
-  const git = spawnSync("git", args, { cwd: projectRoot, encoding: "utf8" });
+  const git = spawnSync("git", args, {
+    cwd: projectRoot,
+    encoding: "utf8",
+    env: CLEAN_ENV,
+  });
   assert.equal(git.status, 0, git.stderr);
   return git.stdout.trim();
 }
@@ -81,6 +96,7 @@ function runGate({ projectRoot, scriptDir }, payload = {}) {
   return spawnSync(process.execPath, [path.join(scriptDir, "proof-gate.js")], {
     cwd: projectRoot,
     encoding: "utf8",
+    env: CLEAN_ENV,
     input: JSON.stringify(payload),
   });
 }
