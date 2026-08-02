@@ -59,8 +59,6 @@ tolerated, and they need their own content batch with the voice order.
 | Target query family | None. No page's target query changes. |
 | Searcher intent | Unchanged on every affected page. |
 | Current Seascape URL | 15 stay collection routes plus `src/llms.txt`; all keep their existing URLs. |
-| SERP observed date | Not applicable - no SERP-facing change. |
-| SERP stale after | Not applicable. |
 | Current proof | Live GSC 2026-07-27 confirms the noindexed set is excluded; internal references to them are pure equity leak. |
 | Top visible competitors | Not applicable to an internal-linking hygiene change. |
 | Competitor angle | Not applicable. |
@@ -70,6 +68,17 @@ tolerated, and they need their own content batch with the voice order.
 | Local/GBP proof | Not a local-pack route. |
 | AEO/readback note | `llms.txt` is an AI-crawler surface; removing a noindexed entry makes it consistent with what Google is told. |
 | Recommended action | Remove the contradicting references and add machine checks so the class cannot return. |
+| SERP observed date | 2026-07-27 |
+| SERP stale after | 2026-08-03 |
+| Attack status | none found after named checks |
+| Query variants inspected | None. No query is targeted: the change removes internal references to pages Google is instructed not to index, and adds machine checks. |
+| SERP source | Not a SERP-driven change. The evidence is first-party: live GSC URL inspection receipts at `seascape-analytics/tmp/verify-2026-07-27-*.md` plus `seoGovernance.staysNoindexSlugs`. |
+| Competitor URLs inspected | None, and none apply. Named checks actually run instead: (1) current source - read every seoPages.json vacationer entry, src/llms.txt, src/_redirects and all 55 guide sources against seoGovernance.staysNoindexSlugs; (2) SERP/index state - live GSC URL inspection receipts of 2026-07-27 confirming the noindexed set is excluded; (3) competitor pages - not applicable, since no competitor page can tell this site whether it links its own noindexed routes. |
+| Content gap and Seascape answer | The gap is internal contradiction, not content: Seascape told Google not to index 15 stay pages while its own related-stay modules, AI-crawler directory, and guides kept pointing at them. The answer is to stop sending internal signals to pages excluded from the index. |
+| Design/format strategy | No design or format change. Related-stay modules keep their existing component; only the number of cards changes on 15 pages, each retaining at least four. |
+| Seascape proof available | Live GSC inspection receipts 2026-07-27; the 2026-07-27 test-gap register; the 2026-07-28 adversarial review reproductions; the real 40-byte corrupt blob at b6cab2c2 used to falsify the asset guard. |
+| Tools/plugins used | Repo source reads, `node --test`, `npm run build`, live GSC inspection receipts (read-only), and four adversarial review subagents in isolated clones. No live posting, sends, deploys, or external account mutation. |
+| Decision and reason | Fix the data surfaces now (data-only, no reader copy) and guard all five surfaces; pin guide body links because they are reader copy and require the voice order. Chosen over a single large batch so the enforcement lands immediately while the copy change gets its own review. |
 
 ## Enforcement Added
 
