@@ -3,6 +3,7 @@ const path = require("path");
 const test = require("node:test");
 const assert = require("node:assert/strict");
 const { execSync } = require("node:child_process");
+const { runBuildForLint } = require("./build-for-lint");
 const { extractAuthorizedSourceSectionText } = require("./search-brief-gate");
 
 const projectRoot = path.resolve(__dirname, "..", "..");
@@ -292,10 +293,7 @@ function ensureRenderedOutputForContentLint() {
     return;
   }
 
-  execSync("node scripts/enforcement/build-site.js", {
-    cwd: projectRoot,
-    stdio: "inherit"
-  });
+  runBuildForLint({ cwd: projectRoot });
 }
 
 function listFilesRecursive(relativeDir) {
