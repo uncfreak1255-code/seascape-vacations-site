@@ -188,6 +188,36 @@ function removeOwnerMarker(lockPath, ownerPath) {
 }
 
 function removeOwnerlessLock(lockPath) {
+  let ownerFileNames;
+
+  try {
+    ownerFileNames = fs
+      .readdirSync(lockPath)
+      .filter((entry) => OWNER_FILE_PATTERN.test(entry));
+  } catch {
+    return false;
+  }
+
+  // A pre-atomic claimant could leave a truncated owner.json behind. Remove
+  // only that malformed marker; never recursively remove the lock directory.
+  // A newly claimed lock has a complete, unique owner marker and is therefore
+  // left untouched by this cleanup.
+  for (const ownerFileName of ownerFileNames) {
+    const ownerPath = path.join(lockPath, ownerFileName);
+
+    try {
+      JSON.parse(fs.readFileSync(ownerPath, "utf8"));
+    } catch {
+      try {
+        fs.unlinkSync(ownerPath);
+      } catch (error) {
+        if (error.code !== "ENOENT") {
+          throw error;
+        }
+      }
+    }
+  }
+
   try {
     // Ownerless directories can be the handoff window of an older process or
     // a crashed reclaim. Remove them only if empty; never recursively delete a

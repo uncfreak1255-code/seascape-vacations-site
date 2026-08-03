@@ -545,3 +545,23 @@ test("withWorktreeLock recovers a stale lock from a dead process", () => {
   assert.equal(ran, true);
   assert.equal(fs.existsSync(lockPath), false);
 });
+
+test("withWorktreeLock reclaims a stale malformed legacy owner marker", () => {
+  const lockRootDir = fs.mkdtempSync(path.join(os.tmpdir(), "seascape-lock-"));
+  const lockPath = path.join(lockRootDir, "repo-build.lock");
+  let ran = false;
+
+  fs.mkdirSync(lockPath);
+  fs.writeFileSync(path.join(lockPath, "owner.json"), "{\"pid\":");
+
+  withWorktreeLock({ name: "repo-build", lockRootDir }, () => {
+    ran = true;
+    assert.equal(
+      fs.readdirSync(lockPath).some((entry) => OWNER_FILE_PATTERN.test(entry)),
+      true
+    );
+  });
+
+  assert.equal(ran, true);
+  assert.equal(fs.existsSync(lockPath), false);
+});
