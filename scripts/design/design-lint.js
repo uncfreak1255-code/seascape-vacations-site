@@ -68,16 +68,11 @@ const ALWAYS_ALLOWED_HEX = new Set([
 // alpha forms: #ff00ff80 renders magenta and matched NOTHING (adversarial
 // review, 2026-07-28). Longest-first so #ff00ff80 is not read as #ff00ff.
 const HEX_RE = /#(?:[0-9a-fA-F]{8}|[0-9a-fA-F]{6}|[0-9a-fA-F]{4}|[0-9a-fA-F]{3})(?![0-9a-fA-F])/g;
-// Emoji: pictographic + regional + dingbat ranges (conservative; excludes plain symbols).
-// Adds default-presentation emoji the original ranges missed: U+231A/B (watch,
-// hourglass), U+23E9-U+23FA (media/clock), U+25AA-U+25FE, U+203C, U+2049,
-// U+2122, U+2139, U+21A9-AA, U+24C2, U+3030, U+303D, U+3297, U+3299. Only the
-// Emoji_Presentation codepoints of the 25xx block are listed - the full
-// U+25AA-U+25FE range would flag plain geometric shapes such as the U+25BE
-// dropdown chevron used across the area guides, which is typography, not an emoji.
-// U+231B and U+23F0 render full-colour with no variation selector and were
-// invisible to the gate (adversarial review, 2026-07-28).
-const EMOJI_RE = /[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{2B00}-\u{2BFF}\u{1F1E6}-\u{1F1FF}\u{FE0F}\u{200D}\u{231A}\u{231B}\u{23E9}-\u{23FA}\u{25AA}\u{25AB}\u{25B6}\u{25C0}\u{25FB}-\u{25FE}\u{203C}\u{2049}\u{2122}\u{2139}\u{21A9}\u{21AA}\u{24C2}\u{3030}\u{303D}\u{3297}\u{3299}]/u;
+// Match default-presentation emoji directly, plus text-default codepoints only
+// when an explicit emoji variation selector is present. This keeps ordinary
+// symbols such as bare ™, ℹ, and ↩ as typography while still rejecting ™️, ℹ️,
+// and ↩️ when authors explicitly request emoji presentation.
+const EMOJI_RE = /(?:\p{Emoji_Presentation}|\p{Emoji}\uFE0F)/u;
 
 function read(rel) {
   return fs.readFileSync(path.join(projectRoot, rel), "utf8");
@@ -499,6 +494,26 @@ function evaluate({ files, report }, baseline, touched, baseReport = {}) {
   return { newViolations, graduated, debt };
 }
 
+function buildJsonReport({
+  baseRef,
+  newViolations,
+  graduated,
+  debt,
+  palette,
+  coverageFailures = [],
+  paletteFailures = [],
+}) {
+  return {
+    baseRef,
+    newViolations,
+    graduated,
+    debt,
+    palette,
+    coverageFailures,
+    paletteFailures,
+  };
+}
+
 function main() {
   const args = process.argv.slice(2);
   const state = run();
@@ -524,6 +539,36 @@ function main() {
   // entry that no longer resolves to a scanned file is the signal: the corpus
   // shrank without going through --update-baseline.
   const coverageFailures = checkCoverage(state, baseline);
+
+  // PALETTE INTEGRITY. Same review: appending two hex values to DESIGN.md widened
+  // the allowlist, so off-brand hex in a guide passed as "on-brand" and both the
+  // gate and its unit test went green. The palette is the gate's own definition
+  // of correct, so a branch that edits it must not simultaneously introduce the
+  // colors it just legalized.
+  const paletteFailures = checkPaletteIntegrity(touched, baseRef, state);
+
+  const baseReport = buildBaseReport(state, touched, baseRef);
+  const { newViolations, graduated, debt } = evaluate(state, baseline, touched, baseReport);
+
+  if (args.includes("--json")) {
+    console.log(
+      JSON.stringify(
+        buildJsonReport({
+          baseRef,
+          newViolations,
+          graduated,
+          debt,
+          palette: [...state.allowlist].sort(),
+          coverageFailures,
+          paletteFailures,
+        }),
+        null,
+        2
+      )
+    );
+    return newViolations.length === 0 && coverageFailures.length === 0 && paletteFailures.length === 0 ? 0 : 1;
+  }
+
   if (coverageFailures.length) {
     console.error("design-lint FAILED: coverage collapse — the scan cannot be trusted:");
     for (const line of coverageFailures) {
@@ -532,26 +577,12 @@ function main() {
     return 1;
   }
 
-  // PALETTE INTEGRITY. Same review: appending two hex values to DESIGN.md widened
-  // the allowlist, so off-brand hex in a guide passed as "on-brand" and both the
-  // gate and its unit test went green. The palette is the gate's own definition
-  // of correct, so a branch that edits it must not simultaneously introduce the
-  // colors it just legalized.
-  const paletteFailures = checkPaletteIntegrity(touched, baseRef, state);
   if (paletteFailures.length) {
     console.error("design-lint FAILED: palette widened to legalize new debt:");
     for (const line of paletteFailures) {
       console.error(`  ${line}`);
     }
     return 1;
-  }
-
-  const baseReport = buildBaseReport(state, touched, baseRef);
-  const { newViolations, graduated, debt } = evaluate(state, baseline, touched, baseReport);
-
-  if (args.includes("--json")) {
-    console.log(JSON.stringify({ baseRef, newViolations, graduated, debt, palette: [...state.allowlist].sort() }, null, 2));
-    return newViolations.length === 0 ? 0 : 1;
   }
 
   if (newViolations.length === 0) {
@@ -591,4 +622,7 @@ module.exports = {
   changedFiles,
   buildBaseReport,
   checkWorsened,
+  checkCoverage,
+  checkPaletteIntegrity,
+  buildJsonReport,
 };

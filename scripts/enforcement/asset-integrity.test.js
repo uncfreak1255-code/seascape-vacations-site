@@ -15,32 +15,14 @@ const projectRoot = path.resolve(__dirname, "..", "..");
 // corrupt binary is invisible to every existing gate while it ships a broken
 // Open Graph image to every social and AI-citation surface that reads it.
 //
-// This checks the file is what its extension claims by MAGIC BYTES, not just by
-// size. The corrupt blob began 6d ab 1e eb; a real JPEG begins ff d8 ff. Size
-// alone would be a weaker and more false-positive-prone rule.
+// This checks that the file fully decodes, not merely that it begins with a
+// plausible MAGIC BYTES signature. A truncated image can retain its header and
+// still be unusable by a browser, crawler, or social preview consumer.
 
-// First bytes that must be present for each container. WEBP and ICO need a
-// second check beyond the first four bytes, handled below.
-const MAGIC = {
-  ".jpg": [[0xff, 0xd8, 0xff]],
-  ".jpeg": [[0xff, 0xd8, 0xff]],
-  ".png": [[0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]],
-  ".gif": [
-    [0x47, 0x49, 0x46, 0x38, 0x37, 0x61],
-    [0x47, 0x49, 0x46, 0x38, 0x39, 0x61],
-  ],
-  ".webp": [[0x52, 0x49, 0x46, 0x46]], // "RIFF", plus "WEBP" at offset 8
-  ".ico": [[0x00, 0x00, 0x01, 0x00]],
-  ".avif": [], // brand checked at offset 4 ("ftyp")
-};
-
-const RASTER_EXTENSIONS = new Set(Object.keys(MAGIC));
+// Raster container extensions this gate supports. Decoder output, not file
+// prefixes, determines whether each tracked asset is valid.
+const RASTER_EXTENSIONS = new Set([".jpg", ".jpeg", ".png", ".gif", ".webp", ".ico", ".avif"]);
 const SVG_EXTENSION = ".svg";
-
-// A raster image with real pixel data is never this small. Kept deliberately low
-// (the smallest real raster in the repo is ~23KB) so this fires on corruption and
-// truncation, never on a legitimately optimized asset.
-const MIN_RASTER_BYTES = 512;
 
 function trackedImages() {
   const out = execFileSync("git", ["ls-files", "-z"], {
@@ -58,13 +40,6 @@ function trackedImages() {
     // Screenshot baselines are Playwright-generated and already diffed by the
     // visual suite; they are not shipped assets.
     .filter((rel) => !rel.startsWith("tests/visual/__screenshots__/"));
-}
-
-function startsWith(buffer, bytes) {
-  if (buffer.length < bytes.length) {
-    return false;
-  }
-  return bytes.every((byte, index) => buffer[index] === byte);
 }
 
 function describeHead(buffer) {
@@ -94,26 +69,38 @@ const KNOWN_EXTENSION_MISMATCHES = new Set([
   "logo.png",
 ]);
 
-// Every container this repo ships, for the "is it a valid image at all" check.
-const ANY_IMAGE_SIGNATURES = [
-  { label: "jpeg", test: (b) => startsWith(b, [0xff, 0xd8, 0xff]) },
-  { label: "png", test: (b) => startsWith(b, [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]) },
-  { label: "gif", test: (b) => startsWith(b, [0x47, 0x49, 0x46, 0x38]) },
-  {
-    label: "webp",
-    test: (b) => startsWith(b, [0x52, 0x49, 0x46, 0x46]) && b.subarray(8, 12).toString("ascii") === "WEBP",
-  },
-  { label: "ico", test: (b) => startsWith(b, [0x00, 0x00, 0x01, 0x00]) },
-  { label: "isobmff/avif", test: (b) => b.subarray(4, 8).toString("ascii") === "ftyp" },
-];
+// ImageMagick's decoder reads the container and pixel stream, so a valid magic
+// prefix followed by random or truncated bytes is rejected. The release runner
+// is Ubuntu-based and supplies `identify`; a missing decoder fails closed because
+// it returns null for every raster rather than silently accepting signatures.
+const DECODED_FORMATS = {
+  JPEG: "jpeg",
+  PNG: "png",
+  GIF: "gif",
+  WEBP: "webp",
+  ICO: "ico",
+  AVIF: "isobmff/avif",
+};
 
-function identify(buffer) {
-  return ANY_IMAGE_SIGNATURES.find((sig) => sig.test(buffer))?.label || null;
+function decodeImage(buffer) {
+  try {
+    const output = execFileSync("identify", ["-format", "%m\\n", "-"], {
+      cwd: projectRoot,
+      input: buffer,
+      encoding: "utf8",
+      maxBuffer: 1024 * 1024,
+      stdio: ["pipe", "pipe", "pipe"],
+    });
+    const format = output.trim().split(/\r?\n/, 1)[0].toUpperCase();
+    return DECODED_FORMATS[format] || null;
+  } catch {
+    return null;
+  }
 }
 
 // THE CORRUPTION GATE. This is the one that had to exist: a tracked image whose
-// bytes are not a valid image of ANY type, or that is too small to hold pixel
-// data. The 2026-07-28 regression was 40 bytes beginning 6d ab 1e eb.
+// bytes cannot be fully decoded as a supported image. The 2026-07-28 regression
+// was 40 bytes beginning 6d ab 1e eb.
 test("tracked raster images contain valid image data", () => {
   const broken = [];
 
@@ -130,13 +117,8 @@ test("tracked raster images contain valid image data", () => {
 
     const buffer = fs.readFileSync(absolute);
 
-    if (buffer.length < MIN_RASTER_BYTES) {
-      broken.push(`${rel}: ${buffer.length} bytes - too small to contain image data`);
-      continue;
-    }
-
-    if (!identify(buffer)) {
-      broken.push(`${rel}: not a valid image of any known type (head: ${describeHead(buffer)})`);
+    if (!decodeImage(buffer)) {
+      broken.push(`${rel}: image does not fully decode (head: ${describeHead(buffer)})`);
     }
   }
 
@@ -165,7 +147,7 @@ test("tracked images match their extension, except known pinned mismatches", () 
       continue;
     }
     const buffer = fs.readFileSync(absolute);
-    const actual = identify(buffer);
+    const actual = decodeImage(buffer);
     if (!actual) {
       continue; // corruption is the previous test's finding, not this one's
     }
@@ -268,10 +250,26 @@ test("images referenced by Open Graph metadata exist and are valid", () => {
       missing.push(`${route} (referenced by og:image/twitter:image, not present in the repo)`);
       continue;
     }
-    if (fs.statSync(absolute).size < MIN_RASTER_BYTES) {
-      missing.push(`${route}: ${fs.statSync(absolute).size} bytes - corrupt or truncated`);
+    if (path.extname(absolute).toLowerCase() === SVG_EXTENSION) {
+      const source = fs.readFileSync(absolute, "utf8");
+      if (!/<svg[\s>]/i.test(source)) {
+        missing.push(`${route}: SVG has no parseable root element`);
+      }
+      continue;
+    }
+    if (!decodeImage(fs.readFileSync(absolute))) {
+      missing.push(`${route}: image does not fully decode`);
     }
   }
 
   assert.deepEqual(missing, [], `Broken social image reference(s):\n  ${missing.join("\n  ")}`);
+});
+
+test("image validation rejects truncated and magic-prefixed random payloads", () => {
+  const clean = fs.readFileSync(path.join(projectRoot, "images", "anna-maria-island-og.jpg"));
+  const truncated = clean.subarray(0, 512);
+  const magicPrefixedRandom = Buffer.concat([clean.subarray(0, 16), Buffer.alloc(4096, 0x41)]);
+
+  assert.equal(decodeImage(truncated), null, "a retained JPEG header must not make truncation pass");
+  assert.equal(decodeImage(magicPrefixedRandom), null, "a valid header plus random bytes must not pass");
 });
