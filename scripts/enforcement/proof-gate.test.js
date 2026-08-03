@@ -914,6 +914,24 @@ test("both proof commands share one timeout deadline", () => {
   assert.deepEqual(observedTimeouts, [800, 300]);
 });
 
+test("timed-out proof terminates the detached descendant group", () => {
+  const terminated = [];
+  const runner = createProofRunner("/repo", {
+    terminateProcessTree: (pid) => terminated.push(pid),
+    spawn: () => ({
+      error: { code: "ETIMEDOUT" },
+      pid: 4242,
+      signal: "SIGTERM",
+      status: null,
+      stdout: "",
+      stderr: ""
+    })
+  });
+
+  assert.equal(runner("npm run proof").status, 1);
+  assert.deepEqual(terminated, [4242]);
+});
+
 test("a failing run is never recorded as a passing step", () => {
   const receipt = buildReceipt({
     command: "npm test",

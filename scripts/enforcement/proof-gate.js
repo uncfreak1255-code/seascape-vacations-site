@@ -452,11 +452,36 @@ function invalidateHeadReceipt(projectRoot, headSha) {
   });
 }
 
+function terminateProcessGroup(pid) {
+  if (!Number.isInteger(pid) || pid <= 0) {
+    return;
+  }
+
+  if (process.platform === "win32") {
+    spawnSync("taskkill", ["/pid", String(pid), "/T", "/F"], {
+      stdio: "ignore",
+    });
+    return;
+  }
+
+  try {
+    // createProofRunner launches a detached shell, so its pid is the process
+    // group id. Killing the group prevents inherited proof descendants from
+    // continuing to touch _site after repo-build is released.
+    process.kill(-pid, "SIGKILL");
+  } catch (error) {
+    if (error.code !== "ESRCH") {
+      throw error;
+    }
+  }
+}
+
 function createProofRunner(
   projectRoot,
   {
     now = Date.now,
     spawn = spawnSync,
+    terminateProcessTree = terminateProcessGroup,
     timeoutMs = TEST_TIMEOUT_MS,
   } = {},
 ) {
@@ -466,10 +491,18 @@ function createProofRunner(
       cwd: projectRoot,
       shell: true,
       encoding: "utf8",
+      // The timeout must be able to reap npm/Node/Eleventy descendants as a
+      // group before the outer repo-build lock is released.
+      detached: true,
       // .keel/verify and testCommand share one deadline so the hook's outer
       // timeout always has room to report the result and persist the receipt.
       timeout: Math.max(1, deadline - now()),
     });
+
+    if (run.error?.code === "ETIMEDOUT" || run.signal) {
+      terminateProcessTree(run.pid);
+    }
+
     return {
       status: run.status === null ? 1 : run.status,
       output: `${run.stdout || ""}${run.stderr || ""}`,
