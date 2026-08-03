@@ -83,6 +83,9 @@ const DECODED_FORMATS = {
   heif: "isobmff/avif",
 };
 
+const SITE_ORIGIN = "https://seascape-vacations.com";
+const SAME_SITE_HOSTS = new Set(["seascape-vacations.com", "www.seascape-vacations.com"]);
+const SAME_SITE_PROTOCOLS = new Set(["http:", "https:"]);
 const META_TAG_RE = /<meta\b[^>]*>/gi;
 const META_ATTRIBUTE_RE = /([:\w-]+)\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s"'=<>`]+))/gi;
 
@@ -128,6 +131,65 @@ function metaImageReferences(source) {
   }
 
   return references;
+}
+
+function htmlFiles(rootDir) {
+  if (!fs.existsSync(rootDir)) {
+    return [];
+  }
+
+  const files = [];
+  const walk = (dir) => {
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      const absolute = path.join(dir, entry.name);
+      if (entry.isDirectory()) {
+        walk(absolute);
+      } else if (/\.html$/i.test(entry.name)) {
+        files.push(absolute);
+      }
+    }
+  };
+  walk(rootDir);
+  return files.sort();
+}
+
+function localImagePath(value) {
+  const raw = String(value || "").trim();
+  if (!raw || raw.includes("{{") || raw.includes("{%")) {
+    return null;
+  }
+
+  let parsed;
+  try {
+    parsed = new URL(raw, SITE_ORIGIN);
+  } catch {
+    return null;
+  }
+
+  const isAbsolute = /^(?:https?:)?\/\//i.test(raw);
+  if (
+    (isAbsolute && !SAME_SITE_PROTOCOLS.has(parsed.protocol)) ||
+    (isAbsolute && !SAME_SITE_HOSTS.has(parsed.hostname.toLowerCase()))
+  ) {
+    return null;
+  }
+  if (!parsed.pathname.startsWith("/")) {
+    return null;
+  }
+  return parsed.pathname;
+}
+
+function localImageReferences(entries) {
+  const referenced = new Set();
+  for (const { source } of entries) {
+    for (const value of metaImageReferences(source)) {
+      const route = localImagePath(value);
+      if (route) {
+        referenced.add(route);
+      }
+    }
+  }
+  return referenced;
 }
 
 // THE CORRUPTION GATE. This is the one that had to exist: a tracked image whose
@@ -246,30 +308,28 @@ test("images referenced by Open Graph metadata exist and are valid", async () =>
   // The corrupt file was an og:image. Those are the highest-blast-radius assets:
   // they render in every social share and are read by AI citation surfaces, and
   // nothing else in the repo asserts the referenced file is even present.
-  const siteOrigin = "https://seascape-vacations.com";
-  const referenced = new Set();
-
-  const sources = execFileSync("git", ["ls-files", "-z", "src"], {
+  const sourceFiles = execFileSync("git", ["ls-files", "-z", "src"], {
     cwd: projectRoot,
     encoding: "utf8",
     maxBuffer: 32 * 1024 * 1024,
   })
     .split("\0")
     .filter((rel) => /\.(html|njk)$/i.test(rel));
-
-  for (const rel of sources) {
-    const source = fs.readFileSync(path.join(projectRoot, rel), "utf8");
-    for (let value of metaImageReferences(source)) {
-      if (value.startsWith(siteOrigin)) {
-        value = value.slice(siteOrigin.length);
-      }
-      // Skip template expressions; those resolve at build time and are covered by
-      // the rendered-output gates.
-      if (value.startsWith("/") && !value.includes("{{") && !value.includes("{%")) {
-        referenced.add(value.split("?")[0]);
-      }
-    }
-  }
+  const sourceEntries = sourceFiles.map((rel) => ({
+    rel,
+    source: fs.readFileSync(path.join(projectRoot, rel), "utf8"),
+  }));
+  const renderedRoot = path.join(projectRoot, "_site");
+  const renderedFiles = htmlFiles(renderedRoot);
+  assert.ok(
+    renderedFiles.length > 0,
+    "rendered _site output is required: build the public site before validating templated social-image references"
+  );
+  const renderedEntries = renderedFiles.map((absolute) => ({
+    rel: path.relative(projectRoot, absolute),
+    source: fs.readFileSync(absolute, "utf8"),
+  }));
+  const referenced = localImageReferences([...sourceEntries, ...renderedEntries]);
 
   const missing = [];
   for (const route of referenced) {
@@ -317,4 +377,13 @@ test("social-image metadata parsing is independent of attribute order and quote 
   ].join("\n");
 
   assert.deepEqual(metaImageReferences(source), ["/images/first.jpg", "/images/second.webp"]);
+});
+
+test("rendered templated social-image references stay in validation scope", () => {
+  const templateSource = '<meta property="og:image" content="{{ pageImage }}">';
+  const renderedSource =
+    '<meta data-slot="pageImage" content="https://seascape-vacations.com/images/missing.jpg" property="og:image">';
+
+  assert.deepEqual(localImageReferences([{ source: templateSource }]), new Set());
+  assert.deepEqual(localImageReferences([{ source: renderedSource }]), new Set(["/images/missing.jpg"]));
 });

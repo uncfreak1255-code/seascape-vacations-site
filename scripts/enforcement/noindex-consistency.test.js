@@ -9,6 +9,8 @@ const projectRoot = path.resolve(__dirname, "..", "..");
 const seoPages = require(path.join(projectRoot, "src", "_data", "seoPages.json"));
 const seoGovernance = require(path.join(projectRoot, "src", "_data", "seoGovernance.js"));
 const SITE_ORIGIN = "https://seascape-vacations.com";
+const SAME_SITE_HOSTS = new Set(["seascape-vacations.com", "www.seascape-vacations.com"]);
+const SAME_SITE_PROTOCOLS = new Set(["http:", "https:"]);
 const HREF_RE = /\bhref\s*=\s*(["'])(.*?)\1/gi;
 const TEXT_LINK_RE = /(?:https?:\/\/[^\s<>()"']+|\/[A-Za-z0-9][^\s<>()"']*)/gi;
 
@@ -55,7 +57,7 @@ function normalizeInternalRoute(href) {
   } catch {
     return null;
   }
-  if (parsed.origin !== SITE_ORIGIN) {
+  if (!SAME_SITE_PROTOCOLS.has(parsed.protocol) || !SAME_SITE_HOSTS.has(parsed.hostname.toLowerCase())) {
     return null;
   }
 
@@ -233,40 +235,54 @@ test("every rehomed stay page has redirect parity to its rehomeTo target", () =>
 // Guide BODY links are reader copy: changing them requires the voice order and a
 // brief, so they are pinned here rather than fixed in the same change. This list
 // MAY ONLY SHRINK - a file whose links are cleaned must be deleted from it.
-const KNOWN_GUIDE_NOINDEX_LINKS = new Set([
-  ["src/guides/anna-maria-island-area-guide/index.html", "/stays/pet-friendly-vacation-rentals-bradenton/"],
-  ["src/guides/anna-maria-island-weather.html", "/stays/spring-break-rentals-anna-maria-island/"],
-  ["src/guides/anna-maria-island-weather.html", "/stays/summer-vacation-rentals-florida-gulf-coast/"],
-  ["src/guides/best-restaurants-anna-maria-island.html", "/stays/anniversary-trip-rentals-florida/"],
-  ["src/guides/best-time-visit-anna-maria-island.html", "/stays/new-years-eve-rentals-florida/"],
-  ["src/guides/best-time-visit-anna-maria-island.html", "/stays/beach-wedding-vacation-rentals-florida/"],
-  ["src/guides/bradenton-beach.html", "/stays/pet-friendly-vacation-rentals-bradenton/"],
-  ["src/guides/family-vacation-anna-maria-island.html", "/stays/babymoon-vacation-rentals-florida/"],
-  ["src/guides/pet-friendly-anna-maria-island.html", "/stays/pet-friendly-vacation-rentals-bradenton/"],
-  [
-    "src/guides/spring-break-activities-bradenton-anna-maria-island/index.html",
-    "/stays/spring-break-rentals-anna-maria-island/",
-  ],
-].map(([rel, route]) => `${rel}|${route}`));
+const KNOWN_GUIDE_NOINDEX_LINK_COUNTS = new Map([
+  ["src/guides/anna-maria-island-area-guide/index.html|/stays/pet-friendly-vacation-rentals-bradenton/", 1],
+  ["src/guides/anna-maria-island-weather.html|/stays/spring-break-rentals-anna-maria-island/", 2],
+  ["src/guides/anna-maria-island-weather.html|/stays/summer-vacation-rentals-florida-gulf-coast/", 1],
+  ["src/guides/best-restaurants-anna-maria-island.html|/stays/anniversary-trip-rentals-florida/", 1],
+  ["src/guides/best-time-visit-anna-maria-island.html|/stays/new-years-eve-rentals-florida/", 1],
+  ["src/guides/best-time-visit-anna-maria-island.html|/stays/beach-wedding-vacation-rentals-florida/", 1],
+  ["src/guides/bradenton-beach.html|/stays/pet-friendly-vacation-rentals-bradenton/", 1],
+  ["src/guides/family-vacation-anna-maria-island.html|/stays/babymoon-vacation-rentals-florida/", 1],
+  ["src/guides/pet-friendly-anna-maria-island.html|/stays/pet-friendly-vacation-rentals-bradenton/", 2],
+  ["src/guides/spring-break-activities-bradenton-anna-maria-island/index.html|/stays/spring-break-rentals-anna-maria-island/", 1],
+]);
+const KNOWN_GUIDE_NOINDEX_LINKS = new Set(KNOWN_GUIDE_NOINDEX_LINK_COUNTS.keys());
 
 function guideSources() {
   return publicTemplateSources().filter((rel) => rel.startsWith("src/guides/"));
 }
 
-test("public templates do not link noindexed stay pages, except exact pinned guide pairs", () => {
+function findPublicTemplateNoindexFindings(entries = publicTemplateSources().map((rel) => ({ rel, source: read(rel) }))) {
   const offenders = [];
-  const stale = new Set(KNOWN_GUIDE_NOINDEX_LINKS);
+  const stale = new Set(KNOWN_GUIDE_NOINDEX_LINK_COUNTS.keys());
+  const observed = new Map();
 
-  for (const rel of publicTemplateSources()) {
-    for (const hit of noindexHits(rel, read(rel))) {
+  for (const { rel, source } of entries) {
+    for (const hit of noindexHits(rel, source)) {
       const pair = `${rel}|${hit.route}`;
-      if (rel.startsWith("src/guides/") && KNOWN_GUIDE_NOINDEX_LINKS.has(pair)) {
-        stale.delete(pair);
+      if (rel.startsWith("src/guides/") && KNOWN_GUIDE_NOINDEX_LINK_COUNTS.has(pair)) {
+        const occurrence = (observed.get(pair) || 0) + 1;
+        observed.set(pair, occurrence);
+        const pinnedCount = KNOWN_GUIDE_NOINDEX_LINK_COUNTS.get(pair);
+        if (occurrence <= pinnedCount) {
+          stale.delete(pair);
+        } else {
+          offenders.push(
+            `${rel}: ${hit.href} -> ${hit.route} (occurrence ${occurrence} exceeds pinned ${pinnedCount})`
+          );
+        }
       } else {
         offenders.push(`${rel}: ${hit.href} -> ${hit.route}`);
       }
     }
   }
+
+  return { offenders, stale };
+}
+
+test("public templates do not link noindexed stay pages, except exact pinned guide pairs", () => {
+  const { offenders, stale } = findPublicTemplateNoindexFindings();
 
   assert.deepEqual(
     offenders,
@@ -327,6 +343,28 @@ test("llms links normalize absolute slashless stay routes", () => {
   ]);
 });
 
+test("same-site alternate origins normalize to noindex routes", () => {
+  const route = "/stays/pet-friendly-vacation-rentals-bradenton/";
+  for (const origin of [
+    "https://www.seascape-vacations.com",
+    "http://seascape-vacations.com",
+    "http://www.seascape-vacations.com",
+  ]) {
+    assert.equal(normalizeInternalRoute(`${origin}${route}`), route, `${origin} must be treated as internal`);
+  }
+});
+
+test("guide noindex pins reject extra occurrences of an existing pair", () => {
+  const rel = "src/guides/bradenton-beach.html";
+  const route = "/stays/pet-friendly-vacation-rentals-bradenton/";
+  const source = `<a href="${route}">one</a><a href="${route}">two</a>`;
+  const { offenders } = findPublicTemplateNoindexFindings([{ rel, source }]);
+
+  assert.equal(KNOWN_GUIDE_NOINDEX_LINK_COUNTS.get(`${rel}|${route}`), 1);
+  assert.equal(offenders.length, 1);
+  assert.match(offenders[0], /occurrence 2 exceeds pinned 1/);
+});
+
 module.exports = {
   normalizeInternalRoute,
   noindexHits,
@@ -335,4 +373,6 @@ module.exports = {
   publicTemplateSources,
   guideSources,
   KNOWN_GUIDE_NOINDEX_LINKS,
+  KNOWN_GUIDE_NOINDEX_LINK_COUNTS,
+  findPublicTemplateNoindexFindings,
 };

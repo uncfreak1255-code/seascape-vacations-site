@@ -360,6 +360,25 @@ function checkCoverage({ files, report }, baseline) {
 // Fails when this branch both WIDENS the palette and USES a newly-legalized hex
 // in a touched guide. Editing the palette alone stays allowed (real palette work
 // happens); using a color you legalized in the same breath does not.
+function paletteUsageFiles(files, touched, changedPaletteSources) {
+  return [
+    ...new Set([
+      ...files.filter((rel) => touched.has(rel)),
+      // Shared style partials and CSS files are consumers too. Once any
+      // palette source changes, audit every shared consumer: a branch can
+      // widen the allowlist in DESIGN.md while an unchanged partial already
+      // uses the newly legalized color.
+      ...(changedPaletteSources.length ? PALETTE_SOURCE_FILES.filter((rel) => rel !== "DESIGN.md") : []),
+    ]),
+  ];
+}
+
+function paletteUsesAddedHexes(source, addedHexes) {
+  const styleContext = extractStyleContexts(source);
+  const used = new Set((styleContext.match(HEX_RE) || []).map(normalizeHex));
+  return [...addedHexes].filter((hex) => used.has(hex));
+}
+
 function checkPaletteIntegrity(touched, baseRef, { files, report }) {
   const changedPaletteSources = PALETTE_SOURCE_FILES.filter((rel) => touched.has(rel));
   if (!changedPaletteSources.length) {
@@ -406,25 +425,18 @@ function checkPaletteIntegrity(touched, baseRef, { files, report }) {
   }
 
   // A newly-legalized hex is only a problem if this branch also puts it into a
-  // guide. Re-lint each touched guide against the BASE allowlist: anything that
-  // would have been a violation before the palette moved is the abuse case.
+  // rendered design surface. Re-lint each touched guide and changed shared
+  // style source against the BASE allowlist: anything that would have been a
+  // violation before the palette moved is the abuse case.
   const failures = [];
-  for (const rel of files) {
-    if (!touched.has(rel)) {
-      continue;
-    }
-    const offending = (report[rel]?.offBrandHex || []).concat(
-      Object.keys(report[rel]?.counts?.hex || {})
-    );
+  for (const rel of paletteUsageFiles(files, touched, changedPaletteSources)) {
     let source;
     try {
       source = read(rel);
     } catch {
       continue;
     }
-    const styleContext = extractStyleContexts(source);
-    const used = new Set((styleContext.match(HEX_RE) || []).map(normalizeHex));
-    const abused = [...addedHexes].filter((hex) => used.has(hex));
+    const abused = paletteUsesAddedHexes(source, addedHexes);
     if (abused.length) {
       failures.push(
         `${rel} uses ${abused.join(", ")}, legalized in this same branch by ` +
@@ -432,7 +444,6 @@ function checkPaletteIntegrity(touched, baseRef, { files, report }) {
           "palette change on its own and let it be reviewed as a design decision."
       );
     }
-    void offending;
   }
 
   return failures;
@@ -624,5 +635,7 @@ module.exports = {
   checkWorsened,
   checkCoverage,
   checkPaletteIntegrity,
+  paletteUsageFiles,
+  paletteUsesAddedHexes,
   buildJsonReport,
 };
