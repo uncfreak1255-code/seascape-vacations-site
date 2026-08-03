@@ -805,6 +805,31 @@ test("prefers .keel/verify over testCommand when the repo declares one", () => {
   assert.equal(result.receipt.status, "pass");
 });
 
+test("runs the declared proof and required test under one rendered-proof lock", () => {
+  const events = [];
+  const result = evaluateStop(fixture({
+    keelVerify: "node scripts/enforcement/run-proof-chain.js",
+    runner: (command) => {
+      events.push(`run:${command}`);
+      return { status: 0, output: "ok" };
+    },
+    runProofChain: (fn) => {
+      events.push("lock:acquire");
+      const value = fn();
+      events.push("lock:release");
+      return value;
+    },
+  }));
+
+  assert.equal(result.receipt.status, "pass");
+  assert.deepEqual(events, [
+    "lock:acquire",
+    "run:node scripts/enforcement/run-proof-chain.js",
+    "run:npm test",
+    "lock:release",
+  ]);
+});
+
 test("keel receipt still satisfies landing-evaluator's required testCommand", () => {
   // requiredProofCommands() demands a passing step whose command is
   // byte-identical to testCommand. Run it explicitly rather than inferring

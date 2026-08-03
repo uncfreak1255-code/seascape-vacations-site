@@ -142,6 +142,7 @@ function evaluateStop({
   existingReceipt = null,
   beforeRun = () => {},
   inspectWorktree = () => worktreeDirty,
+  runProofChain = (fn) => fn(),
 }) {
   if (payload.stop_hook_active && loopStateUnchanged) {
     return {
@@ -231,11 +232,14 @@ function evaluateStop({
     };
   }
 
-  const primaryRun = runner(command);
+  let primaryRun;
   const additionalSteps = [];
-  if (primaryRun.status === 0 && testCommand && command !== testCommand) {
-    additionalSteps.push({ ...runner(testCommand), command: testCommand });
-  }
+  runProofChain(() => {
+    primaryRun = runner(command);
+    if (primaryRun.status === 0 && testCommand && command !== testCommand) {
+      additionalSteps.push({ ...runner(testCommand), command: testCommand });
+    }
+  });
   const receipt = buildReceipt({
     command,
     status: primaryRun.status,
@@ -452,6 +456,20 @@ function createProofRunner(
   };
 }
 
+function runProofUnderRepoBuildLock(projectRoot, fn) {
+  const lockModulePath = path.join(projectRoot, "scripts", "enforcement", "worktree-lock.js");
+
+  // The proof gate is also copied into small fixture repositories in its own
+  // tests. Those fixtures do not have the site's build lock, so preserve the
+  // generic gate behavior there while locking the real repository proof.
+  if (!fs.existsSync(lockModulePath)) {
+    return fn();
+  }
+
+  const { withWorktreeLock } = require(lockModulePath);
+  return withWorktreeLock({ name: "repo-build", repoRootDir: projectRoot }, fn);
+}
+
 function readKeelVerify(projectRoot) {
   try {
     return fs.readFileSync(path.join(projectRoot, ".keel", "verify"), "utf8").trim();
@@ -564,6 +582,7 @@ function main() {
       (baseResolved &&
         git(projectRoot, ["merge-base", configuredBaseRef, "HEAD"]) !== baseSha),
     runner,
+    runProofChain: (fn) => runProofUnderRepoBuildLock(projectRoot, fn),
   });
 
   if (result.wroteReceipt && result.receipt) {
@@ -609,6 +628,7 @@ module.exports = {
   evaluateStop,
   buildReceipt,
   createProofRunner,
+  runProofUnderRepoBuildLock,
   invalidateHeadReceipt,
   outputTail,
   readKeelVerify,
