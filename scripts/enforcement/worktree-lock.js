@@ -1,8 +1,11 @@
 const fs = require("fs");
 const path = require("path");
+const { randomUUID } = require("node:crypto");
 const { execFileSync } = require("node:child_process");
 
 const LOCK_ENV_PREFIX = "SEASCAPE_WORKTREE_LOCK_";
+const OWNER_FILE_PATTERN = /^owner(?:-[A-Za-z0-9-]+)?\.json$/;
+const RECLAIMABLE_RENAME_ERRORS = new Set(["EEXIST", "ENOTEMPTY", "EISDIR"]);
 
 // A competing build is normally seconds away from finishing, so waiting beats
 // failing the caller. Only a genuinely stuck holder should reach the timeout.
@@ -66,22 +69,43 @@ function getLockPath(options) {
   return path.join(lockRootDir || getDefaultLockRootDir(repoRootDir), `${name}.lock`);
 }
 
-function getOwnerMetadataPath(lockPath) {
-  return path.join(lockPath, "owner.json");
+function getOwnerMetadataPath(lockPath, token) {
+  return path.join(lockPath, token ? `owner-${token}.json` : "owner.json");
 }
 
-function readLockOwner(lockPath) {
-  const ownerPath = getOwnerMetadataPath(lockPath);
-
-  if (!fs.existsSync(ownerPath)) {
-    return null;
-  }
+function readLockOwnerRecord(lockPath) {
+  let ownerFileNames;
 
   try {
-    return JSON.parse(fs.readFileSync(ownerPath, "utf8"));
+    ownerFileNames = fs
+      .readdirSync(lockPath)
+      .filter((entry) => OWNER_FILE_PATTERN.test(entry))
+      .sort();
   } catch {
     return null;
   }
+
+  for (const ownerFileName of ownerFileNames) {
+    const ownerPath = path.join(lockPath, ownerFileName);
+
+    try {
+      return {
+        owner: JSON.parse(fs.readFileSync(ownerPath, "utf8")),
+        ownerPath
+      };
+    } catch {
+      // A partially written legacy marker is not a valid owner. The caller
+      // will only reclaim it if the directory can be removed safely.
+    }
+  }
+
+  return null;
+}
+
+function readLockOwner(lockPath) {
+  const record = readLockOwnerRecord(lockPath);
+
+  return record ? record.owner : null;
 }
 
 function isProcessAlive(pid) {
@@ -97,22 +121,92 @@ function isProcessAlive(pid) {
   }
 }
 
-function tryClaimLock(lockPath) {
+function createLockOwner() {
+  return {
+    pid: process.pid,
+    createdAt: new Date().toISOString(),
+    token: randomUUID()
+  };
+}
+
+function tryClaimLock(lockPath, owner) {
+  const stagingPath = fs.mkdtempSync(
+    path.join(path.dirname(lockPath), `.${path.basename(lockPath)}-${process.pid}-`)
+  );
+
   try {
-    fs.mkdirSync(lockPath);
-    return true;
+    // The owner marker is complete before the directory becomes visible at
+    // lockPath. A queued caller can therefore never observe a live lock with
+    // no owner metadata and mistake it for a dead holder.
+    fs.writeFileSync(
+      getOwnerMetadataPath(stagingPath, owner.token),
+      JSON.stringify(owner, null, 2)
+    );
+
+    try {
+      fs.renameSync(stagingPath, lockPath);
+      return true;
+    } catch (error) {
+      if (!RECLAIMABLE_RENAME_ERRORS.has(error.code)) {
+        throw error;
+      }
+
+      return false;
+    }
+  } finally {
+    if (fs.existsSync(stagingPath)) {
+      fs.rmSync(stagingPath, { recursive: true, force: true });
+    }
+  }
+}
+
+function removeOwnerMarker(lockPath, ownerPath) {
+  try {
+    // This path is unique to the owner that is releasing. Never recursively
+    // remove lockPath: a queued caller may already have replaced it.
+    fs.unlinkSync(ownerPath);
   } catch (error) {
-    if (error.code !== "EEXIST") {
-      throw error;
+    if (error.code === "ENOENT") {
+      return false;
     }
 
-    return false;
+    throw error;
+  }
+
+  try {
+    // Only the now-empty directory may be removed. If another owner replaced
+    // lockPath, rmdir fails without touching that owner's live lock.
+    fs.rmdirSync(lockPath);
+    return true;
+  } catch (error) {
+    if (["ENOENT", "ENOTEMPTY", "EEXIST"].includes(error.code)) {
+      return false;
+    }
+
+    throw error;
+  }
+}
+
+function removeOwnerlessLock(lockPath) {
+  try {
+    // Ownerless directories can be the handoff window of an older process or
+    // a crashed reclaim. Remove them only if empty; never recursively delete a
+    // path that may now contain a newly published owner.
+    fs.rmdirSync(lockPath);
+    return true;
+  } catch (error) {
+    if (["ENOENT", "ENOTEMPTY", "EEXIST"].includes(error.code)) {
+      return false;
+    }
+
+    throw error;
   }
 }
 
 function ensureLockAvailable(lockPath, options = {}) {
   const pollIntervalMs = pickTiming(options.pollIntervalMs, DEFAULT_POLL_INTERVAL_MS);
   const waitTimeoutMs = pickTiming(options.waitTimeoutMs, DEFAULT_WAIT_TIMEOUT_MS);
+  const owner = options.owner || createLockOwner();
 
   fs.mkdirSync(path.dirname(lockPath), { recursive: true });
 
@@ -121,20 +215,47 @@ function ensureLockAvailable(lockPath, options = {}) {
   let waitedMs = 0;
 
   for (;;) {
-    if (tryClaimLock(lockPath)) {
-      return;
+    if (tryClaimLock(lockPath, owner)) {
+      return owner;
     }
 
-    const owner = readLockOwner(lockPath);
+    const lockOwnerRecord = readLockOwnerRecord(lockPath);
+    const lockOwner = lockOwnerRecord ? lockOwnerRecord.owner : null;
 
-    if (!owner || !isProcessAlive(owner.pid)) {
-      // The holder died without cleaning up. Reclaim and retry rather than
-      // trusting a single mkdir that could race another waiter.
-      fs.rmSync(lockPath, { recursive: true, force: true });
+    if (!lockOwner) {
+      const removed = removeOwnerlessLock(lockPath);
+      if (!removed && fs.existsSync(lockPath)) {
+        waitedMs = Date.now() - startedAt;
+
+        if (waitedMs >= waitTimeoutMs) {
+          break;
+        }
+
+        sleepSync(Math.min(pollIntervalMs, waitTimeoutMs - waitedMs));
+      }
+
       continue;
     }
 
-    holder = owner;
+    if (!isProcessAlive(lockOwner.pid)) {
+      // Reclaim only this dead owner's marker. Competing waiters can remove the
+      // same marker at most once, and the non-recursive rmdir cannot delete a
+      // replacement owner.
+      const removed = removeOwnerMarker(lockPath, lockOwnerRecord.ownerPath);
+      if (!removed && fs.existsSync(lockPath)) {
+        waitedMs = Date.now() - startedAt;
+
+        if (waitedMs >= waitTimeoutMs) {
+          break;
+        }
+
+        sleepSync(Math.min(pollIntervalMs, waitTimeoutMs - waitedMs));
+      }
+
+      continue;
+    }
+
+    holder = lockOwner;
     waitedMs = Date.now() - startedAt;
 
     if (waitedMs >= waitTimeoutMs) {
@@ -146,7 +267,8 @@ function ensureLockAvailable(lockPath, options = {}) {
 
   throw new Error(
     `Another repo-wide build or release check is already running in this worktree ` +
-      `(pid ${holder.pid}, holding ${lockPath}). Waited ${waitedMs}ms before giving up. ` +
+      `(${holder ? `pid ${holder.pid}` : "an ownerless lock"}, holding ${lockPath}). ` +
+      `Waited ${waitedMs}ms before giving up. ` +
       `Wait for it to finish before starting another.`
   );
 }
@@ -161,21 +283,11 @@ function withWorktreeLock(options, fn) {
     return fn();
   }
 
-  ensureLockAvailable(lockPath, {
+  const owner = ensureLockAvailable(lockPath, {
     pollIntervalMs: normalized.pollIntervalMs,
-    waitTimeoutMs: normalized.waitTimeoutMs
+    waitTimeoutMs: normalized.waitTimeoutMs,
+    owner: createLockOwner()
   });
-  fs.writeFileSync(
-    getOwnerMetadataPath(lockPath),
-    JSON.stringify(
-      {
-        pid: process.pid,
-        createdAt: new Date().toISOString()
-      },
-      null,
-      2
-    )
-  );
 
   process.env[lockEnvVar] = lockPath;
 
@@ -188,7 +300,7 @@ function withWorktreeLock(options, fn) {
       process.env[lockEnvVar] = previousLockValue;
     }
 
-    fs.rmSync(lockPath, { recursive: true, force: true });
+    removeOwnerMarker(lockPath, getOwnerMetadataPath(lockPath, owner.token));
   }
 }
 
