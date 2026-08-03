@@ -1,7 +1,32 @@
 const test = require("node:test");
 const assert = require("node:assert/strict");
+const { EventEmitter } = require("node:events");
+const { PassThrough } = require("node:stream");
 
 const { BUILD_SCRIPT, formatBuildFailure, runBuildForLint } = require("./build-for-lint");
+
+function fakeChild({ status = 0, signal = null, stdout = "", stderr = "", error = null }) {
+  const child = new EventEmitter();
+  child.stdout = new PassThrough();
+  child.stderr = new PassThrough();
+
+  process.nextTick(() => {
+    child.stdout.end(stdout);
+    child.stderr.end(stderr);
+    if (error) {
+      child.emit("error", error);
+    } else {
+      child.emit("close", status, signal);
+    }
+  });
+
+  return child;
+}
+
+const quietOutput = {
+  stdout: { write() {} },
+  stderr: { write() {} }
+};
 
 test("build failure message carries stderr and status", () => {
   const message = formatBuildFailure({
@@ -44,27 +69,55 @@ test("build failure message preserves both streams and bounds long lines", () =>
   assert.ok(message.length < 200000, `evidence must be bounded, got ${message.length} chars`);
 });
 
-test("signal kills never read as success", () => {
-  assert.throws(
-    () => runBuildForLint({ spawn: () => ({ status: 0, signal: "SIGKILL", stdout: "", stderr: "" }) }),
+test("signal kills never read as success", async () => {
+  await assert.rejects(
+    () =>
+      runBuildForLint({
+        output: quietOutput,
+        spawn: () => fakeChild({ status: 0, signal: "SIGKILL" })
+      }),
     /terminated by signal SIGKILL/
   );
 });
 
-test("spawn errors are actionable", () => {
-  assert.throws(
-    () => runBuildForLint({ spawn: () => ({ error: new Error("spawn ENOENT"), status: null }) }),
+test("spawn errors are actionable", async () => {
+  await assert.rejects(
+    () =>
+      runBuildForLint({
+        output: quietOutput,
+        spawn: () => fakeChild({ error: new Error("spawn ENOENT") })
+      }),
     /could not be started: spawn ENOENT/
   );
 });
 
-test("successful runs capture the build entrypoint", () => {
+test("large output stays bounded while preserving the failure tail", async () => {
+  const output = `HEAD diagnostic\n${"x".repeat(500000)}\nTAIL diagnostic\n`;
+
+  await assert.rejects(
+    () =>
+      runBuildForLint({
+        output: quietOutput,
+        spawn: () => fakeChild({ status: 1, stdout: output })
+      }),
+    (error) => {
+      assert.match(error.message, /HEAD diagnostic/);
+      assert.match(error.message, /TAIL diagnostic/);
+      assert.match(error.message, /output truncated for bounded evidence/);
+      assert.ok(error.message.length < 200000, `evidence must be bounded, got ${error.message.length}`);
+      return true;
+    }
+  );
+});
+
+test("successful runs capture the build entrypoint", async () => {
   const calls = [];
-  const result = runBuildForLint({
+  const result = await runBuildForLint({
     cwd: "/tmp",
+    output: quietOutput,
     spawn: (command, args, options) => {
       calls.push({ command, args, options });
-      return { status: 0, signal: null, stdout: "", stderr: "" };
+      return fakeChild({});
     }
   });
 
