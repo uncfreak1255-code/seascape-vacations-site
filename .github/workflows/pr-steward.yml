@@ -1,0 +1,39 @@
+name: PR steward
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "plan or act; dispatch is always human-invoked"
+        required: true
+        default: plan
+        type: choice
+        options: [plan, act]
+      pr:
+        description: "Optional PR number; leave blank for the open-PR sweep"
+        required: false
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: pr-steward-${{ github.repository }}-${{ github.event.pull_request.number || 'manual' }}
+  cancel-in-progress: true
+
+jobs:
+  act:
+    runs-on: [self-hosted, macOS, arm64]
+    timeout-minutes: 10
+    steps:
+      - name: Check out trusted base workflow
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+      - name: Apply guarded PR action
+        uses: ./.github/actions/pr-steward
+        with:
+          mode: ${{ inputs.mode || 'plan' }}
+          max-actions: "10"
+          pr-number: ${{ inputs.pr }}
