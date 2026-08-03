@@ -1,0 +1,30 @@
+name: PR steward
+description: Apply guarded PR actions without requiring a model run for routine updates.
+inputs:
+  mode:
+    description: plan or act
+    required: false
+    default: act
+  max-actions:
+    description: Maximum write actions in one run
+    required: false
+    default: "10"
+  pr-number:
+    description: Optional PR number for a human-invoked targeted run
+    required: false
+    default: ""
+runs:
+  using: composite
+  steps:
+    - name: Run guarded PR steward
+      shell: bash
+      env:
+        GH_TOKEN: ${{ github.token }}
+        PR_NUMBER: ${{ inputs['pr-number'] || github.event.pull_request.number }}
+      run: |
+        set -euo pipefail
+        args=(--repo "$GITHUB_REPOSITORY" --mode "${{ inputs.mode }}" --max-actions "${{ inputs['max-actions'] }}")
+        if [[ -n "${PR_NUMBER:-}" ]]; then
+          args+=(--pr "$PR_NUMBER")
+        fi
+        python3 "$GITHUB_ACTION_PATH/pr_auto_steward.py" "${args[@]}"
