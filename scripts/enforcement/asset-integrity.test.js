@@ -83,6 +83,9 @@ const DECODED_FORMATS = {
   heif: "isobmff/avif",
 };
 
+const META_TAG_RE = /<meta\b[^>]*>/gi;
+const META_ATTRIBUTE_RE = /([:\w-]+)\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s"'=<>`]+))/gi;
+
 async function decodeImage(buffer) {
   try {
     const metadata = await sharp(buffer).metadata();
@@ -91,6 +94,40 @@ async function decodeImage(buffer) {
   } catch {
     return null;
   }
+}
+
+async function decodeSvg(buffer) {
+  try {
+    const metadata = await sharp(buffer).metadata();
+    if (metadata.format !== "svg") {
+      return false;
+    }
+    await sharp(buffer).raw().toBuffer();
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function metaImageReferences(source) {
+  const references = [];
+  const tagMatcher = new RegExp(META_TAG_RE.source, META_TAG_RE.flags);
+
+  for (const tagMatch of source.matchAll(tagMatcher)) {
+    const attributes = {};
+    const attributeMatcher = new RegExp(META_ATTRIBUTE_RE.source, META_ATTRIBUTE_RE.flags);
+    for (const attributeMatch of tagMatch[0].matchAll(attributeMatcher)) {
+      const name = attributeMatch[1].toLowerCase();
+      attributes[name] = attributeMatch[2] ?? attributeMatch[3] ?? attributeMatch[4] ?? "";
+    }
+
+    const property = (attributes.property || attributes.name || "").toLowerCase();
+    if ((property === "og:image" || property === "twitter:image") && attributes.content) {
+      references.push(attributes.content);
+    }
+  }
+
+  return references;
 }
 
 // THE CORRUPTION GATE. This is the one that had to exist: a tracked image whose
@@ -185,7 +222,7 @@ test("tracked images match their extension, except known pinned mismatches", asy
   );
 });
 
-test("tracked SVG assets contain a parseable root element", () => {
+test("tracked SVG assets fully decode", async () => {
   const broken = [];
 
   for (const rel of trackedImages()) {
@@ -196,9 +233,9 @@ test("tracked SVG assets contain a parseable root element", () => {
     if (!fs.existsSync(absolute)) {
       continue;
     }
-    const source = fs.readFileSync(absolute, "utf8");
-    if (!/<svg[\s>]/i.test(source)) {
-      broken.push(`${rel}: no <svg> root element (first 40 chars: ${JSON.stringify(source.slice(0, 40))})`);
+    const buffer = fs.readFileSync(absolute);
+    if (!(await decodeSvg(buffer))) {
+      broken.push(`${rel}: SVG does not fully decode (head: ${describeHead(buffer)})`);
     }
   }
 
@@ -222,10 +259,7 @@ test("images referenced by Open Graph metadata exist and are valid", async () =>
 
   for (const rel of sources) {
     const source = fs.readFileSync(path.join(projectRoot, rel), "utf8");
-    const pattern = /<meta\s+(?:property|name)="(?:og:image|twitter:image)"\s+content="([^"]+)"/gi;
-    let match = pattern.exec(source);
-    while (match) {
-      let value = match[1];
+    for (let value of metaImageReferences(source)) {
       if (value.startsWith(siteOrigin)) {
         value = value.slice(siteOrigin.length);
       }
@@ -234,7 +268,6 @@ test("images referenced by Open Graph metadata exist and are valid", async () =>
       if (value.startsWith("/") && !value.includes("{{") && !value.includes("{%")) {
         referenced.add(value.split("?")[0]);
       }
-      match = pattern.exec(source);
     }
   }
 
@@ -246,9 +279,8 @@ test("images referenced by Open Graph metadata exist and are valid", async () =>
       continue;
     }
     if (path.extname(absolute).toLowerCase() === SVG_EXTENSION) {
-      const source = fs.readFileSync(absolute, "utf8");
-      if (!/<svg[\s>]/i.test(source)) {
-        missing.push(`${route}: SVG has no parseable root element`);
+      if (!(await decodeSvg(fs.readFileSync(absolute)))) {
+        missing.push(`${route}: SVG does not fully decode`);
       }
       continue;
     }
@@ -267,4 +299,22 @@ test("image validation rejects truncated and magic-prefixed random payloads", as
 
   assert.equal(await decodeImage(truncated), null, "a retained JPEG header must not make truncation pass");
   assert.equal(await decodeImage(magicPrefixedRandom), null, "a valid header plus random bytes must not pass");
+});
+
+test("SVG validation rejects truncated and prefixed garbage payloads", async () => {
+  const clean = fs.readFileSync(path.join(projectRoot, "images", "research", "booking-window-74-days-2026.svg"));
+  const truncated = Buffer.from(clean.toString("utf8").replace(/<\/svg>\s*$/i, ""));
+  const prefixedGarbage = Buffer.concat([Buffer.from("garbage before the root\n"), clean]);
+
+  assert.equal(await decodeSvg(truncated), false, "a retained SVG opening tag must not make truncation pass");
+  assert.equal(await decodeSvg(prefixedGarbage), false, "garbage before an SVG root must not pass");
+});
+
+test("social-image metadata parsing is independent of attribute order and quote style", () => {
+  const source = [
+    '<meta content="/images/first.jpg" data-test="1" property=\'og:image\'>',
+    "<meta name='twitter:image' content='/images/second.webp' data-test='2'>",
+  ].join("\n");
+
+  assert.deepEqual(metaImageReferences(source), ["/images/first.jpg", "/images/second.webp"]);
 });

@@ -10,6 +10,7 @@ const seoPages = require(path.join(projectRoot, "src", "_data", "seoPages.json")
 const seoGovernance = require(path.join(projectRoot, "src", "_data", "seoGovernance.js"));
 const SITE_ORIGIN = "https://seascape-vacations.com";
 const HREF_RE = /\bhref\s*=\s*(["'])(.*?)\1/gi;
+const TEXT_LINK_RE = /(?:https?:\/\/[^\s<>()"']+|\/[A-Za-z0-9][^\s<>()"']*)/gi;
 
 // Why this exists: `seoGovernance.staysNoindexSlugs` marks stay pages Google is
 // told NOT to index. Every internal reference pointing at one of those pages
@@ -77,6 +78,21 @@ function noindexHits(rel, source) {
   return hits;
 }
 
+function noindexTextHits(rel, source) {
+  const matcher = new RegExp(TEXT_LINK_RE.source, TEXT_LINK_RE.flags);
+  const hits = [];
+  for (const match of source.matchAll(matcher)) {
+    // Markdown and prose commonly put links before punctuation. Strip only
+    // terminal punctuation so normalization sees the URL, not its sentence.
+    const href = match[0].replace(/[.,;:!?]+$/g, "");
+    const route = normalizeInternalRoute(href);
+    if (route && NOINDEX_ROUTES.has(route)) {
+      hits.push({ rel, href, route });
+    }
+  }
+  return hits;
+}
+
 function sourceFiles(rootDir) {
   const results = [];
   const walk = (dir) => {
@@ -138,14 +154,14 @@ test("indexable stay pages do not link noindexed siblings via relatedStaySlugs",
 
 test("src/llms.txt does not steer AI crawlers to noindexed pages", () => {
   const llms = read("src/llms.txt");
-  const offenders = noindexRoutes().filter((route) => llms.includes(route));
+  const offenders = noindexTextHits("src/llms.txt", llms);
 
   assert.deepEqual(
     offenders,
     [],
     "src/llms.txt links route(s) excluded from the index. This file exists to point " +
       "AI crawlers at canonical content, so listing a noindexed page is a direct " +
-      `contradiction:\n  ${offenders.join("\n  ")}`
+      `contradiction:\n  ${offenders.map(({ href, route }) => `${href} -> ${route}`).join("\n  ")}`
   );
 });
 
@@ -296,9 +312,25 @@ test("guide noindex pins are exact file-and-route pairs", () => {
   assert.equal(KNOWN_GUIDE_NOINDEX_LINKS.has(`${rel}|${newRoute}`), false);
 });
 
+test("llms links normalize absolute slashless stay routes", () => {
+  const hits = noindexTextHits(
+    "src/llms.txt",
+    "- [Pet-Friendly Rentals](https://seascape-vacations.com/stays/pet-friendly-vacation-rentals-bradenton)"
+  );
+
+  assert.deepEqual(hits, [
+    {
+      rel: "src/llms.txt",
+      href: "https://seascape-vacations.com/stays/pet-friendly-vacation-rentals-bradenton",
+      route: "/stays/pet-friendly-vacation-rentals-bradenton/",
+    },
+  ]);
+});
+
 module.exports = {
   normalizeInternalRoute,
   noindexHits,
+  noindexTextHits,
   noindexRoutes,
   publicTemplateSources,
   guideSources,
