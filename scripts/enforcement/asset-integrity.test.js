@@ -5,6 +5,7 @@ const assert = require("node:assert/strict");
 const fs = require("node:fs");
 const path = require("node:path");
 const { execFileSync } = require("node:child_process");
+const sharp = require("sharp");
 
 const projectRoot = path.resolve(__dirname, "..", "..");
 
@@ -69,30 +70,24 @@ const KNOWN_EXTENSION_MISMATCHES = new Set([
   "logo.png",
 ]);
 
-// ImageMagick's decoder reads the container and pixel stream, so a valid magic
-// prefix followed by random or truncated bytes is rejected. The release runner
-// is Ubuntu-based and supplies `identify`; a missing decoder fails closed because
-// it returns null for every raster rather than silently accepting signatures.
+// Sharp reads the container and decodes the pixel stream in a native library
+// shipped through npm, so a valid magic prefix followed by random or truncated
+// bytes is rejected without relying on an image utility being installed on the
+// runner. A missing decoder fails closed because it returns null for every raster
+// rather than silently accepting signatures.
 const DECODED_FORMATS = {
-  JPEG: "jpeg",
-  PNG: "png",
-  GIF: "gif",
-  WEBP: "webp",
-  ICO: "ico",
-  AVIF: "isobmff/avif",
+  jpeg: "jpeg",
+  png: "png",
+  gif: "gif",
+  webp: "webp",
+  heif: "isobmff/avif",
 };
 
-function decodeImage(buffer) {
+async function decodeImage(buffer) {
   try {
-    const output = execFileSync("identify", ["-format", "%m\\n", "-"], {
-      cwd: projectRoot,
-      input: buffer,
-      encoding: "utf8",
-      maxBuffer: 1024 * 1024,
-      stdio: ["pipe", "pipe", "pipe"],
-    });
-    const format = output.trim().split(/\r?\n/, 1)[0].toUpperCase();
-    return DECODED_FORMATS[format] || null;
+    const metadata = await sharp(buffer).metadata();
+    await sharp(buffer).raw().toBuffer();
+    return DECODED_FORMATS[metadata.format] || null;
   } catch {
     return null;
   }
@@ -101,7 +96,7 @@ function decodeImage(buffer) {
 // THE CORRUPTION GATE. This is the one that had to exist: a tracked image whose
 // bytes cannot be fully decoded as a supported image. The 2026-07-28 regression
 // was 40 bytes beginning 6d ab 1e eb.
-test("tracked raster images contain valid image data", () => {
+test("tracked raster images contain valid image data", async () => {
   const broken = [];
 
   for (const rel of trackedImages()) {
@@ -117,7 +112,7 @@ test("tracked raster images contain valid image data", () => {
 
     const buffer = fs.readFileSync(absolute);
 
-    if (!decodeImage(buffer)) {
+    if (!(await decodeImage(buffer))) {
       broken.push(`${rel}: image does not fully decode (head: ${describeHead(buffer)})`);
     }
   }
@@ -133,7 +128,7 @@ test("tracked raster images contain valid image data", () => {
 });
 
 // The advisory half: content valid, extension wrong. Ratchets down only.
-test("tracked images match their extension, except known pinned mismatches", () => {
+test("tracked images match their extension, except known pinned mismatches", async () => {
   const mismatched = [];
   const stale = new Set(KNOWN_EXTENSION_MISMATCHES);
 
@@ -147,7 +142,7 @@ test("tracked images match their extension, except known pinned mismatches", () 
       continue;
     }
     const buffer = fs.readFileSync(absolute);
-    const actual = decodeImage(buffer);
+    const actual = await decodeImage(buffer);
     if (!actual) {
       continue; // corruption is the previous test's finding, not this one's
     }
@@ -210,7 +205,7 @@ test("tracked SVG assets contain a parseable root element", () => {
   assert.deepEqual(broken, [], `Corrupt SVG asset(s):\n  ${broken.join("\n  ")}`);
 });
 
-test("images referenced by Open Graph metadata exist and are valid", () => {
+test("images referenced by Open Graph metadata exist and are valid", async () => {
   // The corrupt file was an og:image. Those are the highest-blast-radius assets:
   // they render in every social share and are read by AI citation surfaces, and
   // nothing else in the repo asserts the referenced file is even present.
@@ -257,7 +252,7 @@ test("images referenced by Open Graph metadata exist and are valid", () => {
       }
       continue;
     }
-    if (!decodeImage(fs.readFileSync(absolute))) {
+    if (!(await decodeImage(fs.readFileSync(absolute)))) {
       missing.push(`${route}: image does not fully decode`);
     }
   }
@@ -265,11 +260,11 @@ test("images referenced by Open Graph metadata exist and are valid", () => {
   assert.deepEqual(missing, [], `Broken social image reference(s):\n  ${missing.join("\n  ")}`);
 });
 
-test("image validation rejects truncated and magic-prefixed random payloads", () => {
+test("image validation rejects truncated and magic-prefixed random payloads", async () => {
   const clean = fs.readFileSync(path.join(projectRoot, "images", "anna-maria-island-og.jpg"));
   const truncated = clean.subarray(0, 512);
   const magicPrefixedRandom = Buffer.concat([clean.subarray(0, 16), Buffer.alloc(4096, 0x41)]);
 
-  assert.equal(decodeImage(truncated), null, "a retained JPEG header must not make truncation pass");
-  assert.equal(decodeImage(magicPrefixedRandom), null, "a valid header plus random bytes must not pass");
+  assert.equal(await decodeImage(truncated), null, "a retained JPEG header must not make truncation pass");
+  assert.equal(await decodeImage(magicPrefixedRandom), null, "a valid header plus random bytes must not pass");
 });
