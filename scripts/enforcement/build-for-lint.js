@@ -1,8 +1,11 @@
+const fs = require("node:fs");
+const os = require("node:os");
 const path = require("path");
 const { spawnSync } = require("node:child_process");
 
 const BUILD_SCRIPT = "scripts/enforcement/build-site.js";
 const EVIDENCE_LINE_LIMIT = 12;
+const FAILURE_TAIL_BYTES = 64 * 1024;
 
 function lastLines(text, limit) {
   return String(text || "")
@@ -31,14 +34,73 @@ function formatBuildFailure(result) {
   return `${BUILD_SCRIPT} ${reason}:\n${evidence}`;
 }
 
+function readFailureTail(filePath) {
+  let descriptor;
+
+  try {
+    const { size } = fs.statSync(filePath);
+    const start = Math.max(0, size - FAILURE_TAIL_BYTES);
+    const buffer = Buffer.alloc(size - start);
+    descriptor = fs.openSync(filePath, "r");
+    fs.readSync(descriptor, buffer, 0, buffer.length, start);
+    return buffer.toString("utf8");
+  } catch {
+    return "";
+  } finally {
+    if (descriptor !== undefined) {
+      fs.closeSync(descriptor);
+    }
+  }
+}
+
+function runStreamingBuild(cwd) {
+  const outputDir = fs.mkdtempSync(path.join(os.tmpdir(), "seascape-build-for-lint-"));
+  const outputPath = path.join(outputDir, "build.log");
+
+  try {
+    // bash owns the pipe so the build's output reaches the caller immediately;
+    // the log file is only read back when a failure needs a bounded evidence
+    // tail. This avoids spawnSync's 1 MiB pipe buffer entirely.
+    const result = spawnSync(
+      "bash",
+      [
+        "-o",
+        "pipefail",
+        "-c",
+        '"$1" "$2" 2>&1 | tee "$3"',
+        "build-for-lint",
+        process.execPath,
+        BUILD_SCRIPT,
+        outputPath
+      ],
+      {
+        cwd,
+        stdio: "inherit"
+      }
+    );
+
+    if (result.error || result.status !== 0 || result.signal) {
+      return {
+        ...result,
+        stdout: readFailureTail(outputPath),
+        stderr: ""
+      };
+    }
+
+    return { ...result, stdout: "", stderr: "" };
+  } finally {
+    fs.rmSync(outputDir, { recursive: true, force: true });
+  }
+}
+
 function runBuildForLint(options = {}) {
   const cwd = options.cwd || path.resolve(__dirname, "..", "..");
-  const spawn = options.spawn || spawnSync;
-
-  const result = spawn(process.execPath, [BUILD_SCRIPT], {
-    cwd,
-    encoding: "utf8"
-  });
+  const result = options.spawn
+    ? options.spawn(process.execPath, [BUILD_SCRIPT], {
+        cwd,
+        encoding: "utf8"
+      })
+    : runStreamingBuild(cwd);
 
   if (result && result.error) {
     throw new Error(`${BUILD_SCRIPT} could not be started: ${result.error.message}`);
@@ -64,5 +126,6 @@ function runBuildForLint(options = {}) {
 module.exports = {
   BUILD_SCRIPT,
   formatBuildFailure,
+  readFailureTail,
   runBuildForLint
 };

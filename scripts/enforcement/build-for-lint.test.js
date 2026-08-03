@@ -1,7 +1,15 @@
 const test = require("node:test");
 const assert = require("node:assert/strict");
+const fs = require("node:fs");
+const os = require("node:os");
+const path = require("node:path");
 
-const { BUILD_SCRIPT, formatBuildFailure, runBuildForLint } = require("./build-for-lint");
+const {
+  BUILD_SCRIPT,
+  formatBuildFailure,
+  readFailureTail,
+  runBuildForLint
+} = require("./build-for-lint");
 
 // Regression: the content lint used to shell out with stdio "inherit", so a
 // failing build threw `Command failed: node scripts/enforcement/build-site.js`
@@ -79,4 +87,16 @@ test("runBuildForLint returns the result and runs the build script on success", 
   assert.deepEqual(calls[0].args, [BUILD_SCRIPT]);
   assert.equal(calls[0].options.cwd, "/tmp");
   assert.equal(calls[0].options.encoding, "utf8");
+});
+
+test("readFailureTail keeps only the bounded end of a streamed build log", (t) => {
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), "build-for-lint-tail-"));
+  t.after(() => fs.rmSync(directory, { recursive: true, force: true }));
+
+  const logPath = path.join(directory, "build.log");
+  fs.writeFileSync(logPath, `${"x".repeat(100_000)}\nlast useful failure\n`);
+
+  const tail = readFailureTail(logPath);
+  assert.match(tail, /last useful failure/);
+  assert.ok(Buffer.byteLength(tail, "utf8") <= 64 * 1024);
 });
