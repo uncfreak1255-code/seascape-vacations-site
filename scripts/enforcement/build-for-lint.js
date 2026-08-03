@@ -1,5 +1,5 @@
 const path = require("path");
-const { spawnSync } = require("node:child_process");
+const { spawn } = require("node:child_process");
 
 const BUILD_SCRIPT = "scripts/enforcement/build-site.js";
 const EVIDENCE_HEAD_LINES = 80;
@@ -26,8 +26,19 @@ function evidenceFrom(text) {
 function formatBuildFailure(result) {
   const status = result && result.status;
   const signal = result && result.signal;
-  const reason = signal ? `terminated by signal ${signal}` : `exited with code ${status}`;
+  const error = result && result.error;
+  const reason = signal
+    ? `terminated by signal ${signal}`
+    : error
+      ? "failed"
+      : `exited with code ${status}`;
   const sections = [
+    [
+      "error",
+      error
+        ? `${error.code ? `${error.code}: ` : ""}${error.message || String(error)}`
+        : ""
+    ],
     ["stderr", evidenceFrom(result && result.stderr)],
     ["stdout", evidenceFrom(result && result.stdout)]
   ].filter(([, evidence]) => evidence);
@@ -43,32 +54,151 @@ function formatBuildFailure(result) {
   return `${BUILD_SCRIPT} ${reason}:\n${body}`;
 }
 
-function runBuildForLint(options = {}) {
+function createEvidenceCollector() {
+  const head = [];
+  const tail = [];
+  let pending = "";
+  let discardLongLine = false;
+  let totalLines = 0;
+
+  function addLine(line) {
+    const normalized = String(line || "")
+      .trimEnd()
+      .slice(0, EVIDENCE_LINE_CHARS);
+
+    if (!normalized) {
+      return;
+    }
+
+    totalLines += 1;
+    if (head.length < EVIDENCE_HEAD_LINES) {
+      head.push(normalized);
+      return;
+    }
+
+    if (tail.length === EVIDENCE_TAIL_LINES) {
+      tail.shift();
+    }
+    tail.push(normalized);
+  }
+
+  function write(chunk) {
+    let remaining = String(chunk || "");
+
+    while (remaining.length > 0) {
+      if (discardLongLine) {
+        const newlineIndex = remaining.indexOf("\n");
+        if (newlineIndex === -1) {
+          return;
+        }
+
+        discardLongLine = false;
+        remaining = remaining.slice(newlineIndex + 1);
+        continue;
+      }
+
+      const newlineIndex = remaining.indexOf("\n");
+      const fragment = newlineIndex === -1 ? remaining : remaining.slice(0, newlineIndex);
+      const remainingLineChars = Math.max(EVIDENCE_LINE_CHARS - pending.length, 0);
+      pending += fragment.slice(0, remainingLineChars);
+
+      if (newlineIndex === -1) {
+        discardLongLine = fragment.length > remainingLineChars;
+        return;
+      }
+
+      addLine(pending);
+      pending = "";
+      remaining = remaining.slice(newlineIndex + 1);
+    }
+  }
+
+  function finish() {
+    if (pending) {
+      addLine(pending);
+    }
+    pending = "";
+    discardLongLine = false;
+  }
+
+  function toString() {
+    const omitted = totalLines - head.length - tail.length;
+    const lines = [...head];
+
+    if (omitted > 0) {
+      lines.push(`  ... ${omitted} more line(s) ...`);
+    }
+
+    lines.push(...tail);
+    return lines.join("\n");
+  }
+
+  return {
+    finish,
+    toString,
+    write
+  };
+}
+
+async function runBuildForLint(options = {}) {
   const cwd = options.cwd || path.resolve(__dirname, "..", "..");
-  const spawn = options.spawn || spawnSync;
-  const result = spawn(process.execPath, [BUILD_SCRIPT], {
-    cwd,
-    encoding: "utf8",
-    stdio: ["ignore", "pipe", "pipe"]
+  const spawnProcess = options.spawn || spawn;
+  const writeStdout = options.writeStdout || ((chunk) => process.stdout.write(chunk));
+  const writeStderr = options.writeStderr || ((chunk) => process.stderr.write(chunk));
+  const stdoutEvidence = createEvidenceCollector();
+  const stderrEvidence = createEvidenceCollector();
+
+  let child;
+  try {
+    child = spawnProcess(process.execPath, [BUILD_SCRIPT], {
+      cwd,
+      stdio: ["ignore", "pipe", "pipe"]
+    });
+  } catch (error) {
+    throw new Error(formatBuildFailure({ error }));
+  }
+
+  if (child.stdout && typeof child.stdout.setEncoding === "function") {
+    child.stdout.setEncoding("utf8");
+  }
+  if (child.stderr && typeof child.stderr.setEncoding === "function") {
+    child.stderr.setEncoding("utf8");
+  }
+
+  return new Promise((resolve, reject) => {
+    let childError = null;
+
+    child.stdout.on("data", (chunk) => {
+      writeStdout(chunk);
+      stdoutEvidence.write(chunk);
+    });
+    child.stderr.on("data", (chunk) => {
+      writeStderr(chunk);
+      stderrEvidence.write(chunk);
+    });
+    child.once("error", (error) => {
+      childError = error;
+    });
+    child.once("close", (status, signal) => {
+      stdoutEvidence.finish();
+      stderrEvidence.finish();
+
+      const result = {
+        error: childError,
+        signal,
+        status,
+        stderr: stderrEvidence.toString(),
+        stdout: stdoutEvidence.toString()
+      };
+
+      if (childError || status !== 0 || signal) {
+        reject(new Error(formatBuildFailure(result)));
+        return;
+      }
+
+      resolve(result);
+    });
   });
-
-  if (result && result.error) {
-    throw new Error(`${BUILD_SCRIPT} could not be started: ${result.error.message}`);
-  }
-
-  if (result && result.stdout) {
-    process.stdout.write(result.stdout);
-  }
-
-  if (result && result.stderr) {
-    process.stderr.write(result.stderr);
-  }
-
-  if (!result || result.status !== 0 || result.signal) {
-    throw new Error(formatBuildFailure(result));
-  }
-
-  return result;
 }
 
 module.exports = {

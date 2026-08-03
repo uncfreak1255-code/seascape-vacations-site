@@ -288,12 +288,12 @@ function lintRenderedPublicContent(relativePath, source) {
   );
 }
 
-function ensureRenderedOutputForContentLint() {
+async function ensureRenderedOutputForContentLint() {
   if (process.env.npm_lifecycle_event !== "lint:content") {
     return;
   }
 
-  runBuildForLint({ cwd: projectRoot });
+  await runBuildForLint({ cwd: projectRoot });
 }
 
 function listFilesRecursive(relativeDir) {
@@ -1174,8 +1174,8 @@ test("repo public-copy source and data surfaces do not ship instruction-template
   assert.deepEqual([...sourceViolations, ...dataViolations], []);
 });
 
-test("changed public content and source-backed copy files require active briefs and pass gate checks", () => {
-  ensureRenderedOutputForContentLint();
+test("changed public content and source-backed copy files require active briefs and pass gate checks", async () => {
+  await ensureRenderedOutputForContentLint();
 
   const changedFiles = getChangedFiles();
   const changedPublicContentFiles = changedFiles.filter(isPublicContentFile);
