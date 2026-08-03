@@ -3,12 +3,36 @@ const os = require("os");
 const path = require("path");
 const test = require("node:test");
 const assert = require("node:assert/strict");
+const { spawnSync } = require("node:child_process");
 
 const {
   getDefaultLockRootDir,
   getLockPath,
   withWorktreeLock
 } = require("./worktree-lock");
+
+test("repo-root lookup explains a non-worktree invocation", () => {
+  const cwd = fs.mkdtempSync(path.join(os.tmpdir(), "seascape-not-worktree-"));
+  const env = { ...process.env };
+
+  for (const key of Object.keys(env)) {
+    if (key.startsWith("GIT_")) {
+      delete env[key];
+    }
+  }
+
+  const result = spawnSync(
+    process.execPath,
+    ["-e", `require(${JSON.stringify(path.join(__dirname, "worktree-lock.js"))}).getRepoRootDir()`],
+    { cwd, encoding: "utf8", env }
+  );
+
+  assert.notEqual(result.status, 0);
+  assert.ok(result.stderr.includes(cwd));
+  assert.match(result.stderr, /checked-out Git worktree/);
+  assert.match(result.stderr, /fatal:/i);
+  assert.equal((result.stderr.match(/fatal:/gi) || []).length, 1);
+});
 
 test("default lock path stays inside the worktree for linked worktrees", () => {
   const repoRootDir = fs.mkdtempSync(path.join(os.tmpdir(), "seascape-worktree-"));

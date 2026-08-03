@@ -29,9 +29,20 @@ function getGitDir() {
 }
 
 function getRepoRootDir() {
-  return execFileSync("git", ["rev-parse", "--show-toplevel"], {
-    encoding: "utf8"
-  }).trim();
+  try {
+    return execFileSync("git", ["rev-parse", "--show-toplevel"], {
+      encoding: "utf8",
+      stdio: ["ignore", "pipe", "pipe"]
+    }).trim();
+  } catch (error) {
+    const stderr = error && error.stderr ? String(error.stderr).trim() : "";
+    const detail = stderr || (error && error.message) || "Git root lookup failed.";
+
+    throw new Error(
+      `Cannot resolve the repository root from \"${process.cwd()}\"; ` +
+        `this command must run inside a checked-out Git worktree.\n${detail}`
+    );
+  }
 }
 
 function getDefaultLockRootDir(repoRootDir) {
