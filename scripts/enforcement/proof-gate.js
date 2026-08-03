@@ -234,12 +234,33 @@ function evaluateStop({
 
   let primaryRun;
   const additionalSteps = [];
-  runProofChain(() => {
-    primaryRun = runner(command);
-    if (primaryRun.status === 0 && testCommand && command !== testCommand) {
-      additionalSteps.push({ ...runner(testCommand), command: testCommand });
-    }
-  });
+  try {
+    runProofChain(() => {
+      primaryRun = runner(command);
+      if (primaryRun.status === 0 && testCommand && command !== testCommand) {
+        additionalSteps.push({ ...runner(testCommand), command: testCommand });
+      }
+    });
+  } catch (error) {
+    const message =
+      `${LOG} BLOCKED [proof-lock-failed] ` +
+      `Could not run the declared proof under the repo-build lock (${error.message}). ` +
+      `Wait for the other proof chain to finish, then finish again.`;
+    return {
+      block: true,
+      ranTests: false,
+      wroteReceipt: true,
+      receipt: buildReceipt({
+        command,
+        status: 1,
+        headSha,
+        baseSha,
+        output: message,
+      }),
+      loopRetryable: false,
+      message,
+    };
+  }
   const receipt = buildReceipt({
     command,
     status: primaryRun.status,

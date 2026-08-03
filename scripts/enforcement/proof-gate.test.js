@@ -830,6 +830,21 @@ test("runs the declared proof and required test under one rendered-proof lock", 
   ]);
 });
 
+test("lock acquisition failures return an explicit blocking proof result", () => {
+  const result = evaluateStop(fixture({
+    runProofChain: () => {
+      throw new Error("lock wait timed out");
+    },
+  }));
+
+  assert.equal(result.block, true);
+  assert.equal(result.ranTests, false);
+  assert.equal(result.wroteReceipt, true);
+  assert.equal(result.receipt.status, "fail");
+  assert.match(result.message, /proof-lock-failed/);
+  assert.match(result.message, /lock wait timed out/);
+});
+
 test("keel receipt still satisfies landing-evaluator's required testCommand", () => {
   // requiredProofCommands() demands a passing step whose command is
   // byte-identical to testCommand. Run it explicitly rather than inferring
