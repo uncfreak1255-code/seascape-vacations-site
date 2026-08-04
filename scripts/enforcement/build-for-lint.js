@@ -1,10 +1,48 @@
 const path = require("path");
-const { spawnSync } = require("node:child_process");
+const { spawn: spawnChild } = require("node:child_process");
 
 const BUILD_SCRIPT = "scripts/enforcement/build-site.js";
 const EVIDENCE_HEAD_LINES = 80;
 const EVIDENCE_TAIL_LINES = 80;
 const EVIDENCE_LINE_CHARS = 2000;
+const CAPTURE_LIMIT_CHARS = 400000;
+const CAPTURE_HEAD_CHARS = CAPTURE_LIMIT_CHARS / 2;
+const CAPTURE_TAIL_CHARS = CAPTURE_LIMIT_CHARS / 2;
+
+function createBoundedCapture() {
+  let complete = "";
+  let tail = "";
+  let truncated = false;
+
+  return {
+    append(value) {
+      const text = String(value);
+
+      if (!truncated) {
+        const combined = complete + text;
+        if (combined.length <= CAPTURE_LIMIT_CHARS) {
+          complete = combined;
+          return;
+        }
+
+        complete = combined.slice(0, CAPTURE_HEAD_CHARS);
+        tail = combined.slice(-CAPTURE_TAIL_CHARS);
+        truncated = true;
+        return;
+      }
+
+      tail = (tail + text).slice(-CAPTURE_TAIL_CHARS);
+    },
+
+    text() {
+      if (!truncated) {
+        return complete;
+      }
+
+      return `${complete}\n  ... output truncated for bounded evidence ...\n${tail}`;
+    }
+  };
+}
 
 function evidenceFrom(text) {
   const lines = String(text || "")
@@ -43,32 +81,92 @@ function formatBuildFailure(result) {
   return `${BUILD_SCRIPT} ${reason}:\n${body}`;
 }
 
+function formatSpawnFailure(error, result) {
+  const sections = [
+    ["stderr", evidenceFrom(result && result.stderr)],
+    ["stdout", evidenceFrom(result && result.stdout)]
+  ].filter(([, evidence]) => evidence);
+
+  const evidence = sections
+    .map(([label, output]) => `--- ${label} ---\n${output}`)
+    .join("\n");
+
+  return `${BUILD_SCRIPT} could not be started: ${error.message}${evidence ? `\n${evidence}` : ""}`;
+}
+
 function runBuildForLint(options = {}) {
   const cwd = options.cwd || path.resolve(__dirname, "..", "..");
-  const spawn = options.spawn || spawnSync;
-  const result = spawn(process.execPath, [BUILD_SCRIPT], {
-    cwd,
-    encoding: "utf8",
-    stdio: ["ignore", "pipe", "pipe"]
+  const spawn = options.spawn || spawnChild;
+  const output = options.output || { stdout: process.stdout, stderr: process.stderr };
+
+  return new Promise((resolve, reject) => {
+    const stdout = createBoundedCapture();
+    const stderr = createBoundedCapture();
+    let child;
+    let settled = false;
+
+    const rejectOnce = (error) => {
+      if (settled) {
+        return;
+      }
+
+      settled = true;
+      reject(error);
+    };
+
+    try {
+      child = spawn(process.execPath, [BUILD_SCRIPT], {
+        cwd,
+        stdio: ["ignore", "pipe", "pipe"]
+      });
+    } catch (error) {
+      rejectOnce(new Error(formatSpawnFailure(error, { stdout: "", stderr: "" })));
+      return;
+    }
+
+    const captureStream = (stream, capture, destination) => {
+      stream.on("data", (chunk) => {
+        const text = String(chunk);
+        capture.append(text);
+        destination.write(text);
+      });
+    };
+
+    captureStream(child.stdout, stdout, output.stdout);
+    captureStream(child.stderr, stderr, output.stderr);
+
+    child.on("error", (error) => {
+      rejectOnce(
+        new Error(
+          formatSpawnFailure(error, {
+            stdout: stdout.text(),
+            stderr: stderr.text()
+          })
+        )
+      );
+    });
+
+    child.on("close", (status, signal) => {
+      const result = {
+        status,
+        signal,
+        stdout: stdout.text(),
+        stderr: stderr.text()
+      };
+
+      if (settled) {
+        return;
+      }
+
+      settled = true;
+      if (status !== 0 || signal) {
+        reject(new Error(formatBuildFailure(result)));
+        return;
+      }
+
+      resolve(result);
+    });
   });
-
-  if (result && result.error) {
-    throw new Error(`${BUILD_SCRIPT} could not be started: ${result.error.message}`);
-  }
-
-  if (result && result.stdout) {
-    process.stdout.write(result.stdout);
-  }
-
-  if (result && result.stderr) {
-    process.stderr.write(result.stderr);
-  }
-
-  if (!result || result.status !== 0 || result.signal) {
-    throw new Error(formatBuildFailure(result));
-  }
-
-  return result;
 }
 
 module.exports = {
