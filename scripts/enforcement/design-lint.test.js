@@ -14,6 +14,9 @@ const {
   lintFile,
   resolveBaseRef,
   checkWorsened,
+  paletteUsageFiles,
+  paletteUsesAddedHexes,
+  buildJsonReport,
 } = require("../design/design-lint.js");
 const { designLintBaseFromRange, buildCommandSteps } = require("./verify-release.js");
 
@@ -314,6 +317,43 @@ test("design-lint detects the exact violations that shipped on the legacy page",
   // Emoji decoration in visible markup.
   const emoji = lintSource("<span>Beach day \u{1F3D6}\u{FE0F}</span>", allowlist);
   assert.equal(emoji.emoji, true, "should flag emoji in visible markup");
+});
+
+test("design-lint distinguishes text-presentation symbols from emoji presentation", () => {
+  const allowlist = buildPaletteAllowlist();
+  const typography = lintSource("<p>Trademark ™ · information ℹ · return ↩ · dropdown ▾</p>", allowlist);
+  assert.equal(typography.emoji, false, "bare text-presentation symbols must remain valid typography");
+
+  const explicitEmoji = lintSource("<p>Trademark ™️ · information ℹ️ · return ↩️</p>", allowlist);
+  assert.equal(explicitEmoji.emoji, true, "variation-selector emoji presentation must remain blocked");
+
+  const defaultEmoji = lintSource("<p>Timer ⌛ · alarm ⏰</p>", allowlist);
+  assert.equal(defaultEmoji.emoji, true, "default-presentation emoji without a variation selector must be blocked");
+});
+
+test("JSON design-lint reports preserve palette failures as parseable output", () => {
+  const report = buildJsonReport({
+    baseRef: "origin/main",
+    newViolations: [],
+    graduated: [],
+    debt: 0,
+    palette: ["#123456"],
+    coverageFailures: [],
+    paletteFailures: ["guide uses a color legalized in this same branch"],
+  });
+  const parsed = JSON.parse(JSON.stringify(report));
+  assert.deepEqual(parsed.paletteFailures, ["guide uses a color legalized in this same branch"]);
+  assert.deepEqual(parsed.newViolations, []);
+});
+
+test("palette integrity audits changed shared partials as rendered usage sites", () => {
+  const partial = "src/_includes/partials/guide-conversion-kit.njk";
+  const touched = new Set([partial]);
+  const usageFiles = paletteUsageFiles([], touched, [partial]);
+  const used = paletteUsesAddedHexes("<style>.new-chip { color: #123456; }</style>", new Set(["#123456"]));
+
+  assert.ok(usageFiles.includes(partial));
+  assert.deepEqual(used, ["#123456"]);
 });
 
 test("design-lint does not false-positive on sanctioned tokens, palette hex, or non-style hex", () => {

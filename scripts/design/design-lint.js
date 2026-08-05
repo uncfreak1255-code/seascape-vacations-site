@@ -64,9 +64,15 @@ const ALWAYS_ALLOWED_HEX = new Set([
   "#fff", "#ffffff", "#000", "#000000",
 ]);
 
-const HEX_RE = /#[0-9a-fA-F]{3}(?:[0-9a-fA-F]{3})?\b/g;
-// Emoji: pictographic + regional + dingbat ranges (conservative; excludes plain symbols).
-const EMOJI_RE = /[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{2B00}-\u{2BFF}\u{1F1E6}-\u{1F1FF}\u{FE0F}\u{200D}]/u;
+// 3, 4, 6 or 8 digits. The previous trailing \b silently skipped CSS Color 4
+// alpha forms: #ff00ff80 renders magenta and matched NOTHING (adversarial
+// review, 2026-07-28). Longest-first so #ff00ff80 is not read as #ff00ff.
+const HEX_RE = /#(?:[0-9a-fA-F]{8}|[0-9a-fA-F]{6}|[0-9a-fA-F]{4}|[0-9a-fA-F]{3})(?![0-9a-fA-F])/g;
+// Match default-presentation emoji directly, plus text-default codepoints only
+// when an explicit emoji variation selector is present. This keeps ordinary
+// symbols such as bare ™, ℹ, and ↩ as typography while still rejecting ™️, ℹ️,
+// and ↩️ when authors explicitly request emoji presentation.
+const EMOJI_RE = /(?:\p{Emoji_Presentation}|\p{Emoji}\uFE0F)/u;
 
 function read(rel) {
   return fs.readFileSync(path.join(projectRoot, rel), "utf8");
@@ -74,9 +80,15 @@ function read(rel) {
 
 function normalizeHex(hex) {
   const lower = hex.toLowerCase();
-  if (lower.length === 4) {
-    // #abc -> #aabbcc
+  // Compare on the RGB triplet so alpha variants cannot smuggle an off-brand
+  // color past a palette that lists only its opaque form.
+  if (lower.length === 4 || lower.length === 5) {
+    // #abc / #abcd -> #aabbcc
     return `#${lower[1]}${lower[1]}${lower[2]}${lower[2]}${lower[3]}${lower[3]}`;
+  }
+  if (lower.length === 9) {
+    // #rrggbbaa -> #rrggbb
+    return lower.slice(0, 7);
   }
   return lower;
 }
@@ -99,6 +111,12 @@ function buildPaletteAllowlist() {
 
 // Extract only the CSS/style contexts so we never flag hex inside JSON-LD, URLs,
 // SVG path data, or tracking IDs.
+//
+// KNOWN, DELIBERATE GAP: SVG paint attributes (fill=, stroke=) are NOT treated as
+// style contexts, and design-lint.test.js asserts that explicitly. An adversarial
+// review on 2026-07-28 showed off-brand color CAN therefore ship via <rect fill="...">.
+// Closing it would flag legitimate multi-colour brand illustrations, so it stays a
+// documented gap rather than an unreviewed expansion of the rule.
 function extractStyleContexts(source) {
   const chunks = [];
   const styleBlocks = source.match(/<style[\s\S]*?<\/style>/gi) || [];
@@ -107,6 +125,10 @@ function extractStyleContexts(source) {
   chunks.push(...styleAttrs);
   const styleAttrsSingle = source.match(/style\s*=\s*'[^']*'/gi) || [];
   chunks.push(...styleAttrsSingle);
+  // Unquoted style attributes are valid HTML5 and rendered <p style=color:#ff00ff>
+  // straight past the gate until 2026-07-28.
+  const styleAttrsBare = source.match(/style\s*=\s*[^"'\s>][^\s>]*/gi) || [];
+  chunks.push(...styleAttrsBare);
   return chunks.join("\n");
 }
 
@@ -293,6 +315,140 @@ function checkWorsened(working, base, check) {
   return workingCounts[check] > baseCounts[check];
 }
 
+// Fails when the scanned corpus no longer covers what the baseline describes.
+// A file may legitimately leave the scan (retired page, rename) — but then the
+// baseline must shrink through `--update-baseline` in the same change, which is
+// the only sanctioned way it moves.
+function checkCoverage({ files, report }, baseline) {
+  const failures = [];
+
+  if (!files.length) {
+    failures.push(
+      "0 guide sources scanned. listGuideFiles() found nothing under src/guides, " +
+        "so every check below would pass vacuously."
+    );
+    return failures;
+  }
+
+  const scanned = new Set(files);
+  const orphaned = [];
+  for (const check of CHECKS) {
+    for (const rel of baseline[check] || []) {
+      if (!scanned.has(rel) && !orphaned.includes(rel)) {
+        orphaned.push(rel);
+      }
+    }
+  }
+
+  if (orphaned.length) {
+    failures.push(
+      `${orphaned.length} baseline entr${orphaned.length === 1 ? "y" : "ies"} no longer resolve to a scanned file. ` +
+        "If those pages were retired or renamed, re-record the baseline in the same " +
+        "change: node scripts/design/design-lint.js --update-baseline"
+    );
+    for (const rel of orphaned.slice(0, 10)) {
+      failures.push(`  orphaned: ${rel}`);
+    }
+    if (orphaned.length > 10) {
+      failures.push(`  ...and ${orphaned.length - 10} more`);
+    }
+  }
+
+  return failures;
+}
+
+// Fails when this branch both WIDENS the palette and USES a newly-legalized hex
+// in a touched guide. Editing the palette alone stays allowed (real palette work
+// happens); using a color you legalized in the same breath does not.
+function paletteUsageFiles(files, touched, changedPaletteSources) {
+  return [
+    ...new Set([
+      ...files.filter((rel) => touched.has(rel)),
+      // Shared style partials and CSS files are consumers too. Once any
+      // palette source changes, audit every shared consumer: a branch can
+      // widen the allowlist in DESIGN.md while an unchanged partial already
+      // uses the newly legalized color.
+      ...(changedPaletteSources.length ? PALETTE_SOURCE_FILES.filter((rel) => rel !== "DESIGN.md") : []),
+    ]),
+  ];
+}
+
+function paletteUsesAddedHexes(source, addedHexes) {
+  const styleContext = extractStyleContexts(source);
+  const used = new Set((styleContext.match(HEX_RE) || []).map(normalizeHex));
+  return [...addedHexes].filter((hex) => used.has(hex));
+}
+
+function checkPaletteIntegrity(touched, baseRef, { files, report }) {
+  const changedPaletteSources = PALETTE_SOURCE_FILES.filter((rel) => touched.has(rel));
+  if (!changedPaletteSources.length) {
+    return [];
+  }
+
+  const mergeBase = resolveMergeBase(baseRef);
+  if (!mergeBase) {
+    return [
+      `palette source(s) changed (${changedPaletteSources.join(", ")}) but the merge base ` +
+        `against ${baseRef} could not be resolved, so the widening cannot be audited.`,
+    ];
+  }
+
+  const baseAllowed = new Set([...ALWAYS_ALLOWED_HEX].map(normalizeHex));
+  for (const rel of PALETTE_SOURCE_FILES) {
+    const source = readSourceAtRef(mergeBase, rel);
+    if (!source) {
+      continue;
+    }
+    for (const match of source.match(HEX_RE) || []) {
+      baseAllowed.add(normalizeHex(match));
+    }
+  }
+
+  const addedHexes = new Set();
+  for (const rel of PALETTE_SOURCE_FILES) {
+    let source;
+    try {
+      source = read(rel);
+    } catch {
+      continue;
+    }
+    for (const match of source.match(HEX_RE) || []) {
+      const norm = normalizeHex(match);
+      if (!baseAllowed.has(norm)) {
+        addedHexes.add(norm);
+      }
+    }
+  }
+
+  if (!addedHexes.size) {
+    return [];
+  }
+
+  // A newly-legalized hex is only a problem if this branch also puts it into a
+  // rendered design surface. Re-lint each touched guide and changed shared
+  // style source against the BASE allowlist: anything that would have been a
+  // violation before the palette moved is the abuse case.
+  const failures = [];
+  for (const rel of paletteUsageFiles(files, touched, changedPaletteSources)) {
+    let source;
+    try {
+      source = read(rel);
+    } catch {
+      continue;
+    }
+    const abused = paletteUsesAddedHexes(source, addedHexes);
+    if (abused.length) {
+      failures.push(
+        `${rel} uses ${abused.join(", ")}, legalized in this same branch by ` +
+          `${changedPaletteSources.join(", ")}. Use an existing palette value, or land the ` +
+          "palette change on its own and let it be reviewed as a design decision."
+      );
+    }
+  }
+
+  return failures;
+}
+
 function run() {
   const allowlist = buildPaletteAllowlist();
   const files = listGuideFiles();
@@ -349,6 +505,26 @@ function evaluate({ files, report }, baseline, touched, baseReport = {}) {
   return { newViolations, graduated, debt };
 }
 
+function buildJsonReport({
+  baseRef,
+  newViolations,
+  graduated,
+  debt,
+  palette,
+  coverageFailures = [],
+  paletteFailures = [],
+}) {
+  return {
+    baseRef,
+    newViolations,
+    graduated,
+    debt,
+    palette,
+    coverageFailures,
+    paletteFailures,
+  };
+}
+
 function main() {
   const args = process.argv.slice(2);
   const state = run();
@@ -366,12 +542,58 @@ function main() {
   const baseline = loadBaseline();
   const baseRef = resolveBaseRef(args);
   const touched = changedFiles(baseRef);
+
+  // COVERAGE FLOOR. Adversarial review, 2026-07-28: thinning or emptying
+  // src/guides made listGuideFiles() return [], the evaluate() loop never ran,
+  // and the gate printed "0 guide sources scanned, 0 new violations" and exited
+  // 0 — a required CI check reporting success after checking nothing. A baseline
+  // entry that no longer resolves to a scanned file is the signal: the corpus
+  // shrank without going through --update-baseline.
+  const coverageFailures = checkCoverage(state, baseline);
+
+  // PALETTE INTEGRITY. Same review: appending two hex values to DESIGN.md widened
+  // the allowlist, so off-brand hex in a guide passed as "on-brand" and both the
+  // gate and its unit test went green. The palette is the gate's own definition
+  // of correct, so a branch that edits it must not simultaneously introduce the
+  // colors it just legalized.
+  const paletteFailures = checkPaletteIntegrity(touched, baseRef, state);
+
   const baseReport = buildBaseReport(state, touched, baseRef);
   const { newViolations, graduated, debt } = evaluate(state, baseline, touched, baseReport);
 
   if (args.includes("--json")) {
-    console.log(JSON.stringify({ baseRef, newViolations, graduated, debt, palette: [...state.allowlist].sort() }, null, 2));
-    return newViolations.length === 0 ? 0 : 1;
+    console.log(
+      JSON.stringify(
+        buildJsonReport({
+          baseRef,
+          newViolations,
+          graduated,
+          debt,
+          palette: [...state.allowlist].sort(),
+          coverageFailures,
+          paletteFailures,
+        }),
+        null,
+        2
+      )
+    );
+    return newViolations.length === 0 && coverageFailures.length === 0 && paletteFailures.length === 0 ? 0 : 1;
+  }
+
+  if (coverageFailures.length) {
+    console.error("design-lint FAILED: coverage collapse — the scan cannot be trusted:");
+    for (const line of coverageFailures) {
+      console.error(`  ${line}`);
+    }
+    return 1;
+  }
+
+  if (paletteFailures.length) {
+    console.error("design-lint FAILED: palette widened to legalize new debt:");
+    for (const line of paletteFailures) {
+      console.error(`  ${line}`);
+    }
+    return 1;
   }
 
   if (newViolations.length === 0) {
@@ -411,4 +633,9 @@ module.exports = {
   changedFiles,
   buildBaseReport,
   checkWorsened,
+  checkCoverage,
+  checkPaletteIntegrity,
+  paletteUsageFiles,
+  paletteUsesAddedHexes,
+  buildJsonReport,
 };

@@ -1,35 +1,46 @@
 const test = require("node:test");
 const assert = require("node:assert/strict");
-const fs = require("node:fs");
-const os = require("node:os");
-const path = require("node:path");
+const { EventEmitter } = require("node:events");
+const { PassThrough } = require("node:stream");
 
-const {
-  BUILD_SCRIPT,
-  formatBuildFailure,
-  readFailureTail,
-  runBuildForLint
-} = require("./build-for-lint");
+const { BUILD_SCRIPT, formatBuildFailure, runBuildForLint } = require("./build-for-lint");
 
-// Regression: the content lint used to shell out with stdio "inherit", so a
-// failing build threw `Command failed: node scripts/enforcement/build-site.js`
-// with stdout and stderr both null. A held worktree lock then read as a
-// content-lint defect, and the real cause never reached the proof gate.
-test("build failure message carries the child stderr instead of dropping it", () => {
+function fakeChild({ status = 0, signal = null, stdout = "", stderr = "", error = null }) {
+  const child = new EventEmitter();
+  child.stdout = new PassThrough();
+  child.stderr = new PassThrough();
+
+  process.nextTick(() => {
+    child.stdout.end(stdout);
+    child.stderr.end(stderr);
+    if (error) {
+      child.emit("error", error);
+    } else {
+      child.emit("close", status, signal);
+    }
+  });
+
+  return child;
+}
+
+const quietOutput = {
+  stdout: { write() {} },
+  stderr: { write() {} }
+};
+
+test("build failure message carries stderr and status", () => {
   const message = formatBuildFailure({
     status: 1,
     signal: null,
     stdout: "",
-    stderr:
-      "Another repo-wide build or release check is already running in this worktree (pid 4242).\n"
+    stderr: "Another repo-wide build or release check is already running in this worktree.\n"
   });
 
   assert.match(message, /already running in this worktree/);
-  assert.match(message, /pid 4242/);
   assert.match(message, /exited with code 1/);
 });
 
-test("build failure message falls back to stdout when stderr is empty", () => {
+test("build failure message carries stdout when stderr is empty", () => {
   const message = formatBuildFailure({
     status: 2,
     stdout: "validate-properties-availability-output: missing availability rows\n",
@@ -40,63 +51,79 @@ test("build failure message falls back to stdout when stderr is empty", () => {
   assert.match(message, /exited with code 2/);
 });
 
-test("build failure message says so plainly when the child produced no output", () => {
+test("build failure message reports no output plainly", () => {
   const message = formatBuildFailure({ status: 1, stdout: "", stderr: "" });
 
   assert.match(message, /produced no output/);
   assert.ok(!message.includes("undefined"));
 });
 
-test("build failure message names the signal when the child was killed", () => {
-  const message = formatBuildFailure({ status: null, signal: "SIGKILL", stderr: "" });
-
-  assert.match(message, /terminated by signal SIGKILL/);
-});
-
-test("runBuildForLint throws with the child stderr on a non-zero exit", () => {
-  const spawn = () => ({
+test("build failure message preserves both streams and bounds long lines", () => {
+  const message = formatBuildFailure({
     status: 1,
-    signal: null,
-    stdout: "",
-    stderr: "Another repo-wide build or release check is already running in this worktree (pid 99).\n"
+    stdout: "FATAL: availability output validation failed\n",
+    stderr: `${"x".repeat(500000)}\n`
   });
 
-  assert.throws(
-    () => runBuildForLint({ cwd: "/tmp", spawn }),
-    /already running in this worktree/
+  assert.match(message, /FATAL: availability output validation failed/);
+  assert.ok(message.length < 200000, `evidence must be bounded, got ${message.length} chars`);
+});
+
+test("signal kills never read as success", async () => {
+  await assert.rejects(
+    () =>
+      runBuildForLint({
+        output: quietOutput,
+        spawn: () => fakeChild({ status: 0, signal: "SIGKILL" })
+      }),
+    /terminated by signal SIGKILL/
   );
 });
 
-test("runBuildForLint reports a spawn error instead of a bare exit code", () => {
-  const spawn = () => ({ error: new Error("spawn ENOENT"), status: null });
-
-  assert.throws(() => runBuildForLint({ cwd: "/tmp", spawn }), /could not be started: spawn ENOENT/);
+test("spawn errors are actionable", async () => {
+  await assert.rejects(
+    () =>
+      runBuildForLint({
+        output: quietOutput,
+        spawn: () => fakeChild({ error: new Error("spawn ENOENT") })
+      }),
+    /could not be started: spawn ENOENT/
+  );
 });
 
-test("runBuildForLint returns the result and runs the build script on success", () => {
-  const calls = [];
-  const spawn = (command, args, options) => {
-    calls.push({ command, args, options });
-    return { status: 0, stdout: "", stderr: "" };
-  };
+test("large output stays bounded while preserving the failure tail", async () => {
+  const output = `HEAD diagnostic\n${"x".repeat(500000)}\nTAIL diagnostic\n`;
 
-  const result = runBuildForLint({ cwd: "/tmp", spawn });
+  await assert.rejects(
+    () =>
+      runBuildForLint({
+        output: quietOutput,
+        spawn: () => fakeChild({ status: 1, stdout: output })
+      }),
+    (error) => {
+      assert.match(error.message, /HEAD diagnostic/);
+      assert.match(error.message, /TAIL diagnostic/);
+      assert.match(error.message, /output truncated for bounded evidence/);
+      assert.ok(error.message.length < 200000, `evidence must be bounded, got ${error.message.length}`);
+      return true;
+    }
+  );
+});
+
+test("successful runs capture the build entrypoint", async () => {
+  const calls = [];
+  const result = await runBuildForLint({
+    cwd: "/tmp",
+    output: quietOutput,
+    spawn: (command, args, options) => {
+      calls.push({ command, args, options });
+      return fakeChild({});
+    }
+  });
 
   assert.equal(result.status, 0);
   assert.equal(calls.length, 1);
   assert.deepEqual(calls[0].args, [BUILD_SCRIPT]);
   assert.equal(calls[0].options.cwd, "/tmp");
-  assert.equal(calls[0].options.encoding, "utf8");
-});
-
-test("readFailureTail keeps only the bounded end of a streamed build log", (t) => {
-  const directory = fs.mkdtempSync(path.join(os.tmpdir(), "build-for-lint-tail-"));
-  t.after(() => fs.rmSync(directory, { recursive: true, force: true }));
-
-  const logPath = path.join(directory, "build.log");
-  fs.writeFileSync(logPath, `${"x".repeat(100_000)}\nlast useful failure\n`);
-
-  const tail = readFailureTail(logPath);
-  assert.match(tail, /last useful failure/);
-  assert.ok(Buffer.byteLength(tail, "utf8") <= 64 * 1024);
+  assert.deepEqual(calls[0].options.stdio, ["ignore", "pipe", "pipe"]);
 });

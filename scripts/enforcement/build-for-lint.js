@@ -1,131 +1,176 @@
-const fs = require("node:fs");
-const os = require("node:os");
 const path = require("path");
-const { spawnSync } = require("node:child_process");
+const { spawn: spawnChild } = require("node:child_process");
 
 const BUILD_SCRIPT = "scripts/enforcement/build-site.js";
-const EVIDENCE_LINE_LIMIT = 12;
-const FAILURE_TAIL_BYTES = 64 * 1024;
+const EVIDENCE_HEAD_LINES = 80;
+const EVIDENCE_TAIL_LINES = 80;
+const EVIDENCE_LINE_CHARS = 2000;
+const CAPTURE_LIMIT_CHARS = 400000;
+const CAPTURE_HEAD_CHARS = CAPTURE_LIMIT_CHARS / 2;
+const CAPTURE_TAIL_CHARS = CAPTURE_LIMIT_CHARS / 2;
 
-function lastLines(text, limit) {
-  return String(text || "")
-    .split("\n")
-    .map((line) => line.trimEnd())
-    .filter((line) => line.length > 0)
-    .slice(-limit)
-    .join("\n");
+function createBoundedCapture() {
+  let complete = "";
+  let tail = "";
+  let truncated = false;
+
+  return {
+    append(value) {
+      const text = String(value);
+
+      if (!truncated) {
+        const combined = complete + text;
+        if (combined.length <= CAPTURE_LIMIT_CHARS) {
+          complete = combined;
+          return;
+        }
+
+        complete = combined.slice(0, CAPTURE_HEAD_CHARS);
+        tail = combined.slice(-CAPTURE_TAIL_CHARS);
+        truncated = true;
+        return;
+      }
+
+      tail = (tail + text).slice(-CAPTURE_TAIL_CHARS);
+    },
+
+    text() {
+      if (!truncated) {
+        return complete;
+      }
+
+      return `${complete}\n  ... output truncated for bounded evidence ...\n${tail}`;
+    }
+  };
 }
 
-// The build wrapper reports real causes on stderr - a held worktree lock, a
-// Hostaway cache failure, a failed availability validation. Discarding that
-// output makes every one of them look like a content-lint defect, so the
-// failure message has to carry the child's own words.
+function evidenceFrom(text) {
+  const lines = String(text || "")
+    .split("\n")
+    .map((line) => line.trimEnd().slice(0, EVIDENCE_LINE_CHARS))
+    .filter((line) => line.length > 0);
+
+  if (lines.length <= EVIDENCE_HEAD_LINES + EVIDENCE_TAIL_LINES) {
+    return lines.join("\n");
+  }
+
+  const head = lines.slice(0, EVIDENCE_HEAD_LINES);
+  const tail = lines.slice(-EVIDENCE_TAIL_LINES);
+  const omitted = lines.length - head.length - tail.length;
+
+  return [...head, `  ... ${omitted} more line(s) ...`, ...tail].join("\n");
+}
+
 function formatBuildFailure(result) {
   const status = result && result.status;
   const signal = result && result.signal;
   const reason = signal ? `terminated by signal ${signal}` : `exited with code ${status}`;
-  const evidence = lastLines(result && result.stderr, EVIDENCE_LINE_LIMIT)
-    || lastLines(result && result.stdout, EVIDENCE_LINE_LIMIT);
+  const sections = [
+    ["stderr", evidenceFrom(result && result.stderr)],
+    ["stdout", evidenceFrom(result && result.stdout)]
+  ].filter(([, evidence]) => evidence);
 
-  if (!evidence) {
+  if (!sections.length) {
     return `${BUILD_SCRIPT} ${reason} and produced no output to explain why.`;
   }
 
-  return `${BUILD_SCRIPT} ${reason}:\n${evidence}`;
+  const body = sections
+    .map(([label, evidence]) => `--- ${label} ---\n${evidence}`)
+    .join("\n");
+
+  return `${BUILD_SCRIPT} ${reason}:\n${body}`;
 }
 
-function readFailureTail(filePath) {
-  let descriptor;
+function formatSpawnFailure(error, result) {
+  const sections = [
+    ["stderr", evidenceFrom(result && result.stderr)],
+    ["stdout", evidenceFrom(result && result.stdout)]
+  ].filter(([, evidence]) => evidence);
 
-  try {
-    const { size } = fs.statSync(filePath);
-    const start = Math.max(0, size - FAILURE_TAIL_BYTES);
-    const buffer = Buffer.alloc(size - start);
-    descriptor = fs.openSync(filePath, "r");
-    fs.readSync(descriptor, buffer, 0, buffer.length, start);
-    return buffer.toString("utf8");
-  } catch {
-    return "";
-  } finally {
-    if (descriptor !== undefined) {
-      fs.closeSync(descriptor);
-    }
-  }
-}
+  const evidence = sections
+    .map(([label, output]) => `--- ${label} ---\n${output}`)
+    .join("\n");
 
-function runStreamingBuild(cwd) {
-  const outputDir = fs.mkdtempSync(path.join(os.tmpdir(), "seascape-build-for-lint-"));
-  const outputPath = path.join(outputDir, "build.log");
-
-  try {
-    // bash owns the pipe so the build's output reaches the caller immediately;
-    // the log file is only read back when a failure needs a bounded evidence
-    // tail. This avoids spawnSync's 1 MiB pipe buffer entirely.
-    const result = spawnSync(
-      "bash",
-      [
-        "-o",
-        "pipefail",
-        "-c",
-        '"$1" "$2" 2>&1 | tee "$3"',
-        "build-for-lint",
-        process.execPath,
-        BUILD_SCRIPT,
-        outputPath
-      ],
-      {
-        cwd,
-        stdio: "inherit"
-      }
-    );
-
-    if (result.error || result.status !== 0 || result.signal) {
-      return {
-        ...result,
-        stdout: readFailureTail(outputPath),
-        stderr: ""
-      };
-    }
-
-    return { ...result, stdout: "", stderr: "" };
-  } finally {
-    fs.rmSync(outputDir, { recursive: true, force: true });
-  }
+  return `${BUILD_SCRIPT} could not be started: ${error.message}${evidence ? `\n${evidence}` : ""}`;
 }
 
 function runBuildForLint(options = {}) {
   const cwd = options.cwd || path.resolve(__dirname, "..", "..");
-  const result = options.spawn
-    ? options.spawn(process.execPath, [BUILD_SCRIPT], {
+  const spawn = options.spawn || spawnChild;
+  const output = options.output || { stdout: process.stdout, stderr: process.stderr };
+
+  return new Promise((resolve, reject) => {
+    const stdout = createBoundedCapture();
+    const stderr = createBoundedCapture();
+    let child;
+    let settled = false;
+
+    const rejectOnce = (error) => {
+      if (settled) {
+        return;
+      }
+
+      settled = true;
+      reject(error);
+    };
+
+    try {
+      child = spawn(process.execPath, [BUILD_SCRIPT], {
         cwd,
-        encoding: "utf8"
-      })
-    : runStreamingBuild(cwd);
+        stdio: ["ignore", "pipe", "pipe"]
+      });
+    } catch (error) {
+      rejectOnce(new Error(formatSpawnFailure(error, { stdout: "", stderr: "" })));
+      return;
+    }
 
-  if (result && result.error) {
-    throw new Error(`${BUILD_SCRIPT} could not be started: ${result.error.message}`);
-  }
+    const captureStream = (stream, capture, destination) => {
+      stream.on("data", (chunk) => {
+        const text = String(chunk);
+        capture.append(text);
+        destination.write(text);
+      });
+    };
 
-  // Keep the build's own progress output visible; the lint run is long enough
-  // that a silent child reads as a hang.
-  if (result && result.stdout) {
-    process.stdout.write(result.stdout);
-  }
+    captureStream(child.stdout, stdout, output.stdout);
+    captureStream(child.stderr, stderr, output.stderr);
 
-  if (result && result.stderr) {
-    process.stderr.write(result.stderr);
-  }
+    child.on("error", (error) => {
+      rejectOnce(
+        new Error(
+          formatSpawnFailure(error, {
+            stdout: stdout.text(),
+            stderr: stderr.text()
+          })
+        )
+      );
+    });
 
-  if (!result || result.status !== 0) {
-    throw new Error(formatBuildFailure(result));
-  }
+    child.on("close", (status, signal) => {
+      const result = {
+        status,
+        signal,
+        stdout: stdout.text(),
+        stderr: stderr.text()
+      };
 
-  return result;
+      if (settled) {
+        return;
+      }
+
+      settled = true;
+      if (status !== 0 || signal) {
+        reject(new Error(formatBuildFailure(result)));
+        return;
+      }
+
+      resolve(result);
+    });
+  });
 }
 
 module.exports = {
   BUILD_SCRIPT,
   formatBuildFailure,
-  readFailureTail,
   runBuildForLint
 };

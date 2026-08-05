@@ -55,9 +55,20 @@ function getGitDir() {
 }
 
 function getRepoRootDir() {
-  return execFileSync("git", ["rev-parse", "--show-toplevel"], {
-    encoding: "utf8"
-  }).trim();
+  try {
+    return execFileSync("git", ["rev-parse", "--show-toplevel"], {
+      encoding: "utf8",
+      stdio: ["ignore", "pipe", "pipe"]
+    }).trim();
+  } catch (error) {
+    const stderr = error && error.stderr ? String(error.stderr).trim() : "";
+    const detail = stderr || (error && error.message) || "Git root lookup failed.";
+
+    throw new Error(
+      `Cannot resolve the repository root from \"${process.cwd()}\"; ` +
+        `this command must run inside a checked-out Git worktree.\n${detail}`
+    );
+  }
 }
 
 function getDefaultLockRootDir(repoRootDir) {
@@ -321,9 +332,7 @@ function withWorktreeLock(options, fn) {
 
   process.env[lockEnvVar] = lockPath;
 
-  try {
-    return fn();
-  } finally {
+  const release = () => {
     if (previousLockValue === undefined) {
       delete process.env[lockEnvVar];
     } else {
@@ -331,7 +340,36 @@ function withWorktreeLock(options, fn) {
     }
 
     removeOwnerMarker(lockPath, getOwnerMetadataPath(lockPath, owner.token));
+  };
+
+  let result;
+
+  try {
+    result = fn();
+  } catch (error) {
+    release();
+    throw error;
   }
+
+  // The build is streamed now, so callbacks can be async. A plain finally would
+  // release the lock the moment the promise was created and let the next build
+  // delete _site while this one is still reading it - the exact interleaving
+  // this lock exists to prevent. Hold the lock until the work settles.
+  if (result && typeof result.then === "function") {
+    return result.then(
+      (value) => {
+        release();
+        return value;
+      },
+      (error) => {
+        release();
+        throw error;
+      }
+    );
+  }
+
+  release();
+  return result;
 }
 
 module.exports = {

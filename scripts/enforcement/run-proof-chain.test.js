@@ -13,7 +13,14 @@ function sleepSync(ms) {
   Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms);
 }
 
-function waitForFile(filePath, timeoutMs = 5000) {
+// These budgets cover process startup, not the property under test. The whole
+// suite runs test files in parallel, so two workers each spawning their own
+// child can easily need more than 5s just to reach the inspect stage on a
+// saturated machine - which timed the test out before it asserted anything.
+// The serialization assertion below is unchanged and still strict.
+const STARTUP_TIMEOUT_MS = 30000;
+
+function waitForFile(filePath, timeoutMs = STARTUP_TIMEOUT_MS) {
   const deadline = Date.now() + timeoutMs;
 
   while (Date.now() < deadline) {
@@ -27,7 +34,7 @@ function waitForFile(filePath, timeoutMs = 5000) {
   throw new Error(`expected ${filePath} to appear`);
 }
 
-function waitForChild(child, timeoutMs = 5000) {
+function waitForChild(child, timeoutMs = STARTUP_TIMEOUT_MS) {
   return new Promise((resolve, reject) => {
     if (child.exitCode !== null) {
       resolve(child.exitCode);
