@@ -142,6 +142,7 @@ function evaluateStop({
   existingReceipt = null,
   beforeRun = () => {},
   inspectWorktree = () => worktreeDirty,
+  runProofChain = (fn) => fn(),
 }) {
   if (payload.stop_hook_active && loopStateUnchanged) {
     return {
@@ -231,10 +232,34 @@ function evaluateStop({
     };
   }
 
-  const primaryRun = runner(command);
+  let primaryRun;
   const additionalSteps = [];
-  if (primaryRun.status === 0 && testCommand && command !== testCommand) {
-    additionalSteps.push({ ...runner(testCommand), command: testCommand });
+  try {
+    runProofChain(() => {
+      primaryRun = runner(command);
+      if (primaryRun.status === 0 && testCommand && command !== testCommand) {
+        additionalSteps.push({ ...runner(testCommand), command: testCommand });
+      }
+    });
+  } catch (error) {
+    const message =
+      `${LOG} BLOCKED [proof-lock-failed] ` +
+      `Could not run the declared proof under the repo-build lock (${error.message}). ` +
+      `Wait for the other proof chain to finish, then finish again.`;
+    return {
+      block: true,
+      ranTests: false,
+      wroteReceipt: true,
+      receipt: buildReceipt({
+        command,
+        status: 1,
+        headSha,
+        baseSha,
+        output: message,
+      }),
+      loopRetryable: false,
+      message,
+    };
   }
   const receipt = buildReceipt({
     command,
@@ -299,8 +324,21 @@ function readPayload() {
   }
 }
 
+// An inherited GIT_DIR / GIT_WORK_TREE / GIT_INDEX_FILE - exported by every git
+// hook - overrides `cwd` and points these commands at whatever repository
+// invoked us. worktreeFingerprint then returns "" for both the clean and the
+// dirty state, so the gate stops being able to tell them apart. Always resolve
+// the repository from projectRoot alone.
+const GIT_ENV = Object.fromEntries(
+  Object.entries(process.env).filter(([key]) => !key.startsWith("GIT_")),
+);
+
 function git(projectRoot, args) {
-  const result = spawnSync("git", args, { cwd: projectRoot, encoding: "utf8" });
+  const result = spawnSync("git", args, {
+    cwd: projectRoot,
+    encoding: "utf8",
+    env: GIT_ENV,
+  });
   return result.status === 0 ? String(result.stdout).trim() : "";
 }
 
@@ -311,13 +349,14 @@ function worktreeIsDirty(projectRoot) {
     {
       cwd: projectRoot,
       encoding: "utf8",
+      env: GIT_ENV,
     },
   );
   return result.status !== 0 || Boolean(String(result.stdout).trim());
 }
 
 function gitBuffer(projectRoot, args) {
-  const result = spawnSync("git", args, { cwd: projectRoot });
+  const result = spawnSync("git", args, { cwd: projectRoot, env: GIT_ENV });
   return result.status === 0 ? result.stdout : null;
 }
 
@@ -413,11 +452,36 @@ function invalidateHeadReceipt(projectRoot, headSha) {
   });
 }
 
+function terminateProcessGroup(pid) {
+  if (!Number.isInteger(pid) || pid <= 0) {
+    return;
+  }
+
+  if (process.platform === "win32") {
+    spawnSync("taskkill", ["/pid", String(pid), "/T", "/F"], {
+      stdio: "ignore",
+    });
+    return;
+  }
+
+  try {
+    // createProofRunner launches a detached shell, so its pid is the process
+    // group id. Killing the group prevents inherited proof descendants from
+    // continuing to touch _site after repo-build is released.
+    process.kill(-pid, "SIGKILL");
+  } catch (error) {
+    if (error.code !== "ESRCH") {
+      throw error;
+    }
+  }
+}
+
 function createProofRunner(
   projectRoot,
   {
     now = Date.now,
     spawn = spawnSync,
+    terminateProcessTree = terminateProcessGroup,
     timeoutMs = TEST_TIMEOUT_MS,
   } = {},
 ) {
@@ -427,15 +491,37 @@ function createProofRunner(
       cwd: projectRoot,
       shell: true,
       encoding: "utf8",
+      // The timeout must be able to reap npm/Node/Eleventy descendants as a
+      // group before the outer repo-build lock is released.
+      detached: true,
       // .keel/verify and testCommand share one deadline so the hook's outer
       // timeout always has room to report the result and persist the receipt.
       timeout: Math.max(1, deadline - now()),
     });
+
+    if (run.error?.code === "ETIMEDOUT" || run.signal) {
+      terminateProcessTree(run.pid);
+    }
+
     return {
       status: run.status === null ? 1 : run.status,
       output: `${run.stdout || ""}${run.stderr || ""}`,
     };
   };
+}
+
+function runProofUnderRepoBuildLock(projectRoot, fn) {
+  const lockModulePath = path.join(projectRoot, "scripts", "enforcement", "worktree-lock.js");
+
+  // The proof gate is also copied into small fixture repositories in its own
+  // tests. Those fixtures do not have the site's build lock, so preserve the
+  // generic gate behavior there while locking the real repository proof.
+  if (!fs.existsSync(lockModulePath)) {
+    return fn();
+  }
+
+  const { withWorktreeLock } = require(lockModulePath);
+  return withWorktreeLock({ name: "repo-build", repoRootDir: projectRoot }, fn);
 }
 
 function readKeelVerify(projectRoot) {
@@ -550,6 +636,7 @@ function main() {
       (baseResolved &&
         git(projectRoot, ["merge-base", configuredBaseRef, "HEAD"]) !== baseSha),
     runner,
+    runProofChain: (fn) => runProofUnderRepoBuildLock(projectRoot, fn),
   });
 
   if (result.wroteReceipt && result.receipt) {
@@ -595,6 +682,7 @@ module.exports = {
   evaluateStop,
   buildReceipt,
   createProofRunner,
+  runProofUnderRepoBuildLock,
   invalidateHeadReceipt,
   outputTail,
   readKeelVerify,

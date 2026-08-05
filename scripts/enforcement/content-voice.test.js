@@ -4,6 +4,7 @@ const test = require("node:test");
 const assert = require("node:assert/strict");
 const { execSync } = require("node:child_process");
 const { runBuildForLint } = require("./build-for-lint");
+const { withWorktreeLock } = require("./worktree-lock");
 const { extractAuthorizedSourceSectionText } = require("./search-brief-gate");
 
 const projectRoot = path.resolve(__dirname, "..", "..");
@@ -1174,7 +1175,7 @@ test("repo public-copy source and data surfaces do not ship instruction-template
   assert.deepEqual([...sourceViolations, ...dataViolations], []);
 });
 
-test("changed public content and source-backed copy files require active briefs and pass gate checks", async () => {
+async function runChangedPublicContentGate() {
   await ensureRenderedOutputForContentLint();
 
   const changedFiles = getChangedFiles();
@@ -1245,4 +1246,13 @@ test("changed public content and source-backed copy files require active briefs 
   }
 
   assert.deepEqual(violations, []);
+}
+
+test("changed public content and source-backed copy files require active briefs and pass gate checks", async () => {
+  // build-site.js owns the same lock, so this is reentrant for the build child.
+  // Keeping the outer lock here is what prevents a second build from deleting
+  // or rewriting _site while this test inspects rendered public content.
+  // The gate is async now that the build streams, so the await matters: without
+  // it the lock would drop before the rendered content had been inspected.
+  await withWorktreeLock({ name: "repo-build" }, runChangedPublicContentGate);
 });
