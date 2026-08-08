@@ -101,6 +101,51 @@ function runGate({ projectRoot, scriptDir }, payload = {}) {
   });
 }
 
+// Regression: these fixtures ran green under `node --test` but failed under
+// the pre-commit hook with "fatal: this operation must be run in a work tree",
+// because the hook's GIT_DIR/GIT_WORK_TREE pointed every fixture git command at
+// the outer repository. The gate that guards commits has to pass while running
+// inside a commit.
+test("git fixtures ignore hook-exported GIT_* env", (t) => {
+  const fixtureRepo = fs.mkdtempSync(path.join(os.tmpdir(), "proof-gate-env-"));
+  t.after(() => fs.rmSync(fixtureRepo, { recursive: true, force: true }));
+
+  runGit(fixtureRepo, ["init"]);
+
+  const outerRoot = path.resolve(__dirname, "..", "..");
+  const hookEnv = {
+    ...CLEAN_ENV,
+    GIT_DIR: path.join(outerRoot, ".git"),
+    GIT_WORK_TREE: outerRoot,
+  };
+  const strippedEnv = Object.fromEntries(
+    Object.entries(hookEnv).filter(([key]) => !key.startsWith("GIT_"))
+  );
+
+  const leaked = spawnSync("git", ["rev-parse", "--show-toplevel"], {
+    cwd: fixtureRepo,
+    encoding: "utf8",
+    env: hookEnv,
+  });
+  const stripped = spawnSync("git", ["rev-parse", "--show-toplevel"], {
+    cwd: fixtureRepo,
+    encoding: "utf8",
+    env: strippedEnv,
+  });
+
+  assert.equal(stripped.status, 0, stripped.stderr);
+  assert.equal(
+    fs.realpathSync(stripped.stdout.trim()),
+    fs.realpathSync(fixtureRepo),
+    "stripped env must resolve to the fixture repo"
+  );
+  assert.notEqual(
+    leaked.stdout.trim(),
+    stripped.stdout.trim(),
+    "inherited GIT_* must be what breaks the fixture, or this test proves nothing"
+  );
+});
+
 test("loop guard: never blocks twice for the same stop", () => {
   const result = evaluateStop(fixture({ payload: { stop_hook_active: true } }));
   assert.equal(result.block, false);
@@ -760,6 +805,46 @@ test("prefers .keel/verify over testCommand when the repo declares one", () => {
   assert.equal(result.receipt.status, "pass");
 });
 
+test("runs the declared proof and required test under one rendered-proof lock", () => {
+  const events = [];
+  const result = evaluateStop(fixture({
+    keelVerify: "node scripts/enforcement/run-proof-chain.js",
+    runner: (command) => {
+      events.push(`run:${command}`);
+      return { status: 0, output: "ok" };
+    },
+    runProofChain: (fn) => {
+      events.push("lock:acquire");
+      const value = fn();
+      events.push("lock:release");
+      return value;
+    },
+  }));
+
+  assert.equal(result.receipt.status, "pass");
+  assert.deepEqual(events, [
+    "lock:acquire",
+    "run:node scripts/enforcement/run-proof-chain.js",
+    "run:npm test",
+    "lock:release",
+  ]);
+});
+
+test("lock acquisition failures return an explicit blocking proof result", () => {
+  const result = evaluateStop(fixture({
+    runProofChain: () => {
+      throw new Error("lock wait timed out");
+    },
+  }));
+
+  assert.equal(result.block, true);
+  assert.equal(result.ranTests, false);
+  assert.equal(result.wroteReceipt, true);
+  assert.equal(result.receipt.status, "fail");
+  assert.match(result.message, /proof-lock-failed/);
+  assert.match(result.message, /lock wait timed out/);
+});
+
 test("keel receipt still satisfies landing-evaluator's required testCommand", () => {
   // requiredProofCommands() demands a passing step whose command is
   // byte-identical to testCommand. Run it explicitly rather than inferring
@@ -827,6 +912,24 @@ test("both proof commands share one timeout deadline", () => {
   assert.equal(runner("npm run proof").status, 0);
   assert.equal(runner("npm test").status, 0);
   assert.deepEqual(observedTimeouts, [800, 300]);
+});
+
+test("timed-out proof terminates the detached descendant group", () => {
+  const terminated = [];
+  const runner = createProofRunner("/repo", {
+    terminateProcessTree: (pid) => terminated.push(pid),
+    spawn: () => ({
+      error: { code: "ETIMEDOUT" },
+      pid: 4242,
+      signal: "SIGTERM",
+      status: null,
+      stdout: "",
+      stderr: ""
+    })
+  });
+
+  assert.equal(runner("npm run proof").status, 1);
+  assert.deepEqual(terminated, [4242]);
 });
 
 test("a failing run is never recorded as a passing step", () => {
