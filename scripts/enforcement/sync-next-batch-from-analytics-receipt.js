@@ -153,12 +153,17 @@ function renderSerpEvidence(receipt) {
   }
 
   const support = Array.isArray(serp.support) ? serp.support : [];
+  const evidenceAvailable = serp.serp_evidence_status === "available";
   if (support.length > 0) {
     lines.push(
       "",
       "| query | page_path | seascape_rank | classification_support | top_visible_competitors | serp_features |",
       "|---|---|---|---|---|---|",
       ...support.map((target) => {
+        if (!evidenceAvailable) {
+          return `| ${formatCell(target.query)} | ${formatCell(target.page_path)} | unavailable | unavailable | unavailable | unavailable |`;
+        }
+
         const competitors = Array.isArray(target.top_visible_competitors)
           ? target.top_visible_competitors
               .map((competitor) => competitor?.domain || competitor?.url || competitor)
