@@ -250,3 +250,36 @@ test("replaceLatestExecutionRead updates only the latest execution read block", 
   assert.doesNotMatch(updated, /old volatile read/);
   assert.match(updated, /## Likely Priorities\n\n1\. keep this section/);
 });
+
+
+test("unavailable SERP receipts cannot render rank or competitor evidence", () => {
+  const unavailableReceipt = {
+    ...receipt,
+    serp_evidence: {
+      ...receipt.serp_evidence,
+      serp_evidence_status: "unavailable",
+      error_kind: "auth_missing",
+      support: [
+        {
+          query: "fake query",
+          page_path: "/stays/fake/",
+          seascape_rank: { status: "present", rank_group: 3 },
+          classification_support: "supports_ctr_issue",
+          top_visible_competitors: [{ domain: "competitor.example" }],
+          serp_features: ["organic"]
+        }
+      ]
+    }
+  };
+
+  const rendered = renderLatestExecutionRead(unavailableReceipt);
+
+  assert.match(rendered, /- Evidence status: `unavailable`./);
+  assert.match(
+    rendered,
+    /\| fake query \| \/stays\/fake\/ \| unavailable \| unavailable \| unavailable \| unavailable \|/
+  );
+  assert.doesNotMatch(rendered, /\| fake query \| \/stays\/fake\/ \| 3 \|/);
+  assert.doesNotMatch(rendered, /competitor\.example/);
+  assert.doesNotMatch(rendered, /supports_ctr_issue/);
+});

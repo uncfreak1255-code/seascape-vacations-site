@@ -16,13 +16,13 @@
 
 ## Latest Execution Read
 
-Run date: 2026-07-20.
+Run date: 2026-08-11.
 
 The targeted joined operator read was executed in `seascape-analytics` and
 rendered here from its machine-readable next-batch decision receipt.
 
-- Requested last-7-complete-day window: 2026-07-12 to 2026-07-18.
-- Latest BigQuery GSC `data_date`: 2026-07-18.
+- Requested last-7-complete-day window: 2026-08-03 to 2026-08-09.
+- Latest BigQuery GSC `data_date`: 2026-08-09.
 - Site work gate: `clear` - joined GSC + GA4 read covers the requested window.
 - Reread status: `fresh but below threshold`.
 - Concrete next move: owner cluster cannot clear by waiting - qualify one owner-direct, permissioned signal (see the Owner-Direct Intake Escalation section in seascape-vacations-site/docs/status/next-batch.md and seascape-vacations-site/docs/status/owner-direct-intake-policy.md). Do not use Airbnb or Vrbo host messaging; qualification is not a lead, named candidate state does not belong in the public site repo, and any one-to-one message still requires Sawyer's separate approval.
@@ -33,24 +33,54 @@ Cluster read from the analytics receipt:
 
 | cluster | pages | gsc_clicks | gsc_impressions | gsc_ctr | gsc_position | ga4_sessions |
 |---|---:|---:|---:|---:|---:|---:|
-| brand | 1 | 9 | 336 | 2.68% | 6.39 | 107 |
-| catalog | 1 | 0 | 38 | 0.00% | 18.87 | 32 |
-| guide_support | 1 | 1 | 526 | 0.19% | 6.74 | 3 |
-| guide_winners | 4 | 68 | 6257 | 1.09% | 4.02 | 113 |
-| owner_hub | 1 | 0 | 33 | 0.00% | 13.97 | 4 |
-| owner_money | 4 | 0 | 7 | 0.00% | 5.71 | 3 |
-| owner_support | 1 | 0 | 3 | 0.00% | 23.33 | 4 |
-| property_pages | 1 | 0 | 0 | 0.00% | 0.00 | 2 |
-| stay_money | 2 | 0 | 0 | 0.00% | 0.00 | 18 |
-| stay_support | 2 | 0 | 212 | 0.00% | 58.52 | 7 |
+| brand | 1 | 3 | 175 | 1.71% | 8.98 | 95 |
+| catalog | 1 | 0 | 15 | 0.00% | 13.53 | 34 |
+| guide_support | 1 | 0 | 362 | 0.00% | 5.86 | 0 |
+| guide_winners | 4 | 44 | 4362 | 1.01% | 4.14 | 82 |
+| owner_hub | 1 | 0 | 21 | 0.00% | 10.43 | 12 |
+| owner_money | 4 | 0 | 58 | 0.00% | 18.10 | 2 |
+| owner_support | 1 | 1 | 9 | 11.11% | 15.00 | 1 |
+| property_pages | 1 | 0 | 0 | 0.00% | 0.00 | 4 |
+| stay_money | 2 | 0 | 57 | 0.00% | 57.49 | 9 |
+| stay_support | 2 | 0 | 160 | 0.00% | 64.59 | 1 |
 
 SEO queue read from the analytics receipt:
 
 | queue_bucket | pages | gsc_clicks | gsc_impressions | ga4_sessions |
 |---|---:|---:|---:|---:|
-| too thin to call | 11 | 0 | 81 | 66 |
-| transfer/CRO issue | 1 | 27 | 2383 | 51 |
-| wait | 6 | 51 | 4948 | 176 |
+| too thin to call | 11 | 1 | 160 | 62 |
+| wait | 7 | 47 | 5059 | 178 |
+
+SERP evidence from the analytics receipt:
+
+- Evidence status: `unavailable`.
+- Mode: `standard_queue`.
+- Task count: 21.
+- Error kind: `auth_missing`.
+
+| query | page_path | seascape_rank | classification_support | top_visible_competitors | serp_features |
+|---|---|---|---|---|---|
+| Anna Maria Island vacation rentals | /stays/anna-maria-island-vacation-rentals/ | unavailable | unavailable | unavailable | unavailable |
+| vacation rentals near Anna Maria Island | /stays/vacation-rentals-near-anna-maria-island/ | unavailable | unavailable | unavailable | unavailable |
+| Seascape Vacations Bradenton Sarasota vacation rentals | / | unavailable | unavailable | unavailable | unavailable |
+| vacation rental property management | /property-management/ | unavailable | unavailable | unavailable | unavailable |
+| vacation rental management fees Florida | /property-management/vacation-rental-management-fees-florida/ | unavailable | unavailable | unavailable | unavailable |
+| Bradenton vs Sarasota vacation | /guides/bradenton-vs-sarasota/ | unavailable | unavailable | unavailable | unavailable |
+| Sarasota airport to Anna Maria Island | /guides/srq-airport-to-anna-maria-island/ | unavailable | unavailable | unavailable | unavailable |
+| Sarasota to Anna Maria Island | /guides/srq-airport-to-anna-maria-island/ | unavailable | unavailable | unavailable | unavailable |
+| Anna Maria Island vs Siesta Key | /guides/anna-maria-island-vs-siesta-key/ | unavailable | unavailable | unavailable | unavailable |
+| Siesta Key vs Anna Maria Island for families | /guides/siesta-key-vs-anna-maria-island-families/ | unavailable | unavailable | unavailable | unavailable |
+| best time to visit Anna Maria Island | /guides/best-time-visit-anna-maria-island/ | unavailable | unavailable | unavailable | unavailable |
+| Florida Gulf Coast vacation rental market report | /guides/florida-gulf-coast-vacation-rental-market-report-2026/ | unavailable | unavailable | unavailable | unavailable |
+| Bradenton vs Sarasota for families | /guides/bradenton-vs-sarasota-for-families/ | unavailable | unavailable | unavailable | unavailable |
+| best vacation rental companies Anna Maria Island | /guides/best-vacation-rental-companies-ami/ | unavailable | unavailable | unavailable | unavailable |
+| Anna Maria vacation rental companies | /guides/best-vacation-rental-companies-ami/ | unavailable | unavailable | unavailable | unavailable |
+| luxury vacation rentals Sarasota | /stays/luxury-vacation-rentals-sarasota/ | unavailable | unavailable | unavailable | unavailable |
+| vacation rental management Bradenton | /property-management/vacation-rental-management-bradenton/ | unavailable | unavailable | unavailable | unavailable |
+| vacation rental management Sarasota | /property-management/vacation-rental-management-sarasota/ | unavailable | unavailable | unavailable | unavailable |
+| Anna Maria Island property management | /property-management/vacation-rental-management-anna-maria-island/ | unavailable | unavailable | unavailable | unavailable |
+| bradenton vacation rentals near beaches | /stays/bradenton-vacation-rentals-near-beaches/ | unavailable | unavailable | unavailable | unavailable |
+| sarasota vacation rentals with pool | /stays/sarasota-vacation-rentals-with-pool/ | unavailable | unavailable | unavailable | unavailable |
 
 Do not open a new owner, stay, guide, GEO, or SEO expansion branch from this read.
 If a tracked winner or money page has regressed, use `docs/process/ranking-regression-rescue.md` for a bounded rescue brief instead of waiting passively.
