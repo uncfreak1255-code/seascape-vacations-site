@@ -119,6 +119,35 @@ test("june 12 404 alert routes redirect to current live destinations", () => {
   }
 });
 
+test("august 2026 dead stays slugs redirect to current live destinations", () => {
+  const redirects = fs.readFileSync(path.join(projectRoot, "src", "_redirects"), "utf8");
+
+  for (const redirectRule of [
+    "/stays/bradenton-beach-house-rental  /stays/bradenton-vacation-rentals-near-beaches/  301",
+    "/stays/bradenton-beach-house-rental/  /stays/bradenton-vacation-rentals-near-beaches/  301",
+    "/stays/monthly-vacation-rentals-florida-gulf-coast  /stays/snowbird-rentals-florida-gulf-coast/  301",
+    "/stays/monthly-vacation-rentals-florida-gulf-coast/  /stays/snowbird-rentals-florida-gulf-coast/  301",
+    "/stays/vacation-rentals-near-siesta-key-beach  /stays/siesta-key-area-vacation-rentals/  301",
+    "/stays/vacation-rentals-near-siesta-key-beach/  /stays/siesta-key-area-vacation-rentals/  301",
+    "/stays/riverwalk-bradenton-vacation-rentals  /stays/bradenton-waterfront-vacation-rentals/  301",
+    "/stays/riverwalk-bradenton-vacation-rentals/  /stays/bradenton-waterfront-vacation-rentals/  301",
+    "/stays/waterfront-vacation-rentals-with-kayaks  /stays/kayaking-vacation-rentals-bradenton/  301",
+    "/stays/waterfront-vacation-rentals-with-kayaks/  /stays/kayaking-vacation-rentals-bradenton/  301",
+    "/stays/paddleboarding-vacation-rentals-florida  /stays/kayaking-vacation-rentals-bradenton/  301",
+    "/stays/paddleboarding-vacation-rentals-florida/  /stays/kayaking-vacation-rentals-bradenton/  301",
+    "/stays/birdwatching-vacation-rentals-florida  /stays/dolphin-watching-vacation-rentals-florida/  301",
+    "/stays/birdwatching-vacation-rentals-florida/  /stays/dolphin-watching-vacation-rentals-florida/  301",
+    "/stays/de-soto-national-memorial-vacation-rentals  /stays/bradenton-vacation-rentals-near-beaches/  301",
+    "/stays/de-soto-national-memorial-vacation-rentals/  /stays/bradenton-vacation-rentals-near-beaches/  301",
+    "/stays/fourth-of-july-vacation-rentals-florida  /stays/long-weekend-getaway-florida/  301",
+    "/stays/fourth-of-july-vacation-rentals-florida/  /stays/long-weekend-getaway-florida/  301",
+    "/stays/vacation-rentals-with-screened-lanai-florida  /properties/  301",
+    "/stays/vacation-rentals-with-screened-lanai-florida/  /properties/  301"
+  ]) {
+    assert.equal(redirects.includes(redirectRule), true, `Expected redirects to include ${redirectRule}`);
+  }
+});
+
 test("legacy guide alias redirects point directly at slash canonicals instead of .html hops", () => {
   const redirects = fs.readFileSync(path.join(projectRoot, "src", "_redirects"), "utf8");
 

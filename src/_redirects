@@ -521,3 +521,29 @@
 /stays/vacation-rentals-with-elevator/  /stays/accessible-vacation-rentals-florida/  301
 /stays/vacation-rentals-with-fire-pit  /stays/vacation-rentals-with-outdoor-grill/  301
 /stays/vacation-rentals-with-fire-pit/  /stays/vacation-rentals-with-outdoor-grill/  301
+
+# --- August 2026 monthly audit dead-slug cleanup (2026-08-10) ---
+# Ten /stays/ URLs from the deleted "DEPLOY THIS FOLDER TO NETLIFY" tree still
+# return hard 404 with no redirect and no sitemap entry. bradenton-beach-house-rental
+# is an exact-match URL for a tracked money keyword. Redirects only — these are not
+# being resurrected as pages.
+/stays/bradenton-beach-house-rental  /stays/bradenton-vacation-rentals-near-beaches/  301
+/stays/bradenton-beach-house-rental/  /stays/bradenton-vacation-rentals-near-beaches/  301
+/stays/monthly-vacation-rentals-florida-gulf-coast  /stays/snowbird-rentals-florida-gulf-coast/  301
+/stays/monthly-vacation-rentals-florida-gulf-coast/  /stays/snowbird-rentals-florida-gulf-coast/  301
+/stays/vacation-rentals-near-siesta-key-beach  /stays/siesta-key-area-vacation-rentals/  301
+/stays/vacation-rentals-near-siesta-key-beach/  /stays/siesta-key-area-vacation-rentals/  301
+/stays/riverwalk-bradenton-vacation-rentals  /stays/bradenton-waterfront-vacation-rentals/  301
+/stays/riverwalk-bradenton-vacation-rentals/  /stays/bradenton-waterfront-vacation-rentals/  301
+/stays/waterfront-vacation-rentals-with-kayaks  /stays/kayaking-vacation-rentals-bradenton/  301
+/stays/waterfront-vacation-rentals-with-kayaks/  /stays/kayaking-vacation-rentals-bradenton/  301
+/stays/paddleboarding-vacation-rentals-florida  /stays/kayaking-vacation-rentals-bradenton/  301
+/stays/paddleboarding-vacation-rentals-florida/  /stays/kayaking-vacation-rentals-bradenton/  301
+/stays/birdwatching-vacation-rentals-florida  /stays/dolphin-watching-vacation-rentals-florida/  301
+/stays/birdwatching-vacation-rentals-florida/  /stays/dolphin-watching-vacation-rentals-florida/  301
+/stays/de-soto-national-memorial-vacation-rentals  /stays/bradenton-vacation-rentals-near-beaches/  301
+/stays/de-soto-national-memorial-vacation-rentals/  /stays/bradenton-vacation-rentals-near-beaches/  301
+/stays/fourth-of-july-vacation-rentals-florida  /stays/long-weekend-getaway-florida/  301
+/stays/fourth-of-july-vacation-rentals-florida/  /stays/long-weekend-getaway-florida/  301
+/stays/vacation-rentals-with-screened-lanai-florida  /properties/  301
+/stays/vacation-rentals-with-screened-lanai-florida/  /properties/  301
