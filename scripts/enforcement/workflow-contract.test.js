@@ -44,6 +44,21 @@ test("release safety audits dependency changes and runs tests without rebuilding
   );
 });
 
+test("production Netlify Blobs stays on the audit-safe dependency line", () => {
+  const packageJson = JSON.parse(
+    fs.readFileSync(path.join(projectRoot, "package.json"), "utf8")
+  );
+  const lockfile = JSON.parse(
+    fs.readFileSync(path.join(projectRoot, "package-lock.json"), "utf8")
+  );
+  const packages = lockfile.packages;
+
+  assert.equal(packageJson.dependencies["@netlify/blobs"], "9.1.5");
+  assert.equal(packages["node_modules/@netlify/blobs"].version, "9.1.5");
+  assert.equal(packages["node_modules/@netlify/dev-utils"].version, "3.1.1");
+  assert.equal(packages["node_modules/image-size"], undefined);
+});
+
 test("performance budget keeps PR proof and full scheduled proof bounded", () => {
   const workflow = readWorkflow("performance-budget.yml");
 
