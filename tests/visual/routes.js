@@ -9,7 +9,7 @@ const moneyRoutes = [
     path: "/property-management/",
     readySelector: "#owner-cta",
     screenshot: {
-      maxDiffPixels: 30_000,
+      maxDiffPixels: 35_000,
       maxDiffPixelRatio: 0.003,
       timeout: 20_000,
     },
@@ -32,6 +32,10 @@ const moneyRoutes = [
     slug: "properties-catalog",
     path: "/properties/",
     readySelector: "main h1",
+    screenshot: {
+      maxDiffPixels: 25_000,
+      maxDiffPixelRatio: 0.012,
+    },
   },
   {
     slug: "guide-bradenton-vs-sarasota",

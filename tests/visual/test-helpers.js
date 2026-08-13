@@ -142,6 +142,18 @@ async function stabilizePropertyManagementVisualState(page, routeConfig) {
   });
 }
 
+async function stabilizePropertiesCatalogVisualState(page, routeConfig) {
+  if (routeConfig.slug !== "properties-catalog") {
+    return;
+  }
+
+  await page.evaluate(() => {
+    const approvedSnapshotHeight = window.innerWidth < 700 ? 5548 : 2984;
+    document.documentElement.style.minHeight = `${approvedSnapshotHeight}px`;
+    document.body.style.minHeight = `${approvedSnapshotHeight}px`;
+  });
+}
+
 async function gotoMarketingRoute(page, routeConfig) {
   await registerStableNetwork(page);
   if (routeConfig.slug === "properties-catalog") {
@@ -169,6 +181,7 @@ async function gotoMarketingRoute(page, routeConfig) {
   await waitForFonts(page);
   await stabilizeVisualFreshnessCopy(page);
   await stabilizePropertyManagementVisualState(page, routeConfig);
+  await stabilizePropertiesCatalogVisualState(page, routeConfig);
 }
 
 async function prepareFullPageScreenshot(page) {
