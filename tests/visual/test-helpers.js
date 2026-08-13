@@ -202,6 +202,10 @@ async function prepareFullPageScreenshot(page) {
   );
   await waitForFonts(page);
   await waitForStableLayout(page);
+
+  // The first full-page capture causes a browser reflow. Warm it up before the baseline assertion.
+  await page.screenshot({ fullPage: true });
+  await waitForStableLayout(page);
 }
 
 module.exports = {
