@@ -90,6 +90,32 @@ business context.
 
 ## Agent-surface-audit receipts
 
+### 2026-08-14 — removed `.agent/` (singular), a dead parallel skill surface
+
+`agent-surface-audit` run on this repo does not recognise `.agent/` as a surface
+at all, and nothing in `AGENTS.md`, `CLAUDE.md`, or this policy references it.
+Inspecting it rather than trusting the directory listing:
+
+- 44 of 49 entries were **dangling symlinks** into `.agents/skills/<name>`,
+  pointing at skills removed in the 2026-04-28 disabling. They resolved to
+  nothing.
+- 4 were working symlinks to `accessibility`, `page-cro`, `schema-markup`, and
+  `site-architecture` — aliases of canonical skills, and the source of a
+  one-letter naming collision with `.agents/`.
+- 1 was real content: `seo-audit/SKILL.md`, 8453 bytes, unique. Larger than
+  both the 3375-byte copy already in `_disabled-skills-2026-04-28/` and the
+  global `~/.codex/skills/seo-audit`, so it was preserved at
+  `_disabled-skills-2026-04-28/seo-audit-full-2026-03/` rather than deleted.
+
+Counting tools disagreed and both were wrong until checked: `git ls-files`
+reported 49 files (symlinks are tracked), while `find -type f` reported 1 (the
+agent-shell `find` is .gitignore-aware and a broken symlink is not a file).
+Only `ls -la` showed what was actually there.
+
+Nothing enters active discovery from this change. The canonical surface remains
+the 16 skills named in `AGENTS.md`, and broad marketing / generic SEO lenses
+remain global-only per "Global marketing skills — advisory lenses" above.
+
 A durable record of approved changes to the local skill/agent surface. Each
 entry is the receipt the governance rule requires for any skill change.
 
