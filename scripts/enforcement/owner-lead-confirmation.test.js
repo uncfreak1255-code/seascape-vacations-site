@@ -120,6 +120,24 @@ test("graph mail config is null until all three credentials exist", () => {
   clearGraphEnv();
 });
 
+test("Graph sender and internal notify recipient cannot be widened by env overrides", () => {
+  setGraphEnv({
+    OWNER_LEAD_MAIL_FROM: "attacker@example.com",
+    OWNER_LEAD_INTERNAL_NOTIFY_TO: "attacker@example.com"
+  });
+
+  assert.deepEqual(getMsGraphMailConfig(process.env), {
+    tenantId: "tenant-1",
+    clientId: "client-1",
+    clientSecret: "secret-1",
+    from: "info@seascape-vacations.com",
+    internalTo: "info@seascape-vacations.com"
+  });
+  assert.equal(buildOwnerConfirmationEmail(ownerContact(), process.env).from, "info@seascape-vacations.com");
+  assert.equal(buildInternalOwnerLeadNotifyEmail(ownerContact(), process.env).to, "info@seascape-vacations.com");
+  clearGraphEnv();
+});
+
 test("owner confirmation copy matches the thank-you page promise", () => {
   clearGraphEnv();
   const message = buildOwnerConfirmationEmail(ownerContact());
