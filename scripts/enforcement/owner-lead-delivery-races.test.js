@@ -81,7 +81,7 @@ test("ambiguous internal-leg transport failures remain non-retryable", async () 
     { submissionId: "ambiguous-internal", email: "owner@example.com", name: "Owner" },
     async () => {
       calls += 1;
-      if (calls === 1) return { ok: true, async json() { return { access_token: "token" }; } };
+      if (calls === 1 || calls === 3) return { ok: true, async json() { return { access_token: "token" }; } };
       if (calls === 2) return { ok: true, status: 202 };
       throw new Error("socket reset");
     },
