@@ -8,6 +8,7 @@
   action="{{ options.action or '/property-management/revenue-review-requested/' }}"
   enctype="multipart/form-data"
   data-netlify="true"
+  data-netlify-recaptcha="true"
   netlify-honeypot="bot-field"
   data-track-form="owner"
   data-form-start-event="owner_form_start"
@@ -102,12 +103,15 @@
       </div>
 
   {% if hasFormCard %}
+      <div data-netlify-recaptcha="true"></div>
+
       <div class="owner-form-actions">
         <button class="btn btn-gold owner-form-submit" type="submit">{{ options.buttonLabel or "Send My Review Request" }}</button>
       </div>
     </div>
   </div>
   {% else %}
+  <div data-netlify-recaptcha="true"></div>
   <button class="btn btn-gold owner-form-submit" type="submit">{{ options.buttonLabel or "Request Your Revenue Review" }}</button>
   {% endif %}
 

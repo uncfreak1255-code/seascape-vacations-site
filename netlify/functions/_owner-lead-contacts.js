@@ -167,6 +167,68 @@ async function writeOwnerLeadContacts(store, contacts) {
   );
 }
 
+async function readOwnerLeadContactsWithEtag(store) {
+  if (store && typeof store.getWithMetadata === "function") {
+    try {
+      const result = await store.getWithMetadata(OWNER_LEAD_CONTACTS_KEY, { type: "json" });
+      if (!result) {
+        return { contacts: null, etag: undefined, exists: false };
+      }
+      return {
+        contacts: parseStoredContacts(result.data),
+        etag: result.etag,
+        exists: true
+      };
+    } catch (_error) {
+      // Fall through for stores that only implement get/set.
+    }
+  }
+
+  const contacts = await readOwnerLeadContacts(store);
+  return {
+    contacts,
+    etag: undefined,
+    exists: Boolean(contacts)
+  };
+}
+
+// Conditional read/modify/write so overlapping captures cannot overwrite each other
+// with a stale whole-blob snapshot.
+async function mutateOwnerLeadContacts(store, mutator, { attempts = 5 } = {}) {
+  if (!store || typeof store.set !== "function") {
+    throw new Error("owner_lead_contact_store_unavailable");
+  }
+
+  let lastError = null;
+  for (let attempt = 0; attempt < attempts; attempt += 1) {
+    const current = await readOwnerLeadContactsWithEtag(store);
+    const next = mutator(current.contacts);
+    const options = { contentType: "application/json; charset=utf-8" };
+    if (current.etag) {
+      options.onlyIfMatch = current.etag;
+    } else if (!current.exists && typeof store.getWithMetadata === "function") {
+      options.onlyIfNew = true;
+    }
+
+    try {
+      const writeResult = await store.set(
+        OWNER_LEAD_CONTACTS_KEY,
+        JSON.stringify(next),
+        options
+      );
+      if (writeResult && writeResult.modified === false) {
+        lastError = new Error("owner_lead_contacts_write_conflict");
+        continue;
+      }
+      return next;
+    } catch (error) {
+      lastError = error;
+    }
+  }
+
+  throw lastError || new Error("owner_lead_contacts_write_failed");
+}
+
 function resolveContactStore(event, injectedStore) {
   if (injectedStore && typeof injectedStore.get === "function" && typeof injectedStore.set === "function") {
     return injectedStore;
@@ -189,6 +251,8 @@ module.exports = {
   getOwnerLeadContactBlobsConfig,
   parseStoredContacts,
   readOwnerLeadContacts,
+  readOwnerLeadContactsWithEtag,
   writeOwnerLeadContacts,
+  mutateOwnerLeadContacts,
   resolveContactStore
 };
