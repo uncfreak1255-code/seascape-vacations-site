@@ -9,8 +9,10 @@ const {
 } = require("./_owner-lead-metrics");
 const {
   buildOwnerLeadContact,
+  getOwnerLeadConfirmationDelivery,
   mergeOwnerLeadContacts,
   readOwnerLeadContacts,
+  updateOwnerLeadConfirmationDelivery,
   writeOwnerLeadContacts,
   resolveContactStore
 } = require("./_owner-lead-contacts");
@@ -79,9 +81,9 @@ async function safeNotify(notify, message) {
   }
 }
 
-async function safeConfirm(sendConfirmation, contact) {
+async function safeConfirm(sendConfirmation, contact, delivery) {
   try {
-    return await sendConfirmation(contact);
+    return await sendConfirmation(contact, delivery);
   } catch (error) {
     console.error("owner_lead_confirmation_threw", {
       submissionId: contact && contact.submissionId ? contact.submissionId : undefined,
@@ -103,11 +105,13 @@ async function captureOwnerLeadContact(event, payload, injectedContactStore, not
   try {
     const contactStore = resolveContactStore(event, injectedContactStore);
     const existingContacts = await readOwnerLeadContacts(contactStore);
-    const alreadyStored = Boolean(
+    const existingContact =
       existingContacts &&
-      Array.isArray(existingContacts.contacts) &&
-      existingContacts.contacts.some((entry) => entry.submissionId === contact.submissionId)
-    );
+      Array.isArray(existingContacts.contacts)
+        ? existingContacts.contacts.find((entry) => entry.submissionId === contact.submissionId)
+        : null;
+    const alreadyStored = Boolean(existingContact);
+    const delivery = getOwnerLeadConfirmationDelivery(existingContact);
     await writeOwnerLeadContacts(contactStore, mergeOwnerLeadContacts(existingContacts, contact));
     // Idempotent: Netlify form webhooks are at-least-once, so a re-delivered
     // submission must not re-alert a human.
@@ -119,7 +123,7 @@ async function captureOwnerLeadContact(event, payload, injectedContactStore, not
         contact
       });
     }
-    return { contact, alreadyStored, captureFailed: false };
+    return { contact, alreadyStored, delivery, captureFailed: false };
   } catch (error) {
     console.error("owner_lead_contact_capture_failed", {
       submissionId: contact.submissionId,
@@ -135,6 +139,38 @@ async function captureOwnerLeadContact(event, payload, injectedContactStore, not
     });
     return { contact, alreadyStored: false, captureFailed: true };
   }
+}
+
+async function persistOwnerLeadConfirmationDelivery(event, contact, result, injectedContactStore) {
+  if (!contact || !result || (!result.ownerSent && !result.internalSent)) {
+    return;
+  }
+
+  try {
+    const contactStore = resolveContactStore(event, injectedContactStore);
+    const existingContacts = await readOwnerLeadContacts(contactStore);
+    const nextContacts = updateOwnerLeadConfirmationDelivery(
+      existingContacts,
+      contact.submissionId,
+      result
+    );
+    await writeOwnerLeadContacts(contactStore, nextContacts);
+  } catch (error) {
+    console.error("owner_lead_confirmation_state_write_failed", {
+      submissionId: contact.submissionId,
+      message: error && error.message ? error.message : String(error)
+    });
+  }
+}
+
+function isPublicHttpInvocation(event) {
+  return Boolean(
+    event &&
+    (
+      typeof event.httpMethod === "string" ||
+      (event.requestContext && event.requestContext.http && typeof event.requestContext.http.method === "string")
+    )
+  );
 }
 
 async function handleSubmissionCreated(
@@ -171,14 +207,26 @@ async function handleSubmissionCreated(
   // throw-prone metrics-store resolution, so a Blobs/connect failure on the
   // attribution path can never silently drop the lead.
   const notify = injectedNotify || notifyOwnerLead;
-  const sendConfirmation = injectedSendConfirmation || sendOwnerLeadConfirmationEmails;
+  const sendConfirmation = injectedSendConfirmation || (
+    (contact, delivery) => sendOwnerLeadConfirmationEmails(contact, undefined, process.env, delivery)
+  );
   const capture = await captureOwnerLeadContact(event, payload, injectedContactStore, notify);
 
   // One confirmation ack + internal info@ notify for usable-email submits only.
   // Skip redeliveries so the owner is not emailed twice. Skip phone/name-only
   // captures that have no address to deliver to.
-  if (capture.contact && !capture.alreadyStored && isUsableOwnerEmail(capture.contact.email)) {
-    await safeConfirm(sendConfirmation, capture.contact);
+  if (
+    capture.contact &&
+    isUsableOwnerEmail(capture.contact.email) &&
+    (!capture.delivery.ownerSent || !capture.delivery.internalSent)
+  ) {
+    const confirmationResult = await safeConfirm(sendConfirmation, capture.contact, capture.delivery);
+    await persistOwnerLeadConfirmationDelivery(
+      event,
+      capture.contact,
+      confirmationResult,
+      injectedContactStore
+    );
   }
 
   // Attribution metrics are best-effort and fully independent of the lead record.
@@ -215,8 +263,17 @@ async function handleSubmissionCreated(
 }
 
 async function handler(event, context) {
+  if (isPublicHttpInvocation(event)) {
+    console.warn("owner_lead_event_http_invocation_rejected");
+    return {
+      statusCode: 404,
+      body: JSON.stringify({ stored: false, reason: "event_only" })
+    };
+  }
+
   return handleSubmissionCreated(event, context);
 }
 
 exports.handleSubmissionCreated = handleSubmissionCreated;
+exports.isPublicHttpInvocation = isPublicHttpInvocation;
 exports.handler = handler;
