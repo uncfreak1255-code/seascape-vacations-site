@@ -131,7 +131,7 @@ function isRetryableConfirmationFailure(result) {
     reason.startsWith("graph_token_response_invalid:") ||
     reason === "graph_token_missing_access_token"
   ) return true;
-  const graphTokenStatus = reason.match(/^graph_token_failed:(\\d+)$/);
+  const graphTokenStatus = reason.match(/^graph_token_failed:(\d+)$/);
   if (graphTokenStatus) {
     const status = Number(graphTokenStatus[1]);
     return status === 429 || status >= 500;
