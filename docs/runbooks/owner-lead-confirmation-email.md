@@ -60,10 +60,18 @@ event-named URL rejects external HTTP with 403.
 - Delivery flags live in per-submission Blobs keys
   (`owner_lead_confirmation_delivery/<id>.json`), not in the contacts list
   blob, so overlapping submits cannot wipe leads or successful-send state.
-- Contact-list writes use etag conditional retry.
-- Transient Graph failures (429/5xx/token/network) and “Graph accepted but
+- After Graph accepts a send, the handler also stamps
+  `confirmationOwnerSent` / `confirmationInternalSent` on the captured contact
+  record before (and independently of) the delivery-blob write. That stamp is
+  the durable “already sent” proof if the delivery blob write fails.
+- Ordering on success: claim `sending` → Graph send → contact stamp → delivery
+  blob `sent`. A webhook retry that sees the stamp finalizes the delivery blob
+  and **does not** call Graph again.
+- Contact-list writes use etag conditional retry. Delivery-blob writes retry
+  conditionally, then one unconditional merge write as last resort.
+- Transient Graph failures (429/token transport) and “Graph accepted but
   delivery-state write failed” return **503** so Netlify redelivers the event.
-  Already-sent owner/internal legs are skipped on retry.
+  Already-sent owner/internal legs (blob or contact stamp) are skipped on retry.
 - Missing Graph env is **not** retryable (logs `missing_env:…`, returns 200).
 
 ## Delivery blocker (must be green before production send)

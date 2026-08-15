@@ -46,17 +46,52 @@ function parseDeliveryValue(value) {
   return typeof value === "object" ? value : null;
 }
 
+function deliveryFlagsEqual(left, right) {
+  const a = normalizeDeliveryState(left);
+  const b = normalizeDeliveryState(right);
+  return (
+    a.ownerSent === b.ownerSent &&
+    a.internalSent === b.internalSent &&
+    a.ownerStatus === b.ownerStatus &&
+    a.internalStatus === b.internalStatus &&
+    a.deliveryStatus === b.deliveryStatus
+  );
+}
+
 async function readOwnerLeadDeliveryRecord(store, submissionId) {
   const key = buildOwnerLeadDeliveryKey(submissionId);
+
   if (store && typeof store.getWithMetadata === "function") {
-    const result = await store.getWithMetadata(key, { type: "json" });
-    if (!result) return { state: emptyDeliveryState(), etag: undefined, exists: false };
-    return { state: normalizeDeliveryState(parseDeliveryValue(result.data)), etag: result.etag, exists: true };
+    try {
+      const result = await store.getWithMetadata(key, { type: "json" });
+      if (!result) return { state: emptyDeliveryState(), etag: undefined, exists: false };
+      return {
+        state: normalizeDeliveryState(parseDeliveryValue(result.data)),
+        etag: result.etag,
+        exists: true
+      };
+    } catch (_error) {
+      // Fall through to plain get for transient metadata failures / test doubles.
+    }
   }
-  if (!store || typeof store.get !== "function") return { state: emptyDeliveryState(), etag: undefined, exists: false };
-  const raw = await store.get(key, { type: "json" });
-  if (raw == null) return { state: emptyDeliveryState(), etag: undefined, exists: false };
-  return { state: normalizeDeliveryState(parseDeliveryValue(raw)), etag: undefined, exists: true };
+
+  if (!store || typeof store.get !== "function") {
+    return { state: emptyDeliveryState(), etag: undefined, exists: false };
+  }
+
+  try {
+    const raw = await store.get(key, { type: "json" });
+    if (raw == null) return { state: emptyDeliveryState(), etag: undefined, exists: false };
+    return { state: normalizeDeliveryState(parseDeliveryValue(raw)), etag: undefined, exists: true };
+  } catch (_error) {
+    try {
+      const raw = await store.get(key, { type: "text" });
+      if (raw == null) return { state: emptyDeliveryState(), etag: undefined, exists: false };
+      return { state: normalizeDeliveryState(parseDeliveryValue(raw)), etag: undefined, exists: true };
+    } catch (_textError) {
+      throw _textError || _error || new Error("owner_lead_delivery_read_failed");
+    }
+  }
 }
 
 async function readOwnerLeadDeliveryState(store, submissionId) {
@@ -75,23 +110,59 @@ function mergeDeliveryState(existing, result) {
   return { ownerSent, internalSent, ownerStatus, internalStatus, deliveryStatus, updatedAt: new Date().toISOString() };
 }
 
-async function writeOwnerLeadDeliveryState(store, submissionId, result) {
+async function writeOwnerLeadDeliveryState(store, submissionId, result, { allowUnconditional = true } = {}) {
   if (!store || typeof store.set !== "function") throw new Error("owner_lead_delivery_store_unavailable");
   const key = buildOwnerLeadDeliveryKey(submissionId);
   let lastError = null;
+
   for (let attempt = 0; attempt < MAX_DELIVERY_WRITE_ATTEMPTS; attempt += 1) {
-    const current = await readOwnerLeadDeliveryRecord(store, submissionId);
+    let current;
+    try {
+      current = await readOwnerLeadDeliveryRecord(store, submissionId);
+    } catch (error) {
+      lastError = error;
+      continue;
+    }
+
     const next = mergeDeliveryState(current.state, result);
-    if (current.exists && JSON.stringify(next) === JSON.stringify(current.state)) return { state: current.state, persisted: true, unchanged: true };
+    if (current.exists && deliveryFlagsEqual(next, current.state)) {
+      return { state: current.state, persisted: true, unchanged: true };
+    }
+
     const options = { contentType: "application/json; charset=utf-8" };
     if (current.etag) options.onlyIfMatch = current.etag;
     else if (!current.exists && typeof store.getWithMetadata === "function") options.onlyIfNew = true;
+
     try {
       const writeResult = await store.set(key, JSON.stringify(next), options);
-      if (writeResult && writeResult.modified === false) { lastError = new Error("owner_lead_delivery_write_conflict"); continue; }
+      if (writeResult && writeResult.modified === false) {
+        lastError = new Error("owner_lead_delivery_write_conflict");
+        continue;
+      }
       return { state: next, persisted: true, unchanged: false };
-    } catch (error) { lastError = error; }
+    } catch (error) {
+      lastError = error;
+    }
   }
+
+  // Last resort after conditional retries: merge against a best-effort read and
+  // write without onlyIf* so a known Graph acceptance can still land durable flags.
+  if (allowUnconditional) {
+    try {
+      let current;
+      try {
+        current = await readOwnerLeadDeliveryRecord(store, submissionId);
+      } catch (_error) {
+        current = { state: emptyDeliveryState(), exists: false };
+      }
+      const next = mergeDeliveryState(current.state, result);
+      await store.set(key, JSON.stringify(next), { contentType: "application/json; charset=utf-8" });
+      return { state: next, persisted: true, unchanged: false, unconditional: true };
+    } catch (error) {
+      lastError = error;
+    }
+  }
+
   throw lastError || new Error("owner_lead_delivery_write_failed");
 }
 
@@ -99,15 +170,24 @@ async function claimOwnerLeadDelivery(store, submissionId) {
   if (!store || typeof store.set !== "function") return { claimed: false, reason: "delivery_store_unavailable" };
   const key = buildOwnerLeadDeliveryKey(submissionId);
   for (let attempt = 0; attempt < MAX_DELIVERY_WRITE_ATTEMPTS; attempt += 1) {
-    const current = await readOwnerLeadDeliveryRecord(store, submissionId);
+    let current;
+    try {
+      current = await readOwnerLeadDeliveryRecord(store, submissionId);
+    } catch (_error) {
+      if (attempt + 1 >= MAX_DELIVERY_WRITE_ATTEMPTS) return { claimed: false, reason: "delivery_claim_failed" };
+      continue;
+    }
+
     const state = current.state;
     if (state.ownerSent && state.internalSent) return { claimed: false, reason: "already_sent", state };
     if (state.deliveryStatus === "sending") return { claimed: false, reason: "in_flight", state };
     if (state.deliveryStatus === "unknown") return { claimed: false, reason: "delivery_unknown", state };
+
     const next = { ...state, deliveryStatus: "sending", updatedAt: new Date().toISOString() };
     const options = { contentType: "application/json; charset=utf-8" };
     if (current.etag) options.onlyIfMatch = current.etag;
     else if (!current.exists && typeof store.getWithMetadata === "function") options.onlyIfNew = true;
+
     try {
       const result = await store.set(key, JSON.stringify(next), options);
       if (result && result.modified === false) continue;
@@ -154,5 +234,6 @@ module.exports = {
   writeOwnerLeadDeliveryState,
   mergeDeliveryState,
   claimOwnerLeadDelivery,
-  isRetryableConfirmationFailure
-}
+  isRetryableConfirmationFailure,
+  deliveryFlagsEqual
+};

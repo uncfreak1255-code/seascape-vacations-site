@@ -11,7 +11,9 @@ const {
   buildOwnerLeadContact,
   mergeOwnerLeadContacts,
   mutateOwnerLeadContacts,
-  resolveContactStore
+  readOwnerLeadConfirmationStamp,
+  resolveContactStore,
+  stampOwnerLeadConfirmationOnContact
 } = require("./_owner-lead-contacts");
 const { notifyOwnerLead } = require("./_owner-lead-notify");
 const {
@@ -245,6 +247,85 @@ function buildJsonResponse(statusCode, body) {
   };
 }
 
+async function resolveKnownDeliveryProgress(contactStore, submissionId, delivery) {
+  const blobSent = Boolean(delivery && delivery.ownerSent && delivery.internalSent);
+  if (blobSent) {
+    return { ownerSent: true, internalSent: true, source: "delivery_blob" };
+  }
+
+  let stamp = { ownerSent: false, internalSent: false };
+  try {
+    stamp = await readOwnerLeadConfirmationStamp(contactStore, submissionId);
+  } catch (error) {
+    console.error("owner_lead_confirmation_stamp_read_failed", {
+      submissionId,
+      message: error && error.message ? error.message : String(error)
+    });
+  }
+
+  return {
+    ownerSent: Boolean(delivery && delivery.ownerSent) || stamp.ownerSent === true,
+    internalSent: Boolean(delivery && delivery.internalSent) || stamp.internalSent === true,
+    source: stamp.ownerSent || stamp.internalSent ? "contact_stamp" : "delivery_blob"
+  };
+}
+
+async function persistAcceptedConfirmationDelivery(contactStore, contact, confirmationResult) {
+  const mailAccepted = Boolean(
+    confirmationResult &&
+    (confirmationResult.ownerSent === true || confirmationResult.internalSent === true)
+  );
+
+  let stampPersisted = false;
+  if (mailAccepted) {
+    try {
+      await stampOwnerLeadConfirmationOnContact(
+        contactStore,
+        contact.submissionId,
+        confirmationResult
+      );
+      stampPersisted = true;
+    } catch (error) {
+      console.error("owner_lead_confirmation_stamp_write_failed", {
+        submissionId: contact.submissionId,
+        message: error && error.message ? error.message : String(error)
+      });
+    }
+  }
+
+  try {
+    const persisted = await persistOwnerLeadConfirmationDelivery(
+      contactStore,
+      contact,
+      confirmationResult
+    );
+    return { ...persisted, stampPersisted, mailAccepted };
+  } catch (error) {
+    error.stampPersisted = stampPersisted;
+    error.mailAccepted = mailAccepted;
+    throw error;
+  }
+}
+
+async function finalizeDeliveryStateFromKnownProgress(contactStore, contact, progress) {
+  if (!progress || (!progress.ownerSent && !progress.internalSent)) {
+    return { finalized: false, reason: "nothing_to_finalize" };
+  }
+
+  await writeOwnerLeadDeliveryState(contactStore, contact.submissionId, {
+    ownerSent: progress.ownerSent === true,
+    internalSent: progress.internalSent === true,
+    sent: progress.ownerSent === true && progress.internalSent === true,
+    reason: "sent"
+  });
+
+  return {
+    finalized: true,
+    ownerSent: progress.ownerSent === true,
+    internalSent: progress.internalSent === true
+  };
+}
+
 async function maybeSendOwnerLeadConfirmation({
   event,
   capture,
@@ -264,14 +345,46 @@ async function maybeSendOwnerLeadConfirmation({
     return { attempted: false, result: { sent: false, reason: "delivery_state_unavailable" }, retryable: true };
   }
 
-  if (delivery.ownerSent && delivery.internalSent) return { attempted: false, result: null, retryable: false, delivery };
+  const known = await resolveKnownDeliveryProgress(
+    contactStore,
+    capture.contact.submissionId,
+    delivery
+  );
+
+  // Graph already accepted once (delivery blob and/or contact stamp). Never send
+  // again — only repair the per-submission delivery blob if it lagged the stamp.
+  if (known.ownerSent && known.internalSent) {
+    if (!(delivery.ownerSent && delivery.internalSent)) {
+      try {
+        await finalizeDeliveryStateFromKnownProgress(contactStore, capture.contact, known);
+      } catch (error) {
+        console.error("owner_lead_confirmation_state_write_failed", {
+          submissionId: capture.contact.submissionId,
+          persistFailedAfterSend: true,
+          message: error && error.message ? error.message : String(error)
+        });
+        return {
+          attempted: true,
+          result: {
+            sent: false,
+            ownerSent: true,
+            internalSent: true,
+            reason: "delivery_state_write_failed"
+          },
+          retryable: true,
+          delivery
+        };
+      }
+    }
+    return { attempted: false, result: null, retryable: false, delivery };
+  }
 
   const rate = await assertOwnerLeadMailAllowed(contactStore, capture.contact.email, process.env, { submissionId: capture.contact.submissionId });
   if (!rate.allowed) {
     console.error("owner_lead_confirmation_rate_limited", { reason: rate.reason, scope: rate.scope, submissionId: capture.contact.submissionId });
     return {
       attempted: true,
-      result: { sent: false, ownerSent: delivery.ownerSent, internalSent: delivery.internalSent, reason: rate.reason },
+      result: { sent: false, ownerSent: known.ownerSent, internalSent: known.internalSent, reason: rate.reason },
       retryable: rate.reason !== "rate_limited",
       delivery
     };
@@ -279,26 +392,105 @@ async function maybeSendOwnerLeadConfirmation({
 
   const claim = await claimOwnerLeadDelivery(contactStore, capture.contact.submissionId);
   if (!claim.claimed) {
+    // in_flight after a prior Graph accept: contact stamp lets us finalize the
+    // delivery blob without calling Graph again. Otherwise stay fail-closed on send.
+    if (claim.reason === "in_flight") {
+      const progress = await resolveKnownDeliveryProgress(
+        contactStore,
+        capture.contact.submissionId,
+        claim.state || delivery
+      );
+      if (progress.ownerSent || progress.internalSent) {
+        try {
+          await finalizeDeliveryStateFromKnownProgress(contactStore, capture.contact, progress);
+          return {
+            attempted: true,
+            result: {
+              sent: Boolean(progress.ownerSent && progress.internalSent),
+              ownerSent: progress.ownerSent,
+              internalSent: progress.internalSent,
+              reason: progress.ownerSent && progress.internalSent ? "sent" : "owner_sent_internal_failed"
+            },
+            retryable: !(progress.ownerSent && progress.internalSent),
+            delivery: claim.state || delivery
+          };
+        } catch (error) {
+          console.error("owner_lead_confirmation_state_write_failed", {
+            submissionId: capture.contact.submissionId,
+            persistFailedAfterSend: true,
+            message: error && error.message ? error.message : String(error)
+          });
+          return {
+            attempted: true,
+            result: {
+              sent: false,
+              ownerSent: progress.ownerSent,
+              internalSent: progress.internalSent,
+              reason: "delivery_state_write_failed"
+            },
+            retryable: true,
+            delivery: claim.state || delivery
+          };
+        }
+      }
+
+      return {
+        attempted: true,
+        result: {
+          sent: false,
+          ownerSent: progress.ownerSent,
+          internalSent: progress.internalSent,
+          reason: "in_flight"
+        },
+        retryable: false,
+        delivery: claim.state || delivery
+      };
+    }
+
     const claimRetryable = claim.reason === "delivery_store_unavailable" || claim.reason === "delivery_claim_failed";
     return {
       attempted: false,
-      result: { sent: false, ownerSent: delivery.ownerSent, internalSent: delivery.internalSent, reason: claim.reason },
+      result: { sent: false, ownerSent: known.ownerSent, internalSent: known.internalSent, reason: claim.reason },
       retryable: claimRetryable,
       delivery: claim.state || delivery
     };
   }
 
-  const confirmationResult = await safeConfirm(sendConfirmation, capture.contact, delivery);
+  const confirmationResult = await safeConfirm(sendConfirmation, capture.contact, {
+    ownerSent: known.ownerSent,
+    internalSent: known.internalSent
+  });
+
   try {
-    await persistOwnerLeadConfirmationDelivery(contactStore, capture.contact, confirmationResult);
+    await persistAcceptedConfirmationDelivery(contactStore, capture.contact, confirmationResult);
   } catch (error) {
-    console.error("owner_lead_confirmation_state_write_failed", { submissionId: capture.contact.submissionId, persistFailedAfterSend: Boolean(confirmationResult && (confirmationResult.ownerSent || confirmationResult.internalSent)) });
-    return {
-      attempted: true,
-      result: { ...confirmationResult, sent: false, reason: "delivery_state_unknown", ambiguous: true },
-      retryable: false,
-      delivery: claim.state
-    };
+    const mailAccepted = Boolean(
+      error && error.mailAccepted !== undefined
+        ? error.mailAccepted
+        : confirmationResult && (confirmationResult.ownerSent || confirmationResult.internalSent)
+    );
+    const stampPersisted = Boolean(error && error.stampPersisted);
+    console.error("owner_lead_confirmation_state_write_failed", {
+      submissionId: capture.contact.submissionId,
+      persistFailedAfterSend: mailAccepted,
+      stampPersisted,
+      message: error && error.message ? error.message : String(error)
+    });
+
+    // Graph already accepted: return 503 so Netlify retries the state write.
+    // Contact stamp (when present) makes the retry finalize-only — no second send.
+    if (mailAccepted) {
+      return {
+        attempted: true,
+        result: {
+          ...confirmationResult,
+          sent: false,
+          reason: "delivery_state_write_failed"
+        },
+        retryable: true,
+        delivery: claim.state
+      };
+    }
   }
 
   return { attempted: true, result: confirmationResult, retryable: isRetryableConfirmationFailure(confirmationResult), delivery: claim.state };

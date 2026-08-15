@@ -243,6 +243,81 @@ function resolveContactStore(event, injectedStore) {
   return getStore(OWNER_LEAD_CONTACT_STORE_NAME);
 }
 
+function readConfirmationStampFromContact(contact) {
+  if (!contact || typeof contact !== "object") {
+    return { ownerSent: false, internalSent: false };
+  }
+  return {
+    ownerSent: contact.confirmationOwnerSent === true,
+    internalSent: contact.confirmationInternalSent === true
+  };
+}
+
+async function readOwnerLeadConfirmationStamp(store, submissionId) {
+  const id = normalizeText(submissionId);
+  if (!id) return { ownerSent: false, internalSent: false };
+  const contacts = await readOwnerLeadContacts(store);
+  const match = contacts && Array.isArray(contacts.contacts)
+    ? contacts.contacts.find((entry) => entry && entry.submissionId === id)
+    : null;
+  return readConfirmationStampFromContact(match);
+}
+
+// Durable backup for Graph acceptance. Lives on the contact record that already
+// persisted in this request, so a later delivery-blob write failure can still
+// prove "mail already sent" on webhook retry without calling Graph again.
+async function stampOwnerLeadConfirmationOnContact(store, submissionId, result) {
+  const id = normalizeText(submissionId);
+  if (!id || !result) {
+    throw new Error("owner_lead_confirmation_stamp_invalid");
+  }
+
+  const ownerSent = result.ownerSent === true;
+  const internalSent = result.internalSent === true;
+  if (!ownerSent && !internalSent) {
+    return { stamped: false, reason: "nothing_to_stamp" };
+  }
+
+  let stamped = false;
+  await mutateOwnerLeadContacts(store, (existingContacts) => {
+    const base = {
+      ...emptyContacts(),
+      ...(existingContacts || {}),
+      contacts: Array.isArray(existingContacts && existingContacts.contacts)
+        ? existingContacts.contacts.map((entry) => ({ ...entry }))
+        : []
+    };
+    const index = base.contacts.findIndex((entry) => entry && entry.submissionId === id);
+    if (index < 0) {
+      return base;
+    }
+
+    const current = base.contacts[index];
+    const nextOwnerSent = current.confirmationOwnerSent === true || ownerSent;
+    const nextInternalSent = current.confirmationInternalSent === true || internalSent;
+    base.contacts[index] = {
+      ...current,
+      confirmationOwnerSent: nextOwnerSent,
+      confirmationInternalSent: nextInternalSent,
+      confirmationUpdatedAt: new Date().toISOString()
+    };
+    base.totalContacts = base.contacts.length;
+    base.updatedAt = new Date().toISOString();
+    stamped = true;
+    return base;
+  });
+
+  if (!stamped) {
+    throw new Error("owner_lead_confirmation_stamp_missing_contact");
+  }
+
+  return {
+    stamped: true,
+    ownerSent: ownerSent,
+    internalSent: internalSent
+  };
+}
+
 module.exports = {
   OWNER_LEAD_CONTACT_STORE_NAME,
   OWNER_LEAD_CONTACTS_KEY,
@@ -254,5 +329,8 @@ module.exports = {
   readOwnerLeadContactsWithEtag,
   writeOwnerLeadContacts,
   mutateOwnerLeadContacts,
-  resolveContactStore
+  resolveContactStore,
+  readConfirmationStampFromContact,
+  readOwnerLeadConfirmationStamp,
+  stampOwnerLeadConfirmationOnContact
 };

@@ -719,10 +719,15 @@ test("submission-created does not resend when delivery-state persistence fails a
   const contactStore = createMemoryStore();
   const originalSet = contactStore.set.bind(contactStore);
   let deliveryWrites = 0;
+  let failDeliveryWrites = true;
   contactStore.set = async (key, value, options) => {
     if (String(key).startsWith(OWNER_LEAD_DELIVERY_KEY_PREFIX)) {
       deliveryWrites += 1;
-      if (deliveryWrites > 1) throw new Error("delivery blob unavailable");
+      // Claim write (first delivery key write) succeeds; post-send persist fails
+      // until the webhook retry, matching production Blobs blips after Graph.
+      if (failDeliveryWrites && deliveryWrites > 1) {
+        throw new Error("delivery blob unavailable");
+      }
     }
     return originalSet(key, value, options);
   };
@@ -733,13 +738,61 @@ test("submission-created does not resend when delivery-state persistence fails a
   };
   const event = { body: JSON.stringify({ payload: ownerSubmitPayload({}, { id: "persist-fail" }) }) };
   const first = await handleSubmissionCreated(event, undefined, metricsStore, contactStore, async () => {}, sendConfirmation);
+
+  assert.equal(first.statusCode, 503);
+  assert.equal(JSON.parse(first.body).confirmation.reason, "delivery_state_write_failed");
+  assert.equal(sendCalls, 1);
+
+  const contactsAfterSend = await contactStore.get(OWNER_LEAD_CONTACTS_KEY, { type: "json" });
+  assert.equal(contactsAfterSend.contacts[0].confirmationOwnerSent, true);
+  assert.equal(contactsAfterSend.contacts[0].confirmationInternalSent, true);
+
+  failDeliveryWrites = false;
   const second = await handleSubmissionCreated(event, undefined, metricsStore, contactStore, async () => {}, sendConfirmation);
 
-  assert.equal(first.statusCode, 200);
-  assert.equal(JSON.parse(first.body).confirmation.reason, "delivery_state_unknown");
   assert.equal(second.statusCode, 200);
-  assert.equal(sendCalls, 1);
+  assert.equal(sendCalls, 1, "retry must not call Graph/send again");
   assert.equal(JSON.parse(second.body).confirmation, undefined);
+
+  const delivery = await contactStore.get(buildOwnerLeadDeliveryKey("persist-fail"), { type: "json" });
+  assert.equal(delivery.ownerSent, true);
+  assert.equal(delivery.internalSent, true);
+  assert.equal(delivery.deliveryStatus, "sent");
+});
+
+test("submission-created still skips resend when delivery persist and contact stamp both fail after Graph acceptance", async () => {
+  const metricsStore = createMemoryStore();
+  const contactStore = createMemoryStore();
+  const originalSet = contactStore.set.bind(contactStore);
+  let deliveryWrites = 0;
+  contactStore.set = async (key, value, options) => {
+    if (String(key).startsWith(OWNER_LEAD_DELIVERY_KEY_PREFIX)) {
+      deliveryWrites += 1;
+      if (deliveryWrites > 1) throw new Error("delivery blob unavailable");
+      return originalSet(key, value, options);
+    }
+    if (String(key) === OWNER_LEAD_CONTACTS_KEY) {
+      const parsed = typeof value === "string" ? JSON.parse(value) : value;
+      const stamped = Array.isArray(parsed && parsed.contacts)
+        && parsed.contacts.some((entry) => entry && entry.confirmationOwnerSent === true);
+      if (stamped) throw new Error("contact stamp unavailable");
+    }
+    return originalSet(key, value, options);
+  };
+  let sendCalls = 0;
+  const sendConfirmation = async () => {
+    sendCalls += 1;
+    return { sent: true, ownerSent: true, internalSent: true, reason: "sent" };
+  };
+  const event = { body: JSON.stringify({ payload: ownerSubmitPayload({}, { id: "persist-and-stamp-fail" }) }) };
+  const first = await handleSubmissionCreated(event, undefined, metricsStore, contactStore, async () => {}, sendConfirmation);
+  const second = await handleSubmissionCreated(event, undefined, metricsStore, contactStore, async () => {}, sendConfirmation);
+
+  assert.equal(first.statusCode, 503);
+  assert.equal(JSON.parse(first.body).confirmation.reason, "delivery_state_write_failed");
+  assert.equal(second.statusCode, 200);
+  assert.equal(JSON.parse(second.body).confirmation.reason, "in_flight");
+  assert.equal(sendCalls, 1, "even without a contact stamp, in_flight claim must block a second send");
 });
 
 test("overlapping contact writes keep both leads via conditional retry", async () => {
@@ -822,11 +875,18 @@ test("submission-created retries when delivery-state reads are unavailable", asy
   const metricsStore = createMemoryStore();
   const contactStore = createMemoryStore();
   const originalGetWithMetadata = contactStore.getWithMetadata.bind(contactStore);
+  const originalGet = contactStore.get.bind(contactStore);
   contactStore.getWithMetadata = async (key, options = {}) => {
     if (String(key).startsWith(OWNER_LEAD_DELIVERY_KEY_PREFIX)) {
       throw new Error("delivery read unavailable");
     }
     return originalGetWithMetadata(key, options);
+  };
+  contactStore.get = async (key, options = {}) => {
+    if (String(key).startsWith(OWNER_LEAD_DELIVERY_KEY_PREFIX)) {
+      throw new Error("delivery read unavailable");
+    }
+    return originalGet(key, options);
   };
   let sendCalls = 0;
   const response = await handleSubmissionCreated(
