@@ -83,7 +83,11 @@ async function safeNotify(notify, message) {
 
 async function safeConfirm(sendConfirmation, contact, delivery) {
   try {
-    return await sendConfirmation(contact, delivery);
+    const result = await sendConfirmation(contact, delivery);
+    if (result && result.sent === true && typeof result.ownerSent !== "boolean") {
+      return { ...result, ownerSent: true, internalSent: true };
+    }
+    return result;
   } catch (error) {
     console.error("owner_lead_confirmation_threw", {
       submissionId: contact && contact.submissionId ? contact.submissionId : undefined,
@@ -137,7 +141,12 @@ async function captureOwnerLeadContact(event, payload, injectedContactStore, not
       rawPayload: payload,
       error: error && error.message ? error.message : String(error)
     });
-    return { contact, alreadyStored: false, captureFailed: true };
+    return {
+      contact,
+      alreadyStored: false,
+      delivery: { ownerSent: false, internalSent: false },
+      captureFailed: true
+    };
   }
 }
 
