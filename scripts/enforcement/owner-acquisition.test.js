@@ -47,6 +47,7 @@ test("owner landing page uses a real owner revenue review form instead of generi
   assert.equal(ownerFormPartial.includes("owner-revenue-teardown"), true);
   assert.equal(ownerFormPartial.includes('data-netlify="true"'), true);
   assert.equal(ownerFormPartial.includes('data-netlify-recaptcha="true"'), true);
+  assert.equal(ownerLanding.includes('data-netlify-recaptcha="true"'), true);
   assert.equal(ownerFormPartial.includes('name="proof_label"'), true);
   assert.equal(ownerLanding.includes('name="proof_label"'), true);
 });
