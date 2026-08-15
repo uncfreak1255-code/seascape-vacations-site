@@ -126,7 +126,12 @@ function isRetryableConfirmationFailure(result) {
   if (reason.startsWith("missing_env:")) return false;
   if (reason === "missing_email" || reason === "missing_contact" || reason === "rate_limited") return false;
   if (reason === "delivery_state_write_failed" || reason === "confirmation_threw") return true;
-  if (reason.startsWith("graph_token_transport_failed:") || reason.startsWith("graph_token_failed")) return true;
+  if (
+    reason.startsWith("graph_token_transport_failed:") ||
+    reason.startsWith("graph_token_failed") ||
+    reason.startsWith("graph_token_response_invalid:") ||
+    reason === "graph_token_missing_access_token"
+  ) return true;
   if (reason.startsWith("graph_send_failed:") || reason === "owner_sent_internal_failed") return true;
   return false;
 }
