@@ -469,7 +469,7 @@ test("submission-created returns 503 so Netlify retries a failed Graph delivery"
     sendConfirmation
   );
   assert.equal(first.statusCode, 503);
-  assert.equal(JSON.parse(first.body).confirmation.reason, "graph_send_failed:503");
+  assert.equal(JSON.parse(first.body).confirmation.reason, "graph_send_failed:429");
 
   const second = await handleSubmissionCreated(
     event,
