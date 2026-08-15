@@ -18,7 +18,9 @@ const {
 const { OWNER_LEAD_FORM_NAME } = require("../../netlify/functions/_owner-lead-metrics");
 const {
   handleSubmissionCreated,
-  handler
+  handler,
+  isPublicHttpInvocation,
+  isNetlifySubmissionCreatedEvent
 } = require("../../netlify/functions/submission-created");
 const { OWNER_LEAD_CONTACTS_KEY } = require("../../netlify/functions/_owner-lead-contacts");
 const {
@@ -194,14 +196,112 @@ test("Graph sender and internal notify recipient cannot be widened by env overri
 
 test("public HTTP calls cannot reach the owner event handler", async () => {
   setGraphEnv();
-  const response = await handler({
-    httpMethod: "POST",
-    body: JSON.stringify({ payload: ownerSubmitPayload() })
-  });
+  const warningLogs = patchConsoleMethod("warn");
+  try {
+    const response = await handler({
+      httpMethod: "POST",
+      headers: {
+        "user-agent": "Mozilla/5.0",
+        "content-type": "application/json"
+      },
+      body: JSON.stringify({ payload: ownerSubmitPayload() })
+    });
 
-  assert.equal(response.statusCode, 404);
-  assert.equal(JSON.parse(response.body).reason, "event_only");
+    assert.equal(response.statusCode, 404);
+    assert.equal(JSON.parse(response.body).reason, "event_only");
+    assert.equal(warningLogs.calls[0][0], "owner_lead_event_http_invocation_rejected");
+  } finally {
+    warningLogs.restore();
+    clearGraphEnv();
+  }
+});
+
+test("isPublicHttpInvocation allows Netlify form events and rejects bare HTTP", () => {
+  assert.equal(isPublicHttpInvocation({ body: "{}" }), false);
+  assert.equal(isPublicHttpInvocation({
+    httpMethod: "POST",
+    headers: {},
+    body: JSON.stringify({ payload: ownerSubmitPayload() })
+  }), true);
+  assert.equal(isPublicHttpInvocation({
+    httpMethod: "POST",
+    headers: { "X-Netlify-Event": "submission-created" },
+    body: JSON.stringify({ payload: ownerSubmitPayload() })
+  }), false);
+  assert.equal(isPublicHttpInvocation({
+    requestContext: { http: { method: "POST" } },
+    headers: { "x-netlify-event": "submission_created" },
+    body: "{}"
+  }), false);
+  assert.equal(isNetlifySubmissionCreatedEvent({
+    headers: { "x-netlify-event": "submission-created" }
+  }), true);
+  assert.equal(isNetlifySubmissionCreatedEvent({
+    headers: { "x-netlify-event": "identity_signup" }
+  }), false);
+});
+
+test("Netlify submission-created platform event reaches handleSubmissionCreated", async () => {
   clearGraphEnv();
+  const metricsStore = createMemoryStore();
+  const contactStore = createMemoryStore();
+  const confirmations = [];
+  const warningLogs = patchConsoleMethod("warn");
+
+  try {
+    const platformEvent = {
+      httpMethod: "POST",
+      headers: {
+        "content-type": "application/json",
+        "user-agent": "Netlify",
+        "x-netlify-event": "submission-created",
+        "x-webhook-signature": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.test"
+      },
+      body: JSON.stringify({
+        payload: ownerSubmitPayload({}, { id: "platform-event-allowed" })
+      })
+    };
+
+    assert.equal(isPublicHttpInvocation(platformEvent), false);
+
+    // Guard must not short-circuit platform form webhooks as public HTTP.
+    // Use a non-owner form body so handler exits before Blobs/Graph work.
+    const guarded = await handler({
+      ...platformEvent,
+      body: JSON.stringify({
+        payload: {
+          id: "ignored-guest",
+          form_name: "email_capture",
+          data: { email: "guest@example.com" }
+        }
+      })
+    });
+    assert.equal(guarded.statusCode, 200);
+    assert.equal(JSON.parse(guarded.body).reason, "ignored_form");
+    assert.equal(
+      warningLogs.calls.some((args) => args[0] === "owner_lead_event_http_invocation_rejected"),
+      false
+    );
+
+    const response = await handleSubmissionCreated(
+      platformEvent,
+      undefined,
+      metricsStore,
+      contactStore,
+      async () => {},
+      async (contact) => {
+        confirmations.push(contact);
+        return { sent: true, ownerSent: true, internalSent: true, reason: "sent" };
+      }
+    );
+
+    assert.equal(response.statusCode, 200);
+    assert.equal(confirmations.length, 1);
+    assert.equal(confirmations[0].submissionId, "platform-event-allowed");
+    assert.equal(confirmations[0].email, "pat@example.com");
+  } finally {
+    warningLogs.restore();
+  }
 });
 
 test("owner confirmation copy matches the thank-you page promise", () => {

@@ -163,7 +163,31 @@ async function persistOwnerLeadConfirmationDelivery(contactStore, contact, resul
   return writeOwnerLeadDeliveryState(contactStore, contact.submissionId, result);
 }
 
-function isPublicHttpInvocation(event) {
+function readEventHeader(event, headerName) {
+  const headers = event && event.headers && typeof event.headers === "object"
+    ? event.headers
+    : {};
+  const target = String(headerName || "").toLowerCase();
+  for (const [key, value] of Object.entries(headers)) {
+    if (String(key).toLowerCase() !== target) continue;
+    if (Array.isArray(value)) {
+      return value.length > 0 ? String(value[0] || "").trim() : "";
+    }
+    return value == null ? "" : String(value).trim();
+  }
+  return "";
+}
+
+// Netlify Forms delivers submission-created as an HTTP POST webhook with
+// x-netlify-event set. Reject bare/browser hits that lack that platform marker
+// so this function cannot become a public mail relay, while still allowing the
+// only real invoke path.
+function isNetlifySubmissionCreatedEvent(event) {
+  const netlifyEvent = readEventHeader(event, "x-netlify-event").toLowerCase();
+  return netlifyEvent === "submission-created" || netlifyEvent === "submission_created";
+}
+
+function hasHttpMethod(event) {
   return Boolean(
     event &&
     (
@@ -171,6 +195,12 @@ function isPublicHttpInvocation(event) {
       (event.requestContext && event.requestContext.http && typeof event.requestContext.http.method === "string")
     )
   );
+}
+
+function isPublicHttpInvocation(event) {
+  if (!hasHttpMethod(event)) return false;
+  if (isNetlifySubmissionCreatedEvent(event)) return false;
+  return true;
 }
 
 function buildJsonResponse(statusCode, body) {
@@ -343,4 +373,5 @@ async function handler(event, context) {
 
 exports.handleSubmissionCreated = handleSubmissionCreated;
 exports.isPublicHttpInvocation = isPublicHttpInvocation;
+exports.isNetlifySubmissionCreatedEvent = isNetlifySubmissionCreatedEvent;
 exports.handler = handler;

@@ -17,8 +17,10 @@ This is not a drip, not guest Mailchimp, and not founder-gated sales outreach.
   `src/_includes/partials/owner-evaluation-form.njk`) use Netlify managed
   reCAPTCHA (`data-netlify-recaptcha="true"` + widget div). Enable the site
   captcha provider in the Netlify Forms UI if it is not already on.
-- The function rejects direct HTTP invocation (`event_only` / 404). Netlify
-  verifies the platform event signature before invoking `submission-created`.
+- The function rejects bare/browser HTTP hits (`event_only` / 404). Real
+  Netlify Forms `submission-created` deliveries are HTTP POSTs that carry
+  `x-netlify-event: submission-created`; those platform events are allowed.
+  Netlify also verifies the platform event JWS before invoking the function.
 - Before Graph send, a Blobs-backed rate limit caps confirmation attempts per
   recipient email and globally per UTC hour (defaults: 3 / 40). Override with
   `OWNER_LEAD_MAIL_RATE_LIMIT_PER_EMAIL_HOUR` and
