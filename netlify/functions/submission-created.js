@@ -229,7 +229,7 @@ async function handleSubmissionCreated(
     !capture.captureFailed &&
     isUsableOwnerEmail(capture.contact.email) &&
     (!capture.delivery.ownerSent || !capture.delivery.internalSent)
-  )
+  ) {
     const confirmationResult = await safeConfirm(sendConfirmation, capture.contact, capture.delivery);
     await persistOwnerLeadConfirmationDelivery(
       event,
