@@ -9,7 +9,7 @@ const moneyRoutes = [
     path: "/property-management/",
     readySelector: "#owner-cta",
     screenshot: {
-      maxDiffPixels: 35_000,
+      maxDiffPixels: 30_000,
       maxDiffPixelRatio: 0.003,
       timeout: 20_000,
     },
