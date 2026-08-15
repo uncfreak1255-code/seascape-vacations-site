@@ -65,8 +65,16 @@ async function requestGraphAccessToken(config, injectedFetch) {
     throw new Error("graph_token_transport_failed:" + (error && error.message ? error.message : "network"));
   }
 
+  if (!response || typeof response !== "object") {
+    throw new Error("graph_token_response_invalid:missing_response");
+  }
   if (!response.ok) throw new Error("graph_token_failed:" + response.status);
-  const payload = await response.json();
+  let payload;
+  try {
+    payload = await response.json();
+  } catch (error) {
+    throw new Error("graph_token_response_invalid:" + (error && error.message ? error.message : "invalid_json"));
+  }
   const accessToken = normalizeText(payload && payload.access_token);
   if (!accessToken) throw new Error("graph_token_missing_access_token");
   return accessToken;
