@@ -226,9 +226,10 @@ async function handleSubmissionCreated(
   // captures that have no address to deliver to.
   if (
     capture.contact &&
+    !capture.captureFailed &&
     isUsableOwnerEmail(capture.contact.email) &&
     (!capture.delivery.ownerSent || !capture.delivery.internalSent)
-  ) {
+  )
     const confirmationResult = await safeConfirm(sendConfirmation, capture.contact, capture.delivery);
     await persistOwnerLeadConfirmationDelivery(
       event,
