@@ -614,3 +614,59 @@ test("env example documents Graph turn-on without embedding secrets", () => {
   assert.doesNotMatch(envExample, /eyJ[A-Za-z0-9_-]{10,}/);
   assert.doesNotMatch(envExample, /MS_GRAPH_CLIENT_SECRET=(?!your_entra_app_client_secret$)[^\n]+/m);
 });
+
+test("submission-created retries when delivery-state reads are unavailable", async () => {
+  clearGraphEnv();
+  const metricsStore = createMemoryStore();
+  const contactStore = createMemoryStore();
+  const originalGetWithMetadata = contactStore.getWithMetadata.bind(contactStore);
+  contactStore.getWithMetadata = async (key, options = {}) => {
+    if (String(key).startsWith(OWNER_LEAD_DELIVERY_KEY_PREFIX)) {
+      throw new Error("delivery read unavailable");
+    }
+    return originalGetWithMetadata(key, options);
+  };
+  let sendCalls = 0;
+  const response = await handleSubmissionCreated(
+    { body: JSON.stringify({ payload: ownerSubmitPayload({}, { id: "delivery-read-fail" }) }) },
+    undefined,
+    metricsStore,
+    contactStore,
+    async () => {},
+    async () => {
+      sendCalls += 1;
+      return { sent: true, ownerSent: true, internalSent: true };
+    }
+  );
+  assert.equal(response.statusCode, 503);
+  assert.equal(JSON.parse(response.body).confirmation.reason, "delivery_state_unavailable");
+  assert.equal(sendCalls, 0);
+});
+
+test("submission-created retries when the rate store is unavailable", async () => {
+  clearGraphEnv();
+  const metricsStore = createMemoryStore();
+  const contactStore = createMemoryStore();
+  const originalGetWithMetadata = contactStore.getWithMetadata.bind(contactStore);
+  contactStore.getWithMetadata = async (key, options = {}) => {
+    if (String(key).startsWith("owner_lead_mail_rate/bucket/")) {
+      throw new Error("rate read unavailable");
+    }
+    return originalGetWithMetadata(key, options);
+  };
+  let sendCalls = 0;
+  const response = await handleSubmissionCreated(
+    { body: JSON.stringify({ payload: ownerSubmitPayload({}, { id: "rate-store-fail" }) }) },
+    undefined,
+    metricsStore,
+    contactStore,
+    async () => {},
+    async () => {
+      sendCalls += 1;
+      return { sent: true, ownerSent: true, internalSent: true };
+    }
+  );
+  assert.equal(response.statusCode, 503);
+  assert.equal(JSON.parse(response.body).confirmation.reason, "rate_store_unavailable");
+  assert.equal(sendCalls, 0);
+});
