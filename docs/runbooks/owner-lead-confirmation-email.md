@@ -10,6 +10,8 @@ email, `netlify/functions/submission-created.js` sends:
    cannot go silent
 
 This is not a drip, not guest Mailchimp, and not founder-gated sales outreach.
+The function is an event-only handler: direct HTTP invocation is rejected, and
+Netlify verifies the platform event signature before invoking it.
 
 ## Delivery blocker (must be green before production send)
 
