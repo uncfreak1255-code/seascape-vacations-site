@@ -197,7 +197,7 @@ async function maybeSendOwnerLeadConfirmation({
     delivery = await readOwnerLeadDeliveryState(contactStore, capture.contact.submissionId);
   } catch (error) {
     console.error("owner_lead_delivery_read_failed", { submissionId: capture.contact.submissionId });
-    return { attempted: false, result: { sent: false, reason: "delivery_state_unavailable" }, retryable: false };
+    return { attempted: false, result: { sent: false, reason: "delivery_state_unavailable" }, retryable: true };
   }
 
   if (delivery.ownerSent && delivery.internalSent) return { attempted: false, result: null, retryable: false, delivery };
@@ -205,12 +205,23 @@ async function maybeSendOwnerLeadConfirmation({
   const rate = await assertOwnerLeadMailAllowed(contactStore, capture.contact.email, process.env, { submissionId: capture.contact.submissionId });
   if (!rate.allowed) {
     console.error("owner_lead_confirmation_rate_limited", { reason: rate.reason, scope: rate.scope, submissionId: capture.contact.submissionId });
-    return { attempted: true, result: { sent: false, ownerSent: delivery.ownerSent, internalSent: delivery.internalSent, reason: rate.reason }, retryable: false, delivery };
+    return {
+      attempted: true,
+      result: { sent: false, ownerSent: delivery.ownerSent, internalSent: delivery.internalSent, reason: rate.reason },
+      retryable: rate.reason !== "rate_limited",
+      delivery
+    };
   }
 
   const claim = await claimOwnerLeadDelivery(contactStore, capture.contact.submissionId);
   if (!claim.claimed) {
-    return { attempted: false, result: { sent: false, ownerSent: delivery.ownerSent, internalSent: delivery.internalSent, reason: claim.reason }, retryable: false, delivery: claim.state || delivery };
+    const claimRetryable = claim.reason === "delivery_store_unavailable" || claim.reason === "delivery_claim_failed";
+    return {
+      attempted: false,
+      result: { sent: false, ownerSent: delivery.ownerSent, internalSent: delivery.internalSent, reason: claim.reason },
+      retryable: claimRetryable,
+      delivery: claim.state || delivery
+    };
   }
 
   const confirmationResult = await safeConfirm(sendConfirmation, capture.contact, delivery);
