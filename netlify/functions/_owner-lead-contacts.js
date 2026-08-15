@@ -77,7 +77,9 @@ function buildOwnerLeadContact(rawPayload) {
       normalizeText(data.page_slug) ||
       "property-management",
     market: normalizeText(data.market) || "florida-gulf-coast",
-    leadType: normalizeText(data.lead_type) || OWNER_LEAD_FORM_NAME
+    leadType: normalizeText(data.lead_type) || OWNER_LEAD_FORM_NAME,
+    ownerConfirmationSent: false,
+    internalNotifySent: false
   };
 }
 
@@ -115,6 +117,44 @@ function mergeOwnerLeadContacts(existing, contact) {
   }
 
   base.totalContacts = base.contacts.length;
+  base.updatedAt = new Date().toISOString();
+  return base;
+}
+
+function getOwnerLeadConfirmationDelivery(contact) {
+  return {
+    ownerSent: Boolean(contact && contact.ownerConfirmationSent === true),
+    internalSent: Boolean(contact && contact.internalNotifySent === true)
+  };
+}
+
+function updateOwnerLeadConfirmationDelivery(existing, submissionId, result) {
+  const base = {
+    ...emptyContacts(),
+    ...(existing || {}),
+    contacts: Array.isArray(existing && existing.contacts) ? [...existing.contacts] : []
+  };
+  const index = base.contacts.findIndex((entry) => entry.submissionId === submissionId);
+  if (index === -1) {
+    return base;
+  }
+
+  const current = base.contacts[index];
+  const nextOwnerSent = current.ownerConfirmationSent === true || result?.ownerSent === true;
+  const nextInternalSent = current.internalNotifySent === true || result?.internalSent === true;
+
+  if (
+    nextOwnerSent === (current.ownerConfirmationSent === true) &&
+    nextInternalSent === (current.internalNotifySent === true)
+  ) {
+    return base;
+  }
+
+  base.contacts[index] = {
+    ...current,
+    ownerConfirmationSent: nextOwnerSent,
+    internalNotifySent: nextInternalSent
+  };
   base.updatedAt = new Date().toISOString();
   return base;
 }
@@ -187,6 +227,8 @@ module.exports = {
   buildOwnerLeadContact,
   mergeOwnerLeadContacts,
   getOwnerLeadContactBlobsConfig,
+  getOwnerLeadConfirmationDelivery,
+  updateOwnerLeadConfirmationDelivery,
   parseStoredContacts,
   readOwnerLeadContacts,
   writeOwnerLeadContacts,
