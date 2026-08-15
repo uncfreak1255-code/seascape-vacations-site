@@ -98,11 +98,11 @@ async function sendOwnerLeadConfirmationEmails(
   deliveryState = {}
 ) {
   if (!contact || typeof contact !== "object") {
-    return { sent: false, ownerSent: false, internalSent: false, reason: "missing_contact" };
+    return { sent: false, reason: "missing_contact" };
   }
 
   if (!isUsableOwnerEmail(contact.email)) {
-    return { sent: false, ownerSent: false, internalSent: false, reason: "missing_email" };
+    return { sent: false, reason: "missing_email" };
   }
 
   const ownerAlreadySent = deliveryState && deliveryState.ownerSent === true;
