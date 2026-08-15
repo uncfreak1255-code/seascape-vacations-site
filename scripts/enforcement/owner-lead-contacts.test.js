@@ -115,7 +115,14 @@ test("submission-created writes full contact to the contact store and keeps PII 
   const notify = async (message) => { notifications.push(message); };
 
   const event = { body: JSON.stringify({ payload: ownerSubmitPayload() }) };
-  const response = await handleSubmissionCreated(event, undefined, metricsStore, contactStore, notify);
+  const response = await handleSubmissionCreated(
+    event,
+    undefined,
+    metricsStore,
+    contactStore,
+    notify,
+    async () => ({ sent: false, reason: "test_skip" })
+  );
 
   // The cross-repo metrics blob must NEVER carry PII.
   assert.equal(metricsBlob.includes("pat@example.com"), false);
@@ -148,7 +155,14 @@ test("submission-created notifies with the raw lead when the contact store write
   try {
     const payload = { ...ownerSubmitPayload(), id: "submission-x" };
     const event = { body: JSON.stringify({ payload }) };
-    const response = await handleSubmissionCreated(event, undefined, metricsStore, failingContactStore, notify);
+    const response = await handleSubmissionCreated(
+      event,
+      undefined,
+      metricsStore,
+      failingContactStore,
+      notify,
+      async () => ({ sent: false, reason: "test_skip" })
+    );
 
     // The lead must NOT be silently dropped on a persistence failure.
     assert.equal(notifications.length, 1);
@@ -196,7 +210,14 @@ test("submission-created captures the lead and notifies even when the metrics st
   try {
     const payload = { ...ownerSubmitPayload(), id: "submission-resolve-fail" };
     const event = { body: JSON.stringify({ payload }) };
-    const response = await handleSubmissionCreated(event, undefined, invalidMetricsStore, contactStore, notify);
+    const response = await handleSubmissionCreated(
+      event,
+      undefined,
+      invalidMetricsStore,
+      contactStore,
+      notify,
+      async () => ({ sent: false, reason: "test_skip" })
+    );
 
     assert.equal(JSON.parse(contactBlob).contacts[0].email, "pat@example.com");
     assert.equal(notifications.length, 1);
@@ -228,7 +249,8 @@ test("submission-created logs when notify throws after a lead is captured", asyn
       contactStore,
       async () => {
         throw new Error("notify transport blew up");
-      }
+      },
+      async () => ({ sent: false, reason: "test_skip" })
     );
 
     assert.equal(response.statusCode, 200);
@@ -254,8 +276,9 @@ test("submission-created does not re-notify when an already-captured submission 
   const notify = async (message) => { notifications.push(message); };
 
   const event = { body: JSON.stringify({ payload: ownerSubmitPayload({ id: "submission-redeliver" }) }) };
-  await handleSubmissionCreated(event, undefined, metricsStore, contactStore, notify);
-  await handleSubmissionCreated(event, undefined, metricsStore, contactStore, notify);
+  const skipConfirm = async () => ({ sent: false, reason: "test_skip" });
+  await handleSubmissionCreated(event, undefined, metricsStore, contactStore, notify, skipConfirm);
+  await handleSubmissionCreated(event, undefined, metricsStore, contactStore, notify, skipConfirm);
 
   assert.equal(JSON.parse(contactBlob).contacts.length, 1);
   assert.equal(notifications.length, 1);

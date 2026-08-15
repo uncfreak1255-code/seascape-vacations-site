@@ -16,6 +16,7 @@ improvising the next move.
 | `test:visual`, visual proof, or screenshot sanity fails | `docs/runbooks/failed-visual-gate.md` | visual diff output plus fresh desktop/mobile proof |
 | The current analytics receipt or next-batch read is stale or missing | `docs/runbooks/stale-analytics-receipt.md` | `seascape-analytics` receipt path and date |
 | Public legal or trust copy is blocked on approval | `docs/runbooks/legal-approval-blocked.md` | approved copy source or a narrowed non-substantive diff |
+| Owner form confirmation email did not arrive / Graph send blocked | `docs/runbooks/owner-lead-confirmation-email.md` | Netlify Graph env + function logs `owner_lead_confirmation_not_sent` |
 
 ## Hard Rules
 

@@ -15,6 +15,10 @@ const {
   resolveContactStore
 } = require("./_owner-lead-contacts");
 const { notifyOwnerLead } = require("./_owner-lead-notify");
+const {
+  isUsableOwnerEmail,
+  sendOwnerLeadConfirmationEmails
+} = require("./_owner-lead-confirmation");
 
 function resolveWritableStore(event, candidateStore) {
   if (candidateStore && typeof candidateStore.get === "function" && typeof candidateStore.set === "function") {
@@ -75,12 +79,26 @@ async function safeNotify(notify, message) {
   }
 }
 
+async function safeConfirm(sendConfirmation, contact) {
+  try {
+    return await sendConfirmation(contact);
+  } catch (error) {
+    console.error("owner_lead_confirmation_threw", {
+      submissionId: contact && contact.submissionId ? contact.submissionId : undefined,
+      message: error && error.message ? error.message : String(error)
+    });
+    return { sent: false, reason: "confirmation_threw" };
+  }
+}
+
 // Durable full-contact capture for a real owner submission, kept entirely
 // separate from the PII-free attribution metrics blob. The lead must never be
 // silently dropped: if persistence fails, push the raw lead to a human via notify.
 async function captureOwnerLeadContact(event, payload, injectedContactStore, notify) {
   const contact = buildOwnerLeadContact(payload);
-  if (!contact) return;
+  if (!contact) {
+    return { contact: null, alreadyStored: false, captureFailed: false };
+  }
 
   try {
     const contactStore = resolveContactStore(event, injectedContactStore);
@@ -101,6 +119,7 @@ async function captureOwnerLeadContact(event, payload, injectedContactStore, not
         contact
       });
     }
+    return { contact, alreadyStored, captureFailed: false };
   } catch (error) {
     console.error("owner_lead_contact_capture_failed", {
       submissionId: contact.submissionId,
@@ -114,10 +133,18 @@ async function captureOwnerLeadContact(event, payload, injectedContactStore, not
       rawPayload: payload,
       error: error && error.message ? error.message : String(error)
     });
+    return { contact, alreadyStored: false, captureFailed: true };
   }
 }
 
-async function handleSubmissionCreated(event, _context, injectedStore, injectedContactStore = null, injectedNotify = null) {
+async function handleSubmissionCreated(
+  event,
+  _context,
+  injectedStore,
+  injectedContactStore = null,
+  injectedNotify = null,
+  injectedSendConfirmation = null
+) {
   const payload = parseRequestBody(event);
   if (!payload) {
     return {
@@ -144,7 +171,15 @@ async function handleSubmissionCreated(event, _context, injectedStore, injectedC
   // throw-prone metrics-store resolution, so a Blobs/connect failure on the
   // attribution path can never silently drop the lead.
   const notify = injectedNotify || notifyOwnerLead;
-  await captureOwnerLeadContact(event, payload, injectedContactStore, notify);
+  const sendConfirmation = injectedSendConfirmation || sendOwnerLeadConfirmationEmails;
+  const capture = await captureOwnerLeadContact(event, payload, injectedContactStore, notify);
+
+  // One confirmation ack + internal info@ notify for usable-email submits only.
+  // Skip redeliveries so the owner is not emailed twice. Skip phone/name-only
+  // captures that have no address to deliver to.
+  if (capture.contact && !capture.alreadyStored && isUsableOwnerEmail(capture.contact.email)) {
+    await safeConfirm(sendConfirmation, capture.contact);
+  }
 
   // Attribution metrics are best-effort and fully independent of the lead record.
   // Resolve + read + write are guarded together so any failure degrades to a

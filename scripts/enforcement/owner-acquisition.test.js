@@ -241,7 +241,7 @@ test("owner review submit path lands on a qualified-owner confirmation route", (
   assert.equal(ownerReviewRequested.includes('permalink: "/property-management/revenue-review-requested/"'), true);
   assert.equal(ownerReviewRequested.includes("Your 48-hour review request is in."), true);
   assert.equal(
-    ownerReviewRequested.includes("A real Seascape person will read what you sent. If the listing or address and what feels off are there, we can take a more useful first look right away."),
+    ownerReviewRequested.includes("A real Seascape person will follow up within 48 hours. If the listing or address and what feels off are there, we can take a more useful first look right away."),
     true
   );
   assert.equal(ownerReviewRequested.includes("listing link or property address"), true);
