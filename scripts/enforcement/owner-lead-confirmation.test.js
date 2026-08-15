@@ -28,7 +28,7 @@ const {
 } = require("../../netlify/functions/_owner-lead-delivery");
 const {
   assertOwnerLeadMailAllowed,
-  buildEmailRateKey,
+  buildRateBucketKey,
   hourBucket
 } = require("../../netlify/functions/_owner-lead-abuse");
 
@@ -450,7 +450,7 @@ test("submission-created returns 503 so Netlify retries a failed Graph delivery"
     deliveryStates.push(delivery);
     attempts += 1;
     if (attempts === 1) {
-      return { sent: false, ownerSent: false, internalSent: false, reason: "graph_send_failed:503" };
+      return { sent: false, ownerSent: false, internalSent: false, reason: "graph_send_failed:429" };
     }
     return { sent: true, ownerSent: true, internalSent: true, reason: "sent" };
   };
@@ -469,7 +469,7 @@ test("submission-created returns 503 so Netlify retries a failed Graph delivery"
     sendConfirmation
   );
   assert.equal(first.statusCode, 503);
-  assert.equal(JSON.parse(first.body).confirmation.reason, "graph_send_failed:503");
+  assert.equal(JSON.parse(first.body).confirmation.reason, "graph_send_failed:429");
 
   const second = await handleSubmissionCreated(
     event,
@@ -513,28 +513,32 @@ test("submission-created does not send when contact capture fails", async () => 
   assert.equal(notifications[0].type, "owner_lead_capture_failed");
 });
 
-test("submission-created returns 503 when Graph succeeded but delivery state could not persist", async () => {
+test("submission-created does not resend when delivery-state persistence fails after Graph acceptance", async () => {
   const metricsStore = createMemoryStore();
   const contactStore = createMemoryStore();
   const originalSet = contactStore.set.bind(contactStore);
+  let deliveryWrites = 0;
   contactStore.set = async (key, value, options) => {
     if (String(key).startsWith(OWNER_LEAD_DELIVERY_KEY_PREFIX)) {
-      throw new Error("delivery blob unavailable");
+      deliveryWrites += 1;
+      if (deliveryWrites > 1) throw new Error("delivery blob unavailable");
     }
     return originalSet(key, value, options);
   };
+  let sendCalls = 0;
+  const sendConfirmation = async () => {
+    sendCalls += 1;
+    return { sent: true, ownerSent: true, internalSent: true, reason: "sent" };
+  };
+  const event = { body: JSON.stringify({ payload: ownerSubmitPayload({}, { id: "persist-fail" }) }) };
+  const first = await handleSubmissionCreated(event, undefined, metricsStore, contactStore, async () => {}, sendConfirmation);
+  const second = await handleSubmissionCreated(event, undefined, metricsStore, contactStore, async () => {}, sendConfirmation);
 
-  const response = await handleSubmissionCreated(
-    { body: JSON.stringify({ payload: ownerSubmitPayload({}, { id: "persist-fail" }) }) },
-    undefined,
-    metricsStore,
-    contactStore,
-    async () => {},
-    async () => ({ sent: true, ownerSent: true, internalSent: true, reason: "sent" })
-  );
-
-  assert.equal(response.statusCode, 503);
-  assert.equal(JSON.parse(response.body).confirmation.reason, "delivery_state_write_failed");
+  assert.equal(first.statusCode, 200);
+  assert.equal(JSON.parse(first.body).confirmation.reason, "delivery_state_unknown");
+  assert.equal(second.statusCode, 200);
+  assert.equal(sendCalls, 1);
+  assert.equal(JSON.parse(second.body).confirmation, undefined);
 });
 
 test("overlapping contact writes keep both leads via conditional retry", async () => {
@@ -584,7 +588,7 @@ test("mail rate limit blocks repeated confirmation attempts for the same recipie
   assert.equal(second.reason, "rate_limited");
   assert.equal(retrySameSubmission.allowed, true);
   assert.equal(retrySameSubmission.reserved, true);
-  assert.ok(store._values.has(buildEmailRateKey("pat@example.com", hourBucket())));
+  assert.ok(store._values.has(buildRateBucketKey(hourBucket())));
   delete process.env.OWNER_LEAD_MAIL_RATE_LIMIT_PER_EMAIL_HOUR;
 });
 
@@ -609,4 +613,60 @@ test("env example documents Graph turn-on without embedding secrets", () => {
   assert.match(envExample, /OWNER_LEAD_NOTIFY_WEBHOOK_URL=/);
   assert.doesNotMatch(envExample, /eyJ[A-Za-z0-9_-]{10,}/);
   assert.doesNotMatch(envExample, /MS_GRAPH_CLIENT_SECRET=(?!your_entra_app_client_secret$)[^\n]+/m);
+});
+
+test("submission-created retries when delivery-state reads are unavailable", async () => {
+  clearGraphEnv();
+  const metricsStore = createMemoryStore();
+  const contactStore = createMemoryStore();
+  const originalGetWithMetadata = contactStore.getWithMetadata.bind(contactStore);
+  contactStore.getWithMetadata = async (key, options = {}) => {
+    if (String(key).startsWith(OWNER_LEAD_DELIVERY_KEY_PREFIX)) {
+      throw new Error("delivery read unavailable");
+    }
+    return originalGetWithMetadata(key, options);
+  };
+  let sendCalls = 0;
+  const response = await handleSubmissionCreated(
+    { body: JSON.stringify({ payload: ownerSubmitPayload({}, { id: "delivery-read-fail" }) }) },
+    undefined,
+    metricsStore,
+    contactStore,
+    async () => {},
+    async () => {
+      sendCalls += 1;
+      return { sent: true, ownerSent: true, internalSent: true };
+    }
+  );
+  assert.equal(response.statusCode, 503);
+  assert.equal(JSON.parse(response.body).confirmation.reason, "delivery_state_unavailable");
+  assert.equal(sendCalls, 0);
+});
+
+test("submission-created retries when the rate store is unavailable", async () => {
+  clearGraphEnv();
+  const metricsStore = createMemoryStore();
+  const contactStore = createMemoryStore();
+  const originalGetWithMetadata = contactStore.getWithMetadata.bind(contactStore);
+  contactStore.getWithMetadata = async (key, options = {}) => {
+    if (String(key).startsWith("owner_lead_mail_rate/bucket/")) {
+      throw new Error("rate read unavailable");
+    }
+    return originalGetWithMetadata(key, options);
+  };
+  let sendCalls = 0;
+  const response = await handleSubmissionCreated(
+    { body: JSON.stringify({ payload: ownerSubmitPayload({}, { id: "rate-store-fail" }) }) },
+    undefined,
+    metricsStore,
+    contactStore,
+    async () => {},
+    async () => {
+      sendCalls += 1;
+      return { sent: true, ownerSent: true, internalSent: true };
+    }
+  );
+  assert.equal(response.statusCode, 503);
+  assert.equal(JSON.parse(response.body).confirmation.reason, "rate_store_unavailable");
+  assert.equal(sendCalls, 0);
 });

@@ -19,6 +19,7 @@ const {
   sendOwnerLeadConfirmationEmails
 } = require("./_owner-lead-confirmation");
 const {
+  claimOwnerLeadDelivery,
   isRetryableConfirmationFailure,
   readOwnerLeadDeliveryState,
   writeOwnerLeadDeliveryState
@@ -155,7 +156,7 @@ async function captureOwnerLeadContact(event, payload, injectedContactStore, not
 }
 
 async function persistOwnerLeadConfirmationDelivery(contactStore, contact, result) {
-  if (!contact || !result || (!result.ownerSent && !result.internalSent)) {
+  if (!contact || !result) {
     return { persisted: true, unchanged: true, state: null };
   }
 
@@ -186,94 +187,57 @@ async function maybeSendOwnerLeadConfirmation({
   injectedContactStore,
   sendConfirmation
 }) {
-  if (
-    !capture.contact ||
-    capture.captureFailed ||
-    !isUsableOwnerEmail(capture.contact.email)
-  ) {
+  if (!capture.contact || capture.captureFailed || !isUsableOwnerEmail(capture.contact.email)) {
     return { attempted: false, result: null, retryable: false };
   }
 
-  const contactStore =
-    capture.contactStore || resolveContactStore(event, injectedContactStore);
-  const delivery = await readOwnerLeadDeliveryState(
-    contactStore,
-    capture.contact.submissionId
-  );
-
-  if (delivery.ownerSent && delivery.internalSent) {
-    return { attempted: false, result: null, retryable: false, delivery };
+  const contactStore = capture.contactStore || resolveContactStore(event, injectedContactStore);
+  let delivery;
+  try {
+    delivery = await readOwnerLeadDeliveryState(contactStore, capture.contact.submissionId);
+  } catch (error) {
+    console.error("owner_lead_delivery_read_failed", { submissionId: capture.contact.submissionId });
+    return { attempted: false, result: { sent: false, reason: "delivery_state_unavailable" }, retryable: true };
   }
 
-  const rate = await assertOwnerLeadMailAllowed(
-    contactStore,
-    capture.contact.email,
-    process.env,
-    { submissionId: capture.contact.submissionId }
-  );
+  if (delivery.ownerSent && delivery.internalSent) return { attempted: false, result: null, retryable: false, delivery };
+
+  const rate = await assertOwnerLeadMailAllowed(contactStore, capture.contact.email, process.env, { submissionId: capture.contact.submissionId });
   if (!rate.allowed) {
-    console.error("owner_lead_confirmation_rate_limited", {
-      reason: rate.reason,
-      scope: rate.scope,
-      submissionId: capture.contact.submissionId
-    });
+    console.error("owner_lead_confirmation_rate_limited", { reason: rate.reason, scope: rate.scope, submissionId: capture.contact.submissionId });
     return {
       attempted: true,
-      result: {
-        sent: false,
-        ownerSent: delivery.ownerSent,
-        internalSent: delivery.internalSent,
-        reason: "rate_limited"
-      },
-      retryable: false,
+      result: { sent: false, ownerSent: delivery.ownerSent, internalSent: delivery.internalSent, reason: rate.reason },
+      retryable: rate.reason !== "rate_limited",
       delivery
     };
   }
 
-  const confirmationResult = await safeConfirm(
-    sendConfirmation,
-    capture.contact,
-    delivery
-  );
-
-  let persistFailed = false;
-  try {
-    await persistOwnerLeadConfirmationDelivery(
-      contactStore,
-      capture.contact,
-      confirmationResult
-    );
-  } catch (error) {
-    persistFailed = Boolean(
-      confirmationResult &&
-      (confirmationResult.ownerSent === true || confirmationResult.internalSent === true)
-    );
-    console.error("owner_lead_confirmation_state_write_failed", {
-      submissionId: capture.contact.submissionId,
-      message: error && error.message ? error.message : String(error),
-      persistFailedAfterSend: persistFailed
-    });
-    if (persistFailed) {
-      return {
-        attempted: true,
-        result: {
-          ...confirmationResult,
-          sent: false,
-          reason: "delivery_state_write_failed"
-        },
-        retryable: true,
-        delivery
-      };
-    }
+  const claim = await claimOwnerLeadDelivery(contactStore, capture.contact.submissionId);
+  if (!claim.claimed) {
+    const claimRetryable = claim.reason === "delivery_store_unavailable" || claim.reason === "delivery_claim_failed";
+    return {
+      attempted: false,
+      result: { sent: false, ownerSent: delivery.ownerSent, internalSent: delivery.internalSent, reason: claim.reason },
+      retryable: claimRetryable,
+      delivery: claim.state || delivery
+    };
   }
 
-  const retryable = isRetryableConfirmationFailure(confirmationResult);
-  return {
-    attempted: true,
-    result: confirmationResult,
-    retryable,
-    delivery
-  };
+  const confirmationResult = await safeConfirm(sendConfirmation, capture.contact, delivery);
+  try {
+    await persistOwnerLeadConfirmationDelivery(contactStore, capture.contact, confirmationResult);
+  } catch (error) {
+    console.error("owner_lead_confirmation_state_write_failed", { submissionId: capture.contact.submissionId, persistFailedAfterSend: Boolean(confirmationResult && (confirmationResult.ownerSent || confirmationResult.internalSent)) });
+    return {
+      attempted: true,
+      result: { ...confirmationResult, sent: false, reason: "delivery_state_unknown", ambiguous: true },
+      retryable: false,
+      delivery: claim.state
+    };
+  }
+
+  return { attempted: true, result: confirmationResult, retryable: isRetryableConfirmationFailure(confirmationResult), delivery: claim.state };
 }
 
 async function handleSubmissionCreated(

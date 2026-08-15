@@ -141,6 +141,7 @@ async function sendOwnerLeadConfirmationEmails(
       ownerSent: false,
       internalSent: internalAlreadySent,
       reason: ownerResult.reason,
+      ambiguous: Boolean(ownerResult.ambiguous),
       owner: ownerResult,
       internal: { sent: false, reason: "skipped_after_owner_failure" }
     };
@@ -151,6 +152,7 @@ async function sendOwnerLeadConfirmationEmails(
     : await sendMailViaGraph(internalMessage, injectedFetch, env);
   const ownerSent = true;
   const internalSent = internalAlreadySent || internalResult.sent;
+  const ambiguous = Boolean(ownerResult.ambiguous || internalResult.ambiguous);
 
   if (!internalResult.sent && !internalAlreadySent) {
     console.error("owner_lead_internal_notify_not_sent", {
@@ -163,6 +165,8 @@ async function sendOwnerLeadConfirmationEmails(
     sent: ownerSent && internalSent,
     ownerSent,
     internalSent,
+    ambiguous,
+    deliveryStatus: ambiguous ? "unknown" : undefined,
     reason: internalSent ? "sent" : "owner_sent_internal_failed",
     owner: ownerResult,
     internal: internalResult
