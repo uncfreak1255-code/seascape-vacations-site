@@ -46,6 +46,20 @@ test("owner landing page uses a real owner revenue review form instead of generi
   assert.equal(ownerLanding.includes('data-track-event="owner_primary_cta_click"'), true);
   assert.equal(ownerFormPartial.includes("owner-revenue-teardown"), true);
   assert.equal(ownerFormPartial.includes('data-netlify="true"'), true);
+  assert.equal(ownerFormPartial.includes('data-netlify-recaptcha="true"'), true);
+  assert.equal(ownerLanding.includes('data-netlify-recaptcha="true"'), true);
+  assert.equal(
+    (ownerFormPartial.match(/data-netlify-recaptcha="true"/g) || []).length >= 2,
+    true,
+    "shared owner form needs form-level captcha attribute plus a widget div"
+  );
+  assert.equal(
+    (ownerLanding.match(/data-netlify-recaptcha="true"/g) || []).length >= 2,
+    true,
+    "primary owner hub form needs form-level captcha attribute plus a widget div"
+  );
+  assert.equal(ownerFormPartial.includes('<div data-netlify-recaptcha="true"></div>'), true);
+  assert.equal(ownerLanding.includes('<div data-netlify-recaptcha="true"></div>'), true);
   assert.equal(ownerFormPartial.includes('name="proof_label"'), true);
   assert.equal(ownerLanding.includes('name="proof_label"'), true);
 });
@@ -241,7 +255,7 @@ test("owner review submit path lands on a qualified-owner confirmation route", (
   assert.equal(ownerReviewRequested.includes('permalink: "/property-management/revenue-review-requested/"'), true);
   assert.equal(ownerReviewRequested.includes("Your 48-hour review request is in."), true);
   assert.equal(
-    ownerReviewRequested.includes("A real Seascape person will read what you sent. If the listing or address and what feels off are there, we can take a more useful first look right away."),
+    ownerReviewRequested.includes("A real Seascape person will follow up within 48 hours. If the listing or address and what feels off are there, we can take a more useful first look right away."),
     true
   );
   assert.equal(ownerReviewRequested.includes("listing link or property address"), true);

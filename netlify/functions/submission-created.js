@@ -10,11 +10,20 @@ const {
 const {
   buildOwnerLeadContact,
   mergeOwnerLeadContacts,
-  readOwnerLeadContacts,
-  writeOwnerLeadContacts,
+  mutateOwnerLeadContacts,
   resolveContactStore
 } = require("./_owner-lead-contacts");
 const { notifyOwnerLead } = require("./_owner-lead-notify");
+const {
+  isUsableOwnerEmail,
+  sendOwnerLeadConfirmationEmails
+} = require("./_owner-lead-confirmation");
+const {
+  isRetryableConfirmationFailure,
+  readOwnerLeadDeliveryState,
+  writeOwnerLeadDeliveryState
+} = require("./_owner-lead-delivery");
+const { assertOwnerLeadMailAllowed } = require("./_owner-lead-abuse");
 
 function resolveWritableStore(event, candidateStore) {
   if (candidateStore && typeof candidateStore.get === "function" && typeof candidateStore.set === "function") {
@@ -75,22 +84,43 @@ async function safeNotify(notify, message) {
   }
 }
 
+async function safeConfirm(sendConfirmation, contact, delivery) {
+  try {
+    const result = await sendConfirmation(contact, delivery);
+    if (result && result.sent === true && typeof result.ownerSent !== "boolean") {
+      return { ...result, ownerSent: true, internalSent: true };
+    }
+    return result;
+  } catch (error) {
+    console.error("owner_lead_confirmation_threw", {
+      submissionId: contact && contact.submissionId ? contact.submissionId : undefined,
+      message: error && error.message ? error.message : String(error)
+    });
+    return { sent: false, reason: "confirmation_threw" };
+  }
+}
+
 // Durable full-contact capture for a real owner submission, kept entirely
 // separate from the PII-free attribution metrics blob. The lead must never be
 // silently dropped: if persistence fails, push the raw lead to a human via notify.
 async function captureOwnerLeadContact(event, payload, injectedContactStore, notify) {
   const contact = buildOwnerLeadContact(payload);
-  if (!contact) return;
+  if (!contact) {
+    return { contact: null, alreadyStored: false, captureFailed: false, contactStore: null };
+  }
 
   try {
     const contactStore = resolveContactStore(event, injectedContactStore);
-    const existingContacts = await readOwnerLeadContacts(contactStore);
-    const alreadyStored = Boolean(
-      existingContacts &&
-      Array.isArray(existingContacts.contacts) &&
-      existingContacts.contacts.some((entry) => entry.submissionId === contact.submissionId)
-    );
-    await writeOwnerLeadContacts(contactStore, mergeOwnerLeadContacts(existingContacts, contact));
+    let alreadyStored = false;
+    await mutateOwnerLeadContacts(contactStore, (existingContacts) => {
+      alreadyStored = Boolean(
+        existingContacts &&
+        Array.isArray(existingContacts.contacts) &&
+        existingContacts.contacts.some((entry) => entry.submissionId === contact.submissionId)
+      );
+      return mergeOwnerLeadContacts(existingContacts, contact);
+    });
+
     // Idempotent: Netlify form webhooks are at-least-once, so a re-delivered
     // submission must not re-alert a human.
     if (!alreadyStored) {
@@ -101,6 +131,7 @@ async function captureOwnerLeadContact(event, payload, injectedContactStore, not
         contact
       });
     }
+    return { contact, alreadyStored, captureFailed: false, contactStore };
   } catch (error) {
     console.error("owner_lead_contact_capture_failed", {
       submissionId: contact.submissionId,
@@ -114,17 +145,148 @@ async function captureOwnerLeadContact(event, payload, injectedContactStore, not
       rawPayload: payload,
       error: error && error.message ? error.message : String(error)
     });
+    return {
+      contact,
+      alreadyStored: false,
+      captureFailed: true,
+      contactStore: null
+    };
   }
 }
 
-async function handleSubmissionCreated(event, _context, injectedStore, injectedContactStore = null, injectedNotify = null) {
+async function persistOwnerLeadConfirmationDelivery(contactStore, contact, result) {
+  if (!contact || !result || (!result.ownerSent && !result.internalSent)) {
+    return { persisted: true, unchanged: true, state: null };
+  }
+
+  return writeOwnerLeadDeliveryState(contactStore, contact.submissionId, result);
+}
+
+function isPublicHttpInvocation(event) {
+  return Boolean(
+    event &&
+    (
+      typeof event.httpMethod === "string" ||
+      (event.requestContext && event.requestContext.http && typeof event.requestContext.http.method === "string")
+    )
+  );
+}
+
+function buildJsonResponse(statusCode, body) {
+  return {
+    statusCode,
+    headers: { "content-type": "application/json; charset=utf-8" },
+    body: JSON.stringify(body)
+  };
+}
+
+async function maybeSendOwnerLeadConfirmation({
+  event,
+  capture,
+  injectedContactStore,
+  sendConfirmation
+}) {
+  if (
+    !capture.contact ||
+    capture.captureFailed ||
+    !isUsableOwnerEmail(capture.contact.email)
+  ) {
+    return { attempted: false, result: null, retryable: false };
+  }
+
+  const contactStore =
+    capture.contactStore || resolveContactStore(event, injectedContactStore);
+  const delivery = await readOwnerLeadDeliveryState(
+    contactStore,
+    capture.contact.submissionId
+  );
+
+  if (delivery.ownerSent && delivery.internalSent) {
+    return { attempted: false, result: null, retryable: false, delivery };
+  }
+
+  const rate = await assertOwnerLeadMailAllowed(
+    contactStore,
+    capture.contact.email,
+    process.env,
+    { submissionId: capture.contact.submissionId }
+  );
+  if (!rate.allowed) {
+    console.error("owner_lead_confirmation_rate_limited", {
+      reason: rate.reason,
+      scope: rate.scope,
+      submissionId: capture.contact.submissionId
+    });
+    return {
+      attempted: true,
+      result: {
+        sent: false,
+        ownerSent: delivery.ownerSent,
+        internalSent: delivery.internalSent,
+        reason: "rate_limited"
+      },
+      retryable: false,
+      delivery
+    };
+  }
+
+  const confirmationResult = await safeConfirm(
+    sendConfirmation,
+    capture.contact,
+    delivery
+  );
+
+  let persistFailed = false;
+  try {
+    await persistOwnerLeadConfirmationDelivery(
+      contactStore,
+      capture.contact,
+      confirmationResult
+    );
+  } catch (error) {
+    persistFailed = Boolean(
+      confirmationResult &&
+      (confirmationResult.ownerSent === true || confirmationResult.internalSent === true)
+    );
+    console.error("owner_lead_confirmation_state_write_failed", {
+      submissionId: capture.contact.submissionId,
+      message: error && error.message ? error.message : String(error),
+      persistFailedAfterSend: persistFailed
+    });
+    if (persistFailed) {
+      return {
+        attempted: true,
+        result: {
+          ...confirmationResult,
+          sent: false,
+          reason: "delivery_state_write_failed"
+        },
+        retryable: true,
+        delivery
+      };
+    }
+  }
+
+  const retryable = isRetryableConfirmationFailure(confirmationResult);
+  return {
+    attempted: true,
+    result: confirmationResult,
+    retryable,
+    delivery
+  };
+}
+
+async function handleSubmissionCreated(
+  event,
+  _context,
+  injectedStore,
+  injectedContactStore = null,
+  injectedNotify = null,
+  injectedSendConfirmation = null
+) {
   const payload = parseRequestBody(event);
   if (!payload) {
-    return {
-      statusCode: 400,
-      headers: { "content-type": "application/json; charset=utf-8" },
-      body: JSON.stringify({ stored: false, reason: "invalid_json" })
-    };
+    return buildJsonResponse(400, { stored: false, reason: "invalid_json" });
   }
 
   const receipt = buildOwnerLeadReceipt(payload);
@@ -134,33 +296,44 @@ async function handleSubmissionCreated(event, _context, injectedStore, injectedC
       formName: getPayloadFormName(payload) || "unknown",
       hasSubmissionId: Boolean(getPayloadSubmissionId(payload))
     });
-    return {
-      statusCode: 200,
-      body: JSON.stringify({ stored: false, reason: "ignored_form" })
-    };
+    return buildJsonResponse(200, { stored: false, reason: "ignored_form" });
   }
 
   // Lead-safety FIRST: durable contact capture + human notify run before any
   // throw-prone metrics-store resolution, so a Blobs/connect failure on the
   // attribution path can never silently drop the lead.
   const notify = injectedNotify || notifyOwnerLead;
-  await captureOwnerLeadContact(event, payload, injectedContactStore, notify);
+  const sendConfirmation = injectedSendConfirmation || (
+    (contact, delivery) => sendOwnerLeadConfirmationEmails(contact, undefined, process.env, delivery)
+  );
+  const capture = await captureOwnerLeadContact(event, payload, injectedContactStore, notify);
+
+  // Confirmation ack only after durable contact capture. Failed Graph sends
+  // return retryable 503 so Netlify redelivers; per-submission delivery flags
+  // prevent duplicate owner/internal mail on those retries.
+  const confirmation = await maybeSendOwnerLeadConfirmation({
+    event,
+    capture,
+    injectedContactStore,
+    sendConfirmation
+  });
 
   // Attribution metrics are best-effort and fully independent of the lead record.
-  // Resolve + read + write are guarded together so any failure degrades to a
-  // metrics_write_failed response instead of throwing past the contact capture.
+  let metricsBody = {
+    stored: false,
+    reason: "metrics_write_failed",
+    sourcePageSlug: receipt.sourcePageSlug
+  };
+
   try {
     const store = resolveWritableStore(event, injectedStore);
     const existingMetrics = await readOwnerLeadMetrics(store);
     const nextMetrics = mergeOwnerLeadMetrics(existingMetrics, receipt);
     await writeOwnerLeadMetrics(store, nextMetrics);
-    return {
-      statusCode: 200,
-      body: JSON.stringify({
-        stored: true,
-        totalSubmissions: nextMetrics.totalSubmissions,
-        sourcePageSlug: receipt.sourcePageSlug
-      })
+    metricsBody = {
+      stored: true,
+      totalSubmissions: nextMetrics.totalSubmissions,
+      sourcePageSlug: receipt.sourcePageSlug
     };
   } catch (error) {
     console.error("owner_lead_metrics_write_failed", {
@@ -168,20 +341,42 @@ async function handleSubmissionCreated(event, _context, injectedStore, injectedC
       submissionId: receipt.submissionId,
       message: error && error.message ? error.message : String(error)
     });
-    return {
-      statusCode: 200,
-      body: JSON.stringify({
-        stored: false,
-        reason: "metrics_write_failed",
-        sourcePageSlug: receipt.sourcePageSlug
-      })
-    };
   }
+
+  if (confirmation.retryable) {
+    return buildJsonResponse(503, {
+      ...metricsBody,
+      confirmation: {
+        sent: false,
+        reason: confirmation.result && confirmation.result.reason
+          ? confirmation.result.reason
+          : "confirmation_retryable"
+      }
+    });
+  }
+
+  return buildJsonResponse(200, {
+    ...metricsBody,
+    confirmation: confirmation.attempted
+      ? {
+          sent: Boolean(confirmation.result && confirmation.result.sent),
+          reason: confirmation.result && confirmation.result.reason
+            ? confirmation.result.reason
+            : undefined
+        }
+      : undefined
+  });
 }
 
 async function handler(event, context) {
+  if (isPublicHttpInvocation(event)) {
+    console.warn("owner_lead_event_http_invocation_rejected");
+    return buildJsonResponse(404, { stored: false, reason: "event_only" });
+  }
+
   return handleSubmissionCreated(event, context);
 }
 
 exports.handleSubmissionCreated = handleSubmissionCreated;
+exports.isPublicHttpInvocation = isPublicHttpInvocation;
 exports.handler = handler;
