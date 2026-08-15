@@ -1,5 +1,5 @@
 // Microsoft Graph Mail.Send for owner-lead transactional mail only.
-// Sender is always info@seascape-vacations.com (or OWNER_LEAD_MAIL_FROM).
+// Sender and internal notify recipient are always info@seascape-vacations.com.
 // This is not the guest Mailchimp plane and not the frozen owner outbound campaign.
 
 const DEFAULT_FROM = "info@seascape-vacations.com";
@@ -16,8 +16,8 @@ function getMsGraphMailConfig(env = process.env) {
   const tenantId = normalizeText(env.MS_GRAPH_TENANT_ID || env.AZURE_TENANT_ID);
   const clientId = normalizeText(env.MS_GRAPH_CLIENT_ID || env.AZURE_CLIENT_ID);
   const clientSecret = normalizeText(env.MS_GRAPH_CLIENT_SECRET || env.AZURE_CLIENT_SECRET);
-  const from = normalizeText(env.OWNER_LEAD_MAIL_FROM) || DEFAULT_FROM;
-  const internalTo = normalizeText(env.OWNER_LEAD_INTERNAL_NOTIFY_TO) || from;
+  const from = DEFAULT_FROM;
+  const internalTo = DEFAULT_FROM;
 
   if (!tenantId || !clientId || !clientSecret) {
     return null;
