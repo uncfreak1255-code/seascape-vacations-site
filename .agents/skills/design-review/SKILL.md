@@ -1,6 +1,6 @@
 ---
 name: design-review
-description: Review rendered Seascape Vacations pages against `DESIGN.md`, repo visual rules, accessibility basics, and desktop/mobile browser proof. Use when the user asks for a design audit, page-by-page review, screenshot feedback, visual QA after CSS/template/layout changes, or help catching overflow, spacing, hierarchy, or component drift on localhost or the live site.
+description: Review rendered Seascape Vacations pages against `DESIGN.md`, repo visual rules, accessibility basics, and desktop/mobile browser proof. Use for a design audit, page-by-page review, screenshot feedback, visual QA after CSS/template/layout changes, or catching overflow, spacing, hierarchy, or component drift on localhost or the live site.
 ---
 
 # Design Review

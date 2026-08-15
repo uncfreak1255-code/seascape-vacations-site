@@ -1,6 +1,6 @@
 ---
 name: seascape-design-critic
-description: Bluntly critique current or proposed Seascape page direction before implementation or approval. Use when a route feels stale, bland, generic, too SaaS, too crowded, off-brand, or not yet good enough to ship, and when the design lane needs a clear taste verdict instead of polite feedback.
+description: Bluntly critique current or proposed Seascape page direction before implementation or approval. Use when a route feels stale, bland, generic, too SaaS, too crowded, off-brand, or not yet good enough to ship, and the design lane needs a clear taste verdict instead of polite feedback.
 ---
 
 # Seascape Design Critic

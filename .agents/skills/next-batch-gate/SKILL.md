@@ -1,6 +1,6 @@
 ---
 name: next-batch-gate
-description: Decide whether a proposed Seascape SEO, GEO, CRO, or performance branch should open by checking the current repo gate in `docs/status/next-batch.md`, `docs/status/current-state.md`, and `docs/status/open-risks.md`. Use when the user asks what to work on next, wants to open an owner/stay/guide batch, or proposes expansion, rewrite, or audit work that may conflict with the current reread status contract.
+description: Decide whether a proposed Seascape SEO, GEO, CRO, or performance branch should open, by checking the repo gate in `docs/status/next-batch.md`, `docs/status/current-state.md`, and `docs/status/open-risks.md`. Use when the user asks what to work on next, wants to open an owner/stay/guide batch, or proposes expansion, rewrite, or audit work that may conflict with the reread status contract.
 ---
 
 # Next Batch Gate

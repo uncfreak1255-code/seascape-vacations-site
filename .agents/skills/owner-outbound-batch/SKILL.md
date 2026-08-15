@@ -1,6 +1,6 @@
 ---
 name: owner-outbound-batch
-description: Qualify an owner-direct and permissioned Seascape opportunity from a real signal, warm relationship, explicit contact invitation, or direct inbound request. Use when a founder needs a reviewable intake decision. This skill never sends or creates outreach drafts and never persists a candidate in the public site repo.
+description: Qualify an owner-direct, permissioned Seascape opportunity from a real signal, warm relationship, explicit contact invitation, or direct inbound request, when a founder needs a reviewable intake decision. This skill never sends or creates outreach drafts and never persists a candidate in the public site repo.
 ---
 
 # Owner-Direct Permissioned Intake

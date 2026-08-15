@@ -1,6 +1,6 @@
 ---
 name: property-truth-regeneration
-description: Regenerate Seascape property surfaces from the canonical fallback data and verify drift is gone. Use when property facts in `src/_data/properties-fallback.json`, the per-property templates under `src/properties/`, or `src/llms.txt` may have diverged, after Hostaway or fallback updates, or whenever amenities, bedroom counts, bathroom counts, docks, pools, or guest counts change.
+description: Regenerate Seascape property surfaces from canonical fallback data and verify drift is gone. Use when property facts in `src/_data/properties-fallback.json`, the per-property templates under `src/properties/`, or `src/llms.txt` may have diverged, after Hostaway or fallback updates, or whenever amenities, bedroom counts, bathroom counts, docks, pools, or guest counts change.
 ---
 
 # Property Truth Regeneration
