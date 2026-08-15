@@ -156,7 +156,7 @@ async function captureOwnerLeadContact(event, payload, injectedContactStore, not
 }
 
 async function persistOwnerLeadConfirmationDelivery(contactStore, contact, result) {
-  if (!contact || !result || (!result.ownerSent && !result.internalSent)) {
+  if (!contact || !result) {
     return { persisted: true, unchanged: true, state: null };
   }
 
