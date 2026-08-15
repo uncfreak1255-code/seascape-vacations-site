@@ -114,3 +114,10 @@ test("only explicit 429 Graph send failures are retryable", () => {
   assert.equal(isRetryableConfirmationFailure({ sent: false, reason: "graph_send_failed:503" }), false);
   assert.equal(isRetryableConfirmationFailure({ sent: false, reason: "graph_send_transport_unknown:socket reset", ambiguous: true }), false);
 });
+
+test("only transient Graph token HTTP failures are retryable", () => {
+  assert.equal(isRetryableConfirmationFailure({ sent: false, reason: "graph_token_failed:429" }), true);
+  assert.equal(isRetryableConfirmationFailure({ sent: false, reason: "graph_token_failed:500" }), true);
+  assert.equal(isRetryableConfirmationFailure({ sent: false, reason: "graph_token_failed:400" }), false);
+  assert.equal(isRetryableConfirmationFailure({ sent: false, reason: "graph_token_failed:401" }), false);
+});
