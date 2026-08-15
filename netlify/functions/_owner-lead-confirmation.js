@@ -91,15 +91,22 @@ function buildInternalOwnerLeadNotifyEmail(contact, env = process.env) {
   };
 }
 
-async function sendOwnerLeadConfirmationEmails(contact, injectedFetch, env = process.env) {
+async function sendOwnerLeadConfirmationEmails(
+  contact,
+  injectedFetch,
+  env = process.env,
+  deliveryState = {}
+) {
   if (!contact || typeof contact !== "object") {
-    return { sent: false, reason: "missing_contact" };
+    return { sent: false, ownerSent: false, internalSent: false, reason: "missing_contact" };
   }
 
   if (!isUsableOwnerEmail(contact.email)) {
-    return { sent: false, reason: "missing_email" };
+    return { sent: false, ownerSent: false, internalSent: false, reason: "missing_email" };
   }
 
+  const ownerAlreadySent = deliveryState && deliveryState.ownerSent === true;
+  const internalAlreadySent = deliveryState && deliveryState.internalSent === true;
   const config = getMsGraphMailConfig(env);
   if (!config) {
     const reason = missingGraphConfigReason(env);
@@ -108,13 +115,21 @@ async function sendOwnerLeadConfirmationEmails(contact, injectedFetch, env = pro
       submissionId: normalizeText(contact.submissionId) || undefined,
       hasEmail: true
     });
-    return { sent: false, reason };
+    return {
+      sent: false,
+      ownerSent: ownerAlreadySent,
+      internalSent: internalAlreadySent,
+      reason
+    };
   }
 
   const ownerMessage = buildOwnerConfirmationEmail(contact, env);
   const internalMessage = buildInternalOwnerLeadNotifyEmail(contact, env);
 
-  const ownerResult = await sendMailViaGraph(ownerMessage, injectedFetch, env);
+  const ownerResult = ownerAlreadySent
+    ? { sent: true, reason: "already_sent" }
+    : await sendMailViaGraph(ownerMessage, injectedFetch, env);
+
   if (!ownerResult.sent) {
     console.error("owner_lead_confirmation_not_sent", {
       reason: ownerResult.reason,
@@ -123,14 +138,21 @@ async function sendOwnerLeadConfirmationEmails(contact, injectedFetch, env = pro
     });
     return {
       sent: false,
+      ownerSent: false,
+      internalSent: internalAlreadySent,
       reason: ownerResult.reason,
       owner: ownerResult,
       internal: { sent: false, reason: "skipped_after_owner_failure" }
     };
   }
 
-  const internalResult = await sendMailViaGraph(internalMessage, injectedFetch, env);
-  if (!internalResult.sent) {
+  const internalResult = internalAlreadySent
+    ? { sent: true, reason: "already_sent" }
+    : await sendMailViaGraph(internalMessage, injectedFetch, env);
+  const ownerSent = true;
+  const internalSent = internalAlreadySent || internalResult.sent;
+
+  if (!internalResult.sent && !internalAlreadySent) {
     console.error("owner_lead_internal_notify_not_sent", {
       reason: internalResult.reason,
       submissionId: normalizeText(contact.submissionId) || undefined
@@ -138,8 +160,10 @@ async function sendOwnerLeadConfirmationEmails(contact, injectedFetch, env = pro
   }
 
   return {
-    sent: true,
-    reason: internalResult.sent ? "sent" : "owner_sent_internal_failed",
+    sent: ownerSent && internalSent,
+    ownerSent,
+    internalSent,
+    reason: internalSent ? "sent" : "owner_sent_internal_failed",
     owner: ownerResult,
     internal: internalResult
   };
