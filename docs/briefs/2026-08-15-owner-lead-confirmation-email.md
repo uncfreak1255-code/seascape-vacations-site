@@ -20,6 +20,34 @@ Status: ACTIVE
 - The thank-you page promised a confirmation email the site could not prove was sending from `info@seascape-vacations.com`.
 - Owner confirmation must be one transactional ack from `info@`, not a drip and not founder-gated sales outreach.
 
+## Gate 0 Search And Attack Receipt
+
+| Field | Required answer |
+| --- | --- |
+| Target query family | vacation rental management fees Florida; owner revenue review; Airbnb management fees Florida |
+| Searcher intent | owner-management |
+| Current Seascape URL | /property-management/revenue-review-requested/ |
+| SERP observed date | 2026-08-15 |
+| SERP stale after | 2026-08-22 |
+| Current proof | 2026-08-15 PR #515 source proof covers the owner confirmation, contact-capture, and owner-acquisition tests; no GSC or GA4 read is required because this is a noindex post-submit handoff, not a search rewrite. |
+| Top visible competitors | Vacasa fee guide; FunStay Florida Airbnb fee guide; SkyRun fee-and-cost guide; Lodgify vacation-rental fee guide. |
+| Competitor angle | Fee ranges, service coverage, owner cost education, and FAQ-style comparisons. |
+| Visual/format gap | Competitors use fee-range summaries, service breakdowns, and FAQs; this route is a noindex confirmation page and should not imitate those search-facing formats. |
+| Seascape gap | The public owner funnel needs a truthful post-submit handoff and confirmation promise, not another fee explainer; the gap is operational confirmation clarity. |
+| Search fit | Keep this URL as the noindex conversion handoff after owner form submission; drive the owner back to the human follow-up path rather than target organic ranking. |
+| Local/GBP proof | N/A for this noindex confirmation route; the live read is for the owner-management query family and does not authorize a GBP or NAP edit. |
+| AEO/readback note | N/A for this noindex confirmation route; no AI-answer targeting or answer-content edit is proposed. |
+| Recommendation | keep the existing noindex route and limit this batch to the confirmation copy and transactional handoff truth. |
+| Attack status | completed |
+| Query variants inspected | vacation rental management fees Florida; Airbnb management fees Florida; owner revenue review vacation rental management; vacation rental property manager fees. |
+| SERP source | Live web search read observed 2026-08-15. |
+| Competitor URLs inspected | https://www.vacasa.com/homeowner-guides/vacation-rental-management-fees; https://www.funstayflorida.com/blog/airbnb-management-fees-what-they-cover-cost-and-why-they-matter/; https://skyrun.com/blog/understanding-vacation-rental-management-fees-and-costs/; https://www.lodgify.com/guides/property-management/fees/ |
+| Content gap and Seascape answer | Competitors explain fees and service scope; Seascape answers the separate post-submit need with a one-shot human-follow-up confirmation and no performance promise. |
+| Design/format strategy | Preserve the existing confirmation layout and noindex behavior; do not add competitor-style SEO sections to the handoff route. |
+| Seascape proof available | Current owner confirmation route copy, exact owner form name, Graph helper tests, contact-store idempotency test, and owner-acquisition route tests. |
+| Tools/plugins used | Live web search and repository release verifier requirements. |
+| Decision and reason | keep; the required source edit is a bounded owner-form handoff change, and the live read found no reason to expand the route into a search page. |
+
 ## Cluster In Scope
 
 - canonical route: `/property-management/revenue-review-requested/`
