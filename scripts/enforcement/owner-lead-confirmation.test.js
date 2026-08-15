@@ -513,28 +513,32 @@ test("submission-created does not send when contact capture fails", async () => 
   assert.equal(notifications[0].type, "owner_lead_capture_failed");
 });
 
-test("submission-created returns 503 when Graph succeeded but delivery state could not persist", async () => {
+test("submission-created does not resend when delivery-state persistence fails after Graph acceptance", async () => {
   const metricsStore = createMemoryStore();
   const contactStore = createMemoryStore();
   const originalSet = contactStore.set.bind(contactStore);
+  let deliveryWrites = 0;
   contactStore.set = async (key, value, options) => {
     if (String(key).startsWith(OWNER_LEAD_DELIVERY_KEY_PREFIX)) {
-      throw new Error("delivery blob unavailable");
+      deliveryWrites += 1;
+      if (deliveryWrites > 1) throw new Error("delivery blob unavailable");
     }
     return originalSet(key, value, options);
   };
+  let sendCalls = 0;
+  const sendConfirmation = async () => {
+    sendCalls += 1;
+    return { sent: true, ownerSent: true, internalSent: true, reason: "sent" };
+  };
+  const event = { body: JSON.stringify({ payload: ownerSubmitPayload({}, { id: "persist-fail" }) }) };
+  const first = await handleSubmissionCreated(event, undefined, metricsStore, contactStore, async () => {}, sendConfirmation);
+  const second = await handleSubmissionCreated(event, undefined, metricsStore, contactStore, async () => {}, sendConfirmation);
 
-  const response = await handleSubmissionCreated(
-    { body: JSON.stringify({ payload: ownerSubmitPayload({}, { id: "persist-fail" }) }) },
-    undefined,
-    metricsStore,
-    contactStore,
-    async () => {},
-    async () => ({ sent: true, ownerSent: true, internalSent: true, reason: "sent" })
-  );
-
-  assert.equal(response.statusCode, 503);
-  assert.equal(JSON.parse(response.body).confirmation.reason, "delivery_state_write_failed");
+  assert.equal(first.statusCode, 200);
+  assert.equal(JSON.parse(first.body).confirmation.reason, "delivery_state_unknown");
+  assert.equal(second.statusCode, 200);
+  assert.equal(sendCalls, 1);
+  assert.equal(JSON.parse(second.body).confirmation, undefined);
 });
 
 test("overlapping contact writes keep both leads via conditional retry", async () => {
