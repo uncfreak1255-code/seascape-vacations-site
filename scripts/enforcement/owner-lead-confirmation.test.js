@@ -450,7 +450,7 @@ test("submission-created returns 503 so Netlify retries a failed Graph delivery"
     deliveryStates.push(delivery);
     attempts += 1;
     if (attempts === 1) {
-      return { sent: false, ownerSent: false, internalSent: false, reason: "graph_send_failed:503" };
+      return { sent: false, ownerSent: false, internalSent: false, reason: "graph_send_failed:429" };
     }
     return { sent: true, ownerSent: true, internalSent: true, reason: "sent" };
   };
