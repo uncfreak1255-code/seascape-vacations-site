@@ -128,10 +128,14 @@ function isRetryableConfirmationFailure(result) {
   if (reason === "delivery_state_write_failed" || reason === "confirmation_threw") return true;
   if (
     reason.startsWith("graph_token_transport_failed:") ||
-    reason.startsWith("graph_token_failed") ||
     reason.startsWith("graph_token_response_invalid:") ||
     reason === "graph_token_missing_access_token"
   ) return true;
+  const graphTokenStatus = reason.match(/^graph_token_failed:(\\d+)$/);
+  if (graphTokenStatus) {
+    const status = Number(graphTokenStatus[1]);
+    return status === 429 || status >= 500;
+  }
   const graphSendStatus = reason.match(/^graph_send_failed:(\d+)$/);
   if (graphSendStatus) return Number(graphSendStatus[1]) === 429;
   if (reason === "owner_sent_internal_failed") {
