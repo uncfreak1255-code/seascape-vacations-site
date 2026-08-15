@@ -132,7 +132,11 @@ function isRetryableConfirmationFailure(result) {
     reason.startsWith("graph_token_response_invalid:") ||
     reason === "graph_token_missing_access_token"
   ) return true;
-  if (reason.startsWith("graph_send_failed:") || reason === "owner_sent_internal_failed") return true;
+  const graphSendStatus = reason.match(/^graph_send_failed:(\\d+)$/);
+  if (graphSendStatus) return Number(graphSendStatus[1]) === 429;
+  if (reason === "owner_sent_internal_failed") {
+    return isRetryableConfirmationFailure(result.internal);
+  }
   return false;
 }
 
