@@ -21,6 +21,16 @@ const {
   handler
 } = require("../../netlify/functions/submission-created");
 const { OWNER_LEAD_CONTACTS_KEY } = require("../../netlify/functions/_owner-lead-contacts");
+const {
+  OWNER_LEAD_DELIVERY_KEY_PREFIX,
+  buildOwnerLeadDeliveryKey,
+  isRetryableConfirmationFailure
+} = require("../../netlify/functions/_owner-lead-delivery");
+const {
+  assertOwnerLeadMailAllowed,
+  buildEmailRateKey,
+  hourBucket
+} = require("../../netlify/functions/_owner-lead-abuse");
 
 const GRAPH_ENV = {
   MS_GRAPH_TENANT_ID: "tenant-1",
@@ -37,6 +47,8 @@ function clearGraphEnv() {
   delete process.env.AZURE_CLIENT_SECRET;
   delete process.env.OWNER_LEAD_MAIL_FROM;
   delete process.env.OWNER_LEAD_INTERNAL_NOTIFY_TO;
+  delete process.env.OWNER_LEAD_MAIL_RATE_LIMIT_PER_EMAIL_HOUR;
+  delete process.env.OWNER_LEAD_MAIL_RATE_LIMIT_GLOBAL_HOUR;
 }
 
 function setGraphEnv(overrides = {}) {
@@ -58,6 +70,44 @@ function patchConsoleMethod(methodName) {
   };
 }
 
+function createMemoryStore(initial = {}) {
+  const values = new Map(Object.entries(initial));
+  const etags = new Map();
+  let etagCounter = 1;
+
+  return {
+    async get(key, options = {}) {
+      if (!values.has(key)) return null;
+      const value = values.get(key);
+      if (options.type === "json") {
+        return typeof value === "string" ? JSON.parse(value) : value;
+      }
+      return typeof value === "string" ? value : JSON.stringify(value);
+    },
+    async getWithMetadata(key, options = {}) {
+      if (!values.has(key)) return null;
+      const data = await this.get(key, options);
+      return { data, etag: etags.get(key) };
+    },
+    async set(key, value, options = {}) {
+      const exists = values.has(key);
+      if (options.onlyIfNew && exists) {
+        return { modified: false };
+      }
+      if (options.onlyIfMatch) {
+        if (!exists || etags.get(key) !== options.onlyIfMatch) {
+          return { modified: false };
+        }
+      }
+      values.set(key, value);
+      const etag = `etag-${etagCounter++}`;
+      etags.set(key, etag);
+      return { modified: true, etag };
+    },
+    _values: values
+  };
+}
+
 function ownerContact(overrides = {}) {
   return {
     submissionId: "submission-1",
@@ -76,7 +126,7 @@ function ownerContact(overrides = {}) {
   };
 }
 
-function ownerSubmitPayload(overrides = {}) {
+function ownerSubmitPayload(dataOverrides = {}, payloadOverrides = {}) {
   return {
     id: "submission-1",
     created_at: "2026-06-13T12:00:00.000Z",
@@ -93,8 +143,9 @@ function ownerSubmitPayload(overrides = {}) {
       market: "florida-gulf-coast",
       lead_type: "owner-revenue-teardown",
       event_name: "owner_form_submit",
-      ...overrides
-    }
+      ...dataOverrides
+    },
+    ...payloadOverrides
   };
 }
 
@@ -236,6 +287,7 @@ test("confirmation send is skipped when Graph env is missing (no fake success)",
     assert.equal(result.sent, false);
     assert.match(result.reason, /missing_env/);
     assert.equal(errorLogs.calls[0][0], "owner_lead_confirmation_not_sent");
+    assert.equal(isRetryableConfirmationFailure(result), false);
   } finally {
     errorLogs.restore();
   }
@@ -279,13 +331,8 @@ test("confirmation send delivers owner ack then internal notify when Graph is co
 
 test("submission-created sends confirmation on valid owner submit with email", async () => {
   clearGraphEnv();
-  let contactBlob = null;
-  let metricsBlob = null;
-  const metricsStore = { async get() { return metricsBlob; }, async set(_k, v) { metricsBlob = v; } };
-  const contactStore = {
-    async get(key) { assert.equal(key, OWNER_LEAD_CONTACTS_KEY); return contactBlob; },
-    async set(key, v) { assert.equal(key, OWNER_LEAD_CONTACTS_KEY); contactBlob = v; }
-  };
+  const metricsStore = createMemoryStore();
+  const contactStore = createMemoryStore();
   const confirmations = [];
   const notifications = [];
 
@@ -305,25 +352,25 @@ test("submission-created sends confirmation on valid owner submit with email", a
   assert.equal(confirmations.length, 1);
   assert.equal(confirmations[0].email, "pat@example.com");
   assert.equal(notifications.length, 1);
-  assert.equal(metricsBlob.includes("pat@example.com"), false);
+  const metricsBlob = await metricsStore.get(Object.keys(Object.fromEntries(metricsStore._values))[0]);
+  assert.equal(JSON.stringify(metricsStore._values).includes("pat@example.com"), false);
+  assert.ok(contactStore._values.has(buildOwnerLeadDeliveryKey("submission-1")));
+  void metricsBlob;
 });
 
 test("submission-created does not send confirmation without email", async () => {
-  let contactBlob = null;
-  let metricsBlob = null;
-  const metricsStore = { async get() { return metricsBlob; }, async set(_k, v) { metricsBlob = v; } };
-  const contactStore = { async get() { return contactBlob; }, async set(_k, v) { contactBlob = v; } };
+  const metricsStore = createMemoryStore();
+  const contactStore = createMemoryStore();
   const confirmations = [];
 
   await handleSubmissionCreated(
     {
       body: JSON.stringify({
         payload: ownerSubmitPayload({
-          id: "no-email",
           email: "",
           name: "Phone Only",
           phone: "941-555-0199"
-        })
+        }, { id: "no-email" })
       })
     },
     undefined,
@@ -337,15 +384,14 @@ test("submission-created does not send confirmation without email", async () => 
   );
 
   assert.equal(confirmations.length, 0);
-  assert.equal(JSON.parse(contactBlob).contacts[0].phone, "941-555-0199");
-  assert.equal(JSON.parse(contactBlob).contacts[0].email, "");
+  const contacts = await contactStore.get(OWNER_LEAD_CONTACTS_KEY, { type: "json" });
+  assert.equal(contacts.contacts[0].phone, "941-555-0199");
+  assert.equal(contacts.contacts[0].email, "");
 });
 
 test("submission-created does not send confirmation for guest email_capture forms", async () => {
-  let contactBlob = null;
-  let metricsBlob = null;
-  const metricsStore = { async get() { return metricsBlob; }, async set(_k, v) { metricsBlob = v; } };
-  const contactStore = { async get() { return contactBlob; }, async set(_k, v) { contactBlob = v; } };
+  const metricsStore = createMemoryStore();
+  const contactStore = createMemoryStore();
   const confirmations = [];
 
   const response = await handleSubmissionCreated(
@@ -370,27 +416,22 @@ test("submission-created does not send confirmation for guest email_capture form
 
   assert.equal(JSON.parse(response.body).reason, "ignored_form");
   assert.equal(confirmations.length, 0);
-  assert.equal(contactBlob, null);
-  assert.equal(metricsBlob, null);
+  assert.equal(contactStore._values.size, 0);
+  assert.equal(metricsStore._values.size, 0);
 });
 
 test("submission-created does not re-send confirmation on webhook redelivery", async () => {
-  let contactBlob = null;
-  let metricsBlob = null;
-  const metricsStore = { async get() { return metricsBlob; }, async set(_k, v) { metricsBlob = v; } };
-  const contactStore = { async get() { return contactBlob; }, async set(_k, v) { contactBlob = v; } };
+  const metricsStore = createMemoryStore();
+  const contactStore = createMemoryStore();
   const confirmations = [];
   const sendConfirmation = async (contact) => {
     confirmations.push(contact.submissionId);
-    return { sent: true };
+    return { sent: true, ownerSent: true, internalSent: true };
   };
 
   const event = {
     body: JSON.stringify({
-      payload: {
-        ...ownerSubmitPayload(),
-        id: "submission-redeliver-mail"
-      }
+      payload: ownerSubmitPayload({}, { id: "submission-redeliver-mail" })
     })
   };
   await handleSubmissionCreated(event, undefined, metricsStore, contactStore, async () => {}, sendConfirmation);
@@ -399,11 +440,9 @@ test("submission-created does not re-send confirmation on webhook redelivery", a
   assert.deepEqual(confirmations, ["submission-redeliver-mail"]);
 });
 
-test("submission-created retries confirmation after a failed delivery", async () => {
-  let contactBlob = null;
-  let metricsBlob = null;
-  const metricsStore = { async get() { return metricsBlob; }, async set(_k, v) { metricsBlob = v; } };
-  const contactStore = { async get() { return contactBlob; }, async set(_k, v) { contactBlob = v; } };
+test("submission-created returns 503 so Netlify retries a failed Graph delivery", async () => {
+  const metricsStore = createMemoryStore();
+  const contactStore = createMemoryStore();
   const deliveryStates = [];
   let attempts = 0;
 
@@ -416,25 +455,46 @@ test("submission-created retries confirmation after a failed delivery", async ()
     return { sent: true, ownerSent: true, internalSent: true, reason: "sent" };
   };
 
-  const event = { body: JSON.stringify({ payload: ownerSubmitPayload({ id: "retry-mail" }) }) };
-  await handleSubmissionCreated(event, undefined, metricsStore, contactStore, async () => {}, sendConfirmation);
-  await handleSubmissionCreated(event, undefined, metricsStore, contactStore, async () => {}, sendConfirmation);
+  const event = {
+    body: JSON.stringify({
+      payload: ownerSubmitPayload({}, { id: "retry-mail" })
+    })
+  };
+  const first = await handleSubmissionCreated(
+    event,
+    undefined,
+    metricsStore,
+    contactStore,
+    async () => {},
+    sendConfirmation
+  );
+  assert.equal(first.statusCode, 503);
+  assert.equal(JSON.parse(first.body).confirmation.reason, "graph_send_failed:503");
 
+  const second = await handleSubmissionCreated(
+    event,
+    undefined,
+    metricsStore,
+    contactStore,
+    async () => {},
+    sendConfirmation
+  );
+  assert.equal(second.statusCode, 200);
   assert.equal(attempts, 2);
-  assert.deepEqual(deliveryStates, [
-    { ownerSent: false, internalSent: false },
-    { ownerSent: false, internalSent: false }
-  ]);
+  assert.equal(deliveryStates.length, 2);
+  assert.equal(deliveryStates[0].ownerSent, false);
+  assert.equal(deliveryStates[0].internalSent, false);
+  assert.equal(deliveryStates[1].ownerSent, false);
+  assert.equal(deliveryStates[1].internalSent, false);
 });
 
 test("submission-created does not send when contact capture fails", async () => {
-  let metricsBlob = null;
-  const metricsStore = { async get() { return metricsBlob; }, async set(_k, v) { metricsBlob = v; } };
+  const metricsStore = createMemoryStore();
   const confirmations = [];
   const notifications = [];
 
   const response = await handleSubmissionCreated(
-    { body: JSON.stringify({ payload: ownerSubmitPayload({ id: "capture-failed" }) }) },
+    { body: JSON.stringify({ payload: ownerSubmitPayload({}, { id: "capture-failed" }) }) },
     undefined,
     metricsStore,
     {
@@ -451,6 +511,81 @@ test("submission-created does not send when contact capture fails", async () => 
   assert.equal(response.statusCode, 200);
   assert.equal(confirmations.length, 0);
   assert.equal(notifications[0].type, "owner_lead_capture_failed");
+});
+
+test("submission-created returns 503 when Graph succeeded but delivery state could not persist", async () => {
+  const metricsStore = createMemoryStore();
+  const contactStore = createMemoryStore();
+  const originalSet = contactStore.set.bind(contactStore);
+  contactStore.set = async (key, value, options) => {
+    if (String(key).startsWith(OWNER_LEAD_DELIVERY_KEY_PREFIX)) {
+      throw new Error("delivery blob unavailable");
+    }
+    return originalSet(key, value, options);
+  };
+
+  const response = await handleSubmissionCreated(
+    { body: JSON.stringify({ payload: ownerSubmitPayload({}, { id: "persist-fail" }) }) },
+    undefined,
+    metricsStore,
+    contactStore,
+    async () => {},
+    async () => ({ sent: true, ownerSent: true, internalSent: true, reason: "sent" })
+  );
+
+  assert.equal(response.statusCode, 503);
+  assert.equal(JSON.parse(response.body).confirmation.reason, "delivery_state_write_failed");
+});
+
+test("overlapping contact writes keep both leads via conditional retry", async () => {
+  const store = createMemoryStore();
+  const { mutateOwnerLeadContacts, mergeOwnerLeadContacts, buildOwnerLeadContact } = require(
+    "../../netlify/functions/_owner-lead-contacts"
+  );
+
+  const first = buildOwnerLeadContact(ownerSubmitPayload({}, { id: "lead-a" }));
+  const second = buildOwnerLeadContact(
+    ownerSubmitPayload({ email: "other@example.com" }, { id: "lead-b" })
+  );
+
+  let conflictInjected = false;
+  const originalSet = store.set.bind(store);
+  store.set = async (key, value, options = {}) => {
+    if (!conflictInjected) {
+      conflictInjected = true;
+      await originalSet(key, JSON.stringify(mergeOwnerLeadContacts(null, second)), {});
+      return { modified: false };
+    }
+    return originalSet(key, value, options);
+  };
+
+  await mutateOwnerLeadContacts(store, (existing) => mergeOwnerLeadContacts(existing, first));
+  const stored = await store.get(OWNER_LEAD_CONTACTS_KEY, { type: "json" });
+  assert.equal(stored.contacts.length, 2);
+  assert.ok(stored.contacts.some((entry) => entry.submissionId === "lead-a"));
+  assert.ok(stored.contacts.some((entry) => entry.submissionId === "lead-b"));
+});
+
+test("mail rate limit blocks repeated confirmation attempts for the same recipient", async () => {
+  process.env.OWNER_LEAD_MAIL_RATE_LIMIT_PER_EMAIL_HOUR = "1";
+  const store = createMemoryStore();
+  const first = await assertOwnerLeadMailAllowed(store, "pat@example.com", process.env, {
+    submissionId: "rate-1"
+  });
+  const second = await assertOwnerLeadMailAllowed(store, "pat@example.com", process.env, {
+    submissionId: "rate-2"
+  });
+  const retrySameSubmission = await assertOwnerLeadMailAllowed(store, "pat@example.com", process.env, {
+    submissionId: "rate-1"
+  });
+
+  assert.equal(first.allowed, true);
+  assert.equal(second.allowed, false);
+  assert.equal(second.reason, "rate_limited");
+  assert.equal(retrySameSubmission.allowed, true);
+  assert.equal(retrySameSubmission.reserved, true);
+  assert.ok(store._values.has(buildEmailRateKey("pat@example.com", hourBucket())));
+  delete process.env.OWNER_LEAD_MAIL_RATE_LIMIT_PER_EMAIL_HOUR;
 });
 
 test("graph sendMail payload builder never embeds secrets", () => {

@@ -10,8 +10,32 @@ email, `netlify/functions/submission-created.js` sends:
    cannot go silent
 
 This is not a drip, not guest Mailchimp, and not founder-gated sales outreach.
-The function is an event-only handler: direct HTTP invocation is rejected, and
-Netlify verifies the platform event signature before invoking it.
+
+## Abuse controls
+
+- Both owner forms (`src/property-management/index.njk` and
+  `src/_includes/partials/owner-evaluation-form.njk`) use Netlify managed
+  reCAPTCHA (`data-netlify-recaptcha="true"` + widget div). Enable the site
+  captcha provider in the Netlify Forms UI if it is not already on.
+- The function rejects direct HTTP invocation (`event_only` / 404). Netlify
+  verifies the platform event signature before invoking `submission-created`.
+- Before Graph send, a Blobs-backed rate limit caps confirmation attempts per
+  recipient email and globally per UTC hour (defaults: 3 / 40). Override with
+  `OWNER_LEAD_MAIL_RATE_LIMIT_PER_EMAIL_HOUR` and
+  `OWNER_LEAD_MAIL_RATE_LIMIT_GLOBAL_HOUR`. Same submission id retries do not
+  re-burn the quota.
+
+## Delivery durability and retries
+
+- Confirmation mail runs only after contact capture succeeds.
+- Delivery flags live in per-submission Blobs keys
+  (`owner_lead_confirmation_delivery/<id>.json`), not in the contacts list
+  blob, so overlapping submits cannot wipe leads or successful-send state.
+- Contact-list writes use etag conditional retry.
+- Transient Graph failures (429/5xx/token/network) and “Graph accepted but
+  delivery-state write failed” return **503** so Netlify redelivers the event.
+  Already-sent owner/internal legs are skipped on retry.
+- Missing Graph env is **not** retryable (logs `missing_env:…`, returns 200).
 
 ## Delivery blocker (must be green before production send)
 
@@ -51,11 +75,12 @@ pretend the email was delivered. Contact capture and metrics still run.
 - Partial fills with no usable email
 - Guest `email_capture` / Mailchimp SAVE50
 - Non-`owner-revenue-teardown` forms
-- Webhook redeliveries of an already-captured submission id
+- Webhook redeliveries after both delivery flags are true
+- Rate-limited abuse attempts (contact still stored for human follow-up)
 - Owner-direct sales packets (still founder-gated / HOLD)
 
 ## Proof
 
 ```bash
-node --test scripts/enforcement/owner-lead-contacts.test.js scripts/enforcement/owner-lead-confirmation.test.js
+node --test scripts/enforcement/owner-lead-contacts.test.js scripts/enforcement/owner-lead-confirmation.test.js scripts/enforcement/owner-acquisition.test.js
 ```

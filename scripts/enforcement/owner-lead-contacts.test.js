@@ -49,6 +49,36 @@ function patchConsoleMethod(methodName) {
   };
 }
 
+function createContactStore(initialContacts = null) {
+  const values = new Map();
+  if (initialContacts != null) {
+    values.set(
+      OWNER_LEAD_CONTACTS_KEY,
+      typeof initialContacts === "string" ? initialContacts : JSON.stringify(initialContacts)
+    );
+  }
+
+  return {
+    async get(key, options = {}) {
+      if (!values.has(key)) return null;
+      const value = values.get(key);
+      if (options.type === "json") {
+        return typeof value === "string" ? JSON.parse(value) : value;
+      }
+      return typeof value === "string" ? value : JSON.stringify(value);
+    },
+    async set(key, value) {
+      values.set(key, value);
+    },
+    readContacts() {
+      const raw = values.get(OWNER_LEAD_CONTACTS_KEY);
+      if (raw == null) return null;
+      return typeof raw === "string" ? JSON.parse(raw) : raw;
+    },
+    _values: values
+  };
+}
+
 test("owner lead contact captures full contact details on an owner form submit", () => {
   const contact = buildOwnerLeadContact(ownerSubmitPayload());
 
@@ -105,12 +135,8 @@ test("owner lead contacts dedupe by submission id", () => {
 
 test("submission-created writes full contact to the contact store and keeps PII out of the metrics store", async () => {
   let metricsBlob = null;
-  let contactBlob = null;
   const metricsStore = { async get() { return metricsBlob; }, async set(_k, v) { metricsBlob = v; } };
-  const contactStore = {
-    async get(key) { assert.equal(key, OWNER_LEAD_CONTACTS_KEY); return contactBlob; },
-    async set(key, v) { assert.equal(key, OWNER_LEAD_CONTACTS_KEY); contactBlob = v; }
-  };
+  const contactStore = createContactStore();
   const notifications = [];
   const notify = async (message) => { notifications.push(message); };
 
@@ -130,7 +156,7 @@ test("submission-created writes full contact to the contact store and keeps PII 
   assert.equal(metricsBlob.includes("941-555-0100"), false);
 
   // The separate restricted contact store carries the full lead.
-  const parsedContacts = JSON.parse(contactBlob);
+  const parsedContacts = contactStore.readContacts();
   assert.equal(parsedContacts.contacts[0].submissionId, "submission-1");
   assert.equal(parsedContacts.contacts[0].email, "pat@example.com");
   assert.equal(parsedContacts.contacts[0].phone, "941-555-0100");
@@ -200,8 +226,7 @@ test("owner lead contact blobs config reads explicit fallback credentials", () =
 // If the metrics store cannot be resolved, contact capture + notify must already
 // have run, and the handler must degrade gracefully instead of throwing.
 test("submission-created captures the lead and notifies even when the metrics store cannot be resolved", async () => {
-  let contactBlob = null;
-  const contactStore = { async get() { return contactBlob; }, async set(_k, v) { contactBlob = v; } };
+  const contactStore = createContactStore();
   const invalidMetricsStore = {}; // no get/set -> resolveWritableStore falls through to connectLambda(event) and throws
   const notifications = [];
   const notify = async (message) => { notifications.push(message); };
@@ -219,7 +244,7 @@ test("submission-created captures the lead and notifies even when the metrics st
       async () => ({ sent: false, reason: "test_skip" })
     );
 
-    assert.equal(JSON.parse(contactBlob).contacts[0].email, "pat@example.com");
+    assert.equal(contactStore.readContacts().contacts[0].email, "pat@example.com");
     assert.equal(notifications.length, 1);
     assert.equal(notifications[0].stored, true);
     assert.equal(response.statusCode, 200);
@@ -236,14 +261,13 @@ test("submission-created captures the lead and notifies even when the metrics st
 
 test("submission-created logs when notify throws after a lead is captured", async () => {
   let metricsBlob = null;
-  let contactBlob = null;
   const metricsStore = { async get() { return metricsBlob; }, async set(_k, v) { metricsBlob = v; } };
-  const contactStore = { async get() { return contactBlob; }, async set(_k, v) { contactBlob = v; } };
+  const contactStore = createContactStore();
   const errorLogs = patchConsoleMethod("error");
 
   try {
     const response = await handleSubmissionCreated(
-      { body: JSON.stringify({ payload: ownerSubmitPayload({ id: "submission-notify-throws" }) }) },
+      { body: JSON.stringify({ payload: { ...ownerSubmitPayload(), id: "submission-notify-throws" } }) },
       undefined,
       metricsStore,
       contactStore,
@@ -268,19 +292,18 @@ test("submission-created logs when notify throws after a lead is captured", asyn
 // Regression: Netlify form webhooks are at-least-once. A re-delivered submission
 // must not produce a second "new lead" notification.
 test("submission-created does not re-notify when an already-captured submission is re-delivered", async () => {
-  let contactBlob = null;
   let metricsBlob = null;
-  const contactStore = { async get() { return contactBlob; }, async set(_k, v) { contactBlob = v; } };
+  const contactStore = createContactStore();
   const metricsStore = { async get() { return metricsBlob; }, async set(_k, v) { metricsBlob = v; } };
   const notifications = [];
   const notify = async (message) => { notifications.push(message); };
 
-  const event = { body: JSON.stringify({ payload: ownerSubmitPayload({ id: "submission-redeliver" }) }) };
+  const event = { body: JSON.stringify({ payload: { ...ownerSubmitPayload(), id: "submission-redeliver" } }) };
   const skipConfirm = async () => ({ sent: false, reason: "test_skip" });
   await handleSubmissionCreated(event, undefined, metricsStore, contactStore, notify, skipConfirm);
   await handleSubmissionCreated(event, undefined, metricsStore, contactStore, notify, skipConfirm);
 
-  assert.equal(JSON.parse(contactBlob).contacts.length, 1);
+  assert.equal(contactStore.readContacts().contacts.length, 1);
   assert.equal(notifications.length, 1);
 });
 

@@ -48,6 +48,18 @@ test("owner landing page uses a real owner revenue review form instead of generi
   assert.equal(ownerFormPartial.includes('data-netlify="true"'), true);
   assert.equal(ownerFormPartial.includes('data-netlify-recaptcha="true"'), true);
   assert.equal(ownerLanding.includes('data-netlify-recaptcha="true"'), true);
+  assert.equal(
+    (ownerFormPartial.match(/data-netlify-recaptcha="true"/g) || []).length >= 2,
+    true,
+    "shared owner form needs form-level captcha attribute plus a widget div"
+  );
+  assert.equal(
+    (ownerLanding.match(/data-netlify-recaptcha="true"/g) || []).length >= 2,
+    true,
+    "primary owner hub form needs form-level captcha attribute plus a widget div"
+  );
+  assert.equal(ownerFormPartial.includes('<div data-netlify-recaptcha="true"></div>'), true);
+  assert.equal(ownerLanding.includes('<div data-netlify-recaptcha="true"></div>'), true);
   assert.equal(ownerFormPartial.includes('name="proof_label"'), true);
   assert.equal(ownerLanding.includes('name="proof_label"'), true);
 });
