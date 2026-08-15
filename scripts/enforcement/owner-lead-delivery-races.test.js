@@ -7,6 +7,7 @@ const {
 } = require("../../netlify/functions/_owner-lead-abuse");
 const { claimOwnerLeadDelivery, isRetryableConfirmationFailure } = require("../../netlify/functions/_owner-lead-delivery");
 const { sendMailViaGraph } = require("../../netlify/functions/_owner-lead-mail");
+const { sendOwnerLeadConfirmationEmails } = require("../../netlify/functions/_owner-lead-confirmation");
 
 function createConditionalStore() {
   const values = new Map();
@@ -71,4 +72,21 @@ test("token transport failures are retryable but send transport failures are amb
   assert.equal(sendFailure.ambiguous, true);
   assert.equal(sendFailure.reason.startsWith("graph_send_transport_unknown:"), true);
   assert.equal(isRetryableConfirmationFailure(sendFailure), false);
+});
+
+test("ambiguous internal-leg transport failures remain non-retryable", async () => {
+  const env = { MS_GRAPH_TENANT_ID: "tenant", MS_GRAPH_CLIENT_ID: "client", MS_GRAPH_CLIENT_SECRET: "secret" };
+  let calls = 0;
+  const result = await sendOwnerLeadConfirmationEmails(
+    { submissionId: "ambiguous-internal", email: "owner@example.com", name: "Owner" },
+    async () => {
+      calls += 1;
+      if (calls === 1) return { ok: true, async json() { return { access_token: "token" }; } };
+      if (calls === 2) return { ok: true, status: 202 };
+      throw new Error("socket reset");
+    },
+    env
+  );
+  assert.equal(result.ambiguous, true);
+  assert.equal(isRetryableConfirmationFailure(result), false);
 });
