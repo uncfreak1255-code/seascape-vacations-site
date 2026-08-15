@@ -90,3 +90,20 @@ test("ambiguous internal-leg transport failures remain non-retryable", async () 
   assert.equal(result.ambiguous, true);
   assert.equal(isRetryableConfirmationFailure(result), false);
 });
+
+test("malformed Graph token responses are retryable", async () => {
+  const env = { MS_GRAPH_TENANT_ID: "tenant", MS_GRAPH_CLIENT_ID: "client", MS_GRAPH_CLIENT_SECRET: "secret" };
+  const result = await sendMailViaGraph(
+    { to: "owner@example.com", subject: "x", text: "x" },
+    async () => ({
+      ok: true,
+      status: 200,
+      async json() {
+        throw new Error("invalid json");
+      }
+    }),
+    env
+  );
+  assert.equal(result.reason.startsWith("graph_token_response_invalid:"), true);
+  assert.equal(isRetryableConfirmationFailure(result), true);
+});
