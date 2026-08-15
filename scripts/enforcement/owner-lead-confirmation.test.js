@@ -427,6 +427,32 @@ test("submission-created retries confirmation after a failed delivery", async ()
   ]);
 });
 
+test("submission-created does not send when contact capture fails", async () => {
+  let metricsBlob = null;
+  const metricsStore = { async get() { return metricsBlob; }, async set(_k, v) { metricsBlob = v; } };
+  const confirmations = [];
+  const notifications = [];
+
+  const response = await handleSubmissionCreated(
+    { body: JSON.stringify({ payload: ownerSubmitPayload({ id: "capture-failed" }) }) },
+    undefined,
+    metricsStore,
+    {
+      async get() { throw new Error("contact store unavailable"); },
+      async set() { throw new Error("should not write after failed read"); }
+    },
+    async (message) => { notifications.push(message); },
+    async () => {
+      confirmations.push(true);
+      return { sent: true, ownerSent: true, internalSent: true };
+    }
+  );
+
+  assert.equal(response.statusCode, 200);
+  assert.equal(confirmations.length, 0);
+  assert.equal(notifications[0].type, "owner_lead_capture_failed");
+});
+
 test("graph sendMail payload builder never embeds secrets", () => {
   const payload = buildGraphSendMailPayload({
     to: "pat@example.com",
