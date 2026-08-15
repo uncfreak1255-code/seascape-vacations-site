@@ -55,25 +55,20 @@ async function requestGraphAccessToken(config, injectedFetch) {
     scope: GRAPH_SCOPE
   });
 
-  const response = await transport(
-    `${GRAPH_TOKEN_HOST}/${encodeURIComponent(config.tenantId)}/oauth2/v2.0/token`,
-    {
-      method: "POST",
-      headers: { "content-type": "application/x-www-form-urlencoded" },
-      body: body.toString()
-    }
-  );
-
-  if (!response.ok) {
-    throw new Error(`graph_token_failed:${response.status}`);
+  let response;
+  try {
+    response = await transport(
+      GRAPH_TOKEN_HOST + "/" + encodeURIComponent(config.tenantId) + "/oauth2/v2.0/token",
+      { method: "POST", headers: { "content-type": "application/x-www-form-urlencoded" }, body: body.toString() }
+    );
+  } catch (error) {
+    throw new Error("graph_token_transport_failed:" + (error && error.message ? error.message : "network"));
   }
 
+  if (!response.ok) throw new Error("graph_token_failed:" + response.status);
   const payload = await response.json();
   const accessToken = normalizeText(payload && payload.access_token);
-  if (!accessToken) {
-    throw new Error("graph_token_missing_access_token");
-  }
-
+  if (!accessToken) throw new Error("graph_token_missing_access_token");
   return accessToken;
 }
 
@@ -104,65 +99,40 @@ function buildGraphSendMailPayload(message) {
 
 async function sendMailViaGraph(message, injectedFetch, env = process.env) {
   const config = getMsGraphMailConfig(env);
-  if (!config) {
-    return {
-      sent: false,
-      reason: missingGraphConfigReason(env)
-    };
-  }
+  if (!config) return { sent: false, reason: missingGraphConfigReason(env) };
 
   const toList = Array.isArray(message && message.to) ? message.to : [message && message.to];
   const recipients = toList.map((value) => normalizeText(value)).filter(Boolean);
-  if (!recipients.length) {
-    return { sent: false, reason: "missing_recipient" };
-  }
+  if (!recipients.length) return { sent: false, reason: "missing_recipient" };
 
   const transport = injectedFetch || fetch;
+  let accessToken;
+  try {
+    accessToken = await requestGraphAccessToken(config, transport);
+  } catch (error) {
+    const reason = error && error.message ? error.message : "graph_token_failed";
+    console.error("owner_lead_graph_token_failed", { reason });
+    return { sent: false, reason };
+  }
 
   try {
-    const accessToken = await requestGraphAccessToken(config, transport);
     const response = await transport(
-      `${GRAPH_API_HOST}/v1.0/users/${encodeURIComponent(config.from)}/sendMail`,
+      GRAPH_API_HOST + "/v1.0/users/" + encodeURIComponent(config.from) + "/sendMail",
       {
         method: "POST",
-        headers: {
-          authorization: `Bearer ${accessToken}`,
-          "content-type": "application/json; charset=utf-8"
-        },
-        body: JSON.stringify(
-          buildGraphSendMailPayload({
-            ...message,
-            to: recipients,
-            replyTo: message.replyTo || config.from
-          })
-        )
+        headers: { authorization: "Bearer " + accessToken, "content-type": "application/json; charset=utf-8" },
+        body: JSON.stringify(buildGraphSendMailPayload({ ...message, to: recipients, replyTo: message.replyTo || config.from }))
       }
     );
-
     if (!response.ok) {
-      console.error("owner_lead_graph_send_failed", {
-        status: response.status,
-        fromConfigured: Boolean(config.from),
-        recipientCount: recipients.length
-      });
-      return { sent: false, reason: `graph_send_failed:${response.status}` };
+      console.error("owner_lead_graph_send_failed", { status: response.status, fromConfigured: Boolean(config.from), recipientCount: recipients.length });
+      return { sent: false, reason: "graph_send_failed:" + response.status, ambiguous: response.status >= 500 };
     }
-
-    return {
-      sent: true,
-      from: config.from,
-      to: recipients,
-      status: response.status || 202
-    };
+    return { sent: true, from: config.from, to: recipients, status: response.status || 202 };
   } catch (error) {
-    console.error("owner_lead_graph_send_failed", {
-      message: error && error.message ? error.message : String(error),
-      recipientCount: recipients.length
-    });
-    return {
-      sent: false,
-      reason: error && error.message ? error.message : "graph_send_failed"
-    };
+    const reason = error && error.message ? error.message : "network";
+    console.error("owner_lead_graph_send_unknown", { recipientCount: recipients.length });
+    return { sent: false, reason: "graph_send_transport_unknown:" + reason, ambiguous: true };
   }
 }
 
