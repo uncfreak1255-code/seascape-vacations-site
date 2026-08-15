@@ -25,6 +25,12 @@ const {
   writeOwnerLeadDeliveryState
 } = require("./_owner-lead-delivery");
 const { assertOwnerLeadMailAllowed } = require("./_owner-lead-abuse");
+const {
+  OWNER_LEAD_FORM_WEBHOOK_SECRET_ENV,
+  getOwnerLeadFormWebhookSecret,
+  readRawBody,
+  verifyNetlifyWebhookJws
+} = require("./_netlify-jws");
 
 function resolveWritableStore(event, candidateStore) {
   if (candidateStore && typeof candidateStore.get === "function" && typeof candidateStore.set === "function") {
@@ -178,10 +184,6 @@ function readEventHeader(event, headerName) {
   return "";
 }
 
-// Netlify Forms delivers submission-created as an HTTP POST webhook with
-// x-netlify-event set. Reject bare/browser hits that lack that platform marker
-// so this function cannot become a public mail relay, while still allowing the
-// only real invoke path.
 function isNetlifySubmissionCreatedEvent(event) {
   const netlifyEvent = readEventHeader(event, "x-netlify-event").toLowerCase();
   return netlifyEvent === "submission-created" || netlifyEvent === "submission_created";
@@ -197,10 +199,42 @@ function hasHttpMethod(event) {
   );
 }
 
-function isPublicHttpInvocation(event) {
+/**
+ * Authenticated Netlify form delivery for HTTP invokes.
+ *
+ * Outgoing Forms notification webhooks are signed with the customer JWS secret
+ * (`OWNER_LEAD_FORM_WEBHOOK_SECRET`). Event-function platform JWS is verified by
+ * Netlify before invoke and is NOT customer-verifiable — do not treat
+ * `x-netlify-event` alone as proof. Fail closed when the secret is missing or
+ * the signature is absent/invalid/forged.
+ *
+ * Forms HTTP notifications may omit `x-netlify-event`; when that header is
+ * present it must name submission-created.
+ */
+function verifyAuthenticatedNetlifyFormDelivery(event, env = process.env) {
+  const secret = getOwnerLeadFormWebhookSecret(env);
+  if (!secret) {
+    return { ok: false, reason: "missing_webhook_secret" };
+  }
+
+  const jws = verifyNetlifyWebhookJws(
+    readEventHeader(event, "x-webhook-signature"),
+    readRawBody(event),
+    secret
+  );
+  if (!jws.ok) return jws;
+
+  const eventName = readEventHeader(event, "x-netlify-event");
+  if (eventName && !isNetlifySubmissionCreatedEvent(event)) {
+    return { ok: false, reason: "unexpected_netlify_event" };
+  }
+
+  return { ok: true, reason: "verified" };
+}
+
+function isPublicHttpInvocation(event, env = process.env) {
   if (!hasHttpMethod(event)) return false;
-  if (isNetlifySubmissionCreatedEvent(event)) return false;
-  return true;
+  return !verifyAuthenticatedNetlifyFormDelivery(event, env).ok;
 }
 
 function buildJsonResponse(statusCode, body) {
@@ -364,8 +398,15 @@ async function handleSubmissionCreated(
 
 async function handler(event, context) {
   if (isPublicHttpInvocation(event)) {
-    console.warn("owner_lead_event_http_invocation_rejected");
-    return buildJsonResponse(404, { stored: false, reason: "event_only" });
+    const auth = verifyAuthenticatedNetlifyFormDelivery(event);
+    console.warn("owner_lead_event_http_invocation_rejected", {
+      reason: auth.reason || "event_only"
+    });
+    return buildJsonResponse(404, {
+      stored: false,
+      reason: "event_only",
+      authReason: auth.reason || "event_only"
+    });
   }
 
   return handleSubmissionCreated(event, context);
@@ -374,4 +415,6 @@ async function handler(event, context) {
 exports.handleSubmissionCreated = handleSubmissionCreated;
 exports.isPublicHttpInvocation = isPublicHttpInvocation;
 exports.isNetlifySubmissionCreatedEvent = isNetlifySubmissionCreatedEvent;
+exports.verifyAuthenticatedNetlifyFormDelivery = verifyAuthenticatedNetlifyFormDelivery;
+exports.OWNER_LEAD_FORM_WEBHOOK_SECRET_ENV = OWNER_LEAD_FORM_WEBHOOK_SECRET_ENV;
 exports.handler = handler;

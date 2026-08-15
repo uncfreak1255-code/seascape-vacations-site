@@ -20,8 +20,11 @@ const {
   handleSubmissionCreated,
   handler,
   isPublicHttpInvocation,
-  isNetlifySubmissionCreatedEvent
+  isNetlifySubmissionCreatedEvent,
+  verifyAuthenticatedNetlifyFormDelivery
 } = require("../../netlify/functions/submission-created");
+const { signNetlifyWebhookJws } = require("../../netlify/functions/_netlify-jws");
+const ownerLeadFormWebhook = require("../../netlify/functions/owner-lead-form-webhook");
 const { OWNER_LEAD_CONTACTS_KEY } = require("../../netlify/functions/_owner-lead-contacts");
 const {
   OWNER_LEAD_DELIVERY_KEY_PREFIX,
@@ -51,11 +54,38 @@ function clearGraphEnv() {
   delete process.env.OWNER_LEAD_INTERNAL_NOTIFY_TO;
   delete process.env.OWNER_LEAD_MAIL_RATE_LIMIT_PER_EMAIL_HOUR;
   delete process.env.OWNER_LEAD_MAIL_RATE_LIMIT_GLOBAL_HOUR;
+  delete process.env.OWNER_LEAD_FORM_WEBHOOK_SECRET;
 }
 
 function setGraphEnv(overrides = {}) {
   clearGraphEnv();
   Object.assign(process.env, GRAPH_ENV, overrides);
+}
+
+function setWebhookSecret(secret = "test-owner-lead-form-webhook-secret") {
+  process.env.OWNER_LEAD_FORM_WEBHOOK_SECRET = secret;
+  return secret;
+}
+
+function signedNetlifyFormEvent(bodyObject, overrides = {}) {
+  const {
+    signNetlifyWebhookJws
+  } = require("../../netlify/functions/_netlify-jws");
+  const secret = overrides.secret || process.env.OWNER_LEAD_FORM_WEBHOOK_SECRET || setWebhookSecret();
+  const body = JSON.stringify(bodyObject);
+  const headers = {
+    "content-type": "application/json",
+    "user-agent": "Netlify",
+    "x-netlify-event": "submission-created",
+    "x-webhook-signature": signNetlifyWebhookJws(body, secret),
+    ...(overrides.headers || {})
+  };
+  return {
+    httpMethod: "POST",
+    headers,
+    body,
+    ...overrides.event
+  };
 }
 
 function patchConsoleMethod(methodName) {
@@ -196,6 +226,7 @@ test("Graph sender and internal notify recipient cannot be widened by env overri
 
 test("public HTTP calls cannot reach the owner event handler", async () => {
   setGraphEnv();
+  setWebhookSecret();
   const warningLogs = patchConsoleMethod("warn");
   try {
     const response = await handler({
@@ -216,66 +247,102 @@ test("public HTTP calls cannot reach the owner event handler", async () => {
   }
 });
 
-test("isPublicHttpInvocation allows Netlify form events and rejects bare HTTP", () => {
-  assert.equal(isPublicHttpInvocation({ body: "{}" }), false);
+test("isPublicHttpInvocation requires verified Netlify JWS, not event-name header alone", () => {
+  setWebhookSecret("unit-test-webhook-secret");
+  const body = JSON.stringify({ payload: ownerSubmitPayload() });
+
+  assert.equal(isPublicHttpInvocation({ body }), false);
   assert.equal(isPublicHttpInvocation({
     httpMethod: "POST",
     headers: {},
-    body: JSON.stringify({ payload: ownerSubmitPayload() })
+    body
   }), true);
   assert.equal(isPublicHttpInvocation({
     httpMethod: "POST",
-    headers: { "X-Netlify-Event": "submission-created" },
-    body: JSON.stringify({ payload: ownerSubmitPayload() })
-  }), false);
-  assert.equal(isPublicHttpInvocation({
-    requestContext: { http: { method: "POST" } },
-    headers: { "x-netlify-event": "submission_created" },
-    body: "{}"
-  }), false);
-  assert.equal(isNetlifySubmissionCreatedEvent({
-    headers: { "x-netlify-event": "submission-created" }
+    headers: { "x-netlify-event": "submission-created" },
+    body
   }), true);
-  assert.equal(isNetlifySubmissionCreatedEvent({
-    headers: { "x-netlify-event": "identity_signup" }
-  }), false);
+  assert.equal(isPublicHttpInvocation({
+    httpMethod: "POST",
+    headers: {
+      "x-netlify-event": "submission-created",
+      "x-webhook-signature": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.dummy.sig"
+    },
+    body
+  }), true);
+
+  const signed = signedNetlifyFormEvent({ payload: ownerSubmitPayload() }, {
+    secret: "unit-test-webhook-secret"
+  });
+  assert.equal(isPublicHttpInvocation(signed), false);
+  assert.equal(verifyAuthenticatedNetlifyFormDelivery(signed).ok, true);
+  assert.equal(isNetlifySubmissionCreatedEvent(signed), true);
+
+  delete process.env.OWNER_LEAD_FORM_WEBHOOK_SECRET;
+  assert.equal(isPublicHttpInvocation(signed), true);
+  assert.equal(verifyAuthenticatedNetlifyFormDelivery(signed).reason, "missing_webhook_secret");
 });
 
-test("Netlify submission-created platform event reaches handleSubmissionCreated", async () => {
+test("spoofed x-netlify-event without valid JWS never reaches confirmation", async () => {
+  setGraphEnv();
+  setWebhookSecret("spoof-reject-secret");
+  const confirmations = [];
+  const warningLogs = patchConsoleMethod("warn");
+
+  try {
+    const spoofed = {
+      httpMethod: "POST",
+      headers: {
+        "content-type": "application/json",
+        "x-netlify-event": "submission-created",
+        "x-webhook-signature": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.fake.signature"
+      },
+      body: JSON.stringify({ payload: ownerSubmitPayload({}, { id: "spoofed-event" }) })
+    };
+
+    assert.equal(isPublicHttpInvocation(spoofed), true);
+    const response = await handler(spoofed);
+    assert.equal(response.statusCode, 404);
+    assert.equal(JSON.parse(response.body).reason, "event_only");
+    assert.match(JSON.parse(response.body).authReason, /invalid_signature/);
+    assert.equal(confirmations.length, 0);
+    assert.equal(warningLogs.calls[0][0], "owner_lead_event_http_invocation_rejected");
+
+    const webhookResponse = await ownerLeadFormWebhook.handler(spoofed);
+    assert.equal(webhookResponse.statusCode, 404);
+    assert.equal(JSON.parse(webhookResponse.body).reason, "event_only");
+  } finally {
+    warningLogs.restore();
+    clearGraphEnv();
+  }
+});
+
+test("valid signed Netlify submission-created event reaches confirmation", async () => {
   clearGraphEnv();
+  const secret = setWebhookSecret("valid-signed-event-secret");
   const metricsStore = createMemoryStore();
   const contactStore = createMemoryStore();
   const confirmations = [];
   const warningLogs = patchConsoleMethod("warn");
 
   try {
-    const platformEvent = {
-      httpMethod: "POST",
-      headers: {
-        "content-type": "application/json",
-        "user-agent": "Netlify",
-        "x-netlify-event": "submission-created",
-        "x-webhook-signature": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.test"
-      },
-      body: JSON.stringify({
-        payload: ownerSubmitPayload({}, { id: "platform-event-allowed" })
-      })
-    };
+    const platformEvent = signedNetlifyFormEvent(
+      { payload: ownerSubmitPayload({}, { id: "platform-event-allowed" }) },
+      { secret }
+    );
 
     assert.equal(isPublicHttpInvocation(platformEvent), false);
 
-    // Guard must not short-circuit platform form webhooks as public HTTP.
-    // Use a non-owner form body so handler exits before Blobs/Graph work.
-    const guarded = await handler({
-      ...platformEvent,
-      body: JSON.stringify({
+    const guarded = await handler(signedNetlifyFormEvent(
+      {
         payload: {
           id: "ignored-guest",
           form_name: "email_capture",
           data: { email: "guest@example.com" }
         }
-      })
-    });
+      },
+      { secret }
+    ));
     assert.equal(guarded.statusCode, 200);
     assert.equal(JSON.parse(guarded.body).reason, "ignored_form");
     assert.equal(
@@ -301,7 +368,41 @@ test("Netlify submission-created platform event reaches handleSubmissionCreated"
     assert.equal(confirmations[0].email, "pat@example.com");
   } finally {
     warningLogs.restore();
+    clearGraphEnv();
   }
+});
+
+test("missing or forged Netlify JWS is rejected as event_only", async () => {
+  setWebhookSecret("forge-check-secret");
+  const body = JSON.stringify({ payload: ownerSubmitPayload({}, { id: "forged" }) });
+
+  const missingSig = await handler({
+    httpMethod: "POST",
+    headers: { "x-netlify-event": "submission-created" },
+    body
+  });
+  assert.equal(missingSig.statusCode, 404);
+  assert.equal(JSON.parse(missingSig.body).authReason, "missing_signature");
+
+  const wrongSecretBody = JSON.stringify({ payload: ownerSubmitPayload({}, { id: "wrong-secret" }) });
+  const forged = await handler({
+    httpMethod: "POST",
+    headers: {
+      "x-netlify-event": "submission-created",
+      "x-webhook-signature": signNetlifyWebhookJws(wrongSecretBody, "not-the-site-secret")
+    },
+    body: wrongSecretBody
+  });
+  assert.equal(forged.statusCode, 404);
+  assert.equal(JSON.parse(forged.body).authReason, "invalid_signature");
+
+  delete process.env.OWNER_LEAD_FORM_WEBHOOK_SECRET;
+  const missingSecret = await handler(signedNetlifyFormEvent(
+    { payload: ownerSubmitPayload({}, { id: "no-env-secret" }) },
+    { secret: "orphan-secret" }
+  ));
+  assert.equal(missingSecret.statusCode, 404);
+  assert.equal(JSON.parse(missingSecret.body).authReason, "missing_webhook_secret");
 });
 
 test("owner confirmation copy matches the thank-you page promise", () => {
@@ -710,6 +811,7 @@ test("env example documents Graph turn-on without embedding secrets", () => {
   assert.match(envExample, /MS_GRAPH_TENANT_ID=your_entra_tenant_id/);
   assert.match(envExample, /MS_GRAPH_CLIENT_ID=your_entra_app_client_id/);
   assert.match(envExample, /MS_GRAPH_CLIENT_SECRET=your_entra_app_client_secret/);
+  assert.match(envExample, /OWNER_LEAD_FORM_WEBHOOK_SECRET=your_long_random_shared_secret/);
   assert.match(envExample, /OWNER_LEAD_NOTIFY_WEBHOOK_URL=/);
   assert.doesNotMatch(envExample, /eyJ[A-Za-z0-9_-]{10,}/);
   assert.doesNotMatch(envExample, /MS_GRAPH_CLIENT_SECRET=(?!your_entra_app_client_secret$)[^\n]+/m);
