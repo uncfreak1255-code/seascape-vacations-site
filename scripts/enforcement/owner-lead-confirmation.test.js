@@ -28,7 +28,7 @@ const {
 } = require("../../netlify/functions/_owner-lead-delivery");
 const {
   assertOwnerLeadMailAllowed,
-  buildEmailRateKey,
+  buildRateBucketKey,
   hourBucket
 } = require("../../netlify/functions/_owner-lead-abuse");
 
@@ -588,7 +588,7 @@ test("mail rate limit blocks repeated confirmation attempts for the same recipie
   assert.equal(second.reason, "rate_limited");
   assert.equal(retrySameSubmission.allowed, true);
   assert.equal(retrySameSubmission.reserved, true);
-  assert.ok(store._values.has(buildEmailRateKey("pat@example.com", hourBucket())));
+  assert.ok(store._values.has(buildRateBucketKey(hourBucket())));
   delete process.env.OWNER_LEAD_MAIL_RATE_LIMIT_PER_EMAIL_HOUR;
 });
 
