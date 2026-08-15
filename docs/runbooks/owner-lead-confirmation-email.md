@@ -6,8 +6,8 @@ When someone completes the public `owner-revenue-teardown` form with a usable
 email, `netlify/functions/submission-created.js` sends:
 
 1. One confirmation ack **from** `info@seascape-vacations.com` **to** the owner
-2. One internal notify **to** `info@seascape-vacations.com` (or
-   `OWNER_LEAD_INTERNAL_NOTIFY_TO`) so the lead cannot go silent
+2. One internal notify **to** `info@seascape-vacations.com` so the lead
+   cannot go silent
 
 This is not a drip, not guest Mailchimp, and not founder-gated sales outreach.
 
