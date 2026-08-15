@@ -16,7 +16,10 @@ const {
   sendOwnerLeadConfirmationEmails
 } = require("../../netlify/functions/_owner-lead-confirmation");
 const { OWNER_LEAD_FORM_NAME } = require("../../netlify/functions/_owner-lead-metrics");
-const { handleSubmissionCreated } = require("../../netlify/functions/submission-created");
+const {
+  handleSubmissionCreated,
+  handler
+} = require("../../netlify/functions/submission-created");
 const { OWNER_LEAD_CONTACTS_KEY } = require("../../netlify/functions/_owner-lead-contacts");
 
 const GRAPH_ENV = {
@@ -135,6 +138,18 @@ test("Graph sender and internal notify recipient cannot be widened by env overri
   });
   assert.equal(buildOwnerConfirmationEmail(ownerContact(), process.env).from, "info@seascape-vacations.com");
   assert.equal(buildInternalOwnerLeadNotifyEmail(ownerContact(), process.env).to, "info@seascape-vacations.com");
+  clearGraphEnv();
+});
+
+test("public HTTP calls cannot reach the owner event handler", async () => {
+  setGraphEnv();
+  const response = await handler({
+    httpMethod: "POST",
+    body: JSON.stringify({ payload: ownerSubmitPayload() })
+  });
+
+  assert.equal(response.statusCode, 404);
+  assert.equal(JSON.parse(response.body).reason, "event_only");
   clearGraphEnv();
 });
 
@@ -382,6 +397,34 @@ test("submission-created does not re-send confirmation on webhook redelivery", a
   await handleSubmissionCreated(event, undefined, metricsStore, contactStore, async () => {}, sendConfirmation);
 
   assert.deepEqual(confirmations, ["submission-redeliver-mail"]);
+});
+
+test("submission-created retries confirmation after a failed delivery", async () => {
+  let contactBlob = null;
+  let metricsBlob = null;
+  const metricsStore = { async get() { return metricsBlob; }, async set(_k, v) { metricsBlob = v; } };
+  const contactStore = { async get() { return contactBlob; }, async set(_k, v) { contactBlob = v; } };
+  const deliveryStates = [];
+  let attempts = 0;
+
+  const sendConfirmation = async (_contact, delivery) => {
+    deliveryStates.push(delivery);
+    attempts += 1;
+    if (attempts === 1) {
+      return { sent: false, ownerSent: false, internalSent: false, reason: "graph_send_failed:503" };
+    }
+    return { sent: true, ownerSent: true, internalSent: true, reason: "sent" };
+  };
+
+  const event = { body: JSON.stringify({ payload: ownerSubmitPayload({ id: "retry-mail" }) }) };
+  await handleSubmissionCreated(event, undefined, metricsStore, contactStore, async () => {}, sendConfirmation);
+  await handleSubmissionCreated(event, undefined, metricsStore, contactStore, async () => {}, sendConfirmation);
+
+  assert.equal(attempts, 2);
+  assert.deepEqual(deliveryStates, [
+    { ownerSent: false, internalSent: false },
+    { ownerSent: false, internalSent: false }
+  ]);
 });
 
 test("graph sendMail payload builder never embeds secrets", () => {
