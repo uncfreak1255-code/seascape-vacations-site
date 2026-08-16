@@ -4,6 +4,9 @@
 
 const OWNER_LEAD_DELIVERY_KEY_PREFIX = "owner_lead_confirmation_delivery/";
 const MAX_DELIVERY_WRITE_ATTEMPTS = 5;
+// Netlify function runtime is short; keep the lease above worst-case Graph+Blobs
+// work so a live sender is not reclaimed, but allow recovery after a crash.
+const OWNER_LEAD_CLAIM_LEASE_MS = 120000;
 const DELIVERY_STATUSES = new Set(["pending", "sending", "sent", "failed", "unknown"]);
 
 function normalizeText(value) {
@@ -174,6 +177,12 @@ async function writeOwnerLeadDeliveryState(store, submissionId, result) {
   throw lastError || new Error("owner_lead_delivery_write_failed");
 }
 
+function isOwnerLeadClaimLeaseExpired(state, nowMs = Date.now()) {
+  const updatedAtMs = Date.parse(state && state.updatedAt ? state.updatedAt : "");
+  if (!Number.isFinite(updatedAtMs)) return true;
+  return nowMs - updatedAtMs > OWNER_LEAD_CLAIM_LEASE_MS;
+}
+
 async function claimOwnerLeadDelivery(store, submissionId) {
   if (!store || typeof store.set !== "function") return { claimed: false, reason: "delivery_store_unavailable" };
   const key = buildOwnerLeadDeliveryKey(submissionId);
@@ -188,7 +197,9 @@ async function claimOwnerLeadDelivery(store, submissionId) {
 
     const state = current.state;
     if (state.ownerSent && state.internalSent) return { claimed: false, reason: "already_sent", state };
-    if (state.deliveryStatus === "sending") return { claimed: false, reason: "in_flight", state };
+    if (state.deliveryStatus === "sending" && !isOwnerLeadClaimLeaseExpired(state)) {
+      return { claimed: false, reason: "in_flight", state };
+    }
     if (state.deliveryStatus === "unknown") return { claimed: false, reason: "delivery_unknown", state };
 
     const next = { ...state, deliveryStatus: "sending", updatedAt: new Date().toISOString() };
@@ -236,6 +247,7 @@ function isRetryableConfirmationFailure(result) {
 
 module.exports = {
   OWNER_LEAD_DELIVERY_KEY_PREFIX,
+  OWNER_LEAD_CLAIM_LEASE_MS,
   buildOwnerLeadDeliveryKey,
   emptyDeliveryState,
   normalizeDeliveryState,
@@ -244,6 +256,7 @@ module.exports = {
   writeOwnerLeadDeliveryState,
   mergeDeliveryState,
   claimOwnerLeadDelivery,
+  isOwnerLeadClaimLeaseExpired,
   isRetryableConfirmationFailure,
   deliveryFlagsEqual
 };

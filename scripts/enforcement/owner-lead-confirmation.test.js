@@ -709,7 +709,8 @@ test("submission-created does not send when contact capture fails", async () => 
     }
   );
 
-  assert.equal(response.statusCode, 200);
+  assert.equal(response.statusCode, 503);
+  assert.equal(JSON.parse(response.body).confirmation.reason, "delivery_state_unavailable");
   assert.equal(confirmations.length, 0);
   assert.equal(notifications[0].type, "owner_lead_capture_failed");
 });
@@ -852,7 +853,7 @@ test("submission-created still skips resend when delivery persist and contact st
 
   assert.equal(first.statusCode, 503);
   assert.equal(JSON.parse(first.body).confirmation.reason, "delivery_state_write_failed");
-  assert.equal(second.statusCode, 200);
+  assert.equal(second.statusCode, 503);
   assert.equal(JSON.parse(second.body).confirmation.reason, "in_flight");
   assert.equal(sendCalls, 1, "even without a contact stamp, in_flight claim must block a second send");
 });

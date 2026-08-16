@@ -82,7 +82,7 @@ test("etag-less delivery writes refuse to clobber an in-flight claim", async () 
 });
 
 test("partial delivery finalize preserves sending so overlapping retries cannot reclaim", async () => {
-  const { mergeDeliveryState } = require("../../netlify/functions/_owner-lead-delivery");
+  const { mergeDeliveryState, OWNER_LEAD_CLAIM_LEASE_MS } = require("../../netlify/functions/_owner-lead-delivery");
   const store = createConditionalStore();
   const claim = await claimOwnerLeadDelivery(store, "partial-progress");
   assert.equal(claim.claimed, true);
@@ -96,14 +96,22 @@ test("partial delivery finalize preserves sending so overlapping retries cannot 
   assert.equal(next.internalSent, false);
   assert.equal(next.deliveryStatus, "sending");
 
-  await writeOwnerLeadDeliveryState(store, "partial-progress", {
-    ownerSent: true,
-    internalSent: false,
-    deliveryStatus: "sending"
-  });
   const secondClaim = await claimOwnerLeadDelivery(store, "partial-progress");
   assert.equal(secondClaim.claimed, false);
   assert.equal(secondClaim.reason, "in_flight");
+
+  // After the lease expires, a retry may reclaim to finish the remaining leg.
+  const key = buildOwnerLeadDeliveryKey("partial-progress");
+  const stale = {
+    ...claim.state,
+    ownerSent: true,
+    internalSent: false,
+    updatedAt: new Date(Date.now() - OWNER_LEAD_CLAIM_LEASE_MS - 1000).toISOString()
+  };
+  store.values.set(key, JSON.stringify(stale));
+  store.versions.set(key, (store.versions.get(key) || 1));
+  const reclaim = await claimOwnerLeadDelivery(store, "partial-progress");
+  assert.equal(reclaim.claimed, true);
 });
 
 test("fallback delivery reads cannot be followed by a write over a concurrent claim", async () => {
