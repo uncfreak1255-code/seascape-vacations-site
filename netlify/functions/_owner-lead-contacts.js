@@ -167,7 +167,7 @@ async function writeOwnerLeadContacts(store, contacts) {
   );
 }
 
-async function readOwnerLeadContactsWithEtag(store) {
+async function readOwnerLeadContactsWithEtag(store, { forWrite = false } = {}) {
   if (store && typeof store.getWithMetadata === "function") {
     try {
       const result = await store.getWithMetadata(OWNER_LEAD_CONTACTS_KEY, { type: "json" });
@@ -179,8 +179,10 @@ async function readOwnerLeadContactsWithEtag(store) {
         etag: result.etag,
         exists: true
       };
-    } catch (_error) {
-      // Fall through for stores that only implement get/set.
+    } catch (error) {
+      // Reads may fall through. Writes must not — an etag-less whole-blob set can
+      // erase a concurrent confirmation stamp and reopen a Graph send.
+      if (forWrite) throw error;
     }
   }
 
@@ -192,6 +194,25 @@ async function readOwnerLeadContactsWithEtag(store) {
   };
 }
 
+function buildContactWriteOptions(store, current) {
+  const options = { contentType: "application/json; charset=utf-8" };
+  const hasMetadata = store && typeof store.getWithMetadata === "function";
+
+  if (hasMetadata) {
+    if (current.etag) {
+      options.onlyIfMatch = current.etag;
+      return { options, safe: true };
+    }
+    if (!current.exists) {
+      options.onlyIfNew = true;
+      return { options, safe: true };
+    }
+    return { options, safe: false, reason: "owner_lead_contacts_missing_etag" };
+  }
+
+  return { options, safe: true };
+}
+
 // Conditional read/modify/write so overlapping captures cannot overwrite each other
 // with a stale whole-blob snapshot.
 async function mutateOwnerLeadContacts(store, mutator, { attempts = 5 } = {}) {
@@ -201,20 +222,26 @@ async function mutateOwnerLeadContacts(store, mutator, { attempts = 5 } = {}) {
 
   let lastError = null;
   for (let attempt = 0; attempt < attempts; attempt += 1) {
-    const current = await readOwnerLeadContactsWithEtag(store);
+    let current;
+    try {
+      current = await readOwnerLeadContactsWithEtag(store, { forWrite: true });
+    } catch (error) {
+      lastError = error;
+      continue;
+    }
+
     const next = mutator(current.contacts);
-    const options = { contentType: "application/json; charset=utf-8" };
-    if (current.etag) {
-      options.onlyIfMatch = current.etag;
-    } else if (!current.exists && typeof store.getWithMetadata === "function") {
-      options.onlyIfNew = true;
+    const prepared = buildContactWriteOptions(store, current);
+    if (!prepared.safe) {
+      lastError = new Error(prepared.reason || "owner_lead_contacts_write_unsafe");
+      continue;
     }
 
     try {
       const writeResult = await store.set(
         OWNER_LEAD_CONTACTS_KEY,
         JSON.stringify(next),
-        options
+        prepared.options
       );
       if (writeResult && writeResult.modified === false) {
         lastError = new Error("owner_lead_contacts_write_conflict");
