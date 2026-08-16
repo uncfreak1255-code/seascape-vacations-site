@@ -5,7 +5,13 @@ const {
   buildRateBucketKey,
   hourBucket
 } = require("../../netlify/functions/_owner-lead-abuse");
-const { claimOwnerLeadDelivery, isRetryableConfirmationFailure, writeOwnerLeadDeliveryState, buildOwnerLeadDeliveryKey } = require("../../netlify/functions/_owner-lead-delivery");
+const {
+  claimOwnerLeadDelivery,
+  isRetryableConfirmationFailure,
+  readOwnerLeadDeliveryState,
+  writeOwnerLeadDeliveryState,
+  buildOwnerLeadDeliveryKey
+} = require("../../netlify/functions/_owner-lead-delivery");
 const { sendMailViaGraph } = require("../../netlify/functions/_owner-lead-mail");
 const { sendOwnerLeadConfirmationEmails } = require("../../netlify/functions/_owner-lead-confirmation");
 
@@ -71,6 +77,62 @@ test("etag-less delivery writes refuse to clobber an in-flight claim", async () 
   assert.equal(stillSending.deliveryStatus, "sending");
 
   const secondClaim = await claimOwnerLeadDelivery(store, "etag-race");
+  assert.equal(secondClaim.claimed, false);
+  assert.equal(secondClaim.reason, "in_flight");
+});
+
+test("fallback delivery reads cannot be followed by a write over a concurrent claim", async () => {
+  const store = createConditionalStore();
+  const submissionId = "fallback-claim-race";
+  const key = buildOwnerLeadDeliveryKey(submissionId);
+  await store.set(key, JSON.stringify({
+    ownerSent: false,
+    internalSent: false,
+    ownerStatus: "pending",
+    internalStatus: "pending",
+    deliveryStatus: "pending"
+  }));
+
+  const originalGetWithMetadata = store.getWithMetadata.bind(store);
+  const originalGet = store.get.bind(store);
+  let metadataUnavailable = true;
+  let fallbackGets = 0;
+  store.getWithMetadata = async (...args) => {
+    if (metadataUnavailable) throw new Error("metadata unavailable");
+    return originalGetWithMetadata(...args);
+  };
+  store.get = async (...args) => {
+    if (args[0] === key) fallbackGets += 1;
+    return originalGet(...args);
+  };
+
+  const fallbackState = await readOwnerLeadDeliveryState(store, submissionId);
+  assert.equal(fallbackState.deliveryStatus, "pending");
+  assert.equal(fallbackGets, 1, "read-only status lookup must use the plain-get fallback");
+
+  metadataUnavailable = false;
+  const claim = await claimOwnerLeadDelivery(store, submissionId);
+  assert.equal(claim.claimed, true);
+  assert.equal(claim.state.deliveryStatus, "sending");
+
+  // Recreate the metadata failure for the stale writer. It must fail closed;
+  // falling back to get here would permit an unconditional pending write over
+  // the concurrent sending claim.
+  metadataUnavailable = true;
+  await assert.rejects(
+    () => writeOwnerLeadDeliveryState(store, submissionId, {
+      ownerSent: false,
+      internalSent: false,
+      deliveryStatus: "pending"
+    }),
+    /metadata unavailable|owner_lead_delivery/
+  );
+
+  metadataUnavailable = false;
+  assert.equal(fallbackGets, 1, "writable updates must not use the etag-less fallback");
+  const stillSending = await store.get(key, { type: "json" });
+  assert.equal(stillSending.deliveryStatus, "sending");
+  const secondClaim = await claimOwnerLeadDelivery(store, submissionId);
   assert.equal(secondClaim.claimed, false);
   assert.equal(secondClaim.reason, "in_flight");
 });
