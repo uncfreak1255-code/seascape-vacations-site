@@ -318,11 +318,15 @@ async function finalizeDeliveryStateFromKnownProgress(contactStore, contact, pro
     return { finalized: false, reason: "nothing_to_finalize" };
   }
 
+  const bothSent = progress.ownerSent === true && progress.internalSent === true;
+  // Partial stamp progress must not clear an active "sending" claim back to
+  // "pending" — that lets an overlapping retry reclaim and double-send a leg.
   await writeOwnerLeadDeliveryState(contactStore, contact.submissionId, {
     ownerSent: progress.ownerSent === true,
     internalSent: progress.internalSent === true,
-    sent: progress.ownerSent === true && progress.internalSent === true,
-    reason: "sent"
+    sent: bothSent,
+    deliveryStatus: bothSent ? "sent" : "sending",
+    reason: bothSent ? "sent" : "owner_sent_internal_failed"
   });
 
   return {
@@ -332,13 +336,139 @@ async function finalizeDeliveryStateFromKnownProgress(contactStore, contact, pro
   };
 }
 
+async function maybeRepairOwnerLeadConfirmationAfterCaptureFailure({
+  event,
+  capture,
+  injectedContactStore
+}) {
+  if (!capture || !capture.captureFailed || !capture.contact) {
+    return null;
+  }
+  if (!isUsableOwnerEmail(capture.contact.email)) {
+    return null;
+  }
+
+  let contactStore;
+  try {
+    contactStore = resolveContactStore(event, injectedContactStore);
+  } catch (error) {
+    console.error("owner_lead_repair_store_unavailable", {
+      submissionId: capture.contact.submissionId,
+      message: error && error.message ? error.message : String(error)
+    });
+    return {
+      attempted: true,
+      result: { sent: false, reason: "delivery_state_unavailable" },
+      retryable: true,
+      delivery: null
+    };
+  }
+
+  let delivery;
+  try {
+    delivery = await readOwnerLeadDeliveryState(contactStore, capture.contact.submissionId);
+  } catch (error) {
+    // Cannot inspect prior claim state on a broken store. Leave the normal
+    // capture-failed soft ack (human notify already fired).
+    console.error("owner_lead_delivery_read_failed", { submissionId: capture.contact.submissionId });
+    return null;
+  }
+
+  const needsRepair = Boolean(
+    delivery.deliveryStatus === "sending" ||
+    delivery.deliveryStatus === "unknown" ||
+    delivery.ownerSent ||
+    delivery.internalSent
+  );
+  if (!needsRepair) {
+    return null;
+  }
+
+  const known = await resolveKnownDeliveryProgress(
+    contactStore,
+    capture.contact.submissionId,
+    delivery
+  );
+  if (known.stampReadFailed) {
+    return {
+      attempted: true,
+      result: {
+        sent: false,
+        ownerSent: known.ownerSent,
+        internalSent: known.internalSent,
+        reason: "confirmation_stamp_unavailable"
+      },
+      retryable: true,
+      delivery
+    };
+  }
+
+  if (known.ownerSent || known.internalSent) {
+    try {
+      await finalizeDeliveryStateFromKnownProgress(contactStore, capture.contact, known);
+      return {
+        attempted: true,
+        result: {
+          sent: Boolean(known.ownerSent && known.internalSent),
+          ownerSent: known.ownerSent,
+          internalSent: known.internalSent,
+          reason: known.ownerSent && known.internalSent ? "sent" : "owner_sent_internal_failed"
+        },
+        retryable: !(known.ownerSent && known.internalSent),
+        delivery
+      };
+    } catch (error) {
+      console.error("owner_lead_confirmation_state_write_failed", {
+        submissionId: capture.contact.submissionId,
+        persistFailedAfterSend: true,
+        message: error && error.message ? error.message : String(error)
+      });
+      return {
+        attempted: true,
+        result: {
+          sent: false,
+          ownerSent: known.ownerSent,
+          internalSent: known.internalSent,
+          reason: "delivery_state_write_failed"
+        },
+        retryable: true,
+        delivery
+      };
+    }
+  }
+
+  // Claim is in-flight / unknown with no durable stamp yet — keep retrying,
+  // never send from the capture-failed path.
+  return {
+    attempted: true,
+    result: {
+      sent: false,
+      ownerSent: known.ownerSent,
+      internalSent: known.internalSent,
+      reason: delivery.deliveryStatus === "unknown" ? "delivery_unknown" : "in_flight"
+    },
+    retryable: true,
+    delivery
+  };
+}
+
 async function maybeSendOwnerLeadConfirmation({
   event,
   capture,
   injectedContactStore,
   sendConfirmation
 }) {
-  if (!capture.contact || capture.captureFailed || !isUsableOwnerEmail(capture.contact.email)) {
+  if (!capture.contact || !isUsableOwnerEmail(capture.contact.email)) {
+    return { attempted: false, result: null, retryable: false };
+  }
+
+  if (capture.captureFailed) {
+    const repair = await maybeRepairOwnerLeadConfirmationAfterCaptureFailure({
+      event,
+      capture,
+      injectedContactStore
+    });
+    if (repair) return repair;
     return { attempted: false, result: null, retryable: false };
   }
 

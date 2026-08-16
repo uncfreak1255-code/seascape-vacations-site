@@ -714,6 +714,68 @@ test("submission-created does not send when contact capture fails", async () => 
   assert.equal(notifications[0].type, "owner_lead_capture_failed");
 });
 
+test("submission-created keeps repairing after capture failure when delivery is already in flight", async () => {
+  const metricsStore = createMemoryStore();
+  const contactStore = createMemoryStore();
+  const deliveryKey = buildOwnerLeadDeliveryKey("capture-fail-repair");
+  await contactStore.set(
+    deliveryKey,
+    JSON.stringify({
+      ownerSent: true,
+      internalSent: false,
+      ownerStatus: "sent",
+      internalStatus: "pending",
+      deliveryStatus: "sending",
+      updatedAt: "2026-08-16T12:00:00.000Z"
+    }),
+    { contentType: "application/json; charset=utf-8" }
+  );
+  await contactStore.set(
+    OWNER_LEAD_CONTACTS_KEY,
+    JSON.stringify({
+      totalContacts: 1,
+      contacts: [{
+        submissionId: "capture-fail-repair",
+        email: "pat@example.com",
+        confirmationOwnerSent: true,
+        confirmationInternalSent: false
+      }],
+      updatedAt: "2026-08-16T12:00:00.000Z"
+    }),
+    { contentType: "application/json; charset=utf-8" }
+  );
+
+  const originalGetWithMetadata = contactStore.getWithMetadata.bind(contactStore);
+  contactStore.getWithMetadata = async (key, options = {}) => {
+    if (String(key) === OWNER_LEAD_CONTACTS_KEY) {
+      throw new Error("contacts metadata unavailable");
+    }
+    return originalGetWithMetadata(key, options);
+  };
+
+  let sendCalls = 0;
+  const response = await handleSubmissionCreated(
+    { body: JSON.stringify({ payload: ownerSubmitPayload({}, { id: "capture-fail-repair" }) }) },
+    undefined,
+    metricsStore,
+    contactStore,
+    async () => {},
+    async () => {
+      sendCalls += 1;
+      return { sent: true, ownerSent: true, internalSent: true };
+    }
+  );
+
+  assert.equal(response.statusCode, 503);
+  assert.equal(JSON.parse(response.body).confirmation.reason, "owner_sent_internal_failed");
+  assert.equal(sendCalls, 0);
+
+  const delivery = await contactStore.get(deliveryKey, { type: "json" });
+  assert.equal(delivery.ownerSent, true);
+  assert.equal(delivery.internalSent, false);
+  assert.equal(delivery.deliveryStatus, "sending");
+});
+
 test("submission-created does not resend when delivery-state persistence fails after Graph acceptance", async () => {
   const metricsStore = createMemoryStore();
   const contactStore = createMemoryStore();
