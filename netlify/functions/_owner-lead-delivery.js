@@ -58,7 +58,29 @@ function deliveryFlagsEqual(left, right) {
   );
 }
 
-async function readOwnerLeadDeliveryRecord(store, submissionId) {
+function buildWriteOptions(store, current) {
+  const options = { contentType: "application/json; charset=utf-8" };
+  const hasMetadata = store && typeof store.getWithMetadata === "function";
+
+  // Writable updates must stay conditional when the store supports etags.
+  // An etag-less read of an existing key is not safe to write: it can clobber a
+  // concurrent "sending" claim and reopen a Graph send.
+  if (hasMetadata) {
+    if (current.etag) {
+      options.onlyIfMatch = current.etag;
+      return { options, safe: true };
+    }
+    if (!current.exists) {
+      options.onlyIfNew = true;
+      return { options, safe: true };
+    }
+    return { options, safe: false, reason: "owner_lead_delivery_missing_etag" };
+  }
+
+  return { options, safe: true };
+}
+
+async function readOwnerLeadDeliveryRecord(store, submissionId, { forWrite = false } = {}) {
   const key = buildOwnerLeadDeliveryKey(submissionId);
 
   if (store && typeof store.getWithMetadata === "function") {
@@ -70,8 +92,10 @@ async function readOwnerLeadDeliveryRecord(store, submissionId) {
         etag: result.etag,
         exists: true
       };
-    } catch (_error) {
-      // Fall through to plain get for transient metadata failures / test doubles.
+    } catch (error) {
+      // Reads may fall through to plain get. Writes must not — no etag means an
+      // unsafe clobber risk against concurrent claims.
+      if (forWrite) throw error;
     }
   }
 
@@ -110,7 +134,7 @@ function mergeDeliveryState(existing, result) {
   return { ownerSent, internalSent, ownerStatus, internalStatus, deliveryStatus, updatedAt: new Date().toISOString() };
 }
 
-async function writeOwnerLeadDeliveryState(store, submissionId, result, { allowUnconditional = true } = {}) {
+async function writeOwnerLeadDeliveryState(store, submissionId, result) {
   if (!store || typeof store.set !== "function") throw new Error("owner_lead_delivery_store_unavailable");
   const key = buildOwnerLeadDeliveryKey(submissionId);
   let lastError = null;
@@ -118,7 +142,7 @@ async function writeOwnerLeadDeliveryState(store, submissionId, result, { allowU
   for (let attempt = 0; attempt < MAX_DELIVERY_WRITE_ATTEMPTS; attempt += 1) {
     let current;
     try {
-      current = await readOwnerLeadDeliveryRecord(store, submissionId);
+      current = await readOwnerLeadDeliveryRecord(store, submissionId, { forWrite: true });
     } catch (error) {
       lastError = error;
       continue;
@@ -129,35 +153,19 @@ async function writeOwnerLeadDeliveryState(store, submissionId, result, { allowU
       return { state: current.state, persisted: true, unchanged: true };
     }
 
-    const options = { contentType: "application/json; charset=utf-8" };
-    if (current.etag) options.onlyIfMatch = current.etag;
-    else if (!current.exists && typeof store.getWithMetadata === "function") options.onlyIfNew = true;
+    const prepared = buildWriteOptions(store, current);
+    if (!prepared.safe) {
+      lastError = new Error(prepared.reason || "owner_lead_delivery_write_unsafe");
+      continue;
+    }
 
     try {
-      const writeResult = await store.set(key, JSON.stringify(next), options);
+      const writeResult = await store.set(key, JSON.stringify(next), prepared.options);
       if (writeResult && writeResult.modified === false) {
         lastError = new Error("owner_lead_delivery_write_conflict");
         continue;
       }
       return { state: next, persisted: true, unchanged: false };
-    } catch (error) {
-      lastError = error;
-    }
-  }
-
-  // Last resort after conditional retries: merge against a best-effort read and
-  // write without onlyIf* so a known Graph acceptance can still land durable flags.
-  if (allowUnconditional) {
-    try {
-      let current;
-      try {
-        current = await readOwnerLeadDeliveryRecord(store, submissionId);
-      } catch (_error) {
-        current = { state: emptyDeliveryState(), exists: false };
-      }
-      const next = mergeDeliveryState(current.state, result);
-      await store.set(key, JSON.stringify(next), { contentType: "application/json; charset=utf-8" });
-      return { state: next, persisted: true, unchanged: false, unconditional: true };
     } catch (error) {
       lastError = error;
     }
@@ -172,7 +180,7 @@ async function claimOwnerLeadDelivery(store, submissionId) {
   for (let attempt = 0; attempt < MAX_DELIVERY_WRITE_ATTEMPTS; attempt += 1) {
     let current;
     try {
-      current = await readOwnerLeadDeliveryRecord(store, submissionId);
+      current = await readOwnerLeadDeliveryRecord(store, submissionId, { forWrite: true });
     } catch (_error) {
       if (attempt + 1 >= MAX_DELIVERY_WRITE_ATTEMPTS) return { claimed: false, reason: "delivery_claim_failed" };
       continue;
@@ -184,12 +192,14 @@ async function claimOwnerLeadDelivery(store, submissionId) {
     if (state.deliveryStatus === "unknown") return { claimed: false, reason: "delivery_unknown", state };
 
     const next = { ...state, deliveryStatus: "sending", updatedAt: new Date().toISOString() };
-    const options = { contentType: "application/json; charset=utf-8" };
-    if (current.etag) options.onlyIfMatch = current.etag;
-    else if (!current.exists && typeof store.getWithMetadata === "function") options.onlyIfNew = true;
+    const prepared = buildWriteOptions(store, current);
+    if (!prepared.safe) {
+      if (attempt + 1 >= MAX_DELIVERY_WRITE_ATTEMPTS) return { claimed: false, reason: "delivery_claim_failed" };
+      continue;
+    }
 
     try {
-      const result = await store.set(key, JSON.stringify(next), options);
+      const result = await store.set(key, JSON.stringify(next), prepared.options);
       if (result && result.modified === false) continue;
       return { claimed: true, state: next };
     } catch (_error) {

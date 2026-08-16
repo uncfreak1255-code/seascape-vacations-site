@@ -5,7 +5,7 @@ const {
   buildRateBucketKey,
   hourBucket
 } = require("../../netlify/functions/_owner-lead-abuse");
-const { claimOwnerLeadDelivery, isRetryableConfirmationFailure } = require("../../netlify/functions/_owner-lead-delivery");
+const { claimOwnerLeadDelivery, isRetryableConfirmationFailure, writeOwnerLeadDeliveryState, buildOwnerLeadDeliveryKey } = require("../../netlify/functions/_owner-lead-delivery");
 const { sendMailViaGraph } = require("../../netlify/functions/_owner-lead-mail");
 const { sendOwnerLeadConfirmationEmails } = require("../../netlify/functions/_owner-lead-confirmation");
 
@@ -31,7 +31,8 @@ function createConditionalStore() {
       versions.set(key, (version || 0) + 1);
       return { modified: true };
     },
-    values
+    values,
+    versions
   };
 }
 
@@ -43,6 +44,35 @@ test("concurrent delivery claims permit only one sender", async () => {
   ]);
   assert.equal([first.claimed, second.claimed].filter(Boolean).length, 1);
   assert.ok([first.reason, second.reason].includes("in_flight"));
+});
+
+test("etag-less delivery writes refuse to clobber an in-flight claim", async () => {
+  const store = createConditionalStore();
+  const claim = await claimOwnerLeadDelivery(store, "etag-race");
+  assert.equal(claim.claimed, true);
+
+  const originalGetWithMetadata = store.getWithMetadata.bind(store);
+  store.getWithMetadata = async () => {
+    throw new Error("metadata unavailable");
+  };
+
+  await assert.rejects(
+    () => writeOwnerLeadDeliveryState(store, "etag-race", {
+      ownerSent: false,
+      internalSent: false,
+      deliveryStatus: "pending"
+    }),
+    /metadata unavailable|owner_lead_delivery/
+  );
+
+  store.getWithMetadata = originalGetWithMetadata;
+  const key = buildOwnerLeadDeliveryKey("etag-race");
+  const stillSending = await store.get(key, { type: "json" });
+  assert.equal(stillSending.deliveryStatus, "sending");
+
+  const secondClaim = await claimOwnerLeadDelivery(store, "etag-race");
+  assert.equal(secondClaim.claimed, false);
+  assert.equal(secondClaim.reason, "in_flight");
 });
 
 test("conditional rate bucket enforces email and global limits under concurrent submissions", async () => {

@@ -67,8 +67,9 @@ event-named URL rejects external HTTP with 403.
 - Ordering on success: claim `sending` → Graph send → contact stamp → delivery
   blob `sent`. A webhook retry that sees the stamp finalizes the delivery blob
   and **does not** call Graph again.
-- Contact-list writes use etag conditional retry. Delivery-blob writes retry
-  conditionally, then one unconditional merge write as last resort.
+- Contact-list writes use etag conditional retry. Delivery-blob writes stay
+  conditional (`onlyIfMatch` / `onlyIfNew`) and refuse etag-less updates so a
+  concurrent claim cannot be clobbered back to `pending`.
 - Transient Graph failures (429/token transport) and “Graph accepted but
   delivery-state write failed” return **503** so Netlify redelivers the event.
   Already-sent owner/internal legs (blob or contact stamp) are skipped on retry.
