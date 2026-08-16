@@ -197,9 +197,41 @@ async function claimOwnerLeadDelivery(store, submissionId) {
 
     const state = current.state;
     if (state.ownerSent && state.internalSent) return { claimed: false, reason: "already_sent", state };
-    if (state.deliveryStatus === "sending" && !isOwnerLeadClaimLeaseExpired(state)) {
-      return { claimed: false, reason: "in_flight", state };
+
+    if (state.deliveryStatus === "sending") {
+      if (!isOwnerLeadClaimLeaseExpired(state)) {
+        return { claimed: false, reason: "in_flight", state };
+      }
+
+      // Stale claim with no durable sent flags: Graph may already have accepted.
+      // Prefer at-most-once — freeze as unknown instead of reclaiming a resend.
+      if (!state.ownerSent && !state.internalSent) {
+        const frozen = {
+          ...state,
+          deliveryStatus: "unknown",
+          updatedAt: new Date().toISOString()
+        };
+        const prepared = buildWriteOptions(store, current);
+        if (!prepared.safe) {
+          if (attempt + 1 >= MAX_DELIVERY_WRITE_ATTEMPTS) {
+            return { claimed: false, reason: "delivery_unknown", state };
+          }
+          continue;
+        }
+        try {
+          const result = await store.set(key, JSON.stringify(frozen), prepared.options);
+          if (result && result.modified === false) continue;
+          return { claimed: false, reason: "delivery_unknown", state: frozen };
+        } catch (_error) {
+          if (attempt + 1 >= MAX_DELIVERY_WRITE_ATTEMPTS) {
+            return { claimed: false, reason: "delivery_unknown", state };
+          }
+          continue;
+        }
+      }
+      // Partial durable flags on the blob: reclaim is safe for remaining legs.
     }
+
     if (state.deliveryStatus === "unknown") return { claimed: false, reason: "delivery_unknown", state };
 
     const next = { ...state, deliveryStatus: "sending", updatedAt: new Date().toISOString() };

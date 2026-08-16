@@ -114,6 +114,29 @@ test("partial delivery finalize preserves sending so overlapping retries cannot 
   assert.equal(reclaim.claimed, true);
 });
 
+test("stale sending claims without durable flags freeze to unknown instead of resending", async () => {
+  const { OWNER_LEAD_CLAIM_LEASE_MS } = require("../../netlify/functions/_owner-lead-delivery");
+  const store = createConditionalStore();
+  const claim = await claimOwnerLeadDelivery(store, "stale-unrecorded");
+  assert.equal(claim.claimed, true);
+
+  const key = buildOwnerLeadDeliveryKey("stale-unrecorded");
+  const stale = {
+    ...claim.state,
+    ownerSent: false,
+    internalSent: false,
+    updatedAt: new Date(Date.now() - OWNER_LEAD_CLAIM_LEASE_MS - 1000).toISOString()
+  };
+  store.values.set(key, JSON.stringify(stale));
+  store.versions.set(key, (store.versions.get(key) || 1));
+
+  const frozen = await claimOwnerLeadDelivery(store, "stale-unrecorded");
+  assert.equal(frozen.claimed, false);
+  assert.equal(frozen.reason, "delivery_unknown");
+  const stored = await store.get(key, { type: "json" });
+  assert.equal(stored.deliveryStatus, "unknown");
+});
+
 test("fallback delivery reads cannot be followed by a write over a concurrent claim", async () => {
   const store = createConditionalStore();
   const submissionId = "fallback-claim-race";
