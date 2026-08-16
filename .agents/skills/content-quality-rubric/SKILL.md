@@ -1,6 +1,6 @@
 ---
 name: content-quality-rubric
-description: Advisory positive rubric that scores a Seascape draft for information gain and AI-citation extractability before it ships. Use when drafting or reviewing guide, stay, or research reader copy — after the banned-phrase content gate passes — to check the page actually earns rankings and AI citations instead of only avoiding slop. Advisory only; it does not block merge.
+description: Advisory rubric that scores a Seascape draft for information gain and AI-citation extractability before it ships. Use when drafting or reviewing guide, stay, or research reader copy — after the banned-phrase content gate passes — to check the page earns rankings and AI citations instead of only avoiding slop. Advisory only; does not block merge.
 ---
 
 # Content Quality Rubric
