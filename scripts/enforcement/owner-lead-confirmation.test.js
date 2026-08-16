@@ -795,6 +795,64 @@ test("submission-created still skips resend when delivery persist and contact st
   assert.equal(sendCalls, 1, "even without a contact stamp, in_flight claim must block a second send");
 });
 
+test("submission-created retries when contact-stamp reads fail after an in-flight Graph accept", async () => {
+  const metricsStore = createMemoryStore();
+  const contactStore = createMemoryStore();
+  const originalSet = contactStore.set.bind(contactStore);
+  const originalGet = contactStore.get.bind(contactStore);
+  let deliveryWrites = 0;
+  let failStampReads = false;
+  const etags = new Map();
+  let etagCounter = 1000;
+
+  contactStore.set = async (key, value, options = {}) => {
+    if (String(key).startsWith(OWNER_LEAD_DELIVERY_KEY_PREFIX)) {
+      deliveryWrites += 1;
+      if (deliveryWrites > 1) throw new Error("delivery blob unavailable");
+    }
+    const exists = contactStore._values.has(key);
+    if (options.onlyIfNew && exists) return { modified: false };
+    if (options.onlyIfMatch && etags.get(key) !== options.onlyIfMatch) return { modified: false };
+    contactStore._values.set(key, value);
+    const etag = `etag-stamp-${etagCounter++}`;
+    etags.set(key, etag);
+    return { modified: true, etag };
+  };
+  // Stamp path uses plain get(). Capture/mutate keep working through a
+  // getWithMetadata that does not call the throwing get().
+  contactStore.get = async (key, options = {}) => {
+    if (failStampReads && String(key) === OWNER_LEAD_CONTACTS_KEY) {
+      throw new Error("contacts read unavailable");
+    }
+    return originalGet(key, options);
+  };
+  contactStore.getWithMetadata = async (key, options = {}) => {
+    if (!contactStore._values.has(key)) return null;
+    const raw = contactStore._values.get(key);
+    const data = options.type === "json"
+      ? (typeof raw === "string" ? JSON.parse(raw) : raw)
+      : raw;
+    return { data, etag: etags.get(key) };
+  };
+
+  let sendCalls = 0;
+  const sendConfirmation = async () => {
+    sendCalls += 1;
+    return { sent: true, ownerSent: true, internalSent: true, reason: "sent" };
+  };
+  const event = { body: JSON.stringify({ payload: ownerSubmitPayload({}, { id: "stamp-read-fail" }) }) };
+  const first = await handleSubmissionCreated(event, undefined, metricsStore, contactStore, async () => {}, sendConfirmation);
+  assert.equal(first.statusCode, 503);
+  assert.equal(JSON.parse(first.body).confirmation.reason, "delivery_state_write_failed");
+  assert.equal(sendCalls, 1);
+
+  failStampReads = true;
+  const second = await handleSubmissionCreated(event, undefined, metricsStore, contactStore, async () => {}, sendConfirmation);
+  assert.equal(second.statusCode, 503);
+  assert.equal(JSON.parse(second.body).confirmation.reason, "confirmation_stamp_unavailable");
+  assert.equal(sendCalls, 1, "stamp read failure must not resend");
+});
+
 test("overlapping contact writes keep both leads via conditional retry", async () => {
   const store = createMemoryStore();
   const { mutateOwnerLeadContacts, mergeOwnerLeadContacts, buildOwnerLeadContact } = require(

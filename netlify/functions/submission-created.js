@@ -261,6 +261,12 @@ async function resolveKnownDeliveryProgress(contactStore, submissionId, delivery
       submissionId,
       message: error && error.message ? error.message : String(error)
     });
+    return {
+      ownerSent: Boolean(delivery && delivery.ownerSent),
+      internalSent: Boolean(delivery && delivery.internalSent),
+      source: "stamp_read_failed",
+      stampReadFailed: true
+    };
   }
 
   return {
@@ -351,6 +357,22 @@ async function maybeSendOwnerLeadConfirmation({
     delivery
   );
 
+  // Cannot prove prior Graph acceptance from the contact stamp. Suppress send and
+  // return 503 so Netlify keeps retrying state repair instead of soft-acking.
+  if (known.stampReadFailed) {
+    return {
+      attempted: true,
+      result: {
+        sent: false,
+        ownerSent: known.ownerSent,
+        internalSent: known.internalSent,
+        reason: "confirmation_stamp_unavailable"
+      },
+      retryable: true,
+      delivery
+    };
+  }
+
   // Graph already accepted once (delivery blob and/or contact stamp). Never send
   // again — only repair the per-submission delivery blob if it lagged the stamp.
   if (known.ownerSent && known.internalSent) {
@@ -400,6 +422,19 @@ async function maybeSendOwnerLeadConfirmation({
         capture.contact.submissionId,
         claim.state || delivery
       );
+      if (progress.stampReadFailed) {
+        return {
+          attempted: true,
+          result: {
+            sent: false,
+            ownerSent: progress.ownerSent,
+            internalSent: progress.internalSent,
+            reason: "confirmation_stamp_unavailable"
+          },
+          retryable: true,
+          delivery: claim.state || delivery
+        };
+      }
       if (progress.ownerSent || progress.internalSent) {
         try {
           await finalizeDeliveryStateFromKnownProgress(contactStore, capture.contact, progress);

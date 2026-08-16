@@ -159,6 +159,22 @@ async function readOwnerLeadContacts(store) {
   }
 }
 
+async function readOwnerLeadContactsOrThrow(store) {
+  if (!store || typeof store.get !== "function") {
+    throw new Error("owner_lead_contact_store_unavailable");
+  }
+
+  try {
+    return parseStoredContacts(await store.get(OWNER_LEAD_CONTACTS_KEY, { type: "json" }));
+  } catch (jsonError) {
+    try {
+      return parseStoredContacts(await store.get(OWNER_LEAD_CONTACTS_KEY, { type: "text" }));
+    } catch (textError) {
+      throw textError || jsonError || new Error("owner_lead_contacts_read_failed");
+    }
+  }
+}
+
 async function writeOwnerLeadContacts(store, contacts) {
   await store.set(
     OWNER_LEAD_CONTACTS_KEY,
@@ -283,7 +299,7 @@ function readConfirmationStampFromContact(contact) {
 async function readOwnerLeadConfirmationStamp(store, submissionId) {
   const id = normalizeText(submissionId);
   if (!id) return { ownerSent: false, internalSent: false };
-  const contacts = await readOwnerLeadContacts(store);
+  const contacts = await readOwnerLeadContactsOrThrow(store);
   const match = contacts && Array.isArray(contacts.contacts)
     ? contacts.contacts.find((entry) => entry && entry.submissionId === id)
     : null;
@@ -353,6 +369,7 @@ module.exports = {
   getOwnerLeadContactBlobsConfig,
   parseStoredContacts,
   readOwnerLeadContacts,
+  readOwnerLeadContactsOrThrow,
   readOwnerLeadContactsWithEtag,
   writeOwnerLeadContacts,
   mutateOwnerLeadContacts,
