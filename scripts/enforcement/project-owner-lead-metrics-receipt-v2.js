@@ -11,6 +11,7 @@ const CLAIM_ID = "CLM-OWNER-MEASUREMENT-PATH-LIVE";
 const PRODUCER_ID = "site-owner-lead-metrics-v2-shadow";
 const ACTION_BOUNDARY = "retrieval never authorizes a live action";
 const ALLOWED_USES = ["read_only_answer", "evidence_draft"];
+const ISO_TIMESTAMP_PATTERN = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(?:\.\d{1,3})?(Z|[+-]\d{2}:\d{2})$/;
 const V2_FIELDS = new Set([
   "schema_version",
   "claim_id",
@@ -34,8 +35,37 @@ function sha256Bytes(content) {
   return crypto.createHash("sha256").update(content).digest("hex");
 }
 
+function hasValidCalendarDate(year, month, day) {
+  const date = new Date(Date.UTC(year, month - 1, day));
+  return (
+    date.getUTCFullYear() === year &&
+    date.getUTCMonth() === month - 1 &&
+    date.getUTCDate() === day
+  );
+}
+
 function parseTimestamp(value, fieldName) {
-  if (typeof value !== "string" || !/(Z|[+-]\d\d:\d\d)$/.test(value)) {
+  const match = typeof value === "string" ? ISO_TIMESTAMP_PATTERN.exec(value) : null;
+  if (!match) {
+    throw new ProjectionError(`${fieldName} must be an ISO-8601 timestamp with a timezone`);
+  }
+  const [, yearText, monthText, dayText, hourText, minuteText, secondText, timezone] = match;
+  const year = Number(yearText);
+  const month = Number(monthText);
+  const day = Number(dayText);
+  const hour = Number(hourText);
+  const minute = Number(minuteText);
+  const second = Number(secondText);
+  const timezoneHour = timezone === "Z" ? 0 : Number(timezone.slice(1, 3));
+  const timezoneMinute = timezone === "Z" ? 0 : Number(timezone.slice(4, 6));
+  if (
+    !hasValidCalendarDate(year, month, day) ||
+    hour > 23 ||
+    minute > 59 ||
+    second > 59 ||
+    timezoneHour > 23 ||
+    timezoneMinute > 59
+  ) {
     throw new ProjectionError(`${fieldName} must be an ISO-8601 timestamp with a timezone`);
   }
   const parsed = new Date(value);
@@ -49,11 +79,11 @@ function parseStaleAfter(value) {
   if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(value)) {
     throw new ProjectionError("stale_after must be a V1 date");
   }
-  const parsed = new Date(`${value}T23:59:59.999Z`);
-  if (Number.isNaN(parsed.valueOf())) {
+  const [year, month, day] = value.split("-").map(Number);
+  if (!hasValidCalendarDate(year, month, day)) {
     throw new ProjectionError("stale_after must be a V1 date");
   }
-  return parsed;
+  return new Date(`${value}T23:59:59.999Z`);
 }
 
 function readV1Source(inputPath) {

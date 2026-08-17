@@ -128,6 +128,36 @@ test("refuses a receipt identifier that does not match its observation date", ()
   assert.equal(fs.existsSync(paths.projection), false);
 });
 
+test("refuses invalid source and caller calendar dates before writing", () => {
+  const invalidSource = fixturePaths();
+  writeSource(invalidSource.source, v1Receipt({ date_or_window: "2026-02-31T01:00:00.000Z" }));
+  assert.throws(
+    () => projector.main(["--input", invalidSource.source, "--output", invalidSource.projection]),
+    /date_or_window/,
+  );
+  assert.equal(fs.existsSync(invalidSource.projection), false);
+
+  const invalidCaller = fixturePaths();
+  writeSource(invalidCaller.source);
+  assert.throws(
+    () => projector.main([
+      "--input", invalidCaller.source,
+      "--output", invalidCaller.projection,
+      "--recorded-at", "2026-02-31T01:00:00.000Z",
+    ]),
+    /recorded_at/,
+  );
+  assert.equal(fs.existsSync(invalidCaller.projection), false);
+
+  const invalidStaleAfter = fixturePaths();
+  writeSource(invalidStaleAfter.source, v1Receipt({ stale_after: "2026-02-31" }));
+  assert.throws(
+    () => projector.main(["--input", invalidStaleAfter.source, "--output", invalidStaleAfter.projection]),
+    /stale_after/,
+  );
+  assert.equal(fs.existsSync(invalidStaleAfter.projection), false);
+});
+
 test("expired V1 evidence is projected as historical", () => {
   const projection = projector.buildV2Projection(v1Receipt({ stale_after: "2026-08-16" }), {
     sourceSha256: "b".repeat(64),
