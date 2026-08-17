@@ -191,7 +191,8 @@ test("guide redirects enforce a trailing-slash canonical shape for current guide
 
   for (const redirectRule of [
     "/guides/things-to-do-bradenton-fl.html  /guides/things-to-do-bradenton-fl/  301",
-    "/guides/:slug/index.html  /guides/:slug/  301!",
+    "/guides/why-booking-direct-saves-you-hundreds  /guides/booking-direct-vacation-rentals/  301",
+    "/guides/why-booking-direct-saves-you-hundreds/  /guides/booking-direct-vacation-rentals/  301",
     "/guides/:slug  /guides/:slug/  301"
   ]) {
     assert.equal(redirects.includes(redirectRule), true, `Expected redirects to include ${redirectRule}`);
@@ -203,6 +204,12 @@ test("guide redirects enforce a trailing-slash canonical shape for current guide
     "Dynamic .html guide redirects are unsafe on Netlify because the suffix placeholder can be shadowed or emitted literally"
   );
 
+  assert.equal(
+    redirects.includes("/guides/:slug/index.html  /guides/:slug/  301!"),
+    false,
+    "Forced /guides/:slug/index.html catch-all self-loops missing guide URLs on Netlify"
+  );
+
   assert.ok(
     redirects.indexOf("/guides/things-to-do-bradenton-fl.html  /guides/things-to-do-bradenton-fl/  301") <
       redirects.indexOf("/guides/:slug  /guides/:slug/  301"),
@@ -210,9 +217,15 @@ test("guide redirects enforce a trailing-slash canonical shape for current guide
   );
 
   assert.ok(
-    redirects.indexOf("/guides/:slug/index.html  /guides/:slug/  301!") <
+    redirects.indexOf("/guides/why-booking-direct-saves-you-hundreds  /guides/booking-direct-vacation-rentals/  301") <
       redirects.indexOf("/guides/:slug  /guides/:slug/  301"),
-    "Expected index.html guide redirect to come before the broad slashless guide redirect"
+    "Expected retired book-direct slug redirects to come before the broad slashless guide redirect"
+  );
+
+  assert.ok(
+    redirects.indexOf("/guides/why-booking-direct-saves-you-hundreds/  /guides/booking-direct-vacation-rentals/  301") <
+      redirects.indexOf("/guides/:slug  /guides/:slug/  301"),
+    "Expected retired book-direct trailing-slash redirect to come before the broad slashless guide redirect"
   );
 });
 

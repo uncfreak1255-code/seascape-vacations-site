@@ -488,7 +488,16 @@
 /guides/things-to-do-bradenton-fl.html  /guides/things-to-do-bradenton-fl/  301
 /guides/vacation-rental-income-anna-maria.html  /guides/vacation-rental-income-anna-maria/  301
 /guides/where-to-stay-near-anna-maria-island.html  /guides/where-to-stay-near-anna-maria-island/  301
-/guides/:slug/index.html  /guides/:slug/  301!
+
+# Retired book-direct featured slug → live booking-direct guide (must stay ABOVE /guides/:slug)
+# Observed 2026-08-17: old slug and any missing /guides/{slug}/ self-301 looped via the
+# forced /guides/:slug/index.html catch-all. Explicit alias + no force index.html rule.
+/guides/why-booking-direct-saves-you-hundreds  /guides/booking-direct-vacation-rentals/  301
+/guides/why-booking-direct-saves-you-hundreds/  /guides/booking-direct-vacation-rentals/  301
+
+# Slashless → trailing-slash only. Do NOT force /guides/:slug/index.html → /guides/:slug/
+# (that 301! rule self-loops on missing guides). Existing pages still canonicalize via
+# Netlify Pretty URLs + the slashless rule below; missing /guides/{slug}/ must 404.
 /guides/:slug  /guides/:slug/  301
 
 /property-management/vacation-rental-management-licensing-florida  /property-management/vacation-rental-licensing-florida/  301
