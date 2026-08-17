@@ -183,9 +183,12 @@ function isOwnerLeadClaimLeaseExpired(state, nowMs = Date.now()) {
   return nowMs - updatedAtMs > OWNER_LEAD_CLAIM_LEASE_MS;
 }
 
-async function claimOwnerLeadDelivery(store, submissionId) {
+async function claimOwnerLeadDelivery(store, submissionId, durableProgress = {}) {
   if (!store || typeof store.set !== "function") return { claimed: false, reason: "delivery_store_unavailable" };
   const key = buildOwnerLeadDeliveryKey(submissionId);
+  const progressOwnerSent = durableProgress && durableProgress.ownerSent === true;
+  const progressInternalSent = durableProgress && durableProgress.internalSent === true;
+
   for (let attempt = 0; attempt < MAX_DELIVERY_WRITE_ATTEMPTS; attempt += 1) {
     let current;
     try {
@@ -196,6 +199,8 @@ async function claimOwnerLeadDelivery(store, submissionId) {
     }
 
     const state = current.state;
+    const ownerSent = state.ownerSent || progressOwnerSent;
+    const internalSent = state.internalSent || progressInternalSent;
     if (state.ownerSent && state.internalSent) return { claimed: false, reason: "already_sent", state };
 
     if (state.deliveryStatus === "sending") {
@@ -203,9 +208,10 @@ async function claimOwnerLeadDelivery(store, submissionId) {
         return { claimed: false, reason: "in_flight", state };
       }
 
-      // Stale claim with no durable sent flags: Graph may already have accepted.
-      // Prefer at-most-once — freeze as unknown instead of reclaiming a resend.
-      if (!state.ownerSent && !state.internalSent) {
+      // Stale claim with no durable progress anywhere (blob OR contact stamp):
+      // Graph may already have accepted. Prefer at-most-once — freeze unknown.
+      // Partial durable progress (either source) may reclaim the remaining leg.
+      if (!ownerSent && !internalSent) {
         const frozen = {
           ...state,
           deliveryStatus: "unknown",
@@ -229,12 +235,44 @@ async function claimOwnerLeadDelivery(store, submissionId) {
           continue;
         }
       }
-      // Partial durable flags on the blob: reclaim is safe for remaining legs.
+
+      // Reclaim with any known durable leg flags folded into the new claim so
+      // sendConfirmation skips already-accepted legs.
+      const next = {
+        ...state,
+        ownerSent,
+        internalSent,
+        ownerStatus: ownerSent ? "sent" : state.ownerStatus,
+        internalStatus: internalSent ? "sent" : state.internalStatus,
+        deliveryStatus: "sending",
+        updatedAt: new Date().toISOString()
+      };
+      const prepared = buildWriteOptions(store, current);
+      if (!prepared.safe) {
+        if (attempt + 1 >= MAX_DELIVERY_WRITE_ATTEMPTS) return { claimed: false, reason: "delivery_claim_failed" };
+        continue;
+      }
+      try {
+        const result = await store.set(key, JSON.stringify(next), prepared.options);
+        if (result && result.modified === false) continue;
+        return { claimed: true, state: next };
+      } catch (_error) {
+        if (attempt + 1 >= MAX_DELIVERY_WRITE_ATTEMPTS) return { claimed: false, reason: "delivery_claim_failed" };
+        continue;
+      }
     }
 
     if (state.deliveryStatus === "unknown") return { claimed: false, reason: "delivery_unknown", state };
 
-    const next = { ...state, deliveryStatus: "sending", updatedAt: new Date().toISOString() };
+    const next = {
+      ...state,
+      ownerSent,
+      internalSent,
+      ownerStatus: ownerSent ? "sent" : state.ownerStatus,
+      internalStatus: internalSent ? "sent" : state.internalStatus,
+      deliveryStatus: "sending",
+      updatedAt: new Date().toISOString()
+    };
     const prepared = buildWriteOptions(store, current);
     if (!prepared.safe) {
       if (attempt + 1 >= MAX_DELIVERY_WRITE_ATTEMPTS) return { claimed: false, reason: "delivery_claim_failed" };

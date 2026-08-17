@@ -137,6 +137,34 @@ test("stale sending claims without durable flags freeze to unknown instead of re
   assert.equal(stored.deliveryStatus, "unknown");
 });
 
+test("stale sending claims reclaim when contact-stamp progress proves a partial send", async () => {
+  const { OWNER_LEAD_CLAIM_LEASE_MS } = require("../../netlify/functions/_owner-lead-delivery");
+  const store = createConditionalStore();
+  const claim = await claimOwnerLeadDelivery(store, "stale-stamp-partial");
+  assert.equal(claim.claimed, true);
+
+  // Blob still looks unrecorded (persist + release both failed), but the contact
+  // stamp proved the owner leg already accepted — reclaim the remaining leg.
+  const key = buildOwnerLeadDeliveryKey("stale-stamp-partial");
+  const stale = {
+    ...claim.state,
+    ownerSent: false,
+    internalSent: false,
+    updatedAt: new Date(Date.now() - OWNER_LEAD_CLAIM_LEASE_MS - 1000).toISOString()
+  };
+  store.values.set(key, JSON.stringify(stale));
+  store.versions.set(key, (store.versions.get(key) || 1));
+
+  const reclaim = await claimOwnerLeadDelivery(store, "stale-stamp-partial", {
+    ownerSent: true,
+    internalSent: false
+  });
+  assert.equal(reclaim.claimed, true);
+  assert.equal(reclaim.state.ownerSent, true);
+  assert.equal(reclaim.state.internalSent, false);
+  assert.equal(reclaim.state.deliveryStatus, "sending");
+});
+
 test("fallback delivery reads cannot be followed by a write over a concurrent claim", async () => {
   const store = createConditionalStore();
   const submissionId = "fallback-claim-race";

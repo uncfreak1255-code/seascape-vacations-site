@@ -584,7 +584,10 @@ async function maybeSendOwnerLeadConfirmation({
     };
   }
 
-  const claim = await claimOwnerLeadDelivery(contactStore, capture.contact.submissionId);
+  const claim = await claimOwnerLeadDelivery(contactStore, capture.contact.submissionId, {
+    ownerSent: known.ownerSent,
+    internalSent: known.internalSent
+  });
   if (!claim.claimed) {
     // in_flight after a prior Graph accept: finalize only when both legs are
     // already proven sent. Partial progress must not clear a live claim.
@@ -664,8 +667,8 @@ async function maybeSendOwnerLeadConfirmation({
   }
 
   const confirmationResult = await safeConfirm(sendConfirmation, capture.contact, {
-    ownerSent: known.ownerSent,
-    internalSent: known.internalSent
+    ownerSent: known.ownerSent || Boolean(claim.state && claim.state.ownerSent),
+    internalSent: known.internalSent || Boolean(claim.state && claim.state.internalSent)
   });
 
   try {
