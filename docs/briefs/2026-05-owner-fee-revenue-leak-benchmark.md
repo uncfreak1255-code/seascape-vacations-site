@@ -29,7 +29,7 @@ Status: active truthfulness rescue; legacy URL retained
 | Searcher intent | Research the charges behind an owner statement or management proposal before requesting a property-specific quote. |
 | Current Seascape URL | `/research/owner-fee-revenue-leak-benchmark-2026/` |
 | SERP observed date | 2026-07-17 |
-| SERP stale after | 2026-08-16 |
+| SERP stale after | 2026-09-16 |
 | Current proof | A July 17, 2026 live search showed this research route indexed under the broad management-fee title while `/property-management/` also described the fee guide as a conversion resource. The current route therefore overlaps the owner-money page and needs a distinct platform-fee comparison title. |
 | Top visible competitors | Gulf Coast Property Management pricing, Luxe Haus Florida management-cost guide, Emperor Rentals Florida management-fee guide, and Airbnb's own service-fee documentation. |
 | Competitor angle | Competitors lead with a management percentage or package; Airbnb defines its host service fee. Few explain why platform commission, card processing, and management are different services. |
