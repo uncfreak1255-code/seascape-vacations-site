@@ -4,6 +4,9 @@
 
 const OWNER_LEAD_DELIVERY_KEY_PREFIX = "owner_lead_confirmation_delivery/";
 const MAX_DELIVERY_WRITE_ATTEMPTS = 5;
+// Netlify function runtime is short; keep the lease above worst-case Graph+Blobs
+// work so a live sender is not reclaimed, but allow recovery after a crash.
+const OWNER_LEAD_CLAIM_LEASE_MS = 120000;
 const DELIVERY_STATUSES = new Set(["pending", "sending", "sent", "failed", "unknown"]);
 
 function normalizeText(value) {
@@ -18,7 +21,18 @@ function buildOwnerLeadDeliveryKey(submissionId) {
 }
 
 function emptyDeliveryState() {
-  return { ownerSent: false, internalSent: false, ownerStatus: "pending", internalStatus: "pending", deliveryStatus: "pending", updatedAt: null };
+  return {
+    ownerSent: false,
+    internalSent: false,
+    ownerStatus: "pending",
+    internalStatus: "pending",
+    deliveryStatus: "pending",
+    // True when this claim is finishing a known-partial delivery (one leg already
+    // durable). Used so a stale lease cannot reclaim that same remaining leg
+    // after Graph may have accepted it without a durable record.
+    remainingAttempt: false,
+    updatedAt: null
+  };
 }
 
 function normalizeLegStatus(value, sent) {
@@ -36,6 +50,7 @@ function normalizeDeliveryState(value) {
     ownerStatus: normalizeLegStatus(value.ownerStatus, ownerSent),
     internalStatus: normalizeLegStatus(value.internalStatus, internalSent),
     deliveryStatus: normalizeLegStatus(value.deliveryStatus, ownerSent && internalSent),
+    remainingAttempt: value.remainingAttempt === true,
     updatedAt: normalizeText(value.updatedAt) || null
   };
 }
@@ -46,17 +61,77 @@ function parseDeliveryValue(value) {
   return typeof value === "object" ? value : null;
 }
 
-async function readOwnerLeadDeliveryRecord(store, submissionId) {
-  const key = buildOwnerLeadDeliveryKey(submissionId);
-  if (store && typeof store.getWithMetadata === "function") {
-    const result = await store.getWithMetadata(key, { type: "json" });
-    if (!result) return { state: emptyDeliveryState(), etag: undefined, exists: false };
-    return { state: normalizeDeliveryState(parseDeliveryValue(result.data)), etag: result.etag, exists: true };
+function deliveryFlagsEqual(left, right) {
+  const a = normalizeDeliveryState(left);
+  const b = normalizeDeliveryState(right);
+  return (
+    a.ownerSent === b.ownerSent &&
+    a.internalSent === b.internalSent &&
+    a.ownerStatus === b.ownerStatus &&
+    a.internalStatus === b.internalStatus &&
+    a.deliveryStatus === b.deliveryStatus &&
+    a.remainingAttempt === b.remainingAttempt
+  );
+}
+
+function buildWriteOptions(store, current) {
+  const options = { contentType: "application/json; charset=utf-8" };
+  const hasMetadata = store && typeof store.getWithMetadata === "function";
+
+  // Writable updates must stay conditional when the store supports etags.
+  // An etag-less read of an existing key is not safe to write: it can clobber a
+  // concurrent "sending" claim and reopen a Graph send.
+  if (hasMetadata) {
+    if (current.etag) {
+      options.onlyIfMatch = current.etag;
+      return { options, safe: true };
+    }
+    if (!current.exists) {
+      options.onlyIfNew = true;
+      return { options, safe: true };
+    }
+    return { options, safe: false, reason: "owner_lead_delivery_missing_etag" };
   }
-  if (!store || typeof store.get !== "function") return { state: emptyDeliveryState(), etag: undefined, exists: false };
-  const raw = await store.get(key, { type: "json" });
-  if (raw == null) return { state: emptyDeliveryState(), etag: undefined, exists: false };
-  return { state: normalizeDeliveryState(parseDeliveryValue(raw)), etag: undefined, exists: true };
+
+  return { options, safe: true };
+}
+
+async function readOwnerLeadDeliveryRecord(store, submissionId, { forWrite = false } = {}) {
+  const key = buildOwnerLeadDeliveryKey(submissionId);
+
+  if (store && typeof store.getWithMetadata === "function") {
+    try {
+      const result = await store.getWithMetadata(key, { type: "json" });
+      if (!result) return { state: emptyDeliveryState(), etag: undefined, exists: false };
+      return {
+        state: normalizeDeliveryState(parseDeliveryValue(result.data)),
+        etag: result.etag,
+        exists: true
+      };
+    } catch (error) {
+      // Reads may fall through to plain get. Writes must not — no etag means an
+      // unsafe clobber risk against concurrent claims.
+      if (forWrite) throw error;
+    }
+  }
+
+  if (!store || typeof store.get !== "function") {
+    return { state: emptyDeliveryState(), etag: undefined, exists: false };
+  }
+
+  try {
+    const raw = await store.get(key, { type: "json" });
+    if (raw == null) return { state: emptyDeliveryState(), etag: undefined, exists: false };
+    return { state: normalizeDeliveryState(parseDeliveryValue(raw)), etag: undefined, exists: true };
+  } catch (_error) {
+    try {
+      const raw = await store.get(key, { type: "text" });
+      if (raw == null) return { state: emptyDeliveryState(), etag: undefined, exists: false };
+      return { state: normalizeDeliveryState(parseDeliveryValue(raw)), etag: undefined, exists: true };
+    } catch (_textError) {
+      throw _textError || _error || new Error("owner_lead_delivery_read_failed");
+    }
+  }
 }
 
 async function readOwnerLeadDeliveryState(store, submissionId) {
@@ -72,44 +147,201 @@ function mergeDeliveryState(existing, result) {
   const deliveryStatus = result?.ambiguous === true
     ? "unknown"
     : (ownerSent && internalSent ? "sent" : (result?.deliveryStatus || "pending"));
-  return { ownerSent, internalSent, ownerStatus, internalStatus, deliveryStatus, updatedAt: new Date().toISOString() };
+  // Durable writes clear the in-claim remainingAttempt marker unless the caller
+  // is explicitly preserving a live claim shape.
+  const remainingAttempt = result?.remainingAttempt === true;
+  return {
+    ownerSent,
+    internalSent,
+    ownerStatus,
+    internalStatus,
+    deliveryStatus,
+    remainingAttempt,
+    updatedAt: new Date().toISOString()
+  };
 }
 
 async function writeOwnerLeadDeliveryState(store, submissionId, result) {
   if (!store || typeof store.set !== "function") throw new Error("owner_lead_delivery_store_unavailable");
   const key = buildOwnerLeadDeliveryKey(submissionId);
   let lastError = null;
+
   for (let attempt = 0; attempt < MAX_DELIVERY_WRITE_ATTEMPTS; attempt += 1) {
-    const current = await readOwnerLeadDeliveryRecord(store, submissionId);
-    const next = mergeDeliveryState(current.state, result);
-    if (current.exists && JSON.stringify(next) === JSON.stringify(current.state)) return { state: current.state, persisted: true, unchanged: true };
-    const options = { contentType: "application/json; charset=utf-8" };
-    if (current.etag) options.onlyIfMatch = current.etag;
-    else if (!current.exists && typeof store.getWithMetadata === "function") options.onlyIfNew = true;
+    let current;
     try {
-      const writeResult = await store.set(key, JSON.stringify(next), options);
-      if (writeResult && writeResult.modified === false) { lastError = new Error("owner_lead_delivery_write_conflict"); continue; }
+      current = await readOwnerLeadDeliveryRecord(store, submissionId, { forWrite: true });
+    } catch (error) {
+      lastError = error;
+      continue;
+    }
+
+    const next = mergeDeliveryState(current.state, result);
+    if (current.exists && deliveryFlagsEqual(next, current.state)) {
+      return { state: current.state, persisted: true, unchanged: true };
+    }
+
+    const prepared = buildWriteOptions(store, current);
+    if (!prepared.safe) {
+      lastError = new Error(prepared.reason || "owner_lead_delivery_write_unsafe");
+      continue;
+    }
+
+    try {
+      const writeResult = await store.set(key, JSON.stringify(next), prepared.options);
+      if (writeResult && writeResult.modified === false) {
+        lastError = new Error("owner_lead_delivery_write_conflict");
+        continue;
+      }
       return { state: next, persisted: true, unchanged: false };
-    } catch (error) { lastError = error; }
+    } catch (error) {
+      lastError = error;
+    }
   }
+
   throw lastError || new Error("owner_lead_delivery_write_failed");
 }
 
-async function claimOwnerLeadDelivery(store, submissionId) {
+function isOwnerLeadClaimLeaseExpired(state, nowMs = Date.now()) {
+  const updatedAtMs = Date.parse(state && state.updatedAt ? state.updatedAt : "");
+  if (!Number.isFinite(updatedAtMs)) return true;
+  return nowMs - updatedAtMs > OWNER_LEAD_CLAIM_LEASE_MS;
+}
+
+async function claimOwnerLeadDelivery(store, submissionId, durableProgress = {}) {
   if (!store || typeof store.set !== "function") return { claimed: false, reason: "delivery_store_unavailable" };
   const key = buildOwnerLeadDeliveryKey(submissionId);
+  const progressOwnerSent = durableProgress && durableProgress.ownerSent === true;
+  const progressInternalSent = durableProgress && durableProgress.internalSent === true;
+
   for (let attempt = 0; attempt < MAX_DELIVERY_WRITE_ATTEMPTS; attempt += 1) {
-    const current = await readOwnerLeadDeliveryRecord(store, submissionId);
-    const state = current.state;
-    if (state.ownerSent && state.internalSent) return { claimed: false, reason: "already_sent", state };
-    if (state.deliveryStatus === "sending") return { claimed: false, reason: "in_flight", state };
-    if (state.deliveryStatus === "unknown") return { claimed: false, reason: "delivery_unknown", state };
-    const next = { ...state, deliveryStatus: "sending", updatedAt: new Date().toISOString() };
-    const options = { contentType: "application/json; charset=utf-8" };
-    if (current.etag) options.onlyIfMatch = current.etag;
-    else if (!current.exists && typeof store.getWithMetadata === "function") options.onlyIfNew = true;
+    let current;
     try {
-      const result = await store.set(key, JSON.stringify(next), options);
+      current = await readOwnerLeadDeliveryRecord(store, submissionId, { forWrite: true });
+    } catch (_error) {
+      if (attempt + 1 >= MAX_DELIVERY_WRITE_ATTEMPTS) return { claimed: false, reason: "delivery_claim_failed" };
+      continue;
+    }
+
+    const state = current.state;
+    const ownerSent = state.ownerSent || progressOwnerSent;
+    const internalSent = state.internalSent || progressInternalSent;
+    const bothSent = ownerSent && internalSent;
+    const startingPartial = ownerSent || internalSent;
+    if (state.ownerSent && state.internalSent) return { claimed: false, reason: "already_sent", state };
+
+    if (state.deliveryStatus === "sending") {
+      if (!isOwnerLeadClaimLeaseExpired(state)) {
+        return { claimed: false, reason: "in_flight", state };
+      }
+
+      // Stale claim with no durable progress anywhere (blob OR contact stamp):
+      // Graph may already have accepted. Prefer at-most-once — freeze unknown.
+      if (!ownerSent && !internalSent) {
+        const frozen = {
+          ...state,
+          remainingAttempt: false,
+          deliveryStatus: "unknown",
+          updatedAt: new Date().toISOString()
+        };
+        const prepared = buildWriteOptions(store, current);
+        if (!prepared.safe) {
+          if (attempt + 1 >= MAX_DELIVERY_WRITE_ATTEMPTS) {
+            return { claimed: false, reason: "delivery_unknown", state };
+          }
+          continue;
+        }
+        try {
+          const result = await store.set(key, JSON.stringify(frozen), prepared.options);
+          if (result && result.modified === false) continue;
+          return { claimed: false, reason: "delivery_unknown", state: frozen };
+        } catch (_error) {
+          if (attempt + 1 >= MAX_DELIVERY_WRITE_ATTEMPTS) {
+            return { claimed: false, reason: "delivery_unknown", state };
+          }
+          continue;
+        }
+      }
+
+      // Prior claim was already finishing a known-partial remaining leg and the
+      // lease expired without a durable record for that leg. Graph may have
+      // accepted — freeze unknown instead of reclaiming a resend.
+      if (state.remainingAttempt === true && startingPartial && !bothSent) {
+        const frozen = {
+          ...state,
+          ownerSent,
+          internalSent,
+          ownerStatus: ownerSent ? "sent" : state.ownerStatus,
+          internalStatus: internalSent ? "sent" : state.internalStatus,
+          remainingAttempt: false,
+          deliveryStatus: "unknown",
+          updatedAt: new Date().toISOString()
+        };
+        const prepared = buildWriteOptions(store, current);
+        if (!prepared.safe) {
+          if (attempt + 1 >= MAX_DELIVERY_WRITE_ATTEMPTS) {
+            return { claimed: false, reason: "delivery_unknown", state };
+          }
+          continue;
+        }
+        try {
+          const result = await store.set(key, JSON.stringify(frozen), prepared.options);
+          if (result && result.modified === false) continue;
+          return { claimed: false, reason: "delivery_unknown", state: frozen };
+        } catch (_error) {
+          if (attempt + 1 >= MAX_DELIVERY_WRITE_ATTEMPTS) {
+            return { claimed: false, reason: "delivery_unknown", state };
+          }
+          continue;
+        }
+      }
+
+      // First reclaim of remaining leg(s): fold durable flags and mark this as a
+      // remainingAttempt so a later stale lease cannot replay Graph.
+      const next = {
+        ...state,
+        ownerSent,
+        internalSent,
+        ownerStatus: ownerSent ? "sent" : "sending",
+        internalStatus: internalSent ? "sent" : "sending",
+        remainingAttempt: startingPartial && !bothSent,
+        deliveryStatus: "sending",
+        updatedAt: new Date().toISOString()
+      };
+      const prepared = buildWriteOptions(store, current);
+      if (!prepared.safe) {
+        if (attempt + 1 >= MAX_DELIVERY_WRITE_ATTEMPTS) return { claimed: false, reason: "delivery_claim_failed" };
+        continue;
+      }
+      try {
+        const result = await store.set(key, JSON.stringify(next), prepared.options);
+        if (result && result.modified === false) continue;
+        return { claimed: true, state: next };
+      } catch (_error) {
+        if (attempt + 1 >= MAX_DELIVERY_WRITE_ATTEMPTS) return { claimed: false, reason: "delivery_claim_failed" };
+        continue;
+      }
+    }
+
+    if (state.deliveryStatus === "unknown") return { claimed: false, reason: "delivery_unknown", state };
+
+    const next = {
+      ...state,
+      ownerSent,
+      internalSent,
+      ownerStatus: ownerSent ? "sent" : "sending",
+      internalStatus: internalSent ? "sent" : "sending",
+      remainingAttempt: startingPartial && !bothSent,
+      deliveryStatus: "sending",
+      updatedAt: new Date().toISOString()
+    };
+    const prepared = buildWriteOptions(store, current);
+    if (!prepared.safe) {
+      if (attempt + 1 >= MAX_DELIVERY_WRITE_ATTEMPTS) return { claimed: false, reason: "delivery_claim_failed" };
+      continue;
+    }
+
+    try {
+      const result = await store.set(key, JSON.stringify(next), prepared.options);
       if (result && result.modified === false) continue;
       return { claimed: true, state: next };
     } catch (_error) {
@@ -146,6 +378,7 @@ function isRetryableConfirmationFailure(result) {
 
 module.exports = {
   OWNER_LEAD_DELIVERY_KEY_PREFIX,
+  OWNER_LEAD_CLAIM_LEASE_MS,
   buildOwnerLeadDeliveryKey,
   emptyDeliveryState,
   normalizeDeliveryState,
@@ -154,5 +387,7 @@ module.exports = {
   writeOwnerLeadDeliveryState,
   mergeDeliveryState,
   claimOwnerLeadDelivery,
-  isRetryableConfirmationFailure
-}
+  isOwnerLeadClaimLeaseExpired,
+  isRetryableConfirmationFailure,
+  deliveryFlagsEqual
+};

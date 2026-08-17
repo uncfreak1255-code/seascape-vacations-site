@@ -11,7 +11,9 @@ const {
   buildOwnerLeadContact,
   mergeOwnerLeadContacts,
   mutateOwnerLeadContacts,
-  resolveContactStore
+  readOwnerLeadConfirmationStamp,
+  resolveContactStore,
+  stampOwnerLeadConfirmationOnContact
 } = require("./_owner-lead-contacts");
 const { notifyOwnerLead } = require("./_owner-lead-notify");
 const {
@@ -245,13 +247,277 @@ function buildJsonResponse(statusCode, body) {
   };
 }
 
+async function resolveKnownDeliveryProgress(contactStore, submissionId, delivery) {
+  const blobSent = Boolean(delivery && delivery.ownerSent && delivery.internalSent);
+  if (blobSent) {
+    return { ownerSent: true, internalSent: true, source: "delivery_blob" };
+  }
+
+  let stamp = { ownerSent: false, internalSent: false };
+  try {
+    stamp = await readOwnerLeadConfirmationStamp(contactStore, submissionId);
+  } catch (error) {
+    console.error("owner_lead_confirmation_stamp_read_failed", {
+      submissionId,
+      message: error && error.message ? error.message : String(error)
+    });
+    return {
+      ownerSent: Boolean(delivery && delivery.ownerSent),
+      internalSent: Boolean(delivery && delivery.internalSent),
+      source: "stamp_read_failed",
+      stampReadFailed: true
+    };
+  }
+
+  return {
+    ownerSent: Boolean(delivery && delivery.ownerSent) || stamp.ownerSent === true,
+    internalSent: Boolean(delivery && delivery.internalSent) || stamp.internalSent === true,
+    source: stamp.ownerSent || stamp.internalSent ? "contact_stamp" : "delivery_blob"
+  };
+}
+
+async function persistAcceptedConfirmationDelivery(contactStore, contact, confirmationResult) {
+  const mailAccepted = Boolean(
+    confirmationResult &&
+    (confirmationResult.ownerSent === true || confirmationResult.internalSent === true)
+  );
+
+  let stampPersisted = false;
+  if (mailAccepted) {
+    try {
+      await stampOwnerLeadConfirmationOnContact(
+        contactStore,
+        contact.submissionId,
+        confirmationResult
+      );
+      stampPersisted = true;
+    } catch (error) {
+      console.error("owner_lead_confirmation_stamp_write_failed", {
+        submissionId: contact.submissionId,
+        message: error && error.message ? error.message : String(error)
+      });
+    }
+  }
+
+  try {
+    const persisted = await persistOwnerLeadConfirmationDelivery(
+      contactStore,
+      contact,
+      confirmationResult
+    );
+    return { ...persisted, stampPersisted, mailAccepted };
+  } catch (error) {
+    error.stampPersisted = stampPersisted;
+    error.mailAccepted = mailAccepted;
+    throw error;
+  }
+}
+
+async function finalizeDeliveryStateFromKnownProgress(contactStore, contact, progress) {
+  if (!progress || (!progress.ownerSent && !progress.internalSent)) {
+    return { finalized: false, reason: "nothing_to_finalize" };
+  }
+
+  const bothSent = progress.ownerSent === true && progress.internalSent === true;
+  // Only close the claim when both legs are known sent. Partial progress is
+  // recovered by releasing the claim (pending) from the sender that exits after
+  // Graph accept, or by lease expiry — never by an overlapping in_flight watcher.
+  if (!bothSent) {
+    return { finalized: false, reason: "partial_progress" };
+  }
+
+  await writeOwnerLeadDeliveryState(contactStore, contact.submissionId, {
+    ownerSent: true,
+    internalSent: true,
+    sent: true,
+    deliveryStatus: "sent",
+    reason: "sent"
+  });
+
+  return {
+    finalized: true,
+    ownerSent: true,
+    internalSent: true
+  };
+}
+
+async function releaseOwnerLeadDeliveryClaimAfterSend(contactStore, contact, confirmationResult) {
+  if (!contact || !confirmationResult) return { released: false };
+  const ownerSent = confirmationResult.ownerSent === true;
+  const internalSent = confirmationResult.internalSent === true;
+  if (!ownerSent && !internalSent) return { released: false };
+
+  const ambiguous = confirmationResult.ambiguous === true;
+  const bothSent = ownerSent && internalSent;
+  // Ambiguous Graph transport: never reopen the remaining leg as pending.
+  // Durable partial failures reset remaining legs to pending so a later claim
+  // can finish a clearly failed send.
+  await writeOwnerLeadDeliveryState(contactStore, contact.submissionId, {
+    ownerSent,
+    internalSent,
+    ownerStatus: ownerSent ? "sent" : (ambiguous ? "unknown" : "pending"),
+    internalStatus: internalSent ? "sent" : (ambiguous ? "unknown" : "pending"),
+    sent: bothSent,
+    ambiguous,
+    deliveryStatus: ambiguous ? "unknown" : (bothSent ? "sent" : "pending"),
+    reason: ambiguous ? "delivery_unknown" : (bothSent ? "sent" : "owner_sent_internal_failed")
+  });
+  return { released: true, ownerSent, internalSent, bothSent, ambiguous };
+}
+
+async function maybeRepairOwnerLeadConfirmationAfterCaptureFailure({
+  event,
+  capture,
+  injectedContactStore
+}) {
+  if (!capture || !capture.captureFailed || !capture.contact) {
+    return null;
+  }
+  if (!isUsableOwnerEmail(capture.contact.email)) {
+    return null;
+  }
+
+  let contactStore;
+  try {
+    contactStore = resolveContactStore(event, injectedContactStore);
+  } catch (error) {
+    console.error("owner_lead_repair_store_unavailable", {
+      submissionId: capture.contact.submissionId,
+      message: error && error.message ? error.message : String(error)
+    });
+    return {
+      attempted: true,
+      result: { sent: false, reason: "delivery_state_unavailable" },
+      retryable: true,
+      delivery: null
+    };
+  }
+
+  let delivery;
+  try {
+    delivery = await readOwnerLeadDeliveryState(contactStore, capture.contact.submissionId);
+  } catch (error) {
+    // Cannot prove whether repair is needed. Keep Netlify retrying.
+    console.error("owner_lead_delivery_read_failed", { submissionId: capture.contact.submissionId });
+    return {
+      attempted: true,
+      result: { sent: false, reason: "delivery_state_unavailable" },
+      retryable: true,
+      delivery: null
+    };
+  }
+
+  const needsRepair = Boolean(
+    delivery.deliveryStatus === "sending" ||
+    delivery.deliveryStatus === "unknown" ||
+    delivery.ownerSent ||
+    delivery.internalSent
+  );
+  if (!needsRepair) {
+    return null;
+  }
+
+  const known = await resolveKnownDeliveryProgress(
+    contactStore,
+    capture.contact.submissionId,
+    delivery
+  );
+  if (known.stampReadFailed) {
+    return {
+      attempted: true,
+      result: {
+        sent: false,
+        ownerSent: known.ownerSent,
+        internalSent: known.internalSent,
+        reason: "confirmation_stamp_unavailable"
+      },
+      retryable: true,
+      delivery
+    };
+  }
+
+  if (known.ownerSent && known.internalSent) {
+    try {
+      await finalizeDeliveryStateFromKnownProgress(contactStore, capture.contact, known);
+      return {
+        attempted: true,
+        result: {
+          sent: true,
+          ownerSent: true,
+          internalSent: true,
+          reason: "sent"
+        },
+        retryable: false,
+        delivery
+      };
+    } catch (error) {
+      console.error("owner_lead_confirmation_state_write_failed", {
+        submissionId: capture.contact.submissionId,
+        persistFailedAfterSend: true,
+        message: error && error.message ? error.message : String(error)
+      });
+      return {
+        attempted: true,
+        result: {
+          sent: false,
+          ownerSent: true,
+          internalSent: true,
+          reason: "delivery_state_write_failed"
+        },
+        retryable: true,
+        delivery
+      };
+    }
+  }
+
+  if (known.ownerSent || known.internalSent) {
+    // Partial progress: do not clear a live claim from this path. Keep retrying
+    // until the sender releases the claim or the lease expires.
+    return {
+      attempted: true,
+      result: {
+        sent: false,
+        ownerSent: known.ownerSent,
+        internalSent: known.internalSent,
+        reason: "owner_sent_internal_failed"
+      },
+      retryable: true,
+      delivery
+    };
+  }
+
+  // Claim is in-flight / unknown with no durable stamp yet — keep retrying,
+  // never send from the capture-failed path.
+  return {
+    attempted: true,
+    result: {
+      sent: false,
+      ownerSent: known.ownerSent,
+      internalSent: known.internalSent,
+      reason: delivery.deliveryStatus === "unknown" ? "delivery_unknown" : "in_flight"
+    },
+    retryable: true,
+    delivery
+  };
+}
+
 async function maybeSendOwnerLeadConfirmation({
   event,
   capture,
   injectedContactStore,
   sendConfirmation
 }) {
-  if (!capture.contact || capture.captureFailed || !isUsableOwnerEmail(capture.contact.email)) {
+  if (!capture.contact || !isUsableOwnerEmail(capture.contact.email)) {
+    return { attempted: false, result: null, retryable: false };
+  }
+
+  if (capture.captureFailed) {
+    const repair = await maybeRepairOwnerLeadConfirmationAfterCaptureFailure({
+      event,
+      capture,
+      injectedContactStore
+    });
+    if (repair) return repair;
     return { attempted: false, result: null, retryable: false };
   }
 
@@ -264,41 +530,199 @@ async function maybeSendOwnerLeadConfirmation({
     return { attempted: false, result: { sent: false, reason: "delivery_state_unavailable" }, retryable: true };
   }
 
-  if (delivery.ownerSent && delivery.internalSent) return { attempted: false, result: null, retryable: false, delivery };
+  const known = await resolveKnownDeliveryProgress(
+    contactStore,
+    capture.contact.submissionId,
+    delivery
+  );
+
+  // Cannot prove prior Graph acceptance from the contact stamp. Suppress send and
+  // return 503 so Netlify keeps retrying state repair instead of soft-acking.
+  if (known.stampReadFailed) {
+    return {
+      attempted: true,
+      result: {
+        sent: false,
+        ownerSent: known.ownerSent,
+        internalSent: known.internalSent,
+        reason: "confirmation_stamp_unavailable"
+      },
+      retryable: true,
+      delivery
+    };
+  }
+
+  // Graph already accepted once (delivery blob and/or contact stamp). Never send
+  // again — only repair the per-submission delivery blob if it lagged the stamp.
+  if (known.ownerSent && known.internalSent) {
+    if (!(delivery.ownerSent && delivery.internalSent)) {
+      try {
+        await finalizeDeliveryStateFromKnownProgress(contactStore, capture.contact, known);
+      } catch (error) {
+        console.error("owner_lead_confirmation_state_write_failed", {
+          submissionId: capture.contact.submissionId,
+          persistFailedAfterSend: true,
+          message: error && error.message ? error.message : String(error)
+        });
+        return {
+          attempted: true,
+          result: {
+            sent: false,
+            ownerSent: true,
+            internalSent: true,
+            reason: "delivery_state_write_failed"
+          },
+          retryable: true,
+          delivery
+        };
+      }
+    }
+    return { attempted: false, result: null, retryable: false, delivery };
+  }
 
   const rate = await assertOwnerLeadMailAllowed(contactStore, capture.contact.email, process.env, { submissionId: capture.contact.submissionId });
   if (!rate.allowed) {
     console.error("owner_lead_confirmation_rate_limited", { reason: rate.reason, scope: rate.scope, submissionId: capture.contact.submissionId });
     return {
       attempted: true,
-      result: { sent: false, ownerSent: delivery.ownerSent, internalSent: delivery.internalSent, reason: rate.reason },
+      result: { sent: false, ownerSent: known.ownerSent, internalSent: known.internalSent, reason: rate.reason },
       retryable: rate.reason !== "rate_limited",
       delivery
     };
   }
 
-  const claim = await claimOwnerLeadDelivery(contactStore, capture.contact.submissionId);
+  const claim = await claimOwnerLeadDelivery(contactStore, capture.contact.submissionId, {
+    ownerSent: known.ownerSent,
+    internalSent: known.internalSent
+  });
   if (!claim.claimed) {
+    // in_flight after a prior Graph accept: finalize only when both legs are
+    // already proven sent. Partial progress must not clear a live claim.
+    if (claim.reason === "in_flight") {
+      const progress = await resolveKnownDeliveryProgress(
+        contactStore,
+        capture.contact.submissionId,
+        claim.state || delivery
+      );
+      if (progress.stampReadFailed) {
+        return {
+          attempted: true,
+          result: {
+            sent: false,
+            ownerSent: progress.ownerSent,
+            internalSent: progress.internalSent,
+            reason: "confirmation_stamp_unavailable"
+          },
+          retryable: true,
+          delivery: claim.state || delivery
+        };
+      }
+      if (progress.ownerSent && progress.internalSent) {
+        try {
+          await finalizeDeliveryStateFromKnownProgress(contactStore, capture.contact, progress);
+          return {
+            attempted: true,
+            result: {
+              sent: true,
+              ownerSent: true,
+              internalSent: true,
+              reason: "sent"
+            },
+            retryable: false,
+            delivery: claim.state || delivery
+          };
+        } catch (error) {
+          console.error("owner_lead_confirmation_state_write_failed", {
+            submissionId: capture.contact.submissionId,
+            persistFailedAfterSend: true,
+            message: error && error.message ? error.message : String(error)
+          });
+          return {
+            attempted: true,
+            result: {
+              sent: false,
+              ownerSent: true,
+              internalSent: true,
+              reason: "delivery_state_write_failed"
+            },
+            retryable: true,
+            delivery: claim.state || delivery
+          };
+        }
+      }
+
+      return {
+        attempted: true,
+        result: {
+          sent: false,
+          ownerSent: progress.ownerSent,
+          internalSent: progress.internalSent,
+          reason: "in_flight"
+        },
+        retryable: true,
+        delivery: claim.state || delivery
+      };
+    }
+
     const claimRetryable = claim.reason === "delivery_store_unavailable" || claim.reason === "delivery_claim_failed";
     return {
       attempted: false,
-      result: { sent: false, ownerSent: delivery.ownerSent, internalSent: delivery.internalSent, reason: claim.reason },
+      result: { sent: false, ownerSent: known.ownerSent, internalSent: known.internalSent, reason: claim.reason },
       retryable: claimRetryable,
       delivery: claim.state || delivery
     };
   }
 
-  const confirmationResult = await safeConfirm(sendConfirmation, capture.contact, delivery);
+  const confirmationResult = await safeConfirm(sendConfirmation, capture.contact, {
+    ownerSent: known.ownerSent || Boolean(claim.state && claim.state.ownerSent),
+    internalSent: known.internalSent || Boolean(claim.state && claim.state.internalSent)
+  });
+
   try {
-    await persistOwnerLeadConfirmationDelivery(contactStore, capture.contact, confirmationResult);
+    await persistAcceptedConfirmationDelivery(contactStore, capture.contact, confirmationResult);
   } catch (error) {
-    console.error("owner_lead_confirmation_state_write_failed", { submissionId: capture.contact.submissionId, persistFailedAfterSend: Boolean(confirmationResult && (confirmationResult.ownerSent || confirmationResult.internalSent)) });
-    return {
-      attempted: true,
-      result: { ...confirmationResult, sent: false, reason: "delivery_state_unknown", ambiguous: true },
-      retryable: false,
-      delivery: claim.state
-    };
+    const mailAccepted = Boolean(
+      error && error.mailAccepted !== undefined
+        ? error.mailAccepted
+        : confirmationResult && (confirmationResult.ownerSent || confirmationResult.internalSent)
+    );
+    const stampPersisted = Boolean(error && error.stampPersisted);
+    console.error("owner_lead_confirmation_state_write_failed", {
+      submissionId: capture.contact.submissionId,
+      persistFailedAfterSend: mailAccepted,
+      stampPersisted,
+      message: error && error.message ? error.message : String(error)
+    });
+
+    // Graph already accepted: release the sending claim into durable leg flags
+    // when possible, then return 503 so Netlify retries without double-sending.
+    // Ambiguous transport must stay at-most-once even if the delivery blob lag
+    // still needs a human/ops follow-up — do not reopen Graph via 503.
+    if (mailAccepted) {
+      try {
+        await releaseOwnerLeadDeliveryClaimAfterSend(
+          contactStore,
+          capture.contact,
+          confirmationResult
+        );
+      } catch (releaseError) {
+        console.error("owner_lead_confirmation_claim_release_failed", {
+          submissionId: capture.contact.submissionId,
+          message: releaseError && releaseError.message ? releaseError.message : String(releaseError)
+        });
+      }
+      const ambiguous = confirmationResult && confirmationResult.ambiguous === true;
+      return {
+        attempted: true,
+        result: {
+          ...confirmationResult,
+          sent: false,
+          reason: ambiguous ? "delivery_unknown" : "delivery_state_write_failed"
+        },
+        retryable: ambiguous ? false : true,
+        delivery: claim.state
+      };
+    }
   }
 
   return { attempted: true, result: confirmationResult, retryable: isRetryableConfirmationFailure(confirmationResult), delivery: claim.state };

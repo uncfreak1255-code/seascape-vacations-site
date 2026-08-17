@@ -6,8 +6,8 @@
     "reviewerRole": "Founder, Seascape Vacations",
     "reviewedDate": "2026-05-03",
     "reviewedDateLabel": "May 3, 2026",
-    "updatedDate": "2026-07-17",
-    "updatedDateLabel": "July 17, 2026",
+    "updatedDate": "2026-08-17",
+    "updatedDateLabel": "August 17, 2026",
     "sourceLabel": "Airbnb host fees and Stripe pricing",
     "sourceUrl": "https://www.airbnb.com/help/article/1857",
     "sources": [
@@ -23,10 +23,10 @@
     "benchmarkUrl": "/research/owner-fee-revenue-leak-benchmark-2026/",
     "ctaPath": "/property-management/?owner_source=owner-fee-revenue-leak-benchmark-2026#owner-cta",
     "status": "Published-pricing guide; performance proof retired",
-    "dataPeriod": "Published pricing checked July 17, 2026",
+    "dataPeriod": "Published pricing checked August 17, 2026",
     "pricingStatus": "active",
-    "pricingReviewedDate": "2026-07-17",
-    "pricingStaleAfter": "2026-08-16",
+    "pricingReviewedDate": "2026-08-17",
+    "pricingStaleAfter": "2026-09-16",
     "scopeLabel": "Published fee comparison",
     "basis": "Airbnb and Stripe published pricing",
     "sourceNote": "Platform commission, card processing, and full-service management cover different services and are not all-in equivalents.",
@@ -40,12 +40,12 @@
       "Do not compare platform commission with card processing as all-in equivalents.",
       "Do not expose owner names, internal file paths, or private booking records."
     ],
-    "refreshedLabel": "Sources checked: July 2026",
+    "refreshedLabel": "Sources checked: August 2026",
     "proofLabels": [
       "Published platform pricing",
       "Property-specific management pricing",
       "Definitions, not a payout forecast",
-      "Sources checked: July 2026"
+      "Sources checked: August 2026"
     ],
     "methodology": "This guide uses Airbnb's and Stripe's published pricing pages. Seascape management pricing is property-specific and controlled by the signed management agreement.",
     "examples": [],

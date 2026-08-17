@@ -159,6 +159,22 @@ async function readOwnerLeadContacts(store) {
   }
 }
 
+async function readOwnerLeadContactsOrThrow(store) {
+  if (!store || typeof store.get !== "function") {
+    throw new Error("owner_lead_contact_store_unavailable");
+  }
+
+  try {
+    return parseStoredContacts(await store.get(OWNER_LEAD_CONTACTS_KEY, { type: "json" }));
+  } catch (jsonError) {
+    try {
+      return parseStoredContacts(await store.get(OWNER_LEAD_CONTACTS_KEY, { type: "text" }));
+    } catch (textError) {
+      throw textError || jsonError || new Error("owner_lead_contacts_read_failed");
+    }
+  }
+}
+
 async function writeOwnerLeadContacts(store, contacts) {
   await store.set(
     OWNER_LEAD_CONTACTS_KEY,
@@ -167,7 +183,7 @@ async function writeOwnerLeadContacts(store, contacts) {
   );
 }
 
-async function readOwnerLeadContactsWithEtag(store) {
+async function readOwnerLeadContactsWithEtag(store, { forWrite = false } = {}) {
   if (store && typeof store.getWithMetadata === "function") {
     try {
       const result = await store.getWithMetadata(OWNER_LEAD_CONTACTS_KEY, { type: "json" });
@@ -179,8 +195,10 @@ async function readOwnerLeadContactsWithEtag(store) {
         etag: result.etag,
         exists: true
       };
-    } catch (_error) {
-      // Fall through for stores that only implement get/set.
+    } catch (error) {
+      // Reads may fall through. Writes must not — an etag-less whole-blob set can
+      // erase a concurrent confirmation stamp and reopen a Graph send.
+      if (forWrite) throw error;
     }
   }
 
@@ -192,6 +210,25 @@ async function readOwnerLeadContactsWithEtag(store) {
   };
 }
 
+function buildContactWriteOptions(store, current) {
+  const options = { contentType: "application/json; charset=utf-8" };
+  const hasMetadata = store && typeof store.getWithMetadata === "function";
+
+  if (hasMetadata) {
+    if (current.etag) {
+      options.onlyIfMatch = current.etag;
+      return { options, safe: true };
+    }
+    if (!current.exists) {
+      options.onlyIfNew = true;
+      return { options, safe: true };
+    }
+    return { options, safe: false, reason: "owner_lead_contacts_missing_etag" };
+  }
+
+  return { options, safe: true };
+}
+
 // Conditional read/modify/write so overlapping captures cannot overwrite each other
 // with a stale whole-blob snapshot.
 async function mutateOwnerLeadContacts(store, mutator, { attempts = 5 } = {}) {
@@ -201,20 +238,26 @@ async function mutateOwnerLeadContacts(store, mutator, { attempts = 5 } = {}) {
 
   let lastError = null;
   for (let attempt = 0; attempt < attempts; attempt += 1) {
-    const current = await readOwnerLeadContactsWithEtag(store);
+    let current;
+    try {
+      current = await readOwnerLeadContactsWithEtag(store, { forWrite: true });
+    } catch (error) {
+      lastError = error;
+      continue;
+    }
+
     const next = mutator(current.contacts);
-    const options = { contentType: "application/json; charset=utf-8" };
-    if (current.etag) {
-      options.onlyIfMatch = current.etag;
-    } else if (!current.exists && typeof store.getWithMetadata === "function") {
-      options.onlyIfNew = true;
+    const prepared = buildContactWriteOptions(store, current);
+    if (!prepared.safe) {
+      lastError = new Error(prepared.reason || "owner_lead_contacts_write_unsafe");
+      continue;
     }
 
     try {
       const writeResult = await store.set(
         OWNER_LEAD_CONTACTS_KEY,
         JSON.stringify(next),
-        options
+        prepared.options
       );
       if (writeResult && writeResult.modified === false) {
         lastError = new Error("owner_lead_contacts_write_conflict");
@@ -243,6 +286,81 @@ function resolveContactStore(event, injectedStore) {
   return getStore(OWNER_LEAD_CONTACT_STORE_NAME);
 }
 
+function readConfirmationStampFromContact(contact) {
+  if (!contact || typeof contact !== "object") {
+    return { ownerSent: false, internalSent: false };
+  }
+  return {
+    ownerSent: contact.confirmationOwnerSent === true,
+    internalSent: contact.confirmationInternalSent === true
+  };
+}
+
+async function readOwnerLeadConfirmationStamp(store, submissionId) {
+  const id = normalizeText(submissionId);
+  if (!id) return { ownerSent: false, internalSent: false };
+  const contacts = await readOwnerLeadContactsOrThrow(store);
+  const match = contacts && Array.isArray(contacts.contacts)
+    ? contacts.contacts.find((entry) => entry && entry.submissionId === id)
+    : null;
+  return readConfirmationStampFromContact(match);
+}
+
+// Durable backup for Graph acceptance. Lives on the contact record that already
+// persisted in this request, so a later delivery-blob write failure can still
+// prove "mail already sent" on webhook retry without calling Graph again.
+async function stampOwnerLeadConfirmationOnContact(store, submissionId, result) {
+  const id = normalizeText(submissionId);
+  if (!id || !result) {
+    throw new Error("owner_lead_confirmation_stamp_invalid");
+  }
+
+  const ownerSent = result.ownerSent === true;
+  const internalSent = result.internalSent === true;
+  if (!ownerSent && !internalSent) {
+    return { stamped: false, reason: "nothing_to_stamp" };
+  }
+
+  let stamped = false;
+  await mutateOwnerLeadContacts(store, (existingContacts) => {
+    const base = {
+      ...emptyContacts(),
+      ...(existingContacts || {}),
+      contacts: Array.isArray(existingContacts && existingContacts.contacts)
+        ? existingContacts.contacts.map((entry) => ({ ...entry }))
+        : []
+    };
+    const index = base.contacts.findIndex((entry) => entry && entry.submissionId === id);
+    if (index < 0) {
+      return base;
+    }
+
+    const current = base.contacts[index];
+    const nextOwnerSent = current.confirmationOwnerSent === true || ownerSent;
+    const nextInternalSent = current.confirmationInternalSent === true || internalSent;
+    base.contacts[index] = {
+      ...current,
+      confirmationOwnerSent: nextOwnerSent,
+      confirmationInternalSent: nextInternalSent,
+      confirmationUpdatedAt: new Date().toISOString()
+    };
+    base.totalContacts = base.contacts.length;
+    base.updatedAt = new Date().toISOString();
+    stamped = true;
+    return base;
+  });
+
+  if (!stamped) {
+    throw new Error("owner_lead_confirmation_stamp_missing_contact");
+  }
+
+  return {
+    stamped: true,
+    ownerSent: ownerSent,
+    internalSent: internalSent
+  };
+}
+
 module.exports = {
   OWNER_LEAD_CONTACT_STORE_NAME,
   OWNER_LEAD_CONTACTS_KEY,
@@ -251,8 +369,12 @@ module.exports = {
   getOwnerLeadContactBlobsConfig,
   parseStoredContacts,
   readOwnerLeadContacts,
+  readOwnerLeadContactsOrThrow,
   readOwnerLeadContactsWithEtag,
   writeOwnerLeadContacts,
   mutateOwnerLeadContacts,
-  resolveContactStore
+  resolveContactStore,
+  readConfirmationStampFromContact,
+  readOwnerLeadConfirmationStamp,
+  stampOwnerLeadConfirmationOnContact
 };

@@ -5,7 +5,13 @@ const {
   buildRateBucketKey,
   hourBucket
 } = require("../../netlify/functions/_owner-lead-abuse");
-const { claimOwnerLeadDelivery, isRetryableConfirmationFailure } = require("../../netlify/functions/_owner-lead-delivery");
+const {
+  claimOwnerLeadDelivery,
+  isRetryableConfirmationFailure,
+  readOwnerLeadDeliveryState,
+  writeOwnerLeadDeliveryState,
+  buildOwnerLeadDeliveryKey
+} = require("../../netlify/functions/_owner-lead-delivery");
 const { sendMailViaGraph } = require("../../netlify/functions/_owner-lead-mail");
 const { sendOwnerLeadConfirmationEmails } = require("../../netlify/functions/_owner-lead-confirmation");
 
@@ -31,7 +37,8 @@ function createConditionalStore() {
       versions.set(key, (version || 0) + 1);
       return { modified: true };
     },
-    values
+    values,
+    versions
   };
 }
 
@@ -43,6 +50,222 @@ test("concurrent delivery claims permit only one sender", async () => {
   ]);
   assert.equal([first.claimed, second.claimed].filter(Boolean).length, 1);
   assert.ok([first.reason, second.reason].includes("in_flight"));
+});
+
+test("etag-less delivery writes refuse to clobber an in-flight claim", async () => {
+  const store = createConditionalStore();
+  const claim = await claimOwnerLeadDelivery(store, "etag-race");
+  assert.equal(claim.claimed, true);
+
+  const originalGetWithMetadata = store.getWithMetadata.bind(store);
+  store.getWithMetadata = async () => {
+    throw new Error("metadata unavailable");
+  };
+
+  await assert.rejects(
+    () => writeOwnerLeadDeliveryState(store, "etag-race", {
+      ownerSent: false,
+      internalSent: false,
+      deliveryStatus: "pending"
+    }),
+    /metadata unavailable|owner_lead_delivery/
+  );
+
+  store.getWithMetadata = originalGetWithMetadata;
+  const key = buildOwnerLeadDeliveryKey("etag-race");
+  const stillSending = await store.get(key, { type: "json" });
+  assert.equal(stillSending.deliveryStatus, "sending");
+
+  const secondClaim = await claimOwnerLeadDelivery(store, "etag-race");
+  assert.equal(secondClaim.claimed, false);
+  assert.equal(secondClaim.reason, "in_flight");
+});
+
+test("partial delivery finalize preserves sending so overlapping retries cannot reclaim", async () => {
+  const { mergeDeliveryState, OWNER_LEAD_CLAIM_LEASE_MS } = require("../../netlify/functions/_owner-lead-delivery");
+  const store = createConditionalStore();
+  const claim = await claimOwnerLeadDelivery(store, "partial-progress");
+  assert.equal(claim.claimed, true);
+
+  const next = mergeDeliveryState(claim.state, {
+    ownerSent: true,
+    internalSent: false,
+    deliveryStatus: "sending"
+  });
+  assert.equal(next.ownerSent, true);
+  assert.equal(next.internalSent, false);
+  assert.equal(next.deliveryStatus, "sending");
+
+  const secondClaim = await claimOwnerLeadDelivery(store, "partial-progress");
+  assert.equal(secondClaim.claimed, false);
+  assert.equal(secondClaim.reason, "in_flight");
+
+  // After the lease expires, a retry may reclaim to finish the remaining leg
+  // when that remaining leg has not yet been marked as a remainingAttempt.
+  const key = buildOwnerLeadDeliveryKey("partial-progress");
+  const stale = {
+    ...claim.state,
+    ownerSent: true,
+    internalSent: false,
+    ownerStatus: "sent",
+    internalStatus: "pending",
+    remainingAttempt: false,
+    updatedAt: new Date(Date.now() - OWNER_LEAD_CLAIM_LEASE_MS - 1000).toISOString()
+  };
+  store.values.set(key, JSON.stringify(stale));
+  store.versions.set(key, (store.versions.get(key) || 1));
+  const reclaim = await claimOwnerLeadDelivery(store, "partial-progress");
+  assert.equal(reclaim.claimed, true);
+  assert.equal(reclaim.state.remainingAttempt, true);
+  assert.equal(reclaim.state.internalStatus, "sending");
+});
+
+test("stale sending claims without durable flags freeze to unknown instead of resending", async () => {
+  const { OWNER_LEAD_CLAIM_LEASE_MS } = require("../../netlify/functions/_owner-lead-delivery");
+  const store = createConditionalStore();
+  const claim = await claimOwnerLeadDelivery(store, "stale-unrecorded");
+  assert.equal(claim.claimed, true);
+
+  const key = buildOwnerLeadDeliveryKey("stale-unrecorded");
+  const stale = {
+    ...claim.state,
+    ownerSent: false,
+    internalSent: false,
+    updatedAt: new Date(Date.now() - OWNER_LEAD_CLAIM_LEASE_MS - 1000).toISOString()
+  };
+  store.values.set(key, JSON.stringify(stale));
+  store.versions.set(key, (store.versions.get(key) || 1));
+
+  const frozen = await claimOwnerLeadDelivery(store, "stale-unrecorded");
+  assert.equal(frozen.claimed, false);
+  assert.equal(frozen.reason, "delivery_unknown");
+  const stored = await store.get(key, { type: "json" });
+  assert.equal(stored.deliveryStatus, "unknown");
+});
+
+test("stale sending claims reclaim when contact-stamp progress proves a partial send", async () => {
+  const { OWNER_LEAD_CLAIM_LEASE_MS } = require("../../netlify/functions/_owner-lead-delivery");
+  const store = createConditionalStore();
+  const claim = await claimOwnerLeadDelivery(store, "stale-stamp-partial");
+  assert.equal(claim.claimed, true);
+
+  // Blob still looks unrecorded (persist + release both failed), but the contact
+  // stamp proved the owner leg already accepted — reclaim the remaining leg.
+  const key = buildOwnerLeadDeliveryKey("stale-stamp-partial");
+  const stale = {
+    ...claim.state,
+    ownerSent: false,
+    internalSent: false,
+    updatedAt: new Date(Date.now() - OWNER_LEAD_CLAIM_LEASE_MS - 1000).toISOString()
+  };
+  store.values.set(key, JSON.stringify(stale));
+  store.versions.set(key, (store.versions.get(key) || 1));
+
+  const reclaim = await claimOwnerLeadDelivery(store, "stale-stamp-partial", {
+    ownerSent: true,
+    internalSent: false
+  });
+  assert.equal(reclaim.claimed, true);
+  assert.equal(reclaim.state.ownerSent, true);
+  assert.equal(reclaim.state.internalSent, false);
+  assert.equal(reclaim.state.deliveryStatus, "sending");
+  assert.equal(reclaim.state.remainingAttempt, true);
+
+  // If that remaining-leg attempt expires without a durable internal record,
+  // freeze unknown — do not reclaim Graph again.
+  const afterAttempt = {
+    ...reclaim.state,
+    updatedAt: new Date(Date.now() - OWNER_LEAD_CLAIM_LEASE_MS - 1000).toISOString()
+  };
+  store.values.set(key, JSON.stringify(afterAttempt));
+  store.versions.set(key, (store.versions.get(key) || 1));
+  const frozen = await claimOwnerLeadDelivery(store, "stale-stamp-partial", {
+    ownerSent: true,
+    internalSent: false
+  });
+  assert.equal(frozen.claimed, false);
+  assert.equal(frozen.reason, "delivery_unknown");
+  const stored = await store.get(key, { type: "json" });
+  assert.equal(stored.deliveryStatus, "unknown");
+  assert.equal(stored.ownerSent, true);
+  assert.equal(stored.internalSent, false);
+});
+
+test("stale remainingAttempt claims freeze even when only blob flags show partial progress", async () => {
+  const { OWNER_LEAD_CLAIM_LEASE_MS } = require("../../netlify/functions/_owner-lead-delivery");
+  const store = createConditionalStore();
+  const key = buildOwnerLeadDeliveryKey("stale-remaining-attempt");
+  await store.set(key, JSON.stringify({
+    ownerSent: true,
+    internalSent: false,
+    ownerStatus: "sent",
+    internalStatus: "sending",
+    remainingAttempt: true,
+    deliveryStatus: "sending",
+    updatedAt: new Date(Date.now() - OWNER_LEAD_CLAIM_LEASE_MS - 1000).toISOString()
+  }));
+
+  const frozen = await claimOwnerLeadDelivery(store, "stale-remaining-attempt");
+  assert.equal(frozen.claimed, false);
+  assert.equal(frozen.reason, "delivery_unknown");
+  const stored = await store.get(key, { type: "json" });
+  assert.equal(stored.deliveryStatus, "unknown");
+});
+
+test("fallback delivery reads cannot be followed by a write over a concurrent claim", async () => {
+  const store = createConditionalStore();
+  const submissionId = "fallback-claim-race";
+  const key = buildOwnerLeadDeliveryKey(submissionId);
+  await store.set(key, JSON.stringify({
+    ownerSent: false,
+    internalSent: false,
+    ownerStatus: "pending",
+    internalStatus: "pending",
+    deliveryStatus: "pending"
+  }));
+
+  const originalGetWithMetadata = store.getWithMetadata.bind(store);
+  const originalGet = store.get.bind(store);
+  let metadataUnavailable = true;
+  let fallbackGets = 0;
+  store.getWithMetadata = async (...args) => {
+    if (metadataUnavailable) throw new Error("metadata unavailable");
+    return originalGetWithMetadata(...args);
+  };
+  store.get = async (...args) => {
+    if (args[0] === key) fallbackGets += 1;
+    return originalGet(...args);
+  };
+
+  const fallbackState = await readOwnerLeadDeliveryState(store, submissionId);
+  assert.equal(fallbackState.deliveryStatus, "pending");
+  assert.equal(fallbackGets, 1, "read-only status lookup must use the plain-get fallback");
+
+  metadataUnavailable = false;
+  const claim = await claimOwnerLeadDelivery(store, submissionId);
+  assert.equal(claim.claimed, true);
+  assert.equal(claim.state.deliveryStatus, "sending");
+
+  // Recreate the metadata failure for the stale writer. It must fail closed;
+  // falling back to get here would permit an unconditional pending write over
+  // the concurrent sending claim.
+  metadataUnavailable = true;
+  await assert.rejects(
+    () => writeOwnerLeadDeliveryState(store, submissionId, {
+      ownerSent: false,
+      internalSent: false,
+      deliveryStatus: "pending"
+    }),
+    /metadata unavailable|owner_lead_delivery/
+  );
+
+  metadataUnavailable = false;
+  assert.equal(fallbackGets, 1, "writable updates must not use the etag-less fallback");
+  const stillSending = await store.get(key, { type: "json" });
+  assert.equal(stillSending.deliveryStatus, "sending");
+  const secondClaim = await claimOwnerLeadDelivery(store, submissionId);
+  assert.equal(secondClaim.claimed, false);
+  assert.equal(secondClaim.reason, "in_flight");
 });
 
 test("conditional rate bucket enforces email and global limits under concurrent submissions", async () => {

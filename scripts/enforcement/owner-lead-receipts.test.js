@@ -478,7 +478,8 @@ test("submission-created stores sanitized owner lead metrics and ignores duplica
       storedMetrics = value;
     }
   };
-
+  // Metrics-only fixture: omit email so confirmation repair is not attempted.
+  // Capture/repair paths need a contact store and are covered elsewhere.
   const ownerEvent = {
     body: JSON.stringify({
       payload: {
@@ -490,8 +491,7 @@ test("submission-created stores sanitized owner lead metrics and ignores duplica
           source_page_slug: "owner-fee-revenue-leak-benchmark-2026",
           market: "florida-gulf-coast",
           lead_type: "owner-revenue-teardown",
-          proof_label: "Codex Owner Proof 2026",
-          email: "hidden@example.com"
+          proof_label: "Codex Owner Proof 2026"
         }
       }
     })
@@ -516,6 +516,7 @@ test("submission-created stores sanitized owner lead metrics and ignores duplica
       mockStore
     );
 
+    assert.equal(firstResponse.statusCode, 200);
     assert.deepEqual(JSON.parse(firstResponse.body), {
       stored: true,
       totalSubmissions: 1,

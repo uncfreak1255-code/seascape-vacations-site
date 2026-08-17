@@ -307,6 +307,70 @@ test("submission-created does not re-notify when an already-captured submission 
   assert.equal(notifications.length, 1);
 });
 
+test("contact mutations refuse etag-less writes when metadata is supported", async () => {
+  const {
+    mutateOwnerLeadContacts,
+    stampOwnerLeadConfirmationOnContact
+  } = require("../../netlify/functions/_owner-lead-contacts");
+
+  const values = new Map();
+  const etags = new Map();
+  let etagCounter = 1;
+  const store = {
+    async getWithMetadata(key, options = {}) {
+      throw new Error("metadata unavailable");
+    },
+    async get(key, options = {}) {
+      if (!values.has(key)) return null;
+      const value = values.get(key);
+      return options.type === "json"
+        ? (typeof value === "string" ? JSON.parse(value) : value)
+        : value;
+    },
+    async set(key, value, options = {}) {
+      const exists = values.has(key);
+      if (options.onlyIfNew && exists) return { modified: false };
+      if (options.onlyIfMatch && etags.get(key) !== options.onlyIfMatch) return { modified: false };
+      values.set(key, value);
+      const etag = `etag-${etagCounter++}`;
+      etags.set(key, etag);
+      return { modified: true, etag };
+    }
+  };
+
+  // Seed via a temporary metadata-capable write so the blob exists.
+  const seedStore = {
+    ...store,
+    async getWithMetadata(key, options = {}) {
+      if (!values.has(key)) return null;
+      const data = await store.get(key, options);
+      return { data, etag: etags.get(key) };
+    }
+  };
+  await mutateOwnerLeadContacts(seedStore, () => ({
+    totalContacts: 1,
+    contacts: [{
+      submissionId: "stamp-race",
+      email: "pat@example.com",
+      confirmationOwnerSent: true,
+      confirmationInternalSent: true
+    }],
+    updatedAt: "2026-08-16T00:00:00.000Z"
+  }));
+
+  await assert.rejects(
+    () => stampOwnerLeadConfirmationOnContact(store, "stamp-race", {
+      ownerSent: true,
+      internalSent: true
+    }),
+    /metadata unavailable|owner_lead_contacts/
+  );
+
+  const preserved = await store.get(OWNER_LEAD_CONTACTS_KEY, { type: "json" });
+  assert.equal(preserved.contacts[0].confirmationOwnerSent, true);
+  assert.equal(preserved.contacts[0].confirmationInternalSent, true);
+});
+
 // Regression: the freshly captured contact must never be evicted by the cap,
 // even when its createdAt is older than the retained records.
 test("merge never evicts the freshly captured contact even at the cap", () => {
