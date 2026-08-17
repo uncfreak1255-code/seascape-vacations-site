@@ -21,7 +21,18 @@ function buildOwnerLeadDeliveryKey(submissionId) {
 }
 
 function emptyDeliveryState() {
-  return { ownerSent: false, internalSent: false, ownerStatus: "pending", internalStatus: "pending", deliveryStatus: "pending", updatedAt: null };
+  return {
+    ownerSent: false,
+    internalSent: false,
+    ownerStatus: "pending",
+    internalStatus: "pending",
+    deliveryStatus: "pending",
+    // True when this claim is finishing a known-partial delivery (one leg already
+    // durable). Used so a stale lease cannot reclaim that same remaining leg
+    // after Graph may have accepted it without a durable record.
+    remainingAttempt: false,
+    updatedAt: null
+  };
 }
 
 function normalizeLegStatus(value, sent) {
@@ -39,6 +50,7 @@ function normalizeDeliveryState(value) {
     ownerStatus: normalizeLegStatus(value.ownerStatus, ownerSent),
     internalStatus: normalizeLegStatus(value.internalStatus, internalSent),
     deliveryStatus: normalizeLegStatus(value.deliveryStatus, ownerSent && internalSent),
+    remainingAttempt: value.remainingAttempt === true,
     updatedAt: normalizeText(value.updatedAt) || null
   };
 }
@@ -57,7 +69,8 @@ function deliveryFlagsEqual(left, right) {
     a.internalSent === b.internalSent &&
     a.ownerStatus === b.ownerStatus &&
     a.internalStatus === b.internalStatus &&
-    a.deliveryStatus === b.deliveryStatus
+    a.deliveryStatus === b.deliveryStatus &&
+    a.remainingAttempt === b.remainingAttempt
   );
 }
 
@@ -134,7 +147,18 @@ function mergeDeliveryState(existing, result) {
   const deliveryStatus = result?.ambiguous === true
     ? "unknown"
     : (ownerSent && internalSent ? "sent" : (result?.deliveryStatus || "pending"));
-  return { ownerSent, internalSent, ownerStatus, internalStatus, deliveryStatus, updatedAt: new Date().toISOString() };
+  // Durable writes clear the in-claim remainingAttempt marker unless the caller
+  // is explicitly preserving a live claim shape.
+  const remainingAttempt = result?.remainingAttempt === true;
+  return {
+    ownerSent,
+    internalSent,
+    ownerStatus,
+    internalStatus,
+    deliveryStatus,
+    remainingAttempt,
+    updatedAt: new Date().toISOString()
+  };
 }
 
 async function writeOwnerLeadDeliveryState(store, submissionId, result) {
@@ -201,6 +225,8 @@ async function claimOwnerLeadDelivery(store, submissionId, durableProgress = {})
     const state = current.state;
     const ownerSent = state.ownerSent || progressOwnerSent;
     const internalSent = state.internalSent || progressInternalSent;
+    const bothSent = ownerSent && internalSent;
+    const startingPartial = ownerSent || internalSent;
     if (state.ownerSent && state.internalSent) return { claimed: false, reason: "already_sent", state };
 
     if (state.deliveryStatus === "sending") {
@@ -210,10 +236,10 @@ async function claimOwnerLeadDelivery(store, submissionId, durableProgress = {})
 
       // Stale claim with no durable progress anywhere (blob OR contact stamp):
       // Graph may already have accepted. Prefer at-most-once — freeze unknown.
-      // Partial durable progress (either source) may reclaim the remaining leg.
       if (!ownerSent && !internalSent) {
         const frozen = {
           ...state,
+          remainingAttempt: false,
           deliveryStatus: "unknown",
           updatedAt: new Date().toISOString()
         };
@@ -236,14 +262,48 @@ async function claimOwnerLeadDelivery(store, submissionId, durableProgress = {})
         }
       }
 
-      // Reclaim with any known durable leg flags folded into the new claim so
-      // sendConfirmation skips already-accepted legs.
+      // Prior claim was already finishing a known-partial remaining leg and the
+      // lease expired without a durable record for that leg. Graph may have
+      // accepted — freeze unknown instead of reclaiming a resend.
+      if (state.remainingAttempt === true && startingPartial && !bothSent) {
+        const frozen = {
+          ...state,
+          ownerSent,
+          internalSent,
+          ownerStatus: ownerSent ? "sent" : state.ownerStatus,
+          internalStatus: internalSent ? "sent" : state.internalStatus,
+          remainingAttempt: false,
+          deliveryStatus: "unknown",
+          updatedAt: new Date().toISOString()
+        };
+        const prepared = buildWriteOptions(store, current);
+        if (!prepared.safe) {
+          if (attempt + 1 >= MAX_DELIVERY_WRITE_ATTEMPTS) {
+            return { claimed: false, reason: "delivery_unknown", state };
+          }
+          continue;
+        }
+        try {
+          const result = await store.set(key, JSON.stringify(frozen), prepared.options);
+          if (result && result.modified === false) continue;
+          return { claimed: false, reason: "delivery_unknown", state: frozen };
+        } catch (_error) {
+          if (attempt + 1 >= MAX_DELIVERY_WRITE_ATTEMPTS) {
+            return { claimed: false, reason: "delivery_unknown", state };
+          }
+          continue;
+        }
+      }
+
+      // First reclaim of remaining leg(s): fold durable flags and mark this as a
+      // remainingAttempt so a later stale lease cannot replay Graph.
       const next = {
         ...state,
         ownerSent,
         internalSent,
-        ownerStatus: ownerSent ? "sent" : state.ownerStatus,
-        internalStatus: internalSent ? "sent" : state.internalStatus,
+        ownerStatus: ownerSent ? "sent" : "sending",
+        internalStatus: internalSent ? "sent" : "sending",
+        remainingAttempt: startingPartial && !bothSent,
         deliveryStatus: "sending",
         updatedAt: new Date().toISOString()
       };
@@ -268,8 +328,9 @@ async function claimOwnerLeadDelivery(store, submissionId, durableProgress = {})
       ...state,
       ownerSent,
       internalSent,
-      ownerStatus: ownerSent ? "sent" : state.ownerStatus,
-      internalStatus: internalSent ? "sent" : state.internalStatus,
+      ownerStatus: ownerSent ? "sent" : "sending",
+      internalStatus: internalSent ? "sent" : "sending",
+      remainingAttempt: startingPartial && !bothSent,
       deliveryStatus: "sending",
       updatedAt: new Date().toISOString()
     };

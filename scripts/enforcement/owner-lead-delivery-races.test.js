@@ -100,18 +100,24 @@ test("partial delivery finalize preserves sending so overlapping retries cannot 
   assert.equal(secondClaim.claimed, false);
   assert.equal(secondClaim.reason, "in_flight");
 
-  // After the lease expires, a retry may reclaim to finish the remaining leg.
+  // After the lease expires, a retry may reclaim to finish the remaining leg
+  // when that remaining leg has not yet been marked as a remainingAttempt.
   const key = buildOwnerLeadDeliveryKey("partial-progress");
   const stale = {
     ...claim.state,
     ownerSent: true,
     internalSent: false,
+    ownerStatus: "sent",
+    internalStatus: "pending",
+    remainingAttempt: false,
     updatedAt: new Date(Date.now() - OWNER_LEAD_CLAIM_LEASE_MS - 1000).toISOString()
   };
   store.values.set(key, JSON.stringify(stale));
   store.versions.set(key, (store.versions.get(key) || 1));
   const reclaim = await claimOwnerLeadDelivery(store, "partial-progress");
   assert.equal(reclaim.claimed, true);
+  assert.equal(reclaim.state.remainingAttempt, true);
+  assert.equal(reclaim.state.internalStatus, "sending");
 });
 
 test("stale sending claims without durable flags freeze to unknown instead of resending", async () => {
@@ -163,6 +169,47 @@ test("stale sending claims reclaim when contact-stamp progress proves a partial 
   assert.equal(reclaim.state.ownerSent, true);
   assert.equal(reclaim.state.internalSent, false);
   assert.equal(reclaim.state.deliveryStatus, "sending");
+  assert.equal(reclaim.state.remainingAttempt, true);
+
+  // If that remaining-leg attempt expires without a durable internal record,
+  // freeze unknown — do not reclaim Graph again.
+  const afterAttempt = {
+    ...reclaim.state,
+    updatedAt: new Date(Date.now() - OWNER_LEAD_CLAIM_LEASE_MS - 1000).toISOString()
+  };
+  store.values.set(key, JSON.stringify(afterAttempt));
+  store.versions.set(key, (store.versions.get(key) || 1));
+  const frozen = await claimOwnerLeadDelivery(store, "stale-stamp-partial", {
+    ownerSent: true,
+    internalSent: false
+  });
+  assert.equal(frozen.claimed, false);
+  assert.equal(frozen.reason, "delivery_unknown");
+  const stored = await store.get(key, { type: "json" });
+  assert.equal(stored.deliveryStatus, "unknown");
+  assert.equal(stored.ownerSent, true);
+  assert.equal(stored.internalSent, false);
+});
+
+test("stale remainingAttempt claims freeze even when only blob flags show partial progress", async () => {
+  const { OWNER_LEAD_CLAIM_LEASE_MS } = require("../../netlify/functions/_owner-lead-delivery");
+  const store = createConditionalStore();
+  const key = buildOwnerLeadDeliveryKey("stale-remaining-attempt");
+  await store.set(key, JSON.stringify({
+    ownerSent: true,
+    internalSent: false,
+    ownerStatus: "sent",
+    internalStatus: "sending",
+    remainingAttempt: true,
+    deliveryStatus: "sending",
+    updatedAt: new Date(Date.now() - OWNER_LEAD_CLAIM_LEASE_MS - 1000).toISOString()
+  }));
+
+  const frozen = await claimOwnerLeadDelivery(store, "stale-remaining-attempt");
+  assert.equal(frozen.claimed, false);
+  assert.equal(frozen.reason, "delivery_unknown");
+  const stored = await store.get(key, { type: "json" });
+  assert.equal(stored.deliveryStatus, "unknown");
 });
 
 test("fallback delivery reads cannot be followed by a write over a concurrent claim", async () => {

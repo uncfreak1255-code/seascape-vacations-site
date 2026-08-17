@@ -347,15 +347,22 @@ async function releaseOwnerLeadDeliveryClaimAfterSend(contactStore, contact, con
   const internalSent = confirmationResult.internalSent === true;
   if (!ownerSent && !internalSent) return { released: false };
 
+  const ambiguous = confirmationResult.ambiguous === true;
   const bothSent = ownerSent && internalSent;
+  // Ambiguous Graph transport: never reopen the remaining leg as pending.
+  // Durable partial failures reset remaining legs to pending so a later claim
+  // can finish a clearly failed send.
   await writeOwnerLeadDeliveryState(contactStore, contact.submissionId, {
     ownerSent,
     internalSent,
+    ownerStatus: ownerSent ? "sent" : (ambiguous ? "unknown" : "pending"),
+    internalStatus: internalSent ? "sent" : (ambiguous ? "unknown" : "pending"),
     sent: bothSent,
-    deliveryStatus: bothSent ? "sent" : "pending",
-    reason: bothSent ? "sent" : "owner_sent_internal_failed"
+    ambiguous,
+    deliveryStatus: ambiguous ? "unknown" : (bothSent ? "sent" : "pending"),
+    reason: ambiguous ? "delivery_unknown" : (bothSent ? "sent" : "owner_sent_internal_failed")
   });
-  return { released: true, ownerSent, internalSent, bothSent };
+  return { released: true, ownerSent, internalSent, bothSent, ambiguous };
 }
 
 async function maybeRepairOwnerLeadConfirmationAfterCaptureFailure({
@@ -689,6 +696,8 @@ async function maybeSendOwnerLeadConfirmation({
 
     // Graph already accepted: release the sending claim into durable leg flags
     // when possible, then return 503 so Netlify retries without double-sending.
+    // Ambiguous transport must stay at-most-once even if the delivery blob lag
+    // still needs a human/ops follow-up — do not reopen Graph via 503.
     if (mailAccepted) {
       try {
         await releaseOwnerLeadDeliveryClaimAfterSend(
@@ -702,14 +711,15 @@ async function maybeSendOwnerLeadConfirmation({
           message: releaseError && releaseError.message ? releaseError.message : String(releaseError)
         });
       }
+      const ambiguous = confirmationResult && confirmationResult.ambiguous === true;
       return {
         attempted: true,
         result: {
           ...confirmationResult,
           sent: false,
-          reason: "delivery_state_write_failed"
+          reason: ambiguous ? "delivery_unknown" : "delivery_state_write_failed"
         },
-        retryable: true,
+        retryable: ambiguous ? false : true,
         delivery: claim.state
       };
     }

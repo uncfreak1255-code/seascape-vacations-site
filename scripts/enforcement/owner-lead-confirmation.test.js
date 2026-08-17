@@ -858,6 +858,70 @@ test("submission-created still skips resend when delivery persist and contact st
   assert.equal(sendCalls, 1, "even without a contact stamp, in_flight claim must block a second send");
 });
 
+test("submission-created freezes ambiguous internal-leg results instead of releasing to pending", async () => {
+  const metricsStore = createMemoryStore();
+  const contactStore = createMemoryStore();
+  const originalSet = contactStore.set.bind(contactStore);
+  let deliveryWrites = 0;
+  // Claim write succeeds; exhaust persist retries; allow the release write that
+  // must land deliveryStatus unknown for ambiguous Graph transport.
+  let failRemainingDeliveryWrites = 5;
+  contactStore.set = async (key, value, options) => {
+    if (String(key).startsWith(OWNER_LEAD_DELIVERY_KEY_PREFIX)) {
+      deliveryWrites += 1;
+      if (deliveryWrites > 1 && failRemainingDeliveryWrites > 0) {
+        failRemainingDeliveryWrites -= 1;
+        throw new Error("delivery blob unavailable");
+      }
+    }
+    return originalSet(key, value, options);
+  };
+
+  let sendCalls = 0;
+  const sendConfirmation = async (_contact, delivery) => {
+    sendCalls += 1;
+    assert.equal(delivery && delivery.ownerSent, false);
+    return {
+      sent: false,
+      ownerSent: true,
+      internalSent: false,
+      ambiguous: true,
+      reason: "owner_sent_internal_failed",
+      deliveryStatus: "unknown"
+    };
+  };
+
+  const event = { body: JSON.stringify({ payload: ownerSubmitPayload({}, { id: "ambiguous-release" }) }) };
+  const first = await handleSubmissionCreated(
+    event,
+    undefined,
+    metricsStore,
+    contactStore,
+    async () => {},
+    sendConfirmation
+  );
+
+  assert.equal(first.statusCode, 200);
+  assert.equal(JSON.parse(first.body).confirmation.reason, "delivery_unknown");
+  assert.equal(sendCalls, 1);
+
+  const delivery = await contactStore.get(buildOwnerLeadDeliveryKey("ambiguous-release"), { type: "json" });
+  assert.equal(delivery.ownerSent, true);
+  assert.equal(delivery.internalSent, false);
+  assert.equal(delivery.deliveryStatus, "unknown");
+
+  const second = await handleSubmissionCreated(
+    event,
+    undefined,
+    metricsStore,
+    contactStore,
+    async () => {},
+    sendConfirmation
+  );
+  assert.equal(second.statusCode, 200);
+  assert.equal(sendCalls, 1, "unknown must block Graph resend of the ambiguous internal leg");
+});
+
 test("submission-created retries when contact-stamp reads fail after an in-flight Graph accept", async () => {
   const metricsStore = createMemoryStore();
   const contactStore = createMemoryStore();
