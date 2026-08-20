@@ -29,48 +29,38 @@ prove any of this produces a direct booking.
 
 ```mermaid
 flowchart TD
-    A["Guest fills a site form
-    popup, homepage, or guide kit"] --> B["POST /.netlify/functions/guest-email-capture"]
+    A["Guest fills a site form<br/>popup, homepage, or guide kit"] --> B["POST /.netlify/functions/guest-email-capture"]
 
-    B -->|"API key + audience configured"| C["Mailchimp Marketing API
-    PUT member, POST tags, POST event"]
-    B -->|"function errors, key missing,
-    or API call throws"| D["Fallback: list-manage.com embed POST
-    EMAIL + FNAME only, NO TAGS"]
+    B -->|"API key + audience configured"| C["Mailchimp Marketing API<br/>PUT member, POST tags, POST event"]
+    B -->|"function errors, key missing,<br/>or API call throws"| D["Fallback: list-manage.com embed POST<br/>EMAIL + FNAME only, NO TAGS"]
 
-    C --> E["Contact tagged guest-capture
-    plus placement / page / guide tags"]
-    D --> F["Contact with no tags
-    Mailchimp source: Embed Form"]
+    C --> E["Contact tagged guest-capture<br/>plus placement / page / guide tags"]
+    D --> F["Contact with no tags<br/>Mailchimp source: Embed Form"]
 
     E --> G["Journey 8592 trigger fires"]
-    F --> H["Never enters any journey
-    receives nothing"]
+    F --> H["Never enters any journey<br/>receives nothing"]
 
-    G --> I["Email 1 - 10594587
-    designed HTML, SAVE50, 5 homes"]
+    G --> I["Email 1 - 10594587<br/>designed HTML, SAVE50, 5 homes"]
     I --> J["2-day delay"]
-    J --> K["Email 2 - 10594588
-    plain template"]
+    J --> K["Email 2 - 10594588<br/>plain template"]
 
-    K --> L["/properties/ and /guides/
-    on-site SAVE50 reminder reappears
-    only for allowlisted utm_campaign"]
-    L --> M["book.seascape-vacations.com
-    booking-engine handoff"]
+    K --> L["/properties/ and /guides/<br/>on-site SAVE50 reminder reappears<br/>only for allowlisted utm_campaign"]
+    L --> M["book.seascape-vacations.com<br/>booking-engine handoff"]
 
-    N["Owner website form"] --> O["owner-lead-form-webhook
-    Microsoft Graph to info@"]
-    O --> P["Transactional owner mail
-    NOT Mailchimp, keep it that way"]
+    N["Owner website form"] --> O["owner-lead-form-webhook<br/>Microsoft Graph to info@"]
+    O --> P["Transactional owner mail<br/>NOT Mailchimp, keep it that way"]
+
+    style D fill:#f8d7da,stroke:#b02a37
+    style F fill:#f8d7da,stroke:#b02a37
+    style H fill:#f8d7da,stroke:#b02a37
 ```
 
 Source files behind each step:
 
 | Step | File |
 |---|---|
-| Popup on 46 guide pages | `src/_includes/partials/email-popup.njk` |
-| Homepage popup | `src/index.njk` |
+| Popup on 44 guide pages | `src/_includes/partials/email-popup.njk` |
+| Homepage popup (its own copy of the markup, not the partial) | `src/index.njk` |
 | Inline guide form | `src/_includes/partials/guide-conversion-kit.njk` |
 | Submit + fallback logic | `src/assets/js/conversion-tracking.js` (`submitInlineEmailForm`) |
 | Tagging, events, receipts | `netlify/functions/guest-email-capture.js`, `netlify/functions/_guest-email-capture-metrics.js` |
@@ -85,7 +75,7 @@ Source files behind each step:
 |---|---|---|
 | Site capture to Mailchimp API, with tags | live | This is the only path that reaches the journey |
 | Embed-form fallback path | live, and harmful | Creates untagged contacts that receive nothing |
-| Journey 8592 "Welcome new contacts" | live since 2026-08-20 audit, active since May 26 | Trigger is the `guest-capture` tag, re-entry off |
+| Journey 8592 "Welcome new contacts" | live, active since May 26 | Trigger is the `guest-capture` tag, re-entry off |
 | Email 1 (10594587) | live, designed | 19.0% opens, 0.40% clicks, 5.6% bounce |
 | Email 2 (10594588) | live, plain template | Subject and links repaired 2026-08-20; the 244 already-completed contacts keep the old 0%-click version |
 | Journey 8590 | gone | No action |
@@ -179,9 +169,9 @@ section of the welcome-sequence doc without touching the Outlook lock.
 Still present, and worth one coordinated fix rather than a drive-by:
 
 1. `docs/outreach/templates/save50-welcome-email.html` and `.txt` put
-   `utm_source=outlook` on every link, including all five property links and the
-   main CTA. The email is sent by Mailchimp. Traffic from it would be filed under
-   Outlook in GA4.
+   `utm_source=outlook` on all eleven Seascape links - every property link, the
+   main CTA, and all four footer links. The email is sent by Mailchimp, so that
+   traffic would be filed under the wrong channel in GA4.
 2. `scripts/enforcement/save50-welcome-email-template.test.js` actively enforces
    that wrong value - `requiredCampaignParams` hardcodes
    `utm_source: "outlook"`. The gate currently locks in the mislabel.
@@ -199,9 +189,11 @@ artifact and the live email agree afterwards.
 `src/_includes/partials/save50-offer.njk` allowlists exactly two campaign
 tokens:
 
-```96:97:src/_includes/partials/save50-offer.njk
-    const SAVE50_CAMPAIGNS = ["save50_welcome", "guest_social_proof"];
-    const DEFAULT_SAVE50_CAMPAIGN = SAVE50_CAMPAIGNS[0];
+From `src/_includes/partials/save50-offer.njk`, lines 96-97:
+
+```js
+const SAVE50_CAMPAIGNS = ["save50_welcome", "guest_social_proof"];
+const DEFAULT_SAVE50_CAMPAIGN = SAVE50_CAMPAIGNS[0];
 ```
 
 `src/_includes/partials/email-popup.njk` carries the same two. If an email uses
@@ -261,6 +253,20 @@ named homes, `(941) 704-8545`, and the `*|UNSUB|*` / `*|UPDATE_PROFILE|*` /
 `*|ARCHIVE|*` merge tags. Excluded: any expiry date, any review count, any
 sitewide hot-tub or beach-chair claim, and the word "heated" - pool heat is a
 paid nightly add-on, so "heated pool" is banned by the test rather than claimed.
+
+One deliberate difference from Email 1: Email 2 opens on a compact deep-teal band
+with the same gold eyebrow and serif headline rather than repeating Email 1's
+photographic hero. Three reasons. The reader saw that photo two days earlier; a
+335px hero pushes the group-size table below the fold in an email whose only job
+is a click; and the hosted hero is 1200x670, so any band that is not the same
+1.791 ratio gets stretched by Outlook, which ignores `object-fit` and scales VML
+backgrounds to fill. Everything else - palette, header lockup, card treatment,
+coupon ticket, footer - is Email 1's system.
+
+Property card images render at 215x130, matching the 560x340 source ratio, for
+the same reason. An enforcement check now reads the actual pixel dimensions of
+each hosted asset and fails if any image is declared at a ratio more than 2% off
+its source, so a squashed photo cannot ship unnoticed.
 
 The enforcement test was checked against ten bad inputs before being trusted -
 a dropped UTM parameter, a fake expiry, an external link, an empty HTML file, an

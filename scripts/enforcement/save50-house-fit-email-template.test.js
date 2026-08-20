@@ -80,6 +80,32 @@ function subjectLineFromText(source) {
   return match[1].trim();
 }
 
+function imageSize(filePath) {
+  const buffer = fs.readFileSync(filePath);
+
+  if (buffer.slice(0, 8).equals(Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]))) {
+    return { width: buffer.readUInt32BE(16), height: buffer.readUInt32BE(20) };
+  }
+
+  assert.equal(buffer.readUInt16BE(0), 0xffd8, `${filePath} is not a JPEG or PNG`);
+
+  let offset = 2;
+  while (offset < buffer.length - 1) {
+    assert.equal(buffer[offset], 0xff, `corrupt JPEG marker in ${filePath}`);
+    const marker = buffer[offset + 1];
+    const length = buffer.readUInt16BE(offset + 2);
+    const isStartOfFrame = marker >= 0xc0 && marker <= 0xcf && ![0xc4, 0xc8, 0xcc].includes(marker);
+
+    if (isStartOfFrame) {
+      return { height: buffer.readUInt16BE(offset + 5), width: buffer.readUInt16BE(offset + 7) };
+    }
+
+    offset += 2 + length;
+  }
+
+  throw new Error(`could not read dimensions from ${filePath}`);
+}
+
 function assetPathForUrl(url) {
   const prefix = "https://seascape-vacations.com/";
   if (!url.startsWith(prefix)) {
@@ -249,6 +275,40 @@ test("house-fit capacity and layout claims match property truth in both formats"
     assert.ok(text.includes(property.name), `${property.name} missing from the plain-text copy`);
     assert.ok(htmlText.includes(htmlSpec), `HTML copy missing the source spec "${htmlSpec}"`);
     assert.ok(text.includes(textSpec), `plain-text copy missing the source spec "${textSpec}"`);
+  }
+});
+
+test("house-fit images are repo assets rendered at their source aspect ratio", () => {
+  const html = read(htmlPath);
+  const imageTags = [...html.matchAll(/<img\b[^>]*>/gi)].map((match) => match[0]);
+
+  assert.ok(imageTags.length >= 6, "template should use the logo and all five property images");
+
+  for (const tag of imageTags) {
+    const src = (tag.match(/src=["']([^"']+)["']/i) || [])[1];
+    const width = Number((tag.match(/\bwidth=["'](\d+)["']/i) || [])[1]);
+    const height = Number((tag.match(/\bheight=["'](\d+)["']/i) || [])[1]);
+
+    assert.ok(
+      src && src.startsWith("https://seascape-vacations.com/images/email/save50/"),
+      `image must be a site-hosted email asset: ${src}`
+    );
+    assert.ok(width > 0 && height > 0, `image is missing width/height attributes: ${src}`);
+
+    const localPath = assetPathForUrl(src);
+    assert.ok(localPath && fs.existsSync(localPath), `missing local asset for ${src}`);
+
+    // Outlook ignores object-fit and stretches to the declared box, so a rendered
+    // ratio that drifts from the source file shows up as a visibly distorted photo.
+    const source = imageSize(localPath);
+    const renderedRatio = width / height;
+    const sourceRatio = source.width / source.height;
+    const drift = Math.abs(renderedRatio - sourceRatio) / sourceRatio;
+
+    assert.ok(
+      drift <= 0.02,
+      `${src} renders at ${width}x${height} (${renderedRatio.toFixed(3)}) but the source is ${source.width}x${source.height} (${sourceRatio.toFixed(3)}); that is ${(drift * 100).toFixed(1)}% distortion`
+    );
   }
 });
 
