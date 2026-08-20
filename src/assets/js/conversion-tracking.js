@@ -56,6 +56,17 @@
     "sv_session_id",
     GUIDE_DIRECT_CLICK_PARAM
   ];
+  var GUIDE_LINEAGE_START_EVENTS = [
+    "guide_stay_click",
+    "guide_book_direct_click",
+    "guide_property_check_dates_click"
+  ];
+  var FUNNEL_LINEAGE_EVENTS = GUIDE_LINEAGE_START_EVENTS.concat([
+    "stay_view_property_click",
+    "catalog_book_direct_click",
+    "catalog_collection_click",
+    "catalog_view_details_click"
+  ]);
   var SENSITIVE_ANALYTICS_KEYS = [
     "setup_intent",
     "setup_intent_client_secret",
@@ -213,11 +224,34 @@
     return (params.get(key) || "").trim();
   }
 
-  function syncGuideDirectClickLink(node) {
-    if (!node || !node.dataset || node.dataset.trackEvent !== "guide_book_direct_click") return getNavigationHref(node);
+  function isBookingEngineUrl(href) {
+    if (!href || typeof URL !== "function") return false;
+
+    try {
+      return new URL(href, window.location && window.location.href ? window.location.href : "https://seascape-vacations.com/")
+        .hostname.replace(/^www\./, "").toLowerCase() === BOOKING_ENGINE_HOST;
+    } catch (_error) {
+      return false;
+    }
+  }
+
+  function isSameOriginUrl(url, currentHref) {
+    if (!url || typeof URL !== "function") return false;
+
+    try {
+      return url.origin === new URL(currentHref).origin;
+    } catch (_error) {
+      return false;
+    }
+  }
+
+  function syncFunnelLineageLink(node) {
+    var eventName = node && node.dataset ? node.dataset.trackEvent : "";
+    if (FUNNEL_LINEAGE_EVENTS.indexOf(eventName) === -1) return getNavigationHref(node);
 
     var href = getNavigationHref(node);
     if (!href || typeof URL !== "function") return href || "";
+    if (href.charAt(0) === "#") return href;
 
     var currentHref = window.location && typeof window.location.href === "string"
       ? window.location.href
@@ -230,7 +264,7 @@
       return href;
     }
 
-    if (url.hostname.replace(/^www\./, "").toLowerCase() === BOOKING_ENGINE_HOST) {
+    if (url.hostname.replace(/^www\./, "").toLowerCase() === BOOKING_ENGINE_HOST || !isSameOriginUrl(url, currentHref)) {
       return href;
     }
 
@@ -245,7 +279,13 @@
     }
 
     if (!url.searchParams.get(GUIDE_DIRECT_CLICK_PARAM)) {
-      url.searchParams.set(GUIDE_DIRECT_CLICK_PARAM, getCurrentParamValue(GUIDE_DIRECT_CLICK_PARAM) || createTrackingId("svg"));
+      var currentGuideClickId = getCurrentParamValue(GUIDE_DIRECT_CLICK_PARAM);
+      if (!currentGuideClickId && GUIDE_LINEAGE_START_EVENTS.indexOf(eventName) !== -1) {
+        currentGuideClickId = createTrackingId("svg");
+      }
+      if (currentGuideClickId) {
+        url.searchParams.set(GUIDE_DIRECT_CLICK_PARAM, currentGuideClickId);
+      }
     }
 
     var nextHref = url.toString();
@@ -702,27 +742,35 @@
       var target = event.target.closest("[data-track-event]");
       if (!target) return;
 
-      syncGuideDirectClickLink(target);
+      syncFunnelLineageLink(target);
       syncBookingEngineLink(target);
       var payload = getPayloadFromElement(target);
-      if (
-        target.dataset.trackEvent === "booking_engine_handoff" ||
-        target.dataset.trackEvent === "property_booking_page_click"
-      ) {
+      var primaryEvent = target.dataset.trackEvent;
+      var targetsBookingEngine = isBookingEngineUrl(payload.link_url);
+      var hasExplicitHandoffEvent =
+        primaryEvent === "booking_engine_handoff" ||
+        primaryEvent === "property_booking_page_click";
+      if (targetsBookingEngine) {
         sendBookingHandoffReceipt(payload);
       }
 
       if (shouldDelayTrackedNavigation(target, event)) {
         event.preventDefault();
-        trackEvent(target.dataset.trackEvent, payload, {
+        trackEvent(primaryEvent, payload, {
           onComplete: function () {
             continueTrackedNavigation(target);
           }
         });
+        if (targetsBookingEngine && !hasExplicitHandoffEvent) {
+          trackEvent("booking_engine_handoff", payload);
+        }
         return;
       }
 
-      trackEvent(target.dataset.trackEvent, payload);
+      trackEvent(primaryEvent, payload);
+      if (targetsBookingEngine && !hasExplicitHandoffEvent) {
+        trackEvent("booking_engine_handoff", payload);
+      }
     });
   }
 
