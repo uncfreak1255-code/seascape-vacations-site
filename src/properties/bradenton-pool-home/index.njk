@@ -315,7 +315,7 @@
 "https://bookingenginecdn.hostaway.com/listing/51916-487798-Ka0RaMAnYa4LN-RPjkghBFtHqdFvSIP4tvCGLrb46q8-69925067b62e6?width=1200&quality=80&format=webp&v=2",
 "https://bookingenginecdn.hostaway.com/listing/51916-487798-r0210bB-vtw4bazIOU2MEjMnS9rIFzIrnznYwkoRVwQ-699257be03803?width=1200&quality=80&format=webp&v=2",
 "https://bookingenginecdn.hostaway.com/listing/51916-487798-fveav4RDND6H0n92eYn7UMKyN01TxeUZ6Dr--p9eV-rQ-69925062d8ae5?width=1200&quality=80&format=webp&v=2"];
-function switchHero(i){event.stopPropagation();document.getElementById("heroMain").src=_heroUrls[i];document.querySelectorAll(".hero-cinema-thumb").forEach(function(t,j){t.classList.toggle("active",j===i)})}
+function switchHero(i){event.stopPropagation();var hero=document.getElementById("heroMain"),url=_heroUrls[i];hero.srcset=url.replace("width=1200","width=768")+" 768w, "+url+" 1200w";hero.src=url;document.querySelectorAll(".hero-cinema-thumb").forEach(function(t,j){t.classList.toggle("active",j===i)})}
 function openGallery(){var g=document.getElementById('galleryLbGrid');if(!g.children.length){_gP.forEach(function(s,i){var img=document.createElement('img');img.src=s;img.alt='Photo '+(i+1);img.loading='lazy';g.appendChild(img);});}document.getElementById('galleryLb').classList.add('active');document.body.style.overflow='hidden';}function closeGallery(){document.getElementById('galleryLb').classList.remove('active');document.body.style.overflow='';}document.addEventListener('keydown',function(e){if(e.key==='Escape')closeGallery();});</script>{% include "partials/hostaway-mobile-calendar-fix.njk" %}<script>
 (function(){
   var loaded=false;

@@ -311,6 +311,19 @@ test("top property pages instrument both availability and booking-page handoff C
   }
 });
 
+test("Bradenton Pool Home keeps responsive hero candidates in sync after thumbnail changes", () => {
+  const source = fs.readFileSync(
+    path.join(projectRoot, "src", "properties", "bradenton-pool-home", "index.njk"),
+    "utf8"
+  );
+
+  assert.match(source, /id="heroMain"[^>]+srcset="[^"]+ 768w, [^"]+ 1200w"/);
+  assert.match(
+    source,
+    /function switchHero\(i\)\{[^}]+hero\.srcset=url\.replace\("width=1200","width=768"\)\+" 768w, "\+url\+" 1200w";hero\.src=url;/
+  );
+});
+
 test("top property pages use semantic hero headings and stay pages explain fit in guest language", () => {
   const propertyPages = [
     path.join(projectRoot, "src", "properties", "dockside-dreams", "index.njk"),
