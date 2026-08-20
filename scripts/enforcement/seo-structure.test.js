@@ -436,7 +436,7 @@ test("priority guides ship complete metadata instead of truncated titles or brok
     },
     {
       relativePath: ["src", "guides", "florida-gulf-coast-vacation-rental-market-report-2026.html"],
-      expectedTitle: "2026 Gulf Coast Vacation Rental Market Report — Pricing & Trends"
+      expectedTitle: "Bradenton-Sarasota Vacation Rental Benchmark 2026"
     }
   ];
 

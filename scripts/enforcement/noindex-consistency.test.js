@@ -237,8 +237,6 @@ test("every rehomed stay page has redirect parity to its rehomeTo target", () =>
 // MAY ONLY SHRINK - a file whose links are cleaned must be deleted from it.
 const KNOWN_GUIDE_NOINDEX_LINK_COUNTS = new Map([
   ["src/guides/anna-maria-island-area-guide/index.html|/stays/pet-friendly-vacation-rentals-bradenton/", 1],
-  ["src/guides/anna-maria-island-weather.html|/stays/spring-break-rentals-anna-maria-island/", 2],
-  ["src/guides/anna-maria-island-weather.html|/stays/summer-vacation-rentals-florida-gulf-coast/", 1],
   ["src/guides/best-restaurants-anna-maria-island.html|/stays/anniversary-trip-rentals-florida/", 1],
   ["src/guides/best-time-visit-anna-maria-island.html|/stays/new-years-eve-rentals-florida/", 1],
   ["src/guides/best-time-visit-anna-maria-island.html|/stays/beach-wedding-vacation-rentals-florida/", 1],
