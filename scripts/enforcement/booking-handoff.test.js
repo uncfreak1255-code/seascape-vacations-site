@@ -320,6 +320,10 @@ test("Bradenton Pool Home keeps responsive hero candidates in sync after thumbna
   assert.match(source, /id="heroMain"[^>]+srcset="[^"]+ 768w, [^"]+ 1200w"/);
   assert.match(
     source,
+    /sizes="\(min-width: 1200px\) 1200px, \(min-width: 768px\) calc\(100vw - 48px\), calc\(100vw - 32px\)"/
+  );
+  assert.match(
+    source,
     /function switchHero\(i\)\{[^}]+hero\.srcset=url\.replace\("width=1200","width=768"\)\+" 768w, "\+url\+" 1200w";hero\.src=url;/
   );
 });
