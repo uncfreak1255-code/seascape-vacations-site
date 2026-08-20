@@ -2,25 +2,49 @@
 
 ## Current Sender Authority
 
-This is historical Mailchimp-format content, not an executable delivery
-runbook. Every Seascape campaign must be sent by the Ops-owned Microsoft Graph
-lane from `info@seascape-vacations.com`. Personal Gmail, a Mailchimp From
-identity, and any other sender are prohibited. Do not activate this sequence
-from the Site repo. Hub owns the policy; Ops owns recipient authorization,
-scheduling, delivery, and Sent Items proof.
-The Outlook campaign lane is Phase 1 hard-disabled in source. Microsoft admin
-proof must show Application `Mail.Send` in scope for `info@`, sibling role
-mailboxes out of scope, and no additive unscoped Entra `Mail.Send`; a separate
-reviewed Phase 2 is required before any canary or send.
+Corrected 2026-08-20 from the live audit in
+`docs/outreach/2026-08-20-email-marketing-ultrasound.md`.
+
+Mailchimp is the live guest-marketing sender. This welcome sequence has been
+delivering from `Seascape Vacations <info@seascape-vacations.com>` on an
+authenticated domain since 2026-05-26. Earlier revisions of this file described
+Mailchimp as a retired provider with no send authority, which was wrong and
+misrouted agents reading it. Personal Gmail is still prohibited as a sender.
+
+Three lanes, kept apart:
+
+- guest marketing: Mailchimp, triggered by the `guest-capture` tag written by
+  site capture. Live.
+- Outlook `info@` campaign and post-stay email: not live.
+- owner lead mail: Microsoft Graph, transactional only, never Mailchimp.
+
+Hub owns sender policy. Ops owns recipient authorization, scheduling, and
+delivery proof for the Outlook lane. This repo owns email content, link
+integrity, and claim truth.
+
+The Outlook campaign lane stays Phase 1 hard-disabled in source, and the live
+Mailchimp lane does not change that. Microsoft admin proof must show
+Application `Mail.Send` in scope for `info@`, sibling role mailboxes out of
+scope, and no additive unscoped Entra `Mail.Send`; a separate reviewed Phase 2
+is required before any canary or send on that lane.
 
 ## Overview
-- **Trigger:** new subscriber joins from the SAVE50 homepage popup.
-- **Historical Mailchimp account:** us6, list ID `95e5a594d1` (content and evidence reference only; not current send authority).
-- **Current priority:** keep Phase 1 source-disabled. Do not run a canary. After the Microsoft admin scope proof above, a separate reviewed Phase 2 must deliberately add the Outlook renderer, recipient eligibility, legal/opt-out handling, and internal-canary path.
-- **Primary template:** `docs/outreach/templates/save50-welcome-email.html`
-- **Plain-text fallback:** `docs/outreach/templates/save50-welcome-email.txt`
+- **Trigger:** the `guest-capture` tag, written when a site signup reaches the Mailchimp Marketing API through `netlify/functions/guest-email-capture.js`. A signup that falls back to the embed-form path gets no tag and never enters the sequence.
+- **Mailchimp account:** us6, list ID `95e5a594d1`.
+- **Current priority:** replace the plain-template second email with the designed artifact below. Do not send anything to contacts who already completed the sequence.
+- **Email 1 template:** `docs/outreach/templates/save50-welcome-email.html` / `.txt`
+- **Email 2 template:** `docs/outreach/templates/save50-house-fit-email.html` / `.txt`
 - **Hosted email assets:** `https://seascape-vacations.com/images/email/save50/`
 - **Related campaign governance:** `docs/outreach/mailchimp-guest-social-proof-campaign.md`
+
+## Known Attribution Gap In Email 1
+
+Every link in the Email 1 template carries `utm_source=outlook`, and
+`scripts/enforcement/save50-welcome-email-template.test.js` enforces that value.
+The email is sent by Mailchimp, so that source value files its traffic under the
+wrong channel. Repairing it means changing the two template files, this doc, and
+the test's `requiredCampaignParams` together in one PR, alongside a re-paste of
+the live email. Do not change one side alone.
 
 ## Email 1: Welcome And Coupon Delivery
 **Send:** immediately after signup
@@ -55,31 +79,41 @@ reviewed Phase 2 is required before any canary or send.
 - Do not add an expiration date unless the SAVE50 coupon config proves one.
 - Do not add review counts, rating claims, price-from claims, or broad savings promises unless the proof source is current.
 
-## Email 2: Trip Fit Follow-Up
-**Send:** 3 days after Email 1
+## Email 2: House Fit Follow-Up
+**Send:** 2 days after Email 1 (the live journey delay)
 
 **Subject line:** Want help picking the right Seascape home?
 
 **Preview text:** A quick way to match the house to your group, beach plans, and dates.
 
-**Body draft:**
+**Production templates:**
+- `docs/outreach/templates/save50-house-fit-email.html`
+- `docs/outreach/templates/save50-house-fit-email.txt`
 
-Hey `*|FNAME|*`,
+These replace the plain-text draft that previously lived in this section. Email 2
+now uses the same visual system as Email 1 and does a different job: it sorts the
+five homes by group size instead of restating the offer.
 
-If you're still choosing dates, the main thing is matching the house to the trip.
+**Campaign parameters:** `utm_source=mailchimp`, `utm_medium=email`,
+`utm_campaign=guest_social_proof`. That campaign token is deliberate. It is one of
+only two tokens allowlisted in `src/_includes/partials/save50-offer.njk` and
+`src/_includes/partials/email-popup.njk`, so any other value means the reader
+lands on `/properties/` with the on-site SAVE50 reminder hidden.
 
-For the biggest groups, start with The Oasis. For a private dock and a Bradenton base, look at Dockside Dreams. If you want Sarasota as your home base, start with Sarasota Luxe. If you want the simplest family pool setup, compare River House and Bradenton Pool Home.
+**Fit lines trace to source:** group size, bedroom and bathroom counts, the single
+waterfront claim, and each home's differentiator come from
+`src/_data/properties-fallback.json`. Pool heat is a paid nightly add-on, so the
+email claims private pools and never "heated" pools.
 
-Your code is still `SAVE50`: $50 off your first direct booking of 3 nights or more.
+**Verification:** `node --test scripts/enforcement/save50-house-fit-email-template.test.js`
 
-Browse the homes here:
-`https://seascape-vacations.com/properties/?utm_source=outlook&utm_medium=email&utm_campaign=save50_welcome&utm_content=email_2_browse_homes`
+## Email 3: Direct Booking Reminder (draft, not built)
 
-If you want help choosing, reply with your group size and dates. We'll point you toward the best fit.
+This third touch does not exist in the live journey and should not be built yet.
+Email 2 has to earn a click first. Adding a third message to a sequence whose
+first email clicks at 0.40% adds volume, not results. The draft below is kept as
+content source only.
 
-- Sawyer and the Seascape team
-
-## Email 3: Direct Booking Reminder
 **Send:** 7 days after Email 1
 
 **Subject line:** Still have your SAVE50 code
@@ -101,12 +135,24 @@ Questions? Reply here or call us at `(941) 704-8545`.
 
 - Sawyer and the Seascape team
 
-## Retired Mailchimp Setup
+## Live Journey Shape
 
-The old provider setup steps were removed from this runbook; Git history keeps
-them for receipt forensics. Do not configure, test, activate, or deliver this
-sequence through Mailchimp. The templates above remain content/design inputs
-only.
+Recorded from the 2026-08-20 audit so a reader knows what is already running
+before proposing a change:
+
+- one active journey, triggered by the `guest-capture` tag, re-entry off
+- Email 1 immediately on entry, then a 2-day delay, then Email 2
+- Email 1 is designed HTML with SAVE50, five homes, and no expiry date
+- Email 2 was still a plain Mailchimp template at audit time; the artifact above
+  is its replacement
+- no regular campaign has ever been sent from this account, and the audience has
+  no segments
+- contacts that entered before a change keep the version they were sent; do not
+  re-send to contacts who already completed the sequence
+
+Provider setup steps are deliberately not restated here. Journey structure and
+audience configuration are operated in the Mailchimp UI; this file governs
+content, links, claim truth, and campaign parameters.
 
 ## Phase 2-Only Outlook Canary Checklist
 
