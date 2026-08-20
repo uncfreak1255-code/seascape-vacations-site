@@ -251,8 +251,8 @@ function validateTargetResponse(target, response) {
 
   if (target.path === "/guides/srq-airport-to-anna-maria-island/") {
     requireIncludes(target.path, response.body, [
-      "Reviewed June 2026",
-      "<strong>June 2026 review:</strong>",
+      "Reviewed August 19, 2026",
+      "<strong>August 2026 review:</strong>",
       "planning ranges, not live quotes"
     ]);
     requireExcludes(target.path, response.body, [

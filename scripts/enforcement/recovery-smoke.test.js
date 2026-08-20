@@ -273,8 +273,8 @@ test("live smoke locks the refreshed SRQ airport guide markers", () => {
       location: null,
       body: `
         <main>
-          <p class="guide-meta">Reviewed June 2026 • 8 min read</p>
-          <p><strong>June 2026 review:</strong> SRQ still lists rental cars, taxis, airport shuttles, Uber, and Lyft as ground transportation options. Treat any fare ranges below as planning ranges, not live quotes.</p>
+          <p class="guide-meta">Reviewed August 19, 2026 • 8 min read</p>
+          <p><strong>August 2026 review:</strong> SRQ still lists rental cars, taxis, airport shuttles, Uber, and Lyft as ground transportation options. Treat any fare ranges below as planning ranges, not live quotes.</p>
         </main>
       `
     });
