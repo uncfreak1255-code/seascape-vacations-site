@@ -34,14 +34,21 @@ Read in this order:
 - analytics pipeline logic that belongs in `seascape-analytics`
 - email-campaign delivery, sender credentials, schedules, or send receipts;
   policy lives in `seascape-hub/context/operating-canon.md#business-email` and
-  execution lives in `seascape-ops`. Campaigns use Microsoft 365 / Outlook
-  `info@seascape-vacations.com`; personal Gmail is prohibited.
+  execution lives in `seascape-ops`. Three-lane email split (2026-08-20 lock):
+  1. Mailchimp is the paid guest-marketing sender (Journey 8592, trigger tag
+     `guest-capture`).
+  2. Outlook Graph `info@` campaigns / post-stay email are Phase 1 hard-disabled
+     in `seascape-ops`. Do not activate.
+  3. Owner Graph `info@` is transactional only (form confirmations +
+     founder-approved replies).
+  Personal Gmail remains prohibited.
 
 ## Business Bottleneck
 
-- owner acquisition is still the main business bottleneck
-- direct-book conversion on existing demand is the second bottleneck
-- new page volume is not the default answer when owner CTR and current money-page yield are still weak
+- owner acquisition is a durable lever, not the current binding constraint
+- the current constraint is owner-form + post-stay email automation
+- do not spawn owner-money pages; guides still carry organic
+- direct-book conversion on existing demand remains a secondary site bottleneck
 - Phase 4 and other entity-expansion work stays frozen until the measured gates in `docs/status/next-batch.md` are cleared
 
 ## Non-Negotiable Rules
