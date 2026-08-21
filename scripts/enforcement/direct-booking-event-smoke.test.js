@@ -114,13 +114,27 @@ test("direct-booking event smoke validates the three funnel event surfaces", () 
   );
 });
 
-test("inline email capture tries the Netlify function before observable Mailchimp fallback", async () => {
+test("inline email capture requires tagged Netlify success and never uses untagged embed fallback", async () => {
   const trackingScriptPath = path.join(projectRoot, "src", "assets", "js", "conversion-tracking.js");
   delete require.cache[require.resolve(trackingScriptPath)];
   const listeners = {};
   const fetchCalls = [];
   const warnings = [];
+  const successClasses = [];
   const originalWarn = console.warn;
+  const popupSuccess = {
+    classList: {
+      add(className) {
+        successClasses.push(className);
+      }
+    }
+  };
+  const popupContent = { style: {} };
+  const popupRoot = {
+    querySelector(selector) {
+      return selector === "[data-email-capture-success]" ? popupSuccess : null;
+    }
+  };
   const emailForm = {
     tagName: "FORM",
     textContent: "Email capture",
@@ -139,10 +153,17 @@ test("inline email capture tries the Netlify function before observable Mailchim
     matches(selector) {
       return selector === "form[data-track-form]";
     },
+    closest(selector) {
+      if (selector === "[data-email-capture-root]") return popupRoot;
+      if (selector === "[data-email-capture-content]") return popupContent;
+      return null;
+    },
     getAttribute() {
       return "";
     },
-    reset() {}
+    reset() {
+      this.wasReset = true;
+    }
   };
 
   global.window = {
@@ -164,7 +185,9 @@ test("inline email capture tries the Netlify function before observable Mailchim
     }
   };
   global.localStorage = {
-    setItem() {}
+    setItem() {
+      throw new Error("failed capture must not mark the popup as subscribed");
+    }
   };
   global.FormData = class FormDataStub {
     get(field) {
@@ -173,6 +196,10 @@ test("inline email capture tries the Netlify function before observable Mailchim
       return "";
     }
   };
+  let settleCapture;
+  const captureSettled = new Promise((resolve) => {
+    settleCapture = resolve;
+  });
   global.fetch = (url, options = {}) => {
     fetchCalls.push({ url: String(url), method: options.method || "GET", mode: options.mode || null });
     if (String(url) === "/.netlify/functions/guest-email-capture") {
@@ -182,6 +209,9 @@ test("inline email capture tries the Netlify function before observable Mailchim
   };
   console.warn = function patchedWarn(label, payload) {
     warnings.push({ label, payload });
+    if (label === "email_capture_failed") {
+      settleCapture();
+    }
   };
 
   try {
@@ -192,21 +222,162 @@ test("inline email capture tries the Netlify function before observable Mailchim
       preventDefault() {}
     });
 
-    await Promise.resolve();
-    await Promise.resolve();
-    await Promise.resolve();
+    await Promise.race([
+      captureSettled,
+      new Promise((_, reject) => setTimeout(() => reject(new Error("capture failure was not reported")), 1000))
+    ]);
 
+    assert.equal(fetchCalls.length, 1);
     assert.equal(fetchCalls[0].url, "/.netlify/functions/guest-email-capture");
     assert.equal(fetchCalls[0].method, "POST");
-    assert.match(fetchCalls[1].url, /^https:\/\/seascape-vacations\.us6\.list-manage\.com\/subscribe\/post/);
-    assert.equal(fetchCalls[1].method, "POST");
-    assert.equal(fetchCalls[1].mode, "no-cors");
-    assert.ok(
-      window.dataLayer.some((entry) => entry.event === "email_capture_fallback"),
-      "fallback should emit a visible analytics event"
+    assert.equal(
+      fetchCalls.some((call) => /list-manage\.com/.test(call.url)),
+      false,
+      "untagged embed fallback must not run"
     );
-    assert.deepEqual(warnings.map((entry) => entry.label), ["email_capture_fallback"]);
-    assert.equal(warnings[0].payload.reason, "guest_email_capture_endpoint_failed");
+    assert.ok(
+      window.dataLayer.some((entry) => entry.event === "email_capture_failed"),
+      "failed capture should emit a visible analytics event"
+    );
+    assert.deepEqual(warnings.map((entry) => entry.label), ["email_capture_failed"]);
+    assert.deepEqual(successClasses, []);
+    assert.equal(popupContent.style.display, undefined);
+    assert.equal(emailForm.wasReset, undefined);
+  } finally {
+    console.warn = originalWarn;
+    delete global.window;
+    delete global.document;
+    delete global.localStorage;
+    delete global.fetch;
+    delete global.FormData;
+  }
+});
+
+test("inline email capture does not treat untagged function responses as success", async () => {
+  const trackingScriptPath = path.join(projectRoot, "src", "assets", "js", "conversion-tracking.js");
+  delete require.cache[require.resolve(trackingScriptPath)];
+  const listeners = {};
+  const warnings = [];
+  const successClasses = [];
+  const originalWarn = console.warn;
+  const popupSuccess = {
+    classList: {
+      add(className) {
+        successClasses.push(className);
+      }
+    }
+  };
+  const popupContent = { style: {} };
+  const popupRoot = {
+    querySelector(selector) {
+      return selector === "[data-email-capture-success]" ? popupSuccess : null;
+    }
+  };
+  const emailForm = {
+    tagName: "FORM",
+    textContent: "Email capture",
+    dataset: {
+      trackForm: "guide-email",
+      formSubmitEvent: "email_capture_submit",
+      inlineEmailCapture: "true",
+      guideSlug: "bradenton-vs-sarasota",
+      formPlacement: "guide_conversion"
+    },
+    parentElement: {
+      querySelector() {
+        return null;
+      }
+    },
+    matches(selector) {
+      return selector === "form[data-track-form]";
+    },
+    closest(selector) {
+      if (selector === "[data-email-capture-root]") return popupRoot;
+      if (selector === "[data-email-capture-content]") return popupContent;
+      return null;
+    },
+    getAttribute() {
+      return "";
+    },
+    reset() {
+      this.wasReset = true;
+    }
+  };
+
+  global.window = {
+    dataLayer: [],
+    location: {
+      href: "http://localhost/guides/bradenton-vs-sarasota/",
+      pathname: "/guides/bradenton-vs-sarasota/",
+      search: ""
+    }
+  };
+  global.document = {
+    readyState: "loading",
+    referrer: "",
+    addEventListener(eventName, handler) {
+      listeners[eventName] = handler;
+    },
+    querySelectorAll() {
+      return [];
+    }
+  };
+  global.localStorage = {
+    setItem() {
+      throw new Error("untagged capture must not mark the popup as subscribed");
+    }
+  };
+  global.FormData = class FormDataStub {
+    get(field) {
+      if (field === "email") return "guest@example.com";
+      if (field === "name") return "Test Guest";
+      return "";
+    }
+  };
+  let settleCapture;
+  const captureSettled = new Promise((resolve) => {
+    settleCapture = resolve;
+  });
+  global.fetch = () =>
+    Promise.resolve({
+      ok: true,
+      status: 200,
+      json() {
+        return Promise.resolve({
+          stored: true,
+          tagged: false,
+          deliveryMode: "legacy_form",
+          reason: "marketing_api_unconfigured"
+        });
+      }
+    });
+  console.warn = function patchedWarn(label, payload) {
+    warnings.push({ label, payload });
+    if (label === "email_capture_failed") {
+      settleCapture();
+    }
+  };
+
+  try {
+    require(trackingScriptPath);
+    assert.equal(typeof listeners.DOMContentLoaded, "function");
+    listeners.DOMContentLoaded();
+    listeners.submit({
+      target: emailForm,
+      preventDefault() {}
+    });
+
+    await Promise.race([
+      captureSettled,
+      new Promise((_, reject) => setTimeout(() => reject(new Error("capture failure was not reported")), 1000))
+    ]);
+
+    assert.ok(window.dataLayer.some((entry) => entry.event === "email_capture_failed"));
+    assert.equal(warnings[0].label, "email_capture_failed");
+    assert.equal(warnings[0].payload.reason, "marketing_api_unconfigured");
+    assert.deepEqual(successClasses, []);
+    assert.equal(popupContent.style.display, undefined);
+    assert.equal(emailForm.wasReset, undefined);
   } finally {
     console.warn = originalWarn;
     delete global.window;
@@ -356,12 +527,25 @@ test("SAVE50 popup success state stays honest for repeat subscribers and deliver
       throw new Error("delivery failure should not mark the popup as subscribed");
     }
   };
+  let settleCapture;
+  const captureSettled = new Promise((resolve) => {
+    settleCapture = resolve;
+  });
+  const originalWarn = console.warn;
   global.fetch = () => Promise.reject(new Error("network down"));
   global.FormData = class FormDataStub {
     get(field) {
       if (field === "email") return "repeat@example.com";
       if (field === "name") return "Repeat Guest";
       return "";
+    }
+  };
+  console.warn = function patchedWarn(label, payload) {
+    if (label === "email_capture_failed") {
+      settleCapture();
+    }
+    if (typeof originalWarn === "function") {
+      originalWarn(label, payload);
     }
   };
 
@@ -373,15 +557,16 @@ test("SAVE50 popup success state stays honest for repeat subscribers and deliver
       preventDefault() {}
     });
 
-    await Promise.resolve();
-    await Promise.resolve();
-    await Promise.resolve();
-    await Promise.resolve();
+    await Promise.race([
+      captureSettled,
+      new Promise((_, reject) => setTimeout(() => reject(new Error("capture failure was not reported")), 1000))
+    ]);
 
     assert.deepEqual(successClasses, []);
     assert.equal(popupContent.style.display, undefined);
     assert.equal(popupForm.wasReset, undefined);
   } finally {
+    console.warn = originalWarn;
     delete global.window;
     delete global.document;
     delete global.localStorage;

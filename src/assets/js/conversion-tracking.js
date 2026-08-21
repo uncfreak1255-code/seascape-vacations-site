@@ -4,8 +4,6 @@
   if (window.__seascapeConversionTrackingLoaded) return;
   window.__seascapeConversionTrackingLoaded = true;
 
-  var MAILCHIMP_ENDPOINT = "https://seascape-vacations.us6.list-manage.com/subscribe/post";
-  var MAILCHIMP_QUERY = "u=48f234eebd9cb530fd2f217fe&id=95e5a594d1&f_id=008996e5f0";
   var GUEST_EMAIL_CAPTURE_ENDPOINT = "/.netlify/functions/guest-email-capture";
   var BOOKING_HANDOFF_ENDPOINT = "/.netlify/functions/booking-handoff";
   var BOOKING_HANDOFF_SESSION_KEY = "seascape_booking_handoff_session_id";
@@ -20,7 +18,7 @@
     "guide_book_direct_click",
     "guide_property_check_dates_click",
     "email_capture_submit",
-    "email_capture_fallback",
+    "email_capture_failed",
     "booking_engine_handoff",
     "catalog_book_direct_click",
     "catalog_collection_click",
@@ -809,21 +807,55 @@
     form.reset();
   }
 
+  function parseGuestCaptureResponse(response) {
+    if (!response || typeof response.ok !== "boolean" || !response.ok) {
+      return Promise.reject(new Error("Guest email capture failed"));
+    }
+
+    if (typeof response.json !== "function") {
+      return Promise.reject(new Error("Guest email capture response missing body"));
+    }
+
+    return response.json().then(function (data) {
+      if (!data || data.tagged !== true) {
+        var incomplete = new Error("Guest email capture incomplete");
+        incomplete.capturePayload = data || null;
+        return Promise.reject(incomplete);
+      }
+      return data;
+    });
+  }
+
+  function reportInlineEmailCaptureFailure(trackingPayload, error) {
+    var reason =
+      (error && error.capturePayload && error.capturePayload.reason) ||
+      (error && error.message) ||
+      "guest_email_capture_failed";
+
+    try {
+      trackEvent("email_capture_failed", Object.assign({}, trackingPayload, {
+        capture_failure_reason: String(reason).slice(0, 160),
+        capture_endpoint: GUEST_EMAIL_CAPTURE_ENDPOINT
+      }));
+    } catch (_error) {
+      // Analytics is best-effort; never throw out of the capture failure path.
+    }
+
+    if (typeof console !== "undefined" && typeof console.warn === "function") {
+      console.warn("email_capture_failed", {
+        reason: reason,
+        endpoint: GUEST_EMAIL_CAPTURE_ENDPOINT,
+        message: error && error.message ? error.message : "unknown"
+      });
+    }
+  }
+
   function submitInlineEmailForm(form) {
     var formData = new FormData(form);
     var email = formData.get("email");
     var name = formData.get("name");
 
     if (!email || !name) return;
-
-    var mailchimpEndpoint =
-      MAILCHIMP_ENDPOINT +
-      "?" +
-      MAILCHIMP_QUERY +
-      "&EMAIL=" +
-      encodeURIComponent(email) +
-      "&FNAME=" +
-      encodeURIComponent(name);
 
     var currentPagePath = getCurrentPagePath();
     var trackingPayload = getPayloadFromElement(form);
@@ -852,36 +884,19 @@
       },
       body: JSON.stringify(submissionPayload),
       keepalive: true
-    }).then(function (response) {
-      if (response && typeof response.ok === "boolean" && !response.ok) {
-        throw new Error("Guest email capture failed");
-      }
-      return response;
-    }).catch(function (error) {
-      trackEvent("email_capture_fallback", Object.assign({}, trackingPayload, {
-        capture_delivery_mode: "legacy_form",
-        fallback_reason: "guest_email_capture_endpoint_failed",
-        capture_endpoint: GUEST_EMAIL_CAPTURE_ENDPOINT
-      }));
-      if (typeof console !== "undefined" && typeof console.warn === "function") {
-        console.warn("email_capture_fallback", {
-          reason: "guest_email_capture_endpoint_failed",
-          endpoint: GUEST_EMAIL_CAPTURE_ENDPOINT,
-          message: error && error.message ? error.message : "unknown"
-        });
-      }
-      return fetch(mailchimpEndpoint, {
-        method: "POST",
-        mode: "no-cors"
+    })
+      .then(parseGuestCaptureResponse)
+      .then(function () {
+        try {
+          localStorage.setItem("seascape_email_popup_shown", "subscribed");
+        } catch (error) {
+          // Ignore private mode / storage failures.
+        }
+        showInlineEmailSuccess(form);
+      })
+      .catch(function (error) {
+        reportInlineEmailCaptureFailure(trackingPayload, error);
       });
-    }).then(function () {
-      try {
-        localStorage.setItem("seascape_email_popup_shown", "subscribed");
-      } catch (error) {
-        // Ignore private mode / storage failures.
-      }
-      showInlineEmailSuccess(form);
-    }).catch(function () {});
   }
 
   function bindTrackedForms() {

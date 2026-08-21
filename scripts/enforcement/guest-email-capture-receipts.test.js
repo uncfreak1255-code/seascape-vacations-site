@@ -418,6 +418,7 @@ test("guest email capture stores sanitized metrics after a successful Mailchimp 
 
     assert.deepEqual(JSON.parse(response.body), {
       stored: true,
+      tagged: true,
       totalCaptures: 1,
       pagePath: "/guides/bradenton-vs-sarasota/",
       placement: "inline",
@@ -459,16 +460,17 @@ test("guest email capture stores sanitized metrics after a successful Mailchimp 
   }
 });
 
-test("guest email capture falls back to the hosted Mailchimp form when marketing API credentials are missing", async () => {
-  let storedMetrics = null;
-  const warnings = [];
-  const originalWarn = console.warn;
+test("guest email capture fails closed when marketing API credentials are missing", async () => {
+  let storeTouched = false;
+  const errors = [];
+  const originalError = console.error;
   const mockStore = {
     async get() {
-      return storedMetrics;
+      storeTouched = true;
+      return null;
     },
-    async set(_key, value) {
-      storedMetrics = value;
+    async set() {
+      storeTouched = true;
     }
   };
 
@@ -480,83 +482,6 @@ test("guest email capture falls back to the hosted Mailchimp form when marketing
   delete process.env.MAILCHIMP_AUDIENCE_ID;
   delete process.env.MAILCHIMP_AUDIENCE_IDS;
   delete process.env.MAILCHIMP_SERVER_PREFIX;
-  console.warn = function patchedWarn(label, payload) {
-    warnings.push({ label, payload });
-  };
-
-  try {
-    const response = await handleGuestEmailCapture(
-      {
-        httpMethod: "POST",
-        body: JSON.stringify({
-          name: "Sawyer",
-          email: "sawyer@example.com",
-          pagePath: "/",
-          placement: "popup",
-          createdAt: "2026-05-12T12:00:00.000Z"
-        })
-      },
-      undefined,
-      mockStore,
-      async (url, options = {}) => {
-        assert.match(String(url), /seascape-vacations\.us6\.list-manage\.com\/subscribe\/post/);
-        assert.equal(options.method, "POST");
-        return {
-          ok: true,
-          status: 200
-        };
-      }
-    );
-
-    assert.deepEqual(JSON.parse(response.body), {
-      stored: true,
-      totalCaptures: 1,
-      pagePath: "/",
-      placement: "popup",
-      deliveryMode: "legacy_form"
-    });
-
-    const parsedMetrics = JSON.parse(storedMetrics);
-    assert.equal(parsedMetrics.receipts[0].mailchimp.mode, "legacy-form");
-    assert.deepEqual(parsedMetrics.receipts[0].mailchimp.warnings, ["marketing-api-unconfigured"]);
-    assert.deepEqual(warnings.map((entry) => entry.label), ["mailchimp_legacy_form_fallback"]);
-    assert.equal(warnings[0].payload.reason, "marketing_api_unconfigured");
-  } finally {
-    console.warn = originalWarn;
-    restoreEnvValue("MAILCHIMP_API_KEY", previousApiKey);
-    restoreEnvValue("MAILCHIMP_AUDIENCE_ID", previousAudienceId);
-    restoreEnvValue("MAILCHIMP_AUDIENCE_IDS", previousAudienceIds);
-    restoreEnvValue("MAILCHIMP_SERVER_PREFIX", previousServerPrefix);
-  }
-});
-
-test("guest email capture logs fallback when marketing API submit fails", async () => {
-  let storedMetrics = null;
-  const warnings = [];
-  const errors = [];
-  const fetchCalls = [];
-  const originalWarn = console.warn;
-  const originalError = console.error;
-  const mockStore = {
-    async get() {
-      return storedMetrics;
-    },
-    async set(_key, value) {
-      storedMetrics = value;
-    }
-  };
-
-  const previousApiKey = process.env.MAILCHIMP_API_KEY;
-  const previousAudienceId = process.env.MAILCHIMP_AUDIENCE_ID;
-  const previousAudienceIds = process.env.MAILCHIMP_AUDIENCE_IDS;
-  const previousServerPrefix = process.env.MAILCHIMP_SERVER_PREFIX;
-  process.env.MAILCHIMP_API_KEY = "test-key-us6";
-  process.env.MAILCHIMP_AUDIENCE_ID = "95e5a594d1";
-  delete process.env.MAILCHIMP_AUDIENCE_IDS;
-  delete process.env.MAILCHIMP_SERVER_PREFIX;
-  console.warn = function patchedWarn(label, payload) {
-    warnings.push({ label, payload });
-  };
   console.error = function patchedError(label, payload) {
     errors.push({ label, payload });
   };
@@ -575,40 +500,192 @@ test("guest email capture logs fallback when marketing API submit fails", async 
       },
       undefined,
       mockStore,
-      async (url, options = {}) => {
-        fetchCalls.push({ url: String(url), method: options.method || "GET" });
-        if (String(url).includes("api.mailchimp.com")) {
-          return {
-            ok: false,
-            status: 503
-          };
-        }
-        assert.match(String(url), /seascape-vacations\.us6\.list-manage\.com\/subscribe\/post/);
-        assert.equal(options.method, "POST");
+      async () => {
+        assert.fail("untagged legacy Mailchimp form must not be used");
+      }
+    );
+
+    assert.equal(response.statusCode, 502);
+    assert.deepEqual(JSON.parse(response.body), {
+      stored: false,
+      tagged: false,
+      pagePath: "/",
+      placement: "popup",
+      deliveryMode: null,
+      reason: "marketing_api_unconfigured"
+    });
+    assert.equal(storeTouched, false);
+    assert.equal(errors.some((entry) => entry.label === "marketing_api_unconfigured"), true);
+    assert.equal(errors.some((entry) => entry.label === "guest_capture_mailchimp_incomplete"), true);
+  } finally {
+    console.error = originalError;
+    restoreEnvValue("MAILCHIMP_API_KEY", previousApiKey);
+    restoreEnvValue("MAILCHIMP_AUDIENCE_ID", previousAudienceId);
+    restoreEnvValue("MAILCHIMP_AUDIENCE_IDS", previousAudienceIds);
+    restoreEnvValue("MAILCHIMP_SERVER_PREFIX", previousServerPrefix);
+  }
+});
+
+test("guest email capture fails closed when marketing API submit fails", async () => {
+  let storedMetrics = null;
+  const errors = [];
+  const fetchCalls = [];
+  const originalError = console.error;
+  const mockStore = {
+    async get() {
+      return storedMetrics;
+    },
+    async set(_key, value) {
+      storedMetrics = value;
+    }
+  };
+
+  const previousApiKey = process.env.MAILCHIMP_API_KEY;
+  const previousAudienceId = process.env.MAILCHIMP_AUDIENCE_ID;
+  const previousAudienceIds = process.env.MAILCHIMP_AUDIENCE_IDS;
+  const previousServerPrefix = process.env.MAILCHIMP_SERVER_PREFIX;
+  process.env.MAILCHIMP_API_KEY = "test-key-us6";
+  process.env.MAILCHIMP_AUDIENCE_ID = "95e5a594d1";
+  delete process.env.MAILCHIMP_AUDIENCE_IDS;
+  delete process.env.MAILCHIMP_SERVER_PREFIX;
+  console.error = function patchedError(label, payload) {
+    errors.push({ label, payload });
+  };
+
+  try {
+    const response = await handleGuestEmailCapture(
+      {
+        httpMethod: "POST",
+        body: JSON.stringify({
+          name: "Sawyer",
+          email: "sawyer@example.com",
+          pagePath: "/",
+          placement: "popup",
+          createdAt: "2026-05-12T12:00:00.000Z"
+        })
+      },
+      undefined,
+      mockStore,
+      async (url) => {
+        fetchCalls.push({ url: String(url), method: "PUT" });
+        assert.match(String(url), /api\.mailchimp\.com/);
+        assert.doesNotMatch(String(url), /list-manage\.com/);
         return {
-          ok: true,
-          status: 200
+          ok: false,
+          status: 503
         };
       }
     );
 
+    assert.equal(response.statusCode, 502);
+    assert.deepEqual(JSON.parse(response.body), {
+      stored: false,
+      tagged: false,
+      pagePath: "/",
+      placement: "popup",
+      deliveryMode: null,
+      reason: "marketing_api_submit_failed"
+    });
+    assert.equal(storedMetrics, null);
+    assert.deepEqual(fetchCalls.map((call) => call.method), ["PUT"]);
+    assert.equal(errors.some((entry) => entry.label === "marketing_api_submit_failed"), true);
+    assert.equal(errors.some((entry) => entry.label === "guest_capture_mailchimp_incomplete"), true);
+  } finally {
+    console.error = originalError;
+    restoreEnvValue("MAILCHIMP_API_KEY", previousApiKey);
+    restoreEnvValue("MAILCHIMP_AUDIENCE_ID", previousAudienceId);
+    restoreEnvValue("MAILCHIMP_AUDIENCE_IDS", previousAudienceIds);
+    restoreEnvValue("MAILCHIMP_SERVER_PREFIX", previousServerPrefix);
+  }
+});
+
+test("guest email capture persists tag failure without claiming tagged success", async () => {
+  let storedMetrics = null;
+  const errors = [];
+  const originalError = console.error;
+  const mockStore = {
+    async get() {
+      return storedMetrics;
+    },
+    async set(_key, value) {
+      storedMetrics = value;
+    }
+  };
+
+  const previousApiKey = process.env.MAILCHIMP_API_KEY;
+  const previousAudienceId = process.env.MAILCHIMP_AUDIENCE_ID;
+  const previousAudienceIds = process.env.MAILCHIMP_AUDIENCE_IDS;
+  const previousServerPrefix = process.env.MAILCHIMP_SERVER_PREFIX;
+  process.env.MAILCHIMP_API_KEY = "test-key-us6";
+  process.env.MAILCHIMP_AUDIENCE_ID = "95e5a594d1";
+  delete process.env.MAILCHIMP_AUDIENCE_IDS;
+  delete process.env.MAILCHIMP_SERVER_PREFIX;
+  console.error = function patchedError(label, payload) {
+    errors.push({ label, payload });
+  };
+
+  try {
+    const response = await handleGuestEmailCapture(
+      {
+        httpMethod: "POST",
+        body: JSON.stringify({
+          name: "Sawyer",
+          email: "sawyer@example.com",
+          pagePath: "/",
+          placement: "popup",
+          createdAt: "2026-05-12T12:00:00.000Z"
+        })
+      },
+      undefined,
+      mockStore,
+      async (url) => {
+        const parsed = new URL(url);
+        if (parsed.pathname.endsWith("/tags")) {
+          return {
+            ok: false,
+            status: 500,
+            async text() {
+              return JSON.stringify({ detail: "tag sync failed" });
+            }
+          };
+        }
+        if (parsed.pathname.endsWith("/events")) {
+          return {
+            ok: true,
+            status: 204,
+            async text() {
+              return "";
+            }
+          };
+        }
+        return {
+          ok: true,
+          status: 200,
+          async text() {
+            return JSON.stringify({ id: "member-1" });
+          }
+        };
+      }
+    );
+
+    assert.equal(response.statusCode, 502);
     assert.deepEqual(JSON.parse(response.body), {
       stored: true,
+      tagged: false,
       totalCaptures: 1,
       pagePath: "/",
       placement: "popup",
-      deliveryMode: "legacy_form"
+      deliveryMode: "marketing_api",
+      reason: "mailchimp_tags_sync_failed"
     });
 
     const parsedMetrics = JSON.parse(storedMetrics);
-    assert.equal(parsedMetrics.receipts[0].mailchimp.mode, "legacy-form");
-    assert.deepEqual(parsedMetrics.receipts[0].mailchimp.warnings, ["marketing-api-submit-failed"]);
-    assert.deepEqual(fetchCalls.map((call) => call.method), ["PUT", "POST"]);
-    assert.deepEqual(errors.map((entry) => entry.label), ["marketing_api_submit_failed"]);
-    assert.deepEqual(warnings.map((entry) => entry.label), ["mailchimp_legacy_form_fallback"]);
-    assert.equal(warnings[0].payload.reason, "marketing_api_submit_failed");
+    assert.equal(parsedMetrics.receipts[0].mailchimp.mode, "marketing-api");
+    assert.deepEqual(parsedMetrics.receipts[0].mailchimp.warnings, ["mailchimp-tags-sync-failed"]);
+    assert.equal("tags" in parsedMetrics.receipts[0].mailchimp, false);
+    assert.equal(errors.some((entry) => entry.label === "mailchimp_tags_sync_failed"), true);
+    assert.equal(errors.some((entry) => entry.label === "guest_capture_tagging_incomplete"), true);
   } finally {
-    console.warn = originalWarn;
     console.error = originalError;
     restoreEnvValue("MAILCHIMP_API_KEY", previousApiKey);
     restoreEnvValue("MAILCHIMP_AUDIENCE_ID", previousAudienceId);
@@ -786,12 +863,11 @@ test("guest email capture rejects malformed json before touching the store", asy
   }
 });
 
-test("guest email capture logs when the legacy Mailchimp fallback submit also fails", async () => {
+test("guest email capture does not use untagged legacy Mailchimp form when marketing API is unconfigured", async () => {
   const previousApiKey = process.env.MAILCHIMP_API_KEY;
   const previousAudienceId = process.env.MAILCHIMP_AUDIENCE_ID;
   const previousAudienceIds = process.env.MAILCHIMP_AUDIENCE_IDS;
   const previousServerPrefix = process.env.MAILCHIMP_SERVER_PREFIX;
-  const warningLogs = patchConsoleMethod("warn");
   const errorLogs = patchConsoleMethod("error");
   delete process.env.MAILCHIMP_API_KEY;
   delete process.env.MAILCHIMP_AUDIENCE_ID;
@@ -799,47 +875,38 @@ test("guest email capture logs when the legacy Mailchimp fallback submit also fa
   delete process.env.MAILCHIMP_SERVER_PREFIX;
 
   try {
-    await assert.rejects(
-      handleGuestEmailCapture(
-        {
-          httpMethod: "POST",
-          body: JSON.stringify({
-            name: "Sawyer",
-            email: "sawyer@example.com",
-            pagePath: "/",
-            placement: "popup"
-          })
+    const response = await handleGuestEmailCapture(
+      {
+        httpMethod: "POST",
+        body: JSON.stringify({
+          name: "Sawyer",
+          email: "sawyer@example.com",
+          pagePath: "/",
+          placement: "popup"
+        })
+      },
+      undefined,
+      {
+        async get() {
+          throw new Error("store should not be used");
         },
-        undefined,
-        {
-          async get() {
-            throw new Error("store should not be used");
-          },
-          async set() {
-            throw new Error("store should not be used");
-          }
-        },
-        async () => ({ ok: false, status: 500 })
-      ),
-      /Mailchimp submission failed with status 500/
+        async set() {
+          throw new Error("store should not be used");
+        }
+      },
+      async () => {
+        assert.fail("legacy list-manage form must not be called");
+      }
     );
 
-    assert.deepEqual(warningLogs.calls, [[
-      "mailchimp_legacy_form_fallback",
-      {
-        reason: "marketing_api_unconfigured",
-        message: undefined
-      }
-    ]]);
-    assert.deepEqual(errorLogs.calls, [[
-      "mailchimp_legacy_form_submit_failed",
-      {
-        reason: "marketing_api_unconfigured",
-        message: "Mailchimp submission failed with status 500"
-      }
-    ]]);
+    assert.equal(response.statusCode, 502);
+    assert.equal(JSON.parse(response.body).reason, "marketing_api_unconfigured");
+    assert.equal(JSON.parse(response.body).tagged, false);
+    assert.equal(
+      errorLogs.calls.some((entry) => entry[0] === "marketing_api_unconfigured"),
+      true
+    );
   } finally {
-    warningLogs.restore();
     errorLogs.restore();
     restoreEnvValue("MAILCHIMP_API_KEY", previousApiKey);
     restoreEnvValue("MAILCHIMP_AUDIENCE_ID", previousAudienceId);
@@ -909,6 +976,7 @@ test("guest email capture returns stored false when metrics write fails after Ma
     assert.equal(response.statusCode, 200);
     assert.deepEqual(JSON.parse(response.body), {
       stored: false,
+      tagged: true,
       pagePath: "/",
       placement: "popup",
       deliveryMode: "marketing_api"
@@ -985,6 +1053,7 @@ test("guest email capture returns stored false when metrics read fails after Mai
     assert.equal(response.statusCode, 200);
     assert.deepEqual(JSON.parse(response.body), {
       stored: false,
+      tagged: true,
       pagePath: "/",
       placement: "popup",
       deliveryMode: "marketing_api"

@@ -2,8 +2,6 @@ const { connectLambda, getStore } = require("@netlify/blobs");
 const {
   GUEST_EMAIL_CAPTURE_STORE_NAME,
   MAILCHIMP_EVENT_NAME,
-  MAILCHIMP_ENDPOINT,
-  MAILCHIMP_QUERY,
   buildGuestEmailCaptureReceipt,
   buildGuestMailchimpEvent,
   buildGuestMailchimpTags,
@@ -110,44 +108,15 @@ async function requestMailchimpJson(config, pathname, method, body, injectedFetc
   return JSON.parse(rawBody);
 }
 
-async function submitToMailchimpForm(payload, injectedFetch) {
-  const transport = injectedFetch || fetch;
-  const body = new URLSearchParams({
-    EMAIL: payload.email,
-    FNAME: payload.name
-  });
-
-  const response = await transport(`${MAILCHIMP_ENDPOINT}?${MAILCHIMP_QUERY}`, {
-    method: "POST",
-    headers: {
-      "content-type": "application/x-www-form-urlencoded; charset=utf-8"
-    },
-    body: body.toString(),
-    redirect: "follow"
-  });
-
-  if (!response.ok) {
-    throw new Error(`Mailchimp submission failed with status ${response.status}`);
-  }
-
-  return {
-    mode: "legacy_form",
-    warnings: [],
-    tags: [],
-    eventName: null
-  };
-}
-
-async function submitToMailchimpFormWithLogging(payload, reason, injectedFetch) {
-  try {
-    return await submitToMailchimpForm(payload, injectedFetch);
-  } catch (error) {
-    console.error("mailchimp_legacy_form_submit_failed", {
-      reason,
-      message: error && error.message ? error.message : String(error)
-    });
-    throw error;
-  }
+function deliveryHasGuestCaptureTag(delivery) {
+  const tags = Array.isArray(delivery && delivery.tags) ? delivery.tags : [];
+  const warnings = Array.isArray(delivery && delivery.warnings) ? delivery.warnings : [];
+  return (
+    delivery &&
+    delivery.mode === "marketing_api" &&
+    tags.includes("guest-capture") &&
+    !warnings.includes("mailchimp_tags_sync_failed")
+  );
 }
 
 async function submitToMailchimpApi(payload, receipt, config, injectedFetch) {
@@ -157,6 +126,7 @@ async function submitToMailchimpApi(payload, receipt, config, injectedFetch) {
   const tags = buildGuestMailchimpTags(receipt);
   const warnings = [];
   const event = buildGuestMailchimpEvent(receipt);
+  let appliedTags = [];
 
   if (firstName) {
     mergeFields.FNAME = firstName;
@@ -192,6 +162,7 @@ async function submitToMailchimpApi(payload, receipt, config, injectedFetch) {
         },
         injectedFetch
       );
+      appliedTags = tags;
     } catch (error) {
       console.error("mailchimp_tags_sync_failed", {
         message: error && error.message ? error.message : String(error)
@@ -220,50 +191,60 @@ async function submitToMailchimpApi(payload, receipt, config, injectedFetch) {
   return {
     mode: "marketing_api",
     warnings,
-    tags,
+    tags: appliedTags,
     eventName: event ? event.name : MAILCHIMP_EVENT_NAME
   };
-}
-
-function logMailchimpFallback(reason, error) {
-  console.warn("mailchimp_legacy_form_fallback", {
-    reason,
-    message: error && error.message ? error.message : undefined
-  });
 }
 
 async function submitToMailchimp(payload, receipt, injectedFetch) {
   const config = buildMailchimpConfig();
   if (!config) {
-    logMailchimpFallback("marketing_api_unconfigured");
-    const fallbackResult = await submitToMailchimpFormWithLogging(
-      payload,
-      "marketing_api_unconfigured",
-      injectedFetch
-    );
-    return {
-      ...fallbackResult,
-      warnings: ["marketing_api_unconfigured"]
-    };
+    console.error("marketing_api_unconfigured", {
+      reason: "missing_mailchimp_marketing_api_config"
+    });
+    const error = new Error("marketing_api_unconfigured");
+    error.code = "marketing_api_unconfigured";
+    throw error;
   }
 
   try {
     return await submitToMailchimpApi(payload, receipt, config, injectedFetch);
   } catch (error) {
+    if (error && error.code === "marketing_api_unconfigured") {
+      throw error;
+    }
     console.error("marketing_api_submit_failed", {
       message: error && error.message ? error.message : String(error)
     });
-    logMailchimpFallback("marketing_api_submit_failed", error);
-    const fallbackResult = await submitToMailchimpFormWithLogging(
-      payload,
-      "marketing_api_submit_failed",
-      injectedFetch
-    );
-    return {
-      ...fallbackResult,
-      warnings: ["marketing_api_submit_failed"]
-    };
+    const wrapped = new Error("marketing_api_submit_failed");
+    wrapped.code = "marketing_api_submit_failed";
+    wrapped.cause = error;
+    throw wrapped;
   }
+}
+
+function buildCaptureResponseBody({
+  stored,
+  tagged,
+  receipt,
+  deliveryMode,
+  reason,
+  totalCaptures
+}) {
+  const body = {
+    stored: Boolean(stored),
+    tagged: Boolean(tagged),
+    pagePath: receipt.pagePath,
+    placement: receipt.placement,
+    deliveryMode: deliveryMode || null
+  };
+  if (typeof totalCaptures === "number") {
+    body.totalCaptures = totalCaptures;
+  }
+  if (reason) {
+    body.reason = reason;
+  }
+  return body;
 }
 
 async function handleGuestEmailCapture(event, _context, injectedStore, injectedFetch) {
@@ -295,41 +276,92 @@ async function handleGuestEmailCapture(event, _context, injectedStore, injectedF
     };
   }
 
-  const delivery = await submitToMailchimp(payload, receipt, injectedFetch);
+  let delivery;
+  try {
+    delivery = await submitToMailchimp(payload, receipt, injectedFetch);
+  } catch (error) {
+    const reason =
+      (error && error.code) ||
+      (error && error.message) ||
+      "marketing_api_submit_failed";
+    console.error("guest_capture_mailchimp_incomplete", {
+      reason,
+      message: error && error.message ? error.message : String(error)
+    });
+    return {
+      statusCode: 502,
+      headers: { "content-type": "application/json; charset=utf-8" },
+      body: JSON.stringify(
+        buildCaptureResponseBody({
+          stored: false,
+          tagged: false,
+          receipt,
+          deliveryMode: null,
+          reason
+        })
+      )
+    };
+  }
+
+  const tagged = deliveryHasGuestCaptureTag(delivery);
+  const incompleteReason = !tagged
+    ? (delivery.warnings && delivery.warnings.includes("mailchimp_tags_sync_failed")
+      ? "mailchimp_tags_sync_failed"
+      : "guest_capture_tag_missing")
+    : null;
   const storedReceipt = withMailchimpDelivery(receipt, delivery);
 
+  let metricsStored = false;
+  let totalCaptures;
   try {
     const store = resolveWritableStore(event, injectedStore);
     const existingMetrics = await readGuestEmailCaptureMetrics(store);
     const nextMetrics = mergeGuestEmailCaptureMetrics(existingMetrics, storedReceipt);
     await writeGuestEmailCaptureMetrics(store, nextMetrics);
-    return {
-      statusCode: 200,
-      headers: { "content-type": "application/json; charset=utf-8" },
-      body: JSON.stringify({
-        stored: true,
-        totalCaptures: nextMetrics.totalCaptures,
-        pagePath: storedReceipt.pagePath,
-        placement: storedReceipt.placement,
-        deliveryMode: delivery.mode
-      })
-    };
+    metricsStored = true;
+    totalCaptures = nextMetrics.totalCaptures;
   } catch (error) {
     console.error("guest_capture_metrics_write_failed", {
       submissionId: storedReceipt.submissionId,
       message: error && error.message ? error.message : String(error)
     });
+  }
+
+  if (!tagged) {
+    console.error("guest_capture_tagging_incomplete", {
+      submissionId: storedReceipt.submissionId,
+      reason: incompleteReason,
+      stored: metricsStored
+    });
     return {
-      statusCode: 200,
+      statusCode: 502,
       headers: { "content-type": "application/json; charset=utf-8" },
-      body: JSON.stringify({
-        stored: false,
-        pagePath: storedReceipt.pagePath,
-        placement: storedReceipt.placement,
-        deliveryMode: delivery.mode
-      })
+      body: JSON.stringify(
+        buildCaptureResponseBody({
+          stored: metricsStored,
+          tagged: false,
+          receipt: storedReceipt,
+          deliveryMode: delivery.mode,
+          reason: incompleteReason,
+          totalCaptures
+        })
+      )
     };
   }
+
+  return {
+    statusCode: 200,
+    headers: { "content-type": "application/json; charset=utf-8" },
+    body: JSON.stringify(
+      buildCaptureResponseBody({
+        stored: metricsStored,
+        tagged: true,
+        receipt: storedReceipt,
+        deliveryMode: delivery.mode,
+        totalCaptures
+      })
+    )
+  };
 }
 
 async function handler(event, context) {
