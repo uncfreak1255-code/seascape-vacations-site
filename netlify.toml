@@ -2,6 +2,9 @@
   publish = "_site"
   command = "npm run build"
 
+[functions."guest-email-capture-retry"]
+  schedule = "*/15 * * * *"
+
 [[headers]]
   for = "/*"
   [headers.values]

@@ -817,7 +817,12 @@
     }
 
     return response.json().then(function (data) {
-      if (!data || data.tagged !== true) {
+      var acceptedState = data && (
+        data.tagged === true ||
+        data.captureState === "guest_capture_tag_applied" ||
+        data.captureState === "retry_queued"
+      );
+      if (!acceptedState) {
         var incomplete = new Error("Guest email capture incomplete");
         incomplete.capturePayload = data || null;
         return Promise.reject(incomplete);
@@ -851,6 +856,8 @@
   }
 
   function submitInlineEmailForm(form) {
+    if (form.dataset.guestCaptureInFlight === "true") return;
+
     var formData = new FormData(form);
     var email = formData.get("email");
     var name = formData.get("name");
@@ -859,7 +866,16 @@
 
     var currentPagePath = getCurrentPagePath();
     var trackingPayload = getPayloadFromElement(form);
+    if (!form.dataset.guestCaptureSubmissionId) {
+      form.dataset.guestCaptureCreatedAt = new Date().toISOString();
+      form.dataset.guestCaptureSubmissionId =
+        window.crypto && typeof window.crypto.randomUUID === "function"
+          ? window.crypto.randomUUID()
+          : "capture-" + form.dataset.guestCaptureCreatedAt + "-" + Math.random().toString(36).slice(2);
+    }
     var submissionPayload = {
+      submissionId: form.dataset.guestCaptureSubmissionId,
+      createdAt: form.dataset.guestCaptureCreatedAt,
       formName: form.dataset.trackForm || "email_capture",
       name: name,
       email: email,
@@ -877,6 +893,7 @@
       consentBasis: trackingPayload.consent_basis
     };
 
+    form.dataset.guestCaptureInFlight = "true";
     fetch(GUEST_EMAIL_CAPTURE_ENDPOINT, {
       method: "POST",
       headers: {
@@ -895,6 +912,7 @@
         showInlineEmailSuccess(form);
       })
       .catch(function (error) {
+        form.dataset.guestCaptureInFlight = "false";
         reportInlineEmailCaptureFailure(trackingPayload, error);
       });
   }

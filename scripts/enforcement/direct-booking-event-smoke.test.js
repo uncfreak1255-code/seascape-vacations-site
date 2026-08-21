@@ -168,6 +168,11 @@ test("inline email capture requires tagged Netlify success and never uses untagg
 
   global.window = {
     dataLayer: [],
+    crypto: {
+      randomUUID() {
+        return "capture-browser-1";
+      }
+    },
     location: {
       href: "http://localhost/guides/bradenton-vs-sarasota/",
       pathname: "/guides/bradenton-vs-sarasota/",
@@ -201,7 +206,12 @@ test("inline email capture requires tagged Netlify success and never uses untagg
     settleCapture = resolve;
   });
   global.fetch = (url, options = {}) => {
-    fetchCalls.push({ url: String(url), method: options.method || "GET", mode: options.mode || null });
+    fetchCalls.push({
+      url: String(url),
+      method: options.method || "GET",
+      mode: options.mode || null,
+      body: options.body ? JSON.parse(options.body) : null
+    });
     if (String(url) === "/.netlify/functions/guest-email-capture") {
       return Promise.reject(new Error("function unavailable"));
     }
@@ -221,15 +231,27 @@ test("inline email capture requires tagged Netlify success and never uses untagg
       target: emailForm,
       preventDefault() {}
     });
+    listeners.submit({
+      target: emailForm,
+      preventDefault() {}
+    });
 
     await Promise.race([
       captureSettled,
       new Promise((_, reject) => setTimeout(() => reject(new Error("capture failure was not reported")), 1000))
     ]);
 
-    assert.equal(fetchCalls.length, 1);
+    listeners.submit({
+      target: emailForm,
+      preventDefault() {}
+    });
+    await new Promise((resolve) => setImmediate(resolve));
+    assert.equal(fetchCalls.length, 2);
     assert.equal(fetchCalls[0].url, "/.netlify/functions/guest-email-capture");
     assert.equal(fetchCalls[0].method, "POST");
+    assert.equal(fetchCalls[0].body.submissionId, "capture-browser-1");
+    assert.equal(fetchCalls[1].body.submissionId, fetchCalls[0].body.submissionId);
+    assert.equal(fetchCalls[1].body.createdAt, fetchCalls[0].body.createdAt);
     assert.equal(
       fetchCalls.some((call) => /list-manage\.com/.test(call.url)),
       false,
@@ -239,7 +261,10 @@ test("inline email capture requires tagged Netlify success and never uses untagg
       window.dataLayer.some((entry) => entry.event === "email_capture_failed"),
       "failed capture should emit a visible analytics event"
     );
-    assert.deepEqual(warnings.map((entry) => entry.label), ["email_capture_failed"]);
+    assert.deepEqual(warnings.map((entry) => entry.label), [
+      "email_capture_failed",
+      "email_capture_failed"
+    ]);
     assert.deepEqual(successClasses, []);
     assert.equal(popupContent.style.display, undefined);
     assert.equal(emailForm.wasReset, undefined);
