@@ -413,6 +413,273 @@ test("inline email capture does not treat untagged function responses as success
   }
 });
 
+test("guide inline email capture shows sibling success and clears in-flight after accept", async () => {
+  const trackingScriptPath = path.join(projectRoot, "src", "assets", "js", "conversion-tracking.js");
+  delete require.cache[require.resolve(trackingScriptPath)];
+  const listeners = {};
+  const fetchCalls = [];
+  const successClasses = [];
+  const storage = {};
+  const guideSuccess = {
+    classList: {
+      add(className) {
+        successClasses.push(className);
+      }
+    }
+  };
+  const guideContent = {
+    style: {},
+    querySelector() {
+      return null;
+    },
+    parentElement: {
+      querySelector(selector) {
+        return selector === "[data-email-capture-success]" ? guideSuccess : null;
+      }
+    }
+  };
+  const emailForm = {
+    tagName: "FORM",
+    textContent: "Guide email capture",
+    dataset: {
+      trackForm: "email_capture",
+      formSubmitEvent: "email_capture_submit",
+      inlineEmailCapture: "true",
+      guideSlug: "bradenton-vs-sarasota",
+      formPlacement: "inline"
+    },
+    parentElement: guideContent,
+    matches(selector) {
+      return selector === "form[data-track-form]";
+    },
+    closest(selector) {
+      if (selector === "[data-email-capture-content]") return guideContent;
+      return null;
+    },
+    getAttribute() {
+      return "";
+    },
+    reset() {
+      this.wasReset = true;
+    }
+  };
+
+  global.window = {
+    dataLayer: [],
+    crypto: {
+      randomUUID() {
+        return "capture-guide-accept-1";
+      }
+    },
+    location: {
+      href: "http://localhost/guides/bradenton-vs-sarasota/",
+      pathname: "/guides/bradenton-vs-sarasota/",
+      search: ""
+    }
+  };
+  global.document = {
+    readyState: "loading",
+    referrer: "",
+    addEventListener(eventName, handler) {
+      listeners[eventName] = handler;
+    },
+    querySelectorAll() {
+      return [];
+    }
+  };
+  global.localStorage = {
+    setItem(key, value) {
+      storage[key] = value;
+      settleCapture();
+    }
+  };
+  global.FormData = class FormDataStub {
+    get(field) {
+      if (field === "email") return "guest@example.com";
+      if (field === "name") return "Test Guest";
+      return "";
+    }
+  };
+  let settleCapture;
+  const captureSettled = new Promise((resolve) => {
+    settleCapture = resolve;
+  });
+  global.fetch = (url, options = {}) => {
+    fetchCalls.push({
+      url: String(url),
+      method: options.method || "GET",
+      body: options.body ? JSON.parse(options.body) : null
+    });
+    return Promise.resolve({
+      ok: true,
+      status: 202,
+      json() {
+        return Promise.resolve({
+          tagged: true,
+          captureState: "guest_capture_tag_applied"
+        });
+      }
+    });
+  };
+
+  try {
+    require(trackingScriptPath);
+    listeners.DOMContentLoaded();
+    listeners.submit({
+      target: emailForm,
+      preventDefault() {}
+    });
+
+    await Promise.race([
+      captureSettled,
+      new Promise((_, reject) => setTimeout(() => reject(new Error("accepted capture did not settle")), 1000))
+    ]);
+    await new Promise((resolve) => setImmediate(resolve));
+
+    assert.deepEqual(successClasses, ["is-visible", "show"]);
+    assert.equal(guideContent.style.display, "none");
+    assert.equal(emailForm.wasReset, true);
+    assert.equal(storage.seascape_email_popup_shown, "subscribed");
+    assert.equal(emailForm.dataset.guestCaptureInFlight, "false");
+
+    listeners.submit({
+      target: emailForm,
+      preventDefault() {}
+    });
+    await new Promise((resolve) => setImmediate(resolve));
+    assert.equal(fetchCalls.length, 2, "cleared in-flight lock must allow a later submit");
+  } finally {
+    delete global.window;
+    delete global.document;
+    delete global.localStorage;
+    delete global.fetch;
+    delete global.FormData;
+  }
+});
+
+test("inline email capture preserves server failure reasons on non-OK responses", async () => {
+  const trackingScriptPath = path.join(projectRoot, "src", "assets", "js", "conversion-tracking.js");
+  delete require.cache[require.resolve(trackingScriptPath)];
+  const listeners = {};
+  const warnings = [];
+  const originalWarn = console.warn;
+  const emailForm = {
+    tagName: "FORM",
+    textContent: "Email capture",
+    dataset: {
+      trackForm: "email_capture",
+      formSubmitEvent: "email_capture_submit",
+      inlineEmailCapture: "true",
+      guideSlug: "bradenton-vs-sarasota",
+      formPlacement: "inline"
+    },
+    parentElement: {
+      querySelector() {
+        return null;
+      }
+    },
+    matches(selector) {
+      return selector === "form[data-track-form]";
+    },
+    closest() {
+      return null;
+    },
+    getAttribute() {
+      return "";
+    },
+    reset() {
+      this.wasReset = true;
+    }
+  };
+
+  global.window = {
+    dataLayer: [],
+    crypto: {
+      randomUUID() {
+        return "capture-http-error-1";
+      }
+    },
+    location: {
+      href: "http://localhost/guides/bradenton-vs-sarasota/",
+      pathname: "/guides/bradenton-vs-sarasota/",
+      search: ""
+    }
+  };
+  global.document = {
+    readyState: "loading",
+    referrer: "",
+    addEventListener(eventName, handler) {
+      listeners[eventName] = handler;
+    },
+    querySelectorAll() {
+      return [];
+    }
+  };
+  global.localStorage = {
+    setItem() {
+      throw new Error("failed capture must not mark the popup as subscribed");
+    }
+  };
+  global.FormData = class FormDataStub {
+    get(field) {
+      if (field === "email") return "guest@example.com";
+      if (field === "name") return "Test Guest";
+      return "";
+    }
+  };
+  let settleCapture;
+  const captureSettled = new Promise((resolve) => {
+    settleCapture = resolve;
+  });
+  global.fetch = () =>
+    Promise.resolve({
+      ok: false,
+      status: 503,
+      json() {
+        return Promise.resolve({
+          stored: false,
+          tagged: false,
+          captureState: "visible_failure",
+          reason: "retry_persistence_failed"
+        });
+      }
+    });
+  console.warn = function patchedWarn(label, payload) {
+    warnings.push({ label, payload });
+    if (label === "email_capture_failed") {
+      settleCapture();
+    }
+  };
+
+  try {
+    require(trackingScriptPath);
+    listeners.DOMContentLoaded();
+    listeners.submit({
+      target: emailForm,
+      preventDefault() {}
+    });
+
+    await Promise.race([
+      captureSettled,
+      new Promise((_, reject) => setTimeout(() => reject(new Error("capture failure was not reported")), 1000))
+    ]);
+
+    const failedEvent = window.dataLayer.find((entry) => entry.event === "email_capture_failed");
+    assert.ok(failedEvent, "failed capture should emit email_capture_failed");
+    assert.equal(failedEvent.payload.capture_failure_reason, "retry_persistence_failed");
+    assert.equal(warnings[0].label, "email_capture_failed");
+    assert.equal(warnings[0].payload.reason, "retry_persistence_failed");
+    assert.equal(emailForm.wasReset, undefined);
+  } finally {
+    console.warn = originalWarn;
+    delete global.window;
+    delete global.document;
+    delete global.localStorage;
+    delete global.fetch;
+    delete global.FormData;
+  }
+});
+
 test("conversion tracking scrubs obvious PII before analytics payloads reach dataLayer", () => {
   const smoke = loadSmokeModule();
   const events = smoke.simulateSanitizedAnalyticsPayload({

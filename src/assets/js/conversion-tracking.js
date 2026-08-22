@@ -787,19 +787,26 @@
 
   function showInlineEmailSuccess(form) {
     var success = form.parentElement && form.parentElement.querySelector("[data-email-capture-success]");
+    var captureContent = null;
+    if (typeof form.closest === "function") {
+      captureContent = form.closest("[data-email-capture-content]");
+    }
     if (!success && typeof form.closest === "function") {
       var captureRoot = form.closest("[data-email-capture-root]");
       if (captureRoot && typeof captureRoot.querySelector === "function") {
         success = captureRoot.querySelector("[data-email-capture-success]");
       }
     }
+    // Guide inline forms keep success as a sibling of [data-email-capture-content]
+    // without a [data-email-capture-root] ancestor.
+    if (!success && captureContent && captureContent.parentElement &&
+        typeof captureContent.parentElement.querySelector === "function") {
+      success = captureContent.parentElement.querySelector("[data-email-capture-success]");
+    }
     if (!success) return;
 
-    if (typeof form.closest === "function") {
-      var captureContent = form.closest("[data-email-capture-content]");
-      if (captureContent && captureContent.style) {
-        captureContent.style.display = "none";
-      }
+    if (captureContent && captureContent.style) {
+      captureContent.style.display = "none";
     }
 
     success.classList.add("is-visible");
@@ -808,27 +815,43 @@
   }
 
   function parseGuestCaptureResponse(response) {
-    if (!response || typeof response.ok !== "boolean" || !response.ok) {
-      return Promise.reject(new Error("Guest email capture failed"));
-    }
-
-    if (typeof response.json !== "function") {
-      return Promise.reject(new Error("Guest email capture response missing body"));
-    }
-
-    return response.json().then(function (data) {
-      var acceptedState = data && (
-        data.tagged === true ||
-        data.captureState === "guest_capture_tag_applied" ||
-        data.captureState === "retry_queued"
+    if (!response || typeof response.json !== "function") {
+      return Promise.reject(
+        new Error(
+          response && response.ok
+            ? "Guest email capture response missing body"
+            : "Guest email capture failed"
+        )
       );
-      if (!acceptedState) {
-        var incomplete = new Error("Guest email capture incomplete");
-        incomplete.capturePayload = data || null;
-        return Promise.reject(incomplete);
+    }
+
+    return response.json().then(
+      function (data) {
+        var acceptedState = data && (
+          data.tagged === true ||
+          data.captureState === "guest_capture_tag_applied" ||
+          data.captureState === "retry_queued"
+        );
+        if (response.ok && acceptedState) {
+          return data;
+        }
+
+        var failure = new Error(
+          response.ok ? "Guest email capture incomplete" : "Guest email capture failed"
+        );
+        failure.capturePayload = data || null;
+        return Promise.reject(failure);
+      },
+      function () {
+        return Promise.reject(
+          new Error(
+            response.ok
+              ? "Guest email capture response missing body"
+              : "Guest email capture failed"
+          )
+        );
       }
-      return data;
-    });
+    );
   }
 
   function reportInlineEmailCaptureFailure(trackingPayload, error) {
@@ -910,6 +933,7 @@
           // Ignore private mode / storage failures.
         }
         showInlineEmailSuccess(form);
+        form.dataset.guestCaptureInFlight = "false";
       })
       .catch(function (error) {
         form.dataset.guestCaptureInFlight = "false";
