@@ -4,8 +4,6 @@
   if (window.__seascapeConversionTrackingLoaded) return;
   window.__seascapeConversionTrackingLoaded = true;
 
-  var MAILCHIMP_ENDPOINT = "https://seascape-vacations.us6.list-manage.com/subscribe/post";
-  var MAILCHIMP_QUERY = "u=48f234eebd9cb530fd2f217fe&id=95e5a594d1&f_id=008996e5f0";
   var GUEST_EMAIL_CAPTURE_ENDPOINT = "/.netlify/functions/guest-email-capture";
   var BOOKING_HANDOFF_ENDPOINT = "/.netlify/functions/booking-handoff";
   var BOOKING_HANDOFF_SESSION_KEY = "seascape_booking_handoff_session_id";
@@ -20,7 +18,7 @@
     "guide_book_direct_click",
     "guide_property_check_dates_click",
     "email_capture_submit",
-    "email_capture_fallback",
+    "email_capture_failed",
     "booking_engine_handoff",
     "catalog_book_direct_click",
     "catalog_collection_click",
@@ -789,45 +787,217 @@
 
   function showInlineEmailSuccess(form) {
     var success = form.parentElement && form.parentElement.querySelector("[data-email-capture-success]");
+    var captureContent = null;
+    if (typeof form.closest === "function") {
+      captureContent = form.closest("[data-email-capture-content]");
+    }
     if (!success && typeof form.closest === "function") {
       var captureRoot = form.closest("[data-email-capture-root]");
       if (captureRoot && typeof captureRoot.querySelector === "function") {
         success = captureRoot.querySelector("[data-email-capture-success]");
       }
     }
+    // Guide inline forms keep success as a sibling of [data-email-capture-content]
+    // without a [data-email-capture-root] ancestor.
+    if (!success && captureContent && captureContent.parentElement &&
+        typeof captureContent.parentElement.querySelector === "function") {
+      success = captureContent.parentElement.querySelector("[data-email-capture-success]");
+    }
     if (!success) return;
 
-    if (typeof form.closest === "function") {
-      var captureContent = form.closest("[data-email-capture-content]");
-      if (captureContent && captureContent.style) {
-        captureContent.style.display = "none";
-      }
+    hideEmailCaptureOutcome(form, "[data-email-capture-pending]");
+    hideEmailCaptureOutcome(form, "[data-email-capture-error]");
+
+    if (captureContent && captureContent.style) {
+      captureContent.style.display = "none";
     }
 
     success.classList.add("is-visible");
     success.classList.add("show");
+    if (typeof success.hidden === "boolean") {
+      success.hidden = false;
+    }
     form.reset();
   }
 
+  function findEmailCaptureOutcome(form, selector) {
+    if (!form) return null;
+    if (form.parentElement && typeof form.parentElement.querySelector === "function") {
+      var fromParent = form.parentElement.querySelector(selector);
+      if (fromParent) return fromParent;
+    }
+    if (typeof form.closest !== "function") return null;
+
+    var captureRoot = form.closest("[data-email-capture-root]");
+    if (captureRoot && typeof captureRoot.querySelector === "function") {
+      var fromRoot = captureRoot.querySelector(selector);
+      if (fromRoot) return fromRoot;
+    }
+
+    var captureContent = form.closest("[data-email-capture-content]");
+    if (captureContent && captureContent.parentElement &&
+        typeof captureContent.parentElement.querySelector === "function") {
+      return captureContent.parentElement.querySelector(selector);
+    }
+    return null;
+  }
+
+  function setEmailCaptureOutcomeVisibility(node, isVisible) {
+    if (!node) return;
+    if (node.style) {
+      if (isVisible) {
+        if (node.style.display === "none") {
+          node.style.display = "";
+        }
+      } else {
+        node.style.display = "none";
+      }
+    }
+    if (node.classList) {
+      if (isVisible) {
+        if (typeof node.classList.add === "function") {
+          node.classList.add("is-visible");
+          node.classList.add("show");
+        }
+      } else if (typeof node.classList.remove === "function") {
+        node.classList.remove("is-visible");
+        node.classList.remove("show");
+      }
+    }
+    if (typeof node.hidden === "boolean") {
+      node.hidden = !isVisible;
+    }
+  }
+
+  function hideEmailCaptureOutcome(form, selector) {
+    setEmailCaptureOutcomeVisibility(findEmailCaptureOutcome(form, selector), false);
+  }
+
+  function showInlineEmailPending(form) {
+    var pending = findEmailCaptureOutcome(form, "[data-email-capture-pending]");
+    if (!pending) return;
+
+    var captureContent = typeof form.closest === "function"
+      ? form.closest("[data-email-capture-content]")
+      : null;
+    hideEmailCaptureOutcome(form, "[data-email-capture-success]");
+    hideEmailCaptureOutcome(form, "[data-email-capture-error]");
+    if (captureContent && captureContent.style) {
+      captureContent.style.display = "none";
+    }
+    setEmailCaptureOutcomeVisibility(pending, true);
+  }
+
+  function showInlineEmailFailure(form) {
+    var error = findEmailCaptureOutcome(form, "[data-email-capture-error]");
+    var captureContent = typeof form.closest === "function"
+      ? form.closest("[data-email-capture-content]")
+      : null;
+
+    hideEmailCaptureOutcome(form, "[data-email-capture-success]");
+    hideEmailCaptureOutcome(form, "[data-email-capture-pending]");
+    if (captureContent) {
+      setEmailCaptureOutcomeVisibility(captureContent, true);
+    }
+    setEmailCaptureOutcomeVisibility(error, true);
+  }
+
+  function isCompletedGuestCapture(data) {
+    return Boolean(
+      data &&
+        (data.tagged === true || data.captureState === "guest_capture_tag_applied")
+    );
+  }
+
+  function isPendingGuestCapture(data) {
+    return Boolean(data && data.captureState === "retry_queued");
+  }
+
+  function parseGuestCaptureResponse(response) {
+    if (!response || typeof response.json !== "function") {
+      return Promise.reject(
+        new Error(
+          response && response.ok
+            ? "Guest email capture response missing body"
+            : "Guest email capture failed"
+        )
+      );
+    }
+
+    return response.json().then(
+      function (data) {
+        var acceptedState = data && (
+          data.tagged === true ||
+          data.captureState === "guest_capture_tag_applied" ||
+          data.captureState === "retry_queued"
+        );
+        if (response.ok && acceptedState) {
+          return data;
+        }
+
+        var failure = new Error(
+          response.ok ? "Guest email capture incomplete" : "Guest email capture failed"
+        );
+        failure.capturePayload = data || null;
+        return Promise.reject(failure);
+      },
+      function () {
+        return Promise.reject(
+          new Error(
+            response.ok
+              ? "Guest email capture response missing body"
+              : "Guest email capture failed"
+          )
+        );
+      }
+    );
+  }
+
+  function reportInlineEmailCaptureFailure(trackingPayload, error) {
+    var reason =
+      (error && error.capturePayload && error.capturePayload.reason) ||
+      (error && error.message) ||
+      "guest_email_capture_failed";
+
+    try {
+      trackEvent("email_capture_failed", Object.assign({}, trackingPayload, {
+        capture_failure_reason: String(reason).slice(0, 160),
+        capture_endpoint: GUEST_EMAIL_CAPTURE_ENDPOINT
+      }));
+    } catch (_error) {
+      // Analytics is best-effort; never throw out of the capture failure path.
+    }
+
+    if (typeof console !== "undefined" && typeof console.warn === "function") {
+      console.warn("email_capture_failed", {
+        reason: reason,
+        endpoint: GUEST_EMAIL_CAPTURE_ENDPOINT,
+        message: error && error.message ? error.message : "unknown"
+      });
+    }
+  }
+
   function submitInlineEmailForm(form) {
+    if (form.dataset.guestCaptureInFlight === "true") return;
+
     var formData = new FormData(form);
     var email = formData.get("email");
     var name = formData.get("name");
 
     if (!email || !name) return;
 
-    var mailchimpEndpoint =
-      MAILCHIMP_ENDPOINT +
-      "?" +
-      MAILCHIMP_QUERY +
-      "&EMAIL=" +
-      encodeURIComponent(email) +
-      "&FNAME=" +
-      encodeURIComponent(name);
-
     var currentPagePath = getCurrentPagePath();
     var trackingPayload = getPayloadFromElement(form);
+    if (!form.dataset.guestCaptureSubmissionId) {
+      form.dataset.guestCaptureCreatedAt = new Date().toISOString();
+      form.dataset.guestCaptureSubmissionId =
+        window.crypto && typeof window.crypto.randomUUID === "function"
+          ? window.crypto.randomUUID()
+          : "capture-" + form.dataset.guestCaptureCreatedAt + "-" + Math.random().toString(36).slice(2);
+    }
     var submissionPayload = {
+      submissionId: form.dataset.guestCaptureSubmissionId,
+      createdAt: form.dataset.guestCaptureCreatedAt,
       formName: form.dataset.trackForm || "email_capture",
       name: name,
       email: email,
@@ -845,6 +1015,7 @@
       consentBasis: trackingPayload.consent_basis
     };
 
+    form.dataset.guestCaptureInFlight = "true";
     fetch(GUEST_EMAIL_CAPTURE_ENDPOINT, {
       method: "POST",
       headers: {
@@ -852,36 +1023,27 @@
       },
       body: JSON.stringify(submissionPayload),
       keepalive: true
-    }).then(function (response) {
-      if (response && typeof response.ok === "boolean" && !response.ok) {
-        throw new Error("Guest email capture failed");
-      }
-      return response;
-    }).catch(function (error) {
-      trackEvent("email_capture_fallback", Object.assign({}, trackingPayload, {
-        capture_delivery_mode: "legacy_form",
-        fallback_reason: "guest_email_capture_endpoint_failed",
-        capture_endpoint: GUEST_EMAIL_CAPTURE_ENDPOINT
-      }));
-      if (typeof console !== "undefined" && typeof console.warn === "function") {
-        console.warn("email_capture_fallback", {
-          reason: "guest_email_capture_endpoint_failed",
-          endpoint: GUEST_EMAIL_CAPTURE_ENDPOINT,
-          message: error && error.message ? error.message : "unknown"
-        });
-      }
-      return fetch(mailchimpEndpoint, {
-        method: "POST",
-        mode: "no-cors"
+    })
+      .then(parseGuestCaptureResponse)
+      .then(function (data) {
+        form.dataset.guestCaptureInFlight = "false";
+        if (isPendingGuestCapture(data) && !isCompletedGuestCapture(data)) {
+          showInlineEmailPending(form);
+          return;
+        }
+
+        try {
+          localStorage.setItem("seascape_email_popup_shown", "subscribed");
+        } catch (error) {
+          // Ignore private mode / storage failures.
+        }
+        showInlineEmailSuccess(form);
+      })
+      .catch(function (error) {
+        form.dataset.guestCaptureInFlight = "false";
+        showInlineEmailFailure(form);
+        reportInlineEmailCaptureFailure(trackingPayload, error);
       });
-    }).then(function () {
-      try {
-        localStorage.setItem("seascape_email_popup_shown", "subscribed");
-      } catch (error) {
-        // Ignore private mode / storage failures.
-      }
-      showInlineEmailSuccess(form);
-    }).catch(function () {});
   }
 
   function bindTrackedForms() {

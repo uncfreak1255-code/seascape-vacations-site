@@ -1,9 +1,8 @@
+const crypto = require("crypto");
 const { connectLambda, getStore } = require("@netlify/blobs");
 const {
   GUEST_EMAIL_CAPTURE_STORE_NAME,
   MAILCHIMP_EVENT_NAME,
-  MAILCHIMP_ENDPOINT,
-  MAILCHIMP_QUERY,
   buildGuestEmailCaptureReceipt,
   buildGuestMailchimpEvent,
   buildGuestMailchimpTags,
@@ -17,6 +16,15 @@ const {
   withMailchimpDelivery,
   writeGuestEmailCaptureMetrics
 } = require("./_guest-email-capture-metrics");
+
+const CAPTURE_STATES = Object.freeze({
+  TAGGED: "guest_capture_tag_applied",
+  RETRY_QUEUED: "retry_queued",
+  MANUAL_ATTENTION: "manual_attention_required",
+  VISIBLE_FAILURE: "visible_failure"
+});
+const GUEST_CAPTURE_STATE_KEY_PREFIX = "guest_capture_state_v1";
+const MAX_TAG_RETRY_ATTEMPTS = 3;
 
 function resolveWritableStore(event, candidateStore) {
   if (candidateStore && typeof candidateStore.get === "function" && typeof candidateStore.set === "function") {
@@ -110,44 +118,85 @@ async function requestMailchimpJson(config, pathname, method, body, injectedFetc
   return JSON.parse(rawBody);
 }
 
-async function submitToMailchimpForm(payload, injectedFetch) {
-  const transport = injectedFetch || fetch;
-  const body = new URLSearchParams({
-    EMAIL: payload.email,
-    FNAME: payload.name
-  });
-
-  const response = await transport(`${MAILCHIMP_ENDPOINT}?${MAILCHIMP_QUERY}`, {
-    method: "POST",
-    headers: {
-      "content-type": "application/x-www-form-urlencoded; charset=utf-8"
-    },
-    body: body.toString(),
-    redirect: "follow"
-  });
-
-  if (!response.ok) {
-    throw new Error(`Mailchimp submission failed with status ${response.status}`);
-  }
-
-  return {
-    mode: "legacy_form",
-    warnings: [],
-    tags: [],
-    eventName: null
-  };
+function deliveryHasGuestCaptureTag(delivery) {
+  const tags = Array.isArray(delivery && delivery.tags) ? delivery.tags : [];
+  const warnings = Array.isArray(delivery && delivery.warnings) ? delivery.warnings : [];
+  return (
+    delivery &&
+    delivery.mode === "marketing_api" &&
+    tags.includes("guest-capture") &&
+    !warnings.includes("mailchimp_tags_sync_failed")
+  );
 }
 
-async function submitToMailchimpFormWithLogging(payload, reason, injectedFetch) {
+function buildGuestCaptureQueueId(email, submissionId) {
+  return crypto
+    .createHash("sha256")
+    .update(`${buildMailchimpSubscriberHash(email)}|${String(submissionId || "")}`)
+    .digest("hex");
+}
+
+function buildGuestCaptureStateKey(email, submissionId) {
+  return `${GUEST_CAPTURE_STATE_KEY_PREFIX}/retry/${buildGuestCaptureQueueId(email, submissionId)}.json`;
+}
+
+function buildGuestCaptureManualStateKey(email, submissionId) {
+  return `${GUEST_CAPTURE_STATE_KEY_PREFIX}/manual/${buildGuestCaptureQueueId(email, submissionId)}.json`;
+}
+
+function parseGuestCaptureState(value) {
+  if (!value) return null;
+  if (typeof value === "object") return value;
+  if (typeof value !== "string") return null;
+
   try {
-    return await submitToMailchimpForm(payload, injectedFetch);
+    return JSON.parse(value);
+  } catch (_error) {
+    return null;
+  }
+}
+
+async function readGuestCaptureState(store, key) {
+  if (!store) return null;
+
+  try {
+    return parseGuestCaptureState(
+      await store.get(key, { type: "json", consistency: "strong" })
+    );
   } catch (error) {
-    console.error("mailchimp_legacy_form_submit_failed", {
-      reason,
+    console.error("guest_capture_state_read_failed", {
+      key,
       message: error && error.message ? error.message : String(error)
     });
-    throw error;
+    return null;
   }
+}
+
+async function writeGuestCaptureState(store, key, state) {
+  if (!store) {
+    throw new Error("guest_capture_state_store_unavailable");
+  }
+
+  await store.set(key, JSON.stringify(state), {
+    contentType: "application/json; charset=utf-8"
+  });
+}
+
+function buildGuestCaptureState({ state, payload, receipt, attempts, reason }) {
+  const config = buildMailchimpConfig();
+  return {
+    version: 1,
+    state,
+    queueId: buildGuestCaptureQueueId(payload.email, receipt.submissionId),
+    submissionId: receipt.submissionId,
+    subscriberHash: buildMailchimpSubscriberHash(payload.email),
+    audienceId: config ? config.audienceId : null,
+    tags: buildGuestMailchimpTags(receipt),
+    attempts,
+    maxAttempts: MAX_TAG_RETRY_ATTEMPTS,
+    reason,
+    updatedAt: new Date().toISOString()
+  };
 }
 
 async function submitToMailchimpApi(payload, receipt, config, injectedFetch) {
@@ -157,6 +206,7 @@ async function submitToMailchimpApi(payload, receipt, config, injectedFetch) {
   const tags = buildGuestMailchimpTags(receipt);
   const warnings = [];
   const event = buildGuestMailchimpEvent(receipt);
+  let appliedTags = [];
 
   if (firstName) {
     mergeFields.FNAME = firstName;
@@ -192,6 +242,7 @@ async function submitToMailchimpApi(payload, receipt, config, injectedFetch) {
         },
         injectedFetch
       );
+      appliedTags = tags;
     } catch (error) {
       console.error("mailchimp_tags_sync_failed", {
         message: error && error.message ? error.message : String(error)
@@ -220,49 +271,82 @@ async function submitToMailchimpApi(payload, receipt, config, injectedFetch) {
   return {
     mode: "marketing_api",
     warnings,
-    tags,
-    eventName: event ? event.name : MAILCHIMP_EVENT_NAME
+    tags: appliedTags,
+    eventName: event ? event.name : MAILCHIMP_EVENT_NAME,
+    subscriberHash
   };
-}
-
-function logMailchimpFallback(reason, error) {
-  console.warn("mailchimp_legacy_form_fallback", {
-    reason,
-    message: error && error.message ? error.message : undefined
-  });
 }
 
 async function submitToMailchimp(payload, receipt, injectedFetch) {
   const config = buildMailchimpConfig();
   if (!config) {
-    logMailchimpFallback("marketing_api_unconfigured");
-    const fallbackResult = await submitToMailchimpFormWithLogging(
-      payload,
-      "marketing_api_unconfigured",
-      injectedFetch
-    );
-    return {
-      ...fallbackResult,
-      warnings: ["marketing_api_unconfigured"]
-    };
+    console.error("marketing_api_unconfigured", {
+      reason: "missing_mailchimp_marketing_api_config"
+    });
+    const error = new Error("marketing_api_unconfigured");
+    error.code = "marketing_api_unconfigured";
+    throw error;
   }
 
   try {
     return await submitToMailchimpApi(payload, receipt, config, injectedFetch);
   } catch (error) {
+    if (error && error.code === "marketing_api_unconfigured") {
+      throw error;
+    }
     console.error("marketing_api_submit_failed", {
       message: error && error.message ? error.message : String(error)
     });
-    logMailchimpFallback("marketing_api_submit_failed", error);
-    const fallbackResult = await submitToMailchimpFormWithLogging(
-      payload,
-      "marketing_api_submit_failed",
-      injectedFetch
-    );
-    return {
-      ...fallbackResult,
-      warnings: ["marketing_api_submit_failed"]
-    };
+    const wrapped = new Error("marketing_api_submit_failed");
+    wrapped.code = "marketing_api_submit_failed";
+    wrapped.cause = error;
+    throw wrapped;
+  }
+}
+
+function buildCaptureResponseBody({
+  stored,
+  tagged,
+  captureState,
+  retryAttempts,
+  receipt,
+  deliveryMode,
+  reason,
+  totalCaptures
+}) {
+  const body = {
+    stored: Boolean(stored),
+    tagged: Boolean(tagged),
+    captureState,
+    pagePath: receipt.pagePath,
+    placement: receipt.placement,
+    deliveryMode: deliveryMode || null
+  };
+  if (typeof totalCaptures === "number") {
+    body.totalCaptures = totalCaptures;
+  }
+  if (reason) {
+    body.reason = reason;
+  }
+  if (typeof retryAttempts === "number") {
+    body.retryAttempts = retryAttempts;
+  }
+  return body;
+}
+
+async function persistGuestCaptureMetrics(store, receipt) {
+  try {
+    if (!store) throw new Error("guest_capture_metrics_store_unavailable");
+    const existingMetrics = await readGuestEmailCaptureMetrics(store);
+    const nextMetrics = mergeGuestEmailCaptureMetrics(existingMetrics, receipt);
+    await writeGuestEmailCaptureMetrics(store, nextMetrics);
+    return { stored: true, totalCaptures: nextMetrics.totalCaptures };
+  } catch (error) {
+    console.error("guest_capture_metrics_write_failed", {
+      submissionId: receipt.submissionId,
+      message: error && error.message ? error.message : String(error)
+    });
+    return { stored: false, totalCaptures: undefined };
   }
 }
 
@@ -295,41 +379,215 @@ async function handleGuestEmailCapture(event, _context, injectedStore, injectedF
     };
   }
 
-  const delivery = await submitToMailchimp(payload, receipt, injectedFetch);
-  const storedReceipt = withMailchimpDelivery(receipt, delivery);
+  let store = null;
+  try {
+    store = resolveWritableStore(event, injectedStore);
+  } catch (error) {
+    console.error("guest_capture_store_unavailable", {
+      submissionId: receipt.submissionId,
+      message: error && error.message ? error.message : String(error)
+    });
+  }
+
+  const manualStateKey = buildGuestCaptureManualStateKey(payload.email, receipt.submissionId);
+  const manualState = await readGuestCaptureState(store, manualStateKey);
+  if (manualState && manualState.state === CAPTURE_STATES.MANUAL_ATTENTION) {
+    const manualReceipt = withMailchimpDelivery(receipt, {
+      mode: "marketing_api",
+      warnings: [manualState.reason || "mailchimp_tags_sync_failed"],
+      tags: [],
+      eventName: null
+    });
+    const metrics = await persistGuestCaptureMetrics(store, manualReceipt);
+    return {
+      statusCode: 503,
+      headers: { "content-type": "application/json; charset=utf-8" },
+      body: JSON.stringify(
+        buildCaptureResponseBody({
+          stored: metrics.stored,
+          tagged: false,
+          captureState: CAPTURE_STATES.MANUAL_ATTENTION,
+          retryAttempts: Number(manualState.attempts) || MAX_TAG_RETRY_ATTEMPTS,
+          receipt,
+          deliveryMode: "marketing_api",
+          reason: manualState.reason || "mailchimp_tags_sync_failed",
+          totalCaptures: metrics.totalCaptures
+        })
+      )
+    };
+  }
+
+  const stateKey = buildGuestCaptureStateKey(payload.email, receipt.submissionId);
+  const priorState = await readGuestCaptureState(store, stateKey);
+  if (priorState && priorState.state === CAPTURE_STATES.RETRY_QUEUED) {
+    const queuedReceipt = withMailchimpDelivery(receipt, {
+      mode: "marketing_api",
+      warnings: [priorState.reason || "mailchimp_tags_sync_failed"],
+      tags: [],
+      eventName: null
+    });
+    const metrics = await persistGuestCaptureMetrics(store, queuedReceipt);
+    return {
+      statusCode: 202,
+      headers: { "content-type": "application/json; charset=utf-8" },
+      body: JSON.stringify(
+        buildCaptureResponseBody({
+          stored: metrics.stored,
+          tagged: false,
+          captureState: CAPTURE_STATES.RETRY_QUEUED,
+          retryAttempts: Number(priorState.attempts) || 1,
+          receipt,
+          deliveryMode: "marketing_api",
+          reason: priorState.reason || "mailchimp_tags_sync_failed",
+          totalCaptures: metrics.totalCaptures
+        })
+      )
+    };
+  }
+
+  let delivery;
+  let captureState = CAPTURE_STATES.TAGGED;
+  let retryAttempts;
+  let incompleteReason = null;
 
   try {
-    const store = resolveWritableStore(event, injectedStore);
-    const existingMetrics = await readGuestEmailCaptureMetrics(store);
-    const nextMetrics = mergeGuestEmailCaptureMetrics(existingMetrics, storedReceipt);
-    await writeGuestEmailCaptureMetrics(store, nextMetrics);
-    return {
-      statusCode: 200,
-      headers: { "content-type": "application/json; charset=utf-8" },
-      body: JSON.stringify({
-        stored: true,
-        totalCaptures: nextMetrics.totalCaptures,
-        pagePath: storedReceipt.pagePath,
-        placement: storedReceipt.placement,
-        deliveryMode: delivery.mode
-      })
-    };
+    delivery = await submitToMailchimp(payload, receipt, injectedFetch);
   } catch (error) {
-    console.error("guest_capture_metrics_write_failed", {
-      submissionId: storedReceipt.submissionId,
+    const reason =
+      (error && error.code) ||
+      (error && error.message) ||
+      "marketing_api_submit_failed";
+    console.error("guest_capture_mailchimp_incomplete", {
+      reason,
       message: error && error.message ? error.message : String(error)
     });
     return {
-      statusCode: 200,
+      statusCode: 502,
       headers: { "content-type": "application/json; charset=utf-8" },
-      body: JSON.stringify({
-        stored: false,
-        pagePath: storedReceipt.pagePath,
-        placement: storedReceipt.placement,
-        deliveryMode: delivery.mode
-      })
+      body: JSON.stringify(
+        buildCaptureResponseBody({
+          stored: false,
+          tagged: false,
+          captureState: CAPTURE_STATES.VISIBLE_FAILURE,
+          receipt,
+          deliveryMode: null,
+          reason
+        })
+      )
     };
   }
+
+  if (!deliveryHasGuestCaptureTag(delivery)) {
+    retryAttempts = 1;
+    incompleteReason = delivery.warnings && delivery.warnings.includes("mailchimp_tags_sync_failed")
+      ? "mailchimp_tags_sync_failed"
+      : "guest_capture_tag_missing";
+    captureState = CAPTURE_STATES.RETRY_QUEUED;
+
+    try {
+      await writeGuestCaptureState(
+        store,
+        stateKey,
+        buildGuestCaptureState({
+          state: captureState,
+          payload,
+          receipt,
+          attempts: retryAttempts,
+          reason: incompleteReason
+        })
+      );
+    } catch (error) {
+      console.error("guest_capture_retry_persistence_failed", {
+        submissionId: receipt.submissionId,
+        message: error && error.message ? error.message : String(error)
+      });
+      return {
+        statusCode: 503,
+        headers: { "content-type": "application/json; charset=utf-8" },
+        body: JSON.stringify(
+          buildCaptureResponseBody({
+            stored: false,
+            tagged: false,
+            captureState: CAPTURE_STATES.VISIBLE_FAILURE,
+            retryAttempts,
+            receipt,
+            deliveryMode: delivery.mode,
+            reason: "retry_persistence_failed"
+          })
+        )
+      };
+    }
+  }
+
+  const tagged = deliveryHasGuestCaptureTag(delivery);
+  const storedReceipt = withMailchimpDelivery(receipt, delivery);
+
+  const metrics = await persistGuestCaptureMetrics(store, storedReceipt);
+  const metricsStored = metrics.stored;
+  const totalCaptures = metrics.totalCaptures;
+
+  if (captureState === CAPTURE_STATES.RETRY_QUEUED) {
+    console.error("guest_capture_tagging_incomplete", {
+      submissionId: storedReceipt.submissionId,
+      reason: incompleteReason,
+      stored: metricsStored
+    });
+    return {
+      statusCode: 202,
+      headers: { "content-type": "application/json; charset=utf-8" },
+      body: JSON.stringify(
+        buildCaptureResponseBody({
+          stored: metricsStored,
+          tagged: false,
+          captureState,
+          retryAttempts,
+          receipt: storedReceipt,
+          deliveryMode: delivery.mode,
+          reason: incompleteReason,
+          totalCaptures
+        })
+      )
+    };
+  }
+
+  if (captureState === CAPTURE_STATES.MANUAL_ATTENTION) {
+    console.error("guest_capture_retry_exhausted", {
+      submissionId: storedReceipt.submissionId,
+      attempts: retryAttempts,
+      reason: incompleteReason
+    });
+    return {
+      statusCode: 503,
+      headers: { "content-type": "application/json; charset=utf-8" },
+      body: JSON.stringify(
+        buildCaptureResponseBody({
+          stored: metricsStored,
+          tagged: false,
+          captureState,
+          retryAttempts,
+          receipt: storedReceipt,
+          deliveryMode: delivery.mode,
+          reason: incompleteReason,
+          totalCaptures
+        })
+      )
+    };
+  }
+
+  return {
+    statusCode: 200,
+    headers: { "content-type": "application/json; charset=utf-8" },
+    body: JSON.stringify(
+      buildCaptureResponseBody({
+        stored: metricsStored,
+        tagged: true,
+        captureState: CAPTURE_STATES.TAGGED,
+        receipt: storedReceipt,
+        deliveryMode: delivery.mode,
+        totalCaptures
+      })
+    )
+  };
 }
 
 async function handler(event, context) {
@@ -337,6 +595,12 @@ async function handler(event, context) {
 }
 
 exports.buildMailchimpConfig = buildMailchimpConfig;
+exports.CAPTURE_STATES = CAPTURE_STATES;
+exports.GUEST_CAPTURE_STATE_KEY_PREFIX = GUEST_CAPTURE_STATE_KEY_PREFIX;
+exports.MAX_TAG_RETRY_ATTEMPTS = MAX_TAG_RETRY_ATTEMPTS;
+exports.buildGuestCaptureQueueId = buildGuestCaptureQueueId;
+exports.buildGuestCaptureManualStateKey = buildGuestCaptureManualStateKey;
+exports.buildGuestCaptureStateKey = buildGuestCaptureStateKey;
 exports.requestMailchimpJson = requestMailchimpJson;
 exports.submitToMailchimp = submitToMailchimp;
 exports.handleGuestEmailCapture = handleGuestEmailCapture;

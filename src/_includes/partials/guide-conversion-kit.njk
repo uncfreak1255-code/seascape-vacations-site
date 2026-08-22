@@ -190,6 +190,31 @@
     display: block;
   }
 
+  .guide-email-capture-pending,
+  .guide-email-capture-error {
+    display: none;
+    margin-top: 16px;
+    padding: 16px 18px;
+    border-radius: 16px;
+    color: #2D4647;
+  }
+
+  .guide-email-capture-pending.is-visible,
+  .guide-email-capture-error.is-visible {
+    display: block;
+  }
+
+  .guide-email-capture-pending {
+    background: rgba(201, 169, 98, 0.12);
+    border: 1px solid rgba(201, 169, 98, 0.28);
+  }
+
+  .guide-email-capture-error {
+    background: rgba(95, 138, 139, 0.08);
+    border: 1px solid rgba(95, 138, 139, 0.22);
+    color: #3A3A3A;
+  }
+
   .guide-email-capture [hidden],
   .guide-save50-sticky[hidden] {
     display: none !important;
@@ -658,6 +683,10 @@
         <button type="submit">{{ config.emailButtonLabel or "Join The Direct-Booking List" }}</button>
       </form>
       <p class="guide-email-capture-note">{{ config.emailNote or "No spam. Just direct-booking savings and useful Gulf Coast stay ideas." }}</p>
+      <p class="guide-email-capture-error" data-email-capture-error role="alert" hidden>We could not finish saving your email. Please try again in a moment.</p>
+      </div>
+      <div class="guide-email-capture-pending" data-email-capture-pending hidden>
+        We're still confirming your signup. Keep browsing, and try again in a few minutes if this stays pending.
       </div>
       <div class="guide-email-capture-success" data-email-capture-success data-save50-state="cold">
         You're on the list. In the meantime, the stay links below show which homes fit your trip.
