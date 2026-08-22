@@ -680,6 +680,293 @@ test("inline email capture preserves server failure reasons on non-OK responses"
   }
 });
 
+
+test("retry_queued shows pending state instead of completed success", async () => {
+  const trackingScriptPath = path.join(projectRoot, "src", "assets", "js", "conversion-tracking.js");
+  delete require.cache[require.resolve(trackingScriptPath)];
+  const listeners = {};
+  const successClasses = [];
+  const pendingClasses = [];
+  const storage = {};
+  const guideSuccess = {
+    classList: {
+      add(className) {
+        successClasses.push(className);
+      },
+      remove() {}
+    },
+    hidden: true
+  };
+  const guidePending = {
+    classList: {
+      add(className) {
+        pendingClasses.push(className);
+      },
+      remove() {}
+    },
+    hidden: true
+  };
+  const guideContent = {
+    style: {},
+    classList: { add() {}, remove() {} },
+    hidden: false,
+    parentElement: {
+      querySelector(selector) {
+        if (selector === "[data-email-capture-success]") return guideSuccess;
+        if (selector === "[data-email-capture-pending]") return guidePending;
+        if (selector === "[data-email-capture-content]") return guideContent;
+        return null;
+      }
+    }
+  };
+  const emailForm = {
+    tagName: "FORM",
+    textContent: "Guide email capture",
+    dataset: {
+      trackForm: "email_capture",
+      formSubmitEvent: "email_capture_submit",
+      inlineEmailCapture: "true",
+      formPlacement: "inline"
+    },
+    parentElement: guideContent,
+    matches(selector) {
+      return selector === "form[data-track-form]";
+    },
+    closest(selector) {
+      if (selector === "[data-email-capture-content]") return guideContent;
+      return null;
+    },
+    getAttribute() {
+      return "";
+    },
+    reset() {
+      this.wasReset = true;
+    }
+  };
+
+  global.window = {
+    dataLayer: [],
+    crypto: {
+      randomUUID() {
+        return "capture-pending-1";
+      }
+    },
+    location: {
+      href: "http://localhost/guides/bradenton-vs-sarasota/",
+      pathname: "/guides/bradenton-vs-sarasota/",
+      search: ""
+    }
+  };
+  global.document = {
+    readyState: "loading",
+    referrer: "",
+    addEventListener(eventName, handler) {
+      listeners[eventName] = handler;
+    },
+    querySelectorAll() {
+      return [];
+    }
+  };
+  let settleCapture;
+  const captureSettled = new Promise((resolve) => {
+    settleCapture = resolve;
+  });
+  global.localStorage = {
+    setItem(key, value) {
+      storage[key] = value;
+    }
+  };
+  global.FormData = class FormDataStub {
+    get(field) {
+      if (field === "email") return "guest@example.com";
+      if (field === "name") return "Test Guest";
+      return "";
+    }
+  };
+  global.fetch = () =>
+    Promise.resolve({
+      ok: true,
+      status: 202,
+      json() {
+        return Promise.resolve({
+          tagged: false,
+          captureState: "retry_queued",
+          reason: "mailchimp_tags_sync_failed"
+        }).then((data) => {
+          settleCapture();
+          return data;
+        });
+      }
+    });
+
+  try {
+    require(trackingScriptPath);
+    listeners.DOMContentLoaded();
+    listeners.submit({
+      target: emailForm,
+      preventDefault() {}
+    });
+
+    await Promise.race([
+      captureSettled,
+      new Promise((_, reject) => setTimeout(() => reject(new Error("pending capture did not settle")), 1000))
+    ]);
+    await new Promise((resolve) => setImmediate(resolve));
+
+    assert.deepEqual(successClasses, []);
+    assert.deepEqual(pendingClasses, ["is-visible", "show"]);
+    assert.equal(guideContent.style.display, "none");
+    assert.equal(guidePending.hidden, false);
+    assert.equal(emailForm.wasReset, undefined);
+    assert.equal(storage.seascape_email_popup_shown, undefined);
+    assert.equal(emailForm.dataset.guestCaptureInFlight, "false");
+  } finally {
+    delete global.window;
+    delete global.document;
+    delete global.localStorage;
+    delete global.fetch;
+    delete global.FormData;
+  }
+});
+
+test("visible failure shows accessible inline retry guidance", async () => {
+  const trackingScriptPath = path.join(projectRoot, "src", "assets", "js", "conversion-tracking.js");
+  delete require.cache[require.resolve(trackingScriptPath)];
+  const listeners = {};
+  const warnings = [];
+  const originalWarn = console.warn;
+  const captureError = {
+    classList: {
+      add(className) {
+        this.added = (this.added || []).concat(className);
+      },
+      remove() {}
+    },
+    hidden: true
+  };
+  const captureContent = {
+    style: { display: "none" },
+    classList: { add() {}, remove() {} },
+    hidden: false
+  };
+  const emailForm = {
+    tagName: "FORM",
+    textContent: "Email capture",
+    dataset: {
+      trackForm: "email_capture",
+      formSubmitEvent: "email_capture_submit",
+      inlineEmailCapture: "true",
+      formPlacement: "popup"
+    },
+    parentElement: {
+      querySelector(selector) {
+        if (selector === "[data-email-capture-error]") return captureError;
+        if (selector === "[data-email-capture-content]") return captureContent;
+        return null;
+      }
+    },
+    matches(selector) {
+      return selector === "form[data-track-form]";
+    },
+    closest(selector) {
+      if (selector === "[data-email-capture-content]") return captureContent;
+      return null;
+    },
+    getAttribute() {
+      return "";
+    },
+    reset() {
+      this.wasReset = true;
+    }
+  };
+
+  global.window = {
+    dataLayer: [],
+    crypto: {
+      randomUUID() {
+        return "capture-visible-failure-1";
+      }
+    },
+    location: {
+      href: "http://localhost/",
+      pathname: "/",
+      search: ""
+    }
+  };
+  global.document = {
+    readyState: "loading",
+    referrer: "",
+    addEventListener(eventName, handler) {
+      listeners[eventName] = handler;
+    },
+    querySelectorAll() {
+      return [];
+    }
+  };
+  global.localStorage = {
+    setItem() {
+      throw new Error("failed capture must not mark the popup as subscribed");
+    }
+  };
+  global.FormData = class FormDataStub {
+    get(field) {
+      if (field === "email") return "guest@example.com";
+      if (field === "name") return "Test Guest";
+      return "";
+    }
+  };
+  let settleCapture;
+  const captureSettled = new Promise((resolve) => {
+    settleCapture = resolve;
+  });
+  global.fetch = () =>
+    Promise.resolve({
+      ok: false,
+      status: 502,
+      json() {
+        return Promise.resolve({
+          stored: false,
+          tagged: false,
+          captureState: "visible_failure",
+          reason: "marketing_api_unconfigured"
+        });
+      }
+    });
+  console.warn = function patchedWarn(label, payload) {
+    warnings.push({ label, payload });
+    if (label === "email_capture_failed") {
+      settleCapture();
+    }
+  };
+
+  try {
+    require(trackingScriptPath);
+    listeners.DOMContentLoaded();
+    listeners.submit({
+      target: emailForm,
+      preventDefault() {}
+    });
+
+    await Promise.race([
+      captureSettled,
+      new Promise((_, reject) => setTimeout(() => reject(new Error("capture failure was not reported")), 1000))
+    ]);
+
+    assert.equal(captureError.hidden, false);
+    assert.deepEqual(captureError.classList.added, ["is-visible", "show"]);
+    assert.equal(captureContent.style.display, "");
+    assert.equal(emailForm.wasReset, undefined);
+    assert.equal(warnings[0].payload.reason, "marketing_api_unconfigured");
+  } finally {
+    console.warn = originalWarn;
+    delete global.window;
+    delete global.document;
+    delete global.localStorage;
+    delete global.fetch;
+    delete global.FormData;
+  }
+});
+
 test("conversion tracking scrubs obvious PII before analytics payloads reach dataLayer", () => {
   const smoke = loadSmokeModule();
   const events = smoke.simulateSanitizedAnalyticsPayload({
@@ -728,6 +1015,8 @@ test("homepage and shared popup partial use the tracked email capture path", () 
     assert.match(source, /data-track-form="email_capture"/);
     assert.match(source, /data-inline-email-capture="true"/);
     assert.match(source, /data-email-capture-success/);
+    assert.match(source, /data-email-capture-pending/);
+    assert.match(source, /data-email-capture-error/);
     assert.doesNotMatch(source, /onsubmit="handleEmailSubmit\(event\)"/);
   }
 

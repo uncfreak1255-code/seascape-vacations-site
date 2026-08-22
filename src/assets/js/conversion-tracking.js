@@ -805,13 +805,112 @@
     }
     if (!success) return;
 
+    hideEmailCaptureOutcome(form, "[data-email-capture-pending]");
+    hideEmailCaptureOutcome(form, "[data-email-capture-error]");
+
     if (captureContent && captureContent.style) {
       captureContent.style.display = "none";
     }
 
     success.classList.add("is-visible");
     success.classList.add("show");
+    if (typeof success.hidden === "boolean") {
+      success.hidden = false;
+    }
     form.reset();
+  }
+
+  function findEmailCaptureOutcome(form, selector) {
+    if (!form) return null;
+    if (form.parentElement && typeof form.parentElement.querySelector === "function") {
+      var fromParent = form.parentElement.querySelector(selector);
+      if (fromParent) return fromParent;
+    }
+    if (typeof form.closest !== "function") return null;
+
+    var captureRoot = form.closest("[data-email-capture-root]");
+    if (captureRoot && typeof captureRoot.querySelector === "function") {
+      var fromRoot = captureRoot.querySelector(selector);
+      if (fromRoot) return fromRoot;
+    }
+
+    var captureContent = form.closest("[data-email-capture-content]");
+    if (captureContent && captureContent.parentElement &&
+        typeof captureContent.parentElement.querySelector === "function") {
+      return captureContent.parentElement.querySelector(selector);
+    }
+    return null;
+  }
+
+  function setEmailCaptureOutcomeVisibility(node, isVisible) {
+    if (!node) return;
+    if (node.style) {
+      if (isVisible) {
+        if (node.style.display === "none") {
+          node.style.display = "";
+        }
+      } else {
+        node.style.display = "none";
+      }
+    }
+    if (node.classList) {
+      if (isVisible) {
+        if (typeof node.classList.add === "function") {
+          node.classList.add("is-visible");
+          node.classList.add("show");
+        }
+      } else if (typeof node.classList.remove === "function") {
+        node.classList.remove("is-visible");
+        node.classList.remove("show");
+      }
+    }
+    if (typeof node.hidden === "boolean") {
+      node.hidden = !isVisible;
+    }
+  }
+
+  function hideEmailCaptureOutcome(form, selector) {
+    setEmailCaptureOutcomeVisibility(findEmailCaptureOutcome(form, selector), false);
+  }
+
+  function showInlineEmailPending(form) {
+    var pending = findEmailCaptureOutcome(form, "[data-email-capture-pending]");
+    if (!pending) return;
+
+    var captureContent = typeof form.closest === "function"
+      ? form.closest("[data-email-capture-content]")
+      : null;
+    hideEmailCaptureOutcome(form, "[data-email-capture-success]");
+    hideEmailCaptureOutcome(form, "[data-email-capture-error]");
+    if (captureContent && captureContent.style) {
+      captureContent.style.display = "none";
+    }
+    setEmailCaptureOutcomeVisibility(pending, true);
+  }
+
+  function showInlineEmailFailure(form) {
+    var error = findEmailCaptureOutcome(form, "[data-email-capture-error]");
+    var captureContent = typeof form.closest === "function"
+      ? form.closest("[data-email-capture-content]")
+      : null;
+
+    hideEmailCaptureOutcome(form, "[data-email-capture-success]");
+    hideEmailCaptureOutcome(form, "[data-email-capture-pending]");
+    if (captureContent) {
+      setEmailCaptureOutcomeVisibility(captureContent, true);
+    }
+    setEmailCaptureOutcomeVisibility(error, true);
+  }
+
+  function isCompletedGuestCapture(data) {
+    return Boolean(
+      data &&
+        (data.tagged === true || data.captureState === "guest_capture_tag_applied")
+    );
+  }
+
+  function isPendingGuestCapture(data) {
+    return Boolean(data && data.captureState === "retry_queued");
   }
 
   function parseGuestCaptureResponse(response) {
@@ -926,17 +1025,23 @@
       keepalive: true
     })
       .then(parseGuestCaptureResponse)
-      .then(function () {
+      .then(function (data) {
+        form.dataset.guestCaptureInFlight = "false";
+        if (isPendingGuestCapture(data) && !isCompletedGuestCapture(data)) {
+          showInlineEmailPending(form);
+          return;
+        }
+
         try {
           localStorage.setItem("seascape_email_popup_shown", "subscribed");
         } catch (error) {
           // Ignore private mode / storage failures.
         }
         showInlineEmailSuccess(form);
-        form.dataset.guestCaptureInFlight = "false";
       })
       .catch(function (error) {
         form.dataset.guestCaptureInFlight = "false";
+        showInlineEmailFailure(form);
         reportInlineEmailCaptureFailure(trackingPayload, error);
       });
   }
