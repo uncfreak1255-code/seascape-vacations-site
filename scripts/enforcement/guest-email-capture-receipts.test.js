@@ -43,6 +43,7 @@ const {
 } = require("../../netlify/functions/_guest-email-capture-metrics");
 const {
   CAPTURE_STATES,
+  GUEST_CAPTURE_STATE_KEY_PREFIX,
   MAX_TAG_RETRY_ATTEMPTS,
   buildGuestCaptureManualStateKey,
   buildGuestCaptureQueueId,
@@ -54,6 +55,7 @@ const {
   handleGuestEmailCaptureMetricsRequest
 } = require("../../netlify/functions/guest-email-capture-metrics");
 const {
+  MAX_RETRY_BATCH_SIZE,
   handleGuestCaptureRetries
 } = require("../../netlify/functions/guest-email-capture-retry");
 const {
@@ -160,6 +162,31 @@ function createMemoryStore(options = {}) {
       };
     }
   };
+}
+
+function seedQueuedRetry(store, { keySuffix = "queued-1", raw, ...stateOverrides } = {}) {
+  const key = `${GUEST_CAPTURE_STATE_KEY_PREFIX}/retry/${keySuffix}.json`;
+  if (raw !== undefined) {
+    store.values.set(key, raw);
+    return { key };
+  }
+
+  const state = {
+    version: 1,
+    state: CAPTURE_STATES.RETRY_QUEUED,
+    queueId: keySuffix,
+    submissionId: keySuffix,
+    subscriberHash: "abc123def456",
+    audienceId: process.env.MAILCHIMP_AUDIENCE_ID || "95e5a594d1",
+    tags: ["guest-capture"],
+    attempts: 1,
+    maxAttempts: MAX_TAG_RETRY_ATTEMPTS,
+    reason: "mailchimp_tags_sync_failed",
+    updatedAt: "2026-05-12T12:00:00.000Z",
+    ...stateOverrides
+  };
+  store.values.set(key, JSON.stringify(state));
+  return { key, state };
 }
 
 function buildMailchimpFetch({ failTags = false, calls = [] } = {}) {
@@ -1088,8 +1115,192 @@ test("guest capture retry worker has a bounded fifteen-minute schedule", () => {
     netlifyConfig,
     /\[functions\."guest-email-capture-retry"\][\s\S]*schedule = "\*\/15 \* \* \* \*"/
   );
-  const { MAX_RETRY_BATCH_SIZE } = require("../../netlify/functions/guest-email-capture-retry");
   assert.equal(MAX_RETRY_BATCH_SIZE, 10);
+});
+
+test("retry worker skips malformed and non-queued retry records", async () => {
+  const restoreMailchimp = configureTestMailchimp();
+  const store = createMemoryStore();
+  const captureKeys = buildCaptureStateKeys();
+  seedQueuedRetry(store, { keySuffix: "malformed", raw: "{not-json" });
+  seedQueuedRetry(store, {
+    keySuffix: "already-tagged",
+    state: CAPTURE_STATES.TAGGED,
+    queueId: captureKeys.queueId
+  });
+
+  try {
+    const response = await handleGuestCaptureRetries(
+      {},
+      undefined,
+      store,
+      async () => assert.fail("must not call Mailchimp for unprocessable retry records")
+    );
+
+    assert.equal(response.statusCode, 200);
+    assert.deepEqual(JSON.parse(response.body), {
+      processed: 2,
+      tagged: 0,
+      retryQueued: 0,
+      manualAttention: 0,
+      skipped: 2,
+      failures: 0
+    });
+    assert.equal(store.values.has(`${GUEST_CAPTURE_STATE_KEY_PREFIX}/retry/malformed.json`), true);
+    assert.equal(store.values.has(`${GUEST_CAPTURE_STATE_KEY_PREFIX}/retry/already-tagged.json`), true);
+  } finally {
+    restoreMailchimp();
+  }
+});
+
+test("retry worker fails closed when Mailchimp audience no longer matches the queued record", async () => {
+  const restoreMailchimp = configureTestMailchimp();
+  const errorLogs = patchConsoleMethod("error");
+  const store = createMemoryStore();
+  const { key } = seedQueuedRetry(store, {
+    keySuffix: "stale-audience",
+    audienceId: "audience-from-a-previous-list"
+  });
+
+  try {
+    const response = await handleGuestCaptureRetries(
+      {},
+      undefined,
+      store,
+      async () => assert.fail("must not tag a different Mailchimp audience")
+    );
+    const manual = JSON.parse(
+      store.values.get(`${GUEST_CAPTURE_STATE_KEY_PREFIX}/manual/stale-audience.json`)
+    );
+
+    assert.equal(response.statusCode, 200);
+    assert.deepEqual(JSON.parse(response.body), {
+      processed: 1,
+      tagged: 0,
+      retryQueued: 0,
+      manualAttention: 1,
+      skipped: 0,
+      failures: 0
+    });
+    assert.equal(store.values.has(key), false);
+    assert.equal(manual.state, CAPTURE_STATES.MANUAL_ATTENTION);
+    assert.equal(manual.reason, "retry_config_invalid");
+    assert.equal(manual.audienceId, "audience-from-a-previous-list");
+    assert.equal(
+      errorLogs.calls.some((entry) => entry[0] === "guest_capture_retry_manual_attention"),
+      true
+    );
+  } finally {
+    errorLogs.restore();
+    restoreMailchimp();
+  }
+});
+
+test("retry worker fails closed when Mailchimp config or tag payload is missing", async () => {
+  const restoreMailchimp = configureTestMailchimp();
+  const store = createMemoryStore();
+  seedQueuedRetry(store, { keySuffix: "empty-tags", tags: [] });
+  seedQueuedRetry(store, { keySuffix: "no-hash", subscriberHash: "" });
+
+  try {
+    const configured = await handleGuestCaptureRetries(
+      {},
+      undefined,
+      store,
+      async () => assert.fail("must not call Mailchimp with an invalid retry payload")
+    );
+    assert.equal(JSON.parse(configured.body).manualAttention, 2);
+    assert.equal(JSON.parse(configured.body).tagged, 0);
+
+    delete process.env.MAILCHIMP_API_KEY;
+    delete process.env.MAILCHIMP_AUDIENCE_ID;
+    seedQueuedRetry(store, { keySuffix: "no-config" });
+    const unconfigured = await handleGuestCaptureRetries(
+      {},
+      undefined,
+      store,
+      async () => assert.fail("must not call Mailchimp without credentials")
+    );
+    const noConfig = JSON.parse(
+      store.values.get(`${GUEST_CAPTURE_STATE_KEY_PREFIX}/manual/no-config.json`)
+    );
+
+    assert.equal(JSON.parse(unconfigured.body).manualAttention, 1);
+    assert.equal(noConfig.reason, "retry_config_invalid");
+    assert.equal(store.values.has(`${GUEST_CAPTURE_STATE_KEY_PREFIX}/retry/no-config.json`), false);
+  } finally {
+    restoreMailchimp();
+  }
+});
+
+test("retry worker returns 500 when a queued persist hits an etag conflict", async () => {
+  const restoreMailchimp = configureTestMailchimp();
+  const errorLogs = patchConsoleMethod("error");
+  const store = createMemoryStore();
+  const { key } = seedQueuedRetry(store, { keySuffix: "conflict", attempts: 1 });
+  const originalSet = store.set.bind(store);
+  store.set = async (writeKey, value, options) => {
+    if (writeKey === key) {
+      return { modified: false };
+    }
+    return originalSet(writeKey, value, options);
+  };
+
+  try {
+    const response = await handleGuestCaptureRetries(
+      {},
+      undefined,
+      store,
+      buildMailchimpFetch({ failTags: true })
+    );
+
+    assert.equal(response.statusCode, 500);
+    assert.deepEqual(JSON.parse(response.body), {
+      processed: 1,
+      tagged: 0,
+      retryQueued: 0,
+      manualAttention: 0,
+      skipped: 0,
+      failures: 1
+    });
+    assert.equal(store.values.has(key), true);
+    assert.equal(
+      errorLogs.calls.some((entry) => entry[0] === "guest_capture_retry_worker_failed"),
+      true
+    );
+  } finally {
+    errorLogs.restore();
+    restoreMailchimp();
+  }
+});
+
+test("retry worker processes at most the bounded batch size", async () => {
+  const restoreMailchimp = configureTestMailchimp();
+  const store = createMemoryStore();
+  const calls = [];
+  for (let index = 0; index < MAX_RETRY_BATCH_SIZE + 3; index += 1) {
+    seedQueuedRetry(store, { keySuffix: `batch-${String(index).padStart(2, "0")}` });
+  }
+
+  try {
+    const response = await handleGuestCaptureRetries(
+      {},
+      undefined,
+      store,
+      buildMailchimpFetch({ calls })
+    );
+    const remainingRetryKeys = [...store.values.keys()].filter((key) =>
+      key.startsWith(`${GUEST_CAPTURE_STATE_KEY_PREFIX}/retry/`)
+    );
+
+    assert.equal(response.statusCode, 200);
+    assert.equal(JSON.parse(response.body).processed, MAX_RETRY_BATCH_SIZE);
+    assert.equal(JSON.parse(response.body).tagged, MAX_RETRY_BATCH_SIZE);
+    assert.equal(calls.filter((call) => call.url.endsWith("/tags")).length, MAX_RETRY_BATCH_SIZE);
+    assert.equal(remainingRetryKeys.length, 3);
+  } finally {
+    restoreMailchimp();
+  }
 });
 
 test("guest capture relabel updates only matching submission ids", () => {
