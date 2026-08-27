@@ -616,6 +616,12 @@
                 </form>
 
                 <p class="email-popup-privacy">{{ uiIcon('secure', 'ui-icon--inline') }} No spam, ever. Unsubscribe anytime.</p>
+                <p class="email-popup-error" data-email-capture-error role="alert" hidden>We could not finish saving your email. Please try again in a moment.</p>
+            </div>
+
+            <div id="email-pending-content" class="email-popup-pending" data-email-capture-pending hidden>
+                <h3 class="email-popup-title">Still finishing your signup</h3>
+                <p class="email-popup-subtitle">We saved your request and are still confirming it. You can keep browsing; if this stays pending, try again in a few minutes.</p>
             </div>
 
             <!-- Success Content -->

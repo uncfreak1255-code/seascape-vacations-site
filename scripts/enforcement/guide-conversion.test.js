@@ -251,9 +251,9 @@ test("Sarasota Luxe availability click emits exact property and placement contex
   assert.equal(observed.payload.guide_slug, "anna-maria-island-vs-siesta-key");
   assert.equal(observed.payload.property_slug, "sarasota-luxe");
   assert.equal(observed.payload.placement, "before_long_comparison");
-  assert.equal(
+  assert.match(
     observed.payload.link_url,
-    "http://localhost/properties/sarasota-luxe/#check-availability"
+    /^http:\/\/localhost\/properties\/sarasota-luxe\/\?sv_guide_click_id=svg_[^#]+#check-availability$/
   );
   assert.equal(observed.payload.link_text, "See photos and check dates Sarasota Luxe");
 });

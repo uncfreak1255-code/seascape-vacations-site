@@ -2259,6 +2259,22 @@
             display: block;
         }
 
+        .email-popup-pending,
+        .email-popup-error {
+            display: none;
+            text-align: center;
+            margin-top: 8px;
+        }
+
+        .email-popup-pending.show,
+        .email-popup-error.show {
+            display: block;
+        }
+
+        .email-popup-error {
+            color: var(--stone);
+        }
+
         .email-popup-success-icon {
             width: 64px;
             height: 64px;
