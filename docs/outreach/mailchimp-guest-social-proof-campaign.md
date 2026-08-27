@@ -10,13 +10,30 @@ Use this doc plus the template files below as source truth before editing or sen
 
 ## Sender Authority
 
-This repo owns campaign content only. Every Seascape campaign uses Microsoft
-365 / Outlook `info@seascape-vacations.com`; personal Gmail and any other From
-identity are prohibited. Sender enforcement, recipient authorization,
-scheduling, and delivery readback belong in `seascape-ops`. Durable policy is
-`seascape-hub/context/operating-canon.md#business-email`. The Outlook campaign
-lane is Phase 1 hard-disabled in source. No credential, approval, or environment
-variable may activate it.
+Corrected 2026-08-20 from `docs/outreach/2026-08-20-email-marketing-ultrasound.md`.
+
+This repo owns campaign content only. Mailchimp is the live guest-marketing
+sender, delivering from `info@seascape-vacations.com` on an authenticated domain;
+personal Gmail is prohibited. The Microsoft 365 / Outlook campaign lane from
+`info@seascape-vacations.com` is a separate lane that is Phase 1 hard-disabled in
+source, and no credential, approval, or environment variable may activate it.
+Sender enforcement, recipient authorization, scheduling, and delivery readback
+for that Outlook lane belong in `seascape-ops`. Durable policy is
+`seascape-hub/context/operating-canon.md#business-email`.
+
+## Superseded By The House-Fit Artifact
+
+The content in this file was pasted into the live welcome journey's second email.
+As of 2026-08-20 that slot belongs to
+`docs/outreach/templates/save50-house-fit-email.html`, which uses Email 1's
+visual system and sorts the five homes by group size instead of leading with
+guest quotes. Keep this file as the governed archive of the superseded variant.
+Do not paste it back into the journey.
+
+The live variant of this content also carried claim drift that the templates here
+do not support: a sitewide "pools, hot tubs, and beach chairs included at every
+property" line, and specific drive-time claims. Neither traces to
+`src/_data/properties-fallback.json`.
 
 ## Outlook Proof Receipt
 

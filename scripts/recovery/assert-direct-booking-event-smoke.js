@@ -222,7 +222,18 @@ function withTrackingRuntime(callback) {
     },
     setItem() {}
   };
-  global.fetch = () => Promise.resolve();
+  global.fetch = () =>
+    Promise.resolve({
+      ok: true,
+      status: 200,
+      json() {
+        return Promise.resolve({
+          stored: true,
+          tagged: true,
+          deliveryMode: "marketing_api"
+        });
+      }
+    });
   global.FormData = class FormDataStub {
     get(field) {
       if (field === "email") return "guest@example.com";

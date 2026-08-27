@@ -17,6 +17,9 @@
 .email-popup-privacy{font-size:12px;color:#6A6A6A;margin-top:16px}
 .email-popup-success{display:none;text-align:center}
 .email-popup-success.show{display:block}
+.email-popup-pending,.email-popup-error{display:none;text-align:center;margin-top:8px}
+.email-popup-pending.show,.email-popup-error.show{display:block}
+.email-popup-error{color:#3A3A3A}
 .email-popup-success-icon{width:64px;height:64px;background:linear-gradient(135deg,#5F8A8B 0,#3D5C5D 100%);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:28px;color:#fff}
 @media(max-width:600px){.email-popup{padding:36px 24px;margin:20px}.email-popup-title{font-size:26px}}
 </style>
@@ -33,6 +36,11 @@
 <button type="submit" class="email-popup-btn">Get My $50 Credit &rarr;</button>
 </form>
 <p class="email-popup-privacy">&#128274; No spam, ever. Unsubscribe anytime.</p>
+<p class="email-popup-error" data-email-capture-error role="alert" hidden>We could not finish saving your email. Please try again in a moment.</p>
+</div>
+<div id="email-pending-content" class="email-popup-pending" data-email-capture-pending hidden>
+<h3 class="email-popup-title">Still finishing your signup</h3>
+<p class="email-popup-subtitle">We saved your request and are still confirming it. You can keep browsing; if this stays pending, try again in a few minutes.</p>
 </div>
 <div id="email-success-content" class="email-popup-success" data-email-capture-success>
 <div class="email-popup-success-icon">&#10003;</div>
