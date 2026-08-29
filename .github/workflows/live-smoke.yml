@@ -13,7 +13,9 @@ permissions:
 
 jobs:
   live-smoke:
-    runs-on: ubuntu-latest
+    # Keep scheduled readback off GitHub-hosted compute. If the runner is down,
+    # the job queues rather than silently falling back to billable infrastructure.
+    runs-on: [self-hosted, macOS, arm64]
     timeout-minutes: 10
 
     steps:
