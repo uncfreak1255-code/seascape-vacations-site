@@ -1,1 +1,78 @@
-m«ëˆ§½©buªàºg§¶­†æÿÂŠä~Z0³úÞ•æ¬zÆŸzÜ²šU,j›jÇºà7an{¦Š)ßŠW¨¢ë_ŠW›n·š‘ºÞjG§r‡^v‹­¦ën¦)í¢X§zÊ•éà¶î˜7]yÊy×œ¡×¢ž›­†¥¥Ø¬¦V²¶¬™ë,j¢Šzn¶)éº×â•ç^}«¥µú+²×bžŠ.¶›­¢ëiº×â•ç^}«¥µú+²×hº
+name: Release Safety
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: release-safety-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  release-safety:
+    name: release-safety
+    # Public fork PRs execute untrusted source, so only those PRs use hosted Linux.
+    runs-on: ${{ (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name != github.repository) && 'ubuntu-latest' || 'mac-sawbeck-seascape-vacations-site' }}
+    timeout-minutes: 20
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Compute comparison range
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            echo "RANGE=${{ github.event.pull_request.base.sha }}...${{ github.event.pull_request.head.sha }}" >> "$GITHUB_ENV"
+          elif [ "${{ github.event.before }}" = "0000000000000000000000000000000000000000" ]; then
+            echo "RANGE=HEAD^..HEAD" >> "$GITHUB_ENV"
+          else
+            echo "RANGE=${{ github.event.before }}..${{ github.sha }}" >> "$GITHUB_ENV"
+          fi
+
+      - name: Detect dependency manifest changes
+        id: dependency_changes
+        shell: bash
+        run: |
+          if git diff --name-only "$RANGE" | grep -Eq '^(package(-lock)?\.json)$'; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Run dependency audit gate
+        if: github.event_name == 'push' || steps.dependency_changes.outputs.changed == 'true'
+        run: npm run audit:deps
+
+      - name: Run release safety gate
+        run: npm run verify:release -- --range "$RANGE"
+
+  build:
+    name: build
+    needs: release-safety
+    if: always()
+    runs-on: ${{ (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name != github.repository) && 'ubuntu-latest' || 'mac-sawbeck-seascape-vacations-site' }}
+    timeout-minutes: 5
+    steps:
+      - name: Confirm authoritative gate passed
+        run: |
+          if [ "${{ needs.release-safety.result }}" != "success" ]; then
+            echo "release-safety did not pass."
+            exit 1
+          fi
+          echo "Build and tests passed in release-safety."

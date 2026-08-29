@@ -1,1 +1,66 @@
-m«ëˆ§½©buªàºg§¶­†æÿÂŠä~Z0³ú^­ú+™©Üy»ëršU,j›jÇºà7an{¦Š)ßŠW¨¢ë_ŠW›n·š‘ºŞjG§r‡^v‹­¦ën¦)í¢X§zÊ•éà¶î˜7]yÊy×œ¡×¢›­†¥¥Ø¬¦V²¶¬™ë,j¢Šzn¶)éº×â•ç^}«¥µú+²×bŠ.¶›­¢ëiº×â•ç^}«¥µú+²×hº
+name: Performance Budget
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "src/**"
+      - "images/**"
+      - "css/**"
+      - "js/**"
+      - "hero-optimized.jpg"
+      - "hero-mobile.jpg"
+      - "*.png"
+      - "*.webp"
+      - "*.avif"
+      - "config/perf-budget.json"
+      - "scripts/enforcement/build-site.js"
+      - "scripts/perf/**"
+      - "eleventy.config.js"
+      - "lighthouserc.js"
+      - "package.json"
+      - "package-lock.json"
+      - ".github/workflows/performance-budget.yml"
+  schedule:
+    - cron: "17 9 * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: performance-budget-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  performance-budget:
+    name: performance-budget
+    # Scheduled, manual, and same-repository PR runs are self-hosted. Public
+    # fork PRs stay on hosted Linux to keep untrusted code off Sawyer's Mac.
+    runs-on: ${{ (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name != github.repository) && 'ubuntu-latest' || 'mac-sawbeck-seascape-vacations-site' }}
+    timeout-minutes: 20
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build production site
+        run: npm run build
+
+      - name: Check performance budgets
+        run: npm run perf:budget:check
+
+      - name: Upload Lighthouse reports
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: lighthouse-reports
+          path: .lighthouseci/
+          if-no-files-found: ignore
+          retention-days: 7

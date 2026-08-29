@@ -1,1 +1,61 @@
-m«ëˆ§½©buªàºg§¶­†æÿÂŠä~Z0³úek,+Šm¾+.j\¦•KæÚ±î¸Ø[é¢Šwâ•ê(º×â•æÛ­æ¤n·š‘éÜ¡×¢ëiºÛ©Š{h–)Ş²‡åzx-†{¦×^r‡^uç(uè§¦ëa…éiv+)•¬­†+&zËè¢›­Šznµø¥y×Ÿjém~ŠìµØ§¢‹­¦ëhºÚnµø¥y×Ÿjém~ŠìµÚ.
+name: Playwright Visual Gate
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "src/**"
+      - "eleventy.config.js"
+      - "playwright.config.js"
+      - "tests/visual/**"
+      - "scripts/enforcement/run-visual-tests.js"
+      - "scripts/enforcement/capture-visual-proof.js"
+      - "scripts/enforcement/serve-static.js"
+      - "package.json"
+      - "package-lock.json"
+      - ".github/workflows/playwright-visual.yml"
+
+concurrency:
+  group: playwright-visual-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  visual-regression:
+    # Trusted branches use Sawyer's Mac for screenshot fidelity. Fork PRs stay
+    # on GitHub-hosted macOS so untrusted code never executes in Sawyer's session.
+    runs-on: ${{ (github.event.pull_request.head.repo.full_name != github.repository) && 'macos-latest' || 'mac-sawbeck-seascape-vacations-site' }}
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: ".nvmrc"
+          cache: "npm"
+
+      - run: npm ci
+      - run: npm run test:visual:install
+      - run: npm run test:visual
+      - run: npm run proof:visual
+        if: always()
+
+      - name: Upload visual proof bundle
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: visual-proof-bundle
+          path: artifacts/visual-proof/
+          retention-days: 7
+
+      - name: Upload Playwright report
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: playwright-report
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 7
