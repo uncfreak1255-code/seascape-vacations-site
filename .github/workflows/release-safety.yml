@@ -15,7 +15,7 @@ concurrency:
 jobs:
   release-safety:
     name: release-safety
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, macOS, arm64]
     timeout-minutes: 20
 
     steps:
@@ -65,7 +65,8 @@ jobs:
     name: build
     needs: release-safety
     if: always()
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, macOS, arm64]
+    timeout-minutes: 5
     steps:
       - name: Confirm authoritative gate passed
         run: |
