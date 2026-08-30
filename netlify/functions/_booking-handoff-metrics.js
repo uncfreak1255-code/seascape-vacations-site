@@ -70,6 +70,8 @@ function normalizeBookingUrl(value) {
         "checkin",
         "checkout",
         "guests",
+        "listing_id",
+        "property_slug",
         "sv_handoff_id",
         "sv_session_id",
         "sv_guide_click_id"
@@ -92,6 +94,18 @@ function extractListingId(linkUrl, explicitListingId) {
     const url = new URL(normalizeText(linkUrl), "https://seascape-vacations.com/");
     const match = url.pathname.match(/\/listings\/([^/?#]+)/);
     return match ? normalizeToken(match[1], 32) : "";
+  } catch (_error) {
+    return "";
+  }
+}
+
+function extractPropertySlug(linkUrl, explicitPropertySlug) {
+  const explicit = normalizeToken(explicitPropertySlug, 80);
+  if (explicit) return explicit;
+
+  try {
+    const url = new URL(normalizeText(linkUrl), "https://seascape-vacations.com/");
+    return normalizeToken(url.searchParams.get("property_slug"), 80);
   } catch (_error) {
     return "";
   }
@@ -130,6 +144,7 @@ function buildBookingHandoffReceipt(rawPayload) {
     createdAt,
     linkUrl,
     listingId: extractListingId(linkUrl, payload.listingId || payload.listing_id || payload.booking_listing_id),
+    propertySlug: extractPropertySlug(linkUrl, payload.propertySlug || payload.property_slug || payload.booking_property_slug),
     pagePath,
     pageSlug,
     guideSlug: normalizeToken(payload.guideSlug || payload.guide_slug, 80),

@@ -101,11 +101,14 @@ test("direct-booking event smoke validates the three funnel event surfaces", () 
   assert.match(bookingHandoff.payload.link_url, /guests=4/);
   assert.match(bookingHandoff.payload.link_url, /sv_handoff_id=svh_/);
   assert.match(bookingHandoff.payload.link_url, /sv_session_id=svs_/);
+  assert.match(bookingHandoff.payload.link_url, /listing_id=206016/);
+  assert.match(bookingHandoff.payload.link_url, /property_slug=dockside-dreams/);
   assert.match(bookingHandoff.payload.link_url, /sv_guide_click_id=svg_/);
   assert.match(bookingHandoff.payload.booking_handoff_id, /^svh_/);
   assert.match(bookingHandoff.payload.booking_session_id, /^svs_/);
   assert.match(bookingHandoff.payload.guide_direct_click_id, /^svg_/);
   assert.equal(bookingHandoff.payload.booking_listing_id, "206016");
+  assert.equal(bookingHandoff.payload.booking_property_slug, "dockside-dreams");
 
   const popupEvents = smoke.simulatePopupEmailCaptureEvent();
   assert.deepEqual(

@@ -107,7 +107,7 @@ test("booking handoff receipts store only the identity bridge context needed for
     handoffId: "svh_test_123",
     sessionId: "svs_test_456",
     guideDirectClickId: "svg_test_789",
-    linkUrl: "https://book.seascape-vacations.com/listings/206016?utm_source=google&utm_medium=organic&utm_campaign=guide_winners&utm_content=best-time&sv_handoff_id=svh_test_123&sv_session_id=svs_test_456&sv_guide_click_id=svg_test_789&email=guest@example.com&payment_intent=pi_123&payment_intent_client_secret=pi_secret_123&setup_intent=seti_123&setup_intent_client_secret=seti_secret_123&client_secret=secret_123&redirect_status=succeeded",
+    linkUrl: "https://book.seascape-vacations.com/listings/206016?listing_id=206016&property_slug=dockside-dreams&utm_source=google&utm_medium=organic&utm_campaign=guide_winners&utm_content=best-time&sv_handoff_id=svh_test_123&sv_session_id=svs_test_456&sv_guide_click_id=svg_test_789&email=guest@example.com&payment_intent=pi_123&payment_intent_client_secret=pi_secret_123&setup_intent=seti_123&setup_intent_client_secret=seti_secret_123&client_secret=secret_123&redirect_status=succeeded",
     linkText: "Check availability",
     pagePath: "https://seascape-vacations.com/guides/best-time-visit-anna-maria-island/",
     pageSlug: "best-time-visit-anna-maria-island",
@@ -123,6 +123,7 @@ test("booking handoff receipts store only the identity bridge context needed for
   assert.equal(receipt.sessionId, "svs_test_456");
   assert.equal(receipt.guideDirectClickId, "svg_test_789");
   assert.equal(receipt.listingId, "206016");
+  assert.equal(receipt.propertySlug, "dockside-dreams");
   assert.equal(receipt.pagePath, "/guides/best-time-visit-anna-maria-island/");
   assert.equal(receipt.pageSlug, "best-time-visit-anna-maria-island");
   assert.match(receipt.linkUrl, /sv_handoff_id=svh_test_123/);

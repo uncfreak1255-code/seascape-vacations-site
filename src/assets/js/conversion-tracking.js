@@ -41,6 +41,13 @@
     "yahoo.com"
   ];
   var BOOKING_ENGINE_HOST = "book.seascape-vacations.com";
+  var PROPERTY_SLUG_BY_LISTING_ID = {
+    "189511": "the-oasis",
+    "206016": "dockside-dreams",
+    "135880": "river-house",
+    "135881": "sarasota-luxe",
+    "487798": "bradenton-pool-home"
+  };
   var BOOKING_ENGINE_HANDOFF_KEYS = [
     "utm_source",
     "utm_medium",
@@ -50,6 +57,8 @@
     "checkin",
     "checkout",
     "guests",
+    "listing_id",
+    "property_slug",
     "sv_handoff_id",
     "sv_session_id",
     GUIDE_DIRECT_CLICK_PARAM
@@ -337,6 +346,29 @@
       });
     }
 
+    var currentPagePath = getCurrentPagePath();
+    var currentPropertyMatch = currentPagePath.match(/^\/properties\/([^/]+)/i);
+    var propertySlug = node && node.dataset && node.dataset.propertySlug
+      ? node.dataset.propertySlug
+      : currentPropertyMatch
+        ? currentPropertyMatch[1]
+        : "";
+    var listingMatch = url.pathname.match(/\/listings\/([^/?#]+)/i);
+    var listingId = node && node.dataset && (node.dataset.listingId || node.dataset.bookingListingId)
+      ? (node.dataset.listingId || node.dataset.bookingListingId)
+      : listingMatch
+        ? listingMatch[1]
+        : "";
+    if (!propertySlug && listingId) {
+      propertySlug = PROPERTY_SLUG_BY_LISTING_ID[String(listingId).trim()] || "";
+    }
+    if (listingId && !url.searchParams.get("listing_id")) {
+      url.searchParams.set("listing_id", String(listingId).trim());
+    }
+    if (propertySlug && !url.searchParams.get("property_slug")) {
+      url.searchParams.set("property_slug", normalizeTrackingValue(propertySlug));
+    }
+
     var sourceContext = getSourceContext();
     if (!url.searchParams.get("utm_source") && sourceContext.ai_platform) {
       url.searchParams.set("utm_source", normalizeTrackingValue(sourceContext.ai_platform));
@@ -574,6 +606,7 @@
       consent_basis: dataset.consentBasis || "",
       booking_handoff_id: bookingHandoffContext.handoffId,
       booking_session_id: bookingHandoffContext.sessionId,
+      booking_property_slug: bookingHandoffContext.propertySlug,
       guide_direct_click_id: bookingHandoffContext.guideDirectClickId || getCurrentParamValue(GUIDE_DIRECT_CLICK_PARAM),
       booking_listing_id: bookingHandoffContext.listingId
     }, getSourceContext());
@@ -584,7 +617,8 @@
       handoffId: "",
       sessionId: "",
       guideDirectClickId: "",
-      listingId: ""
+      listingId: "",
+      propertySlug: ""
     };
 
     if (!href || typeof URL !== "function") return context;
@@ -597,7 +631,12 @@
       context.sessionId = (url.searchParams.get("sv_session_id") || "").trim();
       context.guideDirectClickId = (url.searchParams.get(GUIDE_DIRECT_CLICK_PARAM) || "").trim();
       var listingMatch = url.pathname.match(/\/listings\/([^/?#]+)/);
-      context.listingId = listingMatch ? listingMatch[1] : "";
+      context.listingId = (url.searchParams.get("listing_id") || (listingMatch ? listingMatch[1] : "")).trim();
+      context.propertySlug = (
+        url.searchParams.get("property_slug") ||
+        PROPERTY_SLUG_BY_LISTING_ID[context.listingId] ||
+        ""
+      ).trim();
     } catch (_error) {
       return context;
     }
@@ -613,6 +652,7 @@
       sessionId: payload.booking_session_id,
       guideDirectClickId: payload.guide_direct_click_id,
       listingId: payload.booking_listing_id,
+      propertySlug: payload.booking_property_slug,
       linkUrl: payload.link_url,
       linkText: payload.link_text,
       pagePath: payload.landing_page_path,
