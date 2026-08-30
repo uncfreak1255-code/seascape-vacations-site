@@ -57,6 +57,6 @@
 
 ## 2026-08-30 Rendering Stability Addendum
 
-- `src/property-management/property-management.njk` changes only the local font-loading policy from `optional` to `swap`. This makes the established visual-regression baseline use stable, locally served font metrics.
+- `src/property-management/property-management.njk` changes only the local font-loading policy from `optional` to `block`. This makes the established visual-regression baseline use stable, locally served font metrics without a fallback-to-webfont layout shift.
 - The change does not modify visible copy, search intent, metadata, schema, internal links, CTA wording, tracking, routing, owner claims, sitemap output, or `dateModified` behavior.
 - Proof is the exact-head Playwright visual gate with its visual-proof bundle. The release gate must pass before merge.
