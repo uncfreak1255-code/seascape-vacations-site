@@ -32,10 +32,10 @@ concurrency:
 jobs:
   performance-budget:
     name: performance-budget
-    # Scheduled/default-branch work and owner-authored PRs use Sawyer's Mac.
-    # Forks, non-owner same-repository PRs, and non-owner manual dispatches
-    # execute unreviewed branch code on hosted Linux.
-    runs-on: ${{ (github.event_name == 'pull_request' && (github.event.pull_request.head.repo.full_name != github.repository || github.event.pull_request.author_association != 'OWNER')) && 'ubuntu-latest' || (github.event_name == 'workflow_dispatch' && (github.actor != 'uncfreak1255' || github.triggering_actor != 'uncfreak1255')) && 'ubuntu-latest' || 'mac-sawbeck-seascape-vacations-site' }}
+    # Scheduled/default-branch work and Sawyer-triggered owner PRs use the Mac.
+    # Forks, other same-repository PRs, and non-owner manual dispatches execute
+    # unreviewed branch code on hosted Linux.
+    runs-on: ${{ (github.event_name == 'pull_request' && (github.event.pull_request.head.repo.full_name != github.repository || github.event.pull_request.author_association != 'OWNER' || github.actor != 'uncfreak1255' || github.triggering_actor != 'uncfreak1255')) && 'ubuntu-latest' || (github.event_name == 'workflow_dispatch' && (github.actor != 'uncfreak1255' || github.triggering_actor != 'uncfreak1255')) && 'ubuntu-latest' || 'mac-sawbeck-seascape-vacations-site' }}
     timeout-minutes: 20
 
     steps:

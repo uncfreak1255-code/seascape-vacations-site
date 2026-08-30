@@ -21,9 +21,9 @@ concurrency:
 
 jobs:
   visual-regression:
-    # Only owner-authored PRs use Sawyer's Mac for screenshot fidelity. Forks
-    # and non-owner same-repository PRs stay hosted because they run branch code.
-    runs-on: ${{ (github.event.pull_request.head.repo.full_name != github.repository || github.event.pull_request.author_association != 'OWNER') && 'macos-latest' || 'mac-sawbeck-seascape-vacations-site' }}
+    # Only owner-authored PR commits triggered (or re-run) by Sawyer use the Mac.
+    # Forks and other same-repository branch code stay on hosted macOS.
+    runs-on: ${{ (github.event.pull_request.head.repo.full_name != github.repository || github.event.pull_request.author_association != 'OWNER' || github.actor != 'uncfreak1255' || github.triggering_actor != 'uncfreak1255') && 'macos-latest' || 'mac-sawbeck-seascape-vacations-site' }}
     timeout-minutes: 30
 
     steps:

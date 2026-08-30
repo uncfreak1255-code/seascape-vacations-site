@@ -85,6 +85,8 @@ test("self-hosted workflows keep untrusted branch code off Sawyer's Mac", () => 
 
   for (const workflow of [visual, release, performance]) {
     assert.match(workflow, /pull_request\.author_association != 'OWNER'/);
+    assert.match(workflow, /github\.actor != 'uncfreak1255'/);
+    assert.match(workflow, /github\.triggering_actor != 'uncfreak1255'/);
   }
 
   assert.match(performance, /github\.triggering_actor != 'uncfreak1255'/);
