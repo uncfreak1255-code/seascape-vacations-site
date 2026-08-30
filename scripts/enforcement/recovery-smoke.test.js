@@ -152,6 +152,49 @@ test("properties smoke accepts only current New York availability metadata on li
   );
 });
 
+test("rendered properties smoke validates the post-hydration catalog state", async () => {
+  const smoke = loadSmokeModule();
+  let closed = false;
+  let navigatedTo = "";
+  const now = Date.parse("2026-07-17T00:30:00.000Z");
+  const chromium = {
+    async launch() {
+      return {
+        async newPage() {
+          return {
+            async goto(url) {
+              navigatedTo = url;
+            },
+            async waitForFunction() {},
+            locator() {
+              return {
+                async evaluateAll() {
+                  return `
+                    <article class="catalog-card" data-next-available-start="2026-07-16" data-next-available-end="2026-07-18">
+                      <span>Availability · live</span>
+                    </article>
+                    <article class="catalog-card">
+                      <span>Calendar · secure</span>
+                    </article>
+                  `;
+                }
+              };
+            }
+          };
+        },
+        async close() {
+          closed = true;
+        }
+      };
+    }
+  };
+
+  const report = await smoke.validateRenderedLiveAvailability("https://example.test", { chromium, now });
+  assert.equal(navigatedTo, "https://example.test/properties/");
+  assert.deepEqual(report, { checked: 1 });
+  assert.equal(closed, true);
+});
+
 test("stays smoke follows the live stay-collection hub instead of a dead prefix", () => {
   const smoke = loadSmokeModule();
   const target = smoke.targets.find((entry) => entry.path === "/stays/");

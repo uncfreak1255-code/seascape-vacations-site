@@ -88,6 +88,24 @@ function validateLiveAvailabilityMarkup(body, options = {}) {
   return { checked: liveCards.length };
 }
 
+async function validateRenderedLiveAvailability(baseUrl, options = {}) {
+  const chromium = options.chromium || require("@playwright/test").chromium;
+  const browser = await chromium.launch({ headless: true });
+
+  try {
+    const page = await browser.newPage();
+    await page.goto(`${baseUrl}/properties/`, { waitUntil: "domcontentloaded" });
+    await page.waitForFunction(() => document.querySelectorAll("article.catalog-card").length > 0);
+    const cardMarkup = await page
+      .locator("article.catalog-card")
+      .evaluateAll((cards) => cards.map((card) => card.outerHTML).join("\n"));
+
+    return validateLiveAvailabilityMarkup(cardMarkup, options);
+  } finally {
+    await browser.close();
+  }
+}
+
 function request(baseUrl, path) {
   return new Promise((resolve, reject) => {
     const request = https
@@ -169,7 +187,6 @@ function validateTargetResponse(target, response) {
       throw new Error("properties page still exposes the old utility/catalog-copy surface");
     }
 
-    validateLiveAvailabilityMarkup(response.body);
   }
 
   if (target.path === "/property-management/") {
@@ -300,6 +317,7 @@ async function run(baseUrl) {
   }
 
   await Promise.all(targets.map((target) => check(baseUrl, target)));
+  await validateRenderedLiveAvailability(baseUrl);
 }
 
 if (require.main === module) {
@@ -316,6 +334,7 @@ module.exports = {
   request,
   validateTargetResponse,
   validateLiveAvailabilityMarkup,
+  validateRenderedLiveAvailability,
   stablePropertyDetailLinks,
   requireIncludes,
   requireExcludes,
