@@ -54,3 +54,9 @@
 - focused sitemap/dateModified discrimination test passes
 - `npm run verify:release` passes for the PR range
 - no ranking, crawl, indexation, lead, or booking impact is claimed
+
+## 2026-08-30 Rendering Stability Addendum
+
+- `src/property-management/property-management.njk` changes only the local font-loading policy from `optional` to `swap`. This makes the established visual-regression baseline use stable, locally served font metrics.
+- The change does not modify visible copy, search intent, metadata, schema, internal links, CTA wording, tracking, routing, owner claims, sitemap output, or `dateModified` behavior.
+- Proof is the exact-head Playwright visual gate with its visual-proof bundle. The release gate must pass before merge.
