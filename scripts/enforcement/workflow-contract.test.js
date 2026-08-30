@@ -75,3 +75,20 @@ test("visual regression cancels superseded pull request runs", () => {
   assert.match(workflow, /group:\s*playwright-visual-\$\{\{ github\.event\.pull_request\.number \}\}/);
   assert.match(workflow, /cancel-in-progress:\s*true/);
 });
+
+test("self-hosted workflows keep untrusted branch code off Sawyer's Mac", () => {
+  const visual = readWorkflow("playwright-visual.yml");
+  const release = readWorkflow("release-safety.yml");
+  const performance = readWorkflow("performance-budget.yml");
+  const liveSmoke = readWorkflow("live-smoke.yml");
+  const baselines = readWorkflow("update-visual-baselines.yml");
+
+  for (const workflow of [visual, release, performance]) {
+    assert.match(workflow, /pull_request\.author_association != 'OWNER'/);
+  }
+
+  assert.match(performance, /github\.triggering_actor != 'uncfreak1255'/);
+  assert.match(liveSmoke, /github\.triggering_actor == 'uncfreak1255'/);
+  assert.match(baselines, /github\.triggering_actor == 'uncfreak1255'/);
+  assert.match(baselines, /github\.actor == 'uncfreak1255'/);
+});

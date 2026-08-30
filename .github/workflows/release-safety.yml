@@ -15,8 +15,9 @@ concurrency:
 jobs:
   release-safety:
     name: release-safety
-    # Public fork PRs execute untrusted source, so only those PRs use hosted Linux.
-    runs-on: ${{ (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name != github.repository) && 'ubuntu-latest' || 'mac-sawbeck-seascape-vacations-site' }}
+    # Only owner-authored PRs use the self-hosted Mac. Other PRs execute
+    # unreviewed branch code on hosted Linux.
+    runs-on: ${{ (github.event_name == 'pull_request' && (github.event.pull_request.head.repo.full_name != github.repository || github.event.pull_request.author_association != 'OWNER')) && 'ubuntu-latest' || 'mac-sawbeck-seascape-vacations-site' }}
     timeout-minutes: 20
 
     steps:
@@ -66,7 +67,7 @@ jobs:
     name: build
     needs: release-safety
     if: always()
-    runs-on: ${{ (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name != github.repository) && 'ubuntu-latest' || 'mac-sawbeck-seascape-vacations-site' }}
+    runs-on: ${{ (github.event_name == 'pull_request' && (github.event.pull_request.head.repo.full_name != github.repository || github.event.pull_request.author_association != 'OWNER')) && 'ubuntu-latest' || 'mac-sawbeck-seascape-vacations-site' }}
     timeout-minutes: 5
     steps:
       - name: Confirm authoritative gate passed

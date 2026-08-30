@@ -30,6 +30,9 @@ concurrency:
 jobs:
   generate-baselines:
     # Must match the OS of the Playwright Visual Gate so regenerated pixels line up.
+    # This job executes and later commits a caller-selected branch. Do not run it
+    # for anyone other than Sawyer, including a re-run initiated by another user.
+    if: ${{ github.actor == 'uncfreak1255' && github.triggering_actor == 'uncfreak1255' }}
     runs-on: [self-hosted, macOS, arm64]
     timeout-minutes: 30
     permissions:
@@ -91,6 +94,7 @@ jobs:
 
   commit-baselines:
     needs: generate-baselines
+    if: ${{ github.actor == 'uncfreak1255' && github.triggering_actor == 'uncfreak1255' }}
     runs-on: [self-hosted, macOS, arm64]
     timeout-minutes: 10
     permissions:

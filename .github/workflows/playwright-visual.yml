@@ -21,9 +21,9 @@ concurrency:
 
 jobs:
   visual-regression:
-    # Trusted branches use Sawyer's Mac for screenshot fidelity. Fork PRs stay
-    # on GitHub-hosted macOS so untrusted code never executes in Sawyer's session.
-    runs-on: ${{ (github.event.pull_request.head.repo.full_name != github.repository) && 'macos-latest' || 'mac-sawbeck-seascape-vacations-site' }}
+    # Only owner-authored PRs use Sawyer's Mac for screenshot fidelity. Forks
+    # and non-owner same-repository PRs stay hosted because they run branch code.
+    runs-on: ${{ (github.event.pull_request.head.repo.full_name != github.repository || github.event.pull_request.author_association != 'OWNER') && 'macos-latest' || 'mac-sawbeck-seascape-vacations-site' }}
     timeout-minutes: 30
 
     steps:
