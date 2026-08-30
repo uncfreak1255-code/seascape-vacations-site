@@ -73,6 +73,12 @@
 - internal-link or CTA work: keep owner links intact, standardize visible owner CTA wording to `Request Your Revenue Review`, and normalize visible helper copy to plain owner language.
 - money CTA and downstream tracking event to verify: `owner_primary_cta_click` on `#owner-cta` surfaces.
 
+### 2026-08-30 Technical Rendering Addendum
+
+- `src/property-management/property-management.njk` changes only the local font-loading policy from `optional` to `swap` so the existing visual-regression baseline uses stable, locally served font metrics.
+- This addendum does not change visible copy, search intent, metadata, schema, internal links, CTA wording, tracking, routing, or owner claims.
+- Proof: the exact-head Playwright visual gate must pass with the updated local-font baseline before this branch can merge.
+
 ## Voice Editor Checklist
 
 - tone risks: sounding like hard-sell copy or implying guaranteed outcomes.
