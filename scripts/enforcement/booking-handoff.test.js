@@ -144,6 +144,9 @@ test("booking listing path overrides stale query and payload identity context", 
 
   assert.equal(receipt.listingId, "135881");
   assert.equal(receipt.propertySlug, "sarasota-luxe");
+  const normalizedUrl = new URL(receipt.linkUrl);
+  assert.equal(normalizedUrl.searchParams.get("listing_id"), "135881");
+  assert.equal(normalizedUrl.searchParams.get("property_slug"), "sarasota-luxe");
 });
 
 test("booking handoff metrics dedupe repeated handoff ids and keep small aggregates", () => {

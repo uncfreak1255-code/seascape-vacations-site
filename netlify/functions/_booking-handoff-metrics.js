@@ -87,6 +87,18 @@ function normalizeBookingUrl(value) {
       }
     }
 
+    const listingMatch = url.pathname.match(/\/listings\/([^/?#]+)/);
+    if (listingMatch) {
+      const pathListingId = normalizeToken(listingMatch[1], 32);
+      const pathPropertySlug = PROPERTY_SLUG_BY_LISTING_ID[pathListingId];
+      url.searchParams.set("listing_id", pathListingId);
+      if (pathPropertySlug) {
+        url.searchParams.set("property_slug", pathPropertySlug);
+      } else {
+        url.searchParams.delete("property_slug");
+      }
+    }
+
     return url.toString();
   } catch (_error) {
     return "";
