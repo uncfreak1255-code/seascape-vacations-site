@@ -327,9 +327,9 @@ if (phase === "remediation") {
   expectExists("_site/images/seascape-og-default.jpg");
   expectExists("_site/images/anna-maria-island-og.jpg");
   expectMatches("_site/index.html", /Local Gulf Coast hosting team/, "homepage local-hosting trust badge");
-  expectMatches("_site/index.html", /5[\s\S]{0,120}Managed Homes/, "homepage managed homes stat");
-  expectMatches("_site/index.html", /4-16[\s\S]{0,120}Guests Per Stay/, "homepage guests-per-stay stat");
-  expectMatches("_site/index.html", /10-15%[\s\S]{0,120}Book Direct Savings/, "homepage 10-15% Book Direct Savings stat");
+  expectMatches("_site/index.html", /Live[\s\S]{0,120}Home availability/, "homepage live-availability stat");
+  expectMatches("_site/index.html", /Flexible[\s\S]{0,120}Home sizes/, "homepage home-sizes stat");
+  expectMatches("_site/index.html", /Clear[\s\S]{0,120}Checkout totals/, "homepage checkout-total stat");
   expectMatches("_site/index.html", /24\/7[\s\S]{0,120}Local Support/, "homepage 24/7 Local Support stat");
   expectNotMatches(
     "_site/index.html",
@@ -343,8 +343,8 @@ if (phase === "remediation") {
   );
   expectNotMatches(
     "_site/index.html",
-    /class="stat-value">0<\/div>\s*<div class="stat-label">Book Direct Savings<\/div>/,
-    "homepage Book Direct Savings zero fallback"
+    /class="stat-value">0<\/div>\s*<div class="stat-label">Checkout totals<\/div>/,
+    "homepage Checkout totals zero fallback"
   );
   expectNotMatches(
     "_site/index.html",

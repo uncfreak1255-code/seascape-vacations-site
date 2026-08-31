@@ -13,7 +13,6 @@ const REQUIRED_ROUTES = [
   "/guides/best-vacation-rental-companies-ami/",
   "/guides/booking-direct-vacation-rentals/",
   "/guides/bradenton-vs-sarasota-beaches/",
-  "/guides/bradenton-vs-sarasota-cost-of-living/",
   "/guides/bradenton-vs-sarasota-for-families/",
   "/guides/bradenton-vs-sarasota-restaurants/",
   "/guides/bradenton-vs-sarasota-retirement/",

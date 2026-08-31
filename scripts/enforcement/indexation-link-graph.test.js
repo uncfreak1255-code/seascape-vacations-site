@@ -54,7 +54,6 @@ test("owner hub links to the long-tail owner pages that were previously orphaned
     "/property-management/vacation-rental-cleaning-services-florida/",
     "/property-management/vacation-rental-guest-screening/",
     "/property-management/vacation-rental-insurance-florida/",
-    "/property-management/vacation-rental-taxes-florida/",
     "/property-management/buy-vacation-rental-property-florida/"
   ]) {
     assert.equal(ownerHub.includes(marker), true, `owner hub missing ${marker}`);

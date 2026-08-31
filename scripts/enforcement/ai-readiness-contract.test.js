@@ -26,7 +26,7 @@ const AI_PRIORITY_ROUTES = [
     sourcePath: "src/guides/bradenton-vs-sarasota.html",
     answerMarkers: [
       /<strong>Direct answer:<\/strong>/i,
-      /Bradenton is usually better for a lower-cost, beach-first vacation/i
+      /Bradenton suits a beach-first vacation/i
     ],
     proofMarkers: [
       /Why trust this comparison:/i,

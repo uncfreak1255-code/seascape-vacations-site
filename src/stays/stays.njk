@@ -381,7 +381,7 @@ eleventyComputed:
                 <div class="trust-chips" aria-label="Booking highlights">
                     <span class="trust-chip">{{ uiIcon("star") }} {{ seoPage.reviewTrustLabel or "Rated 5.0" }}</span>
                     <span class="trust-chip">{{ uiIcon("car") }} {{ seoPage.driveTimeLabel or "10-15 minutes to beaches" }}</span>
-                    <span class="trust-chip">{{ uiIcon("dollar") }} Save 10-15% direct</span>
+                    <span class="trust-chip">{{ uiIcon("dollar") }} Compare full checkout totals</span>
                 </div>
             </div>
         </section>
@@ -393,8 +393,8 @@ eleventyComputed:
                     <span class="stat-label">Direct-book homes</span>
                 </div>
                 <div class="stat">
-                    <span class="stat-value">10-15%</span>
-                    <span class="stat-label">Typical direct savings</span>
+                    <span class="stat-value">Clear</span>
+                    <span class="stat-label">Checkout totals</span>
                 </div>
                 <div class="stat">
                     <span class="stat-value">Local</span>
@@ -510,7 +510,7 @@ eleventyComputed:
                 <div class="section-header">
                     <p class="section-tag">Featured rentals</p>
                     <h2 class="section-title">Direct-book homes that fit this search</h2>
-                    <p class="section-subtitle">Book direct and save 10-15% compared with Airbnb and VRBO service fees.</p>
+                    <p class="section-subtitle">Book direct to compare the complete checkout total for the home and dates you select.</p>
                 </div>
                 <div class="properties-grid">
                     {% for matchingSlug in seoPage.matchingProperties %}
@@ -696,7 +696,7 @@ eleventyComputed:
             data-track-event="catalog_book_direct_click"
             data-placement="stay_mobile_sticky"
             data-track-label="{{ seoPage.collectionCtaLabel or seoPage.slug }}"
-        >Book direct · save 10-15%</a>
+        >Compare full checkout total</a>
     </div>
 
     <footer class="footer">
@@ -712,7 +712,7 @@ eleventyComputed:
                 <a href="/guides/sarasota-area-guide/">Sarasota</a>
                 <a href="/property-management/">Property Owners</a>
             </div>
-            <div class="footer-copyright">&copy; 2026 Seascape Vacations. All rights reserved. Book direct and save.</div>
+            <div class="footer-copyright">&copy; 2026 Seascape Vacations. All rights reserved.</div>
         </div>
     </footer>
 

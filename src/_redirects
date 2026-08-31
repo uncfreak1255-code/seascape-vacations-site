@@ -10,6 +10,13 @@
 /property-owners   /property-management/   301
 /property-owners/*   /property-management/   301
 
+# P0 factual-integrity routing: preserve the canonical comparison and contact exit.
+/contact   /#contact   301
+/contact/   /#contact   301
+/guides/bradenton-vs-sarasota-cost-of-living   /guides/bradenton-vs-sarasota/   301
+/guides/bradenton-vs-sarasota-cost-of-living/   /guides/bradenton-vs-sarasota/   301
+/guides/bradenton-vs-sarasota-cost-of-living.html   /guides/bradenton-vs-sarasota/   301
+
 # June 12 Search Console 404 alert cleanup
 # These retired stay aliases no longer exist in source and should resolve to
 # the closest current live page instead of 404ing.
@@ -457,7 +464,7 @@
 /guides/bradenton-beach.html  /guides/bradenton-beach/  301
 /guides/bradenton-insider-guide.html  /guides/bradenton-insider-guide/  301
 /guides/bradenton-vs-sarasota-beaches.html  /guides/bradenton-vs-sarasota-beaches/  301
-/guides/bradenton-vs-sarasota-cost-of-living.html  /guides/bradenton-vs-sarasota-cost-of-living/  301
+/guides/bradenton-vs-sarasota-cost-of-living.html  /guides/bradenton-vs-sarasota/  301
 /guides/bradenton-vs-sarasota-for-families.html  /guides/bradenton-vs-sarasota-for-families/  301
 /guides/bradenton-vs-sarasota-restaurants.html  /guides/bradenton-vs-sarasota-restaurants/  301
 /guides/bradenton-vs-sarasota-retirement.html  /guides/bradenton-vs-sarasota-retirement/  301

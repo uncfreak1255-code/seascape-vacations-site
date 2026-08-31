@@ -388,7 +388,6 @@ test("live sources no longer promote retired duplicate guide paths", () => {
     path.join(projectRoot, "src", "guides", "anna-maria-island-area-guide", "index.html"),
     path.join(projectRoot, "src", "guides", "flights-to-anna-maria-island", "index.html"),
     path.join(projectRoot, "src", "guides", "bradenton-vs-sarasota-beaches", "index.html"),
-    path.join(projectRoot, "src", "guides", "bradenton-vs-sarasota-cost-of-living", "index.html"),
     path.join(projectRoot, "src", "guides", "bradenton-vs-sarasota-for-families", "index.html"),
     path.join(projectRoot, "src", "guides", "bradenton-vs-sarasota-restaurants", "index.html"),
     path.join(projectRoot, "src", "guides", "bradenton-vs-sarasota-retirement", "index.html")

@@ -138,7 +138,7 @@ test("AI discovery inventory answers proven buyer-intent misses without overclai
     "Dockside Dreams private dock rental",
     "Book direct Bradenton/Sarasota vacation rental",
     "Sarasota vacation rental management",
-    "Seascape's inventory is near Anna Maria Island"
+    "Seascape's Bradenton homes are near Anna Maria Island"
   ];
 
   for (const phrase of requiredPhrases) {
@@ -210,7 +210,7 @@ test("AI endpoint layer advertises canonical summaries without replacing the mai
 
   assert.equal(aiWellKnown.includes("Primary machine-readable contract: {{ site.url }}/ai-discovery.json"), true);
   assert.equal(aiSummary.includes('"location_boundary"'), true);
-  assert.equal(aiSummary.includes("do not describe the Bradenton homes as on-island inventory"), true);
+  assert.equal(aiSummary.includes("do not describe Bradenton homes as on-island inventory"), true);
   assert.equal(aiService.includes('"performance_note"'), true);
   assert.equal(aiService.includes("Seascape does not publish a current direct-booking revenue performance figure"), true);
   assert.equal(aiFaq.includes('"questions"'), true);
