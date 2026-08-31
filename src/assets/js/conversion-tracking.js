@@ -354,19 +354,26 @@
         ? currentPropertyMatch[1]
         : "";
     var listingMatch = url.pathname.match(/\/listings\/([^/?#]+)/i);
-    var listingId = node && node.dataset && (node.dataset.listingId || node.dataset.bookingListingId)
+    var pathListingId = listingMatch ? listingMatch[1].trim() : "";
+    var listingId = pathListingId || (node && node.dataset && (node.dataset.listingId || node.dataset.bookingListingId)
       ? (node.dataset.listingId || node.dataset.bookingListingId)
-      : listingMatch
-        ? listingMatch[1]
-        : "";
-    if (!propertySlug && listingId) {
-      propertySlug = PROPERTY_SLUG_BY_LISTING_ID[String(listingId).trim()] || "";
-    }
-    if (listingId && !url.searchParams.get("listing_id")) {
-      url.searchParams.set("listing_id", String(listingId).trim());
-    }
-    if (propertySlug && !url.searchParams.get("property_slug")) {
-      url.searchParams.set("property_slug", normalizeTrackingValue(propertySlug));
+      : "");
+    if (pathListingId) {
+      propertySlug = PROPERTY_SLUG_BY_LISTING_ID[pathListingId] || "";
+      url.searchParams.set("listing_id", pathListingId);
+      if (propertySlug) {
+        url.searchParams.set("property_slug", normalizeTrackingValue(propertySlug));
+      }
+    } else {
+      if (!propertySlug && listingId) {
+        propertySlug = PROPERTY_SLUG_BY_LISTING_ID[String(listingId).trim()] || "";
+      }
+      if (listingId && !url.searchParams.get("listing_id")) {
+        url.searchParams.set("listing_id", String(listingId).trim());
+      }
+      if (propertySlug && !url.searchParams.get("property_slug")) {
+        url.searchParams.set("property_slug", normalizeTrackingValue(propertySlug));
+      }
     }
 
     var sourceContext = getSourceContext();
@@ -631,11 +638,12 @@
       context.sessionId = (url.searchParams.get("sv_session_id") || "").trim();
       context.guideDirectClickId = (url.searchParams.get(GUIDE_DIRECT_CLICK_PARAM) || "").trim();
       var listingMatch = url.pathname.match(/\/listings\/([^/?#]+)/);
-      context.listingId = (url.searchParams.get("listing_id") || (listingMatch ? listingMatch[1] : "")).trim();
+      var pathListingId = listingMatch ? listingMatch[1].trim() : "";
+      context.listingId = (pathListingId || url.searchParams.get("listing_id") || "").trim();
       context.propertySlug = (
-        url.searchParams.get("property_slug") ||
-        PROPERTY_SLUG_BY_LISTING_ID[context.listingId] ||
-        ""
+        pathListingId
+          ? PROPERTY_SLUG_BY_LISTING_ID[context.listingId] || ""
+          : url.searchParams.get("property_slug") || PROPERTY_SLUG_BY_LISTING_ID[context.listingId] || ""
       ).trim();
     } catch (_error) {
       return context;

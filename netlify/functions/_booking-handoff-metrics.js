@@ -5,6 +5,13 @@ const BOOKING_HANDOFF_METRICS_KEY = "booking_handoff_metrics_v1.json";
 const MAX_RECEIPTS = 1000;
 const MAX_TOKEN_LENGTH = 96;
 const MAX_CONTEXT_LENGTH = 160;
+const PROPERTY_SLUG_BY_LISTING_ID = {
+  "189511": "the-oasis",
+  "206016": "dockside-dreams",
+  "135880": "river-house",
+  "135881": "sarasota-luxe",
+  "487798": "bradenton-pool-home"
+};
 
 function normalizeText(value) {
   if (typeof value !== "string") return "";
@@ -87,28 +94,34 @@ function normalizeBookingUrl(value) {
 }
 
 function extractListingId(linkUrl, explicitListingId) {
-  const explicit = normalizeToken(explicitListingId, 32);
-  if (explicit) return explicit;
-
   try {
     const url = new URL(normalizeText(linkUrl), "https://seascape-vacations.com/");
     const match = url.pathname.match(/\/listings\/([^/?#]+)/);
-    return match ? normalizeToken(match[1], 32) : "";
+    if (match) return normalizeToken(match[1], 32);
   } catch (_error) {
-    return "";
+    // Fall back to the explicit payload value below.
   }
+
+  return normalizeToken(explicitListingId, 32);
 }
 
 function extractPropertySlug(linkUrl, explicitPropertySlug) {
-  const explicit = normalizeToken(explicitPropertySlug, 80);
-  if (explicit) return explicit;
-
   try {
     const url = new URL(normalizeText(linkUrl), "https://seascape-vacations.com/");
-    return normalizeToken(url.searchParams.get("property_slug"), 80);
+    const match = url.pathname.match(/\/listings\/([^/?#]+)/);
+    if (match) {
+      const pathListingId = normalizeToken(match[1], 32);
+      const pathPropertySlug = PROPERTY_SLUG_BY_LISTING_ID[pathListingId];
+      if (pathPropertySlug) return pathPropertySlug;
+    } else {
+      const queryPropertySlug = normalizeToken(url.searchParams.get("property_slug"), 80);
+      if (queryPropertySlug) return queryPropertySlug;
+    }
   } catch (_error) {
-    return "";
+    // Fall back to the explicit payload value below.
   }
+
+  return normalizeToken(explicitPropertySlug, 80);
 }
 
 function buildFallbackHandoffId(payload, createdAt) {

@@ -132,6 +132,20 @@ test("booking handoff receipts store only the identity bridge context needed for
   assert.doesNotMatch(receipt.linkUrl, /guest@example\.com|email=|payment_intent|payment_intent_client_secret|setup_intent|setup_intent_client_secret|client_secret|redirect_status/i);
 });
 
+test("booking listing path overrides stale query and payload identity context", () => {
+  const receipt = buildBookingHandoffReceipt({
+    handoffId: "svh_path_wins_1",
+    listingId: "206016",
+    propertySlug: "dockside-dreams",
+    linkUrl: "https://book.seascape-vacations.com/listings/135881?listing_id=206016&property_slug=dockside-dreams",
+    pagePath: "/properties/sarasota-luxe/",
+    createdAt: "2026-08-30T12:00:00.000Z"
+  });
+
+  assert.equal(receipt.listingId, "135881");
+  assert.equal(receipt.propertySlug, "sarasota-luxe");
+});
+
 test("booking handoff metrics dedupe repeated handoff ids and keep small aggregates", () => {
   const receipt = buildBookingHandoffReceipt({
     handoffId: "svh_dedupe_1",
