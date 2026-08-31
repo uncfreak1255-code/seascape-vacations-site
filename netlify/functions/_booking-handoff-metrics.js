@@ -12,6 +12,7 @@ const PROPERTY_SLUG_BY_LISTING_ID = {
   "135881": "sarasota-luxe",
   "487798": "bradenton-pool-home"
 };
+const KNOWN_PROPERTY_SLUGS = new Set(Object.values(PROPERTY_SLUG_BY_LISTING_ID));
 
 function normalizeText(value) {
   if (typeof value !== "string") return "";
@@ -24,6 +25,16 @@ function normalizeToken(value, maxLength = MAX_TOKEN_LENGTH) {
     .replace(/-+/g, "-")
     .replace(/^-+|-+$/g, "")
     .slice(0, maxLength);
+}
+
+function normalizeListingIdentity(value) {
+  const token = normalizeToken(value, 32);
+  return /^\d+$/.test(token) ? token : "";
+}
+
+function normalizePropertyIdentity(value) {
+  const token = normalizeToken(value, 80);
+  return KNOWN_PROPERTY_SLUGS.has(token) ? token : "";
 }
 
 function normalizeContextValue(value, maxLength = MAX_CONTEXT_LENGTH) {
@@ -87,11 +98,28 @@ function normalizeBookingUrl(value) {
       }
     }
 
+    const queryListingId = normalizeListingIdentity(url.searchParams.get("listing_id"));
+    if (queryListingId) {
+      url.searchParams.set("listing_id", queryListingId);
+    } else {
+      url.searchParams.delete("listing_id");
+    }
+    const queryPropertySlug = normalizePropertyIdentity(url.searchParams.get("property_slug"));
+    if (queryPropertySlug) {
+      url.searchParams.set("property_slug", queryPropertySlug);
+    } else {
+      url.searchParams.delete("property_slug");
+    }
+
     const listingMatch = url.pathname.match(/\/listings\/([^/?#]+)/);
     if (listingMatch) {
-      const pathListingId = normalizeToken(listingMatch[1], 32);
+      const pathListingId = normalizeListingIdentity(listingMatch[1]);
       const pathPropertySlug = PROPERTY_SLUG_BY_LISTING_ID[pathListingId];
-      url.searchParams.set("listing_id", pathListingId);
+      if (pathListingId) {
+        url.searchParams.set("listing_id", pathListingId);
+      } else {
+        url.searchParams.delete("listing_id");
+      }
       if (pathPropertySlug) {
         url.searchParams.set("property_slug", pathPropertySlug);
       } else {
@@ -109,12 +137,12 @@ function extractListingId(linkUrl, explicitListingId) {
   try {
     const url = new URL(normalizeText(linkUrl), "https://seascape-vacations.com/");
     const match = url.pathname.match(/\/listings\/([^/?#]+)/);
-    if (match) return normalizeToken(match[1], 32);
+    if (match) return normalizeListingIdentity(match[1]);
   } catch (_error) {
     // Fall back to the explicit payload value below.
   }
 
-  return normalizeToken(explicitListingId, 32);
+  return normalizeListingIdentity(explicitListingId);
 }
 
 function extractPropertySlug(linkUrl, explicitPropertySlug) {
@@ -122,18 +150,18 @@ function extractPropertySlug(linkUrl, explicitPropertySlug) {
     const url = new URL(normalizeText(linkUrl), "https://seascape-vacations.com/");
     const match = url.pathname.match(/\/listings\/([^/?#]+)/);
     if (match) {
-      const pathListingId = normalizeToken(match[1], 32);
+      const pathListingId = normalizeListingIdentity(match[1]);
       const pathPropertySlug = PROPERTY_SLUG_BY_LISTING_ID[pathListingId];
       if (pathPropertySlug) return pathPropertySlug;
     } else {
-      const queryPropertySlug = normalizeToken(url.searchParams.get("property_slug"), 80);
+      const queryPropertySlug = normalizePropertyIdentity(url.searchParams.get("property_slug"));
       if (queryPropertySlug) return queryPropertySlug;
     }
   } catch (_error) {
     // Fall back to the explicit payload value below.
   }
 
-  return normalizeToken(explicitPropertySlug, 80);
+  return normalizePropertyIdentity(explicitPropertySlug);
 }
 
 function buildFallbackHandoffId(payload, createdAt) {

@@ -149,6 +149,20 @@ test("booking listing path overrides stale query and payload identity context", 
   assert.equal(normalizedUrl.searchParams.get("property_slug"), "sarasota-luxe");
 });
 
+test("booking receipt URLs discard malformed identity query values", () => {
+  const receipt = buildBookingHandoffReceipt({
+    handoffId: "svh_identity_validation_1",
+    linkUrl: "https://book.seascape-vacations.com/search?listing_id=guest@example.com&property_slug=guest@example.com",
+    pagePath: "/properties/"
+  });
+
+  const normalizedUrl = new URL(receipt.linkUrl);
+  assert.equal(normalizedUrl.searchParams.has("listing_id"), false);
+  assert.equal(normalizedUrl.searchParams.has("property_slug"), false);
+  assert.equal(receipt.listingId, "");
+  assert.equal(receipt.propertySlug, "");
+});
+
 test("booking handoff metrics dedupe repeated handoff ids and keep small aggregates", () => {
   const receipt = buildBookingHandoffReceipt({
     handoffId: "svh_dedupe_1",
