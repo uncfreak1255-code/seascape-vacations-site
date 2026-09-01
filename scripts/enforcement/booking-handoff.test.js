@@ -107,7 +107,7 @@ test("booking handoff receipts store only the identity bridge context needed for
     handoffId: "svh_test_123",
     sessionId: "svs_test_456",
     guideDirectClickId: "svg_test_789",
-    linkUrl: "https://book.seascape-vacations.com/listings/206016?utm_source=google&utm_medium=organic&utm_campaign=guide_winners&utm_content=best-time&sv_handoff_id=svh_test_123&sv_session_id=svs_test_456&sv_guide_click_id=svg_test_789&email=guest@example.com&payment_intent=pi_123&payment_intent_client_secret=pi_secret_123&setup_intent=seti_123&setup_intent_client_secret=seti_secret_123&client_secret=secret_123&redirect_status=succeeded",
+    linkUrl: "https://book.seascape-vacations.com/listings/206016?listing_id=206016&property_slug=dockside-dreams&utm_source=google&utm_medium=organic&utm_campaign=guide_winners&utm_content=best-time&sv_handoff_id=svh_test_123&sv_session_id=svs_test_456&sv_guide_click_id=svg_test_789&email=guest@example.com&payment_intent=pi_123&payment_intent_client_secret=pi_secret_123&setup_intent=seti_123&setup_intent_client_secret=seti_secret_123&client_secret=secret_123&redirect_status=succeeded",
     linkText: "Check availability",
     pagePath: "https://seascape-vacations.com/guides/best-time-visit-anna-maria-island/",
     pageSlug: "best-time-visit-anna-maria-island",
@@ -123,12 +123,44 @@ test("booking handoff receipts store only the identity bridge context needed for
   assert.equal(receipt.sessionId, "svs_test_456");
   assert.equal(receipt.guideDirectClickId, "svg_test_789");
   assert.equal(receipt.listingId, "206016");
+  assert.equal(receipt.propertySlug, "dockside-dreams");
   assert.equal(receipt.pagePath, "/guides/best-time-visit-anna-maria-island/");
   assert.equal(receipt.pageSlug, "best-time-visit-anna-maria-island");
   assert.match(receipt.linkUrl, /sv_handoff_id=svh_test_123/);
   assert.match(receipt.linkUrl, /sv_session_id=svs_test_456/);
   assert.match(receipt.linkUrl, /sv_guide_click_id=svg_test_789/);
   assert.doesNotMatch(receipt.linkUrl, /guest@example\.com|email=|payment_intent|payment_intent_client_secret|setup_intent|setup_intent_client_secret|client_secret|redirect_status/i);
+});
+
+test("booking listing path overrides stale query and payload identity context", () => {
+  const receipt = buildBookingHandoffReceipt({
+    handoffId: "svh_path_wins_1",
+    listingId: "206016",
+    propertySlug: "dockside-dreams",
+    linkUrl: "https://book.seascape-vacations.com/listings/135881?listing_id=206016&property_slug=dockside-dreams",
+    pagePath: "/properties/sarasota-luxe/",
+    createdAt: "2026-08-30T12:00:00.000Z"
+  });
+
+  assert.equal(receipt.listingId, "135881");
+  assert.equal(receipt.propertySlug, "sarasota-luxe");
+  const normalizedUrl = new URL(receipt.linkUrl);
+  assert.equal(normalizedUrl.searchParams.get("listing_id"), "135881");
+  assert.equal(normalizedUrl.searchParams.get("property_slug"), "sarasota-luxe");
+});
+
+test("booking receipt URLs discard malformed identity query values", () => {
+  const receipt = buildBookingHandoffReceipt({
+    handoffId: "svh_identity_validation_1",
+    linkUrl: "https://book.seascape-vacations.com/search?listing_id=guest@example.com&property_slug=guest@example.com",
+    pagePath: "/properties/"
+  });
+
+  const normalizedUrl = new URL(receipt.linkUrl);
+  assert.equal(normalizedUrl.searchParams.has("listing_id"), false);
+  assert.equal(normalizedUrl.searchParams.has("property_slug"), false);
+  assert.equal(receipt.listingId, "");
+  assert.equal(receipt.propertySlug, "");
 });
 
 test("booking handoff metrics dedupe repeated handoff ids and keep small aggregates", () => {

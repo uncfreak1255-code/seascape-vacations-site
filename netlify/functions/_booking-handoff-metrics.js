@@ -5,6 +5,14 @@ const BOOKING_HANDOFF_METRICS_KEY = "booking_handoff_metrics_v1.json";
 const MAX_RECEIPTS = 1000;
 const MAX_TOKEN_LENGTH = 96;
 const MAX_CONTEXT_LENGTH = 160;
+const PROPERTY_SLUG_BY_LISTING_ID = {
+  "189511": "the-oasis",
+  "206016": "dockside-dreams",
+  "135880": "river-house",
+  "135881": "sarasota-luxe",
+  "487798": "bradenton-pool-home"
+};
+const KNOWN_PROPERTY_SLUGS = new Set(Object.values(PROPERTY_SLUG_BY_LISTING_ID));
 
 function normalizeText(value) {
   if (typeof value !== "string") return "";
@@ -17,6 +25,16 @@ function normalizeToken(value, maxLength = MAX_TOKEN_LENGTH) {
     .replace(/-+/g, "-")
     .replace(/^-+|-+$/g, "")
     .slice(0, maxLength);
+}
+
+function normalizeListingIdentity(value) {
+  const token = normalizeToken(value, 32);
+  return /^\d+$/.test(token) ? token : "";
+}
+
+function normalizePropertyIdentity(value) {
+  const token = normalizeToken(value, 80);
+  return KNOWN_PROPERTY_SLUGS.has(token) ? token : "";
 }
 
 function normalizeContextValue(value, maxLength = MAX_CONTEXT_LENGTH) {
@@ -70,11 +88,42 @@ function normalizeBookingUrl(value) {
         "checkin",
         "checkout",
         "guests",
+        "listing_id",
+        "property_slug",
         "sv_handoff_id",
         "sv_session_id",
         "sv_guide_click_id"
       ].includes(key)) {
         url.searchParams.delete(key);
+      }
+    }
+
+    const queryListingId = normalizeListingIdentity(url.searchParams.get("listing_id"));
+    if (queryListingId) {
+      url.searchParams.set("listing_id", queryListingId);
+    } else {
+      url.searchParams.delete("listing_id");
+    }
+    const queryPropertySlug = normalizePropertyIdentity(url.searchParams.get("property_slug"));
+    if (queryPropertySlug) {
+      url.searchParams.set("property_slug", queryPropertySlug);
+    } else {
+      url.searchParams.delete("property_slug");
+    }
+
+    const listingMatch = url.pathname.match(/\/listings\/([^/?#]+)/);
+    if (listingMatch) {
+      const pathListingId = normalizeListingIdentity(listingMatch[1]);
+      const pathPropertySlug = PROPERTY_SLUG_BY_LISTING_ID[pathListingId];
+      if (pathListingId) {
+        url.searchParams.set("listing_id", pathListingId);
+      } else {
+        url.searchParams.delete("listing_id");
+      }
+      if (pathPropertySlug) {
+        url.searchParams.set("property_slug", pathPropertySlug);
+      } else {
+        url.searchParams.delete("property_slug");
       }
     }
 
@@ -85,16 +134,34 @@ function normalizeBookingUrl(value) {
 }
 
 function extractListingId(linkUrl, explicitListingId) {
-  const explicit = normalizeToken(explicitListingId, 32);
-  if (explicit) return explicit;
-
   try {
     const url = new URL(normalizeText(linkUrl), "https://seascape-vacations.com/");
     const match = url.pathname.match(/\/listings\/([^/?#]+)/);
-    return match ? normalizeToken(match[1], 32) : "";
+    if (match) return normalizeListingIdentity(match[1]);
   } catch (_error) {
-    return "";
+    // Fall back to the explicit payload value below.
   }
+
+  return normalizeListingIdentity(explicitListingId);
+}
+
+function extractPropertySlug(linkUrl, explicitPropertySlug) {
+  try {
+    const url = new URL(normalizeText(linkUrl), "https://seascape-vacations.com/");
+    const match = url.pathname.match(/\/listings\/([^/?#]+)/);
+    if (match) {
+      const pathListingId = normalizeListingIdentity(match[1]);
+      const pathPropertySlug = PROPERTY_SLUG_BY_LISTING_ID[pathListingId];
+      if (pathPropertySlug) return pathPropertySlug;
+    } else {
+      const queryPropertySlug = normalizePropertyIdentity(url.searchParams.get("property_slug"));
+      if (queryPropertySlug) return queryPropertySlug;
+    }
+  } catch (_error) {
+    // Fall back to the explicit payload value below.
+  }
+
+  return normalizePropertyIdentity(explicitPropertySlug);
 }
 
 function buildFallbackHandoffId(payload, createdAt) {
@@ -130,6 +197,7 @@ function buildBookingHandoffReceipt(rawPayload) {
     createdAt,
     linkUrl,
     listingId: extractListingId(linkUrl, payload.listingId || payload.listing_id || payload.booking_listing_id),
+    propertySlug: extractPropertySlug(linkUrl, payload.propertySlug || payload.property_slug || payload.booking_property_slug),
     pagePath,
     pageSlug,
     guideSlug: normalizeToken(payload.guideSlug || payload.guide_slug, 80),

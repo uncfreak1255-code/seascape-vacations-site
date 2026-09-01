@@ -148,6 +148,29 @@ test("external catalog booking emits its placement event and one named handoff",
   });
 });
 
+test("booking listing path wins over stale propagated property query context", () => {
+  withTrackingRuntime(({ click, window }) => {
+    setLocation(
+      window,
+      "https://seascape-vacations.com/properties/sarasota-luxe/?listing_id=206016&property_slug=dockside-dreams"
+    );
+    const bookingLink = trackedLink(
+      "property_booking_page_click",
+      "https://book.seascape-vacations.com/listings/135881"
+    );
+
+    click(bookingLink);
+
+    const bookingUrl = new URL(bookingLink.href);
+    assert.equal(bookingUrl.pathname, "/listings/135881");
+    assert.equal(bookingUrl.searchParams.get("listing_id"), "135881");
+    assert.equal(bookingUrl.searchParams.get("property_slug"), "sarasota-luxe");
+    const handoff = window.dataLayer.find((entry) => entry.event === "property_booking_page_click");
+    assert.equal(handoff.payload.booking_listing_id, "135881");
+    assert.equal(handoff.payload.booking_property_slug, "sarasota-luxe");
+  });
+});
+
 test("same-page catalog links do not create false booking handoffs", () => {
   withTrackingRuntime(({ click, fetchCalls, window }) => {
     setLocation(window, "https://seascape-vacations.com/stays/anna-maria-island-vacation-rentals/?sv_guide_click_id=svg_existing");
