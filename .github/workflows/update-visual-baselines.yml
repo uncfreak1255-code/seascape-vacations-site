@@ -1,8 +1,8 @@
 name: Update Visual Baselines
 
 # Manual-only. Regenerates the committed Playwright visual baselines in the same
-# environment the Playwright Visual Gate runs in (macos-latest), then commits them
-# back to the target branch. Use this to re-baseline after an INTENTIONAL design
+# environment the Playwright Visual Gate runs in (self-hosted macOS), then commits
+# them back to the target branch. Use this to re-baseline after an INTENTIONAL design
 # change, so the visual-regression gate compares against the new approved look.
 #
 # Never runs on push or pull_request — it only fires when a maintainer dispatches it.
@@ -30,7 +30,10 @@ concurrency:
 jobs:
   generate-baselines:
     # Must match the OS of the Playwright Visual Gate so regenerated pixels line up.
-    runs-on: macos-latest
+    # This job executes and later commits a caller-selected branch. Do not run it
+    # for anyone other than Sawyer, including a re-run initiated by another user.
+    if: ${{ github.actor == 'uncfreak1255' && github.triggering_actor == 'uncfreak1255' }}
+    runs-on: [self-hosted, macOS, arm64]
     timeout-minutes: 30
     permissions:
       contents: read
@@ -87,10 +90,12 @@ jobs:
           name: updated-visual-baselines
           path: tests/visual/__screenshots__/
           if-no-files-found: warn
+          retention-days: 7
 
   commit-baselines:
     needs: generate-baselines
-    runs-on: ubuntu-latest
+    if: ${{ github.actor == 'uncfreak1255' && github.triggering_actor == 'uncfreak1255' }}
+    runs-on: [self-hosted, macOS, arm64]
     timeout-minutes: 10
     permissions:
       contents: write

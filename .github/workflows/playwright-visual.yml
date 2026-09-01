@@ -21,7 +21,9 @@ concurrency:
 
 jobs:
   visual-regression:
-    runs-on: macos-latest
+    # Only owner-authored PR commits triggered (or re-run) by Sawyer use the Mac.
+    # Forks and other same-repository branch code stay on hosted macOS.
+    runs-on: ${{ (github.event.pull_request.head.repo.full_name != github.repository || github.event.pull_request.author_association != 'OWNER' || github.actor != 'uncfreak1255' || github.triggering_actor != 'uncfreak1255') && 'macos-latest' || 'mac-sawbeck-seascape-vacations-site' }}
     timeout-minutes: 30
 
     steps:
@@ -46,6 +48,7 @@ jobs:
         with:
           name: visual-proof-bundle
           path: artifacts/visual-proof/
+          retention-days: 7
 
       - name: Upload Playwright report
         if: failure()
@@ -55,3 +58,4 @@ jobs:
           path: |
             playwright-report/
             test-results/
+          retention-days: 7

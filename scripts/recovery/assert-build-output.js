@@ -512,7 +512,7 @@ if (phase === "remediation") {
   expectContains("_site/stays/anna-maria-island-vacation-rentals/index.html", 'fetchpriority="high"');
   expectContains(
     "_site/property-management/vacation-rental-management-sarasota/index.html",
-    "font-display: optional"
+    "font-display: block"
   );
   expectContains(
     "_site/property-management/index.html",
