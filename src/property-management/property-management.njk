@@ -22,6 +22,7 @@ eleventyComputed:
   or seoPage.slug == "vacation-rental-licensing-florida"
   or seoPage.slug == "vrbo-management-services-florida" %}
 {% set showOwnerBenchmarkPath = ownerMoneyPage or ownerNetBridgePage %}
+{% set pageQuarantined = seoPage.quarantined == true %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -31,7 +32,7 @@ eleventyComputed:
     <!-- Primary SEO -->
     <title>{{ seoPage.title }} | Seascape Vacations</title>
     <meta name="description" content="{{ seoPage.description }}">
-    <meta name="robots" content="index, follow">
+    <meta name="robots" content="{% if pageQuarantined %}noindex, nofollow{% else %}index, follow{% endif %}">
     <link rel="canonical" href="{{ site.url }}/property-management/{{ seoPage.slug }}/">
     
     <!-- Open Graph -->
@@ -118,7 +119,7 @@ eleventyComputed:
     }
     </script>
 
-    {% if seoPage.faqs | length %}
+    {% if not pageQuarantined and seoPage.faqs | length %}
     <!-- FAQPage Schema -->
     <script type="application/ld+json">
     {
@@ -196,11 +197,25 @@ eleventyComputed:
                     <div class="nav-logo-sub">Vacations</div>
                 </div>
             </a>
+            {% if pageQuarantined %}
+            <a href="/property-management/" class="btn">Return to property management</a>
+            {% else %}
             <a href="#owner-cta" class="btn" data-track-event="owner_primary_cta_click" data-page-slug="{{ seoPage.slug }}">{{ seoPage.primaryCta or "Request Your Revenue Review" }}</a>
+            {% endif %}
         </div>
     </nav>
 
     <main class="main-content">
+        {% if pageQuarantined %}
+        <section class="section">
+            <div class="container" style="max-width: 760px;">
+                <p class="section-tag">Under professional review</p>
+                <h1 class="section-title">This tax guide is not available for reliance.</h1>
+                <p style="font-size: 17px; line-height: 1.8; color: var(--stone-light);">Seascape Vacations is not publishing tax guidance from this page while it is being professionally reviewed. Tax treatment depends on the property, jurisdiction, booking arrangement, and taxpayer. Please consult a qualified tax professional.</p>
+                <p style="margin-top: 24px;"><a class="btn" href="/property-management/">Return to property management</a></p>
+            </div>
+        </section>
+        {% else %}
         <nav class="breadcrumbs" aria-label="Breadcrumb">
             <ol>
                 <li><a href="/">Home</a></li>
@@ -669,6 +684,7 @@ eleventyComputed:
                 </div>
             </div>
         </section>
+        {% endif %}
     </main>
 
     <footer class="footer">
@@ -681,7 +697,7 @@ eleventyComputed:
                 <a href="/guides/sarasota-area-guide/">Sarasota</a>
                 <a href="/property-management/">Property Management</a>
             </div>
-            <div class="footer-copyright">© 2026 Seascape Vacations. All rights reserved. | Book Direct & Save</div>
+            <div class="footer-copyright">© 2026 Seascape Vacations. All rights reserved.</div>
         </div>
     </footer>
 

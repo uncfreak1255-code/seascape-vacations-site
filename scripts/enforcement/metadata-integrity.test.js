@@ -135,7 +135,7 @@ test("winner guide metadata and conversion markers stay decision-forward", () =>
   assert.equal(bradentonContract.head.title, "Bradenton vs Sarasota: Which Is Better for Vacation?");
   assert.equal(
     bradentonContract.head.description,
-    "Bradenton is cheaper, with free beach parking near Anna Maria Island. Sarasota wins on Siesta Key sand, dining, and arts. Compare both before you book."
+    "Compare Bradenton and Sarasota for beaches, parking, dining, arts, and stay options. Check live listings and final checkout totals for your dates."
   );
   assert.equal(bradentonContract.head.ogTitle, "Bradenton vs Sarasota: Which Is Better for Vacation?");
   assert.equal(bradentonWebPage?.name, bradentonContract.head.title);

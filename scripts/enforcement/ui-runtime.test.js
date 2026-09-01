@@ -225,7 +225,7 @@ test("hero ticker uses real data hooks instead of hardcoded live theater", () =>
   assert.match(homepage, /id="hero-property-source"[^>]*type="application\/json"/);
   assert.match(homepage, /data-live-fact="weather"/);
   assert.match(homepage, /data-live-fact="sunset"/);
-  assert.match(homepage, /properties\.length/);
+  assert.match(homepage, /Live home collection/);
   assert.match(heroScript, /fetch\(config\.weatherUrl/);
   assert.match(heroScript, /fetch\(config\.sunsetUrl/);
   assert.match(heroScript, /data-source-label/);

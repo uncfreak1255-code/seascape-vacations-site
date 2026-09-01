@@ -260,6 +260,14 @@ function hasVisibleReaderCopyDiff(relativePath, source) {
 }
 
 function getBuiltPublicContentPath(relativePath, source) {
+  if (relativePath === "src/property-management/property-management.njk") {
+    return path.join("_site", "property-management", "vacation-rental-taxes-florida", "index.html");
+  }
+
+  if (relativePath === "src/stays/stays.njk") {
+    return path.join("_site", "stays", "bradenton-vacation-rentals-near-beaches", "index.html");
+  }
+
   const route = getCurrentRoute(relativePath, source).split(/[?#]/)[0];
   const normalizedRoute = route.replace(/^\/+|\/+$/g, "");
 
@@ -413,7 +421,7 @@ function getCurrentRoute(relativePath, source) {
     return permalinkMatch[1];
   }
 
-  const withoutSrc = relativePath.replace(/^src/, "").replace(/\.njk$/i, "");
+  const withoutSrc = relativePath.replace(/^src/, "").replace(/\.(?:njk|html)$/i, "");
   if (withoutSrc.endsWith("/index")) {
     return `${withoutSrc.slice(0, -"/index".length)}/`;
   }
