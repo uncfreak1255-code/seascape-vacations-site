@@ -175,6 +175,27 @@ test("plugin skill package exactly mirrors the canonical .agents skill tree", ()
   assert.equal(result.ok, true);
 });
 
+test("plugin manifest version and advertised skill count match the marketplace", () => {
+  const pluginManifest = JSON.parse(
+    fs.readFileSync(path.join(REPO_ROOT, "plugins", "seascape-seo-os", ".claude-plugin", "plugin.json"), "utf8")
+  );
+  const marketplace = JSON.parse(
+    fs.readFileSync(path.join(REPO_ROOT, ".claude-plugin", "marketplace.json"), "utf8")
+  );
+  const marketplacePlugin = marketplace.plugins.find((plugin) => plugin.name === pluginManifest.name);
+  const skillCount = listSkillDirs(path.join(REPO_ROOT, ".agents", "skills")).length;
+  const numberWords = [
+    "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine",
+    "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen"
+  ];
+
+  assert.ok(marketplacePlugin, `${pluginManifest.name} must be listed in the marketplace`);
+  assert.equal(pluginManifest.version, marketplace.metadata.version);
+  assert.equal(pluginManifest.version, marketplacePlugin.version);
+  assert.match(pluginManifest.description, new RegExp(`\\b${numberWords[skillCount]}\\b`, "i"));
+  assert.match(marketplacePlugin.description, new RegExp(`\\b${numberWords[skillCount]}\\b`, "i"));
+});
+
 test("canonical skill descriptions stay compact without losing activation triggers", () => {
   assert.deepEqual(listSkillDirs(path.join(REPO_ROOT, ".agents", "skills")), Object.keys(DESCRIPTION_TRIGGERS).sort());
 
