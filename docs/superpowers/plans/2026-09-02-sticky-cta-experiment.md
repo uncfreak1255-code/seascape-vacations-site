@@ -14,7 +14,7 @@
 
 ### Task 1: Require an immutable current route-selection receipt
 
-At this snapshot, route selection is **BLOCKED**: the checked-in `docs/status/next-batch.md` read is dated 2026-08-11 and does not provide a current `open next batch` receipt. No implementation, source change, visible-copy change, or experiment activation may begin until the receipt gate below passes.
+Route selection is **BLOCKED**. A read-only joined Analytics refresh on 2026-09-02 covered the last seven complete days, 2026-08-25 through 2026-08-31, with BigQuery GSC data current through 2026-08-31 and GA4/Postgres coverage. It returned `reread_status: fresh but below threshold`, `next_branch: hold-and-reread`, and no eligible route. The refresh used `python3 scripts/weekly_search_operator_report.py --latest-complete-gsc-window` without rank-history recording or another data write. The generated temporary receipt is evidence for the stop decision only: it is not an enabling input, is not checked in here, and does not contain the required future `expires_at`. The checked-in `docs/status/next-batch.md` read is older, dated 2026-08-11, and also does not provide `open next batch` authority. No implementation, source change, visible-copy change, or experiment activation may begin until the receipt gate below passes.
 
 **Files:**
 - Create: `docs/briefs/2026-09-sticky-cta-experiment.md` (during implementation; the active brief is required for any public CTA copy change)
