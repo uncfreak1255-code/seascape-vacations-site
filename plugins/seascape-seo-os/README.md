@@ -8,7 +8,7 @@ hand-wiring agents and skills.
 
 - **Agents** (`agents/`) — the five roles from `CLAUDE.md`: Search Operator,
   SEO Architect, Page Builder, Voice Editor, Release Gate.
-- **Skills** (`skills/`) — the eleven active site-specific skills.
+- **Skills** (`skills/`) — the sixteen active site-specific skills.
 
 The `agents/` and `skills/` entries are committed plugin copies of the canonical
 sources in `.claude/agents/` and `.agents/skills/`. They are duplicated on
@@ -44,6 +44,6 @@ From a clone of this repo (or a fork):
 - This does **not** change *triggering* — skills already auto-surface from
   `.agents/skills/` in a local clone. The plugin's job is reproducible
   distribution, not new behavior.
-- The eleven skills here track `AGENTS.md` and `CLAUDE.md`. If the active-skill
+- The sixteen skills here track `AGENTS.md` and `CLAUDE.md`. If the active-skill
   set changes, update the copied plugin files in `skills/` and bump the plugin
   version.

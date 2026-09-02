@@ -1,6 +1,6 @@
 ---
 name: owner-proof-integrity
-description: Keep Seascape owner-acquisition proof claims aligned across approved proof assets, owner-page copy, and supporting metadata. Use when editing owner money pages, benchmark sections, proof grids, research assets, or any claim about fees, revenue lift, review counts, homes served, local operator proof, or management performance.
+description: Keep Seascape owner proof aligned across assets, page copy, and metadata. Use for owner money pages or claims about fees, revenue, reviews, homes served, local proof, or management performance.
 ---
 
 # Owner Proof Integrity

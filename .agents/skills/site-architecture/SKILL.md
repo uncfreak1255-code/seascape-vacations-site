@@ -1,6 +1,6 @@
 ---
 name: site-architecture
-description: Plan, map, or restructure a website's page hierarchy, navigation, URL structure, or internal linking. Also use for 'sitemap', 'site map', 'visual sitemap', 'site structure', 'page hierarchy', 'information architecture', 'IA', 'navigation design', 'URL structure', 'breadcrumbs', 'internal linking strategy', 'website planning', 'what pages do I need', 'how should I organize my site', or 'site navigation'. NOT for XML sitemaps.
+description: Plan site architecture, hierarchy, navigation, URLs, breadcrumbs, internal links, and visual sitemaps. Use for IA, page planning, or what pages do I need; not XML sitemaps.
 metadata:
   version: 1.1.0
 ---
