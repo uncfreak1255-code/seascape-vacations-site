@@ -10,14 +10,12 @@ The trusted-project Codex configuration in `.codex/config.toml` connects to the
 local OpenSEO MCP server at `http://localhost:3001/mcp`. The server is optional,
 so a stopped OpenSEO app must not block a Codex session.
 
-The committed allowlist contains only these no-credit reads:
+The committed allowlist contains only these saved-state reads:
 
 - `whoami`
 - `list_projects`
 - `list_saved_keywords`
 - `get_rank_tracker`
-- `get_search_console_performance`
-- `inspect_urls`
 
 Codex asks for approval before every OpenSEO tool call. A new Codex session is
 required after this project configuration changes.
@@ -32,7 +30,8 @@ authentication and security review.
 
 Search Console access is a separate Google authorization. If OpenSEO reports
 that the connection expired or was revoked, stop and request Sawyer's approval
-before reconnecting it.
+before reconnecting it. Search Console tools are not available through this
+site-repo integration; use a `seascape-analytics` receipt instead.
 
 ## Ownership
 
@@ -67,6 +66,8 @@ The following OpenSEO tools are intentionally outside the project allowlist:
 - `get_google_business_questions`
 - `get_keyword_metrics`
 - `save_keywords`
+- `get_search_console_performance`
+- `inspect_urls`
 
 Do not copy OpenSEO's optional agent skills into this repo. The five-role SEO
 workflow and active repo skills remain the agent surface of record.
@@ -92,7 +93,9 @@ From a new trusted Codex session in this repo:
 codex mcp get openseo
 ```
 
-The readback must show the localhost URL, `required: false`, approval mode
-`prompt`, and only the six allowed tools above. A live acceptance check then
-calls `list_projects` and reads the existing rank tracker twice with the same
-result count. It must not run a new rank check or another paid lookup.
+The committed config and its enforcement test prove that the server is optional
+with `required = false`. The `codex mcp get openseo` readback must show the
+localhost URL, approval mode `prompt`, and only the four allowed tools above. A
+live acceptance check then calls `list_projects` and reads the existing rank
+tracker twice with the same result count. It must not run a new rank check or
+another paid lookup.

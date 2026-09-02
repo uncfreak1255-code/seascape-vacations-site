@@ -10,6 +10,4 @@ enabled_tools = [
   "list_projects",
   "list_saved_keywords",
   "get_rank_tracker",
-  "get_search_console_performance",
-  "inspect_urls",
 ]
