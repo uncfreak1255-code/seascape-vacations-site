@@ -108,6 +108,10 @@ Read in this order:
 - AI discovery, GEO/AEO, and schema work should use the global `seascape-seo` skill for attack-lane framing plus the repo-local `.agents/skills/schema-markup` skill for implementation rules
 - external SEO/GEO packs such as `geo-optimizer-skill`, `gtm-engineer-skills`, `searchstack-aeo`, `claude-seo`, `akii-seo-ai-search-optimizer`, and `aeo.js` are donor references only; do not install or mirror them here without a fresh `agent-surface-audit`, repeated repo-specific need, and a smoke-tested win
 - AI citation monitoring and Search Console/GA4 proof systems belong in `seascape-analytics`; this repo may expose site endpoints and markup, but it must not become the measurement control plane
+- OpenSEO is a bounded local read surface for saved project state, rank history,
+  and existing Search Console data. Its project-scoped Codex MCP allowlist and
+  cost/ownership rules live in `docs/process/openseo.md`. It does not replace
+  the direct DataForSEO Gate 0 path or analytics-owned measurement receipts.
 - if work writes durable state into another repo, route it through a clean
   keeper branch or PR from that repo's current `origin/main`
 
