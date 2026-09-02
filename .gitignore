@@ -36,8 +36,9 @@ blob-report/
 # of these as untracked noise; the path has never been tracked.
 artifacts/
 
-# Local Codex agent tooling config (hooks, per-machine settings), not site source
-.codex/
+# Ignore machine-specific Codex files; keep the project MCP policy in source.
+.codex/*
+!.codex/config.toml
 
 # keel proof-gate (local receipts + proof config, never committed)
 .keel/
