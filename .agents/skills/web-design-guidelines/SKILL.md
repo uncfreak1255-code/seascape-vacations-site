@@ -1,6 +1,6 @@
 ---
 name: web-design-guidelines
-description: Review Seascape site UI against DESIGN.md, repo visual rules, accessibility basics, and desktop/mobile screenshot evidence. Use before or after CSS, template, layout, or visual polish work.
+description: Review Seascape UI against DESIGN.md with accessibility and desktop/mobile screenshot evidence. Use before or after CSS, template, layout, or visual polish.
 disable-model-invocation: true
 ---
 

@@ -1,6 +1,6 @@
 ---
 name: next-batch-gate
-description: Decide whether a proposed Seascape SEO, GEO, CRO, or performance branch should open by checking the current repo gate in `docs/status/next-batch.md`, `docs/status/current-state.md`, and `docs/status/open-risks.md`. Use when the user asks what to work on next, wants to open an owner/stay/guide batch, or proposes expansion, rewrite, or audit work that may conflict with the current reread status contract.
+description: Decide whether a Seascape SEO, GEO, CRO, performance, owner, stay, or guide branch may open by reading the current status gates. Use for next-work, expansion, rewrite, or audit proposals.
 ---
 
 # Next Batch Gate
@@ -36,6 +36,10 @@ Use this only for Seascape batch selection.
 - If attack-lane work is available, name it separately from the blocked proof
   lane. Do not collapse the answer to `wait` unless no bounded attack candidate
   survives source, SERP, and repo checks.
+- A verdict is incomplete until the attack lane is `completed` or `none found
+  after named checks`. Those named checks must cover a current source, SERP
+  evidence, and competitor pages. Analytics unavailable, below threshold, or
+  waiting for recrawl is not an attack-lane result.
 - If the status is `fresh but below threshold`, do not invent a new SEO batch just because the data is fresh.
 - Favor one bounded branch over parallel SEO lanes.
 - Route analytics freshness questions back to `seascape-analytics`, not to a site-wide audit here.
@@ -78,3 +82,5 @@ Include:
 - attack-lane action, if any
 - exact next action
 - whether a new brief should open
+- attack status, inspected query variants, dated SERP source, competitor URLs,
+  content and design strategy, tool route, and decision reason

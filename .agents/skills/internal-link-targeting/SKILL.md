@@ -1,6 +1,6 @@
 ---
 name: internal-link-targeting
-description: Analyze the repo internal link graph and propose target inbound-link counts by page family and by page, with a prioritized donor plan. Use when owner/stay/guide families show authority imbalance, when internal linking is named as a bottleneck, or when an execution-ready internal-link plan is needed.
+description: Analyze Seascape internal links and propose page-family targets plus a prioritized donor plan. Use for authority imbalance, internal-link bottlenecks, or an execution-ready link plan.
 ---
 
 # Internal Link Targeting

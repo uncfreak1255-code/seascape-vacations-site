@@ -1,6 +1,6 @@
 ---
 name: accessibility
-description: Audit and improve web accessibility following WCAG 2.1 guidelines. Use when asked to "improve accessibility", "a11y audit", "WCAG compliance", "screen reader support", "keyboard navigation", or "make accessible".
+description: Audit Seascape web accessibility and WCAG 2.1 behavior. Use for accessibility, a11y, WCAG, screen reader, keyboard navigation, or make accessible.
 license: MIT
 metadata:
   author: web-quality-skills
@@ -477,6 +477,25 @@ axe https://example.com
 - [ ] **High contrast:** Test with Windows High Contrast Mode
 - [ ] **Reduced motion:** Test with `prefers-reduced-motion: reduce`
 - [ ] **Focus order:** Logical and follows visual order
+
+Automated scans are a baseline, not the full audit. When reporting manual
+accessibility findings, include:
+
+- route, viewport, browser, and assistive technology checked
+- keyboard path tested, including where focus starts, moves, and returns
+- screen-reader readback for headings, landmarks, links, buttons, forms, and dynamic status changes
+- zoom or high-contrast mode used, if the issue depends on visual scale or contrast
+- issue severity by user impact: critical, serious, moderate, or minor
+- current behavior, expected behavior, and the smallest verification step after the fix
+
+For interactive components, verify the expected keyboard pattern before marking
+the component accessible:
+
+- menus and disclosures: Tab reaches the trigger, Enter or Space opens it, Escape closes it, and focus returns to the trigger
+- modals: focus moves into the dialog, stays inside while open, Escape closes it, and focus returns to the opener
+- forms: every input has a programmatic label, errors are associated with fields, and error or success states are announced
+- carousels or sliders: controls are keyboard reachable, motion can be paused when needed, and the current state is announced
+- custom buttons, cards, or CTAs: role, name, state, and action are clear without relying on pointer hover
 
 ### Screen reader commands
 
