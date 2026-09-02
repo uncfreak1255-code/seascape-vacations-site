@@ -1,6 +1,6 @@
 ---
 name: serp-ctr-title-rewrite
-description: Pull live SERP snippets for target keywords, extract competitor title/snippet patterns, and draft CTR-focused title rewrites tied to page intent. Use when pages rank but CTR is weak, title framing is the likely bottleneck, or competitor snippet patterns need translating into tested title options.
+description: Use live SERP competitor patterns to rewrite titles for CTR without changing page intent. Use when rankings have impressions but weak CTR or title framing is the bottleneck.
 ---
 
 # SERP CTR Title Rewrite

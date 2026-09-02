@@ -1,6 +1,6 @@
 ---
 name: accessibility
-description: Audit and improve web accessibility to WCAG 2.1. Use for 'improve accessibility', 'a11y audit', 'WCAG compliance', 'screen reader support', 'keyboard navigation', or 'make accessible'.
+description: Audit Seascape web accessibility and WCAG 2.1 behavior. Use for accessibility, a11y, WCAG, screen reader, keyboard navigation, or make accessible.
 license: MIT
 metadata:
   author: web-quality-skills

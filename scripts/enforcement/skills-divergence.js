@@ -19,6 +19,7 @@ const path = require("node:path");
 
 const AGENTS_SKILLS_DIR = path.join(".agents", "skills");
 const CLAUDE_SKILLS_DIR = path.join(".claude", "skills");
+const PLUGIN_SKILLS_DIR = path.join("plugins", "seascape-seo-os", "skills");
 const MANIFEST_PATH = path.join(".agents", "skills-divergence.json");
 const VALID_SIDES = [".agents", ".claude"];
 
@@ -67,6 +68,59 @@ function listSkillDirs(absoluteDir, { symlinkErrors, expectTargetRoot } = {}) {
     names.push(entry.name);
   }
   return names.sort();
+}
+
+function listTreeFiles(absoluteDir, relativeDir = "") {
+  const files = [];
+  for (const entry of fs.readdirSync(path.join(absoluteDir, relativeDir), {
+    withFileTypes: true
+  })) {
+    const relativePath = path.join(relativeDir, entry.name);
+    if (entry.isDirectory()) {
+      files.push(...listTreeFiles(absoluteDir, relativePath));
+    } else if (entry.isFile()) {
+      files.push(relativePath);
+    }
+  }
+  return files.sort();
+}
+
+function comparePluginSkillTrees(repoRoot) {
+  const canonicalRoot = path.join(repoRoot, AGENTS_SKILLS_DIR);
+  const pluginRoot = path.join(repoRoot, PLUGIN_SKILLS_DIR);
+  const canonicalSkills = listSkillDirs(canonicalRoot);
+  const pluginSkills = listSkillDirs(pluginRoot);
+  const canonicalSet = new Set(canonicalSkills);
+  const pluginSet = new Set(pluginSkills);
+  const missing = canonicalSkills.filter((skill) => !pluginSet.has(skill));
+  const extra = pluginSkills.filter((skill) => !canonicalSet.has(skill));
+  const mismatched = [];
+
+  for (const skill of canonicalSkills.filter((name) => pluginSet.has(name))) {
+    const canonicalDir = path.join(canonicalRoot, skill);
+    const pluginDir = path.join(pluginRoot, skill);
+    const canonicalFiles = listTreeFiles(canonicalDir);
+    const pluginFiles = listTreeFiles(pluginDir);
+    if (
+      canonicalFiles.length !== pluginFiles.length ||
+      canonicalFiles.some((file, index) => file !== pluginFiles[index]) ||
+      canonicalFiles.some(
+        (file) =>
+          !fs.readFileSync(path.join(canonicalDir, file)).equals(
+            fs.readFileSync(path.join(pluginDir, file))
+          )
+      )
+    ) {
+      mismatched.push(skill);
+    }
+  }
+
+  return {
+    missing,
+    extra,
+    mismatched,
+    ok: missing.length === 0 && extra.length === 0 && mismatched.length === 0
+  };
 }
 
 function validateManifestEntries(entries) {
@@ -182,12 +236,18 @@ function runCheck(repoRoot) {
     claudeSkills,
     manifestEntries: manifest.entries
   });
+  const pluginComparison = comparePluginSkillTrees(repoRoot);
 
   return {
     ...comparison,
+    pluginComparison,
     symlinkErrors,
     manifestErrors: manifest.errors,
-    ok: comparison.ok && manifest.errors.length === 0 && symlinkErrors.length === 0
+    ok:
+      comparison.ok &&
+      pluginComparison.ok &&
+      manifest.errors.length === 0 &&
+      symlinkErrors.length === 0
   };
 }
 
@@ -211,6 +271,15 @@ function main() {
       `[SKILLS-DIVERGENCE] stale manifest entry: "${item.skill}" (only_in ${item.only_in}) no longer diverges — remove it from ${MANIFEST_PATH}`
     );
   }
+  for (const skill of result.pluginComparison.missing) {
+    console.error(`[SKILLS-DIVERGENCE] plugin missing canonical skill: "${skill}"`);
+  }
+  for (const skill of result.pluginComparison.extra) {
+    console.error(`[SKILLS-DIVERGENCE] plugin has non-canonical skill: "${skill}"`);
+  }
+  for (const skill of result.pluginComparison.mismatched) {
+    console.error(`[SKILLS-DIVERGENCE] plugin skill bytes differ from canonical: "${skill}"`);
+  }
 
   if (!result.ok) {
     process.exit(1);
@@ -226,6 +295,7 @@ if (require.main === module) {
 
 module.exports = {
   compareSkillSets,
+  comparePluginSkillTrees,
   validateManifestEntries,
   listSkillDirs,
   loadManifest,

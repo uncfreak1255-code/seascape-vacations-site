@@ -1,6 +1,6 @@
 ---
 name: schema-markup
-description: Add, fix, or optimize schema markup and structured data on a site. Also use for 'schema markup', 'structured data', 'JSON-LD', 'rich snippets', 'schema.org', 'FAQ schema', 'product schema', 'review schema', 'breadcrumb schema', 'Google rich results', 'knowledge panel', 'star ratings in search', or 'add structured data' — whenever pages should show enhanced results in Google.
+description: Add or fix schema markup, structured data, or JSON-LD. Use for schema.org, rich results, FAQ, Product, Review, Breadcrumb, ratings, or knowledge-panel markup.
 metadata:
   version: 1.1.0
 ---

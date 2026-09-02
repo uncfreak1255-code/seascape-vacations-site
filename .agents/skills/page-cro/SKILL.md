@@ -1,6 +1,6 @@
 ---
 name: page-cro
-description: Optimize, improve, or increase conversions on any marketing page — homepage, landing, pricing, feature pages, or blog posts. Also use for 'CRO', 'conversion rate optimization', 'this page isn't converting', 'improve conversions', 'why isn't this page working', 'my landing page sucks', 'nobody's converting', 'low conversion rate', 'bounce rate is too high', 'people leave without signing up', or 'this page needs work' — including when the user just shares a URL and asks for feedback.
+description: Improve conversion on a homepage, landing, pricing, feature, blog, or shared URL. Use for CRO, conversion-rate optimization, low conversion, bounce, signup loss, or page feedback.
 metadata:
   version: 1.1.0
 ---
