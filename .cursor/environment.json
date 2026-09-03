@@ -1,0 +1,22 @@
+{
+  "name": "seascape-vacations-site",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
+  "install": "npm ci && npm run build",
+  "enable_testing": true,
+  "ports": [
+    {
+      "name": "eleventy",
+      "port": 8080
+    }
+  ],
+  "terminals": [
+    {
+      "name": "eleventy",
+      "command": "npx @11ty/eleventy --serve --port 8080",
+      "description": "Local site preview for visual QA. Not a deploy and not a send path."
+    }
+  ]
+}
