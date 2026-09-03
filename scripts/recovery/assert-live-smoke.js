@@ -258,7 +258,7 @@ function validateTargetResponse(target, response) {
   if (target.path === "/guides/best-vacation-rental-companies-ami/") {
     requireIncludes(target.path, response.body, [
       "Reviewed June 20, 2026 using public company pages",
-      "direct-booking path that does not bury the value under platform fees",
+      "direct-booking option that does not bury the value under platform fees",
       "Those are not the same job, and bad guides blur them together"
     ]);
     requireExcludes(target.path, response.body, [
