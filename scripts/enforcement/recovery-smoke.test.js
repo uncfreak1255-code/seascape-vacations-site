@@ -279,7 +279,7 @@ test("live smoke locks the refreshed AMI rental companies markers", () => {
       body: `
         <main>
           <p>Reviewed June 20, 2026 using public company pages, vacation-rental category pages, owner-service pages, and the Anna Maria Island Chamber vacation-rental directory.</p>
-          <p>It is who gives guests a clear all-in price, local support when something breaks, and a direct-booking path that does not bury the value under platform fees.</p>
+          <p>It is who gives guests a clear all-in price, local support when something breaks, and a direct-booking option that does not bury the value under platform fees.</p>
           <p>This guide is for two different decisions. Those are not the same job, and bad guides blur them together.</p>
         </main>
       `
