@@ -41,7 +41,7 @@
 
 ## Task 4: Close out and schedule readback
 
-- [ ] Commit the bounded source change on `codex/ai-visibility-booking-pilot` with the repository guardrail wrapper; do not push, merge, deploy, or claim runtime publication without a separate remote readback.
-- [ ] Preserve the refreshed receipt paths and the commit SHA in the final handoff.
+- [x] Commit the bounded source change on `codex/ai-visibility-booking-pilot` with the repository guardrail wrapper; do not push, merge, deploy, or claim runtime publication without a separate remote readback.
+- [x] Preserve the refreshed receipt paths and the commit SHA in the final handoff.
 - [ ] Re-run the same three OpenSEO prompts and the GSC guide-winner inspection after two complete comparable post-release windows (expected windows ending 2026-09-10 and 2026-09-17, subject to final GSC data).
 - [ ] Keep the batch if Seascape is named or cited more directly and `guide_book_direct_click`/guardrails do not regress; hold if the signal stays flat; revert only if a guardrail fails.
