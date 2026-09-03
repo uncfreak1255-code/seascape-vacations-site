@@ -1010,6 +1010,20 @@ test("priority guides use the shared conversion kit with page-specific stay link
   }
 });
 
+test("AMI rental-company guide tracks its standalone sticky booking CTA", () => {
+  const source = fs.readFileSync(
+    path.join(projectRoot, "src", "guides", "best-vacation-rental-companies-ami.html"),
+    "utf8"
+  );
+  const stickyBar = source.match(/<div\s+id="sticky-book-bar"[\s\S]*?<\/div>/);
+
+  assert.notEqual(stickyBar, null, "AMI rental-company guide should keep its sticky booking CTA");
+  assert.match(stickyBar[0], /href="\/stays\/book-direct-anna-maria-island\/"/);
+  assert.match(stickyBar[0], /data-track-event="guide_book_direct_click"/);
+  assert.match(stickyBar[0], /data-guide-slug="best-vacation-rental-companies-ami"/);
+  assert.match(stickyBar[0], /data-track-label="Browse Direct Homes \(sticky\)"/);
+});
+
 test("priority guide stay links resolve to real vacationer SEO pages", () => {
   for (const guide of guideFiles) {
     for (const href of guide.requiredLinks) {
