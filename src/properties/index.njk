@@ -5,688 +5,15 @@ templateEngineOverride: "njk"
 pageTitle: "Vacation Rentals Near Anna Maria Island | Seascape Vacations"
 pageDescription: "Direct-booking Bradenton and Sarasota stays near Anna Maria Island from Seascape Vacations. More space and private pools off-island, or Sarasota city-first stays."
 pageImage: "https://seascape-vacations.com/images/seascape-og-default.jpg"
-pageUpdated: "2026-05-17T12:00:00-04:00"
+pageUpdated: "2026-09-04T12:00:00-04:00"
 navActive: "properties"
 navButtonLabel: "Book Direct"
 navButtonHref: "https://book.seascape-vacations.com"
 navButtonTarget: "_blank"
 navButtonRel: "noopener noreferrer"
 headExtra: |
-  <link rel="preconnect" href="https://bookingenginecdn.hostaway.com" crossorigin>
-  <link rel="dns-prefetch" href="https://bookingenginecdn.hostaway.com">
-  <style>
-    .ui-icon {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      line-height: 0;
-      flex-shrink: 0;
-    }
-
-    .ui-icon svg {
-      width: 1em;
-      height: 1em;
-      display: block;
-      fill: none;
-      stroke: currentColor;
-      stroke-width: 1.9;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    .catalog-hero {
-      background:
-        linear-gradient(135deg, rgba(45, 70, 71, 0.82) 0%, rgba(61, 92, 93, 0.68) 48%, rgba(201, 169, 98, 0.24) 100%),
-        image-set(
-          url('/hero-optimized.avif') type('image/avif'),
-          url('/hero-optimized.webp') type('image/webp')
-        ) center/cover;
-      color: white;
-      padding: 96px 24px 56px;
-    }
-
-    .catalog-hero-inner {
-      max-width: 1180px;
-      margin: 0 auto;
-    }
-
-    .catalog-shell .container {
-      max-width: 1400px;
-      margin: 0 auto;
-    }
-
-    .catalog-hero-copy {
-      max-width: 760px;
-    }
-
-    .catalog-kicker {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      padding: 10px 16px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.14);
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      font-size: 12px;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      font-weight: 600;
-      margin-bottom: 20px;
-    }
-
-    .catalog-hero h1 {
-      font-size: clamp(40px, 6vw, 64px);
-      line-height: 0.96;
-      margin-bottom: 18px;
-      color: white;
-    }
-
-    .catalog-hero p {
-      max-width: 680px;
-      color: rgba(255, 255, 255, 0.9);
-      font-size: 18px;
-      line-height: 1.8;
-    }
-
-    .catalog-highlights {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 16px;
-      margin-top: 34px;
-    }
-
-    .catalog-highlight {
-      padding: 18px 20px;
-      border-radius: 18px;
-      background: rgba(255, 255, 255, 0.12);
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      backdrop-filter: blur(18px);
-    }
-
-    .catalog-highlight strong {
-      display: block;
-      font-size: 12px;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      margin-bottom: 8px;
-      color: rgba(255, 255, 255, 0.74);
-    }
-
-    .catalog-highlight span {
-      font-size: 16px;
-      line-height: 1.55;
-      color: white;
-    }
-
-    .catalog-shell {
-      padding: 60px 24px 88px;
-    }
-
-    .catalog-toolbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: end;
-      gap: 24px;
-      margin-bottom: 28px;
-      flex-wrap: wrap;
-    }
-
-    .catalog-toolbar-copy {
-      max-width: 680px;
-    }
-
-    .catalog-toolbar-copy h2 {
-      font-size: clamp(28px, 4vw, 40px);
-      margin-bottom: 10px;
-      color: var(--stone);
-    }
-
-    .catalog-toolbar-copy p {
-      color: var(--stone-light);
-      line-height: 1.8;
-    }
-
-    .catalog-toolbar-copy .section-tag {
-      margin-bottom: 14px;
-    }
-
-    .catalog-toolbar-link {
-      color: var(--brand-dark);
-      font-weight: 600;
-    }
-
-    .catalog-filters {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      align-items: center;
-      margin-bottom: 28px;
-    }
-
-    .catalog-route-panel {
-      margin-bottom: 30px;
-      padding: 28px;
-      border-radius: 28px;
-      background: linear-gradient(135deg, rgba(95, 138, 139, 0.12), rgba(201, 169, 98, 0.14));
-      border: 1px solid rgba(61, 92, 93, 0.08);
-      box-shadow: 0 18px 48px rgba(28, 38, 39, 0.06);
-    }
-
-    .catalog-route-header {
-      max-width: 760px;
-      margin-bottom: 22px;
-    }
-
-    .catalog-route-header h3 {
-      font-size: clamp(26px, 3vw, 34px);
-      margin-bottom: 10px;
-      color: var(--stone);
-    }
-
-    .catalog-route-header p {
-      color: var(--stone-light);
-      line-height: 1.8;
-    }
-
-    .catalog-route-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-      gap: 16px;
-    }
-
-    .catalog-route-card {
-      display: block;
-      padding: 20px;
-      border-radius: 22px;
-      background: white;
-      border: 1px solid rgba(61, 92, 93, 0.08);
-      box-shadow: 0 10px 24px rgba(28, 38, 39, 0.06);
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    .catalog-route-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 16px 30px rgba(28, 38, 39, 0.1);
-    }
-
-    .catalog-route-card strong {
-      display: block;
-      font-size: 12px;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: var(--brand-dark);
-      margin-bottom: 10px;
-    }
-
-    .catalog-route-card h4 {
-      font-size: 20px;
-      line-height: 1.15;
-      margin-bottom: 10px;
-      color: var(--stone);
-    }
-
-    .catalog-route-card p {
-      color: var(--stone-light);
-      font-size: 14px;
-      line-height: 1.65;
-    }
-
-    .catalog-filter {
-      border: 1px solid rgba(61, 92, 93, 0.14);
-      background: white;
-      color: var(--stone);
-      padding: 12px 18px;
-      border-radius: 999px;
-      font: inherit;
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .catalog-filter.active,
-    .catalog-filter:hover {
-      background: var(--brand-dark);
-      color: white;
-      border-color: var(--brand-dark);
-      box-shadow: 0 8px 24px rgba(61, 92, 93, 0.18);
-    }
-
-    .catalog-grid {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 28px;
-    }
-
-    .catalog-card {
-      flex: 0 1 440px;
-      width: min(100%, 440px);
-      min-height: 100%;
-      background: var(--white);
-      border-radius: 20px;
-      overflow: hidden;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
-    }
-
-    .catalog-card[hidden] {
-      display: none;
-    }
-
-    .catalog-card-media {
-      position: relative;
-      height: 280px;
-      overflow: hidden;
-    }
-
-    .catalog-card-media img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.45s ease;
-    }
-
-    .catalog-card:hover .catalog-card-media img {
-      transform: scale(1.04);
-    }
-
-    .catalog-card-scrim {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.1) 40%, transparent 60%, rgba(0, 0, 0, 0.6));
-      pointer-events: none;
-    }
-
-    .catalog-card-top,
-    .catalog-card-bottom {
-      position: absolute;
-      left: 18px;
-      right: 18px;
-      color: var(--white);
-    }
-
-    .catalog-card-top {
-      top: 18px;
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      align-items: flex-start;
-    }
-
-    .catalog-card-bottom {
-      bottom: 18px;
-    }
-
-    .catalog-eyebrow {
-      font-size: 9.5px;
-      letter-spacing: 0.28em;
-      text-transform: uppercase;
-      font-weight: 600;
-      line-height: 1;
-    }
-
-    .catalog-live-pill,
-    .catalog-rating-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 6px 10px;
-      border-radius: 50px;
-      color: var(--white);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      white-space: nowrap;
-    }
-
-    .catalog-live-pill {
-      background: rgba(255, 255, 255, 0.2);
-    }
-
-    .catalog-live-pill::before {
-      content: "";
-      width: 6px;
-      height: 6px;
-      border-radius: 50px;
-      background: #7FDBA4;
-      box-shadow: 0 0 0 3px rgba(127, 219, 164, 0.3);
-      animation: catalogPulse 2s infinite;
-      flex: 0 0 auto;
-    }
-
-    .catalog-live-pill.is-muted::before {
-      background: rgba(255, 255, 255, 0.72);
-      box-shadow: none;
-      animation: none;
-    }
-
-    @keyframes catalogPulse {
-      0% {
-        box-shadow: 0 0 0 0 rgba(127, 219, 164, 0.6);
-      }
-
-      70% {
-        box-shadow: 0 0 0 8px rgba(127, 219, 164, 0);
-      }
-
-      100% {
-        box-shadow: 0 0 0 0 rgba(127, 219, 164, 0);
-      }
-    }
-
-    .catalog-rating-pill {
-      background: rgba(0, 0, 0, 0.4);
-    }
-
-    .catalog-rating-pill .ui-icon svg {
-      width: 12px;
-      height: 12px;
-      fill: currentColor;
-      stroke: none;
-    }
-
-    .catalog-card h3 {
-      font-size: 30px;
-      line-height: 1.05;
-      font-weight: 500;
-      margin: 0;
-      color: var(--white);
-      letter-spacing: 0;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-
-    .catalog-title-link {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    .catalog-specs {
-      font-size: 12px;
-      color: rgba(255, 255, 255, 0.9);
-      margin-top: 3px;
-    }
-
-    .catalog-card-body {
-      padding: 22px 26px 10px;
-    }
-
-    .catalog-next {
-      padding: 14px 16px;
-      background: #F5FBF2;
-      border-radius: 12px;
-      border: 1px solid rgba(127, 219, 164, 0.35);
-      margin-bottom: 16px;
-    }
-
-    .catalog-next-lbl {
-      font-size: 9px;
-      letter-spacing: 0.28em;
-      color: #1F4733;
-      margin-bottom: 4px;
-      font-weight: 600;
-      text-transform: uppercase;
-    }
-
-    .catalog-next-dates {
-      font-size: 15px;
-      font-weight: 500;
-      color: #0E3222;
-    }
-
-    .catalog-next-sub {
-      font-size: 11px;
-      color: #3F6B55;
-      margin-top: 2px;
-      line-height: 1.45;
-    }
-
-    .catalog-chips {
-      display: flex;
-      gap: 8px;
-      font-size: 11px;
-    }
-
-    .catalog-chips[hidden] {
-      display: none;
-    }
-
-    .catalog-chip {
-      flex: 1;
-      min-width: 0;
-      text-align: center;
-      padding: 9px 8px;
-      background: var(--cream-light);
-      border-radius: 8px;
-    }
-
-    .catalog-chip-val {
-      font-family: "Playfair Display", serif;
-      font-size: 20px;
-      font-weight: 400;
-      color: var(--brand-dark);
-      line-height: 1;
-    }
-
-    .catalog-chip-val.gold {
-      color: var(--gold);
-    }
-
-    .catalog-chip-lbl {
-      font-size: 8.5px;
-      letter-spacing: 0.28em;
-      color: var(--stone-light);
-      margin-top: 3px;
-      font-weight: 600;
-      text-transform: uppercase;
-      line-height: 1.2;
-    }
-
-    .catalog-card-hairline {
-      height: 1px;
-      margin: 4px 26px 0;
-      background: linear-gradient(90deg, transparent, rgba(201, 169, 98, 0.6), transparent);
-    }
-
-    .catalog-card-foot {
-      padding: 16px 26px 22px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 18px;
-    }
-
-    .catalog-price-lbl {
-      font-size: 9px;
-      letter-spacing: 0.28em;
-      color: var(--stone-light);
-      font-weight: 600;
-      margin-bottom: 2px;
-      text-transform: uppercase;
-    }
-
-    .catalog-price {
-      font-family: "Playfair Display", serif;
-      font-size: 22px;
-      font-weight: 400;
-      line-height: 1;
-      color: var(--stone);
-    }
-
-    .catalog-price span {
-      font-size: 11px;
-      font-family: "Poppins", sans-serif;
-      color: var(--stone-light);
-      margin-left: 4px;
-    }
-
-    .catalog-check-dates {
-      flex: 0 0 auto;
-      padding: 11px 22px;
-      font-size: 10.5px;
-      letter-spacing: 0.18em;
-      white-space: nowrap;
-    }
-
-    .catalog-empty {
-      display: none;
-      padding: 28px;
-      border-radius: 22px;
-      background: white;
-      border: 1px solid rgba(61, 92, 93, 0.08);
-      color: var(--stone-light);
-      text-align: center;
-      box-shadow: 0 18px 48px rgba(28, 38, 39, 0.06);
-      margin-top: 20px;
-    }
-
-    .catalog-empty.visible {
-      display: block;
-    }
-
-    .catalog-owner-cta {
-      margin-top: 42px;
-      padding: 30px;
-      border-radius: 28px;
-      background: linear-gradient(135deg, var(--brand) 0%, var(--brand-dark) 100%);
-      color: white;
-      display: grid;
-      grid-template-columns: minmax(0, 1.4fr) auto;
-      gap: 20px;
-      align-items: center;
-    }
-
-    .catalog-owner-cta h3 {
-      font-size: 32px;
-      color: white;
-      margin-bottom: 10px;
-    }
-
-    .catalog-owner-cta p {
-      color: rgba(255, 255, 255, 0.84);
-      max-width: 700px;
-      line-height: 1.8;
-    }
-
-    .catalog-owner-cta .section-tag {
-      color: rgba(255, 255, 255, 0.7);
-      margin-bottom: 14px;
-    }
-
-    @media (max-width: 900px) {
-      .catalog-highlights,
-      .catalog-owner-cta {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    @media (max-width: 680px) {
-      .catalog-hero {
-        padding: 42px 20px 34px;
-      }
-
-      .catalog-kicker {
-        margin-bottom: 12px;
-        padding: 7px 11px;
-        font-size: 9.5px;
-        letter-spacing: 0.16em;
-      }
-
-      .catalog-hero h1 {
-        font-size: clamp(36px, 9.5vw, 40px);
-        line-height: 1.02;
-        margin-bottom: 12px;
-      }
-
-      .catalog-hero p {
-        font-size: 15px;
-        line-height: 1.5;
-      }
-
-      .catalog-shell {
-        padding: 28px 18px 72px;
-      }
-
-      .catalog-toolbar {
-        gap: 14px;
-        margin-bottom: 14px;
-      }
-
-      .catalog-toolbar-copy .section-tag {
-        margin-bottom: 10px;
-      }
-
-      .catalog-toolbar-copy h2 {
-        font-size: clamp(28px, 8vw, 31px);
-        line-height: 1.1;
-        margin-bottom: 8px;
-      }
-
-      .catalog-toolbar-copy p {
-        font-size: 15px;
-        line-height: 1.45;
-      }
-
-      .catalog-toolbar-link {
-        font-size: 14px;
-        margin-top: 2px;
-      }
-
-      .catalog-filters {
-        flex-wrap: nowrap;
-        overflow-x: auto;
-        margin: 0 -18px 22px;
-        padding: 0 18px 8px;
-        scrollbar-width: none;
-        -webkit-overflow-scrolling: touch;
-      }
-
-      .catalog-filters::-webkit-scrollbar {
-        display: none;
-      }
-
-      .catalog-filter {
-        flex: 0 0 auto;
-        padding: 10px 15px;
-        white-space: nowrap;
-      }
-
-      .catalog-grid {
-        justify-content: center;
-        gap: 24px;
-      }
-
-      .catalog-card h3 {
-        font-size: 28px;
-      }
-
-      .catalog-card-media {
-        height: 252px;
-      }
-
-      .catalog-card-body,
-      .catalog-card-foot {
-        padding-left: 18px;
-        padding-right: 18px;
-      }
-
-      .catalog-card-hairline {
-        margin-left: 18px;
-        margin-right: 18px;
-      }
-
-      .catalog-card-foot {
-        align-items: flex-start;
-        flex-direction: column;
-      }
-
-      .catalog-check-dates {
-        width: 100%;
-        justify-content: center;
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="/css/catalog.css">
+  <script defer src="/assets/js/catalog.js"></script>
 ---
 {% from "partials/ui-icon.njk" import uiIcon %}
 <script type="application/ld+json">
@@ -708,481 +35,128 @@ headExtra: |
   "numberOfItems": {{ properties | length }},
   "itemListElement": [
     {% for property in properties %}
-    {
-      "@type": "ListItem",
-      "position": {{ loop.index }},
-      "url": "{{ site.url }}{{ property.pageUrl }}",
-      "name": "{{ property.name }}",
-      "description": "{{ property.description | stripHtml | escape }}",
-      "image": "{{ property.image | imgProxy(1200) }}"
-    }{% if not loop.last %},{% endif %}
+    { "@type": "ListItem", "position": {{ loop.index }}, "url": "{{ site.url }}{{ property.pageUrl }}", "name": "{{ property.name }}", "image": "{{ property.image | imgProxy(1200) }}" }{% if not loop.last %},{% endif %}
     {% endfor %}
   ]
 }
 </script>
 
-<nav class="breadcrumbs" aria-label="Breadcrumb">
-  <ol>
-    <li><a href="/">Home</a></li>
-    <li><span>></span></li>
-    <li><span aria-current="page">Properties</span></li>
-  </ol>
-</nav>
-
-{% include "partials/save50-offer.njk" %}
-
-<section class="catalog-hero">
-  <div class="catalog-hero-inner">
-    <div class="catalog-hero-copy">
-      <span class="catalog-kicker">Seascape Collection</span>
-      <h1>Gulf Coast vacation rentals for groups. Direct booking, private pools, no OTA fees.</h1>
-      <p>
-        Private-pool homes in Bradenton and Sarasota. Compare the full checkout total for your dates.
-      </p>
+<div class="catalog-page" data-catalog-version="guest-journey-v1">
+  <nav class="catalog-breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true"> / </span><span aria-current="page">Our homes</span></nav>
+  {% include "partials/save50-offer.njk" %}
+  <header class="catalog-intro">
+    <div class="catalog-intro-copy">
+      <p class="section-tag">The Seascape Collection</p>
+      <h1>A house everyone<br>can agree on.</h1>
+      <p>Pool days, a private dock, or room for the whole crew. Find your favorite among our five homes in Bradenton and Sarasota.</p>
+      <a class="btn-link" href="#catalog-heading">Meet the homes <span class="arr" aria-hidden="true">→</span></a>
     </div>
-  </div>
-</section>
+    <figure class="catalog-intro-photo">
+      <img src="/images/email/save50/the-oasis.jpg" alt="Pool and loungers at The Oasis in the evening" width="560" height="340" fetchpriority="high">
+      <figcaption>The Oasis · Bradenton <span>Evenings in your own backyard</span></figcaption>
+    </figure>
+  </header>
 
-<section class="catalog-shell">
-  <div class="container">
-    <div class="catalog-toolbar">
-      <div class="catalog-toolbar-copy">
-        <p class="section-tag">Our Collection</p>
-        <h2 id="catalog-heading">Five homes. Find the one that fits your group.</h2>
-        <p id="catalog-copy">
-          Four homes in Bradenton, one in Sarasota. Use the filters to narrow by location, then check dates.
-        </p>
-      </div>
-      <a class="catalog-toolbar-link" href="/guides/">Explore local guides →</a>
+  <section class="catalog-trip" aria-label="Your trip">
+    <div class="catalog-trip-heading"><h2>Your trip</h2><span>Start with your group. Keep your dates as you explore.</span></div>
+    <form id="catalog-trip-form" method="get" action="/properties/">
+      <div><label for="trip-arrive">Arrival</label><input id="trip-arrive" name="arrive" type="date"></div>
+      <div><label for="trip-depart">Departure</label><input id="trip-depart" name="depart" type="date"></div>
+      <div><label for="trip-guests">Guests</label><select id="trip-guests" name="guests"><option value="">Any group size</option>{% for n in range(1,17) %}<option value="{{ n }}">{{ n }} {% if n == 1 %}guest{% else %}guests{% endif %}</option>{% endfor %}<option value="17">More than 16 guests</option></select></div>
+      <button class="btn btn-brand" type="submit">Find my home</button>
+    </form>
+    <p id="trip-status" class="catalog-trip-status" aria-live="polite">Compare homes here. Check availability and the full total on our booking page.</p>
+    <button id="clear-dates" class="catalog-text-button" type="button" hidden>My dates are flexible</button>
+  </section>
+
+  <section class="catalog-collection" aria-labelledby="catalog-heading">
+    <div class="catalog-collection-heading">
+      <div><p class="section-tag">Five homes. Different ways to stay.</p><h2 id="catalog-heading">Find your kind of getaway.</h2></div>
+      <p>All have private pools.<br>Our Bradenton homes are near Anna Maria Island, on the mainland.</p>
     </div>
-
     <div class="catalog-filters" aria-label="Property filters">
-      <button class="catalog-filter active" type="button" data-filter="all">All stays</button>
-      <button class="catalog-filter" type="button" data-filter="waterfront">Waterfront</button>
-      <button class="catalog-filter" type="button" data-filter="pool">Private Pool</button>
-      <button class="catalog-filter" type="button" data-filter="hot-tub">Hot Tub</button>
-      <button class="catalog-filter" type="button" data-filter="pet-friendly">Pet Friendly</button>
-      <button class="catalog-filter" type="button" data-filter="bradenton">Near AMI</button>
-      <button class="catalog-filter" type="button" data-filter="sarasota">Sarasota</button>
+      <button class="catalog-filter active" type="button" data-filter="all" aria-pressed="true">All stays</button>
+      <button class="catalog-filter" type="button" data-filter="waterfront" aria-pressed="false">Waterfront</button>
+      <button class="catalog-filter" type="button" data-filter="bradenton" aria-pressed="false">Near AMI</button>
+      <button class="catalog-filter" type="button" data-filter="sarasota" aria-pressed="false">Sarasota</button>
+      <button class="catalog-filter" type="button" data-filter="pet-friendly" aria-pressed="false">Pets considered</button>
     </div>
+    <p id="catalog-count" class="catalog-count" role="status">{{ properties | length }} homes · Availability confirmed on the booking page</p>
+    <noscript><p>All five homes are below. Open a home’s booking page to select dates and guests. Interactive filters and comparisons need JavaScript.</p></noscript>
 
     <div class="catalog-grid" id="catalog-grid">
       {% for property in properties %}
-      {# marketing_amenities included so flags like pet-friendly match when they
-         live there instead of amenities (true for 3 of the 4 pet homes) #}
-      {% set filterTokens = ((property.amenities or []) | join('|') ~ '|' ~ ((property.marketing_amenities or []) | join('|')) ~ '|' ~ property.destination ~ '|' ~ property.city ~ '|' ~ property.slug) | lower %}
-      {% if property.slug == "dockside-dreams" %}
-        {% set primaryTag = "Waterfront" %}
-      {% elif property.slug == "the-oasis" %}
-        {% set primaryTag = "Sleeps 16" %}
-      {% elif property.slug == "sarasota-luxe" %}
-        {% set primaryTag = "Downtown Sarasota" %}
-      {% elif property.slug == "river-house" %}
-        {% set primaryTag = "Guest Favorite" %}
-      {% elif property.slug == "bradenton-pool-home" %}
-        {% set primaryTag = "Near IMG" %}
-      {% else %}
-        {% set primaryTag = property.city %}
-      {% endif %}
+      {% set filterTokens = ((property.amenities or []) | join('|') ~ '|' ~ ((property.marketing_amenities or []) | join('|')) ~ '|' ~ property.destination ~ '|' ~ property.city) | lower %}
       {% set availability = property.availability %}
-      {% set bookingHref = property.bookingUrl or property.pageUrl + '#check-availability' %}
-      {% if availability and availability.nextAvailable and property.bookingUrl %}
-        {% set bookingSeparator = "?" %}
-        {% if "?" in bookingHref %}
-          {% set bookingSeparator = "&" %}
-        {% endif %}
-        {% set bookingHref = bookingHref ~ bookingSeparator ~ "startingDate=" ~ availability.nextAvailable.startDate ~ "&endingDate=" ~ availability.nextAvailable.endDate %}
-      {% endif %}
-      {% if loop.first %}
-        {% set loading = "eager" %}
-        {% set fetchpriority = "high" %}
-      {% else %}
-        {% set loading = "lazy" %}
-        {% set fetchpriority = "" %}
-      {% endif %}
-      <article
-        class="catalog-card"
-        data-filters="{{ filterTokens }}"
-        data-max-guests="{{ property.guests }}"
-        {% if availability and availability.nextAvailable %}
-        data-next-available-start="{{ availability.nextAvailable.startDate }}"
-        data-next-available-end="{{ availability.nextAvailable.endDate }}"
-        {% endif %}
-      >
-        <div class="catalog-card-media">
-          <img
-            src="{{ property.image | imgProxy(900) }}"
-            srcset="{{ property.image | imgProxy(500) }} 500w, {{ property.image | imgProxy(900) }} 900w, {{ property.image | imgProxy(1200) }} 1200w"
-            sizes="(min-width: 1180px) 440px, (min-width: 768px) 50vw, 100vw"
-            alt="{{ property.name }} - {{ property.specs }} vacation rental in {{ property.city }}, Florida"
-            loading="{{ loading }}"
-            {% if fetchpriority %}fetchpriority="{{ fetchpriority }}"{% endif %}
-            decoding="async"
-            width="900"
-            height="620"
-            onerror="this.onerror=null;this.src='/images/seascape-og-default.jpg';this.srcset='';">
-          <div class="catalog-card-scrim"></div>
-          <div class="catalog-card-top">
-            <span class="catalog-eyebrow catalog-live-pill{% if not (availability and availability.nextAvailable) %} is-muted{% endif %}">
-              {% if availability and availability.nextAvailable %}Availability · live{% else %}Calendar · secure{% endif %}
-            </span>
-            <span class="catalog-eyebrow catalog-rating-pill">{{ uiIcon('star') }} <span>{{ property.rating }}</span></span>
-          </div>
-          <div class="catalog-card-bottom">
-            <h3>
-              <a
-                class="catalog-title-link"
-                href="{{ property.pageUrl }}"
-                aria-label="View {{ property.name }} details"
-                data-track-event="catalog_view_details_click"
-                data-page-slug="{{ property.slug }}"
-                data-placement="catalog_card_title"
-                data-track-label="{{ property.name }}"
-              >{{ property.name }}</a>
-            </h3>
-            <div class="catalog-specs">{{ property.city }}, FL · {{ property.bedrooms }} BR · {{ property.bathrooms }} BA · Sleeps {{ property.guests }}</div>
-          </div>
-        </div>
+      <article class="catalog-card" data-property="{{ property.slug }}" data-filters="{{ filterTokens }}" data-max-guests="{{ property.guests }}" data-availability-mode="checkout">
+        <a class="catalog-card-media" href="{{ property.pageUrl }}" data-trip-link data-track-event="catalog_view_details_click" data-page-slug="{{ property.slug }}" data-placement="catalog_photo" aria-label="View {{ property.name }} photos and details">
+          <img src="{{ property.image | imgProxy(900) }}" alt="{{ property.name }} vacation home in {{ property.city }}" width="900" height="620" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/images/email/save50/{{ property.slug }}.jpg';">
+          <span class="catalog-photo-number" aria-hidden="true">0{{ loop.index }}</span>
+        </a>
         <div class="catalog-card-body">
-          <div class="catalog-next">
-            {% if availability and availability.nextAvailable %}
-            <div class="catalog-next-lbl">Next available</div>
-            <div class="catalog-next-dates">{{ availability.nextAvailable.label }}</div>
-            <div class="catalog-next-sub">{{ availability.nextAvailable.subcopy }}</div>
-            {% else %}
-            <div class="catalog-next-lbl">Live calendar</div>
-            <div class="catalog-next-dates">Check available dates</div>
-            <div class="catalog-next-sub">Real-time rates and minimum stays open on the secure booking page.</div>
-            {% endif %}
+          <div class="catalog-card-topline"><span>{{ property.city }}, Florida</span><button class="catalog-compare-toggle" type="button" data-compare="{{ property.slug }}" aria-pressed="false" aria-label="Compare {{ property.name }}" hidden>{{ uiIcon('plus') }} <span>Compare</span></button></div>
+          <h3><a class="catalog-title-link" href="{{ property.pageUrl }}" data-trip-link aria-label="View {{ property.name }} details" data-track-event="catalog_view_details_click" data-page-slug="{{ property.slug }}" data-placement="catalog_card_title">{{ property.name }}</a></h3>
+          <p class="catalog-card-specs"><span>{{ property.bedrooms }} bedrooms</span><span>{{ property.bathrooms }} baths</span><span>Up to {{ property.guests }} guests</span></p>
+          <div class="catalog-card-reason">
+            <p class="section-tag">The draw</p>
+            <p>{{ property.highlights | join(' · ') }}</p>
           </div>
+          {% if "pet-friendly" in filterTokens %}<p class="catalog-pet-note">Bringing a dog? Check this home’s approval, size and fee rules.</p>{% endif %}
+          <div class="catalog-card-foot">
+            <a class="btn btn-brand catalog-check-dates" href="{{ property.bookingUrl }}" data-booking-base="{{ property.bookingUrl }}" data-track-event="catalog_book_direct_click" data-page-slug="{{ property.slug }}" data-placement="catalog_card" target="_blank" rel="noopener noreferrer" aria-label="Check dates for {{ property.name }}">Check dates</a>
+            <a class="catalog-details-link" href="{{ property.pageUrl }}" data-trip-link data-track-event="catalog_view_details_click" data-page-slug="{{ property.slug }}" data-placement="catalog_card_details">Explore this home <span aria-hidden="true">→</span></a>
+          </div>
+          <p class="catalog-quote-note">Full price, fees and cancellation terms on the booking page.</p>
           {% if availability and availability.nextAvailable %}
-          <div class="catalog-chips" aria-label="{{ property.name }} availability details">
-            {% for month in availability.monthNights %}
-            <div class="catalog-chip">
-              <div class="catalog-chip-val">{{ month.value }}</div>
-              <div class="catalog-chip-lbl">{{ month.label }}</div>
-            </div>
-            {% endfor %}
-            <div class="catalog-chip">
-              <div class="catalog-chip-val gold">{{ availability.weekendsLeft }}</div>
-              <div class="catalog-chip-lbl">Weekends left</div>
-            </div>
-          </div>
-          {% else %}
-          <div class="catalog-chips" aria-label="{{ property.name }} listing details">
-            <div class="catalog-chip">
-              <div class="catalog-chip-val">{{ property.bedrooms }}</div>
-              <div class="catalog-chip-lbl">Bedrooms</div>
-            </div>
-            <div class="catalog-chip">
-              <div class="catalog-chip-val">{{ property.bathrooms }}</div>
-              <div class="catalog-chip-lbl">Baths</div>
-            </div>
-            <div class="catalog-chip">
-              <div class="catalog-chip-val gold">{{ property.guests }}</div>
-              <div class="catalog-chip-lbl">Sleeps</div>
-            </div>
-          </div>
+          <details hidden class="catalog-opening" data-opening-start="{{ availability.nextAvailable.startDate }}" data-opening-end="{{ availability.nextAvailable.endDate }}" data-opening-synced="{{ availability.syncedAt }}">
+            <summary>Dates flexible? See a recent opening</summary>
+            <p>{{ availability.nextAvailable.label }} · {{ availability.nextAvailable.nights }} nights. From a recent calendar check; confirm before booking.</p>
+            <a href="{{ property.bookingUrl }}?start={{ availability.nextAvailable.startDate }}&end={{ availability.nextAvailable.endDate }}" data-track-event="catalog_book_direct_click" data-page-slug="{{ property.slug }}" data-placement="catalog_recent_opening" target="_blank" rel="noopener noreferrer">Check this opening</a>
+          </details>
           {% endif %}
-        </div>
-        <div class="catalog-card-hairline"></div>
-        <div class="catalog-card-foot">
-          <div>
-            <div class="catalog-price-lbl">Direct from</div>
-            <div class="catalog-price">${{ property.price }}<span>/ night</span></div>
-          </div>
-          <a
-            class="btn btn-brand catalog-check-dates"
-            href="{{ bookingHref }}"
-            data-track-event="catalog_book_direct_click"
-            data-page-slug="{{ property.slug }}"
-            data-placement="catalog_card"
-            data-track-label="{{ property.name }}"
-            {% if property.bookingUrl %}target="_blank" rel="noopener noreferrer"{% endif %}
-          >Check Dates</a>
         </div>
       </article>
       {% endfor %}
     </div>
 
-    <div class="catalog-empty" id="catalog-empty">
-      No homes match that filter right now. Reset to <strong>All stays</strong> instead of assuming the collection disappeared.
+    <div class="catalog-empty" id="catalog-empty" hidden>
+      <h3>No single home fits these choices.</h3><p id="catalog-empty-copy">Try another area or check your group size. Changing dates will not change a home’s maximum capacity.</p>
+      <button class="btn btn-brand" id="reset-filter" type="button">Show all areas</button>
+      <a href="tel:9417048545">Talk with our local team</a>
     </div>
+  </section>
 
-    <section class="catalog-route-panel" aria-label="Explore by trip type" style="margin-top:48px">
-      <div class="catalog-route-header">
-        <p class="section-tag">Explore by Trip Type</p>
-        <h3>Looking for something specific?</h3>
-        <p>
-          Browse curated stay collections by trip type — each page matches you with the right home for your goals.
-        </p>
-      </div>
-      <div class="catalog-route-grid">
-        <a
-          class="catalog-route-card"
-          href="/stays/book-direct-anna-maria-island/"
-          data-track-event="catalog_collection_click"
-          data-placement="catalog_route_card"
-          data-track-label="Book Direct Near AMI"
-        >
-          <strong>Fee-first</strong>
-          <h4>Book direct near AMI</h4>
-          <p>Skip Airbnb and Vrbo fees — same homes, lower total.</p>
-        </a>
-        <a
-          class="catalog-route-card"
-          href="/stays/anna-maria-island-vacation-rentals/"
-          data-track-event="catalog_collection_click"
-          data-placement="catalog_route_card"
-          data-track-label="Anna Maria Island Vacation Rentals"
-        >
-          <strong>Island-first</strong>
-          <h4>Anna Maria Island stays</h4>
-          <p>Homes near the island with direct booking savings.</p>
-        </a>
-        <a
-          class="catalog-route-card"
-          href="/stays/bradenton-vacation-rentals-near-beaches/"
-          data-track-event="catalog_collection_click"
-          data-placement="catalog_route_card"
-          data-track-label="Bradenton Near Beaches"
-        >
-          <strong>Value base</strong>
-          <h4>Bradenton near beaches</h4>
-          <p>Private-pool stay options near Anna Maria Island; confirm each listing's location and features.</p>
-        </a>
-        <a
-          class="catalog-route-card"
-          href="/stays/sarasota-vacation-rentals-with-pool/"
-          data-track-event="catalog_collection_click"
-          data-placement="catalog_route_card"
-          data-track-label="Sarasota Pool Homes"
-        >
-          <strong>Sarasota</strong>
-          <h4>Sarasota pool homes</h4>
-          <p>Sarasota pool home — arts district access and Gulf day trips without the AMI price.</p>
-        </a>
-        <a
-          class="catalog-route-card"
-          href="/stays/last-minute-vacation-rentals-florida/"
-          data-track-event="catalog_collection_click"
-          data-placement="catalog_route_card"
-          data-track-label="Last-Minute Openings"
-        >
-          <strong>Fast escape</strong>
-          <h4>Last-minute openings</h4>
-          <p>Current Gulf Coast homes with dates open this week.</p>
-        </a>
-      </div>
-    </section>
-  </div>
-</section>
+  <section class="catalog-help" aria-label="Help choosing a home">
+    <div><p class="section-tag">A local team, one conversation away</p><h2>A detail could decide it.</h2><p>Boat size, a dog coming along, or who sleeps where. Ask us about the home you’re considering before you book.</p><a class="btn-link" href="tel:9417048545">Call (941) 704-8545 <span class="arr" aria-hidden="true">→</span></a></div>
+    <div class="catalog-help-links"><a href="/guides/">Plan beach days, meals and getting around <span aria-hidden="true">→</span></a><a data-track-event="catalog_collection_click" data-placement="catalog_help" href="/stays/book-direct-anna-maria-island/">What to compare when you book direct <span aria-hidden="true">→</span></a><details class="catalog-area-guides"><summary>Explore by area or trip</summary><a href="/stays/anna-maria-island-vacation-rentals/" data-track-event="catalog_collection_click" data-placement="catalog_area_guides">Near Anna Maria Island</a><a href="/stays/bradenton-vacation-rentals-near-beaches/" data-track-event="catalog_collection_click" data-placement="catalog_area_guides">Bradenton, near the beaches</a><a href="/stays/sarasota-vacation-rentals-with-pool/" data-track-event="catalog_collection_click" data-placement="catalog_area_guides">Sarasota with a private pool</a><a href="/stays/last-minute-vacation-rentals-florida/" data-track-event="catalog_collection_click" data-placement="catalog_area_guides">Planning a last-minute stay</a></details></div>
+  </section>
 
-<script>
-  (function () {
-    const buttons = Array.from(document.querySelectorAll(".catalog-filter"));
-    const cards = Array.from(document.querySelectorAll(".catalog-card"));
-    const emptyState = document.getElementById("catalog-empty");
-    const heading = document.getElementById("catalog-heading");
-    const copy = document.getElementById("catalog-copy");
-    const params = new URLSearchParams(window.location.search);
-    const requestedArea = (params.get("area") || "").toLowerCase();
-    const areaFilterMap = {
-      "anna-maria-island": "bradenton",
-      "ami": "bradenton",
-      "bradenton": "bradenton",
-      "sarasota": "sarasota"
-    };
-    const filterUrlMap = {
-      bradenton: "anna-maria-island",
-      sarasota: "sarasota",
-      // keeps ?area=pet-friendly stable across load/refresh/back-forward so the
-      // rescued legacy pet URLs land and stay prefiltered
-      "pet-friendly": "pet-friendly"
-    };
-    const filterCopy = {
-      all: {
-        heading: "Five homes. Find the one that fits your group.",
-        body: "Four homes in Bradenton, one in Sarasota. Use the filters to narrow by location, then check dates."
-      },
-      bradenton: {
-        heading: "Bradenton homes with Anna Maria Island access — 10–15 min to the beach.",
-        body: "More space and a private pool while keeping AMI beach days easy for the whole group."
-      },
-      sarasota: {
-        heading: "Sarasota stays for travelers who want a city-first Gulf Coast trip.",
-        body: "Sarasota is the real destination here — arts district, dining, and Gulf day trips without the AMI price premium."
-      }
-    };
+  <aside class="catalog-shortlist" id="catalog-shortlist" aria-label="Your comparison" hidden>
+    <div><strong id="shortlist-count">1 home selected</strong><span id="shortlist-hint">Add one more to compare.</span></div>
+    <button class="btn btn-brand" id="open-comparison" type="button" disabled>Compare homes</button>
+    <button class="catalog-text-button" id="clear-comparison" type="button">Clear</button>
+  </aside>
 
-    function setActiveButton(filter) {
-      buttons.forEach((button) => {
-        button.classList.toggle("active", (button.dataset.filter || "all") === filter);
-      });
-    }
-
-    function updateCopy(filter) {
-      const content = filterCopy[filter] || filterCopy.all;
-      if (heading) heading.textContent = content.heading;
-      if (copy) copy.textContent = content.body;
-    }
-
-    function syncAreaParam(filter) {
-      const url = new URL(window.location.href);
-      const nextArea = filterUrlMap[filter];
-
-      if (nextArea) {
-        url.searchParams.set("area", nextArea);
-      } else {
-        url.searchParams.delete("area");
-      }
-
-      history.replaceState({}, "", `${url.pathname}${url.search}`);
-    }
-
-    // Pull arrive/depart/guests from the URL and propagate them into
-    // (a) the Hostaway "Book Direct" links so dates carry through, and
-    // (b) a guests filter that hides cards whose max occupancy is too low.
-    const requestedArrive = (params.get("arrive") || "").trim();
-    const requestedDepart = (params.get("depart") || "").trim();
-    const requestedGuests = parseInt(params.get("guests") || "", 10) || 0;
-
-    function newYorkDateStamp() {
-      const parts = new Intl.DateTimeFormat("en-US", {
-        timeZone: "America/New_York",
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit"
-      }).formatToParts(new Date());
-      const byType = Object.fromEntries(parts.map((part) => [part.type, part.value]));
-      return `${byType.year}-${byType.month}-${byType.day}`;
-    }
-
-    function downgradeExpiredAvailabilityCards() {
-      const today = newYorkDateStamp();
-      const datePattern = /^\d{4}-\d{2}-\d{2}$/;
-      const isDateStamp = (value) => {
-        if (!datePattern.test(value)) return false;
-        const parsed = new Date(`${value}T00:00:00Z`);
-        return !Number.isNaN(parsed.getTime()) && parsed.toISOString().slice(0, 10) === value;
-      };
-
-      cards.forEach((card) => {
-        const badge = card.querySelector(".catalog-live-pill");
-        if (!badge || !badge.textContent.includes("Availability")) return;
-
-        const startDate = card.dataset.nextAvailableStart || "";
-        const endDate = card.dataset.nextAvailableEnd || "";
-        const isCurrentRange =
-          isDateStamp(startDate) &&
-          isDateStamp(endDate) &&
-          startDate >= today &&
-          endDate > startDate;
-        if (isCurrentRange) return;
-
-        badge.textContent = "Calendar · secure";
-        badge.classList.add("is-muted");
-
-        const nextLabel = card.querySelector(".catalog-next-lbl");
-        const nextDates = card.querySelector(".catalog-next-dates");
-        const nextSubcopy = card.querySelector(".catalog-next-sub");
-        if (nextLabel) nextLabel.textContent = "Live calendar";
-        if (nextDates) nextDates.textContent = "Check available dates";
-        if (nextSubcopy) {
-          nextSubcopy.textContent =
-            "Real-time rates and minimum stays open on the secure booking page.";
-        }
-
-        const availabilityChips = card.querySelector(".catalog-chips");
-        if (availabilityChips) availabilityChips.hidden = true;
-
-        const link = card.querySelector('a[data-track-event="catalog_book_direct_click"]');
-        const href = link ? link.getAttribute("href") || "" : "";
-        if (link && href.startsWith("https://book.seascape-vacations.com/listings/")) {
-          const url = new URL(href);
-          url.searchParams.delete("startingDate");
-          url.searchParams.delete("endingDate");
-          link.setAttribute("href", url.toString());
-        }
-      });
-    }
-
-    function cardMaxGuests(card) {
-      return parseInt(card.dataset.maxGuests || "0", 10) || 0;
-    }
-
-    function decorateBookDirectLinks() {
-      if (!requestedArrive && !requestedDepart && !requestedGuests) return;
-      cards.forEach((card) => {
-        const link = card.querySelector('a[data-track-event="catalog_book_direct_click"]');
-        if (!link) return;
-        const href = link.getAttribute("href") || "";
-        if (!href.startsWith("https://book.seascape-vacations.com/listings/")) return;
-        const url = new URL(href);
-        if (requestedArrive) url.searchParams.set("startingDate", requestedArrive);
-        if (requestedDepart) url.searchParams.set("endingDate", requestedDepart);
-        if (requestedGuests) url.searchParams.set("numberOfGuests", String(requestedGuests));
-        link.setAttribute("href", url.toString());
-      });
-    }
-    downgradeExpiredAvailabilityCards();
-    decorateBookDirectLinks();
-
-    function applyFilter(filter, { sync = false } = {}) {
-      let visibleCount = 0;
-
-      cards.forEach((card) => {
-        const haystack = (card.dataset.filters || "").toLowerCase();
-        let matches = filter === "all" || haystack.includes(filter);
-        if (matches && requestedGuests && cardMaxGuests(card) < requestedGuests) {
-          matches = false;
-        }
-        card.hidden = !matches;
-        if (matches) {
-          visibleCount += 1;
-        }
-      });
-
-      if (emptyState) {
-        emptyState.classList.toggle("visible", visibleCount === 0);
-      }
-
-      setActiveButton(filter);
-      updateCopy(filter);
-
-      if (sync) {
-        syncAreaParam(filter);
-      }
-    }
-
-    function resolveInitialFilter() {
-      if (!requestedArea) {
-        return "all";
-      }
-
-      if (requestedArea.includes("anna-maria-island") || requestedArea.includes("ami")) {
-        return "bradenton";
-      }
-
-      if (requestedArea.includes("sarasota")) {
-        return "sarasota";
-      }
-
-      const exactMatch = buttons.find((button) => (button.dataset.filter || "").toLowerCase() === requestedArea);
-      return exactMatch ? requestedArea : "all";
-    }
-
-    buttons.forEach((button) => {
-      button.addEventListener("click", () => {
-        applyFilter(button.dataset.filter || "all", { sync: true });
-      });
-    });
-
-    const initialFilter = resolveInitialFilter();
-    applyFilter(initialFilter);
-
-    if (requestedArea.length > 0) {
-      syncAreaParam(initialFilter);
-    }
-  })();
-</script>
+  <dialog class="catalog-dialog" id="catalog-comparison" aria-labelledby="comparison-heading">
+    <div class="catalog-dialog-header"><div><p class="section-tag">Your shortlist</p><h2 id="comparison-heading">Which one feels like your vacation?</h2></div><button type="button" id="close-comparison" class="catalog-close" aria-label="Close comparison">Close {{ uiIcon('close') }}</button></div>
+    <p id="comparison-trip"></p>
+    <div class="catalog-comparison-scroll" tabindex="0" role="region" aria-label="Home comparison. Scroll horizontally to see all homes.">
+      <table class="catalog-comparison-table">
+        <caption>Home features. Scroll sideways to see more homes.</caption>
+        <thead><tr><th scope="col">Your home</th>{% for property in properties %}<th scope="col" data-compare-column="{{ property.slug }}"><img src="/images/email/save50/{{ property.slug }}.jpg" alt="" width="280" height="170"><a href="{{ property.pageUrl }}" data-trip-link data-track-event="catalog_view_details_click" data-page-slug="{{ property.slug }}" data-placement="catalog_comparison">{{ property.name }}</a></th>{% endfor %}</tr></thead>
+        <tbody>
+          <tr><th scope="row">Location</th>{% for property in properties %}<td data-compare-column="{{ property.slug }}">{{ property.city }}</td>{% endfor %}</tr>
+          <tr><th scope="row">Bedrooms / baths</th>{% for property in properties %}<td data-compare-column="{{ property.slug }}">{{ property.bedrooms }} / {{ property.bathrooms }}</td>{% endfor %}</tr>
+          <tr><th scope="row">Maximum guests</th>{% for property in properties %}<td data-compare-column="{{ property.slug }}">{{ property.guests }}<span class="comparison-capacity" data-capacity="{{ property.guests }}"></span></td>{% endfor %}</tr>
+          <tr><th scope="row">What stands out</th>{% for property in properties %}<td data-compare-column="{{ property.slug }}">{{ property.highlights | join(' · ') }}</td>{% endfor %}</tr>
+          <tr><th scope="row">Waterfront / dock</th>{% for property in properties %}<td data-compare-column="{{ property.slug }}">{% if "waterfront" in property.amenities %}Waterfront · private dock{% else %}No private waterfront dock{% endif %}</td>{% endfor %}</tr>
+          <tr><th scope="row">Dogs</th>{% for property in properties %}{% set amenities = (property.amenities | join('|')) ~ '|' ~ (property.marketing_amenities | join('|')) %}<td data-compare-column="{{ property.slug }}">{% if "pet-friendly" in amenities %}Approval, limits and fees apply. Check the home’s rules.{% else %}Ask us before booking with a pet.{% endif %}</td>{% endfor %}</tr>
+          <tr><th scope="row">Dates & total</th>{% for property in properties %}<td data-compare-column="{{ property.slug }}"><a class="btn btn-brand" href="{{ property.bookingUrl }}" data-booking-base="{{ property.bookingUrl }}" data-track-event="catalog_book_direct_click" data-page-slug="{{ property.slug }}" data-placement="catalog_comparison" target="_blank" rel="noopener noreferrer" aria-label="Check dates for {{ property.name }}">Check dates</a></td>{% endfor %}</tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="catalog-share"><div><strong>Let the group weigh in.</strong><p>Share these homes and trip details in your group chat. No account needed.</p></div><button type="button" class="btn btn-brand" id="share-comparison">Copy shortlist link</button></div>
+    <p id="share-status" role="status"></p>
+    <label id="share-fallback-label" for="share-fallback" hidden>Copy this shortlist link</label><input id="share-fallback" type="text" readonly hidden>
+  </dialog>
+</div>

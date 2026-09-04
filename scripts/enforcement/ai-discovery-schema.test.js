@@ -268,16 +268,7 @@ test("homepage does not ship hidden FAQ schema without visible FAQ content", () 
   );
 });
 
-test("properties catalog honors incoming area filters from homepage search and SearchAction", () => {
-  const catalog = fs.readFileSync(path.join(projectRoot, "src", "properties", "index.njk"), "utf8");
 
-  assert.equal(catalog.includes("new URLSearchParams(window.location.search)"), true);
-  assert.equal(catalog.includes('params.get("area")'), true);
-  assert.equal(catalog.includes('requestedArea.includes("anna-maria-island")'), true);
-  assert.equal(catalog.includes('requestedArea.includes("sarasota")'), true);
-  assert.equal(catalog.includes("const initialFilter ="), true);
-  assert.equal(catalog.includes("applyFilter(initialFilter)"), true);
-});
 
 test("property pages with AggregateOffer do not also ship a stale priceRange", () => {
   for (const page of propertyPages) {

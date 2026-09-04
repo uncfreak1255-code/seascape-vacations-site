@@ -166,6 +166,12 @@ function validateTargetResponse(target, response) {
       throw new Error("properties page is missing stable property detail links");
     }
 
+    requireIncludes(target.path, response.body, [
+      'data-catalog-version="guest-journey-v1"', 'id="catalog-trip-form"',
+      'id="catalog-comparison"', "A house everyone", "can agree on.",
+      "Full price, fees and cancellation terms on the booking page."
+    ]);
+    requireExcludes(target.path, response.body, ["Availability · live", "catalog-card-price"]);
     if (!response.body.includes("Book Direct")) {
       throw new Error("properties page is missing direct-book CTAs");
     }
