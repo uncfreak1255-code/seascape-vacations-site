@@ -109,8 +109,20 @@ async function captureViewportBundle({ outDir, baseUrl, projectName, contextOpti
   const captures = [];
 
   try {
-    // Review proof uses the real network and clock. Only analytics is blocked to avoid test traffic.
+    // Review proof uses the real network and clock. Block analytics to avoid test traffic.
     await context.route(/googletagmanager|google-analytics|connect\.facebook\.net/, route => route.abort());
+    // A plain local server has no Netlify image CDN. Deliver the exact public source
+    // asset for local CDN requests; never substitute another scene or accommodation.
+    await context.route(/\/\.netlify\/images\?/, async route => {
+      const url = new URL(route.request().url());
+      const source = url.searchParams.get("url") || "";
+      const imagePath = path.resolve(projectRoot, "." + source);
+      if (["127.0.0.1", "localhost"].includes(url.hostname) && source.startsWith("/images/") && imagePath.startsWith(path.join(projectRoot, "images") + path.sep) && fs.existsSync(imagePath)) {
+        await route.fulfill({ status: 200, path: imagePath });
+      } else {
+        await route.continue();
+      }
+    });
     for (const routeConfig of routes) {
       const response = await page.goto(routeConfig.path, { waitUntil: "networkidle" });
       if (!response || response.status() !== 200) throw new Error(`Refusing proof for ${routeConfig.path}: HTTP ${response?.status()}`);
@@ -194,6 +206,7 @@ async function main() {
       base_url: baseUrl,
       routes_captured: routes.map((route) => route.path),
       property_photos: "actual assets; missing photos fail capture",
+      local_image_delivery: "local Netlify image-CDN URLs use their exact repository source asset; CDN compression is not reproduced",
       availability_and_pricing: "not mocked; page state at capture time, not a quote",
       projects: {
         "desktop-chromium": desktopCaptures,

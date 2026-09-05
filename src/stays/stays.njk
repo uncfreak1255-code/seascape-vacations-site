@@ -72,8 +72,6 @@ eleventyComputed:
         rel="preload"
         as="image"
         href="{{ heroImage | imgProxy(1200) }}"
-        imagesrcset="{{ heroImage | imgProxy(800) }} 800w, {{ heroImage | imgProxy(1200) }} 1200w"
-        imagesizes="100vw"
         fetchpriority="high">
     {% endif %}
 
