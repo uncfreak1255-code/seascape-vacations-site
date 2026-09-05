@@ -43,13 +43,33 @@ Read in this order:
      founder-approved replies).
   Personal Gmail remains prohibited.
 
-## Business Bottleneck
+## Business Priorities And Experiments
 
-- owner acquisition is a durable lever, not the current binding constraint
-- the current constraint is owner-form + post-stay email automation
-- do not spawn owner-money pages; guides still carry organic
-- direct-book conversion on existing demand remains a secondary site bottleneck
-- Phase 4 and other entity-expansion work stays frozen until the measured gates in `docs/status/next-batch.md` are cleared
+- Start from Sawyer's current objective and the affected source or guest flow.
+  Owner acquisition and direct booking are business levers, not permanent
+  rankings of the current bottleneck. Verify a ranking against the owning
+  business or analytics source before using it to redirect work.
+- Status files describe their dated evidence window. Historical holds and
+  forecasts do not become current facts because a startup document cites them.
+- `docs/status/next-batch.md` governs measured SEO and entity expansion.
+  Preserve its thresholds, evidence requirements, and publication gates.
+  Missing analytics limits measurement and impact claims; it does not by
+  itself block an authorized bug fix, local product prototype, or reversible
+  capability trial that has independent source and behavior proof.
+- For an AI-workflow or product-improvement request, propose one concrete
+  improvement and explain both its upside and the cost of inaction. Prefer an
+  existing capability when it serves the outcome. Test a plausible improvement
+  locally instead of treating an old toolchain freeze as a permanent veto.
+- A local trial needs a named task, isolated checkout, affected surface,
+  comparison with the current method, time limit, and stop condition. Judge
+  correctness, useful output, and Sawyer intervention; file counts and a
+  polished report are not evidence of improvement. Retain or reverse the
+  candidate based on that result before expanding its scope.
+- Local experiment authority does not authorize paid services, credential or
+  permission changes, external sends, production mutation, publication, or
+  global configuration activation. Existing owner-intake, content, design,
+  privacy, and release requirements still apply. New installed skills, MCPs,
+  and workflow layers still require the existing audit and learning contract.
 
 ## Non-Negotiable Rules
 
