@@ -95,7 +95,7 @@ test('a missing accommodation photo is explicit and cannot pass visual proof',as
   await visit(page,'/');
   await page.route(/\/images\/homes\/the-oasis\/01(?:-800)?\.webp$/,route=>route.abort());
   await page.reload({waitUntil:'networkidle'});
-  await expect(page.locator('[data-photo-failed]')).toBeVisible();
+  await expect(page.locator('[data-photo-failed]').first()).toBeVisible();
   expect(await page.locator('img[src*="seascape-og-default"]').count()).toBe(0);
   await expect(prepareFullPageScreenshot(page)).rejects.toThrow(/Refusing visual proof/);
 });

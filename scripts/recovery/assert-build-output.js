@@ -212,7 +212,7 @@ if (phase === "p0") {
   expectContains("_site/index.html", 'href="/properties/the-oasis/"');
   expectContains("_site/index.html", "Dockside Dreams");
   expectContains("_site/index.html", "The Oasis");
-  expectContains("_site/index.html", 'class="g-featured-homes"');
+  expectContains("_site/index.html", 'class="g-postcards"');
   expectContains("_site/index.html", 'data-property-photo="the-oasis" src="/images/homes/the-oasis/01.webp"');
   expectExists("_site/images/homes/the-oasis/01.webp");
   expectContains("_site/properties/index.html", 'href="/properties/dockside-dreams/"');

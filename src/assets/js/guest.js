@@ -75,9 +75,8 @@
       var current=new URL(location.href);['arrive','depart','checkin','checkout','guests'].forEach(function(key){current.searchParams.delete(key);});Object.keys(trip).forEach(function(key){current.searchParams.set(key,trip[key]);});history.replaceState(null,'',current.pathname+current.search+current.hash);
       syncTrip();status.textContent='Opening availability and the full total for '+summary()+'.';document.querySelector('[data-property-checkout]').click();
     });
-    // Keep a prepared question in step with edits, without claiming unsubmitted dates are selected.
+    // Keep valid trip edits with home links and prepared questions.
     form.addEventListener('change',function(){
-      if(!form.dataset.bookingUrl)return;
       var query=new URLSearchParams();if(arrive.value)query.set('arrive',arrive.value);if(depart.value)query.set('depart',depart.value);if(guests.value)query.set('guests',guests.value);
       var next=parseTrip ? parseTrip(query) : {};
       ['arrive','depart','guests'].forEach(function(key){delete trip[key];if(next[key])trip[key]=next[key];});
@@ -92,6 +91,56 @@
     var notice=document.createElement('div');notice.className='g-photo-unavailable';notice.dataset.propertyPhoto=image.dataset.propertyPhoto;notice.dataset.photoFailed='true';notice.setAttribute('role','img');notice.setAttribute('aria-label',image.alt+' unavailable');notice.textContent='Photo unavailable. View this home’s photos on the booking page.';image.replaceWith(notice);
   }
   document.querySelectorAll('img[data-property-photo]').forEach(function(image){image.addEventListener('error',function(){photoFailed(image);});if(image.getAttribute('src')&&image.complete&&!image.naturalWidth)photoFailed(image);});
+  // The collection preview is progressive: without JS these remain ordinary home links.
+  var sceneRoot=document.querySelector('[data-home-scenes]');
+  if(sceneRoot){
+    var choices=Array.from(document.querySelectorAll('[data-scene-choice]'));
+    var sceneStatus=document.querySelector('.g-scene-status');
+    var sceneRequest=0;
+    var reducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
+    async function chooseScene(choice){
+      var request=++sceneRequest;
+      var slug=choice.dataset.sceneChoice;
+      var panel=document.getElementById('scene-'+slug);
+      if(!panel)return;
+      var photo=panel.querySelector('img[data-scene-src]');
+      var name=choice.querySelector('strong').textContent;
+      sceneRoot.setAttribute('aria-busy','true');
+      if(photo&&!photo.getAttribute('src')){
+        sceneStatus.textContent='Loading '+name+'…';
+        photo.srcset=photo.dataset.sceneSrcset;
+        photo.src=photo.dataset.sceneSrc;
+      }
+      if(photo&&photo.decode){try{await photo.decode();}catch(error){/* The shared photo handler provides a named unavailable state. */}}
+      if(request!==sceneRequest)return;
+      sceneRoot.querySelectorAll('[data-scene]').forEach(function(scene){scene.hidden=scene!==panel;});
+      choices.forEach(function(item){var selected=item===choice;item.classList.toggle('is-active',selected);item.setAttribute('aria-pressed',String(selected));});
+      sceneRoot.setAttribute('aria-busy','false');
+      sceneStatus.textContent='Previewing '+name+'. '+panel.querySelector('.g-scene-caption p:last-child').textContent;
+      if(!reducedMotion.matches&&panel.animate){
+        var picture=panel.querySelector('.g-scene-photo');
+        if(picture)picture.animate([{opacity:.45,transform:'scale(1.035)'},{opacity:1,transform:'scale(1)'}],{duration:650,easing:'cubic-bezier(.2,.7,.2,1)'});
+        panel.querySelector('.g-scene-caption').animate([{opacity:0,transform:'translateY(10px)'},{opacity:1,transform:'translateY(0)'}],{duration:450,easing:'ease-out'});
+      }
+    }
+    choices.forEach(function(choice,index){
+      choice.setAttribute('role','button');
+      choice.setAttribute('aria-pressed',String(choice.classList.contains('is-active')));
+      choice.setAttribute('aria-label','Preview '+choice.querySelector('strong').textContent);
+      choice.setAttribute('aria-controls','scene-'+choice.dataset.sceneChoice);
+      choice.addEventListener('click',function(event){if(event.metaKey||event.ctrlKey||event.shiftKey||event.altKey||event.button!==0)return;event.preventDefault();chooseScene(choice);});
+      choice.addEventListener('keydown',function(event){
+        if(event.key===' '){event.preventDefault();chooseScene(choice);return;}
+        var next=event.key==='ArrowRight'?(index+1)%choices.length:event.key==='ArrowLeft'?(index+choices.length-1)%choices.length:event.key==='Home'?0:event.key==='End'?choices.length-1:-1;
+        if(next<0)return;
+        event.preventDefault();choices[next].focus({preventScroll:true});
+        // Scroll the horizontal selector only; never move the guest away from the scene.
+        var rail=choice.parentElement;
+        rail.scrollTo({left:choices[next].offsetLeft-rail.offsetLeft-14,behavior:reducedMotion.matches?'instant':'smooth'});
+        chooseScene(choices[next]);
+      });
+    });
+  }
   var gallery=document.querySelector('.g-photo-dialog'),openGallery=document.querySelector('[data-open-gallery]');
   if(gallery&&openGallery){openGallery.hidden=false;openGallery.addEventListener('click',function(){gallery.querySelectorAll('[data-gallery-src]').forEach(function(image){if(!image.src)image.src=image.dataset.gallerySrc;});gallery.showModal();});gallery.querySelector('[data-close-gallery]').addEventListener('click',function(){gallery.close();});}
   var sticky=document.querySelector('.g-mobile-booking'),booking=document.getElementById('booking');

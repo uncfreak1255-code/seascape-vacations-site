@@ -121,16 +121,16 @@ components:
 ## Product promise
 Help a group choose one of five real homes, understand the details that could change its choice, and arrive at Hostaway with dates and guest count intact. Seascape is a small, owner-operated collection in Bradenton and Sarasota. Do not make it look like an island-wide resort or an unlimited marketplace.
 
-## Guest journey: Open House (September 2026)
-The homepage, catalog, and five property details use the scoped `guest-site` theme in `src/css/guest.css`. Other routes retain the legacy tokens above until deliberately redesigned.
+## Guest journey: Waterline (September 2026)
+The homepage, catalog, and five property details use the scoped `guest-site` theme in `src/css/guest.css`, with homepage scenes in `src/css/arrival.css`. Other routes retain the legacy tokens above until deliberately redesigned.
 
-- Canvas: warm white `#FBFAF7`; ink and primary controls: deep marine `#173D42`; supporting text: `#52676A`; rare accent: clay `#A4533E`; rules: `#CAD4CF`; quiet panel: `#F0F3EE`. These live as CSS variables, not repeated inline declarations.
-- Use existing self-hosted Playfair Display and Poppins. The serif gives property names and headlines character; body text and controls remain practical. No new font download is needed.
-- Desktop content can reach 1280px. Keep text columns shorter. Vary large photographs, open text, compact rows, and a purposeful comparison table.
-- Buttons are solid, sentence case, at least 44px tall, with 4px corners. Remove foil gradients, inset gold frames, bouncing buttons, decorative status pills, and card-lift motion from these guest routes.
-- Homepage copy sits beside a named home photo. On mobile, the trip controls come before the large photo; both remain easy to find. Avoid a tall image overlay that buries the form.
-- Property pages lead with the home name, real gallery, capacity and location, then room arrangements and the details to check before booking. Keep date/guest editing and the checkout action nearby.
-- Comparison keeps the same dates and guests, exposes meaningful differences, and can be shared as an ordinary URL without private identifiers.
+- Canvas: sun-warmed paper `#F6F3EB`; ink and primary controls: deep marine `#173D42`; supporting text: `#52676A`; accent: clay `#A4533E`; selected scene and photographic CTA: citron `#D6EB85`; rules: `#CAD4CF`. Citron is a surface/accent, never small text on paper.
+- Display type: self-hosted Instrument Serif, regular and italic, under its included SIL Open Font License. Poppins remains the practical body and control face. Large, compact display lines are deliberate; factual text stays readable.
+- The photographic homepage opening leads on both desktop and mobile. Name the actual pictured home. Guests can preview each of the five homes manually; never auto-rotate scenes. Keep a direct property link for each scene and a clearly labeled date/guest form immediately after the collection selector. Navigation offers a direct jump to the form.
+- The five-home postcard collection uses shallow perspective, an open fan on desktop, and full readable cards in a native horizontal snap list on mobile. Hover enhances a card; tap and keyboard provide the complete path. Never hide information behind hover alone.
+- Carry expressive type, photographic scale, calm rules and marine/paper contrast through the catalog and property pages. Keep the working comparison table and conventional booking panel. Property photos remain real rectangles, not simulated rooms or a fictitious floor plan.
+- Motion has three jobs: identify a newly selected home, give the collection tactile depth, and connect its photo to the detail page. Use browser-native CSS/Web Animations and same-origin view transitions as progressive enhancements. No loader, scroll hijacking, autoplay, custom cursor, or required animation library. The static reduced-motion and no-JavaScript paths remain complete.
+- Desktop content can reach 1280px, with a full-width opening photograph. Controls remain at least 44px tall, with visible focus, clear labels and quiet solid surfaces. No animation may delay booking or be required to reveal essential information.
 
 ## Photography is evidence
 Only an actual photograph of the named property may illustrate its accommodation. A destination scene may illustrate a clearly named destination, never a failed home photo.
@@ -153,4 +153,4 @@ This file records deliberate current choices; it is not proof that a choice is g
 Use the existing design specialist/critic for useful challenges and the existing browser/Playwright workflow for proof. Do not add a new review layer. For material changes capture the actual desktop/mobile route, important interactive states, and real photos. Label mocked availability or pricing. Inspect images and page identity before updating any baseline.
 
 ## Direction decision
-Two real-photo slices were rendered on September 4: light editorial Open House and dark immersive Afterglow. Open House won because it made the organizer's task and date entry clear, especially on mobile. The dark slice delayed mobile date entry and made one property's mood dominate the collection. Preserve atmosphere in property photography without obscuring the controls.
+The September 4 Open House draft preserved useful guest behavior but was visually too restrained. On September 5, two new real-photo slices were rendered on desktop and mobile: cinematic Waterline and Spatial Atlas. Waterline won for photographic presence and a clear active home; the atlas won for personality but obscured adjacent cards on a narrow screen. The chosen direction combines Waterline's opening with a readable, responsive postcard collection. The prior draft remains in Git and the before/after proof; its existence is not a reason to keep weak composition.

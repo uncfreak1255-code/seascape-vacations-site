@@ -41,7 +41,7 @@ headExtra: |
 }
 </script>
 
-<div class="catalog-page" data-catalog-version="open-house-v2">
+<div class="catalog-page" data-catalog-version="waterline-v3">
   <nav class="catalog-breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true"> / </span><span aria-current="page">Our homes</span></nav>
   {% include "partials/save50-offer.njk" %}
   <header class="catalog-intro">
@@ -51,8 +51,8 @@ headExtra: |
       <p>Pool days, a private dock, or room for the whole crew. Find your favorite among our five homes in Bradenton and Sarasota.</p>
       <a class="btn-link" href="#catalog-heading">Meet the homes <span class="arr" aria-hidden="true">→</span></a>
     </div>
-    <figure class="catalog-intro-photo">
-      <img data-property-photo="sarasota-luxe" src="/images/homes/sarasota-luxe/22.webp" srcset="/images/homes/sarasota-luxe/22-800.webp 800w, /images/homes/sarasota-luxe/22.webp 1400w" sizes="(min-width: 900px) 45vw, calc(100vw - 40px)" alt="Sarasota Luxe living room" width="560" height="340" fetchpriority="high">
+    <figure class="catalog-intro-photo g-catalog-postcard">
+      <img data-property-photo="sarasota-luxe" src="/images/homes/sarasota-luxe/22.webp" srcset="/images/homes/sarasota-luxe/22-800.webp 800w, /images/homes/sarasota-luxe/22.webp 1400w" sizes="(min-width: 900px) 45vw, calc(100vw - 40px)" alt="Sarasota Luxe living room" width="1400" height="933" fetchpriority="high">
       <figcaption>Sarasota Luxe · Sarasota <span>Make room for time together</span></figcaption>
     </figure>
   </header>
@@ -90,7 +90,7 @@ headExtra: |
       {% set availability = property.availability %}
       <article class="catalog-card" data-property="{{ property.slug }}" data-filters="{{ filterTokens }}" data-max-guests="{{ property.guests }}" data-availability-mode="checkout">
         <a class="catalog-card-media" href="{{ property.pageUrl }}" data-trip-link data-track-event="catalog_view_details_click" data-page-slug="{{ property.slug }}" data-placement="catalog_photo" aria-label="View {{ property.name }} photos and details">
-          <img data-property-photo="{{ property.slug }}" src="{{ property.photography.photos[0].src }}" srcset="{{ property.photography.photos[0].src | replace('.webp', '-800.webp') }} 800w, {{ property.photography.photos[0].src }} 1400w" sizes="(min-width: 900px) 30vw, calc(100vw - 40px)" alt="{{ property.name }} vacation home in {{ property.city }}" width="900" height="620" loading="lazy" decoding="async">
+          <img data-transition-home="{{ property.slug }}" data-property-photo="{{ property.slug }}" src="{{ property.photography.photos[0].src }}" srcset="{{ property.photography.photos[0].src | replace('.webp', '-800.webp') }} 800w, {{ property.photography.photos[0].src }} 1400w" sizes="(min-width: 900px) 30vw, calc(100vw - 40px)" alt="{{ property.name }} vacation home in {{ property.city }}" width="900" height="620" loading="lazy" decoding="async">
           <span class="catalog-photo-number" aria-hidden="true">0{{ loop.index }}</span>
         </a>
         <div class="catalog-card-body">

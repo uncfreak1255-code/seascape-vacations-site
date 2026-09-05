@@ -152,7 +152,7 @@ function validateTargetResponse(target, response) {
       throw new Error("homepage still depends on the external weserv image proxy");
     }
 
-    requireIncludes(target.path, response.body, ['data-guest-version="open-house-v2"', 'id="home-heading"', "Room for your", "favorite people.", 'data-guest-trip-form', '/images/homes/the-oasis/01.webp']);
+    requireIncludes(target.path, response.body, ['data-guest-version="waterline-v3"', 'id="home-heading"', "Your people.", "Your place.", 'data-guest-trip-form', '/images/homes/the-oasis/01.webp']);
     requireExcludes(target.path, response.body, ["Best rates guaranteed", "Best Price Guaranteed", "save up to 20%"]);
   }
 
@@ -167,7 +167,7 @@ function validateTargetResponse(target, response) {
     }
 
     requireIncludes(target.path, response.body, [
-      'data-catalog-version="open-house-v2"', 'id="catalog-trip-form"',
+      'data-catalog-version="waterline-v3"', 'id="catalog-trip-form"',
       'id="catalog-comparison"', "Find the house.", "Bring your people.",
       "Full price, fees and cancellation terms on the booking page."
     ]);

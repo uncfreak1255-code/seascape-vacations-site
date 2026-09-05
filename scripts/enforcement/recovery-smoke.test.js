@@ -76,7 +76,7 @@ test("properties smoke checks durable property detail hrefs instead of old CTA c
   assert.notEqual(target, undefined, "expected /properties/ to stay in the smoke target list");
 
   const currentPropertiesBody = `
-    <main data-catalog-version="open-house-v2">
+    <main data-catalog-version="waterline-v3">
       <h1>Find the house.<br>Bring your people.</h1>
       <form id="catalog-trip-form"></form><dialog id="catalog-comparison"></dialog>
       <p>Full price, fees and cancellation terms on the booking page.</p>
