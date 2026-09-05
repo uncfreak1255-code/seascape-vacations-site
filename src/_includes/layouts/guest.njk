@@ -31,13 +31,13 @@
   <header class="g-header">
     <a class="g-wordmark" href="/" data-trip-link aria-label="Seascape Vacations home">seascape<span>VACATIONS</span></a>
     <nav class="g-nav" aria-label="Primary">
-      <a href="/properties/" data-trip-link>Our five homes</a><a href="/guides/">Explore the coast</a><a href="/about-us/">Meet your hosts</a>
+      <a href="/properties/" data-trip-link>Our homes</a><a href="/guides/">Explore the coast</a><a href="/about-us/">Meet your hosts</a>
     </nav>
     <div class="g-header-actions"><a class="g-button btn-brand" href="{% if guestHome %}#home-trip{% else %}/properties/{% endif %}"{% if not guestHome %} data-trip-link{% endif %}>Find your home <span aria-hidden="true">{{ uiIcon('arrow-up-right') }}</span></a><button class="g-menu-button" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="guest-menu">Menu</button></div>
-    <nav class="g-mobile-menu" id="guest-menu" aria-label="Mobile" hidden><a href="/properties/" data-trip-link>Our five homes</a><a href="/guides/">Explore the coast</a><a href="/about-us/">Meet your hosts</a><a href="tel:9417048545">Call (941) 704-8545</a><a href="/property-management/">Property owners</a></nav>
+    <nav class="g-mobile-menu" id="guest-menu" aria-label="Mobile" hidden><a href="/properties/" data-trip-link>Our homes</a><a href="/guides/">Explore the coast</a><a href="/about-us/">Meet your hosts</a><a href="tel:9417048545">Call (941) 704-8545</a><a href="/property-management/">Property owners</a></nav>
   </header>
   <main id="main">{{ content | safe }}</main>
-  <footer class="g-footer" id="contact"><div class="g-wrap g-footer-grid"><div><a class="g-wordmark" href="/" data-trip-link>seascape<span>VACATIONS</span></a><p>Five homes. A local connection.<br>Bradenton & Sarasota, Florida.</p></div><div><p class="g-label">Let's talk about your trip</p><a href="tel:9417048545">(941) 704-8545</a><a href="mailto:info@seascape-vacations.com">info@seascape-vacations.com</a></div><div><a href="/properties/" data-trip-link>Our homes</a><a href="/guides/">Local guides</a><a href="/property-management/">For property owners</a><a href="/services/concierge-services/">Help planning your stay</a></div></div><div class="g-wrap g-footer-bottom"><span>© 2026 Seascape Vacations</span><div><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/cookies/">Cookies</a></div></div></footer>
+  <footer class="g-footer" id="contact"><div class="g-wrap g-footer-grid"><div><a class="g-wordmark" href="/" data-trip-link>seascape<span>VACATIONS</span></a><p>Our homes. A local connection.<br>Bradenton & Sarasota, Florida.</p></div><div><p class="g-label">Let's talk about your trip</p><a href="tel:9417048545">(941) 704-8545</a><a href="mailto:info@seascape-vacations.com">info@seascape-vacations.com</a></div><div><a href="/properties/" data-trip-link>Our homes</a><a href="/guides/">Local guides</a><a href="/property-management/">For property owners</a><a href="/services/concierge-services/">Help planning your stay</a></div></div><div class="g-wrap g-footer-bottom"><span>© 2026 Seascape Vacations</span><div><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/cookies/">Cookies</a></div></div></footer>
   {% include "partials/analytics-ga4.njk" %}
   <script defer src="/assets/js/guest.js?v=waterline-v3"></script>
 </body></html>

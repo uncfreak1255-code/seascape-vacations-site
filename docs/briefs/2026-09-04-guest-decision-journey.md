@@ -11,6 +11,8 @@
 
 ## Decision and scope
 
+September 5 copy decision: Sawyer prefers “our homes” with no fixed inventory count. Apply this across navigation, homepage, catalog and descriptive metadata. Dunia’s Blue Pool House and Lily’s home are planned additions, not published inventory; photos, verified facts and bookable Hostaway records remain required before adding either. Per-home capacity and room counts remain factual. The decorative scene number is an ordinal, with no inventory-total denominator.
+
 North Star: make Seascape the easiest small collection for a group organizer to choose with confidence. Five distinct homes and a person who knows them are the advantage. Build the choice, then carry it intact to the authoritative quote and checkout.
 
 The first draft improved only the catalog. This revision connects the homepage, catalog, comparison/share link, all five detail pages, prepared property questions and Hostaway handoff. Keep existing canonical routes, attribution, guide discovery, reviewed guest reviews and SAVE50 email landing continuity. Retire the unidentified homepage hero, competing baseline prices, weather ticker, automatic homepage discount popup, blanket cancellation language and five duplicated detail templates. No framework, account, model, database or new service is needed.

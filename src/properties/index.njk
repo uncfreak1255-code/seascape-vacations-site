@@ -31,7 +31,7 @@ headExtra: |
   "@context": "https://schema.org",
   "@type": "ItemList",
   "name": "Seascape Vacations Properties",
-  "description": "Five private-pool vacation rentals in Bradenton and Sarasota, available for direct booking through Seascape Vacations.",
+  "description": "Private-pool vacation rentals in Bradenton and Sarasota, available for direct booking through Seascape Vacations.",
   "numberOfItems": {{ properties | length }},
   "itemListElement": [
     {% for property in properties %}
@@ -48,7 +48,7 @@ headExtra: |
     <div class="catalog-intro-copy">
       <p class="section-tag">The Seascape Collection</p>
       <h1>Find the house.<br><em>Bring your people.</em></h1>
-      <p>Pool days, a private dock, or room for the whole crew. Find your favorite among our five homes in Bradenton and Sarasota.</p>
+      <p>Pool days, a private dock, or room for the whole crew. Find your favorite among our homes in Bradenton and Sarasota.</p>
       <a class="btn-link" href="#catalog-heading">Meet the homes <span class="arr" aria-hidden="true">→</span></a>
     </div>
     <figure class="catalog-intro-photo g-catalog-postcard">
@@ -71,7 +71,7 @@ headExtra: |
 
   <section class="catalog-collection" aria-labelledby="catalog-heading">
     <div class="catalog-collection-heading">
-      <div><p class="section-tag">Five homes. Different ways to stay.</p><h2 id="catalog-heading">Find your kind of getaway.</h2></div>
+      <div><p class="section-tag">Our homes. Different ways to stay.</p><h2 id="catalog-heading">Find your kind of getaway.</h2></div>
       <p>All have private pools.<br>Our Bradenton homes are near Anna Maria Island, on the mainland.</p>
     </div>
     <div class="catalog-filters" aria-label="Property filters">
@@ -82,7 +82,7 @@ headExtra: |
       <button class="catalog-filter" type="button" data-filter="pet-friendly" aria-pressed="false">Ask about pets</button>
     </div>
     <p id="catalog-count" class="catalog-count" role="status">{{ properties | length }} homes · Availability confirmed on the booking page</p>
-    <noscript><p>All five homes are below. Open a home’s booking page to select dates and guests. Interactive filters and comparisons need JavaScript.</p></noscript>
+    <noscript><p>Explore our homes below. Open a home’s booking page to select dates and guests. Interactive filters and comparisons need JavaScript.</p></noscript>
 
     <div class="catalog-grid" id="catalog-grid">
       {% for property in properties %}
