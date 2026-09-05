@@ -1,8 +1,9 @@
 const moneyRoutes = [
+  ...["dockside-dreams", "the-oasis", "sarasota-luxe", "river-house", "bradenton-pool-home"].map(slug => ({slug, path:`/properties/${slug}/`, readySelector:"[data-property-page] h1"})),
   {
     slug: "home",
     path: "/",
-    readySelector: ".hero-booking",
+    readySelector: "[data-guest-trip-form]",
   },
   {
     slug: "property-management",

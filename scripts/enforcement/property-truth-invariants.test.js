@@ -162,7 +162,7 @@ test("River House kayaking copy stays framed as a nearby public launch, not on-p
 test("River House property page keeps water access framed as the nearby boat ramp, not a riverfront stay", () => {
   const html = readBuilt("properties/river-house/index.html");
 
-  assert.match(html, /Warner Bayou boat ramp 1 min away/i);
+  assert.match(html, /Warner Bayou[^<.]*boat ramp/i);
   assert.doesNotMatch(html, /Surrounded by nature on the river/i);
   assert.doesNotMatch(html, /view over the river/i);
   assert.doesNotMatch(html, /sits on the water/i);
@@ -202,12 +202,12 @@ test("fallback, llms, and property templates agree on property specs", () => {
 
   for (const property of fallbackProperties) {
     const compactSpec = `${property.bedrooms}BR/${property.bathrooms}BA`;
-    const template = readSource(`src/properties/${property.slug}/index.njk`);
+    const template = readBuilt(`properties/${property.slug}/index.html`);
 
     assert.match(llms, new RegExp(`${property.name}[\\s\\S]*${compactSpec.replace(".", "\\.")}`));
-    assert.match(template, new RegExp(`<div class="stat-val">${property.bedrooms}</div>[\\s\\S]*Bedrooms`));
-    assert.match(template, new RegExp(`<div class="stat-val">${String(property.bathrooms).replace(".", "\\.")}</div>[\\s\\S]*Bathrooms`));
-    assert.match(template, new RegExp(`<div class="stat-val">${property.guests}</div>[\\s\\S]*Max Guests`));
+    assert.match(template, new RegExp(`<strong>${property.bedrooms}</strong> bedrooms`));
+    assert.match(template, new RegExp(`<strong>${String(property.bathrooms).replace(".", "\\.")}</strong> bathrooms`));
+    assert.match(template, new RegExp(`Up to <strong>${property.guests}</strong> guests`));
   }
 });
 
@@ -223,7 +223,7 @@ test("llms property bullets are regenerated from the fallback summary renderer",
 
 test("property template schema facts match fallback counts and amenity labels", () => {
   for (const property of fallbackProperties) {
-    const template = readSource(`src/properties/${property.slug}/index.njk`);
+    const template = readBuilt(`properties/${property.slug}/index.html`);
     const vacationRentalSchema = extractJsonLdObjects(template).find((item) => item["@type"] === "VacationRental");
     const accommodation = vacationRentalSchema?.containsPlace;
 

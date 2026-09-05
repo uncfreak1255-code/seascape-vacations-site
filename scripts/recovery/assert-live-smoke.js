@@ -152,7 +152,7 @@ function validateTargetResponse(target, response) {
       throw new Error("homepage still depends on the external weserv image proxy");
     }
 
-    requireIncludes(target.path, response.body, ["Direct booking, local support", "Platform Fees Removed"]);
+    requireIncludes(target.path, response.body, ['data-guest-version="open-house-v2"', 'id="home-heading"', "Room for your", "favorite people.", 'data-guest-trip-form', '/images/homes/the-oasis/01.webp']);
     requireExcludes(target.path, response.body, ["Best rates guaranteed", "Best Price Guaranteed", "save up to 20%"]);
   }
 
@@ -167,12 +167,12 @@ function validateTargetResponse(target, response) {
     }
 
     requireIncludes(target.path, response.body, [
-      'data-catalog-version="guest-journey-v1"', 'id="catalog-trip-form"',
-      'id="catalog-comparison"', "A house everyone", "can agree on.",
+      'data-catalog-version="open-house-v2"', 'id="catalog-trip-form"',
+      'id="catalog-comparison"', "Find the house.", "Bring your people.",
       "Full price, fees and cancellation terms on the booking page."
     ]);
     requireExcludes(target.path, response.body, ["Availability · live", "catalog-card-price"]);
-    if (!response.body.includes("Book Direct")) {
+    if (!response.body.includes("catalog-check-dates")) {
       throw new Error("properties page is missing direct-book CTAs");
     }
 

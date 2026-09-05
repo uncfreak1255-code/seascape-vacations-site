@@ -8,14 +8,174 @@
     "bedrooms": 4,
     "bathrooms": 3,
     "guests": 12,
-    "rating": 5.0,
+    "rating": 5,
     "price": 450,
     "image": "https://bookingenginecdn.hostaway.com/listing/51916-206016-xNIrPl9kvF0vllYFzSL7Lm0Gl4eOGxLIN--wmPlCT3NY-6536bca493945?width=1600&quality=80&format=webp&v=2",
-    "amenities": ["pool", "waterfront", "dock", "hot-tub"],
-    "highlights": ["Private Pool & Spa", "Waterfront Dock"],
+    "amenities": [
+      "pool",
+      "waterfront",
+      "dock",
+      "hot-tub"
+    ],
+    "highlights": [
+      "Private Pool & Spa",
+      "Waterfront Dock"
+    ],
     "description": "Wake up to stunning water views and watch dolphins play right from your private dock. This magnificent waterfront home features a heated pool and spa, gourmet kitchen, and direct water access.",
     "specs": "4 BR · 3 BA · Sleeps 12",
-    "marketing_amenities": ["private-heated-pool", "hot-tub-spa", "private-dock", "waterfront", "game-room", "outdoor-kitchen", "fast-wifi", "pet-friendly", "single-level", "outdoor-living"]
+    "marketing_amenities": [
+      "private-heated-pool",
+      "hot-tub-spa",
+      "private-dock",
+      "waterfront",
+      "game-room",
+      "outdoor-kitchen",
+      "fast-wifi",
+      "pet-friendly",
+      "single-level",
+      "outdoor-living"
+    ],
+    "photography": {
+      "verifiedAt": "2026-09-04",
+      "photos": [
+        {
+          "src": "/images/homes/dockside-dreams/02.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-206016-wFSIPPqxCQNq7DRmjvRa4hWMguiwZ--ZPrH-85kz44tg-6537ef38c9dcc",
+          "alt": "Dockside Dreams — Pool and patio at dusk",
+          "width": 1400,
+          "height": 933
+        },
+        {
+          "src": "/images/homes/dockside-dreams/18.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-206016-THwWro0V2bCwJuZiHtXCu6FTTbZ2uGXYA6Pl1ouezDw-6536bc6c6d5cf",
+          "alt": "Dockside Dreams — Living room",
+          "width": 1400,
+          "height": 934
+        },
+        {
+          "src": "/images/homes/dockside-dreams/33.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-206016-I1Xtgz-G9DVPcyl--PbAJxExj14kzfmlmVxSm4b-aExY-6536c36a75a34",
+          "alt": "Dockside Dreams — Bunk room",
+          "width": 1400,
+          "height": 934
+        },
+        {
+          "src": "/images/homes/dockside-dreams/22.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-206016-XgkugrVzVaOf6QwteR55lTliNGloaPWKadqRTGup5NU-6536bc662f93e",
+          "alt": "Dockside Dreams — Kitchen",
+          "width": 1400,
+          "height": 934
+        },
+        {
+          "src": "/images/homes/dockside-dreams/20.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-206016-dW4a13855qfY8xJxWQWCCV0bgBZGaI5dfsbeE520AcE-6536bc5d4caee",
+          "alt": "Dockside Dreams — Dining area",
+          "width": 1400,
+          "height": 934
+        },
+        {
+          "src": "/images/homes/dockside-dreams/24.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-206016-xdx1autFInfzKRNujCVSZdAAXdGGkOh9a5-YTfIL22s-6536bc887e302",
+          "alt": "Dockside Dreams — Bedroom",
+          "width": 1400,
+          "height": 934
+        },
+        {
+          "src": "/images/homes/dockside-dreams/28.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-206016-Btk0GvLDc8eIPxb3PX2xNS-Bz9BEeotV0T6syoRnIKM-6536e814bb09e",
+          "alt": "Dockside Dreams — Bedroom",
+          "width": 1400,
+          "height": 932
+        },
+        {
+          "src": "/images/homes/dockside-dreams/31.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-206016-TZI20O2MZNKFI1tRfyQAnCJaNIFE7G3QQPDUEvroxSc-6536e810e8ffc",
+          "alt": "Dockside Dreams — Bedroom",
+          "width": 1400,
+          "height": 932
+        },
+        {
+          "src": "/images/homes/dockside-dreams/26.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-206016-BjU6IHFqPk6jozJPIkfir9JKjjLtWT09rMOgY8oKgGI-6536bc8d43b35",
+          "alt": "Dockside Dreams — Bathroom",
+          "width": 1400,
+          "height": 934
+        },
+        {
+          "src": "/images/homes/dockside-dreams/12.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-206016-Gf3oSLYs0fshFTKgv3DOvTnxknGiPRLAeGpyK8GXjx4-6536bc75967d4",
+          "alt": "Dockside Dreams — Game room",
+          "width": 1400,
+          "height": 934
+        },
+        {
+          "src": "/images/homes/dockside-dreams/39.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-206016-4GOhaqpHiq01wIyjPVEFGif1zfHyp1lC8NgPdqqd3xM-6536c37488965",
+          "alt": "Dockside Dreams — Dock seating",
+          "width": 1400,
+          "height": 934
+        },
+        {
+          "src": "/images/homes/dockside-dreams/01.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-206016-xNIrPl9kvF0vllYFzSL7Lm0Gl4eOGxLIN--wmPlCT3NY-6536bca493945",
+          "alt": "Dockside Dreams — Front exterior",
+          "width": 1400,
+          "height": 934
+        },
+        {
+          "src": "/images/homes/dockside-dreams/04.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-206016-KrpAyWZVO2m-Kb1t90pR9pj0J0l64Yrg6lsnKpPVGfg-65393ce49d1f9",
+          "alt": "Dockside Dreams — Screened patio",
+          "width": 1400,
+          "height": 933
+        }
+      ]
+    },
+    "guestFacts": {
+      "tagline": "A private waterfront dock, pool and spa.",
+      "summary": "A private pool and spa, three king bedrooms, and a dock on the water. Dockside is the only waterfront home in our collection.",
+      "sleeping": [
+        "Bedroom 1: two twin-over-full bunk beds",
+        "Bedroom 2: one king bed",
+        "Bedroom 3: one king bed",
+        "Bedroom 4: one king bed"
+      ],
+      "pets": {
+        "status": "approval",
+        "text": "One dog under 30 lb may stay with host approval and an additional pet fee. Dogs may not toilet on the turf."
+      },
+      "considerations": [
+        "The dock is for access, not fishing. No fishing from the dock, jet skis, or guest use of the boat lift. One boat maximum.",
+        "Driveway parking only. Ask us about boat size and vehicle or trailer fit before booking."
+      ],
+      "fitNote": "Private dock; no fishing from the dock.",
+      "checkIn": "4 pm",
+      "checkOut": "10 am",
+      "extraGuestsAbove": 10,
+      "sourceUrl": "https://book.seascape-vacations.com/listings/206016",
+      "verifiedAt": "2026-09-04",
+      "poolHeat": "Pool heating costs extra. Confirm the charge for your dates; the water temperature depends on the weather.",
+      "reviews": [
+        {
+          "author": "Tracy Bunce",
+          "date": "2025-08-10",
+          "text": "We could not have been happier with our stay! The house was beautiful, spacious and so comfortable! The view was so amazing and we sat outside every morning drinking coffee. We even saw several manatee swim by.",
+          "rating": 5
+        },
+        {
+          "author": "Tyler Johnson",
+          "date": "2025-07-01",
+          "text": "Great house in a good neighborhood. It is right on the canal so almost every morning we seen dolphins and manatees! Which my young boys really enjoyed and we didnt even have to leave the property! We all had a great time!",
+          "rating": 5
+        },
+        {
+          "author": "Heather Vozza",
+          "date": "2024-09-30",
+          "text": "This home was absolutely gorgeous and very clean! Perfect space for families. We spent a lot of time outside at the pool area and the screened in patio was perfect to hang out. The location was great and close to AMI.",
+          "rating": 5
+        }
+      ]
+    }
   },
   {
     "id": "the-oasis",
@@ -26,14 +186,175 @@
     "bedrooms": 5,
     "bathrooms": 3,
     "guests": 16,
-    "rating": 5.0,
+    "rating": 5,
     "price": 550,
     "image": "https://bookingenginecdn.hostaway.com/listing/51916-189511-g2tWgjqFm-DXPRc0ll2k1u87aWIKNZm6tOyz9KhGrnc-64dfdf914c559?width=1600&quality=80&format=webp&v=2",
-    "amenities": ["pool", "hot-tub", "outdoor-grill", "pet-friendly"],
-    "highlights": ["Large Pool + 2 Hot Tubs", "Putting Green + Kid Putters"],
+    "amenities": [
+      "pool",
+      "hot-tub",
+      "outdoor-grill",
+      "pet-friendly"
+    ],
+    "highlights": [
+      "Large Pool + 2 Hot Tubs",
+      "Putting Green + Kid Putters"
+    ],
     "description": "The ultimate gathering spot features a massive pool, TWO hot tubs, a private putting green with kid putters included, pool table, and endless entertainment options.",
     "specs": "5 BR · 3 BA · Sleeps 16",
-    "marketing_amenities": ["private-heated-pool", "hot-tub-spa", "putting-green", "game-room", "fast-wifi", "pet-friendly", "single-level", "outdoor-living", "grill", "fenced-yard"]
+    "marketing_amenities": [
+      "private-heated-pool",
+      "hot-tub-spa",
+      "putting-green",
+      "game-room",
+      "fast-wifi",
+      "pet-friendly",
+      "single-level",
+      "outdoor-living",
+      "grill",
+      "fenced-yard"
+    ],
+    "photography": {
+      "verifiedAt": "2026-09-04",
+      "photos": [
+        {
+          "src": "/images/homes/the-oasis/01.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-189511-g2tWgjqFm-DXPRc0ll2k1u87aWIKNZm6tOyz9KhGrnc-64dfdf914c559",
+          "alt": "The Oasis — Pool and backyard at dusk",
+          "width": 1400,
+          "height": 934
+        },
+        {
+          "src": "/images/homes/the-oasis/09.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-189511-QLhaH1pJ2Euk8HH5wbSWb7d69fsQgIPF1LWNchvsCGk-64dfdf96ba52a",
+          "alt": "The Oasis — Living room",
+          "width": 1400,
+          "height": 934
+        },
+        {
+          "src": "/images/homes/the-oasis/22.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-189511-dX0GFSCm3pwtJ2bok6BKUir38Ex63OrkU-vb0VjCy6U-64dfdfb89c89a",
+          "alt": "The Oasis — Bunk room",
+          "width": 1400,
+          "height": 934
+        },
+        {
+          "src": "/images/homes/the-oasis/14.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-189511-ySu46GJW1h94---vjOVZ1NWA--vCdvBUw-Ao6EVUcGgHA-64dfdfa6df74f",
+          "alt": "The Oasis — Dining area",
+          "width": 1400,
+          "height": 934
+        },
+        {
+          "src": "/images/homes/the-oasis/15.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-189511-XoXvIjqPejMkzEdNMGzPZ7zvZ4AUEcbgvp2G2U5Aers-64dfdfa94e560",
+          "alt": "The Oasis — Kitchen",
+          "width": 1400,
+          "height": 934
+        },
+        {
+          "src": "/images/homes/the-oasis/20.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-189511-e23Axvnc1ut0OcWotT14oVHj--Uy4uQezssOrYIFqbe4-64dfde6b34403",
+          "alt": "The Oasis — Bedroom",
+          "width": 1400,
+          "height": 934
+        },
+        {
+          "src": "/images/homes/the-oasis/23.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-189511-RYLiG--9EEE8--GVP9nsOuhm0N7oYoAsbPFULBkebfyjY-64dfdfbaa3040",
+          "alt": "The Oasis — Bedroom",
+          "width": 1400,
+          "height": 934
+        },
+        {
+          "src": "/images/homes/the-oasis/25.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-189511-DfyS32n0GF5alsC8ijMlHnrg6Eqm--G--c--Cbkg5eXPX4-64dfdfbf0cf0e",
+          "alt": "The Oasis — Bedroom",
+          "width": 1400,
+          "height": 934
+        },
+        {
+          "src": "/images/homes/the-oasis/27.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-189511-0DE2nQwY0u7RJPLIfgE2EzmrhkpupKeAsGAMXXimVYA-64dfdfc2d22fa",
+          "alt": "The Oasis — Bedroom with two beds",
+          "width": 1400,
+          "height": 934
+        },
+        {
+          "src": "/images/homes/the-oasis/12.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-189511-odsa8c8kFjMY--89me3uF0tRmT0d95vTbxcHwLCa3K--o-64dfdfa22f85a",
+          "alt": "The Oasis — Bathroom",
+          "width": 1400,
+          "height": 934
+        },
+        {
+          "src": "/images/homes/the-oasis/08.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-189511-cwuboYnUx9kw-1SJnKMzBiUgwcBBSw8qbNevzl24skY-64dfdf9e5128a",
+          "alt": "The Oasis — Game room",
+          "width": 1400,
+          "height": 934
+        },
+        {
+          "src": "/images/homes/the-oasis/07.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-189511-esLRi2TjoVUY3-CW1G8awpXJyJaqK--zd--NoWzOt4rRs-65414c74e6268",
+          "alt": "The Oasis — Spa",
+          "width": 1400,
+          "height": 1050
+        },
+        {
+          "src": "/images/homes/the-oasis/31.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-189511-GaScQh2aAvh3gK5N5dgAZrWqwPPjantkEzjWaxfvsE0-64dfdfc9996f7",
+          "alt": "The Oasis — Front exterior",
+          "width": 1400,
+          "height": 934
+        }
+      ]
+    },
+    "guestFacts": {
+      "tagline": "Five bedrooms, a private pool and room for 16.",
+      "summary": "Our largest home pairs five bedrooms with a pool, two hot tubs, a putting green, and space to gather. A good place to keep the group together between beach days.",
+      "sleeping": [
+        "Bedroom 1: two full beds",
+        "Bedroom 2: one king bed",
+        "Bedroom 3: one king bed and a crib",
+        "Bedroom 4: one king bed",
+        "Bedroom 5: two twin-over-full bunk beds and two twin trundles"
+      ],
+      "pets": {
+        "status": "approval",
+        "text": "One dog under 30 lb may stay with host approval and an additional pet fee. Dogs may not toilet on the turf."
+      },
+      "considerations": [
+        "Driveway parking only; no street or turf parking. Ask us about space for your vehicles.",
+        "The in-ground spa needs time to warm up. The separate above-ground hot tub gives your group another option."
+      ],
+      "fitNote": "Our largest home. Extra-guest charges apply above 12 guests.",
+      "checkIn": "4 pm",
+      "checkOut": "10 am",
+      "extraGuestsAbove": 12,
+      "sourceUrl": "https://book.seascape-vacations.com/listings/189511",
+      "verifiedAt": "2026-09-04",
+      "poolHeat": "Pool heating costs extra. Confirm the charge for your dates; the water temperature depends on the weather.",
+      "reviews": [
+        {
+          "author": "David Kohley",
+          "date": "2026-02-03",
+          "text": "House was very well stocked and plenty of room for everyone staying. Backyard was very nice setup with pool and hot tub. Highly recommend.",
+          "rating": 5
+        },
+        {
+          "author": "Anna Cannon",
+          "date": "2025-07-25",
+          "text": "Absolutely beautiful house, looks even bigger in person and the photos are the exact same of how it looks when you get there. Super smooth check in and out and the hosts are absolutely amazing.",
+          "rating": 5
+        },
+        {
+          "author": "Joshua Rogers",
+          "date": "2025-07-19",
+          "text": "The house had everything we wanted! It was beyond our expectations! We loved it and we will absolutely be staying again in the future!",
+          "rating": 5
+        }
+      ]
+    }
   },
   {
     "id": "sarasota-luxe",
@@ -44,14 +365,166 @@
     "bedrooms": 4,
     "bathrooms": 3,
     "guests": 12,
-    "rating": 5.0,
+    "rating": 5,
     "price": 425,
     "image": "https://bookingenginecdn.hostaway.com/listing/51916-135881-kgzZJ5KWwcw1HTE3EKwE6qxVSHBXCzEjbQjloKZayik-63ac665e899b2?width=1600&quality=80&format=webp&v=2",
-    "amenities": ["pool", "downtown"],
-    "highlights": ["Downtown Location", "Near St. Armands"],
+    "amenities": [
+      "pool",
+      "downtown"
+    ],
+    "highlights": [
+      "Downtown Location",
+      "Near St. Armands"
+    ],
     "description": "Sophisticated Florida living in downtown Sarasota. Explore St. Armands Circle by car, visit the Ringling Museum, then return to the private pool.",
     "specs": "4 BR · 3 BA · Sleeps 12",
-    "marketing_amenities": ["private-heated-pool", "hot-tub-spa", "outdoor-kitchen", "fast-wifi", "pet-friendly", "downtown", "single-level", "grill", "fenced-yard", "kid-friendly"]
+    "marketing_amenities": [
+      "private-heated-pool",
+      "hot-tub-spa",
+      "outdoor-kitchen",
+      "fast-wifi",
+      "pet-friendly",
+      "downtown",
+      "single-level",
+      "grill",
+      "fenced-yard",
+      "kid-friendly"
+    ],
+    "photography": {
+      "verifiedAt": "2026-09-04",
+      "photos": [
+        {
+          "src": "/images/homes/sarasota-luxe/01.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-135881-kgzZJ5KWwcw1HTE3EKwE6qxVSHBXCzEjbQjloKZayik-63ac665e899b2",
+          "alt": "Sarasota Luxe — Front exterior",
+          "width": 1400,
+          "height": 1400
+        },
+        {
+          "src": "/images/homes/sarasota-luxe/22.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-135881-X4vYqxOuvuQG3Cvt-bTUn6gVqIXlLdrul7tGXNYHnMY-63ac66966150b",
+          "alt": "Sarasota Luxe — Living room",
+          "width": 1400,
+          "height": 932
+        },
+        {
+          "src": "/images/homes/sarasota-luxe/16.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-135881-SeiDnBUpHRHSQAVCRE2RLtNl7QFKUPUSJ39ujIXYGKg-63ac668123755",
+          "alt": "Sarasota Luxe — Bunk room",
+          "width": 1400,
+          "height": 1400
+        },
+        {
+          "src": "/images/homes/sarasota-luxe/11.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-135881-wgxFQItl0eZ--pSKx3pLFixMzH0YOdDJsTT4J35J--PPk-63ac667340917",
+          "alt": "Sarasota Luxe — Kitchen",
+          "width": 1400,
+          "height": 934
+        },
+        {
+          "src": "/images/homes/sarasota-luxe/02.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-135881-t5DbFz4bDADk9ZBuWdZqFJuxNIww59-FoJeJIQe89i4-63ac6660bdebb",
+          "alt": "Sarasota Luxe — Dining area",
+          "width": 1400,
+          "height": 933
+        },
+        {
+          "src": "/images/homes/sarasota-luxe/04.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-135881-EJs6b2SzYTee6pctl4UmJHYDFajOl3gLB1hpDAjcqsc-63ac66658280e",
+          "alt": "Sarasota Luxe — Bedroom",
+          "width": 1400,
+          "height": 931
+        },
+        {
+          "src": "/images/homes/sarasota-luxe/07.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-135881-IRB3UGVebo6DMxoBcug2GyxBg2XM-gk--hbP-3qP7Ye4-63ac6667ecc8a",
+          "alt": "Sarasota Luxe — Bedroom",
+          "width": 1400,
+          "height": 933
+        },
+        {
+          "src": "/images/homes/sarasota-luxe/18.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-135881-x6GeQj7rqULjs782tEA9Pf6--4AU08pTIqKGvC9aiXng-63ac6689e0304",
+          "alt": "Sarasota Luxe — Bedroom",
+          "width": 1400,
+          "height": 931
+        },
+        {
+          "src": "/images/homes/sarasota-luxe/08.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-135881-Z-g48qfmoQbYvo2ydM--axBXu32foHEaHCpBcsvbKDWg-63ac666a7dfb4",
+          "alt": "Sarasota Luxe — Bathroom",
+          "width": 1400,
+          "height": 933
+        },
+        {
+          "src": "/images/homes/sarasota-luxe/03.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-135881-LNvuZCacc--wxX-VR5n-GM446kK5D7ofBixQCFPDJKrM-63c1efb764c08",
+          "alt": "Sarasota Luxe — Screened pool",
+          "width": 1400,
+          "height": 1400
+        },
+        {
+          "src": "/images/homes/sarasota-luxe/05.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-135881-Id38QMMV2--QyP00ncgK10ix3iO4RVKD-ys8opGAP3nM-63c1efc4173cf",
+          "alt": "Sarasota Luxe — Spa",
+          "width": 1400,
+          "height": 1400
+        },
+        {
+          "src": "/images/homes/sarasota-luxe/26.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-135881-O2uNNNzKDakus-d1UAc4U6otzrDhMzbVmIuQVmX26gw-63c1efc85b1ce",
+          "alt": "Sarasota Luxe — Backyard seating",
+          "width": 1400,
+          "height": 1400
+        }
+      ]
+    },
+    "guestFacts": {
+      "tagline": "Three king bedrooms, a bunk room and a private pool.",
+      "summary": "A Sarasota home with three king bedrooms, a queen bunk room, and a private pool. Choose it for time in Sarasota with room for the group to come home to.",
+      "sleeping": [
+        "Bedroom 1: one king bed",
+        "Bedroom 2: one king bed",
+        "Bedroom 3: one king bed",
+        "Bedroom 4: three queen beds in a bunk configuration"
+      ],
+      "pets": {
+        "status": "approval",
+        "text": "One dog under 30 lb may stay with host approval and an additional pet fee. Dogs may not toilet on the turf."
+      },
+      "considerations": [
+        "Planning for 9–12 guests? Confirm the group size with us before booking.",
+        "Driveway parking only; no street, turf, or trailer parking. Confirm garage access before relying on it."
+      ],
+      "fitNote": "A Sarasota location. Confirm with us for groups over 8.",
+      "checkIn": "4 pm",
+      "checkOut": "10 am",
+      "extraGuestsAbove": 10,
+      "confirmGuestsAbove": 8,
+      "sourceUrl": "https://book.seascape-vacations.com/listings/135881",
+      "verifiedAt": "2026-09-04",
+      "poolHeat": "Pool heating costs extra. Confirm the charge for your dates; the water temperature depends on the weather.",
+      "reviews": [
+        {
+          "author": "Stanley Shake",
+          "date": "2025-09-29",
+          "text": "This house is absolutely beautiful. Everything here was immaculate, plenty of space for any gathering, and the location made it easy to get downtown fast.",
+          "rating": 5
+        },
+        {
+          "author": "ANN MARIE GIUDICE",
+          "date": "2025-04-29",
+          "text": "Amazing home near downtown. Our family enjoyed the pool and amenities the home had to offer. Easy to get around town. We enjoyed our time at this home.",
+          "rating": 5
+        },
+        {
+          "author": "Bryce Mewhorter",
+          "date": "2025-04-06",
+          "text": "Fantastic property, easy check in, very clean, and great location. Hosts were excellent.",
+          "rating": 5
+        }
+      ]
+    }
   },
   {
     "id": "river-house",
@@ -62,14 +535,162 @@
     "bedrooms": 4,
     "bathrooms": 3,
     "guests": 12,
-    "rating": 5.0,
+    "rating": 5,
     "price": 400,
     "image": "https://bookingenginecdn.hostaway.com/listing/51916-135880-O6JS9DHvtg7g5gc5ZAe7--55PGx3-0ELuuNJ4T1dsz7s-67620f804f296?width=1600&quality=80&format=webp&v=2",
-    "amenities": ["pool", "spa"],
-    "highlights": ["Pool & Spa", "1 Min to Boat Ramp"],
+    "amenities": [
+      "pool",
+      "spa"
+    ],
+    "highlights": [
+      "Pool & Spa",
+      "1 Min to Boat Ramp"
+    ],
     "description": "Escape to this tranquil retreat one minute from the Warner Bayou boat ramp, featuring a private heated pool, spa, and game room — a peaceful backyard paradise five miles from Anna Maria Island beaches.",
     "specs": "4 BR · 3 BA · Sleeps 12",
-    "marketing_amenities": ["private-heated-pool", "hot-tub-spa", "game-room", "fast-wifi", "pet-friendly", "single-level", "outdoor-living", "grill", "fenced-yard", "kid-friendly"]
+    "marketing_amenities": [
+      "private-heated-pool",
+      "hot-tub-spa",
+      "game-room",
+      "fast-wifi",
+      "pet-friendly",
+      "single-level",
+      "outdoor-living",
+      "grill",
+      "fenced-yard",
+      "kid-friendly"
+    ],
+    "photography": {
+      "verifiedAt": "2026-09-04",
+      "photos": [
+        {
+          "src": "/images/homes/river-house/01.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-135880-O6JS9DHvtg7g5gc5ZAe7--55PGx3-0ELuuNJ4T1dsz7s-67620f804f296",
+          "alt": "River House — Backyard",
+          "width": 1400,
+          "height": 934
+        },
+        {
+          "src": "/images/homes/river-house/08.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-135880-Z8Y96zYn1Pse7JhV6zA1SryfsOl24-MQOX3uhYNgOYo-67620fbc73df9",
+          "alt": "River House — Living room",
+          "width": 1400,
+          "height": 933
+        },
+        {
+          "src": "/images/homes/river-house/28.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-135880-0WnAHReHknUEWEBelinW--skfXQbt16rMH1wU-PaCMgI-6762109d60c59",
+          "alt": "River House — Bunk room",
+          "width": 1400,
+          "height": 934
+        },
+        {
+          "src": "/images/homes/river-house/06.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-135880---MvAp4qaRu7kiE3k8rLlBS91JKP--K9W27j0gSz85fI-67621047092ea",
+          "alt": "River House — Kitchen",
+          "width": 1400,
+          "height": 933
+        },
+        {
+          "src": "/images/homes/river-house/07.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-135880-OjOthIkLY--af9i-nKVMVz1hIehhAFqAMhnx21GMeMaE-67620fd112d5a",
+          "alt": "River House — Dining area",
+          "width": 1400,
+          "height": 933
+        },
+        {
+          "src": "/images/homes/river-house/14.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-135880-3-WHUih34aKJ-O8dGl9n9-mwQoL3ZCAfRN-SdAOJyq4-67620ff00a61f",
+          "alt": "River House — Bedroom",
+          "width": 1400,
+          "height": 933
+        },
+        {
+          "src": "/images/homes/river-house/17.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-135880-Jluyx39g6SUT5ptLznYnKQF--JJeMA2oOn--7P6kHfXz0-6762100a90ffb",
+          "alt": "River House — Bedroom",
+          "width": 1400,
+          "height": 933
+        },
+        {
+          "src": "/images/homes/river-house/25.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-135880-2EdnBP5NgblNV4--JgxLOmuakAHoNsyi3sS12FPvGPVY-676210755edc4",
+          "alt": "River House — Bedroom",
+          "width": 1400,
+          "height": 934
+        },
+        {
+          "src": "/images/homes/river-house/05.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-135880-g8wwLrsaItg4FXqddvMHvmC-RqGfMcD5WrwyAWwVv70-67620fe015f64",
+          "alt": "River House — Bathroom",
+          "width": 1400,
+          "height": 933
+        },
+        {
+          "src": "/images/homes/river-house/23.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-135880-b3k0bUFryxvpWpX9kA9SJA4A1lR6hf2FSN9VVThcxDU-6762105e71186",
+          "alt": "River House — Game room",
+          "width": 1400,
+          "height": 933
+        },
+        {
+          "src": "/images/homes/river-house/35.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-135880-k4OggMD0HEeUv--8o40XusNTMi8VXw2wf9daBaQUrmWw-67620f8806807",
+          "alt": "River House — Screened pool",
+          "width": 1400,
+          "height": 934
+        },
+        {
+          "src": "/images/homes/river-house/04.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-135880-8-QJvdTAGfAr9E7NO7wBcH8vG78TeLMO2PabnNWgiSc-67620f8c04395",
+          "alt": "River House — Screened dining area",
+          "width": 1400,
+          "height": 931
+        }
+      ]
+    },
+    "guestFacts": {
+      "tagline": "Two king suites, a bunk room and a private pool.",
+      "summary": "Two king bedrooms with their own bathrooms, a queen room, and a bunk room make River House worth a look for groups sharing a home. A private pool and spa round out the stay.",
+      "sleeping": [
+        "Bedroom 1: one king bed with ensuite bathroom",
+        "Bedroom 2: one king bed with ensuite bathroom",
+        "Bedroom 3: one queen bed",
+        "Bedroom 4: two full-over-full bunk beds"
+      ],
+      "pets": {
+        "status": "ask",
+        "text": "Ask us to confirm pet approval, size restrictions, and fees before booking."
+      },
+      "considerations": [
+        "There is one interior step in the living-room area. Ask us about your access needs.",
+        "Near the Warner Bayou boat ramp; this home does not have a private waterfront dock."
+      ],
+      "fitNote": "Two king suites with ensuite bathrooms. One interior step.",
+      "sourceUrl": "https://book.seascape-vacations.com/listings/135880",
+      "verifiedAt": "2026-09-04",
+      "poolHeat": "Pool heating costs extra. Confirm the charge for your dates; the water temperature depends on the weather.",
+      "reviews": [
+        {
+          "author": "Andrew Coblentz",
+          "date": "2026-01-03",
+          "text": "We had a great time!",
+          "rating": 5
+        },
+        {
+          "author": "Florian Lasserre",
+          "date": "2025-08-14",
+          "text": "Perfect location, very nice neighborhood, the house is very well equiped, hosts are very nice and easy to comunicate with. We really enjoyed our stay, we were two family of 5 and it was perfect.",
+          "rating": 5
+        },
+        {
+          "author": "Brittany Byrne",
+          "date": "2025-05-28",
+          "text": "Loved the convenience of this house! The location was perfect for what we needed. Everything was extremely clean, and well maintained. Loved having access to the pool!",
+          "rating": 5
+        }
+      ]
+    }
   },
   {
     "id": "487798",
@@ -80,13 +701,145 @@
     "bedrooms": 3,
     "bathrooms": 3.5,
     "guests": 10,
-    "rating": 5.0,
+    "rating": 5,
     "price": 200,
     "image": "https://bookingenginecdn.hostaway.com/listing/51916-487798-V0NBY--NCCpIEyYp6re-PPCPp-D1YJjHS25PWR9-gUzg-6992505e1bcdd?width=1600&quality=80&format=webp&v=2",
-    "amenities": ["pool", "spa", "outdoor-grill"],
-    "highlights": ["Heated Pool & In-Ground Spa", "Closest Home to IMG Academy"],
+    "amenities": [
+      "pool",
+      "spa",
+      "outdoor-grill"
+    ],
+    "highlights": [
+      "Heated Pool & In-Ground Spa",
+      "Closest Home to IMG Academy"
+    ],
     "description": "Bradenton pool home with three bedrooms, 3.5 baths, a heated pool, in-ground spa, outdoor grill area, and easy access to IMG Academy. Compare the current full checkout total for your dates.",
     "specs": "3 BR · 3.5 BA · Sleeps 10",
-    "marketing_amenities": ["private-heated-pool", "hot-tub-spa", "outdoor-kitchen", "fast-wifi", "single-level", "outdoor-living", "grill", "fenced-yard", "kid-friendly", "smart-tv"]
+    "marketing_amenities": [
+      "private-heated-pool",
+      "hot-tub-spa",
+      "outdoor-kitchen",
+      "fast-wifi",
+      "single-level",
+      "outdoor-living",
+      "grill",
+      "fenced-yard",
+      "kid-friendly",
+      "smart-tv"
+    ],
+    "photography": {
+      "verifiedAt": "2026-09-04",
+      "photos": [
+        {
+          "src": "/images/homes/bradenton-pool-home/01.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-487798-V0NBY--NCCpIEyYp6re-PPCPp-D1YJjHS25PWR9-gUzg-6992505e1bcdd",
+          "alt": "Bradenton Pool Home — Pool and spa",
+          "width": 1400,
+          "height": 933
+        },
+        {
+          "src": "/images/homes/bradenton-pool-home/20.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-487798-jZ-fCfd4L6a44PhAT--VZSKK4V4-fCNqtziRB6jQP99c-699250540be9f",
+          "alt": "Bradenton Pool Home — Living room",
+          "width": 1400,
+          "height": 1033
+        },
+        {
+          "src": "/images/homes/bradenton-pool-home/14.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-487798-kokqxK0aT--k7QDaAgh5sQbJ8--bAsd---eeS0wlJyOhCg-6992502dabddd",
+          "alt": "Bradenton Pool Home — Bedroom with two beds",
+          "width": 1400,
+          "height": 1037
+        },
+        {
+          "src": "/images/homes/bradenton-pool-home/18.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-487798-02GwK-7HxZcquheKkCuLeomF6Vhfr52wPx8BRGcbI7I-6992503e48697",
+          "alt": "Bradenton Pool Home — Kitchen",
+          "width": 1400,
+          "height": 1034
+        },
+        {
+          "src": "/images/homes/bradenton-pool-home/17.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-487798-vqmtBLLUgzaJj768oCTejay8AC0i1khCxhdNWsNWUAI-6992504f25e20",
+          "alt": "Bradenton Pool Home — Dining area",
+          "width": 1400,
+          "height": 1845
+        },
+        {
+          "src": "/images/homes/bradenton-pool-home/13.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-487798-vs56V7VNzQclcCi9kafLZ2WqaHTXVCPmVeXDY97e2GE-6992503383009",
+          "alt": "Bradenton Pool Home — Bedroom",
+          "width": 1400,
+          "height": 1028
+        },
+        {
+          "src": "/images/homes/bradenton-pool-home/15.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-487798-baHMZv9nZpMUx44ApxfShbc0eOeUnNzdLWTnzkv3maI-6992502c1233a",
+          "alt": "Bradenton Pool Home — Bedroom",
+          "width": 1400,
+          "height": 1026
+        },
+        {
+          "src": "/images/homes/bradenton-pool-home/07.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-487798-QLXqh3hLPIhOMEFaMhUH--iPMQz9sL1pPwDSwUlpCBR0-699257b42b912",
+          "alt": "Bradenton Pool Home — Bathroom",
+          "width": 1400,
+          "height": 1026
+        },
+        {
+          "src": "/images/homes/bradenton-pool-home/23.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-487798-G0noPWr4c3wV6fdYuAvbynYooH3KzUnUv-LXcYnI6Ac-699250389f090",
+          "alt": "Bradenton Pool Home — Additional seating area",
+          "width": 1400,
+          "height": 1034
+        },
+        {
+          "src": "/images/homes/bradenton-pool-home/09.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-487798-x9zkd--3pY8Rvlj3TZSK7r6xpOg8sYZDVLoLjjm5TlJg-69925029c43a4",
+          "alt": "Bradenton Pool Home — Bathroom",
+          "width": 1400,
+          "height": 1858
+        },
+        {
+          "src": "/images/homes/bradenton-pool-home/06.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-487798-s7O9RMl--k-hY2zr1796y3SxkC5F2PO0hoYAZNIqNNw8-699257bce0a56",
+          "alt": "Bradenton Pool Home — Backyard",
+          "width": 1400,
+          "height": 1036
+        },
+        {
+          "src": "/images/homes/bradenton-pool-home/28.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-487798-WwTLEyLic9rNrOsafu1ikPbpT--qx94PGUz9h7dxJd6U-6992505ba6c4c",
+          "alt": "Bradenton Pool Home — Front exterior",
+          "width": 1400,
+          "height": 933
+        }
+      ]
+    },
+    "guestFacts": {
+      "tagline": "A private pool, spa and screened outdoor dining.",
+      "summary": "Three bedrooms, three and a half baths, and a private pool and spa in Bradenton. This is our closest home to IMG Academy, with a backyard to return to after the day’s plans.",
+      "sleeping": [
+        "Bedroom 1: two queen beds",
+        "Bedroom 2: one queen bed and one sofa bed",
+        "Bedroom 3: one king bed"
+      ],
+      "pets": {
+        "status": "no",
+        "text": "Pets are not permitted at this home."
+      },
+      "considerations": [
+        "Two exterior steps lead to the front entrance. One interior step leads to a bedroom and kitchenette area.",
+        "The pool and spa cannot be heated at the same time.",
+        "Driveway parking only. Ask us about boat or vehicle fit; no street parking."
+      ],
+      "fitNote": "Closest to IMG Academy. No pets; exterior and interior steps.",
+      "checkIn": "4 pm",
+      "checkOut": "10 am",
+      "sourceUrl": "https://book.seascape-vacations.com/listings/487798",
+      "verifiedAt": "2026-09-04",
+      "poolHeat": "Pool heating costs extra. Confirm the charge for your dates; the water temperature depends on the weather.",
+      "reviews": []
+    }
   }
 ]

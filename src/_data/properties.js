@@ -339,10 +339,12 @@ function toHostawayCdn(url, width = 1600) {
 }
 
 function normalizeProperties(list) {
+  const approvedProperties = JSON.parse(fs.readFileSync(FALLBACK_PATH, "utf8"));
   return list
     .filter((property) => property.status !== "inactive")
     .map((property) => {
       const slug = deriveSlug(property);
+      const curated = approvedProperties.find((entry) => entry.slug === slug) || {};
       const listingId = deriveListingId(property, slug);
       const staticSchemaFacts = STATIC_PROPERTY_SCHEMA_FACTS_BY_SLUG[slug] || {};
       const image = toHostawayCdn(property.image);
@@ -357,6 +359,8 @@ function normalizeProperties(list) {
 
       return {
         ...property,
+        guestFacts: curated.guestFacts || null,
+        photography: curated.photography || null,
         id: listingId,
         slug,
         pageUrl: property.pageUrl || `/properties/${slug}/`,

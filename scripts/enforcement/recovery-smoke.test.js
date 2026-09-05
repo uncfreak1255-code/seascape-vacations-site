@@ -76,8 +76,8 @@ test("properties smoke checks durable property detail hrefs instead of old CTA c
   assert.notEqual(target, undefined, "expected /properties/ to stay in the smoke target list");
 
   const currentPropertiesBody = `
-    <main data-catalog-version="guest-journey-v1">
-      <h1>A house everyone<br>can agree on.</h1>
+    <main data-catalog-version="open-house-v2">
+      <h1>Find the house.<br>Bring your people.</h1>
       <form id="catalog-trip-form"></form><dialog id="catalog-comparison"></dialog>
       <p>Full price, fees and cancellation terms on the booking page.</p>
       <article><a href="/properties/dockside-dreams/">Dockside Dreams</a></article>
@@ -85,7 +85,7 @@ test("properties smoke checks durable property detail hrefs instead of old CTA c
       <article><a href="/properties/sarasota-luxe/">Sarasota Luxe</a></article>
       <article><a href="/properties/river-house/">River House</a></article>
       <article><a href="/properties/bradenton-pool-home/">Bradenton Pool Home</a></article>
-      <a href="https://book.seascape-vacations.com">Book Direct</a>
+      <a class="catalog-check-dates" href="https://book.seascape-vacations.com">Check dates</a>
     </main>
   `;
 
@@ -112,7 +112,7 @@ test("properties smoke rejects missing stable property detail hrefs", () => {
         <main>
           <article>Dockside Dreams</article>
           <article>The Oasis</article>
-          <a href="https://book.seascape-vacations.com">Book Direct</a>
+          <a class="catalog-check-dates" href="https://book.seascape-vacations.com">Check dates</a>
         </main>
       `
     });
@@ -342,4 +342,11 @@ test("live smoke rejects stale SRQ airport freshness copy", () => {
       `
     });
   }, /missing current live marker/);
+});
+
+test("homepage smoke validates the rendered home journey and rejects missing trip controls", () => {
+  const fs=require("fs");const smoke=loadSmokeModule();const target=smoke.targets.find(entry=>entry.path==="/");
+  const body=fs.readFileSync(path.join(projectRoot,"_site/index.html"),"utf8");
+  assert.doesNotThrow(()=>smoke.validateTargetResponse(target,{statusCode:200,body}));
+  assert.throws(()=>smoke.validateTargetResponse(target,{statusCode:200,body:body.replace(/data-guest-trip-form/g,"removed-control")}));
 });

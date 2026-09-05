@@ -9,8 +9,16 @@ test("catalog facts and accommodation photos come from canonical property record
   for (const field of ["bedrooms", "bathrooms", "guests", "bookingUrl", "pageUrl", "highlights"]) {
     assert.ok(template.includes("property." + field), "missing canonical " + field);
   }
-  assert.ok(template.includes("{{ property.image | imgProxy(900) }}"));
-  assert.ok(template.includes("/images/email/save50/{{ property.slug }}.jpg"));
+  assert.ok(template.includes("property.photography.photos[0].src"));
+  assert.doesNotMatch(template, /seascape-og-default|this.src=/);
+  for (const property of require("../../src/_data/properties-fallback.json")) {
+    assert.ok(property.photography.photos.length >= 10, property.slug + " must include interiors");
+    for (const photo of property.photography.photos) {
+      assert.ok(photo.src.startsWith("/images/homes/" + property.slug + "/"));
+      assert.ok(fs.existsSync(path.resolve(__dirname, "../..", photo.src.slice(1))));
+      assert.ok(photo.sourceUrl.includes("bookingenginecdn.hostaway.com/listing/"));
+    }
+  }
   for (const claim of ["{{ property.price }}", "Availability · live", "weekendsLeft", "Booked 2 hours ago"]) {
     assert.ok(!template.includes(claim), "catalog must not imply a selected-date quote or scarcity: " + claim);
   }

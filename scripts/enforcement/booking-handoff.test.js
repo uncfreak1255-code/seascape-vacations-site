@@ -291,87 +291,40 @@ test("priority stay pages carry page-specific trip math and fallback routing met
   }
 });
 
-test("top property pages instrument both availability and booking-page handoff CTAs", () => {
-  const propertyPages = [
-    path.join(projectRoot, "src", "properties", "dockside-dreams", "index.njk"),
-    path.join(projectRoot, "src", "properties", "the-oasis", "index.njk"),
-    path.join(projectRoot, "src", "properties", "sarasota-luxe", "index.njk"),
-    path.join(projectRoot, "src", "properties", "river-house", "index.njk"),
-    path.join(projectRoot, "src", "properties", "bradenton-pool-home", "index.njk")
-  ];
-
-  for (const file of propertyPages) {
-    const source = fs.readFileSync(file, "utf8");
-    assert.equal(
-      source.includes('data-track-event="property_check_availability_click"'),
-      true,
-      `${path.basename(path.dirname(file))} missing tracked availability CTA`
-    );
-    assert.equal(
-      source.includes('data-track-event="property_booking_page_click"'),
-      true,
-      `${path.basename(path.dirname(file))} missing tracked booking-page CTA`
-    );
-    assert.equal(
-      source.includes('src="/assets/js/conversion-tracking.js"'),
-      true,
-      `${path.basename(path.dirname(file))} missing shared conversion tracking runtime`
-    );
-    for (const placement of [
-      'data-placement="property_nav"',
-      'data-placement="property_mobile_menu"',
-      'data-placement="property_intro"',
-      'data-placement="property_intro_booking_panel"',
-      'data-placement="property_reviews"'
-    ]) {
-      assert.equal(
-        source.includes(placement),
-        true,
-        `${path.basename(path.dirname(file))} missing ${placement}`
-      );
-    }
+test("all five rendered homes carry the matching tracked booking decision", () => {
+  for (const property of require("../../src/_data/properties-fallback.json")) {
+    const source = fs.readFileSync(path.join(projectRoot, "src/properties", property.slug, "index.njk"), "utf8");
+    assert.ok(source.includes("layout: layouts/property.njk"));
+    assert.ok(source.includes("propertySlug: " + property.slug));
+    const html = fs.readFileSync(path.join(projectRoot, "_site/properties", property.slug, "index.html"), "utf8");
+    for (const event of ["property_check_availability_click", "property_booking_page_click"]) assert.ok(html.includes('data-track-event="' + event + '"'));
+    assert.ok(html.includes('src="/assets/js/conversion-tracking.js"'));
+    assert.ok(html.includes('data-booking-url="' + property.guestFacts.sourceUrl + '"'));
+    assert.ok(html.includes('data-property-page="' + property.slug + '"'));
+    for (const placement of ["property_heading", "property_booking_panel", "property_mobile_booking"]) assert.ok(html.includes('data-placement="' + placement + '"'));
   }
 });
 
-test("Bradenton Pool Home keeps responsive hero candidates in sync after thumbnail changes", () => {
-  const source = fs.readFileSync(
-    path.join(projectRoot, "src", "properties", "bradenton-pool-home", "index.njk"),
-    "utf8"
-  );
-
-  assert.match(source, /id="heroMain"[^>]+srcset="[^"]+ 768w, [^"]+ 1200w"/);
-  assert.match(
-    source,
-    /sizes="\(min-width: 1200px\) 1200px, \(min-width: 768px\) calc\(100vw - 48px\), calc\(100vw - 32px\)"/
-  );
-  assert.match(
-    source,
-    /function switchHero\(i\)\{[^}]+hero\.srcset=url\.replace\("width=1200","width=768"\)\+" 768w, "\+url\+" 1200w";hero\.src=url;/
-  );
+test("each gallery has only its own canonical local photos with valid dimensions", () => {
+  for (const property of require("../../src/_data/properties-fallback.json")) {
+    const html = fs.readFileSync(path.join(projectRoot, "_site/properties", property.slug, "index.html"), "utf8");
+    const images = [...html.matchAll(/<img[^>]+data-property-photo="([^"]+)"[^>]+(?:src|data-gallery-src)="([^"]+)"/g)];
+    assert.ok(images.length >= 10);
+    for (const [,slug,src] of images) {
+      assert.equal(slug, property.slug);
+      const photo=property.photography.photos.find(p=>p.src===src);
+      assert.ok(photo);assert.ok(photo.width>0 && photo.height>0);
+      assert.ok(fs.existsSync(path.join(projectRoot,src.slice(1))));
+    }
+    assert.doesNotMatch(html,/seascape-og-default/);
+  }
 });
 
-test("top property pages use semantic hero headings and stay pages explain fit in guest language", () => {
-  const propertyPages = [
-    path.join(projectRoot, "src", "properties", "dockside-dreams", "index.njk"),
-    path.join(projectRoot, "src", "properties", "the-oasis", "index.njk"),
-    path.join(projectRoot, "src", "properties", "sarasota-luxe", "index.njk"),
-    path.join(projectRoot, "src", "properties", "river-house", "index.njk"),
-    path.join(projectRoot, "src", "properties", "bradenton-pool-home", "index.njk")
-  ];
-
-  for (const file of propertyPages) {
-    const source = fs.readFileSync(file, "utf8");
-
-    assert.equal(
-      /<div class="hero-cinema-content">\s*<h1>/m.test(source),
-      true,
-      `${path.basename(path.dirname(file))} should expose an h1 inside the hero`
-    );
-    assert.equal(
-      /<div class="hero-cinema-content">\s*<h2>/m.test(source),
-      false,
-      `${path.basename(path.dirname(file))} should not hide the main title inside an h2`
-    );
+test("property headings are semantic and stay pages explain fit in guest language", () => {
+  for (const property of require("../../src/_data/properties-fallback.json")) {
+    const html = fs.readFileSync(path.join(projectRoot, "_site/properties", property.slug, "index.html"), "utf8");
+    assert.ok(html.includes('<h1>'+property.name+'</h1>'));
+    assert.equal((html.match(/<h1[ >]/g)||[]).length,1);
   }
 
   const staysTemplate = fs.readFileSync(path.join(projectRoot, "src", "stays", "stays.njk"), "utf8");

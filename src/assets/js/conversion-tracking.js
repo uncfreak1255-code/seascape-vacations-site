@@ -166,6 +166,7 @@
 
     try {
       var url = new URL(String(value), window.location && window.location.href ? window.location.href : "https://seascape-vacations.com/");
+                if (url.protocol !== "https:" && url.protocol !== "http:") return "";
       Array.from(url.searchParams.keys()).forEach(function (key) {
         var paramValue = url.searchParams.get(key) || "";
         if (isSensitiveAnalyticsKey(key) || isSensitiveAnalyticsValue(paramValue)) {
@@ -269,7 +270,7 @@
       trip.depart = departure;
     }
     var guests = params.get("guests") || "";
-    if (/^\d+$/.test(guests) && Number(guests) >= 1 && Number(guests) <= 16) trip.guests = String(Number(guests));
+    if (/^\d+$/.test(guests) && Number(guests) >= 1) trip.guests = String(Math.min(Number(guests), 17));
     var area = params.get("area") || "";
     if (["anna-maria-island", "ami", "bradenton", "sarasota", "waterfront", "pet-friendly"].indexOf(area) !== -1) trip.area = area;
     var slugs = Object.keys(PROPERTY_SLUG_BY_LISTING_ID).map(function (id) { return PROPERTY_SLUG_BY_LISTING_ID[id]; });
@@ -412,7 +413,7 @@
         url.searchParams.set("start", chosenTrip.arrive);
         url.searchParams.set("end", chosenTrip.depart);
       }
-      if (trip.guests && !url.searchParams.has("numberOfGuests")) url.searchParams.set("numberOfGuests", trip.guests);
+      if (trip.guests && Number(trip.guests) <= 16 && !url.searchParams.has("numberOfGuests")) url.searchParams.set("numberOfGuests", trip.guests);
       url.searchParams.delete("startingDate");
       url.searchParams.delete("endingDate");
     }
@@ -1202,6 +1203,7 @@
 
   window.SeascapeConversionTracking = {
     trackEvent: trackEvent,
+    readTripParams: readTripParams,
     shouldDelayTrackedNavigation: shouldDelayTrackedNavigation,
     continueTrackedNavigation: continueTrackedNavigation,
     getSourceContext: getSourceContext,

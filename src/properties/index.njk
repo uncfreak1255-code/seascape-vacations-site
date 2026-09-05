@@ -1,10 +1,10 @@
 ---
-layout: layouts/base.njk
+layout: layouts/guest.njk
 permalink: "/properties/"
 templateEngineOverride: "njk"
 pageTitle: "Vacation Rentals Near Anna Maria Island | Seascape Vacations"
 pageDescription: "Direct-booking Bradenton and Sarasota stays near Anna Maria Island from Seascape Vacations. More space and private pools off-island, or Sarasota city-first stays."
-pageImage: "https://seascape-vacations.com/images/seascape-og-default.jpg"
+pageImage: "https://seascape-vacations.com/images/homes/sarasota-luxe/22.webp"
 pageUpdated: "2026-09-04T12:00:00-04:00"
 navActive: "properties"
 navButtonLabel: "Book Direct"
@@ -35,25 +35,25 @@ headExtra: |
   "numberOfItems": {{ properties | length }},
   "itemListElement": [
     {% for property in properties %}
-    { "@type": "ListItem", "position": {{ loop.index }}, "url": "{{ site.url }}{{ property.pageUrl }}", "name": "{{ property.name }}", "image": "{{ property.image | imgProxy(1200) }}" }{% if not loop.last %},{% endif %}
+    { "@type": "ListItem", "position": {{ loop.index }}, "url": "{{ site.url }}{{ property.pageUrl }}", "name": "{{ property.name }}", "image": "{{ site.url }}{{ property.photography.photos[0].src }}" }{% if not loop.last %},{% endif %}
     {% endfor %}
   ]
 }
 </script>
 
-<div class="catalog-page" data-catalog-version="guest-journey-v1">
+<div class="catalog-page" data-catalog-version="open-house-v2">
   <nav class="catalog-breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true"> / </span><span aria-current="page">Our homes</span></nav>
   {% include "partials/save50-offer.njk" %}
   <header class="catalog-intro">
     <div class="catalog-intro-copy">
       <p class="section-tag">The Seascape Collection</p>
-      <h1>A house everyone<br>can agree on.</h1>
+      <h1>Find the house.<br><em>Bring your people.</em></h1>
       <p>Pool days, a private dock, or room for the whole crew. Find your favorite among our five homes in Bradenton and Sarasota.</p>
       <a class="btn-link" href="#catalog-heading">Meet the homes <span class="arr" aria-hidden="true">→</span></a>
     </div>
     <figure class="catalog-intro-photo">
-      <img src="/images/email/save50/the-oasis.jpg" alt="Pool and loungers at The Oasis in the evening" width="560" height="340" fetchpriority="high">
-      <figcaption>The Oasis · Bradenton <span>Evenings in your own backyard</span></figcaption>
+      <img data-property-photo="sarasota-luxe" src="/images/homes/sarasota-luxe/22.webp" srcset="/images/homes/sarasota-luxe/22-800.webp 800w, /images/homes/sarasota-luxe/22.webp 1400w" sizes="(min-width: 900px) 45vw, calc(100vw - 40px)" alt="Sarasota Luxe living room" width="560" height="340" fetchpriority="high">
+      <figcaption>Sarasota Luxe · Sarasota <span>Make room for time together</span></figcaption>
     </figure>
   </header>
 
@@ -79,7 +79,7 @@ headExtra: |
       <button class="catalog-filter" type="button" data-filter="waterfront" aria-pressed="false">Waterfront</button>
       <button class="catalog-filter" type="button" data-filter="bradenton" aria-pressed="false">Near AMI</button>
       <button class="catalog-filter" type="button" data-filter="sarasota" aria-pressed="false">Sarasota</button>
-      <button class="catalog-filter" type="button" data-filter="pet-friendly" aria-pressed="false">Pets considered</button>
+      <button class="catalog-filter" type="button" data-filter="pet-friendly" aria-pressed="false">Ask about pets</button>
     </div>
     <p id="catalog-count" class="catalog-count" role="status">{{ properties | length }} homes · Availability confirmed on the booking page</p>
     <noscript><p>All five homes are below. Open a home’s booking page to select dates and guests. Interactive filters and comparisons need JavaScript.</p></noscript>
@@ -90,7 +90,7 @@ headExtra: |
       {% set availability = property.availability %}
       <article class="catalog-card" data-property="{{ property.slug }}" data-filters="{{ filterTokens }}" data-max-guests="{{ property.guests }}" data-availability-mode="checkout">
         <a class="catalog-card-media" href="{{ property.pageUrl }}" data-trip-link data-track-event="catalog_view_details_click" data-page-slug="{{ property.slug }}" data-placement="catalog_photo" aria-label="View {{ property.name }} photos and details">
-          <img src="{{ property.image | imgProxy(900) }}" alt="{{ property.name }} vacation home in {{ property.city }}" width="900" height="620" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/images/email/save50/{{ property.slug }}.jpg';">
+          <img data-property-photo="{{ property.slug }}" src="{{ property.photography.photos[0].src }}" srcset="{{ property.photography.photos[0].src | replace('.webp', '-800.webp') }} 800w, {{ property.photography.photos[0].src }} 1400w" sizes="(min-width: 900px) 30vw, calc(100vw - 40px)" alt="{{ property.name }} vacation home in {{ property.city }}" width="900" height="620" loading="lazy" decoding="async">
           <span class="catalog-photo-number" aria-hidden="true">0{{ loop.index }}</span>
         </a>
         <div class="catalog-card-body">
@@ -101,7 +101,7 @@ headExtra: |
             <p class="section-tag">The draw</p>
             <p>{{ property.highlights | join(' · ') }}</p>
           </div>
-          {% if "pet-friendly" in filterTokens %}<p class="catalog-pet-note">Bringing a dog? Check this home’s approval, size and fee rules.</p>{% endif %}
+          <p class="catalog-fit-note">{{ property.guestFacts.fitNote }}</p>
           <div class="catalog-card-foot">
             <a class="btn btn-brand catalog-check-dates" href="{{ property.bookingUrl }}" data-booking-base="{{ property.bookingUrl }}" data-track-event="catalog_book_direct_click" data-page-slug="{{ property.slug }}" data-placement="catalog_card" target="_blank" rel="noopener noreferrer" aria-label="Check dates for {{ property.name }}">Check dates</a>
             <a class="catalog-details-link" href="{{ property.pageUrl }}" data-trip-link data-track-event="catalog_view_details_click" data-page-slug="{{ property.slug }}" data-placement="catalog_card_details">Explore this home <span aria-hidden="true">→</span></a>
@@ -143,14 +143,16 @@ headExtra: |
     <div class="catalog-comparison-scroll" tabindex="0" role="region" aria-label="Home comparison. Scroll horizontally to see all homes.">
       <table class="catalog-comparison-table">
         <caption>Home features. Scroll sideways to see more homes.</caption>
-        <thead><tr><th scope="col">Your home</th>{% for property in properties %}<th scope="col" data-compare-column="{{ property.slug }}"><img src="/images/email/save50/{{ property.slug }}.jpg" alt="" width="280" height="170"><a href="{{ property.pageUrl }}" data-trip-link data-track-event="catalog_view_details_click" data-page-slug="{{ property.slug }}" data-placement="catalog_comparison">{{ property.name }}</a></th>{% endfor %}</tr></thead>
+        <thead><tr><th scope="col">Your home</th>{% for property in properties %}<th scope="col" data-compare-column="{{ property.slug }}"><img data-property-photo="{{ property.slug }}" src="{{ property.photography.photos[0].src }}" srcset="{{ property.photography.photos[0].src | replace('.webp', '-800.webp') }} 800w, {{ property.photography.photos[0].src }} 1400w" sizes="(min-width: 900px) 30vw, calc(100vw - 40px)" alt="" width="280" height="170" loading="lazy"><a href="{{ property.pageUrl }}" data-trip-link data-track-event="catalog_view_details_click" data-page-slug="{{ property.slug }}" data-placement="catalog_comparison">{{ property.name }}</a></th>{% endfor %}</tr></thead>
         <tbody>
           <tr><th scope="row">Location</th>{% for property in properties %}<td data-compare-column="{{ property.slug }}">{{ property.city }}</td>{% endfor %}</tr>
           <tr><th scope="row">Bedrooms / baths</th>{% for property in properties %}<td data-compare-column="{{ property.slug }}">{{ property.bedrooms }} / {{ property.bathrooms }}</td>{% endfor %}</tr>
           <tr><th scope="row">Maximum guests</th>{% for property in properties %}<td data-compare-column="{{ property.slug }}">{{ property.guests }}<span class="comparison-capacity" data-capacity="{{ property.guests }}"></span></td>{% endfor %}</tr>
+          <tr><th scope="row">Sleeping arrangements</th>{% for property in properties %}<td data-compare-column="{{ property.slug }}">{% for room in property.guestFacts.sleeping %}<p>{{ room }}</p>{% endfor %}</td>{% endfor %}</tr>
+          <tr><th scope="row">Before choosing</th>{% for property in properties %}<td data-compare-column="{{ property.slug }}">{{ property.guestFacts.fitNote }}</td>{% endfor %}</tr>
           <tr><th scope="row">What stands out</th>{% for property in properties %}<td data-compare-column="{{ property.slug }}">{{ property.highlights | join(' · ') }}</td>{% endfor %}</tr>
           <tr><th scope="row">Waterfront / dock</th>{% for property in properties %}<td data-compare-column="{{ property.slug }}">{% if "waterfront" in property.amenities %}Waterfront · private dock{% else %}No private waterfront dock{% endif %}</td>{% endfor %}</tr>
-          <tr><th scope="row">Dogs</th>{% for property in properties %}{% set amenities = (property.amenities | join('|')) ~ '|' ~ (property.marketing_amenities | join('|')) %}<td data-compare-column="{{ property.slug }}">{% if "pet-friendly" in amenities %}Approval, limits and fees apply. Check the home’s rules.{% else %}Ask us before booking with a pet.{% endif %}</td>{% endfor %}</tr>
+          <tr><th scope="row">Dogs</th>{% for property in properties %}<td data-compare-column="{{ property.slug }}">{{ property.guestFacts.pets.text }}</td>{% endfor %}</tr>
           <tr><th scope="row">Dates & total</th>{% for property in properties %}<td data-compare-column="{{ property.slug }}"><a class="btn btn-brand" href="{{ property.bookingUrl }}" data-booking-base="{{ property.bookingUrl }}" data-track-event="catalog_book_direct_click" data-page-slug="{{ property.slug }}" data-placement="catalog_comparison" target="_blank" rel="noopener noreferrer" aria-label="Check dates for {{ property.name }}">Check dates</a></td>{% endfor %}</tr>
         </tbody>
       </table>
