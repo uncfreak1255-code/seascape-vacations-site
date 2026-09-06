@@ -1,7 +1,8 @@
 # Site Learning Contract
 
-This repo may learn only from public-site behavior, source-backed page claims,
-and release checks that improve visible site execution.
+This repo may improve site execution and its supporting workflow from
+source-backed behavior, release checks, and bounded local comparisons. A useful
+local result is evidence for that task, not proof of business impact.
 
 ## Trusted Inputs
 
@@ -13,9 +14,28 @@ and release checks that improve visible site execution.
 Do not turn page views, AI referrals, proof-labeled owner tests, or model
 suggestions into public claims without a current source-backed receipt.
 
+## Local Capability Trials
+
+Use the "Business Priorities And Experiments" contract in `AGENTS.md`. A trial
+may use an already available tool or proposed instruction change in an isolated
+checkout before it earns adoption. Test the candidate against the current
+method on the same task and compare correctness, useful output, and Sawyer's
+intervention. New purchases, installation, permissions, external actions, and
+global activation remain outside that authority.
+
+When an instruction changes, inspect a fresh session's loaded guidance and
+task decisions. Static text checks alone do not prove changed agent behavior.
+One successful session is initial evidence; use subsequent real tasks to test
+repeatability before claiming reduced supervision. Preserve the current method
+until the candidate earns replacement, and reverse a trial that introduces a
+material regression or exceeds its time limit.
+
 ## Approval Boundary
 
-- Agents may improve page source, internal links, metadata, schema, and tracking hooks when an active brief and repo gates support the change.
+- Authorized local fixes, prototypes, and comparisons may proceed under the
+  local trial scope above. Before proposing page source, internal links,
+  metadata, schema, or tracking-hook changes for publication, require the active
+  brief and applicable repo gates. A successful trial does not waive them.
 - Public owner-demand, direct-booking, revenue, attribution, or AI-visibility claims require source-backed proof and the relevant live or build check.
 - New dashboards, skills, MCPs, or workflow layers require a repeated repo-specific need, a passing surface audit, and a smoke-tested win.
 - Public copy changes must pass the content gate and keep reader copy, proof copy, and agent copy separate.

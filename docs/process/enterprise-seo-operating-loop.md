@@ -101,9 +101,13 @@ finding is promotable only when it names:
 - the verification command
 - the kill/defer reason if evidence is weak
 
-Do not install an external SEO pack, copy new skills into this repo, or change
-the agent surface unless a repeated gap survives this loop and the agent-surface
-audit approves the change.
+An authorized, isolated instruction trial may test a candidate under
+`docs/process/learning-contract.md` before adoption. The trial does not waive
+source inspection or the existing agent-surface audit.
+
+Do not install an external SEO pack, copy new skills into this repo, or promote
+an agent-surface change for use beyond the isolated trial unless a repeated gap
+survives this loop and the agent-surface audit approves the change.
 
 ## Receipt Shape
 

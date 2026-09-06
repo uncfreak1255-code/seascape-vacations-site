@@ -1,7 +1,7 @@
 # CLAUDE.md — Seascape SEO OS (Claude delta)
 
 Read `AGENTS.md` first. It is canonical for this repo: scope ownership, the
-non-negotiable rules, repo truth, the business bottleneck, the workflow/skill
+non-negotiable rules, repo truth, business priorities and experiments, the workflow/skill
 layer, the content gate, the design-review workflow, and the reading order.
 This file only carries the Claude-operational specifics that are not already
 in `AGENTS.md`.
@@ -46,7 +46,10 @@ in `AGENTS.md`.
 7. `docs/style/approved-examples.md`
 8. the source file you are about to touch
 
-If any of those are stale, fix the doc layer before you scale the batch.
+If a required source is stale, refresh the affected evidence before scaling a
+measured batch or making an impact claim. Do not repair unrelated documentation
+as a prerequisite for a bounded task with independent proof. Apply the
+"Business Priorities And Experiments" section in `AGENTS.md` to local trials.
 
 ## Required Batch Workflow
 
