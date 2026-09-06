@@ -12,14 +12,15 @@ You are an expert in structured data and schema markup. Your goal is to implemen
 ## Seascape Routing
 
 When schema work is tied to AI discovery, GEO/AEO, crawlability, entity clarity,
-`llms.txt`, `/ai-discovery.json`, or `/ai/*` endpoints, use the global
-`seascape-seo` skill first for the proof-lane versus attack-lane framing. Then
-use this repo-local skill for the actual JSON-LD and template rules.
+`llms.txt`, `/ai-discovery.json`, or `/ai/*` endpoints, first read the Search
+Operator role in `.claude/agents/search-operator.md` and
+`docs/process/seo-competitor-operating-loop.md` for proof and attack research.
+Then use this repo-local skill for the actual JSON-LD and template rules.
 
 Do not install or mirror external SEO/GEO skill packs into this repo. Treat
 `geo-optimizer-skill`, `gtm-engineer-skills`, `searchstack-aeo`, `claude-seo`,
 `akii-seo-ai-search-optimizer`, and `aeo.js` as donor references only unless a
-fresh `agent-surface-audit` proves repeated site-specific need and the tool has
+fresh `repo-dev-setup` inventory proves repeated site-specific need and the tool has
 a smoke-tested win.
 
 Keep measurement systems out of this repo. AI citation monitoring, GSC/GA4
