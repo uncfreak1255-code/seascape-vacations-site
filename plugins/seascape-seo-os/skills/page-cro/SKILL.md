@@ -2,7 +2,7 @@
 name: page-cro
 description: Improve conversion on a homepage, landing, pricing, feature, blog, or shared URL. Use for CRO, conversion-rate optimization, low conversion, bounce, signup loss, or page feedback.
 metadata:
-  version: 1.1.0
+  version: 1.1.1
 ---
 
 # Page Conversion Rate Optimization (CRO)
@@ -173,10 +173,14 @@ When recommending experiments, consider tests for:
 
 ---
 
-## Related Skills
+## Related Work
 
-- **signup-flow-cro**: If the issue is in the signup process itself
-- **form-cro**: If forms on the page need optimization
-- **popup-cro**: If considering popups as part of the strategy
-- **copywriting**: If the page needs a complete copy rewrite
-- **ab-test-setup**: To properly test recommended changes
+- For signup or form abandonment, inspect the affected fields, validation,
+  errors, and completion path with the existing source and tests. Keep the
+  review focused on form friction; a full page review is not required.
+- For popup proposals, inspect the existing interaction and accessibility
+  rules before recommending a change.
+- For copy rewrites and CTA wording, follow the three editorial steps in
+  `docs/process/content-quality-gate.md` and the active brief.
+- For experiments, follow `docs/process/learning-contract.md` and the current
+  repository approval rules. Use optional helpers only when available.
