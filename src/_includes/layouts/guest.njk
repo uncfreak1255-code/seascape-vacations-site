@@ -1,0 +1,36 @@
+{% from "partials/ui-icon.njk" import uiIcon %}
+<!doctype html>
+<html lang="en">
+<head>
+  {% if propertySlug %}
+    {% set metaProperty = properties | propertyBySlug(propertySlug) %}
+    {% set pageDescription = metaProperty.name + " in " + metaProperty.city + ": " + metaProperty.bedrooms + " bedrooms, " + metaProperty.bathrooms + " bathrooms, up to " + metaProperty.guests + " guests. " + metaProperty.guestFacts.tagline + " Compare the full total and book direct." %}
+    {% set pageImage = site.url + metaProperty.photography.photos[0].src %}
+  {% endif %}
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{{ pageTitle | seoTitle }}</title><meta name="description" content="{{ pageDescription | seoDescription }}">
+  <link rel="alternate" type="application/json" title="Seascape property and booking information" href="https://seascape-vacations.com/ai-discovery.json">
+  <link rel="canonical" href="{{ site.url }}{{ page.url }}"><meta name="robots" content="index, follow">
+  <meta property="og:type" content="website"><meta property="og:url" content="{{ site.url }}{{ page.url }}">
+  <meta property="og:title" content="{{ pageTitle }}"><meta property="og:description" content="{{ pageDescription }}">
+  <meta property="og:image" content="{{ pageImage or site.url + '/images/homes/the-oasis/01.webp' }}">
+  <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="{{ pageTitle }}">
+  <meta name="twitter:description" content="{{ pageDescription }}"><meta name="twitter:image" content="{{ pageImage or site.url + '/images/homes/the-oasis/01.webp' }}">
+  <link rel="icon" href="/logo-optimized.png" type="image/png">
+  {% set localFontDisplay = "swap" %}
+  {% include "partials/local-font-head.njk" %}
+  <link rel="preload" href="/assets/fonts/guest/instrument-serif.ttf" as="font" type="font/ttf" crossorigin>
+  {% include "partials/organization-schema.njk" %}
+  <link rel="stylesheet" href="/css/base.css">
+  {{ headExtra | safe }}
+  <link rel="stylesheet" href="/css/guest.css?v=waterline-v3">
+  {% if guestHome %}<link rel="stylesheet" href="/css/arrival.css?v=waterline-v3">{% endif %}
+</head>
+<body class="guest-site{% if guestHome %} g-homepage{% endif %}" data-guest-version="waterline-v3">
+  <a class="g-skip" href="#main">Skip to content</a>
+  {% include "partials/guest-header.njk" %}
+  <main id="main">{{ content | safe }}</main>
+  {% include "partials/guest-footer.njk" %}
+  {% include "partials/analytics-ga4.njk" %}
+  <script defer src="/assets/js/guest.js?v=waterline-v3"></script>
+</body></html>

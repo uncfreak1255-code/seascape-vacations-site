@@ -998,7 +998,7 @@ test("conversion tracking scrubs obvious PII before analytics payloads reach dat
   assert.doesNotMatch(JSON.stringify(event.payload), /owner@example\.com|941-555-1212|Owner Name|123 Palm Street|The numbers feel off|Please call me/i);
 });
 
-test("homepage and shared popup partial use the tracked email capture path", () => {
+test("the active shared popup keeps tracked email capture and honest states", () => {
   const homepage = fs.readFileSync(path.join(projectRoot, "src", "index.njk"), "utf8");
   const homepageScript = fs.readFileSync(path.join(projectRoot, "src", "assets", "js", "homepage.js"), "utf8");
   const popupPartial = fs.readFileSync(path.join(projectRoot, "src", "_includes", "partials", "email-popup.njk"), "utf8");
@@ -1014,7 +1014,7 @@ test("homepage and shared popup partial use the tracked email capture path", () 
     sourcePath: "src/_includes/partials/email-popup.njk"
   });
 
-  for (const source of [homepage, popupPartial]) {
+  for (const source of [popupPartial]) {
     assert.match(source, /data-track-form="email_capture"/);
     assert.match(source, /data-inline-email-capture="true"/);
     assert.match(source, /data-email-capture-success/);
@@ -1023,9 +1023,11 @@ test("homepage and shared popup partial use the tracked email capture path", () 
     assert.doesNotMatch(source, /onsubmit="handleEmailSubmit\(event\)"/);
   }
 
-  assert.ok(homepageContract.trackedEvents.includes("email_capture_submit"));
+  assert.doesNotMatch(homepage, /email-popup|data-track-form="email_capture"/, "homepage browsing no longer triggers a popup");
   assert.ok(popupContract.trackedEvents.includes("email_capture_submit"));
-  assert.match(homepage, /\/assets\/js\/homepage\.js/);
+  const guide=fs.readFileSync(path.join(projectRoot,"_site/guides/anna-maria-island-area-guide/index.html"),"utf8");
+  assert.match(guide, /data-inline-email-capture="true"/);
+  assert.match(guide, /\/assets\/js\/conversion-tracking\.js/);
   assert.match(homepageScript, /\/assets\/js\/conversion-tracking\.js/);
   assert.match(popupPartial, /\/assets\/js\/conversion-tracking\.js/);
   assert.match(trackingScript, /__seascapeConversionTrackingLoaded/);
@@ -1080,7 +1082,7 @@ test("SAVE50 popup success state stays honest for repeat subscribers and deliver
     }
   };
 
-  for (const source of [homepage, popupPartial]) {
+  for (const source of [popupPartial]) {
     assert.doesNotMatch(source, /We also sent it to your email so you won't lose it\./);
     assert.match(source, /Use code <strong>SAVE50<\/strong> on your first direct booking of 3 nights or more\. Enter it on the secure booking page, and save this code before you browse\./);
     assert.match(source, /data-email-capture-browse/);

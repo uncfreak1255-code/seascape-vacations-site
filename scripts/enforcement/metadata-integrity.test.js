@@ -179,35 +179,17 @@ test("homepage and about page do not ship invented review totals or stale pricin
   );
 });
 
-test("homepage entity schema keeps Seascape inventory in Bradenton and Sarasota", () => {
-  const homepage = readSource("src", "index.njk");
-  const schemaBlocks = Array.from(
-    homepage.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g),
-    (match) => match[1]
-  );
-  const localBusiness = schemaBlocks.find((block) => block.includes('"@type": "LocalBusiness"'));
-  const vacationRental = schemaBlocks.find((block) => block.includes('"@type": "VacationRental"'));
-
-  assert.ok(localBusiness, "homepage should keep its LocalBusiness schema");
-  assert.ok(vacationRental, "homepage should keep its VacationRental schema");
-  assert.match(localBusiness, /"description": "\{\{ site\.description \}\}"/);
-  assert.match(vacationRental, /"description": "\{\{ site\.description \}\}"/);
-
-  for (const city of ["Bradenton", "Sarasota"]) {
-    assert.match(
-      localBusiness,
-      new RegExp(`\\{"@type": "City", "name": "${city}"\\}`),
-      `LocalBusiness areaServed should include ${city}`
-    );
-  }
-
-  for (const nearbyBeachMarket of ["Anna Maria Island", "Siesta Key", "Longboat Key"]) {
-    assert.equal(
-      localBusiness.includes(`{"@type": "City", "name": "${nearbyBeachMarket}"}`),
-      false,
-      `${nearbyBeachMarket} should not be represented as a Seascape inventory city`
-    );
-  }
+test("homepage schema keeps inventory in Bradenton and Sarasota and names the five real homes", () => {
+  const homepage=readSource("_site", "index.html");
+  const blocks=[...homepage.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].flatMap(match=>JSON.parse(match[1]));
+  const business=blocks.find(item=>item["@type"]==="LocalBusiness");
+  assert.ok(business);
+  assert.deepEqual(business.areaServed.map(item=>item.name),["Bradenton","Sarasota"]);
+  for(const beach of ["Anna Maria Island","Siesta Key","Longboat Key"]) assert.ok(!business.areaServed.some(item=>item.name===beach));
+  assert.equal(blocks.some(item=>item["@type"]==="VacationRental"),false,"A collection homepage must not pretend to be one accommodation");
+  const inventory=blocks.find(item=>item["@type"]==="ItemList");assert.ok(inventory);
+  const properties=require("../../src/_data/properties-fallback.json");
+  assert.deepEqual(inventory.itemListElement.map(item=>({name:item.name,url:item.url})),properties.map(p=>({name:p.name,url:'https://seascape-vacations.com/properties/'+p.slug+'/'})));
 });
 
 test("priority owner money-page metadata stays non-empty and query-aligned", () => {

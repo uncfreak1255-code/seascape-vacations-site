@@ -182,34 +182,25 @@ test("Netlify builds require rendered live availability cards", () => {
   assert.equal(shouldRequirePropertiesAvailabilityOutput({}), false);
 });
 
-test("rendered availability output gate rejects stale fallback cards", () => {
-  const liveHtml = `
-    <article
-      class="catalog-card"
-      data-next-available-start="2026-08-01"
-      data-next-available-end="2026-08-03"
-    ><span>Availability · live</span><div class="catalog-next-lbl">Next available</div></article>
-    <article
-      class="catalog-card"
-      data-next-available-start="2026-08-04"
-      data-next-available-end="2026-08-06"
-    ><span>Availability · live</span><div class="catalog-next-lbl">Next available</div></article>
-    <script>badge.textContent = "Calendar · secure";</script>
-  `;
-
-  const report = validatePropertiesAvailabilityOutput(liveHtml, { expectedCards: 2 });
-  assert.equal(report.cardCount, 2);
-  assert.equal(report.nextAvailableCount, 2);
-  assert.equal(report.calendarSecureCount, 0);
-
-  assert.throws(
-    () =>
-      validatePropertiesAvailabilityOutput(
-        `<article class="catalog-card"><span>Calendar · secure</span><div class="catalog-next-lbl">Live calendar</div></article>`,
-        { expectedCards: 1 }
-      ),
-    /availability output check failed/
-  );
+test("rendered availability gate requires unique homes, canonical checkout links and honest price disclosures", () => {
+  const card = (slug, id) => '<article class="catalog-card" data-property="' + slug + '" data-availability-mode="checkout"><a href="https://book.seascape-vacations.com/listings/' + id + '">Check dates</a><p>Full price, fees and cancellation terms on the booking page.</p></article>';
+  const html = '<div data-catalog-version="guest-journey-v1">' + card("dockside-dreams",206016) + card("the-oasis",189511) + card("sarasota-luxe",135881) + card("river-house",135880) + card("bradenton-pool-home",487798) + '</div>';
+  const report = validatePropertiesAvailabilityOutput(html);
+  assert.equal(report.checkoutCardCount, 5);
+  for (const broken of [
+    html.replace("guest-journey-v1", "old"),
+    html.replace("/listings/206016", "/listings/189511"),
+    html.replace("</div>", card("extra-home",123456) + "</div>"),
+    html.replace('data-availability-mode="checkout"', ""),
+    html.replace("book.seascape-vacations.com", "untrusted.example"),
+    html.replace("Full price, fees and cancellation terms on the booking page.", ""),
+    html.replace('data-property="the-oasis"', 'data-property="dockside-dreams"'),
+    html.replace("</article>", "<span>Availability · live</span></article>"),
+    html.replace("</article>", '<details class="catalog-opening">Stale dates</details></article>')
+  ]) {
+    assert.throws(() => validatePropertiesAvailabilityOutput(broken), /availability output check failed/);
+  }
+  assert.throws(() => validatePropertiesAvailabilityOutput(html, { expectedCards:4 }), /expected 4 property cards/);
 });
 
 test("Hostaway build cache freshness gate rejects missing or stale card availability", () => {

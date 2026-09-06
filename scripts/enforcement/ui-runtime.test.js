@@ -25,37 +25,15 @@ function walkFiles(dir) {
   return files;
 }
 
-test("homepage footer legal and support links point to real routes", () => {
-  const homepage = readSource("src", "index.njk");
-  const homepageScript = readSource("src", "assets", "js", "homepage.js");
-  const homepageStyles = readSource("src", "css", "homepage.css");
-
-  assert.match(homepage, /<a class="footer-link" href="\/guides\/">FAQs<\/a>/);
-  assert.match(
-    homepage,
-    /<a class="footer-link" href="\/terms\/#booking-and-confirmation">Booking Policy<\/a>/
-  );
-  assert.match(
-    homepage,
-    /<a class="footer-link" href="\/terms\/#cancellations">Cancellation<\/a>/
-  );
-  assert.match(
-    homepage,
-    /<a class="footer-link" href="\/guides\/booking-direct-vacation-rentals\/">Guest Guide<\/a>/
-  );
-  assert.match(homepage, /<a class="footer-link" href="\/privacy\/">Privacy Policy<\/a>/);
-  assert.match(homepage, /<a class="footer-link" href="\/terms\/">Terms of Service<\/a>/);
-  assert.match(homepage, /<a class="footer-link" href="\/cookies\/">Cookie Policy<\/a>/);
-  assert.equal(homepage.includes("data-legal-modal="), false);
-  assert.equal(homepage.includes('id="legal-modal"'), false);
-  assert.equal(homepage.includes('<span class="footer-link" onclick="openLegalModal'), false);
-  assert.equal(
-    homepageScript.includes("document.querySelectorAll('[data-legal-modal]')"),
-    false
-  );
-  assert.equal(homepageScript.includes("openLegalModal"), false);
-  assert.equal(homepageStyles.includes(".footer-link--button"), false);
-  assert.equal(homepageStyles.includes(".modal-overlay"), false);
+test("guest footer legal and support links point to real routes", () => {
+  const html=readSource("_site","index.html");
+  for (const route of ["guides","privacy","terms","cookies"]) {
+    assert.ok(html.includes('href="/'+route+'/"'));
+    assert.ok(fs.existsSync(path.join(projectRoot,"_site",route,"index.html")));
+  }
+  assert.doesNotMatch(html,/data-legal-modal|openLegalModal/);
+  assert.ok(html.includes('mailto:info@seascape-vacations.com'));
+  assert.ok(html.includes('tel:9417048545'));
 });
 
 test("Bradenton vs Sarasota comparison table fits mobile width without forced horizontal overflow", () => {
@@ -165,40 +143,19 @@ test("guide cards expose full-card taps without breaking inline links", () => {
   assert.match(familyComparisonGuide, /class="property-card" data-card-link="\/properties\/dockside-dreams\/"/);
 });
 
-test("property booking calendars collapse cleanly on mobile without sticky CTA overlap", () => {
-  const propertyPages = [
-    ["dockside-dreams", "206016"],
-    ["the-oasis", "189511"],
-    ["river-house", "135880"],
-    ["sarasota-luxe", "135881"],
-    ["bradenton-pool-home", "487798"],
-  ];
-  const mobileCalendarFix = readSource(
-    "src",
-    "_includes",
-    "partials",
-    "hostaway-mobile-calendar-fix.njk"
-  );
-
-  assert.match(mobileCalendarFix, /\.sticky-book\.sticky-book--hidden/);
-  assert.match(mobileCalendarFix, /transform: translateY\(calc\(100% \+ env\(safe-area-inset-bottom\)\)\)/);
-  assert.match(mobileCalendarFix, /#hostaway-calendar-widget \.gRAtCh/);
-  assert.match(mobileCalendarFix, /max-width: none/);
-  assert.match(mobileCalendarFix, /#hostaway-calendar-widget \.dvfhrq/);
-  assert.match(mobileCalendarFix, /#hostaway-calendar-widget \.hKhBw/);
-  assert.match(mobileCalendarFix, /grid-template-columns: repeat\(7, minmax\(0, 1fr\)\)/);
-  assert.match(mobileCalendarFix, /grid-auto-rows: 2\.2rem/);
-  assert.match(mobileCalendarFix, /document\.querySelector\("\.sticky-book"\)/);
-  assert.match(mobileCalendarFix, /document\.getElementById\("check-availability"\)/);
-  assert.match(mobileCalendarFix, /new IntersectionObserver/);
-  assert.match(mobileCalendarFix, /stickyBook\.classList\.toggle\("sticky-book--hidden", hidden\)/);
-
-  for (const [slug, listingId] of propertyPages) {
-    const page = readSource("src", "properties", slug, "index.njk");
-    assert.match(page, /\{% include "partials\/hostaway-mobile-calendar-fix\.njk" %\}/);
-    assert.match(page, /window\.matchMedia\('\(min-width:64rem\)'\)\.matches\?2:1/);
-    assert.match(page, new RegExp(`listingId:${listingId},`));
-    assert.match(page, /numberOfMonths:numberOfMonths/);
+test("property booking panels provide native controls and hide their mobile shortcut", () => {
+  const script=readSource("src/assets/js/guest.js");
+  assert.match(script,/IntersectionObserver/);
+  assert.match(script,/sticky.hidden=entries\[0\].isIntersecting/);
+  assert.match(readSource("src/css/guest.css"),/env\(safe-area-inset-bottom\)/);
+  for(const property of require("../../src/_data/properties-fallback.json")) {
+    const html=readSource("_site/properties",property.slug,"index.html");
+    assert.match(html,/id="booking"/);
+    assert.match(html,/data-guest-trip-form/);
+    assert.match(html,/name="start" type="date"/);
+    assert.match(html,/name="end" type="date"/);
+    assert.match(html,/data-property-checkout/);
+    assert.doesNotMatch(html,/hostaway-calendar-widget/);
   }
 });
 
@@ -213,61 +170,21 @@ test("Anna Maria mobile sticky CTAs reserve safe-area bottom space", () => {
   );
 });
 
-test("hero ticker uses real data hooks instead of hardcoded live theater", () => {
-  const homepage = readSource("src", "index.njk");
-  const heroScript = readSource("src", "assets", "js", "hero-v2.js");
-
-  for (const staleClaim of ["78&deg;F", "7:42 PM", "2 homes open", "312 stays"]) {
-    assert.equal(homepage.includes(staleClaim), false, `homepage still ships ${staleClaim}`);
-  }
-
-  assert.match(homepage, /id="hero-live-source"[^>]*type="application\/json"/);
-  assert.match(homepage, /id="hero-property-source"[^>]*type="application\/json"/);
-  assert.match(homepage, /data-live-fact="weather"/);
-  assert.match(homepage, /data-live-fact="sunset"/);
-  assert.match(homepage, /Live home collection/);
-  assert.match(heroScript, /fetch\(config\.weatherUrl/);
-  assert.match(heroScript, /fetch\(config\.sunsetUrl/);
-  assert.match(heroScript, /data-source-label/);
+test("homepage does not present weather or cached openings as live booking evidence", () => {
+  const html=readSource("_site/index.html");
+  assert.doesNotMatch(html,/hero-live-source|hero-v2.js|data-live-fact|Live home collection|homes open|312 stays/);
+  assert.match(html,/data-property-photo="the-oasis"/);
+  assert.doesNotMatch(html,/seascape-og-default/);
 });
 
-test("hero booking pill exposes real controls, not inert fakes", () => {
-  const homepage = readSource("src", "index.njk");
-  const heroScript = readSource("src", "assets", "js", "hero-v2.js");
-  const homepageScript = readSource("src", "assets", "js", "homepage.js");
-
-  // The Where field is a real <button>, not a <label> wrapping a <select>.
-  assert.match(
-    homepage,
-    /<button type="button" class="hero-booking-field hero-booking-field--primary"/
-  );
-  // Arrive / Depart / Guests are real <button> elements that open popovers.
-  const fieldButtonCount = (
-    homepage.match(/<button type="button" class="hero-booking-field"[^-]/g) || []
-  ).length;
-  assert.equal(fieldButtonCount, 3);
-  // No aria-hidden inert markers on field cells.
-  assert.equal(
-    homepage.includes('class="hero-booking-field hero-booking-field--display"'),
-    false
-  );
-  assert.equal(homepage.includes('id="location-select"'), false);
-  // Real interaction handlers are wired in hero-v2.js.
-  assert.match(heroScript, /booking\.addEventListener\('submit'/);
-  assert.match(heroScript, /whereField\.addEventListener\('click'/);
-  assert.match(heroScript, /arriveField\.addEventListener\('click'/);
-  assert.match(heroScript, /departField\.addEventListener\('click'/);
-  assert.match(heroScript, /guestsField\.addEventListener\('click'/);
-  assert.match(heroScript, /document\.getElementById\('hero-property-source'\)/);
-  assert.match(heroScript, /home match/);
-  assert.equal(heroScript.includes("home available"), false);
-  assert.equal(homepage.includes("{{ properties.length }} homes direct"), false);
-  assert.equal(heroScript.includes("var HOMES = ["), false);
-  assert.equal(heroScript.includes("dockside-dreams',"), false);
-  // homepage.js never tried to wire fake form fields.
-  assert.equal(homepageScript.includes('[name="arrive"]'), false);
-  assert.equal(homepageScript.includes('[name="depart"]'), false);
-  assert.equal(homepageScript.includes('[name="guests"]'), false);
+test("homepage exposes native trip controls and a no-JavaScript collection route", () => {
+  const html=readSource("_site/index.html");
+  assert.match(html,/<form[^>]+action="\/properties\/"[^>]+method="get"/);
+  for(const name of ["arrive","depart"]) assert.match(html,new RegExp('name="'+name+'" type="date"'));
+  assert.match(html,/<select[^>]+name="guests"/);
+  assert.match(html,/<button[^>]+type="submit"/);
+  assert.doesNotMatch(html,/hero-booking-field--display/);
+  assert.match(html,/\/assets\/js\/guest.js/);
 });
 
 test("hero booking popovers stay in the viewport when the booking bar sits low", () => {

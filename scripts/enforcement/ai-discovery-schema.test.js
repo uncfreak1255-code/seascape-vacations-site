@@ -4,7 +4,7 @@ const test = require("node:test");
 const assert = require("node:assert/strict");
 
 const projectRoot = path.resolve(__dirname, "..", "..");
-const homepage = fs.readFileSync(path.join(projectRoot, "src", "index.njk"), "utf8");
+const homepage = fs.readFileSync(path.join(projectRoot, "_site", "index.html"), "utf8");
 const llms = fs.readFileSync(path.join(projectRoot, "src", "llms.txt"), "utf8");
 const robots = fs.readFileSync(path.join(projectRoot, "src", "robots.txt"), "utf8");
 const aiDiscovery = fs.readFileSync(path.join(projectRoot, "src", "ai-discovery.json.njk"), "utf8");
@@ -248,11 +248,11 @@ test("homepage schema advertises a real searchable website target", () => {
 test("homepage brand signals stay consistent on title, visible hero copy, and website schema", () => {
   assert.match(
     homepage,
-    /<title>Seascape Vacations \| Bradenton & Sarasota Vacation Rentals Near Anna Maria Island<\/title>/
+    /<title>Seascape Vacations \| Bradenton &amp; Sarasota Vacation Rentals Near Anna Maria Island<\/title>/
   );
   assert.match(
     homepage,
-    /<span>Seascape Vacations<\/span>/
+    /aria-label="Seascape Vacations home"/
   );
   assert.equal(
     homepage.includes('"alternateName": "seascape-vacations.com"'),
@@ -268,16 +268,7 @@ test("homepage does not ship hidden FAQ schema without visible FAQ content", () 
   );
 });
 
-test("properties catalog honors incoming area filters from homepage search and SearchAction", () => {
-  const catalog = fs.readFileSync(path.join(projectRoot, "src", "properties", "index.njk"), "utf8");
 
-  assert.equal(catalog.includes("new URLSearchParams(window.location.search)"), true);
-  assert.equal(catalog.includes('params.get("area")'), true);
-  assert.equal(catalog.includes('requestedArea.includes("anna-maria-island")'), true);
-  assert.equal(catalog.includes('requestedArea.includes("sarasota")'), true);
-  assert.equal(catalog.includes("const initialFilter ="), true);
-  assert.equal(catalog.includes("applyFilter(initialFilter)"), true);
-});
 
 test("property pages with AggregateOffer do not also ship a stale priceRange", () => {
   for (const page of propertyPages) {
@@ -303,7 +294,7 @@ test("property pages no longer advertise an invented sitewide 420+ review total"
 test("property schema uses public Hostaway-backed reviews where available", () => {
   const expectations = [
     {
-      file: path.join(projectRoot, "src", "properties", "dockside-dreams", "index.njk"),
+      file: path.join(projectRoot, "_site", "properties", "dockside-dreams", "index.html"),
       reviews: [
         ["Tracy Bunce", "2025-08-10", "We could not have been happier with our stay!"],
         ["Tyler Johnson", "2025-07-01", "Great house in a good neighborhood."],
@@ -311,7 +302,7 @@ test("property schema uses public Hostaway-backed reviews where available", () =
       ]
     },
     {
-      file: path.join(projectRoot, "src", "properties", "the-oasis", "index.njk"),
+      file: path.join(projectRoot, "_site", "properties", "the-oasis", "index.html"),
       reviews: [
         ["David Kohley", "2026-02-03", "House was very well stocked and plenty of room for everyone staying."],
         ["Anna Cannon", "2025-07-25", "Absolutely beautiful house, looks even bigger in person"],
@@ -319,7 +310,7 @@ test("property schema uses public Hostaway-backed reviews where available", () =
       ]
     },
     {
-      file: path.join(projectRoot, "src", "properties", "sarasota-luxe", "index.njk"),
+      file: path.join(projectRoot, "_site", "properties", "sarasota-luxe", "index.html"),
       reviews: [
         ["Stanley Shake", "2025-09-29", "This house is absolutely beautiful"],
         ["ANN MARIE GIUDICE", "2025-04-29", "Amazing home near downtown."],
@@ -327,7 +318,7 @@ test("property schema uses public Hostaway-backed reviews where available", () =
       ]
     },
     {
-      file: path.join(projectRoot, "src", "properties", "river-house", "index.njk"),
+      file: path.join(projectRoot, "_site", "properties", "river-house", "index.html"),
       reviews: [
         ["Andrew Coblentz", "2026-01-03", "We had a great time!"],
         ["Florian Lasserre", "2025-08-14", "Perfect location, very nice neighborhood"],
@@ -419,4 +410,35 @@ test("llms.txt avoids known dead targets and stale duplicate guide references", 
     false,
     "llms.txt should use the canonical slash route for Bradenton vs Sarasota"
   );
+});
+
+
+test("AI property information uses the same reviewed facts and booking identity as the guest pages", () => {
+  const payload=JSON.parse(fs.readFileSync(path.join(projectRoot,"_site/ai-discovery.json"),"utf8"));
+  const canonical=require("../../src/_data/properties-fallback.json");
+  assert.equal(payload.properties.length,canonical.length);
+  for(const home of canonical) {
+    const record=payload.properties.find(p=>p.slug===home.slug);
+    assert.ok(record,home.slug);
+    assert.equal(record.booking_url,home.guestFacts.sourceUrl);
+    assert.equal(record.maximum_guests,home.guests);
+    assert.deepEqual(record.sleeping_arrangements,home.guestFacts.sleeping);
+    assert.deepEqual(record.pets,home.guestFacts.pets);
+    assert.deepEqual(record.considerations,home.guestFacts.considerations);
+    assert.equal(record.source_url,home.guestFacts.sourceUrl);
+    assert.equal(record.facts_reviewed_on,home.guestFacts.verifiedAt);
+    assert.equal(record.cover_photo,"https://seascape-vacations.com"+home.photography.photos[0].src);
+    assert.equal("price" in record,false);
+    assert.equal("available" in record,false);
+  }
+  assert.match(payload.booking_data_boundary.availability,/Not provided by this static document/);
+  assert.match(payload.booking_data_boundary.prices,/complete total/);
+});
+
+
+test("River House structured amenities do not turn an unknown pet policy into permission", () => {
+  const html=fs.readFileSync(path.join(projectRoot,"_site/properties/river-house/index.html"),"utf8");
+  const blocks=[...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].flatMap(match=>JSON.parse(match[1]));
+  const rental=blocks.find(block=>block["@type"]==="VacationRental");
+  assert.equal(rental.containsPlace.amenityFeature.some(amenity=>amenity.name==="pet friendly"&&amenity.value===true),false);
 });

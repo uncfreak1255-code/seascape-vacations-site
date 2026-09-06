@@ -1,77 +1,40 @@
+---
+layout: layouts/guest.njk
+permalink: /
+guestHome: true
+pageTitle: "Seascape Vacations | Bradenton & Sarasota Vacation Rentals Near Anna Maria Island"
+pageDescription: "Private-pool vacation homes in Bradenton and Sarasota. Compare homes, plan with your group, and book direct with Seascape Vacations."
+---
 {% from "partials/ui-icon.njk" import uiIcon %}
-<!DOCTYPE html>
-<html lang="en">
+{% set sceneSlugs = ['the-oasis', 'dockside-dreams', 'sarasota-luxe', 'river-house', 'bradenton-pool-home'] %}
+<div class="g-home">
+  <section class="g-arrival" aria-labelledby="home-heading" data-home-scenes>
+    <div class="g-arrival-copy"><p class="g-label">Private-pool homes · Bradenton & Sarasota</p><h1 id="home-heading">Your people.<br><em>Your place.</em></h1><p>A Gulf Coast home to call your own.<br>And a local team who knows it.</p></div>
+    <div class="g-scenes">
+      {% for slug in sceneSlugs %}{% set home = properties | propertyBySlug(slug) %}{% set photo = home.photography.photos[0] %}
+      <div class="g-scene" id="scene-{{ home.slug }}" data-scene="{{ home.slug }}"{% if not loop.first %} hidden{% endif %}>
+        <img class="g-scene-photo" data-transition-home="{{ home.slug }}" data-property-photo="{{ home.slug }}" {% if loop.first %}src="{{ photo.src }}" srcset="{{ photo.src | replace('.webp', '-800.webp') }} 800w, {{ photo.src }} {{ photo.width }}w" fetchpriority="high"{% else %}data-scene-src="{{ photo.src }}" data-scene-srcset="{{ photo.src | replace('.webp', '-800.webp') }} 800w, {{ photo.src }} {{ photo.width }}w"{% endif %} sizes="100vw" width="{{ photo.width }}" height="{{ photo.height }}" alt="{{ photo.alt }}">
+        <div class="g-scene-caption"><div><p class="g-label">In the collection · {{ home.city }}, Florida</p><h2>{{ home.name }}</h2><p>{{ home.guestFacts.tagline }}</p></div><a class="g-scene-explore" href="{{ home.pageUrl }}" data-trip-link>Explore this home <span aria-hidden="true">{{ uiIcon('arrow-up-right') }}</span></a><span class="g-scene-index" aria-hidden="true">0{{ loop.index }}</span></div>
+      </div>{% endfor %}
+    </div>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Seascape Vacations | Bradenton & Sarasota Vacation Rentals Near Anna Maria Island</title>
-    <meta name="description"
-        content="Seascape Vacations offers direct-book Bradenton and Sarasota vacation rentals near Anna Maria Island, with private pools, waterfront options, and lower fees than Airbnb or VRBO.">
-    
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://seascape-vacations.com/">
-    <meta property="og:title" content="Seascape Vacations | Direct-Book Bradenton & Sarasota Vacation Rentals">
-    <meta property="og:description" content="Direct-book vacation rentals in Bradenton and Sarasota near Anna Maria Island. Private pools, waterfront homes, and lower fees than Airbnb or Vrbo.">
-    <meta property="og:image" content="https://seascape-vacations.com/images/seascape-og-default.jpg">
+    <a class="g-arrival-seal" href="#home-collection-heading" aria-label="Explore our homes"><span>OUR HOMES</span><strong>One good<br>getaway.</strong><span aria-hidden="true">↓</span></a>
+  </section>
+  <nav class="g-scene-picker" aria-label="Preview our homes">{% for slug in sceneSlugs %}{% set home = properties | propertyBySlug(slug) %}<a href="{{ home.pageUrl }}" data-trip-link data-scene-choice="{{ home.slug }}"{% if loop.first %} class="is-active"{% endif %}><img data-property-photo="{{ home.slug }}" src="{{ home.photography.photos[0].src | replace('.webp', '-800.webp') }}" width="64" height="64" alt="" loading="lazy"><span><strong>{{ home.name }}</strong><small>Up to {{ home.guests }} guests</small></span><span class="g-scene-choice-arrow" aria-hidden="true">{{ uiIcon('arrow-up-right') }}</span></a>{% endfor %}</nav>
+  <p class="g-scene-status g-sr-only" role="status"></p>
+  <div class="g-wrap">
+  <section class="g-home-trip" id="home-trip" aria-labelledby="home-trip-heading"><div><p class="g-label">Your time on the coast</p><h2 id="home-trip-heading">Make yourself<br><em>at home.</em></h2></div>{% set tripFormId = 'home-trip' %}{% include "partials/guest-trip-form.njk" %}</section>
+  <section class="g-collection g-section" aria-labelledby="home-collection-heading"><div class="g-section-heading"><div><p class="g-label">A small collection, with a lot of personality</p><h2 id="home-collection-heading">Our homes.<br><em>Your kind of getaway.</em></h2></div><p>A private dock. A big backyard. A corner of Sarasota. Start with the place you want to spend time together.</p></div>
+    <div class="g-postcards">{% for home in properties %}<article class="g-postcard"><a href="{{ home.pageUrl }}" data-trip-link><div class="g-postcard-photo"><img data-property-photo="{{ home.slug }}" src="{{ home.photography.photos[0].src }}" srcset="{{ home.photography.photos[0].src | replace('.webp', '-800.webp') }} 800w, {{ home.photography.photos[0].src }} 1400w" sizes="(min-width: 900px) 22vw, 76vw" alt="{{ home.photography.photos[0].alt }}" width="1400" height="933" loading="lazy"><span aria-hidden="true">{{ uiIcon('arrow-up-right') }}</span></div><p class="g-label">{{ home.city }} · Up to {{ home.guests }} guests</p><h3>{{ home.name }}</h3></a><p>{{ home.guestFacts.tagline }}</p></article>{% endfor %}</div>
+    <div class="g-collection-end"><p>Every home has a private pool.<br>Which one feels like your vacation?</p><a class="g-button btn-brand" href="/properties/" data-trip-link>Compare our homes <span aria-hidden="true">{{ uiIcon('arrow-up-right') }}</span></a></div>
+  </section>
+  <section class="g-organizer g-section" aria-labelledby="organizer-heading"><div><p class="g-label">For the person planning it all</p><h2 id="organizer-heading">Less back-and-forth.<br>More “this is the one.”</h2><p>Choose a few homes, compare the rooms and details, then send one link to your group. Your dates and guest count stay with you as you explore.</p><a class="g-button btn-brand" href="/properties/" data-trip-link>Build your shortlist</a></div><ol><li><span>01</span><div><h3>Start with your people</h3><p>Group size comes first. Then narrow by location or a private dock.</p></div></li><li><span>02</span><div><h3>Check the details that matter</h3><p>Who sleeps where. Whether the dog can come. Steps, parking and pool heat.</p></div></li><li><span>03</span><div><h3>Share a choice, then check dates</h3><p>Compare up to three homes. See the current availability and complete total on the booking page.</p></div></li></ol></section>
+  <section class="g-local g-section" aria-labelledby="local-heading"><div><p class="g-label">The coast, with a local connection</p><h2 id="local-heading">A little help<br>goes a long way.</h2><p>Seascape is owner-operated. Before you book, ask us about the details that could make or break your stay. We know our homes. <a href="/about-us/">About Seascape</a>.</p><a class="g-inline-link" href="tel:9417048545">Call (941) 704-8545 <span aria-hidden="true">→</span></a></div><div class="g-guide-list"><a href="/guides/bradenton-vs-sarasota/">Bradenton or Sarasota? <span>Compare the two areas →</span></a><a href="/guides/anna-maria-island-area-guide/">Beach days on Anna Maria Island <span>Plan from a mainland home →</span></a><a href="/guides/anna-maria-island-vs-siesta-key/">Anna Maria Island or Siesta Key? <span>Choose your beach day →</span></a><a class="g-inline-link" href="/guides/">Explore all local guides →</a></div></section>
+  <section class="g-return g-section"><p class="g-label">Been here before?</p><h2>Your next stay can start with the home you already know.</h2><p>Find it in our collection, choose your dates, and book direct. Have a question from your last visit? Our local team can help.</p><a class="g-inline-link" href="/properties/" data-trip-link>Find your home again <span aria-hidden="true">→</span></a></section>
+</div>
+</div>
 
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Seascape Vacations | Direct-Book Bradenton & Sarasota Vacation Rentals">
-    <meta name="twitter:description" content="Direct-book Bradenton & Sarasota vacation rentals near Anna Maria Island. Private pools, waterfront, lower fees than Airbnb or Vrbo.">
-    <meta name="twitter:image" content="https://seascape-vacations.com/images/seascape-og-default.jpg">
-    
-    <!-- Additional SEO -->
-    <meta name="robots" content="index, follow">
-    <meta name="author" content="Seascape Vacations">
-    <link rel="canonical" href="https://seascape-vacations.com/">
-    <link rel="alternate" type="application/json" title="Seascape AI discovery and conversion proof contract" href="https://seascape-vacations.com/ai-discovery.json">
-    <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
-    <link rel="preload" href="/hero-mobile.avif" as="image" type="image/avif" fetchpriority="high" media="(max-width: 768px)">
-    <link rel="preload" href="/hero-optimized.avif" as="image" type="image/avif" fetchpriority="high" media="(min-width: 769px)">
-    <link rel="preload" href="/assets/fonts/homepage/poppins-400-latin.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="/assets/fonts/homepage/poppins-600-latin.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="/assets/fonts/homepage/playfair-display-latin.woff2" as="font" type="font/woff2" crossorigin>
-    
-    <!-- LocalBusiness Schema -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "LocalBusiness",
-        "name": "Seascape Vacations",
-        "description": "{{ site.description }}",
-        "url": "https://seascape-vacations.com",
-        "logo": "https://seascape-vacations.com/logo-optimized.png",
-        "image": "https://seascape-vacations.com/images/seascape-og-default.jpg",
-        "telephone": "+1-941-704-8545",
-        "email": "info@seascape-vacations.com",
-        "address": {
-            "@type": "PostalAddress",
-            "addressLocality": "Bradenton",
-            "addressRegion": "FL",
-            "addressCountry": "US",
-            "postalCode": "34209"
-        },
-        "areaServed": [
-            {"@type": "City", "name": "Bradenton"},
-            {"@type": "City", "name": "Sarasota"}
-        ],
-        "openingHoursSpecification": {
-            "@type": "OpeningHoursSpecification",
-            "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
-            "opens": "00:00",
-            "closes": "23:59"
-        },
-        "sameAs": [
-            {% for profile in site.sameAsLinks %}
-            "{{ profile }}"{% if not loop.last %},{% endif %}
-            {% endfor %}
-        ]
-    }
-    </script>
-    <!-- WebSite SearchAction Schema -->
-    <script type="application/ld+json">
+<script type="application/ld+json">
     {
         "@context": "https://schema.org",
         "@type": "WebSite",
@@ -88,557 +51,29 @@
         }
     }
     </script>
-    <link rel="stylesheet" href="/css/homepage.css">
-    <link rel="stylesheet" href="/css/hero-v2.css">
-    <style>
-        {% include "partials/site-header-styles.njk" %}
-    </style>
-    <!-- Preconnect to image optimization CDN -->
-    <link rel="preconnect" href="https://bookingenginecdn.hostaway.com" crossorigin>
-</head>
-
-<body>
-
-    <!-- NAV -->
-    {% set navActive = "home" %}
-    {% set navButtonHref = "https://book.seascape-vacations.com" %}
-    {% set navButtonLabel = "Book Direct" %}
-    {% set navButtonTarget = "_blank" %}
-    {% set navButtonRel = "noopener noreferrer" %}
-    {% set navContactHref = "#contact" %}
-    {% include "partials/site-header.njk" %}
-
-    <!-- Mobile CTA Bar (visible on mobile only) -->
-    <div class="mobile-cta-bar">
-        <div class="cta-info">
-            <div class="cta-title">Book Direct & Compare Totals</div>
-            <div class="cta-subtitle">Direct booking, local support</div>
-        </div>
-        <button class="btn btn-gold" onclick="window.open('https://book.seascape-vacations.com', '_blank')">Book Now</button>
-    </div>
-
-    <!-- JSON-LD Structured Data for SEO -->
-    <script type="application/ld+json">
+<script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "Seascape Vacations",
+  "url": "https://seascape-vacations.com",
+  "telephone": "+1-941-704-8545",
+  "email": "info@seascape-vacations.com",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Bradenton",
+    "addressRegion": "FL",
+    "addressCountry": "US"
+  },
+  "areaServed": [
     {
-        "@context": "https://schema.org",
-        "@type": "VacationRental",
-        "name": "Seascape Vacations",
-        "description": "{{ site.description }}",
-        "url": "https://seascape-vacations.com",
-        "telephone": "+1-941-704-8545",
-        "address": {
-            "@type": "PostalAddress",
-            "addressLocality": "Bradenton",
-            "addressRegion": "FL",
-            "addressCountry": "US",
-            "postalCode": "34209"
-        },
-        "geo": {
-            "@type": "GeoCoordinates",
-            "latitude": "27.4989",
-            "longitude": "-82.5748"
-        },
-        "sameAs": [
-            {% for profile in site.sameAsLinks %}
-            "{{ profile }}"{% if not loop.last %},{% endif %}
-            {% endfor %}
-        ]
+      "@type": "City",
+      "name": "Bradenton"
+    },
+    {
+      "@type": "City",
+      "name": "Sarasota"
     }
-    </script>
+  ]
+}</script>
 
-    <!-- HOME PAGE -->
-    <div id="page-home" class="page active">
-        <!-- Hero v2 -->
-        <section class="hero" aria-label="Seascape Vacations hero">
-            <div class="hero-img-wrap" aria-hidden="true">
-                <picture>
-                    <source media="(max-width: 768px)" srcset="/hero-mobile.avif" type="image/avif">
-                    <source media="(max-width: 768px)" srcset="/hero-mobile.webp" type="image/webp">
-                    <source srcset="/hero-optimized.avif" type="image/avif">
-                    <source srcset="/hero-optimized.webp" type="image/webp">
-                    <img
-                        class="hero-img"
-                        src="/hero-optimized.jpg"
-                        alt="Gulf Coast waterfront home with a pool and dock at sunset"
-                        width="2400" height="1340"
-                        fetchpriority="high"
-                        decoding="async">
-                </picture>
-                <div class="hero-grade"></div>
-            </div>
-
-            <div class="hero-scrim" aria-hidden="true"></div>
-            <div class="hero-haze" aria-hidden="true"></div>
-            <div class="hero-grain" aria-hidden="true"></div>
-
-            <div class="hero-content">
-                <p class="hero-eyebrow">
-                    <span class="hero-eyebrow-hairline" aria-hidden="true"></span>
-                    <span class="hero-eyebrow-dot" aria-hidden="true">&#9670;</span>
-                    <span>Seascape Vacations</span>
-                    <span class="hero-eyebrow-dot" aria-hidden="true">&#9670;</span>
-                    <span>Bradenton &amp; Sarasota</span>
-                    <span class="hero-eyebrow-dot" aria-hidden="true">&#9670;</span>
-                    <span>Est. 2019</span>
-                    <span class="hero-eyebrow-hairline hero-eyebrow-hairline--right" aria-hidden="true"></span>
-                </p>
-
-                <h1 class="hero-h1">
-                    Ten minutes to<br>
-                    <span class="hero-phrase-wrap">
-                        <em class="hero-phrase is-active">the whitest sand</em>
-                        <em class="hero-phrase">dolphins at sunrise</em>
-                        <em class="hero-phrase">your quietest morning</em>
-                    </span><br>
-                    on Florida's Gulf.
-                </h1>
-
-                <div class="hero-rule" aria-hidden="true"></div>
-
-                <p class="hero-sub">
-                    Private pool homes on Florida's Gulf Coast &middot; Local Gulf Coast hosting team.<br>
-                    <strong>Book direct &mdash; compare the full checkout total</strong> with a local team.
-                </p>
-            </div>
-
-            <script id="hero-live-source" type="application/json">
-            {
-                "weatherUrl": "https://api.open-meteo.com/v1/forecast?latitude=27.4989&longitude=-82.5748&current=temperature_2m,weather_code&temperature_unit=fahrenheit&timezone=America%2FNew_York",
-                "sunsetUrl": "https://api.open-meteo.com/v1/forecast?latitude=27.4989&longitude=-82.5748&daily=sunset&timezone=America%2FNew_York&forecast_days=1"
-            }
-            </script>
-            <script id="hero-property-source" type="application/json">
-            [
-                {% for property in properties %}
-                {
-                    "slug": {{ property.slug | json | safe }},
-                    "area": {{ (property.destination or property.city or "") | lower | json | safe }},
-                    "guests": {{ property.guests | json | safe }}
-                }{% if not loop.last %},{% endif %}
-                {% endfor %}
-            ]
-            </script>
-
-            <!-- Live ticker: API-hydrated weather/sunset with repo-backed fallback facts -->
-            <div class="hero-ticker">
-                <div class="hero-ticker-badge">
-                    <span class="hero-ticker-dot" aria-hidden="true"></span>
-                    <span class="hero-ticker-label">LIVE</span>
-                </div>
-                <div class="hero-ticker-stage">
-                    <div class="hero-ticker-fact is-active" data-live-fact="weather" data-source-label="SITE DATA">
-                        <span class="hero-ticker-k">Anna Maria area</span>
-                        <span class="hero-ticker-v">Local weather</span>
-                    </div>
-                    <div class="hero-ticker-fact" data-live-fact="sunset" data-source-label="SITE DATA">
-                        <span class="hero-ticker-k">Sunset tonight</span>
-                        <span class="hero-ticker-v">Local forecast</span>
-                    </div>
-                    <div class="hero-ticker-fact" data-source-label="SITE DATA">
-                        <span class="hero-ticker-k">Seascape collection</span>
-                        <span class="hero-ticker-v">Live home collection</span>
-                    </div>
-                    <div class="hero-ticker-fact" data-source-label="SITE DATA">
-                        <span class="hero-ticker-k">Book direct</span>
-                        <span class="hero-ticker-v">Full checkout totals</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Booking bar (cream pill; non-area cells are display text, not fake controls) -->
-            <form class="hero-booking" role="search" aria-label="Find a vacation rental">
-                <div class="hero-booking-inner">
-                    <button type="button" class="hero-booking-field hero-booking-field--primary" aria-haspopup="listbox">
-                        <span class="hero-booking-hint">Direct booking</span>
-                        <span class="hero-booking-label">Where</span>
-                        <span class="hero-booking-value">
-                            <span class="hero-booking-region">Anna Maria area</span>
-                            <span class="hero-booking-caret" aria-hidden="true">&#9662;</span>
-                        </span>
-                    </button>
-                    <div class="hero-booking-sep" aria-hidden="true"></div>
-                    <button type="button" class="hero-booking-field" aria-haspopup="dialog">
-                        <span class="hero-booking-label">Arrive</span>
-                        <span class="hero-booking-value hero-booking-value--empty">Select dates</span>
-                    </button>
-                    <div class="hero-booking-sep" aria-hidden="true"></div>
-                    <button type="button" class="hero-booking-field" aria-haspopup="dialog">
-                        <span class="hero-booking-label">Depart</span>
-                        <span class="hero-booking-value hero-booking-value--empty">&mdash;</span>
-                    </button>
-                    <div class="hero-booking-sep" aria-hidden="true"></div>
-                    <button type="button" class="hero-booking-field" aria-haspopup="dialog">
-                        <span class="hero-booking-label">Guests</span>
-                        <span class="hero-booking-value">8 guests</span>
-                    </button>
-                    <button type="submit" class="hero-booking-cta">Search Homes</button>
-                </div>
-            </form>
-
-            <!-- Scroll indicator -->
-            <div class="hero-scroll" aria-hidden="true">
-                <div class="hero-scroll-line"></div>
-                <div class="hero-scroll-text">SCROLL</div>
-            </div>
-        </section>
-
-        <!-- Stats Bar -->
-        <div style="padding-top:100px">
-            <div class="container">
-                <div class="stats-bar">
-                    <div class="stat-item">
-                        <div class="stat-value">Live</div>
-                        <div class="stat-label">Home availability</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value">Flexible</div>
-                        <div class="stat-label">Home sizes</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value">Clear</div>
-                        <div class="stat-label">Checkout totals</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value">24/7</div>
-                        <div class="stat-label">Local Support</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Welcome Section -->
-        <section class="section" id="welcome" style="padding-top:40px">
-            <div class="container">
-                <div class="section-header">
-                    <p class="section-tag">Welcome to Seascape</p>
-                    <h2 class="section-title">Exceptional Service & Exceptional Fun</h2>
-                    <p class="section-subtitle">Our guests book vacations confidently knowing they're going to find
-                        exactly what they're looking for without any surprises. Even better, if anything is off about
-                        your stay, we'll make it right. That's the Seascape promise.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Featured Properties -->
-        <section class="section" style="padding-top:0">
-            <div class="container">
-                <div class="property-section-header">
-                    <div>
-                        <p class="section-tag" style="text-align:left">Our Collection</p>
-                        <h2 class="section-title" style="margin-bottom:0">Featured Properties</h2>
-                    </div>
-                    <a href="/properties/" class="property-section-cta">View All Properties →</a>
-                </div>
-                <div class="property-grid">
-                    {% for property in properties.slice(0, 3) %}
-                    <a class="prop-card prop-card-link" href="/properties/{{ property.slug }}/">
-                        <div class="prop-card-shadow"></div>
-                        <img
-                            loading="lazy"
-                            decoding="async"
-                            src="{{ property.image | imgProxy(800) }}"
-                            srcset="{{ property.image | imgProxy(400) }} 400w, {{ property.image | imgProxy(800) }} 800w, {{ property.image | imgProxy(1200) }} 1200w"
-                            sizes="(min-width: 1100px) 50vw, 100vw"
-                            onerror="this.onerror=null;this.src='/images/seascape-og-default.jpg';this.srcset='';"
-                            alt="{{ property.name }}">
-                        <div class="prop-card-overlay"></div>
-                        <div class="prop-card-content">
-                            <div class="prop-card-top">
-                                <div>
-                                    <h3 class="prop-title">{{ property.name }}</h3>
-                                    <p class="prop-location">{{ property.city }} · {{ property.specs }}</p>
-                                </div>
-                                <div class="prop-badge">{{ uiIcon('star', 'ui-icon--star') }} {{ property.rating }}</div>
-                            </div>
-                            <div>
-                                <p class="prop-desc-snippet">
-                                    {{ property.description }}
-                                </p>
-                                <div class="prop-highlights">
-                                    {% for highlight in property.highlights %}
-                                    <div class="prop-highlight"><span class="prop-dot"></span>{{ highlight }}</div>
-                                    {% endfor %}
-                                </div>
-                                <div class="prop-bottom">
-                                    <span class="prop-btn">View Details →</span>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                    {% endfor %}
-                </div>
-            </div>
-        </section>
-
-        <!-- Why Book Direct -->
-        <section class="section" style="background:var(--cream-dark)">
-            <div class="container">
-                <div class="section-header">
-                    <p class="section-tag">Why Book Direct</p>
-                    <h2 class="section-title">The Seascape Difference</h2>
-                </div>
-                <div class="feature-grid">
-                    <div class="feature-card">
-                        <div class="feature-icon"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
-                        <h3 class="feature-title">Platform Fees Removed</h3>
-                        <p class="feature-desc">Book direct to compare the complete checkout total, including the charges that apply to your dates and home.
-                        </p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
-                        <h3 class="feature-title">Local Hosts Who Care</h3>
-                        <p class="feature-desc">We live here and love it. Get real insider tips and personalized
-                            recommendations.</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
-                        <h3 class="feature-title">Local Stay Support</h3>
-                        <p class="feature-desc">Professionally managed homes, local recommendations, and help from the
-                            Seascape team during your stay.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Reviews -->
-        <section class="section">
-            <div class="container">
-                <div class="section-header">
-                    <p class="section-tag">Guest Reviews</p>
-                    <h2 class="section-title">What Our Guests Say</h2>
-                </div>
-                <div class="review-grid">
-                    <div class="review-card">
-                        <div class="review-stars">{{ uiIcon('star', 'ui-icon--review-star') }}{{ uiIcon('star', 'ui-icon--review-star') }}{{ uiIcon('star', 'ui-icon--review-star') }}{{ uiIcon('star', 'ui-icon--review-star') }}{{ uiIcon('star', 'ui-icon--review-star') }}</div>
-                        <p class="review-text">"This home was by far the best we have ever rented. We saw Manatees and
-                            Dolphins right from the back porch!! The home was absolutely beautiful, and decorated to a
-                            T!"</p>
-                        <div class="review-author">
-                            <div class="review-avatar">K</div>
-                            <div>
-                                <div class="review-name">Kate O'Hara</div>
-                                <div class="review-property">Dockside Dreams</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="review-card">
-                        <div class="review-stars">{{ uiIcon('star', 'ui-icon--review-star') }}{{ uiIcon('star', 'ui-icon--review-star') }}{{ uiIcon('star', 'ui-icon--review-star') }}{{ uiIcon('star', 'ui-icon--review-star') }}{{ uiIcon('star', 'ui-icon--review-star') }}</div>
-                        <p class="review-text">"Hands down the best rental we've ever experienced. The place was
-                            spotlessly clean and the hosts responded to every question immediately!"</p>
-                        <div class="review-author">
-                            <div class="review-avatar">K</div>
-                            <div>
-                                <div class="review-name">Kurt Jones</div>
-                                <div class="review-property">Dockside Dreams</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="review-card">
-                        <div class="review-stars">{{ uiIcon('star', 'ui-icon--review-star') }}{{ uiIcon('star', 'ui-icon--review-star') }}{{ uiIcon('star', 'ui-icon--review-star') }}{{ uiIcon('star', 'ui-icon--review-star') }}{{ uiIcon('star', 'ui-icon--review-star') }}</div>
-                        <p class="review-text">"Absolutely perfect for our family vacation! The property is stunning and
-                            had everything we needed. Can't wait to come back!"</p>
-                        <div class="review-author">
-                            <div class="review-avatar">F</div>
-                            <div>
-                                <div class="review-name">Farzad Alizadeh</div>
-                                <div class="review-property">Sarasota Luxe</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- CTA Section -->
-        <section class="cta-section">
-            <div class="cta-bg" aria-hidden="true">
-                <img
-                    class="cta-bg-image"
-                    src="/images/sarasota-sunset-hero.jpg"
-                    alt="Sarasota Bay sunset over the water"
-                    width="1024"
-                    height="1024"
-                    loading="lazy"
-                    decoding="async"
-                    fetchpriority="low">
-            </div>
-            <div class="cta-overlay"></div>
-            <div class="cta-content">
-                <p style="font-size:12px;letter-spacing:0.2em;text-transform:uppercase;opacity:0.8;margin-bottom:16px">
-                    For Property Owners</p>
-                <h2 class="cta-title">Partner With Seascape Vacations</h2>
-                <p class="cta-text">Own a property in the Bradenton-Sarasota area? Request a property-specific review of the current setup, costs, and operating needs.</p>
-                <div class="cta-buttons">
-                    <a class="btn btn-solid-gold" href="/property-management/">Free Property Evaluation</a>
-                    <a class="btn btn-outline-light" href="/property-management/">Owner Services <span class="arr">→</span></a>
-                </div>
-            </div>
-        </section>
-
-        <!-- Blog Preview -->
-        <section class="section">
-            <div class="container">
-                <div class="property-section-header">
-                    <div>
-                        <p class="section-tag" style="text-align:left">Plan Your Stay</p>
-                        <h2 class="section-title" style="margin-bottom:0">Start With The Right Guide</h2>
-                    </div>
-                    <a href="/guides/" style="color:var(--brand-dark);font-weight:500;text-decoration:none">View all →</a>
-                </div>
-                <div class="blog-grid">
-                    <a class="blog-card" href="/guides/bradenton-vs-sarasota/" style="display:block;color:inherit;text-decoration:none">
-                        <div class="blog-card-img"><img
-                                src="/images/sarasota-sunset-hero.jpg"
-                                alt="Bradenton vs Sarasota comparison" width="400" height="250" loading="lazy"
-                                decoding="async"></div>
-                        <div class="blog-card-body">
-                            <span class="blog-tag">City Comparison</span>
-                            <h3 class="blog-card-title">Bradenton vs Sarasota</h3>
-                            <p class="blog-card-excerpt">Use the high-intent comparison first if you are choosing between value, beaches, dining, and pace.</p>
-                            <p class="blog-card-meta">Reviewed June 2026</p>
-                        </div>
-                    </a>
-                    <a class="blog-card" href="/guides/anna-maria-island-vs-siesta-key/" style="display:block;color:inherit;text-decoration:none">
-                        <div class="blog-card-img"><img
-                                src="/images/siesta-key-intro.webp"
-                                alt="Anna Maria Island vs Siesta Key comparison" width="400" height="250" loading="lazy"
-                                decoding="async"></div>
-                        <div class="blog-card-body">
-                            <span class="blog-tag">Beach Comparison</span>
-                            <h3 class="blog-card-title">Anna Maria Island vs Siesta Key</h3>
-                            <p class="blog-card-excerpt">See which island fits your trip before you lock in the wrong vibe for a week.</p>
-                            <p class="blog-card-meta">Reviewed June 2026</p>
-                        </div>
-                    </a>
-                    <a class="blog-card" href="/guides/anna-maria-island-area-guide/" style="display:block;color:inherit;text-decoration:none">
-                        <div class="blog-card-img"><img
-                                src="/images/ami-hero.webp"
-                                alt="Anna Maria Island area guide" width="400" height="250" loading="lazy"
-                                decoding="async"></div>
-                        <div class="blog-card-body">
-                            <span class="blog-tag">Destination Guide</span>
-                            <h3 class="blog-card-title">Anna Maria Island Area Guide</h3>
-                            <p class="blog-card-excerpt">Get the logistics, neighborhoods, and beach access context before you book.</p>
-                            <p class="blog-card-meta">Local planning guide</p>
-                        </div>
-                    </a>
-                </div>
-            </div>
-        </section>
-    </div>
-
-    <!-- FOOTER -->
-    <footer class="footer" id="contact">
-        <div class="container">
-            <div class="footer-grid" style="grid-template-columns: 2fr 1fr 1fr 1fr 1fr;">
-                <div>
-                    <div class="footer-brand">
-                        <svg viewBox="0 0 100 100" width="44" height="44" fill="none" stroke="rgba(255,255,255,0.9)"
-                            stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M50 12 L88 78 Q92 86 84 88 L16 88 Q8 86 12 78 Z" />
-                            <path d="M20 72 Q32 50 48 56 Q62 62 72 52 Q78 46 82 48" stroke-width="3.5" />
-                            <path d="M26 62 Q32 54 38 58" stroke-width="2.5" />
-                            <path d="M30 70 Q36 62 42 66" stroke-width="2.5" />
-                            <path d="M22 78 Q28 70 34 74" stroke-width="2.5" />
-                        </svg>
-                        <div class="footer-logo-text">Seascape Vacations</div>
-                    </div>
-                    <p class="footer-desc">Your premier destination for luxury vacation rentals in the
-                        Sarasota-Bradenton area. Experience exceptional service and unforgettable stays.</p>
-                    <div style="margin-top: 16px;">
-                        <a href="tel:9417048545" class="footer-link"
-                            style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">{{ uiIcon('phone', 'ui-icon--footer') }} (941)
-                            704-8545</a>
-                        <a href="mailto:info@seascape-vacations.com" class="footer-link"
-                            style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">{{ uiIcon('email', 'ui-icon--footer') }}
-                            info@seascape-vacations.com</a>
-                        <span class="footer-link" style="display: flex; align-items: center; gap: 8px;">{{ uiIcon('location', 'ui-icon--footer') }}
-                            Sarasota-Bradenton, FL</span>
-                    </div>
-                </div>
-                <div>
-                    <p class="footer-heading">Company</p>
-                    <a class="footer-link" href="/about-us/">About Us</a>
-                    <a class="footer-link" href="/properties/">Our Properties</a>
-                    <a class="footer-link" href="/property-management/">For Owners</a>
-                    <a class="footer-link" href="#contact">Contact</a>
-                </div>
-                <div>
-                    <p class="footer-heading">Support</p>
-                    <a class="footer-link" href="/guest-support/">Guest Support</a>
-                    <a class="footer-link" href="/guides/">FAQs</a>
-                    <a class="footer-link" href="/terms/#booking-and-confirmation">Booking Policy</a>
-                    <a class="footer-link" href="/terms/#cancellations">Cancellation</a>
-                    <a class="footer-link" href="/guides/booking-direct-vacation-rentals/">Guest Guide</a>
-                </div>
-                <div>
-                    <p class="footer-heading">Legal</p>
-                    <a class="footer-link" href="/privacy/">Privacy Policy</a>
-                    <a class="footer-link" href="/terms/">Terms of Service</a>
-                    <a class="footer-link" href="/cookies/">Cookie Policy</a>
-                </div>
-                <div>
-                    <p class="footer-heading">Follow Us</p>
-                    <div class="footer-social">
-                        <a href="{{ site.socialLinks.facebook }}" target="_blank" rel="noopener noreferrer"
-                            class="footer-social-link" title="Facebook">FB</a>
-                        <a href="{{ site.socialLinks.instagram }}" target="_blank" rel="noopener noreferrer"
-                            class="footer-social-link" title="Instagram">IG</a>
-                        {% if site.businessProfiles and site.businessProfiles.googleBusinessProfile %}
-                        <a href="{{ site.businessProfiles.googleBusinessProfile }}" target="_blank" rel="noopener noreferrer"
-                            class="footer-social-link" title="Google Business Profile">G</a>
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
-            <div class="footer-bottom">© 2026 Seascape Vacations. All rights reserved.</div>
-        </div>
-    </footer>
-
-    <!-- EMAIL CAPTURE POPUP -->
-    <div id="email-popup" class="email-popup-overlay" data-email-capture-root onclick="closeEmailPopup()">
-        <div class="email-popup" onclick="event.stopPropagation()">
-            <button class="email-popup-close" type="button" aria-label="Close offer popup" onclick="closeEmailPopup()">{{ uiIcon('close', 'ui-icon--control') }}</button>
-
-            <!-- Form Content -->
-            <div id="email-form-content" data-email-capture-content>
-                <span class="email-popup-badge">Exclusive Offer</span>
-                <h3 class="email-popup-title">Get $50 Off Your Next Stay</h3>
-                <p class="email-popup-subtitle">Join our list for Seascape deals, local tips, and your SAVE50 code:
-                    $50 off your first direct booking of 3 nights or more.</p>
-
-                <form class="email-popup-form" id="email-capture-form" data-track-form="email_capture" data-form-submit-event="email_capture_submit" data-inline-email-capture="true" data-form-placement="popup">
-                    <input type="text" name="name" class="email-popup-input" placeholder="Your first name" required>
-                    <input type="email" name="email" class="email-popup-input" placeholder="Your email address"
-                        required>
-                    <button type="submit" class="email-popup-btn">Get My $50 Credit →</button>
-                </form>
-
-                <p class="email-popup-privacy">{{ uiIcon('secure', 'ui-icon--inline') }} No spam, ever. Unsubscribe anytime.</p>
-                <p class="email-popup-error" data-email-capture-error role="alert" hidden>We could not finish saving your email. Please try again in a moment.</p>
-            </div>
-
-            <div id="email-pending-content" class="email-popup-pending" data-email-capture-pending hidden>
-                <h3 class="email-popup-title">Still finishing your signup</h3>
-                <p class="email-popup-subtitle">We saved your request and are still confirming it. You can keep browsing; if this stays pending, try again in a few minutes.</p>
-            </div>
-
-            <!-- Success Content -->
-            <div id="email-success-content" class="email-popup-success" data-email-capture-success>
-                <div class="email-popup-success-icon">{{ uiIcon('check', 'ui-icon--success') }}</div>
-                <h3 class="email-popup-title">Your SAVE50 Code Is Ready</h3>
-                <p style="font-size:2rem;font-weight:700;letter-spacing:4px;color:#5F8A8B;background:#f0f7f7;padding:12px 24px;border-radius:8px;border:2px dashed #5F8A8B;display:inline-block;margin:12px 0;">SAVE50</p>
-                <p class="email-popup-subtitle">Use code <strong>SAVE50</strong> on your first direct booking of 3 nights or more. Enter it on the secure booking page, and save this code before you browse.</p>
-                <a class="email-popup-btn" href="/properties/?promo=save50" data-email-capture-browse data-email-capture-default-href="/properties/" style="margin-top: 16px;">Browse Properties
-                    &rarr;</a>
-            </div>
-        </div>
-    </div>
-
-    <script defer src="/assets/js/homepage.js"></script>
-    <script defer src="/assets/js/hero-v2.js"></script>
-    {% include "partials/site-header-script.njk" %}
-
-</body>
-
-</html>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"ItemList","name":"Seascape homes","itemListElement":[{% for property in properties %}{"@type":"ListItem","position":{{ loop.index }},"name":{{ property.name | json | safe }},"url":"{{ site.url }}{{ property.pageUrl }}"}{% if not loop.last %},{% endif %}{% endfor %}]}</script>

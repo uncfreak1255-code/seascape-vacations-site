@@ -125,6 +125,12 @@
       ].join("-");
     }
 
+    // Losslessly encode digits so opaque IDs cannot resemble phone numbers.
+    // Escape q as well to keep both UUID and legacy fallback tokens unambiguous.
+    token = token.replace(/[0-9q]/g, function (character) {
+      return character === "q" ? "qq" : "q" + String.fromCharCode(97 + Number(character));
+    });
+
     return [prefix || "id", token].join("_").replace(/[^a-zA-Z0-9_-]+/g, "-").slice(0, 96);
   }
 
@@ -134,7 +140,7 @@
     try {
       if (window.localStorage && typeof window.localStorage.getItem === "function") {
         sessionId = window.localStorage.getItem(BOOKING_HANDOFF_SESSION_KEY) || "";
-        if (!sessionId) {
+        if (!sessionId || isSensitiveAnalyticsValue(sessionId)) {
           sessionId = createTrackingId("svs");
           window.localStorage.setItem(BOOKING_HANDOFF_SESSION_KEY, sessionId);
         }
@@ -166,6 +172,7 @@
 
     try {
       var url = new URL(String(value), window.location && window.location.href ? window.location.href : "https://seascape-vacations.com/");
+                if (url.protocol !== "https:" && url.protocol !== "http:") return "";
       Array.from(url.searchParams.keys()).forEach(function (key) {
         var paramValue = url.searchParams.get(key) || "";
         if (isSensitiveAnalyticsKey(key) || isSensitiveAnalyticsValue(paramValue)) {
@@ -250,6 +257,59 @@
     } catch (_error) {
       return false;
     }
+  }
+
+  // The marketing search uses arrive/depart; Hostaway's public booking UI emits start/end.
+  // Keep this translation separate from attribution and from PMS priceDetails parameters.
+  function readTripParams(params) {
+    var arrival = params.get("arrive") || params.get("checkin") || "";
+    var departure = params.get("depart") || params.get("checkout") || "";
+    function validDate(value) {
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
+      var date = new Date(value + "T00:00:00Z");
+      return !Number.isNaN(date.getTime()) && date.toISOString().slice(0, 10) === value;
+    }
+    var trip = {};
+    var today = new Intl.DateTimeFormat("en-CA", { timeZone:"America/New_York", year:"numeric", month:"2-digit", day:"2-digit" }).format(new Date());
+    if (validDate(arrival) && validDate(departure) && arrival >= today && departure > arrival) {
+      trip.arrive = arrival;
+      trip.depart = departure;
+    }
+    var guests = params.get("guests") || "";
+    if (/^\d+$/.test(guests) && Number(guests) >= 1) trip.guests = String(Math.min(Number(guests), 17));
+    var area = params.get("area") || "";
+    if (["anna-maria-island", "ami", "bradenton", "sarasota", "waterfront", "pet-friendly"].indexOf(area) !== -1) trip.area = area;
+    var slugs = Object.keys(PROPERTY_SLUG_BY_LISTING_ID).map(function (id) { return PROPERTY_SLUG_BY_LISTING_ID[id]; });
+    var compare = (params.get("compare") || "").split(",").filter(function (slug, index, all) { return slugs.indexOf(slug) !== -1 && all.indexOf(slug) === index; }).slice(0,3);
+    if (compare.length) trip.compare = compare.join(",");
+    return trip;
+  }
+
+  function preservePropertyTrip() {
+    if (!window.location || typeof URLSearchParams !== "function") return;
+    var trip = readTripParams(new URLSearchParams(window.location.search || ""));
+    if (!Object.keys(trip).length) return;
+    Array.prototype.forEach.call(document.querySelectorAll("a[href]"), function (link) {
+      var url;
+      try { url = new URL(link.getAttribute("href"), window.location.href); } catch (_error) { return; }
+      if (!isSameOriginUrl(url, window.location.href) || !/^(?:\/(?:properties|guides|stays)\/|\/about-us\/|\/$)/.test(url.pathname)) return;
+      Object.keys(trip).forEach(function (key) { if (!url.searchParams.has(key)) url.searchParams.set(key, trip[key]); });
+      link.setAttribute("href", url.toString());
+    });
+    if (!/^\/properties\/[^/]+\//.test(getCurrentPagePath()) || (!trip.arrive && !trip.guests)) return;
+    var main = document.querySelector("main");
+    if (!main || document.querySelector(".property-trip-context")) return;
+    var stylesheet = document.createElement("link");
+    stylesheet.rel = "stylesheet"; stylesheet.href = "/css/catalog.css"; document.head.appendChild(stylesheet);
+    var summary = document.createElement("aside");
+    summary.className = "property-trip-context"; summary.setAttribute("aria-label", "Your trip");
+    var copy = document.createElement("p");
+    function label(value) { return new Intl.DateTimeFormat("en-US", { month:"short", day:"numeric", year:"numeric", timeZone:"UTC" }).format(new Date(value+"T12:00:00Z")); }
+    copy.textContent = "Your trip: " + (trip.arrive ? label(trip.arrive) + " – " + label(trip.depart) : "Flexible dates") + (trip.guests ? " · " + trip.guests + " guests" : "") + ". Confirm dates and the full total on the booking page.";
+    var edit = document.createElement("a"); edit.textContent = "Change trip / compare homes";
+    edit.href = "/properties/?" + new URLSearchParams(trip).toString();
+    summary.appendChild(copy); summary.appendChild(edit);
+    main.insertBefore(summary, main.firstChild);
   }
 
   function syncFunnelLineageLink(node) {
@@ -344,6 +404,24 @@
           url.searchParams.set(key, value);
         }
       });
+    }
+
+    if (currentParams) {
+      var trip = readTripParams(currentParams);
+      // Explicit destination dates (for example, a different opening selected in the widget) win.
+      var destinationStart = url.searchParams.get("start") || url.searchParams.get("startingDate");
+      var destinationEnd = url.searchParams.get("end") || url.searchParams.get("endingDate");
+      var destinationTrip = readTripParams(new URLSearchParams({ arrive:destinationStart || "", depart:destinationEnd || "" }));
+      var chosenTrip = destinationTrip.arrive ? destinationTrip : trip;
+      url.searchParams.delete("start");
+      url.searchParams.delete("end");
+      if (chosenTrip.arrive && chosenTrip.depart) {
+        url.searchParams.set("start", chosenTrip.arrive);
+        url.searchParams.set("end", chosenTrip.depart);
+      }
+      if (trip.guests && Number(trip.guests) <= 16 && !url.searchParams.has("numberOfGuests")) url.searchParams.set("numberOfGuests", trip.guests);
+      url.searchParams.delete("startingDate");
+      url.searchParams.delete("endingDate");
     }
 
     var currentPagePath = getCurrentPagePath();
@@ -1116,6 +1194,7 @@
   }
 
   function init() {
+    preservePropertyTrip();
     decorateBookingEngineLinks();
     bindTrackedClicks();
     bindOwnerFormStarts();
@@ -1130,6 +1209,7 @@
 
   window.SeascapeConversionTracking = {
     trackEvent: trackEvent,
+    readTripParams: readTripParams,
     shouldDelayTrackedNavigation: shouldDelayTrackedNavigation,
     continueTrackedNavigation: continueTrackedNavigation,
     getSourceContext: getSourceContext,

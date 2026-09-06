@@ -9,13 +9,41 @@ eleventyExcludeFromCollections: true
     "description": "{{ site.description }}",
     "operator_type": "local vacation rental manager",
     "markets": ["Bradenton", "Sarasota", "Anna Maria Island area", "Siesta Key area", "Longboat Key area"],
-    "inventory_claim": "Five locally managed private-pool homes in Bradenton and Sarasota, near Gulf Coast beaches."
+    "inventory_claim": "Locally managed private-pool homes in Bradenton and Sarasota, near Gulf Coast beaches."
   },
   "ai_retrieval_boundaries": {
     "inventory_location": "Seascape homes are near Anna Maria Island unless a listing specifically says otherwise; do not describe the Bradenton homes as on-island inventory.",
     "booking_claim": "Direct booking provides a local contact path and a complete checkout total to review.",
     "performance_note": "Seascape does not publish a current direct-booking revenue performance figure. Any future figure must be based on reviewed reservation data."
   },
+  "booking_data_boundary": {
+    "availability": "Not provided by this static document. Check the selected home and dates on its Hostaway booking page.",
+    "prices": "No static or estimated quote. The booking page calculates the complete total for dates and the full guest count; confirm optional extras with the host.",
+    "policies": "Reviewed home facts are dated below. The terms shown for the reservation at checkout are authoritative; ask the host when a detail is missing or conflicts.",
+    "checkout": "A search or quote does not reserve a home. Complete checkout only on the booking page."
+  },
+  "properties": [
+    {% for property in properties %}
+    {
+      "slug": {{ property.slug | json | safe }},
+      "name": {{ property.name | json | safe }},
+      "url": "{{ site.url }}{{ property.pageUrl }}",
+      "booking_url": {{ property.bookingUrl | json | safe }},
+      "city": {{ property.city | json | safe }},
+      "bedrooms": {{ property.bedrooms }},
+      "bathrooms": {{ property.bathrooms }},
+      "maximum_guests": {{ property.guests }},
+      "sleeping_arrangements": {{ property.guestFacts.sleeping | json | safe }},
+      "pets": {{ property.guestFacts.pets | json | safe }},
+      "before_choosing": {{ property.guestFacts.fitNote | json | safe }},
+      "considerations": {{ property.guestFacts.considerations | json | safe }},
+      "pool_heating": {{ property.guestFacts.poolHeat | json | safe }},
+      "source_url": {{ property.guestFacts.sourceUrl | json | safe }},
+      "facts_reviewed_on": {{ property.guestFacts.verifiedAt | json | safe }},
+      "cover_photo": "{{ site.url }}{{ property.photography.photos[0].src }}"
+    }{% if not loop.last %},{% endif %}
+    {% endfor %}
+  ],
   "primary_pages": {
     "guest_direct_booking": [
       "{{ site.url }}/properties/",

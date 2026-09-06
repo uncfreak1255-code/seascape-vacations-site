@@ -81,7 +81,9 @@ function renderSchemaAmenityLabels(property, limit = 12) {
     ? property.marketing_amenities.map(amenityLabel)
     : [];
 
-  return unique([...structuredAmenities, ...marketingAmenities]).slice(0, limit);
+  return unique([...structuredAmenities, ...marketingAmenities])
+    .filter(label => label !== "pet friendly" || property.guestFacts?.pets?.status === "approval")
+    .slice(0, limit);
 }
 
 function renderPropertySummary(property) {
@@ -223,7 +225,9 @@ function regeneratePropertySurfaces({
       throw new Error(`Missing property template for ${property.slug}: ${templatePath}`);
     }
     const template = fs.readFileSync(templatePath, "utf8");
-    const nextTemplate = replaceTemplateFacts(template, property);
+    const nextTemplate = template.includes("layout: layouts/property.njk")
+      ? template
+      : replaceTemplateFacts(template, property);
     const before = fs.readFileSync(templatePath, "utf8");
     if (before !== nextTemplate) {
       changed.push(path.relative(projectRoot, templatePath));

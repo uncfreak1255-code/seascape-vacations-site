@@ -1181,3 +1181,44 @@ test("priority guides do not keep the legacy popup email capture once the shared
     }
   }
 });
+
+test("hero arrival and departure reach Hostaway through a property page", (context) => {
+  context.mock.timers.enable({ apis:["Date"], now:new Date("2026-09-04T16:00:00Z") });
+  withConversionTrackingStubs(({ api, window }) => {
+    window.location.href = "https://seascape-vacations.com/properties/dockside-dreams/?arrive=2026-11-07&depart=2026-11-14&guests=8";
+    window.location.search = "?arrive=2026-11-07&depart=2026-11-14&guests=8";
+    const result = new URL(api.buildBookingEngineHandoffUrl("https://book.seascape-vacations.com/listings/206016"));
+    assert.equal(result.searchParams.get("start"), "2026-11-07");
+    assert.equal(result.searchParams.get("end"), "2026-11-14");
+    assert.equal(result.searchParams.get("numberOfGuests"), "8");
+  });
+});
+
+test("only a complete real destination date pair may override the selected trip", (context) => {
+  context.mock.timers.enable({ apis:["Date"], now:new Date("2026-09-04T16:00:00Z") });
+  withConversionTrackingStubs(({ api, window }) => {
+    window.location.href = "https://seascape-vacations.com/properties/dockside-dreams/?arrive=2026-11-07&depart=2026-11-14&guests=8";
+    window.location.search = "?arrive=2026-11-07&depart=2026-11-14&guests=8";
+    for (const suffix of ["start=broken", "end=2026-11-14", "start=2026-02-30&end=2026-03-02", "start=2026-11-14&end=2026-11-07"]) {
+      const url = new URL(api.buildBookingEngineHandoffUrl("https://book.seascape-vacations.com/listings/206016?" + suffix));
+      assert.equal(url.searchParams.get("start"),"2026-11-07");
+      assert.equal(url.searchParams.get("end"),"2026-11-14");
+    }
+    const explicit = new URL(api.buildBookingEngineHandoffUrl("https://book.seascape-vacations.com/listings/206016?startingDate=2026-12-05&endingDate=2026-12-12"));
+    assert.equal(explicit.searchParams.get("start"),"2026-12-05");
+    assert.equal(explicit.searchParams.get("end"),"2026-12-12");
+    assert.equal(explicit.searchParams.has("startingDate"),false);
+  });
+});
+
+test("stale shared itineraries and stale explicit openings never prefill past dates", (context) => {
+  context.mock.timers.enable({ apis:["Date"], now:new Date("2026-09-04T16:00:00Z") });
+  withConversionTrackingStubs(({ api, window }) => {
+    window.location.href = "https://seascape-vacations.com/properties/dockside-dreams/?arrive=2020-11-07&depart=2020-11-14&guests=8";
+    window.location.search = "?arrive=2020-11-07&depart=2020-11-14&guests=8";
+    const url = new URL(api.buildBookingEngineHandoffUrl("https://book.seascape-vacations.com/listings/206016?start=2020-12-05&end=2020-12-12"));
+    assert.equal(url.searchParams.has("start"),false);
+    assert.equal(url.searchParams.has("end"),false);
+    assert.equal(url.searchParams.get("numberOfGuests"),"8");
+  });
+});
