@@ -132,3 +132,10 @@ The rendered guide detour dropped dates and party size. Preserve the existing va
 
 ## Required Internal Link Map
 - src/guides/anna-maria-island-vs-siesta-key.html: /stays/anna-maria-island-vacation-rentals/, /stays/siesta-key-area-vacation-rentals/
+
+## September 6 release readiness
+The combined branch includes the exact attribution fix from #547 and the connected-guide repair. Canonical verification passed 910 unit tests, release checks, 162-page link validation and 688 JSON-LD blocks. The native fixture-aware browser suite passed 144 desktop/mobile tests. Separate read-only source and rendered review found no blocking issue at source commit `2bbd442c29a9b9d4616a226b7e7020fd90560709`.
+
+A pre-release browser check used the actual generated handoff into public Hostaway listing 206016. December 1–8, 2026 and eight guests appeared in the real booking form with a full total; no inquiry or reservation was submitted. The November 7–14 test dates were unavailable in Hostaway and its UI cleared those selections. Preserve this distinction: local tests prove URL/state handling; only the booking engine confirms availability. The combined source can be released once, with #547 closed as incorporated after verified merge, rather than requiring two production deploys.
+
+Production is unchanged. Automatic approval review rejected the merge because it still applies the initial no-production limit. Do not retry a production action without the direct approval needed to clear that block. The current Codex task remains the sole mutation owner and merger. The pre-release Netlify deploy is `6a9cc3a4471f8e000861a36b`, commit `6d93d9ef021f0d488df4088b2bd13c9d6916fa64`; retain it as the rollback target. After release approval, merge the verified combined #546 head, read Netlify's deployed commit, repeat the live public handoff, and close #547 only after its change is verified in main.
