@@ -125,6 +125,12 @@
       ].join("-");
     }
 
+    // Losslessly encode digits so opaque IDs cannot resemble phone numbers.
+    // Escape q as well to keep both UUID and legacy fallback tokens unambiguous.
+    token = token.replace(/[0-9q]/g, function (character) {
+      return character === "q" ? "qq" : "q" + String.fromCharCode(97 + Number(character));
+    });
+
     return [prefix || "id", token].join("_").replace(/[^a-zA-Z0-9_-]+/g, "-").slice(0, 96);
   }
 
@@ -134,7 +140,7 @@
     try {
       if (window.localStorage && typeof window.localStorage.getItem === "function") {
         sessionId = window.localStorage.getItem(BOOKING_HANDOFF_SESSION_KEY) || "";
-        if (!sessionId) {
+        if (!sessionId || isSensitiveAnalyticsValue(sessionId)) {
           sessionId = createTrackingId("svs");
           window.localStorage.setItem(BOOKING_HANDOFF_SESSION_KEY, sessionId);
         }
