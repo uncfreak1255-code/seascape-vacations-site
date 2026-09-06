@@ -13,6 +13,23 @@ function trip(href) {
   return {start:params.get("start"), end:params.get("end"), guests:params.get("numberOfGuests")};
 }
 
+test("a guide detour preserves trip details through a stay collection", async ({ page }) => {
+  await registerStableNetwork(page);
+  await page.clock.setFixedTime(new Date("2026-09-04T16:00:00Z"));
+  await page.goto("/?" + itinerary, {waitUntil:"networkidle"});
+  const guide = page.locator('main a[href*="/guides/bradenton-vs-sarasota/"]').first();
+  await guide.click();
+  await expect(page).toHaveURL(/arrive=2026-11-07/);
+  await page.locator('a[href*="/stays/bradenton-vacation-rentals-near-beaches/"]').first().click();
+  await expect(page).toHaveURL(/guests=8/);
+  await page.locator('a[href*="/properties/dockside-dreams/"]').first().click();
+  await expect(page.locator(".g-arrive")).toHaveValue("2026-11-07");
+  await expect(page.locator(".g-depart")).toHaveValue("2026-11-14");
+  await expect(page.locator(".g-guests")).toHaveValue("8");
+  expect(trip(await page.locator('[data-property-checkout]').getAttribute('href')))
+    .toEqual({start:"2026-11-07",end:"2026-11-14",guests:"8"});
+});
+
 test("area and group matching preserve the selected trip into details and checkout", async ({ page, context }) => {
   await context.route("https://book.seascape-vacations.com/**", route => route.fulfill({status:200,contentType:"text/html",body:"<h1>Checkout navigation intercepted by test</h1>"}));
   await visit(page, itinerary + "&area=anna-maria-island");

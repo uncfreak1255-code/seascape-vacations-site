@@ -93,8 +93,9 @@
   <style>
     {% include "partials/site-header-styles.njk" %}
   </style>
+<link rel="stylesheet" href="/css/guest.css?v=waterline-v3">
 </head>
-<body>
+<body class="guest-shell">
   <a class="journal-skip-link" href="#guide-content">Skip to guide</a>
   {% set navActive = "guides" %}
   {% set navButtonHref = "/stays/anna-maria-island-vacation-rentals/" %}
@@ -102,7 +103,7 @@
   {% if guideNavPlacement %}
     {% set navButtonAttributes = 'data-track-event="guide_book_direct_click" data-placement="' ~ guideNavPlacement ~ '"' %}
   {% endif %}
-  {% include "partials/site-header.njk" %}
+  {% include "partials/guest-header.njk" %}
 
   <main class="journal-page" id="main-content">
     <article>
@@ -197,26 +198,7 @@
     </article>
   </main>
 
-  <footer class="footer">
-    <div class="footer-inner">
-      <div class="footer-logo">Seascape Vacations</div>
-      <div class="footer-links">
-        <a href="/">Home</a>
-        <a href="/guides/anna-maria-island-area-guide/">Anna Maria Island</a>
-        <a href="/guides/bradenton-area-guide/">Bradenton</a>
-        <a href="/guides/sarasota-area-guide/">Sarasota</a>
-        <a href="/property-management/">Property Owners</a>
-      </div>
-      <div class="footer-copyright">
-        © 2026 Seascape Vacations. All rights reserved. | Book Direct & Save
-        <div class="footer-meta-links">
-          <a href="/privacy/">Privacy</a>
-          <a href="/terms/">Terms</a>
-          <a href="/cookies/">Cookies</a>
-        </div>
-      </div>
-    </div>
-  </footer>
+  {% include "partials/guest-footer.njk" %}
 
   {% include "partials/site-header-script.njk" %}
   {% include "partials/analytics-ga4.njk" %}

@@ -286,7 +286,7 @@
     Array.prototype.forEach.call(document.querySelectorAll("a[href]"), function (link) {
       var url;
       try { url = new URL(link.getAttribute("href"), window.location.href); } catch (_error) { return; }
-      if (!isSameOriginUrl(url, window.location.href) || !/^\/properties\//.test(url.pathname)) return;
+      if (!isSameOriginUrl(url, window.location.href) || !/^(?:\/(?:properties|guides|stays)\/|\/about-us\/|\/$)/.test(url.pathname)) return;
       Object.keys(trip).forEach(function (key) { if (!url.searchParams.has(key)) url.searchParams.set(key, trip[key]); });
       link.setAttribute("href", url.toString());
     });

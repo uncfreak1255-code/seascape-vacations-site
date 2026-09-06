@@ -6,7 +6,10 @@
   var trip = parseTrip ? parseTrip(new URLSearchParams(location.search)) : {};
   var pageRoot = document.querySelector('[data-property-page]');
   var originalLinks = new Map();
-  document.querySelectorAll('[data-trip-link]').forEach(function (link) { originalLinks.set(link, link.getAttribute('href')); });
+  document.querySelectorAll('a[href]').forEach(function (link) {
+    var url = new URL(link.getAttribute('href'), location.href);
+    if (url.origin === location.origin && (link.hasAttribute('data-trip-link') || /^(?:\/(?:properties|guides|stays)\/|\/about-us\/|\/$)/.test(url.pathname))) originalLinks.set(link, link.getAttribute('href'));
+  });
   function label(value) { return new Intl.DateTimeFormat('en-US', {month:'short',day:'numeric',year:'numeric',timeZone:'UTC'}).format(new Date(value+'T12:00:00Z')); }
   function summary() { return (trip.arrive ? label(trip.arrive)+' – '+label(trip.depart) : 'Flexible dates') + (trip.guests ? ' · '+(trip.guests === '17' ? 'more than 16' : trip.guests)+' guests' : ''); }
   function emit(name, extras) { if (tracking) tracking.trackEvent(name, Object.assign({page_slug:pageRoot ? pageRoot.dataset.propertyPage : 'home',placement:'guest_journey'},extras || {})); }
@@ -84,8 +87,6 @@
       syncTrip();
     });
   });
-  var menu=document.querySelector('.g-menu-button'),menuPanel=document.getElementById('guest-menu');
-  if(menu&&menuPanel){menu.addEventListener('click',function(){var open=menu.getAttribute('aria-expanded')!=='true';menu.setAttribute('aria-expanded',String(open));menu.setAttribute('aria-label',open?'Close menu':'Open menu');menuPanel.hidden=!open;});document.addEventListener('keydown',function(event){if(event.key==='Escape'&&!menuPanel.hidden){menuPanel.hidden=true;menu.setAttribute('aria-expanded','false');menu.setAttribute('aria-label','Open menu');menu.focus();}});}
   function photoFailed(image){
     if(image.dataset.photoFailed)return;image.dataset.photoFailed='true';
     var notice=document.createElement('div');notice.className='g-photo-unavailable';notice.dataset.propertyPhoto=image.dataset.propertyPhoto;notice.dataset.photoFailed='true';notice.setAttribute('role','img');notice.setAttribute('aria-label',image.alt+' unavailable');notice.textContent='Photo unavailable. View this home’s photos on the booking page.';image.replaceWith(notice);

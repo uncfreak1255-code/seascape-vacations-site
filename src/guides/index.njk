@@ -244,10 +244,10 @@ eleventyComputed:
     }
 
     .hero {
-      padding-top: 112px;
+      padding-top: 48px;
       padding-bottom: 28px;
       display: grid;
-      grid-template-columns: 1.25fr 0.75fr;
+      grid-template-columns: 1fr;
       gap: 32px;
       align-items: end;
     }
@@ -574,27 +574,24 @@ eleventyComputed:
       }
     }
   </style>
+<link rel="stylesheet" href="/css/guest.css?v=waterline-v3">
 </head>
-<body>
+<body class="guest-shell">
   <a class="skip-link" href="#main">Skip to content</a>
 
   {% set navActive = "guides" %}
   {% set navButtonHref = "/properties/" %}
   {% set navButtonLabel = "Browse Homes" %}
-  {% include "partials/site-header.njk" %}
+  {% include "partials/guest-header.njk" %}
 
   <main id="main">
     <header class="hero">
       <div>
         <p class="hero-tag">Travel Guides</p>
-        <h1 class="hero-title">Florida Gulf Coast guides for choosing where to stay and what to do</h1>
-        <p class="hero-subtitle">Local advice on Anna Maria Island, Bradenton, Sarasota, and Siesta Key. Use these guides to compare destinations, plan the trip, and book with more confidence.</p>
+        <h1 class="hero-title">Explore the Florida Gulf Coast</h1>
+        <p class="hero-subtitle">Local advice on Anna Maria Island, Bradenton, Sarasota, and Siesta Key. Compare destinations, plan beach days, and find <a href="/properties/">a home for your trip</a>.</p>
       </div>
-      <aside class="hero-note">
-        <strong>Where to start</strong>
-        <p>Start with the featured guide if you are still deciding where to stay. If you already know the area, jump to the section that matches the question you want to answer next.</p>
-        <small>Updated {{ pageUpdatedLabel }}</small>
-      </aside>
+
     </header>
 
     <section class="section" style="padding-top: 8px;">
@@ -749,12 +746,7 @@ eleventyComputed:
     </section>
   </main>
 
-  <footer class="footer">
-    <div class="footer-inner">
-      <div>© 2026 {{ site.name }}</div>
-      <div><a href="/">Home</a> · <a href="/about-us/">About Us</a> · <a href="/property-management/">Property Owners</a></div>
-    </div>
-  </footer>
+  {% include "partials/guest-footer.njk" %}
 
   {% include "partials/site-header-script.njk" %}
   {% include "partials/analytics-ga4.njk" %}

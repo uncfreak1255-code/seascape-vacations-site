@@ -23,8 +23,8 @@
 .g-nav,.g-header-actions{display:flex;align-items:center;gap:32px}
 .g-nav a{text-decoration:none;font-size:14px;padding:10px 0}
 .g-nav a:hover,.g-inline-link:hover{color:var(--g-accent)}
-.guest-site .g-button,.guest-site .btn-brand,.guest-site .btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:14px 24px;background:var(--g-ink);color:white;border:1px solid var(--g-ink);border-radius:4px;font:500 14px/1.35 Poppins,sans-serif;text-decoration:none;letter-spacing:0;text-transform:none;box-shadow:none;cursor:pointer;transition:background .15s}
-.guest-site .btn::after,.guest-site .btn::before,.guest-site .g-button::after,.guest-site .g-button::before{display:none}
+.guest-shell .g-button,.guest-site .g-button,.guest-site .btn-brand,.guest-site .btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:14px 24px;background:var(--g-ink);color:white;border:1px solid var(--g-ink);border-radius:4px;font:500 14px/1.35 Poppins,sans-serif;text-decoration:none;letter-spacing:0;text-transform:none;box-shadow:none;cursor:pointer;transition:background .15s}
+.guest-shell .g-button::before,.guest-shell .g-button::after,.guest-site .btn::after,.guest-site .btn::before,.guest-site .g-button::after,.guest-site .g-button::before{display:none}
 .g-button:hover,.guest-site .btn:hover{background:var(--g-muted);transform:none;box-shadow:none;color:white}
 .g-menu-button{display:none;background:none;border:0;padding:12px 0;color:var(--g-ink);min-height:44px}
 .g-mobile-menu{position:absolute;inset:100% 0 auto;background:var(--g-paper);padding:20px;border-bottom:1px solid var(--g-rule);box-shadow:0 20px 30px #173d4214}
@@ -349,3 +349,13 @@
 @media(prefers-reduced-motion:reduce){.guest-site *,.guest-site *::before,.guest-site *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
 .guest-site .catalog-card-media:hover img,.g-gallery-photo:hover img{transform:none}}
 @media(prefers-reduced-motion:no-preference){::view-transition-group(root){animation-duration:.2s}}
+
+/* The shared shell leaves guide, stay and company-page body typography intact. */
+.guest-shell .g-header,.guest-shell .g-footer{--g-paper:#f6f3eb;--g-ink:#173d42;--g-muted:#52676a;--g-accent:#a4533e;--g-rule:#cad4cf;font-family:Poppins,sans-serif;font-size:15px;line-height:1.65}
+.guest-shell .g-header{color:var(--g-ink)}
+.guest-shell .g-header *,.guest-shell .g-footer *{box-sizing:border-box}
+.guest-shell .g-header a,.guest-shell .g-footer a{color:inherit;text-decoration:none}
+.guest-shell .g-header .g-button{color:white}
+.guest-shell .g-header [hidden]{display:none!important}
+.guest-shell .g-header a:focus-visible,.guest-shell .g-header button:focus-visible,.guest-shell .g-footer a:focus-visible{outline:3px solid var(--g-accent);outline-offset:4px}
+.guest-shell .main-content,.guest-shell .journal-page{padding-top:0}

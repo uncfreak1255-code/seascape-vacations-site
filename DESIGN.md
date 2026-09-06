@@ -122,7 +122,7 @@ components:
 Help a group choose one of five real homes, understand the details that could change its choice, and arrive at Hostaway with dates and guest count intact. Seascape is a small, owner-operated collection in Bradenton and Sarasota. Do not make it look like an island-wide resort or an unlimited marketplace.
 
 ## Guest journey: Waterline (September 2026)
-The homepage, catalog, and five property details use the scoped `guest-site` theme in `src/css/guest.css`, with homepage scenes in `src/css/arrival.css`. Other routes retain the legacy tokens above until deliberately redesigned.
+The homepage, catalog, and five property details use the scoped `guest-site` theme in `src/css/guest.css`, with homepage scenes in `src/css/arrival.css`. The guide index, field-journal guides, two homepage comparison guides, stay collections, and About page share the guest header and footer. Their editorial bodies keep their existing typography. Owner pages and other legacy routes retain the tokens above until deliberately redesigned.
 
 - Canvas: sun-warmed paper `#F6F3EB`; ink and primary controls: deep marine `#173D42`; supporting text: `#52676A`; accent: clay `#A4533E`; selected scene and photographic CTA: citron `#D6EB85`; rules: `#CAD4CF`. Citron is a surface/accent, never small text on paper.
 - Display type: self-hosted Instrument Serif, regular and italic, under its included SIL Open Font License. Poppins remains the practical body and control face. Large, compact display lines are deliberate; factual text stays readable.

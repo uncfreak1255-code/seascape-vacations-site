@@ -125,3 +125,10 @@ This final qualitative search read checks the product decision against current a
 | Seascape proof available | Canonical property data, reviewed public Hostaway descriptions/photos, before/after renders, 130 passing browser checks and dated live dates/guest/total readback. |
 | Tools/plugins used | Web search; Agent Reach Jina read-only page reader; existing Playwright and repository tools. No paid service or plugin installation. |
 | Decision and reason | Keep the five-home organizer direction. It addresses observed choice/handoff defects and can be tested without speculative platform work or a new acquisition claim. |
+
+## September 6 release repair
+Source files also include `src/about-us/index.njk` for the two existing text contrast failures exposed by the new guest-route accessibility coverage.
+The rendered guide detour dropped dates and party size. Preserve the existing validated trip fields across same-origin guides, stays, properties, the homepage and About page. Reuse the Waterline header and footer on these connected page families, preserving editorial body layouts and the owner funnel. This repairs the approved guest direction; it adds no SEO cluster or new property claims. Replace the unfulfilled “Meet your hosts” label with “About Seascape” and remove the guide index's redundant reading instructions. Acceptance: desktop/mobile guide-to-stay-to-property form and checkout retain dates and party size; rendered navigation, images and menus remain usable; release checks and live handoff pass.
+
+## Required Internal Link Map
+- src/guides/anna-maria-island-vs-siesta-key.html: /stays/anna-maria-island-vacation-rentals/, /stays/siesta-key-area-vacation-rentals/
