@@ -470,14 +470,14 @@ function getChangedFiles() {
   }
 }
 
-function assertSkillsInOrder(source, label) {
-  const orderedSkills = ["`copywriting`", "`enterprise-ui-writing`", "`humanizer`"];
+function assertEditorialStepsInOrder(source, label) {
+  const orderedSteps = ["**Draft the copy**", "**Remove internal wording**", "**Check voice and specificity**"];
   let lastIndex = -1;
 
-  for (const skill of orderedSkills) {
-    const currentIndex = source.indexOf(skill);
-    assert.notEqual(currentIndex, -1, `${label} should mention ${skill}`);
-    assert.ok(currentIndex > lastIndex, `${label} should mention ${skill} in visible-copy order`);
+  for (const step of orderedSteps) {
+    const currentIndex = source.indexOf(step);
+    assert.notEqual(currentIndex, -1, `${label} should mention ${step}`);
+    assert.ok(currentIndex > lastIndex, `${label} should mention ${step} in visible-copy order`);
     lastIndex = currentIndex;
   }
 }
@@ -692,7 +692,7 @@ test("content quality gate doc defines reader, proof, and agent copy plus the vi
   assert.equal(gateDoc.includes("agent copy"), true);
   assert.equal(gateDoc.includes("No Brief, No Writing"), true);
   assert.equal(gateDoc.includes("Visible Copy Lane"), true);
-  assertSkillsInOrder(gateDoc, "content quality gate doc");
+  assertEditorialStepsInOrder(gateDoc, "content quality gate doc");
   assert.equal(gateDoc.includes("npm run lint:content"), true);
 });
 
@@ -716,11 +716,11 @@ test("repo instructions require the content gate and lint command for content PR
 
   assert.equal(agents.includes("docs/process/content-quality-gate.md"), true);
   assert.equal(agents.includes("npm run lint:content"), true);
-  assertSkillsInOrder(agents, "AGENTS content gate");
+  assertEditorialStepsInOrder(agents, "AGENTS content gate");
   assert.equal(claude.includes("docs/process/content-quality-gate.md"), true);
   assert.equal(claude.includes("npm run lint:content"), true);
-  assertSkillsInOrder(claudeWorkflow, "CLAUDE workflow");
-  assertSkillsInOrder(reviewChecklist, "before user review checklist");
+  assertEditorialStepsInOrder(claudeWorkflow, "CLAUDE workflow");
+  assertEditorialStepsInOrder(reviewChecklist, "before user review checklist");
 });
 
 test("reader-language gate rejects static, JavaScript, arbitrary object-key, component, and rendered bypasses", () => {

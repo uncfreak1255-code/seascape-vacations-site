@@ -28,7 +28,7 @@ npm run verify:recovery:remediation
 
 If the task does not touch all three areas, run the relevant subset and note why.
 
-- [ ] If visible `src/` copy changed, I completed `copywriting` -> `enterprise-ui-writing` -> `humanizer` and `npm run lint:content`.
+- [ ] If visible `src/` copy changed, I completed **Draft the copy** -> **Remove internal wording** -> **Check voice and specificity** and `npm run lint:content`.
 - [ ] If I changed a search-facing page, `src/_data/seoPages.json`, `_redirects`, or `src/sitemap.njk`, the active brief includes a filled Gate 0 block from `docs/process/seo-competitor-operating-loop.md` or `docs/process/ranking-regression-rescue.md`.
 - [ ] If I changed `src/llms.txt`, `src/ai-discovery.json.njk`, `src/robots.txt`, or a citation-oriented intro/module, I used `docs/process/ai-citation-audit-usage.md` and ran the relevant AI-surface checks.
 - [ ] If this is an AI-search or experiment batch, the active brief names a `hypothesis`, `primary event`, `guardrail event`, `entry criteria`, `readback window`, and `decision rule`.

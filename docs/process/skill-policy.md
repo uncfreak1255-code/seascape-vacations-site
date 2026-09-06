@@ -10,12 +10,13 @@ active skill set is not exhaustively re-listed here on purpose — it lives in
 The active local skill layer is intentionally lean and site-specific. Use the
 skills in `.agents/skills/` as helpers under the five-role workflow, not as
 another operating system. Stale deploy, monthly-reset, broad marketing, and
-generic SEO skills stay out of active discovery unless a new `agent-surface-audit`
+generic SEO skills stay out of active discovery unless a new `repo-dev-setup` inventory
 proves they should return.
 
-For AI discovery, GEO/AEO, and schema work, pair the global `seascape-seo` skill
-with the repo-local `schema-markup` skill. `seascape-seo` owns the proof-lane
-versus attack-lane framing; `schema-markup` owns JSON-LD and structured-data
+For AI discovery, GEO/AEO, and schema work, use the existing Search Operator
+role in `.claude/agents/search-operator.md` and
+`docs/process/seo-competitor-operating-loop.md` for proof and attack research.
+The repo-local `schema-markup` skill owns JSON-LD and structured-data
 implementation rules inside this site repo.
 
 For owner intake, use `owner-outbound-batch` to qualify owner-direct,
@@ -65,7 +66,7 @@ explains the page; Playwright screenshots and visual tests prove it.
 
 Do not install or mirror `geo-optimizer-skill`, `gtm-engineer-skills`,
 `searchstack-aeo`, `claude-seo`, `akii-seo-ai-search-optimizer`, or `aeo.js` into
-this repo unless a fresh `agent-surface-audit` shows a repeated site-specific need
+this repo unless a fresh `repo-dev-setup` inventory shows a repeated site-specific need
 and the tool has a smoke-tested win. AI citation monitoring and GSC/GA4 proof
 systems belong in `seascape-analytics`, not in this website repo.
 
@@ -80,15 +81,26 @@ bundle globally loaded for the Seascape design lane.
 
 ## Global marketing skills — advisory lenses
 
-Global marketing skills in `~/.codex/skills/` are allowed as advisory lenses when
-the task calls for them, especially `customer-research`, `marketing-psychology`,
-`content-strategy`, `copywriting`, `enterprise-ui-writing`, `copy-editing`,
-`humanizer`, `seo-audit`, `ai-seo`, `analytics-tracking`, `ab-test-setup`, and
-`pricing-strategy`. They help structure thinking; they do not create new local
+Global marketing skills may help only when the current session exposes a
+relevant skill. Their absence does not block the existing local workflow.
+Use native reasoning and `docs/style/` for the three editorial steps in
+`docs/process/content-quality-gate.md`. Optional helpers do not create local
 authority, bypass the five roles, or replace Seascape Hub as the source of
 business context.
 
 ## Agent-surface-audit receipts
+
+### 2026-09-05 — retired global reference repair
+
+A current inventory found required global copy and SEO helpers absent from the
+working environment. The local content gate now specifies the same three
+editorial steps directly; Search Operator and the existing competitor loop
+own SEO framing. The content linter, Voice Editor verdict, answer-structure
+safeguards, and analytics ownership remain required. The local CRO helper uses
+source inspection for form issues instead of redirecting to missing helpers.
+Canonical skills and plugin copies stay identical. No skill is installed or
+reactivated. This supersedes the 2026-06-13 availability claim below; dated
+entries remain historical evidence.
 
 ### 2026-08-14 — removed `.agent/` (singular), a dead parallel skill surface
 
