@@ -5,15 +5,16 @@
 - secondary keywords: Sarasota vacation rental, Bradenton vacation rental, Florida vacation rental taxes
 - audience pattern: needs a practical comparison or direct booking path and should not be asked to rely on unsupported savings, location, portfolio, or tax claims
 - proof source: canonical property fallback data; current route inventory; professional tax review is not yet available
-- required internal links: /guides/bradenton-vs-sarasota/, /properties/sarasota-luxe/, /property-management/, /#contact
+- required internal links: /properties/, /guides/
 - CTA target: `/properties/` or `/#contact`
-- anti-claims: no tax advice; no fixed savings, portfolio, guest-count, return, or experience claims without an approved source; no statement that downtown Sarasota is walkable to St. Armands Circle
+- anti-claims: no tax advice; no fixed savings, portfolio, guest-count, return, or experience claims without an approved source; no statement that Sarasota Luxe or the Sarasota home is walkable, within walking distance, or steps from downtown, St. Armands Circle, restaurants, galleries, shops, beaches, or other attractions
 - hypothesis: removing unsupported claims preserves booking trust without adding new search surfaces
 - primary event: `guide_book_direct_click`
 - guardrail event: `guest_capture_form_submit`
 - entry criteria: P0 source-truth conflict identified in existing canonical pages and routes
 - readback window: 48 hours after production deployment
 - decision rule: keep the corrected canonical routes if direct-book and contact behavior remain intact; only reconsider claims when approved proof exists
+- corrective pass: on 2026-09-07, remove the remaining Sarasota-home walkability language and fixed 10-15% / 30-40% public savings claims from existing canonical surfaces; do not add a new page
 - source files likely to change:
   - `src/_redirects`
   - `src/_data/properties-fallback.json`
