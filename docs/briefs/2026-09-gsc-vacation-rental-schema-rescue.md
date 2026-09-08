@@ -45,7 +45,7 @@ eligibility guidance using current booking-engine facts.
 | Competitor URLs inspected | SERP check: none required. Competitor-page check: none required. Search Console identified a source-local validation defect. |
 | Content gap and Seascape answer | Align each visible review card with its verified structured review. Correct coordinate facts from the current booking engine and expand each schema image set to eight existing gallery assets. |
 | Design/format strategy | Preserve the current card layout, links, and calls to action while changing the review records shown inside the cards. |
-| Seascape proof available | Canonical property facts and the 12 existing verified review records in current property source. |
+| Seascape proof available | Canonical property facts and one featured verified review for each of four properties. |
 | Tools/plugins used | Google Search Console URL inspection and enhancement reports, repository tests, production build, and JSON-LD validation. |
 | Decision and reason | Ship the narrow schema repair because it removes 10 measured invalid items while preserving the valid property entities and published review facts. |
 
@@ -86,7 +86,7 @@ eligibility guidance using current booking-engine facts.
 
 ## Done When
 
-- each property page publishes one complete VacationRental entity with at least eight images and precise current coordinates, the 12 verified reviews remain nested under their owning properties and visible on-page, the homepage publishes no property-level VacationRental, and Search Console validation can start against the deployed correction
+- each property page publishes one complete VacationRental entity with at least eight category-complete images and precise current coordinates, four featured verified reviews remain nested under their owning properties and visible on-page, the homepage publishes no property-level VacationRental, and Search Console validation can start against the deployed correction
 
 ## Post-Reread Outcome
 

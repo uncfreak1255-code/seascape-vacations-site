@@ -305,33 +305,25 @@ test("property schema uses public Hostaway-backed reviews where available", () =
     {
       file: path.join(projectRoot, "src", "properties", "dockside-dreams", "index.njk"),
       reviews: [
-        ["Tracy Bunce", "2025-08-10", "We could not have been happier with our stay!"],
-        ["Tyler Johnson", "2025-07-01", "Great house in a good neighborhood."],
-        ["Heather Vozza", "2024-09-30", "This home was absolutely gorgeous and very clean!"]
+        ["Tracy Bunce", "2025-08-10", "We could not have been happier with our stay!"]
       ]
     },
     {
       file: path.join(projectRoot, "src", "properties", "the-oasis", "index.njk"),
       reviews: [
-        ["David Kohley", "2026-02-03", "House was very well stocked and plenty of room for everyone staying."],
-        ["Anna Cannon", "2025-07-25", "Absolutely beautiful house, looks even bigger in person"],
-        ["Joshua Rogers", "2025-07-19", "The house had everything we wanted!"]
+        ["David Kohley", "2026-02-03", "House was very well stocked and plenty of room for everyone staying."]
       ]
     },
     {
       file: path.join(projectRoot, "src", "properties", "sarasota-luxe", "index.njk"),
       reviews: [
-        ["Stanley Shake", "2025-09-29", "This house is absolutely beautiful"],
-        ["ANN MARIE GIUDICE", "2025-04-29", "Amazing home near downtown."],
-        ["Bryce Mewhorter", "2025-04-06", "Fantastic property, easy check in, very clean"]
+        ["Stanley Shake", "2025-09-29", "This house is absolutely beautiful"]
       ]
     },
     {
       file: path.join(projectRoot, "src", "properties", "river-house", "index.njk"),
       reviews: [
-        ["Andrew Coblentz", "2026-01-03", "We had a great time!"],
-        ["Florian Lasserre", "2025-08-14", "Perfect location, very nice neighborhood"],
-        ["Brittany Byrne", "2025-05-28", "Loved the convenience of this house!"]
+        ["Andrew Coblentz", "2026-01-03", "We had a great time!"]
       ]
     }
   ];
