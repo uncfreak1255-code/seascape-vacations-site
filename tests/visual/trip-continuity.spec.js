@@ -54,7 +54,7 @@ test('existing homepage search carries the trip through catalog and property che
   expectTrip(page.url());
 });
 
-test('guide to stay to property retains the trip and receipt agrees with checkout', async ({ page }) => {
+test('guide to stay to property retains the trip and GA4 lineage agrees with checkout', async ({ page }) => {
   await visit(page, '/guides/bradenton-vs-sarasota/?' + trip);
   const stay = page.locator('a[data-track-event="guide_stay_click"]').first();
   expectTrip(await stay.getAttribute('href'));
@@ -66,23 +66,20 @@ test('guide to stay to property retains the trip and receipt agrees with checkou
   await detail.click();
   await expect(page).toHaveURL(/\/properties\/[^/]+\//);
   expectTrip(page.url());
-  const receipts = [];
-  await page.route('**/.netlify/functions/booking-handoff', async route => {
-    receipts.push(route.request().postDataJSON());
-    await route.fulfill({ status: 200, contentType: 'application/json', body: '{"ok":true}' });
-  });
   const checkout = page.locator('a[data-track-event="property_booking_page_click"]:visible').first();
   const href = await checkout.getAttribute('href');
   expectTrip(href, true);
-  // Observe the real click/receipt code without submitting anything to Hostaway.
+  const outbound = new URL(href);
+  // Observe the real click/GA4 path without submitting anything to Hostaway.
+  await page.evaluate(() => {
+    window.__tripContinuityEvents = [];
+    window.seascapeTrackEvent = (name, payload) => window.__tripContinuityEvents.push({ name, payload });
+  });
   await checkout.evaluate(node => node.addEventListener('click', event => event.preventDefault()));
   await checkout.click();
-  await expect.poll(() => receipts.length).toBe(1);
-  const receipt = receipts[0];
-  expectTrip(receipt.linkUrl, true);
-  const outbound = new URL(href);
-  expect(receipt.handoffId).toBe(outbound.searchParams.get('sv_handoff_id'));
-  expect(receipt.sessionId).toBe(outbound.searchParams.get('sv_session_id'));
+  const event = await page.evaluate(() => window.__tripContinuityEvents.find(item => item.name === 'property_booking_page_click'));
+  expect(event.payload.booking_handoff_id).toBe(outbound.searchParams.get('sv_handoff_id'));
+  expect(event.payload.booking_session_id).toBe(outbound.searchParams.get('sv_session_id'));
 });
 
 test('catalog direct links retain requested dates and capacity filtering', async ({ page }) => {
