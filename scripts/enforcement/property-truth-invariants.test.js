@@ -268,6 +268,7 @@ test("property reviews stay nested under one complete VacationRental entity", ()
     assert.equal(standaloneReviews.length, 0, `${property.slug} must not publish standalone Review entities`);
 
     const reviews = vacationRentals[0].review || [];
+    const visibleTemplate = template.replace(/<script[\s\S]*?<\/script>/g, "");
     assert.equal(
       reviews.length,
       expectedReviewCounts.get(property.slug),
@@ -281,7 +282,13 @@ test("property reviews stay nested under one complete VacationRental entity", ()
       assert.ok(review.author, `${property.slug} nested review must retain its author`);
       assert.ok(review.reviewBody, `${property.slug} nested review must retain its text`);
       assert.ok(review.datePublished, `${property.slug} nested review must retain its date`);
+      assert.match(visibleTemplate, new RegExp(escapeRegExp(review.author.name)), `${property.slug} review author must be visible`);
+      assert.match(visibleTemplate, new RegExp(escapeRegExp(review.reviewBody)), `${property.slug} review text must be visible`);
     }
+
+    assert.ok(vacationRentals[0].image.length >= 8, `${property.slug} must publish at least 8 rental images`);
+    assert.match(String(vacationRentals[0].latitude), /^-?\d+\.\d{5,}$/, `${property.slug} latitude must have at least 5 decimal places`);
+    assert.match(String(vacationRentals[0].longitude), /^-?\d+\.\d{5,}$/, `${property.slug} longitude must have at least 5 decimal places`);
   }
 });
 

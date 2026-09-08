@@ -17,7 +17,9 @@ Google Search Console reported 10 invalid VacationRental items. The invalid item
 were incomplete duplicate entities: one organization-level VacationRental on the
 homepage and standalone Review.itemReviewed references on four property pages.
 The complete property entities were already valid. This batch removes the false
-duplicates and nests the existing verified reviews under their owning properties.
+duplicates, nests the existing verified reviews under their owning properties,
+shows those same reviews on the page, and meets Google's image and coordinate
+eligibility guidance using current booking-engine facts.
 
 ## Gate 0 Search And Attack Receipt
 
@@ -31,7 +33,7 @@ duplicates and nests the existing verified reviews under their owning properties
 | Current proof | Google Search Console reported 9 valid and 10 invalid VacationRental items; the invalid examples lacked required property fields and traced to duplicate entities in current source. |
 | Top visible competitors | No competitor change is needed for this technical correction. |
 | Competitor angle | None; the defect is measured against Google's required VacationRental fields. |
-| Visual/format gap | None; the rendered page design and reader copy stay unchanged. |
+| Visual/format gap | Existing review cards did not match the reviews in structured data. Keep the card design and show the same verified records that the schema publishes. |
 | Seascape gap | Duplicate incomplete entities make valid property markup appear partly invalid. |
 | Search fit | One complete VacationRental entity per home gives search systems one canonical property record. |
 | Local/GBP proof | Not applicable; this batch changes on-site property markup only. |
@@ -40,9 +42,9 @@ duplicates and nests the existing verified reviews under their owning properties
 | Attack status | none found after named checks |
 | Query variants inspected | Property-name searches and affected stay-page searches from the 2026-09-08 stale-snippet audit. |
 | SERP source | Google Search and Search Console, observed 2026-09-08. |
-| Competitor URLs inspected | None required after the Search Console enhancement report identified a source-local validation defect. |
-| Content gap and Seascape answer | This is a schema integrity defect, not a missing reader answer. Existing property facts and reviews remain unchanged. |
-| Design/format strategy | Preserve the current layout, visible copy, links, and calls to action. |
+| Competitor URLs inspected | SERP check: none required. Competitor-page check: none required. Search Console identified a source-local validation defect. |
+| Content gap and Seascape answer | Align each visible review card with its verified structured review. Correct coordinate facts from the current booking engine and expand each schema image set to eight existing gallery assets. |
+| Design/format strategy | Preserve the current card layout, links, and calls to action while changing the review records shown inside the cards. |
 | Seascape proof available | Canonical property facts and the 12 existing verified review records in current property source. |
 | Tools/plugins used | Google Search Console URL inspection and enhancement reports, repository tests, production build, and JSON-LD validation. |
 | Decision and reason | Ship the narrow schema repair because it removes 10 measured invalid items while preserving the valid property entities and published review facts. |
@@ -57,21 +59,21 @@ duplicates and nests the existing verified reviews under their owning properties
 
 ## Source And Proof Constraints
 
-- property truth needed: preserve every canonical name, URL, image, occupancy, identifier, latitude, longitude, amenity, offer, and verified review fact
+- property truth needed: preserve every canonical name, URL, occupancy, identifier, amenity, offer, and verified review fact; source coordinates and gallery images from the current booking engine
 - owner proof asset needed: none
 - claims that are off-limits: new ratings, review totals, amenities, locations, or guaranteed rich-result visibility
 - Seascape-specific proof or local experience this page can add beyond generic competitor coverage: the existing canonical facts for each Seascape home
 
 ## Page Builder Tasks
 
-- source files likely to change: `src/index.njk`, `src/properties/dockside-dreams/index.njk`, `src/properties/river-house/index.njk`, `src/properties/sarasota-luxe/index.njk`, `src/properties/the-oasis/index.njk`
-- redirect or schema work: remove the organization-level VacationRental and nest each verified Review under its complete property VacationRental
+- source files likely to change: `src/index.njk`, `src/_data/properties.js`, and all five `src/properties/*/index.njk` property templates
+- redirect or schema work: remove the organization-level VacationRental; nest each verified Review under its complete property VacationRental; publish at least eight existing property images and booking-engine coordinates at current precision
 - internal-link or CTA work: preserve all existing links and calls to action
 - money CTA and downstream tracking event to verify: no booking or tracking change
 
 ## Voice Editor Checklist
 
-- tone risks: none because reader copy does not change
+- tone risks: review cards must remain guest wording and must not introduce internal process language
 - generic or mechanical patterns to kill: none
 - proof or specificity checks: retain review author, rating, text, and publication date exactly
 - customer wording kept where it sounds natural; SEO-tool phrasing removed where it sounds manufactured: preserve all existing reader wording
@@ -84,7 +86,7 @@ duplicates and nests the existing verified reviews under their owning properties
 
 ## Done When
 
-- each property page publishes one complete VacationRental entity, the 12 verified reviews remain nested under their owning properties, the homepage publishes no property-level VacationRental, and Search Console validation can start against the deployed correction
+- each property page publishes one complete VacationRental entity with at least eight images and precise current coordinates, the 12 verified reviews remain nested under their owning properties and visible on-page, the homepage publishes no property-level VacationRental, and Search Console validation can start against the deployed correction
 
 ## Post-Reread Outcome
 
@@ -96,6 +98,5 @@ duplicates and nests the existing verified reviews under their owning properties
 
 ## Not In Scope
 
-- visible copy, layout, property facts, redirects, new pages, or new search claims
-- changes to the valid Bradenton Pool Home property entity
+- layout, redirects, new pages, or new search claims
 - copied competitor structure or new schema types
