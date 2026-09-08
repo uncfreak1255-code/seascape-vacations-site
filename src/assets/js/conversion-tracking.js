@@ -125,6 +125,12 @@
       ].join("-");
     }
 
+    // Losslessly encode digits so opaque IDs cannot resemble phone numbers.
+    // Escape q as well to keep both UUID and legacy fallback tokens unambiguous.
+    token = token.replace(/[0-9q]/g, function (character) {
+      return character === "q" ? "qq" : "q" + String.fromCharCode(97 + Number(character));
+    });
+
     return [prefix || "id", token].join("_").replace(/[^a-zA-Z0-9_-]+/g, "-").slice(0, 96);
   }
 
@@ -134,7 +140,7 @@
     try {
       if (window.localStorage && typeof window.localStorage.getItem === "function") {
         sessionId = window.localStorage.getItem(BOOKING_HANDOFF_SESSION_KEY) || "";
-        if (!sessionId) {
+        if (!sessionId || isSensitiveAnalyticsValue(sessionId)) {
           sessionId = createTrackingId("svs");
           window.localStorage.setItem(BOOKING_HANDOFF_SESSION_KEY, sessionId);
         }
@@ -252,6 +258,41 @@
     }
   }
 
+  // Site navigation uses arrive/depart; Hostaway's public checkout uses start/end.
+  function readTripParams(params) {
+    var arrive = params.get("arrive") || params.get("checkin") || "";
+    var depart = params.get("depart") || params.get("checkout") || "";
+    function validDate(value) {
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
+      var date = new Date(value + "T00:00:00Z");
+      return !Number.isNaN(date.getTime()) && date.toISOString().slice(0, 10) === value;
+    }
+    var today = new Intl.DateTimeFormat("en-CA", { timeZone: "America/New_York", year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date());
+    var trip = {};
+    if (validDate(arrive) && validDate(depart) && arrive >= today && depart > arrive) {
+      trip.arrive = arrive;
+      trip.depart = depart;
+    }
+    var guests = params.get("guests") || "";
+    if (/^\d+$/.test(guests) && Number.isSafeInteger(Number(guests)) && Number(guests) > 0) trip.guests = String(Number(guests));
+    return trip;
+  }
+
+  function preserveTripLink(node) {
+    var href = node && typeof node.getAttribute === "function" ? node.getAttribute("href") : "";
+    if (!href || href.charAt(0) === "#") return;
+    var url;
+    try { url = new URL(href, window.location.href); } catch (_error) { return; }
+    if (!isSameOriginUrl(url, window.location.href) || !/^(?:\/(?:properties|guides|stays)(?:\/|$)|\/about-us\/|\/$)/.test(url.pathname)) return;
+    var trip = readTripParams(new URLSearchParams(window.location.search || ""));
+    // A destination's explicit trip is intentional; never combine two date ranges.
+    if (!["arrive", "depart", "checkin", "checkout"].some(function (key) { return url.searchParams.has(key); })) {
+      if (trip.arrive) { url.searchParams.set("arrive", trip.arrive); url.searchParams.set("depart", trip.depart); }
+    }
+    if (trip.guests && !url.searchParams.has("guests")) url.searchParams.set("guests", trip.guests);
+    if (Object.keys(trip).length) node.setAttribute("href", url.toString());
+  }
+
   function syncFunnelLineageLink(node) {
     var eventName = node && node.dataset ? node.dataset.trackEvent : "";
     if (FUNNEL_LINEAGE_EVENTS.indexOf(eventName) === -1) return getNavigationHref(node);
@@ -346,6 +387,24 @@
       });
     }
 
+    // Prefer an explicitly selected destination range; do not mix it with page dates.
+    var dateKeys = ["start", "end", "startingDate", "endingDate"];
+    var explicitDates = dateKeys.some(function (key) { return url.searchParams.has(key); });
+    var trip = readTripParams(currentParams || new URLSearchParams());
+    var destinationTrip = readTripParams(new URLSearchParams({
+      arrive: url.searchParams.get("start") || url.searchParams.get("startingDate") || "",
+      depart: url.searchParams.get("end") || url.searchParams.get("endingDate") || "",
+      guests: url.searchParams.get("numberOfGuests") || trip.guests || ""
+    }));
+    var chosenTrip = explicitDates ? destinationTrip : trip;
+    dateKeys.forEach(function (key) { url.searchParams.delete(key); });
+    if (chosenTrip.arrive) {
+      url.searchParams.set("start", chosenTrip.arrive);
+      url.searchParams.set("end", chosenTrip.depart);
+    }
+    url.searchParams.delete("numberOfGuests");
+    if (destinationTrip.guests) url.searchParams.set("numberOfGuests", destinationTrip.guests);
+
     var currentPagePath = getCurrentPagePath();
     var currentPropertyMatch = currentPagePath.match(/^\/properties\/([^/]+)/i);
     var propertySlug = node && node.dataset && node.dataset.propertySlug
@@ -429,6 +488,7 @@
     if (!document || typeof document.querySelectorAll !== "function") return;
 
     Array.prototype.forEach.call(document.querySelectorAll("a[href]"), function (node) {
+      preserveTripLink(node);
       syncBookingEngineLink(node);
     });
   }
@@ -785,6 +845,7 @@
     document.addEventListener("click", function (event) {
       if (!event.target || typeof event.target.closest !== "function") return;
 
+      preserveTripLink(event.target.closest("a[href]"));
       var target = event.target.closest("[data-track-event]");
       if (!target) return;
 
@@ -1129,6 +1190,7 @@
   }
 
   window.SeascapeConversionTracking = {
+    readTripParams: readTripParams,
     trackEvent: trackEvent,
     shouldDelayTrackedNavigation: shouldDelayTrackedNavigation,
     continueTrackedNavigation: continueTrackedNavigation,

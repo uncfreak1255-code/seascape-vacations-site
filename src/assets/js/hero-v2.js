@@ -215,6 +215,13 @@
     ];
 
     var state = { area: 'bradenton', arrive: '', depart: '', guests: 8 };
+    var tracking = window.SeascapeConversionTracking;
+    if (tracking && tracking.readTripParams) {
+        var trip = tracking.readTripParams(search);
+        state.arrive = trip.arrive || '';
+        state.depart = trip.depart || '';
+        if (trip.guests) state.guests = Number(trip.guests);
+    }
 
     var fields = booking.querySelectorAll('.hero-booking-field');
     var whereField  = fields[0];
