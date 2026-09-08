@@ -24,28 +24,28 @@ const LISTING_ID_BY_SLUG = {
 };
 const STATIC_PROPERTY_SCHEMA_FACTS_BY_SLUG = {
   "dockside-dreams": {
-    latitude: 27.4992,
-    longitude: -82.5751,
+    latitude: 27.4681853,
+    longitude: -82.6603068,
     postalCode: "34205"
   },
   "the-oasis": {
-    latitude: 27.4889,
-    longitude: -82.5648,
+    latitude: 27.49016452,
+    longitude: -82.63729058,
     postalCode: "34209"
   },
   "sarasota-luxe": {
-    latitude: 27.3364,
-    longitude: -82.5307,
+    latitude: 27.33519936,
+    longitude: -82.52189636,
     postalCode: "34236"
   },
   "river-house": {
-    latitude: 27.4989,
-    longitude: -82.5748,
+    latitude: 27.51230049,
+    longitude: -82.62239838,
     postalCode: "34209"
   },
   "bradenton-pool-home": {
-    latitude: 27.4789,
-    longitude: -82.5548,
+    latitude: 27.4726594,
+    longitude: -82.600671,
     postalCode: "34205"
   }
 };

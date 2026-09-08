@@ -15,6 +15,24 @@ function expectTrip(href, booking = false) {
   expect(url.searchParams.get(booking ? 'numberOfGuests' : 'guests')).toBe('8');
 }
 
+test('returning home restores dates and a non-default group before searching again', async ({ page }) => {
+  await visit(page, '/properties/?' + trip.replace('guests=8', 'guests=6'));
+  // Use an existing homepage link, as a guest returning through site navigation does.
+  const href = await page.locator('a[href]').evaluateAll(nodes => nodes.map(n => n.href).find(href => new URL(href).pathname === '/'));
+  expect(href).toBeTruthy();
+  await page.goto(href);
+  const fields = page.locator('.hero-booking-field');
+  await expect(fields.nth(1)).toContainText('Dec 5');
+  await expect(fields.nth(2)).toContainText('Dec 12');
+  await expect(fields.nth(3)).toContainText('6 guests');
+  await page.locator('.hero-booking-cta').click();
+  await expect(page).toHaveURL(/\/properties\//);
+  const url = new URL(page.url());
+  expect(url.searchParams.get('arrive')).toBe('2026-12-05');
+  expect(url.searchParams.get('depart')).toBe('2026-12-12');
+  expect(url.searchParams.get('guests')).toBe('6');
+});
+
 test('existing homepage search carries the trip through catalog and property checkout', async ({ page }) => {
   await visit(page, '/');
   const fields = page.locator('.hero-booking-field');

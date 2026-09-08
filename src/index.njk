@@ -117,35 +117,6 @@
         <button class="btn btn-gold" onclick="window.open('https://book.seascape-vacations.com', '_blank')">Book Now</button>
     </div>
 
-    <!-- JSON-LD Structured Data for SEO -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "VacationRental",
-        "name": "Seascape Vacations",
-        "description": "{{ site.description }}",
-        "url": "https://seascape-vacations.com",
-        "telephone": "+1-941-704-8545",
-        "address": {
-            "@type": "PostalAddress",
-            "addressLocality": "Bradenton",
-            "addressRegion": "FL",
-            "addressCountry": "US",
-            "postalCode": "34209"
-        },
-        "geo": {
-            "@type": "GeoCoordinates",
-            "latitude": "27.4989",
-            "longitude": "-82.5748"
-        },
-        "sameAs": [
-            {% for profile in site.sameAsLinks %}
-            "{{ profile }}"{% if not loop.last %},{% endif %}
-            {% endfor %}
-        ]
-    }
-    </script>
-
     <!-- HOME PAGE -->
     <div id="page-home" class="page active">
         <!-- Hero v2 -->
@@ -635,6 +606,7 @@
         </div>
     </div>
 
+    <script defer src="/assets/js/conversion-tracking.js"></script>
     <script defer src="/assets/js/homepage.js"></script>
     <script defer src="/assets/js/hero-v2.js"></script>
     {% include "partials/site-header-script.njk" %}
