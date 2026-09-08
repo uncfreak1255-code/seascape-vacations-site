@@ -54,7 +54,7 @@ test('existing homepage search carries the trip through catalog and property che
   expectTrip(page.url());
 });
 
-test('guide to stay to property retains the trip and GA4 lineage agrees with checkout', async ({ page }) => {
+test('guide to stay to property retains the trip and GA4 outbound lineage agrees with checkout', async ({ page }) => {
   await visit(page, '/guides/bradenton-vs-sarasota/?' + trip);
   const stay = page.locator('a[data-track-event="guide_stay_click"]').first();
   expectTrip(await stay.getAttribute('href'));
@@ -70,7 +70,7 @@ test('guide to stay to property retains the trip and GA4 lineage agrees with che
   const href = await checkout.getAttribute('href');
   expectTrip(href, true);
   const outbound = new URL(href);
-  // Observe the real click/GA4 path without submitting anything to Hostaway.
+  // Observe the real outbound click/GA4 path without submitting anything to Hostaway.
   await page.evaluate(() => {
     window.__tripContinuityEvents = [];
     window.seascapeTrackEvent = (name, payload) => window.__tripContinuityEvents.push({ name, payload });
