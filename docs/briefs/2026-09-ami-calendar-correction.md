@@ -33,6 +33,15 @@
 | Local/GBP proof | Not applicable: event-source validation, no local-pack claim. |
 | AEO/readback note | No AI citation claim; verify the corrected list in built HTML. |
 | Recommendation | Correct two dated event entries and cite their sources. No expansion or snippet rewrite. |
+| Attack status | completed |
+| Query variants inspected | best time to visit Anna Maria Island; Manatee County Fair 2026 dates; Cortez Commercial Fishing Festival 2026 dates. |
+| SERP source | Public web search and source-page readback on 2026-09-08; not a location-controlled rank report. |
+| Competitor URLs inspected | https://onestopami.com/blog/best-time-to-visit-anna-maria-island ; https://annamariaisland.com/faqs-frequently-asked-questions ; https://www.planannamaria.com/best-time-to-visit . Search extracts cover seasonal timing and month-based planning. |
+| Content gap and Seascape answer | Seascape's existing event list places two events in the wrong months. Correct January and February using the dated fair and tourism-board listings linked above. |
+| Design/format strategy | Retain the existing event list and chronological order; add source links and a 2026 date caveat. No new visual pattern. |
+| Seascape proof available | Current source and rendered page establish the errors; the linked Florida Federation of Fairs and Bradenton Area Convention and Visitors Bureau listings establish the 2026 dates. |
+| Tools/plugins used | Search Console connector for page demand; analytics-owned joined read for the hold decision; web search and page reads for source dates and competitor context; local build and browser readback for corrected content. |
+| Decision and reason | Make the two factual corrections on the existing guide. The measurement hold remains in place for expansion and impact claims. |
 
 ## Acceptance
 
