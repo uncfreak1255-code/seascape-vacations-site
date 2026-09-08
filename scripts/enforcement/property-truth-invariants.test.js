@@ -249,6 +249,42 @@ test("property template schema facts match fallback counts and amenity labels", 
   }
 });
 
+test("property reviews stay nested under one complete VacationRental entity", () => {
+  const expectedReviewCounts = new Map([
+    ["bradenton-pool-home", 0],
+    ["dockside-dreams", 3],
+    ["river-house", 3],
+    ["sarasota-luxe", 3],
+    ["the-oasis", 3]
+  ]);
+
+  for (const property of fallbackProperties) {
+    const template = readSource(`src/properties/${property.slug}/index.njk`);
+    const schemaObjects = extractJsonLdObjects(template);
+    const vacationRentals = schemaObjects.filter((item) => item["@type"] === "VacationRental");
+    const standaloneReviews = schemaObjects.filter((item) => item["@type"] === "Review");
+
+    assert.equal(vacationRentals.length, 1, `${property.slug} must publish one complete VacationRental entity`);
+    assert.equal(standaloneReviews.length, 0, `${property.slug} must not publish standalone Review entities`);
+
+    const reviews = vacationRentals[0].review || [];
+    assert.equal(
+      reviews.length,
+      expectedReviewCounts.get(property.slug),
+      `${property.slug} must retain its verified reviews under VacationRental.review`
+    );
+
+    for (const review of reviews) {
+      assert.equal(review["@type"], "Review", `${property.slug} nested review must stay typed as Review`);
+      assert.equal("itemReviewed" in review, false, `${property.slug} nested review must not create another VacationRental`);
+      assert.ok(review.reviewRating, `${property.slug} nested review must retain its rating`);
+      assert.ok(review.author, `${property.slug} nested review must retain its author`);
+      assert.ok(review.reviewBody, `${property.slug} nested review must retain its text`);
+      assert.ok(review.datePublished, `${property.slug} nested review must retain its date`);
+    }
+  }
+});
+
 function escapeRegExp(value) {
   return String(value).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
