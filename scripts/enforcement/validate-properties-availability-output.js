@@ -54,7 +54,7 @@ function validatePropertiesAvailabilityOutput(html, options = {}) {
       failures.push("missing or incorrect canonical booking destination for " + property.slug);
     }
   }
-  if (!/data-catalog-version=["']guest-journey-v1["']/.test(html)) {
+  if (!/data-catalog-version=["']waterline-v3["']/.test(html)) {
     failures.push("missing current guest journey version");
   }
   for (const [key, label] of [
