@@ -62,7 +62,7 @@
   }
   function syncLinks() {
     document.querySelectorAll("[data-trip-link]").forEach(function (link) {
-      var url = new URL(originalLinks.get(link),location.href);
+      var url = preserveSave50Params(new URL(originalLinks.get(link),location.href));
       ["arrive","depart","checkin","checkout","guests","area","compare"].forEach(function(key){url.searchParams.delete(key);});
       itineraryParams().forEach(function (value,key) { url.searchParams.set(key,value); });
       link.href = url.pathname + url.search + url.hash;
