@@ -139,6 +139,8 @@ Only an actual photograph of the named property may illustrate its accommodation
 
 If an image cannot load, show a neutral named unavailable state. Never substitute the site OG image, a guide photograph, or another home. Visual proof must fail on a missing expected property image; a fallback is not a passing design baseline.
 
+- **Editorial illustrations:** Clearly illustrated, non-location planning subjects may support guide text, as approved for the family guide on September 9, 2026. Use the existing cream/teal/gold palette, descriptive alt text, and an editorial-illustration caption. Retain real photography for property galleries, property/destination heroes, amenities, and named places; illustrations must not imply an actual rental or destination scene.
+
 ## Trust and usability
 - Facts, room layouts and policies come from canonical property data and explicitly reviewed booking-source facts. Unknown is not false or included. Quote and cancellation terms come from the current Hostaway checkout.
 - Never claim universal savings, flexible cancellation, ratings, review counts or response times without supporting evidence.
