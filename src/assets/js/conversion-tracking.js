@@ -5,7 +5,6 @@
   window.__seascapeConversionTrackingLoaded = true;
 
   var GUEST_EMAIL_CAPTURE_ENDPOINT = "/.netlify/functions/guest-email-capture";
-  var BOOKING_HANDOFF_ENDPOINT = "/.netlify/functions/booking-handoff";
   var BOOKING_HANDOFF_SESSION_KEY = "seascape_booking_handoff_session_id";
   var GUIDE_DIRECT_CLICK_PARAM = "sv_guide_click_id";
   var SUPPORTED_EVENTS = [
@@ -712,51 +711,6 @@
     return context;
   }
 
-  function sendBookingHandoffReceipt(payload) {
-    if (!payload || !payload.booking_handoff_id || typeof fetch !== "function") return;
-
-    var receiptPayload = {
-      handoffId: payload.booking_handoff_id,
-      sessionId: payload.booking_session_id,
-      guideDirectClickId: payload.guide_direct_click_id,
-      listingId: payload.booking_listing_id,
-      propertySlug: payload.booking_property_slug,
-      linkUrl: payload.link_url,
-      linkText: payload.link_text,
-      pagePath: payload.landing_page_path,
-      pageSlug: payload.page_slug || payload.guide_slug || slugFromPath(payload.landing_page_path),
-      guideSlug: payload.guide_slug,
-      sourcePageSlug: payload.source_page_slug,
-      placement: payload.placement,
-      sourceContext: payload.source_context,
-      aiPlatform: payload.ai_platform,
-      referrerHost: payload.referrer_host,
-      utmSource: payload.utm_source,
-      utmMedium: payload.utm_medium,
-      utmCampaign: payload.utm_campaign,
-      utmContent: payload.utm_content,
-      ref: payload.ref
-    };
-
-    receiptPayload = window.seascapeSanitizeAnalyticsPayload(receiptPayload);
-
-    fetch(BOOKING_HANDOFF_ENDPOINT, {
-      method: "POST",
-      headers: {
-        "content-type": "application/json; charset=utf-8"
-      },
-      body: JSON.stringify(receiptPayload),
-      keepalive: true
-    }).catch(function (error) {
-      if (typeof console !== "undefined" && typeof console.warn === "function") {
-        console.warn("booking_handoff_receipt_failed", {
-          endpoint: BOOKING_HANDOFF_ENDPOINT,
-          message: error && error.message ? error.message : "unknown"
-        });
-      }
-    });
-  }
-
   function getCurrentPagePath() {
     var path = window.location && typeof window.location.pathname === "string"
       ? window.location.pathname
@@ -857,10 +811,6 @@
       var hasExplicitHandoffEvent =
         primaryEvent === "booking_engine_handoff" ||
         primaryEvent === "property_booking_page_click";
-      if (targetsBookingEngine) {
-        sendBookingHandoffReceipt(payload);
-      }
-
       if (shouldDelayTrackedNavigation(target, event)) {
         event.preventDefault();
         trackEvent(primaryEvent, payload, {
