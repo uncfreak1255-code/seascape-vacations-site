@@ -184,11 +184,11 @@ test("Netlify builds require rendered live availability cards", () => {
 
 test("rendered availability gate requires unique homes, canonical checkout links and honest price disclosures", () => {
   const card = (slug, id) => '<article class="catalog-card" data-property="' + slug + '" data-availability-mode="checkout"><a href="https://book.seascape-vacations.com/listings/' + id + '">Check dates</a><p>Full price, fees and cancellation terms on the booking page.</p></article>';
-  const html = '<div data-catalog-version="guest-journey-v1">' + card("dockside-dreams",206016) + card("the-oasis",189511) + card("sarasota-luxe",135881) + card("river-house",135880) + card("bradenton-pool-home",487798) + '</div>';
+  const html = '<div data-catalog-version="waterline-v3">' + card("dockside-dreams",206016) + card("the-oasis",189511) + card("sarasota-luxe",135881) + card("river-house",135880) + card("bradenton-pool-home",487798) + '</div>';
   const report = validatePropertiesAvailabilityOutput(html);
   assert.equal(report.checkoutCardCount, 5);
   for (const broken of [
-    html.replace("guest-journey-v1", "old"),
+    html.replace("waterline-v3", "old"),
     html.replace("/listings/206016", "/listings/189511"),
     html.replace("</div>", card("extra-home",123456) + "</div>"),
     html.replace('data-availability-mode="checkout"', ""),
