@@ -85,7 +85,9 @@ test('editing the homepage trip carries it into a home even before search is sub
   await page.getByLabel('Departure',{exact:true}).fill('2026-12-12');
   await page.getByLabel('Guests',{exact:true}).selectOption('6');
   await page.getByRole('button',{name:'Preview Dockside Dreams',exact:true}).click();
+  await expect(page.locator('.g-scene:visible')).toHaveAttribute('data-scene','dockside-dreams');
   await page.locator('.g-scene:visible a').click();
+  await expect(page).toHaveURL(/\/properties\/dockside-dreams\/\?/);
   await expect(page.getByLabel('Arrival',{exact:true})).toHaveValue('2026-12-05');
   await expect(page.getByLabel('Departure',{exact:true})).toHaveValue('2026-12-12');
   await expect(page.getByLabel('Guests',{exact:true})).toHaveValue('6');
