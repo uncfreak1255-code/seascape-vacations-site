@@ -1112,6 +1112,10 @@
     document.addEventListener("submit", function (event) {
       var form = event.target;
       if (!form || !form.matches("form[data-track-form]")) return;
+      if (form.dataset.inlineEmailCapture === "true" && form.dataset.guestCaptureInFlight === "true") {
+        event.preventDefault();
+        return;
+      }
 
       syncOwnerSourcePage(form);
       if (!validateOwnerFormContext(form)) {

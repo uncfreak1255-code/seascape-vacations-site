@@ -38,6 +38,7 @@ test('owners have a navigation path and a homepage path to the existing review f
 
 test('signup posts once, carries consent context, and reveals SAVE50 only after completion', async ({ page }) => {
   await visit(page);
+  expect(await page.locator('#email-signup').innerText()).not.toContain('SAVE50');
   const submitted = [];
   let finish;
   await page.route('**/.netlify/functions/guest-email-capture', async route => {
@@ -51,7 +52,9 @@ test('signup posts once, carries consent context, and reveals SAVE50 only after 
   await expect.poll(() => submitted.length).toBe(1);
   await button.click();
   await expect(page.locator('[data-email-capture-success]')).toBeHidden();
+  expect(await page.locator('#email-signup').innerText()).not.toContain('SAVE50');
   expect(submitted).toHaveLength(1);
+  expect(await page.evaluate(() => (window.dataLayer || []).filter(entry => entry.event === 'email_capture_submit').length)).toBe(1);
   expect(submitted[0]).toMatchObject({ name: 'Test Guest', email: 'waterline-test@example.com', formName: 'email_capture', pagePath: '/', pageSlug: 'home', placement: 'home_inline', deliveryChannel: 'email', consentBasis: 'guest_requested_email_followup' });
   expect(submitted[0].submissionId).toBeTruthy();
   finish();
@@ -79,6 +82,7 @@ test('pending capture never claims a completed signup or reveals the success off
 
 test('failed capture preserves entered fields and retries with the same submission identity', async ({ page }) => {
   await visit(page);
+  expect(await page.locator('#email-signup').innerText()).not.toContain('SAVE50');
   const submitted = [];
   await page.route('**/.netlify/functions/guest-email-capture', async route => {
     submitted.push(route.request().postDataJSON());
