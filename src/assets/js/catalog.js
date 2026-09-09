@@ -17,6 +17,18 @@
   var activeFilter = "all";
   var originalLinks = new Map();
 
+  function preserveSave50Params(url) {
+    var campaign = (params.get("utm_campaign") || "").trim().toLowerCase();
+    var promo = (params.get("promo") || "").trim().toLowerCase();
+    if (!["save50_welcome", "guest_social_proof"].includes(campaign) && promo !== "save50") return url;
+    ["utm_source","utm_medium","utm_campaign","utm_content","utm_term","utm_id","promo"].forEach(function (key) {
+      var value = (params.get(key) || "").trim();
+      if (!value && key === "utm_campaign") value = "save50_welcome";
+      if (value && !url.searchParams.get(key)) url.searchParams.set(key,value);
+    });
+    return url;
+  }
+
   function validDate(value) {
     if (!/^\d{4}-\d{2}-\d{2}$/.test(value || "")) return false;
     var date = new Date(value + "T00:00:00Z");
@@ -57,7 +69,7 @@
     });
     // Only the main CTAs inherit the chosen trip. A recent-opening link owns its own dates.
     document.querySelectorAll("[data-booking-base]").forEach(function (link) {
-      var url = new URL(link.dataset.bookingBase);
+      var url = preserveSave50Params(new URL(link.dataset.bookingBase));
       if (trip.arrive && trip.depart) { url.searchParams.set("start",trip.arrive); url.searchParams.set("end",trip.depart); }
       if (trip.guests && Number(trip.guests) <= 16) url.searchParams.set("numberOfGuests",trip.guests);
       link.href = url.toString();

@@ -12,6 +12,17 @@
   var trip = parseTrip ? parseTrip(new URLSearchParams(location.search)) : {};
   var pageRoot = document.querySelector('[data-property-page]');
   var originalLinks = new Map();
+  function preserveSave50Params(url) {
+    var params=new URLSearchParams(location.search);
+    var campaign=(params.get('utm_campaign')||'').trim().toLowerCase();
+    var promo=(params.get('promo')||'').trim().toLowerCase();
+    if(!['save50_welcome','guest_social_proof'].includes(campaign)&&promo!=='save50')return url;
+    ['utm_source','utm_medium','utm_campaign','utm_content','utm_term','utm_id','promo'].forEach(function(key){
+      var value=(params.get(key)||'').trim();if(!value&&key==='utm_campaign')value='save50_welcome';
+      if(value&&!url.searchParams.get(key))url.searchParams.set(key,value);
+    });
+    return url;
+  }
   document.querySelectorAll('a[href]').forEach(function (link) {
     var url = new URL(link.getAttribute('href'), location.href);
     if (url.origin === location.origin && (link.hasAttribute('data-trip-link') || /^(?:\/(?:properties|guides|stays)\/|\/about-us\/|\/$)/.test(url.pathname))) originalLinks.set(link, link.getAttribute('href'));
@@ -32,7 +43,7 @@
     var checkout=document.querySelector('[data-property-checkout]');
     var form=document.querySelector('form[data-booking-url]');
     if (checkout && form) {
-      var url=new URL(form.dataset.bookingUrl);
+      var url=preserveSave50Params(new URL(form.dataset.bookingUrl));
       if (trip.arrive) {url.searchParams.set('start',trip.arrive);url.searchParams.set('end',trip.depart);}
       if (trip.guests) url.searchParams.set('numberOfGuests',trip.guests);
       var oversized=Number(trip.guests||0)>Number(form.dataset.maxGuests);

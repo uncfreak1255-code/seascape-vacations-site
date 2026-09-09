@@ -72,6 +72,23 @@ test("editing fields requires applying the trip; global booking links update too
   expect(trip(await page.locator(".catalog-check-dates").first().getAttribute("href"))).toEqual({start:null,end:null,guests:"14"});
 });
 
+test("SAVE50 campaign survives catalog and property trip edits", async ({ page }) => {
+  await visit(page, "promo=save50");
+  await page.getByLabel("Arrival", {exact:true}).fill("2026-12-05");
+  await page.getByLabel("Departure", {exact:true}).fill("2026-12-12");
+  await page.getByLabel("Guests", {exact:true}).selectOption("8");
+  await page.getByRole("button", {name:"Find my home",exact:true}).click();
+  var catalogCheckout = new URL(await page.locator('[data-property="dockside-dreams"] .catalog-check-dates').getAttribute("href"));
+  expect(catalogCheckout.searchParams.get("promo")).toBe("save50");
+  expect(catalogCheckout.searchParams.get("utm_campaign")).toBe("save50_welcome");
+  await page.getByRole("link", {name:"View Dockside Dreams details",exact:true}).click();
+  await page.getByLabel("Guests", {exact:true}).selectOption("10");
+  var propertyCheckout = new URL(await page.locator("[data-property-checkout]").getAttribute("href"));
+  expect(propertyCheckout.searchParams.get("promo")).toBe("save50");
+  expect(propertyCheckout.searchParams.get("utm_campaign")).toBe("save50_welcome");
+  expect(propertyCheckout.searchParams.get("numberOfGuests")).toBe("10");
+});
+
 test("bad incoming dates recover visibly; oversized groups are never silently made smaller", async ({ page }) => {
   for (const query of [
     "arrive=2026-11-07", "arrive=2026-11-14&depart=2026-11-07",
