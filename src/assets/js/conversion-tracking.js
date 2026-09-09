@@ -5,7 +5,6 @@
   window.__seascapeConversionTrackingLoaded = true;
 
   var GUEST_EMAIL_CAPTURE_ENDPOINT = "/.netlify/functions/guest-email-capture";
-  var BOOKING_HANDOFF_ENDPOINT = "/.netlify/functions/booking-handoff";
   var BOOKING_HANDOFF_SESSION_KEY = "seascape_booking_handoff_session_id";
   var GUIDE_DIRECT_CLICK_PARAM = "sv_guide_click_id";
   var SUPPORTED_EVENTS = [
@@ -258,6 +257,41 @@
     }
   }
 
+  // Site navigation uses arrive/depart; Hostaway's public checkout uses start/end.
+  function readTripParams(params) {
+    var arrive = params.get("arrive") || params.get("checkin") || "";
+    var depart = params.get("depart") || params.get("checkout") || "";
+    function validDate(value) {
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
+      var date = new Date(value + "T00:00:00Z");
+      return !Number.isNaN(date.getTime()) && date.toISOString().slice(0, 10) === value;
+    }
+    var today = new Intl.DateTimeFormat("en-CA", { timeZone: "America/New_York", year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date());
+    var trip = {};
+    if (validDate(arrive) && validDate(depart) && arrive >= today && depart > arrive) {
+      trip.arrive = arrive;
+      trip.depart = depart;
+    }
+    var guests = params.get("guests") || "";
+    if (/^\d+$/.test(guests) && Number.isSafeInteger(Number(guests)) && Number(guests) > 0) trip.guests = String(Number(guests));
+    return trip;
+  }
+
+  function preserveTripLink(node) {
+    var href = node && typeof node.getAttribute === "function" ? node.getAttribute("href") : "";
+    if (!href || href.charAt(0) === "#") return;
+    var url;
+    try { url = new URL(href, window.location.href); } catch (_error) { return; }
+    if (!isSameOriginUrl(url, window.location.href) || !/^(?:\/(?:properties|guides|stays)(?:\/|$)|\/about-us\/|\/$)/.test(url.pathname)) return;
+    var trip = readTripParams(new URLSearchParams(window.location.search || ""));
+    // A destination's explicit trip is intentional; never combine two date ranges.
+    if (!["arrive", "depart", "checkin", "checkout"].some(function (key) { return url.searchParams.has(key); })) {
+      if (trip.arrive) { url.searchParams.set("arrive", trip.arrive); url.searchParams.set("depart", trip.depart); }
+    }
+    if (trip.guests && !url.searchParams.has("guests")) url.searchParams.set("guests", trip.guests);
+    if (Object.keys(trip).length) node.setAttribute("href", url.toString());
+  }
+
   function syncFunnelLineageLink(node) {
     var eventName = node && node.dataset ? node.dataset.trackEvent : "";
     if (FUNNEL_LINEAGE_EVENTS.indexOf(eventName) === -1) return getNavigationHref(node);
@@ -352,6 +386,24 @@
       });
     }
 
+    // Prefer an explicitly selected destination range; do not mix it with page dates.
+    var dateKeys = ["start", "end", "startingDate", "endingDate"];
+    var explicitDates = dateKeys.some(function (key) { return url.searchParams.has(key); });
+    var trip = readTripParams(currentParams || new URLSearchParams());
+    var destinationTrip = readTripParams(new URLSearchParams({
+      arrive: url.searchParams.get("start") || url.searchParams.get("startingDate") || "",
+      depart: url.searchParams.get("end") || url.searchParams.get("endingDate") || "",
+      guests: url.searchParams.get("numberOfGuests") || trip.guests || ""
+    }));
+    var chosenTrip = explicitDates ? destinationTrip : trip;
+    dateKeys.forEach(function (key) { url.searchParams.delete(key); });
+    if (chosenTrip.arrive) {
+      url.searchParams.set("start", chosenTrip.arrive);
+      url.searchParams.set("end", chosenTrip.depart);
+    }
+    url.searchParams.delete("numberOfGuests");
+    if (destinationTrip.guests) url.searchParams.set("numberOfGuests", destinationTrip.guests);
+
     var currentPagePath = getCurrentPagePath();
     var currentPropertyMatch = currentPagePath.match(/^\/properties\/([^/]+)/i);
     var propertySlug = node && node.dataset && node.dataset.propertySlug
@@ -435,6 +487,7 @@
     if (!document || typeof document.querySelectorAll !== "function") return;
 
     Array.prototype.forEach.call(document.querySelectorAll("a[href]"), function (node) {
+      preserveTripLink(node);
       syncBookingEngineLink(node);
     });
   }
@@ -658,51 +711,6 @@
     return context;
   }
 
-  function sendBookingHandoffReceipt(payload) {
-    if (!payload || !payload.booking_handoff_id || typeof fetch !== "function") return;
-
-    var receiptPayload = {
-      handoffId: payload.booking_handoff_id,
-      sessionId: payload.booking_session_id,
-      guideDirectClickId: payload.guide_direct_click_id,
-      listingId: payload.booking_listing_id,
-      propertySlug: payload.booking_property_slug,
-      linkUrl: payload.link_url,
-      linkText: payload.link_text,
-      pagePath: payload.landing_page_path,
-      pageSlug: payload.page_slug || payload.guide_slug || slugFromPath(payload.landing_page_path),
-      guideSlug: payload.guide_slug,
-      sourcePageSlug: payload.source_page_slug,
-      placement: payload.placement,
-      sourceContext: payload.source_context,
-      aiPlatform: payload.ai_platform,
-      referrerHost: payload.referrer_host,
-      utmSource: payload.utm_source,
-      utmMedium: payload.utm_medium,
-      utmCampaign: payload.utm_campaign,
-      utmContent: payload.utm_content,
-      ref: payload.ref
-    };
-
-    receiptPayload = window.seascapeSanitizeAnalyticsPayload(receiptPayload);
-
-    fetch(BOOKING_HANDOFF_ENDPOINT, {
-      method: "POST",
-      headers: {
-        "content-type": "application/json; charset=utf-8"
-      },
-      body: JSON.stringify(receiptPayload),
-      keepalive: true
-    }).catch(function (error) {
-      if (typeof console !== "undefined" && typeof console.warn === "function") {
-        console.warn("booking_handoff_receipt_failed", {
-          endpoint: BOOKING_HANDOFF_ENDPOINT,
-          message: error && error.message ? error.message : "unknown"
-        });
-      }
-    });
-  }
-
   function getCurrentPagePath() {
     var path = window.location && typeof window.location.pathname === "string"
       ? window.location.pathname
@@ -791,6 +799,7 @@
     document.addEventListener("click", function (event) {
       if (!event.target || typeof event.target.closest !== "function") return;
 
+      preserveTripLink(event.target.closest("a[href]"));
       var target = event.target.closest("[data-track-event]");
       if (!target) return;
 
@@ -802,10 +811,6 @@
       var hasExplicitHandoffEvent =
         primaryEvent === "booking_engine_handoff" ||
         primaryEvent === "property_booking_page_click";
-      if (targetsBookingEngine) {
-        sendBookingHandoffReceipt(payload);
-      }
-
       if (shouldDelayTrackedNavigation(target, event)) {
         event.preventDefault();
         trackEvent(primaryEvent, payload, {
@@ -1135,6 +1140,7 @@
   }
 
   window.SeascapeConversionTracking = {
+    readTripParams: readTripParams,
     trackEvent: trackEvent,
     shouldDelayTrackedNavigation: shouldDelayTrackedNavigation,
     continueTrackedNavigation: continueTrackedNavigation,

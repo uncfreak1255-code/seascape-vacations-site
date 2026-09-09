@@ -581,7 +581,7 @@
       "faqs": [
         {
           "question": "Which property is best for a romantic couples getaway?",
-          "answer": "River House for a quiet cul-de-sac near the river, about 15 minutes from the AMI beaches. Sarasota Luxe for an upscale, walkable downtown-Sarasota base near fine dining. Both have a private heated pool and hot tub."
+          "answer": "River House for a quiet cul-de-sac near the river, about 15 minutes from the AMI beaches. Sarasota Luxe for an upscale Sarasota base near downtown dining. Both have a private heated pool and hot tub."
         },
         {
           "question": "What are the best romantic restaurants near Anna Maria Island?",
@@ -622,7 +622,7 @@
           "value": "Sunset sailing, couples' spa, beachfront dinners at Beach Bistro and Euphemia Haye, and quiet beach walks."
         }
       ],
-      "geoIntro": "<p>A couples' trip works better in a whole private home than a hotel room: your own heated pool, a hot tub, and quiet evenings with no shared walls or lobby noise. Both of these homes sit in the Bradenton\u2013Sarasota area near Anna Maria Island, so you trade a beachfront address for real privacy and more space.</p><p><strong>River House</strong> is the quieter pick \u2014 a calm cul-de-sac near the Manatee River, about 15 minutes from the AMI beaches, with a private heated pool and hot tub. <strong>Sarasota Luxe</strong> leans upscale and walkable: downtown Sarasota dining and galleries at the door, Lido and Siesta a short drive away. Both are private, both have a pool and hot tub, neither drops you into a crowded resort.</p><p>Fill the days with sunset sailing, a couples' massage, dinner at Beach Bistro on the sand or Euphemia Haye on Longboat Key, then a soak in the hot tub under the stars. Compare the same dates and complete checkout total across channels.</p>",
+      "geoIntro": "<p>A couples' trip works better in a whole private home than a hotel room: your own heated pool, a hot tub, and quiet evenings with no shared walls or lobby noise. Both of these homes sit in the Bradenton\u2013Sarasota area near Anna Maria Island, so you trade a beachfront address for real privacy and more space.</p><p><strong>River House</strong> is the quieter pick \u2014 a calm cul-de-sac near the Manatee River, about 15 minutes from the AMI beaches, with a private heated pool and hot tub. <strong>Sarasota Luxe</strong> is an upscale Sarasota base near downtown dining and galleries, which require driving; Lido and Siesta also require a drive. Both are private, both have a pool and hot tub, neither drops you into a crowded resort.</p><p>Fill the days with sunset sailing, a couples' massage, dinner at Beach Bistro on the sand or Euphemia Haye on Longboat Key, then a soak in the hot tub under the stars. Compare the same dates and complete checkout total across channels.</p>",
       "relatedStaySlugs": [
         "affordable-vacation-rentals-florida-gulf-coast",
         "bradenton-vacation-rentals-near-beaches",
@@ -638,7 +638,7 @@
       "title": "Sarasota Vacation Rentals with Private Pool",
       "h1": "Sarasota Homes with Private Pools",
       "description": "Book Sarasota Luxe, Seascape's private-pool Sarasota vacation rental near downtown, St. Armands, Siesta Key, and Lido Key.",
-      "intro": "A private heated-pool home walkable to downtown Sarasota \u2014 Sarasota Luxe \u2014 with the city's restaurants and galleries at the door and the beaches a short drive away.",
+      "intro": "A private heated-pool home near downtown Sarasota \u2014 Sarasota Luxe \u2014 with the city's restaurants, galleries, and beaches reached by car.",
       "faqs": [
         {
           "question": "How far is Siesta Key Beach from your Sarasota pool homes?",
@@ -654,15 +654,15 @@
         },
         {
           "question": "Is Sarasota Luxe good for a girls' trip or couples retreat?",
-          "answer": "Yes to both. Sarasota Luxe is walkable to downtown dining, shops, and galleries; St. Armands Circle is a short drive away."
+          "answer": "Sarasota Luxe is near downtown dining, shops, and galleries. St. Armands Circle is also reached by car; confirm current travel times before booking."
         },
         {
           "question": "What restaurants are near your Sarasota vacation rentals?",
           "answer": "Marina Jack on the bayfront, Indigenous for farm-to-table, Bijou Caf\u00e9, Owen's Fish Camp, the whole St. Armands Circle restaurant row, plus the caf\u00e9s in Burns Court."
         },
         {
-          "question": "Can I walk to anything from your Sarasota property?",
-          "answer": "Yes \u2014 Sarasota Luxe is walkable to downtown restaurants, shops, and galleries. The beaches are a short drive over the bridge."
+          "question": "What is near your Sarasota property?",
+          "answer": "Sarasota Luxe is near downtown restaurants, shops, and galleries. Downtown destinations and the beaches require driving; confirm current travel times."
         }
       ],
       "matchingProperties": [
@@ -670,8 +670,8 @@
       ],
       "decisionHighlights": [
         {
-          "label": "Walk to downtown",
-          "value": "Sarasota Luxe sits steps from downtown restaurants, galleries, and Palm Avenue shops \u2014 beaches a short drive over the bridge."
+          "label": "Near downtown",
+          "value": "Sarasota Luxe is near downtown restaurants, galleries, and Palm Avenue shops; plan to drive to downtown destinations and the beaches."
         },
         {
           "label": "Private pool, sleeps 12",
@@ -692,19 +692,19 @@
         "sarasota-arts-culture-vacation-rentals",
         "vacation-rentals-near-restaurants-florida"
       ],
-      "geoIntro": "<p>Sarasota Luxe is a downtown Sarasota home with a private pool and screened lanai. Downtown restaurants, shops, and galleries are walkable; beach visits and St. Armands Circle require a drive. Confirm current travel times and property details before booking.</p>"
+      "geoIntro": "<p>Sarasota Luxe is a downtown Sarasota home with a private pool and screened lanai. Downtown restaurants, shops, galleries, beach visits, and St. Armands Circle require a drive. Confirm current travel times and property details before booking.</p>"
     },
     {
       "slug": "downtown-sarasota-vacation-rentals",
       "destination": "sarasota",
       "title": "Downtown Sarasota Vacation Rentals",
       "h1": "Vacation Homes Near Downtown Sarasota",
-      "description": "Stay near downtown Sarasota in luxury vacation rentals. Walk to shops and restaurants.",
-      "intro": "A private pool home walkable to downtown Sarasota \u2014 Sarasota Luxe \u2014 steps from the restaurants, galleries, and theaters, with the beaches a short drive away.",
+      "description": "Stay near downtown Sarasota in a private-pool vacation home, with shops and restaurants reached by car.",
+      "intro": "A private-pool home near downtown Sarasota \u2014 Sarasota Luxe \u2014 with restaurants, galleries, theaters, and beaches reached by car.",
       "faqs": [
         {
-          "question": "Can I walk to restaurants from your downtown-area Sarasota rental?",
-          "answer": "Yes \u2014 Sarasota Luxe is walkable to downtown restaurants, Palm Avenue shops, and galleries. The beaches are a short drive over the bridge."
+          "question": "How do I reach restaurants from your Sarasota rental?",
+          "answer": "Plan to drive from Sarasota Luxe to downtown restaurants, Palm Avenue shops, galleries, and the beaches. Confirm current travel times."
         },
         {
           "question": "What's special about St. Armands Circle?",
@@ -732,8 +732,8 @@
       ],
       "decisionHighlights": [
         {
-          "label": "Walk to it all",
-          "value": "Steps from downtown restaurants, galleries, and Palm Avenue shops \u2014 the Ringling and the opera minutes away."
+          "label": "Near Sarasota attractions",
+          "value": "Downtown restaurants, galleries, Palm Avenue shops, the Ringling, and the opera are reached by car."
         },
         {
           "label": "Pool and space for 12",
@@ -744,7 +744,7 @@
           "value": "Lido in about 10 minutes over the bridge, Siesta in 15\u201320."
         }
       ],
-      "geoIntro": "<p>Downtown Sarasota packs museums, theaters, chef-driven restaurants, and a sunset bayfront into a few walkable blocks \u2014 and Sarasota Luxe puts you in the middle of it with your own pool instead of a hotel room. Spend the morning at the Ringling, lunch at a sidewalk caf\u00e9, the afternoon at Lido Beach, and the evening at the opera, mostly within 15 minutes.</p><p><strong>Sarasota Luxe</strong> is a four-bedroom home that sleeps 12, with a private heated pool, screened lanai, and designer interiors, walkable to Palm Avenue dining and shops. Lido Key is about 10 minutes over the Ringling Bridge; Siesta about 15\u201320.</p><p>It's the rare downtown base that's also a real home \u2014 quiet, private, and steps from the best of the city. Compare the same dates and complete checkout total across channels.</p>",
+      "geoIntro": "<p>Downtown Sarasota packs museums, theaters, chef-driven restaurants, and a sunset bayfront into a compact district, and Sarasota Luxe provides a private-home base nearby with your own pool instead of a hotel room. Spend the morning at the Ringling, lunch at a sidewalk caf\u00e9, the afternoon at Lido Beach, and the evening at the opera, mostly within 15 minutes.</p><p><strong>Sarasota Luxe</strong> is a four-bedroom home that sleeps 12, with a private heated pool, screened lanai, and designer interiors, near Palm Avenue dining and shops, which require driving. Lido Key is about 10 minutes over the Ringling Bridge; Siesta about 15\u201320.</p><p>It's the rare downtown base that's also a real home \u2014 quiet and private, with city destinations reached by car. Compare the same dates and complete checkout total across channels.</p>",
       "relatedStaySlugs": [
         "luxury-vacation-rentals-sarasota",
         "sarasota-arts-culture-vacation-rentals",
@@ -797,14 +797,14 @@
         },
         {
           "label": "House Fit",
-          "value": "Sarasota Luxe sleeps 12 across four bedrooms, with a private heated pool, screened lanai, and a downtown-Sarasota spot you can walk from."
+          "value": "Sarasota Luxe sleeps 12 across four bedrooms, with a private heated pool, screened lanai, and a Sarasota location near downtown; downtown destinations require driving."
         },
         {
           "label": "Direct Value",
           "value": "Compare the same dates and complete checkout total across channels."
         }
       ],
-      "geoIntro": "<p>Siesta Key's quartz sand and Sarasota's beaches draw visitors for different reasons. What the island does not provide is the same home-base setup as a private pool home inland in Sarasota.</p><p><strong>Sarasota Luxe</strong> is a four-bedroom home with a private heated pool and screened lanai near downtown Sarasota. Lido Key and Siesta Key require a drive, while downtown restaurants and galleries are walkable. Confirm current travel times and property details before booking.</p><p>If stepping straight onto the sand matters most, book on the island. If a short morning drive is fine, compare the same dates and complete checkout total across channels.</p>",
+      "geoIntro": "<p>Siesta Key's quartz sand and Sarasota's beaches draw visitors for different reasons. What the island does not provide is the same home-base setup as a private pool home inland in Sarasota.</p><p><strong>Sarasota Luxe</strong> is a four-bedroom home with a private heated pool and screened lanai near downtown Sarasota. Lido Key and Siesta Key require a drive, and downtown restaurants and galleries also require a drive. Confirm current travel times and property details before booking.</p><p>If stepping straight onto the sand matters most, book on the island. If a short morning drive is fine, compare the same dates and complete checkout total across channels.</p>",
       "relatedStaySlugs": [
         "4-bedroom-vacation-rentals-florida",
         "accessible-vacation-rentals-florida",
@@ -850,8 +850,8 @@
       ],
       "decisionHighlights": [
         {
-          "label": "Walkable to downtown Sarasota",
-          "value": "Restaurants, galleries, and the arts district on foot - no car needed for evening plans"
+          "label": "Near downtown Sarasota",
+          "value": "Plan to drive to restaurants, galleries, and the arts district; confirm current travel times"
         },
         {
           "label": "Ringling Museum: 10 min",
@@ -862,7 +862,7 @@
           "value": "4BR/12 guests with pool and included hot tub - books direct"
         }
       ],
-      "geoIntro": "<p>Sarasota runs on a scale that's easy to underestimate. The Ringling Museum is a 66-acre estate with a serious art collection, a Venetian Gothic mansion, and a circus museum on the same grounds. Marie Selby Botanical Gardens sits on a bay waterfront with one of the better orchid collections in the country. The Van Wezel, Asolo Rep, and Florida Studio Theatre all run professional seasons. First Friday gallery walks draw actual galleries. This is a real arts city that also has beaches - not a beach town with a museum.</p><p><strong>Sarasota Luxe</strong> is the Seascape home that fits a Sarasota cultural trip. It's a 4-bedroom home sleeping 12 in a walkable position from downtown Sarasota - dinner and galleries don't require a car. Lido Beach is 3 miles away (about 10 minutes). Siesta Key is 6 miles south, roughly 15-20 minutes depending on traffic. The home has a private pool, included hot tub, screened lanai, and a 2-car garage. Pet-friendly.</p><p>Anna Maria Island is 30-40 minutes north - far enough that it doesn't make sense as a daily side trip from a Sarasota base. If the AMI beaches are the priority, one of the Bradenton homes is a better starting point. If downtown Sarasota walkability, the arts corridor, and Siesta Key beach are the priority, <strong>Sarasota Luxe</strong> is the right call.</p>",
+      "geoIntro": "<p>Sarasota runs on a scale that's easy to underestimate. The Ringling Museum is a 66-acre estate with a serious art collection, a Venetian Gothic mansion, and a circus museum on the same grounds. Marie Selby Botanical Gardens sits on a bay waterfront with one of the better orchid collections in the country. The Van Wezel, Asolo Rep, and Florida Studio Theatre all run professional seasons. First Friday gallery walks draw actual galleries. This is a real arts city that also has beaches - not a beach town with a museum.</p><p><strong>Sarasota Luxe</strong> is the Seascape home that fits a Sarasota cultural trip. It's a 4-bedroom home sleeping 12 near downtown Sarasota; dinner and galleries require a car. Lido Beach is 3 miles away (about 10 minutes). Siesta Key is 6 miles south, roughly 15-20 minutes depending on traffic. The home has a private pool, included hot tub, screened lanai, and a 2-car garage. Pet-friendly.</p><p>Anna Maria Island is 30-40 minutes north - far enough that it doesn't make sense as a daily side trip from a Sarasota base. If the AMI beaches are the priority, one of the Bradenton homes is a better starting point. If Sarasota's arts corridor and Siesta Key beach are the priority, <strong>Sarasota Luxe</strong> is the right call.</p>",
       "relatedStaySlugs": [
         "sarasota-vacation-rentals-with-pool",
         "vacation-rentals-near-restaurants-florida",
@@ -881,7 +881,7 @@
       "faqs": [
         {
           "question": "Which Gulf Coast destination is right for my vacation?",
-          "answer": "Anna Maria Island for quieter beach access and old-Florida feel - best reached from the Bradenton homes. Sarasota for walkable downtown, arts, and Siesta Key - best served by Sarasota Luxe. Bradenton for private waterfront or large-group setups at better value than on-island rates. Tell us your group size and priorities and we can narrow it down."
+          "answer": "Anna Maria Island for quieter beach access and old-Florida feel - best reached from the Bradenton homes. Sarasota for arts, dining, and Siesta Key - all reached by car from Sarasota Luxe. Bradenton for private waterfront or large-group setups at better value than on-island rates. Tell us your group size and priorities and we can narrow it down."
         },
         {
           "question": "How do I save money on Gulf Coast vacation rentals?",
@@ -1292,18 +1292,18 @@
       "title": "Luxury Vacation Rentals in Sarasota FL",
       "h1": "Sarasota Luxury Vacation Homes",
       "description": "Experience Sarasota in style. Luxury vacation rentals with designer finishes and listing-specific amenities.",
-      "intro": "Sarasota Luxe is a 4-bedroom pool home walkable to downtown dining and galleries - the right base when your group wants Sarasota's arts and restaurant scene without giving up a private pool.",
+      "intro": "Sarasota Luxe is a 4-bedroom pool home near downtown dining and galleries, which require driving - the right base when your group wants Sarasota's arts and restaurant scene without giving up a private pool.",
       "faqs": [
         {
           "question": "What makes Sarasota Luxe a luxury property?",
-          "answer": "High-end kitchen appliances, designer interiors, private pool and hot tub, screened lanai, 2-car garage, and a location walkable to downtown Sarasota's best restaurants. It's the only Seascape home in Sarasota."
+          "answer": "High-end kitchen appliances, designer interiors, private pool and hot tub, screened lanai, 2-car garage, and a location near downtown Sarasota restaurants, which require driving. It's the only Seascape home in Sarasota."
         },
         {
           "question": "How close is Sarasota Luxe to downtown restaurants and attractions?",
-          "answer": "Walkable - downtown Sarasota restaurants, the Bayfront, galleries, and theaters are accessible on foot. St. Armands Circle is about 10 minutes by car. The Ringling Museum is about 10 minutes north."
+          "answer": "Plan to drive to downtown Sarasota restaurants, the Bayfront, galleries, and theaters. St. Armands Circle is about 10 minutes by car. The Ringling Museum is about 10 minutes north."
         },
         {
-          "question": "Can I walk to Siesta Key Beach from your Sarasota rental?",
+          "question": "How do I reach Siesta Key Beach from your Sarasota rental?",
           "answer": "No. Siesta Key Beach is about 6 miles and 15-20 minutes by car. Lido Beach is closer at about 3 miles and 10 minutes. Neither is walkable, but the drives are straightforward."
         },
         {
@@ -1316,7 +1316,7 @@
         },
         {
           "question": "What cultural attractions are near your Sarasota vacation rental?",
-          "answer": "Within easy reach: the Ringling Museum (about 10 min), Marie Selby Botanical Gardens (about 5 min), Van Wezel Performing Arts Hall (about 5 min), and a dense restaurant and gallery corridor that's walkable from the home."
+          "answer": "Within easy reach: the Ringling Museum (about 10 min), Marie Selby Botanical Gardens (about 5 min), Van Wezel Performing Arts Hall (about 5 min), and downtown restaurants and galleries, which require driving from the home."
         }
       ],
       "matchingProperties": [
@@ -1324,8 +1324,8 @@
       ],
       "decisionHighlights": [
         {
-          "label": "Walkable to Downtown",
-          "value": "On-foot access to Sarasota restaurants, galleries, and the Bayfront - no car needed for evenings out"
+          "label": "Near Downtown",
+          "value": "Plan to drive to Sarasota restaurants, galleries, and the Bayfront; confirm current travel times"
         },
         {
           "label": "Private Pool + Hot Tub",
@@ -1336,7 +1336,7 @@
           "value": "4BR, 12 guests, small dog welcome - fits a group that wants city access without splitting across two places"
         }
       ],
-      "geoIntro": "<p>Sarasota's reputation as Florida's Cultural Coast is earned: the Ringling Museum's 66-acre bayfront campus, Van Wezel Performing Arts Hall, and a downtown restaurant row that outpunches most Florida cities. What it does not always offer is large-group private-home accommodation close to all of it. Most lodging near downtown Sarasota is hotel rooms or small condos. <strong>Sarasota Luxe</strong> is the exception - a 4-bedroom home sleeping 12, walkable to downtown, with a private pool and hot tub.</p><p>Lido Beach is about 3 miles away, roughly 10 minutes by car. Siesta Key - the quartz-sand beach that earns most of the headlines - is about 6 miles, 15-20 minutes depending on bridge traffic. The distance matters: guests who want mornings at the beach and evenings at downtown restaurants will do that drive twice a day. Guests who want mostly dinner reservations, gallery walks, and a pool back home will hardly notice. Know which trip you're planning before you choose the base.</p><p><strong>Sarasota Luxe</strong> fits groups that lean toward the city side of that balance. The screened lanai, 2-car garage, and small-dog-friendly policy round out the practical details. Compare the same dates and complete checkout total across channels.</p>",
+      "geoIntro": "<p>Sarasota's reputation as Florida's Cultural Coast is earned: the Ringling Museum's 66-acre bayfront campus, Van Wezel Performing Arts Hall, and a downtown restaurant row that outpunches most Florida cities. What it does not always offer is large-group private-home accommodation close to all of it. Most lodging near downtown Sarasota is hotel rooms or small condos. <strong>Sarasota Luxe</strong> is the exception - a 4-bedroom home sleeping 12, near downtown, with a private pool and hot tub; downtown destinations require driving.</p><p>Lido Beach is about 3 miles away, roughly 10 minutes by car. Siesta Key - the quartz-sand beach that earns most of the headlines - is about 6 miles, 15-20 minutes depending on bridge traffic. The distance matters: guests who want mornings at the beach and evenings at downtown restaurants will do that drive twice a day. Guests who want mostly dinner reservations, gallery walks, and a pool back home will hardly notice. Know which trip you're planning before you choose the base.</p><p><strong>Sarasota Luxe</strong> fits groups that lean toward the city side of that balance. The screened lanai, 2-car garage, and small-dog-friendly policy round out the practical details. Compare the same dates and complete checkout total across channels.</p>",
       "relatedStaySlugs": [
         "sarasota-arts-culture-vacation-rentals",
         "sarasota-vacation-rentals-with-pool",
@@ -1396,7 +1396,7 @@
           "value": "From The Oasis's two hot tubs and putting green to Dockside's dock-side pool - each home is different"
         }
       ],
-      "geoIntro": "<p>All five Seascape homes have a private pool and a hot tub or spa included with the stay. The hot tub heat is included at no extra cost. Pool heat is an optional add-on ($40/day) that most guests request November through March - the Gulf runs warm enough the rest of the year that an unheated pool is comfortable. That distinction matters if you're planning a winter trip.</p><p>The setups aren't identical. <strong>The Oasis</strong> (5BR, sleeps 16, Bradenton) has the largest outdoor footprint - pool, two hot tubs, putting green, and a turf yard - built for big groups. <strong>Dockside Dreams</strong> (4BR, sleeps 12, Bradenton) adds a private dock and canal access to the pool and hot tub, making it the call for boaters. <strong>River House</strong> (4BR, sleeps 12, Bradenton) is a minute from a public boat ramp and has a pool and hot tub with a game room inside. <strong>Bradenton Pool Home</strong> (3BR, sleeps 10) is the smallest footprint and closest to IMG Academy. <strong>Sarasota Luxe</strong> (4BR, sleeps 12, downtown Sarasota) has a screened lanai with pool and hot tub, walkable to downtown dining.</p><p>If your group's main decision is pool-and-hot-tub and you haven't narrowed beyond that, the next cut is location: Bradenton puts you 10-15 minutes from Anna Maria Island beaches; Sarasota puts you 10-15 minutes from Lido Beach and walking distance from downtown.</p>",
+      "geoIntro": "<p>All five Seascape homes have a private pool and a hot tub or spa included with the stay. The hot tub heat is included at no extra cost. Pool heat is an optional add-on ($40/day) that most guests request November through March - the Gulf runs warm enough the rest of the year that an unheated pool is comfortable. That distinction matters if you're planning a winter trip.</p><p>The setups aren't identical. <strong>The Oasis</strong> (5BR, sleeps 16, Bradenton) has the largest outdoor footprint - pool, two hot tubs, putting green, and a turf yard - built for big groups. <strong>Dockside Dreams</strong> (4BR, sleeps 12, Bradenton) adds a private dock and canal access to the pool and hot tub, making it the call for boaters. <strong>River House</strong> (4BR, sleeps 12, Bradenton) is a minute from a public boat ramp and has a pool and hot tub with a game room inside. <strong>Bradenton Pool Home</strong> (3BR, sleeps 10) is the smallest footprint and closest to IMG Academy. <strong>Sarasota Luxe</strong> (4BR, sleeps 12, downtown Sarasota) has a screened lanai with pool and hot tub, near downtown dining, which requires driving.</p><p>If your group's main decision is pool-and-hot-tub and you haven't narrowed beyond that, the next cut is location: Bradenton puts you 10-15 minutes from Anna Maria Island beaches; Sarasota puts you 10-15 minutes from Lido Beach and near downtown, which requires driving.</p>",
       "relatedStaySlugs": [
         "week-long-vacation-rentals-florida",
         "work-from-home-vacation-rentals-florida",
@@ -1587,7 +1587,7 @@
       "faqs": [
         {
           "question": "Which homes sleep 12 guests?",
-          "answer": "Dockside Dreams, River House, and Sarasota Luxe each sleep 12 across 4 bedrooms. Dockside is waterfront in Bradenton; River House is near the Manatee River in Bradenton; Sarasota Luxe is walkable to downtown Sarasota."
+          "answer": "Dockside Dreams, River House, and Sarasota Luxe each sleep 12 across 4 bedrooms. Dockside is waterfront in Bradenton; River House is near the Manatee River in Bradenton; Sarasota Luxe is near downtown Sarasota; downtown destinations require driving."
         },
         {
           "question": "How many bedrooms do 12-guest homes have?",
@@ -1629,7 +1629,7 @@
           "value": "All three include a private pool and hot tub - no shared amenities, no lobby, no resort fees"
         }
       ],
-      "geoIntro": "<p>Sleeping 12 in a single home narrows the options fast. Hotels scatter a group across rooms on different floors; most vacation condos cap at 6-8. The three Seascape homes that hold 12 each have 4 bedrooms and 3+ bathrooms, and they cover two markets: Bradenton (near Anna Maria Island) and downtown Sarasota.</p><p><strong>Dockside Dreams</strong> (Bradenton) is the waterfront option - private dock, pool, hot tub, and arcade. Bradenton Beach is 2.9 miles away. <strong>River House</strong> (Bradenton) is a minute from a public boat ramp on the Manatee River, with a pool, hot tub, and game room; AMI beaches are about 15 minutes away. <strong>Sarasota Luxe</strong> (downtown Sarasota) trades beach proximity for walkable access to Sarasota restaurants, galleries, and the Bayfront - with a pool, hot tub, and screened lanai. Lido Beach is about 3 miles, 10 minutes.</p><p>The choice between Bradenton and Sarasota is mostly about how you'll spend your time. Beach-heavy trip: the Bradenton homes are the base. Mix of beach days and city dinners: Sarasota Luxe fits better. Rates split among 12 guests bring per-person cost well below hotel alternatives, with none of the shared-hallway tradeoffs.</p>",
+      "geoIntro": "<p>Sleeping 12 in a single home narrows the options fast. Hotels scatter a group across rooms on different floors; most vacation condos cap at 6-8. The three Seascape homes that hold 12 each have 4 bedrooms and 3+ bathrooms, and they cover two markets: Bradenton (near Anna Maria Island) and downtown Sarasota.</p><p><strong>Dockside Dreams</strong> (Bradenton) is the waterfront option - private dock, pool, hot tub, and arcade. Bradenton Beach is 2.9 miles away. <strong>River House</strong> (Bradenton) is a minute from a public boat ramp on the Manatee River, with a pool, hot tub, and game room; AMI beaches are about 15 minutes away. <strong>Sarasota Luxe</strong> (downtown Sarasota) trades beach proximity for proximity to Sarasota restaurants, galleries, and the Bayfront, all reached by car - with a pool, hot tub, and screened lanai. Lido Beach is about 3 miles, 10 minutes.</p><p>The choice between Bradenton and Sarasota is mostly about how you'll spend your time. Beach-heavy trip: the Bradenton homes are the base. Mix of beach days and city dinners: Sarasota Luxe fits better. Rates split among 12 guests bring per-person cost well below hotel alternatives, with none of the shared-hallway tradeoffs.</p>",
       "relatedStaySlugs": [
         "accessible-vacation-rentals-florida",
         "vacation-rentals-with-outdoor-grill",
@@ -2404,7 +2404,7 @@
       "faqs": [
         {
           "question": "Which property is best for a honeymoon?",
-          "answer": "River House for a quiet cul-de-sac near the river and the AMI beaches; Sarasota Luxe for upscale, walkable downtown Sarasota. Both have a private heated pool and hot tub, and the seclusion newlyweds want."
+          "answer": "River House for a quiet cul-de-sac near the river and the AMI beaches; Sarasota Luxe for upscale Sarasota near downtown, which requires driving. Both have a private heated pool and hot tub, and the seclusion newlyweds want."
         },
         {
           "question": "Can you help arrange honeymoon surprises?",
@@ -2438,14 +2438,14 @@
         },
         {
           "label": "Two settings",
-          "value": "River House for river-quiet near the beaches; Sarasota Luxe for walkable downtown dining. Both private, both pool and hot tub."
+          "value": "River House for river-quiet near the beaches; Sarasota Luxe for downtown dining, which requires driving. Both private, both pool and hot tub."
         },
         {
           "label": "Honeymoon-priced",
           "value": "Gulf Coast rates well under a comparable resort, and Compare the same dates and complete checkout total across channels."
         }
       ],
-      "geoIntro": "<p>For a honeymoon, a private home beats a hotel room: your own heated pool, a hot tub, and quiet mornings with no agenda. Both homes sit in the Bradenton\u2013Sarasota area near Anna Maria Island \u2014 you trade a beachfront address for seclusion and more space at Gulf Coast prices.</p><p><strong>River House</strong> is the quiet one \u2014 a calm cul-de-sac near the Manatee River, about 15 minutes from the AMI beaches, with a private heated pool and hot tub. <strong>Sarasota Luxe</strong> is the upscale, walkable pick: downtown Sarasota dining and galleries at the door, Lido and Siesta a short drive away. Both are private and intimate, neither drops you into a resort.</p><p>Sunset sailing, a couples' massage, dinner at Beach Bistro or Euphemia Haye, slow beach walks at Bean Point, and evenings in the hot tub. Compare the same dates and complete checkout total across channels.</p>",
+      "geoIntro": "<p>For a honeymoon, a private home beats a hotel room: your own heated pool, a hot tub, and quiet mornings with no agenda. Both homes sit in the Bradenton\u2013Sarasota area near Anna Maria Island \u2014 you trade a beachfront address for seclusion and more space at Gulf Coast prices.</p><p><strong>River House</strong> is the quiet one \u2014 a calm cul-de-sac near the Manatee River, about 15 minutes from the AMI beaches, with a private heated pool and hot tub. <strong>Sarasota Luxe</strong> is the upscale Sarasota pick near downtown dining and galleries, which require driving, Lido and Siesta a short drive away. Both are private and intimate, neither drops you into a resort.</p><p>Sunset sailing, a couples' massage, dinner at Beach Bistro or Euphemia Haye, slow beach walks at Bean Point, and evenings in the hot tub. Compare the same dates and complete checkout total across channels.</p>",
       "relatedStaySlugs": [
         "large-group-vacation-rentals-anna-maria-island",
         "romantic-getaway-anna-maria-island",
@@ -2464,7 +2464,7 @@
       "faqs": [
         {
           "question": "Which property is best for a babymoon?",
-          "answer": "River House for quiet nature-side calm near the river, about 15 minutes from the beaches. Sarasota Luxe for a walkable downtown base near spas and restaurants. Both are private and quiet, with a pool and hot tub."
+          "answer": "River House for quiet nature-side calm near the river, about 15 minutes from the beaches. Sarasota Luxe for a Sarasota base near downtown spas and restaurants, which require driving. Both are private and quiet, with a pool and hot tub."
         },
         {
           "question": "Are there prenatal spa services nearby?",
@@ -2498,14 +2498,14 @@
         },
         {
           "label": "Quiet or downtown",
-          "value": "River House for nature-side calm near the river; Sarasota Luxe for walkable downtown spas and dining. Both private, both pool and hot tub."
+          "value": "River House for nature-side calm near the river; Sarasota Luxe for downtown spas and dining, which require driving. Both private, both pool and hot tub."
         },
         {
           "label": "Peace of mind",
           "value": "Prenatal spas nearby, and Sarasota Memorial and Manatee Memorial hospitals both close."
         }
       ],
-      "geoIntro": "<p>A babymoon is the last easy trip before the baby comes, so the point is rest: a private home where you set the pace, nap when you want, and don't share a pool with anyone. Both of these homes are quiet and private, near AMI and Sarasota.</p><p><strong>River House</strong> is the calm, nature-side pick \u2014 a quiet cul-de-sac near the Manatee River, about 15 minutes from the beaches, with a private heated pool. <strong>Sarasota Luxe</strong> sits in walkable downtown Sarasota, near spas, restaurants, and galleries. Both have a pool and hot tub and the quiet expectant parents want.</p><p>Nearby spas offer prenatal treatments, and Sarasota Memorial and Manatee Memorial hospitals are both close if you want the peace of mind. Compare the same dates and complete checkout total across channels.</p>"
+      "geoIntro": "<p>A babymoon is the last easy trip before the baby comes, so the point is rest: a private home where you set the pace, nap when you want, and don't share a pool with anyone. Both of these homes are quiet and private, near AMI and Sarasota.</p><p><strong>River House</strong> is the calm, nature-side pick \u2014 a quiet cul-de-sac near the Manatee River, about 15 minutes from the beaches, with a private heated pool. <strong>Sarasota Luxe</strong> is near downtown Sarasota; downtown destinations require driving, near spas, restaurants, and galleries. Both have a pool and hot tub and the quiet expectant parents want.</p><p>Nearby spas offer prenatal treatments, and Sarasota Memorial and Manatee Memorial hospitals are both close if you want the peace of mind. Compare the same dates and complete checkout total across channels.</p>"
     },
     {
       "slug": "multigenerational-vacation-rentals-florida",

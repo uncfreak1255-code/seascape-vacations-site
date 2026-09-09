@@ -105,8 +105,8 @@ Read in this order:
 - global marketing skills in `/Users/sawbeck/.codex/skills/` may be used as advisory helpers for CRO, SEO, copy, psychology, analytics, and growth decisions, but they do not override this repo's source files, briefs, status docs, or five-role workflow
 - canonical lane for internal-link family/page inbound planning is `.agents/skills/internal-link-targeting`
 - canonical lane for live SERP CTR title-rewrite recommendation packs is `.agents/skills/serp-ctr-title-rewrite`; ship title/meta edits only when `docs/status/next-batch.md` is not `blocked by freshness`
-- AI discovery, GEO/AEO, and schema work should use the global `seascape-seo` skill for attack-lane framing plus the repo-local `.agents/skills/schema-markup` skill for implementation rules
-- external SEO/GEO packs such as `geo-optimizer-skill`, `gtm-engineer-skills`, `searchstack-aeo`, `claude-seo`, `akii-seo-ai-search-optimizer`, and `aeo.js` are donor references only; do not install or mirror them here without a fresh `agent-surface-audit`, repeated repo-specific need, and a smoke-tested win
+- AI discovery, GEO/AEO, and schema work follows the Search Operator role in `.claude/agents/search-operator.md` and `docs/process/seo-competitor-operating-loop.md` for proof and attack research, plus `.agents/skills/schema-markup` for implementation rules
+- external SEO/GEO packs such as `geo-optimizer-skill`, `gtm-engineer-skills`, `searchstack-aeo`, `claude-seo`, `akii-seo-ai-search-optimizer`, and `aeo.js` are donor references only; do not install or mirror them here without a fresh `repo-dev-setup` inventory, repeated repo-specific need, and a smoke-tested win
 - AI citation monitoring and Search Console/GA4 proof systems belong in `seascape-analytics`; this repo may expose site endpoints and markup, but it must not become the measurement control plane
 - OpenSEO is a bounded local read surface for saved project state and rank
   history. Its project-scoped Codex MCP allowlist and cost/ownership rules live
@@ -121,7 +121,7 @@ For any PR that changes public copy in `src/`:
 
 - read the active brief plus `docs/process/content-quality-gate.md`
 - read `docs/style/voice.md`, `docs/style/banned-patterns.md`, and `docs/style/approved-examples.md`
-- run the visible-copy lane in order: `copywriting` for the draft, `enterprise-ui-writing` to strip internal/process wording, then `humanizer` for the final pass on reader copy
+- run the visible-copy lane in order: **Draft the copy** for the draft, **Remove internal wording** to strip internal/process wording, then **Check voice and specificity** for the final pass on reader copy
 - keep reader copy, proof copy, and agent copy separate
 - run `npm run lint:content` before push, PR, or merge
 
