@@ -265,7 +265,8 @@ If Playfair Display ever needs replacing, consider: Fraunces (more personality),
 - **Hero images:** Full-bleed, high-resolution property or Gulf Coast lifestyle photography. Overlay with semi-transparent gradient for text readability.
 - **Property card images:** 220px height, cover fit, center position. Consistent framing.
 - **Image sources:** Hostaway CDN with WebP/AVIF optimization (`?w=800&q=80` format).
-- **No stock photography.** All images must be actual Seascape properties or Gulf Coast locations.
+- **No stock photography.** Property and destination photography must show actual Seascape properties or Gulf Coast locations.
+- **Editorial illustrations:** Clearly illustrated, non-location planning subjects may support guide text, as approved for the family guide on September 9, 2026. Use the existing cream/teal/gold palette, descriptive alt text, and an editorial-illustration caption. Retain real photography for property galleries, property/destination heroes, amenities, and named places; illustrations must not imply an actual rental or destination scene.
 - **Alt text required** on every image. Descriptive, not keyword-stuffed.
 
 ## Component Patterns
@@ -322,7 +323,7 @@ Legacy bare `.btn` (no modifier) falls back to the same visual as `.btn-brand` m
 1. **Never replace the cream background with white or gray.** Cream is the brand's visual signature. It separates Seascape from every Airbnb clone.
 2. **Never use system fonts or generic sans-serif** for headings. Playfair Display is the brand identity.
 3. **Never add a dark mode.** This is a vacation rental site browsed in daylight.
-4. **Never use stock photography.** Real properties and real Gulf Coast locations only.
+4. **Never use stock photography.** Use real property and Gulf Coast location photographs; use the scoped editorial-illustration rule above for guide planning artwork.
 5. **Do not add new parallax, scroll animations, or lazy-reveal effects.** Current homepage hero motion and a few legacy load-in patterns are grandfathered implementation residue, not the pattern to copy forward.
 6. **Never change the button pill shape (50px radius).** It's a brand signature.
 7. **Never flatten the cream/teal/gold palette to a generic blue.** Blue = Airbnb. Teal + gold + cream = Seascape.
