@@ -979,7 +979,7 @@ headExtra: |
 </section>
 
 <script>
-  (function () {
+  document.addEventListener("DOMContentLoaded", function () {
     const buttons = Array.from(document.querySelectorAll(".catalog-filter"));
     const cards = Array.from(document.querySelectorAll(".catalog-card"));
     const emptyState = document.getElementById("catalog-empty");
@@ -1043,9 +1043,10 @@ headExtra: |
     // Pull arrive/depart/guests from the URL and propagate them into
     // (a) the Hostaway "Book Direct" links so dates carry through, and
     // (b) a guests filter that hides cards whose max occupancy is too low.
-    const requestedArrive = (params.get("arrive") || "").trim();
-    const requestedDepart = (params.get("depart") || "").trim();
-    const requestedGuests = parseInt(params.get("guests") || "", 10) || 0;
+    const trip = window.SeascapeConversionTracking.readTripParams(params);
+    const requestedArrive = trip.arrive || "";
+    const requestedDepart = trip.depart || "";
+    const requestedGuests = Number(trip.guests || 0);
 
     function newYorkDateStamp() {
       const parts = new Intl.DateTimeFormat("en-US", {
@@ -1122,7 +1123,7 @@ headExtra: |
         if (requestedArrive) url.searchParams.set("startingDate", requestedArrive);
         if (requestedDepart) url.searchParams.set("endingDate", requestedDepart);
         if (requestedGuests) url.searchParams.set("numberOfGuests", String(requestedGuests));
-        link.setAttribute("href", url.toString());
+        link.setAttribute("href", window.SeascapeConversionTracking.buildBookingEngineHandoffUrl(url.toString(), link));
       });
     }
     downgradeExpiredAvailabilityCards();
@@ -1184,5 +1185,5 @@ headExtra: |
     if (requestedArea.length > 0) {
       syncAreaParam(initialFilter);
     }
-  })();
+  });
 </script>
