@@ -27,9 +27,8 @@ test('homepage search reaches the matching collection without losing the trip', 
 for (const p of properties) test(p.name+': identity, sleeping, reviews, real photos, schema and checkout agree', async ({ page, context }) => {
   // Only the destination page is simulated; this test never reserves or pays.
   await context.route('https://book.seascape-vacations.com/**', route=>route.fulfill({status:200,contentType:'text/html',body:'<h1>Simulated checkout navigation only</h1>'}));
-  const receipts=[];
   await visit(page,'/properties/'+p.slug+'/?'+itinerary+'&email=private@example.com');
-  await page.route('**/.netlify/functions/booking-handoff',async route=>{receipts.push(route.request().postDataJSON());await route.fulfill({status:200,contentType:'application/json',body:'{"ok":true}'});});
+  await page.evaluate(() => { window.__outboundEvents = []; window.seascapeTrackEvent = (name, payload) => window.__outboundEvents.push({name, payload}); });
   await expect(page.locator('main h1')).toHaveText(p.name);
   await expect(page.locator('.g-sleeping-list li')).toHaveText(p.guestFacts.sleeping.map((text,i)=>'0'+(i+1)+text));
   const schema=await page.locator('script[type="application/ld+json"]').evaluateAll(nodes=>nodes.flatMap(n=>JSON.parse(n.textContent)));
@@ -38,7 +37,8 @@ for (const p of properties) test(p.name+': identity, sleeping, reviews, real pho
   expect(rental.containsPlace.numberOfBedrooms).toBe(p.bedrooms);
   expect(rental.containsPlace.numberOfBathroomsTotal).toBe(p.bathrooms);
   expect(rental.containsPlace.occupancy.value).toBe(p.guests);
-  expect(schema.filter(n=>n['@type']==='Review').length).toBe(p.guestFacts.reviews.length);
+  expect(schema.filter(n=>n['@type']==='Review')).toHaveLength(0);
+  expect(rental.review || []).toHaveLength(p.guestFacts.reviews.length);
   await page.locator('[data-open-gallery]').click();
   const dialog=page.locator('.g-photo-dialog');await expect(dialog).toBeVisible();
   await expect(dialog.locator('img')).toHaveCount(p.photography.photos.length);
@@ -52,9 +52,13 @@ for (const p of properties) test(p.name+': identity, sleeping, reviews, real pho
   const popup=await popupPromise;await popup.waitForLoadState('domcontentloaded');
   expect(new URL(popup.url()).pathname).toBe(new URL(p.guestFacts.sourceUrl).pathname);
   expect(quoteParams(popup.url())).toEqual({start:'2026-12-05',end:'2026-12-12',guests:'6'});
-  await expect.poll(()=>receipts.length).toBeGreaterThan(0);
-  const receipt=receipts[0];expect(String(receipt.listingId)).toBe(new URL(p.guestFacts.sourceUrl).pathname.split('/').pop());expect(receipt.propertySlug).toBe(p.slug);
-  expect(receipt.handoffId).toBeTruthy();expect(receipt.sessionId).toBeTruthy();expect(JSON.stringify(receipts)).not.toContain('private@example.com');await popup.close();
+  const outbound = new URL(popup.url());
+  const event = await page.evaluate(() => window.__outboundEvents.find(item => item.name === 'property_booking_page_click'));
+  expect(event.payload.booking_handoff_id).toBe(outbound.searchParams.get('sv_handoff_id'));
+  expect(event.payload.booking_session_id).toBe(outbound.searchParams.get('sv_session_id'));
+  expect(event.payload.booking_property_slug).toBe(p.slug);
+  expect(JSON.stringify(event)).not.toContain('private@example.com');
+  await popup.close();
   await page.getByRole('link',{name:'Change trip / compare homes',exact:true}).click();
   await expect(page.locator('#trip-arrive')).toHaveValue('2026-12-05');await expect(page.locator('#trip-guests')).toHaveValue('6');
 });

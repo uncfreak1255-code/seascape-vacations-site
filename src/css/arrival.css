@@ -166,3 +166,16 @@
 .g-scene-picker .g-photo-unavailable{width:50px;height:56px;min-height:0;flex-shrink:0;padding:0;font-size:0}
 .g-scene-picker .g-photo-unavailable::after{content:"—";font-size:18px}
 .g-scene-picker a>span:not(.g-scene-choice-arrow){min-width:0}
+
+/* Quiet owner and signup paths below the guest collection. */
+.g-home-signup,.g-home-owners{display:grid;grid-template-columns:1fr 1fr;gap:72px;border-top:1px solid var(--g-rule);align-items:center}
+.g-home-signup>div>p:not(.g-label),.g-home-owners>div>p:not(.g-label){max-width:520px;color:var(--g-muted)}
+.g-home-signup-form{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.g-home-signup-form label{display:block;font-size:13px;margin-bottom:8px}
+.g-home-signup-form input{width:100%;min-width:0;min-height:48px;border:1px solid var(--g-rule);border-radius:4px;background:var(--g-paper);color:var(--g-ink);padding:10px 12px;font-size:16px}
+.g-home-signup-form button{grid-column:1/-1;justify-self:start}
+.g-home-signup .g-small{font-size:13px}
+.g-home-signup .g-capture-error{color:var(--g-accent)}
+.g-home-owners .g-inline-link{display:flex;width:fit-content;margin-top:16px}
+@media(max-width:900px){.g-home-signup,.g-home-owners{gap:36px;grid-template-columns:1fr}}
+@media(max-width:480px){.g-home-signup-form{grid-template-columns:1fr}.g-home-signup-form button{width:100%}}

@@ -5,15 +5,16 @@
 - secondary keywords: Sarasota vacation rental, Bradenton vacation rental, Florida vacation rental taxes
 - audience pattern: needs a practical comparison or direct booking path and should not be asked to rely on unsupported savings, location, portfolio, or tax claims
 - proof source: canonical property fallback data; current route inventory; professional tax review is not yet available
-- required internal links: /guides/bradenton-vs-sarasota/, /properties/sarasota-luxe/, /property-management/, /#contact
+- required internal links: /properties/, /guides/
 - CTA target: `/properties/` or `/#contact`
-- anti-claims: no tax advice; no fixed savings, portfolio, guest-count, return, or experience claims without an approved source; no statement that downtown Sarasota is walkable to St. Armands Circle
+- anti-claims: no tax advice; no fixed savings, portfolio, guest-count, return, or experience claims without an approved source; no statement that Sarasota Luxe or the Sarasota home is walkable, within walking distance, or steps from downtown, St. Armands Circle, restaurants, galleries, shops, beaches, or other attractions
 - hypothesis: removing unsupported claims preserves booking trust without adding new search surfaces
 - primary event: `guide_book_direct_click`
 - guardrail event: `guest_capture_form_submit`
 - entry criteria: P0 source-truth conflict identified in existing canonical pages and routes
 - readback window: 48 hours after production deployment
 - decision rule: keep the corrected canonical routes if direct-book and contact behavior remain intact; only reconsider claims when approved proof exists
+- corrective pass: on 2026-09-07, remove the remaining Sarasota-home walkability language and fixed 10-15% / 30-40% public savings claims from existing canonical surfaces; do not add a new page
 - source files likely to change:
   - `src/_redirects`
   - `src/_data/properties-fallback.json`
@@ -24,7 +25,6 @@
   - `src/guides/bradenton-vs-sarasota-restaurants/index.html`
   - `src/guides/anna-maria-island-vs-longboat-key.html`
   - `src/index.njk`
-  - `src/stays/stays.njk`
   - `src/about-us/index.njk`
   - `src/llms.txt`
   - `src/ai/faq.json.njk`
@@ -74,3 +74,5 @@
 | Seascape proof available | Canonical property fallback data, route inventory, and build/test receipts dated 2026-08-31; no tax advice proof |
 | Tools/plugins used | Repository tests, content lint, release and redirect validators; official-source review |
 | Decision and reason | Ship the narrow correction after release gates pass; no new page is justified without Search Console query-to-page evidence |
+
+September 9 scope handoff: the existing stay collection shell in `src/stays/stays.njk` is now covered by the approved Waterline brief (`2026-09-04-guest-decision-journey.md`). The factual area and property corrections in this brief remain required.

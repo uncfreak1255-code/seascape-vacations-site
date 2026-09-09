@@ -2,37 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const test = require("node:test");
 const assert = require("node:assert/strict");
-const Module = require("module");
-
 const projectRoot = path.resolve(__dirname, "..", "..");
-
-const originalLoad = Module._load;
-Module._load = function patchedLoad(request, parent, isMain) {
-  if (request === "@netlify/blobs") {
-    return {
-      connectLambda() {},
-      getStore() {
-        return {
-          async get() {
-            return null;
-          },
-          async set() {}
-        };
-      }
-    };
-  }
-
-  return originalLoad(request, parent, isMain);
-};
-
-const {
-  BOOKING_HANDOFF_METRICS_KEY,
-  buildBookingHandoffReceipt,
-  mergeBookingHandoffMetrics
-} = require("../../netlify/functions/_booking-handoff-metrics");
-const {
-  handleBookingHandoff
-} = require("../../netlify/functions/booking-handoff");
 
 test("conversion tracking supports post-guide booking handoff events", () => {
   const trackingScript = fs.readFileSync(
@@ -89,134 +59,17 @@ test("conversion tracking preserves booking-engine handoff context instead of dr
   for (const marker of [
     "BOOKING_ENGINE_HOST",
     "BOOKING_ENGINE_HANDOFF_KEYS",
-    "BOOKING_HANDOFF_ENDPOINT",
     "BOOKING_HANDOFF_SESSION_KEY",
     "sv_handoff_id",
     "sv_session_id",
     "buildBookingEngineHandoffUrl",
     "syncBookingEngineLink",
-    "decorateBookingEngineLinks",
-    "sendBookingHandoffReceipt"
+    "decorateBookingEngineLinks"
   ]) {
     assert.equal(trackingScript.includes(marker), true, `tracking script missing ${marker}`);
   }
 });
 
-test("booking handoff receipts store only the identity bridge context needed for reservation matching", () => {
-  const receipt = buildBookingHandoffReceipt({
-    handoffId: "svh_test_123",
-    sessionId: "svs_test_456",
-    guideDirectClickId: "svg_test_789",
-    linkUrl: "https://book.seascape-vacations.com/listings/206016?listing_id=206016&property_slug=dockside-dreams&utm_source=google&utm_medium=organic&utm_campaign=guide_winners&utm_content=best-time&sv_handoff_id=svh_test_123&sv_session_id=svs_test_456&sv_guide_click_id=svg_test_789&email=guest@example.com&payment_intent=pi_123&payment_intent_client_secret=pi_secret_123&setup_intent=seti_123&setup_intent_client_secret=seti_secret_123&client_secret=secret_123&redirect_status=succeeded",
-    linkText: "Check availability",
-    pagePath: "https://seascape-vacations.com/guides/best-time-visit-anna-maria-island/",
-    pageSlug: "best-time-visit-anna-maria-island",
-    guideSlug: "best-time-visit-anna-maria-island",
-    placement: "guide_booking_panel",
-    sourceContext: "organic_search",
-    referrerHost: "google.com",
-    createdAt: "2026-06-29T12:00:00.000Z"
-  });
-
-  assert.equal(BOOKING_HANDOFF_METRICS_KEY, "booking_handoff_metrics_v1.json");
-  assert.equal(receipt.handoffId, "svh_test_123");
-  assert.equal(receipt.sessionId, "svs_test_456");
-  assert.equal(receipt.guideDirectClickId, "svg_test_789");
-  assert.equal(receipt.listingId, "206016");
-  assert.equal(receipt.propertySlug, "dockside-dreams");
-  assert.equal(receipt.pagePath, "/guides/best-time-visit-anna-maria-island/");
-  assert.equal(receipt.pageSlug, "best-time-visit-anna-maria-island");
-  assert.match(receipt.linkUrl, /sv_handoff_id=svh_test_123/);
-  assert.match(receipt.linkUrl, /sv_session_id=svs_test_456/);
-  assert.match(receipt.linkUrl, /sv_guide_click_id=svg_test_789/);
-  assert.doesNotMatch(receipt.linkUrl, /guest@example\.com|email=|payment_intent|payment_intent_client_secret|setup_intent|setup_intent_client_secret|client_secret|redirect_status/i);
-});
-
-test("booking listing path overrides stale query and payload identity context", () => {
-  const receipt = buildBookingHandoffReceipt({
-    handoffId: "svh_path_wins_1",
-    listingId: "206016",
-    propertySlug: "dockside-dreams",
-    linkUrl: "https://book.seascape-vacations.com/listings/135881?listing_id=206016&property_slug=dockside-dreams",
-    pagePath: "/properties/sarasota-luxe/",
-    createdAt: "2026-08-30T12:00:00.000Z"
-  });
-
-  assert.equal(receipt.listingId, "135881");
-  assert.equal(receipt.propertySlug, "sarasota-luxe");
-  const normalizedUrl = new URL(receipt.linkUrl);
-  assert.equal(normalizedUrl.searchParams.get("listing_id"), "135881");
-  assert.equal(normalizedUrl.searchParams.get("property_slug"), "sarasota-luxe");
-});
-
-test("booking receipt URLs discard malformed identity query values", () => {
-  const receipt = buildBookingHandoffReceipt({
-    handoffId: "svh_identity_validation_1",
-    linkUrl: "https://book.seascape-vacations.com/search?listing_id=guest@example.com&property_slug=guest@example.com",
-    pagePath: "/properties/"
-  });
-
-  const normalizedUrl = new URL(receipt.linkUrl);
-  assert.equal(normalizedUrl.searchParams.has("listing_id"), false);
-  assert.equal(normalizedUrl.searchParams.has("property_slug"), false);
-  assert.equal(receipt.listingId, "");
-  assert.equal(receipt.propertySlug, "");
-});
-
-test("booking handoff metrics dedupe repeated handoff ids and keep small aggregates", () => {
-  const receipt = buildBookingHandoffReceipt({
-    handoffId: "svh_dedupe_1",
-    sessionId: "svs_dedupe_1",
-    linkUrl: "https://book.seascape-vacations.com/listings/189511?sv_handoff_id=svh_dedupe_1&sv_session_id=svs_dedupe_1",
-    pagePath: "/properties/the-oasis/",
-    placement: "property_cta",
-    createdAt: "2026-06-29T12:00:00.000Z"
-  });
-
-  const firstMetrics = mergeBookingHandoffMetrics(null, receipt);
-  const dedupedMetrics = mergeBookingHandoffMetrics(firstMetrics, receipt);
-
-  assert.equal(dedupedMetrics.totalHandoffs, 1);
-  assert.equal(dedupedMetrics.byPagePath["/properties/the-oasis/"], 1);
-  assert.equal(dedupedMetrics.byListingId["189511"], 1);
-  assert.equal(dedupedMetrics.byPlacement.property_cta, 1);
-});
-
-test("booking handoff function writes a receipt through the injected store", async () => {
-  let storedMetrics = null;
-  const injectedStore = {
-    async get() {
-      return storedMetrics;
-    },
-    async set(_key, value) {
-      storedMetrics = JSON.parse(value);
-    }
-  };
-
-  const response = await handleBookingHandoff(
-    {
-      httpMethod: "POST",
-      body: JSON.stringify({
-        handoffId: "svh_function_1",
-        sessionId: "svs_function_1",
-        linkUrl: "https://book.seascape-vacations.com/listings/206016?sv_handoff_id=svh_function_1&sv_session_id=svs_function_1",
-        pagePath: "/guides/best-time-visit-anna-maria-island/",
-        placement: "guide_booking_panel",
-        createdAt: "2026-06-29T12:00:00.000Z"
-      })
-    },
-    {},
-    injectedStore
-  );
-  const body = JSON.parse(response.body);
-
-  assert.equal(response.statusCode, 200);
-  assert.equal(body.stored, true);
-  assert.equal(body.handoffId, "svh_function_1");
-  assert.equal(body.listingId, "206016");
-  assert.equal(storedMetrics.totalHandoffs, 1);
-  assert.equal(storedMetrics.receipts[0].handoffId, "svh_function_1");
-});
 
 test("properties catalog behaves like a buyer handoff surface, not a generic directory", () => {
   const propertiesTemplate = fs.readFileSync(

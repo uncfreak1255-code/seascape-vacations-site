@@ -2,6 +2,12 @@
   'use strict';
   if (!document.body.classList.contains('guest-site')) return;
   var tracking = window.SeascapeConversionTracking;
+  if (tracking) document.querySelectorAll('[data-email-capture-root]').forEach(function (root) {
+    var form = root.querySelector('[data-guest-email-form]');
+    if (form) form.hidden = false;
+    var fallback = root.querySelector('[data-email-capture-unavailable]');
+    if (fallback) fallback.hidden = true;
+  });
   var parseTrip = tracking && tracking.readTripParams;
   var trip = parseTrip ? parseTrip(new URLSearchParams(location.search)) : {};
   var pageRoot = document.querySelector('[data-property-page]');
@@ -35,7 +41,7 @@
       checkout.hidden=oversized||invalidDates;
       if(oversized){checkout.removeAttribute('href');form.querySelector('.g-form-status').textContent='This home hosts up to '+form.dataset.maxGuests+' guests. Compare the collection or ask us about separate homes.';}
       else if(invalidDates){checkout.removeAttribute('href');form.querySelector('.g-form-status').textContent='Choose a departure after arrival, or clear both dates to stay flexible.';}
-      else checkout.href=url.toString();
+      else checkout.href=tracking ? tracking.buildBookingEngineHandoffUrl(url.toString(), checkout) : url.toString();
     }
     updateQuestion();
   }

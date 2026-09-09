@@ -433,7 +433,7 @@ test("booking-engine handoff click emits the GA4 event with the target booking U
   assert.equal(observed.payload.link_text, "Open Direct Availability");
 });
 
-test("property booking-page clicks send booking handoff receipts when pointed at the booking engine", () => {
+test("property booking-page clicks use the existing analytics event without a parallel receipt", () => {
   const observed = withConversionTrackingStubs(({ listeners, window }) => {
     const fetchCalls = [];
     global.fetch = (url, options = {}) => {
@@ -492,27 +492,12 @@ test("property booking-page clicks send booking handoff receipts when pointed at
       fetchCalls
     };
   });
-  const receipt = JSON.parse(observed.fetchCalls[0].body);
-
   assert.equal(observed.analyticsEvent.event, "property_booking_page_click");
-  assert.equal(observed.fetchCalls[0].url, "/.netlify/functions/booking-handoff");
-  assert.equal(observed.fetchCalls[0].method, "POST");
-  assert.match(receipt.handoffId, /^svh_/);
-  assert.match(receipt.sessionId, /^svs_/);
-  assert.equal(receipt.listingId, "487798");
-  assert.equal(receipt.pageSlug, "bradenton-pool-home");
-  assert.equal(receipt.placement, "property_cta");
-  assert.equal(receipt.utmSource, "google");
-  assert.equal(receipt.utmMedium, "organic");
-  assert.equal(receipt.utmCampaign, "summer");
-  assert.equal(Object.prototype.hasOwnProperty.call(receipt, "utmContent"), false);
-  assert.equal(Object.prototype.hasOwnProperty.call(receipt, "ref"), false);
-  assert.match(receipt.linkUrl, /sv_handoff_id=svh_/);
-  assert.match(receipt.linkUrl, /sv_session_id=svs_/);
-  assert.match(receipt.linkUrl, /utm_source=google/);
-  assert.match(receipt.linkUrl, /utm_medium=organic/);
-  assert.match(receipt.linkUrl, /utm_campaign=summer/);
-  assert.doesNotMatch(receipt.linkUrl, /guest%40example\.com|guest@example\.com|9415551212|ref=|payment_intent|payment_intent_client_secret|setup_intent|setup_intent_client_secret|client_secret|redirect_status/i);
+  assert.equal(observed.fetchCalls.length, 0);
+  assert.match(observed.analyticsEvent.payload.link_url, /sv_handoff_id=svh_/);
+  assert.match(observed.analyticsEvent.payload.link_url, /sv_session_id=svs_/);
+  assert.match(observed.analyticsEvent.payload.link_url, /utm_source=google/);
+  assert.doesNotMatch(observed.analyticsEvent.payload.link_url, /guest%40example\.com|guest@example\.com|9415551212|ref=|payment_intent|payment_intent_client_secret|setup_intent|setup_intent_client_secret|client_secret|redirect_status/i);
 });
 
 test("Bradenton guide bottom decision block routes to mapped stays before navigation", () => {
@@ -642,7 +627,7 @@ test("Bradenton guide bottom decision block routes to mapped stays before naviga
   assert.equal(navigationIndex > trackIndex, true, "guide direct-book click should continue navigation only after the tracking callback");
 });
 
-test("guide direct-book click id is carried into the later booking-engine handoff receipt", () => {
+test("guide direct-book click id is carried into the later booking-engine analytics event", () => {
   const observed = withConversionTrackingStubs(({ listeners, window }) => {
     const fetchCalls = [];
     global.fetch = (url, options = {}) => {
@@ -742,13 +727,10 @@ test("guide direct-book click id is carried into the later booking-engine handof
     };
   });
   const bookingEvent = observed.analyticsEvents.find((entry) => entry.event === "booking_engine_handoff");
-  const receipt = JSON.parse(observed.fetchCalls[0].body);
-
   assert.match(observed.guideClickId, /^svg_/);
   assert.equal(bookingEvent.payload.guide_direct_click_id, observed.guideClickId);
   assert.match(bookingEvent.payload.link_url, new RegExp(`sv_guide_click_id=${observed.guideClickId}`));
-  assert.equal(receipt.guideDirectClickId, observed.guideClickId);
-  assert.match(receipt.linkUrl, new RegExp(`sv_guide_click_id=${observed.guideClickId}`));
+  assert.equal(observed.fetchCalls.length, 0);
 });
 
 test("first tracked navigation click is delivered before same-tab navigation continues", () => {
@@ -1194,15 +1176,15 @@ test("hero arrival and departure reach Hostaway through a property page", (conte
   });
 });
 
-test("only a complete real destination date pair may override the selected trip", (context) => {
+test("invalid explicit destination dates are cleared rather than replaced with the page trip", (context) => {
   context.mock.timers.enable({ apis:["Date"], now:new Date("2026-09-04T16:00:00Z") });
   withConversionTrackingStubs(({ api, window }) => {
     window.location.href = "https://seascape-vacations.com/properties/dockside-dreams/?arrive=2026-11-07&depart=2026-11-14&guests=8";
     window.location.search = "?arrive=2026-11-07&depart=2026-11-14&guests=8";
     for (const suffix of ["start=broken", "end=2026-11-14", "start=2026-02-30&end=2026-03-02", "start=2026-11-14&end=2026-11-07"]) {
       const url = new URL(api.buildBookingEngineHandoffUrl("https://book.seascape-vacations.com/listings/206016?" + suffix));
-      assert.equal(url.searchParams.get("start"),"2026-11-07");
-      assert.equal(url.searchParams.get("end"),"2026-11-14");
+      assert.equal(url.searchParams.get("start"),null);
+      assert.equal(url.searchParams.get("end"),null);
     }
     const explicit = new URL(api.buildBookingEngineHandoffUrl("https://book.seascape-vacations.com/listings/206016?startingDate=2026-12-05&endingDate=2026-12-12"));
     assert.equal(explicit.searchParams.get("start"),"2026-12-05");

@@ -129,7 +129,7 @@ test("guide lineage survives guide, stay, property, and explicit booking-engine 
     click(bookingLink);
     const bookingUrl = new URL(bookingLink.href);
     assert.equal(bookingUrl.searchParams.get("sv_guide_click_id"), clickId);
-    assert.equal(fetchCalls.filter((call) => call.url === "/.netlify/functions/booking-handoff").length, 1);
+    assert.equal(fetchCalls.length, 0);
   });
 });
 
@@ -143,7 +143,7 @@ test("external catalog booking emits its placement event and one named handoff",
       window.dataLayer.map((entry) => entry.event),
       ["catalog_book_direct_click", "booking_engine_handoff"]
     );
-    assert.equal(fetchCalls.filter((call) => call.url === "/.netlify/functions/booking-handoff").length, 1);
+    assert.equal(fetchCalls.length, 0);
     assert.equal(new URL(bookingLink.href).searchParams.get("sv_guide_click_id"), "svg_existing");
   });
 });

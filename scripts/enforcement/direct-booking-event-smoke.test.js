@@ -1014,7 +1014,7 @@ test("the active shared popup keeps tracked email capture and honest states", ()
     sourcePath: "src/_includes/partials/email-popup.njk"
   });
 
-  for (const source of [popupPartial]) {
+  for (const source of [homepage, popupPartial]) {
     assert.match(source, /data-track-form="email_capture"/);
     assert.match(source, /data-inline-email-capture="true"/);
     assert.match(source, /data-email-capture-success/);
@@ -1023,7 +1023,8 @@ test("the active shared popup keeps tracked email capture and honest states", ()
     assert.doesNotMatch(source, /onsubmit="handleEmailSubmit\(event\)"/);
   }
 
-  assert.doesNotMatch(homepage, /email-popup|data-track-form="email_capture"/, "homepage browsing no longer triggers a popup");
+  assert.doesNotMatch(homepage, /email-popup/, "homepage browsing no longer triggers a popup");
+  assert.ok(homepageContract.trackedEvents.includes("email_capture_submit"));
   assert.ok(popupContract.trackedEvents.includes("email_capture_submit"));
   const guide=fs.readFileSync(path.join(projectRoot,"_site/guides/anna-maria-island-area-guide/index.html"),"utf8");
   assert.match(guide, /data-inline-email-capture="true"/);

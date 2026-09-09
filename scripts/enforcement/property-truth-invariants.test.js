@@ -249,6 +249,52 @@ test("property template schema facts match fallback counts and amenity labels", 
   }
 });
 
+test("property reviews stay nested under one complete VacationRental entity", () => {
+  const reviewedImageCategories = new Map([
+    ["bradenton-pool-home", ["vs56V7VNzQclcCi9kafLZ2WqaHTXVCPmVeXDY97e2GE", "Rm0StPDUlVu4jPwH--B0QGxa7KRBZ-ioHHGW1nr-SYsI", "fveav4RDND6H0n92eYn7UMKyN01TxeUZ6Dr--p9eV-rQ"]],
+    ["dockside-dreams", ["xdx1autFInfzKRNujCVSZdAAXdGGkOh9a5-YTfIL22s", "Jz4vT1Y9--TQtQh6OcU3NPt4W7rEC8WxLii4RDMF8FgA", "THwWro0V2bCwJuZiHtXCu6FTTbZ2uGXYA6Pl1ouezDw"]],
+    ["river-house", ["3-WHUih34aKJ-O8dGl9n9-mwQoL3ZCAfRN-SdAOJyq4", "g8wwLrsaItg4FXqddvMHvmC-RqGfMcD5WrwyAWwVv70", "OjOthIkLY--af9i-nKVMVz1hIehhAFqAMhnx21GMeMaE"]],
+    ["the-oasis", ["e23Axvnc1ut0OcWotT14oVHj--Uy4uQezssOrYIFqbe4", "9Cklr9RWmrxTmXFPnskevzCeBDtpos--pP5T8N1EpN1M", "TlB9vmTl4A6t6vVsiMEg7p3LHLxuGO60XKpM6DEO6Bo"]]
+  ]);
+
+
+  for (const property of fallbackProperties) {
+    const template = readSource(`_site/properties/${property.slug}/index.html`);
+    const schemaObjects = extractJsonLdObjects(template);
+    const vacationRentals = schemaObjects.filter((item) => item["@type"] === "VacationRental");
+    const standaloneReviews = schemaObjects.filter((item) => item["@type"] === "Review");
+
+    assert.equal(vacationRentals.length, 1, `${property.slug} must publish one complete VacationRental entity`);
+    assert.equal(standaloneReviews.length, 0, `${property.slug} must not publish standalone Review entities`);
+
+    const reviews = vacationRentals[0].review || [];
+    const visibleTemplate = template.replace(/<script[\s\S]*?<\/script>/g, "");
+    assert.equal(
+      reviews.length,
+      property.guestFacts.reviews.length,
+      `${property.slug} must retain its verified reviews under VacationRental.review`
+    );
+
+    for (const review of reviews) {
+      assert.equal(review["@type"], "Review", `${property.slug} nested review must stay typed as Review`);
+      assert.equal("itemReviewed" in review, false, `${property.slug} nested review must not create another VacationRental`);
+      assert.ok(review.reviewRating, `${property.slug} nested review must retain its rating`);
+      assert.ok(review.author, `${property.slug} nested review must retain its author`);
+      assert.ok(review.reviewBody, `${property.slug} nested review must retain its text`);
+      assert.ok(review.datePublished, `${property.slug} nested review must retain its date`);
+      assert.match(visibleTemplate, new RegExp(escapeRegExp(review.author.name)), `${property.slug} review author must be visible`);
+      assert.match(visibleTemplate, new RegExp(escapeRegExp(review.reviewBody)), `${property.slug} review text must be visible`);
+    }
+
+    assert.ok(vacationRentals[0].image.length >= 8, `${property.slug} must publish at least 8 rental images`);
+    for (const reviewedImage of reviewedImageCategories.get(property.slug) || []) {
+      assert.ok(vacationRentals[0].image.some((url) => url.includes(reviewedImage)), `${property.slug} must retain reviewed bedroom, bathroom, and common-area coverage`);
+    }
+    assert.match(String(vacationRentals[0].latitude), /^-?\d+\.\d{5,}$/, `${property.slug} latitude must have at least 5 decimal places`);
+    assert.match(String(vacationRentals[0].longitude), /^-?\d+\.\d{5,}$/, `${property.slug} longitude must have at least 5 decimal places`);
+  }
+});
+
 function escapeRegExp(value) {
   return String(value).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }

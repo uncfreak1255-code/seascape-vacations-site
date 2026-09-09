@@ -359,3 +359,5 @@
 .guest-shell .g-header [hidden]{display:none!important}
 .guest-shell .g-header a:focus-visible,.guest-shell .g-header button:focus-visible,.guest-shell .g-footer a:focus-visible{outline:3px solid var(--g-accent);outline-offset:4px}
 .guest-shell .main-content,.guest-shell .journal-page{padding-top:0}
+
+@media(min-width:701px) and (max-width:1000px){.g-nav{display:none}.g-menu-button{display:block}.g-header{gap:20px}}
