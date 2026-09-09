@@ -54,14 +54,14 @@
     {
       "id": 4,
       "prompt": "We have a blog that gets 20k organic visits/month but almost nobody clicks through to our product. How do we get more conversions from blog readers?",
-      "expected_output": "Should apply the Blog Post CRO framework. Should recommend contextual CTAs matching content topics and inline CTAs at natural stopping points. Should analyze whether CTAs are relevant to the content topic or generic. Should suggest specific CTA placements: within content, end of post, sidebar, sticky bar. Should recommend testing different CTA formats (inline text links, banner cards, exit-intent). Should cross-reference copywriting skill for CTA copy improvement.",
+      "expected_output": "Should apply the Blog Post CRO framework. Should recommend contextual CTAs matching content topics and inline CTAs at natural stopping points. Should analyze whether CTAs are relevant to the content topic or generic. Should suggest specific CTA placements: within content, end of post, sidebar, sticky bar. Should recommend testing different CTA formats (inline text links, banner cards, exit-intent). Should use the active brief and docs/process/content-quality-gate.md for CTA copy improvement.",
       "assertions": [
         "Applies Blog Post CRO framework",
         "Recommends contextual CTAs matching content",
         "Recommends inline CTAs at natural stopping points",
         "Suggests specific CTA placements",
         "Suggests testing different CTA formats",
-        "Cross-references copywriting or related skill"
+        "Uses the local content gate for CTA wording"
       ],
       "files": []
     },
@@ -84,10 +84,10 @@
     {
       "id": 6,
       "prompt": "Our signup form has too many fields and people keep abandoning it halfway through. Can you help optimize it?",
-      "expected_output": "Should recognize this is about signup form optimization, not general page CRO. Should defer to or cross-reference the signup-flow-cro skill, which specifically handles signup, registration, and account creation flows. May provide some general friction reduction advice but should make clear that signup-flow-cro is the right skill for this task.",
+      "expected_output": "Should recognize signup form friction and inspect the affected fields, validation errors, and completion path using existing source and tests. Should keep the analysis focused on the form and not require a missing global skill or a full page review.",
       "assertions": [
         "Recognizes this as signup flow optimization",
-        "References or defers to signup-flow-cro skill",
+        "Inspects form fields, validation, and completion without requiring a global skill",
         "Does not attempt full page-cro analysis on a form"
       ],
       "files": []
@@ -95,7 +95,7 @@
     {
       "id": 7,
       "prompt": "Review this feature page for our API monitoring tool. Most traffic comes from organic search for 'API monitoring tools'. We want them to start a free trial.",
-      "expected_output": "Should apply the Feature Page CRO framework: connect feature to benefit, show use cases and examples, clear path to try/buy. Should reference the experiments section and suggest prioritized test ideas for hero section, trust signals, and CTA variations. Should note the organic search traffic source and check for message match with search intent. Should cross-reference ab-test-setup skill for proper test implementation.",
+      "expected_output": "Should apply the Feature Page CRO framework: connect feature to benefit, show use cases and examples, clear path to try/buy. Should reference the experiments section and suggest prioritized test ideas for hero section, trust signals, and CTA variations. Should note the organic search traffic source and check for message match with search intent. Should follow docs/process/learning-contract.md and repository approval rules for experiment implementation.",
       "assertions": [
         "Applies Feature Page CRO framework",
         "Connects features to benefits",
@@ -103,7 +103,7 @@
         "Provides clear path to try/buy",
         "Notes organic traffic source and search intent match",
         "Suggests specific experiment hypotheses",
-        "Cross-references ab-test-setup skill"
+        "Uses the local learning contract and approval rules for testing"
       ],
       "files": []
     }

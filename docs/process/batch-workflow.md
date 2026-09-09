@@ -12,10 +12,10 @@ because it only applies while a batch is actually running.
 4. One cluster gets chosen and one brief gets written or updated in
    `docs/briefs/` only after that strategy exists.
 5. Work starts on `codex/<batch>` in `.worktrees/<batch>`.
-6. Page Builder reads the active brief, `docs/process/content-quality-gate.md`, `docs/style/voice.md`, `docs/style/banned-patterns.md`, and `docs/style/approved-examples.md`, then uses `copywriting` when drafting or rewriting reader copy.
+6. Page Builder reads the active brief, `docs/process/content-quality-gate.md`, `docs/style/voice.md`, `docs/style/banned-patterns.md`, and `docs/style/approved-examples.md`, then completes **Draft the copy** for changed reader copy.
 7. Page Builder edits source and only the docs needed to support that batch.
 8. Page Builder rewrites any sentence that still sounds like a role card, session note, or helper instruction before it lands in source.
-9. Voice Editor runs `enterprise-ui-writing` and then `humanizer` on changed reader copy before critiquing it against the same brief and content gate.
+9. Voice Editor checks **Remove internal wording** and then **Check voice and specificity** against the same brief and content gate. Page Builder makes any requested rewrites; Voice Editor stays read-only.
 10. Release Gate runs `npm run lint:content` and requires a visible-copy voice pass before the rest of verification.
 11. Deploy.
 12. Reread after the crawl window instead of inventing a new batch too early.

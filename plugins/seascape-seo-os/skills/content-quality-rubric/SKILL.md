@@ -21,7 +21,7 @@ repo's "repeated site-specific need + smoke-tested win" bar.
 - Drafting or reviewing `reader copy` on a guide, stay, or research route — the
   routes that get ranked under the information-gain era and cited by AI answer
   engines.
-- After `copywriting` → `enterprise-ui-writing` → `humanizer` and after
+- After **Draft the copy** → **Remove internal wording** → **Check voice and specificity** and after
   `npm run lint:content` is green, before asking for a Voice Editor or human
   pass.
 - Not for owner money pages' proof claims — `owner-proof-integrity` still owns
@@ -51,7 +51,7 @@ Do not reduce the page to a single number; the fixes are the output.
    snippet? Bury the answer and the page loses citations.
 3. **Scannable structure for AEO.** Comparative or financial content uses a
    table, not prose. Multi-part answers use short, self-contained blocks or
-   lists. Declarative sentences over meandering ones. The `humanizer` pass may
+   lists. Declarative sentences over meandering ones. The final voice pass may
    not have dissolved these (see the content gate's reconciliation rule).
 4. **Named-source statistical density.** Each citable stat traces to an approved
    proof asset and can stand alone in one sentence without extra internal
@@ -97,5 +97,5 @@ failure; a `weak` score with three sharp fixes is the win.
 If the same gap shows up across multiple content batches (for example, answers
 buried past the first 200 words, or comparison prose that should be tables),
 that is the evidence bar for a small deterministic check modeled on the
-zero-dependency `lint:content` pattern. Open that as its own `agent-surface-audit`
+zero-dependency `lint:content` pattern. Open that as its own `repo-dev-setup` review
 decision; do not pre-build it.

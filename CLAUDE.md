@@ -54,9 +54,9 @@ as a prerequisite for a bounded task with independent proof. Apply the
 ## Required Batch Workflow
 
 Full order of operations: `docs/process/batch-workflow.md`. The visible-copy
-voice order is non-negotiable: draft and rewrite reader copy with `copywriting`,
-then run `enterprise-ui-writing` and `humanizer` on changed copy before the
-content gate and `npm run lint:content`.
+order is non-negotiable: **Draft the copy**, then **Remove internal wording**,
+then **Check voice and specificity** using the active brief and `docs/style/`.
+Complete these steps before the content gate and `npm run lint:content`.
 
 ## Design Specifics
 

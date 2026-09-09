@@ -189,9 +189,8 @@ test("homepage entity schema keeps Seascape inventory in Bradenton and Sarasota"
   const vacationRental = schemaBlocks.find((block) => block.includes('"@type": "VacationRental"'));
 
   assert.ok(localBusiness, "homepage should keep its LocalBusiness schema");
-  assert.ok(vacationRental, "homepage should keep its VacationRental schema");
+  assert.equal(vacationRental, undefined, "homepage should not publish a property-level VacationRental entity");
   assert.match(localBusiness, /"description": "\{\{ site\.description \}\}"/);
-  assert.match(vacationRental, /"description": "\{\{ site\.description \}\}"/);
 
   for (const city of ["Bradenton", "Sarasota"]) {
     assert.match(
