@@ -225,9 +225,14 @@ if (phase === "p0") {
   expectContains("_site/stays/index.html", 'href="/stays/bradenton-vacation-rentals-near-beaches/"');
   expectContains("_site/sitemap.xml", "<loc>https://seascape-vacations.com/stays/</loc>");
   expectContains("_site/properties/index.html", 'href="/css/base.css"');
-  expectContains("_site/stays/anna-maria-island-vacation-rentals/index.html", ".nav-logo img");
+  // These two pages must render site navigation with the brand mark. Until
+  // 2026-09-10 that meant the legacy header's .nav-logo img; every page now
+  // renders the shared Waterline header, whose wordmark is text, not an image.
+  expectContains("_site/stays/anna-maria-island-vacation-rentals/index.html", 'class="g-header"');
+  expectContains("_site/stays/anna-maria-island-vacation-rentals/index.html", 'class="g-wordmark"');
   expectContains("_site/property-management/index.html", 'href="/css/base.css"');
-  expectContains("_site/property-management/index.html", ".nav-logo img");
+  expectContains("_site/property-management/index.html", 'class="g-header"');
+  expectContains("_site/property-management/index.html", 'class="g-wordmark"');
   expectNotContains("_site/index.html", '<button class="mobile-btn" onclick="toggleMenu()">☰</button>');
   expectNotContains("_site/index.html", '<span class="star">★</span>');
   expectNotContains("_site/index.html", "<div class=\"review-stars\">★★★★★</div>");

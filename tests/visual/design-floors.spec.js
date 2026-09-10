@@ -155,6 +155,11 @@ async function meanLuminance(png, box) {
 
 function heroTextSelectors(isMobileProject) {
   const shared = [
+    // The homepage header sits over the photo (transparent, white text), so
+    // the wordmark and the mobile menu button are hero text too — they were
+    // not checked until 2026-09-10 and nothing else measures them.
+    ".g-wordmark",
+    ".g-wordmark span",
     ".g-arrival-copy .g-label",
     ".g-arrival-copy h1",
     ".g-arrival-copy > p:last-child",
@@ -166,7 +171,9 @@ function heroTextSelectors(isMobileProject) {
   // Nav, header phone badge and the arrival seal are desktop-only chrome;
   // selectors that render nothing on a project are simply skipped below
   // (querySelectorAll returns no elements, so there is nothing to check).
-  return isMobileProject ? shared : [".g-nav a", ".g-header-phone", ".g-arrival-seal", ...shared];
+  return isMobileProject
+    ? [".g-menu-button", ...shared]
+    : [".g-nav a", ".g-header-phone", ".g-arrival-seal", ...shared];
 }
 
 // -- F1: no visible text below the 12px floor --
