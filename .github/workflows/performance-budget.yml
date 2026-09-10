@@ -35,7 +35,7 @@ jobs:
     # Scheduled/default-branch work and Sawyer-triggered owner PRs use the Mac.
     # Forks, other same-repository PRs, and non-owner manual dispatches execute
     # unreviewed branch code on hosted Linux.
-    runs-on: ${{ (github.event_name == 'pull_request' && (github.event.pull_request.head.repo.full_name != github.repository || github.event.pull_request.author_association != 'OWNER' || github.actor != 'uncfreak1255' || github.triggering_actor != 'uncfreak1255')) && 'ubuntu-latest' || (github.event_name == 'workflow_dispatch' && (github.actor != 'uncfreak1255' || github.triggering_actor != 'uncfreak1255')) && 'ubuntu-latest' || 'mac-sawbeck-seascape-vacations-site' }}
+    runs-on: ${{ (github.event_name == 'pull_request' && (github.event.pull_request.head.repo.full_name != github.repository || github.event.pull_request.author_association != 'OWNER' || github.actor != 'uncfreak1255-code' || github.triggering_actor != 'uncfreak1255-code')) && 'ubuntu-latest' || (github.event_name == 'workflow_dispatch' && (github.actor != 'uncfreak1255-code' || github.triggering_actor != 'uncfreak1255-code')) && 'ubuntu-latest' || 'mac-sawbeck-seascape-vacations-site' }}
     timeout-minutes: 20
 
     steps:

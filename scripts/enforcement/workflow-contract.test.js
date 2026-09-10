@@ -85,12 +85,87 @@ test("self-hosted workflows keep untrusted branch code off Sawyer's Mac", () => 
 
   for (const workflow of [visual, release, performance]) {
     assert.match(workflow, /pull_request\.author_association != 'OWNER'/);
-    assert.match(workflow, /github\.actor != 'uncfreak1255'/);
-    assert.match(workflow, /github\.triggering_actor != 'uncfreak1255'/);
+    assert.match(workflow, /github\.actor != 'uncfreak1255-code'/);
+    assert.match(workflow, /github\.triggering_actor != 'uncfreak1255-code'/);
   }
 
-  assert.match(performance, /github\.triggering_actor != 'uncfreak1255'/);
-  assert.match(liveSmoke, /github\.triggering_actor == 'uncfreak1255'/);
-  assert.match(baselines, /github\.triggering_actor == 'uncfreak1255'/);
-  assert.match(baselines, /github\.actor == 'uncfreak1255'/);
+  assert.match(performance, /github\.triggering_actor != 'uncfreak1255-code'/);
+  assert.match(liveSmoke, /github\.triggering_actor == 'uncfreak1255-code'/);
+  assert.match(baselines, /github\.triggering_actor == 'uncfreak1255-code'/);
+  assert.match(baselines, /github\.actor == 'uncfreak1255-code'/);
+});
+
+// These routing expressions use only string equality, booleans and &&/||,
+// whose semantics match JavaScript for the non-empty string fixtures below.
+function routingValues(filename, key, github) {
+  const expressions = [...readWorkflow(filename).matchAll(
+    new RegExp(`^ +${key}: \\$\\{\\{ (.+) \\}\\}$`, "gm")
+  )];
+  assert.ok(expressions.length, `${filename}: missing ${key} expressions`);
+  return expressions.map(([, expression]) =>
+    require("node:vm").runInNewContext(expression, { github }, { timeout: 100 })
+  );
+}
+
+function ownerEvent(eventName, overrides = {}) {
+  return {
+    event_name: eventName,
+    repository: "uncfreak1255-code/seascape-vacations-site",
+    actor: "uncfreak1255-code",
+    triggering_actor: "uncfreak1255-code",
+    event: { pull_request: {
+      head: { repo: { full_name: "uncfreak1255-code/seascape-vacations-site" } },
+      author_association: "OWNER",
+    } },
+    ...overrides,
+  };
+}
+
+test("actual PR routing selects the Mac only for trusted owner events", () => {
+  for (const [file, hosted] of [
+    ["release-safety.yml", "ubuntu-latest"],
+    ["performance-budget.yml", "ubuntu-latest"],
+    ["playwright-visual.yml", "macos-latest"],
+  ]) {
+    const trusted = ownerEvent("pull_request");
+    for (const runner of routingValues(file, "runs-on", trusted)) {
+      assert.equal(runner, "mac-sawbeck-seascape-vacations-site", file);
+    }
+    const fork = ownerEvent("pull_request");
+    fork.event.pull_request.head.repo.full_name = "outsider/fork";
+    const collaborator = ownerEvent("pull_request");
+    collaborator.event.pull_request.author_association = "COLLABORATOR";
+    for (const untrusted of [fork, collaborator,
+      ownerEvent("pull_request", { actor: "outsider" }),
+      ownerEvent("pull_request", { triggering_actor: "outsider" }),
+      ownerEvent("pull_request", { actor: "uncfreak1255", triggering_actor: "uncfreak1255" }),
+    ]) {
+      for (const runner of routingValues(file, "runs-on", untrusted)) {
+        assert.equal(runner, hosted, file);
+      }
+    }
+  }
+});
+
+test("manual routing checks both actors and preserves scheduled routes", () => {
+  const trusted = ownerEvent("workflow_dispatch", { event: {} });
+  for (const file of ["live-smoke.yml", "update-visual-baselines.yml"]) {
+    assert.ok(routingValues(file, "if", trusted).every(value => value === true));
+    for (const field of ["actor", "triggering_actor"]) {
+      const untrusted = { ...trusted, [field]: "outsider" };
+      assert.ok(routingValues(file, "if", untrusted).every(value => value === false));
+    }
+  }
+  assert.deepEqual(routingValues("performance-budget.yml", "runs-on", trusted),
+    ["mac-sawbeck-seascape-vacations-site"]);
+  for (const field of ["actor", "triggering_actor"]) {
+    assert.deepEqual(routingValues("performance-budget.yml", "runs-on",
+      { ...trusted, [field]: "outsider" }), ["ubuntu-latest"]);
+  }
+  const scheduled = ownerEvent("schedule", { event: {} });
+  assert.deepEqual(routingValues("performance-budget.yml", "runs-on", scheduled),
+    ["mac-sawbeck-seascape-vacations-site"]);
+  assert.deepEqual(routingValues("live-smoke.yml", "if", scheduled), [true]);
+  assert.ok(routingValues("release-safety.yml", "runs-on",
+    ownerEvent("push", { event: {} })).every(value => value === "mac-sawbeck-seascape-vacations-site"));
 });

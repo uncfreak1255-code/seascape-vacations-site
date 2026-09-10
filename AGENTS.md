@@ -152,7 +152,7 @@ For any PR that changes public copy in `src/`:
   outside tools are donor surfaces only unless Sawyer explicitly says
   otherwise.
 - For any meaningful visual change, including layout, spacing, typography, color, imagery, iconography, CTA treatment, or motion, run the repo flow in `docs/process/design-review-workflow.md`.
-- The required rendered QA loop for visual changes is the global `design-review` skill. Use it after implementation and before human review so the review surface is screenshots plus live route checks, not code alone.
+- The required rendered QA loop for visual changes is the repo-local `design-review` skill (`.agents/skills/design-review`). Use it after implementation and before human review so the review surface is screenshots plus live route checks, not code alone.
 - Start a fresh repo-local design worktree with `npm run design:lane -- "<task>"`
   or `./scripts/design/codex-seascape-design "<task>"` when you want the
   specialist/critic lane, guide-family route, and local donor scan in one
