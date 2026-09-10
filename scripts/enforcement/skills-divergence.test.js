@@ -24,6 +24,7 @@ const DESCRIPTION_TRIGGERS = {
   "owner-proof-integrity": ["owner proof", "fees", "revenue", "reviews"],
   "owner-reply-intake": ["owner replies", "form submits", "demand evidence"],
   "page-cro": ["CRO", "conversion-rate optimization", "bounce", "shared URL"],
+  "production-pr-readiness-review": ["production PR", "agent claims", "GitHub", "merge blockers", "visual proof", "Read-only"],
   "property-truth-regeneration": ["property", "llms.txt", "Hostaway", "amenities"],
   "schema-markup": ["schema markup", "structured data", "JSON-LD", "rich results"],
   "seascape-design-critic": ["blunt", "stale", "generic", "off-brand"],
@@ -186,7 +187,7 @@ test("plugin manifest version and advertised skill count match the marketplace",
   const skillCount = listSkillDirs(path.join(REPO_ROOT, ".agents", "skills")).length;
   const numberWords = [
     "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine",
-    "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen"
+    "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen"
   ];
 
   assert.ok(marketplacePlugin, `${pluginManifest.name} must be listed in the marketplace`);

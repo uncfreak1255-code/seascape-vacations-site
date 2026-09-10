@@ -44,6 +44,11 @@ design pair stable while allowing guide families to borrow stronger interface,
 artifact, map, chart, imagery, or prototype lenses when the current session
 actually exposes them.
 
+For production PR readiness, use `production-pr-readiness-review` to reconcile
+agent claims, current GitHub checks/reviews, and route-specific visual proof.
+It uses the existing merge and design policies and returns a read-only decision.
+Implementation closeout and rendered design review keep their existing owners.
+
 ## Model And Tool Routing
 
 Choose models and plugins at task level. Do not change a global default or add
@@ -89,6 +94,17 @@ authority, bypass the five roles, or replace Seascape Hub as the source of
 business context.
 
 ## Agent-surface-audit receipts
+
+### 2026-09-10 — production PR readiness review
+
+Sawyer requested this skill after repeated production PR supervision required
+comparing agent claims with current checks, review findings, and desktop/mobile
+proof. Inventory confirmed existing design review, merge checklists, and skill
+parity enforcement, but no single site-specific readiness report. Add one
+instruction-only skill under `.agents/skills/`, its Claude symlink, and the
+existing portable plugin copy. It inherits the current policies and grants no
+source, GitHub, or production mutation authority. Keep the recorded private
+activity outside this public repository.
 
 ### 2026-09-05 — retired global reference repair
 

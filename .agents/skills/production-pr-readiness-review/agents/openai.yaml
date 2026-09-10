@@ -1,0 +1,7 @@
+interface:
+  display_name: "Production PR readiness review"
+  short_description: "Check production PR claims, blockers, and visual proof"
+  default_prompt: "Use $production-pr-readiness-review to review my active Seascape production PR, compare agent claims with GitHub and check evidence, and return merge blockers, visual-proof gaps, and the next action."
+
+policy:
+  allow_implicit_invocation: true

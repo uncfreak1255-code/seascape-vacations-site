@@ -14,6 +14,7 @@ Current curated focus:
 - `owner-reply-intake`
 - `owner-proof-integrity`
 - `page-cro`
+- `production-pr-readiness-review`
 - `property-truth-regeneration`
 - `schema-markup`
 - `seascape-design-critic`
