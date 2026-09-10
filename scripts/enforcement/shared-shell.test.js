@@ -23,6 +23,15 @@ const siteDir = process.env.SEASCAPE_SITE_DIR
  * guest-facing routes, so the shared shell does not apply to them. Keep this
  * list short — a route a guest can land on belongs in the fix, not here.
  */
+// Markup that only ever belonged to a site-wide navigation bar, so finding any
+// of it alongside the shared header means the page shows two.
+const LEGACY_SITE_NAV_SIGNATURES = [
+  ['aria-label="Main navigation"', /aria-label="Main navigation"/],
+  ['nav id="mainNav"', /<nav\b[^>]*\bid="mainNav"/i],
+  ['nav class="nav"', /<nav\b[^>]*\bclass="(?:[^"]*\s)?nav(?:\s[^"]*)?"/i],
+  ['legacy guide-nav bar', /<nav\b[^>]*\bclass="(?:[^"]*\s)?(?:guide-nav|chart-nav)(?:\s[^"]*)?"/i],
+];
+
 const EXEMPTIONS = {
   "internal/ai-engine-click-test/index.html":
     'Noindex internal QA harness (meta robots "noindex, follow") for verifying AI-labeled click tracking. Not a guest-facing route; ships with no shared header/footer by design.',
@@ -80,12 +89,22 @@ test("every non-exempt HTML page has exactly one g-header and one g-footer (F5)"
       .readFileSync(filePath, "utf8")
       .replace(/<!--[\s\S]*?-->/g, " ")
       .replace(/<template[\s\S]*?<\/template>/gi, " ")
-      .replace(/<script[\s\S]*?<\/script>/gi, " ");
+      .replace(/<script[\s\S]*?<\/script>/gi, " ")
+      .replace(/<style[\s\S]*?<\/style>/gi, " ");
     const headerCount = (html.match(/class="g-header"/g) || []).length;
     const footerCount = (html.match(/class="g-footer"/g) || []).length;
 
     if (headerCount !== 1 || footerCount !== 1) {
       offenders.push(`${relativePath}: g-header x${headerCount}, g-footer x${footerCount}`);
+    }
+
+    // Counting the shared header alone let a page keep a second, legacy site
+    // navigation directly beneath it and still pass. A semantic section
+    // <header> is fine; another navigation landmark for the whole site is not.
+    for (const [label, pattern] of LEGACY_SITE_NAV_SIGNATURES) {
+      if (pattern.test(html)) {
+        offenders.push(`${relativePath}: renders a second site navigation (${label})`);
+      }
     }
   }
 

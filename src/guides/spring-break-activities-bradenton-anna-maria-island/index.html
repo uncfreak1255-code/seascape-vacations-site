@@ -46,16 +46,6 @@
       color: var(--brand-dark);
     }
 
-    header {
-      max-width: 1120px;
-      margin: 0 auto;
-      padding: 18px 24px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 24px;
-    }
-
     .logo a {
       color: var(--brand-dark);
       text-decoration: none;
@@ -63,23 +53,6 @@
       font-size: 1.6rem;
       font-weight: 700;
       letter-spacing: 0.03em;
-    }
-
-    nav[aria-label="Main navigation"] {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 16px;
-      font-size: 0.95rem;
-    }
-
-    nav[aria-label="Main navigation"] a {
-      text-decoration: none;
-      color: var(--muted);
-      font-weight: 500;
-    }
-
-    nav[aria-label="Main navigation"] a:hover {
-      color: var(--brand-dark);
     }
 
     main {
@@ -230,10 +203,6 @@
         border-radius: 20px;
       }
 
-      nav[aria-label="Main navigation"] {
-        gap: 12px;
-      }
-
       table {
         display: block;
         overflow-x: auto;
@@ -305,16 +274,6 @@
 </head>
 <body class="guest-shell">
 {% include "partials/guest-header.njk" %}
-
-  <header>
-    <div class="logo"><a href="/">Seascape Vacations</a></div>
-    <nav aria-label="Main navigation">
-      <a href="/properties/">Browse Stays</a>
-      <a href="/guides/">Local Guides</a>
-      <a href="/property-management/">Owner Info</a>
-      <a href="/#contact">Contact</a>
-    </nav>
-  </header>
 
   <main>
     <nav aria-label="Breadcrumb" class="breadcrumb">

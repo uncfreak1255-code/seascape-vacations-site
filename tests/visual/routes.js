@@ -58,6 +58,15 @@ const moneyRoutes = [
     readySelector: ".journal-cover h1",
   },
   {
+    // One of the 26 routes generated from property-management.njk. Its header
+    // CTA comes from per-page data, so the template needs its own coverage;
+    // testing only /property-management/ missed a header that overflowed every
+    // phone width across the whole family.
+    slug: "owner-airbnb-management-sarasota",
+    path: "/property-management/airbnb-management-services-sarasota/",
+    readySelector: "main h1",
+  },
+  {
     slug: "guest-support",
     path: "/guest-support/",
     readySelector: "main h1",

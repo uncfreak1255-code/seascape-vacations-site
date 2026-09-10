@@ -69,12 +69,18 @@ const LEGACY_NAV_BAR_RE = /\s*<nav\b[^>]*\bclass="[^"]*\b(?:guide-nav|chart-nav)
 // a bare gap once the static guest header replaces it.
 const LEGACY_MAIN_NAV_RE = /\s*<nav\b[^>]*\bid="mainNav"[^>]*>[\s\S]*?<\/nav>/i;
 const LEGACY_MAIN_NAV_OFFSET_RE = /;?margin-top:76px(?=")/g;
+// A branded <header> wrapping a site nav, as opposed to the bare bars above.
+// Matched by its navigation landmark so a semantic section <header> is safe.
+const LEGACY_BRANDED_HEADER_RE = /\s*<header(?:\s[^>]*)?>(?:(?!<\/header>)[\s\S])*?<nav\b[^>]*aria-label="Main navigation"[\s\S]*?<\/header>/i;
 // Orphaned CSS for that same removed bar (.guide-nav{...}, .guide-nav a{...},
 // .guide-nav a:hover{...}, .guide-nav .logo{...}, and the .chart-nav
 // equivalents) left behind in the page's own <style> block. Matches one
 // compact one-line-per-rule declaration at a time; each capture stops at the
 // first "}" so it never reaches past its own rule.
 const ORPHANED_NAV_CSS_RE = /\.(?:guide|chart)-nav(?:\s+\.?[a-zA-Z][\w-]*)?(?::[a-zA-Z-]+)?\s*\{[^}]*\}\n?/g;
+// Styling left behind by a removed branded header: its element rules and the
+// attribute selectors that only ever targeted its navigation.
+const ORPHANED_BRANDED_HEADER_CSS_RE = /\s*(?:nav\[aria-label="Main navigation"\][^{]*|header(?:\s+\.logo)?)\s*\{[^}]*\}/g;
 
 function readHeadBytes(fullPath, n) {
   const fd = fs.openSync(fullPath, "r");
@@ -117,7 +123,8 @@ function hasShell(html) {
     html.includes(HEADER_INCLUDE) &&
     html.includes(FOOTER_INCLUDE) &&
     !LEGACY_NAV_BAR_RE.test(html) &&
-    !LEGACY_MAIN_NAV_RE.test(html)
+    !LEGACY_MAIN_NAV_RE.test(html) &&
+    !LEGACY_BRANDED_HEADER_RE.test(html)
   );
 }
 
@@ -170,6 +177,13 @@ function transform(html, fileLabel) {
     changed = true;
     notes.push("removed legacy back-to-Seascape nav bar");
   }
+  const legacyBrandedHeaderMatch = out.match(LEGACY_BRANDED_HEADER_RE);
+  if (legacyBrandedHeaderMatch) {
+    out = out.replace(legacyBrandedHeaderMatch[0], "");
+    changed = true;
+    notes.push("removed legacy branded header with its own site navigation");
+  }
+
   const legacyMainNavMatch = out.match(LEGACY_MAIN_NAV_RE);
   if (legacyMainNavMatch) {
     out = out.replace(legacyMainNavMatch[0], "");
@@ -184,6 +198,9 @@ function transform(html, fileLabel) {
   // <style> block. Checked unconditionally so a re-run still catches it.
   const beforeCssStrip = out;
   out = out.replace(ORPHANED_NAV_CSS_RE, "");
+  if (!LEGACY_BRANDED_HEADER_RE.test(out)) {
+    out = out.replace(ORPHANED_BRANDED_HEADER_CSS_RE, "");
+  }
   if (out !== beforeCssStrip) {
     changed = true;
     notes.push("removed orphaned nav-bar CSS declarations");
