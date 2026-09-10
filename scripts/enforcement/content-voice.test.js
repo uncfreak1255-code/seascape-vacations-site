@@ -282,6 +282,27 @@ function getBuiltPublicContentPath(relativePath, source) {
   return path.join("_site", normalizedRoute, "index.html");
 }
 
+// Since the shared Waterline header and footer (2026-09-10), every page's hub
+// links (/properties/, /guides/, /property-management/, /about-us/) arrive
+// through an include rather than the page's own markup. A required link that
+// the source does not carry still counts when the rendered page carries it,
+// so the gate keeps checking what a reader can actually click without forcing
+// every page body to duplicate the shell.
+const renderedOutputCache = new Map();
+
+function renderedOutputIncludesLink(relativePath, source, link) {
+  const builtRelativePath = getBuiltPublicContentPath(relativePath, source);
+  if (!renderedOutputCache.has(builtRelativePath)) {
+    const builtAbsolutePath = path.join(projectRoot, builtRelativePath);
+    renderedOutputCache.set(
+      builtRelativePath,
+      fs.existsSync(builtAbsolutePath) ? fs.readFileSync(builtAbsolutePath, "utf8") : ""
+    );
+  }
+  const rendered = renderedOutputCache.get(builtRelativePath);
+  return rendered.includes(`href="${link}"`) || rendered.includes(`href='${link}'`);
+}
+
 function lintRenderedPublicContent(relativePath, source) {
   const builtRelativePath = getBuiltPublicContentPath(relativePath, source);
   const builtAbsolutePath = path.join(projectRoot, builtRelativePath);
@@ -674,7 +695,11 @@ function lintPublicContent(relativePath, source, requiredLinks, options = {}) {
           continue;
         }
 
-        if (!source.includes(`href="${link}"`) && !source.includes(`href='${link}'`)) {
+        if (
+          !source.includes(`href="${link}"`) &&
+          !source.includes(`href='${link}'`) &&
+          !renderedOutputIncludesLink(relativePath, source, link)
+        ) {
           violations.push(`${relativePath}: missing required internal link ${link}`);
         }
       }
