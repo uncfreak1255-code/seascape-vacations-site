@@ -7,9 +7,18 @@ updates:
       day: "monday"
     open-pull-requests-limit: 5
     labels: ["dependencies"]
+    # One PR per week for all minor and patch bumps; majors stay separate
+    # because they can carry breaking changes worth reading on their own.
+    groups:
+      npm-minor-and-patch:
+        patterns: ["*"]
+        update-types: ["minor", "patch"]
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "weekly"
       day: "monday"
     labels: ["dependencies", "ci"]
+    groups:
+      github-actions:
+        patterns: ["*"]
