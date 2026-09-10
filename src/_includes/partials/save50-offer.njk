@@ -1,8 +1,18 @@
 <style>
+  /* Same sizing mechanism as .g-wrap/.catalog-page (width cap + auto margin,
+     no self padding) so the card's edges land exactly on the surrounding
+     content's edges instead of adding a second inset on top of theirs. */
   .save50-offer {
     margin: 18px auto 0;
-    max-width: 1180px;
-    padding: 0 24px;
+    width: min(1280px, calc(100% - 80px));
+  }
+
+  /* Nested inside .catalog-page, the width formula above would resolve
+     against an already-inset containing block and double the inset — just
+     fill it instead, at every width, so edges land exactly on the
+     breadcrumb/intro's edges. */
+  .catalog-page .save50-offer {
+    width: 100%;
   }
 
   .save50-offer[hidden] {
@@ -15,32 +25,33 @@
     gap: 18px;
     align-items: center;
     padding: 18px 20px;
-    border: 1px solid rgba(61, 92, 93, 0.12);
-    border-radius: 18px;
-    background: linear-gradient(135deg, rgba(250, 247, 238, 0.96), rgba(245, 238, 214, 0.96));
-    box-shadow: 0 16px 42px rgba(28, 38, 39, 0.08);
+    background: var(--g-soft, #f0f3ee);
+    border: 1px solid var(--g-rule, #cad4cf);
+    border-left: 3px solid var(--g-accent, #a4533e);
+    border-radius: 4px;
+    box-shadow: none;
   }
 
   .save50-offer-label {
     display: block;
     margin-bottom: 5px;
-    color: var(--brand);
-    font-size: 11px;
+    color: var(--g-muted, #52676a);
+    font-size: 12px;
     font-weight: 600;
-    letter-spacing: 0.16em;
+    letter-spacing: 0.13em;
     line-height: 1.2;
     text-transform: uppercase;
   }
 
   .save50-offer-copy {
     margin: 0;
-    color: var(--stone);
-    font-size: 15px;
+    color: var(--g-ink, #173d42);
+    font-size: 14px;
     line-height: 1.55;
   }
 
   .save50-offer-copy strong {
-    color: var(--brand-dark);
+    color: var(--g-ink, #173d42);
     font-weight: 600;
   }
 
@@ -49,19 +60,19 @@
     align-items: center;
     justify-content: center;
     min-width: 86px;
-    padding: 9px 13px;
-    border-radius: 999px;
-    background: var(--gold);
-    color: var(--stone);
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 0.12em;
+    min-height: 44px;
+    padding: 12px 14px;
+    border-radius: 4px;
+    background: var(--g-citron, #d6eb85);
+    color: var(--g-ink, #173d42);
+    font: 600 13px/1 Poppins, sans-serif;
+    letter-spacing: 0.08em;
   }
 
   @media (max-width: 680px) {
     .save50-offer {
       margin-top: 12px;
-      padding: 0 18px;
+      width: calc(100% - 40px);
     }
 
     .save50-offer-card {
