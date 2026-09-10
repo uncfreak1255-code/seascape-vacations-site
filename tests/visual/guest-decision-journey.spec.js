@@ -82,6 +82,7 @@ test("SAVE50 campaign survives catalog and property trip edits", async ({ page }
   expect(catalogCheckout.searchParams.get("promo")).toBe("save50");
   expect(catalogCheckout.searchParams.get("utm_campaign")).toBe("save50_welcome");
   await page.getByRole("link", {name:"View Dockside Dreams details",exact:true}).click();
+  await expect(page).toHaveURL(/\/properties\/dockside-dreams\//);
   await page.getByLabel("Guests", {exact:true}).selectOption("10");
   var propertyCheckout = new URL(await page.locator("[data-property-checkout]").getAttribute("href"));
   expect(propertyCheckout.searchParams.get("promo")).toBe("save50");
