@@ -69,6 +69,7 @@
   var today=new Intl.DateTimeFormat('en-CA',{timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
   document.querySelectorAll('[data-guest-trip-form]').forEach(function(form){
     var arrive=form.querySelector('.g-arrive'),depart=form.querySelector('.g-depart'),guests=form.querySelector('.g-guests'),status=form.querySelector('.g-form-status');
+    var defaultStatus=status.textContent;
     arrive.min=today;depart.min=today;
     arrive.value=trip.arrive||'';depart.value=trip.depart||'';
     if(form.dataset.bookingUrl&&Number(trip.guests)>Number(form.dataset.maxGuests)){
@@ -102,6 +103,7 @@
       ['arrive','depart','guests'].forEach(function(key){delete trip[key];if(next[key])trip[key]=next[key];});
       var current=new URL(location.href);['arrive','depart','checkin','checkout','guests'].forEach(function(key){current.searchParams.delete(key);});Object.keys(trip).forEach(function(key){current.searchParams.set(key,trip[key]);});history.replaceState(null,'',current.pathname+current.search+current.hash);
       syncTrip();
+      if(form.dataset.bookingUrl&&!document.querySelector('[data-property-checkout]').hidden)status.textContent=defaultStatus;
     });
   });
   function photoFailed(image){
