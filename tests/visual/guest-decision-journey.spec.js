@@ -16,18 +16,24 @@ function trip(href) {
 test("a guide detour preserves trip details through a stay collection", async ({ page }) => {
   await registerStableNetwork(page);
   await page.clock.setFixedTime(new Date("2026-09-04T16:00:00Z"));
-  await page.goto("/?" + itinerary, {waitUntil:"networkidle"});
+  await page.goto("/?" + itinerary + "&promo=save50&utm_source=mailchimp", {waitUntil:"networkidle"});
   const guide = page.locator('main a[href*="/guides/bradenton-vs-sarasota/"]').first();
   await guide.click();
   await expect(page).toHaveURL(/arrive=2026-11-07/);
+  await expect(page).toHaveURL(/promo=save50/);
+  await expect(page).toHaveURL(/utm_campaign=save50_welcome/);
   await page.locator('a[href*="/stays/bradenton-vacation-rentals-near-beaches/"]').first().click();
   await expect(page).toHaveURL(/guests=8/);
+  await expect(page).toHaveURL(/promo=save50/);
   await page.locator('a[href*="/properties/dockside-dreams/"]').first().click();
   await expect(page.locator(".g-arrive")).toHaveValue("2026-11-07");
   await expect(page.locator(".g-depart")).toHaveValue("2026-11-14");
   await expect(page.locator(".g-guests")).toHaveValue("8");
   expect(trip(await page.locator('[data-property-checkout]').getAttribute('href')))
     .toEqual({start:"2026-11-07",end:"2026-11-14",guests:"8"});
+  const propertyCheckout = new URL(await page.locator('[data-property-checkout]').getAttribute('href'));
+  expect(propertyCheckout.searchParams.get("promo")).toBe("save50");
+  expect(propertyCheckout.searchParams.get("utm_campaign")).toBe("save50_welcome");
 });
 
 test("area and group matching preserve the selected trip into details and checkout", async ({ page, context }) => {
@@ -68,6 +74,14 @@ test("editing fields requires applying the trip; global booking links update too
   await expect(page.locator(".catalog-card:visible")).toHaveAttribute("data-property","the-oasis");
   const hrefs = await page.locator('a[data-booking-base]').evaluateAll(nodes=>nodes.map(node=>node.href));
   for (const href of hrefs) expect(trip(href)).toEqual({start:"2026-12-05",end:"2026-12-12",guests:"14"});
+  const planningHrefs = await page.locator('.catalog-help-links a[data-trip-link]').evaluateAll(nodes=>nodes.map(node=>node.href));
+  expect(planningHrefs).toHaveLength(6);
+  for (const href of planningHrefs) {
+    const planned = new URL(href);
+    expect(planned.searchParams.get("arrive")).toBe("2026-12-05");
+    expect(planned.searchParams.get("depart")).toBe("2026-12-12");
+    expect(planned.searchParams.get("guests")).toBe("14");
+  }
   await page.getByRole("button", {name:"My dates are flexible"}).click();
   expect(trip(await page.locator(".catalog-check-dates").first().getAttribute("href"))).toEqual({start:null,end:null,guests:"14"});
 });

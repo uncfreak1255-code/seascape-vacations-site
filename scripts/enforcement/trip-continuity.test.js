@@ -30,6 +30,21 @@ test('guide and stay detours retain dates and guests without copying private que
   assert.equal(new URL(links[6].getAttribute()).search, trip + '&email=private@example.com');
 });
 
+test('shared navigation retains the approved SAVE50 campaign allowlist only', () => {
+  const links = [link('/properties/'), link('/stays/bradenton-vacation-rentals-near-beaches/')];
+  runtime(trip + '&promo=save50&utm_source=mailchimp&utm_medium=email&utm_content=welcome&sv_session_id=secret&email=private@example.com', links).init();
+  for (const item of links) {
+    const url = new URL(item.getAttribute());
+    assert.equal(url.searchParams.get('promo'), 'save50');
+    assert.equal(url.searchParams.get('utm_source'), 'mailchimp');
+    assert.equal(url.searchParams.get('utm_medium'), 'email');
+    assert.equal(url.searchParams.get('utm_campaign'), 'save50_welcome');
+    assert.equal(url.searchParams.get('utm_content'), 'welcome');
+    assert.equal(url.searchParams.has('sv_session_id'), false);
+    assert.equal(url.searchParams.has('email'), false);
+  }
+});
+
 test('checkout receives Hostaway public date names and the selected guest count', () => {
   const url = new URL(runtime(trip).api.buildBookingEngineHandoffUrl('https://book.seascape-vacations.com/listings/206016'));
   assert.equal(url.searchParams.get('start'), '2099-12-05');
