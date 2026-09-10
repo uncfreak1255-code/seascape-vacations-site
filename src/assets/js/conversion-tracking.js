@@ -171,6 +171,7 @@
 
     try {
       var url = new URL(String(value), window.location && window.location.href ? window.location.href : "https://seascape-vacations.com/");
+      if (url.protocol !== "https:" && url.protocol !== "http:") return "";
       Array.from(url.searchParams.keys()).forEach(function (key) {
         var paramValue = url.searchParams.get(key) || "";
         if (isSensitiveAnalyticsKey(key) || isSensitiveAnalyticsValue(paramValue)) {
@@ -274,6 +275,11 @@
     }
     var guests = params.get("guests") || "";
     if (/^\d+$/.test(guests) && Number.isSafeInteger(Number(guests)) && Number(guests) > 0) trip.guests = String(Number(guests));
+    var area = params.get("area") || "";
+    if (["anna-maria-island", "ami", "bradenton", "sarasota", "waterfront", "pet-friendly"].indexOf(area) !== -1) trip.area = area;
+    var slugs = Object.keys(PROPERTY_SLUG_BY_LISTING_ID).map(function (id) { return PROPERTY_SLUG_BY_LISTING_ID[id]; });
+    var compare = (params.get("compare") || "").split(",").filter(function (slug, index, all) { return slugs.indexOf(slug) !== -1 && all.indexOf(slug) === index; }).slice(0, 3);
+    if (compare.length) trip.compare = compare.join(",");
     return trip;
   }
 
@@ -283,13 +289,25 @@
     var url;
     try { url = new URL(href, window.location.href); } catch (_error) { return; }
     if (!isSameOriginUrl(url, window.location.href) || !/^(?:\/(?:properties|guides|stays)(?:\/|$)|\/about-us\/|\/$)/.test(url.pathname)) return;
-    var trip = readTripParams(new URLSearchParams(window.location.search || ""));
+    var currentParams = new URLSearchParams(window.location.search || "");
+    var trip = readTripParams(currentParams);
     // A destination's explicit trip is intentional; never combine two date ranges.
     if (!["arrive", "depart", "checkin", "checkout"].some(function (key) { return url.searchParams.has(key); })) {
       if (trip.arrive) { url.searchParams.set("arrive", trip.arrive); url.searchParams.set("depart", trip.depart); }
     }
     if (trip.guests && !url.searchParams.has("guests")) url.searchParams.set("guests", trip.guests);
-    if (Object.keys(trip).length) node.setAttribute("href", url.toString());
+    ["area", "compare"].forEach(function (key) { if (trip[key] && !url.searchParams.has(key)) url.searchParams.set(key, trip[key]); });
+    var campaign = (currentParams.get("utm_campaign") || "").trim().toLowerCase();
+    var promo = (currentParams.get("promo") || "").trim().toLowerCase();
+    var preserveSave50 = ["save50_welcome", "guest_social_proof"].indexOf(campaign) !== -1 || promo === "save50";
+    if (preserveSave50) {
+      ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "utm_id", "promo"].forEach(function (key) {
+        var value = (currentParams.get(key) || "").trim();
+        if (!value && key === "utm_campaign") value = "save50_welcome";
+        if (value && !url.searchParams.get(key)) url.searchParams.set(key, value);
+      });
+    }
+    if (Object.keys(trip).length || preserveSave50) node.setAttribute("href", url.toString());
   }
 
   function syncFunnelLineageLink(node) {
@@ -871,11 +889,7 @@
       captureContent.style.display = "none";
     }
 
-    success.classList.add("is-visible");
-    success.classList.add("show");
-    if (typeof success.hidden === "boolean") {
-      success.hidden = false;
-    }
+    setEmailCaptureOutcomeVisibility(success, true);
     form.reset();
   }
 
@@ -1109,6 +1123,10 @@
     document.addEventListener("submit", function (event) {
       var form = event.target;
       if (!form || !form.matches("form[data-track-form]")) return;
+      if (form.dataset.inlineEmailCapture === "true" && form.dataset.guestCaptureInFlight === "true") {
+        event.preventDefault();
+        return;
+      }
 
       syncOwnerSourcePage(form);
       if (!validateOwnerFormContext(form)) {

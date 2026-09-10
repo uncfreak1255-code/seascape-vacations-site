@@ -244,6 +244,13 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.addWatchTarget("./_data/");
   
   // Simple title filter - just appends site name if not already there
+  eleventyConfig.addFilter("propertySchemaAmenities", require("./scripts/regenerate-property-surfaces").renderSchemaAmenityLabels);
+  eleventyConfig.addFilter("propertyBySlug", (properties, slug) => {
+    const property = properties.find((entry) => entry.slug === slug);
+    if (!property) throw new Error(`Unknown property slug: ${slug}`);
+    return property;
+  });
+
   eleventyConfig.addFilter("seoTitle", function(title) {
     if (!title) return "Seascape Vacations | Florida Gulf Coast Vacation Rentals";
     if (title.includes("Seascape")) return title;

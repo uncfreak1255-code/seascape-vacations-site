@@ -200,6 +200,10 @@ async function prepareFullPageScreenshot(page) {
       return image.complete && (!image.currentSrc || image.naturalWidth > 0);
     })
   );
+  const badPhotos = await page.locator("[data-property-photo]").evaluateAll(nodes => nodes
+    .filter(node => node.getClientRects().length && (node.tagName !== "IMG" || !node.naturalWidth || node.dataset.photoFailed || !new URL(node.currentSrc, location.href).pathname.startsWith("/images/homes/" + node.dataset.propertyPhoto + "/")))
+    .map(node => ({property: node.dataset.propertyPhoto, src: node.currentSrc || "unavailable"})));
+  if (badPhotos.length) throw new Error("Refusing visual proof: property photos missing or mismatched " + JSON.stringify(badPhotos));
   await waitForFonts(page);
   await waitForStableLayout(page);
 

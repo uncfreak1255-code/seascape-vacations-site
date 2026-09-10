@@ -10,7 +10,7 @@ async function visit(page, route) {
 }
 function expectTrip(href, booking = false) {
   const url = new URL(href, 'https://seascape-vacations.com');
-  expect(url.searchParams.get(booking ? 'start' : 'arrive')).toBe('2026-12-05');
+  expect(url.searchParams.get(booking ? 'start' : 'arrive'), href).toBe('2026-12-05');
   expect(url.searchParams.get(booking ? 'end' : 'depart')).toBe('2026-12-12');
   expect(url.searchParams.get(booking ? 'numberOfGuests' : 'guests')).toBe('8');
 }
@@ -21,11 +21,10 @@ test('returning home restores dates and a non-default group before searching aga
   const href = await page.locator('a[href]').evaluateAll(nodes => nodes.map(n => n.href).find(href => new URL(href).pathname === '/'));
   expect(href).toBeTruthy();
   await page.goto(href);
-  const fields = page.locator('.hero-booking-field');
-  await expect(fields.nth(1)).toContainText('Dec 5');
-  await expect(fields.nth(2)).toContainText('Dec 12');
-  await expect(fields.nth(3)).toContainText('6 guests');
-  await page.locator('.hero-booking-cta').click();
+  await expect(page.locator('#home-trip-arrive')).toHaveValue('2026-12-05');
+  await expect(page.locator('#home-trip-depart')).toHaveValue('2026-12-12');
+  await expect(page.locator('#home-trip-guests')).toHaveValue('6');
+  await page.getByRole('button', { name: 'Find my home', exact: true }).click();
   await expect(page).toHaveURL(/\/properties\//);
   const url = new URL(page.url());
   expect(url.searchParams.get('arrive')).toBe('2026-12-05');
@@ -35,12 +34,10 @@ test('returning home restores dates and a non-default group before searching aga
 
 test('existing homepage search carries the trip through catalog and property checkout', async ({ page }) => {
   await visit(page, '/');
-  const fields = page.locator('.hero-booking-field');
-  await fields.nth(1).click();
-  await page.locator('.hero-booking-popover input[type=date]').fill('2026-12-05');
-  await fields.nth(2).click();
-  await page.locator('.hero-booking-popover input[type=date]').fill('2026-12-12');
-  await page.locator('.hero-booking-cta').click();
+  await page.getByLabel('Arrival', { exact: true }).fill('2026-12-05');
+  await page.getByLabel('Departure', { exact: true }).fill('2026-12-12');
+  await page.getByLabel('Guests', { exact: true }).selectOption('8');
+  await page.getByRole('button', { name: 'Find my home', exact: true }).click();
   await expect(page).toHaveURL(/\/properties\//);
   expectTrip(page.url());
   const detail = page.locator('a[aria-label="View Dockside Dreams details"]').first();
@@ -84,7 +81,7 @@ test('guide to stay to property retains the trip and GA4 outbound lineage agrees
 
 test('catalog direct links retain requested dates and capacity filtering', async ({ page }) => {
   await visit(page, '/properties/?' + trip);
-  const links = page.locator('.catalog-card:visible a[data-track-event="catalog_book_direct_click"]');
+  const links = page.locator('.catalog-card:visible a[data-track-event="catalog_book_direct_click"]:visible');
   for (const href of await links.evaluateAll(nodes => nodes.map(n => n.href))) expectTrip(href, true);
   await page.goto('/properties/?' + trip.replace('guests=8', 'guests=17') + '&visual-test=1');
   await expect(page.locator('.catalog-card:visible')).toHaveCount(0);

@@ -37,6 +37,7 @@
             if (typeof URL !== "function") return "";
             try {
                 var url = new URL(String(value), window.location && window.location.href ? window.location.href : "https://seascape-vacations.com/");
+                if (url.protocol !== "https:" && url.protocol !== "http:") return "";
                 Array.from(url.searchParams.keys()).forEach(function(key) {
                     var paramValue = url.searchParams.get(key) || "";
                     if (isSensitiveAnalyticsKey(key) || EMAIL_VALUE_PATTERN.test(paramValue) || PHONE_VALUE_PATTERN.test(paramValue) || ADDRESS_VALUE_PATTERN.test(paramValue)) {

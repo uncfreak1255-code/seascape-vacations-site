@@ -46,16 +46,17 @@
     <style>
         {% include "partials/site-header-styles.njk" %}
     </style>
+{% if page.url == "/about-us/" %}<link rel="stylesheet" href="/css/guest.css?v=waterline-v3">{% endif %}
 </head>
-<body>
-    {% include "partials/site-header.njk" %}
+<body{% if page.url == "/about-us/" %} class="guest-shell"{% endif %}>
+    {% if page.url == "/about-us/" %}{% include "partials/guest-header.njk" %}{% else %}{% include "partials/site-header.njk" %}{% endif %}
 
     <main class="main-content">
         {{ content | safe }}
     </main>
 
     <!-- Footer -->
-    <footer class="footer">
+    {% if page.url == "/about-us/" %}{% include "partials/guest-footer.njk" %}{% else %}<footer class="footer">
         <div class="footer-inner">
             <div class="footer-logo">Seascape Vacations</div>
             <div class="footer-links">
@@ -74,7 +75,7 @@
                 </div>
             </div>
         </div>
-    </footer>
+    </footer>{% endif %}
 
     {% include "partials/site-header-script.njk" %}
     {% include "partials/analytics-ga4.njk" %}

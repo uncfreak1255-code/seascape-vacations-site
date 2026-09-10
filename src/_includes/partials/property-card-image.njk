@@ -1,7 +1,12 @@
 <div class="property-img">
   <img
+    {% if property.photography.photos[0].src %}
+    src="{{ property.photography.photos[0].src | replace('.webp', '-800.webp') }}"
+    srcset="{{ property.photography.photos[0].src | replace('.webp', '-800.webp') }} 800w, {{ property.photography.photos[0].src }} 1400w"
+    {% else %}
     src="{{ property.image | imgProxy(800) }}"
     srcset="{{ property.image | imgProxy(400) }} 400w, {{ property.image | imgProxy(800) }} 800w, {{ property.image | imgProxy(1200) }} 1200w"
+    {% endif %}
     sizes="(min-width: 1100px) 33vw, (min-width: 768px) 50vw, 100vw"
     width="800"
     height="533"
@@ -9,8 +14,9 @@
     {% if fetchpriority %}fetchpriority="{{ fetchpriority }}"{% endif %}
     decoding="async"
     alt="{{ property.name }} - {{ property.specs }} vacation rental in {{ property.city }}, Florida"
-    onerror="this.onerror=null;this.src='/images/seascape-og-default.jpg';this.srcset='';"
+    onerror="this.onerror=null;this.hidden=true;this.parentElement.querySelector('[data-photo-unavailable]').hidden=false;"
     style="position:absolute;width:100%;height:100%;object-fit:cover;top:0;left:0;">
+  <span data-photo-unavailable hidden style="position:absolute;inset:0;padding:24px;background:#eeeae2;color:#173d42;">{{ property.name }} photo unavailable. Open this home for more details.</span>
   {% if badge %}
   <span class="property-badge">{{ badge | safe }}</span>
   {% endif %}

@@ -207,13 +207,14 @@ if (phase === "p0") {
     "_site/index.html",
     "wp-content/uploads/2025/03/51916-135881-kgzZJ5KWwcw1HTE3EKwE6qxVSHBXCzEjbQjloKZayik-63ac665e899b2.jpg"
   );
-  expectContains("_site/index.html", "Partner With Seascape Vacations");
+  expectContains("_site/index.html", 'href="/property-management/">For property owners</a>');
   expectContains("_site/index.html", 'href="/properties/dockside-dreams/"');
   expectContains("_site/index.html", 'href="/properties/the-oasis/"');
   expectContains("_site/index.html", "Dockside Dreams");
   expectContains("_site/index.html", "The Oasis");
-  expectContains("_site/index.html", "prop-desc-snippet");
-  expectContains("_site/index.html", "bookingenginecdn.hostaway.com");
+  expectContains("_site/index.html", 'class="g-postcards"');
+  expectContains("_site/index.html", 'data-property-photo="the-oasis" src="/images/homes/the-oasis/01.webp"');
+  expectExists("_site/images/homes/the-oasis/01.webp");
   expectContains("_site/properties/index.html", 'href="/properties/dockside-dreams/"');
   expectNotContains("_site/properties/index.html", "/.netlify/functions/get-properties");
   expectNotContains("_site/properties/index.html", "api.hostaway.com");
@@ -326,11 +327,14 @@ if (phase === "remediation") {
   expectContains("_site/_redirects", "/stays/concierge-luxury-services/  /services/concierge-services/  301");
   expectExists("_site/images/seascape-og-default.jpg");
   expectExists("_site/images/anna-maria-island-og.jpg");
-  expectMatches("_site/index.html", /Local Gulf Coast hosting team/, "homepage local-hosting trust badge");
-  expectMatches("_site/index.html", /Live[\s\S]{0,120}Home availability/, "homepage live-availability stat");
-  expectMatches("_site/index.html", /Flexible[\s\S]{0,120}Home sizes/, "homepage home-sizes stat");
-  expectMatches("_site/index.html", /Clear[\s\S]{0,120}Checkout totals/, "homepage checkout-total stat");
-  expectMatches("_site/index.html", /24\/7[\s\S]{0,120}Local Support/, "homepage 24/7 Local Support stat");
+  expectContains("_site/index.html", "Seascape is owner-operated.");
+  expectContains("_site/index.html", 'href="tel:9417048545"');
+  expectMatches("_site/index.html", /<form[^>]+action="\/properties\/"[^>]+method="get"/, "native catalog trip form");
+  for (const name of ["arrive", "depart", "guests"]) {
+    expectContains("_site/index.html", `name="${name}"`);
+  }
+  expectContains("_site/index.html", "See the current availability and complete total on the booking page.");
+  expectNotMatches("_site/index.html", /hero-live-source|data-live-fact|Live home collection/, "retired homepage live ticker");
   expectNotMatches(
     "_site/index.html",
     /class="stat-value">0<\/div>\s*<div class="stat-label">Airbnb Rating<\/div>/,
@@ -392,86 +396,21 @@ if (phase === "remediation") {
       "stale Anna Maria destination route"
     );
     expectNoTemplateLeakMarkers(file);
-    expectMatches(
-      file,
-      buildAnchorPattern({
-        href: "/property-management/",
-        className: "nav-link",
-        text: "Property Owners"
-      }),
-      "property owners nav link"
-    );
-    expectMatches(
-      file,
-      buildAnchorPattern({
-        href: "/property-management/",
-        className: "mobile-item",
-        text: "Property Owners"
-      }),
-      "property owners mobile link"
-    );
-    expectMatches(
-      file,
-      buildAnchorPattern({
-        href: "/property-management/",
-        className: "footer-link",
-        text: "For Owners"
-      }),
-      "property owners footer link"
-    );
-    expectMatches(
-      file,
-      buildAnchorPattern({
-        href: "/guides/",
-        className: "nav-link",
-        text: "Guides"
-      }),
-      "guides nav link"
-    );
-    expectMatches(
-      file,
-      buildAnchorPattern({
-        href: "/guides/",
-        className: "mobile-item",
-        text: "Guides"
-      }),
-      "guides mobile link"
-    );
-    expectMatches(
-      file,
-      buildAnchorPattern({
-        href: "tel:+19417048545",
-        className: "nav-link",
-        text: "Call"
-      }),
-      "phone-backed contact nav link"
-    );
-    expectMatches(
-      file,
-      buildAnchorPattern({
-        href: "tel:+19417048545",
-        className: "mobile-item",
-        text: "Call"
-      }),
-      "phone-backed contact mobile link"
-    );
-    expectMatches(
-      file,
-      buildAnchorPattern({
-        href: "tel:+19417048545",
-        className: "footer-link",
-        text: "Call"
-      }),
-      "phone-backed contact footer link"
-    );
-    expectMatches(
-      file,
-      buildAnchorPattern({
-        href: "/guides/anna-maria-island-area-guide/",
-        text: "Anna Maria Island"
-      }),
-      "Anna Maria destination menu link"
-    );
+    const html = read(file);
+    const regions = [
+      ["primary navigation", /<nav\b[^>]*aria-label="Primary"[^>]*>([\s\S]*?)<\/nav>/, ["/properties/", "/guides/", "/about-us/"]],
+      ["mobile navigation", /<nav\b[^>]*aria-label="Mobile"[^>]*>([\s\S]*?)<\/nav>/, ["/properties/", "/guides/", "/about-us/", "/property-management/", "tel:9417048545"]],
+      ["footer", /<footer\b[^>]*>([\s\S]*?)<\/footer>/, ["/properties/", "/guides/", "/property-management/", "tel:9417048545", "mailto:info@seascape-vacations.com", "/privacy/", "/terms/", "/cookies/"]]
+    ];
+    for (const [region, pattern, requiredLinks] of regions) {
+      const contents = html.match(pattern)?.[1];
+      if (!contents) throw new Error(`Missing ${region} in ${file}`);
+      for (const href of requiredLinks) {
+        if (!new RegExp(`<a\\b[^>]*href="${escapeRegex(href)}"`).test(contents)) {
+          throw new Error(`Missing ${region} link in ${file}: ${href}`);
+        }
+      }
+    }
   }
   expectNotContains(
     "_site/stays/anna-maria-island-vacation-rentals/index.html",
@@ -489,13 +428,19 @@ if (phase === "remediation") {
     "_site/index.html",
     "wp-content/uploads/2025/03/51916-206016-xNIrPl9kvF0vllYFzSL7Lm0Gl4eOGxLIN--wmPlCT3NY-6536bca493945.jpg"
   );
-  expectContains("_site/index.html", "images/seascape-og-default.jpg");
-  expectContains("_site/index.html", "hero-optimized.webp");
+  expectContains("_site/index.html", 'property="og:image" content="https://seascape-vacations.com/images/homes/the-oasis/01.webp"');
+  expectNotContains("_site/index.html", "seascape-og-default.jpg");
+  expectContains("_site/index.html", 'srcset="/images/homes/the-oasis/01-800.webp 800w, /images/homes/the-oasis/01.webp 1400w"');
+  expectNotContains("_site/index.html", "hero-optimized.webp");
   expectContains("_site/index.html", "kgmid=%2Fg%2F11y4vdnsfp");
-  expectContains("_site/index.html", "bookingenginecdn.hostaway.com");
+  expectContains("_site/index.html", 'data-property-photo="the-oasis" src="/images/homes/the-oasis/01.webp"');
+  expectExists("_site/images/homes/the-oasis/01.webp");
   expectNotContains("_site/index.html", "images.weserv.nl");
   expectNotContains("_site/index.html", "images.unsplash.com");
-  expectContains("_site/properties/index.html", "bookingenginecdn.hostaway.com");
+  for (const slug of ["dockside-dreams", "the-oasis", "sarasota-luxe", "river-house", "bradenton-pool-home"]) {
+    expectMatches("_site/properties/index.html", new RegExp(`data-property-photo="${slug}" src="/images/homes/${slug}/`), `${slug} real catalog photo`);
+  }
+  expectNotContains("_site/properties/index.html", "seascape-og-default.jpg");
   expectNotContains("_site/properties/index.html", "images.unsplash.com");
   expectContains("_site/property-management/index.html", "images/seascape-og-default.jpg");
   expectContains(

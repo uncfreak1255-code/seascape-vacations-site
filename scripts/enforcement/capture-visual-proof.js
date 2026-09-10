@@ -6,7 +6,7 @@ const { spawn } = require("node:child_process");
 const { chromium, devices } = require("@playwright/test");
 const { closeServer, startStaticServer } = require("./serve-static");
 const { moneyRoutes } = require("../../tests/visual/routes");
-const { gotoMarketingRoute, prepareFullPageScreenshot } = require("../../tests/visual/test-helpers");
+const { prepareFullPageScreenshot } = require("../../tests/visual/test-helpers");
 
 const projectRoot = path.resolve(__dirname, "..", "..");
 const npmCommand = process.platform === "win32" ? "npm.cmd" : "npm";
@@ -15,6 +15,7 @@ function parseArgs(argv) {
   const options = {
     outDir: "artifacts/visual-proof",
     baseUrl: "",
+    routes: [],
   };
 
   for (let index = 0; index < argv.length; index += 1) {
@@ -31,6 +32,8 @@ function parseArgs(argv) {
       index += 1;
       continue;
     }
+
+    if (arg === "--route") { options.routes.push(argv[++index]); continue; }
 
     if (arg === "--help") {
       console.log("Usage: node scripts/enforcement/capture-visual-proof.js [--out-dir <path>] [--base-url <url>]");
@@ -67,7 +70,7 @@ async function runBuild() {
   const child = spawnChild(npmCommand, ["run", "build"], {
     env: {
       ...process.env,
-      SEASCAPE_VISUAL_TEST: "1",
+      SEASCAPE_VISUAL_TEST: "0",
     },
   });
 
@@ -90,7 +93,7 @@ function relativeFromRoot(filePath) {
   return path.relative(projectRoot, filePath).replace(/\\/g, "/");
 }
 
-async function captureViewportBundle({ outDir, baseUrl, projectName, contextOptions }) {
+async function captureViewportBundle({ outDir, baseUrl, projectName, contextOptions, routes }) {
   const browser = await chromium.launch({ headless: true });
   const context = await browser.newContext({
     baseURL: baseUrl,
@@ -106,11 +109,28 @@ async function captureViewportBundle({ outDir, baseUrl, projectName, contextOpti
   const captures = [];
 
   try {
-    for (const routeConfig of moneyRoutes) {
-      await gotoMarketingRoute(page, routeConfig);
+    // Review proof uses the real network and clock. Block analytics to avoid test traffic.
+    await context.route(/googletagmanager|google-analytics|connect\.facebook\.net/, route => route.abort());
+    // A plain local server has no Netlify image CDN. Deliver the exact public source
+    // asset for local CDN requests; never substitute another scene or accommodation.
+    await context.route(/\/\.netlify\/images\?/, async route => {
+      const url = new URL(route.request().url());
+      const source = url.searchParams.get("url") || "";
+      const imagePath = path.resolve(projectRoot, "." + source);
+      if (["127.0.0.1", "localhost"].includes(url.hostname) && source.startsWith("/images/") && imagePath.startsWith(path.join(projectRoot, "images") + path.sep) && fs.existsSync(imagePath)) {
+        await route.fulfill({ status: 200, path: imagePath });
+      } else {
+        await route.continue();
+      }
+    });
+    for (const routeConfig of routes) {
+      const response = await page.goto(routeConfig.path, { waitUntil: "networkidle" });
+      if (!response || response.status() !== 200) throw new Error(`Refusing proof for ${routeConfig.path}: HTTP ${response?.status()}`);
+      await page.locator(routeConfig.readySelector || "main h1").first().waitFor({ state: "visible" });
       await prepareFullPageScreenshot(page);
 
       const screenshotPath = path.join(outputDir, `${routeConfig.slug}.png`);
+      await page.screenshot({ path: path.join(outputDir, `${routeConfig.slug}-first-screen.png`) });
       await page.screenshot({
         path: screenshotPath,
         fullPage: true,
@@ -120,6 +140,7 @@ async function captureViewportBundle({ outDir, baseUrl, projectName, contextOpti
         route: routeConfig.path,
         slug: routeConfig.slug,
         screenshot: relativeFromRoot(screenshotPath),
+        images: await page.locator("[data-property-photo]").evaluateAll(nodes => nodes.filter(node => node.getClientRects().length).map(node => ({property: node.dataset.propertyPhoto, src: node.currentSrc, loaded: node.naturalWidth > 0}))),
       });
 
       console.log(`[visual-proof] captured ${projectName}/${routeConfig.slug}.png`);
@@ -134,6 +155,11 @@ async function captureViewportBundle({ outDir, baseUrl, projectName, contextOpti
 
 async function main() {
   const args = parseArgs(process.argv.slice(2));
+  const routes = args.routes.length ? args.routes.map(path => {
+    const known = moneyRoutes.find(route => route.path === path);
+    if (!known) throw new Error(`Unknown proof route: ${path}`);
+    return known;
+  }) : moneyRoutes;
   const outDir = path.resolve(projectRoot, args.outDir);
   ensureCleanDirectory(outDir);
 
@@ -156,6 +182,7 @@ async function main() {
     const desktopCaptures = await captureViewportBundle({
       outDir,
       baseUrl,
+      routes,
       projectName: "desktop-chromium",
       contextOptions: {
         viewport: { width: 1440, height: 900 },
@@ -165,6 +192,7 @@ async function main() {
     const mobileCaptures = await captureViewportBundle({
       outDir,
       baseUrl,
+      routes,
       projectName: "mobile-chromium",
       contextOptions: {
         ...devices["Pixel 5"],
@@ -176,7 +204,10 @@ async function main() {
       generated_at: new Date().toISOString(),
       source: "scripts/enforcement/capture-visual-proof.js",
       base_url: baseUrl,
-      routes_captured: moneyRoutes.map((route) => route.path),
+      routes_captured: routes.map((route) => route.path),
+      property_photos: "actual assets; missing photos fail capture",
+      local_image_delivery: "local Netlify image-CDN URLs use their exact repository source asset; CDN compression is not reproduced",
+      availability_and_pricing: "not mocked; page state at capture time, not a quote",
       projects: {
         "desktop-chromium": desktopCaptures,
         "mobile-chromium": mobileCaptures,
