@@ -149,13 +149,8 @@ img { max-width: 100%; height: auto; }
 a { text-decoration: none; color: inherit; }
 
 /* Nav */
-.guide-nav { position: fixed; top: 0; left: 0; right: 0; background: rgba(255,255,255,.95); backdrop-filter: blur(20px); z-index: 1000; padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(0,0,0,.05); }
-.guide-nav a { color: var(--brand); text-decoration: none; font-weight: 500; display: inline-flex; align-items: center; gap: 8px; }
-.guide-nav a:hover { color: var(--brand-dark); }
-.guide-nav .logo { font-family: 'Playfair Display', serif; font-size: 20px; color: var(--brand-dark); font-weight: 600; }
-
 /* Layout */
-.guide-container { max-width: 800px; margin: 0 auto; padding: 100px 24px 60px; }
+.guide-container { max-width: 800px; margin: 0 auto; padding: 64px 24px 60px; }
 .guide-tag { display: inline-block; padding: 6px 16px; border-radius: 20px; font-size: 13px; font-weight: 500; background: var(--brand); color: #fff; margin-bottom: 20px; }
 .guide-title { font-size: clamp(28px, 5vw, 44px); color: var(--brand-dark); margin-bottom: 16px; line-height: 1.2; }
 .guide-meta { color: var(--stone-light); margin-bottom: 32px; font-size: 15px; }
@@ -345,7 +340,7 @@ a { text-decoration: none; color: inherit; }
 .author-box .author-role { color: var(--stone-light); font-size: 14px; }
 
 @media (max-width: 768px) {
-    .guide-container { padding: 80px 16px 40px; }
+    .guide-container { padding: 32px 16px 40px; }
     .guide-cta { padding: 32px; }
     .quick-stats { padding: 28px; }
     .quick-stats ul { grid-template-columns: 1fr; }
@@ -357,13 +352,10 @@ a { text-decoration: none; color: inherit; }
     .asset-links { display: grid; }
 }
 </style>
+<link rel="stylesheet" href="/css/guest.css?v=waterline-v3">
 </head>
-<body>
-<nav class="guide-nav">
-    <a href="/">&#8592; Back to Seascape</a>
-    <span class="logo">Seascape Vacations</span>
-</nav>
-
+<body class="guest-shell">
+{% include "partials/guest-header.njk" %}
 <main class="guide-container">
 <div class="breadcrumb">
     <a href="/">Home</a><span>&#8250;</span>
@@ -716,10 +708,7 @@ a { text-decoration: none; color: inherit; }
 </div><!-- /.guide-content -->
 </main>
 
-<footer class="guide-footer">
-    <p><a href="/">Seascape Vacations</a> &bull; <a href="/guides/">Guides</a> &bull; <a href="/properties/">Properties</a> &bull; <a href="/property-management/">Property Owners</a></p>
-    <p style="margin-top: 12px;">&copy; 2026 Seascape Vacations. All rights reserved.</p>
-</footer>
+{% include "partials/guest-footer.njk" %}
 
 {% include "partials/analytics-ga4.njk" %}
 </body>

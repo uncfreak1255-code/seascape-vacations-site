@@ -74,6 +74,7 @@ eleventyComputed:
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" media="print" onload='this.media="all"'>
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap"></noscript>
+  <link rel="stylesheet" href="/css/guest.css?v=waterline-v3">
   <style>
     :root {
       --brand: #5F8A8B;
@@ -130,8 +131,6 @@ eleventyComputed:
       padding-left: 24px;
       padding-right: 24px;
     }
-
-    {% include "partials/site-header-styles.njk" %}
 
     .btn {
       display: inline-flex;
@@ -371,23 +370,23 @@ eleventyComputed:
     }
   </style>
 </head>
-<body>
+<body class="guest-shell">
   <a class="skip-link" href="#main">Skip to content</a>
 
   {% set navButtonHref = "/properties/" %}
   {% set navButtonLabel = "Browse Homes" %}
-  {% include "partials/site-header.njk" %}
+  {% include "partials/guest-header.njk" %}
 
   <main id="main">
     <header class="hero">
       <div>
         <p class="hero-tag">Stay Collections</p>
         <h1 class="hero-title">Use the live stay pages as a real collection hub, not a dead prefix</h1>
-        <p class="hero-subtitle">These pages route by destination, trip shape, and amenity fit across Anna Maria Island, Bradenton, Sarasota, and the wider Gulf Coast. Use them to narrow the right house before you open individual property pages.</p>
+        <p class="hero-subtitle">These pages route by destination, kind of trip, and amenity fit across Anna Maria Island, Bradenton, Sarasota, and the wider Gulf Coast. Use them to narrow the right house before you open individual property pages.</p>
       </div>
       <aside class="hero-note">
         <strong>How to use this page</strong>
-        <p>If you already know the market, start with the destination sections. If the trip shape matters more than the map, use the amenity and use-case links below.</p>
+        <p>If you already know the market, start with the destination sections. If the kind of trip matters more than the map, use the amenity and use-case links below.</p>
         <p>This is the parent hub for the live `/stays/&lt;slug&gt;/` pages, so the collection pages can finally point to each other cleanly.</p>
         <small>Updated {{ pageUpdatedLabel }}</small>
       </aside>
@@ -436,7 +435,7 @@ eleventyComputed:
         <article class="utility-card">
           <div class="utility-card-body">
             <span class="card-kicker">Cross-market filters</span>
-            <h3>Trip shape and amenity pages</h3>
+            <h3>Kind of trip and amenity pages</h3>
             <p class="utility-copy">This is the catchment for pages that span multiple markets or answer a specific stay question better than a destination page does.</p>
             <ul class="utility-pills">
               {% for page in staysPages %}
@@ -469,21 +468,15 @@ eleventyComputed:
       <div class="cta-panel">
         <div>
           <h2>Need the actual homes, not just the collection logic?</h2>
-          <p>Once the trip shape is clear, open the direct-book property catalog and compare the current Seascape inventory in one place.</p>
+          <p>Once the kind of trip is clear, open the direct-book property catalog and compare the current Seascape inventory in one place.</p>
         </div>
         <a class="btn" href="/properties/">Browse Direct-Book Homes</a>
       </div>
     </section>
   </main>
 
-  <footer class="footer">
-    <div class="footer-inner">
-      <div>© 2026 {{ site.name }}</div>
-      <div><a href="/">Home</a> · <a href="/guides/">Guides</a> · <a href="/properties/">Properties</a> · <a href="/property-management/">Property Owners</a></div>
-    </div>
-  </footer>
+  {% include "partials/guest-footer.njk" %}
 
-  {% include "partials/site-header-script.njk" %}
   {% include "partials/analytics-ga4.njk" %}
 </body>
 </html>

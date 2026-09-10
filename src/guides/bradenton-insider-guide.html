@@ -411,8 +411,10 @@
     "Siesta Key"
   ]
 }</script>
-<meta property="og:image" content="https://seascape-vacations.com/images/bradenton-og.jpg"><meta property="og:locale" content="en_US"><meta property="og:site_name" content="Seascape Vacations"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="The Bradenton Insider Guide: Local's Complete Handbook 2026"><meta name="twitter:description" content="Discover neighborhoods, hidden gems, dining, beaches, and practical tips for visiting Bradenton."><meta name="twitter:image" content="https://seascape-vacations.com/images/bradenton-og.jpg"></head>
-<body>
+<meta property="og:image" content="https://seascape-vacations.com/images/bradenton-og.jpg"><meta property="og:locale" content="en_US"><meta property="og:site_name" content="Seascape Vacations"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="The Bradenton Insider Guide: Local's Complete Handbook 2026"><meta name="twitter:description" content="Discover neighborhoods, hidden gems, dining, beaches, and practical tips for visiting Bradenton."><meta name="twitter:image" content="https://seascape-vacations.com/images/bradenton-og.jpg"><link rel="stylesheet" href="/css/guest.css?v=waterline-v3">
+</head>
+<body class="guest-shell">
+{% include "partials/guest-header.njk" %}
 
 <header>
     <div class="breadcrumb">
@@ -716,10 +718,7 @@
 
 </main>
 
-<footer>
-    <p>&copy; 2026 Seascape Vacations. Luxury Waterfront Vacation Rentals in Bradenton, FL & Anna Maria Island.</p>
-    <p><a href="tel:+1-941-704-8545" style="color: white; text-decoration: none;">+1-941-704-8545</a></p>
-</footer>
+{% include "partials/guest-footer.njk" %}
 
 <script>
     // JSON-LD Schema Markup

@@ -186,24 +186,13 @@ eleventyComputed:
         .ui-icon--benefit { width: 20px; height: 20px; color: white; }
         .ui-icon--metric { width: 34px; height: 34px; color: var(--brand); vertical-align: -6px; margin-left: 6px; }
     </style>
+<link rel="stylesheet" href="/css/guest.css?v=waterline-v3">
 </head>
-<body>
-    <nav class="nav">
-        <div class="nav-inner">
-            <a href="/" class="nav-logo">
-                <img src="/logo-optimized.png" alt="Seascape Vacations" height="40">
-                <div>
-                    <div class="nav-logo-text">SEASCAPE</div>
-                    <div class="nav-logo-sub">Vacations</div>
-                </div>
-            </a>
-            {% if pageQuarantined %}
-            <a href="/property-management/" class="btn">Return to property management</a>
-            {% else %}
-            <a href="#owner-cta" class="btn" data-track-event="owner_primary_cta_click" data-page-slug="{{ seoPage.slug }}">{{ seoPage.primaryCta or "Request Your Revenue Review" }}</a>
-            {% endif %}
-        </div>
-    </nav>
+<body class="guest-shell">
+    {% set navButtonLabel = "Return to property management" if pageQuarantined else (seoPage.primaryCta or "Request Your Revenue Review") %}
+    {% set navButtonHref = "/property-management/" if pageQuarantined else "#owner-cta" %}
+    {% set navButtonAttributes = "" if pageQuarantined else ('data-track-event="owner_primary_cta_click" data-page-slug="' ~ seoPage.slug ~ '"') %}
+    {% include "partials/guest-header.njk" %}
 
     <main class="main-content">
         {% if pageQuarantined %}
@@ -687,19 +676,7 @@ eleventyComputed:
         {% endif %}
     </main>
 
-    <footer class="footer">
-        <div class="footer-inner">
-            <div class="footer-logo">Seascape Vacations</div>
-            <div class="footer-links">
-                <a href="/">Home</a>
-                <a href="/guides/anna-maria-island-area-guide/">Anna Maria Island</a>
-                <a href="/guides/bradenton-area-guide/">Bradenton</a>
-                <a href="/guides/sarasota-area-guide/">Sarasota</a>
-                <a href="/property-management/">Property Management</a>
-            </div>
-            <div class="footer-copyright">© 2026 Seascape Vacations. All rights reserved.</div>
-        </div>
-    </footer>
+    {% include "partials/guest-footer.njk" %}
 
     {% include "partials/analytics-ga4.njk" %}
 </body>

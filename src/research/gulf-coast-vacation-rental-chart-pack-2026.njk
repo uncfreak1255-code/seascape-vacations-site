@@ -53,10 +53,9 @@ body{background:var(--cream);color:var(--stone);font-family:Poppins,sans-serif;l
 h1,h2,h3{font-family:'Playfair Display',Georgia,serif;font-weight:500;letter-spacing:-.02em;line-height:1.12}
 a{color:var(--brand);text-decoration:none}
 a:hover{color:var(--brand-dark);text-decoration:underline}
-.chart-nav{align-items:center;background:rgba(255,255,255,.95);border-bottom:1px solid rgba(61,92,93,.08);display:flex;inset:0 0 auto 0;justify-content:space-between;padding:16px 24px;position:fixed;z-index:20}
 .chart-nav a{font-weight:600}
 .logo{color:var(--brand-dark);font-family:'Playfair Display',Georgia,serif;font-size:20px}
-.shell{margin:0 auto;max-width:1160px;padding:96px 24px 64px}
+.shell{margin:0 auto;max-width:1160px;padding:64px 24px 64px}
 .hero{background:linear-gradient(148deg,var(--brand-darker) 6%,var(--brand-dark) 54%,#476d6f 94%);border-radius:28px;box-shadow:0 20px 42px rgba(45,70,71,.18);color:white;display:grid;gap:28px;grid-template-columns:minmax(0,1.15fr) minmax(340px,.85fr);margin-bottom:28px;padding:32px}
 .eyebrow{color:var(--gold-light);font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase}
 .scope-chip,.proof-chip{align-items:center;border-radius:999px;display:inline-flex;font-size:12px;font-weight:700;letter-spacing:.08em;line-height:1.2;padding:9px 13px;text-transform:uppercase}
@@ -104,15 +103,16 @@ a:hover{color:var(--brand-dark);text-decoration:underline}
 .citation-panel a{color:var(--gold-light);font-weight:600}
 .footer{color:var(--stone-light);font-size:14px;padding:0 24px 44px;text-align:center}
 @media(max-width:860px){
-  .chart-nav{padding:14px 16px}.logo{font-size:18px}.shell{padding:84px 16px 46px}.hero{grid-template-columns:1fr;padding:24px}.hero-panel{padding:20px}.scan-head{align-items:start;flex-direction:column}.scan-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.chart-card{padding:22px}.chart-detail{grid-template-columns:1fr}.stat-grid{grid-template-columns:1fr 1fr}
+  .logo{font-size:18px}.shell{padding:32px 16px 46px}.hero{grid-template-columns:1fr;padding:24px}.hero-panel{padding:20px}.scan-head{align-items:start;flex-direction:column}.scan-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.chart-card{padding:22px}.chart-detail{grid-template-columns:1fr}.stat-grid{grid-template-columns:1fr 1fr}
 }
 @media(max-width:540px){
   .chart-nav{align-items:flex-start;flex-direction:column;gap:4px}.hero h1{font-size:38px}.hero-copy{font-size:17px}.stat-grid,.scan-grid{grid-template-columns:1fr}.scan-card{min-height:0}.proof-chip{width:100%}.chart-media{margin-left:-6px;margin-right:-6px;padding:8px}.source-note,.scan-card,.chart-card,.citation-panel{border-radius:18px}.embed-code{font-size:11px}
 }
 </style>
+<link rel="stylesheet" href="/css/guest.css?v=waterline-v3">
 </head>
-<body>
-<nav class="chart-nav"><a href="/research/">&#8592; Research</a><span class="logo">Seascape Vacations</span></nav>
+<body class="guest-shell">
+{% include "partials/guest-header.njk" %}
 <main class="shell">
   <section class="hero">
     <div>
@@ -256,7 +256,7 @@ a:hover{color:var(--brand-dark);text-decoration:underline}
     <p>For booking-channel, booking-window, or seasonal-rate charts, link to the <a href="/research/gulf-coast-vacation-booking-trends-2026/">booking trends report</a>. For Bradenton, Sarasota, and Anna Maria Island cost comparisons, link to the <a href="/research/real-cost-florida-beach-vacation-bradenton-sarasota-ami-2026/">cost index</a>.</p>
   </section>
 </main>
-<footer class="footer">© 2026 <a href="/">Seascape Vacations</a> · <a href="/research/gulf-coast-vacation-booking-trends-2026/">Booking Trends</a> · <a href="/research/real-cost-florida-beach-vacation-bradenton-sarasota-ami-2026/">Cost Index</a></footer>
+{% include "partials/guest-footer.njk" %}
 {% include "partials/analytics-ga4.njk" %}
 </body>
 </html>

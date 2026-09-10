@@ -185,8 +185,10 @@ permalink: "/guides/anna-maria-island-vacation-cost/"
       .section { padding: 44px 0; }
     }
   </style>
+<link rel="stylesheet" href="/css/guest.css?v=waterline-v3">
 </head>
-<body>
+<body class="guest-shell">
+{% include "partials/guest-header.njk" %}
   <nav class="breadcrumb" aria-label="Breadcrumb">
     <ol>
       <li><a href="/">Home</a></li>
@@ -400,5 +402,6 @@ permalink: "/guides/anna-maria-island-vacation-cost/"
   </div>
 
   {% include "partials/analytics-ga4.njk" %}
+{% include "partials/guest-footer.njk" %}
 </body>
 </html>

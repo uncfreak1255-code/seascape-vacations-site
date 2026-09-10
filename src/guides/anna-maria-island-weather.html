@@ -90,8 +90,10 @@ permalink: "/guides/anna-maria-island-weather/"
     .cta-section{background:linear-gradient(135deg,var(--brand),var(--brand-dark));padding:52px 24px;text-align:center;color:#fff}.cta-section h2{font-family:'Playfair Display',serif;font-size:clamp(26px,4vw,36px);margin:0 0 12px}.cta-btn{display:inline-block;background:var(--gold);color:var(--stone);padding:14px 28px;border-radius:50px;font-weight:600;text-decoration:none}
     @media(max-width:700px){.season-grid{grid-template-columns:1fr}.container{padding:40px 18px}.hero{padding:58px 18px 42px}.table-hint{display:block}}
   </style>
+<link rel="stylesheet" href="/css/guest.css?v=waterline-v3">
 </head>
-<body>
+<body class="guest-shell">
+{% include "partials/guest-header.njk" %}
   <nav class="breadcrumb" aria-label="Breadcrumb"><ol><li><a href="/">Home</a></li><li>›</li><li><a href="/guides/">Guides</a></li><li>›</li><li aria-current="page">Anna Maria Island Weather</li></ol></nav>
   <main>
     <section class="hero">
@@ -174,5 +176,6 @@ permalink: "/guides/anna-maria-island-weather/"
   </section>
   {% include "partials/email-popup.njk" %}
   {% include "partials/analytics-ga4.njk" %}
+{% include "partials/guest-footer.njk" %}
 </body>
 </html>
