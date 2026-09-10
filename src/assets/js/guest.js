@@ -46,13 +46,13 @@
       var url=preserveSave50Params(new URL(form.dataset.bookingUrl));
       if (trip.arrive) {url.searchParams.set('start',trip.arrive);url.searchParams.set('end',trip.depart);}
       if (trip.guests) url.searchParams.set('numberOfGuests',trip.guests);
+      document.querySelectorAll('[data-property-booking-link]').forEach(function(link){link.href=tracking ? tracking.buildBookingEngineHandoffUrl(url.toString(),link) : url.toString();});
       var oversized=Number(trip.guests||0)>Number(form.dataset.maxGuests);
       var arrive=form.querySelector('.g-arrive'),depart=form.querySelector('.g-depart');
       var invalidDates=Boolean(arrive.value)!==Boolean(depart.value)||(arrive.value&&(depart.value<=arrive.value||arrive.value<arrive.min));
       checkout.hidden=oversized||invalidDates;
       if(oversized){checkout.removeAttribute('href');form.querySelector('.g-form-status').textContent='This home hosts up to '+form.dataset.maxGuests+' guests. Compare the collection or ask us about separate homes.';}
       else if(invalidDates){checkout.removeAttribute('href');form.querySelector('.g-form-status').textContent='Choose a departure after arrival, or clear both dates to stay flexible.';}
-      else checkout.href=tracking ? tracking.buildBookingEngineHandoffUrl(url.toString(), checkout) : url.toString();
     }
     updateQuestion();
   }

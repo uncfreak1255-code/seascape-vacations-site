@@ -74,6 +74,8 @@ test("editing fields requires applying the trip; global booking links update too
 
 test("SAVE50 campaign survives catalog and property trip edits", async ({ page }) => {
   await visit(page, "promo=save50");
+  await expect(page.getByRole("link", {name:"Book Direct",exact:true})).toHaveAttribute("target", "_blank");
+  await expect(page.getByRole("link", {name:"Book Direct",exact:true})).toHaveAttribute("rel", "noopener noreferrer");
   await page.getByLabel("Arrival", {exact:true}).fill("2026-12-05");
   await page.getByLabel("Departure", {exact:true}).fill("2026-12-12");
   await page.getByLabel("Guests", {exact:true}).selectOption("8");
@@ -88,6 +90,14 @@ test("SAVE50 campaign survives catalog and property trip edits", async ({ page }
   expect(propertyCheckout.searchParams.get("promo")).toBe("save50");
   expect(propertyCheckout.searchParams.get("utm_campaign")).toBe("save50_welcome");
   expect(propertyCheckout.searchParams.get("numberOfGuests")).toBe("10");
+  var propertyBookingLinks = page.locator("[data-property-booking-link]");
+  await expect(propertyBookingLinks).toHaveCount(4);
+  for (var href of await propertyBookingLinks.evaluateAll(nodes => nodes.map(node => node.href))) {
+    var propertyExit = new URL(href);
+    expect(propertyExit.searchParams.get("promo")).toBe("save50");
+    expect(propertyExit.searchParams.get("utm_campaign")).toBe("save50_welcome");
+    expect(propertyExit.searchParams.get("numberOfGuests")).toBe("10");
+  }
   await page.getByRole("link", {name:"Change trip / compare homes",exact:true}).click();
   await expect(page).toHaveURL(/\/properties\//);
   var catalogReturn = new URL(page.url());
