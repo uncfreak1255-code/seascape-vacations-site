@@ -17,6 +17,7 @@ test('owners have a navigation path and a homepage path to the existing review f
   if (isMobile) {
     await page.getByRole('button', { name: 'Open menu', exact: true }).click();
     await expect(page.locator('#guest-menu a[href="/property-management/"]')).toBeVisible();
+    await expect(page.locator('#guest-menu a[href="/property-management/"]')).toHaveAttribute('data-track-event', 'owner_primary_cta_click');
   } else {
     await expect(page.locator('.g-nav a[href="/property-management/"]')).toBeVisible();
   }
