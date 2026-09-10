@@ -3,6 +3,7 @@ const AxeBuilder = require('@axe-core/playwright').default;
 const properties = require('../../src/_data/properties-fallback.json');
 const { registerStableNetwork, prepareFullPageScreenshot } = require('./test-helpers');
 const itinerary = 'arrive=2026-11-07&depart=2026-11-14&guests=8';
+const availabilityStatus = 'Availability, fees and cancellation terms are confirmed on our secure booking page.';
 async function visit(page, route) {
   await registerStableNetwork(page);
   await page.clock.setFixedTime(new Date('2026-09-04T16:00:00Z'));
@@ -87,12 +88,32 @@ test('clearing dates stays cleared and prepared questions omit private URL field
   await page.getByRole('link',{name:'Change trip / compare homes',exact:true}).click();await expect(page.locator('#trip-arrive')).toHaveValue('');
 });
 
+test('correcting an oversized group restores the normal availability status',async({page})=>{
+  for(const count of ['16','17']){
+    await visit(page,'/properties/dockside-dreams/?guests='+count);
+    await expect(page.locator('.g-form-status')).toContainText('up to 12 guests');
+    await expect(page.locator('[data-property-checkout]')).toBeHidden();
+    await page.getByLabel('Guests',{exact:true}).selectOption('8');
+    await expect(page.locator('[data-property-checkout]')).toBeVisible();
+    await expect(page.locator('.g-form-status')).toHaveText(availabilityStatus);
+    expect(quoteParams(await page.locator('[data-property-checkout]').getAttribute('href'))).toEqual({start:null,end:null,guests:'8'});
+  }
+});
+
 test('invalid dates recover and incomplete edits do not open checkout',async({page})=>{
   await visit(page,'/properties/the-oasis/?arrive=2026-11-14&depart=2026-11-07');
   await expect(page.locator('.g-form-status')).toContainText('Choose new dates');
   await page.getByLabel('Arrival',{exact:true}).fill('2026-11-07');
   await page.getByRole('button',{name:'Check dates & total',exact:true}).click();
   expect(await page.locator('.g-depart').evaluate(input=>input.checkValidity())).toBe(false);
+  await page.getByLabel('Departure',{exact:true}).fill('2026-11-14');
+  await page.getByLabel('Guests',{exact:true}).focus();
+  await expect(page.locator('[data-property-checkout]')).toBeVisible();
+  await expect(page.locator('.g-form-status')).toHaveText(availabilityStatus);
+  await page.getByLabel('Arrival',{exact:true}).fill('');
+  await page.getByLabel('Departure',{exact:true}).fill('');
+  await page.getByLabel('Guests',{exact:true}).focus();
+  await expect(page.locator('.g-form-status')).toHaveText(availabilityStatus);
 });
 
 test('a missing accommodation photo is explicit and cannot pass visual proof',async({page})=>{
@@ -156,4 +177,5 @@ test('an incomplete edited trip cannot use the secondary checkout shortcut',asyn
   await page.getByLabel('Guests',{exact:true}).focus();
   await expect(page.locator('[data-property-checkout]')).toBeVisible();
   expect(quoteParams(await page.locator('[data-property-checkout]').getAttribute('href'))).toEqual({start:'2026-11-07',end:'2026-11-15',guests:'8'});
+  await expect(page.locator('.g-form-status')).toHaveText(availabilityStatus);
 });
