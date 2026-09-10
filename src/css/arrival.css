@@ -46,7 +46,7 @@
 .g-home{display:block}
 .g-homepage .g-header{position:absolute;inset:0 0 auto;color:white;background:transparent;border-color:#ffffff50;z-index:20}
 .g-homepage .g-header .g-wordmark,.g-homepage .g-nav a{color:white}
-.g-homepage .g-header-phone{color:white}
+.g-homepage .g-header-phone{color:white;border-color:#ffffff55}
 .g-homepage .g-header-phone:hover{color:var(--g-accent)}
 .g-homepage .g-header-actions .g-button{background:var(--g-citron);color:var(--g-ink);border-color:var(--g-citron)}
 .g-homepage .g-menu-button{color:white}

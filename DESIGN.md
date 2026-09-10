@@ -156,6 +156,8 @@ Floors (the contract every change to these routes must leave true, enforced in `
 - F4 — Hero contrast: on the homepage, white text over the scene photo reaches 4.5:1 (text under 24px) or 3:1 (24px and larger) for all five scenes, measured on rendered pixels.
 - F5 — One shared shell: every built HTML page has exactly one `class="g-header"` and one `class="g-footer"`.
 
+F1 and F2 apply to the whole page on the Waterline guest routes (`body.guest-site`: the homepage, the catalog and the five property pages) and, on every other route, to the shared header, mobile menu and footer only. Those pages carry the shared shell but keep their legacy body typography, which has not been brought to the floors yet. That narrower scope is a stopping point for one release, not a permanent rule: widening it is the work that finishes the redesign, and until then a legacy page body can still ship text below 12px without the gate objecting.
+
 ## How this direction changes
 This file records deliberate current choices; it is not proof that a choice is good. Authorized product/design work may revise it after examining a rendered alternative, the guest task, truth, accessibility and performance. A specific model, external design app, color, font, button shape, or template is not an approval authority.
 

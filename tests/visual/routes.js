@@ -58,6 +58,16 @@ const moneyRoutes = [
     readySelector: ".journal-cover h1",
   },
   {
+    slug: "guest-support",
+    path: "/guest-support/",
+    readySelector: "main h1",
+  },
+  {
+    slug: "concierge-services",
+    path: "/services/concierge-services/",
+    readySelector: "main h1",
+  },
+  {
     slug: "stay-fishing-vacation-rentals-bradenton",
     path: "/stays/fishing-vacation-rentals-bradenton/",
     readySelector: "main h1",

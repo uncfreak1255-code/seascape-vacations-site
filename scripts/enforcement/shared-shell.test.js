@@ -73,7 +73,14 @@ test("every non-exempt HTML page has exactly one g-header and one g-footer (F5)"
       continue;
     }
 
-    const html = fs.readFileSync(filePath, "utf8");
+    // Count only markup the browser will render: an HTML comment or a
+    // <template> still contains the literal class string, so a header that was
+    // commented out rather than removed would otherwise pass this gate.
+    const html = fs
+      .readFileSync(filePath, "utf8")
+      .replace(/<!--[\s\S]*?-->/g, " ")
+      .replace(/<template[\s\S]*?<\/template>/gi, " ")
+      .replace(/<script[\s\S]*?<\/script>/gi, " ");
     const headerCount = (html.match(/class="g-header"/g) || []).length;
     const footerCount = (html.match(/class="g-footer"/g) || []).length;
 

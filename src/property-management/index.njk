@@ -237,12 +237,14 @@ headExtra: |
     pointer-events: none;
   }
 
+  /* The ken-burns scale belongs on the image, with the frame clipping it. On the
+     element itself it made the hero 1% wider than the viewport, which scrolled
+     the whole page sideways on a phone. */
   .owner-hero-media {
     position: absolute;
     inset: 0;
+    overflow: hidden;
     pointer-events: none;
-    transform: scale(1.01);
-    animation: owner-field-kenburns 50s ease-in-out infinite alternate;
   }
 
   .owner-hero-media img {
@@ -250,6 +252,8 @@ headExtra: |
     width: 100%;
     height: 100%;
     object-fit: cover;
+    transform: scale(1.01);
+    animation: owner-field-kenburns 50s ease-in-out infinite alternate;
     object-position: center 40%;
     filter: contrast(1.08);
   }
@@ -2202,7 +2206,34 @@ headExtra: |
     }
 
     .owner-field-map {
-      display: none;
+      margin-bottom: 30px;
+    }
+
+    /* No hover on touch, and a tap gives focus — which would otherwise pop the
+       preview card over the map every time a market is chosen. */
+    .owner-field-pin-preview {
+      display: none !important;
+    }
+
+    /* At phone width the seven label chips cover most of the coastline, and the
+       market cards directly below already name every one of them. Keep the
+       marker and the chosen market's name; the rest stay in the accessibility
+       tree as the buttons' names without crowding the geography. */
+    .owner-field-pin:not(.is-active) > span:last-child {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .owner-field-hq span {
+      padding: 3px 7px;
+      letter-spacing: 0.06em;
     }
 
     .owner-field-market-card {
@@ -3021,11 +3052,23 @@ headExtra: |
             candidate.classList.toggle("is-active", active);
             candidate.setAttribute("aria-pressed", active ? "true" : "false");
           });
+          var chosenPanel = null;
           panels.forEach(function (panel) {
             var active = panel.getAttribute("data-market-panel") === id;
             panel.classList.toggle("is-active", active);
-            if (active) loadMarketPanel(panel);
+            if (active) {
+              chosenPanel = panel;
+              loadMarketPanel(panel);
+            }
           });
+          // Below 900px the cards are all expanded, so activating one changes
+          // nothing on screen. Carry the reader to the market they picked.
+          if (chosenPanel && window.matchMedia("(max-width: 900px)").matches) {
+            chosenPanel.scrollIntoView({
+              behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
+              block: "start"
+            });
+          }
         });
       });
     });

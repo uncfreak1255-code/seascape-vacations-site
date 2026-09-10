@@ -481,14 +481,13 @@ if (phase === "remediation") {
   expectNotContains("_site/property-management/index.html", "13.4%");
   expectNotContains("_site/property-management/index.html", "What Is Vacation Rental Property Management?");
   expectNotContains("_site/property-management/index.html", "Owner Questions");
+  // The owner page's header CTA now comes from the shared Waterline header, so
+  // it carries g-button and an arrow glyph after its label rather than the
+  // legacy .nav-owner-cta anchor with bare text.
   expectMatches(
     "_site/property-management/index.html",
-    buildAnchorPattern({
-      href: "#owner-cta",
-      className: "nav-owner-cta",
-      text: "Revenue Review"
-    }),
-    "property management compact nav CTA"
+    /<a\b(?=[^>]*href="#owner-cta")(?=[^>]*class="(?:[^"]*\s)?g-button(?:\s[^"]*)?")(?=[^>]*data-track-event="owner_primary_cta_click")[^>]*>\s*Revenue Review\b/,
+    "property management header CTA"
   );
   expectMatches(
     "_site/property-management/index.html",

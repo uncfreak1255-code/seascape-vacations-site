@@ -32,6 +32,7 @@ function collectSmallText() {
     : Array.from(document.querySelectorAll(".g-header, .g-mobile-menu, .g-footer"));
   const seen = new Set();
   const out = [];
+  const root0 = roots[0] || document.body;
   for (const root of roots) {
     if (!root) continue;
     const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
@@ -62,6 +63,18 @@ function collectSmallText() {
       }
     }
   }
+  // Placeholder text renders from the UA shadow tree, not a DOM text node, so
+  // the walker above cannot see it however wide its scope is.
+  for (const field of root0.querySelectorAll("input[placeholder], textarea[placeholder]")) {
+    if (field.closest("[hidden]")) continue;
+    const cs = getComputedStyle(field);
+    if (cs.display === "none" || cs.visibility === "hidden") continue;
+    if (field.getBoundingClientRect().height === 0) continue;
+    const size = parseFloat(getComputedStyle(field, "::placeholder").fontSize || cs.fontSize);
+    if (size < FLOOR) {
+      out.push({ size, text: field.getAttribute("placeholder").slice(0, 40), sel: "placeholder of " + field.tagName.toLowerCase() + (field.id ? "#" + field.id : "") });
+    }
+  }
   return out;
 }
 
@@ -86,10 +99,13 @@ function collectSmallTargets() {
       if (r.width === 0 || r.height === 0) return;
       if (r.bottom < 0 || r.top > document.documentElement.scrollHeight) return;
       // Inline link inside flowing text: exempt (WCAG 2.5.8 inline exception).
+      // "Flowing text" means real prose around the link, so a bare glyph with a
+      // label beside it ("Nav: >") does not buy itself an exemption.
       if (el.tagName === "A" && cs.display === "inline") {
-        const parentText = (el.parentElement.textContent || "").trim();
         const ownText = (el.textContent || "").trim();
-        if (parentText.length > ownText.length + 2) return;
+        const surrounding = ((el.parentElement.textContent || "").trim()).replace(ownText, " ");
+        const surroundingWords = surrounding.split(/\s+/).filter((w) => /[A-Za-z0-9]{2,}/.test(w));
+        if (surroundingWords.length >= 3 && ownText.length >= 2) return;
       }
       if (r.height < FLOOR || r.width < FLOOR) {
         out.push({
@@ -109,9 +125,14 @@ function collectSmallTargets() {
 }
 
 function measureOverflow() {
+  // Compare against the layout viewport, not window.innerWidth: under mobile
+  // emulation Chromium widens innerWidth to swallow an overflowing document, so
+  // scrollWidth <= innerWidth stayed true while the page really did scroll
+  // sideways (measured 2026-09-10: a 391px document inside a 360px viewport
+  // reported innerWidth 391 and passed).
   return {
     scrollWidth: document.documentElement.scrollWidth,
-    innerWidth: window.innerWidth,
+    innerWidth: document.documentElement.clientWidth,
   };
 }
 
@@ -135,22 +156,42 @@ function lum(r, g, b) {
   return 0.2126 * f(r) + 0.7152 * f(g) + 0.0722 * f(b);
 }
 
-async function meanLuminance(png, box) {
+async function meanBackground(png, box) {
   const { data, info } = await sharp(png).raw().toBuffer({ resolveWithObject: true });
   const x0 = Math.max(0, Math.floor(box.x));
   const y0 = Math.max(0, Math.floor(box.y));
   const x1 = Math.min(info.width, Math.ceil(box.x + box.width));
   const y1 = Math.min(info.height, Math.ceil(box.y + box.height));
-  let total = 0;
+  let r = 0;
+  let g = 0;
+  let b = 0;
   let n = 0;
   for (let y = y0; y < y1; y++) {
     for (let x = x0; x < x1; x++) {
       const i = (y * info.width + x) * info.channels;
-      total += lum(data[i], data[i + 1], data[i + 2]);
+      r += data[i];
+      g += data[i + 1];
+      b += data[i + 2];
       n++;
     }
   }
-  return n ? total / n : 0;
+  return n ? [r / n, g / n, b / n] : [0, 0, 0];
+}
+
+// The text is hidden to photograph its background, so its own colour has to
+// come from the computed style and be composited back over that background.
+// Assuming pure white made `color: transparent` — an invisible headline —
+// measure as a comfortable pass.
+function contrastOf(colorString, background) {
+  const parts = String(colorString).match(/[\d.]+/g);
+  if (!parts) return null;
+  const alpha = parts.length > 3 ? parseFloat(parts[3]) : 1;
+  const composited = [0, 1, 2].map((i) => alpha * parseFloat(parts[i]) + (1 - alpha) * background[i]);
+  const foreground = lum(composited[0], composited[1], composited[2]);
+  const behind = lum(background[0], background[1], background[2]);
+  const light = Math.max(foreground, behind);
+  const dark = Math.min(foreground, behind);
+  return (light + 0.05) / (dark + 0.05);
 }
 
 function heroTextSelectors(isMobileProject) {
@@ -278,6 +319,16 @@ for (const slug of SCENES) {
     // observed directly as a flaky pass/fail flip on a borderline contrast
     // value (.g-arrival-seal on sarasota-luxe, 4.40:1 vs the 4.5:1 floor)
     // between two otherwise-identical runs. Two rAFs guarantee a full paint.
+    // Wait for the scene's own entrance animations to finish. Without this the
+    // caption is photographed at a few percent opacity and every selector
+    // inside it measures its background instead of itself.
+    await page.waitForFunction(() => {
+      const hero = document.querySelector(".g-arrival");
+      if (!hero) return true;
+      return hero
+        .getAnimations({ subtree: true })
+        .every((animation) => animation.playState === "finished" || animation.playState === "idle");
+    }, null, { timeout: 5000 });
     await page.evaluate(
       () => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)))
     );
@@ -290,6 +341,8 @@ for (const slug of SCENES) {
             .map((el) => ({
               sel,
               size: parseFloat(getComputedStyle(el).fontSize),
+              color: getComputedStyle(el).color,
+              opacity: getComputedStyle(el).opacity,
               box: el.getBoundingClientRect().toJSON(),
             }))
         ),
@@ -310,13 +363,20 @@ for (const slug of SCENES) {
     });
     await styleHandle.evaluate((node) => node.remove());
 
+    assert.ok(
+      boxes.length > 0,
+      `F4 measured no hero text on home @ ${testInfo.project.name}, scene "${slug}" — the selectors in heroTextSelectors() no longer match anything, so this check was passing vacuously`
+    );
+
     const failures = [];
     for (const item of boxes) {
-      const L = await meanLuminance(png, item.box);
-      const contrast = (1.0 + 0.05) / (L + 0.05);
+      const background = await meanBackground(png, item.box);
+      const contrast = contrastOf(item.color, background);
       const floor = item.size >= 24 ? 3 : 4.5;
-      if (contrast < floor) {
-        failures.push(`${item.sel} ${item.size.toFixed(1)}px contrast ${contrast.toFixed(2)}:1 < ${floor}:1 floor`);
+      if (contrast === null || contrast < floor) {
+        failures.push(
+          `${item.sel} ${item.size.toFixed(1)}px color ${item.color} contrast ${contrast === null ? "unreadable" : contrast.toFixed(2) + ":1"} < ${floor}:1 floor`
+        );
       }
     }
 

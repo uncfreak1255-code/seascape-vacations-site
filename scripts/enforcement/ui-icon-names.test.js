@@ -98,3 +98,40 @@ test("every uiIcon()/uiLabel() call in src references a name defined in ui-icon.
       unknown.map((u) => `  ${u.file}:${u.line} — ${u.macro}('${u.name}') has no matching icon, renders the fallback circle`).join("\n")
   );
 });
+
+// A name that reaches the macro through a variable or data value (for example
+// `uiIcon(card.icon or "check")` in src/stays/stays.njk) has no literal to
+// check statically, so the macro marks its fallback branch in the rendered
+// output and this walks the build for that marker.
+test("no built page renders the unknown-icon fallback", () => {
+  const siteDir = process.env.SEASCAPE_SITE_DIR
+    ? path.resolve(process.env.SEASCAPE_SITE_DIR)
+    : path.join(repoRoot, "_site");
+
+  if (!fs.existsSync(siteDir)) {
+    assert.fail(`${siteDir} does not exist — build before running this test`);
+  }
+
+  const offenders = [];
+  const walk = (dir) => {
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      const full = path.join(dir, entry.name);
+      if (entry.isDirectory()) {
+        walk(full);
+      } else if (entry.isFile() && entry.name.endsWith(".html")) {
+        const html = fs.readFileSync(full, "utf8");
+        for (const match of html.matchAll(/data-icon-unknown="([^"]*)"/g)) {
+          offenders.push(`${path.relative(siteDir, full)} -> uiIcon("${match[1]}")`);
+        }
+      }
+    }
+  };
+  walk(siteDir);
+
+  assert.equal(
+    offenders.length,
+    0,
+    `Rendered pages fall back to the generic icon for a name ui-icon.njk does not define (${offenders.length} found):\n` +
+      offenders.map((line) => `  ${line}`).join("\n")
+  );
+});
