@@ -88,6 +88,12 @@ test("SAVE50 campaign survives catalog and property trip edits", async ({ page }
   expect(propertyCheckout.searchParams.get("promo")).toBe("save50");
   expect(propertyCheckout.searchParams.get("utm_campaign")).toBe("save50_welcome");
   expect(propertyCheckout.searchParams.get("numberOfGuests")).toBe("10");
+  await page.getByRole("link", {name:"Change trip / compare homes",exact:true}).click();
+  await expect(page).toHaveURL(/\/properties\//);
+  var catalogReturn = new URL(page.url());
+  expect(catalogReturn.searchParams.get("promo")).toBe("save50");
+  expect(catalogReturn.searchParams.get("utm_campaign")).toBe("save50_welcome");
+  expect(catalogReturn.searchParams.get("guests")).toBe("10");
 });
 
 test("bad incoming dates recover visibly; oversized groups are never silently made smaller", async ({ page }) => {

@@ -32,7 +32,7 @@
   function emit(name, extras) { if (tracking) tracking.trackEvent(name, Object.assign({page_slug:pageRoot ? pageRoot.dataset.propertyPage : 'home',placement:'guest_journey'},extras || {})); }
   function syncTrip() {
     originalLinks.forEach(function (href, link) {
-      var url = new URL(href, location.href);
+      var url = preserveSave50Params(new URL(href, location.href));
       ['arrive','depart','checkin','checkout','guests','area'].forEach(function(key){url.searchParams.delete(key);});
       if(trip.compare&&url.searchParams.has('compare')){var comparison=trip.compare.split(',');var currentHome=url.searchParams.get('compare');if(!comparison.includes(currentHome)&&comparison.length<3)comparison.push(currentHome);url.searchParams.set('compare',comparison.join(','));}
       Object.keys(trip).forEach(function (key) { if (key !== 'compare' || !url.searchParams.has('compare')) url.searchParams.set(key,trip[key]); });
