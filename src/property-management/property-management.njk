@@ -163,13 +163,18 @@ eleventyComputed:
         .section { padding: 80px 24px; }
         .container { max-width: 1100px; margin: 0 auto; }
         .section-header { text-align: center; margin-bottom: 48px; }
-        .section-tag { display: inline-block; font-size: 12px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--brand); margin-bottom: 12px; }
+        .section-tag { display: inline-block; font-size: 12px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--brand-dark); margin-bottom: 12px; }
         .section-title { font-size: clamp(28px, 4vw, 38px); color: var(--stone); margin-bottom: 12px; }
         .section-subtitle { color: var(--stone-light); max-width: 600px; margin: 0 auto; }
         .breadcrumbs { background: white; padding: 12px 24px; border-bottom: 1px solid var(--cream-dark); }
         .breadcrumbs ol { display: flex; gap: 8px; list-style: none; margin: 0; padding: 0; font-size: 13px; max-width: 1100px; margin: 0 auto; }
-        .breadcrumbs a { color: var(--brand); }
+        /* --brand on white measures 3.82:1; the dark tone clears 4.5:1. */
+        .breadcrumbs a { color: var(--brand-dark); }
         .breadcrumbs span { color: var(--stone-light); }
+        /* --stone-light (#6A6A6A) on --cream-dark measures 4.25:1. */
+        .section[style*="--cream-dark"] p,
+        .section[style*="--cream-dark"] span,
+        .section[style*="--cream-dark"] div { --stone-light: #5C5C5C; }
         .cta-section { background: linear-gradient(135deg, var(--brand) 0%, var(--brand-dark) 100%); padding: 80px 24px; text-align: center; color: white; }
         .cta-title { font-size: clamp(28px, 4vw, 40px); margin-bottom: 16px; }
         .cta-subtitle { opacity: 0.9; max-width: 500px; margin: 0 auto 32px; }
@@ -186,24 +191,18 @@ eleventyComputed:
         .ui-icon--benefit { width: 20px; height: 20px; color: white; }
         .ui-icon--metric { width: 34px; height: 34px; color: var(--brand); vertical-align: -6px; margin-left: 6px; }
     </style>
+<link rel="stylesheet" href="/css/guest.css?v=waterline-v3">
 </head>
-<body>
-    <nav class="nav">
-        <div class="nav-inner">
-            <a href="/" class="nav-logo">
-                <img src="/logo-optimized.png" alt="Seascape Vacations" height="40">
-                <div>
-                    <div class="nav-logo-text">SEASCAPE</div>
-                    <div class="nav-logo-sub">Vacations</div>
-                </div>
-            </a>
-            {% if pageQuarantined %}
-            <a href="/property-management/" class="btn">Return to property management</a>
-            {% else %}
-            <a href="#owner-cta" class="btn" data-track-event="owner_primary_cta_click" data-page-slug="{{ seoPage.slug }}">{{ seoPage.primaryCta or "Request Your Revenue Review" }}</a>
-            {% endif %}
-        </div>
-    </nav>
+<body class="guest-shell">
+    {#- The shared header holds a wordmark, a call target, this button and the
+        menu on one non-wrapping row. seoPage.primaryCta is a full sentence
+        ("Request Your Revenue Review"), which pushed the row past a 360-393px
+        viewport on all 26 generated owner routes. The page's own hero CTA below
+        still carries the full label. -#}
+    {% set navButtonLabel = "Property management" if pageQuarantined else "Revenue Review" %}
+    {% set navButtonHref = "/property-management/" if pageQuarantined else "#owner-cta" %}
+    {% set navButtonAttributes = "" if pageQuarantined else ('data-track-event="owner_primary_cta_click" data-page-slug="' ~ seoPage.slug ~ '"') %}
+    {% include "partials/guest-header.njk" %}
 
     <main class="main-content">
         {% if pageQuarantined %}
@@ -687,19 +686,7 @@ eleventyComputed:
         {% endif %}
     </main>
 
-    <footer class="footer">
-        <div class="footer-inner">
-            <div class="footer-logo">Seascape Vacations</div>
-            <div class="footer-links">
-                <a href="/">Home</a>
-                <a href="/guides/anna-maria-island-area-guide/">Anna Maria Island</a>
-                <a href="/guides/bradenton-area-guide/">Bradenton</a>
-                <a href="/guides/sarasota-area-guide/">Sarasota</a>
-                <a href="/property-management/">Property Management</a>
-            </div>
-            <div class="footer-copyright">© 2026 Seascape Vacations. All rights reserved.</div>
-        </div>
-    </footer>
+    {% include "partials/guest-footer.njk" %}
 
     {% include "partials/analytics-ga4.njk" %}
 </body>

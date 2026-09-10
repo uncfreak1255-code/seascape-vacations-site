@@ -278,6 +278,16 @@ module.exports = function(eleventyConfig) {
     return toHostawayCdn(url, width, 82);
   });
 
+  eleventyConfig.addFilter("monthYear", function(dateStr) {
+    const MONTH_NAMES = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    const match = /^(\d{4})-(\d{2})-\d{2}$/.exec(String(dateStr || ""));
+    if (!match) return dateStr || "";
+    const year = parseInt(match[1], 10);
+    const month = parseInt(match[2], 10);
+    if (month < 1 || month > 12) return dateStr;
+    return `${MONTH_NAMES[month - 1]} ${year}`;
+  });
+
   eleventyConfig.addTransform("entitySchemaCoverage", function(content, outputPath) {
     if (!outputPath || !outputPath.endsWith(".html")) {
       return content;

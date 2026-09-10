@@ -140,6 +140,9 @@ If the rendered surface still needs the user to discover basic bugs, the review 
 - Do not use Browser or Chrome as a replacement for the deterministic visual
   gate. `npm run test:visual`, committed Playwright baselines, and the CI
   visual proof bundle remain the acceptance proof.
+- Iterate with the in-app Browser while making visual changes. Before
+  claiming the work done, run `npm run test:visual` (which now includes the
+  Waterline design-floor checks) and `npm run test:unit`.
 - Treat screenshots as receipts, not chat clutter. Keep them in local artifacts,
   CI artifacts, or PR proof when needed; paste them into chat only when the
   visual call is subjective, surprising, or Sawyer asks to see the pixels.

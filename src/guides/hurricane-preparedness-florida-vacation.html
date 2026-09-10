@@ -76,8 +76,10 @@
     .cta{background:var(--brand-dark);color:#fff;border-radius:24px;padding:32px;text-align:center;margin-top:32px}
     .cta a{display:inline-block;margin-top:18px;background:linear-gradient(135deg,var(--gold) 0%,#b8943a 100%);color:#2f2f2f;text-decoration:none;padding:14px 28px;border-radius:999px;font-weight:600}
   </style>
+<link rel="stylesheet" href="/css/guest.css?v=waterline-v3">
 </head>
-<body>
+<body class="guest-shell">
+{% include "partials/guest-header.njk" %}
   <main class="wrap">
     <nav class="breadcrumb" aria-label="Breadcrumb">
       <a href="/">Home</a> <span>›</span> <a href="/guides/">Guides</a> <span>›</span> <span aria-current="page">Hurricane Preparedness</span>
@@ -126,5 +128,6 @@
     </section>
   </main>
   {% include "partials/analytics-ga4.njk" %}
+{% include "partials/guest-footer.njk" %}
 </body>
 </html>

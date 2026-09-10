@@ -170,6 +170,12 @@ permalink: "/guides/siesta-key-vs-anna-maria-island-families/"
             line-height: 1.8;
         }
 
+        .compare-table-wrap {
+            max-width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
         .compare-table {
             width: 100%;
             border-collapse: collapse;
@@ -409,8 +415,10 @@ permalink: "/guides/siesta-key-vs-anna-maria-island-families/"
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/guest.css?v=waterline-v3">
 </head>
-<body>
+<body class="guest-shell">
+{% include "partials/guest-header.njk" %}
     <div class="breadcrumb">
         <a href="https://seascape-vacations.com/">Home</a> > <a href="https://seascape-vacations.com/guides/">Guides</a> > Siesta Key vs Anna Maria Island for Families
     </div>
@@ -441,7 +449,7 @@ permalink: "/guides/siesta-key-vs-anna-maria-island-families/"
             </ul>
         </div>
 
-        <table class="compare-table">
+        <div class="compare-table-wrap" role="region" aria-label="Family comparison table" tabindex="0"><table class="compare-table">
             <thead>
                 <tr>
                     <th>Category</th>
@@ -512,7 +520,7 @@ permalink: "/guides/siesta-key-vs-anna-maria-island-families/"
                     <td>Depends on family preference</td>
                 </tr>
             </tbody>
-        </table>
+        </table></div>
 
         <div class="verdict-card" data-transfer-choice="siesta-vs-ami-family-stay-base">
             <h2 style="margin-top: 0;">Choose your family base, then compare homes</h2>
@@ -849,5 +857,6 @@ permalink: "/guides/siesta-key-vs-anna-maria-island-families/"
     <!-- deploy-force: 2026-03-03 -->
 {% include "partials/analytics-ga4.njk" %}
 {% include "partials/email-popup.njk" %}
+{% include "partials/guest-footer.njk" %}
 </body>
 </html>

@@ -59,7 +59,14 @@ test("visible source templates do not ship emoji glyphs", () => {
     /\p{Extended_Pictographic}(?:\uFE0F|\uFE0E)?(?:\u200D\p{Extended_Pictographic}(?:\uFE0F|\uFE0E)?)*?/gu;
   const offenders = [];
 
+  // Binary assets (self-hosted fonts, images) are not visible templates; their
+  // bytes can decode to pictographic code points by coincidence.
+  const binaryAssetPattern = /\.(?:woff2?|ttf|otf|eot|png|jpe?g|webp|avif|gif|ico|mp4|webm|pdf)$/i;
+
   for (const filePath of walkFiles(path.join(projectRoot, "src"))) {
+    if (binaryAssetPattern.test(filePath)) {
+      continue;
+    }
     const relativePath = path.relative(projectRoot, filePath);
     const source = fs.readFileSync(filePath, "utf8");
     const lines = source.split(/\r?\n/);

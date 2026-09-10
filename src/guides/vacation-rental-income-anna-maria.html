@@ -61,12 +61,10 @@ seoIndexable: false
     footer{text-align:center;padding:28px 20px 48px;color:var(--muted);font-size:14px}
     @media(max-width:600px){main{padding:40px 16px}.actions{display:grid}.button{width:100%}}
   </style>
+<link rel="stylesheet" href="/css/guest.css?v=waterline-v3">
 </head>
-<body>
-  <nav>
-    <a href="/guides/">Back to guides</a>
-    <a href="/">Seascape Vacations</a>
-  </nav>
+<body class="guest-shell">
+{% include "partials/guest-header.njk" %}
   <main>
     <article>
       <span class="eyebrow">Retired Owner Guide</span>
@@ -87,7 +85,7 @@ seoIndexable: false
       </div>
     </article>
   </main>
-  <footer>© 2026 Seascape Vacations</footer>
+  {% include "partials/guest-footer.njk" %}
   {% include "partials/analytics-ga4.njk" %}
 </body>
 </html>

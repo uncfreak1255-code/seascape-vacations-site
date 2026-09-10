@@ -225,9 +225,14 @@ if (phase === "p0") {
   expectContains("_site/stays/index.html", 'href="/stays/bradenton-vacation-rentals-near-beaches/"');
   expectContains("_site/sitemap.xml", "<loc>https://seascape-vacations.com/stays/</loc>");
   expectContains("_site/properties/index.html", 'href="/css/base.css"');
-  expectContains("_site/stays/anna-maria-island-vacation-rentals/index.html", ".nav-logo img");
+  // These two pages must render site navigation with the brand mark. Until
+  // 2026-09-10 that meant the legacy header's .nav-logo img; every page now
+  // renders the shared Waterline header, whose wordmark is text, not an image.
+  expectContains("_site/stays/anna-maria-island-vacation-rentals/index.html", 'class="g-header"');
+  expectContains("_site/stays/anna-maria-island-vacation-rentals/index.html", 'class="g-wordmark"');
   expectContains("_site/property-management/index.html", 'href="/css/base.css"');
-  expectContains("_site/property-management/index.html", ".nav-logo img");
+  expectContains("_site/property-management/index.html", 'class="g-header"');
+  expectContains("_site/property-management/index.html", 'class="g-wordmark"');
   expectNotContains("_site/index.html", '<button class="mobile-btn" onclick="toggleMenu()">☰</button>');
   expectNotContains("_site/index.html", '<span class="star">★</span>');
   expectNotContains("_site/index.html", "<div class=\"review-stars\">★★★★★</div>");
@@ -476,14 +481,13 @@ if (phase === "remediation") {
   expectNotContains("_site/property-management/index.html", "13.4%");
   expectNotContains("_site/property-management/index.html", "What Is Vacation Rental Property Management?");
   expectNotContains("_site/property-management/index.html", "Owner Questions");
+  // The owner page's header CTA now comes from the shared Waterline header, so
+  // it carries g-button and an arrow glyph after its label rather than the
+  // legacy .nav-owner-cta anchor with bare text.
   expectMatches(
     "_site/property-management/index.html",
-    buildAnchorPattern({
-      href: "#owner-cta",
-      className: "nav-owner-cta",
-      text: "Revenue Review"
-    }),
-    "property management compact nav CTA"
+    /<a\b(?=[^>]*href="#owner-cta")(?=[^>]*class="(?:[^"]*\s)?g-button(?:\s[^"]*)?")(?=[^>]*data-track-event="owner_primary_cta_click")[^>]*>\s*Revenue Review\b/,
+    "property management header CTA"
   );
   expectMatches(
     "_site/property-management/index.html",

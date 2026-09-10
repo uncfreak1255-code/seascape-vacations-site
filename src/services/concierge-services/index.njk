@@ -47,8 +47,8 @@
   <style>
     :root{--brand:#5F8A8B;--brand-dark:#3D5C5D;--gold:#C9A962;--cream:#F5EED6;--cream-dark:#EBE4CC;--stone:#3A3A3A;--stone-light:#5c5c5c}
     *{box-sizing:border-box;margin:0;padding:0}body{font-family:Poppins,sans-serif;background:var(--cream);color:var(--stone);line-height:1.8}
-    a{color:var(--brand)} .wrap{max-width:860px;margin:0 auto;padding:96px 24px 60px}
-    .breadcrumb{font-size:14px;margin-bottom:24px;color:var(--stone-light)} .breadcrumb a{text-decoration:none}
+    a{color:var(--brand)} .wrap{max-width:860px;margin:0 auto;padding:56px 24px 60px}
+    .breadcrumb{font-size:14px;margin-bottom:24px;color:var(--stone-light)} .breadcrumb a{color:var(--brand-dark);text-decoration:underline;text-underline-offset:3px}
     .hero{background:linear-gradient(135deg,var(--brand) 0%,var(--brand-dark) 100%);border-radius:28px;padding:44px 36px;color:#fff;margin-bottom:32px}
     .badge{display:inline-block;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);padding:6px 14px;border-radius:999px;font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;margin-bottom:18px}
     h1,h2{font-family:"Playfair Display",serif;line-height:1.15}.hero h1{font-size:clamp(34px,5vw,52px);margin-bottom:16px}.hero p{max-width:700px;opacity:.94}
@@ -58,8 +58,10 @@
     .cta{background:var(--brand-dark);color:#fff;border-radius:24px;padding:32px;text-align:center;margin-top:32px}
     .cta a{display:inline-block;margin-top:18px;background:linear-gradient(135deg,var(--gold) 0%,#b8943a 100%);color:#2f2f2f;text-decoration:none;padding:14px 28px;border-radius:999px;font-weight:600}
   </style>
+  <link rel="stylesheet" href="/css/guest.css?v=waterline-v3">
 </head>
-<body>
+<body class="guest-shell">
+  {% include "partials/guest-header.njk" %}
   <main class="wrap">
     <nav class="breadcrumb" aria-label="Breadcrumb">
       <a href="/">Home</a> <span>›</span> <span aria-current="page">Concierge Services</span>
@@ -94,6 +96,7 @@
       <a href="/properties/">Browse Our Homes</a>
     </section>
   </main>
+  {% include "partials/guest-footer.njk" %}
   {% include "partials/analytics-ga4.njk" %}
 </body>
 </html>

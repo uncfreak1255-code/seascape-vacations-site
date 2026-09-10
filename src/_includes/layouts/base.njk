@@ -43,41 +43,17 @@
     {% endif %}
 
     <link rel="stylesheet" href="/css/base.css">
-    <style>
-        {% include "partials/site-header-styles.njk" %}
-    </style>
-{% if page.url == "/about-us/" %}<link rel="stylesheet" href="/css/guest.css?v=waterline-v3">{% endif %}
+    <link rel="stylesheet" href="/css/guest.css?v=waterline-v3">
 </head>
-<body{% if page.url == "/about-us/" %} class="guest-shell"{% endif %}>
-    {% if page.url == "/about-us/" %}{% include "partials/guest-header.njk" %}{% else %}{% include "partials/site-header.njk" %}{% endif %}
+<body class="guest-shell">
+    {% include "partials/guest-header.njk" %}
 
     <main class="main-content">
         {{ content | safe }}
     </main>
 
-    <!-- Footer -->
-    {% if page.url == "/about-us/" %}{% include "partials/guest-footer.njk" %}{% else %}<footer class="footer">
-        <div class="footer-inner">
-            <div class="footer-logo">Seascape Vacations</div>
-            <div class="footer-links">
-                <a href="/">Home</a>
-                <a href="/guides/anna-maria-island-area-guide/">Anna Maria Island</a>
-                <a href="/guides/bradenton-area-guide/">Bradenton</a>
-                <a href="/guides/sarasota-area-guide/">Sarasota</a>
-                <a href="/property-management/">Property Owners</a>
-            </div>
-            <div class="footer-copyright">
-                © 2026 Seascape Vacations. All rights reserved. | Book Direct & Save
-                <div class="footer-meta-links">
-                    <a href="/privacy/">Privacy</a>
-                    <a href="/terms/">Terms</a>
-                    <a href="/cookies/">Cookies</a>
-                </div>
-            </div>
-        </div>
-    </footer>{% endif %}
+    {% include "partials/guest-footer.njk" %}
 
-    {% include "partials/site-header-script.njk" %}
     {% include "partials/analytics-ga4.njk" %}
 </body>
 </html>
