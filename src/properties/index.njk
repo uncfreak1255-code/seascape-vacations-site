@@ -94,7 +94,7 @@ headExtra: |
           <span class="catalog-photo-number" aria-hidden="true">0{{ loop.index }}</span>
         </a>
         <div class="catalog-card-body">
-          <div class="catalog-card-topline"><span>{{ property.city }}, Florida</span><button class="catalog-compare-toggle" type="button" data-compare="{{ property.slug }}" aria-pressed="false" aria-label="Compare {{ property.name }}" hidden>{{ uiIcon('plus') }} <span>Compare</span></button></div>
+          <div class="catalog-card-topline"><span>{{ property.city }}, Florida</span><button class="catalog-compare-toggle" type="button" data-compare="{{ property.slug }}" aria-pressed="false" aria-label="Compare {{ property.name }}" hidden>{{ uiIcon('plus', 'catalog-compare-add') }}{{ uiIcon('check', 'catalog-compare-selected') }} <span>Compare</span></button></div>
           <h3><a class="catalog-title-link" href="{{ property.pageUrl }}" data-trip-link aria-label="View {{ property.name }} details" data-track-event="catalog_view_details_click" data-page-slug="{{ property.slug }}" data-placement="catalog_card_title">{{ property.name }}</a></h3>
           <p class="catalog-card-specs"><span>{{ property.bedrooms }} bedrooms</span><span>{{ property.bathrooms }} baths</span><span>Up to {{ property.guests }} guests</span></p>
           <div class="catalog-card-reason">
@@ -148,7 +148,7 @@ headExtra: |
           <tr><th scope="row">Location</th>{% for property in properties %}<td data-compare-column="{{ property.slug }}">{{ property.city }}</td>{% endfor %}</tr>
           <tr><th scope="row">Bedrooms / baths</th>{% for property in properties %}<td data-compare-column="{{ property.slug }}">{{ property.bedrooms }} / {{ property.bathrooms }}</td>{% endfor %}</tr>
           <tr><th scope="row">Maximum guests</th>{% for property in properties %}<td data-compare-column="{{ property.slug }}">{{ property.guests }}<span class="comparison-capacity" data-capacity="{{ property.guests }}"></span></td>{% endfor %}</tr>
-          <tr><th scope="row">Sleeping arrangements</th>{% for property in properties %}<td data-compare-column="{{ property.slug }}">{% for room in property.guestFacts.sleeping %}<p>{{ room }}</p>{% endfor %}</td>{% endfor %}</tr>
+          <tr><th scope="row">Beds</th>{% for property in properties %}<td data-compare-column="{{ property.slug }}">{% for room in property.guestFacts.sleeping %}<p>{{ room }}</p>{% endfor %}</td>{% endfor %}</tr>
           <tr><th scope="row">Before choosing</th>{% for property in properties %}<td data-compare-column="{{ property.slug }}">{{ property.guestFacts.fitNote }}</td>{% endfor %}</tr>
           <tr><th scope="row">What stands out</th>{% for property in properties %}<td data-compare-column="{{ property.slug }}">{{ property.highlights | join(' · ') }}</td>{% endfor %}</tr>
           <tr><th scope="row">Waterfront / dock</th>{% for property in properties %}<td data-compare-column="{{ property.slug }}">{% if "waterfront" in property.amenities %}Waterfront · private dock{% else %}No private waterfront dock{% endif %}</td>{% endfor %}</tr>
