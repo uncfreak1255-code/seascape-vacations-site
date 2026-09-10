@@ -198,7 +198,12 @@ function transform(html, fileLabel) {
   // <style> block. Checked unconditionally so a re-run still catches it.
   const beforeCssStrip = out;
   out = out.replace(ORPHANED_NAV_CSS_RE, "");
-  if (!LEGACY_BRANDED_HEADER_RE.test(out)) {
+  // Only sweep the branded header's styling when this run actually removed
+  // that header from this file. Testing "no branded header present" instead
+  // was true of every file that never had one, so a re-run would have deleted
+  // legitimate `header { ... }` rules from any guide that styles a semantic
+  // header of its own.
+  if (legacyBrandedHeaderMatch) {
     out = out.replace(ORPHANED_BRANDED_HEADER_CSS_RE, "");
   }
   if (out !== beforeCssStrip) {
