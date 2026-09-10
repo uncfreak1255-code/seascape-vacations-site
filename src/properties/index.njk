@@ -94,7 +94,7 @@ headExtra: |
           <span class="catalog-photo-number" aria-hidden="true">0{{ loop.index }}</span>
         </a>
         <div class="catalog-card-body">
-          <div class="catalog-card-topline"><span>{{ property.city }}, Florida</span><button class="catalog-compare-toggle" type="button" data-compare="{{ property.slug }}" aria-pressed="false" aria-label="Compare {{ property.name }}" hidden>{{ uiIcon('plus', 'catalog-compare-plus') }}{{ uiIcon('check', 'catalog-compare-check') }} <span>Compare</span></button></div>
+          <div class="catalog-card-topline"><span>{{ property.city }}, Florida</span><button class="catalog-compare-toggle" type="button" data-compare="{{ property.slug }}" aria-pressed="false" aria-label="Compare {{ property.name }}" hidden>{{ uiIcon('plus', 'catalog-compare-add') }}{{ uiIcon('check', 'catalog-compare-selected') }} <span>Compare</span></button></div>
           <h3><a class="catalog-title-link" href="{{ property.pageUrl }}" data-trip-link aria-label="View {{ property.name }} details" data-track-event="catalog_view_details_click" data-page-slug="{{ property.slug }}" data-placement="catalog_card_title">{{ property.name }}</a></h3>
           <p class="catalog-card-specs"><span>{{ property.bedrooms }} bedrooms</span><span>{{ property.bathrooms }} baths</span><span>Up to {{ property.guests }} guests</span></p>
           <div class="catalog-card-reason">
