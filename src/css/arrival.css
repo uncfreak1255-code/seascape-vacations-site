@@ -125,15 +125,15 @@
 .g-postcard>p{font-size:13px}
 .g-home-trip{grid-template-columns:190px 1fr}
 .g-postcards{padding-inline:18px}}
-@media(max-width:700px){.g-arrival{height:500px}
-.g-arrival-copy{top:112px;left:24px;right:24px}
-.g-arrival-copy .g-label{font-size:12px;letter-spacing:.075em;margin-bottom:24px;max-width:290px}
+@media(max-width:700px){.g-arrival{height:580px}
+.g-arrival-copy{top:100px;left:24px;right:24px}
+.g-arrival-copy .g-label{font-size:12px;letter-spacing:.075em;margin-bottom:18px;max-width:290px}
 .g-arrival-copy h1{font-size:clamp(64px,18.5vw,104px);line-height:.87;letter-spacing:-.03em}
 .g-arrival-copy h1 em{margin-left:22px}
-.g-arrival-copy>p:last-child{font-size:12px;margin:18px 0 0 24px;line-height:1.8}
+.g-arrival-copy>p:last-child{font-size:12px;margin:14px 0 0 24px;line-height:1.7}
 .g-arrival-seal{display:none}
 .g-scene-photo{object-position:57% center}
-.g-scene::after{background:linear-gradient(180deg,#071d32b8 0,#071d3266 120px,transparent 42%),radial-gradient(65% 42% at 32% 30%,#071d3299,transparent 72%),linear-gradient(90deg,#071d3240,transparent),linear-gradient(0deg,#071d32cc,transparent 65%,#071d3266)}
+.g-scene::after{background:linear-gradient(180deg,#071d32b8 0,#071d3266 110px,transparent 38%),radial-gradient(78% 48% at 34% 36%,#071d32a6,transparent 76%),linear-gradient(90deg,#071d3240,transparent),linear-gradient(0deg,#071d32cc,transparent 65%,#071d3266)}
 .g-scene-caption{left:24px;right:24px;padding:18px 0 20px;grid-template-columns:1fr 66px;gap:6px 12px;align-items:start}
 .g-scene-caption .g-label{font-size:12px;letter-spacing:.05em;margin-bottom:8px}
 .g-scene-caption h2{font-size:32px}
