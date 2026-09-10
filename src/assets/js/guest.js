@@ -89,7 +89,7 @@
       if(arrive.value){trip.arrive=arrive.value;trip.depart=depart.value;}
       if(guests.value)trip.guests=guests.value;
       if(!form.dataset.bookingUrl){
-        var target=new URL('/properties/',location.origin);Object.keys(trip).forEach(function(key){target.searchParams.set(key,trip[key]);});
+        var target=preserveSave50Params(new URL('/properties/',location.origin));Object.keys(trip).forEach(function(key){target.searchParams.set(key,trip[key]);});
         emit('homepage_search_submit',{guest_count:count,has_dates:Boolean(arrive.value)});location.assign(target.pathname+target.search);return;
       }
       var current=new URL(location.href);['arrive','depart','checkin','checkout','guests'].forEach(function(key){current.searchParams.delete(key);});Object.keys(trip).forEach(function(key){current.searchParams.set(key,trip[key]);});history.replaceState(null,'',current.pathname+current.search+current.hash);

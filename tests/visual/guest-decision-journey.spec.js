@@ -73,13 +73,22 @@ test("editing fields requires applying the trip; global booking links update too
 });
 
 test("SAVE50 campaign survives catalog and property trip edits", async ({ page }) => {
-  await visit(page, "promo=save50");
-  await expect(page.getByRole("link", {name:"Book Direct",exact:true})).toHaveAttribute("target", "_blank");
-  await expect(page.getByRole("link", {name:"Book Direct",exact:true})).toHaveAttribute("rel", "noopener noreferrer");
+  await registerStableNetwork(page);
+  await page.clock.setFixedTime(new Date("2026-09-04T16:00:00Z"));
+  await page.goto("/?visual-test=1&promo=save50&utm_source=mailchimp", {waitUntil:"networkidle"});
   await page.getByLabel("Arrival", {exact:true}).fill("2026-12-05");
   await page.getByLabel("Departure", {exact:true}).fill("2026-12-12");
   await page.getByLabel("Guests", {exact:true}).selectOption("8");
   await page.getByRole("button", {name:"Find my home",exact:true}).click();
+  await expect(page).toHaveURL(/\/properties\//);
+  var catalogUrl = new URL(page.url());
+  expect(catalogUrl.searchParams.get("promo")).toBe("save50");
+  expect(catalogUrl.searchParams.get("utm_source")).toBe("mailchimp");
+  expect(catalogUrl.searchParams.get("utm_campaign")).toBe("save50_welcome");
+  var headerBooking = new URL(await page.getByRole("link", {name:"Book Direct",exact:true}).getAttribute("href"));
+  expect(headerBooking.origin).toBe("https://book.seascape-vacations.com");
+  await expect(page.getByRole("link", {name:"Book Direct",exact:true})).toHaveAttribute("target", "_blank");
+  await expect(page.getByRole("link", {name:"Book Direct",exact:true})).toHaveAttribute("rel", "noopener noreferrer");
   var catalogCheckout = new URL(await page.locator('[data-property="dockside-dreams"] .catalog-check-dates').getAttribute("href"));
   expect(catalogCheckout.searchParams.get("promo")).toBe("save50");
   expect(catalogCheckout.searchParams.get("utm_campaign")).toBe("save50_welcome");
