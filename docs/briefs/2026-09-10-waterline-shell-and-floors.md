@@ -183,6 +183,39 @@ captures are the acceptance proof.
 | Tools/plugins used | Repository source, Playwright, node:test, sharp, public web search, one read-only competitor page fetch. No paid service or plugin installation. |
 | Decision and reason | Ship the shell rollout and floors as fixes to the approved Waterline design; it addresses observed defects without any search expansion or new claims. |
 
+## Follow-up round: the gold CTA and the internal links it exposed
+
+Shipped after #565 landed, in the same workstream and against the same authorized
+source list above.
+
+**Gold CTA retired site-wide.** The pre-Waterline gold pill survived #565 on the 51
+guide routes, the owner pages and the research pages. It was not only off-brand: it
+rendered white on `#C9A962` at 2.25:1 against a 4.5:1 requirement, on hit boxes as
+small as 40px, and it was the owner funnel's primary call to action as well as the
+guides'. Every gold button now takes the Waterline primary action, chosen per surface
+by measurement: ink on cream, white and photos; citron on the two sticky CTA bars, the
+owner hero and the generated owner band; paper with an ink hairline on the legacy teal
+bands, where ink falls to 1.04:1 and citron only reaches 2.93:1. The only source edit
+to a search-driven page is one class, `owner-dark-band`, added to the dark band in
+`src/property-management/property-management.njk` so that band can take the
+dark-surface treatment. No copy, metadata, canonical, heading or schema changed.
+
+**Internal links restored.** #565 replaced the legacy footer, which had linked the four
+area-guide hubs. Nothing failed, because URLs, titles, canonicals, descriptions and
+JSON-LD were byte-identical, the link validator only checks that links which exist
+still resolve, and the visual gate's per-route pixel tolerance absorbed the footer
+change without a diff. Counting inbound links across the whole build was the only thing
+that showed it: three hubs had fallen from 59, 59 and 50 inbound pages to 27, 27 and 18.
+The shared footer now carries a "Where we are" column linking all four, so each is
+linked from every built page.
+
+**New floor F6.** `scripts/enforcement/internal-link-floor.test.js` asserts that a hub
+page the shared shell links to stays linked from at least 70% of built pages. It was
+proven red by reproducing the exact regression against a build with that footer column
+stripped. `DESIGN.md` records the floor, documents the retired gold, and gained a
+`waterline:` token block, because its machine-readable half still declared Playfair
+Display, a 50px pill radius and the pre-Waterline palette as the law.
+
 ## Release gate
 
 Merge and the Netlify deploy remain Sawyer's decision. Nothing in this brief
