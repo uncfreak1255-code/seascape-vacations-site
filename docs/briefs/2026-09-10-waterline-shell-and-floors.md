@@ -216,6 +216,30 @@ stripped. `DESIGN.md` records the floor, documents the retired gold, and gained 
 `waterline:` token block, because its machine-readable half still declared Playfair
 Display, a 50px pill radius and the pre-Waterline palette as the law.
 
+## Follow-up round: the hero scene counter
+
+Shipped after #566 landed, in the same workstream and against the same authorized
+source list above.
+
+**Hero scene counter finished.** The homepage hero caption rendered a large citron
+"01" with nothing after it, so the number read as decoration instead of the guest's
+position in the five-home scene rotation. #559 designed the denominator and shipped
+its styling at both breakpoints (`.g-scene-index small`, 32px inline on desktop and
+19px stacked under the numeral on mobile), but the `<small>` was never added to the
+template, so both rules were dead. The caption now reads "01/05".
+
+The total is read from the hero's `sceneSlugs` list rather than typed as a literal,
+so onboarding a sixth home makes it "01/06" without a second edit. Both halves pad to
+a two-digit minimum, which is what the old hardcoded `0` prefix could not do: at ten
+scenes it reads "10/10", not "010". Nothing else changed. No copy, route, metadata,
+schema or property fact moved, the span stays `aria-hidden`, and the spoken position
+for screen readers is still the `g-scene-status` live region, not this counter.
+
+`scripts/recovery/assert-live-smoke.js` gained a homepage marker for the counter,
+as the smoke-asserted-route rule requires. The marker stops before the total, so
+onboarding a sixth home cannot turn the daily smoke red. It was proven red-capable
+against production, which fails on that marker alone until this ships.
+
 ## Release gate
 
 Merge and the Netlify deploy remain Sawyer's decision. Nothing in this brief

@@ -152,7 +152,13 @@ function validateTargetResponse(target, response) {
       throw new Error("homepage still depends on the external weserv image proxy");
     }
 
-    requireIncludes(target.path, response.body, ['data-guest-version="waterline-v3"', 'id="home-heading"', "Your people.", "Your place.", "Our homes", 'data-guest-trip-form', '/images/homes/the-oasis/01.webp', 'href="/guest-support/"', 'href="/terms/#booking-and-confirmation"', 'Explore', 'Where we are', 'href="/guides/anna-maria-island-area-guide/"', 'id="email-signup"', 'data-inline-email-capture="true"', 'data-placement="home_owner_section"']);
+    // The hero scene counter ships its denominator as `01<small>/05</small>`.
+    // #559 shipped the styling with no markup, so the denominator was silently
+    // absent in production until someone looked; this marker is what notices.
+    // It deliberately stops before the total: the denominator is computed from
+    // the scene list, so onboarding a sixth home makes it `/06` and pinning the
+    // count here would turn the daily smoke red on a healthy site.
+    requireIncludes(target.path, response.body, ['data-guest-version="waterline-v3"', 'id="home-heading"', "Your people.", "Your place.", "Our homes", 'data-guest-trip-form', '/images/homes/the-oasis/01.webp', 'href="/guest-support/"', 'href="/terms/#booking-and-confirmation"', 'Explore', 'Where we are', 'href="/guides/anna-maria-island-area-guide/"', 'id="email-signup"', 'data-inline-email-capture="true"', 'data-placement="home_owner_section"', '>01<small>/']);
     requireExcludes(target.path, response.body, ["Best rates guaranteed", "Best Price Guaranteed", "save up to 20%"]);
   }
 
