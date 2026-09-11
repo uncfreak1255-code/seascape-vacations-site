@@ -7,6 +7,7 @@ pageDescription: "Private-pool vacation homes in Bradenton and Sarasota. Compare
 ---
 {% from "partials/ui-icon.njk" import uiIcon %}
 {% set sceneSlugs = ['the-oasis', 'dockside-dreams', 'sarasota-luxe', 'river-house', 'bradenton-pool-home'] %}
+{% set sceneCount = sceneSlugs | length %}
 <div class="g-home">
   <section class="g-arrival" aria-labelledby="home-heading" data-home-scenes>
     <div class="g-arrival-copy"><p class="g-label">Private-pool homes · Bradenton & Sarasota</p><h1 id="home-heading">Your people.<br><em>Your place.</em></h1><p>A Gulf Coast home to call your own.<br>And a local team who knows it.</p></div>
@@ -14,7 +15,7 @@ pageDescription: "Private-pool vacation homes in Bradenton and Sarasota. Compare
       {% for slug in sceneSlugs %}{% set home = properties | propertyBySlug(slug) %}{% set photo = home.photography.photos[0] %}
       <div class="g-scene" id="scene-{{ home.slug }}" data-scene="{{ home.slug }}"{% if not loop.first %} hidden{% endif %}>
         <img class="g-scene-photo" data-transition-home="{{ home.slug }}" data-property-photo="{{ home.slug }}" {% if loop.first %}src="{{ photo.src }}" srcset="{{ photo.src | replace('.webp', '-800.webp') }} 800w, {{ photo.src }} {{ photo.width }}w" fetchpriority="high"{% else %}data-scene-src="{{ photo.src }}" data-scene-srcset="{{ photo.src | replace('.webp', '-800.webp') }} 800w, {{ photo.src }} {{ photo.width }}w"{% endif %} sizes="100vw" width="{{ photo.width }}" height="{{ photo.height }}" alt="{{ photo.alt }}">
-        <div class="g-scene-caption"><div><p class="g-label">In the collection · {{ home.city }}, Florida</p><h2>{{ home.name }}</h2><p>{{ home.guestFacts.tagline }}</p></div><a class="g-scene-explore" href="{{ home.pageUrl }}" data-trip-link>Explore this home <span aria-hidden="true">{{ uiIcon('arrow-up-right') }}</span></a><span class="g-scene-index" aria-hidden="true">0{{ loop.index }}</span></div>
+        <div class="g-scene-caption"><div><p class="g-label">In the collection · {{ home.city }}, Florida</p><h2>{{ home.name }}</h2><p>{{ home.guestFacts.tagline }}</p></div><a class="g-scene-explore" href="{{ home.pageUrl }}" data-trip-link>Explore this home <span aria-hidden="true">{{ uiIcon('arrow-up-right') }}</span></a><span class="g-scene-index" aria-hidden="true">{{ "0" if loop.index < 10 else "" }}{{ loop.index }}<small>/{{ "0" if sceneCount < 10 else "" }}{{ sceneCount }}</small></span></div>
       </div>{% endfor %}
     </div>
 
