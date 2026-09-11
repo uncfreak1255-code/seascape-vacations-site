@@ -2,6 +2,54 @@
 version: "alpha"
 name: "Seascape Vacations Marketing Site"
 description: "Public Seascape Vacations website design system for owner acquisition, direct booking, and Gulf Coast SEO pages."
+
+# CURRENT SYSTEM — Waterline (September 2026). Build every new surface from this
+# block. Source of truth in code is src/css/guest.css; these values mirror it.
+waterline:
+  colors:
+    paper: "#F6F3EB"
+    ink: "#173D42"
+    citron: "#D6EB85"
+    muted: "#52676A"
+    clay: "#A4533E"
+    rule: "#CAD4CF"
+    soft: "#F0F3EE"
+  typography:
+    display:
+      fontFamily: "Instrument Serif"
+      fontWeight: 400
+      lineHeight: "1.12"
+      letterSpacing: "-0.025em"
+      h1: "clamp(46px,5.4vw,78px)"
+    body:
+      fontFamily: "Poppins"
+      fontSize: "15px"
+      lineHeight: "1.65"
+    label:
+      fontFamily: "Poppins"
+      fontSize: "12px"
+      letterSpacing: "0.16em"
+  rounded:
+    button: "4px"
+  components:
+    button-primary:
+      backgroundColor: "{waterline.colors.ink}"
+      textColor: "#FFFFFF"
+      rounded: "{waterline.rounded.button}"
+      padding: "14px 24px"
+      minHeight: "48px, never below the 44px mobile floor"
+      typography: "500 14px/1.35 Poppins"
+    button-on-dark:
+      backgroundColor: "{waterline.colors.citron}"
+      textColor: "{waterline.colors.ink}"
+      rounded: "{waterline.rounded.button}"
+      usage: "only where ink loses separation from its own surface: the homepage header over the scene photo, the two sticky CTA bars, the near-black owner hero"
+
+# LEGACY — the pre-Waterline system. Kept for two reasons, neither of them
+# guidance. scripts/design/design-lint.js treats every hex in this file as the
+# sanctioned palette, and the 51 legacy guide routes still carry these colours as
+# non-clickable accents, so deleting them would flag all of that as off-brand
+# overnight. Do not build a new surface from anything below this line.
 colors:
   primary: "#3D5C5D"
   brand: "#5F8A8B"
@@ -68,13 +116,15 @@ components:
     underline: "1px {colors.gold} bottom"
     padding: "8px 0"
   button-gold:
+    retired: "2026-09-10 — see 'Legacy gold CTAs'. Recorded for provenance only. Do not apply to a new control."
     backgroundColor: "linear-gradient(135deg,#E3C47A 0%,{colors.gold} 38%,#8E6D28 62%,{colors.gold} 100%)"
     textColor: "#2A2014"
     typography: "{typography.label}"
     rounded: "{rounded.pill}"
     padding: "15px 32px"
-    usage: "rare — one per page max"
+    usage: "retired — overridden to the Waterline ink or citron button in guest.css"
   button-solid-gold:
+    retired: "2026-09-10 — see 'Legacy gold CTAs'. Recorded for provenance only. Do not apply to a new control."
     backgroundColor: "{colors.gold}"
     textColor: "#2A2014"
     typography: "{typography.label}"
@@ -87,7 +137,7 @@ components:
     typography: "{typography.label}"
     rounded: "{rounded.pill}"
     padding: "15px 32px"
-    usage: "over-imagery ghost, pairs with button-solid-gold"
+    usage: "over-imagery ghost; formerly paired with the retired button-solid-gold"
   property-card:
     backgroundColor: "{colors.white}"
     textColor: "{colors.stone}"
@@ -149,12 +199,13 @@ If an image cannot load, show a neutral named unavailable state. Never substitut
 - Use clear labels, keyboard-operable controls, visible focus, native date inputs/dialog behavior, and reduced motion. Test 390px, a narrower 375px, tablet, and desktop.
 - A sticky action must not cover the form, navigation, or content. No unsolicited popup should interrupt the core guest journey.
 
-Floors (the contract every change to these routes must leave true, enforced in `tests/visual/design-floors.spec.js` and `scripts/enforcement/shared-shell.test.js`):
+Floors (the contract every change to these routes must leave true, enforced in `tests/visual/design-floors.spec.js`, `scripts/enforcement/shared-shell.test.js` and `scripts/enforcement/internal-link-floor.test.js`):
 - F1 — Minimum font size: no visible text renders below 12px, on desktop or mobile, including decorative eyebrows.
 - F2 — Tap targets: on mobile (393px), every link, button, input, select and summary has a hit box of at least 44×44px, except inline links inside flowing sentences.
 - F3 — No overflow: the page never scrolls horizontally at 360, 375 or 393px.
 - F4 — Hero contrast: on the homepage, white text over the scene photo reaches 4.5:1 (text under 24px) or 3:1 (24px and larger) for all five scenes, measured on rendered pixels.
 - F5 — One shared shell: every built HTML page has exactly one `class="g-header"` and one `class="g-footer"`.
+- F6 — Internal-link distribution: a hub page the shared shell links to stays linked from at least 70% of built pages. Editing a shared header or footer redistributes internal links across the whole site at once, and no other gate here can see it: URLs, titles, canonicals and JSON-LD stay identical, the link validator only checks that links which exist still resolve, and the visual gate's per-route pixel tolerance absorbs a footer change without a diff.
 
 F1 and F2 apply to the whole page on the Waterline guest routes (`body.guest-site`: the homepage, the catalog and the five property pages) and, on every other route, to the shared header, mobile menu and footer only. Those pages carry the shared shell but keep their legacy body typography, which has not been brought to the floors yet. That narrower scope is a stopping point for one release, not a permanent rule: widening it is the work that finishes the redesign, and until then a legacy page body can still ship text below 12px without the gate objecting.
 
@@ -162,6 +213,16 @@ F1 and F2 apply to the whole page on the Waterline guest routes (`body.guest-sit
 This file records deliberate current choices; it is not proof that a choice is good. Authorized product/design work may revise it after examining a rendered alternative, the guest task, truth, accessibility and performance. A specific model, external design app, color, font, button shape, or template is not an approval authority.
 
 Use the existing design specialist/critic for useful challenges and the existing browser/Playwright workflow for proof. Do not add a new review layer. For material changes capture the actual desktop/mobile route, important interactive states, and real photos. Label mocked availability or pricing. Inspect images and page identity before updating any baseline.
+
+## Legacy gold CTAs
+
+The 51 pre-Waterline guide routes, the owner pages and the research pages ship bespoke styling, including a gold pill CTA (`#C9A962`). It rendered white-on-gold at 2.25:1 against a 4.5:1 requirement, on hit boxes as small as 40px, and it was the owner funnel's primary CTA as well as the guides'. That gold is retired. The replacement is chosen per surface by measured contrast, not by class:
+
+- **Ink `#173D42` with white text** on cream, white and photos. Clears 10.14:1 against cream.
+- **Citron `#D6EB85` with ink text** where we own the surface and it is dark enough: the two sticky CTA bars, the near-black owner hero (ink would be 1.51:1 there), and the generated owner band on the 27 landers, whose `#3D5C5D`-to-`#1A3A3C` gradient takes ink to 1.04:1. Citron clears 5.57:1 and 9.38:1 across that gradient.
+- **Paper `#F6F3EB` with ink text and a 1px ink hairline** on the legacy teal bands (`.hero`, `.cta-section`, `.cta-shell`), which run from `#5F8A8B` to `#203F40`. Ink loses them entirely and citron only reaches 2.93:1 on the lightest stop, under the 3:1 a filled control needs against its own surface. Paper clears every stop at 3.45:1, and the hairline keeps a boundary on the one band light enough that the fill alone is 2.49:1. The owner lead form re-lightens to a cream card inside those bands, so it takes ink at 11:1 rather than paper at 1.04:1.
+
+Do not substitute one of these for another by eye. Each was picked because the other two fail on that surface. Radius is 4px, never a pill. The overrides live in `src/css/guest.css` and need `!important` because these pages carry the colours inline. The tracked owner CTA is selected by its `data-track-event` attribute rather than the generic `.btn` class, which 62 built pages use for something already correct. Gold survives as a non-clickable accent on borders, badges and card rules; only the buttons changed.
 
 ## Direction decision
 The September 4 Open House draft preserved useful guest behavior but was visually too restrained. On September 5, two new real-photo slices were rendered on desktop and mobile: cinematic Waterline and Spatial Atlas. Waterline won for photographic presence and a clear active home; the atlas won for personality but obscured adjacent cards on a narrow screen. The chosen direction combines Waterline's opening with a readable, responsive postcard collection. The prior draft remains in Git and the before/after proof; its existence is not a reason to keep weak composition.
