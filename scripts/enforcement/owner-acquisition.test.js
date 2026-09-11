@@ -439,7 +439,11 @@ test("owner pages keep phone as a lower-trust fallback instead of a competing he
   const landingHeroEnd = ownerLanding.indexOf("</section>", landingHeroStart);
   const landingHero = ownerLanding.slice(landingHeroStart, landingHeroEnd);
 
-  const templateHeroStart = ownerTemplate.indexOf('<section class="section" style="background: linear-gradient(135deg, var(--brand-dark) 0%, #1a3a3c 100%); color: white;">');
+  // Match the band by its class the way the landing hero above is matched, rather
+  // than by its exact opening tag: pinning the full style attribute made this test
+  // fail the moment that section gained a class.
+  const templateHeroMatch = ownerTemplate.match(/<section class="[^"]*\bowner-dark-band\b[^"]*"[^>]*>/);
+  const templateHeroStart = templateHeroMatch ? templateHeroMatch.index : -1;
   const templateHeroEnd = ownerTemplate.indexOf("</section>", templateHeroStart);
   const templateHero = ownerTemplate.slice(templateHeroStart, templateHeroEnd);
 

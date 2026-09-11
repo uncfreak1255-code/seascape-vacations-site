@@ -76,10 +76,24 @@
    tracked owner CTA rather than `.btn` keeps this off the 62 other built pages
    that use that generic class for something already correct. */
 .guest-shell a.btn[data-track-event="owner_primary_cta_click"]{display:inline-flex!important;align-items:center!important;justify-content:center!important;min-height:44px!important;padding:12px 24px!important;background:#173d42!important;background-image:none!important;color:#fff!important;border:0!important;border-radius:4px!important;font:500 14px/1.35 Poppins,sans-serif!important}
-/* The owner hero is near-black (#0a1a1c), where the ink button drops to 1.51:1
-   against its own section. Citron is the dark-surface treatment, same as the two
+/* Dark owner surfaces, where the ink button loses its own background: the owner
+   hero is near-black (#0a1a1c) and drops to 1.51:1, and the band on the 27
+   generated landers is a #3d5c5d-to-#1a3a3c gradient where ink measures 1.62:1
+   at the light end and 1.04:1 at the dark end. Citron clears 5.57:1 and 9.38:1
+   across that same gradient. Citron is the dark-surface treatment, same as the two
    sticky CTA bars. */
-.guest-shell .owner-hero .btn-gold,.guest-shell .sv-pm-hero .btn-gold,.guest-shell .owner-hero a.btn[data-track-event="owner_primary_cta_click"],.guest-shell .sv-pm-hero a.btn[data-track-event="owner_primary_cta_click"]{background:#d6eb85!important;background-image:none!important;color:#173d42!important}
+.guest-shell .owner-hero .btn-gold,.guest-shell .sv-pm-hero .btn-gold,.guest-shell .owner-hero a.btn[data-track-event="owner_primary_cta_click"],.guest-shell .sv-pm-hero a.btn[data-track-event="owner_primary_cta_click"],.guest-shell .owner-dark-band .btn-gold,.guest-shell .owner-dark-band a.btn[data-track-event="owner_primary_cta_click"]{background:#d6eb85!important;background-image:none!important;color:#173d42!important}
+/* Legacy teal bands (.hero, .cta-section, .cta-shell on the pre-Waterline guide and
+   owner pages) sit between #5F8A8B and #203F40. Ink loses them completely, as low as
+   1.04:1, and citron only reaches 2.93:1 on the lightest stop, under the 3:1 a filled
+   control needs against its own surface. Paper clears every stop at 3.45:1 or better
+   and carries ink text at 10.62:1. Citron stays the treatment where we own the surface
+   and it clears 5.57:1 or more: the two sticky CTA bars, the owner hero, the owner band. */
+.guest-shell .hero .btn-gold,.guest-shell .cta-section .btn-gold,.guest-shell .cta-shell .btn-gold,.guest-shell .hero .cta-btn,.guest-shell .cta-section .cta-btn,.guest-shell .cta-shell .cta-btn,.guest-shell .hero .cta-button,.guest-shell .cta-section .cta-button,.guest-shell .cta-shell .cta-button,.guest-shell .hero .hero-cta,.guest-shell .cta-section .hero-cta,.guest-shell .cta-shell .hero-cta,.guest-shell .hero a.btn[data-track-event="owner_primary_cta_click"],.guest-shell .cta-section a.btn[data-track-event="owner_primary_cta_click"],.guest-shell .cta-shell a.btn[data-track-event="owner_primary_cta_click"]{background:#f6f3eb!important;background-image:none!important;color:#173d42!important;border:1px solid #173d42!important}
+/* The owner lead form sits inside those legacy bands but re-lightens to a cream
+   #FAF7EE card, where the paper fill above would land at 1.04:1. Ink on that card
+   is 11:1. This rule must outrank the band rules, hence the doubled class. */
+.guest-shell .owner-form-card .btn-gold.owner-form-submit,.guest-shell .owner-form-card .owner-form-submit{background:#173d42!important;background-image:none!important;color:#fff!important;border:0!important}
 .guest-shell .btn-solid-gold{display:inline-flex!important;align-items:center!important;justify-content:center!important;min-height:44px!important;padding:12px 24px!important;background:#d6eb85!important;background-image:none!important;color:#173d42!important;border:0!important;border-radius:4px!important;font:500 14px/1.35 Poppins,sans-serif!important;box-shadow:none!important}
 .guest-site .catalog-page{max-width:1280px;width:calc(100% - 80px);padding:0;margin:0 auto}
 .guest-site .catalog-breadcrumb{padding:20px 0}
