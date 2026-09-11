@@ -235,6 +235,11 @@ scenes it reads "10/10", not "010". Nothing else changed. No copy, route, metada
 schema or property fact moved, the span stays `aria-hidden`, and the spoken position
 for screen readers is still the `g-scene-status` live region, not this counter.
 
+`scripts/recovery/assert-live-smoke.js` gained a homepage marker for the counter,
+as the smoke-asserted-route rule requires. The marker stops before the total, so
+onboarding a sixth home cannot turn the daily smoke red. It was proven red-capable
+against production, which fails on that marker alone until this ships.
+
 ## Release gate
 
 Merge and the Netlify deploy remain Sawyer's decision. Nothing in this brief
