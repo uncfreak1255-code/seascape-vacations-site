@@ -347,6 +347,11 @@
 .g-all-photos>h2{font-size:56px}
 .g-photo-dialog .g-photo-grid img{height:auto}
 .g-next-home h2{font-size:50px}
+/* Between the phone stack and the desktop row, four footer columns leave the last
+   two at 73px and 87px, which ragged-wraps every link. Two columns instead. The
+   grid's min-content sizing already prevented an overflow here, measured at 0px
+   from 701 to 1024, so this is legibility, not a clipped layout. */
+@media(min-width:701px) and (max-width:900px){.g-footer-grid{grid-template-columns:1fr 1fr;gap:32px 48px}}
 @media(min-width:701px) and (max-width:1050px){.guest-site .catalog-intro{gap:45px}
 .guest-site .catalog-intro h1{font-size:76px}
 .guest-site .catalog-card-body{padding-left:28px}
