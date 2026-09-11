@@ -47,7 +47,7 @@
 .g-section-heading h2{max-width:650px}
 .g-section-heading>p{max-width:360px;color:var(--g-muted)}
 .g-footer{background:var(--g-ink);color:var(--g-paper);padding:56px 0 24px}
-.g-footer-grid{display:grid;grid-template-columns:1fr 1fr .8fr;gap:60px}
+.g-footer-grid{display:grid;grid-template-columns:1fr 1fr .8fr .8fr;gap:48px}
 .g-footer .g-label{color:var(--g-paper)}
 .g-footer a{color:var(--g-paper);text-decoration:none}
 .g-footer-grid>div>a:not(.g-wordmark){display:flex;align-items:center;min-height:44px;font-size:14px;padding:10px 0}
@@ -55,6 +55,32 @@
 .g-footer-bottom{display:flex;justify-content:space-between;border-top:1px solid #ffffff33;padding-top:24px;margin-top:40px;font-size:13px}
 .g-footer-bottom div{display:flex;gap:24px}
 .g-footer-bottom a{display:inline-flex;align-items:center;min-height:44px}
+/* Legacy guide CTA bars. 42 guides hard-code #sticky-book-bar and 16 hard-code
+   .mobile-cta-bar, with the gold pill and the old teal call circle as inline styles, so each property below needs !important
+   to win over them. The Waterline tokens are declared locally because .guest-shell
+   scopes that palette to the header and footer only, so it never reaches these
+   bars. Replaces white-on-gold (2.25:1) with ink-on-citron (9.02:1) and lifts both
+   controls to the 44px mobile floor. */
+.guest-shell #sticky-book-bar,.guest-shell .mobile-cta-bar{--g-paper:#f6f3eb;--g-citron:#d6eb85;--g-ink:#173d42;background:var(--g-ink)!important;background-image:none!important;box-shadow:0 -1px 0 #ffffff26!important}
+.guest-shell #sticky-book-bar>span,.guest-shell .mobile-cta-bar .cta-title,.guest-shell .mobile-cta-bar .cta-subtitle{color:var(--g-paper)!important;font-family:Poppins,sans-serif!important}
+.guest-shell #sticky-book-bar a,.guest-shell .mobile-cta-bar .btn-gold{display:inline-flex!important;align-items:center!important;justify-content:center!important;min-height:44px!important;padding:12px 20px!important;background:var(--g-citron)!important;background-image:none!important;color:var(--g-ink)!important;border:0!important;border-radius:4px!important;font:500 14px/1.35 Poppins,sans-serif!important;white-space:nowrap!important}
+.guest-shell .mobile-cta-bar a[href^="tel:"]{width:44px!important;height:44px!important;border-radius:4px!important;background:#ffffff1f!important;color:var(--g-paper)!important}
+/* The rest of the legacy gold CTAs. The 51 built guide routes and the owner and
+   research pages ship bespoke gold buttons, some as classes and some as inline styles, so these need !important too. White on that
+   gold measured 2.25:1. Citron is reserved for the darkest panels, where it clears
+   7.7:1; everywhere else becomes the standard Waterline ink button, which clears
+   3:1 against cream, white, the old teal and photos alike (citron would not: it is
+   1.12:1 on cream). The 50px pill becomes the 4px Waterline radius. */
+.guest-shell .cta-btn,.guest-shell .cta-button,.guest-shell .hero-cta,.guest-shell .btn-gold,.guest-shell .property-card-body a,.guest-shell a[style*="background"][style*="C9A962"],.guest-shell a[style*="background"][style*="c9a962"],.guest-shell a[style*="background"][style*="var(--gold)"]{display:inline-flex!important;align-items:center!important;justify-content:center!important;min-height:44px!important;padding:12px 24px!important;background:#173d42!important;background-image:none!important;color:#fff!important;border:0!important;border-radius:4px!important;font:500 14px/1.35 Poppins,sans-serif!important;text-transform:none!important;letter-spacing:0!important;box-shadow:none!important}
+/* The research pages style a bare `.btn` as their own gold pill. Targeting the
+   tracked owner CTA rather than `.btn` keeps this off the 62 other built pages
+   that use that generic class for something already correct. */
+.guest-shell a.btn[data-track-event="owner_primary_cta_click"]{display:inline-flex!important;align-items:center!important;justify-content:center!important;min-height:44px!important;padding:12px 24px!important;background:#173d42!important;background-image:none!important;color:#fff!important;border:0!important;border-radius:4px!important;font:500 14px/1.35 Poppins,sans-serif!important}
+/* The owner hero is near-black (#0a1a1c), where the ink button drops to 1.51:1
+   against its own section. Citron is the dark-surface treatment, same as the two
+   sticky CTA bars. */
+.guest-shell .owner-hero .btn-gold,.guest-shell .sv-pm-hero .btn-gold,.guest-shell .owner-hero a.btn[data-track-event="owner_primary_cta_click"],.guest-shell .sv-pm-hero a.btn[data-track-event="owner_primary_cta_click"]{background:#d6eb85!important;background-image:none!important;color:#173d42!important}
+.guest-shell .btn-solid-gold{display:inline-flex!important;align-items:center!important;justify-content:center!important;min-height:44px!important;padding:12px 24px!important;background:#d6eb85!important;background-image:none!important;color:#173d42!important;border:0!important;border-radius:4px!important;font:500 14px/1.35 Poppins,sans-serif!important;box-shadow:none!important}
 .guest-site .catalog-page{max-width:1280px;width:calc(100% - 80px);padding:0;margin:0 auto}
 .guest-site .catalog-breadcrumb{padding:20px 0}
 .guest-site .catalog-intro{gap:70px;padding:30px 0;grid-template-columns:1fr 1fr}
