@@ -1,78 +1,62 @@
 # Current State
 
-*Updated: 2026-06-14*
+Guidance reviewed: 2026-09-05. This page provides durable source routing; it
+does not refresh analytics, owner demand, deployed commits, or runtime health.
 
-## Operating Decision — Stop Polishing The OS (corrected 2026-06-14)
+## Choose Work From Current Evidence
 
-The operating system is now more advanced than the business it serves. Two
-back-to-back audits (`docs/research/2026-06-13-ai-seo-stack-audit.md` and the
-2026-06-13 skill-layer audit) returned the same verdict: zero skill or tool
-swaps clear the bar, and the only sanctioned build is the already-planned
-owner-outbound pair. The skill, governance, and toolchain layer is **settled and
-frozen** — no further skill, tool, or meta audit without a new, specific trigger
-tied to an owner lead or a direct booking. Auditing the toolchain again is now a
-procrastination surface, not a growth surface.
+Start from Sawyer's current objective and the affected source or guest flow.
+Use `AGENTS.md` ("Business Priorities And Experiments") for local fixes,
+prototypes, and capability comparisons. Apply the measured expansion gate when
+the proposed work depends on it; do not extend it to unrelated local work.
 
-Correction: this freezes agent/tool churn and broad page expansion. It does not
-freeze bounded rescue work when a tracked winner or money page is sliding. A
-confirmed regression uses `docs/process/ranking-regression-rescue.md`: prove
-impact later, but make the smallest source-truth, SERP, internal-link, schema,
-or page-quality fix now.
+The June 2026 audit and strategy conclusions are historical context. Their
+toolchain hold, lead counts, traffic rankings, and proposed allocation of founder
+hours must not be presented as current evidence. The original record remains
+available in Git history and the dated research files.
 
-The binding constraint is unchanged and still unaddressed: owner acquisition has
-produced **zero leads**, and owner impressions are roughly 42/week and falling.
-No amount of on-site SEO, skill, or governance polish fixes a channel with
-almost no owner demand. Owner acquisition for a property manager is mostly an
-off-repo sales and relationship job — referrals from current owners, local agent
-relationships, owner-form or direct-inbound requests, and public or in-person
-paths that expressly invite a relevant follow-up — not a website job. A
-platform listing or public host label is not contact permission. This site's
-honest role is the Lane A guest-to-owner referral (shipped, Card 1) and a proof
-surface, not the primary lead engine.
+- `docs/status/next-batch.md` is the canonical operator-read status surface;
+  it must carry exactly one reread status and one concrete next move after
+  every reread. Check its observation window before using a measurement.
+- `seascape-analytics` owns the joined search read, demand measurements, and
+  attribution evidence. Missing proof limits only the decision or claim that
+  depends on it.
+- `seascape-hub` owns company priorities and owner-demand interpretation.
+  This site owns the implementation of guest and owner experiences.
+- A confirmed winner or money-page regression follows
+  `docs/process/ranking-regression-rescue.md` and its affected checks.
 
-Next founder hours go to the off-repo owner motion, not this repo:
-1. Qualify the first owner-direct, permissioned signal under
-   `docs/status/owner-direct-intake-policy.md`; do not build an OTA host-message
-   list or store named candidate state in this public repository.
-2. If a named signal qualifies, make a separate founder decision on one
-   one-to-one next step. Intake does not authorize a draft or send.
-3. Let the shipped Lane A referral run and watch for the first benchmark
-   form-submit from guide traffic.
+## Owner Intake And Communication
 
-On-repo expansion work resumes only when the `seascape-analytics` receipt says a
-cluster cleared a threshold (per `next-batch.md`) or a real owner lead lands.
-On-repo rescue work is allowed when `next-batch.md`, rank history, or the rank
-tracker names a confirmed winner or money-page regression.
+A platform listing or public host label is not contact permission. Qualify an
+owner-direct, permissioned signal under
+`docs/status/owner-direct-intake-policy.md`; do not build an OTA host-message
+list or store named candidate state in this public repository.
 
-## Source of Truth
+Intake does not authorize a draft or send. A qualified signal still needs the
+separate founder decision required by the owner-intake policy. A prototype or
+local experiment must not create a mailbox draft, automate outreach, or turn
+test activity into owner demand.
 
-- `/Users/sawbeck/Projects/seascape-vacations-site` is the canonical sync-only `main` checkout
-- `_site/` is generated output
-- `DEPLOY THIS FOLDER TO NETLIFY/` is archival only
-- the operating system for SEO work now lives across `docs/status/`, `docs/briefs/`, `docs/style/`, and `docs/portfolio/`
+## Source Of Truth
 
-## What Is True Right Now
+- Start with Git state to identify the current branch and checkout. Root
+  `main` is sync-only; implementation belongs in an isolated task worktree.
+- `_site/` is generated output. `DEPLOY THIS FOLDER TO NETLIFY/` is archival.
+- `AGENTS.md` identifies editable page, property, redirect, and proof sources.
+- `DESIGN.md` owns visual conventions; the existing design-review workflow
+  owns rendered desktop and mobile proof.
+- `docs/process/learning-contract.md` defines evidence for retaining an
+  improvement and the boundary between a local trial and activation.
+- The owner metrics endpoint and its verification script prove measurement
+  behavior only. They do not by themselves prove bookings or owner demand.
+- A merged commit or historical release note does not prove current production.
+  Use the deployed commit and the relevant live check for a live claim.
 
-- the site serves two real audiences: guests and property owners
-- owner acquisition remains the business bottleneck
-- direct-book conversion on existing search demand remains the second bottleneck
-- the comparison-guide cluster is still the strongest nonbrand organic asset, especially `/guides/bradenton-vs-sarasota/` and `/guides/anna-maria-island-vs-siesta-key/`
-- the truth-normalization pass is live on `main`; false shared trust claims and stale homepage schema drift were removed before more expansion work
-- the winner-guide consolidation pass is live on `main` as merge `edf6e791`; guide-family aliases now have explicit redirect ownership and stronger enforcement coverage
-- Phase 2 owner proof pages are live and indexed, but owner CTR is still weaker than rankings suggest
-- Phase 3 stay money pages are live and self-canonical, but click yield is still not strong enough to justify fresh stay sprawl
-- `docs/status/next-batch.md` is the canonical operator-read status surface; it must carry exactly one reread status and one concrete next move after every reread
-- no measured owner, stay, or guide expansion branch has cleared the repo's branch-opening thresholds yet; use `docs/status/next-batch.md` for the latest reread status, evidence, thresholds, and next move
-- a confirmed winner or money-page regression is not an expansion branch; handle it through `docs/process/ranking-regression-rescue.md`
-- the weekly operator report in `seascape-analytics` is the read that should decide the next batch, not another site-wide audit
-- the repo now has a lean SEO OS: five roles only, one brief per serious batch, and dedicated style and portfolio docs instead of stale root markdown acting like live truth
-- the deployed owner metrics endpoint can now be turned into a bounded hub receipt with `node scripts/enforcement/emit-hub-verification-receipt.js owner-lead-metrics`; that receipt still proves measurement surface truth, not booked teardowns or validated owner demand by itself
-- the 2026-05-11 property source-truth drift has been reconciled: `src/_data/properties-fallback.json` remains the editable authority, `npm run property:truth:regen` derives the per-property templates and `src/llms.txt`, and enforcement now checks exact llms bullets plus VacationRental BR/BA/guest and amenity schema facts against fallback data
+## Outcomes To Evaluate
 
-## What This Repo Should Optimize For
-
-1. owner lead quality and conversion
-2. direct-book conversion on existing search traffic
-3. canonical and page-family integrity through enforcement
-4. proof and truth consistency across copy, schema, and supporting docs
-5. measured batching instead of content sprawl
+Evaluate owner lead quality, guest decision clarity, direct-booking completion,
+maintainable delivery, and Sawyer's intervention time when relevant to the task.
+Choose the priority from current evidence and the approved objective. State
+unmeasured business effects as hypotheses, and keep public claims within their
+source-backed proof.
