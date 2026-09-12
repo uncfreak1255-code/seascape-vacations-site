@@ -1,108 +1,36 @@
 ---
 name: seascape-design-critic
-description: Give a blunt taste verdict on Seascape page direction. Use when a route feels stale, bland, generic, SaaS-like, crowded, off-brand, or not ready to ship.
+description: Use when judging whether a Seascape visual direction meets the design bar.
 ---
 
 # Seascape Design Critic
 
-Use this only for Seascape visual direction.
+Give a blunt, evidence-backed taste verdict on a Seascape visual direction.
+Judge against `DESIGN.md`, especially editorial warmth, restraint, direct-booking
+math, and the Field Report standard. Use
+`docs/process/seascape-design-studio.md` for the design packet and next gate.
 
-This skill is the taste gate. Its job is to say plainly when a design is not
-good enough yet.
+## Design bar
 
-## Required Reading
+Address concept weakness before spacing details. A clean, functional page is
+not enough: it must be memorable and persuasive. Explain weaknesses in hero
+thesis, hierarchy, rhythm, imagery, proof treatment, CTA desirability, and mobile
+behavior with concrete examples. Watch for generic card grids, same-weight
+sections, boxed/badge clutter, decorative gold, and premium claims without
+matching art direction.
 
-1. `AGENTS.md`
-2. `CLAUDE.md`
-3. `DESIGN.md`
-4. `docs/process/design-review-workflow.md`
-5. `docs/process/seascape-design-studio.md`
-6. the task-relevant route, source file, screenshot, mockup, or brief
+## Verdict and completion
 
-## Critique Standard
+Return exactly one verdict: `Reject`, `Needs another pass`, `Approved with edge`,
+or `Approved`, with confidence and supporting visual evidence. If screenshots
+or mocks are missing, make the verdict provisional and name the missing proof.
 
-- Critique the work, not the person.
-- Be direct when the page is generic, stale, timid, crowded, or off-brand.
-- Do not hide a fundamental problem behind soft wording like `could be stronger`
-  or `nice start`.
-- Judge against `DESIGN.md` first, especially the Plum Guide restraint,
-  editorial warmth, direct-booking math visibility, and Field Report standard.
-- Prefer concrete language about hierarchy, rhythm, imagery, proof treatment,
-  mobile energy, and CTA desirability over vague taste talk.
+State what works, what fails, what to keep or replace, specific upgrade moves,
+and the next gate: new directions, narrow revision, or implementation brief.
+A weak concept requires 2–3 materially different directions. For strong work,
+name the distinctive qualities implementation must preserve.
 
-## Default Failure Modes
-
-- generic SaaS card-grid energy
-- weak hero thesis or no memorable first screen
-- same-weight sections with no pacing or escalation
-- analytical owner-proof treatment instead of editorial proof
-- safe default typography rhythm that flattens the page
-- badge spam, divider spam, or too many boxed modules
-- gold accents used as decoration instead of emphasis
-- mobile layouts that technically work but feel dead
-- premium claims with no premium art direction
-- CTA visible but not emotionally desirable
-
-## Mandatory Verdict
-
-Return exactly one of these:
-
-- `Reject`
-- `Needs another pass`
-- `Approved with edge`
-- `Approved`
-
-Use `Reject` or `Needs another pass` by default when the route is merely clean,
-functional, or acceptable. The bar is memorable and persuasive, not just
-unbroken.
-
-## Output Format
-
-```markdown
-# Seascape Design Critique
-
-## Verdict
-- Status:
-- Confidence:
-
-## What Is Working
-- ...
-
-## What Fails
-- ...
-
-## Why It Feels Weak
-- hierarchy:
-- art direction:
-- proof treatment:
-- CTA treatment:
-- mobile behavior:
-
-## Keep
-- ...
-
-## Replace
-- ...
-
-## Upgrade Moves
-1. ...
-2. ...
-3. ...
-
-## Next Gate
-- another direction pass
-- narrow revision
-- ready for implementation brief
-```
-
-## Rules
-
-- If the design is weak in concept, say so before talking about spacing nits.
-- If the route needs a stronger idea, demand 2-3 new directions instead of
-  patching the same bland frame.
-- If the page is already strong, say what gives it edge so the implementation
-  does not sand it down.
-- If the work introduces a new pattern, note whether `DESIGN.md` needs to
-  change before implementation.
-- If screenshots or mocks are missing, say the verdict is provisional and name
-  the missing proof.
+Identify any new visual rule that requires a `DESIGN.md` change. Critique the
+work directly without personal criticism or softening a fundamental flaw.
+This is a taste gate; rendered implementation proof still belongs to
+`design-review` and `docs/process/design-review-workflow.md`.

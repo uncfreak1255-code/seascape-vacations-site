@@ -4,17 +4,17 @@
     {
       "id": 1,
       "prompt": "Here's my SaaS landing page: https://example.com/product. We get about 5,000 visitors/month from Google Ads but only 1.2% convert to free trial signups. Can you help me figure out what's wrong?",
-      "expected_output": "Should check for product-marketing-context.md first. Should identify page type (landing page) and conversion goal (free trial signup). Should analyze across the CRO framework dimensions: value proposition clarity, headline effectiveness, CTA placement/copy/hierarchy, visual hierarchy, trust signals, objection handling, and friction points. Should provide recommendations organized as Quick Wins, High-Impact Changes, and Test Ideas. Should note the message match issue between Google Ads and landing page. Should provide 2-3 headline and CTA copy alternatives with rationale.",
+      "expected_output": "Should use available page, brief, and business context. Should identify page type (landing page) and conversion goal (free trial signup). Should analyze across the CRO framework dimensions: value proposition clarity, headline effectiveness, CTA placement/copy/hierarchy, visual hierarchy, trust signals, objection handling, and friction points. Should provide recommendations organized as prioritized fixes and test hypotheses. Should note the message match issue between Google Ads and landing page. Should provide 2-3 headline and CTA copy alternatives with rationale.",
       "assertions": [
-        "Checks for product-marketing-context.md",
+        "Uses available page, brief, and business context",
         "Identifies page type as landing page",
         "Identifies conversion goal as free trial signup",
         "Analyzes value proposition clarity",
         "Analyzes CTA placement and copy",
         "Notes message match between ads and landing page",
-        "Output has Quick Wins section",
-        "Output has High-Impact Changes section",
-        "Output has Test Ideas section",
+        "Prioritizes concrete fixes by evidence and expected impact",
+        "Distinguishes scope and effort of proposed fixes",
+        "Separates test hypotheses from proven results",
         "Provides 2-3 headline or CTA alternatives"
       ],
       "files": []
@@ -22,28 +22,28 @@
     {
       "id": 2,
       "prompt": "Our pricing page has three tiers but nobody picks the middle one. 60% choose the cheapest plan and 30% bounce entirely. What should we change?",
-      "expected_output": "Should apply the Pricing Page CRO framework. Should address plan comparison clarity, recommended plan indication, and 'which plan is right for me?' anxiety. Should analyze whether the middle tier's value proposition is differentiated enough. Should recommend trust signals and social proof near pricing. Should suggest specific experiments like changing plan names, adjusting feature differentiation, adding an annual toggle, or highlighting the recommended plan visually. Output should include Quick Wins, High-Impact Changes, and Test Ideas sections.",
+      "expected_output": "Should apply the Pricing Page CRO framework. Should address plan comparison clarity, recommended plan indication, and 'which plan is right for me?' anxiety. Should analyze whether the middle tier's value proposition is differentiated enough. Should recommend trust signals and social proof near pricing. Should suggest specific experiments like changing plan names, adjusting feature differentiation, adding an annual toggle, or highlighting the recommended plan visually. Output should include prioritized fixes and test hypotheses sections.",
       "assertions": [
         "Applies Pricing Page CRO framework",
         "Addresses recommended plan indication",
         "Addresses 'which plan is right for me' anxiety",
         "Analyzes middle tier differentiation",
         "Suggests specific experiments",
-        "Output has Quick Wins section",
-        "Output has High-Impact Changes section",
-        "Output has Test Ideas section"
+        "Prioritizes concrete fixes by evidence and expected impact",
+        "Distinguishes scope and effort of proposed fixes",
+        "Separates test hypotheses from proven results"
       ],
       "files": []
     },
     {
       "id": 3,
       "prompt": "this page isn't converting. can you take a look? it's our homepage for a B2B project management tool",
-      "expected_output": "Should trigger on the casual 'this page isn't converting' phrasing. Should identify this as a Homepage CRO analysis. Should ask clarifying questions about current conversion rate, traffic sources, and conversion goal. Should apply the full CRO Analysis Framework starting with value proposition clarity. Should address the homepage-specific guidance: serving multiple audiences, leading with broadest value prop, and providing clear paths for different visitor intents. Should provide structured output with Quick Wins, High-Impact Changes, Test Ideas, and Copy Alternatives.",
+      "expected_output": "Should trigger on the casual 'this page isn't converting' phrasing. Should identify this as a Homepage CRO analysis. Should identify the conversion goal and available traffic evidence, asking only for missing context that changes the recommendation. Should apply the relevant CRO lenses, prioritizing the observed problem. Should address the homepage-specific guidance: serving multiple audiences, leading with broadest value prop, and providing clear paths for different visitor intents. Should provide structured output with prioritized fixes, test hypotheses, and relevant copy alternatives.",
       "assertions": [
         "Triggers on casual phrasing",
         "Identifies as Homepage CRO",
-        "Asks about current conversion rate",
-        "Asks about traffic sources",
+        "States available conversion evidence and unknowns",
+        "Uses known traffic context or asks when the missing context matters",
         "Applies CRO Analysis Framework",
         "Addresses serving multiple audiences",
         "Addresses clear paths for different visitor intents",
@@ -68,7 +68,7 @@
     {
       "id": 5,
       "prompt": "We redesigned our landing page and conversions dropped from 4.2% to 2.8%. Here's the new page. What went wrong?",
-      "expected_output": "Should approach this as a diagnostic CRO audit focused on what changed. Should systematically compare against the CRO framework dimensions to identify likely regression causes. Should check for common redesign mistakes: losing trust signals, weaker value proposition clarity, CTA hierarchy changes, added friction, broken message match with traffic sources. Should provide specific fixes organized by likely impact. Should recommend reverting high-risk changes while testing others.",
+      "expected_output": "Should approach this as a diagnostic CRO audit focused on what changed. Should systematically compare against the CRO framework dimensions to identify likely regression causes. Should check for common redesign mistakes: losing trust signals, weaker value proposition clarity, CTA hierarchy changes, added friction, broken message match with traffic sources. Should provide specific fixes organized by likely impact. Should identify possible rollback candidates without performing an unauthorized rollback.",
       "assertions": [
         "Approaches as diagnostic audit",
         "Checks for lost trust signals",
@@ -77,7 +77,7 @@
         "Checks for added friction",
         "Checks for broken message match with traffic sources",
         "Provides fixes organized by impact",
-        "Recommends reverting high-risk changes"
+        "Identifies rollback candidates without executing an unauthorized rollback"
       ],
       "files": []
     },

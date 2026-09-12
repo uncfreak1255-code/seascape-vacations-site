@@ -16,7 +16,7 @@ test("design critic skill keeps the blunt four-state taste gate", () => {
   const skill = read(".agents/skills/seascape-design-critic/SKILL.md");
 
   assert.match(skill, /^name: seascape-design-critic$/m);
-  assert.match(skill, /generic SaaS card-grid energy/);
+  assert.match(skill, /generic card grids/);
   assert.match(skill, /Reject/);
   assert.match(skill, /Needs another pass/);
   assert.match(skill, /Approved with edge/);
@@ -27,11 +27,13 @@ test("design specialist skill requires critic first and routes local donor disco
   const skill = read(".agents/skills/seascape-design-specialist/SKILL.md");
 
   assert.match(skill, /^name: seascape-design-specialist$/m);
-  assert.match(skill, /Run `seascape-design-critic` first/);
+  assert.match(skill, /Run `seascape-design-critic`[\s\S]+before selecting a direction/);
   assert.match(skill, /design:donors/);
-  assert.match(skill, /frontend-design/);
-  assert.match(skill, /visualize/);
-  assert.match(skill, /Figma is optional/);
+  assert.match(skill, /Local Donor Discovery section/);
+  const studio = read("docs/process/seascape-design-studio.md");
+  assert.match(studio, /frontend-design/);
+  assert.match(studio, /visualize/);
+  assert.match(skill, /Figma remains optional/);
 });
 
 test("design lane parser keeps --prepare and builds a stable task slug", () => {

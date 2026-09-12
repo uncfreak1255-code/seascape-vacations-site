@@ -1,6 +1,6 @@
 ---
 name: next-batch-gate
-description: Decide whether a Seascape SEO, GEO, CRO, performance, owner, stay, or guide branch may open by reading the current status gates. Use for next-work, expansion, rewrite, or audit proposals.
+description: Use when deciding whether a proposed Seascape batch may open under the current measurement gates.
 ---
 
 # Next Batch Gate
@@ -44,32 +44,13 @@ Use this only for Seascape batch selection.
 - Favor one bounded branch over parallel SEO lanes.
 - Route analytics freshness questions back to `seascape-analytics`, not to a site-wide audit here.
 
-## Decision Flow
+## Decision
 
-1. Name the proposed branch and page family.
-2. Read the exact `Reread status` and `Concrete next move` in `docs/status/next-batch.md`.
-3. Check whether `docs/status/next-batch.md` already authorizes the proposed branch.
-4. Check `docs/status/open-risks.md` for blockers that must be resolved first.
-5. If the proposed measured branch depends on Search Console, GA4, or BigQuery freshness, state the exact missing proof.
-6. Read `docs/status/search-growth-map.md` for the matching query family,
-   current URL, proof lane, and attack lane before returning a passive hold.
-7. Check whether a bounded attack-lane action remains useful without the
-   missing proof: hygiene, internal links, schema, SERP/query research,
-   competitor research, or an execution-ready brief.
-8. Return one verdict matching the repo contract: `blocked by freshness`,
-   `fresh but below threshold`, or `open next batch`, plus a separate
-   attack-lane action when one survives.
-
-## Common Blocks
-
-- owner or stay work without a fresh joined read
-- site-wide audits when the docs still say `blocked by freshness` or
-  `fresh but below threshold`, unless the ask is explicitly bounded research or
-  hygiene
-- new guide or entity expansion before thresholds clear
-- branch ideas that ignore open truth or proof drift
-- passive `wait for recrawl` answers that skip available attack-lane work
-- passive `hold` answers that skip `docs/status/search-growth-map.md`
+Name the proposed branch and page family, check its authorization and open
+risks, and use the matching query family/current URL in the search-growth map.
+Return one verdict matching the repo contract, plus a separate attack-lane
+action when one survives the required checks. A gate review does not itself
+authorize implementing that action.
 
 ## Output
 

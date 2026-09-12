@@ -15,22 +15,78 @@ const {
 const REPO_ROOT = path.resolve(__dirname, "..", "..");
 
 const DESCRIPTION_TRIGGERS = {
-  accessibility: ["accessibility", "WCAG", "screen reader", "keyboard navigation"],
-  "content-quality-rubric": ["information gain", "AI-citation", "guide", "stay", "research"],
-  "design-review": ["DESIGN.md", "design audit", "visual QA", "desktop/mobile"],
-  "internal-link-targeting": ["internal links", "authority imbalance", "donor plan"],
-  "next-batch-gate": ["SEO", "GEO", "CRO", "owner", "stay", "guide"],
-  "owner-outbound-batch": ["owner opportunity", "real signal", "never sends"],
-  "owner-proof-integrity": ["owner proof", "fees", "revenue", "reviews"],
-  "owner-reply-intake": ["owner replies", "form submits", "demand evidence"],
-  "page-cro": ["CRO", "conversion-rate optimization", "bounce", "shared URL"],
-  "property-truth-regeneration": ["property", "llms.txt", "Hostaway", "amenities"],
-  "schema-markup": ["schema markup", "structured data", "JSON-LD", "rich results"],
-  "seascape-design-critic": ["blunt", "stale", "generic", "off-brand"],
-  "seascape-design-specialist": ["editorial", "premium", "implementation briefs"],
-  "serp-ctr-title-rewrite": ["SERP", "CTR", "page intent", "title"],
-  "site-architecture": ["site architecture", "IA", "visual sitemaps", "XML sitemaps"],
-  "web-design-guidelines": ["DESIGN.md", "accessibility", "desktop/mobile", "CSS"]
+  "accessibility": [
+    "accessibility",
+    "WCAG",
+    "keyboard navigation"
+  ],
+  "content-quality-rubric": [
+    "information gain",
+    "AI-citation",
+    "copy"
+  ],
+  "design-review": [
+    "rendered",
+    "DESIGN.md",
+    "desktop/mobile"
+  ],
+  "internal-link-targeting": [
+    "internal links",
+    "donor plan"
+  ],
+  "next-batch-gate": [
+    "proposed Seascape batch",
+    "measurement gates"
+  ],
+  "owner-outbound-batch": [
+    "owner opportunity",
+    "permissioned"
+  ],
+  "owner-proof-integrity": [
+    "owner proof",
+    "approved assets"
+  ],
+  "owner-reply-intake": [
+    "owner replies",
+    "form submits",
+    "demand evidence"
+  ],
+  "page-cro": [
+    "conversion",
+    "page or form"
+  ],
+  "property-truth-regeneration": [
+    "property facts",
+    "llms.txt",
+    "canonical data"
+  ],
+  "schema-markup": [
+    "schema markup",
+    "JSON-LD",
+    "rich results"
+  ],
+  "seascape-design-critic": [
+    "visual direction",
+    "design bar"
+  ],
+  "seascape-design-specialist": [
+    "visual concepts",
+    "implementation briefs"
+  ],
+  "serp-ctr-title-rewrite": [
+    "SERP",
+    "CTR",
+    "page intent"
+  ],
+  "site-architecture": [
+    "site architecture",
+    "visual sitemaps",
+    "excludes XML sitemaps"
+  ],
+  "web-design-guidelines": [
+    "explicitly requesting",
+    "DESIGN.md"
+  ]
 };
 
 function readDescription(skill) {

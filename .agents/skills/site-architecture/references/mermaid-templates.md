@@ -1,5 +1,10 @@
 # Mermaid Diagram Templates
 
+These are optional donor examples for the matching task. Counts, layouts, colors,
+and placements are heuristics, not requirements. Seascape source, `DESIGN.md`,
+accessibility, proof assets, and existing approval boundaries take precedence.
+
+
 Copy-paste-ready Mermaid diagrams for visual sitemaps. Customize node labels and connections for your site.
 
 ---

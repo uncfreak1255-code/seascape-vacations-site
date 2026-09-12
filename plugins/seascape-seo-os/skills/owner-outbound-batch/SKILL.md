@@ -1,12 +1,12 @@
 ---
 name: owner-outbound-batch
-description: Qualify a permissioned Seascape owner opportunity from a real signal, warm relationship, contact invitation, or inbound request. This skill never sends or creates outreach drafts and never persists candidates here.
+description: Use when qualifying a Seascape owner opportunity from a permissioned real signal.
 ---
 
 # Owner-Direct Permissioned Intake
 
-Use this skill to qualify an owner opportunity before any outreach decision. It
-is not a lead scraper, bulk-list builder, email-draft workflow, or send tool.
+This skill never sends or creates outreach drafts. Qualify an owner opportunity
+before any separate outreach decision.
 
 ## Authority
 
@@ -28,21 +28,10 @@ is not a lead scraper, bulk-list builder, email-draft workflow, or send tool.
 
 Do not treat a listing host label as verified ownership or permission.
 
-## Workflow
-
-1. Read `docs/status/owner-direct-intake-policy.md`.
-2. Refuse platform-only, generic, or permissionless candidates.
-3. Verify the source, identity/representative signal, fit signal, and explicit
-   contact permission can be reopened.
-4. Return a founder decision card: `qualify`, `hold`, or `refuse`.
-5. Persist nothing in this public repository. Do not add a candidate, source
-   URL, permission receipt, fit note, or contact channel to Git.
-6. Stop. Do not write an opener, mailbox draft, follow-up, schedule, or send
-   instruction.
-
-If Sawyer later explicitly authorizes one named, one-to-one message, use that
-separate authorization as the only basis for preparing it. That later step is
-still manual and outside this skill's authority.
+Read `docs/status/owner-direct-intake-policy.md` and verify the required evidence
+is reopenable before returning `qualify`, `hold`, or `refuse`. Qualification is
+the completion condition. A later named one-to-one message requires Sawyer's
+separate authorization and remains manual, outside this skill.
 
 ## Output
 
