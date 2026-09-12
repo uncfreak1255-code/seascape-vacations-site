@@ -1,199 +1,50 @@
 ---
 name: schema-markup
-description: Add or fix schema markup, structured data, or JSON-LD. Use for schema.org, rich results, FAQ, Product, Review, Breadcrumb, ratings, or knowledge-panel markup.
+description: Use when adding or reviewing page schema markup and JSON-LD, or diagnosing missing rich results.
 metadata:
   version: 1.1.0
 ---
 
 # Schema Markup
 
-You are an expert in structured data and schema markup. Your goal is to implement schema.org markup that helps search engines understand content and enables rich results in search.
+Implement accurate JSON-LD that represents the visible page and its verified
+entities. Valid markup, rich-result eligibility, and actual search display are
+separate outcomes.
 
-## Seascape Routing
+## Constraints
 
-When schema work is tied to AI discovery, GEO/AEO, crawlability, entity clarity,
-`llms.txt`, `/ai-discovery.json`, or `/ai/*` endpoints, first read the Search
-Operator role in `.claude/agents/search-operator.md` and
-`docs/process/seo-competitor-operating-loop.md` for proof and attack research.
-Then use this repo-local skill for the actual JSON-LD and template rules.
+- Use existing source data and template conventions. Do not invent reviews,
+  ratings, amenities, prices, dates, or content to fill schema fields.
+- Preserve entity identifiers and avoid conflicting duplicate markup. Use
+  `@graph` when it helps relate multiple entities.
+- Property facts belong to `src/_data/properties-fallback.json` and its
+  regeneration path. Owner claims belong to `src/_data/ownerProofAssets.json`.
+- Check current official Google requirements for the targeted rich result;
+  examples are not an eligibility contract. Do not recommend HowTo rich results
+  or FAQPage outside Google's eligibility policy.
+- Measurement and AI-citation monitoring remain in `seascape-analytics`.
+  External SEO packs remain donor-only under `docs/process/skill-policy.md`.
 
-Do not install or mirror external SEO/GEO skill packs into this repo. Treat
-`geo-optimizer-skill`, `gtm-engineer-skills`, `searchstack-aeo`, `claude-seo`,
-`akii-seo-ai-search-optimizer`, and `aeo.js` as donor references only unless a
-fresh `repo-dev-setup` inventory proves repeated site-specific need and the tool has
-a smoke-tested win.
+## Routing
 
-Keep measurement systems out of this repo. AI citation monitoring, GSC/GA4
-proof, and analytics pipelines belong in `seascape-analytics`; this repo owns
-site endpoints, templates, markup, and deploy readiness.
+For schema tied to AI discovery, GEO/AEO, crawlability, entity clarity,
+`llms.txt`, `/ai-discovery.json`, or `/ai/*`, use
+`.claude/agents/search-operator.md` and
+`docs/process/seo-competitor-operating-loop.md` for the proof and attack lane.
+This skill owns the resulting markup and templates.
 
-## Initial Assessment
+Use [schema examples](references/schema-examples.md) only for the schema type
+or integration pattern needed. Replace example values with verified facts;
+check required fields and eligibility against current official documentation.
 
-**Check for product marketing context first:**
-If `.agents/product-marketing-context.md` exists (or `.claude/product-marketing-context.md` in older setups), read it before asking questions. Use that context and only ask for information not already covered or specific to this task.
+## Completion
 
-Before implementing schema, understand:
+For implementation, finish the source change, inspect built JSON-LD against
+visible content, run `npm run verify:jsonld` on a fresh build and the required
+release checks, and repair in-scope failures. Check relevant official validators
+when assessing rich-result eligibility; explain warnings rather than promising
+search display from a clean validator result.
 
-1. **Page Type** - What kind of page? What's the primary content? What rich results are possible?
-
-2. **Current State** - Any existing schema? Errors in implementation? Which rich results already appearing?
-
-3. **Goals** - Which rich results are you targeting? What's the business value?
-
----
-
-## Core Principles
-
-### 1. Accuracy First
-- Schema must accurately represent page content
-- Don't markup content that doesn't exist
-- Keep updated when content changes
-
-### 2. Use JSON-LD
-- Google recommends JSON-LD format
-- Easier to implement and maintain
-- Place in `<head>` or end of `<body>`
-
-### 3. Follow Google's Guidelines
-- Only use markup Google supports
-- Avoid spam tactics
-- Review eligibility requirements
-
-### 4. Validate Everything
-- Test before deploying
-- Monitor Search Console
-- Fix errors promptly
-
----
-
-## Common Schema Types
-
-| Type | Use For | Required Properties |
-|------|---------|-------------------|
-| Organization | Company homepage/about | name, url |
-| WebSite | Homepage (search box) | name, url |
-| Article | Blog posts, news | headline, image, datePublished, author |
-| Product | Product pages | name, image, offers |
-| SoftwareApplication | SaaS/app pages | name, offers |
-| BreadcrumbList | Any page with breadcrumbs | itemListElement |
-| LocalBusiness | Local business pages | name, address |
-| Event | Events, webinars | name, startDate, location |
-
-**For complete JSON-LD examples**: See [references/schema-examples.md](references/schema-examples.md)
-
----
-
-## Quick Reference
-
-### Organization (Company Page)
-Required: name, url
-Recommended: logo, sameAs (social profiles), contactPoint
-
-### Article/BlogPosting
-Required: headline, image, datePublished, author
-Recommended: dateModified, publisher, description
-
-### Product
-Required: name, image, offers (price + availability)
-Recommended: sku, brand, aggregateRating, review
-
-### FAQPage
-Restricted: only recommend for government and healthcare authority sites.
-
-### BreadcrumbList
-Required: itemListElement (array with position, name, item)
-
-### Deprecated / Restricted
-- Do not recommend `HowTo` rich results. Google removed them.
-- Do not recommend `FAQPage` unless the site qualifies under Google's restricted policy.
-
----
-
-## Multiple Schema Types
-
-You can combine multiple schema types on one page using `@graph`:
-
-```json
-{
-  "@context": "https://schema.org",
-  "@graph": [
-    { "@type": "Organization", ... },
-    { "@type": "WebSite", ... },
-    { "@type": "BreadcrumbList", ... }
-  ]
-}
-```
-
----
-
-## Validation and Testing
-
-### Tools
-- **Google Rich Results Test**: https://search.google.com/test/rich-results
-- **Schema.org Validator**: https://validator.schema.org/
-- **Search Console**: Enhancements reports
-
-### Common Errors
-
-**Missing required properties** - Check Google's documentation for required fields
-
-**Invalid values** - Dates must be ISO 8601, URLs fully qualified, enumerations exact
-
-**Mismatch with page content** - Schema doesn't match visible content
-
----
-
-## Implementation
-
-### Static Sites
-- Add JSON-LD directly in HTML template
-- Use includes/partials for reusable schema
-
-### Dynamic Sites (React, Next.js)
-- Component that renders schema
-- Server-side rendered for SEO
-- Serialize data to JSON-LD
-
-### CMS / WordPress
-- Plugins (Yoast, Rank Math, Schema Pro)
-- Theme modifications
-- Custom fields to structured data
-
----
-
-## Output Format
-
-### Schema Implementation
-```json
-// Full JSON-LD code block
-{
-  "@context": "https://schema.org",
-  "@type": "...",
-  // Complete markup
-}
-```
-
-### Testing Checklist
-- [ ] Validates in Rich Results Test
-- [ ] No errors or warnings
-- [ ] Matches page content
-- [ ] All required properties included
-
----
-
-## Task-Specific Questions
-
-1. What type of page is this?
-2. What rich results are you hoping to achieve?
-3. What data is available to populate the schema?
-4. Is there existing schema on the page?
-5. What's your tech stack?
-
----
-
-## Related Skills
-
-- **seo-audit**: For overall SEO including schema review
-- **ai-seo**: For AI search optimization (schema helps AI understand content)
-- **programmatic-seo**: For templated schema at scale
-- **site-architecture**: For breadcrumb structure and navigation schema planning
+Return the changed schema/source, validation evidence, and any missing factual
+data or unverified search behavior. For review-only requests, return findings
+and a concrete fix without changing source.

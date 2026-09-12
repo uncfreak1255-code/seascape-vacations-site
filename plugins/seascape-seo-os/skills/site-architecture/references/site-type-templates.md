@@ -1,5 +1,10 @@
 # Site Type Templates
 
+These are optional donor examples for the matching task. Counts, layouts, colors,
+and placements are heuristics, not requirements. Seascape source, `DESIGN.md`,
+accessibility, proof assets, and existing approval boundaries take precedence.
+
+
 Full page hierarchy templates with ASCII trees, URL maps, and navigation recommendations for common site types.
 
 ---
