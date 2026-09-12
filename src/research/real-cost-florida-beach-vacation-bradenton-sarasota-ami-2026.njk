@@ -156,14 +156,8 @@ h1, h2, h3, h4 { font-family: 'Playfair Display', Georgia, serif; font-weight: 5
 img { max-width: 100%; height: auto; }
 a { text-decoration: none; color: inherit; }
 
-/* Nav */
-.guide-nav { position: fixed; top: 0; left: 0; right: 0; background: rgba(255,255,255,.95); backdrop-filter: blur(20px); z-index: 1000; padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(0,0,0,.05); }
-.guide-nav a { color: var(--brand); text-decoration: none; font-weight: 500; display: inline-flex; align-items: center; gap: 8px; }
-.guide-nav a:hover { color: var(--brand-dark); }
-.guide-nav .logo { font-family: 'Playfair Display', serif; font-size: 20px; color: var(--brand-dark); font-weight: 600; }
-
 /* Layout */
-.guide-container { max-width: 800px; margin: 0 auto; padding: 100px 24px 60px; }
+.guide-container { max-width: 800px; margin: 0 auto; padding: 64px 24px 60px; }
 .guide-tag { display: inline-block; padding: 6px 16px; border-radius: 20px; font-size: 13px; font-weight: 500; background: var(--brand); color: #fff; margin-bottom: 20px; }
 .guide-title { font-size: clamp(28px, 5vw, 44px); color: var(--brand-dark); margin-bottom: 16px; line-height: 1.2; }
 .guide-meta { color: var(--stone-light); margin-bottom: 32px; font-size: 15px; }
@@ -385,7 +379,7 @@ a { text-decoration: none; color: inherit; }
 .author-box .author-role { color: var(--stone-light); font-size: 14px; }
 
 @media (max-width: 768px) {
-    .guide-container { padding: 80px 16px 40px; }
+    .guide-container { padding: 32px 16px 40px; }
     .guide-cta { padding: 32px; }
     .bottom-line { padding: 28px; }
     .budget-grid { grid-template-columns: 1fr; }
@@ -397,13 +391,10 @@ a { text-decoration: none; color: inherit; }
     .asset-links { display: grid; }
 }
 </style>
+<link rel="stylesheet" href="/css/guest.css?v=waterline-v3">
 </head>
-<body>
-<nav class="guide-nav">
-    <a href="/">&#8592; Back to Seascape</a>
-    <span class="logo">Seascape Vacations</span>
-</nav>
-
+<body class="guest-shell">
+{% include "partials/guest-header.njk" %}
 <main class="guide-container">
 <div class="breadcrumb">
     <a href="/">Home</a><span>&#8250;</span>
@@ -536,7 +527,7 @@ a { text-decoration: none; color: inherit; }
 
 <h2>Where Your Money Actually Goes: The Daily Budget Breakdown</h2>
 
-<p>Abstract totals are hard to plan around. Here's what a typical day actually looks like at three budget levels for a family of 6 (2 adults, 4 kids or 4 adults and 2 kids &mdash; doesn't change the math much).</p>
+<p>Abstract totals are hard to plan around. This is what a typical day actually looks like at three budget levels for a family of 6 (2 adults, 4 kids or 4 adults and 2 kids &mdash; doesn't change the math much).</p>
 
 <table class="data-table">
     <caption>Total 5-night trip cost for a family of 6 by budget level</caption>
@@ -594,7 +585,7 @@ a { text-decoration: none; color: inherit; }
 
 <p><strong>De Soto National Memorial</strong> &mdash; free admission, ranger programs, living history demos. It's a 10-minute drive from downtown Bradenton and most tourists have no idea it exists. <strong>Robinson Preserve</strong> is 682 acres of mangrove trails, kayak launches, and observation towers &mdash; also free. The Ringling Museum grounds are free every Monday (the museum itself is $25).</p>
 
-<p>When you do want to spend money, here's what the paid activities actually cost:</p>
+<p>When you do want to spend money, this is what the paid activities actually cost:</p>
 
 <table class="data-table">
     <caption>Paid activity costs verified March 2026</caption>
@@ -620,7 +611,7 @@ a { text-decoration: none; color: inherit; }
 
 <h2>The Hidden Savings Nobody Talks About</h2>
 
-<p>Every "vacation cost" article lists prices. Here's what they leave out: the stuff that's free on the Gulf Coast that costs real money elsewhere.</p>
+<p>Every "vacation cost" article lists prices. What they leave out: the stuff that's free on the Gulf Coast that costs real money elsewhere.</p>
 
 <ul>
     <li><strong>Beach parking: $0.</strong> Miami Beach charges $25&ndash;$40/day. Clearwater has metered lots at $3/hour. Bradenton, Sarasota, and AMI? Free. That's $125&ndash;$200 in savings over 5 beach days.</li>
@@ -659,7 +650,7 @@ a { text-decoration: none; color: inherit; }
 
 <p>Fall is $935 cheaper than spring on lodging alone for a 5-night trip. That's real money.</p>
 
-<p>And here's the thing about fall on the Gulf Coast that people from up north don't realize: it's still summer weather. October averages 84&deg;F. The Gulf water temperature stays in the low 80s through mid-November. The rain is slightly more frequent than spring but comes in 20-minute afternoon bursts, not all-day washouts. You get the beach to yourself by 9am because there's nobody here.</p>
+<p>And the part about fall on the Gulf Coast that people from up north don't realize: it's still summer weather. October averages 84&deg;F. The Gulf water temperature stays in the low 80s through mid-November. The rain is slightly more frequent than spring but comes in 20-minute afternoon bursts, not all-day washouts. You get the beach to yourself by 9am because there's nobody here.</p>
 
 <div class="callout">
     <strong>The sweet spot:</strong> Late October through mid-November. Rates at their lowest &mdash; sub-$500/night average, 27% below peak season pricing. Temps in the low 80s, hurricane season winding down, and zero spring-break crowds. The Bradenton-area restaurants are half-empty &mdash; you'll get a table at Star Fish Company without the 90-minute wait.
@@ -778,10 +769,7 @@ a { text-decoration: none; color: inherit; }
 </div><!-- /.guide-content -->
 </main>
 
-<footer class="guide-footer">
-    <p><a href="/">Seascape Vacations</a> &bull; <a href="/research/">Research</a> &bull; <a href="/properties/">Properties</a> &bull; <a href="/property-management/">Property Owners</a></p>
-    <p style="margin-top: 12px;">&copy; 2026 Seascape Vacations. All rights reserved.</p>
-</footer>
+{% include "partials/guest-footer.njk" %}
 
 {% include "partials/analytics-ga4.njk" %}
 </body>

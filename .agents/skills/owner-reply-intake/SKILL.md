@@ -1,6 +1,6 @@
 ---
 name: owner-reply-intake
-description: Classify Seascape owner replies, form submits, email signals, and outbound outcomes; refuse weak demand evidence before the Hub register.
+description: Use when classifying owner replies or form submits as Seascape demand evidence before Hub registration.
 ---
 
 # Owner Reply Intake
@@ -76,7 +76,7 @@ Return:
 - proposed `## Register` row only when `REAL_REGISTER_READY`
 - next action or explicit stop
 
-## Stop Conditions
+## Refusal boundaries
 
 Stop and refuse when:
 

@@ -79,10 +79,8 @@ seoIndexable: false
 html{scroll-behavior:smooth}
 body{font-family:Poppins,Arial,sans-serif;background:var(--cream);color:var(--stone);line-height:1.7}
 a{color:inherit}
-.guide-nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;gap:18px;padding:16px 24px;background:rgba(250,247,238,.95);backdrop-filter:blur(18px);border-bottom:1px solid rgba(61,92,93,.12)}
-.guide-nav a{color:var(--brand-dark);text-decoration:none;font-weight:600;font-size:14px}
 .logo{font-family:"Playfair Display",Georgia,serif;color:var(--brand-dark);font-size:20px;font-weight:600}
-.page{padding-top:72px}
+.page{padding-top:48px}
 .hero{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(320px,.95fr);gap:32px;align-items:center;min-height:calc(100vh - 72px);padding:72px max(24px,calc((100vw - 1160px)/2)) 48px;background:linear-gradient(135deg,var(--brand-darker) 0%,var(--brand-dark) 58%,#203f40 100%);color:var(--white)}
 .eyebrow{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--brand-dark);margin-bottom:14px}
 .hero .eyebrow,.hero-panel .eyebrow,.cta-shell .eyebrow{color:var(--gold-light)}
@@ -158,7 +156,6 @@ a{color:inherit}
   .boundary-row{grid-template-columns:1fr}
 }
 @media(max-width:640px){
-  .guide-nav{padding:14px 16px}
   .logo{font-size:18px}
   .hero,.section,.cta-shell{padding-left:16px;padding-right:16px}
   .metric-pair{grid-template-columns:1fr}
@@ -166,13 +163,10 @@ a{color:inherit}
   .module-card,.bridge-card,.boundary-card,.cta-card{border-radius:16px;padding:20px}
 }
 </style>
+<link rel="stylesheet" href="/css/guest.css?v=waterline-v3">
 </head>
-<body>
-<nav class="guide-nav">
-  <a href="/research/">Back to research</a>
-  <span class="logo">Seascape Vacations</span>
-</nav>
-
+<body class="guest-shell">
+{% include "partials/guest-header.njk" %}
 <main class="page">
   <section class="hero">
     <div class="hero-copy">
@@ -242,7 +236,7 @@ a{color:inherit}
   </section>
 </main>
 
-<footer class="footer">© 2026 <a href="/">Seascape Vacations</a> · <a href="/property-management/">Property Management</a> · <a href="/research/owner-fee-revenue-leak-benchmark-2026/">Owner Fee Guide</a></footer>
+{% include "partials/guest-footer.njk" %}
 {% include "partials/analytics-ga4.njk" %}
 </body>
 </html>

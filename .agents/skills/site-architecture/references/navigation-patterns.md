@@ -1,5 +1,10 @@
 # Navigation Patterns
 
+These are optional donor examples for the matching task. Counts, layouts, colors,
+and placements are heuristics, not requirements. Seascape source, `DESIGN.md`,
+accessibility, proof assets, and existing approval boundaries take precedence.
+
+
 Detailed navigation patterns for different site types and contexts.
 
 ---

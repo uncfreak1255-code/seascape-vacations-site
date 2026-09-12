@@ -1,5 +1,12 @@
 # Brief: Preserve booking trips with the current design
 
+- persona: Guest returning to home selection after researching a stay
+- primary keyword: Seascape vacation rentals
+- secondary keywords: Bradenton vacation rentals, Sarasota vacation rentals
+- audience pattern: Existing guest traffic carrying dates and group size to booking
+- proof source: PR 552 trip-continuity tests and published release at 2ccbfce8 on September 8, 2026
+- required internal links: /properties/, /guides/
+
 ## Scope and proof
 
 This is the functionality-only release requested by Sawyer in PR #552. Preserve

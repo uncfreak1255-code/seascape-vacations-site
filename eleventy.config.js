@@ -244,6 +244,13 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.addWatchTarget("./_data/");
   
   // Simple title filter - just appends site name if not already there
+  eleventyConfig.addFilter("propertySchemaAmenities", require("./scripts/regenerate-property-surfaces").renderSchemaAmenityLabels);
+  eleventyConfig.addFilter("propertyBySlug", (properties, slug) => {
+    const property = properties.find((entry) => entry.slug === slug);
+    if (!property) throw new Error(`Unknown property slug: ${slug}`);
+    return property;
+  });
+
   eleventyConfig.addFilter("seoTitle", function(title) {
     if (!title) return "Seascape Vacations | Florida Gulf Coast Vacation Rentals";
     if (title.includes("Seascape")) return title;
@@ -269,6 +276,16 @@ module.exports = function(eleventyConfig) {
 
   eleventyConfig.addFilter("imgProxy", function(url, width = 800) {
     return toHostawayCdn(url, width, 82);
+  });
+
+  eleventyConfig.addFilter("monthYear", function(dateStr) {
+    const MONTH_NAMES = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    const match = /^(\d{4})-(\d{2})-\d{2}$/.exec(String(dateStr || ""));
+    if (!match) return dateStr || "";
+    const year = parseInt(match[1], 10);
+    const month = parseInt(match[2], 10);
+    if (month < 1 || month > 12) return dateStr;
+    return `${MONTH_NAMES[month - 1]} ${year}`;
   });
 
   eleventyConfig.addTransform("entitySchemaCoverage", function(content, outputPath) {

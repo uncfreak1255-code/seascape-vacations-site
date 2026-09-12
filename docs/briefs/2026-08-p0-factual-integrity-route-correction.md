@@ -25,7 +25,6 @@
   - `src/guides/bradenton-vs-sarasota-restaurants/index.html`
   - `src/guides/anna-maria-island-vs-longboat-key.html`
   - `src/index.njk`
-  - `src/stays/stays.njk`
   - `src/about-us/index.njk`
   - `src/llms.txt`
   - `src/ai/faq.json.njk`
@@ -75,3 +74,5 @@
 | Seascape proof available | Canonical property fallback data, route inventory, and build/test receipts dated 2026-08-31; no tax advice proof |
 | Tools/plugins used | Repository tests, content lint, release and redirect validators; official-source review |
 | Decision and reason | Ship the narrow correction after release gates pass; no new page is justified without Search Console query-to-page evidence |
+
+September 9 scope handoff: the existing stay collection shell in `src/stays/stays.njk` is now covered by the approved Waterline brief (`2026-09-04-guest-decision-journey.md`). The factual area and property corrections in this brief remain required.

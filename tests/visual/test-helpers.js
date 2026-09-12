@@ -147,9 +147,12 @@ async function gotoMarketingRoute(page, routeConfig) {
   if (routeConfig.slug === "properties-catalog") {
     await page.clock.setFixedTime(STABLE_PROPERTY_AVAILABILITY_NOW);
   }
-  if (routeConfig.slug === "property-management") {
-    await page.emulateMedia({ reducedMotion: "reduce" });
-  }
+  // The config-level `use.reducedMotion` does not reach matchMedia inside the
+  // page in this Playwright version (probed 2026-09-10: matchMedia reported
+  // false on both projects), so scripts that gate animation on the media query
+  // still animate. That silently made the homepage hero-contrast checks measure
+  // a caption at ~4-10% opacity. Emulate it explicitly on every route.
+  await page.emulateMedia({ reducedMotion: "reduce" });
   const separator = routeConfig.path.includes("?") ? "&" : "?";
   const response = await page.goto(`${routeConfig.path}${separator}visual-test=1`, { waitUntil: "networkidle" });
   // The static server serves the branded /404.html (with its own main h1) for
@@ -200,6 +203,10 @@ async function prepareFullPageScreenshot(page) {
       return image.complete && (!image.currentSrc || image.naturalWidth > 0);
     })
   );
+  const badPhotos = await page.locator("[data-property-photo]").evaluateAll(nodes => nodes
+    .filter(node => node.getClientRects().length && (node.tagName !== "IMG" || !node.naturalWidth || node.dataset.photoFailed || !new URL(node.currentSrc, location.href).pathname.startsWith("/images/homes/" + node.dataset.propertyPhoto + "/")))
+    .map(node => ({property: node.dataset.propertyPhoto, src: node.currentSrc || "unavailable"})));
+  if (badPhotos.length) throw new Error("Refusing visual proof: property photos missing or mismatched " + JSON.stringify(badPhotos));
   await waitForFonts(page);
   await waitForStableLayout(page);
 

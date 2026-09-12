@@ -72,8 +72,6 @@ eleventyComputed:
         rel="preload"
         as="image"
         href="{{ heroImage | imgProxy(1200) }}"
-        imagesrcset="{{ heroImage | imgProxy(800) }} 800w, {{ heroImage | imgProxy(1200) }} 1200w"
-        imagesizes="100vw"
         fetchpriority="high">
     {% endif %}
 
@@ -325,26 +323,12 @@ eleventyComputed:
             .sticky-mobile-cta .btn { flex: 1; padding: 13px 18px; font-size: 13px; }
         }
     </style>
+<link rel="stylesheet" href="/css/guest.css?v=waterline-v3">
 </head>
-<body>
-    <nav class="nav">
-        <div class="nav-inner">
-            <a href="/" class="nav-logo">
-                <img src="/logo-optimized.png" alt="Seascape Vacations" height="40">
-                <div>
-                    <div class="nav-logo-text">SEASCAPE</div>
-                    <div class="nav-logo-sub">Vacations</div>
-                </div>
-            </a>
-            <a
-                href="{{ seoPage.collectionCtaHref or '/properties/' }}"
-                class="btn"
-                data-track-event="catalog_book_direct_click"
-                data-placement="stay_nav"
-                data-track-label="{{ seoPage.slug }}"
-            >Browse homes</a>
-        </div>
-    </nav>
+<body class="guest-shell">
+    {% set navButtonHref = seoPage.collectionCtaHref or "/properties/" %}
+    {% set navButtonAttributes = 'data-track-event="catalog_book_direct_click" data-placement="stay_nav" data-track-label="' ~ seoPage.slug ~ '"' %}
+    {% include "partials/guest-header.njk" %}
 
     <main class="main-content">
         <nav class="breadcrumbs" aria-label="Breadcrumb">
@@ -699,22 +683,8 @@ eleventyComputed:
         >Compare full checkout total</a>
     </div>
 
-    <footer class="footer">
-        <div class="footer-inner">
-            <div class="footer-logo">Seascape Vacations</div>
-            <div class="footer-links">
-                <a href="/">Home</a>
-                <a href="/stays/">Stay Collections</a>
-                <a href="/stays/anna-maria-island-vacation-rentals/">Anna Maria Island Rentals</a>
-                <a href="/properties/?area=anna-maria-island">AMI Homes</a>
-                <a href="/guides/anna-maria-island-area-guide/">Anna Maria Island</a>
-                <a href="/guides/bradenton-area-guide/">Bradenton</a>
-                <a href="/guides/sarasota-area-guide/">Sarasota</a>
-                <a href="/property-management/">Property Owners</a>
-            </div>
-            <div class="footer-copyright">&copy; 2026 Seascape Vacations. All rights reserved.</div>
-        </div>
-    </footer>
+    <p class="container"><a href="/properties/">Compare all homes</a> · <a href="/guides/">Explore local guides</a></p>
+    {% include "partials/guest-footer.njk" %}
 
     {% include "partials/analytics-ga4.njk" %}
 </body>

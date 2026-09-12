@@ -1,6 +1,6 @@
 ---
 name: owner-proof-integrity
-description: Keep Seascape owner proof aligned across assets, page copy, and metadata. Use for owner money pages or claims about fees, revenue, reviews, homes served, local proof, or management performance.
+description: Use when checking or changing Seascape owner proof claims against approved assets.
 ---
 
 # Owner Proof Integrity
@@ -14,17 +14,12 @@ Use this when owner proof claims change.
 - Shared owner template: `src/property-management/property-management.njk`
 - Relevant checks: `scripts/enforcement/owner-acquisition.test.js` and `scripts/enforcement/metadata-integrity.test.js`
 
-## Workflow
+## Change and completion contract
 
-1. Read `docs/status/current-state.md`, `docs/status/open-risks.md`, and the active brief.
-2. Identify the claim class: benchmark metric, review or testimonial proof, service coverage, owner CTA support, or page metadata.
-3. Change the proof asset or source data first.
-4. Update reader-facing copy only after the source truth exists.
-5. Run:
-
-```bash
-npm run verify:release
-```
+Use the active brief and relevant current drift warnings to identify the claim
+and dependent surfaces. Establish approved source truth before updating copy.
+Run `npm run verify:release` and repair in-scope failures before reporting the
+implementation complete. For review-only requests, report discrepancies.
 
 ## Rules
 

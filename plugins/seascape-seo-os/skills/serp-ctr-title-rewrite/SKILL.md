@@ -1,6 +1,6 @@
 ---
 name: serp-ctr-title-rewrite
-description: Use live SERP competitor patterns to rewrite titles for CTR without changing page intent. Use when rankings have impressions but weak CTR or title framing is the bottleneck.
+description: Use when preparing title rewrites from live SERP patterns to improve CTR while preserving page intent.
 ---
 
 # SERP CTR Title Rewrite
@@ -14,13 +14,10 @@ Before editing production titles or metadata in this repo, check `docs/status/ne
 - If `Reread status` is `blocked by freshness`, do not ship title/meta edits.
 - In blocked state, return recommendation-only output and wait for gate clearance.
 
-## Workflow
-
-1. Build keyword-to-page pairs from the active brief and latest measurement inputs.
-2. Pull live SERP snippets for each keyword.
-3. Extract recurring competitor patterns.
-4. Draft three title options per page.
-5. Score and recommend one primary plus one fallback.
+Build keyword-to-page pairs from the active brief and latest measurement inputs.
+Use live SERP snippets to identify competitor patterns, then use
+[the scoring rubric](references/title-pattern-checklist.md) to recommend a
+primary title and fallback from three options per page.
 
 ## Pattern Rules
 
@@ -38,7 +35,3 @@ For each target page, return:
 3. Three rewrite options.
 4. Recommended option with rationale.
 5. Gate state (`blocked by freshness`, `fresh but below threshold`, or `open next batch`) and whether edits are allowed now.
-
-## Reference
-
-- Scoring rubric: `references/title-pattern-checklist.md`

@@ -1,21 +1,11 @@
 ---
 name: internal-link-targeting
-description: Analyze Seascape internal links and propose page-family targets plus a prioritized donor plan. Use for authority imbalance, internal-link bottlenecks, or an execution-ready link plan.
+description: Use when analyzing Seascape internal links for authority imbalance and a prioritized donor plan.
 ---
 
 # Internal Link Targeting
 
 Use this skill to produce a measurable internal-link plan from repo source.
-
-## Workflow
-
-1. Run the analyzer script.
-2. Review family imbalance first (owner vs guide is the default pressure lane).
-3. Set family-level inbound targets.
-4. Set page-level target gaps for underlinked pages.
-5. Produce candidate donor-page suggestions and execution order.
-6. Verify each target route's indexability, intent, and sentence fit in the
-   active brief before changing source links.
 
 ## Command
 
@@ -35,6 +25,9 @@ python3 .agents/skills/internal-link-targeting/scripts/analyze_internal_link_gra
 - Treat analyzer output as planning input, not permission to link. The active
   brief still owns business priority, conversion fit, and final target choice.
 
+Before source link changes, verify target indexability, intent, and sentence
+fit against the active brief.
+
 ## Output Contract
 
 Return:
@@ -44,6 +37,7 @@ Return:
 3. Candidate donor-page suggestions per priority target.
 4. A single execution sequence: highest impact first.
 
-## References
+## Reference
 
-- Family mapping defaults: `references/family-mapping.md`
+Use [family mapping](references/family-mapping.md) when interpreting or changing
+route-family classification.

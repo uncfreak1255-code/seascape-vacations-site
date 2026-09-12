@@ -1,6 +1,6 @@
 ---
 name: property-truth-regeneration
-description: Regenerate Seascape property templates and llms.txt from canonical fallback data. Use after Hostaway or fallback changes or drift in amenities, bedrooms, bathrooms, docks, pools, or guest counts.
+description: Use when property facts change or generated property templates and llms.txt drift from canonical data.
 ---
 
 # Property Truth Regeneration
@@ -16,21 +16,20 @@ Use this when property facts change.
 
 ## Workflow
 
-1. Read `docs/status/current-state.md` and `docs/status/open-risks.md` for current drift warnings.
-2. Edit the fallback data unless the task is explicitly about the regeneration script itself.
-3. Regenerate the derived surfaces:
+1. Edit the fallback data unless the task is explicitly about the regeneration script itself.
+2. Regenerate the derived surfaces:
 
 ```bash
 npm run property:truth:regen
 ```
 
-4. Verify that no drift remains:
+3. Verify that no drift remains:
 
 ```bash
 npm run property:truth:check
 ```
 
-5. If the branch touches public site output or adjacent truth surfaces, run:
+4. If the branch touches public site output or adjacent truth surfaces, run:
 
 ```bash
 npm run verify:release
@@ -42,6 +41,9 @@ npm run verify:release
 - Keep amenity facts grounded in structured data, not marketing prose.
 - If counts disagree because of split API fields such as full and half baths, inspect the regeneration path instead of patching templates by hand.
 - Treat a failing truth check as a source-of-truth problem first, not a copy problem.
+
+Complete authorized regeneration through a passing drift check; fix source or
+regenerator failures in scope before handoff.
 
 ## Output
 

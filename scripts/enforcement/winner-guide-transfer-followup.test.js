@@ -54,7 +54,7 @@ test('Siesta vs AMI families presents two tracked stay bases directly after the 
   assert.ok(block, 'missing Siesta vs AMI family transfer decision');
   assert.match(
     source,
-    /<table class="compare-table">[\s\S]*?<\/table>\s*<div\b[^>]*data-transfer-choice="siesta-vs-ami-family-stay-base"/,
+    /<div class="compare-table-wrap"[^>]*>[\s\S]*?<\/table><\/div>\s*<div\b[^>]*data-transfer-choice="siesta-vs-ami-family-stay-base"/,
   );
   assert.equal(countTrackedChoices(block), 2);
   assertTrackedChoice(block, {

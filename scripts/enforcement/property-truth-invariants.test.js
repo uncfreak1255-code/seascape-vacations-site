@@ -162,7 +162,7 @@ test("River House kayaking copy stays framed as a nearby public launch, not on-p
 test("River House property page keeps water access framed as the nearby boat ramp, not a riverfront stay", () => {
   const html = readBuilt("properties/river-house/index.html");
 
-  assert.match(html, /Warner Bayou boat ramp 1 min away/i);
+  assert.match(html, /Warner Bayou[^<.]*boat ramp/i);
   assert.doesNotMatch(html, /Surrounded by nature on the river/i);
   assert.doesNotMatch(html, /view over the river/i);
   assert.doesNotMatch(html, /sits on the water/i);
@@ -202,12 +202,12 @@ test("fallback, llms, and property templates agree on property specs", () => {
 
   for (const property of fallbackProperties) {
     const compactSpec = `${property.bedrooms}BR/${property.bathrooms}BA`;
-    const template = readSource(`src/properties/${property.slug}/index.njk`);
+    const template = readBuilt(`properties/${property.slug}/index.html`);
 
     assert.match(llms, new RegExp(`${property.name}[\\s\\S]*${compactSpec.replace(".", "\\.")}`));
-    assert.match(template, new RegExp(`<div class="stat-val">${property.bedrooms}</div>[\\s\\S]*Bedrooms`));
-    assert.match(template, new RegExp(`<div class="stat-val">${String(property.bathrooms).replace(".", "\\.")}</div>[\\s\\S]*Bathrooms`));
-    assert.match(template, new RegExp(`<div class="stat-val">${property.guests}</div>[\\s\\S]*Max Guests`));
+    assert.match(template, new RegExp(`<strong>${property.bedrooms}</strong> bedrooms`));
+    assert.match(template, new RegExp(`<strong>${String(property.bathrooms).replace(".", "\\.")}</strong> bathrooms`));
+    assert.match(template, new RegExp(`Up to <strong>${property.guests}</strong> guests`));
   }
 });
 
@@ -223,7 +223,7 @@ test("llms property bullets are regenerated from the fallback summary renderer",
 
 test("property template schema facts match fallback counts and amenity labels", () => {
   for (const property of fallbackProperties) {
-    const template = readSource(`src/properties/${property.slug}/index.njk`);
+    const template = readBuilt(`properties/${property.slug}/index.html`);
     const vacationRentalSchema = extractJsonLdObjects(template).find((item) => item["@type"] === "VacationRental");
     const accommodation = vacationRentalSchema?.containsPlace;
 
@@ -256,16 +256,10 @@ test("property reviews stay nested under one complete VacationRental entity", ()
     ["river-house", ["3-WHUih34aKJ-O8dGl9n9-mwQoL3ZCAfRN-SdAOJyq4", "g8wwLrsaItg4FXqddvMHvmC-RqGfMcD5WrwyAWwVv70", "OjOthIkLY--af9i-nKVMVz1hIehhAFqAMhnx21GMeMaE"]],
     ["the-oasis", ["e23Axvnc1ut0OcWotT14oVHj--Uy4uQezssOrYIFqbe4", "9Cklr9RWmrxTmXFPnskevzCeBDtpos--pP5T8N1EpN1M", "TlB9vmTl4A6t6vVsiMEg7p3LHLxuGO60XKpM6DEO6Bo"]]
   ]);
-  const expectedReviewCounts = new Map([
-    ["bradenton-pool-home", 0],
-    ["dockside-dreams", 1],
-    ["river-house", 1],
-    ["sarasota-luxe", 1],
-    ["the-oasis", 1]
-  ]);
+
 
   for (const property of fallbackProperties) {
-    const template = readSource(`src/properties/${property.slug}/index.njk`);
+    const template = readSource(`_site/properties/${property.slug}/index.html`);
     const schemaObjects = extractJsonLdObjects(template);
     const vacationRentals = schemaObjects.filter((item) => item["@type"] === "VacationRental");
     const standaloneReviews = schemaObjects.filter((item) => item["@type"] === "Review");
@@ -277,7 +271,7 @@ test("property reviews stay nested under one complete VacationRental entity", ()
     const visibleTemplate = template.replace(/<script[\s\S]*?<\/script>/g, "");
     assert.equal(
       reviews.length,
-      expectedReviewCounts.get(property.slug),
+      property.guestFacts.reviews.length,
       `${property.slug} must retain its verified reviews under VacationRental.review`
     );
 

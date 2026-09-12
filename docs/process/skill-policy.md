@@ -90,6 +90,21 @@ business context.
 
 ## Agent-surface-audit receipts
 
+### 2026-09-12 — Astra prompt migration
+
+Sawyer requested an audit and migration of existing skills using OpenAI's
+[Rethinking skills and prompts for GPT-6 Astra](https://developers.openai.com/blog/rethinking-skills-and-prompts-for-gpt-6-astra).
+All sixteen active roots and their supporting files were reviewed, together
+with the forty-six archived roots and their supporting files. Active descriptions
+now identify specific tasks; conditional component examples, manual checks,
+page patterns, and interaction proof load through references. Existing design
+orchestration, model routing, truth gates, owner-contact restrictions, explicit
+invocation, and release authority remain in force. The retired archive remains
+unchanged and inactive. Canonical and plugin trees match; Claude uses existing
+symlinks. See `docs/research/2026-09-12-astra-skill-migration.md` for the audit,
+per-skill changes, counts, and verification limits.
+
+
 ### 2026-09-05 — retired global reference repair
 
 A current inventory found required global copy and SEO helpers absent from the

@@ -172,7 +172,7 @@ For any PR that changes public copy in `src/`:
   outside tools are donor surfaces only unless Sawyer explicitly says
   otherwise.
 - For any meaningful visual change, including layout, spacing, typography, color, imagery, iconography, CTA treatment, or motion, run the repo flow in `docs/process/design-review-workflow.md`.
-- The required rendered QA loop for visual changes is the global `design-review` skill. Use it after implementation and before human review so the review surface is screenshots plus live route checks, not code alone.
+- The required rendered QA loop for visual changes is the repo-local `design-review` skill (`.agents/skills/design-review`). Use it after implementation and before human review so the review surface is screenshots plus live route checks, not code alone.
 - Start a fresh repo-local design worktree with `npm run design:lane -- "<task>"`
   or `./scripts/design/codex-seascape-design "<task>"` when you want the
   specialist/critic lane, guide-family route, and local donor scan in one
@@ -183,6 +183,7 @@ For any PR that changes public copy in `src/`:
 
 Before UI work, read `DESIGN.md`; treat it as the visual source of truth.
 Do not invent colors, fonts, spacing, border radius, shadows, or component styles unless Sawyer explicitly asks for a design-system change.
+Treat any edit to a shared header, footer or nav partial as an SEO change as well as a visual one: it redistributes internal links across every built page at once. Run `node --test scripts/enforcement/internal-link-floor.test.js` against a fresh build, and do not read a green visual gate as proof a shell edit was safe — its per-route pixel tolerance absorbed an entire new footer column on 2026-09-10 without a single diff.
 If `seascape-design-specialist`, Claude Design, Stitch, designmd.directory, or another design tool produces a new direction, propose it as a `DESIGN.md` change first when it changes the visual law.
 
 ## Writeback Boundary

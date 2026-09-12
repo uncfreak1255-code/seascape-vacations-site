@@ -124,8 +124,6 @@ permalink: "/guides/anna-maria-island-vs-siesta-key/"
 }
 </script>{% include "partials/local-font-head.njk" %}<link rel="preload" href="/assets/fonts/homepage/poppins-400-latin.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/assets/fonts/homepage/poppins-600-latin.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/assets/fonts/homepage/playfair-display-latin.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" as="image" href="/images/ami-hero.webp" fetchpriority="high"><link rel="stylesheet" href="/css/base.css"><link rel="stylesheet" href="/css/guide-field-journal.css">
 <style>
-  {% include "partials/site-header-styles.njk" %}
-
   /* ---- AMI vs Siesta: page shell (bare <main> kept for the recovery landmark gate) ---- */
   main { padding-top: 78px; overflow: clip; }
 
@@ -587,13 +585,14 @@ permalink: "/guides/anna-maria-island-vs-siesta-key/"
         ]
     }
     </script>
-</head><body>
+<link rel="stylesheet" href="/css/guest.css?v=waterline-v3">
+</head><body class="guest-shell">
 <a class="journal-skip-link" href="#guide-content">Skip to guide</a>
 {% set navActive = "guides" %}
 {% set navButtonHref = "/stays/anna-maria-island-vacation-rentals/" %}
 {% set navButtonLabel = "Browse AMI Stays" %}
 {% set navButtonAttributes = 'data-track-event="guide_book_direct_click" data-placement="ami_vs_siesta_nav"' %}
-{% include "partials/site-header.njk" %}
+{% include "partials/guest-header.njk" %}
 
 <main>
 <header class="amivs-hero">
@@ -780,28 +779,8 @@ permalink: "/guides/anna-maria-island-vs-siesta-key/"
 <p>Planning a Siesta Key trip but want more space? Check our <a href="/stays/siesta-key-area-vacation-rentals/">Siesta Key area vacation rentals</a> — private pools, full kitchens, and way more room than a hotel.</p>
 </aside>
 
-<footer class="footer">
-  <div class="footer-inner">
-    <div class="footer-logo">Seascape Vacations</div>
-    <div class="footer-links">
-      <a href="/">Home</a>
-      <a href="/guides/anna-maria-island-area-guide/">Anna Maria Island</a>
-      <a href="/guides/bradenton-area-guide/">Bradenton</a>
-      <a href="/guides/sarasota-area-guide/">Sarasota</a>
-      <a href="/property-management/">Property Owners</a>
-    </div>
-    <div class="footer-copyright">
-      © 2026 Seascape Vacations. All rights reserved. | Book Direct & Save
-      <div class="footer-meta-links">
-        <a href="/privacy/">Privacy</a>
-        <a href="/terms/">Terms</a>
-        <a href="/cookies/">Cookies</a>
-      </div>
-    </div>
-  </div>
-</footer>
+{% include "partials/guest-footer.njk" %}
 
-{% include "partials/site-header-script.njk" %}
 {% include "partials/analytics-ga4.njk" %}
 </body></html>
 <!-- deploy-force: 2026-03-03 -->

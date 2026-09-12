@@ -1,6 +1,7 @@
 # Schema Markup Examples
 
-Complete JSON-LD examples for common schema types.
+Illustrative JSON-LD shapes for the selected type. Placeholder facts are not
+Seascape evidence; verify current official eligibility and fields before use.
 
 ## Contents
 - Organization
@@ -44,7 +45,8 @@ For company/brand homepage or about page.
 
 ## WebSite (with SearchAction)
 
-For homepage, enables sitelinks search box.
+For a site with a real search action. This example does not establish eligibility
+for a Google search feature.
 
 ```json
 {
@@ -162,7 +164,8 @@ For SaaS product pages and app landing pages.
 
 ## FAQPage
 
-For pages with frequently asked questions.
+For eligible pages only under the root skill and current Google policy.
+An FAQ on the page alone does not establish rich-result eligibility.
 
 ```json
 {
@@ -193,7 +196,7 @@ For pages with frequently asked questions.
 
 ## HowTo
 
-For instructional content and tutorials.
+Vocabulary example only; do not recommend HowTo rich results.
 
 ```json
 {
