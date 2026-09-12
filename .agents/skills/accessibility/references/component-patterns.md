@@ -21,7 +21,7 @@ production dialogs also need initial focus, an accessible name, and focus return
 
 <!-- ✅ Complex image with longer description -->
 <figure>
-  <img src="infographic.png" alt="2024 market trends infographic" 
+  <img src="infographic.png" alt="2024 market trends infographic"
        aria-describedby="infographic-desc">
   <figcaption id="infographic-desc">
     <!-- Detailed description -->
@@ -156,7 +156,7 @@ function openModal(modal) {
   );
   const firstElement = focusableElements[0];
   const lastElement = focusableElements[focusableElements.length - 1];
-  
+
   // Trap focus within modal
   modal.addEventListener('keydown', (e) => {
     if (e.key === 'Tab') {
@@ -172,7 +172,7 @@ function openModal(modal) {
       closeModal();
     }
   });
-  
+
   firstElement.focus();
 }
 ```
@@ -298,7 +298,7 @@ function showSessionWarning() {
 
 <!-- ✅ Explicit label -->
 <label for="email">Email address</label>
-<input type="email" id="email" name="email" 
+<input type="email" id="email" name="email"
        autocomplete="email" required>
 
 <!-- ✅ Implicit label -->
@@ -309,7 +309,7 @@ function showSessionWarning() {
 
 <!-- ✅ With instructions -->
 <label for="password">Password</label>
-<input type="password" id="password" 
+<input type="password" id="password"
        aria-describedby="password-requirements">
 <p id="password-requirements">
   Must be at least 8 characters with one number.
@@ -323,7 +323,7 @@ function showSessionWarning() {
 <form novalidate>
   <div class="field" aria-live="polite">
     <label for="email">Email</label>
-    <input type="email" id="email" 
+    <input type="email" id="email"
            aria-invalid="true"
            aria-describedby="email-error">
     <p id="email-error" class="error" role="alert">
@@ -340,7 +340,7 @@ form.addEventListener('submit', (e) => {
   if (firstError) {
     e.preventDefault();
     firstError.focus();
-    
+
     // Announce error summary
     const errorSummary = document.getElementById('error-summary');
     errorSummary.textContent = `${errors.length} errors found. Please fix them and try again.`;
@@ -392,9 +392,9 @@ form.addEventListener('submit', (e) => {
 ```html
 <!-- Custom tabs component -->
 <div role="tablist" aria-label="Product information">
-  <button role="tab" id="tab-1" aria-selected="true" 
+  <button role="tab" id="tab-1" aria-selected="true"
           aria-controls="panel-1">Description</button>
-  <button role="tab" id="tab-2" aria-selected="false" 
+  <button role="tab" id="tab-2" aria-selected="false"
           aria-controls="panel-2" tabindex="-1">Reviews</button>
 </div>
 <div role="tabpanel" id="panel-1" aria-labelledby="tab-1">
