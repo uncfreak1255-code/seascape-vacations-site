@@ -57,7 +57,7 @@ test("flagged aria-label hosts use allowed semantics instead of role-less generi
     /<div class="property-trip-context" role="group" aria-label="Your trip">/
   );
 
-  assert.doesNotMatch(ownerLanding, /class="owner-field-phrase"[^>]*aria-label=/);
+  assert.match(ownerLanding, /class="owner-field-phrase"[^>]*role="group"[^>]*aria-label="island rental"/);
   assert.match(
     ownerLanding,
     /class="owner-field-ticker-dots" role="group" aria-label="Fee guide fact selector"/

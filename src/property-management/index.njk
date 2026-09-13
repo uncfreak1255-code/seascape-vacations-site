@@ -2454,7 +2454,7 @@ headExtra: |
     <div class="owner-field-shell owner-field-hero-grid">
       <div>
         <div class="owner-field-kicker">The Property Management Brief</div>
-        <h1 id="owner-field-title">Before you renew,<br>what does your<br><span class="owner-field-phrase" data-owner-phrases><em class="sv-pm-h1-phrase-item is-active">island rental</em><em class="sv-pm-h1-phrase-item" aria-hidden="true">pool home</em><em class="sv-pm-h1-phrase-item" aria-hidden="true">beach condo</em><em class="sv-pm-h1-phrase-item" aria-hidden="true">Gulf Coast home</em></span><br>actually keep?</h1>
+        <h1 id="owner-field-title">Before you renew,<br>what does your<br><span class="owner-field-phrase" data-owner-phrases role="group" aria-label="island rental"><em class="sv-pm-h1-phrase-item is-active">island rental</em><em class="sv-pm-h1-phrase-item">pool home</em><em class="sv-pm-h1-phrase-item">beach condo</em><em class="sv-pm-h1-phrase-item">Gulf Coast home</em></span><br>actually keep?</h1>
         <p class="owner-field-hero-copy">If the payout, fee story, or owner updates on your Sarasota condo, Bradenton pool home, or island listing do not add up, send the listing link or address plus a sentence or two about what feels off. We will compare the charges on your statement with the services in your agreement and send back a one-page revenue review that shows what deserves a second look.</p>
         <div class="owner-field-actions">
           <a class="btn btn-gold owner-field-btn" href="#owner-cta" data-track-event="owner_primary_cta_click" data-page-slug="property-management">Request Your Revenue Review</a>
@@ -2929,11 +2929,9 @@ headExtra: |
       function showPhrase(nextIndex) {
         phraseIndex = nextIndex % phrases.length;
         phrases.forEach(function (phrase, index) {
-          var active = index === phraseIndex;
-          phrase.classList.toggle("is-active", active);
-          if (active) phrase.removeAttribute("aria-hidden");
-          else phrase.setAttribute("aria-hidden", "true");
+          phrase.classList.toggle("is-active", index === phraseIndex);
         });
+        phraseRoot.setAttribute("aria-label", phrases[phraseIndex].textContent || "");
       }
       if (!reduceMotion && phrases.length > 1) {
         window.setInterval(function () {

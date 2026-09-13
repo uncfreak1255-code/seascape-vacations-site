@@ -70,6 +70,17 @@ test("search decision gate skips branches with no search-driven source edits", (
   assert.equal(result.status, "skipped");
 });
 
+test("search-facing copy diff ignores landmark, aria, and CSS-only page edits", () => {
+  const { extractSearchFacingText, hasSearchFacingCopyDiff } = require("./search-brief-gate");
+  const base = `<main class="owner-field"><h1>Before you renew</h1></main><style>.dot{color:#C9A962}</style>`;
+  const structural = `<div class="owner-field" role="group" aria-label="x"><h1>Before you renew</h1></div><style>.dot{color:#173D42}</style>`;
+
+  assert.equal(extractSearchFacingText(base), extractSearchFacingText(structural));
+  assert.equal(hasSearchFacingCopyDiff(base, structural), false);
+  assert.equal(hasSearchFacingCopyDiff(base, `<div><h1>Before you renew this year</h1></div>`), true);
+  assert.equal(hasSearchFacingCopyDiff(null, structural), true);
+});
+
 test("search decision gate requires at least one changed brief when search surfaces move", () => {
   assert.throws(
     () => assertSearchDecisionBriefContract({

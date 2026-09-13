@@ -76,7 +76,8 @@ test("named catalog, gallery, and owner regions are not role-less aria-label hos
   await expect(page.locator(".owner-field-steps")).toHaveAccessibleName("Form progress");
   await expect(page.locator(".owner-field-form-proof")).toHaveRole("group");
   await expect(page.locator(".owner-field-form-proof")).toHaveAccessibleName("Owner review proof points");
-  await expect(page.locator(".owner-field-phrase")).not.toHaveAttribute("aria-label");
+  await expect(page.locator(".owner-field-phrase")).toHaveRole("group");
+  await expect(page.locator(".owner-field-phrase")).toHaveAccessibleName("pool home");
 
   const scan = await new AxeBuilder({ page })
     .withRules(["aria-allowed-attr", "aria-prohibited-attr", "aria-roles"])

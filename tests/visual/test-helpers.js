@@ -120,11 +120,11 @@ async function stabilizePropertyManagementVisualState(page, routeConfig) {
       const phrases = Array.from(phraseRoot.querySelectorAll(".sv-pm-h1-phrase-item"));
       const activeIndex = Math.min(1, Math.max(phrases.length - 1, 0));
       phrases.forEach((phrase, index) => {
-        const active = index === activeIndex;
-        phrase.classList.toggle("is-active", active);
-        if (active) phrase.removeAttribute("aria-hidden");
-        else phrase.setAttribute("aria-hidden", "true");
+        phrase.classList.toggle("is-active", index === activeIndex);
       });
+      if (phrases[activeIndex]) {
+        phraseRoot.setAttribute("aria-label", phrases[activeIndex].textContent || "");
+      }
     }
 
     const ticker = document.querySelector("[data-owner-ticker]");

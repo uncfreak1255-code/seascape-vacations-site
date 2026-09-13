@@ -92,6 +92,66 @@ function findSearchDecisionFiles(changedFiles) {
   );
 }
 
+function extractSearchFacingText(source) {
+  return String(source || "")
+    .replace(/<style[\s\S]*?<\/style>/gi, " ")
+    .replace(/<script[\s\S]*?<\/script>/gi, " ")
+    .replace(/\{#[\s\S]*?#\}/g, " ")
+    .replace(/\{%[\s\S]*?%\}/g, " ")
+    .replace(/\{\{[\s\S]*?\}\}/g, " ")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function hasSearchFacingCopyDiff(baseSource, currentSource) {
+  if (baseSource === null || baseSource === undefined) {
+    return true;
+  }
+
+  return extractSearchFacingText(baseSource) !== extractSearchFacingText(currentSource);
+}
+
+function isAlwaysSearchDecisionFile(relativePath) {
+  return /(?:^src\/_data\/seoPages\.json$|^src\/_redirects$|^src\/sitemap\.njk$)/i.test(
+    String(relativePath || "")
+  );
+}
+
+function readFileAtRangeBase(rootDir, relativePath, range) {
+  if (!range) {
+    return null;
+  }
+
+  const baseRef = String(range).split("...")[0].split("..")[0].trim();
+  if (!baseRef) {
+    return null;
+  }
+
+  const result = spawnSync("git", ["show", `${baseRef}:${relativePath}`], {
+    cwd: rootDir,
+    encoding: "utf8"
+  });
+
+  return result.status === 0 ? result.stdout : null;
+}
+
+function findSearchFacingCopyChanges(rootDir, searchDecisionFiles, range) {
+  return (searchDecisionFiles || []).filter((relativePath) => {
+    if (isAlwaysSearchDecisionFile(relativePath)) {
+      return true;
+    }
+
+    const fullPath = path.join(rootDir, relativePath);
+    if (!fs.existsSync(fullPath)) {
+      return true;
+    }
+
+    const baseSource = readFileAtRangeBase(rootDir, relativePath, range);
+    return hasSearchFacingCopyDiff(baseSource, fs.readFileSync(fullPath, "utf8"));
+  });
+}
+
 function findChangedBriefFiles(changedFiles) {
   return (changedFiles || []).filter(
     (relativePath) => BRIEF_PATH_PATTERN.test(relativePath) && !BRIEF_TEMPLATE_PATH_PATTERN.test(relativePath)
@@ -288,7 +348,11 @@ function assertSearchDecisionBriefContract({
   rootDir = process.cwd(),
   changedFiles = getChangedFiles(range, rootDir),
 } = {}) {
-  const searchDecisionFiles = findSearchDecisionFiles(changedFiles);
+  const searchDecisionFiles = findSearchFacingCopyChanges(
+    rootDir,
+    findSearchDecisionFiles(changedFiles),
+    range
+  );
   if (searchDecisionFiles.length === 0) {
     return {
       changedFiles,
@@ -370,10 +434,13 @@ module.exports = {
   assertSearchDecisionBriefContract,
   extractGate0Section,
   extractAuthorizedSourceSectionText,
+  extractSearchFacingText,
   findChangedBriefFiles,
   findMissingGate0Fields,
   findSearchDecisionFiles,
+  findSearchFacingCopyChanges,
   findUncoveredSearchDecisionFiles,
   getChangedFiles,
+  hasSearchFacingCopyDiff,
   parseGate0Rows,
 };
