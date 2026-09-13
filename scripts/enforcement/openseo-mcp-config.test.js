@@ -11,6 +11,8 @@ const expectedTools = [
   "list_projects",
   "list_saved_keywords",
   "get_rank_tracker",
+  "get_search_console_performance",
+  "inspect_urls",
 ];
 
 const blockedTools = [
@@ -26,8 +28,6 @@ const blockedTools = [
   "get_google_business_questions",
   "get_keyword_metrics",
   "save_keywords",
-  "get_search_console_performance",
-  "inspect_urls",
 ];
 
 test("OpenSEO MCP config is optional, local, approval-gated, and bounded", () => {
