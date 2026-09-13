@@ -1,8 +1,10 @@
 # OpenSEO Bounded Integration
 
-OpenSEO is a local evidence reader for saved Seascape SEO state. It is not the
-site SEO operating system, the source of current analytics truth, or permission
-to spend DataForSEO credits.
+OpenSEO is the default first read for rank-opportunity triage on queries already
+in the Seascape tracker. It gives an agent one current, project-scoped view of
+saved rankings and landing URLs before the agent opens broader research
+surfaces. It is not the site SEO operating system, the source of current
+analytics truth, or permission to spend DataForSEO credits.
 
 ## Project Configuration
 
@@ -36,7 +38,9 @@ site-repo integration; use a `seascape-analytics` receipt instead.
 ## Ownership
 
 - `seascape-vacations-site` may use saved rank history as supporting evidence
-  for a bounded regression-rescue decision and may consume an analytics receipt.
+  to identify a candidate winner, money-page regression, or landing-page
+  mismatch. The candidate still needs the evidence required by
+  `docs/process/ranking-regression-rescue.md` before a page change.
 - `seascape-analytics` owns current Search Console, AI citation and mention
   measurement, prompt packs, recurring pulls, joined attribution, and receipts.
 - The direct DataForSEO MCP remains this repo's Gate 0 path for new live SERP,
@@ -78,11 +82,18 @@ workflow and active repo skills remain the agent surface of record.
    `Seascape Vacations` for `seascape-vacations.com`.
 2. Use `list_projects` before a project-specific read. Stop on a wrong or
    missing project.
-3. Use `get_rank_tracker` only to read the existing tracker configuration,
-   latest results, or history. Do not trigger a fresh check.
-4. For AI-search exports, keep brand mentions separate from cited-source rows.
+3. For a rank-opportunity or regression question involving tracked queries,
+   read `get_rank_tracker` before consulting a stale status handoff or opening
+   a paid research surface. Use the existing tracker configuration, latest
+   results, and history only; do not trigger a fresh check.
+4. Treat the tracker result as triage, not the final decision. Record the
+   observation time, query, current and prior position, and landing URL. Then
+   use live SERP evidence and the owning analytics receipt required for the
+   proposed action. If the tracker is stale or lacks the target query, route to
+   the direct DataForSEO Gate 0 path instead.
+5. For AI-search exports, keep brand mentions separate from cited-source rows.
    Route current measurement and durable receipts to `seascape-analytics`.
-5. Stop on an expired Search Console connection, unavailable current data,
+6. Stop on an expired Search Console connection, unavailable current data,
    unexpected credit estimate, or any write request.
 
 ## Verification
