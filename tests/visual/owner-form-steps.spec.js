@@ -19,6 +19,9 @@ async function readColors(locator) {
 }
 
 test("owner form step controls use high-contrast ink and keep gold decorative", async ({ page }) => {
+  // Pixel baselines for this route live in the macOS visual gate. This spec
+  // asserts computed contrast and reduced-motion so Linux CI cannot land
+  // Mac-incompatible goldens.
   await gotoMarketingRoute(page, ownerHub);
 
   const steps = page.locator(".owner-field-steps");
@@ -30,8 +33,6 @@ test("owner form step controls use high-contrast ink and keep gold decorative", 
   assert.equal(activeColors.color, WHITE);
   assert.equal(activeColors.background, INK);
   assert.equal(activeColors.transform, "none");
-
-  await expect(steps).toHaveScreenshot("owner-form-steps-active.png");
 
   await page.locator("[data-form-next]").first().click();
   await expect(page.locator(".owner-field-step-dot.is-complete")).toHaveCount(1);
@@ -49,6 +50,4 @@ test("owner form step controls use high-contrast ink and keep gold decorative", 
   const lineColor = await completeLine.evaluate((node) => getComputedStyle(node).backgroundColor);
   assert.notEqual(lineColor, INK);
   assert.notEqual(lineColor, WHITE);
-
-  await expect(steps).toHaveScreenshot("owner-form-steps-complete.png");
 });
