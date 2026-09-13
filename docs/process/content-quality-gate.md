@@ -119,6 +119,17 @@ elsewhere in the paragraph. See `## SEO, GEO, And AEO Checks` below.
   `booking path`, `named option`, `right stay`, and `research mode` describe how
   the team routes a page. Translate them into the actual vacation, property, or
   next action a guest can picture.
+- Do not ship leaked agent or developer notes as reader copy. That includes
+  internal hub language such as `dead prefix`, raw template syntax such as
+  `/stays/<slug>/`, and process instructions that tell the team how to use the
+  page instead of helping a guest choose a stay.
+- Do not ship unsupported portfolio-scale claims such as `managing hundreds of
+  properties`. Do not state an exact portfolio count in evergreen owner copy,
+  and do not imply Seascape manages homes on Anna Maria Island or Siesta Key
+  when the current inventory is Bradenton and Sarasota.
+- Stay leaf stats must count the homes actually listed on that page. A
+  collection that shows three matched homes must not present the full portfolio
+  count as `Direct-book homes`.
 
 ## SEO, GEO, And AEO Checks
 
@@ -139,6 +150,8 @@ elsewhere in the paragraph. See `## SEO, GEO, And AEO Checks` below.
 - gray internal phrases like `planning math`, `marketplace-fee exposure`, `source-bounded`, `accepted formulas`, `proof boundaries`, `proven cost`, `likely cost`, or `missing information` in public copy
 - internal guest-funnel shorthand such as `trip shape`, `stay base`, `booking path`, `named option`, `right stay`, or `research mode`, including visible copy generated from JavaScript interaction data or component configuration
 - instruction-template phrasing in source or copy-generating data surfaces, including `Use this when`, `Use this if`, `Use it when`, `Read this if`, `Open this page if`, `Do not use this page if`, and close variants that sound like a role card instead of Seascape copy
+- leaked internal reader copy such as `dead prefix`, raw `/stays/<slug>/` template syntax, or `managing hundreds of properties` in public `src/` copy (not `docs/process`)
+- stay leaf pages that use total portfolio count as `Direct-book homes` instead of the matched homes listed on the page
 - `observed`, `scenario`, or `methodology` in the first visible paragraph
 - detached owner voice where `the owner` outnumbers `you/your`
 - vague owner claims like `attentive local operations`, `clearer owner communication`, or `quiet misses`
