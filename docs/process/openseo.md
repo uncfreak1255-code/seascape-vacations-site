@@ -18,6 +18,8 @@ The committed allowlist contains only these saved-state reads:
 - `list_projects`
 - `list_saved_keywords`
 - `get_rank_tracker`
+- `get_search_console_performance`
+- `inspect_urls`
 
 Codex asks for approval before every OpenSEO tool call. A new Codex session is
 required after this project configuration changes.
@@ -30,10 +32,12 @@ access and keep them on the local machine. Do not expose the endpoint through a
 public tunnel, shared network listener, or reverse proxy without a separate
 authentication and security review.
 
-Search Console access is a separate Google authorization. If OpenSEO reports
-that the connection expired or was revoked, stop and request Sawyer's approval
-before reconnecting it. Search Console tools are not available through this
-site-repo integration; use a `seascape-analytics` receipt instead.
+Search Console access is a separate Google authorization. This integration may
+read performance and URL-inspection evidence through OpenSEO, but it may not
+connect, reconnect, or change the Google authorization. If OpenSEO reports that
+the connection expired or was revoked, stop and request Sawyer's approval
+before reconnecting it. These reads do not move analytics ownership or replace
+a `seascape-analytics` receipt.
 
 ## Ownership
 
@@ -70,8 +74,6 @@ The following OpenSEO tools are intentionally outside the project allowlist:
 - `get_google_business_questions`
 - `get_keyword_metrics`
 - `save_keywords`
-- `get_search_console_performance`
-- `inspect_urls`
 
 Do not copy OpenSEO's optional agent skills into this repo. The five-role SEO
 workflow and active repo skills remain the agent surface of record.
@@ -91,10 +93,28 @@ workflow and active repo skills remain the agent surface of record.
    use live SERP evidence and the owning analytics receipt required for the
    proposed action. If the tracker is stale or lacks the target query, route to
    the direct DataForSEO Gate 0 path instead.
-5. For AI-search exports, keep brand mentions separate from cited-source rows.
+5. Use `get_search_console_performance` and `inspect_urls` only as read-only
+   confirmation for the exact site, query, page, country, device, and date
+   window under review. Do not connect or reconnect Search Console, and do not
+   treat a successful read as permission to change a page.
+6. For AI-search exports, keep brand mentions separate from cited-source rows.
    Route current measurement and durable receipts to `seascape-analytics`.
-6. Stop on an expired Search Console connection, unavailable current data,
+7. Stop on an expired Search Console connection, unavailable current data,
    unexpected credit estimate, or any write request.
+
+## Business Decision Boundary
+
+OpenSEO evidence may inform a business decision; it may not silently make one.
+When the proposed next action would change Seascape's business priority,
+revenue-lever focus, budget, or measured batch strategy, stop before acting and
+put this exact line at the top of the handoff:
+
+`BUSINESS DECISION REQUIRED — SAWYER`
+
+State the evidence, the recommended decision, the consequence of yes and no,
+and the exact approval needed. Do not bury the request in a routine update.
+Routine read-only evidence gathering and already-approved implementation do not
+need a new strategy decision.
 
 ## Verification
 
@@ -106,7 +126,8 @@ codex mcp get openseo
 
 The committed config and its enforcement test prove that the server is optional
 with `required = false`. The `codex mcp get openseo` readback must show the
-localhost URL, approval mode `prompt`, and only the four allowed tools above. A
-live acceptance check then calls `list_projects` and reads the existing rank
-tracker twice with the same result count. It must not run a new rank check or
+localhost URL, approval mode `prompt`, and only the six allowed tools above. A live
+acceptance check then calls `list_projects`, reads the existing rank tracker
+twice with the same result count, and completes one approved read-only Search
+Console query. It must not reconnect Google, run a new rank check, or start
 another paid lookup.
