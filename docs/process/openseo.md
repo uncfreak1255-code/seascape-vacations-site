@@ -91,8 +91,9 @@ workflow and active repo skills remain the agent surface of record.
 4. Treat the tracker result as triage, not the final decision. Record the
    observation time, query, current and prior position, and landing URL. Then
    use live SERP evidence and the owning analytics receipt required for the
-   proposed action. If the tracker is stale or lacks the target query, route to
-   the direct DataForSEO Gate 0 path instead.
+   proposed action. If the tracker is stale or lacks the target query, stop and
+   report the evidence gap. Do not open DataForSEO; a separately approved paid
+   run is required.
 5. Use `get_search_console_performance` and `inspect_urls` only as read-only
    confirmation for the exact site, query, page, country, device, and date
    window under review. Do not connect or reconnect Search Console, and do not
