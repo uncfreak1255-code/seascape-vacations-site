@@ -92,14 +92,61 @@ function findSearchDecisionFiles(changedFiles) {
   );
 }
 
+const SEARCH_META_NAMES = new Set([
+  "description",
+  "og:title",
+  "og:description",
+  "og:url",
+  "twitter:title",
+  "twitter:description",
+]);
+
+function extractSearchSignificantAttributes(tag) {
+  const pieces = [];
+  const relCanonical = /\brel\s*=\s*(["'])canonical\1/i.test(tag) || /\brel\s*=\s*canonical\b/i.test(tag);
+  const href = tag.match(/\bhref\s*=\s*(["'])(.*?)\1/i);
+  if (relCanonical && href) {
+    pieces.push(href[2]);
+  }
+
+  const name = tag.match(/\b(?:name|property|itemprop)\s*=\s*(["'])(.*?)\1/i);
+  const content = tag.match(/\bcontent\s*=\s*(["'])(.*?)\1/i);
+  if (name && content && SEARCH_META_NAMES.has(name[2].toLowerCase())) {
+    pieces.push(name[2], content[2]);
+  }
+
+  return pieces;
+}
+
 function extractSearchFacingText(source) {
-  return String(source || "")
+  let text = String(source || "");
+  const jsonLdBlocks = [];
+
+  text = text.replace(
+    /<script\b[^>]*type\s*=\s*(["'])application\/ld\+json\1[^>]*>([\s\S]*?)<\/script>/gi,
+    (_, _quote, body) => {
+      jsonLdBlocks.push(String(body || "").trim());
+      return " ";
+    }
+  );
+
+  text = text
     .replace(/<style[\s\S]*?<\/style>/gi, " ")
     .replace(/<script[\s\S]*?<\/script>/gi, " ")
     .replace(/\{#[\s\S]*?#\}/g, " ")
-    .replace(/\{%[\s\S]*?%\}/g, " ")
-    .replace(/\{\{[\s\S]*?\}\}/g, " ")
-    .replace(/<[^>]+>/g, " ")
+    .replace(/\{%[\s\S]*?%\}/g, " ");
+
+  const preservedAttributes = [];
+  text = text.replace(/<[^>]+>/g, (tag) => {
+    const kept = extractSearchSignificantAttributes(tag);
+    if (kept.length) {
+      preservedAttributes.push(...kept);
+    }
+    return " ";
+  });
+
+  return [text, ...jsonLdBlocks, ...preservedAttributes]
+    .join(" ")
     .replace(/\s+/g, " ")
     .trim();
 }
