@@ -202,8 +202,8 @@ test("without JavaScript, every home still has real details and a checkout path"
   const page = await context.newPage();
   await registerStableNetwork(page);
   await page.goto("/properties/?visual-test=1");
-  await expect(page.locator(".catalog-card")).toHaveCount(5);
-  await expect(page.locator(".catalog-check-dates")).toHaveCount(5);
+  await expect(page.locator(".catalog-card")).toHaveCount(6);
+  await expect(page.locator(".catalog-check-dates")).toHaveCount(6);
   await expect(page.locator(".catalog-compare-toggle:visible")).toHaveCount(0);
   await expect(page.locator(".catalog-opening:visible")).toHaveCount(0);
   const response = await page.goto(await page.getByRole("link",{name:"View Dockside Dreams details",exact:true}).getAttribute("href"));

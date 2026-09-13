@@ -95,12 +95,29 @@ test("fallback property seed includes all curated homes shown in the collection"
     .sort();
 
   assert.deepEqual(slugs, [
+    "blue-house",
     "bradenton-pool-home",
     "dockside-dreams",
     "river-house",
     "sarasota-luxe",
     "the-oasis"
   ]);
+});
+
+test("Blue House normalizes to the verified Hostaway identity and local photography", () => {
+  const blueHouse = propertiesData
+    .normalizeProperties(fallbackProperties)
+    .find((property) => property.slug === "blue-house");
+
+  assert.ok(blueHouse);
+  assert.equal(blueHouse.id, "589288");
+  assert.equal(blueHouse.bookingUrl, "https://book.seascape-vacations.com/listings/589288");
+  assert.equal(blueHouse.pageUrl, "/properties/blue-house/");
+  assert.equal(blueHouse.latitude, 27.50860514);
+  assert.equal(blueHouse.longitude, -82.63215404);
+  assert.equal(blueHouse.postalCode, "34209");
+  assert.equal(blueHouse.photography.photos.length, 13);
+  assert.equal(blueHouse.guestFacts.verifiedAt, "2026-09-13");
 });
 
 test("normalizeAvailabilitySummary drops stale or incomplete calendar summaries", () => {
@@ -204,7 +221,7 @@ test("safe property projection overlays public availability without replacing cu
   const properties = propertiesData.loadSafePropertyProjection(projectionPath);
   const dockside = properties.find((property) => property.slug === "dockside-dreams");
 
-  assert.equal(properties.length, 5);
+  assert.equal(properties.length, 6);
   assert.equal(dockside.name, "Dockside Dreams");
   assert.equal(dockside.id, "206016");
   assert.equal(dockside.availability.source, "seascape-ops");
@@ -220,13 +237,14 @@ test("visual test mode keeps fixture availability live for deterministic snapsho
     const properties = await propertiesData();
     const availabilityLabels = properties.map((property) => property.availability?.nextAvailable?.label ?? null);
 
-    assert.equal(properties.length, 5);
+    assert.equal(properties.length, 6);
     assert.deepEqual(availabilityLabels, [
       "Jun 08 - Jun 10",
       "May 18 - May 20",
       "May 30 - Jun 06",
       "Aug 21 - Aug 23",
-      "May 18 - May 19"
+      "May 18 - May 19",
+      "Sep 18 - Sep 21"
     ]);
     assert.equal(properties[0].availability.syncedAt, "2026-05-17T15:39:21.311Z");
   } finally {

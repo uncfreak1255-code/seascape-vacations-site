@@ -33,7 +33,7 @@ test('keyboard previews and reduced motion keep the scene usable',async({page})=
   await page.emulateMedia({reducedMotion:'reduce'});await visit(page);
   const first=page.getByRole('button',{name:'Preview The Oasis',exact:true});await first.focus();
   await page.keyboard.press('ArrowRight');await expect(page.locator('.g-scene:visible')).toHaveAttribute('data-scene','dockside-dreams');
-  await page.keyboard.press('End');await expect(page.locator('.g-scene:visible')).toHaveAttribute('data-scene','bradenton-pool-home');
+  await page.keyboard.press('End');await expect(page.locator('.g-scene:visible')).toHaveAttribute('data-scene','blue-house');
   await page.keyboard.press('Home');await expect(first).toBeFocused();await expect(first).toHaveAttribute('aria-pressed','true');
   expect(await page.evaluate(()=>document.getAnimations().filter(a=>a.playState==='running').length)).toBe(0);
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
@@ -71,10 +71,10 @@ test('motion preference changes stop subsequent preview animation',async({page})
   expect(await page.locator('.g-scene:visible').evaluate(n=>n.getAnimations({subtree:true}).length)).toBe(0);
 });
 
-test('without JavaScript all five scene choices are ordinary property links',async({browser,baseURL})=>{
+test('without JavaScript all six scene choices are ordinary property links',async({browser,baseURL})=>{
   const context=await browser.newContext({javaScriptEnabled:false,baseURL});const page=await context.newPage();
   await registerStableNetwork(page);await page.goto('/');
-  await expect(page.locator('.g-scene-picker a')).toHaveCount(5);
+  await expect(page.locator('.g-scene-picker a')).toHaveCount(6);
   await page.locator('[data-scene-choice="sarasota-luxe"]').click();
   await expect(page.getByRole('heading',{level:1})).toHaveText('Sarasota Luxe');await context.close();
 });

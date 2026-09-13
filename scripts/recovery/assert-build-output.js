@@ -62,6 +62,7 @@ const PROPERTY_NAV_STALE_ROUTE_MARKERS = [
   'href="/stays/anna-maria-island-homes-with-pool/" class="mobile-item">Anna Maria Island</a>'
 ];
 const PROPERTY_PAGE_FILES = [
+  "_site/properties/blue-house/index.html",
   "_site/properties/bradenton-pool-home/index.html",
   "_site/properties/dockside-dreams/index.html",
   "_site/properties/river-house/index.html",
