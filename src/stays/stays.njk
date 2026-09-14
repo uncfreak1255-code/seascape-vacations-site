@@ -34,6 +34,7 @@ eleventyComputed:
 {% set hasComparison = comparisonRows and comparisonRows.length > 0 %}
 {% set hasTripMatches = seoPage.tripMatchCards and seoPage.tripMatchCards.length > 0 %}
 {% set hasMatchingHomes = properties and properties.length and seoPage.matchingProperties and seoPage.matchingProperties.length > 0 %}
+{% set listedHomeCount = seoPage.matchingProperties.length if seoPage.matchingProperties and seoPage.matchingProperties.length else 0 %}
 {% set hasDriveFacts = seoPage.propertyFacts and seoPage.propertyFacts.length > 0 and seoPage.propertyFacts[0].time %}
 {% set hasReviews = seoPage.reviewProof and seoPage.reviewProof.length > 0 %}
 {% set hasFaqs = seoPage.faqs and seoPage.faqs.length > 0 %}
@@ -373,7 +374,7 @@ eleventyComputed:
         <section class="stats-bar" aria-label="Seascape stay highlights">
             <div class="stats-grid">
                 <div class="stat">
-                    <span class="stat-value">{{ properties.length if properties else "5" }}</span>
+                    <span class="stat-value">{{ listedHomeCount }}</span>
                     <span class="stat-label">Direct-book homes</span>
                 </div>
                 <div class="stat">

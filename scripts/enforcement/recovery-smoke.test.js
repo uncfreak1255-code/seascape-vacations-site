@@ -199,7 +199,7 @@ test("rendered properties smoke validates the post-hydration catalog state", asy
   assert.equal(closed, true);
 });
 
-test("stays smoke follows the live stay-collection hub instead of a dead prefix", () => {
+test("stays smoke locks the customer-facing stay-collection hub", () => {
   const smoke = loadSmokeModule();
   const target = smoke.targets.find((entry) => entry.path === "/stays/");
 
@@ -208,7 +208,7 @@ test("stays smoke follows the live stay-collection hub instead of a dead prefix"
   const currentStayHubBody = `
     <main>
       <p>Stay Collections</p>
-      <h1>Use the live stay pages as a real collection hub, not a dead prefix</h1>
+      <h1>Compare Gulf Coast private-pool homes by area, group size, and trip priorities</h1>
       <section>
         <h2>Destination collections</h2>
         <a href="/stays/anna-maria-island-vacation-rentals/">Anna Maria Island Vacation Rentals</a>
@@ -225,6 +225,30 @@ test("stays smoke follows the live stay-collection hub instead of a dead prefix"
       body: currentStayHubBody
     });
   });
+});
+
+test("stays smoke rejects leaked internal hub copy", () => {
+  const smoke = loadSmokeModule();
+  const target = smoke.targets.find((entry) => entry.path === "/stays/");
+
+  assert.throws(() => {
+    smoke.validateTargetResponse(target, {
+      statusCode: 200,
+      location: null,
+      body: `
+        <main>
+          <p>Stay Collections</p>
+          <h1>Use the live stay pages as a real collection hub, not a dead prefix</h1>
+          <section>
+            <h2>Destination collections</h2>
+            <a href="/stays/anna-maria-island-vacation-rentals/">Anna Maria Island Vacation Rentals</a>
+            <a href="/stays/bradenton-vacation-rentals-near-beaches/">Bradenton Vacation Rentals Near Beaches</a>
+          </section>
+          <a href="/properties/">Browse Direct-Book Homes</a>
+        </main>
+      `
+    });
+  }, /stale live marker|missing the live stay-collection hub surface/);
 });
 
 test("live smoke locks the refreshed AMI vs Siesta SEO markers", () => {
