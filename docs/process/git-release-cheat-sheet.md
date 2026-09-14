@@ -13,6 +13,9 @@ This repo is not a sandbox. `main` is the production line.
 ## The rule for this repo
 
 - Edit source in `src/`, config in `eleventy.config.js` / `netlify.toml`, and data in `src/_data/`
+- Sitewide CSP is enforced in `netlify.toml` (`/*`). New third-party origins
+  must be added to the matching directive and to
+  `scripts/enforcement/csp-headers.js`; `npm test` includes that guard.
 - Build with `npm run build`
 - Netlify publishes from `_site`
 - Do not hand-edit `_site`
