@@ -31,7 +31,8 @@ const REQUIRED_ANALYTICS = {
     "https://www.googletagmanager.com",
     "https://www.google-analytics.com",
     "https://analytics.google.com",
-    "https://region1.google-analytics.com"
+    "https://region1.google-analytics.com",
+    "https://stats.g.doubleclick.net"
   ]
 };
 

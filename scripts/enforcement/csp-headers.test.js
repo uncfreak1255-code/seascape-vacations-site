@@ -17,7 +17,7 @@ const VALID_POLICY = [
   "default-src 'self'",
   "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/",
   "img-src 'self' data: https://bookingenginecdn.hostaway.com https://www.googletagmanager.com https://www.google-analytics.com https://www.gstatic.com/recaptcha/",
-  "connect-src 'self' https://www.googletagmanager.com https://www.google-analytics.com https://analytics.google.com https://region1.google-analytics.com https://bookingenginecdn.hostaway.com https://www.google.com/recaptcha/",
+  "connect-src 'self' https://www.googletagmanager.com https://www.google-analytics.com https://analytics.google.com https://region1.google-analytics.com https://stats.g.doubleclick.net https://bookingenginecdn.hostaway.com https://www.google.com/recaptcha/",
   "frame-src 'self' https://book.seascape-vacations.com https://www.google.com/recaptcha/ https://recaptcha.google.com/recaptcha/",
   "form-action 'self' https://book.seascape-vacations.com",
   "frame-ancestors 'none'"
@@ -49,6 +49,7 @@ test("repo netlify.toml enforces CSP with recaptcha, Hostaway, and GTM origins",
   assert.ok(result.directives.get("script-src").includes("https://www.gstatic.com/recaptcha/"));
   assert.ok(result.directives.get("frame-src").includes("https://www.google.com/recaptcha/"));
   assert.ok(result.directives.get("connect-src").includes("https://www.google.com/recaptcha/"));
+  assert.ok(result.directives.get("connect-src").includes("https://stats.g.doubleclick.net"));
   assert.doesNotMatch(toml, /Content-Security-Policy-Report-Only/);
   assert.doesNotMatch(headers["Strict-Transport-Security"], /preload/);
 });
@@ -102,6 +103,13 @@ test("CSP guard requires recaptcha, Hostaway, GTM origins and forbids https: wil
       policy: VALID_POLICY.replace(" https://book.seascape-vacations.com", "")
     })),
     /missing required Hostaway origins/
+  );
+
+  assert.throws(
+    () => assertEnforcedCsp(tomlWithPolicy({
+      policy: VALID_POLICY.replace(" https://stats.g.doubleclick.net", "")
+    })),
+    /missing required GTM\/GA origins/
   );
 
   assert.throws(
