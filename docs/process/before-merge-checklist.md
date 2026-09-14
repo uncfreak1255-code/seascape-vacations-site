@@ -34,6 +34,11 @@ If the task does not touch all three areas, run the relevant subset and note why
 - [ ] If this is an AI-search or experiment batch, the active brief names a `hypothesis`, `primary event`, `guardrail event`, `entry criteria`, `readback window`, and `decision rule`.
 - [ ] I did not claim AI citation lift, booking lift, or owner-demand lift without analytics-owned proof.
 - [ ] If schema, AI discovery, or JSON-LD verification failed at any point, I used `docs/runbooks/failed-schema-smoke.md` before retrying the gate.
+- [ ] If I added a third-party script, font, embed, form target, image host, or
+      changed `netlify.toml` headers, I updated the matching CSP directive and
+      ran `node --test scripts/enforcement/csp-headers.test.js` (also covered
+      by `npm test`). Do not switch the sitewide policy to Report-Only or add
+      HSTS `preload`.
 
 AI-search / citation surface checks:
 
