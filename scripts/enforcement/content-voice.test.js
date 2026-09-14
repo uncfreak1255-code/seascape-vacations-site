@@ -117,6 +117,12 @@ const INSTRUCTION_TEMPLATE_PATTERNS = [
   /\bfor homes where\b/i
 ];
 
+const LEAKED_INTERNAL_READER_PATTERNS = [
+  /\bdead prefix\b/i,
+  /\/stays\/(?:<slug>|&lt;slug&gt;)\//,
+  /\bmanaging hundreds of properties\b/i
+];
+
 const FIRST_PARAGRAPH_PROOF_PATTERNS = [/\bobserved\b/i, /\bscenario\b/i, /\bmethodology\b/i];
 
 const PUBLIC_CONTENT_PATTERNS = [
@@ -597,6 +603,34 @@ function lintInstructionTemplateSource(relativePath, source) {
   return violations;
 }
 
+function lintLeakedInternalCopy(relativePath, text, scopeLabel) {
+  const violations = [];
+
+  for (const pattern of LEAKED_INTERNAL_READER_PATTERNS) {
+    const match = text.match(pattern);
+    if (match) {
+      violations.push(
+        `${relativePath}: ${scopeLabel} contains leaked internal phrasing "${match[0]}"`
+      );
+    }
+  }
+
+  return violations;
+}
+
+function lintLeakedInternalData(relativePath, data) {
+  const violations = [];
+
+  for (const entry of collectStringLeaves(data)) {
+    const normalizedValue = entry.value.replace(/\s+/g, " ").trim();
+    violations.push(
+      ...lintLeakedInternalCopy(`${relativePath}:${entry.path}`, normalizedValue, "source-backed copy")
+    );
+  }
+
+  return violations;
+}
+
 function lintInstructionTemplateData(relativePath, data) {
   const violations = [];
 
@@ -626,6 +660,8 @@ function lintPublicContent(relativePath, source, requiredLinks, options = {}) {
   const currentRoute = getCurrentRoute(relativePath, source);
 
   violations.push(...lintInstructionTemplateSource(relativePath, source));
+  violations.push(...lintLeakedInternalCopy(relativePath, visibleText, "reader copy"));
+  violations.push(...lintLeakedInternalCopy(relativePath, normalizeSourceCopyText(source), "source copy"));
   violations.push(...lintReaderLanguage(relativePath, visibleText, "reader copy"));
   violations.push(
     ...lintReaderLanguage(relativePath, scriptGeneratedReaderCopy, "JavaScript-generated reader copy")
@@ -1194,6 +1230,36 @@ test("owner seo page data avoids banned owner jargon", () => {
   assert.deepEqual(violations, []);
 });
 
+test("lint catches leaked internal hub notes and unsupported portfolio claims", () => {
+  const failingSample = `
+    <main>
+      <h1>Use the live stay pages as a real collection hub, not a dead prefix</h1>
+      <p>This is the parent hub for the live /stays/&lt;slug&gt;/ pages.</p>
+      <p>Our first-hand experience managing hundreds of properties taught us screening.</p>
+      <a href="/properties/">Browse homes</a>
+      <a href="/guides/">Guides</a>
+    </main>
+  `;
+
+  const violations = lintPublicContent("src/stays/index.njk", failingSample, [
+    "/properties/",
+    "/guides/"
+  ]);
+
+  assert.equal(
+    violations.some((entry) => entry.includes("dead prefix")),
+    true
+  );
+  assert.equal(
+    violations.some((entry) => /\/stays\/(?:<slug>|&lt;slug&gt;)\//.test(entry)),
+    true
+  );
+  assert.equal(
+    violations.some((entry) => entry.includes("managing hundreds of properties")),
+    true
+  );
+});
+
 test("repo public-copy source and data surfaces do not ship instruction-template public copy", () => {
   const sourceViolations = listFilesRecursive("src")
     .filter((relativePath) =>
@@ -1206,6 +1272,48 @@ test("repo public-copy source and data surfaces do not ship instruction-template
   );
 
   assert.deepEqual([...sourceViolations, ...dataViolations], []);
+});
+
+test("public src copy does not leak internal hub notes or unsupported portfolio claims", () => {
+  const publicCopyPaths = listFilesRecursive("src").filter((relativePath) =>
+    ALWAYS_SCANNED_PUBLIC_COPY_PATH_PATTERNS.some((pattern) => pattern.test(relativePath))
+  );
+  const sourceViolations = publicCopyPaths.flatMap((relativePath) => {
+    const source = read(relativePath);
+    return [
+      ...lintLeakedInternalCopy(relativePath, normalizeVisibleText(source), "reader copy"),
+      ...lintLeakedInternalCopy(relativePath, normalizeSourceCopyText(source), "source copy")
+    ];
+  });
+  const dataViolations = ALWAYS_SCANNED_PUBLIC_COPY_DATA_FILES.flatMap((relativePath) =>
+    lintLeakedInternalData(relativePath, JSON.parse(read(relativePath)))
+  );
+
+  assert.deepEqual([...sourceViolations, ...dataViolations], []);
+});
+
+test("leaked-internal scan covers public src copy and does not treat docs/process as public copy", () => {
+  const scannedPaths = [
+    ...listFilesRecursive("src").filter((relativePath) =>
+      ALWAYS_SCANNED_PUBLIC_COPY_PATH_PATTERNS.some((pattern) => pattern.test(relativePath))
+    ),
+    ...ALWAYS_SCANNED_PUBLIC_COPY_DATA_FILES
+  ];
+
+  assert.equal(scannedPaths.some((entry) => entry.startsWith("src/")), true);
+  assert.equal(
+    scannedPaths.some((entry) => entry.startsWith("docs/process")),
+    false,
+    "docs/process may name banned phrases as rules and must not be scanned as public copy"
+  );
+
+  const processDoc = read(path.join("docs", "process", "content-quality-gate.md"));
+  assert.match(processDoc, /dead prefix/);
+  assert.equal(
+    lintLeakedInternalCopy("docs/process/content-quality-gate.md", processDoc, "process doc").length > 0,
+    true,
+    "the quality-gate doc should still name the banned phrase so the exclusion is load-bearing"
+  );
 });
 
 async function runChangedPublicContentGate() {

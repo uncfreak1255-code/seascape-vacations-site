@@ -2,28 +2,28 @@
 permalink: "/stays/"
 eleventyComputed:
   pageTitle: "Vacation Rental Stay Collections"
-  pageDescription: "Browse Seascape stay collections by destination, trip type, and amenities across Anna Maria Island, Bradenton, Sarasota, and Florida's Gulf Coast."
+  pageDescription: "Compare Seascape private-pool homes in Bradenton and Sarasota by area, group size, and trip priorities, including near-island collections for Anna Maria Island and Siesta Key."
 ---
 {% set destinationSections = [
   {
     "key": "anna-maria-island",
     "title": "Anna Maria Island",
-    "intro": "Use these pages when the trip is centered on AMI access, island feel, and near-island pool-home tradeoffs."
+    "intro": "Near-island pool homes for beach days on AMI without an on-island address."
   },
   {
     "key": "bradenton",
     "title": "Bradenton",
-    "intro": "Best for guests who want bigger houses, waterfront options, docks, and faster value than the island usually gives."
+    "intro": "Bigger houses, one canal-front dock home, and more space for the money than the island usually gives."
   },
   {
     "key": "sarasota",
     "title": "Sarasota",
-    "intro": "Useful when the trip skews toward culture, restaurants, downtown access, or a polished city-side base."
+    "intro": "A downtown Sarasota house when restaurants, museums, and city evenings matter more than an island address."
   },
   {
     "key": "siesta-key",
     "title": "Siesta Key",
-    "intro": "The narrower Siesta Key lane. Keep this section tight because the inventory and fit are tighter."
+    "intro": "Siesta Key sand is the draw. Seascape's Sarasota home is a short drive from the island, not an on-key stay."
   }
 ] %}
 {% set pageUpdatedLabel = gitLastModifiedLabel(page.inputPath) %}
@@ -381,13 +381,13 @@ eleventyComputed:
     <header class="hero">
       <div>
         <p class="hero-tag">Stay Collections</p>
-        <h1 class="hero-title">Use the live stay pages as a real collection hub, not a dead prefix</h1>
-        <p class="hero-subtitle">These pages route by destination, kind of trip, and amenity fit across Anna Maria Island, Bradenton, Sarasota, and the wider Gulf Coast. Use them to narrow the right house before you open individual property pages.</p>
+        <h1 class="hero-title">Compare Gulf Coast private-pool homes by area, group size, and trip priorities</h1>
+        <p class="hero-subtitle">Seascape's homes sit in Bradenton and Sarasota. These collections group them by town, group size, pool setup, and drive time to the beaches — including near-island stays for Anna Maria Island and Siesta Key, not on-island addresses.</p>
       </div>
       <aside class="hero-note">
-        <strong>How to use this page</strong>
-        <p>If you already know the market, start with the destination sections. If the kind of trip matters more than the map, use the amenity and use-case links below.</p>
-        <p>This is the parent hub for the live `/stays/&lt;slug&gt;/` pages, so the collection pages can finally point to each other cleanly.</p>
+        <strong>Area or trip details</strong>
+        <p>Destination collections group homes by Bradenton, Sarasota, Anna Maria Island, and Siesta Key. Amenity collections group them by pool, dock, group size, and pets.</p>
+        <p>Each collection lists the Seascape homes for that area or amenity so you can compare listings side by side.</p>
         <small>Updated {{ pageUpdatedLabel }}</small>
       </aside>
     </header>
@@ -398,7 +398,7 @@ eleventyComputed:
           <p class="section-tag">Browse by Destination</p>
           <h2>Destination collections</h2>
         </div>
-        <p class="section-note">These are the fastest routes when the guest already knows the geography and needs the best-fit landing page for that market.</p>
+        <p class="section-note">Bradenton, Sarasota, Anna Maria Island, and Siesta Key collections sit here. Seascape homes are in Bradenton and Sarasota; island collections are near-island drives, not on-key addresses.</p>
       </div>
 
       <div class="category-grid">
@@ -426,17 +426,17 @@ eleventyComputed:
       <div class="section-head">
         <div>
           <p class="section-tag">Trip Type & Amenities</p>
-          <h2>Use-case collections</h2>
+          <h2>Collections by trip and amenities</h2>
         </div>
-        <p class="section-note">These pages cut across destinations. Use them when the booking is really about pool setups, dock access, group size, pet rules, or extended-stay shape.</p>
+        <p class="section-note">Pool, dock, group size, pets, and longer stays, across the same Bradenton and Sarasota homes.</p>
       </div>
 
       <div class="utility-grid">
         <article class="utility-card">
           <div class="utility-card-body">
-            <span class="card-kicker">Cross-market filters</span>
-            <h3>Kind of trip and amenity pages</h3>
-            <p class="utility-copy">This is the catchment for pages that span multiple markets or answer a specific stay question better than a destination page does.</p>
+            <span class="card-kicker">By amenity</span>
+            <h3>Pool, dock, group, and stay-length pages</h3>
+            <p class="utility-copy">Pool, dock, group, pet, and longer-stay collections sit beside the destination list.</p>
             <ul class="utility-pills">
               {% for page in staysPages %}
               {% set isIndexableStay = seoGovernance.staysNoindexSlugs.indexOf(page.slug) === -1 %}
@@ -451,13 +451,13 @@ eleventyComputed:
         <article class="utility-card">
           <div class="utility-card-body">
             <span class="card-kicker">Next step</span>
-            <h3>When to leave the hub</h3>
-            <p class="utility-copy">Use a stay collection page to choose the right lane, then jump into the direct-book catalog when you are ready to compare actual homes and dates.</p>
+            <h3>Ready to compare actual homes</h3>
+            <p class="utility-copy">The direct-book catalog is next: compare homes and dates.</p>
             <ul class="utility-links">
               <li><a href="/properties/">Open the full direct-book property collection</a></li>
               <li><a href="/guides/where-to-stay-near-anna-maria-island/">Read the where-to-stay guide first</a></li>
               <li><a href="/guides/booking-direct-vacation-rentals/">See why booking direct changes the total trip cost</a></li>
-              <li><a href="/guides/anna-maria-island-vs-siesta-key/">Compare AMI and Siesta Key before you lock the wrong market</a></li>
+              <li><a href="/guides/anna-maria-island-vs-siesta-key/">Compare AMI and Siesta Key before you choose the island</a></li>
             </ul>
           </div>
         </article>
@@ -467,8 +467,8 @@ eleventyComputed:
     <section class="cta-section">
       <div class="cta-panel">
         <div>
-          <h2>Need the actual homes, not just the collection logic?</h2>
-          <p>Once the kind of trip is clear, open the direct-book property catalog and compare the current Seascape inventory in one place.</p>
+          <h2>Ready to compare actual homes?</h2>
+          <p>Open the catalog and compare current Seascape homes in one place.</p>
         </div>
         <a class="btn" href="/properties/">Browse Direct-Book Homes</a>
       </div>

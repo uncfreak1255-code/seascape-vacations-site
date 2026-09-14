@@ -231,6 +231,7 @@ function validateTargetResponse(target, response) {
     const hasStayHubSurface =
       response.body.includes("Stay Collections")
       && response.body.includes("Destination collections")
+      && response.body.includes("Compare Gulf Coast private-pool homes by area, group size, and trip priorities")
       && response.body.includes("/stays/anna-maria-island-vacation-rentals/")
       && response.body.includes("/stays/bradenton-vacation-rentals-near-beaches/")
       && response.body.includes("/properties/");
@@ -238,6 +239,14 @@ function validateTargetResponse(target, response) {
     if (!hasStayHubSurface) {
       throw new Error("/stays/ is missing the live stay-collection hub surface");
     }
+
+    requireExcludes(target.path, response.body, [
+      "dead prefix",
+      "/stays/<slug>/",
+      "/stays/&lt;slug&gt;/",
+      "When to leave the hub",
+      "collection logic"
+    ]);
   }
 
   if (target.path === "/guides/anna-maria-island-area-guide/" || target.path === "/guides/bradenton-vs-sarasota/" || target.path === "/guides/anna-maria-island-vs-siesta-key/") {
