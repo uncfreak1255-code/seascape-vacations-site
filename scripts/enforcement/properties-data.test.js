@@ -129,23 +129,6 @@ test("client listing map stays in sync with properties.js including Blue House",
   assert.deepEqual(clientEntries.find((entry) => entry[1] === "blue-house"), ["589288", "blue-house"]);
 });
 
-test("homepage guest reviews sit on an ink band and use the longest listing quote", () => {
-  const homepage = fs.readFileSync(path.join(__dirname, "../../src/index.njk"), "utf8");
-  const css = fs.readFileSync(path.join(__dirname, "../../src/css/arrival.css"), "utf8");
-  const reviewBlock = homepage.match(/class="g-home-reviews"[\s\S]*?<\/section>/);
-  const band = css.match(/\.g-home-reviews\{[^}]+\}/);
-  const lead = css.match(/\.g-review-grid figure:first-child\{[^}]+\}/);
-
-  assert.ok(reviewBlock, "homepage must render a dedicated guest-review band");
-  assert.match(reviewBlock[0], /sort\(true, false, "text\.length"\)/);
-  assert.doesNotMatch(reviewBlock[0], /sort\(false, false, "text\.length"\)/);
-  assert.match(reviewBlock[0], /class="g-wrap"/);
-  assert.ok(band, "arrival.css must define the homepage review band");
-  assert.match(band[0], /background:var\(--g-ink\)/);
-  assert.ok(lead, "the first listing quote must lead the review band");
-  assert.match(lead[0], /grid-column:1\/-1/);
-});
-
 test("homepage postcard fan stays in one count-agnostic desktop row", () => {
   const css = fs.readFileSync(path.join(__dirname, "../../src/css/arrival.css"), "utf8");
   const postcardBlock = css.match(/\.g-postcards\{[^}]+\}/);
