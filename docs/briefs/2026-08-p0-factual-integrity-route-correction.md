@@ -7,7 +7,7 @@
 - proof source: canonical property fallback data; current route inventory; professional tax review is not yet available
 - required internal links: /properties/, /guides/
 - CTA target: `/properties/` or `/#contact`
-- anti-claims: no tax advice; no fixed savings, portfolio, guest-count, return, or experience claims without an approved source; no statement that Sarasota Luxe or the Sarasota home is walkable, within walking distance, or steps from downtown, St. Armands Circle, restaurants, galleries, shops, beaches, or other attractions; no leaked internal or process-facing reader copy such as `dead prefix`, raw `/stays/<slug>/` template syntax, `catchment`, `fastest routes`, or `When to leave the hub`; no `managing hundreds of properties` or other unsupported portfolio-scale experience claims; no exact portfolio count in evergreen owner copy; no implication that Seascape manages properties on Anna Maria Island or Siesta Key; no invented screening protocols, ROI projections, premium-rate ranges, investor outcomes, or first-hand market coverage Seascape does not have; stay leaf pages must not present total portfolio count as `Direct-book homes` when the page lists a matched subset
+- anti-claims: no tax advice; no fixed savings, portfolio, guest-count, return, or experience claims without an approved source; no statement that Sarasota Luxe or the Sarasota home is walkable, within walking distance, or steps from downtown, St. Armands Circle, restaurants, galleries, shops, beaches, or other attractions; no leaked internal or process-facing reader copy such as `dead prefix`, raw `/stays/<slug>/` template syntax, `catchment`, `fastest routes`, or `When to leave the hub`; no `managing hundreds of properties` or other unsupported portfolio-scale experience claims; no exact portfolio count in evergreen owner copy; no implication that Seascape manages properties on Anna Maria Island or Siesta Key; no invented screening protocols, ROI projections, premium-rate ranges, investor outcomes, or first-hand market coverage Seascape does not have; stay leaf pages must not present total portfolio count as `Direct-book homes` when the page lists a matched subset; no on-island, beachfront, Gulf-front, walk-to-beach, or no-car-needed promises in copy that refers readers to the near-island destinations `/stays/anna-maria-island-vacation-rentals/` or `/stays/anna-maria-island-beachfront-rentals/`
 - hypothesis: removing unsupported claims preserves booking trust without adding new search surfaces
 - primary event: `guide_book_direct_click`
 - guardrail event: `guest_capture_form_submit`
@@ -26,6 +26,7 @@
   - `src/guides/bradenton-vs-sarasota-retirement/index.html`
   - `src/guides/bradenton-vs-sarasota-restaurants/index.html`
   - `src/guides/anna-maria-island-vs-longboat-key.html`
+  - `src/guides/anna-maria-island-vs-siesta-key.html`
   - `src/index.njk`
   - `src/about-us/index.njk`
   - `src/llms.txt`
@@ -39,6 +40,7 @@
 ## Required Internal Link Map
 
 - src/guides/anna-maria-island-vs-longboat-key.html: /properties/sarasota-luxe/, /stays/bradenton-waterfront-vacation-rentals/
+- src/guides/anna-maria-island-vs-siesta-key.html: /stays/anna-maria-island-vacation-rentals/, /stays/anna-maria-island-beachfront-rentals/
 - src/guides/bradenton-vs-sarasota.html: /stays/bradenton-vacation-rentals-near-beaches/, /stays/siesta-key-area-vacation-rentals/
 - src/guides/bradenton-vs-sarasota-beaches/index.html: /guides/bradenton-vs-sarasota/, /property-management/
 - src/guides/bradenton-vs-sarasota-restaurants/index.html: /guides/bradenton-vs-sarasota/, /property-management/
@@ -81,3 +83,5 @@
 September 9 scope handoff: the existing stay collection shell in `src/stays/stays.njk` is now covered by the approved Waterline brief (`2026-09-04-guest-decision-journey.md`). The factual area and property corrections in this brief remain required.
 
 September 13 corrective pass: replace leaked agent/dev notes on `/stays/` with guest-facing collection copy; remove `managing hundreds of properties` and surrounding unsupported owner paragraphs from `src/_data/seoPages.json`; make stay leaf `Direct-book homes` count matched homes listed on the page, not the full portfolio. Changed public sources in this pass: `src/stays/index.njk`, `src/stays/stays.njk`, `src/_data/seoPages.json`.
+
+September 13 scope: correct AMI vs Siesta guide referrals to `/stays/anna-maria-island-vacation-rentals/` and `/stays/anna-maria-island-beachfront-rentals/` so they adopt those destinations' own honest framing (mainland homes, 5-15 / 12-25 minute drives, beachfront *alternative*) instead of promising on-island, Gulf-front, walk-to-beach, or no-car stays. Keep existing routes, hrefs, tracking attributes, and table structure. Also rewrite the AMI beaches supervision sentence so gradual shallows stay factual without implying reduced watch of small children.
