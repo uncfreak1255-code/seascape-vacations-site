@@ -70,6 +70,54 @@ test("search decision gate skips branches with no search-driven source edits", (
   assert.equal(result.status, "skipped");
 });
 
+test("search-facing copy diff ignores landmark, aria, and CSS-only page edits", () => {
+  const { extractSearchFacingText, hasSearchFacingCopyDiff } = require("./search-brief-gate");
+  const base = `<main class="owner-field"><h1>Before you renew</h1></main><style>.dot{color:#C9A962}</style>`;
+  const structural = `<div class="owner-field" role="group" aria-label="x"><h1>Before you renew</h1></div><style>.dot{color:#173D42}</style>`;
+
+  assert.equal(extractSearchFacingText(base), extractSearchFacingText(structural));
+  assert.equal(hasSearchFacingCopyDiff(base, structural), false);
+  assert.equal(hasSearchFacingCopyDiff(base, `<div><h1>Before you renew this year</h1></div>`), true);
+  assert.equal(hasSearchFacingCopyDiff(null, structural), true);
+});
+
+test("search-facing copy diff still catches metadata, JSON-LD, and template expression edits", () => {
+  const { extractSearchFacingText, hasSearchFacingCopyDiff } = require("./search-brief-gate");
+  const empty = extractSearchFacingText("");
+  assert.equal(empty, "");
+  assert.equal(hasSearchFacingCopyDiff("", "<h1>Visible copy</h1>"), true);
+
+  assert.equal(
+    hasSearchFacingCopyDiff(
+      `<link rel="canonical" href="https://seascape-vacations.com/old/">`,
+      `<link rel="canonical" href="https://seascape-vacations.com/new/">`
+    ),
+    true
+  );
+  assert.equal(
+    hasSearchFacingCopyDiff(
+      `<meta name="description" content="Old owner description">`,
+      `<meta name="description" content="New owner description">`
+    ),
+    true
+  );
+  assert.equal(
+    hasSearchFacingCopyDiff(
+      `<script type="application/ld+json">{"name":"Old Service"}</script><p>Same body</p>`,
+      `<script type="application/ld+json">{"name":"New Service"}</script><p>Same body</p>`
+    ),
+    true
+  );
+  assert.equal(
+    hasSearchFacingCopyDiff(`<title>{{ pageTitle }}</title>`, `<title>{{ otherTitle }}</title>`),
+    true
+  );
+  assert.equal(
+    extractSearchFacingText(`<title>{{ pageTitle }}</title>`).includes("pageTitle"),
+    true
+  );
+});
+
 test("search decision gate requires at least one changed brief when search surfaces move", () => {
   assert.throws(
     () => assertSearchDecisionBriefContract({

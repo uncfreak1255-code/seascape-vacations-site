@@ -1442,18 +1442,19 @@ headExtra: |
 
   .owner-field-step-dot.is-active,
   .owner-field-step-dot.is-complete {
-    border-color: var(--gold);
-    color: var(--gold);
+    background: #173D42;
+    border-color: #173D42;
+    color: #FFFFFF;
   }
 
   .owner-field-step-dot.is-active {
     transform: scale(1.08);
-    box-shadow: 0 4px 14px rgba(201, 169, 98, 0.35);
+    box-shadow: 0 0 0 2px var(--owner-paper), 0 0 0 4px var(--gold);
   }
 
   .owner-field-step-dot.is-complete {
-    background: var(--gold);
-    color: var(--white);
+    background: #173D42;
+    color: #FFFFFF;
   }
 
   .owner-field-step-line {
@@ -2148,6 +2149,13 @@ headExtra: |
     .owner-field-choice.is-active::before {
       animation: none;
     }
+
+    .owner-field-step-dot,
+    .owner-field-step-dot.is-active {
+      animation: none;
+      transform: none;
+      transition: none;
+    }
   }
 
   @media (max-width: 980px) {
@@ -2422,7 +2430,7 @@ headExtra: |
   }
 </style>
 
-<main class="owner-field" data-owner-field-page>
+<div class="owner-field" data-owner-field-page>
   <section class="section owner-hero sv-pm-hero">
     <picture class="owner-hero-media" aria-hidden="true">
       <source type="image/avif" sizes="100vw" srcset="/.netlify/images?url=/images/hero-sunset-source.jpg&amp;w=640&amp;fm=avif&amp;q=76 640w, /.netlify/images?url=/images/hero-sunset-source.jpg&amp;w=1024&amp;fm=avif&amp;q=76 1024w, /.netlify/images?url=/images/hero-sunset-source.jpg&amp;w=1600&amp;fm=avif&amp;q=76 1600w, /.netlify/images?url=/images/hero-sunset-source.jpg&amp;w=2400&amp;fm=avif&amp;q=76 2400w, /.netlify/images?url=/images/hero-sunset-source.jpg&amp;w=3840&amp;fm=avif&amp;q=76 3840w">
@@ -2446,7 +2454,7 @@ headExtra: |
     <div class="owner-field-shell owner-field-hero-grid">
       <div>
         <div class="owner-field-kicker">The Property Management Brief</div>
-        <h1 id="owner-field-title">Before you renew,<br>what does your<br><span class="owner-field-phrase" data-owner-phrases aria-label="island rental"><em class="sv-pm-h1-phrase-item is-active">island rental</em><em class="sv-pm-h1-phrase-item">pool home</em><em class="sv-pm-h1-phrase-item">beach condo</em><em class="sv-pm-h1-phrase-item">Gulf Coast home</em></span><br>actually keep?</h1>
+        <h1 id="owner-field-title">Before you renew,<br>what does your<br><span class="owner-field-phrase" data-owner-phrases role="group" aria-label="island rental"><em class="sv-pm-h1-phrase-item is-active">island rental</em><em class="sv-pm-h1-phrase-item">pool home</em><em class="sv-pm-h1-phrase-item">beach condo</em><em class="sv-pm-h1-phrase-item">Gulf Coast home</em></span><br>actually keep?</h1>
         <p class="owner-field-hero-copy">If the payout, fee story, or owner updates on your Sarasota condo, Bradenton pool home, or island listing do not add up, send the listing link or address plus a sentence or two about what feels off. We will compare the charges on your statement with the services in your agreement and send back a one-page revenue review that shows what deserves a second look.</p>
         <div class="owner-field-actions">
           <a class="btn btn-gold owner-field-btn" href="#owner-cta" data-track-event="owner_primary_cta_click" data-page-slug="property-management">Request Your Revenue Review</a>
@@ -2488,7 +2496,7 @@ headExtra: |
           <div class="owner-field-ticker-item sv-pm-ticker-fact" data-ticker-item><strong>In writing</strong><span>fee basis, included services, and separate charges</span></div>
           <div class="owner-field-ticker-item sv-pm-ticker-fact" data-ticker-item><strong>48 hr</strong><span>usual reply window on every review</span></div>
         </div>
-        <div class="owner-field-ticker-dots" aria-label="Fee guide fact selector">
+        <div class="owner-field-ticker-dots" role="group" aria-label="Fee guide fact selector">
           <button class="owner-field-ticker-dot is-active" type="button" data-ticker-dot="0" aria-label="Show fee guide fact 1"></button>
           <button class="owner-field-ticker-dot" type="button" data-ticker-dot="1" aria-label="Show fee guide fact 2"></button>
           <button class="owner-field-ticker-dot" type="button" data-ticker-dot="2" aria-label="Show fee guide fact 3"></button>
@@ -2508,7 +2516,7 @@ headExtra: |
       <div class="owner-field-benchmark-intro">
         <p class="owner-field-pullquote"><span class="owner-field-drop">"</span>Property management for owners who want every charge explained. Start by putting platform commission, card processing, and management services in separate columns.</p>
         <p class="owner-field-deck"><strong>Fee Guide + Revenue Review</strong> Airbnb's host service fee, Stripe's card price, and a management agreement pay for different things. The review checks the fee basis, included work, and separate costs before you switch.</p>
-        <div class="owner-field-proof-strip" aria-label="Fee comparison sources">
+        <div class="owner-field-proof-strip" role="group" aria-label="Fee comparison sources">
           <span class="owner-field-proof-chip">Published platform pricing</span>
           <span class="owner-field-proof-chip">Property-specific management quote</span>
           <span class="owner-field-proof-chip"><a href="/research/owner-fee-revenue-leak-benchmark-2026/">Read the owner fee guide</a></span>
@@ -2552,7 +2560,7 @@ headExtra: |
         <span class="sv-magazine-header-meta">Pages 6-7 · §2</span>
       </div>
       <div class="owner-field-market-grid" data-owner-market>
-        <div class="owner-field-map" aria-label="Bradenton Sarasota corridor portfolio map">
+        <div class="owner-field-map" role="region" aria-label="Bradenton Sarasota corridor portfolio map">
           <svg viewBox="0 0 400 500" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
             <defs>
               <radialGradient id="ownerFieldWater" cx="50%" cy="50%" r="80%">
@@ -2643,7 +2651,7 @@ headExtra: |
         <span class="sv-magazine-header-meta">Pages 8-11 · §3</span>
       </div>
       <div class="owner-field-label">Fee Definitions</div>
-      <div class="owner-field-mega" aria-label="Three fees are not one comparison">3<span>&ne;</span>1</div>
+      <div class="owner-field-mega" role="img" aria-label="Three fees are not one comparison">3<span aria-hidden="true">&ne;</span>1</div>
       <div class="owner-field-mega-sub">platform · processing · management</div>
       <p>Airbnb, Stripe, and a property manager charge for different services. A useful comparison names the fee basis and the work attached to it.</p>
       <div class="owner-field-econ-grid">
@@ -2693,7 +2701,7 @@ headExtra: |
             <div class="owner-field-stamp-ring"></div>
           </div>
         </div>
-        <div class="owner-field-steps" aria-label="Form progress">
+        <nav class="owner-field-steps" aria-label="Form progress">
           <button class="owner-field-step-dot is-active" type="button" data-form-goto="0" aria-label="Go to step 1">1</button>
           <span class="owner-field-step-line" aria-hidden="true"></span>
           <button class="owner-field-step-dot" type="button" data-form-goto="1" aria-label="Go to step 2">2</button>
@@ -2702,7 +2710,7 @@ headExtra: |
           <span class="owner-field-step-line" aria-hidden="true"></span>
           <button class="owner-field-step-dot" type="button" data-form-goto="3" aria-label="Go to step 4">4</button>
           <div class="owner-field-step-meta" data-form-meta>Question 1 of 4</div>
-        </div>
+        </nav>
         <div class="owner-field-form-step sv-postcard-panel is-active" data-form-step="0">
           <em>Question 1 of 4</em>
           <h3>What listing or property should we review?</h3>
@@ -2776,7 +2784,7 @@ headExtra: |
         </div>
         <div class="owner-field-seal" aria-hidden="true">SV<span class="owner-field-seal-ring"></span></div>
       </form>
-      <div class="owner-field-form-proof" aria-label="Owner review proof points">
+      <div class="owner-field-form-proof" role="group" aria-label="Owner review proof points">
         <span>Real Seascape reply</span>
         <span>48-hour reply</span>
         <span>Sentence or two is enough</span>
@@ -2890,7 +2898,7 @@ headExtra: |
       </details>
     </div>
   </section>
-</main>
+</div>
 
 <script>
   (function () {
