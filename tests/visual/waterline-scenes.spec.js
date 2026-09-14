@@ -25,7 +25,7 @@ test('every manual scene keeps its identity, own photo, facts and trip link', as
     expect(url.searchParams.get('arrive')).toBe('2026-11-07');expect(url.searchParams.get('guests')).toBe('8');
   }
   await page.locator('.g-scene:visible a').click();
-  await expect(page.getByRole('heading',{level:1})).toHaveText('Bradenton Pool Home');
+  await expect(page.getByRole('heading',{level:1})).toHaveText(homes[homes.length - 1].name);
   await expect(page.getByLabel('Arrival',{exact:true})).toHaveValue('2026-11-07');
 });
 

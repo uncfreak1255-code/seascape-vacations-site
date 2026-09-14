@@ -45,7 +45,8 @@
     "206016": "dockside-dreams",
     "135880": "river-house",
     "135881": "sarasota-luxe",
-    "487798": "bradenton-pool-home"
+    "487798": "bradenton-pool-home",
+    "589288": "blue-house"
   };
   var BOOKING_ENGINE_HANDOFF_KEYS = [
     "utm_source",

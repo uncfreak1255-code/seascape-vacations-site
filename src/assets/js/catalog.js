@@ -139,7 +139,7 @@
   if (area === "anna-maria-island" || area === "ami") area="bradenton";
   if (filters.some(function(button) { return button.dataset.filter === area; })) activeFilter=area;
   trip = { arrive:arrive.value, depart:depart.value, guests:guests.value };
-  // Preserve old incoming pool / hot-tub links; every current home has a pool and spa.
+  // Preserve old incoming pool / hot-tub links. Every current home has a pool; hot tubs do not.
   if (area === "pool" || area === "hot-tub") activeFilter="all";
   selected = Array.from(new Set((params.get("compare") || "").split(","))).filter(function(slug) {
     return cards.some(function(card) { return card.dataset.property === slug; });

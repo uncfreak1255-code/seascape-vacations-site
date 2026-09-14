@@ -280,13 +280,71 @@ test("safe property projection is validated as the build-time availability surfa
         { property_slug: "the-oasis", listing_map_id: 189511, availability },
         { property_slug: "sarasota-luxe", listing_map_id: 135881, availability },
         { property_slug: "river-house", listing_map_id: 135880, availability },
-        { property_slug: "bradenton-pool-home", listing_map_id: 487798, availability }
+        { property_slug: "bradenton-pool-home", listing_map_id: 487798, availability },
+        { property_slug: "blue-house", listing_map_id: 589288, availability }
       ]
     })
   );
 
   assert.deepEqual(
     validateSafePropertyProjection(projectionPath),
-    { checked: 5 }
+    { checked: 6 }
+  );
+});
+
+test("safe property projection fails closed when Blue House availability is missing", () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "safe-property-missing-blue-"));
+  const projectionPath = path.join(dir, "properties-latest.json");
+  const syncedAt = new Date().toISOString();
+  const startDate = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
+  const endDate = new Date(Date.now() + 9 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
+  const availability = {
+    source: "seascape-ops",
+    syncedAt,
+    nextAvailable: {
+      startDate,
+      endDate,
+      label: "Future 2-night range",
+      nights: 2,
+      nightlyRate: 425,
+      subcopy: "2 nights from $425/night - Direct booking"
+    }
+  };
+
+  fs.writeFileSync(
+    projectionPath,
+    JSON.stringify({
+      records: [
+        { property_slug: "dockside-dreams", listing_map_id: 206016, availability },
+        { property_slug: "the-oasis", listing_map_id: 189511, availability },
+        { property_slug: "sarasota-luxe", listing_map_id: 135881, availability },
+        { property_slug: "river-house", listing_map_id: 135880, availability },
+        { property_slug: "bradenton-pool-home", listing_map_id: 487798, availability }
+      ]
+    })
+  );
+
+  assert.throws(
+    () => validateSafePropertyProjection(projectionPath),
+    /blue-house: missing next availability/
+  );
+
+  assert.throws(
+    () =>
+      validateHostawayAvailabilityPayload(
+        {
+          properties: [
+            {
+              slug: "dockside-dreams",
+              availability: {
+                syncedAt: new Date().toISOString(),
+                nextAvailable: { startDate: "2099-01-01", endDate: "2099-01-03" }
+              }
+            }
+          ]
+        },
+        { now: Date.now() }
+      ),
+    /blue-house: missing listing/
   );
 });

@@ -104,6 +104,41 @@ test("fallback property seed includes all curated homes shown in the collection"
   ]);
 });
 
+test("client listing map stays in sync with properties.js including Blue House", () => {
+  const trackingSource = fs.readFileSync(
+    path.join(__dirname, "../../src/assets/js/conversion-tracking.js"),
+    "utf8"
+  );
+  const propertiesSource = fs.readFileSync(
+    path.join(__dirname, "../../src/_data/properties.js"),
+    "utf8"
+  );
+  const clientBlock = trackingSource.match(/var PROPERTY_SLUG_BY_LISTING_ID = \{([^}]+)\}/);
+  const serverBlock = propertiesSource.match(/const LISTING_ID_BY_SLUG = \{([^}]+)\}/);
+  assert.ok(clientBlock, "conversion-tracking.js must define PROPERTY_SLUG_BY_LISTING_ID");
+  assert.ok(serverBlock, "properties.js must define LISTING_ID_BY_SLUG");
+
+  const clientEntries = [...clientBlock[1].matchAll(/"(\d+)":\s*"([a-z0-9-]+)"/g)]
+    .map((match) => [match[1], match[2]])
+    .sort((left, right) => left[1].localeCompare(right[1]));
+  const serverEntries = [...serverBlock[1].matchAll(/"([a-z0-9-]+)":\s*"(\d+)"/g)]
+    .map((match) => [match[2], match[1]])
+    .sort((left, right) => left[1].localeCompare(right[1]));
+
+  assert.deepEqual(clientEntries, serverEntries);
+  assert.deepEqual(clientEntries.find((entry) => entry[1] === "blue-house"), ["589288", "blue-house"]);
+});
+
+test("homepage postcard fan stays in one count-agnostic desktop row", () => {
+  const css = fs.readFileSync(path.join(__dirname, "../../src/css/arrival.css"), "utf8");
+  const postcardBlock = css.match(/\.g-postcards\{[^}]+\}/);
+  assert.ok(postcardBlock, "arrival.css must define .g-postcards");
+  assert.match(postcardBlock[0], /grid-auto-flow:column/);
+  assert.match(postcardBlock[0], /grid-auto-columns:minmax\(0,1fr\)/);
+  assert.doesNotMatch(postcardBlock[0], /repeat\(5/);
+  assert.match(css, /\.g-postcard:nth-child\(6\)\{--card-angle:5deg/);
+});
+
 test("Blue House normalizes to the verified Hostaway identity and local photography", () => {
   const blueHouse = propertiesData
     .normalizeProperties(fallbackProperties)

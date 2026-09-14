@@ -91,14 +91,15 @@
 .g-collection .g-section-heading h2{font-size:clamp(45px,4.9vw,72px);line-height:.97}
 .g-collection .g-section-heading{margin-bottom:66px}
 .g-collection .g-section-heading>p{font-size:14px;max-width:300px}
-.g-postcards{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));perspective:1400px;padding:10px 0 24px;gap:18px}
+.g-postcards{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);perspective:1400px;padding:10px 0 24px;gap:14px}
 .g-postcard{position:relative;background:#fffcf4;padding:10px 10px 20px;box-shadow:0 20px 32px #173d421c;transform:rotate(var(--card-angle)) translateY(var(--card-offset));transform-origin:50% 80%;transition:transform .55s cubic-bezier(.2,.7,.2,1),box-shadow .55s;z-index:1;width:100%;margin-left:0}
 .g-postcard:nth-child(1){--card-angle:-5deg;--card-offset:17px;z-index:2}
-.g-postcard:nth-child(2){--card-angle:-2deg;--card-offset:0px;z-index:3}
-.g-postcard:nth-child(3){--card-angle:0deg;--card-offset:-12px;z-index:4}
-.g-postcard:nth-child(4){--card-angle:2deg;--card-offset:0px;z-index:3}
-.g-postcard:nth-child(5){--card-angle:5deg;--card-offset:18px;z-index:2}
-.g-postcard:hover,.g-postcard:focus-within{transform:translateY(-24px) rotate(0deg) scale(1.05);box-shadow:0 26px 50px #173d4233;z-index:6}
+.g-postcard:nth-child(2){--card-angle:-3deg;--card-offset:6px;z-index:3}
+.g-postcard:nth-child(3){--card-angle:-1deg;--card-offset:-10px;z-index:4}
+.g-postcard:nth-child(4){--card-angle:1deg;--card-offset:-10px;z-index:5}
+.g-postcard:nth-child(5){--card-angle:3deg;--card-offset:6px;z-index:3}
+.g-postcard:nth-child(6){--card-angle:5deg;--card-offset:18px;z-index:2}
+.g-postcard:hover,.g-postcard:focus-within{transform:translateY(-24px) rotate(0deg) scale(1.05);box-shadow:0 26px 50px #173d4233;z-index:8}
 .g-postcard a{text-decoration:none}
 .g-postcard-photo{position:relative;overflow:hidden}
 .g-postcard-photo img{width:100%;height:218px;object-fit:cover}
@@ -120,11 +121,11 @@
 .g-arrival-copy{left:6vw}
 .g-arrival-copy h1{font-size:112px}
 .g-scene-caption{gap:30px}
-.g-postcard-photo img{height:180px}
-.g-postcard h3{font-size:26px}
-.g-postcard>p{font-size:13px}
+.g-postcard-photo img{height:168px}
+.g-postcard h3{font-size:22px}
+.g-postcard>p{font-size:12px}
 .g-home-trip{grid-template-columns:190px 1fr}
-.g-postcards{padding-inline:18px}}
+.g-postcards{padding-inline:12px;gap:10px}}
 @media(max-width:700px){.g-arrival{height:580px}
 .g-arrival-copy{top:100px;left:24px;right:24px}
 .g-arrival-copy .g-label{font-size:12px;letter-spacing:.075em;margin-bottom:18px;max-width:290px}

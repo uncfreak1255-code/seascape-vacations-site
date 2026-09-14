@@ -296,6 +296,19 @@ test("property reviews stay nested under one complete VacationRental entity", ()
   }
 });
 
+test("pool-and-hot-tub stay copy does not claim every home has a hot tub", () => {
+  const page = allSeoPages().find((entry) => entry.slug === "vacation-rentals-with-pool-and-hot-tub");
+  assert.ok(page, "vacation-rentals-with-pool-and-hot-tub must exist");
+  const visible = [
+    page.intro,
+    ...(page.faqs || []).map((faq) => `${faq.question} ${faq.answer}`),
+    ...(page.decisionHighlights || []).map((item) => `${item.label} ${item.value}`)
+  ].join(" ");
+  assert.doesNotMatch(visible, /every (?:seascape )?home[^.]*hot tub/i);
+  assert.doesNotMatch(visible, /hot tub heat is included at every home/i);
+  assert.match(page.intro, /Pickleball Pool Home Retreat has a private pool, but no verified hot tub or spa/);
+});
+
 test("Blue House publishes verified Hostaway identity, coordinates, and no spa or waterfront claims", () => {
   const property = fallbackProperties.find((entry) => entry.slug === "blue-house");
   assert.ok(property, "blue-house must exist in the fallback data");

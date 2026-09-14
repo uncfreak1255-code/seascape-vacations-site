@@ -12,7 +12,8 @@ const propertyPages = [
   "the-oasis",
   "sarasota-luxe",
   "river-house",
-  "bradenton-pool-home"
+  "bradenton-pool-home",
+  "blue-house"
 ];
 const allowedSave50IncludePaths = new Set([
   path.join("src", "properties", "index.njk"),
@@ -204,7 +205,7 @@ test("properties catalog and all email-linked property pages include the SAVE50 
   }
 });
 
-test("SAVE50 reminder is only mounted on the properties catalog and five email-linked homes", () => {
+test("SAVE50 reminder is only mounted on the properties catalog and six email-linked homes", () => {
   const filesWithInclude = walkFiles(path.join(projectRoot, "src"))
     .filter((filePath) => read(filePath).includes('partials/save50-offer.njk'))
     .map((filePath) => path.relative(projectRoot, filePath));

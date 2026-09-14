@@ -64,6 +64,16 @@ test('explicit destination dates and guests win as a pair over the current trip'
   }
 });
 
+test('Blue House listing 589288 resolves to blue-house on checkout and shortlist', () => {
+  const checkout = new URL(runtime(trip).api.buildBookingEngineHandoffUrl('https://book.seascape-vacations.com/listings/589288'));
+  assert.equal(checkout.searchParams.get('property_slug'), 'blue-house');
+
+  const shortlist = runtime('?compare=blue-house,unknown-home,dockside-dreams').api.readTripParams(
+    new URLSearchParams('compare=blue-house,unknown-home,dockside-dreams')
+  );
+  assert.equal(shortlist.compare, 'blue-house,dockside-dreams');
+});
+
 test('invalid, partial, reversed, impossible and past trip dates are never passed to checkout', () => {
   for (const query of ['arrive=2099-12-05', 'arrive=2099-12-12&depart=2099-12-05', 'arrive=2099-02-30&depart=2099-03-04', 'arrive=2020-12-05&depart=2020-12-12']) {
     const url = new URL(runtime('?' + query + '&guests=8oops').api.buildBookingEngineHandoffUrl('https://book.seascape-vacations.com/listings/206016'));
