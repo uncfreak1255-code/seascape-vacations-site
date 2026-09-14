@@ -32,7 +32,7 @@
 .g-review-grid figure:first-child::before{content:"“";display:block;font:clamp(72px,12vw,120px)/.7 'Instrument Serif',Georgia,serif;color:var(--g-citron);margin:0 0 10px}
 .g-review-grid blockquote{margin:0}
 .g-review-grid blockquote p{font:22px/1.35 'Instrument Serif',serif;color:var(--g-paper);margin:0}
-.g-review-grid figure:first-child blockquote p{font-size:clamp(28px,3.2vw,42px);line-height:1.18;max-width:16em}
+.g-review-grid figure:first-child blockquote p{font-size:clamp(28px,3.2vw,42px);line-height:1.18;max-width:22ch}
 .g-review-grid figcaption{font-size:13px;color:var(--g-paper);margin-top:16px}
 .g-review-grid figcaption a{color:var(--g-paper);display:inline-flex;align-items:center;min-height:44px;text-decoration:underline;text-underline-offset:3px}
 @media(max-width:1050px){.g-home-trip{grid-template-columns:180px 1fr;gap:24px}
