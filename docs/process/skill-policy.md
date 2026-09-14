@@ -44,6 +44,15 @@ design pair stable while allowing guide families to borrow stronger interface,
 artifact, map, chart, imagery, or prototype lenses when the current session
 actually exposes them.
 
+## Shared OpenSEO evidence
+
+`openseo-review` is a project-scoped checked projection of
+`sawyer-skills/skills/seascape/measurement/openseo-review`. Update that maintained
+source first and compare every file before refreshing this copy and the plugin
+copy. The relative Claude link reads the local projection, including in worktrees.
+The procedure remains an evidence review; its spend and external-action limits
+remain in force.
+
 ## Model And Tool Routing
 
 Choose models and plugins at task level. Do not change a global default or add
