@@ -143,7 +143,7 @@ test("stay hub exists and child stay pages link back to it", () => {
 
   for (const marker of [
     "Destination collections",
-    "Use-case collections",
+    "Collections by trip and amenities",
     '/stays/{{ page.slug }}/',
     'page.destination == section.key',
     "/properties/",

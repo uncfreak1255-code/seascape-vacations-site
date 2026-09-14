@@ -82,6 +82,7 @@ function createCliRepo(t, testCommand) {
   runGit(projectRoot, ["init"]);
   runGit(projectRoot, ["config", "user.email", "proof-gate@example.test"]);
   runGit(projectRoot, ["config", "user.name", "Proof Gate Test"]);
+  runGit(projectRoot, ["config", "commit.gpgsign", "false"]);
   runGit(projectRoot, ["add", "."]);
   runGit(projectRoot, ["commit", "-m", "fixture"]);
 

@@ -63,6 +63,7 @@ function commitDoc(repo, doc, message, isoDate) {
 function makeRepo() {
   const repo = fs.mkdtempSync(path.join(os.tmpdir(), "seo-history-fixture-"));
   git(repo, "init", "-q", "-b", "main");
+  git(repo, "config", "commit.gpgsign", "false");
   return repo;
 }
 
