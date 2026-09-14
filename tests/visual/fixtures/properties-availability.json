@@ -113,5 +113,28 @@
       }
     ],
     "weekendsLeft": 0
+  },
+  "blue-house": {
+    "source": "hostaway",
+    "syncedAt": "2026-05-17T15:39:21.311Z",
+    "nextAvailable": {
+      "startDate": "2026-09-18",
+      "endDate": "2026-09-21",
+      "label": "Sep 18 - Sep 21",
+      "nights": 3,
+      "nightlyRate": 0,
+      "subcopy": "3 nights - Direct booking"
+    },
+    "monthNights": [
+      {
+        "label": "NIGHTS IN SEP",
+        "value": 3
+      },
+      {
+        "label": "NIGHTS IN OCT",
+        "value": 0
+      }
+    ],
+    "weekendsLeft": 1
   }
 }

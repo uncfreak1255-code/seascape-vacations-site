@@ -95,12 +95,81 @@ test("fallback property seed includes all curated homes shown in the collection"
     .sort();
 
   assert.deepEqual(slugs, [
+    "blue-house",
     "bradenton-pool-home",
     "dockside-dreams",
     "river-house",
     "sarasota-luxe",
     "the-oasis"
   ]);
+});
+
+test("client listing map stays in sync with properties.js including Blue House", () => {
+  const trackingSource = fs.readFileSync(
+    path.join(__dirname, "../../src/assets/js/conversion-tracking.js"),
+    "utf8"
+  );
+  const propertiesSource = fs.readFileSync(
+    path.join(__dirname, "../../src/_data/properties.js"),
+    "utf8"
+  );
+  const clientBlock = trackingSource.match(/var PROPERTY_SLUG_BY_LISTING_ID = \{([^}]+)\}/);
+  const serverBlock = propertiesSource.match(/const LISTING_ID_BY_SLUG = \{([^}]+)\}/);
+  assert.ok(clientBlock, "conversion-tracking.js must define PROPERTY_SLUG_BY_LISTING_ID");
+  assert.ok(serverBlock, "properties.js must define LISTING_ID_BY_SLUG");
+
+  const clientEntries = [...clientBlock[1].matchAll(/"(\d+)":\s*"([a-z0-9-]+)"/g)]
+    .map((match) => [match[1], match[2]])
+    .sort((left, right) => left[1].localeCompare(right[1]));
+  const serverEntries = [...serverBlock[1].matchAll(/"([a-z0-9-]+)":\s*"(\d+)"/g)]
+    .map((match) => [match[2], match[1]])
+    .sort((left, right) => left[1].localeCompare(right[1]));
+
+  assert.deepEqual(clientEntries, serverEntries);
+  assert.deepEqual(clientEntries.find((entry) => entry[1] === "blue-house"), ["589288", "blue-house"]);
+});
+
+test("homepage guest reviews sit on an ink band and use the longest listing quote", () => {
+  const homepage = fs.readFileSync(path.join(__dirname, "../../src/index.njk"), "utf8");
+  const css = fs.readFileSync(path.join(__dirname, "../../src/css/arrival.css"), "utf8");
+  const reviewBlock = homepage.match(/class="g-home-reviews"[\s\S]*?<\/section>/);
+  const band = css.match(/\.g-home-reviews\{[^}]+\}/);
+  const lead = css.match(/\.g-review-grid figure:first-child\{[^}]+\}/);
+
+  assert.ok(reviewBlock, "homepage must render a dedicated guest-review band");
+  assert.match(reviewBlock[0], /sort\(true, false, "text\.length"\)/);
+  assert.doesNotMatch(reviewBlock[0], /sort\(false, false, "text\.length"\)/);
+  assert.match(reviewBlock[0], /class="g-wrap"/);
+  assert.ok(band, "arrival.css must define the homepage review band");
+  assert.match(band[0], /background:var\(--g-ink\)/);
+  assert.ok(lead, "the first listing quote must lead the review band");
+  assert.match(lead[0], /grid-column:1\/-1/);
+});
+
+test("homepage postcard fan stays in one count-agnostic desktop row", () => {
+  const css = fs.readFileSync(path.join(__dirname, "../../src/css/arrival.css"), "utf8");
+  const postcardBlock = css.match(/\.g-postcards\{[^}]+\}/);
+  assert.ok(postcardBlock, "arrival.css must define .g-postcards");
+  assert.match(postcardBlock[0], /grid-auto-flow:column/);
+  assert.match(postcardBlock[0], /grid-auto-columns:minmax\(0,1fr\)/);
+  assert.doesNotMatch(postcardBlock[0], /repeat\(5/);
+  assert.match(css, /\.g-postcard:nth-child\(6\)\{--card-angle:5deg/);
+});
+
+test("Blue House normalizes to the verified Hostaway identity and local photography", () => {
+  const blueHouse = propertiesData
+    .normalizeProperties(fallbackProperties)
+    .find((property) => property.slug === "blue-house");
+
+  assert.ok(blueHouse);
+  assert.equal(blueHouse.id, "589288");
+  assert.equal(blueHouse.bookingUrl, "https://book.seascape-vacations.com/listings/589288");
+  assert.equal(blueHouse.pageUrl, "/properties/blue-house/");
+  assert.equal(blueHouse.latitude, 27.50860514);
+  assert.equal(blueHouse.longitude, -82.63215404);
+  assert.equal(blueHouse.postalCode, "34209");
+  assert.equal(blueHouse.photography.photos.length, 13);
+  assert.equal(blueHouse.guestFacts.verifiedAt, "2026-09-13");
 });
 
 test("normalizeAvailabilitySummary drops stale or incomplete calendar summaries", () => {
@@ -204,7 +273,7 @@ test("safe property projection overlays public availability without replacing cu
   const properties = propertiesData.loadSafePropertyProjection(projectionPath);
   const dockside = properties.find((property) => property.slug === "dockside-dreams");
 
-  assert.equal(properties.length, 5);
+  assert.equal(properties.length, 6);
   assert.equal(dockside.name, "Dockside Dreams");
   assert.equal(dockside.id, "206016");
   assert.equal(dockside.availability.source, "seascape-ops");
@@ -220,13 +289,14 @@ test("visual test mode keeps fixture availability live for deterministic snapsho
     const properties = await propertiesData();
     const availabilityLabels = properties.map((property) => property.availability?.nextAvailable?.label ?? null);
 
-    assert.equal(properties.length, 5);
+    assert.equal(properties.length, 6);
     assert.deepEqual(availabilityLabels, [
       "Jun 08 - Jun 10",
       "May 18 - May 20",
       "May 30 - Jun 06",
       "Aug 21 - Aug 23",
-      "May 18 - May 19"
+      "May 18 - May 19",
+      "Sep 18 - Sep 21"
     ]);
     assert.equal(properties[0].availability.syncedAt, "2026-05-17T15:39:21.311Z");
   } finally {

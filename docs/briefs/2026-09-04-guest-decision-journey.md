@@ -4,16 +4,20 @@
 - primary keyword: vacation rentals near Anna Maria Island (existing intent).
 - secondary keywords: Bradenton vacation rentals, Sarasota vacation rentals.
 - audience pattern: Compare real homes, understand sleeping and restrictions, keep the trip, check the complete total.
-- proof source: Canonical properties-fallback.json via properties.js; public Hostaway listing descriptions and photography inspected September 4, 2026; rendered live before and local after.
+- proof source: Canonical properties-fallback.json via properties.js; Blue House Hub canon, public Hostaway listing schema, booking page and photography inspected September 13, 2026; rendered live before and local after.
 - required internal links: /properties/, /guides/
 - CTA target: The selected home's public Hostaway listing at book.seascape-vacations.com.
 - anti-claims: No invented amenities, unconditional pet permission, step-free access, cancellation guarantees, savings percentages, selected-date availability or model-generated prices. No revenue lift claimed.
 
 ## Decision and scope
 
-September 5 copy decision: Sawyer prefers “our homes” with no fixed inventory count. Apply this across navigation, homepage, catalog and descriptive metadata. Dunia’s Blue Pool House and Lily’s home are planned additions, not published inventory; photos, verified facts and bookable Hostaway records remain required before adding either. Per-home capacity and room counts remain factual. The decorative scene number is an ordinal, with no inventory-total denominator.
+September 5 copy decision: Sawyer prefers “our homes” with no fixed inventory count. Apply this across navigation, homepage, catalog and descriptive metadata. Per-home capacity and room counts remain factual. The decorative scene number is an ordinal, with no inventory-total denominator.
 
-North Star: make Seascape the easiest small collection for a group organizer to choose with confidence. Five distinct homes and a person who knows them are the advantage. Build the choice, then carry it intact to the authoritative quote and checkout.
+September 13 Blue House addition: Sawyer directed the site to add the live Blue House as the sixth managed home. Public Hostaway listing 589288 and its direct-booking page identify it as Pickleball Pool Home Retreat: 4 bedrooms, 2 bathrooms and 10 guests. The implementation uses 13 real photos selected from the current 30-photo Hostaway gallery and generated from the archived original-resolution Elite Realty Shots files. Source changes are limited to `src/_data/properties.js`, `src/_data/properties-fallback.json`, the generated property route and AI property summary, the shared verification-date rendering, responsive local photos, current inventory wording and the corresponding property, catalog, schema, smoke and visual checks. Lily’s home remains outside published inventory until its own verified facts, photography and bookable Hostaway record exist.
+
+September 14 completeness: Blue House has no verified hot tub or spa. Scope `/stays/vacation-rentals-with-pool-and-hot-tub/` intro, FAQs, and highlights to the five homes that have one. Register listing 589288 in `src/assets/js/conversion-tracking.js` so checkout attribution and shortlist continuity keep `blue-house`. Keep the desktop postcard fan in one count-agnostic row with a sixth-card treatment. Require Blue House in the safe availability projection. SAVE50 landing, catalog openings, and Bradenton-area match counts follow the sixth home.
+
+North Star: make Seascape the easiest small collection for a group organizer to choose with confidence. Distinct homes and a person who knows them are the advantage. Build the choice, then carry it intact to the authoritative quote and checkout.
 
 The first draft improved only the catalog. This revision connects the homepage, catalog, comparison/share link, all five detail pages, prepared property questions and Hostaway handoff. Keep existing canonical routes, attribution, guide discovery, reviewed guest reviews and SAVE50 email landing continuity. Retire the unidentified homepage hero, competing baseline prices, weather ticker, automatic homepage discount popup, blanket cancellation language and five duplicated detail templates. No framework, account, model, database or new service is needed.
 

@@ -2,7 +2,7 @@ const moneyRoutes = [
   {slug:"guides-index", path:"/guides/", readySelector:"main h1"},
   {slug:"about-seascape", path:"/about-us/", readySelector:"main h1"},
   {slug:"stay-bradenton-near-beaches", path:"/stays/bradenton-vacation-rentals-near-beaches/", readySelector:"main h1"},
-  ...["dockside-dreams", "the-oasis", "sarasota-luxe", "river-house", "bradenton-pool-home"].map(slug => ({slug, path:`/properties/${slug}/`, readySelector:"[data-property-page] h1"})),
+  ...["dockside-dreams", "the-oasis", "sarasota-luxe", "river-house", "bradenton-pool-home", "blue-house"].map(slug => ({slug, path:`/properties/${slug}/`, readySelector:"[data-property-page] h1"})),
   {
     slug: "home",
     path: "/",

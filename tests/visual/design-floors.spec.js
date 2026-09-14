@@ -12,14 +12,14 @@ const { gotoMarketingRoute } = require("./test-helpers");
  * spec proves those floors on every money route.
  *
  * Scope rule (SPEC-common.md): F1 and F2 check the whole page on
- * `body.guest-site` pages (home, catalog, the five property pages) and only
+ * `body.guest-site` pages (home, catalog, the six property pages) and only
  * the header/mobile-menu/footer subtrees on every other route, whose bodies
  * are not fully restyled in this PR. The scope is read from the live DOM
  * (`document.body.classList.contains('guest-site')`), not hardcoded per
  * route, so it stays correct as routes move between the two states.
  */
 
-const SCENES = ["the-oasis", "dockside-dreams", "sarasota-luxe", "river-house", "bradenton-pool-home"];
+const SCENES = ["the-oasis", "dockside-dreams", "sarasota-luxe", "river-house", "bradenton-pool-home", "blue-house"];
 const SHELL_ROOT_SELECTOR = ".g-header, .g-mobile-menu, .g-footer";
 
 // -- in-page scan functions (serialized into the browser by page.evaluate) --
@@ -291,7 +291,7 @@ for (const routeConfig of moneyRoutes) {
   });
 }
 
-// -- F4: homepage hero contrast for all five scenes --
+// -- F4: homepage hero contrast for all six scenes --
 
 const homeRoute = moneyRoutes.find((route) => route.slug === "home");
 if (!homeRoute) {

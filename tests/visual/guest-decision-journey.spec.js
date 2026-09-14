@@ -39,7 +39,7 @@ test("a guide detour preserves trip details through a stay collection", async ({
 test("area and group matching preserve the selected trip into details and checkout", async ({ page, context }) => {
   await context.route("https://book.seascape-vacations.com/**", route => route.fulfill({status:200,contentType:"text/html",body:"<h1>Checkout navigation intercepted by test</h1>"}));
   await visit(page, itinerary + "&area=anna-maria-island");
-  await expect(page.locator(".catalog-card:visible")).toHaveCount(4);
+  await expect(page.locator(".catalog-card:visible")).toHaveCount(5);
   await expect(page.locator('[data-filter="bradenton"]')).toHaveAttribute("aria-pressed","true");
   await expect(page.locator("#trip-status")).toContainText("Nov 7, 2026");
   const cta = page.locator('[data-property="dockside-dreams"] .catalog-check-dates');
@@ -202,8 +202,8 @@ test("without JavaScript, every home still has real details and a checkout path"
   const page = await context.newPage();
   await registerStableNetwork(page);
   await page.goto("/properties/?visual-test=1");
-  await expect(page.locator(".catalog-card")).toHaveCount(5);
-  await expect(page.locator(".catalog-check-dates")).toHaveCount(5);
+  await expect(page.locator(".catalog-card")).toHaveCount(6);
+  await expect(page.locator(".catalog-check-dates")).toHaveCount(6);
   await expect(page.locator(".catalog-compare-toggle:visible")).toHaveCount(0);
   await expect(page.locator(".catalog-opening:visible")).toHaveCount(0);
   const response = await page.goto(await page.getByRole("link",{name:"View Dockside Dreams details",exact:true}).getAttribute("href"));

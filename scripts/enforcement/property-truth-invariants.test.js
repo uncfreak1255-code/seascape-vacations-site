@@ -254,7 +254,8 @@ test("property reviews stay nested under one complete VacationRental entity", ()
     ["bradenton-pool-home", ["vs56V7VNzQclcCi9kafLZ2WqaHTXVCPmVeXDY97e2GE", "Rm0StPDUlVu4jPwH--B0QGxa7KRBZ-ioHHGW1nr-SYsI", "fveav4RDND6H0n92eYn7UMKyN01TxeUZ6Dr--p9eV-rQ"]],
     ["dockside-dreams", ["xdx1autFInfzKRNujCVSZdAAXdGGkOh9a5-YTfIL22s", "Jz4vT1Y9--TQtQh6OcU3NPt4W7rEC8WxLii4RDMF8FgA", "THwWro0V2bCwJuZiHtXCu6FTTbZ2uGXYA6Pl1ouezDw"]],
     ["river-house", ["3-WHUih34aKJ-O8dGl9n9-mwQoL3ZCAfRN-SdAOJyq4", "g8wwLrsaItg4FXqddvMHvmC-RqGfMcD5WrwyAWwVv70", "OjOthIkLY--af9i-nKVMVz1hIehhAFqAMhnx21GMeMaE"]],
-    ["the-oasis", ["e23Axvnc1ut0OcWotT14oVHj--Uy4uQezssOrYIFqbe4", "9Cklr9RWmrxTmXFPnskevzCeBDtpos--pP5T8N1EpN1M", "TlB9vmTl4A6t6vVsiMEg7p3LHLxuGO60XKpM6DEO6Bo"]]
+    ["the-oasis", ["e23Axvnc1ut0OcWotT14oVHj--Uy4uQezssOrYIFqbe4", "9Cklr9RWmrxTmXFPnskevzCeBDtpos--pP5T8N1EpN1M", "TlB9vmTl4A6t6vVsiMEg7p3LHLxuGO60XKpM6DEO6Bo"]],
+    ["blue-house", ["/images/homes/blue-house/17.webp", "/images/homes/blue-house/08.webp", "/images/homes/blue-house/14.webp"]]
   ]);
 
 
@@ -293,6 +294,45 @@ test("property reviews stay nested under one complete VacationRental entity", ()
     assert.match(String(vacationRentals[0].latitude), /^-?\d+\.\d{5,}$/, `${property.slug} latitude must have at least 5 decimal places`);
     assert.match(String(vacationRentals[0].longitude), /^-?\d+\.\d{5,}$/, `${property.slug} longitude must have at least 5 decimal places`);
   }
+});
+
+test("pool-and-hot-tub stay copy does not claim every home has a hot tub", () => {
+  const page = allSeoPages().find((entry) => entry.slug === "vacation-rentals-with-pool-and-hot-tub");
+  assert.ok(page, "vacation-rentals-with-pool-and-hot-tub must exist");
+  const visible = [
+    page.intro,
+    ...(page.faqs || []).map((faq) => `${faq.question} ${faq.answer}`),
+    ...(page.decisionHighlights || []).map((item) => `${item.label} ${item.value}`)
+  ].join(" ");
+  assert.doesNotMatch(visible, /every (?:seascape )?home[^.]*hot tub/i);
+  assert.doesNotMatch(visible, /hot tub heat is included at every home/i);
+  assert.match(page.intro, /Pickleball Pool Home Retreat has a private pool, but no verified hot tub or spa/);
+});
+
+test("Blue House publishes verified Hostaway identity, coordinates, and no spa or waterfront claims", () => {
+  const property = fallbackProperties.find((entry) => entry.slug === "blue-house");
+  assert.ok(property, "blue-house must exist in the fallback data");
+  assert.equal(property.id, "589288");
+  assert.equal(property.guests, 10);
+  assert.equal(property.bedrooms, 4);
+  assert.equal(property.bathrooms, 2);
+  assert.equal(property.guestFacts.pets.status, "no");
+  assert.doesNotMatch(
+    cleanText({ name: property.name, description: property.description, highlights: property.highlights, amenities: property.amenities, marketing_amenities: property.marketing_amenities, tagline: property.guestFacts.tagline, summary: property.guestFacts.summary }),
+    /\b(hot tub|spa|waterfront|dock|beachfront)\b/i
+  );
+
+  const html = readBuilt("properties/blue-house/index.html");
+  const rental = extractJsonLdObjects(html).find((item) => item["@type"] === "VacationRental");
+  assert.ok(rental, "blue-house must publish VacationRental schema");
+  assert.equal(rental.identifier, "seascape-589288");
+  assert.equal(rental.latitude, 27.50860514);
+  assert.equal(rental.longitude, -82.63215404);
+  assert.equal(rental.address.postalCode, "34209");
+  assert.ok(rental.image.length >= 8, "blue-house must publish at least 8 rental images");
+  assert.match(html, /booking listing<\/a> on September 13, 2026/);
+  assert.match(html, /Bedroom 4 also has a separate exterior door/);
+  assert.match(html, /https:\/\/book\.seascape-vacations\.com\/listings\/589288/);
 });
 
 function escapeRegExp(value) {

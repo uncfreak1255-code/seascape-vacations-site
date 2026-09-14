@@ -144,7 +144,7 @@ test("priority stay pages carry page-specific trip math and fallback routing met
   }
 });
 
-test("all five rendered homes carry the matching tracked booking decision", () => {
+test("all six rendered homes carry the matching tracked booking decision", () => {
   for (const property of require("../../src/_data/properties-fallback.json")) {
     const source = fs.readFileSync(path.join(projectRoot, "src/properties", property.slug, "index.njk"), "utf8");
     assert.ok(source.includes("layout: layouts/property.njk"));

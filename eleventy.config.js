@@ -278,6 +278,13 @@ module.exports = function(eleventyConfig) {
     return toHostawayCdn(url, width, 82);
   });
 
+  eleventyConfig.addFilter("dateLabel", function(dateStr) {
+    const value = String(dateStr || "").trim();
+    if (!value) return "";
+    const normalized = /^\d{4}-\d{2}-\d{2}$/.test(value) ? `${value}T12:00:00Z` : value;
+    return formatDateLabel(normalized) || value;
+  });
+
   eleventyConfig.addFilter("monthYear", function(dateStr) {
     const MONTH_NAMES = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     const match = /^(\d{4})-(\d{2})-\d{2}$/.exec(String(dateStr || ""));

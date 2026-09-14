@@ -248,7 +248,8 @@ test("house-fit capacity and layout claims match property truth in both formats"
   const htmlText = visibleHtmlText(read(htmlPath));
   const text = read(textPath);
 
-  assert.equal(list.length, 5, "the email describes exactly five homes");
+  const emailHomes = list.filter((property) => requiredPropertySlugs.includes(property.slug));
+  assert.equal(emailHomes.length, 5, "the email describes exactly the five email-linked homes");
 
   const largest = list.reduce((best, property) => (property.guests > best.guests ? property : best));
   assert.equal(largest.name, "The Oasis", "the sleeps-16 claim must point at the largest home");
@@ -262,7 +263,7 @@ test("house-fit capacity and layout claims match property truth in both formats"
   assert.equal(waterfront.length, 1, "only one home may carry a waterfront claim");
   assert.equal(waterfront[0].name, "Dockside Dreams");
 
-  for (const property of list) {
+  for (const property of emailHomes) {
     assert.ok(
       (property.amenities || []).includes("pool"),
       `${property.name} must have a pool for the all-five private pool claim`

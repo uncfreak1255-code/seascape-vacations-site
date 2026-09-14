@@ -169,15 +169,16 @@ components:
 # Seascape design direction
 
 ## Product promise
-Help a group choose one of five real homes, understand the details that could change its choice, and arrive at Hostaway with dates and guest count intact. Seascape is a small, owner-operated collection in Bradenton and Sarasota. Do not make it look like an island-wide resort or an unlimited marketplace.
+Help a group choose one of the real homes, understand the details that could change its choice, and arrive at Hostaway with dates and guest count intact. Seascape is a small, owner-operated collection in Bradenton and Sarasota. Do not make it look like an island-wide resort or an unlimited marketplace.
 
 ## Guest journey: Waterline (September 2026)
-The homepage, catalog, and five property details use the scoped `guest-site` theme in `src/css/guest.css`, with homepage scenes in `src/css/arrival.css`. The guide index, field-journal guides, two homepage comparison guides, stay collections, and About page share the guest header and footer. Their editorial bodies keep their existing typography. Owner pages and other legacy routes retain the tokens above until deliberately redesigned.
+The homepage, catalog, and property details use the scoped `guest-site` theme in `src/css/guest.css`, with homepage scenes in `src/css/arrival.css`. The guide index, field-journal guides, two homepage comparison guides, stay collections, and About page share the guest header and footer. Their editorial bodies keep their existing typography. Owner pages and other legacy routes retain the tokens above until deliberately redesigned.
 
 - Canvas: sun-warmed paper `#F6F3EB`; ink and primary controls: deep marine `#173D42`; supporting text: `#52676A`; accent: clay `#A4533E`; selected scene and photographic CTA: citron `#D6EB85`; rules: `#CAD4CF`. Citron is a surface/accent, never small text on paper.
 - Display type: self-hosted Instrument Serif, regular and italic, under its included SIL Open Font License. Poppins remains the practical body and control face. Large, compact display lines are deliberate; factual text stays readable.
-- The photographic homepage opening leads on both desktop and mobile. Name the actual pictured home. Guests can preview each of the five homes manually; never auto-rotate scenes. Keep a direct property link for each scene and a clearly labeled date/guest form immediately after the collection selector. Navigation offers a direct jump to the form.
-- The five-home postcard collection uses shallow perspective, an open fan on desktop, and full readable cards in a native horizontal snap list on mobile. Hover enhances a card; tap and keyboard provide the complete path. Never hide information behind hover alone.
+- The photographic homepage opening leads on both desktop and mobile. Name the actual pictured home. Guests can preview each home manually; never auto-rotate scenes. Keep a direct property link for each scene and a clearly labeled date/guest form immediately after the collection selector. Navigation offers a direct jump to the form.
+- The postcard collection uses shallow perspective, an open fan on desktop, and full readable cards in a native horizontal snap list on mobile. Desktop cards stay in one count-agnostic row so a new home cannot wrap off the fan. Hover enhances a card; tap and keyboard provide the complete path. Never hide information behind hover alone.
+- Homepage guest proof sits on a full-bleed ink band so it does not flatten into the paper sections around it. One sourced listing quote leads at display scale; the others support it. Citron marks the band, never a review-count badge or invented rating theater.
 - Carry expressive type, photographic scale, calm rules and marine/paper contrast through the catalog and property pages. Keep the working comparison table and conventional booking panel. Property photos remain real rectangles, not simulated rooms or a fictitious floor plan.
 - Motion has three jobs: identify a newly selected home, give the collection tactile depth, and connect its photo to the detail page. Use browser-native CSS/Web Animations and same-origin view transitions as progressive enhancements. No loader, scroll hijacking, autoplay, custom cursor, or required animation library. The static reduced-motion and no-JavaScript paths remain complete.
 - Desktop content can reach 1280px, with a full-width opening photograph. Controls remain at least 44px tall, with visible focus, clear labels and quiet solid surfaces. No animation may delay booking or be required to reveal essential information.
@@ -203,7 +204,7 @@ Floors (the contract every change to these routes must leave true, enforced in `
 - F1 — Minimum font size: no visible text renders below 12px, on desktop or mobile, including decorative eyebrows.
 - F2 — Tap targets: on mobile (393px), every link, button, input, select and summary has a hit box of at least 44×44px, except inline links inside flowing sentences.
 - F3 — No overflow: the page never scrolls horizontally at 360, 375 or 393px.
-- F4 — Hero contrast: on the homepage, white text over the scene photo reaches 4.5:1 (text under 24px) or 3:1 (24px and larger) for all five scenes, measured on rendered pixels.
+- F4 — Hero contrast: on the homepage, white text over the scene photo reaches 4.5:1 (text under 24px) or 3:1 (24px and larger) for every scene, measured on rendered pixels.
 - F5 — One shared shell: every built HTML page has exactly one `class="g-header"` and one `class="g-footer"`.
 - F6 — Internal-link distribution: a hub page the shared shell links to stays linked from at least 70% of built pages. Editing a shared header or footer redistributes internal links across the whole site at once, and no other gate here can see it: URLs, titles, canonicals and JSON-LD stay identical, the link validator only checks that links which exist still resolve, and the visual gate's per-route pixel tolerance absorbs a footer change without a diff.
 

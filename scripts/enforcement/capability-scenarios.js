@@ -113,7 +113,8 @@ const propertySlugs = [
   "the-oasis",
   "sarasota-luxe",
   "river-house",
-  "bradenton-pool-home"
+  "bradenton-pool-home",
+  "blue-house"
 ];
 
 const SCENARIOS = [

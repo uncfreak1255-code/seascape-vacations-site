@@ -20,7 +20,8 @@ const LISTING_ID_BY_SLUG = {
   "the-oasis": "189511",
   "sarasota-luxe": "135881",
   "river-house": "135880",
-  "bradenton-pool-home": "487798"
+  "bradenton-pool-home": "487798",
+  "blue-house": "589288"
 };
 const STATIC_PROPERTY_SCHEMA_FACTS_BY_SLUG = {
   "dockside-dreams": {
@@ -47,6 +48,11 @@ const STATIC_PROPERTY_SCHEMA_FACTS_BY_SLUG = {
     latitude: 27.4726594,
     longitude: -82.600671,
     postalCode: "34205"
+  },
+  "blue-house": {
+    latitude: 27.50860514,
+    longitude: -82.63215404,
+    postalCode: "34209"
   }
 };
 
