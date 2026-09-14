@@ -93,11 +93,11 @@
   },
   "devDependencies": {
     "@11ty/eleventy": "^3.1.6",
-    "@axe-core/playwright": "^4.12.1",
+    "@axe-core/playwright": "^4.13.0",
     "@lhci/cli": "^0.15.1",
-    "@playwright/test": "^1.62.0",
+    "@playwright/test": "^1.63.0",
     "html-minifier-terser": "^7.2.0",
-    "sharp": "^0.34.5"
+    "sharp": "^0.35.4"
   },
   "dependencies": {
     "@netlify/blobs": "^10.7.13"
