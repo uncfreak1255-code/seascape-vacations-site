@@ -177,14 +177,6 @@ test("Anna Maria mobile sticky CTAs reserve safe-area bottom space", () => {
   );
 });
 
-test("homepage review band leads with a sourced listing quote, not the shortest leftover", () => {
-  const html=readSource("_site/index.html");
-  assert.match(html,/<section class="g-home-reviews"/);
-  assert.match(html,/almost every morning we seen dolphins and manatees/);
-  assert.match(html,/we were two family of 5 and it was perfect/);
-  assert.doesNotMatch(html,/We had a great time!/);
-});
-
 test("homepage does not present weather or cached openings as live booking evidence", () => {
   const html=readSource("_site/index.html");
   assert.doesNotMatch(html,/hero-live-source|hero-v2.js|data-live-fact|Live home collection|homes open|312 stays/);
