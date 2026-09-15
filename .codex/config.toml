@@ -14,6 +14,9 @@ enabled_tools = [
   "inspect_urls",
 ]
 
+[plugins."build-macos-apps@openai-curated"]
+enabled = false
+
 [plugins."github@openai-curated"]
 enabled = true
 
@@ -26,6 +29,30 @@ enabled = true
 [plugins."figma@openai-curated"]
 enabled = true
 
+[plugins."chatgpt-apps@openai-curated"]
+enabled = false
+
+[plugins."expo@openai-curated"]
+enabled = false
+
+[plugins."neon-postgres@openai-curated"]
+enabled = false
+
+[plugins."remotion@openai-curated"]
+enabled = false
+
+[plugins."plugin-eval@openai-curated"]
+enabled = false
+
+[plugins."codex-security@openai-curated"]
+enabled = false
+
+[plugins."openai-developers@openai-curated"]
+enabled = false
+
+[plugins."outlook-email@openai-curated"]
+enabled = false
+
 [plugins."browser@openai-bundled"]
 enabled = true
 
@@ -35,5 +62,26 @@ enabled = true
 [plugins."visualize@openai-bundled"]
 enabled = true
 
+[plugins."computer-use@openai-bundled"]
+enabled = false
+
+[plugins."pdf@openai-primary-runtime"]
+enabled = false
+
+[plugins."chrome@openai-bundled"]
+enabled = false
+
+[plugins."codex-app-tools@openai-bundled"]
+enabled = false
+
+[plugins."computer-history@openai-bundled"]
+enabled = false
+
+[plugins."documents@openai-primary-runtime"]
+enabled = false
+
+[plugins."founder-kit@sawyer-skills"]
+enabled = false
+
 [plugins."mattpocock-skills@claude-plugins-official"]
-enabled = true
+enabled = false
