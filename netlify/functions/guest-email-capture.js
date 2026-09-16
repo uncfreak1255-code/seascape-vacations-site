@@ -16,12 +16,14 @@ const {
   withMailchimpDelivery,
   writeGuestEmailCaptureMetrics
 } = require("./_guest-email-capture-metrics");
+const { assessGuestCaptureBotSignals } = require("./_guest-capture-bot-guard");
 
 const CAPTURE_STATES = Object.freeze({
   TAGGED: "guest_capture_tag_applied",
   RETRY_QUEUED: "retry_queued",
   MANUAL_ATTENTION: "manual_attention_required",
-  VISIBLE_FAILURE: "visible_failure"
+  VISIBLE_FAILURE: "visible_failure",
+  REJECTED: "rejected"
 });
 const GUEST_CAPTURE_STATE_KEY_PREFIX = "guest_capture_state_v1";
 const MAX_TAG_RETRY_ATTEMPTS = 3;
@@ -376,6 +378,20 @@ async function handleGuestEmailCapture(event, _context, injectedStore, injectedF
     return {
       statusCode: 400,
       body: JSON.stringify({ stored: false, reason: "invalid_payload" })
+    };
+  }
+
+  const botScreen = assessGuestCaptureBotSignals({ payload, headers: event && event.headers });
+  if (botScreen.rejected) {
+    console.warn("guest_capture_rejected", {
+      submissionId: receipt.submissionId,
+      reasons: botScreen.reasons,
+      ...buildGuestCaptureLogContext(payload)
+    });
+    return {
+      statusCode: 422,
+      headers: { "content-type": "application/json; charset=utf-8" },
+      body: JSON.stringify({ stored: false, tagged: false, captureState: CAPTURE_STATES.REJECTED, reason: "rejected" })
     };
   }
 

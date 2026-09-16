@@ -1086,7 +1086,9 @@
       requestedValue: trackingPayload.requested_value,
       guestIntent: trackingPayload.guest_intent,
       deliveryChannel: trackingPayload.delivery_channel,
-      consentBasis: trackingPayload.consent_basis
+      consentBasis: trackingPayload.consent_basis,
+      formOpenedAt: form.dataset.guestCaptureOpenedAt || "",
+      website: formData.get("website") || ""
     };
 
     form.dataset.guestCaptureInFlight = "true";
@@ -1145,7 +1147,16 @@
     });
   }
 
+  function markInlineEmailFormsOpened() {
+    var forms = document.querySelectorAll("form[data-inline-email-capture]");
+    var openedAt = new Date().toISOString();
+    for (var i = 0; i < forms.length; i += 1) {
+      if (!forms[i].dataset.guestCaptureOpenedAt) forms[i].dataset.guestCaptureOpenedAt = openedAt;
+    }
+  }
+
   function init() {
+    markInlineEmailFormsOpened();
     decorateBookingEngineLinks();
     bindTrackedClicks();
     bindOwnerFormStarts();
