@@ -141,24 +141,8 @@ Skills are maintained in `.agents/skills/`; `.claude/skills/<name>` is a
 relative link to the same file, so both paths resolve to one procedure. Use
 native reasoning for routine site work; a skill never replaces the gates,
 approval, or proof requirements in this file.
-
-- read `.claude/skills/accessibility/SKILL.md` when auditing or fixing WCAG, screen-reader, or keyboard behavior
-- read `.claude/skills/content-quality-rubric/SKILL.md` when scoring information gain and AI-citation extractability of guide, stay, or research copy
-- read `.claude/skills/design-review/SKILL.md` when running rendered design audit or visual QA against `DESIGN.md` with desktop/mobile proof
-- read `.claude/skills/internal-link-targeting/SKILL.md` when analyzing internal links for authority imbalance and a prioritized donor plan
-- read `.claude/skills/next-batch-gate/SKILL.md` when deciding whether a proposed batch may open under current measurement gates
-- read `.claude/skills/openseo-review/SKILL.md` when reviewing OpenSEO query, citation, competitor, or rank-tracking evidence
-- read `.claude/skills/owner-outbound-batch/SKILL.md` when qualifying an owner opportunity from a permissioned real signal
-- read `.claude/skills/owner-proof-integrity/SKILL.md` when checking or changing owner proof claims against approved assets
-- read `.claude/skills/owner-reply-intake/SKILL.md` when classifying owner replies or form submits as demand evidence before Hub registration
-- read `.claude/skills/page-cro/SKILL.md` when diagnosing or improving conversion on a marketing page or form
-- read `.claude/skills/property-truth-regeneration/SKILL.md` when property facts change or generated templates and `llms.txt` drift from canonical data
-- read `.claude/skills/schema-markup/SKILL.md` when adding or reviewing schema/JSON-LD or diagnosing missing rich results
-- read `.claude/skills/seascape-design-critic/SKILL.md` when judging whether a visual direction meets the design bar
-- read `.claude/skills/seascape-design-specialist/SKILL.md` when developing visual concepts and implementation briefs for meaningful page or section changes
-- read `.claude/skills/serp-ctr-title-rewrite/SKILL.md` when preparing title rewrites from live SERP patterns to improve CTR
-- read `.claude/skills/site-architecture/SKILL.md` when planning architecture, navigation, URL hierarchy, or visual sitemaps (not XML sitemaps)
-- read `.claude/skills/web-design-guidelines/SKILL.md` only when a UI review against `DESIGN.md` is explicitly requested
+Codex discovers `.agents/skills` natively and each skill's frontmatter states
+its trigger, so no per-skill index is kept here.
 
 ## Environment
 

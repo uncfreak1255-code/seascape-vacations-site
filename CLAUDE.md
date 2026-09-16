@@ -1,5 +1,7 @@
 # CLAUDE.md — Seascape SEO OS (Claude delta)
 
+@AGENTS.md
+
 Read `AGENTS.md` first. It is canonical for this repo: scope ownership,
 non-negotiable rules, repo truth, business priorities, the workflow/skill layer
 with every `.claude/skills/*/SKILL.md` path, environment, commands, testing,
