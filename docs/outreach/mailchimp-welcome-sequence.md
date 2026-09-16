@@ -37,14 +37,16 @@ is required before any canary or send on that lane.
 - **Hosted email assets:** `https://seascape-vacations.com/images/email/save50/`
 - **Related campaign governance:** `docs/outreach/mailchimp-guest-social-proof-campaign.md`
 
-## Known Attribution Gap In Email 1
+## Email 1 Attribution
 
-Every link in the Email 1 template carries `utm_source=outlook`, and
+Every link in the Email 1 template carries `utm_source=mailchimp`, and
 `scripts/enforcement/save50-welcome-email-template.test.js` enforces that value.
-The email is sent by Mailchimp, so that source value files its traffic under the
-wrong channel. Repairing it means changing the two template files, this doc, and
-the test's `requiredCampaignParams` together in one PR, alongside a re-paste of
-the live email. Do not change one side alone.
+Until 2026-09-16 the template pair, this doc, and the test all carried
+`utm_source=outlook`, which filed Mailchimp traffic under the wrong channel in
+GA4. The repair changed all four places together; the live Email 1 must be
+re-pasted from the repaired template so the artifact and the live send agree.
+Copy in both emails is count-independent ("our homes", "Browse all homes") so a
+new listing does not silently make the sequence wrong again.
 
 ## Email 1: Welcome And Coupon Delivery
 **Send:** immediately after signup
@@ -53,22 +55,22 @@ the live email. Do not change one side alone.
 
 **Preview text:** SAVE50 is ready: $50 off your first direct Seascape booking of 3 nights or more.
 
-**Primary CTA:** Browse all 5 homes -> `https://seascape-vacations.com/properties/?utm_source=outlook&utm_medium=email&utm_campaign=save50_welcome&utm_content=browse_all_homes`
+**Primary CTA:** Browse all homes -> `https://seascape-vacations.com/properties/?utm_source=mailchimp&utm_medium=email&utm_campaign=save50_welcome&utm_content=browse_all_homes`
 
 **Core offer copy:**
 
-> Thanks for joining the Seascape list. Your welcome code is ready: $50 off your first direct booking of 3 nights or more at any of our five private pool homes between Bradenton and Sarasota.
+> Thanks for joining the Seascape list. Your welcome code is ready: $50 off your first direct booking of 3 nights or more at any of our private pool homes between Bradenton and Sarasota.
 >
 > Your code: SAVE50
 >
 > Book direct and avoid the extra service fees Airbnb and VRBO add at checkout.
 
 **Property links used in the template:**
-- Dockside Dreams: `https://seascape-vacations.com/properties/dockside-dreams/?utm_source=outlook&utm_medium=email&utm_campaign=save50_welcome&utm_content=dockside_dreams`
-- The Oasis: `https://seascape-vacations.com/properties/the-oasis/?utm_source=outlook&utm_medium=email&utm_campaign=save50_welcome&utm_content=the_oasis`
-- Sarasota Luxe: `https://seascape-vacations.com/properties/sarasota-luxe/?utm_source=outlook&utm_medium=email&utm_campaign=save50_welcome&utm_content=sarasota_luxe`
-- River House: `https://seascape-vacations.com/properties/river-house/?utm_source=outlook&utm_medium=email&utm_campaign=save50_welcome&utm_content=river_house`
-- Bradenton Pool Home: `https://seascape-vacations.com/properties/bradenton-pool-home/?utm_source=outlook&utm_medium=email&utm_campaign=save50_welcome&utm_content=bradenton_pool_home`
+- Dockside Dreams: `https://seascape-vacations.com/properties/dockside-dreams/?utm_source=mailchimp&utm_medium=email&utm_campaign=save50_welcome&utm_content=dockside_dreams`
+- The Oasis: `https://seascape-vacations.com/properties/the-oasis/?utm_source=mailchimp&utm_medium=email&utm_campaign=save50_welcome&utm_content=the_oasis`
+- Sarasota Luxe: `https://seascape-vacations.com/properties/sarasota-luxe/?utm_source=mailchimp&utm_medium=email&utm_campaign=save50_welcome&utm_content=sarasota_luxe`
+- River House: `https://seascape-vacations.com/properties/river-house/?utm_source=mailchimp&utm_medium=email&utm_campaign=save50_welcome&utm_content=river_house`
+- Bradenton Pool Home: `https://seascape-vacations.com/properties/bradenton-pool-home/?utm_source=mailchimp&utm_medium=email&utm_campaign=save50_welcome&utm_content=bradenton_pool_home`
 
 **Implementation notes:**
 - Treat the HTML and plain-text files as content/design source only.
@@ -92,7 +94,7 @@ the live email. Do not change one side alone.
 
 These replace the plain-text draft that previously lived in this section. Email 2
 now uses the same visual system as Email 1 and does a different job: it sorts the
-five homes by group size instead of restating the offer.
+the homes by group size instead of restating the offer.
 
 **Campaign parameters:** `utm_source=mailchimp`, `utm_medium=email`,
 `utm_campaign=guest_social_proof`. That campaign token is deliberate. It is one of
@@ -129,7 +131,7 @@ Quick reminder: your welcome code is `SAVE50`.
 Use it for $50 off your first direct booking of 3 nights or more. Booking direct also means you avoid the extra service fees Airbnb and VRBO add at checkout, and you can reach us directly if you need help before your stay.
 
 Check the homes and dates here:
-`https://seascape-vacations.com/properties/?utm_source=outlook&utm_medium=email&utm_campaign=save50_welcome&utm_content=email_3_check_homes`
+`https://seascape-vacations.com/properties/?utm_source=mailchimp&utm_medium=email&utm_campaign=save50_welcome&utm_content=email_3_check_homes`
 
 Questions? Reply here or call us at `(941) 704-8545`.
 
@@ -163,7 +165,7 @@ content, links, claim truth, and campaign parameters.
 - Mobile preview keeps the property cards readable.
 - `SAVE50` remains visible when images are blocked.
 - Every property card opens the correct Seascape property URL with `utm_campaign=save50_welcome`.
-- The main CTA opens `https://seascape-vacations.com/properties/?utm_source=outlook&utm_medium=email&utm_campaign=save50_welcome&utm_content=browse_all_homes`.
+- The main CTA opens `/properties/` with `utm_campaign=save50_welcome`, `utm_medium=email`, and the Outlook lane's own `utm_source=outlook` (the Mailchimp template value does not apply on this lane).
 - The phone link opens `tel:+19417048545`.
 - the Ops-rendered legal footer, preferences, and unsubscribe links resolve without raw Mailchimp merge tags
 - the Sent Items readback proves the message was accepted from `info@seascape-vacations.com`

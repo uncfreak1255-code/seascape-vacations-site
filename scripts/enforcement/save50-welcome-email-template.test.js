@@ -34,7 +34,7 @@ const bannedClaimPatterns = [
   /\bfrom \$\d+/i
 ];
 const requiredCampaignParams = {
-  utm_source: "outlook",
+  utm_source: "mailchimp",
   utm_medium: "email",
   utm_campaign: "save50_welcome"
 };
@@ -196,13 +196,13 @@ test("SAVE50 plain text fallback keeps core offer and links", () => {
   assert.match(text, /SAVE50/);
   assert.match(text, /\$50 off your first direct booking/i);
   assert.match(text, /3 nights or more/i);
-  assert.match(text, /https:\/\/seascape-vacations\.com\/properties\/\?utm_source=outlook&utm_medium=email&utm_campaign=save50_welcome/);
+  assert.match(text, /https:\/\/seascape-vacations\.com\/properties\/\?utm_source=mailchimp&utm_medium=email&utm_campaign=save50_welcome/);
 
   for (const slug of requiredPropertySlugs) {
     assert.match(
       text,
       new RegExp(
-        `https://seascape-vacations\\.com/properties/${slug}/\\?utm_source=outlook&utm_medium=email&utm_campaign=save50_welcome`
+        `https://seascape-vacations\\.com/properties/${slug}/\\?utm_source=mailchimp&utm_medium=email&utm_campaign=save50_welcome`
       )
     );
   }
