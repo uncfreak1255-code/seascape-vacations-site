@@ -17,7 +17,7 @@ function cleanPayload(overrides = {}) {
     placement: "home_inline",
     submissionId: "capture-test-1",
     formOpenedAt: new Date(NOW - 45000).toISOString(),
-    website: "",
+    trip_url: "",
     ...overrides
   };
 }
@@ -32,12 +32,12 @@ test("a normal guest submission from the site passes every signal", () => {
 });
 
 test("direct API callers without Origin or dwell time are not rejected on those signals alone", () => {
-  const payload = cleanPayload({ formOpenedAt: undefined, website: undefined });
+  const payload = cleanPayload({ formOpenedAt: undefined, trip_url: undefined });
   assert.deepEqual(assessGuestCaptureBotSignals({ payload, headers: {}, now: NOW }), { rejected: false, reasons: [] });
 });
 
 test("a filled honeypot is rejected", () => {
-  const result = assessGuestCaptureBotSignals({ payload: cleanPayload({ website: "http://spam.example" }), headers: siteHeaders, now: NOW });
+  const result = assessGuestCaptureBotSignals({ payload: cleanPayload({ trip_url: "http://spam.example" }), headers: siteHeaders, now: NOW });
   assert.equal(result.rejected, true);
   assert.deepEqual(result.reasons, ["honeypot"]);
 });
@@ -115,7 +115,7 @@ test("the capture handler returns 422 for a rejected submission and never reache
       {
         httpMethod: "POST",
         headers: { origin: "https://seascape-vacations.com" },
-        body: JSON.stringify(cleanPayload({ website: "filled-by-bot" }))
+        body: JSON.stringify(cleanPayload({ trip_url: "filled-by-bot" }))
       },
       {},
       store
@@ -142,13 +142,13 @@ test("every guest capture form carries the honeypot and the browser sends dwell 
   for (const relativePath of forms) {
     const source = fs.readFileSync(path.join(projectRoot, relativePath), "utf8");
     const formCount = (source.match(/data-inline-email-capture="true"/g) || []).length;
-    const honeypotCount = (source.match(/name="website"[^>]*data-guest-capture-honeypot/g) || []).length;
+    const honeypotCount = (source.match(/name="trip_url"[^>]*data-guest-capture-honeypot/g) || []).length;
     assert.ok(formCount >= 1, `${relativePath} should contain a guest capture form`);
     assert.equal(honeypotCount, formCount, `${relativePath} should carry one honeypot per capture form`);
     assert.match(source, /tabindex="-1" autocomplete="off" aria-hidden="true" data-guest-capture-honeypot/);
   }
   const browser = fs.readFileSync(path.join(projectRoot, "src/assets/js/conversion-tracking.js"), "utf8");
   assert.match(browser, /formOpenedAt: form\.dataset\.guestCaptureOpenedAt \|\| ""/);
-  assert.match(browser, /website: formData\.get\("website"\) \|\| ""/);
+  assert.match(browser, /trip_url: formData\.get\("trip_url"\) \|\| ""/);
   assert.match(browser, /markInlineEmailFormsOpened\(\);/);
 });

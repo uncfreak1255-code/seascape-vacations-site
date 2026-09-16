@@ -56,7 +56,7 @@ function originMismatch(headers) {
 }
 
 function honeypotFilled(payload) {
-  return Boolean(text(payload && payload.website));
+  return Boolean(text(payload && (payload.trip_url || payload.website)));
 }
 
 function submittedTooFast(payload, now) {

@@ -1088,7 +1088,7 @@
       deliveryChannel: trackingPayload.delivery_channel,
       consentBasis: trackingPayload.consent_basis,
       formOpenedAt: form.dataset.guestCaptureOpenedAt || "",
-      website: formData.get("website") || ""
+      trip_url: formData.get("trip_url") || ""
     };
 
     form.dataset.guestCaptureInFlight = "true";
