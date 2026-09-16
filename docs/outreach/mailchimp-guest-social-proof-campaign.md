@@ -26,7 +26,7 @@ for that Outlook lane belong in `seascape-ops`. Durable policy is
 The content in this file was pasted into the live welcome journey's second email.
 As of 2026-08-20 that slot belongs to
 `docs/outreach/templates/save50-house-fit-email.html`, which uses Email 1's
-visual system and sorts the five homes by group size instead of leading with
+visual system and sorts the homes by group size instead of leading with
 guest quotes. Keep this file as the governed archive of the superseded variant.
 Do not paste it back into the journey.
 
