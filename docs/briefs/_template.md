@@ -13,6 +13,7 @@
 - secondary keywords:
 - audience pattern:
 - proof source:
+- offer claim: (owner lane only) the line of `seascape-hub/context/owner-offer.md` this page exists to land
 - required internal links:
 - CTA target:
 - anti-claims:
