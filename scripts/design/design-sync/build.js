@@ -189,7 +189,7 @@ ${fontFace("fonts/")}
 /* ---------------------------------------------------------------- card factory */
 const chromeCss = `
 .ds-doc{padding:32px 36px 40px}
-.ds-eyebrow{font:500 12px/1.4 Poppins,sans-serif;letter-spacing:.13em;text-transform:uppercase;color:${C.muted};margin:0 0 10px}
+.ds-eyebrow{font:500 12px/1.4 Poppins,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:${C.muted};margin:0 0 10px}
 .ds-title{font:400 30px/1.12 'Instrument Serif',Georgia,serif;letter-spacing:-.02em;color:${C.ink};margin:0 0 8px}
 .ds-note{font:13px/1.65 Poppins,sans-serif;color:${C.muted};max-width:640px;margin:0 0 24px}
 .ds-note strong{color:${C.ink};font-weight:500}
@@ -332,11 +332,11 @@ card({
   file: "type-body.html",
   group: "Type",
   name: "Type — Body, labels and controls (Poppins)",
-  subtitle: "Body 15/1.65 · label 12 caps .13em · control 500 14 · small 13",
+  subtitle: "Body 15/1.65 · label 12 caps .16em · control 500 14 · small 13",
   viewport: [900, 560],
   css: GUEST,
   title: "Poppins does the practical work",
-  note: `Body 15px / 1.65 in ink. Labels are 12px uppercase Poppins 500 with .13em tracking in muted; that is the eyebrow pattern and the only tracking in the system. No text renders below 12px anywhere (floor F1).`,
+  note: `Body 15px / 1.65 in ink. Labels are 12px uppercase Poppins 500 with .16em tracking in muted; that is the eyebrow pattern. No text renders below 12px anywhere (floor F1).`,
   body: `<div class="ds-line"><div class="ds-spec">.g-label · eyebrow</div><p class="g-label" style="margin:0">Your time on the coast</p></div>
 <div class="ds-line"><div class="ds-spec">body · 15/1.65</div><p style="margin:0;max-width:560px">Seascape is a small, owner-operated collection of homes in Bradenton and Sarasota. Choose the home, understand the details that could change your choice, and arrive at the booking page with dates and guest count intact.</p></div>
 <div class="ds-line"><div class="ds-spec">.g-small · 13/1.65 muted</div><p class="g-small" style="margin:0">Availability, fees and cancellation terms are confirmed on our secure booking page.</p></div>
