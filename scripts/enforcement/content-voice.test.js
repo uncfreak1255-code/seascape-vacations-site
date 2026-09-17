@@ -420,6 +420,28 @@ function parseMissingBriefFields(briefContent) {
   });
 }
 
+// Owner-lane pages must name the line of the hub's owner offer they exist to land.
+// Every other gate here is subtractive (it can only delete a claim); this is the one
+// additive requirement, so a page cannot pass by saying nothing about Seascape.
+function parseOfferClaim(briefContent) {
+  const match = briefContent.match(/^- offer claim:\s*(.+)$/im);
+  return match ? match[1].trim() : null;
+}
+
+function missingOfferClaimViolation(relativePath, briefContent) {
+  if (!isOwnerContentFile(relativePath)) {
+    return null;
+  }
+  const claim = parseOfferClaim(briefContent);
+  if (!claim || /^\(owner lane only\)/i.test(claim)) {
+    return `${relativePath}: owner-lane change needs an "offer claim:" line in its brief naming the line of seascape-hub/context/owner-offer.md this page exists to land (no offer line, no owner page)`;
+  }
+  if (!/context\/owner-offer\.md/i.test(claim)) {
+    return `${relativePath}: "offer claim:" must point at seascape-hub/context/owner-offer.md, found "${claim}"`;
+  }
+  return null;
+}
+
 function briefMentionsContentFile(briefContent, relativePath, source) {
   const authorizedSourceText = extractAuthorizedSourceSectionText(briefContent);
   if (authorizedSourceText.includes(relativePath)) {
@@ -752,6 +774,7 @@ test("content quality gate doc defines reader, proof, and agent copy plus the vi
   assert.equal(gateDoc.includes("proof copy"), true);
   assert.equal(gateDoc.includes("agent copy"), true);
   assert.equal(gateDoc.includes("No Brief, No Writing"), true);
+  assert.equal(gateDoc.includes("`offer claim:`"), true, "content gate must document the owner-lane offer claim field");
   assert.equal(gateDoc.includes("Visible Copy Lane"), true);
   assertEditorialStepsInOrder(gateDoc, "content quality gate doc");
   assert.equal(gateDoc.includes("npm run lint:content"), true);
@@ -1370,6 +1393,11 @@ async function runChangedPublicContentGate() {
       `${relativePath}: changed reader copy must be named by one changed active brief when multiple briefs are present`
     );
 
+    const offerClaimViolation = missingOfferClaimViolation(relativePath, brief.content);
+    if (offerClaimViolation) {
+      violations.push(offerClaimViolation);
+    }
+
     const defaultRequiredLinks = parseRequiredLinksFromBrief(brief.content);
     const requiredLinkMap = parseRequiredLinkMapFromBrief(brief.content);
     violations.push(
@@ -1396,4 +1424,18 @@ test("changed public content and source-backed copy files require active briefs 
   // The gate is async now that the build streams, so the await matters: without
   // it the lock would drop before the rendered content had been inspected.
   await withWorktreeLock({ name: "repo-build" }, runChangedPublicContentGate);
+});
+
+
+test("owner-lane changes need an offer claim that points at the hub owner offer", () => {
+  const briefWithout = "- persona: owner\n- proof source: hub\n- anti-claims: none\n";
+  const briefTemplatePlaceholder = "- offer claim: (owner lane only) the line of `seascape-hub/context/owner-offer.md` this page exists to land\n";
+  const briefElsewhere = "- offer claim: docs/plans/some-plan.md section 2\n";
+  const briefWith = "- offer claim: `seascape-hub/context/owner-offer.md` section 6, landed through section 4 rows 1 to 4\n";
+
+  assert.match(missingOfferClaimViolation("src/property-management/index.njk", briefWithout), /no offer line, no owner page/);
+  assert.match(missingOfferClaimViolation("src/property-management/index.njk", briefTemplatePlaceholder), /no offer line, no owner page/);
+  assert.match(missingOfferClaimViolation("src/research/owner-fee-revenue-leak-benchmark-2026.njk", briefElsewhere), /must point at seascape-hub\/context\/owner-offer\.md/);
+  assert.equal(missingOfferClaimViolation("src/property-management/index.njk", briefWith), null);
+  assert.equal(missingOfferClaimViolation("src/guides/bradenton-area-guide.njk", briefWithout), null, "non-owner routes are not gated on the offer claim");
 });
