@@ -94,8 +94,13 @@ function dotStuffedGmail(payload) {
 function randomCaseName(payload) {
   const name = text(payload && payload.name);
   if (name.length < 8 || /\s/.test(name)) return false;
-  const interiorUppercase = (name.slice(1).match(/[A-Z]/g) || []).length;
-  return interiorUppercase >= MIN_INTERIOR_UPPERCASE_FOR_RANDOM_NAME;
+  const interior = name.slice(1);
+  const interiorUppercase = (interior.match(/[A-Z]/g) || []).length;
+  const interiorLowercase = (interior.match(/[a-z]/g) || []).length;
+  // Mixed interior case only. All-caps (JONATHAN) and Title Case are real guests.
+  return (
+    interiorUppercase >= MIN_INTERIOR_UPPERCASE_FOR_RANDOM_NAME && interiorLowercase >= 1
+  );
 }
 
 function assessGuestCaptureBotSignals({ payload, headers, now = Date.now() } = {}) {

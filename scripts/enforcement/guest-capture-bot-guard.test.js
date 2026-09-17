@@ -100,7 +100,17 @@ test("random-case single-token names are rejected; real names are not", () => {
   for (const name of ["mUjaxXCWuMTyQDTX", "RiykEmxgaWwNrFJaEwZOa"]) {
     assert.deepEqual(assessGuestCaptureBotSignals({ payload: cleanPayload({ name }), headers: siteHeaders, now: NOW }).reasons, ["random_case_name"], name);
   }
-  for (const name of ["Sawyer", "Mary-Kate", "McDonald", "DeShawn", "Jean Luc Picard", "Rvfla"]) {
+  for (const name of [
+    "Sawyer",
+    "Mary-Kate",
+    "McDonald",
+    "DeShawn",
+    "Jean Luc Picard",
+    "Rvfla",
+    "JONATHAN",
+    "CHRISTOPHER",
+    "ALEXANDER"
+  ]) {
     assert.equal(assessGuestCaptureBotSignals({ payload: cleanPayload({ name }), headers: siteHeaders, now: NOW }).rejected, false, name);
   }
 });
