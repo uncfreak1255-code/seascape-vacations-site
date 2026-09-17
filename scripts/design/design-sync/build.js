@@ -46,6 +46,12 @@ const argValue = (flag, fallback) => {
 };
 const SITE = path.resolve(ROOT, argValue("--site", "_site"));
 const OUT = path.resolve(ROOT, argValue("--out", ".design-sync/out"));
+// The bundle folder is wiped on every build, so it must stay inside the ignored
+// .design-sync/ tree; `--out ..` or an absolute path elsewhere is refused.
+const SYNC_ROOT = path.join(ROOT, ".design-sync");
+if (!(OUT === SYNC_ROOT || OUT.startsWith(SYNC_ROOT + path.sep))) {
+  throw new Error(`--out must resolve inside ${SYNC_ROOT}; got ${OUT}`);
+}
 const LIVE = "https://seascape-vacations.com";
 
 function read(rel) {
@@ -131,7 +137,7 @@ function absolutize(html) {
 }
 
 /* ---------------------------------------------------------------- css */
-const stripFontFace = (css) => css.replace(/@font-face\{[^}]*\}\n?/g, "");
+const stripFontFace = (css) => css.replace(/@font-face\s*\{[^}]*\}\n?/g, "");
 const baseCss = read("src/css/base.css");
 const guestCss = stripFontFace(read("src/css/guest.css"));
 const arrivalCss = read("src/css/arrival.css");
@@ -236,7 +242,9 @@ const arrival = absolutize(extract(home, "g-arrival"));
 const catalogCard = absolutize(extract(catalog, "catalog-card"));
 const booking = absolutize(extract(property, "g-booking"));
 const mobileBooking = absolutize(extract(property, "g-mobile-booking")).replace(/\shidden(?=[\s>])/, "");
-const scenePhoto = (home.match(/class="g-scene-photo"[^>]*src="([^"]+)"/) || [])[1];
+const scenePhotoMatch = home.match(/class="g-scene-photo"[^>]*src="([^"]+)"/);
+if (!scenePhotoMatch) throw new Error("Homepage scene photo not found in built HTML; the header-over-photo card needs it");
+const scenePhoto = absolutize(`src="${scenePhotoMatch[1]}"`).slice(5, -1);
 
 /* ---------------------------------------------------------------- bundle files */
 fs.rmSync(OUT, { recursive: true, force: true });
@@ -373,7 +381,7 @@ card({
 <p class="ds-caption" style="padding:0 36px">Paper state</p>
 <div class="ds-frame" style="border-left:0;border-right:0">${headerPaper}</div>
 <p class="ds-caption" style="padding:0 36px;margin-top:20px">Homepage state: absolute over the scene photo, white text, citron CTA</p>
-<div class="ds-frame g-homepage" style="height:190px;border-left:0;border-right:0;background:${C.ink} url('${scenePhoto || ""}') center 60%/cover">${headerHome}</div>`,
+<div class="ds-frame g-homepage" style="height:190px;border-left:0;border-right:0;background:${C.ink} url('${scenePhoto}') center 60%/cover">${headerHome}</div>`,
 });
 
 card({
@@ -536,15 +544,46 @@ card({
 </div></div>`,
 });
 
+// Icons: every SVG the site's ui-icon partial can render, so the card is the real set.
+const iconSource = read("src/_includes/partials/ui-icon.njk");
+const icons = [...iconSource.matchAll(/\{% (?:el)?if name == "([a-z-]+)" %\}\s*(<svg[\s\S]*?<\/svg>)/g)]
+  .map((m) => ({ name: m[1], svg: m[2] }))
+  .filter((icon, index, all) => all.findIndex((other) => other.name === icon.name) === index);
+if (icons.length < 10) throw new Error(`ui-icon.njk yielded only ${icons.length} icons; the parser is broken`);
+card({
+  file: "iconography.html",
+  group: "Brand",
+  name: "Iconography",
+  subtitle: `${icons.length} inline SVG icons from ui-icon.njk · currentColor · no emoji`,
+  viewport: [900, 640],
+  css: [...GUEST, `.ds-icons{display:grid;grid-template-columns:repeat(8,1fr);gap:14px 8px}.ds-icons div{display:flex;flex-direction:column;align-items:center;gap:8px;font-size:12px;color:${C.muted};text-align:center}.ds-icons .ui-icon{font-size:26px;color:${C.ink}}`],
+  title: "One line-icon set, drawn in the site",
+  note: `Every icon is an inline SVG from <code>src/_includes/partials/ui-icon.njk</code>, 24px viewBox, round caps, 1.85 stroke (the arrow is 1.3), <code>currentColor</code>. No icon font, no emoji, no gold stars.`,
+  body: `<div class="ds-icons">${icons
+    .map((icon) => `<div><span class="ui-icon" aria-hidden="true" style="display:inline-flex;align-items:center;justify-content:center;line-height:1">${icon.svg}</span>${icon.name}</div>`)
+    .join("")}</div>`,
+});
+
+card({
+  file: "voice.html",
+  group: "Brand",
+  name: "Voice samples",
+  subtitle: "Stays · guide · owner · banned",
+  viewport: [760, 420],
+  css: [...GUEST, `.ds-v{display:grid;grid-template-columns:110px 1fr;gap:16px;align-items:baseline;padding:16px 0;border-bottom:1px solid ${C.rule}}.ds-v:last-child{border-bottom:0}.ds-v s{color:${C.muted}}`],
+  title: "A local friend who knows the coast",
+  note: `"We" for Seascape, "you" for the reader. Sentence case. Named places, minutes and real numbers instead of adjectives. Rules in <code>waterline/writing-style-guide.md</code>.`,
+  body: `<div class="ds-v"><p class="g-label" style="margin:0">Stays</p><p style="margin:0">Five bedrooms, a private pool and room for 16, eight minutes from Coquina Beach.</p></div>
+<div class="ds-v"><p class="g-label" style="margin:0">Guide</p><p style="margin:0">Skip the tourist traps on Bridge Street and head to the Sandbar instead.</p></div>
+<div class="ds-v"><p class="g-label" style="margin:0">Owner</p><p style="margin:0">Send the listing link or address and a sentence on what feels off. A real person reads it and replies, usually within 48 hours.</p></div>
+<div class="ds-v"><p class="g-label" style="margin:0;color:${C.clay}">Banned</p><p style="margin:0"><s>A hidden gem nestled along the coast, curated for unforgettable memories.</s></p></div>`,
+});
+
 /* ---------------------------------------------------------------- pane manifest */
 // The Design System pane reads _ds_manifest.json for its card index and token list.
 // The app rebuilds it from @dsCard markers on its own self-check, but a DesignSync push
 // does not trigger that, so a stale manifest keeps showing deleted cards as "file not
 // found". Emit it here from the same data the cards were built from.
-const keptCards = [
-  { path: "preview/voice.html", group: "Brand", name: "Voice samples", subtitle: "Stays · guide · PM · banned", viewport: "700x240" },
-  { path: "preview/iconography.html", group: "Brand", name: "Iconography", subtitle: "Inline SVG .ui-icon · 1.85 stroke · currentColor", viewport: "700x200" },
-];
 // Claude Design's token vocabulary: color | spacing | radius | shadow | font | other.
 const tokenKind = (name, value) => {
   if (/radius/.test(name)) return "radius";
@@ -574,7 +613,7 @@ write(
       namespace: "SeascapeVacationsDesignSystem_57d1b4",
       components: [],
       startingPoints: [],
-      cards: [...cards, ...keptCards],
+      cards,
       templates: [],
       globalCssPaths: ["styles.css", "waterline/tokens.css"],
       tokens,
