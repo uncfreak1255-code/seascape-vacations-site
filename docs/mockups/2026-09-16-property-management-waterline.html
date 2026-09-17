@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vacation Rental Property Management | Seascape Vacations — Waterline</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#F6F3EB;--ink:#173D42;--citron:#D6EB85;--muted:#52676A;--clay:#A4533E;--rule:#CAD4CF;--soft:#F0F3EE;--serif:'Instrument Serif',Georgia,serif;--sans:Poppins,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--paper);color:var(--ink);font:400 15px/1.65 var(--sans);-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:var(--serif);font-weight:400;letter-spacing:-.025em;line-height:1.12}
+h1{font-size:clamp(44px,5.2vw,74px)}
+h2{font-size:clamp(32px,3.3vw,46px)}
+h3{font-size:26px}
+em{font-style:italic;color:var(--clay)}
+a{color:inherit;text-decoration:none}
+a:hover{color:var(--clay)}
+p a,li a,dd a{text-decoration:underline;text-underline-offset:4px}
+a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,summary:focus-visible{outline:3px solid var(--clay);outline-offset:4px}
+img{display:block;max-width:100%}
+.wrap{width:min(1200px,calc(100% - 80px));margin-inline:auto}
+.label{font:500 12px/1.4 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:14px 24px;background:var(--ink);color:#fff;border:1px solid var(--ink);border-radius:4px;font:500 14px/1.35 var(--sans);cursor:pointer;transition:background .15s}
+.btn:hover{background:var(--muted);color:#fff}
+.btn-citron{background:var(--citron);color:var(--ink);border-color:var(--citron)}
+.btn-citron:hover{background:#c7de70;color:var(--ink)}
+.link{display:inline-flex;align-items:center;gap:12px;min-height:44px;font-weight:500;font-size:14px;text-decoration:underline;text-underline-offset:5px}
+.small{font-size:13px;color:var(--muted)}
+/* header */
+.hdr{height:92px;border-bottom:1px solid var(--rule);padding:0 4.5vw;display:flex;align-items:center;justify-content:space-between;gap:32px;background:var(--paper);position:relative;z-index:20}
+.wordmark{font-family:var(--serif);font-size:30px;line-height:1.15}
+.wordmark span{display:block;font:500 12px var(--sans);letter-spacing:.14em;margin-top:6px}
+.nav,.hdr-actions{display:flex;align-items:center;gap:32px}
+.nav a{font-size:14px;padding:10px 0}
+.nav a[aria-current=page]{color:var(--clay);text-decoration:underline;text-underline-offset:5px}
+.phone{font-size:14px;min-height:44px;display:inline-flex;align-items:center;gap:8px}
+.phone svg{display:none}
+.menu-btn{display:none;background:none;border:0;color:var(--ink);font:inherit;font-size:14px;min-height:44px;min-width:44px;cursor:pointer}
+/* hero */
+.hero{padding:56px 0 64px;border-bottom:1px solid var(--rule)}
+.hero .wrap{display:grid;grid-template-columns:minmax(0,1fr) 420px;gap:64px;align-items:start}
+.masthead{display:flex;flex-wrap:wrap;gap:8px 20px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding-bottom:18px;border-bottom:1px solid var(--rule);margin-bottom:22px}
+.hero .label{margin-bottom:18px}
+.hero h1{max-width:12ch}
+.hero .lede{font-size:17px;max-width:56ch;margin:26px 0 30px;color:var(--ink)}
+.hero-cta{display:flex;flex-wrap:wrap;gap:12px 28px;align-items:center}
+.hero-cta .link{display:none}
+.hero .small{margin-top:20px}
+/* form */
+.review{background:var(--soft);border:1px solid var(--rule);padding:28px;scroll-margin-top:24px}
+.review h2{font-size:34px;margin:4px 0 6px}
+.review>p{font-size:13px;color:var(--muted);margin-bottom:18px}
+.review form{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.field{display:block}
+.field.full{grid-column:1/-1}
+.field span{display:block;font-size:12px;letter-spacing:.05em;margin-bottom:6px}
+.field span i{font-style:normal;color:var(--muted)}
+.field input,.field textarea{width:100%;min-width:0;min-height:46px;border:0;border-bottom:1px solid var(--muted);background:transparent;color:var(--ink);border-radius:0;padding:8px 0;font:14px var(--sans);resize:none}
+.field textarea{min-height:52px;line-height:1.4}
+.field input::placeholder,.field textarea::placeholder{color:#7a8b8d}
+.upload{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:44px;font-size:13px;color:var(--muted);border-bottom:1px solid var(--rule);padding-bottom:12px}
+.upload label{color:var(--ink);font-weight:500;text-decoration:underline;text-underline-offset:4px;cursor:pointer;min-height:44px;display:inline-flex;align-items:center}
+.upload input{position:absolute;width:1px;height:1px;opacity:0}
+.review .btn{grid-column:1/-1;width:100%}
+.review .foot{grid-column:1/-1;font-size:12px;color:var(--muted);line-height:1.6}
+.review .foot a{color:var(--ink);text-decoration:underline;text-underline-offset:3px}
+/* photo band */
+.band img{width:100%;height:360px;object-fit:cover}
+.band figcaption{padding:12px 0 0;font-size:12px;color:var(--muted)}
+/* issue toc */
+.toc{padding:28px 0;border-bottom:1px solid var(--rule)}
+.toc .wrap{display:grid;grid-template-columns:auto repeat(4,1fr);gap:40px;align-items:center}
+.toc a{display:flex;gap:14px;min-height:44px;align-items:center;font-size:14px}
+.toc a b{display:block;font-weight:500}
+.toc a small{display:block;font-size:12px;color:var(--muted)}
+.toc a>span:first-child{font-family:var(--serif);font-size:22px;color:var(--clay)}
+/* stats */
+.stats{padding:56px 0 0}
+.stats .wrap{display:grid;grid-template-columns:repeat(5,1fr);gap:32px;border-top:1px solid var(--ink);padding-top:28px}
+.stats div b{display:block;font:400 40px/1.05 var(--serif);letter-spacing:-.02em;margin:8px 0 8px}
+.stats div p{font-size:13px;color:var(--muted)}
+/* sections */
+.sec{padding:80px 0;border-bottom:1px solid var(--rule)}
+.sec-head{display:flex;justify-content:space-between;align-items:end;gap:40px;margin-bottom:40px}
+.sec-head .pg{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);white-space:nowrap;padding-bottom:10px}
+.quote{font:400 clamp(26px,2.4vw,34px)/1.25 var(--serif);letter-spacing:-.02em;max-width:26ch}
+.two{display:grid;grid-template-columns:1.1fr .9fr;gap:64px;align-items:start}
+.two p+p{margin-top:14px}
+.tags{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}
+.tags span{font-size:12px;letter-spacing:.06em;border:1px solid var(--rule);border-radius:4px;padding:8px 12px;min-height:36px;display:inline-flex;align-items:center}
+.cols4{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:56px;border-top:1px solid var(--ink)}
+.cols4>div{padding:24px 28px 8px 0;border-right:1px solid var(--rule);margin-right:28px}
+.cols4>div:last-child{border-right:0;margin-right:0}
+.cols4 b{display:block;font:400 42px/1.05 var(--serif);letter-spacing:-.02em;margin:10px 0 6px}
+.cols4 .sub{font-size:12px;letter-spacing:.04em;color:var(--muted);margin-bottom:14px}
+.cols4 p{font-size:14px}
+/* markets */
+.legend{display:grid;grid-template-columns:repeat(7,1fr);border-top:1px solid var(--ink);border-bottom:1px solid var(--rule);margin-bottom:56px}
+.legend>div{padding:16px 16px 16px 0;font-size:12px;color:var(--muted)}
+.legend b{display:block;font-weight:500;color:var(--ink);font-size:14px;margin-bottom:2px}
+.legend-note{display:flex;gap:28px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.markets{display:grid;grid-template-columns:repeat(3,1fr);gap:48px 40px}
+.mk img{width:100%;height:220px;object-fit:cover}
+.mk .label{margin:16px 0 6px;font-size:12px}
+.mk h3{font-size:30px;margin-bottom:10px}
+.mk p{font-size:14px}
+.mk dl{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:18px 0 6px;padding-top:14px;border-top:1px solid var(--rule)}
+.mk dt{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.mk dd{font-size:13px;font-weight:500}
+/* economics */
+.econ{display:grid;grid-template-columns:.9fr 1.1fr;gap:64px;align-items:start}
+.econ .big{font:400 clamp(96px,11vw,150px)/1 var(--serif);letter-spacing:-.04em;color:var(--ink)}
+.econ .big+p{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-top:8px}
+.defs{border-top:1px solid var(--ink)}
+.defs>div{display:grid;grid-template-columns:200px 1fr;gap:24px;padding:22px 0;border-bottom:1px solid var(--rule)}
+.defs b{font:400 28px/1.1 var(--serif);letter-spacing:-.02em}
+.defs p{font-size:14px}
+/* request */
+.req{background:var(--ink);color:var(--paper)}
+.req .sec-head .pg,.req .label{color:#b7c6c3}
+.req h2{color:var(--paper)}
+.req em{color:var(--citron)}
+.req .two p{font-size:15px;color:#e7ece8}
+.req .checklist{list-style:none;border-top:1px solid #ffffff33}
+.req .checklist li{display:flex;justify-content:space-between;gap:20px;padding:14px 0;border-bottom:1px solid #ffffff33;font-size:14px}
+.req .checklist li span{color:#b7c6c3}
+.req .stamp{display:flex;gap:40px;margin:28px 0}
+.req .stamp b{display:block;font:400 56px/1 var(--serif);letter-spacing:-.03em;color:var(--citron)}
+.req .stamp small{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#b7c6c3}
+.req .actions{display:flex;flex-wrap:wrap;gap:16px 28px;align-items:center;margin-top:32px}
+.req .actions a:not(.btn){color:var(--paper);text-decoration:underline;text-underline-offset:5px;min-height:44px;display:inline-flex;align-items:center;font-size:14px}
+/* guides */
+.switchers{background:var(--soft);border:1px solid var(--rule);padding:24px 28px;margin:0 0 48px;font-size:14px}
+.switchers .label{margin-bottom:8px}
+.guides{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--ink)}
+.guides a{display:flex;flex-direction:column;gap:8px;padding:24px 28px 28px 0;border-bottom:1px solid var(--rule);min-height:44px}
+.guides a:nth-child(3n+2),.guides a:nth-child(3n){padding-left:28px;border-left:1px solid var(--rule)}
+.guides a:nth-last-child(-n+1){border-bottom:0}
+.guides h3{font-size:26px;line-height:1.15}
+.guides p{font-size:14px;color:var(--muted)}
+.guides .more{margin-top:auto;font-size:14px;font-weight:500;text-decoration:underline;text-underline-offset:5px;padding-top:8px}
+/* situations */
+.sits{display:grid;grid-template-columns:1fr 1fr;gap:64px}
+.sits ol{list-style:none;border-top:1px solid var(--ink)}
+.sits li{border-bottom:1px solid var(--rule)}
+.sits li a,.sits li>div{display:flex;gap:18px;align-items:center;min-height:52px;padding:8px 0;font-size:14px}
+.sits li>div{color:var(--muted);flex-wrap:wrap;row-gap:0}
+.sits li>div small{flex-basis:100%;padding-left:46px;font-size:12px;margin-top:-4px;padding-bottom:8px}
+.sits li span.n{font-family:var(--serif);font-size:20px;color:var(--clay);width:28px}
+.sits li a b{font-weight:400}
+.sits li a i{margin-left:auto;font-style:normal}
+/* faq */
+.faq{max-width:820px}
+.faq details{border-top:1px solid var(--rule)}
+.faq details:last-child{border-bottom:1px solid var(--rule)}
+.faq summary{cursor:pointer;list-style:none;display:flex;gap:18px;align-items:baseline;min-height:64px;padding:20px 0;font-weight:500;font-size:15px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary .n{font-family:var(--serif);font-size:20px;color:var(--clay);font-weight:400}
+.faq summary::after{content:"+";margin-left:auto;font-family:var(--serif);font-size:26px;color:var(--muted)}
+.faq details[open] summary::after{content:"–"}
+.faq details p{font-size:14px;padding:0 0 22px 38px;max-width:60ch}
+/* footer */
+.ftr{background:var(--ink);color:var(--paper);padding:56px 0 24px}
+.ftr-grid{display:grid;grid-template-columns:1fr 1fr .8fr .8fr;gap:48px}
+.ftr .label{color:var(--paper);margin-bottom:10px}
+.ftr a{color:var(--paper)}
+.ftr a:hover{color:var(--citron)}
+.ftr-grid>div>a:not(.wordmark){display:flex;align-items:center;min-height:44px;font-size:14px;padding:10px 0}
+.ftr-grid p{font-size:14px;margin-top:14px}
+.ftr-bottom{display:flex;justify-content:space-between;border-top:1px solid #ffffff33;padding-top:24px;margin-top:40px;font-size:13px}
+.ftr-bottom div{display:flex;gap:24px}
+.ftr-bottom a{display:inline-flex;align-items:center;min-height:44px}
+/* sticky mobile bar */
+.sticky{display:none}
+@media(max-width:1050px){
+.wrap{width:calc(100% - 48px)}
+.hdr{gap:20px;padding-inline:24px}.nav{gap:20px}.nav a{font-size:12px}
+.hero .wrap{grid-template-columns:minmax(0,1fr) 380px;gap:40px}
+.toc .wrap{grid-template-columns:1fr 1fr;gap:16px 32px}.toc .label{grid-column:1/-1}
+.stats .wrap{grid-template-columns:repeat(3,1fr)}
+.cols4{grid-template-columns:1fr 1fr}.cols4>div:nth-child(2){border-right:0}
+.legend{grid-template-columns:repeat(4,1fr)}
+.markets{grid-template-columns:1fr 1fr}
+.guides{grid-template-columns:1fr 1fr}.guides a:nth-child(n){padding-left:0;border-left:0}.guides a:nth-child(2n){padding-left:24px;border-left:1px solid var(--rule)}
+}
+@media(max-width:700px){
+.wrap{width:calc(100% - 40px)}
+.hdr{height:76px;padding:0 20px;gap:14px}
+.wordmark{font-size:25px}
+.nav,.hdr-cta{display:none}
+.phone{min-width:44px;justify-content:center;border:1px solid var(--rule);border-radius:4px}
+.phone span{display:none}.phone svg{display:block}
+.menu-btn{display:inline-flex;align-items:center;justify-content:center}
+.hero{padding:32px 0 44px}
+.hero .wrap{grid-template-columns:1fr;gap:40px}
+.hero h1{font-size:44px;max-width:none}
+.hero .lede{font-size:15px;margin:20px 0 24px}
+.hero-cta .btn{width:100%}
+.hero-cta .link{display:inline-flex}
+.review{padding:22px 20px}
+.review h2{font-size:30px}
+.review form{grid-template-columns:1fr}
+.band img{height:240px}
+.toc .wrap{grid-template-columns:1fr;gap:0}
+.toc a{border-bottom:1px solid var(--rule);padding:6px 0}
+.toc a:last-child{border-bottom:0}
+.stats{padding-top:40px}
+.stats .wrap{grid-template-columns:1fr 1fr;gap:24px 20px}
+.stats div b{font-size:32px}
+.sec{padding:56px 0}
+.sec-head{flex-direction:column;align-items:start;gap:8px;margin-bottom:28px}
+.two,.econ,.sits,.req .two{grid-template-columns:1fr;gap:32px}
+.cols4{grid-template-columns:1fr;margin-top:36px}
+.cols4>div{border-right:0;margin-right:0;padding-right:0;border-bottom:1px solid var(--rule);padding-bottom:20px}
+.cols4>div:last-child{border-bottom:0}
+.cols4 b{font-size:36px}
+.legend{grid-template-columns:1fr 1fr}
+.legend-note{flex-wrap:wrap;gap:8px 20px}
+.markets{grid-template-columns:1fr;gap:40px}
+.mk img{height:200px}
+.econ .big{font-size:96px}
+.defs>div{grid-template-columns:1fr;gap:6px}
+.req .stamp{gap:28px}
+.req .actions .btn{width:100%}
+.guides{grid-template-columns:1fr}
+.guides a:nth-child(n){padding-left:0;border-left:0;padding-right:0}
+.faq summary{font-size:14px}
+.faq details p{padding-left:0}
+.ftr-grid{grid-template-columns:1fr;gap:28px}
+.ftr-bottom{flex-direction:column;gap:8px}
+.sticky{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--ink);color:var(--paper);padding:10px 20px;padding-bottom:calc(10px + env(safe-area-inset-bottom));align-items:center;justify-content:space-between;gap:14px;box-shadow:0 -1px 0 #ffffff26;transition:transform .2s}
+.sticky.hide{transform:translateY(110%)}
+.sticky small{font-size:12px;line-height:1.4;color:#d5dfdc}
+.sticky small b{display:block;font-weight:500;color:var(--paper);font-size:13px}
+.sticky .btn{min-height:44px;padding:12px 18px;white-space:nowrap}
+body{padding-bottom:72px}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.sticky{transition:none}}
+</style>
+</head>
+<body>
+<header class="hdr">
+<a class="wordmark" href="https://seascape-vacations.com/" aria-label="Seascape Vacations home">seascape<span>VACATIONS</span></a>
+<nav class="nav" aria-label="Primary"><a href="https://seascape-vacations.com/properties/">Our homes</a><a href="https://seascape-vacations.com/guides/">Explore the coast</a><a href="https://seascape-vacations.com/about-us/">About Seascape</a><a href="https://seascape-vacations.com/property-management/" aria-current="page">Property Owners</a></nav>
+<div class="hdr-actions"><a class="phone" href="tel:9417048545" aria-label="Call Seascape Vacations at (941) 704-8545"><span>(941) 704-8545</span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v2a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.08 3.99 2 2 0 0 1 4.06 1.8h2a2 2 0 0 1 2 1.72l.34 2.28a2 2 0 0 1-.57 1.73L6.2 9.17a16 16 0 0 0 8.63 8.63l1.64-1.63a2 2 0 0 1 1.73-.57l2.28.34A2 2 0 0 1 22 16.92Z"/></svg></a><a class="btn hdr-cta" href="#owner-cta">Revenue Review</a><button class="menu-btn" type="button" aria-label="Open menu" aria-expanded="false">Menu</button></div>
+</header>
+<main id="main">
+<section class="hero" data-screen-label="Hero + form">
+<div class="wrap">
+<div>
+<div class="masthead"><span>Vol. III · Owner Field Report</span><span>Bradenton · Sarasota Corridor</span><span>Spring 2026 · Issue 04</span></div>
+<p class="label">The Property Management Brief</p>
+<h1>Before you renew, what does your <em>Gulf Coast home</em> actually keep?</h1>
+<p class="lede">If the payout, fee story, or owner updates on your Sarasota condo, Bradenton pool home, or island listing do not add up, send the listing link or address plus a sentence or two about what feels off. We will compare the charges on your statement with the services in your agreement and send back a one-page revenue review that shows what deserves a second look.</p>
+<div class="hero-cta"><a class="btn" href="#owner-cta">Request your revenue review</a><a class="link" href="#economics">Read the issue</a></div>
+<p class="small">Listing or address first · Sentence or two is enough · 48-hour reply</p>
+</div>
+<aside class="review" id="owner-cta" aria-labelledby="review-h">
+<p class="label">Request a review · §4</p>
+<h2 id="review-h">Your 48-hour revenue review</h2>
+<p>Four short questions, two minutes. A real Seascape person reads every reply.</p>
+<form action="#" method="post" onsubmit="return false">
+<label class="field full"><span>Listing URL or property address</span><input type="text" name="listing" placeholder="Airbnb or Vrbo link, or the street address" autocomplete="street-address"></label>
+<label class="field full"><span>What feels off right now</span><textarea name="issue" rows="2" placeholder="Revenue, booking-site fees, reporting, owner communication, pricing, occupancy, or the current manager setup"></textarea></label>
+<label class="field"><span>Name</span><input type="text" name="name" autocomplete="name"></label>
+<label class="field"><span>Email</span><input type="email" name="email" autocomplete="email"></label>
+<label class="field full"><span>Phone <i>· optional</i></span><input type="tel" name="phone" autocomplete="tel"></label>
+<div class="upload"><span>Owner statement — PDF, spreadsheet, or screenshot, optional</span><label>Attach<input type="file" name="statement" accept=".pdf,.csv,.xls,.xlsx,image/*"></label></div>
+<button class="btn" type="submit">Send my review request</button>
+<p class="foot">If anything is missing, we will tell you what we still need instead of filling in the blanks. Usually a 48-hour reply. Prefer to talk first? <a href="tel:+19417048545">(941) 704-8545</a></p>
+</form>
+</aside>
+</div>
+</section>
+<figure class="band"><img src="https://seascape-vacations.com/.netlify/images?url=/images/hero-sunset-source.jpg&w=1600&fm=jpg&q=86" alt="Gulf Coast sunset over open water"><figcaption class="wrap">Gulf Coast sunset over open water</figcaption></figure>
+<nav class="toc" aria-label="Inside this issue" data-screen-label="Inside this issue">
+<div class="wrap"><p class="label">Inside this issue</p>
+<a href="#benchmark"><span>01</span><span><b>The fee guide</b><small>Published charges explained</small></span></a>
+<a href="#markets"><span>02</span><span><b>By market</b><small>AMI · Bradenton · Sarasota</small></span></a>
+<a href="#economics"><span>03</span><span><b>Owner economics</b><small>Which charge buys what</small></span></a>
+<a href="#owner-cta"><span>04</span><span><b>Request a review</b><small>4-step owner check-in</small></span></a>
+</div>
+</nav>
+<section class="stats" aria-label="Fee guide" data-screen-label="Fee guide stats">
+<div class="wrap">
+<div><p class="label">Fee guide</p><b>15.5%</b><p>Airbnb's published fee for most single-fee hosts</p></div>
+<div><p class="label">&nbsp;</p><b>2.9% + 30¢</b><p>Stripe's standard domestic online-card price</p></div>
+<div><p class="label">&nbsp;</p><b>Property-specific</b><p>Seascape management pricing follows the agreement</p></div>
+<div><p class="label">&nbsp;</p><b>In writing</b><p>Fee basis, included services, and separate charges</p></div>
+<div><p class="label">&nbsp;</p><b>48 hr</b><p>Usual reply window on every review</p></div>
+</div>
+</section>
+<section class="sec" id="benchmark" data-screen-label="§1 Fee comparison">
+<div class="wrap">
+<div class="sec-head"><h2>The Fee Comparison</h2><span class="pg">Pages 4-5 · §1</span></div>
+<div class="two">
+<p class="quote">“Property management for owners who want every charge explained. Start by putting platform commission, card processing, and management services in separate columns.”</p>
+<div><p><strong>Fee Guide + Revenue Review.</strong> Airbnb's host service fee, Stripe's card price, and a management agreement pay for different things. The review checks the fee basis, included work, and separate costs before you switch.</p>
+<div class="tags"><span>Published platform pricing</span><span>Property-specific management quote</span></div>
+<a class="link" href="https://seascape-vacations.com/research/owner-fee-revenue-leak-benchmark-2026/">Read the owner fee guide</a></div>
+</div>
+<div class="cols4">
+<div><p class="label">Airbnb Host Fee</p><b>15.5%</b><p class="sub">most hosts on Airbnb's single-fee structure</p><p>Airbnb says other hosts on the single-fee structure typically pay 14–16%. Check the current fee on Airbnb's pricing page and in the reservation payout.</p></div>
+<div><p class="label">Management Quote</p><b>Property-specific</b><p class="sub">controlled by the signed agreement</p><p>Ask which revenue base the fee uses, which services are included, and which charges remain separate.</p></div>
+<div><p class="label">Stripe Card Price</p><b>2.9% + 30¢</b><p class="sub">standard domestic online-card transaction</p><p>Payment processing only. Marketing, software, guest service, refunds, and local operations are separate costs.</p></div>
+<div><p class="label">Comparison Rule</p><b>Not equivalent</b><p class="sub">different charges for different services</p><p>A lower card-processing rate does not by itself mean a higher owner payout.</p></div>
+</div>
+</div>
+</section>
+<section class="sec" id="markets" data-screen-label="§2 By market">
+<div class="wrap">
+<div class="sec-head"><h2>By Market</h2><span class="pg">Pages 6-7 · §2</span></div>
+<div class="legend-note"><span>Seascape portfolio map</span><span>Bradenton – Sarasota corridor</span><span>Gulf of Mexico · Mainland</span><span>Seascape HQ · Bradenton</span></div>
+<div class="legend">
+<div><b>Anna Maria Island</b>Premium weeks · local execution</div>
+<div><b>Holmes Beach</b>Repeat guests · walkability</div>
+<div><b>Cortez</b>Story · pricing clarity</div>
+<div><b>Bradenton</b>Pool value · group demand</div>
+<div><b>Longboat Key</b>Rate quality · guest fit</div>
+<div><b>Sarasota</b>Presentation · guest quality</div>
+<div><b>Siesta Key</b>Beach standards · rate fit</div>
+</div>
+<div class="markets">
+<article class="mk"><img src="https://seascape-vacations.com/images/owner-field-ami-cottages.jpg" alt="Colorful Anna Maria Island cottages with palms and bicycles"><p class="label">GPS lock · AMI</p><h3>Anna Maria Island</h3><p>Island homes prioritize rate protection, reliable channels, and local execution when occupancy alone is not enough to protect return.</p><dl><div><dt>Price</dt><dd>Premium weeks</dd></div><div><dt>Protect</dt><dd>Owner margin</dd></div><div><dt>Check</dt><dd>Local response</dd></div></dl><a class="link" href="https://seascape-vacations.com/property-management/vacation-rental-management-anna-maria-island/">View Anna Maria Island guidance →</a></article>
+<article class="mk"><img src="https://seascape-vacations.com/images/owner-field-longboat.jpg" alt="Gulf beach sunset with a swimmer near the shore"><p class="label">GPS lock · Holmes</p><h3>Holmes Beach</h3><p>Quiet stretches of Holmes Beach pull repeat guests who want walkability, calm weeks, and local service instead of crowded beach traffic.</p><dl><div><dt>Fit</dt><dd>Repeat guests</dd></div><div><dt>Watch</dt><dd>Quiet weeks</dd></div><div><dt>Check</dt><dd>Walkability</dd></div></dl><a class="link" href="https://seascape-vacations.com/guides/holmes-beach-area-guide/">View Holmes Beach guidance →</a></article>
+<article class="mk"><img src="https://seascape-vacations.com/images/owner-field-bradenton.jpg" alt="Sailboat near a Gulf Coast shoreline at sunset"><p class="label">GPS lock · Cortez</p><h3>Cortez</h3><p>Cortez homes win on authenticity: fishing village texture, family demand, and a no-high-rise story that has to be priced clearly.</p><dl><div><dt>Story</dt><dd>Village fit</dd></div><div><dt>Price</dt><dd>Family demand</dd></div><div><dt>Check</dt><dd>Positioning</dd></div></dl><a class="link" href="https://seascape-vacations.com/guides/bradenton-area-guide/">View Cortez guidance →</a></article>
+<article class="mk"><img src="https://seascape-vacations.com/images/owner-field-bradenton.jpg" alt="Sailboat near a Gulf Coast shoreline at sunset"><p class="label">GPS lock · Bradenton</p><h3>Bradenton</h3><p>In Bradenton homes, pricing, pool value, and location positioning still decide the return.</p><dl><div><dt>Pool</dt><dd>Value story</dd></div><div><dt>Group</dt><dd>Trip fit</dd></div><div><dt>Check</dt><dd>Discounting</dd></div></dl><a class="link" href="https://seascape-vacations.com/property-management/vacation-rental-management-bradenton/">View Bradenton guidance →</a></article>
+<article class="mk"><img src="https://seascape-vacations.com/images/owner-field-longboat.jpg" alt="Gulf beach sunset with a swimmer near the shore"><p class="label">GPS lock · Longboat</p><h3>Longboat Key</h3><p>Longboat owners trade volume for rate. Channel quality and guest screening do more than discounting.</p><dl><div><dt>Rate</dt><dd>Quality first</dd></div><div><dt>Guest</dt><dd>Screening fit</dd></div><div><dt>Check</dt><dd>Channel cost</dd></div></dl><a class="link" href="https://seascape-vacations.com/guides/longboat-key-area-guide/">View Longboat Key guidance →</a></article>
+<article class="mk"><img src="https://seascape-vacations.com/images/owner-field-sarasota.jpg" alt="Palm-lined waterfront bridge at sunset"><p class="label">GPS lock · Sarasota</p><h3>Sarasota</h3><p>For Sarasota owners, the first questions are usually simple: does the payout still make sense, is the presentation earning the rate, and are the owner updates clear enough to trust.</p><dl><div><dt>Show</dt><dd>Presentation</dd></div><div><dt>Guest</dt><dd>Quality</dd></div><div><dt>Check</dt><dd>Rate fit</dd></div></dl><a class="link" href="https://seascape-vacations.com/property-management/vacation-rental-management-sarasota/">View Sarasota guidance →</a></article>
+<article class="mk"><img src="https://seascape-vacations.com/images/owner-field-siesta-key.jpg" alt="Aerial view of a white sand Gulf Coast beach and turquoise water"><p class="label">GPS lock · Siesta</p><h3>Siesta Key</h3><p>On beach properties, guest expectations are high and presentation has to match the rate.</p><dl><div><dt>Beach</dt><dd>Expectations</dd></div><div><dt>Photo</dt><dd>Rate support</dd></div><div><dt>Check</dt><dd>Service gaps</dd></div></dl><a class="link" href="https://seascape-vacations.com/property-management/vacation-rental-management-siesta-key/">View Siesta Key guidance →</a></article>
+</div>
+</div>
+</section>
+<section class="sec" id="economics" data-screen-label="§3 Owner economics">
+<div class="wrap">
+<div class="sec-head"><h2>Owner Economics</h2><span class="pg">Pages 8-11 · §3</span></div>
+<div class="econ">
+<div><p class="label">Fee Definitions</p><div class="big">3≠1</div><p>platform · processing · management</p><p style="margin-top:22px;max-width:40ch">Airbnb, Stripe, and a property manager charge for different services. A useful comparison names the fee basis and the work attached to it.</p></div>
+<div class="defs">
+<div><b>Mostly 15.5%</b><p>Airbnb's published host service fee for most listings on its single-fee structure.</p></div>
+<div><b>2.9% + 30¢</b><p>Stripe's published standard price for a successful domestic online-card transaction.</p></div>
+<div><b>Property-specific</b><p>Seascape management pricing is set by the services and fee basis in the signed agreement.</p></div>
+</div>
+</div>
+</div>
+</section>
+<section class="sec req" id="request" data-screen-label="§4 Request your review">
+<div class="wrap">
+<div class="sec-head"><h2>Request your 48-hour revenue review.</h2><span class="pg">Pages 12-13 · §4</span></div>
+<div class="two">
+<div>
+<p class="quote">Send the listing URL or property address, plus what feels off right now. We will send back <em>a one-page revenue review.</em></p>
+<div class="stamp"><div><b>48hr</b><small>Reply guaranteed</small></div><div><b>4</b><small>Short questions</small></div><div><b>2</b><small>Minutes</small></div></div>
+</div>
+<div>
+<p>Four short questions, two minutes. Start with the listing URL or property address, then add one plain-English note on what feels off: revenue, booking-site fees, reporting, owner communication, pricing, occupancy, or the current manager setup.</p>
+<p>A real Seascape person reads every reply and sends back a one-page revenue review that shows what deserves a closer look and what we would check next, usually within 48 hours. If it is easier, send the listing link and a sentence or two about what is bothering you most.</p>
+<ul class="checklist" style="margin-top:24px">
+<li>Listing<span>Question 1 of 4</span></li>
+<li>What feels off<span>Question 2 of 4</span></li>
+<li>Name and email<span>Question 3 of 4</span></li>
+<li>Phone<span>Optional</span></li>
+</ul>
+<div class="actions"><a class="btn btn-citron" href="#owner-cta">Send my review request</a><a href="tel:+19417048545">Prefer to talk first? (941) 704-8545</a></div>
+</div>
+</div>
+</div>
+</section>
+<section class="sec" id="guides" data-screen-label="§5 Owner guides">
+<div class="wrap">
+<div class="sec-head"><div><h2>Owner Guides</h2><p style="margin-top:12px;max-width:60ch;color:var(--muted)">Operational guides that protect revenue and reduce risk, useful when cleaning, taxes, screening, insurance, or acquisition are the real blocker.</p></div><span class="pg">Pages 14-18 · §5</span></div>
+<div class="switchers"><p class="label">Start here for switchers</p><p>Run this sequence before you decide: <a href="https://seascape-vacations.com/research/owner-fee-revenue-leak-benchmark-2026/">owner fee guide</a>, <a href="https://seascape-vacations.com/property-management/vacation-rental-management-fees-florida/">management-fee reality</a>, <a href="https://seascape-vacations.com/property-management/vacation-rental-licensing-florida/">Florida licensing risk</a>, <a href="https://seascape-vacations.com/property-management/vrbo-management-services-florida/">VRBO handling</a>, then <a href="#owner-cta">request your 48-hour revenue review</a>.</p></div>
+<div class="guides">
+<a href="https://seascape-vacations.com/property-management/maximize-vacation-rental-income-florida/"><span class="label">Revenue</span><h3>What Cuts Into Owner Income</h3><p>Start here for a clearer read on fees, booking-source costs, and operating issues before a property-specific review.</p><span class="more">Read guide →</span></a>
+<a href="https://seascape-vacations.com/research/owner-fee-revenue-leak-benchmark-2026/"><span class="label">Fee Guide</span><h3>Airbnb Host Fees vs Card Processing</h3><p>Published fee definitions, their limits, and the questions to put beside a property-specific management quote.</p><span class="more">Read fee comparison →</span></a>
+<a href="https://seascape-vacations.com/property-management/vacation-rental-management-fees-florida/"><span class="label">Fees</span><h3>Vacation Rental Management Fee Reality</h3><p>Compare property-management proposals and the services behind each quote.</p><span class="more">Read management guide →</span></a>
+<a href="https://seascape-vacations.com/property-management/switch-vacation-rental-management-company/"><span class="label">Switching</span><h3>How To Switch Without Wrecking Momentum</h3><p>For owners weighing a fixable setup against a clean manager switch.</p><span class="more">Read switch guide →</span></a>
+<a href="https://seascape-vacations.com/property-management/vacation-rental-cleaning-services-florida/"><span class="label">Turnover</span><h3>Cleaning Services That Protect Reviews</h3><p>For bad turns, inspection misses, and housekeeping control issues that cost repeat bookings.</p><span class="more">Read cleaning guide →</span></a>
+<a href="https://seascape-vacations.com/property-management/vacation-rental-guest-screening/"><span class="label">Risk</span><h3>Guest Screening Standards</h3><p>Best for owners whose real concern is property damage, neighbor friction, or low-quality bookings.</p><span class="more">Read screening guide →</span></a>
+<a href="https://seascape-vacations.com/property-management/buy-vacation-rental-property-florida/"><span class="label">Buying</span><h3>Buy the Right Vacation Rental Property</h3><p>Best before another purchase when a listing agent is selling the dream faster than the operating truth.</p><span class="more">Read acquisition guide →</span></a>
+</div>
+</div>
+</section>
+<section class="sec" id="situations" data-screen-label="Specific situations">
+<div class="wrap">
+<div class="sec-head"><h2>Specific Situations</h2><span class="pg">Index · §5</span></div>
+<div class="sits">
+<div><p class="label" style="margin-bottom:14px">Operations</p><ol>
+<li><a href="https://seascape-vacations.com/property-management/new-vacation-rental-owner-guide-florida/"><span class="n">01</span><b>New vacation rental owner guide</b><i>→</i></a></li>
+<li><a href="https://seascape-vacations.com/property-management/increase-vacation-rental-bookings/"><span class="n">02</span><b>Increase vacation rental bookings</b><i>→</i></a></li>
+<li><a href="https://seascape-vacations.com/property-management/vacation-rental-cleaning-services-florida/"><span class="n">03</span><b>Cleaning services that protect reviews</b><i>→</i></a></li>
+<li><a href="https://seascape-vacations.com/property-management/vacation-rental-guest-screening/"><span class="n">04</span><b>Guest screening standards</b><i>→</i></a></li>
+<li><a href="https://seascape-vacations.com/property-management/vacation-rental-insurance-florida/"><span class="n">05</span><b>Florida vacation rental insurance</b><i>→</i></a></li>
+<li><div><span class="n">06</span><b style="font-weight:400">Florida vacation rental taxes</b><small>Professional review required; consult a qualified tax professional.</small></div></li>
+<li><a href="https://seascape-vacations.com/property-management/buy-vacation-rental-property-florida/"><span class="n">07</span><b>Buy the right vacation rental property</b><i>→</i></a></li>
+</ol></div>
+<div><p class="label" style="margin-bottom:14px">Situation Desk</p><ol>
+<li><a href="https://seascape-vacations.com/property-management/sell-vacation-rental-property-florida/"><span class="n">08</span><b>Sell a vacation rental in Florida</b><i>→</i></a></li>
+<li><a href="https://seascape-vacations.com/property-management/switch-from-airbnb-self-manage/"><span class="n">09</span><b>Switch from Airbnb self-management</b><i>→</i></a></li>
+<li><a href="https://seascape-vacations.com/property-management/vacation-rental-interior-design-florida/"><span class="n">10</span><b>Interior design for vacation rentals</b><i>→</i></a></li>
+<li><a href="https://seascape-vacations.com/property-management/vacation-rental-licensing-florida/"><span class="n">11</span><b>Florida licensing requirements</b><i>→</i></a></li>
+<li><a href="https://seascape-vacations.com/property-management/vacation-rental-maintenance-florida/"><span class="n">12</span><b>Maintenance that preserves revenue</b><i>→</i></a></li>
+<li><a href="https://seascape-vacations.com/property-management/vacation-rental-management-siesta-key/"><span class="n">13</span><b>Siesta Key management</b><i>→</i></a></li>
+<li><a href="https://seascape-vacations.com/property-management/vacation-rental-photography-florida/"><span class="n">14</span><b>Vacation rental photography</b><i>→</i></a></li>
+<li><a href="https://seascape-vacations.com/property-management/vrbo-management-services-florida/"><span class="n">15</span><b>VRBO management services</b><i>→</i></a></li>
+<li><a href="https://seascape-vacations.com/property-management/condo-rental-management-florida/"><span class="n">16</span><b>Condo rental management</b><i>→</i></a></li>
+</ol></div>
+</div>
+</div>
+</section>
+<section class="sec" id="faq" data-screen-label="§6 FAQ" style="border-bottom:0">
+<div class="wrap">
+<div class="sec-head"><div><h2>Selected FAQ</h2><p style="margin-top:12px;color:var(--muted)">What Gulf Coast owners usually ask first.</p></div><span class="pg">Page 19 · §6</span></div>
+<div class="faq">
+<details><summary><span class="n">01</span>How do I know if my market can support professional management fees?</summary><p>Start with the services and fee basis in the agreement, not a generic public percentage. Read the <a href="https://seascape-vacations.com/research/owner-fee-revenue-leak-benchmark-2026/">Airbnb host fee and card-processing guide</a>, then request a revenue review if you need a property-specific management quote.</p></details>
+<details><summary><span class="n">02</span>What should a local manager handle that a remote manager usually misses?</summary><p>The short answer is local response time. Cleaning quality control, maintenance triage, guest screening, and property checks are all weaker when the manager is not operating in-market. The market-specific service pages break down how that changes between <a href="https://seascape-vacations.com/property-management/vacation-rental-management-bradenton/">Bradenton</a>, <a href="https://seascape-vacations.com/property-management/vacation-rental-management-sarasota/">Sarasota</a>, and <a href="https://seascape-vacations.com/property-management/vacation-rental-management-anna-maria-island/">Anna Maria Island</a>.</p></details>
+<details><summary><span class="n">03</span>What should I read before choosing a vacation rental manager?</summary><p>Start with the page that matches your market, then read the <a href="https://seascape-vacations.com/property-management/vacation-rental-management-fees-florida/">fee reality page</a>, the <a href="https://seascape-vacations.com/property-management/maximize-vacation-rental-income-florida/">income breakdown</a>, and the <a href="https://seascape-vacations.com/property-management/switch-vacation-rental-management-company/">switch-management page</a> if you think the current setup is the real problem.</p></details>
+</div>
+</div>
+</section>
+</main>
+<footer class="ftr" id="contact">
+<div class="wrap ftr-grid">
+<div><a class="wordmark" href="https://seascape-vacations.com/">seascape<span>VACATIONS</span></a><p>Our homes. A local connection.<br>Bradenton &amp; Sarasota, Florida.</p></div>
+<div><p class="label">Let's talk about your trip</p><a href="tel:9417048545">(941) 704-8545</a><a href="mailto:info@seascape-vacations.com">info@seascape-vacations.com</a></div>
+<div><p class="label">Explore</p><a href="https://seascape-vacations.com/properties/">Our homes</a><a href="https://seascape-vacations.com/guides/">Local guides</a><a href="https://seascape-vacations.com/property-management/">For property owners</a><a href="https://seascape-vacations.com/services/concierge-services/">Help planning your stay</a><a href="https://seascape-vacations.com/guest-support/">Guest Support</a><a href="https://seascape-vacations.com/terms/#booking-and-confirmation">Booking &amp; cancellation policy</a></div>
+<div><p class="label">Where we are</p><a href="https://seascape-vacations.com/guides/anna-maria-island-area-guide/">Anna Maria Island</a><a href="https://seascape-vacations.com/guides/bradenton-area-guide/">Bradenton</a><a href="https://seascape-vacations.com/guides/sarasota-area-guide/">Sarasota</a><a href="https://seascape-vacations.com/guides/siesta-key-area-guide/">Siesta Key</a></div>
+</div>
+<div class="wrap ftr-bottom"><span>© 2026 Seascape Vacations</span><div><a href="https://seascape-vacations.com/privacy/">Privacy</a><a href="https://seascape-vacations.com/terms/">Terms</a><a href="https://seascape-vacations.com/cookies/">Cookies</a></div></div>
+</footer>
+<div class="sticky" id="sticky"><small><b>48-hour revenue review</b>Listing or address is enough</small><a class="btn btn-citron" href="#owner-cta">Request review</a></div>
+<script>
+(()=>{const f=document.getElementById('owner-cta'),s=document.getElementById('sticky');if(!f||!s||!('IntersectionObserver' in window))return;new IntersectionObserver(e=>s.classList.toggle('hide',e[0].isIntersecting),{threshold:.15}).observe(f);})();
+</script>
+</body>
+</html>

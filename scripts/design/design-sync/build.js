@@ -545,11 +545,26 @@ const keptCards = [
   { path: "preview/voice.html", group: "Brand", name: "Voice samples", subtitle: "Stays · guide · PM · banned", viewport: "700x240" },
   { path: "preview/iconography.html", group: "Brand", name: "Iconography", subtitle: "Inline SVG .ui-icon · 1.85 stroke · currentColor", viewport: "700x200" },
 ];
-const tokenKind = (value) => (/^#|^rgba?\(/.test(value) ? "color" : /'/.test(value) || /,\s*(serif|sans-serif)$/.test(value) ? "font" : /px|em|%/.test(value) ? "spacing" : "other");
+// Claude Design's token vocabulary: color | spacing | radius | shadow | font | other.
+const tokenKind = (name, value) => {
+  if (/radius/.test(name)) return "radius";
+  if (/shadow/.test(name) || /shadow/.test(value)) return "shadow";
+  if (/^#|^rgba?\(/.test(value)) return "color";
+  if (/font|-h1$|-size$|-lh$|-ls$|weight/.test(name) || /'/.test(value)) return "font";
+  if (/px|em|%/.test(value)) return "spacing";
+  return "other";
+};
+// Claude Design reads a trailing `/* @kind x */` on a token line for its Tokens panel; emit it
+// here so nobody hand-edits the generated file to add it.
+const tokensCssAnnotated = tokensCss.replace(/^(\s*--wl-[a-z0-9-]+:)([^;]+);(.*)$/gm, (line, name, value, rest) => {
+  if (/@kind/.test(rest)) return line;
+  return `${name}${value}; /* @kind ${tokenKind(name.replace(/[:\s]/g, ""), value.trim())} */${rest ? " " + rest.trim() : ""}`;
+});
+fs.writeFileSync(path.join(OUT, "waterline/tokens.css"), tokensCssAnnotated);
 const tokens = [...tokensCss.matchAll(/^\s*(--wl-[a-z0-9-]+):([^;]+);/gm)].map((m) => ({
   name: m[1],
   value: m[2].trim(),
-  kind: tokenKind(m[2].trim()),
+  kind: tokenKind(m[1], m[2].trim()),
   definedIn: "waterline/tokens.css",
 }));
 write(
@@ -583,6 +598,14 @@ write(
 // (gold pills, Playfair numerals, 20px cards) and must leave the pane. The full
 // project was exported to a zip before the first sync (see README).
 const deletes = [
+  // Files Claude Design adds inside the project when a mock is run from its chat.
+  // The system is generated; mocks live in their own design project (see README).
+  "waterline/components/Button.jsx",
+  "waterline/components/Button.d.ts",
+  "waterline/components/button.html",
+  "waterline/tokens.html",
+  "live-mockup/Property Management Waterline.html",
+  "live-mockup/Property Management Waterline - Desktop & Mobile.html",
   "preview/badge-gps-chip.html",
   "preview/badges.html",
   "preview/colors-gradients.html",

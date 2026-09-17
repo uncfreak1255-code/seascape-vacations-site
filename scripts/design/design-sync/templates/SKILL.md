@@ -18,6 +18,10 @@ Last synced {{SYNC_DATE}} from `seascape-vacations-site` commit `{{COMMIT}}` by 
 - **Motion** browser-native only, never required, never auto-rotating. No popups in the guest journey; a sticky bar never covers the form.
 - **Floors F1 to F6** (min 12px text, 44px hit boxes at 393px, no horizontal scroll at 360/375/393, hero contrast, one shell, link distribution) are enforced by tests. A mock that breaks one is not approvable.
 
+## Do not add files to this project
+
+It is generated. Anything written here by hand (a `components/*.jsx`, an extra card, a mock saved into `live-mockup/`) is deleted by the next sync. Build mocks as their own design project that attaches this system, then hand the approved mock to the repo. The HTML cards in `preview/` are the validation surface; no compiled component bundle is needed.
+
 ## What is current and what is history
 
 - **Current**: `waterline/`, `styles.css`, and every card in `preview/`. The component cards are the site's real built markup with the real CSS, so match their class names (`g-header`, `g-button btn-brand`, `g-trip-form`, `g-postcard`, `catalog-card`, `g-booking`) when the output is meant to go back into the site.

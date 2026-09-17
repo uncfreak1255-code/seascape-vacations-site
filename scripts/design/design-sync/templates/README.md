@@ -45,6 +45,8 @@ This project is **generated from the repository**, not authored here. Synced {{S
 └── uploads/                     Sawyer's uploaded logo files and reference screenshots
 ```
 
+Mocks do not live in this project. Start a new design, attach this system, and build there; an approved mock is copied into the repo under `docs/mockups/` as the implementation contract. Files Claude Design writes into this project during a chat (`waterline/components/`, `live-mockup/`, extra cards) are removed by the next sync.
+
 The pre-Waterline layers that used to live here (v1 `colors_and_type.css`, v2 `design-system/`, `ui_kits/`, `explorations/`, `live-mockup/`, `handoff/`) were removed on 2026-09-16 so nothing old can leak into a mock. A full export of the project as it stood before that (150 files) is kept outside this project.
 
 ## Waterline in one screen

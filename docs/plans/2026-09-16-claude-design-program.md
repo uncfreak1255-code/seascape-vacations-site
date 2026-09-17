@@ -62,6 +62,37 @@ the 26 city landers come from `property-management.njk` and follow later).
   review form is the conversion and must stay above the fold on desktop and
   reachable in one tap on a 393px phone. Show desktop 1280 and mobile 393."
 
+## Item 1 council verdict (2026-09-16, four lenses, proven by execution)
+
+The first Claude Design mock is saved at `docs/mockups/2026-09-16-property-management-waterline.html`.
+Four independent reviewers measured it; their findings agree.
+
+- **Floors (Playwright at 1280, 393, 375, 360).** F1 pass (nothing under 12px). F3 pass (no overflow).
+  F2 two misses at 393: the footer "Terms" link is 40px wide, and the hidden file input reads as a 1x1
+  control. Submit button bottom is 809px at a 1280x800 fold, 9px under. Buttons: 4px radius, 48px,
+  ink/white 11.78:1, citron/ink 9.02:1, citron only on dark surfaces. Focus ring correct. Sticky bar
+  hides while the form is in view.
+- **Truth.** Every number, label and headline matches the live page word for word, including the
+  masthead, page numbers, fee figures and "Reply guaranteed" (already live; still a claim to retire
+  under DESIGN.md's trust rule). All 45 links and images return 200. Structural gaps: the mock hand-rolls
+  a header and footer instead of the shared shell (F5), and its form is decorative rather than the real
+  four-step Netlify form (`owner-revenue-teardown`, hidden fields, `current_manager`,
+  `current_fee_quote`). Guide cards dropped their seven photos.
+- **Critic (repo taste gate): Needs another pass, scoped to one module.** Keep the Waterline
+  application, fold hierarchy, copy and button reasoning. Cut the seven-market "portfolio map": two towns
+  reuse a neighbour's photo (Holmes Beach and Longboat Key; Cortez and Bradenton), Cortez links to the
+  Bradenton guide, and the "GPS lock" chips are generic decoration. Drop the "Pages X to Y" counters, keep
+  volume and issue. Record citron on the flat ink band as a fourth sanctioned on-dark surface if approved.
+- **Structure.** The design-system project stays HTML-only and generated. Claude Design's in-project
+  additions (`waterline/components/*.jsx`, `button.html`, `tokens.html`, `live-mockup/`) are deleted by
+  the sync; `build.js` emits the `@kind` token annotations itself. Mocks are built as their own design
+  project that attaches the system, then copied into `docs/mockups/`.
+
+Implementation contract for item 1, once Sawyer approves the direction: this mock, with the By Market
+module reduced to the markets Seascape serves with one real named photo each, no GPS chips, no page
+counters; the shared `g-header`/`g-footer`; the real four-step Netlify form; the Terms link and file
+input brought to 44px; the submit button above the 800px fold; guide photos restored.
+
 ## What this program does not do
 
 - No second design lane, router or review layer. The repo's specialist and
