@@ -42,7 +42,10 @@ test("owner landing page uses a real owner revenue review form instead of generi
 
   const ownerFormPartial = fs.readFileSync(ownerFormPath, "utf8");
   assert.equal(ownerLanding.includes("Request your 48-hour revenue review"), true);
-  assert.equal(ownerLanding.includes("ownerEvaluationForm({"), true);
+  assert.equal(ownerLanding.includes('<form class="g-owner-form" name="owner-revenue-teardown" method="POST" action="/property-management/revenue-review-requested/" enctype="multipart/form-data"'), true);
+  assert.equal(ownerLanding.includes('name="property_address" autocomplete="street-address"'), true);
+  assert.equal(ownerLanding.includes('name="owner_statement"'), true);
+  assert.equal(ownerLanding.includes('data-owner-context-field></textarea>'), true);
   assert.equal(ownerLanding.includes('data-track-event="owner_primary_cta_click"'), true);
   assert.equal(ownerFormPartial.includes("owner-revenue-teardown"), true);
   assert.equal(ownerFormPartial.includes('data-netlify="true"'), true);
@@ -193,9 +196,10 @@ test("owner revenue review form lowers friction without losing tracking or inten
   assert.equal(ownerFormPartial.includes('data-form-submit-event="owner_form_submit"'), true);
   assert.equal(ownerFormPartial.includes('data-source-page-slug="{{ options.sourcePageSlug or options.pageSlug or \'property-management\' }}"'), true);
   assert.equal(ownerFormPartial.includes('name="source_page_slug" value="{{ options.sourcePageSlug or options.pageSlug or \'property-management\' }}"'), true);
-  assert.equal(ownerLanding.includes("showBenchmarkFields: true"), true);
+  assert.equal(ownerLanding.includes('name="current_manager"'), true, "hub form keeps the benchmark fields the shared partial exposes");
+  assert.equal(ownerLanding.includes('name="current_fee_quote"'), true);
   assert.equal(ownerTemplate.includes("showBenchmarkFields: true"), true);
-  assert.equal(ownerLanding.includes('propertyFieldLabel: "Listing URL or property address"'), true);
+  assert.equal(ownerLanding.includes("<span>Listing link or street address</span>"), true);
   assert.equal(ownerTemplate.includes('propertyFieldLabel: "Listing URL or property address"'), true);
   assert.equal(ownerLanding.includes("Send my review request"), true);
   assert.equal(ownerLanding.includes("Request My Review"), false);

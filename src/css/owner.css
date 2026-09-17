@@ -1,23 +1,24 @@
-/* Waterline: owner acquisition page (/property-management/). Loaded only there;
-   tokens come from .guest-site in guest.css. Every control keeps the 44px floor,
+/* Waterline: owner acquisition page (/property-management/). Loaded after guest.css
+   via the layout's pageStylesheet slot; rules that collide with `.guest-site p` or
+   `.guest-site button` carry the .guest-site prefix to outrank them; tokens come from guest.css. Every control keeps the 44px floor,
    no text under 12px, rules not shadows, ink primary and citron on the ink bar. */
 .g-owner-hero{padding:44px 0 64px;border-bottom:1px solid var(--g-rule)}
 .g-owner-hero .g-wrap{display:grid;grid-template-columns:minmax(0,1fr) 440px;gap:64px;align-items:start}
 .g-owner-hero h1{max-width:12ch;margin:0}
 .g-owner-hero .g-label{margin-bottom:18px}
-.g-owner-lede{font-size:17px;line-height:1.6;max-width:56ch;margin:26px 0 30px}
+.guest-site .g-owner-lede{font-size:17px;line-height:1.6;max-width:56ch;margin:26px 0 30px}
 .g-owner-actions{display:flex;flex-wrap:wrap;gap:12px 28px;align-items:center}
 .g-owner-phone{display:inline-flex;align-items:center;min-height:44px;font-size:14px;font-weight:500;text-decoration:underline;text-underline-offset:5px}
 .g-owner-phone:hover{color:var(--g-accent)}
-.g-owner-hero-note{margin:20px 0 0}
+.guest-site .g-owner-hero-note{margin:20px 0 0}
 /* Review panel: the conversion. It sits beside the hero copy on desktop and
    directly under it on a phone, so the first question is one tap away. */
 .g-owner-review{background:var(--g-soft);border:1px solid var(--g-rule);padding:24px;scroll-margin-top:24px}
 .g-owner-review .g-label{margin-bottom:10px}
 .g-owner-review h2{font-size:32px;margin:0 0 6px}
-.g-owner-review-intro{font-size:13px;color:var(--g-muted);margin:0 0 18px}
+.guest-site .g-owner-review-intro{font-size:13px;color:var(--g-muted);margin:0 0 18px}
 .g-owner-steps{display:flex;align-items:center;gap:8px;margin:0 0 20px}
-.g-owner-step-dot{width:44px;height:44px;flex:0 0 44px;border:1px solid var(--g-rule);border-radius:4px;background:transparent;color:var(--g-ink);font:500 13px/1 Poppins,sans-serif;cursor:pointer;padding:0}
+.guest-site .g-owner-step-dot{width:44px;height:44px;flex:0 0 44px;border:1px solid var(--g-rule);border-radius:4px;background:transparent;color:var(--g-ink);font:500 13px/1 Poppins,sans-serif;cursor:pointer;padding:0}
 .g-owner-step-dot.is-active,.g-owner-step-dot.is-complete{background:var(--g-ink);color:#fff;border-color:var(--g-ink)}
 .g-owner-step-line{flex:1 1 8px;height:1px;background:var(--g-rule)}
 .g-owner-step-line.is-complete{background:var(--g-citron)}
@@ -34,17 +35,17 @@
 .g-owner-field-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 16px}
 .g-owner-field-full{grid-column:1/-1}
 .g-owner-choices{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px}
-.g-owner-choice{min-height:44px;padding:10px 14px;border:1px solid var(--g-rule);border-radius:4px;background:transparent;color:var(--g-ink);font:14px/1.3 Poppins,sans-serif;text-align:left;cursor:pointer}
+.guest-site .g-owner-choice{min-height:44px;padding:10px 14px;border:1px solid var(--g-rule);border-radius:4px;background:transparent;color:var(--g-ink);font:14px/1.3 Poppins,sans-serif;text-align:left;cursor:pointer}
 .g-owner-choice:hover{border-color:var(--g-ink)}
 .g-owner-choice.is-active{background:var(--g-ink);color:#fff;border-color:var(--g-ink)}
 .g-owner-panel-actions{display:flex;flex-wrap:wrap;gap:12px 22px;align-items:center;margin-top:6px}
-.g-owner-text-button{background:none;border:0;min-height:44px;min-width:44px;padding:0;color:var(--g-ink);font:500 14px Poppins,sans-serif;text-decoration:underline;text-underline-offset:5px;cursor:pointer}
+.guest-site .g-owner-text-button{background:none;border:0;min-height:44px;min-width:44px;padding:0;color:var(--g-ink);font:500 14px Poppins,sans-serif;text-decoration:underline;text-underline-offset:5px;cursor:pointer}
 .g-owner-text-button:hover{color:var(--g-accent)}
 .g-owner-recap{margin:0 0 16px;border-top:1px solid var(--g-rule)}
 .g-owner-recap div{display:grid;grid-template-columns:120px minmax(0,1fr);gap:12px;padding:10px 0;border-bottom:1px solid var(--g-rule);font-size:14px}
 .g-owner-recap dt{font-weight:500}
 .g-owner-recap dd{margin:0;overflow-wrap:anywhere}
-.g-owner-review-foot{font-size:12px;line-height:1.6;color:var(--g-muted);margin:18px 0 0}
+.guest-site .g-owner-review-foot{font-size:12px;line-height:1.6;color:var(--g-muted);margin:18px 0 0}
 .g-owner-review-foot a{color:var(--g-ink)}
 .g-owner-three p a,.g-owner-switchers p a,.g-owner-faq details p a,.g-owner-review-foot a{text-decoration:underline;text-underline-offset:4px}
 .g-owner-three p a:hover,.g-owner-switchers p a:hover,.g-owner-faq details p a:hover{color:var(--g-accent)}
@@ -124,7 +125,7 @@
 .g-owner-hero{padding:32px 0 44px}
 .g-owner-hero .g-wrap{grid-template-columns:1fr;gap:36px}
 .g-owner-hero h1{max-width:none;font-size:44px}
-.g-owner-lede{font-size:15px;margin:20px 0 24px}
+.guest-site .g-owner-lede{font-size:15px;margin:20px 0 24px}
 .g-owner-actions .g-button{width:100%}
 .g-owner-review{padding:22px 20px}
 .g-owner-review h2{font-size:30px}
@@ -152,7 +153,6 @@
 .g-owner-sticky[hidden]{display:none!important}
 .g-owner-sticky span{font-size:12px;line-height:1.4;color:#d5dfdc}
 .g-owner-sticky strong{display:block;font-weight:500;color:var(--g-paper);font-size:13px}
-/* guest.css loads after this sheet, so the ink button needs the extra class to lose the tie. */
 .guest-site .g-owner-sticky .g-button{background:var(--g-citron);color:var(--g-ink);border-color:var(--g-citron);min-height:44px;padding:12px 18px;white-space:nowrap}
 .guest-site .g-owner-sticky .g-button:hover{background:#c7de70;color:var(--g-ink)}
 .g-owner{padding-bottom:72px}

@@ -30,11 +30,11 @@ html[data-visual-route="property-management"] *::after {
   transition: none !important;
 }
 
-html[data-visual-route="property-management"] .owner-hero-media,
-html[data-visual-route="property-management"] .owner-field-market-card,
-html[data-visual-route="property-management"] .owner-field-form-step {
-  animation: none !important;
-  transform: none !important;
+/* The owner page's mobile bar is position:fixed and toggles on scroll; pin it
+   in flow so a full-page capture is deterministic. */
+html[data-visual-route="property-management"] .g-owner-sticky {
+  position: absolute !important;
+  transition: none !important;
 }
 
 .sticky-mobile-cta {
