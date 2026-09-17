@@ -678,6 +678,7 @@
         data-consent-basis="{{ config.consentBasis or 'guest_requested_email_followup' }}"
       >
         <input type="hidden" name="guide_slug" value="{{ config.guideSlug }}">
+        <input type="text" name="trip_url" value="" tabindex="-1" autocomplete="off" aria-hidden="true" data-guest-capture-honeypot style="position:absolute;left:-9999px;width:0;height:0;padding:0;border:0;margin:0;opacity:0;overflow:hidden;">
         <input type="text" name="name" placeholder="First name" aria-label="First name" autocomplete="name" required>
         <input type="email" name="email" placeholder="Email address" aria-label="Email address" autocomplete="email" required>
         <button type="submit">{{ config.emailButtonLabel or "Join The Direct-Booking List" }}</button>
