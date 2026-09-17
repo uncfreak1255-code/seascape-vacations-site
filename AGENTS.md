@@ -168,9 +168,15 @@ For any PR that changes public copy in `src/`:
   be named and justified by repo truth, `DESIGN.md`, accessibility,
   performance, responsive behavior, or source constraints.
 - Codex still owns repo truth, `DESIGN.md`, implementation, and verification.
-- `DESIGN.md` is the visual law. Figma, Claude Design, Stitch, and other
-  outside tools are donor surfaces only unless Sawyer explicitly says
-  otherwise.
+- `DESIGN.md` is the visual law. Figma, Stitch, and other outside tools are
+  donor surfaces only unless Sawyer explicitly says otherwise.
+- Claude Design is the approved mock surface (Sawyer, 2026-09-16) only while
+  its "Seascape Vacations Design System" project is synced from this repo by
+  `npm run design:sync` (`scripts/design/design-sync/`). A mock built there
+  from the Waterline system and approved by Sawyer is the implementation
+  contract under the workflow below; a mock built from the legacy layers in
+  that project is not. Re-sync after any PR that touches `DESIGN.md`,
+  `src/css/{base,guest,arrival,catalog}.css` or the guest partials.
 - For any meaningful visual change, including layout, spacing, typography, color, imagery, iconography, CTA treatment, or motion, run the repo flow in `docs/process/design-review-workflow.md`.
 - The required rendered QA loop for visual changes is the repo-local `design-review` skill (`.agents/skills/design-review`). Use it after implementation and before human review so the review surface is screenshots plus live route checks, not code alone.
 - Start a fresh repo-local design worktree with `npm run design:lane -- "<task>"`
