@@ -28,7 +28,7 @@ waterline:
     label:
       fontFamily: "Poppins"
       fontSize: "12px"
-      letterSpacing: "0.16em"
+      letterSpacing: "0.13em"
   rounded:
     button: "4px"
   components:
