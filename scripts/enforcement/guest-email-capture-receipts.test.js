@@ -109,6 +109,7 @@ function configureTestMailchimp() {
 function buildCaptureEvent(overrides = {}) {
   return {
     httpMethod: "POST",
+    headers: { origin: "https://seascape-vacations.com" },
     body: JSON.stringify({
       name: "Sawyer",
       email: "sawyer@example.com",
@@ -496,6 +497,7 @@ test("guest email capture stores sanitized metrics after a successful Mailchimp 
     const response = await handleGuestEmailCapture(
       {
         httpMethod: "POST",
+        headers: { origin: "https://seascape-vacations.com" },
         body: JSON.stringify({
           name: "Sawyer",
           email: "sawyer@example.com",
@@ -612,6 +614,7 @@ test("guest email capture fails closed when marketing API credentials are missin
     const response = await handleGuestEmailCapture(
       {
         httpMethod: "POST",
+        headers: { origin: "https://seascape-vacations.com" },
         body: JSON.stringify({
           name: "Sawyer",
           email: "sawyer@example.com",
@@ -679,6 +682,7 @@ test("guest email capture fails closed when marketing API submit fails", async (
     const response = await handleGuestEmailCapture(
       {
         httpMethod: "POST",
+        headers: { origin: "https://seascape-vacations.com" },
         body: JSON.stringify({
           name: "Sawyer",
           email: "sawyer@example.com",
@@ -752,6 +756,7 @@ test("guest email capture durably queues tag failure without claiming tagged suc
     const response = await handleGuestEmailCapture(
       {
         httpMethod: "POST",
+        headers: { origin: "https://seascape-vacations.com" },
         body: JSON.stringify({
           name: "Sawyer",
           email: "sawyer@example.com",
@@ -1161,6 +1166,7 @@ test("guest email capture returns invalid payload when name/email are missing", 
     const response = await handleGuestEmailCapture(
       {
         httpMethod: "POST",
+        headers: { origin: "https://seascape-vacations.com" },
         body: JSON.stringify({
           pagePath: "/guides/bradenton-vs-sarasota/"
         })
@@ -1234,6 +1240,7 @@ test("guest email capture rejects malformed json before touching the store", asy
     const response = await handleGuestEmailCapture(
       {
         httpMethod: "POST",
+        headers: { origin: "https://seascape-vacations.com" },
         body: "{not json"
       },
       undefined,
@@ -1276,6 +1283,7 @@ test("guest email capture does not use untagged legacy Mailchimp form when marke
     const response = await handleGuestEmailCapture(
       {
         httpMethod: "POST",
+        headers: { origin: "https://seascape-vacations.com" },
         body: JSON.stringify({
           name: "Sawyer",
           email: "sawyer@example.com",
@@ -1332,6 +1340,7 @@ test("guest email capture returns stored false when metrics write fails after Ma
     const response = await handleGuestEmailCapture(
       {
         httpMethod: "POST",
+        headers: { origin: "https://seascape-vacations.com" },
         body: JSON.stringify({
           name: "Sawyer",
           email: "sawyer@example.com",
@@ -1413,6 +1422,7 @@ test("guest email capture returns stored false when metrics read fails after Mai
     const response = await handleGuestEmailCapture(
       {
         httpMethod: "POST",
+        headers: { origin: "https://seascape-vacations.com" },
         body: JSON.stringify({
           name: "Sawyer",
           email: "sawyer@example.com",

@@ -31,9 +31,23 @@ test("a normal guest submission from the site passes every signal", () => {
   });
 });
 
-test("direct API callers without Origin or dwell time are not rejected on those signals alone", () => {
-  const payload = cleanPayload({ formOpenedAt: undefined, trip_url: undefined });
-  assert.deepEqual(assessGuestCaptureBotSignals({ payload, headers: {}, now: NOW }), { rejected: false, reasons: [] });
+test("a POST with neither Origin nor Referer is rejected; missing dwell time alone is not", () => {
+  const noOrigin = cleanPayload({ formOpenedAt: undefined, trip_url: undefined });
+  assert.deepEqual(assessGuestCaptureBotSignals({ payload: noOrigin, headers: {}, now: NOW }), {
+    rejected: true,
+    reasons: ["origin_missing"]
+  });
+  assert.equal(assessGuestCaptureBotSignals({ payload: noOrigin, headers: siteHeaders, now: NOW }).rejected, false);
+  assert.equal(assessGuestCaptureBotSignals({ payload: noOrigin, headers: undefined, now: NOW }).reasons[0], "origin_missing");
+});
+
+test("single-token names with almost no vowels are rejected; short or real names are not", () => {
+  for (const name of ["Kbnyhkm", "Wprhd", "Hgvnw", "Mnzydgv", "Wrfxq", "Gphfmp", "Wdgvd", "Qcdzxdlu"]) {
+    assert.deepEqual(assessGuestCaptureBotSignals({ payload: cleanPayload({ name }), headers: siteHeaders, now: NOW }).reasons, ["vowelless_name"], name);
+  }
+  for (const name of ["Lynn", "Flynn", "Brynn", "Scott", "Grant", "Fritz", "Krystl", "Sawyer", "Mary Beth", "Myqz"]) {
+    assert.equal(assessGuestCaptureBotSignals({ payload: cleanPayload({ name }), headers: siteHeaders, now: NOW }).rejected, false, name);
+  }
 });
 
 test("a filled honeypot is rejected", () => {

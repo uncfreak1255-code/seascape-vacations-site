@@ -9,13 +9,18 @@
 // Mailchimp call or receipt write. Every check is conservative on purpose: a
 // real guest who trips the timing check can simply submit again.
 //
-// The origin check only rejects a PRESENT mismatching Origin/Referer. Direct
-// API callers (ops proof posts, tests) send no Origin and are not rejected on
-// that signal alone.
+// Browsers always send Origin on a POST, so a submission with neither Origin
+// nor Referer did not come from a page on the site. Live audience export on
+// 2026-09-16 (after the first screen went live) still showed harvested real
+// addresses paired with random names arriving through the API source, which
+// is exactly a direct POST. No repository script posts to this endpoint
+// without a browser, so a missing origin is rejected.
 
 const MIN_FORM_DWELL_MS = 3000;
 const MAX_GMAIL_LOCAL_PART_DOTS = 3;
 const MIN_INTERIOR_UPPERCASE_FOR_RANDOM_NAME = 3;
+const MIN_NAME_LETTERS_FOR_VOWEL_CHECK = 5;
+const MIN_NAME_VOWEL_RATIO = 0.15;
 
 const ALLOWED_ORIGIN_HOSTS = Object.freeze([
   "seascape-vacations.com",
@@ -45,14 +50,22 @@ function isAllowedOriginHost(hostname) {
   return ALLOWED_ORIGIN_HOST_SUFFIXES.some((suffix) => host.endsWith(suffix));
 }
 
-function originMismatch(headers) {
+function originSignal(headers) {
   const candidate = headerValue(headers, "origin") || headerValue(headers, "referer");
-  if (!candidate) return false;
+  if (!candidate) return "origin_missing";
   try {
-    return !isAllowedOriginHost(new URL(candidate).hostname);
+    return isAllowedOriginHost(new URL(candidate).hostname) ? "" : "origin_mismatch";
   } catch (_error) {
-    return true;
+    return "origin_mismatch";
   }
+}
+
+function vowellessName(payload) {
+  const name = text(payload && payload.name);
+  if (/\s/.test(name) || !/^[a-z]+$/i.test(name)) return false;
+  if (name.length < MIN_NAME_LETTERS_FOR_VOWEL_CHECK) return false;
+  const vowels = (name.match(/[aeiouy]/gi) || []).length;
+  return vowels / name.length < MIN_NAME_VOWEL_RATIO;
 }
 
 function honeypotFilled(payload) {
@@ -89,9 +102,11 @@ function assessGuestCaptureBotSignals({ payload, headers, now = Date.now() } = {
   const reasons = [];
   if (honeypotFilled(payload)) reasons.push("honeypot");
   if (submittedTooFast(payload, now)) reasons.push("too_fast");
-  if (originMismatch(headers)) reasons.push("origin_mismatch");
+  const origin = originSignal(headers);
+  if (origin) reasons.push(origin);
   if (dotStuffedGmail(payload)) reasons.push("dot_stuffed_gmail");
   if (randomCaseName(payload)) reasons.push("random_case_name");
+  if (vowellessName(payload)) reasons.push("vowelless_name");
   return { rejected: reasons.length > 0, reasons };
 }
 
