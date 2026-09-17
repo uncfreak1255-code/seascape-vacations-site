@@ -21,7 +21,7 @@ Last synced {{SYNC_DATE}} from `seascape-vacations-site` commit `{{COMMIT}}` by 
 ## What is current and what is history
 
 - **Current**: `waterline/`, `styles.css`, and every card in `preview/`. The component cards are the site's real built markup with the real CSS, so match their class names (`g-header`, `g-button btn-brand`, `g-trip-form`, `g-postcard`, `catalog-card`, `g-booking`) when the output is meant to go back into the site.
-- **History, not guidance**: `colors_and_type.css`, `design-system/`, `ui_kits/website/`, `explorations/`, `live-mockup/`, `handoff/` and `save50-handoff/` are the April to June 2026 systems (teal, gold, Playfair, pills). They stay for provenance. Do not build a new surface from them, and do not blend them with Waterline.
+- **Nothing else is a source.** The April to June 2026 layers (teal, gold, Playfair, pills) were removed from this project on 2026-09-16. If an `assets/` or `uploads/` screenshot shows the old site, it is reference for what changed, not a direction. Do not reintroduce the retired palette, and do not blend it with Waterline.
 
 ## Voice
 

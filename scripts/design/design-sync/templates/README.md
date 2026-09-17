@@ -41,15 +41,11 @@ This project is **generated from the repository**, not authored here. Synced {{S
 │   ├── property-card, postcard-collection, scene-hero, footer
 │   ├── logo, radii, spacing, rules-floors
 │   └── voice, iconography       (unchanged from before; still valid)
-└── HISTORY (do not build from these)
-    ├── colors_and_type.css      v1, the April 2026 teal/gold site
-    ├── design-system/           v2, the June 2026 editorial-premium proposal
-    ├── ui_kits/website/         v1 React recreation
-    ├── explorations/, live-mockup/, handoff/, save50-handoff/
-    └── assets/, uploads/, screenshots/
+├── assets/                      PNG logos and site photography for email, slides, PDF
+└── uploads/                     Sawyer's uploaded logo files and reference screenshots
 ```
 
-A full export of the project as it stood before the first Waterline sync (2026-09-16, 150 files) is kept outside this project. Nothing under HISTORY was deleted; only the pre-Waterline `preview/` cards that contradicted the current system were removed.
+The pre-Waterline layers that used to live here (v1 `colors_and_type.css`, v2 `design-system/`, `ui_kits/`, `explorations/`, `live-mockup/`, `handoff/`) were removed on 2026-09-16 so nothing old can leak into a mock. A full export of the project as it stood before that (150 files) is kept outside this project.
 
 ## Waterline in one screen
 
