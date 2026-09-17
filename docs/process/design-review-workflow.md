@@ -35,6 +35,16 @@ That includes:
   risks, and responsive requirements.
 - Figma, Stitch, and other outside tools are reference surfaces only unless
   Sawyer explicitly approves them as the design source for a specific task.
+- Claude Design is an approved mock surface when, and only when, the mock is
+  built from the "Seascape Vacations Design System" project's Waterline layer,
+  which `npm run design:sync` generates from this repo (`DESIGN.md`, the live
+  guest CSS, the self-hosted fonts and the built shell markup). Prove the cards
+  with `npm run design:sync:check` before pushing them with the DesignSync tool.
+  The project's `colors_and_type.css`, `design-system/`, `ui_kits/`,
+  `explorations/` and `live-mockup/` folders are pre-Waterline history and never
+  a source. Sawyer's approval of a Claude Design mock is the implementation
+  contract described below; the mock does not skip the critic, the floors or
+  the Playwright proof.
 - The design launcher classifies the page or guide family and scans local Codex
   and Claude plugin-cache skill metadata for relevant donor capabilities.
   `frontend-design`-style donors are preferred for distinctive interface
@@ -77,7 +87,8 @@ That includes:
 6. Wait for Sawyer approval when the design output changes layout,
    hierarchy, art direction, or component treatment. Do not implement a
    materially different visual direction after approval.
-7. If the approved direction changes the visual law, update `DESIGN.md` first.
+7. If the approved direction changes the visual law, update `DESIGN.md` first,
+   then re-run `npm run design:sync` and push so Claude Design follows the law.
 8. Implement the approved mockup or brief closely in source. Preserve the approved
    hierarchy, spacing intent, imagery direction, CTA treatment, and interaction
    intent unless a named constraint requires adjustment.
