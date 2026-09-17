@@ -72,6 +72,7 @@ function copy(relSrc, relOut) {
 }
 
 const writes = [];
+const cards = [];
 
 /* ---------------------------------------------------------------- source truth */
 const designMd = read("DESIGN.md");
@@ -218,6 +219,7 @@ ${chromeCss}
     ? `<div class="ds-doc"><p class="ds-eyebrow">${eyebrow || group}</p><h2 class="ds-title">${title}</h2>${note ? `<p class="ds-note">${note}</p>` : ""}${body}</div>`
     : body;
   write(`preview/${file}`, `${head}\n${chrome}\n</body></html>\n`);
+  cards.push({ path: `preview/${file}`, group, name, subtitle, viewport: `${w}x${h}` });
 }
 
 /* ---------------------------------------------------------------- built pages */
@@ -533,6 +535,48 @@ card({
 <div class="ds-line" style="grid-template-columns:1fr"><div>Motion: browser-native only, never required, never auto-rotating, reduced-motion path complete. No popup interrupts the guest journey; a sticky action never covers the form.</div></div>
 </div></div>`,
 });
+
+/* ---------------------------------------------------------------- pane manifest */
+// The Design System pane reads _ds_manifest.json for its card index and token list.
+// The app rebuilds it from @dsCard markers on its own self-check, but a DesignSync push
+// does not trigger that, so a stale manifest keeps showing deleted cards as "file not
+// found". Emit it here from the same data the cards were built from.
+const keptCards = [
+  { path: "preview/voice.html", group: "Brand", name: "Voice samples", subtitle: "Stays · guide · PM · banned", viewport: "700x240" },
+  { path: "preview/iconography.html", group: "Brand", name: "Iconography", subtitle: "Inline SVG .ui-icon · 1.85 stroke · currentColor", viewport: "700x200" },
+];
+const tokenKind = (value) => (/^#|^rgba?\(/.test(value) ? "color" : /'/.test(value) || /,\s*(serif|sans-serif)$/.test(value) ? "font" : /px|em|%/.test(value) ? "spacing" : "other");
+const tokens = [...tokensCss.matchAll(/^\s*(--wl-[a-z0-9-]+):([^;]+);/gm)].map((m) => ({
+  name: m[1],
+  value: m[2].trim(),
+  kind: tokenKind(m[2].trim()),
+  definedIn: "waterline/tokens.css",
+}));
+write(
+  "_ds_manifest.json",
+  JSON.stringify(
+    {
+      namespace: "SeascapeVacationsDesignSystem_57d1b4",
+      components: [],
+      startingPoints: [],
+      cards: [...cards, ...keptCards],
+      templates: [],
+      globalCssPaths: ["styles.css", "waterline/tokens.css"],
+      tokens,
+      themes: [],
+      fonts: [],
+      brandFonts: [
+        { family: "Instrument Serif", status: "ok", tokens: ["--wl-font-display"], path: "waterline/tokens.css" },
+        { family: "Poppins", status: "ok", tokens: ["--wl-font-body"], path: "waterline/tokens.css" },
+      ],
+      source: "design-sync",
+      syncedAt: today,
+      commit,
+    },
+    null,
+    2
+  )
+);
 
 /* ---------------------------------------------------------------- deletes */
 // Legacy cards with no Waterline equivalent. They contradict the current system
