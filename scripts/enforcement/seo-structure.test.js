@@ -298,15 +298,15 @@ test("about page exists as a real route and homepage links point to it", () => {
   assert.equal(redirects.includes("/about-us   /about-us/   301"), true);
 });
 
-test("property owners page leads with sourced fee definitions instead of unsupported portfolio proof", () => {
+test("property owners page leads with the owner offer instead of third-party fee definitions or unsupported portfolio proof", () => {
   const ownerPage = fs.readFileSync(path.join(projectRoot, "src", "property-management", "index.njk"), "utf8");
 
-  assert.equal(ownerPage.includes("Before you renew,"), true);
-  assert.equal(ownerPage.includes("actually keep?"), true);
-  assert.equal(ownerPage.includes("15.5%"), true);
-  assert.equal(ownerPage.includes("2.9% + 30¢"), true);
-  assert.equal(ownerPage.includes("Property-specific"), true);
-  assert.equal(ownerPage.includes("Not equivalent"), true);
+  assert.equal(ownerPage.includes("Six homes. One local team."), true);
+  assert.equal(ownerPage.includes("What we do for your home"), true);
+  assert.equal(ownerPage.includes("The homes we manage"), true);
+  assert.equal(ownerPage.includes("15.5%"), false);
+  assert.equal(ownerPage.includes("2.9% + 30¢"), false);
+  assert.equal(ownerPage.includes("Reply guaranteed"), false);
   assert.equal(ownerPage.includes("$119,923"), false);
   assert.equal(ownerPage.includes("13.4%"), false);
   assert.equal(ownerPage.includes("What Is Vacation Rental Property Management?"), false);

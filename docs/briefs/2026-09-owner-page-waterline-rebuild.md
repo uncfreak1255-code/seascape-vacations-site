@@ -1,8 +1,8 @@
 # Brief: Owner Page Waterline Rebuild
 
-Status: draft for Sawyer's direction approval (2026-09-17). Implementation waits
-for the three open inputs at the bottom and for `seascape-hub/context/owner-offer.md`
-to be approved.
+Status: in implementation (2026-09-17). Sawyer answered the open inputs with
+facts on 2026-09-17 and left the calls to the agent; the decisions are recorded
+at the bottom. `seascape-hub/context/owner-offer.md` is the offer source.
 
 ## Content Gate Inputs
 
@@ -79,8 +79,27 @@ Removed from the live page: the Vol. III / Issue 04 masthead and every page coun
 - tone risks: sliding back into fee vocabulary; "full service" flattening; detached "the owner" phrasing
 - generic or mechanical patterns to kill: stamps, badges, chips, magazine counters, any "guaranteed"
 
-## Open inputs from Sawyer before implementation
+## Decisions recorded 2026-09-17
 
-1. What an owner receives each month and when.
-2. One current owner willing to be quoted by name, with permission.
-3. The current citable home count, and the listing-transfer specifics for the switching section.
+Sawyer's facts (chat, 2026-09-17): monthly statements are needed only for the
+externally owned homes (Blue House, Bradenton Pool Home, and the signed MJNS7
+home), Hostaway already exports owner statements, Blue House and the MJNS7 home
+have had no guest stay yet, and the MJNS7 home is not listed. He did not want to
+make the five calls himself, so the agent made them:
+
+1. **Monthly statement.** Copy stays generic: a monthly statement of what the
+   home earned and what was spent, with the payout; no cadence day, no format.
+2. **Owner quote.** None yet. No permission is recorded in `people/`, and the
+   only externally owned home with guest history is Bradenton Pool Home. The
+   section is cut, not faked. Reopen when Manny or Grettel agree to be quoted.
+3. **Home count.** Six, the homes listed on this site and in Hostaway, Blue
+   House included. The signed MJNS7 home is not listed and is not counted.
+   **Switching section.** Cut. The transfer specifics were not confirmed, and the
+   brief says cut, not soften.
+4. **Fee range.** Not public. Pricing stays "a share of net rent, quoted after
+   the review, in writing" (Patrick's lane).
+5. **The sentence.** Kept as written in `owner-offer.md` section 6.
+
+Direction: the Claude Design mock with the council fixes, treated as approved;
+Sawyer's pick point is the rendered PR preview, per his "show me, do not ask me
+to describe it" rule.

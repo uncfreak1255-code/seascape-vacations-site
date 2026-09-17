@@ -465,19 +465,13 @@ if (phase === "remediation") {
     "_site/property-management/vacation-rental-management-sarasota/index.html",
     "font-display: block"
   );
-  expectContains(
-    "_site/property-management/index.html",
-    "Before you renew,"
-  );
-  expectContains("_site/property-management/index.html", "actually keep?");
-  expectContains(
-    "_site/property-management/index.html",
-    "The Fee Comparison"
-  );
+  expectContains("_site/property-management/index.html", "Six homes. One local team.");
+  expectContains("_site/property-management/index.html", "What we do for your home");
+  expectContains("_site/property-management/index.html", "The homes we manage");
   expectContains("_site/property-management/index.html", "What Gulf Coast owners usually ask first");
-  expectContains("_site/property-management/index.html", "15.5%");
-  expectContains("_site/property-management/index.html", "2.9% + 30¢");
-  expectContains("_site/property-management/index.html", "Property-specific");
+  expectContains("_site/property-management/index.html", 'name="owner-revenue-teardown"');
+  expectNotContains("_site/property-management/index.html", "Reply guaranteed");
+  expectNotContains("_site/property-management/index.html", "The Fee Comparison");
   expectNotContains("_site/property-management/index.html", "$119,923");
   expectNotContains("_site/property-management/index.html", "13.4%");
   expectNotContains("_site/property-management/index.html", "What Is Vacation Rental Property Management?");
@@ -492,11 +486,7 @@ if (phase === "remediation") {
   );
   expectMatches(
     "_site/property-management/index.html",
-    buildAnchorPattern({
-      href: "#owner-cta",
-      className: "btn btn-gold",
-      text: "Request Your Revenue Review"
-    }),
+    /<a\b(?=[^>]*href="#owner-cta")(?=[^>]*class="g-button")(?=[^>]*data-track-event="owner_primary_cta_click")[^>]*>Request your 48-hour revenue review<\/a>/,
     "property management hero CTA"
   );
   expectNotMatches(

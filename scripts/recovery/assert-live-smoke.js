@@ -203,18 +203,17 @@ function validateTargetResponse(target, response) {
   }
 
   if (target.path === "/property-management/") {
-    const hasProofFirstOwnerSurface =
-      response.body.includes("Before you renew,")
-      && response.body.includes("actually keep?")
-      && response.body.includes("15.5%")
-      && response.body.includes("2.9% + 30¢")
-      && response.body.includes("Property-specific")
-      && response.body.includes("The Fee Comparison")
-      && response.body.includes("Request Your Revenue Review")
+    const hasOwnerOfferSurface =
+      response.body.includes("Six homes. One local team.")
+      && response.body.includes("What we do for your home")
+      && response.body.includes("Why a six-home operator")
+      && response.body.includes("The homes we manage")
+      && response.body.includes("Request your 48-hour revenue review")
+      && response.body.includes('name="owner-revenue-teardown"')
       && response.body.includes('href="#owner-cta"');
 
-    if (!hasProofFirstOwnerSurface) {
-      throw new Error("property-management hub is missing the proof-first owner revenue surface");
+    if (!hasOwnerOfferSurface) {
+      throw new Error("property-management hub is missing the Waterline owner offer surface");
     }
 
     if (
@@ -223,6 +222,9 @@ function validateTargetResponse(target, response) {
       || response.body.includes("Request a property evaluation")
       || response.body.includes("$119,923")
       || response.body.includes("13.4%")
+      || response.body.includes("Reply guaranteed")
+      || response.body.includes("The Fee Comparison")
+      || response.body.includes("Before you renew,")
     ) {
       throw new Error("property-management hub is serving retired owner copy");
     }
