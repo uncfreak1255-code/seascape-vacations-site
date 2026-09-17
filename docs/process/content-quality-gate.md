@@ -27,6 +27,7 @@ Every active content brief must include these flat bullets with real values:
 - `secondary keywords:`
 - `audience pattern:`
 - `proof source:`
+- `offer claim:` (required when the page is owner-lane: `src/property-management/` or owner research routes). Name the line of `seascape-hub/context/owner-offer.md` the page exists to land. No offer line, no owner page: `lint:content` fails an owner-lane change whose brief lacks it, the same way it fails a missing brief.
 - `required internal links:`
 - `CTA target:`
 - `anti-claims:`
