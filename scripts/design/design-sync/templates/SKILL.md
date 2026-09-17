@@ -11,7 +11,7 @@ Last synced {{SYNC_DATE}} from `seascape-vacations-site` commit `{{COMMIT}}` by 
 ## Quick contract (Waterline)
 
 - **Canvas** paper `#F6F3EB`. **Ink** `#173D42` for text, primary buttons and dark bands. **Muted** `#52676A` for supporting text. **Clay** `#A4533E` is the only warm accent: italic emphasis, the active nav item, the focus ring. **Citron** `#D6EB85` marks the selected scene and is the button colour over photos and dark surfaces; it is never small text on paper. **Rule** `#CAD4CF` for 1px rules. **Soft** `#F0F3EE` for a quiet solid panel.
-- **Type** Instrument Serif 400 for every display line (h1 `clamp(46px,5.4vw,78px)`, -0.025em, line-height 1.12; italic takes clay). Poppins for body (15px / 1.65), labels (12px uppercase, .16em) and controls (500 14px). Nothing renders below 12px.
+- **Type** Instrument Serif 400 for every display line (h1 `clamp(46px,5.4vw,78px)`, -0.025em, line-height 1.12; italic takes clay). Poppins for body (15px / 1.65), labels (12px uppercase, .13em) and controls (500 14px). Nothing renders below 12px.
 - **Shape** 4px radius on buttons and inputs, never a pill. Photos are real rectangles. Cards are separated by 1px rules, not shadows. The postcard is the one lifted surface.
 - **Buttons** one primary per view, chosen by measured contrast on its surface: ink with white text on paper and photos; citron with ink text over dark; paper with an ink hairline on the legacy teal bands. Min-height 48px, 44px floor on mobile. Hover fills muted. No lift, shine, gradient or gold.
 - **Photography is evidence.** Only a real photograph of the named home may illustrate it. Never generate, retouch or substitute a room. Use the live photo URLs the cards use.
