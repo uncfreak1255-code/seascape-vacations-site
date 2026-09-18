@@ -332,8 +332,7 @@ test("guide email capture carries utility context for reviewed agent-data proof"
 });
 
 test("shared conversion tracking exposes navigation-safe tracked-link helpers", () => {
-  const api = loadConversionTrackingWithStubs();
-
+  withConversionTrackingStubs(({ api }) => {
   assert.equal(typeof api.trackEvent, "function");
   assert.equal(typeof api.shouldDelayTrackedNavigation, "function");
   assert.equal(typeof api.continueTrackedNavigation, "function");
@@ -366,6 +365,51 @@ test("shared conversion tracking exposes navigation-safe tracked-link helpers", 
     }
   };
 
+  // Real anchors resolve node.href to an absolute URL. The old helper only
+  // skipped delays when that property still started with "#", so the owner
+  // header CTA waited ~800ms on body.guest-site.
+  const resolvedHashLink = {
+    tagName: "A",
+    href: "http://localhost/guides/bradenton-vs-sarasota/#owner-cta",
+    target: "",
+    hasAttribute(name) {
+      return name === "href";
+    },
+    getAttribute(name) {
+      if (name === "href") return "#owner-cta";
+      if (name === "target") return this.target;
+      return null;
+    }
+  };
+
+  const rewrittenSamePageHash = {
+    tagName: "A",
+    href: "http://localhost/guides/bradenton-vs-sarasota/#owner-cta",
+    target: "",
+    hasAttribute(name) {
+      return name === "href";
+    },
+    getAttribute(name) {
+      if (name === "href") return "/guides/bradenton-vs-sarasota/#owner-cta";
+      if (name === "target") return this.target;
+      return null;
+    }
+  };
+
+  const otherPageHash = {
+    tagName: "A",
+    href: "http://localhost/property-management/#owner-cta",
+    target: "",
+    hasAttribute(name) {
+      return name === "href";
+    },
+    getAttribute(name) {
+      if (name === "href") return "/property-management/#owner-cta";
+      if (name === "target") return this.target;
+      return null;
+    }
+  };
+
   assert.equal(
     api.shouldDelayTrackedNavigation(sameTabGuideLink, { button: 0, metaKey: false, ctrlKey: false, shiftKey: false, altKey: false }),
     true
@@ -375,9 +419,22 @@ test("shared conversion tracking exposes navigation-safe tracked-link helpers", 
     false
   );
   assert.equal(
+    api.shouldDelayTrackedNavigation(resolvedHashLink, { button: 0, metaKey: false, ctrlKey: false, shiftKey: false, altKey: false }),
+    false
+  );
+  assert.equal(
+    api.shouldDelayTrackedNavigation(rewrittenSamePageHash, { button: 0, metaKey: false, ctrlKey: false, shiftKey: false, altKey: false }),
+    false
+  );
+  assert.equal(
+    api.shouldDelayTrackedNavigation(otherPageHash, { button: 0, metaKey: false, ctrlKey: false, shiftKey: false, altKey: false }),
+    true
+  );
+  assert.equal(
     api.shouldDelayTrackedNavigation(sameTabGuideLink, { button: 0, metaKey: true, ctrlKey: false, shiftKey: false, altKey: false }),
     false
   );
+  });
 });
 
 test("booking-engine handoff click emits the GA4 event with the target booking URL", () => {

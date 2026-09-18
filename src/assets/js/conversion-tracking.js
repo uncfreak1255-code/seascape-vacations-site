@@ -229,6 +229,23 @@
     return "";
   }
 
+  function isSameDocumentHashNavigation(href) {
+    var locationHref = typeof window !== "undefined" && window.location && window.location.href
+      ? window.location.href
+      : "";
+    if (!href || !locationHref || typeof URL !== "function") return false;
+    try {
+      var current = new URL(locationHref);
+      var next = new URL(href, current.href);
+      return next.origin === current.origin
+        && next.pathname === current.pathname
+        && next.search === current.search
+        && Boolean(next.hash);
+    } catch (_error) {
+      return false;
+    }
+  }
+
   function getCurrentParamValue(key) {
     if (!window.location || typeof window.location.search !== "string" || typeof URLSearchParams !== "function") {
       return "";
@@ -517,7 +534,8 @@
 
     if (!node || String(node.tagName || "").toUpperCase() !== "A") return false;
     if (!href) return false;
-    if (href.charAt(0) === "#") return false;
+    var rawHref = typeof node.getAttribute === "function" ? node.getAttribute("href") || "" : "";
+    if (href.charAt(0) === "#" || rawHref.charAt(0) === "#" || isSameDocumentHashNavigation(href)) return false;
     if (/^(mailto:|tel:|javascript:)/i.test(href)) return false;
     if (target && target.toLowerCase() !== "_self") return false;
     if (typeof node.hasAttribute === "function" && node.hasAttribute("download")) return false;

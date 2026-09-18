@@ -20,6 +20,14 @@ const siteHeaderStyles = fs.readFileSync(
   path.join(projectRoot, "src", "_includes", "partials", "site-header-styles.njk"),
   "utf8"
 );
+const guestHeader = fs.readFileSync(
+  path.join(projectRoot, "src", "_includes", "partials", "guest-header.njk"),
+  "utf8"
+);
+const guestRuntime = fs.readFileSync(
+  path.join(projectRoot, "src", "assets", "js", "guest.js"),
+  "utf8"
+);
 const conversionTracking = fs.readFileSync(
   path.join(projectRoot, "src", "assets", "js", "conversion-tracking.js"),
   "utf8"
@@ -41,9 +49,24 @@ test("owner landing page uses a real owner revenue review form instead of generi
   assert.equal(fs.existsSync(ownerFormPath), true, "owner form partial should exist");
 
   const ownerFormPartial = fs.readFileSync(ownerFormPath, "utf8");
-  assert.equal(ownerLanding.includes("Request Your Revenue Review"), true);
-  assert.equal(ownerLanding.includes("ownerEvaluationForm({"), true);
+  assert.equal(ownerLanding.includes("Request your 48-hour revenue review"), true);
+  // novalidate is load-bearing: without it the browser blocks submit on required
+// fields inside hidden step panels and the form dead-ends with no feedback.
+  assert.equal(ownerLanding.includes('<form class="g-owner-form" novalidate name="owner-revenue-teardown" method="POST" action="/property-management/revenue-review-requested/" enctype="multipart/form-data"'), true);
+  assert.equal(ownerLanding.includes('name="property_address" autocomplete="street-address"'), true);
+  assert.equal(ownerLanding.includes('name="owner_statement"'), true);
+  assert.equal(ownerLanding.includes('data-owner-context-field></textarea>'), true);
   assert.equal(ownerLanding.includes('data-track-event="owner_primary_cta_click"'), true);
+  assert.match(
+    ownerLanding,
+    /data-track-event="owner_primary_cta_click"[^>]*data-placement="review-section"/,
+    "mid-page review jump must stay on the 30-day owner_primary_cta_click read"
+  );
+  assert.match(
+    ownerLanding,
+    /data-track-event="owner_primary_cta_click"[^>]*data-placement="sticky"/,
+    "mobile sticky bar must stay on the 30-day owner_primary_cta_click read"
+  );
   assert.equal(ownerFormPartial.includes("owner-revenue-teardown"), true);
   assert.equal(ownerFormPartial.includes('data-netlify="true"'), true);
   assert.equal(ownerFormPartial.includes('data-netlify-recaptcha="true"'), true);
@@ -67,44 +90,72 @@ test("owner landing page uses a real owner revenue review form instead of generi
 test("owner landing page keeps the owner revenue review close to the sales argument instead of burying it under the library", () => {
   const reviewIndex = ownerLanding.indexOf('id="owner-cta"');
   const faqIndex = ownerLanding.indexOf("Selected FAQ");
-  const libraryIndex = ownerLanding.indexOf("Owner Guides");
-  const specialSituationsIndex = ownerLanding.indexOf("Specific Situations");
+  const libraryIndex = ownerLanding.indexOf("Owner guides");
+  const specialSituationsIndex = ownerLanding.indexOf("Specific situations");
 
   assert.notEqual(reviewIndex, -1, "owner hub needs the revenue review anchor");
-  assert.equal(ownerLanding.includes("Fee Guide + Revenue Review"), true);
-  assert.equal(ownerLanding.includes("<strong>Fee Guide + Revenue Review</strong> Airbnb's host service fee"), true);
+  // The offer (seascape-hub/context/owner-offer.md) leads; fee vocabulary lives on the fee guide.
+  assert.equal(ownerLanding.includes("Six homes. One local team."), true);
   assert.equal(
-    ownerLanding.includes("We will compare the charges on your statement with the services in your agreement and send back a one-page revenue review"),
+    ownerLanding.includes("We list, price, host and clean each one, pay you monthly, and tell you what your home earned and what needs attention before you have to ask."),
     true
   );
-  assert.equal(
-    ownerLanding.includes("Airbnb's host service fee, Stripe's card price, and a management agreement pay for different things."),
-    true
-  );
-  assert.equal(
-    ownerLanding.includes("A lower card-processing rate does not by itself mean a higher owner payout."),
-    true
-  );
+  assert.equal(ownerLanding.includes("Send the listing. We send back a one-page review."), true);
+  assert.equal(ownerLanding.includes("We do not have one fee for every home."), true);
   assert.equal(ownerLanding.includes("proven cost, likely cost, and missing information"), false);
-  assert.equal(ownerLanding.includes("Published platform pricing"), true);
-  assert.equal(ownerLanding.includes("Property-specific management quote"), true);
+  assert.equal(ownerLanding.includes("The Fee Comparison"), false, "fee comparison content belongs to the fee guide, not the offer page");
+  assert.equal(ownerLanding.includes("15.5%"), false, "no third-party fee figures above the offer");
+  assert.equal(ownerLanding.includes("Reply guaranteed"), false, "no response-time claim without evidence (DESIGN.md trust rule)");
   assert.equal(ownerLanding.includes('href="/research/owner-fee-revenue-leak-benchmark-2026/"'), true);
+  assert.equal(ownerLanding.includes('href="/property-management/vacation-rental-management-fees-florida/"'), true);
   assert.ok(reviewIndex < faqIndex, "owner CTA should land before FAQ filler");
   assert.ok(reviewIndex < libraryIndex, "owner CTA should land before the operational library");
   assert.ok(reviewIndex < specialSituationsIndex, "owner CTA should land before special-situations content");
 });
 
-test("owner landing page opts into owner-only nav instead of the guest browse header", () => {
-  assert.equal(ownerLanding.includes("ownerNavOnly: true"), true, "owner landing should declare owner-only nav mode");
+// The owner hub moved to layouts/guest.njk (DESIGN.md floor F5, one shared shell),
+// so it no longer renders site-header.njk. Assertions about that template passed
+// here regardless of this page and are removed; the live rule is the shared
+// header's CTA wiring, asserted below.
+test("owner-only nav stays wired for the pages that still use it", () => {
+  // The owner hub moved to layouts/guest.njk, but ownerNavOnly: true is still set
+  // by src/property-management/revenue-review-requested.njk -- the page every
+  // submitted lead lands on -- and src/internal/ai-engine-click-test.njk. Removing
+  // these assertions with the hub left that branch live but unguarded.
+  const thankYou = fs.readFileSync(path.join(projectRoot, "src", "property-management", "revenue-review-requested.njk"), "utf8");
+  assert.equal(thankYou.includes("ownerNavOnly: true"), true, "the lead thank-you page still opts into owner-only nav");
+  assert.equal(siteHeader.includes("{% if resolvedOwnerNavOnly %}"), true, "site header must keep the owner-only nav branch");
+  assert.equal(siteHeader.includes('class="nav-links nav-links--owner"'), true, "owner-only nav keeps its CTA container");
+  assert.equal(siteHeader.includes('class="nav-owner-cta"'), true, "owner-only nav keeps its bespoke CTA treatment");
+  assert.equal(siteHeaderStyles.includes(".nav-links--owner {"), true, "owner-only nav CSS keeps the CTA visible below desktop");
+  assert.equal(siteHeaderStyles.includes(".nav-owner-cta {"), true, "owner-only nav CSS styles the compact CTA");
+  assert.equal(siteHeaderStyles.includes("margin-left: auto;"), true, "owner-only nav pushes the CTA right without guest links");
+});
+
+test("owner landing page uses the shared Waterline shell with an owner CTA", () => {
+  assert.equal(ownerLanding.includes("layout: layouts/guest.njk"), true, "owner landing uses the shared Waterline shell (floor F5)");
+  assert.equal(ownerLanding.includes('navButtonHref: "#owner-cta"'), true, "shared header CTA should jump to the review form");
   assert.equal(ownerLanding.includes('navButtonLabel: "Revenue Review"'), true, "owner landing should use compact owner nav CTA copy");
-  assert.equal(siteHeader.includes("{% if resolvedOwnerNavOnly %}"), true, "site header should support owner-only nav mode");
-  assert.equal(siteHeader.includes('class="nav-links nav-links--owner"'), true, "owner-only nav should use its own CTA container");
-  assert.equal(siteHeader.includes('class="nav-owner-cta"'), true, "owner-only nav should use a lighter bespoke CTA treatment");
-  assert.equal(siteHeaderStyles.includes(".nav-links--owner {"), true, "owner-only nav needs CSS that keeps the CTA visible below desktop");
-  assert.equal(siteHeaderStyles.includes(".nav-owner-cta {"), true, "owner-only nav CSS should style the compact CTA directly");
-  assert.equal(siteHeaderStyles.includes("margin-left: auto;"), true, "owner-only nav should push the CTA to the right without guest links");
   assert.equal(siteHeader.includes("href=\"/properties/\""), true, "shared header still needs guest-nav links for non-owner pages");
   assert.equal(siteHeader.includes("Request Your Revenue Review"), false, "shared header should stay page-driven, not hard-code owner CTA copy");
+});
+
+test("shared header keeps hash CTAs as instant jumps instead of trip-link navigations", () => {
+  assert.equal(
+    guestHeader.includes('{% if not guestHome %} data-trip-link{% endif %}'),
+    false,
+    "hash header CTAs must not inherit data-trip-link just because the page is not the homepage"
+  );
+  assert.match(
+    guestHeader,
+    /resolvedNavButtonHref\[0\] != "#"/,
+    "header CTA should stamp data-trip-link only when the href is not a same-page hash"
+  );
+  assert.match(
+    guestRuntime,
+    /if \(rawHref\.charAt\(0\) === '#'\) return;/,
+    "guest.js must not rewrite same-page hash jumps into path URLs"
+  );
 });
 
 test("owner template supports proof-first sections for high-intent owner pages", () => {
@@ -170,9 +221,9 @@ test("owner revenue review form lowers friction without losing tracking or inten
   assert.equal(ownerFormPartial.includes('name="what_feels_off" rows="3"'), true);
   assert.equal(ownerFormPartial.includes('data-owner-context-field></textarea>'), true);
   assert.equal(ownerFormPartial.includes('name="owner_statement"'), true);
-  assert.equal(ownerLanding.includes('name="what_feels_off" rows="4"'), true);
-  assert.equal(ownerLanding.includes("Add one line in your own words"), true);
-  assert.equal(ownerLanding.includes("Sarasota condo is staying booked, but the payout still feels light and the owner statements are hard to trust."), true);
+  assert.equal(ownerLanding.includes('name="what_feels_off" rows="3"'), true);
+  assert.equal(ownerLanding.includes("One line in your own words"), true);
+  assert.equal(ownerLanding.includes("The payout feels light and the statements are hard to follow."), true);
   assert.equal(
     ownerFormPartial.includes("The fastest first pass comes from two things: the listing URL or address, and one line on what feels off. An owner statement or fee quote makes the review sharper."),
     true
@@ -196,15 +247,16 @@ test("owner revenue review form lowers friction without losing tracking or inten
   assert.equal(ownerFormPartial.includes('data-form-submit-event="owner_form_submit"'), true);
   assert.equal(ownerFormPartial.includes('data-source-page-slug="{{ options.sourcePageSlug or options.pageSlug or \'property-management\' }}"'), true);
   assert.equal(ownerFormPartial.includes('name="source_page_slug" value="{{ options.sourcePageSlug or options.pageSlug or \'property-management\' }}"'), true);
-  assert.equal(ownerLanding.includes("showBenchmarkFields: true"), true);
+  assert.equal(ownerLanding.includes('name="current_manager"'), true, "hub form keeps the benchmark fields the shared partial exposes");
+  assert.equal(ownerLanding.includes('name="current_fee_quote"'), true);
   assert.equal(ownerTemplate.includes("showBenchmarkFields: true"), true);
-  assert.equal(ownerLanding.includes('propertyFieldLabel: "Listing URL or property address"'), true);
+  assert.equal(ownerLanding.includes("<span>Listing link or street address</span>"), true);
   assert.equal(ownerTemplate.includes('propertyFieldLabel: "Listing URL or property address"'), true);
-  assert.equal(ownerLanding.includes("Send My Review Request"), true);
+  assert.equal(ownerLanding.includes("Send my review request"), true);
   assert.equal(ownerLanding.includes("Request My Review"), false);
-  assert.equal(ownerLanding.includes("Sentence or two is enough"), true);
-  assert.equal(ownerLanding.includes("If anything is missing, we will tell you what we still need instead of filling in the blanks."), true);
-  assert.equal(ownerLanding.includes("We will read the listing or address, look at what feels off, and send back what we would check next."), true);
+  assert.equal(ownerLanding.includes("A sentence on what feels off helps."), true);
+  assert.equal(ownerLanding.includes("If something is missing we will ask for it rather than fill in the blanks."), true);
+  assert.equal(ownerLanding.includes("We read the listing, look at what feels off, and reply with what we would check next."), true);
   assert.equal(ownerLanding.includes("No sales call"), false);
   assert.equal(conversionTracking.includes("function validateOwnerFormContext(form)"), true);
   assert.equal(conversionTracking.includes('form.dataset.ownerContextRequired !== "true"'), true);
@@ -218,12 +270,11 @@ test("Pat-like Sarasota leads are prompted for the property context and the reas
 
   assert.ok(sarasotaPage, "Sarasota owner page should exist");
   assert.equal(ownerTemplate.includes("Send the listing link or property address, plus a sentence or two about what feels off."), true);
-  assert.equal(ownerLanding.includes("Send the listing URL or property address. If the address is easier, use that. If the Airbnb or Vrbo link is easier, paste it here."), true);
+  assert.equal(ownerLanding.includes("Paste the Airbnb or Vrbo link, or type the street address."), true);
   assert.equal(ownerLanding.includes("Revenue feels low for the market"), true);
   assert.equal(ownerLanding.includes("Booking-site fees feel heavy"), true);
   assert.equal(ownerLanding.includes("Current manager concerns"), true);
-  assert.equal(ownerLanding.includes("Add one line in your own words"), true);
-  assert.equal(ownerLanding.includes("If you would rather say it plainly"), true);
+  assert.equal(ownerLanding.includes("One line in your own words"), true);
   assert.equal(ownerLanding.includes("function validateOwnerContext()"), true);
   assert.equal(ownerLanding.includes("var hasListing = listingField && listingField.value.trim();"), true);
   assert.equal(ownerLanding.includes("var hasConcern = concerns.length > 0 || (concernsInput && concernsInput.value.trim()) || (concernsMirror && concernsMirror.value.trim());"), true);
@@ -236,10 +287,18 @@ test("Pat-like Sarasota leads are prompted for the property context and the reas
 test("owner field report email payload avoids duplicate listing fields and submit tracking stays single-source", () => {
   assert.equal(ownerLanding.includes('data-skip-global-submit-track="true"'), true);
   assert.equal(ownerLanding.includes('name="listing_url" data-owner-listing-mirror'), false);
-  assert.equal(ownerLanding.includes('name="what_feels_off" data-owner-concerns-mirror'), false);
-  assert.equal(ownerLanding.includes('textarea class="owner-field-textarea" name="what_feels_off"'), true);
+  // The two attributes are no longer adjacent in the markup, so a literal match
+  // can never fire. Count the field instead, which is what "no duplicate" means.
+  assert.equal((ownerLanding.match(/name="what_feels_off"/g) || []).length, 1, "exactly one concerns field, no duplicate mirror");
+  // Count the ATTRIBUTE on an element, not the JS querySelector that reads it.
+  assert.equal((ownerLanding.match(/<textarea[^>]*data-owner-concerns-mirror/g) || []).length, 1, "exactly one concerns mirror element");
+  assert.equal(ownerLanding.includes('<textarea name="what_feels_off" rows="3"'), true);
   assert.equal(ownerLanding.includes("function getSubmitPayload(extra) {"), true);
   assert.equal(ownerLanding.includes("conversionTracking.getSourceContext"), true);
+  // Guard the fix: the tracker must be read lazily, never captured at parse time,
+  // or owner_form_submit ships with no utm/owner_source context.
+  assert.equal(ownerLanding.includes("var conversionTracking = window.SeascapeConversionTracking;"), false, "tracker must not be captured at parse time");
+  assert.equal(ownerLanding.includes("function conversionTrackingApi()"), true, "tracker is read lazily");
   assert.equal(ownerLanding.includes('placement: form.dataset.formPlacement || ""'), true);
   assert.equal(ownerLanding.includes('track("owner_form_submit", getSubmitPayload({'), true);
   assert.equal(ownerLanding.includes('concern_note_present: concernsMirror && concernsMirror.value.trim() ? "true" : "false"'), true);
@@ -429,12 +488,12 @@ test("owner hub removes the retired operator proof pack while the benchmark stan
     "/property-management/?owner_source=owner-fee-revenue-leak-benchmark-2026#owner-cta"
   );
   assert.equal(ownerBenchmark.includes('href="{{ ctaPath }}"'), true);
-  assert.equal(ownerLanding.includes("Request Your Revenue Review"), true);
+  assert.equal(ownerLanding.includes("Request your 48-hour revenue review"), true);
   assert.equal(ownerBenchmark.includes("Request Your Revenue Review"), true);
 });
 
 test("owner pages keep phone as a lower-trust fallback instead of a competing hero CTA", () => {
-  const landingHeroMatch = ownerLanding.match(/<section class="[^"]*\bowner-hero\b[^"]*">/);
+  const landingHeroMatch = ownerLanding.match(/<section class="[^"]*\bowner-hero\b[^"]*"[^>]*>/);
   const landingHeroStart = landingHeroMatch ? landingHeroMatch.index : -1;
   const landingHeroEnd = ownerLanding.indexOf("</section>", landingHeroStart);
   const landingHero = ownerLanding.slice(landingHeroStart, landingHeroEnd);
@@ -465,7 +524,7 @@ test("week 3 owner pages do not collapse back into fake flat-fee messaging", () 
   assert.ok(sarasotaPage, "Sarasota owner page should exist");
   assert.equal(ownerLanding.includes("10-15% management fees"), false, "owner landing should not hard-code a flat fee band");
   assert.equal(
-    ownerLanding.includes("Seascape management pricing is set by the services and fee basis in the signed agreement."),
+    ownerLanding.includes("we quote a share of net rent that fits what the home can earn, and we put the basis, the included services and any separate charges in writing."),
     true,
     "owner landing should explain the property-specific pricing model"
   );
