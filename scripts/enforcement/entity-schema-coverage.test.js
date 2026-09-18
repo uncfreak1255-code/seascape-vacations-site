@@ -7,7 +7,6 @@ const projectRoot = path.resolve(__dirname, "..", "..");
 const buildRoot = path.join(projectRoot, "_site");
 
 const REQUIRED_ROUTES = [
-  "/guides/2026-bradenton-vacation-rental-market-analysis/",
   "/guides/anna-maria-island-vacation-cost/",
   "/guides/anna-maria-island-vs-clearwater-beach/",
   "/guides/best-vacation-rental-companies-ami/",

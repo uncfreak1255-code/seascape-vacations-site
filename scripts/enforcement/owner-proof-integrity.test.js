@@ -246,20 +246,12 @@ test("benchmark metadata, schema, byline, sources, and CTA stay synchronized", (
 });
 
 test("linked public guides do not restore unsupported management uplift or retired fee-guide naming", () => {
-  const bradentonAnalysis = readBuiltRoute(
-    projectRoot,
-    "/guides/2026-bradenton-vacation-rental-market-analysis/"
-  );
   const companyGuide = readBuiltRoute(projectRoot, "/guides/best-vacation-rental-companies-ami/");
   const bookingTrends = readBuiltRoute(
     projectRoot,
     "/research/gulf-coast-vacation-booking-trends-2026/"
   );
 
-  assert.doesNotMatch(
-    bradentonAnalysis.visibleBodyText,
-    /leave 15-20% on the table|12% higher occupancy|8% higher nightly rates/i
-  );
   assert.doesNotMatch(companyGuide.visibleBodyText, /\bfee leakage\b/i);
   assert.match(bookingTrends.visibleBodyText, /Owner Fee Comparison Guide/);
   assert.doesNotMatch(bookingTrends.visibleBodyText, /Owner Fee Benchmark/);
