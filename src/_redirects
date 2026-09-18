@@ -444,7 +444,9 @@
 # Canonical guide shape — keep current guides on trailing-slash canonicals
 # Netlify cannot safely strip .html with a dynamic suffix placeholder, so keep
 # explicit .html aliases before the broad slashless placeholder rule.
-/guides/2026-bradenton-vacation-rental-market-analysis.html  /guides/2026-bradenton-vacation-rental-market-analysis/  301
+/guides/2026-bradenton-vacation-rental-market-analysis.html  /property-management/vacation-rental-management-bradenton/  301
+/guides/2026-bradenton-vacation-rental-market-analysis  /property-management/vacation-rental-management-bradenton/  301
+/guides/2026-bradenton-vacation-rental-market-analysis/  /property-management/vacation-rental-management-bradenton/  301
 /guides/anna-maria-city.html  /guides/anna-maria-city/  301
 /guides/anna-maria-island-area-guide.html  /guides/anna-maria-island-area-guide/  301
 /guides/anna-maria-island-beaches.html  /guides/anna-maria-island-beaches/  301

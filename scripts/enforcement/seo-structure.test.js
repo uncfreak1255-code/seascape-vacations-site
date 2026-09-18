@@ -414,10 +414,6 @@ test("live sources no longer promote retired duplicate guide paths", () => {
 test("priority guides ship complete metadata instead of truncated titles or broken descriptions", () => {
   const guideExpectations = [
     {
-      relativePath: ["src", "guides", "2026-bradenton-vacation-rental-market-analysis.html"],
-      expectedTitle: "2026 Bradenton Beach Vacation Rental Market: Pricing, Occupancy & Top Areas"
-    },
-    {
       relativePath: ["src", "guides", "anna-maria-island-vs-longboat-key.html"],
       expectedTitle: "Anna Maria Island vs Longboat Key — Which Beach Is Right for You?"
     },

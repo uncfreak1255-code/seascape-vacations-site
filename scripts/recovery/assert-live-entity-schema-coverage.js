@@ -2,7 +2,6 @@ const http = require("http");
 const https = require("https");
 
 const requiredRoutes = [
-  "/guides/2026-bradenton-vacation-rental-market-analysis/",
   "/guides/anna-maria-island-vacation-cost/",
   "/guides/anna-maria-island-vs-clearwater-beach/",
   "/guides/best-vacation-rental-companies-ami/",
