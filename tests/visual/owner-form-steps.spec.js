@@ -60,7 +60,22 @@ test("header Revenue Review stays a same-page hash after guest.js runs", async (
   await expect(headerCta).toHaveAttribute("href", "#owner-cta");
   await expect(headerCta).not.toHaveAttribute("data-trip-link");
 
-  await headerCta.click();
+  const elapsedMs = await page.evaluate(() => {
+    const header = document.querySelector(".g-header-actions a.g-button");
+    return new Promise((resolve) => {
+      const start = performance.now();
+      const finish = () => {
+        window.removeEventListener("hashchange", onHash);
+        resolve(performance.now() - start);
+      };
+      const onHash = () => finish();
+      window.addEventListener("hashchange", onHash);
+      header.click();
+      window.setTimeout(finish, 1200);
+    });
+  });
+
+  expect(elapsedMs).toBeLessThan(150);
   await expect(page).toHaveURL(/#owner-cta$/);
   await expect(page.locator("#owner-cta")).toBeInViewport();
 });
