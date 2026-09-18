@@ -400,10 +400,15 @@ headExtra: |
     var page = document.querySelector("[data-owner-page]");
     if (!page) return;
     var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    var conversionTracking = window.SeascapeConversionTracking;
+    // conversion-tracking.js is deferred and defines this AFTER this inline block
+    // parses, so read it lazily on every use instead of capturing undefined once.
+    function conversionTrackingApi() {
+      return window.SeascapeConversionTracking;
+    }
 
     function track(eventName, payload) {
       if (!eventName) return;
+      var conversionTracking = conversionTrackingApi();
       if (conversionTracking && typeof conversionTracking.trackEvent === "function") {
         conversionTracking.trackEvent(eventName, payload || {});
         return;
@@ -421,7 +426,7 @@ headExtra: |
     var reviewPanel = document.getElementById("owner-cta");
     if (sticky && reviewPanel && "IntersectionObserver" in window) {
       var stickyObserver = new IntersectionObserver(function (entries) {
-        sticky.hidden = entries[0].isIntersecting;
+        sticky.hidden = entries[entries.length - 1].isIntersecting;
       }, { threshold: 0.15 });
       stickyObserver.observe(reviewPanel);
     }
@@ -470,6 +475,7 @@ headExtra: |
 
     function getSubmitPayload(extra) {
       var sourceContext = {};
+      var conversionTracking = conversionTrackingApi();
       if (conversionTracking && typeof conversionTracking.getSourceContext === "function") {
         sourceContext = conversionTracking.getSourceContext();
       }
@@ -619,8 +625,10 @@ headExtra: |
     if (phoneField) phoneField.addEventListener("input", syncConfirmPanel);
 
     form.addEventListener("submit", function (event) {
-      if (submitting) return;
+      // preventDefault first: a second click inside the submit window must not
+      // fall through to an unprevented native submit.
       event.preventDefault();
+      if (submitting) return;
       if (!validateAllRequiredFields()) return;
       if (!validateOwnerContext()) return;
       submitting = true;
@@ -640,6 +648,15 @@ headExtra: |
     });
 
     showStep(0, "forward", { silent: true });
-    track("owner_form_step_view", getFormPayload({ viewed_step: 1 }));
+    // Deferred: at parse time none of the tracking globals exist yet, so firing
+    // here loses the step-1 view and silently zeroes the top of the funnel.
+    function trackFirstStepView() {
+      track("owner_form_step_view", getFormPayload({ viewed_step: 1 }));
+    }
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", trackFirstStepView, { once: true });
+    } else {
+      trackFirstStepView();
+    }
   })();
 </script>

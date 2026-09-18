@@ -31,9 +31,15 @@ html[data-visual-route="property-management"] *::after {
 }
 
 /* The owner page's mobile bar is position:fixed and toggles on scroll; pin it
-   in flow so a full-page capture is deterministic. */
+   in flow so a full-page capture is deterministic. `absolute` did NOT do that:
+   with no positioned ancestor the containing block is the initial containing
+   block, so bottom:0 painted the bar partway down the full-page capture and
+   masked ~72px of the review panel from the gate. `static` pins it in flow. */
 html[data-visual-route="property-management"] .g-owner-sticky {
-  position: absolute !important;
+  position: static !important;
+  bottom: auto !important;
+  left: auto !important;
+  right: auto !important;
   transition: none !important;
 }
 

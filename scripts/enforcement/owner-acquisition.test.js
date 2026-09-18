@@ -99,6 +99,21 @@ test("owner landing page keeps the owner revenue review close to the sales argum
 // so it no longer renders site-header.njk. Assertions about that template passed
 // here regardless of this page and are removed; the live rule is the shared
 // header's CTA wiring, asserted below.
+test("owner-only nav stays wired for the pages that still use it", () => {
+  // The owner hub moved to layouts/guest.njk, but ownerNavOnly: true is still set
+  // by src/property-management/revenue-review-requested.njk -- the page every
+  // submitted lead lands on -- and src/internal/ai-engine-click-test.njk. Removing
+  // these assertions with the hub left that branch live but unguarded.
+  const thankYou = fs.readFileSync(path.join(projectRoot, "src", "property-management", "revenue-review-requested.njk"), "utf8");
+  assert.equal(thankYou.includes("ownerNavOnly: true"), true, "the lead thank-you page still opts into owner-only nav");
+  assert.equal(siteHeader.includes("{% if resolvedOwnerNavOnly %}"), true, "site header must keep the owner-only nav branch");
+  assert.equal(siteHeader.includes('class="nav-links nav-links--owner"'), true, "owner-only nav keeps its CTA container");
+  assert.equal(siteHeader.includes('class="nav-owner-cta"'), true, "owner-only nav keeps its bespoke CTA treatment");
+  assert.equal(siteHeaderStyles.includes(".nav-links--owner {"), true, "owner-only nav CSS keeps the CTA visible below desktop");
+  assert.equal(siteHeaderStyles.includes(".nav-owner-cta {"), true, "owner-only nav CSS styles the compact CTA");
+  assert.equal(siteHeaderStyles.includes("margin-left: auto;"), true, "owner-only nav pushes the CTA right without guest links");
+});
+
 test("owner landing page uses the shared Waterline shell with an owner CTA", () => {
   assert.equal(ownerLanding.includes("layout: layouts/guest.njk"), true, "owner landing uses the shared Waterline shell (floor F5)");
   assert.equal(ownerLanding.includes('navButtonHref: "#owner-cta"'), true, "shared header CTA should jump to the review form");
@@ -236,10 +251,18 @@ test("Pat-like Sarasota leads are prompted for the property context and the reas
 test("owner field report email payload avoids duplicate listing fields and submit tracking stays single-source", () => {
   assert.equal(ownerLanding.includes('data-skip-global-submit-track="true"'), true);
   assert.equal(ownerLanding.includes('name="listing_url" data-owner-listing-mirror'), false);
-  assert.equal(ownerLanding.includes('name="what_feels_off" data-owner-concerns-mirror'), false);
+  // The two attributes are no longer adjacent in the markup, so a literal match
+  // can never fire. Count the field instead, which is what "no duplicate" means.
+  assert.equal((ownerLanding.match(/name="what_feels_off"/g) || []).length, 1, "exactly one concerns field, no duplicate mirror");
+  // Count the ATTRIBUTE on an element, not the JS querySelector that reads it.
+  assert.equal((ownerLanding.match(/<textarea[^>]*data-owner-concerns-mirror/g) || []).length, 1, "exactly one concerns mirror element");
   assert.equal(ownerLanding.includes('<textarea name="what_feels_off" rows="3"'), true);
   assert.equal(ownerLanding.includes("function getSubmitPayload(extra) {"), true);
   assert.equal(ownerLanding.includes("conversionTracking.getSourceContext"), true);
+  // Guard the fix: the tracker must be read lazily, never captured at parse time,
+  // or owner_form_submit ships with no utm/owner_source context.
+  assert.equal(ownerLanding.includes("var conversionTracking = window.SeascapeConversionTracking;"), false, "tracker must not be captured at parse time");
+  assert.equal(ownerLanding.includes("function conversionTrackingApi()"), true, "tracker is read lazily");
   assert.equal(ownerLanding.includes('placement: form.dataset.formPlacement || ""'), true);
   assert.equal(ownerLanding.includes('track("owner_form_submit", getSubmitPayload({'), true);
   assert.equal(ownerLanding.includes('concern_note_present: concernsMirror && concernsMirror.value.trim() ? "true" : "false"'), true);
