@@ -20,6 +20,14 @@ const siteHeaderStyles = fs.readFileSync(
   path.join(projectRoot, "src", "_includes", "partials", "site-header-styles.njk"),
   "utf8"
 );
+const guestHeader = fs.readFileSync(
+  path.join(projectRoot, "src", "_includes", "partials", "guest-header.njk"),
+  "utf8"
+);
+const guestRuntime = fs.readFileSync(
+  path.join(projectRoot, "src", "assets", "js", "guest.js"),
+  "utf8"
+);
 const conversionTracking = fs.readFileSync(
   path.join(projectRoot, "src", "assets", "js", "conversion-tracking.js"),
   "utf8"
@@ -49,6 +57,16 @@ test("owner landing page uses a real owner revenue review form instead of generi
   assert.equal(ownerLanding.includes('name="owner_statement"'), true);
   assert.equal(ownerLanding.includes('data-owner-context-field></textarea>'), true);
   assert.equal(ownerLanding.includes('data-track-event="owner_primary_cta_click"'), true);
+  assert.match(
+    ownerLanding,
+    /data-track-event="owner_primary_cta_click"[^>]*data-placement="review-section"/,
+    "mid-page review jump must stay on the 30-day owner_primary_cta_click read"
+  );
+  assert.match(
+    ownerLanding,
+    /data-track-event="owner_primary_cta_click"[^>]*data-placement="sticky"/,
+    "mobile sticky bar must stay on the 30-day owner_primary_cta_click read"
+  );
   assert.equal(ownerFormPartial.includes("owner-revenue-teardown"), true);
   assert.equal(ownerFormPartial.includes('data-netlify="true"'), true);
   assert.equal(ownerFormPartial.includes('data-netlify-recaptcha="true"'), true);
@@ -120,6 +138,24 @@ test("owner landing page uses the shared Waterline shell with an owner CTA", () 
   assert.equal(ownerLanding.includes('navButtonLabel: "Revenue Review"'), true, "owner landing should use compact owner nav CTA copy");
   assert.equal(siteHeader.includes("href=\"/properties/\""), true, "shared header still needs guest-nav links for non-owner pages");
   assert.equal(siteHeader.includes("Request Your Revenue Review"), false, "shared header should stay page-driven, not hard-code owner CTA copy");
+});
+
+test("shared header keeps hash CTAs as instant jumps instead of trip-link navigations", () => {
+  assert.equal(
+    guestHeader.includes('{% if not guestHome %} data-trip-link{% endif %}'),
+    false,
+    "hash header CTAs must not inherit data-trip-link just because the page is not the homepage"
+  );
+  assert.match(
+    guestHeader,
+    /resolvedNavButtonHref\[0\] != "#"/,
+    "header CTA should stamp data-trip-link only when the href is not a same-page hash"
+  );
+  assert.match(
+    guestRuntime,
+    /if \(rawHref\.charAt\(0\) === '#'\) return;/,
+    "guest.js must not rewrite same-page hash jumps into path URLs"
+  );
 });
 
 test("owner template supports proof-first sections for high-intent owner pages", () => {

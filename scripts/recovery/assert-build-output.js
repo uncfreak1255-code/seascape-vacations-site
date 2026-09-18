@@ -484,10 +484,25 @@ if (phase === "remediation") {
     /<a\b(?=[^>]*href="#owner-cta")(?=[^>]*class="(?:[^"]*\s)?g-button(?:\s[^"]*)?")(?=[^>]*data-track-event="owner_primary_cta_click")[^>]*>\s*Revenue Review\b/,
     "property management header CTA"
   );
+  expectNotMatches(
+    "_site/property-management/index.html",
+    /<a\b(?=[^>]*href="#owner-cta")(?=[^>]*class="(?:[^"]*\s)?g-button(?:\s[^"]*)?")(?=[^>]*data-trip-link)(?=[^>]*data-track-event="owner_primary_cta_click")[^>]*>\s*Revenue Review\b/,
+    "property management header CTA must stay a hash jump"
+  );
   expectMatches(
     "_site/property-management/index.html",
     /<a\b(?=[^>]*href="#owner-cta")(?=[^>]*class="g-button")(?=[^>]*data-track-event="owner_primary_cta_click")[^>]*>Request your 48-hour revenue review<\/a>/,
     "property management hero CTA"
+  );
+  expectMatches(
+    "_site/property-management/index.html",
+    /<a\b(?=[^>]*href="#owner-cta")(?=[^>]*data-track-event="owner_primary_cta_click")(?=[^>]*data-placement="review-section")[^>]*>Request your review<\/a>/,
+    "property management mid-page review CTA"
+  );
+  expectMatches(
+    "_site/property-management/index.html",
+    /<a\b(?=[^>]*href="#owner-cta")(?=[^>]*data-track-event="owner_primary_cta_click")(?=[^>]*data-placement="sticky")[^>]*>Request review<\/a>/,
+    "property management sticky CTA"
   );
   expectNotMatches(
     "_site/property-management/index.html",

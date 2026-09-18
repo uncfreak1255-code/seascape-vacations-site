@@ -51,3 +51,16 @@ test("owner form step controls use high-contrast ink and keep the progress line 
   assert.notEqual(lineColor, INK);
   assert.notEqual(lineColor, WHITE);
 });
+
+test("header Revenue Review stays a same-page hash after guest.js runs", async ({ page }) => {
+  await gotoMarketingRoute(page, ownerHub);
+
+  const headerCta = page.locator(".g-header-actions a.g-button");
+  await expect(headerCta).toBeVisible();
+  await expect(headerCta).toHaveAttribute("href", "#owner-cta");
+  await expect(headerCta).not.toHaveAttribute("data-trip-link");
+
+  await headerCta.click();
+  await expect(page).toHaveURL(/#owner-cta$/);
+  await expect(page.locator("#owner-cta")).toBeInViewport();
+});

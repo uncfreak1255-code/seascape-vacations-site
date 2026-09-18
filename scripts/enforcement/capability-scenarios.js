@@ -310,6 +310,11 @@ const SCENARIOS = [
         assertExcludes(html, "Reply guaranteed");
         assertIncludes(html, "Request your 48-hour revenue review");
         assertIncludes(html, 'data-track-event="owner_primary_cta_click"');
+        assertIncludes(html, 'data-placement="review-section"');
+        assertIncludes(html, 'data-placement="sticky"');
+        const headerCta = html.match(/<a\b[^>]*class="g-button btn-brand"[^>]*>/);
+        if (!headerCta) throw new Error("owner hub header CTA missing");
+        assertExcludes(headerCta[0], "data-trip-link");
         assertIncludes(html, 'data-form-submit-event="owner_form_submit"');
         assertIncludes(html, 'data-netlify="true"');
         assertExcludes(html, "What Is Vacation Rental Property Management?");
