@@ -85,6 +85,24 @@ const OWNER_JARGON_PATTERNS = [
   /\bpricing discipline\b/i
 ];
 
+// Owner-facing copy never names the operating stack. Prospective owners have
+// booked calls to extract the toolchain and then self-manage (Sawyer, 2026-09-17),
+// so the capability is described and the vendor is not. Guest-side functional
+// mentions (checkout, the booking widget, CDN hosts) are out of scope by design:
+// OWNER_CONTENT_PATTERNS only matches owner routes.
+const OWNER_VENDOR_DISCLOSURE_PATTERNS = [
+  /\bhostaway\b/i,
+  /\bpricelabs\b/i,
+  /\bprice labs\b/i,
+  /\bwheelhouse\b/i,
+  /\bbeyond pricing\b/i,
+  /\bguesty\b/i,
+  /\blodgify\b/i,
+  /\bownerrez\b/i,
+  /\bhospitable\b/i,
+  /\bproperty management system\b/i
+];
+
 const INTERNAL_PROCESS_PATTERNS = [
   /\bapproved benchmark\b/i,
   /\bapproved inputs?\b/i,
@@ -734,6 +752,15 @@ function lintPublicContent(relativePath, source, requiredLinks, options = {}) {
       }
     }
 
+    for (const pattern of OWNER_VENDOR_DISCLOSURE_PATTERNS) {
+      const match = visibleText.match(pattern);
+      if (match) {
+        violations.push(
+          `${relativePath}: owner copy must not name the operating stack ("${match[0]}"); describe the capability instead`
+        );
+      }
+    }
+
     const youMatches = visibleText.match(/\b(you|your)\b/gi) || [];
     const detachedOwnerMatches = visibleText.match(/\bthe owner\b(?!-)/gi) || [];
 
@@ -1246,6 +1273,15 @@ test("owner seo page data avoids banned owner jargon", () => {
       const match = visibleText.match(pattern);
       if (match) {
         violations.push(`${entry.slug}: banned owner jargon "${match[0]}"`);
+      }
+    }
+
+    for (const pattern of OWNER_VENDOR_DISCLOSURE_PATTERNS) {
+      const match = visibleText.match(pattern);
+      if (match) {
+        violations.push(
+          `${entry.slug}: owner copy must not name the operating stack ("${match[0]}")`
+        );
       }
     }
   }

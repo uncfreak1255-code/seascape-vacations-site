@@ -11,10 +11,10 @@ at the bottom. `seascape-hub/context/owner-offer.md` is the offer source.
 - secondary keywords: Bradenton vacation rental management, Sarasota vacation rental management, Anna Maria Island vacation rental management, switch vacation rental property manager
 - audience pattern: the reader wants to see a real operator and real homes, understand the service and the fee basis, and get one clear next step; they do not want fee vocabulary.
 - proof source: `seascape-hub/context/owner-offer.md` (sections 2, 3, 4, 7); `src/_data/properties-fallback.json` for the homes and photographs; `src/about-us/index.njk` for the team; `docs/runbooks/owner-lead-confirmation-email.md` for what happens after the form.
-- offer claim: `seascape-hub/context/owner-offer.md` section 6 (the one sentence), landed through section 4 rows 1 to 4.
+- offer claim: `seascape-hub/context/owner-offer.md` section 6 (the one sentence), landed through section 4 rows 1 to 4, plus section 2 ("Sets and adjusts the nightly rate per home") for the demand-pricing row and section 5 (what Seascape refuses) for the line that says we turn homes down.
 - required internal links: /properties/, /about-us/, /research/owner-fee-revenue-leak-benchmark-2026/, /property-management/vacation-rental-management-fees-florida/, /property-management/switch-vacation-rental-management-company/, /property-management/maximize-vacation-rental-income-florida/
 - CTA target: #owner-cta
-- anti-claims: no revenue or occupancy figure, no direct-booking savings, no response-time or review-count number, no universal fee or minimum, no guarantee, no passive income, no hands-off management, no "Reply guaranteed", no AI as a lead claim, no comparison of platform commission and card processing as all-in equivalents.
+- anti-claims: no revenue or occupancy figure, no direct-booking savings, no response-time or review-count number, no universal fee or minimum, no guarantee, no passive income, no hands-off management, no "Reply guaranteed", no AI as a lead claim, no comparison of platform commission and card processing as all-in equivalents, and no naming of the operating stack (PMS or pricing vendor) anywhere in owner-facing copy.
 
 ## Why This Batch
 
@@ -112,6 +112,21 @@ canonical, title and JSON-LD types are unchanged, and no ranking claim is made.
 | Decision and reason | Rebuild the page around the offer because the fee-vocabulary page produced zero owner submits and the positioning in the hub was never used; no competitor angle is copied. |
 
 ## Decisions recorded 2026-09-17
+
+**Vendor names are not owner-facing copy (Sawyer, 2026-09-17).** Owner copy
+describes the capability and never names the software. Sawyer's reason: owners
+have booked calls to extract the toolchain and then self-manage, so naming the
+PMS or the pricing vendor hands a tire-kicker the shopping list. Applied here as
+`OWNER_VENDOR_DISCLOSURE_PATTERNS` in `scripts/enforcement/content-voice.test.js`,
+scoped to owner routes and the `seoPages.json` owner entries, so guest-side
+functional mentions (checkout, the booking widget, CDN hosts) are untouched.
+Adding the guard surfaced eight live strings in `src/_data/seoPages.json` that
+named the PMS on owner landers; all eight are rewritten in this PR. The banned
+performance claims that sat inside those same strings (a 15-30% revenue
+improvement, a 30-50% occupancy lift, an 8-15% nightly-rate lift, "hands-off
+management") are removed with them. The remaining legacy performance claims on
+other owner landers are tracked as a separate remediation, not silently kept.
+
 
 Sawyer's facts (chat, 2026-09-17): monthly statements are needed only for the
 externally owned homes (Blue House, Bradenton Pool Home, and the signed MJNS7
