@@ -25,7 +25,10 @@ headExtra: |
     },
     "areaServed": [
       { "@type": "City", "name": "Bradenton" },
-      { "@type": "City", "name": "Sarasota" }
+      { "@type": "Place", "name": "Anna Maria Island" },
+      { "@type": "City", "name": "Sarasota" },
+      { "@type": "Place", "name": "Siesta Key" },
+      { "@type": "Place", "name": "Longboat Key" }
     ],
     "serviceType": "Vacation Rental Property Management"
   }
@@ -71,7 +74,7 @@ headExtra: |
         <p class="g-owner-lede">Seascape manages a small collection of pool homes in Bradenton and Sarasota. We list, price, host and clean each one, pay you monthly, and tell you what your home earned and what needs attention before you have to ask.</p>
         <div class="g-owner-actions">
           <a class="g-button" href="#owner-cta" data-track-event="owner_primary_cta_click" data-page-slug="property-management">Request your 48-hour revenue review</a>
-          <a class="g-owner-phone" href="tel:+19417048545">(941) 704-8545</a>
+
         </div>
         <p class="g-small g-owner-hero-note">A listing link or an address is enough to start. A sentence on what feels off helps.</p>
       </div>
@@ -80,7 +83,7 @@ headExtra: |
         <p class="g-label">48-hour revenue review</p>
         <h2 id="owner-review-title">Send the listing. We send back a one-page review.</h2>
         <p class="g-owner-review-intro">Four short questions, about two minutes. A real Seascape person reads every reply.</p>
-        <form class="g-owner-form" name="owner-revenue-teardown" method="POST" action="/property-management/revenue-review-requested/" enctype="multipart/form-data" data-netlify="true" data-netlify-recaptcha="true" netlify-honeypot="bot-field" data-track-form="owner" data-form-start-event="owner_form_start" data-form-submit-event="owner_form_submit" data-skip-global-submit-track="true" data-page-slug="property-management" data-source-page-slug="property-management" data-market="florida-gulf-coast" data-form-placement="hero-review-panel" data-form-direction="forward">
+        <form class="g-owner-form" novalidate name="owner-revenue-teardown" method="POST" action="/property-management/revenue-review-requested/" enctype="multipart/form-data" data-netlify="true" data-netlify-recaptcha="true" netlify-honeypot="bot-field" data-track-form="owner" data-form-start-event="owner_form_start" data-form-submit-event="owner_form_submit" data-skip-global-submit-track="true" data-page-slug="property-management" data-source-page-slug="property-management" data-market="florida-gulf-coast" data-form-placement="hero-review-panel" data-form-direction="forward">
           <input type="hidden" name="form-name" value="owner-revenue-teardown">
           <input type="hidden" name="page_slug" value="property-management">
           <input type="hidden" name="source_page_slug" value="property-management">
@@ -164,7 +167,7 @@ headExtra: |
             </div>
           </div>
         </form>
-        <p class="g-owner-review-foot">If something is missing we will ask for it rather than fill in the blanks. Prefer to talk first? <a href="tel:+19417048545">(941) 704-8545</a></p>
+        <p class="g-owner-review-foot">If something is missing we will ask for it rather than fill in the blanks. </p>
       </aside>
     </div>
   </section>
@@ -587,6 +590,7 @@ headExtra: |
         button.setAttribute("aria-pressed", index < 0 ? "true" : "false");
         concernsInput.value = concerns.join(", ");
         syncConfirmPanel();
+        clearOwnerContextValidity();
         track("owner_form_concern_toggle", getFormPayload({
           concern: concern,
           selected: index < 0 ? "true" : "false"
@@ -600,7 +604,16 @@ headExtra: |
         syncConfirmPanel();
       });
     }
-    if (concernsMirror) concernsMirror.addEventListener("input", syncConfirmPanel);
+    function clearOwnerContextValidity() {
+      // The listing field carries the "listing or concern" custom error. It can be
+      // satisfied by EITHER input, so every path that satisfies it must clear it,
+      // not just typing in the listing field.
+      if (listingField) listingField.setCustomValidity("");
+    }
+    if (concernsMirror) concernsMirror.addEventListener("input", function () {
+      clearOwnerContextValidity();
+      syncConfirmPanel();
+    });
     if (nameField) nameField.addEventListener("input", syncConfirmPanel);
     if (emailField) emailField.addEventListener("input", syncConfirmPanel);
     if (phoneField) phoneField.addEventListener("input", syncConfirmPanel);

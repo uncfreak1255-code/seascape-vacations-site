@@ -94,14 +94,38 @@ const OWNER_VENDOR_DISCLOSURE_PATTERNS = [
   /\bhostaway\b/i,
   /\bpricelabs\b/i,
   /\bprice labs\b/i,
-  /\bwheelhouse\b/i,
-  /\bbeyond pricing\b/i,
   /\bguesty\b/i,
   /\blodgify\b/i,
-  /\bownerrez\b/i,
-  /\bhospitable\b/i,
-  /\bproperty management system\b/i
+  /\bownerrez\b/i
 ];
+// Deliberately NOT banned: "wheelhouse", "hospitable" and "property management
+// system" are ordinary English ("in our wheelhouse", "a hospitable welcome") and
+// would fail the gate on innocent copy. The rule is about naming the vendor.
+
+// Vendor names legitimately appear in non-reader fields (photo CDN hosts are on
+// bookingenginecdn.hostaway.com), so the seoPages arm scans reader-visible
+// strings only and skips URLs.
+const NON_READER_SEO_FIELDS = new Set(["slug", "canonical", "image", "ogImage", "url", "ctaPath", "benchmarkUrl", "sourceUrl"]);
+function readerVisibleSeoText(entry) {
+  const parts = [];
+  const walk = (key, value) => {
+    if (typeof value === "string") {
+      if (NON_READER_SEO_FIELDS.has(key)) return;
+      if (/^(https?:)?\/\//i.test(value.trim())) return;
+      parts.push(value);
+      return;
+    }
+    if (Array.isArray(value)) {
+      value.forEach((item) => walk(key, item));
+      return;
+    }
+    if (value && typeof value === "object") {
+      for (const [k, v] of Object.entries(value)) walk(k, v);
+    }
+  };
+  walk("", entry);
+  return parts.join("\n");
+}
 
 const INTERNAL_PROCESS_PATTERNS = [
   /\bapproved benchmark\b/i,
@@ -1268,6 +1292,7 @@ test("owner seo page data avoids banned owner jargon", () => {
 
   for (const entry of seoPages.owner) {
     const visibleText = JSON.stringify(entry);
+    const readerText = readerVisibleSeoText(entry);
 
     for (const pattern of OWNER_JARGON_PATTERNS) {
       const match = visibleText.match(pattern);
@@ -1277,7 +1302,7 @@ test("owner seo page data avoids banned owner jargon", () => {
     }
 
     for (const pattern of OWNER_VENDOR_DISCLOSURE_PATTERNS) {
-      const match = visibleText.match(pattern);
+      const match = readerText.match(pattern);
       if (match) {
         violations.push(
           `${entry.slug}: owner copy must not name the operating stack ("${match[0]}")`

@@ -42,7 +42,9 @@ test("owner landing page uses a real owner revenue review form instead of generi
 
   const ownerFormPartial = fs.readFileSync(ownerFormPath, "utf8");
   assert.equal(ownerLanding.includes("Request your 48-hour revenue review"), true);
-  assert.equal(ownerLanding.includes('<form class="g-owner-form" name="owner-revenue-teardown" method="POST" action="/property-management/revenue-review-requested/" enctype="multipart/form-data"'), true);
+  // novalidate is load-bearing: without it the browser blocks submit on required
+// fields inside hidden step panels and the form dead-ends with no feedback.
+  assert.equal(ownerLanding.includes('<form class="g-owner-form" novalidate name="owner-revenue-teardown" method="POST" action="/property-management/revenue-review-requested/" enctype="multipart/form-data"'), true);
   assert.equal(ownerLanding.includes('name="property_address" autocomplete="street-address"'), true);
   assert.equal(ownerLanding.includes('name="owner_statement"'), true);
   assert.equal(ownerLanding.includes('data-owner-context-field></textarea>'), true);
@@ -93,16 +95,14 @@ test("owner landing page keeps the owner revenue review close to the sales argum
   assert.ok(reviewIndex < specialSituationsIndex, "owner CTA should land before special-situations content");
 });
 
-test("owner landing page opts into owner-only nav instead of the guest browse header", () => {
+// The owner hub moved to layouts/guest.njk (DESIGN.md floor F5, one shared shell),
+// so it no longer renders site-header.njk. Assertions about that template passed
+// here regardless of this page and are removed; the live rule is the shared
+// header's CTA wiring, asserted below.
+test("owner landing page uses the shared Waterline shell with an owner CTA", () => {
   assert.equal(ownerLanding.includes("layout: layouts/guest.njk"), true, "owner landing uses the shared Waterline shell (floor F5)");
   assert.equal(ownerLanding.includes('navButtonHref: "#owner-cta"'), true, "shared header CTA should jump to the review form");
   assert.equal(ownerLanding.includes('navButtonLabel: "Revenue Review"'), true, "owner landing should use compact owner nav CTA copy");
-  assert.equal(siteHeader.includes("{% if resolvedOwnerNavOnly %}"), true, "site header should support owner-only nav mode");
-  assert.equal(siteHeader.includes('class="nav-links nav-links--owner"'), true, "owner-only nav should use its own CTA container");
-  assert.equal(siteHeader.includes('class="nav-owner-cta"'), true, "owner-only nav should use a lighter bespoke CTA treatment");
-  assert.equal(siteHeaderStyles.includes(".nav-links--owner {"), true, "owner-only nav needs CSS that keeps the CTA visible below desktop");
-  assert.equal(siteHeaderStyles.includes(".nav-owner-cta {"), true, "owner-only nav CSS should style the compact CTA directly");
-  assert.equal(siteHeaderStyles.includes("margin-left: auto;"), true, "owner-only nav should push the CTA to the right without guest links");
   assert.equal(siteHeader.includes("href=\"/properties/\""), true, "shared header still needs guest-nav links for non-owner pages");
   assert.equal(siteHeader.includes("Request Your Revenue Review"), false, "shared header should stay page-driven, not hard-code owner CTA copy");
 });
