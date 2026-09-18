@@ -42,3 +42,12 @@ html[data-visual-route="property-management"] .g-owner-sticky {
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
 }
+
+/* The owner landers stamp "Updated <date>" from the source file's last git commit,
+   so the text changes every time seoPages.json is committed on a new day. That made
+   the baseline depend on WHEN it was regenerated: a golden captured before committing
+   read the previous commit's date and failed in CI against the new one. Hide the
+   stamp so the baseline tracks layout rather than the calendar. */
+.g-updated-stamp {
+  visibility: hidden !important;
+}
