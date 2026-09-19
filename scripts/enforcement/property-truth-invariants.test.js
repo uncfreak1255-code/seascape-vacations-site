@@ -361,3 +361,33 @@ function extractJsonLdObjects(html) {
       return Array.isArray(parsed) ? parsed : [parsed];
     });
 }
+
+test("guide CTAs keep dock and waterfront claims singular and off the island", () => {
+  const whereToStay = readSource("src/guides/where-to-stay-near-anna-maria-island/index.html");
+  const thingsToDo = readSource("src/guides/things-to-do-bradenton-fl.html");
+  const holmesVsBradenton = readSource("src/guides/holmes-beach-vs-bradenton-beach.html");
+  const amiVsLongboat = readSource("src/guides/anna-maria-island-vs-longboat-key.html");
+
+  assert.doesNotMatch(whereToStay, /We manage properties both on the island/i, "no Seascape home sits on the island");
+  assert.doesNotMatch(whereToStay, /Waterfront homes on AMI/i);
+  assert.doesNotMatch(whereToStay, /bigger properties with pools and docks/i);
+  assert.doesNotMatch(thingsToDo, /waterfront views, private pools, and docks/i);
+  assert.doesNotMatch(thingsToDo, /Some homes include docks or waterfront access/i);
+  assert.doesNotMatch(holmesVsBradenton, /Waterfront homes with pools, docks/i);
+
+  for (const [name, html] of [["where-to-stay", whereToStay], ["ami-vs-longboat", amiVsLongboat]]) {
+    assert.doesNotMatch(html, /\b\d+-foot dock\b/i, `${name}: dock length is not in any property source`);
+  }
+});
+
+test("Dockside Dreams dock is never marketed for fishing", () => {
+  const dockPage = allSeoPages().find((page) => page.slug === "canal-homes-with-boat-dock");
+  assert.ok(dockPage, "canal-homes-with-boat-dock page must exist");
+  const text = cleanText(dockPage);
+
+  assert.doesNotMatch(text, /dock for fishing/i);
+  assert.doesNotMatch(text, /fishing from the dock/i);
+  assert.doesNotMatch(text, /use the dock for casual inshore fishing/i);
+  assert.doesNotMatch(text, /guests can fish at sunrise/i);
+  assert.match(text, /not for fishing|no fishing from the dock/i);
+});

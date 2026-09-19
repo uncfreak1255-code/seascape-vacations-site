@@ -18,6 +18,7 @@
 - why this cluster wins now: the three sentences promise an activity the property's own house rules prohibit. That is a guest-expectation and complaint risk on arrival, independent of any search value.
 - fourth instance, added 2026-09-18 after Sawyer's review: `/guides/where-to-stay-near-anna-maria-island/` grouped Dockside Dreams and The Oasis under a "Bradenton Waterfront Mainland" heading and credited the pair with "water access". Canon says The Oasis is `NOT waterfront` (beaches 5.4-5.7 mi) and `seoPages.json` already states "Neither home is on the water except Dockside Dreams". Both homes still belong in the section; the amenity attribution is now split so the dock and bay access sit with Dockside Dreams and the space and putting green sit with The Oasis. Every element is canon-backed: 16 guests, putting green and turf backyard, private deep-water dock, canal with direct bay access.
 - related but NOT fixed here: River House's canon entry carries an unresolved source discrepancy ("river access" in an older dossier versus "near the river, not directly on water" in the operational reference). That is a `seascape-hub` correction and must be settled before any guide describes River House's relationship to the Manatee River.
+- follow-up, added 2026-09-19 after an independent review of the #604 batch: five sentences on pages this batch already touches still made plural or off-island water claims ("We manage properties both on the island", "Waterfront homes on AMI", "pools, docks, and direct water access", "Some homes include docks or waterfront access", "Waterfront homes with pools, docks"), and two guides gave the same dock conflicting unsourced lengths (80-foot and 30-foot). Canon: Dockside Dreams is the only waterfront home and no Seascape home is on the island. The `canal-homes-with-boat-dock` stay page also still marketed fishing from the dock; its intro, swimming FAQ, fishing FAQ and geoIntro now match the house rule. `property-truth-invariants.test.js` pins all of it.
 - what should explicitly wait: broader link-claim remediation. The harness still over-flags navigation and related-links blocks, so the remaining flagged list is not yet a work queue.
 
 ## Source Files Changed In This Batch
@@ -26,6 +27,8 @@
   - src/guides/holmes-beach-vs-bradenton-beach.html
   - src/guides/fishing-guide-anna-maria-sarasota.html
   - src/guides/where-to-stay-near-anna-maria-island/index.html
+  - src/guides/things-to-do-bradenton-fl.html
+  - src/_data/seoPages.json
 
 ## Experiment And Readback Contract
 

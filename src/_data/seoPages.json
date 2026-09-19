@@ -3238,7 +3238,7 @@
       "title": "Canal Front Vacation Rental with Boat Dock Florida",
       "h1": "Canal Home with a Private Boat Dock",
       "description": "Bring your boat to Dockside Dreams, a canal-front Bradenton vacation rental with a private dock and access toward Tampa Bay and the Gulf.",
-      "intro": "For boaters, Dockside Dreams offers a canal-front private dock for fishing, kayaking, paddleboarding, or docking a properly sized boat.",
+      "intro": "For boaters, Dockside Dreams offers a canal-front private dock for kayaking, paddleboarding, or docking a properly sized boat. The dock is for access, not for fishing.",
       "faqs": [
         {
           "question": "Which Seascape property has canal access and a boat dock?",
@@ -3254,21 +3254,21 @@
         },
         {
           "question": "Is the canal safe for swimming?",
-          "answer": "Pool swimming is recommended over canal swimming. The canal is best enjoyed by boat, kayak, paddleboard, or fishing from the dock."
+          "answer": "Pool swimming is recommended over canal swimming. The canal is best enjoyed by boat, kayak, or paddleboard."
         },
         {
           "question": "Do manatees visit the canal?",
           "answer": "Manatees can be spotted in Bradenton waterways, especially during cooler months, but wildlife sightings are not guaranteed."
         },
         {
-          "question": "What fish can I catch from the canal dock?",
-          "answer": "Guests use the dock for casual inshore fishing. Species vary by tide and season, so check with a local bait shop and bring the right Florida license."
+          "question": "Can I fish from the dock?",
+          "answer": "No. The dock is for access, not fishing. Jet skis and guest use of the boat lift are not allowed either, and one boat is the maximum. Ask us before booking about boat size and trailer fit."
         }
       ],
       "matchingProperties": [
         "dockside-dreams"
       ],
-      "geoIntro": "<p>Dockside Dreams is Seascape Vacations' canal-front private-dock home in Bradenton. The canal connects toward the Manatee River, Tampa Bay, and the Gulf of Mexico, giving guests a water-access base for fishing, kayaking, paddleboarding, and boat days.</p><p>With the dock in the backyard, guests can fish at sunrise, launch a paddleboard when conditions allow, and use the home as a private-pool base near Anna Maria Island beaches. Compare the same dates and complete checkout total across channels.</p>",
+      "geoIntro": "<p>Dockside Dreams is Seascape Vacations' canal-front private-dock home in Bradenton. The canal connects toward the Manatee River, Tampa Bay, and the Gulf of Mexico, giving guests a water-access base for kayaking, paddleboarding, and boat days.</p><p>With the dock in the backyard, guests can launch a paddleboard when conditions allow, and use the home as a private-pool base near Anna Maria Island beaches. Compare the same dates and complete checkout total across channels.</p>",
       "relatedStaySlugs": [
         "fishing-vacation-rentals-bradenton",
         "golf-vacation-rentals-bradenton",
