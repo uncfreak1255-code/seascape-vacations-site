@@ -15,8 +15,8 @@ Owner: Sawyer. Driver: Claude.
 - proof source: `seascape-hub/projects/negative-proof-register.md` and
   `seascape-hub/context/owner-offer.md` section 7 (excluded claims);
   live SERP check recorded in the Gate 0 block below.
-- required internal links: /property-management/vacation-rental-management-bradenton/, /guides/
-- CTA target: #owner-cta on the redirect destination
+- required internal links: /guides/bradenton-area-guide/, /guides/
+- CTA target: /guides/bradenton-area-guide/ on the guest inbound page; retired-route 301 lands on /property-management/vacation-rental-management-bradenton/#owner-cta
 - anti-claims: no occupancy band, no gross annual revenue figure, no cap rate, no
   nightly-rate table, no market-wide statistic of any kind, and no replacement
   page that reintroduces them from a different angle.
@@ -79,12 +79,22 @@ That guard's page-specific assertions retire with the page.
 - 301 the pretty route, the bare route and the `.html` alias to
   `/property-management/vacation-rental-management-bradenton/`
 - removed the route from the guides index and the inbound link in
-  `things-to-do-bradenton-fl.html`
+  `things-to-do-bradenton-fl.html`, and dropped the leftover
+  "Compare live Bradenton and AMI pricing" sentence so the guest stay
+  paragraph no longer points at the owner lander
 - removed the route from `entity-schema-coverage.test.js`,
   `assert-live-entity-schema-coverage.js` (20 required routes to 19, count floor
   in `recovery-entity-schema.test.js` updated to match), the
   `seo-structure.test.js` title expectation, the page-specific assertions in
   `owner-proof-integrity.test.js`, and `design-lint-baseline.json`
+- pinned the retired slug in `seo-structure.test.js`: source must stay deleted,
+  all three 301s must stay present, live sources including
+  `things-to-do-bradenton-fl.html` must not promote the old URL, and the
+  guest page must not restore the live-pricing promise
+
+## Source files likely to change
+
+  - `src/guides/things-to-do-bradenton-fl.html`
 
 ## Not In This Batch
 
