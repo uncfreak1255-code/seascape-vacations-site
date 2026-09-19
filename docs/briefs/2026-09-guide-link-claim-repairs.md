@@ -21,6 +21,13 @@ actually owns.
 - src/guides/best-vacation-rental-companies-ami.html: /stays/book-direct-anna-maria-island/, /stays/anna-maria-island-vacation-rentals/, /guides/booking-direct-vacation-rentals/
 - src/guides/how-to-get-to-anna-maria-island.html: /stays/book-direct-anna-maria-island/, /stays/vacation-rentals-near-anna-maria-island/, /guides/best-time-visit-anna-maria-island/
 
+## Source Files Changed
+
+- src/guides/dolphins-manatees-bradenton.html
+- src/guides/best-vacation-rental-companies-ami.html
+- src/guides/how-to-get-to-anna-maria-island.html
+- Name the two dock homes and retitle the `/properties/` button; retitle the book-direct card as a checkout-total comparison; change "on AMI" to "near AMI" on the travel guide. No metadata, route, or layout change.
+
 ## Why This Batch
 
 - what changed in the data: a full-site link-claim scan (405 claims, 58 destinations) found the PR #576 defect class on pages outside that PR
@@ -92,6 +99,34 @@ on-island/near-island substitution PR #576 removed. None of the six homes are on
 the island.
 
 **Fix:** "on AMI" becomes "near AMI", matching the destination's own wording.
+
+## Gate 0 — Existing-page factual correction
+
+| Field | Read |
+| --- | --- |
+| Target query family | dolphins manatees Bradenton; best vacation rental companies Anna Maria Island; how to get to Anna Maria Island; book direct Anna Maria Island |
+| Searcher intent | guide/research and comparison: trip-planning readers following an in-guide stay link |
+| Current Seascape URL | /guides/dolphins-manatees-bradenton/, /guides/best-vacation-rental-companies-ami/, /guides/how-to-get-to-anna-maria-island/ |
+| SERP observed date | 2026-09-19 |
+| SERP stale after | 2026-09-26 |
+| Current proof | Search Console Web results, 2026-08-18 through 2026-09-14: dolphins guide 19 clicks / 946 impressions; rental-companies guide 2 / 473; how-to-get guide 1 / 95 (1,514 impressions combined). The 2026-09-13 next-batch joined read is fresh but below threshold and says hold-and-reread. This correction uses property-source errors, not expansion or impact authority. |
+| Top visible competitors | Go2Dolphins; Visit Anna Maria Island; AnnaMariaIsland.com; SeaBreeze Vacation; Anna Maria Life Vacation Rentals; Beach Boutique Rentals. Public search sample on 2026-09-19, not a location-controlled rank report. |
+| Competitor angle | Tour inventory and official visitor logistics, plus on-island managers selling book-direct homes and fee savings. |
+| Visual/format gap | None required; keep existing CTA, card, and related-link markup. Competitors use tour booking widgets and property grids. This batch does not match those formats. |
+| Seascape gap | Three in-guide stay claims overstate inventory: "many" docks at 2 of 6 homes, a "homes" card that opens a checkout-total comparison, and "on AMI" for a destination that says near Anna Maria Island. |
+| Search fit | Keep the three existing trafficked guides. Correct the stay-link wording so the destination's own title matches the sentence. Conversion stays on /properties/ and /stays/book-direct-anna-maria-island/. Do not open a new page. |
+| Local/GBP proof | Not applicable: organic guide copy correction, no local-pack or GBP claim. |
+| AEO/readback note | No AI citation claim. Verify the three repaired sentences in built HTML. Leave first-paragraph answers and FAQ blocks unchanged. |
+| Recommendation | improve the three existing guides only: name the two dock homes, retitle the comparison card, and say near AMI. No snippet rewrite, no expansion. |
+| Attack status | completed |
+| Query variants inspected | where to see dolphins and manatees near Bradenton; best vacation rental companies Anna Maria Island; how to get to Anna Maria Island; book direct Anna Maria Island vacation rentals |
+| SERP source | Public web search on 2026-09-19 plus destination-page and properties.js readback; not a location-controlled rank report. |
+| Competitor URLs inspected | https://go2dolphins.com/dolphin-tours/ ; https://www.visitannamariaisland.com/post/how-do-i-get-to-anna-maria-island ; https://annamariaisland.com/planning-your-trip/planning-your-trip/getting-here ; https://www.seabreezevacation.com/ ; https://www.annamarialifevacationrentals.com/ ; https://www.beachboutiquerentals.com/ ; https://www.annamaria.com/news-and-blog/why-book-direct-anna-maria-vacations/ |
+| Content gap and Seascape answer | Competitors sell on-island inventory or official travel facts. Seascape's gap is honesty on its own six-home set: two dock homes, a comparison page rather than a listing, and near-island not on-island. |
+| Design/format strategy | Text-only correction inside existing CTA, card, and related-link markup. No new visual pattern. |
+| Seascape proof available | src/_data/properties.js and properties-fallback.json: docks on Dockside Dreams and River House only. Destination title for /stays/book-direct-anna-maria-island/ is Compare the same dates and complete checkout total across channels; its description says near Anna Maria Island. |
+| Tools/plugins used | tools/link-claim-check; properties.js source inspection; public web search and competitor-page reads on 2026-09-19; Search Console window cited above; local lint, test, and release gates. |
+| Decision and reason | Repair the three source-backed link claims on the existing guides. next-batch.md remains fresh but below threshold, so this is attack-lane hygiene, not a new SEO batch. |
 
 ## Out of scope, deliberately
 
