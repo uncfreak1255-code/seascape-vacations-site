@@ -81,11 +81,11 @@
         },
         {
           "question": "Is fishing allowed from the private dock?",
-          "answer": "Yes. Casual dock fishing is common. You'll need a valid Florida fishing license - pick one up at Walmart or online at myfwc.com before you arrive."
+          "answer": "No. The Dockside Dreams dock is for boat access, not fishing. For fishing, book a charter out of Cortez or try a public pier, and pick up a valid Florida fishing license online at myfwc.com before you arrive."
         },
         {
           "question": "What water activities are available from the dock?",
-          "answer": "Boating and fishing are the natural uses for the dock. Seascape does not own kayaks, paddleboards, or fishing gear, but several local outfitters near AMI offer rentals and some deliver. The canal itself is calm and works for paddling if you bring or rent equipment."
+          "answer": "The dock is for boat access and launching kayaks or paddleboards. Seascape does not own kayaks, paddleboards, or fishing gear, but several local outfitters near AMI offer rentals and some deliver. The canal itself is calm and works for paddling if you bring or rent equipment."
         },
         {
           "question": "Is Dockside Dreams family-friendly?",
@@ -532,12 +532,12 @@
       "destination": "bradenton",
       "title": "Fishing Vacation Rentals in Bradenton Florida",
       "h1": "Bradenton Vacation Homes for Fishing Trips",
-      "description": "Plan a Bradenton fishing trip around Dockside Dreams, Seascape's canal-side rental with a private dock.",
-      "intro": "Cast a line from the private dock at Dockside Dreams, or use it as a base for Bradenton-area fishing charters.",
+      "description": "Plan a Bradenton fishing trip from Dockside Dreams, Seascape's canal-side rental with a private boat dock, and fish by charter, kayak, or public pier.",
+      "intro": "Use Dockside Dreams as a base for Bradenton-area fishing charters, kayak fishing, and public piers. The private dock is for boat access, not fishing.",
       "faqs": [
         {
-          "question": "What fish can I catch from the dock at Dockside Dreams?",
-          "answer": "Guests fish from the Dockside Dreams dock for common Gulf Coast inshore species. Conditions change by tide and season, so bring the right Florida license and local bait-shop advice."
+          "question": "Can I fish from the dock at Dockside Dreams?",
+          "answer": "No. The dock is for boat access, not fishing. Guests who fish book a charter, fish from a kayak, or use a public pier. Conditions change by tide and season, so bring the right Florida license and local bait-shop advice."
         },
         {
           "question": "Do I need a Florida fishing license?",
@@ -557,13 +557,13 @@
         },
         {
           "question": "Is Bradenton fishing good for beginners and families?",
-          "answer": "Yes. Bradenton has beginner-friendly charter options, piers, preserves, and casual dock fishing at Dockside Dreams."
+          "answer": "Yes. Bradenton has beginner-friendly charter options, public piers, and preserves."
         }
       ],
       "matchingProperties": [
         "dockside-dreams"
       ],
-      "geoIntro": "<p>Bradenton sits near productive Gulf Coast fishing water, and Dockside Dreams gives Seascape guests the cleanest private-dock fit in the current listing set. Use the home for casual dock fishing, boat days, or nearby charters from Cortez Village, Holmes Beach, and the Manatee River area.</p><p>This page is scoped to Dockside Dreams because it is the Seascape property with private dock access.</p><p>Book direct with Seascape Vacations and keep more of the fishing budget for bait, tackle, and charters.</p>",
+      "geoIntro": "<p>Bradenton sits near productive Gulf Coast fishing water, and Dockside Dreams gives Seascape guests the cleanest private-dock fit in the current listing set. Use the home for boat days or nearby charters from Cortez Village, Holmes Beach, and the Manatee River area. The dock is for boat access, not fishing.</p><p>This page is scoped to Dockside Dreams because it is the Seascape property with private dock access.</p><p>Book direct with Seascape Vacations and keep more of the fishing budget for bait, tackle, and charters.</p>",
       "relatedStaySlugs": [
         "golf-vacation-rentals-bradenton",
         "gulf-coast-vacation-homes-with-dock",
@@ -1544,8 +1544,8 @@
           "answer": "Yes. Local rental companies offer boats, kayaks, paddleboards, and jet skis, and some deliver to Dockside Dreams - confirm with the rental company when you book. Seascape doesn't own or provide watercraft at any home."
         },
         {
-          "question": "What can I catch fishing from the dock?",
-          "answer": "The canal and Manatee River system holds snook, redfish, and trout depending on season. Bring a valid Florida saltwater license and check with a local bait shop for current conditions."
+          "question": "Can I fish from the dock?",
+          "answer": "No. The Dockside Dreams dock is for boat access, not fishing. The canal and Manatee River system holds snook, redfish, and trout depending on season, so book a charter or fish from a kayak, bring a valid Florida saltwater license, and check with a local bait shop for current conditions."
         },
         {
           "question": "Are manatees and dolphins visible from the dock?",
@@ -1742,7 +1742,7 @@
         },
         {
           "question": "What's the difference between The Oasis and Dockside Dreams?",
-          "answer": "The Oasis features a resort-style pool, game room, and large fenced yard \u2014 ideal for families with children. Dockside Dreams offers a private boat dock, waterfront location, and canal access \u2014 perfect for boaters and fishing enthusiasts."
+          "answer": "The Oasis features a resort-style pool, game room, and large fenced yard \u2014 ideal for families with children. Dockside Dreams offers a private boat dock, waterfront location, and canal access \u2014 perfect for boaters."
         },
         {
           "question": "How many guests can your 5-bedroom homes accommodate?",
@@ -3238,7 +3238,7 @@
       "title": "Canal Front Vacation Rental with Boat Dock Florida",
       "h1": "Canal Home with a Private Boat Dock",
       "description": "Bring your boat to Dockside Dreams, a canal-front Bradenton vacation rental with a private dock and access toward Tampa Bay and the Gulf.",
-      "intro": "For boaters, Dockside Dreams offers a canal-front private dock for fishing, kayaking, paddleboarding, or docking a properly sized boat.",
+      "intro": "For boaters, Dockside Dreams offers a canal-front private dock for kayaking, paddleboarding, or docking a properly sized boat. The dock is for access, not for fishing.",
       "faqs": [
         {
           "question": "Which Seascape property has canal access and a boat dock?",
@@ -3254,21 +3254,21 @@
         },
         {
           "question": "Is the canal safe for swimming?",
-          "answer": "Pool swimming is recommended over canal swimming. The canal is best enjoyed by boat, kayak, paddleboard, or fishing from the dock."
+          "answer": "Pool swimming is recommended over canal swimming. The canal is best enjoyed by boat, kayak, or paddleboard."
         },
         {
           "question": "Do manatees visit the canal?",
           "answer": "Manatees can be spotted in Bradenton waterways, especially during cooler months, but wildlife sightings are not guaranteed."
         },
         {
-          "question": "What fish can I catch from the canal dock?",
-          "answer": "Guests use the dock for casual inshore fishing. Species vary by tide and season, so check with a local bait shop and bring the right Florida license."
+          "question": "Can I fish from the dock?",
+          "answer": "No. The dock is for access, not fishing. Jet skis and guest use of the boat lift are not allowed either, and one boat is the maximum. Ask us before booking about boat size and trailer fit."
         }
       ],
       "matchingProperties": [
         "dockside-dreams"
       ],
-      "geoIntro": "<p>Dockside Dreams is Seascape Vacations' canal-front private-dock home in Bradenton. The canal connects toward the Manatee River, Tampa Bay, and the Gulf of Mexico, giving guests a water-access base for fishing, kayaking, paddleboarding, and boat days.</p><p>With the dock in the backyard, guests can fish at sunrise, launch a paddleboard when conditions allow, and use the home as a private-pool base near Anna Maria Island beaches. Compare the same dates and complete checkout total across channels.</p>",
+      "geoIntro": "<p>Dockside Dreams is Seascape Vacations' canal-front private-dock home in Bradenton. The canal connects toward the Manatee River, Tampa Bay, and the Gulf of Mexico, giving guests a water-access base for kayaking, paddleboarding, and boat days.</p><p>With the dock in the backyard, guests can launch a paddleboard when conditions allow, and use the home as a private-pool base near Anna Maria Island beaches. Compare the same dates and complete checkout total across channels.</p>",
       "relatedStaySlugs": [
         "fishing-vacation-rentals-bradenton",
         "golf-vacation-rentals-bradenton",
