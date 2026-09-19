@@ -82,3 +82,31 @@ Related-links label "Holmes Beach Rentals with Heated Pools" pointed at the Flor
 
 - npm run lint:content, npm test, npm run verify:release
 - npm run test:visual: `things-to-do-bradenton-fl` is not in visual.spec.js; `shelling-florida` is, but this PR does not edit that file
+
+## Gate 0 Search And Attack Receipt
+
+| Field | Required answer |
+| --- | --- |
+| Target query family | none; no query is being targeted |
+| Searcher intent | n/a |
+| Current Seascape URL | `/guides/bradenton-vs-sarasota/`, `/guides/anna-maria-island-vs-siesta-key/`, `/guides/where-to-stay-near-anna-maria-island/`, `/guides/holmes-beach-area-guide/`, `/guides/things-to-do-bradenton-fl/` |
+| SERP observed date | 2026-09-18 |
+| SERP stale after | 2026-10-18 |
+| Current proof | `src/_data/properties.js` (six homes, zero on Anna Maria Island, Dockside Dreams is the canal-front waterfront home); destination title/meta on each linked stays page |
+| Top visible competitors | n/a for a truth correction |
+| Competitor angle | n/a |
+| Visual/format gap | none; sentence-level copy only. Existing visual baselines for two of the five pages were regenerated. |
+| Seascape gap | leftover on-island / Holmes Beach / "steps from the action" promises after PR #576, #598, and #599 |
+| Search fit | no new page, no new keyword; title/meta unchanged |
+| Local/GBP proof | Not a GBP or local-pack action. Organic guide pages; property-fact correction. |
+| AEO/readback note | corrected sentences remain quotable and no longer contradict inventory |
+| Recommendation | ship the five sentence corrections |
+| Attack status | `none found after named checks` |
+| Query variants inspected | none; no query lane involved |
+| SERP source | n/a |
+| Competitor URLs inspected | None were inspected, because a property-fact correction has no competitor lane. The three named checks resolve as follows: the current source check is the governing evidence (`src/_data/properties.js` and each destination page title/meta); a DataForSEO SERP check was deliberately not run because no query is being targeted; and a competitor-page check was deliberately not run for the same reason. |
+| Content gap and Seascape answer | keep the same hrefs; rewrite the referring sentence so it matches mainland / canal-front / near-AMI inventory |
+| Design/format strategy | unchanged |
+| Seascape proof available | yes, from properties.js and destination meta |
+| Tools/plugins used | TypeSafe Jev 1.13.0 link-claim harness |
+| Decision and reason | ship: five leftover sentences still contradict inventory after the earlier PRs |
