@@ -25,7 +25,7 @@ actually owns.
 
 - what changed in the data: a full-site link-claim scan (405 claims, 58 destinations) found the PR #576 defect class on pages outside that PR
 - why this cluster wins now: these three carry live Search Console traffic (19, 2, and 1 clicks; 1,514 impressions combined), so the copy is being read
-- what should explicitly wait: the zero-click pages carrying the same defect are a retirement decision with redirects, not a copy fix
+- what should explicitly wait: nine further flagged claims, led by /guides/shelling-guide-florida/ (30 clicks, 2,048 impressions), go in a second repair PR
 
 ## Not In Scope
 
@@ -42,10 +42,15 @@ instances someone happened to read.
 
 A scan of every internal link on the built site (405 claims across 58
 destinations, `tools/link-claim-check`) found the same defect class elsewhere.
-Joined against Search Console for 2026-08-18 to 2026-09-14, the flagged pages
-split cleanly: most carry zero clicks and are handled separately as a retirement,
-while three flagged claims sit on pages that actually earn traffic and are
-repaired here.
+Joined against Search Console for 2026-08-18 to 2026-09-14, three flagged claims
+sit on pages that earn traffic and are repaired here.
+
+A retirement PR was considered for the zero-click pages and then dropped. That
+case rested on flag concentration (one page showed four, two showed three), and
+correcting a fault in the scanner's own extraction removed most of those: it had
+been judging related-links markup as editorial copy. After the fix no page
+carries more than two flags, which is a copy fix, not grounds for deleting a
+page. No page is retired.
 
 Scope note: this brief repairs copy only. No page is retired, no route changes,
 no redirects.
@@ -94,17 +99,20 @@ the island.
   stays". It scored 0.62, above the review cut, so it is not touched here. It is
   worth a human read later; a mainland home is not an "island-first stay" in the
   strictest reading.
-- The zero-traffic pages carrying the same defect class are a retirement
-  decision, not a copy fix, and belong in their own PR alongside the 301s.
+- Retiring any page. The retirement shortlist was withdrawn once the scanner
+  stopped counting navigation markup as claims; see Problem above.
 
 ## Verification
 
 - `npm run lint:content`, `npm test`, `npm run verify:release` before review.
 - Re-run `tools/link-claim-check` against the rebuilt `_site` and confirm all
   three claims move above the review cut, without pushing another claim below it.
-- `npm run test:visual` must be run outside the sandbox. These are copy-only
-  changes inside guide bodies, so guide snapshots are expected to change and the
-  baselines need regenerating by whoever runs the visual suite.
+- `npm run test:visual`: run, 323 passed, 23 skipped, 0 failed (7m). No
+  baselines need regenerating. `tests/visual/visual.spec.js` baselines cover four
+  guides (bradenton-vs-sarasota, ami-vs-siesta-key, siesta-vs-ami-families,
+  shelling-florida) and none of the three pages changed here. An earlier note in
+  this brief predicted snapshot churn from the general rule rather than from
+  which pages are actually baselined; that prediction was wrong.
 
 ## Why this is not yet a gate
 
