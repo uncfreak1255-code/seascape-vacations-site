@@ -6,10 +6,10 @@
 - primary keyword: anna maria island vacation rentals
 - secondary keywords: dolphins manatees bradenton, how to get to anna maria island, best vacation rental companies ami, book direct anna maria island
 - audience pattern: trip-planning guide readers who follow an in-guide link expecting the destination to match what the sentence promised
-- proof source: `src/_data/properties.js` (six homes; exactly two carry docks: Dockside Dreams, River House) and each destination page's own title and meta description
+- proof source: `src/_data/properties-fallback.json` (six homes; only Dockside Dreams carries a dock). River House is near the Warner Bayou boat ramp and does not have a private waterfront dock. Destination pages keep their own title and meta description.
 - required internal links: /properties/, /stays/book-direct-anna-maria-island/, /guides/booking-direct-vacation-rentals/
 - CTA target: /properties/ on the dolphins guide; /stays/book-direct-anna-maria-island/ on the other two
-- anti-claims: do not say "many of our rentals" have docks when two of six do; do not promise homes "on" Anna Maria Island; do not label a checkout-total comparison page as a listing of homes
+- anti-claims: do not say "many of our rentals" have docks when one of six does; do not give River House a dock, waterfront, canal-front, or Manatee River address; do not promise homes "on" Anna Maria Island; do not label a checkout-total comparison page as a listing of homes
 
 ## Required Internal Link Map
 
@@ -26,7 +26,7 @@ actually owns.
 - src/guides/dolphins-manatees-bradenton.html
 - src/guides/best-vacation-rental-companies-ami.html
 - src/guides/how-to-get-to-anna-maria-island.html
-- Name the two dock homes and retitle the `/properties/` button; retitle the book-direct card as a checkout-total comparison; change "on AMI" to "near AMI" on the travel guide. No metadata, route, or layout change.
+- Name the one dock home (Dockside Dreams) and retitle the `/properties/` button; retitle the book-direct card as a checkout-total comparison; change "on AMI" to "near AMI" on the travel guide. No metadata, route, or layout change. Follow-up: #598 named River House as a second dock home; that is false and is corrected here.
 
 ## Why This Batch
 
@@ -69,9 +69,10 @@ no redirects.
 The site's best-earning guide. Two problems in one CTA block:
 
 - "**Many of our** vacation rentals feature private docks and waterfront access"
-  — `src/_data/properties.js` has six homes and exactly **two** have docks:
-  Dockside Dreams (saltwater canal) and River House (Manatee River). "Many" is
-  not supportable at 2 of 6.
+  — six homes, **one** dock: Dockside Dreams on a saltwater canal. River House
+  is near the Warner Bayou boat ramp and does not have a private waterfront
+  dock (`properties-fallback.json`). "Many" is not supportable, and naming
+  River House as a dock home is false.
 - The button read "View Waterfront **Rentals**" but points at `/properties/`,
   the unfiltered index of all six homes. There is no waterfront-filtered view to
   send anyone to.
@@ -79,8 +80,9 @@ The site's best-earning guide. Two problems in one CTA block:
 A second instance of the same overclaim in the manatee-locations list
 ("Many of our canal-front and bayfront properties") is corrected the same way.
 
-**Fix:** name the two dock homes and what they sit on; retitle the button to
-describe where it actually goes.
+**Fix:** name Dockside Dreams as the dock home; do not credit River House with
+a dock or a waterfront address; retitle the button to describe where it
+actually goes. #598 shipped the two-home dock wording; this follow-up removes it.
 
 ### 2. `/guides/best-vacation-rental-companies-ami/` — 2 clicks, 473 impressions
 
@@ -113,18 +115,18 @@ the island.
 | Top visible competitors | Go2Dolphins; Visit Anna Maria Island; AnnaMariaIsland.com; SeaBreeze Vacation; Anna Maria Life Vacation Rentals; Beach Boutique Rentals. Public search sample on 2026-09-19, not a location-controlled rank report. |
 | Competitor angle | Tour inventory and official visitor logistics, plus on-island managers selling book-direct homes and fee savings. |
 | Visual/format gap | None required; keep existing CTA, card, and related-link markup. Competitors use tour booking widgets and property grids. This batch does not match those formats. |
-| Seascape gap | Three in-guide stay claims overstate inventory: "many" docks at 2 of 6 homes, a "homes" card that opens a checkout-total comparison, and "on AMI" for a destination that says near Anna Maria Island. |
+| Seascape gap | Three in-guide stay claims overstate inventory: "many" docks when only Dockside Dreams has one, a "homes" card that opens a checkout-total comparison, and "on AMI" for a destination that says near Anna Maria Island. #598 then named River House as a second dock home; that is also false. |
 | Search fit | Keep the three existing trafficked guides. Correct the stay-link wording so the destination's own title matches the sentence. Conversion stays on /properties/ and /stays/book-direct-anna-maria-island/. Do not open a new page. |
 | Local/GBP proof | Not applicable: organic guide copy correction, no local-pack or GBP claim. |
 | AEO/readback note | No AI citation claim. Verify the three repaired sentences in built HTML. Leave first-paragraph answers and FAQ blocks unchanged. |
-| Recommendation | improve the three existing guides only: name the two dock homes, retitle the comparison card, and say near AMI. No snippet rewrite, no expansion. |
+| Recommendation | keep the three existing guides: name Dockside Dreams as the only dock home, retitle the comparison card, and say near AMI. No snippet rewrite, no expansion. |
 | Attack status | completed |
 | Query variants inspected | where to see dolphins and manatees near Bradenton; best vacation rental companies Anna Maria Island; how to get to Anna Maria Island; book direct Anna Maria Island vacation rentals |
 | SERP source | Public web search on 2026-09-19 plus destination-page and properties.js readback; not a location-controlled rank report. |
 | Competitor URLs inspected | https://go2dolphins.com/dolphin-tours/ ; https://www.visitannamariaisland.com/post/how-do-i-get-to-anna-maria-island ; https://annamariaisland.com/planning-your-trip/planning-your-trip/getting-here ; https://www.seabreezevacation.com/ ; https://www.annamarialifevacationrentals.com/ ; https://www.beachboutiquerentals.com/ ; https://www.annamaria.com/news-and-blog/why-book-direct-anna-maria-vacations/ |
-| Content gap and Seascape answer | Competitors sell on-island inventory or official travel facts. Seascape's gap is honesty on its own six-home set: two dock homes, a comparison page rather than a listing, and near-island not on-island. |
+| Content gap and Seascape answer | Competitors sell on-island inventory or official travel facts. Seascape's gap is honesty on its own six-home set: one dock home (Dockside Dreams), a comparison page rather than a listing, and near-island not on-island. |
 | Design/format strategy | Text-only correction inside existing CTA, card, and related-link markup. No new visual pattern. |
-| Seascape proof available | src/_data/properties.js and properties-fallback.json: docks on Dockside Dreams and River House only. Destination title for /stays/book-direct-anna-maria-island/ is Compare the same dates and complete checkout total across channels; its description says near Anna Maria Island. |
+| Seascape proof available | properties-fallback.json: Dockside Dreams has amenity `dock`; River House note is "Near the Warner Bayou boat ramp; this home does not have a private waterfront dock." Destination title for /stays/book-direct-anna-maria-island/ is Compare the same dates and complete checkout total across channels; its description says near Anna Maria Island. |
 | Tools/plugins used | tools/link-claim-check; properties.js source inspection; public web search and competitor-page reads on 2026-09-19; Search Console window cited above; local lint, test, and release gates. |
 | Decision and reason | Repair the three source-backed link claims on the existing guides. next-batch.md remains fresh but below threshold, so this is attack-lane hygiene, not a new SEO batch. |
 

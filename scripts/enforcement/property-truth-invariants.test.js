@@ -181,6 +181,21 @@ test("Bradenton guides keep River House and dock access claims scoped to the rig
   assert.doesNotMatch(areaGuide, /Many of our waterfront vacation rentals offer dolphin and manatee sightings right from the backyard dock/i);
 });
 
+test("dolphins guide does not give River House a dock", () => {
+  const html = readSource("src/guides/dolphins-manatees-bradenton.html");
+
+  assert.match(html, /Dockside Dreams has a private dock on a saltwater canal/i);
+  assert.match(html, /One of our six homes sits on the water with a private dock/i);
+  assert.doesNotMatch(html, /Our two dock homes, Dockside Dreams and River House/i);
+  assert.doesNotMatch(html, /Two of our six homes sit on the water with private docks/i);
+  assert.doesNotMatch(html, /River House on the Manatee River/i);
+  assert.doesNotMatch(
+    html,
+    /River House[^.]{0,200}\b(private dock|dock homes|on the water with private docks)\b/i,
+    "River House must not be described as a dock or waterfront home on the dolphins guide"
+  );
+});
+
 test("putting green is not described as mini-golf across durable marketing surfaces", () => {
   const surfaces = [
     "src/_data/properties-fallback.json",
