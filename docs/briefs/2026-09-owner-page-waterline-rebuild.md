@@ -1,8 +1,8 @@
 # Brief: Owner Page Waterline Rebuild
 
-Status: draft for Sawyer's direction approval (2026-09-17). Implementation waits
-for the three open inputs at the bottom and for `seascape-hub/context/owner-offer.md`
-to be approved.
+Status: in implementation (2026-09-17). Sawyer answered the open inputs with
+facts on 2026-09-17 and left the calls to the agent; the decisions are recorded
+at the bottom. `seascape-hub/context/owner-offer.md` is the offer source.
 
 ## Content Gate Inputs
 
@@ -11,10 +11,10 @@ to be approved.
 - secondary keywords: Bradenton vacation rental management, Sarasota vacation rental management, Anna Maria Island vacation rental management, switch vacation rental property manager
 - audience pattern: the reader wants to see a real operator and real homes, understand the service and the fee basis, and get one clear next step; they do not want fee vocabulary.
 - proof source: `seascape-hub/context/owner-offer.md` (sections 2, 3, 4, 7); `src/_data/properties-fallback.json` for the homes and photographs; `src/about-us/index.njk` for the team; `docs/runbooks/owner-lead-confirmation-email.md` for what happens after the form.
-- offer claim: `seascape-hub/context/owner-offer.md` section 6 (the one sentence), landed through section 4 rows 1 to 4.
+- offer claim: `seascape-hub/context/owner-offer.md` section 6 (the one sentence), landed through section 4 rows 1 to 4, plus section 2 ("Sets and adjusts the nightly rate per home") for the demand-pricing row and section 5 (what Seascape refuses) for the line that says we turn homes down.
 - required internal links: /properties/, /about-us/, /research/owner-fee-revenue-leak-benchmark-2026/, /property-management/vacation-rental-management-fees-florida/, /property-management/switch-vacation-rental-management-company/, /property-management/maximize-vacation-rental-income-florida/
 - CTA target: #owner-cta
-- anti-claims: no revenue or occupancy figure, no direct-booking savings, no response-time or review-count number, no universal fee or minimum, no guarantee, no passive income, no hands-off management, no "Reply guaranteed", no AI as a lead claim, no comparison of platform commission and card processing as all-in equivalents.
+- anti-claims: no revenue or occupancy figure, no direct-booking savings, no response-time or review-count number, no universal fee or minimum, no guarantee, no passive income, no hands-off management, no "Reply guaranteed", no AI as a lead claim, no comparison of platform commission and card processing as all-in equivalents, and no naming of the operating stack (PMS or pricing vendor) anywhere in owner-facing copy.
 
 ## Why This Batch
 
@@ -79,8 +79,74 @@ Removed from the live page: the Vol. III / Issue 04 masthead and every page coun
 - tone risks: sliding back into fee vocabulary; "full service" flattening; detached "the owner" phrasing
 - generic or mechanical patterns to kill: stamps, badges, chips, magazine counters, any "guaranteed"
 
-## Open inputs from Sawyer before implementation
+## Gate 0 Search And Attack Receipt
 
-1. What an owner receives each month and when.
-2. One current owner willing to be quoted by name, with permission.
-3. The current citable home count, and the listing-transfer specifics for the switching section.
+This block satisfies the release gate for search-driven source edits. The task
+is an owner-offer and design rebuild of an existing indexed route; its URL,
+canonical, title and JSON-LD types are unchanged, and no ranking claim is made.
+
+| Field | Required answer |
+| --- | --- |
+| Target query family | Vacation rental property management in Bradenton and Sarasota |
+| Searcher intent | An owner comparing managers wants to know what the manager does, who they would talk to, and how pricing is set. |
+| Current Seascape URL | https://seascape-vacations.com/property-management/ |
+| SERP observed date | 2026-09-17 |
+| SERP stale after | 2026-10-17 |
+| Current proof | On 2026-09-17 the live page still led with Airbnb and Stripe fee definitions; the Netlify form has produced zero owner submits (brief hypothesis); the offer text in seascape-hub/context/owner-offer.md was never used on the site. |
+| Top visible competitors | iTrip Sarasota-Bradenton (https://www.itrip.net/property-management/sarasota-bradenton), Gulf Coast Property Management (https://www.choosegulfcoast.com/vacation-rentals-management), Anchor Down (https://anchordownmanagement.com/vacation-rental-property-management/), Stringer Management (https://stringermanagement.com/bradenton-vacation-rental-management), Jennette Properties (https://jennetteproperties.com/). |
+| Competitor angle | Stats and review badges first (iTrip, SkyRun), a free income analysis with fees in the FAQ (Anchor Down), a named local team with direct phone numbers (Island Real Estate). None lead with third-party fee tables. |
+| Visual/format gap | The live page is a magazine layout with counters, a ticker and a stamp; competitors use a plain hero with a form or phone beside it. The rebuild uses the Waterline shell with the form beside the hero. |
+| Seascape gap | The page never stated what Seascape does, who answers, or which homes it manages; it borrowed other companies' numbers above the fold. |
+| Search fit | Keep the route, canonical, title, description keyword and JSON-LD types; move fee vocabulary to the fee guide where it already ranks; state the offer on the hub page. |
+| Local/GBP proof | Not applicable because the page changes no business profile facts; the phone number and towns match the Organization schema and the Google Business Profile. |
+| AEO/readback note | No AI-discovery improvement is claimed; the readback is owner_form_submit over 30 days per the experiment contract above. |
+| Recommendation | Ship the offer-led page, then read owner_form_submit and owner_primary_cta_click after 30 days. |
+| Attack status | none found after named checks |
+| Query variants inspected | vacation rental property management Bradenton Sarasota; Bradenton vacation rental management; Sarasota vacation rental management |
+| SERP source | Public web search for the named query on 2026-09-17; the first ten results were iTrip, Gulf Coast Property Management (2), Anchor Down (3), Gulf Coast Vacation Rental, Stringer, Jennette and iTrip's booking site. Seascape was not in the first ten. |
+| Competitor URLs inspected | Source check: src/property-management/index.njk and seascape-hub/context/owner-offer.md on 2026-09-17. SERP check: the named query on 2026-09-17. Competitor-page check on 2026-09-16 and 2026-09-17: https://anchordownmanagement.com/vacation-rental-property-management/, https://skyrun.com/anna-maria-island/management/, https://www.islandreal.com/about-us/property-management-services, https://stringermanagement.com/bradenton-vacation-rental-management, https://www.itrip.net/property-management/sarasota-bradenton, plus Vacasa, Evolve, AvantStay, Awning and Casago owner pages (notes in the design-sync research file). No competitor lists a small named collection of homes with photographs or names the people who answer the phone with a fee basis in writing. |
+| Content gap and Seascape answer | Competitors lead with revenue stats and badges Seascape cannot prove; Seascape answers with the named team, the six real homes, the concrete 48-hour review deliverable and property-specific pricing in writing. |
+| Design/format strategy | Waterline shell and tokens, form beside the hero, real photography only, no counters, stamps or badges. |
+| Seascape proof available | Unit, content, release, design-lint, link and JSON-LD gates; Playwright floors F1 to F3 and the form-steps spec on the route; rendered desktop and mobile screenshots. |
+| Tools/plugins used | Repository source, Eleventy build, Node tests, Playwright, public web search, GitHub CI, Netlify deploy preview. |
+| Decision and reason | Rebuild the page around the offer because the fee-vocabulary page produced zero owner submits and the positioning in the hub was never used; no competitor angle is copied. |
+
+## Decisions recorded 2026-09-17
+
+**Vendor names are not owner-facing copy (Sawyer, 2026-09-17).** Owner copy
+describes the capability and never names the software. Sawyer's reason: owners
+have booked calls to extract the toolchain and then self-manage, so naming the
+PMS or the pricing vendor hands a tire-kicker the shopping list. Applied here as
+`OWNER_VENDOR_DISCLOSURE_PATTERNS` in `scripts/enforcement/content-voice.test.js`,
+scoped to owner routes and the `seoPages.json` owner entries, so guest-side
+functional mentions (checkout, the booking widget, CDN hosts) are untouched.
+Adding the guard surfaced eight live strings in `src/_data/seoPages.json` that
+named the PMS on owner landers; all eight are rewritten in this PR. The banned
+performance claims that sat inside those same strings (a 15-30% revenue
+improvement, a 30-50% occupancy lift, an 8-15% nightly-rate lift, "hands-off
+management") are removed with them. The remaining legacy performance claims on
+other owner landers are tracked as a separate remediation, not silently kept.
+
+
+Sawyer's facts (chat, 2026-09-17): monthly statements are needed only for the
+externally owned homes (Blue House, Bradenton Pool Home, and the signed MJNS7
+home), Hostaway already exports owner statements, Blue House and the MJNS7 home
+have had no guest stay yet, and the MJNS7 home is not listed. He did not want to
+make the five calls himself, so the agent made them:
+
+1. **Monthly statement.** Copy stays generic: a monthly statement of what the
+   home earned and what was spent, with the payout; no cadence day, no format.
+2. **Owner quote.** None yet. No permission is recorded in `people/`, and the
+   only externally owned home with guest history is Bradenton Pool Home. The
+   section is cut, not faked. Reopen when Manny or Grettel agree to be quoted.
+3. **Home count.** Six, the homes listed on this site and in Hostaway, Blue
+   House included. The signed MJNS7 home is not listed and is not counted.
+   **Switching section.** Cut. The transfer specifics were not confirmed, and the
+   brief says cut, not soften.
+4. **Fee range.** Not public. Pricing stays "a share of net rent, quoted after
+   the review, in writing" (Patrick's lane).
+5. **The sentence.** Kept as written in `owner-offer.md` section 6.
+
+Direction: the Claude Design mock with the council fixes, treated as approved;
+Sawyer's pick point is the rendered PR preview, per his "show me, do not ask me
+to describe it" rule.

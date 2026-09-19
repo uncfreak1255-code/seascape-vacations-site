@@ -25,6 +25,8 @@
   {{ headExtra | safe }}
   <link rel="stylesheet" href="/css/guest.css?v=waterline-v3">
   {% if guestHome %}<link rel="stylesheet" href="/css/arrival.css?v=waterline-v3">{% endif %}
+  {# Page sheets load after guest.css so their equal-specificity rules win the cascade. #}
+  {% if pageStylesheet %}<link rel="stylesheet" href="{{ pageStylesheet }}">{% endif %}
 </head>
 <body class="guest-site{% if guestHome %} g-homepage{% endif %}" data-guest-version="waterline-v3">
   <a class="g-skip" href="#main">Skip to content</a>

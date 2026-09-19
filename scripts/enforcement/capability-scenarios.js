@@ -300,17 +300,21 @@ const SCENARIOS = [
       "Owner routes avoid the old generic explainer surface."
     ],
     checks: [
-      check("owner hub includes proof-first form surface", () => {
+      check("owner hub includes the offer and the review form surface", () => {
         const html = readBuiltHtml("/property-management/");
-        assertIncludes(html, "Before you renew,");
-        assertIncludes(html, "actually keep?");
-        assertIncludes(html, "15.5%");
-        assertIncludes(html, "2.9% + 30¢");
-        assertIncludes(html, "Property-specific");
+        assertIncludes(html, "Six homes. One local team.");
+        assertIncludes(html, "What we do for your home");
+        assertIncludes(html, "The homes we manage");
         assertExcludes(html, "$119,923");
         assertExcludes(html, "13.4%");
-        assertIncludes(html, "Request Your Revenue Review");
+        assertExcludes(html, "Reply guaranteed");
+        assertIncludes(html, "Request your 48-hour revenue review");
         assertIncludes(html, 'data-track-event="owner_primary_cta_click"');
+        assertIncludes(html, 'data-placement="review-section"');
+        assertIncludes(html, 'data-placement="sticky"');
+        const headerCta = html.match(/<a\b[^>]*class="g-button btn-brand"[^>]*>/);
+        if (!headerCta) throw new Error("owner hub header CTA missing");
+        assertExcludes(headerCta[0], "data-trip-link");
         assertIncludes(html, 'data-form-submit-event="owner_form_submit"');
         assertIncludes(html, 'data-netlify="true"');
         assertExcludes(html, "What Is Vacation Rental Property Management?");
