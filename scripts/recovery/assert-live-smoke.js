@@ -209,7 +209,7 @@ function validateTargetResponse(target, response) {
       && response.body.includes("Why a six-home operator")
       && response.body.includes("The homes we manage")
       && response.body.includes("Request your 48-hour revenue review")
-      && response.body.includes('name="owner-revenue-teardown"')
+      && /name=["']owner-revenue-teardown["']/.test(response.body)
       && response.body.includes('href="#owner-cta"');
 
     if (!hasOwnerOfferSurface) {
