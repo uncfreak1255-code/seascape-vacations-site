@@ -48,6 +48,50 @@ test("property-management smoke follows the current Waterline owner offer hub", 
   });
 });
 
+test("property-management smoke accepts the live minified single-quoted form name", () => {
+  const smoke = loadSmokeModule();
+  const target = smoke.targets.find((entry) => entry.path === "/property-management/");
+  const minifiedOwnerHubBody = `
+    <main>
+      <h1>Six homes. One local team. <em>Your call gets answered.</em></h1>
+      <a href="#owner-cta">Request your 48-hour revenue review</a>
+      <form name='owner-revenue-teardown' method='POST'></form>
+      <h2>What we do for your home</h2>
+      <h2>Why a six-home operator</h2>
+      <h2>The homes we manage</h2>
+    </main>
+  `;
+
+  assert.doesNotThrow(() => {
+    smoke.validateTargetResponse(target, {
+      statusCode: 200,
+      location: null,
+      body: minifiedOwnerHubBody
+    });
+  });
+});
+
+test("property-management smoke fails when the owner form name is missing", () => {
+  const smoke = loadSmokeModule();
+  const target = smoke.targets.find((entry) => entry.path === "/property-management/");
+
+  assert.throws(() => {
+    smoke.validateTargetResponse(target, {
+      statusCode: 200,
+      location: null,
+      body: `
+        <main>
+          <h1>Six homes. One local team. <em>Your call gets answered.</em></h1>
+          <a href="#owner-cta">Request your 48-hour revenue review</a>
+          <h2>What we do for your home</h2>
+          <h2>Why a six-home operator</h2>
+          <h2>The homes we manage</h2>
+        </main>
+      `
+    });
+  }, /property-management hub is missing the Waterline owner offer surface/);
+});
+
 test("property-management smoke rejects the retired explainer-hub surface", () => {
   const smoke = loadSmokeModule();
   const target = smoke.targets.find((entry) => entry.path === "/property-management/");
