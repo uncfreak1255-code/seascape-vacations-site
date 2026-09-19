@@ -362,32 +362,44 @@ function extractJsonLdObjects(html) {
     });
 }
 
-test("guide CTAs keep dock and waterfront claims singular and off the island", () => {
-  const whereToStay = readSource("src/guides/where-to-stay-near-anna-maria-island/index.html");
-  const thingsToDo = readSource("src/guides/things-to-do-bradenton-fl.html");
-  const holmesVsBradenton = readSource("src/guides/holmes-beach-vs-bradenton-beach.html");
-  const amiVsLongboat = readSource("src/guides/anna-maria-island-vs-longboat-key.html");
+const DOCK_FISHING_CLAIM =
+  /\b(?:fish(?:ing)?\s+(?:from|off)\s+the\s+(?:canal\s+|private\s+)?dock\b(?!s)(?!\s+(?:is|are)\s+not\b)|dock\s+fishing|guests\s+fish\s+from|use\s+the\s+dock\s+for\s+[^.]{0,20}fishing|dock\s+for\s+fishing|fishing[^.<"]{0,40}\bwith\s+dock\s+access|fish\s+at\s+sunrise)/i;
 
-  assert.doesNotMatch(whereToStay, /We manage properties both on the island/i, "no Seascape home sits on the island");
-  assert.doesNotMatch(whereToStay, /Waterfront homes on AMI/i);
-  assert.doesNotMatch(whereToStay, /bigger properties with pools and docks/i);
-  assert.doesNotMatch(thingsToDo, /waterfront views, private pools, and docks/i);
-  assert.doesNotMatch(thingsToDo, /Some homes include docks or waterfront access/i);
-  assert.doesNotMatch(holmesVsBradenton, /Waterfront homes with pools, docks/i);
+function stripAnswersThatDenyDockFishing(text) {
+  return text.replace(/(?:question":\s*")?(?:Is fishing allowed from|Can I fish from) the (?:private )?dock[^"]*"/gi, " ");
+}
 
-  for (const [name, html] of [["where-to-stay", whereToStay], ["ami-vs-longboat", amiVsLongboat]]) {
-    assert.doesNotMatch(html, /\b\d+-foot dock\b/i, `${name}: dock length is not in any property source`);
+test("no page markets fishing from the Dockside Dreams dock", () => {
+  const surfaces = [["seoPages.json", stripAnswersThatDenyDockFishing(JSON.stringify(seoPages))]];
+  for (const file of fs.readdirSync(path.join(projectRoot, "src/guides"), { recursive: true })) {
+    if (!/\.(html|njk)$/.test(file)) continue;
+    surfaces.push([`src/guides/${file}`, readSource(`src/guides/${file}`)]);
   }
+  for (const [name, text] of surfaces) {
+    const match = text.match(DOCK_FISHING_CLAIM);
+    assert.equal(match, null, `${name} markets dock fishing ("${match && match[0]}"); the dock is for access, not fishing`);
+  }
+  const dockPage = allSeoPages().find((page) => page.slug === "canal-homes-with-boat-dock");
+  assert.match(cleanText(dockPage), /not for fishing|for access, not fishing/i);
 });
 
-test("Dockside Dreams dock is never marketed for fishing", () => {
-  const dockPage = allSeoPages().find((page) => page.slug === "canal-homes-with-boat-dock");
-  assert.ok(dockPage, "canal-homes-with-boat-dock page must exist");
-  const text = cleanText(dockPage);
+const DOCK_PAGES_FIXED_IN_THIS_BATCH = [
+  "src/guides/where-to-stay-near-anna-maria-island/index.html",
+  "src/guides/things-to-do-bradenton-fl.html",
+  "src/guides/holmes-beach-vs-bradenton-beach.html",
+  "src/guides/anna-maria-island-vs-longboat-key.html",
+];
 
-  assert.doesNotMatch(text, /dock for fishing/i);
-  assert.doesNotMatch(text, /fishing from the dock/i);
-  assert.doesNotMatch(text, /use the dock for casual inshore fishing/i);
-  assert.doesNotMatch(text, /guests can fish at sunrise/i);
-  assert.match(text, /not for fishing|no fishing from the dock/i);
+test("repaired guides keep water claims singular, sourced, and off the island", () => {
+  const pluralWater =
+    /\b(?:pools?,\s*docks|with\s+(?:private\s+)?pools\s+and\s+docks|some\s+homes\s+include\s+docks|waterfront\s+(?:homes|rentals|properties|vacation\s+rentals)|(?:rentals|homes|properties)\s+with\s+(?:waterfront|dock)\s+access|waterfront\s+access\s+for\s+less)\b/i;
+  const onIsland = /\b(?:properties\s+both\s+on\s+the\s+island|(?:our|waterfront)\s+homes?\s+on\s+AMI|island\s+and\s+near-island\s+stays)\b/i;
+  const unsourced = /\b(?:\d+-foot\s+dock|\d+%\s+of\s+our\s+(?:returning\s+)?guests|most\s+of\s+our\s+returning\s+guests)\b/i;
+  for (const file of DOCK_PAGES_FIXED_IN_THIS_BATCH) {
+    const text = readSource(file).replace(/<a\b[^>]*>|<\/a>/g, "");
+    for (const [label, pattern] of [["plural dock/waterfront", pluralWater], ["on-island", onIsland], ["unsourced", unsourced]]) {
+      const match = text.match(pattern);
+      assert.equal(match, null, `${file}: ${label} claim "${match && match[0]}"`);
+    }
+  }
 });
