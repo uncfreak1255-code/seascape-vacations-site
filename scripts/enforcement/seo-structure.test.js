@@ -353,14 +353,31 @@ test("retired duplicate guides are excluded and redirect to canonical guide path
     false,
     "Expected the retired duplicate comparison source route to be removed entirely"
   );
+  assert.equal(
+    fs.existsSync(
+      path.join(projectRoot, "src", "guides", "2026-bradenton-vacation-rental-market-analysis.html")
+    ),
+    false,
+    "Expected the fabricated Bradenton market analysis source to be removed entirely"
+  );
 
   for (const redirectRule of [
     "/guides/anna-maria-island-vacation-cost-guide-2026/  /guides/anna-maria-island-vacation-cost/  301",
     "/guides/best-time-to-visit-anna-maria-island/  /guides/best-time-visit-anna-maria-island/  301",
-    "/guides/bradenton-vs-sarasota-vacation-rental-comparison/  /guides/bradenton-vs-sarasota/  301"
+    "/guides/bradenton-vs-sarasota-vacation-rental-comparison/  /guides/bradenton-vs-sarasota/  301",
+    "/guides/2026-bradenton-vacation-rental-market-analysis.html  /property-management/vacation-rental-management-bradenton/  301",
+    "/guides/2026-bradenton-vacation-rental-market-analysis  /property-management/vacation-rental-management-bradenton/  301",
+    "/guides/2026-bradenton-vacation-rental-market-analysis/  /property-management/vacation-rental-management-bradenton/  301"
   ]) {
-    assert.equal(redirects.includes(redirectRule), true);
+    assert.equal(redirects.includes(redirectRule), true, `Expected redirects to include ${redirectRule}`);
   }
+
+  assert.ok(
+    redirects.indexOf(
+      "/guides/2026-bradenton-vacation-rental-market-analysis  /property-management/vacation-rental-management-bradenton/  301"
+    ) < redirects.indexOf("/guides/:slug  /guides/:slug/  301"),
+    "Expected retired market-analysis slashless redirect to come before the broad slashless guide redirect"
+  );
 
   for (const ignoredGuideDir of [
     'src/guides/anna-maria-island-vacation-cost-guide-2026/**',
@@ -390,13 +407,15 @@ test("live sources no longer promote retired duplicate guide paths", () => {
     path.join(projectRoot, "src", "guides", "bradenton-vs-sarasota-beaches", "index.html"),
     path.join(projectRoot, "src", "guides", "bradenton-vs-sarasota-for-families", "index.html"),
     path.join(projectRoot, "src", "guides", "bradenton-vs-sarasota-restaurants", "index.html"),
-    path.join(projectRoot, "src", "guides", "bradenton-vs-sarasota-retirement", "index.html")
+    path.join(projectRoot, "src", "guides", "bradenton-vs-sarasota-retirement", "index.html"),
+    path.join(projectRoot, "src", "guides", "things-to-do-bradenton-fl.html")
   ];
 
   const staleGuidePaths = [
     "/guides/anna-maria-island-vacation-cost-guide-2026/",
     "/guides/best-time-to-visit-anna-maria-island/",
-    "/guides/bradenton-vs-sarasota-vacation-rental-comparison/"
+    "/guides/bradenton-vs-sarasota-vacation-rental-comparison/",
+    "/guides/2026-bradenton-vacation-rental-market-analysis/"
   ];
 
   for (const sourceFile of sourceFiles) {
@@ -409,6 +428,16 @@ test("live sources no longer promote retired duplicate guide paths", () => {
       );
     }
   }
+
+  const thingsToDo = fs.readFileSync(
+    path.join(projectRoot, "src", "guides", "things-to-do-bradenton-fl.html"),
+    "utf8"
+  );
+  assert.equal(
+    /compare live bradenton/i.test(thingsToDo),
+    false,
+    "things-to-do-bradenton-fl.html should not promise live Bradenton pricing after the market-analysis retirement"
+  );
 });
 
 test("priority guides ship complete metadata instead of truncated titles or broken descriptions", () => {
