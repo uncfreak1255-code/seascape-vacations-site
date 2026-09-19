@@ -58,3 +58,7 @@
 | Seascape proof available | yes; first-hand beach access notes and the county rule citation already on the page |
 | Tools/plugins used | OpenSEO MCP (GSC page and query reads, live SERP), repo grep against `src/` |
 | Decision and reason | ship the retitle: the page earns island queries but was titled for Florida, and the H1 already used the island framing |
+
+## Source files likely to change
+
+  - `src/guides/shelling-guide-florida.html`

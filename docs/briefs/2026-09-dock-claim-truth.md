@@ -63,3 +63,10 @@
 | Seascape proof available | yes, from the two property data files |
 | Tools/plugins used | OpenSEO MCP (GSC and SERP reads), TypeSafe Jev 1.13.0 link-claim harness, repo grep against `src/` and `_site/` |
 | Decision and reason | ship: three published sentences promise fishing and kayak supply that the property explicitly denies |
+
+## Source files likely to change
+
+  - `src/guides/anna-maria-island-vs-longboat-key.html`
+  - `src/guides/holmes-beach-vs-bradenton-beach.html`
+  - `src/guides/fishing-guide-anna-maria-sarasota.html`
+  - `src/guides/where-to-stay-near-anna-maria-island/index.html`

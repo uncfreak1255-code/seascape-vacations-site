@@ -92,6 +92,10 @@ That guard's page-specific assertions retire with the page.
   `things-to-do-bradenton-fl.html` must not promote the old URL, and the
   guest page must not restore the live-pricing promise
 
+## Source files likely to change
+
+  - `src/guides/things-to-do-bradenton-fl.html`
+
 ## Not In This Batch
 
 The remaining antigravity-era claims are tracked in `seascape-hub` PR #739: the

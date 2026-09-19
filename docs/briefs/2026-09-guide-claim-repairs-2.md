@@ -110,3 +110,11 @@ Related-links label "Holmes Beach Rentals with Heated Pools" pointed at the Flor
 | Seascape proof available | yes, from properties.js and destination meta |
 | Tools/plugins used | TypeSafe Jev 1.13.0 link-claim harness |
 | Decision and reason | ship: five leftover sentences still contradict inventory after the earlier PRs |
+
+## Source files likely to change
+
+  - `src/guides/bradenton-vs-sarasota.html`
+  - `src/guides/anna-maria-island-vs-siesta-key.html`
+  - `src/guides/where-to-stay-near-anna-maria-island/index.html`
+  - `src/guides/holmes-beach-area-guide/index.html`
+  - `src/guides/things-to-do-bradenton-fl.html`

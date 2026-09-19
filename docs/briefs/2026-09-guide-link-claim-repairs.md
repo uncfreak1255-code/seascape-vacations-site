@@ -21,11 +21,11 @@ actually owns.
 - src/guides/best-vacation-rental-companies-ami.html: /stays/book-direct-anna-maria-island/, /stays/anna-maria-island-vacation-rentals/, /guides/booking-direct-vacation-rentals/
 - src/guides/how-to-get-to-anna-maria-island.html: /stays/book-direct-anna-maria-island/, /stays/vacation-rentals-near-anna-maria-island/, /guides/best-time-visit-anna-maria-island/
 
-## Source Files Changed
+## Source files likely to change
 
-- src/guides/dolphins-manatees-bradenton.html
-- src/guides/best-vacation-rental-companies-ami.html
-- src/guides/how-to-get-to-anna-maria-island.html
+  - `src/guides/dolphins-manatees-bradenton.html`
+  - `src/guides/best-vacation-rental-companies-ami.html`
+  - `src/guides/how-to-get-to-anna-maria-island.html`
 - Name the one dock home (Dockside Dreams) and retitle the `/properties/` button; retitle the book-direct card as a checkout-total comparison; change "on AMI" to "near AMI" on the travel guide. No metadata, route, or layout change. Follow-up: #598 named River House as a second dock home; that is false and is corrected here.
 
 ## Why This Batch
