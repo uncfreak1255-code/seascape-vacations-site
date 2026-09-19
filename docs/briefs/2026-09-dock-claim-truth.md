@@ -20,6 +20,8 @@
 - related but NOT fixed here: River House's canon entry carries an unresolved source discrepancy ("river access" in an older dossier versus "near the river, not directly on water" in the operational reference). That is a `seascape-hub` correction and must be settled before any guide describes River House's relationship to the Manatee River.
 - follow-up, added 2026-09-19 after an independent review of the #604 batch: five sentences on pages this batch already touches still made plural or off-island water claims ("We manage properties both on the island", "Waterfront homes on AMI", "pools, docks, and direct water access", "Some homes include docks or waterfront access", "Waterfront homes with pools, docks"), and two guides gave the same dock conflicting unsourced lengths (80-foot and 30-foot). Canon: Dockside Dreams is the only waterfront home and no Seascape home is on the island. The `canal-homes-with-boat-dock` stay page also still marketed fishing from the dock; its intro, swimming FAQ, fishing FAQ and geoIntro now match the house rule. `property-truth-invariants.test.js` pins all of it.
 - second follow-up, same PR, after a second independent review: every dock-fishing claim on the site is removed (`seoPages.json` bradenton-waterfront-vacation-rentals, fishing-vacation-rentals-bradenton, gulf-coast-vacation-homes-with-dock and canal-homes-with-boat-dock; their fishing FAQs now state the house rule). The unsourced "40% of our returning guests" statistic and the remaining plural or on-island claims on the four repaired guides are gone. The tests now match patterns, not exact phrases: dock fishing is scanned site-wide across `seoPages.json` and `src/guides/`, and plural water claims across the four repaired guides.
+- third review round: removed the last dock-fishing lines ("Cast a line from the private dock", "Boating and fishing are the natural uses for the dock", the Dockside card on the families guide that said "Drop a line right off the dock", and "fishing from your backyard dock" on the retirement guide). Also removed the unsourced "4-bedroom waterfront home with deep-water dock under $400/night" line, and changed the "Stay on Anna Maria Island" CTA to "Stay Near". A new sentence-level test fails any Dockside-linked stay page, or any guide repaired here, that puts the dock and fishing in one sentence without a denial.
+- deliberately NOT in this batch (not a dock or water-access claim): unsourced price and percentage comparisons such as "saves 10-15% vs Airbnb", "20–30% premium" and the market price bands. Those belong to a pricing and direct-booking claim review.
 - deliberately NOT in this batch: plural "our waterfront homes" wording on about 20 other guides, the `/stays/bradenton-waterfront-vacation-rentals/` page title, and the waterfront revenue statistics in `src/research/gulf-coast-vacation-booking-trends-2026.njk`. These need their own site-wide sweep.
 - what should explicitly wait: broader link-claim remediation. The harness still over-flags navigation and related-links blocks, so the remaining flagged list is not yet a work queue.
 
@@ -31,6 +33,8 @@
   - src/guides/where-to-stay-near-anna-maria-island/index.html
   - src/guides/things-to-do-bradenton-fl.html
   - src/_data/seoPages.json
+  - src/guides/bradenton-vs-sarasota-for-families/index.html
+  - src/guides/bradenton-vs-sarasota-retirement/index.html
 
 ## Experiment And Readback Contract
 
