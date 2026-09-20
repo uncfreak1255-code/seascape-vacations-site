@@ -101,14 +101,14 @@ test("accepted snippet rescues match the current query decisions", () => {
   const bestTime = read(bestTimePath);
   const srq = read(srqPath);
 
-  const bestTimeMeta = "Compare all 12 months for typical weather, Gulf water, crowds, and storm season. See why May and November often balance comfort and trip timing.";
+  const bestTimeMeta = "See the best months for Anna Maria Island weather, crowds, and water. May and November usually balance comfort and timing.";
   assert.match(bestTime, new RegExp(bestTimeMeta.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
-  assert.match(bestTime, /<title>Best Time to Visit Anna Maria Island: May and November<\/title>/);
+  assert.match(bestTime, /<title>Best Time to Visit Anna Maria Island \(Month-by-Month\)<\/title>/);
   assert.match(bestTime, /"dateModified": "2026-07-28"/);
   assert.match(bestTime, /Updated July 2026/);
 
-  const srqTitle = "SRQ Airport to Anna Maria Island: Drive Time, Cost & Options";
-  const srqMeta = "Compare rental car, rideshare, taxi, shuttle, and bus options from SRQ to Anna Maria Island, with drive times and the best bridge route for each town.";
+  const srqTitle = "SRQ to Anna Maria Island: Time, Cost, Best Route";
+  const srqMeta = "SRQ to Anna Maria Island drive times, rental vs rideshare costs, and which bridge to take for your town.";
   assert.match(srq, new RegExp(`<title>${srqTitle.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}</title>`));
   assert.match(srq, new RegExp(srqMeta.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
   assert.match(srq, /"dateModified": "2026-08-19"/);
