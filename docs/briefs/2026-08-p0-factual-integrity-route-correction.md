@@ -49,7 +49,7 @@
 - src/stays/index.njk: /properties/, /guides/
 - src/stays/stays.njk: /guides/anna-maria-island-area-guide/, /property-management/
 - src/research/owner-fee-revenue-leak-benchmark-2026.njk: /property-management/, /property-management/vacation-rental-management-fees-florida/
-- src/property-management/index.njk: /property-management/vacation-rental-management-fees-florida/, /property-management/vacation-rental-insurance-florida/
+- src/property-management/index.njk: /property-management/vacation-rental-management-fees-florida/, /property-management/buy-vacation-rental-property-florida/
 - src/property-management/property-management.njk: /property-management/vacation-rental-management-fees-florida/, /property-management/vacation-rental-licensing-florida/
 
 ## Gate 0 Search Block — factual-integrity route correction
@@ -85,3 +85,7 @@ September 9 scope handoff: the existing stay collection shell in `src/stays/stay
 September 13 corrective pass: replace leaked agent/dev notes on `/stays/` with guest-facing collection copy; remove `managing hundreds of properties` and surrounding unsupported owner paragraphs from `src/_data/seoPages.json`; make stay leaf `Direct-book homes` count matched homes listed on the page, not the full portfolio. Changed public sources in this pass: `src/stays/index.njk`, `src/stays/stays.njk`, `src/_data/seoPages.json`.
 
 September 13 scope: correct AMI vs Siesta guide referrals to `/stays/anna-maria-island-vacation-rentals/` and `/stays/anna-maria-island-beachfront-rentals/` so they adopt those destinations' own honest framing (mainland homes, 5-15 / 12-25 minute drives, beachfront *alternative*) instead of promising on-island, Gulf-front, walk-to-beach, or no-car stays. Keep existing routes, hrefs, tracking attributes, and table structure. Also rewrite the AMI beaches supervision sentence so gradual shallows stay factual without implying reduced watch of small children.
+
+September 21 consolidated P0 pass: remove the final Sarasota-home walking reference; quarantine the insurance page for professional review; remove unsupported interior-design performance, return, revenue, rating, and on-island experience claims; remove promotional links to quarantined tax and insurance guidance; replace the unsupported owner-page aggregate rating with the retained 48-hour one-page review; and extend live smoke coverage to `/contact`, the retired cost route, Sarasota copy, and both quarantined pages. No new page is authorized.
+
+- offer claim: `seascape-hub/context/owner-offer.md` 48-hour one-page revenue review offer, landed on the existing property-management hub and shared owner-page template.
