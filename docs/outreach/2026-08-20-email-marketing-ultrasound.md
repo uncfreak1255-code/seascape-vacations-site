@@ -64,6 +64,7 @@ Source files behind each step:
 | Inline guide form | `src/_includes/partials/guide-conversion-kit.njk` |
 | Submit + fallback logic | `src/assets/js/conversion-tracking.js` (`submitInlineEmailForm`) |
 | Tagging, events, receipts | `netlify/functions/guest-email-capture.js`, `netlify/functions/_guest-email-capture-metrics.js` |
+| Bot screen (added 2026-09-16; current contract) | `netlify/functions/_guest-capture-bot-guard.js` — see [Capture bot screen](mailchimp-welcome-sequence.md#capture-bot-screen) |
 | Landing-page SAVE50 reminder | `src/_includes/partials/save50-offer.njk` |
 | Email 1 artifact | `docs/outreach/templates/save50-welcome-email.html` / `.txt` |
 | Email 2 artifact (new) | `docs/outreach/templates/save50-house-fit-email.html` / `.txt` |

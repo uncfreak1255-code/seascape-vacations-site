@@ -29,13 +29,62 @@ scope, and no additive unscoped Entra `Mail.Send`; a separate reviewed Phase 2
 is required before any canary or send on that lane.
 
 ## Overview
-- **Trigger:** the `guest-capture` tag, written when a site signup reaches the Mailchimp Marketing API through `netlify/functions/guest-email-capture.js`. A signup that falls back to the embed-form path gets no tag and never enters the sequence.
+- **Trigger:** the `guest-capture` tag, written when a site signup reaches the Mailchimp Marketing API through `netlify/functions/guest-email-capture.js`. A signup that falls back to the embed-form path gets no tag and never enters the sequence. A signup the bot screen rejects never reaches Mailchimp at all.
 - **Mailchimp account:** us6, list ID `95e5a594d1`.
 - **Current priority:** replace the plain-template second email with the designed artifact below. Do not send anything to contacts who already completed the sequence.
 - **Email 1 template:** `docs/outreach/templates/save50-welcome-email.html` / `.txt`
 - **Email 2 template:** `docs/outreach/templates/save50-house-fit-email.html` / `.txt`
 - **Hosted email assets:** `https://seascape-vacations.com/images/email/save50/`
 - **Related campaign governance:** `docs/outreach/mailchimp-guest-social-proof-campaign.md`
+
+## Capture bot screen
+
+The public capture endpoint screens a POST before any Mailchimp call or
+receipt write. The screen lives in
+`netlify/functions/_guest-capture-bot-guard.js` and is invoked from
+`netlify/functions/guest-email-capture.js`. It exists because a 2026-09-16
+audience export showed harvested addresses and random names arriving as
+direct API posts; browsers always send `Origin`, those posts did not.
+
+A rejected submission returns HTTP 422:
+
+```json
+{ "stored": false, "tagged": false, "captureState": "rejected", "reason": "rejected" }
+```
+
+The HTTP body does not name the signal. Look for `guest_capture_rejected`
+in the function log; that line includes `reasons`.
+
+| Reason | What trips it | What does not |
+|---|---|---|
+| `origin_missing` | No `Origin` and no `Referer` | A browser POST from the site |
+| `origin_mismatch` | Host is not `seascape-vacations.com`, `www`, `localhost`, `127.0.0.1`, or `*.netlify.app` | Deploy-preview Netlify hosts |
+| `honeypot` | `trip_url` or `website` is non-empty | The hidden field left blank |
+| `too_fast` | `formOpenedAt` / `form_opened_at` is a valid timestamp less than 3s old | Missing or unparseable dwell time (ignored, not rejected) |
+| `dot_stuffed_gmail` | Gmail/Googlemail local part has more than 3 dots | `jane.doe@gmail.com` |
+| `random_case_name` | One token, length ≥ 8, at least 3 interior capitals **and** one interior lowercase | `JONATHAN`, Title Case, multi-word names |
+| `vowelless_name` | One A–Z token, length ≥ 5, vowel ratio (`aeiouy`) below 0.15 | `Lynn`, `Scott`, `Mary Beth` |
+
+Constraints:
+
+- The screen is conservative. A real guest who trips `too_fast` can submit
+  again. Do not add CAPTCHA or a rate-limit here without a separate change.
+- Site forms (`src/index.njk`, `src/_includes/partials/email-popup.njk`,
+  `src/_includes/partials/guide-conversion-kit.njk`) must keep one hidden
+  `trip_url` honeypot per `data-inline-email-capture="true"` form.
+  `src/assets/js/conversion-tracking.js` stamps `formOpenedAt` on submit.
+- No repository script posts to this endpoint without a browser-style
+  `Origin`. `seascape-analytics` `scripts/live_guest_capture_proof.py`
+  sends `Origin` from the capture URL. A raw `curl` without `-H Origin: …`
+  is 422.
+- Allowed local/preview origins are for developers and Netlify previews,
+  not a public CORS grant.
+
+Proof:
+
+```bash
+node --test scripts/enforcement/guest-capture-bot-guard.test.js
+```
 
 ## Email 1 Attribution
 
