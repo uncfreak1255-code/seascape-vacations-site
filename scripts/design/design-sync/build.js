@@ -36,7 +36,18 @@
 const fs = require("fs");
 const path = require("path");
 const { execSync } = require("child_process");
-const yaml = require("js-yaml");
+const {
+  LIVE_ORIGIN,
+  absolutize,
+  annotateTokenCss,
+  extract,
+  loadWaterline,
+  parseUiIcons,
+  requireScenePhoto,
+  resolveOutDir,
+  stripFontFace,
+  tokenKind,
+} = require("./lib");
 
 const ROOT = path.resolve(__dirname, "../../..");
 const args = process.argv.slice(2);
@@ -45,14 +56,10 @@ const argValue = (flag, fallback) => {
   return i >= 0 && args[i + 1] ? args[i + 1] : fallback;
 };
 const SITE = path.resolve(ROOT, argValue("--site", "_site"));
-const OUT = path.resolve(ROOT, argValue("--out", ".design-sync/out"));
 // The bundle folder is wiped on every build, so it must stay inside the ignored
 // .design-sync/ tree; `--out ..` or an absolute path elsewhere is refused.
-const SYNC_ROOT = path.join(ROOT, ".design-sync");
-if (!(OUT === SYNC_ROOT || OUT.startsWith(SYNC_ROOT + path.sep))) {
-  throw new Error(`--out must resolve inside ${SYNC_ROOT}; got ${OUT}`);
-}
-const LIVE = "https://seascape-vacations.com";
+const { OUT } = resolveOutDir(ROOT, argValue("--out", ".design-sync/out"));
+const LIVE = LIVE_ORIGIN;
 
 function read(rel) {
   return fs.readFileSync(path.join(ROOT, rel), "utf8");
@@ -82,12 +89,7 @@ const cards = [];
 
 /* ---------------------------------------------------------------- source truth */
 const designMd = read("DESIGN.md");
-const frontMatter = (designMd.match(/^---\n([\s\S]*?)\n---/) || [])[1];
-if (!frontMatter) throw new Error("DESIGN.md has no YAML front matter");
-const wl = yaml.load(frontMatter).waterline;
-if (!wl || !wl.colors || !wl.typography) {
-  throw new Error("DESIGN.md front matter has no waterline block; refusing to build from legacy tokens.");
-}
+const wl = loadWaterline(designMd);
 const C = wl.colors;
 const T = wl.typography;
 let commit = "unknown";
@@ -98,46 +100,7 @@ try {
 }
 const today = new Date().toISOString().slice(0, 10);
 
-/* ---------------------------------------------------------------- markup extraction */
-// Returns the first element whose class attribute starts with `cls`, with balanced tags.
-function extract(html, cls, nth = 0) {
-  const open = new RegExp(`<([a-z][a-z0-9]*)\\b[^>]*class="${cls}[" ][^>]*>`, "g");
-  let m;
-  for (let i = 0; i <= nth; i += 1) {
-    m = open.exec(html);
-    if (!m) throw new Error(`Component .${cls} (#${nth}) not found in built HTML`);
-  }
-  const tag = m[1];
-  const opener = new RegExp(`<${tag}\\b[^>]*>`, "g");
-  const closer = new RegExp(`</${tag}>`, "g");
-  let i = m.index + m[0].length;
-  let depth = 1;
-  while (depth > 0) {
-    opener.lastIndex = i;
-    closer.lastIndex = i;
-    const o = opener.exec(html);
-    const c = closer.exec(html);
-    if (!c) throw new Error(`Unbalanced <${tag}> while extracting .${cls}`);
-    if (o && o.index < c.index && !/\/>$/.test(o[0])) {
-      depth += 1;
-      i = o.index + o[0].length;
-    } else {
-      depth -= 1;
-      i = c.index + c[0].length;
-    }
-  }
-  return html.slice(m.index, i);
-}
-
-// Root-relative URLs -> live site, so cards show the approved photography.
-function absolutize(html) {
-  return html
-    .replace(/(src|href|poster)="\//g, `$1="${LIVE}/`)
-    .replace(/srcset="([^"]*)"/g, (_, v) => `srcset="${v.replace(/(^|,\s*)\//g, `$1${LIVE}/`)}"`);
-}
-
 /* ---------------------------------------------------------------- css */
-const stripFontFace = (css) => css.replace(/@font-face\s*\{[^}]*\}\n?/g, "");
 const baseCss = read("src/css/base.css");
 const guestCss = stripFontFace(read("src/css/guest.css"));
 const arrivalCss = read("src/css/arrival.css");
@@ -242,9 +205,7 @@ const arrival = absolutize(extract(home, "g-arrival"));
 const catalogCard = absolutize(extract(catalog, "catalog-card"));
 const booking = absolutize(extract(property, "g-booking"));
 const mobileBooking = absolutize(extract(property, "g-mobile-booking")).replace(/\shidden(?=[\s>])/, "");
-const scenePhotoMatch = home.match(/class="g-scene-photo"[^>]*src="([^"]+)"/);
-if (!scenePhotoMatch) throw new Error("Homepage scene photo not found in built HTML; the header-over-photo card needs it");
-const scenePhoto = absolutize(`src="${scenePhotoMatch[1]}"`).slice(5, -1);
+const scenePhoto = requireScenePhoto(home, LIVE);
 
 /* ---------------------------------------------------------------- bundle files */
 fs.rmSync(OUT, { recursive: true, force: true });
@@ -545,11 +506,7 @@ card({
 });
 
 // Icons: every SVG the site's ui-icon partial can render, so the card is the real set.
-const iconSource = read("src/_includes/partials/ui-icon.njk");
-const icons = [...iconSource.matchAll(/\{% (?:el)?if name == "([a-z-]+)" %\}\s*(<svg[\s\S]*?<\/svg>)/g)]
-  .map((m) => ({ name: m[1], svg: m[2] }))
-  .filter((icon, index, all) => all.findIndex((other) => other.name === icon.name) === index);
-if (icons.length < 10) throw new Error(`ui-icon.njk yielded only ${icons.length} icons; the parser is broken`);
+const icons = parseUiIcons(read("src/_includes/partials/ui-icon.njk"));
 card({
   file: "iconography.html",
   group: "Brand",
@@ -585,20 +542,9 @@ card({
 // does not trigger that, so a stale manifest keeps showing deleted cards as "file not
 // found". Emit it here from the same data the cards were built from.
 // Claude Design's token vocabulary: color | spacing | radius | shadow | font | other.
-const tokenKind = (name, value) => {
-  if (/radius/.test(name)) return "radius";
-  if (/shadow/.test(name) || /shadow/.test(value)) return "shadow";
-  if (/^#|^rgba?\(/.test(value)) return "color";
-  if (/font|-h1$|-size$|-lh$|-ls$|weight/.test(name) || /'/.test(value)) return "font";
-  if (/px|em|%/.test(value)) return "spacing";
-  return "other";
-};
 // Claude Design reads a trailing `/* @kind x */` on a token line for its Tokens panel; emit it
 // here so nobody hand-edits the generated file to add it.
-const tokensCssAnnotated = tokensCss.replace(/^(\s*--wl-[a-z0-9-]+:)([^;]+);(.*)$/gm, (line, name, value, rest) => {
-  if (/@kind/.test(rest)) return line;
-  return `${name}${value}; /* @kind ${tokenKind(name.replace(/[:\s]/g, ""), value.trim())} */${rest ? " " + rest.trim() : ""}`;
-});
+const tokensCssAnnotated = annotateTokenCss(tokensCss);
 fs.writeFileSync(path.join(OUT, "waterline/tokens.css"), tokensCssAnnotated);
 const tokens = [...tokensCss.matchAll(/^\s*(--wl-[a-z0-9-]+):([^;]+);/gm)].map((m) => ({
   name: m[1],

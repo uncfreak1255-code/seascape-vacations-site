@@ -24,6 +24,7 @@
 const fs = require("fs");
 const path = require("path");
 const { chromium } = require("@playwright/test");
+const { clearRenderReceipt, listPreviewCards } = require("./lib");
 
 const ROOT = path.resolve(__dirname, "../../..");
 const args = process.argv.slice(2);
@@ -89,10 +90,9 @@ async function probeCard(page, width) {
 }
 
 (async () => {
-  const cards = fs.readdirSync(path.join(OUT, "preview")).filter((f) => f.endsWith(".html")).sort();
-  if (!cards.length) throw new Error(`No preview cards in ${OUT}; run build.js first.`);
+  const cards = listPreviewCards(OUT);
   fs.mkdirSync(RENDER, { recursive: true });
-  fs.rmSync(RECEIPT, { force: true });
+  clearRenderReceipt(OUT);
   const browser = await chromium.launch();
   const results = [];
   for (const file of cards) {
@@ -121,6 +121,6 @@ async function probeCard(page, width) {
   process.exit(bad ? 1 : 0);
 })().catch((e) => {
   console.error(e);
-  fs.rmSync(RECEIPT, { force: true });
+  clearRenderReceipt(OUT);
   process.exit(1);
 });
