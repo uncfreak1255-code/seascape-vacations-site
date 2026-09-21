@@ -33,6 +33,7 @@ test("Sarasota home copy does not claim walkability", () => {
   }
 
   assert.doesNotMatch(sources, /walkable to downtown|walkable downtown|walking distance from downtown|walk to downtown|steps from downtown|spot you can walk from|accessible on foot|on-foot access to Sarasota|no car needed for evening/i);
+  assert.doesNotMatch(sources, /short drive or walk/i);
 });
 
 test("fixed direct-booking and comparison savings claims stay removed", () => {
@@ -46,14 +47,35 @@ test("fixed direct-booking and comparison savings claims stay removed", () => {
   assert.doesNotMatch(sources, /save 10[-–]15%|save up to 15%|30[-–]40% (?:less|off)|typical direct savings/i);
 });
 
-test("P0 routes and tax quarantine remain intact", () => {
+test("P0 routes and professional-review quarantines remain intact", () => {
   const redirects = read("src/_redirects");
-  const taxPage = read("src/property-management/property-management.njk");
+  const pageTemplate = read("src/property-management/property-management.njk");
+  const seoPages = JSON.parse(read("src/_data/seoPages.json"));
+  const taxPage = seoPages.owner.find((page) => page.slug === "vacation-rental-taxes-florida");
+  const insurancePage = seoPages.owner.find((page) => page.slug === "vacation-rental-insurance-florida");
+  const interiorPage = seoPages.owner.find((page) => page.slug === "vacation-rental-interior-design-florida");
 
   assert.match(redirects, /^\/contact\s+\/#contact\s+301$/m);
   assert.match(redirects, /^\/guides\/bradenton-vs-sarasota-cost-of-living\/\s+\/guides\/bradenton-vs-sarasota\/\s+301$/m);
-  assert.match(taxPage, /noindex, nofollow/);
-  assert.match(taxPage, /This tax guide is not available for reliance\./);
+  assert.match(pageTemplate, /noindex, nofollow/);
+  assert.equal(taxPage.quarantined, true);
+  assert.equal(taxPage.seoIndexable, false);
+  assert.match(taxPage.reviewTitle, /tax guide is not available for reliance/i);
+  assert.match(taxPage.reviewNotice, /qualified tax professional/i);
+  assert.equal(insurancePage.quarantined, true);
+  assert.equal(insurancePage.seoIndexable, false);
+  assert.match(insurancePage.reviewTitle, /insurance guide is not available for reliance/i);
+  assert.match(insurancePage.reviewNotice, /licensed insurance professional/i);
+  assert.doesNotMatch(JSON.stringify(interiorPage), /\$80,000|10-20%|1-2 years|within weeks|five-star reviews|on Anna Maria Island/i);
+
+  const publicNavigation = [
+    read("src/guides/index.njk"),
+    read("src/property-management/index.njk"),
+    read("src/guides/florida-gulf-coast-vacation-rental-market-report-2026.html"),
+    JSON.stringify(seoPages.owner.filter((page) => ![taxPage.slug, insurancePage.slug].includes(page.slug)))
+  ].join("\n");
+  assert.doesNotMatch(publicNavigation, /vacation-rental-taxes-florida/);
+  assert.doesNotMatch(publicNavigation, /vacation-rental-insurance-florida/);
 });
 
 const AMI_VSIESTA_GUIDE = "src/guides/anna-maria-island-vs-siesta-key.html";
