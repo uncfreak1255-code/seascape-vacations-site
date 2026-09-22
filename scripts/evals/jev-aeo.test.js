@@ -184,6 +184,13 @@ test("provider and response-validation failures both write private findings arti
       name: "malformed success response",
       evaluate: async () => ({ model: "jev-test", answers: {}, usage: { input_tokens: 1 } }),
     },
+    {
+      name: "success response without returned model",
+      evaluate: async () => ({
+        answers: Object.fromEntries(RUBRIC.dimensions.map(({ id }) => [id, scoreAnswer()])),
+        usage: { input_tokens: 1 },
+      }),
+    },
   ];
 
   const previousKey = process.env.TYPESAFE_API_KEY;

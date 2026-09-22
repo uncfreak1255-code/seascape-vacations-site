@@ -121,6 +121,12 @@ function fixtureManifest(goldenResults, questionCount) {
   }));
 }
 
+function validateResponseMetadata(response) {
+  if (typeof response?.model !== "string" || response.model.trim() === "") {
+    throw new Error("TypeSafe response is missing returned model");
+  }
+}
+
 function formatUsd(value) {
   return value === null ? "not calculated" : `$${value.toFixed(9)}`;
 }
@@ -244,6 +250,7 @@ async function run(argv = process.argv.slice(2), dependencies = {}) {
     try {
       const response = await client.evaluate({ copy: fixture.copy }, questions);
       const latencyMs = Math.round(performance.now() - startedAt);
+      validateResponseMetadata(response);
       const { scores, confidence } = scoresFromTypeSafeResponse(response, rubric);
       const scored = computeOverall(scores, rubric, fixture.copy);
       const inputTokens = response.usage.input_tokens;
@@ -308,5 +315,6 @@ module.exports = {
   renderMarkdown,
   run,
   validateApprovedFixtures,
+  validateResponseMetadata,
   writeFindings,
 };
