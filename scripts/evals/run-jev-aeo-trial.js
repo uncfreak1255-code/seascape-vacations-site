@@ -56,25 +56,34 @@ function loadInputs() {
   return { rubric, goldenResults, questions: buildAeoQuestions(rubric) };
 }
 
-function sourceState(goldenResults) {
+function isolatedGitEnvironment() {
+  const env = { ...process.env };
+  for (const key of Object.keys(env)) {
+    if (key.startsWith("GIT_")) delete env[key];
+  }
+  return env;
+}
+
+function sourceState(goldenResults, root = projectRoot) {
   const evidenceFiles = [
     "scripts/evals/evals.config.json", lane.rubric,
     "scripts/evals/run-jev-aeo-trial.js", "scripts/evals/lib/jev-aeo.js",
-    "scripts/evals/lib/typesafe-client.js", "scripts/evals/lib/score.js",
+    "scripts/evals/lib/typesafe-client.js", "scripts/evals/lib/rubric.js",
+    "scripts/evals/lib/golden.js", "scripts/evals/lib/score.js",
     ...goldenResults.map(({ filePath }) => path.relative(projectRoot, filePath)),
   ].sort();
   const digest = crypto.createHash("sha256");
   for (const relativePath of evidenceFiles) {
     digest.update(`${relativePath}\0`);
-    digest.update(fs.readFileSync(path.join(projectRoot, relativePath)));
+    digest.update(fs.readFileSync(path.join(root, relativePath)));
   }
   const evaluationDigest = digest.digest("hex");
   try {
     return {
-      commit: execFileSync("git", ["rev-parse", "HEAD"], { cwd: projectRoot, encoding: "utf8" }).trim(),
+      commit: execFileSync("git", ["rev-parse", "HEAD"], { cwd: root, encoding: "utf8", env: isolatedGitEnvironment() }).trim(),
       evaluationDigest,
       evidenceFiles,
-      dirty: execFileSync("git", ["status", "--porcelain", "--", ...evidenceFiles], { cwd: projectRoot, encoding: "utf8" }).trim().length > 0,
+      dirty: execFileSync("git", ["status", "--porcelain", "--", ...evidenceFiles], { cwd: root, encoding: "utf8", env: isolatedGitEnvironment() }).trim().length > 0,
     };
   } catch {
     return { commit: "unknown", evaluationDigest, evidenceFiles, dirty: null };
@@ -91,7 +100,7 @@ function fixtureManifest(goldenResults, questionCount) {
 }
 
 function validateResponseMetadata(response) {
-  if (typeof response?.model !== "string" || response.model.trim() === "") {
+  if (typeof response?.model !== "string" || !/^[A-Za-z0-9._:-]{1,128}$/.test(response.model)) {
     throw new Error("TypeSafe response is missing returned model");
   }
 }
@@ -99,12 +108,13 @@ function validateResponseMetadata(response) {
 function formatUsd(value) { return value === null ? "not calculated" : `$${value.toFixed(9)}`; }
 
 function renderMarkdown(findings) {
+  const returnedModel = findings.provider.modelReturned || (findings.provider.requestAttempted ? "not returned" : "not called");
   const lines = [
     "# Seascape AEO evaluation findings", "",
     `- Status: \`${findings.status}\``, `- Generated: ${findings.generatedAt}`,
     `- Source commit: \`${findings.source.commit}\``, `- Evaluation digest: \`${findings.source.evaluationDigest}\``,
     `- Relevant source dirty: \`${findings.source.dirty}\``, `- Requested model: \`${findings.provider.modelRequested}\``,
-    `- Returned model: \`${findings.provider.modelReturned || "not called"}\``, `- Credential lifecycle: \`${findings.credentialLifecycle}\``,
+    `- Returned model: \`${returnedModel}\``, `- Credential lifecycle: \`${findings.credentialLifecycle}\``,
     "", "## Payload manifest", "", "| Fixture | Bytes | SHA-256 | Judgments |", "|---|---:|---|---:|",
     ...findings.payload.fixtures.map((fixture) => `| ${fixture.name} | ${fixture.copyBytes} | \`${fixture.copySha256}\` | ${fixture.judgmentCount} |`),
   ];
@@ -135,6 +145,10 @@ function completedModels(results) {
   return [...new Set(results.map((result) => result.model))].join(", ") || null;
 }
 
+function recordReturnedModel(current, model) {
+  return [...new Set([...(current ? current.split(", ") : []), model])].join(", ");
+}
+
 async function run(argv = process.argv.slice(2), dependencies = {}) {
   const options = parseArgs(argv);
   if (options.help) { console.log("Usage: npm run eval:aeo:typesafe -- [--preview] [--output DIR] [--input-cost-per-million-usd RATE]"); return 0; }
@@ -144,7 +158,7 @@ async function run(argv = process.argv.slice(2), dependencies = {}) {
     schemaVersion: 1, generatedAt: new Date().toISOString(), source: sourceState(goldenResults),
     status: options.preview ? "PREVIEW" : "RUNNING",
     credentialLifecycle: "not inspected; verify any trial-key revocation by exact dashboard name",
-    provider: { endpoint: "https://api.typesafe.ai/v1/systemone", modelRequested: DEFAULT_MODEL, modelReturned: null, inputCostPerMillionUsd: options.pricePerMillionInputTokens },
+    provider: { endpoint: "https://api.typesafe.ai/v1/systemone", modelRequested: DEFAULT_MODEL, modelReturned: null, requestAttempted: false, inputCostPerMillionUsd: options.pricePerMillionInputTokens },
     payload: { scope: "three non-guest repository AEO golden fixtures", externalData: "fixture copy plus five rubric-derived Score questions", fixtures: fixtureManifest(goldenResults, Object.keys(questions).length) },
   };
   if (options.preview) { const paths = writeFindings(outputDir, base); console.log(`[preview] ${JSON.stringify(paths)}`); return 0; }
@@ -160,8 +174,10 @@ async function run(argv = process.argv.slice(2), dependencies = {}) {
   for (const { fixture } of goldenResults) {
     const startedAt = performance.now();
     try {
+      base.provider.requestAttempted = true;
       const response = await client.evaluate({ copy: fixture.copy }, questions);
       validateResponseMetadata(response);
+      base.provider.modelReturned = recordReturnedModel(base.provider.modelReturned, response.model);
       const { scores, confidence } = scoresFromTypeSafeResponse(response, rubric);
       const scored = computeOverall(scores, rubric, fixture.copy);
       const inputTokens = response.usage.input_tokens;
@@ -177,10 +193,9 @@ async function run(argv = process.argv.slice(2), dependencies = {}) {
     } catch (error) {
       base.status = "PROVIDER_ERROR";
       base.results = results;
-      base.provider.modelReturned = completedModels(results);
-      base.error = error.message;
+      base.error = "TypeSafe AEO provider evaluation failed; inspect the local provider error class before retrying.";
       const paths = writeFindings(outputDir, base);
-      console.error(`[provider-error] ${error.message}; findings=${paths.markdownPath}`);
+      console.error(`[provider-error] ${base.error}; findings=${paths.markdownPath}`);
       return 3;
     }
   }
@@ -203,4 +218,4 @@ if (require.main === module) {
   run().then((code) => { process.exitCode = code; }).catch((error) => { console.error(`[fatal] ${error.message}`); process.exitCode = 1; });
 }
 
-module.exports = { fixtureManifest, parseArgs, renderMarkdown, run, sourceState, validateApprovedFixtures, validateResponseMetadata, writeFindings };
+module.exports = { fixtureManifest, isolatedGitEnvironment, parseArgs, renderMarkdown, run, sourceState, validateApprovedFixtures, validateResponseMetadata, writeFindings };

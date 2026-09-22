@@ -5,7 +5,7 @@ const assert = require("node:assert/strict");
 const fs = require("node:fs");
 const os = require("node:os");
 const path = require("node:path");
-const { spawnSync } = require("node:child_process");
+const { execFileSync, spawnSync } = require("node:child_process");
 
 const {
   AEO_SCORE_LEVELS,
@@ -15,7 +15,7 @@ const {
   scoresFromTypeSafeResponse,
 } = require("./lib/jev-aeo.js");
 const { createTypeSafeClient, SYSTEM_ONE_URL } = require("./lib/typesafe-client.js");
-const { renderMarkdown, run, sourceState, validateApprovedFixtures } = require("./run-jev-aeo-trial.js");
+const { isolatedGitEnvironment, renderMarkdown, run, sourceState, validateApprovedFixtures, validateResponseMetadata } = require("./run-jev-aeo-trial.js");
 
 const RUBRIC = {
   dimensions: Object.keys(AEO_SCORE_LEVELS).map((id) => ({
@@ -78,6 +78,11 @@ test("input cost requires an explicit current price", () => {
   assert.equal(inputCostUsd(1_000_000, 0.042), 0.042);
 });
 
+test("returned model metadata is bounded to a safe identifier", () => {
+  assert.doesNotThrow(() => validateResponseMetadata({ model: "jev-1.13.0" }));
+  assert.throws(() => validateResponseMetadata({ model: "jev-1\nPROVIDER_RESPONSE_CONTENT_DO_NOT_LEAK" }), /missing returned model/);
+});
+
 test("TypeSafe client sends the pinned model, state, and questions without exposing the key", async () => {
   const calls = [];
   const fetchImpl = async (url, options) => {
@@ -128,6 +133,26 @@ test("TypeSafe client redacts malformed success-response JSON", async () => {
   );
 });
 
+test("TypeSafe client redacts request failures and unreadable response metadata", async () => {
+  const marker = "PROVIDER_RESPONSE_CONTENT_DO_NOT_LEAK";
+  const requestClient = createTypeSafeClient({
+    apiKey: "secret-test-key",
+    fetchImpl: async () => { throw new Error(marker); },
+  });
+  await assert.rejects(
+    requestClient.evaluate({ copy: "Example" }, {}),
+    (error) => error.message === "TypeSafe API request failed" && !error.message.includes(marker)
+  );
+  const responseClient = createTypeSafeClient({
+    apiKey: "secret-test-key",
+    fetchImpl: async () => ({ get ok() { throw new Error(marker); } }),
+  });
+  await assert.rejects(
+    responseClient.evaluate({ copy: "Example" }, {}),
+    (error) => error.message === "TypeSafe API response metadata could not be read" && !error.message.includes(marker)
+  );
+});
+
 test("Jev AEO trial fails closed without a TypeSafe key and sends nothing", () => {
   const script = path.join(__dirname, "run-jev-aeo-trial.js");
   const result = spawnSync(process.execPath, [script], {
@@ -167,9 +192,37 @@ test("approved fixture validation rejects extra or non-AEO payload entries", () 
   );
 });
 
-test("evaluation fingerprint includes the deterministic scoring module", () => {
+test("evaluation fingerprint includes every loaded scoring dependency", () => {
   const state = sourceState([]);
-  assert.ok(state.evidenceFiles.includes("scripts/evals/lib/score.js"));
+  for (const file of [
+    "scripts/evals/lib/jev-aeo.js",
+    "scripts/evals/lib/rubric.js",
+    "scripts/evals/lib/golden.js",
+    "scripts/evals/lib/score.js",
+    "scripts/evals/lib/typesafe-client.js",
+  ]) assert.ok(state.evidenceFiles.includes(file));
+});
+
+test("each declared evaluation dependency changes the fingerprint and marks provenance dirty", () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), "jev-aeo-source-state-"));
+  const files = sourceState([]).evidenceFiles;
+  for (const file of files) {
+    const target = path.join(root, file);
+    fs.mkdirSync(path.dirname(target), { recursive: true });
+    fs.writeFileSync(target, `${file}\n`);
+  }
+  const gitOptions = { cwd: root, env: isolatedGitEnvironment() };
+  execFileSync("git", ["init", "--quiet"], gitOptions);
+  execFileSync("git", ["add", "."], gitOptions);
+  execFileSync("git", ["-c", "user.name=Test", "-c", "user.email=test@example.invalid", "commit", "--quiet", "-m", "baseline"], gitOptions);
+  for (const file of files) {
+    const before = sourceState([], root);
+    fs.appendFileSync(path.join(root, file), "changed\n");
+    const after = sourceState([], root);
+    assert.notEqual(after.evaluationDigest, before.evaluationDigest, file);
+    assert.equal(after.dirty, true, file);
+    execFileSync("git", ["checkout", "--", file], gitOptions);
+  }
 });
 
 test("provider and response-validation failures both write private findings artifacts", async () => {
@@ -240,6 +293,52 @@ test("partial provider failures retain already-returned model metadata", async (
     assert.equal(findings.provider.modelReturned, "jev-test-1");
     assert.match(fs.readFileSync(path.join(outputDir, "findings.md"), "utf8"), /Returned model: `jev-test-1`/);
   } finally {
+    if (previousKey === undefined) delete process.env.TYPESAFE_API_KEY;
+    else process.env.TYPESAFE_API_KEY = previousKey;
+  }
+});
+
+test("response-validation failures record a provider attempt and returned model", async () => {
+  const outputDir = fs.mkdtempSync(path.join(os.tmpdir(), "jev-aeo-validation-failure-"));
+  const previousKey = process.env.TYPESAFE_API_KEY;
+  process.env.TYPESAFE_API_KEY = "test-only";
+  try {
+    const exitCode = await run(["--output", outputDir], {
+      createClient: () => ({
+        evaluate: async () => ({ model: "jev-before-score", answers: {}, usage: { input_tokens: 1 } }),
+      }),
+    });
+    assert.equal(exitCode, 3);
+    const findings = JSON.parse(fs.readFileSync(path.join(outputDir, "findings.json"), "utf8"));
+    assert.equal(findings.provider.requestAttempted, true);
+    assert.equal(findings.provider.modelReturned, "jev-before-score");
+    assert.match(fs.readFileSync(path.join(outputDir, "findings.md"), "utf8"), /Returned model: `jev-before-score`/);
+  } finally {
+    if (previousKey === undefined) delete process.env.TYPESAFE_API_KEY;
+    else process.env.TYPESAFE_API_KEY = previousKey;
+  }
+});
+
+test("provider failures never copy provider text into findings or stderr", async () => {
+  const outputDir = fs.mkdtempSync(path.join(os.tmpdir(), "jev-aeo-redacted-provider-error-"));
+  const previousKey = process.env.TYPESAFE_API_KEY;
+  const originalError = console.error;
+  const marker = "PROVIDER_RESPONSE_CONTENT_DO_NOT_LEAK";
+  const stderr = [];
+  process.env.TYPESAFE_API_KEY = "test-only";
+  console.error = (message) => stderr.push(message);
+  try {
+    const exitCode = await run(["--output", outputDir], {
+      createClient: () => ({ evaluate: async () => { throw new Error(marker); } }),
+    });
+    assert.equal(exitCode, 3);
+    const json = fs.readFileSync(path.join(outputDir, "findings.json"), "utf8");
+    const markdown = fs.readFileSync(path.join(outputDir, "findings.md"), "utf8");
+    assert.equal(json.includes(marker), false);
+    assert.equal(markdown.includes(marker), false);
+    assert.equal(stderr.join("\n").includes(marker), false);
+  } finally {
+    console.error = originalError;
     if (previousKey === undefined) delete process.env.TYPESAFE_API_KEY;
     else process.env.TYPESAFE_API_KEY = previousKey;
   }

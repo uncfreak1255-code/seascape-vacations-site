@@ -20,18 +20,32 @@ function createTypeSafeClient({
   }
 
   async function evaluate(state, questions) {
-    const response = await fetchImpl(SYSTEM_ONE_URL, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ state, model, questions }),
-      signal: AbortSignal.timeout(timeoutMs),
-    });
+    let response;
+    try {
+      response = await fetchImpl(SYSTEM_ONE_URL, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ state, model, questions }),
+        signal: AbortSignal.timeout(timeoutMs),
+      });
+    } catch {
+      throw new Error("TypeSafe API request failed");
+    }
 
-    if (!response.ok) {
-      throw new Error(`TypeSafe API error ${response.status}`);
+    let ok;
+    let status;
+    try {
+      ok = response.ok;
+      status = response.status;
+    } catch {
+      throw new Error("TypeSafe API response metadata could not be read");
+    }
+    if (ok !== true) {
+      const safeStatus = Number.isInteger(status) && status >= 100 && status <= 599 ? ` ${status}` : "";
+      throw new Error(`TypeSafe API error${safeStatus}`);
     }
 
     let data;
@@ -40,11 +54,16 @@ function createTypeSafeClient({
     } catch {
       throw new Error("TypeSafe API response could not be parsed");
     }
-    if (!data || typeof data !== "object" || !data.answers || !data.usage) {
-      throw new Error("TypeSafe API response is missing answers or usage");
-    }
-    if (!Number.isInteger(data.usage.input_tokens) || data.usage.input_tokens < 0) {
-      throw new Error("TypeSafe API response has invalid input-token usage");
+    try {
+      if (!data || typeof data !== "object" || !data.answers || !data.usage) {
+        throw new Error("TypeSafe API response is missing answers or usage");
+      }
+      if (!Number.isInteger(data.usage.input_tokens) || data.usage.input_tokens < 0) {
+        throw new Error("TypeSafe API response has invalid input-token usage");
+      }
+    } catch (error) {
+      if (error.message === "TypeSafe API response is missing answers or usage" || error.message === "TypeSafe API response has invalid input-token usage") throw error;
+      throw new Error("TypeSafe API response data could not be read");
     }
     return data;
   }
