@@ -28,12 +28,22 @@ function parseArgs(argv) {
   for (let index = 0; index < argv.length; index += 1) {
     const arg = argv[index];
     if (arg === "--preview") options.preview = true;
-    else if (arg === "--output") options.outputDir = argv[++index];
-    else if (arg === "--input-cost-per-million-usd") options.pricePerMillionInputTokens = Number(argv[++index]);
+    else if (arg === "--output") {
+      const outputDir = argv[++index];
+      if (typeof outputDir !== "string" || outputDir === "" || outputDir.startsWith("--")) {
+        throw new Error("--output requires a directory");
+      }
+      options.outputDir = outputDir;
+    } else if (arg === "--input-cost-per-million-usd") {
+      const price = argv[++index];
+      if (typeof price !== "string" || price === "" || price.startsWith("--")) {
+        throw new Error("--input-cost-per-million-usd requires a non-negative number");
+      }
+      options.pricePerMillionInputTokens = Number(price);
+    }
     else if (arg === "--help") options.help = true;
     else throw new Error(`Unknown argument: ${arg}`);
   }
-  if (options.outputDir === undefined || options.outputDir === "") throw new Error("--output requires a directory");
   if (options.pricePerMillionInputTokens !== null && (!Number.isFinite(options.pricePerMillionInputTokens) || options.pricePerMillionInputTokens < 0)) {
     throw new Error("--input-cost-per-million-usd requires a non-negative number");
   }

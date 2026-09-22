@@ -166,6 +166,22 @@ test("Jev AEO trial fails closed without a TypeSafe key and sends nothing", () =
   assert.match(result.stderr, /requires TYPESAFE_API_KEY; no request was sent/);
 });
 
+test("a flag cannot be consumed as an output directory and trigger a provider call", async () => {
+  const previousKey = process.env.TYPESAFE_API_KEY;
+  let clientCreated = false;
+  process.env.TYPESAFE_API_KEY = "test-only";
+  try {
+    await assert.rejects(
+      run(["--output", "--preview"], { createClient: () => { clientCreated = true; return {}; } }),
+      /--output requires a directory/
+    );
+    assert.equal(clientCreated, false);
+  } finally {
+    if (previousKey === undefined) delete process.env.TYPESAFE_API_KEY;
+    else process.env.TYPESAFE_API_KEY = previousKey;
+  }
+});
+
 test("provider-error findings render without a success summary", () => {
   const markdown = renderMarkdown({
     status: "PROVIDER_ERROR",
