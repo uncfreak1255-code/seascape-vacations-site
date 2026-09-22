@@ -15,7 +15,7 @@ const {
   scoresFromTypeSafeResponse,
 } = require("./lib/jev-aeo.js");
 const { createTypeSafeClient, SYSTEM_ONE_URL } = require("./lib/typesafe-client.js");
-const { renderMarkdown, validateApprovedFixtures } = require("./run-jev-aeo-trial.js");
+const { renderMarkdown, run, sourceState, validateApprovedFixtures } = require("./run-jev-aeo-trial.js");
 
 const RUBRIC = {
   dimensions: Object.keys(AEO_SCORE_LEVELS).map((id) => ({
@@ -167,6 +167,11 @@ test("approved fixture validation rejects extra or non-AEO payload entries", () 
   );
 });
 
+test("evaluation fingerprint includes the deterministic scoring module", () => {
+  const state = sourceState([]);
+  assert.ok(state.evidenceFiles.includes("scripts/evals/lib/score.js"));
+});
+
 test("provider and response-validation failures both write private findings artifacts", async () => {
   const cases = [
     {
@@ -193,7 +198,7 @@ test("provider and response-validation failures both write private findings arti
   try {
     for (const entry of cases) {
       const outputDir = fs.mkdtempSync(path.join(os.tmpdir(), "jev-aeo-provider-error-"));
-      const exitCode = await require("./run-jev-aeo-trial.js").run(
+      const exitCode = await run(
         ["--output", outputDir],
         { createClient: () => ({ evaluate: entry.evaluate }) }
       );
@@ -205,6 +210,35 @@ test("provider and response-validation failures both write private findings arti
       assert.equal(fs.statSync(jsonPath).mode & 0o777, 0o600, entry.name);
       assert.equal(fs.statSync(markdownPath).mode & 0o777, 0o600, entry.name);
     }
+  } finally {
+    if (previousKey === undefined) delete process.env.TYPESAFE_API_KEY;
+    else process.env.TYPESAFE_API_KEY = previousKey;
+  }
+});
+
+test("partial provider failures retain already-returned model metadata", async () => {
+  const outputDir = fs.mkdtempSync(path.join(os.tmpdir(), "jev-aeo-partial-failure-"));
+  const previousKey = process.env.TYPESAFE_API_KEY;
+  process.env.TYPESAFE_API_KEY = "test-only";
+  let calls = 0;
+  try {
+    const exitCode = await run(["--output", outputDir], {
+      createClient: () => ({
+        evaluate: async () => {
+          calls += 1;
+          if (calls === 2) throw new Error("TypeSafe API error 429");
+          return {
+            model: "jev-test-1",
+            answers: Object.fromEntries(RUBRIC.dimensions.map(({ id }) => [id, scoreAnswer()])),
+            usage: { input_tokens: 1 },
+          };
+        },
+      }),
+    });
+    assert.equal(exitCode, 3);
+    const findings = JSON.parse(fs.readFileSync(path.join(outputDir, "findings.json"), "utf8"));
+    assert.equal(findings.provider.modelReturned, "jev-test-1");
+    assert.match(fs.readFileSync(path.join(outputDir, "findings.md"), "utf8"), /Returned model: `jev-test-1`/);
   } finally {
     if (previousKey === undefined) delete process.env.TYPESAFE_API_KEY;
     else process.env.TYPESAFE_API_KEY = previousKey;

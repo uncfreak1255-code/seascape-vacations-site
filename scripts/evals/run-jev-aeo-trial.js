@@ -203,4 +203,4 @@ if (require.main === module) {
   run().then((code) => { process.exitCode = code; }).catch((error) => { console.error(`[fatal] ${error.message}`); process.exitCode = 1; });
 }
 
-module.exports = { fixtureManifest, parseArgs, renderMarkdown, run, validateApprovedFixtures, validateResponseMetadata, writeFindings };
+module.exports = { fixtureManifest, parseArgs, renderMarkdown, run, sourceState, validateApprovedFixtures, validateResponseMetadata, writeFindings };
