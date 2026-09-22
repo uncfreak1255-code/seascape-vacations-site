@@ -1,14 +1,22 @@
 "use strict";
 
-const DEFAULT_MODEL = "jev-1.13.0";
+const DEFAULT_MODEL = "jev-latest";
 const SYSTEM_ONE_URL = "https://api.typesafe.ai/v1/systemone";
 
-function createTypeSafeClient({ apiKey, model = DEFAULT_MODEL, fetchImpl = globalThis.fetch } = {}) {
+function createTypeSafeClient({
+  apiKey,
+  model = DEFAULT_MODEL,
+  fetchImpl = globalThis.fetch,
+  timeoutMs = 30_000,
+} = {}) {
   if (!apiKey) {
     throw new Error("TYPESAFE_API_KEY is required for the Jev AEO trial");
   }
   if (typeof fetchImpl !== "function") {
     throw new Error("A fetch implementation is required for the Jev AEO trial");
+  }
+  if (!Number.isInteger(timeoutMs) || timeoutMs <= 0) {
+    throw new Error("A positive integer timeout is required for the Jev AEO trial");
   }
 
   async function evaluate(state, questions) {
@@ -19,14 +27,19 @@ function createTypeSafeClient({ apiKey, model = DEFAULT_MODEL, fetchImpl = globa
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ state, model, questions }),
+      signal: AbortSignal.timeout(timeoutMs),
     });
 
     if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`TypeSafe API error ${response.status}: ${errorText}`);
+      throw new Error(`TypeSafe API error ${response.status}`);
     }
 
-    const data = await response.json();
+    let data;
+    try {
+      data = await response.json();
+    } catch {
+      throw new Error("TypeSafe API response could not be parsed");
+    }
     if (!data || typeof data !== "object" || !data.answers || !data.usage) {
       throw new Error("TypeSafe API response is missing answers or usage");
     }

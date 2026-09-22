@@ -2,6 +2,8 @@
 
 const test = require("node:test");
 const assert = require("node:assert/strict");
+const fs = require("node:fs");
+const os = require("node:os");
 const path = require("node:path");
 const { spawnSync } = require("node:child_process");
 
@@ -13,6 +15,7 @@ const {
   scoresFromTypeSafeResponse,
 } = require("./lib/jev-aeo.js");
 const { createTypeSafeClient, SYSTEM_ONE_URL } = require("./lib/typesafe-client.js");
+const { renderMarkdown, validateApprovedFixtures } = require("./run-jev-aeo-trial.js");
 
 const RUBRIC = {
   dimensions: Object.keys(AEO_SCORE_LEVELS).map((id) => ({
@@ -70,8 +73,9 @@ test("golden expectation matching keeps high and low bands explicit", () => {
   );
 });
 
-test("input cost uses the published Jev input-token price", () => {
-  assert.equal(inputCostUsd(1_000_000), 0.042);
+test("input cost requires an explicit current price", () => {
+  assert.equal(inputCostUsd(1_000_000), null);
+  assert.equal(inputCostUsd(1_000_000, 0.042), 0.042);
 });
 
 test("TypeSafe client sends the pinned model, state, and questions without exposing the key", async () => {
@@ -92,8 +96,36 @@ test("TypeSafe client sends the pinned model, state, and questions without expos
   assert.equal(calls[0].url, SYSTEM_ONE_URL);
   assert.equal(calls[0].options.headers.Authorization, "Bearer secret-test-key");
   const body = JSON.parse(calls[0].options.body);
-  assert.equal(body.model, "jev-1.13.0");
+  assert.ok(calls[0].options.signal instanceof AbortSignal);
+  assert.equal(body.model, "jev-latest");
   assert.deepEqual(body.state, { copy: "Example" });
+});
+
+test("TypeSafe client does not expose an API error body", async () => {
+  const client = createTypeSafeClient({
+    apiKey: "secret-test-key",
+    fetchImpl: async () => ({ ok: false, status: 401, text: async () => "echoed-secret" }),
+  });
+  await assert.rejects(
+    client.evaluate({ copy: "Example" }, { quality: { type: "score", instructions: "Rate it", criteria: ["bad", "good"] } }),
+    (error) => error.message === "TypeSafe API error 401"
+  );
+});
+
+test("TypeSafe client redacts malformed success-response JSON", async () => {
+  const client = createTypeSafeClient({
+    apiKey: "secret-test-key",
+    fetchImpl: async () => ({
+      ok: true,
+      json: async () => {
+        throw new SyntaxError("Unexpected token secret-from-provider in JSON at position 1");
+      },
+    }),
+  });
+  await assert.rejects(
+    client.evaluate({ copy: "Example" }, { quality: { type: "score", instructions: "Rate it", criteria: ["bad", "good"] } }),
+    (error) => error.message === "TypeSafe API response could not be parsed"
+  );
 });
 
 test("Jev AEO trial fails closed without a TypeSafe key and sends nothing", () => {
@@ -105,4 +137,76 @@ test("Jev AEO trial fails closed without a TypeSafe key and sends nothing", () =
   });
   assert.equal(result.status, 2);
   assert.match(result.stderr, /requires TYPESAFE_API_KEY; no request was sent/);
+});
+
+test("provider-error findings render without a success summary", () => {
+  const markdown = renderMarkdown({
+    status: "PROVIDER_ERROR",
+    generatedAt: "2026-09-22T00:00:00.000Z",
+    source: { commit: "abc", evaluationDigest: "def", dirty: false },
+    credentialLifecycle: "unresolved",
+    provider: { modelRequested: "jev-latest", modelReturned: null },
+    payload: { fixtures: [] },
+    results: [],
+    error: "TypeSafe API error 401",
+  });
+  assert.match(markdown, /Provider failure/);
+  assert.match(markdown, /TypeSafe API error 401/);
+});
+
+test("approved fixture validation rejects extra or non-AEO payload entries", () => {
+  const approved = [
+    { fixture: { name: "aeo-cost-compare-after", lane: "aeo" } },
+    { fixture: { name: "aeo-methodology-before", lane: "aeo" } },
+    { fixture: { name: "aeo-fluff-intro", lane: "aeo" } },
+  ];
+  assert.doesNotThrow(() => validateApprovedFixtures(approved));
+  assert.throws(
+    () => validateApprovedFixtures([...approved, { fixture: { name: "guest-copy", lane: "guest" } }]),
+    /approved AEO payload/
+  );
+});
+
+test("provider and response-validation failures both write private findings artifacts", async () => {
+  const cases = [
+    {
+      name: "provider rejection",
+      evaluate: async () => {
+        throw new Error("TypeSafe API error 429");
+      },
+    },
+    {
+      name: "malformed success response",
+      evaluate: async () => ({ model: "jev-test", answers: {}, usage: { input_tokens: 1 } }),
+    },
+    {
+      name: "success response without returned model",
+      evaluate: async () => ({
+        answers: Object.fromEntries(RUBRIC.dimensions.map(({ id }) => [id, scoreAnswer()])),
+        usage: { input_tokens: 1 },
+      }),
+    },
+  ];
+
+  const previousKey = process.env.TYPESAFE_API_KEY;
+  process.env.TYPESAFE_API_KEY = "test-only";
+  try {
+    for (const entry of cases) {
+      const outputDir = fs.mkdtempSync(path.join(os.tmpdir(), "jev-aeo-provider-error-"));
+      const exitCode = await require("./run-jev-aeo-trial.js").run(
+        ["--output", outputDir],
+        { createClient: () => ({ evaluate: entry.evaluate }) }
+      );
+      assert.equal(exitCode, 3, entry.name);
+      const jsonPath = path.join(outputDir, "findings.json");
+      const markdownPath = path.join(outputDir, "findings.md");
+      assert.equal(JSON.parse(fs.readFileSync(jsonPath, "utf8")).status, "PROVIDER_ERROR", entry.name);
+      assert.match(fs.readFileSync(markdownPath, "utf8"), /Provider failure/, entry.name);
+      assert.equal(fs.statSync(jsonPath).mode & 0o777, 0o600, entry.name);
+      assert.equal(fs.statSync(markdownPath).mode & 0o777, 0o600, entry.name);
+    }
+  } finally {
+    if (previousKey === undefined) delete process.env.TYPESAFE_API_KEY;
+    else process.env.TYPESAFE_API_KEY = previousKey;
+  }
 });

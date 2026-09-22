@@ -1,7 +1,5 @@
 "use strict";
 
-const JEV_PRICE_PER_MILLION_INPUT_TOKENS = 0.042;
-
 const AEO_SCORE_LEVELS = {
   "standalone-answer": [
     "No answer to the page's core question is present.",
@@ -91,13 +89,15 @@ function fixtureMatchesExpectation(fixture, overall) {
   return overall <= fixture.expect.maxOverall;
 }
 
-function inputCostUsd(inputTokens) {
-  return (inputTokens / 1_000_000) * JEV_PRICE_PER_MILLION_INPUT_TOKENS;
+function inputCostUsd(inputTokens, pricePerMillionInputTokens) {
+  if (!Number.isFinite(pricePerMillionInputTokens) || pricePerMillionInputTokens < 0) {
+    return null;
+  }
+  return (inputTokens / 1_000_000) * pricePerMillionInputTokens;
 }
 
 module.exports = {
   AEO_SCORE_LEVELS,
-  JEV_PRICE_PER_MILLION_INPUT_TOKENS,
   buildAeoQuestions,
   fixtureMatchesExpectation,
   inputCostUsd,
