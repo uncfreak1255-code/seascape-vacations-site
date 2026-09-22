@@ -22,7 +22,8 @@ Run a bounded, advisory comparison over the repository's AEO golden fixtures. Th
 3. Run the preview without credentials:
 
    ```bash
-   eval_dir="$(mktemp -d /private/tmp/seascape-aeo-evaluation.XXXXXX)"
+   eval_dir="$(mktemp -d)"
+   printf 'AEO findings directory: %s\n' "$eval_dir"
    npm run eval:aeo:typesafe -- --preview --output "$eval_dir"
    ```
 
@@ -36,20 +37,20 @@ Use an existing `TYPESAFE_API_KEY` supplied through an approved secret channel t
 
 A missing key is a successful fail-closed result: the runner writes `BLOCKED_NO_CREDENTIAL` findings and sends nothing. Creating, saving, rotating, or revoking a key is a separate credential action. If a trial-specific key should be revoked, match its exact dashboard name and verify the post-action dashboard readback; suffixes and clipboard state are not proof.
 
-Before the first provider request for a payload digest, confirm approval to transmit the three fixture copies and incur the bounded provider usage. Reuse that approval only while the fixture digests, provider, judgment count, and spend bound are unchanged.
+Before every billed provider execution, confirm approval to transmit the three fixture copies and incur that run's bounded provider usage. A prior run's approval does not authorize a retry or later evaluation unless a separately approved aggregate cap and expiry cover it.
 
 ## Run
 
-With the approved key already present in the environment:
+With the approved key already present in the environment, replace `<findings-directory>` with the directory printed during the preview (do not rely on a shell variable from an earlier tool call):
 
 ```bash
-npm run eval:aeo:typesafe -- --output "$eval_dir"
+npm run eval:aeo:typesafe -- --output <findings-directory>
 ```
 
 If current official pricing was verified during this run, add:
 
 ```bash
-npm run eval:aeo:typesafe -- --output "$eval_dir" --input-cost-per-million-usd <verified-current-rate>
+npm run eval:aeo:typesafe -- --output <findings-directory> --input-cost-per-million-usd <verified-current-rate>
 ```
 
 Without a verified current rate, leave cost unset. Token usage and latency still remain measured.
