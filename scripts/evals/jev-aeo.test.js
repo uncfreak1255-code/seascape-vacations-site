@@ -17,7 +17,7 @@ const {
 const { createTypeSafeClient, SYSTEM_ONE_URL } = require("./lib/typesafe-client.js");
 const { loadGoldenDir } = require("./lib/golden.js");
 const { loadRubric } = require("./lib/rubric.js");
-const { isolatedGitEnvironment, renderMarkdown, run, sourceState, validateApprovedFixtures, validateApprovedPayload, validateResponseMetadata } = require("./run-jev-aeo-trial.js");
+const { isolatedGitEnvironment, prepareOutputDestination, releaseOutputDestination, renderMarkdown, run, sourceState, validateApprovedFixtures, validateApprovedPayload, validateResponseMetadata } = require("./run-jev-aeo-trial.js");
 
 const RUBRIC = {
   dimensions: Object.keys(AEO_SCORE_LEVELS).map((id) => ({
@@ -215,6 +215,34 @@ test("a read-only findings directory prevents provider-client construction", asy
     assert.equal(clientCreated, false);
   } finally {
     fs.chmodSync(outputPath, 0o700);
+    if (previousKey === undefined) delete process.env.TYPESAFE_API_KEY;
+    else process.env.TYPESAFE_API_KEY = previousKey;
+  }
+});
+
+test("preflight leaves an existing private output directory's permissions unchanged", () => {
+  const outputPath = fs.mkdtempSync(path.join(os.tmpdir(), "jev-aeo-preserve-output-mode-"));
+  const before = fs.statSync(outputPath).mode & 0o777;
+  const destination = prepareOutputDestination(outputPath);
+  try {
+    assert.equal(fs.statSync(outputPath).mode & 0o777, before);
+  } finally {
+    releaseOutputDestination(destination);
+  }
+  assert.equal(fs.statSync(outputPath).mode & 0o777, before);
+});
+
+test("a client-construction failure writes a private no-request finding", async () => {
+  const outputPath = fs.mkdtempSync(path.join(os.tmpdir(), "jev-aeo-client-failure-output-"));
+  const previousKey = process.env.TYPESAFE_API_KEY;
+  process.env.TYPESAFE_API_KEY = "test-only";
+  try {
+    assert.equal(await run(["--output", outputPath], { createClient: () => { throw new Error("test client construction failure"); } }), 2);
+    const findings = JSON.parse(fs.readFileSync(path.join(outputPath, "findings.json"), "utf8"));
+    assert.equal(findings.status, "BLOCKED_CLIENT_SETUP");
+    assert.equal(findings.provider.requestAttempted, false);
+    assert.equal(findings.error.includes("test client construction failure"), false);
+  } finally {
     if (previousKey === undefined) delete process.env.TYPESAFE_API_KEY;
     else process.env.TYPESAFE_API_KEY = previousKey;
   }

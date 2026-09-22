@@ -198,8 +198,6 @@ function prepareOutputDestination(outputDir) {
       if (!file.isFile() || (file.mode & 0o077) !== 0) throw new Error("artifact is not private");
       destination[`${descriptorName}Identity`] = { dev: file.dev, ino: file.ino };
     }
-    destination.directoryMode = verifiedDirectory.mode & 0o777;
-    fs.chmodSync(outputDir, destination.directoryMode & ~0o200);
   } catch {
     for (const descriptor of [destination.jsonDescriptor, destination.markdownDescriptor]) {
       if (typeof descriptor === "number") {
@@ -245,16 +243,9 @@ function writeFindings(destination, findings) {
 }
 
 function releaseOutputDestination(destination) {
-  let restoreError = null;
-  try {
-    if (outputDestinationMatches(destination)) fs.chmodSync(destination.outputDir, destination.directoryMode);
-  } catch (error) {
-    restoreError = error;
-  }
   for (const descriptor of [destination.jsonDescriptor, destination.markdownDescriptor]) {
     fs.closeSync(descriptor);
   }
-  if (restoreError) throw restoreError;
 }
 
 function completedModels(results) {
@@ -294,7 +285,17 @@ async function run(argv = process.argv.slice(2), dependencies = {}) {
       return 2;
     }
     verifyOutputDestination(destination);
-    const client = dependencies.createClient ? dependencies.createClient({ apiKey }) : createTypeSafeClient({ apiKey });
+    let client;
+    try {
+      client = dependencies.createClient ? dependencies.createClient({ apiKey }) : createTypeSafeClient({ apiKey });
+    } catch {
+      base.status = "BLOCKED_CLIENT_SETUP";
+      base.error = "TypeSafe AEO client could not be initialized; no provider request was sent.";
+      const paths = writeFindings(destination, base);
+      verifyOutputDestination(destination);
+      console.error(`[blocked] ${base.error}; findings=${paths.markdownPath}`);
+      return 2;
+    }
     verifyOutputDestination(destination);
     const results = [];
     for (const { fixture } of goldenResults) {
