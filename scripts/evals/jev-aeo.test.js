@@ -15,6 +15,7 @@ const {
   scoresFromTypeSafeResponse,
 } = require("./lib/jev-aeo.js");
 const { createTypeSafeClient, SYSTEM_ONE_URL } = require("./lib/typesafe-client.js");
+const { renderMarkdown, validateApprovedFixtures } = require("./run-jev-aeo-trial.js");
 
 const RUBRIC = {
   dimensions: Object.keys(AEO_SCORE_LEVELS).map((id) => ({
@@ -141,4 +142,69 @@ test("preview writes a hashed payload manifest without sending or requiring a ke
   assert.equal(findings.payload.fixtures.length, 3);
   assert.ok(findings.payload.fixtures.every((fixture) => /^[a-f0-9]{64}$/.test(fixture.copySha256)));
   assert.ok(findings.payload.fixtures.every((fixture) => !("copy" in fixture)));
+});
+
+test("provider-error findings render without a success summary", () => {
+  const markdown = renderMarkdown({
+    status: "PROVIDER_ERROR",
+    generatedAt: "2026-09-22T00:00:00.000Z",
+    source: { commit: "abc", evaluationDigest: "def", dirty: false },
+    credentialLifecycle: "unresolved",
+    provider: { modelRequested: "jev-latest", modelReturned: null },
+    payload: { fixtures: [] },
+    results: [],
+    error: "TypeSafe API error 401",
+  });
+  assert.match(markdown, /Provider failure/);
+  assert.match(markdown, /TypeSafe API error 401/);
+});
+
+test("approved fixture validation rejects extra or non-AEO payload entries", () => {
+  const approved = [
+    { fixture: { name: "aeo-cost-compare-after", lane: "aeo" } },
+    { fixture: { name: "aeo-methodology-before", lane: "aeo" } },
+    { fixture: { name: "aeo-fluff-intro", lane: "aeo" } },
+  ];
+  assert.doesNotThrow(() => validateApprovedFixtures(approved));
+  assert.throws(
+    () => validateApprovedFixtures([...approved, { fixture: { name: "guest-copy", lane: "guest" } }]),
+    /approved AEO payload/
+  );
+});
+
+test("provider and response-validation failures both write private findings artifacts", async () => {
+  const cases = [
+    {
+      name: "provider rejection",
+      evaluate: async () => {
+        throw new Error("TypeSafe API error 429");
+      },
+    },
+    {
+      name: "malformed success response",
+      evaluate: async () => ({ model: "jev-test", answers: {}, usage: { input_tokens: 1 } }),
+    },
+  ];
+
+  const previousKey = process.env.TYPESAFE_API_KEY;
+  process.env.TYPESAFE_API_KEY = "test-only";
+  try {
+    for (const entry of cases) {
+      const outputDir = fs.mkdtempSync(path.join(os.tmpdir(), "jev-aeo-provider-error-"));
+      const exitCode = await require("./run-jev-aeo-trial.js").run(
+        ["--output", outputDir],
+        { createClient: () => ({ evaluate: entry.evaluate }) }
+      );
+      assert.equal(exitCode, 3, entry.name);
+      const jsonPath = path.join(outputDir, "findings.json");
+      const markdownPath = path.join(outputDir, "findings.md");
+      assert.equal(JSON.parse(fs.readFileSync(jsonPath, "utf8")).status, "PROVIDER_ERROR", entry.name);
+      assert.match(fs.readFileSync(markdownPath, "utf8"), /Provider failure/, entry.name);
+      assert.equal(fs.statSync(jsonPath).mode & 0o777, 0o600, entry.name);
+      assert.equal(fs.statSync(markdownPath).mode & 0o777, 0o600, entry.name);
+    }
+  } finally {
+    if (previousKey === undefined) delete process.env.TYPESAFE_API_KEY;
+    else process.env.TYPESAFE_API_KEY = previousKey;
+  }
 });

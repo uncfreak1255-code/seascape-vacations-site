@@ -22,6 +22,11 @@ const {
 const projectRoot = path.resolve(__dirname, "..", "..");
 const config = JSON.parse(fs.readFileSync(path.join(__dirname, "evals.config.json"), "utf8"));
 const lane = config.lanes.find((entry) => entry.id === "aeo");
+const APPROVED_FIXTURE_NAMES = [
+  "aeo-cost-compare-after",
+  "aeo-fluff-intro",
+  "aeo-methodology-before",
+];
 
 function parseArgs(argv) {
   const options = { preview: false, outputDir: null, pricePerMillionInputTokens: null };
@@ -58,7 +63,21 @@ function loadInputs() {
   if (invalid.length > 0 || goldenResults.length === 0) {
     throw new Error(`AEO golden fixtures are missing or invalid (${invalid.length} invalid)`);
   }
+  validateApprovedFixtures(goldenResults);
   return { rubric, goldenResults, questions: buildAeoQuestions(rubric) };
+}
+
+function validateApprovedFixtures(goldenResults) {
+  const actualNames = goldenResults.map(({ fixture }) => fixture.name).sort();
+  const exactNames =
+    actualNames.length === APPROVED_FIXTURE_NAMES.length &&
+    actualNames.every((name, index) => name === APPROVED_FIXTURE_NAMES[index]);
+  const exactLane = goldenResults.every(({ fixture }) => fixture.lane === "aeo");
+  if (!exactNames || !exactLane) {
+    throw new Error(
+      `AEO fixtures do not match the approved AEO payload: expected ${APPROVED_FIXTURE_NAMES.join(", ")}`
+    );
+  }
 }
 
 function sourceState(goldenResults) {
@@ -128,7 +147,7 @@ function renderMarkdown(findings) {
     ),
   ];
 
-  if (findings.results) {
+  if (findings.results?.length > 0) {
     lines.push(
       "",
       "## Results",
@@ -138,7 +157,12 @@ function renderMarkdown(findings) {
       ...findings.results.map(
         (result) =>
           `| ${result.name} | ${result.expectedBand} | ${result.overall} | ${result.matches ? "yes" : "no"} | ${result.meanConfidence.toFixed(3)} | ${result.inputTokens} | ${result.latencyMs} ms |`
-      ),
+      )
+    );
+  }
+
+  if (findings.summary) {
+    lines.push(
       "",
       "## Summary",
       "",
@@ -150,6 +174,10 @@ function renderMarkdown(findings) {
       "",
       findings.summary.note
     );
+  }
+
+  if (findings.error) {
+    lines.push("", "## Provider failure", "", findings.error);
   }
   return `${lines.join("\n")}\n`;
 }
@@ -165,7 +193,7 @@ function writeFindings(outputDir, findings) {
   return { jsonPath, markdownPath };
 }
 
-async function run(argv = process.argv.slice(2)) {
+async function run(argv = process.argv.slice(2), dependencies = {}) {
   const options = parseArgs(argv);
   if (options.help) {
     console.log("Usage: npm run eval:aeo:typesafe -- [--preview] [--output DIR] [--input-cost-per-million-usd RATE]");
@@ -199,20 +227,42 @@ async function run(argv = process.argv.slice(2)) {
     return 0;
   }
 
-  if (!process.env.TYPESAFE_API_KEY) {
+  const apiKey = process.env.TYPESAFE_API_KEY;
+  if (!apiKey) {
     base.status = "BLOCKED_NO_CREDENTIAL";
     const paths = writeFindings(outputDir, base);
     console.error(`[blocked] TypeSafe AEO evaluation requires TYPESAFE_API_KEY; no request was sent; findings=${paths.markdownPath}`);
     return 2;
   }
 
-  const client = createTypeSafeClient({ apiKey: process.env.TYPESAFE_API_KEY });
+  const client = dependencies.createClient
+    ? dependencies.createClient({ apiKey })
+    : createTypeSafeClient({ apiKey });
   const results = [];
   for (const { fixture } of goldenResults) {
     const startedAt = performance.now();
-    let response;
     try {
-      response = await client.evaluate({ copy: fixture.copy }, questions);
+      const response = await client.evaluate({ copy: fixture.copy }, questions);
+      const latencyMs = Math.round(performance.now() - startedAt);
+      const { scores, confidence } = scoresFromTypeSafeResponse(response, rubric);
+      const scored = computeOverall(scores, rubric, fixture.copy);
+      const inputTokens = response.usage.input_tokens;
+      const costUsd = inputCostUsd(inputTokens, options.pricePerMillionInputTokens);
+      const matches = fixtureMatchesExpectation(fixture, scored.overall);
+      const confidenceValues = Object.values(confidence);
+      results.push({
+        name: fixture.name,
+        expectedBand: fixture.expect.band,
+        overall: scored.overall,
+        matches,
+        scores,
+        confidence,
+        meanConfidence: confidenceValues.reduce((sum, value) => sum + value, 0) / confidenceValues.length,
+        inputTokens,
+        costUsd,
+        latencyMs,
+        model: response.model,
+      });
     } catch (error) {
       base.status = "PROVIDER_ERROR";
       base.results = results;
@@ -221,26 +271,6 @@ async function run(argv = process.argv.slice(2)) {
       console.error(`[provider-error] ${error.message}; findings=${paths.markdownPath}`);
       return 3;
     }
-    const latencyMs = Math.round(performance.now() - startedAt);
-    const { scores, confidence } = scoresFromTypeSafeResponse(response, rubric);
-    const scored = computeOverall(scores, rubric, fixture.copy);
-    const inputTokens = response.usage.input_tokens;
-    const costUsd = inputCostUsd(inputTokens, options.pricePerMillionInputTokens);
-    const matches = fixtureMatchesExpectation(fixture, scored.overall);
-    const confidenceValues = Object.values(confidence);
-    results.push({
-      name: fixture.name,
-      expectedBand: fixture.expect.band,
-      overall: scored.overall,
-      matches,
-      scores,
-      confidence,
-      meanConfidence: confidenceValues.reduce((sum, value) => sum + value, 0) / confidenceValues.length,
-      inputTokens,
-      costUsd,
-      latencyMs,
-      model: response.model,
-    });
   }
 
   base.status = "COMPLETE_SHADOW_ONLY";
@@ -272,4 +302,11 @@ if (require.main === module) {
   });
 }
 
-module.exports = { fixtureManifest, parseArgs, renderMarkdown, run, writeFindings };
+module.exports = {
+  fixtureManifest,
+  parseArgs,
+  renderMarkdown,
+  run,
+  validateApprovedFixtures,
+  writeFindings,
+};
