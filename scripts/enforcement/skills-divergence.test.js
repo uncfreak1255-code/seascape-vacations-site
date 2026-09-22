@@ -16,6 +16,7 @@ const REPO_ROOT = path.resolve(__dirname, "..", "..");
 
 const DESCRIPTION_TRIGGERS = {
   "openseo-review": ["OpenSEO", "citation", "rank-tracking"],
+  "seascape-aeo-evaluation": ["TypeSafe", "AEO fixture", "findings"],
   "accessibility": [
     "accessibility",
     "WCAG",
@@ -243,7 +244,7 @@ test("plugin manifest version and advertised skill count match the marketplace",
   const skillCount = listSkillDirs(path.join(REPO_ROOT, ".agents", "skills")).length;
   const numberWords = [
     "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine",
-    "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen"
+    "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen"
   ];
 
   assert.ok(marketplacePlugin, `${pluginManifest.name} must be listed in the marketplace`);
