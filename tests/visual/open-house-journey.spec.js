@@ -4,6 +4,7 @@ const properties = require('../../src/_data/properties-fallback.json');
 const { registerStableNetwork, prepareFullPageScreenshot } = require('./test-helpers');
 const itinerary = 'arrive=2026-11-07&depart=2026-11-14&guests=8';
 const availabilityStatus = 'Availability, fees and cancellation terms are confirmed on our secure booking page.';
+const datesOpenStatus = 'These dates are open. Price and cancellation terms are on the booking page.';
 async function visit(page, route) {
   await registerStableNetwork(page);
   await page.clock.setFixedTime(new Date('2026-09-04T16:00:00Z'));
@@ -109,7 +110,7 @@ test('invalid dates recover and incomplete edits do not open checkout',async({pa
   await page.getByLabel('Departure',{exact:true}).fill('2026-11-14');
   await page.getByLabel('Guests',{exact:true}).focus();
   await expect(page.locator('[data-property-checkout]')).toBeVisible();
-  await expect(page.locator('.g-form-status')).toHaveText(availabilityStatus);
+  await expect(page.locator('.g-form-status')).toHaveText(datesOpenStatus);
   await page.getByLabel('Arrival',{exact:true}).fill('');
   await page.getByLabel('Departure',{exact:true}).fill('');
   await page.getByLabel('Guests',{exact:true}).focus();
@@ -177,5 +178,5 @@ test('an incomplete edited trip cannot use the secondary checkout shortcut',asyn
   await page.getByLabel('Guests',{exact:true}).focus();
   await expect(page.locator('[data-property-checkout]')).toBeVisible();
   expect(quoteParams(await page.locator('[data-property-checkout]').getAttribute('href'))).toEqual({start:'2026-11-07',end:'2026-11-15',guests:'8'});
-  await expect(page.locator('.g-form-status')).toHaveText(availabilityStatus);
+  await expect(page.locator('.g-form-status')).toHaveText(datesOpenStatus);
 });
