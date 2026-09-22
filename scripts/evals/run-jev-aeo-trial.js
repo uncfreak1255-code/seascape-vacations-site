@@ -91,7 +91,9 @@ function fixtureManifest(goldenResults, questionCount) {
 }
 
 function validateResponseMetadata(response) {
-  if (typeof response?.model !== "string" || response.model.trim() === "") throw new Error("TypeSafe response is missing returned model");
+  if (typeof response?.model !== "string" || response.model.trim() === "") {
+    throw new Error("TypeSafe response is missing returned model");
+  }
 }
 
 function formatUsd(value) { return value === null ? "not calculated" : `$${value.toFixed(9)}`; }
