@@ -15,7 +15,9 @@ const {
   scoresFromTypeSafeResponse,
 } = require("./lib/jev-aeo.js");
 const { createTypeSafeClient, SYSTEM_ONE_URL } = require("./lib/typesafe-client.js");
-const { isolatedGitEnvironment, renderMarkdown, run, sourceState, validateApprovedFixtures, validateResponseMetadata } = require("./run-jev-aeo-trial.js");
+const { loadGoldenDir } = require("./lib/golden.js");
+const { loadRubric } = require("./lib/rubric.js");
+const { isolatedGitEnvironment, renderMarkdown, run, sourceState, validateApprovedFixtures, validateApprovedPayload, validateResponseMetadata } = require("./run-jev-aeo-trial.js");
 
 const RUBRIC = {
   dimensions: Object.keys(AEO_SCORE_LEVELS).map((id) => ({
@@ -192,6 +194,15 @@ test("approved fixture validation rejects extra or non-AEO payload entries", () 
   );
 });
 
+test("approved payload validation rejects changed fixture copy or rubric questions", () => {
+  const goldenResults = loadGoldenDir(path.join(__dirname, "golden", "aeo"));
+  const questions = buildAeoQuestions(loadRubric(path.join(__dirname, "..", "..", "docs", "process", "aeo-citability-rubric.md")));
+  assert.doesNotThrow(() => validateApprovedPayload(goldenResults, questions));
+  const changedCopy = goldenResults.map((entry, index) => index === 0 ? { ...entry, fixture: { ...entry.fixture, copy: `${entry.fixture.copy} changed` } } : entry);
+  assert.throws(() => validateApprovedPayload(changedCopy, questions), /approved external payload/);
+  assert.throws(() => validateApprovedPayload(goldenResults, { ...questions, extra: { type: "score" } }), /approved external payload/);
+});
+
 test("evaluation fingerprint includes every loaded scoring dependency", () => {
   const state = sourceState([]);
   for (const file of [
@@ -339,6 +350,30 @@ test("provider failures never copy provider text into findings or stderr", async
     assert.equal(stderr.join("\n").includes(marker), false);
   } finally {
     console.error = originalError;
+    if (previousKey === undefined) delete process.env.TYPESAFE_API_KEY;
+    else process.env.TYPESAFE_API_KEY = previousKey;
+  }
+});
+
+test("completed shadow comparisons exit zero even when a fixture misses", async () => {
+  const outputDir = fs.mkdtempSync(path.join(os.tmpdir(), "jev-aeo-shadow-mismatch-"));
+  const previousKey = process.env.TYPESAFE_API_KEY;
+  process.env.TYPESAFE_API_KEY = "test-only";
+  try {
+    const exitCode = await run(["--output", outputDir], {
+      createClient: () => ({
+        evaluate: async () => ({
+          model: "jev-test",
+          answers: Object.fromEntries(RUBRIC.dimensions.map(({ id }) => [id, scoreAnswer(0)])),
+          usage: { input_tokens: 1 },
+        }),
+      }),
+    });
+    assert.equal(exitCode, 0);
+    const findings = JSON.parse(fs.readFileSync(path.join(outputDir, "findings.json"), "utf8"));
+    assert.equal(findings.status, "COMPLETE_SHADOW_ONLY");
+    assert.ok(findings.summary.matches < findings.summary.fixtures);
+  } finally {
     if (previousKey === undefined) delete process.env.TYPESAFE_API_KEY;
     else process.env.TYPESAFE_API_KEY = previousKey;
   }

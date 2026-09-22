@@ -16,7 +16,12 @@ const { buildAeoQuestions, fixtureMatchesExpectation, inputCostUsd, scoresFromTy
 const projectRoot = path.resolve(__dirname, "..", "..");
 const config = JSON.parse(fs.readFileSync(path.join(__dirname, "evals.config.json"), "utf8"));
 const lane = config.lanes.find((entry) => entry.id === "aeo");
-const APPROVED_FIXTURE_NAMES = ["aeo-cost-compare-after", "aeo-fluff-intro", "aeo-methodology-before"];
+const APPROVED_FIXTURES = {
+  "aeo-cost-compare-after": { copyBytes: 157, copySha256: "f985c4017189cca3a359109f955e7d7a3cdff0eb3f48f8907855894116106940" },
+  "aeo-fluff-intro": { copyBytes: 120, copySha256: "3e57d5ba64dc392a08a62a51e5700c0db80a5dc8f163afedac1b80242997fefa" },
+  "aeo-methodology-before": { copyBytes: 143, copySha256: "01ce81d7d089b6e635d7166065a8f0511e774b20d2c615b0526c2d349335061a" },
+};
+const APPROVED_QUESTIONS_SHA256 = "e26a0a091a61ee69d1add9e527fd4f0c170e07cc8309ad6546ee45592e99e4b5";
 
 function parseArgs(argv) {
   const options = { preview: false, outputDir: null, pricePerMillionInputTokens: null };
@@ -41,9 +46,27 @@ function defaultOutputDir() {
 
 function validateApprovedFixtures(goldenResults) {
   const actualNames = goldenResults.map(({ fixture }) => fixture.name).sort();
-  const exactNames = actualNames.length === APPROVED_FIXTURE_NAMES.length && actualNames.every((name, index) => name === APPROVED_FIXTURE_NAMES[index]);
+  const approvedNames = Object.keys(APPROVED_FIXTURES).sort();
+  const exactNames = actualNames.length === approvedNames.length && actualNames.every((name, index) => name === approvedNames[index]);
   if (!exactNames || !goldenResults.every(({ fixture }) => fixture.lane === "aeo")) {
-    throw new Error(`AEO fixtures do not match the approved AEO payload: expected ${APPROVED_FIXTURE_NAMES.join(", ")}`);
+    throw new Error(`AEO fixtures do not match the approved AEO payload: expected ${approvedNames.join(", ")}`);
+  }
+}
+
+function questionSha256(questions) {
+  return crypto.createHash("sha256").update(JSON.stringify(questions)).digest("hex");
+}
+
+function validateApprovedPayload(goldenResults, questions) {
+  validateApprovedFixtures(goldenResults);
+  const manifest = fixtureManifest(goldenResults, Object.keys(questions).length);
+  const fixturesMatch = manifest.every((fixture) => (
+    fixture.judgmentCount === 5
+    && fixture.copyBytes === APPROVED_FIXTURES[fixture.name]?.copyBytes
+    && fixture.copySha256 === APPROVED_FIXTURES[fixture.name]?.copySha256
+  ));
+  if (!fixturesMatch || questionSha256(questions) !== APPROVED_QUESTIONS_SHA256) {
+    throw new Error("AEO fixtures or rubric-derived questions do not match the approved external payload; run preview and update the reviewed bounds before transmission");
   }
 }
 
@@ -52,8 +75,9 @@ function loadInputs() {
   const goldenResults = loadGoldenDir(path.join(projectRoot, lane.golden));
   const invalid = goldenResults.filter((entry) => !entry.ok);
   if (invalid.length > 0 || goldenResults.length === 0) throw new Error(`AEO golden fixtures are missing or invalid (${invalid.length} invalid)`);
-  validateApprovedFixtures(goldenResults);
-  return { rubric, goldenResults, questions: buildAeoQuestions(rubric) };
+  const questions = buildAeoQuestions(rubric);
+  validateApprovedPayload(goldenResults, questions);
+  return { rubric, goldenResults, questions };
 }
 
 function isolatedGitEnvironment() {
@@ -211,11 +235,11 @@ async function run(argv = process.argv.slice(2), dependencies = {}) {
   };
   const paths = writeFindings(outputDir, base);
   console.log(`[complete] ${JSON.stringify({ ...base.summary, ...paths })}`);
-  return base.summary.matches === base.summary.fixtures ? 0 : 1;
+  return 0;
 }
 
 if (require.main === module) {
   run().then((code) => { process.exitCode = code; }).catch((error) => { console.error(`[fatal] ${error.message}`); process.exitCode = 1; });
 }
 
-module.exports = { fixtureManifest, isolatedGitEnvironment, parseArgs, renderMarkdown, run, sourceState, validateApprovedFixtures, validateResponseMetadata, writeFindings };
+module.exports = { fixtureManifest, isolatedGitEnvironment, parseArgs, renderMarkdown, run, sourceState, validateApprovedFixtures, validateApprovedPayload, validateResponseMetadata, writeFindings };
