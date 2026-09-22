@@ -85,6 +85,48 @@ const OWNER_JARGON_PATTERNS = [
   /\bpricing discipline\b/i
 ];
 
+// Owner-facing copy never names the operating stack. Prospective owners have
+// booked calls to extract the toolchain and then self-manage (Sawyer, 2026-09-17),
+// so the capability is described and the vendor is not. Guest-side functional
+// mentions (checkout, the booking widget, CDN hosts) are out of scope by design:
+// OWNER_CONTENT_PATTERNS only matches owner routes.
+const OWNER_VENDOR_DISCLOSURE_PATTERNS = [
+  /\bhostaway\b/i,
+  /\bpricelabs\b/i,
+  /\bprice labs\b/i,
+  /\bguesty\b/i,
+  /\blodgify\b/i,
+  /\bownerrez\b/i
+];
+// Deliberately NOT banned: "wheelhouse", "hospitable" and "property management
+// system" are ordinary English ("in our wheelhouse", "a hospitable welcome") and
+// would fail the gate on innocent copy. The rule is about naming the vendor.
+
+// Vendor names legitimately appear in non-reader fields (photo CDN hosts are on
+// bookingenginecdn.hostaway.com), so the seoPages arm scans reader-visible
+// strings only and skips URLs.
+const NON_READER_SEO_FIELDS = new Set(["slug", "canonical", "image", "ogImage", "url", "ctaPath", "benchmarkUrl", "sourceUrl"]);
+function readerVisibleSeoText(entry) {
+  const parts = [];
+  const walk = (key, value) => {
+    if (typeof value === "string") {
+      if (NON_READER_SEO_FIELDS.has(key)) return;
+      if (/^(https?:)?\/\//i.test(value.trim())) return;
+      parts.push(value);
+      return;
+    }
+    if (Array.isArray(value)) {
+      value.forEach((item) => walk(key, item));
+      return;
+    }
+    if (value && typeof value === "object") {
+      for (const [k, v] of Object.entries(value)) walk(k, v);
+    }
+  };
+  walk("", entry);
+  return parts.join("\n");
+}
+
 const INTERNAL_PROCESS_PATTERNS = [
   /\bapproved benchmark\b/i,
   /\bapproved inputs?\b/i,
@@ -734,6 +776,15 @@ function lintPublicContent(relativePath, source, requiredLinks, options = {}) {
       }
     }
 
+    for (const pattern of OWNER_VENDOR_DISCLOSURE_PATTERNS) {
+      const match = visibleText.match(pattern);
+      if (match) {
+        violations.push(
+          `${relativePath}: owner copy must not name the operating stack ("${match[0]}"); describe the capability instead`
+        );
+      }
+    }
+
     const youMatches = visibleText.match(/\b(you|your)\b/gi) || [];
     const detachedOwnerMatches = visibleText.match(/\bthe owner\b(?!-)/gi) || [];
 
@@ -1241,11 +1292,21 @@ test("owner seo page data avoids banned owner jargon", () => {
 
   for (const entry of seoPages.owner) {
     const visibleText = JSON.stringify(entry);
+    const readerText = readerVisibleSeoText(entry);
 
     for (const pattern of OWNER_JARGON_PATTERNS) {
       const match = visibleText.match(pattern);
       if (match) {
         violations.push(`${entry.slug}: banned owner jargon "${match[0]}"`);
+      }
+    }
+
+    for (const pattern of OWNER_VENDOR_DISCLOSURE_PATTERNS) {
+      const match = readerText.match(pattern);
+      if (match) {
+        violations.push(
+          `${entry.slug}: owner copy must not name the operating stack ("${match[0]}")`
+        );
       }
     }
   }

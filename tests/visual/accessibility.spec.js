@@ -42,9 +42,9 @@ test("property-management keeps a single unique main landmark", async ({ page })
 
   const mains = page.locator("main");
   await expect(mains).toHaveCount(1);
-  await expect(mains).toHaveClass(/main-content/);
-  await expect(page.locator(".owner-field")).toHaveCount(1);
-  assert.equal(await page.locator(".owner-field").evaluate((node) => node.tagName), "DIV");
+  await expect(mains).toHaveAttribute("id", "main");
+  await expect(page.locator(".g-owner")).toHaveCount(1);
+  assert.equal(await page.locator(".g-owner").evaluate((node) => node.tagName), "DIV");
 
   const scan = await new AxeBuilder({ page })
     .withRules(["landmark-main-is-top-level", "landmark-no-duplicate-main", "landmark-unique"])
@@ -64,20 +64,17 @@ test("named catalog, gallery, and owner regions are not role-less aria-label hos
   await expect(page.locator(".property-trip-context")).toHaveAccessibleName("Your trip");
 
   await gotoMarketingRoute(page, ownerHub);
-  await expect(page.locator(".owner-field-ticker-dots")).toHaveRole("group");
-  await expect(page.locator(".owner-field-ticker-dots")).toHaveAccessibleName("Fee guide fact selector");
-  await expect(page.locator(".owner-field-proof-strip")).toHaveRole("group");
-  await expect(page.locator(".owner-field-proof-strip")).toHaveAccessibleName("Fee comparison sources");
-  await expect(page.locator(".owner-field-map")).toHaveRole("region");
-  await expect(page.locator(".owner-field-map")).toHaveAccessibleName("Bradenton Sarasota corridor portfolio map");
-  await expect(page.locator(".owner-field-mega")).toHaveRole("img");
-  await expect(page.locator(".owner-field-mega")).toHaveAccessibleName("Three fees are not one comparison");
-  await expect(page.locator(".owner-field-steps")).toHaveRole("navigation");
-  await expect(page.locator(".owner-field-steps")).toHaveAccessibleName("Form progress");
-  await expect(page.locator(".owner-field-form-proof")).toHaveRole("group");
-  await expect(page.locator(".owner-field-form-proof")).toHaveAccessibleName("Owner review proof points");
-  await expect(page.locator(".owner-field-phrase")).toHaveRole("group");
-  await expect(page.locator(".owner-field-phrase")).toHaveAccessibleName("pool home");
+  await expect(page.locator(".g-owner-steps")).toHaveRole("navigation");
+  await expect(page.locator(".g-owner-steps")).toHaveAccessibleName("Form progress");
+  await expect(page.locator(".g-owner-review")).toHaveRole("complementary");
+  await expect(page.locator(".g-owner-review")).toHaveAccessibleName("Send the listing. We send back a one-page review.");
+  await page.locator("[data-form-next]").first().click();
+  await expect(page.locator(".g-owner-choices")).toHaveRole("group");
+  await expect(page.locator(".g-owner-choices")).toHaveAccessibleName("What feels off");
+  const firstChip = page.locator(".g-owner-choice").first();
+  await expect(firstChip).toHaveAttribute("aria-pressed", "false");
+  await firstChip.click();
+  await expect(firstChip).toHaveAttribute("aria-pressed", "true");
 
   const scan = await new AxeBuilder({ page })
     .withRules(["aria-allowed-attr", "aria-prohibited-attr", "aria-roles"])

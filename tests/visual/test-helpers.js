@@ -110,36 +110,14 @@ async function stabilizeVisualFreshnessCopy(page) {
 }
 
 async function stabilizePropertyManagementVisualState(page, routeConfig) {
+  // The Waterline rebuild removed the phrase rotator and ticker this used to pin
+  // ([data-owner-phrases], .sv-pm-h1-phrase-item, [data-owner-ticker],
+  // [data-ticker-dot]). It null-guarded every lookup, so it kept passing while
+  // stabilizing nothing -- a dead stabilizer that read as live coverage. The
+  // route's remaining motion is pinned by screenshot.css instead.
   if (routeConfig.slug !== "property-management") {
     return;
   }
-
-  await page.evaluate(() => {
-    const phraseRoot = document.querySelector("[data-owner-phrases]");
-    if (phraseRoot) {
-      const phrases = Array.from(phraseRoot.querySelectorAll(".sv-pm-h1-phrase-item"));
-      const activeIndex = Math.min(1, Math.max(phrases.length - 1, 0));
-      phrases.forEach((phrase, index) => {
-        phrase.classList.toggle("is-active", index === activeIndex);
-      });
-      if (phrases[activeIndex]) {
-        phraseRoot.setAttribute("aria-label", phrases[activeIndex].textContent || "");
-      }
-    }
-
-    const ticker = document.querySelector("[data-owner-ticker]");
-    if (ticker) {
-      const tickerItems = Array.from(ticker.querySelectorAll(".sv-pm-ticker-fact"));
-      const tickerDots = Array.from(ticker.querySelectorAll("[data-ticker-dot]"));
-      const activeIndex = Math.min(1, Math.max(tickerItems.length - 1, 0));
-      tickerItems.forEach((item, index) => {
-        item.classList.toggle("is-active", index === activeIndex);
-      });
-      tickerDots.forEach((dot, index) => {
-        dot.classList.toggle("is-active", index === activeIndex);
-      });
-    }
-  });
 }
 
 async function gotoMarketingRoute(page, routeConfig) {

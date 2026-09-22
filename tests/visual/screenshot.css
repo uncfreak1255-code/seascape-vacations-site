@@ -30,15 +30,30 @@ html[data-visual-route="property-management"] *::after {
   transition: none !important;
 }
 
-html[data-visual-route="property-management"] .owner-hero-media,
-html[data-visual-route="property-management"] .owner-field-market-card,
-html[data-visual-route="property-management"] .owner-field-form-step {
-  animation: none !important;
-  transform: none !important;
+/* The owner page's mobile bar is position:fixed and toggles on scroll; pin it
+   in flow so a full-page capture is deterministic. `absolute` did NOT do that:
+   with no positioned ancestor the containing block is the initial containing
+   block, so bottom:0 painted the bar partway down the full-page capture and
+   masked ~72px of the review panel from the gate. `static` pins it in flow. */
+html[data-visual-route="property-management"] .g-owner-sticky {
+  position: static !important;
+  bottom: auto !important;
+  left: auto !important;
+  right: auto !important;
+  transition: none !important;
 }
 
 .sticky-mobile-cta {
   position: absolute !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
+}
+
+/* The owner landers stamp "Updated <date>" from the source file's last git commit,
+   so the text changes every time seoPages.json is committed on a new day. That made
+   the baseline depend on WHEN it was regenerated: a golden captured before committing
+   read the previous commit's date and failed in CI against the new one. Hide the
+   stamp so the baseline tracks layout rather than the calendar. */
+.g-updated-stamp {
+  visibility: hidden !important;
 }

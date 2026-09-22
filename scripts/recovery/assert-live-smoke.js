@@ -14,6 +14,11 @@ const targets = [
   { path: "/guides/anna-maria-island-vs-siesta-key/", status: 200 },
   { path: "/guides/best-vacation-rental-companies-ami/", status: 200 },
   { path: "/guides/srq-airport-to-anna-maria-island/", status: 200 },
+  { path: "/stays/sarasota-vacation-rentals-with-pool/", status: 200 },
+  { path: "/property-management/vacation-rental-taxes-florida/", status: 200 },
+  { path: "/property-management/vacation-rental-insurance-florida/", status: 200 },
+  { path: "/contact", status: 301, followRedirects: false },
+  { path: "/guides/bradenton-vs-sarasota-cost-of-living/", status: 301, followRedirects: false },
   { path: "/property-owners/", status: 301, followRedirects: false },
   { path: "/hero-mobile.webp", status: 200 },
   { path: "/hero-optimized.webp", status: 200 },
@@ -203,18 +208,17 @@ function validateTargetResponse(target, response) {
   }
 
   if (target.path === "/property-management/") {
-    const hasProofFirstOwnerSurface =
-      response.body.includes("Before you renew,")
-      && response.body.includes("actually keep?")
-      && response.body.includes("15.5%")
-      && response.body.includes("2.9% + 30¢")
-      && response.body.includes("Property-specific")
-      && response.body.includes("The Fee Comparison")
-      && response.body.includes("Request Your Revenue Review")
+    const hasOwnerOfferSurface =
+      response.body.includes("Six homes. One local team.")
+      && response.body.includes("What we do for your home")
+      && response.body.includes("Why a six-home operator")
+      && response.body.includes("The homes we manage")
+      && response.body.includes("Request your 48-hour revenue review")
+      && /name=["']owner-revenue-teardown["']/.test(response.body)
       && response.body.includes('href="#owner-cta"');
 
-    if (!hasProofFirstOwnerSurface) {
-      throw new Error("property-management hub is missing the proof-first owner revenue surface");
+    if (!hasOwnerOfferSurface) {
+      throw new Error("property-management hub is missing the Waterline owner offer surface");
     }
 
     if (
@@ -223,9 +227,58 @@ function validateTargetResponse(target, response) {
       || response.body.includes("Request a property evaluation")
       || response.body.includes("$119,923")
       || response.body.includes("13.4%")
+      || response.body.includes("Reply guaranteed")
+      || response.body.includes("The Fee Comparison")
+      || response.body.includes("Before you renew,")
     ) {
       throw new Error("property-management hub is serving retired owner copy");
     }
+
+    requireExcludes(target.path, response.body, [
+      "/property-management/vacation-rental-taxes-florida/",
+      "/property-management/vacation-rental-insurance-florida/",
+      "Average Guest Rating"
+    ]);
+  }
+
+  if (target.path === "/contact" && response.location !== "/#contact") {
+    throw new Error(`/contact expected Location /#contact, got ${response.location || "no Location header"}`);
+  }
+
+  if (
+    target.path === "/guides/bradenton-vs-sarasota-cost-of-living/"
+    && response.location !== "/guides/bradenton-vs-sarasota/"
+  ) {
+    throw new Error(`retired cost page has unexpected redirect target: ${response.location || "no Location header"}`);
+  }
+
+  if (target.path === "/stays/sarasota-vacation-rentals-with-pool/") {
+    requireIncludes(target.path, response.body, [
+      "St. Armands Circle is also reached by car",
+      "are reached by car from Sarasota Luxe"
+    ]);
+    requireExcludes(target.path, response.body, [
+      "short drive or walk",
+      "walkable to downtown",
+      "walkable to St. Armands",
+      "walking distance"
+    ]);
+  }
+
+  if (target.path === "/property-management/vacation-rental-taxes-florida/") {
+    requireIncludes(target.path, response.body, [
+      '<meta name="robots" content="noindex, nofollow">',
+      "This tax guide is not available for reliance.",
+      "Please consult a qualified tax professional."
+    ]);
+  }
+
+  if (target.path === "/property-management/vacation-rental-insurance-florida/") {
+    requireIncludes(target.path, response.body, [
+      '<meta name="robots" content="noindex, nofollow">',
+      "This insurance guide is not available for reliance.",
+      "Please consult a licensed insurance professional."
+    ]);
   }
 
   if (target.path === "/stays/") {

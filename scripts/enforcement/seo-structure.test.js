@@ -298,15 +298,15 @@ test("about page exists as a real route and homepage links point to it", () => {
   assert.equal(redirects.includes("/about-us   /about-us/   301"), true);
 });
 
-test("property owners page leads with sourced fee definitions instead of unsupported portfolio proof", () => {
+test("property owners page leads with the owner offer instead of third-party fee definitions or unsupported portfolio proof", () => {
   const ownerPage = fs.readFileSync(path.join(projectRoot, "src", "property-management", "index.njk"), "utf8");
 
-  assert.equal(ownerPage.includes("Before you renew,"), true);
-  assert.equal(ownerPage.includes("actually keep?"), true);
-  assert.equal(ownerPage.includes("15.5%"), true);
-  assert.equal(ownerPage.includes("2.9% + 30¢"), true);
-  assert.equal(ownerPage.includes("Property-specific"), true);
-  assert.equal(ownerPage.includes("Not equivalent"), true);
+  assert.equal(ownerPage.includes("Six homes. One local team."), true);
+  assert.equal(ownerPage.includes("What we do for your home"), true);
+  assert.equal(ownerPage.includes("The homes we manage"), true);
+  assert.equal(ownerPage.includes("15.5%"), false);
+  assert.equal(ownerPage.includes("2.9% + 30¢"), false);
+  assert.equal(ownerPage.includes("Reply guaranteed"), false);
   assert.equal(ownerPage.includes("$119,923"), false);
   assert.equal(ownerPage.includes("13.4%"), false);
   assert.equal(ownerPage.includes("What Is Vacation Rental Property Management?"), false);
@@ -353,14 +353,31 @@ test("retired duplicate guides are excluded and redirect to canonical guide path
     false,
     "Expected the retired duplicate comparison source route to be removed entirely"
   );
+  assert.equal(
+    fs.existsSync(
+      path.join(projectRoot, "src", "guides", "2026-bradenton-vacation-rental-market-analysis.html")
+    ),
+    false,
+    "Expected the fabricated Bradenton market analysis source to be removed entirely"
+  );
 
   for (const redirectRule of [
     "/guides/anna-maria-island-vacation-cost-guide-2026/  /guides/anna-maria-island-vacation-cost/  301",
     "/guides/best-time-to-visit-anna-maria-island/  /guides/best-time-visit-anna-maria-island/  301",
-    "/guides/bradenton-vs-sarasota-vacation-rental-comparison/  /guides/bradenton-vs-sarasota/  301"
+    "/guides/bradenton-vs-sarasota-vacation-rental-comparison/  /guides/bradenton-vs-sarasota/  301",
+    "/guides/2026-bradenton-vacation-rental-market-analysis.html  /property-management/vacation-rental-management-bradenton/  301",
+    "/guides/2026-bradenton-vacation-rental-market-analysis  /property-management/vacation-rental-management-bradenton/  301",
+    "/guides/2026-bradenton-vacation-rental-market-analysis/  /property-management/vacation-rental-management-bradenton/  301"
   ]) {
-    assert.equal(redirects.includes(redirectRule), true);
+    assert.equal(redirects.includes(redirectRule), true, `Expected redirects to include ${redirectRule}`);
   }
+
+  assert.ok(
+    redirects.indexOf(
+      "/guides/2026-bradenton-vacation-rental-market-analysis  /property-management/vacation-rental-management-bradenton/  301"
+    ) < redirects.indexOf("/guides/:slug  /guides/:slug/  301"),
+    "Expected retired market-analysis slashless redirect to come before the broad slashless guide redirect"
+  );
 
   for (const ignoredGuideDir of [
     'src/guides/anna-maria-island-vacation-cost-guide-2026/**',
@@ -390,13 +407,15 @@ test("live sources no longer promote retired duplicate guide paths", () => {
     path.join(projectRoot, "src", "guides", "bradenton-vs-sarasota-beaches", "index.html"),
     path.join(projectRoot, "src", "guides", "bradenton-vs-sarasota-for-families", "index.html"),
     path.join(projectRoot, "src", "guides", "bradenton-vs-sarasota-restaurants", "index.html"),
-    path.join(projectRoot, "src", "guides", "bradenton-vs-sarasota-retirement", "index.html")
+    path.join(projectRoot, "src", "guides", "bradenton-vs-sarasota-retirement", "index.html"),
+    path.join(projectRoot, "src", "guides", "things-to-do-bradenton-fl.html")
   ];
 
   const staleGuidePaths = [
     "/guides/anna-maria-island-vacation-cost-guide-2026/",
     "/guides/best-time-to-visit-anna-maria-island/",
-    "/guides/bradenton-vs-sarasota-vacation-rental-comparison/"
+    "/guides/bradenton-vs-sarasota-vacation-rental-comparison/",
+    "/guides/2026-bradenton-vacation-rental-market-analysis/"
   ];
 
   for (const sourceFile of sourceFiles) {
@@ -409,14 +428,20 @@ test("live sources no longer promote retired duplicate guide paths", () => {
       );
     }
   }
+
+  const thingsToDo = fs.readFileSync(
+    path.join(projectRoot, "src", "guides", "things-to-do-bradenton-fl.html"),
+    "utf8"
+  );
+  assert.equal(
+    /compare live bradenton/i.test(thingsToDo),
+    false,
+    "things-to-do-bradenton-fl.html should not promise live Bradenton pricing after the market-analysis retirement"
+  );
 });
 
 test("priority guides ship complete metadata instead of truncated titles or broken descriptions", () => {
   const guideExpectations = [
-    {
-      relativePath: ["src", "guides", "2026-bradenton-vacation-rental-market-analysis.html"],
-      expectedTitle: "2026 Bradenton Beach Vacation Rental Market: Pricing, Occupancy & Top Areas"
-    },
     {
       relativePath: ["src", "guides", "anna-maria-island-vs-longboat-key.html"],
       expectedTitle: "Anna Maria Island vs Longboat Key — Which Beach Is Right for You?"

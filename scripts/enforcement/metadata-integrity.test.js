@@ -83,12 +83,15 @@ test("winner guide metadata and conversion markers stay decision-forward", () =>
   const amiWebPage = amiContract.jsonLdObjects.find((entry) => entry["@type"] === "WebPage");
   const bradentonWebPage = bradentonContract.jsonLdObjects.find((entry) => entry["@type"] === "WebPage");
 
-  assert.equal(amiContract.head.title, "Anna Maria Island vs Siesta Key: Where to Stay");
+  assert.equal(amiContract.head.title, "AMI vs Siesta Key: Beach, Crowds & Where to Stay");
   assert.equal(
     amiContract.head.description,
-    "Compare AMI, Bradenton near AMI beaches, and Siesta Key area stays after choosing between quieter beach days and famous quartz sand."
+    "Compare Anna Maria Island vs Siesta Key for beach vibe, crowds, and where to stay—so you can pick the Gulf coast that fits your trip."
   );
-  assert.equal(amiContract.head.ogTitle, "Anna Maria Island vs Siesta Key: Where to Stay");
+  assert.equal(amiContract.head.ogTitle, amiContract.head.title);
+  assert.equal(amiContract.head.ogDescription, amiContract.head.description);
+  assert.equal(amiContract.head.twitterTitle, amiContract.head.title);
+  assert.equal(amiContract.head.twitterDescription, amiContract.head.description);
   assert.equal(amiWebPage?.name, amiContract.head.title);
   assert.match(
     amiVsSiesta,

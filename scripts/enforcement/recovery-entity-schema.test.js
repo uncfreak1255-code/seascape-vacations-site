@@ -14,7 +14,7 @@ test("live entity schema coverage script exports reusable helpers", () => {
   const coverage = loadModule();
 
   assert.equal(Array.isArray(coverage.requiredRoutes), true);
-  assert.equal(coverage.requiredRoutes.length, 20);
+  assert.equal(coverage.requiredRoutes.length, 19);
   assert.equal(typeof coverage.extractJsonLdBlocks, "function");
   assert.equal(typeof coverage.analyzeEntityCoverage, "function");
   assert.equal(typeof coverage.run, "function");

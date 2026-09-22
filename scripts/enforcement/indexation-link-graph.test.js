@@ -53,11 +53,16 @@ test("owner hub links to the long-tail owner pages that were previously orphaned
     "/property-management/increase-vacation-rental-bookings/",
     "/property-management/vacation-rental-cleaning-services-florida/",
     "/property-management/vacation-rental-guest-screening/",
-    "/property-management/vacation-rental-insurance-florida/",
     "/property-management/buy-vacation-rental-property-florida/"
   ]) {
     assert.equal(ownerHub.includes(marker), true, `owner hub missing ${marker}`);
   }
+
+  assert.equal(
+    ownerHub.includes("/property-management/vacation-rental-insurance-florida/"),
+    false,
+    "owner hub must not promote the quarantined insurance guide"
+  );
 });
 
 test("remaining orphan guides, stays, and owner scenarios are routed into the hub pages", () => {
@@ -116,11 +121,16 @@ test("strong guide pages link to the selected indexation rescue targets", () => 
 
   for (const marker of [
     "/property-management/condo-rental-management-florida/",
-    "/property-management/vacation-rental-maintenance-florida/",
-    "/property-management/vacation-rental-insurance-florida/"
+    "/property-management/vacation-rental-maintenance-florida/"
   ]) {
     assert.equal(marketReport.includes(marker), true, `market report missing ${marker}`);
   }
+
+  assert.equal(
+    marketReport.includes("/property-management/vacation-rental-insurance-florida/"),
+    false,
+    "market report must not promote the quarantined insurance guide"
+  );
 
   for (const marker of [
     "/stays/vacation-rentals-sleeps-12-florida/",

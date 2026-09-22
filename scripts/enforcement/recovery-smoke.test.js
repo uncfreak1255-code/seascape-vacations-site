@@ -21,7 +21,7 @@ test("live smoke script exposes reusable helpers for unit coverage", () => {
   );
 });
 
-test("property-management smoke follows the current proof-first owner hub", () => {
+test("property-management smoke follows the current Waterline owner offer hub", () => {
   const smoke = loadSmokeModule();
   const target = smoke.targets.find((entry) => entry.path === "/property-management/");
 
@@ -29,16 +29,13 @@ test("property-management smoke follows the current proof-first owner hub", () =
 
   const currentOwnerHubBody = `
     <main>
-      <h1>Before you renew, what does your Gulf Coast home actually keep?</h1>
-      <p>The Fee Comparison separates published platform charges from a property-specific management agreement.</p>
-      <strong>15.5%</strong>
-      <strong>2.9% + 30¢</strong>
-      <strong>Property-specific</strong>
-      <section>
-        <p>Airbnb, Stripe, and a property manager charge for different services.</p>
-      </section>
-      <a href="#owner-cta">Request Your Revenue Review</a>
-      <a href="/property-management/vacation-rental-management-sarasota/">Sarasota coverage</a>
+      <h1>Six homes. One local team. <em>Your call gets answered.</em></h1>
+      <a href="#owner-cta">Request your 48-hour revenue review</a>
+      <form name="owner-revenue-teardown" method="POST"></form>
+      <h2>What we do for your home</h2>
+      <h2>Why a six-home operator</h2>
+      <h2>The homes we manage</h2>
+      <a href="/property-management/vacation-rental-management-sarasota/">Sarasota</a>
     </main>
   `;
 
@@ -49,6 +46,50 @@ test("property-management smoke follows the current proof-first owner hub", () =
       body: currentOwnerHubBody
     });
   });
+});
+
+test("property-management smoke accepts the live minified single-quoted form name", () => {
+  const smoke = loadSmokeModule();
+  const target = smoke.targets.find((entry) => entry.path === "/property-management/");
+  const minifiedOwnerHubBody = `
+    <main>
+      <h1>Six homes. One local team. <em>Your call gets answered.</em></h1>
+      <a href="#owner-cta">Request your 48-hour revenue review</a>
+      <form name='owner-revenue-teardown' method='POST'></form>
+      <h2>What we do for your home</h2>
+      <h2>Why a six-home operator</h2>
+      <h2>The homes we manage</h2>
+    </main>
+  `;
+
+  assert.doesNotThrow(() => {
+    smoke.validateTargetResponse(target, {
+      statusCode: 200,
+      location: null,
+      body: minifiedOwnerHubBody
+    });
+  });
+});
+
+test("property-management smoke fails when the owner form name is missing", () => {
+  const smoke = loadSmokeModule();
+  const target = smoke.targets.find((entry) => entry.path === "/property-management/");
+
+  assert.throws(() => {
+    smoke.validateTargetResponse(target, {
+      statusCode: 200,
+      location: null,
+      body: `
+        <main>
+          <h1>Six homes. One local team. <em>Your call gets answered.</em></h1>
+          <a href="#owner-cta">Request your 48-hour revenue review</a>
+          <h2>What we do for your home</h2>
+          <h2>Why a six-home operator</h2>
+          <h2>The homes we manage</h2>
+        </main>
+      `
+    });
+  }, /property-management hub is missing the Waterline owner offer surface/);
 });
 
 test("property-management smoke rejects the retired explainer-hub surface", () => {
@@ -66,7 +107,7 @@ test("property-management smoke rejects the retired explainer-hub surface", () =
         </main>
       `
     });
-  }, /property-management hub is missing the proof-first owner revenue surface/);
+  }, /property-management hub is missing the Waterline owner offer surface/);
 });
 
 test("properties smoke checks durable property detail hrefs instead of old CTA copy", () => {

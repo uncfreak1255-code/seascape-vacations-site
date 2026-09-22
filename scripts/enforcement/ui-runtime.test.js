@@ -152,6 +152,7 @@ test("guide cards expose full-card taps without breaking inline links", () => {
 
 test("property booking panels provide native controls and hide their mobile shortcut", () => {
   const script=readSource("src/assets/js/guest.js");
+  assert.match(script,/if \(rawHref\.charAt\(0\) === '#'\) return;/);
   assert.match(script,/IntersectionObserver/);
   assert.match(script,/sticky.hidden=entries\[0\].isIntersecting/);
   assert.match(readSource("src/css/guest.css"),/env\(safe-area-inset-bottom\)/);
