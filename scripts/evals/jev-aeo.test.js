@@ -182,6 +182,80 @@ test("a flag cannot be consumed as an output directory and trigger a provider ca
   }
 });
 
+test("an unusable findings destination prevents provider-client construction", async () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), "jev-aeo-unusable-output-"));
+  const outputPath = path.join(root, "not-a-directory");
+  fs.writeFileSync(outputPath, "existing file");
+  const previousKey = process.env.TYPESAFE_API_KEY;
+  let clientCreated = false;
+  process.env.TYPESAFE_API_KEY = "test-only";
+  try {
+    await assert.rejects(
+      run(["--output", outputPath], { createClient: () => { clientCreated = true; return {}; } }),
+      /findings destination is unavailable/
+    );
+    assert.equal(clientCreated, false);
+  } finally {
+    if (previousKey === undefined) delete process.env.TYPESAFE_API_KEY;
+    else process.env.TYPESAFE_API_KEY = previousKey;
+  }
+});
+
+test("a read-only findings directory prevents provider-client construction", async () => {
+  const outputPath = fs.mkdtempSync(path.join(os.tmpdir(), "jev-aeo-read-only-output-"));
+  const previousKey = process.env.TYPESAFE_API_KEY;
+  let clientCreated = false;
+  fs.chmodSync(outputPath, 0o500);
+  process.env.TYPESAFE_API_KEY = "test-only";
+  try {
+    await assert.rejects(
+      run(["--output", outputPath], { createClient: () => { clientCreated = true; return {}; } }),
+      /findings destination is unavailable/
+    );
+    assert.equal(clientCreated, false);
+  } finally {
+    fs.chmodSync(outputPath, 0o700);
+    if (previousKey === undefined) delete process.env.TYPESAFE_API_KEY;
+    else process.env.TYPESAFE_API_KEY = previousKey;
+  }
+});
+
+test("a swapped findings directory stops after the active fake evaluation", async () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), "jev-aeo-swapped-output-"));
+  const outputPath = path.join(root, "out");
+  const retiredPath = path.join(root, "retired");
+  const redirectPath = path.join(root, "redirect");
+  const previousKey = process.env.TYPESAFE_API_KEY;
+  let evaluations = 0;
+  fs.mkdirSync(redirectPath, { mode: 0o700 });
+  process.env.TYPESAFE_API_KEY = "test-only";
+  try {
+    await assert.rejects(
+      run(["--output", outputPath], {
+        createClient: () => ({
+          evaluate: async () => {
+            evaluations += 1;
+            fs.renameSync(outputPath, retiredPath);
+            fs.symlinkSync(redirectPath, outputPath);
+            return {
+              model: "jev-test",
+              answers: Object.fromEntries(RUBRIC.dimensions.map(({ id }) => [id, scoreAnswer()])),
+              usage: { input_tokens: 1 },
+            };
+          },
+        }),
+      }),
+      /findings destination changed during evaluation/
+    );
+    assert.equal(evaluations, 1);
+    assert.equal(fs.existsSync(path.join(redirectPath, "findings.json")), false);
+  } finally {
+    if (fs.existsSync(retiredPath)) fs.chmodSync(retiredPath, 0o700);
+    if (previousKey === undefined) delete process.env.TYPESAFE_API_KEY;
+    else process.env.TYPESAFE_API_KEY = previousKey;
+  }
+});
+
 test("provider-error findings render without a success summary", () => {
   const markdown = renderMarkdown({
     status: "PROVIDER_ERROR",

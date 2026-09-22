@@ -22,6 +22,7 @@ const APPROVED_FIXTURES = {
   "aeo-methodology-before": { copyBytes: 143, copySha256: "01ce81d7d089b6e635d7166065a8f0511e774b20d2c615b0526c2d349335061a" },
 };
 const APPROVED_QUESTIONS_SHA256 = "e26a0a091a61ee69d1add9e527fd4f0c170e07cc8309ad6546ee45592e99e4b5";
+const OUTPUT_DESTINATION_CHANGED = "AEO findings destination changed during evaluation; stopping before further requests";
 
 function parseArgs(argv) {
   const options = { preview: false, outputDir: null, pricePerMillionInputTokens: null };
@@ -165,14 +166,95 @@ function renderMarkdown(findings) {
   return `${lines.join("\n")}\n`;
 }
 
-function writeFindings(outputDir, findings) {
-  fs.mkdirSync(outputDir, { recursive: true, mode: 0o700 });
-  const jsonPath = path.join(outputDir, "findings.json");
-  const markdownPath = path.join(outputDir, "findings.md");
-  fs.writeFileSync(jsonPath, `${JSON.stringify(findings, null, 2)}\n`, { mode: 0o600 });
-  fs.writeFileSync(markdownPath, renderMarkdown(findings), { mode: 0o600 });
-  fs.chmodSync(jsonPath, 0o600); fs.chmodSync(markdownPath, 0o600);
-  return { jsonPath, markdownPath };
+function prepareOutputDestination(outputDir) {
+  const destination = {
+    outputDir,
+    jsonPath: path.join(outputDir, "findings.json"),
+    markdownPath: path.join(outputDir, "findings.md"),
+  };
+  const reservedPaths = [];
+  try {
+    let created = false;
+    try {
+      fs.mkdirSync(outputDir, { recursive: false, mode: 0o700 });
+      created = true;
+    } catch (error) {
+      if (error.code !== "EEXIST") throw error;
+    }
+    const directory = fs.lstatSync(outputDir);
+    if (!directory.isDirectory() || directory.isSymbolicLink()) throw new Error("not a directory");
+    if (created) fs.chmodSync(outputDir, 0o700);
+    const verifiedDirectory = fs.statSync(outputDir);
+    if ((verifiedDirectory.mode & 0o077) !== 0 || (verifiedDirectory.mode & 0o200) === 0) {
+      throw new Error("directory is not a private writable destination");
+    }
+    destination.directoryIdentity = { dev: verifiedDirectory.dev, ino: verifiedDirectory.ino };
+    for (const [descriptorName, filePath] of [["jsonDescriptor", destination.jsonPath], ["markdownDescriptor", destination.markdownPath]]) {
+      const descriptor = fs.openSync(filePath, "wx", 0o600);
+      reservedPaths.push(filePath);
+      destination[descriptorName] = descriptor;
+      fs.fchmodSync(descriptor, 0o600);
+      const file = fs.fstatSync(descriptor);
+      if (!file.isFile() || (file.mode & 0o077) !== 0) throw new Error("artifact is not private");
+      destination[`${descriptorName}Identity`] = { dev: file.dev, ino: file.ino };
+    }
+    destination.directoryMode = verifiedDirectory.mode & 0o777;
+    fs.chmodSync(outputDir, destination.directoryMode & ~0o200);
+  } catch {
+    for (const descriptor of [destination.jsonDescriptor, destination.markdownDescriptor]) {
+      if (typeof descriptor === "number") {
+        try { fs.closeSync(descriptor); } catch {}
+      }
+    }
+    for (const filePath of reservedPaths) {
+      try { fs.unlinkSync(filePath); } catch {}
+    }
+    throw new Error("AEO findings destination is unavailable; choose a new writable private directory");
+  }
+  return destination;
+}
+
+function outputDestinationMatches(destination) {
+  try {
+    const directory = fs.lstatSync(destination.outputDir);
+    if (!directory.isDirectory() || directory.isSymbolicLink() || directory.dev !== destination.directoryIdentity.dev || directory.ino !== destination.directoryIdentity.ino) return false;
+    for (const [filePath, identity] of [[destination.jsonPath, destination.jsonDescriptorIdentity], [destination.markdownPath, destination.markdownDescriptorIdentity]]) {
+      const file = fs.lstatSync(filePath);
+      if (!file.isFile() || file.isSymbolicLink() || file.dev !== identity.dev || file.ino !== identity.ino) return false;
+    }
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function verifyOutputDestination(destination) {
+  if (!outputDestinationMatches(destination)) throw new Error(OUTPUT_DESTINATION_CHANGED);
+}
+
+function writeFindings(destination, findings) {
+  const write = (descriptor, contents) => {
+    fs.ftruncateSync(descriptor, 0);
+    fs.writeSync(descriptor, contents, 0, "utf8");
+    fs.fchmodSync(descriptor, 0o600);
+    fs.fsyncSync(descriptor);
+  };
+  write(destination.jsonDescriptor, `${JSON.stringify(findings, null, 2)}\n`);
+  write(destination.markdownDescriptor, renderMarkdown(findings));
+  return { jsonPath: destination.jsonPath, markdownPath: destination.markdownPath };
+}
+
+function releaseOutputDestination(destination) {
+  let restoreError = null;
+  try {
+    if (outputDestinationMatches(destination)) fs.chmodSync(destination.outputDir, destination.directoryMode);
+  } catch (error) {
+    restoreError = error;
+  }
+  for (const descriptor of [destination.jsonDescriptor, destination.markdownDescriptor]) {
+    fs.closeSync(descriptor);
+  }
+  if (restoreError) throw restoreError;
 }
 
 function completedModels(results) {
@@ -188,68 +270,86 @@ async function run(argv = process.argv.slice(2), dependencies = {}) {
   if (options.help) { console.log("Usage: npm run eval:aeo:typesafe -- [--preview] [--output DIR] [--input-cost-per-million-usd RATE]"); return 0; }
   const outputDir = path.resolve(options.outputDir || defaultOutputDir());
   const { rubric, goldenResults, questions } = loadInputs();
-  const base = {
-    schemaVersion: 1, generatedAt: new Date().toISOString(), source: sourceState(goldenResults),
-    status: options.preview ? "PREVIEW" : "RUNNING",
-    credentialLifecycle: "not inspected; verify any trial-key revocation by exact dashboard name",
-    provider: { endpoint: "https://api.typesafe.ai/v1/systemone", modelRequested: DEFAULT_MODEL, modelReturned: null, requestAttempted: false, inputCostPerMillionUsd: options.pricePerMillionInputTokens },
-    payload: { scope: "three non-guest repository AEO golden fixtures", externalData: "fixture copy plus five rubric-derived Score questions", fixtures: fixtureManifest(goldenResults, Object.keys(questions).length) },
-  };
-  if (options.preview) { const paths = writeFindings(outputDir, base); console.log(`[preview] ${JSON.stringify(paths)}`); return 0; }
-  const apiKey = process.env.TYPESAFE_API_KEY;
-  if (!apiKey) {
-    base.status = "BLOCKED_NO_CREDENTIAL";
-    const paths = writeFindings(outputDir, base);
-    console.error(`[blocked] TypeSafe AEO evaluation requires TYPESAFE_API_KEY; no request was sent; findings=${paths.markdownPath}`);
-    return 2;
-  }
-  const client = dependencies.createClient ? dependencies.createClient({ apiKey }) : createTypeSafeClient({ apiKey });
-  const results = [];
-  for (const { fixture } of goldenResults) {
-    const startedAt = performance.now();
-    try {
-      base.provider.requestAttempted = true;
-      const response = await client.evaluate({ copy: fixture.copy }, questions);
-      validateResponseMetadata(response);
-      base.provider.modelReturned = recordReturnedModel(base.provider.modelReturned, response.model);
-      const { scores, confidence } = scoresFromTypeSafeResponse(response, rubric);
-      const scored = computeOverall(scores, rubric, fixture.copy);
-      const inputTokens = response.usage.input_tokens;
-      const confidenceValues = Object.values(confidence);
-      results.push({
-        name: fixture.name, expectedBand: fixture.expect.band, overall: scored.overall,
-        matches: fixtureMatchesExpectation(fixture, scored.overall), scores, confidence,
-        meanConfidence: confidenceValues.reduce((sum, value) => sum + value, 0) / confidenceValues.length,
-        inputTokens, costUsd: inputCostUsd(inputTokens, options.pricePerMillionInputTokens),
-        latencyMs: Math.round(performance.now() - startedAt), model: response.model,
-      });
-      base.provider.modelReturned = completedModels(results);
-    } catch (error) {
-      base.status = "PROVIDER_ERROR";
-      base.results = results;
-      base.error = "TypeSafe AEO provider evaluation failed; inspect the local provider error class before retrying.";
-      const paths = writeFindings(outputDir, base);
-      console.error(`[provider-error] ${base.error}; findings=${paths.markdownPath}`);
-      return 3;
+  const destination = prepareOutputDestination(outputDir);
+  try {
+    const base = {
+      schemaVersion: 1, generatedAt: new Date().toISOString(), source: sourceState(goldenResults),
+      status: options.preview ? "PREVIEW" : "RUNNING",
+      credentialLifecycle: "not inspected; verify any trial-key revocation by exact dashboard name",
+      provider: { endpoint: "https://api.typesafe.ai/v1/systemone", modelRequested: DEFAULT_MODEL, modelReturned: null, requestAttempted: false, inputCostPerMillionUsd: options.pricePerMillionInputTokens },
+      payload: { scope: "three non-guest repository AEO golden fixtures", externalData: "fixture copy plus five rubric-derived Score questions", fixtures: fixtureManifest(goldenResults, Object.keys(questions).length) },
+    };
+    if (options.preview) {
+      const paths = writeFindings(destination, base);
+      verifyOutputDestination(destination);
+      console.log(`[preview] ${JSON.stringify(paths)}`);
+      return 0;
     }
+    const apiKey = process.env.TYPESAFE_API_KEY;
+    if (!apiKey) {
+      base.status = "BLOCKED_NO_CREDENTIAL";
+      const paths = writeFindings(destination, base);
+      verifyOutputDestination(destination);
+      console.error(`[blocked] TypeSafe AEO evaluation requires TYPESAFE_API_KEY; no request was sent; findings=${paths.markdownPath}`);
+      return 2;
+    }
+    verifyOutputDestination(destination);
+    const client = dependencies.createClient ? dependencies.createClient({ apiKey }) : createTypeSafeClient({ apiKey });
+    verifyOutputDestination(destination);
+    const results = [];
+    for (const { fixture } of goldenResults) {
+      const startedAt = performance.now();
+      try {
+        verifyOutputDestination(destination);
+        base.provider.requestAttempted = true;
+        const response = await client.evaluate({ copy: fixture.copy }, questions);
+        verifyOutputDestination(destination);
+        validateResponseMetadata(response);
+        base.provider.modelReturned = recordReturnedModel(base.provider.modelReturned, response.model);
+        const { scores, confidence } = scoresFromTypeSafeResponse(response, rubric);
+        const scored = computeOverall(scores, rubric, fixture.copy);
+        const inputTokens = response.usage.input_tokens;
+        const confidenceValues = Object.values(confidence);
+        results.push({
+          name: fixture.name, expectedBand: fixture.expect.band, overall: scored.overall,
+          matches: fixtureMatchesExpectation(fixture, scored.overall), scores, confidence,
+          meanConfidence: confidenceValues.reduce((sum, value) => sum + value, 0) / confidenceValues.length,
+          inputTokens, costUsd: inputCostUsd(inputTokens, options.pricePerMillionInputTokens),
+          latencyMs: Math.round(performance.now() - startedAt), model: response.model,
+        });
+        base.provider.modelReturned = completedModels(results);
+      } catch (error) {
+        if (error.message === OUTPUT_DESTINATION_CHANGED) throw error;
+        base.status = "PROVIDER_ERROR";
+        base.results = results;
+        base.error = "TypeSafe AEO provider evaluation failed; inspect the local provider error class before retrying.";
+        const paths = writeFindings(destination, base);
+        verifyOutputDestination(destination);
+        console.error(`[provider-error] ${base.error}; findings=${paths.markdownPath}`);
+        return 3;
+      }
+    }
+    base.status = "COMPLETE_SHADOW_ONLY";
+    base.provider.modelReturned = completedModels(results);
+    base.results = results;
+    base.summary = {
+      fixtures: results.length, matches: results.filter((entry) => entry.matches).length,
+      inputTokens: results.reduce((sum, entry) => sum + entry.inputTokens, 0),
+      costUsd: options.pricePerMillionInputTokens === null ? null : results.reduce((sum, entry) => sum + entry.costUsd, 0),
+      latencyMs: results.reduce((sum, entry) => sum + entry.latencyMs, 0), decision: "SHADOW_ONLY",
+      note: "This three-fixture run cannot replace the canonical evaluator or become a release gate. Expand representative fixtures and approve a separate adoption decision.",
+    };
+    const paths = writeFindings(destination, base);
+    verifyOutputDestination(destination);
+    console.log(`[complete] ${JSON.stringify({ ...base.summary, ...paths })}`);
+    return 0;
+  } finally {
+    releaseOutputDestination(destination);
   }
-  base.status = "COMPLETE_SHADOW_ONLY";
-  base.provider.modelReturned = completedModels(results);
-  base.results = results;
-  base.summary = {
-    fixtures: results.length, matches: results.filter((entry) => entry.matches).length,
-    inputTokens: results.reduce((sum, entry) => sum + entry.inputTokens, 0),
-    costUsd: options.pricePerMillionInputTokens === null ? null : results.reduce((sum, entry) => sum + entry.costUsd, 0),
-    latencyMs: results.reduce((sum, entry) => sum + entry.latencyMs, 0), decision: "SHADOW_ONLY",
-    note: "This three-fixture run cannot replace the canonical evaluator or become a release gate. Expand representative fixtures and approve a separate adoption decision.",
-  };
-  const paths = writeFindings(outputDir, base);
-  console.log(`[complete] ${JSON.stringify({ ...base.summary, ...paths })}`);
-  return 0;
 }
 
 if (require.main === module) {
   run().then((code) => { process.exitCode = code; }).catch((error) => { console.error(`[fatal] ${error.message}`); process.exitCode = 1; });
 }
 
-module.exports = { fixtureManifest, isolatedGitEnvironment, parseArgs, renderMarkdown, run, sourceState, validateApprovedFixtures, validateApprovedPayload, validateResponseMetadata, writeFindings };
+module.exports = { fixtureManifest, isolatedGitEnvironment, outputDestinationMatches, parseArgs, prepareOutputDestination, releaseOutputDestination, renderMarkdown, run, sourceState, validateApprovedFixtures, validateApprovedPayload, validateResponseMetadata, verifyOutputDestination, writeFindings };
