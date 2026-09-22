@@ -2,6 +2,8 @@
 
 const test = require("node:test");
 const assert = require("node:assert/strict");
+const fs = require("node:fs");
+const os = require("node:os");
 const path = require("node:path");
 const { spawnSync } = require("node:child_process");
 
@@ -70,8 +72,9 @@ test("golden expectation matching keeps high and low bands explicit", () => {
   );
 });
 
-test("input cost uses the published Jev input-token price", () => {
-  assert.equal(inputCostUsd(1_000_000), 0.042);
+test("input cost requires an explicit current price", () => {
+  assert.equal(inputCostUsd(1_000_000), null);
+  assert.equal(inputCostUsd(1_000_000, 0.042), 0.042);
 });
 
 test("TypeSafe client sends the pinned model, state, and questions without exposing the key", async () => {
@@ -91,18 +94,51 @@ test("TypeSafe client sends the pinned model, state, and questions without expos
   assert.equal(calls.length, 1);
   assert.equal(calls[0].url, SYSTEM_ONE_URL);
   assert.equal(calls[0].options.headers.Authorization, "Bearer secret-test-key");
+  assert.ok(calls[0].options.signal instanceof AbortSignal);
   const body = JSON.parse(calls[0].options.body);
-  assert.equal(body.model, "jev-1.13.0");
+  assert.equal(body.model, "jev-latest");
   assert.deepEqual(body.state, { copy: "Example" });
 });
 
+test("TypeSafe client does not expose an API error body", async () => {
+  const client = createTypeSafeClient({
+    apiKey: "secret-test-key",
+    fetchImpl: async () => ({ ok: false, status: 401, text: async () => "echoed-secret" }),
+  });
+  await assert.rejects(
+    client.evaluate({ copy: "Example" }, { quality: { type: "score", instructions: "Rate it", criteria: ["bad", "good"] } }),
+    (error) => error.message === "TypeSafe API error 401"
+  );
+});
+
 test("Jev AEO trial fails closed without a TypeSafe key and sends nothing", () => {
+  const outputDir = fs.mkdtempSync(path.join(os.tmpdir(), "jev-aeo-blocked-"));
   const script = path.join(__dirname, "run-jev-aeo-trial.js");
-  const result = spawnSync(process.execPath, [script], {
+  const result = spawnSync(process.execPath, [script, "--output", outputDir], {
     cwd: path.resolve(__dirname, "..", ".."),
     env: { ...process.env, TYPESAFE_API_KEY: "" },
     encoding: "utf8",
   });
   assert.equal(result.status, 2);
   assert.match(result.stderr, /requires TYPESAFE_API_KEY; no request was sent/);
+  const findings = JSON.parse(fs.readFileSync(path.join(outputDir, "findings.json"), "utf8"));
+  assert.equal(findings.status, "BLOCKED_NO_CREDENTIAL");
+  assert.equal(findings.provider.modelRequested, "jev-latest");
+  assert.ok(!JSON.stringify(findings).includes("secret"));
+});
+
+test("preview writes a hashed payload manifest without sending or requiring a key", () => {
+  const outputDir = fs.mkdtempSync(path.join(os.tmpdir(), "jev-aeo-preview-"));
+  const script = path.join(__dirname, "run-jev-aeo-trial.js");
+  const result = spawnSync(process.execPath, [script, "--preview", "--output", outputDir], {
+    cwd: path.resolve(__dirname, "..", ".."),
+    env: { ...process.env, TYPESAFE_API_KEY: "" },
+    encoding: "utf8",
+  });
+  assert.equal(result.status, 0);
+  const findings = JSON.parse(fs.readFileSync(path.join(outputDir, "findings.json"), "utf8"));
+  assert.equal(findings.status, "PREVIEW");
+  assert.equal(findings.payload.fixtures.length, 3);
+  assert.ok(findings.payload.fixtures.every((fixture) => /^[a-f0-9]{64}$/.test(fixture.copySha256)));
+  assert.ok(findings.payload.fixtures.every((fixture) => !("copy" in fixture)));
 });

@@ -16,10 +16,11 @@ is measured in `seascape-analytics`, not here.)
   `ANTHROPIC_API_KEY` is present.
 - Pairs with the `schema-markup` skill and `validate-jsonld.js`: those check the
   structured-data *pipeline*; this scores whether the *prose* is answer-shaped.
-- `npm run trial:jev:aeo` is an isolated, non-blocking provider trial over the
-  three AEO golden fixtures. It requires `TYPESAFE_API_KEY`, pins `jev-1.13.0`,
-  reports token cost and latency, and does not change the canonical Sonnet lane
-  or any release requirement.
+- `npm run eval:aeo:typesafe` is an isolated, non-blocking provider comparison
+  over the three AEO golden fixtures. It previews hashed payload metadata before
+  sending, reads `TYPESAFE_API_KEY` only from the process environment, uses the
+  current `jev-latest` alias, and writes private findings. It does not change the
+  canonical Sonnet lane or any release requirement.
 
 ## Dimensions
 

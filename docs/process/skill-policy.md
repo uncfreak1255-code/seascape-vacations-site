@@ -53,6 +53,22 @@ copy. The relative Claude link reads the local projection, including in worktree
 The procedure remains an evidence review; its spend and external-action limits
 remain in force.
 
+## Bounded TypeSafe AEO evaluation
+
+`seascape-aeo-evaluation` is local because its inputs, rubric, deterministic
+scoring, and non-blocking authority all belong to this repository. It preserves
+the successful part of the 2026-09-20 three-fixture trial as a repeatable shadow
+comparison, while the recorded 2/3 match keeps it from replacing the canonical
+evaluator or becoming a release gate. The procedure previews a hashed payload,
+accepts credentials only through the process environment, writes private
+findings, and leaves key creation or revocation to a separately verified
+credential action.
+
+Pair it with `openseo-review` only when current OpenSEO evidence is needed to
+select a representative fixture or explain a live citation gap. OpenSEO is not
+the runner, and current AI-search measurement remains owned by
+`seascape-analytics`.
+
 ## Model And Tool Routing
 
 Choose models and plugins at task level. Do not change a global default or add
@@ -154,6 +170,15 @@ remain global-only per "Global marketing skills — advisory lenses" above.
 
 A durable record of approved changes to the local skill/agent surface. Each
 entry is the receipt the governance rule requires for any skill change.
+
+- **2026-09-22 — added `seascape-aeo-evaluation` (advisory).** Trigger: Sawyer
+  explicitly asked to turn the earlier bounded TypeSafe/Jev evaluation into a
+  recurring capability. The original three-fixture run produced a useful cost
+  and latency read but only 2/3 expectation matches, including a severe false
+  negative on the intended high-quality fixture. Decision: recover the isolated
+  runner as a repo-local, shadow-only skill with payload preview, environment-only
+  credentials, private findings, and no release authority. Keep OpenSEO as an
+  optional evidence input rather than coupling either workflow.
 
 - **2026-06-13 — added `content-quality-rubric` (advisory).** Trigger: the
   2026-06-13 AI-SEO stack audit (`docs/research/2026-06-13-ai-seo-stack-audit.md`)
