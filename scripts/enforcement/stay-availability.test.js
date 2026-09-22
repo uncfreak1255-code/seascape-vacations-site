@@ -107,3 +107,69 @@ test("availability endpoint fails closed when a calendar cannot be read", async 
   assert.equal(response.statusCode, 503);
   assert.equal(JSON.parse(response.body).ok, false);
 });
+
+test("a missing arrival or mid-stay day is incomplete, not booked", () => {
+  assert.deepEqual(evaluateStay([], "2026-10-18", "2026-10-22"), {
+    bookable: false,
+    reason: "no-calendar",
+    minimumStay: null
+  });
+
+  const days = stay("2026-10-18", 4);
+  days.splice(2, 1);
+  assert.equal(evaluateStay(days, "2026-10-18", "2026-10-22").reason, "no-calendar");
+});
+
+test("availability endpoint fails open when a Hostaway calendar is empty or missing the stay", async () => {
+  resetBookingAvailabilityCache();
+  const empty = await handleBookingAvailability(
+    { httpMethod: "GET", queryStringParameters: { arrive: "2026-10-18", depart: "2026-10-22" } },
+    { fetchCalendar: async () => [] }
+  );
+  assert.equal(empty.statusCode, 503);
+  assert.equal(JSON.parse(empty.body).ok, false);
+
+  resetBookingAvailabilityCache();
+  const calendars = Object.fromEntries(LISTINGS.map((listing) => [listing.slug, stay("2026-09-26", 2)]));
+  calendars["river-house"] = stay("2026-09-01", 2);
+  const missingRange = await handleBookingAvailability(
+    { httpMethod: "GET", queryStringParameters: { arrive: "2026-09-26", depart: "2026-09-28" } },
+    { fetchCalendar: async (id) => calendars[LISTINGS.find((listing) => listing.id === id).slug] }
+  );
+  assert.equal(missingRange.statusCode, 503);
+  assert.equal(JSON.parse(missingRange.body).error, "calendar-unavailable");
+});
+
+test("an empty Hostaway calendar is not cached as booked homes", async () => {
+  resetBookingAvailabilityCache();
+  const first = await handleBookingAvailability(
+    { httpMethod: "GET", queryStringParameters: { arrive: "2026-09-26", depart: "2026-09-28" } },
+    { fetchCalendar: async () => [] }
+  );
+  assert.equal(first.statusCode, 503);
+
+  const calendars = Object.fromEntries(LISTINGS.map((listing) => [listing.slug, stay("2026-09-26", 2)]));
+  const second = await handleBookingAvailability(
+    { httpMethod: "GET", queryStringParameters: { arrive: "2026-09-26", depart: "2026-09-28" } },
+    { fetchCalendar: async (id) => calendars[LISTINGS.find((listing) => listing.id === id).slug] }
+  );
+  assert.equal(second.statusCode, 200);
+  assert.equal(JSON.parse(second.body).homes.every((home) => home.bookable), true);
+});
+
+test("catalog leaves homes visible when the calendar check is incomplete or fails", () => {
+  const catalog = fs.readFileSync(path.join(__dirname, "..", "..", "src", "assets", "js", "catalog.js"), "utf8");
+  assert.match(catalog, /count > 0 && !visualTestMode/);
+  assert.match(catalog, /home\.reason === "no-calendar"/);
+  assert.match(catalog, /showCapacityState\(visible/);
+  assert.match(catalog, /Availability could not be checked\. Confirm it on each booking page/);
+  assert.match(catalog, /function emptyCopy\(\)/);
+});
+
+test("property checkout does not stay blocked after dates are cleared", () => {
+  const guest = fs.readFileSync(path.join(__dirname, "..", "..", "src", "assets", "js", "guest.js"), "utf8");
+  assert.match(guest, /function clearStayGate\(checkout\)/);
+  assert.match(guest, /else \{clearStayGate\(checkout\);\}/);
+  assert.match(guest, /home\.reason==='no-calendar'/);
+  assert.match(guest, /delete checkout\.dataset\.stayBlocked/);
+});

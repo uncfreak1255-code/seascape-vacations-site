@@ -56,13 +56,23 @@
       var arrive=form.querySelector('.g-arrive'),depart=form.querySelector('.g-depart');
       var invalidDates=Boolean(arrive.value)!==Boolean(depart.value)||(arrive.value&&(depart.value<=arrive.value||arrive.value<arrive.min));
       checkout.hidden=oversized||invalidDates;
-      if(oversized){checkout.removeAttribute('href');form.querySelector('.g-form-status').textContent='This home hosts up to '+form.dataset.maxGuests+' guests. Compare the collection or ask us about separate homes.';}
-      else if(invalidDates){checkout.removeAttribute('href');form.querySelector('.g-form-status').textContent='Choose a departure after arrival, or clear both dates to stay flexible.';}
-      else if(trip.arrive&&trip.depart){requestStayCheck();}
+      if(oversized){clearStayGate(checkout);checkout.removeAttribute('href');form.querySelector('.g-form-status').textContent='This home hosts up to '+form.dataset.maxGuests+' guests. Compare the collection or ask us about separate homes.';}
+      else if(invalidDates){clearStayGate(checkout);checkout.removeAttribute('href');form.querySelector('.g-form-status').textContent='Choose a departure after arrival, or clear both dates to stay flexible.';}
+      else if(trip.arrive&&trip.depart){
+        if(new URLSearchParams(location.search).get('visual-test')==='1')clearStayGate(checkout);
+        else requestStayCheck();
+      }
+      else {clearStayGate(checkout);}
     }
     updateQuestion();
   }
   var stayRequest=0;
+  function clearStayGate(checkout){
+    stayRequest+=1;
+    if(!checkout)return;
+    delete checkout.dataset.stayBlocked;
+    delete checkout.dataset.stayPending;
+  }
   function stayMessage(home){
     if(home.reason==='minimum-stay'&&home.minimumStay)return 'This home needs '+home.minimumStay+' nights. Choose a longer stay or compare the other homes.';
     if(home.reason==='closed-arrival')return 'Check-in is not available that day. Choose a different arrival.';
@@ -84,7 +94,7 @@
         delete checkout.dataset.stayPending;
         if(!body||body.ok!==true||!Array.isArray(body.homes))throw new Error('stay check failed');
         var home=body.homes.find(function(item){return item.slug===pageRoot.dataset.propertyPage;});
-        if(!home)throw new Error('stay check incomplete');
+        if(!home||home.reason==='no-calendar')throw new Error('stay check incomplete');
         if(!home.bookable){checkout.dataset.stayBlocked='true';checkout.hidden=true;checkout.removeAttribute('href');statusNode.textContent=stayMessage(home);return home;}
         delete checkout.dataset.stayBlocked;
         statusNode.textContent='These dates are open. Price and cancellation terms are on the booking page.';

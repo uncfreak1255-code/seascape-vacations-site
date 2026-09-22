@@ -35,6 +35,13 @@ async function loadCalendars(fetchCalendar, now = new Date()) {
     LISTINGS.map(async (listing) => [listing.slug, await loader(listing.id, startingDate)])
   );
   const calendars = Object.fromEntries(entries);
+  const incomplete = LISTINGS.some((listing) => {
+    const days = calendars[listing.slug];
+    return !Array.isArray(days) || days.length === 0;
+  });
+  if (incomplete) {
+    throw new Error("calendar-unavailable");
+  }
   cache = { startingDate, at: now.getTime(), calendars };
   return calendars;
 }
@@ -50,12 +57,16 @@ async function handleBookingAvailability(event = {}, options = {}) {
 
   try {
     const calendars = await loadCalendars(options.fetchCalendar, options.now);
+    const homes = summarizeStay(calendars, params.arrive, params.depart);
+    if (homes.some((home) => home.reason === "no-calendar")) {
+      return json(503, { ok: false, error: "calendar-unavailable" });
+    }
     return json(200, {
       ok: true,
       checkedAt: (options.now || new Date()).toISOString(),
       arrive: params.arrive,
       depart: params.depart,
-      homes: summarizeStay(calendars, params.arrive, params.depart)
+      homes
     });
   } catch (error) {
     return json(503, { ok: false, error: "calendar-unavailable" });

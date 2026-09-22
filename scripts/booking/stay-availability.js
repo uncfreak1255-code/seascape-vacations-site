@@ -51,7 +51,9 @@ function evaluateStay(days, arrive, depart) {
   if (isClosed(arrival.closedOnArrival)) return { bookable: false, reason: "closed-arrival", minimumStay };
 
   for (let offset = 0; offset < nights; offset += 1) {
-    if (!isOpenDay(byDate.get(addDays(arrive, offset)))) {
+    const night = byDate.get(addDays(arrive, offset));
+    if (!night) return { bookable: false, reason: "no-calendar", minimumStay };
+    if (!isOpenDay(night)) {
       return { bookable: false, reason: "booked", minimumStay };
     }
   }

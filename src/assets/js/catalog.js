@@ -17,6 +17,7 @@
   var activeFilter = "all";
   var originalLinks = new Map();
   var availabilityRequest = 0;
+  var visualTestMode = params.get("visual-test") === "1";
 
   function preserveSave50Params(url) {
     var campaign = (params.get("utm_campaign") || "").trim().toLowerCase();
@@ -105,17 +106,12 @@
       var active = button.dataset.filter === activeFilter;
       button.classList.toggle("active",active); button.setAttribute("aria-pressed",String(active));
     });
-    if (trip.arrive && trip.depart) {
+    if (trip.arrive && trip.depart && count > 0 && !visualTestMode) {
       document.getElementById("catalog-count").textContent = "Checking these dates.";
       document.getElementById("catalog-empty").hidden = true;
       status.textContent = "Checking these dates.";
     } else {
-      document.getElementById("catalog-count").textContent = count + (count === 1 ? " home fits" : " homes fit") + " · Check dates on each booking page";
-      document.getElementById("catalog-empty").hidden = count > 0;
-      document.getElementById("catalog-empty-copy").textContent = Number(trip.guests) > 16
-        ? "Our largest home sleeps 16. Call us to discuss separate homes for a larger group; availability and suitability need confirmation."
-        : "Try another area or check your group size. Changing dates will not change a home’s maximum capacity.";
-      status.textContent = tripText() + ". Availability, fees and the full total are confirmed on the booking page.";
+      showCapacityState(count);
     }
     document.getElementById("clear-dates").hidden = !trip.arrive && !trip.depart;
     root.querySelectorAll(".catalog-opening").forEach(function (opening) {
@@ -125,7 +121,20 @@
         || !Number.isFinite(age) || age < -300000 || age > 36*60*60*1000;
     });
     renderComparison(); syncUrl(); syncLinks();
-    if (trip.arrive && trip.depart) applyDateAvailability();
+    if (trip.arrive && trip.depart && count > 0 && !visualTestMode) applyDateAvailability();
+  }
+  function emptyCopy() {
+    return Number(trip.guests) > 16
+      ? "Our largest home sleeps 16. Call us to discuss separate homes for a larger group; availability and suitability need confirmation."
+      : "Try another area or check your group size. Changing dates will not change a home’s maximum capacity.";
+  }
+  function showCapacityState(count, extras) {
+    extras = extras || {};
+    document.getElementById("catalog-count").textContent = extras.countText
+      || (count + (count === 1 ? " home fits" : " homes fit") + " · Check dates on each booking page");
+    document.getElementById("catalog-empty").hidden = count > 0;
+    if (count === 0) document.getElementById("catalog-empty-copy").textContent = emptyCopy();
+    status.textContent = extras.status || (tripText() + ". Availability, fees and the full total are confirmed on the booking page.");
   }
   function homeName(card) {
     var heading = card.querySelector("h3");
@@ -150,7 +159,10 @@
         if (request !== availabilityRequest || !trip.arrive || !trip.depart) return;
         if (!body || body.ok !== true || !Array.isArray(body.homes)) throw new Error("availability check failed");
         var bySlug = new Map(body.homes.map(function (home) { return [home.slug, home]; }));
-        if (candidates.some(function (card) { return !bySlug.has(card.dataset.property); })) throw new Error("availability check incomplete");
+        if (candidates.some(function (card) {
+          var home = bySlug.get(card.dataset.property);
+          return !home || home.reason === "no-calendar";
+        })) throw new Error("availability check incomplete");
         var reasons = [];
         candidates.forEach(function (card) {
           var home = bySlug.get(card.dataset.property);
@@ -170,7 +182,11 @@
       })
       .catch(function () {
         if (request !== availabilityRequest) return;
-        status.textContent = tripText() + ". Availability could not be checked. Confirm it on the booking page.";
+        var visible = cards.filter(function (card) { return !card.hidden; }).length;
+        showCapacityState(visible, {
+          countText: visible + (visible === 1 ? " home fits" : " homes fit") + " · Availability could not be checked. Confirm it on each booking page",
+          status: tripText() + ". Availability could not be checked. Confirm it on the booking page."
+        });
       });
   }
   document.querySelectorAll("[data-trip-link]").forEach(function(link) { originalLinks.set(link,link.getAttribute("href")); });
