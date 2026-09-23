@@ -11,7 +11,6 @@ on:
       - "scripts/enforcement/run-visual-tests.js"
       - "scripts/enforcement/capture-visual-proof.js"
       - "scripts/enforcement/serve-static.js"
-      - "package.json"
       - "package-lock.json"
       - ".github/workflows/playwright-visual.yml"
 
@@ -34,16 +33,15 @@ jobs:
       - uses: actions/setup-node@v7
         with:
           node-version-file: ".nvmrc"
-          cache: "npm"
 
       - run: npm ci
-      - run: npm run test:visual:install
-      - run: npm run test:visual
-      - run: npm run proof:visual
-        if: always()
+      - run: npx --no-install playwright install chromium
+      - run: node scripts/enforcement/run-visual-tests.js
+      - run: node scripts/enforcement/capture-visual-proof.js
+        if: failure()
 
       - name: Upload visual proof bundle
-        if: always()
+        if: failure()
         uses: actions/upload-artifact@v7
         with:
           name: visual-proof-bundle

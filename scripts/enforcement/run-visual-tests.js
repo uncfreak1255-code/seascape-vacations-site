@@ -5,7 +5,6 @@ const { spawn } = require("node:child_process");
 const { closeServer, startStaticServer } = require("./serve-static");
 
 const projectRoot = path.resolve(__dirname, "..", "..");
-const npmCommand = process.platform === "win32" ? "npm.cmd" : "npm";
 const playwrightCli = require.resolve("@playwright/test/cli");
 
 function spawnChild(command, args, options) {
@@ -29,7 +28,7 @@ function waitForChild(child) {
 }
 
 async function runBuild(setActiveChild) {
-  const child = spawnChild(npmCommand, ["run", "build"], {
+  const child = spawnChild(process.execPath, ["scripts/enforcement/build-site.js"], {
     env: {
       ...process.env,
       SEASCAPE_VISUAL_TEST: "1",
