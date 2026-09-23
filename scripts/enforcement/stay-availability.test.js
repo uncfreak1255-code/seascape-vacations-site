@@ -118,6 +118,13 @@ test("a missing arrival or mid-stay day is incomplete, not booked", () => {
   const days = stay("2026-10-18", 4);
   days.splice(2, 1);
   assert.equal(evaluateStay(days, "2026-10-18", "2026-10-22").reason, "no-calendar");
+
+  // A reserved earlier day must not hide a later gap in a partial response.
+  days[0] = day("2026-10-18", { isAvailable: 0, status: "reserved" });
+  assert.equal(evaluateStay(days, "2026-10-18", "2026-10-22").reason, "no-calendar");
+
+  const missingDeparture = stay("2026-10-18", 4).slice(0, -1);
+  assert.equal(evaluateStay(missingDeparture, "2026-10-18", "2026-10-22").reason, "no-calendar");
 });
 
 test("availability endpoint fails open when a Hostaway calendar is empty or missing the stay", async () => {

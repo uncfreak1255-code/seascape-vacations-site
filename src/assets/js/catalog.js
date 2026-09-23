@@ -95,6 +95,8 @@
     document.getElementById("comparison-trip").textContent = tripText() + " · Dates and prices need confirmation.";
   }
   function render() {
+    // Even a render with no date request supersedes an outstanding response.
+    availabilityRequest++;
     var count = 0;
     cards.forEach(function (card) {
       var fitsArea = activeFilter === "all" || card.dataset.filters.split("|").includes(activeFilter);
@@ -148,7 +150,7 @@
     return name + " is booked those nights.";
   }
   function applyDateAvailability() {
-    var request = ++availabilityRequest;
+    var request = availabilityRequest;
     var candidates = cards.filter(function (card) { return !card.hidden; });
     fetch("/.netlify/functions/booking-availability?arrive=" + encodeURIComponent(trip.arrive) + "&depart=" + encodeURIComponent(trip.depart), { headers: { accept: "application/json" } })
       .then(function (response) {

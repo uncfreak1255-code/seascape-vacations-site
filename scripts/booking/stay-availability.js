@@ -43,8 +43,17 @@ function evaluateStay(days, arrive, depart) {
   }
 
   const byDate = new Map((Array.isArray(days) ? days : []).map((day) => [day.date, day]));
+  // Check coverage before interpreting a blocked night. A partial response is
+  // not evidence that the whole stay is booked.
+  for (let offset = 0; offset < nights; offset += 1) {
+    if (!byDate.has(addDays(arrive, offset))) {
+      return { bookable: false, reason: "no-calendar", minimumStay: null };
+    }
+  }
+  if (!byDate.has(depart)) {
+    return { bookable: false, reason: "no-calendar", minimumStay: null };
+  }
   const arrival = byDate.get(arrive);
-  if (!arrival) return { bookable: false, reason: "no-calendar", minimumStay: null };
 
   const minimumStay = Number(arrival.minimumStay) || null;
   if (!isOpenDay(arrival)) return { bookable: false, reason: "booked", minimumStay };
@@ -52,7 +61,6 @@ function evaluateStay(days, arrive, depart) {
 
   for (let offset = 0; offset < nights; offset += 1) {
     const night = byDate.get(addDays(arrive, offset));
-    if (!night) return { bookable: false, reason: "no-calendar", minimumStay };
     if (!isOpenDay(night)) {
       return { bookable: false, reason: "booked", minimumStay };
     }
@@ -63,7 +71,7 @@ function evaluateStay(days, arrive, depart) {
   }
 
   const departure = byDate.get(depart);
-  if (departure && isClosed(departure.closedOnDeparture)) {
+  if (isClosed(departure.closedOnDeparture)) {
     return { bookable: false, reason: "closed-departure", minimumStay };
   }
 
