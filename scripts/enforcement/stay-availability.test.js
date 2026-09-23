@@ -64,6 +64,13 @@ test("closed arrival and closed departure are separate from a booked night", () 
   assert.equal(evaluateStay(closedDeparture, "2026-10-13", "2026-10-15").reason, "closed-departure");
 });
 
+test("calendar string flags follow the established Hostaway normalizer", () => {
+  const days = stay("2026-10-13", 2, { isAvailable: "1" });
+  assert.equal(evaluateStay(days, "2026-10-13", "2026-10-15").bookable, true);
+  days[0].closedOnArrival = "1";
+  assert.equal(evaluateStay(days, "2026-10-13", "2026-10-15").reason, "closed-arrival");
+});
+
 test("booking availability uses the same six listing ids as the site catalog", () => {
   const source = fs.readFileSync(path.join(__dirname, "..", "..", "src", "_data", "properties.js"), "utf8");
   for (const listing of LISTINGS) {

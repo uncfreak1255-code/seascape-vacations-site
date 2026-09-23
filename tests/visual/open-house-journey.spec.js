@@ -180,3 +180,25 @@ test('an incomplete edited trip cannot use the secondary checkout shortcut',asyn
   expect(quoteParams(await page.locator('[data-property-checkout]').getAttribute('href'))).toEqual({start:'2026-11-07',end:'2026-11-15',guests:'8'});
   await expect(page.locator('.g-form-status')).toHaveText(datesOpenStatus);
 });
+
+test('a pending calendar check cannot open checkout after dates are cleared',async({page})=>{
+  await visit(page,'/properties/dockside-dreams/?guests=4');
+  const pending=[];
+  const popups=[];
+  page.on('popup',popup=>popups.push(popup));
+  await page.route('**/.netlify/functions/booking-availability?**',route=>{pending.push(route);});
+  await page.getByLabel('Arrival',{exact:true}).fill('2026-11-07');
+  await page.getByLabel('Departure',{exact:true}).fill('2026-11-14');
+  await page.getByLabel('Guests',{exact:true}).focus();
+  await expect(page.locator('[data-property-checkout]')).toBeHidden();
+  await page.getByRole('button',{name:'Check dates & total',exact:true}).click();
+  await expect.poll(()=>pending.length).toBeGreaterThan(0);
+  await page.getByLabel('Arrival',{exact:true}).fill('');
+  await page.getByLabel('Departure',{exact:true}).fill('');
+  await page.getByLabel('Guests',{exact:true}).focus();
+  await expect(page.locator('[data-property-checkout]')).toBeVisible();
+  for(const route of pending)await route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({ok:true,homes:[{slug:'dockside-dreams',bookable:true}]})});
+  await page.waitForTimeout(200);
+  expect(popups).toHaveLength(0);
+  await expect(page.locator('.g-form-status')).toHaveText(availabilityStatus);
+});

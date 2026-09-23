@@ -36,6 +36,7 @@
   function summary() { return (trip.arrive ? label(trip.arrive)+' – '+label(trip.depart) : 'Flexible dates') + (trip.guests ? ' · '+(trip.guests === '17' ? 'more than 16' : trip.guests)+' guests' : ''); }
   function emit(name, extras) { if (tracking) tracking.trackEvent(name, Object.assign({page_slug:pageRoot ? pageRoot.dataset.propertyPage : 'home',placement:'guest_journey'},extras || {})); }
   function syncTrip() {
+    var stayCheck=null;
     originalLinks.forEach(function (href, link) {
       var url = preserveSave50Params(new URL(href, location.href));
       ['arrive','depart','checkin','checkout','guests','area'].forEach(function(key){url.searchParams.delete(key);});
@@ -60,11 +61,12 @@
       else if(invalidDates){clearStayGate(checkout);checkout.removeAttribute('href');form.querySelector('.g-form-status').textContent='Choose a departure after arrival, or clear both dates to stay flexible.';}
       else if(trip.arrive&&trip.depart){
         if(new URLSearchParams(location.search).get('visual-test')==='1')clearStayGate(checkout);
-        else requestStayCheck();
+        else stayCheck=requestStayCheck();
       }
       else {clearStayGate(checkout);}
     }
     updateQuestion();
+    return stayCheck;
   }
   var stayRequest=0;
   function clearStayGate(checkout){
@@ -86,6 +88,7 @@
     if(!checkout||!form||!statusNode||!pageRoot||!trip.arrive||!trip.depart)return Promise.resolve(null);
     var request=++stayRequest;
     checkout.dataset.stayPending='true';
+    checkout.hidden=true;
     statusNode.textContent='Checking these dates.';
     return fetch('/.netlify/functions/booking-availability?arrive='+encodeURIComponent(trip.arrive)+'&depart='+encodeURIComponent(trip.depart),{headers:{accept:'application/json'}})
       .then(function(response){if(!response.ok)throw new Error('stay check failed');return response.json();})
@@ -97,6 +100,7 @@
         if(!home||home.reason==='no-calendar')throw new Error('stay check incomplete');
         if(!home.bookable){checkout.dataset.stayBlocked='true';checkout.hidden=true;checkout.removeAttribute('href');statusNode.textContent=stayMessage(home);return home;}
         delete checkout.dataset.stayBlocked;
+        checkout.hidden=false;
         statusNode.textContent='These dates are open. Price and cancellation terms are on the booking page.';
         return home;
       })
@@ -104,6 +108,7 @@
         if(request!==stayRequest)return null;
         delete checkout.dataset.stayPending;
         delete checkout.dataset.stayBlocked;
+        checkout.hidden=false;
         statusNode.textContent='Availability could not be checked. Confirm it on the booking page.';
         return null;
       });
@@ -146,10 +151,14 @@
         emit('homepage_search_submit',{guest_count:count,has_dates:Boolean(arrive.value)});location.assign(target.pathname+target.search);return;
       }
       var current=new URL(location.href);['arrive','depart','checkin','checkout','guests'].forEach(function(key){current.searchParams.delete(key);});Object.keys(trip).forEach(function(key){current.searchParams.set(key,trip[key]);});history.replaceState(null,'',current.pathname+current.search+current.hash);
-      syncTrip();
+      var stayCheck=syncTrip();
       var checkoutLink=document.querySelector('[data-property-checkout]');
-      var openCheckout=function(){if(checkoutLink.dataset.stayBlocked)return;status.textContent='Opening availability and the full total for '+summary()+'.';checkoutLink.click();};
-      if(checkoutLink.dataset.stayPending){requestStayCheck().then(openCheckout);return;}
+      var submittedRequest=stayRequest,submittedArrive=trip.arrive,submittedDepart=trip.depart,submittedGuests=trip.guests;
+      var openCheckout=function(){
+        if(stayRequest!==submittedRequest||trip.arrive!==submittedArrive||trip.depart!==submittedDepart||trip.guests!==submittedGuests||checkoutLink.dataset.stayBlocked||checkoutLink.dataset.stayPending||checkoutLink.hidden)return;
+        status.textContent='Opening availability and the full total for '+summary()+'.';checkoutLink.click();
+      };
+      if(checkoutLink.dataset.stayPending){stayCheck.then(openCheckout);return;}
       openCheckout();
     });
     // Keep valid trip edits with home links and prepared questions.

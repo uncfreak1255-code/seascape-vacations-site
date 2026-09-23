@@ -27,13 +27,13 @@ function nightCount(arrive, depart) {
 
 function isOpenDay(day) {
   if (!day) return false;
-  const available = day.isAvailable === 1 || day.isAvailable === true;
+  const available = isClosed(day.isAvailable);
   if (!available) return false;
   return !day.status || day.status === "available";
 }
 
 function isClosed(value) {
-  return value === 1 || value === true;
+  return value === 1 || value === true || value === "1" || (typeof value === "string" && value.toLowerCase() === "true");
 }
 
 function evaluateStay(days, arrive, depart) {
