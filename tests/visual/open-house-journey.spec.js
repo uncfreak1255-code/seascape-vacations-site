@@ -190,9 +190,10 @@ test('a pending calendar check cannot open checkout after dates are cleared',asy
   await page.getByLabel('Arrival',{exact:true}).fill('2026-11-07');
   await page.getByLabel('Departure',{exact:true}).fill('2026-11-14');
   await page.getByLabel('Guests',{exact:true}).focus();
+  await expect.poll(()=>pending.length).toBe(1);
   await expect(page.locator('[data-property-checkout]')).toBeHidden();
   await page.getByRole('button',{name:'Check dates & total',exact:true}).click();
-  await expect.poll(()=>pending.length).toBeGreaterThan(0);
+  await expect.poll(()=>pending.length).toBe(2);
   await page.getByLabel('Arrival',{exact:true}).fill('');
   await page.getByLabel('Departure',{exact:true}).fill('');
   await page.getByLabel('Guests',{exact:true}).focus();
