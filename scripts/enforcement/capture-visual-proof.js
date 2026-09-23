@@ -9,7 +9,6 @@ const { moneyRoutes } = require("../../tests/visual/routes");
 const { prepareFullPageScreenshot } = require("../../tests/visual/test-helpers");
 
 const projectRoot = path.resolve(__dirname, "..", "..");
-const npmCommand = process.platform === "win32" ? "npm.cmd" : "npm";
 
 function parseArgs(argv) {
   const options = {
@@ -67,7 +66,7 @@ function waitForChild(child) {
 }
 
 async function runBuild() {
-  const child = spawnChild(npmCommand, ["run", "build"], {
+  const child = spawnChild(process.execPath, ["scripts/enforcement/build-site.js"], {
     env: {
       ...process.env,
       SEASCAPE_VISUAL_TEST: "0",
