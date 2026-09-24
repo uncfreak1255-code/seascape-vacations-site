@@ -1,0 +1,29 @@
+{
+  "routes": {
+    "/": {
+      "script": 62841,
+      "stylesheet": 56225
+    },
+    "/property-management/vacation-rental-licensing-florida/": {
+      "script": 44475,
+      "stylesheet": 34373
+    },
+    "/property-management/vacation-rental-management-fees-florida/": {
+      "script": 44475,
+      "stylesheet": 34373
+    },
+    "/property-management/vrbo-management-services-florida/": {
+      "script": 44475,
+      "stylesheet": 34373
+    },
+    "/stays/anna-maria-island-beachfront-rentals/": {
+      "script": 44475,
+      "stylesheet": 34373
+    },
+    "/stays/anna-maria-island-vacation-rentals/": {
+      "script": 44475,
+      "stylesheet": 34373
+    }
+  },
+  "raises": []
+}

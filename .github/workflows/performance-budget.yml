@@ -14,6 +14,7 @@ on:
       - "*.webp"
       - "*.avif"
       - "config/perf-budget.json"
+      - "config/perf-ratchet.json"
       - "scripts/enforcement/build-site.js"
       - "scripts/perf/**"
       - "eleventy.config.js"
@@ -55,11 +56,17 @@ jobs:
       - name: Check performance budgets
         run: npx --no-install lhci autorun --config=./lighthouserc.js
 
+      - name: Check byte-size ratchet
+        run: node scripts/perf/perf-ratchet.js
+
       - name: Upload Lighthouse reports
         if: always()
         uses: actions/upload-artifact@v7
         with:
           name: lighthouse-reports
           path: .lighthouseci/
+          # The reports live in a dot-directory; without this the action
+          # uploads nothing and logs "No files were found" (PR #617 run 1).
+          include-hidden-files: true
           if-no-files-found: ignore
           retention-days: 7
