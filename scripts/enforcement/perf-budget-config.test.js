@@ -17,15 +17,24 @@ test("perf budget watches the tracked money routes", () => {
   ]);
 });
 
-test("lighthouserc uses built site output and local homepage plus money-route URLs", () => {
+test("perf budget watches one page per guest and owner journey", () => {
+  const { journeyRoutes } = require(path.join(projectRoot, "scripts/perf/money-routes.js"));
+
+  // Landing is "/". Listing is the property catalog. The inquiry journeys
+  // start on the owner page (owner evaluation form) and the catalog (guest
+  // trip form); the send itself is a live function call, not a page load.
+  assert.deepEqual(journeyRoutes, ["/properties/", "/property-management/"]);
+});
+
+test("lighthouserc uses built site output and local homepage, journey and money-route URLs", () => {
   const config = require(path.join(projectRoot, "lighthouserc.js"));
-  const { moneyRoutes } = require(path.join(projectRoot, "scripts/perf/money-routes.js"));
+  const { journeyRoutes, moneyRoutes } = require(path.join(projectRoot, "scripts/perf/money-routes.js"));
 
   assert.equal(config.ci.collect.staticDistDir, "./_site");
   assert.equal(config.ci.collect.numberOfRuns, 3);
   assert.deepEqual(
     config.ci.collect.url,
-    ["/", ...moneyRoutes].map((route) => `http://localhost${route}`)
+    ["/", ...journeyRoutes, ...moneyRoutes].map((route) => `http://localhost${route}`)
   );
   assert.equal(config.ci.collect.settings.budgetPath, "./config/perf-budget.json");
   assert.equal(config.ci.assert.assertions["performance-budget"], "error");
