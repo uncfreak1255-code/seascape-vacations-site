@@ -36,6 +36,26 @@ async function registerStableNetwork(page) {
       return;
     }
 
+    if ((url.hostname === "127.0.0.1" || url.hostname === "localhost") && url.pathname === "/.netlify/functions/booking-availability") {
+      const homes = ["dockside-dreams","the-oasis","sarasota-luxe","river-house","bradenton-pool-home","blue-house"].map((slug) => ({
+        slug,
+        bookable: true,
+        reason: null,
+        minimumStay: 2
+      }));
+      await route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({
+          ok: true,
+          arrive: url.searchParams.get("arrive"),
+          depart: url.searchParams.get("depart"),
+          homes
+        }),
+      });
+      return;
+    }
+
     if ((url.hostname === "127.0.0.1" || url.hostname === "localhost") && url.pathname === "/.netlify/images") {
       const sourcePath = url.searchParams.get("url");
       if (sourcePath && sourcePath.startsWith("/images/")) {

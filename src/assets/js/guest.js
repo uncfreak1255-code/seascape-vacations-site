@@ -36,6 +36,7 @@
   function summary() { return (trip.arrive ? label(trip.arrive)+' – '+label(trip.depart) : 'Flexible dates') + (trip.guests ? ' · '+(trip.guests === '17' ? 'more than 16' : trip.guests)+' guests' : ''); }
   function emit(name, extras) { if (tracking) tracking.trackEvent(name, Object.assign({page_slug:pageRoot ? pageRoot.dataset.propertyPage : 'home',placement:'guest_journey'},extras || {})); }
   function syncTrip() {
+    var stayCheck=null;
     originalLinks.forEach(function (href, link) {
       var url = preserveSave50Params(new URL(href, location.href));
       ['arrive','depart','checkin','checkout','guests','area'].forEach(function(key){url.searchParams.delete(key);});
@@ -56,10 +57,61 @@
       var arrive=form.querySelector('.g-arrive'),depart=form.querySelector('.g-depart');
       var invalidDates=Boolean(arrive.value)!==Boolean(depart.value)||(arrive.value&&(depart.value<=arrive.value||arrive.value<arrive.min));
       checkout.hidden=oversized||invalidDates;
-      if(oversized){checkout.removeAttribute('href');form.querySelector('.g-form-status').textContent='This home hosts up to '+form.dataset.maxGuests+' guests. Compare the collection or ask us about separate homes.';}
-      else if(invalidDates){checkout.removeAttribute('href');form.querySelector('.g-form-status').textContent='Choose a departure after arrival, or clear both dates to stay flexible.';}
+      if(oversized){clearStayGate(checkout);checkout.removeAttribute('href');form.querySelector('.g-form-status').textContent='This home hosts up to '+form.dataset.maxGuests+' guests. Compare the collection or ask us about separate homes.';}
+      else if(invalidDates){clearStayGate(checkout);checkout.removeAttribute('href');form.querySelector('.g-form-status').textContent='Choose a departure after arrival, or clear both dates to stay flexible.';}
+      else if(trip.arrive&&trip.depart){
+        if(new URLSearchParams(location.search).get('visual-test')==='1')clearStayGate(checkout);
+        else stayCheck=requestStayCheck();
+      }
+      else {clearStayGate(checkout);}
     }
     updateQuestion();
+    return stayCheck;
+  }
+  var stayRequest=0;
+  function clearStayGate(checkout){
+    stayRequest+=1;
+    if(!checkout)return;
+    delete checkout.dataset.stayBlocked;
+    delete checkout.dataset.stayPending;
+  }
+  function stayMessage(home){
+    if(home.reason==='minimum-stay'&&home.minimumStay)return 'This home needs '+home.minimumStay+' nights. Choose a longer stay or compare the other homes.';
+    if(home.reason==='closed-arrival')return 'Check-in is not available that day. Choose a different arrival.';
+    if(home.reason==='closed-departure')return 'Check-out is not available that day. Choose a different departure.';
+    return 'These dates are booked. Choose different dates or compare the other homes.';
+  }
+  function requestStayCheck(){
+    var checkout=document.querySelector('[data-property-checkout]');
+    var form=document.querySelector('form[data-booking-url]');
+    var statusNode=form&&form.querySelector('.g-form-status');
+    if(!checkout||!form||!statusNode||!pageRoot||!trip.arrive||!trip.depart)return Promise.resolve(null);
+    var request=++stayRequest;
+    checkout.dataset.stayPending='true';
+    checkout.hidden=true;
+    statusNode.textContent='Checking these dates.';
+    return fetch('/.netlify/functions/booking-availability?arrive='+encodeURIComponent(trip.arrive)+'&depart='+encodeURIComponent(trip.depart),{headers:{accept:'application/json'}})
+      .then(function(response){if(!response.ok)throw new Error('stay check failed');return response.json();})
+      .then(function(body){
+        if(request!==stayRequest)return null;
+        delete checkout.dataset.stayPending;
+        if(!body||body.ok!==true||!Array.isArray(body.homes))throw new Error('stay check failed');
+        var home=body.homes.find(function(item){return item.slug===pageRoot.dataset.propertyPage;});
+        if(!home||home.reason==='no-calendar')throw new Error('stay check incomplete');
+        if(!home.bookable){checkout.dataset.stayBlocked='true';checkout.hidden=true;checkout.removeAttribute('href');statusNode.textContent=stayMessage(home);return home;}
+        delete checkout.dataset.stayBlocked;
+        checkout.hidden=false;
+        statusNode.textContent='These dates are open. Price and cancellation terms are on the booking page.';
+        return home;
+      })
+      .catch(function(){
+        if(request!==stayRequest)return null;
+        delete checkout.dataset.stayPending;
+        delete checkout.dataset.stayBlocked;
+        checkout.hidden=false;
+        statusNode.textContent='Availability could not be checked. Confirm it on the booking page.';
+        return null;
+      });
   }
   function updateQuestion() {
     var email=document.querySelector('[data-question-email]');
@@ -99,7 +151,15 @@
         emit('homepage_search_submit',{guest_count:count,has_dates:Boolean(arrive.value)});location.assign(target.pathname+target.search);return;
       }
       var current=new URL(location.href);['arrive','depart','checkin','checkout','guests'].forEach(function(key){current.searchParams.delete(key);});Object.keys(trip).forEach(function(key){current.searchParams.set(key,trip[key]);});history.replaceState(null,'',current.pathname+current.search+current.hash);
-      syncTrip();status.textContent='Opening availability and the full total for '+summary()+'.';document.querySelector('[data-property-checkout]').click();
+      var stayCheck=syncTrip();
+      var checkoutLink=document.querySelector('[data-property-checkout]');
+      var submittedRequest=stayRequest,submittedArrive=trip.arrive,submittedDepart=trip.depart,submittedGuests=trip.guests;
+      var openCheckout=function(){
+        if(stayRequest!==submittedRequest||trip.arrive!==submittedArrive||trip.depart!==submittedDepart||trip.guests!==submittedGuests||checkoutLink.dataset.stayBlocked||checkoutLink.dataset.stayPending||checkoutLink.hidden)return;
+        status.textContent='Opening availability and the full total for '+summary()+'.';checkoutLink.click();
+      };
+      if(checkoutLink.dataset.stayPending){stayCheck.then(openCheckout);return;}
+      openCheckout();
     });
     // Keep valid trip edits with home links and prepared questions.
     form.addEventListener('change',function(){
@@ -108,7 +168,8 @@
       ['arrive','depart','guests'].forEach(function(key){delete trip[key];if(next[key])trip[key]=next[key];});
       var current=new URL(location.href);['arrive','depart','checkin','checkout','guests'].forEach(function(key){current.searchParams.delete(key);});Object.keys(trip).forEach(function(key){current.searchParams.set(key,trip[key]);});history.replaceState(null,'',current.pathname+current.search+current.hash);
       syncTrip();
-      if(form.dataset.bookingUrl&&!document.querySelector('[data-property-checkout]').hidden)status.textContent=defaultStatus;
+      var checkoutNow=document.querySelector('[data-property-checkout]');
+      if(form.dataset.bookingUrl&&checkoutNow&&!checkoutNow.hidden&&!checkoutNow.dataset.stayPending)status.textContent=defaultStatus;
     });
   });
   function photoFailed(image){

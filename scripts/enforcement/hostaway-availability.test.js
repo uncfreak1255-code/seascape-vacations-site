@@ -176,6 +176,21 @@ test("booking engine calendar adapter exposes Hostaway day objects without priva
   assert.equal(toBookingEngineHostname("https://book.seascape-vacations.com"), "book.seascape-vacations.com");
 });
 
+test("booking engine calendar adapter fails closed on a non-success Hostaway payload", () => {
+  assert.throws(
+    () => calendarDaysFromBookingEngineResponse({ status: "fail", result: {} }),
+    /booking-engine-calendar-unavailable/
+  );
+  assert.throws(
+    () => calendarDaysFromBookingEngineResponse(null),
+    /booking-engine-calendar-unavailable/
+  );
+  assert.throws(
+    () => calendarDaysFromBookingEngineResponse({ status: "success" }),
+    /booking-engine-calendar-unavailable/
+  );
+});
+
 test("Netlify builds require rendered live availability cards", () => {
   assert.equal(shouldRequirePropertiesAvailabilityOutput({ NETLIFY: "true" }), true);
   assert.equal(shouldRequirePropertiesAvailabilityOutput({ SEASCAPE_REQUIRE_PROPERTIES_AVAILABILITY: "1" }), true);
