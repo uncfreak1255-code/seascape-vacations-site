@@ -21,6 +21,11 @@
 // run (+879 bytes on the homepage for the same commit, PR #617 run 1).
 // LCP, CLS and TBT stay ceilings in lighthouserc.js because they vary run to
 // run.
+//
+// The pull_request workflow builds the merge of the branch with current main,
+// so seed or update the baseline on a tree that already contains origin/main.
+// A baseline seeded on a stale base fails in CI with main's growth, not the
+// PR's (PR #617 run 2: guest.js +3562 bytes that had landed on main).
 
 const fs = require("fs");
 const path = require("path");

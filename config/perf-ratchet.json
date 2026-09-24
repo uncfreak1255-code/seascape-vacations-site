@@ -1,7 +1,7 @@
 {
   "routes": {
     "/": {
-      "script": 59279,
+      "script": 62841,
       "stylesheet": 56225
     },
     "/property-management/vacation-rental-licensing-florida/": {

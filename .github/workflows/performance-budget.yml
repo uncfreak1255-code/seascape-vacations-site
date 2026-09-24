@@ -65,5 +65,8 @@ jobs:
         with:
           name: lighthouse-reports
           path: .lighthouseci/
+          # The reports live in a dot-directory; without this the action
+          # uploads nothing and logs "No files were found" (PR #617 run 1).
+          include-hidden-files: true
           if-no-files-found: ignore
           retention-days: 7
