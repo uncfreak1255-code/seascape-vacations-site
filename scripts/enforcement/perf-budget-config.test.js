@@ -20,9 +20,7 @@ test("perf budget watches the tracked money routes", () => {
 test("perf budget watches one page per guest and owner journey", () => {
   const { journeyRoutes } = require(path.join(projectRoot, "scripts/perf/money-routes.js"));
 
-  // Landing is "/". Listing is the property catalog. The inquiry journeys
-  // start on the owner page (owner evaluation form) and the catalog (guest
-  // trip form); the send itself is a live function call, not a page load.
+  // Why these two: see the comment on journeyRoutes in money-routes.js.
   assert.deepEqual(journeyRoutes, ["/properties/", "/property-management/"]);
 });
 
