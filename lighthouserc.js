@@ -1,8 +1,8 @@
 "use strict";
 
-const { moneyRoutes } = require("./scripts/perf/money-routes.js");
+const { journeyRoutes, moneyRoutes } = require("./scripts/perf/money-routes.js");
 
-const budgetRoutes = ["/", ...moneyRoutes];
+const budgetRoutes = ["/", ...journeyRoutes, ...moneyRoutes];
 
 module.exports = {
   ci: {
