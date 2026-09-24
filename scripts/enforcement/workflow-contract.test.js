@@ -53,8 +53,8 @@ test("performance budget keeps PR proof and full scheduled proof bounded", () =>
   assert.match(workflow, /group:\s*performance-budget-\$\{\{ github\.event\.pull_request\.number \|\| github\.ref \}\}/);
   assert.match(workflow, /cancel-in-progress:\s*true/);
   assert.match(workflow, /timeout-minutes:\s*\d+/);
-  assert.match(workflow, /run:\s*npm run build/);
-  assert.match(workflow, /run:\s*npm run perf:budget:check/);
+  assert.match(workflow, /run:\s*node scripts\/enforcement\/build-site\.js/);
+  assert.match(workflow, /run:\s*npx --no-install lhci autorun --config=\.\/lighthouserc\.js/);
   for (const assetPath of [
     '"images/**"',
     '"css/**"',
@@ -76,6 +76,35 @@ test("visual regression cancels superseded pull request runs", () => {
   assert.match(workflow, /cancel-in-progress:\s*true/);
 });
 
+test("CI speed lane keeps non-rendering package commands off expensive visual gates", () => {
+  const visual = readWorkflow("playwright-visual.yml");
+  const performance = readWorkflow("performance-budget.yml");
+  const release = readWorkflow("release-safety.yml");
+
+  for (const workflow of [visual, performance]) {
+    assert.doesNotMatch(workflow, /"package\.json"/);
+    assert.match(workflow, /"package-lock\.json"/);
+    assert.doesNotMatch(workflow, /cache:\s*"npm"/);
+  }
+
+  assert.match(visual, /run:\s*npx --no-install playwright install chromium/);
+  assert.match(visual, /run:\s*node scripts\/enforcement\/run-visual-tests\.js/);
+  assert.match(visual, /- run: node scripts\/enforcement\/capture-visual-proof\.js\n\s+if: failure\(\)/);
+  assert.match(visual, /name: Upload visual proof bundle\n\s+if: failure\(\)/);
+  assert.match(performance, /run:\s*node scripts\/enforcement\/build-site\.js/);
+  assert.match(performance, /run:\s*npx --no-install lhci autorun --config=\.\/lighthouserc\.js/);
+  assert.match(release, /runs-on:\s*ubuntu-latest/);
+  assert.doesNotMatch(release, /mac-sawbeck-seascape-vacations-site/);
+
+  for (const script of [
+    fs.readFileSync(path.join(projectRoot, "scripts/enforcement/run-visual-tests.js"), "utf8"),
+    fs.readFileSync(path.join(projectRoot, "scripts/enforcement/capture-visual-proof.js"), "utf8"),
+  ]) {
+    assert.match(script, /spawnChild\(process\.execPath, \["scripts\/enforcement\/build-site\.js"\]/);
+    assert.doesNotMatch(script, /npm run build/);
+  }
+});
+
 test("self-hosted workflows keep untrusted branch code off Sawyer's Mac", () => {
   const visual = readWorkflow("playwright-visual.yml");
   const release = readWorkflow("release-safety.yml");
@@ -83,11 +112,13 @@ test("self-hosted workflows keep untrusted branch code off Sawyer's Mac", () => 
   const liveSmoke = readWorkflow("live-smoke.yml");
   const baselines = readWorkflow("update-visual-baselines.yml");
 
-  for (const workflow of [visual, release, performance]) {
+  for (const workflow of [visual, performance]) {
     assert.match(workflow, /pull_request\.author_association != 'OWNER'/);
     assert.match(workflow, /github\.actor != 'uncfreak1255-code'/);
     assert.match(workflow, /github\.triggering_actor != 'uncfreak1255-code'/);
   }
+
+  assert.match(release, /runs-on:\s*ubuntu-latest/);
 
   assert.match(performance, /github\.triggering_actor != 'uncfreak1255-code'/);
   assert.match(liveSmoke, /github\.triggering_actor == 'uncfreak1255-code'/);
@@ -121,9 +152,8 @@ function ownerEvent(eventName, overrides = {}) {
   };
 }
 
-test("actual PR routing selects the Mac only for trusted owner events", () => {
+test("actual PR routing selects the Mac only for screenshot-sensitive owner events", () => {
   for (const [file, hosted] of [
-    ["release-safety.yml", "ubuntu-latest"],
     ["performance-budget.yml", "ubuntu-latest"],
     ["playwright-visual.yml", "macos-latest"],
   ]) {
@@ -166,6 +196,5 @@ test("manual routing checks both actors and preserves scheduled routes", () => {
   assert.deepEqual(routingValues("performance-budget.yml", "runs-on", scheduled),
     ["mac-sawbeck-seascape-vacations-site"]);
   assert.deepEqual(routingValues("live-smoke.yml", "if", scheduled), [true]);
-  assert.ok(routingValues("release-safety.yml", "runs-on",
-    ownerEvent("push", { event: {} })).every(value => value === "mac-sawbeck-seascape-vacations-site"));
+  assert.match(readWorkflow("release-safety.yml"), /runs-on:\s*ubuntu-latest/);
 });
