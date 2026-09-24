@@ -30,8 +30,12 @@
 const fs = require("fs");
 const path = require("path");
 
-const METRICS = ["script", "stylesheet"];
-const REQUEST_TYPE = { script: "Script", stylesheet: "Stylesheet" };
+// key: the name in the baseline file. requestType: Lighthouse's resourceType
+// for the matching rows of the network-requests audit.
+const METRICS = [
+  { key: "script", requestType: "Script" },
+  { key: "stylesheet", requestType: "Stylesheet" },
+];
 
 function parseArgs(argv) {
   const args = {
@@ -63,6 +67,10 @@ function median(values) {
   return sorted.length % 2 ? sorted[mid] : Math.round((sorted[mid - 1] + sorted[mid]) / 2);
 }
 
+function readJsonIfExists(file) {
+  return fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, "utf8")) : null;
+}
+
 function readMeasured(reportsDir) {
   if (!fs.existsSync(reportsDir)) {
     throw new Error(`perf-ratchet: reports directory ${reportsDir} does not exist`);
@@ -81,54 +89,62 @@ function readMeasured(reportsDir) {
     if (!Array.isArray(items)) {
       throw new Error(`perf-ratchet: ${file} has no network-requests audit for ${route}`);
     }
-    const bucket = (samples[route] ??= Object.fromEntries(METRICS.map((m) => [m, []])));
+    const bucket = (samples[route] ??= Object.fromEntries(METRICS.map((m) => [m.key, []])));
     for (const metric of METRICS) {
       let total = 0;
       for (const item of items) {
-        if (item.resourceType !== REQUEST_TYPE[metric] || item.statusCode !== 200) continue;
+        if (item.resourceType !== metric.requestType || item.statusCode !== 200) continue;
         if (typeof item.resourceSize !== "number") {
           throw new Error(`perf-ratchet: ${file} request ${item.url} has no resourceSize`);
         }
         total += item.resourceSize;
       }
-      bucket[metric].push(total);
+      bucket[metric.key].push(total);
     }
   }
   const measured = {};
   for (const [route, bucket] of Object.entries(samples)) {
-    measured[route] = Object.fromEntries(METRICS.map((m) => [m, median(bucket[m])]));
+    measured[route] = Object.fromEntries(METRICS.map((m) => [m.key, median(bucket[m.key])]));
   }
   return measured;
 }
 
 function readBaseline(file) {
-  if (!fs.existsSync(file)) {
+  const parsed = readJsonIfExists(file);
+  if (!parsed) {
     throw new Error(`perf-ratchet: baseline ${file} is missing; run with --update to seed it`);
   }
-  const parsed = JSON.parse(fs.readFileSync(file, "utf8"));
   if (!parsed.routes || Object.keys(parsed.routes).length === 0) {
     throw new Error(`perf-ratchet: baseline ${file} has no routes; run with --update to seed it`);
   }
   return parsed;
 }
 
+// Every route/metric pair where the measured value differs from the baseline,
+// as { route, metric, from, to }. Callers split on the sign of to - from.
+function deltas(measured, baseline) {
+  const out = [];
+  for (const [route, values] of Object.entries(measured)) {
+    for (const { key: metric } of METRICS) {
+      const from = baseline.routes?.[route]?.[metric];
+      if (typeof from === "number" && values[metric] !== from) {
+        out.push({ route, metric, from, to: values[metric] });
+      }
+    }
+  }
+  return out;
+}
+
 function check(measured, baseline) {
   const failures = [];
-  const tightenable = [];
   for (const route of Object.keys(baseline.routes)) {
     if (!measured[route]) {
       failures.push(`no Lighthouse report for ${route}; is it still in lighthouserc.js?`);
       continue;
     }
-    for (const metric of METRICS) {
-      const was = baseline.routes[route][metric];
-      const now = measured[route][metric];
-      if (typeof was !== "number") {
+    for (const { key: metric } of METRICS) {
+      if (typeof baseline.routes[route][metric] !== "number") {
         failures.push(`baseline for ${route} has no ${metric} value`);
-      } else if (now > was) {
-        failures.push(`${route} ${metric} ${now} > baseline ${was} (+${now - was} bytes)`);
-      } else if (now < was) {
-        tightenable.push(`${route} ${metric} ${now} < baseline ${was}`);
       }
     }
   }
@@ -137,22 +153,19 @@ function check(measured, baseline) {
       failures.push(`no baseline for ${route}; run npm run perf:ratchet:update and commit it`);
     }
   }
+  const changed = deltas(measured, baseline);
+  for (const d of changed.filter((d) => d.to > d.from)) {
+    failures.push(`${d.route} ${d.metric} ${d.to} > baseline ${d.from} (+${d.to - d.from} bytes)`);
+  }
+  const tightenable = changed
+    .filter((d) => d.to < d.from)
+    .map((d) => `${d.route} ${d.metric} ${d.to} < baseline ${d.from}`);
   return { failures, tightenable };
 }
 
 function update(measured, baselineFile, allowRaise) {
-  const existing = fs.existsSync(baselineFile)
-    ? JSON.parse(fs.readFileSync(baselineFile, "utf8"))
-    : { routes: {} };
-  const raises = [];
-  for (const [route, values] of Object.entries(measured)) {
-    for (const metric of METRICS) {
-      const was = existing.routes?.[route]?.[metric];
-      if (typeof was === "number" && values[metric] > was) {
-        raises.push({ route, metric, from: was, to: values[metric] });
-      }
-    }
-  }
+  const existing = readJsonIfExists(baselineFile) || { routes: {} };
+  const raises = deltas(measured, existing).filter((d) => d.to > d.from);
   if (raises.length > 0 && !allowRaise) {
     const lines = raises.map((r) => `  ${r.route} ${r.metric} ${r.from} -> ${r.to}`);
     throw new Error(
@@ -213,4 +226,4 @@ if (require.main === module) {
   }
 }
 
-module.exports = { check, median, readMeasured, update, METRICS };
+module.exports = { check, deltas, median, readMeasured, update, METRICS };
