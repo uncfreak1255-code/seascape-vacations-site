@@ -143,6 +143,19 @@ test("fails loudly when the baseline file is missing or has no routes", () => {
   assert.equal(r2.status, 1, r2.output);
 });
 
+test("fails loudly when a report lacks a resource row instead of treating it as zero", () => {
+  const body = JSON.parse(lhr("/", { script: 100, stylesheet: 200 }));
+  body.audits["resource-summary"].details.items =
+    body.audits["resource-summary"].details.items.filter((i) => i.resourceType !== "stylesheet");
+  const { reportsDir, baselineFile } = fixture({
+    reports: [JSON.stringify(body)],
+    baseline: { routes: { "/": { script: 100, stylesheet: 0 } } },
+  });
+  const r = run(["--reports", reportsDir, "--baseline", baselineFile]);
+  assert.equal(r.status, 1, r.output);
+  assert.match(r.output, /no stylesheet row for \//);
+});
+
 test("fails loudly when there are no reports at all", () => {
   const { reportsDir, baselineFile } = fixture({ reports: [], baseline: BASE });
   const r = run(["--reports", reportsDir, "--baseline", baselineFile]);

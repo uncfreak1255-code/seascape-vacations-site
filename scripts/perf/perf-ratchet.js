@@ -73,7 +73,12 @@ function readMeasured(reportsDir) {
     const bucket = (samples[route] ??= Object.fromEntries(METRICS.map((m) => [m, []])));
     for (const metric of METRICS) {
       const item = items.find((i) => i.resourceType === metric);
-      bucket[metric].push(item ? item.transferSize : 0);
+      if (!item || typeof item.transferSize !== "number") {
+        throw new Error(
+          `perf-ratchet: ${file} resource-summary has no ${metric} row for ${route}; Lighthouse lists zero-byte types explicitly, so this report is malformed`
+        );
+      }
+      bucket[metric].push(item.transferSize);
     }
   }
   const measured = {};
