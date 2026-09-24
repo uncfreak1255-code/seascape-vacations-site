@@ -173,6 +173,10 @@
             reasons.push(reasonSentence(card, home));
           }
         });
+        selected = selected.filter(function (slug) {
+          return cards.some(function (card) { return card.dataset.property === slug && !card.hidden; });
+        });
+        if (selected.length < 2 && dialog.open) dialog.close();
         var openCount = cards.filter(function (card) { return !card.hidden; }).length;
         document.getElementById("catalog-count").textContent = openCount === 0
           ? "No home is open for these dates."
@@ -180,7 +184,7 @@
         document.getElementById("catalog-empty").hidden = openCount > 0;
         document.getElementById("catalog-empty-copy").textContent = reasons.slice(0, 6).join(" ") || "Try different dates, or call us.";
         status.textContent = tripText() + (openCount === 0 ? ". No home is open for these dates." : ". Open homes are shown below.");
-        renderComparison(); syncLinks();
+        renderComparison(); syncUrl(); syncLinks();
       })
       .catch(function () {
         if (request !== availabilityRequest) return;
