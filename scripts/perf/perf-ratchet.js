@@ -13,14 +13,20 @@
 //                                                     refuses to raise any
 //   node scripts/perf/perf-ratchet.js --update --allow-raise "<reason>"
 //
-// Values are the median transferSize across runs, per route, taken from the
-// resource-summary audit. They are deterministic for a static site served by
-// lhci, unlike LCP, which stays a ceiling in lighthouserc.js.
+// Values are the median across runs, per route, of the summed uncompressed
+// resourceSize of every 200 script / stylesheet request in the
+// network-requests audit. Uncompressed body bytes are a function of the
+// committed source alone; transferSize is not, because it counts response
+// headers and compression, which differ between the Mac runner and a local
+// run (+879 bytes on the homepage for the same commit, PR #617 run 1).
+// LCP, CLS and TBT stay ceilings in lighthouserc.js because they vary run to
+// run.
 
 const fs = require("fs");
 const path = require("path");
 
 const METRICS = ["script", "stylesheet"];
+const REQUEST_TYPE = { script: "Script", stylesheet: "Stylesheet" };
 
 function parseArgs(argv) {
   const args = {
@@ -66,19 +72,21 @@ function readMeasured(reportsDir) {
     const url = lhr.finalDisplayedUrl || lhr.requestedUrl;
     if (!url) throw new Error(`perf-ratchet: ${file} has no requestedUrl`);
     const route = new URL(url).pathname;
-    const items = lhr.audits?.["resource-summary"]?.details?.items;
+    const items = lhr.audits?.["network-requests"]?.details?.items;
     if (!Array.isArray(items)) {
-      throw new Error(`perf-ratchet: ${file} has no resource-summary audit`);
+      throw new Error(`perf-ratchet: ${file} has no network-requests audit for ${route}`);
     }
     const bucket = (samples[route] ??= Object.fromEntries(METRICS.map((m) => [m, []])));
     for (const metric of METRICS) {
-      const item = items.find((i) => i.resourceType === metric);
-      if (!item || typeof item.transferSize !== "number") {
-        throw new Error(
-          `perf-ratchet: ${file} resource-summary has no ${metric} row for ${route}; Lighthouse lists zero-byte types explicitly, so this report is malformed`
-        );
+      let total = 0;
+      for (const item of items) {
+        if (item.resourceType !== REQUEST_TYPE[metric] || item.statusCode !== 200) continue;
+        if (typeof item.resourceSize !== "number") {
+          throw new Error(`perf-ratchet: ${file} request ${item.url} has no resourceSize`);
+        }
+        total += item.resourceSize;
       }
-      bucket[metric].push(item.transferSize);
+      bucket[metric].push(total);
     }
   }
   const measured = {};

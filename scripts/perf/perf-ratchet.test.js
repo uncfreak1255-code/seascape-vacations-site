@@ -10,16 +10,23 @@ const { execFileSync } = require("child_process");
 const SCRIPT = path.resolve(__dirname, "perf-ratchet.js");
 
 function lhr(route, { script, stylesheet }) {
+  // Split each total across two requests so the sum, not one row, is measured.
+  const half = (n) => [Math.floor(n / 2), n - Math.floor(n / 2)];
+  const [s1, s2] = half(script);
+  const [c1, c2] = half(stylesheet);
   return JSON.stringify({
     requestedUrl: `http://localhost${route}`,
     finalDisplayedUrl: `http://localhost${route}`,
     audits: {
-      "resource-summary": {
+      "network-requests": {
         details: {
           items: [
-            { resourceType: "script", transferSize: script },
-            { resourceType: "stylesheet", transferSize: stylesheet },
-            { resourceType: "image", transferSize: 400000 },
+            { url: "http://localhost/a.js", resourceType: "Script", statusCode: 200, resourceSize: s1, transferSize: s1 + 300 },
+            { url: "http://localhost/b.js", resourceType: "Script", statusCode: 200, resourceSize: s2, transferSize: s2 + 300 },
+            { url: "http://localhost/gone.js", resourceType: "Script", statusCode: 404, resourceSize: 5000, transferSize: 5300 },
+            { url: "http://localhost/a.css", resourceType: "Stylesheet", statusCode: 200, resourceSize: c1, transferSize: c1 + 300 },
+            { url: "http://localhost/b.css", resourceType: "Stylesheet", statusCode: 200, resourceSize: c2, transferSize: c2 + 300 },
+            { url: "http://localhost/hero.jpg", resourceType: "Image", statusCode: 200, resourceSize: 400000, transferSize: 400300 },
           ],
         },
       },
@@ -143,17 +150,32 @@ test("fails loudly when the baseline file is missing or has no routes", () => {
   assert.equal(r2.status, 1, r2.output);
 });
 
-test("fails loudly when a report lacks a resource row instead of treating it as zero", () => {
-  const body = JSON.parse(lhr("/", { script: 100, stylesheet: 200 }));
-  body.audits["resource-summary"].details.items =
-    body.audits["resource-summary"].details.items.filter((i) => i.resourceType !== "stylesheet");
+test("fails loudly when a report lacks the network-requests audit or a request lacks resourceSize", () => {
+  const noAudit = JSON.parse(lhr("/", { script: 100, stylesheet: 200 }));
+  delete noAudit.audits["network-requests"];
+  const a = fixture({ reports: [JSON.stringify(noAudit)], baseline: BASE });
+  const r1 = run(["--reports", a.reportsDir, "--baseline", a.baselineFile]);
+  assert.equal(r1.status, 1, r1.output);
+  assert.match(r1.output, /no network-requests audit for \//);
+
+  const noSize = JSON.parse(lhr("/", { script: 100, stylesheet: 200 }));
+  delete noSize.audits["network-requests"].details.items[0].resourceSize;
+  const b = fixture({ reports: [JSON.stringify(noSize)], baseline: BASE });
+  const r2 = run(["--reports", b.reportsDir, "--baseline", b.baselineFile]);
+  assert.equal(r2.status, 1, r2.output);
+  assert.match(r2.output, /a\.js has no resourceSize/);
+});
+
+test("measures uncompressed body bytes of 200 responses only, never transferSize", () => {
+  // Fixture: transferSize is +300 per request and a 404 script carries 5000 bytes.
+  // A baseline equal to the exact resourceSize sum passes only if both are ignored.
   const { reportsDir, baselineFile } = fixture({
-    reports: [JSON.stringify(body)],
-    baseline: { routes: { "/": { script: 100, stylesheet: 0 } } },
+    reports: [lhr("/", { script: 15000, stylesheet: 14000 })],
+    baseline: BASE,
   });
   const r = run(["--reports", reportsDir, "--baseline", baselineFile]);
-  assert.equal(r.status, 1, r.output);
-  assert.match(r.output, /no stylesheet row for \//);
+  assert.equal(r.status, 0, r.output);
+  assert.doesNotMatch(r.output, /tightened/);
 });
 
 test("fails loudly when there are no reports at all", () => {
