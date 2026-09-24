@@ -16,6 +16,8 @@
   var selected = [];
   var activeFilter = "all";
   var originalLinks = new Map();
+  var availabilityRequest = 0;
+  var visualTestMode = params.get("visual-test") === "1";
 
   function preserveSave50Params(url) {
     var campaign = (params.get("utm_campaign") || "").trim().toLowerCase();
@@ -93,6 +95,8 @@
     document.getElementById("comparison-trip").textContent = tripText() + " · Dates and prices need confirmation.";
   }
   function render() {
+    // Even a render with no date request supersedes an outstanding response.
+    availabilityRequest++;
     var count = 0;
     cards.forEach(function (card) {
       var fitsArea = activeFilter === "all" || card.dataset.filters.split("|").includes(activeFilter);
@@ -104,12 +108,13 @@
       var active = button.dataset.filter === activeFilter;
       button.classList.toggle("active",active); button.setAttribute("aria-pressed",String(active));
     });
-    document.getElementById("catalog-count").textContent = count + (count === 1 ? " home fits" : " homes fit") + " · Check dates on each booking page";
-    document.getElementById("catalog-empty").hidden = count > 0;
-    document.getElementById("catalog-empty-copy").textContent = Number(trip.guests) > 16
-      ? "Our largest home sleeps 16. Call us to discuss separate homes for a larger group; availability and suitability need confirmation."
-      : "Try another area or check your group size. Changing dates will not change a home’s maximum capacity.";
-    status.textContent = tripText() + ". Availability, fees and the full total are confirmed on the booking page.";
+    if (trip.arrive && trip.depart && count > 0 && !visualTestMode) {
+      document.getElementById("catalog-count").textContent = "Checking these dates.";
+      document.getElementById("catalog-empty").hidden = true;
+      status.textContent = "Checking these dates.";
+    } else {
+      showCapacityState(count);
+    }
     document.getElementById("clear-dates").hidden = !trip.arrive && !trip.depart;
     root.querySelectorAll(".catalog-opening").forEach(function (opening) {
       var age = Date.now() - Date.parse(opening.dataset.openingSynced);
@@ -118,6 +123,77 @@
         || !Number.isFinite(age) || age < -300000 || age > 36*60*60*1000;
     });
     renderComparison(); syncUrl(); syncLinks();
+    if (trip.arrive && trip.depart && count > 0 && !visualTestMode) applyDateAvailability();
+  }
+  function emptyCopy() {
+    return Number(trip.guests) > 16
+      ? "Our largest home sleeps 16. Call us to discuss separate homes for a larger group; availability and suitability need confirmation."
+      : "Try another area or check your group size. Changing dates will not change a home’s maximum capacity.";
+  }
+  function showCapacityState(count, extras) {
+    extras = extras || {};
+    document.getElementById("catalog-count").textContent = extras.countText
+      || (count + (count === 1 ? " home fits" : " homes fit") + " · Check dates on each booking page");
+    document.getElementById("catalog-empty").hidden = count > 0;
+    if (count === 0) document.getElementById("catalog-empty-copy").textContent = emptyCopy();
+    status.textContent = extras.status || (tripText() + ". Availability, fees and the full total are confirmed on the booking page.");
+  }
+  function homeName(card) {
+    var heading = card.querySelector("h3");
+    return heading ? heading.textContent.trim() : card.dataset.property;
+  }
+  function reasonSentence(card, home) {
+    var name = homeName(card);
+    if (home.reason === "minimum-stay" && home.minimumStay) return name + " needs " + home.minimumStay + " nights.";
+    if (home.reason === "closed-arrival") return name + " cannot be checked into that day.";
+    if (home.reason === "closed-departure") return name + " cannot be checked out that day.";
+    return name + " is booked those nights.";
+  }
+  function applyDateAvailability() {
+    var request = availabilityRequest;
+    var candidates = cards.filter(function (card) { return !card.hidden; });
+    fetch("/.netlify/functions/booking-availability?arrive=" + encodeURIComponent(trip.arrive) + "&depart=" + encodeURIComponent(trip.depart), { headers: { accept: "application/json" } })
+      .then(function (response) {
+        if (!response.ok) throw new Error("availability check failed");
+        return response.json();
+      })
+      .then(function (body) {
+        if (request !== availabilityRequest || !trip.arrive || !trip.depart) return;
+        if (!body || body.ok !== true || !Array.isArray(body.homes)) throw new Error("availability check failed");
+        var bySlug = new Map(body.homes.map(function (home) { return [home.slug, home]; }));
+        if (candidates.some(function (card) {
+          var home = bySlug.get(card.dataset.property);
+          return !home || home.reason === "no-calendar";
+        })) throw new Error("availability check incomplete");
+        var reasons = [];
+        candidates.forEach(function (card) {
+          var home = bySlug.get(card.dataset.property);
+          if (!home.bookable) {
+            card.hidden = true;
+            reasons.push(reasonSentence(card, home));
+          }
+        });
+        selected = selected.filter(function (slug) {
+          return cards.some(function (card) { return card.dataset.property === slug && !card.hidden; });
+        });
+        if (selected.length < 2 && dialog.open) dialog.close();
+        var openCount = cards.filter(function (card) { return !card.hidden; }).length;
+        document.getElementById("catalog-count").textContent = openCount === 0
+          ? "No home is open for these dates."
+          : openCount + (openCount === 1 ? " home is open for these dates." : " homes are open for these dates.") + " Price and cancellation terms are on the booking page.";
+        document.getElementById("catalog-empty").hidden = openCount > 0;
+        document.getElementById("catalog-empty-copy").textContent = reasons.slice(0, 6).join(" ") || "Try different dates, or call us.";
+        status.textContent = tripText() + (openCount === 0 ? ". No home is open for these dates." : ". Open homes are shown below.");
+        renderComparison(); syncUrl(); syncLinks();
+      })
+      .catch(function () {
+        if (request !== availabilityRequest) return;
+        var visible = cards.filter(function (card) { return !card.hidden; }).length;
+        showCapacityState(visible, {
+          countText: visible + (visible === 1 ? " home fits" : " homes fit") + " · Availability could not be checked. Confirm it on each booking page",
+          status: tripText() + ". Availability could not be checked. Confirm it on the booking page."
+        });
+      });
   }
   document.querySelectorAll("[data-trip-link]").forEach(function(link) { originalLinks.set(link,link.getAttribute("href")); });
   document.querySelectorAll('a[href]').forEach(function(link) {

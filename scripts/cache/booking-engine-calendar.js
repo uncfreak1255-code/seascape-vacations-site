@@ -8,7 +8,7 @@ function toBookingEngineHostname(baseUrl = DEFAULT_BOOKING_BASE_URL) {
 
 function calendarDaysFromBookingEngineResponse(json) {
   if (!json || json.status !== "success" || !json.result || typeof json.result !== "object") {
-    return [];
+    throw new Error("booking-engine-calendar-unavailable");
   }
 
   return Object.values(json.result);

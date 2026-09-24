@@ -197,6 +197,55 @@ test("trip controls fit the viewport and the comparison meets automated accessib
   await page.screenshot({path:testInfo.outputPath("comparison-first-screen.png")});
 });
 
+function catalogAvailability(homes) {
+  return async (route) => {
+    const url = new URL(route.request().url());
+    await route.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: JSON.stringify({
+        ok: true,
+        arrive: url.searchParams.get("arrive"),
+        depart: url.searchParams.get("depart"),
+        homes
+      })
+    });
+  };
+}
+
+test("a closed stay is removed from the comparison shortlist and compare URL", async ({ page }) => {
+  await registerStableNetwork(page);
+  await page.route("**/.netlify/functions/booking-availability**", catalogAvailability([
+    { slug: "dockside-dreams", bookable: false, reason: "booked", minimumStay: 5 },
+    { slug: "the-oasis", bookable: false, reason: "booked", minimumStay: 4 },
+    { slug: "sarasota-luxe", bookable: false, reason: "booked", minimumStay: 7 },
+    { slug: "river-house", bookable: true, reason: null, minimumStay: 2 },
+    { slug: "bradenton-pool-home", bookable: false, reason: "booked", minimumStay: 3 },
+    { slug: "blue-house", bookable: false, reason: "minimum-stay", minimumStay: 4 }
+  ]));
+  await page.clock.setFixedTime(new Date("2026-09-04T16:00:00Z"));
+  await page.goto("/properties/?arrive=2026-09-26&depart=2026-09-28&guests=4&compare=dockside-dreams,river-house", { waitUntil: "domcontentloaded" });
+  await expect(page.locator("#catalog-count")).toHaveText(/1 home is open for these dates/);
+  await expect(page.locator(".catalog-card:visible")).toHaveCount(1);
+  await expect(page.locator(".catalog-card:visible")).toHaveAttribute("data-property", "river-house");
+  await expect(page.locator("#shortlist-count")).toHaveText("1 home selected");
+  await expect(page.locator("#open-comparison")).toBeDisabled();
+  await expect(page.locator('[data-compare-column="dockside-dreams"]:visible')).toHaveCount(0);
+  expect(new URL(page.url()).searchParams.get("compare")).toBe("river-house");
+});
+
+test("a failed calendar check leaves the comparison shortlist in place", async ({ page }) => {
+  await registerStableNetwork(page);
+  await page.route("**/.netlify/functions/booking-availability**", (route) => route.abort());
+  await page.clock.setFixedTime(new Date("2026-09-04T16:00:00Z"));
+  await page.goto("/properties/?arrive=2026-09-26&depart=2026-09-28&guests=4&compare=dockside-dreams,river-house", { waitUntil: "networkidle" });
+  await expect(page.locator("#catalog-count")).toContainText("Availability could not be checked");
+  await expect(page.locator(".catalog-card:visible")).toHaveCount(6);
+  await expect(page.locator("#shortlist-count")).toHaveText("2 homes selected");
+  await expect(page.locator("#open-comparison")).toBeEnabled();
+  expect(new URL(page.url()).searchParams.get("compare")).toBe("dockside-dreams,river-house");
+});
+
 test("without JavaScript, every home still has real details and a checkout path", async ({ browser, baseURL }) => {
   const context = await browser.newContext({ javaScriptEnabled:false,baseURL });
   const page = await context.newPage();
