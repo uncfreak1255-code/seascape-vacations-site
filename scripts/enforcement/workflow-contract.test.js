@@ -55,18 +55,12 @@ test("performance budget keeps PR proof and full scheduled proof bounded", () =>
   assert.match(workflow, /timeout-minutes:\s*\d+/);
   assert.match(workflow, /run:\s*node scripts\/enforcement\/build-site\.js/);
   assert.match(workflow, /run:\s*npx --no-install lhci autorun --config=\.\/lighthouserc\.js/);
-  for (const assetPath of [
-    '"images/**"',
-    '"css/**"',
-    '"js/**"',
-    '"hero-optimized.jpg"',
-    '"hero-mobile.jpg"',
-    '"*.png"',
-    '"*.webp"',
-    '"*.avif"',
-  ]) {
-    assert.ok(workflow.includes(assetPath), `performance workflow should watch ${assetPath}`);
-  }
+  assert.match(workflow, /run:\s*node scripts\/perf\/perf-ratchet\.js/);
+  // performance-budget is a required status check on main (decision
+  // 2026-09-24). A required check that only runs when a paths filter matches
+  // never reports on other PRs and blocks them, so the trigger stays unfiltered.
+  const triggers = workflow.slice(workflow.indexOf("\non:"), workflow.indexOf("\nconcurrency:"));
+  assert.doesNotMatch(triggers, /paths(-ignore)?:/, "performance-budget must run on every pull request");
 });
 
 test("visual regression cancels superseded pull request runs", () => {
@@ -83,9 +77,11 @@ test("CI speed lane keeps non-rendering package commands off expensive visual ga
 
   for (const workflow of [visual, performance]) {
     assert.doesNotMatch(workflow, /"package\.json"/);
-    assert.match(workflow, /"package-lock\.json"/);
     assert.doesNotMatch(workflow, /cache:\s*"npm"/);
   }
+  // Only the visual gate keeps a paths filter; the performance gate runs on
+  // every PR because it is a required status check.
+  assert.match(visual, /"package-lock\.json"/);
 
   assert.match(visual, /run:\s*npx --no-install playwright install chromium/);
   assert.match(visual, /run:\s*node scripts\/enforcement\/run-visual-tests\.js/);

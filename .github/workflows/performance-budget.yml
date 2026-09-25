@@ -1,26 +1,11 @@
 name: Performance Budget
 
 on:
+  # No paths filter: this job is a required status check on main, and a
+  # required check that never reports blocks the PR (adversarial review of
+  # #617, 2026-09-24). Cost: one build + Lighthouse pass per PR on the Mac.
   pull_request:
     branches: [main]
-    paths:
-      - "src/**"
-      - "images/**"
-      - "css/**"
-      - "js/**"
-      - "hero-optimized.jpg"
-      - "hero-mobile.jpg"
-      - "*.png"
-      - "*.webp"
-      - "*.avif"
-      - "config/perf-budget.json"
-      - "config/perf-ratchet.json"
-      - "scripts/enforcement/build-site.js"
-      - "scripts/perf/**"
-      - "eleventy.config.js"
-      - "lighthouserc.js"
-      - "package-lock.json"
-      - ".github/workflows/performance-budget.yml"
   schedule:
     - cron: "17 9 * * *"
   workflow_dispatch:
