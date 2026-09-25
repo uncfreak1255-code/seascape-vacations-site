@@ -4,23 +4,13 @@
 
 `/.claude/skills/` is only a thin compatibility layer for Claude-specific discovery. Keep it limited to symlinks for approved local skills that actually exist in `/.agents/skills/`.
 
-Current curated focus:
-- `accessibility`
-- `content-quality-rubric`
-- `design-review`
-- `internal-link-targeting`
-- `next-batch-gate`
-- `owner-outbound-batch`
-- `owner-reply-intake`
-- `owner-proof-integrity`
-- `page-cro`
-- `property-truth-regeneration`
-- `schema-markup`
-- `seascape-design-critic`
-- `seascape-design-specialist`
-- `serp-ctr-title-rewrite`
-- `site-architecture`
-- `web-design-guidelines`
+The directories under `/.agents/skills/` are the current inventory. This file
+does not duplicate that list; `scripts/enforcement/skills-divergence.js` proves
+that the compatibility links stay aligned with the canonical directory.
+
+For meaningful visual work, start with the repo-local
+`seascape-design-specialist`; its workflow uses the design critic and rendered
+review procedures named in `AGENTS.md`.
 
 Use global marketing skills from `/Users/sawbeck/.codex/skills/` as advisory
 helpers when needed. Do not mirror broad marketing, deploy, monthly reset,

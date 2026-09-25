@@ -5,6 +5,13 @@ full-corpus scan, enforcement-gap analysis, external research) with an
 adversarial verification pass over the load-bearing numbers, then synthesis.
 Numbers below are the verified counts.*
 
+> **Historical status:** This report preserves the July 2026 diagnosis and
+> proposals. Only the items under “What this PR ships” describe implemented
+> behavior from that change. The Design Loop v2 section was a proposal:
+> `build:tokens`, critic-receipt writing, and critic-receipt freshness checks
+> are not current repository capabilities. Use `package.json`, `DESIGN.md`, and
+> `.agents/skills/design-review/SKILL.md` for current commands and behavior.
+
 ## The one-sentence finding
 
 Seascape has an excellent design **system** (`DESIGN.md`), a real design
@@ -112,7 +119,7 @@ lever to pull. That is the root of every drift symptom.
 | Medium | S | process | Add the mandated single "creative slot" to the recipe contract; enforce softly via the critic's "one memorable interaction" criterion. |
 | Medium | L | componentization | Migrate the remaining ~52 legacy guides onto the recipe in batches behind the shrinking baseline; add a hidden `/_gallery/` route that snapshots every component so a token change surfaces one diff, not 54. |
 
-## Design Loop v2 — runnable by a solo owner + agent
+## Design Loop v2 — proposed, not current
 
 - **Step 0 — Source of truth (one-time / on token change):** `npm run build:tokens`
   emits `/css/tokens.css` from `DESIGN.md`; a contract test guards it. Nobody

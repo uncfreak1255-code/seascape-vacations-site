@@ -14,7 +14,7 @@ This project is **generated from the repository**, not authored here. Synced {{S
 | --- | --- |
 | `DESIGN.md` (copied to `waterline/DESIGN.md`) | The visual law: tokens, product promise, photography rules, floors F1 to F6, button treatments, direction decisions |
 | `src/css/base.css`, `src/css/guest.css`, `src/css/arrival.css`, `src/css/catalog.css` (copied to `waterline/`) | The live stylesheets the guest routes ship |
-| `src/_includes/partials/guest-*.njk`, `layouts/guest.njk` | The shared shell and guest components; the cards use their built output |
+| `src/_includes/partials/guest-*.njk`, `src/_includes/layouts/guest.njk` | The shared shell and guest components; the cards use their built output |
 | `src/assets/fonts/` (copied to `waterline/fonts/`) | Self-hosted Poppins and Instrument Serif (SIL OFL) |
 | `docs/process/design-review-workflow.md` | How a design becomes a change on the site |
 | `docs/style/writing-style-guide.md` | Voice, banned phrases, hook formulas |

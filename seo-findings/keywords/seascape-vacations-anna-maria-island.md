@@ -31,7 +31,7 @@
 
 ## Source
 
-- raw file: `workspace/dataforseo-phase1-raw/call-3.json`
+- raw response: not retained in this repository
 - observed at: 2026-05-16 22:25:34 +00:00
 - DataForSEO tag: q3-home-ami-mobile-us
 - item types: local_pack, organic, people_also_search, people_also_ask

@@ -31,7 +31,7 @@
 
 ## Source
 
-- raw file: `workspace/dataforseo-phase1-raw/call-5.json`
+- raw response: not retained in this repository
 - observed at: 2026-05-16 22:25:41 +00:00
 - DataForSEO tag: q5-properties-near-ami-mobile-us
 - item types: hotels_pack, organic, people_also_search, knowledge_graph_expanded_item

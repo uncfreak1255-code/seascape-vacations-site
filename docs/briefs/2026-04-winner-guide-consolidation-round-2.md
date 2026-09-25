@@ -22,7 +22,7 @@
 ## Search Operator Read
 
 - source reads used:
-  - `./scripts/weekly-search-operator-report.sh`
+  - `seascape-analytics/scripts/weekly-search-operator-report.sh`
   - Search Console MCP inspection for the five tracked money pages
   - `docs/status/current-state.md`
   - `docs/portfolio/winner-guides.md`

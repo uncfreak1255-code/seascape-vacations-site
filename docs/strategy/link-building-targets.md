@@ -3,6 +3,10 @@
 > **Created:** 2026-03-08
 > **Goal:** 15 actionable link targets to boost domain authority from low/new to competitive range
 > **Context:** 334 clicks/mo, 53K impressions, money keywords stuck at pos 13-18. Need quality local/travel backlinks.
+> **Status:** Historical target research. Recheck availability, cost, audience,
+> and permission before use. The templates below use current property truth;
+> outreach, hosted stays, memberships, and other spending still require separate
+> approval.
 
 ---
 
@@ -122,8 +126,8 @@
 - **Membership inquiry:** https://www.annamariaislandweddings.com/membership/
 - **Link type:** Vendor member listing (cross-promotion for wedding guest accommodations)
 - **Difficulty:** Medium — invitation-only, hand-selected vendors. Need to pitch the accommodation angle.
-- **Why it matters:** Destination weddings on AMI are a huge market. Wedding guests need multi-night accommodations. Seascape properties (especially larger homes that sleep 8-12) are perfect for wedding parties. A listing here puts Seascape in front of couples booking everything for their wedding week. Plus wedding content tends to have high engagement and shares.
-- **Pitch angle:** "We're not a venue — we're where your wedding party sleeps. Five waterfront homes within 15 minutes of AMI, perfect for bridal parties and family groups."
+- **Why it matters:** Wedding guests need multi-night accommodations. Seascape's private pool homes may fit families and groups planning an AMI wedding week. A listing here could put the collection in front of couples arranging lodging alongside other vendors.
+- **Pitch angle:** "We're not a venue — we operate a small collection of private pool homes near Anna Maria Island for families and groups planning a wedding week."
 - **Action:** Fill out membership inquiry form. Emphasize the accommodation gap — most wedding vendors are caterers, photographers, and venues. Lodging for the wedding party is an underserved niche.
 
 ---
@@ -133,7 +137,7 @@
 - **URL:** https://bradentonfishing.com/
 - **Link type:** Local partnership — mutual referral links
 - **Difficulty:** Easy — small local business, personal outreach works
-- **Why it matters:** Seascape properties have docks. Fishing guests are a core audience. Captain Russ and his son have 40+ years combined experience on local waters. A "recommended accommodations" or "where to stay" link from a fishing charter site sends exactly the right audience to Seascape.
+- **Why it matters:** Dockside Dreams is the collection's only waterfront home with a private dock. A charter partnership may still be relevant to guests planning fishing days without implying that the rest of the collection is waterfront.
 - **Action:** Email or call. Propose mutual link exchange — Seascape recommends them on property pages and fishing guides, they recommend Seascape as lodging for their charter clients.
 
 ---
@@ -189,7 +193,7 @@
 - **AMI guide:** https://thewalkingmermaid.com/blog/anna-maria-island-travel-guide/
 - **Link type:** Guest post or sponsored review
 - **Difficulty:** Medium — family travel niche, AMI content already exists
-- **Why it matters:** Family travel blog with existing AMI coverage. Families are a core Seascape demographic — the larger homes with pools and docks are built for family vacations. A recommendation from a family travel blogger carries authentic trust that money can't buy in traditional advertising.
+- **Why it matters:** Family travel blog with existing AMI coverage. Seascape's private pool homes may fit family vacations, while Dockside Dreams is the only home with a private dock. A recommendation from a family travel blogger carries authentic trust that money can't buy in traditional advertising.
 - **Action:** Same approach — offer a hosted stay for a family. Their review would naturally mention the property, link to booking, and include family-specific details (pool safety, nearby kid activities, kitchen for family meals).
 
 ---
@@ -208,20 +212,20 @@
 
 ### Template A: Directory / Listing Request
 
-**Subject:** Listing Seascape Vacations — 5 waterfront homes in Bradenton/AMI
+**Subject:** Listing Seascape Vacations — private pool homes in Bradenton and Sarasota
 
 ```
 Hi [Name or "there"],
 
-I'm Sawyer, founder of Seascape Vacations. We manage 5 handpicked waterfront vacation homes in Bradenton and Sarasota — most with private docks, pools, and direct water access.
+I'm Sawyer, founder of Seascape Vacations. We manage a small collection of private pool vacation homes in Bradenton and Sarasota. Dockside Dreams is our only waterfront home with a private dock.
 
-I'd like to get Seascape listed in your [directory/member listing]. We're a small, locally operated company (not a faceless corporate chain), and our properties consistently get 4.8+ star reviews from guests.
+I'd like to get Seascape listed in your [directory/member listing]. We're a small, owner-operated local company, and guests can compare the homes and book directly on our site.
 
 Quick details:
-- 5 homes: 4 in Bradenton, 1 in Sarasota
-- Waterfront properties with docks, pools, hot tubs
-- Direct booking at seascape-vacations.com (guests save 10-15% vs. Airbnb)
-- Licensed and insured vacation rental management
+- Private pool homes in Bradenton and Sarasota
+- Dockside Dreams is the only waterfront home with a private dock
+- Direct booking at seascape-vacations.com
+- Local, owner-operated vacation rental management
 
 What's the process to get listed? Happy to fill out whatever forms you need or jump on a quick call.
 
@@ -240,13 +244,13 @@ seascape-vacations.com
 ```
 Hey [Name],
 
-I'm Sawyer — I run Seascape Vacations, a small vacation rental company on Florida's Gulf Coast (5 waterfront homes in Bradenton and Sarasota).
+I'm Sawyer — I run Seascape Vacations, a small owner-operated vacation rental company with private pool homes in Bradenton and Sarasota.
 
 I've been reading your [specific article or section] and thought your audience might find value in a piece about [pick one]:
 
-- "The real cost of a week on Anna Maria Island in 2026" — actual pricing data, not fluff
-- "Bradenton's waterfront neighborhoods: where locals actually recommend staying"
-- "Book direct vs. Airbnb/VRBO: what vacation renters don't realize they're overpaying"
+- "What changes the cost of a week near Anna Maria Island"
+- "Bradenton neighborhoods: how to choose the right mainland base"
+- "Book direct vs. Airbnb/VRBO: which fees appear at checkout"
 
 I'd write the whole thing — no sales pitch, just genuinely useful info based on what our guests ask us constantly. Happy to tailor the angle to whatever fits your editorial calendar.
 
@@ -268,13 +272,13 @@ seascape-vacations.com
 ```
 Hey [Name],
 
-I'm Sawyer with Seascape Vacations — we manage 5 waterfront vacation homes in Bradenton and Sarasota. Most of our properties have private docks and water access, so we get a lot of guests who are into [fishing/boating/water activities/weddings — pick what fits].
+I'm Sawyer with Seascape Vacations — we manage a small collection of private pool vacation homes in Bradenton and Sarasota. Dockside Dreams is our only waterfront home with a private dock, and guests across the collection often plan [fishing/boating/water activities/weddings — pick what fits].
 
 Here's what I'm thinking: our guests always ask us for recommendations on [their service — charters, tours, venues, etc.]. Right now we're sending them to Google, which is a missed opportunity for both of us.
 
 What if we did a simple cross-promotion?
 
-- We'd recommend [their business] on our property pages and area guides (we have 130+ pages on seascape-vacations.com that get ~53K impressions/month from Google)
+- We'd consider a sourced recommendation for [their business] in the relevant area guide
 - You'd mention Seascape as a recommended place to stay for your [clients/customers/guests]
 
 No contracts, no cost — just two local businesses helping each other out. If it doesn't work, we pull it down, no hard feelings.

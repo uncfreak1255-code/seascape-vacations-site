@@ -1,6 +1,7 @@
 {
   "generated_from_latest_observed_at": "2026-05-16 22:25:41 +00:00",
-  "input_dir": "workspace/dataforseo-phase1-raw",
+  "input_dir": null,
+  "raw_responses_retained": false,
   "analytics_gate": {
     "status": "blocked",
     "label": "`blocked` - GSC export freshness does not cover the requested window.",

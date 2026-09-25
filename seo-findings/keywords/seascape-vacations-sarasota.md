@@ -29,7 +29,7 @@
 
 ## Source
 
-- raw file: `workspace/dataforseo-phase1-raw/call-4.json`
+- raw response: not retained in this repository
 - observed at: 2026-05-16 22:25:36 +00:00
 - DataForSEO tag: q4-home-sarasota-mobile-us
 - item types: organic, knowledge_graph, google_reviews, people_also_search

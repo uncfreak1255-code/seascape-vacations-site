@@ -95,7 +95,7 @@ An agent must stop and fix workflow first if any of these are true:
 - Editable source: `src/`, `eleventy.config.js`, `package.json`, `netlify.toml`
 - Generated output: `_site/`
 - Netlify publish directory: `_site`
-- Legacy archival content only: `DEPLOY THIS FOLDER TO NETLIFY/`
+- Removed legacy deploy path: `DEPLOY THIS FOLDER TO NETLIFY/` must stay absent; the source guard prevents its reintroduction.
 - On this machine, the only sync-only `main` checkout should be `/Users/sawbeck/Projects/seascape-vacations-site`
 - `/Users/sawbeck/Projects/seascape-main` is a duplicate checkout, not the long-term sync target for `main`
 

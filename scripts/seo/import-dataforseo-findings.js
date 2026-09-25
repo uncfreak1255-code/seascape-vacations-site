@@ -137,7 +137,6 @@ function parseTask(filePath) {
     .slice(0, 8);
 
   return {
-    source_file: path.relative(PROJECT_ROOT, filePath),
     keyword,
     slug: slugify(keyword),
     intent: classifyIntent(keyword),
@@ -233,7 +232,7 @@ ${competitorRows}
 
 ## Source
 
-- raw file: \`${finding.source_file}\`
+- raw response: not retained in this repository
 - observed at: ${finding.datetime || "unknown"}
 - DataForSEO tag: ${finding.tag || "unknown"}
 - item types: ${finding.item_types.join(", ") || "none"}
@@ -358,7 +357,8 @@ function importFindings(options) {
       .filter(Boolean)
       .sort()
       .at(-1) || null,
-    input_dir: path.relative(PROJECT_ROOT, inputDir),
+    input_dir: null,
+    raw_responses_retained: false,
     analytics_gate: analyticsGate,
     keyword_count: findings.length,
     keywords: findings.map((finding) => finding.keyword),
