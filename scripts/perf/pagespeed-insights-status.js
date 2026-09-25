@@ -125,6 +125,10 @@ function classifyApiError(response, body) {
   };
 }
 
+function hasFieldMetrics(experience) {
+  return Boolean(experience?.metrics) && Object.keys(experience.metrics).length > 0;
+}
+
 async function runOne({ pageUrl, strategy, category }) {
   const apiUrl = buildApiUrl({ pageUrl, strategy, category });
   const response = await fetch(apiUrl, {
@@ -159,8 +163,11 @@ async function runOne({ pageUrl, strategy, category }) {
     largest_contentful_paint_ms: audits["largest-contentful-paint"]?.numericValue ?? null,
     cumulative_layout_shift: audits["cumulative-layout-shift"]?.numericValue ?? null,
     total_blocking_time_ms: audits["total-blocking-time"]?.numericValue ?? null,
-    crux_origin_available: Boolean(body.originLoadingExperience),
-    crux_url_available: Boolean(body.loadingExperience),
+    // PageSpeed returns a loadingExperience block with an empty metrics
+    // object when CrUX has no field data for the URL, so only non-empty
+    // metrics count as field data.
+    crux_origin_available: hasFieldMetrics(body.originLoadingExperience),
+    crux_url_available: hasFieldMetrics(body.loadingExperience),
   };
 }
 
