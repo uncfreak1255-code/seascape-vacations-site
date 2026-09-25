@@ -151,7 +151,22 @@ async function runOne({ pageUrl, strategy, category }) {
     };
   }
 
-  const lighthouse = body.lighthouseResult || {};
+  // PageSpeed can answer 200 with an error envelope, and a proxy or captive
+  // portal can answer 200 with anything. Only a body carrying a Lighthouse
+  // result is a PageSpeed result; everything else is unavailable, so
+  // --strict exits non-zero instead of reporting null metrics as healthy.
+  if (!body.lighthouseResult || typeof body.lighthouseResult !== "object") {
+    return {
+      url: pageUrl,
+      strategy,
+      api_key_configured: Boolean(process.env.PAGESPEED_API_KEY),
+      status: "unavailable",
+      reason: "malformed_response",
+      message: body.error?.message || "200 response without a lighthouseResult",
+    };
+  }
+
+  const lighthouse = body.lighthouseResult;
   const categories = lighthouse.categories || {};
   const audits = lighthouse.audits || {};
   return {

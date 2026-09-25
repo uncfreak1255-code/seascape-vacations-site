@@ -59,6 +59,53 @@ function runScript(endpoint) {
   });
 }
 
+function runStrict(endpoint) {
+  return new Promise((resolve) => {
+    execFile(
+      "node",
+      [SCRIPT, "--route", "/", "--strict"],
+      { env: { ...process.env, PAGESPEED_API_ENDPOINT: endpoint, PAGESPEED_API_KEY: "" } },
+      (err, stdout, stderr) => resolve({ code: err ? err.code : 0, stdout, stderr })
+    );
+  });
+}
+
+test("a 200 response without a Lighthouse result is unavailable, and --strict exits 2", async () => {
+  // Adversarial review 2026-09-24: HTML, arbitrary JSON, and PageSpeed's own
+  // 200 + error envelope were all reported "available" with null metrics.
+  const bodies = [
+    { foo: "bar" },
+    { error: { code: 500, message: "Backend Error" } },
+  ];
+  for (const body of bodies) {
+    const r = await withFakePsi(body, runStrict);
+    assert.equal(r.code, 2, `${JSON.stringify(body)}: ${r.stdout}${r.stderr}`);
+    const [result] = JSON.parse(r.stdout).results;
+    assert.equal(result.status, "unavailable");
+    assert.equal(result.reason, "malformed_response");
+    assert.equal(result.performance_score, undefined);
+  }
+
+  // A non-JSON body must take the same path.
+  const html = await new Promise((resolve, reject) => {
+    const server = http.createServer((req, res) => {
+      res.setHeader("content-type", "text/html");
+      res.end("<html><body>not json</body></html>");
+    });
+    server.listen(0, "127.0.0.1", async () => {
+      try {
+        resolve(await runStrict(`http://127.0.0.1:${server.address().port}/runPagespeed`));
+      } catch (err) {
+        reject(err);
+      } finally {
+        server.close();
+      }
+    });
+  });
+  assert.equal(html.code, 2, html.stdout + html.stderr);
+  assert.equal(JSON.parse(html.stdout).results[0].reason, "malformed_response");
+});
+
 test("an empty field block is reported as no CrUX data", async () => {
   const r = await withFakePsi(psiBody({ fieldMetrics: {} }), runScript);
   assert.equal(r.code, 0, r.stderr);
