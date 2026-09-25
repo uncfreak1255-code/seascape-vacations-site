@@ -25,6 +25,6 @@ Archived snapshot moved here during the cleanup:
 - `site-architecture`
 - `web-quality-audit`
 
-`.claude/skills/` is a thin compatibility layer and should mirror only these approved local skills.
+`.claude/skills/` is a thin compatibility layer and should mirror only the current directories under `.agents/skills/`.
 
 Everything else from the old local skill pile was moved here to get it out of active Codex discovery without deleting it.

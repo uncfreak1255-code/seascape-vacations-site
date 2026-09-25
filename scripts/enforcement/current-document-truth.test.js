@@ -31,6 +31,8 @@ test("current skill guidance links to the owning directories instead of caching 
 
   assert.doesNotMatch(claudeReadme, /^\s*- `[^`]+`\s*$/m);
   assert.doesNotMatch(disabledCurrentSection, /^\s*- `[^`]+`\s*$/m);
+  assert.match(disabledReadme, /mirror only the current directories under `\.agents\/skills\/`/);
+  assert.doesNotMatch(disabledReadme, /mirror only these approved local skills/i);
   assert.doesNotMatch(pluginReadme, countedSkills);
 });
 
@@ -79,6 +81,11 @@ test("current documentation names repository paths that exist", () => {
   ]) {
     assert.match(read(documentPath), /removed legacy deploy path/i, documentPath);
   }
+
+  assert.match(
+    read("docs/briefs/2026-06-near-ami-direct-book-cro.md"),
+    /from a `seascape-analytics` checkout, running `scripts\/weekly-search-operator-report\.sh/
+  );
 });
 
 test("DataForSEO findings disclose that their raw responses are not retained", () => {
@@ -110,4 +117,11 @@ test("current outreach guidance does not imply docks across the collection", () 
     read("docs/strategy/link-building-targets.md"),
     /\b(?:homes|properties)\s+with\s+(?:pools\s+and\s+)?docks\b/i
   );
+});
+
+test("retired journalist quotes do not attribute removed figures to current guides", () => {
+  const quoteBank = read("docs/strategy/journalist-quote-bank-2026-03.md");
+
+  assert.match(quoteBank, /Quotes 1, 3, 4, and 5 were retired/);
+  assert.doesNotMatch(quoteBank, /25-35% cheaper|10-20% higher|\$603 in savings/);
 });
