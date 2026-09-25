@@ -1,8 +1,11 @@
 # Journalist Quote Bank
 Date: 2026-03-15
-Status: Ready
+Status: Historical source; not cleared for external use
 
-These quotes are grounded in the live Seascape pages and can be adapted for Connectively, Qwoted, or direct reporter outreach.
+This file preserves the March 2026 quote draft. Quotes 3 and 5 were retired in
+September 2026 because their market source contained unsupported and materially
+inflated figures. The remaining quotes require a current source check before
+any external use.
 
 ## Quote 1: Bradenton vs Sarasota
 
@@ -38,19 +41,8 @@ Support:
 
 ## Quote 3: Bradenton market economics
 
-Use when:
-
-- reporters ask about short-term-rental trends
-- investors or local-market reporters ask about Gulf Coast vacation rentals
-
-Quote:
-
-> The interesting thing about Bradenton right now is the spread between purchase price and revenue potential. Our market page shows Bradenton averaging about $225 a night with 68 to 72 percent annual occupancy, while purchase prices still run materially below Anna Maria Island. That gap is why Bradenton remains one of the more compelling value markets on this stretch of the Gulf Coast.
-
-Support:
-
-- [2026 Bradenton Vacation Rental Market Analysis](/Users/sawbeck/Projects/seascape-vacations-site/src/guides/2026-bradenton-vacation-rental-market-analysis.html#L1) states $225 average nightly rate and 68-72% annual occupancy.
-- The same page states Bradenton purchase prices run 30-40% lower than Anna Maria Island and shows a 6.9% cap rate.
+Retired. The cited market-analysis page was removed because its figures had no
+acceptable source. Do not reuse or reconstruct this quote.
 
 ## Quote 4: Why direct booking matters
 
@@ -69,18 +61,8 @@ Support:
 
 ## Quote 5: Management delta
 
-Use when:
-
-- reporters ask what professional managers actually change
-- owner-side or investment-side vacation-rental stories
-
-Quote:
-
-> The biggest difference between a professionally managed Gulf Coast rental and a self-managed one is not just convenience. It shows up in occupancy, pricing, and response quality. In our Bradenton data, professionally managed listings outperform owner-managed ones because pricing, photography, guest communication, and maintenance response all compound together.
-
-Support:
-
-- [2026 Bradenton Vacation Rental Market Analysis](/Users/sawbeck/Projects/seascape-vacations-site/src/guides/2026-bradenton-vacation-rental-market-analysis.html#L1) says professionally managed Bradenton properties average 12% higher occupancy and 8% higher nightly rates than owner-managed listings.
+Retired. The cited management-performance figures came from the removed,
+unsupported market-analysis page. Do not reuse or reconstruct this quote.
 
 ## Bio Line
 

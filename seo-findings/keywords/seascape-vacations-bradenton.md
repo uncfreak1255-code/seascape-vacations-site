@@ -31,7 +31,7 @@
 
 ## Source
 
-- raw file: `workspace/dataforseo-phase1-raw/call-2.json`
+- raw response: not retained in this repository
 - observed at: 2026-05-16 22:25:25 +00:00
 - DataForSEO tag: q2-home-bradenton-mobile-us
 - item types: organic, knowledge_graph, google_reviews, people_also_search

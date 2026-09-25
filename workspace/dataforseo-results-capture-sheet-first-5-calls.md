@@ -1,8 +1,9 @@
 # DataForSEO Results Capture Sheet - First 5 Calls
 
-Use this sheet with:
-- [dataforseo-run-sheet-first-5-calls.md](/Users/sawbeck/Projects/seascape-vacations-site/workspace/dataforseo-run-sheet-first-5-calls.md)
-- [dataforseo-research-plan-core-guest-pages.md](/Users/sawbeck/Projects/seascape-vacations-site/workspace/dataforseo-research-plan-core-guest-pages.md)
+This is a retained summary sheet. Its run sheet, research plan, and raw
+responses were deliberately removed from version control on 2026-05-17. The
+rows below may be used as historical research memory, not as independently
+reproducible raw evidence.
 
 Fill one row per API call.
 Do not summarize across pages until all five rows are complete.
@@ -51,9 +52,9 @@ For each call, copy these fields somewhere under the row notes or an attached JS
 - `tasks[0].result[0].item_types`
 - `tasks[0].result[0].items`
 
-## Evidence Paths
+## Evidence retention
 
-- Raw responses: `workspace/dataforseo-phase1-raw/call-1.json` through `workspace/dataforseo-phase1-raw/call-5.json`
+- The original raw responses are not retained in this repository.
 
 ## Optional JSON Capture Stub
 

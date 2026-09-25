@@ -2,16 +2,9 @@
 
 This folder is an archived dump from the 2026-04-28 cleanup pass, not the current local skill authority.
 
-Current active local skills are defined in `AGENTS.md`, `CLAUDE.md`, and `.claude/skills/README.md`. As of the current repo surface, that active set is:
-- `accessibility`
-- `design-review`
-- `next-batch-gate`
-- `owner-proof-integrity`
-- `page-cro`
-- `property-truth-regeneration`
-- `schema-markup`
-- `site-architecture`
-- `web-design-guidelines`
+Current active local skills are the directories under `.agents/skills/`.
+`AGENTS.md` defines their authority and `.claude/skills/` mirrors them for
+Claude discovery. This archive does not maintain a second current inventory.
 
 Archived snapshot moved here during the cleanup:
 - `accessibility`

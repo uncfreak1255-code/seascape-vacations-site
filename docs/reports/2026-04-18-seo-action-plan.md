@@ -1,7 +1,7 @@
 # SEO Action Plan
 
 Date: 2026-04-18
-Source audit: [2026-04-18-full-seo-audit.md](/Users/sawbeck/.codex/worktrees/seascape-vacations-site-codex-seo-audit-2026-04-18/docs/reports/2026-04-18-full-seo-audit.md)
+Source audit: [2026-04-18-full-seo-audit.md](2026-04-18-full-seo-audit.md)
 
 ## Critical
 
@@ -14,7 +14,7 @@ Why:
 
 Do:
 
-- use [2026-04-winner-guide-consolidation-round-2.md](/Users/sawbeck/.codex/worktrees/seascape-vacations-site-codex-seo-audit-2026-04-18/docs/briefs/2026-04-winner-guide-consolidation-round-2.md)
+- use [2026-04-winner-guide-consolidation-round-2.md](../briefs/2026-04-winner-guide-consolidation-round-2.md)
 - clean any remaining noncanonical guide links in source
 - verify redirects, canonicals, breadcrumb/schema URLs, and feeder links all point at the slash winners
 - repair the stale owner-hub live-smoke assertion inside this same branch so the release gate is trustworthy again

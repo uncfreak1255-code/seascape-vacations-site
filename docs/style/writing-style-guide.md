@@ -211,7 +211,7 @@ This [noun] is the perfect [noun] for
 - "Browse our [N] Bradenton vacation homes →" (with link to /stays/ or specific property)
 - "Book direct and save — no booking fees, no middleman. Call (941) 704-8545"
 - "See current rates for [Property Name] →"
-- "Compare all 5 properties side by side →"
+- "Compare our properties side by side →"
 - "Get a free rental income estimate for your property →" (PM pages only)
 
 **CTA rules:**
@@ -244,7 +244,7 @@ Before any content goes live, verify ALL of these:
 - [ ] **Paragraph max 4 sentences** — no walls of text
 - [ ] **2+ CTAs** — one mid-page, one near the bottom
 - [ ] **3+ internal links** — with descriptive keyword-rich anchor text
-- [ ] **Factual accuracy** — all property details match `memory/property-database.md`
+- [ ] **Factual accuracy** — all property details match `src/_data/properties.js` and its fallback `src/_data/properties-fallback.json`
 - [ ] **No fabricated claims** — no invented amenities, false waterfront claims, or made-up reviews
 - [ ] **Readability** — would a real person planning a Gulf Coast trip find this genuinely useful?
 - [ ] **GEO opening paragraph** — 134-167 word self-contained answer block with 2+ specific facts

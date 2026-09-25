@@ -150,4 +150,9 @@ test("importFindings writes durable keyword, domain, and index files with the an
   const finding = fs.readFileSync(path.join(outputDir, "keywords", "vacation-rentals-near-anna-maria-island.md"), "utf8");
   assert.match(finding, /hold site edits; keep researching until analytics\/GSC gate opens/);
   assert.match(finding, /This finding is research memory only/);
+  assert.match(finding, /raw response: not retained in this repository/);
+
+  const latestRun = JSON.parse(fs.readFileSync(path.join(outputDir, "latest-run.json"), "utf8"));
+  assert.equal(latestRun.input_dir, null);
+  assert.equal(latestRun.raw_responses_retained, false);
 });

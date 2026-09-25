@@ -27,7 +27,7 @@
 
 ## Source
 
-- raw file: `workspace/dataforseo-phase1-raw/call-1.json`
+- raw response: not retained in this repository
 - observed at: 2026-05-16 22:25:12 +00:00
 - DataForSEO tag: q1-home-brand-mobile-us
 - item types: organic, knowledge_graph, google_reviews, featured_snippet, people_also_search
