@@ -6,29 +6,38 @@ const { spawn, spawnSync } = require("node:child_process");
 const designDonorRouter = require("./design-donor-router");
 
 const DEFAULT_BASE_REF = "origin/main";
-const AGENT_START_BIN =
-  process.env.SEASCAPE_AGENT_START_BIN || "/Users/sawbeck/bin/agent-start";
 const CODEX_REPO_DISPATCH_BIN =
   process.env.CODEX_REPO_DISPATCH_BIN
   || "/Users/sawbeck/Projects/seascape-ops/bin/codex_repo_dispatch.py";
+const GIT_LOCATION_VARS = new Set([
+  "GIT_DIR",
+  "GIT_WORK_TREE",
+  "GIT_INDEX_FILE",
+  "GIT_OBJECT_DIRECTORY",
+  "GIT_COMMON_DIR",
+]);
+
+function cleanGitEnv() {
+  return Object.fromEntries(
+    Object.entries(process.env).filter(([key]) => !GIT_LOCATION_VARS.has(key))
+  );
+}
 
 function usage() {
   console.error(
     [
-      "Usage: codex-seascape-design <task description> [--family <family>] [--prepare] [--allow-fallback]",
+      "Usage: codex-seascape-design <task description> [--family <family>] [--prepare]",
       "",
       "Examples:",
       '  codex-seascape-design "refresh the owner hero layout"',
       '  codex-seascape-design "critique the homepage CTA rhythm" --prepare',
       '  codex-seascape-design "Sarasota vs Anna Maria guide" --family comparison --prepare',
-      '  codex-seascape-design "critique the homepage CTA rhythm" --allow-fallback',
     ].join("\n")
   );
 }
 
 function parseArgs(argv) {
   const options = {
-    allowFallback: false,
     family: "auto",
     help: false,
     prepareOnly: false,
@@ -43,10 +52,6 @@ function parseArgs(argv) {
     }
     if (arg === "--prepare") {
       options.prepareOnly = true;
-      continue;
-    }
-    if (arg === "--allow-fallback") {
-      options.allowFallback = true;
       continue;
     }
     if (arg === "--family") {
@@ -106,6 +111,7 @@ function runCommand(command, args, options = {}) {
   const result = spawnSync(command, args, {
     cwd: options.cwd,
     encoding: "utf8",
+    env: cleanGitEnv(),
     stdio: options.stdio || "pipe",
   });
 
@@ -149,11 +155,21 @@ function findWorktreePathForBranch(entries, branchName) {
   return match ? match.worktree || "" : "";
 }
 
+function pathExists(pathname) {
+  try {
+    fs.lstatSync(pathname);
+    return true;
+  } catch (error) {
+    if (error.code === "ENOENT") return false;
+    throw error;
+  }
+}
+
 function branchExists(repoRoot, branchName) {
   const result = spawnSync(
     "git",
     ["show-ref", "--verify", "--quiet", `refs/heads/${branchName}`],
-    { cwd: repoRoot }
+    { cwd: repoRoot, env: cleanGitEnv() }
   );
   return result.status === 0;
 }
@@ -166,51 +182,40 @@ function fetchBaseRef(repoRoot, baseRef) {
   runCommand("git", ["fetch", remote, ref], { cwd: repoRoot });
 }
 
-function isDirtyReviewWorktreeLimitError(message) {
-  return /dirty\/detached review worktrees exceed limit/i.test(message);
-}
-
-function runAgentStart(repoRoot, taskName, baseRef) {
-  const result = spawnSync(
-    AGENT_START_BIN,
-    [taskName, "--base", baseRef, "--json"],
-    {
-      cwd: repoRoot,
-      encoding: "utf8",
-    }
-  );
-
-  if (result.status !== 0) {
-    const output = (result.stderr || result.stdout || "").trim();
-    const error = new Error(`agent-start failed: ${output}`);
-    error.output = output;
-    throw error;
+function ensureNativeWorktree(repoRoot, taskName, branchName, baseRef) {
+  const worktreesRoot = path.resolve(fs.realpathSync(repoRoot), ".worktrees");
+  const worktreePath = path.resolve(worktreesRoot, taskName);
+  if (path.dirname(worktreePath) !== worktreesRoot) {
+    throw new Error(`Refusing worktree creation for invalid task name: ${taskName}`);
   }
 
-  try {
-    return JSON.parse(result.stdout);
-  } catch (error) {
-    throw new Error(`agent-start returned non-JSON output: ${result.stdout}`);
-  }
-}
-
-function ensureFallbackWorktree(repoRoot, taskName, branchName, baseRef) {
   const worktrees = parseWorktreeList(
     runCommand("git", ["worktree", "list", "--porcelain"], { cwd: repoRoot })
   );
-  const existingPath = findWorktreePathForBranch(worktrees, branchName);
-  if (existingPath) {
+  const branchRef = `refs/heads/${branchName}`;
+  const existing = worktrees.find((entry) => entry.branch === branchRef);
+  if (existing) {
+    const existingPath = existing.worktree || "";
+    if (Object.hasOwn(existing, "prunable") || !pathExists(existingPath)) {
+      throw new Error(
+        `Refusing to reuse stale worktree record for ${branchName}; run git worktree prune and retry.`
+      );
+    }
+    if (path.resolve(existingPath) !== worktreePath) {
+      throw new Error(
+        `Refusing to reuse ${branchName} outside the expected lane path: ${worktreePath}`
+      );
+    }
     return {
       branchName,
       worktreePath: existingPath,
-      launchMode: "fallback-existing-worktree",
+      launchMode: "existing-worktree",
     };
   }
 
-  const worktreePath = path.join(repoRoot, ".worktrees", taskName);
-  if (fs.existsSync(worktreePath)) {
+  if (pathExists(worktreePath)) {
     throw new Error(
-      `Refusing fallback worktree creation because ${worktreePath} already exists without a matching branch record.`
+      `Refusing worktree creation because ${worktreePath} already exists without a matching branch record.`
     );
   }
 
@@ -227,33 +232,14 @@ function ensureFallbackWorktree(repoRoot, taskName, branchName, baseRef) {
     branchName,
     worktreePath,
     launchMode: alreadyHasBranch
-      ? "fallback-existing-branch"
-      : "fallback-new-worktree",
+      ? "existing-branch"
+      : "new-worktree",
   };
 }
 
-function createLane(repoRoot, taskName, baseRef, options = {}) {
-  try {
-    return {
-      ...runAgentStart(repoRoot, taskName, baseRef),
-      launchMode: "agent-start",
-    };
-  } catch (error) {
-    if (!isDirtyReviewWorktreeLimitError(error.output || error.message)) {
-      throw error;
-    }
-    if (!options.allowFallback) {
-      throw new Error(
-        [
-          "agent-start refused to create a new lane because dirty/detached review worktrees exceed the allowed limit.",
-          "Clean up existing review worktrees or rerun with --allow-fallback if you intentionally want a plain git worktree lane.",
-        ].join(" ")
-      );
-    }
-  }
-
+function createLane(repoRoot, taskName, baseRef) {
   const branchName = buildBranchName(taskName);
-  return ensureFallbackWorktree(repoRoot, taskName, branchName, baseRef);
+  return ensureNativeWorktree(repoRoot, taskName, branchName, baseRef);
 }
 
 function formatList(items) {
@@ -372,7 +358,7 @@ function prepareLane(repoRoot, taskText, options, createLaneImpl = createLane) {
   const designRoute = designDonorRouter.routeDesignTask(taskText, {
     requestedFamily: options.family,
   });
-  const lane = createLaneImpl(repoRoot, taskName, DEFAULT_BASE_REF, options);
+  const lane = createLaneImpl(repoRoot, taskName, DEFAULT_BASE_REF);
   return { designRoute, lane, taskName };
 }
 
@@ -433,9 +419,10 @@ if (require.main === module) {
 module.exports = {
   buildPrompt,
   buildTaskName,
+  createLane,
   deriveRepoRoot,
+  ensureNativeWorktree,
   findWorktreePathForBranch,
-  isDirtyReviewWorktreeLimitError,
   parseArgs,
   parseWorktreeList,
   prepareLane,

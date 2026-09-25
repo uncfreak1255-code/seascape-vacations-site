@@ -7,6 +7,19 @@ const os = require("node:os");
 const projectRoot = path.resolve(__dirname, "..", "..");
 const designLane = require("../design/seascape-design-lane");
 const donorRouter = require("../design/design-donor-router");
+const gitLocationVars = new Set([
+  "GIT_DIR",
+  "GIT_WORK_TREE",
+  "GIT_INDEX_FILE",
+  "GIT_OBJECT_DIRECTORY",
+  "GIT_COMMON_DIR",
+]);
+
+function cleanGitEnv() {
+  return Object.fromEntries(
+    Object.entries(process.env).filter(([key]) => !gitLocationVars.has(key))
+  );
+}
 
 function read(relativePath) {
   return fs.readFileSync(path.join(projectRoot, relativePath), "utf8");
@@ -44,14 +57,12 @@ test("design lane parser keeps --prepare and builds a stable task slug", () => {
     "hero",
     "layout",
     "--prepare",
-    "--allow-fallback",
     "--family",
     "comparison",
   ]);
 
   assert.equal(parsed.taskText, "refresh the owner hero layout");
   assert.equal(parsed.options.prepareOnly, true);
-  assert.equal(parsed.options.allowFallback, true);
   assert.equal(parsed.options.family, "comparison");
   assert.equal(designLane.parseArgs(["--help"]).options.help, true);
   assert.equal(
@@ -263,6 +274,176 @@ test("design lane worktree parser finds existing linked worktrees", () => {
   );
 });
 
+test("design lane creates and reuses a native git worktree without the retired broker", () => {
+  const repo = fs.mkdtempSync(path.join(os.tmpdir(), "seascape-design-lane-"));
+  try {
+    const git = (...args) => {
+      const result = require("node:child_process").spawnSync("git", args, {
+        cwd: repo,
+        encoding: "utf8",
+        env: cleanGitEnv(),
+      });
+      assert.equal(result.status, 0, result.stderr || result.stdout);
+    };
+    git("init", "-b", "main");
+    git("config", "user.email", "test@example.invalid");
+    git("config", "user.name", "Design Lane Test");
+    fs.writeFileSync(path.join(repo, "README.md"), "fixture\n", "utf8");
+    git("add", "README.md");
+    git("commit", "-m", "fixture");
+
+    const first = designLane.ensureNativeWorktree(
+      repo,
+      "design-owner-hero",
+      "codex/design-owner-hero",
+      "main"
+    );
+    assert.equal(first.launchMode, "new-worktree");
+    assert.equal(fs.existsSync(first.worktreePath), true);
+
+    const second = designLane.ensureNativeWorktree(
+      repo,
+      "design-owner-hero",
+      "codex/design-owner-hero",
+      "main"
+    );
+    assert.equal(second.launchMode, "existing-worktree");
+    assert.equal(
+      fs.realpathSync(second.worktreePath),
+      fs.realpathSync(first.worktreePath)
+    );
+
+    const source = read("scripts/design/seascape-design-lane.js");
+    assert.doesNotMatch(source, /agent-start/);
+  } finally {
+    fs.rmSync(repo, { recursive: true, force: true });
+  }
+});
+
+test("design lane refuses an unregistered worktree path collision", () => {
+  const repo = fs.mkdtempSync(path.join(os.tmpdir(), "seascape-design-lane-collision-"));
+  try {
+    const git = (...args) => {
+      const result = require("node:child_process").spawnSync("git", args, {
+        cwd: repo,
+        encoding: "utf8",
+        env: cleanGitEnv(),
+      });
+      assert.equal(result.status, 0, result.stderr || result.stdout);
+    };
+    git("init", "-b", "main");
+    git("config", "user.email", "test@example.invalid");
+    git("config", "user.name", "Design Lane Test");
+    fs.writeFileSync(path.join(repo, "README.md"), "fixture\n", "utf8");
+    git("add", "README.md");
+    git("commit", "-m", "fixture");
+
+    const collision = path.join(repo, ".worktrees", "design-owner-hero");
+    fs.mkdirSync(collision, { recursive: true });
+
+    assert.throws(
+      () => designLane.ensureNativeWorktree(
+        repo,
+        "design-owner-hero",
+        "codex/design-owner-hero",
+        "main"
+      ),
+      /already exists without a matching branch record/
+    );
+    assert.equal(fs.readdirSync(collision).length, 0);
+  } finally {
+    fs.rmSync(repo, { recursive: true, force: true });
+  }
+});
+
+test("design lane refuses a matching branch checked out outside the expected lane path", () => {
+  const repo = fs.mkdtempSync(path.join(os.tmpdir(), "seascape-design-lane-external-"));
+  const external = `${repo}-external`;
+  try {
+    const git = (...args) => {
+      const result = require("node:child_process").spawnSync("git", args, {
+        cwd: repo,
+        encoding: "utf8",
+        env: cleanGitEnv(),
+      });
+      assert.equal(result.status, 0, result.stderr || result.stdout);
+    };
+    git("init", "-b", "main");
+    git("config", "user.email", "test@example.invalid");
+    git("config", "user.name", "Design Lane Test");
+    fs.writeFileSync(path.join(repo, "README.md"), "fixture\n", "utf8");
+    git("add", "README.md");
+    git("commit", "-m", "fixture");
+    git("worktree", "add", "-b", "codex/design-owner-hero", external, "main");
+
+    assert.throws(
+      () => designLane.ensureNativeWorktree(
+        repo,
+        "design-owner-hero",
+        "codex/design-owner-hero",
+        "main"
+      ),
+      /outside the expected lane path/
+    );
+  } finally {
+    fs.rmSync(external, { recursive: true, force: true });
+    fs.rmSync(repo, { recursive: true, force: true });
+  }
+});
+
+test("design lane refuses stale worktree records instead of returning a missing path", () => {
+  const repo = fs.mkdtempSync(path.join(os.tmpdir(), "seascape-design-lane-stale-"));
+  try {
+    const git = (...args) => {
+      const result = require("node:child_process").spawnSync("git", args, {
+        cwd: repo,
+        encoding: "utf8",
+        env: cleanGitEnv(),
+      });
+      assert.equal(result.status, 0, result.stderr || result.stdout);
+    };
+    git("init", "-b", "main");
+    git("config", "user.email", "test@example.invalid");
+    git("config", "user.name", "Design Lane Test");
+    fs.writeFileSync(path.join(repo, "README.md"), "fixture\n", "utf8");
+    git("add", "README.md");
+    git("commit", "-m", "fixture");
+    const stale = path.join(repo, ".worktrees", "design-stale");
+    git("worktree", "add", "-b", "codex/design-stale", stale, "main");
+    fs.rmSync(stale, { recursive: true, force: true });
+
+    assert.throws(
+      () => designLane.ensureNativeWorktree(
+        repo,
+        "design-stale",
+        "codex/design-stale",
+        "main"
+      ),
+      /stale worktree record/
+    );
+  } finally {
+    fs.rmSync(repo, { recursive: true, force: true });
+  }
+});
+
+test("design lane rejects task names that escape the worktree root", () => {
+  const repo = fs.mkdtempSync(path.join(os.tmpdir(), "seascape-design-lane-traversal-"));
+  try {
+    assert.throws(
+      () => designLane.ensureNativeWorktree(
+        repo,
+        "../escaped",
+        "codex/escaped",
+        "main"
+      ),
+      /invalid task name/
+    );
+    assert.equal(fs.existsSync(path.join(repo, "escaped")), false);
+  } finally {
+    fs.rmSync(repo, { recursive: true, force: true });
+  }
+});
+
 test("design workflow docs and claude compatibility layer advertise the local lane", () => {
   const agents = read("AGENTS.md");
   const workflow = read("docs/process/design-review-workflow.md");
@@ -282,7 +463,7 @@ test("design workflow docs and claude compatibility layer advertise the local la
   assert.match(workflow, /npm run design:lane/);
   assert.match(studio, /npm run design:donors/);
   assert.match(studio, /Comparison guide/);
-  assert.match(studio, /--allow-fallback/);
+  assert.doesNotMatch(studio, /--allow-fallback/);
   assert.match(studio, /Do not implement from `Reject` or `Needs another pass`/);
   assert.match(readme, /seascape-design-specialist/);
   assert.match(packageJson, /"design:lane": "\.\/scripts\/design\/codex-seascape-design"/);

@@ -37,12 +37,8 @@ prewired:
 - add `--family comparison|field-journal|planning|destination-overview|site-page`
   when automatic family detection needs an explicit override
 - add `--prepare` to create or inspect the lane without launching Codex
-- add `--allow-fallback` only when you intentionally want a plain git worktree
-  lane after `agent-start` blocks on dirty review-worktree limits
-
-The launcher prefers `agent-start`. If the broker refuses because dirty review
-worktrees already need cleanup, the default command now stops and tells you so
-instead of silently bypassing that guardrail.
+- the launcher creates or reuses a native `git worktree` under `.worktrees/`
+  and refuses an unregistered path collision
 
 ## Source Order
 
