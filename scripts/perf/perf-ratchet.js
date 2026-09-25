@@ -13,14 +13,23 @@
 //                                                     refuses to raise any
 //   node scripts/perf/perf-ratchet.js --update --allow-raise "<reason>"
 //
-// Values are the median across runs, per route, of the summed uncompressed
-// resourceSize of every 200 script / stylesheet request in the
-// network-requests audit. Uncompressed body bytes are a function of the
-// committed source alone; transferSize is not, because it counts response
-// headers and compression, which differ between the Mac runner and a local
-// run (+879 bytes on the homepage for the same commit, PR #617 run 1).
-// LCP, CLS and TBT stay ceilings in lighthouserc.js because they vary run to
-// run.
+// Values are per route, the MAXIMUM across runs, of:
+//   script     = summed uncompressed resourceSize of every 200 Script request
+//                in the network-requests audit, plus the inline executable
+//                script bytes Lighthouse files under the document URL in the
+//                script-treemap-data audit (inline <script> never appears as a
+//                request, so without this it was invisible to the gate)
+//   stylesheet = summed uncompressed resourceSize of every 200 Stylesheet
+//                request (inline <style> is not covered; ~0.9 KB on the
+//                homepage on 2026-09-24, no Lighthouse audit exposes it)
+// Uncompressed body bytes are a function of the committed source alone;
+// transferSize is not, because it counts response headers and compression,
+// which differ between the Mac runner and a local run (+879 bytes on the
+// homepage for the same commit, PR #617 run 1). Because the bytes are
+// deterministic, the maximum is the fail-closed choice: a script that only
+// sometimes loads is a change, and a median let a 1-of-3 growth pass
+// (adversarial review, 2026-09-24). LCP, CLS and TBT stay ceilings in
+// lighthouserc.js because they vary run to run.
 //
 // The pull_request workflow builds the merge of the branch with current main,
 // so seed or update the baseline on a tree that already contains origin/main.
@@ -61,10 +70,8 @@ function parseArgs(argv) {
   return args;
 }
 
-function median(values) {
-  const sorted = [...values].sort((a, b) => a - b);
-  const mid = Math.floor(sorted.length / 2);
-  return sorted.length % 2 ? sorted[mid] : Math.round((sorted[mid - 1] + sorted[mid]) / 2);
+function maximum(values) {
+  return values.reduce((a, b) => (b > a ? b : a));
 }
 
 function readJsonIfExists(file) {
@@ -99,14 +106,32 @@ function readMeasured(reportsDir) {
         }
         total += item.resourceSize;
       }
+      if (metric.key === "script") total += inlineScriptBytes(lhr, file, route);
       bucket[metric.key].push(total);
     }
   }
   const measured = {};
   for (const [route, bucket] of Object.entries(samples)) {
-    measured[route] = Object.fromEntries(METRICS.map((m) => [m.key, median(bucket[m.key])]));
+    measured[route] = Object.fromEntries(METRICS.map((m) => [m.key, maximum(bucket[m.key])]));
   }
   return measured;
+}
+
+// Lighthouse's script-treemap-data audit files inline executable <script>
+// content as one node named after the document URL. A page with no inline
+// script has no such node, which is a legitimate 0.
+function inlineScriptBytes(lhr, file, route) {
+  const nodes = lhr.audits?.["script-treemap-data"]?.details?.nodes;
+  if (!Array.isArray(nodes)) {
+    throw new Error(`perf-ratchet: ${file} has no script-treemap-data audit for ${route}`);
+  }
+  const pageUrls = new Set([lhr.finalDisplayedUrl, lhr.requestedUrl].filter(Boolean));
+  const doc = nodes.find((n) => pageUrls.has(n.name));
+  if (!doc) return 0;
+  if (typeof doc.resourceBytes !== "number") {
+    throw new Error(`perf-ratchet: ${file} treemap document node for ${route} has no resourceBytes`);
+  }
+  return doc.resourceBytes;
 }
 
 function readBaseline(file) {
@@ -226,4 +251,4 @@ if (require.main === module) {
   }
 }
 
-module.exports = { check, deltas, median, readMeasured, update, METRICS };
+module.exports = { check, deltas, maximum, readMeasured, update, METRICS };
