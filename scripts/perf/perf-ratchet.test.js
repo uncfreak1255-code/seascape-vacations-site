@@ -9,15 +9,25 @@ const { execFileSync } = require("child_process");
 
 const SCRIPT = path.resolve(__dirname, "perf-ratchet.js");
 
-function lhr(route, { script, stylesheet }) {
+function lhr(route, { script, stylesheet, inlineScript = 0 }) {
   // Split each total across two requests so the sum, not one row, is measured.
   const half = (n) => [Math.floor(n / 2), n - Math.floor(n / 2)];
   const [s1, s2] = half(script);
   const [c1, c2] = half(stylesheet);
+  const pageUrl = `http://localhost${route}`;
   return JSON.stringify({
-    requestedUrl: `http://localhost${route}`,
-    finalDisplayedUrl: `http://localhost${route}`,
+    requestedUrl: pageUrl,
+    finalDisplayedUrl: pageUrl,
     audits: {
+      // Lighthouse files inline executable script under the document URL.
+      "script-treemap-data": {
+        details: {
+          nodes: [
+            { name: pageUrl, resourceBytes: inlineScript },
+            { name: "http://localhost/a.js", resourceBytes: s1 },
+          ],
+        },
+      },
       "network-requests": {
         details: {
           items: [
@@ -94,26 +104,52 @@ test("passes when a route shrinks and says the baseline can be tightened", () =>
   assert.deepEqual(readJson(baselineFile), BASE, "check mode must not write");
 });
 
-test("uses the median across runs so one noisy run neither passes nor fails alone", () => {
+test("uses the maximum across runs, so growth seen in any one run fails", () => {
+  // Bytes are deterministic for a static site, so a single run that ships
+  // more is a real change (a script that only sometimes loads), not noise.
+  // A median would let a 1-of-3 growth pass (adversarial review, 2026-09-24).
   const { reportsDir, baselineFile } = fixture({
     reports: [
       lhr("/", { script: 15000, stylesheet: 14000 }),
       lhr("/", { script: 15000, stylesheet: 14000 }),
-      lhr("/", { script: 99999, stylesheet: 14000 }),
+      lhr("/", { script: 15001, stylesheet: 14000 }),
     ],
     baseline: BASE,
   });
-  assert.equal(run(["--reports", reportsDir, "--baseline", baselineFile]).status, 0);
+  const r = run(["--reports", reportsDir, "--baseline", baselineFile]);
+  assert.equal(r.status, 1, r.output);
+  assert.match(r.output, /\/ script 15001 > baseline 15000/);
 
   const low = fixture({
     reports: [
       lhr("/", { script: 1, stylesheet: 14000 }),
-      lhr("/", { script: 20000, stylesheet: 14000 }),
-      lhr("/", { script: 20000, stylesheet: 14000 }),
+      lhr("/", { script: 15000, stylesheet: 14000 }),
+      lhr("/", { script: 15000, stylesheet: 14000 }),
     ],
     baseline: BASE,
   });
-  assert.equal(run(["--reports", low.reportsDir, "--baseline", low.baselineFile]).status, 1);
+  assert.equal(run(["--reports", low.reportsDir, "--baseline", low.baselineFile]).status, 0);
+});
+
+test("counts inline executable script bytes from the treemap document node", () => {
+  // Inline <script> never appears in network-requests, so the external sum
+  // alone read PASS on a page that grew inline (adversarial review, 2026-09-24).
+  const { reportsDir, baselineFile } = fixture({
+    reports: [lhr("/", { script: 15000, stylesheet: 14000, inlineScript: 1 })],
+    baseline: BASE,
+  });
+  const r = run(["--reports", reportsDir, "--baseline", baselineFile]);
+  assert.equal(r.status, 1, r.output);
+  assert.match(r.output, /\/ script 15001 > baseline 15000/);
+});
+
+test("fails loudly when a report lacks the script-treemap-data audit", () => {
+  const body = JSON.parse(lhr("/", { script: 15000, stylesheet: 14000 }));
+  delete body.audits["script-treemap-data"];
+  const { reportsDir, baselineFile } = fixture({ reports: [JSON.stringify(body)], baseline: BASE });
+  const r = run(["--reports", reportsDir, "--baseline", baselineFile]);
+  assert.equal(r.status, 1, r.output);
+  assert.match(r.output, /no script-treemap-data audit for \//);
 });
 
 test("fails loudly when a baselined route has no report", () => {
