@@ -84,4 +84,4 @@ enabled = false
 enabled = false
 
 [plugins."mattpocock-skills@claude-plugins-official"]
-enabled = false
+enabled = true
