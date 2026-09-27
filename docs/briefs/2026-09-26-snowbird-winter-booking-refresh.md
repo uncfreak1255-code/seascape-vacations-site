@@ -38,7 +38,7 @@
 | Attack status | none found after named checks |
 | Query variants inspected | snowbird monthly rentals Anna Maria Island Bradenton winter 2027 |
 | SERP source | web search results read 2026-09-26 |
-| Competitor URLs inspected | islandreal.com/monthly-rentals; floridarentals.com/southwest/bradenton-vacation-rentals/monthly/; annamaria.com/vacation-rentals/anna-maria-monthly-rentals/ |
+| Competitor URLs inspected | source: live direct-booking calendar and repository property data read 2026-09-26; SERP: web search results read 2026-09-26; competitor-page: competitor URLs taken from those search results, pages not opened: islandreal.com/monthly-rentals, floridarentals.com/southwest/bradenton-vacation-rentals/monthly/, annamaria.com/vacation-rentals/anna-maria-monthly-rentals/ |
 | Content gap and Seascape answer | say plainly how long a stay books online, which home takes longer stays, that pool heat is extra, and how to get a quote |
 | Design/format strategy | text changes inside existing sections; add Pickleball Pool Home Retreat to the stays page list |
 | Seascape proof available | live calendar read and property fallback data dated 2026-09-26 |
