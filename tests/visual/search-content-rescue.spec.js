@@ -47,7 +47,8 @@ for (const routeConfig of routes) {
     await expect(page).toHaveTitle(routeConfig.title);
     await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", routeConfig.canonical);
     await expect(page.locator("main h1").first()).toHaveText(routeConfig.heading);
-    await expect(page.locator(routeConfig.ctaSelector).first()).toBeVisible();
+    // The guide conversion kit keeps a hidden SAVE50 link to the same stay until a returning visitor has the code.
+    await expect(page.locator(routeConfig.ctaSelector).filter({ visible: true }).first()).toBeVisible();
 
     if (routeConfig.description) {
       await expect(page.locator('meta[name="description"]')).toHaveAttribute("content", routeConfig.description);
