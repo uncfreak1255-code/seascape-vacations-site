@@ -567,7 +567,7 @@
     "guests": 12,
     "rating": 5,
     "price": 400,
-    "image": "https://bookingenginecdn.hostaway.com/listing/51916-135880-O6JS9DHvtg7g5gc5ZAe7--55PGx3-0ELuuNJ4T1dsz7s-67620f804f296?width=1600&quality=80&format=webp&v=2",
+    "image": "https://seascape-vacations.com/images/homes/river-house/01.webp",
     "amenities": [
       "pool",
       "spa"
@@ -591,91 +591,91 @@
       "kid-friendly"
     ],
     "photography": {
-      "verifiedAt": "2026-09-04",
+      "verifiedAt": "2026-09-27",
       "photos": [
         {
           "src": "/images/homes/river-house/01.webp",
           "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-135880-O6JS9DHvtg7g5gc5ZAe7--55PGx3-0ELuuNJ4T1dsz7s-67620f804f296",
-          "alt": "River House — Backyard",
+          "alt": "River House — Turf yard at sunset with lounge chairs, a volleyball net, and a round target game",
+          "width": 1400,
+          "height": 933
+        },
+        {
+          "src": "/images/homes/river-house/36.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-135880-k4OggMD0HEeUv--8o40XusNTMi8VXw2wf9daBaQUrmWw-67620f8806807",
+          "alt": "River House — Screened pool lit at dusk",
+          "width": 1400,
+          "height": 933
+        },
+        {
+          "src": "/images/homes/river-house/37.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-135880-8-QJvdTAGfAr9E7NO7wBcH8vG78TeLMO2PabnNWgiSc-67620f8c04395",
+          "alt": "River House — Screened lanai dining table and spa at dusk",
+          "width": 1400,
+          "height": 1044
+        },
+        {
+          "src": "/images/homes/river-house/38.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-135880-O6JS9DHvtg7g5gc5ZAe7--55PGx3-0ELuuNJ4T1dsz7s-67620f804f296",
+          "alt": "River House — Wicker lounge set on the patio at sunset",
+          "width": 1400,
+          "height": 933
+        },
+        {
+          "src": "/images/homes/river-house/39.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-135880-O6JS9DHvtg7g5gc5ZAe7--55PGx3-0ELuuNJ4T1dsz7s-67620f804f296",
+          "alt": "River House — Screened porch, spa, turf yard, and cornhole at dusk",
+          "width": 1400,
+          "height": 933
+        },
+        {
+          "src": "/images/homes/river-house/02.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-135880-O6JS9DHvtg7g5gc5ZAe7--55PGx3-0ELuuNJ4T1dsz7s-67620f804f296",
+          "alt": "River House — Daytime backyard with wicker seating, turf, and a volleyball net",
           "width": 1400,
           "height": 934
         },
         {
           "src": "/images/homes/river-house/08.webp",
           "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-135880-Z8Y96zYn1Pse7JhV6zA1SryfsOl24-MQOX3uhYNgOYo-67620fbc73df9",
-          "alt": "River House — Living room",
+          "alt": "River House — Living room with a sofa, TV, and work desk",
+          "width": 1400,
+          "height": 933
+        },
+        {
+          "src": "/images/homes/river-house/06.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-135880---MvAp4qaRu7kiE3k8rLlBS91JKP--K9W27j0gSz85fI-67621047092ea",
+          "alt": "River House — Kitchen with a blue island and stainless appliances",
           "width": 1400,
           "height": 933
         },
         {
           "src": "/images/homes/river-house/28.webp",
           "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-135880-0WnAHReHknUEWEBelinW--skfXQbt16rMH1wU-PaCMgI-6762109d60c59",
-          "alt": "River House — Bunk room",
+          "alt": "River House — Bunk room with two full-over-full bunk beds",
           "width": 1400,
           "height": 934
-        },
-        {
-          "src": "/images/homes/river-house/06.webp",
-          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-135880---MvAp4qaRu7kiE3k8rLlBS91JKP--K9W27j0gSz85fI-67621047092ea",
-          "alt": "River House — Kitchen",
-          "width": 1400,
-          "height": 933
-        },
-        {
-          "src": "/images/homes/river-house/07.webp",
-          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-135880-OjOthIkLY--af9i-nKVMVz1hIehhAFqAMhnx21GMeMaE-67620fd112d5a",
-          "alt": "River House — Dining area",
-          "width": 1400,
-          "height": 933
         },
         {
           "src": "/images/homes/river-house/14.webp",
           "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-135880-3-WHUih34aKJ-O8dGl9n9-mwQoL3ZCAfRN-SdAOJyq4-67620ff00a61f",
-          "alt": "River House — Bedroom",
-          "width": 1400,
-          "height": 933
-        },
-        {
-          "src": "/images/homes/river-house/17.webp",
-          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-135880-Jluyx39g6SUT5ptLznYnKQF--JJeMA2oOn--7P6kHfXz0-6762100a90ffb",
-          "alt": "River House — Bedroom",
-          "width": 1400,
-          "height": 933
-        },
-        {
-          "src": "/images/homes/river-house/25.webp",
-          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-135880-2EdnBP5NgblNV4--JgxLOmuakAHoNsyi3sS12FPvGPVY-676210755edc4",
-          "alt": "River House — Bedroom",
-          "width": 1400,
-          "height": 934
-        },
-        {
-          "src": "/images/homes/river-house/05.webp",
-          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-135880-g8wwLrsaItg4FXqddvMHvmC-RqGfMcD5WrwyAWwVv70-67620fe015f64",
-          "alt": "River House — Bathroom",
+          "alt": "River House — Bedroom with white bedding and shuttered windows",
           "width": 1400,
           "height": 933
         },
         {
           "src": "/images/homes/river-house/23.webp",
           "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-135880-b3k0bUFryxvpWpX9kA9SJA4A1lR6hf2FSN9VVThcxDU-6762105e71186",
-          "alt": "River House — Game room",
+          "alt": "River House — Game room with a pool table and foosball",
           "width": 1400,
           "height": 933
         },
         {
-          "src": "/images/homes/river-house/35.webp",
-          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-135880-k4OggMD0HEeUv--8o40XusNTMi8VXw2wf9daBaQUrmWw-67620f8806807",
-          "alt": "River House — Screened pool",
+          "src": "/images/homes/river-house/05.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-135880-g8wwLrsaItg4FXqddvMHvmC-RqGfMcD5WrwyAWwVv70-67620fe015f64",
+          "alt": "River House — Bathroom with a double vanity and glass shower",
           "width": 1400,
-          "height": 934
-        },
-        {
-          "src": "/images/homes/river-house/04.webp",
-          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-135880-8-QJvdTAGfAr9E7NO7wBcH8vG78TeLMO2PabnNWgiSc-67620f8c04395",
-          "alt": "River House — Screened dining area",
-          "width": 1400,
-          "height": 931
+          "height": 933
         }
       ]
     },
