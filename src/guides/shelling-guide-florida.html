@@ -63,6 +63,7 @@ guideRelatedLinks:
     copy: Plan Point of Rocks and other Sarasota-area beach stops.
     href: /guides/siesta-key-beach-guide/
 ---
+{% from "partials/guide-conversion-kit.njk" import guideConversionKit %}
 
 <section class="journal-answer" id="quick-answer" aria-labelledby="quick-answer-title">
   <p class="journal-kicker">The short answer</p>
@@ -200,6 +201,48 @@ guideRelatedLinks:
   <p>Empty shells may be collected from many public beaches. Florida State Parks generally allow empty seashells found between the water line and dune toe at coastal parks, while live shells and live sand dollars should stay in place. Protected areas and local sites can apply additional rules.</p>
   <p>Read the current <a href="https://myfwc.com/fishing/saltwater/recreational/sea-shells/">Florida Fish and Wildlife Conservation Commission shell-collecting guidance</a> and the <a href="https://www.floridastateparks.org/plan-your-visit/faqs">Florida State Parks collection FAQ</a> before the trip.</p>
 </aside>
+
+{{ guideConversionKit({
+  guideSlug: "shelling-guide-florida",
+  title: "Stay close enough for an early low tide",
+  copy: "The best shelling starts early, around low tide. Seascape's homes are in Bradenton, a short drive from Anna Maria Island beaches, so a dawn beach run is easy and the afternoon can go to a private pool instead.",
+  savingsBullets: [
+    {
+      title: "Our homes are on the mainland",
+      copy: "Plan to drive to Bean Point or Coquina Beach. In return you get more room than most island rentals, and most homes have a private pool."
+    },
+    {
+      title: "Compare the final total, not the nightly rate",
+      copy: "Two homes can look close on price, then separate once Airbnb or Vrbo adds its service fee at checkout. The direct price is the total you pay."
+    }
+  ],
+  stays: [
+    {
+      href: "/stays/anna-maria-island-vacation-rentals/",
+      title: "Anna Maria Island vacation rentals",
+      copy: "Private-pool homes on the Bradenton side, a short drive from Anna Maria Island beaches."
+    },
+    {
+      href: "/stays/bradenton-vacation-rentals-near-beaches/",
+      title: "Bradenton homes near AMI beaches",
+      copy: "More house and pool space for groups planning repeat beach days on the island."
+    }
+  ],
+  repeatLinks: [
+    {
+      href: "/guides/anna-maria-island-beaches/",
+      title: "Match a beach to the morning",
+      copy: "Parking, crowds and sunsets for every Anna Maria Island beach."
+    },
+    {
+      href: "/guides/best-time-visit-anna-maria-island/",
+      title: "Pick your month",
+      copy: "Weather, crowds and water by season."
+    }
+  ],
+  primaryCtaLabel: "Browse Homes Near AMI",
+  bookingEngineLabel: "Check Available Dates"
+}) }}
 
 <section id="faq" aria-labelledby="faq-title">
   <p class="journal-kicker">Quick answers</p>
