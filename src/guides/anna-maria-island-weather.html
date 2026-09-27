@@ -2,6 +2,7 @@
 permalink: "/guides/anna-maria-island-weather/"
 ---
 {% from "partials/ui-icon.njk" import uiLabel %}
+{% from "partials/guide-conversion-kit.njk" import guideConversionKit %}
 <!doctype html>
 <html lang="en">
 <head>
@@ -168,6 +169,52 @@ permalink: "/guides/anna-maria-island-weather/"
         <li><a href="/stays/anna-maria-island-homes-with-pool/">Browse homes with pools</a></li>
       </ul>
     </article>
+{{ guideConversionKit({
+  guideSlug: "anna-maria-island-weather",
+  title: "Picked your weather window? Check which homes are open",
+  copy: "Once you know which months fit your trip, compare private-pool homes in Bradenton, a short drive from Anna Maria Island beaches. Seascape's homes are on the mainland, not on the island, so plan on a car for beach days.",
+  savingsBullets: [
+    {
+      title: "Ask about pool heat for a winter swim",
+      copy: "Normal highs sit in the low to mid 70s from December through February. Pool heat costs extra on most of our homes, so ask before you book."
+    },
+    {
+      title: "Compare the final total, not the nightly rate",
+      copy: "Two homes can look close on price, then separate once Airbnb or Vrbo adds its service fee at checkout. The direct price is the total you pay."
+    }
+  ],
+  stays: [
+    {
+      href: "/stays/anna-maria-island-vacation-rentals/",
+      title: "Anna Maria Island vacation rentals",
+      copy: "Private-pool homes on the Bradenton side, a short drive from Anna Maria Island beaches."
+    },
+    {
+      href: "/stays/anna-maria-island-homes-with-pool/",
+      title: "Homes with a private pool",
+      copy: "For the hot summer afternoons, when the pool beats another hour on the sand."
+    },
+    {
+      href: "/stays/bradenton-vacation-rentals-near-beaches/",
+      title: "Bradenton homes near AMI beaches",
+      copy: "More house and pool space for groups planning repeat beach days on the island."
+    }
+  ],
+  repeatLinks: [
+    {
+      href: "/guides/best-time-visit-anna-maria-island/",
+      title: "Compare timing beyond weather",
+      copy: "Crowds, prices and events change by month too."
+    },
+    {
+      href: "/guides/hurricane-preparedness-florida-vacation/",
+      title: "Plan for hurricane season",
+      copy: "What to check before booking June through November dates."
+    }
+  ],
+  primaryCtaLabel: "Browse Homes Near AMI",
+  bookingEngineLabel: "Check Available Dates"
+}) }}
   </main>
   <section class="cta-section">
     <h2>Find a stay for your dates</h2>

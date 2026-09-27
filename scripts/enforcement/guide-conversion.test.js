@@ -57,6 +57,30 @@ const guideFiles = [
       "/stays/anna-maria-island-vacation-rentals/",
       "/stays/anna-maria-island-beachfront-rentals/"
     ]
+  },
+  {
+    slug: "anna-maria-island-weather",
+    file: path.join(projectRoot, "src", "guides", "anna-maria-island-weather.html"),
+    requiredLinks: [
+      "/stays/anna-maria-island-vacation-rentals/",
+      "/stays/anna-maria-island-homes-with-pool/"
+    ]
+  },
+  {
+    slug: "srq-airport-to-anna-maria-island",
+    file: path.join(projectRoot, "src", "guides", "srq-airport-to-anna-maria-island.html"),
+    requiredLinks: [
+      "/stays/bradenton-vacation-rentals-near-beaches/",
+      "/stays/anna-maria-island-vacation-rentals/"
+    ]
+  },
+  {
+    slug: "shelling-guide-florida",
+    file: path.join(projectRoot, "src", "guides", "shelling-guide-florida.html"),
+    requiredLinks: [
+      "/stays/anna-maria-island-vacation-rentals/",
+      "/stays/bradenton-vacation-rentals-near-beaches/"
+    ]
   }
 ];
 
@@ -1041,7 +1065,11 @@ test("priority guides use the shared conversion kit with page-specific stay link
     assert.equal(source.includes('from "partials/guide-conversion-kit.njk" import guideConversionKit'), true);
     assert.equal(source.includes("guideConversionKit({"), true);
     assert.equal(source.includes(`guideSlug: "${guide.slug}"`), true, `${guide.slug} should pass its slug`);
-    assert.equal(source.includes('{% include "partials/analytics-ga4.njk" %}'), true, `${guide.slug} should load analytics`);
+    const layout = source.match(/^layout:\s*(\S+)$/m);
+    const analyticsSource = layout
+      ? fs.readFileSync(path.join(projectRoot, "src", "_includes", layout[1]), "utf8")
+      : source;
+    assert.equal(analyticsSource.includes('{% include "partials/analytics-ga4.njk" %}'), true, `${guide.slug} should load analytics`);
 
     for (const href of guide.requiredLinks) {
       assert.equal(source.includes(href), true, `${guide.slug} should include ${href}`);
