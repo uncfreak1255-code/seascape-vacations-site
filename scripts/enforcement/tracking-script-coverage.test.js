@@ -66,10 +66,7 @@ test("rendered routes with tracked events load the shared tracking runtime", () 
     const html = fs.readFileSync(path.join(projectRoot, contract.sourcePath), "utf8");
     const hasTrackingScript = html.includes('/assets/js/conversion-tracking.js');
 
-    // The homepage loads the shared tracking script through homepage.js at runtime.
-    const hasRuntimeLoader = html.includes('/assets/js/homepage.js');
-
-    if (!hasTrackingScript && !hasRuntimeLoader) {
+    if (!hasTrackingScript) {
       offenders.push(`${routePath} -> tracked events ${contract.trackedEvents.join(", ")}`);
     }
   }
@@ -78,6 +75,41 @@ test("rendered routes with tracked events load the shared tracking runtime", () 
     offenders,
     [],
     `Routes with tracked events must load shared tracking:\n- ${offenders.join("\n- ")}`
+  );
+});
+
+function readGa4MeasurementId() {
+  const site = JSON.parse(fs.readFileSync(path.join(projectRoot, "src", "_data", "site.json"), "utf8"));
+  const measurementId = site.analytics && site.analytics.ga4MeasurementId;
+  assert.ok(measurementId, "src/_data/site.json is missing analytics.ga4MeasurementId");
+  return measurementId;
+}
+
+test("built pages that load tracking or the email popup also load GA4", () => {
+  const measurementId = readGa4MeasurementId();
+  const siteRoot = path.join(projectRoot, "_site");
+  const pages = listFiles(siteRoot).filter((file) => file.endsWith(".html"));
+  assert.ok(pages.length > 0, "_site should contain built HTML pages");
+
+  const trackedPages = [];
+  const offenders = [];
+  for (const file of pages) {
+    const html = fs.readFileSync(file, "utf8");
+    const loadsTracking = html.includes("/assets/js/conversion-tracking.js");
+    const hasEmailPopup = html.includes('id="email-popup"');
+    if (!loadsTracking && !hasEmailPopup) continue;
+
+    trackedPages.push(file);
+    if (!html.includes(measurementId)) {
+      offenders.push(path.relative(projectRoot, file));
+    }
+  }
+
+  assert.ok(trackedPages.length > 0, "expected built pages that load conversion-tracking.js or the email popup");
+  assert.deepEqual(
+    offenders.sort(),
+    [],
+    `Pages that load conversion-tracking.js or the email popup must load GA4 (${measurementId}); add {% include "partials/analytics-ga4.njk" %}:\n- ${offenders.join("\n- ")}`
   );
 });
 
