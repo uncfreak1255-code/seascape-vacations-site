@@ -1,15 +1,15 @@
 {
   "routes": {
     "/": {
-      "script": 68937,
-      "stylesheet": 56225
+      "script": 70220,
+      "stylesheet": 56949
     },
     "/properties/": {
-      "script": 88909,
+      "script": 90192,
       "stylesheet": 56330
     },
     "/property-management/": {
-      "script": 80236,
+      "script": 81519,
       "stylesheet": 53600
     },
     "/property-management/vacation-rental-licensing-florida/": {
@@ -97,6 +97,38 @@
       "to": 50571,
       "reason": "count inline executable script bytes from script-treemap-data; adversarial review of #617, 2026-09-24",
       "date": "2026-09-25"
+    },
+    {
+      "route": "/",
+      "metric": "script",
+      "from": 68937,
+      "to": 70220,
+      "reason": "Homepage leave-the-page email signup dialog approved by Sawyer 2026-09-27 (+1.3KB guest.js, +0.7KB arrival.css)",
+      "date": "2026-09-27"
+    },
+    {
+      "route": "/",
+      "metric": "stylesheet",
+      "from": 56225,
+      "to": 56949,
+      "reason": "Homepage leave-the-page email signup dialog approved by Sawyer 2026-09-27 (+1.3KB guest.js, +0.7KB arrival.css)",
+      "date": "2026-09-27"
+    },
+    {
+      "route": "/properties/",
+      "metric": "script",
+      "from": 88909,
+      "to": 90192,
+      "reason": "Homepage leave-the-page email signup dialog approved by Sawyer 2026-09-27 (+1.3KB guest.js, +0.7KB arrival.css)",
+      "date": "2026-09-27"
+    },
+    {
+      "route": "/property-management/",
+      "metric": "script",
+      "from": 80236,
+      "to": 81519,
+      "reason": "Homepage leave-the-page email signup dialog approved by Sawyer 2026-09-27 (+1.3KB guest.js, +0.7KB arrival.css)",
+      "date": "2026-09-27"
     }
   ]
 }
