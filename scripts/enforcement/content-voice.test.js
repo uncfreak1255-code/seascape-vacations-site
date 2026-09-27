@@ -98,6 +98,18 @@ const OWNER_VENDOR_DISCLOSURE_PATTERNS = [
   /\blodgify\b/i,
   /\bownerrez\b/i
 ];
+// Claims seascape-hub context/owner-offer.md section 7 excludes from owner copy:
+// revenue, booking or occupancy figures, response-time numbers, passive income,
+// and hands-off management. Published third-party prices (Airbnb's 15.5%) stay.
+const OWNER_EXCLUDED_CLAIM_PATTERNS = [
+  /passive income/i,
+  /hands[- ]off/i,
+  /\d+\s*%?\s*(?:-|–|to)?\s*\d*\s*%\+?\s*(?:annual\s+)?occupancy/i,
+  /occupancy\s+(?:to|of|at)\s+\d+/i,
+  /\b(?:increase|improve|boost|grow)\w*\b[^.]{0,60}?\d+\s*(?:-|–|to)\s*\d+\s*%/i,
+  /\d+\s*(?:-|–|to)\s*\d+\s*%\s+(?:of\s+)?(?:potential\s+)?(?:annual\s+)?(?:income|revenue|more|higher)/i,
+  /\b(?:respon\w*|repl\w*)\b[^.]{0,40}?within\s+\d+/i
+];
 // Deliberately NOT banned: "wheelhouse", "hospitable" and "property management
 // system" are ordinary English ("in our wheelhouse", "a hospitable welcome") and
 // would fail the gate on innocent copy. The rule is about naming the vendor.
@@ -1307,6 +1319,13 @@ test("owner seo page data avoids banned owner jargon", () => {
         violations.push(
           `${entry.slug}: owner copy must not name the operating stack ("${match[0]}")`
         );
+      }
+    }
+
+    for (const pattern of OWNER_EXCLUDED_CLAIM_PATTERNS) {
+      const match = readerText.match(pattern);
+      if (match) {
+        violations.push(`${entry.slug}: owner copy makes an excluded performance claim ("${match[0]}")`);
       }
     }
   }
