@@ -8,6 +8,30 @@
     var fallback = root.querySelector('[data-email-capture-unavailable]');
     if (fallback) fallback.hidden = true;
   });
+  // Homepage leave-the-page signup: desktop only, once a week, never after a signup.
+  var exitSignup = document.querySelector('[data-home-exit-signup]');
+  if (exitSignup && tracking && typeof exitSignup.showModal === 'function' && window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    var exitKey = 'seascape_email_popup_shown';
+    var exitRecentlyShown = function () {
+      try {
+        var shown = localStorage.getItem(exitKey);
+        if (!shown) return false;
+        return shown === 'subscribed' || (Date.now() - parseInt(shown, 10)) / 864e5 < 7;
+      } catch (error) {
+        return true;
+      }
+    };
+    var onPageLeave = function (event) {
+      if (event.relatedTarget || event.clientY > 0) return;
+      document.removeEventListener('mouseout', onPageLeave);
+      if (exitRecentlyShown()) return;
+      try { localStorage.setItem(exitKey, String(Date.now())); } catch (error) { return; }
+      exitSignup.showModal();
+    };
+    document.addEventListener('mouseout', onPageLeave);
+    exitSignup.querySelector('[data-home-exit-close]').addEventListener('click', function () { exitSignup.close(); });
+    exitSignup.addEventListener('click', function (event) { if (event.target === exitSignup) exitSignup.close(); });
+  }
   var parseTrip = tracking && tracking.readTripParams;
   var trip = parseTrip ? parseTrip(new URLSearchParams(location.search)) : {};
   var pageRoot = document.querySelector('[data-property-page]');
