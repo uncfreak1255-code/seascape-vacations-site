@@ -139,6 +139,26 @@ test("homepage postcard fan stays in one count-agnostic desktop row", () => {
   assert.match(css, /\.g-postcard:nth-child\(6\)\{--card-angle:5deg/);
 });
 
+test("River House gallery leads with the dusk outdoor set and keeps one daytime yard shot", () => {
+  const riverHouse = propertiesData
+    .normalizeProperties(fallbackProperties)
+    .find((property) => property.slug === "river-house");
+
+  assert.ok(riverHouse);
+  assert.equal(riverHouse.photography.photos.length, 12);
+  assert.equal(riverHouse.photography.photos[0].src, "/images/homes/river-house/01.webp");
+  assert.match(riverHouse.photography.photos[0].alt, /sunset/i);
+  assert.equal(riverHouse.photography.photos[1].src, "/images/homes/river-house/36.webp");
+  assert.match(riverHouse.photography.photos[1].alt, /pool/i);
+  assert.equal(riverHouse.photography.photos[5].src, "/images/homes/river-house/02.webp");
+  assert.match(riverHouse.photography.photos[5].alt, /daytime/i);
+  assert.equal(riverHouse.image, "https://seascape-vacations.com/images/homes/river-house/01.webp");
+  assert.equal(
+    riverHouse.photography.photos.filter((photo) => /bedroom/i.test(photo.alt)).length,
+    1
+  );
+});
+
 test("Blue House normalizes to the verified Hostaway identity and local photography", () => {
   const blueHouse = propertiesData
     .normalizeProperties(fallbackProperties)
