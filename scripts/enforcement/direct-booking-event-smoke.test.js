@@ -1023,7 +1023,7 @@ test("the active shared popup keeps tracked email capture and honest states", ()
     assert.doesNotMatch(source, /onsubmit="handleEmailSubmit\(event\)"/);
   }
 
-  assert.doesNotMatch(homepage, /email-popup/, "homepage browsing no longer triggers a popup");
+  assert.doesNotMatch(homepage, /email-popup/, "homepage never loads the legacy timed popup");
   assert.ok(homepageContract.trackedEvents.includes("email_capture_submit"));
   assert.ok(popupContract.trackedEvents.includes("email_capture_submit"));
   const guide=fs.readFileSync(path.join(projectRoot,"_site/guides/anna-maria-island-area-guide/index.html"),"utf8");
@@ -1032,6 +1032,25 @@ test("the active shared popup keeps tracked email capture and honest states", ()
   assert.match(homepageScript, /\/assets\/js\/conversion-tracking\.js/);
   assert.match(popupPartial, /\/assets\/js\/conversion-tracking\.js/);
   assert.match(trackingScript, /__seascapeConversionTrackingLoaded/);
+});
+
+test("homepage offers the email signup again only when a desktop visitor leaves the page", () => {
+  const homepage = fs.readFileSync(path.join(projectRoot, "src", "index.njk"), "utf8");
+  const guestScript = fs.readFileSync(path.join(projectRoot, "src", "assets", "js", "guest.js"), "utf8");
+  const exitSignup = homepage.match(/<dialog[^>]*data-home-exit-signup[\s\S]*?<\/dialog>/);
+
+  assert.ok(exitSignup, "homepage should carry the leave-the-page signup dialog");
+  assert.match(exitSignup[0], /data-email-capture-root/);
+  assert.match(exitSignup[0], /data-form-placement="home_exit_intent"/);
+  assert.match(exitSignup[0], /data-form-submit-event="email_capture_submit"/);
+  assert.match(exitSignup[0], /data-guest-capture-honeypot/);
+  assert.match(exitSignup[0], /data-email-capture-success/);
+
+  const exitLogic = guestScript.slice(guestScript.indexOf("[data-home-exit-signup]"), guestScript.indexOf("var parseTrip"));
+  assert.match(exitLogic, /addEventListener\('mouseout'/, "the dialog opens on page leave");
+  assert.match(exitLogic, /pointer: fine/, "touch devices never get the dialog");
+  assert.match(exitLogic, /'subscribed'/, "subscribers never see it again");
+  assert.doesNotMatch(exitLogic, /setTimeout/, "no timed popup on the homepage");
 });
 
 test("SAVE50 popup success state stays honest for repeat subscribers and delivery failures", async () => {

@@ -24,7 +24,7 @@
   <link rel="stylesheet" href="/css/base.css">
   {{ headExtra | safe }}
   <link rel="stylesheet" href="/css/guest.css?v=waterline-v3">
-  {% if guestHome %}<link rel="stylesheet" href="/css/arrival.css?v=waterline-v3">{% endif %}
+  {% if guestHome %}<link rel="stylesheet" href="/css/arrival.css?v=waterline-v4">{% endif %}
   {# Page sheets load after guest.css so their equal-specificity rules win the cascade. #}
   {% if pageStylesheet %}<link rel="stylesheet" href="{{ pageStylesheet }}">{% endif %}
 </head>
@@ -34,5 +34,5 @@
   <main id="main">{{ content | safe }}</main>
   {% include "partials/guest-footer.njk" %}
   {% include "partials/analytics-ga4.njk" %}
-  <script defer src="/assets/js/guest.js?v=waterline-v3"></script>
+  <script defer src="/assets/js/guest.js?v=waterline-v4"></script>
 </body></html>

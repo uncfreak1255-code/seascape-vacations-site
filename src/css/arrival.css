@@ -187,5 +187,13 @@
 .g-home-signup .g-small{font-size:13px}
 .g-home-signup .g-capture-error{color:var(--g-accent)}
 .g-home-owners .g-inline-link{display:flex;width:fit-content;margin-top:16px}
+.g-exit-signup{position:fixed;inset:0;margin:auto;height:fit-content;max-height:calc(100% - 48px);overflow:auto;width:min(560px,calc(100% - 48px));border:1px solid var(--g-rule);border-radius:8px;background:var(--g-paper);color:var(--g-ink);padding:48px 40px 36px}
+.g-exit-signup::backdrop{background:rgba(20,32,32,.5)}
+.g-exit-signup h2{margin:8px 0 12px}
+.g-exit-signup p:not(.g-label){color:var(--g-muted)}
+.g-exit-signup .g-home-signup-form{margin:24px 0 12px}
+.g-exit-signup .g-small{font-size:13px}
+.g-exit-signup .g-capture-error{color:var(--g-accent)}
+.g-exit-close{position:absolute;top:8px;right:8px;width:44px;height:44px;border:0;background:none;color:var(--g-muted);font-size:28px;line-height:1;cursor:pointer}
 @media(max-width:900px){.g-home-signup,.g-home-owners{gap:36px;grid-template-columns:1fr}}
 @media(max-width:480px){.g-home-signup-form{grid-template-columns:1fr}.g-home-signup-form button{width:100%}}
