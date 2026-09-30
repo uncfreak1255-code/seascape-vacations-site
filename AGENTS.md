@@ -93,6 +93,11 @@ Read in this order:
 - Simplicity first: make the minimum change that solves the problem. Nothing speculative. No abstractions for single-use code.
 - Surgical changes: touch only what you must, match existing style, and do not refactor adjacent code that is not broken unless the task requires it.
 - Goal-driven execution: define success criteria early, then loop until the right proof gate verifies the work.
+- Documentation impact: start from current `origin/main`; when code changes
+  affect active instructions, runbooks, status, source-of-truth, or active
+  brief docs, update them in the same branch and run their focused check.
+  Preserve dated reports and completed plans; add a brief historical label only
+  when they could be mistaken for current guidance.
 
 ## Repo Truth
 
