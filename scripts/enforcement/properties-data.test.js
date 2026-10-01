@@ -166,6 +166,8 @@ test("Blue House normalizes to the verified Hostaway identity and local photogra
 
   assert.ok(blueHouse);
   assert.equal(blueHouse.id, "589288");
+  assert.equal(blueHouse.guests, 11);
+  assert.equal(blueHouse.specs, "4 BR · 2 BA · Sleeps 11");
   assert.equal(blueHouse.bookingUrl, "https://book.seascape-vacations.com/listings/589288");
   assert.equal(blueHouse.pageUrl, "/properties/blue-house/");
   assert.equal(blueHouse.latitude, 27.50860514);

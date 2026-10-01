@@ -328,7 +328,7 @@ test("Blue House publishes verified Hostaway identity, coordinates, and no spa o
   const property = fallbackProperties.find((entry) => entry.slug === "blue-house");
   assert.ok(property, "blue-house must exist in the fallback data");
   assert.equal(property.id, "589288");
-  assert.equal(property.guests, 10);
+  assert.equal(property.guests, 11);
   assert.equal(property.bedrooms, 4);
   assert.equal(property.bathrooms, 2);
   assert.equal(property.guestFacts.pets.status, "no");
@@ -341,6 +341,9 @@ test("Blue House publishes verified Hostaway identity, coordinates, and no spa o
   const rental = extractJsonLdObjects(html).find((item) => item["@type"] === "VacationRental");
   assert.ok(rental, "blue-house must publish VacationRental schema");
   assert.equal(rental.identifier, "seascape-589288");
+  assert.equal(rental.containsPlace.occupancy.value, 11);
+  assert.match(html, /Up to <strong>11<\/strong> guests/);
+  assert.equal(JSON.parse(readBuilt("ai-discovery.json")).properties.find((entry) => entry.slug === "blue-house").maximum_guests, 11);
   assert.equal(rental.latitude, 27.50860514);
   assert.equal(rental.longitude, -82.63215404);
   assert.equal(rental.address.postalCode, "34209");
