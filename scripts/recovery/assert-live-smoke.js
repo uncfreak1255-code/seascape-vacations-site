@@ -184,6 +184,10 @@ function validateTargetResponse(target, response) {
       "Full price, fees and cancellation terms on the booking page."
     ]);
     requireExcludes(target.path, response.body, ["Availability · live", "catalog-card-price"]);
+    const blueHouseCard = response.body.match(/<article\b[^>]*\bdata-property=["']blue-house["'][^>]*>[\s\S]*?<\/article>/i);
+    if (!blueHouseCard || !/\bdata-max-guests=["']11["']/.test(blueHouseCard[0]) || !blueHouseCard[0].includes("Up to 11 guests")) {
+      throw new Error("properties page Blue House capacity must be 11 guests");
+    }
     if (!response.body.includes("catalog-check-dates")) {
       throw new Error("properties page is missing direct-book CTAs");
     }

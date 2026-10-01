@@ -39,6 +39,7 @@ eleventyExcludeFromCollections: true
       "considerations": {{ property.guestFacts.considerations | json | safe }},
       "pool_heating": {{ property.guestFacts.poolHeat | json | safe }},
       "source_url": {{ property.guestFacts.sourceUrl | json | safe }},
+      {% if property.guestFacts.capacityVerifiedAt %}"capacity_reviewed_on": {{ property.guestFacts.capacityVerifiedAt | json | safe }},{% endif %}
       "facts_reviewed_on": {{ property.guestFacts.verifiedAt | json | safe }},
       "cover_photo": "{{ site.url }}{{ property.photography.photos[0].src }}"
     }{% if not loop.last %},{% endif %}

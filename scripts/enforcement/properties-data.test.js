@@ -166,6 +166,8 @@ test("Blue House normalizes to the verified Hostaway identity and local photogra
 
   assert.ok(blueHouse);
   assert.equal(blueHouse.id, "589288");
+  assert.equal(blueHouse.guests, 11);
+  assert.equal(blueHouse.specs, "4 BR · 2 BA · Sleeps 11");
   assert.equal(blueHouse.bookingUrl, "https://book.seascape-vacations.com/listings/589288");
   assert.equal(blueHouse.pageUrl, "/properties/blue-house/");
   assert.equal(blueHouse.latitude, 27.50860514);
@@ -173,6 +175,7 @@ test("Blue House normalizes to the verified Hostaway identity and local photogra
   assert.equal(blueHouse.postalCode, "34209");
   assert.equal(blueHouse.photography.photos.length, 13);
   assert.equal(blueHouse.guestFacts.verifiedAt, "2026-09-13");
+  assert.equal(blueHouse.guestFacts.capacityVerifiedAt, "2026-09-30");
 });
 
 test("normalizeAvailabilitySummary drops stale or incomplete calendar summaries", () => {
