@@ -11,6 +11,8 @@
 
 ## Decision and scope
 
+October 1 interaction refinement: Sawyer approved the emil-design-eng review’s three upgrades. Preserve the Waterline composition and direct homepage Book now handoff. Add subtle pointer/touch press feedback to shared guest buttons, make keyboard scene changes and selector movement immediate, and retain clear postcard keyboard focus without lift/scale while shortening desktop pointer hover to 200ms. Reduced-motion behavior stays static. Scope: guest.css, arrival.css, guest.js, DESIGN.md, and focused browser regression coverage. The session owns mutation and source closeout; deployment remains separately gated.
+
 October 1 homepage booking shortcut: Sawyer requested that the homepage header button say “Book now” and open Seascape’s Hostaway booking platform directly. Scope: `src/index.njk`, `src/_includes/partials/guest-header.njk`, and the corresponding homepage live smoke assertion. Use the existing https://book.seascape-vacations.com destination in the same tab; retain the on-page date form and existing internal navigation. Preserve the button styling. Voice pass: Approved after drafting “Book now”, removing internal wording, and checking that the label accurately describes the booking destination. No reservation, payment, or deployment is authorized by this source change.
 
 September 5 copy decision: Sawyer prefers “our homes” with no fixed inventory count. Apply this across navigation, homepage, catalog and descriptive metadata. Per-home capacity and room counts remain factual. The decorative scene number is an ordinal, with no inventory-total denominator.

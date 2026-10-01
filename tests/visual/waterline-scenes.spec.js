@@ -92,3 +92,38 @@ test('editing the homepage trip carries it into a home even before search is sub
   await expect(page.getByLabel('Departure',{exact:true})).toHaveValue('2026-12-12');
   await expect(page.getByLabel('Guests',{exact:true})).toHaveValue('6');
 });
+
+
+test('keyboard scene changes are immediate even when motion is allowed',async({page})=>{
+  await registerStableNetwork(page);
+  await page.emulateMedia({reducedMotion:'no-preference'});
+  await page.goto('/');
+  const choice=page.getByRole('button',{name:'Preview Dockside Dreams',exact:true});
+  await choice.focus();
+  await choice.press('Enter');
+  const scene=page.locator('#scene-dockside-dreams');
+  await expect(scene).toBeVisible();
+  expect(await scene.evaluate(n=>n.getAnimations({subtree:true}).length)).toBe(0);
+  await choice.press('ArrowRight');
+  await expect(page.locator('#scene-sarasota-luxe')).toBeVisible();
+  expect(await page.locator('#scene-sarasota-luxe').evaluate(n=>n.getAnimations({subtree:true}).length)).toBe(0);
+  await page.getByRole('button',{name:'Preview River House',exact:true}).focus();
+  await page.keyboard.press('Space');
+  await expect(page.locator('#scene-river-house')).toBeVisible();
+  expect(await page.locator('#scene-river-house').evaluate(n=>n.getAnimations({subtree:true}).length)).toBe(0);
+});
+
+
+test('keyboard selection shows the chosen home while its photo is loading', async ({ page }) => {
+  await visit(page);
+  let release;
+  const loading = new Promise(resolve => { release = resolve; });
+  await page.route(/\/images\/homes\/river-house\/01(?:-800)?\.webp$/, async route => { await loading; await route.continue(); });
+  try {
+    const choice = page.getByRole('button', { name: 'Preview River House', exact: true });
+    await choice.focus();
+    await choice.press('Enter');
+    await expect(page.locator('#scene-river-house')).toBeVisible();
+    await expect(choice).toHaveAttribute('aria-pressed', 'true');
+  } finally { release(); }
+});
