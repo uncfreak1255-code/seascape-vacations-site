@@ -56,6 +56,13 @@ function assertOwnerRouteResponse(result) {
   }
 
   if (
+    new URL(result.url).pathname === "/property-management/revenue-review-requested/"
+    && !result.body.includes("Your submission records that you are the property owner or an authorized representative for this property.")
+  ) {
+    throw new Error(`${result.url} is missing the submitted owner-authority confirmation`);
+  }
+
+  if (
     /\$1\.4M|\$119,923|13\.4%|32\.8%|5\.7%|16\.4%|\$730|\$450|10\.5 pts|Patrick(?:'s)? portfolio|marked unknown|intake route|seascape-hub/i.test(
       result.body
     )

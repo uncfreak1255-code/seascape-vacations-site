@@ -214,6 +214,9 @@ function validateTargetResponse(target, response) {
       && response.body.includes("Why a six-home operator")
       && response.body.includes("The homes we manage")
       && response.body.includes("Request your 48-hour revenue review")
+      && response.body.includes('name="submitter_authority" value="owner_or_authorized_representative" required')
+      && response.body.includes("I confirm I am the property owner or an authorized representative for this property.")
+      && response.body.includes("Owner statement, optional")
       && /name=["']owner-revenue-teardown["']/.test(response.body)
       && response.body.includes('href="#owner-cta"');
 

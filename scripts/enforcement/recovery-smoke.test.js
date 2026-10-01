@@ -32,6 +32,9 @@ test("property-management smoke follows the current Waterline owner offer hub", 
       <h1>Six homes. One local team. <em>Your call gets answered.</em></h1>
       <a href="#owner-cta">Request your 48-hour revenue review</a>
       <form name="owner-revenue-teardown" method="POST"></form>
+      <input type="checkbox" name="submitter_authority" value="owner_or_authorized_representative" required>
+      I confirm I am the property owner or an authorized representative for this property.
+      Owner statement, optional
       <h2>What we do for your home</h2>
       <h2>Why a six-home operator</h2>
       <h2>The homes we manage</h2>
@@ -56,6 +59,9 @@ test("property-management smoke accepts the live minified single-quoted form nam
       <h1>Six homes. One local team. <em>Your call gets answered.</em></h1>
       <a href="#owner-cta">Request your 48-hour revenue review</a>
       <form name='owner-revenue-teardown' method='POST'></form>
+      <input type="checkbox" name="submitter_authority" value="owner_or_authorized_representative" required>
+      I confirm I am the property owner or an authorized representative for this property.
+      Owner statement, optional
       <h2>What we do for your home</h2>
       <h2>Why a six-home operator</h2>
       <h2>The homes we manage</h2>

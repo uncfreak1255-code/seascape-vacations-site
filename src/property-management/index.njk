@@ -143,6 +143,7 @@ headExtra: |
               <label class="g-owner-field g-owner-field-full"><span>Phone, optional</span><input type="tel" name="phone" autocomplete="tel" placeholder="For a text when it is ready"></label>
               <label class="g-owner-field"><span>Current manager</span><input type="text" name="current_manager" placeholder="Manager name, or self-managed"></label>
               <label class="g-owner-field"><span>Fee quote, if known</span><input type="text" name="current_fee_quote" placeholder="15%, 20%, or the fee terms"></label>
+              <label class="g-owner-authority g-owner-field-full"><input type="checkbox" name="submitter_authority" value="owner_or_authorized_representative" required data-owner-authority><span>I confirm I am the property owner or an authorized representative for this property.</span></label>
             </div>
             <div class="g-owner-panel-actions">
               <button class="g-button" type="button" data-form-next>Continue</button>
@@ -159,6 +160,7 @@ headExtra: |
               <div><dt>Name</dt><dd data-confirm-name>Not added yet</dd></div>
               <div><dt>Email</dt><dd data-confirm-email>Not added yet</dd></div>
               <div><dt>Phone</dt><dd data-confirm-phone>Optional</dd></div>
+              <div><dt>Owner authority</dt><dd data-confirm-authority>Not confirmed yet</dd></div>
             </dl>
             <div data-netlify-recaptcha="true"></div>
             <div class="g-owner-panel-actions">
@@ -447,6 +449,8 @@ headExtra: |
     var confirmName = form.querySelector("[data-confirm-name]");
     var confirmEmail = form.querySelector("[data-confirm-email]");
     var confirmPhone = form.querySelector("[data-confirm-phone]");
+    var authorityField = form.querySelector("[data-owner-authority]");
+    var confirmAuthority = form.querySelector("[data-confirm-authority]");
     var concerns = [];
     var submitting = false;
 
@@ -460,6 +464,7 @@ headExtra: |
       if (confirmName) confirmName.textContent = nameField && nameField.value.trim() ? nameField.value.trim() : "Not added yet";
       if (confirmEmail) confirmEmail.textContent = emailField && emailField.value.trim() ? emailField.value.trim() : "Not added yet";
       if (confirmPhone) confirmPhone.textContent = phoneField && phoneField.value.trim() ? phoneField.value.trim() : "Optional";
+      if (confirmAuthority) confirmAuthority.textContent = authorityField && authorityField.checked ? "Confirmed" : "Not confirmed yet";
     }
 
     function getFormPayload(extra) {

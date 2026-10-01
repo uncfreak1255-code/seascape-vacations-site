@@ -37,6 +37,41 @@ test('owners have a navigation path and a homepage path to the existing review f
   await expect(form.locator('[name="what_feels_off"]')).toBeVisible();
 });
 
+test('owner intake requires and records submitter authority while keeping the statement upload optional', async ({ page }) => {
+  await visit(page);
+  await page.locator('.g-home-owners a[href="/property-management/#owner-cta"]').click();
+  const form = page.locator('form[name="owner-revenue-teardown"]');
+  const authority = form.locator('[name="submitter_authority"]');
+  const statement = form.locator('[name="owner_statement"]');
+
+  await expect(authority).toHaveAttribute('required', '');
+  await expect(authority).toHaveAttribute('value', 'owner_or_authorized_representative');
+  await expect(statement).not.toHaveAttribute('required', '');
+
+  await form.getByRole('button', { name: 'Continue', exact: true }).first().click();
+  await form.locator('[name="what_feels_off"]').fill('I want to understand my current payout.');
+  await form.getByRole('button', { name: 'Continue', exact: true }).click();
+  await form.locator('[name="name"]').fill('Test Owner');
+  await form.locator('[name="email"]').fill('test-owner@example.com');
+  await form.getByRole('button', { name: 'Continue', exact: true }).click();
+
+  await expect(form.locator('[data-form-step="2"]')).toBeVisible();
+  await expect(authority).toBeInvalid();
+  await authority.check();
+  await form.getByRole('button', { name: 'Continue', exact: true }).click();
+  await expect(form.locator('[data-confirm-authority]')).toHaveText('Confirmed');
+
+  await page.evaluate(() => {
+    HTMLFormElement.prototype.submit = function () {
+      if (this.name === 'owner-revenue-teardown') {
+        window.__ownerAuthoritySubmission = new FormData(this).get('submitter_authority');
+      }
+    };
+  });
+  await form.getByRole('button', { name: 'Send my review request', exact: true }).click();
+  await expect.poll(() => page.evaluate(() => window.__ownerAuthoritySubmission)).toBe('owner_or_authorized_representative');
+});
+
 test('signup posts once, carries consent context, and reveals SAVE50 only after completion', async ({ page }) => {
   await visit(page);
   expect(await page.locator('#email-signup').innerText()).not.toContain('SAVE50');
