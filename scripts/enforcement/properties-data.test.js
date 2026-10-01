@@ -175,6 +175,7 @@ test("Blue House normalizes to the verified Hostaway identity and local photogra
   assert.equal(blueHouse.postalCode, "34209");
   assert.equal(blueHouse.photography.photos.length, 13);
   assert.equal(blueHouse.guestFacts.verifiedAt, "2026-09-13");
+  assert.equal(blueHouse.guestFacts.capacityVerifiedAt, "2026-09-30");
 });
 
 test("normalizeAvailabilitySummary drops stale or incomplete calendar summaries", () => {

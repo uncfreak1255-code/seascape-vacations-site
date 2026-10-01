@@ -346,11 +346,15 @@ test("Blue House publishes verified Hostaway identity, coordinates, and no spa o
   assert.match(stayHtml, /Pickleball Pool Home Retreat<\/strong> \(4BR, sleeps 11, Bradenton\)/);
   assert.doesNotMatch(stayHtml, /Pickleball Pool Home Retreat<\/strong> \(4BR, sleeps 10/);
   assert.match(html, /Up to <strong>11<\/strong> guests/);
-  assert.equal(JSON.parse(readBuilt("ai-discovery.json")).properties.find((entry) => entry.slug === "blue-house").maximum_guests, 11);
+  const aiProperty = JSON.parse(readBuilt("ai-discovery.json")).properties.find((entry) => entry.slug === "blue-house");
+  assert.equal(aiProperty.maximum_guests, 11);
+  assert.equal(aiProperty.capacity_reviewed_on, "2026-09-30");
+  assert.equal(aiProperty.facts_reviewed_on, "2026-09-13");
   assert.equal(rental.latitude, 27.50860514);
   assert.equal(rental.longitude, -82.63215404);
   assert.equal(rental.address.postalCode, "34209");
   assert.ok(rental.image.length >= 8, "blue-house must publish at least 8 rental images");
+  assert.match(html, /Guest capacity confirmed on September 30, 2026\. Other home details checked against the/);
   assert.match(html, /booking listing<\/a> on September 13, 2026/);
   assert.match(html, /Bedroom 4 also has a separate exterior door/);
   assert.match(html, /https:\/\/book\.seascape-vacations\.com\/listings\/589288/);
