@@ -342,6 +342,9 @@ test("Blue House publishes verified Hostaway identity, coordinates, and no spa o
   assert.ok(rental, "blue-house must publish VacationRental schema");
   assert.equal(rental.identifier, "seascape-589288");
   assert.equal(rental.containsPlace.occupancy.value, 11);
+  const stayHtml = readBuilt("stays/vacation-rentals-with-pool-and-hot-tub/index.html");
+  assert.match(stayHtml, /Pickleball Pool Home Retreat<\/strong> \(4BR, sleeps 11, Bradenton\)/);
+  assert.doesNotMatch(stayHtml, /Pickleball Pool Home Retreat<\/strong> \(4BR, sleeps 10/);
   assert.match(html, /Up to <strong>11<\/strong> guests/);
   assert.equal(JSON.parse(readBuilt("ai-discovery.json")).properties.find((entry) => entry.slug === "blue-house").maximum_guests, 11);
   assert.equal(rental.latitude, 27.50860514);

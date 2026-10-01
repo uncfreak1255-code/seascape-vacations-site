@@ -167,3 +167,39 @@ The integration includes current-main factual repairs on the following existing 
 ## September 10 usability repair
 
 Preserve the approved Waterline composition and property facts. Raise undersized supporting text to 12px and mobile body text to 15px; use 44px navigation and footer targets. Strengthen the photographic scrim, size catalog ordinals to fit, show plus/check comparison states, and wrap comparison row labels. Apply marine/paper styling to the existing SAVE50 panel. Restore Guest Support and booking/cancellation links using the existing routes; no policy or offer terms change. The scoped browser regression checks exercise these rendered states on desktop and mobile. Broader owner/legacy shell redesign, new reviews, fonts, maps, pricing, and gallery enhancements are outside this repair.
+
+## September 30 capacity repair — source files changed
+
+- `src/_data/properties-fallback.json`
+- `src/_data/seoPages.json` (only the Blue House guest count in the pool-and-hot-tub stay intro)
+- `src/llms.txt`
+
+## Gate 0 — September 30 property capacity correction
+
+This receipt applies only to the confirmed capacity correction. No new search lane or experiment is opened.
+
+| Field | Required answer |
+| --- | --- |
+| Target query family | Exact property identity check only; no new keyword target |
+| Searcher intent | Confirm the group capacity of Pickleball Pool Home Retreat |
+| Current Seascape URL | `/properties/blue-house/`, `/stays/vacation-rentals-with-pool-and-hot-tub/` |
+| SERP observed date | 2026-09-30 |
+| SERP stale after | 2026-09-30 |
+| Current proof | Sawyer direct capacity confirmation and current exact booking-listing 589288 heading/data/schema read, 2026-09-30; pre-edit Site source says 10 |
+| Top visible competitors | No same-property competitor evidence used; the exact-name search returned Seascape detail, homepage and catalog plus unrelated listing results |
+| Competitor angle | Not a competitor or ranking action; preserve the existing page intent |
+| Visual/format gap | None; one count changes inside the existing sentence |
+| Seascape gap | Pool-and-hot-tub stay intro hard-codes sleeps 10 while approved Blue House capacity is 11 |
+| Search fit | Existing property and stay pages retain their URLs, titles, intent and checkout destination |
+| Local/GBP proof | Not applicable because the task corrects one home's capacity, without a GBP/local-pack change |
+| AEO/readback note | Align visible stay copy with property/schema/AI facts; no citation or ranking lift is claimed |
+| Recommendation | Correct the Blue House count to 11 and prove generated surfaces agree |
+| Attack status | none found after named checks |
+| Query variants inspected | Exact name: "Pickleball Pool Home Retreat" Bradenton |
+| SERP source | Web search of that exact name on 2026-09-30; Seascape snippets still showed the pre-release 10, with cached crawl ages distinct from current booking truth |
+| Competitor URLs inspected | None. Current source check covered property fallback, seoPages and templates; the SERP check used the exact-property query; competitor-page inspection was deliberately omitted because unrelated listings cannot establish this home's approved capacity |
+| Content gap and Seascape answer | 4 bedrooms, 2 bathrooms, up to 11 guests; preserve sleeping layout and amenity limits |
+| Design/format strategy | Existing shared templates and one unchanged stay paragraph |
+| Seascape proof available | Direct Sawyer confirmation and exact booking page data, September 30 |
+| Tools/plugins used | Connected GitHub source reads, read-only booking GET, web search, native regeneration and Site release gate |
+| Decision and reason | Correct: one factual count conflict, no expansion or impact claim |
