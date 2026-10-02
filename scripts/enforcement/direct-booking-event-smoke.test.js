@@ -58,14 +58,32 @@ test("direct-booking event smoke validates the three funnel event surfaces", () 
         <input name="name" value="Test Guest">
         <input name="email" value="guest@example.com">
       </form>
-      <a href="/stays/anna-maria-island-vacation-rentals/" data-track-event="guide_book_direct_click">Browse Direct Homes</a>
-      <a href="https://book.seascape-vacations.com/listings/206016" data-track-event="booking_engine_handoff">Open Direct Availability</a>
+      <a href="/properties/" data-track-event="guide_book_direct_click">Browse Direct Homes</a>
     </main>
   `;
 
   assert.doesNotThrow(() => {
     smoke.validateGuideEventMarkup(guideBody, "/guides/best-time-visit-anna-maria-island/");
   });
+  assert.throws(() => {
+    smoke.validateGuideEventMarkup(guideBody.replace("guide_book_direct_click", "guide_stay_click"), "/guides/best-time-visit-anna-maria-island/");
+  }, /missing direct-booking event markup: guide_book_direct_click/);
+
+  // The handoff surface is the catalog: a tracked link that opens the booking engine.
+  const catalogBody = `
+    <a class="btn" href="/properties/dockside-dreams/" data-track-event="catalog_view_details_click">View details</a>
+    <a class="btn" href="https://book.seascape-vacations.com/listings/206016" data-track-event="catalog_book_direct_click">Check dates</a>
+  `;
+
+  assert.doesNotThrow(() => {
+    smoke.validateHandoffMarkup(catalogBody, "/properties/");
+  });
+  assert.throws(() => {
+    smoke.validateHandoffMarkup(catalogBody.replace(' data-track-event="catalog_book_direct_click"', ""), "/properties/");
+  }, /missing a tracked booking engine link/);
+  assert.throws(() => {
+    smoke.validateHandoffMarkup(catalogBody.replace("https://book.seascape-vacations.com/listings/206016", "/properties/"), "/properties/");
+  }, /missing a tracked booking engine link/);
 
   const popupBody = `
     <div data-email-capture-root>
