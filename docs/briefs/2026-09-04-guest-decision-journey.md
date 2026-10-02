@@ -209,3 +209,9 @@ This receipt applies only to the confirmed capacity correction. No new search la
 | Seascape proof available | Direct Sawyer confirmation and exact booking page data, September 30 |
 | Tools/plugins used | Connected GitHub source reads, read-only booking GET, web search, native regeneration and Site release gate |
 | Decision and reason | Correct: one factual count conflict, no expansion or impact claim |
+
+## October 1 trip memory
+
+Third slice of the booking-path direction Sawyer approved on 2026-10-01. A guest's last arrival date, departure date and guest count are kept in this browser (`localStorage` key `seascape_trip`, 30 days) and nothing else is stored with them. The page address remains the source of truth: memory fills only a guest page (homepage, `/properties/`, guides, stays, About) whose address names no trip, and never an owner page, a shared comparison link, or an address whose own dates were rejected. Changing the trip in a form replaces the memory; clearing the trip forgets it. A blocked or full browser store changes nothing else.
+
+Source: `src/assets/js/conversion-tracking.js` (`rememberTrip`, `restoreRememberedTrip`), `src/assets/js/guest.js`, `src/assets/js/catalog.js`, and `src/properties/index.njk`, which now loads the tracking script before the catalog script so the catalog reads the restored address. The catalog therefore applies the booking handoff fields to its own booking links, as the home pages already do. No event is added or renamed. Proof: `scripts/enforcement/trip-continuity.test.js` and `tests/visual/trip-continuity.spec.js`. Anti-claim: a remembered trip does not prove availability, price or a reservation.
