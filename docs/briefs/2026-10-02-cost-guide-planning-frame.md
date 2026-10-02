@@ -38,9 +38,36 @@ overrides it.
 
 ## Gate 0 Search And Attack Receipt
 
-Not required: the route, canonical, title, headings and JSON-LD are unchanged;
-the five phrase swaps carry no new claim or keyword. This batch changes
-presentation.
+This block satisfies the search-decision brief gate. The release is a
+presentation change to one existing guide, not a search expansion: the route,
+canonical, title, headings and JSON-LD are unchanged and the five phrase swaps
+carry no new claim or keyword.
+
+| Field | Required answer |
+| --- | --- |
+| Target query family | Anna Maria Island vacation cost / how much does a vacation to Anna Maria Island cost |
+| Searcher intent | A family pricing a week on the island wants the realistic total, how it is built, and homes that fit the number. |
+| Current Seascape URL | https://seascape-vacations.com/guides/anna-maria-island-vacation-cost/ |
+| SERP observed date | 2026-10-02 |
+| SERP stale after | 2026-10-09 |
+| Current proof | On 2026-10-02 a public web search for the query returned the Seascape guide on the first page of results alongside Travelocity, Expedia, Kayak, Holidu, HomeToGo and Wimdu package and listing pages. Qualitative returned results, not a controlled organic position. |
+| Top visible competitors | Travelocity and Expedia destination package pages, Kayak packages, Holidu, HomeToGo and Wimdu rental aggregators. No other editorial budget guide was returned. |
+| Competitor angle | Aggregators lead with "from $X" package or nightly prices and inventory; none shows a whole-trip total by season and stay tier. |
+| Visual/format gap | The live Seascape guide buried its answer under a legacy banner and boxed answer, and its tier table needed a sideways swipe at 360 and 375 wide; the three totals were never visible at a glance. |
+| Seascape gap | The answer and the three tier totals sit far apart on the live page; the booking-kit button text was unreadable; no competitor shows trip totals, so the gap is presentation, not content. |
+| Search fit | Preserve the route, title, description intent, headings and JSON-LD; the figure and rail add no new query targets and change no internal links. |
+| Local/GBP proof | N/A for this release: it changes no business profile, address, phone or local fact. |
+| AEO/readback note | N/A for this release: no discovery JSON, property fact or citation claim changes; the figure repeats the table's own tiers and totals. |
+| Recommendation | improve: convert the existing guide to the planning-guide frame; no new pages |
+| Attack status | none found after named checks |
+| Query variants inspected | how much does a vacation to Anna Maria Island cost |
+| SERP source | Public web search for the named query on 2026-10-02; returned results read for angle and format only. |
+| Competitor URLs inspected | Source check: the live guide and its built head. SERP check: the named query on 2026-10-02. Competitor-page check: https://www.travelocity.com/Anna-Maria-Island.d553248622847118534.Destination-Travel-Guides and https://www.holidu.com/vacation-rentals/usa/anna-maria-island as returned on 2026-10-02; both lead with "from $" prices and inventory, no trip-total guide. |
+| Content gap and Seascape answer | No copy gap. The guide already holds the only whole-trip total by season and tier in the returned set; the answer is to make that total and the three tiers readable in one screen. |
+| Design/format strategy | Apply the `DESIGN.md` planning-guide frame: answer beside the title, trip-tier figure from the table, numbered sections with a rail, a table that fits phones; no new component styles. |
+| Seascape proof available | The guide's own tier table (March 2026 rate checks), the approved mock in `docs/mockups/2026-10-02-vacation-cost-planning-guide/`, the design floors spec on the route. |
+| Tools/plugins used | Repository source, Playwright, node:test, one public web search. No paid service or plugin installation. |
+| Decision and reason | Ship the presentation change: the guide already ranks for the query and the only gap found is how the answer reads. |
 
 ## Cluster In Scope
 
