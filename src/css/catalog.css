@@ -69,7 +69,7 @@
 .catalog-help p:not(.section-tag) { font-size:14px; line-height:1.7; margin-bottom:20px; }
 .catalog-help-links { display:flex; flex-direction:column; justify-content:center; }
 .catalog-help-links a { padding:24px 0; color:var(--brand-dark); border-bottom:1px solid var(--cream-dark); font-size:14px; }
-.catalog-shortlist { position:fixed; left:50%; transform:translateX(-50%); bottom:16px; z-index:90; display:flex; gap:24px; align-items:center; width:fit-content; max-width:calc(100% - 32px); margin:0; padding:16px 24px; background:var(--cream-light); border:1px solid var(--brand); border-radius:20px; box-shadow:0 4px 20px rgba(0,0,0,.12); }
+.catalog-shortlist { position:sticky; bottom:16px; z-index:90; display:flex; gap:24px; align-items:center; width:fit-content; max-width:100%; margin:24px auto 0; padding:16px 24px; background:var(--cream-light); border:1px solid var(--brand); border-radius:20px; box-shadow:0 4px 20px rgba(0,0,0,.12); }
 .catalog-shortlist strong,.catalog-shortlist span { display:block; }
 .catalog-shortlist strong { font-size:14px; }
 .catalog-shortlist span { font-size:12px; margin-top:4px; }
@@ -128,7 +128,7 @@
   .catalog-card-foot { gap:12px; }
   .catalog-help { order:5; grid-template-columns:1fr; gap:16px; margin-top:40px; padding-top:32px; }
   .catalog-help h2 { font-size:32px; }
-  .catalog-shortlist { gap:12px; padding:12px; bottom:8px; width:calc(100% - 32px); justify-content:space-between; }
+  .catalog-shortlist { gap:12px; padding:12px; bottom:8px; width:100%; justify-content:space-between; }
   .catalog-shortlist .btn { padding:12px 16px; font-size:12px; min-height:44px; }
   .catalog-shortlist span { display:none; }
   .catalog-shortlist strong { font-size:12px; }
@@ -158,7 +158,6 @@
 @media(max-width:767px) { .property-trip-context { margin:12px 16px; padding:12px 16px; } }
 
 .has-catalog-shortlist { scroll-padding-bottom:120px; }
-.has-catalog-shortlist body { padding-bottom:120px; }
 .catalog-area-guides { font-size:14px; }
 .catalog-area-guides summary { padding:24px 0; cursor:pointer; color:var(--brand-dark); }
 .catalog-area-guides a { display:block; padding:16px 0; }

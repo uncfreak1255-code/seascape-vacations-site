@@ -177,6 +177,19 @@ test("clipboard denial gives a usable manual copy link", async ({ page }) => {
   await expect(page.locator("#share-fallback")).toBeFocused();
 });
 
+test("a shared shortlist does not cover the trip form", async ({ page }) => {
+  await visit(page,itinerary+"&compare=dockside-dreams,the-oasis");
+  await expect(page.locator("#shortlist-count")).toHaveText("2 homes selected");
+  await page.evaluate(() => {
+    const form = document.getElementById("catalog-trip").getBoundingClientRect();
+    scrollTo(0, form.bottom + scrollY - innerHeight);
+  });
+  const form = await page.locator("#catalog-trip").boundingBox();
+  const tray = await page.locator("#catalog-shortlist").boundingBox();
+  expect(form.y + form.height).toBeLessThanOrEqual(page.viewportSize().height + 1);
+  expect(tray.y).toBeGreaterThanOrEqual(form.y + form.height);
+});
+
 test("trip controls fit the viewport and the comparison meets automated accessibility checks", async ({ page }, testInfo) => {
   await visit(page);
   const button = await page.getByRole("button",{name:"Find my home",exact:true}).boundingBox();
