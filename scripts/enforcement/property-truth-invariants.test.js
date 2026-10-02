@@ -441,3 +441,18 @@ test("repaired guides keep water claims singular, sourced, and off the island", 
     }
   }
 });
+
+test("present-tense portfolio count is six on the pages an agent quotes", () => {
+  const files = [
+    "src/guides/flights-to-anna-maria-island/index.html",
+    "src/guides/bradenton-vs-sarasota-restaurants/index.html",
+    "src/research/gulf-coast-vacation-booking-trends-2026.njk",
+    "src/research/real-cost-florida-beach-vacation-bradenton-sarasota-ami-2026.njk"
+  ];
+  const currentFive = /\b(?:manages|manage)\s+5\b|\b5 vacation homes\b/i;
+  for (const file of files) {
+    const text = readSource(file);
+    assert.equal(text.match(currentFive), null, `${file} still states a current portfolio of five`);
+    assert.match(text, /\bsix\b/i, `${file} should state the current portfolio as six`);
+  }
+});
