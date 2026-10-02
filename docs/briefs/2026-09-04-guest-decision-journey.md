@@ -221,3 +221,24 @@ This receipt applies only to the confirmed capacity correction. No new search la
 Third slice of the booking-path direction Sawyer approved on 2026-10-01. A guest's last arrival date, departure date and guest count are kept in this browser (`localStorage` key `seascape_trip`, 30 days) and nothing else is stored with them. The page address remains the source of truth: memory fills only a guest page (homepage, `/properties/`, guides, stays, About) whose address names no trip, and never an owner page, a shared comparison link, or an address whose own dates were rejected. Changing the trip in a form replaces the memory; clearing the trip forgets it. A blocked or full browser store changes nothing else.
 
 Source: `src/assets/js/conversion-tracking.js` (`rememberTrip`, `restoreRememberedTrip`), `src/assets/js/guest.js`, `src/assets/js/catalog.js`, and `src/properties/index.njk`, which now loads the tracking script before the catalog script so the catalog reads the restored address. The catalog therefore applies the booking handoff fields to its own booking links, as the home pages already do. No event is added or renamed. Proof: `scripts/enforcement/trip-continuity.test.js` and `tests/visual/trip-continuity.spec.js`. Anti-claim: a remembered trip does not prove availability, price or a reservation.
+
+## October 1 home page booking button
+
+Fourth slice of the booking-path direction Sawyer approved on 2026-10-01. On a home's page the three booking buttons (beside the heading, in the booking panel, and in the bottom bar on a phone) now say the same word and do the same thing:
+
+| What the page knows | Button | Where it goes |
+| --- | --- | --- |
+| No dates yet | `Check dates` | The date fields |
+| Dates open, group size chosen | `Book these dates` | Hostaway's priced checkout for this home and stay, in the same tab |
+| Dates open, no group size | `Book these dates` | The group-size field |
+| Dates booked | `See open homes` | `/properties/` with the dates and group size kept |
+| Minimum stay, or a closed arrival or departure day | `Check dates` | The date fields, with the existing message |
+| The dates check failed or the calendar could not be read | `Check dates` | The home's booking page with the trip filled in, in the same tab |
+
+The separate text link `Open the booking page` is removed. On a phone the button beside the heading is hidden, so the bottom bar is the one booking button; desktop keeps the heading button.
+
+Reader copy added or changed: `Check dates` (was `Check dates & total`), `Book these dates`, `See open homes`, `Choose your dates and group size. You’ll see the full price before you pay.`, `These dates are open. You’ll see the full price on the next screen, before you pay.`, `These dates are open. Choose your group size to book them.` and `Choose your arrival and departure dates.`
+
+Source: `src/assets/js/guest.js`, `src/_includes/layouts/property.njk`, `src/_includes/partials/guest-trip-form.njk`, `src/css/guest.css`, and `src/assets/js/conversion-tracking.js` (a checkout address now carries the same home and listing fields as a listing address). No event is added or renamed; `property_booking_page_click` reports the checkout press. Proof: `tests/visual/home-booking-button.spec.js`, `scripts/recovery/assert-direct-booking-event-smoke.js`, and a daily live-smoke check in `scripts/recovery/assert-live-smoke.js` that loads the checkout address for an open stay and fails when the priced checkout stops appearing.
+
+Anti-claims: open dates come from a cached calendar and are not a quote or a reservation; the page promises the full price before payment and says nothing about cancellation terms on the checkout screen; nothing is reserved until the guest pays on Hostaway.

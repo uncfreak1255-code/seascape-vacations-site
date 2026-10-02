@@ -180,10 +180,8 @@ test("catalog leaves homes visible when the calendar check is incomplete or fail
   assert.match(catalog, /function emptyCopy\(\)/);
 });
 
-test("property checkout does not stay blocked after dates are cleared", () => {
+test("an unreadable calendar is not shown as open dates on a home's page", () => {
   const guest = fs.readFileSync(path.join(__dirname, "..", "..", "src", "assets", "js", "guest.js"), "utf8");
-  assert.match(guest, /function clearStayGate\(checkout\)/);
-  assert.match(guest, /else \{clearStayGate\(checkout\);\}/);
-  assert.match(guest, /home\.reason==='no-calendar'/);
-  assert.match(guest, /delete checkout\.dataset\.stayBlocked/);
+  assert.match(guest, /home\.reason==='no-calendar'\)throw/);
+  assert.match(guest, /renderBooking\('failed'/);
 });

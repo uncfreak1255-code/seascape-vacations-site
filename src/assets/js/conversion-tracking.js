@@ -488,7 +488,7 @@
       : currentPropertyMatch
         ? currentPropertyMatch[1]
         : "";
-    var listingMatch = url.pathname.match(/\/listings\/([^/?#]+)/i);
+    var listingMatch = url.pathname.match(/\/(?:listings|checkout)\/([^/?#]+)/i);
     var pathListingId = listingMatch ? listingMatch[1].trim() : "";
     var listingId = pathListingId || (node && node.dataset && (node.dataset.listingId || node.dataset.bookingListingId)
       ? (node.dataset.listingId || node.dataset.bookingListingId)
@@ -774,7 +774,7 @@
       context.handoffId = (url.searchParams.get("sv_handoff_id") || "").trim();
       context.sessionId = (url.searchParams.get("sv_session_id") || "").trim();
       context.guideDirectClickId = (url.searchParams.get(GUIDE_DIRECT_CLICK_PARAM) || "").trim();
-      var listingMatch = url.pathname.match(/\/listings\/([^/?#]+)/);
+      var listingMatch = url.pathname.match(/\/(?:listings|checkout)\/([^/?#]+)/);
       var pathListingId = listingMatch ? listingMatch[1].trim() : "";
       context.listingId = (pathListingId || url.searchParams.get("listing_id") || "").trim();
       context.propertySlug = (

@@ -135,6 +135,12 @@ test("direct-booking event smoke validates the three funnel event surfaces", () 
   );
 });
 
+test("a checkout link reports the booking click with its home and listing", () => {
+  const smoke = loadSmokeModule();
+
+  assert.doesNotThrow(() => smoke.validateCheckoutHandoffEvents(smoke.simulateCheckoutHandoffEvent()));
+});
+
 test("inline email capture requires tagged Netlify success and never uses untagged embed fallback", async () => {
   const trackingScriptPath = path.join(projectRoot, "src", "assets", "js", "conversion-tracking.js");
   delete require.cache[require.resolve(trackingScriptPath)];
