@@ -5,7 +5,7 @@
 {% elif page.url.indexOf('/about-us/') == 0 %}{% set navCurrent = "about" %}
 {% elif page.url.indexOf('/property-management/') == 0 or page.url.indexOf('/research/') == 0 %}{% set navCurrent = "owners" %}
 {% endif %}
-{% set resolvedNavButtonHref = "#home-trip" if guestHome else (navButtonHref or "/properties/") %}
+{% set resolvedNavButtonHref = navButtonHref or ("#home-trip" if guestHome else "/properties/") %}
   <header class="g-header">
     <a class="g-wordmark" href="/" data-trip-link aria-label="Seascape Vacations home">seascape<span>VACATIONS</span></a>
     <nav class="g-nav" aria-label="Primary">

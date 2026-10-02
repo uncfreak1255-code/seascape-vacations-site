@@ -27,7 +27,7 @@
 .g-header-phone{font:14px Poppins,sans-serif;min-height:44px;display:inline-flex;align-items:center;color:var(--g-ink);text-decoration:none}
 .g-header-phone:hover{color:var(--g-accent)}
 .g-header-phone-icon{display:none}
-.guest-shell .g-button,.guest-site .g-button,.guest-site .btn-brand,.guest-site .btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:14px 24px;background:var(--g-ink);color:white;border:1px solid var(--g-ink);border-radius:4px;font:500 14px/1.35 Poppins,sans-serif;text-decoration:none;letter-spacing:0;text-transform:none;box-shadow:none;cursor:pointer;transition:background .15s}
+.guest-shell .g-button,.guest-site .g-button,.guest-site .btn-brand,.guest-site .btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:14px 24px;background:var(--g-ink);color:white;border:1px solid var(--g-ink);border-radius:4px;font:500 14px/1.35 Poppins,sans-serif;text-decoration:none;letter-spacing:0;text-transform:none;box-shadow:none;cursor:pointer;transition:background .15s,transform .12s cubic-bezier(.23,1,.32,1)}
 .guest-shell .g-button::before,.guest-shell .g-button::after,.guest-site .btn::after,.guest-site .btn::before,.guest-site .g-button::after,.guest-site .g-button::before{display:none}
 .g-button:hover,.guest-site .btn:hover{background:var(--g-muted);transform:none;box-shadow:none;color:white}
 .g-menu-button{display:none;background:none;border:0;padding:12px 0;color:var(--g-ink);min-height:44px;min-width:44px}
@@ -436,3 +436,5 @@
    dropping under the 12px floor, so the lockup reduces to the wordmark. */
 .g-wordmark span{display:none}
 .g-header-actions .g-button{padding-inline:10px}}
+
+@media(prefers-reduced-motion:no-preference){.guest-shell .g-button:active:not(:focus-visible),.guest-site .g-button:active:not(:focus-visible),.guest-site .btn-brand:active:not(:focus-visible),.guest-site .btn:active:not(:focus-visible),.guest-shell .g-button[data-pressed],.guest-site .g-button[data-pressed],.guest-site .btn-brand[data-pressed],.guest-site .btn[data-pressed]{transform:scale(.97)}}

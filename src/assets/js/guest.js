@@ -208,7 +208,7 @@
     var sceneStatus=document.querySelector('.g-scene-status');
     var sceneRequest=0;
     var reducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
-    async function chooseScene(choice){
+    async function chooseScene(choice,animateScene){
       var request=++sceneRequest;
       var slug=choice.dataset.sceneChoice;
       var panel=document.getElementById('scene-'+slug);
@@ -221,13 +221,14 @@
         photo.srcset=photo.dataset.sceneSrcset;
         photo.src=photo.dataset.sceneSrc;
       }
-      if(photo&&photo.decode){try{await photo.decode();}catch(error){/* The shared photo handler provides a named unavailable state. */}}
+      if(animateScene&&photo&&photo.decode){try{await photo.decode();}catch(error){/* The shared photo handler provides a named unavailable state. */}}
       if(request!==sceneRequest)return;
       sceneRoot.querySelectorAll('[data-scene]').forEach(function(scene){scene.hidden=scene!==panel;});
       choices.forEach(function(item){var selected=item===choice;item.classList.toggle('is-active',selected);item.setAttribute('aria-pressed',String(selected));});
       sceneRoot.setAttribute('aria-busy','false');
       sceneStatus.textContent='Previewing '+name+'. '+panel.querySelector('.g-scene-caption p:last-child').textContent;
-      if(!reducedMotion.matches&&panel.animate){
+      if(panel.getAnimations)panel.getAnimations({subtree:true}).forEach(function(animation){animation.cancel();});
+      if(animateScene&&!reducedMotion.matches&&panel.animate){
         var picture=panel.querySelector('.g-scene-photo');
         if(picture)picture.animate([{opacity:.45,transform:'scale(1.035)'},{opacity:1,transform:'scale(1)'}],{duration:650,easing:'cubic-bezier(.2,.7,.2,1)'});
         panel.querySelector('.g-scene-caption').animate([{opacity:0,transform:'translateY(10px)'},{opacity:1,transform:'translateY(0)'}],{duration:450,easing:'ease-out'});
@@ -238,16 +239,16 @@
       choice.setAttribute('aria-pressed',String(choice.classList.contains('is-active')));
       choice.setAttribute('aria-label','Preview '+choice.querySelector('strong').textContent);
       choice.setAttribute('aria-controls','scene-'+choice.dataset.sceneChoice);
-      choice.addEventListener('click',function(event){if(event.metaKey||event.ctrlKey||event.shiftKey||event.altKey||event.button!==0)return;event.preventDefault();chooseScene(choice);});
+      choice.addEventListener('click',function(event){if(event.metaKey||event.ctrlKey||event.shiftKey||event.altKey||event.button!==0)return;event.preventDefault();chooseScene(choice,event.detail>0);});
       choice.addEventListener('keydown',function(event){
-        if(event.key===' '){event.preventDefault();chooseScene(choice);return;}
+        if(event.key===' '){event.preventDefault();chooseScene(choice,false);return;}
         var next=event.key==='ArrowRight'?(index+1)%choices.length:event.key==='ArrowLeft'?(index+choices.length-1)%choices.length:event.key==='Home'?0:event.key==='End'?choices.length-1:-1;
         if(next<0)return;
         event.preventDefault();choices[next].focus({preventScroll:true});
         // Scroll the horizontal selector only; never move the guest away from the scene.
         var rail=choice.parentElement;
-        rail.scrollTo({left:choices[next].offsetLeft-rail.offsetLeft-14,behavior:reducedMotion.matches?'instant':'smooth'});
-        chooseScene(choices[next]);
+        rail.scrollTo({left:choices[next].offsetLeft-rail.offsetLeft-14,behavior:'instant'});
+        chooseScene(choices[next],false);
       });
     });
   }
