@@ -18,6 +18,10 @@
   var originalLinks = new Map();
   var availabilityRequest = 0;
   var visualTestMode = params.get("visual-test") === "1";
+  // Homes confirmed open for the dates last searched.
+  var openHomes = [];
+  // Dates edited since that search are not confirmed.
+  function isOpen(home) { return arrive.value === trip.arrive && depart.value === trip.depart && openHomes.includes(home); }
 
   function preserveSave50Params(url) {
     var campaign = (params.get("utm_campaign") || "").trim().toLowerCase();
@@ -77,6 +81,22 @@
       var url = preserveSave50Params(new URL(link.dataset.bookingBase));
       if (trip.arrive && trip.depart) { url.searchParams.set("start",trip.arrive); url.searchParams.set("end",trip.depart); }
       if (trip.guests && Number(trip.guests) <= 16) url.searchParams.set("numberOfGuests",trip.guests);
+      var home = root.contains(link) && link.dataset.pageSlug;
+      if (home) {
+        // An open home is booked here; any other opens its listing page.
+        var open = isOpen(home);
+        var word = open ? "Book these dates" : "Check dates";
+        link.textContent = word;
+        link.setAttribute("aria-label",word + " for " + link.getAttribute("aria-label").replace(/^.*? for /,""));
+        if (open) link.removeAttribute("target"); else link.target = "_blank";
+        if (open && !trip.guests) {
+          // Checkout needs a guest count: ask for it, report no booking click.
+          link.removeAttribute("data-track-event"); link.href = "#trip-guests"; return;
+        }
+        link.dataset.trackEvent = "catalog_book_direct_click";
+        // Rollback: remove this line to send open homes to the listing page.
+        if (open) url.pathname = url.pathname.replace("/listings/","/checkout/");
+      }
       // conversion-tracking.js now runs first, so apply its handoff fields here as the home pages do.
       link.href = window.SeascapeConversionTracking ? window.SeascapeConversionTracking.buildBookingEngineHandoffUrl(url.toString(),link) : url.toString();
     });
@@ -96,11 +116,12 @@
     root.querySelectorAll("[data-capacity]").forEach(function (cell) {
       cell.textContent = trip.guests && Number(trip.guests) > Number(cell.dataset.capacity) ? "Too small for your group" : "";
     });
-    document.getElementById("comparison-trip").textContent = tripText() + " · Dates and prices need confirmation.";
+    document.getElementById("comparison-trip").textContent = tripText() + (isOpen(openHomes[0]) ? " · These dates are open." : " · Dates and prices need confirmation.");
   }
   function render() {
     // Even a render with no date request supersedes an outstanding response.
     availabilityRequest++;
+    openHomes = [];
     var count = 0;
     cards.forEach(function (card) {
       var fitsArea = activeFilter === "all" || card.dataset.filters.split("|").includes(activeFilter);
@@ -181,10 +202,12 @@
           return cards.some(function (card) { return card.dataset.property === slug && !card.hidden; });
         });
         if (selected.length < 2 && dialog.open) dialog.close();
-        var openCount = cards.filter(function (card) { return !card.hidden; }).length;
+        openHomes = cards.filter(function (card) { return !card.hidden; }).map(function (card) { return card.dataset.property; });
+        var openCount = openHomes.length;
         document.getElementById("catalog-count").textContent = openCount === 0
           ? "No home is open for these dates."
-          : openCount + (openCount === 1 ? " home is open for these dates." : " homes are open for these dates.") + " Price and cancellation terms are on the booking page.";
+          : openCount + (openCount === 1 ? " home is open for these dates." : " homes are open for these dates.")
+            + (trip.guests ? " You’ll see the full price before you pay." : " Choose your group size to book.");
         document.getElementById("catalog-empty").hidden = openCount > 0;
         document.getElementById("catalog-empty-copy").textContent = reasons.slice(0, 6).join(" ") || "Try different dates, or call us.";
         status.textContent = tripText() + (openCount === 0 ? ". No home is open for these dates." : ". Open homes are shown below.");
@@ -236,17 +259,30 @@
     });
   });
   filters.forEach(function(button) { button.addEventListener("click",function() { activeFilter=button.dataset.filter; render(); emit("catalog_filter_change",{filter:activeFilter}); }); });
-  form.addEventListener("submit",function(event) {
-    event.preventDefault(); depart.setCustomValidity("");
+  function submitTrip(event) {
+    if (event) event.preventDefault();
+    depart.setCustomValidity("");
     if (Boolean(arrive.value) !== Boolean(depart.value) || (arrive.value && depart.value <= arrive.value)) {
       depart.setCustomValidity("Choose a departure after your arrival, or clear both dates."); depart.reportValidity(); return;
     }
     if (!form.reportValidity()) return;
     trip = { arrive:arrive.value, depart:depart.value, guests:guests.value };
     rememberTrip(); render(); emit("catalog_trip_update",{guest_count:Number(guests.value)||0,has_dates:Boolean(arrive.value)});
+  }
+  form.addEventListener("submit",submitTrip);
+  root.addEventListener("click",function(event) {
+    var link = event.target.closest("a[data-booking-base]");
+    if (!link || trip.guests || !isOpen(link.dataset.pageSlug)) return;
+    event.preventDefault();
+    if (dialog.open) dialog.close();
+    status.textContent = "These dates are open. Choose your group size to book them.";
+    guests.scrollIntoView({block:"center"}); guests.focus();
   });
-  depart.addEventListener("input",function() { depart.setCustomValidity(""); });
-  arrive.addEventListener("input",function() { depart.setCustomValidity(""); depart.min=arrive.value || today; });
+  // For open homes, a group size applies at once; else it voids the answer.
+  guests.addEventListener("change",function() { if (isOpen(openHomes[0])) submitTrip(); else openHomes = []; });
+  function datesEdited() { depart.setCustomValidity(""); depart.min=arrive.value || today; if (openHomes.length) { renderComparison(); syncLinks(); } }
+  depart.addEventListener("input",datesEdited);
+  arrive.addEventListener("input",datesEdited);
   document.getElementById("clear-dates").addEventListener("click",function() {
     arrive.value=""; depart.value=""; depart.setCustomValidity(""); depart.min=today; trip.arrive=""; trip.depart=""; rememberTrip(); render();
   });
