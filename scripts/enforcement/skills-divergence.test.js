@@ -39,7 +39,7 @@ const DESCRIPTION_TRIGGERS = {
     "proposed Seascape batch",
     "measurement gates"
   ],
-  "owner-outbound-batch": [
+  "owner-opportunity-intake": [
     "owner opportunity",
     "permissioned"
   ],
@@ -54,7 +54,9 @@ const DESCRIPTION_TRIGGERS = {
   ],
   "page-cro": [
     "conversion",
-    "page or form"
+    "page",
+    "form",
+    "booking flow"
   ],
   "property-truth-regeneration": [
     "property facts",
@@ -84,10 +86,6 @@ const DESCRIPTION_TRIGGERS = {
     "visual sitemaps",
     "excludes XML sitemaps"
   ],
-  "web-design-guidelines": [
-    "explicitly requesting",
-    "DESIGN.md"
-  ]
 };
 
 function readDescription(skill) {
@@ -123,13 +121,13 @@ test("listSkillDirs: broken symlinks are ERRORS, not omissions; misdirected syml
 
 test("undeclared divergence fails: skill present in one dir but not in manifest", () => {
   const result = compareSkillSets({
-    agentsSkills: ["accessibility", "owner-outbound-batch"],
+    agentsSkills: ["accessibility", "owner-opportunity-intake"],
     claudeSkills: ["accessibility"],
     manifestEntries: []
   });
 
   assert.deepEqual(result.undeclared, [
-    { skill: "owner-outbound-batch", only_in: ".agents" }
+    { skill: "owner-opportunity-intake", only_in: ".agents" }
   ]);
   assert.deepEqual(result.stale, []);
   assert.equal(result.ok, false);
@@ -137,11 +135,11 @@ test("undeclared divergence fails: skill present in one dir but not in manifest"
 
 test("declared divergence passes: manifest entry matches actual state", () => {
   const result = compareSkillSets({
-    agentsSkills: ["accessibility", "owner-outbound-batch"],
+    agentsSkills: ["accessibility", "owner-opportunity-intake"],
     claudeSkills: ["accessibility"],
     manifestEntries: [
       {
-        skill: "owner-outbound-batch",
+        skill: "owner-opportunity-intake",
         only_in: ".agents",
         reason: "outbound sends are agent-lane only"
       }
@@ -159,7 +157,7 @@ test("stale manifest entry fails: declared divergence no longer exists", () => {
     claudeSkills: ["accessibility"],
     manifestEntries: [
       {
-        skill: "owner-outbound-batch",
+        skill: "owner-opportunity-intake",
         only_in: ".agents",
         reason: "no longer true"
       }
@@ -168,7 +166,7 @@ test("stale manifest entry fails: declared divergence no longer exists", () => {
 
   assert.deepEqual(result.undeclared, []);
   assert.deepEqual(result.stale, [
-    { skill: "owner-outbound-batch", only_in: ".agents" }
+    { skill: "owner-opportunity-intake", only_in: ".agents" }
   ]);
   assert.equal(result.ok, false);
 });
@@ -263,6 +261,18 @@ test("canonical skill descriptions stay compact without losing activation trigge
       assert.ok(description.toLowerCase().includes(trigger.toLowerCase()), `${skill} lost trigger: ${trigger}`);
     }
   }
+});
+
+test("accessibility skill uses the current WCAG 2.2 contract", () => {
+  const skill = fs.readFileSync(path.join(REPO_ROOT, ".agents/skills/accessibility/SKILL.md"), "utf8");
+  const reference = fs.readFileSync(path.join(REPO_ROOT, ".agents/skills/accessibility/references/WCAG.md"), "utf8");
+
+  assert.match(skill, /WCAG 2\.2 A\/AA/);
+  assert.doesNotMatch(skill, /WCAG 2\.1 A\/AA/);
+  assert.match(reference, /2\.4\.11.*Focus Not Obscured/);
+  assert.match(reference, /2\.5\.8.*Target Size/);
+  assert.match(reference, /3\.3\.8.*Accessible Authentication/);
+  assert.doesNotMatch(reference, /4\.1\.1.*Parsing/);
 });
 
 test("current repo state passes: every actual divergence is declared, no stale entries", () => {

@@ -62,6 +62,14 @@ const KNOWN_DONORS = {
     capabilities: ["interface-direction"],
     baseScore: 100,
   },
+  "better-layout": {
+    capabilities: ["responsive-layout"],
+    baseScore: 95,
+  },
+  "improve-ui": {
+    capabilities: ["evidence-audit"],
+    baseScore: 95,
+  },
   visualize: {
     capabilities: ["visual-artifact"],
     baseScore: 100,
@@ -203,6 +211,12 @@ function inferCapabilities(name, description) {
   if (/(visual qa|design review|design parity|accessibility audit|screenshot review)/.test(haystack)) {
     capabilities.push("rendered-qa");
   }
+  if (/(responsive layout|adaptive responsive|reading order|progressive disclosure|layout audit)/.test(haystack)) {
+    capabilities.push("responsive-layout");
+  }
+  if (/(design evidence|verified ui problems|ui audit|interface audit)/.test(haystack)) {
+    capabilities.push("evidence-audit");
+  }
 
   return [...new Set(capabilities)];
 }
@@ -323,6 +337,16 @@ function explicitCapabilitySignals(taskText) {
     signals.add("imagery-art-direction");
   }
   if (/(prototype|standalone|microsite)/.test(text)) signals.add("standalone-prototype");
+  if (/(responsive|mobile|desktop|breakpoint|layout|reading order)/.test(text)) {
+    signals.add("responsive-layout");
+  }
+  if (/(booking path|booking flow|booking journey|search[- ]to[- ]book|property[- ]to[- ]book)/.test(text)) {
+    signals.add("responsive-layout");
+    signals.add("evidence-audit");
+  }
+  if (/(audit|review|diagnose|improve existing|current ui)/.test(text)) {
+    signals.add("evidence-audit");
+  }
   return signals;
 }
 
@@ -367,9 +391,16 @@ function routeDesignTask(taskText, options = {}) {
     if (selected.length >= 4) break;
   }
 
+  const taskCapabilities = [...explicitSignals].filter((signal) => signal !== "figma");
+  const unfilledCapabilities = taskCapabilities.filter(
+    (capability) => !covered.has(capability)
+  );
+
   return {
     family,
     authorities: ["DESIGN.md", "seascape-design-specialist", "seascape-design-critic"],
+    taskCapabilities,
+    unfilledCapabilities,
     selectedDonors: selected.map((candidate) => ({
       name: candidate.name,
       path: candidate.path,
@@ -399,6 +430,8 @@ function formatRoute(route) {
     `Design family: ${route.family.label} (${route.family.id})`,
     `Visitor decision: ${route.family.decision}`,
     `Suggested shape: ${route.family.shape}`,
+    `Task-specific optional capabilities: ${route.taskCapabilities.length ? route.taskCapabilities.join(", ") : "none"}`,
+    `Unfilled optional capabilities: ${route.unfilledCapabilities.length ? route.unfilledCapabilities.join(", ") : "none"}`,
     `Plugin skill metadata scanned: ${route.scannedSkillFiles}`,
     "Selected optional donors:",
     donors,
@@ -451,4 +484,5 @@ module.exports = {
   parseFrontmatter,
   resolveFamily,
   routeDesignTask,
+  explicitCapabilitySignals,
 };

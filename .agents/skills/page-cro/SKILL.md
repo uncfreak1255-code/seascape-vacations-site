@@ -1,8 +1,8 @@
 ---
 name: page-cro
-description: Use when diagnosing or improving conversion on a marketing page or form.
+description: Use when diagnosing or improving conversion on a marketing page, form, or booking flow.
 metadata:
-  version: 1.1.2
+  version: 1.2.0
 ---
 
 # Page Conversion Rate Optimization
@@ -30,6 +30,9 @@ Let observed impact determine priority; these are lenses, not a fixed sequence.
   and repository approval rules. A recommendation does not authorize launch.
 - For form friction, use [form checks](references/forms.md) to inspect the affected
   fields and completion states.
+- For a search-to-property-to-booking journey, use [responsive booking-flow
+  checks](references/booking-flow.md) to inspect continuity, action visibility,
+  and responsive reading order across the affected routes.
 - Use [page patterns](references/page-patterns.md) for page-type-specific guidance;
   use [experiment ideas](references/experiments.md) only when forming test hypotheses.
   Examples are options, not requirements to add claims, remove navigation, or

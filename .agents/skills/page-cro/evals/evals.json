@@ -106,6 +106,21 @@
         "Uses the local learning contract and approval rules for testing"
       ],
       "files": []
+    },
+    {
+      "id": 8,
+      "prompt": "Guests can find our stay collections, but the mobile path from choosing dates to selecting a home and reaching booking feels disconnected. Audit the responsive booking flow.",
+      "expected_output": "Should trace one search-to-property-to-booking journey with the same dates and guests, inspect desktop and the supported mobile floor, and distinguish route or state loss from visual hierarchy problems. Should verify action visibility, DOM reading order, content growth, clipping, and sticky or safe-area obstruction. Findings must name the broken journey step, runtime evidence, smallest correction, and measurement event or route check.",
+      "assertions": [
+        "Traces search, property, and booking transitions",
+        "Checks that dates, guests, property identity, and direct-booking intent survive",
+        "Inspects desktop and the supported mobile floor",
+        "Checks action visibility and reading order",
+        "Checks clipping, content growth, and sticky or safe-area obstruction",
+        "Separates measured behavior from conversion hypotheses",
+        "Names route-backed evidence and the smallest correction"
+      ],
+      "files": []
     }
   ]
 }
