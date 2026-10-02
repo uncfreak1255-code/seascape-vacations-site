@@ -288,7 +288,8 @@ test("checkout smoke tells a priced checkout, a changed address format, a blank 
   assert.equal(priced.checked, "https://book.seascape-vacations.com/checkout/206016?start=2027-01-29&end=2027-02-05&numberOfGuests=2");
   assert.equal(visited.length, 1);
 
-  await assert.rejects(check("Finalize your booking Select dates Add payment method"), /no longer shows a priced stay/);
+  // The rollback names both pages that open the checkout address.
+  await assert.rejects(check("Finalize your booking Select dates Add payment method"), /no longer shows a priced stay.*guest\.js.*catalog\.js/);
   await assert.rejects(
     check("Finalize your booking Price details Total", { chromium: chromiumShowing("Not found", 404) }),
     /no longer shows a priced stay/
