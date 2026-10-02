@@ -284,7 +284,7 @@
 .guest-site .catalog-help h2{font-size:32px}
 .guest-site .catalog-dialog{padding:18px 14px}
 .guest-site .catalog-dialog h2{font-size:26px}
-.guest-site .catalog-shortlist{border-radius:0;bottom:0;width:auto;max-width:none;margin-left:calc(50% - 50vw);margin-right:calc(50% - 50vw)}
+.guest-site .catalog-shortlist{border-radius:0;bottom:0;margin-inline:calc(50% - 50vw)}
 .guest-site .catalog-shortlist .btn{font-size:12px;padding:12px}
 .guest-site .catalog-filter{font-size:12px}
 .guest-site .catalog-collection{margin-top:20px}}

@@ -128,7 +128,7 @@
   .catalog-card-foot { gap:12px; }
   .catalog-help { order:5; grid-template-columns:1fr; gap:16px; margin-top:40px; padding-top:32px; }
   .catalog-help h2 { font-size:32px; }
-  .catalog-shortlist { gap:12px; padding:12px; bottom:8px; width:100%; justify-content:space-between; }
+  .catalog-shortlist { gap:12px; padding:12px; bottom:8px; width:auto; max-width:none; justify-content:space-between; }
   .catalog-shortlist .btn { padding:12px 16px; font-size:12px; min-height:44px; }
   .catalog-shortlist span { display:none; }
   .catalog-shortlist strong { font-size:12px; }
