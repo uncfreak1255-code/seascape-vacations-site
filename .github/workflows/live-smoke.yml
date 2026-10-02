@@ -28,7 +28,8 @@ jobs:
         uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
-          cache: npm
+          # No `cache: npm`: this runner keeps its npm cache on disk between
+          # jobs, so the action's cache only adds a multi-gigabyte transfer.
 
       - name: Install dependencies
         run: npm ci
@@ -46,3 +47,39 @@ jobs:
 
       - name: Verify owner funnel routes
         run: npm run verify:owner-funnel-routes || (sleep 30 && npm run verify:owner-funnel-routes)
+
+  report-failure:
+    # A red scheduled run otherwise sits unseen in the Actions tab. Open one
+    # issue, or comment on the open one, when the daily readback does not pass.
+    # Hosted Linux on purpose: the report must still go out when the Mac runner
+    # is what failed, and the issue-write token stays off the job that runs
+    # repository code. Manual dispatches report nothing; the person who
+    # dispatched one is already watching it.
+    name: report-failure
+    needs: live-smoke
+    if: always() && github.event_name == 'schedule' && needs.live-smoke.result != 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      issues: write
+
+    steps:
+      - name: Open or update the live-smoke issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          SMOKE_RESULT: ${{ needs.live-smoke.result }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          set -euo pipefail
+          title="Daily live smoke failed"
+          body="$(printf 'The scheduled live smoke finished with result `%s`: %s\n\n%s\n' \
+            "$SMOKE_RESULT" "$RUN_URL" \
+            "This means production drift, stale assertions in scripts/recovery/assert-live-smoke.js, or a runner fault, not necessarily an outage. Read the failed step first. Close this issue once a scheduled run passes again.")"
+          existing="$(gh issue list --state open --limit 200 --json number,title,author \
+            --jq 'map(select(.title == "Daily live smoke failed" and .author.is_bot and (.author.login | endswith("github-actions")))) | .[0].number // empty')"
+          if [ -n "$existing" ]; then
+            gh issue comment "$existing" --body "$body"
+          else
+            gh issue create --title "$title" --body "$body"
+          fi

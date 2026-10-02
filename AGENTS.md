@@ -212,7 +212,8 @@ its trigger, so no per-skill index is kept here.
   `npm run verify:recovery:live && npm run verify:direct-booking-events && npm run verify:owner-funnel-routes`
 - The same smoke trio also runs daily via `.github/workflows/live-smoke.yml`
   (dispatchable manually); a red scheduled run means production drift or stale
-  smoke assertions, not necessarily an outage
+  smoke assertions, not necessarily an outage. A scheduled run that does not
+  pass opens a `Daily live smoke failed` issue, or comments on the open one
 
 ## Deploy Configuration
 
