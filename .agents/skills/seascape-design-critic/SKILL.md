@@ -7,7 +7,9 @@ description: Use when judging whether a Seascape visual direction meets the desi
 
 Give a blunt, evidence-backed taste verdict on a Seascape visual direction.
 Judge against `DESIGN.md`, especially editorial warmth, restraint, direct-booking
-math, and the Field Report standard. Use
+math, and the current Waterline system. Use the family references in
+`docs/portfolio/golden-routes.md`; legacy guide/research bodies are not
+Waterline shell or owner-page references. Use
 `docs/process/seascape-design-studio.md` for the design packet and next gate.
 
 ## Design bar

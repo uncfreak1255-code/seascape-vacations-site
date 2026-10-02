@@ -14,7 +14,15 @@ Use this only for Seascape batch selection.
 3. `docs/status/open-risks.md`
 4. `docs/status/search-growth-map.md`
 5. the active brief if one exists
-6. the latest joined operator read in `seascape-analytics` when freshness is part of the decision
+6. `docs/process/openseo.md` for rank-opportunity triage on already-tracked queries:
+   use `list_projects`, then existing `get_rank_tracker` configuration/results/history
+   before a stale handoff or paid research; record time, query, positions and URL
+7. the latest joined operator read in `seascape-analytics` when freshness is part of the decision
+
+OpenSEO is supporting rank evidence, not the measurement gate. Follow its
+saved-read allowlist and approval path; never trigger a fresh check or paid
+lookup. Missing tools or stale/missing tracked queries are exact evidence gaps.
+Continue bounded unpaid source/SERP/competitor checks when independently available.
 
 ## Gate Contract
 
