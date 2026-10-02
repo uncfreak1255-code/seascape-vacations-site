@@ -208,6 +208,12 @@ its trigger, so no per-skill index is kept here.
   screenshot proof. That gate diffs the committed desktop and mobile baselines
   in `tests/visual/__screenshots__/` and includes an axe accessibility spec;
   still attach desktop and mobile screenshots for subjective changes.
+- Refresh a committed visual baseline only when the screenshot change is
+  intended and you have looked at the new screenshots. Start the
+  `update-visual-baselines.yml` workflow for the task branch with the route
+  slug in `grep`. It runs only for Sawyer's GitHub account, so start it from
+  the Mac session, not from a cloud thread. The bot commit does not start the
+  PR checks again; push your next real commit to start them.
 - Live post-merge smoke when the release surface matters:
   `npm run verify:recovery:live && npm run verify:direct-booking-events && npm run verify:owner-funnel-routes`
 - The same smoke trio also runs daily via `.github/workflows/live-smoke.yml`
