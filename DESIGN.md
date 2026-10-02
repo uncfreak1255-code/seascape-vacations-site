@@ -172,7 +172,7 @@ components:
 Help a group choose one of the real homes, understand the details that could change its choice, and arrive at Hostaway with dates and guest count intact. Seascape is a small, owner-operated collection in Bradenton and Sarasota. Do not make it look like an island-wide resort or an unlimited marketplace.
 
 ## Guest journey: Waterline (September 2026)
-The homepage, catalog, property details, and owner hub use the scoped `guest-site` theme in `src/css/guest.css`, with homepage scenes in `src/css/arrival.css`. The guide index, field-journal guides, two homepage comparison guides, stay collections, and About page share the guest header and footer. Their editorial bodies keep their existing typography. Generated owner landers and other legacy routes retain the tokens above until deliberately redesigned.
+The homepage, catalog, property details, and owner hub use the scoped `guest-site` theme in `src/css/guest.css`, with homepage scenes in `src/css/arrival.css`. The guide index, field-journal guides, two homepage comparison guides, stay collections, and About page share the guest header and footer. Their editorial bodies keep their existing typography, except a guide converted to the planning-guide frame below. Generated owner landers and other legacy routes retain the tokens above until deliberately redesigned.
 
 - Canvas: sun-warmed paper `#F6F3EB`; ink and primary controls: deep marine `#173D42`; supporting text: `#52676A`; accent: clay `#A4533E`; selected scene and photographic CTA: citron `#D6EB85`; rules: `#CAD4CF`. Citron is a surface/accent, never small text on paper.
 - Display type: self-hosted Instrument Serif, regular and italic, under its included SIL Open Font License. Poppins remains the practical body and control face. Large, compact display lines are deliberate; factual text stays readable.
@@ -182,6 +182,19 @@ The homepage, catalog, property details, and owner hub use the scoped `guest-sit
 - Motion has three jobs: identify a newly selected home, give the collection tactile depth, and connect its photo to the detail page. Use browser-native CSS/Web Animations and same-origin view transitions as progressive enhancements. No loader, scroll hijacking, autoplay, custom cursor, or required animation library. The static reduced-motion and no-JavaScript paths remain complete.
 - Pointer and touch presses use subtle feedback (up to 3% scale, 120ms) when motion is allowed. Keyboard scene selection and horizontal selector movement are immediate. Keyboard card focus keeps the visible outline without lifting or enlarging the card. Desktop card hover movement is limited to fine pointers and 200ms; reduced-motion users keep the static layout.
 - Desktop content can reach 1280px, with a full-width opening photograph. Controls remain at least 44px tall, with visible focus, clear labels and quiet solid surfaces. No animation may delay booking or be required to reveal essential information.
+
+## Planning guides (October 2026)
+A planning guide finishes one trip-planning task: when to come, how to get there, what a week costs. A guide in this family converts to the frame below one guide at a time; a converted guide renders its body in the Waterline tokens. Sawyer approved the direction on October 2, 2026 from desktop and phone boards of the weather guide. The build contract for each conversion is a mock built in the synced Claude Design project.
+
+- **Frame, same words.** Conversion keeps the title, description, headings, answer, table figures, sources and links identical; prove it with a text diff against the page it replaces.
+- **Opening.** Label and Instrument Serif title on the left, the quick answer as a serif lede on the right, stacked on a phone. Rules separate the parts; the legacy banner, pill badge and boxed answer are retired on a converted guide.
+- **Instrument.** One figure directly under the answer, specific to the guide's subject and drawn from data the guide already publishes (weather: a twelve-month strip of normal highs, lows and rain days). It is static markup generated at build time, carries a text label, and the full table stays on the page as its data source. Ink draws the primary marks; clay marks the one cautionary reading (rain, storm season). A guide with no dataset of its own uses the steps alone.
+- **Steps.** Sections carry numerals 01, 02, 03 beside the heading, leaving the heading text as written. On desktop an "In this guide" rail lists the steps and stays in view; on a phone the numerals carry the sequence.
+- **Tables.** Every column is visible at 360, 375 and 393px wide, so a converted guide has no swipe hint.
+- **Your dates.** When the site's trip memory holds dates, the instrument marks those months with a citron surface and an ink "Your dates" label. It is a progressive enhancement reading only the stored arrive and depart dates; the figure is complete without it, and the mark states the guest's dates only, never an opening or a quote.
+- **Booking box and close.** The guide booking box keeps its position, content and tracking through a conversion; restyling it is its own decision. The closing band is ink with a paper button and ink text.
+- **Floors.** F1, F2 and F3 apply to the whole page of a converted guide.
+- **Measurement.** A guide inside an open readback window converts after that window is read.
 
 ## Photography is evidence
 Only an actual photograph of the named property may illustrate its accommodation. A destination scene may illustrate a clearly named destination, never a failed home photo.
