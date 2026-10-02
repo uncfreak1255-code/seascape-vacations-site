@@ -110,11 +110,50 @@ test('open dates without a group size ask for the group, then book', async ({ pa
   }
 });
 
-test('a group size chosen without being asked waits for "Find my home"', async ({ page }) => {
+test('a group size chosen while dates are open applies at once, every time it changes', async ({ page }) => {
   await visit(page, dates);
   await expect(cardButtons(page)).toHaveText(['Book these dates', 'Book these dates', 'Book these dates']);
-  await page.locator('#trip-guests').selectOption('6');
-  expect((await links(cardButtons(page))).map(link => link.raw)).toEqual(['#trip-guests', '#trip-guests', '#trip-guests']);
+  for (const size of ['6', '4']) {
+    await page.locator('#trip-guests').selectOption(size);
+    await expect(count(page)).toHaveText('3 homes are open for these dates. You’ll see the full price before you pay.');
+    for (const link of await links(cardButtons(page))) {
+      expect(new URL(link.href).pathname).toBe('/checkout/' + listingIds[link.slug]);
+      expect(new URL(link.href).searchParams.get('numberOfGuests')).toBe(size);
+    }
+  }
+});
+
+test('dates edited but not searched again take the booking buttons back to "Check dates"', async ({ page }) => {
+  await visit(page, dates + '&guests=6&compare=dockside-dreams,sarasota-luxe');
+  await expect(cardButtons(page)).toHaveText(['Book these dates', 'Book these dates', 'Book these dates']);
+  await page.locator('#trip-depart').fill('2026-11-16');
+  // No card may open checkout for the earlier dates while the form shows different ones.
+  for (const link of await links(cardButtons(page))) {
+    expect(new URL(link.href).pathname).toBe('/listings/' + listingIds[link.slug]);
+    expect(link.text).toBe('Check dates');
+    expect(link.target).toBe('_blank');
+  }
+  await page.locator('#open-comparison').click();
+  await expect(page.locator('#comparison-trip')).toContainText('Dates and prices need confirmation.');
+  for (const link of await links(page.locator('#catalog-comparison td:not([hidden]) a[data-booking-base]'))) {
+    expect(new URL(link.href).pathname).toBe('/listings/' + listingIds[link.slug]);
+    expect(link.text).toBe('Check dates');
+  }
+  await page.locator('#close-comparison').click();
+
+  // Searching again with the new dates books the new dates.
+  await page.locator('#catalog-trip-form [type="submit"]').click();
+  await expect(cardButtons(page)).toHaveText(['Book these dates', 'Book these dates', 'Book these dates']);
+  for (const link of await links(cardButtons(page))) {
+    expect(new URL(link.href).pathname).toBe('/checkout/' + listingIds[link.slug]);
+    expect(new URL(link.href).searchParams.get('end')).toBe('2026-11-16');
+  }
+});
+
+test('with no group size, an unsearched date edit does not ask for the group size', async ({ page }) => {
+  await visit(page, dates);
+  await page.locator('#trip-depart').fill('2026-11-16');
+  expect((await links(cardButtons(page))).map(link => link.raw.includes('/listings/'))).toEqual([true, true, true]);
 });
 
 test('a failed dates check keeps every card on its listing page in a new tab', async ({ page }) => {

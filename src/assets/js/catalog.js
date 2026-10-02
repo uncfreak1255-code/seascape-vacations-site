@@ -18,9 +18,10 @@
   var originalLinks = new Map();
   var availabilityRequest = 0;
   var visualTestMode = params.get("visual-test") === "1";
-  // Homes the live check confirmed open for the chosen dates. Empty in every other state.
+  // Homes the live check confirmed open for the dates last searched.
   var openHomes = [];
-  var askedForGuests = false;
+  // Dates edited since that search are not confirmed.
+  function isOpen(home) { return arrive.value === trip.arrive && depart.value === trip.depart && openHomes.includes(home); }
 
   function preserveSave50Params(url) {
     var campaign = (params.get("utm_campaign") || "").trim().toLowerCase();
@@ -82,14 +83,14 @@
       if (trip.guests && Number(trip.guests) <= 16) url.searchParams.set("numberOfGuests",trip.guests);
       var home = root.contains(link) && link.dataset.pageSlug;
       if (home) {
-        // One word per state: a home confirmed open is booked from here; every other state opens its listing page.
-        var open = openHomes.includes(home);
+        // A home confirmed open is booked from here; any other opens its listing page.
+        var open = isOpen(home);
         var word = open ? "Book these dates" : "Check dates";
         link.textContent = word;
         link.setAttribute("aria-label",word + " for " + link.getAttribute("aria-label").replace(/^.*? for /,""));
         if (open) link.removeAttribute("target"); else link.target = "_blank";
         if (open && !trip.guests) {
-          // Hostaway's checkout needs a guest count, so this press asks for the group size and reports no booking click.
+          // Checkout needs a guest count: ask for the group size, report no booking click.
           link.removeAttribute("data-track-event"); link.href = "#trip-guests"; return;
         }
         link.dataset.trackEvent = "catalog_book_direct_click";
@@ -115,12 +116,12 @@
     root.querySelectorAll("[data-capacity]").forEach(function (cell) {
       cell.textContent = trip.guests && Number(trip.guests) > Number(cell.dataset.capacity) ? "Too small for your group" : "";
     });
-    document.getElementById("comparison-trip").textContent = tripText() + (openHomes.length ? " · These dates are open." : " · Dates and prices need confirmation.");
+    document.getElementById("comparison-trip").textContent = tripText() + (isOpen(openHomes[0]) ? " · These dates are open." : " · Dates and prices need confirmation.");
   }
   function render() {
     // Even a render with no date request supersedes an outstanding response.
     availabilityRequest++;
-    openHomes = []; askedForGuests = false;
+    openHomes = [];
     var count = 0;
     cards.forEach(function (card) {
       var fitsArea = activeFilter === "all" || card.dataset.filters.split("|").includes(activeFilter);
@@ -271,17 +272,17 @@
   form.addEventListener("submit",submitTrip);
   root.addEventListener("click",function(event) {
     var link = event.target.closest("a[data-booking-base]");
-    if (!link || trip.guests || !openHomes.includes(link.dataset.pageSlug)) return;
+    if (!link || trip.guests || !isOpen(link.dataset.pageSlug)) return;
     event.preventDefault();
     if (dialog.open) dialog.close();
-    askedForGuests = true;
     status.textContent = "These dates are open. Choose your group size to book them.";
     guests.scrollIntoView({block:"center"}); guests.focus();
   });
-  // The group size a guest was just asked for applies at once, without a second press on "Find my home".
-  guests.addEventListener("change",function() { if (askedForGuests && guests.value) submitTrip(); });
-  depart.addEventListener("input",function() { depart.setCustomValidity(""); });
-  arrive.addEventListener("input",function() { depart.setCustomValidity(""); depart.min=arrive.value || today; });
+  // For open homes, a group size applies at once.
+  guests.addEventListener("change",function() { if (isOpen(openHomes[0])) submitTrip(); });
+  function datesEdited() { depart.setCustomValidity(""); depart.min=arrive.value || today; if (openHomes.length) { renderComparison(); syncLinks(); } }
+  depart.addEventListener("input",datesEdited);
+  arrive.addEventListener("input",datesEdited);
   document.getElementById("clear-dates").addEventListener("click",function() {
     arrive.value=""; depart.value=""; depart.setCustomValidity(""); depart.min=today; trip.arrive=""; trip.depart=""; rememberTrip(); render();
   });
