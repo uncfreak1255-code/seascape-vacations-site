@@ -5,8 +5,8 @@
       "stylesheet": 57294
     },
     "/properties/": {
-      "script": 96163,
-      "stylesheet": 56709
+      "script": 98253,
+      "stylesheet": 56913
     },
     "/property-management/": {
       "script": 87054,
@@ -384,6 +384,22 @@
       "from": 54064,
       "to": 54090,
       "reason": "Home page booking button (PR #643): one button whose word and destination follow the dates check; about 1.8 KB more script on the three pages that load guest.js, 26 bytes elsewhere. Raise approved by Sawyer on 2026-10-02.",
+      "date": "2026-10-02"
+    },
+    {
+      "route": "/properties/",
+      "metric": "script",
+      "from": 96163,
+      "to": 98253,
+      "reason": "Catalog card to checkout (PR #644): an open home's card books straight to the priced checkout; about 2.1 KB more script and 204 bytes more stylesheet on /properties/ only. Raise approved by Sawyer on 2026-10-02.",
+      "date": "2026-10-02"
+    },
+    {
+      "route": "/properties/",
+      "metric": "stylesheet",
+      "from": 56709,
+      "to": 56913,
+      "reason": "Catalog card to checkout (PR #644): an open home's card books straight to the priced checkout; about 2.1 KB more script and 204 bytes more stylesheet on /properties/ only. Raise approved by Sawyer on 2026-10-02.",
       "date": "2026-10-02"
     }
   ]
