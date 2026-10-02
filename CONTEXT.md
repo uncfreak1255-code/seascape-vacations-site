@@ -7,8 +7,12 @@ The Seascape website helps guests choose a home and proceed to direct booking, a
 ### Homes and guest planning
 
 **Home**:
-A physical vacation-rental property in Seascape's collection, with its own location, amenities, sleeping arrangements and guest capacity.
+A physical vacation-rental property with its own location, amenities, sleeping arrangements and guest capacity.
 _Avoid_: Listing when referring to the physical property.
+
+**Collection**:
+The homes currently listed for guest booking on Seascape's website. A home under management may not yet be part of the guest collection.
+_Avoid_: Every signed property, every managed home.
 
 **Listing**:
 The advertisement for a home on a booking channel. A listing describes the home; it is not the home itself.
