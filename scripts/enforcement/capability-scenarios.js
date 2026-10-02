@@ -180,7 +180,6 @@ const SCENARIOS = [
         for (const slug of propertySlugs) {
           assertIncludes(html, `/properties/${slug}/`, `properties catalog missing ${slug}`);
         }
-        assertIncludes(html, "Book Direct");
         return passEvidence(`${propertySlugs.length} property detail links found`);
       }),
       check("property detail pages expose tracked booking actions", () => {

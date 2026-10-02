@@ -8,7 +8,11 @@ const REQUIRED_EVENTS = [
   "booking_engine_handoff"
 ];
 
+// Guides link to our own catalog, so a guide carries the first two events and the catalog carries the handoff.
+const GUIDE_MARKUP_EVENTS = ["email_capture_submit", "guide_book_direct_click"];
+
 const TARGET_GUIDE_PATH = "/guides/best-time-visit-anna-maria-island/";
+const HANDOFF_PATH = "/properties/";
 const POPUP_GUIDE_PATH = "/guides/bradenton-area-guide/";
 const HOMEPAGE_PATH = "/";
 
@@ -37,12 +41,23 @@ function request(baseUrl, targetPath) {
 }
 
 function validateGuideEventMarkup(body, targetPath = TARGET_GUIDE_PATH) {
-  const missingEvents = REQUIRED_EVENTS.filter((eventName) => {
+  const missingEvents = GUIDE_MARKUP_EVENTS.filter((eventName) => {
     return !body.includes(`data-track-event="${eventName}"`) && !body.includes(`data-form-submit-event="${eventName}"`);
   });
 
   if (missingEvents.length > 0) {
     throw new Error(`${targetPath} is missing direct-booking event markup: ${missingEvents.join(", ")}`);
+  }
+}
+
+// The tracking runtime reports booking_engine_handoff for any tracked link that opens the booking engine.
+function validateHandoffMarkup(body, targetPath = HANDOFF_PATH) {
+  const hasTrackedEngineLink = (body.match(/<a\b[^>]*>/g) || []).some((tag) => {
+    return tag.includes('data-track-event="') && /href="https:\/\/book\.seascape-vacations\.com[/?"]/.test(tag);
+  });
+
+  if (!hasTrackedEngineLink) {
+    throw new Error(`${targetPath} is missing a tracked booking engine link for booking_engine_handoff`);
   }
 }
 
@@ -309,6 +324,46 @@ function simulateDirectBookingEvents() {
   });
 }
 
+// A home's page books through Hostaway's checkout address, so that address must carry the same lineage as a listing link.
+function simulateCheckoutHandoffEvent() {
+  return withTrackingRuntime(({ listeners, window }) => {
+    listeners.DOMContentLoaded();
+
+    const checkoutLink = buildTrackedLink(
+      "property_booking_page_click",
+      "https://book.seascape-vacations.com/checkout/206016?start=2026-06-01&end=2026-06-05&numberOfGuests=4"
+    );
+    listeners.click({
+      target: {
+        closest(selector) {
+          return selector === "[data-track-event]" ? checkoutLink : null;
+        }
+      },
+      button: 0,
+      metaKey: false,
+      ctrlKey: false,
+      shiftKey: false,
+      altKey: false
+    });
+
+    return window.dataLayer;
+  });
+}
+
+function validateCheckoutHandoffEvents(events) {
+  const clicks = events.filter((entry) => entry.event === "property_booking_page_click");
+  if (clicks.length !== 1) {
+    throw new Error(`checkout link expected one property_booking_page_click, got ${clicks.length}`);
+  }
+  const payload = clicks[0].payload;
+  if (payload.booking_listing_id !== "206016" || payload.booking_property_slug !== "dockside-dreams") {
+    throw new Error("checkout link did not carry its listing id and home into property_booking_page_click");
+  }
+  if (!/^svh_/.test(payload.booking_handoff_id) || !new URL(payload.link_url).pathname.startsWith("/checkout/206016")) {
+    throw new Error("checkout link did not carry a handoff id to the checkout address");
+  }
+}
+
 function simulatePopupEmailCaptureEvent() {
   return withTrackingRuntime(({ listeners, window }) => {
     if (typeof listeners.DOMContentLoaded !== "function") {
@@ -373,12 +428,21 @@ async function run(baseUrl, options = {}) {
 
   validateGuideEventMarkup(response.body, TARGET_GUIDE_PATH);
 
+  const handoffResponse = await request(baseUrl, HANDOFF_PATH);
+  if (handoffResponse.statusCode !== 200) {
+    throw new Error(`${HANDOFF_PATH} expected 200, got ${handoffResponse.statusCode}`);
+  }
+
+  validateHandoffMarkup(handoffResponse.body, HANDOFF_PATH);
+
   const observedEvents = simulateDirectBookingEvents().map((entry) => entry.event);
   for (const eventName of REQUIRED_EVENTS) {
     if (!observedEvents.includes(eventName)) {
       throw new Error(`conversion tracking did not emit ${eventName}`);
     }
   }
+
+  validateCheckoutHandoffEvents(simulateCheckoutHandoffEvent());
 
   if (options.requirePopupCapture) {
     for (const popupPath of [POPUP_GUIDE_PATH, HOMEPAGE_PATH]) {
@@ -414,9 +478,12 @@ module.exports = {
   parseArgs,
   request,
   validateGuideEventMarkup,
+  validateHandoffMarkup,
   validatePopupMarkup,
   validatePopupRuntime,
   simulateDirectBookingEvents,
+  simulateCheckoutHandoffEvent,
+  validateCheckoutHandoffEvents,
   simulatePopupEmailCaptureEvent,
   simulateSanitizedAnalyticsPayload,
   run

@@ -1,6 +1,6 @@
 ---
 name: openseo-review
-description: Use when reviewing OpenSEO query, citation, competitor, or rank-tracking evidence.
+description: Use for rank-opportunity or regression triage on already-tracked Seascape queries, or when reviewing OpenSEO query, citation, competitor, or rank-tracking evidence.
 ---
 
 # OpenSEO Opportunity Review
@@ -20,6 +20,23 @@ For Seascape, default to `seascape-vacations.com`, United States, and the curren
 3. Do not add the OpenSEO connector, change global MCP settings, sign in, or spend credits without the required current approval.
 4. Name the proof gate: verified query export, verified cited-source export, current rank configuration readback, and an opportunity table tied to source rows.
 5. If live OpenSEO is unavailable, stop with the failed path. Do not replace it with guessed data.
+
+## Select the evidence lane
+
+For Seascape rank-opportunity or regression triage on already-tracked queries,
+read the [Site-owned OpenSEO preflight](https://github.com/uncfreak1255-code/seascape-vacations-site/blob/main/docs/process/openseo.md)
+first. Use `list_projects` and
+then existing `get_rank_tracker` configuration, results and history through the
+configured approval path. Record observation time, query, current/prior position
+and landing URL; do not trigger a fresh check. Continue with live SERP and
+competitor evidence plus the owning Analytics receipt before recommending work.
+The six saved-state reads are the allowed surface; paid lookup tools remain
+excluded. Unavailable tools or stale/missing target queries are evidence gaps,
+not permission to start a paid run or change the measurement gate.
+
+Use the brand/citation steps below only when that evidence lane is requested
+and the lookup already exists or its exact paid run is separately approved.
+A tracked-rank review starts with the rank read, not a brand lookup.
 
 ## Review workflow
 

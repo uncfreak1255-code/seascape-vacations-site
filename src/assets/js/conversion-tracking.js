@@ -7,6 +7,10 @@
   var GUEST_EMAIL_CAPTURE_ENDPOINT = "/.netlify/functions/guest-email-capture";
   var BOOKING_HANDOFF_SESSION_KEY = "seascape_booking_handoff_session_id";
   var GUIDE_DIRECT_CLICK_PARAM = "sv_guide_click_id";
+  var TRIP_MEMORY_KEY = "seascape_trip";
+  var TRIP_MEMORY_FIELDS = ["arrive", "depart", "guests"];
+  var TRIP_MEMORY_MAX_AGE_MS = 30 * 24 * 60 * 60 * 1000;
+  var TRIP_PAGE_PATTERN = /^(?:\/(?:properties|guides|stays)(?:\/|$)|\/about-us\/|\/$)/;
   var SUPPORTED_EVENTS = [
     "owner_primary_cta_click",
     "owner_phone_click",
@@ -301,12 +305,49 @@
     return trip;
   }
 
+  // Trip memory: only the last dates and guest count, in this browser.
+  // The address wins: memory only fills one that names no trip.
+  function rememberTrip(source) {
+    var query = new URLSearchParams();
+    TRIP_MEMORY_FIELDS.forEach(function (key) { if (source && source[key]) query.set(key, String(source[key])); });
+    var trip = readTripParams(query);
+    try {
+      if (!trip.arrive && !trip.guests) { window.localStorage.removeItem(TRIP_MEMORY_KEY); return; }
+      window.localStorage.setItem(TRIP_MEMORY_KEY, JSON.stringify({ arrive: trip.arrive || "", depart: trip.depart || "", guests: trip.guests || "", saved: Date.now() }));
+    } catch (_error) {
+      // Storage can be blocked or full; the address still has the trip.
+    }
+  }
+
+  function restoreRememberedTrip() {
+    var location = window.location;
+    if (!location || typeof location.search !== "string" || typeof URLSearchParams !== "function") return;
+    var params = new URLSearchParams(location.search);
+    var current = readTripParams(params);
+    if (current.arrive || current.guests) { rememberTrip(current); return; }
+    // An address naming its own trip or shortlist is intentional, even with rejected dates.
+    if (TRIP_MEMORY_FIELDS.concat(["checkin", "checkout", "compare"]).some(function (key) { return params.has(key); })) return;
+    if (!TRIP_PAGE_PATTERN.test(location.pathname || "") || !window.history || typeof window.history.replaceState !== "function") return;
+    var stored;
+    try { stored = JSON.parse(window.localStorage.getItem(TRIP_MEMORY_KEY) || "null"); } catch (_error) { return; }
+    if (!stored || typeof stored !== "object") return;
+    var age = typeof stored.saved === "number" ? Date.now() - stored.saved : -1;
+    if (!(age >= 0 && age < TRIP_MEMORY_MAX_AGE_MS)) { rememberTrip(null); return; }
+    var query = new URLSearchParams();
+    TRIP_MEMORY_FIELDS.forEach(function (key) { if (typeof stored[key] === "string" && stored[key]) query.set(key, stored[key]); });
+    var trip = readTripParams(query);
+    if (!trip.arrive && !trip.guests) return;
+    var url = new URL(location.href);
+    TRIP_MEMORY_FIELDS.forEach(function (key) { if (trip[key]) url.searchParams.set(key, trip[key]); });
+    window.history.replaceState(window.history.state, "", url.pathname + url.search + url.hash);
+  }
+
   function preserveTripLink(node) {
     var href = node && typeof node.getAttribute === "function" ? node.getAttribute("href") : "";
     if (!href || href.charAt(0) === "#") return;
     var url;
     try { url = new URL(href, window.location.href); } catch (_error) { return; }
-    if (!isSameOriginUrl(url, window.location.href) || !/^(?:\/(?:properties|guides|stays)(?:\/|$)|\/about-us\/|\/$)/.test(url.pathname)) return;
+    if (!isSameOriginUrl(url, window.location.href) || !TRIP_PAGE_PATTERN.test(url.pathname)) return;
     var currentParams = new URLSearchParams(window.location.search || "");
     var trip = readTripParams(currentParams);
     // A destination's explicit trip is intentional; never combine two date ranges.
@@ -447,7 +488,7 @@
       : currentPropertyMatch
         ? currentPropertyMatch[1]
         : "";
-    var listingMatch = url.pathname.match(/\/listings\/([^/?#]+)/i);
+    var listingMatch = url.pathname.match(/\/(?:listings|checkout)\/([^/?#]+)/i);
     var pathListingId = listingMatch ? listingMatch[1].trim() : "";
     var listingId = pathListingId || (node && node.dataset && (node.dataset.listingId || node.dataset.bookingListingId)
       ? (node.dataset.listingId || node.dataset.bookingListingId)
@@ -733,7 +774,7 @@
       context.handoffId = (url.searchParams.get("sv_handoff_id") || "").trim();
       context.sessionId = (url.searchParams.get("sv_session_id") || "").trim();
       context.guideDirectClickId = (url.searchParams.get(GUIDE_DIRECT_CLICK_PARAM) || "").trim();
-      var listingMatch = url.pathname.match(/\/listings\/([^/?#]+)/);
+      var listingMatch = url.pathname.match(/\/(?:listings|checkout)\/([^/?#]+)/);
       var pathListingId = listingMatch ? listingMatch[1].trim() : "";
       context.listingId = (pathListingId || url.searchParams.get("listing_id") || "").trim();
       context.propertySlug = (
@@ -1181,6 +1222,9 @@
     bindTrackedForms();
   }
 
+  // Runs before any link is decorated and before guest.js or catalog.js reads the address.
+  restoreRememberedTrip();
+
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", init, { once: true });
   } else {
@@ -1189,6 +1233,7 @@
 
   window.SeascapeConversionTracking = {
     readTripParams: readTripParams,
+    rememberTrip: rememberTrip,
     trackEvent: trackEvent,
     shouldDelayTrackedNavigation: shouldDelayTrackedNavigation,
     continueTrackedNavigation: continueTrackedNavigation,

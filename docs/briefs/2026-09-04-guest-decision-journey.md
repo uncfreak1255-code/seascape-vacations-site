@@ -11,9 +11,17 @@
 
 ## Decision and scope
 
+October 1 interaction refinement: Sawyer approved the emil-design-eng review’s three upgrades. Preserve the Waterline composition and direct homepage Book now handoff. Add subtle pointer/touch press feedback to shared guest buttons, make keyboard scene changes and selector movement immediate, and retain clear postcard keyboard focus without lift/scale while shortening desktop pointer hover to 200ms. Reduced-motion behavior stays static. Scope: guest.css, arrival.css, guest.js, DESIGN.md, and focused browser regression coverage. The session owns mutation and source closeout; deployment remains separately gated.
+
+October 1 homepage booking shortcut: Sawyer requested that the homepage header button say “Book now” and open Seascape’s Hostaway booking platform directly. Scope: `src/index.njk`, `src/_includes/partials/guest-header.njk`, and the corresponding homepage live smoke assertion. Use the existing https://book.seascape-vacations.com destination in the same tab; retain the on-page date form and existing internal navigation. Preserve the button styling. Voice pass: Approved after drafting “Book now”, removing internal wording, and checking that the label accurately describes the booking destination. No reservation, payment, or deployment is authorized by this source change.
+
+October 2 header button, replacing the October 1 homepage shortcut: Sawyer decided that “Find your home is fine. As long as a guest doesn't have to jump through tons of loops to book a home quickly.” The header button on every guest page now says “Find your home” and opens `/properties/` in the same tab with the trip kept. The homepage no longer says “Book now” and no longer opens the Hostaway root, which is a search page with no home or dates chosen; `/404.html` and `/properties/` no longer say “Book Direct”, and the support, legal, about, guides index and stays index pages no longer say “Browse Homes”. Owner pages keep their own header button. Scope: `src/_includes/partials/guest-header.njk`, the page-level header overrides, the homepage live smoke marker, the catalog header assertion in `tests/visual/guest-decision-journey.spec.js`, and the button card in `scripts/design/design-sync/build.js`. Named deviations from “one button to the homes list”: (1) on `/properties/` the button jumps to the date fields on that page, because a link to the page the guest is already on would do nothing; (2) the header on `/guides/anna-maria-island-vs-siesta-key/` and `/guides/shelling-guide-florida/` used to say “Browse AMI Stays” and open the Anna Maria Island stays page. It now matches every other guest page. Both headers still report `guide_book_direct_click` with their existing placements (`ami_vs_siesta_nav`, `shelling_field_journal_nav`), so from this change those placements count presses that open the homes list, and any readback of them must be split at the release date. Links to the Anna Maria Island stays page inside both guides are unchanged; (3) the default button drops the arrow icon because it stays on this site; buttons with their own label keep it. The default button on other pages carries no click event, as before. Voice pass: “Find your home” is the existing approved default label and no other reader copy changes. No reservation, payment, or deployment is authorized by this source change.
+
 September 5 copy decision: Sawyer prefers “our homes” with no fixed inventory count. Apply this across navigation, homepage, catalog and descriptive metadata. Per-home capacity and room counts remain factual. The decorative scene number is an ordinal, with no inventory-total denominator.
 
-September 13 Blue House addition: Sawyer directed the site to add the live Blue House as the sixth managed home. Public Hostaway listing 589288 and its direct-booking page identify it as Pickleball Pool Home Retreat: 4 bedrooms, 2 bathrooms and 10 guests. The implementation uses 13 real photos selected from the current 30-photo Hostaway gallery and generated from the archived original-resolution Elite Realty Shots files. Source changes are limited to `src/_data/properties.js`, `src/_data/properties-fallback.json`, the generated property route and AI property summary, the shared verification-date rendering, responsive local photos, current inventory wording and the corresponding property, catalog, schema, smoke and visual checks. Lily’s home remains outside published inventory until its own verified facts, photography and bookable Hostaway record exist.
+September 13 Blue House addition: Sawyer directed the site to add the live Blue House as the sixth managed home. Public Hostaway listing 589288 and its direct-booking page identify it as Pickleball Pool Home Retreat: 4 bedrooms, 2 bathrooms and 10 guests at that dated inspection (capacity superseded by the September 30 correction below). The implementation uses 13 real photos selected from the current 30-photo Hostaway gallery and generated from the archived original-resolution Elite Realty Shots files. Source changes are limited to `src/_data/properties.js`, `src/_data/properties-fallback.json`, the generated property route and AI property summary, the shared verification-date rendering, responsive local photos, current inventory wording and the corresponding property, catalog, schema, smoke and visual checks. Lily’s home remains outside published inventory until its own verified facts, photography and bookable Hostaway record exist.
+
+September 30 Blue House capacity correction: Sawyer directly confirmed "11 guest is the truth" and authorized updating every affected Blue House capacity surface. This supersedes the earlier 10-guest Hub/API capture and September 13 Site brief; Hub PR #785 records the September 30 exact booking-listing 589288 display as 11 guests; a fresh read in this task also found `personCapacity: 11` and booking JSON-LD occupancy 11. Canonical `src/_data/properties-fallback.json` now carries 11 guests and matching specs. Regenerate `src/llms.txt`; the shared property layout, JSON-LD, catalog/homepage, and `src/ai-discovery.json.njk` consume the property data. Record a separate September 30 capacity verification date in the fallback, visible source note and AI facts; keep the other home details dated September 13. Update capacity regression and live-smoke assertions. Preserve 4BR/2BA, sleeping arrangements and all other facts; do not refresh unrelated verification dates. Scope is a factual source correction, not a new search/AI experiment, deployment or Hostaway write. Voice pass: Approved after drafting the count correction, removing internal wording from reader copy, and checking specificity.
 
 September 14 completeness: Blue House has no verified hot tub or spa. Scope `/stays/vacation-rentals-with-pool-and-hot-tub/` intro, FAQs, and highlights to the five homes that have one. Register listing 589288 in `src/assets/js/conversion-tracking.js` so checkout attribution and shortlist continuity keep `blue-house`. Keep the desktop postcard fan in one count-agnostic row with a sixth-card treatment. Require Blue House in the safe availability projection. SAVE50 landing, catalog openings, and Bradenton-area match counts follow the sixth home.
 
@@ -165,3 +173,92 @@ The integration includes current-main factual repairs on the following existing 
 ## September 10 usability repair
 
 Preserve the approved Waterline composition and property facts. Raise undersized supporting text to 12px and mobile body text to 15px; use 44px navigation and footer targets. Strengthen the photographic scrim, size catalog ordinals to fit, show plus/check comparison states, and wrap comparison row labels. Apply marine/paper styling to the existing SAVE50 panel. Restore Guest Support and booking/cancellation links using the existing routes; no policy or offer terms change. The scoped browser regression checks exercise these rendered states on desktop and mobile. Broader owner/legacy shell redesign, new reviews, fonts, maps, pricing, and gallery enhancements are outside this repair.
+
+## October 1 guide booking links and phone fit
+
+Sawyer approved the booking-path direction on 2026-10-01; this is its first slice. Every guide link that opened the booking engine's empty search page now opens `/properties/` in the same tab: 44 hard-coded links in 33 guide files plus the default second link in `src/_includes/partials/guide-conversion-kit.njk`. Link words are unchanged. The four winner guides' source files are untouched; their second link in the shared block changes through the partial. The retargeted links fire `guide_book_direct_click`; the kit's second link adds `placement=guide_kit_secondary`. Guides therefore stop firing `booking_engine_handoff`, so the funnel count in "Measurement and proof boundaries" reads that event from non-guide pages only.
+
+Phone fit: 21 guides were wider than the phone screen, which pushed the fixed bottom booking bar's button off screen. 24 wide tables in 20 guides now scroll inside an `overflow-x:auto` wrapper, the Anna Maria Island area guide's stats row wraps, and one hero image is capped at the screen width. `tests/visual/design-floors.spec.js` now checks every built guide for sideways scroll at 360, 375 and 393px. No header, home-page button, price, policy or property fact changes in this slice.
+
+## September 30 capacity repair — source files changed
+
+- `src/_data/properties-fallback.json`
+- `src/_data/seoPages.json` (only the Blue House guest count in the pool-and-hot-tub stay intro)
+- `src/llms.txt`
+- `src/_includes/layouts/property.njk` (separate capacity provenance; other homes keep existing notes)
+- `src/ai-discovery.json.njk` (optional capacity verification date)
+
+## Gate 0 — September 30 property capacity correction
+
+This receipt applies only to the confirmed capacity correction. No new search lane or experiment is opened.
+
+| Field | Required answer |
+| --- | --- |
+| Target query family | Exact property identity check only; no new keyword target |
+| Searcher intent | Confirm the group capacity of Pickleball Pool Home Retreat |
+| Current Seascape URL | `/properties/blue-house/`, `/stays/vacation-rentals-with-pool-and-hot-tub/` |
+| SERP observed date | 2026-09-30 |
+| SERP stale after | 2026-09-30 |
+| Current proof | Sawyer direct capacity confirmation and current exact booking-listing 589288 heading/data/schema read, 2026-09-30; pre-edit Site source says 10 |
+| Top visible competitors | No same-property competitor evidence used; the exact-name search returned Seascape detail, homepage and catalog plus unrelated listing results |
+| Competitor angle | Not a competitor or ranking action; preserve the existing page intent |
+| Visual/format gap | None; one count changes inside the existing sentence |
+| Seascape gap | Pool-and-hot-tub stay intro hard-codes sleeps 10 while approved Blue House capacity is 11 |
+| Search fit | Existing property and stay pages retain their URLs, titles, intent and checkout destination |
+| Local/GBP proof | Not applicable because the task corrects one home's capacity, without a GBP/local-pack change |
+| AEO/readback note | Align visible stay copy with property/schema/AI facts; no citation or ranking lift is claimed |
+| Recommendation | Correct the Blue House count to 11 and prove generated surfaces agree |
+| Attack status | none found after named checks |
+| Query variants inspected | Exact name: "Pickleball Pool Home Retreat" Bradenton |
+| SERP source | Web search of that exact name on 2026-09-30; Seascape snippets still showed the pre-release 10, with cached crawl ages distinct from current booking truth |
+| Competitor URLs inspected | None. Current source check covered property fallback, seoPages and templates; the SERP check used the exact-property query; competitor-page inspection was deliberately omitted because unrelated listings cannot establish this home's approved capacity |
+| Content gap and Seascape answer | 4 bedrooms, 2 bathrooms, up to 11 guests; preserve sleeping layout and amenity limits |
+| Design/format strategy | Existing shared templates and one unchanged stay paragraph |
+| Seascape proof available | Direct Sawyer confirmation and exact booking page data, September 30 |
+| Tools/plugins used | Connected GitHub source reads, read-only booking GET, web search, native regeneration and Site release gate |
+| Decision and reason | Correct: one factual count conflict, no expansion or impact claim |
+
+## October 1 trip memory
+
+Third slice of the booking-path direction Sawyer approved on 2026-10-01. A guest's last arrival date, departure date and guest count are kept in this browser (`localStorage` key `seascape_trip`, 30 days) and nothing else is stored with them. The page address remains the source of truth: memory fills only a guest page (homepage, `/properties/`, guides, stays, About) whose address names no trip, and never an owner page, a shared comparison link, or an address whose own dates were rejected. Changing the trip in a form replaces the memory; clearing the trip forgets it. A blocked or full browser store changes nothing else.
+
+Source: `src/assets/js/conversion-tracking.js` (`rememberTrip`, `restoreRememberedTrip`), `src/assets/js/guest.js`, `src/assets/js/catalog.js`, and `src/properties/index.njk`, which now loads the tracking script before the catalog script so the catalog reads the restored address. The catalog therefore applies the booking handoff fields to its own booking links, as the home pages already do. No event is added or renamed. Proof: `scripts/enforcement/trip-continuity.test.js` and `tests/visual/trip-continuity.spec.js`. Anti-claim: a remembered trip does not prove availability, price or a reservation.
+
+## October 1 home page booking button
+
+Fourth slice of the booking-path direction Sawyer approved on 2026-10-01. On a home's page the three booking buttons (beside the heading, in the booking panel, and in the bottom bar on a phone) now say the same word and do the same thing:
+
+| What the page knows | Button | Where it goes |
+| --- | --- | --- |
+| No dates yet | `Check dates` | The date fields |
+| Dates open, group size chosen | `Book these dates` | Hostaway's priced checkout for this home and stay, in the same tab |
+| Dates open, no group size | `Book these dates` | The group-size field |
+| Dates booked | `See open homes` | `/properties/` with the dates and group size kept |
+| Minimum stay, or a closed arrival or departure day | `Check dates` | The date fields, with the existing message |
+| The dates check failed or the calendar could not be read | `Check dates` | The home's booking page with the trip filled in, in the same tab |
+
+The separate text link `Open the booking page` is removed. On a phone the button beside the heading is hidden, so the bottom bar is the one booking button; desktop keeps the heading button.
+
+Reader copy added or changed: `Check dates` (was `Check dates & total`), `Book these dates`, `See open homes`, `Choose your dates and group size. You’ll see the full price before you pay.`, `These dates are open. You’ll see the full price on the next screen, before you pay.`, `These dates are open. Choose your group size to book them.` and `Choose your arrival and departure dates.`
+
+Source: `src/assets/js/guest.js`, `src/_includes/layouts/property.njk`, `src/_includes/partials/guest-trip-form.njk`, `src/css/guest.css`, and `src/assets/js/conversion-tracking.js` (a checkout address now carries the same home and listing fields as a listing address). No event is added or renamed; `property_booking_page_click` reports the checkout press. Proof: `tests/visual/home-booking-button.spec.js`, `scripts/recovery/assert-direct-booking-event-smoke.js`, and a daily live-smoke check in `scripts/recovery/assert-live-smoke.js` that loads the checkout address for an open stay and fails when the priced checkout stops appearing.
+
+Anti-claims: open dates come from a cached calendar and are not a quote or a reservation; the page promises the full price before payment and says nothing about cancellation terms on the checkout screen; nothing is reserved until the guest pays on Hostaway.
+
+## October 2 catalog card to checkout
+
+Fifth slice of the booking-path direction Sawyer approved on 2026-10-01. On `/properties/`, once the live dates check confirms a home is open, that home's card button and its button in the comparison say and do what the home's own page does:
+
+| What the catalog knows | Button | Where it goes |
+| --- | --- | --- |
+| No dates yet | `Check dates` | The home's booking page, in a new tab (unchanged) |
+| Dates open, group size chosen | `Book these dates` | Hostaway's priced checkout for that home and stay, in the same tab |
+| Dates open, no group size | `Book these dates` | The group-size field; the size chosen there applies at once |
+| Dates booked, or a stay rule not met | none | The card is hidden, as before |
+| The dates check failed or a calendar could not be read | `Check dates` | The home's booking page with the trip filled in, in a new tab (unchanged) |
+
+Reader copy added or changed: the count line after an open-dates answer ends `You’ll see the full price before you pay.` with a group size and `Choose your group size to book.` without one (was `Price and cancellation terms are on the booking page.`); the trip status says `These dates are open. Choose your group size to book them.` when a guest presses `Book these dates` without a group size; the comparison's trip line ends `These dates are open.` when the dates check confirmed the homes shown (otherwise `Dates and prices need confirmation.`, unchanged). The card note `Full price, fees and cancellation terms on the booking page.` is unchanged; Hostaway's checkout screen shows the total and the cancellation policy (read on 2026-10-02, load and read only).
+
+Source: `src/assets/js/catalog.js`, plus one rule in `src/css/catalog.css` that keeps the comparison's button at its phone size so the longer word fits on two lines. No event is added or renamed; `catalog_book_direct_click` reports the checkout press and is sent before the same-tab navigation. Pressing `Book these dates` without a group size reports no booking click. Proof: `tests/visual/catalog-card-checkout.spec.js` and the daily checkout-address check in `scripts/recovery/assert-live-smoke.js`, whose rollback message now names both the home page and the catalog.
+
+Anti-claims: the same as the home page button. Open dates come from a cached calendar and are not a quote or a reservation; nothing is reserved until the guest pays on Hostaway.

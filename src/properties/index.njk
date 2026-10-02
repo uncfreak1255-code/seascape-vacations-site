@@ -7,12 +7,10 @@ pageDescription: "Direct-booking Bradenton and Sarasota stays near Anna Maria Is
 pageImage: "https://seascape-vacations.com/images/homes/sarasota-luxe/22.webp"
 pageUpdated: "2026-09-04T12:00:00-04:00"
 navActive: "properties"
-navButtonLabel: "Book Direct"
-navButtonHref: "https://book.seascape-vacations.com"
-navButtonTarget: "_blank"
-navButtonRel: "noopener noreferrer"
+navButtonHref: "#catalog-trip"
 headExtra: |
   <link rel="stylesheet" href="/css/catalog.css">
+  <script defer src="/assets/js/conversion-tracking.js"></script>
   <script defer src="/assets/js/catalog.js"></script>
 ---
 {% from "partials/ui-icon.njk" import uiIcon %}
@@ -42,7 +40,7 @@ headExtra: |
 </script>
 
 <div class="catalog-page" data-catalog-version="waterline-v3">
-  <nav class="catalog-breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true"> / </span><span aria-current="page">Our homes</span></nav>
+  <nav class="catalog-breadcrumb" aria-label="Breadcrumb"><a href="/" data-trip-link>Home</a><span aria-hidden="true"> / </span><span aria-current="page">Our homes</span></nav>
   {% include "partials/save50-offer.njk" %}
   <header class="catalog-intro">
     <div class="catalog-intro-copy">
@@ -57,7 +55,7 @@ headExtra: |
     </figure>
   </header>
 
-  <section class="catalog-trip" aria-label="Your trip">
+  <section class="catalog-trip" id="catalog-trip" aria-label="Your trip">
     <div class="catalog-trip-heading"><h2>Your trip</h2><span>Start with your group. Keep your dates as you explore.</span></div>
     <form id="catalog-trip-form" method="get" action="/properties/">
       <div><label for="trip-arrive">Arrival</label><input id="trip-arrive" name="arrive" type="date"></div>

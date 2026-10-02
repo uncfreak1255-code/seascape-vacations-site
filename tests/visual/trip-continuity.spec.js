@@ -63,6 +63,8 @@ test('guide to stay to property retains the trip and GA4 outbound lineage agrees
   await detail.click();
   await expect(page).toHaveURL(/\/properties\/[^/]+\//);
   expectTrip(page.url());
+  // The booking links are rewritten when the dates check answers, so read them after it has.
+  await expect(page.locator('form [data-booking-action]')).toHaveText('Book these dates');
   const checkout = page.locator('a[data-track-event="property_booking_page_click"]:visible').first();
   const href = await checkout.getAttribute('href');
   expectTrip(href, true);
@@ -97,4 +99,77 @@ test('invalid date and guest queries do not reach the booking page', async ({ pa
     expect(url.searchParams.get('start')).not.toBe('2026-12-12');
     expect(url.searchParams.get('end')).not.toBe('2026-12-05');
   }
+});
+
+async function open(page, route) {
+  await page.goto(route + (route.includes('?') ? '&' : '?') + 'visual-test=1', { waitUntil: 'networkidle' });
+  await page.waitForFunction(() => Boolean(window.SeascapeConversionTracking));
+}
+
+test('a remembered trip follows the guest to pages opened without one', async ({ page }) => {
+  await visit(page, '/properties/dockside-dreams/?' + trip);
+  await open(page, '/');
+  expectTrip(page.url());
+  await expect(page.locator('#home-trip-arrive')).toHaveValue('2026-12-05');
+  await expect(page.locator('#home-trip-depart')).toHaveValue('2026-12-12');
+  await expect(page.locator('#home-trip-guests')).toHaveValue('8');
+
+  await open(page, '/properties/');
+  await expect(page.locator('#trip-arrive')).toHaveValue('2026-12-05');
+  await expect(page.locator('#trip-guests')).toHaveValue('8');
+  const links = await page.locator('.catalog-card:visible a[data-track-event="catalog_book_direct_click"]:visible').evaluateAll(nodes => nodes.map(n => n.href));
+  expect(links.length).toBeGreaterThan(0);
+  for (const href of links) {
+    expectTrip(href, true);
+    // The catalog script now runs after tracking, so it must keep the handoff fields itself.
+    const url = new URL(href);
+    expect(url.searchParams.get('listing_id'), href).toBeTruthy();
+    expect(url.searchParams.get('sv_session_id'), href).toBeTruthy();
+    expect(url.searchParams.get('sv_handoff_id'), href).toBeTruthy();
+  }
+
+  await open(page, '/guides/bradenton-vs-sarasota/');
+  const homes = await page.locator('a[data-trip-link]').evaluateAll(nodes => nodes.map(n => n.href).find(href => new URL(href).pathname === '/properties/'));
+  expectTrip(homes);
+  expectTrip(await page.locator('a[data-track-event="guide_stay_click"]').first().getAttribute('href'));
+
+  await open(page, '/property-management/');
+  expect(new URL(page.url()).searchParams.has('arrive')).toBe(false);
+});
+
+test('flexible dates on the catalog are forgotten on the next page', async ({ page }) => {
+  await visit(page, '/properties/?' + trip);
+  await page.locator('#clear-dates').click();
+  await open(page, '/');
+  await expect(page.locator('#home-trip-arrive')).toHaveValue('');
+  await expect(page.locator('#home-trip-depart')).toHaveValue('');
+  await expect(page.locator('#home-trip-guests')).toHaveValue('8');
+});
+
+test('a shared shortlist or a rejected trip link is not given the remembered dates', async ({ page }) => {
+  await visit(page, '/properties/?' + trip);
+  await open(page, '/properties/?compare=dockside-dreams,the-oasis');
+  expect(new URL(page.url()).searchParams.has('arrive')).toBe(false);
+  await expect(page.locator('#trip-arrive')).toHaveValue('');
+  await open(page, '/properties/?arrive=2026-12-12&depart=2026-12-05');
+  await expect(page.locator('#trip-arrive')).toHaveValue('');
+  // Neither visit replaced the trip this guest chose earlier.
+  await open(page, '/');
+  await expect(page.locator('#home-trip-arrive')).toHaveValue('2026-12-05');
+});
+
+test('no catalog link keeps dates the guest changed or cleared', async ({ page }) => {
+  await visit(page, '/properties/?' + trip);
+  await page.locator('#trip-depart').fill('2026-12-10');
+  await page.getByRole('button', { name: 'Find my home', exact: true }).click();
+  const withOldDeparture = await page.locator('a[href]').evaluateAll(nodes => nodes.map(n => n.href).filter(href => href.includes('2026-12-12')));
+  expect(withOldDeparture).toEqual([]);
+
+  await page.locator('#clear-dates').click();
+  const withDates = await page.locator('a[href]').evaluateAll(nodes => nodes.filter(n => n.origin === location.origin && new URL(n.href).searchParams.has('arrive')).map(n => n.href));
+  expect(withDates).toEqual([]);
+  // The breadcrumb is a real way back to the homepage; it must not bring the cleared dates with it.
+  await page.locator('.catalog-breadcrumb a').click();
+  await expect(page.locator('#home-trip-arrive')).toHaveValue('');
+  await expect(page.locator('#home-trip-guests')).toHaveValue('8');
 });

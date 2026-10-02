@@ -1,36 +1,36 @@
 {
   "routes": {
     "/": {
-      "script": 70220,
-      "stylesheet": 56949
+      "script": 75755,
+      "stylesheet": 57294
     },
     "/properties/": {
-      "script": 90192,
-      "stylesheet": 56330
+      "script": 98253,
+      "stylesheet": 56913
     },
     "/property-management/": {
-      "script": 81519,
-      "stylesheet": 53600
+      "script": 87054,
+      "stylesheet": 53979
     },
     "/property-management/vacation-rental-licensing-florida/": {
-      "script": 50571,
-      "stylesheet": 34373
+      "script": 54090,
+      "stylesheet": 34752
     },
     "/property-management/vacation-rental-management-fees-florida/": {
-      "script": 50571,
-      "stylesheet": 34373
+      "script": 54090,
+      "stylesheet": 34752
     },
     "/property-management/vrbo-management-services-florida/": {
-      "script": 50571,
-      "stylesheet": 34373
+      "script": 54090,
+      "stylesheet": 34752
     },
     "/stays/anna-maria-island-beachfront-rentals/": {
-      "script": 50571,
-      "stylesheet": 34373
+      "script": 54090,
+      "stylesheet": 34752
     },
     "/stays/anna-maria-island-vacation-rentals/": {
-      "script": 50571,
-      "stylesheet": 34373
+      "script": 54090,
+      "stylesheet": 34752
     }
   },
   "raises": [
@@ -129,6 +129,278 @@
       "to": 81519,
       "reason": "Homepage leave-the-page email signup dialog approved by Sawyer 2026-09-27 (+1.3KB guest.js, +0.7KB arrival.css)",
       "date": "2026-09-27"
+    },
+    {
+      "route": "/",
+      "metric": "script",
+      "from": 70220,
+      "to": 71189,
+      "reason": "Sawyer-approved guest interaction feedback and immediate keyboard scene selection; measured by PR #640 performance-budget run 36920910513 at de890f9e on 2026-10-01 (+816-969 bytes JS, +410-444 bytes CSS). Lighthouse ceilings unchanged.",
+      "date": "2026-10-02"
+    },
+    {
+      "route": "/",
+      "metric": "stylesheet",
+      "from": 56949,
+      "to": 57359,
+      "reason": "Sawyer-approved guest interaction feedback and immediate keyboard scene selection; measured by PR #640 performance-budget run 36920910513 at de890f9e on 2026-10-01 (+816-969 bytes JS, +410-444 bytes CSS). Lighthouse ceilings unchanged.",
+      "date": "2026-10-02"
+    },
+    {
+      "route": "/properties/",
+      "metric": "script",
+      "from": 90192,
+      "to": 91161,
+      "reason": "Sawyer-approved guest interaction feedback and immediate keyboard scene selection; measured by PR #640 performance-budget run 36920910513 at de890f9e on 2026-10-01 (+816-969 bytes JS, +410-444 bytes CSS). Lighthouse ceilings unchanged.",
+      "date": "2026-10-02"
+    },
+    {
+      "route": "/properties/",
+      "metric": "stylesheet",
+      "from": 56330,
+      "to": 56774,
+      "reason": "Sawyer-approved guest interaction feedback and immediate keyboard scene selection; measured by PR #640 performance-budget run 36920910513 at de890f9e on 2026-10-01 (+816-969 bytes JS, +410-444 bytes CSS). Lighthouse ceilings unchanged.",
+      "date": "2026-10-02"
+    },
+    {
+      "route": "/property-management/",
+      "metric": "script",
+      "from": 81519,
+      "to": 82488,
+      "reason": "Sawyer-approved guest interaction feedback and immediate keyboard scene selection; measured by PR #640 performance-budget run 36920910513 at de890f9e on 2026-10-01 (+816-969 bytes JS, +410-444 bytes CSS). Lighthouse ceilings unchanged.",
+      "date": "2026-10-02"
+    },
+    {
+      "route": "/property-management/",
+      "metric": "stylesheet",
+      "from": 53600,
+      "to": 54044,
+      "reason": "Sawyer-approved guest interaction feedback and immediate keyboard scene selection; measured by PR #640 performance-budget run 36920910513 at de890f9e on 2026-10-01 (+816-969 bytes JS, +410-444 bytes CSS). Lighthouse ceilings unchanged.",
+      "date": "2026-10-02"
+    },
+    {
+      "route": "/property-management/vacation-rental-management-fees-florida/",
+      "metric": "script",
+      "from": 50571,
+      "to": 51387,
+      "reason": "Sawyer-approved guest interaction feedback and immediate keyboard scene selection; measured by PR #640 performance-budget run 36920910513 at de890f9e on 2026-10-01 (+816-969 bytes JS, +410-444 bytes CSS). Lighthouse ceilings unchanged.",
+      "date": "2026-10-02"
+    },
+    {
+      "route": "/property-management/vacation-rental-management-fees-florida/",
+      "metric": "stylesheet",
+      "from": 34373,
+      "to": 34817,
+      "reason": "Sawyer-approved guest interaction feedback and immediate keyboard scene selection; measured by PR #640 performance-budget run 36920910513 at de890f9e on 2026-10-01 (+816-969 bytes JS, +410-444 bytes CSS). Lighthouse ceilings unchanged.",
+      "date": "2026-10-02"
+    },
+    {
+      "route": "/property-management/vacation-rental-licensing-florida/",
+      "metric": "script",
+      "from": 50571,
+      "to": 51387,
+      "reason": "Sawyer-approved guest interaction feedback and immediate keyboard scene selection; measured by PR #640 performance-budget run 36920910513 at de890f9e on 2026-10-01 (+816-969 bytes JS, +410-444 bytes CSS). Lighthouse ceilings unchanged.",
+      "date": "2026-10-02"
+    },
+    {
+      "route": "/property-management/vacation-rental-licensing-florida/",
+      "metric": "stylesheet",
+      "from": 34373,
+      "to": 34817,
+      "reason": "Sawyer-approved guest interaction feedback and immediate keyboard scene selection; measured by PR #640 performance-budget run 36920910513 at de890f9e on 2026-10-01 (+816-969 bytes JS, +410-444 bytes CSS). Lighthouse ceilings unchanged.",
+      "date": "2026-10-02"
+    },
+    {
+      "route": "/property-management/vrbo-management-services-florida/",
+      "metric": "script",
+      "from": 50571,
+      "to": 51387,
+      "reason": "Sawyer-approved guest interaction feedback and immediate keyboard scene selection; measured by PR #640 performance-budget run 36920910513 at de890f9e on 2026-10-01 (+816-969 bytes JS, +410-444 bytes CSS). Lighthouse ceilings unchanged.",
+      "date": "2026-10-02"
+    },
+    {
+      "route": "/property-management/vrbo-management-services-florida/",
+      "metric": "stylesheet",
+      "from": 34373,
+      "to": 34817,
+      "reason": "Sawyer-approved guest interaction feedback and immediate keyboard scene selection; measured by PR #640 performance-budget run 36920910513 at de890f9e on 2026-10-01 (+816-969 bytes JS, +410-444 bytes CSS). Lighthouse ceilings unchanged.",
+      "date": "2026-10-02"
+    },
+    {
+      "route": "/stays/anna-maria-island-vacation-rentals/",
+      "metric": "script",
+      "from": 50571,
+      "to": 51387,
+      "reason": "Sawyer-approved guest interaction feedback and immediate keyboard scene selection; measured by PR #640 performance-budget run 36920910513 at de890f9e on 2026-10-01 (+816-969 bytes JS, +410-444 bytes CSS). Lighthouse ceilings unchanged.",
+      "date": "2026-10-02"
+    },
+    {
+      "route": "/stays/anna-maria-island-vacation-rentals/",
+      "metric": "stylesheet",
+      "from": 34373,
+      "to": 34817,
+      "reason": "Sawyer-approved guest interaction feedback and immediate keyboard scene selection; measured by PR #640 performance-budget run 36920910513 at de890f9e on 2026-10-01 (+816-969 bytes JS, +410-444 bytes CSS). Lighthouse ceilings unchanged.",
+      "date": "2026-10-02"
+    },
+    {
+      "route": "/stays/anna-maria-island-beachfront-rentals/",
+      "metric": "script",
+      "from": 50571,
+      "to": 51387,
+      "reason": "Sawyer-approved guest interaction feedback and immediate keyboard scene selection; measured by PR #640 performance-budget run 36920910513 at de890f9e on 2026-10-01 (+816-969 bytes JS, +410-444 bytes CSS). Lighthouse ceilings unchanged.",
+      "date": "2026-10-02"
+    },
+    {
+      "route": "/stays/anna-maria-island-beachfront-rentals/",
+      "metric": "stylesheet",
+      "from": 34373,
+      "to": 34817,
+      "reason": "Sawyer-approved guest interaction feedback and immediate keyboard scene selection; measured by PR #640 performance-budget run 36920910513 at de890f9e on 2026-10-01 (+816-969 bytes JS, +410-444 bytes CSS). Lighthouse ceilings unchanged.",
+      "date": "2026-10-02"
+    },
+    {
+      "route": "/",
+      "metric": "script",
+      "from": 71189,
+      "to": 74001,
+      "reason": "Trip memory (PR #642): arrive, depart and group size are kept in browser storage and carried between pages; about 2.7 to 3.2 KB more script per route. Raise approved by Sawyer on 2026-10-02.",
+      "date": "2026-10-02"
+    },
+    {
+      "route": "/properties/",
+      "metric": "script",
+      "from": 91161,
+      "to": 94409,
+      "reason": "Trip memory (PR #642): arrive, depart and group size are kept in browser storage and carried between pages; about 2.7 to 3.2 KB more script per route. Raise approved by Sawyer on 2026-10-02.",
+      "date": "2026-10-02"
+    },
+    {
+      "route": "/property-management/",
+      "metric": "script",
+      "from": 82488,
+      "to": 85300,
+      "reason": "Trip memory (PR #642): arrive, depart and group size are kept in browser storage and carried between pages; about 2.7 to 3.2 KB more script per route. Raise approved by Sawyer on 2026-10-02.",
+      "date": "2026-10-02"
+    },
+    {
+      "route": "/property-management/vacation-rental-management-fees-florida/",
+      "metric": "script",
+      "from": 51387,
+      "to": 54064,
+      "reason": "Trip memory (PR #642): arrive, depart and group size are kept in browser storage and carried between pages; about 2.7 to 3.2 KB more script per route. Raise approved by Sawyer on 2026-10-02.",
+      "date": "2026-10-02"
+    },
+    {
+      "route": "/property-management/vacation-rental-licensing-florida/",
+      "metric": "script",
+      "from": 51387,
+      "to": 54064,
+      "reason": "Trip memory (PR #642): arrive, depart and group size are kept in browser storage and carried between pages; about 2.7 to 3.2 KB more script per route. Raise approved by Sawyer on 2026-10-02.",
+      "date": "2026-10-02"
+    },
+    {
+      "route": "/property-management/vrbo-management-services-florida/",
+      "metric": "script",
+      "from": 51387,
+      "to": 54064,
+      "reason": "Trip memory (PR #642): arrive, depart and group size are kept in browser storage and carried between pages; about 2.7 to 3.2 KB more script per route. Raise approved by Sawyer on 2026-10-02.",
+      "date": "2026-10-02"
+    },
+    {
+      "route": "/stays/anna-maria-island-vacation-rentals/",
+      "metric": "script",
+      "from": 51387,
+      "to": 54064,
+      "reason": "Trip memory (PR #642): arrive, depart and group size are kept in browser storage and carried between pages; about 2.7 to 3.2 KB more script per route. Raise approved by Sawyer on 2026-10-02.",
+      "date": "2026-10-02"
+    },
+    {
+      "route": "/stays/anna-maria-island-beachfront-rentals/",
+      "metric": "script",
+      "from": 51387,
+      "to": 54064,
+      "reason": "Trip memory (PR #642): arrive, depart and group size are kept in browser storage and carried between pages; about 2.7 to 3.2 KB more script per route. Raise approved by Sawyer on 2026-10-02.",
+      "date": "2026-10-02"
+    },
+    {
+      "route": "/",
+      "metric": "script",
+      "from": 74001,
+      "to": 75755,
+      "reason": "Home page booking button (PR #643): one button whose word and destination follow the dates check; about 1.8 KB more script on the three pages that load guest.js, 26 bytes elsewhere. Raise approved by Sawyer on 2026-10-02.",
+      "date": "2026-10-02"
+    },
+    {
+      "route": "/properties/",
+      "metric": "script",
+      "from": 94409,
+      "to": 96163,
+      "reason": "Home page booking button (PR #643): one button whose word and destination follow the dates check; about 1.8 KB more script on the three pages that load guest.js, 26 bytes elsewhere. Raise approved by Sawyer on 2026-10-02.",
+      "date": "2026-10-02"
+    },
+    {
+      "route": "/property-management/",
+      "metric": "script",
+      "from": 85300,
+      "to": 87054,
+      "reason": "Home page booking button (PR #643): one button whose word and destination follow the dates check; about 1.8 KB more script on the three pages that load guest.js, 26 bytes elsewhere. Raise approved by Sawyer on 2026-10-02.",
+      "date": "2026-10-02"
+    },
+    {
+      "route": "/property-management/vacation-rental-management-fees-florida/",
+      "metric": "script",
+      "from": 54064,
+      "to": 54090,
+      "reason": "Home page booking button (PR #643): one button whose word and destination follow the dates check; about 1.8 KB more script on the three pages that load guest.js, 26 bytes elsewhere. Raise approved by Sawyer on 2026-10-02.",
+      "date": "2026-10-02"
+    },
+    {
+      "route": "/property-management/vacation-rental-licensing-florida/",
+      "metric": "script",
+      "from": 54064,
+      "to": 54090,
+      "reason": "Home page booking button (PR #643): one button whose word and destination follow the dates check; about 1.8 KB more script on the three pages that load guest.js, 26 bytes elsewhere. Raise approved by Sawyer on 2026-10-02.",
+      "date": "2026-10-02"
+    },
+    {
+      "route": "/property-management/vrbo-management-services-florida/",
+      "metric": "script",
+      "from": 54064,
+      "to": 54090,
+      "reason": "Home page booking button (PR #643): one button whose word and destination follow the dates check; about 1.8 KB more script on the three pages that load guest.js, 26 bytes elsewhere. Raise approved by Sawyer on 2026-10-02.",
+      "date": "2026-10-02"
+    },
+    {
+      "route": "/stays/anna-maria-island-vacation-rentals/",
+      "metric": "script",
+      "from": 54064,
+      "to": 54090,
+      "reason": "Home page booking button (PR #643): one button whose word and destination follow the dates check; about 1.8 KB more script on the three pages that load guest.js, 26 bytes elsewhere. Raise approved by Sawyer on 2026-10-02.",
+      "date": "2026-10-02"
+    },
+    {
+      "route": "/stays/anna-maria-island-beachfront-rentals/",
+      "metric": "script",
+      "from": 54064,
+      "to": 54090,
+      "reason": "Home page booking button (PR #643): one button whose word and destination follow the dates check; about 1.8 KB more script on the three pages that load guest.js, 26 bytes elsewhere. Raise approved by Sawyer on 2026-10-02.",
+      "date": "2026-10-02"
+    },
+    {
+      "route": "/properties/",
+      "metric": "script",
+      "from": 96163,
+      "to": 98253,
+      "reason": "Catalog card to checkout (PR #644): an open home's card books straight to the priced checkout; about 2.1 KB more script and 204 bytes more stylesheet on /properties/ only. Raise approved by Sawyer on 2026-10-02.",
+      "date": "2026-10-02"
+    },
+    {
+      "route": "/properties/",
+      "metric": "stylesheet",
+      "from": 56709,
+      "to": 56913,
+      "reason": "Catalog card to checkout (PR #644): an open home's card books straight to the priced checkout; about 2.1 KB more script and 204 bytes more stylesheet on /properties/ only. Raise approved by Sawyer on 2026-10-02.",
+      "date": "2026-10-02"
     }
   ]
 }
