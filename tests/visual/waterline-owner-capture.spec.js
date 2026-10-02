@@ -72,6 +72,27 @@ test('owner intake requires and records submitter authority while keeping the st
   await expect.poll(() => page.evaluate(() => window.__ownerAuthoritySubmission)).toBe('owner_or_authorized_representative');
 });
 
+test('generated owner pages require the same submitter authority before the review form submits', async ({ page }) => {
+  await registerStableNetwork(page);
+  await page.goto('/property-management/airbnb-management-services-sarasota/', { waitUntil: 'networkidle' });
+  const form = page.locator('#owner-cta form[name="owner-revenue-teardown"]');
+  const authority = form.locator('[name="submitter_authority"]');
+
+  await expect(authority).toHaveAttribute('required', '');
+  await expect(authority).toHaveAttribute('value', 'owner_or_authorized_representative');
+  await expect(form.locator('[name="owner_statement"]')).not.toHaveAttribute('required', '');
+
+  await form.locator('[name="name"]').fill('Test Owner');
+  await form.locator('[name="email"]').fill('test-owner@example.com');
+  await form.locator('[name="what_feels_off"]').fill('I want to understand my current payout.');
+  expect(await form.evaluate((el) => el.checkValidity())).toBe(false);
+  expect(await authority.evaluate((el) => el.validity.valueMissing)).toBe(true);
+
+  await form.getByText('I confirm I am the property owner or an authorized representative for this property.').click();
+  await expect(authority).toBeChecked();
+  expect(await form.evaluate((el) => el.checkValidity())).toBe(true);
+});
+
 test('signup posts once, carries consent context, and reveals SAVE50 only after completion', async ({ page }) => {
   await visit(page);
   expect(await page.locator('#email-signup').innerText()).not.toContain('SAVE50');
