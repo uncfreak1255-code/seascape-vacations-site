@@ -195,6 +195,27 @@ test('a first group size chosen while edited dates wait does not bring back the 
   expect((await links(cardButtons(page))).map(link => link.text + ' ' + new URL(link.href).pathname)).toEqual(open.map(slug => 'Check dates /listings/' + listingIds[slug]));
 });
 
+test('a group size changed while the dates check is running is not booked with the earlier size', async ({ page }) => {
+  let release;
+  const held = new Promise(resolve => { release = resolve; });
+  await visit(page, 'guests=6', async route => { await held; await answer(route); });
+  await page.locator('#trip-arrive').fill('2026-11-07');
+  await page.locator('#trip-depart').fill('2026-11-14');
+  await page.locator('#catalog-trip-form [type="submit"]').click();
+  // The answer for 6 guests is still on its way when the form changes to 4.
+  await page.locator('#trip-guests').selectOption('4');
+  release();
+  await expect(count(page)).toContainText('3 homes are open for these dates.');
+  expect((await links(cardButtons(page))).map(link => link.text + ' ' + new URL(link.href).pathname)).toEqual(open.map(slug => 'Check dates /listings/' + listingIds[slug]));
+
+  await page.locator('#catalog-trip-form [type="submit"]').click();
+  await expect(cardButtons(page)).toHaveText(['Book these dates', 'Book these dates', 'Book these dates']);
+  for (const link of await links(cardButtons(page))) {
+    expect(new URL(link.href).pathname).toBe('/checkout/' + listingIds[link.slug]);
+    expect(new URL(link.href).searchParams.get('numberOfGuests')).toBe('4');
+  }
+});
+
 test('a failed dates check keeps every card on its listing page in a new tab', async ({ page }) => {
   await visit(page, dates + '&guests=6', route => route.abort());
   await expect(count(page)).toContainText('Availability could not be checked.');

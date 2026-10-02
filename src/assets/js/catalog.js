@@ -18,10 +18,11 @@
   var originalLinks = new Map();
   var availabilityRequest = 0;
   var visualTestMode = params.get("visual-test") === "1";
-  // Homes confirmed open for the dates last searched.
+  // Homes open for the last search.
   var openHomes = [];
-  // Dates edited since that search are not confirmed.
-  function isOpen(home) { return arrive.value === trip.arrive && depart.value === trip.depart && openHomes.includes(home); }
+  // Only while the form still shows it.
+  function searched() { return arrive.value === trip.arrive && depart.value === trip.depart; }
+  function isOpen(home) { return searched() && guests.value === trip.guests && openHomes.includes(home); }
 
   function preserveSave50Params(url) {
     var campaign = (params.get("utm_campaign") || "").trim().toLowerCase();
@@ -278,8 +279,8 @@
     status.textContent = "These dates are open. Choose your group size to book them.";
     guests.scrollIntoView({block:"center"}); guests.focus();
   });
-  // For open homes, a group size applies at once; else it voids the answer.
-  guests.addEventListener("change",function() { if (isOpen(openHomes[0])) submitTrip(); else openHomes = []; });
+  // For open homes, a group size applies at once.
+  guests.addEventListener("change",function() { if (searched() && openHomes.length) submitTrip(); });
   function datesEdited() { depart.setCustomValidity(""); depart.min=arrive.value || today; if (openHomes.length) { renderComparison(); syncLinks(); } }
   depart.addEventListener("input",datesEdited);
   arrive.addEventListener("input",datesEdited);
