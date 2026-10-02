@@ -213,7 +213,9 @@ its trigger, so no per-skill index is kept here.
   `update-visual-baselines.yml` workflow for the task branch with the route
   slug in `grep`. It runs only for Sawyer's GitHub account, so start it from
   the Mac session, not from a cloud thread. The bot commit does not start the
-  PR checks again; push your next real commit to start them.
+  PR checks again; push your next real commit to start them. Run it without
+  asking Sawyer when the screenshot change is intended; use only your own PR
+  branch and report the run ID and the pushed commit.
 - Live post-merge smoke when the release surface matters:
   `npm run verify:recovery:live && npm run verify:direct-booking-events && npm run verify:owner-funnel-routes`
 - The same smoke trio also runs daily via `.github/workflows/live-smoke.yml`
