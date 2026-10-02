@@ -14,21 +14,30 @@ const { gotoMarketingRoute, registerStableNetwork } = require("./test-helpers");
  * spec proves those floors on every money route.
  *
  * Scope rule (SPEC-common.md): F1 and F2 check the whole page on
- * `body.guest-site` pages (home, catalog, the six property pages, the owner page) and only
+ * `body.guest-site` pages (home, catalog, the six property pages, the owner page)
+ * and on `body.planning-guide` pages (DESIGN.md "Planning guides"), and only
  * the header/mobile-menu/footer subtrees on every other route, whose bodies
  * are not fully restyled in this PR. The scope is read from the live DOM
- * (`document.body.classList.contains('guest-site')`), not hardcoded per
- * route, so it stays correct as routes move between the two states.
+ * (`document.body.classList`), not hardcoded per route, so it stays correct as
+ * routes move between the states.
  */
 
 const SCENES = ["the-oasis", "dockside-dreams", "sarasota-luxe", "river-house", "bradenton-pool-home", "blue-house"];
+// Guides restyled with the planning-guide frame. Kept local (not in routes.js)
+// so the floors cover them without adding visual/axe snapshot routes.
+const planningGuideRoutes = [
+  { slug: "guide-ami-vacation-cost", path: "/guides/anna-maria-island-vacation-cost/", readySelector: "main h1" },
+];
+const floorRoutes = [...moneyRoutes, ...planningGuideRoutes];
+
 const SHELL_ROOT_SELECTOR = ".g-header, .g-mobile-menu, .g-footer";
 
 // -- in-page scan functions (serialized into the browser by page.evaluate) --
 
 function collectSmallText() {
   const FLOOR = 12;
-  const isGuestSite = document.body.classList.contains("guest-site");
+  const isGuestSite =
+    document.body.classList.contains("guest-site") || document.body.classList.contains("planning-guide");
   const roots = isGuestSite
     ? [document.body]
     : Array.from(document.querySelectorAll(".g-header, .g-mobile-menu, .g-footer"));
@@ -82,7 +91,8 @@ function collectSmallText() {
 
 function collectSmallTargets() {
   const FLOOR = 44;
-  const isGuestSite = document.body.classList.contains("guest-site");
+  const isGuestSite =
+    document.body.classList.contains("guest-site") || document.body.classList.contains("planning-guide");
   const roots = isGuestSite
     ? [document.body]
     : Array.from(document.querySelectorAll(".g-header, .g-mobile-menu, .g-footer"));
@@ -221,7 +231,7 @@ function heroTextSelectors(isMobileProject) {
 
 // -- F1: no visible text below the 12px floor --
 
-for (const routeConfig of moneyRoutes) {
+for (const routeConfig of floorRoutes) {
   test(`${routeConfig.slug} — F1 no text below 12px`, async ({ page }, testInfo) => {
     await gotoMarketingRoute(page, routeConfig);
     const offenders = await page.evaluate(collectSmallText);
@@ -236,7 +246,7 @@ for (const routeConfig of moneyRoutes) {
 
 // -- F2: mobile tap targets reach 44x44 --
 
-for (const routeConfig of moneyRoutes) {
+for (const routeConfig of floorRoutes) {
   test(`${routeConfig.slug} — F2 tap targets reach 44x44 on mobile`, async ({ page }, testInfo) => {
     test.skip(testInfo.project.name !== "mobile-chromium", "F2 tap targets is a mobile-only floor");
 
@@ -268,7 +278,7 @@ for (const routeConfig of moneyRoutes) {
 
 // -- F3: no horizontal overflow at 360, 375, 393 (mobile) or the desktop viewport --
 
-for (const routeConfig of moneyRoutes) {
+for (const routeConfig of floorRoutes) {
   test(`${routeConfig.slug} — F3 no horizontal overflow`, async ({ page }, testInfo) => {
     await gotoMarketingRoute(page, routeConfig);
 
