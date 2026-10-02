@@ -172,6 +172,12 @@ The integration includes current-main factual repairs on the following existing 
 
 Preserve the approved Waterline composition and property facts. Raise undersized supporting text to 12px and mobile body text to 15px; use 44px navigation and footer targets. Strengthen the photographic scrim, size catalog ordinals to fit, show plus/check comparison states, and wrap comparison row labels. Apply marine/paper styling to the existing SAVE50 panel. Restore Guest Support and booking/cancellation links using the existing routes; no policy or offer terms change. The scoped browser regression checks exercise these rendered states on desktop and mobile. Broader owner/legacy shell redesign, new reviews, fonts, maps, pricing, and gallery enhancements are outside this repair.
 
+## October 1 guide booking links and phone fit
+
+Sawyer approved the booking-path direction on 2026-10-01; this is its first slice. Every guide link that opened the booking engine's empty search page now opens `/properties/` in the same tab: 44 hard-coded links in 33 guide files plus the default second link in `src/_includes/partials/guide-conversion-kit.njk`. Link words are unchanged. The four winner guides' source files are untouched; their second link in the shared block changes through the partial. The retargeted links fire `guide_book_direct_click`; the kit's second link adds `placement=guide_kit_secondary`. Guides therefore stop firing `booking_engine_handoff`, so the funnel count in "Measurement and proof boundaries" reads that event from non-guide pages only.
+
+Phone fit: 21 guides were wider than the phone screen, which pushed the fixed bottom booking bar's button off screen. 24 wide tables in 20 guides now scroll inside an `overflow-x:auto` wrapper, the Anna Maria Island area guide's stats row wraps, and one hero image is capped at the screen width. `tests/visual/design-floors.spec.js` now checks every built guide for sideways scroll at 360, 375 and 393px. No header, home-page button, price, policy or property fact changes in this slice.
+
 ## September 30 capacity repair — source files changed
 
 - `src/_data/properties-fallback.json`

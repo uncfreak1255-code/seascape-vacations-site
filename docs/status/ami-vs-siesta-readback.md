@@ -68,6 +68,25 @@ Decision rule:
 - do not claim booking, revenue, rank, or AI-citation lift from this readback
   unless a separate receipt proves it
 
+## Event Change On 2026-10-01 (guide links to the catalog)
+
+From the release of the `claude/guide-links-to-homes` change, the shared guide
+conversion block's second link on this route goes to `/properties/` in the same
+tab instead of the booking engine's empty search page. Two tracked counts change
+on every guide, including this one:
+
+- that link now fires `guide_book_direct_click` with
+  `placement=guide_kit_secondary`; before, it fired `booking_engine_handoff`
+- guides no longer fire `booking_engine_handoff` at all; a guide count of zero
+  after that release is expected and is not a regression
+
+A readback window that runs after that release is not like-for-like with the
+PR #397 window unless `placement=guide_kit_secondary` is counted separately. As of 2026-10-01
+`seascape-analytics` does not collect `placement` for click events, so that
+split needs a new GA4 dimension there first. The decision rule above is
+unchanged, but it is easier to pass after that release because the second link
+now counts toward `guide_book_direct_click`.
+
 ## Next Agent Runbook
 
 1. Run `npm run verify:ami-vs-siesta-readback` in this repo to confirm the
