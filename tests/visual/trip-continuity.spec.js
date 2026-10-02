@@ -155,3 +155,19 @@ test('a shared shortlist or a rejected trip link is not given the remembered dat
   await open(page, '/');
   await expect(page.locator('#home-trip-arrive')).toHaveValue('2026-12-05');
 });
+
+test('no catalog link keeps dates the guest changed or cleared', async ({ page }) => {
+  await visit(page, '/properties/?' + trip);
+  await page.locator('#trip-depart').fill('2026-12-10');
+  await page.getByRole('button', { name: 'Find my home', exact: true }).click();
+  const withOldDeparture = await page.locator('a[href]').evaluateAll(nodes => nodes.map(n => n.href).filter(href => href.includes('2026-12-12')));
+  expect(withOldDeparture).toEqual([]);
+
+  await page.locator('#clear-dates').click();
+  const withDates = await page.locator('a[href]').evaluateAll(nodes => nodes.filter(n => n.origin === location.origin && new URL(n.href).searchParams.has('arrive')).map(n => n.href));
+  expect(withDates).toEqual([]);
+  // The breadcrumb is a real way back to the homepage; it must not bring the cleared dates with it.
+  await page.locator('.catalog-breadcrumb a').click();
+  await expect(page.locator('#home-trip-arrive')).toHaveValue('');
+  await expect(page.locator('#home-trip-guests')).toHaveValue('8');
+});
