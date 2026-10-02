@@ -99,10 +99,9 @@ test("SAVE50 campaign survives catalog and property trip edits", async ({ page }
   expect(catalogUrl.searchParams.get("promo")).toBe("save50");
   expect(catalogUrl.searchParams.get("utm_source")).toBe("mailchimp");
   expect(catalogUrl.searchParams.get("utm_campaign")).toBe("save50_welcome");
-  var headerBooking = new URL(await page.getByRole("link", {name:"Book Direct",exact:true}).getAttribute("href"));
-  expect(headerBooking.origin).toBe("https://book.seascape-vacations.com");
-  await expect(page.getByRole("link", {name:"Book Direct",exact:true})).toHaveAttribute("target", "_blank");
-  await expect(page.getByRole("link", {name:"Book Direct",exact:true})).toHaveAttribute("rel", "noopener noreferrer");
+  var headerButton = page.locator(".g-header-actions").getByRole("link", {name:"Find your home",exact:true});
+  await expect(headerButton).toHaveAttribute("href", "#catalog-trip");
+  await expect(headerButton).not.toHaveAttribute("target");
   var catalogCheckout = new URL(await page.locator('[data-property="dockside-dreams"] .catalog-check-dates').getAttribute("href"));
   expect(catalogCheckout.searchParams.get("promo")).toBe("save50");
   expect(catalogCheckout.searchParams.get("utm_campaign")).toBe("save50_welcome");
