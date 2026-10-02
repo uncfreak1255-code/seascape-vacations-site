@@ -18,6 +18,34 @@
 - readback window: after the corrected copy is on the production site, before the Prompt Explorer runs
 - decision rule: run the two agent questions only after production no longer says Seascape currently manages five homes; do not treat a branch as the measured page
 
+## Gate 0 Search Block
+
+| Field | Answer |
+| --- | --- |
+| Target query family | flights to Anna Maria Island, airports for an AMI stay |
+| Searcher intent | choose an airport, then a home; not a new ranking play |
+| Current Seascape URL | /guides/flights-to-anna-maria-island/, /guides/bradenton-vs-sarasota-restaurants/, /research/gulf-coast-vacation-booking-trends-2026/, /research/real-cost-florida-beach-vacation-bradenton-sarasota-ami-2026/ |
+| SERP observed date | 2026-10-02 |
+| SERP stale after | 2026-11-02 |
+| Current proof | Search Console web report 2026-09-01 to 2026-09-29: flights guide 30 clicks, 3,940 impressions, position 6.1. Live catalog https://seascape-vacations.com/properties/ on 2026-10-02 says 6 homes. |
+| Top visible competitors | Google Flights, annamaria.com, Expedia, Island Vacation Properties, Anna Maria Life Vacation Rentals, Kayak |
+| Competitor angle | airport choice plus an on-island rental pitch |
+| Visual/format gap | Not a layout change. The defect is a present-tense count, not a missing table or map. |
+| Seascape gap | our own pages said the current portfolio is five homes |
+| Search fit | keep the existing guide and research URLs; the conversion stays the six-home catalog |
+| Local/GBP proof | Not a Google Business Profile edit. The false count is on guide and research copy, not a map pin. |
+| AEO/readback note | An agent will repeat the first inventory sentence. Do not run Prompt Explorer until production says six. |
+| Recommendation | correct the present-tense count in place; leave the 2022-2026 five-home study sample alone |
+| Attack status | none found after named checks |
+| Query variants inspected | flights to Anna Maria Island, nearest airport Anna Maria Island, cheap flights to Anna Maria Island |
+| SERP source | web search results read 2026-10-02 |
+| Competitor URLs inspected | current source https://seascape-vacations.com/properties/ read 2026-10-02; SERP web search results read 2026-10-02; competitor pages opened from those results: https://www.annamaria.com/news-and-blog/which-airport-is-nearest/ and https://www.islandvacationproperties.com/traveling-made-easy-with-these-airports-near-anna-maria-island/ |
+| Content gap and Seascape answer | say six current homes, all with private pools, and name Dockside Dreams as the one with a dock |
+| Design/format strategy | sentence edits only; no new section, table, or page |
+| Seascape proof available | live catalog read 2026-10-02 and Search Console page row for the flights guide |
+| Tools/plugins used | Search Console, web search, repository content gates |
+| Decision and reason | ship the count correction now so an agent does not repeat five homes |
+
 ## Why This Batch
 
 - The live catalog is six homes. Present-tense guide and bio lines still say five.
