@@ -47,18 +47,20 @@ Market list source: `seascape-hub/projects/q2-2026-growth-batch-plan.md`
 Measure: guide-to-stay clicks (`guide_stay_click`), book-direct CTA clicks
 (`guide_book_direct_click`), and email submissions (`email_capture_submit`).
 
-The hub and this repo do not name the same five guides. Both lists are below.
-See open question 1.
+Use the repo winner list (`docs/portfolio/winner-guides.md`) for October:
 
-| Guide | Hub canon (Q2 plan) | Repo winner list (`docs/portfolio/winner-guides.md`) |
-|---|---|---|
-| `/guides/bradenton-vs-sarasota/` | yes | yes |
-| `/guides/anna-maria-island-vs-siesta-key/` | yes | yes |
-| `/guides/best-time-visit-anna-maria-island/` | yes | yes |
-| `/guides/booking-direct-vacation-rentals/` | yes | no |
-| `/guides/anna-maria-island-vacation-cost/` | yes | no |
-| `/guides/family-vacation-anna-maria-island/` | no | yes |
-| `/guides/shelling-guide-florida/` | no | yes |
+1. `/guides/bradenton-vs-sarasota/`
+2. `/guides/anna-maria-island-vs-siesta-key/`
+3. `/guides/best-time-visit-anna-maria-island/`
+4. `/guides/family-vacation-anna-maria-island/`
+5. `/guides/shelling-guide-florida/`
+
+Why: the hub list (`seascape-hub/projects/q2-2026-growth-batch-plan.md`) is
+marked "terminal status; historical record, not a live claim" and dates from
+March 2026. It named `/guides/booking-direct-vacation-rentals/` and
+`/guides/anna-maria-island-vacation-cost/` instead of family and shelling.
+The repo list is the one the current portfolio and tests use. A hub update to
+match is a separate seascape-hub change, not part of this file.
 
 Stay money destinations (`docs/portfolio/stay-money-pages.md`):
 `/stays/anna-maria-island-vacation-rentals/`,
@@ -79,7 +81,7 @@ Ranked. "Go-ahead" means the item changes a live page and waits for Sawyer.
 | 5 | Compare the no-slash and slash rows of `/guides/anna-maria-island-vs-siesta-key/` on the next complete window before any consolidation change. | Readback | Yes | next-batch.md, Bounded Attack Check 2026-10-02 |
 | 6 | Watch for a confirmed regression on a winner guide or stay money page. If the rank tracker, `queries/rank_history_deltas.sql`, or a live SERP read confirms one, open a bounded rescue brief. | Rescue (if triggered) | Yes, bounded | ranking-regression-rescue.md |
 | 7 | Holiday stay check: confirm the Thanksgiving and Christmas redirects to `/stays/anna-maria-island-vacation-rentals/` still resolve, and that the page copy has no stale holiday or date claim before the holiday booking window. Fix only a broken redirect or a false claim. | Fix (if found) | Fix yes; copy change needs go-ahead | stay-money-pages.md |
-| 8 | Rebuild the three priority owner market pages (AMI, Bradenton, Sarasota) in Waterline, from the owner hub pattern. Show as 2 or 3 variants. | Design / owner copy | **Go-ahead.** Also held by next-batch.md "Do Not Start With: another owner-page rewrite before the post-recrawl read exists." Earliest after item 3. | 2026-09-owner-page-waterline-rebuild.md ("Waits: the 26 city landers") |
+| 8 | Rebuild the three priority owner market pages (AMI, Bradenton, Sarasota) in Waterline, from the owner hub pattern. Show as 2 or 3 variants. | Design / owner copy | **Not in October.** next-batch.md "Do Not Start With" blocks another owner-page rewrite before the post-recrawl read exists, and owner pages had 49 impressions in the last read. Reconsider after item 3 and after an owner-direct signal. | 2026-09-owner-page-waterline-rebuild.md ("Waits: the 26 city landers") |
 
 ## 4. Do not start this month
 
@@ -96,20 +98,14 @@ Also: no keyword volume or KD figures in this file until a fresh, paid-approved
 DataForSEO or OpenSEO read supplies them. The March file's volumes are not
 carried forward.
 
-## 5. Open questions for Sawyer
+## 5. Before this file merges
 
-1. **Which five guides are the priority guides?** The hub Q2 plan (March 2026)
-   names booking-direct and vacation-cost. The repo winner list names family
-   and shelling instead. The guest-funnel measure needs one list. The hub is
-   canon, so a change goes to seascape-hub, not here.
-2. **Is item 8 wanted in October**, or does it wait for the owner hub readback
-   and an owner-direct signal first?
-3. **A machine-local `content-priorities-2026-10.md` dated 2026-09-01 may
-   exist** on the local machine (the snowbird brief cites it, and
-   `docs/plans/2026-06-12-repo-audit.md` says live priority files are
-   excluded locally). If it does, this tracked file has the same path. Merge
-   one into the other before this PR merges, or `git pull` on root `main` can
-   stop on an untracked-file conflict.
+A machine-local `content-priorities-2026-10.md` dated 2026-09-01 may exist on
+the local checkout (the snowbird brief cites it, and
+`docs/plans/2026-06-12-repo-audit.md` says live priority files were kept
+untracked). If `git pull` on root `main` stops on this file, rename the local
+copy (for example to `content-priorities-2026-10.local.md`) and pull again.
+Nothing is lost.
 
 ## Notes for content tasks
 
