@@ -34,6 +34,7 @@
   }
   var parseTrip = tracking && tracking.readTripParams;
   var trip = parseTrip ? parseTrip(new URLSearchParams(location.search)) : {};
+  function rememberTrip(){if(tracking&&tracking.rememberTrip)tracking.rememberTrip(trip);}
   var pageRoot = document.querySelector('[data-property-page]');
   var originalLinks = new Map();
   function preserveSave50Params(url) {
@@ -170,6 +171,7 @@
       delete trip.arrive;delete trip.depart;delete trip.guests;
       if(arrive.value){trip.arrive=arrive.value;trip.depart=depart.value;}
       if(guests.value)trip.guests=guests.value;
+      rememberTrip();
       if(!form.dataset.bookingUrl){
         var target=preserveSave50Params(new URL('/properties/',location.origin));Object.keys(trip).forEach(function(key){target.searchParams.set(key,trip[key]);});
         emit('homepage_search_submit',{guest_count:count,has_dates:Boolean(arrive.value)});location.assign(target.pathname+target.search);return;
@@ -191,6 +193,7 @@
       var next=parseTrip ? parseTrip(query) : {};
       ['arrive','depart','guests'].forEach(function(key){delete trip[key];if(next[key])trip[key]=next[key];});
       var current=new URL(location.href);['arrive','depart','checkin','checkout','guests'].forEach(function(key){current.searchParams.delete(key);});Object.keys(trip).forEach(function(key){current.searchParams.set(key,trip[key]);});history.replaceState(null,'',current.pathname+current.search+current.hash);
+      rememberTrip();
       syncTrip();
       var checkoutNow=document.querySelector('[data-property-checkout]');
       if(form.dataset.bookingUrl&&checkoutNow&&!checkoutNow.hidden&&!checkoutNow.dataset.stayPending)status.textContent=defaultStatus;

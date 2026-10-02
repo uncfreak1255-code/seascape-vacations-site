@@ -46,6 +46,9 @@
   function emit(name, extras) {
     if (window.SeascapeConversionTracking) window.SeascapeConversionTracking.trackEvent(name, Object.assign({ page_slug:"properties", placement:"catalog_journey" },extras || {}));
   }
+  function rememberTrip() {
+    if (window.SeascapeConversionTracking && window.SeascapeConversionTracking.rememberTrip) window.SeascapeConversionTracking.rememberTrip(trip);
+  }
   function itineraryParams() {
     var query = new URLSearchParams();
     if (trip.arrive && trip.depart) {
@@ -74,7 +77,8 @@
       var url = preserveSave50Params(new URL(link.dataset.bookingBase));
       if (trip.arrive && trip.depart) { url.searchParams.set("start",trip.arrive); url.searchParams.set("end",trip.depart); }
       if (trip.guests && Number(trip.guests) <= 16) url.searchParams.set("numberOfGuests",trip.guests);
-      link.href = url.toString();
+      // conversion-tracking.js now runs first, so apply its handoff fields here as the home pages do.
+      link.href = window.SeascapeConversionTracking ? window.SeascapeConversionTracking.buildBookingEngineHandoffUrl(url.toString(),link) : url.toString();
     });
   }
   function renderComparison() {
@@ -239,12 +243,12 @@
     }
     if (!form.reportValidity()) return;
     trip = { arrive:arrive.value, depart:depart.value, guests:guests.value };
-    render(); emit("catalog_trip_update",{guest_count:Number(guests.value)||0,has_dates:Boolean(arrive.value)});
+    rememberTrip(); render(); emit("catalog_trip_update",{guest_count:Number(guests.value)||0,has_dates:Boolean(arrive.value)});
   });
   depart.addEventListener("input",function() { depart.setCustomValidity(""); });
   arrive.addEventListener("input",function() { depart.setCustomValidity(""); depart.min=arrive.value || today; });
   document.getElementById("clear-dates").addEventListener("click",function() {
-    arrive.value=""; depart.value=""; depart.setCustomValidity(""); depart.min=today; trip.arrive=""; trip.depart=""; render();
+    arrive.value=""; depart.value=""; depart.setCustomValidity(""); depart.min=today; trip.arrive=""; trip.depart=""; rememberTrip(); render();
   });
   document.getElementById("reset-filter").addEventListener("click",function() { activeFilter="all"; render(); });
   document.getElementById("clear-comparison").addEventListener("click",function() { selected=[]; renderComparison(); syncUrl(); syncLinks(); });
