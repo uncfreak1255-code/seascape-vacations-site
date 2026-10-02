@@ -138,6 +138,8 @@
   .catalog-comparison-table th,.catalog-comparison-table td { min-width:104px; padding:12px 6px; font-size:12px; overflow-wrap:anywhere; }
   .catalog-comparison-table thead th { font-size:17px; }
   .catalog-comparison-table .btn { width:100%; min-height:44px; padding:12px 8px; font-size:12px; letter-spacing:.04em; white-space:normal; }
+  /* guest.css loads after this sheet here, so its button size needs the extra class to be beaten. */
+  .guest-site .catalog-comparison-table .btn { padding:12px 8px; font-size:12px; text-align:center; }
   .catalog-comparison-table img { width:100%; min-width:0; height:84px; border-radius:12px; }
   .catalog-comparison-table th:first-child { min-width:96px; max-width:96px; overflow-wrap:anywhere; position:sticky; left:0; background:var(--cream-light); z-index:1; }
   .catalog-comparison-table caption { max-width:calc(100vw - 64px); }
