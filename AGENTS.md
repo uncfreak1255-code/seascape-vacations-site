@@ -208,6 +208,12 @@ its trigger, so no per-skill index is kept here.
   screenshot proof. That gate diffs the committed desktop and mobile baselines
   in `tests/visual/__screenshots__/` and includes an axe accessibility spec;
   still attach desktop and mobile screenshots for subjective changes.
+- When that gate fails only because a change was meant to alter a page's look,
+  refresh its baselines yourself without asking Sawyer: `gh workflow run
+  update-visual-baselines.yml -f branch=<your PR branch> -f grep=<route slug>`,
+  then `gh run watch <id> --exit-status`. Use it only on your own PR branch,
+  scope it to the changed routes, and report the run ID and pushed commit. Never
+  use it to clear a diff you did not intend; that is a regression to fix.
 - Live post-merge smoke when the release surface matters:
   `npm run verify:recovery:live && npm run verify:direct-booking-events && npm run verify:owner-funnel-routes`
 - The same smoke trio also runs daily via `.github/workflows/live-smoke.yml`
