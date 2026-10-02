@@ -26,8 +26,13 @@ Read-only operator for choosing the next SEO batch.
 4. relevant file in `docs/portfolio/`
 5. `docs/status/search-growth-map.md`
 6. `docs/process/seo-competitor-operating-loop.md`
-7. latest weekly operator output from `seascape-analytics`
-8. current SERP evidence and inspected competitor URLs for the named query family
+7. `docs/process/openseo.md`: for already-tracked rank opportunities, use
+   `list_projects` then existing `get_rank_tracker` history/results first; record
+   observation time, query, current/prior position and landing URL. Preserve the
+   saved-read allowlist and approval path; do not trigger a fresh check or paid
+   lookup. Report unavailable tools or stale/missing queries as evidence gaps.
+8. latest weekly operator output from `seascape-analytics`
+9. current SERP evidence and inspected competitor URLs for the named query family
 
 ## Output
 
