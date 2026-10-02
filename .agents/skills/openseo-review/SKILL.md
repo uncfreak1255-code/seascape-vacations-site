@@ -24,7 +24,8 @@ For Seascape, default to `seascape-vacations.com`, United States, and the curren
 ## Select the evidence lane
 
 For Seascape rank-opportunity or regression triage on already-tracked queries,
-read the Site-owned `docs/process/openseo.md` first. Use `list_projects` and
+read the [Site-owned OpenSEO preflight](https://github.com/uncfreak1255-code/seascape-vacations-site/blob/main/docs/process/openseo.md)
+first. Use `list_projects` and
 then existing `get_rank_tracker` configuration, results and history through the
 configured approval path. Record observation time, query, current/prior position
 and landing URL; do not trigger a fresh check. Continue with live SERP and
