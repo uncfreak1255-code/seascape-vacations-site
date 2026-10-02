@@ -195,6 +195,92 @@ test("generic UI utilities and typography wording do not become design donors", 
   assert.equal(brand, null);
 });
 
+test("booking-path and responsive-layout tasks route narrow UI donor capabilities", () => {
+  const discovery = {
+    roots: [],
+    scannedSkillFiles: 3,
+    candidates: [
+      donorRouter.classifySkill({
+        name: "frontend-design",
+        description: "Distinctive website and interface design.",
+        path: "/frontend/SKILL.md",
+        source: "test",
+        sourcePriority: 1,
+      }),
+      donorRouter.classifySkill({
+        name: "better-layout",
+        description: "Improve grouping, reading order, and adaptive responsive layouts.",
+        path: "/better-layout/SKILL.md",
+        source: "test",
+        sourcePriority: 1,
+      }),
+      donorRouter.classifySkill({
+        name: "improve-ui",
+        description: "Audit an existing product surface against design evidence and identify verified UI problems.",
+        path: "/improve-ui/SKILL.md",
+        source: "test",
+        sourcePriority: 1,
+      }),
+    ],
+  };
+
+  const route = donorRouter.routeDesignTask(
+    "Audit the guest booking path and responsive layout on mobile and desktop",
+    { discovery }
+  );
+
+  assert.deepEqual(
+    route.selectedDonors.map((candidate) => candidate.name),
+    ["frontend-design", "better-layout", "improve-ui"]
+  );
+  assert.deepEqual(route.taskCapabilities, ["responsive-layout", "evidence-audit"]);
+  assert.deepEqual(route.unfilledCapabilities, []);
+  assert.deepEqual(
+    donorRouter.explicitCapabilitySignals("property-to-book journey"),
+    new Set(["responsive-layout", "evidence-audit"])
+  );
+});
+
+test("ordinary copy work does not load responsive booking donors", () => {
+  const discovery = {
+    roots: [],
+    scannedSkillFiles: 2,
+    candidates: [
+      donorRouter.classifySkill({
+        name: "better-layout",
+        description: "Improve grouping, reading order, and adaptive responsive layouts.",
+        path: "/better-layout/SKILL.md",
+        source: "test",
+        sourcePriority: 1,
+      }),
+      donorRouter.classifySkill({
+        name: "improve-ui",
+        description: "Audit an existing product surface against design evidence and identify verified UI problems.",
+        path: "/improve-ui/SKILL.md",
+        source: "test",
+        sourcePriority: 1,
+      }),
+    ],
+  };
+
+  assert.deepEqual(
+    donorRouter.routeDesignTask("Correct a factual sentence in a guide", { discovery }).selectedDonors,
+    []
+  );
+});
+
+test("router reports missing booking capabilities without installing donors", () => {
+  const route = donorRouter.routeDesignTask(
+    "Audit the guest booking path and responsive layout on mobile and desktop",
+    { discovery: { roots: [], scannedSkillFiles: 0, candidates: [] } }
+  );
+
+  assert.deepEqual(route.selectedDonors, []);
+  assert.deepEqual(route.taskCapabilities, ["responsive-layout", "evidence-audit"]);
+  assert.deepEqual(route.unfilledCapabilities, ["responsive-layout", "evidence-audit"]);
+  assert.match(donorRouter.formatRoute(route), /Unfilled optional capabilities: responsive-layout, evidence-audit/);
+});
+
 test("image generators require an explicit imagery task before routing", () => {
   const imageGenerator = donorRouter.classifySkill({
     name: "gemini-imagegen",

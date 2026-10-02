@@ -19,7 +19,7 @@ role in `.claude/agents/search-operator.md` and
 The repo-local `schema-markup` skill owns JSON-LD and structured-data
 implementation rules inside this site repo.
 
-For owner intake, use `owner-outbound-batch` to qualify owner-direct,
+For owner intake, use `owner-opportunity-intake` to qualify owner-direct,
 permissioned signals without creating outreach drafts, and use
 `owner-reply-intake` to classify later replies before any demand row reaches the
 Hub register. These skills are local because the workflow is site-specific:
@@ -98,6 +98,18 @@ authority, bypass the five roles, or replace Seascape Hub as the source of
 business context.
 
 ## Agent-surface-audit receipts
+
+### 2026-10-02 — permissioned intake rename and UI donor trial
+
+Renamed `owner-outbound-batch` to `owner-opportunity-intake` so its trigger
+matches its permissioned qualification behavior; authority and refusal rules
+did not change. Retired the explicit-only `web-design-guidelines` compatibility
+alias because `design-review` owns the same rendered contract. A bounded `/stays/`
+desktop/mobile trial retained `better-layout` responsive stress tests inside
+`page-cro` and the `improve-ui` contract/runtime/correction filter inside
+`design-review`. Neither donor became local authority, and the trial did not
+show a repeated gap requiring a `booking-path-ux` skill. See
+`docs/research/2026-10-02-ui-skills-booking-path-trial.md`.
 
 ### 2026-09-12 — Astra prompt migration
 
@@ -200,6 +212,8 @@ entry is the receipt the governance rule requires for any skill change.
   Git in an approved private owner system. This supersedes the original
   draft-preparation authority while preserving `owner-reply-intake` as the
   demand-validation gate.
+  Renamed to `owner-opportunity-intake` on 2026-10-02; this dated entry retains
+  the original name as historical evidence.
 - **2026-06-25 — added `seascape-design-specialist` and `seascape-design-critic`.**
   Trigger: repeated founder dissatisfaction that Codex site design work was too
   willing to ship clean-but-bland direction and depended too much on remembering

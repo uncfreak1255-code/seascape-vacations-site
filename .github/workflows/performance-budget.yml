@@ -3,7 +3,7 @@ name: Performance Budget
 on:
   # No paths filter: this job is a required status check on main, and a
   # required check that never reports blocks the PR (adversarial review of
-  # #617, 2026-09-24). Cost: one build + Lighthouse pass per PR on the Mac.
+  # #617, 2026-09-24). Cost: one build + Lighthouse pass per PR on hosted Linux.
   pull_request:
     branches: [main]
   schedule:
@@ -17,10 +17,11 @@ concurrency:
 jobs:
   performance-budget:
     name: performance-budget
-    # Scheduled/default-branch work and Sawyer-triggered owner PRs use the Mac.
-    # Forks, other same-repository PRs, and non-owner manual dispatches execute
-    # unreviewed branch code on hosted Linux.
-    runs-on: ${{ (github.event_name == 'pull_request' && (github.event.pull_request.head.repo.full_name != github.repository || github.event.pull_request.author_association != 'OWNER' || github.actor != 'uncfreak1255-code' || github.triggering_actor != 'uncfreak1255-code')) && 'ubuntu-latest' || (github.event_name == 'workflow_dispatch' && (github.actor != 'uncfreak1255-code' || github.triggering_actor != 'uncfreak1255-code')) && 'ubuntu-latest' || 'mac-sawbeck-seascape-vacations-site' }}
+    # Hosted Linux for every event. Lighthouse needs no Mac pixels, hosted
+    # compute is free on this public repository, and keeping this job off the
+    # Mac leaves that single runner to the visual gate instead of queueing
+    # the two behind each other.
+    runs-on: ubuntu-latest
     timeout-minutes: 20
 
     steps:

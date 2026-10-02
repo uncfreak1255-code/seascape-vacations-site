@@ -4,12 +4,12 @@ description: Use when auditing or fixing Seascape accessibility, including WCAG,
 license: MIT
 metadata:
   author: web-quality-skills
-  version: "1.0"
+  version: "1.1"
 ---
 
 # Accessibility
 
-Audit or fix the requested Seascape surface against WCAG 2.1 A/AA. AAA criteria
+Audit or fix the requested Seascape surface against WCAG 2.2 A/AA. AAA criteria
 are additional guidance when requested. Prefer native HTML controls and the
 existing design system over custom ARIA or new styles.
 

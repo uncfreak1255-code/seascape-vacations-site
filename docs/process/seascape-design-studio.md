@@ -91,6 +91,11 @@ or promote a donor from this scan.
 `visualize`-style donors are preferred when a map, chart, comparison artifact,
 or interactive explainer materially helps the visitor decide. Figma,
 standalone site builders, and imagery generators require an explicit task need.
+Booking-path and responsive-layout prompts also request `responsive-layout`
+and `evidence-audit` capability. When no cached donor provides them, the route
+report names those capabilities as unfilled; absence does not block the local
+`page-cro` and `design-review` owners or authorize installation. UI Skills'
+`better-layout` and `improve-ui` remain optional donor references.
 
 Figma is optional and donor-only unless Sawyer explicitly wants it for a task.
 
