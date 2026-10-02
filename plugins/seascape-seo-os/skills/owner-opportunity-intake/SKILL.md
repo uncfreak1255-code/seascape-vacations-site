@@ -1,5 +1,5 @@
 ---
-name: owner-outbound-batch
+name: owner-opportunity-intake
 description: Use when qualifying a Seascape owner opportunity from a permissioned real signal.
 ---
 

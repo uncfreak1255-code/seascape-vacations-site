@@ -16,10 +16,10 @@ function expectFixture(skill, fixture, expected) {
   assert.match(skill, rowPattern);
 }
 
-test("owner outbound skill is permissioned-intake only and retains approved proof boundaries", () => {
-  const skill = read(".agents/skills/owner-outbound-batch/SKILL.md");
+test("owner opportunity intake skill retains approved proof boundaries", () => {
+  const skill = read(".agents/skills/owner-opportunity-intake/SKILL.md");
 
-  assert.match(skill, /^name: owner-outbound-batch$/m);
+  assert.match(skill, /^name: owner-opportunity-intake$/m);
   assert.match(skill, /This skill never sends or creates outreach drafts/i);
   assert.match(skill, /docs\/status\/owner-direct-intake-policy\.md/);
   assert.match(skill, /src\/_data\/ownerProofAssets\.json/);
@@ -31,8 +31,8 @@ test("owner outbound skill is permissioned-intake only and retains approved proo
   assert.match(skill, /Never count a qualification decision, prepared message, sent message, test send,/);
 });
 
-test("owner outbound skill refuses platform-only, permissionless, and tool-expansion paths", () => {
-  const skill = read(".agents/skills/owner-outbound-batch/SKILL.md");
+test("owner opportunity intake refuses platform-only, permissionless, and tool-expansion paths", () => {
+  const skill = read(".agents/skills/owner-opportunity-intake/SKILL.md");
 
   assert.match(skill, /Airbnb, Vrbo, Booking\.com, or another OTA host-message/);
   assert.match(skill, /property listing, directory, property record, or[\s\S]+without an invitation to contact/);
@@ -61,7 +61,7 @@ test("owner outbound archive holds OTA-only candidates and points to a public qu
 test("skill policy records the permissioned-intake authority and audit receipt", () => {
   const policy = read("docs/process/skill-policy.md");
 
-  assert.match(policy, /use `owner-outbound-batch` to qualify owner-direct,[\s\S]+permissioned signals without creating outreach drafts/);
+  assert.match(policy, /use `owner-opportunity-intake` to qualify owner-direct,[\s\S]+permissioned signals without creating outreach drafts/);
   assert.match(policy, /2026-07-17 — restricted `owner-outbound-batch` to permissioned intake/);
   assert.match(policy, /Agent-surface audit verdict: \*\*KEEP\*\*/);
   assert.match(policy, /create no new[\s\S]+agent, skill, workflow, scraper, or automation/);

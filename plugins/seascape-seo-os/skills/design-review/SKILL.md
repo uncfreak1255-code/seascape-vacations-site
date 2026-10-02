@@ -24,6 +24,9 @@ Judge warmth, spacing, hierarchy, and restraint against the design law.
 Meaningful changes need desktop/mobile screenshots, with before/after evidence
 for an existing route. Interaction claims need observed state changes; use
 [interaction proof](references/interaction-proof.md) for the affected control.
+Before retaining a finding, apply the [contract, runtime, correction evidence
+gate](references/evidence-gate.md). A visual difference or repeated pattern is
+only a candidate until all three proofs exist.
 Follow `docs/process/design-review-workflow.md` for the required Playwright,
 visual, and accessibility gates; browser inspection does not replace them.
 
@@ -31,6 +34,8 @@ visual, and accessibility gates; browser inspection does not replace them.
 
 Return findings by severity with route, source where known, viewport, impact,
 evidence, and smallest fix. A clean result names the flows and viewports checked.
+Stop at the three highest-leverage supported findings and prefer no finding to
+an unsupported recommendation.
 State missing proof explicitly. Recommend Figma only if it would resolve a
 specific review problem.
 
