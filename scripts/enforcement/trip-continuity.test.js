@@ -154,6 +154,9 @@ test('past, expired, malformed and unexpected remembered values are not restored
   const rejected = [
     { arrive: '2020-12-05', depart: '2020-12-12', guests: '', saved: Date.now() },
     { ...remembered, saved: Date.now() - 31 * day },
+    // A time ahead of the clock, or one stored as text, never extends the 30 days.
+    { ...remembered, saved: Date.now() + 365 * day },
+    { ...remembered, saved: String(Date.now()) },
     { ...remembered },
     { ...remembered, saved: 'yesterday' },
     { arrive: '2099-12-12', depart: '2099-12-05', guests: '0', saved: Date.now() },
