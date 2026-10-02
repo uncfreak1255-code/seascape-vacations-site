@@ -360,7 +360,7 @@ card({
 <div class="ds-row"><a class="g-button btn-brand" href="#">Find my home</a><a class="g-button btn-brand ds-hover" href="#">Find my home</a><a class="g-button btn-brand ds-focus" href="#">Find my home</a><button class="g-button btn-brand" type="submit">Check dates &amp; total</button></div>
 <div class="ds-rule"></div>
 <p class="ds-caption">Citron with ink text only where ink loses its own surface: homepage header over the scene photo, the two sticky CTA bars, the near-black owner hero.</p>
-<div class="ds-dark ds-row"><a class="g-button btn-brand" href="#">Find your home <span aria-hidden="true">&nearr;</span></a><a class="g-button btn-brand" href="#">Check dates</a></div>
+<div class="ds-dark ds-row"><a class="g-button btn-brand" href="#">Find your home</a><a class="g-button btn-brand" href="#">Check dates</a></div>
 <div class="ds-rule"></div>
 <p class="ds-caption">Paper with ink text and a 1px ink hairline on the legacy teal bands (.hero, .cta-section, .cta-shell). Paper clears every gradient stop at 3.45:1; ink and citron do not.</p>
 <div class="ds-teal ds-row"><a class="g-button" href="#">Get your free rental estimate</a></div>
