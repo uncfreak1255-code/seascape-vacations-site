@@ -1,35 +1,35 @@
 {
   "routes": {
     "/": {
-      "script": 71189,
+      "script": 74001,
       "stylesheet": 57359
     },
     "/properties/": {
-      "script": 91161,
+      "script": 94409,
       "stylesheet": 56774
     },
     "/property-management/": {
-      "script": 82488,
+      "script": 85300,
       "stylesheet": 54044
     },
     "/property-management/vacation-rental-licensing-florida/": {
-      "script": 51387,
+      "script": 54064,
       "stylesheet": 34817
     },
     "/property-management/vacation-rental-management-fees-florida/": {
-      "script": 51387,
+      "script": 54064,
       "stylesheet": 34817
     },
     "/property-management/vrbo-management-services-florida/": {
-      "script": 51387,
+      "script": 54064,
       "stylesheet": 34817
     },
     "/stays/anna-maria-island-beachfront-rentals/": {
-      "script": 51387,
+      "script": 54064,
       "stylesheet": 34817
     },
     "/stays/anna-maria-island-vacation-rentals/": {
-      "script": 51387,
+      "script": 54064,
       "stylesheet": 34817
     }
   },
@@ -256,6 +256,70 @@
       "from": 34373,
       "to": 34817,
       "reason": "Sawyer-approved guest interaction feedback and immediate keyboard scene selection; measured by PR #640 performance-budget run 36920910513 at de890f9e on 2026-10-01 (+816-969 bytes JS, +410-444 bytes CSS). Lighthouse ceilings unchanged.",
+      "date": "2026-10-02"
+    },
+    {
+      "route": "/",
+      "metric": "script",
+      "from": 71189,
+      "to": 74001,
+      "reason": "Trip memory (PR #642): arrive, depart and group size are kept in browser storage and carried between pages; about 2.7 to 3.2 KB more script per route. Raise approved by Sawyer on 2026-10-02.",
+      "date": "2026-10-02"
+    },
+    {
+      "route": "/properties/",
+      "metric": "script",
+      "from": 91161,
+      "to": 94409,
+      "reason": "Trip memory (PR #642): arrive, depart and group size are kept in browser storage and carried between pages; about 2.7 to 3.2 KB more script per route. Raise approved by Sawyer on 2026-10-02.",
+      "date": "2026-10-02"
+    },
+    {
+      "route": "/property-management/",
+      "metric": "script",
+      "from": 82488,
+      "to": 85300,
+      "reason": "Trip memory (PR #642): arrive, depart and group size are kept in browser storage and carried between pages; about 2.7 to 3.2 KB more script per route. Raise approved by Sawyer on 2026-10-02.",
+      "date": "2026-10-02"
+    },
+    {
+      "route": "/property-management/vacation-rental-management-fees-florida/",
+      "metric": "script",
+      "from": 51387,
+      "to": 54064,
+      "reason": "Trip memory (PR #642): arrive, depart and group size are kept in browser storage and carried between pages; about 2.7 to 3.2 KB more script per route. Raise approved by Sawyer on 2026-10-02.",
+      "date": "2026-10-02"
+    },
+    {
+      "route": "/property-management/vacation-rental-licensing-florida/",
+      "metric": "script",
+      "from": 51387,
+      "to": 54064,
+      "reason": "Trip memory (PR #642): arrive, depart and group size are kept in browser storage and carried between pages; about 2.7 to 3.2 KB more script per route. Raise approved by Sawyer on 2026-10-02.",
+      "date": "2026-10-02"
+    },
+    {
+      "route": "/property-management/vrbo-management-services-florida/",
+      "metric": "script",
+      "from": 51387,
+      "to": 54064,
+      "reason": "Trip memory (PR #642): arrive, depart and group size are kept in browser storage and carried between pages; about 2.7 to 3.2 KB more script per route. Raise approved by Sawyer on 2026-10-02.",
+      "date": "2026-10-02"
+    },
+    {
+      "route": "/stays/anna-maria-island-vacation-rentals/",
+      "metric": "script",
+      "from": 51387,
+      "to": 54064,
+      "reason": "Trip memory (PR #642): arrive, depart and group size are kept in browser storage and carried between pages; about 2.7 to 3.2 KB more script per route. Raise approved by Sawyer on 2026-10-02.",
+      "date": "2026-10-02"
+    },
+    {
+      "route": "/stays/anna-maria-island-beachfront-rentals/",
+      "metric": "script",
+      "from": 51387,
+      "to": 54064,
+      "reason": "Trip memory (PR #642): arrive, depart and group size are kept in browser storage and carried between pages; about 2.7 to 3.2 KB more script per route. Raise approved by Sawyer on 2026-10-02.",
       "date": "2026-10-02"
     }
   ]
