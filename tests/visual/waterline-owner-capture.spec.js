@@ -56,14 +56,14 @@ test('owner intake requires and records submitter authority while keeping the st
   await form.getByRole('button', { name: 'Continue', exact: true }).click();
 
   await expect(form.locator('[data-form-step="2"]')).toBeVisible();
-  await expect(authority).toBeInvalid();
+  expect(await authority.evaluate((el) => el.validity.valueMissing)).toBe(true);
   await authority.check();
   await form.getByRole('button', { name: 'Continue', exact: true }).click();
   await expect(form.locator('[data-confirm-authority]')).toHaveText('Confirmed');
 
   await page.evaluate(() => {
     HTMLFormElement.prototype.submit = function () {
-      if (this.name === 'owner-revenue-teardown') {
+      if (this.getAttribute('name') === 'owner-revenue-teardown') {
         window.__ownerAuthoritySubmission = new FormData(this).get('submitter_authority');
       }
     };
