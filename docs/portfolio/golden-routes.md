@@ -1,15 +1,19 @@
 # Golden Routes — the Seascape design conformance bar
 
-These routes are the **reference implementations** of the Field Report standard.
+These routes are family references under the current **Waterline** design law.
+The homepage and owner hub are Waterline references; the guide and research
+bodies below retain legacy family treatments. Their shared header, menu and
+footer follow Waterline, but their body typography is not a Waterline reference.
+Preserve useful family composition without copying retired gold CTAs or tokens.
 When a new or rebuilt page needs a "what good looks like" target, match one of
 these — not an arbitrary legacy page. They are the conformance bar (must meet the
 `DESIGN.md` law), which is distinct from the visual-regression baseline (must not
 change pixels unexpectedly).
 
-A page earns a spot here only when it: is built on the shared layout + tokens (no
-per-page `<style>` shell, no inline hex, passes `npm run lint:design`), uses real
-Gulf Coast photography, self-hosts fonts, carries the shared nav/footer, and has
-one memorable, decisive moment rather than a neutral wall of text.
+New or rebuilt pages must use shared layout and tokens (no per-page `<style>`
+shell or inline hex; pass `npm run lint:design`), real Gulf Coast photography,
+self-hosted fonts and shared navigation/footer. Give each one a memorable,
+decisive moment rather than a neutral wall of text.
 
 ## The set
 
@@ -17,9 +21,9 @@ one memorable, decisive moment rather than a neutral wall of text.
 |---|---|---|
 | `/guides/shelling-guide-florida/` | Guide (field journal) | The original modern guide: shared `guide-field-journal.njk` layout, real cover photo, ledger, sticky rail, responsive `.journal-matrix`. |
 | `/guides/anna-maria-island-vs-siesta-key/` | Guide (comparison) | Split-photo "versus" hero from real photography, verdict-first decision path, on-brand tokenized callouts. The comparison-family reference. |
-| `/property-management/` | Owner money page | The Field Report direction `DESIGN.md` names as the quality bar: cinematic photography, issue-style framing, editorial proof. |
+| `/property-management/` | Owner money page | The Waterline owner hub: real photography, editorial proof, and a clear revenue-review path. |
 | `/research/owner-fee-revenue-leak-benchmark-2026/` | Research | Editorial data presentation — proof that reads as a report, not a dashboard. |
-| `/` (homepage) | Homepage | The brand signal: warm hero, restraint, the cream/teal/gold identity at full strength. |
+| `/` (homepage) | Homepage | The Waterline guest reference: real-photo opening, ink/cream/citron, restrained navigation, and decisive booking actions. |
 
 ## North-star theme per family (the one-line brief)
 

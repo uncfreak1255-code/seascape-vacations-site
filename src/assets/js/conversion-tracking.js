@@ -305,8 +305,8 @@
     return trip;
   }
 
-  // Trip memory keeps the last dates and guest count in this browser, and nothing else.
-  // The page address stays the source of truth: memory only fills an address that names no trip.
+  // Trip memory: only the last dates and guest count, in this browser.
+  // The address wins: memory only fills one that names no trip.
   function rememberTrip(source) {
     var query = new URLSearchParams();
     TRIP_MEMORY_FIELDS.forEach(function (key) { if (source && source[key]) query.set(key, String(source[key])); });
@@ -315,7 +315,7 @@
       if (!trip.arrive && !trip.guests) { window.localStorage.removeItem(TRIP_MEMORY_KEY); return; }
       window.localStorage.setItem(TRIP_MEMORY_KEY, JSON.stringify({ arrive: trip.arrive || "", depart: trip.depart || "", guests: trip.guests || "", saved: Date.now() }));
     } catch (_error) {
-      // Storage can be blocked or full; the address still carries the trip.
+      // Storage can be blocked or full; the address still has the trip.
     }
   }
 
@@ -325,13 +325,14 @@
     var params = new URLSearchParams(location.search);
     var current = readTripParams(params);
     if (current.arrive || current.guests) { rememberTrip(current); return; }
-    // An address that names its own trip or shared shortlist is intentional, even when its dates are rejected.
+    // An address naming its own trip or shortlist is intentional, even with rejected dates.
     if (TRIP_MEMORY_FIELDS.concat(["checkin", "checkout", "compare"]).some(function (key) { return params.has(key); })) return;
     if (!TRIP_PAGE_PATTERN.test(location.pathname || "") || !window.history || typeof window.history.replaceState !== "function") return;
     var stored;
     try { stored = JSON.parse(window.localStorage.getItem(TRIP_MEMORY_KEY) || "null"); } catch (_error) { return; }
     if (!stored || typeof stored !== "object") return;
-    if (!(Date.now() - stored.saved < TRIP_MEMORY_MAX_AGE_MS)) { rememberTrip(null); return; }
+    var age = typeof stored.saved === "number" ? Date.now() - stored.saved : -1;
+    if (!(age >= 0 && age < TRIP_MEMORY_MAX_AGE_MS)) { rememberTrip(null); return; }
     var query = new URLSearchParams();
     TRIP_MEMORY_FIELDS.forEach(function (key) { if (typeof stored[key] === "string" && stored[key]) query.set(key, stored[key]); });
     var trip = readTripParams(query);

@@ -93,7 +93,7 @@ That includes:
    hierarchy, spacing intent, imagery direction, CTA treatment, and interaction
    intent unless a named constraint requires adjustment.
 9. Rebuild the branch output locally.
-10. Run the global `design-review` skill against the affected routes, or use its
+10. Run the repo-local `.agents/skills/design-review/SKILL.md` against the affected routes, or use its
    diff-aware mode when the change scope is branch-specific.
 11. Fix any high- or medium-impact rendered issues it finds before asking for
     human review.
