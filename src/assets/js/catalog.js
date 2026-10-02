@@ -18,7 +18,7 @@
   var originalLinks = new Map();
   var availabilityRequest = 0;
   var visualTestMode = params.get("visual-test") === "1";
-  // Homes the live check confirmed open for the dates last searched.
+  // Homes confirmed open for the dates last searched.
   var openHomes = [];
   // Dates edited since that search are not confirmed.
   function isOpen(home) { return arrive.value === trip.arrive && depart.value === trip.depart && openHomes.includes(home); }
@@ -83,18 +83,18 @@
       if (trip.guests && Number(trip.guests) <= 16) url.searchParams.set("numberOfGuests",trip.guests);
       var home = root.contains(link) && link.dataset.pageSlug;
       if (home) {
-        // A home confirmed open is booked from here; any other opens its listing page.
+        // An open home is booked here; any other opens its listing page.
         var open = isOpen(home);
         var word = open ? "Book these dates" : "Check dates";
         link.textContent = word;
         link.setAttribute("aria-label",word + " for " + link.getAttribute("aria-label").replace(/^.*? for /,""));
         if (open) link.removeAttribute("target"); else link.target = "_blank";
         if (open && !trip.guests) {
-          // Checkout needs a guest count: ask for the group size, report no booking click.
+          // Checkout needs a guest count: ask for it, report no booking click.
           link.removeAttribute("data-track-event"); link.href = "#trip-guests"; return;
         }
         link.dataset.trackEvent = "catalog_book_direct_click";
-        // Rollback: remove this line to send open homes to the listing page again.
+        // Rollback: remove this line to send open homes to the listing page.
         if (open) url.pathname = url.pathname.replace("/listings/","/checkout/");
       }
       // conversion-tracking.js now runs first, so apply its handoff fields here as the home pages do.
@@ -278,8 +278,8 @@
     status.textContent = "These dates are open. Choose your group size to book them.";
     guests.scrollIntoView({block:"center"}); guests.focus();
   });
-  // For open homes, a group size applies at once.
-  guests.addEventListener("change",function() { if (isOpen(openHomes[0])) submitTrip(); });
+  // For open homes, a group size applies at once; else it voids the answer.
+  guests.addEventListener("change",function() { if (isOpen(openHomes[0])) submitTrip(); else openHomes = []; });
   function datesEdited() { depart.setCustomValidity(""); depart.min=arrive.value || today; if (openHomes.length) { renderComparison(); syncLinks(); } }
   depart.addEventListener("input",datesEdited);
   arrive.addEventListener("input",datesEdited);
