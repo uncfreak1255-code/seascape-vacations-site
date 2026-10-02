@@ -158,6 +158,19 @@ test("winner-guide families avoid generic booking detours in live source", () =>
   }
 });
 
+test("guides and the guide conversion kit never send guests to the booking engine's empty search page", () => {
+  const guideFiles = collectSourceFiles(path.join(sourceRoot, "guides"));
+  const conversionKitPath = path.join(sourceRoot, "_includes", "partials", "guide-conversion-kit.njk");
+  const bareEngineRoot = /book\.seascape-vacations\.com\/?(?=["'&])/;
+  const offenders = [...guideFiles, conversionKitPath].filter((filePath) => bareEngineRoot.test(fs.readFileSync(filePath, "utf8")));
+
+  assert.deepEqual(
+    offenders.map((filePath) => path.relative(projectRoot, filePath)),
+    [],
+    "Expected guide booking links to open /properties/ instead of the bare booking-engine root"
+  );
+});
+
 test("guide conversion kit primary CTA falls back to the first stay winner before /properties/", () => {
   const conversionKit = fs.readFileSync(path.join(sourceRoot, "_includes", "partials", "guide-conversion-kit.njk"), "utf8");
 

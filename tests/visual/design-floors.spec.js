@@ -1,8 +1,10 @@
 const assert = require("node:assert/strict");
+const fs = require("node:fs");
+const path = require("node:path");
 const sharp = require("sharp");
 const { test } = require("@playwright/test");
 const { moneyRoutes } = require("./routes");
-const { gotoMarketingRoute } = require("./test-helpers");
+const { gotoMarketingRoute, registerStableNetwork } = require("./test-helpers");
 
 /*
  * Waterline design floors (see DESIGN.md "Floors"): the visual/axe gates
@@ -290,6 +292,43 @@ for (const routeConfig of moneyRoutes) {
     }
   });
 }
+
+// -- F3 on every built guide at phone widths --
+// A guide wider than the phone also widens its fixed bottom booking bar, which
+// pushes the bar's button off screen (seen 2026-10-01 on 21 guides whose tables
+// had no scroll wrapper). The guide list is read from the build, so a new guide
+// is covered without being added to routes.js.
+
+test("guides — F3 no horizontal overflow on any guide at 360, 375 and 393", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "mobile-chromium", "phone-width floor");
+  test.setTimeout(300_000);
+
+  const guidesRoot = path.join(__dirname, "..", "..", "_site", "guides");
+  const slugs = fs
+    .readdirSync(guidesRoot, { withFileTypes: true })
+    .filter((entry) => entry.isDirectory() && fs.existsSync(path.join(guidesRoot, entry.name, "index.html")))
+    .map((entry) => entry.name)
+    .sort();
+  assert.ok(slugs.length > 0, `F3 found no built guides under ${guidesRoot}`);
+
+  await registerStableNetwork(page);
+  const original = page.viewportSize();
+  const failures = [];
+  for (const slug of slugs) {
+    const response = await page.goto(`/guides/${slug}/?visual-test=1`, { waitUntil: "load" });
+    assert.equal(response && response.status(), 200, `F3 guide route /guides/${slug}/ did not return HTTP 200`);
+    for (const width of [360, 375, 393]) {
+      await page.setViewportSize({ width, height: original.height });
+      const measurement = await page.evaluate(measureOverflow);
+      if (measurement.scrollWidth > measurement.innerWidth) {
+        failures.push(`  ${slug} @${width}: scrollWidth ${measurement.scrollWidth} > innerWidth ${measurement.innerWidth}`);
+      }
+    }
+  }
+  await page.setViewportSize(original);
+
+  assert.deepEqual(failures, [], `F3 overflow on ${failures.length} guide measurement(s) of ${slugs.length} guides:\n${failures.join("\n")}`);
+});
 
 // -- F4: homepage hero contrast for all six scenes --
 

@@ -647,10 +647,15 @@
           >{{ config.primaryCtaLabel or "Browse Direct Homes" }} <span class="arr" aria-hidden="true">→</span></a>
           <a
             class="guide-save50-secondary"
-            href="{{ config.bookingEngineHref or 'https://book.seascape-vacations.com' }}"
+            href="{{ config.bookingEngineHref or '/properties/' }}"
+            {% if config.bookingEngineHref %}
             target="_blank"
             rel="noopener"
             data-track-event="booking_engine_handoff"
+            {% else %}
+            data-track-event="guide_book_direct_click"
+            data-placement="guide_kit_secondary"
+            {% endif %}
             data-guide-slug="{{ config.guideSlug }}"
             data-track-label="{{ config.bookingEngineLabel or 'Open Direct Availability' }}"
           >{{ config.bookingEngineLabel or "Open Direct Availability" }} <span class="arr" aria-hidden="true">→</span></a>
@@ -715,10 +720,15 @@
         >{{ config.primaryCtaLabel or "Browse Direct Homes" }}</a>
         <a
           class="guide-cta-btn--ghost"
-          href="{{ config.bookingEngineHref or 'https://book.seascape-vacations.com' }}"
+          href="{{ config.bookingEngineHref or '/properties/' }}"
+          {% if config.bookingEngineHref %}
           target="_blank"
           rel="noopener"
           data-track-event="booking_engine_handoff"
+          {% else %}
+          data-track-event="guide_book_direct_click"
+          data-placement="guide_kit_secondary"
+          {% endif %}
           data-guide-slug="{{ config.guideSlug }}"
           data-track-label="{{ config.bookingEngineLabel or 'Check direct availability' }}"
         >{{ config.bookingEngineLabel or "Check Direct Availability" }}</a>
