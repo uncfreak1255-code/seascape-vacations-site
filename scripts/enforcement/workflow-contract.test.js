@@ -89,8 +89,12 @@ test("CI speed lane keeps non-rendering package commands off expensive visual ga
   assert.match(visual, /name: Upload visual proof bundle\n\s+if: failure\(\)/);
   assert.match(performance, /run:\s*node scripts\/enforcement\/build-site\.js/);
   assert.match(performance, /run:\s*npx --no-install lhci autorun --config=\.\/lighthouserc\.js/);
-  assert.match(release, /runs-on:\s*ubuntu-latest/);
-  assert.doesNotMatch(release, /mac-sawbeck-seascape-vacations-site/);
+  // Lighthouse and the release checks need no Mac pixels, so neither may
+  // queue on the single Mac runner behind the visual gate.
+  for (const workflow of [release, performance]) {
+    assert.match(workflow, /runs-on:\s*ubuntu-latest/);
+    assert.doesNotMatch(workflow, /self-hosted|mac-sawbeck-seascape-vacations-site/);
+  }
 
   for (const script of [
     fs.readFileSync(path.join(projectRoot, "scripts/enforcement/run-visual-tests.js"), "utf8"),
@@ -108,15 +112,17 @@ test("self-hosted workflows keep untrusted branch code off Sawyer's Mac", () => 
   const liveSmoke = readWorkflow("live-smoke.yml");
   const baselines = readWorkflow("update-visual-baselines.yml");
 
-  for (const workflow of [visual, performance]) {
-    assert.match(workflow, /pull_request\.author_association != 'OWNER'/);
-    assert.match(workflow, /github\.actor != 'uncfreak1255-code'/);
-    assert.match(workflow, /github\.triggering_actor != 'uncfreak1255-code'/);
+  assert.match(visual, /pull_request\.author_association != 'OWNER'/);
+  assert.match(visual, /github\.actor != 'uncfreak1255-code'/);
+  assert.match(visual, /github\.triggering_actor != 'uncfreak1255-code'/);
+
+  // Hosted-only workflows never reach the Mac, whoever opens the PR.
+  for (const workflow of [release, performance]) {
+    const runners = [...workflow.matchAll(/^ +runs-on: (.+)$/gm)].map(([, runner]) => runner);
+    assert.ok(runners.length);
+    assert.ok(runners.every(runner => runner === "ubuntu-latest"), runners.join());
   }
 
-  assert.match(release, /runs-on:\s*ubuntu-latest/);
-
-  assert.match(performance, /github\.triggering_actor != 'uncfreak1255-code'/);
   assert.match(liveSmoke, /github\.triggering_actor == 'uncfreak1255-code'/);
   assert.match(baselines, /github\.triggering_actor == 'uncfreak1255-code'/);
   assert.match(baselines, /github\.actor == 'uncfreak1255-code'/);
@@ -150,7 +156,6 @@ function ownerEvent(eventName, overrides = {}) {
 
 test("actual PR routing selects the Mac only for screenshot-sensitive owner events", () => {
   for (const [file, hosted] of [
-    ["performance-budget.yml", "ubuntu-latest"],
     ["playwright-visual.yml", "macos-latest"],
   ]) {
     const trusted = ownerEvent("pull_request");
@@ -182,15 +187,42 @@ test("manual routing checks both actors and preserves scheduled routes", () => {
       assert.ok(routingValues(file, "if", untrusted).every(value => value === false));
     }
   }
-  assert.deepEqual(routingValues("performance-budget.yml", "runs-on", trusted),
-    ["mac-sawbeck-seascape-vacations-site"]);
-  for (const field of ["actor", "triggering_actor"]) {
-    assert.deepEqual(routingValues("performance-budget.yml", "runs-on",
-      { ...trusted, [field]: "outsider" }), ["ubuntu-latest"]);
-  }
   const scheduled = ownerEvent("schedule", { event: {} });
-  assert.deepEqual(routingValues("performance-budget.yml", "runs-on", scheduled),
-    ["mac-sawbeck-seascape-vacations-site"]);
   assert.deepEqual(routingValues("live-smoke.yml", "if", scheduled), [true]);
   assert.match(readWorkflow("release-safety.yml"), /runs-on:\s*ubuntu-latest/);
+});
+
+test("jobs on the persistent Mac runner skip setup-node's npm cache", () => {
+  // The Mac keeps ~/.npm between jobs. `cache: npm` there restores and saves a
+  // multi-gigabyte archive on every job and buys nothing.
+  const dir = path.join(projectRoot, ".github", "workflows");
+  const onMac = fs.readdirSync(dir)
+    .filter(file => /\.ya?ml$/.test(file))
+    .filter(file => /runs-on:.*(self-hosted|mac-sawbeck-seascape-vacations-site)/.test(readWorkflow(file)));
+
+  assert.ok(onMac.includes("live-smoke.yml") && onMac.includes("playwright-visual.yml"),
+    "expected the Mac-runner workflows to be detected");
+  for (const file of onMac) {
+    assert.doesNotMatch(readWorkflow(file), /^\s*cache:\s*["']?npm/m, file);
+  }
+});
+
+test("a failed scheduled live smoke is reported from a separate hosted job", () => {
+  const workflow = readWorkflow("live-smoke.yml");
+  const [smokeJob, reportJob] = workflow.slice(workflow.indexOf("\njobs:")).split("\n  report-failure:");
+
+  assert.ok(reportJob, "live-smoke.yml: missing report-failure job");
+  // The job that runs repository code on the Mac keeps a read-only token.
+  assert.match(workflow.slice(0, workflow.indexOf("\njobs:")), /\npermissions:\n  contents: read\n/);
+  assert.doesNotMatch(smokeJob, /permissions:|issues:\s*write|GH_TOKEN|github\.token/);
+
+  assert.match(reportJob, /\n    needs: live-smoke\n/);
+  assert.match(reportJob, /\n    runs-on: ubuntu-latest\n/);
+  assert.match(reportJob, /\n    permissions:\n      issues: write\n\n/);
+  // Scheduled runs only: a manual dispatch can run branch code and must not
+  // be able to open issues by failing.
+  assert.match(reportJob,
+    /\n    if: always\(\) && github\.event_name == 'schedule' && needs\.live-smoke\.result != 'success'\n/);
+  assert.match(reportJob, /gh issue comment "\$existing"/);
+  assert.match(reportJob, /gh issue create --title "\$title"/);
 });
