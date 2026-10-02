@@ -34,6 +34,10 @@
 .g-owner-file small{display:block;font-size:12px;color:var(--g-muted);margin-top:6px}
 .g-owner-field-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 16px}
 .g-owner-field-full{grid-column:1/-1}
+.g-owner-authority{display:flex;align-items:flex-start;gap:10px;min-height:44px;margin:2px 0 8px;color:var(--g-ink);font-size:13px;line-height:1.5;cursor:pointer}
+.g-owner-authority input[type="checkbox"]{flex:0 0 18px;width:18px;height:18px;min-height:18px;margin:2px 0 0;accent-color:var(--g-ink);cursor:pointer}
+.g-owner-authority input[type="checkbox"]:focus-visible{outline:2px solid var(--g-ink);outline-offset:2px}
+.g-owner-authority span{display:block;margin:0;font-size:13px;letter-spacing:0}
 .g-owner-choices{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px}
 .guest-site .g-owner-choice{min-height:44px;padding:10px 14px;border:1px solid var(--g-rule);border-radius:4px;background:transparent;color:var(--g-ink);font:14px/1.3 Poppins,sans-serif;text-align:left;cursor:pointer}
 .g-owner-choice:hover{border-color:var(--g-ink)}

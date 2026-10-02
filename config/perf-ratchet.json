@@ -9,8 +9,8 @@
       "stylesheet": 56913
     },
     "/property-management/": {
-      "script": 87054,
-      "stylesheet": 53979
+      "script": 87337,
+      "stylesheet": 54481
     },
     "/property-management/vacation-rental-licensing-florida/": {
       "script": 54090,
@@ -400,6 +400,22 @@
       "from": 56709,
       "to": 56913,
       "reason": "Catalog card to checkout (PR #644): an open home's card books straight to the priced checkout; about 2.1 KB more script and 204 bytes more stylesheet on /properties/ only. Raise approved by Sawyer on 2026-10-02.",
+      "date": "2026-10-02"
+    },
+    {
+      "route": "/property-management/",
+      "metric": "script",
+      "from": 87054,
+      "to": 87337,
+      "reason": "Owner authority checkbox and recap line in the revenue review form (#639): +283 B inline script, +502 B owner.css",
+      "date": "2026-10-02"
+    },
+    {
+      "route": "/property-management/",
+      "metric": "stylesheet",
+      "from": 53979,
+      "to": 54481,
+      "reason": "Owner authority checkbox and recap line in the revenue review form (#639): +283 B inline script, +502 B owner.css",
       "date": "2026-10-02"
     }
   ]

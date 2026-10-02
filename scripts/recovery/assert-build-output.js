@@ -470,6 +470,12 @@ if (phase === "remediation") {
   expectContains("_site/property-management/index.html", "The homes we manage");
   expectContains("_site/property-management/index.html", "What Gulf Coast owners usually ask first");
   expectContains("_site/property-management/index.html", 'name="owner-revenue-teardown"');
+  expectContains("_site/property-management/index.html", 'name="submitter_authority" value="owner_or_authorized_representative" required');
+  expectContains("_site/property-management/index.html", "I confirm I am the property owner or an authorized representative for this property.");
+  expectContains("_site/property-management/index.html", "Owner statement, optional");
+  expectNotMatches("_site/property-management/index.html", /<input type="file" name="owner_statement"[^>]*\brequired\b/);
+  expectContains("_site/property-management/airbnb-management-services-sarasota/index.html", 'name="submitter_authority" value="owner_or_authorized_representative" required');
+  expectContains("_site/property-management/revenue-review-requested/index.html", "Your submission records that you are the property owner or an authorized representative for this property.");
   expectNotContains("_site/property-management/index.html", "Reply guaranteed");
   expectNotContains("_site/property-management/index.html", "The Fee Comparison");
   expectNotContains("_site/property-management/index.html", "$119,923");

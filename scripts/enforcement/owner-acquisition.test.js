@@ -55,6 +55,14 @@ test("owner landing page uses a real owner revenue review form instead of generi
   assert.equal(ownerLanding.includes('<form class="g-owner-form" novalidate name="owner-revenue-teardown" method="POST" action="/property-management/revenue-review-requested/" enctype="multipart/form-data"'), true);
   assert.equal(ownerLanding.includes('name="property_address" autocomplete="street-address"'), true);
   assert.equal(ownerLanding.includes('name="owner_statement"'), true);
+  assert.match(
+    ownerLanding,
+    /<input type="checkbox" name="submitter_authority" value="owner_or_authorized_representative" required data-owner-authority>/,
+    "the form must post an explicit required owner-or-authorized-representative confirmation"
+  );
+  const statementInput = ownerLanding.match(/<input type="file" name="owner_statement"[^>]*>/)?.[0] || "";
+  assert.equal(statementInput.includes("required"), false, "the owner statement upload must remain optional");
+  assert.match(ownerLanding, /data-confirm-authority/, "the final form recap must show the authority confirmation");
   assert.equal(ownerLanding.includes('data-owner-context-field></textarea>'), true);
   assert.equal(ownerLanding.includes('data-track-event="owner_primary_cta_click"'), true);
   assert.match(
@@ -85,6 +93,9 @@ test("owner landing page uses a real owner revenue review form instead of generi
   assert.equal(ownerLanding.includes('<div data-netlify-recaptcha="true"></div>'), true);
   assert.equal(ownerFormPartial.includes('name="proof_label"'), true);
   assert.equal(ownerLanding.includes('name="proof_label"'), true);
+  const ownerReceipt = fs.readFileSync(ownerReviewRequestedPath, "utf8");
+  assert.match(ownerReceipt, /Your submission records that you are the property owner or an authorized representative for this property\./);
+  assert.match(ownerReceipt, /An owner statement is optional/);
 });
 
 test("owner landing page keeps the owner revenue review close to the sales argument instead of burying it under the library", () => {
@@ -221,6 +232,11 @@ test("owner revenue review form lowers friction without losing tracking or inten
   assert.equal(ownerFormPartial.includes('name="what_feels_off" rows="3"'), true);
   assert.equal(ownerFormPartial.includes('data-owner-context-field></textarea>'), true);
   assert.equal(ownerFormPartial.includes('name="owner_statement"'), true);
+  assert.match(
+    ownerFormPartial,
+    /<input type="checkbox" name="submitter_authority" value="owner_or_authorized_representative" required>/,
+    "the shared owner form posts to the same receipt, so it must require the same authority confirmation"
+  );
   assert.equal(ownerLanding.includes('name="what_feels_off" rows="3"'), true);
   assert.equal(ownerLanding.includes("One line in your own words"), true);
   assert.equal(ownerLanding.includes("The payout feels light and the statements are hard to follow."), true);
@@ -361,6 +377,20 @@ test("owner funnel route canary protects canonical and alternate public hosts fr
   assert.equal(canary.includes("https://seascape-vacations.com"), true);
   assert.equal(canary.includes("https://www.seascape-vacations.com"), true);
   assert.equal(canary.includes("/lander"), true, "canary should fail loudly on the known lander shell symptom");
+});
+
+test("owner receipt route canary requires the submitted owner-authority confirmation", () => {
+  const receiptUrl = "https://seascape-vacations.com/property-management/revenue-review-requested/";
+  const currentReceipt = {
+    url: receiptUrl,
+    statusCode: 200,
+    body: "Owner revenue review received. Your submission records that you are the property owner or an authorized representative for this property."
+  };
+  assert.doesNotThrow(() => assertOwnerRouteResponse(currentReceipt));
+  assert.throws(
+    () => assertOwnerRouteResponse({ ...currentReceipt, body: "Owner revenue review request received." }),
+    /missing the submitted owner-authority confirmation/
+  );
 });
 
 test("owner funnel route canary rejects the complete retired proof set", () => {
