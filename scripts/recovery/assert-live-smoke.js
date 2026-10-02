@@ -2,9 +2,10 @@ const https = require("https");
 const { isCurrentAvailabilityRange } = require("../cache/normalize-hostaway");
 const { LISTINGS } = require("../booking/stay-availability");
 
-// "Book these dates" on a home's page opens this Hostaway address. Hostaway does not document it,
-// so the daily smoke loads it for an open stay and fails when the priced checkout stops appearing.
-// Rollback: make checkoutUrl() in src/assets/js/guest.js return the listing address.
+// "Book these dates" on a home's page and on a catalog card opens this Hostaway address. Hostaway does
+// not document it, so the daily smoke loads it for an open stay and fails when the priced checkout stops appearing.
+// Rollback: make checkoutUrl() in src/assets/js/guest.js return the listing address, and remove the
+// "/checkout/" line in syncLinks() in src/assets/js/catalog.js.
 const CHECKOUT_ORIGIN = "https://book.seascape-vacations.com";
 const CHECKOUT_STAY_OFFSETS = [120, 150, 180, 210, 240, 270];
 const CHECKOUT_RENDER_TIMEOUT_MS = 30000;
@@ -197,7 +198,7 @@ async function validateRenderedCheckout(baseUrl, options = {}) {
     // The rollback instruction needs every page tried to have rendered without the stay.
     if (seen.every((state) => state === "unpriced")) {
       throw new Error(
-        "Hostaway checkout no longer shows a priced stay from start/end/numberOfGuests in the address; switch checkoutUrl() in src/assets/js/guest.js back to the listing address"
+        "Hostaway checkout no longer shows a priced stay from start/end/numberOfGuests in the address; switch checkoutUrl() in src/assets/js/guest.js back to the listing address and remove the /checkout/ line in syncLinks() in src/assets/js/catalog.js"
       );
     }
     throw new Error(

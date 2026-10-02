@@ -242,3 +242,21 @@ Reader copy added or changed: `Check dates` (was `Check dates & total`), `Book t
 Source: `src/assets/js/guest.js`, `src/_includes/layouts/property.njk`, `src/_includes/partials/guest-trip-form.njk`, `src/css/guest.css`, and `src/assets/js/conversion-tracking.js` (a checkout address now carries the same home and listing fields as a listing address). No event is added or renamed; `property_booking_page_click` reports the checkout press. Proof: `tests/visual/home-booking-button.spec.js`, `scripts/recovery/assert-direct-booking-event-smoke.js`, and a daily live-smoke check in `scripts/recovery/assert-live-smoke.js` that loads the checkout address for an open stay and fails when the priced checkout stops appearing.
 
 Anti-claims: open dates come from a cached calendar and are not a quote or a reservation; the page promises the full price before payment and says nothing about cancellation terms on the checkout screen; nothing is reserved until the guest pays on Hostaway.
+
+## October 2 catalog card to checkout
+
+Fifth slice of the booking-path direction Sawyer approved on 2026-10-01. On `/properties/`, once the live dates check confirms a home is open, that home's card button and its button in the comparison say and do what the home's own page does:
+
+| What the catalog knows | Button | Where it goes |
+| --- | --- | --- |
+| No dates yet | `Check dates` | The home's booking page, in a new tab (unchanged) |
+| Dates open, group size chosen | `Book these dates` | Hostaway's priced checkout for that home and stay, in the same tab |
+| Dates open, no group size | `Book these dates` | The group-size field; the size chosen there applies at once |
+| Dates booked, or a stay rule not met | none | The card is hidden, as before |
+| The dates check failed or a calendar could not be read | `Check dates` | The home's booking page with the trip filled in, in a new tab (unchanged) |
+
+Reader copy added or changed: the count line after an open-dates answer ends `You’ll see the full price before you pay.` with a group size and `Choose your group size to book.` without one (was `Price and cancellation terms are on the booking page.`); the trip status says `These dates are open. Choose your group size to book them.` when a guest presses `Book these dates` without a group size; the comparison's trip line ends `These dates are open.` when the dates check confirmed the homes shown (otherwise `Dates and prices need confirmation.`, unchanged). The card note `Full price, fees and cancellation terms on the booking page.` is unchanged; Hostaway's checkout screen shows the total and the cancellation policy (read on 2026-10-02, load and read only).
+
+Source: `src/assets/js/catalog.js`, plus one rule in `src/css/catalog.css` that keeps the comparison's button at its phone size so the longer word fits on two lines. No event is added or renamed; `catalog_book_direct_click` reports the checkout press and is sent before the same-tab navigation. Pressing `Book these dates` without a group size reports no booking click. Proof: `tests/visual/catalog-card-checkout.spec.js` and the daily checkout-address check in `scripts/recovery/assert-live-smoke.js`, whose rollback message now names both the home page and the catalog.
+
+Anti-claims: the same as the home page button. Open dates come from a cached calendar and are not a quote or a reservation; nothing is reserved until the guest pays on Hostaway.
