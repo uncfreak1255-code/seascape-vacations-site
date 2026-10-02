@@ -232,6 +232,11 @@ test("owner revenue review form lowers friction without losing tracking or inten
   assert.equal(ownerFormPartial.includes('name="what_feels_off" rows="3"'), true);
   assert.equal(ownerFormPartial.includes('data-owner-context-field></textarea>'), true);
   assert.equal(ownerFormPartial.includes('name="owner_statement"'), true);
+  assert.match(
+    ownerFormPartial,
+    /<input type="checkbox" name="submitter_authority" value="owner_or_authorized_representative" required>/,
+    "the shared owner form posts to the same receipt, so it must require the same authority confirmation"
+  );
   assert.equal(ownerLanding.includes('name="what_feels_off" rows="3"'), true);
   assert.equal(ownerLanding.includes("One line in your own words"), true);
   assert.equal(ownerLanding.includes("The payout feels light and the statements are hard to follow."), true);

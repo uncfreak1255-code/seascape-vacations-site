@@ -100,6 +100,10 @@
           <small class="owner-form-help">{{ options.fileHelp or "PDF, spreadsheet, or screenshot. You can submit the form without an upload." }}</small>
         </label>
         {% endif %}
+        <label class="owner-form-authority">
+          <input type="checkbox" name="submitter_authority" value="owner_or_authorized_representative" required>
+          <span>I confirm I am the property owner or an authorized representative for this property.</span>
+        </label>
       </div>
 
   {% if hasFormCard %}
