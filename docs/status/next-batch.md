@@ -216,7 +216,7 @@ replace them with guessed rank history or invoke paid lookup tools.
 
 | Date | Owner surface | Result | Exact remaining proof |
 |---|---|---|---|
-| 2026-10-02 | Site next-batch handoff; Analytics receipt above | Current existing-runtime read retrieved; exact guide variant already 301s. Fixture-built desktop/mobile homepage → owner form navigation passed; fresh pixels inspected with no blocking issue in those states, no submission. | GSC trailing day; approved OpenSEO project and two saved-tracker reads; required source checks/review before merge. No runtime or impact claim. |
+| 2026-10-02 | Site next-batch handoff; Analytics receipt above | Current existing-runtime read retrieved; exact guide variant already 301s. Fixture-built desktop/mobile homepage → owner form navigation passed; fresh pixels inspected with no blocking issue in those states, no submission. | GSC trailing day; approved OpenSEO project and two saved-tracker reads; required current-head source checks/review before source-only publication. No runtime or impact claim. |
 
 ## Historical September 13 Receipt
 
