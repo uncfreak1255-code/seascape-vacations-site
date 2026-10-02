@@ -77,3 +77,4 @@ Status: in implementation (2026-10-02). Sawyer approved drafting this batch on
 - routes to smoke test: the four donor guides and the three market pages
 - commands to run: npm run lint:content && npm run build && npm test && npm run verify:release; npm run test:visual with regenerated baselines for the guide routes that carry full-page screenshots
 - regression risks to watch: full-page visual baselines on `/guides/bradenton-vs-sarasota/`, `/guides/anna-maria-island-vs-siesta-key/`, `/guides/best-time-visit-anna-maria-island/` and `/guides/srq-airport-to-anna-maria-island/` grow by one paragraph; guest CTA events must stay unchanged
+- baselines regenerated on 2026-10-02 by the `update-visual-baselines` workflow (run 37028891728, commit 659eb03): `guide-bradenton-vs-sarasota` and `guide-ami-vs-siesta-key`, desktop and mobile; the srq-airport and best-time guides carry no full-page baseline that changed
