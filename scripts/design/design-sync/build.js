@@ -339,7 +339,7 @@ card({
   note: `Body 15px / 1.65 in ink. Labels are 12px uppercase Poppins 500 with .13em tracking in muted; that is the eyebrow pattern and the only tracking in the system. No text renders below 12px anywhere (floor F1).`,
   body: `<div class="ds-line"><div class="ds-spec">.g-label · eyebrow</div><p class="g-label" style="margin:0">Your time on the coast</p></div>
 <div class="ds-line"><div class="ds-spec">body · 15/1.65</div><p style="margin:0;max-width:560px">Seascape is a small, owner-operated collection of homes in Bradenton and Sarasota. Choose the home, understand the details that could change your choice, and arrive at the booking page with dates and guest count intact.</p></div>
-<div class="ds-line"><div class="ds-spec">.g-small · 13/1.65 muted</div><p class="g-small" style="margin:0">Availability, fees and cancellation terms are confirmed on our secure booking page.</p></div>
+<div class="ds-line"><div class="ds-spec">.g-small · 13/1.65 muted</div><p class="g-small" style="margin:0">Choose your dates and group size. You’ll see the full price before you pay.</p></div>
 <div class="ds-line"><div class="ds-spec">nav link · 14px<br>active = clay + underline</div><nav class="g-nav" style="gap:28px"><a href="#">Our homes</a><a href="#" aria-current="page">Explore the coast</a><a href="#">About Seascape</a></nav></div>
 <div class="ds-line"><div class="ds-spec">.g-inline-link · 14/500 underline</div><a class="g-inline-link" href="#">See every home <span aria-hidden="true">&rarr;</span></a></div>
 <div class="ds-line"><div class="ds-spec">form label · 12px .05em</div><div><label style="display:block;font-size:12px;letter-spacing:.05em;margin-bottom:8px">Arrival</label><input type="date" style="height:46px;border:0;border-bottom:1px solid ${C.muted};background:transparent;color:${C.ink};border-radius:0;padding:6px 0;font:inherit"></div></div>`,
@@ -357,7 +357,7 @@ card({
   title: "One button, three measured treatments",
   note: `Radius 4px, never a pill. 14px/24px padding, min-height 48px (44px mobile floor). Poppins 500 14px. Hover fills with muted, no lift, no shadow, no shine. Focus is a 3px clay outline offset 4px. <strong>Pick the treatment by measured contrast on its surface, not by eye.</strong>`,
   body: `<p class="ds-caption">Ink with white text on paper, white and photos (10.14:1 on cream). Rest · hover · focus.</p>
-<div class="ds-row"><a class="g-button btn-brand" href="#">Find my home</a><a class="g-button btn-brand ds-hover" href="#">Find my home</a><a class="g-button btn-brand ds-focus" href="#">Find my home</a><button class="g-button btn-brand" type="submit">Check dates &amp; total</button></div>
+<div class="ds-row"><a class="g-button btn-brand" href="#">Find my home</a><a class="g-button btn-brand ds-hover" href="#">Find my home</a><a class="g-button btn-brand ds-focus" href="#">Find my home</a><button class="g-button btn-brand" type="submit">Check dates</button></div>
 <div class="ds-rule"></div>
 <p class="ds-caption">Citron with ink text only where ink loses its own surface: homepage header over the scene photo, the two sticky CTA bars, the near-black owner hero.</p>
 <div class="ds-dark ds-row"><a class="g-button btn-brand" href="#">Find your home <span aria-hidden="true">&nearr;</span></a><a class="g-button btn-brand" href="#">Check dates</a></div>

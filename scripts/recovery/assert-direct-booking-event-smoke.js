@@ -309,6 +309,46 @@ function simulateDirectBookingEvents() {
   });
 }
 
+// A home's page books through Hostaway's checkout address, so that address must carry the same lineage as a listing link.
+function simulateCheckoutHandoffEvent() {
+  return withTrackingRuntime(({ listeners, window }) => {
+    listeners.DOMContentLoaded();
+
+    const checkoutLink = buildTrackedLink(
+      "property_booking_page_click",
+      "https://book.seascape-vacations.com/checkout/206016?start=2026-06-01&end=2026-06-05&numberOfGuests=4"
+    );
+    listeners.click({
+      target: {
+        closest(selector) {
+          return selector === "[data-track-event]" ? checkoutLink : null;
+        }
+      },
+      button: 0,
+      metaKey: false,
+      ctrlKey: false,
+      shiftKey: false,
+      altKey: false
+    });
+
+    return window.dataLayer;
+  });
+}
+
+function validateCheckoutHandoffEvents(events) {
+  const clicks = events.filter((entry) => entry.event === "property_booking_page_click");
+  if (clicks.length !== 1) {
+    throw new Error(`checkout link expected one property_booking_page_click, got ${clicks.length}`);
+  }
+  const payload = clicks[0].payload;
+  if (payload.booking_listing_id !== "206016" || payload.booking_property_slug !== "dockside-dreams") {
+    throw new Error("checkout link did not carry its listing id and home into property_booking_page_click");
+  }
+  if (!/^svh_/.test(payload.booking_handoff_id) || !new URL(payload.link_url).pathname.startsWith("/checkout/206016")) {
+    throw new Error("checkout link did not carry a handoff id to the checkout address");
+  }
+}
+
 function simulatePopupEmailCaptureEvent() {
   return withTrackingRuntime(({ listeners, window }) => {
     if (typeof listeners.DOMContentLoaded !== "function") {
@@ -380,6 +420,8 @@ async function run(baseUrl, options = {}) {
     }
   }
 
+  validateCheckoutHandoffEvents(simulateCheckoutHandoffEvent());
+
   if (options.requirePopupCapture) {
     for (const popupPath of [POPUP_GUIDE_PATH, HOMEPAGE_PATH]) {
       const popupResponse = await request(baseUrl, popupPath);
@@ -417,6 +459,8 @@ module.exports = {
   validatePopupMarkup,
   validatePopupRuntime,
   simulateDirectBookingEvents,
+  simulateCheckoutHandoffEvent,
+  validateCheckoutHandoffEvents,
   simulatePopupEmailCaptureEvent,
   simulateSanitizedAnalyticsPayload,
   run

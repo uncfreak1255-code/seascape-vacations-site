@@ -63,6 +63,8 @@ test('guide to stay to property retains the trip and GA4 outbound lineage agrees
   await detail.click();
   await expect(page).toHaveURL(/\/properties\/[^/]+\//);
   expectTrip(page.url());
+  // The booking links are rewritten when the dates check answers, so read them after it has.
+  await expect(page.locator('form [data-booking-action]')).toHaveText('Book these dates');
   const checkout = page.locator('a[data-track-event="property_booking_page_click"]:visible').first();
   const href = await checkout.getAttribute('href');
   expectTrip(href, true);

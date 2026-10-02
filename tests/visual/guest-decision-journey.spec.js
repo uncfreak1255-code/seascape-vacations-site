@@ -114,7 +114,7 @@ test("SAVE50 campaign survives catalog and property trip edits", async ({ page }
   expect(propertyCheckout.searchParams.get("utm_campaign")).toBe("save50_welcome");
   expect(propertyCheckout.searchParams.get("numberOfGuests")).toBe("10");
   var propertyBookingLinks = page.locator("[data-property-booking-link]");
-  await expect(propertyBookingLinks).toHaveCount(4);
+  await expect(propertyBookingLinks).toHaveCount(3);
   for (var href of await propertyBookingLinks.evaluateAll(nodes => nodes.map(node => node.href))) {
     var propertyExit = new URL(href);
     expect(propertyExit.searchParams.get("promo")).toBe("save50");

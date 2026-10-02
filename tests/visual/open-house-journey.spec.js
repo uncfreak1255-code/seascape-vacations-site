@@ -3,8 +3,10 @@ const AxeBuilder = require('@axe-core/playwright').default;
 const properties = require('../../src/_data/properties-fallback.json');
 const { registerStableNetwork, prepareFullPageScreenshot } = require('./test-helpers');
 const itinerary = 'arrive=2026-11-07&depart=2026-11-14&guests=8';
-const availabilityStatus = 'Availability, fees and cancellation terms are confirmed on our secure booking page.';
-const datesOpenStatus = 'These dates are open. Price and cancellation terms are on the booking page.';
+const availabilityStatus = 'Choose your dates and group size. You’ll see the full price before you pay.';
+const datesOpenStatus = 'These dates are open. You’ll see the full price on the next screen, before you pay.';
+const groupNeededStatus = 'These dates are open. Choose your group size to book them.';
+const simulatedCheckout = {status:200,contentType:'text/html',body:'<h1>Simulated checkout navigation only</h1>'};
 async function visit(page, route) {
   await registerStableNetwork(page);
   await page.clock.setFixedTime(new Date('2026-09-04T16:00:00Z'));
@@ -27,10 +29,12 @@ test('homepage search reaches the matching collection without losing the trip', 
 });
 
 for (const p of properties) test(p.name+': identity, sleeping, reviews, real photos, schema and checkout agree', async ({ page, context }) => {
-  // Only the destination page is simulated; this test never reserves or pays.
-  await context.route('https://book.seascape-vacations.com/**', route=>route.fulfill({status:200,contentType:'text/html',body:'<h1>Simulated checkout navigation only</h1>'}));
+  const events=[];
+  await page.exposeFunction('__recordOutbound',event=>{events.push(event);});
   await visit(page,'/properties/'+p.slug+'/?'+itinerary+'&email=private@example.com');
-  await page.evaluate(() => { window.__outboundEvents = []; window.seascapeTrackEvent = (name, payload) => window.__outboundEvents.push({name, payload}); });
+  // Only the destination page is simulated; this test never reserves or pays.
+  await page.route('https://book.seascape-vacations.com/**', route=>route.fulfill(simulatedCheckout));
+  await page.evaluate(() => { window.seascapeTrackEvent = (name, payload) => window.__recordOutbound({name, payload}); });
   await expect(page.locator('main h1')).toHaveText(p.name);
   await expect(page.locator('.g-sleeping-list li')).toHaveText(p.guestFacts.sleeping.map((text,i)=>'0'+(i+1)+text));
   const schema=await page.locator('script[type="application/ld+json"]').evaluateAll(nodes=>nodes.flatMap(n=>JSON.parse(n.textContent)));
@@ -50,17 +54,19 @@ for (const p of properties) test(p.name+': identity, sleeping, reviews, real pho
   await page.getByLabel('Arrival',{exact:true}).fill('2026-12-05');
   await page.getByLabel('Departure',{exact:true}).fill('2026-12-12');
   await page.getByLabel('Guests',{exact:true}).selectOption('6');
-  const popupPromise=page.waitForEvent('popup');await page.getByRole('button',{name:'Check dates & total',exact:true}).click();
-  const popup=await popupPromise;await popup.waitForLoadState('domcontentloaded');
-  expect(new URL(popup.url()).pathname).toBe(new URL(p.guestFacts.sourceUrl).pathname);
-  expect(quoteParams(popup.url())).toEqual({start:'2026-12-05',end:'2026-12-12',guests:'6'});
-  const outbound = new URL(popup.url());
-  const event = await page.evaluate(() => window.__outboundEvents.find(item => item.name === 'property_booking_page_click'));
+  await page.getByRole('button',{name:'Book these dates',exact:true}).click();
+  await page.waitForURL(/book\.seascape-vacations\.com\/checkout\//);
+  // The priced checkout for this home opens in the same tab.
+  expect(context.pages()).toHaveLength(1);
+  expect(new URL(page.url()).pathname).toBe(new URL(p.guestFacts.sourceUrl).pathname.replace('/listings/','/checkout/'));
+  expect(quoteParams(page.url())).toEqual({start:'2026-12-05',end:'2026-12-12',guests:'6'});
+  const outbound = new URL(page.url());
+  const event = events.find(item => item.name === 'property_booking_page_click');
   expect(event.payload.booking_handoff_id).toBe(outbound.searchParams.get('sv_handoff_id'));
   expect(event.payload.booking_session_id).toBe(outbound.searchParams.get('sv_session_id'));
   expect(event.payload.booking_property_slug).toBe(p.slug);
   expect(JSON.stringify(event)).not.toContain('private@example.com');
-  await popup.close();
+  await page.goBack();
   await page.getByRole('link',{name:'Change trip / compare homes',exact:true}).click();
   await expect(page.locator('#trip-arrive')).toHaveValue('2026-12-05');await expect(page.locator('#trip-guests')).toHaveValue('6');
 });
@@ -69,9 +75,9 @@ test('oversized groups cannot bypass the property form through its checkout link
   for(const count of ['16','17']){
     await visit(page,'/properties/dockside-dreams/?guests='+count);
     await expect(page.locator('.g-guests')).toHaveValue(count);
-    await expect(page.locator('[data-property-checkout]')).toBeHidden();
+    await expect(page.locator('[data-property-checkout]')).not.toHaveAttribute('href',/./);
     await expect(page.locator('.g-form-status')).toContainText('up to 12 guests');
-    await page.getByRole('button',{name:'Check dates & total',exact:true}).click();
+    await page.getByRole('button',{name:'Check dates',exact:true}).click();
     await expect(page).toHaveURL(/properties\/dockside-dreams/);
     await page.getByRole('link',{name:'Change trip / compare homes',exact:true}).click();
     await expect(page.locator('#trip-guests')).toHaveValue(count);
@@ -93,9 +99,9 @@ test('correcting an oversized group restores the normal availability status',asy
   for(const count of ['16','17']){
     await visit(page,'/properties/dockside-dreams/?guests='+count);
     await expect(page.locator('.g-form-status')).toContainText('up to 12 guests');
-    await expect(page.locator('[data-property-checkout]')).toBeHidden();
+    await expect(page.locator('[data-property-checkout]')).not.toHaveAttribute('href',/./);
     await page.getByLabel('Guests',{exact:true}).selectOption('8');
-    await expect(page.locator('[data-property-checkout]')).toBeVisible();
+    await expect(page.locator('[data-property-checkout]')).toHaveAttribute('href',/listings\/206016/);
     await expect(page.locator('.g-form-status')).toHaveText(availabilityStatus);
     expect(quoteParams(await page.locator('[data-property-checkout]').getAttribute('href'))).toEqual({start:null,end:null,guests:'8'});
   }
@@ -105,12 +111,17 @@ test('invalid dates recover and incomplete edits do not open checkout',async({pa
   await visit(page,'/properties/the-oasis/?arrive=2026-11-14&depart=2026-11-07');
   await expect(page.locator('.g-form-status')).toContainText('Choose new dates');
   await page.getByLabel('Arrival',{exact:true}).fill('2026-11-07');
-  await page.getByRole('button',{name:'Check dates & total',exact:true}).click();
+  await page.getByRole('button',{name:'Check dates',exact:true}).click();
   expect(await page.locator('.g-depart').evaluate(input=>input.checkValidity())).toBe(false);
   await page.getByLabel('Departure',{exact:true}).fill('2026-11-14');
-  await page.getByLabel('Guests',{exact:true}).focus();
-  await expect(page.locator('[data-property-checkout]')).toBeVisible();
+  // Open dates with no group size ask for the group before the checkout opens.
+  await expect(page.locator('.g-form-status')).toHaveText(groupNeededStatus);
+  await page.getByRole('button',{name:'Book these dates',exact:true}).click();
+  await expect(page.getByLabel('Guests',{exact:true})).toBeFocused();
+  await expect(page).toHaveURL(/properties\/the-oasis/);
+  await page.getByLabel('Guests',{exact:true}).selectOption('6');
   await expect(page.locator('.g-form-status')).toHaveText(datesOpenStatus);
+  await expect(page.locator('[data-property-checkout]')).toHaveAttribute('href',/checkout\/189511/);
   await page.getByLabel('Arrival',{exact:true}).fill('');
   await page.getByLabel('Departure',{exact:true}).fill('');
   await page.getByLabel('Guests',{exact:true}).focus();
@@ -172,34 +183,39 @@ test('an incomplete edited trip cannot use the secondary checkout shortcut',asyn
   await visit(page,'/properties/dockside-dreams/?'+itinerary);
   await page.getByLabel('Departure',{exact:true}).fill('');
   await page.getByLabel('Guests',{exact:true}).focus();
-  await expect(page.locator('[data-property-checkout]')).toBeHidden();
+  await expect(page.locator('[data-property-checkout]')).not.toHaveAttribute('href',/./);
   await expect(page.locator('.g-form-status')).toContainText('Choose a departure');
   await page.getByLabel('Departure',{exact:true}).fill('2026-11-15');
   await page.getByLabel('Guests',{exact:true}).focus();
-  await expect(page.locator('[data-property-checkout]')).toBeVisible();
+  await expect(page.locator('[data-property-checkout]')).toHaveAttribute('href',/checkout\/206016/);
   expect(quoteParams(await page.locator('[data-property-checkout]').getAttribute('href'))).toEqual({start:'2026-11-07',end:'2026-11-15',guests:'8'});
   await expect(page.locator('.g-form-status')).toHaveText(datesOpenStatus);
 });
 
-test('a pending calendar check cannot open checkout after dates are cleared',async({page})=>{
+test('a calendar check never moves the guest by itself',async({page})=>{
   await visit(page,'/properties/dockside-dreams/?guests=4');
   const pending=[];
-  const popups=[];
-  page.on('popup',popup=>popups.push(popup));
+  const open={status:200,contentType:'application/json',body:JSON.stringify({ok:true,homes:[{slug:'dockside-dreams',bookable:true}]})};
   await page.route('**/.netlify/functions/booking-availability?**',route=>{pending.push(route);});
   await page.getByLabel('Arrival',{exact:true}).fill('2026-11-07');
   await page.getByLabel('Departure',{exact:true}).fill('2026-11-14');
-  await page.getByLabel('Guests',{exact:true}).focus();
   await expect.poll(()=>pending.length).toBe(1);
-  await expect(page.locator('[data-property-checkout]')).toBeHidden();
-  await page.getByRole('button',{name:'Check dates & total',exact:true}).click();
-  await expect.poll(()=>pending.length).toBe(2);
+  await expect(page.locator('.g-form-status')).toHaveText('Checking these dates.');
+  // A press while the check is running asks nothing twice and queues no navigation.
+  await page.getByRole('button',{name:'Check dates',exact:true}).click();
   await page.getByLabel('Arrival',{exact:true}).fill('');
   await page.getByLabel('Departure',{exact:true}).fill('');
-  await page.getByLabel('Guests',{exact:true}).focus();
-  await expect(page.locator('[data-property-checkout]')).toBeVisible();
-  for(const route of pending)await route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({ok:true,homes:[{slug:'dockside-dreams',bookable:true}]})});
+  await pending[0].fulfill(open);
   await page.waitForTimeout(200);
-  expect(popups).toHaveLength(0);
+  expect(pending).toHaveLength(1);
   await expect(page.locator('.g-form-status')).toHaveText(availabilityStatus);
+  await expect(page.getByRole('button',{name:'Check dates',exact:true})).toBeVisible();
+  // An answered check changes the word and then waits for the guest's press.
+  await page.getByLabel('Arrival',{exact:true}).fill('2026-11-07');
+  await page.getByLabel('Departure',{exact:true}).fill('2026-11-14');
+  await expect.poll(()=>pending.length).toBe(2);
+  await pending[1].fulfill(open);
+  await expect(page.getByRole('button',{name:'Book these dates',exact:true})).toBeVisible();
+  await page.waitForTimeout(1000);
+  await expect(page).toHaveURL(/properties\/dockside-dreams/);
 });
