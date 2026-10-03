@@ -1174,6 +1174,33 @@ test("week 2 booking guides use named authorship and retire legacy conversion cl
   }
 });
 
+test("AMI vacation cost planning frame keeps the range-bar tail and booking kit uncollided", () => {
+  const source = fs.readFileSync(
+    path.join(projectRoot, "src", "guides", "anna-maria-island-vacation-cost.html"),
+    "utf8"
+  );
+
+  assert.match(source, /<i class="pg-bar-tail"/);
+  assert.doesNotMatch(source, /<i class="pg-tail"/);
+  assert.match(source, /\.pg-bar i\.pg-bar-tail/);
+  assert.doesNotMatch(source, /\.pg-bar i\.pg-tail/);
+
+  const step3Start = source.indexOf('id="pg-3"');
+  const step3End = source.indexOf("</section>", step3Start);
+  const kitIndex = source.indexOf("{{ guideConversionKit({");
+  const tailIndex = source.indexOf('<div class="pg-tail">');
+  const relatedIndex = source.indexOf('<div class="related-guides">');
+
+  assert.notEqual(step3Start, -1, "step 03 should exist");
+  assert.notEqual(step3End, -1, "step 03 should close");
+  assert.notEqual(kitIndex, -1, "booking kit should exist");
+  assert.notEqual(tailIndex, -1, "Keep Reading wrapper should exist");
+  assert.notEqual(relatedIndex, -1, "Keep Reading should exist");
+  assert.equal(kitIndex > step3End, true, "booking kit must sit after #pg-3 closes");
+  assert.equal(kitIndex > tailIndex, true, "booking kit must sit inside .pg-tail");
+  assert.equal(kitIndex < relatedIndex, true, "booking kit must sit before Keep Reading");
+});
+
 test("winner guides surface the shared conversion kit before late-stage related content", () => {
   const winnerGuides = [
     {
