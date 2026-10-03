@@ -183,7 +183,7 @@ permalink: "/guides/anna-maria-island-vacation-cost/"
     .pg-total { font-size: 14px; font-weight: 500; white-space: nowrap; }
     .pg-bar { position: relative; display: block; grid-column: 1 / -1; height: 12px; margin-top: 12px; background: linear-gradient(var(--pg-rule), var(--pg-rule)) center / 100% 1px no-repeat; }
     .pg-bar i { position: absolute; top: 0; height: 12px; background: var(--pg-ink); }
-    .pg-bar i.pg-tail { top: 4px; height: 0; background: none; border-top: 4px dotted var(--pg-ink); }
+    .pg-bar i.pg-bar-tail { top: 4px; height: 0; background: none; border-top: 4px dotted var(--pg-ink); }
 
     .guide-author-card { display: flex; flex-wrap: wrap; gap: 8px 32px; margin-top: 18px; padding-bottom: 44px; color: var(--pg-muted); font-size: 13px; line-height: 1.65; }
     .pg-reviewed-by .pg-label { display: block; }
@@ -243,7 +243,7 @@ permalink: "/guides/anna-maria-island-vacation-cost/"
       .pg-total { font-size: 15px; }
       .pg-bar { grid-column: auto; height: 14px; margin-top: 0; }
       .pg-bar i { height: 14px; }
-      .pg-bar i.pg-tail { top: 5px; height: 0; }
+      .pg-bar i.pg-bar-tail { top: 5px; height: 0; }
       .guide-author-card { margin-top: 22px; padding-bottom: 64px; }
       .pg-reviewed-by { flex: 0 0 300px; }
       .guide-author-card > p { flex: 1 1 320px; max-width: 72ch; }
@@ -316,7 +316,7 @@ permalink: "/guides/anna-maria-island-vacation-cost/"
           <div class="pg-fig-head pg-label"><span>Trip Tier</span><span>Typical Total</span></div>
           <div class="pg-fig-row"><span class="pg-tier">Budget-smart</span><span class="pg-total">$2,700 to $4,100</span><span class="pg-bar"><i style="left:8.75%;width:17.5%"></i></span></div>
           <div class="pg-fig-row"><span class="pg-tier">Comfortable family week</span><span class="pg-total">$4,300 to $6,700</span><span class="pg-bar"><i style="left:28.75%;width:30%"></i></span></div>
-          <div class="pg-fig-row"><span class="pg-tier">Peak-season splurge</span><span class="pg-total">$6,900 to $9,500+</span><span class="pg-bar"><i style="left:61.25%;width:32.5%"></i><i class="pg-tail" style="left:93.75%;width:6.25%"></i></span></div>
+          <div class="pg-fig-row"><span class="pg-tier">Peak-season splurge</span><span class="pg-total">$6,900 to $9,500+</span><span class="pg-bar"><i style="left:61.25%;width:32.5%"></i><i class="pg-bar-tail" style="left:93.75%;width:6.25%"></i></span></div>
         </div>
 
         <div class="guide-author-card" data-guide-author="sawyer-beck">
@@ -442,7 +442,11 @@ permalink: "/guides/anna-maria-island-vacation-cost/"
           <p>
             If the beach still needs to anchor the week, start with <a href="/stays/anna-maria-island-vacation-rentals/" data-track-event="guide_book_direct_click" data-guide-slug="anna-maria-island-vacation-cost" data-track-label="Anna Maria Island vacation rentals">Anna Maria Island vacation rentals</a>. That page keeps the island-first trip in view without pretending you need the full on-island premium every night.
           </p>
+        </section>
+      </article>
+    </div>
 
+    <div class="pg-tail">
       {{ guideConversionKit({
         guideSlug: "anna-maria-island-vacation-cost",
         title: "Turn the budget into a stay that fits, not a weaker trip",
@@ -489,12 +493,6 @@ permalink: "/guides/anna-maria-island-vacation-cost/"
         primaryCtaLabel: "Browse Anna Maria Island Vacation Rentals",
         bookingEngineLabel: "Open Direct Availability"
       }) }}
-
-        </section>
-      </article>
-    </div>
-
-    <div class="pg-tail">
       <div class="related-guides">
         <h2>Keep Reading</h2>
         <div class="related-grid">
