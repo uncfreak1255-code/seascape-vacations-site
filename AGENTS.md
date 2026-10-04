@@ -2,19 +2,36 @@
 
 This repo owns website execution for Seascape Vacations.
 
-Read in this order:
+Before loading task documents, run `git status --short --branch` and compare
+`HEAD` with a freshly fetched `origin/main`. Preserve dirty, divergent, detached,
+and existing task checkouts. For new work, use a guarded worktree from current
+`origin/main`; for a read-only audit, `git show origin/main:<path>` can supply
+current source without changing the checkout. Every session first reads
+`docs/process/git-session-rules.md` -> Source currency for the exact route;
+the rest of that file is required before edits or publication.
 
-1. `AGENTS.md`
-2. `CLAUDE.md`
-3. `docs/process/agent-safety-standard.md`
-4. `docs/process/agent-evidence-routing.md` before choosing Browser, Chrome,
-   Computer Use, DOM inspection, screenshots, Playwright, or web search
-5. `docs/process/git-session-rules.md`
-6. `docs/process/content-quality-gate.md` before content or SEO copy work
-7. `docs/status/current-state.md`
-8. `DESIGN.md` before UI, CSS, template, or layout work
-9. `docs/process/design-review-workflow.md` for any visual or layout change
-10. one task-relevant file from `docs/briefs/`, `docs/portfolio/`, `docs/style/`, or source
+## Load context for the task
+
+Every session reads this entrypoint and `docs/process/agent-safety-standard.md`
+after selecting current source. Claude also reads `CLAUDE.md` for its harness
+delta; Codex uses the shared rules here. Use the Repo Truth map below to find
+the affected source and existing proof, then load only the matching branches:
+
+| When the task involves… | Read before acting |
+| --- | --- |
+| Behavior diagnosis, a focused fix, or tests | Affected source and existing tests from Repo Truth; read Git Session Rules before edits or publication |
+| UI, CSS, templates or layout | `DESIGN.md`, then `docs/process/design-review-workflow.md`; use its specialist/critic and rendered-review lane for meaningful visual changes |
+| Public copy or SEO copy | Select the exact brief through `docs/briefs/README.md`, then follow Reading Order For SEO Work and Content Gate below, including all three `docs/style/` sources |
+| Measured SEO expansion, title/meta rewrites, or prioritization from analytics | `docs/status/current-state.md`, `docs/status/next-batch.md`, the matching brief and portfolio file; apply the owning measurement gate |
+| Business-priority or experiment recommendations | `docs/status/current-state.md` and current evidence from the owning repo; historical forecasts do not set today's priority |
+| Browser, DOM, screenshots, Playwright, web search or desktop automation | `docs/process/agent-evidence-routing.md` before selecting a tool |
+| Commit, push, PR or merge | `docs/process/git-session-rules.md` and `docs/process/before-merge-checklist.md`; read the user-review or post-merge checklist when entering that phase |
+| Skills or workflow changes | `docs/process/skill-policy.md` and `docs/process/learning-contract.md`, plus the affected consumer and proof |
+
+Combine branches when the task spans them. Conditional reading changes what
+loads at startup; it does not waive a content, design, safety, measurement or
+release requirement. Read linked references at their trigger, using focused
+sections and searches rather than concatenating unrelated directories or logs.
 
 ## This Repo Owns
 
@@ -144,10 +161,24 @@ local. Keep the existing content, design, measurement, and release gates.
 - generated output: `_site/`
 - redirects source: `src/_redirects`
 - voice source of truth: `docs/style/`
-- batch briefs: `docs/briefs/`
+- batch briefs: `docs/briefs/README.md` routes selection and lifecycle; tasks name the exact brief in `docs/briefs/`
 - page-family routing map: `docs/portfolio/`
 - property truth (amenity/capacity claims trace here): `src/_data/properties.js` and its fallback `src/_data/properties-fallback.json`
 - owner proof assets (owner-proof claims trace here): `src/_data/ownerProofAssets.json`
+
+For behavior changes, start with the matching source and existing proof below.
+Browser scripts live in `src/assets/js/`; layout identifiers such as
+`layouts/property.njk` resolve under `src/_includes/`, not `src/properties/`.
+These are starting points; the Testing section still governs required checks.
+
+| Task | Source to inspect | Existing proof |
+| --- | --- | --- |
+| Catalog search, comparison, shortlist | `src/properties/index.njk`, `src/assets/js/catalog.js`, `src/css/catalog.css` | `scripts/enforcement/properties-catalog-layout.test.js`, `tests/visual/guest-decision-journey.spec.js` |
+| Property details and booking panel | `src/properties/`, `src/_includes/layouts/property.njk`, `src/assets/js/guest.js` | `scripts/enforcement/ui-runtime.test.js`, `tests/visual/open-house-journey.spec.js` |
+| Dates, guest count, tracking and booking continuity | `src/assets/js/guest.js`, `src/assets/js/conversion-tracking.js`, `src/_includes/partials/guest-trip-form.njk` | `scripts/enforcement/trip-continuity.test.js`, `tests/visual/trip-continuity.spec.js` |
+| Shared guest shell and styling | `src/_includes/layouts/guest.njk`, `src/_includes/partials/guest-header.njk`, `src/_includes/partials/guest-footer.njk`, `src/css/guest.css` | `scripts/enforcement/shared-shell.test.js`, `scripts/enforcement/internal-link-floor.test.js`, `tests/visual/design-floors.spec.js` |
+| Owner inquiry form and public proof | `src/property-management/index.njk`, `src/_includes/partials/owner-evaluation-form.njk`, `src/css/owner.css`, `src/_data/ownerProofAssets.json` | `scripts/enforcement/owner-acquisition.test.js`, `tests/visual/owner-form-steps.spec.js` |
+| Live-smoke assertions after visible-copy changes | `scripts/recovery/assert-live-smoke.js` | `scripts/enforcement/recovery-smoke.test.js` |
 
 ## Workflow Layer
 

@@ -8,6 +8,34 @@ These checkout and wrapper commands apply to the local coordinator. For a
 Codex cloud task's disposable checkout, use `AGENTS.md` -> Codex Cloud Handoff;
 the coordinator retains these gates for integration and publication.
 
+## Source currency
+
+Before loading task documents or choosing an implementation base:
+
+1. Run `git status --short --branch` and `git rev-parse HEAD` in the owning
+   checkout. Record the task owner and preserve all existing changes.
+2. Run `git fetch origin main`, then `git rev-parse origin/main` and
+   `git rev-list --left-right --count HEAD...origin/main`. The two counts show
+   commits unique to this checkout and to the fetched main. A cached tracking
+   ref alone does not prove currency. If fetch fails, say the comparison is
+   against cached source and do not claim it is current. Read-only analysis
+   may continue with that caveat; starting new work that requires current
+   main waits for a successful fetch.
+3. Choose the route:
+   - Clean root `main` with no unique commits: synchronize with
+     `git pull --ff-only origin main` when synchronization is part of the task.
+   - Dirty, divergent, or detached root or unassigned checkout: leave it
+     intact. Start new work in a guarded `.worktrees/<task>` checkout on
+     `codex/<task>` from the fetched `origin/main`. Do not stash, reset, or
+     switch the original checkout.
+   - Existing task branch: keep its changes and base. Inspect upstream changes
+     relevant to the task; fetching does not require resetting or rebasing it.
+   - Read-only audit: read current files with `git show origin/main:<path>`.
+     Read the local diff separately when the question concerns local edits.
+4. Load instructions and task source from the selected checkout or snapshot.
+   If the harness already loaded older instructions, compare affected rules
+   with current source before acting and report material conflicts.
+
 ## First decision: sync or work
 
 Ask this first:
@@ -18,7 +46,7 @@ Ask this first:
 If the answer is `sync`:
 
 1. Stay on root `main`
-2. Run `git pull origin main`
+2. Run `git pull --ff-only origin main`
 3. Verify with `git log --oneline -1`
 4. Stop there
 
@@ -103,7 +131,7 @@ Changing branches in the UI does not replace `git pull origin main`.
 
 For this repo, the safe default is:
 
-1. Sync root `main` at `/Users/sawbeck/Projects/seascape-vacations-site`
+1. Check source currency above; sync clean root `main` only when appropriate
 2. Start real work in `.worktrees/<task>` on `codex/<task>`
 3. Run `npm run git:preflight`
 4. Make source changes

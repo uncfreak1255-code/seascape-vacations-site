@@ -1,7 +1,11 @@
 # Brief: Owner market pages, guide internal links
 
-Status: in implementation (2026-10-02). Sawyer approved drafting this batch on
-2026-10-02 in the project thread.
+- lifecycle: completed
+- completion: source PR #654 merged as `aac361b8` (2026-10-02).
+  The measurement contract below still needs its own readback; source
+  completion does not prove deployment or owner demand.
+
+Sawyer approved drafting this batch on 2026-10-02 in the project thread.
 
 ## Content Gate Inputs
 

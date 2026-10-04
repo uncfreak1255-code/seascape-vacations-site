@@ -1,7 +1,12 @@
 # Brief: Owner Page Waterline Rebuild
 
-Status: in implementation (2026-09-17). Sawyer answered the open inputs with
-facts on 2026-09-17 and left the calls to the agent; the decisions are recorded
+- lifecycle: completed
+- completion: source PR #595 merged as `d684d41c` (2026-09-18).
+  The measurement contract below still needs its own readback; source
+  completion does not prove deployment or owner demand.
+
+Sawyer answered the open inputs with facts on 2026-09-17 and left the calls to
+the agent; the decisions are recorded
 at the bottom. `seascape-hub/context/owner-offer.md` is the offer source.
 
 ## Content Gate Inputs

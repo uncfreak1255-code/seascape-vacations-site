@@ -6,8 +6,11 @@ Read `AGENTS.md` first. It is canonical for this repo: scope ownership,
 non-negotiable rules, repo truth, business priorities, the workflow/skill layer
 with every `.claude/skills/*/SKILL.md` path, environment, commands, testing,
 deploy, the SEO reading order, the content gate, and the design lanes. This file
-holds only Claude-specific surfaces plus the two blocks the repo's own gates
-require to stay here.
+holds Claude-specific guidance and a pointer to the shared content workflow.
+
+Use its "Load context for the task" routes after checking source currency.
+Load the matching branches before their actions; the Claude delta does not
+require reading unrelated SEO, design or measurement documents at startup.
 
 - Skills: Claude loads `.claude/skills/<name>`, a relative link to the
   maintained source in `.agents/skills/<name>`; both resolve to one procedure
@@ -16,15 +19,10 @@ require to stay here.
   holds this repo's Claude permissions.
 - For UI/visual work, dispatch subagents with `model: "sonnet"`.
 
-## Required Batch Workflow
+## Content Work
 
-Kept here because `scripts/enforcement/content-voice.test.js` asserts this
-section in `CLAUDE.md`; `AGENTS.md` carries the same rule. Full order of
-operations: `docs/process/batch-workflow.md`. The visible-copy order is
-non-negotiable: **Draft the copy**, then **Remove internal wording**, then
-**Check voice and specificity** using the active brief and `docs/style/`.
-Complete these steps and `docs/process/content-quality-gate.md` before the
-content gate and `npm run lint:content`.
+Follow the canonical [Required Batch Workflow](AGENTS.md#required-batch-workflow)
+and Content Gate in `AGENTS.md` before public-copy work.
 
 ## GBrain Search Guidance (local, optional)
 <!-- gstack-gbrain-search-guidance:start -->
