@@ -50,6 +50,7 @@
     "seo:links:plan": "python3 .agents/skills/internal-link-targeting/scripts/analyze_internal_link_graph.py --repo . --format markdown",
     "test:visual": "node scripts/enforcement/run-visual-tests.js",
     "proof:visual": "node scripts/enforcement/capture-visual-proof.js",
+    "test:e2e": "npm run build && E2E_TELEMETRY_DISABLED=1 e2e run",
     "test:visual:update": "node scripts/enforcement/run-visual-tests.js --update-snapshots",
     "test:visual:install": "playwright install chromium",
     "audit:deps": "npm audit --audit-level=moderate --omit=dev",
@@ -99,8 +100,10 @@
   "devDependencies": {
     "@11ty/eleventy": "^3.1.6",
     "@axe-core/playwright": "^4.13.0",
+    "@e2e-dev/web": "0.12.0",
     "@lhci/cli": "^0.15.1",
     "@playwright/test": "^1.63.0",
+    "e2e": "0.17.0",
     "html-minifier-terser": "^7.2.0",
     "js-yaml": "4.3.2",
     "sharp": "^0.35.4"
