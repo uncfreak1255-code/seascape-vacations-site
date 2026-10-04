@@ -156,6 +156,20 @@ local. Keep the existing content, design, measurement, and release gates.
 - property truth (amenity/capacity claims trace here): `src/_data/properties.js` and its fallback `src/_data/properties-fallback.json`
 - owner proof assets (owner-proof claims trace here): `src/_data/ownerProofAssets.json`
 
+For behavior changes, start with the matching source and existing proof below.
+Browser scripts live in `src/assets/js/`; layout identifiers such as
+`layouts/property.njk` resolve under `src/_includes/`, not `src/properties/`.
+These are starting points; the Testing section still governs required checks.
+
+| Task | Source to inspect | Existing proof |
+| --- | --- | --- |
+| Catalog search, comparison, shortlist | `src/properties/index.njk`, `src/assets/js/catalog.js`, `src/css/catalog.css` | `scripts/enforcement/properties-catalog-layout.test.js`, `tests/visual/guest-decision-journey.spec.js` |
+| Property details and booking panel | `src/properties/`, `src/_includes/layouts/property.njk`, `src/assets/js/guest.js` | `scripts/enforcement/ui-runtime.test.js`, `tests/visual/open-house-journey.spec.js` |
+| Dates, guest count, tracking and booking continuity | `src/assets/js/guest.js`, `src/assets/js/conversion-tracking.js`, `src/_includes/partials/guest-trip-form.njk` | `scripts/enforcement/trip-continuity.test.js`, `tests/visual/trip-continuity.spec.js` |
+| Shared guest shell and styling | `src/_includes/layouts/guest.njk`, `src/_includes/partials/guest-header.njk`, `src/_includes/partials/guest-footer.njk`, `src/css/guest.css` | `scripts/enforcement/shared-shell.test.js`, `scripts/enforcement/internal-link-floor.test.js`, `tests/visual/design-floors.spec.js` |
+| Owner inquiry form and public proof | `src/property-management/index.njk`, `src/_includes/partials/owner-evaluation-form.njk`, `src/css/owner.css`, `src/_data/ownerProofAssets.json` | `scripts/enforcement/owner-acquisition.test.js`, `tests/visual/owner-form-steps.spec.js` |
+| Live-smoke assertions after visible-copy changes | `scripts/recovery/assert-live-smoke.js` | `scripts/enforcement/recovery-smoke.test.js` |
+
 ## Workflow Layer
 
 - process rules live in `docs/process/`
