@@ -9,6 +9,10 @@ deploy, the SEO reading order, the content gate, and the design lanes. This file
 holds only Claude-specific surfaces plus the two blocks the repo's own gates
 require to stay here.
 
+Use its "Load context for the task" routes after checking source currency.
+Load the matching branches before their actions; the Claude delta does not
+require reading unrelated SEO, design or measurement documents at startup.
+
 - Skills: Claude loads `.claude/skills/<name>`, a relative link to the
   maintained source in `.agents/skills/<name>`; both resolve to one procedure
   (`AGENTS.md` -> Agent Skills lists the per-skill routing lines).

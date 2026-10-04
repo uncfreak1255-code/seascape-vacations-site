@@ -6,22 +6,32 @@ Before loading task documents, run `git status --short --branch` and compare
 `HEAD` with a freshly fetched `origin/main`. Preserve dirty, divergent, detached,
 and existing task checkouts. For new work, use a guarded worktree from current
 `origin/main`; for a read-only audit, `git show origin/main:<path>` can supply
-current source without changing the checkout. Follow
-`docs/process/git-session-rules.md` -> Source currency for the exact route.
+current source without changing the checkout. Every session first reads
+`docs/process/git-session-rules.md` -> Source currency for the exact route;
+the rest of that file is required before edits or publication.
 
-Read in this order:
+## Load context for the task
 
-1. `AGENTS.md`
-2. `CLAUDE.md`
-3. `docs/process/agent-safety-standard.md`
-4. `docs/process/agent-evidence-routing.md` before choosing Browser, Chrome,
-   Computer Use, DOM inspection, screenshots, Playwright, or web search
-5. `docs/process/git-session-rules.md`
-6. `docs/process/content-quality-gate.md` before content or SEO copy work
-7. `docs/status/current-state.md`
-8. `DESIGN.md` before UI, CSS, template, or layout work
-9. `docs/process/design-review-workflow.md` for any visual or layout change
-10. one task-relevant file from `docs/briefs/`, `docs/portfolio/`, `docs/style/`, or source
+Every session reads this entrypoint and `docs/process/agent-safety-standard.md`
+after selecting current source. Claude also reads `CLAUDE.md` for its harness
+delta; Codex uses the shared rules here. Use the Repo Truth map below to find
+the affected source and existing proof, then load only the matching branches:
+
+| When the task involves… | Read before acting |
+| --- | --- |
+| Behavior diagnosis, a focused fix, or tests | Affected source and existing tests from Repo Truth; read Git Session Rules before edits or publication |
+| UI, CSS, templates or layout | `DESIGN.md`, then `docs/process/design-review-workflow.md`; use its specialist/critic and rendered-review lane for meaningful visual changes |
+| Public copy or SEO copy | Select the exact brief through `docs/briefs/README.md`, then follow Reading Order For SEO Work and Content Gate below, including all three `docs/style/` sources |
+| Measured SEO expansion, title/meta rewrites, or prioritization from analytics | `docs/status/current-state.md`, `docs/status/next-batch.md`, the matching brief and portfolio file; apply the owning measurement gate |
+| Business-priority or experiment recommendations | `docs/status/current-state.md` and current evidence from the owning repo; historical forecasts do not set today's priority |
+| Browser, DOM, screenshots, Playwright, web search or desktop automation | `docs/process/agent-evidence-routing.md` before selecting a tool |
+| Commit, push, PR or merge | `docs/process/git-session-rules.md` and `docs/process/before-merge-checklist.md`; read the user-review or post-merge checklist when entering that phase |
+| Skills or workflow changes | `docs/process/skill-policy.md` and `docs/process/learning-contract.md`, plus the affected consumer and proof |
+
+Combine branches when the task spans them. Conditional reading changes what
+loads at startup; it does not waive a content, design, safety, measurement or
+release requirement. Read linked references at their trigger, using focused
+sections and searches rather than concatenating unrelated directories or logs.
 
 ## This Repo Owns
 
