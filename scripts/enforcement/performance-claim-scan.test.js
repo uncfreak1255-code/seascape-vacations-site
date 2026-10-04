@@ -35,6 +35,13 @@ test("planted guide occupancy table fails the public performance-claim scan", ()
   assert.match(violations.join("\n"), /75-80% occupancy/);
 });
 
+test("guest price comparisons are not occupancy/ADR/revenue claims", () => {
+  const hits = findPerformanceClaimHits(
+    "Longboat Key is quieter and 15–30% more expensive than AMI."
+  );
+  assert.deepEqual(hits, []);
+});
+
 test("public copy occupancy/ADR/revenue scan reports hits without rewriting", () => {
   const hits = scanRepoPublicCopy();
   const report = formatPerformanceClaimReport(hits);
