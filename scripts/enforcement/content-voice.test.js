@@ -6,6 +6,11 @@ const { execSync } = require("node:child_process");
 const { runBuildForLint } = require("./build-for-lint");
 const { withWorktreeLock } = require("./worktree-lock");
 const { extractAuthorizedSourceSectionText } = require("./search-brief-gate");
+const {
+  lintPerformanceClaims,
+  scanRepoPublicCopy,
+  formatPerformanceClaimReport
+} = require("./performance-claim-scan");
 
 const projectRoot = path.resolve(__dirname, "..", "..");
 
@@ -1332,6 +1337,24 @@ test("owner seo page data avoids banned owner jargon", () => {
   }
 
   assert.deepEqual(violations, []);
+});
+
+test("planted guide occupancy table fails lint:content", () => {
+  const planted = `
+    <table>
+      <tr><th>Market</th><th>Occupancy</th></tr>
+      <tr><td>Bradenton</td><td>75-80% occupancy</td></tr>
+    </table>
+  `;
+  const violations = lintPerformanceClaims("src/guides/planted-occupancy.html", planted);
+  assert.ok(violations.length > 0, "planted guide occupancy table must fail lint:content");
+  assert.match(violations.join("\n"), /75-80% occupancy/);
+});
+
+test("occupancy/ADR/revenue scan reports every public-copy hit without rewriting", () => {
+  const hits = scanRepoPublicCopy();
+  console.log(formatPerformanceClaimReport(hits));
+  assert.ok(Array.isArray(hits));
 });
 
 test("lint catches leaked internal hub notes and unsupported portfolio claims", () => {
