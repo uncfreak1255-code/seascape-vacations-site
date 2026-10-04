@@ -2,6 +2,13 @@
 
 This repo owns website execution for Seascape Vacations.
 
+Before loading task documents, run `git status --short --branch` and compare
+`HEAD` with a freshly fetched `origin/main`. Preserve dirty, divergent, detached,
+and existing task checkouts. For new work, use a guarded worktree from current
+`origin/main`; for a read-only audit, `git show origin/main:<path>` can supply
+current source without changing the checkout. Follow
+`docs/process/git-session-rules.md` -> Source currency for the exact route.
+
 Read in this order:
 
 1. `AGENTS.md`
