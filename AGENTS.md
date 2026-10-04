@@ -95,7 +95,7 @@ sections and searches rather than concatenating unrelated directories or logs.
 - edit source, not `_site`
 - never use `DEPLOY THIS FOLDER TO NETLIFY/` as the source of truth
 - one serious SEO cluster at a time, with one brief driving it
-- no public content PR without one active brief, the content gate read, and `npm run lint:content`
+- no public content PR without one active brief, the content gate read, and passing content lint through `npm run lint:content` or `npm run verify:release`
 - review the diff before push, PR, or merge
 - any PR changing visible copy on smoke-asserted routes (homepage, `/properties/`, `/property-management/`, `/stays/`) must update `scripts/recovery/assert-live-smoke.js` in the same PR, or the daily live-smoke workflow goes red on a healthy site
 - live `/.netlify/functions/*` endpoint paths, metrics `receipts[]` field names, and `verify:*` npm script names have cross-repo consumers in seascape-ops, seascape-hub, and seascape-analytics; check the contract locks in `docs/plans/2026-06-12-v1-implementation-handoff.md` before renaming any of them
@@ -234,7 +234,14 @@ its trigger, so no per-skill index is kept here.
 
 - Fast gate for copy-only work: `npm run lint:content`
 - Fast gate for structural source work: `npm run build`
-- Full pre-PR gate: `npm run lint:content && npm test && npm run verify:release`
+- Full pre-PR gate: `npm run verify:release`. It builds once, then runs the
+  full suite (including content lint against that fresh build) and release checks
+  under one worktree lock. Standalone `npm test` and `npm run lint:content`
+  still build fresh; use them for iteration rather than repeating them before
+  an unchanged full release verification.
+  On a dirty worktree, stage the task's new files and pass the approved base
+  explicitly, for example `npm run verify:release -- --range origin/main`;
+  the verifier preserves its existing requirement for an explicit dirty-tree range.
 - Visual changes also require: `npm run test:visual` and fresh desktop/mobile
   screenshot proof. That gate diffs the committed desktop and mobile baselines
   in `tests/visual/__screenshots__/` and includes an axe accessibility spec;
@@ -282,7 +289,8 @@ as a prerequisite for a bounded task with independent proof. Apply the
 Full order of operations: `docs/process/batch-workflow.md`. The visible-copy
 order is non-negotiable: **Draft the copy**, then **Remove internal wording**,
 then **Check voice and specificity** using the active brief and `docs/style/`.
-Complete these steps before the content gate and `npm run lint:content`.
+Complete these steps before content lint through `npm run lint:content` or
+the full `npm run verify:release` gate.
 
 ## Content Gate
 
@@ -292,7 +300,8 @@ For any PR that changes public copy in `src/`:
 - read `docs/style/voice.md`, `docs/style/banned-patterns.md`, and `docs/style/approved-examples.md`
 - run the visible-copy lane in order: **Draft the copy** for the draft, **Remove internal wording** to strip internal/process wording, then **Check voice and specificity** for the final pass on reader copy
 - keep reader copy, proof copy, and agent copy separate
-- run `npm run lint:content` before push, PR, or merge
+- pass `npm run lint:content` or the full `npm run verify:release` before push,
+  PR, or merge; both run the same content checks against fresh rendered output
 
 ## Design Review Workflow
 

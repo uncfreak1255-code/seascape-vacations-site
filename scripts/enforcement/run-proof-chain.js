@@ -5,7 +5,8 @@ const { withWorktreeLock } = require("./worktree-lock");
 const PROJECT_ROOT = path.resolve(__dirname, "..", "..");
 const DEFAULT_COMMANDS = Object.freeze([
   { command: "npm", args: ["run", "lint:content"] },
-  { command: "npm", args: ["test"] },
+  // lint:content has just built under this chain's lock; avoid npm pretest's second build.
+  { command: "npm", args: ["run", "test:unit"] },
   { command: "npm", args: ["run", "verify:links"] }
 ]);
 

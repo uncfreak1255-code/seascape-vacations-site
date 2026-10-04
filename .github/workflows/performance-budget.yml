@@ -3,7 +3,7 @@ name: Performance Budget
 on:
   # No paths filter: this job is a required status check on main, and a
   # required check that never reports blocks the PR (adversarial review of
-  # #617, 2026-09-24). Cost: one build + Lighthouse pass per PR on hosted Linux.
+  # #617, 2026-09-24). Docs-only PRs report this check without Lighthouse.
   pull_request:
     branches: [main]
   schedule:
@@ -27,26 +27,37 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Determine performance scope
+        id: performance_scope
+        run: node scripts/perf/performance-scope.js
 
       - name: Set up Node.js
+        if: steps.performance_scope.outputs.run_lighthouse == 'true'
         uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
 
       - name: Install dependencies
+        if: steps.performance_scope.outputs.run_lighthouse == 'true'
         run: npm ci
 
       - name: Build production site
+        if: steps.performance_scope.outputs.run_lighthouse == 'true'
         run: node scripts/enforcement/build-site.js
 
       - name: Check performance budgets
+        if: steps.performance_scope.outputs.run_lighthouse == 'true'
         run: npx --no-install lhci autorun --config=./lighthouserc.js
 
       - name: Check byte-size ratchet
+        if: steps.performance_scope.outputs.run_lighthouse == 'true'
         run: node scripts/perf/perf-ratchet.js
 
       - name: Upload Lighthouse reports
-        if: always()
+        if: always() && steps.performance_scope.outputs.run_lighthouse == 'true'
         uses: actions/upload-artifact@v7
         with:
           name: lighthouse-reports

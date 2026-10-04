@@ -5,6 +5,25 @@ const path = require("node:path");
 
 const projectRoot = path.resolve(__dirname, "..", "..");
 
+test("docs-only performance runs keep the required job but execute no Lighthouse or build", () => {
+  const workflow = require("js-yaml").load(readWorkflow("performance-budget.yml"));
+  const job = workflow.jobs["performance-budget"];
+  assert.equal(job.name, "performance-budget");
+  assert.equal(job.if, undefined, "the required job always reports");
+  function runs(step, runLighthouse) {
+    if (!step.if) return true;
+    const expression = step.if.replace(/^\$\{\{\s*|\s*\}\}$/g, "");
+    return require("node:vm").runInNewContext(expression, {
+      steps: { performance_scope: { outputs: { run_lighthouse: String(runLighthouse) } } },
+      always: () => true
+    });
+  }
+  const expensive = job.steps.filter((step) => step.run && /npm ci|build-site\.js|lhci autorun|perf-ratchet\.js/.test(step.run));
+  assert.equal(expensive.length, 4);
+  assert.equal(expensive.filter((step) => runs(step, false)).length, 0);
+  assert.equal(expensive.filter((step) => runs(step, true)).length, 4);
+});
+
 function readWorkflow(filename) {
   return fs.readFileSync(path.join(projectRoot, ".github", "workflows", filename), "utf8");
 }
