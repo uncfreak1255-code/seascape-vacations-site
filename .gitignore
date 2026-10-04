@@ -59,3 +59,8 @@ scripts/data/
 
 # GBrain writer-claim marker; machine-local, never committed
 .gbrain-owner*.json
+
+# Leftover HTML magnets. Production builds from src/ only.
+/index.html
+/stays/
+/property-management/
