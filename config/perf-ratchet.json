@@ -6,7 +6,7 @@
     },
     "/properties/": {
       "script": 98253,
-      "stylesheet": 56913
+      "stylesheet": 57030
     },
     "/property-management/": {
       "script": 87337,
@@ -417,6 +417,14 @@
       "to": 54481,
       "reason": "Owner authority checkbox and recap line in the revenue review form (#639): +283 B inline script, +502 B owner.css",
       "date": "2026-10-02"
+    },
+    {
+      "route": "/properties/",
+      "metric": "stylesheet",
+      "from": 56913,
+      "to": 57030,
+      "reason": "iOS-only appearance rule so the Arrival/Departure date fields fit their grid columns on iPhone Safari (#668): +117 B catalog.css",
+      "date": "2026-10-04"
     }
   ]
 }

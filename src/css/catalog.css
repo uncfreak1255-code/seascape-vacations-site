@@ -22,7 +22,7 @@
 #catalog-trip-form label { display:block; font-size:12px; font-weight:600; margin-bottom:8px; }
 #catalog-trip-form input,#catalog-trip-form select { width:100%; min-width:0; min-height:48px; background:var(--white); border:1px solid var(--brand); border-radius:12px; padding:10px 12px; color:var(--stone); font-size:14px; }
 #catalog-trip-form .btn { min-height:48px; padding:14px 24px; }
-/* iOS Safari sizes a native date field from its own control, so width:100% plus padding spills into the next column; dropping the native appearance lets the box fit its grid track. iOS-only so desktop date pickers keep their indicator. */
+/* iOS sizes native date fields from the control, so they spill past their grid column. */
 @supports (-webkit-touch-callout:none) { #catalog-trip-form input[type="date"] { -webkit-appearance:none; appearance:none; } }
 .catalog-trip-status { font-size:12px; line-height:1.65; margin:16px 0 0; color:var(--stone-light); }
 .catalog-text-button { border:0; background:transparent; text-decoration:underline; text-underline-offset:4px; color:var(--brand-dark); padding:12px 0; cursor:pointer; font-size:13px!important; }
