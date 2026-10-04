@@ -43,6 +43,19 @@ const test = base.extend<{ network: NetworkState }>({
       blockedExternalRequests: [],
     };
 
+    await browser.addInitScript(`(() => {
+      const NativeDate = Date;
+      const fixedTime = NativeDate.parse("2026-10-04T12:00:00.000Z");
+      function FixtureDate(...args) {
+        if (!new.target) return new NativeDate(fixedTime).toString();
+        return new NativeDate(...(args.length ? args : [fixedTime]));
+      }
+      FixtureDate.prototype = NativeDate.prototype;
+      Object.setPrototypeOf(FixtureDate, NativeDate);
+      FixtureDate.now = () => fixedTime;
+      globalThis.Date = FixtureDate;
+      Object.defineProperty(globalThis, "__siteE2eDateFixture", { value: fixedTime });
+    })();`);
     await installLocalOnlyRoutes(browser, state);
     await use(state);
   },
@@ -147,6 +160,19 @@ async function installLocalOnlyRoutes(browser: Browser, state: NetworkState) {
     await route.abort();
   });
 }
+
+test("browser date fixture is installed before site date validation runs", async ({ app, browser, screen }) => {
+  await app.open("/properties/dockside-dreams/");
+  const fixture = await browser.evaluate(() => ({
+    now: Date.now(),
+    installedAt: (globalThis as typeof globalThis & { __siteE2eDateFixture?: number }).__siteE2eDateFixture,
+    arrivalMin: (document.querySelector('[data-guest-trip-form] .g-arrive') as HTMLInputElement).min,
+  }));
+
+  const expectedNow = Date.parse("2026-10-04T12:00:00.000Z");
+  expect(fixture).toEqual({ now: expectedNow, installedAt: expectedNow, arrivalMin: "2026-10-04" });
+  await expect(screen.getByLabel("Arrival")).toHaveAttribute("min", "2026-10-04");
+});
 
 test("guest searches, chooses the matching home, and reaches only the intercepted checkout", async ({ app, browser, screen, network }) => {
   await app.open("/");

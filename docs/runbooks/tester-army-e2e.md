@@ -5,6 +5,9 @@ the site, starts the generated site on an isolated localhost port, then runs
 the TesterArmy `e2e` SDK and its Playwright web engine in desktop and phone-
 sized Chromium. Telemetry is disabled. These tests use locator actions and
 assertions; they configure no model, account, or API key.
+The browser wall clock is fixed at 2026-10-04 before any site script loads so
+date-sensitive trip flows remain stable as the real calendar advances. Browser
+timers continue to use the normal runtime clock.
 
 If Chromium is not installed locally, install it with
 `npx @e2e-dev/web install chromium` (`--with-deps` for Linux browser system libraries).
