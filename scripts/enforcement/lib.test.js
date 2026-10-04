@@ -77,6 +77,12 @@ test("findForbiddenSourcePaths flags legacy source-of-truth violations only", ()
   ]);
 });
 
+test("findForbiddenSourcePaths empty input fails", () => {
+  assert.throws(() => findForbiddenSourcePaths([]), /non-empty changed-files list/);
+  assert.throws(() => findForbiddenSourcePaths(), /non-empty changed-files list/);
+  assert.throws(() => findForbiddenSourcePaths(null), /non-empty changed-files list/);
+});
+
 test("leftover HTML magnets are not tracked beside src/", () => {
   const listed = spawnSync(
     "git",

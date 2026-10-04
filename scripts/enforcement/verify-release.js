@@ -59,7 +59,8 @@ function capture(command, args, options = {}) {
 function parseArgs(argv) {
   const parsed = {
     pathsOnly: false,
-    range: "origin/main...HEAD",
+    range: "",
+    rangeProvided: false,
     receiptPath: ""
   };
 
@@ -71,7 +72,8 @@ function parseArgs(argv) {
     }
 
     if (arg === "--range") {
-      parsed.range = argv[index + 1];
+      parsed.rangeProvided = true;
+      parsed.range = argv[index + 1] || "";
       index += 1;
       continue;
     }
@@ -83,6 +85,41 @@ function parseArgs(argv) {
   }
 
   return parsed;
+}
+
+function worktreeIsDirty(cwd = process.cwd()) {
+  const result = spawnSync("git", ["status", "--porcelain", "--untracked-files=all"], {
+    cwd,
+    encoding: "utf8"
+  });
+
+  if (result.status !== 0) {
+    throw new Error((result.stderr || "").trim() || "git status failed");
+  }
+
+  return Boolean((result.stdout || "").trim());
+}
+
+function resolveReleaseRange(parsed, options = {}) {
+  const dirty = Object.prototype.hasOwnProperty.call(options, "dirty")
+    ? Boolean(options.dirty)
+    : worktreeIsDirty();
+  const range = String(parsed.range || "").trim();
+
+  if (!parsed.rangeProvided) {
+    if (dirty) {
+      throw new Error(
+        "verify-release: --range is required on a dirty worktree. Without it, git diff origin/main...HEAD can return no files and the gate passes while uncommitted edits exist."
+      );
+    }
+    return "origin/main...HEAD";
+  }
+
+  if (!range) {
+    throw new Error("verify-release: --range must be a non-empty git range");
+  }
+
+  return range;
 }
 
 function designLintBaseFromRange(range) {
@@ -99,7 +136,7 @@ function designLintBaseFromRange(range) {
 
 function getChangedFiles(range) {
   if (!range) {
-    return [];
+    throw new Error("getChangedFiles requires a non-empty git range");
   }
 
   const output = capture("git", ["diff", "--name-only", "--diff-filter=ACMR", range]);
@@ -127,7 +164,15 @@ function assertCachePolicyTruth() {
 }
 
 function assertNoForbiddenSourceChanges(range) {
+  if (!range) {
+    throw new Error("verify-release requires a non-empty --range");
+  }
+
   const changedFiles = getChangedFiles(range);
+  if (!changedFiles.length) {
+    return;
+  }
+
   const violations = findForbiddenSourcePaths(changedFiles);
 
   if (!violations.length) {
@@ -262,6 +307,15 @@ function main() {
   const args = parseArgs(process.argv.slice(2));
   const pathAssertions = [];
   const checks = [];
+
+  try {
+    args.range = resolveReleaseRange(args);
+  } catch (error) {
+    writeReceipt(args.receiptPath, buildReceipt({ args, pathAssertions, checks }));
+    console.error(error.message);
+    process.exit(1);
+  }
+
   const commandSteps = buildCommandSteps(args.range);
 
   try {
@@ -336,4 +390,12 @@ if (require.main === module) {
   main();
 }
 
-module.exports = { parseArgs, designLintBaseFromRange, buildCommandSteps };
+module.exports = {
+  parseArgs,
+  designLintBaseFromRange,
+  buildCommandSteps,
+  resolveReleaseRange,
+  worktreeIsDirty,
+  getChangedFiles,
+  assertNoForbiddenSourceChanges
+};
