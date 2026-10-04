@@ -51,7 +51,7 @@ jobs:
         continue-on-error: true
         run: |
           set -euo pipefail
-          url="https://deploy-preview-${{ github.event.pull_request.number }}--seascape-vacations.netlify.app"
+          url="https://deploy-preview-${{ github.event.pull_request.number }}--cozy-licorice-e83928.netlify.app"
           if curl -fsS --max-time 20 "$url" >/dev/null; then
             node scripts/recovery/assert-preview-surface.js "$url"
           else
