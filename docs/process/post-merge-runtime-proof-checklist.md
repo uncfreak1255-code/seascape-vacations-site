@@ -6,7 +6,10 @@ This is required for deploy-sensitive site work.
 
 ## 1. Wait for deploy
 
-- [ ] Netlify deploy is complete for the merged commit.
+- [ ] Netlify deploy is complete for the merged commit. A merge that changes only
+  agent docs, tooling or CI is skipped on purpose while live availability is
+  under 12 hours old (`scripts/enforcement/netlify-ignore-build.js`); the
+  deploy log then shows the skip reason and no new deploy is expected.
 - [ ] I am testing production, not preview.
 
 ## 2. Run production smoke

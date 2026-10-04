@@ -1,6 +1,8 @@
 [build]
   publish = "_site"
   command = "npm run build"
+  # Skip production deploys for agent-only merges while live availability is fresh.
+  ignore = "node scripts/enforcement/netlify-ignore-build.js"
 
 [functions."guest-email-capture-retry"]
   schedule = "*/15 * * * *"
