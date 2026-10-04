@@ -2,6 +2,16 @@ const fs = require("fs");
 const { spawnSync } = require("child_process");
 const { withWorktreeLock } = require("./worktree-lock");
 
+function parseBuildArgs(argv = []) {
+  return {
+    serve: argv.includes("--serve")
+  };
+}
+
+function eleventyArgs(options = {}) {
+  return options.serve ? ["@11ty/eleventy", "--serve"] : ["@11ty/eleventy"];
+}
+
 function run(command, args, options = {}) {
   const result = spawnSync(command, args, {
     stdio: "inherit",
@@ -13,16 +23,20 @@ function run(command, args, options = {}) {
   }
 }
 
-function buildSite() {
+function buildSite(options = {}) {
+  const serve = Boolean(options.serve);
   fs.rmSync("_site", { recursive: true, force: true });
   run(process.execPath, ["scripts/cache/sync-hostaway-build-cache.js"]);
-  run("npx", ["@11ty/eleventy"]);
-  run(process.execPath, ["scripts/enforcement/validate-properties-availability-output.js"]);
+  run("npx", eleventyArgs({ serve }));
+  if (!serve) {
+    run(process.execPath, ["scripts/enforcement/validate-properties-availability-output.js"]);
+  }
 }
 
-function main() {
+function main(argv = process.argv.slice(2)) {
+  const options = parseBuildArgs(argv);
   withWorktreeLock({ name: "repo-build" }, () => {
-    buildSite();
+    buildSite(options);
   });
 }
 
@@ -36,6 +50,8 @@ if (require.main === module) {
 }
 
 module.exports = {
+  parseBuildArgs,
+  eleventyArgs,
   buildSite,
   main
 };
