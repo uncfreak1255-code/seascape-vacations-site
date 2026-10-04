@@ -144,6 +144,12 @@ elsewhere in the paragraph. See `## SEO, GEO, And AEO Checks` below.
 
 `npm run lint:content` currently blocks:
 
+The full `npm run verify:release` runs these same tests in its full suite after
+building fresh, under the same worktree lock. Passing it satisfies content lint;
+the editorial steps and Voice Editor pass remain required. Commit and merge
+proof chains build through standalone content lint, then run the suite and link
+checks without rebuilding. Each invocation proves its own current files.
+
 - banned generic phrasing called out in `docs/style/banned-patterns.md`
 - donor-mined AI rhythm patterns like `here's the thing`, `here's why`, `this matters because`, `when it comes to`, `at the end of the day`, `full stop`, and mechanical setup-reveal contrasts like `not just X but also Y`, `X is not the problem. Y is.`, or `it feels like X. It is actually Y.`
 - generic donor-mined business wrappers like `unpack`, `landscape`, `double down`, `circle back`, `navigate challenges`, and vague importance claims like `the stakes are high`
@@ -157,7 +163,8 @@ elsewhere in the paragraph. See `## SEO, GEO, And AEO Checks` below.
 - detached owner voice where `the owner` outnumbers `you/your`
 - vague owner claims like `attentive local operations`, `clearer owner communication`, or `quiet misses`
 - public content PRs that skip the active brief or omit the brief's required internal links
-- visible-copy promotions that skip both `npm run lint:content` and a Voice Editor pass
+- visible-copy promotions without passing content lint (`npm run lint:content`
+  or the full `npm run verify:release`) and a Voice Editor pass
 
 ## Required Read Before A Content PR
 

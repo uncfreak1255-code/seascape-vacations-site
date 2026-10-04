@@ -5,7 +5,7 @@ const test = require("node:test");
 const assert = require("node:assert/strict");
 const { spawn } = require("node:child_process");
 
-const { DEFAULT_COMMANDS, runProofChain } = require("./run-proof-chain");
+const { runProofChain } = require("./run-proof-chain");
 
 const RUNNER_MODULE_PATH = path.join(__dirname, "run-proof-chain.js");
 
@@ -95,15 +95,36 @@ function startProofWorker({ projectRootDir, lockRootDir, commands }) {
   });
 }
 
-test(".keel verify delegates the full chain to one proof runner", () => {
+test(".keel verify and merge verification use the same proof runner", () => {
   const keelVerify = fs.readFileSync(path.join(__dirname, "..", "..", ".keel", "verify"), "utf8");
 
   assert.match(keelVerify, /run-proof-chain\.js/);
-  assert.deepEqual(DEFAULT_COMMANDS, [
-    { command: "npm", args: ["run", "lint:content"] },
-    { command: "npm", args: ["test"] },
-    { command: "npm", args: ["run", "verify:links"] }
-  ]);
+  const guardrails = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "..", ".guardrails.json"), "utf8"));
+  assert.equal(guardrails.testCommand.trim(), keelVerify.trim());
+  assert.equal(guardrails.buildCommand, "", "the proof chain already builds before inspecting output");
+});
+
+test("the real npm proof sequence builds once, inspects fresh output and stops on failure", () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), "seascape-proof-once-"));
+  try {
+    fs.writeFileSync(path.join(root, "package.json"), JSON.stringify({ scripts: {
+      "lint:content": "node build.js", pretest: "node build.js",
+      test: "npm run test:unit", "test:unit": "node unit.js", "verify:links": "node links.js"
+    } }));
+    fs.writeFileSync(path.join(root, "build.js"), `const fs=require('node:fs');fs.appendFileSync('builds','build\\n');fs.writeFileSync('output','fresh');`);
+    fs.writeFileSync(path.join(root, "unit.js"), `const fs=require('node:fs');if(fs.readFileSync('output','utf8')!=='fresh'||fs.existsSync('fail'))process.exit(1);fs.appendFileSync('units','unit\\n');`);
+    fs.writeFileSync(path.join(root, "links.js"), `const fs=require('node:fs');if(fs.readFileSync('output','utf8')!=='fresh')process.exit(1);fs.appendFileSync('links','links\\n');`);
+    fs.writeFileSync(path.join(root, "output"), "stale");
+    runProofChain({ projectRootDir: root });
+    assert.equal(fs.readFileSync(path.join(root, "builds"), "utf8"), "build\n");
+    assert.equal(fs.readFileSync(path.join(root, "units"), "utf8"), "unit\n");
+    assert.equal(fs.readFileSync(path.join(root, "links"), "utf8"), "links\n");
+    fs.writeFileSync(path.join(root, "fail"), "");
+    assert.throws(() => runProofChain({ projectRootDir: root }), /exited with code 1/);
+    assert.equal(fs.readFileSync(path.join(root, "links"), "utf8"), "links\n", "failure must stop later checks");
+  } finally {
+    fs.rmSync(root, { recursive: true, force: true });
+  }
 });
 
 test("overlapping proof chains cannot rewrite _site during rendered inspection", async () => {

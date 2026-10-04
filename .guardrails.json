@@ -12,7 +12,7 @@
     "dist/",
     "build/"
   ],
-  "testCommand": "npm test",
-  "buildCommand": "npm run build",
+  "testCommand": "node scripts/enforcement/run-proof-chain.js",
+  "buildCommand": "",
   "mergeBase": "origin/main...HEAD"
 }
