@@ -42,6 +42,10 @@ function isProtectedPush(refs) {
 }
 
 function findForbiddenSourcePaths(changedFiles) {
+  if (!Array.isArray(changedFiles) || changedFiles.length === 0) {
+    throw new Error("findForbiddenSourcePaths requires a non-empty changed-files list");
+  }
+
   return changedFiles.filter((file) =>
     FORBIDDEN_SOURCE_PATH_PATTERNS.some((pattern) => pattern.test(file))
   );
