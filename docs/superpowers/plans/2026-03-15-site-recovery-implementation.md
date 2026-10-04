@@ -70,6 +70,8 @@ These facts are already observable and the plan depends on them:
 
 ### Legacy Paths To Deprecate But Not Blindly Delete
 
+Historical 2026-03-15 recovery status. Later: leftover root `index.html`, leftover `stays/`, and leftover `property-management/` were deleted; production builds from `src/` only.
+
 - `index.html`
   Status after recovery: legacy reference file only; no longer publish-authoritative.
 - `DEPLOY THIS FOLDER TO NETLIFY/`
@@ -708,6 +710,8 @@ Populate these sections:
 - [ ] **Step 3: Add a short repo-owned source-of-truth note**
 
 Create `docs/source-of-truth.md`:
+
+Historical 2026-03-15 draft. Later: leftover root HTML trees were deleted; see current `docs/source-of-truth.md`.
 
 ```md
 # Source Of Truth

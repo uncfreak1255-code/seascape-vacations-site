@@ -82,6 +82,27 @@ test("current documentation names repository paths that exist", () => {
     assert.match(read(documentPath), /removed legacy deploy path/i, documentPath);
   }
 
+  for (const documentPath of [
+    "docs/source-of-truth.md",
+    "docs/status/current-state.md",
+  ]) {
+    assert.match(
+      read(documentPath),
+      /root leftover html[\s\S]*is also deleted/i,
+      `${documentPath} must record leftover tree removal`
+    );
+    assert.doesNotMatch(
+      read(documentPath),
+      /are archival content only/i,
+      `${documentPath} must not treat leftover trees as archival`
+    );
+  }
+
+  assert.doesNotMatch(
+    read("docs/status/open-risks.md"),
+    /old root `index\.html`, `stays\/`, `property-management\/`/
+  );
+
   assert.match(
     read("docs/briefs/2026-06-near-ami-direct-book-cro.md"),
     /from a `seascape-analytics` checkout, running `scripts\/weekly-search-operator-report\.sh/
