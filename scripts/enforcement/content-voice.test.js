@@ -859,14 +859,15 @@ test("repo instructions require the content gate and lint command for content PR
   const agents = read("AGENTS.md");
   const claude = read("CLAUDE.md");
   const reviewChecklist = read(path.join("docs", "process", "before-user-review-checklist.md"));
-  const claudeWorkflow = claude.split("## Required Batch Workflow")[1] || "";
+  const workflowPointer = claude.match(/\[[^\]]+\]\((AGENTS\.md)#required-batch-workflow\)/);
+  assert.ok(workflowPointer, "CLAUDE must route content work to the canonical workflow");
+  assert.equal(claude.includes("@AGENTS.md"), true);
+  const canonicalWorkflow = read(workflowPointer[1]).split("## Required Batch Workflow")[1]?.split("\n## ")[0] || "";
 
   assert.equal(agents.includes("docs/process/content-quality-gate.md"), true);
   assert.equal(agents.includes("npm run lint:content"), true);
   assertEditorialStepsInOrder(agents, "AGENTS content gate");
-  assert.equal(claude.includes("docs/process/content-quality-gate.md"), true);
-  assert.equal(claude.includes("npm run lint:content"), true);
-  assertEditorialStepsInOrder(claudeWorkflow, "CLAUDE workflow");
+  assertEditorialStepsInOrder(canonicalWorkflow, "canonical content workflow");
   assertEditorialStepsInOrder(reviewChecklist, "before user review checklist");
 });
 
