@@ -151,7 +151,7 @@ local. Keep the existing content, design, measurement, and release gates.
 - generated output: `_site/`
 - redirects source: `src/_redirects`
 - voice source of truth: `docs/style/`
-- batch briefs: `docs/briefs/`
+- batch briefs: `docs/briefs/README.md` routes selection and lifecycle; tasks name the exact brief in `docs/briefs/`
 - page-family routing map: `docs/portfolio/`
 - property truth (amenity/capacity claims trace here): `src/_data/properties.js` and its fallback `src/_data/properties-fallback.json`
 - owner proof assets (owner-proof claims trace here): `src/_data/ownerProofAssets.json`

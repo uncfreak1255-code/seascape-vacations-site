@@ -1,6 +1,11 @@
 # Brief: Vacation Cost Guide Planning-Guide Frame
 
-Status: in implementation (2026-10-02). Design-only conversion of one guide to
+- lifecycle: completed
+- completion: source PR #665 merged as `68d624bb` (2026-10-03).
+  Implementation scope is complete; the readback window below remains a
+  measurement contract, not evidence of deployment or lift.
+
+Design-only conversion of one guide to
 the planning-guide frame in `DESIGN.md` ("Planning guides (October 2026)").
 The words on the page are unchanged except for five small phrase swaps the
 content gate requires once the file is touched (internal planning wording in

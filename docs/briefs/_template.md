@@ -1,5 +1,9 @@
 # Brief: <cluster name>
 
+- lifecycle: draft
+- task scope: the named outcome and affected source; set active only for approved work
+- completion or successor: record the merged source proof or replacement brief when applicable
+
 ## Figma Handoff
 
 - Figma capture:

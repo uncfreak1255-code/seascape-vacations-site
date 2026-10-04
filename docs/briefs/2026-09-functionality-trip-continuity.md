@@ -1,5 +1,11 @@
 # Brief: Preserve booking trips with the current design
 
+- lifecycle: completed
+- completion: source release PR #552, commit `2ccbfce8` (2026-09-08).
+  This is the September repair record, not a pending work order. For subsequent
+  guest-journey decisions, see [the journey reference](2026-09-04-guest-decision-journey.md)
+  and current source/tests; this label makes no new live or conversion claim.
+
 - persona: Guest returning to home selection after researching a stay
 - primary keyword: Seascape vacation rentals
 - secondary keywords: Bradenton vacation rentals, Sarasota vacation rentals

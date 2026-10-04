@@ -1,5 +1,11 @@
 # Waterline — guest journey and continuation
 
+- lifecycle: reference
+- task scope: retained guest-journey decisions; later work names its own approved scope.
+  The October 2 header decision below explicitly replaces the October 1
+  homepage shortcut. Read that replacement and current source before changing
+  header destinations. The proposals later in this brief are not a work queue.
+
 - persona: The person organizing a shared Gulf Coast vacation.
 - primary keyword: vacation rentals near Anna Maria Island (existing intent).
 - secondary keywords: Bradenton vacation rentals, Sarasota vacation rentals.
