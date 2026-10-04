@@ -27,8 +27,6 @@
       "WebFetch",
       "Agent",
       "Bash(/usr/bin/grep *)",
-      "Bash(git fetch *)",
-      "Bash(git grep *)",
       "mcp__ccd_pr__get_status",
       "Bash(launchctl print *)",
       "Bash(launchctl print-disabled *)",
