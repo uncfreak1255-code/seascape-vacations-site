@@ -1,6 +1,7 @@
 const fs = require("fs");
 const os = require("os");
 const path = require("path");
+const { spawnSync } = require("child_process");
 const test = require("node:test");
 const assert = require("node:assert/strict");
 
@@ -74,6 +75,16 @@ test("findForbiddenSourcePaths flags legacy source-of-truth violations only", ()
     "stays/example/index.html",
     "property-management/example/index.html"
   ]);
+});
+
+test("leftover HTML magnets are not tracked beside src/", () => {
+  const listed = spawnSync(
+    "git",
+    ["ls-files", "--", "index.html", "stays", "property-management"],
+    { encoding: "utf8" }
+  );
+  assert.equal(listed.status, 0, listed.stderr);
+  assert.equal(listed.stdout.trim(), "");
 });
 
 test("findDeploySensitivePaths catches source and build-critical files only", () => {

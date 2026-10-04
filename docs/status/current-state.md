@@ -42,7 +42,7 @@ test activity into owner demand.
 
 - Start with Git state to identify the current branch and checkout. Root
   `main` is sync-only; implementation belongs in an isolated task worktree.
-- `_site/` is generated output. The removed legacy deploy path `DEPLOY THIS FOLDER TO NETLIFY/` must stay absent.
+- `_site/` is generated output. The removed legacy deploy path `DEPLOY THIS FOLDER TO NETLIFY/` must stay absent. Root leftover HTML (`index.html`, leftover `stays/`, leftover `property-management/`) is also deleted; production builds from `src/` only. The forbidden-path lint stays.
 - `AGENTS.md` identifies editable page, property, redirect, and proof sources.
 - `DESIGN.md` owns visual conventions; the existing design-review workflow
   owns rendered desktop and mobile proof.

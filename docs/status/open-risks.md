@@ -36,7 +36,7 @@ debugging, but label broad per-URL Google claims as partial.
 - Live-smoke alert drill (2026-06-12) resolved detection but not the channel: a deliberate failure run went red and GitHub notified, but GitHub-native notifications are not operator-friendly. V2 must add a plain-language alert surface whose message states what failed, what it means for guests, and the next step — target shape: "Seascape website check failed. The public site may have a broken page or missing tracking. No guest messages were sent. Next step: ask Codex to inspect the failed Live Smoke run." Do not wire Hermes/Telegram without explicit approval.
 - Meta-pixel and privacy wording still block the disclosure follow-up: confirm the intended pixel scope before changing the legal copy.
 - Stylesheet budget still blocks the homepage performance-budget gate: the current homepage CSS is already over the error-level budget, so decide whether to slim it or raise the threshold before extending the gate.
-- Legacy root residue still blocks the cleanup tranche: decide whether the old root `index.html`, `stays/`, `property-management/`, `area-guide-*.html`, `dashboard/`, and `emails/` surfaces should be archived then removed or kept quarantined.
+- Leftover root HTML (`index.html`, leftover `stays/`, leftover `property-management/`) is deleted; production builds from `src/` only and the forbidden-path lint stays. Remaining root residue (`dashboard/`, `emails/`) still needs a keep-quarantined vs archive-then-remove decision. `area-guide-*.html` is already gone from the root.
 - V2 sequencing lives in `docs/plans/2026-06-12-repo-audit.md`.
 
 ## Indexing + Indexability (2026-06-06 forensic)

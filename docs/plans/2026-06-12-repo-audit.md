@@ -168,6 +168,6 @@ Blocking V2 items only; **nothing blocks V1**.
 2. **Alerting channel** (upgrades V1 PR6 / V2 #6) — is GitHub failure email enough for the scheduled smoke, or wire Telegram via Hermes?
 3. **Tracking policy** (blocks V2 #9 only) — confirm Meta pixel scope (it currently fires on legal pages) and approve privacy/cookies disclosure wording. The GA4 include adds no pixel, so V1/V2 GA4 wiring is NOT blocked — only the disclosure fix is.
 4. **Stylesheet budget** (blocks V2 #8) — 50 KB is error-level and the homepage fails it twice over today (59,276 B single file; 74,975 B total). Raise knowingly or slim `homepage.css`?
-5. **Legacy root residue** (blocks the out-of-scope cleanup) — `dashboard/`, `emails/`, `area-guide-*.html`, root `index.html`/`stays/`/`property-management/`: archive-tag-then-delete (recommended) or keep quarantined?
+5. **Legacy root residue** (blocks the out-of-scope cleanup) — Historical 2026-06-12 question. Later: leftover root `index.html`, leftover `stays/`, and leftover `property-management/` were deleted; production builds from `src/` only. Remaining then-listed residue: `dashboard/`, `emails/`, `area-guide-*.html` (archive-tag-then-delete or keep quarantined).
 
 Standing, non-blocking: git-history size (live with 346 MB + forward-only mitigations) and owner-page decomposition timing (fold into the next CRO batch vs wait for a real regression).
