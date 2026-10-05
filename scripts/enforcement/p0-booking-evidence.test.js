@@ -135,8 +135,10 @@ test('flights guide keeps distinct numbered tips and question-specific FAQs afte
   const tip5 = source.indexOf('<strong>5.');
   const tip6 = source.indexOf('<strong>6.');
   assert.ok(tip3 > 0 && tip3 < tip4 && tip4 < tip5 && tip5 < tip6, 'tips must stay numbered 3, 4, 5, 6 in order');
-  assert.match(source, /<strong>4\.\s*Check Southwest separately\.<\/strong>/);
+  assert.match(source, /<strong>4\.\s*Confirm Southwest's bag rules for your fare\.<\/strong>/);
   assert.match(source, /southwest\.com/i);
+  assert.match(source, /appears on Google Flights and Kayak/i);
+  assert.doesNotMatch(source, /does not appear on Google Flights|two checked bags per person are included/i);
   assert.match(source, /<strong>5\.\s*Consider a PIE open-jaw\.<\/strong>/);
   assert.match(source, /open-jaw/i);
 
