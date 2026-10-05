@@ -224,3 +224,30 @@ source-only result.
   Reviewed actual/expected/diff images and fresh local desktop/mobile rendering
   show the intended cost-copy changes. Only those two references are refreshed
   from exact macOS CI captures; full visual CI must pass before integration.
+
+
+### October 5 authorized follow-up to merged #681
+
+Sawyer's 19:24 UTC “Make them” instruction authorizes only the independent
+review's two remaining findings and matching schema. Coordinator is sole source
+writer on `codex/681-claims-followup`, starting from main
+`239b52c1cc8a758f0d85819f1cf41c111888f3f5`. The completed #681 branch is preserved.
+
+- Remove categorical no-rip-current, safer-water and reduced-supervision
+  claims from the families guide's summary, comparison, answers and schema.
+  National Weather Service guidance checked October 5 says rip currents can
+  occur at any beach with breaking waves, including the Gulf:
+  https://www.weather.gov/safety/ripcurrent-faqs . Use current conditions, flags,
+  lifeguard instructions and close child supervision instead.
+- Replace the near-island guide's retained lower-price promises in body and
+  FAQ schema with complete quotes for the same dates and guest count.
+- Preserve routes, layout, CSS, property charges, offers, links and tracking.
+  Capture both routes at desktop/mobile; inspect intended screenshot changes
+  before refreshing only affected references. Full checks and independent
+  exact-head review precede any merge decision. Merge/production remains held.
+- Editorial chain: drafted around the family's beach and accommodation
+  decisions; removed internal wording; checked voice and specificity.
+- editorial verdict: Approved for the bounded safety and accommodation-quote
+  corrections after the three-step voice pass; independent review remains required.
+- source files likely to change: `src/guides/siesta-key-vs-anna-maria-island-families.html`
+- source files likely to change: `src/guides/where-to-stay-near-anna-maria-island/index.html`

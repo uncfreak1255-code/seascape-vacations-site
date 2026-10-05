@@ -7,6 +7,29 @@ const read = (p) => fs.readFileSync(path.join(root, p), 'utf8');
 const report = 'src/research/gulf-coast-vacation-booking-trends-2026.njk';
 const retiredStats = /545|1,492|\$1\.7M|\$686|\$499|\b87%|\b82%|\b27%|\b74[- ]day|\b62[- ]day|7\.5 guests|Market Peaked|market dominance/i;
 
+test('family beach copy and FAQ schema do not promise safer water or reduced supervision', () => {
+  const s = read('src/guides/siesta-key-vs-anna-maria-island-families.html');
+  assert.doesNotMatch(s, /no (?:rip )?currents|AMI (?:is safer|wins on water safety)|Anna Maria Island is safer|requires more (?:water )?supervision|relax while they play|nature's kiddie pool|0-2 (?:ft|feet) for 30\+ yards|5 feet average for 100\+ yards/i);
+  assert.match(s, /Rip currents can occur at either beach/i);
+  assert.match(s, /follow (?:posted )?flags and lifeguard instructions/i);
+  assert.match(s, /closely supervise children/i);
+  const schemas = [...s.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map((m) => JSON.parse(m[1]));
+  const faq = schemas.find((schema) => schema.mainEntity?.['@type'] === 'FAQPage').mainEntity.mainEntity;
+  const safety = faq.find((question) => question.name.startsWith('Which beach is safer'));
+  assert.match(safety.acceptedAnswer.text, /Rip currents can occur at either beach/i);
+  assert.match(safety.acceptedAnswer.text, /closely supervise children/i);
+});
+
+test('near-island accommodation copy and schema do not promise blanket lower prices', () => {
+  const s = read('src/guides/where-to-stay-near-anna-maria-island/index.html');
+  assert.doesNotMatch(s, /for less money|at lower prices|significantly more expensive|best vacation rental value in the entire AMI area/i);
+  assert.match(s, /complete checkout totals for the same dates and guest count/i);
+  const schemas = [...s.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map((m) => JSON.parse(m[1]));
+  const faq = schemas.find((schema) => schema['@type'] === 'FAQPage');
+  const stay = faq.mainEntity.find((question) => question.name === 'Is it better to stay on Anna Maria Island or nearby?');
+  assert.match(stay.acceptedAnswer.text, /complete checkout totals for the same dates and guest count/i);
+});
+
 test('booking report and its feeder withhold numbers without reviewed underlying evidence', () => {
   for (const p of [report, 'src/guides/florida-gulf-coast-vacation-rental-market-report-2026.html']) {
     const s = read(p);
