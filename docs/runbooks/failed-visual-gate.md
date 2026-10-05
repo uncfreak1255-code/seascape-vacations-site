@@ -22,8 +22,21 @@ npm run proof:visual
 ```
 
 If the intended design changed and the repo flow calls for a baseline refresh,
-use the repo's documented baseline-update path instead of editing screenshots by
-hand.
+regenerate the committed baselines with the workflow instead of editing
+screenshots by hand or committing local `--update-snapshots` output:
+
+1. Push the task branch.
+2. Run the `update-visual-baselines.yml` workflow (`Actions` -> `Update Visual
+   Baselines` -> `Run workflow`, or `gh workflow run update-visual-baselines.yml
+   -f branch=<task-branch> -f grep=<route-slug>`). `branch` is required; `grep`
+   limits the run to specs matching the route slug. The job only runs for
+   Sawyer's GitHub account on the self-hosted Mac runner, so start it from a
+   Mac session, not from a cloud thread.
+3. The workflow commits the new screenshots to the task branch as a bot
+   commit. That commit does not restart the PR checks; push your next real
+   commit (or an empty one) to run them again.
+4. Pull the branch, look at the new screenshots, and confirm they show the
+   intended design before asking for review.
 
 ## Source Of Truth
 

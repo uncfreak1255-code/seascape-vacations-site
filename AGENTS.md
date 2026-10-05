@@ -91,7 +91,11 @@ sections and searches rather than concatenating unrelated directories or logs.
 ## Non-Negotiable Rules
 
 - root `main` is sync-only
-- local non-trivial work happens on `codex/<task>` branches in `.worktrees/<task>`
+- local non-trivial work happens on `codex/<task>` branches in `.worktrees/<task>`;
+  a Claude Code session that its harness pinned to `.claude/worktrees/<name>`
+  is already in an isolated worktree and satisfies this rule as-is. Do not
+  create a second worktree from inside it, and do not edit the root checkout
+  from it (the harness rejects those edits)
 - edit source, not `_site`
 - never use `DEPLOY THIS FOLDER TO NETLIFY/` as the source of truth
 - one serious SEO cluster at a time, with one brief driving it
@@ -178,6 +182,12 @@ These are starting points; the Testing section still governs required checks.
 | Dates, guest count, tracking and booking continuity | `src/assets/js/guest.js`, `src/assets/js/conversion-tracking.js`, `src/_includes/partials/guest-trip-form.njk` | `scripts/enforcement/trip-continuity.test.js`, `tests/visual/trip-continuity.spec.js` |
 | Shared guest shell and styling | `src/_includes/layouts/guest.njk`, `src/_includes/partials/guest-header.njk`, `src/_includes/partials/guest-footer.njk`, `src/css/guest.css` | `scripts/enforcement/shared-shell.test.js`, `scripts/enforcement/internal-link-floor.test.js`, `tests/visual/design-floors.spec.js` |
 | Owner inquiry form and public proof | `src/property-management/index.njk`, `src/_includes/partials/owner-evaluation-form.njk`, `src/css/owner.css`, `src/_data/ownerProofAssets.json` | `scripts/enforcement/owner-acquisition.test.js`, `tests/visual/owner-form-steps.spec.js` |
+| Live availability lookup behind the booking panel | `netlify/functions/booking-availability.js`, `scripts/booking/stay-availability.js`, `scripts/cache/booking-engine-calendar.js` | `scripts/enforcement/stay-availability.test.js` |
+| Booking handoff and guide click lineage (`seascape_booking_handoff_session_id`, `sv_guide_click_id`) | `src/assets/js/conversion-tracking.js` | `scripts/enforcement/booking-handoff.test.js`, `scripts/enforcement/guide-funnel-lineage.test.js` |
+| GA4 loading, tracking IDs and PII scrubbing | `src/assets/js/homepage.js`, `src/assets/js/conversion-tracking.js` | `scripts/enforcement/tracking-privacy-ids.test.js`, `scripts/enforcement/tracking-script-coverage.test.js`, `scripts/enforcement/direct-booking-event-smoke.test.js` |
+| Guest email capture (homepage exit signup, guide conversion kit) | `src/assets/js/guest.js`, `src/_includes/partials/guide-conversion-kit.njk`, `netlify/functions/guest-email-capture.js` | `scripts/enforcement/home-exit-signup.test.js`, `scripts/enforcement/guide-conversion.test.js`, `scripts/enforcement/guest-capture-bot-guard.test.js` |
+| Homepage hero phrase, ticker and parallax | `src/assets/js/hero-v2.js`, `src/index.njk` | `scripts/enforcement/ui-runtime.test.js` (append `?visual-test=1` to freeze motion in screenshots) |
+| Header menu button state | `src/assets/js/guest-menu.js` | no unit test; covered only by `tests/visual/*.spec.js` |
 | Live-smoke assertions after visible-copy changes | `scripts/recovery/assert-live-smoke.js` | `scripts/enforcement/recovery-smoke.test.js` |
 
 ## Workflow Layer
@@ -261,11 +271,50 @@ its trigger, so no per-skill index is kept here.
   smoke assertions, not necessarily an outage. A scheduled run that does not
   pass opens a `Daily live smoke failed` issue, or comments on the open one
 
+## Checks And Runners
+
+Which local command proves what, and which CI job repeats it. Run the local
+column before pushing; read the CI column when a PR check is red.
+
+| Local command | What it proves | CI job that repeats it |
+| --- | --- | --- |
+| `npm run build` | Eleventy build under the worktree lock plus availability-output validation | inside `release-safety`, `performance-budget`, `preview-surface` |
+| `npm test` (`test:unit`) | `node --test` over `scripts/enforcement`, `scripts/recovery`, `scripts/evals` and `scripts/perf` tests, after a fresh build | inside `release-safety` via `verify:release` |
+| `node --test scripts/enforcement/<name>.test.js` | one gate from the Repo Truth table, without rebuilding | same |
+| `npm run lint:content` | `content-voice.test.js` against the fresh build | inside `release-safety` via `verify:release` |
+| `npm run verify:release` | build, full suite and release checks under one lock | `release-safety` |
+| `npm run audit:deps` | `npm audit` at moderate on production dependencies | `release-safety` |
+| `npm run test:visual` | Playwright screenshot diffs against `tests/visual/__screenshots__/` plus the axe spec | `visual-regression` |
+| `npm run perf:budget` / `npm run perf:ratchet` | Lighthouse budgets in `lighthouserc.js` and the byte-size ratchet | `performance-budget` |
+| `npm run verify:preview-surface -- <url>` | homepage, property and booking-handoff assertions against a served `_site` | `preview-surface` |
+| smoke trio under Testing | the live production site | `live-smoke` |
+
+GitHub rulesets on `main` require exactly three status checks: `build`,
+`release-safety` and `performance-budget`. Every other job is informational
+and a red one does not block a merge by itself; read it anyway.
+
+| Workflow | Job (check name) | Runs when | Runner | Required |
+| --- | --- | --- | --- | --- |
+| `release-safety.yml` | `release-safety`, then `build` | every PR to `main` and every push to `main` | `ubuntu-latest` | yes, both |
+| `performance-budget.yml` | `performance-budget` | every PR to `main` (no paths filter, so it always reports), daily 09:17 UTC, manual | `ubuntu-latest` | yes; docs-only PRs report without running Lighthouse |
+| `playwright-visual.yml` (Playwright Visual Gate) | `visual-regression` | PRs to `main` that touch `src/**`, `eleventy.config.js`, `playwright.config.js`, `tests/visual/**`, the visual scripts or `package-lock.json`; docs-only PRs skip it | Sawyer's own PRs: self-hosted `mac-sawbeck-seascape-vacations-site`; forks and other authors: `macos-latest` | no |
+| `preview-surface.yml` | `preview-surface` | every PR to `main` | `ubuntu-latest` | no, by design |
+| `live-smoke.yml` | `live-smoke` (`report-failure` on `ubuntu-latest`) | daily 10:17 UTC; manual dispatch by Sawyer's account only | self-hosted `[self-hosted, macOS, arm64]` | not a PR check |
+| `update-visual-baselines.yml` | `generate-baselines` | manual dispatch only, by Sawyer's account | self-hosted `[self-hosted, macOS, arm64]` | not a check; see Testing for the recipe |
+
+A self-hosted job that sits in `queued` means the Mac runner is offline, not
+that the check failed; it does not fall back to GitHub-hosted compute.
+
 ## Deploy Configuration
 
 - Deployable: `yes`
 - Deploy surface: `Netlify`
 - Production URL: `https://seascape-vacations.com`
+- How production deploys: Netlify builds every merge to `main` using
+  `netlify.toml` (`npm run build`, publish `_site`). There is no manual deploy
+  command and no deploy step in GitHub Actions. `scripts/enforcement/netlify-ignore-build.js`
+  skips the deploy for agent-only merges; a missing deploy after a merge is
+  usually that skip, not an outage. Diagnose with `docs/runbooks/failed-netlify-deploy.md`.
 - Post-deploy proof: `npm run verify:recovery:live && npm run verify:direct-booking-events && npm run verify:owner-funnel-routes`
 - "Shipped" means: merged to `main`, Netlify built successfully, and the
   relevant live smoke checks passed

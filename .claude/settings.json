@@ -49,16 +49,5 @@
       "Edit(**/package-lock.json)",
       "Write(**/package-lock.json)"
     ]
-  },
-  "extraKnownMarketplaces": {
-    "superpowers-dev": {
-      "source": {
-        "source": "github",
-        "repo": "obra/superpowers"
-      }
-    }
-  },
-  "enabledPlugins": {
-    "superpowers@superpowers-dev": true
   }
 }

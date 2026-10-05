@@ -60,6 +60,12 @@ that exact paid run. An MCP tool can be marked read-only and still consume
 DataForSEO credits. Self-hosted OpenSEO does not currently expose the remaining
 DataForSEO balance through `whoami`, so tool annotations are not a cost gate.
 
+| Tool | Reads | Spends DataForSEO credits | Needs Sawyer's approval |
+| --- | --- | --- | --- |
+| `whoami`, `list_projects`, `list_saved_keywords`, `get_rank_tracker` | saved OpenSEO project state and rank history | no | no; Codex still prompts per call |
+| `get_search_console_performance`, `inspect_urls` | the existing Search Console authorization | no | no for reads; yes before any reconnect |
+| every tool in the list below | live SERP, keyword, backlink, domain, local or AI lookups | yes, per call | yes, for that exact paid run |
+
 The following OpenSEO tools are intentionally outside the project allowlist:
 
 - `research_keywords`
