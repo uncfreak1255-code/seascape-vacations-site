@@ -242,6 +242,9 @@ its trigger, so no per-skill index is kept here.
 
 ## Testing
 
+- When changing a flow covered by the [TesterArmy journey guide](docs/runbooks/tester-army-e2e.md), run the relevant e2e journey before closeout: `npm run test:e2e -- --grep '<test title>'`.
+- When fixing a demonstrated flow bug, add or update a journey that fails on the bug and passes on the fix.
+- Use ordinary unit tests for smaller logic changes. Preserve the required checks below and the guide's synthetic-only boundaries.
 - Fast gate for copy-only work: `npm run lint:content`
 - Fast gate for structural source work: `npm run build`
 - Full pre-PR gate: `npm run verify:release`. It builds once, then runs the
