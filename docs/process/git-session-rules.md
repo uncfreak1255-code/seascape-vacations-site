@@ -56,7 +56,15 @@ If the answer is `real work`:
 2. Create `codex/<task>`
 3. Create `.worktrees/<task>`
 4. Do the work in that worktree only
-5. Run `npm run git:preflight` before real edits
+5. Run `npm ci` there once; a fresh worktree has no `node_modules`, and the
+   root checkout's install is not shared. Skip this only for a docs-only
+   change that you will not test locally
+6. Run `npm run git:preflight` before real edits
+
+A Claude Code session that its harness already pinned to
+`.claude/worktrees/<name>` has completed steps 2 to 4 under a different name.
+Stay in that worktree on the branch the harness created; do not add a
+`.worktrees/<task>` checkout on top of it.
 
 ## Root `main` rules
 

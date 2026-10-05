@@ -18,6 +18,12 @@ require reading unrelated SEO, design or measurement documents at startup.
 - The five SEO OS role cards live in `.claude/agents/`; `.claude/settings.json`
   holds this repo's Claude permissions.
 - For UI/visual work, dispatch subagents with `model: "sonnet"`.
+- Worktrees: when the harness pins the session to `.claude/worktrees/<name>`,
+  that is the isolated worktree `AGENTS.md` asks for. Work there on the
+  branch the harness created, run `npm ci` once (a fresh worktree has no
+  `node_modules`), and do not create a `.worktrees/<task>` checkout as well.
+  The harness rejects edits outside the pinned worktree, so a "permission
+  denied" on a root-checkout path is the rule working, not a bug.
 
 ## Content Work
 
