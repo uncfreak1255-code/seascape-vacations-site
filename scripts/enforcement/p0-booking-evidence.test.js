@@ -81,6 +81,111 @@ test('destination and airport comparisons do not retain fixed savings in alterna
   }
 });
 
+const quoteBoilerplate =
+  /Compare current flight, baggage and ground-transport quotes for your route and dates\./g;
+
+function visibleText(html) {
+  return String(html || '')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/&nbsp;/gi, ' ')
+    .replace(/&amp;/gi, '&')
+    .replace(/&ndash;|&#8211;|&mdash;|&#8212;/g, '-')
+    .replace(/[\u2013\u2014]/g, '-')
+    .replace(/\s*-\s*/g, '-')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function extractFaqJsonLd(source) {
+  const scripts = source.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g) || [];
+  for (const script of scripts) {
+    const raw = script.replace(/^<script[^>]*>/, '').replace(/<\/script>$/, '');
+    const parsed = JSON.parse(raw);
+    if (parsed['@type'] === 'FAQPage') {
+      return parsed.mainEntity;
+    }
+  }
+  throw new Error('FAQPage JSON-LD is missing');
+}
+
+function extractVisibleFaq(source) {
+  const faqStart = source.indexOf('<h2>Frequently Asked Questions</h2>');
+  assert.ok(faqStart >= 0, 'visible FAQ heading is missing');
+  const faqEnd = source.indexOf('<div class="guide-cta">', faqStart);
+  const faqHtml = source.slice(faqStart, faqEnd > faqStart ? faqEnd : undefined);
+  const blocks = [...faqHtml.matchAll(/<h3>([\s\S]*?)<\/h3>\s*<p>([\s\S]*?)<\/p>/g)];
+  assert.ok(blocks.length > 0, 'visible FAQ answers are missing');
+  return blocks.map((match) => ({
+    question: visibleText(match[1]),
+    answer: visibleText(match[2])
+  }));
+}
+
+test('flights guide keeps distinct numbered tips and question-specific FAQs after savings removal', () => {
+  const source = read('src/guides/flights-to-anna-maria-island/index.html');
+  const leftoverBoilerplate = source.match(quoteBoilerplate) || [];
+  assert.equal(
+    leftoverBoilerplate.length,
+    0,
+    `generic quote boilerplate still appears ${leftoverBoilerplate.length} times`
+  );
+
+  const tip3 = source.indexOf('<strong>3.');
+  const tip4 = source.indexOf('<strong>4.');
+  const tip5 = source.indexOf('<strong>5.');
+  const tip6 = source.indexOf('<strong>6.');
+  assert.ok(tip3 > 0 && tip3 < tip4 && tip4 < tip5 && tip5 < tip6, 'tips must stay numbered 3, 4, 5, 6 in order');
+  assert.match(source, /<strong>4\.\s*Check Southwest separately\.<\/strong>/);
+  assert.match(source, /southwest\.com/i);
+  assert.match(source, /<strong>5\.\s*Consider a PIE open-jaw\.<\/strong>/);
+  assert.match(source, /open-jaw/i);
+
+  const jsonFaqs = extractFaqJsonLd(source);
+  const visibleFaqs = extractVisibleFaq(source);
+  assert.equal(visibleFaqs.length, jsonFaqs.length, 'visible FAQ count must match FAQPage JSON-LD');
+
+  for (const jsonFaq of jsonFaqs) {
+    const visibleFaq = visibleFaqs.find((faq) => faq.question === jsonFaq.name);
+    assert.ok(visibleFaq, `visible FAQ missing for ${jsonFaq.name}`);
+    assert.equal(
+      visibleFaq.answer,
+      visibleText(jsonFaq.acceptedAnswer.text),
+      `visible FAQ answer must match JSON-LD for ${jsonFaq.name}`
+    );
+  }
+
+  const rentalCar = visibleFaqs.find((faq) => /Do I need a rental car/i.test(faq.question));
+  assert.ok(rentalCar, 'rental-car FAQ is missing');
+  assert.match(rentalCar.answer, /Most visitors rent a car/i);
+  assert.match(rentalCar.answer, /island trolley/i);
+  assert.doesNotMatch(rentalCar.answer, quoteBoilerplate);
+
+  const tampaOrSrq = visibleFaqs.find((faq) => /Tampa or Sarasota/i.test(faq.question));
+  assert.match(tampaOrSrq.answer, /Fly into SRQ/i);
+  assert.match(tampaOrSrq.answer, /Fly into TPA/i);
+
+  const uber = visibleFaqs.find((faq) => /Uber/i.test(faq.question));
+  assert.match(uber.answer, /rideshare app/i);
+
+  const cheapest = visibleFaqs.find((faq) => /cheapest/i.test(faq.question));
+  assert.match(cheapest.answer, /September and October/i);
+});
+
+test('worth-visiting metadata matches the quote-based cost body', () => {
+  const source = read('src/guides/is-anna-maria-island-worth-visiting.html');
+  assert.doesNotMatch(source, /7-night costs for a family of four/i);
+
+  const description = source.match(/<meta name="description" content="([^"]+)"/);
+  const og = source.match(/<meta property="og:description" content="([^"]+)"/);
+  const twitter = source.match(/<meta name="twitter:description" content="([^"]+)"/);
+  assert.ok(description && og && twitter, 'description, og:description, and twitter:description must exist');
+  assert.equal(description[1], og[1]);
+  assert.equal(description[1], twitter[1]);
+  assert.match(description[1], /scorecard/i);
+  assert.match(description[1], /quote/i);
+  assert.doesNotMatch(description[1], /7-night|family of four/i);
+});
+
 test('deployment smoke rejects withdrawn counts without matching the Seascape phone number', () => {
   const { validateTargetResponse } = require('../recovery/assert-live-smoke');
   const target = { path: '/research/gulf-coast-vacation-booking-trends-2026/', status: 200 };
