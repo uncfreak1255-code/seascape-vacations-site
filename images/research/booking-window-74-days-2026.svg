@@ -1,28 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
-  <title id="title">74-day Gulf Coast vacation rental booking window</title>
-  <desc id="desc">Average booking lead time is 74 days and median lead time is 62 days.</desc>
-  <rect width="1200" height="720" fill="#FAF7EE"/>
-  <rect x="40" y="40" width="1120" height="640" rx="32" fill="#F5EED6" stroke="#D9CFB2"/>
-  <text x="86" y="112" fill="#5F8A8B" font-family="Poppins, Arial, sans-serif" font-size="18" font-weight="700" letter-spacing="3">BOOKING WINDOW</text>
-  <text x="86" y="174" fill="#3D5C5D" font-family="Playfair Display, Georgia, serif" font-size="54" font-weight="500">Guests plan about two months ahead.</text>
-  <text x="86" y="222" fill="#595959" font-family="Poppins, Arial, sans-serif" font-size="24">Lead time from booking date to check-in across 545 confirmed bookings.</text>
-  <g transform="translate(104 306)">
-    <rect x="0" y="0" width="448" height="230" rx="28" fill="#2D4647"/>
-    <text x="36" y="74" fill="#E8D5A3" font-family="Playfair Display, Georgia, serif" font-size="86" font-weight="700">74</text>
-    <text x="167" y="74" fill="#E8D5A3" font-family="Poppins, Arial, sans-serif" font-size="24" font-weight="700">days</text>
-    <text x="36" y="126" fill="#FFFFFF" font-family="Poppins, Arial, sans-serif" font-size="24" font-weight="700">Average lead time</text>
-    <text x="36" y="166" fill="#DDEAEA" font-family="Poppins, Arial, sans-serif" font-size="20">Early planners pull this above the median.</text>
-  </g>
-  <g transform="translate(648 306)">
-    <rect x="0" y="0" width="448" height="230" rx="28" fill="#FFFFFF" stroke="#D9CFB2"/>
-    <text x="36" y="74" fill="#C9A962" font-family="Playfair Display, Georgia, serif" font-size="86" font-weight="700">62</text>
-    <text x="167" y="74" fill="#C9A962" font-family="Poppins, Arial, sans-serif" font-size="24" font-weight="700">days</text>
-    <text x="36" y="126" fill="#3D5C5D" font-family="Poppins, Arial, sans-serif" font-size="24" font-weight="700">Median lead time</text>
-    <text x="36" y="164" fill="#595959" font-family="Poppins, Arial, sans-serif" font-size="19">Median booking point:</text>
-    <text x="36" y="196" fill="#595959" font-family="Poppins, Arial, sans-serif" font-size="19">about nine weeks out.</text>
-  </g>
-  <path d="M116 594 H1084" stroke="#EBE4CC" stroke-width="18" stroke-linecap="round"/>
-  <path d="M116 594 H712" stroke="#3D5C5D" stroke-width="18" stroke-linecap="round"/>
-  <circle cx="712" cy="594" r="18" fill="#C9A962"/>
-  <text x="86" y="642" fill="#5F8A8B" font-family="Poppins, Arial, sans-serif" font-size="17" font-weight="700" letter-spacing="1.5">SOURCE: BOOKING TRENDS REPORT. 545 CONFIRMED BOOKINGS. PEAK WEEKS CAN BOOK EARLIER.</text>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="360" viewBox="0 0 1200 360" role="img" aria-labelledby="title desc">
+<title id="title">Seascape research figures withdrawn</title><desc id="desc">Earlier numeric findings are withdrawn pending source and calculation review. Visit the Seascape booking research page for evidence status.</desc>
+<rect width="1200" height="360" fill="#F6F3EB"/>
+<g fill="#173D42" font-family="Arial, sans-serif"><text x="60" y="125" font-size="40">Research figures withdrawn</text><text x="60" y="190" font-size="24">Source receipts and calculations require review.</text><text x="60" y="245" font-size="22">seascape-vacations.com/research/</text></g></svg>

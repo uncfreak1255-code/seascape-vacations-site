@@ -114,8 +114,8 @@ test("research hub promotes the rescued fee guide instead of the retired benchma
 
   assert.match(researchHub.visibleBodyText, /Airbnb Host Fees vs Card Processing/);
   assert.match(researchHub.visibleBodyText, /not all-in equivalents/);
-  assert.match(researchHub.visibleBodyText, /Booking-trend reports use confirmed Seascape reservations/);
-  assert.match(researchHub.visibleBodyText, /fee guides name their published or local sources/);
+  assert.match(researchHub.visibleBodyText, /Booking research states its Seascape-only scope and evidence limits/);
+  assert.match(researchHub.visibleBodyText, /fee guides name their published sources/);
   assert.match(researchHub.head.description, /source-checked fee guides/);
   assert.doesNotMatch(
     researchHub.visibleBodyText,
@@ -253,7 +253,8 @@ test("linked public guides do not restore unsupported management uplift or retir
   );
 
   assert.doesNotMatch(companyGuide.visibleBodyText, /\bfee leakage\b/i);
-  assert.match(bookingTrends.visibleBodyText, /Owner Fee Comparison Guide/);
+  assert.match(bookingTrends.visibleBodyText, /numeric results are withheld/);
+  assert.match(bookingTrends.visibleBodyText, /reviewed calculations/);
   assert.doesNotMatch(bookingTrends.visibleBodyText, /Owner Fee Benchmark/);
 });
 
