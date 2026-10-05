@@ -1,11 +1,11 @@
 {
   "receipt_type": "release_verification",
-  "generated_at": "2026-10-05T17:12:10.546Z",
+  "generated_at": "2026-10-05T17:42:31.456Z",
   "source": "scripts/enforcement/verify-release.js",
   "repo_root": "/workspace/scratch/4bd67833505c/site/.worktrees/p0-evidence-correction",
   "git": {
     "branch": "codex/p0-evidence-correction",
-    "head": "01f9959ad26442db150b7add460a643a0153bd24",
+    "head": "6f4addf097f2d1d560f96a476dc5f725eabbc050",
     "range": "origin/main"
   },
   "path_assertions": [
@@ -78,70 +78,70 @@
       "label": "property:truth:check",
       "status": "passed",
       "command": "npm run property:truth:check",
-      "duration_ms": 238.513048,
+      "duration_ms": 274.012905,
       "error": ""
     },
     {
       "label": "build",
       "status": "passed",
       "command": "npm run build",
-      "duration_ms": 8628.08811,
+      "duration_ms": 8477.246311,
       "error": ""
     },
     {
       "label": "test",
       "status": "passed",
       "command": "npm run test:unit",
-      "duration_ms": 15640.735153,
+      "duration_ms": 14982.878758,
       "error": ""
     },
     {
       "label": "lint:design",
       "status": "passed",
       "command": "npm run lint:design -- --base origin/main",
-      "duration_ms": 376.726455,
+      "duration_ms": 377.560827,
       "error": ""
     },
     {
       "label": "verify:redirects",
       "status": "passed",
       "command": "npm run verify:redirects",
-      "duration_ms": 246.228615,
+      "duration_ms": 270.114863,
       "error": ""
     },
     {
       "label": "verify:recovery:p0",
       "status": "passed",
       "command": "npm run verify:recovery:p0",
-      "duration_ms": 366.911106,
+      "duration_ms": 396.696902,
       "error": ""
     },
     {
       "label": "verify:recovery:guides",
       "status": "passed",
       "command": "npm run verify:recovery:guides",
-      "duration_ms": 479.779714,
+      "duration_ms": 454.340241,
       "error": ""
     },
     {
       "label": "verify:recovery:remediation",
       "status": "passed",
       "command": "npm run verify:recovery:remediation",
-      "duration_ms": 396.600102,
+      "duration_ms": 432.271636,
       "error": ""
     },
     {
       "label": "verify:links",
       "status": "passed",
       "command": "npm run verify:links",
-      "duration_ms": 391.057763,
+      "duration_ms": 389.192874,
       "error": ""
     },
     {
       "label": "verify:jsonld",
       "status": "passed",
       "command": "npm run verify:jsonld",
-      "duration_ms": 279.987597,
+      "duration_ms": 281.121911,
       "error": ""
     }
   ],

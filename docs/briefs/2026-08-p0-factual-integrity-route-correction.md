@@ -208,4 +208,19 @@ source-only result.
 - Publication remains subject to review. No production SHA, deployment or live
   smoke success is claimed here.
 
-- Final site gates: content lint 28/28; npm test 1,088/1,088; full release gate passed. Receipt: `docs/receipts/2026-10-05-p0-evidence/release-gate.json`.
+- Final site gates: content lint 28/28; npm test 1,089/1,089; full release gate passed. Receipt: `docs/receipts/2026-10-05-p0-evidence/release-gate.json`.
+- source files likely to change: `src/guides/anna-maria-island-area-guide/index.html`
+- source files likely to change: `src/guides/siesta-key-area-guide/index.html`
+- source files likely to change: `src/guides/longboat-key-area-guide/index.html`
+- source files likely to change: `src/guides/bradenton-area-guide/index.html`
+- source files likely to change: `src/guides/snowbirds-guide-extended-stays-florida.html`
+- Final table sweep also removes unsupported area-average nightly rates and
+  the fabricated monthly snowbird comparison. The existing snowbird table
+  becomes an actionable quote checklist. A regression check covers these
+  nested area-guide tables and the hotel-rate comparison.
+- Draft PR #681 has a passing eight-path Netlify preview smoke plus release,
+  performance and preview CI checks. Initial full visual CI passed 391 tests,
+  skipped 27 by design and failed only two stale family-comparison snapshots.
+  Reviewed actual/expected/diff images and fresh local desktop/mobile rendering
+  show the intended cost-copy changes. Only those two references are refreshed
+  from exact macOS CI captures; full visual CI must pass before integration.

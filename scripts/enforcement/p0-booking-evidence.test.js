@@ -37,6 +37,20 @@ test('booking and cost guides compare complete quotes without fixed savings or f
   assert.match(data, /\$40\/day|\$40 per day/, 'verified pool heat charge remains');
 });
 
+test('area and long-stay comparisons do not invent accommodation averages or monthly budgets', () => {
+  for (const slug of ['anna-maria-island-area-guide', 'siesta-key-area-guide', 'longboat-key-area-guide', 'bradenton-area-guide']) {
+    const s = read(`src/guides/${slug}/index.html`);
+    assert.match(s, /Compare current quotes/, slug);
+    assert.doesNotMatch(s, /Avg(?: Vacation)? Rental Rate|\$[\d,]+[-–]\$[\d,]+\/night/, slug);
+  }
+  const snowbird = read('src/guides/snowbirds-guide-extended-stays-florida.html');
+  assert.doesNotMatch(snowbird, /\$[\d,]+/);
+  assert.match(snowbird, /Monthly Snowbird Budget Checklist/);
+  assert.match(snowbird, /complete checkout total/);
+  const comparison = read('src/guides/anna-maria-island-vs-clearwater-beach.html');
+  assert.doesNotMatch(comparison, /Avg\. Hotel\/Night|\$250–\$400|\$200–\$500/);
+});
+
 test('dependent tools are noindexed and cannot calculate or embed withdrawn figures', () => {
   for (const slug of ['florida-gulf-coast-vacation-cost-calculator-2026', 'gulf-coast-vacation-rental-chart-pack-2026']) {
     const s = read(`src/research/${slug}.njk`);

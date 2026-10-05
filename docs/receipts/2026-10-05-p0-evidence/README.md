@@ -19,7 +19,7 @@ Existing SVG URLs also display a withdrawal notice.
 ## Site gates
 
 - `npm run lint:content`: 28 passed.
-- `npm test`: 1,088 passed, none skipped.
+- `npm test`: 1,089 passed, none skipped.
 - `npm run verify:release -- --range origin/main`: passed.
 - [Full release receipt](release-gate.json): includes property truth, build,
   tests, design lint, redirects, recovery, links and JSON-LD checks.
@@ -29,7 +29,7 @@ The commands ran on the staged correction relative to the recorded main base.
 ## Rendered proof
 
 The route/viewport results are in [rendered-checks.json](rendered-checks.json).
-They cover 25 routes at desktop 1440×900 and mobile 390×844, with current
+They cover 28 routes at desktop 1440×900 and mobile 390×844, with current
 headings, no horizontal overflow, no page JavaScript errors and no failed
 local asset requests. Google analytics and external Google fonts were blocked
 in the local capture; the site's self-hosted assets were served normally.
@@ -44,6 +44,30 @@ Representative booking-report screenshots:
 
 - [Desktop](booking-research-desktop.png)
 - [Mobile](booking-research-mobile.png)
+
+## Preview and CI review
+
+Draft [PR #681](https://github.com/uncfreak1255-code/seascape-vacations-site/pull/681)
+has a [Netlify preview](https://deploy-preview-681--cozy-licorice-e83928.netlify.app).
+The preview smoke passed all eight selected paths, including contact, tax
+quarantine/noindex, the retired-cost redirect, corrected Sarasota wording,
+booking research and withdrawn tools. Release, performance and preview checks
+passed on the first publication.
+
+The first full visual run had 391 passes, 27 intentional skips and two failures:
+the desktop/mobile family-comparison screenshots still expected the removed
+rate figures. [Run 37347296349](https://github.com/uncfreak1255-code/seascape-vacations-site/actions/runs/37347296349)
+provided the actual, expected and diff images. Inspection confirmed the intended
+cost-table and FAQ copy changes, with no source style changes. A fresh local
+desktop/mobile rendering also passed overflow, asset and page-error checks.
+
+Only the two `guide-siesta-vs-ami-families.png` references were refreshed. They
+are byte-for-byte copies of that run's actual screenshots from the same macOS
+runner used for the full visual gate. The manual baseline workflow's dispatch
+is not available through this connection; the existing artifact-application
+step was performed using these generated captures. No screenshot pixels,
+thresholds or test exclusions were edited. A subsequent full CI run must pass
+before this draft is considered ready for merge.
 
 ## Publication boundary
 

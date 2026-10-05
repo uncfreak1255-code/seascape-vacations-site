@@ -400,6 +400,54 @@
       "overflow": false,
       "errors": [],
       "bad": []
+    },
+    {
+      "route": "/guides/siesta-key-area-guide/",
+      "viewport": "desktop",
+      "title": "Siesta Key\nVacation Rentals",
+      "overflow": false,
+      "errors": [],
+      "bad": []
+    },
+    {
+      "route": "/guides/longboat-key-area-guide/",
+      "viewport": "desktop",
+      "title": "Longboat Key\nVacation Rentals",
+      "overflow": false,
+      "errors": [],
+      "bad": []
+    },
+    {
+      "route": "/guides/snowbirds-guide-extended-stays-florida/",
+      "viewport": "desktop",
+      "title": "The Snowbird's Guide to Extended Stays",
+      "overflow": false,
+      "errors": [],
+      "bad": []
+    },
+    {
+      "route": "/guides/siesta-key-area-guide/",
+      "viewport": "mobile",
+      "title": "Siesta Key\nVacation Rentals",
+      "overflow": false,
+      "errors": [],
+      "bad": []
+    },
+    {
+      "route": "/guides/longboat-key-area-guide/",
+      "viewport": "mobile",
+      "title": "Longboat Key\nVacation Rentals",
+      "overflow": false,
+      "errors": [],
+      "bad": []
+    },
+    {
+      "route": "/guides/snowbirds-guide-extended-stays-florida/",
+      "viewport": "mobile",
+      "title": "The Snowbird's Guide to Extended Stays",
+      "overflow": false,
+      "errors": [],
+      "bad": []
     }
   ],
   "failures": [],
