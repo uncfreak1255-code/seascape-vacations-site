@@ -1174,13 +1174,14 @@ test("week 2 booking guides use named authorship and retire legacy conversion cl
   }
 });
 
-test("AMI vacation cost planning frame keeps the range-bar tail and booking kit uncollided", () => {
+test("AMI vacation cost planning frame removes unsupported range bars and keeps its booking kit uncollided", () => {
   const source = fs.readFileSync(
     path.join(projectRoot, "src", "guides", "anna-maria-island-vacation-cost.html"),
     "utf8"
   );
 
-  assert.match(source, /<i class="pg-bar-tail"/);
+  assert.doesNotMatch(source, /<i class="pg-bar-tail"/);
+  assert.match(source, /Price your dates/);
   assert.doesNotMatch(source, /<i class="pg-tail"/);
   assert.match(source, /\.pg-bar i\.pg-bar-tail/);
   assert.doesNotMatch(source, /\.pg-bar i\.pg-tail/);

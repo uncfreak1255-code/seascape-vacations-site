@@ -26,6 +26,12 @@ const targets = [
   { path: "/stays/sarasota-vacation-rentals-with-pool/", status: 200 },
   { path: "/property-management/vacation-rental-taxes-florida/", status: 200 },
   { path: "/property-management/vacation-rental-insurance-florida/", status: 200 },
+  { path: "/guides/booking-direct-vacation-rentals/", status: 200 },
+  { path: "/guides/anna-maria-island-vacation-cost/", status: 200 },
+  { path: "/research/gulf-coast-vacation-booking-trends-2026/", status: 200 },
+  { path: "/research/real-cost-florida-beach-vacation-bradenton-sarasota-ami-2026/", status: 200 },
+  { path: "/research/florida-gulf-coast-vacation-cost-calculator-2026/", status: 200 },
+  { path: "/research/gulf-coast-vacation-rental-chart-pack-2026/", status: 200 },
   { path: "/contact", status: 301, followRedirects: false },
   { path: "/guides/bradenton-vs-sarasota-cost-of-living/", status: 301, followRedirects: false },
   { path: "/property-owners/", status: 301, followRedirects: false },
@@ -343,6 +349,31 @@ function validateTargetResponse(target, response) {
       "/property-management/vacation-rental-insurance-florida/",
       "Average Guest Rating"
     ]);
+  }
+
+  if (target.path === "/research/gulf-coast-vacation-booking-trends-2026/") {
+    requireIncludes(target.path, response.body, [
+      "Seascape Booking Research: Scope and Evidence", "archived reservation export",
+      "inclusion rules", "reviewed calculations", "cannot establish an Anna Maria Island"
+    ]);
+    requireExcludes(target.path, response.body, ["$1.7M", "87%", "82%", "74-day"]);
+  }
+
+  if (target.path.startsWith("/research/") && /\b(?:545|1,492)\b/.test(response.body)) {
+    throw new Error(`${target.path} still publishes withdrawn reservation counts`);
+  }
+
+  if (["/guides/booking-direct-vacation-rentals/", "/guides/anna-maria-island-vacation-cost/",
+    "/research/real-cost-florida-beach-vacation-bradenton-sarasota-ami-2026/"].includes(target.path)) {
+    requireIncludes(target.path, response.body, ["complete checkout total"]);
+    requireExcludes(target.path, response.body, ["$300", "$600", "10–15%", "30–40%", "$6,000"]);
+  }
+
+  if (["/research/florida-gulf-coast-vacation-cost-calculator-2026/",
+    "/research/gulf-coast-vacation-rental-chart-pack-2026/"].includes(target.path)) {
+    requireIncludes(target.path, response.body, ['<meta name="robots" content="noindex, follow">',
+      "figures are withdrawn"]);
+    requireExcludes(target.path, response.body, ["totalEstimate", "feeLow", "74-day"]);
   }
 
   if (target.path === "/contact" && response.location !== "/#contact") {

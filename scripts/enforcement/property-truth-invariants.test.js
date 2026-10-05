@@ -442,7 +442,7 @@ test("repaired guides keep water claims singular, sourced, and off the island", 
   }
 });
 
-test("present-tense portfolio count is six on the pages an agent quotes", () => {
+test("present-tense portfolio references use current counts or canonical listings", () => {
   const files = [
     "src/guides/flights-to-anna-maria-island/index.html",
     "src/guides/bradenton-vs-sarasota-restaurants/index.html",
@@ -453,6 +453,10 @@ test("present-tense portfolio count is six on the pages an agent quotes", () => 
   for (const file of files) {
     const text = readSource(file);
     assert.equal(text.match(currentFive), null, `${file} still states a current portfolio of five`);
-    assert.match(text, /\bsix\b/i, `${file} should state the current portfolio as six`);
+    if (file.startsWith("src/research/")) {
+      assert.match(text, /href="\/properties\/"/, `${file} links current property truth instead of pinning a historical count`);
+    } else {
+      assert.match(text, /\bsix\b/i, `${file} should state the current portfolio as six`);
+    }
   }
 });

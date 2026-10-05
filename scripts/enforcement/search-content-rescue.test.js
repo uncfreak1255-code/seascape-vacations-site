@@ -69,15 +69,15 @@ test("weather guide uses named NOAA proxies and removes expired or unsafe claims
   }
 });
 
-test("market page is labeled as a fixed historical portfolio benchmark", () => {
+test("market page limits the historical portfolio benchmark and withholds unverified numbers", () => {
   const source = read(marketPath);
 
   for (const required of [
     "Bradenton-Sarasota Vacation Rental Benchmark 2026",
-    '"dateModified": "2026-08-19"',
-    "545 confirmed bookings",
-    "1,492 reservation records",
-    "five Bradenton and Sarasota homes",
+    '"dateModified": "2026-10-05"',
+    "Numeric findings are withheld",
+    "archived reservation export",
+    "Seascape-only scope",
     "June 2022 through March 2026",
     "/research/gulf-coast-vacation-booking-trends-2026/",
     "historical portfolio benchmark",

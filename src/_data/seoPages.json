@@ -173,7 +173,7 @@
           "value": "Dockside sleeps 12 with a dock; The Oasis up to 16 with two hot tubs and a putting green."
         }
       ],
-      "geoIntro": "<p>A Bradenton rental with both a private heated pool and a hot tub means you don't trade daytime swimming for an evening soak. Dockside Dreams and The Oasis both have the combination, in a fenced private yard about 10\u201315 minutes from the Gulf beaches on Anna Maria Island.</p><p>The pool handles the afternoons with the kids; the hot tub handles the quiet part of the night. <strong>The Oasis</strong> goes further with two hot tubs and a putting green; <strong>Dockside Dreams</strong> adds a private dock on the canal. Dockside sleeps 12, The Oasis up to 16.</p><p>Booking direct runs the same dates 10\u201315% under the listing platforms \u2014 you skip the service fee. Pool heat is an optional add-on; the hot tub heat is included year-round.</p>",
+      "geoIntro": "<p>A Bradenton rental with both a private heated pool and a hot tub means you don't trade daytime swimming for an evening soak. Dockside Dreams and The Oasis both have the combination, in a fenced private yard about 10\u201315 minutes from the Gulf beaches on Anna Maria Island.</p><p>The pool handles the afternoons with the kids; the hot tub handles the quiet part of the night. <strong>The Oasis</strong> goes further with two hot tubs and a putting green; <strong>Dockside Dreams</strong> adds a private dock on the canal. Dockside sleeps 12, The Oasis up to 16.</p><p>Compare the same dates and complete checkout total across channels. Pool heat is an optional add-on; the hot tub heat is included year-round.</p>",
       "relatedStaySlugs": [
         "bradenton-waterfront-vacation-rentals",
         "canal-homes-with-boat-dock",
@@ -1151,8 +1151,8 @@
       "valueComparison": [
         {
           "label": "Nightly rate",
-          "us": "$200-$550 direct",
-          "them": "$400-$900+ in season"
+          "us": "Check the complete total for your dates",
+          "them": "Check the complete total for your dates"
         },
         {
           "label": "Private heated pool",
@@ -1237,7 +1237,7 @@
         },
         {
           "title": "Snowbirds and extended stays",
-          "desc": "All listed homes can fit longer winter stays, with direct rates starting at $200/night.",
+          "desc": "All listed homes can fit longer winter stays, with quotes based on your home and dates.",
           "href": "/stays/snowbird-rentals-florida-gulf-coast/",
           "icon": "sunset"
         }
@@ -1668,13 +1668,13 @@
         },
         {
           "question": "How much does it cost per person per night?",
-          "answer": "Split among 16 guests, The Oasis works out to approximately $25\u2013$50 per person per night depending on season \u2014 far less than hotel rooms and with infinitely better amenities."
+          "answer": "Divide the complete checkout total by your guest count and number of nights to compare the per-person cost with other lodging options. Check that the listing can accommodate your whole group."
         }
       ],
       "matchingProperties": [
         "the-oasis"
       ],
-      "geoIntro": "<p>When your group reaches 16 people, accommodation options shrink fast \u2014 except in vacation rentals. Our flagship property, <strong>The Oasis</strong>, sleeps up to 16 guests across 5 bedrooms and 3 bathrooms, with a resort-style pool, hot tub, game room, and massive outdoor living area designed for big groups.</p><p>At roughly $25\u2013$50 per person per night, a 16-person vacation home is a fraction of what you'd spend on hotel rooms \u2014 and infinitely more fun. Compare the same dates and complete checkout total across channels.</p>",
+      "geoIntro": "<p>When your group reaches 16 people, accommodation options shrink fast \u2014 except in vacation rentals. Our flagship property, <strong>The Oasis</strong>, sleeps up to 16 guests across 5 bedrooms and 3 bathrooms, with a resort-style pool, hot tub, game room, and massive outdoor living area designed for big groups.</p><p>Compare the complete checkout total for your group and dates.</p>",
       "relatedStaySlugs": [
         "accessible-vacation-rentals-florida",
         "vacation-rentals-with-outdoor-grill",
@@ -1751,7 +1751,7 @@
         },
         {
           "question": "Are 5-bedroom homes affordable for groups?",
-          "answer": "When split among 14\u201316 guests, the per-person nightly rate is remarkably affordable \u2014 typically $25\u2013$60 per person. That's less than most hotel rooms, and you get a private pool, full kitchen, and much more space."
+          "answer": "Divide the complete checkout total by your guest count and number of nights to compare the per-person cost with other lodging options. Check that the listing can accommodate your whole group."
         },
         {
           "question": "Do 5-bedroom homes work for corporate retreats?",
@@ -1827,7 +1827,7 @@
           "value": "Dockside and River House sleep 12, The Oasis up to 16 \u2014 all with a private pool."
         }
       ],
-      "geoIntro": "<p>Summer on the Gulf Coast is warm water for swimming, long beach mornings, brief afternoon thunderstorms that cool things off, and rates below the winter peak. For families on school break it's prime time \u2014 and a private pool home turns the Florida heat into the point rather than the problem.</p><p>Spend the mornings at the beach and the afternoons in your own pool while the 3pm storm passes. The homes run from Dockside Dreams and River House (sleep 12) to <strong>The Oasis</strong> (up to 16), all with a fenced pool \u2014 and you won't need to pay for pool heat in summer.</p><p>Booking direct runs the same dates 10\u201315% under Airbnb or VRBO, on top of summer's already-lower rates.</p>"
+      "geoIntro": "<p>Summer on the Gulf Coast is warm water for swimming, long beach mornings, brief afternoon thunderstorms that cool things off, and rates below the winter peak. For families on school break it's prime time \u2014 and a private pool home turns the Florida heat into the point rather than the problem.</p><p>Spend the mornings at the beach and the afternoons in your own pool while the 3pm storm passes. The homes run from Dockside Dreams and River House (sleep 12) to <strong>The Oasis</strong> (up to 16), all with a fenced pool \u2014 and you won't need to pay for pool heat in summer.</p><p>Compare the same dates and complete checkout total across channels.</p>"
     },
     {
       "slug": "winter-vacation-rentals-florida-gulf-coast",
@@ -1901,7 +1901,7 @@
         },
         {
           "question": "Do holiday rates differ from regular peak season?",
-          "answer": "Holiday weeks (Christmas, New Year's, Thanksgiving) typically command premium rates due to extremely high demand. Book direct with Seascape Vacations to compare a direct quote before listing platforms \u2014 typically 10\u201315% lower than marketplace checkout."
+          "answer": "Holiday weeks (Christmas, New Year's, Thanksgiving) typically command premium rates due to extremely high demand. Compare the complete checkout total for the same home, dates and guests across channels."
         }
       ],
       "matchingProperties": [
