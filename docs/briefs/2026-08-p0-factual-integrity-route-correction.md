@@ -225,6 +225,34 @@ source-only result.
   show the intended cost-copy changes. Only those two references are refreshed
   from exact macOS CI captures; full visual CI must pass before integration.
 
+## October 5 follow-up: restore distinct flight and meta copy
+
+PR #681 removed unsupported prices, then reused one quote-comparison sentence
+for ten guest-facing slots on `/guides/flights-to-anna-maria-island/`. That
+wiped numbered tips 4 and 5, several FAQ answers, and left a stray
+`island trolley` link. Metadata on
+`/guides/is-anna-maria-island-worth-visiting/` still promised a
+`7-night costs for a family of four` breakdown the body no longer has.
+
+Restore the pre-#681 substance without bringing prices back:
+
+- Tip 4: confirm Southwest bag rules for the selected fare. Southwest appears
+  on Google Flights and Kayak; bookings still finish on southwest.com.
+  Checked bags are not automatically included. Allowance depends on fare,
+  Rapid Rewards status, credit card, or military eligibility.
+- Tip 5: consider a TPA/PIE open-jaw and compare the complete transfer total.
+- FAQ answers must answer the asked question and match FAQ JSON-LD.
+- Worth-visiting description, og:description, and twitter:description must
+  describe the current scorecard and quote-based cost guidance.
+
+Keep #681's anti-claims: no fixed savings, no fabricated fare or transfer
+prices, no 7-night family budget, no unconditional free bags, no
+`not on aggregators` claim. No new page or offer.
+
+- source files likely to change:
+  - `src/guides/flights-to-anna-maria-island/index.html`
+  - `src/guides/is-anna-maria-island-worth-visiting.html`
+  - `scripts/enforcement/p0-booking-evidence.test.js`
 
 ### October 5 authorized follow-up to merged #681
 
