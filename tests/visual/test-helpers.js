@@ -37,7 +37,7 @@ async function registerStableNetwork(page) {
     }
 
     if ((url.hostname === "127.0.0.1" || url.hostname === "localhost") && url.pathname === "/.netlify/functions/booking-availability") {
-      const homes = ["dockside-dreams","the-oasis","sarasota-luxe","river-house","bradenton-pool-home","blue-house"].map((slug) => ({
+      const homes = ["dockside-dreams","the-oasis","sarasota-luxe","river-house","bradenton-pool-home","blue-house","coastal-stay"].map((slug) => ({
         slug,
         bookable: true,
         reason: null,
