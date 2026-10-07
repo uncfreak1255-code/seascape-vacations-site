@@ -36,6 +36,9 @@ Property truth regeneration/check; full release suite; route/JSON-LD/AI/discover
 - src/index.njk; src/property-management/index.njk (current count only)
 - src/guides/flights-to-anna-maria-island/index.html and src/guides/bradenton-vs-sarasota-restaurants/index.html (current count only)
 - src/assets/js/conversion-tracking.js; scripts/booking/stay-availability.js; scripts/cache/sync-hostaway-build-cache.js
+- src/_data/seoPages.json pool-and-hot-tub page (follow-up): the "five homes with a hot tub" count becomes six because Coastal Stay has a hot tub; the newest home is named with its exact public title, and its pool-heat fee is stated as confirm-at-booking, never a price.
+- src/css/arrival.css (follow-up): the homepage postcard fan gains a seventh tilt step and a neutral default for any later card, so a new home never renders with an undefined transform.
+- scripts/recovery/assert-live-smoke.js (follow-up): the live catalog smoke now requires the /properties/coastal-stay/ link.
 
 - offer claim: seascape-hub/context/owner-offer.md existing owner-service offer retained; this change corrects inventory count only and introduces no offer.
 

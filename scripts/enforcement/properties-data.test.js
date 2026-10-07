@@ -137,7 +137,12 @@ test("homepage postcard fan stays in one count-agnostic desktop row", () => {
   assert.match(postcardBlock[0], /grid-auto-flow:column/);
   assert.match(postcardBlock[0], /grid-auto-columns:minmax\(0,1fr\)/);
   assert.doesNotMatch(postcardBlock[0], /repeat\(5/);
-  assert.match(css, /\.g-postcard:nth-child\(6\)\{--card-angle:5deg/);
+  // Seven tilt steps mirror around a flat centre card, and any later card gets a neutral default
+  // so a newly onboarded home never renders with an undefined transform.
+  assert.match(css, /\.g-postcard:nth-child\(1\)\{--card-angle:-6deg/);
+  assert.match(css, /\.g-postcard:nth-child\(4\)\{--card-angle:0deg/);
+  assert.match(css, /\.g-postcard:nth-child\(7\)\{--card-angle:6deg/);
+  assert.match(css, /\.g-postcard:nth-child\(n\+8\)\{--card-angle:0deg;--card-offset:0px/);
 });
 
 test("River House gallery leads with the dusk outdoor set and keeps one daytime yard shot", () => {
