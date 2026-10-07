@@ -1,0 +1,148 @@
+# Disposable compatibility rehearsal; do not merge.
+# Jobs copied from main at 143fc980bd7b44ca0a8b7196291fba179c4d7838.
+# Only runner labels, display names, and unconditional dependency audit differ.
+name: Ubuntu 26.04 Rehearsal
+'on':
+  pull_request:
+    branches:
+      - main
+    paths:
+      - .github/workflows/ubuntu-26-rehearsal.yml
+permissions:
+  contents: read
+concurrency:
+  group: ubuntu-26-rehearsal-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+jobs:
+  release-safety:
+    name: ubuntu-26 / release-safety
+    runs-on: ubuntu-26.04
+    timeout-minutes: 20
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Compute comparison range
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            echo "RANGE=${{ github.event.pull_request.base.sha }}...${{ github.event.pull_request.head.sha }}" >> "$GITHUB_ENV"
+          elif [ "${{ github.event.before }}" = "0000000000000000000000000000000000000000" ]; then
+            echo "RANGE=HEAD^..HEAD" >> "$GITHUB_ENV"
+          else
+            echo "RANGE=${{ github.event.before }}..${{ github.sha }}" >> "$GITHUB_ENV"
+          fi
+      - name: Detect dependency manifest changes
+        id: dependency_changes
+        shell: bash
+        run: |
+          if git diff --name-only "$RANGE" | grep -Eq '^(package(-lock)?\.json)$'; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Run dependency audit gate
+        run: npm run audit:deps
+      - name: Run release safety gate
+        run: npm run verify:release -- --range "$RANGE"
+  build:
+    name: ubuntu-26 / build
+    needs: release-safety
+    if: always()
+    runs-on: ubuntu-26.04
+    timeout-minutes: 5
+    steps:
+      - name: Confirm authoritative gate passed
+        run: |
+          if [ "${{ needs.release-safety.result }}" != "success" ]; then
+            echo "release-safety did not pass."
+            exit 1
+          fi
+          echo "Build and tests passed in release-safety."
+  performance-budget:
+    name: ubuntu-26 / performance-budget
+    runs-on: ubuntu-26.04
+    timeout-minutes: 20
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - name: Determine performance scope
+        id: performance_scope
+        run: node scripts/perf/performance-scope.js
+      - name: Set up Node.js
+        if: steps.performance_scope.outputs.run_lighthouse == 'true'
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+      - name: Install dependencies
+        if: steps.performance_scope.outputs.run_lighthouse == 'true'
+        run: npm ci
+      - name: Build production site
+        if: steps.performance_scope.outputs.run_lighthouse == 'true'
+        run: node scripts/enforcement/build-site.js
+      - name: Check performance budgets
+        if: steps.performance_scope.outputs.run_lighthouse == 'true'
+        run: npx --no-install lhci autorun --config=./lighthouserc.js
+      - name: Check byte-size ratchet
+        if: steps.performance_scope.outputs.run_lighthouse == 'true'
+        run: node scripts/perf/perf-ratchet.js
+      - name: Upload Lighthouse reports
+        if: always() && steps.performance_scope.outputs.run_lighthouse == 'true'
+        uses: actions/upload-artifact@v7
+        with:
+          name: lighthouse-reports
+          path: .lighthouseci/
+          include-hidden-files: true
+          if-no-files-found: ignore
+          retention-days: 7
+  preview-surface:
+    name: ubuntu-26 / preview-surface
+    runs-on: ubuntu-26.04
+    timeout-minutes: 15
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Build published output from src/
+        run: npm run build
+      - name: Serve _site and assert homepage, property, booking handoff
+        run: |
+          set -euo pipefail
+          node scripts/enforcement/serve-static.js --host 127.0.0.1 --port 4173 &
+          server_pid=$!
+          cleanup() { kill "$server_pid" 2>/dev/null || true; }
+          trap cleanup EXIT
+          for _ in 1 2 3 4 5 6 7 8 9 10; do
+            if curl -fsS "http://127.0.0.1:4173/__health" >/dev/null; then
+              break
+            fi
+            sleep 1
+          done
+          node scripts/recovery/assert-preview-surface.js "http://127.0.0.1:4173"
+      - name: Probe Netlify deploy preview when it is already up
+        continue-on-error: true
+        run: |
+          set -euo pipefail
+          url="https://deploy-preview-${{ github.event.pull_request.number }}--cozy-licorice-e83928.netlify.app"
+          if curl -fsS --max-time 20 "$url" >/dev/null; then
+            node scripts/recovery/assert-preview-surface.js "$url"
+          else
+            echo "Netlify preview not ready yet: $url"
+            exit 0
+          fi
