@@ -44,15 +44,7 @@
     "yahoo.com"
   ];
   var BOOKING_ENGINE_HOST = "book.seascape-vacations.com";
-  var PROPERTY_SLUG_BY_LISTING_ID = {
-    "189511": "the-oasis",
-    "206016": "dockside-dreams",
-    "135880": "river-house",
-    "135881": "sarasota-luxe",
-    "487798": "bradenton-pool-home",
-    "589288": "blue-house",
-    "599394": "coastal-stay"
-  };
+  var PROPERTY_SLUG_BY_LISTING_ID = {"189511":"the-oasis","206016":"dockside-dreams","135880":"river-house","135881":"sarasota-luxe","487798":"bradenton-pool-home","589288":"blue-house","599394":"coastal-stay"};
   var BOOKING_ENGINE_HANDOFF_KEYS = [
     "utm_source",
     "utm_medium",
