@@ -106,8 +106,10 @@ for an impression number that is not coming or using an OTA host-message path.
 
 When this fires, the founder move is:
 
-- qualify one signal from a referral, owner form, invited public contact path,
-  permissioned networking connection, or direct inbound owner request
+- qualify signals from a referral, owner form, invited public contact path
+  (including referral partners), permissioned networking connection, direct
+  inbound owner request, or a public county property record for a postal
+  letter only
 - apply `docs/status/owner-direct-intake-policy.md` and return a founder
   decision card for the current review; do not persist named candidate,
   receipt, fit, or contact-channel state in this public repository
@@ -115,8 +117,9 @@ When this fires, the founder move is:
   drafts or follow-ups from the archived platform research
 - treat a qualification decision as intake only: it is not a lead, does not move an
   owner gate, and does not authorize a message
-- require Sawyer's separate approval before preparing any named, one-to-one
-  next step
+- require Sawyer's batch approval of one template and one recipient list
+  before any personalized draft or send (policy version 2, 2026-10-07); Sawyer
+  sends, agents never do
 - count only a real, unlabeled reply that meets the register Validation
   Standard as owner demand
 

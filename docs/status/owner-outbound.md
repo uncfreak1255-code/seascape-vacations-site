@@ -94,7 +94,8 @@ opportunities. A future qualification decision requires all of the following:
 - a clear reason the source permits business contact or follow-up
 - a factual property or operating fit signal
 - no scraped, guessed, purchased, or platform-derived private contact data
-- founder review before any individual outbound message is even drafted
+- Sawyer's batch approval of one template and one recipient list before any
+  personalized draft or send (policy version 2, 2026-10-07)
 
 The former ten-platform-row milestone is archived and does not clear the active
 owner-acquisition lane. This public repository must not store a named candidate
