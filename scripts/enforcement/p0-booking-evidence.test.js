@@ -144,6 +144,43 @@ function extractVisibleFaq(source) {
   }));
 }
 
+for (const guidePath of [
+  'src/guides/family-vacation-anna-maria-island.html',
+  '_site/guides/family-vacation-anna-maria-island/index.html'
+]) {
+  test(`family safety FAQ gives practical guidance without unsupported crime or safety claims: ${guidePath}`, () => {
+    const source = read(guidePath);
+    const visible = extractVisibleFaq(source);
+    const schema = extractFaqJsonLd(source);
+    const question = 'Is Anna Maria Island safe for families?';
+    const safety = visible.find((entry) => entry.question === question);
+    const schemaSafety = schema.find((entry) => entry.name === question);
+    assert.ok(safety, 'visible family safety FAQ is missing');
+    assert.ok(schemaSafety, 'family safety FAQPage entry is missing');
+    for (const answer of [safety.answer, schemaSafety.acceptedAnswer.text]) {
+      assert.doesNotMatch(answer, /\bcrime\b|\bsafest\b|\bsafer\b|\b(?:very|completely|perfectly|entirely|totally) safe\b|^Yes[.!]/i);
+      assert.match(answer, /Manatee Public Beach/);
+      assert.match(answer, /Coquina Beach/);
+      assert.match(answer, /lifeguard on duty/);
+      assert.match(answer, /posted warnings/);
+      assert.match(answer, /current water conditions/);
+      assert.match(answer, /supervise children closely/);
+      assert.match(answer, /Conditions can change/);
+    }
+  });
+
+  test(`family guide keeps every visible FAQ identical to FAQPage: ${guidePath}`, () => {
+    const source = read(guidePath);
+    const visible = extractVisibleFaq(source);
+    const schema = extractFaqJsonLd(source).map((entry) => ({
+      question: visibleText(entry.name),
+      answer: visibleText(entry.acceptedAnswer.text)
+    }));
+    assert.equal(visible.length, 3, 'retain all three visible family FAQs');
+    assert.deepEqual(schema, visible);
+  });
+}
+
 test('flights guide keeps distinct numbered tips and question-specific FAQs after savings removal', () => {
   const source = read('src/guides/flights-to-anna-maria-island/index.html');
   const leftoverBoilerplate = source.match(quoteBoilerplate) || [];
