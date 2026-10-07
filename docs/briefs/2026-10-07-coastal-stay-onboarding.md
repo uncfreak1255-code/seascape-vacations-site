@@ -74,3 +74,5 @@ Property truth regeneration/check; full release suite; route/JSON-LD/AI/discover
 - src/guides/flights-to-anna-maria-island/index.html: /properties/, /guides/srq-airport-to-anna-maria-island/
 - src/guides/bradenton-vs-sarasota-restaurants/index.html: /properties/, /guides/bradenton-vs-sarasota/
 - src/properties/coastal-stay/index.njk: /properties/
+
+- src/guides/dolphins-manatees-bradenton.html: /properties/, /guides/fishing-guide-anna-maria-sarasota/
