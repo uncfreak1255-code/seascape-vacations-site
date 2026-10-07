@@ -253,10 +253,17 @@ async function enrichMissingAvailability(properties) {
 async function loadFromCache() {
   const store = getStore(STORE_NAME);
   const cached = await store.get(CACHE_KEY, { type: "json" });
-  if (!cached || !Array.isArray(cached.properties)) {
-    return null;
-  }
-  return normalizeProperties(cached.properties);
+  return normalizeCompleteCachedProperties(cached);
+}
+
+function normalizeCompleteCachedProperties(cached) {
+  if (!cached || !Array.isArray(cached.properties)) return null;
+  const properties = normalizeProperties(cached.properties);
+  const approved = loadFallback();
+  // A pre-onboarding cache must never hide a newly approved home.
+  if (!approved.every(home => properties.some(property =>
+    property.slug === home.slug && property.id === home.id))) return null;
+  return properties;
 }
 
 function loadFallback() {
@@ -422,3 +429,5 @@ module.exports.normalizeAvailabilitySummary = normalizeAvailabilitySummary;
 module.exports.enrichMissingAvailability = enrichMissingAvailability;
 module.exports.loadSafePropertyProjection = loadSafePropertyProjection;
 module.exports.mergeSafePropertyProjection = mergeSafePropertyProjection;
+
+module.exports.normalizeCompleteCachedProperties = normalizeCompleteCachedProperties;

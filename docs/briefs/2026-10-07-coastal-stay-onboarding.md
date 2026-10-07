@@ -76,3 +76,7 @@ Property truth regeneration/check; full release suite; route/JSON-LD/AI/discover
 - src/properties/coastal-stay/index.njk: /properties/
 
 - src/guides/dolphins-manatees-bradenton.html: /properties/, /guides/fishing-guide-anna-maria-sarasota/
+
+## Availability loader ownership
+
+The Site's optional `SEASCAPE_SAFE_PROPERTY_PROJECTION_PATH` is unset in the inspected local session and absent from the canonical Site `.env`. No configured writer was found in tracked Ops source. This is an optional external projection contract, not proof of an installed Ops exporter. Existing fallback hydration belongs to Site `scripts/cache/booking-engine-calendar.js`, which reads the public Hostaway booking calendar. A legacy Netlify Blob cache must include every current curated exact identity (including599394) before wholesale use; old partial caches are ignored. Calendar read failures retain unknown availability and booking-page handoff. No cache, exporter or live configuration was written by this task.

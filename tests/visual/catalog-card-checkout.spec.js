@@ -220,7 +220,7 @@ test('a failed dates check keeps every card on its listing page in a new tab', a
   await visit(page, dates + '&guests=6', route => route.abort());
   await expect(count(page)).toContainText('Availability could not be checked.');
   const cards = await links(cardButtons(page));
-  expect(cards).toHaveLength(6);
+  expect(cards).toHaveLength(7);
   for (const link of cards) {
     const url = new URL(link.href);
     expect(url.origin + url.pathname, link.href).toBe('https://book.seascape-vacations.com/listings/' + listingIds[link.slug]);

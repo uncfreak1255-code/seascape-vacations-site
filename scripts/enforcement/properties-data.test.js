@@ -333,3 +333,33 @@ test("Coastal Stay keeps final identity, ten guests and provider conflicts outsi
   assert.doesNotMatch(JSON.stringify(home.guestFacts), /\$40|\b85\b|\bcrib\b|highchair|infants do not count/i);
   assert.ok(!home.amenities.includes("fire-pit"));
 });
+
+test("legacy cache requires every curated exact identity after onboarding", () => {
+  assert.equal(propertiesData.normalizeCompleteCachedProperties({ properties: fallbackProperties }).length, 7);
+  assert.equal(propertiesData.normalizeCompleteCachedProperties({ properties: fallbackProperties.filter(p => p.slug !== "coastal-stay") }), null);
+  const wrongIdentity = fallbackProperties.map(p => p.slug === "coastal-stay" ? { ...p, id: "589288" } : p);
+  assert.equal(propertiesData.normalizeCompleteCachedProperties({ properties: wrongIdentity }), null);
+});
+
+test("unreadable public calendar leaves Coastal Stay availability unknown", async t => {
+  const https = require("node:https");
+  const { EventEmitter } = require("node:events");
+  t.mock.method(https, "request", () => {
+    const request = new EventEmitter();
+    request.end = () => queueMicrotask(() => request.emit("error", new Error("calendar unavailable")));
+    return request;
+  });
+  const previous = [process.env.GITHUB_ACTIONS, process.env.SEASCAPE_DISABLE_PUBLIC_AVAILABILITY];
+  delete process.env.GITHUB_ACTIONS;
+  delete process.env.SEASCAPE_DISABLE_PUBLIC_AVAILABILITY;
+  try {
+    const home = propertiesData.normalizeProperties(fallbackProperties).find(p => p.slug === "coastal-stay");
+    const [result] = await propertiesData.enrichMissingAvailability([home]);
+    assert.equal(result.availability, null);
+    assert.equal(result.id, "599394");
+  } finally {
+    ["GITHUB_ACTIONS", "SEASCAPE_DISABLE_PUBLIC_AVAILABILITY"].forEach((key, i) => {
+      if (previous[i] === undefined) delete process.env[key]; else process.env[key] = previous[i];
+    });
+  }
+});
