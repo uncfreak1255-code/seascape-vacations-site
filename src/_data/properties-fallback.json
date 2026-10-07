@@ -1061,5 +1061,174 @@
       "https://bookingenginecdn.hostaway.com/listing/51916-589288-zIBY4ELttmZ4ciL009KOgznW28RaIbeHU31X1qd4nLU-6aa091619f81a?width=800&quality=80&format=webp&v=2",
       "https://bookingenginecdn.hostaway.com/listing/51916-589288-PgbmAvT-I--9ALgKED8o77aNoIsuL9aBpV7NU8nEmaHA-6aa0916bdb82d?width=800&quality=80&format=webp&v=2"
     ]
+  },
+  {
+    "id": "599394",
+    "name": "Pickleball, Pool, Spa, Hoops & Mini Golf",
+    "internalName": "Coastal Stay",
+    "slug": "coastal-stay",
+    "city": "Bradenton",
+    "destination": "bradenton",
+    "bedrooms": 3,
+    "bathrooms": 2,
+    "guests": 10,
+    "rating": 0,
+    "price": 0,
+    "image": "https://seascape-vacations.com/images/homes/coastal-stay/01.webp",
+    "latitude": 27.4887612,
+    "longitude": -82.6364131,
+    "amenities": [
+      "pool",
+      "hot-tub",
+      "game-room",
+      "outdoor-grill",
+      "pickleball-court",
+      "putting-green"
+    ],
+    "highlights": [
+      "Private Pool, Hot Tub & Pickleball",
+      "Basketball Hoop & Putting Green"
+    ],
+    "description": "Three-bedroom Bradenton home with a private pool, hot tub, pickleball court, basketball hoop, putting green and air-conditioned game room.",
+    "specs": "3 BR · 2 BA · Sleeps 10",
+    "marketing_amenities": [
+      "private-heated-pool",
+      "hot-tub-spa",
+      "game-room",
+      "outdoor-living",
+      "grill",
+      "fenced-yard",
+      "smart-tv",
+      "pickleball-court",
+      "putting-green"
+    ],
+    "photography": {
+      "verifiedAt": "2026-10-07",
+      "photos": [
+        {
+          "src": "/images/homes/coastal-stay/01.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-599394-ouidB5EiUPL4fN05W0qrkAr4uB8d7v1dA1whIyADXlQ-6ac662fb7cf8e",
+          "alt": "Coastal Stay — Aerial view of the pool, pickleball court and putting green",
+          "width": 1400,
+          "height": 787
+        },
+        {
+          "src": "/images/homes/coastal-stay/03.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-599394-LuspkL347x73oOYGQC1ds4TC8vpiX31Cg1HXo3Zl6yw-6ac662ffa5736",
+          "alt": "Coastal Stay — Hot tub beside the outdoor dining patio",
+          "width": 1400,
+          "height": 933
+        },
+        {
+          "src": "/images/homes/coastal-stay/04.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-599394-3kll6uEP--eiWAOI8MtFWeLH3hnhCBBM6qghcA5B5M2g-6ac66301c5947",
+          "alt": "Coastal Stay — Private pickleball court",
+          "width": 1400,
+          "height": 933
+        },
+        {
+          "src": "/images/homes/coastal-stay/05.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-599394-VSJk59zxWV--8K-CHMY0hYAHaqHHEFhbniMMg0pqQ1jk-6ac66303ba5a3",
+          "alt": "Coastal Stay — Putting green beside the basketball hoop",
+          "width": 1400,
+          "height": 933
+        },
+        {
+          "src": "/images/homes/coastal-stay/06.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-599394-Vg2Io-ClOkihffIbMBD6Vfdv-ju1fyMrxOLPeDbzCyQ-6ac66305c2760",
+          "alt": "Coastal Stay — Private pool at twilight",
+          "width": 1400,
+          "height": 933
+        },
+        {
+          "src": "/images/homes/coastal-stay/08.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-599394-8a052FjNe62bUUgXV-Rb7PRzd70s-ReNgf9Xez2Y9c4-6ac6630d921ae",
+          "alt": "Coastal Stay — Air-conditioned game room with pool table",
+          "width": 1400,
+          "height": 933
+        },
+        {
+          "src": "/images/homes/coastal-stay/15.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-599394-UgMLsreojiZhf4OcAKFd5zWM77RZTvTypW7jgpMWbkg-6ac6633d7334b",
+          "alt": "Coastal Stay — Primary bedroom with king bed",
+          "width": 1400,
+          "height": 933
+        },
+        {
+          "src": "/images/homes/coastal-stay/19.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-599394-meb6XHvAr6HRGCqagAs--c5tFj--hzGp6wRWvbk43BfBc-6ac6635828332",
+          "alt": "Coastal Stay — Bedroom 2 with queen bed",
+          "width": 1400,
+          "height": 933
+        },
+        {
+          "src": "/images/homes/coastal-stay/22.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-599394-8upBeCyVlAQpJU3ZGUEksLDy3r80qJgPv7Ly3SO1wUM-6ac663629fce2",
+          "alt": "Coastal Stay — Bedroom 3 with twin bunks",
+          "width": 1400,
+          "height": 933
+        },
+        {
+          "src": "/images/homes/coastal-stay/24.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-599394-2x2p6evLPlhQfg9lggGnN1kPSHIWIgevEfqX1PP3aWA-6ac66369e486f",
+          "alt": "Coastal Stay — Living room",
+          "width": 1400,
+          "height": 933
+        },
+        {
+          "src": "/images/homes/coastal-stay/25.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-599394-uaYJ2wekcULOUDA4D57er218ssD0dLktZO4nUQyeYBI-6ac6636e38af9",
+          "alt": "Coastal Stay — Dining room",
+          "width": 1400,
+          "height": 933
+        },
+        {
+          "src": "/images/homes/coastal-stay/27.webp",
+          "sourceUrl": "https://bookingenginecdn.hostaway.com/listing/51916-599394-RMDTFk71XrMhgPLpBYP9d0XWoKeR0cllsdJt0TNF0bU-6ac66375d9844",
+          "alt": "Coastal Stay — Kitchen",
+          "width": 1400,
+          "height": 933
+        }
+      ]
+    },
+    "guestFacts": {
+      "tagline": "Pool days, pickleball and a putting green in your own backyard.",
+      "summary": "Three bedrooms and two bathrooms for up to ten guests in Bradenton. Spend the day by the private pool, play pickleball or practice your putting, then settle into the hot tub or air-conditioned game room.",
+      "sleeping": [
+        "Bedroom 1: one king bed",
+        "Bedroom 2: one queen bed",
+        "Bedroom 3: two twin-over-twin bunk beds and one twin trundle"
+      ],
+      "pets": {
+        "status": "no",
+        "text": "Pets are not permitted at this home."
+      },
+      "considerations": [
+        "Maximum ten guests. The game-room couch does not increase the guest limit.",
+        "Driveway parking only. No street or lawn parking.",
+        "Quiet hours are 10 pm to 8 am. No parties or smoking.",
+        "Checkout is at 10 am; late checkout is not available.",
+        "No fire-pit amenity."
+      ],
+      "fitNote": "Private pool, hot tub and backyard games. Three bedrooms; five twin beds share the bunk room.",
+      "checkIn": "4–6 pm",
+      "checkOut": "10 am",
+      "sourceUrl": "https://book.seascape-vacations.com/listings/599394",
+      "verifiedAt": "2026-10-07",
+      "capacityVerifiedAt": "2026-10-07",
+      "poolHeat": "Pool heating is optional. Confirm the fee when booking; the water temperature depends on the weather.",
+      "reviews": [],
+      "finalReferenceUrl": "https://www.airbnb.com/rooms/1790003469785984034"
+    },
+    "schemaImages": [
+      "https://bookingenginecdn.hostaway.com/listing/51916-599394-ouidB5EiUPL4fN05W0qrkAr4uB8d7v1dA1whIyADXlQ-6ac662fb7cf8e?width=800&quality=80&format=webp&v=2",
+      "https://bookingenginecdn.hostaway.com/listing/51916-599394-LuspkL347x73oOYGQC1ds4TC8vpiX31Cg1HXo3Zl6yw-6ac662ffa5736?width=800&quality=80&format=webp&v=2",
+      "https://bookingenginecdn.hostaway.com/listing/51916-599394-3kll6uEP--eiWAOI8MtFWeLH3hnhCBBM6qghcA5B5M2g-6ac66301c5947?width=800&quality=80&format=webp&v=2",
+      "https://bookingenginecdn.hostaway.com/listing/51916-599394-VSJk59zxWV--8K-CHMY0hYAHaqHHEFhbniMMg0pqQ1jk-6ac66303ba5a3?width=800&quality=80&format=webp&v=2",
+      "https://bookingenginecdn.hostaway.com/listing/51916-599394-Vg2Io-ClOkihffIbMBD6Vfdv-ju1fyMrxOLPeDbzCyQ-6ac66305c2760?width=800&quality=80&format=webp&v=2",
+      "https://bookingenginecdn.hostaway.com/listing/51916-599394-8a052FjNe62bUUgXV-Rb7PRzd70s-ReNgf9Xez2Y9c4-6ac6630d921ae?width=800&quality=80&format=webp&v=2",
+      "https://bookingenginecdn.hostaway.com/listing/51916-599394-UgMLsreojiZhf4OcAKFd5zWM77RZTvTypW7jgpMWbkg-6ac6633d7334b?width=800&quality=80&format=webp&v=2",
+      "https://bookingenginecdn.hostaway.com/listing/51916-599394-meb6XHvAr6HRGCqagAs--c5tFj--hzGp6wRWvbk43BfBc-6ac6635828332?width=800&quality=80&format=webp&v=2"
+    ]
   }
 ]

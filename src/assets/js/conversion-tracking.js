@@ -50,7 +50,8 @@
     "135880": "river-house",
     "135881": "sarasota-luxe",
     "487798": "bradenton-pool-home",
-    "589288": "blue-house"
+    "589288": "blue-house",
+    "599394": "coastal-stay"
   };
   var BOOKING_ENGINE_HANDOFF_KEYS = [
     "utm_source",

@@ -21,7 +21,8 @@ const LISTING_ID_BY_SLUG = {
   "sarasota-luxe": "135881",
   "river-house": "135880",
   "bradenton-pool-home": "487798",
-  "blue-house": "589288"
+  "blue-house": "589288",
+  "coastal-stay": "599394"
 };
 const STATIC_PROPERTY_SCHEMA_FACTS_BY_SLUG = {
   "dockside-dreams": {

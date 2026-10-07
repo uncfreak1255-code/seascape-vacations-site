@@ -97,6 +97,7 @@ test("fallback property seed includes all curated homes shown in the collection"
   assert.deepEqual(slugs, [
     "blue-house",
     "bradenton-pool-home",
+    "coastal-stay",
     "dockside-dreams",
     "river-house",
     "sarasota-luxe",
@@ -279,7 +280,7 @@ test("safe property projection overlays public availability without replacing cu
   const properties = propertiesData.loadSafePropertyProjection(projectionPath);
   const dockside = properties.find((property) => property.slug === "dockside-dreams");
 
-  assert.equal(properties.length, 6);
+  assert.equal(properties.length, 7);
   assert.equal(dockside.name, "Dockside Dreams");
   assert.equal(dockside.id, "206016");
   assert.equal(dockside.availability.source, "seascape-ops");
@@ -295,14 +296,15 @@ test("visual test mode keeps fixture availability live for deterministic snapsho
     const properties = await propertiesData();
     const availabilityLabels = properties.map((property) => property.availability?.nextAvailable?.label ?? null);
 
-    assert.equal(properties.length, 6);
+    assert.equal(properties.length, 7);
     assert.deepEqual(availabilityLabels, [
       "Jun 08 - Jun 10",
       "May 18 - May 20",
       "May 30 - Jun 06",
       "Aug 21 - Aug 23",
       "May 18 - May 19",
-      "Sep 18 - Sep 21"
+      "Sep 18 - Sep 21",
+      null
     ]);
     assert.equal(properties[0].availability.syncedAt, "2026-05-17T15:39:21.311Z");
   } finally {
@@ -312,4 +314,22 @@ test("visual test mode keeps fixture availability live for deterministic snapsho
       process.env.SEASCAPE_VISUAL_TEST = previousVisualTestValue;
     }
   }
+});
+
+test("Coastal Stay keeps final identity, ten guests and provider conflicts outside advertised facts", () => {
+  const home = propertiesData.normalizeProperties(fallbackProperties).find(p => p.slug === "coastal-stay");
+  assert.ok(home);
+  assert.equal(home.id, "599394");
+  assert.equal(home.name, "Pickleball, Pool, Spa, Hoops & Mini Golf");
+  assert.equal(home.guests, 10);
+  assert.equal(home.bedrooms, 3);
+  assert.equal(home.bathrooms, 2);
+  assert.equal(home.bookingUrl, "https://book.seascape-vacations.com/listings/599394");
+  assert.equal(home.guestFacts.sleeping.length, 3);
+  assert.match(home.guestFacts.sleeping[2], /twin-over-twin.*trundle/);
+  assert.equal(home.guestFacts.finalReferenceUrl, "https://www.airbnb.com/rooms/1790003469785984034");
+  assert.equal(home.photography.photos.length, 12);
+  assert.ok(home.photography.photos.every(p => p.sourceUrl.includes("51916-599394-")));
+  assert.doesNotMatch(JSON.stringify(home.guestFacts), /\$40|\b85\b|\bcrib\b|highchair|infants do not count/i);
+  assert.ok(!home.amenities.includes("fire-pit"));
 });

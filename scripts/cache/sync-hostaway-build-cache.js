@@ -7,7 +7,8 @@ const REQUIRED_PROPERTY_SLUGS = [
   "sarasota-luxe",
   "river-house",
   "bradenton-pool-home",
-  "blue-house"
+  "blue-house",
+  "coastal-stay"
 ];
 
 function safePropertyProjectionPath(env = process.env) {
