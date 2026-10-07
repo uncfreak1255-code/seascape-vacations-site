@@ -258,3 +258,17 @@ test('deployment smoke rejects withdrawn counts without matching the Seascape ph
     assert.throws(() => validateTargetResponse(target, { statusCode: 200, body: body + `<p>${count} reservations</p>` }), /withdrawn reservation counts/);
   }
 });
+
+test('family stay page safety FAQ gives practical guidance without unsupported crime or safety claims', () => {
+  const stayPath = '_site/stays/family-vacation-rentals-anna-maria-island/index.html';
+  const source = read(stayPath);
+  assert.doesNotMatch(source, /safest vacation destinations|low crime|explore the island safely/i);
+  const question = 'Is Anna Maria Island safe for families?';
+  const schema = extractFaqJsonLd(source).find((entry) => entry.name === question);
+  assert.ok(schema, 'family stay page safety FAQPage entry is missing');
+  for (const answer of [schema.acceptedAnswer.text, visibleText(source.match(/Is Anna Maria Island safe for families\?[\s\S]*?<\/(?:p|div)>/)[0])]) {
+    assert.match(answer, /lifeguard on duty/);
+    assert.match(answer, /posted warnings/);
+    assert.match(answer, /supervise children closely/);
+  }
+});
