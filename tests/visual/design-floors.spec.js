@@ -22,7 +22,7 @@ const { gotoMarketingRoute, registerStableNetwork } = require("./test-helpers");
  * routes move between the states.
  */
 
-const SCENES = ["the-oasis", "dockside-dreams", "sarasota-luxe", "river-house", "bradenton-pool-home", "blue-house"];
+const SCENES = ["the-oasis", "dockside-dreams", "sarasota-luxe", "river-house", "bradenton-pool-home", "blue-house", "coastal-stay"];
 // Guides restyled with the planning-guide frame. Kept local (not in routes.js)
 // so the floors cover them without adding visual/axe snapshot routes.
 const planningGuideRoutes = [

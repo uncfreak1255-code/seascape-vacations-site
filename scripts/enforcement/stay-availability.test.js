@@ -86,7 +86,8 @@ test("availability endpoint reports only the homes open for the requested stay",
     "sarasota-luxe": stay("2026-09-26", 2, { minimumStay: 7 }),
     "river-house": stay("2026-09-26", 2, { minimumStay: 2 }),
     "bradenton-pool-home": stay("2026-09-26", 2).map((entry) => ({ ...entry, isAvailable: 0, status: "reserved" })),
-    "blue-house": stay("2026-09-26", 2, { minimumStay: 4 })
+    "blue-house": stay("2026-09-26", 2, { minimumStay: 4 }),
+    "coastal-stay": stay("2026-09-26", 2).map(entry => ({ ...entry, isAvailable: 0, status: "reserved" }))
   };
 
   const response = await handleBookingAvailability(

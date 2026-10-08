@@ -316,9 +316,9 @@ function validateTargetResponse(target, response) {
 
   if (target.path === "/property-management/") {
     const hasOwnerOfferSurface =
-      response.body.includes("Six homes. One local team.")
+      response.body.includes("Seven homes. One local team.")
       && response.body.includes("What we do for your home")
-      && response.body.includes("Why a six-home operator")
+      && response.body.includes("Why a seven-home operator")
       && response.body.includes("The homes we manage")
       && response.body.includes("Request your 48-hour revenue review")
       && response.body.includes('name="submitter_authority" value="owner_or_authorized_representative" required')

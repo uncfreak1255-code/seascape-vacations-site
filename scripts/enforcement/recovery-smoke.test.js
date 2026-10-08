@@ -29,14 +29,14 @@ test("property-management smoke follows the current Waterline owner offer hub", 
 
   const currentOwnerHubBody = `
     <main>
-      <h1>Six homes. One local team. <em>Your call gets answered.</em></h1>
+      <h1>Seven homes. One local team. <em>Your call gets answered.</em></h1>
       <a href="#owner-cta">Request your 48-hour revenue review</a>
       <form name="owner-revenue-teardown" method="POST"></form>
       <input type="checkbox" name="submitter_authority" value="owner_or_authorized_representative" required>
       I confirm I am the property owner or an authorized representative for this property.
       Owner statement, optional
       <h2>What we do for your home</h2>
-      <h2>Why a six-home operator</h2>
+      <h2>Why a seven-home operator</h2>
       <h2>The homes we manage</h2>
       <a href="/property-management/vacation-rental-management-sarasota/">Sarasota</a>
     </main>
@@ -56,14 +56,14 @@ test("property-management smoke accepts the live minified single-quoted form nam
   const target = smoke.targets.find((entry) => entry.path === "/property-management/");
   const minifiedOwnerHubBody = `
     <main>
-      <h1>Six homes. One local team. <em>Your call gets answered.</em></h1>
+      <h1>Seven homes. One local team. <em>Your call gets answered.</em></h1>
       <a href="#owner-cta">Request your 48-hour revenue review</a>
       <form name='owner-revenue-teardown' method='POST'></form>
       <input type="checkbox" name="submitter_authority" value="owner_or_authorized_representative" required>
       I confirm I am the property owner or an authorized representative for this property.
       Owner statement, optional
       <h2>What we do for your home</h2>
-      <h2>Why a six-home operator</h2>
+      <h2>Why a seven-home operator</h2>
       <h2>The homes we manage</h2>
     </main>
   `;
@@ -87,10 +87,10 @@ test("property-management smoke fails when the owner form name is missing", () =
       location: null,
       body: `
         <main>
-          <h1>Six homes. One local team. <em>Your call gets answered.</em></h1>
+          <h1>Seven homes. One local team. <em>Your call gets answered.</em></h1>
           <a href="#owner-cta">Request your 48-hour revenue review</a>
           <h2>What we do for your home</h2>
-          <h2>Why a six-home operator</h2>
+          <h2>Why a seven-home operator</h2>
           <h2>The homes we manage</h2>
         </main>
       `

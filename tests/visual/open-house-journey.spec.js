@@ -159,11 +159,13 @@ test('without JavaScript the home form, interior photos, rules and matching book
 });
 
 test('the six email landing routes contain exactly one offer module',async({page})=>{
-  for(const route of ['/properties/',...properties.map(p=>'/properties/'+p.slug+'/')]) {
+  for(const route of ['/properties/',...properties.filter(p=>p.slug!=='coastal-stay').map(p=>'/properties/'+p.slug+'/')]) {
     await visit(page,route+'?promo=save50');
     await expect(page.locator('aside[data-save50-offer]')).toHaveCount(1);
     await expect(page.locator('aside[data-save50-offer]')).toBeVisible();
   }
+  await visit(page,'/properties/coastal-stay/?promo=save50');
+  await expect(page.locator('aside[data-save50-offer]')).toHaveCount(0);
 });
 
 

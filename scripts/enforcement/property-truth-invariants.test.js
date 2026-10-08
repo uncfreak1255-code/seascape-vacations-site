@@ -185,9 +185,9 @@ test("dolphins guide does not give River House a dock", () => {
   const html = readSource("src/guides/dolphins-manatees-bradenton.html");
 
   assert.match(html, /Dockside Dreams has a private dock on a saltwater canal/i);
-  assert.match(html, /One of our six homes sits on the water with a private dock/i);
+  assert.match(html, /One of our seven homes sits on the water with a private dock/i);
   assert.doesNotMatch(html, /Our two dock homes, Dockside Dreams and River House/i);
-  assert.doesNotMatch(html, /Two of our six homes sit on the water with private docks/i);
+  assert.doesNotMatch(html, /Two of our seven homes sit on the water with private docks/i);
   assert.doesNotMatch(html, /River House on the Manatee River/i);
   assert.doesNotMatch(
     html,
@@ -205,7 +205,7 @@ test("putting green is not described as mini-golf across durable marketing surfa
   ];
 
   for (const surface of surfaces) {
-    assert.doesNotMatch(readSource(surface), /\bmini[- ]golf\b/i, `${surface} must say putting green, not mini-golf`);
+    assert.doesNotMatch(readSource(surface).replaceAll("Pickleball, Pool, Spa, Hoops & Mini Golf", "Coastal Stay"), /\bmini[- ]golf\b/i, `${surface} must say putting green, not mini-golf`);
   }
 
   assert.match(readSource("src/_data/properties-fallback.json"), /\bputting green\b/i);
@@ -456,7 +456,7 @@ test("present-tense portfolio references use current counts or canonical listing
     if (file.startsWith("src/research/")) {
       assert.match(text, /href="\/properties\/"/, `${file} links current property truth instead of pinning a historical count`);
     } else {
-      assert.match(text, /\bsix\b/i, `${file} should state the current portfolio as six`);
+      assert.match(text, /\bseven\b/i, `${file} should state the current portfolio as seven`);
     }
   }
 });

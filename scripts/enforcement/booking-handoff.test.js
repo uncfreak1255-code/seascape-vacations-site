@@ -176,7 +176,7 @@ test("each gallery has only its own canonical local photos with valid dimensions
 test("property headings are semantic and stay pages explain fit in guest language", () => {
   for (const property of require("../../src/_data/properties-fallback.json")) {
     const html = fs.readFileSync(path.join(projectRoot, "_site/properties", property.slug, "index.html"), "utf8");
-    assert.ok(html.includes('<h1>'+property.name+'</h1>'));
+    assert.ok(html.includes('<h1>'+property.name.replaceAll('&','&amp;')+'</h1>'));
     assert.equal((html.match(/<h1[ >]/g)||[]).length,1);
   }
 

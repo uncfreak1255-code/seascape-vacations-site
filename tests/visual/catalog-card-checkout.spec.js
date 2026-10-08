@@ -1,11 +1,11 @@
 const { test, expect } = require('@playwright/test');
 const { registerStableNetwork } = require('./test-helpers');
 const dates = 'arrive=2026-11-07&depart=2026-11-14';
-const listingIds = { 'dockside-dreams': '206016', 'the-oasis': '189511', 'sarasota-luxe': '135881', 'river-house': '135880', 'bradenton-pool-home': '487798', 'blue-house': '589288' };
+const listingIds = { 'dockside-dreams': '206016', 'the-oasis': '189511', 'sarasota-luxe': '135881', 'river-house': '135880', 'bradenton-pool-home': '487798', 'blue-house': '589288', 'coastal-stay': '599394' };
 const open = ['dockside-dreams', 'sarasota-luxe', 'bradenton-pool-home'];
 const simulatedCheckout = { status: 200, contentType: 'text/html', body: '<h1>Simulated booking page navigation only</h1>' };
 
-// Three homes open, three booked, unless a test supplies its own answer.
+// Three homes open, four booked, unless a test supplies its own answer.
 const answer = route => route.fulfill({
   status: 200,
   contentType: 'application/json',
@@ -220,7 +220,7 @@ test('a failed dates check keeps every card on its listing page in a new tab', a
   await visit(page, dates + '&guests=6', route => route.abort());
   await expect(count(page)).toContainText('Availability could not be checked.');
   const cards = await links(cardButtons(page));
-  expect(cards).toHaveLength(6);
+  expect(cards).toHaveLength(7);
   for (const link of cards) {
     const url = new URL(link.href);
     expect(url.origin + url.pathname, link.href).toBe('https://book.seascape-vacations.com/listings/' + listingIds[link.slug]);

@@ -199,9 +199,9 @@ test("Netlify builds require rendered live availability cards", () => {
 
 test("rendered availability gate requires unique homes, canonical checkout links and honest price disclosures", () => {
   const card = (slug, id) => '<article class="catalog-card" data-property="' + slug + '" data-availability-mode="checkout"><a href="https://book.seascape-vacations.com/listings/' + id + '">Check dates</a><p>Full price, fees and cancellation terms on the booking page.</p></article>';
-  const html = '<div data-catalog-version="waterline-v3">' + card("dockside-dreams",206016) + card("the-oasis",189511) + card("sarasota-luxe",135881) + card("river-house",135880) + card("bradenton-pool-home",487798) + card("blue-house",589288) + '</div>';
+  const html = '<div data-catalog-version="waterline-v3">' + card("dockside-dreams",206016) + card("the-oasis",189511) + card("sarasota-luxe",135881) + card("river-house",135880) + card("bradenton-pool-home",487798) + card("blue-house",589288) + card("coastal-stay",599394) + '</div>';
   const report = validatePropertiesAvailabilityOutput(html);
-  assert.equal(report.checkoutCardCount, 6);
+  assert.equal(report.checkoutCardCount, 7);
   for (const broken of [
     html.replace("waterline-v3", "old"),
     html.replace("/listings/206016", "/listings/189511"),
@@ -296,14 +296,15 @@ test("safe property projection is validated as the build-time availability surfa
         { property_slug: "sarasota-luxe", listing_map_id: 135881, availability },
         { property_slug: "river-house", listing_map_id: 135880, availability },
         { property_slug: "bradenton-pool-home", listing_map_id: 487798, availability },
-        { property_slug: "blue-house", listing_map_id: 589288, availability }
+        { property_slug: "blue-house", listing_map_id: 589288, availability },
+        { property_slug: "coastal-stay", listing_map_id: 599394, availability }
       ]
     })
   );
 
   assert.deepEqual(
     validateSafePropertyProjection(projectionPath),
-    { checked: 6 }
+    { checked: 7 }
   );
 });
 
