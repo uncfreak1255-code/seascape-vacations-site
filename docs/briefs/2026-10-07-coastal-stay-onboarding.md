@@ -9,13 +9,13 @@
 - proof source: Sawyer final-reference direction October 7; exact Airbnb 1790003469785984034 and Hostaway 599394 public listing readbacks October 7. Hub PR807 retains dated documentary history; this source reflects the final listing.
 - required internal links: /properties/, /properties/coastal-stay/
 - CTA target: https://book.seascape-vacations.com/listings/599394
-- anti-claims: No fire pit, waterfront, dock, extra infant-capacity exception, sofa-bed exception, crib/highchair promise, pool-heat price/duration/temperature guarantee, supplied propane refills, equipment safety guarantee or private owner details.
+- anti-claims: No fire pit (October 8: the visible "No fire-pit amenity." line was removed from the property page; the anti-claim still forbids claiming one), waterfront, dock, extra infant-capacity exception, sofa-bed exception, crib/highchair promise, pool-heat price/duration/temperature guarantee, supplied propane refills, equipment safety guarantee or private owner details.
 
 ## Approved facts and source boundaries
 
 Exact title: Pickleball, Pool, Spa, Hoops & Mini Golf. Coastal Stay identity; three bedrooms, seven beds, two bathrooms, ten guests. King, Queen, two twin-over-twin bunks plus twin trundle. Verified public coordinates 27.4887612, -82.6364131. Private pool, hot tub, pickleball, basketball hoop, putting green and air-conditioned game room. Public photos bind exact Hostaway599394; retain source URLs and optimize local variants. No invented ratings, rates or reviews.
 
-Both channels show 4–6 pm check-in and 10 am checkout, no late checkout, quiet hours 10 pm–8 am, driveway parking, no parties, no smoking and no ordinary pets. Pet wording does not define legal assistance-animal eligibility. Pool heat fee must be confirmed at booking because day/night charging wording differs. Child/infant numerical exceptions and equipment promises remain excluded.
+Both channels show a 4 pm check-in start (Airbnb showed a 4–6 pm window on October 7 and a 4–8 pm window on October 8; the booking page shows only the 4 pm start, so the Site states the start only) and 10 am checkout, no late checkout, quiet hours 10 pm–8 am, driveway parking, no parties, no smoking and no ordinary pets. Pet wording does not define legal assistance-animal eligibility. Pool heat fee must be confirmed at booking because day/night charging wording differs. Child/infant numerical exceptions and equipment promises remain excluded.
 
 Availability must remain unknown when no current safe projection or verified booking-calendar result exists. A source branch is not installed/live. The existing provider booking page owns quote/checkout terms.
 
