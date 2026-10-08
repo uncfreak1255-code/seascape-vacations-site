@@ -43,6 +43,8 @@ Property truth regeneration/check; full release suite; route/JSON-LD/AI/discover
 - src/properties/coastal-stay/index.njk and src/_data/properties.js (follow-up, October 8, from the Codex review of the onboarding PR): the Coastal Stay page mounts the same SAVE50 campaign reminder as the other six property pages, so a campaign visitor who picks this home from /properties/ keeps the offer through to checkout; structured data for the home carries its postal code, 34209.
 - scripts/recovery/assert-live-smoke.js (follow-up): the catalog detail-link label for /properties/coastal-stay/ reads "View Coastal Stay details".
 
+- src/property-management/index.njk, the dolphins, restaurants and flights guides, eleventy.config.js (`numberWord` filter), scripts/recovery/assert-live-smoke.js and scripts/enforcement/{home-count-derived,property-truth-invariants}.test.js (count follow-up): the owner page renders the home count from the catalog list and the guides drop the number, so the next home needs no copy edits. The meta description and schema description no longer state a count.
+
 - offer claim: seascape-hub/context/owner-offer.md existing owner-service offer retained; this change corrects inventory count only and introduces no offer.
 
 ## Gate 0 source onboarding search receipt

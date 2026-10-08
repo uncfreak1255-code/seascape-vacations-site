@@ -106,7 +106,7 @@ test("owner landing page keeps the owner revenue review close to the sales argum
 
   assert.notEqual(reviewIndex, -1, "owner hub needs the revenue review anchor");
   // The offer (seascape-hub/context/owner-offer.md) leads; fee vocabulary lives on the fee guide.
-  assert.equal(ownerLanding.includes("Seven homes. One local team."), true);
+  assert.match(ownerLanding, /\{\{ homeCountWord \| capitalize \}\} homes\. One local team\./);
   assert.equal(
     ownerLanding.includes("We list, price, host and clean each one, pay you monthly, and tell you what your home earned and what needs attention before you have to ask."),
     true
