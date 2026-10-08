@@ -128,7 +128,7 @@
 .g-postcard h3{font-size:22px}
 .g-postcard>p{font-size:12px}
 .g-home-trip{grid-template-columns:190px 1fr}
-.g-postcards{padding-inline:12px;gap:10px}}
+.g-postcards{padding-inline:24px;gap:10px}}
 @media(max-width:700px){.g-arrival{height:580px}
 .g-arrival-copy{top:100px;left:24px;right:24px}
 .g-arrival-copy .g-label{font-size:12px;letter-spacing:.075em;margin-bottom:18px;max-width:290px}
