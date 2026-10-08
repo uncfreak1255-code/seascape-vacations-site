@@ -54,6 +54,11 @@ const STATIC_PROPERTY_SCHEMA_FACTS_BY_SLUG = {
     latitude: 27.50860514,
     longitude: -82.63215404,
     postalCode: "34209"
+  },
+  "coastal-stay": {
+    latitude: 27.4887612,
+    longitude: -82.6364131,
+    postalCode: "34209"
   }
 };
 
