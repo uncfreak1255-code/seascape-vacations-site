@@ -5,8 +5,9 @@ description: Use when qualifying a Seascape owner opportunity from a permissione
 
 # Owner-Direct Permissioned Intake
 
-This skill never sends or creates outreach drafts. Qualify an owner opportunity
-before any separate outreach decision.
+This skill never sends. Qualify an owner opportunity, and prepare a template
+and recipient list for Sawyer's batch approval. Drafts exist only inside an
+approved batch (policy version 2, 2026-10-07).
 
 ## Authority
 
@@ -23,15 +24,17 @@ before any separate outreach decision.
 2. An owner-direct, reopenable source receipt.
 3. A clear invitation or permission to make relevant business contact.
 4. A factual property or operating fit signal.
-5. A named contact channel supplied or invited by the source.
+5. A contact channel that the policy allows for that source type. A public
+   county property record allows a postal letter to the owner mailing address
+   only.
 6. No scraped, guessed, purchased, or platform-derived private contact data.
 
 Do not treat a listing host label as verified ownership or permission.
 
 Read `docs/status/owner-direct-intake-policy.md` and verify the required evidence
-is reopenable before returning `qualify`, `hold`, or `refuse`. Qualification is
-the completion condition. A later named one-to-one message requires Sawyer's
-separate authorization and remains manual, outside this skill.
+is reopenable before returning `qualify`, `hold`, or `refuse`. Qualified
+records go into a recipient list. Sawyer approves one template and one list per
+batch; that approval covers each message in the batch. Sawyer sends.
 
 ## Output
 
@@ -42,15 +45,17 @@ Return for the current founder review only:
 - source type and reopenable receipt
 - exact permission basis
 - factual fit signal
-- source-supplied contact channel
+- allowed contact channel
 - `qualify`, `hold`, or `refuse` decision
 - any missing evidence
 
-Do not return copy-paste outreach text.
+Before batch approval, return a template draft only, with no recipient details
+in it. After batch approval, personalized drafts may go into Sawyer's own
+business mailbox or the approved private owner system.
 
-If durable tracking is requested, stop unless Sawyer has named an approved
-private owner system with access and retention rules. Contact details never
-belong in Git.
+Durable records go only into the approved private owner system (business
+Google Drive "Owner Intelligence" folder and tracker Sheet). Contact details
+never belong in Git.
 
 ## Stop Conditions
 
@@ -59,7 +64,8 @@ Stop and refuse instead of adding a row when:
 - the only path is Airbnb, Vrbo, Booking.com, or another OTA host-message
   surface
 - the candidate came from a property listing, directory, property record, or
-  social profile without an invitation to contact
+  social profile without an invitation to contact, and the planned channel is
+  not a postal letter to the owner mailing address on a public property record
 - contact data is private, guessed, scraped, purchased, enriched, or not
   reopenable
 - the person is a generic property-management target rather than an owner or
@@ -67,16 +73,20 @@ Stop and refuse instead of adding a row when:
 - no explicit contact permission or invitation exists
 - the user asks to persist named candidate or contact evidence in this public
   repository
-- the user asks the agent to send, schedule, automate, or create a mailbox
-  draft
+- the user asks the agent to send, schedule, or automate a message, or to
+  create a mailbox draft outside an approved batch
 - the user asks the agent to count a touch, draft, delivery, or test as demand
 
 ## Rules
 
 - Never send outreach.
 - Never schedule or automate sends or follow-ups.
-- Never create a mailbox draft or prospect-facing outreach draft.
-- Never harvest, enrich, or export contact data.
+- Never create a mailbox draft or personalized outreach draft outside a batch
+  that Sawyer approved.
+- Never harvest, enrich, or export contact data. Never build an email, phone,
+  or text contact from a property record.
+- Never name software or vendors, or make revenue, occupancy, savings,
+  review-count, fixed-fee, or guarantee claims in owner-facing text.
 - Never persist a named candidate, permission receipt, fit note, or contact
   channel in this public repository.
 - Never create a Hub demand-register row from qualification alone.
