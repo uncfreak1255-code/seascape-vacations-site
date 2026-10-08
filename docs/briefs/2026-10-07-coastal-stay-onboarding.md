@@ -42,6 +42,8 @@ Property truth regeneration/check; full release suite; route/JSON-LD/AI/discover
 - src/_data/properties-fallback.json, src/_data/properties.js, src/index.njk and src/properties/index.njk (follow-up, Sawyer approved October 7): the homepage postcard, the homepage scene caption and "Preview our homes" picker, and the /properties/ catalog card, compare table and their link labels show the home as "Coastal Stay". The exact public title stays on the property page, in structured data and in every other mention. Reason: the exact title runs to four lines on the card and makes it taller than every other home.
 - scripts/recovery/assert-live-smoke.js (follow-up): the catalog detail-link label for /properties/coastal-stay/ reads "View Coastal Stay details".
 
+- src/property-management/index.njk, the dolphins, restaurants and flights guides, eleventy.config.js (`numberWord` filter), scripts/recovery/assert-live-smoke.js and scripts/enforcement/{home-count-derived,property-truth-invariants}.test.js (count follow-up): the owner page renders the home count from the catalog list and the guides drop the number, so the next home needs no copy edits. The meta description and schema description no longer state a count.
+
 - offer claim: seascape-hub/context/owner-offer.md existing owner-service offer retained; this change corrects inventory count only and introduces no offer.
 
 ## Gate 0 source onboarding search receipt
