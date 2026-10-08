@@ -39,6 +39,8 @@ Property truth regeneration/check; full release suite; route/JSON-LD/AI/discover
 - src/_data/seoPages.json pool-and-hot-tub page (follow-up): the "five homes with a hot tub" count becomes six because Coastal Stay has a hot tub; the newest home is named with its exact public title, and its pool-heat fee is stated as confirm-at-booking, never a price.
 - src/css/arrival.css (follow-up): the homepage postcard fan gains a seventh tilt step and a neutral default for any later card, so a new home never renders with an undefined transform.
 - scripts/recovery/assert-live-smoke.js (follow-up): the live catalog smoke now requires the /properties/coastal-stay/ link.
+- src/_data/properties-fallback.json, src/_data/properties.js, src/index.njk and src/properties/index.njk (follow-up, Sawyer approved October 7): the homepage postcard, the homepage scene caption and "Preview our homes" picker, and the /properties/ catalog card, compare table and their link labels show the home as "Coastal Stay". The exact public title stays on the property page, in structured data and in every other mention. Reason: the exact title runs to four lines on the card and makes it taller than every other home.
+- scripts/recovery/assert-live-smoke.js (follow-up): the catalog detail-link label for /properties/coastal-stay/ reads "View Coastal Stay details".
 
 - offer claim: seascape-hub/context/owner-offer.md existing owner-service offer retained; this change corrects inventory count only and introduces no offer.
 

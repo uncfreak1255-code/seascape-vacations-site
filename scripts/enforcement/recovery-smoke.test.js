@@ -133,7 +133,7 @@ test("properties smoke checks durable property detail hrefs instead of old CTA c
       <article><a href="/properties/river-house/">River House</a></article>
       <article><a href="/properties/bradenton-pool-home/">Bradenton Pool Home</a></article>
       <article data-property="blue-house" data-max-guests="11"><a href="/properties/blue-house/">Pickleball Pool Home Retreat</a><p>Up to 11 guests</p></article>
-      <article><a href="/properties/coastal-stay/">Pickleball, Pool, Spa, Hoops &amp; Mini Golf</a></article>
+      <article><a href="/properties/coastal-stay/">Coastal Stay</a></article>
       <a class="catalog-check-dates" href="https://book.seascape-vacations.com">Check dates</a>
     </main>
   `;
@@ -150,7 +150,7 @@ test("properties smoke checks durable property detail hrefs instead of old CTA c
   assert.throws(() => smoke.validateTargetResponse(target, {
     statusCode: 200,
     location: null,
-    body: currentPropertiesBody.replace('<article><a href="/properties/coastal-stay/">Pickleball, Pool, Spa, Hoops &amp; Mini Golf</a></article>', "")
+    body: currentPropertiesBody.replace('<article><a href="/properties/coastal-stay/">Coastal Stay</a></article>', "")
   }), /properties page is missing stable property detail links/);
   for (const staleBody of [
     currentPropertiesBody.replace('data-max-guests="11"', 'data-max-guests="10"'),

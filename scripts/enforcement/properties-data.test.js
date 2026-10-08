@@ -326,6 +326,8 @@ test("Coastal Stay keeps final identity, ten guests and provider conflicts outsi
   assert.ok(home);
   assert.equal(home.id, "599394");
   assert.equal(home.name, "Pickleball, Pool, Spa, Hoops & Mini Golf");
+  assert.equal(home.cardName, "Coastal Stay", "homepage and catalog cards show the short Coastal Stay name");
+  assert.equal(propertiesData.normalizeProperties(fallbackProperties).find(p => p.slug === "dockside-dreams").cardName, "Dockside Dreams", "homes without a curated card name fall back to their name");
   assert.equal(home.guests, 10);
   assert.equal(home.bedrooms, 3);
   assert.equal(home.bathrooms, 2);

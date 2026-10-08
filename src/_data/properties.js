@@ -118,6 +118,13 @@ function deriveBookingUrl(property, slug, listingId) {
   return mappedListingId ? `${BOOKING_ENGINE_PREFIX}${mappedListingId}` : "";
 }
 
+function deriveCardName(curated, property) {
+  if (curated && typeof curated.cardName === "string" && curated.cardName.trim()) {
+    return curated.cardName.trim();
+  }
+  return property && typeof property.name === "string" ? property.name : "";
+}
+
 function deriveSpecs(property) {
   if (property && typeof property.specs === "string" && property.specs.trim()) {
     return property.specs.trim();
@@ -376,6 +383,7 @@ function normalizeProperties(list) {
         guestFacts: curated.guestFacts || null,
         photography: curated.photography || null,
         schemaImages: curated.schemaImages || [],
+        cardName: deriveCardName(curated, property),
         id: listingId,
         slug,
         pageUrl: property.pageUrl || `/properties/${slug}/`,
