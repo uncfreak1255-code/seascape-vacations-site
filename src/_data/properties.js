@@ -54,6 +54,11 @@ const STATIC_PROPERTY_SCHEMA_FACTS_BY_SLUG = {
     latitude: 27.50860514,
     longitude: -82.63215404,
     postalCode: "34209"
+  },
+  "coastal-stay": {
+    latitude: 27.4887612,
+    longitude: -82.6364131,
+    postalCode: "34209"
   }
 };
 
@@ -116,6 +121,13 @@ function deriveBookingUrl(property, slug, listingId) {
 
   const mappedListingId = LISTING_ID_BY_SLUG[slug];
   return mappedListingId ? `${BOOKING_ENGINE_PREFIX}${mappedListingId}` : "";
+}
+
+function deriveCardName(curated, property) {
+  if (curated && typeof curated.cardName === "string" && curated.cardName.trim()) {
+    return curated.cardName.trim();
+  }
+  return property && typeof property.name === "string" ? property.name : "";
 }
 
 function deriveSpecs(property) {
@@ -376,6 +388,7 @@ function normalizeProperties(list) {
         guestFacts: curated.guestFacts || null,
         photography: curated.photography || null,
         schemaImages: curated.schemaImages || [],
+        cardName: deriveCardName(curated, property),
         id: listingId,
         slug,
         pageUrl: property.pageUrl || `/properties/${slug}/`,

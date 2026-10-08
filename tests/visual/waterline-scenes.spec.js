@@ -11,12 +11,13 @@ async function visit(page) {
 test('every manual scene keeps its identity, own photo, facts and trip link', async ({page}) => {
   await visit(page);
   for (const home of homes) {
-    const choice=page.getByRole('button',{name:'Preview '+home.name,exact:true});
+    const cardName=home.cardName||home.name;
+    const choice=page.getByRole('button',{name:'Preview '+cardName,exact:true});
     await choice.click();
     const panel=page.locator('.g-scene:visible');
     await expect(panel).toHaveAttribute('data-scene',home.slug);
     await expect(choice).toHaveAttribute('aria-pressed','true');
-    await expect(panel.locator('h2')).toHaveText(home.name);
+    await expect(panel.locator('h2')).toHaveText(cardName);
     await expect(panel.locator('.g-scene-caption')).toContainText(home.guestFacts.tagline);
     const photo=await panel.locator('img').evaluate(n=>({src:new URL(n.currentSrc).pathname,loaded:n.naturalWidth>0}));
     expect(photo.loaded).toBe(true);expect(photo.src).toContain('/images/homes/'+home.slug+'/');

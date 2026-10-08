@@ -36,6 +36,12 @@ Property truth regeneration/check; full release suite; route/JSON-LD/AI/discover
 - src/index.njk; src/property-management/index.njk (current count only)
 - src/guides/flights-to-anna-maria-island/index.html and src/guides/bradenton-vs-sarasota-restaurants/index.html (current count only)
 - src/assets/js/conversion-tracking.js; scripts/booking/stay-availability.js; scripts/cache/sync-hostaway-build-cache.js
+- src/_data/seoPages.json pool-and-hot-tub page (follow-up): the "five homes with a hot tub" count becomes six because Coastal Stay has a hot tub; the newest home is named with its exact public title and joins the page's featured-home list. Included hot-tub heat, year-round operation, independent controls and the $40/day pool-heat price stay scoped to the five established homes; for the newest home the hot-tub terms and pool-heat fee are stated as confirm-at-booking, never a price or an included-heat promise (property truth records only that the hot tub exists).
+- src/css/arrival.css (follow-up): the homepage postcard fan gains a seventh tilt step and a neutral default for any later card, so a new home never renders with an undefined transform.
+- scripts/recovery/assert-live-smoke.js (follow-up): the live catalog smoke now requires the /properties/coastal-stay/ link.
+- src/_data/properties-fallback.json, src/_data/properties.js, src/index.njk and src/properties/index.njk (follow-up, Sawyer approved October 7): the homepage postcard, the homepage scene caption and "Preview our homes" picker, and the /properties/ catalog card, compare table and their link labels show the home as "Coastal Stay". The exact public title stays on the property page, in structured data and in every other mention. Reason: the exact title runs to four lines on the card and makes it taller than every other home.
+- src/properties/coastal-stay/index.njk and src/_data/properties.js (follow-up, October 8, from the Codex review of the onboarding PR): the Coastal Stay page mounts the same SAVE50 campaign reminder as the other six property pages, so a campaign visitor who picks this home from /properties/ keeps the offer through to checkout; structured data for the home carries its postal code, 34209.
+- scripts/recovery/assert-live-smoke.js (follow-up): the catalog detail-link label for /properties/coastal-stay/ reads "View Coastal Stay details".
 
 - offer claim: seascape-hub/context/owner-offer.md existing owner-service offer retained; this change corrects inventory count only and introduces no offer.
 

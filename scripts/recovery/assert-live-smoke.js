@@ -50,7 +50,8 @@ const stablePropertyDetailLinks = [
   { href: "/properties/sarasota-luxe/", label: "View Sarasota Luxe details" },
   { href: "/properties/river-house/", label: "View River House details" },
   { href: "/properties/bradenton-pool-home/", label: "View Bradenton Pool Home details" },
-  { href: "/properties/blue-house/", label: "View Pickleball Pool Home Retreat details" }
+  { href: "/properties/blue-house/", label: "View Pickleball Pool Home Retreat details" },
+  { href: "/properties/coastal-stay/", label: "View Coastal Stay details" }
 ];
 
 function requireIncludes(path, body, fragments) {

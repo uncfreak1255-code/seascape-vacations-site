@@ -2,7 +2,7 @@
   "routes": {
     "/": {
       "script": 75755,
-      "stylesheet": 57294
+      "stylesheet": 57430
     },
     "/properties/": {
       "script": 98253,
@@ -425,6 +425,14 @@
       "to": 57030,
       "reason": "iOS-only appearance rule so the Arrival/Departure date fields fit their grid columns on iPhone Safari (#668): +117 B catalog.css",
       "date": "2026-10-04"
+    },
+    {
+      "route": "/",
+      "metric": "stylesheet",
+      "from": 57294,
+      "to": 57430,
+      "reason": "Homepage postcard fan grows from six to seven tilt steps plus a neutral default for later cards (#700, Coastal Stay onboarding, design approved by Sawyer 2026-10-07): +136 B arrival.css, measured by the performance-budget run 37716573423 at aec7fa41.",
+      "date": "2026-10-07"
     }
   ]
 }
