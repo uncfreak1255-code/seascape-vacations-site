@@ -20,7 +20,8 @@ The repo-local `schema-markup` skill owns JSON-LD and structured-data
 implementation rules inside this site repo.
 
 For owner intake, use `owner-opportunity-intake` to qualify owner-direct,
-permissioned signals without creating outreach drafts, and use
+permissioned signals and public-record letter targets, with drafts only inside
+a batch that Sawyer approved, and use
 `owner-reply-intake` to classify later replies before any demand row reaches the
 Hub register. These skills are local because the workflow is site-specific:
 the intake decision can reference the site benchmark and approved owner proof
@@ -200,6 +201,16 @@ entry is the receipt the governance rule requires for any skill change.
   provisional until repo-anchored evidence exists, and only the hand-authored
   `## Register` region in the Seascape Hub owner-demand register may receive a
   real row.
+- **2026-10-07 — owner-intake policy version 2.** Trigger: Sawyer judged the
+  2026-07-17 rule too strict because it blocked every draft and every
+  public-record letter. Decision (Sawyer, 2026-10-07): allow postal letters to
+  the owner mailing address on a public county property record, allow
+  referral-partner business contacts, and replace per-person approval with
+  batch approval of one template and one recipient list. Agents still never
+  send. OTA host messages, bought or scraped lists, contact enrichment, and
+  automated calls or texts stay refused. Named records stay in the approved
+  private owner system, never in Git. Agent-surface audit verdict: **KEEP**
+  `owner-opportunity-intake` and change its authority in place.
 - **2026-07-17 — restricted `owner-outbound-batch` to permissioned intake.**
   Trigger: the active packet contained only Airbnb/Vrbo host-message paths,
   which prove a public listing observation but not owner identity or permission

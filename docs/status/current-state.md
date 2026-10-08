@@ -33,10 +33,11 @@ owner-direct, permissioned signal under
 `docs/status/owner-direct-intake-policy.md`; do not build an OTA host-message
 list or store named candidate state in this public repository.
 
-Intake does not authorize a draft or send. A qualified signal still needs the
-separate founder decision required by the owner-intake policy. A prototype or
-local experiment must not create a mailbox draft, automate outreach, or turn
-test activity into owner demand.
+Intake does not authorize a send. Personalized drafts and sends need Sawyer's
+batch approval of one template and one recipient list, as the owner-intake
+policy (version 2, 2026-10-07) requires, and Sawyer sends. A prototype or local
+experiment must not create a mailbox draft outside an approved batch, automate
+outreach, or turn test activity into owner demand.
 
 ## Source Of Truth
 
