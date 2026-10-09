@@ -2,19 +2,14 @@ const fs = require("fs");
 const path = require("path");
 const test = require("node:test");
 const assert = require("node:assert/strict");
+const {
+  TOTAL_COUNT_PATTERNS,
+  catalogHomeCountHeading,
+  catalogHomeCountWord,
+  numberWord
+} = require("./home-count-word");
 
 const projectRoot = path.resolve(__dirname, "..", "..");
-const catalog = require("../../src/_data/properties-fallback.json");
-const WORDS = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve"];
-const NUMBER = "(?:one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|\\d+)";
-// Phrases that state the size of the whole portfolio. Subset counts such as
-// "six homes with a hot tub" are facts about specific homes and are not matched.
-const TOTAL_COUNT_PATTERNS = [
-  new RegExp(`\\b(?:manages?|all|of our|of the|one of)\\s+${NUMBER}\\s+(?:[\\w-]+\\s+){0,2}(?:homes|houses)\\b`, "i"),
-  new RegExp(`\\b${NUMBER}[- ]home operator\\b`, "i"),
-  new RegExp(`\\b${NUMBER}\\s+homes\\.\\s+One local team`, "i"),
-  new RegExp(`\\bone of ${NUMBER}, not one of`, "i")
-];
 const SOURCE_EXTENSIONS = new Set([".njk", ".html", ".md", ".js"]);
 
 function sourceFiles(dir) {
@@ -24,6 +19,26 @@ function sourceFiles(dir) {
     return SOURCE_EXTENSIONS.has(path.extname(entry.name)) ? [full] : [];
   });
 }
+
+test("numberWord accepts 0-12 and rejects anything else", () => {
+  assert.equal(numberWord(0), "zero");
+  assert.equal(numberWord(7), "seven");
+  assert.equal(numberWord(12), "twelve");
+  assert.throws(() => numberWord(13), /0 to 12/);
+  assert.throws(() => numberWord("7"), /0 to 12/);
+  assert.throws(() => numberWord(), /0 to 12/);
+});
+
+test("portfolio-size patterns catch leftover total-count shapes and spare subset facts", () => {
+  const joined = (text) => TOTAL_COUNT_PATTERNS.some((pattern) => pattern.test(text));
+  assert.equal(joined("our own seven homes"), true);
+  assert.equal(joined("We manage 5 Gulf Coast vacation homes"), true);
+  assert.equal(joined("Seascape Vacations manages 5 Gulf Coast properties"), true);
+  assert.equal(joined("Seven homes. One local team."), true);
+  assert.equal(joined("Hot tub heat is included at the five established homes"), false);
+  assert.equal(joined("Your comparison has three homes"), false);
+  assert.equal(joined(""), false);
+});
 
 test("no template or guide hardcodes the portfolio size", () => {
   const offenders = [];
@@ -41,8 +56,8 @@ test("the property-management page states the catalog size it is built from", ()
   const built = path.join(projectRoot, "_site", "property-management", "index.html");
   assert.ok(fs.existsSync(built), "run npm run build first; _site/property-management/index.html is missing");
   const html = fs.readFileSync(built, "utf8");
-  const word = WORDS[catalog.length];
-  assert.ok(word, `catalog length ${catalog.length} has no number word; extend numberWord`);
-  assert.match(html, new RegExp(`${word[0].toUpperCase()}${word.slice(1)} homes\\. One local team\\.`));
+  const word = catalogHomeCountWord();
+  assert.match(html, new RegExp(`${catalogHomeCountHeading().replace(".", "\\.")}`));
   assert.match(html, new RegExp(`See all ${word} homes`));
+  assert.match(html, new RegExp(`our own ${word} homes`));
 });

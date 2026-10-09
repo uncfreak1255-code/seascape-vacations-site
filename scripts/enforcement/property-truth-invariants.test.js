@@ -447,6 +447,7 @@ test("present-tense portfolio references use current counts or canonical listing
   const files = [
     "src/guides/flights-to-anna-maria-island/index.html",
     "src/guides/bradenton-vs-sarasota-restaurants/index.html",
+    "src/guides/best-time-to-visit-anna-maria-island/index.html",
     "src/research/gulf-coast-vacation-booking-trends-2026.njk",
     "src/research/real-cost-florida-beach-vacation-bradenton-sarasota-ami-2026.njk"
   ];
