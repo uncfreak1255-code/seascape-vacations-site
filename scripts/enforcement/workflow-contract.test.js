@@ -199,7 +199,7 @@ test("actual PR routing selects the Mac only for screenshot-sensitive owner even
 
 test("manual routing checks both actors and preserves scheduled routes", () => {
   const trusted = ownerEvent("workflow_dispatch", { event: {} });
-  for (const file of ["live-smoke.yml", "update-visual-baselines.yml"]) {
+  for (const file of ["live-smoke.yml", "update-visual-baselines.yml", "publish-production.yml"]) {
     assert.ok(routingValues(file, "if", trusted).every(value => value === true));
     for (const field of ["actor", "triggering_actor"]) {
       const untrusted = { ...trusted, [field]: "outsider" };
@@ -208,6 +208,7 @@ test("manual routing checks both actors and preserves scheduled routes", () => {
   }
   const scheduled = ownerEvent("schedule", { event: {} });
   assert.deepEqual(routingValues("live-smoke.yml", "if", scheduled), [true]);
+  assert.deepEqual(routingValues("publish-production.yml", "if", scheduled), [true]);
   assert.match(readWorkflow("release-safety.yml"), /runs-on:\s*ubuntu-latest/);
 });
 
@@ -243,5 +244,20 @@ test("a failed scheduled live smoke is reported from a separate hosted job", () 
   assert.match(reportJob,
     /\n    if: always\(\) && github\.event_name == 'schedule' && needs\.live-smoke\.result != 'success'\n/);
   assert.match(reportJob, /gh issue comment "\$existing"/);
+  assert.match(reportJob, /gh issue create --title "\$title"/);
+});
+
+test("a failed scheduled production publish is reported, and only publish can push", () => {
+  const workflow = readWorkflow("publish-production.yml");
+  const [publishJob, reportJob] = workflow.slice(workflow.indexOf("\njobs:")).split("\n  report-failure:");
+
+  assert.ok(reportJob, "publish-production.yml: missing report-failure job");
+  assert.match(workflow.slice(0, workflow.indexOf("\njobs:")), /\npermissions: \{\}\n/);
+  assert.match(publishJob, /\n    permissions:\n      contents: write\n/);
+  assert.doesNotMatch(publishJob, /--force|\s-f\s|\+refs|"\+/);
+  assert.match(reportJob, /\n    needs: publish\n/);
+  assert.match(reportJob, /\n    permissions:\n      issues: write\n\n/);
+  assert.match(reportJob,
+    /\n    if: always\(\) && github\.event_name == 'schedule' && needs\.publish\.result != 'success'\n/);
   assert.match(reportJob, /gh issue create --title "\$title"/);
 });

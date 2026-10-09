@@ -304,6 +304,7 @@ and a red one does not block a merge by itself; read it anyway.
 | `playwright-visual.yml` (Playwright Visual Gate) | `visual-regression` | PRs to `main` that touch `src/**`, `eleventy.config.js`, `playwright.config.js`, `tests/visual/**`, the visual scripts or `package-lock.json`; docs-only PRs skip it | Sawyer's own PRs: self-hosted `mac-sawbeck-seascape-vacations-site`; forks and other authors: `macos-latest` | no |
 | `preview-surface.yml` | `preview-surface` | every PR to `main` | `ubuntu-latest` | no, by design |
 | `live-smoke.yml` | `live-smoke` (`report-failure` on `ubuntu-latest`) | daily 10:17 UTC; manual dispatch by Sawyer's account only | self-hosted `[self-hosted, macOS, arm64]` | not a PR check |
+| `publish-production.yml` | `publish` | daily 09:05 UTC; manual dispatch by Sawyer's account only | `ubuntu-latest` | not a PR check |
 | `update-visual-baselines.yml` | `generate-baselines` | manual dispatch only, by Sawyer's account | self-hosted `[self-hosted, macOS, arm64]` | not a check; see Testing for the recipe |
 
 A self-hosted job that sits in `queued` means the Mac runner is offline, not
@@ -314,14 +315,19 @@ that the check failed; it does not fall back to GitHub-hosted compute.
 - Deployable: `yes`
 - Deploy surface: `Netlify`
 - Production URL: `https://seascape-vacations.com`
-- How production deploys: Netlify builds every merge to `main` using
-  `netlify.toml` (`npm run build`, publish `_site`). There is no manual deploy
-  command and no deploy step in GitHub Actions. `scripts/enforcement/netlify-ignore-build.js`
-  skips the deploy for agent-only merges; a missing deploy after a merge is
-  usually that skip, not an outage. Diagnose with `docs/runbooks/failed-netlify-deploy.md`.
+- How production deploys: Netlify builds the `production` branch using
+  `netlify.toml` (`npm run build`, publish `_site`). Merges to `main` do not
+  deploy on their own; `.github/workflows/publish-production.yml` fast-forwards
+  `production` to `main` once a day at 09:05 UTC, so every merge since the last
+  publish ships in one build. `scripts/enforcement/netlify-ignore-build.js`
+  still skips that build when only agent-only paths changed; a missing deploy is
+  usually the skip or a day with no merges, not an outage. Diagnose with
+  `docs/runbooks/failed-netlify-deploy.md`.
+- Agents never push to `production` and never dispatch Publish Production; an
+  early publish costs a Netlify build and needs Sawyer's approval each time.
 - Post-deploy proof: `npm run verify:recovery:live && npm run verify:direct-booking-events && npm run verify:owner-funnel-routes`
-- "Shipped" means: merged to `main`, Netlify built successfully, and the
-  relevant live smoke checks passed
+- "Shipped" means: merged to `main`, published to `production`, Netlify built
+  successfully, and the relevant live smoke checks passed
 
 ## Reading Order For SEO Work
 
