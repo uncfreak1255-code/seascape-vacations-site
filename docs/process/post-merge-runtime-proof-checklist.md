@@ -1,15 +1,21 @@
 # Post-Merge Runtime Proof Checklist
 
-Use this right after merge and deploy, before calling the task done.
+Use this after the merged commit has been published and deployed, before
+calling the task shipped. A merge made after the daily 09:05 UTC Publish
+Production run deploys with the next day's batch; until then the honest state is
+merged and queued for publish.
 
 This is required for deploy-sensitive site work.
 
 ## 1. Wait for deploy
 
-- [ ] Netlify deploy is complete for the merged commit. A merge that changes only
-  agent docs, tooling or CI is skipped on purpose while live availability is
-  under 12 hours old (`scripts/enforcement/netlify-ignore-build.js`); the
-  deploy log then shows the skip reason and no new deploy is expected.
+- [ ] A Netlify production deploy is complete for a `production` commit that
+  contains the merge (`git merge-base --is-ancestor <merge-sha> origin/production`).
+  The deployed SHA is usually a later `main` commit carrying several merges.
+  A batch that changes only agent docs, tooling or CI is skipped on purpose
+  while live availability is under 12 hours old
+  (`scripts/enforcement/netlify-ignore-build.js`); the deploy log then shows
+  the skip reason and no new deploy is expected.
 - [ ] I am testing production, not preview.
 
 ## 2. Run production smoke

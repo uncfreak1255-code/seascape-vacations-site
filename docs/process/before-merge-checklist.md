@@ -92,9 +92,15 @@ If that sentence feels too strong, do not merge.
 
 ## 8. After merge
 
-- [ ] watch the Netlify deploy complete, or confirm it was skipped on purpose for
-  an agent-docs, tooling or CI-only merge (`scripts/enforcement/netlify-ignore-build.js`)
-- [ ] complete `docs/process/post-merge-runtime-proof-checklist.md`
+- [ ] a merge does not deploy by itself: Publish Production ships `main` to the
+  `production` branch at the next 09:05 UTC run. Until then report the work as
+  merged and queued for publish, not shipped. Do not push to `production` or
+  dispatch the workflow to hurry it.
+- [ ] after that publish, confirm the Netlify production deploy completed, or was
+  skipped on purpose for an agent-docs, tooling or CI-only batch
+  (`scripts/enforcement/netlify-ignore-build.js`)
+- [ ] complete `docs/process/post-merge-runtime-proof-checklist.md` against that
+  published deploy
 - [ ] capture the post-merge proof receipt in the PR comment or merge closeout note
 
 Useful production checks:
