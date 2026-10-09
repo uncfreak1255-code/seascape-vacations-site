@@ -77,6 +77,31 @@ test("property-management smoke accepts the live minified single-quoted form nam
   });
 });
 
+test("property-management smoke rejects a non-number-word home count", () => {
+  const smoke = loadSmokeModule();
+  const target = smoke.targets.find((entry) => entry.path === "/property-management/");
+
+  assert.throws(() => {
+    smoke.validateTargetResponse(target, {
+      statusCode: 200,
+      location: null,
+      body: `
+        <main>
+          <h1>Many homes. One local team. <em>Your call gets answered.</em></h1>
+          <a href="#owner-cta">Request your 48-hour revenue review</a>
+          <form name="owner-revenue-teardown" method="POST"></form>
+          <input type="checkbox" name="submitter_authority" value="owner_or_authorized_representative" required>
+          I confirm I am the property owner or an authorized representative for this property.
+          Owner statement, optional
+          <h2>What we do for your home</h2>
+          <h2>Why a mystery-home operator</h2>
+          <h2>The homes we manage</h2>
+        </main>
+      `
+    });
+  }, /property-management hub is missing the Waterline owner offer surface/);
+});
+
 test("property-management smoke fails when the owner form name is missing", () => {
   const smoke = loadSmokeModule();
   const target = smoke.targets.find((entry) => entry.path === "/property-management/");

@@ -465,7 +465,10 @@ if (phase === "remediation") {
     "_site/property-management/vacation-rental-management-sarasota/index.html",
     "font-display: block"
   );
-  expectContains("_site/property-management/index.html", "Seven homes. One local team.");
+  expectContains(
+    "_site/property-management/index.html",
+    require("../enforcement/home-count-word").catalogHomeCountHeading()
+  );
   expectContains("_site/property-management/index.html", "What we do for your home");
   expectContains("_site/property-management/index.html", "The homes we manage");
   expectContains("_site/property-management/index.html", "What Gulf Coast owners usually ask first");

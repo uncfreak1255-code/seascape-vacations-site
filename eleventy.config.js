@@ -245,6 +245,7 @@ module.exports = function(eleventyConfig) {
   
   // Simple title filter - just appends site name if not already there
   eleventyConfig.addFilter("propertySchemaAmenities", require("./scripts/regenerate-property-surfaces").renderSchemaAmenityLabels);
+  eleventyConfig.addFilter("numberWord", require("./scripts/enforcement/home-count-word").numberWord);
   eleventyConfig.addFilter("propertyBySlug", (properties, slug) => {
     const property = properties.find((entry) => entry.slug === slug);
     if (!property) throw new Error(`Unknown property slug: ${slug}`);

@@ -12,6 +12,7 @@ const {
   renderSchemaAmenityLabels
 } = require("../../scripts/regenerate-property-surfaces");
 
+const TOTAL_HOME_COUNT_PATTERN = /\b(?:manages?|all|of our|of the)\s+(?:one|two|three|four|five|six|seven|eight|nine|ten|\d+)\s+(?:[\w-]+\s+){0,2}homes\b/i;
 const DOCKSIDE_ONLY_CLAIM_SLUG = "dockside-dreams";
 
 const STRICT_DOCK_OR_WATER_SLUGS = new Set([
@@ -185,9 +186,9 @@ test("dolphins guide does not give River House a dock", () => {
   const html = readSource("src/guides/dolphins-manatees-bradenton.html");
 
   assert.match(html, /Dockside Dreams has a private dock on a saltwater canal/i);
-  assert.match(html, /One of our seven homes sits on the water with a private dock/i);
+  assert.match(html, /One of our homes sits on the water with a private dock/i);
   assert.doesNotMatch(html, /Our two dock homes, Dockside Dreams and River House/i);
-  assert.doesNotMatch(html, /Two of our seven homes sit on the water with private docks/i);
+  assert.doesNotMatch(html, /Two of our (?:\w+ )?homes sit on the water with private docks/i);
   assert.doesNotMatch(html, /River House on the Manatee River/i);
   assert.doesNotMatch(
     html,
@@ -446,6 +447,7 @@ test("present-tense portfolio references use current counts or canonical listing
   const files = [
     "src/guides/flights-to-anna-maria-island/index.html",
     "src/guides/bradenton-vs-sarasota-restaurants/index.html",
+    "src/guides/best-time-to-visit-anna-maria-island/index.html",
     "src/research/gulf-coast-vacation-booking-trends-2026.njk",
     "src/research/real-cost-florida-beach-vacation-bradenton-sarasota-ami-2026.njk"
   ];
@@ -456,7 +458,7 @@ test("present-tense portfolio references use current counts or canonical listing
     if (file.startsWith("src/research/")) {
       assert.match(text, /href="\/properties\/"/, `${file} links current property truth instead of pinning a historical count`);
     } else {
-      assert.match(text, /\bseven\b/i, `${file} should state the current portfolio as seven`);
+      assert.doesNotMatch(text, TOTAL_HOME_COUNT_PATTERN, `${file} must not hardcode the portfolio size; see scripts/enforcement/home-count-derived.test.js`);
     }
   }
 });
