@@ -9,7 +9,9 @@ const { getStore } = require("@netlify/blobs");
 const {
   OWNER_LEAD_CONTACT_STORE_NAME, OWNER_LEAD_CONTACTS_KEY, buildOwnerLeadContact
 } = require("../../netlify/functions/_owner-lead-contacts");
-const { OWNER_LEAD_FORM_NAME } = require("../../netlify/functions/_owner-lead-metrics");
+const {
+  OWNER_LEAD_FORM_NAME, OWNER_LEAD_STORE_NAME, OWNER_LEAD_METRICS_KEY
+} = require("../../netlify/functions/_owner-lead-metrics");
 const {
   TRACKER_ID, FOLDER_ID, DRIVE_ID, TAB, HEADERS, digest,
   canonicalPermissions, requirePrivacy, planImport, timestamp
@@ -120,9 +122,34 @@ async function readSource(env, fetchImpl, storeFactory = getStore) {
       formIds.add(String(s.id));
       formCount += 1;
       const contact = buildOwnerLeadContact({ ...s, form_name: OWNER_LEAD_FORM_NAME });
-      if (contact) contacts.set(contact.submissionId, contact);
+      if (contact) {
+        // Recovery must not erase a proof marker retained in the private capture.
+        contact.proofLabel = contact.proofLabel || contacts.get(contact.submissionId)?.proofLabel || "";
+        contacts.set(contact.submissionId, contact);
+      }
     }
     if (page === 100) throw new Error("forms_pagination_limit");
+  }
+  // The existing relabel endpoint updates only metrics receipts. Join its labels
+  // into this private projection by ID; never copy contact fields into metrics.
+  if (env.OWNER_LEAD_BLOBS_SITE_ID && env.OWNER_LEAD_BLOBS_SITE_ID !== siteID) {
+    throw new Error("proof_labels_site_mismatch");
+  }
+  let metrics;
+  try {
+    const store = storeFactory({ name: OWNER_LEAD_STORE_NAME, siteID,
+      token: env.OWNER_LEAD_BLOBS_TOKEN || token, consistency: "strong" });
+    metrics = await store.get(OWNER_LEAD_METRICS_KEY, { type: "json", consistency: "strong" });
+  } catch (_error) { throw new Error("proof_labels_read_failed"); }
+  if (!metrics || !Array.isArray(metrics.receipts)) throw new Error("proof_labels_unavailable_or_invalid");
+  for (const receipt of metrics.receipts) {
+    if (!receipt || typeof receipt.submissionId !== "string" || !receipt.submissionId.trim() ||
+        (receipt.proofLabel !== undefined && typeof receipt.proofLabel !== "string")) {
+      throw new Error("proof_labels_unavailable_or_invalid");
+    }
+    const label = receipt.proofLabel?.trim();
+    const contact = contacts.get(receipt.submissionId);
+    if (label && contact) contact.proofLabel = contact.proofLabel || label;
   }
   const list = [...contacts.values()].sort((a, b) => a.submissionId.localeCompare(b.submissionId));
   return {

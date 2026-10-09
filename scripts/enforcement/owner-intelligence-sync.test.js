@@ -11,7 +11,11 @@ const {
   request, readAccess, readSource, batchForPlan, applyPlan, privateDirectory, savePrivate
 } = require("../owner-intelligence/sync");
 const { buildOwnerLeadContact } = require("../../netlify/functions/_owner-lead-contacts");
-const { OWNER_LEAD_FORM_NAME } = require("../../netlify/functions/_owner-lead-metrics");
+const {
+  OWNER_LEAD_FORM_NAME, OWNER_LEAD_STORE_NAME, OWNER_LEAD_METRICS_KEY,
+  buildOwnerLeadReceipt, relabelOwnerLeadReceipts
+} = require("../../netlify/functions/_owner-lead-metrics");
+const emptyStores = ({ name }) => ({ get: async () => name === OWNER_LEAD_STORE_NAME ? { receipts: [] } : null });
 const now = "2026-10-08T16:00:00.000Z";
 const contact = (overrides = {}) => ({
   submissionId: "synthetic-1", createdAt: "2026-06-01T12:00:00.000Z",
@@ -177,7 +181,7 @@ function fakeProvider({ lostReply = false, sourceChanged = false, accessChanged 
 
 test("authenticated source recovery restores legacy evidence from canonical Forms without mistaking a missing blob for no inquiries", async () => {
   const f = fakeProvider();
-  const source = await readSource(f.env, f.fetchImpl, () => ({ get: async () => null }));
+  const source = await readSource(f.env, f.fetchImpl, emptyStores);
   assert.equal(source.blobPresent, false);
   assert.equal(source.formCount, 1);
   assert.equal(source.contacts[0].submitterAuthority, "owner_or_authorized_representative");
@@ -199,7 +203,7 @@ test("private staged artifacts cannot live in a repository, and have restrictive
 
 test("synthetic full integration writes once, confirms readback, then reconciles as a no-op", async () => {
   const f = fakeProvider();
-  const storeFactory = () => ({ get: async () => null });
+  const storeFactory = emptyStores;
   const source = await readSource(f.env, f.fetchImpl, storeFactory);
   const p = plan(source.contacts, f.data.rows);
   const tracker = { rows: structuredClone(f.data.rows), sheet: { sheetId: 1, gridProperties: { rowCount: 1000 } } };
@@ -212,7 +216,7 @@ test("synthetic full integration writes once, confirms readback, then reconciles
 
 test("lost write response never retries; next reconciliation finds the landed row instead of duplicating it", async () => {
   const f = fakeProvider({ lostReply: true });
-  const storeFactory = () => ({ get: async () => null });
+  const storeFactory = emptyStores;
   const source = await readSource(f.env, f.fetchImpl, storeFactory);
   const p = plan(source.contacts, f.data.rows);
   const tracker = { rows: structuredClone(f.data.rows), sheet: { sheetId: 1, gridProperties: { rowCount: 1000 } } };
@@ -225,7 +229,7 @@ test("lost write response never retries; next reconciliation finds the landed ro
 test("fresh access and tracker checks block mutations when approved evidence changes", async () => {
   for (const scenario of ["access", "tracker", "source"]) {
     const f = fakeProvider({ accessChanged: scenario === "access" });
-    const storeFactory = () => ({ get: async () => null });
+    const storeFactory = emptyStores;
     const source = await readSource(f.env, f.fetchImpl, storeFactory);
     const p = plan(source.contacts, f.data.rows);
     const tracker = { rows: structuredClone(f.data.rows), sheet: { sheetId: 1, gridProperties: { rowCount: 1000 } } };
@@ -241,4 +245,64 @@ test("fresh Drive metadata verifies all three access surfaces and refuses a chan
   const f = fakeProvider();
   assert.equal((await readAccess("synthetic", f.fetchImpl)).accessHash, accessHash);
   await assert.rejects(readAccess("synthetic", async () => ({ ok: true, json: async () => ({ parents: [] }) })), /location_changed/);
+});
+
+test("post-hoc proof labels hold an otherwise reviewed genuine inquiry without writing PII into metrics", async () => {
+  const f = fakeProvider();
+  const receipt = buildOwnerLeadReceipt({ form_name: OWNER_LEAD_FORM_NAME, id: "synthetic-1", created_at: now,
+    data: { email: "owner@example.invalid", name: "Synthetic Owner" } });
+  const metrics = relabelOwnerLeadReceipts({ receipts: [receipt] }, ["synthetic-1"], "Live Smoke").metrics;
+  const originalMetrics = structuredClone(metrics);
+  const calls = [];
+  const storeFactory = (config) => ({ get: async (key, options) => {
+    calls.push({ config, key, options });
+    return config.name === OWNER_LEAD_STORE_NAME ? structuredClone(metrics) : null;
+  } });
+  const source = await readSource(f.env, f.fetchImpl, storeFactory);
+  const p = plan(source.contacts, f.data.rows);
+  assert.equal(p.append.length, 0);
+  assert.equal(p.held[0].reason, "proof_or_test_submission");
+  assert.equal(source.contacts[0].proofLabel, "live-smoke");
+  assert.equal(calls.find((c) => c.key === OWNER_LEAD_METRICS_KEY).options.consistency, "strong");
+  assert.deepEqual(metrics, originalMetrics);
+  assert.equal(JSON.stringify(metrics).includes("owner@example.invalid"), false);
+});
+
+test("proof labels added after preview invalidate the source hash before any tracker write", async () => {
+  const f = fakeProvider();
+  let metrics = { receipts: [buildOwnerLeadReceipt({ form_name: OWNER_LEAD_FORM_NAME,
+    id: "synthetic-1", created_at: now, data: {} })] };
+  const storeFactory = ({ name }) => ({ get: async () => name === OWNER_LEAD_STORE_NAME ? structuredClone(metrics) : null });
+  const source = await readSource(f.env, f.fetchImpl, storeFactory);
+  const p = plan(source.contacts, f.data.rows);
+  assert.equal(p.append.length, 1);
+  metrics = relabelOwnerLeadReceipts(metrics, ["synthetic-1"], "late-proof").metrics;
+  await assert.rejects(applyPlan({ plan: p, source, policy, env: f.env, now, fetchImpl: f.fetchImpl, storeFactory,
+    tracker: { rows: structuredClone(f.data.rows), sheet: { sheetId: 1, gridProperties: { rowCount: 1000 } } } }), /changed_repreview/);
+  assert.equal(f.data.writes, 0);
+});
+
+test("Forms recovery preserves capture proof labels and unrelated receipt labels do not taint genuine inquiries", async () => {
+  const f = fakeProvider();
+  for (const captureLabel of ["captured-proof", ""]) {
+    const source = await readSource(f.env, f.fetchImpl, ({ name }) => ({ get: async () =>
+      name === OWNER_LEAD_STORE_NAME
+        ? { receipts: [{ submissionId: "synthetic-other", proofLabel: "unrelated-proof" }] }
+        : { totalContacts: 1, contacts: [contact({ proofLabel: captureLabel })] }
+    }));
+    assert.equal(source.contacts[0].proofLabel, captureLabel);
+    assert.equal(plan(source.contacts, f.data.rows).append.length, captureLabel ? 0 : 1);
+  }
+});
+
+test("unavailable or malformed proof-label receipts block reconciliation instead of silently treating tests as genuine", async () => {
+  const f = fakeProvider();
+  for (const value of [null, {}, { receipts: [null] }, { receipts: [{ submissionId: "synthetic-1", proofLabel: true }] }]) {
+    await assert.rejects(readSource(f.env, f.fetchImpl, ({ name }) => ({ get: async () => name === OWNER_LEAD_STORE_NAME ? value : null })),
+      /proof_labels_unavailable_or_invalid/);
+  }
+  await assert.rejects(readSource(f.env, f.fetchImpl, ({ name }) => ({ get: async () => {
+    if (name === OWNER_LEAD_STORE_NAME) throw new Error("private provider body");
+    return null;
+  } })), /proof_labels_read_failed/);
 });

@@ -46,6 +46,17 @@ submission. Repeated or incomplete pagination blocks reconciliation. A Forms
 record may still be synthetic, spam or otherwise unqualified; authenticated
 storage alone proves none of those judgements.
 
+The adapter also strongly reads `owner_lead_metrics_v1.json` from the existing
+`seascape-owner-leads` store and joins retained proof labels by submission ID.
+This covers labels applied after submission through `owner-lead-proof-label`,
+without writing private contacts into metrics. Missing, unreadable or malformed
+receipt data blocks reconciliation. Labels present on either private capture,
+original Forms data or retained metrics receipts always hold the candidate.
+The existing metrics store retains only 200 receipts; a missing historical
+receipt does not prove that an old inquiry was never a test. Historical intake
+still requires genuine-inquiry and owner-direct permission evidence. Labels
+added after preview change the source hash and block apply until a new preview.
+
 `buildOwnerLeadContact` now preserves raw `submitter_authority`, `proof_label`
 and source-ID/time provenance in future private captures. These fields do not
 enter anonymous metrics. A fallback-generated time or fallback number is not
@@ -62,6 +73,7 @@ this implementation.
 | --- | --- |
 | `OWNER_LEAD_CONTACT_BLOBS_SITE_ID` | Verified production Netlify project ID |
 | `OWNER_LEAD_CONTACT_BLOBS_TOKEN` | Existing authorized Netlify read credential for Site, Forms and Blobs |
+| `OWNER_LEAD_BLOBS_TOKEN` | Optional existing separate credential for the same site's metrics store; defaults to the contact-store credential |
 | `OWNER_INTELLIGENCE_GOOGLE_ACCESS_TOKEN` | Existing Google bearer credential able to read Drive metadata/membership and read/write this Sheet |
 | `OWNER_INTELLIGENCE_WRITER_ID` | Accepted single operator host/seat identity; never run a second writer |
 | `SEASCAPE_RUNTIME_HOME` | Existing Ops runtime home; staging must be outside every Git checkout |
