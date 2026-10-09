@@ -205,7 +205,7 @@ test("putting green is not described as mini-golf across durable marketing surfa
   ];
 
   for (const surface of surfaces) {
-    assert.doesNotMatch(readSource(surface).replaceAll("Pickleball, Pool, Spa, Hoops & Mini Golf", "Coastal Stay"), /\bmini[- ]golf\b/i, `${surface} must say putting green, not mini-golf`);
+    assert.doesNotMatch(readSource(surface), /\bmini[- ]golf\b/i, `${surface} must say putting green, not mini-golf`);
   }
 
   assert.match(readSource("src/_data/properties-fallback.json"), /\bputting green\b/i);
