@@ -199,7 +199,7 @@ test("actual PR routing selects the Mac only for screenshot-sensitive owner even
 
 test("manual routing checks both actors and preserves scheduled routes", () => {
   const trusted = ownerEvent("workflow_dispatch", { event: {} });
-  for (const file of ["live-smoke.yml", "update-visual-baselines.yml"]) {
+  for (const file of ["live-smoke.yml", "update-visual-baselines.yml", "publish-production.yml"]) {
     assert.ok(routingValues(file, "if", trusted).every(value => value === true));
     for (const field of ["actor", "triggering_actor"]) {
       const untrusted = { ...trusted, [field]: "outsider" };
@@ -208,6 +208,7 @@ test("manual routing checks both actors and preserves scheduled routes", () => {
   }
   const scheduled = ownerEvent("schedule", { event: {} });
   assert.deepEqual(routingValues("live-smoke.yml", "if", scheduled), [true]);
+  assert.deepEqual(routingValues("publish-production.yml", "if", scheduled), [true]);
   assert.match(readWorkflow("release-safety.yml"), /runs-on:\s*ubuntu-latest/);
 });
 
