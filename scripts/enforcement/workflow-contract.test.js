@@ -246,3 +246,18 @@ test("a failed scheduled live smoke is reported from a separate hosted job", () 
   assert.match(reportJob, /gh issue comment "\$existing"/);
   assert.match(reportJob, /gh issue create --title "\$title"/);
 });
+
+test("a failed scheduled production publish is reported, and only publish can push", () => {
+  const workflow = readWorkflow("publish-production.yml");
+  const [publishJob, reportJob] = workflow.slice(workflow.indexOf("\njobs:")).split("\n  report-failure:");
+
+  assert.ok(reportJob, "publish-production.yml: missing report-failure job");
+  assert.match(workflow.slice(0, workflow.indexOf("\njobs:")), /\npermissions: \{\}\n/);
+  assert.match(publishJob, /\n    permissions:\n      contents: write\n/);
+  assert.doesNotMatch(publishJob, /--force|\s-f\s|\+refs|"\+/);
+  assert.match(reportJob, /\n    needs: publish\n/);
+  assert.match(reportJob, /\n    permissions:\n      issues: write\n\n/);
+  assert.match(reportJob,
+    /\n    if: always\(\) && github\.event_name == 'schedule' && needs\.publish\.result != 'success'\n/);
+  assert.match(reportJob, /gh issue create --title "\$title"/);
+});
