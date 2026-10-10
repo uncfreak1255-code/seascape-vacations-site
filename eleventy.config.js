@@ -1,6 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const { execFileSync } = require("child_process");
+const { renderAnalyticsTrafficScript } = require("./scripts/enforcement/analytics-traffic");
 
 function formatDateLabel(isoString) {
   if (!isoString) return null;
@@ -293,6 +294,12 @@ module.exports = function(eleventyConfig) {
     const month = parseInt(match[2], 10);
     if (month < 1 || month > 12) return dateStr;
     return `${MONTH_NAMES[month - 1]} ${year}`;
+  });
+
+  const analyticsTrafficScript = renderAnalyticsTrafficScript(require("./src/_data/site.json").analytics.ga4MeasurementId);
+  eleventyConfig.addTransform("analyticsTraffic", function(content, outputPath) {
+    if (!outputPath || !outputPath.endsWith(".html")) return content;
+    return content.replace(/<head\b[^>]*>/i, (head) => head + analyticsTrafficScript);
   });
 
   eleventyConfig.addTransform("entitySchemaCoverage", function(content, outputPath) {
