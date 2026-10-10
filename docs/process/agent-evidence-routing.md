@@ -31,6 +31,36 @@ truth the task needs.
 | OS or native-app control | Computer Use | Native apps, permission prompts, QR-code flows, desktop-only workflows, browser surfaces the Browser/Chrome tools cannot control | Default website review or simple localhost checks |
 | External current truth | Web search / live browse | SERPs, competitors, current official docs, pricing, laws, platform behavior, volatile facts | Repo truth, local source behavior, or uncited claims |
 
+## Keep Agent Visits Out Of GA4
+
+For public-site browser QA, add `sv_developer=1` to the first URL on each
+production origin you use (`seascape-vacations.com` or `www.seascape-vacations.com`).
+For example: `https://seascape-vacations.com/?sv_developer=1`. The marker persists
+in that origin's browser storage across pages and sessions. Keep it set in a
+dedicated agent browser. In a shared human browser, finish QA with
+`?sv_developer=0` on the same origin to remove the marker. If storage is blocked,
+include `sv_developer=1` on every QA navigation.
+
+Built pages apply Google's `ga-disable-<measurement ID>` switch before any GA4
+loader: explicit agent markers, `navigator.webdriver` automation, and every
+nonproduction hostname are excluded from GA4 collection. Normal visitors on
+the two production hosts retain tracking. The build transform covers legacy
+standalone guides as well as shared layouts. Do not change GA4 filters, infer
+agent identity from country, or remove historical data to prove this exclusion.
+
+The marker controls this site's GA4 only. It does not change Hostaway's hosted
+booking engine; intercept Analytics collection requests there during browser QA,
+or keep the checkout journey synthetic. Unmarked browser agents that do not
+expose `navigator.webdriver` need the explicit marker; this is not a general
+bot detector.
+
+Verify with `npm run build` and
+`node --test scripts/enforcement/analytics-traffic.test.js`. That test executes
+built scripts, checks exclusion before GA4 configuration, covers marker
+persistence and removal, and confirms ordinary visitor tracking remains enabled.
+Browser proof must intercept Analytics collection endpoints instead of sending
+unlabeled QA events to the real property. Historical traffic stays unchanged.
+
 ## Website Review Pattern
 
 For website design or copy-adjacent changes:

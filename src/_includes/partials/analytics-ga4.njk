@@ -100,10 +100,10 @@
 
         window.seascapeSanitizeAnalyticsPayload = window.seascapeSanitizeAnalyticsPayload || sanitizeAnalyticsPayload;
 
-        window.__seascapeAnalyticsSuppressed = isLocalHost;
+        window.__seascapeAnalyticsSuppressed = isLocalHost || window.__seascapeAnalyticsSuppressed;
         window.gtag = window.gtag || gtag;
 
-        if (isLocalHost) {
+        if (window.__seascapeAnalyticsSuppressed) {
             window.seascapeTrackEvent = function(eventName, params) {
                 if (!eventName) return;
                 window.dataLayer.push({
