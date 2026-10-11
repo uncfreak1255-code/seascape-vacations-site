@@ -11,7 +11,7 @@
 - secondary keywords: Anna Maria Island weather by month, Anna Maria Island water temperature
 - audience pattern: reader scans the quick answer, the month list and the table; numbers must agree across them.
 - proof source: `src/guides/anna-maria-island-weather.html` table (NOAA 1991–2020 normals, Sarasota-Bradenton Airport USW00012871; water proxy NOAA station 8726384 at Port Manatee). Rate and crowd labels: `seascape-hub/context/seasonal-patterns.md` season definitions (Peak Feb–Mar; High Dec–Jan, Apr, Jun–Jul; Shoulder May, Aug, Nov; Off Sep–Oct) at hub main 0d77fea3.
-- required internal links: /guides/anna-maria-island-weather/ (added in the table source note), /stays/anna-maria-island-vacation-rentals/ (existing, kept)
+- required internal links: /guides/anna-maria-island-weather/, /stays/anna-maria-island-vacation-rentals/
 - CTA target: existing booking kit, unchanged.
 - anti-claims: no ranking, citation or conversion lift claim. No ADR or occupancy figure. No new amenity or capacity claim. No vendor names.
 
