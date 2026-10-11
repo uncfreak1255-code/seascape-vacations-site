@@ -321,13 +321,13 @@ test("visual test mode keeps fixture availability live for deterministic snapsho
   }
 });
 
-test("Coastal Stay keeps final identity, ten guests and provider conflicts outside advertised facts", () => {
+test("The Coastal keeps final identity, ten guests and provider conflicts outside advertised facts", () => {
   const home = propertiesData.normalizeProperties(fallbackProperties).find(p => p.slug === "coastal-stay");
   assert.ok(home);
   assert.equal(home.id, "599394");
-  assert.equal(home.name, "Pickleball, Pool, Spa, Hoops & Mini Golf");
-  assert.equal(home.cardName, "Coastal Stay", "homepage and catalog cards show the short Coastal Stay name");
-  assert.equal(home.postalCode, "34209", "Coastal Stay structured data carries its postal code (7410 13th Ave W, Bradenton FL 34209)");
+  assert.equal(home.name, "The Coastal");
+  assert.equal(home.cardName, "The Coastal", "homepage and catalog cards match the approved Hostaway name");
+  assert.equal(home.postalCode, "34209", "The Coastal structured data carries its postal code (7410 13th Ave W, Bradenton FL 34209)");
   assert.equal(propertiesData.normalizeProperties(fallbackProperties).find(p => p.slug === "dockside-dreams").cardName, "Dockside Dreams", "homes without a curated card name fall back to their name");
   assert.equal(home.guests, 10);
   assert.equal(home.bedrooms, 3);
@@ -349,7 +349,7 @@ test("legacy cache requires every curated exact identity after onboarding", () =
   assert.equal(propertiesData.normalizeCompleteCachedProperties({ properties: wrongIdentity }), null);
 });
 
-test("unreadable public calendar leaves Coastal Stay availability unknown", async t => {
+test("unreadable public calendar leaves The Coastal availability unknown", async t => {
   const https = require("node:https");
   const { EventEmitter } = require("node:events");
   t.mock.method(https, "request", () => {

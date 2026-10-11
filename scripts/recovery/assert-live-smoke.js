@@ -51,7 +51,7 @@ const stablePropertyDetailLinks = [
   { href: "/properties/river-house/", label: "View River House details" },
   { href: "/properties/bradenton-pool-home/", label: "View Bradenton Pool Home details" },
   { href: "/properties/blue-house/", label: "View Pickleball Pool Home Retreat details" },
-  { href: "/properties/coastal-stay/", label: "View Coastal Stay details" }
+  { href: "/properties/coastal-stay/", label: "View The Coastal details" }
 ];
 
 function requireIncludes(path, body, fragments) {
