@@ -40,19 +40,19 @@
 | SERP observed date | 2026-10-11 |
 | SERP stale after | 2026-10-18 |
 | Current proof | Source inspection at origin/main 3254f9d: the guide's list, table and FAQ disagree with each other and with the weather guide. Earlier note (2026-10-04) found the guide absent from a nine-result public sample. Result order is not a measured rank. |
-| Top visible competitors | islaguru.com best-time article, islandreal.com weather page, wander.com season guide, in an unlocated public search sample. |
-| Competitor angle | Season-by-season and month-by-month lists. |
-| Visual/format gap | Not inspected beyond titles in this pass. No format change is made here. |
+| Top visible competitors | islaguru.com best-time article, islandreal.com weather page, wander.com season guide, in an unlocated public search sample. No ranking claim. |
+| Competitor angle | islandreal.com: one NOAA 1991–2020 normals table (high, low, rain) with a seven-question FAQ and no water figures. islaguru.com: month-by-month use list with seasonal temperature ranges only, no source, no table, no FAQ. |
+| Visual/format gap | Neither fetched page has a chart. One has a sourced table; the other has no data table. No format change is made in this PR. |
 | Seascape gap | Numbers that disagree on the same page weaken a page meant to be quoted. Seascape's sourced normals live on a sibling guide and are not used here. |
 | Search fit | Keeps the winner guide consistent with its sibling. No new page. |
 | Local/GBP proof | Not applicable. |
 | AEO/readback note | No citation-lift claim. Read back live AI answers later through OpenSEO on Sawyer's Mac. |
 | Recommendation | Reconcile the numbers; ship the tiles figure separately. |
-| Attack status | none found after named checks |
+| Attack status | completed |
 | Query variants inspected | best time to visit Anna Maria Island month by month weather water temperature |
 | SERP source | WebSearch standard snapshot on 2026-10-11, no location control. Many results were scraper domains and are ignored. |
-| Competitor URLs inspected | none opened in this pass; titles and domains from the search snapshot only. Named failed check: no page fetch was run because this change adds no new claim and no format. |
-| Content gap and Seascape answer | Seascape answers with sourced normals and a stated proxy station. |
+| Competitor URLs inspected | https://www.islandreal.com/blog/anna-maria-island-weather/ ; https://islaguru.com/articles/best-time-visit-anna-maria-island (both fetched 2026-10-11) |
+| Content gap and Seascape answer | A sourced table is the standard format. Seascape adds a stated water proxy station, which islandreal.com lacks, and a crowd and rate read that neither competitor gives. |
 | Design/format strategy | No visible layout change. Table gains six rows and a one-line source note. |
 | Seascape proof available | Weather guide NOAA table; Hub season definitions. |
 | Tools/plugins used | WebSearch, source inspection. No paid tool. |
