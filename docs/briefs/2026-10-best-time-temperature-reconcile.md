@@ -1,7 +1,7 @@
 # Brief: Best-time guide temperature reconcile
 
 - lifecycle: active
-- task scope: reconcile every temperature figure on `/guides/best-time-visit-anna-maria-island/` with the NOAA normals already published on `/guides/anna-maria-island-weather/`, complete the monthly table to 12 months with a source note, and align the water FAQ answer (visible text and FAQPage JSON-LD). No new page, no layout change.
+- task scope: reconcile every temperature figure on `/guides/best-time-visit-anna-maria-island/` with the NOAA normals already published on `/guides/anna-maria-island-weather/`, complete the monthly table to 12 months with a source note, and align the water FAQ answer (visible text and FAQPage JSON-LD). No new page, no layout change, no date change.
 - completion or successor: not complete; record the merged PR here when it lands.
 
 ## Content Gate Inputs
@@ -19,7 +19,7 @@
 
 - Before: the 12-month list, the 6-row table, the prose and the FAQ gave different numbers for the same month (May high 85°F in the list and 88°F in the table; November high 78°F against 80.0°F in NOAA normals; water 65°F in January against a 62.7°F proxy). None of the numbers had a source on the page.
 - After: every temperature on the page matches the NOAA normals on the weather guide, rounded to whole degrees in prose and shown to one decimal in the table; the table lists all 12 months; a source note names the stations.
-- Waits: the 12-month tiles figure (variant C, picked by Sawyer 2026-10-11) is a separate PR after this one merges. Rain wording ("virtually no rain" in November; the dry January note) and the "Peak Season: December Through April" heading are left as written and flagged in the PR.
+- Waits: the `dateModified` and "Updated" label stay at July 2026 because two enforcement tests pin them; a re-date is a separate decision after a full fact review. The "Beach swimming: May through October" bullet and the "Peak Season: December Through April" heading are left as written. The 12-month tiles figure (variant C, picked by Sawyer 2026-10-11) is a separate PR after this one merges. Rain wording ("virtually no rain" in November; the dry January note) and the "Peak Season: December Through April" heading are left as written and flagged in the PR.
 
 ## Experiment And Readback Contract
 
