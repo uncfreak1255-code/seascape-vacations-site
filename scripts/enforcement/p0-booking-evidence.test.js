@@ -65,7 +65,7 @@ test('every generated stay record rejects unsupported price advantages and autom
 
 test('Bradenton-Sarasota dining comparison uses current menus in body and FAQ schema', () => {
   const s = read('src/guides/bradenton-vs-sarasota-restaurants/index.html');
-  assert.doesNotMatch(s, /\$\d|Generally yes\. Expect to spend|Average Dinner|better atmosphere, lower prices|lowest rate|Stay in Bradenton for the value/i);
+  assert.doesNotMatch(s, /\$\d|Generally yes\. Expect to spend|Average Dinner|better atmosphere, lower prices|lowest rate|No platform fees|reasonable prices|Not cheap|Cheap Eats|happy hour deals|full dinner price tag|Stay in Bradenton for the value/i);
   const faq = [...s.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)]
     .map((m) => JSON.parse(m[1])).find((schema) => schema['@type'] === 'FAQPage');
   const answer = faq.mainEntity.find((q) => q.name === 'Are Bradenton restaurants cheaper than Sarasota?').acceptedAnswer.text;
@@ -83,6 +83,7 @@ test('booking and cost guides compare complete quotes without fixed savings or f
     const s = read(p);
     assert.doesNotMatch(s, /\$[\d,]+|\b10[-–]15%|\b20[-–]40%|\b30[-–]40%/, p);
     assert.match(s, /complete checkout total/i, p);
+    assert.doesNotMatch(s, /Good deals|at mainland prices|No platform fees|best value|lowest rate/i, p);
     assert.match(s, /<table\b/, `${p}: retain the comparison structure`);
   }
   const data = JSON.stringify(JSON.parse(read('src/_data/seoPages.json')));
