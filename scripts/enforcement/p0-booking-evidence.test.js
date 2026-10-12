@@ -43,6 +43,42 @@ test('booking report and its feeder withhold numbers without reviewed underlying
   }
 });
 
+test('withdrawn benchmark does not claim a verified sample or available method in schema or body', () => {
+  const s = read('src/guides/florida-gulf-coast-vacation-rental-market-report-2026.html');
+  const schemas = [...s.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map((m) => JSON.parse(m[1]));
+  const article = schemas.find((schema) => schema['@type'] === 'Article');
+  const faq = schemas.find((schema) => schema['@type'] === 'FAQPage');
+  assert.match(article.description, /findings are withheld/i);
+  assert.doesNotMatch(JSON.stringify(faq), /from five|figures describe|verified (?:sample|dataset)/i);
+  assert.doesNotMatch(s, /value of this small dataset|records the fixed dataset and method|Historical portfolio signals/i);
+  assert.match(s, /explains why earlier numeric findings are withheld/i);
+});
+
+test('stay comparisons do not promise lower lodging costs or automatic long-stay discounts', () => {
+  const pages = JSON.parse(read('src/_data/seoPages.json')).vacationer;
+  const slugs = ['siesta-key-area-vacation-rentals', 'beach-house-rentals-florida-gulf-coast',
+    'bradenton-vacation-rentals-near-beaches', 'winter-vacation-rentals-florida-gulf-coast',
+    'honeymoon-rentals-anna-maria-island', 'affordable-vacation-rentals-florida-gulf-coast',
+    'anna-maria-island-beachfront-rentals'];
+  for (const slug of slugs) {
+    const page = pages.find((entry) => entry.slug === slug);
+    assert.ok(page, slug);
+    const text = JSON.stringify(page);
+    assert.doesNotMatch(text, /well under|significantly lower rates|usually costs less|lower direct-book total|and lower rates|groups of 8\+ come out ahead|It's cheaper|significant discounts apply|deepest discounts|more you save per night|For families and groups, absolutely|at a similar nightly rate/i, slug);
+    assert.match(text, /complete checkout total/i, slug);
+  }
+});
+
+test('Bradenton-Sarasota dining comparison uses current menus in body and FAQ schema', () => {
+  const s = read('src/guides/bradenton-vs-sarasota-restaurants/index.html');
+  assert.doesNotMatch(s, /\$\d|Generally yes\. Expect to spend|Average Dinner|better atmosphere, lower prices/i);
+  const faq = [...s.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)]
+    .map((m) => JSON.parse(m[1])).find((schema) => schema['@type'] === 'FAQPage');
+  const answer = faq.mainEntity.find((q) => q.name === 'Are Bradenton restaurants cheaper than Sarasota?').acceptedAnswer.text;
+  assert.match(answer, /Compare current menus/);
+  assert.ok(s.includes(`<p>${answer}</p>`), 'visible answer matches FAQ schema');
+});
+
 test('booking and cost guides compare complete quotes without fixed savings or fabricated trip totals', () => {
   for (const p of [
     'src/guides/booking-direct-vacation-rentals.html',

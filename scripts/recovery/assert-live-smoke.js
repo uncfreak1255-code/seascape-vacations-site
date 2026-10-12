@@ -27,6 +27,8 @@ const targets = [
   { path: "/property-management/vacation-rental-taxes-florida/", status: 200 },
   { path: "/property-management/vacation-rental-insurance-florida/", status: 200 },
   { path: "/guides/booking-direct-vacation-rentals/", status: 200 },
+  { path: "/guides/florida-gulf-coast-vacation-rental-market-report-2026/", status: 200 },
+  { path: "/guides/bradenton-vs-sarasota-restaurants/", status: 200 },
   { path: "/guides/anna-maria-island-vacation-cost/", status: 200 },
   { path: "/research/gulf-coast-vacation-booking-trends-2026/", status: 200 },
   { path: "/research/real-cost-florida-beach-vacation-bradenton-sarasota-ami-2026/", status: 200 },
@@ -407,6 +409,16 @@ function validateTargetResponse(target, response) {
       "This tax guide is not available for reliance.",
       "Please consult a qualified tax professional."
     ]);
+  }
+
+  if (target.path === "/guides/florida-gulf-coast-vacation-rental-market-report-2026/") {
+    requireIncludes(target.path, response.body, ["Numeric findings are withheld", "archived reservation export", "reviewed calculations"]);
+    requireExcludes(target.path, response.body, ["from five", "545 confirmed", "value of this small dataset", "records the fixed dataset and method"]);
+  }
+
+  if (target.path === "/guides/bradenton-vs-sarasota-restaurants/") {
+    requireIncludes(target.path, response.body, ["Compare current menus"]);
+    requireExcludes(target.path, response.body, ["$15-30", "$25-60", "Average Dinner", "Generally yes. Expect to spend"]);
   }
 
   if (target.path === "/property-management/vacation-rental-insurance-florida/") {

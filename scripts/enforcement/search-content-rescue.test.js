@@ -74,7 +74,6 @@ test("market page limits the historical portfolio benchmark and withholds unveri
 
   for (const required of [
     "Bradenton-Sarasota Vacation Rental Benchmark 2026",
-    '"dateModified": "2026-10-05"',
     "Numeric findings are withheld",
     "archived reservation export",
     "Seascape-only scope",
@@ -84,6 +83,13 @@ test("market page limits the historical portfolio benchmark and withholds unveri
   ]) {
     assert.match(source, new RegExp(required.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "i"));
   }
+
+  const article = [...source.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)]
+    .map((match) => JSON.parse(match[1])).find((schema) => schema['@type'] === 'Article');
+  assert.match(article.dateModified, /^\d{4}-\d{2}-\d{2}$/);
+  const visibleDate = new Date(`${article.dateModified}T00:00:00Z`)
+    .toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+  assert.ok(source.includes(`Updated ${visibleDate}`), 'schema modification date matches the visible date');
 
   for (const unsupported of [
     "post-pandemic booking surge has normalized",
