@@ -1,8 +1,19 @@
-# Five Roles
+# SEO Task Ownership
 
-The SEO operating model for this repo. Referenced from `CLAUDE.md` but kept here
-because it is workflow context that only applies while running a batch, not
-every-turn truth.
+These five names describe responsibilities. They do not identify model
+versions or require five separate agent sessions for every task. Choose the
+execution route in `docs/process/batch-workflow.md` before dispatching agents.
+
+For source-backed existing-guide accuracy repairs, use one lead and one
+read-only targeted reviewer. The lead owns evidence, scope and implementation;
+the reviewer covers voice, factual consistency and release proof. The existing
+Release Gate card can perform that combined review. The five-role batch lane
+continues to govern new guides, search-intent/routing changes and meaningful
+rescues, including the design specialist when required.
+
+The bounded comparison in
+`docs/research/2026-10-12-seo-workflow-comparison.md` supports this repair route.
+It does not establish a winner for all SEO work or all models.
 
 | Role | Write Access | Job |
 | --- | --- | --- |

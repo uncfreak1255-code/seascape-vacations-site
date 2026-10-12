@@ -8,7 +8,7 @@ active skill set is not exhaustively re-listed here on purpose — it lives in
 ## Local skills
 
 The active local skill layer is intentionally lean and site-specific. Use the
-skills in `.agents/skills/` as helpers under the five-role workflow, not as
+skills in `.agents/skills/` as helpers under the task route in `docs/process/batch-workflow.md`, not as
 another operating system. Stale deploy, monthly-reset, broad marketing, and
 generic SEO skills stay out of active discovery unless a new `repo-dev-setup` inventory
 proves they should return.
@@ -63,6 +63,7 @@ a local skill just because a new model or marketplace package exists.
 | --- | --- | --- | --- |
 | New guide | Current Codex lead through Search Operator and SEO Architect | Analytics receipt, DataForSEO or current web SERP, inspected competitor URLs, active brief, content rubric, design specialist, copy chain, and rendered proof | Sol or another current design-capable model for a bounded concept/critic pass; Product Design or Creative Production only when format exploration materially helps |
 | Meaningful rescue | Current Codex lead through the regression-rescue lane | Current route proof, live SERP, inspected competitors, source truth, active brief, screenshots, and design specialist when hierarchy or format changes | One bounded design or content challenger when the first pass is materially uncertain |
+| Existing-guide accuracy repair | Current lead through the repair route in `docs/process/batch-workflow.md` | Approved brief, source facts, style/content gate, consistency proof, required Site checks and one combined voice/release review | One read-only targeted reviewer; use the existing Release Gate card or equivalent native reviewer |
 | Tiny fix | Codex only | Relevant source plus focused content/build/link proof | No fanout or donor plugin unless search intent, page role, or visual hierarchy changes |
 
 Figma is optional and becomes the handoff only when an actual approved Figma
@@ -95,7 +96,7 @@ Global marketing skills may help only when the current session exposes a
 relevant skill. Their absence does not block the existing local workflow.
 Use native reasoning and `docs/style/` for the three editorial steps in
 `docs/process/content-quality-gate.md`. Optional helpers do not create local
-authority, bypass the five roles, or replace Seascape Hub as the source of
+authority, bypass the required task responsibilities, or replace Seascape Hub as the source of
 business context.
 
 ## Agent-surface-audit receipts
@@ -239,3 +240,14 @@ entry is the receipt the governance rule requires for any skill change.
   skill. Decision: add a metadata-only local plugin scanner plus comparison,
   field-journal, planning, destination-overview, and general-page routing. The
   scanner never installs, copies, invokes, or promotes a donor by itself.
+
+### 2026-10-12 — bounded guide-repair workflow comparison
+
+A same-task replay on one sealed pre-fix source tree retained one lead plus a
+targeted reviewer for existing-guide accuracy repairs: 5:28 versus 8:19 agent
+execution and $1.45 versus $2.33 CLI-estimated usage. Both ended with no material
+defects and needed one taxonomy clarification/repair round. This is initial
+evidence for this task class, not reduced-supervision or universal-model proof.
+Existing cards and larger-batch/design requirements remain. No new skill,
+plugin, agent persona or recurring job was added. See
+`docs/research/2026-10-12-seo-workflow-comparison.md`.
