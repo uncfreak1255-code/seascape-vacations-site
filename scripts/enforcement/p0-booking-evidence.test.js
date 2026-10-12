@@ -64,7 +64,7 @@ test('stay comparisons do not promise lower lodging costs or automatic long-stay
     const page = pages.find((entry) => entry.slug === slug);
     assert.ok(page, slug);
     const text = JSON.stringify(page);
-    assert.doesNotMatch(text, /well under|significantly lower rates|usually costs less|lower direct-book total|and lower rates|groups of 8\+ come out ahead|It's cheaper|significant discounts apply|deepest discounts|more you save per night|For families and groups, absolutely|at a similar nightly rate/i, slug);
+    assert.doesNotMatch(text, /well under|significantly lower rates|usually costs less|lower direct-book total|and lower rates|groups of 8\+ come out ahead|It's cheaper|significant discounts apply|deepest discounts|more you save per night|For families and groups, absolutely|at a similar nightly rate|best available rate|on-island nightly premiums|stronger overall value|same spend|at that price point|near-island pricing usually|beachfront premium|address premium|better value|better rates|Rates are highest|without paying true beachfront pricing|beachfront markup|pay up for/i, slug);
     assert.match(text, /complete checkout total/i, slug);
   }
 });
