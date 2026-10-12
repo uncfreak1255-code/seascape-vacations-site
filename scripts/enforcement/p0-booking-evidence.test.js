@@ -71,7 +71,7 @@ test('stay comparisons do not promise lower lodging costs or automatic long-stay
 
 test('Bradenton-Sarasota dining comparison uses current menus in body and FAQ schema', () => {
   const s = read('src/guides/bradenton-vs-sarasota-restaurants/index.html');
-  assert.doesNotMatch(s, /\$\d|Generally yes\. Expect to spend|Average Dinner|better atmosphere, lower prices/i);
+  assert.doesNotMatch(s, /\$\d|Generally yes\. Expect to spend|Average Dinner|better atmosphere, lower prices|lowest rate|Stay in Bradenton for the value/i);
   const faq = [...s.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)]
     .map((m) => JSON.parse(m[1])).find((schema) => schema['@type'] === 'FAQPage');
   const answer = faq.mainEntity.find((q) => q.name === 'Are Bradenton restaurants cheaper than Sarasota?').acceptedAnswer.text;
