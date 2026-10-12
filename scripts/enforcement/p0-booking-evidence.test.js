@@ -43,6 +43,36 @@ test('booking report and its feeder withhold numbers without reviewed underlying
   }
 });
 
+test('withdrawn benchmark does not claim a verified sample or available method in schema or body', () => {
+  const s = read('src/guides/florida-gulf-coast-vacation-rental-market-report-2026.html');
+  const schemas = [...s.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map((m) => JSON.parse(m[1]));
+  const article = schemas.find((schema) => schema['@type'] === 'Article');
+  const faq = schemas.find((schema) => schema['@type'] === 'FAQPage');
+  assert.match(article.description, /findings are withheld/i);
+  assert.doesNotMatch(JSON.stringify(faq), /from five|figures describe|verified (?:sample|dataset)/i);
+  assert.doesNotMatch(s, /value of this small dataset|records the fixed dataset and method|Historical portfolio signals/i);
+  assert.match(s, /explains why earlier numeric findings are withheld/i);
+});
+
+test('every generated stay record rejects unsupported price advantages and automatic discounts', () => {
+  const pages = JSON.parse(read('src/_data/seoPages.json')).vacationer;
+  assert.ok(pages.length > 0, 'generated stay data is present');
+  for (const page of pages) {
+    const text = JSON.stringify(page);
+    assert.doesNotMatch(text, /well under|significantly lower rates|usually costs less|lower direct-book total|and lower rates|groups of 8\+ come out ahead|It's cheaper|significant discounts apply|deepest discounts|more you save per night|For families and groups, absolutely|at a similar nightly rate|best available rate|best monthly rates|best per-night value|our best value|on-island nightly premiums|stronger overall value|same spend|same-budget island|at that price point|near-island pricing usually|beachfront premium|address premium|better value|better rates|rates are (?:highest|lower)|lower-rate season|rates below|winter weeks cost more|premium rates|priciest|higher per-night rates|lower per-night math|flatten the per-night cost|Stay longer and save|well below hotel|affordable compared to|helps lower the total|Lower Total|higher all-in total|wins on space and total cost|pay more to stay|without the extra platform fees|fewer extra fees|keeps platform fees out|keep more of the fishing budget|beat paying more|without paying true beachfront pricing|(?:beachfront|island) markup|money better spent|Vacation Deals|500\+ Airbnb reviews|500 guest reviews|qualify for monthly pricing|pay up for/i, page.slug);
+  }
+});
+
+test('Bradenton-Sarasota dining comparison uses current menus in body and FAQ schema', () => {
+  const s = read('src/guides/bradenton-vs-sarasota-restaurants/index.html');
+  assert.doesNotMatch(s, /\$\d|Generally yes\. Expect to spend|Average Dinner|better atmosphere, lower prices|lowest rate|No platform fees|reasonable prices|Not cheap|Cheap Eats|happy hour deals|full dinner price tag|Stay in Bradenton for the value/i);
+  const faq = [...s.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)]
+    .map((m) => JSON.parse(m[1])).find((schema) => schema['@type'] === 'FAQPage');
+  const answer = faq.mainEntity.find((q) => q.name === 'Are Bradenton restaurants cheaper than Sarasota?').acceptedAnswer.text;
+  assert.match(answer, /Compare current menus/);
+  assert.ok(s.includes(`<p>${answer}</p>`), 'visible answer matches FAQ schema');
+});
+
 test('booking and cost guides compare complete quotes without fixed savings or fabricated trip totals', () => {
   for (const p of [
     'src/guides/booking-direct-vacation-rentals.html',
@@ -53,6 +83,7 @@ test('booking and cost guides compare complete quotes without fixed savings or f
     const s = read(p);
     assert.doesNotMatch(s, /\$[\d,]+|\b10[-–]15%|\b20[-–]40%|\b30[-–]40%/, p);
     assert.match(s, /complete checkout total/i, p);
+    assert.doesNotMatch(s, /Good deals|at mainland prices|No platform fees|best value|lowest rate/i, p);
     assert.match(s, /<table\b/, `${p}: retain the comparison structure`);
   }
   const data = JSON.stringify(JSON.parse(read('src/_data/seoPages.json')));
