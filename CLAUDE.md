@@ -15,8 +15,10 @@ require reading unrelated SEO, design or measurement documents at startup.
 - Skills: Claude loads `.claude/skills/<name>`, a relative link to the
   maintained source in `.agents/skills/<name>`; both resolve to one procedure
   (`AGENTS.md` -> Agent Skills lists the per-skill routing lines).
-- The five SEO OS role cards live in `.claude/agents/`; `.claude/settings.json`
-  holds this repo's Claude permissions.
+- SEO role cards live in `.claude/agents/`. Select the task route in
+  `docs/process/batch-workflow.md`; source-backed existing-guide repairs use
+  one lead plus one targeted reviewer. `.claude/settings.json` holds this
+  repo's Claude permissions.
 - For UI/visual work, dispatch subagents with `model: "sonnet"`.
 - Worktrees: when the harness pins the session to `.claude/worktrees/<name>`,
   that is the isolated worktree `AGENTS.md` asks for. Work there on the

@@ -31,7 +31,9 @@ This is the writing role. It owns source edits for the chosen batch.
 2. make the source edits
 3. update the brief or portfolio doc if the batch changes routing truth
 4. run the release checks
-5. hand off to Voice Editor and Release Gate before promotion
+5. follow the review route in `docs/process/batch-workflow.md`: existing-guide
+   accuracy repairs use one combined targeted reviewer; other batches hand off
+   to Voice Editor and Release Gate before promotion
 
 ## Hard Rules
 

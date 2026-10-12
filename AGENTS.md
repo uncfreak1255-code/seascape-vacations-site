@@ -201,10 +201,10 @@ These are starting points; the Testing section still governs required checks.
 - current execution context lives in `docs/status/`
 - `docs/status/next-batch.md` is the canonical reread handoff surface for volatile measurement truth; after every reread it must say exactly one of `blocked by freshness`, `fresh but below threshold`, or `open next batch`, plus one concrete next move
 - `docs/status/current-state.md` should keep durable repo truth only and must not duplicate volatile reread windows or `data_date` details that belong in `docs/status/next-batch.md`
-- the five SEO OS role cards live in `.claude/agents/`; the on-demand role model and local skill/external-pack policy load from `docs/process/five-roles.md` and `docs/process/skill-policy.md`
-- active repo-local skills are limited to `.agents/skills/accessibility`, `.agents/skills/content-quality-rubric`, `.agents/skills/design-review`, `.agents/skills/internal-link-targeting`, `.agents/skills/next-batch-gate`, `.agents/skills/owner-opportunity-intake`, `.agents/skills/owner-reply-intake`, `.agents/skills/owner-proof-integrity`, `.agents/skills/page-cro`, `.agents/skills/property-truth-regeneration`, `.agents/skills/schema-markup`, `.agents/skills/seascape-design-critic`, `.agents/skills/seascape-design-specialist`, `.agents/skills/serp-ctr-title-rewrite`, `.agents/skills/site-architecture`, and `.agents/skills/openseo-review`
+- SEO role cards live in `.claude/agents/`; responsibilities and task routing load from `docs/process/five-roles.md`, `docs/process/batch-workflow.md`, and `docs/process/skill-policy.md`
+- active repo-local skills are limited to `.agents/skills/accessibility`, `.agents/skills/content-quality-rubric`, `.agents/skills/design-review`, `.agents/skills/internal-link-targeting`, `.agents/skills/next-batch-gate`, `.agents/skills/owner-opportunity-intake`, `.agents/skills/owner-reply-intake`, `.agents/skills/owner-proof-integrity`, `.agents/skills/page-cro`, `.agents/skills/property-truth-regeneration`, `.agents/skills/schema-markup`, `.agents/skills/seascape-design-critic`, `.agents/skills/seascape-design-specialist`, `.agents/skills/serp-ctr-title-rewrite`, `.agents/skills/site-architecture`, and `.agents/skills/openseo-review`, plus the Claude-only UI craft skills `.claude/skills/animate`, `.claude/skills/better-ui`, `.claude/skills/break-ui`, `.claude/skills/emil-design-eng`, `.claude/skills/mobile-native`, and `.claude/skills/review-animations` (moved here from the global set on 2026-10-12, declared in `.agents/skills-divergence.json`; load only for UI, motion, or mobile-touch work, and they never replace `DESIGN.md` or the design-review gates)
 - `.claude/skills/` should mirror only those active site/design skills; copied marketing, deploy, monthly reset, and generic SEO skills are not live authority
-- global marketing skills in `/Users/sawbeck/.codex/skills/` may be used as advisory helpers for CRO, SEO, copy, psychology, analytics, and growth decisions, but they do not override this repo's source files, briefs, status docs, or five-role workflow
+- global marketing skills in `/Users/sawbeck/.codex/skills/` may be used as advisory helpers for CRO, SEO, copy, psychology, analytics, and growth decisions, but they do not override this repo's source files, briefs, status docs, or the task route in `docs/process/batch-workflow.md`
 - canonical lane for internal-link family/page inbound planning is `.agents/skills/internal-link-targeting`
 - canonical lane for live SERP CTR title-rewrite recommendation packs is `.agents/skills/serp-ctr-title-rewrite`; ship title/meta edits only when `docs/status/next-batch.md` is not `blocked by freshness`
 - AI discovery, GEO/AEO, and schema work follows the Search Operator role in `.claude/agents/search-operator.md` and `docs/process/seo-competitor-operating-loop.md` for proof and attack research, plus `.agents/skills/schema-markup` for implementation rules
@@ -347,7 +347,9 @@ as a prerequisite for a bounded task with independent proof. Apply the
 
 ## Required Batch Workflow
 
-Full order of operations: `docs/process/batch-workflow.md`. The visible-copy
+Choose the task route in `docs/process/batch-workflow.md`: source-backed
+existing-guide accuracy repairs use one lead plus one targeted reviewer; other
+SEO batches retain their required specialist lane. The visible-copy
 order is non-negotiable: **Draft the copy**, then **Remove internal wording**,
 then **Check voice and specificity** using the active brief and `docs/style/`.
 Complete these steps before content lint through `npm run lint:content` or
