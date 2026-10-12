@@ -101,6 +101,7 @@ Anchors: "family vacations" (longboat-key, best-time), "best family beach destin
 - routes to smoke test: the four donor guides and the family guide
 - commands to run: npm run build && npm run lint:content && node --test scripts/enforcement/internal-link-floor.test.js && npm run verify:release -- --range origin/main
 - regression risks to watch: full-page visual baselines on the four donor guides; guest CTA events must stay unchanged
+- visual baseline note (2026-10-12): only `guide-ami-vs-siesta-key` changed on screen (one added in-body link), so only its desktop and mobile baselines were refreshed. The other visual routes passed unchanged.
 
 ## Done When
 
