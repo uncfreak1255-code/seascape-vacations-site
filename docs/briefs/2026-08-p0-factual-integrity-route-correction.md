@@ -294,7 +294,8 @@ Both professional-review pages return `noindex, nofollow`; `/contact` reaches
 `/#contact`. Search snapshots do not establish current deployment content.
 
 Remaining scope: remove blanket lodging price advantages and automatic
-long-stay savings in existing stay data; replace unsourced Bradenton/Sarasota
+long-stay savings across all 64 generated stay records, including nested copy
+and FAQ schema; replace unsourced Bradenton/Sarasota
 dining cost bands with current-menu comparisons; remove the Longboat comparison's
 lower-price CTA; remove the withdrawn benchmark's residual five-home schema and
 claims that the missing dataset/method are available. Preserve route identities,
@@ -341,3 +342,8 @@ record that limitation rather than treating them as passed.
   No visual threshold or assertion changed. Checks are rerun after that refresh.
 - PR #714 remains the single correction. Merge and production deployment are
   separate; this source receipt alone does not claim live completion.
+- Final re-review found the seven-record regression scope was incomplete.
+  Sweep all generated stay records for seasonal, short/long-stay, channel and
+  island/mainland price advantages. Remove unsubstantiated guest quotations
+  rather than rewriting them as reviews. Retain actual listing charges and offers.
+  The regression now covers every vacationer record, without a slug allowlist.

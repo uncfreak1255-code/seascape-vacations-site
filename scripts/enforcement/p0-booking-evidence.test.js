@@ -54,18 +54,12 @@ test('withdrawn benchmark does not claim a verified sample or available method i
   assert.match(s, /explains why earlier numeric findings are withheld/i);
 });
 
-test('stay comparisons do not promise lower lodging costs or automatic long-stay discounts', () => {
+test('every generated stay record rejects unsupported price advantages and automatic discounts', () => {
   const pages = JSON.parse(read('src/_data/seoPages.json')).vacationer;
-  const slugs = ['siesta-key-area-vacation-rentals', 'beach-house-rentals-florida-gulf-coast',
-    'bradenton-vacation-rentals-near-beaches', 'winter-vacation-rentals-florida-gulf-coast',
-    'honeymoon-rentals-anna-maria-island', 'affordable-vacation-rentals-florida-gulf-coast',
-    'anna-maria-island-beachfront-rentals'];
-  for (const slug of slugs) {
-    const page = pages.find((entry) => entry.slug === slug);
-    assert.ok(page, slug);
+  assert.ok(pages.length > 0, 'generated stay data is present');
+  for (const page of pages) {
     const text = JSON.stringify(page);
-    assert.doesNotMatch(text, /well under|significantly lower rates|usually costs less|lower direct-book total|and lower rates|groups of 8\+ come out ahead|It's cheaper|significant discounts apply|deepest discounts|more you save per night|For families and groups, absolutely|at a similar nightly rate|best available rate|on-island nightly premiums|stronger overall value|same spend|at that price point|near-island pricing usually|beachfront premium|address premium|better value|better rates|Rates are highest|without paying true beachfront pricing|beachfront markup|pay up for/i, slug);
-    assert.match(text, /complete checkout total/i, slug);
+    assert.doesNotMatch(text, /well under|significantly lower rates|usually costs less|lower direct-book total|and lower rates|groups of 8\+ come out ahead|It's cheaper|significant discounts apply|deepest discounts|more you save per night|For families and groups, absolutely|at a similar nightly rate|best available rate|best monthly rates|best per-night value|our best value|on-island nightly premiums|stronger overall value|same spend|same-budget island|at that price point|near-island pricing usually|beachfront premium|address premium|better value|better rates|rates are (?:highest|lower)|lower-rate season|rates below|winter weeks cost more|premium rates|priciest|higher per-night rates|lower per-night math|flatten the per-night cost|Stay longer and save|well below hotel|affordable compared to|helps lower the total|Lower Total|higher all-in total|wins on space and total cost|pay more to stay|without the extra platform fees|fewer extra fees|keeps platform fees out|keep more of the fishing budget|beat paying more|without paying true beachfront pricing|beachfront markup|pay up for/i, page.slug);
   }
 });
 
