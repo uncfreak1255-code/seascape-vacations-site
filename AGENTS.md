@@ -402,6 +402,10 @@ For any PR that changes public copy in `src/`:
   or `./scripts/design/codex-seascape-design "<task>"` when you want the
   specialist/critic lane, guide-family route, and local donor scan in one
   command. Use `npm run design:donors -- "<task>"` for a read-only route report.
+- Sawyer cannot steer design by describing it. For any visible design change,
+  show two or three rendered variants (deploy-preview links or screenshots),
+  each anchored to a named reference site from `npm run design:donors`, and ask
+  only "which one" or "keep X, lose Y". Never ask him to specify the look in words.
 - If an outside design tool introduces a new pattern or style direction, propose it as a `DESIGN.md` change first, then implement after that design law is explicit.
 
 ## Design System
