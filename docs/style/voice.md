@@ -42,6 +42,8 @@ That means:
 - Lead with owner economics, not a service laundry list.
 - Treat "busy but underperforming" as a recurring problem pattern.
 - Never flatten every owner problem into "we offer full service."
+- Never name Seascape's operating software (Hostaway, PriceLabs, any PMS vendor) in owner-facing copy; describe the capability instead ("a demand model", "one connected calendar across every platform"). Prospective owners extract the toolchain and self-manage.
+- Guest-side functional mentions stay (for example "Secure checkout through Hostaway"). The line is audience, not vocabulary. `OWNER_VENDOR_DISCLOSURE_PATTERNS` in `scripts/enforcement/content-voice.test.js` enforces it on owner routes.
 
 ## Structural Rules
 
