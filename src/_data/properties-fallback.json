@@ -202,8 +202,7 @@
     "amenities": [
       "pool",
       "hot-tub",
-      "outdoor-grill",
-      "pet-friendly"
+      "outdoor-grill"
     ],
     "highlights": [
       "Large Pool + 2 Hot Tubs",
@@ -217,7 +216,6 @@
       "putting-green",
       "game-room",
       "fast-wifi",
-      "pet-friendly",
       "single-level",
       "outdoor-living",
       "grill",
@@ -330,8 +328,8 @@
         "Bedroom 5: two twin-over-full bunk beds and two twin trundles"
       ],
       "pets": {
-        "status": "approval",
-        "text": "One dog under 30 lb may stay with host approval and an additional pet fee. Dogs may not toilet on the turf."
+        "status": "no",
+        "text": "Pets are not permitted at this home. Service animals are welcome without a pet fee; other assistance-animal questions follow applicable law and booking-platform policies."
       },
       "considerations": [
         "Driveway parking only; no street or turf parking. Ask us about space for your vehicles.",
@@ -583,7 +581,6 @@
       "hot-tub-spa",
       "game-room",
       "fast-wifi",
-      "pet-friendly",
       "single-level",
       "outdoor-living",
       "grill",
@@ -689,8 +686,8 @@
         "Bedroom 4: two full-over-full bunk beds"
       ],
       "pets": {
-        "status": "ask",
-        "text": "Ask us to confirm pet approval, size restrictions, and fees before booking."
+        "status": "no",
+        "text": "Pets are not permitted at this home. Service animals are welcome without a pet fee; other assistance-animal questions follow applicable law and booking-platform policies."
       },
       "considerations": [
         "There is one interior step in the living-room area. Ask us about your access needs.",

@@ -10,6 +10,18 @@ function loadSmokeModule() {
   return require(smokeScriptPath);
 }
 
+test("live smoke rejects stale pet approval at Oasis and River House", () => {
+  const smoke = loadSmokeModule();
+  for (const route of ["/properties/the-oasis/", "/properties/river-house/"]) {
+    const target = smoke.targets.find(entry => entry.path === route);
+    assert.ok(target);
+    const body = "Pets are not permitted at this home. Service animals are welcome without a pet fee";
+    assert.doesNotThrow(() => smoke.validateTargetResponse(target, { statusCode: 200, body }));
+    assert.throws(() => smoke.validateTargetResponse(target, { statusCode: 200, body: "Ask us to confirm pet approval" }), /missing current live marker/);
+    assert.throws(() => smoke.validateTargetResponse(target, { statusCode: 200, body: body + ' <option value="pet approval">Bringing a dog</option>' }), /stale live marker/);
+  }
+});
+
 test("live smoke script exposes reusable helpers for unit coverage", () => {
   const smoke = loadSmokeModule();
 

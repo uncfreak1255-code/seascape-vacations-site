@@ -7,6 +7,32 @@ const path = require("node:path");
 const propertiesData = require("../../src/_data/properties.js");
 const fallbackProperties = require("../../src/_data/properties-fallback.json");
 
+test("Oasis and River House reject stale cached ordinary-pet permissions without changing other homes", () => {
+  const cached = fallbackProperties.map(home => ({
+    ...home,
+    amenities: [...home.amenities, "pet-friendly"],
+    marketing_amenities: [...home.marketing_amenities, "pet-friendly"],
+    guestFacts: { ...home.guestFacts, pets: { status: "approval", text: "Pets allowed with approval." } }
+  }));
+  const normalized = propertiesData.normalizeCompleteCachedProperties({ properties: cached });
+  for (const [slug, id] of [["the-oasis", "189511"], ["river-house", "135880"]]) {
+    const home = normalized.find(home => home.slug === slug);
+    assert.equal(home.id, id);
+    assert.equal(home.guestFacts.pets.status, "no");
+    assert.doesNotMatch(home.guestFacts.pets.text, /with approval|additional pet fee/i);
+    assert.match(home.guestFacts.pets.text, /service animals/i);
+    assert.ok(!home.amenities.includes("pet-friendly"));
+    assert.ok(!home.marketing_amenities.includes("pet-friendly"));
+  }
+  for (const slug of ["dockside-dreams", "sarasota-luxe", "blue-house", "bradenton-pool-home", "coastal-stay"]) {
+    const home = normalized.find(home => home.slug === slug);
+    const original = cached.find(home => home.slug === slug);
+    assert.deepEqual(home.amenities, original.amenities);
+    assert.deepEqual(home.marketing_amenities, original.marketing_amenities);
+    assert.deepEqual(home.guestFacts.pets, fallbackProperties.find(home => home.slug === slug).guestFacts.pets);
+  }
+});
+
 test("normalizeProperties harmonizes fallback and cached property fields", () => {
   assert.equal(typeof propertiesData.normalizeProperties, "function");
   const syncedAt = new Date().toISOString();

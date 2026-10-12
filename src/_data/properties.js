@@ -372,6 +372,9 @@ function normalizeProperties(list) {
       const slug = deriveSlug(property);
       const curated = approvedProperties.find((entry) => entry.slug === slug) || {};
       const listingId = deriveListingId(property, slug);
+      const approvedNoPets = ["the-oasis", "river-house"].includes(slug)
+        && listingId === LISTING_ID_BY_SLUG[slug]
+        && curated.guestFacts?.pets?.status === "no";
       const staticSchemaFacts = STATIC_PROPERTY_SCHEMA_FACTS_BY_SLUG[slug] || {};
       const image = toHostawayCdn(property.image);
       const heroImage = toHostawayCdn(property.heroImage || property.image);
@@ -385,6 +388,10 @@ function normalizeProperties(list) {
 
       return {
         ...property,
+        ...(approvedNoPets ? {
+          amenities: (property.amenities || []).filter(amenity => amenity !== "pet-friendly"),
+          marketing_amenities: (property.marketing_amenities || []).filter(amenity => amenity !== "pet-friendly")
+        } : {}),
         guestFacts: curated.guestFacts || null,
         photography: curated.photography || null,
         schemaImages: curated.schemaImages || [],
