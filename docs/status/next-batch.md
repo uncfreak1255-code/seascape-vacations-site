@@ -16,42 +16,41 @@
 
 ## Latest Execution Read
 
-Run date: 2026-10-02.
+Run date: 2026-10-12.
 
 The targeted joined operator read was executed in `seascape-analytics` and
 rendered here from its machine-readable next-batch decision receipt.
 
-- Requested last-7-complete-day window: 2026-09-24 to 2026-09-30.
-- Latest BigQuery GSC `data_date`: 2026-09-29.
-- Site work gate: `blocked` - GSC export freshness does not cover the requested window.
-- Reread status: `blocked by freshness`.
-- Concrete next move: rerun the targeted operator read after BigQuery GSC covers 2026-09-30.
+- Requested last-7-complete-day window: 2026-10-03 to 2026-10-09.
+- Latest BigQuery GSC `data_date`: 2026-10-09.
+- Site work gate: `clear` - joined GSC + GA4 read covers the requested window.
+- Reread status: `fresh but below threshold`.
+- Concrete next move: owner cluster cannot clear by waiting - qualify one owner-direct, permissioned signal (see the Owner-Direct Intake Escalation section in seascape-vacations-site/docs/status/next-batch.md and seascape-vacations-site/docs/status/owner-direct-intake-policy.md). Do not use Airbnb or Vrbo host messaging; qualification is not a lead, named candidate state does not belong in the public site repo, and any one-to-one message still requires Sawyer's separate approval.
 - Report recommendation: `hold-and-reread`.
 - Reason: No cluster cleared the bar for a stronger next branch than holding for more readback.
-- GSC freshness warning: Requested window ends `2026-09-30`, but BigQuery GSC data is only current through `2026-09-29`. Treat the trailing day as unavailable.
 
 Cluster read from the analytics receipt:
 
 | cluster | pages | gsc_clicks | gsc_impressions | gsc_ctr | gsc_position | ga4_sessions |
 |---|---:|---:|---:|---:|---:|---:|
-| brand | 1 | 7 | 131 | 5.34% | 11.40 | 38 |
-| catalog | 1 | 0 | 41 | 0.00% | 9.37 | 22 |
-| guide_support | 1 | 0 | 9 | 0.00% | 8.22 | 3 |
-| guide_winners | 4 | 43 | 2737 | 1.57% | 5.01 | 81 |
-| owner_hub | 1 | 0 | 38 | 0.00% | 10.18 | 3 |
-| owner_money | 4 | 0 | 49 | 0.00% | 12.08 | 5 |
-| owner_support | 1 | 0 | 5 | 0.00% | 9.80 | 1 |
-| property_pages | 1 | 0 | 7 | 0.00% | 8.43 | 8 |
-| stay_money | 2 | 0 | 61 | 0.00% | 5.57 | 6 |
-| stay_support | 2 | 0 | 61 | 0.00% | 7.08 | 4 |
+| brand | 1 | 1 | 72 | 1.39% | 12.89 | 182 |
+| catalog | 1 | 0 | 30 | 0.00% | 12.03 | 151 |
+| guide_support | 1 | 0 | 7 | 0.00% | 8.57 | 2 |
+| guide_winners | 4 | 29 | 2761 | 1.05% | 5.27 | 70 |
+| owner_hub | 1 | 0 | 30 | 0.00% | 6.13 | 4 |
+| owner_money | 4 | 0 | 74 | 0.00% | 11.70 | 0 |
+| owner_support | 1 | 0 | 7 | 0.00% | 9.00 | 0 |
+| property_pages | 1 | 0 | 5 | 0.00% | 7.60 | 27 |
+| stay_money | 2 | 0 | 21 | 0.00% | 6.24 | 22 |
+| stay_support | 2 | 0 | 27 | 0.00% | 15.26 | 16 |
 
 SEO queue read from the analytics receipt:
 
 | queue_bucket | pages | gsc_clicks | gsc_impressions | ga4_sessions |
 |---|---:|---:|---:|---:|
-| measurement issue | 1 | 12 | 888 | 22 |
-| too thin to call | 14 | 0 | 321 | 55 |
-| wait | 3 | 38 | 1930 | 94 |
+| measurement issue | 1 | 22 | 1638 | 37 |
+| too thin to call | 15 | 1 | 303 | 411 |
+| wait | 2 | 7 | 1093 | 26 |
 
 Do not open a new owner, stay, guide, GEO, or SEO expansion branch from this read.
 If a tracked winner or money page has regressed, use `docs/process/ranking-regression-rescue.md` for a bounded rescue brief instead of waiting passively.
