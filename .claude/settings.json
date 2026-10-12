@@ -35,7 +35,14 @@
       "mcp__Claude_Browser__find",
       "mcp__claude_ai_Claude_Docs__read",
       "mcp__claude_ai_Claude_Docs__guide",
-      "Bash(plutil -p *)"
+      "Bash(plutil -p *)",
+      "Bash(git fetch *)",
+      "Bash(npm test)",
+      "Bash(npm run lint:content)",
+      "Bash(npm run verify:release)",
+      "Bash(npm run verify:release -- *)",
+      "Bash(npm run verify:links)",
+      "Bash(npm run build)"
     ],
     "deny": [
       "Edit(**/.env)",
