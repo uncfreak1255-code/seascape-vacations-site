@@ -322,3 +322,22 @@ record that limitation rather than treating them as passed.
 
 - source files likely to change: `scripts/enforcement/search-content-rescue.test.js`
 - The report’s mobile table labels must match Question / Evidence needed / Limit, rather than presenting withdrawn findings as historical results.
+
+### October 12 proof and reviewed snapshot refresh
+
+- All three requested source gates passed: content lint 28/28, npm test
+  1,131/1,131, full release verification including 163 pages and 686 JSON-LD
+  blocks. Final content source tree: `b18d4a3ff5dd0c78dd901edbc5bd2fb4e5c9a39b`.
+- Independent Codex review of `41a2b44656` completed with no major findings.
+  Its earlier P1 was corrected across complete nested stay records and schema.
+- Netlify preview passed all 33 HTTP smoke targets. Cloud-browser readback
+  confirmed the report, dining footer, corrected stays and contact anchor.
+- Visual run `38256640500` passed 399 tests and skipped 28, with seven stale
+  screenshots. Expected/actual/diff inspection at desktop and mobile showed
+  only the authorized Bradenton price-copy correction and the already-published
+  The Coastal rename from #706; no unintended layout change was found.
+- The documented Mac workflow `38259070621` refreshed only the four affected
+  route baselines and committed seven PNGs as `e55cc6a75250ed779388a7f0af1b66e6d8348edc`.
+  No visual threshold or assertion changed. Checks are rerun after that refresh.
+- PR #714 remains the single correction. Merge and production deployment are
+  separate; this source receipt alone does not claim live completion.
