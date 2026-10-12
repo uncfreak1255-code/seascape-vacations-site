@@ -1,0 +1,6 @@
+interface:
+  display_name: "Emil Design Engineering"
+  short_description: "UI polish, motion, and interaction design guidance"
+
+policy:
+  allow_implicit_invocation: true

@@ -1,4 +1,35 @@
 {
   "description": "Declared divergences between .agents/skills/ and .claude/skills/. Every skill directory that exists in one dir but not the other must be listed here with a reason, or the test gate (scripts/enforcement/skills-divergence.test.js) fails. Scope: directories only \u2014 loose files like .claude/skills/README.md are documentation, not skills. Approved by eng-review decision D16, 2026-07-19.",
-  "divergences": []
+  "divergences": [
+    {
+      "skill": "animate",
+      "only_in": ".claude",
+      "reason": "Third-party UI craft skill (Emil Kowalski / Jakub Krehel, MIT) moved from the global sawyer-skills set on 2026-10-12. Kept Claude-only so the portable seascape-seo-os plugin and the 220-character description cap stay unchanged; attribution in .claude/skills/NOTICE.design-skills."
+    },
+    {
+      "skill": "better-ui",
+      "only_in": ".claude",
+      "reason": "Third-party UI craft skill (Emil Kowalski / Jakub Krehel, MIT) moved from the global sawyer-skills set on 2026-10-12. Kept Claude-only so the portable seascape-seo-os plugin and the 220-character description cap stay unchanged; attribution in .claude/skills/NOTICE.design-skills."
+    },
+    {
+      "skill": "break-ui",
+      "only_in": ".claude",
+      "reason": "Third-party UI craft skill (Emil Kowalski / Jakub Krehel, MIT) moved from the global sawyer-skills set on 2026-10-12. Kept Claude-only so the portable seascape-seo-os plugin and the 220-character description cap stay unchanged; attribution in .claude/skills/NOTICE.design-skills."
+    },
+    {
+      "skill": "emil-design-eng",
+      "only_in": ".claude",
+      "reason": "Third-party UI craft skill (Emil Kowalski / Jakub Krehel, MIT) moved from the global sawyer-skills set on 2026-10-12. Kept Claude-only so the portable seascape-seo-os plugin and the 220-character description cap stay unchanged; attribution in .claude/skills/NOTICE.design-skills."
+    },
+    {
+      "skill": "mobile-native",
+      "only_in": ".claude",
+      "reason": "Third-party UI craft skill (Emil Kowalski / Jakub Krehel, MIT) moved from the global sawyer-skills set on 2026-10-12. Kept Claude-only so the portable seascape-seo-os plugin and the 220-character description cap stay unchanged; attribution in .claude/skills/NOTICE.design-skills."
+    },
+    {
+      "skill": "review-animations",
+      "only_in": ".claude",
+      "reason": "Third-party UI craft skill (Emil Kowalski / Jakub Krehel, MIT) moved from the global sawyer-skills set on 2026-10-12. Kept Claude-only so the portable seascape-seo-os plugin and the 220-character description cap stay unchanged; attribution in .claude/skills/NOTICE.design-skills."
+    }
+  ]
 }
