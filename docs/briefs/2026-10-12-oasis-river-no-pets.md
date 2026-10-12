@@ -50,3 +50,9 @@ SERP query: `Bradenton pet friendly vacation rentals private pool`, October 12. 
 ## Release boundary
 
 Hostaway and channel content readbacks are separate from website source proof. The five already queued Site commits are not approved for publication by this correction. Do not dispatch Publish Production, advance production, change workflow settings or treat the source merge as live proof.
+
+## Approved publication and durable source integration
+
+Sawyer approved the four verified pet-policy screenshot updates and pet-only publication on October 12 at 14:19:47 UTC. The live-based candidate `7df3e829627e6b0aca8f4bbba047a55ff751102b` was published as Netlify deploy `6accf03ee11f1cff8d4ad780`; visible policy, inquiry, catalog, collection, schema and AI surfaces passed production checks, with service and assistance-animal exceptions retained. Workflow `38262478192` generated exactly the four desktop/mobile Oasis and River House reference screenshots.
+
+The coordinator is authorized to finish existing Site PR #716 so the scheduled publisher cannot revert the pet correction. Reconcile current main without rewriting history and import only those four unchanged workflow-generated PNGs. Unrelated inherited Coastal/home/catalog baselines remain with their existing source owners; do not accept or regenerate them under the pet approval. Merge only after required checks and independent exact-head review pass. This source integration does not authorize dispatching Publish Production or releasing the queued backlog. Sarasota's site capacity of 12 and Hostaway capacity of 8 are intentional and outside this correction.

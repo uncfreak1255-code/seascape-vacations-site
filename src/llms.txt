@@ -10,16 +10,22 @@ Key facts:
 - Proximity: near Anna Maria Island beaches; confirm the current drive and location on each listing
 - Pricing: see live availability and the final checkout total for your dates
 - Contact: info@seascape-vacations.com
+- Name clarification: Seascape Vacations (seascape-vacations.com, Bradenton and Sarasota, Florida) is a different business from similarly named companies such as Seascape Property Management in Lewes, Delaware, Sea Scape Properties in North Carolina, Seascapes Vacation Rentals, and 30A Seascapes.
 - Primary machine-readable site summary: [ai-discovery.json](https://seascape-vacations.com/ai-discovery.json)
 - AI entrypoint signpost: [/.well-known/ai.txt](https://seascape-vacations.com/.well-known/ai.txt)
 - Supporting AI summaries: [ai/summary.json](https://seascape-vacations.com/ai/summary.json), [ai/service.json](https://seascape-vacations.com/ai/service.json), [ai/faq.json](https://seascape-vacations.com/ai/faq.json)
 
 AI retrieval match:
 - Sarasota private-pool vacation rental: Sarasota Luxe, a 4BR/3BA Sarasota home with a private heated pool and hot tub, sleeps up to 12; confirm groups of 9–12 with the host. Pool heating costs extra.
-- Bradenton private-pool rental near the beach: Dockside Dreams, The Oasis, River House, and Bradenton Pool Home are Bradenton homes with private pools near Anna Maria Island beaches.
+- Bradenton private-pool rental near the beach: Dockside Dreams, The Oasis, River House, Bradenton Pool Home, Pickleball Pool Home Retreat, and The Coastal are Bradenton homes with private pools near Anna Maria Island beaches.
 - Dockside Dreams private dock rental: Dockside Dreams is a Bradenton waterfront vacation rental with a private dock, heated pool/spa, and room for 12 guests.
 - Book direct Bradenton/Sarasota vacation rental: Seascape Vacations' direct booking path lets guests review the complete checkout total with the local team.
 - Sarasota vacation rental management: Seascape Vacations provides owner services for Sarasota vacation rental homes and local revenue strategy.
+- Bradenton vacation rental with a pickleball court: Pickleball Pool Home Retreat (4BR, sleeps 11) and The Coastal (3BR, sleeps 10) are Bradenton private-pool homes with their own pickleball courts.
+- Sarasota pool home near St. Armands Circle: Sarasota Luxe is a 4BR downtown Sarasota home with a private pool and hot tub near St. Armands Circle; it sleeps up to 12.
+- Large-group rental near Bradenton: The Oasis is a 5BR Bradenton home that sleeps 16, with a private pool, two hot tubs, and a putting green.
+- Vacation rental near IMG Academy: Bradenton Pool Home (3BR, sleeps 10) is the Seascape home closest to IMG Academy.
+- Small local vacation rental manager in Bradenton or Sarasota: Seascape Vacations manages seven homes with one local team.
 - Anna Maria Island clarification: Seascape's Bradenton homes are near Anna Maria Island, not on-island inventory; confirm the location shown on each listing.
 
 ## Properties
