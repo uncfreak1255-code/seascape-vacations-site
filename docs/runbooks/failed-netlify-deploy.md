@@ -3,6 +3,11 @@
 Use this when a merged commit never reaches a healthy production deploy, the
 wrong build publishes, or Netlify fails before publish.
 
+Production builds from the `production` branch, which the Publish Production
+workflow fast-forwards to `main` daily at 09:05 UTC. A merge made after that
+run ships the next day; first check that the workflow ran green and that
+`production` contains the merged commit.
+
 ## Immediate Actions
 
 1. Capture the deploy URL or ID and the first failing log lines.
@@ -21,7 +26,8 @@ npm run build
 ## Source Of Truth
 
 - Netlify deploy logs
-- current `main` commit SHA
+- current `main` and `production` commit SHAs
+- the latest Publish Production workflow run
 - local `npm run build` output from a clean checkout
 
 ## Proof Gate

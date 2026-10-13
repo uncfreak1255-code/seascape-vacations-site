@@ -201,10 +201,10 @@ These are starting points; the Testing section still governs required checks.
 - current execution context lives in `docs/status/`
 - `docs/status/next-batch.md` is the canonical reread handoff surface for volatile measurement truth; after every reread it must say exactly one of `blocked by freshness`, `fresh but below threshold`, or `open next batch`, plus one concrete next move
 - `docs/status/current-state.md` should keep durable repo truth only and must not duplicate volatile reread windows or `data_date` details that belong in `docs/status/next-batch.md`
-- the five SEO OS role cards live in `.claude/agents/`; the on-demand role model and local skill/external-pack policy load from `docs/process/five-roles.md` and `docs/process/skill-policy.md`
-- active repo-local skills are limited to `.agents/skills/accessibility`, `.agents/skills/content-quality-rubric`, `.agents/skills/design-review`, `.agents/skills/internal-link-targeting`, `.agents/skills/next-batch-gate`, `.agents/skills/owner-opportunity-intake`, `.agents/skills/owner-reply-intake`, `.agents/skills/owner-proof-integrity`, `.agents/skills/page-cro`, `.agents/skills/property-truth-regeneration`, `.agents/skills/schema-markup`, `.agents/skills/seascape-design-critic`, `.agents/skills/seascape-design-specialist`, `.agents/skills/serp-ctr-title-rewrite`, `.agents/skills/site-architecture`, and `.agents/skills/openseo-review`
+- SEO role cards live in `.claude/agents/`; responsibilities and task routing load from `docs/process/five-roles.md`, `docs/process/batch-workflow.md`, and `docs/process/skill-policy.md`
+- active repo-local skills are limited to `.agents/skills/accessibility`, `.agents/skills/content-quality-rubric`, `.agents/skills/design-review`, `.agents/skills/internal-link-targeting`, `.agents/skills/next-batch-gate`, `.agents/skills/owner-opportunity-intake`, `.agents/skills/owner-reply-intake`, `.agents/skills/owner-proof-integrity`, `.agents/skills/page-cro`, `.agents/skills/property-truth-regeneration`, `.agents/skills/schema-markup`, `.agents/skills/seascape-design-critic`, `.agents/skills/seascape-design-specialist`, `.agents/skills/serp-ctr-title-rewrite`, `.agents/skills/site-architecture`, and `.agents/skills/openseo-review`, plus the Claude-only UI craft skills `.claude/skills/animate`, `.claude/skills/better-ui`, `.claude/skills/break-ui`, `.claude/skills/emil-design-eng`, `.claude/skills/mobile-native`, and `.claude/skills/review-animations` (moved here from the global set on 2026-10-12, declared in `.agents/skills-divergence.json`; load only for UI, motion, or mobile-touch work, and they never replace `DESIGN.md` or the design-review gates)
 - `.claude/skills/` should mirror only those active site/design skills; copied marketing, deploy, monthly reset, and generic SEO skills are not live authority
-- global marketing skills in `/Users/sawbeck/.codex/skills/` may be used as advisory helpers for CRO, SEO, copy, psychology, analytics, and growth decisions, but they do not override this repo's source files, briefs, status docs, or five-role workflow
+- global marketing skills in `/Users/sawbeck/.codex/skills/` may be used as advisory helpers for CRO, SEO, copy, psychology, analytics, and growth decisions, but they do not override this repo's source files, briefs, status docs, or the task route in `docs/process/batch-workflow.md`
 - canonical lane for internal-link family/page inbound planning is `.agents/skills/internal-link-targeting`
 - canonical lane for live SERP CTR title-rewrite recommendation packs is `.agents/skills/serp-ctr-title-rewrite`; ship title/meta edits only when `docs/status/next-batch.md` is not `blocked by freshness`
 - AI discovery, GEO/AEO, and schema work follows the Search Operator role in `.claude/agents/search-operator.md` and `docs/process/seo-competitor-operating-loop.md` for proof and attack research, plus `.agents/skills/schema-markup` for implementation rules
@@ -304,6 +304,7 @@ and a red one does not block a merge by itself; read it anyway.
 | `playwright-visual.yml` (Playwright Visual Gate) | `visual-regression` | PRs to `main` that touch `src/**`, `eleventy.config.js`, `playwright.config.js`, `tests/visual/**`, the visual scripts or `package-lock.json`; docs-only PRs skip it | Sawyer's own PRs: self-hosted `mac-sawbeck-seascape-vacations-site`; forks and other authors: `macos-latest` | no |
 | `preview-surface.yml` | `preview-surface` | every PR to `main` | `ubuntu-latest` | no, by design |
 | `live-smoke.yml` | `live-smoke` (`report-failure` on `ubuntu-latest`) | daily 10:17 UTC; manual dispatch by Sawyer's account only | self-hosted `[self-hosted, macOS, arm64]` | not a PR check |
+| `publish-production.yml` | `publish` | daily 09:05 UTC; manual dispatch by Sawyer's account only | `ubuntu-latest` | not a PR check |
 | `update-visual-baselines.yml` | `generate-baselines` | manual dispatch only, by Sawyer's account | self-hosted `[self-hosted, macOS, arm64]` | not a check; see Testing for the recipe |
 
 A self-hosted job that sits in `queued` means the Mac runner is offline, not
@@ -314,14 +315,19 @@ that the check failed; it does not fall back to GitHub-hosted compute.
 - Deployable: `yes`
 - Deploy surface: `Netlify`
 - Production URL: `https://seascape-vacations.com`
-- How production deploys: Netlify builds every merge to `main` using
-  `netlify.toml` (`npm run build`, publish `_site`). There is no manual deploy
-  command and no deploy step in GitHub Actions. `scripts/enforcement/netlify-ignore-build.js`
-  skips the deploy for agent-only merges; a missing deploy after a merge is
-  usually that skip, not an outage. Diagnose with `docs/runbooks/failed-netlify-deploy.md`.
+- How production deploys: Netlify builds the `production` branch using
+  `netlify.toml` (`npm run build`, publish `_site`). Merges to `main` do not
+  deploy on their own; `.github/workflows/publish-production.yml` fast-forwards
+  `production` to `main` once a day at 09:05 UTC, so every merge since the last
+  publish ships in one build. `scripts/enforcement/netlify-ignore-build.js`
+  still skips that build when only agent-only paths changed; a missing deploy is
+  usually the skip or a day with no merges, not an outage. Diagnose with
+  `docs/runbooks/failed-netlify-deploy.md`.
+- Agents never push to `production` and never dispatch Publish Production; an
+  early publish costs a Netlify build and needs Sawyer's approval each time.
 - Post-deploy proof: `npm run verify:recovery:live && npm run verify:direct-booking-events && npm run verify:owner-funnel-routes`
-- "Shipped" means: merged to `main`, Netlify built successfully, and the
-  relevant live smoke checks passed
+- "Shipped" means: merged to `main`, published to `production`, Netlify built
+  successfully, and the relevant live smoke checks passed
 
 ## Reading Order For SEO Work
 
@@ -341,7 +347,9 @@ as a prerequisite for a bounded task with independent proof. Apply the
 
 ## Required Batch Workflow
 
-Full order of operations: `docs/process/batch-workflow.md`. The visible-copy
+Choose the task route in `docs/process/batch-workflow.md`: source-backed
+existing-guide accuracy repairs use one lead plus one targeted reviewer; other
+SEO batches retain their required specialist lane. The visible-copy
 order is non-negotiable: **Draft the copy**, then **Remove internal wording**,
 then **Check voice and specificity** using the active brief and `docs/style/`.
 Complete these steps before content lint through `npm run lint:content` or
@@ -396,6 +404,10 @@ For any PR that changes public copy in `src/`:
   or `./scripts/design/codex-seascape-design "<task>"` when you want the
   specialist/critic lane, guide-family route, and local donor scan in one
   command. Use `npm run design:donors -- "<task>"` for a read-only route report.
+- Sawyer cannot steer design by describing it. For any visible design change,
+  show two or three rendered variants (deploy-preview links or screenshots),
+  each anchored to a named reference site from `npm run design:donors`, and ask
+  only "which one" or "keep X, lose Y". Never ask him to specify the look in words.
 - If an outside design tool introduces a new pattern or style direction, propose it as a `DESIGN.md` change first, then implement after that design law is explicit.
 
 ## Design System

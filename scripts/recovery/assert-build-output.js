@@ -439,6 +439,8 @@ if (phase === "remediation") {
   expectContains("_site/index.html", 'srcset="/images/homes/the-oasis/01-800.webp 800w, /images/homes/the-oasis/01.webp 1400w"');
   expectNotContains("_site/index.html", "hero-optimized.webp");
   expectContains("_site/index.html", "kgmid=%2Fg%2F11y4vdnsfp");
+  expectNotContains("_site/index.html", "kgmid=%2Fg%2F11y4vdnsfp&amp;q=");
+  expectContains("_site/index.html", "\"disambiguatingDescription\"");
   expectContains("_site/index.html", 'data-property-photo="the-oasis" src="/images/homes/the-oasis/01.webp"');
   expectExists("_site/images/homes/the-oasis/01.webp");
   expectNotContains("_site/index.html", "images.weserv.nl");

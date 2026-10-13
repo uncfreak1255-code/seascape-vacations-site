@@ -21,8 +21,13 @@ The committed allowlist contains only these saved-state reads:
 - `get_search_console_performance`
 - `inspect_urls`
 
-Codex asks for approval before every OpenSEO tool call. A new Codex session is
-required after this project configuration changes.
+OpenSEO calls use Codex's configured approval route. With a human reviewer,
+that route can present a manual prompt; with automatic review, an allowed call
+can proceed without a manual popup. Keep `default_tools_approval_mode = "prompt"`
+and the six-tool allowlist. A missing popup alone does not prove a bypass.
+Record the configured route and any approval result actually exposed; do not
+invent a per-call approval receipt. A new Codex session is required after this
+project configuration changes.
 
 ## Local Authentication Boundary
 
@@ -62,7 +67,7 @@ DataForSEO balance through `whoami`, so tool annotations are not a cost gate.
 
 | Tool | Reads | Spends DataForSEO credits | Needs Sawyer's approval |
 | --- | --- | --- | --- |
-| `whoami`, `list_projects`, `list_saved_keywords`, `get_rank_tracker` | saved OpenSEO project state and rank history | no | no; Codex still prompts per call |
+| `whoami`, `list_projects`, `list_saved_keywords`, `get_rank_tracker` | saved OpenSEO project state and rank history | no | no; use the configured Codex approval route |
 | `get_search_console_performance`, `inspect_urls` | the existing Search Console authorization | no | no for reads; yes before any reconnect |
 | every tool in the list below | live SERP, keyword, backlink, domain, local or AI lookups | yes, per call | yes, for that exact paid run |
 
@@ -133,8 +138,37 @@ codex mcp get openseo
 
 The committed config and its enforcement test prove that the server is optional
 with `required = false`. The `codex mcp get openseo` readback must show the
-localhost URL, approval mode `prompt`, and only the six allowed tools above. A live
-acceptance check then calls `list_projects`, reads the existing rank tracker
-twice with the same result count, and completes one approved read-only Search
-Console query. It must not reconnect Google, run a new rank check, or start
-another paid lookup.
+localhost URL, approval mode `prompt`, and only the six allowed tools above.
+Run acceptance through the native tools in a fresh trusted session:
+
+1. Call `list_projects` and verify the Seascape project/domain.
+2. Discover the existing tracker if needed, then read the same saved run twice
+   and compare result counts. Do not trigger a check.
+3. Make one read-only Search Console query through its existing authorization.
+4. Record saved-read and Search Console outcomes separately, along with the
+   approval route and any actual approval evidence. Automatic approval does not
+   require a manual popup. A returned `api_error` leaves Search Console reads
+   unverified; it does not invalidate a successful saved-rank read or prove the
+   Google grant expired. Inspect the owning error before proposing a reconnect.
+
+Use the native MCP path for this acceptance; raw HTTP or a shell proxy does not
+prove Codex tool exposure or approval handling. Acceptance does not authorize a
+Google reconnect, new rank check, paid lookup, or configuration change.
+
+### October 11, 2026 readback
+
+The native CLI acceptance ran before and after the verified local upgrade to
+OpenSEO 0.1.12 (`89e5a007`). Both used automatic review. `list_projects` returned
+the correct Seascape project. Two saved snapshots returned the same 78 rows
+from the October 8 completed run. No per-call approval receipt was exposed.
+The October 1–7 Search Console query returned `ok: false`, `reason: api_error`;
+no reconnect or paid lookup ran. The October 2 test's missing manual popup was
+therefore insufficient evidence of a bypass: its separate automatic reviewer
+had explicitly allowed `list_projects`. This follows the supported
+[automatic approval route](https://learn.chatgpt.com/docs/agent-approvals-security#automatic-approval-reviews);
+no approval setting or paid-tool exclusion changed.
+
+The October 11 Analytics-owned joined read covers October 3–9 with GSC export
+freshness clear and `fresh but below threshold`. That BigQuery/GA4 result is
+independent of OpenSEO's failing Search Console API read. See `docs/status/next-batch.md`
+for the receipt-derived handoff.

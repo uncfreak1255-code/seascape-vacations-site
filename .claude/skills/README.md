@@ -2,7 +2,7 @@
 
 `/.agents/skills/` is the canonical local skill source in this repo.
 
-`/.claude/skills/` is only a thin compatibility layer for Claude-specific discovery. Keep it limited to symlinks for approved local skills that actually exist in `/.agents/skills/`.
+`/.claude/skills/` is only a thin compatibility layer for Claude-specific discovery. Keep it limited to symlinks for approved local skills that actually exist in `/.agents/skills/`, plus the Claude-only UI craft skills declared in `/.agents/skills-divergence.json` (third-party attribution in `NOTICE.design-skills`).
 
 The directories under `/.agents/skills/` are the current inventory. This file
 does not duplicate that list; `scripts/enforcement/skills-divergence.js` proves

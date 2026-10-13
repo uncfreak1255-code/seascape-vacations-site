@@ -1,36 +1,36 @@
 {
   "routes": {
     "/": {
-      "script": 75755,
+      "script": 76730,
       "stylesheet": 57430
     },
     "/properties/": {
-      "script": 98253,
+      "script": 99223,
       "stylesheet": 57030
     },
     "/property-management/": {
-      "script": 87337,
-      "stylesheet": 54481
+      "script": 88312,
+      "stylesheet": 54471
     },
     "/property-management/vacation-rental-licensing-florida/": {
-      "script": 54090,
-      "stylesheet": 34752
+      "script": 55065,
+      "stylesheet": 34742
     },
     "/property-management/vacation-rental-management-fees-florida/": {
-      "script": 54090,
-      "stylesheet": 34752
+      "script": 55065,
+      "stylesheet": 34742
     },
     "/property-management/vrbo-management-services-florida/": {
-      "script": 54090,
-      "stylesheet": 34752
+      "script": 55065,
+      "stylesheet": 34742
     },
     "/stays/anna-maria-island-beachfront-rentals/": {
-      "script": 54090,
-      "stylesheet": 34752
+      "script": 55065,
+      "stylesheet": 34742
     },
     "/stays/anna-maria-island-vacation-rentals/": {
-      "script": 54090,
-      "stylesheet": 34752
+      "script": 55065,
+      "stylesheet": 34742
     }
   },
   "raises": [
@@ -433,6 +433,70 @@
       "to": 57430,
       "reason": "Homepage postcard fan grows from six to seven tilt steps plus a neutral default for later cards (#700, Coastal Stay onboarding, design approved by Sawyer 2026-10-07): +136 B arrival.css, measured by the performance-budget run 37716573423 at aec7fa41.",
       "date": "2026-10-07"
+    },
+    {
+      "route": "/",
+      "metric": "script",
+      "from": 75755,
+      "to": 76730,
+      "reason": "Exclude site-working agent, automated-test and nonproduction visits from GA4 (PR #709, outcome approved by Sawyer 2026-10-10): early native Google opt-out adds 970-975 B inline script per budgeted page; measured by performance-budget run 38076444127 at 035159ff. Existing Lighthouse ceilings remain unchanged.",
+      "date": "2026-10-10"
+    },
+    {
+      "route": "/properties/",
+      "metric": "script",
+      "from": 98253,
+      "to": 99223,
+      "reason": "Exclude site-working agent, automated-test and nonproduction visits from GA4 (PR #709, outcome approved by Sawyer 2026-10-10): early native Google opt-out adds 970-975 B inline script per budgeted page; measured by performance-budget run 38076444127 at 035159ff. Existing Lighthouse ceilings remain unchanged.",
+      "date": "2026-10-10"
+    },
+    {
+      "route": "/property-management/",
+      "metric": "script",
+      "from": 87337,
+      "to": 88312,
+      "reason": "Exclude site-working agent, automated-test and nonproduction visits from GA4 (PR #709, outcome approved by Sawyer 2026-10-10): early native Google opt-out adds 970-975 B inline script per budgeted page; measured by performance-budget run 38076444127 at 035159ff. Existing Lighthouse ceilings remain unchanged.",
+      "date": "2026-10-10"
+    },
+    {
+      "route": "/property-management/vacation-rental-management-fees-florida/",
+      "metric": "script",
+      "from": 54090,
+      "to": 55065,
+      "reason": "Exclude site-working agent, automated-test and nonproduction visits from GA4 (PR #709, outcome approved by Sawyer 2026-10-10): early native Google opt-out adds 970-975 B inline script per budgeted page; measured by performance-budget run 38076444127 at 035159ff. Existing Lighthouse ceilings remain unchanged.",
+      "date": "2026-10-10"
+    },
+    {
+      "route": "/property-management/vacation-rental-licensing-florida/",
+      "metric": "script",
+      "from": 54090,
+      "to": 55065,
+      "reason": "Exclude site-working agent, automated-test and nonproduction visits from GA4 (PR #709, outcome approved by Sawyer 2026-10-10): early native Google opt-out adds 970-975 B inline script per budgeted page; measured by performance-budget run 38076444127 at 035159ff. Existing Lighthouse ceilings remain unchanged.",
+      "date": "2026-10-10"
+    },
+    {
+      "route": "/property-management/vrbo-management-services-florida/",
+      "metric": "script",
+      "from": 54090,
+      "to": 55065,
+      "reason": "Exclude site-working agent, automated-test and nonproduction visits from GA4 (PR #709, outcome approved by Sawyer 2026-10-10): early native Google opt-out adds 970-975 B inline script per budgeted page; measured by performance-budget run 38076444127 at 035159ff. Existing Lighthouse ceilings remain unchanged.",
+      "date": "2026-10-10"
+    },
+    {
+      "route": "/stays/anna-maria-island-vacation-rentals/",
+      "metric": "script",
+      "from": 54090,
+      "to": 55065,
+      "reason": "Exclude site-working agent, automated-test and nonproduction visits from GA4 (PR #709, outcome approved by Sawyer 2026-10-10): early native Google opt-out adds 970-975 B inline script per budgeted page; measured by performance-budget run 38076444127 at 035159ff. Existing Lighthouse ceilings remain unchanged.",
+      "date": "2026-10-10"
+    },
+    {
+      "route": "/stays/anna-maria-island-beachfront-rentals/",
+      "metric": "script",
+      "from": 54090,
+      "to": 55065,
+      "reason": "Exclude site-working agent, automated-test and nonproduction visits from GA4 (PR #709, outcome approved by Sawyer 2026-10-10): early native Google opt-out adds 970-975 B inline script per budgeted page; measured by performance-budget run 38076444127 at 035159ff. Existing Lighthouse ceilings remain unchanged.",
+      "date": "2026-10-10"
     }
   ]
 }

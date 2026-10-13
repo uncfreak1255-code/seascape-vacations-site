@@ -64,6 +64,11 @@ function buildOwnerLeadContact(rawPayload) {
   return {
     submissionId,
     createdAt: getCreatedAt(payload),
+    // Preserve provenance without upgrading a self-attestation to verified ownership.
+    sourceSubmissionIdVerified: Boolean(payload.id || payload.submission_id),
+    sourceTimestampVerified: Boolean(normalizeText(payload.created_at || payload.createdAt)),
+    submitterAuthority: normalizeText(data.submitter_authority),
+    proofLabel: normalizeText(data.proof_label),
     name,
     email,
     phone,

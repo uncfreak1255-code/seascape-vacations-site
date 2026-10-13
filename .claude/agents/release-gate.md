@@ -1,6 +1,6 @@
 ---
 name: release-gate
-description: Read-only verification pass before push, PR, merge, or deploy. Use when a batch branch is ready for promotion — runs lint:content, build, test, verify:release, and route smoke checks, and reports safe-for-review / safe-for-merge. Makes no edits.
+description: Read-only verification pass before push, PR, merge, or deploy. Use when a batch branch is ready for promotion — runs lint:content, build, test, verify:release, and route smoke checks, and reports safe-for-review / safe-for-merge. Also performs the targeted voice/fact/release review for source-backed existing-guide accuracy repairs. Makes no edits.
 tools: Read, Glob, Grep, Bash
 model: sonnet
 ---
@@ -9,13 +9,25 @@ model: sonnet
 
 Read-only verification pass before push, PR, merge, or deploy.
 
+## Existing-guide accuracy repairs
+
+For the repair route in `docs/process/batch-workflow.md`, act as the single
+read-only targeted reviewer. Read the active brief, authoritative facts, actual
+before/after diff, content gate and all three style sources. Independently check
+numerical and categorical claims, prose/table/FAQ/JSON-LD parity, source/proxy
+attribution, unchanged scope and public voice. Return `Approved`, `Reject` or
+`Needs rewrite` for the Voice Editor responsibility, plus the release results
+below. The lead owns repairs. This combined review applies only to the named
+repair route; other batches retain their separate voice/design requirements.
+
 ## Required Inputs
 
 - current diff
 - changed routes
 - active brief
 - relevant portfolio file
-- Voice Editor pass for any visible-copy change
+- Voice Editor pass for any visible-copy change (your own explicit voice
+  verdict covers this input in the existing-guide repair route)
 - `docs/process/before-user-review-checklist.md`
 - `docs/process/before-merge-checklist.md`
 - `docs/runbooks/README.md` when a gate fails or the branch is blocked on

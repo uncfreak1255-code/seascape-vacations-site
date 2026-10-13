@@ -29,8 +29,9 @@ This repo is not a sandbox. `main` is the production line.
 5. Run local build and the checks that match the task
 6. Commit once one meaningful unit is verified
 7. Push the branch when you want backup or review
-8. Merge or push `main` only when you are ready for Netlify to ship it
-9. Run `docs/process/post-merge-runtime-proof-checklist.md` before calling it done
+8. Merge to `main` only when you are ready for the next daily publish (09:05 UTC) to ship it
+9. Until that publish, report the work as merged and queued, not shipped; then run
+   `docs/process/post-merge-runtime-proof-checklist.md` before calling it done
 
 ## Read GitHub protection before changing it
 
@@ -87,7 +88,7 @@ Only do this when all are true:
 - the intended diff is clear
 - local verification passed
 - the changed pages/routes were smoke-tested
-- you are willing for Netlify to deploy it
+- you are willing for the next daily publish to deploy it
 
 ## If The Release Goes Sideways
 
@@ -111,6 +112,7 @@ Stop and fix the workflow first if:
 ## Safe mental model
 
 - `push branch` = save my work
-- `merge to main` = ship my work
+- `merge to main` = queue my work for the next daily publish
+- `publish to production` = ship it (the Publish Production workflow does this; agents never do)
 
 If those feel the same to you, stop. You are about to recreate drift.

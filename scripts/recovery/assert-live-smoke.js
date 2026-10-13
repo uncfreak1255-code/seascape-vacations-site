@@ -14,6 +14,8 @@ const CHECKOUT_RENDER_TIMEOUT_MS = 30000;
 const targets = [
   { path: "/", status: 200 },
   { path: "/properties/", status: 200 },
+  { path: "/properties/the-oasis/", status: 200 },
+  { path: "/properties/river-house/", status: 200 },
   { path: "/property-management/", status: 200 },
   { path: "/guides/", status: 200 },
   { path: "/stays/", status: 200 },
@@ -28,6 +30,8 @@ const targets = [
   { path: "/property-management/vacation-rental-taxes-florida/", status: 200 },
   { path: "/property-management/vacation-rental-insurance-florida/", status: 200 },
   { path: "/guides/booking-direct-vacation-rentals/", status: 200 },
+  { path: "/guides/florida-gulf-coast-vacation-rental-market-report-2026/", status: 200 },
+  { path: "/guides/bradenton-vs-sarasota-restaurants/", status: 200 },
   { path: "/guides/anna-maria-island-vacation-cost/", status: 200 },
   { path: "/research/gulf-coast-vacation-booking-trends-2026/", status: 200 },
   { path: "/research/real-cost-florida-beach-vacation-bradenton-sarasota-ami-2026/", status: 200 },
@@ -52,7 +56,7 @@ const stablePropertyDetailLinks = [
   { href: "/properties/river-house/", label: "View River House details" },
   { href: "/properties/bradenton-pool-home/", label: "View Bradenton Pool Home details" },
   { href: "/properties/blue-house/", label: "View Pickleball Pool Home Retreat details" },
-  { href: "/properties/coastal-stay/", label: "View Coastal Stay details" }
+  { href: "/properties/coastal-stay/", label: "View The Coastal details" }
 ];
 
 function requireIncludes(path, body, fragments) {
@@ -246,6 +250,11 @@ function validateTargetResponse(target, response) {
     throw new Error(`${target.path} expected ${target.status}, got ${response.statusCode}`);
   }
 
+  if (["/properties/the-oasis/", "/properties/river-house/"].includes(target.path)) {
+    requireIncludes(target.path, response.body, ["Pets are not permitted at this home.", "Service animals are welcome without a pet fee"]);
+    requireExcludes(target.path, response.body, ["One dog under 30 lb may stay", "Ask us to confirm pet approval", "Dog approval, boat size", 'value="pet approval"']);
+  }
+
   if (target.path === "/") {
     if (!response.body.includes("Dockside Dreams") || !response.body.includes("/properties/dockside-dreams/")) {
       throw new Error("homepage is missing stable featured property markup");
@@ -409,6 +418,16 @@ function validateTargetResponse(target, response) {
       "This tax guide is not available for reliance.",
       "Please consult a qualified tax professional."
     ]);
+  }
+
+  if (target.path === "/guides/florida-gulf-coast-vacation-rental-market-report-2026/") {
+    requireIncludes(target.path, response.body, ["Numeric findings are withheld", "archived reservation export", "reviewed calculations"]);
+    requireExcludes(target.path, response.body, ["from five", "545 confirmed", "value of this small dataset", "records the fixed dataset and method"]);
+  }
+
+  if (target.path === "/guides/bradenton-vs-sarasota-restaurants/") {
+    requireIncludes(target.path, response.body, ["Compare current menus"]);
+    requireExcludes(target.path, response.body, ["$15-30", "$25-60", "Average Dinner", "Generally yes. Expect to spend"]);
   }
 
   if (target.path === "/property-management/vacation-rental-insurance-florida/") {

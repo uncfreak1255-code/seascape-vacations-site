@@ -1,6 +1,6 @@
 # P0 factual-integrity and route correction
 
-- lifecycle: active — October 5, 2026 focused savings, cost and booking-evidence correction
+- lifecycle: active — October 12, 2026 remaining lodging comparisons and report-evidence correction
 - approval: Sawyer requested one focused correction on October 5, 2026; no new pages or pricing offers.
 - mutation owner: Codex in `codex/p0-evidence-correction`, based on current main `01f9959ad26442db150b7add460a643a0153bd24`.
 
@@ -279,3 +279,71 @@ writer on `codex/681-claims-followup`, starting from main
   corrections after the three-step voice pass; independent review remains required.
 - source files likely to change: `src/guides/siesta-key-vs-anna-maria-island-families.html`
 - source files likely to change: `src/guides/where-to-stay-near-anna-maria-island/index.html`
+
+## October 12 consolidated residual correction
+
+Sawyer authorized one consolidated P0 correction, all three site gates, review,
+merge and live verification on October 12. Codex is the sole mutation owner in
+`codex/p0-claims-2026-10-12`, based on fresh main
+`4a9610802d049c9b80b03480be5319ef87bf8613`.
+
+Direct HTTP checks on October 12 show the earlier fixed lodging savings,
+interior-design performance assertions, promotional quarantine links and
+Sarasota-home walking claims are already removed from the cited live routes.
+Both professional-review pages return `noindex, nofollow`; `/contact` reaches
+`/#contact`. Search snapshots do not establish current deployment content.
+
+Remaining scope: remove blanket lodging price advantages and automatic
+long-stay savings across all 64 generated stay records, including nested copy
+and FAQ schema; replace unsourced Bradenton/Sarasota
+dining cost bands with current-menu comparisons; remove the Longboat comparison's
+lower-price CTA; remove the withdrawn benchmark's residual five-home schema and
+claims that the missing dataset/method are available. Preserve route identities,
+existing layouts, verified property charges, SAVE50, the 48-hour owner review and
+booking destinations. No new page, offer or visual pattern.
+
+- source files likely to change: `src/_data/seoPages.json`
+- source files likely to change: `src/guides/anna-maria-island-vs-longboat-key.html`
+- source files likely to change: `src/guides/bradenton-vs-sarasota-restaurants/index.html`
+- source files likely to change: `src/guides/florida-gulf-coast-vacation-rental-market-report-2026.html`
+- source files likely to change: `scripts/enforcement/p0-booking-evidence.test.js`
+- source files likely to change: `scripts/recovery/assert-live-smoke.js`
+
+Editorial chain: drafted around comparing actual accommodation quotes and
+menus; removed internal wording; checked voice and specificity against
+`docs/style/`. Editorial verdict: Approved for this factual correction.
+Schema answers preserve the visible evidence limits. This work makes no
+search-display, revenue or conversion impact claim.
+
+Verification: run `npm run lint:content`, `npm test` and
+`npm run verify:release -- --range origin/main`; inspect rendered affected
+routes, tax/insurance quarantine, Sarasota wording and canonical redirects.
+Machine-local guardrail wrappers remain unavailable in this Linux workspace;
+record that limitation rather than treating them as passed.
+
+- source files likely to change: `scripts/enforcement/search-content-rescue.test.js`
+- The report’s mobile table labels must match Question / Evidence needed / Limit, rather than presenting withdrawn findings as historical results.
+
+### October 12 proof and reviewed snapshot refresh
+
+- All three requested source gates passed: content lint 28/28, npm test
+  1,131/1,131, full release verification including 163 pages and 686 JSON-LD
+  blocks. Final content source tree: `b18d4a3ff5dd0c78dd901edbc5bd2fb4e5c9a39b`.
+- Independent Codex review of `41a2b44656` completed with no major findings.
+  Its earlier P1 was corrected across complete nested stay records and schema.
+- Netlify preview passed all 33 HTTP smoke targets. Cloud-browser readback
+  confirmed the report, dining footer, corrected stays and contact anchor.
+- Visual run `38256640500` passed 399 tests and skipped 28, with seven stale
+  screenshots. Expected/actual/diff inspection at desktop and mobile showed
+  only the authorized Bradenton price-copy correction and the already-published
+  The Coastal rename from #706; no unintended layout change was found.
+- The documented Mac workflow `38259070621` refreshed only the four affected
+  route baselines and committed seven PNGs as `e55cc6a75250ed779388a7f0af1b66e6d8348edc`.
+  No visual threshold or assertion changed. Checks are rerun after that refresh.
+- PR #714 remains the single correction. Merge and production deployment are
+  separate; this source receipt alone does not claim live completion.
+- Final re-review found the seven-record regression scope was incomplete.
+  Sweep all generated stay records for seasonal, short/long-stay, channel and
+  island/mainland price advantages. Remove unsubstantiated guest quotations
+  rather than rewriting them as reviews. Retain actual listing charges and offers.
+  The regression now covers every vacationer record, without a slug allowlist.

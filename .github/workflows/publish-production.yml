@@ -1,0 +1,88 @@
+name: Publish Production
+
+# Netlify builds production from the `production` branch, not `main`. Each
+# production build costs Netlify credits, so merges to `main` batch here and
+# publish once a day instead of once per merge. The push is fast-forward only:
+# if `production` ever diverges from `main`, this job fails loudly rather than
+# overwriting it. When `production` already equals `main` the push is a no-op
+# and Netlify receives no event.
+
+on:
+  workflow_dispatch:
+  schedule:
+    # GitHub Actions cron runs in UTC; 09:05 UTC = 05:05 ET during EDT. Runs
+    # before Live Smoke (10:17 UTC) with room for late scheduled starts, so the
+    # morning readback sees the new build.
+    - cron: "5 9 * * *"
+
+permissions: {}
+
+concurrency:
+  group: publish-production
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    # Publishing is a production deploy, so only Sawyer can dispatch it by hand.
+    if: ${{ github.event_name != 'workflow_dispatch' || (github.actor == 'uncfreak1255-code' && github.triggering_actor == 'uncfreak1255-code') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+
+    steps:
+      - name: Check out main
+        uses: actions/checkout@v7
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Fast-forward production to main
+        run: |
+          set -euo pipefail
+          main_sha="$(git rev-parse origin/main)"
+          if prod_sha="$(git rev-parse --verify --quiet origin/production)"; then
+            if [ "$prod_sha" = "$main_sha" ]; then
+              echo "production already at $main_sha; nothing to publish."
+              exit 0
+            fi
+            echo "Publishing $prod_sha..$main_sha:"
+            git log --oneline "$prod_sha..$main_sha"
+          else
+            echo "Creating production at $main_sha."
+          fi
+          git push origin "$main_sha:refs/heads/production"
+
+  report-failure:
+    # A failed scheduled publish leaves every newer merge unpublished while the
+    # live site stays green on the previous build, so nothing else would notice.
+    # Open one issue, or comment on the open one. Manual dispatches report
+    # nothing; the person who dispatched one is already watching it.
+    name: report-failure
+    needs: publish
+    if: always() && github.event_name == 'schedule' && needs.publish.result != 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      issues: write
+
+    steps:
+      - name: Open or update the publish issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          PUBLISH_RESULT: ${{ needs.publish.result }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          set -euo pipefail
+          title="Daily production publish failed"
+          body="$(printf 'The scheduled production publish finished with result `%s`: %s\n\n%s\n' \
+            "$PUBLISH_RESULT" "$RUN_URL" \
+            "Merges to main are not reaching production until this is fixed. A rejected push means production diverged from main; do not force it, ask Sawyer. Close this issue once a scheduled run passes again.")"
+          existing="$(gh issue list --state open --limit 200 --json number,title,author \
+            --jq 'map(select(.title == "Daily production publish failed" and .author.is_bot and (.author.login | endswith("github-actions")))) | .[0].number // empty')"
+          if [ -n "$existing" ]; then
+            gh issue comment "$existing" --body "$body"
+          else
+            gh issue create --title "$title" --body "$body"
+          fi
