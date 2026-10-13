@@ -288,6 +288,7 @@ column before pushing; read the CI column when a PR check is red.
 | `npm run lint:content` | `content-voice.test.js` against the fresh build | inside `release-safety` via `verify:release` |
 | `npm run verify:release` | build, full suite and release checks under one lock | `release-safety` |
 | `npm run audit:deps` | `npm audit` at moderate on production dependencies | `release-safety` |
+| `npm run test:e2e` | 19 guest-flow journeys (desktop and mobile Chromium) against a fresh build | `e2e-flows` |
 | `npm run test:visual` | Playwright screenshot diffs against `tests/visual/__screenshots__/` plus the axe spec | `visual-regression` |
 | `npm run perf:budget` / `npm run perf:ratchet` | Lighthouse budgets in `lighthouserc.js` and the byte-size ratchet | `performance-budget` |
 | `npm run verify:preview-surface -- <url>` | homepage, property and booking-handoff assertions against a served `_site` | `preview-surface` |
@@ -302,6 +303,7 @@ and a red one does not block a merge by itself; read it anyway.
 | `release-safety.yml` | `release-safety`, then `build` | every PR to `main` and every push to `main` | `ubuntu-latest` | yes, both |
 | `performance-budget.yml` | `performance-budget` | every PR to `main` (no paths filter, so it always reports), daily 09:17 UTC, manual | `ubuntu-latest` | yes; docs-only PRs report without running Lighthouse |
 | `playwright-visual.yml` (Playwright Visual Gate) | `visual-regression` | PRs to `main` that touch `src/**`, `eleventy.config.js`, `playwright.config.js`, `tests/visual/**`, the visual scripts or `package-lock.json`; docs-only PRs skip it | Sawyer's own PRs: self-hosted `mac-sawbeck-seascape-vacations-site`; forks and other authors: `macos-latest` | no |
+| `e2e-flows.yml` (E2E Guest Flows) | `e2e-flows` | PRs to `main` that touch `src/**`, `eleventy.config.js`, `e2e.config.ts`, `tests/e2e/**`, `scripts/enforcement/serve-static.js` or `package*.json` | same rule as `visual-regression` | no |
 | `preview-surface.yml` | `preview-surface` | every PR to `main` | `ubuntu-latest` | no, by design |
 | `live-smoke.yml` | `live-smoke` (`report-failure` on `ubuntu-latest`) | daily 10:17 UTC; manual dispatch by Sawyer's account only | self-hosted `[self-hosted, macOS, arm64]` | not a PR check |
 | `publish-production.yml` | `publish` | daily 09:05 UTC; manual dispatch by Sawyer's account only | `ubuntu-latest` | not a PR check |
