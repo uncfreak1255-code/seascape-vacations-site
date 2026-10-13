@@ -1,0 +1,44 @@
+name: E2E Guest Flows
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "src/**"
+      - "eleventy.config.js"
+      - "e2e.config.ts"
+      - "tests/e2e/**"
+      - "scripts/enforcement/serve-static.js"
+      - "package.json"
+      - "package-lock.json"
+      - ".github/workflows/e2e-flows.yml"
+
+concurrency:
+  group: e2e-flows-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  e2e-flows:
+    # Same runner rule as playwright-visual.yml: only owner-authored PR commits
+    # triggered by Sawyer use the Mac; everything else stays on hosted macOS.
+    runs-on: ${{ (github.event.pull_request.head.repo.full_name != github.repository || github.event.pull_request.author_association != 'OWNER' || github.actor != 'uncfreak1255-code' || github.triggering_actor != 'uncfreak1255-code') && 'macos-latest' || 'mac-sawbeck-seascape-vacations-site' }}
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: ".nvmrc"
+
+      - run: npm ci
+      - run: npx --no-install e2e-web install chromium
+      - run: npm run test:e2e
+
+      - name: Upload e2e logs
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: e2e-logs
+          path: .e2e/
+          retention-days: 7
