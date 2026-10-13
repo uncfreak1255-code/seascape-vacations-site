@@ -44,6 +44,8 @@ test("no template or guide hardcodes the portfolio size", () => {
   const offenders = [];
   for (const file of sourceFiles(path.join(projectRoot, "src"))) {
     const text = fs.readFileSync(file, "utf8");
+    // permalink: false pages are never rendered, so their copy is not reader-visible.
+    if (/^---\r?\n(?:(?!---)[\s\S])*?^permalink:\s*false\s*$/m.test(text)) continue;
     for (const pattern of TOTAL_COUNT_PATTERNS) {
       const match = text.match(pattern);
       if (match) offenders.push(`${path.relative(projectRoot, file)}: "${match[0]}"`);
