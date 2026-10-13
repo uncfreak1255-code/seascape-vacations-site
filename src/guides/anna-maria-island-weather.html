@@ -87,9 +87,10 @@ permalink: "/guides/anna-maria-island-weather/"
     .container{max-width:900px;margin:0 auto;padding:52px 24px}.article-text{font-size:16px;line-height:1.8}.article-text h2{font-family:'Playfair Display',serif;font-size:clamp(24px,3.5vw,32px);color:var(--brand-dark);margin:44px 0 14px}.article-text h3{font-size:20px;margin:26px 0 8px}.article-text a{color:var(--brand-dark)}
     .answer,.source-note,.safety-card{background:#fff;border-left:4px solid var(--brand);padding:20px 22px;margin:0 0 26px;border-radius:0 10px 10px 0}.source-note{border-left-color:var(--gold)}.safety-card{border-left-color:var(--gold)}
     .table-wrap{overflow-x:auto;margin:24px 0 12px}.table-hint{display:none;color:var(--stone-light);font-size:14px;margin:0 0 8px}.weather-table{width:100%;min-width:670px;border-collapse:collapse;background:#fff;border-radius:14px;overflow:hidden}.weather-table th{background:var(--brand);color:#fff;padding:11px 12px;text-align:right;font-size:13px}.weather-table th:first-child,.weather-table td:first-child{text-align:left}.weather-table td{padding:10px 12px;border-bottom:1px solid var(--cream-dark);text-align:right;font-size:13px}.weather-table tr:last-child td{border-bottom:0}
+    .month-strip{margin:0 0 30px}.month-strip figcaption{font-size:14px;line-height:1.6;color:#52676A;margin:0 0 12px}.ms-grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:6px}.ms-grid li{display:flex;flex-direction:column;gap:4px;min-width:0}.ms-m{font-size:12px;font-weight:600;color:#173D42;text-align:center}.ms-h,.ms-r{border-radius:6px;padding:8px 2px;text-align:center;font-size:12px;line-height:1.25;display:flex;flex-direction:column;align-items:center}.ms-v{font-size:14px;font-weight:600}.ms-h{color:#173D42}.ms-h.h1{background:color-mix(in srgb,#173D42 12%,#F6F3EB)}.ms-h.h2{background:color-mix(in srgb,#173D42 35%,#F6F3EB)}.ms-h.h3{background:#173D42;background:color-mix(in srgb,#173D42 70%,#F6F3EB);color:#fff}.ms-h.h4{background:#173D42;background:color-mix(in srgb,#173D42 88%,#F6F3EB);color:#fff}.ms-h.h5{background:#173D42;color:#fff}.ms-r{color:#173D42}.ms-r.r1{background:color-mix(in srgb,#A4533E 12%,#F6F3EB)}.ms-r.r2{background:color-mix(in srgb,#A4533E 30%,#F6F3EB)}.ms-r.r3{background:color-mix(in srgb,#A4533E 48%,#F6F3EB)}.ms-r.r4{background:#A4533E;color:#fff}.ms-r.r5{background:#A4533E;background:color-mix(in srgb,#A4533E 75%,#173D42);color:#fff}
     .season-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.season-card{background:#fff;border-radius:14px;padding:22px}.season-card h3{color:var(--brand-dark);margin-top:0}
     .cta-section{background:linear-gradient(135deg,var(--brand),var(--brand-dark));padding:52px 24px;text-align:center;color:#fff}.cta-section h2{font-family:'Playfair Display',serif;font-size:clamp(26px,4vw,36px);margin:0 0 12px}.cta-btn{display:inline-block;background:var(--gold);color:var(--stone);padding:14px 28px;border-radius:50px;font-weight:600;text-decoration:none}
-    @media(max-width:700px){.season-grid{grid-template-columns:1fr}.container{padding:40px 18px}.hero{padding:58px 18px 42px}.table-hint{display:block}}
+    @media(max-width:700px){.ms-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.season-grid{grid-template-columns:1fr}.container{padding:40px 18px}.hero{padding:58px 18px 42px}.table-hint{display:block}}
   </style>
 <link rel="stylesheet" href="/css/guest.css?v=waterline-v3">
 </head>
@@ -106,6 +107,24 @@ permalink: "/guides/anna-maria-island-weather/"
       <section class="answer" aria-label="Quick answer">
         <strong>Quick answer:</strong> Late fall through spring has milder air and lower monthly rainfall in the nearby NOAA normals. Summer has the warmest Gulf water proxy and the most rain days. Choose the month that fits your heat, water, rain, and storm-season tolerance.
       </section>
+
+      <figure class="month-strip" aria-labelledby="month-strip-cap">
+        <figcaption id="month-strip-cap"><strong>The year at a glance.</strong> Each month shows its normal high in °F, shaded darker as it gets hotter, and its rain days, shaded clay as it gets wetter. The full table below has every value.</figcaption>
+        <ol class="ms-grid">
+          <li><span class="ms-m">Jan</span><span class="ms-h h1"><span class="ms-v">72.5°</span></span><span class="ms-r r2"><span class="ms-v">8.5</span> rain days</span></li>
+          <li><span class="ms-m">Feb</span><span class="ms-h h1"><span class="ms-v">74.9°</span></span><span class="ms-r r1"><span class="ms-v">6.8</span> rain days</span></li>
+          <li><span class="ms-m">Mar</span><span class="ms-h h2"><span class="ms-v">78.2°</span></span><span class="ms-r r1"><span class="ms-v">6.4</span> rain days</span></li>
+          <li><span class="ms-m">Apr</span><span class="ms-h h3"><span class="ms-v">82.5°</span></span><span class="ms-r r1"><span class="ms-v">5.1</span> rain days</span></li>
+          <li><span class="ms-m">May</span><span class="ms-h h3"><span class="ms-v">87.5°</span></span><span class="ms-r r1"><span class="ms-v">6.0</span> rain days</span></li>
+          <li><span class="ms-m">Jun</span><span class="ms-h h4"><span class="ms-v">90.0°</span></span><span class="ms-r r3"><span class="ms-v">12.8</span> rain days</span></li>
+          <li><span class="ms-m">Jul</span><span class="ms-h h5"><span class="ms-v">91.1°</span></span><span class="ms-r r4"><span class="ms-v">15.6</span> rain days</span></li>
+          <li><span class="ms-m">Aug</span><span class="ms-h h5"><span class="ms-v">91.5°</span></span><span class="ms-r r5"><span class="ms-v">17.5</span> rain days</span></li>
+          <li><span class="ms-m">Sep</span><span class="ms-h h4"><span class="ms-v">90.2°</span></span><span class="ms-r r4"><span class="ms-v">13.7</span> rain days</span></li>
+          <li><span class="ms-m">Oct</span><span class="ms-h h3"><span class="ms-v">86.3°</span></span><span class="ms-r r2"><span class="ms-v">7.0</span> rain days</span></li>
+          <li><span class="ms-m">Nov</span><span class="ms-h h2"><span class="ms-v">80.0°</span></span><span class="ms-r r1"><span class="ms-v">5.6</span> rain days</span></li>
+          <li><span class="ms-m">Dec</span><span class="ms-h h1"><span class="ms-v">75.2°</span></span><span class="ms-r r2"><span class="ms-v">7.6</span> rain days</span></li>
+        </ol>
+      </figure>
 
       <section class="source-note" aria-label="Data sources">
         <strong>How to read the table:</strong> Air temperature and rainfall use NOAA 1991–2020 normals for Sarasota-Bradenton Airport, station <strong>USW00012871</strong>. Water temperature uses NOAA station <strong>8726384 at Port Manatee</strong> as a nearby Gulf proxy. Port Manatee is not an Anna Maria Island beach or surf reading, and daily conditions can differ from monthly means.
