@@ -283,6 +283,8 @@ test("checkout smoke tells a priced checkout, a changed address format, a blank 
     async launch() {
       let opened = 0;
       return {
+        async newContext() { return this; },
+        async route() {},
         async newPage() {
           const index = opened++;
           const pick = (value) => (Array.isArray(value) ? value[Math.min(index, value.length - 1)] : value);
