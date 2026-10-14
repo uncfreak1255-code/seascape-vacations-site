@@ -301,7 +301,7 @@ const SCENARIOS = [
     checks: [
       check("owner hub includes the offer and the review form surface", () => {
         const html = readBuiltHtml("/property-management/");
-        assertIncludes(html, "Seven homes. One local team.");
+        assertIncludes(html, require("./home-count-word").catalogHomeCountHeading());
         assertIncludes(html, "What we do for your home");
         assertIncludes(html, "The homes we manage");
         assertExcludes(html, "$119,923");

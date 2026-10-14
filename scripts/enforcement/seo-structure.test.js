@@ -301,7 +301,7 @@ test("about page exists as a real route and homepage links point to it", () => {
 test("property owners page leads with the owner offer instead of third-party fee definitions or unsupported portfolio proof", () => {
   const ownerPage = fs.readFileSync(path.join(projectRoot, "src", "property-management", "index.njk"), "utf8");
 
-  assert.equal(ownerPage.includes("Seven homes. One local team."), true);
+  assert.match(ownerPage, /\{\{ homeCountWord \| capitalize \}\} homes\. One local team\./);
   assert.equal(ownerPage.includes("What we do for your home"), true);
   assert.equal(ownerPage.includes("The homes we manage"), true);
   assert.equal(ownerPage.includes("15.5%"), false);

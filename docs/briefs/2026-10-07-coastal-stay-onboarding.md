@@ -38,7 +38,7 @@ Validated baseline at episode start: Hostaway uses The Coastal; the Site still u
 
 ## Verification and publication
 
-Property truth regeneration/check; full release suite; route/JSON-LD/AI/discovery/checkout identity checks; no fake availability; desktop/mobile screenshots. Current-count wording and smoke assertions follow seven homes. Main merges trigger Netlify, so publication stops at a reviewed keeper branch until production authority is supplied.
+Property truth regeneration/check; full release suite; route/JSON-LD/AI/discovery/checkout identity checks; no fake availability; desktop/mobile screenshots. Owner-page count wording and smoke assertions follow the catalog length via `numberWord`. Main merges trigger Netlify, so publication stops at a reviewed keeper branch until production authority is supplied.
 
 ## Source files changed in this batch
 
@@ -53,6 +53,8 @@ Property truth regeneration/check; full release suite; route/JSON-LD/AI/discover
 - src/_data/properties-fallback.json, generated property truth, src/_data/seoPages.json and public labels (follow-up, Sawyer approved October 9): every reader-facing property name shows "The Coastal". The stable `/properties/coastal-stay/` route and Hostaway 599394 identity do not change.
 - src/properties/coastal-stay/index.njk and src/_data/properties.js (follow-up, October 8, from the Codex review of the onboarding PR): The Coastal page mounts the same SAVE50 campaign reminder as the other six property pages, so a campaign visitor who picks this home from /properties/ keeps the offer through to checkout; structured data for the home carries its postal code, 34209.
 - scripts/recovery/assert-live-smoke.js (follow-up): the catalog detail-link label for /properties/coastal-stay/ reads "View The Coastal details".
+
+- src/property-management/index.njk, the dolphins, restaurants and flights guides, eleventy.config.js (`numberWord` filter), scripts/recovery/assert-live-smoke.js, scripts/recovery/assert-build-output.js and scripts/enforcement/{home-count-derived,home-count-word,property-truth-invariants,capability-scenarios}.js (count follow-up): the owner page renders the home count from the catalog list and the guides drop the number, so the next home needs no copy edits. The meta description and schema description no longer state a count.
 
 - offer claim: seascape-hub/context/owner-offer.md existing owner-service offer retained; this change corrects inventory count only and introduces no offer.
 
