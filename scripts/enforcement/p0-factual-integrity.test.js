@@ -9,12 +9,16 @@ function read(relativePath) {
   return fs.readFileSync(path.join(root, relativePath), "utf8");
 }
 
-function sourceFiles(dir) {
-  return fs.readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
-    const full = path.join(dir, entry.name);
-    return entry.isDirectory() ? sourceFiles(full) : [full];
-  });
-}
+const {
+  loadSourcedClaims,
+  readSourcedClaims,
+  scanSrcSavingsHits,
+  unsourcedSavingsHits,
+  assertSavingsSourced,
+  assertLiveQuotesPresent,
+  unsourcedPriceAdvantages,
+  assertNoUnsourcedPriceAdvantages
+} = require("./sourced-claims");
 
 test("Sarasota home copy does not claim walkability", () => {
   const sources = [
@@ -36,15 +40,61 @@ test("Sarasota home copy does not claim walkability", () => {
   assert.doesNotMatch(sources, /short drive or walk/i);
 });
 
-test("fixed direct-booking and comparison savings claims stay removed", () => {
-  const sources = sourceFiles(path.join(root, "src"))
-    .filter((file) => /\.(?:html|njk|json|md|txt)$/.test(file))
-    .filter((file) => !file.includes("anna-maria-island-vacation-cost-guide-2026"))
-    .filter((file) => !file.includes("best-time-to-visit-anna-maria-island"))
-    .map((file) => fs.readFileSync(file, "utf8"))
-    .join("\n");
+test("empty sourcedClaims.json fails and names the owner file", () => {
+  assert.throws(() => loadSourcedClaims([]), /src\/_data\/sourcedClaims\.json is empty/);
+  assert.throws(() => loadSourcedClaims(null), /src\/_data\/sourcedClaims\.json is missing/);
+  assert.throws(
+    () => loadSourcedClaims([{ file: "src/guides/x.html", quote: "save 10-15%", expires: "2026-12-31" }]),
+    /src\/_data\/sourcedClaims\.json row 0 is missing source/
+  );
+});
 
-  assert.doesNotMatch(sources, /save 10[-–]15%|save up to 15%|30[-–]40% (?:less|off)|typical direct savings/i);
+test("a missing sourced-claim row for a savings percent fails", () => {
+  const hits = scanSrcSavingsHits();
+  const claims = readSourcedClaims();
+  assert.ok(hits.length >= 8, "cost-guide savings hits must remain; do not delete guest copy");
+  assert.doesNotThrow(() => assertSavingsSourced(hits, claims));
+
+  const covering = claims.find((claim) => hits[0].excerpt.includes(claim.quote));
+  const without = claims.filter((claim) => claim !== covering);
+  assert.ok(covering, "live registry must cover the first savings hit");
+  assert.throws(
+    () => assertSavingsSourced(hits, without),
+    /src\/_data\/sourcedClaims\.json is missing a sourced-claim row/
+  );
+});
+
+test("planted qualitative price-advantage on an unlisted slug fails", () => {
+  const pages = JSON.parse(read("src/_data/seoPages.json")).vacationer;
+  const claims = readSourcedClaims();
+  assert.doesNotThrow(() => assertNoUnsourcedPriceAdvantages(pages, claims));
+
+  const planted = [...pages, { slug: "planted-unsourced-better-rates", intro: "better rates" }];
+  assert.throws(
+    () => assertNoUnsourcedPriceAdvantages(planted, claims),
+    /src\/_data\/sourcedClaims\.json is missing a sourced-claim row for better rates on planted-unsourced-better-rates/
+  );
+  assert.equal(
+    unsourcedPriceAdvantages(planted, claims).map((page) => page.slug).join(","),
+    "planted-unsourced-better-rates"
+  );
+});
+
+test("the two cost guides stay green only while dated-quote rows exist", () => {
+  const hits = scanSrcSavingsHits();
+  const claims = readSourcedClaims();
+  const costGuideHits = hits.filter((hit) => hit.file.includes("anna-maria-island-vacation-cost-guide-2026"));
+  const bestTimeHits = hits.filter((hit) => hit.file.includes("best-time-to-visit-anna-maria-island"));
+  assert.ok(costGuideHits.length > 0, "cost-guide savings copy must remain");
+  assert.ok(bestTimeHits.length > 0, "best-time savings copy must remain");
+  assert.equal(unsourcedSavingsHits(hits, claims).length, 0);
+  assert.doesNotThrow(() => assertLiveQuotesPresent(claims));
+
+  const expired = claims.map((claim) => ({ ...claim, expires: "2026-01-01" }));
+  assert.throws(
+    () => assertSavingsSourced(hits, expired, new Date("2026-10-15T00:00:00Z")),
+    /src\/_data\/sourcedClaims\.json is missing a sourced-claim row/
+  );
 });
 
 test("P0 routes and professional-review quarantines remain intact", () => {
