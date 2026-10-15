@@ -14,7 +14,6 @@ const WORDS = [
   "twelve"
 ];
 const NUMBER = "(?:one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|\\d+)";
-const HOME_COUNT_WORD = `(?:${WORDS.join("|")})`;
 
 // Phrases that state the size of the whole portfolio. Subset counts such as
 // "six homes with a hot tub" or "the five established homes" are facts about
@@ -50,18 +49,10 @@ function catalogHomeCountHeading(catalog) {
   return `${word[0].toUpperCase()}${word.slice(1)} homes. One local team.`;
 }
 
-function ownerOfferCountPatterns() {
-  return {
-    heading: new RegExp(`\\b${HOME_COUNT_WORD} homes\\. One local team\\.`, "i"),
-    operator: new RegExp(`Why a ${HOME_COUNT_WORD}-home operator`, "i")
-  };
-}
-
 module.exports = {
   WORDS,
   TOTAL_COUNT_PATTERNS,
   numberWord,
   catalogHomeCountWord,
-  catalogHomeCountHeading,
-  ownerOfferCountPatterns
+  catalogHomeCountHeading
 };
