@@ -182,11 +182,24 @@ async function validateRenderedCheckout(baseUrl, options = {}) {
   const chromium = options.chromium || require("@playwright/test").chromium;
   const browser = await chromium.launch({ headless: true });
   try {
+    // Hostaway is a separate origin: the site's agent opt-out cannot isolate it.
+    // Context routing covers frames/popups; service workers must not bypass it.
+    const context = await browser.newContext({ serviceWorkers: "block" });
+    await context.route("**/*", async (route) => {
+      const url = new URL(route.request().url());
+      const analyticsHost = url.hostname === "google-analytics.com" ||
+        url.hostname.endsWith(".google-analytics.com") ||
+        /^(?:region\d+\.)?analytics\.google\.com$/.test(url.hostname) ||
+        url.hostname === "stats.g.doubleclick.net";
+      const collectionPath = /^\/(?:[gjr]\/)?collect\/?$/.test(url.pathname);
+      if (analyticsHost && collectionPath) await route.abort();
+      else await route.fallback();
+    });
     const seen = [];
     for (const stay of stays) {
       const url = `${CHECKOUT_ORIGIN}/checkout/${stay.listingId}?start=${stay.arrive}&end=${stay.depart}&numberOfGuests=2`;
       // Read only: the page is loaded and its text read. Nothing is typed or submitted.
-      const page = await browser.newPage();
+      const page = await context.newPage();
       let state = "pending";
       try {
         const response = await page.goto(url, { waitUntil: "domcontentloaded", timeout });

@@ -54,6 +54,13 @@ or keep the checkout journey synthetic. Unmarked browser agents that do not
 expose `navigator.webdriver` need the explicit marker; this is not a general
 bot detector.
 
+The daily checkout smoke installs context-wide interception for known Google
+Analytics collection endpoints before opening checkout, with service workers
+blocked. Checkout documents, pricing/calendar requests and assets still pass.
+An interception setup failure stops the check before any checkout navigation.
+Offline regression coverage runs in `scripts/recovery/checkout-analytics-isolation.test.js`;
+this does not prove historical QA traffic was excluded from GA4.
+
 Verify with `npm run build` and
 `node --test scripts/enforcement/analytics-traffic.test.js`. That test executes
 built scripts, checks exclusion before GA4 configuration, covers marker
