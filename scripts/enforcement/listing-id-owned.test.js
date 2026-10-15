@@ -59,18 +59,27 @@ test("live fallback rows each own a listingId", () => {
   }
 });
 
-test("a hand-typed client listing map fails generate", () => {
-  const planted = "var PROPERTY_SLUG_BY_LISTING_ID = {\"189511\":\"the-oasis\"};\n";
+test("generate overwrites a planted wrong client map", () => {
+  const planted = "var PROPERTY_SLUG_BY_LISTING_ID = {\"1\":\"wrong\"};\n";
+  const generated = generateClientListingIdMap(planted, liveCatalog());
+  const inverted = invertListingIdBySlug(listingIdBySlug(liveCatalog()));
+  assert.deepEqual(clientMapFrom(generated), inverted);
+  assert.equal(Object.hasOwn(clientMapFrom(generated), "1"), false);
+});
+
+test("generate fails when the client map assignment is missing", () => {
   assert.throws(
-    () => generateClientListingIdMap(planted, liveCatalog()),
-    /hand-typed PROPERTY_SLUG_BY_LISTING_ID literal remains in src\/assets\/js\/conversion-tracking\.js/
+    () => generateClientListingIdMap("var x = 1;\n", liveCatalog()),
+    /src\/assets\/js\/conversion-tracking\.js is missing PROPERTY_SLUG_BY_LISTING_ID generate seam/
   );
 });
 
-test("conversion-tracking.js has no hand-typed listing map", () => {
+test("source client map equals the invert of the derived server map", () => {
   const trackingSource = fs.readFileSync(trackingPath, "utf8");
-  assert.match(trackingSource, /var PROPERTY_SLUG_BY_LISTING_ID = null;/);
-  assert.doesNotMatch(trackingSource, /PROPERTY_SLUG_BY_LISTING_ID\s*=\s*\{/);
+  assert.deepEqual(
+    clientMapFrom(trackingSource),
+    invertListingIdBySlug(listingIdBySlug(liveCatalog()))
+  );
 });
 
 test("properties.js derives LISTING_ID_BY_SLUG from the catalog", () => {

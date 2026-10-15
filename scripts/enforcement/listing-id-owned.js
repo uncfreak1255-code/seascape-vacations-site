@@ -3,8 +3,7 @@ const path = require("path");
 
 const OWNER_FILE = "src/_data/properties-fallback.json";
 const TRACKING_FILE = "src/assets/js/conversion-tracking.js";
-const CLIENT_MAP_SEAM = "var PROPERTY_SLUG_BY_LISTING_ID = null;";
-const HAND_TYPED_CLIENT_MAP = /PROPERTY_SLUG_BY_LISTING_ID\s*=\s*\{/;
+const CLIENT_MAP_SEAM = /var PROPERTY_SLUG_BY_LISTING_ID = (?:null|\{[^}]*\});/;
 const FALLBACK_PATH = path.join(__dirname, "..", "..", "src", "_data", "properties-fallback.json");
 
 function readFallbackCatalog() {
@@ -56,11 +55,8 @@ function generateClientListingIdMap(trackingSource, catalog = readFallbackCatalo
   if (typeof trackingSource !== "string" || !trackingSource.trim()) {
     throw new Error(`${TRACKING_FILE} is missing`);
   }
-  if (HAND_TYPED_CLIENT_MAP.test(trackingSource)) {
-    throw new Error(`hand-typed PROPERTY_SLUG_BY_LISTING_ID literal remains in ${TRACKING_FILE}`);
-  }
-  const seamCount = trackingSource.split(CLIENT_MAP_SEAM).length - 1;
-  if (seamCount !== 1) {
+  const matches = trackingSource.match(new RegExp(CLIENT_MAP_SEAM.source, "g"));
+  if (!matches || matches.length !== 1) {
     throw new Error(`${TRACKING_FILE} is missing PROPERTY_SLUG_BY_LISTING_ID generate seam`);
   }
   const inverted = invertListingIdBySlug(listingIdBySlug(catalog));
@@ -92,7 +88,6 @@ function writeGeneratedClientListingIdMap(root = process.cwd()) {
 module.exports = {
   OWNER_FILE,
   TRACKING_FILE,
-  CLIENT_MAP_SEAM,
   listingIdBySlug,
   invertListingIdBySlug,
   generateClientListingIdMap,
