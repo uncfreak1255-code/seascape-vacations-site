@@ -9,7 +9,9 @@ const {
   listingIdBySlug,
   invertListingIdBySlug,
   generateClientListingIdMap,
-  writeGeneratedClientListingIdMap
+  writeGeneratedClientListingIdMap,
+  ensureCatalogListingIds,
+  preserveListingIds
 } = require("./listing-id-owned");
 
 const projectRoot = path.resolve(__dirname, "..", "..");
@@ -37,6 +39,30 @@ test("a fallback row without listingId fails with that slug", () => {
     () => listingIdBySlug(catalog),
     /src\/_data\/properties-fallback\.json row coastal-stay is missing listingId/
   );
+});
+
+test("a producer write that omits listingId fails with that slug", () => {
+  assert.throws(
+    () => ensureCatalogListingIds([{ slug: "coastal-stay", id: "coastal-stay", name: "The Coastal" }]),
+    /src\/_data\/properties-fallback\.json row coastal-stay is missing listingId/
+  );
+});
+
+test("ensureCatalogListingIds migrates numeric id and source.listingId onto listingId", () => {
+  const [fromId] = ensureCatalogListingIds([{ slug: "coastal-stay", id: "599394" }]);
+  assert.equal(fromId.listingId, "599394");
+  const [fromSource] = ensureCatalogListingIds([
+    { slug: "coastal-stay", source: { listingId: "599394" } }
+  ]);
+  assert.equal(fromSource.listingId, "599394");
+});
+
+test("preserveListingIds copies listingId from the current catalog by slug", () => {
+  const [preserved] = preserveListingIds(
+    [{ slug: "coastal-stay", id: "coastal-stay", name: "The Coastal" }],
+    [{ slug: "coastal-stay", listingId: "599394" }]
+  );
+  assert.equal(preserved.listingId, "599394");
 });
 
 test("empty catalog input fails and names the owner file", () => {
