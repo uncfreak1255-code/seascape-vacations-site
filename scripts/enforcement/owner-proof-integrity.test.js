@@ -78,8 +78,27 @@ test("retired owner benchmark proof has a complete blocking contract", () => {
   assert.equal(benchmarkAsset.examples.length, 0);
   assert.ok(benchmarkAsset.proofLabels.includes("Definitions, not a payout forecast"));
   assert.equal(benchmarkAsset.proofLabels.includes("Scenario example, not a forecast"), false);
+  assert.doesNotThrow(() =>
+    assertOwnerBenchmarkProof(benchmarkAsset, new Date("2026-10-18T00:00:00Z"))
+  );
+});
+
+test("retired-stale empty stats stay green after 2026-10-17", () => {
+  assert.equal(benchmarkAsset.reuseStatus, "retired-stale");
+  assert.equal(benchmarkAsset.stats.length, 0);
+  assert.doesNotThrow(() =>
+    assertOwnerBenchmarkProof(benchmarkAsset, new Date("2026-10-18T00:00:00Z"))
+  );
+});
+
+test("stale published pricing still fails when the asset is not retired-stale empty stats", () => {
+  const livePricing = {
+    ...benchmarkAsset,
+    reuseStatus: "approved",
+    staleAfter: "2026-12-01"
+  };
   assert.throws(
-    () => assertOwnerBenchmarkProof(benchmarkAsset, new Date("2026-10-18T00:00:00Z")),
+    () => assertOwnerBenchmarkProof(livePricing, new Date("2026-10-18T00:00:00Z")),
     /published pricing is stale after 2026-10-17/
   );
 });

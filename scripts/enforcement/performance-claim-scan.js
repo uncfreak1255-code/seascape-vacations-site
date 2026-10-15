@@ -151,15 +151,24 @@ function formatPerformanceClaimReport(hits) {
     return "occupancy/ADR/revenue scan: 0 hits in public copy";
   }
 
-  const lines = [`occupancy/ADR/revenue scan: ${hits.length} hit(s) (reported, not rewritten)`];
+  const lines = [`occupancy/ADR/revenue scan: ${hits.length} hit(s) (fails the suite)`];
   for (const hit of hits) {
     lines.push(`- ${hit.path}: ${hit.id} "${hit.match}"`);
   }
   return lines.join("\n");
 }
 
+function assertNoPublicPerformanceClaims(projectRoot = process.cwd()) {
+  const hits = scanRepoPublicCopy(projectRoot);
+  if (hits.length) {
+    throw new Error(formatPerformanceClaimReport(hits));
+  }
+  return hits;
+}
+
 module.exports = {
   OCCUPANCY_ADR_REVENUE_PATTERNS,
+  assertNoPublicPerformanceClaims,
   findPerformanceClaimHits,
   lintPerformanceClaims,
   collectPublicCopyFiles,
