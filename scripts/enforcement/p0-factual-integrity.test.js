@@ -12,6 +12,7 @@ function read(relativePath) {
 const {
   loadSourcedClaims,
   readSourcedClaims,
+  scanSavingsHitsInText,
   scanSrcSavingsHits,
   unsourcedSavingsHits,
   assertSavingsSourced,
@@ -47,6 +48,15 @@ test("empty sourcedClaims.json fails and names the owner file", () => {
     () => loadSourcedClaims([{ file: "src/guides/x.html", quote: "save 10-15%", expires: "2026-12-31" }]),
     /src\/_data\/sourcedClaims\.json row 0 is missing source/
   );
+  assert.throws(
+    () => loadSourcedClaims([{
+      file: "src/guides/best-time-to-visit-anna-maria-island/index.html",
+      quote: "Book direct and save 15–35%",
+      source: "2026 AMI best-time guide dated quote",
+      expires: "2026-12-31"
+    }]),
+    /src\/_data\/sourcedClaims\.json row 0 source is the same guide that contains the claim/
+  );
 });
 
 test("a missing sourced-claim row for a savings percent fails", () => {
@@ -64,6 +74,30 @@ test("a missing sourced-claim row for a savings percent fails", () => {
   );
 });
 
+test("percentage-first and tagged savings percents fail without a sourced-claim row", () => {
+  const claims = readSourcedClaims();
+  const plantedLess = scanSavingsHitsInText("rental rates 30–40% less than peak season", "src/guides/planted-percent-first.html");
+  const plantedOff = scanSavingsHitsInText("homes are 30-40% off peak season", "src/guides/planted-percent-first.html");
+  const plantedTagged = scanSavingsHitsInText("Book direct and save <strong>15%</strong> versus Airbnb", "src/guides/planted-tagged-save.html");
+
+  assert.equal(plantedLess.map((hit) => hit.match).join(","), "30–40% less");
+  assert.equal(plantedOff.map((hit) => hit.match).join(","), "30-40% off");
+  assert.equal(plantedTagged.map((hit) => hit.match).join(","), "save 15%");
+
+  assert.throws(
+    () => assertSavingsSourced(plantedLess, claims),
+    /src\/_data\/sourcedClaims\.json is missing a sourced-claim row for 30–40% less in src\/guides\/planted-percent-first.html/
+  );
+  assert.throws(
+    () => assertSavingsSourced(plantedOff, claims),
+    /src\/_data\/sourcedClaims\.json is missing a sourced-claim row for 30-40% off in src\/guides\/planted-percent-first.html/
+  );
+  assert.throws(
+    () => assertSavingsSourced(plantedTagged, claims),
+    /src\/_data\/sourcedClaims\.json is missing a sourced-claim row for save 15% in src\/guides\/planted-tagged-save.html/
+  );
+});
+
 test("planted qualitative price-advantage on an unlisted slug fails", () => {
   const pages = JSON.parse(read("src/_data/seoPages.json")).vacationer;
   const claims = readSourcedClaims();
@@ -77,6 +111,25 @@ test("planted qualitative price-advantage on an unlisted slug fails", () => {
   assert.equal(
     unsourcedPriceAdvantages(planted, claims).map((page) => page.slug).join(","),
     "planted-unsourced-better-rates"
+  );
+
+  const mixedClaims = [
+    ...claims,
+    {
+      slug: "planted-mixed-rates",
+      quote: "better rates",
+      source: "Published OTA guest service fees",
+      expires: "2026-12-31"
+    }
+  ];
+  const mixed = [...pages, { slug: "planted-mixed-rates", intro: "better rates and premium rates" }];
+  assert.throws(
+    () => assertNoUnsourcedPriceAdvantages(mixed, mixedClaims),
+    /src\/_data\/sourcedClaims\.json is missing a sourced-claim row for premium rates on planted-mixed-rates/
+  );
+  assert.equal(
+    unsourcedPriceAdvantages(mixed, mixedClaims).map((hit) => `${hit.match}@${hit.slug}`).join(","),
+    "premium rates@planted-mixed-rates"
   );
 });
 
