@@ -75,6 +75,33 @@ test("empty sourcedClaims.json fails and names the owner file", () => {
     }]),
     /src\/_data\/sourcedClaims\.json row 0 source is the same page that contains the claim/
   );
+  assert.throws(
+    () => loadSourcedClaims([{
+      file: "src/index.njk",
+      quote: "save 10%",
+      source: "https://seascape-vacations.com/",
+      expires: "2026-12-31"
+    }]),
+    /src\/_data\/sourcedClaims\.json row 0 source is the same page that contains the claim/
+  );
+  assert.throws(
+    () => loadSourcedClaims([{
+      file: "src/property-management/index.njk",
+      quote: "save 10%",
+      source: "https://seascape-vacations.com/property-management/",
+      expires: "2026-12-31"
+    }]),
+    /src\/_data\/sourcedClaims\.json row 0 source is the same page that contains the claim/
+  );
+  assert.throws(
+    () => loadSourcedClaims([{
+      file: "src/properties/dockside-dreams/index.njk",
+      quote: "save 10%",
+      source: "https://seascape-vacations.com/properties/dockside-dreams/",
+      expires: "2026-12-31"
+    }]),
+    /src\/_data\/sourcedClaims\.json row 0 source is the same page that contains the claim/
+  );
 });
 
 test("a missing sourced-claim row for a savings percent fails", () => {
@@ -135,6 +162,10 @@ test("percentage-first and tagged savings percents fail without a sourced-claim 
     "Rates drop 20–30% from April",
     "src/guides/planted-percent-first.html"
   );
+  const plantedDifference = scanSavingsHitsInText(
+    "The difference between peak and off-peak can be 40% or more on the same property.",
+    "src/guides/planted-percent-first.html"
+  );
 
   assert.equal(plantedLess.map((hit) => hit.match).join(","), "30–40% less");
   assert.equal(plantedOff.map((hit) => hit.match).join(","), "30-40% off");
@@ -146,6 +177,7 @@ test("percentage-first and tagged savings percents fail without a sourced-claim 
   assert.equal(plantedBelow.map((hit) => hit.match).join(","), "30–40% below");
   assert.equal(plantedLower.map((hit) => hit.match).join(","), "30-40% lower");
   assert.equal(plantedRatesDrop.map((hit) => hit.match).join(","), "Rates drop 20–30%");
+  assert.match(plantedDifference.map((hit) => hit.match).join(","), /40% or more/);
 
   assert.throws(
     () => assertSavingsSourced(plantedLess, claims),
@@ -186,6 +218,10 @@ test("percentage-first and tagged savings percents fail without a sourced-claim 
   assert.throws(
     () => assertSavingsSourced(plantedRatesDrop, claims),
     /src\/_data\/sourcedClaims\.json is missing a sourced-claim row for Rates drop 20–30% in src\/guides\/planted-percent-first.html/
+  );
+  assert.throws(
+    () => assertSavingsSourced(plantedDifference, claims),
+    /src\/_data\/sourcedClaims\.json is missing a sourced-claim row for .*40% or more in src\/guides\/planted-percent-first.html/
   );
 });
 

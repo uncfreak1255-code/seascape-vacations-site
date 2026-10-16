@@ -6,6 +6,7 @@ const GUEST_SOURCE = /\.(?:html|njk|json|md|txt)$/;
 const SAVINGS_PERCENT = /\bsave[sd]?\b[^%.]{0,32}\d+(?:\s*[-–]\s*\d+)?\s*%/gi;
 const PERCENTAGE_FIRST_SAVINGS = /\d+(?:\s*[-–]\s*\d+)?\s*%\s*(?:less|off|below|lower)\b/gi;
 const RATES_DROP_SAVINGS = /\brates\s+drop\s+\d+(?:\s*[-–]\s*\d+)?\s*%/gi;
+const PERCENTAGE_DIFFERENCE = /\bdifference\b[^%.]{0,80}\d+(?:\s*[-–]\s*\d+)?\s*%(?:\s*or more)?|\d+(?:\s*[-–]\s*\d+)?\s*%\s*or more\b/gi;
 const QUALITATIVE_DIRECT_SAVINGS = /typical direct savings/gi;
 const SAVINGS_NOUN_LABEL = /\bsavings\s*:\s*[^%.]{0,24}\d+(?:\s*[-–]\s*\d+)?\s*%/gi;
 const PERCENTAGE_SAVINGS_NOUN = /\d+(?:\s*[-–]\s*\d+)?\s*%\s*savings\b/gi;
@@ -51,6 +52,54 @@ function isExpired(claim, now = new Date()) {
   return dateStamp(now) > parseExpires(claim.expires);
 }
 
+function normalizePublicRoute(route) {
+  if (!route || route === "/") {
+    return "/";
+  }
+  return `/${String(route).replace(/^\/+|\/+$/g, "")}/`;
+}
+
+function publicRouteFromFile(file) {
+  const relative = String(file || "").replace(/\\/g, "/");
+  if (!relative) {
+    return "";
+  }
+  if (relative === "src/index.njk" || relative === "src/index.html") {
+    return "/";
+  }
+  let rest = relative.replace(/^src\//, "").replace(/\.(?:njk|html)$/i, "");
+  rest = rest.replace(/\/index$/, "");
+  if (!rest || rest === "index") {
+    return "/";
+  }
+  if (/^(?:_data|_includes|_includes\/|_data\/|assets\/|css\/)/.test(rest)) {
+    return "";
+  }
+  return normalizePublicRoute(rest);
+}
+
+function pathnameFromUrl(url) {
+  try {
+    const parsed = new URL(url);
+    let pathname = parsed.pathname || "/";
+    if (pathname !== "/" && !pathname.endsWith("/")) {
+      pathname += "/";
+    }
+    return pathname;
+  } catch {
+    return "";
+  }
+}
+
+function sourceContainsPublicRoute(source, route) {
+  if (!route) {
+    return false;
+  }
+  const normalizedRoute = normalizePublicRoute(route);
+  const urls = String(source).match(/https?:\/\/[^\s)'"]+/gi) || [];
+  return urls.some((url) => pathnameFromUrl(url) === normalizedRoute);
+}
+
 function sourceNamesOwnStay(source, slug) {
   const token = String(slug || "").trim().toLowerCase();
   if (!token) {
@@ -88,7 +137,11 @@ function sourceNamesOwnGuide(source, file) {
 }
 
 function assertUnderlyingSource(source, file, slug, index) {
-  if (sourceNamesOwnGuide(source, file) || sourceNamesOwnStay(source, slug)) {
+  if (
+    sourceNamesOwnGuide(source, file) ||
+    sourceNamesOwnStay(source, slug) ||
+    sourceContainsPublicRoute(source, publicRouteFromFile(file))
+  ) {
     throw new Error(`${OWNER_FILE} row ${index} source is the same page that contains the claim`);
   }
   if (!IDENTIFIABLE_EVIDENCE.test(source)) {
@@ -161,7 +214,8 @@ function savingsPatterns() {
     QUALITATIVE_DIRECT_SAVINGS,
     SAVINGS_NOUN_LABEL,
     PERCENTAGE_SAVINGS_NOUN,
-    RATES_DROP_SAVINGS
+    RATES_DROP_SAVINGS,
+    PERCENTAGE_DIFFERENCE
   ].map((pattern) => new RegExp(pattern.source, pattern.flags.includes("g") ? pattern.flags : `${pattern.flags}g`));
 }
 
@@ -299,6 +353,7 @@ module.exports = {
   SAVINGS_NOUN_LABEL,
   PERCENTAGE_SAVINGS_NOUN,
   RATES_DROP_SAVINGS,
+  PERCENTAGE_DIFFERENCE,
   IDENTIFIABLE_EVIDENCE,
   loadSourcedClaims,
   readSourcedClaims,

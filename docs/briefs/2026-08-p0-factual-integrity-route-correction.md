@@ -351,11 +351,12 @@ record that limitation rather than treating them as passed.
 ## October 16 leftover savings-claim repair
 
 Leftover unpublished 2026 cost-guide and best-time files drop unsourced
-percentage savings, including `below`/`lower` and `rates drop N%`. Published
-insider FAQ and things-to-do outlet copy in this PR already dropped unsourced
-ranges. `sourcedClaims.json` rows must name identifiable evidence (a reviewable
-URL), not a self-referential OTA keyword or the stay URL for a slug-only row.
-No invented guest percents. Live unsourced claims stay blocked.
+percentage savings, including `below`/`lower`, `rates drop N%`, and
+`40% or more` peak/off-peak difference wording. Published insider FAQ and
+things-to-do outlet copy in this PR already dropped unsourced ranges.
+`sourcedClaims.json` rows must name identifiable evidence (a reviewable URL),
+not a self-referential OTA keyword, stay URL, homepage URL, owner URL, or
+property URL. No invented guest percents. Live unsourced claims stay blocked.
 
 - source files likely to change:
   - `src/guides/anna-maria-island-vacation-cost-guide-2026/index.html`
