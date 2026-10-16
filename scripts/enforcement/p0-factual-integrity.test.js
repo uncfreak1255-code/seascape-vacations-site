@@ -102,6 +102,54 @@ test("empty sourcedClaims.json fails and names the owner file", () => {
     }]),
     /src\/_data\/sourcedClaims\.json row 0 source is the same page that contains the claim/
   );
+  assert.throws(
+    () => loadSourcedClaims([{
+      file: "src/stays/stays.njk",
+      quote: "save 10%",
+      source: "https://seascape-vacations.com/stays/example/",
+      expires: "2026-12-31"
+    }]),
+    /src\/_data\/sourcedClaims\.json row 0 is missing slug/
+  );
+  assert.throws(
+    () => loadSourcedClaims([{
+      file: "src/stays/stays.njk",
+      slug: "example",
+      quote: "save 10%",
+      source: "https://seascape-vacations.com/stays/example/",
+      expires: "2026-12-31"
+    }]),
+    /src\/_data\/sourcedClaims\.json row 0 source is the same page that contains the claim/
+  );
+  assert.throws(
+    () => loadSourcedClaims([{
+      file: "src/stays/stays.njk",
+      slug: "dummy",
+      quote: "save 10%",
+      source: "https://seascape-vacations.com/stays/example/",
+      expires: "2026-12-31"
+    }]),
+    /src\/_data\/sourcedClaims\.json row 0 source is the same page that contains the claim/
+  );
+  assert.throws(
+    () => loadSourcedClaims([{
+      file: "src/property-management/property-management.njk",
+      quote: "save 10%",
+      source: "https://seascape-vacations.com/property-management/example/",
+      expires: "2026-12-31"
+    }]),
+    /src\/_data\/sourcedClaims\.json row 0 is missing slug/
+  );
+  assert.throws(
+    () => loadSourcedClaims([{
+      file: "src/property-management/property-management.njk",
+      slug: "example",
+      quote: "save 10%",
+      source: "https://seascape-vacations.com/property-management/example/",
+      expires: "2026-12-31"
+    }]),
+    /src\/_data\/sourcedClaims\.json row 0 source is the same page that contains the claim/
+  );
 });
 
 test("a missing sourced-claim row for a savings percent fails", () => {
@@ -166,6 +214,14 @@ test("percentage-first and tagged savings percents fail without a sourced-claim 
     "The difference between peak and off-peak can be 40% or more on the same property.",
     "src/guides/planted-percent-first.html"
   );
+  const plantedCheaper = scanSavingsHitsInText(
+    "Book direct is 15% cheaper than Airbnb",
+    "src/guides/planted-percent-first.html"
+  );
+  const plantedDiscount = scanSavingsHitsInText(
+    "get a 15% discount",
+    "src/guides/planted-percent-first.html"
+  );
 
   assert.equal(plantedLess.map((hit) => hit.match).join(","), "30–40% less");
   assert.equal(plantedOff.map((hit) => hit.match).join(","), "30-40% off");
@@ -178,6 +234,8 @@ test("percentage-first and tagged savings percents fail without a sourced-claim 
   assert.equal(plantedLower.map((hit) => hit.match).join(","), "30-40% lower");
   assert.equal(plantedRatesDrop.map((hit) => hit.match).join(","), "Rates drop 20–30%");
   assert.match(plantedDifference.map((hit) => hit.match).join(","), /40% or more/);
+  assert.equal(plantedCheaper.map((hit) => hit.match).join(","), "15% cheaper");
+  assert.equal(plantedDiscount.map((hit) => hit.match).join(","), "15% discount");
 
   assert.throws(
     () => assertSavingsSourced(plantedLess, claims),
@@ -222,6 +280,14 @@ test("percentage-first and tagged savings percents fail without a sourced-claim 
   assert.throws(
     () => assertSavingsSourced(plantedDifference, claims),
     /src\/_data\/sourcedClaims\.json is missing a sourced-claim row for .*40% or more in src\/guides\/planted-percent-first.html/
+  );
+  assert.throws(
+    () => assertSavingsSourced(plantedCheaper, claims),
+    /src\/_data\/sourcedClaims\.json is missing a sourced-claim row for 15% cheaper in src\/guides\/planted-percent-first.html/
+  );
+  assert.throws(
+    () => assertSavingsSourced(plantedDiscount, claims),
+    /src\/_data\/sourcedClaims\.json is missing a sourced-claim row for 15% discount in src\/guides\/planted-percent-first.html/
   );
 });
 

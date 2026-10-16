@@ -4,7 +4,7 @@ const path = require("path");
 const OWNER_FILE = "src/_data/sourcedClaims.json";
 const GUEST_SOURCE = /\.(?:html|njk|json|md|txt)$/;
 const SAVINGS_PERCENT = /\bsave[sd]?\b[^%.]{0,32}\d+(?:\s*[-–]\s*\d+)?\s*%/gi;
-const PERCENTAGE_FIRST_SAVINGS = /\d+(?:\s*[-–]\s*\d+)?\s*%\s*(?:less|off|below|lower)\b/gi;
+const PERCENTAGE_FIRST_SAVINGS = /\d+(?:\s*[-–]\s*\d+)?\s*%\s*(?:less|off|below|lower|cheaper|discount)\b/gi;
 const RATES_DROP_SAVINGS = /\brates\s+drop\s+\d+(?:\s*[-–]\s*\d+)?\s*%/gi;
 const PERCENTAGE_DIFFERENCE = /\bdifference\b[^%.]{0,80}\d+(?:\s*[-–]\s*\d+)?\s*%(?:\s*or more)?|\d+(?:\s*[-–]\s*\d+)?\s*%\s*or more\b/gi;
 const QUALITATIVE_DIRECT_SAVINGS = /typical direct savings/gi;
@@ -59,6 +59,8 @@ function normalizePublicRoute(route) {
   return `/${String(route).replace(/^\/+|\/+$/g, "")}/`;
 }
 
+const GENERATED_SLUG_TOKEN = /\{\{\s*seoPage\.slug\s*\}\}/;
+
 function publicRouteFromFile(file) {
   const relative = String(file || "").replace(/\\/g, "/");
   if (!relative) {
@@ -76,6 +78,56 @@ function publicRouteFromFile(file) {
     return "";
   }
   return normalizePublicRoute(rest);
+}
+
+function readPermalink(file, root = DEFAULT_ROOT) {
+  const relative = String(file || "").replace(/\\/g, "/");
+  if (!relative) {
+    return "";
+  }
+  const filePath = path.join(root, relative);
+  if (!fs.existsSync(filePath) || !fs.statSync(filePath).isFile()) {
+    return "";
+  }
+  const match = fs.readFileSync(filePath, "utf8").match(/^permalink:\s*(?:["']([^"']+)["']|(\S+))/m);
+  return (match && (match[1] || match[2])) || "";
+}
+
+function permalinkHasGeneratedSlug(permalink) {
+  return GENERATED_SLUG_TOKEN.test(permalink);
+}
+
+function escapeRegExp(value) {
+  return String(value).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function generatedRoutePattern(permalink) {
+  const normalized = normalizePublicRoute(permalink.replace(GENERATED_SLUG_TOKEN, "__SLUG__"));
+  return new RegExp(`^${escapeRegExp(normalized).replace("__SLUG__", "[^/]+")}$`);
+}
+
+function publicRouteFromClaim(file, slug, root = DEFAULT_ROOT) {
+  const permalink = readPermalink(file, root);
+  if (!permalink || permalink === "false") {
+    return publicRouteFromFile(file);
+  }
+  if (permalinkHasGeneratedSlug(permalink)) {
+    if (!slug) {
+      return "";
+    }
+    return normalizePublicRoute(permalink.replace(GENERATED_SLUG_TOKEN, slug));
+  }
+  return normalizePublicRoute(permalink);
+}
+
+function sourceMatchesGeneratedPermalink(source, file, root = DEFAULT_ROOT) {
+  const permalink = readPermalink(file, root);
+  if (!permalinkHasGeneratedSlug(permalink)) {
+    return false;
+  }
+  const pattern = generatedRoutePattern(permalink);
+  const urls = String(source).match(/https?:\/\/[^\s)'"]+/gi) || [];
+  return urls.some((url) => pattern.test(pathnameFromUrl(url)));
 }
 
 function pathnameFromUrl(url) {
@@ -136,11 +188,16 @@ function sourceNamesOwnGuide(source, file) {
   return /guide/i.test(source) && parts.some((part) => part.length > 4 && normalizedSource.includes(part));
 }
 
-function assertUnderlyingSource(source, file, slug, index) {
+function assertUnderlyingSource(source, file, slug, index, root = DEFAULT_ROOT) {
+  const permalink = readPermalink(file, root);
+  if (permalinkHasGeneratedSlug(permalink) && !slug) {
+    throw new Error(`${OWNER_FILE} row ${index} is missing slug`);
+  }
   if (
     sourceNamesOwnGuide(source, file) ||
     sourceNamesOwnStay(source, slug) ||
-    sourceContainsPublicRoute(source, publicRouteFromFile(file))
+    sourceContainsPublicRoute(source, publicRouteFromClaim(file, slug, root)) ||
+    sourceMatchesGeneratedPermalink(source, file, root)
   ) {
     throw new Error(`${OWNER_FILE} row ${index} source is the same page that contains the claim`);
   }
@@ -149,7 +206,7 @@ function assertUnderlyingSource(source, file, slug, index) {
   }
 }
 
-function loadSourcedClaims(claims) {
+function loadSourcedClaims(claims, root = DEFAULT_ROOT) {
   if (claims == null) {
     throw new Error(`${OWNER_FILE} is missing`);
   }
@@ -174,7 +231,7 @@ function loadSourcedClaims(claims) {
     if (!file && !slug) {
       throw new Error(`${OWNER_FILE} row ${index} is missing file`);
     }
-    assertUnderlyingSource(source, file, slug, index);
+    assertUnderlyingSource(source, file, slug, index, root);
     return {
       file,
       slug,
@@ -190,7 +247,7 @@ function readSourcedClaims(root = DEFAULT_ROOT) {
   if (!fs.existsSync(filePath)) {
     throw new Error(`${OWNER_FILE} is missing`);
   }
-  return loadSourcedClaims(JSON.parse(fs.readFileSync(filePath, "utf8")));
+  return loadSourcedClaims(JSON.parse(fs.readFileSync(filePath, "utf8")), root);
 }
 
 function sourceFiles(dir) {
