@@ -1,7 +1,7 @@
 const https = require("https");
 const { isCurrentAvailabilityRange } = require("../cache/normalize-hostaway");
 const { LISTINGS } = require("../booking/stay-availability");
-const { ownerOfferCountPatterns } = require("../enforcement/home-count-word");
+const { catalogHomeCountWord } = require("../enforcement/home-count-word");
 
 // "Book these dates" on a home's page and on a catalog card opens this Hostaway address. Hostaway does
 // not document it, so the daily smoke loads it for an open stay and fails when the priced checkout stops appearing.
@@ -339,11 +339,11 @@ function validateTargetResponse(target, response) {
   }
 
   if (target.path === "/property-management/") {
-    const ownerCount = ownerOfferCountPatterns();
+    const homeCountWord = catalogHomeCountWord();
     const hasOwnerOfferSurface =
-      ownerCount.heading.test(response.body)
+      new RegExp(`\\b${homeCountWord} homes\\. One local team\\.`, "i").test(response.body)
       && response.body.includes("What we do for your home")
-      && ownerCount.operator.test(response.body)
+      && new RegExp(`Why a ${homeCountWord}-home operator`, "i").test(response.body)
       && response.body.includes("The homes we manage")
       && response.body.includes("Request your 48-hour revenue review")
       && response.body.includes('name="submitter_authority" value="owner_or_authorized_representative" required')

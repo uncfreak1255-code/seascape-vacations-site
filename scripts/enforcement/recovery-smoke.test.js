@@ -89,6 +89,49 @@ test("property-management smoke accepts the live minified single-quoted form nam
   });
 });
 
+test("property-management smoke rejects Five homes on a seven-row catalog (#705)", () => {
+  const smoke = loadSmokeModule();
+  const target = smoke.targets.find((entry) => entry.path === "/property-management/");
+  const catalog = require(path.join(projectRoot, "src/_data/properties-fallback.json"));
+  const { catalogHomeCountWord } = require("./home-count-word");
+
+  assert.equal(catalog.length, 7);
+  assert.equal(catalogHomeCountWord(), "seven");
+
+  const sevenHomesOwnerHubBody = `
+    <main>
+      <h1>Seven homes. One local team. <em>Your call gets answered.</em></h1>
+      <a href="#owner-cta">Request your 48-hour revenue review</a>
+      <form name="owner-revenue-teardown" method="POST"></form>
+      <input type="checkbox" name="submitter_authority" value="owner_or_authorized_representative" required>
+      I confirm I am the property owner or an authorized representative for this property.
+      Owner statement, optional
+      <h2>What we do for your home</h2>
+      <h2>Why a seven-home operator</h2>
+      <h2>The homes we manage</h2>
+    </main>
+  `;
+  const fiveHomesOwnerHubBody = sevenHomesOwnerHubBody
+    .replace("Seven homes. One local team.", "Five homes. One local team.")
+    .replace("Why a seven-home operator", "Why a five-home operator");
+
+  assert.doesNotThrow(() => {
+    smoke.validateTargetResponse(target, {
+      statusCode: 200,
+      location: null,
+      body: sevenHomesOwnerHubBody
+    });
+  });
+
+  assert.throws(() => {
+    smoke.validateTargetResponse(target, {
+      statusCode: 200,
+      location: null,
+      body: fiveHomesOwnerHubBody
+    });
+  }, /property-management hub is missing the Waterline owner offer surface/);
+});
+
 test("property-management smoke rejects a non-number-word home count", () => {
   const smoke = loadSmokeModule();
   const target = smoke.targets.find((entry) => entry.path === "/property-management/");
