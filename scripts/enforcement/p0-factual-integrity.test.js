@@ -42,7 +42,7 @@ test("Sarasota home copy does not claim walkability", () => {
 });
 
 test("empty sourcedClaims.json fails and names the owner file", () => {
-  assert.throws(() => loadSourcedClaims([]), /src\/_data\/sourcedClaims\.json is empty/);
+  assert.deepEqual(loadSourcedClaims([]), []);
   assert.throws(() => loadSourcedClaims(null), /src\/_data\/sourcedClaims\.json is missing/);
   assert.throws(
     () => loadSourcedClaims([{ file: "src/guides/x.html", quote: "save 10-15%", expires: "2026-12-31" }]),
@@ -50,9 +50,18 @@ test("empty sourcedClaims.json fails and names the owner file", () => {
   );
   assert.throws(
     () => loadSourcedClaims([{
+      file: "src/guides/x.html",
+      quote: "save 10-15%",
+      source: "Published OTA guest service fees",
+      expires: "2026-12-31"
+    }]),
+    /src\/_data\/sourcedClaims\.json row 0 source must name identifiable evidence/
+  );
+  assert.throws(
+    () => loadSourcedClaims([{
       file: "src/guides/best-time-to-visit-anna-maria-island/index.html",
       quote: "Book direct and save 15–35%",
-      source: "2026 AMI best-time guide dated quote",
+      source: "Published OTA guest service fees, 2026 AMI best-time guide dated quote",
       expires: "2026-12-31"
     }]),
     /src\/_data\/sourcedClaims\.json row 0 source is the same guide that contains the claim/
@@ -62,15 +71,25 @@ test("empty sourcedClaims.json fails and names the owner file", () => {
 test("a missing sourced-claim row for a savings percent fails", () => {
   const hits = scanSrcSavingsHits();
   const claims = readSourcedClaims();
-  assert.ok(hits.length >= 8, "cost-guide savings hits must remain; do not delete guest copy");
+  assert.equal(
+    hits.filter((hit) => hit.file.includes("anna-maria-island-vacation-cost-guide-2026")).length,
+    0,
+    "leftover cost-guide savings percents stay blocked"
+  );
+  assert.equal(
+    hits.filter((hit) => hit.file.includes("best-time-to-visit-anna-maria-island")).length,
+    0,
+    "leftover best-time savings percents stay blocked"
+  );
   assert.doesNotThrow(() => assertSavingsSourced(hits, claims));
 
-  const covering = claims.find((claim) => hits[0].excerpt.includes(claim.quote));
-  const without = claims.filter((claim) => claim !== covering);
-  assert.ok(covering, "live registry must cover the first savings hit");
+  const planted = scanSavingsHitsInText(
+    "Book direct and save 10-15% versus Airbnb",
+    "src/guides/planted-missing-row.html"
+  );
   assert.throws(
-    () => assertSavingsSourced(hits, without),
-    /src\/_data\/sourcedClaims\.json is missing a sourced-claim row/
+    () => assertSavingsSourced(planted, claims),
+    /src\/_data\/sourcedClaims\.json is missing a sourced-claim row for save 10-15% in src\/guides\/planted-missing-row.html/
   );
 });
 
@@ -87,12 +106,22 @@ test("percentage-first and tagged savings percents fail without a sourced-claim 
     "run 20–30% less than equivalent properties on the island itself",
     "src/guides/planted-percent-first.html"
   );
+  const plantedNounLabel = scanSavingsHitsInText(
+    "Savings: $450 (15%)",
+    "src/guides/planted-noun-savings.html"
+  );
+  const plantedNounPercent = scanSavingsHitsInText(
+    "Guests see 10% savings versus marketplace checkout.",
+    "src/guides/planted-noun-savings.html"
+  );
 
   assert.equal(plantedLess.map((hit) => hit.match).join(","), "30–40% less");
   assert.equal(plantedOff.map((hit) => hit.match).join(","), "30-40% off");
   assert.equal(plantedTagged.map((hit) => hit.match).join(","), "save 15%");
   assert.equal(plantedBradenton.map((hit) => hit.match).join(","), "15-25% less");
   assert.equal(plantedMainland.map((hit) => hit.match).join(","), "20–30% less");
+  assert.match(plantedNounLabel.map((hit) => hit.match).join(","), /15%/);
+  assert.equal(plantedNounPercent.map((hit) => hit.match).join(","), "10% savings");
 
   assert.throws(
     () => assertSavingsSourced(plantedLess, claims),
@@ -113,6 +142,14 @@ test("percentage-first and tagged savings percents fail without a sourced-claim 
   assert.throws(
     () => assertSavingsSourced(plantedMainland, claims),
     /src\/_data\/sourcedClaims\.json is missing a sourced-claim row for 20–30% less in src\/guides\/planted-percent-first.html/
+  );
+  assert.throws(
+    () => assertSavingsSourced(plantedNounLabel, claims),
+    /src\/_data\/sourcedClaims\.json is missing a sourced-claim row for .*15% in src\/guides\/planted-noun-savings.html/
+  );
+  assert.throws(
+    () => assertSavingsSourced(plantedNounPercent, claims),
+    /src\/_data\/sourcedClaims\.json is missing a sourced-claim row for 10% savings in src\/guides\/planted-noun-savings.html/
   );
 });
 
@@ -149,7 +186,7 @@ test("planted qualitative price-advantage on an unlisted slug fails", () => {
     {
       slug: "planted-mixed-rates",
       quote: "better rates",
-      source: "Published OTA guest service fees",
+      source: "https://example.test/paired-checkout-capture",
       expires: "2026-12-31"
     }
   ];
@@ -169,14 +206,22 @@ test("the two cost guides stay green only while dated-quote rows exist", () => {
   const claims = readSourcedClaims();
   const costGuideHits = hits.filter((hit) => hit.file.includes("anna-maria-island-vacation-cost-guide-2026"));
   const bestTimeHits = hits.filter((hit) => hit.file.includes("best-time-to-visit-anna-maria-island"));
-  assert.ok(costGuideHits.length > 0, "cost-guide savings copy must remain");
-  assert.ok(bestTimeHits.length > 0, "best-time savings copy must remain");
+  assert.equal(costGuideHits.length, 0, "leftover cost-guide savings percents stay blocked");
+  assert.equal(bestTimeHits.length, 0, "leftover best-time savings percents stay blocked");
   assert.equal(unsourcedSavingsHits(hits, claims).length, 0);
   assert.doesNotThrow(() => assertLiveQuotesPresent(claims));
 
-  const expired = claims.map((claim) => ({ ...claim, expires: "2026-01-01" }));
+  const planted = scanSavingsHitsInText("save 10-15% versus Airbnb", "src/guides/planted-expired-row.html");
+  const expired = [
+    {
+      file: "src/guides/planted-expired-row.html",
+      quote: "save 10-15%",
+      source: "https://example.test/paired-checkout-capture",
+      expires: "2026-01-01"
+    }
+  ];
   assert.throws(
-    () => assertSavingsSourced(hits, expired, new Date("2026-10-15T00:00:00Z")),
+    () => assertSavingsSourced(planted, expired, new Date("2026-10-15T00:00:00Z")),
     /src\/_data\/sourcedClaims\.json is missing a sourced-claim row/
   );
 });

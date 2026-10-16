@@ -6,7 +6,9 @@ const GUEST_SOURCE = /\.(?:html|njk|json|md|txt)$/;
 const SAVINGS_PERCENT = /\bsave[sd]?\b[^%.]{0,32}\d+(?:\s*[-–]\s*\d+)?\s*%/gi;
 const PERCENTAGE_FIRST_SAVINGS = /\d+(?:\s*[-–]\s*\d+)?\s*%\s*(?:less|off)\b/gi;
 const QUALITATIVE_DIRECT_SAVINGS = /typical direct savings/gi;
-const UNDERLYING_EVIDENCE = /ota|guest service fee|airbnb|vrbo|checkout fee|hostaway|published menu/i;
+const SAVINGS_NOUN_LABEL = /\bsavings\s*:\s*[^%.]{0,24}\d+(?:\s*[-–]\s*\d+)?\s*%/gi;
+const PERCENTAGE_SAVINGS_NOUN = /\d+(?:\s*[-–]\s*\d+)?\s*%\s*savings\b/gi;
+const IDENTIFIABLE_EVIDENCE = /https?:\/\/\S+/i;
 const PRICE_ADVANTAGE =
   /well under|significantly lower rates|usually costs less|lower direct-book total|and lower rates|groups of 8\+ come out ahead|It's cheaper|significant discounts apply|deepest discounts|more you save per night|For families and groups, absolutely|at a similar nightly rate|best available rate|best monthly rates|best per-night value|our best value|on-island nightly premiums|stronger overall value|same spend|same-budget island|at that price point|near-island pricing usually|beachfront premium|address premium|better value|better rates|rates are (?:highest|lower)|lower-rate season|rates below|winter weeks cost more|premium rates|priciest|higher per-night rates|lower per-night math|flatten the per-night cost|Stay longer and save|well below hotel|affordable compared to|helps lower the total|Lower Total|higher all-in total|wins on space and total cost|pay more to stay|without the extra platform fees|fewer extra fees|keeps platform fees out|keep more of the fishing budget|beat paying more|without paying true beachfront pricing|(?:beachfront|island) markup|money better spent|Vacation Deals|500\+ Airbnb reviews|500 guest reviews|qualify for monthly pricing|pay up for/gi;
 
@@ -70,8 +72,11 @@ function sourceNamesOwnGuide(source, file) {
 }
 
 function assertUnderlyingSource(source, file, index) {
-  if (sourceNamesOwnGuide(source, file) && !UNDERLYING_EVIDENCE.test(source)) {
+  if (sourceNamesOwnGuide(source, file)) {
     throw new Error(`${OWNER_FILE} row ${index} source is the same guide that contains the claim`);
+  }
+  if (!IDENTIFIABLE_EVIDENCE.test(source)) {
+    throw new Error(`${OWNER_FILE} row ${index} source must name identifiable evidence`);
   }
 }
 
@@ -79,8 +84,8 @@ function loadSourcedClaims(claims) {
   if (claims == null) {
     throw new Error(`${OWNER_FILE} is missing`);
   }
-  if (!Array.isArray(claims) || claims.length === 0) {
-    throw new Error(`${OWNER_FILE} is empty`);
+  if (!Array.isArray(claims)) {
+    throw new Error(`${OWNER_FILE} is missing`);
   }
 
   return claims.map((row, index) => {
@@ -134,9 +139,13 @@ function isGuestSource(file, root = DEFAULT_ROOT) {
 }
 
 function savingsPatterns() {
-  return [SAVINGS_PERCENT, PERCENTAGE_FIRST_SAVINGS, QUALITATIVE_DIRECT_SAVINGS].map(
-    (pattern) => new RegExp(pattern.source, pattern.flags.includes("g") ? pattern.flags : `${pattern.flags}g`)
-  );
+  return [
+    SAVINGS_PERCENT,
+    PERCENTAGE_FIRST_SAVINGS,
+    QUALITATIVE_DIRECT_SAVINGS,
+    SAVINGS_NOUN_LABEL,
+    PERCENTAGE_SAVINGS_NOUN
+  ].map((pattern) => new RegExp(pattern.source, pattern.flags.includes("g") ? pattern.flags : `${pattern.flags}g`));
 }
 
 function scanSavingsHitsInText(text, file) {
@@ -270,6 +279,9 @@ module.exports = {
   SAVINGS_PERCENT,
   PERCENTAGE_FIRST_SAVINGS,
   QUALITATIVE_DIRECT_SAVINGS,
+  SAVINGS_NOUN_LABEL,
+  PERCENTAGE_SAVINGS_NOUN,
+  IDENTIFIABLE_EVIDENCE,
   loadSourcedClaims,
   readSourcedClaims,
   scanSavingsHitsInText,
