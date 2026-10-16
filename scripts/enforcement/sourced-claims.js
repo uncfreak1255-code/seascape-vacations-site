@@ -4,7 +4,8 @@ const path = require("path");
 const OWNER_FILE = "src/_data/sourcedClaims.json";
 const GUEST_SOURCE = /\.(?:html|njk|json|md|txt)$/;
 const SAVINGS_PERCENT = /\bsave[sd]?\b[^%.]{0,32}\d+(?:\s*[-–]\s*\d+)?\s*%/gi;
-const PERCENTAGE_FIRST_SAVINGS = /\d+(?:\s*[-–]\s*\d+)?\s*%\s*(?:less|off)\b/gi;
+const PERCENTAGE_FIRST_SAVINGS = /\d+(?:\s*[-–]\s*\d+)?\s*%\s*(?:less|off|below|lower)\b/gi;
+const RATES_DROP_SAVINGS = /\brates\s+drop\s+\d+(?:\s*[-–]\s*\d+)?\s*%/gi;
 const QUALITATIVE_DIRECT_SAVINGS = /typical direct savings/gi;
 const SAVINGS_NOUN_LABEL = /\bsavings\s*:\s*[^%.]{0,24}\d+(?:\s*[-–]\s*\d+)?\s*%/gi;
 const PERCENTAGE_SAVINGS_NOUN = /\d+(?:\s*[-–]\s*\d+)?\s*%\s*savings\b/gi;
@@ -50,6 +51,21 @@ function isExpired(claim, now = new Date()) {
   return dateStamp(now) > parseExpires(claim.expires);
 }
 
+function sourceNamesOwnStay(source, slug) {
+  const token = String(slug || "").trim().toLowerCase();
+  if (!token) {
+    return false;
+  }
+  const needle = `/stays/${token}`;
+  const normalized = source.toLowerCase();
+  const index = normalized.indexOf(needle);
+  if (index === -1) {
+    return false;
+  }
+  const after = normalized[index + needle.length];
+  return after == null || after === "/" || after === "?" || after === "#" || after === '"' || after === "'" || /\s/.test(after);
+}
+
 function sourceNamesOwnGuide(source, file) {
   if (!file) {
     return false;
@@ -71,9 +87,9 @@ function sourceNamesOwnGuide(source, file) {
   return /guide/i.test(source) && parts.some((part) => part.length > 4 && normalizedSource.includes(part));
 }
 
-function assertUnderlyingSource(source, file, index) {
-  if (sourceNamesOwnGuide(source, file)) {
-    throw new Error(`${OWNER_FILE} row ${index} source is the same guide that contains the claim`);
+function assertUnderlyingSource(source, file, slug, index) {
+  if (sourceNamesOwnGuide(source, file) || sourceNamesOwnStay(source, slug)) {
+    throw new Error(`${OWNER_FILE} row ${index} source is the same page that contains the claim`);
   }
   if (!IDENTIFIABLE_EVIDENCE.test(source)) {
     throw new Error(`${OWNER_FILE} row ${index} source must name identifiable evidence`);
@@ -105,7 +121,7 @@ function loadSourcedClaims(claims) {
     if (!file && !slug) {
       throw new Error(`${OWNER_FILE} row ${index} is missing file`);
     }
-    assertUnderlyingSource(source, file, index);
+    assertUnderlyingSource(source, file, slug, index);
     return {
       file,
       slug,
@@ -144,7 +160,8 @@ function savingsPatterns() {
     PERCENTAGE_FIRST_SAVINGS,
     QUALITATIVE_DIRECT_SAVINGS,
     SAVINGS_NOUN_LABEL,
-    PERCENTAGE_SAVINGS_NOUN
+    PERCENTAGE_SAVINGS_NOUN,
+    RATES_DROP_SAVINGS
   ].map((pattern) => new RegExp(pattern.source, pattern.flags.includes("g") ? pattern.flags : `${pattern.flags}g`));
 }
 
@@ -281,6 +298,7 @@ module.exports = {
   QUALITATIVE_DIRECT_SAVINGS,
   SAVINGS_NOUN_LABEL,
   PERCENTAGE_SAVINGS_NOUN,
+  RATES_DROP_SAVINGS,
   IDENTIFIABLE_EVIDENCE,
   loadSourcedClaims,
   readSourcedClaims,

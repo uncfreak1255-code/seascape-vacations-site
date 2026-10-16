@@ -64,7 +64,16 @@ test("empty sourcedClaims.json fails and names the owner file", () => {
       source: "Published OTA guest service fees, 2026 AMI best-time guide dated quote",
       expires: "2026-12-31"
     }]),
-    /src\/_data\/sourcedClaims\.json row 0 source is the same guide that contains the claim/
+    /src\/_data\/sourcedClaims\.json row 0 source is the same page that contains the claim/
+  );
+  assert.throws(
+    () => loadSourcedClaims([{
+      slug: "planted-stay",
+      quote: "better rates",
+      source: "https://seascape-vacations.com/stays/planted-stay/",
+      expires: "2026-12-31"
+    }]),
+    /src\/_data\/sourcedClaims\.json row 0 source is the same page that contains the claim/
   );
 });
 
@@ -114,6 +123,18 @@ test("percentage-first and tagged savings percents fail without a sourced-claim 
     "Guests see 10% savings versus marketplace checkout.",
     "src/guides/planted-noun-savings.html"
   );
+  const plantedBelow = scanSavingsHitsInText(
+    "September rates run 30–40% below peak season",
+    "src/guides/planted-percent-first.html"
+  );
+  const plantedLower = scanSavingsHitsInText(
+    "rental rates 30-40% lower than peak season",
+    "src/guides/planted-percent-first.html"
+  );
+  const plantedRatesDrop = scanSavingsHitsInText(
+    "Rates drop 20–30% from April",
+    "src/guides/planted-percent-first.html"
+  );
 
   assert.equal(plantedLess.map((hit) => hit.match).join(","), "30–40% less");
   assert.equal(plantedOff.map((hit) => hit.match).join(","), "30-40% off");
@@ -122,6 +143,9 @@ test("percentage-first and tagged savings percents fail without a sourced-claim 
   assert.equal(plantedMainland.map((hit) => hit.match).join(","), "20–30% less");
   assert.match(plantedNounLabel.map((hit) => hit.match).join(","), /15%/);
   assert.equal(plantedNounPercent.map((hit) => hit.match).join(","), "10% savings");
+  assert.equal(plantedBelow.map((hit) => hit.match).join(","), "30–40% below");
+  assert.equal(plantedLower.map((hit) => hit.match).join(","), "30-40% lower");
+  assert.equal(plantedRatesDrop.map((hit) => hit.match).join(","), "Rates drop 20–30%");
 
   assert.throws(
     () => assertSavingsSourced(plantedLess, claims),
@@ -150,6 +174,18 @@ test("percentage-first and tagged savings percents fail without a sourced-claim 
   assert.throws(
     () => assertSavingsSourced(plantedNounPercent, claims),
     /src\/_data\/sourcedClaims\.json is missing a sourced-claim row for 10% savings in src\/guides\/planted-noun-savings.html/
+  );
+  assert.throws(
+    () => assertSavingsSourced(plantedBelow, claims),
+    /src\/_data\/sourcedClaims\.json is missing a sourced-claim row for 30–40% below in src\/guides\/planted-percent-first.html/
+  );
+  assert.throws(
+    () => assertSavingsSourced(plantedLower, claims),
+    /src\/_data\/sourcedClaims\.json is missing a sourced-claim row for 30-40% lower in src\/guides\/planted-percent-first.html/
+  );
+  assert.throws(
+    () => assertSavingsSourced(plantedRatesDrop, claims),
+    /src\/_data\/sourcedClaims\.json is missing a sourced-claim row for Rates drop 20–30% in src\/guides\/planted-percent-first.html/
   );
 });
 
