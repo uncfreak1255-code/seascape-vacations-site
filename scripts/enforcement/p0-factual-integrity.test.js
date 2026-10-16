@@ -98,6 +98,19 @@ test("percentage-first and tagged savings percents fail without a sourced-claim 
   );
 });
 
+test("typical direct savings fails without a sourced-claim row", () => {
+  const claims = readSourcedClaims();
+  const planted = scanSavingsHitsInText(
+    "Guests see typical direct savings versus marketplace checkout.",
+    "src/guides/planted-typical-direct-savings.html"
+  );
+  assert.equal(planted.map((hit) => hit.match).join(","), "typical direct savings");
+  assert.throws(
+    () => assertSavingsSourced(planted, claims),
+    /src\/_data\/sourcedClaims\.json is missing a sourced-claim row for typical direct savings in src\/guides\/planted-typical-direct-savings.html/
+  );
+});
+
 test("planted qualitative price-advantage on an unlisted slug fails", () => {
   const pages = JSON.parse(read("src/_data/seoPages.json")).vacationer;
   const claims = readSourcedClaims();

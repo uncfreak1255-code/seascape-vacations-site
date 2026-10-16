@@ -5,6 +5,7 @@ const OWNER_FILE = "src/_data/sourcedClaims.json";
 const GUEST_SOURCE = /\.(?:html|njk|json|md|txt)$/;
 const SAVINGS_PERCENT = /\bsave[sd]?\b[^%.]{0,32}\d+(?:\s*[-–]\s*\d+)?\s*%/gi;
 const PERCENTAGE_FIRST_SAVINGS = /30\s*[-–]\s*40\s*%\s*(?:less|off)\b/gi;
+const QUALITATIVE_DIRECT_SAVINGS = /typical direct savings/gi;
 const UNDERLYING_EVIDENCE = /ota|guest service fee|airbnb|vrbo|checkout fee|hostaway|published menu/i;
 const PRICE_ADVANTAGE =
   /well under|significantly lower rates|usually costs less|lower direct-book total|and lower rates|groups of 8\+ come out ahead|It's cheaper|significant discounts apply|deepest discounts|more you save per night|For families and groups, absolutely|at a similar nightly rate|best available rate|best monthly rates|best per-night value|our best value|on-island nightly premiums|stronger overall value|same spend|same-budget island|at that price point|near-island pricing usually|beachfront premium|address premium|better value|better rates|rates are (?:highest|lower)|lower-rate season|rates below|winter weeks cost more|premium rates|priciest|higher per-night rates|lower per-night math|flatten the per-night cost|Stay longer and save|well below hotel|affordable compared to|helps lower the total|Lower Total|higher all-in total|wins on space and total cost|pay more to stay|without the extra platform fees|fewer extra fees|keeps platform fees out|keep more of the fishing budget|beat paying more|without paying true beachfront pricing|(?:beachfront|island) markup|money better spent|Vacation Deals|500\+ Airbnb reviews|500 guest reviews|qualify for monthly pricing|pay up for/gi;
@@ -133,7 +134,7 @@ function isGuestSource(file, root = DEFAULT_ROOT) {
 }
 
 function savingsPatterns() {
-  return [SAVINGS_PERCENT, PERCENTAGE_FIRST_SAVINGS].map(
+  return [SAVINGS_PERCENT, PERCENTAGE_FIRST_SAVINGS, QUALITATIVE_DIRECT_SAVINGS].map(
     (pattern) => new RegExp(pattern.source, pattern.flags.includes("g") ? pattern.flags : `${pattern.flags}g`)
   );
 }
@@ -268,6 +269,7 @@ module.exports = {
   PRICE_ADVANTAGE,
   SAVINGS_PERCENT,
   PERCENTAGE_FIRST_SAVINGS,
+  QUALITATIVE_DIRECT_SAVINGS,
   loadSourcedClaims,
   readSourcedClaims,
   scanSavingsHitsInText,
