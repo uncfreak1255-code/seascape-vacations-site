@@ -7,13 +7,12 @@
  * For each lane:
  * 1. If rubric does not exist → skip (success)
  * 2. If rubric exists → deterministic validation: loadRubric + loadGoldenDir
- * 3. If ANTHROPIC_API_KEY missing → print skip judge message, exit 0
- *    (unless --require, then exit 1 for blocking lanes)
+ * 3. If ANTHROPIC_API_KEY missing → exit 1
  * 4. If API key present → resolveTargets, judge each target, computeOverall, report
  *
  * Exit codes:
- *   0 — all blocking lanes pass (or skipped/no API key)
- *   1 — any blocking lane fails
+ *   0 — all blocking lanes pass
+ *   1 — missing ANTHROPIC_API_KEY, or any blocking lane fails
  */
 
 const fs = require("node:fs");
@@ -22,12 +21,14 @@ const path = require("node:path");
 const config = JSON.parse(
   fs.readFileSync(path.join(__dirname, "evals.config.json"), "utf8")
 );
-const { runLane } = require("./lib/run-lane.js");
+const { requireAnthropicApiKey, runLane } = require("./lib/run-lane.js");
 
 const requireFlag = process.argv.includes("--require");
 const explicitFiles = process.argv.slice(2).filter((a) => !a.startsWith("--"));
 
 async function main() {
+  requireAnthropicApiKey("scripts/evals/lint-evals.js");
+
   const lanes = config.lanes || [];
   let anyBlockingFailed = false;
 

@@ -35,34 +35,28 @@ test("run-owner-eval.js: exits 0 with a skip message when no API key is set", ()
   );
 });
 
-test("run-aeo-eval.js: exits 0 with a skip message when no API key is set", () => {
-  const { stdout, status } = runScript(path.join(EVALS_DIR, "run-aeo-eval.js"), [], {
+test("run-aeo-eval.js: exits nonzero when no API key is set", () => {
+  const { stderr, status } = runScript(path.join(EVALS_DIR, "run-aeo-eval.js"), [], {
     ANTHROPIC_API_KEY: "",
   });
-  assert.equal(status, 0, `Expected exit 0, got ${status}`);
-  assert.ok(
-    stdout.includes("[skip]") || stdout.includes("skip"),
-    `Expected skip message, got: ${stdout}`
-  );
+  assert.notEqual(status, 0, `Expected nonzero exit, got ${status}`);
+  assert.match(stderr, /scripts\/evals\/run-aeo-eval\.js: ANTHROPIC_API_KEY is missing/);
 });
 
-test("lint-evals.js: exits 0 when no API key is set", () => {
-  const { stdout, status } = runScript(path.join(EVALS_DIR, "lint-evals.js"), [], {
+test("lint-evals.js: exits nonzero when no API key is set", () => {
+  const { stderr, status } = runScript(path.join(EVALS_DIR, "lint-evals.js"), [], {
     ANTHROPIC_API_KEY: "",
   });
-  assert.equal(status, 0, `Expected exit 0, got ${status}. stdout: ${stdout}`);
+  assert.notEqual(status, 0, `Expected nonzero exit, got ${status}. stderr: ${stderr}`);
+  assert.match(stderr, /scripts\/evals\/lint-evals\.js: ANTHROPIC_API_KEY is missing/);
 });
 
-test("lint-evals.js: exits 0 with no API key (skip judge mode)", () => {
-  const { stdout, status } = runScript(path.join(EVALS_DIR, "lint-evals.js"), [], {
+test("lint-evals.js: missing key cannot skip-as-pass", () => {
+  const { stderr, status } = runScript(path.join(EVALS_DIR, "lint-evals.js"), [], {
     ANTHROPIC_API_KEY: "",
   });
-  assert.equal(status, 0);
-  // Should mention skipping or rubric not authored
-  assert.ok(
-    stdout.includes("skip") || stdout.includes("[skip"),
-    `Expected skip indication, got: ${stdout}`
-  );
+  assert.notEqual(status, 0);
+  assert.match(stderr, /cannot skip-as-pass/);
 });
 
 test("anthropic-client: refuses opus model at creation time", () => {
@@ -126,12 +120,23 @@ test("run-owner-eval.js: exits 0 (skip) with no API key", () => {
   assert.ok(stdout.includes("skip"), `Expected skip message, got: ${stdout}`);
 });
 
-test("lint-evals.js: missing-rubric skip exits 0", () => {
-  const { stdout, status } = runScript(path.join(EVALS_DIR, "lint-evals.js"), [], {
-    ANTHROPIC_API_KEY: "",
-  });
-  assert.equal(status, 0, `Expected exit 0, got ${status}. stdout: ${stdout}`);
-  assert.ok(stdout.includes("skip"), `Expected skip mention, got: ${stdout}`);
+test("requireAnthropicApiKey fails empty input and names the owner file", () => {
+  const { requireAnthropicApiKey } = require("./lib/run-lane.js");
+  assert.throws(() => requireAnthropicApiKey(""), /run-lane\.js: ownerFile is required/);
+  const previous = process.env.ANTHROPIC_API_KEY;
+  delete process.env.ANTHROPIC_API_KEY;
+  try {
+    assert.throws(
+      () => requireAnthropicApiKey("scripts/evals/lint-evals.js"),
+      /scripts\/evals\/lint-evals\.js: ANTHROPIC_API_KEY is missing/
+    );
+  } finally {
+    if (previous === undefined) {
+      delete process.env.ANTHROPIC_API_KEY;
+    } else {
+      process.env.ANTHROPIC_API_KEY = previous;
+    }
+  }
 });
 
 test("lint-evals.js: --require with no API key exits nonzero for blocking lane (if rubric exists)", () => {

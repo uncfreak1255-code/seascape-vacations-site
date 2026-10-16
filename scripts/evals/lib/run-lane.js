@@ -33,6 +33,19 @@ const { collectLaneCopies } = require("./lane-copy.js");
 
 const projectRoot = path.resolve(__dirname, "..", "..", "..");
 
+function requireAnthropicApiKey(ownerFile) {
+  if (!ownerFile || !String(ownerFile).trim()) {
+    throw new Error("scripts/evals/lib/run-lane.js: ownerFile is required for a missing-key failure");
+  }
+
+  const key = String(process.env.ANTHROPIC_API_KEY || "").trim();
+  if (!key) {
+    throw new Error(`${ownerFile}: ANTHROPIC_API_KEY is missing; cannot skip-as-pass`);
+  }
+
+  return key;
+}
+
 /**
  * runLane(lane, options) -> Promise<{laneId, ok, skipped, failures}>
  *
@@ -186,4 +199,4 @@ async function runLane(lane, options = {}) {
   return { laneId, ok, skipped: false, failures };
 }
 
-module.exports = { runLane };
+module.exports = { requireAnthropicApiKey, runLane };
