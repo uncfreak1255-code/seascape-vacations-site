@@ -7,6 +7,7 @@ const { spawnSync } = require("node:child_process");
 
 const {
   main,
+  parseSafeCommitArgs,
   resolveMacKitPath,
   runGitKitFallback
 } = require("./git-kit-fallback");
@@ -17,13 +18,31 @@ function makeTempDir(prefix) {
   return fs.mkdtempSync(path.join(os.tmpdir(), prefix));
 }
 
+function runGit(args, cwd) {
+  const result = spawnSync("git", args, { cwd, encoding: "utf8" });
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  return (result.stdout || "").trim();
+}
+
+function makeCommitRepo() {
+  const cwd = makeTempDir("site-1-safe-commit-");
+  runGit(["init", "-b", "cursor/site-1-kit-test"], cwd);
+  runGit(["config", "user.email", "site-1@example.com"], cwd);
+  runGit(["config", "user.name", "SITE-1"], cwd);
+  runGit(["config", "commit.gpgsign", "false"], cwd);
+  fs.writeFileSync(path.join(cwd, "seed.txt"), "seed\n");
+  runGit(["add", "seed.txt"], cwd);
+  runGit(["-c", "commit.gpgsign=false", "commit", "--no-gpg-sign", "-m", "seed"], cwd);
+  return cwd;
+}
+
 test("empty git-kit command fails and names git-kit-fallback.js", () => {
   assert.throws(() => resolveMacKitPath(""), /git-kit-fallback\.js/);
   assert.throws(() => resolveMacKitPath(), /git-kit-fallback\.js/);
   assert.throws(() => main([]), /git-kit-fallback\.js: command required/);
 });
 
-test("missing Mac git kit falls through to repo pre-commit.js", () => {
+test("missing Mac git kit falls through to repo pre-commit.js for preflight only", () => {
   const kitDir = makeTempDir("site-4-no-kit-");
   const status = runGitKitFallback("preflight", [], {
     kitDir,
@@ -58,4 +77,58 @@ test("npm run git:preflight reaches repo checks when the Mac binary is missing",
     env: { ...process.env, SEASCAPE_GIT_KIT_DIR: makeTempDir("site-4-npm-kit-") }
   });
   assert.equal(result.status, 0, result.stderr || result.stdout);
+});
+
+test("missing Mac kit merge-check fails instead of skip-as-pass", () => {
+  assert.throws(
+    () =>
+      runGitKitFallback("merge-check", [], {
+        kitDir: makeTempDir("site-1-no-merge-kit-"),
+        spawn: { stdio: "pipe" }
+      }),
+    /git-kit-fallback\.js: merge-check cannot skip-as-pass/
+  );
+});
+
+test("missing Mac kit safe-commit without a message fails instead of skip-as-pass", () => {
+  assert.deepEqual(parseSafeCommitArgs(["--stage-source"]), { stageSource: true, message: "" });
+  assert.throws(
+    () =>
+      runGitKitFallback("safe-commit", ["--stage-source"], {
+        kitDir: makeTempDir("site-1-no-commit-msg-"),
+        spawn: { stdio: "pipe", cwd: projectRoot }
+      }),
+    /git-kit-fallback\.js: safe-commit requires -m/
+  );
+});
+
+test("missing Mac kit safe-commit --stage-source creates a commit", () => {
+  const cwd = makeCommitRepo();
+  fs.writeFileSync(path.join(cwd, "note.txt"), "portable commit\n");
+  fs.mkdirSync(path.join(cwd, "_site"));
+  fs.writeFileSync(path.join(cwd, "_site", "index.html"), "<p>generated</p>\n");
+
+  const status = runGitKitFallback("safe-commit", ["--stage-source", "-m", "test: portable safe-commit"], {
+    kitDir: makeTempDir("site-1-portable-commit-"),
+    spawn: { stdio: "pipe", cwd }
+  });
+
+  assert.equal(status, 0);
+  assert.equal(runGit(["log", "-1", "--pretty=%s"], cwd), "test: portable safe-commit");
+  assert.equal(runGit(["ls-files"], cwd), "note.txt\nseed.txt");
+});
+
+test("missing Mac kit safe-commit fails when only generated files changed", () => {
+  const cwd = makeCommitRepo();
+  fs.mkdirSync(path.join(cwd, "_site"));
+  fs.writeFileSync(path.join(cwd, "_site", "index.html"), "<p>generated</p>\n");
+
+  assert.throws(
+    () =>
+      runGitKitFallback("safe-commit", ["--stage-source", "-m", "test: generated only"], {
+        kitDir: makeTempDir("site-1-generated-only-"),
+        spawn: { stdio: "pipe", cwd }
+      }),
+    /git-kit-fallback\.js: safe-commit --stage-source found no source files/
+  );
 });
