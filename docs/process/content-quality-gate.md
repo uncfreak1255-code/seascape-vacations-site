@@ -148,6 +148,8 @@ elsewhere in the paragraph. See `## SEO, GEO, And AEO Checks` below.
 
 `npm run lint:content` currently blocks:
 
+- unsourced savings percentages and stay price-advantage phrases that lack a `sourcedClaims.json` row
+
 The full `npm run verify:release` runs these same tests in its full suite after
 building fresh, under the same worktree lock. Passing it satisfies content lint;
 the editorial steps and Voice Editor pass remain required. Commit and merge

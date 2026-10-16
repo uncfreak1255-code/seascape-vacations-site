@@ -150,6 +150,29 @@ test("empty sourcedClaims.json fails and names the owner file", () => {
     }]),
     /src\/_data\/sourcedClaims\.json row 0 source is the same page that contains the claim/
   );
+  assert.doesNotThrow(() => loadSourcedClaims([{
+    file: "src/index.njk",
+    quote: "save 10%",
+    source: "https://airbnb.com/",
+    expires: "2026-12-31"
+  }]));
+  assert.doesNotThrow(() => loadSourcedClaims([{
+    file: "src/properties/dockside-dreams/index.njk",
+    quote: "save 10%",
+    source: "https://airbnb.com/properties/dockside-dreams/",
+    expires: "2026-12-31"
+  }]));
+  assert.doesNotThrow(() => loadSourcedClaims([{
+    slug: "planted-stay",
+    quote: "better rates",
+    source: "https://airbnb.com/stays/planted-stay/",
+    expires: "2026-12-31"
+  }]));
+});
+
+test("content lint runs sourced-claim enforcement", () => {
+  const pkg = JSON.parse(read("package.json"));
+  assert.match(pkg.scripts["lint:content"], /p0-factual-integrity\.test\.js/);
 });
 
 test("a missing sourced-claim row for a savings percent fails", () => {

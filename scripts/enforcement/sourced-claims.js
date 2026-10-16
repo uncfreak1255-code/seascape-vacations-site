@@ -120,14 +120,30 @@ function publicRouteFromClaim(file, slug, root = DEFAULT_ROOT) {
   return normalizePublicRoute(permalink);
 }
 
+function sourceUrls(source) {
+  return String(source).match(/https?:\/\/[^\s)'"]+/gi) || [];
+}
+
+function isSeascapeHost(url) {
+  try {
+    const host = new URL(url).hostname.toLowerCase();
+    return host === "seascape-vacations.com" || host === "www.seascape-vacations.com";
+  } catch {
+    return false;
+  }
+}
+
+function seascapeSourceUrls(source) {
+  return sourceUrls(source).filter(isSeascapeHost);
+}
+
 function sourceMatchesGeneratedPermalink(source, file, root = DEFAULT_ROOT) {
   const permalink = readPermalink(file, root);
   if (!permalinkHasGeneratedSlug(permalink)) {
     return false;
   }
   const pattern = generatedRoutePattern(permalink);
-  const urls = String(source).match(/https?:\/\/[^\s)'"]+/gi) || [];
-  return urls.some((url) => pattern.test(pathnameFromUrl(url)));
+  return seascapeSourceUrls(source).some((url) => pattern.test(pathnameFromUrl(url)));
 }
 
 function pathnameFromUrl(url) {
@@ -148,8 +164,7 @@ function sourceContainsPublicRoute(source, route) {
     return false;
   }
   const normalizedRoute = normalizePublicRoute(route);
-  const urls = String(source).match(/https?:\/\/[^\s)'"]+/gi) || [];
-  return urls.some((url) => pathnameFromUrl(url) === normalizedRoute);
+  return seascapeSourceUrls(source).some((url) => pathnameFromUrl(url) === normalizedRoute);
 }
 
 function sourceNamesOwnStay(source, slug) {
@@ -157,14 +172,8 @@ function sourceNamesOwnStay(source, slug) {
   if (!token) {
     return false;
   }
-  const needle = `/stays/${token}`;
-  const normalized = source.toLowerCase();
-  const index = normalized.indexOf(needle);
-  if (index === -1) {
-    return false;
-  }
-  const after = normalized[index + needle.length];
-  return after == null || after === "/" || after === "?" || after === "#" || after === '"' || after === "'" || /\s/.test(after);
+  const needle = `/stays/${token}/`;
+  return seascapeSourceUrls(source).some((url) => pathnameFromUrl(url).toLowerCase() === needle);
 }
 
 function sourceNamesOwnGuide(source, file) {

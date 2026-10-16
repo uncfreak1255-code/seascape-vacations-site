@@ -285,7 +285,7 @@ column before pushing; read the CI column when a PR check is red.
 | `npm run build` | Eleventy build under the worktree lock plus availability-output validation | inside `release-safety`, `performance-budget`, `preview-surface` |
 | `npm test` (`test:unit`) | `node --test` over `scripts/enforcement`, `scripts/recovery`, `scripts/evals` and `scripts/perf` tests, after a fresh build | inside `release-safety` via `verify:release` |
 | `node --test scripts/enforcement/<name>.test.js` | one gate from the Repo Truth table, without rebuilding | same |
-| `npm run lint:content` | `content-voice.test.js` against the fresh build | inside `release-safety` via `verify:release` |
+| `npm run lint:content` | `content-voice.test.js` and sourced-claim enforcement against the fresh build | inside `release-safety` via `verify:release` |
 | `npm run verify:release` | build, full suite and release checks under one lock | `release-safety` |
 | `npm run audit:deps` | `npm audit` at moderate on production dependencies | `release-safety` |
 | `npm run test:e2e` | 19 guest-flow journeys (desktop and mobile Chromium) against a fresh build | `e2e-flows` |
