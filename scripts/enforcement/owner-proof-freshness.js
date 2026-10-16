@@ -76,11 +76,7 @@ function assertOwnerBenchmarkProof(proofAsset, now = new Date()) {
   if (pricingStaleAt.getTime() < pricingReviewedAt.getTime()) {
     throw new Error("owner benchmark pricingStaleAfter cannot be before pricingReviewedDate");
   }
-  const retiredStaleEmptyStats =
-    proofAsset.reuseStatus === "retired-stale" &&
-    (!Array.isArray(proofAsset.stats) || proofAsset.stats.length === 0);
-
-  if (now.getTime() > pricingStaleAt.getTime() && !retiredStaleEmptyStats) {
+  if (now.getTime() > pricingStaleAt.getTime()) {
     throw new Error(
       `owner benchmark published pricing is stale after ${proofAsset.pricingStaleAfter}; recheck the linked sources`
     );
