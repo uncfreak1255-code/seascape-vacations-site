@@ -6,6 +6,7 @@ const {
   isCurrentAvailabilityRange,
   normalizeAvailability
 } = require("../../scripts/cache/normalize-hostaway");
+const { listingIdBySlug } = require("../../scripts/enforcement/listing-id-owned");
 
 const FALLBACK_PATH = path.join(__dirname, "properties-fallback.json");
 const VISUAL_TEST_AVAILABILITY_PATH = path.join(__dirname, "..", "..", "tests", "visual", "fixtures", "properties-availability.json");
@@ -15,15 +16,7 @@ const HOSTAWAY_PREFIX = "https://hostaway-platform.s3.us-west-2.amazonaws.com/";
 const CDN_PREFIX = "https://bookingenginecdn.hostaway.com/";
 const BOOKING_ENGINE_PREFIX = "https://book.seascape-vacations.com/listings/";
 const AVAILABILITY_MAX_AGE_MS = 36 * 60 * 60 * 1000;
-const LISTING_ID_BY_SLUG = {
-  "dockside-dreams": "206016",
-  "the-oasis": "189511",
-  "sarasota-luxe": "135881",
-  "river-house": "135880",
-  "bradenton-pool-home": "487798",
-  "blue-house": "589288",
-  "coastal-stay": "599394"
-};
+const LISTING_ID_BY_SLUG = listingIdBySlug();
 const STATIC_PROPERTY_SCHEMA_FACTS_BY_SLUG = {
   "dockside-dreams": {
     latitude: 27.4681853,

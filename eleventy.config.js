@@ -239,6 +239,7 @@ module.exports = function(eleventyConfig) {
         fs.copyFileSync(source, target);
       }
     }
+    require("./scripts/enforcement/listing-id-owned").writeGeneratedClientListingIdMap(root);
   });
   
   // Watch for changes during development

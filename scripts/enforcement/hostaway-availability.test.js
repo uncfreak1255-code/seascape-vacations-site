@@ -14,6 +14,7 @@ const fs = require("node:fs");
 const os = require("node:os");
 const path = require("node:path");
 const {
+  main,
   shouldRequirePropertiesAvailabilityOutput,
   validatePropertiesAvailabilityOutput
 } = require("./validate-properties-availability-output");
@@ -191,10 +192,27 @@ test("booking engine calendar adapter fails closed on a non-success Hostaway pay
   );
 });
 
-test("Netlify builds require rendered live availability cards", () => {
+test("availability output gate runs off-Netlify instead of skip-as-pass", () => {
+  assert.equal(shouldRequirePropertiesAvailabilityOutput({}), true);
   assert.equal(shouldRequirePropertiesAvailabilityOutput({ NETLIFY: "true" }), true);
   assert.equal(shouldRequirePropertiesAvailabilityOutput({ SEASCAPE_REQUIRE_PROPERTIES_AVAILABILITY: "1" }), true);
-  assert.equal(shouldRequirePropertiesAvailabilityOutput({}), false);
+
+  const previousOutputPath = process.env.PROPERTIES_AVAILABILITY_OUTPUT_PATH;
+  process.env.PROPERTIES_AVAILABILITY_OUTPUT_PATH = "/tmp/site-4-missing-properties.html";
+  delete process.env.NETLIFY;
+  delete process.env.SEASCAPE_REQUIRE_PROPERTIES_AVAILABILITY;
+  try {
+    assert.throws(
+      () => main(),
+      /validate-properties-availability-output\.js: missing .* cannot skip-as-pass/
+    );
+  } finally {
+    if (previousOutputPath === undefined) {
+      delete process.env.PROPERTIES_AVAILABILITY_OUTPUT_PATH;
+    } else {
+      process.env.PROPERTIES_AVAILABILITY_OUTPUT_PATH = previousOutputPath;
+    }
+  }
 });
 
 test("rendered availability gate requires unique homes, canonical checkout links and honest price disclosures", () => {

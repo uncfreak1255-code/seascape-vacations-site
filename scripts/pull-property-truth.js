@@ -3,6 +3,7 @@
 const fs = require("fs");
 const path = require("path");
 const { normalizeImage } = require("./cache/normalize-hostaway");
+const { ensureCatalogListingIds, preserveListingIds } = require("./enforcement/listing-id-owned");
 
 const projectRoot = path.resolve(__dirname, "..");
 const DEFAULT_OUTPUT = path.join(projectRoot, "src", "_data", "properties-fallback.json");
@@ -51,9 +52,20 @@ function normalizeStructuredAmenities(listing) {
     .sort((a, b) => a.localeCompare(b));
 }
 
+function hostawayListingId(listing) {
+  const raw = listing && (listing.listingId ?? listing.id);
+  const listingId = raw != null ? String(raw).trim() : "";
+  if (!/^\d+$/.test(listingId)) {
+    const name = listing && listing.name ? listing.name : "(missing name)";
+    throw new Error(`Hostaway listing ${name} is missing numeric id`);
+  }
+  return listingId;
+}
+
 function normalizeHostawayListing(listing, slugMap = DEFAULT_SLUG_MAP) {
   const name = listing.name || "Seascape Vacation Rental";
   const slug = slugMap[name] || slugify(name);
+  const listingId = hostawayListingId(listing);
   const bedrooms = normalizeNumber(listing.bedrooms ?? listing.bedroomsNumber);
   const bathrooms = sumBathrooms(listing);
   const guests = normalizeNumber(listing.personCapacity ?? listing.guests);
@@ -63,7 +75,8 @@ function normalizeHostawayListing(listing, slugMap = DEFAULT_SLUG_MAP) {
   const heroImage = images[0] || "/images/seascape-og-default.jpg";
 
   return {
-    id: String(listing.id),
+    id: listingId,
+    listingId,
     slug,
     name,
     city: listing.city || "Bradenton",
@@ -85,7 +98,7 @@ function normalizeHostawayListing(listing, slugMap = DEFAULT_SLUG_MAP) {
     updatedAt: listing.updatedAt || new Date().toISOString(),
     source: {
       system: "hostaway",
-      listingId: String(listing.id),
+      listingId,
       syncedAt: new Date().toISOString(),
       provenance: {
         bedrooms: listing.bedrooms !== undefined ? "bedrooms" : "bedroomsNumber",
@@ -134,6 +147,25 @@ function snapshotName(now) {
   return `${now.replace(/[:.]/g, "-")}-hostaway-properties.json`;
 }
 
+function parseCatalogRows(text) {
+  if (!String(text || "").trim()) return [];
+  try {
+    const parsed = JSON.parse(text);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
+function readCatalogFile(filePath) {
+  if (!filePath || !fs.existsSync(filePath)) return [];
+  return parseCatalogRows(fs.readFileSync(filePath, "utf8"));
+}
+
+function catalogRowsForWrite(rows, current = []) {
+  return ensureCatalogListingIds(preserveListingIds(rows, current));
+}
+
 function applyPropertyTruth({ properties, rawPayload, outputPath, snapshotDir, lastGoodPath, dryRun = false, now }) {
   const timestamp = now || new Date().toISOString();
   ensureDir(snapshotDir, true);
@@ -141,7 +173,8 @@ function applyPropertyTruth({ properties, rawPayload, outputPath, snapshotDir, l
   writeJsonAtomic(snapshotPath, rawPayload);
 
   const beforeText = fs.existsSync(outputPath) ? fs.readFileSync(outputPath, "utf8") : "";
-  const afterText = stableJson(properties);
+  const propertiesWithIds = catalogRowsForWrite(properties, parseCatalogRows(beforeText));
+  const afterText = stableJson(propertiesWithIds);
   const diff = createLineDiff(beforeText, afterText);
   const changed = beforeText !== afterText;
 
@@ -152,7 +185,7 @@ function applyPropertyTruth({ properties, rawPayload, outputPath, snapshotDir, l
   if (beforeText) {
     writeJsonAtomic(lastGoodPath, JSON.parse(beforeText));
   }
-  writeJsonAtomic(outputPath, properties);
+  writeJsonAtomic(outputPath, propertiesWithIds);
   return { changed, wroteOutput: true, snapshotPath, diff };
 }
 
@@ -160,7 +193,8 @@ function restoreLastGood({ outputPath = DEFAULT_OUTPUT, lastGoodPath = DEFAULT_L
   if (!fs.existsSync(lastGoodPath)) {
     throw new Error(`No last-good snapshot found at ${lastGoodPath}`);
   }
-  writeJsonAtomic(outputPath, JSON.parse(fs.readFileSync(lastGoodPath, "utf8")));
+  const previous = JSON.parse(fs.readFileSync(lastGoodPath, "utf8"));
+  writeJsonAtomic(outputPath, catalogRowsForWrite(previous, readCatalogFile(outputPath)));
   return outputPath;
 }
 

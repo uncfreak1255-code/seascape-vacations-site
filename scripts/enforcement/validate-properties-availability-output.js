@@ -6,8 +6,8 @@ const { normalizeProperties } = require("../../src/_data/properties");
 const canonicalProperties = normalizeProperties(require("../../src/_data/properties-fallback.json"));
 const DEFAULT_EXPECTED_CARDS = canonicalProperties.length;
 
-function shouldRequirePropertiesAvailabilityOutput(env = process.env) {
-  return env.SEASCAPE_REQUIRE_PROPERTIES_AVAILABILITY === "1" || env.NETLIFY === "true";
+function shouldRequirePropertiesAvailabilityOutput(_env = process.env) {
+  return true;
 }
 
 function countMatches(html, pattern) {
@@ -77,12 +77,13 @@ function validatePropertiesAvailabilityOutput(html, options = {}) {
 }
 
 function main() {
-  if (!shouldRequirePropertiesAvailabilityOutput()) {
-    console.log("[properties-availability] skipped: availability output gate not required");
-    return;
+  const outputPath = process.env.PROPERTIES_AVAILABILITY_OUTPUT_PATH || DEFAULT_OUTPUT_PATH;
+  if (!fs.existsSync(outputPath)) {
+    throw new Error(
+      `validate-properties-availability-output.js: missing ${outputPath}; availability output cannot skip-as-pass`
+    );
   }
 
-  const outputPath = process.env.PROPERTIES_AVAILABILITY_OUTPUT_PATH || DEFAULT_OUTPUT_PATH;
   const html = fs.readFileSync(outputPath, "utf8");
   const report = validatePropertiesAvailabilityOutput(html, {
     expectedCards: Number(process.env.PROPERTIES_AVAILABILITY_EXPECTED_CARDS) || DEFAULT_EXPECTED_CARDS
@@ -104,6 +105,7 @@ if (require.main === module) {
 
 module.exports = {
   analyzePropertiesAvailabilityOutput,
+  main,
   shouldRequirePropertiesAvailabilityOutput,
   validatePropertiesAvailabilityOutput
 };

@@ -71,10 +71,12 @@ test("calendar string flags follow the established Hostaway normalizer", () => {
   assert.equal(evaluateStay(days, "2026-10-13", "2026-10-15").reason, "closed-arrival");
 });
 
-test("booking availability uses the same six listing ids as the site catalog", () => {
-  const source = fs.readFileSync(path.join(__dirname, "..", "..", "src", "_data", "properties.js"), "utf8");
+test("booking availability uses the same listing ids as the site catalog", () => {
+  const { listingIdBySlug } = require("./listing-id-owned");
+  const bySlug = listingIdBySlug();
+  assert.equal(LISTINGS.length, Object.keys(bySlug).length);
   for (const listing of LISTINGS) {
-    assert.match(source, new RegExp(`"${listing.slug}": "${listing.id}"`));
+    assert.equal(listing.id, bySlug[listing.slug], listing.slug);
   }
 });
 

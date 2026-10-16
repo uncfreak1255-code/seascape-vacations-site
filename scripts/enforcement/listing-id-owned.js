@@ -1,0 +1,156 @@
+const fs = require("fs");
+const path = require("path");
+
+const OWNER_FILE = "src/_data/properties-fallback.json";
+const TRACKING_FILE = "src/assets/js/conversion-tracking.js";
+const CLIENT_MAP_SEAM = /var PROPERTY_SLUG_BY_LISTING_ID = (?:null|\{[^}]*\});/;
+const FALLBACK_PATH = path.join(__dirname, "..", "..", "src", "_data", "properties-fallback.json");
+
+function readFallbackCatalog() {
+  if (!fs.existsSync(FALLBACK_PATH)) {
+    throw new Error(`${OWNER_FILE} is missing`);
+  }
+  return JSON.parse(fs.readFileSync(FALLBACK_PATH, "utf8"));
+}
+
+function rowSlug(row) {
+  return row && typeof row.slug === "string" ? row.slug.trim() : "";
+}
+
+function listingIdFromRow(row) {
+  if (row && row.listingId != null) {
+    const owned = String(row.listingId).trim();
+    if (owned) return owned;
+  }
+  if (row && row.id != null) {
+    const id = String(row.id).trim();
+    if (/^\d+$/.test(id)) return id;
+  }
+  const sourceId = row && row.source && row.source.listingId;
+  if (sourceId != null) {
+    const fromSource = String(sourceId).trim();
+    if (fromSource) return fromSource;
+  }
+  return "";
+}
+
+function preserveListingIds(rows, current = []) {
+  if (!Array.isArray(rows)) return rows;
+  const bySlug = {};
+  if (Array.isArray(current)) {
+    for (const row of current) {
+      const slug = rowSlug(row);
+      const listingId = listingIdFromRow(row);
+      if (slug && listingId) bySlug[slug] = listingId;
+    }
+  }
+  return rows.map((row) => {
+    if (listingIdFromRow(row)) return row;
+    const slug = rowSlug(row);
+    if (slug && bySlug[slug]) {
+      return { ...row, listingId: bySlug[slug] };
+    }
+    return row;
+  });
+}
+
+function ensureCatalogListingIds(catalog) {
+  if (!Array.isArray(catalog) || catalog.length === 0) {
+    throw new Error(`${OWNER_FILE} has no catalog rows`);
+  }
+  return catalog.map((row) => {
+    const listingId = listingIdFromRow(row);
+    const slug = rowSlug(row);
+    if (!listingId) {
+      throw new Error(`${OWNER_FILE} row ${slug || "(missing slug)"} is missing listingId`);
+    }
+    if (row && String(row.listingId).trim() === listingId) {
+      return row;
+    }
+    return { ...row, listingId };
+  });
+}
+
+function listingIdBySlug(catalog = readFallbackCatalog()) {
+  if (!Array.isArray(catalog) || catalog.length === 0) {
+    throw new Error(`${OWNER_FILE} has no catalog rows`);
+  }
+
+  const map = {};
+  for (const row of catalog) {
+    const slug = rowSlug(row);
+    const listingId = row && row.listingId != null ? String(row.listingId).trim() : "";
+    if (!listingId) {
+      throw new Error(`${OWNER_FILE} row ${slug || "(missing slug)"} is missing listingId`);
+    }
+    if (!slug) {
+      throw new Error(`${OWNER_FILE} row is missing slug`);
+    }
+    if (Object.hasOwn(map, slug)) {
+      throw new Error(`${OWNER_FILE} duplicate slug ${slug}`);
+    }
+    map[slug] = listingId;
+  }
+  return map;
+}
+
+function invertListingIdBySlug(bySlug) {
+  if (!bySlug || typeof bySlug !== "object" || Array.isArray(bySlug) || Object.keys(bySlug).length === 0) {
+    throw new Error(`${OWNER_FILE} has no catalog rows`);
+  }
+
+  const inverted = {};
+  for (const [slug, listingId] of Object.entries(bySlug)) {
+    if (Object.hasOwn(inverted, listingId)) {
+      throw new Error(`${OWNER_FILE} duplicate listingId ${listingId}`);
+    }
+    inverted[listingId] = slug;
+  }
+  return inverted;
+}
+
+function generateClientListingIdMap(trackingSource, catalog = readFallbackCatalog()) {
+  if (typeof trackingSource !== "string" || !trackingSource.trim()) {
+    throw new Error(`${TRACKING_FILE} is missing`);
+  }
+  const matches = trackingSource.match(new RegExp(CLIENT_MAP_SEAM.source, "g"));
+  if (!matches || matches.length !== 1) {
+    throw new Error(`${TRACKING_FILE} is missing PROPERTY_SLUG_BY_LISTING_ID generate seam`);
+  }
+  const inverted = invertListingIdBySlug(listingIdBySlug(catalog));
+  return trackingSource.replace(
+    CLIENT_MAP_SEAM,
+    `var PROPERTY_SLUG_BY_LISTING_ID = ${JSON.stringify(inverted)};`
+  );
+}
+
+function writeGeneratedClientListingIdMap(root = process.cwd()) {
+  const sourcePath = path.join(root, TRACKING_FILE);
+  const catalogPath = path.join(root, OWNER_FILE);
+  const outputPath = path.join(root, "_site", "assets", "js", "conversion-tracking.js");
+  if (!fs.existsSync(sourcePath)) {
+    throw new Error(`${TRACKING_FILE} is missing`);
+  }
+  if (!fs.existsSync(catalogPath)) {
+    throw new Error(`${OWNER_FILE} is missing`);
+  }
+  fs.mkdirSync(path.dirname(outputPath), { recursive: true });
+  const generated = generateClientListingIdMap(
+    fs.readFileSync(sourcePath, "utf8"),
+    JSON.parse(fs.readFileSync(catalogPath, "utf8"))
+  );
+  fs.writeFileSync(outputPath, generated);
+  return outputPath;
+}
+
+module.exports = {
+  OWNER_FILE,
+  TRACKING_FILE,
+  listingIdFromRow,
+  preserveListingIds,
+  ensureCatalogListingIds,
+  listingIdBySlug,
+  invertListingIdBySlug,
+  generateClientListingIdMap,
+  writeGeneratedClientListingIdMap
+};

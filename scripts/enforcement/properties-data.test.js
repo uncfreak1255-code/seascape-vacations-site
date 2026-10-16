@@ -132,28 +132,22 @@ test("fallback property seed includes all curated homes shown in the collection"
 });
 
 test("client listing map stays in sync with properties.js including Blue House", () => {
+  const {
+    listingIdBySlug,
+    invertListingIdBySlug,
+    generateClientListingIdMap
+  } = require("./listing-id-owned");
+  const catalog = require("../../src/_data/properties-fallback.json");
   const trackingSource = fs.readFileSync(
     path.join(__dirname, "../../src/assets/js/conversion-tracking.js"),
     "utf8"
   );
-  const propertiesSource = fs.readFileSync(
-    path.join(__dirname, "../../src/_data/properties.js"),
-    "utf8"
-  );
-  const clientBlock = trackingSource.match(/var PROPERTY_SLUG_BY_LISTING_ID = \{([^}]+)\}/);
-  const serverBlock = propertiesSource.match(/const LISTING_ID_BY_SLUG = \{([^}]+)\}/);
-  assert.ok(clientBlock, "conversion-tracking.js must define PROPERTY_SLUG_BY_LISTING_ID");
-  assert.ok(serverBlock, "properties.js must define LISTING_ID_BY_SLUG");
-
-  const clientEntries = [...clientBlock[1].matchAll(/"(\d+)":\s*"([a-z0-9-]+)"/g)]
-    .map((match) => [match[1], match[2]])
-    .sort((left, right) => left[1].localeCompare(right[1]));
-  const serverEntries = [...serverBlock[1].matchAll(/"([a-z0-9-]+)":\s*"(\d+)"/g)]
-    .map((match) => [match[2], match[1]])
-    .sort((left, right) => left[1].localeCompare(right[1]));
-
-  assert.deepEqual(clientEntries, serverEntries);
-  assert.deepEqual(clientEntries.find((entry) => entry[1] === "blue-house"), ["589288", "blue-house"]);
+  const inverted = invertListingIdBySlug(listingIdBySlug(catalog));
+  const generated = generateClientListingIdMap(trackingSource, catalog);
+  const clientBlock = generated.match(/var PROPERTY_SLUG_BY_LISTING_ID = (\{[^}]+\});/);
+  assert.ok(clientBlock, "generated conversion-tracking.js must define PROPERTY_SLUG_BY_LISTING_ID");
+  assert.deepEqual(JSON.parse(clientBlock[1]), inverted);
+  assert.equal(inverted["589288"], "blue-house");
 });
 
 test("homepage postcard fan stays in one count-agnostic desktop row", () => {
@@ -371,7 +365,7 @@ test("The Coastal keeps final identity, ten guests and provider conflicts outsid
 test("legacy cache requires every curated exact identity after onboarding", () => {
   assert.equal(propertiesData.normalizeCompleteCachedProperties({ properties: fallbackProperties }).length, 7);
   assert.equal(propertiesData.normalizeCompleteCachedProperties({ properties: fallbackProperties.filter(p => p.slug !== "coastal-stay") }), null);
-  const wrongIdentity = fallbackProperties.map(p => p.slug === "coastal-stay" ? { ...p, id: "589288" } : p);
+  const wrongIdentity = fallbackProperties.map(p => p.slug === "coastal-stay" ? { ...p, listingId: "589288", id: "589288" } : p);
   assert.equal(propertiesData.normalizeCompleteCachedProperties({ properties: wrongIdentity }), null);
 });
 

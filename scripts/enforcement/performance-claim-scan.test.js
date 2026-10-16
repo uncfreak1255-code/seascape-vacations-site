@@ -2,9 +2,9 @@ const test = require("node:test");
 const assert = require("node:assert/strict");
 
 const {
+  assertNoPublicPerformanceClaims,
   findPerformanceClaimHits,
   lintPerformanceClaims,
-  scanRepoPublicCopy,
   formatPerformanceClaimReport
 } = require("./performance-claim-scan");
 
@@ -42,11 +42,15 @@ test("guest price comparisons are not occupancy/ADR/revenue claims", () => {
   assert.deepEqual(hits, []);
 });
 
-test("public copy occupancy/ADR/revenue scan reports hits without rewriting", () => {
-  const hits = scanRepoPublicCopy();
-  const report = formatPerformanceClaimReport(hits);
-  console.log(report);
-  assert.equal(typeof report, "string");
-  assert.match(report, /occupancy\/ADR\/revenue scan:/);
-  assert.ok(Array.isArray(hits));
+test("public copy occupancy/ADR/revenue scan fails the suite on a new hit", () => {
+  const hits = assertNoPublicPerformanceClaims();
+  assert.deepEqual(hits, []);
+  assert.match(formatPerformanceClaimReport(hits), /0 hits in public copy/);
+
+  const plantedHits = [{
+    path: "src/guides/planted-occupancy.html",
+    id: "occupancy-percent",
+    match: "75-80% occupancy"
+  }];
+  assert.match(formatPerformanceClaimReport(plantedHits), /fails the suite/);
 });

@@ -1,4 +1,5 @@
 const fs = require("fs");
+const os = require("os");
 const path = require("path");
 const test = require("node:test");
 const assert = require("node:assert/strict");
@@ -7,8 +8,8 @@ const { runBuildForLint } = require("./build-for-lint");
 const { withWorktreeLock } = require("./worktree-lock");
 const { extractAuthorizedSourceSectionText } = require("./search-brief-gate");
 const {
+  assertNoPublicPerformanceClaims,
   lintPerformanceClaims,
-  scanRepoPublicCopy,
   formatPerformanceClaimReport
 } = require("./performance-claim-scan");
 
@@ -550,17 +551,33 @@ function normalizeChangedFileOutputs(outputs) {
   ].sort();
 }
 
-function getChangedFiles() {
+function resolveContentLintMergeBase(execOptions = {}) {
+  let mergeBase;
   try {
-    const mergeBase = execSync("git merge-base HEAD origin/main", {
+    mergeBase = execSync("git merge-base HEAD origin/main", {
       cwd: projectRoot,
-      encoding: "utf8"
+      encoding: "utf8",
+      ...execOptions
     }).trim();
+  } catch (error) {
+    throw new Error(
+      `content-voice: git merge-base HEAD origin/main failed; cannot skip the public-content gate. ${error.message}`
+    );
+  }
 
-    if (!mergeBase) {
-      return [];
-    }
+  if (!mergeBase) {
+    throw new Error(
+      "content-voice: git merge-base HEAD origin/main returned empty; cannot skip the public-content gate."
+    );
+  }
 
+  return mergeBase;
+}
+
+function getChangedFiles() {
+  const mergeBase = resolveContentLintMergeBase();
+
+  try {
     return normalizeChangedFileOutputs(
       [
         `git diff --name-only --diff-filter=ACMR ${mergeBase}...HEAD`,
@@ -573,8 +590,10 @@ function getChangedFiles() {
         })
       )
     );
-  } catch {
-    return [];
+  } catch (error) {
+    throw new Error(
+      `content-voice: git diff after merge-base failed; cannot skip the public-content gate. ${error.message}`
+    );
   }
 }
 
@@ -1351,10 +1370,26 @@ test("planted guide occupancy table fails lint:content", () => {
   assert.match(violations.join("\n"), /75-80% occupancy/);
 });
 
-test("occupancy/ADR/revenue scan reports every public-copy hit without rewriting", () => {
-  const hits = scanRepoPublicCopy();
-  console.log(formatPerformanceClaimReport(hits));
-  assert.ok(Array.isArray(hits));
+test("missing git merge-base fails content-voice instead of skipping", () => {
+  const emptyBin = fs.mkdtempSync(path.join(os.tmpdir(), "site-4-no-merge-base-"));
+  assert.throws(
+    () => resolveContentLintMergeBase({ env: { ...process.env, PATH: emptyBin } }),
+    /content-voice: git merge-base HEAD origin\/main failed/
+  );
+});
+
+test("empty git merge-base output fails content-voice instead of skipping", () => {
+  const bin = fs.mkdtempSync(path.join(os.tmpdir(), "site-4-empty-merge-base-"));
+  fs.writeFileSync(path.join(bin, "git"), "#!/bin/sh\nexit 0\n", { mode: 0o755 });
+  assert.throws(
+    () => resolveContentLintMergeBase({ env: { ...process.env, PATH: bin } }),
+    /content-voice: git merge-base HEAD origin\/main returned empty/
+  );
+});
+
+test("occupancy/ADR/revenue scan fails content-voice on a new public-copy hit", () => {
+  const hits = assertNoPublicPerformanceClaims();
+  assert.deepEqual(hits, [], formatPerformanceClaimReport(hits));
 });
 
 test("lint catches leaked internal hub notes and unsupported portfolio claims", () => {
