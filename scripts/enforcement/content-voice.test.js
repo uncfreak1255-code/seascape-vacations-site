@@ -370,6 +370,10 @@ function renderedOutputIncludesLink(relativePath, source, link) {
 }
 
 function lintRenderedPublicContent(relativePath, source) {
+  if (/^permalink:\s*false\b/m.test(source)) {
+    return [];
+  }
+
   const builtRelativePath = getBuiltPublicContentPath(relativePath, source);
   const builtAbsolutePath = path.join(projectRoot, builtRelativePath);
 
@@ -1555,6 +1559,20 @@ async function runChangedPublicContentGate() {
 
   assert.deepEqual(violations, []);
 }
+
+test("unpublished permalink:false sources skip rendered-output lint", () => {
+  const unpublished = "---\npermalink: false\n---\n<p>Rates drop from April.</p>";
+  assert.deepEqual(lintRenderedPublicContent("src/guides/unpublished-leftover.html", unpublished), []);
+
+  const published = "<p>Rates drop from April.</p>";
+  assert.equal(
+    lintRenderedPublicContent("src/guides/missing-rendered-page.html", published).some((entry) =>
+      entry.includes("rendered output is missing")
+    ),
+    true,
+    "published sources must still fail when _site output is absent"
+  );
+});
 
 test("changed public content and source-backed copy files require active briefs and pass gate checks", async () => {
   // build-site.js owns the same lock, so this is reentrant for the build child.

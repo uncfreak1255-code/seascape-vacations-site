@@ -347,3 +347,20 @@ record that limitation rather than treating them as passed.
   island/mainland price advantages. Remove unsubstantiated guest quotations
   rather than rewriting them as reviews. Retain actual listing charges and offers.
   The regression now covers every vacationer record, without a slug allowlist.
+
+## October 16 leftover savings-claim repair
+
+Leftover unpublished 2026 cost-guide and best-time files drop unsourced
+percentage savings, including `below`/`lower`, `rates drop N%`, and
+`40% or more` peak/off-peak difference wording. Published insider FAQ and
+things-to-do outlet copy in this PR already dropped unsourced ranges.
+`sourcedClaims.json` rows must name identifiable evidence (a reviewable URL),
+not a self-referential OTA keyword, stay URL, homepage URL, owner URL, or
+property URL. No invented guest percents. Live unsourced claims stay blocked.
+
+- source files likely to change:
+  - `src/guides/anna-maria-island-vacation-cost-guide-2026/index.html`
+  - `src/guides/best-time-to-visit-anna-maria-island/index.html`
+  - `src/guides/bradenton-insider-guide.html`
+  - `src/guides/things-to-do-bradenton-fl.html`
+  - `src/_data/sourcedClaims.json`
