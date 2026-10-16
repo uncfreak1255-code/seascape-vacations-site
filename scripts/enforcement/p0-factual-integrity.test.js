@@ -79,10 +79,20 @@ test("percentage-first and tagged savings percents fail without a sourced-claim 
   const plantedLess = scanSavingsHitsInText("rental rates 30–40% less than peak season", "src/guides/planted-percent-first.html");
   const plantedOff = scanSavingsHitsInText("homes are 30-40% off peak season", "src/guides/planted-percent-first.html");
   const plantedTagged = scanSavingsHitsInText("Book direct and save <strong>15%</strong> versus Airbnb", "src/guides/planted-tagged-save.html");
+  const plantedBradenton = scanSavingsHitsInText(
+    "Bradenton vacation rentals typically run 15-25% less than comparable Sarasota properties",
+    "src/guides/planted-percent-first.html"
+  );
+  const plantedMainland = scanSavingsHitsInText(
+    "run 20–30% less than equivalent properties on the island itself",
+    "src/guides/planted-percent-first.html"
+  );
 
   assert.equal(plantedLess.map((hit) => hit.match).join(","), "30–40% less");
   assert.equal(plantedOff.map((hit) => hit.match).join(","), "30-40% off");
   assert.equal(plantedTagged.map((hit) => hit.match).join(","), "save 15%");
+  assert.equal(plantedBradenton.map((hit) => hit.match).join(","), "15-25% less");
+  assert.equal(plantedMainland.map((hit) => hit.match).join(","), "20–30% less");
 
   assert.throws(
     () => assertSavingsSourced(plantedLess, claims),
@@ -95,6 +105,14 @@ test("percentage-first and tagged savings percents fail without a sourced-claim 
   assert.throws(
     () => assertSavingsSourced(plantedTagged, claims),
     /src\/_data\/sourcedClaims\.json is missing a sourced-claim row for save 15% in src\/guides\/planted-tagged-save.html/
+  );
+  assert.throws(
+    () => assertSavingsSourced(plantedBradenton, claims),
+    /src\/_data\/sourcedClaims\.json is missing a sourced-claim row for 15-25% less in src\/guides\/planted-percent-first.html/
+  );
+  assert.throws(
+    () => assertSavingsSourced(plantedMainland, claims),
+    /src\/_data\/sourcedClaims\.json is missing a sourced-claim row for 20–30% less in src\/guides\/planted-percent-first.html/
   );
 });
 
