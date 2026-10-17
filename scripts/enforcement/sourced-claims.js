@@ -44,6 +44,9 @@ const SAVE_BEFORE = /\b(?:save[sd]?\b|savings\s*:|rates\s+drop\b)/i;
 const DIFFERENCE_BEFORE = /\bdifference\b/i;
 const PRICE_NOUN = /\b(?:rates?|pric(?:e|es|ing)|markups?|premiums?|discounts?|values?|savings|totals?)\b/gi;
 const QUALITATIVE_ADJ = /\b(?:better|best|lower|higher|cheaper|lowest|highest|deeper|deepest|stronger|priciest|typical|premium|far better)\b/gi;
+const MAGNITUDE_ADJ = /\b(?:significant|substantial|considerable|major|large|huge|meaningful)\b/gi;
+const RELATIONAL = /\b(?:below|above|under)\b/gi;
+const DISCOUNT_NOUN = /^discounts?$/i;
 const AVOIDANCE = /\b(?:skip|avoid|beat)\b/gi;
 const AVOIDANCE_NOUN = /\b(?:markup|premium|platform fees|extra fees)\b/gi;
 const COST_VERB = /\b(?:costs?|priced|runs)\b/gi;
@@ -543,6 +546,49 @@ function parseQualitativeHits(stripped) {
       Math.max(partner.end, noun.end),
       noun.raw.toLowerCase(),
       stripped.slice(Math.min(partner.index, noun.index), Math.max(partner.end, noun.end)).replace(/\s+/g, " ").trim().toLowerCase()
+    );
+  }
+
+  const magnitudes = collectMatches(stripped, MAGNITUDE_ADJ);
+  let magnitudeLeft = -1;
+  for (const noun of nouns) {
+    if (!DISCOUNT_NOUN.test(noun.raw)) {
+      continue;
+    }
+    while (magnitudeLeft + 1 < magnitudes.length && magnitudes[magnitudeLeft + 1].end <= noun.index) {
+      magnitudeLeft += 1;
+    }
+    const magnitude = magnitudeLeft >= 0 ? magnitudes[magnitudeLeft] : null;
+    if (!magnitude || magnitude.end > noun.index || !allowedGap(stripped, magnitude.end, noun.index)) {
+      continue;
+    }
+    add(
+      magnitude.index,
+      noun.end,
+      noun.raw.toLowerCase(),
+      stripped.slice(magnitude.index, noun.end).replace(/\s+/g, " ").trim().toLowerCase()
+    );
+  }
+
+  const relationals = collectMatches(stripped, RELATIONAL);
+  let relationalI = 0;
+  for (const noun of nouns) {
+    while (relationalI < relationals.length && relationals[relationalI].index < noun.end) {
+      relationalI += 1;
+    }
+    const relational = relationalI < relationals.length ? relationals[relationalI] : null;
+    if (
+      !relational ||
+      !allowedGap(stripped, noun.end, relational.index) ||
+      wordsBetween(stripped, noun.end, relational.index) > 1
+    ) {
+      continue;
+    }
+    add(
+      noun.index,
+      relational.end,
+      noun.raw.toLowerCase(),
+      stripped.slice(noun.index, relational.end).replace(/\s+/g, " ").trim().toLowerCase()
     );
   }
 
