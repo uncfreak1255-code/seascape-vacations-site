@@ -42,7 +42,7 @@ const WORD_PERCENT = new RegExp(`\\b(?:${WORD_NUMBER})\\s+percent\\b`, "gi");
 const AFTER_PERCENT = /^(?:\s*(?:less|off|below|lower|cheaper|discount|reduced|savings|or more))\b/i;
 const SAVE_BEFORE = /\b(?:save[sd]?\b|savings\s*:|rates\s+drop\b)/i;
 const DIFFERENCE_BEFORE = /\bdifference\b/i;
-const PRICE_NOUN = /\b(?:rates?|pricing|price|markup|premium|discount|value|savings|totals?)\b/gi;
+const PRICE_NOUN = /\b(?:rates?|pric(?:e|es|ing)|markups?|premiums?|discounts?|values?|savings|totals?)\b/gi;
 const QUALITATIVE_ADJ = /\b(?:better|best|lower|higher|cheaper|lowest|highest|deeper|deepest|stronger|priciest|typical|premium|far better)\b/gi;
 const AVOIDANCE = /\b(?:skip|avoid|beat)\b/gi;
 const AVOIDANCE_NOUN = /\b(?:markup|premium|platform fees|extra fees)\b/gi;
@@ -508,10 +508,24 @@ function parseQualitativeHits(stripped) {
     );
   }
 
+  let adjLeft = -1;
+  let adjRight = 0;
   for (const noun of nouns) {
-    const leftAdj = adjs.find((entry) => entry.end <= noun.index && allowedGap(stripped, entry.end, noun.index));
-    const rightAdj = adjs.find((entry) => entry.index >= noun.end && allowedGap(stripped, noun.end, entry.index) && wordsBetween(stripped, noun.end, entry.index) <= 1);
-    const partner = leftAdj || rightAdj;
+    while (adjLeft + 1 < adjs.length && adjs[adjLeft + 1].end <= noun.index) {
+      adjLeft += 1;
+    }
+    while (adjRight < adjs.length && adjs[adjRight].index < noun.end) {
+      adjRight += 1;
+    }
+    const leftAdj = adjLeft >= 0 ? adjs[adjLeft] : null;
+    const rightAdj = adjRight < adjs.length ? adjs[adjRight] : null;
+    const leftOk = leftAdj && leftAdj.end <= noun.index && allowedGap(stripped, leftAdj.end, noun.index);
+    const rightOk =
+      rightAdj &&
+      rightAdj.index >= noun.end &&
+      allowedGap(stripped, noun.end, rightAdj.index) &&
+      wordsBetween(stripped, noun.end, rightAdj.index) <= 1;
+    const partner = leftOk ? leftAdj : rightOk ? rightAdj : null;
     if (!partner) {
       continue;
     }
@@ -532,14 +546,17 @@ function parseQualitativeHits(stripped) {
     );
   }
 
+  let avoidI = 0;
   for (const noun of avoidNouns) {
-    const avoid = avoids.find(
-      (entry) =>
-        entry.end <= noun.index &&
-        wordsBetween(stripped, entry.end, noun.index) <= 3 &&
-        !crossesSentence(stripped, entry.end, noun.index)
-    );
-    if (!avoid) {
+    while (avoidI + 1 < avoids.length && avoids[avoidI + 1].end <= noun.index) {
+      avoidI += 1;
+    }
+    const avoid = avoidI < avoids.length && avoids[avoidI].end <= noun.index ? avoids[avoidI] : null;
+    if (
+      !avoid ||
+      wordsBetween(stripped, avoid.end, noun.index) > 3 ||
+      crossesSentence(stripped, avoid.end, noun.index)
+    ) {
       continue;
     }
     add(avoid.index, noun.end, noun.raw.toLowerCase(), stripped.slice(avoid.index, noun.end).replace(/\s+/g, " ").trim().toLowerCase());
@@ -547,14 +564,17 @@ function parseQualitativeHits(stripped) {
 
   const costVerbs = collectMatches(stripped, COST_VERB);
   const costComparatives = collectMatches(stripped, COST_COMPARATIVE);
+  let comparativeI = 0;
   for (const verb of costVerbs) {
-    const comparative = costComparatives.find(
-      (entry) =>
-        entry.index >= verb.end &&
-        wordsBetween(stripped, verb.end, entry.index) <= 2 &&
-        !crossesSentence(stripped, verb.end, entry.index)
-    );
-    if (!comparative) {
+    while (comparativeI < costComparatives.length && costComparatives[comparativeI].index < verb.end) {
+      comparativeI += 1;
+    }
+    const comparative = comparativeI < costComparatives.length ? costComparatives[comparativeI] : null;
+    if (
+      !comparative ||
+      wordsBetween(stripped, verb.end, comparative.index) > 2 ||
+      crossesSentence(stripped, verb.end, comparative.index)
+    ) {
       continue;
     }
     const sentence = sentenceAt(stripped, verb.index);
@@ -574,15 +594,19 @@ function parseQualitativeHits(stripped) {
     add(cheaper.index, cheaper.end, "cheaper", cheaper.raw.replace(/\s+/g, " ").trim().toLowerCase());
   }
 
+  const withouts = collectMatches(stripped, WITHOUT);
+  let withoutI = 0;
   for (const noun of avoidNouns) {
-    const without = collectMatches(stripped, WITHOUT).find(
-      (entry) =>
-        entry.end <= noun.index &&
-        wordsBetween(stripped, entry.end, noun.index) <= 4 &&
-        !crossesSentence(stripped, entry.end, noun.index) &&
-        allowedWithoutGap(stripped, entry.end, noun.index)
-    );
-    if (!without) {
+    while (withoutI + 1 < withouts.length && withouts[withoutI + 1].end <= noun.index) {
+      withoutI += 1;
+    }
+    const without = withoutI < withouts.length && withouts[withoutI].end <= noun.index ? withouts[withoutI] : null;
+    if (
+      !without ||
+      wordsBetween(stripped, without.end, noun.index) > 4 ||
+      crossesSentence(stripped, without.end, noun.index) ||
+      !allowedWithoutGap(stripped, without.end, noun.index)
+    ) {
       continue;
     }
     add(without.index, noun.end, noun.raw.toLowerCase(), stripped.slice(without.index, noun.end).replace(/\s+/g, " ").trim().toLowerCase());
