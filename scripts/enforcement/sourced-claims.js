@@ -42,7 +42,7 @@ const WORD_PERCENT = new RegExp(`\\b(?:${WORD_NUMBER})\\s+percent\\b`, "gi");
 const AFTER_PERCENT = /^(?:\s*(?:less|off|below|lower|cheaper|discount|reduced|savings|or more))\b/i;
 const SAVE_BEFORE = /\b(?:save[sd]?\b|savings\s*:|rates\s+drop\b)/i;
 const DIFFERENCE_BEFORE = /\bdifference\b/i;
-const PRICE_NOUN = /\b(?:rates?|pric(?:e|es|ing)|markups?|premiums?|discounts?|values?|savings|totals?|math)\b/gi;
+const PRICE_NOUN = /\b(?:rates?|pric(?:e|es|ing)|markups?|premiums?|discounts?|values?|savings|totals?|math|costs?)\b/gi;
 const QUALITATIVE_ADJ = /\b(?:better|best|lower|higher|cheaper|lowest|highest|deeper|deepest|stronger|priciest|typical|premium|far better)\b/gi;
 const MAGNITUDE_ADJ = /\b(?:significant|substantial|considerable|major|large|huge|meaningful)\b/gi;
 const RELATIONAL = /\b(?:below|above|under)\b/gi;
@@ -59,7 +59,8 @@ const COST_COMPARATIVE = /\b(?:less|more|cheaper|lower|higher)\b/gi;
 const PAY_VERB = /^(?:pays?|paid|paying)$/i;
 const PAY_UP = /\bpay(?:s|ing|ed)?\s+up\b/gi;
 const SAVE_VERB = /\bsave[sd]?\b/gi;
-const SAVE_OBJECT_SKIP = /^(?:\s+(?:this|that|the|our|your|a|an)\s+(?:guide|page|file|homes?|listing|time|room|space|favorites?|dates?|day|seat)|(?:\s+(?:time|room|space|favorites)))\b/i;
+const SAVE_MONEY_CONTEXT = /^(?:\s+(?:per\s+(?:night|stay)|money|dollars?|versus|vs\.?|on\s+(?:the\s+)?(?:same\s+)?(?:(?:\w+[-\s])?(?:dates?|nights?|stays?|booking|weeks?))|[%$])|\s*[.!?;]|\s*$)/i;
+const REDUCE_VERB = /\b(?:flatten|cut|reduce)\b/gi;
 const IMPLICIT_PRICE_ADJ = /\b(?:pric(?:ey|iest)|affordable|expensive|inexpensive|cheapest|cheaper)\b(?!-)/gi;
 const IMPLICIT_CUE = /\b(?:compared|than|versus|vs\.?|option|choice)\b/gi;
 const INTENSIFIED_RELATIONAL = /\b(?:well|far|comfortably)\s+(?:below|above|under)\b/gi;
@@ -570,6 +571,28 @@ function parseQualitativeHits(stripped) {
     );
   }
 
+  const reducers = collectMatches(stripped, REDUCE_VERB);
+  let reducerI = 0;
+  for (const noun of nouns) {
+    while (reducerI + 1 < reducers.length && reducers[reducerI + 1].end <= noun.index) {
+      reducerI += 1;
+    }
+    const reducer = reducerI < reducers.length && reducers[reducerI].end <= noun.index ? reducers[reducerI] : null;
+    if (
+      !reducer ||
+      wordsBetween(stripped, reducer.end, noun.index) > 3 ||
+      !allowedGap(stripped, reducer.end, noun.index)
+    ) {
+      continue;
+    }
+    add(
+      reducer.index,
+      noun.end,
+      noun.raw.toLowerCase(),
+      stripped.slice(reducer.index, noun.end).replace(/\s+/g, " ").trim().toLowerCase()
+    );
+  }
+
   const magnitudes = collectMatches(stripped, MAGNITUDE_ADJ);
   let magnitudeLeft = -1;
   for (const noun of nouns) {
@@ -811,7 +834,7 @@ function parseQualitativeHits(stripped) {
   }
 
   for (const save of collectMatches(stripped, SAVE_VERB)) {
-    if (SAVE_OBJECT_SKIP.test(stripped.slice(save.end, save.end + 40))) {
+    if (!SAVE_MONEY_CONTEXT.test(stripped.slice(save.end))) {
       continue;
     }
     if (/save our homes/i.test(stripped.slice(save.index, save.end + 20))) {
