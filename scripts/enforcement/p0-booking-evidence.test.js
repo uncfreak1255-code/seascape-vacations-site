@@ -257,6 +257,24 @@ test('unseen synonym plants fail as typed hits, not as a listed fixture', () => 
   assert.equal(parseClaimHits('Save this guide for later.').length, 0);
   assert.equal(parseClaimHits('without paying for more space than you need').length, 0);
 
+  const withoutPaying = ['without paying true beach', 'front pricing'].join('');
+  const bareDifference = ['The difference between channel totals is ', '15%'].join('');
+  const similarRate = ['more space at a sim', 'ilar nightly rate'].join('');
+  const sameSpend = ['a full home for the sa', 'me spend'].join('');
+  const withoutPayingHits = parseClaimHits(withoutPaying);
+  const differenceHits = parseClaimHits(bareDifference);
+  const similarHits = parseClaimHits(similarRate);
+  const spendHits = parseClaimHits(sameSpend);
+  assert.equal(withoutPayingHits[0].kind, 'qualitative-price-advantage');
+  assert.match(withoutPayingHits[0].match, /without paying true beachfront pricing/i);
+  assert.equal(differenceHits[0].kind, 'percent-comparative');
+  assert.match(differenceHits[0].match, /difference between channel totals is 15%/i);
+  assert.equal(similarHits[0].kind, 'qualitative-price-advantage');
+  assert.match(similarHits[0].match, /similar nightly rate/i);
+  assert.equal(spendHits[0].kind, 'qualitative-price-advantage');
+  assert.match(spendHits[0].match, /same spend/i);
+  assert.equal(parseClaimHits('Compare the same dates before booking.').length, 0);
+
   const started = Date.now();
   scanSavingsHitsInText(read('src/_data/seoPages.json'), 'src/_data/seoPages.json');
   assert.ok(Date.now() - started < 2000, 'qualitative scan must stay near-linear on stay JSON');
