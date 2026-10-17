@@ -12,6 +12,7 @@ const {
   lintPerformanceClaims,
   formatPerformanceClaimReport
 } = require("./performance-claim-scan");
+const { allowEmptyState, refuseSkip } = require("./fail-closed");
 
 const projectRoot = path.resolve(__dirname, "..", "..");
 
@@ -564,15 +565,11 @@ function resolveContentLintMergeBase(execOptions = {}) {
       ...execOptions
     }).trim();
   } catch (error) {
-    throw new Error(
-      `content-voice: git merge-base HEAD origin/main failed; cannot skip the public-content gate. ${error.message}`
-    );
+    refuseSkip("content-voice", `git merge-base HEAD origin/main failed. ${error.message}`);
   }
 
   if (!mergeBase) {
-    throw new Error(
-      "content-voice: git merge-base HEAD origin/main returned empty; cannot skip the public-content gate."
-    );
+    refuseSkip("content-voice", "git merge-base HEAD origin/main returned empty");
   }
 
   return mergeBase;
@@ -595,9 +592,7 @@ function getChangedFiles() {
       )
     );
   } catch (error) {
-    throw new Error(
-      `content-voice: git diff after merge-base failed; cannot skip the public-content gate. ${error.message}`
-    );
+    refuseSkip("content-voice", `git diff after merge-base failed. ${error.message}`);
   }
 }
 
@@ -1491,7 +1486,11 @@ async function runChangedPublicContentGate() {
   const changedSeoPageCopy = changedFiles.includes(seoPagesPath);
 
   if (changedPublicContentFiles.length === 0 && !changedSeoPageCopy) {
-    assert.ok(true, "no changed public content or source-backed copy files on this branch");
+    allowEmptyState({
+      owner: "content-voice.test.js",
+      reason: "no changed public content or source-backed copy files on this branch",
+      proveRedTest: "failed git merge-base can no longer pass via a vacuous assert"
+    });
     return;
   }
 
@@ -1500,7 +1499,11 @@ async function runChangedPublicContentGate() {
   );
 
   if (changedReaderCopyFiles.length === 0 && !changedSeoPageCopy) {
-    assert.ok(true, "changed public content files have no reader-visible copy diff");
+    allowEmptyState({
+      owner: "content-voice.test.js",
+      reason: "changed public content files have no reader-visible copy diff",
+      proveRedTest: "failed git merge-base can no longer pass via a vacuous assert"
+    });
     return;
   }
 
