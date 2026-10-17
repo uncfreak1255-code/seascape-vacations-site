@@ -235,6 +235,7 @@ function guestCopyText(text) {
     .replace(/<meta\b[^>]*>/gi, " ")
     .replace(/<style[\s\S]*?<\/style>/gi, " ")
     .replace(/<script[\s\S]*?<\/script>/gi, " ")
+    .replace(/\{#[\s\S]*?#\}/g, " ")
     .replace(/\{%([\s\S]*?)%\}/g, (_, inner) => ` ${quotedTemplateLiterals(inner)} `)
     .replace(/\{\{([\s\S]*?)\}\}/g, (_, inner) => ` ${quotedTemplateLiterals(inner)} `);
   const attributes = publicAttributeCopy(body);
