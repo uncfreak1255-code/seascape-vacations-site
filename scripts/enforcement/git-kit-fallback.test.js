@@ -5,6 +5,11 @@ const test = require("node:test");
 const assert = require("node:assert/strict");
 const { spawnSync } = require("node:child_process");
 
+// Hook Git variables identify the caller's checkout, not our disposable repos.
+for (const key of Object.keys(process.env)) {
+  if (key.startsWith("GIT_")) delete process.env[key];
+}
+
 const {
   main,
   parseSafeCommitArgs,
@@ -131,4 +136,34 @@ test("missing Mac kit safe-commit fails when only generated files changed", () =
       }),
     /git-kit-fallback\.js: safe-commit --stage-source found no source files/
   );
+});
+
+test("portable commit fixtures isolate inherited Git hook identity", (t) => {
+  const outer = makeCommitRepo();
+  t.after(() => fs.rmSync(outer, { recursive: true, force: true }));
+  runGit(["config", "user.name", "Outer Repo"], outer);
+  const configPath = path.join(outer, ".git", "config");
+  const beforeConfig = fs.readFileSync(configPath, "utf8");
+  const beforeHead = runGit(["rev-parse", "HEAD"], outer);
+  const childEnv = {
+    ...process.env,
+    GIT_DIR: path.join(outer, ".git"),
+    GIT_WORK_TREE: outer,
+    GIT_INDEX_FILE: path.join(outer, ".git", "index")
+  };
+  delete childEnv.NODE_TEST_CONTEXT;
+  const result = spawnSync(process.execPath, [
+    "--test",
+    "--test-name-pattern", "^missing Mac kit safe-commit (--stage-source creates a commit|fails when only generated files changed)$",
+    __filename
+  ], {
+    cwd: projectRoot,
+    encoding: "utf8",
+    env: childEnv
+  });
+
+  assert.equal(fs.readFileSync(configPath, "utf8"), beforeConfig, "fixture must preserve the hook caller's Git config");
+  assert.equal(runGit(["rev-parse", "HEAD"], outer), beforeHead);
+  assert.equal(runGit(["status", "--porcelain"], outer), "");
+  assert.equal(result.status, 0, result.stderr || result.stdout);
 });

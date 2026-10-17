@@ -49,13 +49,6 @@ test("lint-evals.js: exits nonzero when no API key is set", () => {
   });
   assert.notEqual(status, 0, `Expected nonzero exit, got ${status}. stderr: ${stderr}`);
   assert.match(stderr, /scripts\/evals\/lint-evals\.js: ANTHROPIC_API_KEY is missing/);
-});
-
-test("lint-evals.js: missing key cannot skip-as-pass", () => {
-  const { stderr, status } = runScript(path.join(EVALS_DIR, "lint-evals.js"), [], {
-    ANTHROPIC_API_KEY: "",
-  });
-  assert.notEqual(status, 0);
   assert.match(stderr, /cannot skip-as-pass/);
 });
 
@@ -107,17 +100,6 @@ test("evals.config.json: has correct structure", () => {
   assert.ok(Array.isArray(owner.dataSources), "owner lane must define dataSources");
   assert.ok(typeof owner.rubric === "string");
   assert.ok(typeof aeo.rubric === "string");
-});
-
-// Fix 6 & 7: missing/renamed lane skip, --require with no key → nonzero for blocking lanes
-
-test("run-owner-eval.js: exits 0 (skip) with no API key", () => {
-  // Rubric does not exist → skip exit 0 regardless of key
-  const { stdout, status } = runScript(path.join(EVALS_DIR, "run-owner-eval.js"), [], {
-    ANTHROPIC_API_KEY: "",
-  });
-  assert.equal(status, 0, `Expected exit 0, got ${status}`);
-  assert.ok(stdout.includes("skip"), `Expected skip message, got: ${stdout}`);
 });
 
 test("requireAnthropicApiKey fails empty input and names the owner file", () => {

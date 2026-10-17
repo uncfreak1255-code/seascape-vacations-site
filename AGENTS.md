@@ -186,7 +186,7 @@ These are starting points; the Testing section still governs required checks.
 | Booking handoff and guide click lineage (`seascape_booking_handoff_session_id`, `sv_guide_click_id`) | `src/assets/js/conversion-tracking.js` | `scripts/enforcement/booking-handoff.test.js`, `scripts/enforcement/guide-funnel-lineage.test.js` |
 | GA4 loading, tracking IDs and PII scrubbing | `src/assets/js/homepage.js`, `src/assets/js/conversion-tracking.js` | `scripts/enforcement/tracking-privacy-ids.test.js`, `scripts/enforcement/tracking-script-coverage.test.js`, `scripts/enforcement/direct-booking-event-smoke.test.js` |
 | Guest email capture (homepage exit signup, guide conversion kit) | `src/assets/js/guest.js`, `src/_includes/partials/guide-conversion-kit.njk`, `netlify/functions/guest-email-capture.js` | `scripts/enforcement/home-exit-signup.test.js`, `scripts/enforcement/guide-conversion.test.js`, `scripts/enforcement/guest-capture-bot-guard.test.js` |
-| Homepage hero phrase, ticker and parallax | `src/assets/js/hero-v2.js`, `src/index.njk` | `scripts/enforcement/ui-runtime.test.js` (append `?visual-test=1` to freeze motion in screenshots) |
+| Homepage scenes and native trip search | `src/assets/js/guest.js`, `src/index.njk` | `scripts/enforcement/ui-runtime.test.js`, `tests/visual/waterline-scenes.spec.js`, `tests/e2e/site-flows.e2e.ts` |
 | Header menu button state | `src/assets/js/guest-menu.js` | no unit test; covered only by `tests/visual/*.spec.js` |
 | Live-smoke assertions after visible-copy changes | `scripts/recovery/assert-live-smoke.js` | `scripts/enforcement/recovery-smoke.test.js` |
 
