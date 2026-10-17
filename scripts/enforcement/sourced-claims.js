@@ -94,6 +94,15 @@ function decodeEntities(text) {
     .replace(/&amp;/gi, "&");
 }
 
+const PUBLIC_TEXT_ATTR = /\b(?:alt|aria-label)\s*=\s*(["'])((?:\\.|(?!\1)[\s\S])*?)\1/gi;
+
+function publicAttributeCopy(text) {
+  return [...String(text || "").matchAll(PUBLIC_TEXT_ATTR)]
+    .map((match) => decodeEntities(match[2]).replace(/\s+/g, " ").trim())
+    .filter(Boolean)
+    .join(". ");
+}
+
 function stripMarkup(text) {
   return decodeEntities(text)
     .replace(/<[^>]+>/g, " ")
@@ -228,7 +237,8 @@ function guestCopyText(text) {
     .replace(/<script[\s\S]*?<\/script>/gi, " ")
     .replace(/\{%([\s\S]*?)%\}/g, (_, inner) => ` ${quotedTemplateLiterals(inner)} `)
     .replace(/\{\{([\s\S]*?)\}\}/g, (_, inner) => ` ${quotedTemplateLiterals(inner)} `);
-  return [frontmatter, htmlMeta, body, structured].filter(Boolean).join(". ");
+  const attributes = publicAttributeCopy(body);
+  return [frontmatter, htmlMeta, attributes, body, structured].filter(Boolean).join(". ");
 }
 
 function splitGuestSentences(text) {
