@@ -132,13 +132,27 @@ function publicFrontmatterCopy(text) {
   if (!block) {
     return "";
   }
+  const lines = block[1].split(/\r?\n/);
   const parts = [];
-  for (const line of block[1].split(/\r?\n/)) {
-    const match = line.match(/^([A-Za-z][A-Za-z0-9_]*)\s*:\s*(?:["']([^"']*)["']|(.+))\s*$/);
+  for (let index = 0; index < lines.length; index += 1) {
+    const match = lines[index].match(/^([A-Za-z][A-Za-z0-9_]*)\s*:\s*(.*)$/);
     if (!match || !PUBLIC_FRONTMATTER_KEY.test(match[1])) {
       continue;
     }
-    const value = String(match[2] != null ? match[2] : match[3] || "").trim();
+    let value = String(match[2] || "").trim();
+    if (/^[|>][-+]?$/.test(value)) {
+      const collected = [];
+      while (index + 1 < lines.length && /^\s+/.test(lines[index + 1])) {
+        index += 1;
+        collected.push(lines[index].replace(/^\s+/, ""));
+      }
+      value = collected.join(" ").trim();
+    } else {
+      const quoted = value.match(/^["']([\s\S]*)["']$/);
+      if (quoted) {
+        value = quoted[1].trim();
+      }
+    }
     if (value) {
       parts.push(value);
     }

@@ -425,6 +425,12 @@ test('never-seen price-cue phrasing fails without changing the matcher', () => {
   assert.equal(frontmatter[0].kind, 'price-cue-candidate');
   assert.match(frontmatter[0].excerpt, /fraction of the OTA price/i);
 
+  const folded = collectPriceClaimCandidates(
+    `---\npageDescription: >-\n  Guests ${phrase}.\npermalink: /guides/hidden-plant/\n---\n<p>Plain body copy with no price words.</p>`
+  );
+  assert.equal(folded[0].kind, 'price-cue-candidate');
+  assert.match(folded[0].excerpt, /fraction of the OTA price/i);
+
   const htmlMeta = collectPriceClaimCandidates(
     `<title>Guide</title><meta name="description" content="Guests ${phrase}."><p>Plain body copy with no price words.</p>`
   );
