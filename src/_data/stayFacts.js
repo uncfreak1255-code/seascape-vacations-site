@@ -1,15 +1,25 @@
 "use strict";
 
-const { catalogHomeCountWord, numberWord } = require("../../scripts/enforcement/home-count-word");
+const { NUMBER, catalogHomeCountWord, numberWord } = require("../../scripts/enforcement/home-count-word");
 
 const SLEEPS_FACT = /\b(?:sleep(?:s|ing)?(?:\s+up\s+to)?|hold)\s+\d+(?:\s*[-–-]\s*\d+)?\b/i;
-const GUESTS_FACT = /(?<![,\d])\b\d+(?:\s*[-–—]\s*\d+)?\s+guests\b/i;
+const GUESTS_FACT = new RegExp(
+  `(?<![,\\d])\\b${NUMBER}(?:\\s*[-–—]\\s*${NUMBER})?\\s+guests\\b`,
+  "i"
+);
 const PEOPLE_FACT = /(?<![,\d])\b\d+(?:\s*[-–—]\s*\d+)?\s+people\b/i;
 const PERSON_GROUP_FACT = /(?<![,\d])\b\d+(?:\s*[-–—]\s*\d+)?[-\s]+person(?:s)?\b/i;
 const GROUPS_FACT = /\bgroups (?:of|larger than|up to|over) \d+\+?(?:\s*[-–—]\s*\d+)?\b/i;
+const ROOM_FOR_FACT = /\bRoom for \d+(?:\s*[-–—]\s*\d+)?\b/i;
+const UP_TO_FACT = /\bup to \d+\b/i;
 const HEAT_INCLUDED_FACT = /\bheat(?:ed|ing)?\b[^.!?]{0,80}(?<!not\s)\bincluded\b/i;
-const HOME_COUNT_FACT =
-  /\b(?:one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|\d+)\s+(?:Seascape\s+)?homes\b/i;
+const HOT_TUB_YEAR_INCLUDED_FACT =
+  /\bhot tubs?\b[^.!?]{0,80}(?<!not\s)\bincluded\b[^.!?]{0,60}\b(?:year-?round|all year)\b/i;
+const HOME_COUNT = "(?:one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|[1-9]|1[0-2])";
+const HOME_COUNT_FACT = new RegExp(
+  `\\b${HOME_COUNT}\\s+(?:(?!of\\b|or\\b|to\\b|per\\b|at\\b|for\\b|with\\b|from\\b|by\\b|in\\b|on\\b)[A-Za-z][\\w-]*\\s+){0,3}(?:homes|options)\\b`,
+  "i"
+);
 const TOKEN = /\{(sleeps-phrase|sleeps-matching|sleeps|br|ba|heat|homes|matching|tub-homes)(?::([a-z0-9-]+))?\}/g;
 
 function propertyBySlug(catalog, slug) {
@@ -176,7 +186,10 @@ function collectHandTypedStayFacts(page) {
       ["N people", PEOPLE_FACT],
       ["N-person", PERSON_GROUP_FACT],
       ["groups of N", GROUPS_FACT],
+      ["room for N", ROOM_FOR_FACT],
+      ["up to N", UP_TO_FACT],
       ["heat included", HEAT_INCLUDED_FACT],
+      ["hot tub included year-round", HOT_TUB_YEAR_INCLUDED_FACT],
       ["N homes", HOME_COUNT_FACT]
     ]) {
       const match = text.match(pattern);
@@ -301,9 +314,12 @@ module.exports = {
   GUESTS_FACT,
   HEAT_INCLUDED_FACT,
   HOME_COUNT_FACT,
+  HOT_TUB_YEAR_INCLUDED_FACT,
   PEOPLE_FACT,
   PERSON_GROUP_FACT,
+  ROOM_FOR_FACT,
   SLEEPS_FACT,
+  UP_TO_FACT,
   applyStayFacts,
   assertNoHandTypedStayFacts,
   assertStayCapacityBindings,
