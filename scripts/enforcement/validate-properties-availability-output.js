@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+const { refuseSkip } = require("./fail-closed");
 
 const DEFAULT_OUTPUT_PATH = path.join(process.cwd(), "_site", "properties", "index.html");
 const { normalizeProperties } = require("../../src/_data/properties");
@@ -79,9 +80,7 @@ function validatePropertiesAvailabilityOutput(html, options = {}) {
 function main() {
   const outputPath = process.env.PROPERTIES_AVAILABILITY_OUTPUT_PATH || DEFAULT_OUTPUT_PATH;
   if (!fs.existsSync(outputPath)) {
-    throw new Error(
-      `validate-properties-availability-output.js: missing ${outputPath}; availability output cannot skip-as-pass`
-    );
+    refuseSkip("validate-properties-availability-output.js", `missing ${outputPath}`);
   }
 
   const html = fs.readFileSync(outputPath, "utf8");

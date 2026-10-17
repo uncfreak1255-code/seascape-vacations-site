@@ -18,10 +18,10 @@
 //   tests pass, dirty tree-> exit 0, but no receipt falsely pinned to HEAD
 //   tests pass, clean tree-> exit 0, receipt written to .guardrails/receipts/
 //
-// Deliberately fail-open on general hook infrastructure errors (missing git,
-// unreadable config): a crashed gate that wedges every session is a worse
-// failure than an unproven turn. Receipt invalidation is the one exception:
-// leaving a stale passing receipt at a dirty HEAD would be false proof. Test
+// Fail-closed on hook infrastructure errors (missing git, unreadable HEAD,
+// unreadable config). A skip that exits 0 must go through allowEmptyState
+// with a named prove-red test. Receipt invalidation stays blocking: leaving
+// a stale passing receipt at a dirty HEAD would be false proof. Test
 // FAILURE is always fail-closed.
 
 "use strict";
@@ -30,6 +30,7 @@ const { spawnSync } = require("node:child_process");
 const crypto = require("node:crypto");
 const fs = require("node:fs");
 const path = require("node:path");
+const { allowEmptyState, refuseSkip } = require("./fail-closed");
 
 const LOG = "[proof-gate]";
 const RECEIPT_DIR = path.join(".guardrails", "receipts");
@@ -145,6 +146,11 @@ function evaluateStop({
   runProofChain = (fn) => fn(),
 }) {
   if (payload.stop_hook_active && loopStateUnchanged) {
+    allowEmptyState({
+      owner: "proof-gate.js",
+      reason: "stop already retried once",
+      proveRedTest: "loop guard: never blocks twice for the same stop",
+    });
     return {
       block: false,
       ranTests: false,
@@ -155,6 +161,11 @@ function evaluateStop({
   }
 
   if (!dirty) {
+    allowEmptyState({
+      owner: "proof-gate.js",
+      reason: "no working-tree changes",
+      proveRedTest: "clean tree is a no-op: does not spend 30s proving nothing changed",
+    });
     return {
       block: false,
       ranTests: false,
@@ -188,6 +199,11 @@ function evaluateStop({
           `Could not invalidate the existing HEAD receipt (${error.message}).`,
       };
     }
+    allowEmptyState({
+      owner: "proof-gate.js",
+      reason: "no declared testCommand",
+      proveRedTest: "empty testCommand does not silently pass as proof",
+    });
     return {
       block: false,
       ranTests: false,
@@ -566,8 +582,12 @@ function main() {
 
   const headSha = git(projectRoot, ["rev-parse", "HEAD"]);
   if (!headSha) {
-    console.error(`${LOG} could not resolve HEAD; allowing stop.`);
-    process.exit(0);
+    try {
+      refuseSkip("proof-gate.js", "could not resolve HEAD");
+    } catch (error) {
+      console.error(`${LOG} BLOCKED [proof-head-unresolved] ${error.message}`);
+      process.exit(2);
+    }
   }
 
   const configuredBaseRef =
