@@ -65,6 +65,8 @@ const IMPLICIT_CUE = /\b(?:compared|than|versus|vs\.?|option|choice)\b/gi;
 const INTENSIFIED_RELATIONAL = /\b(?:well|far|comfortably)\s+(?:below|above|under)\b/gi;
 const COPULA_CHEAPER = /\b(?:it(?:'s|\s+is)|they(?:'re|\s+are)|this\s+is|that\s+is)\s+cheaper\b/gi;
 const WITHOUT = /\bwithout\b/gi;
+const PARITY = /\b(?:same|similar)\b/gi;
+const PARITY_NOUN = /\b(?:rates?|pric(?:e|es|ing)|spend|cost)\b/gi;
 const KIND_PERCENT = "percent-comparative";
 const KIND_QUALITATIVE = "qualitative-price-advantage";
 
@@ -445,11 +447,17 @@ function parsePercentHits(stripped) {
     ) {
       spanStart = percent.index - (before.length - save.index);
       subject = subject ? `${save[0].toLowerCase()}|${subject}` : save[0].toLowerCase();
-    } else if (DIFFERENCE_BEFORE.test(before) && /or more/i.test(after)) {
+    } else if (DIFFERENCE_BEFORE.test(before)) {
       const diffAt = before.toLowerCase().lastIndexOf("difference");
-      spanStart = percent.index - (before.length - diffAt);
-      spanEnd = Math.max(spanEnd, percent.end + (after.match(/^\s*or more/i) || [""])[0].length);
-      subject = subject ? `difference|${subject}` : "difference";
+      if (diffAt < 0 || crossesSentence(before, diffAt, before.length)) {
+        if (!afterMatch) {
+          continue;
+        }
+      } else {
+        spanStart = percent.index - (before.length - diffAt);
+        spanEnd = Math.max(spanEnd, percent.end + (after.match(/^\s*or more/i) || [""])[0].length);
+        subject = subject ? `difference|${subject}` : "difference";
+      }
     } else if (!afterMatch) {
       continue;
     }
@@ -760,6 +768,48 @@ function parseQualitativeHits(stripped) {
     add(without.index, noun.end, noun.raw.toLowerCase(), stripped.slice(without.index, noun.end).replace(/\s+/g, " ").trim().toLowerCase());
   }
 
+  const priceNouns = collectMatches(stripped, PRICE_NOUN);
+  let withoutPriceI = 0;
+  for (const noun of priceNouns) {
+    while (withoutPriceI + 1 < withouts.length && withouts[withoutPriceI + 1].end <= noun.index) {
+      withoutPriceI += 1;
+    }
+    const without = withoutPriceI < withouts.length && withouts[withoutPriceI].end <= noun.index ? withouts[withoutPriceI] : null;
+    if (
+      !without ||
+      wordsBetween(stripped, without.end, noun.index) > 4 ||
+      crossesSentence(stripped, without.end, noun.index) ||
+      !allowedWithoutPriceGap(stripped, without.end, noun.index)
+    ) {
+      continue;
+    }
+    add(without.index, noun.end, noun.raw.toLowerCase(), stripped.slice(without.index, noun.end).replace(/\s+/g, " ").trim().toLowerCase());
+  }
+
+  const parities = collectMatches(stripped, PARITY);
+  const parityNouns = collectMatches(stripped, PARITY_NOUN);
+  let parityNounRight = 0;
+  for (const parity of parities) {
+    while (parityNounRight < parityNouns.length && parityNouns[parityNounRight].index < parity.end) {
+      parityNounRight += 1;
+    }
+    const noun = parityNounRight < parityNouns.length ? parityNouns[parityNounRight] : null;
+    if (
+      !noun ||
+      !allowedGap(stripped, parity.end, noun.index) ||
+      wordsBetween(stripped, parity.end, noun.index) > 2 ||
+      crossesSentence(stripped, parity.end, noun.index)
+    ) {
+      continue;
+    }
+    add(
+      parity.index,
+      noun.end,
+      noun.raw.toLowerCase(),
+      stripped.slice(parity.index, noun.end).replace(/\s+/g, " ").trim().toLowerCase()
+    );
+  }
+
   for (const save of collectMatches(stripped, SAVE_VERB)) {
     if (SAVE_OBJECT_SKIP.test(stripped.slice(save.end, save.end + 40))) {
       continue;
@@ -818,6 +868,19 @@ function allowedWithoutGap(text, start, end) {
     return false;
   }
   return /^(?:the|a|an|extra|those|any|added|these)(?:\s+(?:the|a|an|extra|those|any|added|these))*$/i.test(gap);
+}
+
+function allowedWithoutPriceGap(text, start, end) {
+  const gap = text.slice(start, end).trim();
+  if (!gap) {
+    return true;
+  }
+  if (/[-_/]/.test(gap) || crossesSentence(text, start, end)) {
+    return false;
+  }
+  return gap.split(/\s+/).every((word) =>
+    /^(?:the|a|an|extra|those|any|added|these|paying|true|beachfront|waterfront|island|on-island|nightly|address)$/i.test(word)
+  );
 }
 
 function parseClaimHits(text) {
