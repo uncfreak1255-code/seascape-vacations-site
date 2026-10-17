@@ -1,5 +1,8 @@
 "use strict";
 
+const crypto = require("node:crypto");
+const fs = require("node:fs");
+const path = require("node:path");
 const { NUMBER, catalogHomeCountWord, numberWord } = require("../../scripts/enforcement/home-count-word");
 
 const SLEEPS_FACT = /\b(?:sleep(?:s|ing)?(?:\s+up\s+to)?|hold)\s+\d+(?:\s*[-–-]\s*\d+)?\b/i;
@@ -26,7 +29,10 @@ const ALL_COUNT_FACT = new RegExp(
   `\\b(?:all|both)\\s+${HOME_COUNT}\\b(?!\\s*-?bedrooms?\\b)`,
   "i"
 );
-const TOKEN = /\{(sleeps-phrase|sleeps-matching|sleeps|br|ba|heat|homes|matching|tub-homes)(?::([a-z0-9-]+))?\}/g;
+const TOKEN = /\{(sleeps-phrase|sleeps-matching|br-matching|ba-matching|sleeps|br|ba|heat|homes|matching|tub-homes|pool-heat-fee)(?::([a-z0-9-]+))?\}/g;
+const NUMBER_WORD = /\b(?:zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|dozen|score|\d+(?:\.\d+)?)\b/gi;
+const FACT_TERM = /\b(?:guests?|sleep(?:s|ing)?|bedrooms?|bath(?:s|rooms?)?|homes?|houses?|propert(?:y|ies)|heat(?:ed|ing)?|rooms?)\b/gi;
+const NEAR_WORDS = 4;
 
 function propertyBySlug(catalog, slug) {
   return (catalog || []).find((property) => property && property.slug === slug) || null;
@@ -84,11 +90,22 @@ function matchingOccupancies(page, catalog) {
   return slugs.map((slug) => stayOccupancy(catalog, slug));
 }
 
-function matchingSleepsFact(page, catalog) {
-  const values = matchingOccupancies(page, catalog);
+function matchingRange(page, catalog, field) {
+  const slugs = Array.isArray(page && page.matchingProperties) ? page.matchingProperties : [];
+  const values = slugs.map((slug) => {
+    const property = propertyBySlug(catalog, slug);
+    if (!property || property[field] == null) {
+      throw new Error(`stayFacts: ${field} missing for ${slug || "unknown-slug"}`);
+    }
+    return Number(property[field]);
+  });
   const min = Math.min(...values);
   const max = Math.max(...values);
   return min === max ? String(min) : `${min}–${max}`;
+}
+
+function matchingSleepsFact(page, catalog) {
+  return matchingRange(page, catalog, "guests");
 }
 
 function tubHomeCount(catalog) {
@@ -105,8 +122,28 @@ function resolveToken(kind, slug, page, catalog) {
   if (kind === "sleeps-matching") {
     return matchingSleepsFact(page, catalog);
   }
+  if (kind === "br-matching") {
+    return matchingRange(page, catalog, "bedrooms");
+  }
+  if (kind === "ba-matching") {
+    return matchingRange(page, catalog, "bathrooms");
+  }
   if (kind === "tub-homes") {
     return numberWord(tubHomeCount(catalog));
+  }
+  if (kind === "pool-heat-fee") {
+    const fees = [...new Set(
+      (catalog || [])
+        .map((property) => {
+          const match = poolHeatText(property).match(/\$(\d+)/);
+          return match ? match[1] : "";
+        })
+        .filter(Boolean)
+    )];
+    if (fees.length !== 1) {
+      throw new Error(`stayFacts: {pool-heat-fee} needs one catalog dollar fee, found ${fees.join(" and ") || "none"}`);
+    }
+    return `$${fees[0]}`;
   }
 
   const property = propertyBySlug(catalog, slug);
@@ -169,37 +206,116 @@ function applyStayFacts(value, catalog, page = value) {
   return value;
 }
 
-function visitStrings(value, visit) {
+const SKIP_KEYS = new Set(["slug", "file", "pageUrl", "bookingUrl", "href", "image", "relatedStaySlugs", "matchingProperties"]);
+
+function visitStrings(value, visit, key) {
   if (typeof value === "string") {
-    visit(value);
+    if (!SKIP_KEYS.has(key)) {
+      visit(value);
+    }
     return;
   }
   if (Array.isArray(value)) {
-    value.forEach((entry) => visitStrings(entry, visit));
+    value.forEach((entry) => visitStrings(entry, visit, key));
     return;
   }
   if (value && typeof value === "object") {
-    Object.values(value).forEach((child) => visitStrings(child, visit));
+    for (const [childKey, child] of Object.entries(value)) {
+      visitStrings(child, visit, childKey);
+    }
   }
+}
+
+function wordsBetween(text, start, end) {
+  return text.slice(start, end).trim().split(/\s+/).filter(Boolean).length;
+}
+
+function stripStayMarkup(text) {
+  return String(text || "")
+    .replace(TOKEN, " ")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&[a-z]+;/gi, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function collectNearbyNumberFacts(text) {
+  const stripped = stripStayMarkup(text);
+  const hits = [];
+  for (const sentence of stripped.split(/[.!?]+/)) {
+    const numbers = [...sentence.matchAll(new RegExp(NUMBER_WORD.source, NUMBER_WORD.flags))];
+    const terms = [...sentence.matchAll(new RegExp(FACT_TERM.source, FACT_TERM.flags))];
+    for (const number of numbers) {
+      const numberEnd = number.index + number[0].length;
+      for (const term of terms) {
+        const termEnd = term.index + term[0].length;
+        if (wordsBetween(sentence, Math.min(numberEnd, termEnd), Math.max(number.index, term.index)) > NEAR_WORDS) {
+          continue;
+        }
+        const start = Math.min(number.index, term.index);
+        const end = Math.max(numberEnd, termEnd);
+        hits.push({
+          label: "number next to fact term",
+          match: sentence.slice(start, end).replace(/\s+/g, " ").trim(),
+          excerpt: sentence.trim()
+        });
+      }
+    }
+  }
+  return hits;
+}
+
+function normalizeSentence(text) {
+  return String(text || "").replace(/\s+/g, " ").trim().toLowerCase();
+}
+
+function sentenceHash(text) {
+  return crypto.createHash("sha256").update(normalizeSentence(text)).digest("hex");
+}
+
+function loadStayNumberAllowlist() {
+  const file = path.join(__dirname, "stayNumberAllowlist.json");
+  const rows = JSON.parse(fs.readFileSync(file, "utf8"));
+  if (!Array.isArray(rows.sentences)) {
+    throw new Error("stayFacts: stayNumberAllowlist.json is missing sentences");
+  }
+  const hashes = new Set();
+  for (const row of rows.sentences) {
+    if (!row || row.hash !== sentenceHash(row.sentence)) {
+      throw new Error("stayFacts: stayNumberAllowlist.json hash does not match sentence");
+    }
+    hashes.add(row.hash);
+  }
+  return hashes;
+}
+
+let stayNumberAllowlist;
+
+function allowedStayNumberSentence(sentence) {
+  stayNumberAllowlist = stayNumberAllowlist || loadStayNumberAllowlist();
+  return stayNumberAllowlist.has(sentenceHash(sentence));
+}
+
+function collectStayNumberCandidates(page) {
+  const hits = [];
+  visitStrings(page, (text) => {
+    hits.push(...collectNearbyNumberFacts(text));
+  });
+  return hits;
 }
 
 function collectHandTypedStayFacts(page) {
   const hits = [];
   visitStrings(page, (text) => {
+    for (const hit of collectNearbyNumberFacts(text)) {
+      if (allowedStayNumberSentence(hit.excerpt || hit.match)) {
+        continue;
+      }
+      hits.push(hit);
+    }
     for (const [label, pattern] of [
-      ["sleeps N", SLEEPS_FACT],
-      ["N guests", GUESTS_FACT],
-      ["N people", PEOPLE_FACT],
-      ["N-person", PERSON_GROUP_FACT],
-      ["groups of N", GROUPS_FACT],
-      ["N-guest", GUEST_HYPHEN_FACT],
-      ["space for N", SPACE_FOR_FACT],
-      ["room for N", ROOM_FOR_FACT],
-      ["up to N", UP_TO_FACT],
       ["heat included", HEAT_INCLUDED_FACT],
-      ["hot tub included year-round", HOT_TUB_YEAR_INCLUDED_FACT],
-      ["N homes", HOME_COUNT_FACT],
-      ["all N", ALL_COUNT_FACT]
+      ["hot tub included year-round", HOT_TUB_YEAR_INCLUDED_FACT]
     ]) {
       const match = text.match(pattern);
       if (match) {
@@ -453,6 +569,7 @@ module.exports = {
   assertNoHandTypedStayFacts,
   assertStayCapacityBindings,
   collectHandTypedStayFacts,
+  collectStayNumberCandidates,
   hasTub,
   heatClause,
   heatIncludedFromTruth,
