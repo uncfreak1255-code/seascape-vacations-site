@@ -185,6 +185,27 @@ test('unseen synonym plants fail as typed hits, not as a listed fixture', () => 
   assert.equal(magnitudeHits[0].kind, 'qualitative-price-advantage');
   assert.match(magnitudeHits[0].match, /significant discounts/i);
 
+  const beachfrontPremium = ['beach', 'front premium'].join('');
+  const addressPremium = ['addr', 'ess premium'].join('');
+  const nightlyPremiums = ['on-island ', 'nightly premiums'].join('');
+  const fewerFees = ['few', 'er extra fees'].join('');
+  const keepsFeesOut = ['keeps ', 'platform fees out'].join('');
+  const beachfrontHits = parseClaimHits(`Guests skip the ${beachfrontPremium}.`);
+  const addressHits = parseClaimHits(`Mainland stays avoid the ${addressPremium}.`);
+  const nightlyHits = parseClaimHits(`Bradenton skips ${nightlyPremiums}.`);
+  const fewerHits = parseClaimHits(`Direct booking means ${fewerFees}.`);
+  const keepOutHits = parseClaimHits(`Booking here ${keepsFeesOut}.`);
+  assert.equal(beachfrontHits[0].kind, 'qualitative-price-advantage');
+  assert.match(beachfrontHits[0].match, /beachfront premium/i);
+  assert.equal(addressHits[0].kind, 'qualitative-price-advantage');
+  assert.match(addressHits[0].match, /address premium/i);
+  assert.equal(nightlyHits[0].kind, 'qualitative-price-advantage');
+  assert.match(nightlyHits[0].match, /on-island nightly premiums/i);
+  assert.equal(fewerHits[0].kind, 'qualitative-price-advantage');
+  assert.match(fewerHits[0].match, /fewer extra fees/i);
+  assert.equal(keepOutHits[0].kind, 'qualitative-price-advantage');
+  assert.match(keepOutHits[0].match, /keeps platform fees out/i);
+
   const started = Date.now();
   scanSavingsHitsInText(read('src/_data/seoPages.json'), 'src/_data/seoPages.json');
   assert.ok(Date.now() - started < 2000, 'qualitative scan must stay near-linear on stay JSON');
