@@ -68,7 +68,8 @@ test('unseen synonym plants fail as typed hits, not as a listed fixture', () => 
     coversHit,
     parseClaimHits,
     readSourcedClaims,
-    scanSavingsHitsInText
+    scanSavingsHitsInText,
+    scanStaySavingsHits
   } = require('./sourced-claims');
   const claims = readSourcedClaims();
   const pages = JSON.parse(read('src/_data/seoPages.json')).vacationer;
@@ -256,6 +257,36 @@ test('unseen synonym plants fail as typed hits, not as a listed fixture', () => 
   assert.match(lowerRateHits[0].match, /lower-rate/i);
   assert.equal(parseClaimHits('Save this guide for later.').length, 0);
   assert.equal(parseClaimHits('without paying for more space than you need').length, 0);
+  const cueBefore = ['This option is the ', 'priciest'].join('');
+  const perNightMath = ['low', 'er per-night math'].join('');
+  const saveTime = ['Save ', 'time with self check-in'].join('');
+  const saveRoom = ['Save ', 'room for dessert'].join('');
+  const saveFavorites = ['Save ', 'your favorites'].join('');
+  const cueBeforeHits = parseClaimHits(cueBefore);
+  const mathHits = parseClaimHits(perNightMath);
+  assert.equal(cueBeforeHits[0].kind, 'qualitative-price-advantage');
+  assert.match(cueBeforeHits[0].match, /option is the priciest/i);
+  assert.equal(mathHits[0].kind, 'qualitative-price-advantage');
+  assert.match(mathHits[0].match, /lower per-night math/i);
+  assert.equal(parseClaimHits(saveTime).length, 0);
+  assert.equal(parseClaimHits(saveRoom).length, 0);
+  assert.equal(parseClaimHits(saveFavorites).length, 0);
+
+  const fieldBridge = scanStaySavingsHits([{
+    slug: 'hidden-bridge',
+    heading: 'Book 15%',
+    body: 'less on the same dates.'
+  }]);
+  assert.equal(fieldBridge.length, 0);
+  const stayPercent = scanStaySavingsHits([{
+    slug: 'hidden-plant-percent',
+    intro: 'Direct stays run 15% less on the same dates.'
+  }]);
+  assert.equal(stayPercent[0].slug, 'hidden-plant-percent');
+  assert.throws(
+    () => assertSavingsSourced(stayPercent, claims),
+    /sourcedClaims\.json is missing a sourced-claim row for 15% less in hidden-plant-percent/
+  );
 
   const withoutPaying = ['without paying true beach', 'front pricing'].join('');
   const bareDifference = ['The difference between channel totals is ', '15%'].join('');

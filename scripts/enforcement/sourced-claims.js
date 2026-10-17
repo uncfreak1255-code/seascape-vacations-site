@@ -42,7 +42,7 @@ const WORD_PERCENT = new RegExp(`\\b(?:${WORD_NUMBER})\\s+percent\\b`, "gi");
 const AFTER_PERCENT = /^(?:\s*(?:less|off|below|lower|cheaper|discount|reduced|savings|or more))\b/i;
 const SAVE_BEFORE = /\b(?:save[sd]?\b|savings\s*:|rates\s+drop\b)/i;
 const DIFFERENCE_BEFORE = /\bdifference\b/i;
-const PRICE_NOUN = /\b(?:rates?|pric(?:e|es|ing)|markups?|premiums?|discounts?|values?|savings|totals?)\b/gi;
+const PRICE_NOUN = /\b(?:rates?|pric(?:e|es|ing)|markups?|premiums?|discounts?|values?|savings|totals?|math)\b/gi;
 const QUALITATIVE_ADJ = /\b(?:better|best|lower|higher|cheaper|lowest|highest|deeper|deepest|stronger|priciest|typical|premium|far better)\b/gi;
 const MAGNITUDE_ADJ = /\b(?:significant|substantial|considerable|major|large|huge|meaningful)\b/gi;
 const RELATIONAL = /\b(?:below|above|under)\b/gi;
@@ -59,7 +59,7 @@ const COST_COMPARATIVE = /\b(?:less|more|cheaper|lower|higher)\b/gi;
 const PAY_VERB = /^(?:pays?|paid|paying)$/i;
 const PAY_UP = /\bpay(?:s|ing|ed)?\s+up\b/gi;
 const SAVE_VERB = /\bsave[sd]?\b/gi;
-const SAVE_OBJECT_SKIP = /^(?:\s+(?:this|that|the|our)\s+(?:guide|page|file|homes?|listing))\b/i;
+const SAVE_OBJECT_SKIP = /^(?:\s+(?:this|that|the|our|your|a|an)\s+(?:guide|page|file|homes?|listing|time|room|space|favorites?|dates?|day|seat)|(?:\s+(?:time|room|space|favorites)))\b/i;
 const IMPLICIT_PRICE_ADJ = /\b(?:pric(?:ey|iest)|affordable|expensive|inexpensive|cheapest|cheaper)\b(?!-)/gi;
 const IMPLICIT_CUE = /\b(?:compared|than|versus|vs\.?|option|choice)\b/gi;
 const INTENSIFIED_RELATIONAL = /\b(?:well|far|comfortably)\s+(?:below|above|under)\b/gi;
@@ -826,24 +826,36 @@ function parseQualitativeHits(stripped) {
 
   const implicitAdjs = collectMatches(stripped, IMPLICIT_PRICE_ADJ);
   const implicitCues = collectMatches(stripped, IMPLICIT_CUE);
+  let cueLeft = -1;
   let cueRight = 0;
   for (const adj of implicitAdjs) {
+    while (cueLeft + 1 < implicitCues.length && implicitCues[cueLeft + 1].end <= adj.index) {
+      cueLeft += 1;
+    }
     while (cueRight < implicitCues.length && implicitCues[cueRight].index < adj.end) {
       cueRight += 1;
     }
-    const cue = cueRight < implicitCues.length ? implicitCues[cueRight] : null;
-    if (
-      !cue ||
-      wordsBetween(stripped, adj.end, cue.index) > 3 ||
-      crossesSentence(stripped, adj.end, cue.index)
-    ) {
+    const leftCue = cueLeft >= 0 ? implicitCues[cueLeft] : null;
+    const rightCue = cueRight < implicitCues.length ? implicitCues[cueRight] : null;
+    const leftOk =
+      leftCue &&
+      leftCue.end <= adj.index &&
+      wordsBetween(stripped, leftCue.end, adj.index) <= 3 &&
+      !crossesSentence(stripped, leftCue.end, adj.index);
+    const rightOk =
+      rightCue &&
+      rightCue.index >= adj.end &&
+      wordsBetween(stripped, adj.end, rightCue.index) <= 3 &&
+      !crossesSentence(stripped, adj.end, rightCue.index);
+    const partner = leftOk ? leftCue : rightOk ? rightCue : null;
+    if (!partner) {
       continue;
     }
     add(
-      adj.index,
-      cue.end,
+      Math.min(partner.index, adj.index),
+      Math.max(partner.end, adj.end),
       adj.raw.toLowerCase(),
-      stripped.slice(adj.index, cue.end).replace(/\s+/g, " ").trim().toLowerCase()
+      stripped.slice(Math.min(partner.index, adj.index), Math.max(partner.end, adj.end)).replace(/\s+/g, " ").trim().toLowerCase()
     );
   }
 
@@ -897,6 +909,27 @@ function scanSavingsHitsInText(text, file) {
     }));
 }
 
+function scanStaySavingsHits(records) {
+  const hits = [];
+  for (const page of records || []) {
+    if (!page || page.rehomeTo) {
+      continue;
+    }
+    const slug = page.slug;
+    walkRecordStrings(page, (text) => {
+      hits.push(
+        ...parseClaimHits(text)
+          .filter((hit) => hit.kind === KIND_PERCENT || /savings/i.test(hit.match))
+          .map((hit) => ({
+            ...hit,
+            slug
+          }))
+      );
+    });
+  }
+  return hits;
+}
+
 function scanSrcSavingsHits(root = DEFAULT_ROOT) {
   const srcRoot = path.join(root, "src");
   if (!fs.existsSync(srcRoot)) {
@@ -909,6 +942,11 @@ function scanSrcSavingsHits(root = DEFAULT_ROOT) {
       continue;
     }
     const relative = path.relative(root, file).split(path.sep).join("/");
+    if (relative === "src/_data/seoPages.json") {
+      const pages = JSON.parse(fs.readFileSync(file, "utf8")).vacationer || [];
+      hits.push(...scanStaySavingsHits(pages));
+      continue;
+    }
     hits.push(...scanSavingsHitsInText(fs.readFileSync(file, "utf8"), relative));
   }
   return hits;
@@ -955,7 +993,7 @@ function assertSavingsSourced(hits, claims, now = new Date()) {
   const missing = unsourcedSavingsHits(hits, claims, now);
   if (missing.length > 0) {
     throw new Error(
-      `${OWNER_FILE} is missing a sourced-claim row for ${missing[0].match} in ${missing[0].file}`
+      `${OWNER_FILE} is missing a sourced-claim row for ${missing[0].match} in ${missing[0].file || missing[0].slug || "unknown-scope"}`
     );
   }
 }
@@ -1052,6 +1090,7 @@ module.exports = {
   readSourcedClaims,
   parseClaimHits,
   scanSavingsHitsInText,
+  scanStaySavingsHits,
   scanSrcSavingsHits,
   unsourcedSavingsHits,
   assertSavingsSourced,

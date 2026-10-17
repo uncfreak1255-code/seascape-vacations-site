@@ -216,6 +216,35 @@ test("page ranges and shared home tokens must bind every matching home", () => {
     matchingProperties: ["dockside-dreams", "river-house"],
     intro: "{matching} homes sleep {sleeps:dockside-dreams}."
   }, catalog));
+  assert.throws(
+    () => assertStayCapacityBindings({
+      slug: "plant",
+      matchingProperties: ["dockside-dreams", "the-oasis", "river-house"],
+      intro: "{matching} homes. Both have private pools."
+    }, catalog),
+    /\{matching\} cannot pair with Both/
+  );
+  const tubAnswer = "{tub-homes} homes. Dockside Dreams, The Oasis, River House, Bradenton Pool Home, The Coastal, and Sarasota Luxe. Pickleball Pool Home Retreat has a private pool, but no verified hot tub or spa.";
+  assert.doesNotThrow(() => assertStayCapacityBindings({
+    slug: "plant",
+    matchingProperties: ["dockside-dreams"],
+    faqs: [{ question: "Tubs?", answer: tubAnswer }]
+  }, catalog));
+  const river = catalog.find((property) => property.slug === "river-house");
+  const savedAmenities = river.amenities;
+  const savedMarketing = river.marketing_amenities;
+  river.amenities = (river.amenities || []).filter((flag) => !String(flag).toLowerCase().includes("spa") && !String(flag).toLowerCase().includes("hot-tub"));
+  river.marketing_amenities = (river.marketing_amenities || []).filter((flag) => !String(flag).toLowerCase().includes("spa") && !String(flag).toLowerCase().includes("hot-tub"));
+  assert.throws(
+    () => assertStayCapacityBindings({
+      slug: "plant",
+      matchingProperties: ["dockside-dreams"],
+      faqs: [{ question: "Tubs?", answer: tubAnswer }]
+    }, catalog),
+    /\{tub-homes\} names/
+  );
+  river.amenities = savedAmenities;
+  river.marketing_amenities = savedMarketing;
 });
 
 test("replay 638: Blue House fallback capacity moves geoIntro, FAQ, highlight, ItemList, and JSON-LD", () => {
