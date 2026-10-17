@@ -455,6 +455,11 @@ test('never-seen price-cue phrasing fails without changing the matcher', () => {
     /sourcedClaims\.json is missing a sourced-claim row or .*nonClaimSentences/
   );
 
+  const commentPlant = collectPriceClaimCandidates(
+    `{# Guests ${phrase}. #}<p>Plain body copy about beach parking.</p>`
+  );
+  assert.equal(commentPlant.length, 0, 'Nunjucks comments are not guest copy');
+
   const plantedArg = collectPriceClaimCandidates(
     `{{ kit({ heading: "Need more space", cta: "Guests ${phrase}." }) }}`
   );
@@ -497,6 +502,13 @@ test('Bradenton-Sarasota dining comparison uses current menus in body and FAQ sc
   const answer = faq.mainEntity.find((q) => q.name === 'Are Bradenton restaurants cheaper than Sarasota?').acceptedAnswer.text;
   assert.match(answer, /Compare current menus/);
   assert.ok(s.includes(`<p>${answer}</p>`), 'visible answer matches FAQ schema');
+});
+
+test('cost guide 2026 compares checkout totals instead of an invented Airbnb sample', () => {
+  const s = read('src/guides/anna-maria-island-vacation-cost-guide-2026/index.html');
+  assert.doesNotMatch(s, /14% of subtotal|\$3,050|\$2,600|Here's the math/i);
+  assert.match(s, /compare the complete checkout totals/i);
+  assert.match(s, /href="\/stays\/book-direct-anna-maria-island\/"/);
 });
 
 test('booking and cost guides compare complete quotes without fixed savings or fabricated trip totals', () => {

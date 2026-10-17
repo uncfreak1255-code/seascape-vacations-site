@@ -14,7 +14,7 @@
 - offer claim: n/a (guest-lane claim repair; no owner-offer line)
 - required internal links: /guides/, /properties/
 - CTA target: unchanged on the named guides
-- anti-claims: do not publish a mainland lodging, charter, platform-fee, airfare, Bradenton-vs-Sarasota, or seasonal-rate advantage without a sourcedClaims row; do not invent nightly rates, savings percents, or a cheaper-than-island guarantee; do not keep “often cost less,” “slightly lower rates,” “separate by hundreds,” “significantly lower rates,” “typically cost less,” “prices lower,” or “most affordable months” as current fact
+- anti-claims: do not publish a mainland lodging, charter, platform-fee, airfare, Bradenton-vs-Sarasota, or seasonal-rate advantage without a sourcedClaims row; do not invent nightly rates, savings percents, platform-fee percents, or a cheaper-than-island guarantee; do not keep “often cost less,” “slightly lower rates,” “separate by hundreds,” “significantly lower rates,” “typically cost less,” “prices lower,” “most affordable months,” or a 14% / $3,050 / $2,600 Airbnb sample as current fact
 - hypothesis: the fail-closed price-cue scanner will keep catching qualitative advantages; rewriting the live sentences is the honest fix, not a hashed allowlist
 - primary event: guide_book_direct_click
 - guardrail event: email_capture_submit
@@ -55,7 +55,7 @@ These guides are not a topical cluster. They share only the same unsourced price
 | Top visible competitors | No competitor rewrite. This batch only removes unsourced comparative price lines on existing guides. |
 | Competitor angle | Destination and charter pages still quote nightly or trip prices. The gap here is Seascape copy that asserts a mainland cost, charter-rate, or quantified platform-fee advantage without a sourced row. |
 | Visual/format gap | None required. Keep existing guide layout and only replace the named claim sentences. |
-| Seascape gap | The cost guide said mainland homes “often cost less” and that September and October are the most affordable months with lower peak-season rates. The spring-break guide said Bradenton fishing charters have “slightly lower rates.” The AMI vs Siesta kit said platform fees “separate by hundreds.” The live best-time pages said shifting dates can mean “significantly lower rates” or that fall has the lowest rental rates. The Bradenton insider FAQ said rentals “typically cost less” than Sarasota. The flights guide said TPA “often prices lower.” None of those lines has a sourcedClaims row. |
+| Seascape gap | The cost guide said mainland homes “often cost less,” that September and October are the most affordable months with lower peak-season rates, and that a sample Airbnb stay was 14% / $3,050 versus $2,600 direct. The spring-break guide said Bradenton fishing charters have “slightly lower rates.” The AMI vs Siesta kit said platform fees “separate by hundreds.” The live best-time pages said shifting dates can mean “significantly lower rates” or that fall has the lowest rental rates. The Bradenton insider FAQ said rentals “typically cost less” than Sarasota. The flights guide said TPA “often prices lower.” None of those lines has a sourcedClaims row. |
 | Search fit | Keep the existing guide URLs. Replace the unsourced advantages with a checkout or quote comparison. Conversion stays on /properties/ and the existing stay links. Do not open a new page. |
 | Local/GBP proof | Not applicable: organic guide-copy claim repair, no local-pack or GBP claim. |
 | AEO/readback note | No AI citation-lift claim. Readback is only that the preview sentences stop publishing an unsourced cheaper/lower-rate or hundreds-in-fees advantage. |
@@ -66,7 +66,7 @@ These guides are not a topical cluster. They share only the same unsourced price
 | Competitor URLs inspected | source check: live cost, spring-break, AMI vs Siesta, and best-time guides plus empty `src/_data/sourcedClaims.json` on 2026-10-17; SERP check: no DataForSEO or public SERP action because next-batch.md is fresh but below threshold on 2026-10-12; competitor-page check: no competitor page rewrite, this batch only removes unsourced price-cue sentences |
 | Content gap and Seascape answer | Guides must not assert a mainland lodging, charter, or quantified platform-fee advantage without a sourced row. Answer: compare a complete checkout or current charter quote for the same trip. |
 | Design/format strategy | Text-only sentence replacement inside existing guide HTML. No new visual pattern. |
-| Seascape proof available | Empty sourcedClaims.json on 2026-10-17. Live cost-guide, spring-break, and AMI vs Siesta sentences still used “often cost less,” “slightly lower rates,” and “separate by hundreds” before this rewrite. |
+| Seascape proof available | Empty sourcedClaims.json on 2026-10-17. Live cost-guide, spring-break, and AMI vs Siesta sentences still used “often cost less,” “slightly lower rates,” “separate by hundreds,” and a 14% / $3,050 / $2,600 Airbnb sample before this rewrite. |
 | Tools/plugins used | Public live page reads on 2026-10-17; docs/status/next-batch.md 2026-10-12 freshness receipt; local sourced-claims, search-brief-gate, and content-voice gates. |
 | Decision and reason | Repair the source-backed price-cue sentences on the existing guides. next-batch.md remains below threshold, so this is claim hygiene, not a new SEO batch. |
 
