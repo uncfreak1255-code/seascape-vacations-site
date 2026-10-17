@@ -155,6 +155,26 @@ test('unseen synonym plants fail as typed hits, not as a listed fixture', () => 
   const avoidNextSentence = parseClaimHits('Avoid traffic. Platform fees are displayed separately.');
   assert.equal(avoidNextSentence.length, 0);
 
+  const ratesAreLower = ['Rates are low', 'er than Airbnb'].join('');
+  const priceIsHigher = ['The price is high', 'er'].join('');
+  const copulaHits = parseClaimHits(ratesAreLower);
+  const priceHits = parseClaimHits(priceIsHigher);
+  assert.equal(copulaHits[0].kind, 'qualitative-price-advantage');
+  assert.match(copulaHits[0].match, /rates are lower/i);
+  assert.equal(priceHits[0].kind, 'qualitative-price-advantage');
+  assert.match(priceHits[0].match, /price is higher/i);
+
+  const splitHeading = ['Plan low', 'er'].join('');
+  const splitSubheading = ['Rate', ' options'].join('');
+  assert.equal(parseClaimHits(splitHeading).length, 0);
+  assert.equal(parseClaimHits(splitSubheading).length, 0);
+  assert.doesNotThrow(() =>
+    assertNoUnsourcedPriceAdvantages(
+      [...pages, { slug: 'hidden-plant-fields', heading: splitHeading, subheading: splitSubheading }],
+      claims
+    )
+  );
+
   assert.equal(
     coversHit(
       { file: 'src/guides/hidden-plant.html', quote: 'better rates', expires: '2027-12-31' },

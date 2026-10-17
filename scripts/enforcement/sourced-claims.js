@@ -474,7 +474,7 @@ function allowedGap(text, start, end) {
     return true;
   }
   return trimmed.split(/\s+/).every((word) =>
-    /^(?:the|a|an|available|monthly|nightly|overall|island|beachfront|direct|checkout|booking|[a-z]+(?:-[a-z]+)+)$/i.test(word)
+    /^(?:the|a|an|available|monthly|nightly|overall|island|beachfront|direct|checkout|booking|is|are|was|were|[a-z]+(?:-[a-z]+)+)$/i.test(word)
   );
 }
 
@@ -705,14 +705,13 @@ function coversPriceAdvantageHit(claim, slug, hit, now = new Date()) {
   return coversHit(claim, record, now);
 }
 
-function visibleRecordText(page) {
-  const parts = [];
+function walkRecordStrings(page, visit) {
   function walk(value, key) {
     if (typeof value === "string") {
       if (key === "slug" || key === "file" || key === "pageUrl" || key === "bookingUrl" || key === "href" || key === "image") {
         return;
       }
-      parts.push(value);
+      visit(value);
       return;
     }
     if (Array.isArray(value)) {
@@ -726,7 +725,6 @@ function visibleRecordText(page) {
     }
   }
   walk(page);
-  return parts.join("\n");
 }
 
 function unsourcedPriceAdvantages(records, claims, now = new Date()) {
@@ -736,19 +734,20 @@ function unsourcedPriceAdvantages(records, claims, now = new Date()) {
   const loaded = loadSourcedClaims(claims);
   const missing = [];
   for (const page of records) {
-    const text = visibleRecordText(page);
     const slug = page && typeof page.slug === "string" ? page.slug : "";
-    for (const hit of priceAdvantageHits(text)) {
-      if (!loaded.some((claim) => coversPriceAdvantageHit(claim, slug, hit, now))) {
-        missing.push({
-          slug,
-          match: hit.match,
-          kind: hit.kind,
-          subject: hit.subject,
-          value: hit.value
-        });
+    walkRecordStrings(page, (text) => {
+      for (const hit of priceAdvantageHits(text)) {
+        if (!loaded.some((claim) => coversPriceAdvantageHit(claim, slug, hit, now))) {
+          missing.push({
+            slug,
+            match: hit.match,
+            kind: hit.kind,
+            subject: hit.subject,
+            value: hit.value
+          });
+        }
       }
-    }
+    });
   }
   return missing;
 }
