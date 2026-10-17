@@ -58,6 +58,7 @@
 
 ## Source Files Changed In This Batch
 
+- source files likely to change: `src/_data/seoPages.json`, `src/stays/stays.njk`
 - src/_data/seoPages.json
 - src/stays/stays.njk
 - src/_data/stayFacts.js
