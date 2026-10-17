@@ -18,7 +18,9 @@ const {
   assertSavingsSourced,
   assertLiveQuotesPresent,
   unsourcedPriceAdvantages,
-  assertNoUnsourcedPriceAdvantages
+  assertNoUnsourcedPriceAdvantages,
+  scanSrcClaimCandidates,
+  assertClaimCandidatesCovered
 } = require("./sourced-claims");
 
 test("Sarasota home copy does not claim walkability", () => {
@@ -189,6 +191,7 @@ test("a missing sourced-claim row for a savings percent fails", () => {
     "leftover best-time savings percents stay blocked"
   );
   assert.doesNotThrow(() => assertSavingsSourced(hits, claims));
+  assert.doesNotThrow(() => assertClaimCandidatesCovered(scanSrcClaimCandidates(), claims));
 
   const planted = scanSavingsHitsInText(
     "Book direct and save 10-15% versus Airbnb",
