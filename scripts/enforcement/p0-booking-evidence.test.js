@@ -172,6 +172,19 @@ test('unseen synonym plants fail as typed hits, not as a listed fixture', () => 
   assert.equal(higherDiscountHits[0].kind, 'qualitative-price-advantage');
   assert.match(higherDiscountHits[0].match, /higher discounts/i);
 
+  const ratesBelow = ['Rates bel', 'ow Airbnb'].join('');
+  const pricesBelow = ['prices bel', 'ow marketplace totals'].join('');
+  const significantDiscounts = ['Signifi', 'cant discounts'].join('');
+  const belowHits = parseClaimHits(ratesBelow);
+  const pricesBelowHits = parseClaimHits(`Mainland ${pricesBelow}.`);
+  const magnitudeHits = parseClaimHits(`${significantDiscounts} apply.`);
+  assert.equal(belowHits[0].kind, 'qualitative-price-advantage');
+  assert.match(belowHits[0].match, /rates below/i);
+  assert.equal(pricesBelowHits[0].kind, 'qualitative-price-advantage');
+  assert.match(pricesBelowHits[0].match, /prices below/i);
+  assert.equal(magnitudeHits[0].kind, 'qualitative-price-advantage');
+  assert.match(magnitudeHits[0].match, /significant discounts/i);
+
   const started = Date.now();
   scanSavingsHitsInText(read('src/_data/seoPages.json'), 'src/_data/seoPages.json');
   assert.ok(Date.now() - started < 2000, 'qualitative scan must stay near-linear on stay JSON');
