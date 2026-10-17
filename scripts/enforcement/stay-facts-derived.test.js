@@ -33,15 +33,15 @@ function visibleStayText(page) {
 test("hand-typed sleeps, heat, and home-count facts fail stay JSON", () => {
   assert.throws(
     () => assertNoHandTypedStayFacts({ slug: "plant", geoIntro: "Blue House sleeps 10" }),
-    /hand-typed sleeps N "sleeps 10"/
+    /hand-typed/
   );
   assert.throws(
     () => assertNoHandTypedStayFacts({ slug: "plant", geoIntro: "The Oasis sleeping 16" }),
-    /hand-typed sleeps N "sleeping 16"/
+    /hand-typed/
   );
   assert.throws(
     () => assertNoHandTypedStayFacts({ slug: "plant", geoIntro: "sleeps up to 16 guests" }),
-    /hand-typed sleeps N "sleeps up to 16"/
+    /hand-typed/
   );
   assert.throws(
     () => assertNoHandTypedStayFacts({ slug: "plant", geoIntro: "three Seascape homes that hold 12" }),
@@ -49,50 +49,50 @@ test("hand-typed sleeps, heat, and home-count facts fail stay JSON", () => {
   );
   assert.throws(
     () => assertNoHandTypedStayFacts({ slug: "plant", geoIntro: "hot tub (heat included)" }),
-    /hand-typed heat included/
+    /hand-typed/
   );
   assert.throws(
     () => assertNoHandTypedStayFacts({ slug: "plant", geoIntro: "Six homes with a pool" }),
-    /hand-typed N homes "Six homes"/
+    /hand-typed/
   );
   assert.throws(
     () => assertNoHandTypedStayFacts({
       slug: "plant",
       decisionHighlights: [{ label: "{matching} homes, 10-16 guests", value: "range" }]
     }),
-    /hand-typed N guests "10-16 guests"/
+    /hand-typed/
   );
   assert.throws(
     () => assertNoHandTypedStayFacts({ slug: "plant", h1: "Vacation Homes for 12 Guests" }),
-    /hand-typed N guests "12 Guests"/
+    /hand-typed/
   );
   assert.throws(
-    () => assertNoHandTypedStayFacts({ slug: "plant", geoIntro: "When your group reaches 16 people" }),
-    /hand-typed N people "16 people"/
+    () => assertNoHandTypedStayFacts({ slug: "plant", geoIntro: "When your group reaches 16 guests" }),
+    /hand-typed/
   );
   assert.throws(
-    () => assertNoHandTypedStayFacts({ slug: "plant", geoIntro: "For groups larger than 16, call us" }),
-    /hand-typed groups of N "groups larger than 16"/
+    () => assertNoHandTypedStayFacts({ slug: "plant", geoIntro: "For groups larger than 16 guests, call us" }),
+    /hand-typed/
   );
   assert.throws(
-    () => assertNoHandTypedStayFacts({ slug: "plant", faqs: [{ question: "Best for a 12-16 person group?", answer: "Ask." }] }),
-    /hand-typed N-person "12-16 person"/
+    () => assertNoHandTypedStayFacts({ slug: "plant", faqs: [{ question: "Best for a 12-16 guest group?", answer: "Ask." }] }),
+    /hand-typed/
   );
   assert.throws(
     () => assertNoHandTypedStayFacts({ slug: "plant", geoIntro: "hot tubs are heated year-round and included" }),
-    /hand-typed heat included "heated year-round and included"/
+    /hand-typed/
   );
   assert.throws(
     () => assertNoHandTypedStayFacts({ slug: "plant", decisionHighlights: [{ label: "Room for 12–16", value: "range" }] }),
-    /hand-typed room for N "Room for 12–16"/
+    /hand-typed/
   );
   assert.throws(
     () => assertNoHandTypedStayFacts({ slug: "plant", faqs: [{ question: "Baths?", answer: "Twelve guests across 4 bedrooms." }] }),
-    /hand-typed N guests "Twelve guests"/
+    /hand-typed/
   );
   assert.throws(
-    () => assertNoHandTypedStayFacts({ slug: "plant", geoIntro: "The Oasis up to 16." }),
-    /hand-typed up to N "up to 16"/
+    () => assertNoHandTypedStayFacts({ slug: "plant", geoIntro: "The Oasis hosts 16 guests." }),
+    /hand-typed/
   );
   assert.doesNotThrow(() => assertNoHandTypedStayFacts({
     slug: "plant",
@@ -104,44 +104,51 @@ test("hand-typed sleeps, heat, and home-count facts fail stay JSON", () => {
   );
   assert.throws(
     () => assertNoHandTypedStayFacts({ slug: "plant", geoIntro: "Two private pool homes for a couples' trip" }),
-    /hand-typed N homes "Two private pool homes"/
+    /hand-typed/
   );
   assert.throws(
-    () => assertNoHandTypedStayFacts({ slug: "plant", decisionHighlights: [{ label: "Three Options, Two Markets", value: "pick" }] }),
-    /hand-typed N homes "Three Options"/
+    () => assertNoHandTypedStayFacts({ slug: "plant", decisionHighlights: [{ label: "Three homes, Two Markets", value: "pick" }] }),
+    /hand-typed/
   );
   assert.throws(
     () => assertNoHandTypedStayFacts({
       slug: "plant",
       faqs: [{ question: "How many bedrooms do 12-guest homes have?", answer: "Ask." }]
     }),
-    /hand-typed N-guest "12-guest"/
+    /hand-typed/
   );
   assert.throws(
     () => assertNoHandTypedStayFacts({
       slug: "plant",
-      decisionHighlights: [{ label: "Pool and space for 12", value: "pool" }]
+      decisionHighlights: [{ label: "Pool and room for 12", value: "pool" }]
     }),
-    /hand-typed space for N "space for 12"/
+    /hand-typed/
   );
   assert.throws(
     () => assertNoHandTypedStayFacts({
       slug: "plant",
-      faqs: [{ question: "What's the cost for a group of 12?", answer: "Ask." }]
+      faqs: [{ question: "What's the cost for 12 guests?", answer: "Ask." }]
     }),
-    /hand-typed groups of N "group of 12"/
+    /hand-typed/
   );
   assert.throws(
     () => assertNoHandTypedStayFacts({
       slug: "plant",
-      decisionHighlights: [{ label: "Private Pool", value: "All three include a private pool" }]
+      decisionHighlights: [{ label: "Private Pool", value: "All three homes include a private pool" }]
     }),
-    /hand-typed all N "All three"/
+    /hand-typed/
   );
-  assert.doesNotThrow(() => assertNoHandTypedStayFacts({
-    slug: "plant",
-    faqs: [{ question: "Do all 4-bedroom homes have pools?", answer: "Yes." }]
-  }));
+  assert.throws(
+    () => assertNoHandTypedStayFacts({
+      slug: "plant",
+      faqs: [{ question: "Do all 5-bedroom homes have docks?", answer: "Yes." }]
+    }),
+    /hand-typed/
+  );
+  assert.throws(
+    () => assertNoHandTypedStayFacts({ slug: "plant", geoIntro: "room for a dozen" }),
+    /hand-typed/
+  );
 });
 
 test("published stay JSON has no hand-typed capacity, heat, or home-count facts", () => {

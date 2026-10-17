@@ -1,7 +1,9 @@
+const crypto = require("crypto");
 const fs = require("fs");
 const path = require("path");
 
 const OWNER_FILE = "src/_data/sourcedClaims.json";
+const NON_CLAIM_FILE = "src/_data/nonClaimSentences.json";
 const GUEST_SOURCE = /\.(?:html|njk|json|md|txt)$/;
 const IDENTIFIABLE_EVIDENCE = /https?:\/\/\S+/i;
 const WORD_ONES = {
@@ -70,6 +72,14 @@ const PARITY = /\b(?:same|similar)\b/gi;
 const PARITY_NOUN = /\b(?:rates?|pric(?:e|es|ing)|spend|cost)\b/gi;
 const KIND_PERCENT = "percent-comparative";
 const KIND_QUALITATIVE = "qualitative-price-advantage";
+const KIND_CANDIDATE = "price-cue-candidate";
+const PRICE_TERM = /\b(?:prices?|pricing|costs?|fees?|rates?)\b/gi;
+const COMPARATIVE_CUE = /\b(?:less|more|lower|higher|cheaper|lowest|highest|better|best|worse|fewer|below|above|under|over|reduced|discount(?:s|ed)?|deeper|stronger|priciest|expensive|affordable|inexpensive|cheapest)\b/gi;
+const QUANTITY_CUE = /\b(?:fraction|half|third|quarter|double|twice|portion|share|dozen|score|zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|\d+(?:\.\d+)?)\b/gi;
+const PERCENT_CUE = /\d+(?:\s*[-–]\s*\d+)?\s*%|\bpercent\b/gi;
+const NEGATION_CUE = /\b(?:without|free|waived|included)\b|\bno(?:\s+extra)?(?:\s+(?:fees?|costs?|charges?))?\b/gi;
+const PARITY_CUE = /\b(?:same|similar|equal|matching|parity)\b/gi;
+const CUE_PATTERNS = [COMPARATIVE_CUE, QUANTITY_CUE, PERCENT_CUE, NEGATION_CUE, PARITY_CUE];
 
 const DEFAULT_ROOT = path.resolve(__dirname, "..", "..");
 
@@ -88,6 +98,89 @@ function stripMarkup(text) {
   return decodeEntities(text)
     .replace(/<[^>]+>/g, " ")
     .replace(/\s+/g, " ");
+}
+
+function normalizeSentence(text) {
+  return String(text || "").replace(/\s+/g, " ").trim().toLowerCase();
+}
+
+function sentenceHash(text) {
+  return crypto.createHash("sha256").update(normalizeSentence(text)).digest("hex");
+}
+
+function guestCopyText(text) {
+  return String(text || "")
+    .replace(/^---[\s\S]*?---/, " ")
+    .replace(/<style[\s\S]*?<\/style>/gi, " ")
+    .replace(/<script[\s\S]*?<\/script>/gi, " ")
+    .replace(/\{%[\s\S]*?%\}/g, " ")
+    .replace(/\{\{[\s\S]*?\}\}/g, " ");
+}
+
+function splitGuestSentences(text) {
+  return stripMarkup(guestCopyText(text))
+    .split(/(?<=[.!?])\s+|[.!?]+/)
+    .map((sentence) => sentence.replace(/\s+/g, " ").trim())
+    .filter((sentence) => sentence.length >= 8);
+}
+
+function collectPriceClaimCandidates(text) {
+  const hits = [];
+  const seen = new Set();
+  for (const sentence of splitGuestSentences(text)) {
+    const prices = collectMatches(sentence, PRICE_TERM);
+    if (prices.length === 0) {
+      continue;
+    }
+    const cues = CUE_PATTERNS.flatMap((pattern) => collectMatches(sentence, pattern));
+    if (cues.length === 0) {
+      continue;
+    }
+    const start = Math.min(...prices.map((token) => token.index), ...cues.map((token) => token.index));
+    const end = Math.max(...prices.map((token) => token.end), ...cues.map((token) => token.end));
+    const match = sentence.slice(start, end).replace(/\s+/g, " ").trim();
+    const key = sentenceHash(sentence);
+    if (seen.has(key) || !match) {
+      continue;
+    }
+    seen.add(key);
+    hits.push(
+      typedHit(
+        KIND_CANDIDATE,
+        "price-cue",
+        match,
+        match,
+        sentence
+      )
+    );
+  }
+  return hits;
+}
+
+function loadNonClaimAllowlist(root = DEFAULT_ROOT) {
+  const filePath = path.join(root, NON_CLAIM_FILE);
+  if (!fs.existsSync(filePath)) {
+    throw new Error(`${NON_CLAIM_FILE} is missing`);
+  }
+  const rows = JSON.parse(fs.readFileSync(filePath, "utf8"));
+  if (!Array.isArray(rows.sentences)) {
+    throw new Error(`${NON_CLAIM_FILE} is missing sentences`);
+  }
+  const hashes = new Set();
+  for (const row of rows.sentences) {
+    if (!row || row.hash !== sentenceHash(row.sentence)) {
+      throw new Error(`${NON_CLAIM_FILE} hash does not match sentence`);
+    }
+    hashes.add(row.hash);
+  }
+  return hashes;
+}
+
+let nonClaimAllowlist;
+
+function allowedNonClaimSentence(sentence, root = DEFAULT_ROOT) {
+  nonClaimAllowlist = nonClaimAllowlist || loadNonClaimAllowlist(root);
+  return nonClaimAllowlist.has(sentenceHash(sentence));
 }
 
 function dateStamp(now = new Date()) {
@@ -327,7 +420,8 @@ function isGuestSource(file, root = DEFAULT_ROOT) {
   if (!GUEST_SOURCE.test(file)) {
     return false;
   }
-  return path.relative(root, file) !== OWNER_FILE;
+  const relative = path.relative(root, file).split(path.sep).join("/");
+  return relative !== OWNER_FILE && relative !== NON_CLAIM_FILE && relative !== "src/_data/stayNumberAllowlist.json";
 }
 
 function wordNumberValue(raw) {
@@ -1009,7 +1103,12 @@ function coversSavingsHit(claim, hit, now = new Date()) {
 
 function unsourcedSavingsHits(hits, claims, now = new Date()) {
   const loaded = loadSourcedClaims(claims);
-  return hits.filter((hit) => !loaded.some((claim) => coversSavingsHit(claim, hit, now)));
+  return hits.filter((hit) => {
+    if (allowedNonClaimSentence(hit.excerpt || hit.match)) {
+      return false;
+    }
+    return !loaded.some((claim) => coversSavingsHit(claim, hit, now));
+  });
 }
 
 function assertSavingsSourced(hits, claims, now = new Date()) {
@@ -1050,7 +1149,16 @@ function coversPriceAdvantageHit(claim, slug, hit, now = new Date()) {
 function walkRecordStrings(page, visit) {
   function walk(value, key) {
     if (typeof value === "string") {
-      if (key === "slug" || key === "file" || key === "pageUrl" || key === "bookingUrl" || key === "href" || key === "image") {
+      if (
+        key === "slug" ||
+        key === "file" ||
+        key === "pageUrl" ||
+        key === "bookingUrl" ||
+        key === "href" ||
+        key === "image" ||
+        key === "relatedStaySlugs" ||
+        key === "matchingProperties"
+      ) {
         return;
       }
       visit(value);
@@ -1078,7 +1186,19 @@ function unsourcedPriceAdvantages(records, claims, now = new Date()) {
   for (const page of records) {
     const slug = page && typeof page.slug === "string" ? page.slug : "";
     walkRecordStrings(page, (text) => {
-      for (const hit of priceAdvantageHits(text)) {
+      const typed = priceAdvantageHits(text);
+      const typedMatches = typed.map((hit) => String(hit.match || "").toLowerCase()).filter(Boolean);
+      const hits = [
+        ...typed,
+        ...collectPriceClaimCandidates(text).filter((hit) => {
+          const sentence = String(hit.excerpt || "").toLowerCase();
+          return !typedMatches.some((match) => sentence.includes(match));
+        })
+      ];
+      for (const hit of hits) {
+        if (allowedNonClaimSentence(hit.excerpt || hit.match)) {
+          continue;
+        }
         if (!loaded.some((claim) => coversPriceAdvantageHit(claim, slug, hit, now))) {
           missing.push({
             slug,
@@ -1103,20 +1223,94 @@ function assertNoUnsourcedPriceAdvantages(records, claims, now = new Date()) {
   }
 }
 
+function scanStayClaimCandidates(records) {
+  const hits = [];
+  for (const page of records || []) {
+    if (!page || page.rehomeTo) {
+      continue;
+    }
+    const slug = page.slug;
+    walkRecordStrings(page, (text) => {
+      hits.push(
+        ...collectPriceClaimCandidates(text).map((hit) => ({
+          ...hit,
+          slug
+        }))
+      );
+    });
+  }
+  return hits;
+}
+
+function scanSrcClaimCandidates(root = DEFAULT_ROOT) {
+  const srcRoot = path.join(root, "src");
+  if (!fs.existsSync(srcRoot)) {
+    throw new Error(`${OWNER_FILE} is missing`);
+  }
+  const hits = [];
+  for (const file of sourceFiles(srcRoot)) {
+    if (!isGuestSource(file, root)) {
+      continue;
+    }
+    const relative = path.relative(root, file).split(path.sep).join("/");
+    if (relative === "src/_data/seoPages.json") {
+      const pages = JSON.parse(fs.readFileSync(file, "utf8")).vacationer || [];
+      hits.push(...scanStayClaimCandidates(pages));
+      continue;
+    }
+    if (relative.startsWith("src/_data/") || relative.startsWith("src/_includes/")) {
+      continue;
+    }
+    hits.push(
+      ...collectPriceClaimCandidates(fs.readFileSync(file, "utf8")).map((hit) => ({
+        ...hit,
+        file: relative
+      }))
+    );
+  }
+  return hits;
+}
+
+function unsourcedClaimCandidates(hits, claims, now = new Date()) {
+  const loaded = loadSourcedClaims(claims);
+  return hits.filter((hit) => {
+    if (allowedNonClaimSentence(hit.excerpt || hit.match)) {
+      return false;
+    }
+    return !loaded.some((claim) => coversHit(claim, hit, now));
+  });
+}
+
+function assertClaimCandidatesCovered(hits, claims, now = new Date()) {
+  const missing = unsourcedClaimCandidates(hits, claims, now);
+  if (missing.length > 0) {
+    throw new Error(
+      `${OWNER_FILE} is missing a sourced-claim row or ${NON_CLAIM_FILE} entry for ${missing[0].match} in ${missing[0].file || missing[0].slug || "unknown-scope"}`
+    );
+  }
+}
+
 module.exports = {
   OWNER_FILE,
+  NON_CLAIM_FILE,
   IDENTIFIABLE_EVIDENCE,
   KIND_PERCENT,
   KIND_QUALITATIVE,
+  KIND_CANDIDATE,
   coversHit,
   loadSourcedClaims,
   readSourcedClaims,
   parseClaimHits,
+  collectPriceClaimCandidates,
   scanSavingsHitsInText,
   scanStaySavingsHits,
   scanSrcSavingsHits,
+  scanStayClaimCandidates,
+  scanSrcClaimCandidates,
   unsourcedSavingsHits,
+  unsourcedClaimCandidates,
   assertSavingsSourced,
+  assertClaimCandidatesCovered,
   assertLiveQuotesPresent,
   priceAdvantageHits,
   unsourcedPriceAdvantages,

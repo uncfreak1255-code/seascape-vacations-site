@@ -355,6 +355,27 @@ test('unseen synonym plants fail as typed hits, not as a listed fixture', () => 
   );
 });
 
+test('never-seen price-cue phrasing fails without changing the matcher', () => {
+  const {
+    assertClaimCandidatesCovered,
+    collectPriceClaimCandidates,
+    parseClaimHits,
+    readSourcedClaims
+  } = require('./sourced-claims');
+  const phrase = ['pay a ', 'fraction of the OTA price'].join('');
+  assert.equal(parseClaimHits(phrase).length, 0, 'typed matcher stays unchanged');
+  const hits = collectPriceClaimCandidates(`Guests ${phrase}.`).map((hit) => ({
+    ...hit,
+    file: 'src/guides/hidden-plant.html'
+  }));
+  assert.equal(hits[0].kind, 'price-cue-candidate');
+  assert.match(hits[0].excerpt, /fraction of the OTA price/i);
+  assert.throws(
+    () => assertClaimCandidatesCovered(hits, readSourcedClaims()),
+    /sourcedClaims\.json is missing a sourced-claim row or .*nonClaimSentences/
+  );
+});
+
 test('Bradenton-Sarasota dining comparison uses current menus in body and FAQ schema', () => {
   const s = read('src/guides/bradenton-vs-sarasota-restaurants/index.html');
   assert.doesNotMatch(s, /\$\d|Generally yes\. Expect to spend|Average Dinner|better atmosphere, lower prices|lowest rate|No platform fees|reasonable prices|Not cheap|Cheap Eats|happy hour deals|full dinner price tag|Stay in Bradenton for the value/i);
