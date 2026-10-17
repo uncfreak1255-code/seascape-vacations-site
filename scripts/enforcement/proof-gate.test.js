@@ -77,6 +77,15 @@ function createCliRepo(t, testCommand) {
     path.join(scriptDir, "fail-closed.js"),
   );
   fs.writeFileSync(
+    path.join(scriptDir, "proof-gate.test.js"),
+    [
+      'test("loop guard: never blocks twice for the same stop", () => {});',
+      'test("clean tree is a no-op: does not spend 30s proving nothing changed", () => {});',
+      'test("empty testCommand does not silently pass as proof", () => {});',
+      ""
+    ].join("\n")
+  );
+  fs.writeFileSync(
     path.join(projectRoot, ".guardrails.json"),
     `${JSON.stringify({ testCommand })}\n`,
   );

@@ -63,8 +63,7 @@ function allowEmptyState({ owner, reason, proveRedTest, areaDir = AREA_DIR } = {
   if (!String(proveRedTest || "").trim()) {
     refuseSkip(owner, `empty-state skip "${reason}" is missing proveRedTest`);
   }
-  const testFiles = listProveRedTestFiles(areaDir);
-  if (testFiles.length > 0 && !findProveRedTest(proveRedTest, areaDir)) {
+  if (!findProveRedTest(proveRedTest, areaDir)) {
     refuseSkip(
       owner,
       `empty state "${reason}" names missing prove-red test "${proveRedTest}"`
