@@ -360,7 +360,8 @@ test('never-seen price-cue phrasing fails without changing the matcher', () => {
     assertClaimCandidatesCovered,
     collectPriceClaimCandidates,
     parseClaimHits,
-    readSourcedClaims
+    readSourcedClaims,
+    scanSrcClaimCandidates
   } = require('./sourced-claims');
   const phrase = ['pay a ', 'fraction of the OTA price'].join('');
   assert.equal(parseClaimHits(phrase).length, 0, 'typed matcher stays unchanged');
@@ -373,6 +374,32 @@ test('never-seen price-cue phrasing fails without changing the matcher', () => {
   assert.throws(
     () => assertClaimCandidatesCovered(hits, readSourcedClaims()),
     /sourcedClaims\.json is missing a sourced-claim row or .*nonClaimSentences/
+  );
+
+  const insideMacro = collectPriceClaimCandidates(
+    `{{ guideConversionKit({ copy: "Guests ${phrase}." }) }}`
+  );
+  assert.equal(insideMacro[0].kind, 'price-cue-candidate');
+  assert.match(insideMacro[0].excerpt, /fraction of the OTA price/i);
+  assert.throws(
+    () => assertClaimCandidatesCovered(
+      insideMacro.map((hit) => ({ ...hit, file: 'src/guides/hidden-plant.html' })),
+      readSourcedClaims()
+    ),
+    /sourcedClaims\.json is missing a sourced-claim row or .*nonClaimSentences/
+  );
+
+  const scanned = scanSrcClaimCandidates();
+  assert.ok(
+    scanned.some((hit) => /without platform fees leading the decision/i.test(hit.excerpt)),
+    'quoted copy inside guideConversionKit is a candidate'
+  );
+  assert.ok(
+    scanned.some((hit) =>
+      hit.file === 'src/_includes/partials/guide-conversion-kit.njk' &&
+      /no platform service fees on the final price/i.test(hit.excerpt)
+    ),
+    'guest partial defaults are candidates'
   );
 });
 
