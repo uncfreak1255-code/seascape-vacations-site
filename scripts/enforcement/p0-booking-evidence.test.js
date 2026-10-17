@@ -442,6 +442,19 @@ test('never-seen price-cue phrasing fails without changing the matcher', () => {
   );
   assert.equal(splitArgs.length, 0, 'separate quoted macro args do not form a synthetic claim');
 
+  const altPlant = collectPriceClaimCandidates(
+    `<img alt="Guests ${phrase}." src="/images/hidden-plant.jpg">`
+  );
+  assert.equal(altPlant[0].kind, 'price-cue-candidate');
+  assert.match(altPlant[0].excerpt, /fraction of the OTA price/i);
+  assert.throws(
+    () => assertClaimCandidatesCovered(
+      altPlant.map((hit) => ({ ...hit, file: 'src/guides/hidden-plant.html' })),
+      readSourcedClaims()
+    ),
+    /sourcedClaims\.json is missing a sourced-claim row or .*nonClaimSentences/
+  );
+
   const plantedArg = collectPriceClaimCandidates(
     `{{ kit({ heading: "Need more space", cta: "Guests ${phrase}." }) }}`
   );
