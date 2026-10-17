@@ -271,6 +271,24 @@ test('unseen synonym plants fail as typed hits, not as a listed fixture', () => 
   assert.equal(parseClaimHits(saveTime).length, 0);
   assert.equal(parseClaimHits(saveRoom).length, 0);
   assert.equal(parseClaimHits(saveFavorites).length, 0);
+  const saveWater = ['Save ', 'water with low-flow fixtures'].join('');
+  const saveEnergy = ['Save ', 'energy by closing the doors'].join('');
+  const saveTrip = ['Save ', 'your trip for later'].join('');
+  assert.equal(parseClaimHits(saveWater).length, 0);
+  assert.equal(parseClaimHits(saveEnergy).length, 0);
+  assert.equal(parseClaimHits(saveTrip).length, 0);
+  const lowerCost = ['low', 'er cost'].join('');
+  const lowestCost = ['low', 'est cost'].join('');
+  const flattenCost = ['flatten the per-night ', 'cost'].join('');
+  const lowerCostHits = parseClaimHits(lowerCost);
+  const lowestCostHits = parseClaimHits(lowestCost);
+  const flattenHits = parseClaimHits(flattenCost);
+  assert.equal(lowerCostHits[0].kind, 'qualitative-price-advantage');
+  assert.match(lowerCostHits[0].match, /lower cost/i);
+  assert.equal(lowestCostHits[0].kind, 'qualitative-price-advantage');
+  assert.match(lowestCostHits[0].match, /lowest cost/i);
+  assert.equal(flattenHits[0].kind, 'qualitative-price-advantage');
+  assert.match(flattenHits[0].match, /flatten the per-night cost/i);
 
   const fieldBridge = scanStaySavingsHits([{
     slug: 'hidden-bridge',
