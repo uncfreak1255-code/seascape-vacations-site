@@ -97,12 +97,12 @@ test("AMI large-group page is source-managed and truthful about near-island loca
   assert.equal(page.h1, "Large Group Vacation Rentals Near Anna Maria Island with Private Pools");
   assert.match(
     page.bluntAnswer,
-    /sleep \{sleeps:bradenton-pool-home\}-\{sleeps:the-oasis\} guests/,
-    "AMI large-group occupancy must come from catalog tokens, not a typed range"
+    /sleep \{sleeps-matching\} guests/,
+    "AMI large-group occupancy must come from the matching list, not two slugs"
   );
   assert.equal(
     applyStayFacts(structuredClone(page), fallbackCatalog).bluntAnswer,
-    "These homes are in Bradenton, not on Anna Maria Island, but they are 10-15 minutes from AMI beaches and sleep 10-16 guests."
+    "These homes are in Bradenton, not on Anna Maria Island, but they are 10-15 minutes from AMI beaches and sleep 10–16 guests."
   );
   assert.deepEqual(page.matchingProperties, [
     "the-oasis",
