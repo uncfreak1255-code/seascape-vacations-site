@@ -18,9 +18,23 @@ function refuseSkip(owner, detail) {
   throw new Error(skipMessage(owner, detail));
 }
 
-function testTitlePattern(title) {
+function sourceHasRunnableTest(source, title) {
   const escaped = String(title).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  return new RegExp(`\\btest\\(\\s*["'\`]${escaped}["'\`]`);
+  const declaration = new RegExp(`^\\s*test\\(\\s*(["'\`])${escaped}\\1`);
+  const withoutBlocks = String(source).replace(/\/\*[\s\S]*?\*\//g, "\n");
+  const lines = withoutBlocks.split("\n");
+  for (let index = 0; index < lines.length; index += 1) {
+    const line = lines[index].replace(/^\s*\/\/.*$/, "");
+    if (!declaration.test(line)) {
+      continue;
+    }
+    const window = [line, lines[index + 1] || "", lines[index + 2] || ""].join("\n");
+    if (/^\s*test\([\s\S]*?,\s*\{[\s\S]*?\bskip\s*:\s*true\b/.test(window)) {
+      continue;
+    }
+    return true;
+  }
+  return false;
 }
 
 function listProveRedTestFiles(areaDir = AREA_DIR) {
@@ -40,9 +54,8 @@ function findProveRedTest(proveRedTest, areaDir = AREA_DIR) {
     return "";
   }
 
-  const matcher = testTitlePattern(title);
   for (const filePath of listProveRedTestFiles(areaDir)) {
-    if (matcher.test(fs.readFileSync(filePath, "utf8"))) {
+    if (sourceHasRunnableTest(fs.readFileSync(filePath, "utf8"), title)) {
       return filePath;
     }
   }
