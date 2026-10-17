@@ -3,6 +3,8 @@
 const path = require("node:path");
 
 const { extractReaderCopy } = require("./extract-copy.js");
+const fallbackProperties = require("../../../src/_data/properties-fallback.json");
+const { applyStayFacts } = require("../../../src/_data/stayFacts");
 
 function collectLaneCopies(lane, relPath, raw) {
   const dataSource = findDataSource(lane, relPath);
@@ -38,10 +40,14 @@ function collectLaneCopies(lane, relPath, raw) {
       return allowedSlugs.has(entry[dataSource.labelKey]);
     })
     .map((entry) => {
-      const labelValue = entry[dataSource.labelKey] || "entry";
+      const resolved =
+        dataSource.arrayPath === "vacationer" && entry && !entry.rehomeTo
+          ? applyStayFacts(structuredClone(entry), fallbackProperties)
+          : entry;
+      const labelValue = resolved[dataSource.labelKey] || "entry";
       return {
         label: `${relPath}#${labelValue}`,
-        copy: extractReaderCopy(collectStrings(entry, ignoredKeys).join(" "), { type: "html" }),
+        copy: extractReaderCopy(collectStrings(resolved, ignoredKeys).join(" "), { type: "html" }),
       };
     });
 }
