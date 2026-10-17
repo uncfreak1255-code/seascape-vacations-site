@@ -157,12 +157,24 @@ test('unseen synonym plants fail as typed hits, not as a listed fixture', () => 
 
   const ratesAreLower = ['Rates are low', 'er than Airbnb'].join('');
   const priceIsHigher = ['The price is high', 'er'].join('');
+  const deepestDiscounts = ['deep', 'est discounts'].join('');
+  const higherDiscounts = ['high', 'er discounts'].join('');
   const copulaHits = parseClaimHits(ratesAreLower);
   const priceHits = parseClaimHits(priceIsHigher);
+  const deepestHits = parseClaimHits(`Guests see the ${deepestDiscounts} on the same dates.`);
+  const higherDiscountHits = parseClaimHits(`Direct stays post ${higherDiscounts}.`);
   assert.equal(copulaHits[0].kind, 'qualitative-price-advantage');
   assert.match(copulaHits[0].match, /rates are lower/i);
   assert.equal(priceHits[0].kind, 'qualitative-price-advantage');
   assert.match(priceHits[0].match, /price is higher/i);
+  assert.equal(deepestHits[0].kind, 'qualitative-price-advantage');
+  assert.match(deepestHits[0].match, /deepest discounts/i);
+  assert.equal(higherDiscountHits[0].kind, 'qualitative-price-advantage');
+  assert.match(higherDiscountHits[0].match, /higher discounts/i);
+
+  const started = Date.now();
+  scanSavingsHitsInText(read('src/_data/seoPages.json'), 'src/_data/seoPages.json');
+  assert.ok(Date.now() - started < 2000, 'qualitative scan must stay near-linear on stay JSON');
 
   const splitHeading = ['Plan low', 'er'].join('');
   const splitSubheading = ['Rate', ' options'].join('');

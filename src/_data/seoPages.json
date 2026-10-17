@@ -26,7 +26,7 @@
         },
         {
           "question": "What size groups can your AMI pool homes accommodate?",
-          "answer": "These near-AMI homes are 4\u20135 bedrooms sleeping {sleeps:dockside-dreams}\u2013{sleeps:the-oasis} \u2014 The Oasis for up to {sleeps:the-oasis}, Dockside Dreams and River House for {sleeps:river-house}. Good for big families and groups."
+          "answer": "These near-AMI homes are 4\u20135 bedrooms sleeping {sleeps-matching} \u2014 The Oasis for up to {sleeps:the-oasis}, Dockside Dreams for {sleeps:dockside-dreams}, and River House for {sleeps:river-house}. Good for big families and groups."
         },
         {
           "question": "Can I host a pool party or event at my rental?",
@@ -45,7 +45,7 @@
         },
         {
           "label": "Room for 12\u201316",
-          "value": "The Oasis {sleeps-phrase:the-oasis} with two hot tubs and a putting green; Dockside and River House sleep {sleeps:river-house}."
+          "value": "The Oasis {sleeps-phrase:the-oasis} with two hot tubs and a putting green; Dockside Dreams {sleeps-phrase:dockside-dreams}; River House {sleeps-phrase:river-house}."
         },
         {
           "label": "Compare checkout totals",
@@ -252,7 +252,7 @@
       "h1": "Large Group Vacation Rentals Near Anna Maria Island with Private Pools",
       "description": "Bradenton vacation rentals near Anna Maria Island for groups of {sleeps-matching}. Private pools, hot tubs, beach-distance facts, and direct booking links.",
       "intro": "If your group needs a mainland private-pool home near AMI beach days, these Bradenton listings are about 10-15 minutes from the water. Confirm capacity and location on each property page.",
-      "bluntAnswer": "These homes are in Bradenton, not on Anna Maria Island, but they are 10-15 minutes from AMI beaches and sleep {sleeps:bradenton-pool-home}-{sleeps:the-oasis} guests.",
+      "bluntAnswer": "These homes are in Bradenton, not on Anna Maria Island, but they are 10-15 minutes from AMI beaches and sleep {sleeps-matching} guests.",
       "faqs": [
         {
           "question": "Are these homes on Anna Maria Island?",
@@ -263,7 +263,7 @@
           "answer": "Dockside Dreams is 2.9 miles from Bradenton Beach - about 10 minutes. The Oasis is 5.4 miles from Holmes Beach and 5.7 miles from Bradenton Beach - roughly 12-15 minutes. River House is about 15 minutes to Anna Maria Island beaches. Bradenton Pool Home is 6.9 miles from Bradenton Beach."
         },
         {
-          "question": "Which Seascape home is best for a {sleeps:dockside-dreams}–{sleeps:the-oasis} person group?",
+          "question": "Which Seascape home is best for a {sleeps-matching} person group?",
           "answer": "The Oasis for {sleeps:the-oasis} guests, or when the group wants the biggest layout, the game room, and two hot tubs. Dockside Dreams for {sleeps:dockside-dreams} guests who want water access at the house and the fastest run to Bradenton Beach. River House for {sleeps:river-house} guests who want a pool, game room, and a boat ramp one minute away. Bradenton Pool Home for groups of {sleeps:bradenton-pool-home} where IMG proximity matters most."
         },
         {
@@ -280,7 +280,7 @@
       "decisionHighlights": [
         {
           "label": "{matching} homes, {sleeps-matching} guests",
-          "value": "3-5 bedrooms sleeping {sleeps:bradenton-pool-home}-{sleeps:the-oasis}, all with private pools and hot tubs or spas"
+          "value": "3-5 bedrooms sleeping {sleeps-matching}, all with private pools and hot tubs or spas"
         },
         {
           "label": "AMI beaches: 10-15 min",
@@ -1136,7 +1136,7 @@
         },
         {
           "question": "Are the homes good for large groups and families?",
-          "answer": "Yes. They sleep {sleeps:bradenton-pool-home}-{sleeps:the-oasis}, with Dockside Dreams for dock time and The Oasis for the largest groups."
+          "answer": "Yes. They sleep {sleeps-matching}, with Dockside Dreams for dock time and The Oasis for the largest groups."
         }
       ],
       "matchingProperties": [
@@ -1159,7 +1159,7 @@
         },
         {
           "label": "Space",
-          "us": "3-5 BR, sleeps {sleeps:bradenton-pool-home}-{sleeps:the-oasis}",
+          "us": "3-5 BR, sleeps {sleeps-matching}",
           "them": "Smaller cottages and condos"
         },
         {
@@ -1340,7 +1340,7 @@
       "faqs": [
         {
           "question": "Which properties have both pool and hot tub?",
-          "answer": "{tub-homes} Seascape homes have both a private pool and a hot tub or spa. Dockside Dreams and The Oasis are the Bradenton options for groups of {sleeps:dockside-dreams}+; River House, Bradenton Pool Home and The Coastal are also in Bradenton. Sarasota Luxe is the Sarasota option. Pickleball Pool Home Retreat {sleeps-phrase:blue-house} and has a private pool, but no verified hot tub or spa."
+          "answer": "{tub-homes} Seascape homes have both a private pool and a hot tub or spa. Dockside Dreams is the Bradenton option for groups of {sleeps:dockside-dreams}; The Oasis is the Bradenton option for groups of {sleeps:the-oasis}. River House, Bradenton Pool Home and The Coastal are also in Bradenton. Sarasota Luxe is the Sarasota option. Pickleball Pool Home Retreat {sleeps-phrase:blue-house} and has a private pool, but no verified hot tub or spa."
         },
         {
           "question": "Are both the pool and hot tub heated?",
@@ -1573,7 +1573,7 @@
       "faqs": [
         {
           "question": "Which homes sleep {sleeps:dockside-dreams} guests?",
-          "answer": "Dockside Dreams, River House, and Sarasota Luxe each sleep {sleeps:river-house} across 4 bedrooms. Dockside is waterfront in Bradenton; River House is near the Manatee River in Bradenton; Sarasota Luxe is near downtown Sarasota; downtown destinations require driving."
+          "answer": "Dockside Dreams, River House, and Sarasota Luxe each sleep {sleeps-matching} across 4 bedrooms. Dockside is waterfront in Bradenton; River House is near the Manatee River in Bradenton; Sarasota Luxe is near downtown Sarasota; downtown destinations require driving."
         },
         {
           "question": "How many bedrooms do 12-guest homes have?",
@@ -1809,7 +1809,7 @@
         },
         {
           "label": "Room for the family",
-          "value": "Dockside and River House sleep {sleeps:river-house}, The Oasis up to {sleeps:the-oasis} \u2014 all with a private pool."
+          "value": "Dockside Dreams {sleeps-phrase:dockside-dreams}, River House {sleeps-phrase:river-house}, The Oasis up to {sleeps:the-oasis} \u2014 all with a private pool."
         }
       ],
       "geoIntro": "<p>Summer on the Gulf Coast offers long beach mornings and pool time, with heat and afternoon thunderstorms to plan around. Keep indoor activities available and follow current weather and beach warnings.</p><p>Compare the listed homes\u2019 sleeping arrangements, pools and beach routes. Include any optional extras in the complete checkout total for the dates you want.</p>"
@@ -1964,7 +1964,7 @@
         },
         {
           "question": "Are your homes suitable for a golf group trip?",
-          "answer": "Our homes are perfect for golf groups. Properties sleeping {sleeps:bradenton-pool-home}\u2013{sleeps:the-oasis} guests mean your foursome (or multiple foursomes) can stay together under one roof. Private pools provide great post-round relaxation, and full kitchens make group dinners easy. The Oasis and Dockside Dreams are favorites for golf groups."
+          "answer": "Our homes are perfect for golf groups. Properties sleeping {sleeps-matching} guests mean your foursome (or multiple foursomes) can stay together under one roof. Private pools provide great post-round relaxation, and full kitchens make group dinners easy. The Oasis and Dockside Dreams are favorites for golf groups."
         },
         {
           "question": "What other activities can non-golfers enjoy while the group plays?",
@@ -2066,7 +2066,7 @@
       "destination": null,
       "title": "Family Reunion Vacation Rentals Florida",
       "h1": "Florida Family Reunion Vacation Homes",
-      "description": "Host your family reunion on Florida's Gulf Coast. Large homes sleeping {sleeps:dockside-dreams}-{sleeps:the-oasis} guests.",
+      "description": "Host your family reunion on Florida's Gulf Coast. Large homes sleeping {sleeps-matching} guests.",
       "intro": "Bring the whole family together in a spacious vacation home with room for everyone.",
       "faqs": [
         {
@@ -2347,7 +2347,7 @@
         },
         {
           "question": "How many wedding guests can you accommodate overnight?",
-          "answer": "The homes sleep {sleeps:dockside-dreams}\u2013{sleeps:the-oasis}. For a larger party, we can line up a second home nearby so guests stay close with their own space."
+          "answer": "The homes sleep {sleeps-matching}. For a larger party, we can line up a second home nearby so guests stay close with their own space."
         },
         {
           "question": "What wedding vendors do you recommend?",
@@ -2367,7 +2367,7 @@
       "decisionHighlights": [
         {
           "label": "Room for the party",
-          "value": "Homes sleeping {sleeps:dockside-dreams}\u2013{sleeps:the-oasis} \u2014 get ready, gather by the pool, and host the after-party in one private place."
+          "value": "Homes sleeping {sleeps-matching} \u2014 get ready, gather by the pool, and host the after-party in one private place."
         },
         {
           "label": "Near the ceremony",
@@ -2375,7 +2375,7 @@
         },
         {
           "label": "Group-sized options",
-          "value": "The Oasis for {sleeps:the-oasis}, Dockside and River House for {sleeps:dockside-dreams}, or a second home held nearby for a bigger list."
+          "value": "The Oasis for {sleeps:the-oasis}, Dockside Dreams for {sleeps:dockside-dreams}, River House for {sleeps:river-house}, or a second home held nearby for a bigger list."
         }
       ],
       "geoIntro": "<p>A Gulf Coast beach wedding needs a home base more than a hotel block: somewhere the party can get ready, the pool's open all afternoon, and the celebration keeps going after the ceremony. These Seascape homes sit 10\u201330 minutes from the Anna Maria and Sarasota beaches where couples marry, with space for the wedding party to stay together.</p><p>Pick by group size: <strong>The Oasis</strong> {sleeps-phrase:the-oasis} with two hot tubs and a putting green; <strong>Dockside Dreams</strong> {sleeps-phrase:dockside-dreams} with a dock; River House {sleeps-phrase:river-house} and Sarasota Luxe {sleeps-phrase:sarasota-luxe}. For a bigger guest list, we can hold a second home nearby so everyone stays close.</p><p>The ceremony's on the sand \u2014 Bean Point, Coquina, or Lido \u2014 and local planners handle permits and vendors. The house handles everything else: prep, photos, and the after-party. Compare the same dates and complete checkout total across channels.</p>"

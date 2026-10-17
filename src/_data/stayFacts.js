@@ -197,6 +197,93 @@ function assertNoHandTypedStayFacts(page) {
   }
 }
 
+function catalogHomeNames(catalog) {
+  const homes = (catalog || [])
+    .filter((property) => property && property.slug && property.name)
+    .map((property) => ({
+      slug: property.slug,
+      names: [property.name, String(property.name).replace(/^The\s+/i, "")].filter(
+        (name, index, all) => name && all.indexOf(name) === index
+      )
+    }));
+  const firstWordOwners = new Map();
+  for (const home of homes) {
+    const first = String(home.names[0] || "").split(/\s+/)[0];
+    if (!first || first.length < 5 || /^(?:River|Beach|Pool|House|Bradenton|Sarasota|Anna|Florida|Gulf|Island|Coastal)$/i.test(first)) {
+      continue;
+    }
+    const key = first.toLowerCase();
+    if (!firstWordOwners.has(key)) {
+      firstWordOwners.set(key, []);
+    }
+    firstWordOwners.get(key).push({ home, first });
+  }
+  for (const owners of firstWordOwners.values()) {
+    if (owners.length === 1) {
+      owners[0].home.names.push(owners[0].first);
+    }
+  }
+  return homes.sort(
+    (left, right) => Math.max(...right.names.map((name) => name.length)) - Math.max(...left.names.map((name) => name.length))
+  );
+}
+
+function assertStayCapacityBindings(page, catalog) {
+  const slug = page && page.slug || "unknown-slug";
+  visitStrings(page, (text) => {
+    if (/\{sleeps:[a-z0-9-]+\}[-–]\{sleeps:[a-z0-9-]+\}/.test(text)) {
+      throw new Error(`stayFacts: occupancy range must use {sleeps-matching} on ${slug}`);
+    }
+  });
+  if (!catalog) {
+    return;
+  }
+  const homes = catalogHomeNames(catalog);
+  visitStrings(page, (text) => {
+    for (const clause of String(text).split(/[.;—]/)) {
+      const tokens = [...clause.matchAll(/\{sleeps(?:-phrase)?:([a-z0-9-]+)\}/g)].map((match) => match[1]);
+      const uniqueTokens = [...new Set(tokens)];
+      if (uniqueTokens.length !== 1 || /\{sleeps-matching\}/.test(clause)) {
+        continue;
+      }
+      const masked = clause.replace(/\{[^}]+\}/g, " ");
+      const hits = [];
+      for (const home of homes) {
+        for (const name of [...home.names].sort((left, right) => right.length - left.length)) {
+          const pattern = new RegExp(`\\b${name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`, "ig");
+          let match = pattern.exec(masked);
+          while (match) {
+            hits.push({ slug: home.slug, index: match.index, end: match.index + match[0].length });
+            match = pattern.exec(masked);
+          }
+        }
+      }
+      hits.sort((left, right) => left.index - right.index);
+      const listed = [];
+      const seen = new Set();
+      for (const hit of hits) {
+        if (seen.has(hit.slug)) {
+          continue;
+        }
+        seen.add(hit.slug);
+        listed.push(hit);
+      }
+      if (listed.length < 2) {
+        continue;
+      }
+      const listedTogether = listed.slice(1).every((hit, index) => {
+        const gap = masked.slice(listed[index].end, hit.index).replace(/\s+/g, " ").trim();
+        return /^(?:,|, and|and)$/i.test(gap);
+      });
+      if (listedTogether) {
+        throw new Error(
+          `stayFacts: named homes ${listed.map((hit) => hit.slug).join(" and ")} share {sleeps:${uniqueTokens[0]}} on ${slug}`
+        );
+      }
+    }
+  });
+}
+
 function stayOccupancy(catalog, slug) {
   const property = propertyBySlug(catalog, slug);
   if (!property) {
@@ -219,6 +306,7 @@ module.exports = {
   SLEEPS_FACT,
   applyStayFacts,
   assertNoHandTypedStayFacts,
+  assertStayCapacityBindings,
   collectHandTypedStayFacts,
   hasTub,
   heatClause,
