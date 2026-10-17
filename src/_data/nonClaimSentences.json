@@ -1,6 +1,6 @@
 {
   "generatedAt": "2026-10-17",
-  "reason": "Reviewed snapshot of current guest-copy sentences that pair a price, cost, fee, or rate term with a comparative, quantity, percent, negation-of-cost, or parity cue. Includes quoted literals, guest partials, JSON-LD strings, and public property-data fields. These exact sentences are frozen as current copy. Unknown phrasing near those terms fails unless sourcedClaims.json covers it.",
+  "reason": "Reviewed snapshot of current guest-copy sentences that pair a price, cost, fee, or rate term with a comparative, quantity, percent, negation-of-cost, or parity cue. Includes YAML/HTML title and description metadata, quoted macro arguments as separate sentences, JSON-LD strings, guest partials, public site.json fields, and public property-data fields. Exact sentences are frozen as current copy. Unknown phrasing near those terms fails unless sourcedClaims.json covers it.",
   "sentences": [
     {
       "hash": "dae9ea120641c335ddc588fa4eb1dd5e0dc80c229b5e93a31606b706d3fbb1a0",
@@ -178,69 +178,6 @@
       "note": "reviewed current guest copy; not a new claim phrasing"
     },
     {
-      "hash": "dcf5a59363122c6f02b62f6d00152d190d81be3b40958e4470b8630437a6d93c",
-      "sentence": "Are summer rates lower than winter",
-      "file": "",
-      "slug": "summer-vacation-rentals-florida-gulf-coast",
-      "note": "reviewed current guest copy; not a new claim phrasing"
-    },
-    {
-      "hash": "283c0198b33219ac8ec2bd9690870f6805cfff65d6711afdc20cac97e66d0041",
-      "sentence": "Coquina and Manatee Public Beach have free or low-cost public lots",
-      "file": "",
-      "slug": "vacation-rentals-near-anna-maria-island",
-      "note": "reviewed current guest copy; not a new claim phrasing"
-    },
-    {
-      "hash": "51a1686247d9fad383f6086c04f352e8976054bcb625b488fcc462710dadd415",
-      "sentence": "You trade a walk-out island address for more space, a private heated pool, easier parking, and listing-specific pricing",
-      "file": "",
-      "slug": "vacation-rentals-near-anna-maria-island",
-      "note": "reviewed current guest copy; not a new claim phrasing"
-    },
-    {
-      "hash": "5687d025ffbb101525d42f85c3502e0bb8cbd695840eb26ac4b33faedaa6170f",
-      "sentence": "All {matching} include a private pool and hot tub - no shared amenities, no lobby, no resort fees",
-      "file": "",
-      "slug": "vacation-rentals-sleeps-12-florida",
-      "note": "reviewed current guest copy; not a new claim phrasing"
-    },
-    {
-      "hash": "9fe1ca1aaee2eb735be0842407013fa06395364b917a0ae1e1052d86e7060388",
-      "sentence": "What's the cost per person for a group of {sleeps-matching}",
-      "file": "",
-      "slug": "vacation-rentals-sleeps-12-florida",
-      "note": "reviewed current guest copy; not a new claim phrasing"
-    },
-    {
-      "hash": "21e2f4cc1d5df5d388e12dee4aa43a00432ce314d4fc91f70d8c494d92d437ea",
-      "sentence": "Pool heat is $40/day at homes that list a pool-heat fee - worth it November through March, rarely needed in summer; confirm the fee when booking, including the newest Bradenton home",
-      "file": "",
-      "slug": "vacation-rentals-with-pool-and-hot-tub",
-      "note": "reviewed current guest copy; not a new claim phrasing"
-    },
-    {
-      "hash": "b696004ae03ee9940c239612e0c08a90df675bbc35f804539b79d67d1cda670f",
-      "sentence": "Pool heat is an optional add-on ($40/day at homes that list a pool-heat fee) that most guests request November through March - the Gulf runs warm enough the rest of the year that an unheated pool is comfortable",
-      "file": "",
-      "slug": "vacation-rentals-with-pool-and-hot-tub",
-      "note": "reviewed current guest copy; not a new claim phrasing"
-    },
-    {
-      "hash": "80303e3ad5226ed04d70c101919aa5d0dc5582d6e4fdfc29f3ecd4b92bea0c35",
-      "sentence": "Pool heat is an optional add-on at $40 per day at homes that list a pool-heat fee - most useful November through March",
-      "file": "",
-      "slug": "vacation-rentals-with-pool-and-hot-tub",
-      "note": "reviewed current guest copy; not a new claim phrasing"
-    },
-    {
-      "hash": "e9702cce3be2dcd65b4ddf69571d7c925d929a2d16989822b22d71150eee85bf",
-      "sentence": "Are weekly rates cheaper than nightly",
-      "file": "",
-      "slug": "week-long-vacation-rentals-florida",
-      "note": "reviewed current guest copy; not a new claim phrasing"
-    },
-    {
       "hash": "98e384eee9d727c17f58b95d5933c3197d307895e0613055505b5ce3352be7cb",
       "sentence": "One dog under 30 lb may stay with host approval and an additional pet fee",
       "file": "src/_data/properties-fallback.json",
@@ -304,6 +241,13 @@
       "note": "reviewed current guest copy; not a new claim phrasing"
     },
     {
+      "hash": "e324e349a5d02ac4a7149a8c742021f74b385273b457bc1a737c5bc007f3c38b",
+      "sentence": "Book Direct & Compare Totals Browse Our Homes → Book Direct & Save No platform fees Book Now",
+      "file": "src/guides/anna-maria-island-area-guide/index.html",
+      "slug": "",
+      "note": "reviewed current guest copy after fail-closed sentence boundaries; not a new claim phrasing"
+    },
+    {
       "hash": "698201dbd89babb462438e7a9292e73be60e14a81e7d62baafa04ee105cd3ad7",
       "sentence": "Browse Anna Maria Rentals → Anna Maria Island at a Glance Detail Info Length 7 miles, 3 cities Best Beaches Bean Point, Coquina Beach, Manatee Public Beach Getting Around Free trolley, golf carts, bikes Vacation Rental Pricing Compare current quotes Peak Season January-April Vibe Old Florida — no high-rises, no chain hotels Worth checking out: the AMI noise ordinance guide so you know what to expect",
       "file": "src/guides/anna-maria-island-area-guide/index.html",
@@ -313,13 +257,6 @@
     {
       "hash": "474583b2041f8cc3d03a21f44d31d958da88ca0c578fbb4b0aaad4179754433b",
       "sentence": "Check our month-by-month guide to the best time to visit Anna Maria Island for weather, pricing, and crowd data",
-      "file": "src/guides/anna-maria-island-area-guide/index.html",
-      "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
-    },
-    {
-      "hash": "12b4a9ae3940a19ea0c0a0e3986d107006e8ae58c2b2fe1a5192077a8dfaffb5",
-      "sentence": "njk Book Direct & Save No platform fees Book Now partials/guest-footer",
       "file": "src/guides/anna-maria-island-area-guide/index.html",
       "slug": "",
       "note": "reviewed current guest copy; not a new claim phrasing"
@@ -367,46 +304,46 @@
       "note": "reviewed current guest copy; not a new claim phrasing"
     },
     {
-      "hash": "621c71bd1b121114d5fc51f2fa0588cca67f5fc9751019921c8058fb455421c9",
-      "sentence": "Answer A week-long Anna Maria Island vacation for a family of four typically costs $3,500–$7,500 total in 2026",
+      "hash": "6de07bb076f7329d338984bf1635c15a59954ac8a74cd651129442312f62b4a4",
+      "sentence": "AMI Vacation Cost Guide 2026 | Real Pricing & Tips",
       "file": "src/guides/anna-maria-island-vacation-cost-guide-2026/index.html",
       "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
+      "note": "reviewed current guest copy after fail-closed sentence boundaries; not a new claim phrasing"
     },
     {
-      "hash": "e11eb9abb2370dd435f0142d6c37103a7c0bc3bd66061dc68f57db22937a906d",
-      "sentence": "Answer In 2026, Anna Maria Island vacation rental rates range from $175/night for a basic 1-bedroom cottage to $650+/night for a large waterfront home with a pool and dock",
+      "hash": "3af355d9aaa1b42f5d7e1836ce6a98dca2971941e95c974b26ffa9aae754cfde",
+      "sentence": "Anna Maria Island Vacation Cost Guide 2026",
       "file": "src/guides/anna-maria-island-vacation-cost-guide-2026/index.html",
       "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
+      "note": "reviewed current guest copy after fail-closed sentence boundaries; not a new claim phrasing"
     },
     {
-      "hash": "c4a980ff27a8ac1827a9dc28335426dc7da59c5f901549851ee3187787b5d5c3",
-      "sentence": "Answer September and October are the most affordable months, with rental rates lower than peak season (February–April)",
+      "hash": "30c554a4d650ae785c02a240fc32154d0b0e2eec740dcb1c795dc5964063c081",
+      "sentence": "Anna Maria Island Vacation Cost Guide 2026: Real Pricing & Budget Tips",
       "file": "src/guides/anna-maria-island-vacation-cost-guide-2026/index.html",
       "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
+      "note": "reviewed current guest copy after fail-closed sentence boundaries; not a new claim phrasing"
     },
     {
-      "hash": "7f1b8d383dd50154622efc4ecd7928f58edc6886c4a5b723986415d262cfb7fe",
-      "sentence": "com/guides/ ListItem Anna Maria Island Vacation Cost Guide 2026 https://seascape-vacations",
+      "hash": "3f9f2078fb5097b95e0a7c2618246647aa796ed00d16adb857d5abfd643a9c0a",
+      "sentence": "Budget Planning Anna Maria Island Vacation Cost Guide 2026 Updated March 2026 · Real pricing from local property managers · 8 min read The Quick Numbers A week on Anna Maria Island runs $3,500–$7,500 for a family of four in 2026",
       "file": "src/guides/anna-maria-island-vacation-cost-guide-2026/index.html",
       "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
+      "note": "reviewed current guest copy after fail-closed sentence boundaries; not a new claim phrasing"
     },
     {
-      "hash": "cc7b3dec3c955b160773a565e22e72f7079aed702e61aab9343d10d4471f5656",
-      "sentence": "com/guides/anna-maria-island-vacation-cost-guide-2026/ https://schema",
+      "hash": "8702efdc0370fccdcc04c066d490eeaa516372dc06226ce96225b1213601edc5",
+      "sentence": "com · Contact Us Book Direct & Compare Totals Browse Our Homes → Book Direct & Save No platform fees Book Now",
       "file": "src/guides/anna-maria-island-vacation-cost-guide-2026/index.html",
       "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
+      "note": "reviewed current guest copy after fail-closed sentence boundaries; not a new claim phrasing"
     },
     {
-      "hash": "5d367e66bec94a1db3d7b44f94a33380a39b224cda544e467824616367d1d5d6",
-      "sentence": "com/guides/anna-maria-island-vacation-cost-guide-2026/ https://seascape-vacations",
+      "hash": "1e350f7baef492c691ae9b1bb35e421028db3494511f43656f7dc364ef193c9a",
+      "sentence": "Complete breakdown of Anna Maria Island vacation costs for 2026 including rental pricing, dining, activities, and money-saving strategies",
       "file": "src/guides/anna-maria-island-vacation-cost-guide-2026/index.html",
       "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
+      "note": "reviewed current guest copy after fail-closed sentence boundaries; not a new claim phrasing"
     },
     {
       "hash": "af9686ddc681f9a7666e7a59c0d936551cd5646c647ce80c013d94c82e31d637",
@@ -430,6 +367,20 @@
       "note": "reviewed current guest copy; not a new claim phrasing"
     },
     {
+      "hash": "7173f4cc382a506c7e753ef16b0db4e68aab33819597353a419d49cb7963064a",
+      "sentence": "How much does a week on Anna Maria Island cost in 2026",
+      "file": "src/guides/anna-maria-island-vacation-cost-guide-2026/index.html",
+      "slug": "",
+      "note": "reviewed current guest copy after fail-closed sentence boundaries; not a new claim phrasing"
+    },
+    {
+      "hash": "a2f024b80690f9a9aba7805641e1f19a0e8890c6bf09e037779ca5fbd9fa3e5a",
+      "sentence": "In 2026, Anna Maria Island vacation rental rates range from $175/night for a basic 1-bedroom cottage to $650+/night for a large waterfront home with a pool and dock",
+      "file": "src/guides/anna-maria-island-vacation-cost-guide-2026/index.html",
+      "slug": "",
+      "note": "reviewed current guest copy after fail-closed sentence boundaries; not a new claim phrasing"
+    },
+    {
       "hash": "4dcc631abe596d77275fe803c6c7af4d2b92d67b45fdaf5c4c1ac83e994c3d4c",
       "sentence": "Nightly Rate (3BR) Crowd Level Peak Season Feb – Apr $375–$500/night High — book 3–6 months ahead Summer Jun – Aug $300–$425/night Moderate — families with kids Shoulder (Best Value) May, Sep – Oct $225–$325/night Low — best availability Holiday Weeks Christmas, Spring Break $450–$650/night Very High — book 6+ months out Off-Peak Nov – Jan (non-holiday) $200–$300/night Low — snowbirds + locals Here's a tip most cost guides won't tell you: May is the secret sweet spot",
       "file": "src/guides/anna-maria-island-vacation-cost-guide-2026/index.html",
@@ -437,36 +388,8 @@
       "note": "reviewed current guest copy; not a new claim phrasing"
     },
     {
-      "hash": "33ca9560688a07f070fd6788af4146d017eabdecf7b6d5d4102dea79c7de08a9",
-      "sentence": "njk --- permalink: false eleventyExcludeFromCollections: true --- AMI Vacation Cost Guide 2026 | Real Pricing & Tips ← Back to Seascape Seascape Vacations Home › Guides › AMI Vacation Cost Guide dollar Budget Planning Anna Maria Island Vacation Cost Guide 2026 Updated March 2026 · Real pricing from local property managers · 8 min read The Quick Numbers A week on Anna Maria Island runs $3,500–$7,500 for a family of four in 2026",
-      "file": "src/guides/anna-maria-island-vacation-cost-guide-2026/index.html",
-      "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
-    },
-    {
-      "hash": "04d8918b0a0c3a73811c55ff77544882f0b1a7a3fd5e2b016b1c9e106aee1876",
-      "sentence": "njk Book Direct & Save No platform fees Book Now https://schema",
-      "file": "src/guides/anna-maria-island-vacation-cost-guide-2026/index.html",
-      "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
-    },
-    {
       "hash": "8d47905b039815add5efbb22c8aae2b43fb9a15ed259a048d1d82803015d9bc2",
       "sentence": "No service fee Cleaning fee: $150 (actual cost) Total direct: $2,600 Savings from skipping the service fee That's one nice dinner out for the whole family — or two kayak tours — just from booking differently",
-      "file": "src/guides/anna-maria-island-vacation-cost-guide-2026/index.html",
-      "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
-    },
-    {
-      "hash": "cc07ad3b77693e62af29f7b29a7fd05f063a0e0af56cff1c26840f90b4224677",
-      "sentence": "org Article Anna Maria Island Vacation Cost Guide 2026: Real Pricing & Budget Tips Complete breakdown of Anna Maria Island vacation costs for 2026 including rental pricing, dining, activities, and money-saving strategies",
-      "file": "src/guides/anna-maria-island-vacation-cost-guide-2026/index.html",
-      "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
-    },
-    {
-      "hash": "91d1f2acba956bf2e97beed705ef1217c794241f79aa8bf9bbbd122370a63be9",
-      "sentence": "org FAQPage Question How much does a week on Anna Maria Island cost in 2026",
       "file": "src/guides/anna-maria-island-vacation-cost-guide-2026/index.html",
       "slug": "",
       "note": "reviewed current guest copy; not a new claim phrasing"
@@ -505,6 +428,13 @@
       "file": "src/guides/anna-maria-island-vacation-cost-guide-2026/index.html",
       "slug": "",
       "note": "reviewed current guest copy; not a new claim phrasing"
+    },
+    {
+      "hash": "c43ea81c79ca7d1ceb1e082038d586887fe7a7ee232de24b30b89209f8bfd3fc",
+      "sentence": "September and October are the most affordable months, with rental rates lower than peak season (February–April)",
+      "file": "src/guides/anna-maria-island-vacation-cost-guide-2026/index.html",
+      "slug": "",
+      "note": "reviewed current guest copy after fail-closed sentence boundaries; not a new claim phrasing"
     },
     {
       "hash": "e2bca2dfbe42840771098f0f4a72a16299114411638659c5f8df64b172e74479",
@@ -570,6 +500,13 @@
       "note": "reviewed current guest copy; not a new claim phrasing"
     },
     {
+      "hash": "5b95b5471b004ee68278d83c39e0c669fa1e187703c4ab78b420e0ece3ec26e2",
+      "sentence": "Local comparison of Anna Maria Island and Clearwater Beach — beaches, crowds, rental costs, dining, and which is better for your Gulf Coast trip",
+      "file": "src/guides/anna-maria-island-vs-clearwater-beach.html",
+      "slug": "",
+      "note": "reviewed current guest copy after fail-closed sentence boundaries; not a new claim phrasing"
+    },
+    {
       "hash": "6aa922de33e7b8bd374989c18b2bd74ef3535ee888bc44c0b5a29c70e35eeb37",
       "sentence": "Side-by-Side: How the Numbers Stack Up Category Anna Maria Island Clearwater Beach Beach Width Wide, varies by beach Very wide, 1,100+ feet Sand Type Fine white quartz Fine white quartz Peak Crowd Level Moderate Very High High-Rises None (banned by law) Many — resort towers line the beach Hotel Pricing Compare current quotes Compare current quotes Vacation Rental Value Excellent (pools, docks, space) Mostly condos, less space Dining Scene Casual, local, waterfront Diverse, chains + local Nightlife Quiet by 10pm Active beachfront bars Family Rating &#9733;&#9733;&#9733;&#9733;&#9733; &#9733;&#9733;&#9733;&#9733;&#9733; Couples Rating &#9733;&#9733;&#9733;&#9733;&#9733; &#9733;&#9733;&#9733;&#9733; Groups/Nightlife &#9733;&#9733; &#9733;&#9733;&#9733;&#9733;&#9733; Drive from Tampa Airport 60–75 min 25–35 min Drive from Sarasota Airport 30–40 min 80–90 min The Beach Experience (Same Sand, Totally Different Energy) Anna Maria Island feels like",
       "file": "src/guides/anna-maria-island-vs-clearwater-beach.html",
@@ -591,15 +528,15 @@
       "note": "reviewed current guest copy; not a new claim phrasing"
     },
     {
-      "hash": "1c2ca0233faf3ecd41f80d51428ef069310d813cb3be6210fc57f072534b3c50",
-      "sentence": "AMI often wins when you want the island-first trip; Siesta often prices higher near the famous sand and village access",
+      "hash": "3c12cadf7a80c2aaca5bcb8d960de7c9c8f30c763a72927488dbf3bb86f89bac",
+      "sentence": "A similar home can look close in nightly rate, then separate by hundreds once Airbnb or Vrbo adds service fees",
       "file": "src/guides/anna-maria-island-vs-siesta-key.html",
       "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
+      "note": "reviewed current guest copy after fail-closed sentence boundaries; not a new claim phrasing"
     },
     {
-      "hash": "36522be9428b55360a985bca89a8d0b9e1cb28205f3a0cc61106f7fd97e67d99",
-      "sentence": "Compare final checkout totals A similar home can look close in nightly rate, then separate by hundreds once Airbnb or Vrbo adds service fees",
+      "hash": "1c2ca0233faf3ecd41f80d51428ef069310d813cb3be6210fc57f072534b3c50",
+      "sentence": "AMI often wins when you want the island-first trip; Siesta often prices higher near the famous sand and village access",
       "file": "src/guides/anna-maria-island-vs-siesta-key.html",
       "slug": "",
       "note": "reviewed current guest copy; not a new claim phrasing"
@@ -626,18 +563,11 @@
       "note": "reviewed current guest copy; not a new claim phrasing"
     },
     {
-      "hash": "374e089be5ba7b3efbe386d74d05a062dbb1cd16ce7da0d32c7214f46527dc91",
-      "sentence": "/guides/best-time-visit-anna-maria-island/ Compare timing beyond weather Crowds, prices and events change by month too",
+      "hash": "dae453a7506f58d385ccaae3cc2ff3b006c63b45cda1a02f4faa87cd29747401",
+      "sentence": "Two homes can look close on price, then separate once Airbnb or Vrbo adds its service fee at checkout",
       "file": "src/guides/anna-maria-island-weather.html",
       "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
-    },
-    {
-      "hash": "2f920395b6d6b53be12936ab129d23615f5707e63c2dea12e6f8e6cc6e643659",
-      "sentence": "Compare the final total, not the nightly rate Two homes can look close on price, then separate once Airbnb or Vrbo adds its service fee at checkout",
-      "file": "src/guides/anna-maria-island-weather.html",
-      "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
+      "note": "reviewed current guest copy after fail-closed sentence boundaries; not a new claim phrasing"
     },
     {
       "hash": "dd9b7f5001b9ad1c696982bf069f2d9ce3032c6f8b0297bf1e5c15df2db4758a",
@@ -647,11 +577,11 @@
       "note": "reviewed current guest copy; not a new claim phrasing"
     },
     {
-      "hash": "ca1727cbaff28f1264e45e9d6553b46ae7b6d69cac31f319fa91122972677b5d",
-      "sentence": "Related Vacation Rentals Vacation Rentals Near Restaurants Romantic Getaway on AMI Vacation Rentals Near AMI Top AMI Restaurants by Category Restaurant Cuisine Price Range Waterfront Reservations The Sandbar Seafood/American $$$ Yes — beachfront Recommended Beach Bistro Fine dining seafood $$$$ Yes — Gulf views Required Anna Maria Oyster Bar Casual seafood $$ Yes — bay side No — first come Duffy's Tavern & Grill Pub/American $$ No No Ginny & Jane E's Cafe/Bakery $ No No Blue Marlin Seafood/Tiki $$ Yes — pier views Walk-in OK partials/guest-footer",
+      "hash": "f763efcc88ad254861cf32cb132e3e4dbdb293f7e457d14c4815170cfeccb401",
+      "sentence": "Related Vacation Rentals Vacation Rentals Near Restaurants Romantic Getaway on AMI Vacation Rentals Near AMI Top AMI Restaurants by Category Restaurant Cuisine Price Range Waterfront Reservations The Sandbar Seafood/American $$$ Yes — beachfront Recommended Beach Bistro Fine dining seafood $$$$ Yes — Gulf views Required Anna Maria Oyster Bar Casual seafood $$ Yes — bay side No — first come Duffy's Tavern & Grill Pub/American $$ No No Ginny & Jane E's Cafe/Bakery $ No No Blue Marlin Seafood/Tiki $$ Yes — pier views Walk-in OK Book Direct & Compare Totals Browse Our Homes →",
       "file": "src/guides/best-restaurants-anna-maria-island.html",
       "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
+      "note": "reviewed current guest copy after fail-closed sentence boundaries; not a new claim phrasing"
     },
     {
       "hash": "e17142042d6b2cee013d3ac2f321ce8743d830fad4725196ef9a0aa64534c8be",
@@ -675,18 +605,18 @@
       "note": "reviewed current guest copy; not a new claim phrasing"
     },
     {
-      "hash": "ca3e68415c313d21ea32711530631014866bc5527da2f4bbc62472b546cd81d4",
-      "sentence": "Answer September and October offer the lowest rental rates on Anna Maria Island, below peak season",
-      "file": "src/guides/best-time-to-visit-anna-maria-island/index.html",
-      "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
-    },
-    {
       "hash": "c0616d1f2c52f9dd071b9cd9625d2aef03cbfd07b6058da69f070de9a9f848f1",
       "sentence": "Browse Our Properties More Gulf Coast Planning Guides AMI Vacation Cost Guide 2026 Real pricing for rentals, dining, activities, and tips to skip platform fees",
       "file": "src/guides/best-time-to-visit-anna-maria-island/index.html",
       "slug": "",
       "note": "reviewed current guest copy; not a new claim phrasing"
+    },
+    {
+      "hash": "68648bb762b0595e73ad1e8e1a9ce1e142fef0b1562e84bb7c9adb8ab5687409",
+      "sentence": "com &middot; Contact Us Book Direct & Compare Totals Browse Our Homes → Book Direct & Save No platform fees Book Now",
+      "file": "src/guides/best-time-to-visit-anna-maria-island/index.html",
+      "slug": "",
+      "note": "reviewed current guest copy after fail-closed sentence boundaries; not a new claim phrasing"
     },
     {
       "hash": "3a409a4ca69a8f181df523740dbe61161d9299086e7f5c6b2275450201eccb28",
@@ -696,15 +626,15 @@
       "note": "reviewed current guest copy; not a new claim phrasing"
     },
     {
-      "hash": "a4a39c305427f80ed092be8ec91ef9f085327a6371398479f862c0eefad9f7b3",
-      "sentence": "Month-by-Month Breakdown: Weather, Rates & Crowds Month Avg High Gulf Water Rainfall Crowds Rental Rate* January 72&deg;F 66&deg;F 2",
+      "hash": "bc57d8bd372e4c74e4a366525ee970b34ae45f261e37eecef563d3a93bb1dd5a",
+      "sentence": "Month-by-month breakdown of the best time to visit Anna Maria Island including weather, rental pricing, crowd levels, events, and local tips",
       "file": "src/guides/best-time-to-visit-anna-maria-island/index.html",
       "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
+      "note": "reviewed current guest copy after fail-closed sentence boundaries; not a new claim phrasing"
     },
     {
-      "hash": "194295c7fe1d3b0d4cf4b68f1ea299a852685f6358a61702696a2c74d15a8b45",
-      "sentence": "org Article Best Time to Visit Anna Maria Island: 2026 Month-by-Month Guide Month-by-month breakdown of the best time to visit Anna Maria Island including weather, rental pricing, crowd levels, events, and local tips",
+      "hash": "a4a39c305427f80ed092be8ec91ef9f085327a6371398479f862c0eefad9f7b3",
+      "sentence": "Month-by-Month Breakdown: Weather, Rates & Crowds Month Avg High Gulf Water Rainfall Crowds Rental Rate* January 72&deg;F 66&deg;F 2",
       "file": "src/guides/best-time-to-visit-anna-maria-island/index.html",
       "slug": "",
       "note": "reviewed current guest copy; not a new claim phrasing"
@@ -736,6 +666,13 @@
       "file": "src/guides/best-time-to-visit-anna-maria-island/index.html",
       "slug": "",
       "note": "reviewed current guest copy; not a new claim phrasing"
+    },
+    {
+      "hash": "a01e4db4bde0f5f01ca54fe38b9600c0205eb753161554109f12ee718dc74faf",
+      "sentence": "September and October offer the lowest rental rates on Anna Maria Island, below peak season",
+      "file": "src/guides/best-time-to-visit-anna-maria-island/index.html",
+      "slug": "",
+      "note": "reviewed current guest copy after fail-closed sentence boundaries; not a new claim phrasing"
     },
     {
       "hash": "0511401b0fddea0e94f6f83a6d465cb7ab4abb745c86971722a0a8e9222373a4",
@@ -787,20 +724,6 @@
       "note": "reviewed current guest copy; not a new claim phrasing"
     },
     {
-      "hash": "edf334c286687575ad52a3b90d880d094b7ad437ce66da2bd47b2d3994794877",
-      "sentence": "/guides/anna-maria-island-vacation-cost/ See what each season does to the budget Use the cost guide before you confuse best weather with best economics",
-      "file": "src/guides/best-time-visit-anna-maria-island.html",
-      "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
-    },
-    {
-      "hash": "6e66ff80f57502de4f598b0beeb24bd6d0d378f5e37fac54781d4e00ec4b6110",
-      "sentence": "/stays/anna-maria-island-beachfront-rentals/ Anna Maria Island beachfront alternative For guests who want Anna Maria beach access without forcing the budget into true beachfront pricing",
-      "file": "src/guides/best-time-visit-anna-maria-island.html",
-      "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
-    },
-    {
       "hash": "326d68fb925f2e3d1accead4d0583b6026bb297cfa10895a3fb985c814bd60ef",
       "sentence": "Be flexible for the best deals — Shifting your trip by even one week can mean significantly lower rates, especially around the edges of peak season",
       "file": "src/guides/best-time-visit-anna-maria-island.html",
@@ -810,13 +733,6 @@
     {
       "hash": "76abcbb1a93784f3b49fd4badcfe1ef301e8a45ea372f38ffe92d7b7c5ef784e",
       "sentence": "Best Months for Specific Activities Beach swimming: May through October (warmest water) Fishing: Year-round, but May–June for tarpon, fall for redfish and snook Shelling: January–March, especially after cold fronts push shells ashore Dolphin watching: Year-round, best during fall mullet runs (September–November) Manatee viewing: November–March at the TECO Manatee Viewing Center Photography: November–February for golden light and dramatic sunsets Booking Tips to Get the Best Value Regardless of when you visit, these strategies help you get the best experience and value on Anna Maria Island: Book direct — Booking directly through a local property manager like Seascape Vacations can keep OTA service fees out of the total",
-      "file": "src/guides/best-time-visit-anna-maria-island.html",
-      "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
-    },
-    {
-      "hash": "4ff4a1b04f13d996bddcebfbc97ed185c29100285b3b14d02733d423d81df196",
-      "sentence": "best-time-visit-anna-maria-island Lock the right season before rates move against you Timing is the fastest lever in this market",
       "file": "src/guides/best-time-visit-anna-maria-island.html",
       "slug": "",
       "note": "reviewed current guest copy; not a new claim phrasing"
@@ -836,11 +752,18 @@
       "note": "reviewed current guest copy; not a new claim phrasing"
     },
     {
-      "hash": "4583a54f1581e1c4fd6c837f6a18465f270962aa8176ac5b468275d612d45a6b",
-      "sentence": "Direct Booking List Get direct-booking dates and repeat-guest offers Join the list for direct-booking deals, shoulder-season ideas, and Seascape stay options without OTA service fees",
+      "hash": "0aac361965ef5ada15d2536fa1dba2f8e92876a95d4aa6ad3aaf429971d1bf70",
+      "sentence": "For guests who want Anna Maria beach access without forcing the budget into true beachfront pricing",
       "file": "src/guides/best-time-visit-anna-maria-island.html",
       "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
+      "note": "reviewed current guest copy after fail-closed sentence boundaries; not a new claim phrasing"
+    },
+    {
+      "hash": "4ea14cb97295da68293e3155acdd4a100969833f6df3adee37023552b13882c6",
+      "sentence": "Join the list for direct-booking deals, shoulder-season ideas, and Seascape stay options without OTA service fees",
+      "file": "src/guides/best-time-visit-anna-maria-island.html",
+      "slug": "",
+      "note": "reviewed current guest copy after fail-closed sentence boundaries; not a new claim phrasing"
     },
     {
       "hash": "cbacb7590f2cd0836230b0b1f778eea6c9a92a5e5ef95d246ac7121dcaff2230",
@@ -878,22 +801,22 @@
       "note": "reviewed current guest copy; not a new claim phrasing"
     },
     {
-      "hash": "72506acaa00fdb207e5650455bc425fd5d574117fb4d740082901808260323ca",
-      "sentence": "Use timing and direct booking together Shoulder-season dates lower the nightly rate",
+      "hash": "7deb53f58951659ba42a0f1a53f2c14fec3f8416fbec41215d500e6cdaf1b10e",
+      "sentence": "Shoulder-season dates lower the nightly rate",
       "file": "src/guides/best-time-visit-anna-maria-island.html",
       "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
+      "note": "reviewed current guest copy after fail-closed sentence boundaries; not a new claim phrasing"
+    },
+    {
+      "hash": "54bdaec14a07077e622869d12744593997a58710dfd081e7c2e66f3346b096a0",
+      "sentence": "Use the cost guide before you confuse best weather with best economics",
+      "file": "src/guides/best-time-visit-anna-maria-island.html",
+      "slug": "",
+      "note": "reviewed current guest copy after fail-closed sentence boundaries; not a new claim phrasing"
     },
     {
       "hash": "d5953905256bead438364b616cdf514e84c99ae37b4171c9bea016b2d3f2036b",
       "sentence": "A lower fee is fake savings if the manager loses repeat guests, outsources local response, or drives almost every booking through channels that train guests to book elsewhere next time",
-      "file": "src/guides/best-vacation-rental-companies-ami.html",
-      "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
-    },
-    {
-      "hash": "f20de4b5d3b1c1f906d1c0a09d0b7ef634b1860253f3d37181f6efad4d6ee715",
-      "sentence": "Browse Direct AMI Homes Open Direct Availability Keep Reading Why booking direct still matters Use the fee math before you let a platform decide what \"best\" means",
       "file": "src/guides/best-vacation-rental-companies-ami.html",
       "slug": "",
       "note": "reviewed current guest copy; not a new claim phrasing"
@@ -913,11 +836,11 @@
       "note": "reviewed current guest copy; not a new claim phrasing"
     },
     {
-      "hash": "889ac7489df855ac13e0f1d365228eb011386f7397dfa18fe8f24c8ed887e426",
-      "sentence": "Open the direct-booking collection before the comparison turns into checkout drag The difference between a smart AMI booking and a messy one usually appears in the total, not the headline rate",
+      "hash": "e11e24a25c224aea9ff667039eb766988d04b75a474e915bc9abb81ddbd64753",
+      "sentence": "Open Direct Availability Keep Reading Why booking direct still matters Use the fee math before you let a platform decide what \"best\" means",
       "file": "src/guides/best-vacation-rental-companies-ami.html",
       "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
+      "note": "reviewed current guest copy after fail-closed sentence boundaries; not a new claim phrasing"
     },
     {
       "hash": "8600dfc90092bb33ddd8ec5049702394e88ae561999d3308bd9f861be8c0052d",
@@ -925,6 +848,13 @@
       "file": "src/guides/best-vacation-rental-companies-ami.html",
       "slug": "",
       "note": "reviewed current guest copy; not a new claim phrasing"
+    },
+    {
+      "hash": "70ce7855ff7372aec7ca2a6ab786426f7d1007114907b2839c328df6cd22109d",
+      "sentence": "The difference between a smart AMI booking and a messy one usually appears in the total, not the headline rate",
+      "file": "src/guides/best-vacation-rental-companies-ami.html",
+      "slug": "",
+      "note": "reviewed current guest copy after fail-closed sentence boundaries; not a new claim phrasing"
     },
     {
       "hash": "f9ed6fab076fc308b38252e1f5a11825541d67ad19d3957c000ef673c21e83a2",
@@ -941,11 +871,11 @@
       "note": "reviewed current guest copy; not a new claim phrasing"
     },
     {
-      "hash": "3cf7e8c9083333b1f3dac0c19f77d94099d158b99c93a7981edd2b3264e351f8",
-      "sentence": "Related Vacation Rentals Gulf Coast Beach House Rentals Coquina Beach Vacation Rentals Bradenton Rentals Near Beaches Siesta Key Area Rentals Waterfront Restaurants with Docks Restaurant Location Dock Depth Cuisine Price Pier 22 Bradenton Riverwalk 4-6 ft Seafood/Steaks $$$ The Sandbar Anna Maria Beach Beach pull-up Seafood $$$ Dry Dock Waterfront Grill Longboat Key 4 ft Seafood/American $$$ Star Fish Company Cortez 3-4 ft Fresh market seafood $$ Tide Tables Cortez 4 ft Seafood/American $$ partials/guest-footer",
+      "hash": "435190eb24b980b76222b7d0524401f451ee1e9c0fd0ad58442694ade281c928",
+      "sentence": "Related Vacation Rentals Gulf Coast Beach House Rentals Coquina Beach Vacation Rentals Bradenton Rentals Near Beaches Siesta Key Area Rentals Waterfront Restaurants with Docks Restaurant Location Dock Depth Cuisine Price Pier 22 Bradenton Riverwalk 4-6 ft Seafood/Steaks $$$ The Sandbar Anna Maria Beach Beach pull-up Seafood $$$ Dry Dock Waterfront Grill Longboat Key 4 ft Seafood/American $$$ Star Fish Company Cortez 3-4 ft Fresh market seafood $$ Tide Tables Cortez 4 ft Seafood/American $$ Book Direct & Compare Totals Browse Our Homes →",
       "file": "src/guides/best-waterfront-restaurants-with-boat-dock.html",
       "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
+      "note": "reviewed current guest copy after fail-closed sentence boundaries; not a new claim phrasing"
     },
     {
       "hash": "2619b1311ba2f2a9a9a9ac66aea91e4281fc71f960255e45a28d99a836e1c566",
@@ -965,13 +895,6 @@
       "hash": "70c6e9559b3b621df21f9e9f34eede06677f58b30d075b7b1598ec3f93cb39da",
       "sentence": "This page is here to get you out of fee theory and into a better booking decision quickly",
       "file": "src/guides/booking-direct-vacation-rentals.html",
-      "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
-    },
-    {
-      "hash": "fc50afcaa8a01966a3be7b67567d0fb2062adc90f7410c1e662783edcbf833c5",
-      "sentence": "Answer The best time to visit Bradenton is March-May (warm, less crowded) or October-November (lower rates, pleasant weather)",
-      "file": "src/guides/bradenton-area-guide/index.html",
       "slug": "",
       "note": "reviewed current guest copy; not a new claim phrasing"
     },
@@ -1002,6 +925,13 @@
       "file": "src/guides/bradenton-area-guide/index.html",
       "slug": "",
       "note": "reviewed current guest copy; not a new claim phrasing"
+    },
+    {
+      "hash": "f169188833349c47e3641f92618d9f8ffab4d0ff03eac794f56315babc8efc05",
+      "sentence": "The best time to visit Bradenton is March-May (warm, less crowded) or October-November (lower rates, pleasant weather)",
+      "file": "src/guides/bradenton-area-guide/index.html",
+      "slug": "",
+      "note": "reviewed current guest copy after fail-closed sentence boundaries; not a new claim phrasing"
     },
     {
       "hash": "9ea568e65011da4c86df59b3e03883b79fdd422fc603fe0f738d284edd3ba245",
@@ -1039,11 +969,11 @@
       "note": "reviewed current guest copy; not a new claim phrasing"
     },
     {
-      "hash": "bf8aef3c847d1d5a65ffa3e211c5d87b28d1b04555c06b4f9d9a3a280a63e39d",
-      "sentence": "Sarasota: Complete Comparison Guide 50 Best Things to Do in Bradenton, Florida Complete Guide to Anna Maria Island Beaches Best Restaurants & Dining on Anna Maria Island Anna Maria Island Vacation Cost Guide 2026 Best Time to Visit Anna Maria Island: Month-by-Month Complete Fishing Guide: Anna Maria Island & Sarasota Where to See Dolphins & Manatees in Bradenton Rainy Day Activities: What to Do When Weather Turns partials/guest-footer",
+      "hash": "39286c85f3d7a77ed80c0d4dfdb9b82fc4bde7bcfe7f5676c17e12ab05726106",
+      "sentence": "Sarasota: Complete Comparison Guide 50 Best Things to Do in Bradenton, Florida Complete Guide to Anna Maria Island Beaches Best Restaurants & Dining on Anna Maria Island Anna Maria Island Vacation Cost Guide 2026 Best Time to Visit Anna Maria Island: Month-by-Month Complete Fishing Guide: Anna Maria Island & Sarasota Where to See Dolphins & Manatees in Bradenton Rainy Day Activities: What to Do When Weather Turns Book Direct & Compare Totals Browse Our Homes →",
       "file": "src/guides/bradenton-insider-guide.html",
       "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
+      "note": "reviewed current guest copy after fail-closed sentence boundaries; not a new claim phrasing"
     },
     {
       "hash": "fcfb22354ac8cfac76e4be788e752f0d02f8571636ad762f398c7c6fa2523637",
@@ -1060,22 +990,15 @@
       "note": "reviewed current guest copy; not a new claim phrasing"
     },
     {
-      "hash": "fb0b52f7e6ea8ac7c9f3bcd67e5964cac180722f5b432e9a371105b1f2d1d54c",
-      "sentence": "njk Book Direct & Compare Totals No platform fees Book Now https://schema",
+      "hash": "738e5716f7dd9a6c107123453391b68d9a0f01f634b1b9a547bd6b1dddc6a04b",
+      "sentence": "Browse Our Properties Book Direct & Compare Totals Browse Our Homes &#8594; Book Direct & Compare Totals No platform fees Book Now",
       "file": "src/guides/bradenton-vs-sarasota-beaches/index.html",
       "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
+      "note": "reviewed current guest copy after fail-closed sentence boundaries; not a new claim phrasing"
     },
     {
       "hash": "c56d8467235c9c2021acce41d7f777eb7f76cd1084c80f4913a139eeb4cfd9b4",
       "sentence": "AMI Vacation Cost Guide 2026 What it actually costs for a week on Anna Maria Island — rentals, food, activities",
-      "file": "src/guides/bradenton-vs-sarasota-for-families/index.html",
-      "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
-    },
-    {
-      "hash": "1e4433164db2b9ba9e06c6658fbf4fd59b549b0deca033aafe32c1fa1ad718c9",
-      "sentence": "Answer Bradenton pool homes usually cost less than comparable Sarasota homes, but nightly rates move with season and dates",
       "file": "src/guides/bradenton-vs-sarasota-for-families/index.html",
       "slug": "",
       "note": "reviewed current guest copy; not a new claim phrasing"
@@ -1088,15 +1011,15 @@
       "note": "reviewed current guest copy; not a new claim phrasing"
     },
     {
-      "hash": "fbb6e65658b9baa35179c5bb0361826234756bf008d787d321037d9d27bfa296",
-      "sentence": "Category Bradenton Sarasota Edge Kid-Friendly Beaches Coquina Beach (playground, picnic shelters, calm water), Bean Point, Holmes Beach Siesta Key (amazing sand, packed crowds), Lido Beach Bradenton Rental Cost (3BR w/ Pool) Usually lower; compare live dates Usually higher for a comparable home Bradenton Kid Activities (Free) Robinson Preserve, De Soto NM, AMI trolley, Palma Sola Causeway Bayfront Park, Marie Selby playground, Legacy Trail bike path Bradenton Kid Activities (Paid) Bishop Museum ($25/adult), Mixon Fruit Farms, LECOM Park (spring training) Mote SEA (prices vary by date), Ringling Museum ($30/adult), Big Cat Habitat (check current admission) Sarasota Family Restaurants Anna Maria Oyster Bar, Sandbar, Swordfish Grill, Clesi's Old Salty Dog, Shore, Columbia Tie Beach Parking Easy (free lots at Coquina, trolley everywhere) Brutal at Siesta Key (lot fills by 10am in season) Bradenton Rainy Day Options Bishop Museum planetarium, Ellenton Outlets, escape rooms on Main St Ringling Museum, Mall at UTC, Sarasota Jungle Gardens Sarasota Pool Homes Available Very common Available but pricier Bradenton Nature & Wildlife Robinson Preserve (kayaks, boardwalks), manatee sightings at Riverwalk Myakka River State Park, Mote SEA, Celery Fields birding Tie Overall Safety Feel Small-town, walkable neighborhoods on AMI, quiet canal streets Downtown is busier, Siesta Village has nightlife traffic Bradenton Running tally: Bradenton 6, Sarasota 2, Tie 2",
+      "hash": "8cf1ad762c2bad898adc2cc302c431e33e7aef2fa7400ad8d94c1e5ca81146fe",
+      "sentence": "Browse Our Family Homes &rarr; Book Direct & Compare Totals Browse Our Homes &rarr; Book Direct & Save No platform fees Book Now",
       "file": "src/guides/bradenton-vs-sarasota-for-families/index.html",
       "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
+      "note": "reviewed current guest copy after fail-closed sentence boundaries; not a new claim phrasing"
     },
     {
-      "hash": "bd29190574a80d7bf2ccd5e39707d9c2b4024f438c95b78dbbebc1309608ce37",
-      "sentence": "org Article Bradenton vs Sarasota for Families: Where to Stay on the Gulf Coast (2026) Family-focused comparison of Bradenton and Sarasota covering beaches, kid activities, restaurants, safety, costs, and rainy-day options",
+      "hash": "fbb6e65658b9baa35179c5bb0361826234756bf008d787d321037d9d27bfa296",
+      "sentence": "Category Bradenton Sarasota Edge Kid-Friendly Beaches Coquina Beach (playground, picnic shelters, calm water), Bean Point, Holmes Beach Siesta Key (amazing sand, packed crowds), Lido Beach Bradenton Rental Cost (3BR w/ Pool) Usually lower; compare live dates Usually higher for a comparable home Bradenton Kid Activities (Free) Robinson Preserve, De Soto NM, AMI trolley, Palma Sola Causeway Bayfront Park, Marie Selby playground, Legacy Trail bike path Bradenton Kid Activities (Paid) Bishop Museum ($25/adult), Mixon Fruit Farms, LECOM Park (spring training) Mote SEA (prices vary by date), Ringling Museum ($30/adult), Big Cat Habitat (check current admission) Sarasota Family Restaurants Anna Maria Oyster Bar, Sandbar, Swordfish Grill, Clesi's Old Salty Dog, Shore, Columbia Tie Beach Parking Easy (free lots at Coquina, trolley everywhere) Brutal at Siesta Key (lot fills by 10am in season) Bradenton Rainy Day Options Bishop Museum planetarium, Ellenton Outlets, escape rooms on Main St Ringling Museum, Mall at UTC, Sarasota Jungle Gardens Sarasota Pool Homes Available Very common Available but pricier Bradenton Nature & Wildlife Robinson Preserve (kayaks, boardwalks), manatee sightings at Riverwalk Myakka River State Park, Mote SEA, Celery Fields birding Tie Overall Safety Feel Small-town, walkable neighborhoods on AMI, quiet canal streets Downtown is busier, Siesta Village has nightlife traffic Bradenton Running tally: Bradenton 6, Sarasota 2, Tie 2",
       "file": "src/guides/bradenton-vs-sarasota-for-families/index.html",
       "slug": "",
       "note": "reviewed current guest copy; not a new claim phrasing"
@@ -1128,6 +1051,20 @@
       "file": "src/guides/bradenton-vs-sarasota-retirement/index.html",
       "slug": "",
       "note": "reviewed current guest copy; not a new claim phrasing"
+    },
+    {
+      "hash": "d9ce01549addff3e6fa27f91432a4469b3a14837d4691b3081e836758652dffa",
+      "sentence": "Bradenton vs Sarasota for Retirement: 2026 Cost, Healthcare & Lifestyle Guide",
+      "file": "src/guides/bradenton-vs-sarasota-retirement/index.html",
+      "slug": "",
+      "note": "reviewed current guest copy after fail-closed sentence boundaries; not a new claim phrasing"
+    },
+    {
+      "hash": "9208d6ccfd8d8580ab884653637a23c21aa1aff7a82bb2f155a64504701f0407",
+      "sentence": "Browse Our Properties Book Direct & Compare Totals Browse Our Homes &rarr; Book Direct & Compare Totals No platform fees Book Now",
+      "file": "src/guides/bradenton-vs-sarasota-retirement/index.html",
+      "slug": "",
+      "note": "reviewed current guest copy after fail-closed sentence boundaries; not a new claim phrasing"
     },
     {
       "hash": "2fdd65794b9c171767292a66898b8a6476effc989482c97f531fd6d5f263c32e",
@@ -1165,13 +1102,6 @@
       "note": "reviewed current guest copy; not a new claim phrasing"
     },
     {
-      "hash": "9f13c5571cc0a35c81683437118e009eb79347e1bf7ecc86154c3cc8e4313bae",
-      "sentence": "org Article Bradenton vs Sarasota for Retirement: 2026 Cost, Healthcare & Lifestyle Guide Detailed comparison of Bradenton and Sarasota for retirement covering healthcare systems, cost of living, property taxes, golf, arts, and community life",
-      "file": "src/guides/bradenton-vs-sarasota-retirement/index.html",
-      "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
-    },
-    {
       "hash": "c44f62cfbe34e0b27e316efd021f1b9f3f6de08ee07fffac015ac295d4687987",
       "sentence": "She said renting in Bradenton was half the price of staying near the hospital, and the 50-minute drive was worth the savings and the sanity of coming home to a real house each night",
       "file": "src/guides/bradenton-vs-sarasota-retirement/index.html",
@@ -1193,25 +1123,11 @@
       "note": "reviewed current guest copy; not a new claim phrasing"
     },
     {
-      "hash": "3a5f9276bd0ff94c4b9d999ff73240293a88fcb7db82bdfb739ed96fdf399c3c",
-      "sentence": "/guides/anna-maria-island-vacation-cost/ Stress-test the full trip budget Use the AMI cost guide before a higher nightly rate turns into a weak total-trip decision",
+      "hash": "da1186ec12faa1b4748af8a43cae7b2e486e10c5c31172cd65ba7e573a600757",
+      "sentence": "How much cheaper is Bradenton than Sarasota for cost of living",
       "file": "src/guides/bradenton-vs-sarasota.html",
       "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
-    },
-    {
-      "hash": "93cdf153500775bc47af76375effb91336d76d2ada7a891e97c8d8a7bf886940",
-      "sentence": "/guides/best-time-visit-anna-maria-island/ Shift your dates, not your standards Use the seasonality guide to catch the same kind of trip with less rate pressure",
-      "file": "src/guides/bradenton-vs-sarasota.html",
-      "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
-    },
-    {
-      "hash": "59c71db30f2d8ccef6fa77b8d2d6ac5484c5e6a4c7147e2062c5b8b078e6425c",
-      "sentence": "Question How much cheaper is Bradenton than Sarasota for cost of living",
-      "file": "src/guides/bradenton-vs-sarasota.html",
-      "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
+      "note": "reviewed current guest copy after fail-closed sentence boundaries; not a new claim phrasing"
     },
     {
       "hash": "e856559d9f62b62e7bc5c457bc3752361227112f28d8cab60bc5aeaeaed92c0f",
@@ -1235,6 +1151,20 @@
       "note": "reviewed current guest copy; not a new claim phrasing"
     },
     {
+      "hash": "47d3979ee3b5afac5a79406d97f4c73fdb57be6da73634e364b9b5b0b8dd9626",
+      "sentence": "Use the AMI cost guide before a higher nightly rate turns into a weak total-trip decision",
+      "file": "src/guides/bradenton-vs-sarasota.html",
+      "slug": "",
+      "note": "reviewed current guest copy after fail-closed sentence boundaries; not a new claim phrasing"
+    },
+    {
+      "hash": "3582240b6f97b80584755385e602e502f8f1c62e8c1e7cd68bfe242aa260299f",
+      "sentence": "Use the seasonality guide to catch the same kind of trip with less rate pressure",
+      "file": "src/guides/bradenton-vs-sarasota.html",
+      "slug": "",
+      "note": "reviewed current guest copy after fail-closed sentence boundaries; not a new claim phrasing"
+    },
+    {
       "hash": "1125939e4f99ca0c1c0e3b604ec049d3344d3aa3813af7d3bb5bc3cfb075afac",
       "sentence": "Complete comparison of Bradenton and Tampa vacation rentals: pricing, beaches, activities, dining, and travel logistics for 2026",
       "file": "src/guides/bradenton-vs-tampa-vacation-rentals.html",
@@ -1256,11 +1186,11 @@
       "note": "reviewed current guest copy; not a new claim phrasing"
     },
     {
-      "hash": "63e23b7f6e55d1acf789d3f451982b13fbb4673e173ba150cacb85d979326395",
-      "sentence": "Related Vacation Rentals Gulf Coast Beach House Rentals Coquina Beach Vacation Rentals Bradenton Rentals Near Beaches Siesta Key Area Rentals Getting Around AMI: Transport Options Option Cost Best For Availability Free island trolley Free Beach hopping, dining Every 20 min, 6am-10:30pm Golf cart rental $80-$120/day Short trips, fun factor Multiple rental shops Bicycle rental $15-$30/day Exercise + exploring Shops across the island Rideshare (Uber/Lyft) $8-$15 on island Night out, airport Variable availability Rental car $40-$80/day Off-island day trips Rent at SRQ or TPA airport Walking Free Within your neighborhood Always partials/guest-footer",
+      "hash": "7ded78c754836e50cf2e29f1104a444ea8a63311c934b64ff0bb6d541a47624c",
+      "sentence": "Related Vacation Rentals Gulf Coast Beach House Rentals Coquina Beach Vacation Rentals Bradenton Rentals Near Beaches Siesta Key Area Rentals Getting Around AMI: Transport Options Option Cost Best For Availability Free island trolley Free Beach hopping, dining Every 20 min, 6am-10:30pm Golf cart rental $80-$120/day Short trips, fun factor Multiple rental shops Bicycle rental $15-$30/day Exercise + exploring Shops across the island Rideshare (Uber/Lyft) $8-$15 on island Night out, airport Variable availability Rental car $40-$80/day Off-island day trips Rent at SRQ or TPA airport Walking Free Within your neighborhood Always Book Direct & Compare Totals Browse Our Homes →",
       "file": "src/guides/do-you-need-a-car-anna-maria-island.html",
       "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
+      "note": "reviewed current guest copy after fail-closed sentence boundaries; not a new claim phrasing"
     },
     {
       "hash": "3cfe4994d2c7faa57085bd93be72a225ccee9cd6326e3c7d6a22b970c278672b",
@@ -1291,18 +1221,18 @@
       "note": "reviewed current guest copy; not a new claim phrasing"
     },
     {
-      "hash": "7e434159a825678393dfe2bdb841a39453eda8a9ed5853148bf5cfd5b8fb8b2f",
-      "sentence": "Related Vacation Rentals Family Vacation Rentals Near AMI Multigenerational Rentals Rentals with Game Rooms Heated Pool Vacation Rentals Family Activities & Costs Activity Ages Cost Duration Coquina Beach day All ages Free Half or full day AMI trolley ride All ages Free 30-60 min Robinson Preserve kayaking 6+ $35-$50/kayak 2-3 hours Dolphin boat tour All ages $40-$65/person 90 min Leffis Key nature walk All ages Free 1-2 hours Mini golf (Smugglers Cove) 3+ $12-$15/person 1 hour partials/guest-footer",
+      "hash": "79f7f350bc6048fe9f614cd63ce1f14118a424a354b513005092788e5384e366",
+      "sentence": "Related Vacation Rentals Family Vacation Rentals Near AMI Multigenerational Rentals Rentals with Game Rooms Heated Pool Vacation Rentals Family Activities & Costs Activity Ages Cost Duration Coquina Beach day All ages Free Half or full day AMI trolley ride All ages Free 30-60 min Robinson Preserve kayaking 6+ $35-$50/kayak 2-3 hours Dolphin boat tour All ages $40-$65/person 90 min Leffis Key nature walk All ages Free 1-2 hours Mini golf (Smugglers Cove) 3+ $12-$15/person 1 hour Book Direct & Compare Totals Browse Our Homes →",
       "file": "src/guides/family-vacation-anna-maria-island.html",
       "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
+      "note": "reviewed current guest copy after fail-closed sentence boundaries; not a new claim phrasing"
     },
     {
-      "hash": "ae9136192bd45044c6b7e29da59247e113e4fabdc1d29fb15d6ea9071c5724a9",
-      "sentence": "Answer Half-day fishing charters start around $400-500 and full-day trips cost $600-800 for up to 4 people",
+      "hash": "f3d6d970651ce388a89be2e4deeb9a9a7ac63c7d9e46e57eec3c4fc80a69e62f",
+      "sentence": "Half-day fishing charters start around $400-500 and full-day trips cost $600-800 for up to 4 people",
       "file": "src/guides/fishing-guide-anna-maria-sarasota.html",
       "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
+      "note": "reviewed current guest copy after fail-closed sentence boundaries; not a new claim phrasing"
     },
     {
       "hash": "67316d5811fddf6e8ca55c307ed2bc58b2f06228daf631d64388f21e648d2a34",
@@ -1319,11 +1249,11 @@
       "note": "reviewed current guest copy; not a new claim phrasing"
     },
     {
-      "hash": "7871a9f027b7590700d43a290ce13a7515aafaf050e993575ba4de300626cc67",
-      "sentence": "Related Vacation Rentals Fishing Vacation Rentals in Bradenton Vacation Homes with Private Docks Equipment Rentals for Your Trip Fishing Options Comparison Type Target Species Cost Best Season Inshore charter (flats) Redfish, snook, trout $350-$500 half day Year-round Offshore charter Grouper, snapper, kingfish $800-$1,200 full day Apr-Oct Pier fishing (free) Sheepshead, snook, mackerel Free (no license needed on pier) Year-round Kayak fishing Redfish, trout, snook $50 kayak rental Oct-May Beach fishing (surf) Whiting, pompano, snook Free with license Mar-May, Sep-Nov Bridge fishing Snook, sheepshead, mangrove snapper Free with license Year-round partials/guest-footer",
+      "hash": "8c0bbdc47f2326e1345072187b9b812443267a6bf294d680e6dee997894a2ca9",
+      "sentence": "Related Vacation Rentals Fishing Vacation Rentals in Bradenton Vacation Homes with Private Docks Equipment Rentals for Your Trip Fishing Options Comparison Type Target Species Cost Best Season Inshore charter (flats) Redfish, snook, trout $350-$500 half day Year-round Offshore charter Grouper, snapper, kingfish $800-$1,200 full day Apr-Oct Pier fishing (free) Sheepshead, snook, mackerel Free (no license needed on pier) Year-round Kayak fishing Redfish, trout, snook $50 kayak rental Oct-May Beach fishing (surf) Whiting, pompano, snook Free with license Mar-May, Sep-Nov Bridge fishing Snook, sheepshead, mangrove snapper Free with license Year-round Book Direct & Compare Totals Browse Our Homes →",
       "file": "src/guides/fishing-guide-anna-maria-sarasota.html",
       "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
+      "note": "reviewed current guest copy after fail-closed sentence boundaries; not a new claim phrasing"
     },
     {
       "hash": "871f6dcc8286e6305a2b0bd00bbff13fda45233acf071f0b1d41ea549a8ece1d",
@@ -1333,6 +1263,13 @@
       "note": "reviewed current guest copy; not a new claim phrasing"
     },
     {
+      "hash": "fdf1dc63979d835b1c097377f7e5f8693904c9f3cf1c2d5c67db2a3ff33424d1",
+      "sentence": "Airline options, drive times, ground transport costs, and money-saving flight tips for 2026",
+      "file": "src/guides/flights-to-anna-maria-island/index.html",
+      "slug": "",
+      "note": "reviewed current guest copy after fail-closed sentence boundaries; not a new claim phrasing"
+    },
+    {
       "hash": "ac1a7bbd9b24f17be536b05ac59e9e35551994fb128529f07b3fb0ae6fc2a491",
       "sentence": "Best Time to Visit Anna Maria Island Month-by-month weather, pricing, and crowd guide for planning your trip",
       "file": "src/guides/flights-to-anna-maria-island/index.html",
@@ -1340,15 +1277,15 @@
       "note": "reviewed current guest copy; not a new claim phrasing"
     },
     {
-      "hash": "9e86e7a2cd2d743fdb60a46b7708506263b6b341a69336de20fa33f81ef1733b",
-      "sentence": "Here is what we tell them—no fluff, just the airport-by-airport breakdown with real costs, drive times, and the tips that actually save money",
+      "hash": "72f773c0b680bd306fafb80b2308bb775686dcf9e98a9bc2228f43f8d4bf0962",
+      "sentence": "Book Direct & Compare Totals Browse Our Homes &rarr; Compare booking quotes No platform fees Book Now",
       "file": "src/guides/flights-to-anna-maria-island/index.html",
       "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
+      "note": "reviewed current guest copy after fail-closed sentence boundaries; not a new claim phrasing"
     },
     {
-      "hash": "334bf57f877cdd4c9a4a79100b0934c4526b32d9379cd1722a1fdb74fb385b1a",
-      "sentence": "njk Compare booking quotes No platform fees Book Now https://schema",
+      "hash": "9e86e7a2cd2d743fdb60a46b7708506263b6b341a69336de20fa33f81ef1733b",
+      "sentence": "Here is what we tell them—no fluff, just the airport-by-airport breakdown with real costs, drive times, and the tips that actually save money",
       "file": "src/guides/flights-to-anna-maria-island/index.html",
       "slug": "",
       "note": "reviewed current guest copy; not a new claim phrasing"
@@ -1403,11 +1340,11 @@
       "note": "reviewed current guest copy; not a new claim phrasing"
     },
     {
-      "hash": "f778e0abe110ef3dc6ab4e3c276ec5b2102e9c7344a7d2bc2d955ccd7b92b10e",
-      "sentence": "Side-by-Side Snapshot Category Holmes Beach Bradenton Beach Edge Location on AMI Center of island Southern tip — Dining Options 20+ restaurants walkable ~8 restaurants, Bridge St area Holmes Beach ✓ Beach Vibe Popular, especially Manatee Public Beach Quieter, less crowded Bradenton Beach ✓ Rental Prices Compare complete quotes Compare complete quotes Depends on the home and dates Walkability Most walkable town on AMI Walkable near Bridge St only Holmes Beach ✓ Nightlife Skinnys Place, Duffy's, bars on Gulf Dr Bridge St Bistro, a couple bars Holmes Beach ✓ Grocery Access Publix on the island Drive to Holmes Beach Publix Holmes Beach ✓ Fishing Charter docks, wade fishing Bridge Street Pier, Cortez village nearby Bradenton Beach ✓ Family Friendliness More kid-focused activities Quieter for young kids Tie scales Getting Off-Island Manatee Ave bridge (north) Cortez Bridge — quick to Cortez Village & mainland Bradenton Beach ✓ Where to Eat (This Decides It for Some People) HOLMES BEACH WINS dining Restaurant Scene Not even close on quantity",
+      "hash": "98469e0adb6bdcad563c718b30d9522c1241d0917a0c05563f22f6807ba96245",
+      "sentence": "Side-by-Side Snapshot Category Holmes Beach Bradenton Beach Edge Location on AMI Center of island Southern tip — Dining Options 20+ restaurants walkable ~8 restaurants, Bridge St area Holmes Beach ✓ Beach Vibe Popular, especially Manatee Public Beach Quieter, less crowded Bradenton Beach ✓ Rental Prices Compare complete quotes Compare complete quotes Depends on the home and dates Walkability Most walkable town on AMI Walkable near Bridge St only Holmes Beach ✓ Nightlife Skinnys Place, Duffy's, bars on Gulf Dr Bridge St Bistro, a couple bars Holmes Beach ✓ Grocery Access Publix on the island Drive to Holmes Beach Publix Holmes Beach ✓ Fishing Charter docks, wade fishing Bridge Street Pier, Cortez village nearby Bradenton Beach ✓ Family Friendliness More kid-focused activities Quieter for young kids Tie scales Getting Off-Island Manatee Ave bridge (north) Cortez Bridge — quick to Cortez Village & mainland Bradenton Beach ✓ Where to Eat (This Decides It for Some People) HOLMES BEACH WINS dining",
       "file": "src/guides/holmes-beach-vs-bradenton-beach.html",
       "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
+      "note": "reviewed current guest copy after fail-closed sentence boundaries; not a new claim phrasing"
     },
     {
       "hash": "3398a58b263f1b5d47870215f94a3c31fa26b2e485d6304e5142baefd516eb8a",
@@ -1445,6 +1382,13 @@
       "note": "reviewed current guest copy; not a new claim phrasing"
     },
     {
+      "hash": "3b27141135924b85b8cb362cced376ef3ec8073dae23e9ba1a65d1701f754c5a",
+      "sentence": "Routes, costs, bridge tips, and the free island trolley",
+      "file": "src/guides/how-to-get-to-anna-maria-island.html",
+      "slug": "",
+      "note": "reviewed current guest copy after fail-closed sentence boundaries; not a new claim phrasing"
+    },
+    {
       "hash": "a2154eb985c14309a72a8425013d31e850c30be8d486e237f3090f81a2dd892b",
       "sentence": "The ferry runs seasonally (typically November-May) and costs around $15-20 per person round trip",
       "file": "src/guides/how-to-get-to-anna-maria-island.html",
@@ -1455,13 +1399,6 @@
       "hash": "a82d9ecd4a5a914e6d6850a4655d7a3db27bf8f69fe3d4fc59af23b4d42e66eb",
       "sentence": "Tips: Request rides a few minutes early — drivers may be coming from the mainland Costs are typically $8-$15 within the island, $15-$25 to downtown Bradenton, and $25-$40 to Sarasota For airport trips, pre-book through the app or consider a local car service for reliability Money-Saving Travel Tips Smart planning can save hundreds on your travel to and around Anna Maria Island: Compare SRQ and TPA flights carefully: TPA is farther but often $100-$300 cheaper for a family of four",
       "file": "src/guides/how-to-get-to-anna-maria-island.html",
-      "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
-    },
-    {
-      "hash": "65d60f51ac2574b346b0fb745b7871a04d4fd6fac52d05aba4b57f3a627bc95a",
-      "sentence": "url /guides/bradenton-vs-sarasota/ label Bradenton vs Sarasota url /guides/anna-maria-island-vs-siesta-key/ label Anna Maria Island vs Siesta Key url /guides/bradenton-vs-sarasota-beaches/ label Bradenton vs Sarasota Beaches url /guides/bradenton-vs-tampa-vacation-rentals/ label Bradenton vs Tampa Vacation Rentals url /guides/holmes-beach-vs-bradenton-beach/ label Holmes Beach vs Bradenton Beach url /guides/anna-maria-island-area-guide/ label Anna Maria Island url /guides/anna-maria-city/ label Anna Maria City url /guides/holmes-beach/ label Holmes Beach url /guides/bradenton-beach/ label Bradenton Beach url /guides/bradenton-area-guide/ label Bradenton url /guides/bradenton-insider-guide/ label Bradenton Insider Guide url /guides/sarasota-area-guide/ label Sarasota url /guides/siesta-key-area-guide/ label Siesta Key url /guides/siesta-key-beach-guide/ label Siesta Key Beach Guide url /guides/anna-maria-island-beaches/ label Best AMI Beaches url /guides/best-restaurants-anna-maria-island/ label Best Restaurants Near AMI url /guides/best-time-visit-anna-maria-island/ label Best Time to Visit Anna Maria Island url /guides/how-to-get-to-anna-maria-island/ label How to Get to Anna Maria Island url /guides/where-to-stay-near-anna-maria-island/ label Where To Stay Near Anna Maria Island url /guides/fishing-guide-anna-maria-sarasota/ label Fishing Guide: Anna Maria to Sarasota url /guides/family-vacation-anna-maria-island/ label Family Vacation on Anna Maria Island url /guides/spring-break-activities-bradenton-anna-maria-island/ label Spring Break Activities Near AMI url /guides/dolphins-manatees-bradenton/ label Where to Spot Dolphins and Manatees url /guides/srq-airport-to-anna-maria-island/ label SRQ Airport to Anna Maria Island url /guides/anna-maria-island-noise-ordinance-guide/ label Anna Maria Island Noise Ordinance Guide url /guides/snowbirds-guide-extended-stays-florida/ label Snowbirds Guide to Extended Stays maximize-vacation-rental-income-florida switch-vacation-rental-management-company new-vacation-rental-owner-guide-florida increase-vacation-rental-bookings vacation-rental-cleaning-services-florida vacation-rental-guest-screening buy-vacation-rental-property-florida week-long-vacation-rentals-florida accessible-vacation-rentals-florida canal-homes-with-boat-dock golf-vacation-rentals-bradenton 5-bedroom-vacation-rentals-florida vacation-rentals-sleeps-12-florida vacation-rentals-sleeps-16-florida vacation-rentals-with-outdoor-grill url /guides/florida-gulf-coast-vacation-rental-market-report-2026/ label Florida Gulf Coast Market Report url /research/owner-fee-revenue-leak-benchmark-2026/ label Owner Fee Comparison Guide url /guides/pet-friendly-anna-maria-island/ label Pet-Friendly Anna Maria Guide url /services/concierge-services/ label Concierge Services | Seascape Vacations Skip to content guides partials/guest-header",
-      "file": "src/guides/index.njk",
       "slug": "",
       "note": "reviewed current guest copy; not a new claim phrasing"
     },
@@ -1480,11 +1417,18 @@
       "note": "reviewed current guest copy; not a new claim phrasing"
     },
     {
-      "hash": "4d740b0b77cab234df94680e200dca2cdc133419775d71dfc43df79be0c0ccd3",
-      "sentence": "Find Your Rental Now Related Vacation Rentals Longboat Key Vacation Rentals Luxury Sarasota Rentals Waterfront Rentals Near Longboat Key Longboat Key Quick Facts Detail Info Length 10 miles Vibe Upscale, quiet, resort-style Rental Pricing Compare current quotes Beach Quality Gorgeous — less crowded than AMI/Siesta Dining Dry Dock, Euphemia Haye, Shore Best For Couples, luxury travelers, golfers partials/guest-footer",
+      "hash": "e59c1eb1c171cdbaf229f86ce8a53f668bfaa8f2eb60dc122858e500b26c1313",
+      "sentence": "We rate Anna Maria Island 9",
+      "file": "src/guides/is-anna-maria-island-worth-visiting.html",
+      "slug": "",
+      "note": "reviewed current guest copy after fail-closed sentence boundaries; not a new claim phrasing"
+    },
+    {
+      "hash": "0e0604c35f22714f26c0a39e6d18ba9affe8be78260e3e12355e253f15b28614",
+      "sentence": "Find Your Rental Now Related Vacation Rentals Longboat Key Vacation Rentals Luxury Sarasota Rentals Waterfront Rentals Near Longboat Key Longboat Key Quick Facts Detail Info Length 10 miles Vibe Upscale, quiet, resort-style Rental Pricing Compare current quotes Beach Quality Gorgeous — less crowded than AMI/Siesta Dining Dry Dock, Euphemia Haye, Shore Best For Couples, luxury travelers, golfers Book Direct & Compare Totals Browse Our Homes → Book Direct & Save No platform fees Book Now",
       "file": "src/guides/longboat-key-area-guide/index.html",
       "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
+      "note": "reviewed current guest copy after fail-closed sentence boundaries; not a new claim phrasing"
     },
     {
       "hash": "8b5256239d9f83356339f913685249423db1f72c9c24309e20ad1c8748278dfa",
@@ -1494,18 +1438,11 @@
       "note": "reviewed current guest copy; not a new claim phrasing"
     },
     {
-      "hash": "b1eddabeef5f2c170a096d12f8f37c6fca944cde7b25b73fffa95028b5bd3256",
-      "sentence": "Related Vacation Rentals Bradenton Rentals Near AMI Beaches Siesta Key Area Rentals Sarasota Rentals With Pool Florida Gulf Coast Vacation Rentals Rainy Day Activities Activity Location Cost Good For Mote SEA UTC / Sarasota Check current tickets Families, marine life, full rainy half-day The Ringling Sarasota Check current tickets Adults, older kids, art and circus history Sarasota Art Museum Downtown Sarasota Check current tickets Couples, quiet culture plan The Bishop Museum Bradenton Check current tickets Bradenton families, science fans Florida Studio Theatre or Sarasota Opera Downtown Sarasota Varies by show Adults, grandparents, date-day backup Bowling, arcades, UTC, or covered shopping Bradenton / Sarasota Varies Short storms, kids with energy partials/guest-footer",
+      "hash": "a209617652cad0ca661c2677f9dd413a25d3b6b0a08f2f6eddf4cb9a147d94b0",
+      "sentence": "Related Vacation Rentals Bradenton Rentals Near AMI Beaches Siesta Key Area Rentals Sarasota Rentals With Pool Florida Gulf Coast Vacation Rentals Rainy Day Activities Activity Location Cost Good For Mote SEA UTC / Sarasota Check current tickets Families, marine life, full rainy half-day The Ringling Sarasota Check current tickets Adults, older kids, art and circus history Sarasota Art Museum Downtown Sarasota Check current tickets Couples, quiet culture plan The Bishop Museum Bradenton Check current tickets Bradenton families, science fans Florida Studio Theatre or Sarasota Opera Downtown Sarasota Varies by show Adults, grandparents, date-day backup Bowling, arcades, UTC, or covered shopping Bradenton / Sarasota Varies Short storms, kids with energy Stay Near Beaches and Rainy-Day Backups Compare Bradenton Stays →",
       "file": "src/guides/rainy-day-activities-bradenton-sarasota.html",
       "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
-    },
-    {
-      "hash": "9869c380f61bfd2e95b993d7df3fbc24c8cc76c7ded2703f48e14d0d103a1b80",
-      "sentence": "Answer The best time to visit Sarasota is March-May for warm weather, fewer crowds than peak season, and lower rates",
-      "file": "src/guides/sarasota-area-guide/index.html",
-      "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
+      "note": "reviewed current guest copy after fail-closed sentence boundaries; not a new claim phrasing"
     },
     {
       "hash": "d9c7529ba9f5fb9d766c424353d8e5d8e42e88dd46b1845e39d9a0441994d29d",
@@ -1513,6 +1450,13 @@
       "file": "src/guides/sarasota-area-guide/index.html",
       "slug": "",
       "note": "reviewed current guest copy; not a new claim phrasing"
+    },
+    {
+      "hash": "7de002bf5c2ce8710dd54b6b6fa7e2531ded35178ccca7e822673846efd0ffa8",
+      "sentence": "The best time to visit Sarasota is March-May for warm weather, fewer crowds than peak season, and lower rates",
+      "file": "src/guides/sarasota-area-guide/index.html",
+      "slug": "",
+      "note": "reviewed current guest copy after fail-closed sentence boundaries; not a new claim phrasing"
     },
     {
       "hash": "0bc6d70fbcfd45cc2c9119d791f572e7aa904119110f40a85ea0f6918c3644b0",
@@ -1550,11 +1494,11 @@
       "note": "reviewed current guest copy; not a new claim phrasing"
     },
     {
-      "hash": "6982b5148d461fad5911674c58faa834fd771994d12d71036bb90438f3f052ee",
-      "sentence": "/stays/anna-maria-island-beachfront-rentals/ Anna Maria Island beachfront alternative For families who want beach-first days and a pool-home setup without paying true beachfront pricing",
+      "hash": "f1059902360f710e86e56f8c130d77e5e81b7bda4bbe543679cf6110b304f14d",
+      "sentence": "Booking the wrong way makes these two beaches look closer in price than they really are once platform fees land",
       "file": "src/guides/siesta-key-vs-anna-maria-island-families.html",
       "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
+      "note": "reviewed current guest copy after fail-closed sentence boundaries; not a new claim phrasing"
     },
     {
       "hash": "63132c8523b8e43b4bdabdb424573006dd7ea66d3e10fc503128ef63c79c8470",
@@ -1564,18 +1508,18 @@
       "note": "reviewed current guest copy; not a new claim phrasing"
     },
     {
-      "hash": "57ba255a6a44aa48bf84f3efd2c4fc7c03a187521e4d38f27cb8b909b24561a3",
-      "sentence": "Check out our other family vacation guides: Complete Family Vacation Guide to Anna Maria Island — Activities, logistics, rain plans, and advanced packing tips The 5 Best Beaches on Anna Maria Island — Which beach for which family type Best Restaurants on Anna Maria Island — Complete family dining guide with price ranges Anna Maria Island Vacation Cost Guide 2026 — Budget breakdown for different family sizes Rainy Day Activities in Bradenton & Sarasota — Indoor backup plans for April and September General Siesta Key vs Anna Maria Island Comparison — Non-family focused comparison siesta-key-vs-anna-maria-island-families Pick the calmer family base, then see the homes that fit If this page already settled the beach question, do not send the trip back through generic search or OTA filters",
+      "hash": "1279a54d6a72bc038cb79518f20ab515d8de0cd4f483807f4163547586b6c13f",
+      "sentence": "Check out our other family vacation guides: Complete Family Vacation Guide to Anna Maria Island — Activities, logistics, rain plans, and advanced packing tips The 5 Best Beaches on Anna Maria Island — Which beach for which family type Best Restaurants on Anna Maria Island — Complete family dining guide with price ranges Anna Maria Island Vacation Cost Guide 2026 — Budget breakdown for different family sizes Rainy Day Activities in Bradenton & Sarasota — Indoor backup plans for April and September General Siesta Key vs Anna Maria Island Comparison — Non-family focused comparison siesta-key-vs-anna-maria-island-families",
       "file": "src/guides/siesta-key-vs-anna-maria-island-families.html",
       "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
+      "note": "reviewed current guest copy after fail-closed sentence boundaries; not a new claim phrasing"
     },
     {
-      "hash": "8ddeb1b16356b177b0d4270b05f6a76fac7f43eb2686aceef952398535821b94",
-      "sentence": "Keep the family comparison tied to the real stay cost Booking the wrong way makes these two beaches look closer in price than they really are once platform fees land",
+      "hash": "ba50c860ff9866507208ccfc210133aac84042034115b6182073a30c913a4f12",
+      "sentence": "For families who want beach-first days and a pool-home setup without paying true beachfront pricing",
       "file": "src/guides/siesta-key-vs-anna-maria-island-families.html",
       "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
+      "note": "reviewed current guest copy after fail-closed sentence boundaries; not a new claim phrasing"
     },
     {
       "hash": "e5ed6f7d890e5c91401628a73f70d178b634805ee472b1f89a0a4a01418c0386",
@@ -1592,18 +1536,11 @@
       "note": "reviewed current guest copy; not a new claim phrasing"
     },
     {
-      "hash": "5575c2fccef2a9e5b2bc327f59681c95e274bbcd6f86bf48d0e9efc0d44f9334",
-      "sentence": "njk Book Direct & Save No platform fees Book Now partials/analytics-ga4",
+      "hash": "b439b6754570ccb3a363bc7c968ba016930f55178a65971b33477dd2e0823ec6",
+      "sentence": "Best spring break activities in Bradenton and Anna Maria Island 2026: fishing charters, kayaking, dolphin tours, beach gear, restaurants, and day trips — with cost and booking info",
       "file": "src/guides/spring-break-activities-bradenton-anna-maria-island/index.html",
       "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
-    },
-    {
-      "hash": "7e78c85b4261d27353e53c9a64be8f11677e8689001a10e7d24585883727c05f",
-      "sentence": "org Article Spring Break Activities Bradenton & Anna Maria Island 2026 Practical guide to spring break activities in Bradenton and on Anna Maria Island: fishing, kayaking, dolphin tours, beach access, day trips, and dining recommendations with cost data",
-      "file": "src/guides/spring-break-activities-bradenton-anna-maria-island/index.html",
-      "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
+      "note": "reviewed current guest copy after fail-closed sentence boundaries; not a new claim phrasing"
     },
     {
       "hash": "7736ba5e99ae01d7db2f09167e1a9017e1eacfa0f6a0b4a5c910fdccdb2619ca",
@@ -1620,6 +1557,13 @@
       "note": "reviewed current guest copy; not a new claim phrasing"
     },
     {
+      "hash": "01932ad46472de15511b46951d9df27f251d961f077e1477c296ecf73ad7798c",
+      "sentence": "Spring Break Rentals — Anna Maria Island Spring Break Rentals — Gulf Coast Comparison Large Group Rentals Near AMI (10–16 guests) March & April Weather on Anna Maria Island Book Direct & Save No platform fees Book Now",
+      "file": "src/guides/spring-break-activities-bradenton-anna-maria-island/index.html",
+      "slug": "",
+      "note": "reviewed current guest copy after fail-closed sentence boundaries; not a new claim phrasing"
+    },
+    {
       "hash": "58c4baaf4ff43b69b71716264681bf44205d1ce3e53194caa668e48c78a92af7",
       "sentence": "The comparison table below ranks all major activity categories by cost, group-friendliness, and booking requirements for spring break 2026",
       "file": "src/guides/spring-break-activities-bradenton-anna-maria-island/index.html",
@@ -1634,39 +1578,32 @@
       "note": "reviewed current guest copy; not a new claim phrasing"
     },
     {
-      "hash": "e10bac0cbd1f1a2ec430736b737d86a887ad0a5ae24c5814183a57da25321c2d",
-      "sentence": "Browse Homes Near AMI Check Available Dates Related Guides Best Time to Visit Anna Maria Island Month-by-month weather, crowds, and pricing guide",
+      "hash": "d2fad1529d414ca8a6fbf56c9d2f921738e87f0fb4f11a7dfa27631c2216e30d",
+      "sentence": "Check Available Dates Related Guides Best Time to Visit Anna Maria Island Month-by-month weather, crowds, and pricing guide",
       "file": "src/guides/srq-airport-to-anna-maria-island.html",
       "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
+      "note": "reviewed current guest copy after fail-closed sentence boundaries; not a new claim phrasing"
     },
     {
-      "hash": "4f8862c3a5113eb8368c6c05768db9d7040313a2511acda9b999fb6e436ef2b5",
-      "sentence": "njk Home › Guides › SRQ Airport to Anna Maria Island Travel Guide SRQ Airport to Anna Maria Island: Drive Time, Cost & Options Reviewed August 19, 2026 • 8 min read TL;DR Quick Summary SRQ to AMI is usually a 30- to 45-minute drive",
+      "hash": "4a4f2a4891510db6463635f23ff25af945fec6ae3c18e543a2544629f6d4592b",
+      "sentence": "Home › Guides › SRQ Airport to Anna Maria Island Travel Guide SRQ Airport to Anna Maria Island: Drive Time, Cost & Options Reviewed August 19, 2026 • 8 min read TL;DR Quick Summary SRQ to AMI is usually a 30- to 45-minute drive",
       "file": "src/guides/srq-airport-to-anna-maria-island.html",
       "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
+      "note": "reviewed current guest copy after fail-closed sentence boundaries; not a new claim phrasing"
     },
     {
-      "hash": "728e11278ccba5058ef563d27ce2650f4216f61b4ba68e4a6a4c2e63b667394b",
-      "sentence": "njk SRQ to Anna Maria Island: Time, Cost, Best Route partials/guest-header",
+      "hash": "cc4c249833b5dd968d899bd7bb392cee3c1c79712dcac0ab26dd7f6abefe823d",
+      "sentence": "Related Vacation Rentals Gulf Coast Beach House Rentals Coquina Beach Vacation Rentals Bradenton Rentals Near Beaches Siesta Key Area Rentals SRQ Airport to AMI Transport Options Option Time Cost Best For Rental car 35-45 min $40-$80/day Flexibility, off-island trips Uber/Lyft 35-45 min $40-$60 one way No car needed on island Airport shuttle service 45-60 min $25-$40/person Budget travelers Hotel or rental pickup 40-50 min Varies; ask ahead Pre-arranged arrivals Taxi 35-45 min $50-$70 Guaranteed availability",
       "file": "src/guides/srq-airport-to-anna-maria-island.html",
       "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
+      "note": "reviewed current guest copy after fail-closed sentence boundaries; not a new claim phrasing"
     },
     {
-      "hash": "152ea83803e97877e3fadef85e772193f4b2caabfde15fdbcdbf3363c0f5aa33",
-      "sentence": "org Article SRQ Airport to Anna Maria Island: Drive Time, Cost & Options Compare rental car, rideshare, taxi, shuttle, and bus options from SRQ to Anna Maria Island, with drive times and the best bridge route for each town",
+      "hash": "fa80910fba938b71477e639ef4405c80ca71a58350d74bcfd1dfec8b3d8e8acd",
+      "sentence": "SRQ to Anna Maria Island: Time, Cost, Best Route",
       "file": "src/guides/srq-airport-to-anna-maria-island.html",
       "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
-    },
-    {
-      "hash": "58d8752a30633a35cffdaf590994fd49c4b282b6a28d6d93e7075ed0591d7003",
-      "sentence": "Related Vacation Rentals Gulf Coast Beach House Rentals Coquina Beach Vacation Rentals Bradenton Rentals Near Beaches Siesta Key Area Rentals SRQ Airport to AMI Transport Options Option Time Cost Best For Rental car 35-45 min $40-$80/day Flexibility, off-island trips Uber/Lyft 35-45 min $40-$60 one way No car needed on island Airport shuttle service 45-60 min $25-$40/person Budget travelers Hotel or rental pickup 40-50 min Varies; ask ahead Pre-arranged arrivals Taxi 35-45 min $50-$70 Guaranteed availability partials/guest-footer",
-      "file": "src/guides/srq-airport-to-anna-maria-island.html",
-      "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
+      "note": "reviewed current guest copy after fail-closed sentence boundaries; not a new claim phrasing"
     },
     {
       "hash": "922df963c100962eddae95b2e9018e05db3853c74ad378a1eba300ffcb5b4e37",
@@ -1725,58 +1662,23 @@
       "note": "reviewed current guest copy; not a new claim phrasing"
     },
     {
+      "hash": "43f49e2366ed6967689a6b217229afb36b34c6a552c8d00397cb95dc4ddb8751",
+      "sentence": "Compare Holmes Beach, Bradenton Beach, Longboat Key & more — with pricing and insider tips",
+      "file": "src/guides/where-to-stay-near-anna-maria-island/index.html",
+      "slug": "",
+      "note": "reviewed current guest copy after fail-closed sentence boundaries; not a new claim phrasing"
+    },
+    {
+      "hash": "7141e4e87b8b5b29d91d744e0350a98d3f956ed9d22d4ebc6e2ffe3a177d377b",
+      "sentence": "See All Properties Related Vacation Rentals Bradenton Homes Near the Water Family Rentals on Anna Maria Island Beachfront Homes Sarasota County Luxury Bradenton Rentals Book Direct & Compare Totals Browse Our Homes → Book Direct & Save No platform fees Book Now",
+      "file": "src/guides/where-to-stay-near-anna-maria-island/index.html",
+      "slug": "",
+      "note": "reviewed current guest copy after fail-closed sentence boundaries; not a new claim phrasing"
+    },
+    {
       "hash": "b7b041193eac3781cd95e1bb486d0a322014e0691c918a52415e76bd870eb9ba",
       "sentence": "The Quick Comparison: Every Neighborhood at a Glance Neighborhood Pricing Beach Distance Best For Vibe Anna Maria (north end) Compare current quotes Walk (2–5 min) Quiet couples, Bean Point sunsets Historic, sleepy, cottage-y Holmes Beach (center) Compare current quotes Walk (3–8 min) First-timers, families, foodies Most walkable, most restaurants Bradenton Beach (south) Compare current quotes Walk (2–6 min) Families with small kids, fishing Local, Bridge Street shops Cortez (mainland) Compare current quotes Drive (8 min) Fishing families, authentic Florida Working fishing village Bradenton waterfront Compare current quotes Drive (10–15 min) Value seekers, boaters, pool lovers Residential, spacious, waterfront Longboat Key Compare current quotes Walk (varies) Luxury couples, golf, spa Upscale resort, quiet Palma Sola Compare current quotes Drive (12 min) Kayakers, nature lovers Bay-front, near Robinson Preserve On the Island: Three Towns, Three Personalities Anna Maria City On-Island · North End Check your dates The quietest part of the island",
       "file": "src/guides/where-to-stay-near-anna-maria-island/index.html",
-      "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
-    },
-    {
-      "hash": "dd5cc3a8ef98fceee9eef7eb9211ffdfb691b3bfec1692c4b4d97a89d2f56e29",
-      "sentence": "com/guides/anna-maria-island-vs-siesta-key/): Side-by-side beach comparison covering sand quality, parking, dining, snorkeling, vacation rental prices, and which is better for families - [Best Time to Visit Anna Maria Island](https://seascape-vacations",
-      "file": "src/llms.txt",
-      "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
-    },
-    {
-      "hash": "0ecf608dc48b2c731f4d0ce37e6960891373ac631f6ba49eefd2ff16c39f4135",
-      "sentence": "com/guides/best-time-visit-anna-maria-island/): Seasonal weather, crowds, and pricing - [Flights to Anna Maria Island](https://seascape-vacations",
-      "file": "src/llms.txt",
-      "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
-    },
-    {
-      "hash": "40cd8dd40e4e757e80480b3c75b1eee1092e0a2d0205ba465b45cf52c9b020dd",
-      "sentence": "com/guides/flights-to-anna-maria-island/): Airport options — TPA vs SRQ - [AMI Vacation Cost Guide 2026](https://seascape-vacations",
-      "file": "src/llms.txt",
-      "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
-    },
-    {
-      "hash": "bd278b03aa60063a9a8139b5b5cde1290de5fdcd6829db8051dd6b18ff51c958",
-      "sentence": "com/research/owner-fee-revenue-leak-benchmark-2026/): Airbnb's published host fee, Stripe's published card-processing price, and questions to ask about property-specific management pricing ## Area Guides - [Anna Maria Island Area Guide](https://seascape-vacations",
-      "file": "src/llms.txt",
-      "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
-    },
-    {
-      "hash": "9376bcb11976084057199cb15f27fa09b32e30754826acb2ffa1a258fed711fd",
-      "sentence": "com/stays/affordable-vacation-rentals-florida-gulf-coast/): Pool homes with live pricing by date and property - [Beach House Rentals Gulf Coast](https://seascape-vacations",
-      "file": "src/llms.txt",
-      "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
-    },
-    {
-      "hash": "626ab8ae2f69b14f6cbe02e25b9c18f2ad6e38fd873ddd02077bd2f5cee0ff91",
-      "sentence": "com/stays/book-direct-anna-maria-island/): Pool homes with lower-fee direct-booking paths instead of marketplace checkout ## Property Management - [Property Management](https://seascape-vacations",
-      "file": "src/llms.txt",
-      "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
-    },
-    {
-      "hash": "1996f00288e4059b8cd70c3999da4d5e8d48272bbdfca1cc25248aac7b1c15d5",
-      "sentence": "| | | | | 0 , Florida plus catalog-compare-add check catalog-compare-selected Compare bedrooms baths Up to guests The draw · Check dates Explore this home → Full price, fees and cancellation terms on the booking page",
-      "file": "src/properties/index.njk",
       "slug": "",
       "note": "reviewed current guest copy; not a new claim phrasing"
     },
@@ -1814,6 +1716,13 @@
       "file": "src/property-management/index.njk",
       "slug": "",
       "note": "reviewed current guest copy; not a new claim phrasing"
+    },
+    {
+      "hash": "a78ec48360ee871fa46cce7c25f7d861c4c1ecb4c011e0792f9d7fb7b618c60f",
+      "sentence": "One local team lists, prices, hosts and cleans each home, pays you monthly, and answers the phone",
+      "file": "src/property-management/index.njk",
+      "slug": "",
+      "note": "reviewed current guest copy after fail-closed sentence boundaries; not a new claim phrasing"
     },
     {
       "hash": "cc7a2bec270fc80e838ce5c736b74adfb91438e675a5ae0d6ba74d78c593970c",
@@ -1865,30 +1774,9 @@
       "note": "reviewed current guest copy; not a new claim phrasing"
     },
     {
-      "hash": "3eb91c948913403646c68e24fd26f7abe532a141877e9497be388deaea7640de",
-      "sentence": "Read the fee guide vacation-rental-management-fees-florida Compare management fees vacation-rental-licensing-florida Check licensing risk vrbo-management-services-florida Review VRBO handling Request your review Private revenue review Want the same review on your home",
-      "file": "src/property-management/property-management.njk",
-      "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
-    },
-    {
       "hash": "de65a2472ba4a8d7e3d45ac8eb26355ddee3041b4f5d4a654c2c3e0ef273d80e",
       "sentence": "Send one sentence on what feels off: revenue, booking-site fees, reporting, owner communication, pricing, occupancy, or the current manager setup",
       "file": "src/property-management/revenue-review-requested.njk",
-      "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
-    },
-    {
-      "hash": "82202e1e82ced343a2a0d07b27b898db0f610ca9d0d31818f79e82e395fcc14f",
-      "sentence": "com/research/florida-gulf-coast-vacation-cost-calculator-2026/",
-      "file": "src/research/florida-gulf-coast-vacation-cost-calculator-2026.njk",
-      "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
-    },
-    {
-      "hash": "2b1267200d5c2a52ebe0fe7c168170503719a8e0084c2b4c7728709065fdce4c",
-      "sentence": "com/research/florida-gulf-coast-vacation-cost-calculator-2026/ https://seascape-vacations",
-      "file": "src/research/florida-gulf-coast-vacation-cost-calculator-2026.njk",
       "slug": "",
       "note": "reviewed current guest copy; not a new claim phrasing"
     },
@@ -1928,25 +1816,11 @@
       "note": "reviewed current guest copy; not a new claim phrasing"
     },
     {
-      "hash": "952504f8155d31f296a59b0facc18ca581cf2cbabce4d8053b3663b8ba9a6a05",
-      "sentence": "com/research/gulf-coast-vacation-booking-trends-2026/ CreativeWork Florida Beach Vacation Costs: Compare Your Trip (2026) https://seascape-vacations",
+      "hash": "20a00f5aff891044cba286411fce71c2eb5a1c23352d0393661cd0b6b1c0be75",
+      "sentence": "Florida Beach Vacation Costs: Compare Your Trip (2026)",
       "file": "src/research/index.njk",
       "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
-    },
-    {
-      "hash": "20e3cd576d03cfed7e4f16050fa45cf56cd9cf083604f318985cfea408b13fe2",
-      "sentence": "com/research/owner-fee-revenue-leak-benchmark-2026/",
-      "file": "src/research/index.njk",
-      "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
-    },
-    {
-      "hash": "cf50be1b325296f6e33787f30661bd2366e3338afc0ce516bb3852862e0791ac",
-      "sentence": "com/research/real-cost-florida-beach-vacation-bradenton-sarasota-ami-2026/ CreativeWork Airbnb Host Fees vs Card Processing https://seascape-vacations",
-      "file": "src/research/index.njk",
-      "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
+      "note": "reviewed current guest copy after fail-closed sentence boundaries; not a new claim phrasing"
     },
     {
       "hash": "fa2491dd3c571d45a5c51efe29795666fb27d9cbd7c7a438f1e74ea888a67a49",
@@ -1956,25 +1830,18 @@
       "note": "reviewed current guest copy; not a new claim phrasing"
     },
     {
-      "hash": "b63cf7243b4727d2e7f7644522a7e321e1bf3dce53c4530e491c1e8723681cfc",
-      "sentence": "5% title Stripe card processing detail Published standard domestic online-card pricing value 2",
-      "file": "src/research/owner-fee-revenue-leak-benchmark-2026.njk",
-      "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
-    },
-    {
-      "hash": "961a231befa370f4d1f52f1ed44af3f59c142e5f1fe78f32cfd3ac8c7c79c995",
-      "sentence": "9% + 30¢ title Seascape management detail Set per property by the signed management agreement value Property-specific title Other direct-booking costs detail Marketing, software, labor, refunds, and chargebacks value Review label Your agreement title Management pricing copy Ask which revenue base the fee uses, which services it includes, and which costs remain separate",
-      "file": "src/research/owner-fee-revenue-leak-benchmark-2026.njk",
-      "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
-    },
-    {
       "hash": "7283849d1cf8074cbec82943c5c32aa98f2942af39c156c20ce07914aaeabca3",
       "sentence": "A clear proposal should explain the charge, the revenue base, the included service, and the costs that remain outside the agreement",
       "file": "src/research/owner-fee-revenue-leak-benchmark-2026.njk",
       "slug": "",
       "note": "reviewed current guest copy; not a new claim phrasing"
+    },
+    {
+      "hash": "0eb05b08522d776a21537dcde935f39257e899b65756293c12017e1192b95335",
+      "sentence": "A percentage without its fee basis is not a complete quote",
+      "file": "src/research/owner-fee-revenue-leak-benchmark-2026.njk",
+      "slug": "",
+      "note": "reviewed current guest copy after fail-closed sentence boundaries; not a new claim phrasing"
     },
     {
       "hash": "73d0564426960739cf66f71496dc235504af74763a83ec76e8475294ade6770a",
@@ -1991,11 +1858,11 @@
       "note": "reviewed current guest copy; not a new claim phrasing"
     },
     {
-      "hash": "0d099f5de26d3abc80dfd8716c7e2447acc95b62df1ac6f3819811962318c60c",
-      "sentence": "com/research/owner-fee-revenue-leak-benchmark-2026/ https://seascape-vacations",
+      "hash": "420492bcc3b92bdeeea1a726fad221e51e808118018fc3de1924834103f3843e",
+      "sentence": "Card processing is only one part of the cost of earning and serving a direct guest",
       "file": "src/research/owner-fee-revenue-leak-benchmark-2026.njk",
       "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
+      "note": "reviewed current guest copy after fail-closed sentence boundaries; not a new claim phrasing"
     },
     {
       "hash": "adc79d6eabbeceb58952966446ed9129dd1481c3f5b850b05f4417ce15453625",
@@ -2005,18 +1872,11 @@
       "note": "reviewed current guest copy; not a new claim phrasing"
     },
     {
-      "hash": "4950a4730d9ec31caa24bcdb764209b5c292a9e062a72db0965eece5be565fc0",
-      "sentence": "implication A percentage without its fee basis is not a complete quote",
+      "hash": "99a6bd6d7d420cd60a42d5939bcd2ac7763eb521a74875281526f25c5aa1e7f8",
+      "sentence": "Most single-fee hosts pay 15",
       "file": "src/research/owner-fee-revenue-leak-benchmark-2026.njk",
       "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
-    },
-    {
-      "hash": "ff7bcb2a9e6b29c8f24356853bdb4b35540a361da26e2cab2cc37eabf3dab5f2",
-      "sentence": "implication Card processing is only one part of the cost of earning and serving a direct guest",
-      "file": "src/research/owner-fee-revenue-leak-benchmark-2026.njk",
-      "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
+      "note": "reviewed current guest copy after fail-closed sentence boundaries; not a new claim phrasing"
     },
     {
       "hash": "677790bcec93866a877c7f70e6fb58a7d00d436e998209f2a4398e47d98913cd",
@@ -2040,51 +1900,16 @@
       "note": "reviewed current guest copy; not a new claim phrasing"
     },
     {
+      "hash": "fac468d2ae4b124b9c177e78ac54fb1ae814bf49886397c3e65e11dfd2fd866b",
+      "sentence": "Put platform, processing, management, software, marketing, and operating costs on one page",
+      "file": "src/research/owner-fee-revenue-leak-benchmark-2026.njk",
+      "slug": "",
+      "note": "reviewed current guest copy after fail-closed sentence boundaries; not a new claim phrasing"
+    },
+    {
       "hash": "0c9179cea9e9a65af503c6c4cab0dc6c9da95c57cb9a84c55dd4a001f8800bb6",
       "sentence": "That is one cost inside a direct-booking operation",
       "file": "src/research/owner-fee-revenue-leak-benchmark-2026.njk",
-      "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
-    },
-    {
-      "hash": "7a0f546259847213c140980fee78821831238a0e58698d973b54f9c57916f69e",
-      "sentence": "title Airbnb host service fee detail Published single-fee pricing for software-connected listings value Mostly 15",
-      "file": "src/research/owner-fee-revenue-leak-benchmark-2026.njk",
-      "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
-    },
-    {
-      "hash": "d2f2d25af25b1dbec1626528c125a66d2c4fce5d67e10fa845fa3ec57454358a",
-      "sentence": "title Airbnb host service fee rate Most single-fee hosts pay 15",
-      "file": "src/research/owner-fee-revenue-leak-benchmark-2026.njk",
-      "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
-    },
-    {
-      "hash": "181c3774a31f44c20d455640568f8aa97cacb60893182bb71f5d7018772a1bba",
-      "sentence": "title Complete review change Put platform, processing, management, software, marketing, and operating costs on one page",
-      "file": "src/research/owner-fee-revenue-leak-benchmark-2026.njk",
-      "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
-    },
-    {
-      "hash": "2588f07b5e6ac24c10fbecd3ce4f6a1a92e38d24d56004ae86ef9f57a14c3d37",
-      "sentence": "title Stripe card processing rate 2",
-      "file": "src/research/owner-fee-revenue-leak-benchmark-2026.njk",
-      "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
-    },
-    {
-      "hash": "ac3813b0b11313a6e47446e04e15758065b177bdc2efb780b46c44bf11048a19",
-      "sentence": "com/research/real-cost-florida-beach-vacation-bradenton-sarasota-ami-2026/",
-      "file": "src/research/real-cost-florida-beach-vacation-bradenton-sarasota-ami-2026.njk",
-      "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
-    },
-    {
-      "hash": "f92ec68aef2a62c8ec20a20e9bd39fdfd7881bca8045b85bed1e54d23af86bf7",
-      "sentence": "com/research/real-cost-florida-beach-vacation-bradenton-sarasota-ami-2026/ https://seascape-vacations",
-      "file": "src/research/real-cost-florida-beach-vacation-bradenton-sarasota-ami-2026.njk",
       "slug": "",
       "note": "reviewed current guest copy; not a new claim phrasing"
     },
@@ -2100,6 +1925,69 @@
       "sentence": "Source note — October 5, 2026: The earlier area-rate estimates and family-trip totals have been removed",
       "file": "src/research/real-cost-florida-beach-vacation-bradenton-sarasota-ami-2026.njk",
       "slug": "",
+      "note": "reviewed current guest copy; not a new claim phrasing"
+    },
+    {
+      "hash": "dcf5a59363122c6f02b62f6d00152d190d81be3b40958e4470b8630437a6d93c",
+      "sentence": "Are summer rates lower than winter",
+      "file": "",
+      "slug": "summer-vacation-rentals-florida-gulf-coast",
+      "note": "reviewed current guest copy; not a new claim phrasing"
+    },
+    {
+      "hash": "283c0198b33219ac8ec2bd9690870f6805cfff65d6711afdc20cac97e66d0041",
+      "sentence": "Coquina and Manatee Public Beach have free or low-cost public lots",
+      "file": "",
+      "slug": "vacation-rentals-near-anna-maria-island",
+      "note": "reviewed current guest copy; not a new claim phrasing"
+    },
+    {
+      "hash": "51a1686247d9fad383f6086c04f352e8976054bcb625b488fcc462710dadd415",
+      "sentence": "You trade a walk-out island address for more space, a private heated pool, easier parking, and listing-specific pricing",
+      "file": "",
+      "slug": "vacation-rentals-near-anna-maria-island",
+      "note": "reviewed current guest copy; not a new claim phrasing"
+    },
+    {
+      "hash": "5687d025ffbb101525d42f85c3502e0bb8cbd695840eb26ac4b33faedaa6170f",
+      "sentence": "All {matching} include a private pool and hot tub - no shared amenities, no lobby, no resort fees",
+      "file": "",
+      "slug": "vacation-rentals-sleeps-12-florida",
+      "note": "reviewed current guest copy; not a new claim phrasing"
+    },
+    {
+      "hash": "9fe1ca1aaee2eb735be0842407013fa06395364b917a0ae1e1052d86e7060388",
+      "sentence": "What's the cost per person for a group of {sleeps-matching}",
+      "file": "",
+      "slug": "vacation-rentals-sleeps-12-florida",
+      "note": "reviewed current guest copy; not a new claim phrasing"
+    },
+    {
+      "hash": "21e2f4cc1d5df5d388e12dee4aa43a00432ce314d4fc91f70d8c494d92d437ea",
+      "sentence": "Pool heat is $40/day at homes that list a pool-heat fee - worth it November through March, rarely needed in summer; confirm the fee when booking, including the newest Bradenton home",
+      "file": "",
+      "slug": "vacation-rentals-with-pool-and-hot-tub",
+      "note": "reviewed current guest copy; not a new claim phrasing"
+    },
+    {
+      "hash": "b696004ae03ee9940c239612e0c08a90df675bbc35f804539b79d67d1cda670f",
+      "sentence": "Pool heat is an optional add-on ($40/day at homes that list a pool-heat fee) that most guests request November through March - the Gulf runs warm enough the rest of the year that an unheated pool is comfortable",
+      "file": "",
+      "slug": "vacation-rentals-with-pool-and-hot-tub",
+      "note": "reviewed current guest copy; not a new claim phrasing"
+    },
+    {
+      "hash": "80303e3ad5226ed04d70c101919aa5d0dc5582d6e4fdfc29f3ecd4b92bea0c35",
+      "sentence": "Pool heat is an optional add-on at $40 per day at homes that list a pool-heat fee - most useful November through March",
+      "file": "",
+      "slug": "vacation-rentals-with-pool-and-hot-tub",
+      "note": "reviewed current guest copy; not a new claim phrasing"
+    },
+    {
+      "hash": "e9702cce3be2dcd65b4ddf69571d7c925d929a2d16989822b22d71150eee85bf",
+      "sentence": "Are weekly rates cheaper than nightly",
+      "file": "",
+      "slug": "week-long-vacation-rentals-florida",
       "note": "reviewed current guest copy; not a new claim phrasing"
     }
   ]

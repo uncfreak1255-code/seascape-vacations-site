@@ -418,6 +418,56 @@ test('never-seen price-cue phrasing fails without changing the matcher', () => {
     ),
     /sourcedClaims\.json is missing a sourced-claim row or .*nonClaimSentences/
   );
+
+  const frontmatter = collectPriceClaimCandidates(
+    `---\npageDescription: "Guests ${phrase}."\npermalink: /guides/hidden-plant/\n---\n<p>Plain body copy with no price words.</p>`
+  );
+  assert.equal(frontmatter[0].kind, 'price-cue-candidate');
+  assert.match(frontmatter[0].excerpt, /fraction of the OTA price/i);
+
+  const htmlMeta = collectPriceClaimCandidates(
+    `<title>Guide</title><meta name="description" content="Guests ${phrase}."><p>Plain body copy with no price words.</p>`
+  );
+  assert.equal(htmlMeta[0].kind, 'price-cue-candidate');
+  assert.match(htmlMeta[0].excerpt, /fraction of the OTA price/i);
+
+  const splitArgs = collectPriceClaimCandidates(
+    '{{ kit({ heading: "Need more space", cta: "Check rates" }) }}'
+  );
+  assert.equal(splitArgs.length, 0, 'separate quoted macro args do not form a synthetic claim');
+
+  const plantedArg = collectPriceClaimCandidates(
+    `{{ kit({ heading: "Need more space", cta: "Guests ${phrase}." }) }}`
+  );
+  assert.equal(plantedArg[0].kind, 'price-cue-candidate');
+  assert.match(plantedArg[0].excerpt, /fraction of the OTA price/i);
+
+  const os = require('node:os');
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'claim-site-scan-'));
+  fs.mkdirSync(path.join(tmp, 'src/_data'), { recursive: true });
+  fs.writeFileSync(
+    path.join(tmp, 'src/_data/site.json'),
+    JSON.stringify({ description: `Guests ${phrase}.` })
+  );
+  const siteHits = scanSrcClaimCandidates(tmp);
+  assert.ok(
+    siteHits.some((hit) => hit.file === 'src/_data/site.json' && /fraction of the OTA price/i.test(hit.excerpt)),
+    'public site.json strings are scanned'
+  );
+
+  const saveWithoutPrice = collectPriceClaimCandidates(
+    'Book direct and save 15 percent on the same dates.'
+  );
+  assert.equal(
+    saveWithoutPrice.length,
+    0,
+    'percent without a price/cost/fee/rate term is outside the candidate contract'
+  );
+  const saveWithPrice = collectPriceClaimCandidates(
+    'Book direct and save 15 percent on the OTA price.'
+  );
+  assert.equal(saveWithPrice[0].kind, 'price-cue-candidate');
+  assert.equal(parseClaimHits('Book direct and save 15 percent on the same dates.').length, 0);
 });
 
 test('Bradenton-Sarasota dining comparison uses current menus in body and FAQ schema', () => {

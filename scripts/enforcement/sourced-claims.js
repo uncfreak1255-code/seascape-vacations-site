@@ -108,10 +108,69 @@ function sentenceHash(text) {
   return crypto.createHash("sha256").update(normalizeSentence(text)).digest("hex");
 }
 
+function isSourcePathLiteral(value) {
+  return /\.(?:njk|html|js|json|css|md|txt)(?:#.*)?$/i.test(value) || /^(?:partials|layouts|macros)\//.test(value);
+}
+
+function isNonCopySentence(sentence) {
+  const text = String(sentence || "").trim();
+  return /^(?:https?:\/\/|(?:www\.)?[\w.-]*\/)/i.test(text) || /^[\w.-]+\/[\w./-]+$/.test(text);
+}
+
 function quotedTemplateLiterals(text) {
   return [...String(text || "").matchAll(/(["'`])((?:\\.|(?!\1)[\s\S])*?)\1/g)]
-    .map((match) => match[2].replace(/\\(["'`])/g, "$1"))
-    .join(" ");
+    .map((match) => match[2].replace(/\\(["'`])/g, "$1").trim())
+    .filter((value) => value && !isSourcePathLiteral(value))
+    .join(". ");
+}
+
+const PUBLIC_FRONTMATTER_KEY =
+  /^(?:title|pageTitle|description|pageDescription|metaDescription|ogDescription|twitterDescription|seoTitle|seoDescription)$/i;
+
+function publicFrontmatterCopy(text) {
+  const block = String(text || "").match(/^---\r?\n([\s\S]*?)\r?\n---/);
+  if (!block) {
+    return "";
+  }
+  const parts = [];
+  for (const line of block[1].split(/\r?\n/)) {
+    const match = line.match(/^([A-Za-z][A-Za-z0-9_]*)\s*:\s*(?:["']([^"']*)["']|(.+))\s*$/);
+    if (!match || !PUBLIC_FRONTMATTER_KEY.test(match[1])) {
+      continue;
+    }
+    const value = String(match[2] != null ? match[2] : match[3] || "").trim();
+    if (value) {
+      parts.push(value);
+    }
+  }
+  return parts.join(". ");
+}
+
+const PUBLIC_META_NAME =
+  /^(?:description|og:description|twitter:description|og:title|twitter:title)$/i;
+
+function publicHtmlMetaCopy(text) {
+  const source = String(text || "");
+  const parts = [];
+  const title = source.match(/<title[^>]*>([\s\S]*?)<\/title>/i);
+  if (title) {
+    const value = stripMarkup(title[1]).trim();
+    if (value) {
+      parts.push(value);
+    }
+  }
+  for (const match of source.matchAll(/<meta\b[^>]*>/gi)) {
+    const tag = match[0];
+    const name = (tag.match(/\b(?:name|property)=["']([^"']+)["']/i) || [])[1] || "";
+    if (!PUBLIC_META_NAME.test(name)) {
+      continue;
+    }
+    const content = (tag.match(/\bcontent=["']([^"']*)["']/i) || [])[1];
+    if (content && content.trim()) {
+      parts.push(content.trim());
+    }
+  }
+  return parts.join(". ");
 }
 
 function walkJsonStrings(value, visit) {
@@ -139,24 +198,30 @@ function jsonLdCopy(text) {
       parts.push(quotedTemplateLiterals(match[1]));
     }
   }
-  return parts.join(" ");
+  return parts.join(". ");
 }
 
 function guestCopyText(text) {
-  const structured = jsonLdCopy(text);
-  return `${String(text || "")
+  const source = String(text || "");
+  const frontmatter = publicFrontmatterCopy(source);
+  const htmlMeta = publicHtmlMetaCopy(source);
+  const structured = jsonLdCopy(source);
+  const body = source
     .replace(/^---[\s\S]*?---/, " ")
+    .replace(/<title[\s\S]*?<\/title>/gi, " ")
+    .replace(/<meta\b[^>]*>/gi, " ")
     .replace(/<style[\s\S]*?<\/style>/gi, " ")
     .replace(/<script[\s\S]*?<\/script>/gi, " ")
     .replace(/\{%([\s\S]*?)%\}/g, (_, inner) => ` ${quotedTemplateLiterals(inner)} `)
-    .replace(/\{\{([\s\S]*?)\}\}/g, (_, inner) => ` ${quotedTemplateLiterals(inner)} `)} ${structured}`;
+    .replace(/\{\{([\s\S]*?)\}\}/g, (_, inner) => ` ${quotedTemplateLiterals(inner)} `);
+  return [frontmatter, htmlMeta, body, structured].filter(Boolean).join(". ");
 }
 
 function splitGuestSentences(text) {
   return stripMarkup(guestCopyText(text))
     .split(/(?<=[.!?])\s+|[.!?]+/)
     .map((sentence) => sentence.replace(/\s+/g, " ").trim())
-    .filter((sentence) => sentence.length >= 8);
+    .filter((sentence) => sentence.length >= 8 && !isNonCopySentence(sentence));
 }
 
 function collectPriceClaimCandidates(text) {
@@ -1311,6 +1376,18 @@ function scanSrcClaimCandidates(root = DEFAULT_ROOT) {
           );
         });
       }
+      continue;
+    }
+    if (relative === "src/_data/site.json") {
+      const site = JSON.parse(fs.readFileSync(file, "utf8"));
+      walkRecordStrings(site, (text) => {
+        hits.push(
+          ...collectPriceClaimCandidates(text).map((hit) => ({
+            ...hit,
+            file: relative
+          }))
+        );
+      });
       continue;
     }
     if (relative.startsWith("src/_data/")) {
