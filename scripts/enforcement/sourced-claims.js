@@ -46,6 +46,10 @@ const PRICE_NOUN = /\b(?:rates?|pricing|price|markup|premium|discount|value|savi
 const QUALITATIVE_ADJ = /\b(?:better|best|lower|higher|cheaper|lowest|highest|deeper|deepest|stronger|priciest|typical|premium|far better)\b/gi;
 const AVOIDANCE = /\b(?:skip|avoid|beat)\b/gi;
 const AVOIDANCE_NOUN = /\b(?:markup|premium|platform fees|extra fees)\b/gi;
+const COST_VERB = /\b(?:costs?|priced|runs)\b/gi;
+const COST_COMPARATIVE = /\b(?:less|more|cheaper|lower|higher)\b/gi;
+const COPULA_CHEAPER = /\b(?:it(?:'s|\s+is)|they(?:'re|\s+are)|this\s+is|that\s+is)\s+cheaper\b/gi;
+const WITHOUT = /\bwithout\b/gi;
 const KIND_PERCENT = "percent-comparative";
 const KIND_QUALITATIVE = "qualitative-price-advantage";
 
@@ -326,12 +330,30 @@ function wordNumberValue(raw) {
   return Number.parseInt(String(raw).replace(/[^\d].*$/, ""), 10);
 }
 
+function sentenceStartAt(text, index) {
+  return Math.max(0, text.lastIndexOf(".", index) + 1, text.lastIndexOf("!", index) + 1, text.lastIndexOf("?", index) + 1);
+}
+
 function sentenceAt(text, index) {
-  const start = Math.max(0, text.lastIndexOf(".", index) + 1, text.lastIndexOf("!", index) + 1, text.lastIndexOf("?", index) + 1);
+  const start = sentenceStartAt(text, index);
   const next = [text.indexOf(".", index), text.indexOf("!", index), text.indexOf("?", index)]
     .filter((value) => value >= 0)
     .sort((left, right) => left - right)[0];
   return text.slice(start, next == null ? text.length : next + 1).trim();
+}
+
+function crossesSentence(text, start, end) {
+  return /[.!?]/.test(String(text || "").slice(start, end));
+}
+
+function isNegatedSpan(text, matchStart) {
+  const source = String(text || "");
+  const beforeInSentence = source.slice(sentenceStartAt(source, matchStart), matchStart);
+  if (/\b(?:does\s+not|do\s+not|doesn['’]t|don['’]t)\s+establish\b/i.test(beforeInSentence)) {
+    return true;
+  }
+  const before = source.slice(Math.max(0, matchStart - 48), matchStart);
+  return /\b(?:does\s+not|do\s+not|doesn['’]t|don['’]t)\s+$|\bnot\s+establish\s+$/i.test(before);
 }
 
 function isQuestionSentence(sentence) {
@@ -398,7 +420,13 @@ function parsePercentHits(stripped) {
 
     const save = [...before.matchAll(new RegExp(SAVE_BEFORE.source, "gi"))].pop();
     const saveDistance = save ? before.length - save.index : Infinity;
-    if (save && saveDistance <= 32 && !/save our homes/i.test(before.slice(save.index))) {
+    const saveSameSentence = save && !crossesSentence(before, save.index, before.length);
+    if (
+      save &&
+      saveSameSentence &&
+      saveDistance <= 32 &&
+      !/save our homes/i.test(before.slice(save.index))
+    ) {
       spanStart = percent.index - saveDistance;
       subject = subject ? `${save[0].toLowerCase()}|${subject}` : save[0].toLowerCase();
     } else if (DIFFERENCE_BEFORE.test(before) && /or more/i.test(after)) {
@@ -458,7 +486,7 @@ function parseQualitativeHits(stripped) {
 
   function add(matchStart, matchEnd, subject, value) {
     const sentence = sentenceAt(stripped, matchStart);
-    if (isQuestionSentence(sentence) || /\bdoes not\b|\bnot establish\b/i.test(sentence)) {
+    if (isQuestionSentence(sentence) || isNegatedSpan(stripped, matchStart)) {
       return;
     }
     const match = stripped.slice(matchStart, matchEnd).replace(/\s+/g, " ").trim();
@@ -503,14 +531,73 @@ function parseQualitativeHits(stripped) {
   }
 
   for (const noun of avoidNouns) {
-    const avoid = avoids.find((entry) => entry.end <= noun.index && wordsBetween(stripped, entry.end, noun.index) <= 3);
+    const avoid = avoids.find(
+      (entry) =>
+        entry.end <= noun.index &&
+        wordsBetween(stripped, entry.end, noun.index) <= 3 &&
+        !crossesSentence(stripped, entry.end, noun.index)
+    );
     if (!avoid) {
       continue;
     }
     add(avoid.index, noun.end, noun.raw.toLowerCase(), stripped.slice(avoid.index, noun.end).replace(/\s+/g, " ").trim().toLowerCase());
   }
 
+  const costVerbs = collectMatches(stripped, COST_VERB);
+  const costComparatives = collectMatches(stripped, COST_COMPARATIVE);
+  for (const verb of costVerbs) {
+    const comparative = costComparatives.find(
+      (entry) =>
+        entry.index >= verb.end &&
+        wordsBetween(stripped, verb.end, entry.index) <= 2 &&
+        !crossesSentence(stripped, verb.end, entry.index)
+    );
+    if (!comparative) {
+      continue;
+    }
+    const sentence = sentenceAt(stripped, verb.index);
+    if (/\b(?:assum(?:e|ing)|rather than|whether)\b/i.test(sentence)) {
+      continue;
+    }
+    const adverb = stripped.slice(Math.max(0, verb.index - 16), verb.index).match(/\b(?:usually|typically|often|generally)\s+$/i);
+    add(
+      adverb ? verb.index - adverb[0].length : verb.index,
+      comparative.end,
+      "cost-comparative",
+      stripped.slice(adverb ? verb.index - adverb[0].length : verb.index, comparative.end).replace(/\s+/g, " ").trim().toLowerCase()
+    );
+  }
+
+  for (const cheaper of collectMatches(stripped, COPULA_CHEAPER)) {
+    add(cheaper.index, cheaper.end, "cheaper", cheaper.raw.replace(/\s+/g, " ").trim().toLowerCase());
+  }
+
+  for (const noun of avoidNouns) {
+    const without = collectMatches(stripped, WITHOUT).find(
+      (entry) =>
+        entry.end <= noun.index &&
+        wordsBetween(stripped, entry.end, noun.index) <= 4 &&
+        !crossesSentence(stripped, entry.end, noun.index) &&
+        allowedWithoutGap(stripped, entry.end, noun.index)
+    );
+    if (!without) {
+      continue;
+    }
+    add(without.index, noun.end, noun.raw.toLowerCase(), stripped.slice(without.index, noun.end).replace(/\s+/g, " ").trim().toLowerCase());
+  }
+
   return hits;
+}
+
+function allowedWithoutGap(text, start, end) {
+  const gap = text.slice(start, end).trim();
+  if (!gap) {
+    return true;
+  }
+  if (/[-_/]/.test(gap) || crossesSentence(text, start, end)) {
+    return false;
+  }
+  return /^(?:the|a|an|extra|those|any|added|these)(?:\s+(?:the|a|an|extra|those|any|added|these))*$/i.test(gap);
 }
 
 function parseClaimHits(text) {
@@ -548,10 +635,19 @@ function coversHit(claim, hit, now = new Date()) {
   if (isExpired(claim, now)) {
     return false;
   }
-  if (hit.file && claim.file && claim.file !== hit.file) {
+  const claimFile = String(claim.file || "").trim();
+  const claimSlug = String(claim.slug || "").trim();
+  const hitFile = String(hit.file || "").trim();
+  const hitSlug = String(hit.slug || "").trim();
+  const fileScoped = Boolean(claimFile || hitFile);
+  const slugScoped = Boolean(claimSlug || hitSlug);
+  if (!fileScoped && !slugScoped) {
     return false;
   }
-  if (hit.slug && claim.slug && claim.slug !== hit.slug) {
+  if (fileScoped && (!claimFile || !hitFile || claimFile !== hitFile)) {
+    return false;
+  }
+  if (slugScoped && (!claimSlug || !hitSlug || claimSlug !== hitSlug)) {
     return false;
   }
   const quote = claim.quote.toLowerCase();
@@ -669,6 +765,7 @@ module.exports = {
   IDENTIFIABLE_EVIDENCE,
   KIND_PERCENT,
   KIND_QUALITATIVE,
+  coversHit,
   loadSourcedClaims,
   readSourcedClaims,
   parseClaimHits,

@@ -65,6 +65,7 @@ test('unseen synonym plants fail as typed hits, not as a listed fixture', () => 
   const {
     assertNoUnsourcedPriceAdvantages,
     assertSavingsSourced,
+    coversHit,
     parseClaimHits,
     readSourcedClaims,
     scanSavingsHitsInText
@@ -112,6 +113,49 @@ test('unseen synonym plants fail as typed hits, not as a listed fixture', () => 
       claims
     ),
     /sourcedClaims\.json is missing a sourced-claim row/
+  );
+
+  const costsLess = ['usu', 'ally costs less'].join('');
+  const itsCheaper = ['It', "'s cheaper"].join('');
+  const withoutFees = ['without ', 'the extra ', 'platform fees'].join('');
+  const costHits = parseClaimHits(`Mainland stays ${costsLess} than island condos.`);
+  const cheaperHits = parseClaimHits(`${itsCheaper} than splitting hotel rooms.`);
+  const withoutHits = parseClaimHits(`Book direct ${withoutFees}.`);
+  assert.equal(costHits[0].kind, 'qualitative-price-advantage');
+  assert.match(costHits[0].match, /costs less/i);
+  assert.equal(cheaperHits[0].kind, 'qualitative-price-advantage');
+  assert.match(cheaperHits[0].match, /cheaper/i);
+  assert.equal(withoutHits[0].kind, 'qualitative-price-advantage');
+  assert.match(withoutHits[0].match, /platform fees/i);
+
+  const sharedNegation = parseClaimHits('The total does not include taxes, but guests get better rates.');
+  assert.match(sharedNegation.map((hit) => hit.match).join(','), /better rates/i);
+  const negatedClaim = parseClaimHits('This does not establish better rates for the same dates.');
+  assert.equal(negatedClaim.length, 0);
+  const negatedRange = parseClaimHits('A last-minute booking does not establish a higher or lower rate.');
+  assert.equal(negatedRange.length, 0);
+
+  const saveNextSentence = scanSavingsHitsInText(
+    'Save this guide. A 15% occupancy tax applies.',
+    'src/guides/hidden-plant.html'
+  );
+  assert.equal(saveNextSentence.length, 0);
+  const avoidNextSentence = parseClaimHits('Avoid traffic. Platform fees are displayed separately.');
+  assert.equal(avoidNextSentence.length, 0);
+
+  assert.equal(
+    coversHit(
+      { file: 'src/guides/hidden-plant.html', quote: 'better rates', expires: '2027-12-31' },
+      { slug: 'hidden-plant-skip', match: 'better rates', excerpt: 'better rates' }
+    ),
+    false
+  );
+  assert.equal(
+    coversHit(
+      { slug: 'hidden-plant-skip', quote: 'better rates', expires: '2027-12-31' },
+      { slug: 'hidden-plant-skip', match: 'better rates', excerpt: 'better rates' }
+    ),
+    true
   );
 });
 
