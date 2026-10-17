@@ -13,6 +13,8 @@ const aiSummary = fs.readFileSync(path.join(projectRoot, "src", "ai", "summary.j
 const aiService = fs.readFileSync(path.join(projectRoot, "src", "ai", "service.json.njk"), "utf8");
 const aiFaq = fs.readFileSync(path.join(projectRoot, "src", "ai", "faq.json.njk"), "utf8");
 const seoPages = require(path.join(projectRoot, "src", "_data", "seoPages.json"));
+const fallbackCatalog = require(path.join(projectRoot, "src", "_data", "properties-fallback.json"));
+const { applyStayFacts } = require(path.join(projectRoot, "src", "_data", "stayFacts"));
 const staysTemplate = fs.readFileSync(path.join(projectRoot, "src", "stays", "stays.njk"), "utf8");
 const propertyPages = [
   "bradenton-pool-home",
@@ -93,8 +95,13 @@ test("AMI large-group page is source-managed and truthful about near-island loca
   assert.ok(page, "AMI large-group stay page must live in src/_data/seoPages.json");
   assert.equal(page.title, "Large Group Vacation Rentals Near Anna Maria Island with Private Pools");
   assert.equal(page.h1, "Large Group Vacation Rentals Near Anna Maria Island with Private Pools");
-  assert.equal(
+  assert.match(
     page.bluntAnswer,
+    /sleep \{sleeps:bradenton-pool-home\}-\{sleeps:the-oasis\} guests/,
+    "AMI large-group occupancy must come from catalog tokens, not a typed range"
+  );
+  assert.equal(
+    applyStayFacts(structuredClone(page), fallbackCatalog).bluntAnswer,
     "These homes are in Bradenton, not on Anna Maria Island, but they are 10-15 minutes from AMI beaches and sleep 10-16 guests."
   );
   assert.deepEqual(page.matchingProperties, [
