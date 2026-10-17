@@ -262,13 +262,6 @@
       "note": "reviewed current guest copy; not a new claim phrasing"
     },
     {
-      "hash": "19744e3f8fe58089e0f5eb5e1736ad510a14c31f8ffe2b15b31a42551ff9611a",
-      "sentence": "Summer is perfect for families with warmer gulf waters and lower rental rates",
-      "file": "src/guides/anna-maria-island-area-guide/index.html",
-      "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
-    },
-    {
       "hash": "477df73498ab2e670d8cda1f650044d5b84c9ecffff66c8063f4685865df6aba",
       "sentence": "Book Direct & Save Related Guides Best Time to Visit Anna Maria Island Month-by-month weather, crowds, and pricing guide",
       "file": "src/guides/anna-maria-island-beaches.html",
@@ -458,13 +451,6 @@
       "note": "reviewed current guest copy; not a new claim phrasing"
     },
     {
-      "hash": "e3dcbebe8e16e926ca0c6013fcd79f5dd8cf683165581fc2bd7174246cc8747f",
-      "sentence": "A vacation rental near AMI gives you dramatically more space — private pools, full kitchens, boat docks — often at comparable nightly rates to a Clearwater hotel room",
-      "file": "src/guides/anna-maria-island-vs-clearwater-beach.html",
-      "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
-    },
-    {
       "hash": "bb993de338d6654b587377ff9830b56de21adadeef1805342821381510cad4fc",
       "sentence": "Detailed local comparison of Anna Maria Island and Clearwater Beach covering beaches, vacation rental pricing, dining, crowds, nightlife, and which is better for different types of travelers",
       "file": "src/guides/anna-maria-island-vs-clearwater-beach.html",
@@ -514,22 +500,8 @@
       "note": "reviewed current guest copy; not a new claim phrasing"
     },
     {
-      "hash": "1c2ca0233faf3ecd41f80d51428ef069310d813cb3be6210fc57f072534b3c50",
-      "sentence": "AMI often wins when you want the island-first trip; Siesta often prices higher near the famous sand and village access",
-      "file": "src/guides/anna-maria-island-vs-siesta-key.html",
-      "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
-    },
-    {
       "hash": "700b3e683eededc2bd541ee1b712509da9963f81f64311e03871405dfc617015",
       "sentence": "How we checked the details Early-2026 Seascape rate checks used as planning context, not a live quote Sarasota County's Siesta Beach page for current parking, sand, and award notes Manatee County Route 5 AMI Trolley for current free trolley service Repeated guest questions about parking, beach atmosphere, and dining access from trips that weigh both islands Turn the beach choice into a place to stay If Anna Maria Island sounds right, start with homes close to its quieter beach rhythm",
-      "file": "src/guides/anna-maria-island-vs-siesta-key.html",
-      "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
-    },
-    {
-      "hash": "458fbfad7d39107db15f728e5167f4303713930799f3c9444c744219d41b9167",
-      "sentence": "Rental Prices Often the better value for an island-first trip Often prices higher near the famous sand and the Village Distance 35–40 min from Siesta Key 35–40 min from AMI The Beaches: Different Sand, Both Gorgeous Anna Maria Island Beaches AMI has three distinct beach personalities",
       "file": "src/guides/anna-maria-island-vs-siesta-key.html",
       "slug": "",
       "note": "reviewed current guest copy; not a new claim phrasing"
@@ -836,41 +808,6 @@
       "note": "reviewed current guest copy; not a new claim phrasing"
     },
     {
-      "hash": "ea8b52cd4b41ce3337060e8808e49f220ce026c3d66baa5ff5814fe93ce06399",
-      "sentence": "dollar Better Value Get more space, more amenities, and more privacy — often at better rates than island properties",
-      "file": "src/guides/bradenton-area-guide/index.html",
-      "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
-    },
-    {
-      "hash": "5e1db046285c6c764a183acec042075a30cc8bc78af0b40231e3dacb3273c3d4",
-      "sentence": "Peak season is December-April with the best weather but higher prices",
-      "file": "src/guides/bradenton-area-guide/index.html",
-      "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
-    },
-    {
-      "hash": "7aa44a89726da022e715567918f2ba90a153424280017e8578721ec7987c7413",
-      "sentence": "Summer offers the warmest Gulf water and lowest rental rates, though afternoon thunderstorms are common",
-      "file": "src/guides/bradenton-area-guide/index.html",
-      "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
-    },
-    {
-      "hash": "f169188833349c47e3641f92618d9f8ffab4d0ff03eac794f56315babc8efc05",
-      "sentence": "The best time to visit Bradenton is March-May (warm, less crowded) or October-November (lower rates, pleasant weather)",
-      "file": "src/guides/bradenton-area-guide/index.html",
-      "slug": "",
-      "note": "reviewed current guest copy after fail-closed sentence boundaries; not a new claim phrasing"
-    },
-    {
-      "hash": "9ea568e65011da4c86df59b3e03883b79fdd422fc603fe0f738d284edd3ba245",
-      "sentence": "You'll get more space, private pools, and river views at better rates than island properties",
-      "file": "src/guides/bradenton-beach.html",
-      "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
-    },
-    {
       "hash": "1c1525966e56170176212d3611f7c8fc8e9597d99ad7c61c6b36637627770c93",
       "sentence": "Book March-May for my money—you get all the weather benefits without the crowds or winter pricing",
       "file": "src/guides/bradenton-insider-guide.html",
@@ -922,13 +859,6 @@
     {
       "hash": "c56d8467235c9c2021acce41d7f777eb7f76cd1084c80f4913a139eeb4cfd9b4",
       "sentence": "AMI Vacation Cost Guide 2026 What it actually costs for a week on Anna Maria Island — rentals, food, activities",
-      "file": "src/guides/bradenton-vs-sarasota-for-families/index.html",
-      "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
-    },
-    {
-      "hash": "27953565f69e53ce882ff883f78a5d2cd4974ffff6bfbea0f3b300e10bbab0b1",
-      "sentence": "Bradenton pool homes usually cost less than comparable Sarasota homes, but nightly rates move with season and dates",
       "file": "src/guides/bradenton-vs-sarasota-for-families/index.html",
       "slug": "",
       "note": "reviewed current guest copy; not a new claim phrasing"
@@ -1263,13 +1193,6 @@
       "note": "reviewed current guest copy after fail-closed sentence boundaries; not a new claim phrasing"
     },
     {
-      "hash": "3398a58b263f1b5d47870215f94a3c31fa26b2e485d6304e5142baefd516eb8a",
-      "sentence": "Stay in Bradenton Beach if you want a quieter vibe and slightly lower rental prices",
-      "file": "src/guides/holmes-beach-vs-bradenton-beach.html",
-      "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
-    },
-    {
       "hash": "ae7bf9ae1bd8d18feb0488c7db7bd5a7c494a4d47d558a143232c952dbda1e11",
       "sentence": "The standouts: Eat Here does creative coastal dishes that would cost double in Sarasota",
       "file": "src/guides/holmes-beach-vs-bradenton-beach.html",
@@ -1357,20 +1280,6 @@
       "hash": "a209617652cad0ca661c2677f9dd413a25d3b6b0a08f2f6eddf4cb9a147d94b0",
       "sentence": "Related Vacation Rentals Bradenton Rentals Near AMI Beaches Siesta Key Area Rentals Sarasota Rentals With Pool Florida Gulf Coast Vacation Rentals Rainy Day Activities Activity Location Cost Good For Mote SEA UTC / Sarasota Check current tickets Families, marine life, full rainy half-day The Ringling Sarasota Check current tickets Adults, older kids, art and circus history Sarasota Art Museum Downtown Sarasota Check current tickets Couples, quiet culture plan The Bishop Museum Bradenton Check current tickets Bradenton families, science fans Florida Studio Theatre or Sarasota Opera Downtown Sarasota Varies by show Adults, grandparents, date-day backup Bowling, arcades, UTC, or covered shopping Bradenton / Sarasota Varies Short storms, kids with energy Stay Near Beaches and Rainy-Day Backups Compare Bradenton Stays →",
       "file": "src/guides/rainy-day-activities-bradenton-sarasota.html",
-      "slug": "",
-      "note": "reviewed current guest copy after fail-closed sentence boundaries; not a new claim phrasing"
-    },
-    {
-      "hash": "d9c7529ba9f5fb9d766c424353d8e5d8e42e88dd46b1845e39d9a0441994d29d",
-      "sentence": "Summer is great for families with warm Gulf water and the lowest rental rates, though afternoon rain showers are common",
-      "file": "src/guides/sarasota-area-guide/index.html",
-      "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
-    },
-    {
-      "hash": "7de002bf5c2ce8710dd54b6b6fa7e2531ded35178ccca7e822673846efd0ffa8",
-      "sentence": "The best time to visit Sarasota is March-May for warm weather, fewer crowds than peak season, and lower rates",
-      "file": "src/guides/sarasota-area-guide/index.html",
       "slug": "",
       "note": "reviewed current guest copy after fail-closed sentence boundaries; not a new claim phrasing"
     },
@@ -1522,22 +1431,8 @@
       "note": "reviewed current guest copy; not a new claim phrasing"
     },
     {
-      "hash": "e54bb7563f738be13fa031568dce1f16c1c78fd4fb54cb7b7bfbb129447f119c",
-      "sentence": "January through March is peak season with the highest prices but also spring training baseball at LECOM Park",
-      "file": "src/guides/things-to-do-bradenton-fl.html",
-      "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
-    },
-    {
       "hash": "c21c2e911d85a751e274f0d0b556f351028580ec3a8c0d9a501038f2d5710589",
       "sentence": "Most rental shops offer 2-hour and half-day rates",
-      "file": "src/guides/things-to-do-bradenton-fl.html",
-      "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
-    },
-    {
-      "hash": "3813e91cabb71984bad6351db6dde2c4c5a934325978c9492f81739ef41da62f",
-      "sentence": "October through November is the value sweet spot with lower rental prices and fewer crowds",
       "file": "src/guides/things-to-do-bradenton-fl.html",
       "slug": "",
       "note": "reviewed current guest copy; not a new claim phrasing"
