@@ -43,6 +43,10 @@ test("hand-typed sleeps, heat, and home-count facts fail stay JSON", () => {
     /hand-typed sleeps N "sleeps up to 16"/
   );
   assert.throws(
+    () => assertNoHandTypedStayFacts({ slug: "plant", geoIntro: "three Seascape homes that hold 12" }),
+    /hand-typed/
+  );
+  assert.throws(
     () => assertNoHandTypedStayFacts({ slug: "plant", geoIntro: "hot tub (heat included)" }),
     /hand-typed heat included/
   );
@@ -116,6 +120,64 @@ test("replay 700: Coastal Stay does not inherit heat or tub terms without poolHe
   assert.doesNotMatch(visible, /heat included/i);
   assert.doesNotMatch(visible, /Coastal Stay[^.]*hot tub/i);
   assert.doesNotMatch(planted.geoIntro, /hot tub heat is included/i);
+});
+
+test("matching occupancy and home count come from the page list, not an unrelated slug", () => {
+  const catalog = structuredClone(fallback);
+  const source = vacationerPages().find((page) => page.slug === "4-bedroom-vacation-rentals-florida");
+  assert.ok(source, "4-bedroom stay must exist");
+  assert.match(JSON.stringify(source.faqs), /sleeps-matching/);
+  assert.doesNotMatch(JSON.stringify(source.faqs), /coastal-stay/);
+  const page = applyStayFacts(structuredClone(source), catalog);
+  const faq = page.faqs.map((item) => `${item.question} ${item.answer}`).join(" ");
+  assert.match(faq, /sleep 12/);
+  assert.doesNotMatch(faq, /sleep 10/);
+
+  const twelve = vacationerPages().find((page) => page.slug === "vacation-rentals-sleeps-12-florida");
+  assert.ok(twelve, "sleeps-12 stay must exist");
+  assert.match(twelve.geoIntro, /\{matching\} Seascape homes that hold \{sleeps-matching\}/);
+  const twelvePage = applyStayFacts(structuredClone(twelve), catalog);
+  assert.match(twelvePage.geoIntro, /three Seascape homes that hold 12/);
+
+  const withRiverFacts = vacationerPages().find((page) =>
+    JSON.stringify(page.propertyFacts || []).includes("River House")
+  );
+  assert.ok(withRiverFacts, "a stay must publish River House property facts");
+  assert.match(JSON.stringify(withRiverFacts.propertyFacts), /\{br:river-house\}/);
+
+  const sarasotaPage = vacationerPages().find((page) => page.slug === "sarasota-vacation-rentals-with-pool");
+  assert.ok(sarasotaPage, "Sarasota stay must exist");
+  assert.match(JSON.stringify(sarasotaPage.decisionHighlights), /sleeps-phrase:sarasota-luxe/);
+});
+
+test("poolHeat included does not publish hot-tub heat included", () => {
+  const catalog = structuredClone(fallback);
+  const dockside = catalog.find((property) => property.slug === "dockside-dreams");
+  assert.ok(dockside, "dockside-dreams must exist");
+  dockside.guestFacts = { ...(dockside.guestFacts || {}), poolHeat: "Pool heat is included" };
+  delete dockside.guestFacts.tubHeat;
+
+  const planted = applyStayFacts(
+    {
+      slug: "planted-pool-heat",
+      matchingProperties: ["dockside-dreams"],
+      geoIntro: `hot tub {heat:dockside-dreams}`
+    },
+    catalog
+  );
+  assert.doesNotMatch(planted.geoIntro, /heat included/i);
+  assert.match(planted.geoIntro, /confirm heat terms when booking/i);
+
+  dockside.guestFacts.tubHeat = "Hot tub heat is included";
+  const withTubHeat = applyStayFacts(
+    {
+      slug: "planted-tub-heat",
+      matchingProperties: ["dockside-dreams"],
+      geoIntro: `hot tub {heat:dockside-dreams}`
+    },
+    catalog
+  );
+  assert.match(withTubHeat.geoIntro, /heat included/i);
 });
 
 test("staysPages apply catalog facts before the template renders", () => {

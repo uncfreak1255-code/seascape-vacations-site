@@ -187,8 +187,8 @@
       "destination": "bradenton",
       "title": "Large Group Vacation Rentals in Bradenton FL",
       "h1": "Bradenton Vacation Homes for Large Groups",
-      "description": "Spacious vacation rentals in Bradenton for large groups. Sleep {sleeps:bradenton-pool-home}-{sleeps:the-oasis} guests. Private pools.",
-      "intro": "Bradenton has two Seascape homes that handle groups of 10-16 - one waterfront with a dock, one oversized with two hot tubs and a game room. Both have private pools and book direct.",
+      "description": "Spacious vacation rentals in Bradenton for large groups. Sleep {sleeps-matching} guests. Private pools.",
+      "intro": "Bradenton has {matching} Seascape homes that handle groups of {sleeps-matching} - one waterfront with a dock, one oversized with two hot tubs and a game room. Both have private pools and book direct.",
       "faqs": [
         {
           "question": "What's the largest group you can accommodate?",
@@ -225,7 +225,7 @@
       ],
       "decisionHighlights": [
         {
-          "label": "Sleeps {sleeps:bradenton-pool-home}-{sleeps:the-oasis}",
+          "label": "Sleeps {sleeps-matching}",
           "value": "The Oasis (5BR/16 guests) or Dockside Dreams (4BR/12 guests) - both with private pools"
         },
         {
@@ -348,7 +348,7 @@
           "bathrooms": 3,
           "guests": 12,
           "price": 400,
-          "specs": "{br:dockside-dreams} BR / {ba:dockside-dreams} BA / {sleeps-phrase:dockside-dreams}",
+          "specs": "{br:river-house} BR / {ba:river-house} BA / {sleeps-phrase:river-house}",
           "poolSpa": "Heated pool, spa, gameroom, yard games",
           "beachDistance": "Anna Maria Island and Manatee Public Beach about 5 mi / 15 min",
           "bestFor": "Best fit for active 12-person groups."
@@ -674,7 +674,7 @@
           "value": "Sarasota Luxe is near downtown restaurants, galleries, and Palm Avenue shops; plan to drive to downtown destinations and the beaches."
         },
         {
-          "label": "Private pool, {sleeps-phrase:dockside-dreams}",
+          "label": "Private pool, {sleeps-phrase:sarasota-luxe}",
           "value": "Four bedrooms, a private heated pool, and a screened lanai \u2014 room for a family or two couples splitting the cost."
         },
         {
@@ -1615,7 +1615,7 @@
           "value": "All three include a private pool and hot tub - no shared amenities, no lobby, no resort fees"
         }
       ],
-      "geoIntro": "<p>Sleeping {sleeps:dockside-dreams} in a single home narrows the options fast. Hotels scatter a group across rooms on different floors; most vacation condos cap at 6-8. The three Seascape homes that hold 12 each have 4 bedrooms and 3+ bathrooms, and they cover two markets: Bradenton (near Anna Maria Island) and downtown Sarasota.</p><p><strong>Dockside Dreams</strong> (Bradenton) is the waterfront option - private dock, pool, hot tub, and arcade. Bradenton Beach is 2.9 miles away. <strong>River House</strong> (Bradenton) is a minute from a public boat ramp on the Manatee River, with a pool, hot tub, and game room; AMI beaches are about 15 minutes away. <strong>Sarasota Luxe</strong> (downtown Sarasota) trades beach proximity for proximity to Sarasota restaurants, galleries, and the Bayfront, all reached by car - with a pool, hot tub, and screened lanai. Lido Beach is about 3 miles, 10 minutes.</p><p>The choice between Bradenton and Sarasota is mostly about how you'll spend your time. Beach-heavy trip: the Bradenton homes are the base. Mix of beach days and city dinners: Sarasota Luxe fits better. Divide the complete checkout total by your guest count and number of nights to compare the per-person cost with other lodging options.</p>",
+      "geoIntro": "<p>Sleeping {sleeps:dockside-dreams} in a single home narrows the options fast. Hotels scatter a group across rooms on different floors; most vacation condos cap at 6-8. The {matching} Seascape homes that hold {sleeps-matching} each have 4 bedrooms and 3+ bathrooms, and they cover two markets: Bradenton (near Anna Maria Island) and downtown Sarasota.</p><p><strong>Dockside Dreams</strong> (Bradenton) is the waterfront option - private dock, pool, hot tub, and arcade. Bradenton Beach is 2.9 miles away. <strong>River House</strong> (Bradenton) is a minute from a public boat ramp on the Manatee River, with a pool, hot tub, and game room; AMI beaches are about 15 minutes away. <strong>Sarasota Luxe</strong> (downtown Sarasota) trades beach proximity for proximity to Sarasota restaurants, galleries, and the Bayfront, all reached by car - with a pool, hot tub, and screened lanai. Lido Beach is about 3 miles, 10 minutes.</p><p>The choice between Bradenton and Sarasota is mostly about how you'll spend your time. Beach-heavy trip: the Bradenton homes are the base. Mix of beach days and city dinners: Sarasota Luxe fits better. Divide the complete checkout total by your guest count and number of nights to compare the per-person cost with other lodging options.</p>",
       "relatedStaySlugs": [
         "accessible-vacation-rentals-florida",
         "vacation-rentals-with-outdoor-grill",
@@ -1682,7 +1682,7 @@
         },
         {
           "question": "How many guests can a 4-bedroom home sleep?",
-          "answer": "Our 4-bedroom homes typically sleep {sleeps:coastal-stay}\u2013{sleeps:dockside-dreams} guests depending on the property's bed configuration. Contact us to discuss which property best fits your group size."
+          "answer": "Our 4-bedroom homes typically sleep {sleeps-matching} guests depending on the property's bed configuration. Contact us to discuss which property best fits your group size."
         },
         {
           "question": "Do all 4-bedroom homes have pools?",
@@ -2049,7 +2049,7 @@
         },
         {
           "question": "How many people can your homes accommodate for parties?",
-          "answer": "Our homes sleep {sleeps:coastal-stay}\u2013{sleeps:the-oasis} guests overnight. For celebration gatherings, the comfortable capacity depends on the property. Contact us to discuss your group size and we'll recommend the best fit."
+          "answer": "Our homes sleep {sleeps-matching} guests overnight. For celebration gatherings, the comfortable capacity depends on the property. Contact us to discuss your group size and we'll recommend the best fit."
         },
         {
           "question": "Are there restaurants for group dinners?",
