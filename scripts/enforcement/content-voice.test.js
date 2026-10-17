@@ -13,6 +13,8 @@ const {
   formatPerformanceClaimReport
 } = require("./performance-claim-scan");
 const { allowEmptyState, refuseSkip } = require("./fail-closed");
+const { applyStayFacts } = require("../../src/_data/stayFacts");
+const fallbackProperties = require("../../src/_data/properties-fallback.json");
 
 const projectRoot = path.resolve(__dirname, "..", "..");
 
@@ -717,10 +719,24 @@ function lintLeakedInternalCopy(relativePath, text, scopeLabel) {
   return violations;
 }
 
+function resolvePublicSeoData(relativePath, data) {
+  if (!String(relativePath).endsWith("seoPages.json") || !data || typeof data !== "object") {
+    return data;
+  }
+  return {
+    ...data,
+    vacationer: Array.isArray(data.vacationer)
+      ? data.vacationer.map((page) =>
+          page && !page.rehomeTo ? applyStayFacts(page, fallbackProperties) : page
+        )
+      : data.vacationer
+  };
+}
+
 function lintLeakedInternalData(relativePath, data) {
   const violations = [];
 
-  for (const entry of collectStringLeaves(data)) {
+  for (const entry of collectStringLeaves(resolvePublicSeoData(relativePath, data))) {
     const normalizedValue = entry.value.replace(/\s+/g, " ").trim();
     violations.push(
       ...lintLeakedInternalCopy(`${relativePath}:${entry.path}`, normalizedValue, "source-backed copy")
@@ -733,7 +749,7 @@ function lintLeakedInternalData(relativePath, data) {
 function lintInstructionTemplateData(relativePath, data) {
   const violations = [];
 
-  for (const entry of collectStringLeaves(data)) {
+  for (const entry of collectStringLeaves(resolvePublicSeoData(relativePath, data))) {
     const normalizedValue = entry.value.replace(/\s+/g, " ").trim();
 
     for (const pattern of INSTRUCTION_TEMPLATE_PATTERNS) {
