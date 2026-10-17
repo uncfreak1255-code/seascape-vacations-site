@@ -92,6 +92,9 @@ function matchingOccupancies(page, catalog) {
 
 function matchingRange(page, catalog, field) {
   const slugs = Array.isArray(page && page.matchingProperties) ? page.matchingProperties : [];
+  if (slugs.length === 0) {
+    throw new Error(`stayFacts: matching ${field} range needs matchingProperties on ${page && page.slug || "unknown-slug"}`);
+  }
   const values = slugs.map((slug) => {
     const property = propertyBySlug(catalog, slug);
     if (!property || property[field] == null) {
