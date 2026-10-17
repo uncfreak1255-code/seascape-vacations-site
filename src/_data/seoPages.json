@@ -132,7 +132,7 @@
       "faqs": [
         {
           "question": "Are hot tubs heated year-round?",
-          "answer": "Yes \u2014 the hot tubs are heated year-round and included with your stay, kept around 100\u2013104\u00b0F whether you visit in December or July."
+          "answer": "Hot tub heat terms are listed on each home page. Dockside Dreams {heat:dockside-dreams}. The Oasis {heat:the-oasis}."
         },
         {
           "question": "Do any homes have both pool AND hot tub?",
@@ -192,10 +192,10 @@
       "faqs": [
         {
           "question": "What's the largest group you can accommodate?",
-          "answer": "The Oasis {sleeps-phrase:the-oasis} across 5 bedrooms. Dockside Dreams {sleeps-phrase:dockside-dreams} across 4 bedrooms. Those are the two large-group options. For groups larger than 16, we can talk through coordinating nearby properties, but that's not our standard offering."
+          "answer": "The Oasis {sleeps-phrase:the-oasis} across 5 bedrooms. Dockside Dreams {sleeps-phrase:dockside-dreams} across 4 bedrooms. Those are the two large-group options. For groups larger than {sleeps:the-oasis}, we can talk through coordinating nearby properties, but that's not our standard offering."
         },
         {
-          "question": "Which Seascape home fits a 10-12 person group versus a 14-16 person group?",
+          "question": "Which Seascape home fits a {sleeps:dockside-dreams}-person group versus a {sleeps:the-oasis}-person group?",
           "answer": "For {sleeps:the-oasis} guests, The Oasis is the clear call - it has the bedrooms, the two-hot-tub setup, and the extra outdoor zones. For {sleeps:dockside-dreams} guests, it comes down to what matters more: if your group wants a dock and the shortest drive to Bradenton Beach, go with Dockside Dreams. If they want the biggest layout and the game room, The Oasis still works at {sleeps:dockside-dreams}."
         },
         {
@@ -263,7 +263,7 @@
           "answer": "Dockside Dreams is 2.9 miles from Bradenton Beach - about 10 minutes. The Oasis is 5.4 miles from Holmes Beach and 5.7 miles from Bradenton Beach - roughly 12-15 minutes. River House is about 15 minutes to Anna Maria Island beaches. Bradenton Pool Home is 6.9 miles from Bradenton Beach."
         },
         {
-          "question": "Which Seascape home is best for a 12-16 person group?",
+          "question": "Which Seascape home is best for a {sleeps:dockside-dreams}–{sleeps:the-oasis} person group?",
           "answer": "The Oasis for {sleeps:the-oasis} guests, or when the group wants the biggest layout, the game room, and two hot tubs. Dockside Dreams for {sleeps:dockside-dreams} guests who want water access at the house and the fastest run to Bradenton Beach. River House for {sleeps:river-house} guests who want a pool, game room, and a boat ramp one minute away. Bradenton Pool Home for groups of {sleeps:bradenton-pool-home} where IMG proximity matters most."
         },
         {
@@ -351,7 +351,7 @@
           "specs": "{br:river-house} BR / {ba:river-house} BA / {sleeps-phrase:river-house}",
           "poolSpa": "Heated pool, spa, gameroom, yard games",
           "beachDistance": "Anna Maria Island and Manatee Public Beach about 5 mi / 15 min",
-          "bestFor": "Best fit for active 12-person groups."
+          "bestFor": "Best fit for active {sleeps:river-house}-person groups."
         },
         {
           "name": "Bradenton Pool Home",
@@ -593,7 +593,7 @@
         },
         {
           "question": "Do any of your homes have hot tubs for couples?",
-          "answer": "Both River House and Sarasota Luxe have a private hot tub alongside the pool \u2014 heated year-round and included with your stay. Good for a soak under the stars after a beach day."
+          "answer": "Both River House and Sarasota Luxe have a private hot tub alongside the pool. River House {heat:river-house}. Sarasota Luxe {heat:sarasota-luxe}. Good for a soak under the stars after a beach day."
         },
         {
           "question": "Is Anna Maria Island good for a honeymoon?",
@@ -1340,7 +1340,7 @@
       "faqs": [
         {
           "question": "Which properties have both pool and hot tub?",
-          "answer": "{tub-homes} Seascape homes have both a private pool and a hot tub or spa. Dockside Dreams and The Oasis are the Bradenton options for groups of 12+; River House, Bradenton Pool Home and The Coastal are also in Bradenton. Sarasota Luxe is the Sarasota option. Pickleball Pool Home Retreat {sleeps-phrase:blue-house} and has a private pool, but no verified hot tub or spa."
+          "answer": "{tub-homes} Seascape homes have both a private pool and a hot tub or spa. Dockside Dreams and The Oasis are the Bradenton options for groups of {sleeps:dockside-dreams}+; River House, Bradenton Pool Home and The Coastal are also in Bradenton. Sarasota Luxe is the Sarasota option. Pickleball Pool Home Retreat {sleeps-phrase:blue-house} and has a private pool, but no verified hot tub or spa."
         },
         {
           "question": "Are both the pool and hot tub heated?",
@@ -1580,7 +1580,7 @@
           "answer": "All three have 4 bedrooms with a mix of king, queen, and twin configurations. Exact bed layouts vary - ask for the bedroom diagram if your group has specific needs."
         },
         {
-          "question": "Is there enough bathroom space for 12 people?",
+          "question": "Is there enough bathroom space for {sleeps-matching} people?",
           "answer": "Each home has 3 or more bathrooms. Twelve guests across 4 bedrooms and 3+ baths is a workable ratio."
         },
         {
@@ -1640,7 +1640,7 @@
           "answer": "The Oasis features 5 bedrooms with a mix of king, queen, and twin beds configured to accommodate up to {sleeps:the-oasis} guests. Every bedroom has comfortable, quality bedding."
         },
         {
-          "question": "Is the space really big enough for 16 people?",
+          "question": "Is the space really big enough for {sleeps-matching} people?",
           "answer": "Yes! The Oasis was designed for large groups with an open floor plan, multiple living areas, a large kitchen with island seating, and extensive outdoor space including pool deck, covered patio, and yard."
         },
         {
@@ -1659,7 +1659,7 @@
       "matchingProperties": [
         "the-oasis"
       ],
-      "geoIntro": "<p>When your group reaches 16 people, accommodation options shrink fast \u2014 except in vacation rentals. Our flagship property, <strong>The Oasis</strong>, sleeps up to {sleeps:the-oasis} guests across 5 bedrooms and 3 bathrooms, with a resort-style pool, hot tub, game room, and massive outdoor living area designed for big groups.</p><p>Compare the complete checkout total for your group and dates.</p>",
+      "geoIntro": "<p>When your group reaches {sleeps:the-oasis} people, accommodation options shrink fast \u2014 except in vacation rentals. Our flagship property, <strong>The Oasis</strong>, sleeps up to {sleeps:the-oasis} guests across 5 bedrooms and 3 bathrooms, with a resort-style pool, hot tub, game room, and massive outdoor living area designed for big groups.</p><p>Compare the complete checkout total for your group and dates.</p>",
       "relatedStaySlugs": [
         "accessible-vacation-rentals-florida",
         "vacation-rentals-with-outdoor-grill",

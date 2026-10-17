@@ -65,6 +65,22 @@ test("hand-typed sleeps, heat, and home-count facts fail stay JSON", () => {
     () => assertNoHandTypedStayFacts({ slug: "plant", h1: "Vacation Homes for 12 Guests" }),
     /hand-typed N guests "12 Guests"/
   );
+  assert.throws(
+    () => assertNoHandTypedStayFacts({ slug: "plant", geoIntro: "When your group reaches 16 people" }),
+    /hand-typed N people "16 people"/
+  );
+  assert.throws(
+    () => assertNoHandTypedStayFacts({ slug: "plant", geoIntro: "For groups larger than 16, call us" }),
+    /hand-typed groups of N "groups larger than 16"/
+  );
+  assert.throws(
+    () => assertNoHandTypedStayFacts({ slug: "plant", faqs: [{ question: "Best for a 12-16 person group?", answer: "Ask." }] }),
+    /hand-typed N-person "12-16 person"/
+  );
+  assert.throws(
+    () => assertNoHandTypedStayFacts({ slug: "plant", geoIntro: "hot tubs are heated year-round and included" }),
+    /hand-typed heat included "heated year-round and included"/
+  );
 });
 
 test("published stay JSON has no hand-typed capacity, heat, or home-count facts", () => {
