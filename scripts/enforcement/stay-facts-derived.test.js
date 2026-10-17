@@ -182,7 +182,10 @@ test("poolHeat included does not publish hot-tub heat included", () => {
 
 test("staysPages apply catalog facts before the template renders", () => {
   const source = fs.readFileSync(path.join(projectRoot, "src/_data/staysPages.js"), "utf8");
+  const stayTemplate = fs.readFileSync(path.join(projectRoot, "src/stays/stays.njk"), "utf8");
   assert.match(source, /applyStayFacts/);
   assert.match(source, /assertNoHandTypedStayFacts/);
   assert.match(source, /require\("\.\/properties"\)/);
+  assert.match(stayTemplate, /for relatedPage in staysPages/);
+  assert.doesNotMatch(stayTemplate, /for relatedPage in seoPages\.vacationer/);
 });

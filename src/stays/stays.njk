@@ -640,7 +640,7 @@ eleventyComputed:
                 </div>
                 <div class="guide-grid">
                     {% for relatedSlug in seoPage.relatedStaySlugs %}
-                    {% for relatedPage in seoPages.vacationer %}
+                    {% for relatedPage in staysPages %}
                     {% if relatedPage.slug == relatedSlug %}
                     <a href="/stays/{{ relatedPage.slug }}/" class="guide-card">
                         <span class="guide-category">{{ (relatedPage.destination or "Gulf Coast") | replace("-", " ") | title }}</span>
