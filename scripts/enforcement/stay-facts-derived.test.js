@@ -94,6 +94,10 @@ test("hand-typed sleeps, heat, and home-count facts fail stay JSON", () => {
     () => assertNoHandTypedStayFacts({ slug: "plant", geoIntro: "The Oasis up to 16." }),
     /hand-typed up to N "up to 16"/
   );
+  assert.doesNotThrow(() => assertNoHandTypedStayFacts({
+    slug: "plant",
+    geoIntro: "Stays of up to 4 weeks book online."
+  }));
   assert.throws(
     () => assertNoHandTypedStayFacts({ slug: "plant", faqs: [{ question: "Heated?", answer: "a hot tub included all year" }] }),
     /hand-typed hot tub included year-round "hot tub included all year"/
@@ -198,6 +202,19 @@ test("page ranges and shared home tokens must bind every matching home", () => {
       question: "Largest?",
       answer: "The Oasis {sleeps-phrase:the-oasis}. Dockside Dreams {sleeps-phrase:dockside-dreams}. Those are the {matching} large-group options."
     }]
+  }, catalog));
+  assert.throws(
+    () => assertStayCapacityBindings({
+      slug: "plant",
+      matchingProperties: ["dockside-dreams", "the-oasis"],
+      intro: "{matching} homes sleep {sleeps:dockside-dreams}."
+    }, catalog),
+    /\{matching\} cannot share \{sleeps:dockside-dreams\}/
+  );
+  assert.doesNotThrow(() => assertStayCapacityBindings({
+    slug: "plant",
+    matchingProperties: ["dockside-dreams", "river-house"],
+    intro: "{matching} homes sleep {sleeps:dockside-dreams}."
   }, catalog));
 });
 

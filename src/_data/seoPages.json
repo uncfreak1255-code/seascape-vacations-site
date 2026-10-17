@@ -1569,7 +1569,7 @@
       "title": "Florida Vacation Rentals That Sleep {sleeps:dockside-dreams}",
       "h1": "Vacation Homes for {sleeps-matching} Guests",
       "description": "Need space for {sleeps-matching}? Florida vacation rentals with 4 bedrooms, pools, and room for everyone.",
-      "intro": "{matching} Seascape homes sleep {sleeps:dockside-dreams} across 4 bedrooms - each in a different location and with a different setup, so the right pick depends on where you want to be.",
+      "intro": "{matching} Seascape homes sleep {sleeps-matching} across 4 bedrooms - each in a different location and with a different setup, so the right pick depends on where you want to be.",
       "faqs": [
         {
           "question": "Which homes sleep {sleeps:dockside-dreams} guests?",
