@@ -196,7 +196,7 @@
         },
         {
           "question": "Which Seascape home fits a 10-12 person group versus a 14-16 person group?",
-          "answer": "For 14-16 guests, The Oasis is the clear call - it has the bedrooms, the two-hot-tub setup, and the extra outdoor zones. For 10-12 guests, it comes down to what matters more: if your group wants a dock and the shortest drive to Bradenton Beach, go with Dockside Dreams. If they want the biggest layout and the game room, The Oasis still works at 12."
+          "answer": "For {sleeps:the-oasis} guests, The Oasis is the clear call - it has the bedrooms, the two-hot-tub setup, and the extra outdoor zones. For {sleeps:dockside-dreams} guests, it comes down to what matters more: if your group wants a dock and the shortest drive to Bradenton Beach, go with Dockside Dreams. If they want the biggest layout and the game room, The Oasis still works at {sleeps:dockside-dreams}."
         },
         {
           "question": "Are the homes suitable for family reunions?",
@@ -226,7 +226,7 @@
       "decisionHighlights": [
         {
           "label": "Sleeps {sleeps-matching}",
-          "value": "The Oasis (5BR/16 guests) or Dockside Dreams (4BR/12 guests) - both with private pools"
+          "value": "The Oasis ({br:the-oasis}BR/{sleeps:the-oasis} guests) or Dockside Dreams ({br:dockside-dreams}BR/{sleeps:dockside-dreams} guests) - both with private pools"
         },
         {
           "label": "10-15 min to AMI beaches",
@@ -250,7 +250,7 @@
       "destination": "anna-maria-island",
       "title": "Large Group Vacation Rentals Near Anna Maria Island with Private Pools",
       "h1": "Large Group Vacation Rentals Near Anna Maria Island with Private Pools",
-      "description": "Bradenton vacation rentals near Anna Maria Island for groups of 10-16. Private pools, hot tubs, beach-distance facts, and direct booking links.",
+      "description": "Bradenton vacation rentals near Anna Maria Island for groups of {sleeps-matching}. Private pools, hot tubs, beach-distance facts, and direct booking links.",
       "intro": "If your group needs a mainland private-pool home near AMI beach days, these Bradenton listings are about 10-15 minutes from the water. Confirm capacity and location on each property page.",
       "bluntAnswer": "These homes are in Bradenton, not on Anna Maria Island, but they are 10-15 minutes from AMI beaches and sleep {sleeps:bradenton-pool-home}-{sleeps:the-oasis} guests.",
       "faqs": [
@@ -264,7 +264,7 @@
         },
         {
           "question": "Which Seascape home is best for a 12-16 person group?",
-          "answer": "The Oasis for 14-16 guests, or when the group wants the biggest layout, the game room, and two hot tubs. Dockside Dreams for 10-12 guests who want water access at the house and the fastest run to Bradenton Beach. River House for 10-12 guests who want a pool, game room, and a boat ramp one minute away. Bradenton Pool Home for groups of 10 where IMG proximity matters most."
+          "answer": "The Oasis for {sleeps:the-oasis} guests, or when the group wants the biggest layout, the game room, and two hot tubs. Dockside Dreams for {sleeps:dockside-dreams} guests who want water access at the house and the fastest run to Bradenton Beach. River House for {sleeps:river-house} guests who want a pool, game room, and a boat ramp one minute away. Bradenton Pool Home for groups of {sleeps:bradenton-pool-home} where IMG proximity matters most."
         },
         {
           "question": "Is Bradenton better than staying on AMI for large groups?",
@@ -279,7 +279,7 @@
       ],
       "decisionHighlights": [
         {
-          "label": "{matching} homes, 10-16 guests",
+          "label": "{matching} homes, {sleeps-matching} guests",
           "value": "3-5 bedrooms sleeping {sleeps:bradenton-pool-home}-{sleeps:the-oasis}, all with private pools and hot tubs or spas"
         },
         {
@@ -311,7 +311,7 @@
           "pageUrl": "/properties/the-oasis/",
           "bookingUrl": "https://book.seascape-vacations.com/listings/189511",
           "image": "https://bookingenginecdn.hostaway.com/listing/51916-189511-g2tWgjqFm-DXPRc0ll2k1u87aWIKNZm6tOyz9KhGrnc-64dfdf914c559",
-          "schemaDescription": "Bradenton vacation rental near Anna Maria Island with 5 bedrooms, 3 bathrooms, heated pool, 2 hot tubs, putting green, gameroom, and space for 16 guests.",
+          "schemaDescription": "Bradenton vacation rental near Anna Maria Island with 5 bedrooms, 3 bathrooms, heated pool, 2 hot tubs, putting green, gameroom, and space for {sleeps:the-oasis} guests.",
           "bedrooms": 5,
           "bathrooms": 3,
           "guests": 16,
@@ -319,7 +319,7 @@
           "specs": "5 BR / 3 BA / {sleeps-phrase:the-oasis}",
           "poolSpa": "Heated pool, 2 hot tubs, putting green",
           "beachDistance": "Holmes Beach 5.4 mi; Bradenton Beach 5.7 mi; Cortez Beach 6.2 mi",
-          "bestFor": "Best Seascape fit for 14-16 guests."
+          "bestFor": "Best Seascape fit for {sleeps:the-oasis} guests."
         },
         {
           "name": "Dockside Dreams",
@@ -327,7 +327,7 @@
           "pageUrl": "/properties/dockside-dreams/",
           "bookingUrl": "https://book.seascape-vacations.com/listings/206016",
           "image": "https://bookingenginecdn.hostaway.com/listing/51916-206016-xNIrPl9kvF0vllYFzSL7Lm0Gl4eOGxLIN--wmPlCT3NY-6536bca493945",
-          "schemaDescription": "Bradenton waterfront vacation rental near Anna Maria Island with 4 bedrooms, 3 bathrooms, private dock, heated pool, spa, gameroom, and space for 12 guests.",
+          "schemaDescription": "Bradenton waterfront vacation rental near Anna Maria Island with 4 bedrooms, 3 bathrooms, private dock, heated pool, spa, gameroom, and space for {sleeps:dockside-dreams} guests.",
           "bedrooms": 4,
           "bathrooms": 3,
           "guests": 12,
@@ -335,7 +335,7 @@
           "specs": "{br:dockside-dreams} BR / {ba:dockside-dreams} BA / {sleeps-phrase:dockside-dreams}",
           "poolSpa": "Heated pool/spa, waterfront dock",
           "beachDistance": "Bradenton Beach 2.9 mi; Cortez Beach 3.4 mi; Holmes Beach 5.1 mi",
-          "bestFor": "Best fit for 12 guests who want water access."
+          "bestFor": "Best fit for {sleeps:dockside-dreams} guests who want water access."
         },
         {
           "name": "River House",
@@ -343,7 +343,7 @@
           "pageUrl": "/properties/river-house/",
           "bookingUrl": "https://book.seascape-vacations.com/listings/135880",
           "image": "https://bookingenginecdn.hostaway.com/listing/51916-135880-O6JS9DHvtg7g5gc5ZAe7--55PGx3-0ELuuNJ4T1dsz7s-67620f804f296",
-          "schemaDescription": "Bradenton vacation rental near Anna Maria Island with 4 bedrooms, 3 bathrooms, heated pool, spa, gameroom, yard games, and space for 12 guests.",
+          "schemaDescription": "Bradenton vacation rental near Anna Maria Island with 4 bedrooms, 3 bathrooms, heated pool, spa, gameroom, yard games, and space for {sleeps:river-house} guests.",
           "bedrooms": 4,
           "bathrooms": 3,
           "guests": 12,
@@ -359,7 +359,7 @@
           "pageUrl": "/properties/bradenton-pool-home/",
           "bookingUrl": "https://book.seascape-vacations.com/listings/487798",
           "image": "https://bookingenginecdn.hostaway.com/listing/51916-487798-V0NBY--NCCpIEyYp6re-PPCPp-D1YJjHS25PWR9-gUzg-6992505e1bcdd",
-          "schemaDescription": "Bradenton vacation rental near Anna Maria Island with 3 bedrooms, 3.5 bathrooms, heated pool, inground spa, outdoor grill area, and space for 10 guests.",
+          "schemaDescription": "Bradenton vacation rental near Anna Maria Island with 3 bedrooms, 3.5 bathrooms, heated pool, inground spa, outdoor grill area, and space for {sleeps:bradenton-pool-home} guests.",
           "bedrooms": 3,
           "bathrooms": 3.5,
           "guests": 10,
@@ -367,7 +367,7 @@
           "specs": "{br:bradenton-pool-home} BR / {ba:bradenton-pool-home} BA / {sleeps-phrase:bradenton-pool-home}",
           "poolSpa": "Heated pool, inground spa, outdoor grill area",
           "beachDistance": "Bradenton Beach 6.9 mi; Cortez Beach 7.4 mi; Holmes Beach 8.7 mi",
-          "bestFor": "Best fit for 10 guests who also want IMG convenience."
+          "bestFor": "Best fit for {sleeps:bradenton-pool-home} guests who also want IMG convenience."
         }
       ],
       "reviewProof": [
@@ -859,7 +859,7 @@
         },
         {
           "label": "Siesta Key: 6 miles, 15-20 min",
-          "value": "4BR/12 guests with pool and included hot tub - books direct"
+          "value": "{br:sarasota-luxe}BR/{sleeps:sarasota-luxe} guests with pool and included hot tub - books direct"
         }
       ],
       "geoIntro": "<p>Sarasota runs on a scale that's easy to underestimate. The Ringling Museum is a 66-acre estate with a serious art collection, a Venetian Gothic mansion, and a circus museum on the same grounds. Marie Selby Botanical Gardens sits on a bay waterfront with one of the better orchid collections in the country. The Van Wezel, Asolo Rep, and Florida Studio Theatre all run professional seasons. First Friday gallery walks draw actual galleries. This is a real arts city that also has beaches - not a beach town with a museum.</p><p><strong>Sarasota Luxe</strong> is the Seascape home that fits a Sarasota cultural trip. It's a 4-bedroom home sleeping {sleeps:sarasota-luxe} near downtown Sarasota; dinner and galleries require a car. Lido Beach is 3 miles away (about 10 minutes). Siesta Key is 6 miles south, roughly 15-20 minutes depending on traffic. The home has a private pool, included hot tub, screened lanai, and a 2-car garage. Pet-friendly.</p><p>Anna Maria Island is 30-40 minutes north - far enough that it doesn't make sense as a daily side trip from a Sarasota base. If the AMI beaches are the priority, one of the Bradenton homes is a better starting point. If Sarasota's arts corridor and Siesta Key beach are the priority, <strong>Sarasota Luxe</strong> is the right call.</p>",
@@ -1318,7 +1318,7 @@
         },
         {
           "label": "{sleeps-phrase:sarasota-luxe}, Pet-Friendly",
-          "value": "4BR, 12 guests, small dog welcome - fits a group that wants city access without splitting across two places"
+          "value": "{br:sarasota-luxe}BR, {sleeps:sarasota-luxe} guests, small dog welcome - fits a group that wants city access without splitting across two places"
         }
       ],
       "geoIntro": "<p>Sarasota's reputation as Florida's Cultural Coast is earned: the Ringling Museum's 66-acre bayfront campus, Van Wezel Performing Arts Hall, and a downtown restaurant row that outpunches most Florida cities. What it does not always offer is large-group private-home accommodation close to all of it. Most lodging near downtown Sarasota is hotel rooms or small condos. <strong>Sarasota Luxe</strong> is the exception - a 4-bedroom home sleeping {sleeps:sarasota-luxe}, near downtown, with a private pool and hot tub; downtown destinations require driving.</p><p>Lido Beach is about 3 miles away, roughly 10 minutes by car. Siesta Key - the quartz-sand beach that earns most of the headlines - is about 6 miles, 15-20 minutes depending on bridge traffic. The distance matters: guests who want mornings at the beach and evenings at downtown restaurants will do that drive twice a day. Guests who want mostly dinner reservations, gallery walks, and a pool back home will hardly notice. Know which trip you're planning before you choose the base.</p><p><strong>Sarasota Luxe</strong> fits groups that lean toward the city side of that balance. The screened lanai, 2-car garage, and small-dog-friendly policy round out the practical details. Compare the same dates and complete checkout total across channels.</p>",
@@ -1356,7 +1356,7 @@
         },
         {
           "question": "How large are the pool and hot tub areas?",
-          "answer": "Sizes vary by home. The Oasis has the largest deck with two hot tubs and room for a big group. Dockside Dreams and River House have generous decks sized for 12 guests. Bradenton Pool Home is sized for 10."
+          "answer": "Sizes vary by home. The Oasis has the largest deck with two hot tubs and room for a big group. Dockside Dreams decks are sized for {sleeps:dockside-dreams} guests. River House decks are sized for {sleeps:river-house} guests. Bradenton Pool Home is sized for {sleeps:bradenton-pool-home}."
         },
         {
           "question": "Are the pool and hot tub areas private?",
@@ -1567,8 +1567,8 @@
       "slug": "vacation-rentals-sleeps-12-florida",
       "destination": null,
       "title": "Florida Vacation Rentals That Sleep {sleeps:dockside-dreams}",
-      "h1": "Vacation Homes for 12 Guests",
-      "description": "Need space for 12? Florida vacation rentals with 4 bedrooms, pools, and room for everyone.",
+      "h1": "Vacation Homes for {sleeps-matching} Guests",
+      "description": "Need space for {sleeps-matching}? Florida vacation rentals with 4 bedrooms, pools, and room for everyone.",
       "intro": "{matching} Seascape homes sleep {sleeps:dockside-dreams} across 4 bedrooms - each in a different location and with a different setup, so the right pick depends on where you want to be.",
       "faqs": [
         {
@@ -1627,7 +1627,7 @@
       "slug": "vacation-rentals-sleeps-16-florida",
       "destination": null,
       "title": "Florida Vacation Rentals That Sleep {sleeps:the-oasis}",
-      "h1": "Vacation Homes for 16 Guests",
+      "h1": "Vacation Homes for {sleeps-matching} Guests",
       "description": "Our largest vacation rental {sleeps-phrase:the-oasis} guests. 5 bedrooms, pool, hot tubs, putting green.",
       "intro": "The Oasis is our ultimate group property, sleeping {sleeps:the-oasis} with incredible amenities.",
       "faqs": [
@@ -1636,8 +1636,8 @@
           "answer": "The Oasis is our largest property, sleeping up to {sleeps:the-oasis} guests with 5 bedrooms, 3 bathrooms, a resort-style pool, hot tub, game room, and expansive outdoor areas."
         },
         {
-          "question": "What's the bedroom configuration for 16 guests?",
-          "answer": "The Oasis features 5 bedrooms with a mix of king, queen, and twin beds configured to accommodate up to 16 guests. Every bedroom has comfortable, quality bedding."
+          "question": "What's the bedroom configuration for {sleeps-matching} guests?",
+          "answer": "The Oasis features 5 bedrooms with a mix of king, queen, and twin beds configured to accommodate up to {sleeps:the-oasis} guests. Every bedroom has comfortable, quality bedding."
         },
         {
           "question": "Is the space really big enough for 16 people?",
@@ -1648,7 +1648,7 @@
           "answer": "The Oasis is popular for family reunions, milestone birthdays, and group celebrations. For events beyond normal vacation use, please contact us in advance to discuss details and any guidelines."
         },
         {
-          "question": "What entertainment is available for 16 guests?",
+          "question": "What entertainment is available for {sleeps-matching} guests?",
           "answer": "The Oasis features a dedicated game room, private heated pool, hot tub, outdoor BBQ and dining area, and plenty of space for group activities. Plus, AMI beaches are just 10\u201315 minutes away."
         },
         {
@@ -1678,7 +1678,7 @@
       "faqs": [
         {
           "question": "Which 4-bedroom properties do you have?",
-          "answer": "Multiple properties in the current listing set feature 4 bedrooms, including options in Bradenton and Sarasota. Each comes with private pools, full kitchens, and comfortable sleeping arrangements for 8\u201312 guests."
+          "answer": "Multiple properties in the current listing set feature 4 bedrooms, including options in Bradenton and Sarasota. Each comes with private pools, full kitchens, and comfortable sleeping arrangements for {sleeps-matching} guests."
         },
         {
           "question": "How many guests can a 4-bedroom home sleep?",
