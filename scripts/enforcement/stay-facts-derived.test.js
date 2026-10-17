@@ -180,6 +180,25 @@ test("page ranges and shared home tokens must bind every matching home", () => {
       answer: "These homes sleep {sleeps-matching} — The Oasis for {sleeps:the-oasis}, Dockside Dreams for {sleeps:dockside-dreams}, and River House for {sleeps:river-house}."
     }]
   }, catalog));
+  assert.throws(
+    () => assertStayCapacityBindings({
+      slug: "plant",
+      matchingProperties: ["dockside-dreams", "the-oasis", "river-house"],
+      faqs: [{
+        question: "Largest?",
+        answer: "The Oasis {sleeps-phrase:the-oasis}. Dockside Dreams {sleeps-phrase:dockside-dreams}. Those are the {matching} large-group options."
+      }]
+    }, catalog),
+    /\{matching\} names .+ but matchingProperties is .+river-house/
+  );
+  assert.doesNotThrow(() => assertStayCapacityBindings({
+    slug: "plant",
+    matchingProperties: ["dockside-dreams", "the-oasis"],
+    faqs: [{
+      question: "Largest?",
+      answer: "The Oasis {sleeps-phrase:the-oasis}. Dockside Dreams {sleeps-phrase:dockside-dreams}. Those are the {matching} large-group options."
+    }]
+  }, catalog));
 });
 
 test("replay 638: Blue House fallback capacity moves geoIntro, FAQ, highlight, ItemList, and JSON-LD", () => {
