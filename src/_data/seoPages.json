@@ -736,7 +736,7 @@
           "value": "Downtown restaurants, galleries, Palm Avenue shops, the Ringling, and the opera are reached by car."
         },
         {
-          "label": "Pool and space for 12",
+          "label": "Pool and space for {sleeps-matching}",
           "value": "Four bedrooms, a private heated pool, and a screened lanai \u2014 a real home, not a hotel room."
         },
         {
@@ -1576,8 +1576,8 @@
           "answer": "Dockside Dreams, River House, and Sarasota Luxe each sleep {sleeps-matching} across 4 bedrooms. Dockside is waterfront in Bradenton; River House is near the Manatee River in Bradenton; Sarasota Luxe is near downtown Sarasota; downtown destinations require driving."
         },
         {
-          "question": "How many bedrooms do 12-guest homes have?",
-          "answer": "All three have 4 bedrooms with a mix of king, queen, and twin configurations. Exact bed layouts vary - ask for the bedroom diagram if your group has specific needs."
+          "question": "How many bedrooms do {sleeps-matching}-guest homes have?",
+          "answer": "All {matching} have 4 bedrooms with a mix of king, queen, and twin configurations. Exact bed layouts vary - ask for the bedroom diagram if your group has specific needs."
         },
         {
           "question": "Is there enough bathroom space for {sleeps-matching} people?",
@@ -1588,7 +1588,7 @@
           "answer": "Yes. Each home has a dining area that seats the full group and a fully equipped kitchen for group cooking, plus outdoor dining and a grill."
         },
         {
-          "question": "What's the cost per person for a group of 12?",
+          "question": "What's the cost per person for a group of {sleeps-matching}?",
           "answer": "Per-person cost depends on the nightly rate and length of stay. Compare the same dates and complete checkout total across channels. Contact us for a direct-booking quote."
         },
         {
@@ -1612,7 +1612,7 @@
         },
         {
           "label": "Private Pool at Every Home",
-          "value": "All three include a private pool and hot tub - no shared amenities, no lobby, no resort fees"
+          "value": "All {matching} include a private pool and hot tub - no shared amenities, no lobby, no resort fees"
         }
       ],
       "geoIntro": "<p>Sleeping {sleeps:dockside-dreams} in a single home narrows the options fast. Hotels scatter a group across rooms on different floors; most vacation condos cap at 6-8. The {matching} Seascape homes that hold {sleeps-matching} each have 4 bedrooms and 3+ bathrooms, and they cover two markets: Bradenton (near Anna Maria Island) and downtown Sarasota.</p><p><strong>Dockside Dreams</strong> (Bradenton) is the waterfront option - private dock, pool, hot tub, and arcade. Bradenton Beach is 2.9 miles away. <strong>River House</strong> (Bradenton) is a minute from a public boat ramp on the Manatee River, with a pool, hot tub, and game room; AMI beaches are about 15 minutes away. <strong>Sarasota Luxe</strong> (downtown Sarasota) trades beach proximity for proximity to Sarasota restaurants, galleries, and the Bayfront, all reached by car - with a pool, hot tub, and screened lanai. Lido Beach is about 3 miles, 10 minutes.</p><p>The choice between Bradenton and Sarasota is mostly about how you'll spend your time. Beach-heavy trip: the Bradenton homes are the base. Mix of beach days and city dinners: Sarasota Luxe fits better. Divide the complete checkout total by your guest count and number of nights to compare the per-person cost with other lodging options.</p>",
@@ -1673,7 +1673,7 @@
       "destination": null,
       "title": "4 Bedroom Vacation Rentals in Florida",
       "h1": "4BR Florida Vacation Homes with Pool",
-      "description": "4 bedroom vacation rentals in Florida. Private pools, {sleeps-phrase:dockside-dreams}. Compare the same dates and complete checkout total across channels.",
+      "description": "4 bedroom vacation rentals in Florida. Private pools, sleep {sleeps-matching}. Compare the same dates and complete checkout total across channels.",
       "intro": "Our 4-bedroom vacation homes offer the perfect balance of space and privacy for groups.",
       "faqs": [
         {

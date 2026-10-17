@@ -9,7 +9,9 @@ const GUESTS_FACT = new RegExp(
 );
 const PEOPLE_FACT = /(?<![,\d])\b\d+(?:\s*[-–—]\s*\d+)?\s+people\b/i;
 const PERSON_GROUP_FACT = /(?<![,\d])\b\d+(?:\s*[-–—]\s*\d+)?[-\s]+person(?:s)?\b/i;
-const GROUPS_FACT = /\bgroups (?:of|larger than|up to|over) \d+\+?(?:\s*[-–—]\s*\d+)?\b/i;
+const GROUPS_FACT = /\bgroups? (?:of|larger than|up to|over) \d+\+?(?:\s*[-–—]\s*\d+)?\b/i;
+const GUEST_HYPHEN_FACT = /(?<![,\d])\b\d+(?:\s*[-–—]\s*\d+)?-guest\b/i;
+const SPACE_FOR_FACT = /\bspace for \d+(?:\s*[-–—]\s*\d+)?\b/i;
 const ROOM_FOR_FACT = /\bRoom for \d+(?:\s*[-–—]\s*\d+)?\b/i;
 const UP_TO_FACT = /\bup to \d+\b/i;
 const HEAT_INCLUDED_FACT = /\bheat(?:ed|ing)?\b[^.!?]{0,80}(?<!not\s)\bincluded\b/i;
@@ -18,6 +20,10 @@ const HOT_TUB_YEAR_INCLUDED_FACT =
 const HOME_COUNT = "(?:one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|[1-9]|1[0-2])";
 const HOME_COUNT_FACT = new RegExp(
   `\\b${HOME_COUNT}\\s+(?:(?!of\\b|or\\b|to\\b|per\\b|at\\b|for\\b|with\\b|from\\b|by\\b|in\\b|on\\b)[A-Za-z][\\w-]*\\s+){0,3}(?:homes|options)\\b`,
+  "i"
+);
+const ALL_COUNT_FACT = new RegExp(
+  `\\b(?:all|both)\\s+${HOME_COUNT}\\b(?!\\s*-?bedrooms?\\b)`,
   "i"
 );
 const TOKEN = /\{(sleeps-phrase|sleeps-matching|sleeps|br|ba|heat|homes|matching|tub-homes)(?::([a-z0-9-]+))?\}/g;
@@ -186,11 +192,14 @@ function collectHandTypedStayFacts(page) {
       ["N people", PEOPLE_FACT],
       ["N-person", PERSON_GROUP_FACT],
       ["groups of N", GROUPS_FACT],
+      ["N-guest", GUEST_HYPHEN_FACT],
+      ["space for N", SPACE_FOR_FACT],
       ["room for N", ROOM_FOR_FACT],
       ["up to N", UP_TO_FACT],
       ["heat included", HEAT_INCLUDED_FACT],
       ["hot tub included year-round", HOT_TUB_YEAR_INCLUDED_FACT],
-      ["N homes", HOME_COUNT_FACT]
+      ["N homes", HOME_COUNT_FACT],
+      ["all N", ALL_COUNT_FACT]
     ]) {
       const match = text.match(pattern);
       if (match) {
@@ -310,7 +319,9 @@ function listedHomeCount(page) {
 }
 
 module.exports = {
+  ALL_COUNT_FACT,
   GROUPS_FACT,
+  GUEST_HYPHEN_FACT,
   GUESTS_FACT,
   HEAT_INCLUDED_FACT,
   HOME_COUNT_FACT,
@@ -319,6 +330,7 @@ module.exports = {
   PERSON_GROUP_FACT,
   ROOM_FOR_FACT,
   SLEEPS_FACT,
+  SPACE_FOR_FACT,
   UP_TO_FACT,
   applyStayFacts,
   assertNoHandTypedStayFacts,
