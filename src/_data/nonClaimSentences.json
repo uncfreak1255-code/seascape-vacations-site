@@ -360,13 +360,6 @@
       "note": "reviewed current guest copy after fail-closed sentence boundaries; not a new claim phrasing"
     },
     {
-      "hash": "a2f024b80690f9a9aba7805641e1f19a0e8890c6bf09e037779ca5fbd9fa3e5a",
-      "sentence": "In 2026, Anna Maria Island vacation rental rates range from $175/night for a basic 1-bedroom cottage to $650+/night for a large waterfront home with a pool and dock",
-      "file": "src/guides/anna-maria-island-vacation-cost-guide-2026/index.html",
-      "slug": "",
-      "note": "reviewed current guest copy after fail-closed sentence boundaries; not a new claim phrasing"
-    },
-    {
       "hash": "4dcc631abe596d77275fe803c6c7af4d2b92d67b45fdaf5c4c1ac83e994c3d4c",
       "sentence": "Nightly Rate (3BR) Crowd Level Peak Season Feb – Apr $375–$500/night High — book 3–6 months ahead Summer Jun – Aug $300–$425/night Moderate — families with kids Shoulder (Best Value) May, Sep – Oct $225–$325/night Low — best availability Holiday Weeks Christmas, Spring Break $450–$650/night Very High — book 6+ months out Off-Peak Nov – Jan (non-holiday) $200–$300/night Low — snowbirds + locals Here's a tip most cost guides won't tell you: May is the secret sweet spot",
       "file": "src/guides/anna-maria-island-vacation-cost-guide-2026/index.html",
@@ -523,13 +516,6 @@
     {
       "hash": "9fc0ffb2f200b7403d3c4e12d095cd936c7b7f3ca26af7d489b7952e4af9b26f",
       "sentence": "0&Prime; Moderate–High $$$ *Rental rate scale based on a 3-bedroom waterfront home near AMI: $ = $175–$275/night, $$ = $275–$350, $$$ = $350–$450, $$$$ = $450–$550+ Spring on AMI: The Gold Standard (March–May) There's a reason snowbirds and spring-breakers fight over the same weeks",
-      "file": "src/guides/best-time-to-visit-anna-maria-island/index.html",
-      "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
-    },
-    {
-      "hash": "6f92e3608053a04fa1f353c00ee811077aa0211aa184515cf9bf33ce5ecf8f41",
-      "sentence": "A waterfront 3-bedroom that costs $450/night in March might run $250–$300/night in early fall",
       "file": "src/guides/best-time-to-visit-anna-maria-island/index.html",
       "slug": "",
       "note": "reviewed current guest copy; not a new claim phrasing"

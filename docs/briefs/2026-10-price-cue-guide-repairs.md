@@ -14,7 +14,7 @@
 - offer claim: n/a (guest-lane claim repair; no owner-offer line)
 - required internal links: /guides/, /properties/
 - CTA target: unchanged on the named guides
-- anti-claims: do not publish a mainland lodging, charter, platform-fee, airfare, Bradenton-vs-Sarasota, or seasonal-rate advantage without a sourcedClaims row; do not invent nightly rates, savings percents, platform-fee percents, or a cheaper-than-island guarantee; do not keep “often cost less,” “slightly lower rates,” “separate by hundreds,” “significantly lower rates,” “typically cost less,” “prices lower,” “most affordable months,” or a 14% / $3,050 / $2,600 Airbnb sample as current fact
+- anti-claims: do not publish a mainland lodging, charter, platform-fee, airfare, Bradenton-vs-Sarasota, or seasonal-rate advantage without a sourcedClaims row; do not invent nightly rates, savings percents, platform-fee percents, or a cheaper-than-island guarantee; do not keep “often cost less,” “slightly lower rates,” “separate by hundreds,” “significantly lower rates,” “typically cost less,” “prices lower,” “most affordable months,” a 14% / $3,050 / $2,600 Airbnb sample, a $175–$650+ nightly range, or a $450 March vs $250–$300 fall waterfront example as current fact
 - hypothesis: the fail-closed price-cue scanner will keep catching qualitative advantages; rewriting the live sentences is the honest fix, not a hashed allowlist
 - primary event: guide_book_direct_click
 - guardrail event: email_capture_submit
