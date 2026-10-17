@@ -106,6 +106,38 @@ test("hand-typed sleeps, heat, and home-count facts fail stay JSON", () => {
     () => assertNoHandTypedStayFacts({ slug: "plant", decisionHighlights: [{ label: "Three Options, Two Markets", value: "pick" }] }),
     /hand-typed N homes "Three Options"/
   );
+  assert.throws(
+    () => assertNoHandTypedStayFacts({
+      slug: "plant",
+      faqs: [{ question: "How many bedrooms do 12-guest homes have?", answer: "Ask." }]
+    }),
+    /hand-typed N-guest "12-guest"/
+  );
+  assert.throws(
+    () => assertNoHandTypedStayFacts({
+      slug: "plant",
+      decisionHighlights: [{ label: "Pool and space for 12", value: "pool" }]
+    }),
+    /hand-typed space for N "space for 12"/
+  );
+  assert.throws(
+    () => assertNoHandTypedStayFacts({
+      slug: "plant",
+      faqs: [{ question: "What's the cost for a group of 12?", answer: "Ask." }]
+    }),
+    /hand-typed groups of N "group of 12"/
+  );
+  assert.throws(
+    () => assertNoHandTypedStayFacts({
+      slug: "plant",
+      decisionHighlights: [{ label: "Private Pool", value: "All three include a private pool" }]
+    }),
+    /hand-typed all N "All three"/
+  );
+  assert.doesNotThrow(() => assertNoHandTypedStayFacts({
+    slug: "plant",
+    faqs: [{ question: "Do all 4-bedroom homes have pools?", answer: "Yes." }]
+  }));
 });
 
 test("published stay JSON has no hand-typed capacity, heat, or home-count facts", () => {
