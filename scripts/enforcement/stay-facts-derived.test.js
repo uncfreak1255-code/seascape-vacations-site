@@ -245,6 +245,17 @@ test("page ranges and shared home tokens must bind every matching home", () => {
   );
   river.amenities = savedAmenities;
   river.marketing_amenities = savedMarketing;
+  assert.throws(
+    () => assertStayCapacityBindings({
+      slug: "plant",
+      matchingProperties: ["coastal-stay"],
+      faqs: [{
+        question: "Hours?",
+        answer: "At the homes with a verified hot tub or spa: those hot tubs run year-round and there's no shutoff."
+      }]
+    }, catalog),
+    /class-level tub operation cannot cover .*coastal-stay/
+  );
 });
 
 test("replay 638: Blue House fallback capacity moves geoIntro, FAQ, highlight, ItemList, and JSON-LD", () => {

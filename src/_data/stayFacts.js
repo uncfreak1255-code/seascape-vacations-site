@@ -394,6 +394,33 @@ function assertStayCapacityBindings(page, catalog) {
       );
     }
   });
+  visitStrings(page, (text) => {
+    const clauses = String(text).split(/[.;]/);
+    for (const clause of clauses) {
+      if (!/\{tub-homes\}|verified hot tub/i.test(clause)) {
+        continue;
+      }
+      const needsTubHeat = /\b(?:year-?round|no shutoff|independent controls)\b/i.test(clause);
+      const needsPoolFee = /\$40/.test(clause);
+      if (!needsTubHeat && !needsPoolFee) {
+        continue;
+      }
+      const missing = (catalog || []).filter(hasTub).filter((property) => {
+        if (needsTubHeat && !tubHeatText(property)) {
+          return true;
+        }
+        if (needsPoolFee && !/\$40/.test(poolHeatText(property))) {
+          return true;
+        }
+        return false;
+      });
+      if (missing.length > 0) {
+        throw new Error(
+          `stayFacts: class-level tub operation cannot cover ${missing.map((property) => property.slug).join(" and ")} without guestFacts on ${slug}`
+        );
+      }
+    }
+  });
 }
 
 function stayOccupancy(catalog, slug) {
