@@ -44,7 +44,7 @@
           "value": "10\u201315 minutes to Holmes, Bradenton, and Coquina beaches \u2014 with a private pool and easy parking back at the house."
         },
         {
-          "label": "Room for 12\u201316",
+          "label": "Room for {sleeps-matching}",
           "value": "The Oasis {sleeps-phrase:the-oasis} with two hot tubs and a putting green; Dockside Dreams {sleeps-phrase:dockside-dreams}; River House {sleeps-phrase:river-house}."
         },
         {
@@ -192,7 +192,7 @@
       "faqs": [
         {
           "question": "What's the largest group you can accommodate?",
-          "answer": "The Oasis {sleeps-phrase:the-oasis} across 5 bedrooms. Dockside Dreams {sleeps-phrase:dockside-dreams} across 4 bedrooms. Those are the two large-group options. For groups larger than {sleeps:the-oasis}, we can talk through coordinating nearby properties, but that's not our standard offering."
+          "answer": "The Oasis {sleeps-phrase:the-oasis} across 5 bedrooms. Dockside Dreams {sleeps-phrase:dockside-dreams} across 4 bedrooms. Those are the {matching} large-group options. For groups larger than {sleeps:the-oasis}, we can talk through coordinating nearby properties, but that's not our standard offering."
         },
         {
           "question": "Which Seascape home fits a {sleeps:dockside-dreams}-person group versus a {sleeps:the-oasis}-person group?",
@@ -577,7 +577,7 @@
       "title": "Romantic Getaway Rentals on Anna Maria Island",
       "h1": "AMI Romantic Vacation Rentals for Couples",
       "description": "Plan the perfect romantic escape on Anna Maria Island. Private homes with pools and hot tubs.",
-      "intro": "Two private pool homes for a couples' trip near Anna Maria Island \u2014 your own heated pool and hot tub, no shared walls, no crowded resort pool.",
+      "intro": "{matching} private pool homes for a couples' trip near Anna Maria Island \u2014 your own heated pool and hot tub, no shared walls, no crowded resort pool.",
       "faqs": [
         {
           "question": "Which property is best for a romantic couples getaway?",
@@ -650,7 +650,7 @@
         },
         {
           "question": "Are the pools heated for winter swimming?",
-          "answer": "Yes. You've got a private pool you can warm up whenever you want it, plus a hot tub included all year. Florida sun keeps the pool swimmable most of the season, so heat is a simple optional add-on for the cooler winter weeks."
+          "answer": "Yes. You've got a private pool you can warm up whenever you want it, plus a hot tub {heat:sarasota-luxe}. Florida sun keeps the pool swimmable most of the season, so heat is a simple optional add-on for the cooler winter weeks."
         },
         {
           "question": "Is Sarasota Luxe good for a girls' trip or couples retreat?",
@@ -1581,7 +1581,7 @@
         },
         {
           "question": "Is there enough bathroom space for {sleeps-matching} people?",
-          "answer": "Each home has 3 or more bathrooms. Twelve guests across 4 bedrooms and 3+ baths is a workable ratio."
+          "answer": "Each home has 3 or more bathrooms. {sleeps-matching} guests across 4 bedrooms and 3+ baths is a workable ratio."
         },
         {
           "question": "Can we all eat together?",
@@ -1603,7 +1603,7 @@
       ],
       "decisionHighlights": [
         {
-          "label": "Three Options, Two Markets",
+          "label": "{matching} Options, Two Markets",
           "value": "Dockside Dreams and River House in Bradenton; Sarasota Luxe in downtown Sarasota - match the home to your itinerary"
         },
         {
@@ -1832,7 +1832,7 @@
         },
         {
           "question": "Are the pools heated in winter?",
-          "answer": "Yes. Warm up the pool whenever you want it, and the hot tub is included with your stay year-round. Florida winters are mild, so many guests swim comfortably without heat; it's a simple optional add-on for the chilliest weeks."
+          "answer": "Yes. Warm up the pool whenever you want it. Hot tub heat terms are listed on each home page. Florida winters are mild, so many guests swim comfortably without heat; it's a simple optional add-on for the chilliest weeks."
         },
         {
           "question": "Do you offer monthly snowbird rates?",
@@ -2193,7 +2193,7 @@
         },
         {
           "question": "Which property is best for a retirement celebration?",
-          "answer": "The Oasis for the largest groups \u2014 up to 16, with a pool, two hot tubs, game room, and putting green. Sarasota Luxe for a smaller, upscale gathering near downtown dining."
+          "answer": "The Oasis for the largest groups \u2014 up to {sleeps:the-oasis}, with a pool, two hot tubs, game room, and putting green. Sarasota Luxe for a smaller, upscale gathering near downtown dining."
         },
         {
           "question": "What activities work for retirees?",
@@ -2221,7 +2221,7 @@
       "decisionHighlights": [
         {
           "label": "Room to gather",
-          "value": "A private home with a pool and kitchen for family dinners and relaxed get-togethers \u2014 The Oasis up to 16."
+          "value": "A private home with a pool and kitchen for family dinners and relaxed get-togethers \u2014 The Oasis up to {sleeps:the-oasis}."
         },
         {
           "label": "Big or small",

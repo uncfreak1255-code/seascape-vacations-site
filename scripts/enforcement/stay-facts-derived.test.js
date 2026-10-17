@@ -82,6 +82,30 @@ test("hand-typed sleeps, heat, and home-count facts fail stay JSON", () => {
     () => assertNoHandTypedStayFacts({ slug: "plant", geoIntro: "hot tubs are heated year-round and included" }),
     /hand-typed heat included "heated year-round and included"/
   );
+  assert.throws(
+    () => assertNoHandTypedStayFacts({ slug: "plant", decisionHighlights: [{ label: "Room for 12–16", value: "range" }] }),
+    /hand-typed room for N "Room for 12–16"/
+  );
+  assert.throws(
+    () => assertNoHandTypedStayFacts({ slug: "plant", faqs: [{ question: "Baths?", answer: "Twelve guests across 4 bedrooms." }] }),
+    /hand-typed N guests "Twelve guests"/
+  );
+  assert.throws(
+    () => assertNoHandTypedStayFacts({ slug: "plant", geoIntro: "The Oasis up to 16." }),
+    /hand-typed up to N "up to 16"/
+  );
+  assert.throws(
+    () => assertNoHandTypedStayFacts({ slug: "plant", faqs: [{ question: "Heated?", answer: "a hot tub included all year" }] }),
+    /hand-typed hot tub included year-round "hot tub included all year"/
+  );
+  assert.throws(
+    () => assertNoHandTypedStayFacts({ slug: "plant", geoIntro: "Two private pool homes for a couples' trip" }),
+    /hand-typed N homes "Two private pool homes"/
+  );
+  assert.throws(
+    () => assertNoHandTypedStayFacts({ slug: "plant", decisionHighlights: [{ label: "Three Options, Two Markets", value: "pick" }] }),
+    /hand-typed N homes "Three Options"/
+  );
 });
 
 test("published stay JSON has no hand-typed capacity, heat, or home-count facts", () => {
