@@ -407,6 +407,14 @@ test('never-seen price-cue phrasing fails without changing the matcher', () => {
   );
   assert.equal(jsonLd[0].kind, 'price-cue-candidate');
   assert.match(jsonLd[0].excerpt, /fraction of the OTA price/i);
+  const jsonLdUnquoted = collectPriceClaimCandidates(
+    `<script type=application/ld+json>{"description":"Guests ${phrase}."}</script>`
+  );
+  assert.equal(jsonLdUnquoted[0].kind, 'price-cue-candidate');
+  const jsonLdSpaced = collectPriceClaimCandidates(
+    `<script type = "application/ld+json">{"description":"Guests ${phrase}."}</script>`
+  );
+  assert.equal(jsonLdSpaced[0].kind, 'price-cue-candidate');
   assert.equal(
     collectPriceClaimCandidates(`<script>window.note = "Guests ${phrase}.";</script>`).length,
     0
@@ -506,9 +514,12 @@ test('Bradenton-Sarasota dining comparison uses current menus in body and FAQ sc
 
 test('cost guide 2026 compares checkout totals instead of an invented Airbnb sample', () => {
   const s = read('src/guides/anna-maria-island-vacation-cost-guide-2026/index.html');
-  assert.doesNotMatch(s, /14% of subtotal|\$3,050|\$2,600|Here's the math/i);
+  assert.doesNotMatch(s, /14% of subtotal|\$3,050|\$2,600|Here's the math|\$175\/night|\$650\+\/night/i);
   assert.match(s, /compare the complete checkout totals/i);
   assert.match(s, /href="\/stays\/book-direct-anna-maria-island\/"/);
+  assert.match(s, /Cottage, family-home, and waterfront listings each have their own checkout total/);
+  const bestTime = read('src/guides/best-time-to-visit-anna-maria-island/index.html');
+  assert.doesNotMatch(bestTime, /\$450\/night in March|\$250–\$300\/night in early fall/);
 });
 
 test('booking and cost guides compare complete quotes without fixed savings or fabricated trip totals', () => {

@@ -214,11 +214,11 @@ function walkJsonStrings(value, visit) {
 
 function jsonLdCopy(text) {
   const parts = [];
-  for (const match of String(text || "").matchAll(/<script[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi)) {
+  for (const match of String(text || "").matchAll(/<script\b[^>]*\btype\s*=\s*(["']?)application\/ld\+json\1[^>]*>([\s\S]*?)<\/script>/gi)) {
     try {
-      walkJsonStrings(JSON.parse(match[1]), (value) => parts.push(value));
+      walkJsonStrings(JSON.parse(match[2]), (value) => parts.push(value));
     } catch {
-      parts.push(quotedTemplateLiterals(match[1]));
+      parts.push(quotedTemplateLiterals(match[2]));
     }
   }
   return parts.join(". ");
