@@ -362,6 +362,38 @@ function assertStayCapacityBindings(page, catalog) {
       );
     }
   });
+  visitStrings(page, (text) => {
+    if (/\{matching\}/.test(text) && /\bboth\b/i.test(text) && matchingHomeCount(page) !== 2) {
+      throw new Error(`stayFacts: {matching} cannot pair with Both unless matchingProperties has 2 homes on ${slug}`);
+    }
+  });
+  const tubs = (catalog || []).filter(hasTub).map((property) => property.slug);
+  visitStrings(page, (text) => {
+    if (!/\{tub-homes\}/.test(text)) {
+      return;
+    }
+    const named = namedHomeSlugs(text, homes);
+    if (named.length === 0) {
+      return;
+    }
+    const exceptions = String(text)
+      .split(/[.;—]/)
+      .filter((clause) => /no verified|no hot tub|without a (?:verified )?hot tub/i.test(clause))
+      .flatMap((clause) => namedHomeSlugs(clause, homes));
+    const claimed = named.filter((home) => !exceptions.includes(home));
+    if (claimed.length === 0) {
+      return;
+    }
+    const same =
+      claimed.length === tubs.length &&
+      claimed.every((home) => tubs.includes(home)) &&
+      tubs.every((home) => claimed.includes(home));
+    if (!same) {
+      throw new Error(
+        `stayFacts: {tub-homes} names ${claimed.join(" and ") || "none"} but tub homes are ${tubs.join(" and ") || "none"} on ${slug}`
+      );
+    }
+  });
 }
 
 function stayOccupancy(catalog, slug) {
