@@ -14,7 +14,7 @@
 - offer claim: n/a (guest-lane claim repair; no owner-offer line)
 - required internal links: /guides/, /properties/
 - CTA target: unchanged on the named guides
-- anti-claims: do not publish a mainland lodging, charter, platform-fee, or seasonal-rate advantage without a sourcedClaims row; do not invent nightly rates, savings percents, or a cheaper-than-island guarantee; do not keep “often cost less,” “slightly lower rates,” “separate by hundreds,” or “significantly lower rates” as current fact
+- anti-claims: do not publish a mainland lodging, charter, platform-fee, airfare, Bradenton-vs-Sarasota, or seasonal-rate advantage without a sourcedClaims row; do not invent nightly rates, savings percents, or a cheaper-than-island guarantee; do not keep “often cost less,” “slightly lower rates,” “separate by hundreds,” “significantly lower rates,” “typically cost less,” “prices lower,” or “most affordable months” as current fact
 - hypothesis: the fail-closed price-cue scanner will keep catching qualitative advantages; rewriting the live sentences is the honest fix, not a hashed allowlist
 - primary event: guide_book_direct_click
 - guardrail event: email_capture_submit
@@ -30,6 +30,9 @@ These guides are not a topical cluster. They share only the same unsourced price
 - src/guides/spring-break-activities-bradenton-anna-maria-island/index.html: /stays/spring-break-rentals-anna-maria-island/, /guides/, /properties/
 - src/guides/anna-maria-island-vs-siesta-key.html: /stays/anna-maria-island-vacation-rentals/, /stays/bradenton-vacation-rentals-near-beaches/, /guides/
 - src/guides/best-time-visit-anna-maria-island.html: /stays/anna-maria-island-vacation-rentals/, /stays/anna-maria-island-beachfront-rentals/, /guides/
+- src/guides/best-time-to-visit-anna-maria-island/index.html: /stays/anna-maria-island-vacation-rentals/, /guides/, /properties/
+- src/guides/bradenton-insider-guide.html: /stays/bradenton-waterfront-vacation-rentals/, /guides/, /properties/
+- src/guides/flights-to-anna-maria-island/index.html: /stays/anna-maria-island-vacation-rentals/, /guides/, /properties/
 
 ## Gate 0 Search And Attack Receipt
 
@@ -37,14 +40,14 @@ These guides are not a topical cluster. They share only the same unsourced price
 | --- | --- |
 | Target query family | Anna Maria Island vacation cost; spring break activities Bradenton Anna Maria Island; Anna Maria Island vs Siesta Key |
 | Searcher intent | guide / trip-cost research, not a new stay lander |
-| Current Seascape URL | /guides/anna-maria-island-vacation-cost/, /guides/spring-break-activities-bradenton-anna-maria-island/, /guides/anna-maria-island-vs-siesta-key/, /guides/best-time-visit-anna-maria-island/ |
+| Current Seascape URL | /guides/anna-maria-island-vacation-cost/, /guides/spring-break-activities-bradenton-anna-maria-island/, /guides/anna-maria-island-vs-siesta-key/, /guides/best-time-visit-anna-maria-island/, /guides/bradenton-insider-guide/, /guides/flights-to-anna-maria-island/ |
 | SERP observed date | 2026-10-17 |
 | SERP stale after | 2026-10-24 |
 | Current proof | docs/status/next-batch.md reread on 2026-10-12 is fresh but below threshold (requested window 2026-10-03 to 2026-10-09; BigQuery GSC data_date 2026-10-09). This edit uses the empty sourcedClaims.json file and the live guide sentences, not an impact claim. |
 | Top visible competitors | No competitor rewrite. This batch only removes unsourced comparative price lines on existing guides. |
 | Competitor angle | Destination and charter pages still quote nightly or trip prices. The gap here is Seascape copy that asserts a mainland cost, charter-rate, or quantified platform-fee advantage without a sourced row. |
 | Visual/format gap | None required. Keep existing guide layout and only replace the named claim sentences. |
-| Seascape gap | The cost guide said mainland homes “often cost less” than equivalent island listings. The spring-break guide said Bradenton fishing charters have “slightly lower rates” than island-based operators. The AMI vs Siesta conversion kit said platform fees “separate by hundreds.” The best-time guide said shifting dates can mean “significantly lower rates.” None of those lines has a sourcedClaims row. |
+| Seascape gap | The cost guide said mainland homes “often cost less” and that September and October are the most affordable months with lower peak-season rates. The spring-break guide said Bradenton fishing charters have “slightly lower rates.” The AMI vs Siesta kit said platform fees “separate by hundreds.” The live best-time pages said shifting dates can mean “significantly lower rates” or that fall has the lowest rental rates. The Bradenton insider FAQ said rentals “typically cost less” than Sarasota. The flights guide said TPA “often prices lower.” None of those lines has a sourcedClaims row. |
 | Search fit | Keep the existing guide URLs. Replace the unsourced advantages with a checkout or quote comparison. Conversion stays on /properties/ and the existing stay links. Do not open a new page. |
 | Local/GBP proof | Not applicable: organic guide-copy claim repair, no local-pack or GBP claim. |
 | AEO/readback note | No AI citation-lift claim. Readback is only that the preview sentences stop publishing an unsourced cheaper/lower-rate or hundreds-in-fees advantage. |
@@ -67,9 +70,12 @@ These guides are not a topical cluster. They share only the same unsourced price
 
 ## Source Files Changed In This Batch
 
-- source files likely to change: `src/guides/anna-maria-island-vacation-cost-guide-2026/index.html`, `src/guides/spring-break-activities-bradenton-anna-maria-island/index.html`, `src/guides/anna-maria-island-vs-siesta-key.html`, `src/guides/best-time-visit-anna-maria-island.html`
+- source files likely to change: `src/guides/anna-maria-island-vacation-cost-guide-2026/index.html`, `src/guides/spring-break-activities-bradenton-anna-maria-island/index.html`, `src/guides/anna-maria-island-vs-siesta-key.html`, `src/guides/best-time-visit-anna-maria-island.html`, `src/guides/best-time-to-visit-anna-maria-island/index.html`, `src/guides/bradenton-insider-guide.html`, `src/guides/flights-to-anna-maria-island/index.html`
 - src/guides/anna-maria-island-vacation-cost-guide-2026/index.html
 - src/guides/spring-break-activities-bradenton-anna-maria-island/index.html
 - src/guides/anna-maria-island-vs-siesta-key.html
 - src/guides/best-time-visit-anna-maria-island.html
+- src/guides/best-time-to-visit-anna-maria-island/index.html
+- src/guides/bradenton-insider-guide.html
+- src/guides/flights-to-anna-maria-island/index.html
 
