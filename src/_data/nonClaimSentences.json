@@ -430,20 +430,6 @@
       "note": "reviewed current guest copy; not a new claim phrasing"
     },
     {
-      "hash": "c43ea81c79ca7d1ceb1e082038d586887fe7a7ee232de24b30b89209f8bfd3fc",
-      "sentence": "September and October are the most affordable months, with rental rates lower than peak season (February–April)",
-      "file": "src/guides/anna-maria-island-vacation-cost-guide-2026/index.html",
-      "slug": "",
-      "note": "reviewed current guest copy after fail-closed sentence boundaries; not a new claim phrasing"
-    },
-    {
-      "hash": "e2bca2dfbe42840771098f0f4a72a16299114411638659c5f8df64b172e74479",
-      "sentence": "September and October offer the lowest rates, below peak season",
-      "file": "src/guides/anna-maria-island-vacation-cost-guide-2026/index.html",
-      "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
-    },
-    {
       "hash": "42c2759603e3ec25aec188b957efa598a636206529cf345bd6b127d0449e5380",
       "sentence": "Visit in shoulder season (May or September–October), book a rental directly from the management company to skip OTA fees, cook half your meals at home using the kitchen, and stick to free activities like Coquina Beach, the Rod & Reel Pier, and the Pine Avenue shops",
       "file": "src/guides/anna-maria-island-vacation-cost-guide-2026/index.html",
@@ -612,13 +598,6 @@
       "note": "reviewed current guest copy after fail-closed sentence boundaries; not a new claim phrasing"
     },
     {
-      "hash": "3a409a4ca69a8f181df523740dbe61161d9299086e7f5c6b2275450201eccb28",
-      "sentence": "For the lowest rental rates and empty beaches, aim for late September or October",
-      "file": "src/guides/best-time-to-visit-anna-maria-island/index.html",
-      "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
-    },
-    {
       "hash": "bc57d8bd372e4c74e4a366525ee970b34ae45f261e37eecef563d3a93bb1dd5a",
       "sentence": "Month-by-month breakdown of the best time to visit Anna Maria Island including weather, rental pricing, crowd levels, events, and local tips",
       "file": "src/guides/best-time-to-visit-anna-maria-island/index.html",
@@ -631,41 +610,6 @@
       "file": "src/guides/best-time-to-visit-anna-maria-island/index.html",
       "slug": "",
       "note": "reviewed current guest copy; not a new claim phrasing"
-    },
-    {
-      "hash": "3254e2bbd4e728bf2c2c324a241edbc223ca965fa5ef1910a6eca6f9b8b521e6",
-      "sentence": "Rates sit in the mid-range—lower than winter peak but higher than fall",
-      "file": "src/guides/best-time-to-visit-anna-maria-island/index.html",
-      "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
-    },
-    {
-      "hash": "1ac6547ca1995e87f7fc567678f7ce376ec3001adeb96cad15172338d25983ed",
-      "sentence": "Rental rates sit in the mid-range—cheaper than winter peak but pricier than fall",
-      "file": "src/guides/best-time-to-visit-anna-maria-island/index.html",
-      "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
-    },
-    {
-      "hash": "ee837ae8d3f0ff681a28c0df40c2ab76a3ca397fa21d1ef817dff12d6c5a189e",
-      "sentence": "Seascape Vacations manages 5 Gulf Coast properties near AMI with nightly rates from $175–$650 depending on season",
-      "file": "src/guides/best-time-to-visit-anna-maria-island/index.html",
-      "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
-    },
-    {
-      "hash": "cf3960ad8802934632ae1957247ebb140474ff39182044707c4cd9743cb25b8e",
-      "sentence": "September and October are the most affordable months, with rates below peak",
-      "file": "src/guides/best-time-to-visit-anna-maria-island/index.html",
-      "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
-    },
-    {
-      "hash": "a01e4db4bde0f5f01ca54fe38b9600c0205eb753161554109f12ee718dc74faf",
-      "sentence": "September and October offer the lowest rental rates on Anna Maria Island, below peak season",
-      "file": "src/guides/best-time-to-visit-anna-maria-island/index.html",
-      "slug": "",
-      "note": "reviewed current guest copy after fail-closed sentence boundaries; not a new claim phrasing"
     },
     {
       "hash": "0511401b0fddea0e94f6f83a6d465cb7ab4abb745c86971722a0a8e9222373a4",
@@ -929,13 +873,6 @@
     {
       "hash": "1c1525966e56170176212d3611f7c8fc8e9597d99ad7c61c6b36637627770c93",
       "sentence": "Book March-May for my money—you get all the weather benefits without the crowds or winter pricing",
-      "file": "src/guides/bradenton-insider-guide.html",
-      "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
-    },
-    {
-      "hash": "33e6deed9a4d01618a51abe57fd1de5bea84df59d8081813e9f630310836c74d",
-      "sentence": "Bradenton vacation rentals typically cost less than comparable Sarasota properties, while still being close to top beaches and attractions",
       "file": "src/guides/bradenton-insider-guide.html",
       "slug": "",
       "note": "reviewed current guest copy; not a new claim phrasing"
@@ -1286,13 +1223,6 @@
     {
       "hash": "bb4318c817fab245192c7e5aff0ccb60cae69df45ca625591604dbf812e930e8",
       "sentence": "This is the first question every guest asks, and the answer depends on three things: where you're flying from, how many people are on the trip, and how much you care about drive time versus fare price",
-      "file": "src/guides/flights-to-anna-maria-island/index.html",
-      "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
-    },
-    {
-      "hash": "88d66e3466abe38e25480551bcd4955432f3d9071b24d593586eabc66fbbcc1f",
-      "sentence": "TPA often prices lower because more airlines compete there",
       "file": "src/guides/flights-to-anna-maria-island/index.html",
       "slug": "",
       "note": "reviewed current guest copy; not a new claim phrasing"
