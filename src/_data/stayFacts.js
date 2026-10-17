@@ -4,7 +4,10 @@ const { catalogHomeCountWord, numberWord } = require("../../scripts/enforcement/
 
 const SLEEPS_FACT = /\b(?:sleep(?:s|ing)?(?:\s+up\s+to)?|hold)\s+\d+(?:\s*[-–-]\s*\d+)?\b/i;
 const GUESTS_FACT = /(?<![,\d])\b\d+(?:\s*[-–—]\s*\d+)?\s+guests\b/i;
-const HEAT_INCLUDED_FACT = /\bheat included\b/i;
+const PEOPLE_FACT = /(?<![,\d])\b\d+(?:\s*[-–—]\s*\d+)?\s+people\b/i;
+const PERSON_GROUP_FACT = /(?<![,\d])\b\d+(?:\s*[-–—]\s*\d+)?[-\s]+person(?:s)?\b/i;
+const GROUPS_FACT = /\bgroups (?:of|larger than|up to|over) \d+\+?(?:\s*[-–—]\s*\d+)?\b/i;
+const HEAT_INCLUDED_FACT = /\bheat(?:ed|ing)?\b[^.!?]{0,80}(?<!not\s)\bincluded\b/i;
 const HOME_COUNT_FACT =
   /\b(?:one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|\d+)\s+(?:Seascape\s+)?homes\b/i;
 const TOKEN = /\{(sleeps-phrase|sleeps-matching|sleeps|br|ba|heat|homes|matching|tub-homes)(?::([a-z0-9-]+))?\}/g;
@@ -170,6 +173,9 @@ function collectHandTypedStayFacts(page) {
     for (const [label, pattern] of [
       ["sleeps N", SLEEPS_FACT],
       ["N guests", GUESTS_FACT],
+      ["N people", PEOPLE_FACT],
+      ["N-person", PERSON_GROUP_FACT],
+      ["groups of N", GROUPS_FACT],
       ["heat included", HEAT_INCLUDED_FACT],
       ["N homes", HOME_COUNT_FACT]
     ]) {
@@ -204,9 +210,12 @@ function listedHomeCount(page) {
 }
 
 module.exports = {
+  GROUPS_FACT,
   GUESTS_FACT,
   HEAT_INCLUDED_FACT,
   HOME_COUNT_FACT,
+  PEOPLE_FACT,
+  PERSON_GROUP_FACT,
   SLEEPS_FACT,
   applyStayFacts,
   assertNoHandTypedStayFacts,
