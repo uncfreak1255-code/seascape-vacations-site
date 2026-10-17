@@ -49,13 +49,20 @@ const RELATIONAL = /\b(?:below|above|under)\b/gi;
 const DISCOUNT_NOUN = /^discounts?$/i;
 const AVOIDANCE = /\b(?:skip|avoid|beat)\b/gi;
 const AVOIDANCE_NOUN = /\b(?:markup|premium|platform fees|extra fees)\b/gi;
-const PREMIUM_NOUN = /^premiums?$/i;
+const PREMIUM_NOUN = /^(?:premiums?|markups?)$/i;
 const PREMIUM_MODIFIER = /\b(?:beachfront|waterfront|address|island|on-island|nightly)\b/gi;
 const FEE_COUNT = /\b(?:fewer|less|more)\b/gi;
 const KEEP = /\bkeeps?\b/gi;
 const OUT = /\bout\b/gi;
-const COST_VERB = /\b(?:costs?|priced|runs)\b/gi;
+const COST_VERB = /\b(?:costs?|priced|runs|pays?|paid|paying)\b/gi;
 const COST_COMPARATIVE = /\b(?:less|more|cheaper|lower|higher)\b/gi;
+const PAY_VERB = /^(?:pays?|paid|paying)$/i;
+const PAY_UP = /\bpay(?:s|ing|ed)?\s+up\b/gi;
+const SAVE_VERB = /\bsave[sd]?\b/gi;
+const SAVE_OBJECT_SKIP = /^(?:\s+(?:this|that|the|our)\s+(?:guide|page|file|homes?|listing))\b/i;
+const IMPLICIT_PRICE_ADJ = /\b(?:pric(?:ey|iest)|affordable|expensive|inexpensive|cheapest|cheaper)\b(?!-)/gi;
+const IMPLICIT_CUE = /\b(?:compared|than|versus|vs\.?|option|choice)\b/gi;
+const INTENSIFIED_RELATIONAL = /\b(?:well|far|comfortably)\s+(?:below|above|under)\b/gi;
 const COPULA_CHEAPER = /\b(?:it(?:'s|\s+is)|they(?:'re|\s+are)|this\s+is|that\s+is)\s+cheaper\b/gi;
 const WITHOUT = /\bwithout\b/gi;
 const KIND_PERCENT = "percent-comparative";
@@ -427,7 +434,8 @@ function parsePercentHits(stripped) {
     }
 
     const save = [...before.matchAll(new RegExp(SAVE_BEFORE.source, "gi"))].pop();
-    const saveDistance = save ? before.length - save.index : Infinity;
+    const saveAfter = save ? save.index + save[0].length : 0;
+    const saveDistance = save ? before.length - saveAfter : Infinity;
     const saveSameSentence = save && !crossesSentence(before, save.index, before.length);
     if (
       save &&
@@ -435,7 +443,7 @@ function parsePercentHits(stripped) {
       saveDistance <= 32 &&
       !/save our homes/i.test(before.slice(save.index))
     ) {
-      spanStart = percent.index - saveDistance;
+      spanStart = percent.index - (before.length - save.index);
       subject = subject ? `${save[0].toLowerCase()}|${subject}` : save[0].toLowerCase();
     } else if (DIFFERENCE_BEFORE.test(before) && /or more/i.test(after)) {
       const diffAt = before.toLowerCase().lastIndexOf("difference");
@@ -478,7 +486,7 @@ function allowedGap(text, start, end) {
     return false;
   }
   const trimmed = gap.trim();
-  if (!trimmed) {
+  if (!trimmed || /^[-–—]$/.test(trimmed)) {
     return true;
   }
   return trimmed.split(/\s+/).every((word) =>
@@ -712,7 +720,7 @@ function parseQualitativeHits(stripped) {
     const comparative = comparativeI < costComparatives.length ? costComparatives[comparativeI] : null;
     if (
       !comparative ||
-      wordsBetween(stripped, verb.end, comparative.index) > 2 ||
+      wordsBetween(stripped, verb.end, comparative.index) > (PAY_VERB.test(verb.raw) ? 0 : 2) ||
       crossesSentence(stripped, verb.end, comparative.index)
     ) {
       continue;
@@ -750,6 +758,52 @@ function parseQualitativeHits(stripped) {
       continue;
     }
     add(without.index, noun.end, noun.raw.toLowerCase(), stripped.slice(without.index, noun.end).replace(/\s+/g, " ").trim().toLowerCase());
+  }
+
+  for (const save of collectMatches(stripped, SAVE_VERB)) {
+    if (SAVE_OBJECT_SKIP.test(stripped.slice(save.end, save.end + 40))) {
+      continue;
+    }
+    if (/save our homes/i.test(stripped.slice(save.index, save.end + 20))) {
+      continue;
+    }
+    add(save.index, save.end, "save", save.raw.toLowerCase());
+  }
+
+  for (const payUp of collectMatches(stripped, PAY_UP)) {
+    add(payUp.index, payUp.end, "pay-up", payUp.raw.replace(/\s+/g, " ").trim().toLowerCase());
+  }
+
+  const implicitAdjs = collectMatches(stripped, IMPLICIT_PRICE_ADJ);
+  const implicitCues = collectMatches(stripped, IMPLICIT_CUE);
+  let cueRight = 0;
+  for (const adj of implicitAdjs) {
+    while (cueRight < implicitCues.length && implicitCues[cueRight].index < adj.end) {
+      cueRight += 1;
+    }
+    const cue = cueRight < implicitCues.length ? implicitCues[cueRight] : null;
+    if (
+      !cue ||
+      wordsBetween(stripped, adj.end, cue.index) > 3 ||
+      crossesSentence(stripped, adj.end, cue.index)
+    ) {
+      continue;
+    }
+    add(
+      adj.index,
+      cue.end,
+      adj.raw.toLowerCase(),
+      stripped.slice(adj.index, cue.end).replace(/\s+/g, " ").trim().toLowerCase()
+    );
+  }
+
+  for (const relational of collectMatches(stripped, INTENSIFIED_RELATIONAL)) {
+    add(
+      relational.index,
+      relational.end,
+      "relational",
+      relational.raw.replace(/\s+/g, " ").trim().toLowerCase()
+    );
   }
 
   return hits;
