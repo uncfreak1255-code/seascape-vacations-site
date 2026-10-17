@@ -2,11 +2,11 @@
 
 const { catalogHomeCountWord, numberWord } = require("../../scripts/enforcement/home-count-word");
 
-const SLEEPS_FACT = /\bsleep(?:s|ing)?(?:\s+up\s+to)?\s+\d+(?:\s*[-–-]\s*\d+)?\b/i;
+const SLEEPS_FACT = /\b(?:sleep(?:s|ing)?(?:\s+up\s+to)?|hold)\s+\d+(?:\s*[-–-]\s*\d+)?\b/i;
 const HEAT_INCLUDED_FACT = /\bheat included\b/i;
 const HOME_COUNT_FACT =
-  /\b(?:one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|\d+)\s+homes\b/i;
-const TOKEN = /\{(sleeps-phrase|sleeps|br|ba|heat|homes|matching|tub-homes)(?::([a-z0-9-]+))?\}/g;
+  /\b(?:one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|\d+)\s+(?:Seascape\s+)?homes\b/i;
+const TOKEN = /\{(sleeps-phrase|sleeps-matching|sleeps|br|ba|heat|homes|matching|tub-homes)(?::([a-z0-9-]+))?\}/g;
 
 function propertyBySlug(catalog, slug) {
   return (catalog || []).find((property) => property && property.slug === slug) || null;
@@ -24,15 +24,19 @@ function poolHeatText(property) {
   return String(property && property.guestFacts && property.guestFacts.poolHeat || "").trim();
 }
 
+function tubHeatText(property) {
+  return String(property && property.guestFacts && property.guestFacts.tubHeat || "").trim();
+}
+
 function heatIncludedFromTruth(property) {
-  const poolHeat = poolHeatText(property);
-  if (!poolHeat) {
+  const tubHeat = tubHeatText(property);
+  if (!tubHeat) {
     return false;
   }
-  if (/\b(?:optional|extra|confirm|costs extra|not included)\b/i.test(poolHeat)) {
+  if (/\b(?:optional|extra|confirm|costs extra|not included)\b/i.test(tubHeat)) {
     return false;
   }
-  return /\bincluded\b/i.test(poolHeat);
+  return /\bincluded\b/i.test(tubHeat);
 }
 
 function heatClause(property) {
@@ -42,7 +46,7 @@ function heatClause(property) {
   if (heatIncludedFromTruth(property)) {
     return "(heat included)";
   }
-  if (hasTub(property) || poolHeatText(property)) {
+  if (hasTub(property) || poolHeatText(property) || tubHeatText(property)) {
     return "(confirm heat terms when booking)";
   }
   return "";
@@ -50,6 +54,21 @@ function heatClause(property) {
 
 function matchingHomeCount(page) {
   return Array.isArray(page && page.matchingProperties) ? page.matchingProperties.length : 0;
+}
+
+function matchingOccupancies(page, catalog) {
+  const slugs = Array.isArray(page && page.matchingProperties) ? page.matchingProperties : [];
+  if (slugs.length === 0) {
+    throw new Error(`stayFacts: {sleeps-matching} needs matchingProperties on ${page && page.slug || "unknown-slug"}`);
+  }
+  return slugs.map((slug) => stayOccupancy(catalog, slug));
+}
+
+function matchingSleepsFact(page, catalog) {
+  const values = matchingOccupancies(page, catalog);
+  const min = Math.min(...values);
+  const max = Math.max(...values);
+  return min === max ? String(min) : `${min}–${max}`;
 }
 
 function tubHomeCount(catalog) {
@@ -62,6 +81,9 @@ function resolveToken(kind, slug, page, catalog) {
   }
   if (kind === "matching") {
     return numberWord(matchingHomeCount(page));
+  }
+  if (kind === "sleeps-matching") {
+    return matchingSleepsFact(page, catalog);
   }
   if (kind === "tub-homes") {
     return numberWord(tubHomeCount(catalog));

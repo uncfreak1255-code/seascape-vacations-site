@@ -71,6 +71,25 @@ test("empty-state skip with a missing prove-red test name throws", () => {
   );
 });
 
+test("empty areaDir with no test files refuses the same as a missing prove-red test", () => {
+  const emptyArea = fs.mkdtempSync(path.join(os.tmpdir(), "fail-closed-empty-area-"));
+  try {
+    assert.equal(fs.readdirSync(emptyArea).filter((name) => name.endsWith(".test.js")).length, 0);
+    assert.throws(
+      () =>
+        allowEmptyState({
+          owner: "proof-gate.js",
+          reason: "no working-tree changes",
+          proveRedTest: "clean tree is a no-op: does not spend 30s proving nothing changed",
+          areaDir: emptyArea
+        }),
+      /names missing prove-red test/
+    );
+  } finally {
+    fs.rmSync(emptyArea, { recursive: true, force: true });
+  }
+});
+
 test("every allowEmptyState proveRedTest exists in the same area", () => {
   const pattern = /allowEmptyState\(\s*\{[\s\S]*?proveRedTest:\s*["']([^"']+)["']/g;
   for (const file of readAreaFiles()) {
