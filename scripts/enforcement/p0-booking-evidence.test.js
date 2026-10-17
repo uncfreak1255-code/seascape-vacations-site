@@ -401,6 +401,23 @@ test('never-seen price-cue phrasing fails without changing the matcher', () => {
     ),
     'guest partial defaults are candidates'
   );
+
+  const jsonLd = collectPriceClaimCandidates(
+    `<script type="application/ld+json">{"description":"Guests ${phrase}."}</script>`
+  );
+  assert.equal(jsonLd[0].kind, 'price-cue-candidate');
+  assert.match(jsonLd[0].excerpt, /fraction of the OTA price/i);
+  assert.equal(
+    collectPriceClaimCandidates(`<script>window.note = "Guests ${phrase}.";</script>`).length,
+    0
+  );
+  assert.throws(
+    () => assertClaimCandidatesCovered(
+      jsonLd.map((hit) => ({ ...hit, file: 'src/guides/hidden-plant.html' })),
+      readSourcedClaims()
+    ),
+    /sourcedClaims\.json is missing a sourced-claim row or .*nonClaimSentences/
+  );
 });
 
 test('Bradenton-Sarasota dining comparison uses current menus in body and FAQ schema', () => {

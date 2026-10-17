@@ -114,13 +114,42 @@ function quotedTemplateLiterals(text) {
     .join(" ");
 }
 
+function walkJsonStrings(value, visit) {
+  if (typeof value === "string") {
+    visit(value);
+    return;
+  }
+  if (Array.isArray(value)) {
+    value.forEach((entry) => walkJsonStrings(entry, visit));
+    return;
+  }
+  if (value && typeof value === "object") {
+    for (const child of Object.values(value)) {
+      walkJsonStrings(child, visit);
+    }
+  }
+}
+
+function jsonLdCopy(text) {
+  const parts = [];
+  for (const match of String(text || "").matchAll(/<script[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi)) {
+    try {
+      walkJsonStrings(JSON.parse(match[1]), (value) => parts.push(value));
+    } catch {
+      parts.push(quotedTemplateLiterals(match[1]));
+    }
+  }
+  return parts.join(" ");
+}
+
 function guestCopyText(text) {
-  return String(text || "")
+  const structured = jsonLdCopy(text);
+  return `${String(text || "")
     .replace(/^---[\s\S]*?---/, " ")
     .replace(/<style[\s\S]*?<\/style>/gi, " ")
     .replace(/<script[\s\S]*?<\/script>/gi, " ")
     .replace(/\{%([\s\S]*?)%\}/g, (_, inner) => ` ${quotedTemplateLiterals(inner)} `)
-    .replace(/\{\{([\s\S]*?)\}\}/g, (_, inner) => ` ${quotedTemplateLiterals(inner)} `);
+    .replace(/\{\{([\s\S]*?)\}\}/g, (_, inner) => ` ${quotedTemplateLiterals(inner)} `)} ${structured}`;
 }
 
 function splitGuestSentences(text) {
@@ -1163,7 +1192,13 @@ function walkRecordStrings(page, visit) {
         key === "href" ||
         key === "image" ||
         key === "relatedStaySlugs" ||
-        key === "matchingProperties"
+        key === "matchingProperties" ||
+        key === "src" ||
+        key === "sourceUrl" ||
+        key === "listingId" ||
+        key === "id" ||
+        key === "url" ||
+        key === "booking_url"
       ) {
         return;
       }
@@ -1262,6 +1297,20 @@ function scanSrcClaimCandidates(root = DEFAULT_ROOT) {
     if (relative === "src/_data/seoPages.json") {
       const pages = JSON.parse(fs.readFileSync(file, "utf8")).vacationer || [];
       hits.push(...scanStayClaimCandidates(pages));
+      continue;
+    }
+    if (relative === "src/_data/properties-fallback.json") {
+      const records = JSON.parse(fs.readFileSync(file, "utf8"));
+      for (const record of records || []) {
+        walkRecordStrings(record, (text) => {
+          hits.push(
+            ...collectPriceClaimCandidates(text).map((hit) => ({
+              ...hit,
+              file: relative
+            }))
+          );
+        });
+      }
       continue;
     }
     if (relative.startsWith("src/_data/")) {
