@@ -3,6 +3,7 @@
 const { catalogHomeCountWord, numberWord } = require("../../scripts/enforcement/home-count-word");
 
 const SLEEPS_FACT = /\b(?:sleep(?:s|ing)?(?:\s+up\s+to)?|hold)\s+\d+(?:\s*[-–-]\s*\d+)?\b/i;
+const GUESTS_FACT = /(?<![,\d])\b\d+(?:\s*[-–—]\s*\d+)?\s+guests\b/i;
 const HEAT_INCLUDED_FACT = /\bheat included\b/i;
 const HOME_COUNT_FACT =
   /\b(?:one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|\d+)\s+(?:Seascape\s+)?homes\b/i;
@@ -168,6 +169,7 @@ function collectHandTypedStayFacts(page) {
   visitStrings(page, (text) => {
     for (const [label, pattern] of [
       ["sleeps N", SLEEPS_FACT],
+      ["N guests", GUESTS_FACT],
       ["heat included", HEAT_INCLUDED_FACT],
       ["N homes", HOME_COUNT_FACT]
     ]) {
@@ -202,6 +204,7 @@ function listedHomeCount(page) {
 }
 
 module.exports = {
+  GUESTS_FACT,
   HEAT_INCLUDED_FACT,
   HOME_COUNT_FACT,
   SLEEPS_FACT,
