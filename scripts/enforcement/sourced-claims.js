@@ -108,13 +108,19 @@ function sentenceHash(text) {
   return crypto.createHash("sha256").update(normalizeSentence(text)).digest("hex");
 }
 
+function quotedTemplateLiterals(text) {
+  return [...String(text || "").matchAll(/(["'`])((?:\\.|(?!\1)[\s\S])*?)\1/g)]
+    .map((match) => match[2].replace(/\\(["'`])/g, "$1"))
+    .join(" ");
+}
+
 function guestCopyText(text) {
   return String(text || "")
     .replace(/^---[\s\S]*?---/, " ")
     .replace(/<style[\s\S]*?<\/style>/gi, " ")
     .replace(/<script[\s\S]*?<\/script>/gi, " ")
-    .replace(/\{%[\s\S]*?%\}/g, " ")
-    .replace(/\{\{[\s\S]*?\}\}/g, " ");
+    .replace(/\{%([\s\S]*?)%\}/g, (_, inner) => ` ${quotedTemplateLiterals(inner)} `)
+    .replace(/\{\{([\s\S]*?)\}\}/g, (_, inner) => ` ${quotedTemplateLiterals(inner)} `);
 }
 
 function splitGuestSentences(text) {
@@ -1258,7 +1264,7 @@ function scanSrcClaimCandidates(root = DEFAULT_ROOT) {
       hits.push(...scanStayClaimCandidates(pages));
       continue;
     }
-    if (relative.startsWith("src/_data/") || relative.startsWith("src/_includes/")) {
+    if (relative.startsWith("src/_data/")) {
       continue;
     }
     hits.push(
