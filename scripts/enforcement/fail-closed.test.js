@@ -71,6 +71,35 @@ test("empty-state skip with a missing prove-red test name throws", () => {
   );
 });
 
+test("commented, quoted, or skipped prove-red declarations do not count", () => {
+  const area = fs.mkdtempSync(path.join(os.tmpdir(), "fail-closed-nonrunnable-"));
+  try {
+    fs.writeFileSync(
+      path.join(area, "ghost.test.js"),
+      [
+        "// test(\"ghost prove-red\", () => {});",
+        "/* test(\"ghost prove-red\", () => {}); */",
+        "const hint = 'test(\"ghost prove-red\", () => {});';",
+        "test(\"ghost prove-red\", { skip: true }, () => {});",
+        ""
+      ].join("\n")
+    );
+    assert.equal(findProveRedTest("ghost prove-red", area), "");
+    assert.throws(
+      () =>
+        allowEmptyState({
+          owner: "proof-gate.js",
+          reason: "named a non-runnable prove-red test",
+          proveRedTest: "ghost prove-red",
+          areaDir: area
+        }),
+      /names missing prove-red test "ghost prove-red"/
+    );
+  } finally {
+    fs.rmSync(area, { recursive: true, force: true });
+  }
+});
+
 test("empty areaDir with no test files refuses the same as a missing prove-red test", () => {
   const emptyArea = fs.mkdtempSync(path.join(os.tmpdir(), "fail-closed-empty-area-"));
   try {
