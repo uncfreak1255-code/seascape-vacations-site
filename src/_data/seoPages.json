@@ -26,7 +26,7 @@
         },
         {
           "question": "What size groups can your AMI pool homes accommodate?",
-          "answer": "These near-AMI homes are 4\u20135 bedrooms sleeping {sleeps-matching} \u2014 The Oasis for up to {sleeps:the-oasis}, Dockside Dreams for {sleeps:dockside-dreams}, and River House for {sleeps:river-house}. Good for big families and groups."
+          "answer": "These near-AMI homes are {br-matching} bedrooms sleeping {sleeps-matching} \u2014 The Oasis for up to {sleeps:the-oasis}, Dockside Dreams for {sleeps:dockside-dreams}, and River House for {sleeps:river-house}. Good for big families and groups."
         },
         {
           "question": "Can I host a pool party or event at my rental?",
@@ -280,7 +280,7 @@
       "decisionHighlights": [
         {
           "label": "{matching} homes, {sleeps-matching} guests",
-          "value": "3-5 bedrooms sleeping {sleeps-matching}, all with private pools and hot tubs or spas"
+          "value": "{br-matching} bedrooms sleeping {sleeps-matching}, all with private pools and hot tubs or spas"
         },
         {
           "label": "AMI beaches: 10-15 min",

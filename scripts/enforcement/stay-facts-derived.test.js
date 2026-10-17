@@ -162,6 +162,20 @@ test("published stay JSON has no hand-typed capacity, heat, or home-count facts"
 test("page ranges and shared home tokens must bind every matching home", () => {
   const catalog = structuredClone(fallback);
   assert.throws(
+    () => applyStayFacts({
+      slug: "plant",
+      geoIntro: "These homes sleep {sleeps-matching}."
+    }, catalog),
+    /matching guests range needs matchingProperties/
+  );
+  assert.throws(
+    () => applyStayFacts({
+      slug: "plant",
+      geoIntro: "These homes have {br-matching} bedrooms."
+    }, catalog),
+    /matching bedrooms range needs matchingProperties/
+  );
+  assert.throws(
     () => assertStayCapacityBindings({
       slug: "plant",
       matchingProperties: ["dockside-dreams", "the-oasis", "river-house"],
@@ -327,6 +341,11 @@ test("replay 700: Coastal Stay does not inherit heat or tub terms without poolHe
 
 test("matching occupancy and home count come from the page list, not an unrelated slug", () => {
   const catalog = structuredClone(fallback);
+  const amiPool = vacationerPages().find((page) => page.slug === "anna-maria-island-homes-with-pool");
+  assert.ok(amiPool, "AMI pool stay must exist");
+  assert.match(JSON.stringify(amiPool.faqs), /\{br-matching\} bedrooms sleeping \{sleeps-matching\}/);
+  assert.doesNotMatch(JSON.stringify(amiPool.faqs), /4.5 bedrooms sleeping/);
+
   const source = vacationerPages().find((page) => page.slug === "4-bedroom-vacation-rentals-florida");
   assert.ok(source, "4-bedroom stay must exist");
   assert.match(JSON.stringify(source.faqs), /sleeps-matching/);
