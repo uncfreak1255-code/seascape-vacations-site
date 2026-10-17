@@ -42,7 +42,7 @@ const WORD_PERCENT = new RegExp(`\\b(?:${WORD_NUMBER})\\s+percent\\b`, "gi");
 const AFTER_PERCENT = /^(?:\s*(?:less|off|below|lower|cheaper|discount|reduced|savings|or more))\b/i;
 const SAVE_BEFORE = /\b(?:save[sd]?\b|savings\s*:|rates\s+drop\b)/i;
 const DIFFERENCE_BEFORE = /\bdifference\b/i;
-const PRICE_NOUN = /\b(?:rates?|pricing|price|markup|premium|discount|value|savings)\b/gi;
+const PRICE_NOUN = /\b(?:rates?|pricing|price|markup|premium|discount|value|savings|totals?)\b/gi;
 const QUALITATIVE_ADJ = /\b(?:better|best|lower|higher|cheaper|lowest|highest|deeper|deepest|stronger|priciest|typical|premium|far better)\b/gi;
 const AVOIDANCE = /\b(?:skip|avoid|beat)\b/gi;
 const AVOIDANCE_NOUN = /\b(?:markup|premium|platform fees|extra fees)\b/gi;
@@ -466,14 +466,16 @@ function wordsBetween(text, start, end) {
 
 function allowedGap(text, start, end) {
   const gap = text.slice(start, end);
-  if (/[-_/]/.test(gap)) {
+  if (/[_/]/.test(gap) || crossesSentence(text, start, end)) {
     return false;
   }
   const trimmed = gap.trim();
   if (!trimmed) {
     return true;
   }
-  return /^(?:the|a|an|available|monthly|nightly|overall|island|beachfront|direct)$/i.test(trimmed);
+  return trimmed.split(/\s+/).every((word) =>
+    /^(?:the|a|an|available|monthly|nightly|overall|island|beachfront|direct|checkout|booking|[a-z]+(?:-[a-z]+)+)$/i.test(word)
+  );
 }
 
 function parseQualitativeHits(stripped) {

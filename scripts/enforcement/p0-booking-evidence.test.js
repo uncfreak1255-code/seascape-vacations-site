@@ -121,12 +121,24 @@ test('unseen synonym plants fail as typed hits, not as a listed fixture', () => 
   const costHits = parseClaimHits(`Mainland stays ${costsLess} than island condos.`);
   const cheaperHits = parseClaimHits(`${itsCheaper} than splitting hotel rooms.`);
   const withoutHits = parseClaimHits(`Book direct ${withoutFees}.`);
+  const lowerTotal = ['low', 'er total'].join('');
+  const directBookTotal = ['low', 'er direct-book total'].join('');
+  const allInTotal = ['high', 'er all-in total'].join('');
+  const totalHits = parseClaimHits(`Guests see a ${lowerTotal} on the same dates.`);
+  const directBookHits = parseClaimHits(`Book direct for a ${directBookTotal}.`);
+  const allInHits = parseClaimHits(`Direct stays post a ${allInTotal}.`);
   assert.equal(costHits[0].kind, 'qualitative-price-advantage');
   assert.match(costHits[0].match, /costs less/i);
   assert.equal(cheaperHits[0].kind, 'qualitative-price-advantage');
   assert.match(cheaperHits[0].match, /cheaper/i);
   assert.equal(withoutHits[0].kind, 'qualitative-price-advantage');
   assert.match(withoutHits[0].match, /platform fees/i);
+  assert.equal(totalHits[0].kind, 'qualitative-price-advantage');
+  assert.match(totalHits[0].match, /lower total/i);
+  assert.equal(directBookHits[0].kind, 'qualitative-price-advantage');
+  assert.match(directBookHits[0].match, /direct-book total/i);
+  assert.equal(allInHits[0].kind, 'qualitative-price-advantage');
+  assert.match(allInHits[0].match, /all-in total/i);
 
   const sharedNegation = parseClaimHits('The total does not include taxes, but guests get better rates.');
   assert.match(sharedNegation.map((hit) => hit.match).join(','), /better rates/i);
