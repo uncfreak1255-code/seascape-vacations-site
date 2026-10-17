@@ -411,7 +411,9 @@ function normalizeProperties(list) {
     });
 }
 
-async function getProperties() {
+let propertiesPromise = null;
+
+async function loadProperties() {
   if (isVisualTestMode()) {
     return applyAvailabilityFixture(loadFallback(), loadVisualTestAvailabilityFixture());
   }
@@ -433,6 +435,13 @@ async function getProperties() {
   }
 
   return enrichMissingAvailability(loadFallback());
+}
+
+function getProperties() {
+  if (!propertiesPromise) {
+    propertiesPromise = loadProperties();
+  }
+  return propertiesPromise;
 }
 
 module.exports = getProperties;

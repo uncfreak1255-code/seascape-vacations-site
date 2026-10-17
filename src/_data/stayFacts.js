@@ -13,7 +13,7 @@ const GROUPS_FACT = /\bgroups? (?:of|larger than|up to|over) \d+\+?(?:\s*[-–�
 const GUEST_HYPHEN_FACT = /(?<![,\d])\b\d+(?:\s*[-–—]\s*\d+)?-guest\b/i;
 const SPACE_FOR_FACT = /\bspace for \d+(?:\s*[-–—]\s*\d+)?\b/i;
 const ROOM_FOR_FACT = /\bRoom for \d+(?:\s*[-–—]\s*\d+)?\b/i;
-const UP_TO_FACT = /\bup to \d+\b/i;
+const UP_TO_FACT = /\bup to \d+\b(?!\s+(?:weeks?|days?|nights?|months?|hours?|minutes?|vehicles?|cars?))/i;
 const HEAT_INCLUDED_FACT = /\bheat(?:ed|ing)?\b[^.!?]{0,80}(?<!not\s)\bincluded\b/i;
 const HOT_TUB_YEAR_INCLUDED_FACT =
   /\bhot tubs?\b[^.!?]{0,80}(?<!not\s)\bincluded\b[^.!?]{0,60}\b(?:year-?round|all year)\b/i;
@@ -342,6 +342,23 @@ function assertStayCapacityBindings(page, catalog) {
     if (!same) {
       throw new Error(
         `stayFacts: {matching} names ${named.join(" and ")} but matchingProperties is ${matching.join(" and ") || "empty"} on ${slug}`
+      );
+    }
+  });
+  visitStrings(page, (text) => {
+    if (!/\{matching\}/.test(text) || /\{sleeps-matching\}/.test(text)) {
+      return;
+    }
+    const shared = [...new Set([...text.matchAll(/\{sleeps(?:-phrase)?:([a-z0-9-]+)\}/g)].map((match) => match[1]))];
+    if (shared.length !== 1) {
+      return;
+    }
+    const occupancies = matchingOccupancies(page, catalog);
+    const unique = [...new Set(occupancies)];
+    const tokenOccupancy = stayOccupancy(catalog, shared[0]);
+    if (unique.length > 1 || unique[0] !== tokenOccupancy) {
+      throw new Error(
+        `stayFacts: {matching} cannot share {sleeps:${shared[0]}} unless every matching home sleeps ${tokenOccupancy} on ${slug}`
       );
     }
   });
