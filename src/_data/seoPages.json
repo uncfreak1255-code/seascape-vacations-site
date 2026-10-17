@@ -10,7 +10,7 @@
       "faqs": [
         {
           "question": "Do all AMI rentals have heated pools?",
-          "answer": "Every home has a private pool you can heat as an optional add-on for the cooler months; the hot tub heat is included year-round. Most of the year, Florida keeps the pool comfortable without it."
+          "answer": "Every home has a private pool you can heat as an optional add-on for the cooler months; confirm hot tub heat terms on the home page. Most of the year, Florida keeps the pool comfortable without it."
         },
         {
           "question": "How should I compare direct and marketplace pricing?",
@@ -26,7 +26,7 @@
         },
         {
           "question": "What size groups can your AMI pool homes accommodate?",
-          "answer": "These near-AMI homes are 4\u20135 bedrooms sleeping 12\u201316 \u2014 The Oasis for up to 16, Dockside Dreams and River House for 12. Good for big families and groups."
+          "answer": "These near-AMI homes are 4\u20135 bedrooms sleeping {sleeps:dockside-dreams}\u2013{sleeps:the-oasis} \u2014 The Oasis for up to {sleeps:the-oasis}, Dockside Dreams and River House for {sleeps:river-house}. Good for big families and groups."
         },
         {
           "question": "Can I host a pool party or event at my rental?",
@@ -45,14 +45,14 @@
         },
         {
           "label": "Room for 12\u201316",
-          "value": "The Oasis sleeps 16 with two hot tubs and a putting green; Dockside and River House sleep 12."
+          "value": "The Oasis {sleeps-phrase:the-oasis} with two hot tubs and a putting green; Dockside and River House sleep {sleeps:river-house}."
         },
         {
           "label": "Compare checkout totals",
           "value": "Review the complete total for the same home, dates, taxes, fees, and booking terms."
         }
       ],
-      "geoIntro": "<p>A private pool home near Anna Maria Island gives you beach days with a mainland home base. Seascape's near-AMI homes sit in Bradenton, 10\u201315 minutes from Holmes Beach, Bradenton Beach, and Coquina Beach. Review each listing for its capacity, parking, and amenities before booking.</p><p>The tradeoff is plain: you give up a beachfront address for a mainland stay. <strong>The Oasis</strong> sleeps 16 with two hot tubs and a putting green; <strong>Dockside Dreams</strong> sleeps 12 with a dock; River House sleeps 12 near the river.</p><p>Compare the same dates and complete checkout total across channels, including fees, taxes, and booking terms.</p>",
+      "geoIntro": "<p>A private pool home near Anna Maria Island gives you beach days with a mainland home base. Seascape's near-AMI homes sit in Bradenton, 10\u201315 minutes from Holmes Beach, Bradenton Beach, and Coquina Beach. Review each listing for its capacity, parking, and amenities before booking.</p><p>The tradeoff is plain: you give up a beachfront address for a mainland stay. <strong>The Oasis</strong> {sleeps-phrase:the-oasis} with two hot tubs and a putting green; <strong>Dockside Dreams</strong> {sleeps-phrase:dockside-dreams} with a dock; River House {sleeps-phrase:river-house} near the river.</p><p>Compare the same dates and complete checkout total across channels, including fees, taxes, and booking terms.</p>",
       "relatedStaySlugs": [
         "anna-maria-island-vacation-rentals",
         "bean-point-luxury-rentals",
@@ -109,11 +109,11 @@
           "value": "About 10 minutes to the nearest AMI Gulf beach via Palma Sola Causeway"
         },
         {
-          "label": "Sleeps 12, pet-friendly",
-          "value": "4 bedrooms, pool, hot tub (included), arcade - books direct"
+          "label": "{sleeps-phrase:dockside-dreams}, pet-friendly",
+          "value": "4 bedrooms, pool, hot tub {heat:dockside-dreams}, arcade - books direct"
         }
       ],
-      "geoIntro": "<p><strong>Dockside Dreams</strong> sits on a canal that connects toward the Manatee River, Tampa Bay, and the Gulf. Guests can confirm current dock-use details with the team before booking. The nearest Gulf sand at Bradenton Beach is 2.9 miles away, about 10 minutes, so the home is a mainland stay rather than a beachfront address.</p><p>Bradenton puts Anna Maria Island west and Sarasota south. AMI beaches run from Bradenton Beach through Holmes Beach and Coquina; Sarasota's Ringling Museum, Siesta Key, and downtown dining are farther south. Review current travel times and listing details for your dates.</p><p><strong>Dockside Dreams</strong> sleeps 12 across 4 bedrooms with a private pool, hot tub (heat included), and arcade inside. It is pet-friendly. Compare the same dates and complete checkout total across channels.</p>",
+      "geoIntro": "<p><strong>Dockside Dreams</strong> sits on a canal that connects toward the Manatee River, Tampa Bay, and the Gulf. Guests can confirm current dock-use details with the team before booking. The nearest Gulf sand at Bradenton Beach is 2.9 miles away, about 10 minutes, so the home is a mainland stay rather than a beachfront address.</p><p>Bradenton puts Anna Maria Island west and Sarasota south. AMI beaches run from Bradenton Beach through Holmes Beach and Coquina; Sarasota's Ringling Museum, Siesta Key, and downtown dining are farther south. Review current travel times and listing details for your dates.</p><p><strong>Dockside Dreams</strong> {sleeps-phrase:dockside-dreams} across 4 bedrooms with a private pool, hot tub {heat:dockside-dreams}, and arcade inside. It is pet-friendly. Compare the same dates and complete checkout total across channels.</p>",
       "relatedStaySlugs": [
         "canal-homes-with-boat-dock",
         "fishing-vacation-rentals-bradenton",
@@ -170,10 +170,10 @@
         },
         {
           "label": "Room for the group",
-          "value": "Dockside sleeps 12 with a dock; The Oasis up to 16 with two hot tubs and a putting green."
+          "value": "Dockside {sleeps-phrase:dockside-dreams} with a dock; The Oasis up to {sleeps:the-oasis} with two hot tubs and a putting green."
         }
       ],
-      "geoIntro": "<p>A Bradenton rental with both a private heated pool and a hot tub means you don't trade daytime swimming for an evening soak. Dockside Dreams and The Oasis both have the combination, in a fenced private yard about 10\u201315 minutes from the Gulf beaches on Anna Maria Island.</p><p>The pool handles the afternoons with the kids; the hot tub handles the quiet part of the night. <strong>The Oasis</strong> goes further with two hot tubs and a putting green; <strong>Dockside Dreams</strong> adds a private dock on the canal. Dockside sleeps 12, The Oasis up to 16.</p><p>Compare the same dates and complete checkout total across channels. Pool heat is an optional add-on; the hot tub heat is included year-round.</p>",
+      "geoIntro": "<p>A Bradenton rental with both a private heated pool and a hot tub means you don't trade daytime swimming for an evening soak. Dockside Dreams and The Oasis both have the combination, in a fenced private yard about 10\u201315 minutes from the Gulf beaches on Anna Maria Island.</p><p>The pool handles the afternoons with the kids; the hot tub handles the quiet part of the night. <strong>The Oasis</strong> goes further with two hot tubs and a putting green; <strong>Dockside Dreams</strong> adds a private dock on the canal. Dockside {sleeps-phrase:dockside-dreams}, The Oasis up to {sleeps:the-oasis}.</p><p>Compare the same dates and complete checkout total across channels. Pool heat is an optional add-on; confirm hot tub heat terms on the home page.</p>",
       "relatedStaySlugs": [
         "bradenton-waterfront-vacation-rentals",
         "canal-homes-with-boat-dock",
@@ -187,12 +187,12 @@
       "destination": "bradenton",
       "title": "Large Group Vacation Rentals in Bradenton FL",
       "h1": "Bradenton Vacation Homes for Large Groups",
-      "description": "Spacious vacation rentals in Bradenton for large groups. Sleep 10-16 guests. Private pools.",
+      "description": "Spacious vacation rentals in Bradenton for large groups. Sleep {sleeps:bradenton-pool-home}-{sleeps:the-oasis} guests. Private pools.",
       "intro": "Bradenton has two Seascape homes that handle groups of 10-16 - one waterfront with a dock, one oversized with two hot tubs and a game room. Both have private pools and book direct.",
       "faqs": [
         {
           "question": "What's the largest group you can accommodate?",
-          "answer": "The Oasis sleeps 16 across 5 bedrooms. Dockside Dreams sleeps 12 across 4 bedrooms. Those are the two large-group options. For groups larger than 16, we can talk through coordinating nearby properties, but that's not our standard offering."
+          "answer": "The Oasis {sleeps-phrase:the-oasis} across 5 bedrooms. Dockside Dreams {sleeps-phrase:dockside-dreams} across 4 bedrooms. Those are the two large-group options. For groups larger than 16, we can talk through coordinating nearby properties, but that's not our standard offering."
         },
         {
           "question": "Which Seascape home fits a 10-12 person group versus a 14-16 person group?",
@@ -225,7 +225,7 @@
       ],
       "decisionHighlights": [
         {
-          "label": "Sleeps 10-16",
+          "label": "Sleeps {sleeps:bradenton-pool-home}-{sleeps:the-oasis}",
           "value": "The Oasis (5BR/16 guests) or Dockside Dreams (4BR/12 guests) - both with private pools"
         },
         {
@@ -237,7 +237,7 @@
           "value": "The Oasis is 5.1 miles from IMG - 10 minutes on a weekday morning"
         }
       ],
-      "geoIntro": "<p>Hotels split your group across floors. AMI condos give you a beach address and a kitchen that fits four people. Large private homes in Bradenton solve the actual problem: one space, one pool, one shared kitchen, one table where everyone fits. <strong>The Oasis</strong> sleeps 16 across 5 bedrooms with a putting green, game room, two hot tubs (both included), turf yard, and grill. <strong>Dockside Dreams</strong> sleeps 12 across 4 bedrooms with a private dock, pool, hot tub (included), and arcade. Dockside Dreams may welcome a dog with prior approval; pets are not permitted at The Oasis.</p><p>Anna Maria Island Gulf beaches are 10-15 minutes west. IMG Academy is about 10 minutes from The Oasis and under 15 from Dockside Dreams - useful if your group is in town for a tournament or showcase. Neither home is on the water except Dockside Dreams, which sits on a canal with direct dock access. If your whole group needs a walkable island address, these homes aren't the right fit. If your group wants to be together in one place with a private pool and real space, they are.</p><p>Compare the same dates and complete checkout total across channels before booking.</p>",
+      "geoIntro": "<p>Hotels split your group across floors. AMI condos give you a beach address and a kitchen that fits four people. Large private homes in Bradenton solve the actual problem: one space, one pool, one shared kitchen, one table where everyone fits. <strong>The Oasis</strong> {sleeps-phrase:the-oasis} across 5 bedrooms with a putting green, game room, two hot tubs {heat:the-oasis}, turf yard, and grill. <strong>Dockside Dreams</strong> {sleeps-phrase:dockside-dreams} across 4 bedrooms with a private dock, pool, hot tub {heat:dockside-dreams}, and arcade. Dockside Dreams may welcome a dog with prior approval; pets are not permitted at The Oasis.</p><p>Anna Maria Island Gulf beaches are 10-15 minutes west. IMG Academy is about 10 minutes from The Oasis and under 15 from Dockside Dreams - useful if your group is in town for a tournament or showcase. Neither home is on the water except Dockside Dreams, which sits on a canal with direct dock access. If your whole group needs a walkable island address, these homes aren't the right fit. If your group wants to be together in one place with a private pool and real space, they are.</p><p>Compare the same dates and complete checkout total across channels before booking.</p>",
       "relatedStaySlugs": [
         "vacation-rentals-near-anna-maria-island",
         "vacation-rentals-with-outdoor-grill",
@@ -252,7 +252,7 @@
       "h1": "Large Group Vacation Rentals Near Anna Maria Island with Private Pools",
       "description": "Bradenton vacation rentals near Anna Maria Island for groups of 10-16. Private pools, hot tubs, beach-distance facts, and direct booking links.",
       "intro": "If your group needs a mainland private-pool home near AMI beach days, these Bradenton listings are about 10-15 minutes from the water. Confirm capacity and location on each property page.",
-      "bluntAnswer": "These homes are in Bradenton, not on Anna Maria Island, but they are 10-15 minutes from AMI beaches and sleep 10-16 guests.",
+      "bluntAnswer": "These homes are in Bradenton, not on Anna Maria Island, but they are 10-15 minutes from AMI beaches and sleep {sleeps:bradenton-pool-home}-{sleeps:the-oasis} guests.",
       "faqs": [
         {
           "question": "Are these homes on Anna Maria Island?",
@@ -279,8 +279,8 @@
       ],
       "decisionHighlights": [
         {
-          "label": "Four homes, 10-16 guests",
-          "value": "3-5 bedrooms sleeping 10-16, all with private pools and hot tubs or spas"
+          "label": "{matching} homes, 10-16 guests",
+          "value": "3-5 bedrooms sleeping {sleeps:bradenton-pool-home}-{sleeps:the-oasis}, all with private pools and hot tubs or spas"
         },
         {
           "label": "AMI beaches: 10-15 min",
@@ -291,7 +291,7 @@
           "value": "Private pools, game rooms, and outdoor entertaining vary by listing"
         }
       ],
-      "geoIntro": "<p><strong>Seascape Vacations</strong> offers private-pool homes near Anna Maria Island in Bradenton. These are mainland stays, not island addresses; confirm each listing's location, capacity, amenities, and drive time before booking.</p><p><strong>The Oasis</strong> sleeps 16 with a pool, two hot tubs (both included), game room, putting green, and turf yard. <strong>Dockside Dreams</strong> sleeps 12 with a private dock, pool, hot tub (included), and arcade. <strong>River House</strong> sleeps 12 near the Manatee River with a pool, hot tub (included), game room, and a boat ramp one minute away. <strong>Bradenton Pool Home</strong> sleeps 10 with a pool and spa (both included) and sits 2.6 miles from IMG Academy.</p><p>If your group's non-negotiable is a true island address with no car needed, Seascape is not the right match. Review the individual listing pages and compare complete checkout totals for your dates.</p>",
+      "geoIntro": "<p><strong>Seascape Vacations</strong> offers private-pool homes near Anna Maria Island in Bradenton. These are mainland stays, not island addresses; confirm each listing's location, capacity, amenities, and drive time before booking.</p><p><strong>The Oasis</strong> {sleeps-phrase:the-oasis} with a pool, two hot tubs {heat:the-oasis}, game room, putting green, and turf yard. <strong>Dockside Dreams</strong> {sleeps-phrase:dockside-dreams} with a private dock, pool, hot tub {heat:dockside-dreams}, and arcade. <strong>River House</strong> {sleeps-phrase:river-house} near the Manatee River with a pool, hot tub {heat:river-house}, game room, and a boat ramp one minute away. <strong>Bradenton Pool Home</strong> {sleeps-phrase:bradenton-pool-home} with a pool and spa {heat:bradenton-pool-home} and sits 2.6 miles from IMG Academy.</p><p>If your group's non-negotiable is a true island address with no car needed, Seascape is not the right match. Review the individual listing pages and compare complete checkout totals for your dates.</p>",
       "choiceTradeoffs": [
         {
           "label": "Choose Seascape if",
@@ -316,7 +316,7 @@
           "bathrooms": 3,
           "guests": 16,
           "price": 550,
-          "specs": "5 BR / 3 BA / sleeps 16",
+          "specs": "5 BR / 3 BA / {sleeps-phrase:the-oasis}",
           "poolSpa": "Heated pool, 2 hot tubs, putting green",
           "beachDistance": "Holmes Beach 5.4 mi; Bradenton Beach 5.7 mi; Cortez Beach 6.2 mi",
           "bestFor": "Best Seascape fit for 14-16 guests."
@@ -332,7 +332,7 @@
           "bathrooms": 3,
           "guests": 12,
           "price": 450,
-          "specs": "4 BR / 3 BA / sleeps 12",
+          "specs": "{br:dockside-dreams} BR / {ba:dockside-dreams} BA / {sleeps-phrase:dockside-dreams}",
           "poolSpa": "Heated pool/spa, waterfront dock",
           "beachDistance": "Bradenton Beach 2.9 mi; Cortez Beach 3.4 mi; Holmes Beach 5.1 mi",
           "bestFor": "Best fit for 12 guests who want water access."
@@ -348,7 +348,7 @@
           "bathrooms": 3,
           "guests": 12,
           "price": 400,
-          "specs": "4 BR / 3 BA / sleeps 12",
+          "specs": "{br:dockside-dreams} BR / {ba:dockside-dreams} BA / {sleeps-phrase:dockside-dreams}",
           "poolSpa": "Heated pool, spa, gameroom, yard games",
           "beachDistance": "Anna Maria Island and Manatee Public Beach about 5 mi / 15 min",
           "bestFor": "Best fit for active 12-person groups."
@@ -364,7 +364,7 @@
           "bathrooms": 3.5,
           "guests": 10,
           "price": 200,
-          "specs": "3 BR / 3.5 BA / sleeps 10",
+          "specs": "{br:bradenton-pool-home} BR / {ba:bradenton-pool-home} BA / {sleeps-phrase:bradenton-pool-home}",
           "poolSpa": "Heated pool, inground spa, outdoor grill area",
           "beachDistance": "Bradenton Beach 6.9 mi; Cortez Beach 7.4 mi; Holmes Beach 8.7 mi",
           "bestFor": "Best fit for 10 guests who also want IMG convenience."
@@ -440,7 +440,7 @@
         },
         {
           "question": "What's included when I book direct?",
-          "answer": "All listed homes include professional cleaning between stays, fresh linens and towels, fully equipped kitchens, and WiFi. Hot tub and spa heat is included at no extra charge. Pool heat is an optional $40/day add-on - it's not included by default but available at every home."
+          "answer": "All listed homes include professional cleaning between stays, fresh linens and towels, fully equipped kitchens, and WiFi. Hot tub and spa heat terms are listed on each home page. Pool heat is an optional $40/day add-on - it's not included by default but available at every home."
         },
         {
           "question": "Can I cancel or change my reservation if I book direct?",
@@ -674,7 +674,7 @@
           "value": "Sarasota Luxe is near downtown restaurants, galleries, and Palm Avenue shops; plan to drive to downtown destinations and the beaches."
         },
         {
-          "label": "Private pool, sleeps 12",
+          "label": "Private pool, {sleeps-phrase:dockside-dreams}",
           "value": "Four bedrooms, a private heated pool, and a screened lanai \u2014 room for a family or two couples splitting the cost."
         },
         {
@@ -744,7 +744,7 @@
           "value": "Lido in about 10 minutes over the bridge, Siesta in 15\u201320."
         }
       ],
-      "geoIntro": "<p>Downtown Sarasota packs museums, theaters, chef-driven restaurants, and a sunset bayfront into a compact district, and Sarasota Luxe provides a private-home base nearby with your own pool instead of a hotel room. Spend the morning at the Ringling, lunch at a sidewalk caf\u00e9, the afternoon at Lido Beach, and the evening at the opera, mostly within 15 minutes.</p><p><strong>Sarasota Luxe</strong> is a four-bedroom home that sleeps 12, with a private heated pool, screened lanai, and designer interiors, near Palm Avenue dining and shops, which require driving. Lido Key is about 10 minutes over the Ringling Bridge; Siesta about 15\u201320.</p><p>It's the rare downtown base that's also a real home \u2014 quiet and private, with city destinations reached by car. Compare the same dates and complete checkout total across channels.</p>",
+      "geoIntro": "<p>Downtown Sarasota packs museums, theaters, chef-driven restaurants, and a sunset bayfront into a compact district, and Sarasota Luxe provides a private-home base nearby with your own pool instead of a hotel room. Spend the morning at the Ringling, lunch at a sidewalk caf\u00e9, the afternoon at Lido Beach, and the evening at the opera, mostly within 15 minutes.</p><p><strong>Sarasota Luxe</strong> is a four-bedroom home that {sleeps-phrase:sarasota-luxe}, with a private heated pool, screened lanai, and designer interiors, near Palm Avenue dining and shops, which require driving. Lido Key is about 10 minutes over the Ringling Bridge; Siesta about 15\u201320.</p><p>It's the rare downtown base that's also a real home \u2014 quiet and private, with city destinations reached by car. Compare the same dates and complete checkout total across channels.</p>",
       "relatedStaySlugs": [
         "luxury-vacation-rentals-sarasota",
         "sarasota-arts-culture-vacation-rentals",
@@ -797,7 +797,7 @@
         },
         {
           "label": "House Fit",
-          "value": "Sarasota Luxe sleeps 12 across four bedrooms, with a private heated pool, screened lanai, and a Sarasota location near downtown; downtown destinations require driving."
+          "value": "Sarasota Luxe {sleeps-phrase:sarasota-luxe} across four bedrooms, with a private heated pool, screened lanai, and a Sarasota location near downtown; downtown destinations require driving."
         },
         {
           "label": "Compare full quotes",
@@ -862,7 +862,7 @@
           "value": "4BR/12 guests with pool and included hot tub - books direct"
         }
       ],
-      "geoIntro": "<p>Sarasota runs on a scale that's easy to underestimate. The Ringling Museum is a 66-acre estate with a serious art collection, a Venetian Gothic mansion, and a circus museum on the same grounds. Marie Selby Botanical Gardens sits on a bay waterfront with one of the better orchid collections in the country. The Van Wezel, Asolo Rep, and Florida Studio Theatre all run professional seasons. First Friday gallery walks draw actual galleries. This is a real arts city that also has beaches - not a beach town with a museum.</p><p><strong>Sarasota Luxe</strong> is the Seascape home that fits a Sarasota cultural trip. It's a 4-bedroom home sleeping 12 near downtown Sarasota; dinner and galleries require a car. Lido Beach is 3 miles away (about 10 minutes). Siesta Key is 6 miles south, roughly 15-20 minutes depending on traffic. The home has a private pool, included hot tub, screened lanai, and a 2-car garage. Pet-friendly.</p><p>Anna Maria Island is 30-40 minutes north - far enough that it doesn't make sense as a daily side trip from a Sarasota base. If the AMI beaches are the priority, one of the Bradenton homes is a better starting point. If Sarasota's arts corridor and Siesta Key beach are the priority, <strong>Sarasota Luxe</strong> is the right call.</p>",
+      "geoIntro": "<p>Sarasota runs on a scale that's easy to underestimate. The Ringling Museum is a 66-acre estate with a serious art collection, a Venetian Gothic mansion, and a circus museum on the same grounds. Marie Selby Botanical Gardens sits on a bay waterfront with one of the better orchid collections in the country. The Van Wezel, Asolo Rep, and Florida Studio Theatre all run professional seasons. First Friday gallery walks draw actual galleries. This is a real arts city that also has beaches - not a beach town with a museum.</p><p><strong>Sarasota Luxe</strong> is the Seascape home that fits a Sarasota cultural trip. It's a 4-bedroom home sleeping {sleeps:sarasota-luxe} near downtown Sarasota; dinner and galleries require a car. Lido Beach is 3 miles away (about 10 minutes). Siesta Key is 6 miles south, roughly 15-20 minutes depending on traffic. The home has a private pool, included hot tub, screened lanai, and a 2-car garage. Pet-friendly.</p><p>Anna Maria Island is 30-40 minutes north - far enough that it doesn't make sense as a daily side trip from a Sarasota base. If the AMI beaches are the priority, one of the Bradenton homes is a better starting point. If Sarasota's arts corridor and Siesta Key beach are the priority, <strong>Sarasota Luxe</strong> is the right call.</p>",
       "relatedStaySlugs": [
         "sarasota-vacation-rentals-with-pool",
         "vacation-rentals-near-restaurants-florida",
@@ -901,7 +901,7 @@
         },
         {
           "question": "Do your Gulf Coast homes have pools?",
-          "answer": "Yes, all listed homes have private pools. Pool heat is an optional add-on at $40/day - not included by default. Hot tub and spa heat is included at no extra charge at all listed homes. If a heated pool matters for your trip, note it when you book and we'll confirm availability."
+          "answer": "Yes, all listed homes have private pools. Pool heat is an optional add-on at $40/day - not included by default. Hot tub and spa heat terms are listed on each home page. If a heated pool matters for your trip, note it when you book and we'll confirm availability."
         }
       ],
       "matchingProperties": [
@@ -981,10 +981,10 @@
         },
         {
           "label": "Room for the group",
-          "value": "Dockside Dreams has 4 bedrooms and sleeps 12; confirm your dog\u2019s approval before booking"
+          "value": "Dockside Dreams has 4 bedrooms and {sleeps-phrase:dockside-dreams}; confirm your dog\u2019s approval before booking"
         }
       ],
-      "geoIntro": "<p><strong>Dockside Dreams</strong> is the Bradenton home to consider when you are traveling with a dog. It has 4 bedrooms, sleeps 12, and includes a private pool, hot tub and private dock. Confirm approval for your dog before booking.</p><p><strong>The Oasis</strong> and <strong>River House</strong> do not permit pets. <strong>Sarasota Luxe</strong> may welcome a dog with prior approval if Sarasota works for your trip. Service animals are welcome without a pet fee; other assistance-animal questions follow applicable law and booking-platform policies.</p><p>At homes that permit pets, the policy is one small dog under 30 lbs with prior approval and a $230 plus tax pet fee per stay. Tell us your dog\u2019s size and temperament when you inquire so we can confirm the fit.</p>",
+      "geoIntro": "<p><strong>Dockside Dreams</strong> is the Bradenton home to consider when you are traveling with a dog. It has 4 bedrooms, {sleeps-phrase:dockside-dreams}, and includes a private pool, hot tub and private dock. Confirm approval for your dog before booking.</p><p><strong>The Oasis</strong> and <strong>River House</strong> do not permit pets. <strong>Sarasota Luxe</strong> may welcome a dog with prior approval if Sarasota works for your trip. Service animals are welcome without a pet fee; other assistance-animal questions follow applicable law and booking-platform policies.</p><p>At homes that permit pets, the policy is one small dog under 30 lbs with prior approval and a $230 plus tax pet fee per stay. Tell us your dog\u2019s size and temperament when you inquire so we can confirm the fit.</p>",
       "relatedStaySlugs": [
         "vacation-rentals-near-anna-maria-island",
         "vacation-rentals-with-outdoor-grill",
@@ -1136,7 +1136,7 @@
         },
         {
           "question": "Are the homes good for large groups and families?",
-          "answer": "Yes. They sleep 10-16, with Dockside Dreams for dock time and The Oasis for the largest groups."
+          "answer": "Yes. They sleep {sleeps:bradenton-pool-home}-{sleeps:the-oasis}, with Dockside Dreams for dock time and The Oasis for the largest groups."
         }
       ],
       "matchingProperties": [
@@ -1159,7 +1159,7 @@
         },
         {
           "label": "Space",
-          "us": "3-5 BR, sleeps 10-16",
+          "us": "3-5 BR, sleeps {sleeps:bradenton-pool-home}-{sleeps:the-oasis}",
           "them": "Smaller cottages and condos"
         },
         {
@@ -1203,7 +1203,7 @@
       "tripMatchCards": [
         {
           "title": "Large groups and reunions",
-          "desc": "The Oasis sleeps 16 with two hot tubs and a putting green, so the group can stay together.",
+          "desc": "The Oasis {sleeps-phrase:the-oasis} with two hot tubs and a putting green, so the group can stay together.",
           "href": "/stays/large-group-vacation-rentals-bradenton/",
           "icon": "guests"
         },
@@ -1297,7 +1297,7 @@
         },
         {
           "question": "Is Sarasota Luxe suitable for couples or is it more of a family home?",
-          "answer": "Either. Couples use it for the city access and upscale atmosphere. Families and friend groups use it because 4 bedrooms sleeping 12 is hard to find near downtown Sarasota. The pool makes it flexible for both."
+          "answer": "Either. Couples use it for the city access and upscale atmosphere. Families and friend groups use it because 4 bedrooms sleeping {sleeps:sarasota-luxe} is hard to find near downtown Sarasota. The pool makes it flexible for both."
         },
         {
           "question": "What cultural attractions are near your Sarasota vacation rental?",
@@ -1317,11 +1317,11 @@
           "value": "Screened lanai, pool, and included hot tub - the beach is 10 min away when you want it"
         },
         {
-          "label": "Sleeps 12, Pet-Friendly",
+          "label": "{sleeps-phrase:sarasota-luxe}, Pet-Friendly",
           "value": "4BR, 12 guests, small dog welcome - fits a group that wants city access without splitting across two places"
         }
       ],
-      "geoIntro": "<p>Sarasota's reputation as Florida's Cultural Coast is earned: the Ringling Museum's 66-acre bayfront campus, Van Wezel Performing Arts Hall, and a downtown restaurant row that outpunches most Florida cities. What it does not always offer is large-group private-home accommodation close to all of it. Most lodging near downtown Sarasota is hotel rooms or small condos. <strong>Sarasota Luxe</strong> is the exception - a 4-bedroom home sleeping 12, near downtown, with a private pool and hot tub; downtown destinations require driving.</p><p>Lido Beach is about 3 miles away, roughly 10 minutes by car. Siesta Key - the quartz-sand beach that earns most of the headlines - is about 6 miles, 15-20 minutes depending on bridge traffic. The distance matters: guests who want mornings at the beach and evenings at downtown restaurants will do that drive twice a day. Guests who want mostly dinner reservations, gallery walks, and a pool back home will hardly notice. Know which trip you're planning before you choose the base.</p><p><strong>Sarasota Luxe</strong> fits groups that lean toward the city side of that balance. The screened lanai, 2-car garage, and small-dog-friendly policy round out the practical details. Compare the same dates and complete checkout total across channels.</p>",
+      "geoIntro": "<p>Sarasota's reputation as Florida's Cultural Coast is earned: the Ringling Museum's 66-acre bayfront campus, Van Wezel Performing Arts Hall, and a downtown restaurant row that outpunches most Florida cities. What it does not always offer is large-group private-home accommodation close to all of it. Most lodging near downtown Sarasota is hotel rooms or small condos. <strong>Sarasota Luxe</strong> is the exception - a 4-bedroom home sleeping {sleeps:sarasota-luxe}, near downtown, with a private pool and hot tub; downtown destinations require driving.</p><p>Lido Beach is about 3 miles away, roughly 10 minutes by car. Siesta Key - the quartz-sand beach that earns most of the headlines - is about 6 miles, 15-20 minutes depending on bridge traffic. The distance matters: guests who want mornings at the beach and evenings at downtown restaurants will do that drive twice a day. Guests who want mostly dinner reservations, gallery walks, and a pool back home will hardly notice. Know which trip you're planning before you choose the base.</p><p><strong>Sarasota Luxe</strong> fits groups that lean toward the city side of that balance. The screened lanai, 2-car garage, and small-dog-friendly policy round out the practical details. Compare the same dates and complete checkout total across channels.</p>",
       "relatedStaySlugs": [
         "sarasota-arts-culture-vacation-rentals",
         "sarasota-vacation-rentals-with-pool",
@@ -1336,23 +1336,23 @@
       "title": "Florida Vacation Rentals with Pool AND Hot Tub",
       "h1": "Vacation Homes with Pool + Hot Tub Combo",
       "description": "Florida vacation rentals with a private pool AND hot tub - daytime swim, evening soak. Compare the same dates and complete checkout total across channels.",
-      "intro": "Six Seascape homes pair a private pool with a hot tub or spa. Pickleball Pool Home Retreat has a private pool, but no verified hot tub or spa.",
+      "intro": "{tub-homes} Seascape homes pair a private pool with a hot tub or spa. Pickleball Pool Home Retreat has a private pool, but no verified hot tub or spa.",
       "faqs": [
         {
           "question": "Which properties have both pool and hot tub?",
-          "answer": "Six Seascape homes have both a private pool and a hot tub or spa. Dockside Dreams and The Oasis are the Bradenton options for groups of 12+; River House, Bradenton Pool Home and The Coastal are also in Bradenton. Sarasota Luxe is the Sarasota option. Pickleball Pool Home Retreat has a private pool, but no verified hot tub or spa."
+          "answer": "{tub-homes} Seascape homes have both a private pool and a hot tub or spa. Dockside Dreams and The Oasis are the Bradenton options for groups of 12+; River House, Bradenton Pool Home and The Coastal are also in Bradenton. Sarasota Luxe is the Sarasota option. Pickleball Pool Home Retreat {sleeps-phrase:blue-house} and has a private pool, but no verified hot tub or spa."
         },
         {
           "question": "Are both the pool and hot tub heated?",
-          "answer": "Hot tub heat is included at the five established homes that have a hot tub or spa. Pool heat is an optional add-on at $40 per day at those five homes - most useful November through March. The pools aren't heated by default. Confirm the hot-tub terms and the pool-heat fee for The Coastal when booking."
+          "answer": "Hot tub heat terms are listed on each home page. Pool heat is an optional add-on at $40 per day at homes that list a pool-heat fee - most useful November through March. The pools aren't heated by default. Confirm the hot-tub terms and the pool-heat fee for The Coastal when booking."
         },
         {
           "question": "Can the hot tub be used at night?",
-          "answer": "Yes, at the five established homes with a hot tub or spa: those hot tubs run year-round and there's no shutoff time imposed by the property. Check the house rules on your rental for any quiet-hour guidelines for the outdoor area. The Coastal keeps quiet hours from 10 pm to 8 am, so confirm its hot-tub hours when booking."
+          "answer": "Yes, at the homes with a verified hot tub or spa: those hot tubs run year-round and there's no shutoff time imposed by the property. Check the house rules on your rental for any quiet-hour guidelines for the outdoor area. The Coastal keeps quiet hours from 10 pm to 8 am, so confirm its hot-tub hours when booking."
         },
         {
           "question": "Are the pool and hot tub separate or connected?",
-          "answer": "At the five established homes with a hot tub or spa, they are separate units with independent controls. You can keep the pool at a cooler swimming temperature while the hot tub stays at full heat. Pickleball Pool Home Retreat has a private pool only; confirm the pool and hot-tub setup at The Coastal when booking."
+          "answer": "At the homes with a verified hot tub or spa, they are separate units with independent controls. You can keep the pool at a cooler swimming temperature while the hot tub stays at full heat. Pickleball Pool Home Retreat has a private pool only; confirm the pool and hot-tub setup at The Coastal when booking."
         },
         {
           "question": "How large are the pool and hot tub areas?",
@@ -1371,18 +1371,18 @@
       "decisionHighlights": [
         {
           "label": "Included Hot Tub",
-          "value": "Hot tub heat is included at the five established homes that have one - no add-on fee, runs year-round; confirm the hot-tub terms for the newest Bradenton home when booking"
+          "value": "Hot tub heat terms are listed on each home page; confirm the newest Bradenton home when booking"
         },
         {
           "label": "Optional Pool Heat",
-          "value": "Pool heat is $40/day at the five established homes - worth it November through March, rarely needed in summer; confirm the fee for the newest Bradenton home when booking"
+          "value": "Pool heat is $40/day at the homes with a verified hot tub or spa - worth it November through March, rarely needed in summer; confirm the fee for the newest Bradenton home when booking"
         },
         {
           "label": "Six Distinct Setups",
-          "value": "From The Oasis's two hot tubs and putting green to Dockside's dock-side pool - each home is different"
+          "value": "From The Oasis's two hot tubs and putting green to Dockside's dock-side pool - Pickleball Pool Home Retreat {sleeps-phrase:blue-house}; each home is different"
         }
       ],
-      "geoIntro": "<p>Six Seascape homes have both a private pool and a hot tub or spa. Pickleball Pool Home Retreat has a private pool, but no verified hot tub or spa. Hot tub or spa heat is included at the five established homes that have one. Pool heat is an optional add-on ($40/day at those five homes) that most guests request November through March - the Gulf runs warm enough the rest of the year that an unheated pool is comfortable. That distinction matters if you're planning a winter trip. Confirm the hot-tub terms and the pool-heat fee for the newest Bradenton home when booking.</p><p>The setups aren't identical. <strong>The Oasis</strong> (5BR, sleeps 16, Bradenton) has the largest outdoor footprint - pool, two hot tubs, putting green, and a turf yard - built for big groups. <strong>Dockside Dreams</strong> (4BR, sleeps 12, Bradenton) adds a private dock and canal access to the pool and hot tub, making it the call for boaters. <strong>River House</strong> (4BR, sleeps 12, Bradenton) is a minute from a public boat ramp and has a pool and hot tub with a game room inside. <strong>Bradenton Pool Home</strong> (3BR, sleeps 10) is the smallest footprint and closest to IMG Academy. <strong>Sarasota Luxe</strong> (4BR, sleeps 12, downtown Sarasota) has a screened lanai with pool and hot tub, near downtown dining, which requires driving. <strong>Pickleball Pool Home Retreat</strong> (4BR, sleeps 11, Bradenton) pairs its private pool with a recreational pickleball court and fenced turf yard instead of a hot tub. <strong>The Coastal</strong> (3BR, sleeps 10, Bradenton) adds a hot tub, pickleball court, basketball hoop, putting green and an air-conditioned game room to its private pool.</p><p>If your group's main decision is pool-and-hot-tub and you haven't narrowed beyond that, the next cut is location: Bradenton puts you 10-15 minutes from Anna Maria Island beaches; Sarasota puts you 10-15 minutes from Lido Beach and near downtown, which requires driving.</p>",
+      "geoIntro": "<p>{tub-homes} Seascape homes have both a private pool and a hot tub or spa. Pickleball Pool Home Retreat has a private pool, but no verified hot tub or spa. Hot tub or spa heat terms are listed on each home page. Pool heat is an optional add-on ($40/day at homes that list a pool-heat fee) that most guests request November through March - the Gulf runs warm enough the rest of the year that an unheated pool is comfortable. That distinction matters if you're planning a winter trip. Confirm the hot-tub terms and the pool-heat fee for the newest Bradenton home when booking.</p><p>The setups aren't identical. <strong>The Oasis</strong> (5BR, {sleeps-phrase:the-oasis}, Bradenton) has the largest outdoor footprint - pool, two hot tubs, putting green, and a turf yard - built for big groups. <strong>Dockside Dreams</strong> (4BR, {sleeps-phrase:dockside-dreams}, Bradenton) adds a private dock and canal access to the pool and hot tub, making it the call for boaters. <strong>River House</strong> (4BR, {sleeps-phrase:river-house}, Bradenton) is a minute from a public boat ramp and has a pool and hot tub with a game room inside. <strong>Bradenton Pool Home</strong> (3BR, {sleeps-phrase:bradenton-pool-home}) is the smallest footprint and closest to IMG Academy. <strong>Sarasota Luxe</strong> (4BR, {sleeps-phrase:sarasota-luxe}, downtown Sarasota) has a screened lanai with pool and hot tub, near downtown dining, which requires driving. <strong>Pickleball Pool Home Retreat</strong> (4BR, {sleeps-phrase:blue-house}, Bradenton) pairs its private pool with a recreational pickleball court and fenced turf yard instead of a hot tub. <strong>The Coastal</strong> (3BR, {sleeps-phrase:coastal-stay}, Bradenton) adds a hot tub, pickleball court, basketball hoop, putting green and an air-conditioned game room to its private pool.</p><p>If your group's main decision is pool-and-hot-tub and you haven't narrowed beyond that, the next cut is location: Bradenton puts you 10-15 minutes from Anna Maria Island beaches; Sarasota puts you 10-15 minutes from Lido Beach and near downtown, which requires driving.</p>",
       "relatedStaySlugs": [
         "week-long-vacation-rentals-florida",
         "work-from-home-vacation-rentals-florida",
@@ -1548,14 +1548,14 @@
         },
         {
           "label": "Only Waterfront Home",
-          "value": "Dockside Dreams is the only Seascape property on the water - canal frontage, pool, hot tub, 4BR sleeps 12"
+          "value": "Dockside Dreams is the only Seascape property on the water - canal frontage, pool, hot tub, {br:dockside-dreams}BR {sleeps-phrase:dockside-dreams}"
         },
         {
           "label": "10 Min to Beach",
           "value": "Bradenton Beach is 2.9 miles away - the closest of the Bradenton homes to AMI"
         }
       ],
-      "geoIntro": "<p><strong>Dockside Dreams</strong> is Seascape's only waterfront property. It sits on a Bradenton canal with bay access, and the private dock is available for guest use - you may tie up one boat during your stay. The canal connects toward the Manatee River, Tampa Bay, and the Gulf. Bradenton Beach is 2.9 miles away, about 10 minutes by car.</p><p>A few specifics to know before booking: guests may use the dock but may not use the boat lift on the property. If you're bringing your own boat, contact us with your boat's dimensions before booking so we can confirm the dock is a fit. Kayak, paddleboard, and boat rentals are available from local companies in the area - some deliver to the dock. The home does not have kayaks, paddleboards, or fishing gear of its own.</p><p><strong>Dockside Dreams</strong> sleeps 12 across 4 bedrooms with a private pool, hot tub (included), and arcade inside. It's pet-friendly; compare the same dates and complete checkout total across channels.</p>",
+      "geoIntro": "<p><strong>Dockside Dreams</strong> is Seascape's only waterfront property. It sits on a Bradenton canal with bay access, and the private dock is available for guest use - you may tie up one boat during your stay. The canal connects toward the Manatee River, Tampa Bay, and the Gulf. Bradenton Beach is 2.9 miles away, about 10 minutes by car.</p><p>A few specifics to know before booking: guests may use the dock but may not use the boat lift on the property. If you're bringing your own boat, contact us with your boat's dimensions before booking so we can confirm the dock is a fit. Kayak, paddleboard, and boat rentals are available from local companies in the area - some deliver to the dock. The home does not have kayaks, paddleboards, or fishing gear of its own.</p><p><strong>Dockside Dreams</strong> {sleeps-phrase:dockside-dreams} across 4 bedrooms with a private pool, hot tub {heat:dockside-dreams}, and arcade inside. It's pet-friendly; compare the same dates and complete checkout total across channels.</p>",
       "relatedStaySlugs": [
         "kayaking-vacation-rentals-bradenton",
         "large-group-vacation-rentals-bradenton",
@@ -1566,14 +1566,14 @@
     {
       "slug": "vacation-rentals-sleeps-12-florida",
       "destination": null,
-      "title": "Florida Vacation Rentals That Sleep 12",
+      "title": "Florida Vacation Rentals That Sleep {sleeps:dockside-dreams}",
       "h1": "Vacation Homes for 12 Guests",
       "description": "Need space for 12? Florida vacation rentals with 4 bedrooms, pools, and room for everyone.",
-      "intro": "Three Seascape homes sleep 12 across 4 bedrooms - each in a different location and with a different setup, so the right pick depends on where you want to be.",
+      "intro": "{matching} Seascape homes sleep {sleeps:dockside-dreams} across 4 bedrooms - each in a different location and with a different setup, so the right pick depends on where you want to be.",
       "faqs": [
         {
-          "question": "Which homes sleep 12 guests?",
-          "answer": "Dockside Dreams, River House, and Sarasota Luxe each sleep 12 across 4 bedrooms. Dockside is waterfront in Bradenton; River House is near the Manatee River in Bradenton; Sarasota Luxe is near downtown Sarasota; downtown destinations require driving."
+          "question": "Which homes sleep {sleeps:dockside-dreams} guests?",
+          "answer": "Dockside Dreams, River House, and Sarasota Luxe each sleep {sleeps:river-house} across 4 bedrooms. Dockside is waterfront in Bradenton; River House is near the Manatee River in Bradenton; Sarasota Luxe is near downtown Sarasota; downtown destinations require driving."
         },
         {
           "question": "How many bedrooms do 12-guest homes have?",
@@ -1615,7 +1615,7 @@
           "value": "All three include a private pool and hot tub - no shared amenities, no lobby, no resort fees"
         }
       ],
-      "geoIntro": "<p>Sleeping 12 in a single home narrows the options fast. Hotels scatter a group across rooms on different floors; most vacation condos cap at 6-8. The three Seascape homes that hold 12 each have 4 bedrooms and 3+ bathrooms, and they cover two markets: Bradenton (near Anna Maria Island) and downtown Sarasota.</p><p><strong>Dockside Dreams</strong> (Bradenton) is the waterfront option - private dock, pool, hot tub, and arcade. Bradenton Beach is 2.9 miles away. <strong>River House</strong> (Bradenton) is a minute from a public boat ramp on the Manatee River, with a pool, hot tub, and game room; AMI beaches are about 15 minutes away. <strong>Sarasota Luxe</strong> (downtown Sarasota) trades beach proximity for proximity to Sarasota restaurants, galleries, and the Bayfront, all reached by car - with a pool, hot tub, and screened lanai. Lido Beach is about 3 miles, 10 minutes.</p><p>The choice between Bradenton and Sarasota is mostly about how you'll spend your time. Beach-heavy trip: the Bradenton homes are the base. Mix of beach days and city dinners: Sarasota Luxe fits better. Divide the complete checkout total by your guest count and number of nights to compare the per-person cost with other lodging options.</p>",
+      "geoIntro": "<p>Sleeping {sleeps:dockside-dreams} in a single home narrows the options fast. Hotels scatter a group across rooms on different floors; most vacation condos cap at 6-8. The three Seascape homes that hold 12 each have 4 bedrooms and 3+ bathrooms, and they cover two markets: Bradenton (near Anna Maria Island) and downtown Sarasota.</p><p><strong>Dockside Dreams</strong> (Bradenton) is the waterfront option - private dock, pool, hot tub, and arcade. Bradenton Beach is 2.9 miles away. <strong>River House</strong> (Bradenton) is a minute from a public boat ramp on the Manatee River, with a pool, hot tub, and game room; AMI beaches are about 15 minutes away. <strong>Sarasota Luxe</strong> (downtown Sarasota) trades beach proximity for proximity to Sarasota restaurants, galleries, and the Bayfront, all reached by car - with a pool, hot tub, and screened lanai. Lido Beach is about 3 miles, 10 minutes.</p><p>The choice between Bradenton and Sarasota is mostly about how you'll spend your time. Beach-heavy trip: the Bradenton homes are the base. Mix of beach days and city dinners: Sarasota Luxe fits better. Divide the complete checkout total by your guest count and number of nights to compare the per-person cost with other lodging options.</p>",
       "relatedStaySlugs": [
         "accessible-vacation-rentals-florida",
         "vacation-rentals-with-outdoor-grill",
@@ -1626,14 +1626,14 @@
     {
       "slug": "vacation-rentals-sleeps-16-florida",
       "destination": null,
-      "title": "Florida Vacation Rentals That Sleep 16",
+      "title": "Florida Vacation Rentals That Sleep {sleeps:the-oasis}",
       "h1": "Vacation Homes for 16 Guests",
-      "description": "Our largest vacation rental sleeps 16 guests. 5 bedrooms, pool, hot tubs, putting green.",
-      "intro": "The Oasis is our ultimate group property, sleeping 16 with incredible amenities.",
+      "description": "Our largest vacation rental {sleeps-phrase:the-oasis} guests. 5 bedrooms, pool, hot tubs, putting green.",
+      "intro": "The Oasis is our ultimate group property, sleeping {sleeps:the-oasis} with incredible amenities.",
       "faqs": [
         {
-          "question": "Which property sleeps 16?",
-          "answer": "The Oasis is our largest property, sleeping up to 16 guests with 5 bedrooms, 3 bathrooms, a resort-style pool, hot tub, game room, and expansive outdoor areas."
+          "question": "Which property sleeps {sleeps:the-oasis}?",
+          "answer": "The Oasis is our largest property, sleeping up to {sleeps:the-oasis} guests with 5 bedrooms, 3 bathrooms, a resort-style pool, hot tub, game room, and expansive outdoor areas."
         },
         {
           "question": "What's the bedroom configuration for 16 guests?",
@@ -1659,7 +1659,7 @@
       "matchingProperties": [
         "the-oasis"
       ],
-      "geoIntro": "<p>When your group reaches 16 people, accommodation options shrink fast \u2014 except in vacation rentals. Our flagship property, <strong>The Oasis</strong>, sleeps up to 16 guests across 5 bedrooms and 3 bathrooms, with a resort-style pool, hot tub, game room, and massive outdoor living area designed for big groups.</p><p>Compare the complete checkout total for your group and dates.</p>",
+      "geoIntro": "<p>When your group reaches 16 people, accommodation options shrink fast \u2014 except in vacation rentals. Our flagship property, <strong>The Oasis</strong>, sleeps up to {sleeps:the-oasis} guests across 5 bedrooms and 3 bathrooms, with a resort-style pool, hot tub, game room, and massive outdoor living area designed for big groups.</p><p>Compare the complete checkout total for your group and dates.</p>",
       "relatedStaySlugs": [
         "accessible-vacation-rentals-florida",
         "vacation-rentals-with-outdoor-grill",
@@ -1673,7 +1673,7 @@
       "destination": null,
       "title": "4 Bedroom Vacation Rentals in Florida",
       "h1": "4BR Florida Vacation Homes with Pool",
-      "description": "4 bedroom vacation rentals in Florida. Private pools, sleeps 12. Compare the same dates and complete checkout total across channels.",
+      "description": "4 bedroom vacation rentals in Florida. Private pools, {sleeps-phrase:dockside-dreams}. Compare the same dates and complete checkout total across channels.",
       "intro": "Our 4-bedroom vacation homes offer the perfect balance of space and privacy for groups.",
       "faqs": [
         {
@@ -1682,7 +1682,7 @@
         },
         {
           "question": "How many guests can a 4-bedroom home sleep?",
-          "answer": "Our 4-bedroom homes typically sleep 8\u201312 guests depending on the property's bed configuration. Contact us to discuss which property best fits your group size."
+          "answer": "Our 4-bedroom homes typically sleep {sleeps:coastal-stay}\u2013{sleeps:dockside-dreams} guests depending on the property's bed configuration. Contact us to discuss which property best fits your group size."
         },
         {
           "question": "Do all 4-bedroom homes have pools?",
@@ -1719,12 +1719,12 @@
       "destination": null,
       "title": "5 Bedroom Vacation Rentals in Florida",
       "h1": "5BR Florida Vacation Homes",
-      "description": "5 bedroom vacation rental in Florida. Sleeps 16, pool, hot tubs, putting green. Book direct.",
+      "description": "5 bedroom vacation rental in Florida. {sleeps-phrase:the-oasis}, pool, hot tubs, putting green. Book direct.",
       "intro": "Our largest property, The Oasis, offers 5 bedrooms and endless entertainment options.",
       "faqs": [
         {
           "question": "Which 5-bedroom properties do you have?",
-          "answer": "The Oasis (sleeps 16) is our flagship 5-bedroom property, featuring a private heated pool, two hot tubs, putting green with kid putters, and spacious layouts designed for large groups."
+          "answer": "The Oasis ({sleeps-phrase:the-oasis}) is our flagship 5-bedroom property, featuring a private heated pool, two hot tubs, putting green with kid putters, and spacious layouts designed for large groups."
         },
         {
           "question": "What's the difference between The Oasis and Dockside Dreams?",
@@ -1732,7 +1732,7 @@
         },
         {
           "question": "How many guests can your 5-bedroom homes accommodate?",
-          "answer": "The Oasis sleeps up to 16 guests and Dockside Dreams accommodates 12 guests. Both have 3 bathrooms to handle large group needs comfortably."
+          "answer": "The Oasis sleeps up to {sleeps:the-oasis} guests and Dockside Dreams accommodates {sleeps:dockside-dreams} guests. Both have 3 bathrooms to handle large group needs comfortably."
         },
         {
           "question": "Are 5-bedroom homes affordable for groups?",
@@ -1750,7 +1750,7 @@
       "matchingProperties": [
         "the-oasis"
       ],
-      "geoIntro": "<p>Five-bedroom vacation homes are the gold standard for large group travel \u2014 enough space for extended families, multi-family trips, and group getaways where everyone wants their own room. Our 5-bedroom Florida properties sleep 14\u201316 guests and feature resort-level amenities: private heated pools, hot tubs, game rooms, and outdoor entertaining spaces.</p><p>Properties like <strong>The Oasis</strong> and <strong>Dockside Dreams</strong> from <strong>Seascape Vacations</strong> deliver the space and luxury of a boutique resort with the privacy and comfort of home. Compare the same dates and complete checkout total across channels.</p>",
+      "geoIntro": "<p>Five-bedroom vacation homes are the gold standard for large group travel \u2014 enough space for extended families, multi-family trips, and group getaways where everyone wants their own room. Our 5-bedroom Florida properties sleep {sleeps:the-oasis} guests and feature resort-level amenities: private heated pools, hot tubs, game rooms, and outdoor entertaining spaces.</p><p>Properties like <strong>The Oasis</strong> and <strong>Dockside Dreams</strong> from <strong>Seascape Vacations</strong> deliver the space and luxury of a boutique resort with the privacy and comfort of home. Compare the same dates and complete checkout total across channels.</p>",
       "relatedStaySlugs": [
         "accessible-vacation-rentals-florida",
         "beach-house-rentals-florida-gulf-coast",
@@ -1809,7 +1809,7 @@
         },
         {
           "label": "Room for the family",
-          "value": "Dockside and River House sleep 12, The Oasis up to 16 \u2014 all with a private pool."
+          "value": "Dockside and River House sleep {sleeps:river-house}, The Oasis up to {sleeps:the-oasis} \u2014 all with a private pool."
         }
       ],
       "geoIntro": "<p>Summer on the Gulf Coast offers long beach mornings and pool time, with heat and afternoon thunderstorms to plan around. Keep indoor activities available and follow current weather and beach warnings.</p><p>Compare the listed homes\u2019 sleeping arrangements, pools and beach routes. Include any optional extras in the complete checkout total for the dates you want.</p>"
@@ -1964,7 +1964,7 @@
         },
         {
           "question": "Are your homes suitable for a golf group trip?",
-          "answer": "Our homes are perfect for golf groups. Properties sleeping 10\u201316 guests mean your foursome (or multiple foursomes) can stay together under one roof. Private pools provide great post-round relaxation, and full kitchens make group dinners easy. The Oasis and Dockside Dreams are favorites for golf groups."
+          "answer": "Our homes are perfect for golf groups. Properties sleeping {sleeps:bradenton-pool-home}\u2013{sleeps:the-oasis} guests mean your foursome (or multiple foursomes) can stay together under one roof. Private pools provide great post-round relaxation, and full kitchens make group dinners easy. The Oasis and Dockside Dreams are favorites for golf groups."
         },
         {
           "question": "What other activities can non-golfers enjoy while the group plays?",
@@ -2033,7 +2033,7 @@
       "faqs": [
         {
           "question": "Which property is best for a bachelor/bachelorette party?",
-          "answer": "The Oasis is our top pick for large celebration groups \u2014 it sleeps 16 with a pool, hot tub, game room, and spacious outdoor area. Sarasota Luxe works well for smaller, more upscale bachelorette groups near downtown dining and shopping."
+          "answer": "The Oasis is our top pick for large celebration groups \u2014 it {sleeps-phrase:the-oasis} with a pool, hot tub, game room, and spacious outdoor area. Sarasota Luxe works well for smaller, more upscale bachelorette groups near downtown dining and shopping."
         },
         {
           "question": "Are there things to do for the wedding party?",
@@ -2049,7 +2049,7 @@
         },
         {
           "question": "How many people can your homes accommodate for parties?",
-          "answer": "Our homes sleep 8\u201316 guests overnight. For celebration gatherings, the comfortable capacity depends on the property. Contact us to discuss your group size and we'll recommend the best fit."
+          "answer": "Our homes sleep {sleeps:coastal-stay}\u2013{sleeps:the-oasis} guests overnight. For celebration gatherings, the comfortable capacity depends on the property. Contact us to discuss your group size and we'll recommend the best fit."
         },
         {
           "question": "Are there restaurants for group dinners?",
@@ -2066,12 +2066,12 @@
       "destination": null,
       "title": "Family Reunion Vacation Rentals Florida",
       "h1": "Florida Family Reunion Vacation Homes",
-      "description": "Host your family reunion on Florida's Gulf Coast. Large homes sleeping 12-16 guests.",
+      "description": "Host your family reunion on Florida's Gulf Coast. Large homes sleeping {sleeps:dockside-dreams}-{sleeps:the-oasis} guests.",
       "intro": "Bring the whole family together in a spacious vacation home with room for everyone.",
       "faqs": [
         {
           "question": "How many family members can you accommodate?",
-          "answer": "Our largest property sleeps 16 under one roof. For larger reunions, we can coordinate multiple nearby properties so your family stays close together while having separate homes."
+          "answer": "Our largest property {sleeps-phrase:the-oasis} under one roof. For larger reunions, we can coordinate multiple nearby properties so your family stays close together while having separate homes."
         },
         {
           "question": "Can we cook for the whole family at the rental?",
@@ -2098,7 +2098,7 @@
         "the-oasis",
         "dockside-dreams"
       ],
-      "geoIntro": "<p>Family reunions are about bringing everyone together \u2014 and nothing does that better than a big, beautiful vacation home with a private pool, space for everyone to sleep comfortably, and a kitchen large enough to prepare meals for the whole clan. Our Florida vacation homes sleeping up to 16 guests were made for family reunions.</p><p><strong>Seascape Vacations</strong> homes in Bradenton put your reunion 10\u201315 minutes from Gulf beaches with all the amenities for a memorable gathering. Compare the same dates and complete checkout total across channels.</p>"
+      "geoIntro": "<p>Family reunions are about bringing everyone together \u2014 and nothing does that better than a big, beautiful vacation home with a private pool, space for everyone to sleep comfortably, and a kitchen large enough to prepare meals for the whole clan. Our Florida vacation homes sleeping up to {sleeps:the-oasis} guests were made for family reunions.</p><p><strong>Seascape Vacations</strong> homes in Bradenton put your reunion 10\u201315 minutes from Gulf beaches with all the amenities for a memorable gathering. Compare the same dates and complete checkout total across channels.</p>"
     },
     {
       "slug": "birthday-celebration-rentals-florida",
@@ -2232,7 +2232,7 @@
           "value": "A week to test the Bradenton\u2013Sarasota retirement scene \u2014 beaches, golf, culture, and an easy pace."
         }
       ],
-      "geoIntro": "<p>A retirement trip is really a family gathering with a milestone attached, so the setup that matters is space: a private pool for relaxed get-togethers, a full kitchen for family dinners, and a base where everyone can test the Bradenton\u2013Sarasota lifestyle for a week.</p><p>Pick by group: <strong>The Oasis</strong> sleeps 16 with a pool, two hot tubs, a game room, and a putting green for a big celebration; <strong>Sarasota Luxe</strong> suits a smaller, upscale gathering near downtown dining. Dockside Dreams and River House each sleep 12.</p><p>It's also a low-key way to scout the area \u2014 plenty of guests come for the party and end up eyeing it as a place to retire. Compare the same dates and complete checkout total across channels.</p>"
+      "geoIntro": "<p>A retirement trip is really a family gathering with a milestone attached, so the setup that matters is space: a private pool for relaxed get-togethers, a full kitchen for family dinners, and a base where everyone can test the Bradenton\u2013Sarasota lifestyle for a week.</p><p>Pick by group: <strong>The Oasis</strong> {sleeps-phrase:the-oasis} with a pool, two hot tubs, a game room, and a putting green for a big celebration; <strong>Sarasota Luxe</strong> suits a smaller, upscale gathering near downtown dining. Dockside Dreams {sleeps-phrase:dockside-dreams} and River House {sleeps-phrase:river-house}.</p><p>It's also a low-key way to scout the area \u2014 plenty of guests come for the party and end up eyeing it as a place to retire. Compare the same dates and complete checkout total across channels.</p>"
     },
     {
       "slug": "kayaking-vacation-rentals-bradenton",
@@ -2347,7 +2347,7 @@
         },
         {
           "question": "How many wedding guests can you accommodate overnight?",
-          "answer": "The homes sleep 12\u201316. For a larger party, we can line up a second home nearby so guests stay close with their own space."
+          "answer": "The homes sleep {sleeps:dockside-dreams}\u2013{sleeps:the-oasis}. For a larger party, we can line up a second home nearby so guests stay close with their own space."
         },
         {
           "question": "What wedding vendors do you recommend?",
@@ -2367,7 +2367,7 @@
       "decisionHighlights": [
         {
           "label": "Room for the party",
-          "value": "Homes sleeping 12\u201316 \u2014 get ready, gather by the pool, and host the after-party in one private place."
+          "value": "Homes sleeping {sleeps:dockside-dreams}\u2013{sleeps:the-oasis} \u2014 get ready, gather by the pool, and host the after-party in one private place."
         },
         {
           "label": "Near the ceremony",
@@ -2375,10 +2375,10 @@
         },
         {
           "label": "Group-sized options",
-          "value": "The Oasis for 16, Dockside and River House for 12, or two homes held nearby for a bigger list."
+          "value": "The Oasis for {sleeps:the-oasis}, Dockside and River House for {sleeps:dockside-dreams}, or a second home held nearby for a bigger list."
         }
       ],
-      "geoIntro": "<p>A Gulf Coast beach wedding needs a home base more than a hotel block: somewhere the party can get ready, the pool's open all afternoon, and the celebration keeps going after the ceremony. These Seascape homes sit 10\u201330 minutes from the Anna Maria and Sarasota beaches where couples marry, with space for the wedding party to stay together.</p><p>Pick by group size: <strong>The Oasis</strong> sleeps 16 with two hot tubs and a putting green; <strong>Dockside Dreams</strong> sleeps 12 with a dock; River House and Sarasota Luxe each sleep 12. For a bigger guest list, we can hold two homes nearby so everyone stays close.</p><p>The ceremony's on the sand \u2014 Bean Point, Coquina, or Lido \u2014 and local planners handle permits and vendors. The house handles everything else: prep, photos, and the after-party. Compare the same dates and complete checkout total across channels.</p>"
+      "geoIntro": "<p>A Gulf Coast beach wedding needs a home base more than a hotel block: somewhere the party can get ready, the pool's open all afternoon, and the celebration keeps going after the ceremony. These Seascape homes sit 10\u201330 minutes from the Anna Maria and Sarasota beaches where couples marry, with space for the wedding party to stay together.</p><p>Pick by group size: <strong>The Oasis</strong> {sleeps-phrase:the-oasis} with two hot tubs and a putting green; <strong>Dockside Dreams</strong> {sleeps-phrase:dockside-dreams} with a dock; River House {sleeps-phrase:river-house} and Sarasota Luxe {sleeps-phrase:sarasota-luxe}. For a bigger guest list, we can hold a second home nearby so everyone stays close.</p><p>The ceremony's on the sand \u2014 Bean Point, Coquina, or Lido \u2014 and local planners handle permits and vendors. The house handles everything else: prep, photos, and the after-party. Compare the same dates and complete checkout total across channels.</p>"
     },
     {
       "slug": "honeymoon-rentals-anna-maria-island",
@@ -2503,7 +2503,7 @@
       "faqs": [
         {
           "question": "Which homes are best for multigenerational families?",
-          "answer": "The Oasis (sleeps 16, 5 bedrooms, 3 bathrooms) is our top multigenerational pick \u2014 it offers a large layout with separate living areas, a game room for kids, and a resort-style pool area. Dockside Dreams (4 bedrooms, boat dock) is great for active families who want water access."
+          "answer": "The Oasis ({sleeps-phrase:the-oasis}, 5 bedrooms, 3 bathrooms) is our top multigenerational pick \u2014 it offers a large layout with separate living areas, a game room for kids, and a resort-style pool area. Dockside Dreams (4 bedrooms, boat dock) is great for active families who want water access."
         },
         {
           "question": "Are there ground-floor bedrooms for elderly family members?",
@@ -2845,7 +2845,7 @@
         },
         {
           "question": "What's available for last-minute bookings?",
-          "answer": "Availability varies, but we typically have options across the current listing set of luxury homes in Bradenton and Sarasota. Properties range from cozy couples retreats to spacious family homes sleeping up to 16 guests, all with private heated pools. Check our website or call for current last-minute availability."
+          "answer": "Availability varies, but we typically have options across the current listing set of luxury homes in Bradenton and Sarasota. Properties range from cozy couples retreats to spacious family homes sleeping up to {sleeps:the-oasis} guests, all with private heated pools. Check our website or call for current last-minute availability."
         },
         {
           "question": "How do I check-in for a last-minute stay?",

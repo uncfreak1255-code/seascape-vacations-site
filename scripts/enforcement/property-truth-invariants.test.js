@@ -12,6 +12,12 @@ const {
   renderSchemaAmenityLabels
 } = require("../../scripts/regenerate-property-surfaces");
 
+const {
+  applyStayFacts,
+  assertNoHandTypedStayFacts,
+  stayOccupancy
+} = require("../../src/_data/stayFacts");
+
 const TOTAL_HOME_COUNT_PATTERN = /\b(?:manages?|all|of our|of the)\s+(?:one|two|three|four|five|six|seven|eight|nine|ten|\d+)\s+(?:[\w-]+\s+){0,2}homes\b/i;
 const DOCKSIDE_ONLY_CLAIM_SLUG = "dockside-dreams";
 
@@ -312,6 +318,12 @@ test("property reviews stay nested under one complete VacationRental entity", ()
   }
 });
 
+test("stay JSON cannot hand-type capacity, heat, or home-count facts", () => {
+  for (const page of seoPages.vacationer.filter((entry) => !entry.rehomeTo)) {
+    assert.doesNotThrow(() => assertNoHandTypedStayFacts(page), page.slug);
+  }
+});
+
 test("pool-and-hot-tub stay copy does not claim every home has a hot tub", () => {
   const page = allSeoPages().find((entry) => entry.slug === "vacation-rentals-with-pool-and-hot-tub");
   assert.ok(page, "vacation-rentals-with-pool-and-hot-tub must exist");
@@ -346,6 +358,15 @@ test("Blue House publishes verified Hostaway identity, coordinates, and no spa o
   const stayHtml = readBuilt("stays/vacation-rentals-with-pool-and-hot-tub/index.html");
   assert.match(stayHtml, /Pickleball Pool Home Retreat<\/strong> \(4BR, sleeps 11, Bradenton\)/);
   assert.doesNotMatch(stayHtml, /Pickleball Pool Home Retreat<\/strong> \(4BR, sleeps 10/);
+  const catalog = structuredClone(fallbackProperties);
+  catalog.find((entry) => entry.slug === "blue-house").guests = 99;
+  const replayed = applyStayFacts(
+    structuredClone(seoPages.vacationer.find((entry) => entry.slug === "vacation-rentals-with-pool-and-hot-tub")),
+    catalog
+  );
+  assert.match(JSON.stringify(replayed), /sleeps 99/);
+  assert.doesNotMatch(JSON.stringify(replayed), /sleeps 11/);
+  assert.equal(stayOccupancy(catalog, "blue-house"), 99);
   assert.match(html, /Up to <strong>11<\/strong> guests/);
   const aiProperty = JSON.parse(readBuilt("ai-discovery.json")).properties.find((entry) => entry.slug === "blue-house");
   assert.equal(aiProperty.maximum_guests, 11);

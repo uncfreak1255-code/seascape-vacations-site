@@ -513,7 +513,7 @@ eleventyComputed:
                         <div class="property-body">
                             <div class="property-rating">{{ uiIcon("star") }} Rated {{ property.rating }}</div>
                             <h3 class="property-title">{{ property.name }}</h3>
-                            <p class="property-meta">{{ property.specs }}</p>
+                            <p class="property-meta">{{ property.bedrooms }} BR · {{ property.bathrooms }} BA · Sleeps {{ property.guests }}</p>
                             <p class="property-highlight">{{ property.highlights | join(" · ") }}</p>
                             <div class="property-card-bottom">
                                 <span class="property-price">From ${{ property.price }}/night</span>
