@@ -219,6 +219,28 @@ function assertNoHandTypedStayFacts(page) {
   }
 }
 
+function escapeName(name) {
+  return String(name).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function namedHomeSlugs(text, homes) {
+  const masked = String(text || "").replace(/\{[^}]+\}/g, " ");
+  const slugs = [];
+  const seen = new Set();
+  for (const home of homes) {
+    for (const name of [...home.names].sort((left, right) => right.length - left.length)) {
+      if (new RegExp(`\\b${escapeName(name)}\\b`, "i").test(masked)) {
+        if (!seen.has(home.slug)) {
+          seen.add(home.slug);
+          slugs.push(home.slug);
+        }
+        break;
+      }
+    }
+  }
+  return slugs;
+}
+
 function catalogHomeNames(catalog) {
   const homes = (catalog || [])
     .filter((property) => property && property.slug && property.name)
@@ -272,7 +294,7 @@ function assertStayCapacityBindings(page, catalog) {
       const hits = [];
       for (const home of homes) {
         for (const name of [...home.names].sort((left, right) => right.length - left.length)) {
-          const pattern = new RegExp(`\\b${name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`, "ig");
+          const pattern = new RegExp(`\\b${escapeName(name)}\\b`, "ig");
           let match = pattern.exec(masked);
           while (match) {
             hits.push({ slug: home.slug, index: match.index, end: match.index + match[0].length });
@@ -302,6 +324,25 @@ function assertStayCapacityBindings(page, catalog) {
           `stayFacts: named homes ${listed.map((hit) => hit.slug).join(" and ")} share {sleeps:${uniqueTokens[0]}} on ${slug}`
         );
       }
+    }
+  });
+  const matching = [...new Set((page && page.matchingProperties) || [])];
+  visitStrings(page, (text) => {
+    if (!/\{matching\}/.test(text)) {
+      return;
+    }
+    const named = namedHomeSlugs(text, homes);
+    if (named.length === 0) {
+      return;
+    }
+    const same =
+      named.length === matching.length &&
+      named.every((home) => matching.includes(home)) &&
+      matching.every((home) => named.includes(home));
+    if (!same) {
+      throw new Error(
+        `stayFacts: {matching} names ${named.join(" and ")} but matchingProperties is ${matching.join(" and ") || "empty"} on ${slug}`
+      );
     }
   });
 }
