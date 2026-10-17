@@ -61,6 +61,60 @@ test('every generated stay record rejects unsupported price advantages and autom
   assert.doesNotThrow(() => assertNoUnsourcedPriceAdvantages(pages, readSourcedClaims()));
 });
 
+test('unseen synonym plants fail as typed hits, not as a listed fixture', () => {
+  const {
+    assertNoUnsourcedPriceAdvantages,
+    assertSavingsSourced,
+    parseClaimHits,
+    readSourcedClaims,
+    scanSavingsHitsInText
+  } = require('./sourced-claims');
+  const claims = readSourcedClaims();
+  const pages = JSON.parse(read('src/_data/seoPages.json')).vacationer;
+
+  const percent = [15, 40];
+  const word = ['fif', 'teen'].join('');
+  const reduced = ['red', 'uced'].join('');
+  const skipIsland = ['skip', ' the ', 'island ', 'markup'].join('');
+  const plants = {
+    reduced: `${percent[0]}% ${reduced}`,
+    wordSave: ['save ', word, ' percent'].join(''),
+    skip: skipIsland,
+    orMore: `${percent[1]}% or more`
+  };
+
+  const reducedHits = scanSavingsHitsInText(`Guests pay ${plants.reduced} versus the island.`, 'src/guides/hidden-plant.html');
+  const wordHits = scanSavingsHitsInText(`Book direct and ${plants.wordSave} on the same dates.`, 'src/guides/hidden-plant.html');
+  const orMoreHits = scanSavingsHitsInText(`Shoulder weeks run ${plants.orMore} on the same home.`, 'src/guides/hidden-plant.html');
+  const skipHits = parseClaimHits(`Guests can ${plants.skip} by staying in Bradenton.`);
+
+  assert.equal(reducedHits[0].kind, 'percent-comparative');
+  assert.equal(wordHits[0].kind, 'percent-comparative');
+  assert.equal(orMoreHits[0].kind, 'percent-comparative');
+  assert.equal(skipHits[0].kind, 'qualitative-price-advantage');
+  assert.match(skipHits[0].subject, /markup/);
+
+  assert.throws(
+    () => assertSavingsSourced(reducedHits, claims),
+    /sourcedClaims\.json is missing a sourced-claim row/
+  );
+  assert.throws(
+    () => assertSavingsSourced(wordHits, claims),
+    /sourcedClaims\.json is missing a sourced-claim row/
+  );
+  assert.throws(
+    () => assertSavingsSourced(orMoreHits, claims),
+    /sourcedClaims\.json is missing a sourced-claim row/
+  );
+  assert.throws(
+    () => assertNoUnsourcedPriceAdvantages(
+      [...pages, { slug: 'hidden-plant-skip', intro: `Guests can ${plants.skip} by staying in Bradenton.` }],
+      claims
+    ),
+    /sourcedClaims\.json is missing a sourced-claim row/
+  );
+});
+
 test('Bradenton-Sarasota dining comparison uses current menus in body and FAQ schema', () => {
   const s = read('src/guides/bradenton-vs-sarasota-restaurants/index.html');
   assert.doesNotMatch(s, /\$\d|Generally yes\. Expect to spend|Average Dinner|better atmosphere, lower prices|lowest rate|No platform fees|reasonable prices|Not cheap|Cheap Eats|happy hour deals|full dinner price tag|Stay in Bradenton for the value/i);
