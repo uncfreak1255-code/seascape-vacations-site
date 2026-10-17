@@ -528,13 +528,6 @@
       "note": "reviewed current guest copy; not a new claim phrasing"
     },
     {
-      "hash": "3c12cadf7a80c2aaca5bcb8d960de7c9c8f30c763a72927488dbf3bb86f89bac",
-      "sentence": "A similar home can look close in nightly rate, then separate by hundreds once Airbnb or Vrbo adds service fees",
-      "file": "src/guides/anna-maria-island-vs-siesta-key.html",
-      "slug": "",
-      "note": "reviewed current guest copy after fail-closed sentence boundaries; not a new claim phrasing"
-    },
-    {
       "hash": "1c2ca0233faf3ecd41f80d51428ef069310d813cb3be6210fc57f072534b3c50",
       "sentence": "AMI often wins when you want the island-first trip; Siesta often prices higher near the famous sand and village access",
       "file": "src/guides/anna-maria-island-vs-siesta-key.html",
