@@ -11,6 +11,7 @@ const seoPages = require("../../src/_data/seoPages.json");
 const {
   applyStayFacts,
   assertNoHandTypedStayFacts,
+  assertStayCapacityBindings,
   listedHomeCount,
   stayOccupancy
 } = require("../../src/_data/stayFacts");
@@ -84,9 +85,45 @@ test("hand-typed sleeps, heat, and home-count facts fail stay JSON", () => {
 });
 
 test("published stay JSON has no hand-typed capacity, heat, or home-count facts", () => {
+  const catalog = structuredClone(fallback);
   for (const page of vacationerPages()) {
     assert.doesNotThrow(() => assertNoHandTypedStayFacts(page), page.slug);
+    assert.doesNotThrow(() => assertStayCapacityBindings(page, catalog), page.slug);
   }
+});
+
+test("page ranges and shared home tokens must bind every matching home", () => {
+  const catalog = structuredClone(fallback);
+  assert.throws(
+    () => assertStayCapacityBindings({
+      slug: "plant",
+      matchingProperties: ["dockside-dreams", "the-oasis", "river-house"],
+      faqs: [{
+        question: "What size groups?",
+        answer: "These homes sleep {sleeps:dockside-dreams}–{sleeps:the-oasis}."
+      }]
+    }, catalog),
+    /occupancy range must use \{sleeps-matching\}/
+  );
+  assert.throws(
+    () => assertStayCapacityBindings({
+      slug: "plant",
+      matchingProperties: ["dockside-dreams", "river-house"],
+      decisionHighlights: [{
+        label: "Room",
+        value: "Dockside and River House sleep {sleeps:river-house}."
+      }]
+    }, catalog),
+    /named homes dockside-dreams and river-house share \{sleeps:river-house\}/
+  );
+  assert.doesNotThrow(() => assertStayCapacityBindings({
+    slug: "plant",
+    matchingProperties: ["dockside-dreams", "the-oasis", "river-house"],
+    faqs: [{
+      question: "What size groups?",
+      answer: "These homes sleep {sleeps-matching} — The Oasis for {sleeps:the-oasis}, Dockside Dreams for {sleeps:dockside-dreams}, and River House for {sleeps:river-house}."
+    }]
+  }, catalog));
 });
 
 test("replay 638: Blue House fallback capacity moves geoIntro, FAQ, highlight, ItemList, and JSON-LD", () => {
@@ -212,6 +249,7 @@ test("staysPages apply catalog facts before the template renders", () => {
   const stayTemplate = fs.readFileSync(path.join(projectRoot, "src/stays/stays.njk"), "utf8");
   assert.match(source, /applyStayFacts/);
   assert.match(source, /assertNoHandTypedStayFacts/);
+  assert.match(source, /assertStayCapacityBindings/);
   assert.match(source, /require\("\.\/properties"\)/);
   assert.match(stayTemplate, /for relatedPage in staysPages/);
   assert.doesNotMatch(stayTemplate, /for relatedPage in seoPages\.vacationer/);
