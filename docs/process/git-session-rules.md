@@ -75,6 +75,13 @@ Stay in that worktree on the branch the harness created; do not add a
 - On this machine, `/Users/sawbeck/Projects/seascape-vacations-site` should be the only sync-only `main` checkout
 - `/Users/sawbeck/Projects/seascape-main` is a duplicate checkout; do not treat it as the long-term source for new work or for `main` sync
 
+## File size gate
+
+The pre-commit hook blocks staged files over 5,000 tokens (bytes / 4) and
+growth of files already over it; its error says how to split the file. Guide
+pages, mockups, `src/_data` JSON and lockfiles are exempt; the list lives in
+`scripts/enforcement/check-staged-file-size.js#IGNORED`.
+
 ## Session coaching rules
 
 Any agent working in this repo should say the quiet part out loud:

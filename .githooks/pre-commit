@@ -6,6 +6,7 @@ repo_root="$(git rev-parse --show-toplevel)"
 cd "$repo_root"
 
 node scripts/enforcement/pre-commit.js
+node scripts/enforcement/check-staged-file-size.js
 
 # keel proof-gate (fail-open: no-op when keel-core or .keel/verify is absent)
 KEEL_CORE="/Users/sawbeck/.keel/bin/keel-core.sh"
