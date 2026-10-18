@@ -62,6 +62,8 @@
 - src/_data/seoPages.json
 - src/stays/stays.njk
 - src/_data/stayFacts.js
+- src/_data/stayNumberBaseline.json
 - src/_data/staysPages.js
+- docs/reviews/2026-10-stay-number-suspected-claims.md
 - scripts/enforcement/stay-facts-derived.test.js
 - scripts/enforcement/property-truth-invariants.test.js
