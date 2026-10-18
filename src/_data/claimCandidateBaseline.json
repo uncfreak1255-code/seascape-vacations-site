@@ -1347,8 +1347,8 @@
       "reason": "grandfathered current guest copy; not a new phrasing"
     },
     {
-      "hash": "adc79d6eabbeceb58952966446ed9129dd1481c3f5b850b05f4417ce15453625",
-      "sentence": "gulf-coast-owner-benchmark-2026 Airbnb and Stripe pricing was checked on September 17, 2026",
+      "hash": "9bccaa71237a36d24d0329ffd7c4c5a7aa44c61bdecc7017b532725d2ee1ce39",
+      "sentence": "gulf-coast-owner-benchmark-2026 Airbnb and Stripe pricing was checked on October 17, 2026",
       "file": "src/research/owner-fee-revenue-leak-benchmark-2026.njk",
       "slug": "",
       "tag": "non-claim",

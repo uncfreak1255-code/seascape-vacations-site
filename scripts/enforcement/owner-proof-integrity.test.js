@@ -72,15 +72,15 @@ function articleObjects(contract) {
 
 test("retired owner benchmark proof has a complete blocking contract", () => {
   assert.doesNotThrow(() =>
-    assertOwnerBenchmarkProof(benchmarkAsset, new Date("2026-09-17T00:00:00Z"))
+    assertOwnerBenchmarkProof(benchmarkAsset, new Date("2026-10-17T00:00:00Z"))
   );
   assert.equal(benchmarkAsset.stats.length, 0);
   assert.equal(benchmarkAsset.examples.length, 0);
   assert.ok(benchmarkAsset.proofLabels.includes("Definitions, not a payout forecast"));
   assert.equal(benchmarkAsset.proofLabels.includes("Scenario example, not a forecast"), false);
   assert.throws(
-    () => assertOwnerBenchmarkProof(benchmarkAsset, new Date("2026-10-18T00:00:00Z")),
-    /published pricing is stale after 2026-10-17/
+    () => assertOwnerBenchmarkProof(benchmarkAsset, new Date("2026-11-17T00:00:00Z")),
+    /published pricing is stale after 2026-11-16/
   );
 });
 
@@ -89,8 +89,8 @@ test("retired-stale empty stats still fail after pricingStaleAfter while pricing
   assert.equal(benchmarkAsset.pricingStatus, "active");
   assert.equal(benchmarkAsset.stats.length, 0);
   assert.throws(
-    () => assertOwnerBenchmarkProof(benchmarkAsset, new Date("2026-10-18T00:00:00Z")),
-    /published pricing is stale after 2026-10-17/
+    () => assertOwnerBenchmarkProof(benchmarkAsset, new Date("2026-11-17T00:00:00Z")),
+    /published pricing is stale after 2026-11-16/
   );
 });
 
@@ -101,8 +101,8 @@ test("stale published pricing still fails when the asset is not retired-stale em
     staleAfter: "2026-12-01"
   };
   assert.throws(
-    () => assertOwnerBenchmarkProof(livePricing, new Date("2026-10-18T00:00:00Z")),
-    /published pricing is stale after 2026-10-17/
+    () => assertOwnerBenchmarkProof(livePricing, new Date("2026-11-17T00:00:00Z")),
+    /published pricing is stale after 2026-11-16/
   );
 });
 
