@@ -802,13 +802,11 @@
   }
 
   function getSourceContext() {
-    var search = window.location && typeof window.location.search === "string" ? window.location.search : "";
-    var params = typeof URLSearchParams === "function" ? new URLSearchParams(search) : null;
-    var utmSource = params ? (params.get("utm_source") || "").trim().toLowerCase() : "";
-    var utmMedium = params ? (params.get("utm_medium") || "").trim().toLowerCase() : "";
-    var utmCampaign = params ? (params.get("utm_campaign") || "").trim().toLowerCase() : "";
-    var utmContent = params ? (params.get("utm_content") || "").trim().toLowerCase() : "";
-    var ref = params ? (params.get("ref") || "").trim().toLowerCase() : "";
+    var utmSource = getCurrentParamValue("utm_source").toLowerCase();
+    var utmMedium = getCurrentParamValue("utm_medium").toLowerCase();
+    var utmCampaign = getCurrentParamValue("utm_campaign").toLowerCase();
+    var utmContent = getCurrentParamValue("utm_content").toLowerCase();
+    var ref = getCurrentParamValue("ref").toLowerCase();
     var referrerHost = typeof document !== "undefined" ? getHostname(document.referrer) : "";
     var sourceHost = utmSource || referrerHost;
     var aiPlatform = "";
