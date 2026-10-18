@@ -11,8 +11,10 @@ const seoPages = require("../../src/_data/seoPages.json");
 const {
   applyStayFacts,
   assertNoHandTypedStayFacts,
+  assertStayBaselineRatchet,
   assertStayCapacityBindings,
   listedHomeCount,
+  loadStayNumberBaseline,
   stayOccupancy
 } = require("../../src/_data/stayFacts");
 
@@ -400,6 +402,38 @@ test("poolHeat included does not publish hot-tub heat included", () => {
     catalog
   );
   assert.match(withTubHeat.geoIntro, /heat included/i);
+});
+
+test("adding a new stay baseline entry fails without a reviewed tag change", () => {
+  const { rows } = loadStayNumberBaseline();
+  const planted = [
+    ...rows,
+    {
+      hash: "0".repeat(64),
+      sentence: "room for a dozen",
+      slug: "planted",
+      tag: "non-claim",
+      reason: "plant"
+    }
+  ];
+  assert.throws(
+    () => assertStayBaselineRatchet(planted, rows),
+    /stayNumberBaseline\.json can only shrink/
+  );
+  const retagged = rows.map((row, index) => (
+    index === 0
+      ? { ...row, tag: row.tag === "non-claim" ? "suspected-claim" : "non-claim", reason: "reviewed tag change" }
+      : row
+  ));
+  assert.doesNotThrow(() => assertStayBaselineRatchet(retagged, rows));
+  assert.doesNotThrow(() => assertStayBaselineRatchet(rows.slice(1), rows));
+});
+
+test("never-seen stay phrasing still fails after the grandfathered baseline", () => {
+  assert.throws(
+    () => assertNoHandTypedStayFacts({ slug: "plant", geoIntro: "room for a dozen" }),
+    /hand-typed/
+  );
 });
 
 test("staysPages apply catalog facts before the template renders", () => {
