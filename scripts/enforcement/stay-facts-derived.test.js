@@ -392,6 +392,24 @@ test("poolHeat included does not publish hot-tub heat included", () => {
   assert.doesNotMatch(planted.geoIntro, /heat included/i);
   assert.match(planted.geoIntro, /confirm heat terms when booking/i);
 
+  for (const denied of [
+    "hot tub heat isn't included",
+    "hot tub heat may not be included",
+    "hot tub heat is not always included"
+  ]) {
+    dockside.guestFacts.tubHeat = denied;
+    const negated = applyStayFacts(
+      {
+        slug: "planted-negated-tub-heat",
+        matchingProperties: ["dockside-dreams"],
+        geoIntro: `hot tub {heat:dockside-dreams}`
+      },
+      catalog
+    );
+    assert.doesNotMatch(negated.geoIntro, /heat included/i);
+    assert.match(negated.geoIntro, /confirm heat terms when booking/i);
+  }
+
   dockside.guestFacts.tubHeat = "Hot tub heat is included";
   const withTubHeat = applyStayFacts(
     {
