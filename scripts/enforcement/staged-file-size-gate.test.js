@@ -103,3 +103,10 @@ test("a merge commit that brings in upstream growth passes", (t) => {
   git("merge", "-q", "--no-commit", "--no-ff", "upstream");
   assert.deepEqual(blocked(), []);
 });
+
+test("a file named like an index-stage spec is measured as itself", (t) => {
+  const { stage, blocked } = makeRepo(t);
+  stage("0:big.js", LIMIT + 1);
+  stage("big.js", 2);
+  assert.deepEqual(blocked(), ["0:big.js"]);
+});

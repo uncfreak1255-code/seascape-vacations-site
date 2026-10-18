@@ -49,8 +49,13 @@ function headSize(path, repoRoot) {
   }
 }
 
+// Read only the prefix; a large blob is never buffered whole.
 function isBinary(spec, repoRoot) {
-  const head = git(["cat-file", "blob", spec], repoRoot).subarray(0, 8000);
+  const head = execFileSync("sh", ["-c", 'git cat-file blob "$1" | head -c 8000', "sh", spec], {
+    cwd: repoRoot,
+    encoding: "buffer",
+    stdio: ["ignore", "pipe", "pipe"],
+  });
   return head.includes(0);
 }
 
@@ -94,9 +99,9 @@ function findViolations(repoRoot) {
   for (const { path, previousPath } of stagedFiles(repoRoot)) {
     if (IGNORED.some((pattern) => pattern.test(path))) continue;
     // A staged blob that cannot be read throws: the gate blocks, never passes.
-    const size = blobSize(`:${path}`, repoRoot);
+    const size = blobSize(`:0:${path}`, repoRoot);
     if (size <= MAX_BYTES) continue;
-    if (isBinary(`:${path}`, repoRoot)) continue;
+    if (isBinary(`:0:${path}`, repoRoot)) continue;
     const before = headSize(previousPath, repoRoot);
     const legacy = before !== null && before > MAX_BYTES;
     if (legacy && size <= before) continue;
