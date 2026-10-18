@@ -175,6 +175,19 @@ function publicFrontmatterCopy(text) {
 const PUBLIC_META_NAME =
   /^(?:description|og:description|twitter:description|og:title|twitter:title)$/i;
 
+function htmlAttr(tag, name) {
+  const quoted = String(tag || "").match(
+    new RegExp(String.raw`\b${name}\s*=\s*["']([^"']*)["']`, "i")
+  );
+  if (quoted) {
+    return quoted[1];
+  }
+  const unquoted = String(tag || "").match(
+    new RegExp(String.raw`\b${name}\s*=\s*([^\s>]+)`, "i")
+  );
+  return (unquoted && unquoted[1]) || "";
+}
+
 function publicHtmlMetaCopy(text) {
   const source = String(text || "");
   const parts = [];
@@ -187,11 +200,11 @@ function publicHtmlMetaCopy(text) {
   }
   for (const match of source.matchAll(/<meta\b[^>]*>/gi)) {
     const tag = match[0];
-    const name = (tag.match(/\b(?:name|property)\s*=\s*["']([^"']+)["']/i) || [])[1] || "";
+    const name = htmlAttr(tag, "name") || htmlAttr(tag, "property");
     if (!PUBLIC_META_NAME.test(name)) {
       continue;
     }
-    const content = (tag.match(/\bcontent\s*=\s*["']([^"']*)["']/i) || [])[1];
+    const content = htmlAttr(tag, "content");
     if (content && content.trim()) {
       parts.push(content.trim());
     }

@@ -449,6 +449,11 @@ test('never-seen price-cue phrasing fails without changing the matcher', () => {
   );
   assert.equal(spacedMeta[0].kind, 'price-cue-candidate');
   assert.match(spacedMeta[0].excerpt, /fraction of the OTA price/i);
+  const unquotedMeta = collectPriceClaimCandidates(
+    `<title>Guide</title><meta name=description content="Guests ${phrase}."><p>Plain body copy about beach parking.</p>`
+  );
+  assert.equal(unquotedMeta[0].kind, 'price-cue-candidate');
+  assert.match(unquotedMeta[0].excerpt, /fraction of the OTA price/i);
 
   const splitArgs = collectPriceClaimCandidates(
     '{{ kit({ heading: "Need more space", cta: "Check rates" }) }}'
