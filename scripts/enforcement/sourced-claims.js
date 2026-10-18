@@ -184,11 +184,11 @@ function publicHtmlMetaCopy(text) {
   }
   for (const match of source.matchAll(/<meta\b[^>]*>/gi)) {
     const tag = match[0];
-    const name = (tag.match(/\b(?:name|property)=["']([^"']+)["']/i) || [])[1] || "";
+    const name = (tag.match(/\b(?:name|property)\s*=\s*["']([^"']+)["']/i) || [])[1] || "";
     if (!PUBLIC_META_NAME.test(name)) {
       continue;
     }
-    const content = (tag.match(/\bcontent=["']([^"']*)["']/i) || [])[1];
+    const content = (tag.match(/\bcontent\s*=\s*["']([^"']*)["']/i) || [])[1];
     if (content && content.trim()) {
       parts.push(content.trim());
     }

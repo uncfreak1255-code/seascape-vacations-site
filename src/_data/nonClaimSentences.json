@@ -493,13 +493,6 @@
       "note": "reviewed current guest copy after fail-closed sentence boundaries; not a new claim phrasing"
     },
     {
-      "hash": "dd9b7f5001b9ad1c696982bf069f2d9ce3032c6f8b0297bf1e5c15df2db4758a",
-      "sentence": "Lunch is better value than dinner — Many waterfront restaurants offer the same views and similar menus at lunch for significantly lower prices",
-      "file": "src/guides/best-restaurants-anna-maria-island.html",
-      "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
-    },
-    {
       "hash": "f763efcc88ad254861cf32cb132e3e4dbdb293f7e457d14c4815170cfeccb401",
       "sentence": "Related Vacation Rentals Vacation Rentals Near Restaurants Romantic Getaway on AMI Vacation Rentals Near AMI Top AMI Restaurants by Category Restaurant Cuisine Price Range Waterfront Reservations The Sandbar Seafood/American $$$ Yes — beachfront Recommended Beach Bistro Fine dining seafood $$$$ Yes — Gulf views Required Anna Maria Oyster Bar Casual seafood $$ Yes — bay side No — first come Duffy's Tavern & Grill Pub/American $$ No No Ginny & Jane E's Cafe/Bakery $ No No Blue Marlin Seafood/Tiki $$ Yes — pier views Walk-in OK Book Direct & Compare Totals Browse Our Homes →",
       "file": "src/guides/best-restaurants-anna-maria-island.html",
@@ -607,13 +600,6 @@
     {
       "hash": "0af35141a0b0615bf0f3ae14116728adce27a6f8b486f11faa031e06014f2292",
       "sentence": "Check our guide to flights to Anna Maria Island for the best airports and seasonal pricing",
-      "file": "src/guides/best-time-visit-anna-maria-island.html",
-      "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
-    },
-    {
-      "hash": "fa79f5301796510904aac77ef2fc6229873a63defbb59ae7d7796415e8d99931",
-      "sentence": "Consider weekly stays — Most vacation rentals offer lower per-night rates for 7+ night stays versus short weekend trips",
       "file": "src/guides/best-time-visit-anna-maria-island.html",
       "slug": "",
       "note": "reviewed current guest copy; not a new claim phrasing"
@@ -1174,13 +1160,6 @@
     {
       "hash": "4857e4c5f359d79a9edb151f6ee1e329b6bdc7790202c402049328ba1b1d2b57",
       "sentence": "Key facts: Route: Runs along Gulf Drive, stopping at all major beaches, restaurants, and shops Hours: 6am-10:30pm daily, with buses every 20 minutes during peak hours Cost: Completely free — no fare, no pass required Best for: Beach hopping, dinner without driving, and avoiding parking hassles at popular spots The trolley is genuinely useful — not just a novelty",
-      "file": "src/guides/how-to-get-to-anna-maria-island.html",
-      "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
-    },
-    {
-      "hash": "e898d6ba9655b003e9919b656dcf36bc5e04519cfb680277d82e7c3201ae96d9",
-      "sentence": "Prices can drop $50-$150 per ticket during flash sales Whether you fly or drive, the journey to Anna Maria Island is straightforward",
       "file": "src/guides/how-to-get-to-anna-maria-island.html",
       "slug": "",
       "note": "reviewed current guest copy; not a new claim phrasing"

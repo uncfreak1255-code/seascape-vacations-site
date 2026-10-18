@@ -444,6 +444,11 @@ test('never-seen price-cue phrasing fails without changing the matcher', () => {
   );
   assert.equal(htmlMeta[0].kind, 'price-cue-candidate');
   assert.match(htmlMeta[0].excerpt, /fraction of the OTA price/i);
+  const spacedMeta = collectPriceClaimCandidates(
+    `<title>Guide</title><meta name = "description" content = "Guests ${phrase}."><p>Plain body copy about beach parking.</p>`
+  );
+  assert.equal(spacedMeta[0].kind, 'price-cue-candidate');
+  assert.match(spacedMeta[0].excerpt, /fraction of the OTA price/i);
 
   const splitArgs = collectPriceClaimCandidates(
     '{{ kit({ heading: "Need more space", cta: "Check rates" }) }}'
@@ -520,6 +525,18 @@ test('cost guide 2026 compares checkout totals instead of an invented Airbnb sam
   assert.match(s, /Cottage, family-home, and waterfront listings each have their own checkout total/);
   const bestTime = read('src/guides/best-time-to-visit-anna-maria-island/index.html');
   assert.doesNotMatch(bestTime, /\$450\/night in March|\$250–\$300\/night in early fall/);
+  assert.doesNotMatch(
+    read('src/guides/best-restaurants-anna-maria-island.html'),
+    /significantly lower prices/
+  );
+  assert.doesNotMatch(
+    read('src/guides/best-time-visit-anna-maria-island.html'),
+    /lower per-night rates for 7\+ night stays/
+  );
+  assert.doesNotMatch(
+    read('src/guides/how-to-get-to-anna-maria-island.html'),
+    /Prices can drop \$50-\$150 per ticket during flash sales/
+  );
 });
 
 test('booking and cost guides compare complete quotes without fixed savings or fabricated trip totals', () => {
