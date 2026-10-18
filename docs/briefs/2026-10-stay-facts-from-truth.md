@@ -58,6 +58,16 @@
 
 ## Source Files Changed In This Batch
 
+### October 18 party-capacity correction
+
+- Authorized scope: correct the FAQ on `/stays/bachelor-bachelorette-rentals-florida/` identified in PR #732 review discussion r4305171930 at `1bcdb3086d80e7f2aebe13959b292a3c7f6e0c24`.
+- The recommendation FAQ names The Oasis and Sarasota Luxe; the property-card list contains only The Oasis. The capacity answer therefore names each recommended home and uses its own existing `{sleeps:slug}` token, rather than applying `{sleeps-matching}` to plural homes.
+- Source receipt: October 18 fallback catalog has The Oasis at 16 overnight guests and Sarasota Luxe at 12. Local rendering of the original PR head confirms the misleading plural 16-guest answer in FAQPage JSON-LD.
+- Keep `matchingProperties`, catalog facts, scanner, baseline allowances, titles, links and layout unchanged. Overnight capacities do not establish permission or capacity for events.
+- Complete Draft the copy → Remove internal wording → Check voice and specificity for the replacement. Regression proof covers both named capacities and independent catalog changes, including Sarasota Luxe outside `matchingProperties`.
+- Keep this correction coordinated with draft PR #732. Preserve the draft-stack merge hold, independent exact-head review and separate production-publication decision.
+- scripts/enforcement/stay-party-capacity.test.js
+
 - source files likely to change: `src/_data/seoPages.json`, `src/stays/stays.njk`
 - src/_data/seoPages.json
 - src/stays/stays.njk

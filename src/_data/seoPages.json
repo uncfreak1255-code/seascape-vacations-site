@@ -2049,7 +2049,7 @@
         },
         {
           "question": "How many people can your homes accommodate for parties?",
-          "answer": "Our homes sleep {sleeps-matching} guests overnight. For celebration gatherings, the comfortable capacity depends on the property. Contact us to discuss your group size and we'll recommend the best fit."
+          "answer": "The Oasis sleeps {sleeps:the-oasis} guests overnight. Sarasota Luxe sleeps {sleeps:sarasota-luxe} guests overnight. For celebration gatherings, the comfortable capacity depends on the property. Contact us to discuss your group size and we'll recommend the best fit."
         },
         {
           "question": "Are there restaurants for group dinners?",
