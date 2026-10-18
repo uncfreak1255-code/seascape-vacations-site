@@ -738,27 +738,6 @@
       "reason": "grandfathered current stay copy after token swaps"
     },
     {
-      "hash": "21e2f4cc1d5df5d388e12dee4aa43a00432ce314d4fc91f70d8c494d92d437ea",
-      "sentence": "Pool heat is $40/day at homes that list a pool-heat fee - worth it November through March, rarely needed in summer; confirm the fee when booking, including the newest Bradenton home",
-      "slug": "vacation-rentals-with-pool-and-hot-tub",
-      "tag": "non-claim",
-      "reason": "grandfathered current stay copy after token swaps"
-    },
-    {
-      "hash": "b696004ae03ee9940c239612e0c08a90df675bbc35f804539b79d67d1cda670f",
-      "sentence": "Pool heat is an optional add-on ($40/day at homes that list a pool-heat fee) that most guests request November through March - the Gulf runs warm enough the rest of the year that an unheated pool is comfortable",
-      "slug": "vacation-rentals-with-pool-and-hot-tub",
-      "tag": "non-claim",
-      "reason": "grandfathered current stay copy after token swaps"
-    },
-    {
-      "hash": "80303e3ad5226ed04d70c101919aa5d0dc5582d6e4fdfc29f3ecd4b92bea0c35",
-      "sentence": "Pool heat is an optional add-on at $40 per day at homes that list a pool-heat fee - most useful November through March",
-      "slug": "vacation-rentals-with-pool-and-hot-tub",
-      "tag": "non-claim",
-      "reason": "grandfathered current stay copy after token swaps"
-    },
-    {
       "hash": "4b2424b2c35c10deff50e3156f35fec6b1d4de4db7c55f682d741b2d2cd4f024",
       "sentence": "The Oasis has the largest deck with two hot tubs and room for a big group",
       "slug": "vacation-rentals-with-pool-and-hot-tub",
@@ -794,6 +773,20 @@
       "reason": "reverted heat-inclusion prose beyond a token swap"
     },
     {
+      "hash": "878576356da2f4dfa442f6f1d3b4f97d9d8a01e664f7c11856ed36a78d0e8e49",
+      "sentence": "Pool heat is an optional add-on; the hot tub heat is included year-round",
+      "slug": "bradenton-vacation-rentals-with-hot-tub",
+      "tag": "suspected-claim",
+      "reason": "reverted heat-inclusion prose beyond a token swap"
+    },
+    {
+      "hash": "0e2bf89efe0c9c9b39c8128cbe54f29927336afba766ef1dbb36a778bda7b311",
+      "sentence": "Yes — the hot tubs are heated year-round and included with your stay, kept around 100–104°F whether you visit in December or July",
+      "slug": "bradenton-vacation-rentals-with-hot-tub",
+      "tag": "suspected-claim",
+      "reason": "reverted heat-inclusion prose beyond a token swap"
+    },
+    {
       "hash": "cb6314a42e97598a1dde6ca4b80bf338021935093075cecb6dbf23e83782b755",
       "sentence": "Hot tub and spa heat is included at no extra charge at all listed homes",
       "slug": "florida-gulf-coast-vacation-rentals",
@@ -801,8 +794,43 @@
       "reason": "reverted heat-inclusion prose beyond a token swap"
     },
     {
+      "hash": "12a09556d96b816428e279272f82d4a63ce5a3c06dd991933b97479606cef51b",
+      "sentence": "At the five established homes with a hot tub or spa, they are separate units with independent controls",
+      "slug": "vacation-rentals-with-pool-and-hot-tub",
+      "tag": "suspected-claim",
+      "reason": "reverted heat-inclusion prose beyond a token swap"
+    },
+    {
       "hash": "300415c06b45ed804fdb40bf35bf65f55927b27e37e04aeaf5c5f60ab41f0ef2",
       "sentence": "Hot tub heat is included at the five established homes that have a hot tub or spa",
+      "slug": "vacation-rentals-with-pool-and-hot-tub",
+      "tag": "suspected-claim",
+      "reason": "reverted heat-inclusion prose beyond a token swap"
+    },
+    {
+      "hash": "2072ada973c9cf71a4dd56d8ad8cb5895b417583887aac84a8a05ef063009ea6",
+      "sentence": "Hot tub heat is included at the five established homes that have one - no add-on fee, runs year-round; confirm the hot-tub terms for the newest Bradenton home when booking",
+      "slug": "vacation-rentals-with-pool-and-hot-tub",
+      "tag": "suspected-claim",
+      "reason": "reverted heat-inclusion prose beyond a token swap"
+    },
+    {
+      "hash": "b7155b53e18aea9b083b48f9d65f4b590f1bc7c63e3053e56f870515b9c64867",
+      "sentence": "Hot tub or spa heat is included at the five established homes that have one",
+      "slug": "vacation-rentals-with-pool-and-hot-tub",
+      "tag": "suspected-claim",
+      "reason": "reverted heat-inclusion prose beyond a token swap"
+    },
+    {
+      "hash": "767ff747cfe9ae28843f36d67247f124bd0231dd92d9addd0fe9854268fa80db",
+      "sentence": "Pool heat is $40/day at the five established homes - worth it November through March, rarely needed in summer; confirm the fee for the newest Bradenton home when booking",
+      "slug": "vacation-rentals-with-pool-and-hot-tub",
+      "tag": "suspected-claim",
+      "reason": "reverted heat-inclusion prose beyond a token swap"
+    },
+    {
+      "hash": "4724f1f59810da4f8d4f3bd6c35d60f90d6fce853bd69f4795ff707ceec69830",
+      "sentence": "Pool heat is an optional add-on ($40/day at those five homes) that most guests request November through March - the Gulf runs warm enough the rest of the year that an unheated pool is comfortable",
       "slug": "vacation-rentals-with-pool-and-hot-tub",
       "tag": "suspected-claim",
       "reason": "reverted heat-inclusion prose beyond a token swap"
@@ -817,27 +845,6 @@
     {
       "hash": "b08ed5ce4e26c93db43870affa2734e1d181ab5a27e52315396edb3eb60ddf5c",
       "sentence": "Yes, at the five established homes with a hot tub or spa: those hot tubs run year-round and there's no shutoff time imposed by the property",
-      "slug": "vacation-rentals-with-pool-and-hot-tub",
-      "tag": "suspected-claim",
-      "reason": "reverted heat-inclusion prose beyond a token swap"
-    },
-    {
-      "hash": "12a09556d96b816428e279272f82d4a63ce5a3c06dd991933b97479606cef51b",
-      "sentence": "At the five established homes with a hot tub or spa, they are separate units with independent controls",
-      "slug": "vacation-rentals-with-pool-and-hot-tub",
-      "tag": "suspected-claim",
-      "reason": "reverted heat-inclusion prose beyond a token swap"
-    },
-    {
-      "hash": "2072ada973c9cf71a4dd56d8ad8cb5895b417583887aac84a8a05ef063009ea6",
-      "sentence": "Hot tub heat is included at the five established homes that have one - no add-on fee, runs year-round; confirm the hot-tub terms for the newest Bradenton home when booking",
-      "slug": "vacation-rentals-with-pool-and-hot-tub",
-      "tag": "suspected-claim",
-      "reason": "reverted heat-inclusion prose beyond a token swap"
-    },
-    {
-      "hash": "767ff747cfe9ae28843f36d67247f124bd0231dd92d9addd0fe9854268fa80db",
-      "sentence": "Pool heat is $40/day at the five established homes - worth it November through March, rarely needed in summer; confirm the fee for the newest Bradenton home when booking",
       "slug": "vacation-rentals-with-pool-and-hot-tub",
       "tag": "suspected-claim",
       "reason": "reverted heat-inclusion prose beyond a token swap"

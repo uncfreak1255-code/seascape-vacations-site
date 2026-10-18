@@ -74,7 +74,7 @@ test("collectLaneCopies: resolves stay tokens before guest evaluation", () => {
   assert.equal(result.length, 1);
   assert.doesNotMatch(result[0].copy, /\{(?:heat|sleeps|br|ba|matching)(?::[a-z0-9-]+)?\}/);
   assert.match(result[0].copy, /sleeping 12–16/);
-  assert.match(result[0].copy, /confirm hot tub heat terms on the home page/);
+  assert.match(result[0].copy, /the hot tub heat is included year-round/);
 });
 
 test("collectLaneCopies: default path extracts one plain file target", () => {
