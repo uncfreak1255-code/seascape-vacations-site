@@ -59,7 +59,10 @@ function heatIncludedFromTruth(property) {
   if (!tubHeat) {
     return false;
   }
-  if (/\b(?:optional|extra|confirm|costs extra|not included)\b/i.test(tubHeat)) {
+  if (/\b(?:optional|extra|confirm|costs extra)\b/i.test(tubHeat)) {
+    return false;
+  }
+  if (/\b(?:not|never|without|isn't|aren't|wasn't|weren't)\b/i.test(tubHeat)) {
     return false;
   }
   return /\bincluded\b/i.test(tubHeat);
