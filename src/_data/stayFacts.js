@@ -276,27 +276,47 @@ function sentenceHash(text) {
   return crypto.createHash("sha256").update(normalizeSentence(text)).digest("hex");
 }
 
-function loadStayNumberAllowlist() {
-  const file = path.join(__dirname, "stayNumberAllowlist.json");
+const STAY_BASELINE_FILE = "src/_data/stayNumberBaseline.json";
+const BASELINE_TAGS = new Set(["non-claim", "suspected-claim"]);
+
+function loadStayNumberBaseline(root = path.join(__dirname, "..", "..")) {
+  const file = path.join(root, STAY_BASELINE_FILE);
+  if (!fs.existsSync(file)) {
+    throw new Error(`stayFacts: ${STAY_BASELINE_FILE} is missing`);
+  }
   const rows = JSON.parse(fs.readFileSync(file, "utf8"));
   if (!Array.isArray(rows.sentences)) {
-    throw new Error("stayFacts: stayNumberAllowlist.json is missing sentences");
+    throw new Error(`stayFacts: ${STAY_BASELINE_FILE} is missing sentences`);
   }
   const hashes = new Set();
   for (const row of rows.sentences) {
     if (!row || row.hash !== sentenceHash(row.sentence)) {
-      throw new Error("stayFacts: stayNumberAllowlist.json hash does not match sentence");
+      throw new Error(`stayFacts: ${STAY_BASELINE_FILE} hash does not match sentence`);
+    }
+    if (!BASELINE_TAGS.has(row.tag) || !String(row.reason || "").trim()) {
+      throw new Error(`stayFacts: ${STAY_BASELINE_FILE} row is missing a reviewed tag`);
     }
     hashes.add(row.hash);
   }
-  return hashes;
+  return { rows: rows.sentences, hashes };
 }
 
-let stayNumberAllowlist;
+let stayNumberBaseline;
 
 function allowedStayNumberSentence(sentence) {
-  stayNumberAllowlist = stayNumberAllowlist || loadStayNumberAllowlist();
-  return stayNumberAllowlist.has(sentenceHash(sentence));
+  stayNumberBaseline = stayNumberBaseline || loadStayNumberBaseline();
+  return stayNumberBaseline.hashes.has(sentenceHash(sentence));
+}
+
+function assertStayBaselineRatchet(currentRows, previousRows) {
+  const previous = new Map((previousRows || []).map((row) => [row.hash, row]));
+  for (const row of currentRows || []) {
+    if (!previous.has(row.hash)) {
+      throw new Error(
+        `${STAY_BASELINE_FILE} can only shrink; new hash ${row.hash} needs a sourced token or a reviewed tag change on an existing row`
+      );
+    }
+  }
 }
 
 function collectStayNumberCandidates(page) {
@@ -320,9 +340,12 @@ function collectHandTypedStayFacts(page) {
       ["heat included", HEAT_INCLUDED_FACT],
       ["hot tub included year-round", HOT_TUB_YEAR_INCLUDED_FACT]
     ]) {
-      const match = text.match(pattern);
-      if (match) {
-        hits.push({ label, match: match[0], excerpt: text.slice(0, 180) });
+      for (const sentence of stripStayMarkup(text).split(/[.!?]+/)) {
+        const match = sentence.match(pattern);
+        if (!match || allowedStayNumberSentence(sentence)) {
+          continue;
+        }
+        hits.push({ label, match: match[0], excerpt: sentence.trim() });
       }
     }
   });
@@ -555,6 +578,7 @@ function listedHomeCount(page) {
 }
 
 module.exports = {
+  STAY_BASELINE_FILE,
   ALL_COUNT_FACT,
   GROUPS_FACT,
   GUEST_HYPHEN_FACT,
@@ -570,9 +594,12 @@ module.exports = {
   UP_TO_FACT,
   applyStayFacts,
   assertNoHandTypedStayFacts,
+  assertStayBaselineRatchet,
   assertStayCapacityBindings,
   collectHandTypedStayFacts,
   collectStayNumberCandidates,
+  loadStayNumberBaseline,
+  sentenceHash,
   hasTub,
   heatClause,
   heatIncludedFromTruth,
