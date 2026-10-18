@@ -177,10 +177,10 @@ const PUBLIC_META_NAME =
 
 function htmlAttr(tag, name) {
   const quoted = String(tag || "").match(
-    new RegExp(String.raw`\b${name}\s*=\s*["']([^"']*)["']`, "i")
+    new RegExp(String.raw`\b${name}\s*=\s*(["'])((?:\\.|(?!\1)[\s\S])*?)\1`, "i")
   );
   if (quoted) {
-    return quoted[1];
+    return quoted[2];
   }
   const unquoted = String(tag || "").match(
     new RegExp(String.raw`\b${name}\s*=\s*([^\s>]+)`, "i")
@@ -230,7 +230,7 @@ function walkJsonStrings(value, visit) {
 
 function jsonLdCopy(text) {
   const parts = [];
-  for (const match of String(text || "").matchAll(/<script\b[^>]*\btype\s*=\s*(["']?)application\/ld\+json\1[^>]*>([\s\S]*?)<\/script>/gi)) {
+  for (const match of String(text || "").matchAll(/<script\b[^>]*\btype\s*=\s*(["']?)application\/ld\+json(?:;[^"'>]*)?\1[^>]*>([\s\S]*?)<\/script>/gi)) {
     try {
       walkJsonStrings(JSON.parse(match[2]), (value) => parts.push(value));
     } catch {
