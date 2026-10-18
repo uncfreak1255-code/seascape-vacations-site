@@ -549,20 +549,6 @@
       "note": "reviewed current guest copy; not a new claim phrasing"
     },
     {
-      "hash": "596a571e39117d9f9238004a303c43a43622f5f242f1104ea99454b4bb184a9c",
-      "sentence": "You will pay peak-season rates ($350\u2013$550/night for a 3-bedroom), but the weather is nearly perfect every day",
-      "file": "src/guides/best-time-to-visit-anna-maria-island/index.html",
-      "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
-    },
-    {
-      "hash": "02a0ad6090e0f6c0b92e86863a80c8ea923efc20ebbbb73457090baab10faa7b",
-      "sentence": "You'll pay peak-season rates ($350\u2013$550/night for a 3-bedroom near AMI), but the conditions are nearly perfect every day",
-      "file": "src/guides/best-time-to-visit-anna-maria-island/index.html",
-      "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
-    },
-    {
       "hash": "392a6f4bd16526e7fcf7d16023e6715dd882357c2f1bf8c102fcc97af34d1373",
       "sentence": "Your Priority Best Months Why Perfect weather March & April 80&deg;F, minimal rain, warm Gulf water Lowest prices September & October Below peak rates Fewest crowds September & October Off-season, locals have the island Best for families June or spring break School-friendly, warm water, kid activities Warmest water July & August Gulf hits 85\u201388&deg;F Best fishing Feb & March or Oct Sheepshead in winter, redfish in fall Romantic getaway November or May Quiet, moderate prices, beautiful sunsets Extended snowbird stay January\u2013March Dry, sunny, strong snowbird rental options Local Tips That Actually Matter Book direct and skip platform fees",
       "file": "src/guides/best-time-to-visit-anna-maria-island/index.html",
@@ -801,11 +787,11 @@
       "note": "reviewed current guest copy after fail-closed sentence boundaries; not a new claim phrasing"
     },
     {
-      "hash": "fbb6e65658b9baa35179c5bb0361826234756bf008d787d321037d9d27bfa296",
-      "sentence": "Category Bradenton Sarasota Edge Kid-Friendly Beaches Coquina Beach (playground, picnic shelters, calm water), Bean Point, Holmes Beach Siesta Key (amazing sand, packed crowds), Lido Beach Bradenton Rental Cost (3BR w/ Pool) Usually lower; compare live dates Usually higher for a comparable home Bradenton Kid Activities (Free) Robinson Preserve, De Soto NM, AMI trolley, Palma Sola Causeway Bayfront Park, Marie Selby playground, Legacy Trail bike path Bradenton Kid Activities (Paid) Bishop Museum ($25/adult), Mixon Fruit Farms, LECOM Park (spring training) Mote SEA (prices vary by date), Ringling Museum ($30/adult), Big Cat Habitat (check current admission) Sarasota Family Restaurants Anna Maria Oyster Bar, Sandbar, Swordfish Grill, Clesi's Old Salty Dog, Shore, Columbia Tie Beach Parking Easy (free lots at Coquina, trolley everywhere) Brutal at Siesta Key (lot fills by 10am in season) Bradenton Rainy Day Options Bishop Museum planetarium, Ellenton Outlets, escape rooms on Main St Ringling Museum, Mall at UTC, Sarasota Jungle Gardens Sarasota Pool Homes Available Very common Available but pricier Bradenton Nature & Wildlife Robinson Preserve (kayaks, boardwalks), manatee sightings at Riverwalk Myakka River State Park, Mote SEA, Celery Fields birding Tie Overall Safety Feel Small-town, walkable neighborhoods on AMI, quiet canal streets Downtown is busier, Siesta Village has nightlife traffic Bradenton Running tally: Bradenton 6, Sarasota 2, Tie 2",
+      "hash": "d0709e8a56ca0c81b141a94415f37370d4e3a58d1e7e943d209123667354b948",
+      "sentence": "Category Bradenton Sarasota Edge Kid-Friendly Beaches Coquina Beach (playground, picnic shelters, calm water), Bean Point, Holmes Beach Siesta Key (amazing sand, packed crowds), Lido Beach Bradenton Rental Cost (3BR w/ Pool) Compare current quotes for the same dates Compare current quotes for a comparable home Check quotes Kid Activities (Free) Robinson Preserve, De Soto NM, AMI trolley, Palma Sola Causeway Bayfront Park, Marie Selby playground, Legacy Trail bike path Bradenton Kid Activities (Paid) Bishop Museum ($25/adult), Mixon Fruit Farms, LECOM Park (spring training) Mote SEA (prices vary by date), Ringling Museum ($30/adult), Big Cat Habitat (check current admission) Sarasota Family Restaurants Anna Maria Oyster Bar, Sandbar, Swordfish Grill, Clesi's Old Salty Dog, Shore, Columbia Tie Beach Parking Easy (free lots at Coquina, trolley everywhere) Brutal at Siesta Key (lot fills by 10am in season) Bradenton Rainy Day Options Bishop Museum planetarium, Ellenton Outlets, escape rooms on Main St Ringling Museum, Mall at UTC, Sarasota Jungle Gardens Sarasota Pool Homes Available Very common Available but pricier Bradenton Nature & Wildlife Robinson Preserve (kayaks, boardwalks), manatee sightings at Riverwalk Myakka River State Park, Mote SEA, Celery Fields birding Tie Overall Safety Feel Small-town, walkable neighborhoods on AMI, quiet canal streets Downtown is busier, Siesta Village has nightlife traffic Bradenton Running tally: Bradenton 5, Sarasota 2, Tie 2",
       "file": "src/guides/bradenton-vs-sarasota-for-families/index.html",
       "slug": "",
-      "note": "reviewed current guest copy; not a new claim phrasing"
+      "note": "reviewed rewritten table blob after dropping Usually lower/higher; not a new claim phrasing"
     },
     {
       "hash": "bd1b0adf217e5ce19985d6b2572f9ef931e4f032a88fe15a7aa21730f335e93c",
