@@ -3,7 +3,10 @@ const fs = require("fs");
 const path = require("path");
 
 const OWNER_FILE = "src/_data/sourcedClaims.json";
-const NON_CLAIM_FILE = "src/_data/nonClaimSentences.json";
+const BASELINE_FILE = "src/_data/claimCandidateBaseline.json";
+const NON_CLAIM_FILE = BASELINE_FILE;
+const STAY_BASELINE_FILE = "src/_data/stayNumberBaseline.json";
+const BASELINE_TAGS = new Set(["non-claim", "suspected-claim"]);
 const GUEST_SOURCE = /\.(?:html|njk|json|md|txt)$/;
 const IDENTIFIABLE_EVIDENCE = /https?:\/\/\S+/i;
 const WORD_ONES = {
@@ -282,30 +285,44 @@ function collectPriceClaimCandidates(text) {
   return hits;
 }
 
-function loadNonClaimAllowlist(root = DEFAULT_ROOT) {
-  const filePath = path.join(root, NON_CLAIM_FILE);
+function loadClaimBaseline(root = DEFAULT_ROOT) {
+  const filePath = path.join(root, BASELINE_FILE);
   if (!fs.existsSync(filePath)) {
-    throw new Error(`${NON_CLAIM_FILE} is missing`);
+    throw new Error(`${BASELINE_FILE} is missing`);
   }
   const rows = JSON.parse(fs.readFileSync(filePath, "utf8"));
   if (!Array.isArray(rows.sentences)) {
-    throw new Error(`${NON_CLAIM_FILE} is missing sentences`);
+    throw new Error(`${BASELINE_FILE} is missing sentences`);
   }
   const hashes = new Set();
   for (const row of rows.sentences) {
     if (!row || row.hash !== sentenceHash(row.sentence)) {
-      throw new Error(`${NON_CLAIM_FILE} hash does not match sentence`);
+      throw new Error(`${BASELINE_FILE} hash does not match sentence`);
+    }
+    if (!BASELINE_TAGS.has(row.tag) || !String(row.reason || "").trim()) {
+      throw new Error(`${BASELINE_FILE} row is missing a reviewed tag`);
     }
     hashes.add(row.hash);
   }
-  return hashes;
+  return { rows: rows.sentences, hashes };
 }
 
-let nonClaimAllowlist;
+let claimBaseline;
 
 function allowedNonClaimSentence(sentence, root = DEFAULT_ROOT) {
-  nonClaimAllowlist = nonClaimAllowlist || loadNonClaimAllowlist(root);
-  return nonClaimAllowlist.has(sentenceHash(sentence));
+  claimBaseline = claimBaseline || loadClaimBaseline(root);
+  return claimBaseline.hashes.has(sentenceHash(sentence));
+}
+
+function assertClaimBaselineRatchet(currentRows, previousRows) {
+  const previous = new Map((previousRows || []).map((row) => [row.hash, row]));
+  for (const row of currentRows || []) {
+    if (!previous.has(row.hash)) {
+      throw new Error(
+        `${BASELINE_FILE} can only shrink; new hash ${row.hash} needs a sourcedClaims.json row or a reviewed tag change on an existing row`
+      );
+    }
+  }
 }
 
 function dateStamp(now = new Date()) {
@@ -546,7 +563,11 @@ function isGuestSource(file, root = DEFAULT_ROOT) {
     return false;
   }
   const relative = path.relative(root, file).split(path.sep).join("/");
-  return relative !== OWNER_FILE && relative !== NON_CLAIM_FILE && relative !== "src/_data/stayNumberAllowlist.json";
+  return (
+    relative !== OWNER_FILE &&
+    relative !== BASELINE_FILE &&
+    relative !== STAY_BASELINE_FILE
+  );
 }
 
 function wordNumberValue(raw) {
@@ -1442,14 +1463,18 @@ function assertClaimCandidatesCovered(hits, claims, now = new Date()) {
   const missing = unsourcedClaimCandidates(hits, claims, now);
   if (missing.length > 0) {
     throw new Error(
-      `${OWNER_FILE} is missing a sourced-claim row or ${NON_CLAIM_FILE} entry for ${missing[0].match} in ${missing[0].file || missing[0].slug || "unknown-scope"}`
+      `${OWNER_FILE} is missing a sourced-claim row or ${BASELINE_FILE} entry for ${missing[0].match} in ${missing[0].file || missing[0].slug || "unknown-scope"}`
     );
   }
 }
 
 module.exports = {
   OWNER_FILE,
+  BASELINE_FILE,
   NON_CLAIM_FILE,
+  STAY_BASELINE_FILE,
+  assertClaimBaselineRatchet,
+  loadClaimBaseline,
   IDENTIFIABLE_EVIDENCE,
   KIND_PERCENT,
   KIND_QUALITATIVE,
