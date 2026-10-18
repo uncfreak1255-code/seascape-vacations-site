@@ -11,6 +11,7 @@ Status: active truthfulness rescue; legacy URL retained
 - secondary keywords: vacation rental owner fees, Airbnb host service fee, Stripe card processing fee, vacation rental management quote
 - audience pattern: owner who sees several percentages on a statement or proposal and needs to know what each charge covers before comparing them
 - proof source: Airbnb's official service-fee page, Stripe's official pricing page, and the property-specific signed Seascape management agreement
+- offer claim: seascape-hub/context/owner-offer.md section 3: public management pricing is property-specific after review; no universal Seascape percentage.
 - required internal links: /property-management/, /property-management/vacation-rental-management-fees-florida/, /property-management/maximize-vacation-rental-income-florida/
 - CTA target: /property-management/?owner_source=owner-fee-revenue-leak-benchmark-2026#owner-cta
 - anti-claims: no current Seascape performance total, no owner-savings claim from direct booking, no all-in comparison between platform commission and card processing, no universal Seascape management percentage, no private owner identity, no internal evidence path
@@ -97,6 +98,40 @@ Source claims checked July 17, 2026:
 - Both companies may change pricing. The page must point readers to the linked source instead of presenting either rate as permanent.
 
 ## Retired Proof
+
+### October 18, 2026 published-pricing recheck
+
+Source files changed in this batch:
+  - `src/_data/ownerProofAssets.json`
+  - `src/research/owner-fee-revenue-leak-benchmark-2026.njk`
+
+Scope: recover the required release gate for the existing Friday SEO action;
+refresh verification evidence and date labels only. This source recheck is not
+a new founder review, management-price change or performance-proof approval.
+
+Directly read https://www.airbnb.com/help/article/1857 and
+https://stripe.com/en-us/pricing on October 18. Airbnb still reports most
+single-fee hosts at 15.5%, with the remaining typical range 14–16%, and requires
+the single-fee structure for most software-connected hosts. Stripe's verified
+US page still lists 2.9% + 30 cents per successful domestic-card transaction.
+The generic Stripe URL can localize to another market, so the US entry and
+domestic-card scope were checked explicitly. Existing rate and service-scope
+copy matches these sources. Platform and processor charges remain different
+services, and Seascape terms remain property-specific under the agreement.
+
+Set the pricing review date to October 18 and retain the existing 30-day
+verification window through November 17. Update the visible source-check and
+page-update labels together. The template now reads its methodology check date
+from the same proof asset to avoid a separate stale literal. Keep the original
+founder review date and all retired performance-proof fields unchanged. The
+existing expiry regression in `scripts/enforcement/owner-proof-integrity.test.js`
+continues to reject expired pricing even when performance stats are retired.
+
+Visible-copy pass: draft the new check-date labels, remove internal wording,
+then check voice and specificity. No rate, offer, CTA, layout, source claim or
+tracking contract changes. Use the existing targeted review lane and required
+Site checks for this bounded freshness refresh; the historical rescue review
+list below is provenance, not an additional model requirement.
 
 Earlier versions used a March 2026 planning baseline and April owner-report examples. Those figures cannot support public performance claims now:
 

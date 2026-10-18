@@ -2,7 +2,40 @@ const fs = require("fs");
 const path = require("path");
 const test = require("node:test");
 const assert = require("node:assert/strict");
+const vm = require("node:vm");
 const projectRoot = path.resolve(__dirname, "..", "..");
+
+function sourceContext(search, referrer = "https://www.google.com/") {
+  const window = {
+    location: { href: `https://seascape-vacations.com/properties/${search}`, pathname: "/properties/", search },
+    addEventListener() {},
+    localStorage: { getItem() { return null; }, setItem() {} }
+  };
+  vm.runInNewContext(fs.readFileSync(path.join(projectRoot, "src/assets/js/conversion-tracking.js"), "utf8"), {
+    URL, URLSearchParams, window,
+    document: { referrer, readyState: "loading", addEventListener() {} }
+  });
+  return window.SeascapeConversionTracking.getSourceContext();
+}
+
+test("explicit campaign media do not become organic from a search referrer", () => {
+  for (const medium of ["cpc", "ppc", "paidsearch", "email"]) {
+    const context = sourceContext(`?utm_source=google&utm_medium=${medium}&utm_campaign=summer`);
+    assert.equal(context.source_context, "direct_or_unknown", medium);
+    assert.equal(context.utm_source, "google");
+    assert.equal(context.utm_medium, medium);
+    assert.equal(context.utm_campaign, "summer");
+    assert.equal(context.referrer_host, "google.com");
+    assert.equal(context.landing_page_path, "/properties/");
+  }
+});
+
+test("organic referrers and existing AI source context remain available", () => {
+  assert.equal(sourceContext("").source_context, "organic_search");
+  assert.equal(sourceContext("?utm_source=google&utm_medium=organic").source_context, "organic_search");
+  assert.equal(sourceContext("?utm_source=chatgpt&utm_medium=ai").source_context, "ai_referral");
+  assert.equal(sourceContext("", "").source_context, "direct_or_unknown");
+});
 
 test("conversion tracking supports post-guide booking handoff events", () => {
   const trackingScript = fs.readFileSync(
