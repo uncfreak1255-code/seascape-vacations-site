@@ -14,7 +14,7 @@
 - offer claim: n/a (guest-lane claim repair; no owner-offer line)
 - required internal links: /guides/, /properties/
 - CTA target: unchanged on the named guides
-- anti-claims: do not publish a mainland lodging, charter, platform-fee, airfare, Bradenton-vs-Sarasota, or seasonal-rate advantage without a sourcedClaims row; do not invent nightly rates, savings percents, platform-fee percents, or a cheaper-than-island guarantee; do not keep “often cost less,” “slightly lower rates,” “separate by hundreds,” “significantly lower rates,” “typically cost less,” “prices lower,” “most affordable months,” a 14% / $3,050 / $2,600 Airbnb sample, a $175–$650+ nightly range, a $450 March vs $250–$300 fall waterfront example, “significantly lower prices” at lunch, lower weekly nightly rates, or a $50–$150 flash-sale fare as current fact
+- anti-claims: do not publish a mainland lodging, charter, platform-fee, airfare, Bradenton-vs-Sarasota, or seasonal-rate advantage without a sourcedClaims row; do not invent nightly rates, savings percents, platform-fee percents, or a cheaper-than-island guarantee; do not keep “often cost less,” “slightly lower rates,” “separate by hundreds,” “significantly lower rates,” “typically cost less,” “prices lower,” “most affordable months,” a 14% / $3,050 / $2,600 Airbnb sample, a $175–$650+ nightly range, a $450 March vs $250–$300 fall waterfront example, “significantly lower prices” at lunch, lower weekly nightly rates, a $50–$150 flash-sale fare, a $3,500–$7,500 family-week total, seasonal $200–$650 nightly table cells, Siesta “lower hotel rates,” or Bradenton “without the … prices of nearby Sarasota” as current fact
 - hypothesis: the fail-closed price-cue scanner will keep catching qualitative advantages; rewriting the live sentences is the honest fix, not a hashed allowlist
 - primary event: guide_book_direct_click
 - guardrail event: email_capture_submit
@@ -43,6 +43,7 @@ These guides are not a topical cluster. They share only the same unsourced price
 - src/guides/holmes-beach-vs-bradenton-beach.html: /stays/family-vacation-rentals-anna-maria-island/, /guides/, /properties/
 - src/guides/sarasota-area-guide/index.html: /stays/sarasota-vacation-rentals-with-pool/, /guides/, /properties/
 - src/guides/things-to-do-bradenton-fl.html: /stays/bradenton-waterfront-vacation-rentals/, /guides/, /properties/
+- src/guides/siesta-key-area-guide/index.html: /stays/siesta-key-area-vacation-rentals/, /guides/, /properties/
 
 ## Gate 0 Search And Attack Receipt
 
@@ -50,7 +51,7 @@ These guides are not a topical cluster. They share only the same unsourced price
 | --- | --- |
 | Target query family | Anna Maria Island vacation cost; spring break activities Bradenton Anna Maria Island; Anna Maria Island vs Siesta Key |
 | Searcher intent | guide / trip-cost research, not a new stay lander |
-| Current Seascape URL | /guides/anna-maria-island-vacation-cost/, /guides/spring-break-activities-bradenton-anna-maria-island/, /guides/anna-maria-island-vs-siesta-key/, /guides/best-time-visit-anna-maria-island/, /guides/bradenton-insider-guide/, /guides/flights-to-anna-maria-island/, /guides/anna-maria-island-area-guide/, /guides/anna-maria-island-vs-clearwater-beach/, /guides/bradenton-area-guide/, /guides/bradenton-beach/, /guides/bradenton-vs-sarasota-for-families/, /guides/holmes-beach-vs-bradenton-beach/, /guides/sarasota-area-guide/, /guides/things-to-do-bradenton-fl/ |
+| Current Seascape URL | /guides/anna-maria-island-vacation-cost/, /guides/spring-break-activities-bradenton-anna-maria-island/, /guides/anna-maria-island-vs-siesta-key/, /guides/best-time-visit-anna-maria-island/, /guides/bradenton-insider-guide/, /guides/flights-to-anna-maria-island/, /guides/anna-maria-island-area-guide/, /guides/anna-maria-island-vs-clearwater-beach/, /guides/bradenton-area-guide/, /guides/bradenton-beach/, /guides/bradenton-vs-sarasota-for-families/, /guides/holmes-beach-vs-bradenton-beach/, /guides/sarasota-area-guide/, /guides/things-to-do-bradenton-fl/, /guides/siesta-key-area-guide/ |
 | SERP observed date | 2026-10-17 |
 | SERP stale after | 2026-10-24 |
 | Current proof | docs/status/next-batch.md reread on 2026-10-12 is fresh but below threshold (requested window 2026-10-03 to 2026-10-09; BigQuery GSC data_date 2026-10-09). This edit uses the empty sourcedClaims.json file and the live guide sentences, not an impact claim. |
@@ -80,7 +81,7 @@ These guides are not a topical cluster. They share only the same unsourced price
 
 ## Source Files Changed In This Batch
 
-- source files likely to change: `src/guides/anna-maria-island-vacation-cost-guide-2026/index.html`, `src/guides/spring-break-activities-bradenton-anna-maria-island/index.html`, `src/guides/anna-maria-island-vs-siesta-key.html`, `src/guides/best-time-visit-anna-maria-island.html`, `src/guides/best-time-to-visit-anna-maria-island/index.html`, `src/guides/bradenton-insider-guide.html`, `src/guides/flights-to-anna-maria-island/index.html`, `src/guides/anna-maria-island-area-guide/index.html`, `src/guides/anna-maria-island-vs-clearwater-beach.html`, `src/guides/bradenton-area-guide/index.html`, `src/guides/bradenton-beach.html`, `src/guides/bradenton-vs-sarasota-for-families/index.html`, `src/guides/holmes-beach-vs-bradenton-beach.html`, `src/guides/sarasota-area-guide/index.html`, `src/guides/things-to-do-bradenton-fl.html`, `src/guides/best-restaurants-anna-maria-island.html`, `src/guides/how-to-get-to-anna-maria-island.html`
+- source files likely to change: `src/guides/anna-maria-island-vacation-cost-guide-2026/index.html`, `src/guides/spring-break-activities-bradenton-anna-maria-island/index.html`, `src/guides/anna-maria-island-vs-siesta-key.html`, `src/guides/best-time-visit-anna-maria-island.html`, `src/guides/best-time-to-visit-anna-maria-island/index.html`, `src/guides/bradenton-insider-guide.html`, `src/guides/flights-to-anna-maria-island/index.html`, `src/guides/anna-maria-island-area-guide/index.html`, `src/guides/anna-maria-island-vs-clearwater-beach.html`, `src/guides/bradenton-area-guide/index.html`, `src/guides/bradenton-beach.html`, `src/guides/bradenton-vs-sarasota-for-families/index.html`, `src/guides/holmes-beach-vs-bradenton-beach.html`, `src/guides/sarasota-area-guide/index.html`, `src/guides/things-to-do-bradenton-fl.html`, `src/guides/best-restaurants-anna-maria-island.html`, `src/guides/how-to-get-to-anna-maria-island.html`, `src/guides/siesta-key-area-guide/index.html`
 - src/guides/anna-maria-island-vacation-cost-guide-2026/index.html
 - src/guides/spring-break-activities-bradenton-anna-maria-island/index.html
 - src/guides/anna-maria-island-vs-siesta-key.html
@@ -98,4 +99,5 @@ These guides are not a topical cluster. They share only the same unsourced price
 - src/guides/things-to-do-bradenton-fl.html
 - src/guides/best-restaurants-anna-maria-island.html
 - src/guides/how-to-get-to-anna-maria-island.html
+- src/guides/siesta-key-area-guide/index.html
 
