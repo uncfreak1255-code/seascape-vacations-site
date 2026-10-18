@@ -415,6 +415,11 @@ test('never-seen price-cue phrasing fails without changing the matcher', () => {
     `<script type = "application/ld+json">{"description":"Guests ${phrase}."}</script>`
   );
   assert.equal(jsonLdSpaced[0].kind, 'price-cue-candidate');
+  const jsonLdProfile = collectPriceClaimCandidates(
+    `<script type="application/ld+json;profile=http://www.w3.org/ns/json-ld#frame">{"description":"Guests ${phrase}."}</script>`
+  );
+  assert.equal(jsonLdProfile[0].kind, 'price-cue-candidate');
+  assert.match(jsonLdProfile[0].excerpt, /fraction of the OTA price/i);
   assert.equal(
     collectPriceClaimCandidates(`<script>window.note = "Guests ${phrase}.";</script>`).length,
     0
@@ -454,6 +459,11 @@ test('never-seen price-cue phrasing fails without changing the matcher', () => {
   );
   assert.equal(unquotedMeta[0].kind, 'price-cue-candidate');
   assert.match(unquotedMeta[0].excerpt, /fraction of the OTA price/i);
+  const apostropheMeta = collectPriceClaimCandidates(
+    `<title>Guide</title><meta name="description" content="You'll pay a ${phrase}."><p>Plain body copy about beach parking.</p>`
+  );
+  assert.equal(apostropheMeta[0].kind, 'price-cue-candidate');
+  assert.match(apostropheMeta[0].excerpt, /fraction of the OTA price/i);
 
   const splitArgs = collectPriceClaimCandidates(
     '{{ kit({ heading: "Need more space", cta: "Check rates" }) }}'
