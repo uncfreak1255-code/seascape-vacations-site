@@ -832,7 +832,8 @@
       sourceType = "ai_referral";
     }
 
-    if (sourceType === "direct_or_unknown") {
+    // Explicit campaign media take precedence over referrer-only organic inference.
+    if (sourceType === "direct_or_unknown" && (!utmMedium || utmMedium === "organic")) {
       for (var j = 0; j < ORGANIC_SEARCH_HOSTS.length; j += 1) {
         if (referrerHost.indexOf(ORGANIC_SEARCH_HOSTS[j]) !== -1) {
           sourceType = "organic_search";

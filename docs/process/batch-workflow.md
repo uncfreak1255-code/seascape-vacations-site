@@ -3,6 +3,29 @@
 Choose the route before starting work. Both routes retain the content,
 source-truth, measurement, design and publication requirements in `AGENTS.md`.
 
+## Approved Friday pilot: action and evaluation
+
+The existing Friday pilot selects at most one evidence-supported action. First
+evaluate its previous action against the deployed revision, affected behavior
+and a compatible complete post-release window: `keep`, `revise`, `revert`, or
+`insufficient evidence`. A merged PR remains pending release; a partial window
+remains pending evaluation. Neither counts as a business improvement.
+
+Refresh the Analytics decision in `docs/status/next-batch.md`. Diagnose a
+demonstrated measurement defect or broken journey before selecting a growth
+experiment. Otherwise a guide-to-suitable-home link experiment must pass the
+existing measurement, brief and content gates. Preserve hold when none qualifies.
+
+Record hypothesis, baseline/coverage, outcome metric, guardrails, one current
+mutation owner, reviewer, rollback and evaluation window in the existing private
+pilot handoff. Reuse an active affected-path owner; otherwise the approved pilot
+coordinator owns the isolated task. Record that owner's acknowledgement and PR
+or supported hold. Eligible bounded reversible source work proceeds through the
+owning checks, independent exact-head review and source merge. Production
+activation uses the existing approved consolidated release lane. Keep the action
+open until deployed behavior and evaluation evidence support a verdict. This
+pilot adds no scheduler, paid research, outreach or permission changes.
+
 ## Existing-guide accuracy repairs
 
 Use one lead plus one read-only targeted reviewer when an approved brief repairs
