@@ -75,6 +75,10 @@ This change does not alter titles, descriptions, headings that target queries, s
 - `npm run lint:content`, `npm run build`, the guide-conversion and tracking enforcement tests, `git diff --check`.
 - none of the changed routes is smoke-asserted (`scripts/recovery/assert-live-smoke.js` covers homepage, /properties/, /property-management/, /stays/).
 
+## Visual Baselines
+
+- regenerated through `update-visual-baselines.yml`: `guide-ami-vs-siesta-key` and `guide-shelling-florida` (this change), plus `owner-fee-revenue-leak-benchmark-2026`, whose baseline was left stale by the intended October 18 pricing-date refresh in #738 and failed the visual gate on every branch since.
+
 ## Done When
 
 - all five guides render the box with the right home, photo, and working links; checks pass; PR open for review.
