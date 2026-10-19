@@ -1,6 +1,6 @@
 # Properties Route Stabilization Implementation Plan
 
-> **For agentic workers:** REQUIRED: Use superpowers:subagent-driven-development (if subagents available) or superpowers:executing-plans to implement this plan. Steps use checkbox (`- [ ]`) syntax for tracking.
+> Historical plan. For current instructions and task authority, read `AGENTS.md`.
 
 **Goal:** Replace the cloned `/properties/` SPA shell with a standalone Eleventy route and add regression checks that fail if shell markers return.
 

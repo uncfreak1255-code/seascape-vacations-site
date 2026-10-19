@@ -1,6 +1,6 @@
 # Phase 0 Sitemap Discovery Fix Implementation Plan
 
-> **For agentic workers:** REQUIRED: Use superpowers:subagent-driven-development (if subagents available) or superpowers:executing-plans to implement this plan. Steps use checkbox (`- [ ]`) syntax for tracking.
+> Historical plan. For current instructions and task authority, read `AGENTS.md`.
 
 **Goal:** make the sitemap accurately reflect the current indexable site inventory, especially paginated `/stays/` and `/property-management/` pages, and remove the source-of-truth ambiguity that caused the March 19 reporting confusion.
 

@@ -1,6 +1,6 @@
 # Search Content Rescue Implementation Plan
 
-> **For agentic workers:** REQUIRED: Use superpowers:subagent-driven-development (if subagents available) or superpowers:executing-plans to implement this plan. Steps use checkbox (`- [ ]`) syntax for tracking.
+> Historical plan. For current instructions and task authority, read `AGENTS.md`.
 
 **Goal:** Refresh the highest-value stale guides, improve current search-result fit, repair the guide-to-booking handoff, and consolidate only generated pages that current evidence proves safe to retire.
 

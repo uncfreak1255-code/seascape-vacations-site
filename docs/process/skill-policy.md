@@ -251,3 +251,15 @@ evidence for this task class, not reduced-supervision or universal-model proof.
 Existing cards and larger-batch/design requirements remain. No new skill,
 plugin, agent persona or recurring job was added. See
 `docs/research/2026-10-12-seo-workflow-comparison.md`.
+
+### 2026-10-19 — dated context and archived search cleanup
+
+Agent-surface audit verdict: **KEEP** the existing active skills and role cards.
+`next-batch-gate` and Search Operator now treat the June search-growth map as
+dated context and confirm current URLs against portfolio files and source.
+Canonical and plugin copies change together. The disabled archive remains
+inactive and retains unique content; broken machine-local links are removed.
+`.ignore` excludes that archive, historical Superpowers plans, and
+`docs/archive/` from routine ripgrep searches. Read an explicit path or use
+`rg --no-ignore --hidden` for historical research. No skill is installed or
+activated.

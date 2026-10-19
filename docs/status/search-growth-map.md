@@ -1,17 +1,19 @@
-# Search Growth Map
+# Search Growth Map — Dated Strategy Context
 
 *Updated: 2026-06-20*
 *Last reconciled: 2026-06-20 against `docs/status/next-batch.md` run date
 2026-06-12, `docs/reports/rank-tracker-2026-06-03.md`, current portfolio maps,
 `src/llms.txt`, and the DataForSEO keyword pass.*
 
-This is the live keyword, GEO, and AI-search strategy layer for Seascape site
-work. It does not authorize a measured expansion branch by itself.
-`docs/status/next-batch.md` still owns the reread gate.
+This map preserves May–June 2026 query-family research. Its metrics, ranking
+observations, property claims, and URL assignments are historical evidence.
+Use `docs/status/next-batch.md` for the current measurement gate and the matching
+`docs/portfolio/` file plus page source for current URLs and facts.
 
-Use this map before returning a passive `hold`, `wait`, or `wait for recrawl`
-answer. A freshness block can stop impact claims and measured branch opening,
-but it should not stop bounded attack-lane work that has its own source truth.
+Consult this map for query-family context when evaluating a bounded attack
+lane, then verify the candidate against current source and evidence. A
+freshness block can stop impact claims and measured branch opening; bounded
+attack-lane work still needs its own current source truth.
 For generated stay and owner pSEO classification, use
 `docs/portfolio/pseo-inventory-triage.md`. For repeatable live competitor reads
 before a page edit, use `docs/process/seo-competitor-operating-loop.md`.
@@ -38,9 +40,9 @@ cadence, use `docs/process/enterprise-seo-operating-loop.md`.
   lift without analytics receipts or source proof.
 - Keep validation dates date-only unless a machine receipt provides a more
   specific run timestamp.
-- Treat the `Current read` cells below as strategy context, not the current
-  branch gate. If this file disagrees with `docs/status/next-batch.md`, the
-  current `next-batch.md` status wins.
+- Treat the historical reads below as dated strategy context. If this file
+  disagrees with `docs/status/next-batch.md`, the current `next-batch.md` status
+  wins.
 
 ## Freshness-Blocked No Action
 
@@ -52,9 +54,9 @@ source-backed attack lane, return:
 - `next reread: rerun the targeted operator read after the missing GSC data date lands`
 - `do not open a page, title/meta rewrite, snippet rewrite, or expansion branch from this row`
 
-## Current Map
+## Historical Map (May–June 2026)
 
-| Query family | Intent | Current URL | Evidence source | Source proof | Current read | Attack-lane move while freshness-blocked | Blocked until reread |
+| Query family | Intent | Historical URL | Evidence source | Historical source proof | Historical read | Attack-lane move while freshness-blocked | Blocked until reread |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | vacation rental management fees Florida / short-term rental management fees | owner-management | `/property-management/vacation-rental-management-fees-florida/` | `docs/reports/2026-03-30-dataforseo-keyword-pass.md`; `docs/portfolio/owner-acquisition.md`; `docs/status/next-batch.md` run date 2026-05-28 | DataForSEO pass says fees has real question-shaped demand; owner portfolio marks it as a money page | latest joined read: owner_money has 42 impressions, 0 clicks, avg position 9.50, freshness blocked | SERP gap research for fee ranges, owner-net framing, competitor proof, internal links into the fees page, and source/proof audit | title/meta rewrite or snippet claim until owner-money pages recrawl and the owner-money threshold clears |
 | vacation rental license Florida / DBPR vacation rental license | owner-management | `/property-management/vacation-rental-licensing-florida/` | `docs/reports/2026-03-30-dataforseo-keyword-pass.md`; `docs/portfolio/owner-acquisition.md`; `docs/status/next-batch.md` run date 2026-05-28 | DataForSEO pass says licensing is the cleanest immediate Florida owner-intent cluster | latest joined read: owner_money freshness blocked; May GEO scorecard showed old crawl for licensing | research DBPR/municipal source gaps, check visible direct-answer coverage, prepare licensing proof notes | title/meta or body rewrite framed as CTR work until post-crawl read clears |

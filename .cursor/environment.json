@@ -15,7 +15,7 @@
   "terminals": [
     {
       "name": "eleventy",
-      "command": "npx @11ty/eleventy --serve --port 8080",
+      "command": "npm start",
       "description": "Local site preview for visual QA. Not a deploy and not a send path."
     }
   ]

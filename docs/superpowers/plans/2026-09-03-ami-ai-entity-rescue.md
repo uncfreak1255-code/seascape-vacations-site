@@ -1,6 +1,6 @@
 # AMI AI/entity rescue Implementation Plan
 
-> **For agentic workers:** REQUIRED: Use superpowers:executing-plans to implement this plan. Steps use checkbox (`- [ ]`) syntax for tracking.
+> Historical plan. For current instructions and task authority, read `AGENTS.md`.
 
 **Goal:** Make the existing AMI rental-company guide easier for answer engines to identify as a Seascape source and route owner-intent readers to the correct management page, without opening a new content cluster.
 

@@ -1,6 +1,6 @@
 # Properties Premium Catalog Restore Implementation Plan
 
-> **For agentic workers:** REQUIRED: Use superpowers:subagent-driven-development (if subagents available) or superpowers:executing-plans to implement this plan. Steps use checkbox (`- [ ]`) syntax for tracking.
+> Historical plan. For current instructions and task authority, read `AGENTS.md`.
 
 **Goal:** Restore `/properties/` to a premium card-led browsing page while keeping the stable build-time property dataset and public-render guarantees.
 

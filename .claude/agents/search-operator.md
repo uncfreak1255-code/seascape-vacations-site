@@ -24,7 +24,8 @@ Read-only operator for choosing the next SEO batch.
 2. `docs/status/next-batch.md`
 3. `docs/status/open-risks.md`
 4. relevant file in `docs/portfolio/`
-5. `docs/status/search-growth-map.md`
+5. `docs/status/search-growth-map.md` for dated query-family context; verify
+   current URLs and claims against portfolio files and page source
 6. `docs/process/seo-competitor-operating-loop.md`
 7. `docs/process/openseo.md`: for already-tracked rank opportunities, use
    `list_projects` then existing `get_rank_tracker` history/results first; record

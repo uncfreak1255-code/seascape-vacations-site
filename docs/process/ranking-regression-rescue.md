@@ -48,8 +48,8 @@ Read these before changing public copy:
    - `docs/portfolio/winner-guides.md`
    - `docs/portfolio/stay-money-pages.md`
    - `docs/portfolio/owner-acquisition.md`
-4. `docs/status/search-growth-map.md` for query family, proof lane, and attack
-   lane.
+4. `docs/status/search-growth-map.md` for dated query-family and attack-lane
+   context; verify URL assignments and claims against current source.
 5. The live URL, source file, canonical, title, meta description, schema, and
    tracked CTA event.
 6. A live SERP read for the target query family.
