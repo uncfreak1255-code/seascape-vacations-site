@@ -51,7 +51,7 @@ test("missing Mac git kit falls through to repo pre-commit.js for preflight only
   const kitDir = makeTempDir("site-4-no-kit-");
   const status = runGitKitFallback("preflight", [], {
     kitDir,
-    spawn: { stdio: "pipe" }
+    spawn: { stdio: "pipe", cwd: makeCommitRepo() }
   });
   assert.equal(status, 0);
 });
@@ -76,10 +76,16 @@ test("package.json git wrappers use git-kit-fallback.js", () => {
 });
 
 test("npm run git:preflight reaches repo checks when the Mac binary is missing", () => {
+  // pre-commit.js refuses on main; point its branch check at a task-branch
+  // repo so this passes when CI runs on a push to main.
   const result = spawnSync("npm", ["run", "git:preflight"], {
     cwd: projectRoot,
     encoding: "utf8",
-    env: { ...process.env, SEASCAPE_GIT_KIT_DIR: makeTempDir("site-4-npm-kit-") }
+    env: {
+      ...process.env,
+      GIT_DIR: path.join(makeCommitRepo(), ".git"),
+      SEASCAPE_GIT_KIT_DIR: makeTempDir("site-4-npm-kit-")
+    }
   });
   assert.equal(result.status, 0, result.stderr || result.stdout);
 });
@@ -101,7 +107,7 @@ test("missing Mac kit safe-commit without a message fails instead of skip-as-pas
     () =>
       runGitKitFallback("safe-commit", ["--stage-source"], {
         kitDir: makeTempDir("site-1-no-commit-msg-"),
-        spawn: { stdio: "pipe", cwd: projectRoot }
+        spawn: { stdio: "pipe", cwd: makeCommitRepo() }
       }),
     /git-kit-fallback\.js: safe-commit requires -m/
   );
