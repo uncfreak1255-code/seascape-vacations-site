@@ -12,7 +12,7 @@ The trusted-project Codex configuration in `.codex/config.toml` connects to the
 local OpenSEO MCP server at `http://localhost:3001/mcp`. The server is optional,
 so a stopped OpenSEO app must not block a Codex session.
 
-The committed allowlist contains only these saved-state reads:
+The committed allowlist contains the original saved-state reads:
 
 - `whoami`
 - `list_projects`
@@ -21,10 +21,18 @@ The committed allowlist contains only these saved-state reads:
 - `get_search_console_performance`
 - `inspect_urls`
 
+It also exposes the free workflow tools `get_project_context`,
+`update_project_context`, `list_reports`, `get_report`,
+`list_report_templates`, and `save_report`. Context updates store confirmed
+project facts or dated research notes; they do not promote Hub canon. Report
+saves create private local reports. Replacing an existing report requires
+checking its sharing state first: replacement preserves any existing sharing.
+Public sharing, report deletion, new checks and paid research remain excluded.
+
 OpenSEO calls use Codex's configured approval route. With a human reviewer,
 that route can present a manual prompt; with automatic review, an allowed call
 can proceed without a manual popup. Keep `default_tools_approval_mode = "prompt"`
-and the six-tool allowlist. A missing popup alone does not prove a bypass.
+and the explicit tool allowlist. A missing popup alone does not prove a bypass.
 Record the configured route and any approval result actually exposed; do not
 invent a per-call approval receipt. A new Codex session is required after this
 project configuration changes.
@@ -69,7 +77,9 @@ DataForSEO balance through `whoami`, so tool annotations are not a cost gate.
 | --- | --- | --- | --- |
 | `whoami`, `list_projects`, `list_saved_keywords`, `get_rank_tracker` | saved OpenSEO project state and rank history | no | no; use the configured Codex approval route |
 | `get_search_console_performance`, `inspect_urls` | the existing Search Console authorization | no | no for reads; yes before any reconnect |
-| every tool in the list below | live SERP, keyword, backlink, domain, local or AI lookups | yes, per call | yes, for that exact paid run |
+| `get_project_context`, `list_reports`, `get_report`, `list_report_templates` | saved local workflow context, reports and templates | no | no for reads |
+| `update_project_context`, `save_report` | local project notes and private reports | no | use only within the requested task; verify the exact project and preserve existing content |
+| every paid lookup tool in the list below | live SERP, keyword, backlink, domain, local or AI lookups | yes, per call | yes, for that exact paid run |
 
 The following OpenSEO tools are intentionally outside the project allowlist:
 
@@ -86,8 +96,41 @@ The following OpenSEO tools are intentionally outside the project allowlist:
 - `get_keyword_metrics`
 - `save_keywords`
 
-Do not copy OpenSEO's optional agent skills into this repo. The five-role SEO
-workflow and active repo skills remain the agent surface of record.
+## Standalone upstream skills on the Mac
+
+Sawyer approved the upstream workflows against local OpenSEO on October 19,
+2026, including a free read and private report save. Keep the upstream skills
+outside this repository; the Site roles, measurement and publication gates
+continue to govern any resulting website work.
+
+The Mac installs the public skill directories as user-scope symlinks named
+`openseo-local-<skill>` under `~/.agents/skills/`, pointing to
+`~/Projects/open-seo-review/plugins/openseo/skills/<skill>`. Their upstream
+skill names stay unchanged. The initial source is official release 0.1.12,
+commit `89e5a00717cdf049b7c2b4e29646edb3a7d4995b`. The installed local
+OpenSEO checkout supplies the skills and their supporting files; no plugin
+fork, copied skill pack or hosted migration is needed. A later approved local
+OpenSEO upgrade also changes these symlink targets' contents, so rediscover
+skills and recheck compatibility after upgrading.
+
+For Seascape tasks, select those standalone local skill paths rather than the
+hosted plugin's same-named skills. Use the project-configured `openseo` MCP
+namespace at `http://localhost:3001/mcp` for every workflow call. The hosted
+`mcp__codex_apps__openseo_*` connector is a different data store. Never fall back
+to it when local tools are unavailable. Confirm `Seascape Vacations` and
+`seascape-vacations.com` with local `list_projects` before reading or saving.
+
+Start a Site chat to load this project configuration. The skills can use free
+reads and private report saves now. When an upstream workflow requires a paid
+lookup or another excluded tool, stop that step and report the exact missing
+capability and cost approval required; installing a skill does not authorize
+spending or a broader tool allowlist. Keep reports private and use `get_report`
+to read back the saved title, project, HTML and sharing state. Missing or
+unreadable sharing evidence is unverified, not private-by-assumption.
+
+Use the upstream skills installer only if a local source is unavailable, with
+an inspected public skill selection and no duplicate discovery entries. The
+current symlinks deliberately reuse the already-installed release.
 
 ## Read-Only Use
 
@@ -138,7 +181,7 @@ codex mcp get openseo
 
 The committed config and its enforcement test prove that the server is optional
 with `required = false`. The `codex mcp get openseo` readback must show the
-localhost URL, approval mode `prompt`, and only the six allowed tools above.
+localhost URL, approval mode `prompt`, and only the allowed tools above.
 Run acceptance through the native tools in a fresh trusted session:
 
 1. Call `list_projects` and verify the Seascape project/domain.

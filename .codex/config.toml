@@ -12,6 +12,12 @@ enabled_tools = [
   "get_rank_tracker",
   "get_search_console_performance",
   "inspect_urls",
+  "get_project_context",
+  "update_project_context",
+  "list_reports",
+  "get_report",
+  "list_report_templates",
+  "save_report",
 ]
 
 [plugins."build-macos-apps@openai-curated"]
