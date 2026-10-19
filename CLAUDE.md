@@ -35,9 +35,10 @@ and Content Gate in `AGENTS.md` before public-copy work.
 ## GBrain Search Guidance (local, optional)
 <!-- gstack-gbrain-search-guidance:start -->
 
-GBrain is machine-local and optional. It is wired here when `.gbrain-source`
-exists and `gbrain --version` works; otherwise use Grep/Glob and skip this
-section. Two things live in the brain, reached two ways:
+GBrain is machine-local and optional. The decisions lane below works whenever
+the `gbrain` MCP tool or `gbrain` CLI is available; repo code search also needs
+a `.gbrain-source` file here. Without them, use Grep/Glob. Two things live in
+the brain, reached two ways:
 
 - **Decisions and dated context** (the `session-briefs` facts lane). Before
   answering "what did we decide" or "what do we know about X", or asserting a
