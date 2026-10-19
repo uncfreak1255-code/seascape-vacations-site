@@ -263,3 +263,15 @@ inactive and retains unique content; broken machine-local links are removed.
 `docs/archive/` from routine ripgrep searches. Read an explicit path or use
 `rg --no-ignore --hidden` for historical research. No skill is installed or
 activated.
+
+### 2026-10-19 — standalone local OpenSEO workflows
+
+Sawyer requested the upstream OpenSEO skills against the existing local
+instance, verified with a free read and private report save. The inventory found
+the existing Site MCP connection and the official skill files already present
+in the local OpenSEO release. Install those public workflows through user-scope
+symlinks, outside this repo; do not add a second repo-local skill pack.
+`docs/process/openseo.md` owns local routing and the bounded tool list. Free
+context/report tools join the existing reads; paid lookups, publication,
+deletes and new checks stay excluded. This changes tool availability, not
+Seascape strategy, measurement ownership or website publication authority.
