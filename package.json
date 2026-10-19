@@ -74,8 +74,12 @@
     "@opentelemetry/sdk-trace-base": "2.8.0",
     "@opentelemetry/sdk-trace-node": "2.8.0",
     "js-yaml": "4.3.2",
-    "brace-expansion": "5.0.8",
+    "brace-expansion": "5.0.12",
     "body-parser": "1.20.6",
+    "qs": "6.16.1",
+    "get-uri": {
+      "basic-ftp": "6.2.3"
+    },
     "linkify-it": "5.0.2",
     "@11ty/eleventy": {
       "picomatch": "4.0.4"
@@ -98,7 +102,7 @@
     }
   },
   "devDependencies": {
-    "@11ty/eleventy": "^3.1.6",
+    "@11ty/eleventy": "^3.1.7",
     "@axe-core/playwright": "^4.13.0",
     "@e2e-dev/web": "0.14.0",
     "@lhci/cli": "^0.15.1",
