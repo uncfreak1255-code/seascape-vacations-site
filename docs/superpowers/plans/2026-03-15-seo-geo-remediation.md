@@ -1,6 +1,6 @@
 # SEO GEO Remediation Implementation Plan
 
-> **For agentic workers:** REQUIRED: Use superpowers:subagent-driven-development (if subagents available) or superpowers:executing-plans to implement this plan. Steps use checkbox (`- [ ]`) syntax for tracking.
+> Historical plan. For current instructions and task authority, read `AGENTS.md`.
 
 **Goal:** Validate live SEO state, remediate high-impact GEO/content gaps on priority pages, and operationalize the March 15 strategy docs without redesigning the site.
 

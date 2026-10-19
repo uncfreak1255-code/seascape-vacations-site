@@ -1,6 +1,6 @@
 # Site CI Gate Consolidation Implementation Plan
 
-> **For agentic workers:** REQUIRED: Use superpowers:subagent-driven-development (if subagents available) or superpowers:executing-plans to implement this plan. Steps use checkbox (`- [ ]`) syntax for tracking.
+> Historical plan. For current instructions and task authority, read `AGENTS.md`.
 
 **Goal:** Reduce duplicate GitHub Actions work without weakening the required build, release-safety, Lighthouse, visual, or live-production checks.
 

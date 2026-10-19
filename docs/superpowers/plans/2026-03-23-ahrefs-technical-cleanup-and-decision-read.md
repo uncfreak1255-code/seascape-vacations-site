@@ -1,6 +1,6 @@
 # Ahrefs Technical Cleanup And Decision Read Implementation Plan
 
-> **For agentic workers:** REQUIRED: Use superpowers:subagent-driven-development (if subagents available) or superpowers:executing-plans to implement this plan. Steps use checkbox (`- [ ]`) syntax for tracking.
+> Historical plan. For current instructions and task authority, read `AGENTS.md`.
 
 **Goal:** remove the highest-priority legacy URL and canonical leaks from Seascape's money pages, then leave a clean March 27-28 decision framework instead of guessing from fresh relands.
 

@@ -47,11 +47,11 @@ function classifyUntrackedFiles(paths) {
 
 function getNextSafeCommand({ currentBranch, rootMainDirty, localMainBehindOrigin }) {
   if (currentBranch === "main" && rootMainDirty) {
-    return "git switch -c codex/sort-untracked-files";
+    return "git worktree add -b codex/sort-untracked-files .worktrees/sort-untracked-files origin/main";
   }
 
   if (currentBranch === "main" && localMainBehindOrigin) {
-    return "git pull origin main";
+    return "git pull --ff-only origin main";
   }
 
   return "git status --short";

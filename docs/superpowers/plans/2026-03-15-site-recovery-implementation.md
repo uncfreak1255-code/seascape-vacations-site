@@ -1,6 +1,6 @@
 # Site Recovery Implementation Plan
 
-> **For agentic workers:** REQUIRED: Use superpowers:subagent-driven-development (if subagents available) or superpowers:executing-plans to implement this plan. Steps use checkbox (`- [ ]`) syntax for tracking.
+> Historical plan. For current instructions and task authority, read `AGENTS.md`.
 
 **Goal:** Restore one repo-owned build/deploy path for the homepage, guides, stays, and property-management pages while fixing the live homepage JS failure, the `/property-management/` redirect loop, the priority-guide metadata defects, and the highest-value schema/performance problems on the audited priority pages.
 

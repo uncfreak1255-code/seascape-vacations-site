@@ -1,6 +1,6 @@
 # Cite-Worthy Research Assets Implementation Plan
 
-> **For agentic workers:** REQUIRED: Use superpowers:subagent-driven-development (if subagents available) or superpowers:executing-plans to implement this plan. Steps use checkbox (`- [ ]`) syntax for tracking.
+> Historical plan. For current instructions and task authority, read `AGENTS.md`.
 
 **Goal:** Turn Seascape's two existing research pages into more cite-worthy SEO assets without starting a new content format branch.
 

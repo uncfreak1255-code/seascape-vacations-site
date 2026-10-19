@@ -1,6 +1,6 @@
 # Mobile Design + Media Workflow Implementation Plan
 
-> **For agentic workers:** REQUIRED: Use superpowers:subagent-driven-development (if subagents available) or superpowers:executing-plans to implement this plan. Steps use checkbox (`- [ ]`) syntax for tracking.
+> Historical plan. For current instructions and task authority, read `AGENTS.md`.
 
 **Goal:** Fix the mobile clipping found in the design audit, then prototype one owner-economics media asset before deciding whether to batch property reels.
 

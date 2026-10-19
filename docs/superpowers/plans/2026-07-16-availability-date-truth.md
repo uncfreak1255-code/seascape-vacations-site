@@ -1,6 +1,6 @@
 # Availability Date Truth Implementation Plan
 
-> **For agentic workers:** REQUIRED: Use superpowers:subagent-driven-development (if subagents available) or superpowers:executing-plans to implement this plan. Steps use checkbox (`- [ ]`) syntax for tracking.
+> Historical plan. For current instructions and task authority, read `AGENTS.md`.
 
 **Goal:** Prevent a past or malformed Hostaway `nextAvailable` range from appearing as live availability, both at build time and when a static page ages after deployment.
 

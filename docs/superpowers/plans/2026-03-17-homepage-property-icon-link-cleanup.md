@@ -1,6 +1,6 @@
 # Homepage, Stay, And Property Icon/Link Cleanup Implementation Plan
 
-> **For agentic workers:** REQUIRED: Use superpowers:subagent-driven-development (if subagents available) or superpowers:executing-plans to implement this plan. Steps use checkbox (`- [ ]`) syntax for tracking.
+> Historical plan. For current instructions and task authority, read `AGENTS.md`.
 
 **Goal:** Replace broken homepage proof stats, remove public-facing emoji UI from approved surfaces, and replace stale property-page related links with verified live routes only.
 

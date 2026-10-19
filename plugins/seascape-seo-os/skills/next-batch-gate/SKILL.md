@@ -12,7 +12,7 @@ Use this only for Seascape batch selection.
 1. `docs/status/current-state.md`
 2. `docs/status/next-batch.md`
 3. `docs/status/open-risks.md`
-4. `docs/status/search-growth-map.md`
+4. `docs/status/search-growth-map.md` for dated query-family context
 5. the active brief if one exists
 6. `docs/process/openseo.md` for rank-opportunity triage on already-tracked queries:
    use `list_projects`, then existing `get_rank_tracker` configuration/results/history
@@ -55,7 +55,8 @@ Continue bounded unpaid source/SERP/competitor checks when independently availab
 ## Decision
 
 Name the proposed branch and page family, check its authorization and open
-risks, and use the matching query family/current URL in the search-growth map.
+risks, and use the search-growth map for query-family context. Confirm the
+current URL in the matching portfolio file and page source.
 Return one verdict matching the repo contract, plus a separate attack-lane
 action when one survives the required checks. A gate review does not itself
 authorize implementing that action.
@@ -66,7 +67,8 @@ Include:
 - verdict
 - reread status
 - evidence lines from the status docs
-- query family and current URL from `docs/status/search-growth-map.md`
+- query family from `docs/status/search-growth-map.md`; current URL verified
+  against the matching `docs/portfolio/` file and page source
 - proof-lane block, if any
 - attack-lane action, if any
 - exact next action

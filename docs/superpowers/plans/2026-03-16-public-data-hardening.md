@@ -1,6 +1,6 @@
 # Public Data Hardening Implementation Plan
 
-> **For agentic workers:** REQUIRED: Use superpowers:subagent-driven-development (if subagents available) or superpowers:executing-plans to implement this plan. Steps use checkbox (`- [ ]`) syntax for tracking.
+> Historical plan. For current instructions and task authority, read `AGENTS.md`.
 
 **Goal:** Remove render-time Hostaway/API dependence from public pages while preserving direct-booking capability and the current visual design.
 

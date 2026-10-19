@@ -24,6 +24,7 @@ Thumbs.db
 .skills
 .worktrees/
 playwright-report/
+.playwright-mcp/
 test-results/
 blob-report/
 .lighthouseci/

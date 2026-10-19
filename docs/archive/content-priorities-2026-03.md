@@ -1,5 +1,9 @@
 # Content Priorities — March 2026
 
+> Historical March 2026 snapshot. Preserved for provenance. Use
+> `docs/status/next-batch.md` and the matching current brief for task decisions.
+
+
 > Seasonal theme: **Spring Break + Easter** (peak booking season for Gulf Coast)
 > Updated: 2026-03-07
 

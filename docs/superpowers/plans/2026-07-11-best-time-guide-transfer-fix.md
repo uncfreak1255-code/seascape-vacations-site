@@ -1,6 +1,6 @@
 # Best-Time Guide Transfer Fix Implementation Plan
 
-> **For agentic workers:** REQUIRED: Use superpowers:subagent-driven-development (if subagents available) or superpowers:executing-plans to implement this plan. Steps use checkbox (`- [ ]`) syntax for tracking.
+> Historical plan. For current instructions and task authority, read `AGENTS.md`.
 
 **Goal:** Give readers of the proven best-time guide an early, tracked choice between the two approved Anna Maria Island stay paths without changing the field-journal pilot or adding a new guide pattern.
 

@@ -32,12 +32,12 @@ debugging, but label broad per-URL Google claims as partial.
 ## Repo-audit V1 (2026-06-12)
 
 - owner support GA4 numbers before the Task 3 tracking-gate deploy are instrumentation artifacts because `/research/owner-fee-revenue-leak-benchmark-2026/` shipped tracked owner CTAs without the shared tracking runtime; the first post-fix weekly receipt should be read as sensor repair, not owner demand.
-- Holmes Beach canonical decision still blocks V2 redirect and sitemap cleanup: either retire the slug from `seoPages.json` or remove the redirect, but do not leave both live.
+- Resolved in source (verified 2026-10-19): the Holmes Beach slug is absent from `src/_data/seoPages.json`; both legacy URL spellings redirect to `/stays/vacation-rentals-near-anna-maria-island/` in `src/_redirects`. The June canonical-choice blocker is closed.
 - Live-smoke alert drill (2026-06-12) resolved detection but not the channel: a deliberate failure run went red and GitHub notified, but GitHub-native notifications are not operator-friendly. V2 must add a plain-language alert surface whose message states what failed, what it means for guests, and the next step — target shape: "Seascape website check failed. The public site may have a broken page or missing tracking. No guest messages were sent. Next step: ask Codex to inspect the failed Live Smoke run." Do not wire Hermes/Telegram without explicit approval.
 - Meta-pixel and privacy wording still block the disclosure follow-up: confirm the intended pixel scope before changing the legal copy.
-- Stylesheet budget still blocks the homepage performance-budget gate: the current homepage CSS is already over the error-level budget, so decide whether to slim it or raise the threshold before extending the gate.
-- Leftover root HTML (`index.html`, leftover `stays/`, leftover `property-management/`) is deleted; production builds from `src/` only and the forbidden-path lint stays. Remaining root residue (`dashboard/`, `emails/`) still needs a keep-quarantined vs archive-then-remove decision. `area-guide-*.html` is already gone from the root.
-- V2 sequencing lives in `docs/plans/2026-06-12-repo-audit.md`.
+- Resolved gate-scope decision (verified 2026-10-19): `lighthouserc.js` includes the homepage and `.github/workflows/performance-budget.yml` runs the budget and ratchet checks. Use the current check result for pass/fail; the June CSS observation does not establish a current budget failure.
+- Leftover root HTML (`index.html`, leftover `stays/`, leftover `property-management/`) is deleted; production builds from `src/` only and the forbidden-path lint stays. The unused sample dashboard and obsolete `emails/` exports were removed in the 2026-10-19 source cleanup; Git history preserves them. `area-guide-*.html` is already gone from the root.
+- The June V2 proposal is preserved in `docs/plans/2026-06-12-repo-audit.md`; current source and the risks above determine which items remain open.
 
 ## Indexing + Indexability (2026-06-06 forensic)
 

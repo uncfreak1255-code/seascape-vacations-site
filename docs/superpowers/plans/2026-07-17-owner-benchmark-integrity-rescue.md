@@ -1,6 +1,6 @@
 # Owner Benchmark Integrity Rescue Implementation Plan
 
-> **For agentic workers:** REQUIRED: Use superpowers:subagent-driven-development (if subagents available) or superpowers:executing-plans to implement this plan. Steps use checkbox (`- [ ]`) syntax for tracking.
+> Historical plan. For current instructions and task authority, read `AGENTS.md`.
 
 **Goal:** Remove expired owner-performance claims and internal workflow language from every public surface that reuses them, then rebuild the owner research route as a sourced fee-comparison guide.
 
