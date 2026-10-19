@@ -43,11 +43,13 @@ the brain, reached two ways:
 - **Decisions and dated context** (the `session-briefs` facts lane). Before
   answering "what did we decide" or "what do we know about X", or asserting a
   non-trivial detail about a person, project, or past change, read it first:
-  - Claude: the `gbrain` MCP tool `recall` with `entity: projects/<name>` or
-    `grep: "<text>"`.
+  - Claude: the `gbrain` MCP tool `recall` with `source_id: "session-briefs"`
+    plus `entity: projects/<name>` or `grep: "<text>"`. A repo-scoped
+    connection keeps its own facts; if it refuses that source, use the CLI.
   - Codex or shell: `GBRAIN_SOURCE=session-briefs gbrain recall "<topic>" --json`
     or `gbrain recall <entity-slug> --source session-briefs --json`.
-  Save a durable decision the same way (`remember`, with date and provenance).
+  Save a durable decision the same way (`remember` with `source_id:
+  "session-briefs"`, date, and provenance).
 - **This repo's code and docs** (the source pinned by `.gbrain-source`).
   `gbrain search "<terms>"` or `gbrain query "<question>"` for semantic
   questions with no exact identifier; `gbrain code-def`, `code-refs`,
