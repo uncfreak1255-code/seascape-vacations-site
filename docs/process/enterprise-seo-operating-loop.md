@@ -1,9 +1,12 @@
 # Enterprise SEO Operating Loop
 
-*Updated: 2026-06-20*
+*Diagnostic reference; operating sequence consolidated 2026-10-20.*
 
-This is Seascape's agency-grade SEO loop. It keeps the site moving without
-turning weak or stale evidence into page edits.
+Use this checklist for diagnostic inputs. The single operating contract is
+[Required Batch Workflow](batch-workflow.md#approved-friday-pilot-action-and-evaluation),
+including ownership, selection, skill routing, release and evaluation. The
+[OpenSEO policy](openseo.md) owns tool/store selection and spending boundaries;
+this reference does not create a parallel loop or override either contract.
 
 ## Ownership
 
@@ -42,39 +45,15 @@ Read these in order before opening SEO source work:
 9. `npm run eval:aeo` or an explicit AI-answer readback note for guide/research
    rescue work.
 
-## Loop
+## Decision and execution
 
-1. **Proof lane.** Run or read the dated analytics receipts. Classify the window
-   as `READY_FOR_SITE_BRANCH`, `HOLD_AND_REREAD`, or
-   `INVESTIGATE_INSTRUMENTATION`.
-2. **Attack lane.** Even when proof blocks impact claims, run live SERP,
-   competitor, stale-content, internal-link, local/GBP, and AEO checks for the
-   named query family.
-3. **Decision.** Choose one of: `no action`, `research only`, `rescue existing
-   winner`, `improve existing page`, `consolidate`, `redirect/noindex`, or
-   `open new batch`.
-4. **Brief.** If source changes are allowed, update one active brief for the
-   active lane with the filled Gate 0 block required by
-   `docs/process/content-quality-gate.md`. If a PR intentionally carries more
-   than one active lane, each changed search-facing source file must be named in
-   the matching changed brief.
-5. **Ship the smallest fix.** Edit only the page, metadata, schema, redirect, or
-   internal-link surface named in the brief.
-6. **Verify.** Run the smallest command set that proves the changed surface.
-   Public copy still needs `npm run lint:content` and `npm run build`.
-7. **Reread.** After deploy, compare the first complete post-change window
-   against the pre-edit query/page baseline before claiming impact.
-
-## Decision Rules
-
-| Signal | Allowed move | Blocked move |
-| --- | --- | --- |
-| `READY_FOR_SITE_BRANCH` from dated analytics | One active brief for the named family | Broad page volume or unrelated cleanup |
-| `HOLD_AND_REREAD` | SERP research, stale-content triage, candidate donor-link plan, rescue prep | Impact claims or expansion branches |
-| Confirmed rank/CTR/indexation/conversion regression | Use `docs/process/ranking-regression-rescue.md` | Waiting passively or creating a replacement page |
-| DataForSEO receipt is queued or missing | Rerun/complete the receipt or use a dated live SERP note | Treating competitor proof as complete |
-| AI visibility receipt has no current observations | AEO readback notes and citeability cleanup | AI visibility impact claims |
-| Direct-booking attribution is blocked | Site-funnel and campaign-touchpoint claims only | Revenue-lift claims |
+Apply the operating contract in `batch-workflow.md` to classify the Analytics
+decision, complete the bounded proof/attack work, select one eligible action
+or supported hold, and use the matching repair/batch route. A queued provider
+receipt is not completed research. Current joined Analytics evidence governs
+measured expansion; the existing regression-rescue lane handles a confirmed
+winner or money-page regression. Evaluation follows actual deployment and the
+brief's complete comparable window, not source merge or report production.
 
 ## Stale Advice Rules
 
