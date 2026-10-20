@@ -56,9 +56,30 @@ credible mechanism, not by article count, keyword volume or tool availability:
   existing winner and explain the evidence for changing, merging or retiring it.
 
 Apply `next-batch-gate` and the existing regression-rescue exception. Preserve
-hold when no action qualifies. A supported hold records named checks and the
-next existing review; it is not permission for broad expansion. Do not add a
-second unresolved pilot action. Changes from another active lane are recorded
+hold when no action qualifies. Every supported hold records named checks,
+missing data or observation, the numeric/observable clearance threshold, one
+accountable owner and a dated next review in the existing handoff. A missing
+source is unverified, not observed zero. For each cluster, read impressions,
+`OWNER_IMPRESSION_GATE` (1000) and equivalent volume weeks from the Analytics
+`hold_diagnostics`. More than eight volume weeks is `structurally blocked`:
+route owner evidence to permissioned intake and other clusters to evidence for
+existing-page fixes. Rolling-window impressions do not accumulate by waiting;
+volume weeks never promise that the shipping gate will clear.
+
+Use the same report's `ranked_opportunities` section, at most three ideas.
+Each names the revenue lever as a direction (never dollar lift), evidence
+strength, cheapest discriminating test, kill rule, four-to-six-week time box,
+owner and status. Read GSC and booking evidence from Analytics-owned receipts;
+use saved OpenSEO research as context. A ranked proposal does not override the
+gate, winner/intent checks, page-level thin-sample limits or rescue proof.
+See `seascape-analytics/docs/weekly-search-funnel-runbook.md` for the Markdown,
+JSON and decision-receipt format; the current status sync does not render these
+new sections. Carry the fields in the existing private handoff when needed.
+
+At most two experiments may be live across the workflow. Reconcile the existing
+private pilot handoff first; unknown counts block new starts. Retain this pilot's
+stricter rule: do not add a second unresolved pilot action. Changes from another
+active lane are recorded
 as concurrent changes and possible confounds, not silently attributed to this
 pilot.
 
@@ -95,7 +116,7 @@ still apply when the selected route explicitly requires them.
 | Stage / trigger | Existing skill or procedure | Completion / when to skip |
 | --- | --- | --- |
 | Saved ranking, citation or competitor evidence | `.agents/skills/openseo-review` | Confirm local project, observed window and coverage. Follow `openseo.md`; no hosted fallback or fresh paid check. |
-| Opportunity/branch selection | `.agents/skills/next-batch-gate`; Search Operator and SEO Architect responsibilities | One eligible action or supported hold, including winner/intent overlap check. No new page from a tool suggestion alone. |
+| Opportunity/branch selection | `.agents/skills/next-batch-gate`; Search Operator and SEO Architect responsibilities | One eligible action or supported hold naming missing data, threshold, owner and review date; read the report's hold diagnostics and maximum-three ranked opportunities, including winner/intent overlap check. No new page from a tool suggestion alone. |
 | A named research gap | Installed local upstream `keyword-research`, `keyword-clustering`, `competitor-analysis`, `competitive-landscape`, `ai-prompt-research`, `ai-visibility-audit` or `local-seo` | Use only the matching workflow with available approved tools; hold its excluded steps. Skip broad `seo-audit` for an already diagnosed defect. |
 | Internal links / conversion / snippet diagnosis | `.agents/skills/internal-link-targeting`, `.agents/skills/page-cro`, `.agents/skills/serp-ctr-title-rewrite` | Select only the affected helper. Title/meta changes retain the current measurement gate; none grants expansion. |
 | Verified reader copy / facts / structured data | Content gate and `docs/style/`; `.agents/skills/content-quality-rubric`, `.agents/skills/owner-proof-integrity`, `.agents/skills/property-truth-regeneration`, `.agents/skills/schema-markup` | Load the fact/markup helper only when affected. Rubric is advisory; generic global SEO claims never override verified sources or schema eligibility. |
