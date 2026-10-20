@@ -21,7 +21,9 @@ this reference does not create a parallel loop or override either contract.
 
 ## Weekly Inputs
 
-Read these in order before opening SEO source work:
+Consult the applicable diagnostic inputs below in order for the selected route.
+Batch and growth decisions retain required proof/attack work; accuracy repairs
+and tiny fixes retain their bounded routes.
 
 1. `docs/status/next-batch.md` for the live branch gate.
 2. A dated weekly search operator receipt from `seascape-analytics`; do not use a
