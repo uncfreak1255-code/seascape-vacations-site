@@ -1,5 +1,8 @@
 ---
-description: Writing role that owns source edits for the chosen batch.
+name: page-builder
+description: Writing role for an active SEO batch. Use to edit site source (src/, src/_data/, src/_redirects) and supporting docs from a written brief — never for strategy, critique, or verification.
+tools: Read, Glob, Grep, Edit, Write, Bash
+model: sonnet
 ---
 
 # Page Builder
@@ -28,7 +31,9 @@ This is the writing role. It owns source edits for the chosen batch.
 2. make the source edits
 3. update the brief or portfolio doc if the batch changes routing truth
 4. run the release checks
-5. hand off to Voice Editor and Release Gate before promotion
+5. follow the review route in `docs/process/batch-workflow.md`: existing-guide
+   accuracy repairs use one combined targeted reviewer; other batches hand off
+   to Voice Editor and Release Gate before promotion
 
 ## Hard Rules
 
