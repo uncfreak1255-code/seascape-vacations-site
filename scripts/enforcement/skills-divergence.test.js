@@ -230,6 +230,20 @@ test("plugin skill package exactly mirrors the canonical .agents skill tree", ()
   assert.equal(result.ok, true);
 });
 
+test("plugin role cards exactly mirror the canonical Claude agents", () => {
+  const canonicalRoot = path.join(REPO_ROOT, ".claude", "agents");
+  const pluginRoot = path.join(REPO_ROOT, "plugins", "seascape-seo-os", "agents");
+  const names = (root) => fs.readdirSync(root).filter((name) => name.endsWith(".md")).sort();
+  assert.deepEqual(names(pluginRoot), names(canonicalRoot));
+  for (const name of names(canonicalRoot)) {
+    assert.equal(
+      fs.readFileSync(path.join(pluginRoot, name), "utf8"),
+      fs.readFileSync(path.join(canonicalRoot, name), "utf8"),
+      `${name} plugin copy must match its canonical role card`
+    );
+  }
+});
+
 test("plugin manifest version and advertised skill count match the marketplace", () => {
   const pluginManifest = JSON.parse(
     fs.readFileSync(path.join(REPO_ROOT, "plugins", "seascape-seo-os", ".claude-plugin", "plugin.json"), "utf8")
