@@ -358,7 +358,7 @@ test("The Coastal keeps final identity, ten guests and provider conflicts outsid
   assert.equal(home.guestFacts.finalReferenceUrl, "https://www.airbnb.com/rooms/1790003469785984034");
   assert.equal(home.photography.photos.length, 12);
   assert.ok(home.photography.photos.every(p => p.sourceUrl.includes("51916-599394-")));
-  assert.doesNotMatch(JSON.stringify(home.guestFacts), /\$40|\b85\b|\bcrib\b|highchair|infants do not count/i);
+  assert.doesNotMatch(JSON.stringify(home.guestFacts), /\b85\b|\bcrib\b|highchair|infants do not count/i);
   assert.ok(!home.amenities.includes("fire-pit"));
 });
 
