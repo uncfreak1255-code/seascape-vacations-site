@@ -210,9 +210,9 @@ These are starting points; the Testing section still governs required checks.
 - AI discovery, GEO/AEO, and schema work follows the Search Operator role in `.claude/agents/search-operator.md` and `docs/process/seo-competitor-operating-loop.md` for proof and attack research, plus `.agents/skills/schema-markup` for implementation rules
 - external SEO/GEO packs such as `geo-optimizer-skill`, `gtm-engineer-skills`, `searchstack-aeo`, `claude-seo`, `akii-seo-ai-search-optimizer`, and `aeo.js` are donor references only; do not install or mirror them here without a fresh `repo-dev-setup` inventory, repeated repo-specific need, and a smoke-tested win
 - AI citation monitoring and Search Console/GA4 proof systems belong in `seascape-analytics`; this repo may expose site endpoints and markup, but it must not become the measurement control plane
-- OpenSEO supplies local saved reads, project context and private reports. Its project-scoped Codex MCP allowlist and cost/ownership rules live
-  in `docs/process/openseo.md`. It does not replace the direct DataForSEO Gate 0
-  path or analytics-owned measurement receipts.
+- For SEO, start with local OpenSEO and its upstream skills. Follow
+  `docs/process/openseo.md` for paid approval and repo ownership; Analytics owns
+  measurement receipts.
 - if work writes durable state into another repo, route it through a clean
   keeper branch or PR from that repo's current `origin/main`
 
