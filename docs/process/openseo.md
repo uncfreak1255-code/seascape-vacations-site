@@ -1,14 +1,15 @@
-# OpenSEO Bounded Integration
+# Local OpenSEO — Default Seascape SEO Workflow
 
-OpenSEO is the default first read for rank-opportunity triage on queries already
-in the Seascape tracker. It gives an agent one current, project-scoped view of
+Local OpenSEO and its public upstream skills are the default SEO workflow for
+Seascape agents across all repositories, including Codex and Claude Code.
+Start with saved evidence for the task, including queries already in the tracker. It gives an agent one current, project-scoped view of
 saved rankings and landing URLs before the agent opens broader research
 surfaces. It is not the site SEO operating system, the source of current
 analytics truth, or permission to spend DataForSEO credits.
 
 ## Project Configuration
 
-The trusted-project Codex configuration in `.codex/config.toml` connects to the
+Codex user configuration and this trusted project's `.codex/config.toml` connect to the
 local OpenSEO MCP server at `http://localhost:3001/mcp`. The server is optional,
 so a stopped OpenSEO app must not block a Codex session.
 
@@ -37,6 +38,34 @@ Record the configured route and any approval result actually exposed; do not
 invent a per-call approval receipt. A new Codex session is required after this
 project configuration changes.
 
+## Cross-agent and cross-repo default
+
+The global Codex and Claude instructions select this workflow for Seascape SEO.
+Codex uses the bounded user `openseo` MCP table; Claude Code uses a user-scoped
+HTTP `openseo` server, inherited by local Code sessions in Desktop. Both use
+this Mac's existing Seascape project, not the hosted plugin's Default project.
+The shared `openseo-review` source in `sawyer-skills` defines the improvement
+loop; its existing Site/Analytics projections remain in place.
+
+The default is saved evidence → matching upstream skill → private report →
+owning-repo action → Analytics outcome readback. Apply each repo's existing
+approval, brief, review and proof requirements. This is a workflow default,
+not a new scheduler, automatic page editor or grant of spending authority.
+
+Claude's twelve free workflow tools have native allow rules. Every other tool
+in the installed 0.1.12 catalog has a native ask rule, so auto mode cannot
+silently approve paid research or other unapproved effects. Verify this catalog
+coverage again before an OpenSEO upgrade. Codex continues to exclude paid
+lookup tools from its default allowlist. For an approved paid step, make only
+the exact required capability available; approval never enables an entire pack.
+
+Agents off this Mac must report local OpenSEO unavailable and route the read
+or research step to a Mac session. They may continue independent authorized
+source work; they may not use hosted OpenSEO or an alternate paid provider as
+a silent fallback. No public tunnel, Google reconnect or authentication change
+is part of this rollout. Regular cloud chat/Cowork connections are not local
+Code sessions and do not acquire this Mac's endpoint from these settings.
+
 ## Local Authentication Boundary
 
 The local OpenSEO app can run in `local_noauth` mode. In that mode, no hosted
@@ -60,8 +89,10 @@ a `seascape-analytics` receipt.
   `docs/process/ranking-regression-rescue.md` before a page change.
 - `seascape-analytics` owns current Search Console, AI citation and mention
   measurement, prompt packs, recurring pulls, joined attribution, and receipts.
-- The direct DataForSEO MCP remains this repo's Gate 0 path for new live SERP,
-  keyword, backlink, local-entity, competitor, and AI-search research.
+- Use OpenSEO first for new SEO research after approval for the exact paid
+  run. The existing direct DataForSEO connection remains available for a
+  specifically approved capability gap; changing provider does not waive Gate 0
+  evidence, cost approval or Analytics ownership.
 - `docs/status/next-batch.md` remains the only next-batch handoff surface. Do
   not change its gate from an OpenSEO screen, MCP response, or CSV alone.
 
@@ -104,7 +135,8 @@ outside this repository; the Site roles, measurement and publication gates
 continue to govern any resulting website work.
 
 The Mac installs the public skill directories as user-scope symlinks named
-`openseo-local-<skill>` under `~/.agents/skills/`, pointing to
+`openseo-local-<skill>` under `~/.agents/skills/` for Codex and
+`~/.claude/skills/` for Claude, pointing to
 `~/Projects/open-seo-review/plugins/openseo/skills/<skill>`. Their upstream
 skill names stay unchanged. The initial source is official release 0.1.12,
 commit `89e5a00717cdf049b7c2b4e29646edb3a7d4995b`. The installed local
@@ -120,7 +152,8 @@ namespace at `http://localhost:3001/mcp` for every workflow call. The hosted
 to it when local tools are unavailable. Confirm `Seascape Vacations` and
 `seascape-vacations.com` with local `list_projects` before reading or saving.
 
-Start a Site chat to load this project configuration. The skills can use free
+Start a fresh local Codex or Claude Code session to load the user defaults.
+The Site project configuration retains the same bounded local tools. The skills can use free
 reads and private report saves now. When an upstream workflow requires a paid
 lookup or another excluded tool, stop that step and report the exact missing
 capability and cost approval required; installing a skill does not authorize
