@@ -21,7 +21,7 @@ That means:
   internal lenses, not phrases to paste into the page. Translate them into what
   a traveler would actually say, such as `quiet mornings`, `room for two
   families`, or `restaurants after the beach`.
-- Use owner-economics logic for owner pages: fee drag, rate discipline, channel mix, turnover quality, premium-week protection.
+- Use owner-economics logic while planning owner pages: fee drag, rate discipline, channel mix, turnover quality, premium-week protection. Translate those internal concepts into the owner's payout, costs, care and decisions; they are not labels to paste into visible copy.
 - Prefer route, timing, price, and operational specifics over adjectives.
 - Write as if you have skin in the result. If a recommendation would waste the reader's time or money, say so.
 - Keep reader copy in Seascape's voice, not in role-card or session voice. Sentences like `Use this when`, `Read this if`, or `Open this page if` usually mean the sentence is still a draft note, not finished public copy.
@@ -34,7 +34,7 @@ That means:
 - When comparing locations, explain who should stay where and why. Do not
   narrate the funnel with phrases such as `trip shape`, `stay base`, `booking
   path`, `named option`, `research mode`, or `right stay`.
-- Keep proof language below the hook. "This is a planning estimate, not a quote" belongs in a source/proof box, not the first paragraph.
+- Keep methodology and source language below the hook in a labeled proof box. Keep any qualification that changes the reader's decision beside the claim it qualifies.
 
 ## Owner Voice
 

@@ -1,0 +1,261 @@
+{
+  "assessments": [
+    {
+      "case_id": "rain",
+      "page_type": "Guest guide opening and two recommendations",
+      "versions": {
+        "A": {
+          "information_gain_within_facts": {
+            "grade": "strong",
+            "reason": "Gives distinct short-shower and multi-hour plans, then explains what Mote SEA and The Ringling offer."
+          },
+          "answer_first_clarity": {
+            "grade": "strong",
+            "reason": "Opens with the quick-storm versus several-wet-hours distinction."
+          },
+          "scannable_structure": {
+            "grade": "strong",
+            "reason": "Separates the two recommendations with clear labels."
+          },
+          "supported_claims": {
+            "grade": "strong",
+            "reason": "Its recommendations and descriptions stay within the shared facts."
+          },
+          "trust_author_signals": {
+            "grade": "unassessable",
+            "reason": "The excerpt supplies no author or trust details to evaluate."
+          },
+          "freshness": {
+            "grade": "unassessable",
+            "reason": "The packet gives an opening date for Mote SEA but no freshness standard or review date for this guide."
+          },
+          "relevant_next_decision": {
+            "grade": "strong",
+            "reason": "Helps choose between a nearby short-shower plan, Mote SEA, or The Ringling based on duration and group."
+          },
+          "natural_audience_appropriate_voice": {
+            "grade": "strong",
+            "reason": "Practical, direct language fits a guest planning around rain."
+          }
+        },
+        "B": {
+          "information_gain_within_facts": {
+            "grade": "strong",
+            "reason": "Adds the useful distinction between a short shower and a longer wet day, plus selection cues for each venue."
+          },
+          "answer_first_clarity": {
+            "grade": "strong",
+            "reason": "Starts with where to go for a quick storm versus several wet hours."
+          },
+          "scannable_structure": {
+            "grade": "weak",
+            "reason": "The longer paragraphs and extended emphasis on Mote make the choices harder to scan."
+          },
+          "supported_claims": {
+            "grade": "weak",
+            "reason": "Calls Mote the “current first pick” and The Ringling the “best” culture-heavy choice; the facts do not establish rankings. “The strongest indoor options are now” also adds an unsupported comparative claim."
+          },
+          "trust_author_signals": {
+            "grade": "unassessable",
+            "reason": "The excerpt supplies no author or trust details to evaluate."
+          },
+          "freshness": {
+            "grade": "weak",
+            "reason": "“Current” and “now” imply fresh comparative review, but the packet provides no such review date or evidence."
+          },
+          "relevant_next_decision": {
+            "grade": "strong",
+            "reason": "Offers concrete selection cues, including group makeup and trip duration."
+          },
+          "natural_audience_appropriate_voice": {
+            "grade": "weak",
+            "reason": "Phrases such as “weather stays ugly” and “patience level” sound more editorialized than helpful."
+          }
+        }
+      },
+      "winner": "A",
+      "supporting_quote": "“A 45-minute shower rarely needs a new itinerary. For several wet hours or a cold-front day, head toward Sarasota or UTC…”",
+      "tradeoff": "B gives a more explicit selection framework, but its unsupported superlatives weaken trust."
+    },
+    {
+      "case_id": "comparison",
+      "page_type": "Destination comparison opening and next step",
+      "versions": {
+        "A": {
+          "information_gain_within_facts": {
+            "grade": "strong",
+            "reason": "Explains the vacation-specific comparison and ties it to sleeping location, beach-day ease, total cost, and next options."
+          },
+          "answer_first_clarity": {
+            "grade": "strong",
+            "reason": "Directly states which destination suits each trip style."
+          },
+          "scannable_structure": {
+            "grade": "strong",
+            "reason": "Uses distinct paragraphs for the comparison, decision context, and next steps."
+          },
+          "supported_claims": {
+            "grade": "strong",
+            "reason": "The destination distinctions and next steps match the shared facts."
+          },
+          "trust_author_signals": {
+            "grade": "unassessable",
+            "reason": "No author credentials or broader trust signals are included."
+          },
+          "freshness": {
+            "grade": "strong",
+            "reason": "States the supplied June 2026 review date."
+          },
+          "relevant_next_decision": {
+            "grade": "strong",
+            "reason": "Tells readers to compare live homes and checkout totals for matching dates before booking."
+          },
+          "natural_audience_appropriate_voice": {
+            "grade": "strong",
+            "reason": "Clear vacation-planning language stays focused on the reader’s choice."
+          }
+        },
+        "B": {
+          "information_gain_within_facts": {
+            "grade": "strong",
+            "reason": "Covers the destination tradeoff, comparison factors, and relevant next options."
+          },
+          "answer_first_clarity": {
+            "grade": "strong",
+            "reason": "The first sentence gives a direct Bradenton-or-Sarasota answer."
+          },
+          "scannable_structure": {
+            "grade": "strong",
+            "reason": "Short paragraphs make the recommendation and actions easy to locate."
+          },
+          "supported_claims": {
+            "grade": "strong",
+            "reason": "The excerpt stays within the supplied destination and booking facts."
+          },
+          "trust_author_signals": {
+            "grade": "unassessable",
+            "reason": "No author credentials or broader trust signals are included."
+          },
+          "freshness": {
+            "grade": "strong",
+            "reason": "Includes the supplied June 2026 review date."
+          },
+          "relevant_next_decision": {
+            "grade": "strong",
+            "reason": "Directs readers to compare equivalent-date totals and then view fitting stays."
+          },
+          "natural_audience_appropriate_voice": {
+            "grade": "strong",
+            "reason": "Concise, natural language addresses vacation planning directly."
+          }
+        }
+      },
+      "winner": "B",
+      "supporting_quote": "“Choose Bradenton for a beach-focused vacation… Choose Sarasota for Siesta Key, more dining and arts, and a city-centered trip.”",
+      "tradeoff": "A gives more context on how the guide differs from homebuyer comparisons and why total trip cost matters. B delivers the decision and next steps faster."
+    },
+    {
+      "case_id": "owner",
+      "page_type": "Owner acquisition opening and inquiry next step",
+      "versions": {
+        "A": {
+          "information_gain_within_facts": {
+            "grade": "strong",
+            "reason": "Explains the service, payment cadence, reporting, review offer, what to submit, and what the owner receives."
+          },
+          "answer_first_clarity": {
+            "grade": "strong",
+            "reason": "Names the team’s role and the review request early."
+          },
+          "scannable_structure": {
+            "grade": "strong",
+            "reason": "The short lines separate the service, request, input, and process."
+          },
+          "supported_claims": {
+            "grade": "strong",
+            "reason": "The seven-home, local-team, answered-call and service claims are in the shared facts."
+          },
+          "trust_author_signals": {
+            "grade": "strong",
+            "reason": "“A real Seascape person reads every reply” supplies a specific human-process signal from the facts."
+          },
+          "freshness": {
+            "grade": "unassessable",
+            "reason": "No date or freshness-related claim appears in the excerpt."
+          },
+          "relevant_next_decision": {
+            "grade": "strong",
+            "reason": "Makes the inquiry step concrete: send a listing link or address and optionally state the concern."
+          },
+          "natural_audience_appropriate_voice": {
+            "grade": "strong",
+            "reason": "Direct, plain wording suits an owner considering a conversation."
+          }
+        },
+        "B": {
+          "information_gain_within_facts": {
+            "grade": "strong",
+            "reason": "Covers management duties, monthly payment, reporting, the review request, required input, and response process."
+          },
+          "answer_first_clarity": {
+            "grade": "strong",
+            "reason": "Begins with the owner benefit and moves directly to the service."
+          },
+          "scannable_structure": {
+            "grade": "strong",
+            "reason": "Two concise paragraphs keep the promise and next action together."
+          },
+          "supported_claims": {
+            "grade": "strong",
+            "reason": "Its team, service, answered-call, and review-process claims are supported by the shared facts."
+          },
+          "trust_author_signals": {
+            "grade": "strong",
+            "reason": "States that a real Seascape person reads the reply and returns a one-page review."
+          },
+          "freshness": {
+            "grade": "unassessable",
+            "reason": "No date or freshness-related claim appears in the excerpt."
+          },
+          "relevant_next_decision": {
+            "grade": "strong",
+            "reason": "Clearly says what to submit and what the owner will receive."
+          },
+          "natural_audience_appropriate_voice": {
+            "grade": "strong",
+            "reason": "Natural, specific language leads with the owner’s concern."
+          }
+        }
+      },
+      "winner": "B",
+      "supporting_quote": "“Know what your home earned and what needs attention before you have to ask.”",
+      "tradeoff": "A makes the seven-home scale more prominent and breaks the process into more steps; B leads with the owner benefit and is tighter."
+    }
+  ],
+  "claim_drift": [
+    {
+      "case_id": "rain",
+      "version": "B",
+      "claims": [
+        {
+          "passage": "“the strongest indoor options are now”",
+          "issue": "Unsupported comparative and freshness wording; the shared facts list options but do not rank them or establish a current comparative assessment."
+        },
+        {
+          "passage": "“Mote SEA is the current first pick”",
+          "issue": "Unsupported ranking and freshness claim."
+        },
+        {
+          "passage": "“The Ringling is the best culture-heavy rainy day choice.”",
+          "issue": "Unsupported ranking."
+        },
+        {
+          "passage": "“force beach time between bands of weather”",
+          "issue": "Introduces forecast-pattern advice not present in the shared facts."
+        }
+      ],
+      "lost_or_added_material": "A retains the factual fit distinction that The Ringling is favored for adults and older kids; B paraphrases this as a choice for groups “mostly adults or older kids,” which is close but slightly narrower."
+    }
+  ],
+  "limitations": "This is one model’s editorial assessment of short paired excerpts against the packet’s frozen facts. It is not a user study, full-page review, source verification, or evidence of SEO ranking or conversion uplift. Trust signals and freshness are only assessable to the extent provided in the excerpts and fact sheet."
+}
