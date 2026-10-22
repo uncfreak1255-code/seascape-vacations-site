@@ -1,6 +1,6 @@
 # Deferred Guide And Canonical Tranche Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> Historical plan. For current instructions and task authority, read `AGENTS.md`.
 
 **Goal:** Keep the guide winner + canonical tranche fully execution-ready while freshness is blocked, then execute it safely once `docs/status/next-batch.md` opens.
 

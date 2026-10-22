@@ -340,17 +340,7 @@ function validateTargetResponse(target, response) {
 
   if (target.path === "/property-management/") {
     const homeCountWord = catalogHomeCountWord();
-    const hasOwnerOfferSurface =
-      new RegExp(`\\b${homeCountWord} homes\\. One local team\\.`, "i").test(response.body)
-      && response.body.includes("What we do for your home")
-      && new RegExp(`Why a ${homeCountWord}-home operator`, "i").test(response.body)
-      && response.body.includes("The homes we manage")
-      && response.body.includes("Request your 48-hour revenue review")
-      && response.body.includes('name="submitter_authority" value="owner_or_authorized_representative" required')
-      && response.body.includes("I confirm I am the property owner or an authorized representative for this property.")
-      && response.body.includes("Owner statement, optional")
-      && /name=["']owner-revenue-teardown["']/.test(response.body)
-      && response.body.includes('href="#owner-cta"');
+    const hasOwnerOfferSurface = require("./owner-offer-surface")(response.body, homeCountWord);
 
     if (!hasOwnerOfferSurface) {
       throw new Error("property-management hub is missing the Waterline owner offer surface");

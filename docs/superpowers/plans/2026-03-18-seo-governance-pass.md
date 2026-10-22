@@ -1,6 +1,6 @@
 # SEO Governance Pass Implementation Plan
 
-> **For agentic workers:** REQUIRED: Use superpowers:subagent-driven-development (if subagents available) or superpowers:executing-plans to implement this plan. Steps use checkbox (`- [ ]`) syntax for tracking.
+> Historical plan. For current instructions and task authority, read `AGENTS.md`.
 
 **Goal:** Lock down homepage URL governance, reduce homepage intent dilution, and upgrade the two highest-visibility comparison guides for stronger CTR and citation readiness.
 

@@ -1,11 +1,44 @@
 ---
 name: openseo-review
-description: Use for rank-opportunity or regression triage on already-tracked Seascape queries, or when reviewing OpenSEO query, citation, competitor, or rank-tracking evidence.
+description: Use for Seascape SEO improvement loops, OpenSEO audits, keyword or competitor research, AI citation visibility, and rank-tracking regressions; preserves local evidence, owning-repo proof and paid-run approval.
 ---
 
 # OpenSEO Opportunity Review
 
 Use OpenSEO as an evidence source. Do not treat it as strategy canon or proof that a site change shipped.
+
+## Default improvement loop
+
+This is the shared Seascape SEO entry point for local Codex and Claude agents.
+Use the public upstream OpenSEO skill matching the task: coach/setup, audit,
+keyword research/clustering, competitors, local search, AI visibility/prompts,
+link prospects or report. Prefer the installed local skill paths under
+`~/.agents/skills/openseo-local-*` (Codex) or `~/.claude/skills/openseo-local-*`
+(Claude), which resolve to the official local OpenSEO release. Skills are
+workflows; their presence does not grant paid calls or website publication.
+
+1. Read the local project and saved evidence first. Confirm exact domain,
+   market, device, timestamps and any existing report before buying research.
+2. Run the matching upstream workflow with the native local `openseo` server
+   at `http://localhost:3001/mcp`. Never substitute hosted plugin tools.
+3. If a paid lookup or new check is needed, state the tool, project, inputs,
+   market/depth, estimated cost and maximum spend; obtain Sawyer's approval
+   before that exact run. If the tool remains unavailable, report the missing
+   capability rather than switching providers or broadening access silently.
+4. Save a private, dated report and a bounded recommendation. Context notes
+   use approved source facts and preserve their provenance; they are not canon.
+5. Route the action: Hub owns strategy and promotion; Analytics owns GSC/GA4,
+   attribution, AI measurement and outcome receipts; Site owns approved page,
+   schema, link and conversion changes; Ops owns services and runtime.
+6. Make authorized changes only in the owning repo under its normal gates.
+   Re-read the same evidence window or use the next already-approved review
+   to evaluate keep/revise/revert/insufficient evidence. A rank change is not
+   booking or revenue proof. Do not create a new recurring job for this loop.
+
+When local OpenSEO is unavailable, state the failed connection and route that
+step to a Mac session. Cloud sessions cannot reach this Mac through their own
+localhost. Do not expose the unauthenticated local server, reconnect Google,
+start paid research or fall back to hosted OpenSEO to hide that gap.
 
 ## Inputs
 
@@ -30,8 +63,8 @@ then existing `get_rank_tracker` configuration, results and history through the
 configured approval path. Record observation time, query, current/prior position
 and landing URL; do not trigger a fresh check. Continue with live SERP and
 competitor evidence plus the owning Analytics receipt before recommending work.
-The six saved-state reads are the allowed surface; paid lookup tools remain
-excluded. Unavailable tools or stale/missing target queries are evidence gaps,
+The configured free saved-state, context and private-report tools are the
+default surface; paid lookup tools require the exact approval above. Unavailable tools or stale/missing target queries are evidence gaps,
 not permission to start a paid run or change the measurement gate.
 
 Use the brand/citation steps below only when that evidence lane is requested

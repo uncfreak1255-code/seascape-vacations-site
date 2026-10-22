@@ -53,6 +53,7 @@ test("committed cloud env is a single-repo site machine with pinned Node", () =>
   assert.equal(env.name, "seascape-vacations-site");
   assert.equal(env.build?.dockerfile, "Dockerfile");
   assert.equal(env.enable_testing, true);
+  assert.equal(env.terminals.find((terminal) => terminal.name === "eleventy")?.command, "npm start");
   assertDockerfilePinsNvmrc(
     fs.readFileSync(dockerfilePath, "utf8"),
     fs.readFileSync(nvmrcPath, "utf8"),

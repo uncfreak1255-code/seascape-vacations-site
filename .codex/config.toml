@@ -2,7 +2,7 @@
 url = "http://localhost:3001/mcp"
 enabled = true
 required = false
-startup_timeout_sec = 5
+startup_timeout_sec = 30
 tool_timeout_sec = 60
 default_tools_approval_mode = "prompt"
 enabled_tools = [
@@ -12,6 +12,12 @@ enabled_tools = [
   "get_rank_tracker",
   "get_search_console_performance",
   "inspect_urls",
+  "get_project_context",
+  "update_project_context",
+  "list_reports",
+  "get_report",
+  "list_report_templates",
+  "save_report",
 ]
 
 [plugins."build-macos-apps@openai-curated"]

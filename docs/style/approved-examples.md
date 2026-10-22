@@ -1,6 +1,6 @@
 # Approved Examples
 
-These are reference patterns already present in the repo. Copy the thinking, not the exact sentences.
+These are editorial reference patterns, not a reusable fact bank or approval of every current sentence on the linked pages. Copy the thinking, not the exact sentences. Verify each property fact, estimate, offer and experience claim against its owning source before reuse.
 
 ## `src/guides/booking-direct-vacation-rentals.html`
 

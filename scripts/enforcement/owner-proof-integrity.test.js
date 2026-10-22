@@ -16,6 +16,12 @@ const benchmarkKey = "gulf-coast-owner-benchmark-2026";
 const benchmarkRoute = "/research/owner-fee-revenue-leak-benchmark-2026/";
 const benchmarkCanonical = `https://seascape-vacations.com${benchmarkRoute}`;
 const benchmarkAsset = ownerProofAssets[benchmarkKey];
+// Freeze expiry scenarios independently of the live asset's next source recheck.
+const expiredPricingFixture = {
+  ...benchmarkAsset,
+  pricingReviewedDate: "2026-09-17",
+  pricingStaleAfter: "2026-10-17"
+};
 const expectedTitle = "Airbnb Host Fees vs Card Processing | Seascape";
 const expectedSocialTitle = "Airbnb Host Fees vs Card Processing";
 const expectedDescription = "Compare Airbnb's published host fee with Stripe's card-processing price, see why they are not all-in equivalents, and learn how Seascape quotes each home.";
@@ -72,15 +78,15 @@ function articleObjects(contract) {
 
 test("retired owner benchmark proof has a complete blocking contract", () => {
   assert.doesNotThrow(() =>
-    assertOwnerBenchmarkProof(benchmarkAsset, new Date("2026-10-17T00:00:00Z"))
+    assertOwnerBenchmarkProof(benchmarkAsset, new Date(`${benchmarkAsset.pricingReviewedDate}T00:00:00Z`))
   );
   assert.equal(benchmarkAsset.stats.length, 0);
   assert.equal(benchmarkAsset.examples.length, 0);
   assert.ok(benchmarkAsset.proofLabels.includes("Definitions, not a payout forecast"));
   assert.equal(benchmarkAsset.proofLabels.includes("Scenario example, not a forecast"), false);
   assert.throws(
-    () => assertOwnerBenchmarkProof(benchmarkAsset, new Date("2026-11-17T00:00:00Z")),
-    /published pricing is stale after 2026-11-16/
+    () => assertOwnerBenchmarkProof(expiredPricingFixture, new Date("2026-10-18T00:00:00Z")),
+    /published pricing is stale after 2026-10-17/
   );
 });
 
@@ -89,20 +95,20 @@ test("retired-stale empty stats still fail after pricingStaleAfter while pricing
   assert.equal(benchmarkAsset.pricingStatus, "active");
   assert.equal(benchmarkAsset.stats.length, 0);
   assert.throws(
-    () => assertOwnerBenchmarkProof(benchmarkAsset, new Date("2026-11-17T00:00:00Z")),
-    /published pricing is stale after 2026-11-16/
+    () => assertOwnerBenchmarkProof(expiredPricingFixture, new Date("2026-10-18T00:00:00Z")),
+    /published pricing is stale after 2026-10-17/
   );
 });
 
 test("stale published pricing still fails when the asset is not retired-stale empty stats", () => {
   const livePricing = {
-    ...benchmarkAsset,
+    ...expiredPricingFixture,
     reuseStatus: "approved",
     staleAfter: "2026-12-01"
   };
   assert.throws(
-    () => assertOwnerBenchmarkProof(livePricing, new Date("2026-11-17T00:00:00Z")),
-    /published pricing is stale after 2026-11-16/
+    () => assertOwnerBenchmarkProof(livePricing, new Date("2026-10-18T00:00:00Z")),
+    /published pricing is stale after 2026-10-17/
   );
 });
 

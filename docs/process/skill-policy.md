@@ -251,3 +251,27 @@ evidence for this task class, not reduced-supervision or universal-model proof.
 Existing cards and larger-batch/design requirements remain. No new skill,
 plugin, agent persona or recurring job was added. See
 `docs/research/2026-10-12-seo-workflow-comparison.md`.
+
+### 2026-10-19 — dated context and archived search cleanup
+
+Agent-surface audit verdict: **KEEP** the existing active skills and role cards.
+`next-batch-gate` and Search Operator now treat the June search-growth map as
+dated context and confirm current URLs against portfolio files and source.
+Canonical and plugin copies change together. The disabled archive remains
+inactive and retains unique content; broken machine-local links are removed.
+`.ignore` excludes that archive, historical Superpowers plans, and
+`docs/archive/` from routine ripgrep searches. Read an explicit path or use
+`rg --no-ignore --hidden` for historical research. No skill is installed or
+activated.
+
+### 2026-10-19 — standalone local OpenSEO workflows
+
+Sawyer requested the upstream OpenSEO skills against the existing local
+instance, verified with a free read and private report save. The inventory found
+the existing Site MCP connection and the official skill files already present
+in the local OpenSEO release. Install those public workflows through user-scope
+symlinks, outside this repo; do not add a second repo-local skill pack.
+`docs/process/openseo.md` owns local routing and the bounded tool list. Free
+context/report tools join the existing reads; paid lookups, publication,
+deletes and new checks stay excluded. This changes tool availability, not
+Seascape strategy, measurement ownership or website publication authority.

@@ -423,7 +423,13 @@ function assertSearchDecisionBriefContract({
   }
 
   for (const briefPath of changedBriefFiles) {
-    const missingFields = findMissingGate0Fields(read(rootDir, briefPath));
+    const briefContent = read(rootDir, briefPath);
+    if (changedBriefFiles.length > 1 && !searchDecisionFiles.some(
+      (relativePath) => briefMentionsSearchDecisionFile(briefContent, relativePath)
+    )) {
+      continue;
+    }
+    const missingFields = findMissingGate0Fields(briefContent);
     if (missingFields.length === 0) {
       continue;
     }

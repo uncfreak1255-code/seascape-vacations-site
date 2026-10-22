@@ -1,10 +1,37 @@
 # Next Batch
 
+Friday pilot execution follows `docs/process/batch-workflow.md`. The current
+bounded measurement action is described in
+`docs/briefs/2026-10-18-seo-measurement-closure.md`; its private owner handoff
+tracks acknowledgement, source/release evidence and evaluation separately.
+
 ## Reread Contract
 
 - `docs/status/next-batch.md` is the only canonical reread handoff surface.
 - Every reread update must write exactly one `Reread status` line and exactly one `Concrete next move` line in `Latest Execution Read`.
 - Reread updates should be generated from a `seascape-analytics` next-batch decision receipt with `node scripts/enforcement/sync-next-batch-from-analytics-receipt.js --receipt <path>`.
+- Every hold names the missing observation or data, its numeric/observable
+  clearance threshold, one accountable owner and a dated next review. Include
+  named checks already performed; waiting without a condition that would break
+  the hold is incomplete. Unknown coverage stays unverified, distinct from zero.
+- Read the Analytics report/decision receipt's `hold_diagnostics`,
+  `ranked_opportunities` and `experiment_policy` alongside the generated status.
+  See `seascape-analytics/docs/weekly-search-funnel-runbook.md` for the format.
+  Before those fields are available, record the four hold fields explicitly in
+  the existing private pilot handoff. The current sync script renders the legacy
+  status block; it does not copy the new sections automatically.
+- For each held cluster, include impressions, `OWNER_IMPRESSION_GATE` (1000),
+  window length and equivalent volume weeks at the normalized weekly rate.
+  More than eight volume weeks is `structurally blocked`: use permissioned owner
+  intake or evidence for existing-page fixes. Volume weeks are not a forecast;
+  rolling-window impressions do not accumulate toward the shipping gate.
+- Carry at most three ranked opportunities, each with directional revenue lever
+  (never dollar lift), evidence strength, cheapest test, kill rule, four-to-six-week
+  time box, owner and status. Reuse/deduplicate existing proposals. These are
+  evidence requests until the owning gate and brief permit a change.
+- At most two experiments may be live; retain the stricter single unresolved
+  Friday pilot limit. Read the existing private pilot handoff before starting
+  one. Unknown live counts block starts; a ranked opportunity grants no start.
 - Allowed reread statuses:
   - `blocked by freshness`
   - `fresh but below threshold`
@@ -16,13 +43,13 @@
 
 ## Latest Execution Read
 
-Run date: 2026-10-12.
+Run date: 2026-10-18.
 
 The targeted joined operator read was executed in `seascape-analytics` and
 rendered here from its machine-readable next-batch decision receipt.
 
-- Requested last-7-complete-day window: 2026-10-03 to 2026-10-09.
-- Latest BigQuery GSC `data_date`: 2026-10-09.
+- Requested last-7-complete-day window: 2026-10-10 to 2026-10-16.
+- Latest BigQuery GSC `data_date`: 2026-10-16.
 - Site work gate: `clear` - joined GSC + GA4 read covers the requested window.
 - Reread status: `fresh but below threshold`.
 - Concrete next move: owner cluster cannot clear by waiting - qualify one owner-direct, permissioned signal (see the Owner-Direct Intake Escalation section in seascape-vacations-site/docs/status/next-batch.md and seascape-vacations-site/docs/status/owner-direct-intake-policy.md). Do not use Airbnb or Vrbo host messaging; qualification is not a lead, named candidate state does not belong in the public site repo, and any one-to-one message still requires Sawyer's separate approval.
@@ -33,24 +60,24 @@ Cluster read from the analytics receipt:
 
 | cluster | pages | gsc_clicks | gsc_impressions | gsc_ctr | gsc_position | ga4_sessions |
 |---|---:|---:|---:|---:|---:|---:|
-| brand | 1 | 1 | 72 | 1.39% | 12.89 | 182 |
-| catalog | 1 | 0 | 30 | 0.00% | 12.03 | 151 |
-| guide_support | 1 | 0 | 7 | 0.00% | 8.57 | 2 |
-| guide_winners | 4 | 29 | 2761 | 1.05% | 5.27 | 70 |
-| owner_hub | 1 | 0 | 30 | 0.00% | 6.13 | 4 |
-| owner_money | 4 | 0 | 74 | 0.00% | 11.70 | 0 |
-| owner_support | 1 | 0 | 7 | 0.00% | 9.00 | 0 |
-| property_pages | 1 | 0 | 5 | 0.00% | 7.60 | 27 |
-| stay_money | 2 | 0 | 21 | 0.00% | 6.24 | 22 |
-| stay_support | 2 | 0 | 27 | 0.00% | 15.26 | 16 |
+| brand | 1 | 5 | 109 | 4.59% | 12.96 | 67 |
+| catalog | 1 | 0 | 36 | 0.00% | 7.44 | 67 |
+| guide_support | 1 | 0 | 11 | 0.00% | 8.55 | 1 |
+| guide_winners | 4 | 31 | 2606 | 1.19% | 5.12 | 50 |
+| owner_hub | 1 | 0 | 56 | 0.00% | 11.43 | 3 |
+| owner_money | 4 | 0 | 86 | 0.00% | 11.36 | 0 |
+| owner_support | 1 | 0 | 0 | 0.00% | 0.00 | 0 |
+| property_pages | 1 | 0 | 5 | 0.00% | 8.00 | 1 |
+| stay_money | 2 | 0 | 8 | 0.00% | 21.13 | 5 |
+| stay_support | 2 | 0 | 14 | 0.00% | 30.71 | 1 |
 
 SEO queue read from the analytics receipt:
 
 | queue_bucket | pages | gsc_clicks | gsc_impressions | ga4_sessions |
 |---|---:|---:|---:|---:|
-| measurement issue | 1 | 22 | 1638 | 37 |
-| too thin to call | 15 | 1 | 303 | 411 |
-| wait | 2 | 7 | 1093 | 26 |
+| measurement issue | 1 | 19 | 1518 | 27 |
+| too thin to call | 14 | 0 | 263 | 79 |
+| wait | 3 | 17 | 1150 | 89 |
 
 Do not open a new owner, stay, guide, GEO, or SEO expansion branch from this read.
 If a tracked winner or money page has regressed, use `docs/process/ranking-regression-rescue.md` for a bounded rescue brief instead of waiting passively.
@@ -90,6 +117,22 @@ If a tracked winner or money page has regressed, use `docs/process/ranking-regre
 9. if the AMI stay winners clear `>= 1000` impressions but still show `stay_view_property_clicks = 0`, open `stay-money-cro-round-2` instead of expansion
 10. if any tracked page has GSC impressions `< 100` in the 7-day window, treat that page as too thin to call and do not let it drive the branch choice
 11. keep Phase 4 and other entity-expansion work frozen unless the measured gates above move
+
+## Hold follow-up requirements
+
+For the dated October 18 hold above, the next review is **2026-10-23**, owned by
+**seascape-analytics** for the source readback. Missing observation: reverified
+complete GSC/GA4 coverage and branch-qualified evidence. Clearance threshold:
+the Analytics receipt must cover the requested window and explicitly say
+`open next batch` for expansion; a numeric impression threshold alone is
+insufficient. Keep the current dated read until a verified receipt replaces it.
+
+For alternate evidence, **seascape-hub** owns a real permissioned owner-intake
+signal meeting the existing validation standard; **seascape-vacations-site**
+owns existing-page fixes supported by the rescue/defect route. Both report their
+missing observation and acceptance threshold at the **2026-10-23** pilot review.
+Qualification, test forms, outreach and impressions are not owner demand or
+bookings. No new expansion, send or experiment is authorized by this follow-up.
 
 ## Owner-Direct Intake Escalation
 

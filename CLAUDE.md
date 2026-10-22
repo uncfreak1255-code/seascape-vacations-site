@@ -12,9 +12,12 @@ Use its "Load context for the task" routes after checking source currency.
 Load the matching branches before their actions; the Claude delta does not
 require reading unrelated SEO, design or measurement documents at startup.
 
-- Skills: Claude loads `.claude/skills/<name>`, a relative link to the
-  maintained source in `.agents/skills/<name>`; both resolve to one procedure
-  (`AGENTS.md` -> Agent Skills lists the per-skill routing lines).
+- Skills: shared `.claude/skills/<name>` entries link to the maintained
+  `.agents/skills/<name>` source. The six Claude-only UI craft skills are
+  real directories declared in `.agents/skills-divergence.json`; they remain
+  optional under the Site design rules. Respect each skill's invocation policy
+  and applicable user skill overrides. A displayed or installed skill is not
+  proof that its body loaded or its procedure ran.
 - SEO role cards live in `.claude/agents/`. Select the task route in
   `docs/process/batch-workflow.md`; source-backed existing-guide repairs use
   one lead plus one targeted reviewer. `.claude/settings.json` holds this
@@ -35,61 +38,28 @@ and Content Gate in `AGENTS.md` before public-copy work.
 ## GBrain Search Guidance (local, optional)
 <!-- gstack-gbrain-search-guidance:start -->
 
-**Applies only if GBrain is set up on the machine you're running on.** The pin
-and the local corpora below are **machine-local, not committed**. Before
-relying on any `gbrain` command, confirm it is wired here:
+GBrain is machine-local and optional. The decisions lane below works whenever
+the `gbrain` MCP tool or `gbrain` CLI is available; repo code search also needs
+a `.gbrain-source` file here. Without them, use Grep/Glob. Two things live in
+the brain, reached two ways:
 
-```
-test -f .gbrain-source && gbrain --version >/dev/null 2>&1 \
-  && echo "gbrain wired" || echo "gbrain NOT set up here — use Grep/Glob"
-```
+- **Decisions and dated context** (the `session-briefs` facts lane). Before
+  answering "what did we decide" or "what do we know about X", or asserting a
+  non-trivial detail about a person, project, or past change, read it first:
+  - Claude: the `gbrain` MCP tool `recall` with `source_id: "session-briefs"`
+    plus `entity: projects/<name>` or `grep: "<text>"`. A repo-scoped
+    connection keeps its own facts; if it refuses that source, use the CLI.
+  - Codex or shell: `GBRAIN_SOURCE=session-briefs gbrain recall "<topic>" --json`
+    or `gbrain recall <entity-slug> --source session-briefs --json`.
+  Save a durable decision the same way (`remember` with `source_id:
+  "session-briefs"`, date, and provenance).
+- **This repo's code and docs** (the source pinned by `.gbrain-source`).
+  `gbrain search "<terms>"` or `gbrain query "<question>"` for semantic
+  questions with no exact identifier; `gbrain code-def`, `code-refs`,
+  `code-callers` for symbols. Grep is still right for exact strings and globs.
 
-If that prints "NOT set up," ignore this whole section and use Grep/Glob. Do
-not trust worktree pinning that is not present.
-
-When GBrain *is* set up, prefer it over Grep for semantic questions or when you
-don't know the exact identifier yet.
-
-**This worktree is pinned to a worktree-scoped code source** via the
-`.gbrain-source` file in the repo root (kubectl-style context).
-`gbrain code-def`, `code-refs`, `code-callers`, `code-callees`, `search`, and
-`query` from anywhere under this worktree route to that source by default —
-no `--source` flag needed (gbrain >= 0.41.38.0; on older gbrain the call-graph
-commands need `--source "$(cat .gbrain-source)"`). Conductor sibling worktrees
-of the same repo each have their own pin and their own indexed pages, so
-semantic results match the code on disk here.
-
-Call-graph queries (`code-callers`/`code-callees`) also need the graph to be
-built first. If they return `count: 0`, use the approved local GBrain graph
-build/sync flow for this machine before trusting the result. This only works if
-this source's gbrain schema pack extracts code symbols; on a non-code-aware
-pack the graph can stay empty and report a WARN. `code-def`/`code-refs` need
-the same extraction.
-
-Two indexed corpora available via the `gbrain` CLI:
-- This worktree's code (auto-pinned via `.gbrain-source`).
-- `~/.gstack/` curated memory (registered as `gstack-brain-<user>` source via
-  the existing federation pipeline).
-
-Prefer gbrain when:
-- "Where is X handled?" / semantic intent, no exact string yet:
-    `gbrain search "<terms>"` or `gbrain query "<question>"`
-- "Where is symbol Y defined?" / symbol-based code questions:
-    `gbrain code-def <symbol>` or `gbrain code-refs <symbol>`
-- "What calls Y?" / "What does Y depend on?":
-    `gbrain code-callers <symbol>` / `gbrain code-callees <symbol>`
-- "What did we decide last time?" / past plans, retros, learnings:
-    `gbrain search "<terms>" --source gstack-brain-<user>`
-
-Grep is still right for known exact strings, regex, multiline patterns, and
-file globs. Refresh the local GBrain source after meaningful code changes only
-through the approved local setup/sync flow for this machine. For ongoing
-auto-sync across all worktrees, use the repo-approved autopilot setup rather
-than starting ad hoc sync/remediation commands.
-
-Safety: don't run local GBrain source sync or graph-build commands while
-`gbrain autopilot` is active. Prefer registering user repos with `gbrain
-sources add --path <dir>` (no `--url`): URL-managed sources can auto-reclone,
-and the sync code walk for them requires an explicit `--allow-reclone` opt-in.
+Zero results are not proof of absence: an unsynced source or unbuilt graph
+returns nothing. Do not run `gbrain sync` or graph builds from a task session;
+the machine's approved sync lane owns that.
 
 <!-- gstack-gbrain-search-guidance:end -->

@@ -1,5 +1,8 @@
 ---
-description: Read-only critique pass for customer-facing copy.
+name: voice-editor
+description: Read-only critique pass for changed customer-facing copy. Use after Page Builder edits reader copy and before Release Gate — flags SEO sludge, claim risk, banned patterns, and role-card framing against docs/style. Makes no edits.
+tools: Read, Glob, Grep
+model: sonnet
 ---
 
 # Voice Editor

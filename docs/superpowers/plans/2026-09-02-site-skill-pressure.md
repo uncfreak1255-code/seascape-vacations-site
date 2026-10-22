@@ -1,6 +1,6 @@
 # Site Skill Pressure Implementation Plan
 
-> **For agentic workers:** REQUIRED: Use superpowers:subagent-driven-development (if subagents available) or superpowers:executing-plans to implement this plan. Steps use checkbox (`- [ ]`) syntax for tracking.
+> Historical plan. For current instructions and task authority, read `AGENTS.md`.
 
 **Goal:** Reconcile the portable Site plugin with the canonical 16 skills and restore at least 500 tokens of live Site skill-list headroom without installing external packs.
 

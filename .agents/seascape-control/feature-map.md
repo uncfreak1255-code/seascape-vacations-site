@@ -1,6 +1,6 @@
 # Seascape control feature map
 
-Source of truth for `seascape-control-verify`. One map id per run. Do not duplicate this map beside the skill or in Notion.
+Reference map of site features and how to prove each. The skill that once ran it was retired on 2026-10-21; prove a feature with this repo's declared tests and a direct readback. Do not duplicate this map in Notion.
 
 ## site
 
@@ -12,7 +12,7 @@ Source of truth for `seascape-control-verify`. One map id per run. Do not duplic
 
 ## Hostaway
 
-Do **not** walk Book CTA → Hostaway in `seascape-control-verify`. Use `mobile-booking-handoff-proof` (observer, stop before submit).
+Do **not** walk Book CTA → Hostaway when proving a feature. Use `mobile-booking-handoff-proof` (observer, stop before submit).
 
 ## hub
 
