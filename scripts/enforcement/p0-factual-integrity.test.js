@@ -18,7 +18,11 @@ const {
   assertSavingsSourced,
   assertLiveQuotesPresent,
   unsourcedPriceAdvantages,
-  assertNoUnsourcedPriceAdvantages
+  assertNoUnsourcedPriceAdvantages,
+  scanSrcClaimCandidates,
+  assertClaimCandidatesCovered,
+  assertClaimBaselineRatchet,
+  loadClaimBaseline
 } = require("./sourced-claims");
 
 test("Sarasota home copy does not claim walkability", () => {
@@ -189,6 +193,7 @@ test("a missing sourced-claim row for a savings percent fails", () => {
     "leftover best-time savings percents stay blocked"
   );
   assert.doesNotThrow(() => assertSavingsSourced(hits, claims));
+  assert.doesNotThrow(() => assertClaimCandidatesCovered(scanSrcClaimCandidates(), claims));
 
   const planted = scanSavingsHitsInText(
     "Book direct and save 10-15% versus Airbnb",
@@ -510,4 +515,30 @@ test("AMI vs Siesta guide referrals to near-island stays do not promise beachfro
 
   assert.doesNotMatch(source, /small kids can wade without you hovering/i);
   assert.doesNotMatch(source, /without you hovering/i);
+});
+
+test("adding a new claim baseline entry fails without a reviewed tag change", () => {
+  const { rows } = loadClaimBaseline();
+  const planted = [
+    ...rows,
+    {
+      hash: "0".repeat(64),
+      sentence: "Guests pay a fraction of the OTA price",
+      file: "src/guides/planted.html",
+      slug: "",
+      tag: "non-claim",
+      reason: "plant"
+    }
+  ];
+  assert.throws(
+    () => assertClaimBaselineRatchet(planted, rows),
+    /claimCandidateBaseline\.json can only shrink/
+  );
+  const retagged = rows.map((row, index) => (
+    index === 0
+      ? { ...row, tag: row.tag === "non-claim" ? "suspected-claim" : "non-claim", reason: "reviewed tag change" }
+      : row
+  ));
+  assert.doesNotThrow(() => assertClaimBaselineRatchet(retagged, rows));
+  assert.doesNotThrow(() => assertClaimBaselineRatchet(rows.slice(1), rows));
 });
