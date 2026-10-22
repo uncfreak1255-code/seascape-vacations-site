@@ -59,7 +59,8 @@
     for (i = 0; i < p.infants; i += 1) list.push({ kind: 'infant', size: 0, label: 'Infant ' + (i + 1) });
     return list;
   }
-  function free(beds, kinds, slots, noTop) { return beds.filter(function (b) { return kinds.indexOf(b.kind) !== -1 && b.cap - b.used.length >= slots && !(noTop && b.top); }).sort(function (a, b) { return a.rank - b.rank || a.used.length - b.used.length; })[0]; }
+  function occupied(bed) { return bed.used.reduce(function (n, person) { return n + person.size; }, 0); }
+  function free(beds, kinds, slots, noTop) { return beds.filter(function (b) { return kinds.indexOf(b.kind) !== -1 && b.cap - occupied(b) >= slots && !(noTop && b.top); }).sort(function (a, b) { return a.rank - b.rank || occupied(a) - occupied(b); })[0]; }
   function place(bed, person, note) { bed.used.push(person); person.bed = bed; if (note) person.note = note; }
   function assign(party, home) {
     var beds = homeBeds(home);
@@ -82,7 +83,6 @@
     list.filter(function (x) { return x.kind === 'kid'; }).forEach(function (k) {
       var young = k.age !== null && k.age < 6;
       var b = free(beds, ['bunk-twin', 'twin', 'trundle'], 1, young) || free(beds, ['bunk-full', 'bunk-queen', 'sofa'], 1, young) || free(beds, ['full', 'queen', 'king'], 1, young);
-      if (!b && young) { var parents = beds.filter(function (x) { return x.used.length && x.used[0].kind !== 'kid' && x.cap >= 2; }).sort(function (x, y) { return x.rank - y.rank; })[0]; if (parents) { parents.used.push(k); k.bed = parents; k.note = 'with ' + parents.used[0].label; return; } }
       if (b) place(b, k, b.used.length > 0 ? 'sharing a ' + b.label : ''); else unplaced.push(k);
     });
     var cribs = beds.filter(function (b) { return b.kind === 'crib'; });
@@ -103,7 +103,7 @@
     else if (unplaced.length || (home.confirmGuestsAbove && total > home.confirmGuestsAbove)) verdict = 'confirm';
     var notes = [];
     if (verdict === 'over') notes.push({ kind: 'capacity', text: 'This home hosts up to ' + capacity + ' guests; your group is ' + total + '. Compare the collection or ask about two homes.' });
-    else if (unplaced.length) notes.push({ kind: 'beds', text: 'The listed beds sleep ' + (total - unplaced.length) + ' of your ' + total + '. Ask us how the rest of the group sleeps before booking.' });
+    else if (unplaced.length) notes.push({ kind: 'beds', text: 'The listed beds sleep ' + (total - unplaced.reduce(function (n, person) { return n + person.size; }, 0)) + ' of your ' + total + '. Ask us how the rest of the group sleeps before booking.' });
     if (home.confirmGuestsAbove && total > home.confirmGuestsAbove) notes.push({ kind: 'confirm', text: 'Groups above ' + home.confirmGuestsAbove + ' guests: confirm the group size with us before booking.' });
     if (home.extraGuestsAbove && total > home.extraGuestsAbove) notes.push({ kind: 'fee', text: 'Additional-guest charges apply above ' + home.extraGuestsAbove + ' guests. Include everyone when checking the total.' });
     var shared = list.filter(function (x) { return x.note && /sharing/.test(x.note); }).length;
@@ -143,7 +143,7 @@
       html += '</ul></details>';
     }
     if (r.notes.length) { html += '<ul class="g-fit-notes">' + r.notes.map(function (n) { return '<li class="g-fit-note-' + n.kind + '">' + esc(n.text) + '</li>'; }).join('') + '</ul>'; }
-    if (opts.link) html += '<a class="g-inline-link" href="' + esc(opts.link) + '">See ' + esc(r.name) + ' <span aria-hidden="true">→</span></a>';
+    if (opts.link) html += '<a class="g-inline-link" data-trip-link href="' + esc(opts.link) + '">See ' + esc(r.name) + ' <span aria-hidden="true">→</span></a>';
     html += '</article>';
     return html;
   }
@@ -172,7 +172,15 @@
           out.insertAdjacentHTML('afterbegin', '<p class="g-fit-summary">' + (fits ? fits + ' of ' + results.length + ' homes fit ' + party.total + ' guests.' : 'No single home hosts ' + party.total + ' guests. Ask us about two homes near each other.') + '</p>');
         }
         var guestsSelect = doc.querySelector(rootEl.dataset.guestsSelect || '#trip-guests');
-        if (guestsSelect && party.total) { var v = String(Math.min(party.total, 17)); if (Array.prototype.some.call(guestsSelect.options, function (o) { return o.value === v; })) guestsSelect.value = v; }
+        if (guestsSelect && party.total) {
+          var v = String(Math.min(party.total, 17));
+          // Preserve oversized groups so the existing property capacity guard can block checkout.
+          if (!Array.prototype.some.call(guestsSelect.options, function (o) { return o.value === v; })) {
+            var option = doc.createElement('option'); option.value = v; option.textContent = v + ' guests'; guestsSelect.appendChild(option);
+          }
+          guestsSelect.value = v;
+          guestsSelect.dispatchEvent(new Event(single ? 'change' : 'group-fit-change', { bubbles: true }));
+        }
         if (!fromMemory) track('group_fit_submit', { adults: party.adultsTotal, children: party.kids.length, infants: party.infants, pet: party.pet ? 1 : 0, total: party.total, scope: single ? homes[0].slug : 'collection', top_verdict: results[0].verdict });
       }
       form.addEventListener('submit', function (e) { e.preventDefault(); run(false); });
