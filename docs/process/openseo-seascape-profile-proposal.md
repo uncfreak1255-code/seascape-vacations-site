@@ -1,8 +1,8 @@
 # OpenSEO Seascape profile proposal
 
-Status: draft for Sawyer's review, 2026-10-20. This file proposes positioning
-and key pages only. It does not update OpenSEO, change a public page, or
-authorize implementation.
+Status: approved for local OpenSEO projection by Sawyer on 2026-10-22.
+The positioning and eight key pages below define that bounded projection.
+This changes no public page, listing, research budget or schedule.
 
 ## Evidence and scope
 
@@ -28,10 +28,13 @@ batch, pilot, or research spend.
 [context/market-position.md:61-71](https://github.com/uncfreak1255-code/seascape-hub/blob/3d562c67bc1a45708c6c19c5f3215769abd9cad1/context/market-position.md#L61-L71),
 [MAP.md:20-29](https://github.com/uncfreak1255-code/seascape-hub/blob/3d562c67bc1a45708c6c19c5f3215769abd9cad1/MAP.md#L20-L29)
 
-## Proposed positioning
+## Approved positioning
 
-Proposed text for OpenSEO's `positioning` section; citations are evidence
-annotations to retain with the proposal.
+Text for OpenSEO's `positioning` section; citations retain its provenance.
+Current Hub `origin/main` at `a1634f19d09f6d1486d6ea4314b98f004053eb84`
+was checked on October 22 against the pinned excerpts below. The intervening
+property changes concern pool heat and do not change the positioning claims.
+The original evidence dates remain unchanged.
 
 Seascape Vacations is a boutique, locally owned vacation-rental business with
 seven live homes in Bradenton and Sarasota, Florida. The website serves
@@ -60,15 +63,16 @@ amenity and capacity promises are unsuitable.
 [context/seascape-properties.md:22-32](https://github.com/uncfreak1255-code/seascape-hub/blob/3d562c67bc1a45708c6c19c5f3215769abd9cad1/context/seascape-properties.md#L22-L32),
 [context/seascape-properties.md:415-419](https://github.com/uncfreak1255-code/seascape-hub/blob/3d562c67bc1a45708c6c19c5f3215769abd9cad1/context/seascape-properties.md#L415-L419)
 
-## Proposed key pages
+## Approved key pages
 
-The roles and shortlist are editorial proposals, not measured rankings of
+The roles and shortlist are editorial choices, not measured rankings of
 business value. Every URL or route is present in the cited Hub file; the
 project domain above supplies the origin for relative routes. Older project
 files supply URL identity only. Their claims about being live, indexed,
 high-performing, or conversion-producing are not carried into this profile.
-Before any later OpenSEO update, recheck the selected routes in Site and
-preserve any existing project context.
+Before applying this projection, recheck the selected routes in current Site
+source and preserve every existing project-context section, competitor and
+research-log entry. A source route is not live or commercial proof.
 
 | URL | Proposed role | Topic and reason to include | Hub source and evidence date |
 | --- | --- | --- | --- |
@@ -100,7 +104,10 @@ preserve any existing project context.
 
 ## Approval scope
 
-Sawyer's review is for the proposed positioning and eight-page shortlist.
-Approval of this document alone does not write to OpenSEO or change Hub canon,
-listings, public pages, measurement gates, authentication, or research budgets.
-No OpenSEO update is part of this task.
+Sawyer's October 22 instruction to finish this existing proposal authorizes
+merging this document and applying its positioning and eight-page shortlist to
+the existing local Seascape OpenSEO project. Verify the project/domain and read
+current context before the bounded update; read back exact content afterward.
+This authorizes no Hub-canon, listing, public-page, measurement-gate,
+authentication, research-budget or schedule change. Writing preferences were
+not part of this proposal and remain outside this projection.
