@@ -10,6 +10,28 @@ tracks acknowledgement, source/release evidence and evaluation separately.
 - `docs/status/next-batch.md` is the only canonical reread handoff surface.
 - Every reread update must write exactly one `Reread status` line and exactly one `Concrete next move` line in `Latest Execution Read`.
 - Reread updates should be generated from a `seascape-analytics` next-batch decision receipt with `node scripts/enforcement/sync-next-batch-from-analytics-receipt.js --receipt <path>`.
+- Every hold names the missing observation or data, its numeric/observable
+  clearance threshold, one accountable owner and a dated next review. Include
+  named checks already performed; waiting without a condition that would break
+  the hold is incomplete. Unknown coverage stays unverified, distinct from zero.
+- Read the Analytics report/decision receipt's `hold_diagnostics`,
+  `ranked_opportunities` and `experiment_policy` alongside the generated status.
+  See `seascape-analytics/docs/weekly-search-funnel-runbook.md` for the format.
+  Before those fields are available, record the four hold fields explicitly in
+  the existing private pilot handoff. The current sync script renders the legacy
+  status block; it does not copy the new sections automatically.
+- For each held cluster, include impressions, `OWNER_IMPRESSION_GATE` (1000),
+  window length and equivalent volume weeks at the normalized weekly rate.
+  More than eight volume weeks is `structurally blocked`: use permissioned owner
+  intake or evidence for existing-page fixes. Volume weeks are not a forecast;
+  rolling-window impressions do not accumulate toward the shipping gate.
+- Carry at most three ranked opportunities, each with directional revenue lever
+  (never dollar lift), evidence strength, cheapest test, kill rule, four-to-six-week
+  time box, owner and status. Reuse/deduplicate existing proposals. These are
+  evidence requests until the owning gate and brief permit a change.
+- At most two experiments may be live; retain the stricter single unresolved
+  Friday pilot limit. Read the existing private pilot handoff before starting
+  one. Unknown live counts block starts; a ranked opportunity grants no start.
 - Allowed reread statuses:
   - `blocked by freshness`
   - `fresh but below threshold`
@@ -95,6 +117,22 @@ If a tracked winner or money page has regressed, use `docs/process/ranking-regre
 9. if the AMI stay winners clear `>= 1000` impressions but still show `stay_view_property_clicks = 0`, open `stay-money-cro-round-2` instead of expansion
 10. if any tracked page has GSC impressions `< 100` in the 7-day window, treat that page as too thin to call and do not let it drive the branch choice
 11. keep Phase 4 and other entity-expansion work frozen unless the measured gates above move
+
+## Hold follow-up requirements
+
+For the dated October 18 hold above, the next review is **2026-10-23**, owned by
+**seascape-analytics** for the source readback. Missing observation: reverified
+complete GSC/GA4 coverage and branch-qualified evidence. Clearance threshold:
+the Analytics receipt must cover the requested window and explicitly say
+`open next batch` for expansion; a numeric impression threshold alone is
+insufficient. Keep the current dated read until a verified receipt replaces it.
+
+For alternate evidence, **seascape-hub** owns a real permissioned owner-intake
+signal meeting the existing validation standard; **seascape-vacations-site**
+owns existing-page fixes supported by the rescue/defect route. Both report their
+missing observation and acceptance threshold at the **2026-10-23** pilot review.
+Qualification, test forms, outreach and impressions are not owner demand or
+bookings. No new expansion, send or experiment is authorized by this follow-up.
 
 ## Owner-Direct Intake Escalation
 
