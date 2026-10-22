@@ -248,6 +248,26 @@ module.exports = function(eleventyConfig) {
   // Simple title filter - just appends site name if not already there
   eleventyConfig.addFilter("propertySchemaAmenities", require("./scripts/regenerate-property-surfaces").renderSchemaAmenityLabels);
   eleventyConfig.addFilter("numberWord", require("./scripts/enforcement/home-count-word").numberWord);
+  // Group-fit planner input: only the facts the planner is allowed to speak
+  // from, taken from property truth. No availability, no price.
+  eleventyConfig.addFilter("groupFitData", (properties) => {
+    const list = Array.isArray(properties) ? properties : [properties];
+    return JSON.stringify(list.map((p) => {
+      const facts = p.guestFacts || {};
+      return {
+        slug: p.slug,
+        name: p.name,
+        guests: p.guests,
+        amenities: p.amenities || [],
+        sleeping: facts.sleeping || [],
+        pets: facts.pets ? { status: facts.pets.status, text: facts.pets.text } : null,
+        poolHeat: facts.poolHeat || "",
+        extraGuestsAbove: facts.extraGuestsAbove || null,
+        confirmGuestsAbove: facts.confirmGuestsAbove || null,
+      };
+    })).replace(/</g, "\\u003c");
+  });
+
   eleventyConfig.addFilter("propertyBySlug", (properties, slug) => {
     const property = properties.find((entry) => entry.slug === slug);
     if (!property) throw new Error(`Unknown property slug: ${slug}`);

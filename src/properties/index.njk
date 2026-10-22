@@ -12,6 +12,7 @@ headExtra: |
   <link rel="stylesheet" href="/css/catalog.css">
   <script defer src="/assets/js/conversion-tracking.js"></script>
   <script defer src="/assets/js/catalog.js"></script>
+  <script defer src="/assets/js/group-fit-loader.js"></script>
 ---
 {% from "partials/ui-icon.njk" import uiIcon %}
 <script type="application/ld+json">
@@ -66,6 +67,8 @@ headExtra: |
     <p id="trip-status" class="catalog-trip-status" aria-live="polite">Compare homes here. Check availability and the full total on our booking page.</p>
     <button id="clear-dates" class="catalog-text-button" type="button" hidden>My dates are flexible</button>
   </section>
+
+  {% set groupFitHomes = properties %}{% set groupFitId = "catalog-fit" %}{% set groupFitGuestsSelect = "#trip-guests" %}{% include "partials/group-fit.njk" %}
 
   <section class="catalog-collection" aria-labelledby="catalog-heading">
     <div class="catalog-collection-heading">
