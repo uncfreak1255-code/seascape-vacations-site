@@ -2297,6 +2297,30 @@
       "slug": "",
       "tag": "suspected-claim",
       "reason": "leftover live price claim previously rewritten without copy approval"
+    },
+    {
+      "hash": "31ea7a463c8042921e7785b3d98ebf20c03fc43d05e7053efeea56d9a66919c1",
+      "sentence": "15%, 20%, 25%, or fee terms",
+      "file": "src/_includes/partials/owner-evaluation-form.njk",
+      "slug": "",
+      "tag": "non-claim",
+      "reason": "Sawyer-approved 2026-10-22 extraction repair: Form input examples requesting owner-supplied fee terms; no asserted fee."
+    },
+    {
+      "hash": "d06eec677f3bd5d40082641990189247e96b2aa7417da46a160c3348ab87ff9a",
+      "sentence": "We've written complete guides to nearby areas and specific experiences: Bradenton vs. Sarasota: Complete Comparison Guide 50 Best Things to Do in Bradenton, Florida Complete Guide to Anna Maria Island Beaches Best Restaurants & Dining on Anna Maria Island Anna Maria Island Vacation Cost Guide 2026 Best Time to Visit Anna Maria Island: Month-by-Month Complete Fishing Guide: Anna Maria Island & Sarasota Where to See Dolphins & Manatees in Bradenton Rainy Day Activities: What to Do When Weather Turns Book Direct & Compare Totals Browse Our Homes →",
+      "file": "src/guides/bradenton-insider-guide.html",
+      "slug": "",
+      "tag": "non-claim",
+      "reason": "Sawyer-approved 2026-10-22 extraction repair: Guide-navigation labels combined by markup stripping; no price assertion."
+    },
+    {
+      "hash": "3c1c3c583b051f72504a87c2061c62288b1c51d169e2c4386ed3ed717ea3a83d",
+      "sentence": "15%, 20%, or the fee terms",
+      "file": "src/property-management/index.njk",
+      "slug": "",
+      "tag": "non-claim",
+      "reason": "Sawyer-approved 2026-10-22 extraction repair: Form input examples requesting owner-supplied fee terms; no asserted fee."
     }
   ]
 }

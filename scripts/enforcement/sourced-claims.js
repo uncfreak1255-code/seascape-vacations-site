@@ -97,7 +97,7 @@ function decodeEntities(text) {
     .replace(/&amp;/gi, "&");
 }
 
-const PUBLIC_TEXT_ATTR = /\b(?:alt|aria-label)\s*=\s*(["'])((?:\\.|(?!\1)[\s\S])*?)\1/gi;
+const PUBLIC_TEXT_ATTR = /\b(?:alt|aria-label|placeholder)\s*=\s*(["'])((?:\\.|(?!\1)[\s\S])*?)\1/gi;
 
 function publicAttributeCopy(text) {
   return [...String(text || "").matchAll(PUBLIC_TEXT_ATTR)]
@@ -130,8 +130,20 @@ function isNonCopySentence(sentence) {
 }
 
 function quotedTemplateLiterals(text) {
-  return [...String(text || "").matchAll(/(["'`])((?:\\.|(?!\1)[\s\S])*?)\1/g)]
-    .map((match) => match[2].replace(/\\(["'`])/g, "$1").trim())
+  const source = String(text || "");
+  const parts = [];
+  let previousEnd = 0;
+  for (const match of source.matchAll(/(["'`])((?:\\.|(?!\1)[\s\S])*?)\1/g)) {
+    const value = match[2].replace(/\\(["'`])/g, "$1");
+    if (parts.length && /^\s*[+~]\s*$/.test(source.slice(previousEnd, match.index))) {
+      parts[parts.length - 1] += value;
+    } else {
+      parts.push(value);
+    }
+    previousEnd = match.index + match[0].length;
+  }
+  return parts
+    .map((value) => value.trim())
     .filter((value) => value && !isSourcePathLiteral(value))
     .join(". ");
 }
@@ -258,9 +270,11 @@ function guestCopyText(text) {
   return [frontmatter, htmlMeta, attributes, body, structured].filter(Boolean).join(". ");
 }
 
+const SENTENCE_END = /(?<!\bvs)\.|[!?]/gi;
+
 function splitGuestSentences(text) {
   return stripMarkup(guestCopyText(text))
-    .split(/(?<=[.!?])\s+|[.!?]+/)
+    .split(SENTENCE_END)
     .map((sentence) => sentence.replace(/\s+/g, " ").trim())
     .filter((sentence) => sentence.length >= 8 && !isNonCopySentence(sentence));
 }
@@ -601,20 +615,33 @@ function wordNumberValue(raw) {
   return Number.parseInt(String(raw).replace(/[^\d].*$/, ""), 10);
 }
 
+function isSentenceEndAt(text, index) {
+  const boundary = new RegExp(SENTENCE_END.source, "iy");
+  boundary.lastIndex = index;
+  return boundary.test(text);
+}
+
 function sentenceStartAt(text, index) {
-  return Math.max(0, text.lastIndexOf(".", index) + 1, text.lastIndexOf("!", index) + 1, text.lastIndexOf("?", index) + 1);
+  let period = text.lastIndexOf(".", index);
+  while (period >= 0 && !isSentenceEndAt(text, period)) {
+    period = text.lastIndexOf(".", period - 1);
+  }
+  return Math.max(0, period + 1, text.lastIndexOf("!", index) + 1, text.lastIndexOf("?", index) + 1);
 }
 
 function sentenceAt(text, index) {
   const start = sentenceStartAt(text, index);
-  const next = [text.indexOf(".", index), text.indexOf("!", index), text.indexOf("?", index)]
-    .filter((value) => value >= 0)
-    .sort((left, right) => left - right)[0];
-  return text.slice(start, next == null ? text.length : next + 1).trim();
+  const boundary = new RegExp(SENTENCE_END.source, SENTENCE_END.flags);
+  boundary.lastIndex = index;
+  const next = boundary.exec(text);
+  return text.slice(start, next ? next.index + 1 : text.length).trim();
 }
 
 function crossesSentence(text, start, end) {
-  return /[.!?]/.test(String(text || "").slice(start, end));
+  const boundary = new RegExp(SENTENCE_END.source, SENTENCE_END.flags);
+  boundary.lastIndex = start;
+  const next = boundary.exec(String(text || ""));
+  return Boolean(next && next.index < end);
 }
 
 function isNegatedSpan(text, matchStart) {
@@ -798,11 +825,13 @@ function parseQualitativeHits(stripped) {
     const leftAdj = adjLeft >= 0 ? adjs[adjLeft] : null;
     const rightAdj = adjRight < adjs.length ? adjs[adjRight] : null;
     const leftOk = leftAdj && leftAdj.end <= noun.index && allowedGap(stripped, leftAdj.end, noun.index);
+    const rightGap = rightAdj ? stripped.slice(noun.end, rightAdj.index) : "";
     const rightOk =
       rightAdj &&
       rightAdj.index >= noun.end &&
-      allowedGap(stripped, noun.end, rightAdj.index) &&
-      wordsBetween(stripped, noun.end, rightAdj.index) <= 1;
+      !crossesSentence(stripped, noun.end, rightAdj.index) &&
+      ((allowedGap(stripped, noun.end, rightAdj.index) && wordsBetween(stripped, noun.end, rightAdj.index) <= 1) ||
+        /^\s+(?:vs\.?|versus)\s+(?:[\w'-]+\s+){1,4}(?:is|are|was|were)\s+$/i.test(rightGap));
     const partner = leftOk ? leftAdj : rightOk ? rightAdj : null;
     if (!partner) {
       continue;

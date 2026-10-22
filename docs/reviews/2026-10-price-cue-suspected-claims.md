@@ -4,7 +4,9 @@ Do not rewrite these in this PR. Sawyer approves copy from this table in a later
 
 These rows are every `suspected-claim` hash in `src/_data/claimCandidateBaseline.json`, including the leftover live claims Codex named and the guest-copy this stack previously rewrote. The live guides are restored. New Codex leftovers should be tagged `suspected-claim` here and added to this table — not rewritten.
 
-Baseline snapshot: 287 candidate sentences — 186 `non-claim`, 101 `suspected-claim`.
+Original 2026-10-18 baseline snapshot: 287 candidate sentences — 186 `non-claim`, 101 `suspected-claim`.
+
+2026-10-22 approved extraction repair: Sawyer approved exactly three existing form-example/navigation strings as `non-claim` entries after placeholder and `vs.` extraction exposed them. Current snapshot: 290 sentences — 189 `non-claim`, 101 `suspected-claim`. The suspected-claim table below is unchanged; future baseline additions remain blocked.
 
 | Path | Current sentence | Proposed rewrite |
 | --- | --- | --- |

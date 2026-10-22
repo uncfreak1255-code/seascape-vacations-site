@@ -522,6 +522,59 @@ test('never-seen price-cue phrasing fails without changing the matcher', () => {
   assert.equal(parseClaimHits('Book direct and save 15 percent on the same dates.').length, 0);
 });
 
+test('concatenated template literals preserve claims and independent argument boundaries', () => {
+  const { assertClaimCandidatesCovered, collectPriceClaimCandidates } = require('./sourced-claims');
+  const templates = [
+    '{{ "Guests pay half " + "the OTA price." }}',
+    '{{ "Guests pay " ~ "half " ~ "the OTA price." }}',
+    '{{ kit({ copy: "Guests pay half" + " the OTA price." }) }}',
+    '{% set copy = "Guests pay half " ~ "the OTA price." %}'
+  ];
+  for (const source of templates) {
+    const hits = collectPriceClaimCandidates(source);
+    assert.equal(hits.length, 1, source);
+    assert.equal(hits[0].excerpt, 'Guests pay half the OTA price');
+    assert.throws(() => assertClaimCandidatesCovered(hits, []), /missing a sourced-claim row/);
+  }
+  assert.equal(
+    collectPriceClaimCandidates('{{ kit({ heading: "Need " + "more space", cta: "Check " ~ "rates" }) }}').length,
+    0,
+    'concatenation within an argument must not join independent arguments'
+  );
+});
+
+test('public input and textarea placeholders require sourced claim coverage', () => {
+  const { assertClaimCandidatesCovered, collectPriceClaimCandidates } = require('./sourced-claims');
+  for (const source of [
+    '<input placeholder="Pay half the platform fee">',
+    "<textarea placeholder='Pay half the platform fee'></textarea>"
+  ]) {
+    const hits = collectPriceClaimCandidates(source);
+    assert.equal(hits.length, 1, source);
+    assert.equal(hits[0].excerpt, 'Pay half the platform fee');
+    assert.throws(() => assertClaimCandidatesCovered(hits, []), /missing a sourced-claim row/);
+  }
+});
+
+test('abbreviated comparisons retain claims without crossing real sentence boundaries', () => {
+  const { assertClaimCandidatesCovered, collectPriceClaimCandidates, parseClaimHits } = require('./sourced-claims');
+  const comparison = 'Our rates vs. Airbnb are lower.';
+  const candidates = collectPriceClaimCandidates(comparison);
+  assert.equal(candidates.length, 1);
+  assert.equal(candidates[0].excerpt, 'Our rates vs. Airbnb are lower');
+  assert.throws(() => assertClaimCandidatesCovered(candidates, []), /missing a sourced-claim row/);
+  assert.ok(parseClaimHits(comparison).length > 0, 'the typed parser retains the comparison too');
+  assert.ok(parseClaimHits('It is cheaper vs. Airbnb.').length > 0);
+  for (const source of [
+    'Check rates vs. Airbnb. Lower your luggage weight.',
+    'Check rates vs. Airbnb! Lower your luggage weight.',
+    'Check rates vs. Airbnb? Lower your luggage weight.'
+  ]) {
+    assert.equal(collectPriceClaimCandidates(source).length, 0, source);
+    assert.equal(parseClaimHits(source).length, 0, source);
+  }
+});
+
 test('Bradenton-Sarasota dining comparison uses current menus in body and FAQ schema', () => {
   const s = read('src/guides/bradenton-vs-sarasota-restaurants/index.html');
   assert.doesNotMatch(s, /\$\d|Generally yes\. Expect to spend|Average Dinner|better atmosphere, lower prices|lowest rate|No platform fees|reasonable prices|Not cheap|Cheap Eats|happy hour deals|full dinner price tag|Stay in Bradenton for the value/i);
