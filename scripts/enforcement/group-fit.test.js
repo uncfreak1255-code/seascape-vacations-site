@@ -25,6 +25,23 @@ const homes = list.map((p) => ({
 }));
 const bySlug = (slug) => homes.find((h) => h.slug === slug);
 
+test("a couple consumes two spaces and young children never overflow occupied beds", () => {
+  const r = fit.assign(fit.parseParty("2 couples and 5 kids (2, 3, 4, 5, 5)"), bySlug("coastal-stay"));
+  assert.equal(r.verdict, "confirm");
+  assert.equal(r.unplaced.length, 2);
+  assert.ok(r.notes.some(n => n.kind === "beds" && /sleep 7 of your 9/.test(n.text)));
+  for (const room of r.rooms) for (const line of room.lines) {
+    assert.ok(!(/Couple/.test(line) && /Child/.test(line)), line);
+  }
+});
+
+test("bed shortfall counts both members of an unplaced couple", () => {
+  const home = { slug: "fixture", name: "Fixture", guests: 6, sleeping: ["Bedroom 1: one king bed"] };
+  const r = fit.assign(fit.parseParty("2 couples"), home);
+  assert.equal(r.verdict, "confirm");
+  assert.ok(r.notes.some(n => n.kind === "beds" && /sleep 2 of your 4/.test(n.text)));
+});
+
 test("every listed bedroom parses into at least one bed, and a bed shortfall against capacity is surfaced as a confirm note, not hidden", () => {
   for (const home of homes) {
     let sleepers = 0;
