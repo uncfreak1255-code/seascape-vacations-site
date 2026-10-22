@@ -189,6 +189,9 @@ Before implementation, write a short experiment brief with:
 - another owner-page rewrite before the post-recrawl read exists
 - more agent docs or workflow theater beyond the five-role system
 
+- Copy placing any Seascape home on Anna Maria Island.
+- A licence trust strip.
+
 ## Bounded Attack Check — October 2, 2026
 
 Attack status: `completed` for the existing AMI-versus-Siesta comparison.
@@ -218,6 +221,18 @@ six allowed saved-state reads with approval mode `prompt`; the local endpoint
 responded. This task exposes no OpenSEO tool calls or browser-control execution
 surface, so `list_projects` and two saved-tracker reads remain unverified. Do not
 replace them with guessed rank history or invoke paid lookup tools.
+
+## Confirmed Regressions — October 20, 2026
+
+Proof (GSC domain property, all page rows, 2026-08-21–2026-09-17 vs 2026-09-18–2026-10-15):
+- Money pages: the supplied group had clicks 14 → 7 and impressions 675 → 370. The claim that it contains seven observed GSC URLs is **(unverified — needs receipt)**; attach the exact URL list and aggregation method. The source scope is eight routes: seven property-detail routes plus the `/properties/` catalogue; do not assign these totals to all eight without that receipt. The Oasis 197 → 41 impressions; Sarasota Luxe 198 → 45.
+- Winner guide: `/guides/anna-maria-island-vs-siesta-key/` (all variants) clicks 51 → 29, impressions 6,712 → 5,002 (≥30% click decline trigger).
+- Site overall rose (400 → 428 clicks; guides 327 → 363), so the decline is concentrated.
+Rescue briefs: `docs/briefs/2026-10-property-pages-rescue.md`, `docs/briefs/2026-10-ami-vs-siesta-key-rescue.md`. Both remain research until actual SERP competitors and inspected URLs are recorded and every Gate 0 field, including the nine attack fields, is complete. A SERP read alone does not complete the gate.
+
+## Truth Remediation Before Expansion — Pool Heat
+
+Expansion branches (new stay / answer pages) stay closed until the pool-heat defects in `docs/plans/2026-11-content-priorities.md` §5 are fixed and an invariant asserts the complete rule at every managed home: optional **$40/night**, whole stay before arrival, all remaining nights after arrival, with approved long-stay flat rates valid; never included. **An Analytics receipt must also open the next batch.** Rescue work may proceed under its own gates.
 
 ## Workflow Validation Outcome
 
