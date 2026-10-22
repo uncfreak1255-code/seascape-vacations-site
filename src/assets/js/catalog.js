@@ -72,7 +72,7 @@
   }
   function syncLinks() {
     document.querySelectorAll("[data-trip-link]").forEach(function (link) {
-      var url = preserveSave50Params(new URL(originalLinks.get(link),location.href));
+      var url = preserveSave50Params(new URL(originalLinks.get(link) || link.getAttribute('href'),location.href));
       ["arrive","depart","checkin","checkout","guests","area","compare"].forEach(function(key){url.searchParams.delete(key);});
       itineraryParams().forEach(function (value,key) { url.searchParams.set(key,value); });
       link.href = url.origin === location.origin ? url.pathname + url.search + url.hash : url.toString();
@@ -271,6 +271,8 @@
     rememberTrip(); render(); emit("catalog_trip_update",{guest_count:Number(guests.value)||0,has_dates:Boolean(arrive.value)});
   }
   form.addEventListener("submit",submitTrip);
+  // Planner counts must update links and filters even with flexible dates.
+  guests.addEventListener("group-fit-change",function() { submitTrip(); });
   root.addEventListener("click",function(event) {
     var link = event.target.closest("a[data-booking-base]");
     if (!link || trip.guests || !isOpen(link.dataset.pageSlug)) return;
