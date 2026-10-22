@@ -110,6 +110,13 @@ sections and searches rather than concatenating unrelated directories or logs.
 
 ## Execution Defaults
 
+- UX, DX, AX: choose the simplest solution that improves user, developer, and
+  agent experience together. Preserve behavior, verify affected flows, and
+  explain material tradeoffs when all three cannot win.
+- UI clarity: cut redundant taglines, helper text, and secondary labels.
+  If a screen needs them to make sense,
+  fix its layout. Keep accessible names, essential instructions, errors, and
+  required disclosures; follow the design and content gates.
 - Think before coding: state assumptions explicitly, ask when the missing fact matters, push back when a simpler approach exists, and stop to clarify before editing when the path is unclear.
 - Simplicity first: make the minimum change that solves the problem. Nothing speculative. No abstractions for single-use code.
 - Surgical changes: touch only what you must, match existing style, and do not refactor adjacent code that is not broken unless the task requires it.
@@ -202,7 +209,10 @@ These are starting points; the Testing section still governs required checks.
 - `docs/status/next-batch.md` is the canonical reread handoff surface for volatile measurement truth; after every reread it must say exactly one of `blocked by freshness`, `fresh but below threshold`, or `open next batch`, plus one concrete next move
 - `docs/status/current-state.md` should keep durable repo truth only and must not duplicate volatile reread windows or `data_date` details that belong in `docs/status/next-batch.md`
 - SEO role cards live in `.claude/agents/`; responsibilities and task routing load from `docs/process/five-roles.md`, `docs/process/batch-workflow.md`, and `docs/process/skill-policy.md`
-- active repo-local skills are limited to `.agents/skills/accessibility`, `.agents/skills/content-quality-rubric`, `.agents/skills/design-review`, `.agents/skills/internal-link-targeting`, `.agents/skills/next-batch-gate`, `.agents/skills/owner-opportunity-intake`, `.agents/skills/owner-reply-intake`, `.agents/skills/owner-proof-integrity`, `.agents/skills/page-cro`, `.agents/skills/property-truth-regeneration`, `.agents/skills/schema-markup`, `.agents/skills/seascape-design-critic`, `.agents/skills/seascape-design-specialist`, `.agents/skills/serp-ctr-title-rewrite`, `.agents/skills/site-architecture`, and `.agents/skills/openseo-review`, plus the Claude-only UI craft skills `.claude/skills/animate`, `.claude/skills/better-ui`, `.claude/skills/break-ui`, `.claude/skills/emil-design-eng`, `.claude/skills/mobile-native`, and `.claude/skills/review-animations` (moved here from the global set on 2026-10-12, declared in `.agents/skills-divergence.json`; load only for UI, motion, or mobile-touch work, and they never replace `DESIGN.md` or the design-review gates)
+- Discover active repo-local skills in `.agents/skills/`. Claude-only UI
+  craft skills are declared in `.agents/skills-divergence.json`; load them
+  only for UI, motion, or mobile-touch work. They never replace `DESIGN.md`
+  or the design-review gates.
 - `.claude/skills/` should mirror only those active site/design skills; copied marketing, deploy, monthly reset, and generic SEO skills are not live authority
 - global marketing skills in `/Users/sawbeck/.codex/skills/` may be used as advisory helpers for CRO, SEO, copy, psychology, analytics, and growth decisions, but they do not override this repo's source files, briefs, status docs, or the task route in `docs/process/batch-workflow.md`
 - canonical lane for internal-link family/page inbound planning is `.agents/skills/internal-link-targeting`
@@ -210,16 +220,16 @@ These are starting points; the Testing section still governs required checks.
 - AI discovery, GEO/AEO, and schema work follows the Search Operator role in `.claude/agents/search-operator.md` and `docs/process/seo-competitor-operating-loop.md` for proof and attack research, plus `.agents/skills/schema-markup` for implementation rules
 - external SEO/GEO packs such as `geo-optimizer-skill`, `gtm-engineer-skills`, `searchstack-aeo`, `claude-seo`, `akii-seo-ai-search-optimizer`, and `aeo.js` are donor references only; do not install or mirror them here without a fresh `repo-dev-setup` inventory, repeated repo-specific need, and a smoke-tested win
 - AI citation monitoring and Search Console/GA4 proof systems belong in `seascape-analytics`; this repo may expose site endpoints and markup, but it must not become the measurement control plane
-- OpenSEO supplies local saved reads, project context and private reports. Its project-scoped Codex MCP allowlist and cost/ownership rules live
-  in `docs/process/openseo.md`. It does not replace the direct DataForSEO Gate 0
-  path or analytics-owned measurement receipts.
+- For SEO, start with local OpenSEO and its upstream skills. Follow
+  `docs/process/openseo.md` for paid approval and repo ownership; Analytics owns
+  measurement receipts.
 - if work writes durable state into another repo, route it through a clean
   keeper branch or PR from that repo's current `origin/main`
 
 ## Agent Skills
 
-Skills are maintained in `.agents/skills/`; `.claude/skills/<name>` is a
-relative link to the same file, so both paths resolve to one procedure. Use
+Shared `.claude/skills/<name>` aliases resolve to `.agents/skills/`.
+Claude-only exceptions are declared above. Use
 native reasoning for routine site work; a skill never replaces the gates,
 approval, or proof requirements in this file.
 Codex discovers `.agents/skills` natively and each skill's frontmatter states
@@ -429,6 +439,12 @@ Do not mutate whatever local sibling checkout happens to exist on disk; land
 durable writebacks through a clean keeper branch or PR in the target repo.
 
 ## Closeout Rule
+
+Before finishing, check the touched area for stale instructions, dead code,
+and agent-navigation obstacles. Verify source and consumers before removal.
+Fix task-caused leftovers and in-scope broken pointers; report unrelated
+opportunities. Prefer source/test pointers to duplicate indexes. Use bounded
+subagents when independent work outweighs coordination cost.
 
 Agents may not hand site work back as local dirt. A task is not complete
 because a checkout is dirty, a worktree is left on detached `HEAD`, or cleanup

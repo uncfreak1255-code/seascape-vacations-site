@@ -406,11 +406,19 @@ function assertPoolHeatPolicy(text, name) {
   assert.match(text, /before arrival[^.!?]*(?:whole|entire) stay/i, `${name}: before-arrival whole stay`);
   assert.match(text, /after arrival[^.!?]*all (?:the )?remaining nights/i, `${name}: after-arrival remaining nights`);
   assert.match(text, /approved long[- ]stay flat rates[^.!?]*apply/i, `${name}: preserve approved flat rates`);
+  assert.match(text, /individual nights cannot be selected/i, `${name}: no night picking`);
+  assert.match(text, /inclusions already confirmed in your reservation messages are honored/i, `${name}: preserve confirmed reservation terms`);
+  assert.match(text, /confirm the nights, total charge, payment instructions and heating start time/i, `${name}: confirmation before treating the add-on as arranged`);
+  assert.match(text, /late-day requests or mid-stay requests on an approved long-stay rate[^.!?]*individually before payment/i, `${name}: unresolved billing stays under individual review`);
+  assert.match(text, /request alone does not turn on the heat/i, `${name}: no automatic activation promise`);
 }
+
+const COASTAL_INCLUDED_HEAT = "At The Coastal, if your reservation messages already say pool heat is included, it remains included at no charge.";
 
 function assertPoolHeatClaims(strings, name) {
   for (const text of strings) {
-    for (const sentence of text.split(/[.!?]/).filter((part) => POOL_HEAT_MENTION.test(part))) {
+    const checkedText = name === "coastal-stay" ? text.replace(COASTAL_INCLUDED_HEAT, "") : text;
+    for (const sentence of checkedText.split(/[.!?]/).filter((part) => POOL_HEAT_MENTION.test(part))) {
       assert.doesNotMatch(sentence, /\/\s*day\b|per day|\bfive established homes\b|\bthose five homes\b/i, name);
       assert.doesNotMatch(sentence, /\b(?:included|free)\b/i, `${name}: pool heat is an extra`);
       for (const rate of sentence.matchAll(/\$(\d+(?:\.\d+)?)\s*(?:\/\s*night|per night)\b/gi)) {
@@ -424,7 +432,9 @@ test("pool heat follows the same nightly and arrival rules at every home and sta
   for (const property of fallbackProperties) {
     const policy = property.guestFacts?.poolHeat || "";
     assertPoolHeatPolicy(policy, property.slug);
-    assert.doesNotMatch(policy, /\b(?:included|free|five established homes)\b|\/\s*day\b|per day/i, property.slug);
+    const defaultPolicy = property.slug === "coastal-stay" ? policy.replace(COASTAL_INCLUDED_HEAT, "") : policy;
+    assert.doesNotMatch(defaultPolicy, /\b(?:included|free|five established homes)\b|\/\s*day\b|per day/i, property.slug);
+    if (property.slug === "coastal-stay") assert.ok(policy.includes(COASTAL_INCLUDED_HEAT), "honor Coastal reservation messages without making heat free by default");
     assertPoolHeatClaims(stringLeaves(property), property.slug);
   }
 

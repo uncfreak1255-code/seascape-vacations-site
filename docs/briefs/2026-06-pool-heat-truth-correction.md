@@ -1,7 +1,7 @@
 # Brief: Pool-heat billing correction
 
 - lifecycle: active
-- scope approved: Sawyer requested this separate draft PR on 2026-10-20. Stop at draft; no merge or deployment.
+- scope approved: Sawyer requested this separate draft PR on 2026-10-20 and authorized a focused review/correction on 2026-10-22. Continue in PR #753; no merge, deployment or payment activation.
 - persona: Guest comparing pool homes and the complete cost before booking.
 - primary keyword: vacation rentals with heated pool
 - secondary keywords: Anna Maria Island pool heat fee, Bradenton heated pool rental, Sarasota pool home
@@ -9,7 +9,7 @@
 - proof source: Hub main `73bb60b135c0e947aa615b4353368f9d80a9446f`, verified against its remote on 2026-10-20; `decisions/2026-10-10-pool-heat-whole-stay-only.md`, `decisions/2026-10-11-pool-heat-mid-stay-remaining-nights.md`, `decisions/2026-10-13-pool-heat-every-managed-home.md`, and `context/seascape-properties.md` Portfolio Amenity Billing Baseline. Site base `41ecf4faeda5faccd4bfbee79434eac5e0254321`.
 - required internal links: /properties/sarasota-luxe/, /properties/the-oasis/
 - CTA target: Existing property and direct-booking links, unchanged.
-- anti-claims: No free or included pool heat, daily pricing, five-home billing restriction, selected heated nights, automatic activation, guaranteed temperature or heat-up time. Preserve approved long-stay flat rates. Hot-tub/spa terms remain distinct from pool billing.
+- anti-claims: No default free or included pool heat (honor the approved Coastal reservation-message exception), daily pricing, five-home billing restriction, selected heated nights, automatic activation, guaranteed temperature or heat-up time. Preserve approved long-stay flat rates. Hot-tub/spa terms remain distinct from pool billing.
 
 ## Approved correction
 
@@ -84,3 +84,100 @@ set Seascape's price. The repair makes no ranking or conversion-lift claim.
 - Local static-server HTTP check: 25 stay routes and seven property routes returned 200 with the policy; all stay FAQPage answers match it; all seven AI-discovery property records contain it.
 - Independent read-only review: Approved, no introduced findings; final matching FAQ addition and both superseded test expectations reviewed.
 - No paid evaluation, production mutation or deployment. Publication target remains one draft PR.
+
+
+## Focused policy review — 2026-10-22
+
+The current task's mutation owner is this Codex review session, continuing the
+existing draft branch. Fresh Site main `c11f34512c387bc5fe539fbece318a80c0c5c9b2`
+was fetched and merged cleanly into the branch to preserve subsequent approved
+source changes. This adds no unrelated PR diff against main.
+
+Additional owning source: Hub
+`decisions/2026-10-20-coastal-heat-included-exception.md` (blob
+`60976116135003ca72c53ca919b25fb2fd8b95f1`) preserves free heat for Coastal
+599394 stays promised inclusion in reservation messages. The public default
+remains $40/night. Private reservation eligibility and the separate Coastal
+billing hold are operational matters; this Site task does not read, infer,
+remove or activate either one.
+
+Decision: retain individual review for the first billable night on late-day
+requests and mid-stay adds on an approved long-stay flat rate. No cutoff,
+proration, new rate, tax treatment or new payment-before-activation rule is
+created. These cases already require human review in Hub canon. A deterministic
+billing or unattended collection feature would require a separate owner
+decision before automating those cases; accurate website copy does not.
+
+Copy correction: explicitly prohibit individual night picking; preserve already
+confirmed reservation inclusions; require confirmation of nights, total,
+payment instructions and start time; explain that a request alone does not
+switch heat on. The Coastal property answer explicitly honors prior included
+heat messages. Remove the long-stay FAQ implication that checkout necessarily
+contains every optional pool-heat charge. These edits reach existing FAQ schema
+and AI property records through the same two data sources.
+
+Collection remains unchanged: the October 10 decision specifies a manual Airbnb
+payment request and treats a direct-booking upsell as a separate activation.
+This task does not verify payment processor configuration, transactions,
+reservation eligibility, device state or actual heating performance.
+
+### Public booking handoff evidence
+
+Read-only HTTP response inspection of the seven existing booking listing URLs
+on this review found the following. These are listing-response facts, not a
+completed date-specific quote, checkout payment or guest transaction:
+
+| Home / listing | $40/day wording found | $40/night wording found |
+| --- | --- | --- |
+| Dockside Dreams / 206016 | No | Yes |
+| The Oasis / 189511 | No | Yes |
+| Sarasota Luxe / 135881 | Yes | Yes |
+| River House / 135880 | Yes | Yes |
+| Bradenton Pool Home / 487798 | Yes | Yes |
+| Blue House / 589288 | No | Yes |
+| The Coastal / 599394 | Yes | Yes |
+
+Each listing URL is `https://book.seascape-vacations.com/listings/` plus its ID.
+At The Coastal, the description contains $40 per day and an 85°F setpoint,
+while house rules say $40/night. Do not import the setpoint into Site copy:
+Hub leaves Coastal heating performance unconfirmed. No statement is made that
+the other listings fully implement whole-stay/remaining-night billing merely
+because nightly wording was found.
+
+The website booking panel's `src/assets/js/guest.js` converts listing links to
+Hostaway `/checkout/` when availability is open; the Site does not collect this
+add-on itself. Its existing property cost FAQ already calls for optional extras
+to be confirmed. Preserve that handoff. The four conflicting listing descriptions
+need a separate Hostaway copy correction under its existing owner before claiming
+one consistent end-to-end guest policy. This draft changes no Hostaway setting.
+
+### Current release verdict
+
+Independent targeted review: **Approved** after shortening duplicate policy
+blocks in three introductions/highlights. The full policy remains in each
+FAQ and all seven property answers. Review checked source, policy, voice and
+scope; no new billing decision was required.
+
+Fresh proof on the revised source:
+
+- `SEASCAPE_DISABLE_PUBLIC_AVAILABILITY=1 npm run verify:release -- --range origin/main`: passed, 1,195/1,195 tests, fresh build/content gate, design lint,
+  recovery checks, 450 redirects, 163-page link scan, 686 JSON-LD blocks.
+- Targeted property-truth and dock-copy suite: 21/21 passed.
+- Local HTTP proof: 25 stay routes + seven property routes returned 200 with
+  the revised policy; FAQ/JSON-LD answers match; all seven AI property records
+  contain the revised property policy. Public availability fetching was disabled
+  for deterministic offline checks; this is no proof of current dates or prices.
+- The first pre-commit release attempt included staged upstream merge briefs
+  and failed content-scope parsing on an upstream brief. Recording the clean
+  main merge separately restored the intended PR diff; the final full gate
+  above passed without altering those unrelated briefs or bypassing the gate.
+
+**Site copy/source: ready for the existing publication review.** The October 20
+head's proof was not reused as proof of these edits. **End-to-end consistency:
+not complete** until the four hosted descriptions are corrected and read back.
+This is not a request to invent a cutoff or override an agreement. Keep the
+late-day and long-stay edge cases under individual confirmation.
+
+No merge to main, production deployment, hosted listing mutation, payment
+activation or heater activation was performed. Publication remains a separate
+owner/release decision under PR #753's existing draft boundary.

@@ -198,6 +198,30 @@ test("guest searches, chooses the matching home, and reaches only the intercepte
   expect(network.blockedExternalRequests).toEqual([]);
 });
 
+test("all property CTAs retain their home in suppressed analytics events", async ({ app, browser, network }) => {
+  for (const slug of [...properties, "coastal-stay"]) {
+    await app.open(`/properties/${slug}/`);
+    const events = await browser.evaluate(() => {
+      document.addEventListener("click", event => event.preventDefault(), { capture: true });
+      const layer = (window as typeof window & { dataLayer: any[] }).dataLayer;
+      layer.length = 0;
+      document.querySelectorAll('a[data-track-event^="property_"]').forEach(link =>
+        link.dispatchEvent(new MouseEvent("click", { bubbles: true, cancelable: true, ctrlKey: true })));
+      return JSON.parse(JSON.stringify(layer.filter(entry => /^property_/.test(entry.event))));
+    });
+    expect(events.filter(event => event.payload.placement !== "property_reviews")).toHaveLength(5);
+    expect(new Set(events.map(event => event.payload.placement)).size).toBe(events.length);
+    for (const event of events) {
+      expect(event.suppressed).toBe(true);
+      expect(event.payload.property_slug).toBe(slug);
+      expect(event.payload.source_page_slug).toBe(slug);
+      if (event.payload.booking_property_slug) expect(event.payload.booking_property_slug).toBe(slug);
+    }
+  }
+  expect(network.checkoutRequests).toEqual([]);
+  expect(network.blockedExternalRequests).toEqual([]);
+});
+
 test("invalid dates and an unavailable calendar keep guests on the property until corrected dates pass a fresh check", async ({ app, browser, screen, network }) => {
   network.availabilityReplies.push(
     { status: 503, bookable: false, reason: "no-calendar", minimumStay: null },

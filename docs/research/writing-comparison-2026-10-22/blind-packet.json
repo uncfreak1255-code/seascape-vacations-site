@@ -1,0 +1,63 @@
+{
+  "scope": "Anonymous paired excerpts, not full pages. Judge editorial usefulness only; no ranking/conversion claims. Facts are frozen source inputs, not newly verified attraction/offer data. Shared title, audience and source facts apply equally to both versions. Some trust/freshness/whole-page criteria may be unassessable; say so.",
+  "criteria": [
+    "information gain within the supplied facts",
+    "answer-first clarity",
+    "scannable structure",
+    "supported claims",
+    "trust/author signals where assessable",
+    "freshness where assessable",
+    "relevant next decision",
+    "natural audience-appropriate voice"
+  ],
+  "cases": [
+    {
+      "id": "rain",
+      "page_type": "Guest guide opening and two recommendations",
+      "reader_question": "What should our group do in Sarasota or Bradenton when rain interrupts the beach day?",
+      "shared_facts": [
+        "A quick summer storm and a longer wet/cold-front day call for different backup plans.",
+        "Coffee, lunch, bowling and covered shopping are nearby options for a short shower; 45 minutes does not justify a full itinerary change.",
+        "Several wet hours favor Sarasota or UTC: Mote Science Education Aquarium, The Ringling, Sarasota Art Museum, theaters, restaurants and the Mall at UTC.",
+        "Mote SEA opened October2025 at Nathan Benderson Park near UTC; described in the source as a half-day choice especially with kids, easy to pair with lunch/shopping.",
+        "The Ringling offers Museum of Art, Circus Museum and indoor galleries for several hours; grounds suit lighter breaks; source favors it for adults/older kids."
+      ],
+      "versions": {
+        "A": "For a quick summer storm, stay nearby for coffee, lunch, bowling or covered shopping. A 45-minute shower rarely needs a new itinerary. For several wet hours or a cold-front day, head toward Sarasota or UTC for Mote Science Education Aquarium, The Ringling, Sarasota Art Museum, theaters, restaurants or the Mall at UTC.\n\nMote SEA: a half-day option with kids. The aquarium opened at Nathan Benderson Park in October 2025, near UTC. Pair it with lunch or shopping if the rain continues.\n\nThe Ringling: several hours of art and circus exhibits for adults and older kids. Its Museum of Art, Circus Museum and indoor galleries give you an indoor plan; visit the grounds during lighter breaks in the weather.",
+        "B": "Direct answer: if the rain is a quick summer storm, stay close and use coffee, lunch, bowling, or covered shopping. If the forecast shows several wet hours, drive toward Sarasota or UTC. That is where the strongest indoor options are now: Mote Science Education Aquarium , The Ringling , Sarasota Art Museum, theaters, restaurants, and the Mall at UTC.\n\nThe mistake is treating every rainy day the same. A 45-minute shower is not worth a full itinerary change. A cold-front day is. Use this guide to pick the right backup plan for your location, group, and patience level.\n\nMote SEA is the current first pick for a wet Sarasota day, especially with kids. The new aquarium opened at Nathan Benderson Park in October 2025, near the UTC shopping district, which makes it easy to pair with lunch or shopping if the weather stays ugly. It is a better fit for a half-day rain plan than trying to force beach time between bands of weather.\n\nThe Ringling is the best culture-heavy rainy day choice. The Museum of Art, Circus Museum, and indoor galleries can carry several hours, and the grounds still work during lighter breaks in the weather. Choose this over Mote if your group is mostly adults or older kids."
+      }
+    },
+    {
+      "id": "comparison",
+      "page_type": "Destination comparison opening and next step",
+      "reader_question": "Should we book Bradenton or Sarasota for our vacation?",
+      "shared_facts": [
+        "This is a vacation comparison, covering beaches, cost, parking, dining, family fit and where to stay; source says reviewed June2026.",
+        "Source positions Bradenton for beach-focused trips, easier Anna Maria Island access and less parking friction.",
+        "Source positions Sarasota for Siesta Key, dining, arts and a city-centered trip.",
+        "The relevant decision is where to sleep, beach-day ease and trip cost; compare live homes and final checkout totals for identical dates.",
+        "Existing next steps are Bradenton homes near AMI, Anna Maria Island rentals for an island-first trip, and Siesta Key area stays for Sarasota."
+      ],
+      "versions": {
+        "A": "Compare beaches, cost, parking, dining, family fit, and where to stay if you are choosing between Bradenton and Sarasota.\n\nDirect answer: Bradenton suits a beach-first vacation with easier Anna Maria Island access and less parking friction. Sarasota suits travelers who want Siesta Key, stronger dining, arts, and a more city-centered trip.\n\nWe reviewed this guide again in June 2026 because many Bradenton vs Sarasota comparisons are written for homebuyers. This page stays focused on the vacation decision: where you sleep, how easy beach days are, and what your week actually costs. Compare live listings and final checkout totals for the same dates before booking.\n\nOnce the stay option is clear, compare Bradenton homes near AMI beaches for the beach-first trip, Anna Maria Island vacation rentals for the island-first version, or Siesta Key area stays for the Sarasota-side trip.",
+        "B": "Choose Bradenton for a beach-focused vacation with easier Anna Maria Island access and less parking friction. Choose Sarasota for Siesta Key, more dining and arts, and a city-centered trip.\n\nCompare beach access, parking, dinner plans and family fit around the place you will sleep. Before booking, compare live homes and final checkout totals for the same dates.\n\nNext, see Bradenton homes near AMI beaches, Anna Maria Island vacation rentals for a stay on the island, or Siesta Key area stays for Sarasota.\n\nReview note: reviewed June 2026. This comparison is for a vacation, rather than buying a home."
+      }
+    },
+    {
+      "id": "owner",
+      "page_type": "Owner acquisition opening and inquiry next step",
+      "reader_question": "What does this property manager do for my home, and how do I start a conversation?",
+      "shared_facts": [
+        "Frozen source renders seven homes, one local team, with a claim that calls get answered.",
+        "Seascape manages a small collection of pool homes in Bradenton and Sarasota.",
+        "Team lists, prices, hosts and cleans each home, pays owners monthly, and proactively reports earnings and issues needing attention.",
+        "Existing offer is a48hour revenue review; listing link or address starts it, and a sentence on concerns helps.",
+        "Four questions take about two minutes; a real Seascape person reads each reply and returns a one-page review."
+      ],
+      "versions": {
+        "A": "Seven homes. One local team. Your call gets answered.\n\nSeascape manages a small collection of pool homes in Bradenton and Sarasota. We list, price, host and clean each one, pay you monthly, and tell you what your home earned and what needs attention before you have to ask.\n\nRequest your 48-hour revenue review.\n\nA listing link or an address is enough to start. A sentence on what feels off helps.\n\nSend the listing. We send back a one-page review.\n\nFour short questions, about two minutes. A real Seascape person reads every reply.",
+        "B": "Know what your home earned and what needs attention before you have to ask. Seascape's one local team manages seven pool homes in Bradenton and Sarasota: we list, price, host and clean each home, pay you monthly, and answer your calls.\n\nRequest your 48-hour revenue review. Send a listing link or an address, plus a sentence on what feels off. Four short questions take about two minutes. A real Seascape person reads your reply and sends back a one-page review."
+      }
+    }
+  ]
+}

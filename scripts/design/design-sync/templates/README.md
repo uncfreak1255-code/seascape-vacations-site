@@ -17,7 +17,7 @@ This project is **generated from the repository**, not authored here. Synced {{S
 | `src/_includes/partials/guest-*.njk`, `src/_includes/layouts/guest.njk` | The shared shell and guest components; the cards use their built output |
 | `src/assets/fonts/` (copied to `waterline/fonts/`) | Self-hosted Poppins and Instrument Serif (SIL OFL) |
 | `docs/process/design-review-workflow.md` | How a design becomes a change on the site |
-| `docs/style/writing-style-guide.md` | Voice, banned phrases, hook formulas |
+| `docs/style/writing-style-guide.md` | Editorial entry point; companion `voice.md`, `banned-patterns.md`, and `approved-examples.md` are copied beside it |
 
 ## Folder map
 
@@ -33,7 +33,8 @@ This project is **generated from the repository**, not authored here. Synced {{S
 │   ├── base.css, guest.css, arrival.css, catalog.css   live stylesheets
 │   ├── shell.html               the real shared header + footer markup
 │   ├── design-review-workflow.md
-│   └── writing-style-guide.md
+│   ├── writing-style-guide.md
+│   └── voice.md, banned-patterns.md, approved-examples.md
 ├── preview/                     cards for the Design System pane (real markup + real CSS)
 │   ├── colors-brand, colors-retired
 │   ├── type-display, type-body
@@ -69,17 +70,12 @@ The pre-Waterline layers that used to live here (v1 `colors_and_type.css`, v2 `d
 
 Tone is laid out in `waterline/writing-style-guide.md`. The distilled rules:
 
-**Who the brand sounds like.** A knowledgeable local friend who moved to Florida's Gulf Coast a decade ago. Excited, specific, never salesy. The copy reads like someone texting you tips before your trip.
-
-**Person and casing.** "We" for the Seascape team, "you" for the reader. Sentence case everywhere; never ALL CAPS in body copy. Labels and eyebrows are uppercased as a visual element (12px, .13em), not a prose pattern.
-
-**Specifics over adjectives.** Named streets, drive times in minutes, real prices. Not "beautiful beaches" but "Manatee Public Beach's waist-deep sandbars stretch 50 yards out."
-
-**Banned phrases, deleted on sight:** nestled, world-class, hidden gem, elevate your, unforgettable experience, look no further, in the heart of, boasts, seamlessly, tapestry, curated.
-
-**Proof.** Every guide page earns at least three of: first-person experience, named local places, real numbers, paraphrased guest feedback, seasonal specificity, opinionated recommendations, honest comparisons.
-
-**No emoji in body copy or UI.** At most one exclamation mark per page. Icons are the inline SVG `.ui-icon` set (1.85 stroke, round caps, currentColor); see `preview/iconography.html`.
+The maintained rules are in that entry point and its sibling `voice.md`,
+`banned-patterns.md`, and `approved-examples.md`. Answer the reader's decision
+first, use practical specifics supported by evidence, and name the tradeoff.
+Do not invent local experience or fill proof, sentence or CTA quotas. Examples
+illustrate editorial patterns; verify their facts before reuse. Repository briefs
+and content-quality gates still govern public-page implementation.
 
 ## Using this system
 

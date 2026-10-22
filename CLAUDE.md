@@ -12,9 +12,12 @@ Use its "Load context for the task" routes after checking source currency.
 Load the matching branches before their actions; the Claude delta does not
 require reading unrelated SEO, design or measurement documents at startup.
 
-- Skills: Claude loads `.claude/skills/<name>`, a relative link to the
-  maintained source in `.agents/skills/<name>`; both resolve to one procedure
-  (`AGENTS.md` -> Agent Skills lists the per-skill routing lines).
+- Skills: shared `.claude/skills/<name>` entries link to the maintained
+  `.agents/skills/<name>` source. The six Claude-only UI craft skills are
+  real directories declared in `.agents/skills-divergence.json`; they remain
+  optional under the Site design rules. Respect each skill's invocation policy
+  and applicable user skill overrides. A displayed or installed skill is not
+  proof that its body loaded or its procedure ran.
 - SEO role cards live in `.claude/agents/`. Select the task route in
   `docs/process/batch-workflow.md`; source-backed existing-guide repairs use
   one lead plus one targeted reviewer. `.claude/settings.json` holds this
