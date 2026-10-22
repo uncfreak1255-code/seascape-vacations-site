@@ -1,0 +1,86 @@
+{
+  "observed_at": "2026-10-22T23:33:48.648335+00:00",
+  "owning_repo": "seascape-analytics",
+  "source_revision": "4376242c364166dc3c7b27324772b32325aaeda4",
+  "saved_joined_report": "~/Library/Application Support/seascape-analytics/seo-pilot/closed-loop-20261018-analytics.json",
+  "joined_window": {
+    "start": "2026-10-10",
+    "end": "2026-10-16",
+    "latest_gsc_data_date": "2026-10-16"
+  },
+  "joined_rows": [
+    {
+      "page_path": "/property-management/",
+      "gsc_clicks": 0,
+      "gsc_impressions": 56,
+      "gsc_ctr": 0.0,
+      "gsc_position": 11.428571428571429,
+      "ga4_sessions": 3,
+      "guide_book_direct_clicks": 0,
+      "owner_form_starts": 0,
+      "owner_form_submits": 0,
+      "booking_engine_handoffs": 0
+    },
+    {
+      "page_path": "/guides/bradenton-vs-sarasota/",
+      "gsc_clicks": 5,
+      "gsc_impressions": 462,
+      "gsc_ctr": 0.010822510822510822,
+      "gsc_position": 5.181818181818182,
+      "ga4_sessions": 12,
+      "guide_book_direct_clicks": 1,
+      "owner_form_starts": 0,
+      "owner_form_submits": 0,
+      "booking_engine_handoffs": 0
+    }
+  ],
+  "rainy_joined_coverage": "not included in saved report; not zero",
+  "existing_local_ga4_rows": [
+    {
+      "window_start": "2026-10-15",
+      "window_end": "2026-10-21",
+      "page_path": "/guides/bradenton-vs-sarasota/",
+      "sessions": 8,
+      "pageviews": 8,
+      "observed_dates": 4
+    },
+    {
+      "window_start": "2026-10-15",
+      "window_end": "2026-10-21",
+      "page_path": "/guides/rainy-day-activities-bradenton-sarasota/",
+      "sessions": 16,
+      "pageviews": 15,
+      "observed_dates": 5
+    },
+    {
+      "window_start": "2026-10-15",
+      "window_end": "2026-10-21",
+      "page_path": "/property-management/",
+      "sessions": 10,
+      "pageviews": 11,
+      "observed_dates": 5
+    },
+    {
+      "page_path": "/guides/bradenton-vs-sarasota/",
+      "event_name": "guide_book_direct_click",
+      "count": 2
+    }
+  ],
+  "local_read_method": "BEGIN READ ONLY; SELECT aggregate counts FROM ga4_daily_page_metrics / ga4_daily_funnel_events WHERE event_date BETWEEN 2026-10-15 AND 2026-10-21 AND page_path IN the three named canonical paths; ROLLBACK",
+  "coverage_limits": [
+    "Local page metrics aggregate all channels/devices; do not call them organic-only.",
+    "Observed dates are days with stored rows; absent dates/events do not establish zeros.",
+    "Existing collector tables extend through October 22 pages and October 21 events; complete extraction coverage per page is not proven.",
+    "Page sessions are thin; no eligible post-change window yet.",
+    "Unresolved previous tracking work and other releases are confounds; preserve pilot dates."
+  ],
+  "verdict": "insufficient evidence",
+  "paid_calls": 0,
+  "schedule_changes": 0,
+  "newer_tracking_evidence": {
+    "source": "local OpenSEO report 26dc6980-158a-478f-9aea-3267835517cf, updated 2026-10-22T14:32:10.291Z",
+    "verdict": "technical keep; business insufficient evidence",
+    "coverage": "Placement registration verified October20 11:33:21 EDT; existing daily raw export inspected with free previews. Four baseline legacy clicks omit placement; rainy missing clicks and exact button split unknown.",
+    "existing_experiment_windows": "Preserve October5\u201318 baseline; exclude October19; October20\u2013November2 post; processing through November4. This editorial rollout is a new concurrent confound, not a reset."
+  }
+}
