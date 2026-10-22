@@ -1,0 +1,29 @@
+{
+  "rain": {
+    "source": "src/guides/rainy-day-activities-bradenton-sarasota.html",
+    "versions": {
+      "A": "candidate",
+      "B": "baseline"
+    },
+    "A_sha256": "afb2966278d3fb5f9ed00dd677cccc6f01e8d4cee1956043a972fae75e8be867",
+    "B_sha256": "d23456a42dc7871baef17cc8374d15c5e57bbfcf5a909814de756a17f49de611"
+  },
+  "comparison": {
+    "source": "src/guides/bradenton-vs-sarasota.html",
+    "versions": {
+      "A": "baseline",
+      "B": "candidate"
+    },
+    "A_sha256": "fa3ed93b2fa45d2100ea9faa88a39d5c083007ef35796bdb9e853f0391a0a897",
+    "B_sha256": "f833e195b30a91ea249c66220f9b495c293df46584c7f47787d7505d820a1a8c"
+  },
+  "owner": {
+    "source": "src/property-management/index.njk",
+    "versions": {
+      "A": "baseline",
+      "B": "candidate"
+    },
+    "A_sha256": "03d64ef1bd5fbd0fe9ffc1b9180b0c2f7ceaea6bdad817a89004ba3fbdc0759d",
+    "B_sha256": "34c887c657e6269fd5ea6935deb9583934c69e7cd8839e54a6c4857855b66555"
+  }
+}
