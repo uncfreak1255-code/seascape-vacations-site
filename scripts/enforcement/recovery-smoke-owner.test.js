@@ -122,7 +122,8 @@ test("property-management smoke rejects a non-number-word home count", () => {
       location: null,
       body: `
         <main>
-          <h1>Many homes. One local team. <em>Your call gets answered.</em></h1>
+          <h1>Know what your home earned <em>and what needs attention.</em></h1>
+          <p>Many homes. One local team.</p>
           <a href="#owner-cta">Request your 48-hour revenue review</a>
           <form name="owner-revenue-teardown" method="POST"></form>
           <input type="checkbox" name="submitter_authority" value="owner_or_authorized_representative" required>
