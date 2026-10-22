@@ -1,8 +1,11 @@
 "use strict";
 
-const crypto = require("node:crypto");
-const fs = require("node:fs");
-const path = require("node:path");
+const {
+  STAY_BASELINE_FILE,
+  assertStayBaselineRatchet,
+  loadStayNumberBaseline,
+  sentenceHash
+} = require("../../scripts/enforcement/stay-number-baseline");
 const { NUMBER, catalogHomeCountWord, numberWord } = require("../../scripts/enforcement/home-count-word");
 
 const SLEEPS_FACT = /\b(?:sleep(?:s|ing)?(?:\s+up\s+to)?|hold)\s+\d+(?:\s*[-–-]\s*\d+)?\b/i;
@@ -271,55 +274,11 @@ function collectNearbyNumberFacts(text) {
   return hits;
 }
 
-function normalizeSentence(text) {
-  return String(text || "").replace(/\s+/g, " ").trim().toLowerCase();
-}
-
-function sentenceHash(text) {
-  return crypto.createHash("sha256").update(normalizeSentence(text)).digest("hex");
-}
-
-const STAY_BASELINE_FILE = "src/_data/stayNumberBaseline.json";
-const BASELINE_TAGS = new Set(["non-claim", "suspected-claim"]);
-
-function loadStayNumberBaseline(root = path.join(__dirname, "..", "..")) {
-  const file = path.join(root, STAY_BASELINE_FILE);
-  if (!fs.existsSync(file)) {
-    throw new Error(`stayFacts: ${STAY_BASELINE_FILE} is missing`);
-  }
-  const rows = JSON.parse(fs.readFileSync(file, "utf8"));
-  if (!Array.isArray(rows.sentences)) {
-    throw new Error(`stayFacts: ${STAY_BASELINE_FILE} is missing sentences`);
-  }
-  const hashes = new Set();
-  for (const row of rows.sentences) {
-    if (!row || row.hash !== sentenceHash(row.sentence)) {
-      throw new Error(`stayFacts: ${STAY_BASELINE_FILE} hash does not match sentence`);
-    }
-    if (!BASELINE_TAGS.has(row.tag) || !String(row.reason || "").trim()) {
-      throw new Error(`stayFacts: ${STAY_BASELINE_FILE} row is missing a reviewed tag`);
-    }
-    hashes.add(row.hash);
-  }
-  return { rows: rows.sentences, hashes };
-}
-
 let stayNumberBaseline;
 
-function allowedStayNumberSentence(sentence) {
+function allowedStayNumberSentence(sentence, page) {
   stayNumberBaseline = stayNumberBaseline || loadStayNumberBaseline();
-  return stayNumberBaseline.hashes.has(sentenceHash(sentence));
-}
-
-function assertStayBaselineRatchet(currentRows, previousRows) {
-  const previous = new Map((previousRows || []).map((row) => [row.hash, row]));
-  for (const row of currentRows || []) {
-    if (!previous.has(row.hash)) {
-      throw new Error(
-        `${STAY_BASELINE_FILE} can only shrink; new hash ${row.hash} needs a sourced token or a reviewed tag change on an existing row`
-      );
-    }
-  }
+  return stayNumberBaseline.keys.has(`${page && page.slug}:${sentenceHash(sentence)}`);
 }
 
 function collectStayNumberCandidates(page) {
@@ -334,7 +293,7 @@ function collectHandTypedStayFacts(page) {
   const hits = [];
   visitStrings(page, (text) => {
     for (const hit of collectNearbyNumberFacts(text)) {
-      if (allowedStayNumberSentence(hit.excerpt || hit.match)) {
+      if (allowedStayNumberSentence(hit.excerpt || hit.match, page)) {
         continue;
       }
       hits.push(hit);
@@ -345,7 +304,7 @@ function collectHandTypedStayFacts(page) {
     ]) {
       for (const sentence of stripStayMarkup(text).split(/[.!?]+/)) {
         const match = sentence.match(pattern);
-        if (!match || allowedStayNumberSentence(sentence)) {
+        if (!match || allowedStayNumberSentence(sentence, page)) {
           continue;
         }
         hits.push({ label, match: match[0], excerpt: sentence.trim() });

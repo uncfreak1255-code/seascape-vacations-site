@@ -58,6 +58,14 @@
 
 ## Source Files Changed In This Batch
 
+### October 22 approved P2 repair round
+
+- Sawyer approved one additional round limited to r4305146407 and r4305158882; keep PR #732 draft, with no merge or deployment.
+- Pin the 122 original page/hash allowances from `4429176a7af6261a470f9ddd7b44c63659c732c8` in `scripts/enforcement/fixtures/stay-number-baseline-approved.json`. The baseline loader used by the stay build gate rejects new or moved allowances; removals and reviewed retagging remain valid.
+- Match exceptions by both original page slug and sentence hash. The dock-page copy of a waterfront-page bedroom sentence now uses `{br:dockside-dreams}` instead of a literal number; all catalog-resolved stay-page data is unchanged at the starting catalog.
+- `scripts/enforcement/stay-number-baseline.test.js` exercises the real stay-data entry point. The added-entry, copied-sentence, and moved-slug regressions failed before the repair and passed afterward; original-page exceptions, removals, and retagging still pass.
+- This is copy-integrity enforcement only: no new content, claims, routes, property facts, jobs, or release authority.
+
 ### October 18 party-capacity correction
 
 - Authorized scope: correct the FAQ on `/stays/bachelor-bachelorette-rentals-florida/` identified in PR #732 review discussion r4305171930 at `1bcdb3086d80e7f2aebe13959b292a3c7f6e0c24`.
