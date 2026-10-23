@@ -269,6 +269,7 @@
     if (!form.reportValidity()) return;
     trip = { arrive:arrive.value, depart:depart.value, guests:guests.value };
     rememberTrip(); render(); emit("catalog_trip_update",{guest_count:Number(guests.value)||0,has_dates:Boolean(arrive.value)});
+    if (event) { var heading = document.getElementById("catalog-heading"); heading.focus(); heading.scrollIntoView(); }
   }
   form.addEventListener("submit",submitTrip);
   root.addEventListener("click",function(event) {
