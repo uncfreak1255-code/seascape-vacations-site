@@ -24,12 +24,7 @@ test('Waterline comparison icons, badges and row labels fit their controls', asy
   await first.click();
   await expect(first.locator('.catalog-compare-add')).toBeHidden();
   await expect(first.locator('.catalog-compare-selected')).toBeVisible();
-  const badgesFit = await page.locator('.catalog-photo-number').evaluateAll(nodes => nodes.every(node => {
-    const range = document.createRange(); range.selectNodeContents(node);
-    const text = range.getBoundingClientRect(); const box = node.getBoundingClientRect();
-    return text.left >= box.left && text.right <= box.right && text.top >= box.top && text.bottom <= box.bottom;
-  }));
-  expect(badgesFit).toBe(true);
+  await expect(page.locator('.catalog-photo-number')).toHaveCount(0);
   await page.locator('[data-compare]').nth(1).click();
   await page.getByRole('button', { name: 'Compare homes', exact: true }).click();
   const labelsFit = await page.locator('.catalog-comparison-table tbody th').evaluateAll(nodes => nodes.every(node => {

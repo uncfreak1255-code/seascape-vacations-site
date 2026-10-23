@@ -8,6 +8,7 @@ pageImage: "https://seascape-vacations.com/images/homes/sarasota-luxe/22.webp"
 pageUpdated: "2026-09-04T12:00:00-04:00"
 navActive: "properties"
 navButtonHref: "#catalog-trip"
+pageStylesheet: "/css/catalog-card.css?v=waterline-v3"
 headExtra: |
   <link rel="stylesheet" href="/css/catalog.css">
   <script defer src="/assets/js/conversion-tracking.js"></script>
@@ -89,7 +90,6 @@ headExtra: |
       <article class="catalog-card" data-property="{{ property.slug }}" data-filters="{{ filterTokens }}" data-max-guests="{{ property.guests }}" data-availability-mode="checkout">
         <a class="catalog-card-media" href="{{ property.pageUrl }}" data-trip-link data-track-event="catalog_view_details_click" data-page-slug="{{ property.slug }}" data-placement="catalog_photo" aria-label="View {{ property.cardName or property.name }} photos and details">
           <img data-transition-home="{{ property.slug }}" data-property-photo="{{ property.slug }}" src="{{ property.photography.photos[0].src }}" srcset="{{ property.photography.photos[0].src | replace('.webp', '-800.webp') }} 800w, {{ property.photography.photos[0].src }} 1400w" sizes="(min-width: 900px) 30vw, calc(100vw - 40px)" alt="{{ property.cardName or property.name }} vacation home in {{ property.city }}" width="900" height="620" loading="lazy" decoding="async">
-          <span class="catalog-photo-number" aria-hidden="true">0{{ loop.index }}</span>
         </a>
         <div class="catalog-card-body">
           <div class="catalog-card-topline"><span>{{ property.city }}, Florida</span><button class="catalog-compare-toggle" type="button" data-compare="{{ property.slug }}" aria-pressed="false" aria-label="Compare {{ property.cardName or property.name }}" hidden>{{ uiIcon('plus', 'catalog-compare-add') }}{{ uiIcon('check', 'catalog-compare-selected') }} <span>Compare</span></button></div>

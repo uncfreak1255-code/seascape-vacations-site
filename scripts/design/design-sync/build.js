@@ -17,8 +17,8 @@
  *   waterline/tokens.css           generated from DESIGN.md front matter
  *   waterline/fonts.css + fonts/   self-hosted Poppins + Instrument Serif
  *   waterline/*.css                verbatim copies of the live guest stylesheets
- *   waterline/DESIGN.md            verbatim copy of DESIGN.md (visual law)
- *   waterline/design-review-workflow.md, waterline/writing-style-guide.md
+ *   waterline/DESIGN.md            verbatim DESIGN.md (visual law)
+ *   waterline/{design-review-workflow,writing-style-guide,legacy-gold-ctas}.md
  *   preview/*.html                 self-contained cards for the Design System pane,
  *                                  built from the REAL built HTML of the site
  *   _sync-manifest.json            exact writes + deletes for the DesignSync push
@@ -30,7 +30,7 @@
  *
  * The push itself is done with the DesignSync tool from Claude Code (list -> finalize_plan
  * -> write_files/delete_files) using _sync-manifest.json. Re-run after any PR that touches
- * DESIGN.md, src/css/{base,guest,arrival,catalog}.css or the guest partials.
+ * DESIGN.md, src/css/{base,guest,arrival,catalog,catalog-card}.css or the guest partials.
  */
 
 const fs = require("fs");
@@ -52,7 +52,7 @@ const SYNC_ROOT = path.join(ROOT, ".design-sync");
 if (!(OUT === SYNC_ROOT || OUT.startsWith(SYNC_ROOT + path.sep))) {
   throw new Error(`--out must resolve inside ${SYNC_ROOT}; got ${OUT}`);
 }
-const LIVE = "https://seascape-vacations.com";
+const { LIVE, extract, absolutize } = require("./markup");
 
 function read(rel) {
   return fs.readFileSync(path.join(ROOT, rel), "utf8");
@@ -98,50 +98,13 @@ try {
 }
 const today = new Date().toISOString().slice(0, 10);
 
-/* ---------------------------------------------------------------- markup extraction */
-// Returns the first element whose class attribute starts with `cls`, with balanced tags.
-function extract(html, cls, nth = 0) {
-  const open = new RegExp(`<([a-z][a-z0-9]*)\\b[^>]*class="${cls}[" ][^>]*>`, "g");
-  let m;
-  for (let i = 0; i <= nth; i += 1) {
-    m = open.exec(html);
-    if (!m) throw new Error(`Component .${cls} (#${nth}) not found in built HTML`);
-  }
-  const tag = m[1];
-  const opener = new RegExp(`<${tag}\\b[^>]*>`, "g");
-  const closer = new RegExp(`</${tag}>`, "g");
-  let i = m.index + m[0].length;
-  let depth = 1;
-  while (depth > 0) {
-    opener.lastIndex = i;
-    closer.lastIndex = i;
-    const o = opener.exec(html);
-    const c = closer.exec(html);
-    if (!c) throw new Error(`Unbalanced <${tag}> while extracting .${cls}`);
-    if (o && o.index < c.index && !/\/>$/.test(o[0])) {
-      depth += 1;
-      i = o.index + o[0].length;
-    } else {
-      depth -= 1;
-      i = c.index + c[0].length;
-    }
-  }
-  return html.slice(m.index, i);
-}
-
-// Root-relative URLs -> live site, so cards show the approved photography.
-function absolutize(html) {
-  return html
-    .replace(/(src|href|poster)="\//g, `$1="${LIVE}/`)
-    .replace(/srcset="([^"]*)"/g, (_, v) => `srcset="${v.replace(/(^|,\s*)\//g, `$1${LIVE}/`)}"`);
-}
-
 /* ---------------------------------------------------------------- css */
 const stripFontFace = (css) => css.replace(/@font-face\s*\{[^}]*\}\n?/g, "");
 const baseCss = read("src/css/base.css");
 const guestCss = stripFontFace(read("src/css/guest.css"));
 const arrivalCss = read("src/css/arrival.css");
 const catalogCss = read("src/css/catalog.css");
+const catalogCardCss = read("src/css/catalog-card.css");
 
 const fonts = [
   ["src/assets/fonts/homepage/poppins-400-latin.woff2", "Poppins", 400, "normal"],
@@ -263,6 +226,7 @@ write("waterline/base.css", baseCss);
 write("waterline/guest.css", `/* Verbatim src/css/guest.css minus @font-face (see fonts.css). */\n${guestCss}`);
 write("waterline/arrival.css", arrivalCss);
 write("waterline/catalog.css", catalogCss);
+write("waterline/catalog-card.css", catalogCardCss);
 write("waterline/shell.html", `<!-- Real shared shell as built at ${commit}. -->\n${headerPaper}\n<main id="main"><!-- page --></main>\n${footer}\n`);
 
 /* ---------------------------------------------------------------- cards */
