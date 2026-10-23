@@ -2,35 +2,35 @@
   "routes": {
     "/": {
       "script": 76553,
-      "stylesheet": 57300
+      "stylesheet": 55026
     },
     "/properties/": {
       "script": 99166,
-      "stylesheet": 57999
+      "stylesheet": 57964
     },
     "/property-management/": {
       "script": 88135,
-      "stylesheet": 54341
+      "stylesheet": 52067
     },
     "/property-management/vacation-rental-licensing-florida/": {
       "script": 54895,
-      "stylesheet": 34612
+      "stylesheet": 32338
     },
     "/property-management/vacation-rental-management-fees-florida/": {
       "script": 54895,
-      "stylesheet": 34612
+      "stylesheet": 32338
     },
     "/property-management/vrbo-management-services-florida/": {
       "script": 54895,
-      "stylesheet": 34612
+      "stylesheet": 32338
     },
     "/stays/anna-maria-island-beachfront-rentals/": {
       "script": 54895,
-      "stylesheet": 34612
+      "stylesheet": 32338
     },
     "/stays/anna-maria-island-vacation-rentals/": {
       "script": 54895,
-      "stylesheet": 34612
+      "stylesheet": 32338
     }
   },
   "raises": [
@@ -504,6 +504,14 @@
       "from": 57030,
       "to": 57999,
       "reason": "Approved website design improvements: persistent comparison controls and home-name headers, short-screen layout, and results focus; Lighthouse budgets passed in run 39877000051.",
+      "date": "2026-10-23"
+    },
+    {
+      "route": "/properties/",
+      "metric": "stylesheet",
+      "from": 57999,
+      "to": 58863,
+      "reason": "Catalog card C and 17px long-read guides (critic picks, Sawyer 2026-10-23): the catalog-card family moved out of guest.css into catalog-card.css so guest.css stays under the staged-file size gate; one extra stylesheet request on /properties/ adds 864 B uncompressed (7439+15948+32339+3137). Other routes shrink because guest.css lost those rules.",
       "date": "2026-10-23"
     }
   ]

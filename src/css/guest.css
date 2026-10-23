@@ -103,18 +103,7 @@
 .guest-site .catalog-intro-photo img{height:340px;object-fit:cover}
 .guest-site .catalog-trip{border-radius:0;box-shadow:none;background:transparent;border:0;border-block:1px solid var(--g-rule);padding:26px 0;margin:18px 0 58px}
 .guest-site .catalog-trip input,.guest-site .catalog-trip select{border-radius:0;border:0;border-bottom:1px solid var(--g-muted);background:transparent;padding:8px 0;color:var(--g-ink)}
-.guest-site .catalog-grid{gap:52px}
-.guest-site .catalog-card{border:0;border-radius:0;background:transparent;box-shadow:none;grid-template-columns:1.1fr 1fr;border-bottom:1px solid var(--g-rule);padding-bottom:40px;overflow:visible}
-.guest-site .catalog-card-media{border-radius:0;min-height:350px}
-.guest-site .catalog-card-media img{min-height:350px;object-fit:cover}
-.guest-site .catalog-card-body{padding:8px 0 0 36px}
-.guest-site .catalog-card h3{font-size:40px}
-.guest-site .catalog-card-specs{font-size:13px}
-.guest-site .catalog-card-reason{border:0;padding:0;margin-top:20px}
-.guest-site .catalog-card-reason .section-tag{display:none}
-.guest-site .catalog-card-reason p{font-size:17px}
-.catalog-fit-note{font-size:13px;color:var(--g-muted);border-left:2px solid var(--g-accent);padding-left:14px;margin:18px 0!important}
-.guest-site .catalog-photo-number{border-radius:0;background:var(--g-paper);color:var(--g-ink);font-size:12px;padding:8px;width:auto;height:auto;display:inline-flex;align-items:center;justify-content:center;line-height:1}
+.guest-site .catalog-grid{gap:56px}
 .guest-site .catalog-compare-toggle{border-radius:4px;border-color:var(--g-rule)}
 .guest-site .catalog-compare-toggle[aria-pressed=true]{background:var(--g-ink);color:white}
 .guest-site .catalog-filter{background:transparent;border:1px solid var(--g-rule);border-radius:4px}
@@ -127,7 +116,6 @@
 .guest-site .catalog-comparison-table{font-size:13px}
 .guest-site .catalog-comparison-scroll{scrollbar-width:auto}
 .guest-site .catalog-quote-note{font-size:12px}
-.guest-site .catalog-card-foot{margin-top:22px}
 .g-breadcrumb{display:flex;gap:12px;flex-wrap:wrap;padding:22px 0;font-size:13px}
 .g-breadcrumb a{text-decoration:none}
 .g-property-heading{display:flex;justify-content:space-between;gap:40px;align-items:end;padding:22px 0 28px}
@@ -188,8 +176,6 @@
 .g-property-columns{grid-template-columns:minmax(0,1fr) 315px;gap:32px}
 .g-property-specs{gap:12px 16px;font-size:12px}
 .g-booking{padding:22px}
-.guest-site .catalog-card-body{padding-left:24px}
-.guest-site .catalog-card h3{font-size:34px}
 .g-gallery{grid-template-rows:190px 190px}}
 @media(max-width:700px){.guest-site{font-size:15px}
 .g-wrap,.guest-site .catalog-page{width:calc(100% - 40px)}
@@ -268,16 +254,7 @@
 .guest-site .catalog-trip{padding:20px 0;margin:12px 0 20px}
 .guest-site .catalog-collection-heading{display:block}
 .guest-site .catalog-collection-heading h2{font-size:34px}
-.guest-site .catalog-card{grid-template-columns:1fr;padding-bottom:28px;gap:0}
 .guest-site .catalog-grid{gap:32px}
-.guest-site .catalog-card-media,.guest-site .catalog-card-media img{height:270px;min-height:0}
-.guest-site .catalog-card-body{padding:20px 0 0}
-.guest-site .catalog-card h3{font-size:34px}
-.guest-site .catalog-card-reason{margin-top:14px}
-.guest-site .catalog-card-reason p{font-size:15px}
-.guest-site .catalog-card-topline{font-size:13px}
-.guest-site .catalog-card-specs{font-size:13px}
-.catalog-fit-note{font-size:12px}
 .guest-site .catalog-help{padding:26px 20px;margin-top:24px;margin-bottom:40px}
 .guest-site .catalog-help h2{font-size:32px}
 .guest-site .catalog-dialog{padding:18px 14px}
@@ -314,13 +291,6 @@
 .guest-site .catalog-intro-photo img{height:350px}
 .guest-site .catalog-intro-photo figcaption{padding:18px 8px 0;font-size:12px;display:block;background:none;border:0;color:var(--g-ink)}
 .guest-site .catalog-intro-photo figcaption span{font-size:12px;display:block;margin-top:4px;color:var(--g-muted)}
-.guest-site .catalog-card{grid-template-columns:1.2fr 1fr;gap:0;margin-bottom:8px}
-.guest-site .catalog-card h3{font-size:58px;line-height:1}
-.guest-site .catalog-card-media{overflow:hidden;min-height:390px}
-.guest-site .catalog-card-media img{height:100%;min-height:390px;transition:transform .6s cubic-bezier(.2,.7,.2,1)}
-.guest-site .catalog-card-media:hover img{transform:scale(1.035)}
-.guest-site .catalog-card-body{padding:4px 0 0 48px}
-.guest-site .catalog-photo-number{font:40px/1 'Instrument Serif',serif;padding:12px 18px}
 .guest-site .catalog-collection-heading h2{font-size:55px;line-height:1.03}
 .guest-site .catalog-dialog-header h2{font-size:46px}
 .guest-site .catalog-help h2{font-size:52px}
@@ -350,8 +320,6 @@
 @media(min-width:701px) and (max-width:900px){.g-footer-grid{grid-template-columns:1fr 1fr;gap:32px 48px}}
 @media(min-width:701px) and (max-width:1050px){.guest-site .catalog-intro{gap:45px}
 .guest-site .catalog-intro h1{font-size:76px}
-.guest-site .catalog-card-body{padding-left:28px}
-.guest-site .catalog-card h3{font-size:47px}
 .g-property-heading h1{font-size:83px}
 .g-gallery{grid-template-rows:205px 205px}}
 @media(max-width:700px){.g-header{height:76px}
@@ -368,11 +336,6 @@
 .guest-site .catalog-intro-photo{width:calc(100% - 18px);margin:0 auto 16px;padding:9px 9px 16px}
 .guest-site .catalog-intro-photo img{height:240px}
 .guest-site .catalog-intro-photo figcaption{padding-top:14px;font-size:12px}
-.guest-site .catalog-card{display:block}
-.guest-site .catalog-card-body{padding:22px 0 0}
-.guest-site .catalog-card h3{font-size:47px}
-.guest-site .catalog-card-media,.guest-site .catalog-card-media img{min-height:0;height:280px}
-.guest-site .catalog-photo-number{font-size:33px;padding:10px 14px}
 .guest-site .catalog-collection-heading h2{font-size:45px}
 .guest-site .catalog-dialog-header h2{font-size:35px}
 .guest-site .catalog-help h2{font-size:44px}
@@ -402,7 +365,7 @@
 [data-transition-home="river-house"]{view-transition-name:home-river}
 [data-transition-home="bradenton-pool-home"]{view-transition-name:home-pool}}
 @media(prefers-reduced-motion:reduce){.guest-site *,.guest-site *::before,.guest-site *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
-.guest-site .catalog-card-media:hover img,.g-gallery-photo:hover img{transform:none}}
+.g-gallery-photo:hover img{transform:none}}
 @media(prefers-reduced-motion:no-preference){::view-transition-group(root){animation-duration:.2s}}
 
 /* The shared shell leaves guide, stay and company-page body typography intact. */
@@ -434,3 +397,7 @@
 .g-header-actions .g-button{padding-inline:10px}}
 
 @media(prefers-reduced-motion:no-preference){.guest-shell .g-button:active:not(:focus-visible),.guest-site .g-button:active:not(:focus-visible),.guest-site .btn-brand:active:not(:focus-visible),.guest-site .btn:active:not(:focus-visible),.guest-shell .g-button[data-pressed],.guest-site .g-button[data-pressed],.guest-site .btn-brand[data-pressed],.guest-site .btn[data-pressed]{transform:scale(.97)}}
+
+/* Legacy field-journal guides: long-read body, 17px over 1.75, 68ch measure on nested blocks too (DESIGN.md Oct 2026). Classed or styled boxes keep their width. */
+.guest-shell article.article-text{font-size:17px;line-height:1.75}
+.guest-shell article.article-text :is(p,ul,ol,blockquote):not(article.article-text :is([class],[style]) *){max-width:68ch}
