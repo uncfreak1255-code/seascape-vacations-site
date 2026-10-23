@@ -55,6 +55,28 @@ test("collectLaneCopies: extracts configured owner entries from seoPages data", 
   assert.doesNotMatch(result[0].copy, /Cleaning-service/);
 });
 
+test("collectLaneCopies: resolves stay tokens before guest evaluation", () => {
+  const lane = {
+    dataSources: [
+      {
+        path: "src/_data/seoPages.json",
+        arrayPath: "vacationer",
+        labelKey: "slug",
+        onlySlugs: ["anna-maria-island-homes-with-pool"],
+      },
+    ],
+  };
+  const raw = require("node:fs").readFileSync(
+    require("node:path").join(__dirname, "..", "..", "src/_data/seoPages.json"),
+    "utf8"
+  );
+  const result = collectLaneCopies(lane, "src/_data/seoPages.json", raw);
+  assert.equal(result.length, 1);
+  assert.doesNotMatch(result[0].copy, /\{(?:heat|sleeps|br|ba|matching)(?::[a-z0-9-]+)?\}/);
+  assert.match(result[0].copy, /sleeping 12–16/);
+  assert.match(result[0].copy, /the hot tub heat is included year-round/);
+});
+
 test("collectLaneCopies: default path extracts one plain file target", () => {
   const result = collectLaneCopies(
     {},
