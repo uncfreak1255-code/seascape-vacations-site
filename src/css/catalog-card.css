@@ -1,0 +1,41 @@
+/* Waterline catalog-card family, split out of guest.css for the staged-file size gate (2026-10-23).
+ * Loads after guest.css on /properties/ via the pageStylesheet front-matter key, so the cascade
+ * matches the original in-file order. DESIGN.md governs; card C: no photo-number badge, 40px title. */
+.guest-site .catalog-card{border:0;border-radius:0;background:transparent;box-shadow:none;grid-template-columns:1.1fr 1fr;border-bottom:1px solid var(--g-rule);padding-bottom:56px;overflow:visible}
+.guest-site .catalog-card-media{border-radius:0;min-height:350px}
+.guest-site .catalog-card-media img{min-height:350px;object-fit:cover}
+.guest-site .catalog-card-body{padding:12px 0 0 36px}
+.guest-site .catalog-card h3{font-size:40px}
+.guest-site .catalog-card-specs{font-size:13px}
+.guest-site .catalog-card-reason{border:0;padding:0;margin-top:24px}
+.guest-site .catalog-card-reason .section-tag{display:none}
+.guest-site .catalog-card-reason p{font-size:17px}
+.catalog-fit-note{font-size:13px;color:var(--g-muted);border-left:2px solid var(--g-accent);padding-left:14px;margin:24px 0!important}
+.guest-site .catalog-photo-number{border-radius:0;background:var(--g-paper);color:var(--g-ink);font-size:12px;padding:8px;width:auto;height:auto;display:none;align-items:center;justify-content:center;line-height:1}
+.guest-site .catalog-card-foot{margin-top:32px;gap:28px;align-items:center}
+@media(max-width:1050px){.guest-site .catalog-card-body{padding-left:24px}
+.guest-site .catalog-card h3{font-size:34px}}
+@media(max-width:700px){.guest-site .catalog-card{grid-template-columns:1fr;padding-bottom:40px;gap:0}
+.guest-site .catalog-card-media,.guest-site .catalog-card-media img{height:270px;min-height:0}
+.guest-site .catalog-card-body{padding:20px 0 0}
+.guest-site .catalog-card h3{font-size:34px}
+.guest-site .catalog-card-reason{margin-top:20px}
+.guest-site .catalog-card-reason p{font-size:15px}
+.guest-site .catalog-card-topline{font-size:13px}
+.guest-site .catalog-card-specs{font-size:13px}
+.catalog-fit-note{font-size:12px}}
+.guest-site .catalog-card{grid-template-columns:1.2fr 1fr;gap:0;margin-bottom:8px}
+.guest-site .catalog-card h3{font-size:40px;line-height:1.08}
+.guest-site .catalog-card-media{overflow:hidden;min-height:390px}
+.guest-site .catalog-card-media img{height:100%;min-height:390px;transition:transform .6s cubic-bezier(.2,.7,.2,1)}
+.guest-site .catalog-card-media:hover img{transform:scale(1.035)}
+.guest-site .catalog-card-body{padding:12px 0 0 48px}
+.guest-site .catalog-photo-number{font:40px/1 'Instrument Serif',serif;padding:12px 18px}
+@media(min-width:701px) and (max-width:1050px){.guest-site .catalog-card-body{padding-left:28px}
+.guest-site .catalog-card h3{font-size:40px}}
+@media(max-width:700px){.guest-site .catalog-card{display:block}
+.guest-site .catalog-card-body{padding:22px 0 0}
+.guest-site .catalog-card h3{font-size:40px}
+.guest-site .catalog-card-media,.guest-site .catalog-card-media img{min-height:0;height:280px}
+.guest-site .catalog-photo-number{font-size:33px;padding:10px 14px}}
+@media(prefers-reduced-motion:reduce){.guest-site .catalog-card-media:hover img{transform:none}}
