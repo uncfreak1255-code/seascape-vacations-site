@@ -7,9 +7,10 @@
 
 const LIVE = "https://seascape-vacations.com";
 
-// Returns the first element whose class attribute starts with `cls`, with balanced tags.
+// Returns the nth element carrying class `cls` anywhere in its class list, with balanced tags.
 function extract(html, cls, nth = 0) {
-  const open = new RegExp(`<([a-z][a-z0-9]*)\\b[^>]*class="${cls}[" ][^>]*>`, "g");
+  const safe = cls.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const open = new RegExp(`<([a-z][a-z0-9]*)\\b[^>]*class="(?:[^"]*\\s)?${safe}(?:\\s[^"]*)?"[^>]*>`, "g");
   let m;
   for (let i = 0; i <= nth; i += 1) {
     m = open.exec(html);

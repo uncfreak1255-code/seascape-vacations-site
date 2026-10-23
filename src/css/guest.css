@@ -398,6 +398,6 @@
 
 @media(prefers-reduced-motion:no-preference){.guest-shell .g-button:active:not(:focus-visible),.guest-site .g-button:active:not(:focus-visible),.guest-site .btn-brand:active:not(:focus-visible),.guest-site .btn:active:not(:focus-visible),.guest-shell .g-button[data-pressed],.guest-site .g-button[data-pressed],.guest-site .btn-brand[data-pressed],.guest-site .btn[data-pressed]{transform:scale(.97)}}
 
-/* Legacy field-journal guides: long-read body, 17px over 1.75 with a 68ch measure (DESIGN.md, October 2026). Boxes and related grids keep the 900px container. */
+/* Legacy field-journal guides: long-read body, 17px over 1.75, 68ch measure on nested blocks too (DESIGN.md, Oct 2026). Classed or styled boxes keep their width. */
 .guest-shell article.article-text{font-size:17px;line-height:1.75}
-.guest-shell article.article-text>p,.guest-shell article.article-text>ul,.guest-shell article.article-text>ol{max-width:68ch}
+.guest-shell article.article-text :is(p,ul,ol,blockquote):not(article.article-text :is([class],[style]) *){max-width:68ch}

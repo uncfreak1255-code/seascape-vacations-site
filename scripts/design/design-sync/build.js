@@ -17,8 +17,8 @@
  *   waterline/tokens.css           generated from DESIGN.md front matter
  *   waterline/fonts.css + fonts/   self-hosted Poppins + Instrument Serif
  *   waterline/*.css                verbatim copies of the live guest stylesheets
- *   waterline/DESIGN.md            verbatim copy of DESIGN.md (visual law)
- *   waterline/design-review-workflow.md, waterline/writing-style-guide.md
+ *   waterline/DESIGN.md            verbatim DESIGN.md (visual law)
+ *   waterline/{design-review-workflow,writing-style-guide,legacy-gold-ctas}.md
  *   preview/*.html                 self-contained cards for the Design System pane,
  *                                  built from the REAL built HTML of the site
  *   _sync-manifest.json            exact writes + deletes for the DesignSync push
