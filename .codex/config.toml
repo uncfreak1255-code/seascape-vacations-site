@@ -91,6 +91,3 @@ enabled = false
 
 [plugins."founder-kit@sawyer-skills"]
 enabled = false
-
-[plugins."mattpocock-skills@claude-plugins-official"]
-enabled = true
