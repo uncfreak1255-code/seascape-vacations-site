@@ -86,7 +86,8 @@ test('booking and cost guides compare complete quotes without fixed savings or f
   }
   const data = JSON.stringify(JSON.parse(read('src/_data/seoPages.json')));
   assert.doesNotMatch(data, /10[-–]15%|\$25[-–]\$50|\$25[-–]\$60|\$200-\$550 direct/);
-  assert.match(data, /\$40\/night|\$40 per night/, 'verified pool heat charge remains');
+  assert.match(data, /\{pool-heat-fee\} per night/, 'verified pool heat charge remains as a stayFacts token');
+  assert.match(read('src/_data/properties-fallback.json'), /\$40 per night/, 'fallback catalog still publishes the verified nightly charge');
 });
 
 test('area and long-stay comparisons do not invent accommodation averages or monthly budgets', () => {
