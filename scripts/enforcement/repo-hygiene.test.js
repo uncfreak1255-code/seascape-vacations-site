@@ -36,14 +36,14 @@ test("classifyUntrackedFiles separates scratch artifacts from likely real work",
   assert.deepEqual(result.unknown, ["notes/todo.txt"]);
 });
 
-test("getNextSafeCommand recommends branching off dirty main instead of working there", () => {
+test("getNextSafeCommand preserves dirty main and starts an isolated worktree from origin/main", () => {
   assert.equal(
     getNextSafeCommand({
       currentBranch: "main",
       rootMainDirty: true,
       localMainBehindOrigin: false
     }),
-    "git switch -c codex/sort-untracked-files"
+    "git worktree add -b codex/sort-untracked-files .worktrees/sort-untracked-files origin/main"
   );
 });
 
@@ -54,7 +54,7 @@ test("getNextSafeCommand recommends pulling when main is clean but behind origin
       rootMainDirty: false,
       localMainBehindOrigin: true
     }),
-    "git pull origin main"
+    "git pull --ff-only origin main"
   );
 });
 

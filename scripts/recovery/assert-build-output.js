@@ -335,7 +335,7 @@ if (phase === "remediation") {
   expectExists("_site/images/anna-maria-island-og.jpg");
   expectContains("_site/index.html", "Seascape is owner-operated.");
   expectContains("_site/index.html", 'href="tel:9417048545"');
-  expectMatches("_site/index.html", /<form[^>]+action="\/properties\/"[^>]+method="get"/, "native catalog trip form");
+  expectContains("_site/index.html", 'action="/properties/#catalog-heading" method="get"');
   for (const name of ["arrive", "depart", "guests"]) {
     expectContains("_site/index.html", `name="${name}"`);
   }

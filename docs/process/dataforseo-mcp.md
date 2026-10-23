@@ -3,6 +3,10 @@
 This repo-local MCP entry exists only to make live competitor reads repeatable
 inside the Seascape site workflow.
 
+Local OpenSEO is the default SEO workflow; see `openseo.md`. This direct
+connection is a fallback for a specifically approved capability gap, with
+exact-run spending approval and the existing Gate 0 proof.
+
 ## Boundary
 
 - `seascape-vacations-site` uses DataForSEO as a Gate 0 input for SERP,

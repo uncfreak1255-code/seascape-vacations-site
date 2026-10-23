@@ -133,6 +133,12 @@ async function runLane(lane, options = {}) {
   for (const relPath of targets) {
     const absPath = path.join(projectRoot, relPath);
     if (!fs.existsSync(absPath)) {
+      if (explicitFiles.includes(relPath) && lane.blocking) {
+        console.error(`[error] lane ${laneId}: requested target not found: ${relPath}`);
+        failures.push(relPath);
+        continue;
+      }
+      // Git-diff discovery also includes deliberately deleted pages.
       console.warn(`[warn] lane ${laneId}: target not found, skipping: ${relPath}`);
       continue;
     }

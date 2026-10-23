@@ -182,6 +182,7 @@ test("guest searches, chooses the matching home, and reaches only the intercepte
   await screen.getByRole("button", "Find my home").tap();
 
   await expect(browser).toHaveURL(/\/properties\/\?.*arrive=2026-11-07/);
+  await expect(browser.locator("#catalog-heading")).toBeFocused();
   await expect(browser.locator(".catalog-card:visible")).toHaveCount(1);
   await expect(browser.locator('.catalog-card:visible[data-property="the-oasis"]')).toBeVisible();
 
@@ -195,6 +196,30 @@ test("guest searches, chooses the matching home, and reaches only the intercepte
   await screen.getByRole("link", /book these dates/i).tap();
   await expect(screen.getByRole("heading", "Simulated secure checkout")).toBeVisible();
   expect(network.checkoutRequests).toHaveLength(1);
+  expect(network.blockedExternalRequests).toEqual([]);
+});
+
+test("all property CTAs retain their home in suppressed analytics events", async ({ app, browser, network }) => {
+  for (const slug of [...properties, "coastal-stay"]) {
+    await app.open(`/properties/${slug}/`);
+    const events = await browser.evaluate(() => {
+      document.addEventListener("click", event => event.preventDefault(), { capture: true });
+      const layer = (window as typeof window & { dataLayer: any[] }).dataLayer;
+      layer.length = 0;
+      document.querySelectorAll('a[data-track-event^="property_"]').forEach(link =>
+        link.dispatchEvent(new MouseEvent("click", { bubbles: true, cancelable: true, ctrlKey: true })));
+      return JSON.parse(JSON.stringify(layer.filter(entry => /^property_/.test(entry.event))));
+    });
+    expect(events.filter(event => event.payload.placement !== "property_reviews")).toHaveLength(5);
+    expect(new Set(events.map(event => event.payload.placement)).size).toBe(events.length);
+    for (const event of events) {
+      expect(event.suppressed).toBe(true);
+      expect(event.payload.property_slug).toBe(slug);
+      expect(event.payload.source_page_slug).toBe(slug);
+      if (event.payload.booking_property_slug) expect(event.payload.booking_property_slug).toBe(slug);
+    }
+  }
+  expect(network.checkoutRequests).toEqual([]);
   expect(network.blockedExternalRequests).toEqual([]);
 });
 

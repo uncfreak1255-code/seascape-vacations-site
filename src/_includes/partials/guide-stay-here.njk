@@ -1,0 +1,45 @@
+{#- Mid-article "stay here" box for travel guides. Set `stayHereGuide` (a key in
+    src/_data/guideStayHere.json) before including. Home facts (name, specs,
+    photo) come from the `properties` data; only the heading and fit line are
+    authored per guide. -#}
+{%- set stayHereCfg = guideStayHere[stayHereGuide] -%}
+{%- set stayHereHome = null -%}
+{%- if stayHereCfg -%}
+{%- for p in properties -%}{%- if p.slug == stayHereCfg.home -%}
+{%- set stayHereHome = p -%}
+{%- endif -%}{%- endfor -%}
+{%- endif -%}
+{%- if stayHereHome %}
+<style>
+  aside.guide-stay-here{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:0;margin:32px 0;background:#F6F3EB;border:1px solid #CAD4CF;border-radius:4px;overflow:hidden;color:#173D42;font-family:Poppins,sans-serif}
+  aside.guide-stay-here .guide-stay-here__media{min-height:100%;background:#F0F3EE}
+  aside.guide-stay-here .guide-stay-here__media img{display:block;width:100%;height:100%;min-height:220px;object-fit:cover}
+  aside.guide-stay-here .guide-stay-here__body{padding:26px 28px}
+  aside.guide-stay-here .guide-stay-here__eyebrow{margin:0 0 8px;line-height:1.5;font-size:12px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:#52676A}
+  aside.guide-stay-here .guide-stay-here__title{margin:0 0 6px;font-family:"Instrument Serif",Georgia,serif;font-size:clamp(26px,3.4vw,34px);font-weight:400;line-height:1.12;letter-spacing:-.025em;color:#173D42}
+  aside.guide-stay-here .guide-stay-here__specs{margin:0 0 12px;line-height:1.5;font-size:14px;font-weight:600;color:#52676A}
+  aside.guide-stay-here .guide-stay-here__fit{margin:0 0 18px;font-size:15px;line-height:1.65;color:#173D42}
+  aside.guide-stay-here .guide-stay-here__actions{display:flex;flex-wrap:wrap;align-items:center;gap:14px 22px}
+  aside.guide-stay-here .guide-stay-here__btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:14px 24px;border-radius:4px;background:#173D42;color:#fff !important;font-size:14px;font-weight:500;line-height:1.35;text-decoration:none !important}
+  aside.guide-stay-here .guide-stay-here__btn:hover{background:#0F2B2F}
+  aside.guide-stay-here .guide-stay-here__link{color:#173D42 !important;font-size:14px;font-weight:500;text-decoration:underline;text-underline-offset:3px;min-height:44px;display:inline-flex;align-items:center}
+  aside.guide-stay-here .guide-stay-here__btn:focus-visible,aside.guide-stay-here .guide-stay-here__link:focus-visible{outline:2px solid #173D42;outline-offset:3px}
+  @media(max-width:700px){aside.guide-stay-here{grid-template-columns:1fr}aside.guide-stay-here .guide-stay-here__media img{min-height:0;height:200px}aside.guide-stay-here .guide-stay-here__body{padding:22px 20px}}
+</style>
+<aside class="guide-stay-here" data-guide-stay-here="{{ stayHereHome.slug }}" aria-labelledby="stay-here-title-{{ stayHereGuide }}">
+  {%- set stayHerePhoto = stayHereHome.photography.photos[0] if (stayHereHome.photography and stayHereHome.photography.photos and stayHereHome.photography.photos.length) else null %}
+  {%- if stayHerePhoto %}
+  <div class="guide-stay-here__media"><img src="{{ stayHerePhoto.src }}" alt="{{ stayHerePhoto.alt }}" width="{{ stayHerePhoto.width }}" height="{{ stayHerePhoto.height }}" loading="lazy" decoding="async"></div>
+  {%- endif %}
+  <div class="guide-stay-here__body">
+    <p class="guide-stay-here__eyebrow">Where to stay</p>
+    <h2 class="guide-stay-here__title" id="stay-here-title-{{ stayHereGuide }}">{{ stayHereCfg.heading }}</h2>
+    <p class="guide-stay-here__specs">{{ stayHereHome.name }} · {{ stayHereHome.specs }}</p>
+    <p class="guide-stay-here__fit">{{ stayHereCfg.fit }}</p>
+    <div class="guide-stay-here__actions">
+      <a class="guide-stay-here__btn" href="/properties/{{ stayHereHome.slug }}/#check-availability" data-track-event="guide_property_check_dates_click" data-guide-slug="{{ stayHereGuide }}" data-property-slug="{{ stayHereHome.slug }}" data-placement="guide_stay_here" data-track-label="Check dates at {{ stayHereHome.name }}">Check dates at {{ stayHereHome.name }}</a>
+      <a class="guide-stay-here__link" href="/properties/" data-track-event="guide_stay_click" data-guide-slug="{{ stayHereGuide }}" data-placement="guide_stay_here" data-track-label="Compare all Seascape homes">Compare all Seascape homes</a>
+    </div>
+  </div>
+</aside>
+{%- endif %}

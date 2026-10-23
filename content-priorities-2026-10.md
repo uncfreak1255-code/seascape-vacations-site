@@ -1,13 +1,16 @@
 # Content Priorities — October 2026
 
-> Status: DRAFT for Sawyer's review. Drafted 2026-10-02.
+> Status: DRAFT proposal, not an approved work queue. Drafted 2026-10-02.
+> Gate details below are a snapshot from that date. Read
+> `docs/status/next-batch.md` for the current gate and next move; revalidate any
+> proposed task against current source and its owning brief before starting.
 > Seasonal theme: **off-season month, booking window for the holidays and the
 > January to March peak.** October is a low-rate month (`seascape-hub/context/seasonal-patterns.md`).
 > Guests who book now are planning Thanksgiving, December holidays, and
 > snowbird or spring stays.
-> Replaces: `content-priorities-2026-03.md` (seven months old).
+> Earlier priorities: `docs/archive/content-priorities-2026-03.md` (historical).
 
-## 1. Gate status
+## 1. Gate snapshot (2026-10-02)
 
 Source: `docs/status/next-batch.md`, Latest Execution Read, run 2026-10-02.
 
@@ -68,7 +71,7 @@ Stay money destinations (`docs/portfolio/stay-money-pages.md`):
 `/stays/bradenton-vacation-rentals-near-beaches/`,
 `/stays/siesta-key-area-vacation-rentals/`.
 
-## 3. October work queue
+## 3. Proposed October work queue (draft)
 
 Ranked. "Go-ahead" means the item changes a live page and waits for Sawyer.
 
@@ -97,15 +100,6 @@ From `docs/status/next-batch.md`:
 Also: no keyword volume or KD figures in this file until a fresh, paid-approved
 DataForSEO or OpenSEO read supplies them. The March file's volumes are not
 carried forward.
-
-## 5. Before this file merges
-
-A machine-local `content-priorities-2026-10.md` dated 2026-09-01 may exist on
-the local checkout (the snowbird brief cites it, and
-`docs/plans/2026-06-12-repo-audit.md` says live priority files were kept
-untracked). If `git pull` on root `main` stops on this file, rename the local
-copy (for example to `content-priorities-2026-10.local.md`) and pull again.
-Nothing is lost.
 
 ## Notes for content tasks
 

@@ -1,6 +1,6 @@
 # PR100 Hero Truth And Accessibility Fixes Implementation Plan
 
-> **For agentic workers:** REQUIRED: Use superpowers:executing-plans to implement this plan. Steps use checkbox (`- [ ]`) syntax for tracking.
+> Historical plan. For current instructions and task authority, read `AGENTS.md`.
 
 **Goal:** Keep the PR #100 hero design while removing fake live claims, dead controls, reduced-motion issues, and external font loading.
 

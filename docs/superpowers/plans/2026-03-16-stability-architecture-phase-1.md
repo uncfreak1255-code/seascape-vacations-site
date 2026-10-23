@@ -1,6 +1,6 @@
 # Phase 1 Stability Architecture Implementation Plan
 
-> **For agentic workers:** REQUIRED: Use superpowers:subagent-driven-development (if subagents available) or superpowers:executing-plans to implement this plan. Steps use checkbox (`- [ ]`) syntax for tracking.
+> Historical plan. For current instructions and task authority, read `AGENTS.md`.
 
 **Goal:** Replace all render‑time PMS fetches with a Netlify Blobs cache while keeping the current visual design and a hybrid Hostaway booking experience.
 

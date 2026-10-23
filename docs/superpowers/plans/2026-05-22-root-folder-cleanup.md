@@ -1,6 +1,6 @@
 # Root Folder Cleanup Implementation Plan
 
-> **For agentic workers:** REQUIRED: Use superpowers:subagent-driven-development (if subagents available) or superpowers:executing-plans to implement this plan. Steps use checkbox (`- [ ]`) syntax for tracking.
+> Historical plan. For current instructions and task authority, read `AGENTS.md`.
 
 **Goal:** Reduce repo-root clutter and local worktree graveyard without touching active source truth or breaking legacy redirect/runtime compatibility.
 

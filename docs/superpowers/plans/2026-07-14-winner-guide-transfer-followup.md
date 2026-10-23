@@ -1,6 +1,6 @@
 # Winner Guide Transfer Follow-up Implementation Plan
 
-> **For agentic workers:** REQUIRED: Use superpowers:subagent-driven-development (if subagents available) or superpowers:executing-plans to implement this plan. Steps use checkbox (`- [ ]`) syntax for tracking.
+> Historical plan. For current instructions and task authority, read `AGENTS.md`.
 
 **Goal:** Make the Bradenton-vs-Sarasota and Siesta-vs-AMI-family stay choices visible near the answer and preserve measurable `guide_book_direct_click` routing.
 

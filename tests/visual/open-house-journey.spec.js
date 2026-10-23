@@ -151,7 +151,11 @@ test('mobile menu and booking shortcut are usable, with no critical automated ac
 
 test('without JavaScript the home form, interior photos, rules and matching booking destination remain',async({browser,baseURL})=>{
   const context=await browser.newContext({javaScriptEnabled:false,baseURL});const page=await context.newPage();
-  await registerStableNetwork(page);await page.goto('/');await expect(page.locator('form[action="/properties/"]')).toBeVisible();
+  await registerStableNetwork(page);await page.goto('/');await expect(page.locator('form[action="/properties/#catalog-heading"]')).toBeVisible();
+  await page.locator('#home-trip-guests').selectOption('12');
+  await page.getByRole('button',{name:'Find my home',exact:true}).click();
+  await expect(page).toHaveURL(/\/properties\/\?.*guests=12#catalog-heading$/);
+  await expect(page.locator('#catalog-heading')).toBeInViewport();
   await page.goto('/properties/bradenton-pool-home/');await expect(page.locator('#sleeping')).toContainText('Bedroom');
   await page.getByText('Can I bring a dog?',{exact:true}).click();await expect(page.locator('#before-booking')).toContainText(properties.find(p=>p.slug==='bradenton-pool-home').guestFacts.pets.text);
   expect(await page.locator('.g-guests option').evaluateAll(options=>Math.max(...options.map(o=>Number(o.value))))).toBe(10);
