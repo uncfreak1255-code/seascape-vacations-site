@@ -187,7 +187,7 @@ test("homepage does not present weather or cached openings as live booking evide
 
 test("homepage exposes native trip controls and a no-JavaScript collection route", () => {
   const html=readSource("_site/index.html");
-  assert.match(html,/<form[^>]+action="\/properties\/"[^>]+method="get"/);
+  assert.match(html,/<form[^>]+action="\/properties\/#catalog-heading"[^>]+method="get"/);
   for(const name of ["arrive","depart"]) assert.match(html,new RegExp('name="'+name+'" type="date"'));
   assert.match(html,/<select[^>]+name="guests"/);
   assert.match(html,/<button[^>]+type="submit"/);
