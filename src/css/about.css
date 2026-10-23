@@ -47,4 +47,8 @@
 .g-about-four{grid-template-columns:1fr;gap:28px}
 .g-about-tiles{grid-template-columns:1fr}
 .g-about-tiles img{height:200px}
-.g-about-cta{padding:56px 0 64px}}
+.g-about-cta{padding:56px 0 64px}
+.g-about-facts{flex-direction:column;gap:0;font-size:14px;margin-top:26px;border-top:1px solid var(--g-rule)}
+.g-about-facts li{padding:10px 0;border-bottom:1px solid var(--g-rule)}
+.g-about-facts li+li::before{content:none;margin:0}
+.guest-site .g-about-section .g-section-heading>p{margin-top:16px;font-size:14px}}
