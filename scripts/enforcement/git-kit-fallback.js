@@ -1,6 +1,7 @@
 const fs = require("node:fs");
 const path = require("node:path");
 const { spawnSync } = require("node:child_process");
+const { refuseSkip } = require("./fail-closed");
 
 const COMMANDS = {
   preflight: "guardrail-preflight",
@@ -114,18 +115,14 @@ function runPortableSafeCommit(args, spawnOptions) {
 
   const { stageSource, message } = parseSafeCommitArgs(args);
   if (!message) {
-    throw new Error(
-      "git-kit-fallback.js: safe-commit requires -m <message>; refusing to exit 0 without a commit"
-    );
+    refuseSkip("git-kit-fallback.js", "safe-commit requires -m <message>");
   }
 
   const generatedPaths = loadGeneratedPaths(cwd);
   if (stageSource) {
     const sourceFiles = listChangedFiles(cwd).filter((file) => !isGeneratedPath(file, generatedPaths));
     if (sourceFiles.length === 0) {
-      throw new Error(
-        "git-kit-fallback.js: safe-commit --stage-source found no source files to commit; refusing to skip-as-pass"
-      );
+      refuseSkip("git-kit-fallback.js", "safe-commit --stage-source found no source files to commit");
     }
     runGit(["add", "--", ...sourceFiles], cwd);
   }
@@ -141,9 +138,7 @@ function runPortableSafeCommit(args, spawnOptions) {
 
   const staged = runGit(["diff", "--cached", "--name-only"], cwd);
   if (!staged) {
-    throw new Error(
-      "git-kit-fallback.js: safe-commit has nothing staged; refusing to exit 0 without a commit"
-    );
+    refuseSkip("git-kit-fallback.js", "safe-commit has nothing staged");
   }
 
   runGit(["-c", "commit.gpgsign=false", "commit", "--no-gpg-sign", "-m", message], cwd);
@@ -172,8 +167,9 @@ function runGitKitFallback(command, args = [], options = {}) {
   }
 
   if (command === "merge-check") {
-    throw new Error(
-      "git-kit-fallback.js: merge-check cannot skip-as-pass without the Mac git kit; install /Users/sawbeck/bin/guardrail-merge-check or run verify:release"
+    refuseSkip(
+      "git-kit-fallback.js",
+      "merge-check cannot skip-as-pass without the Mac git kit; install /Users/sawbeck/bin/guardrail-merge-check or run verify:release"
     );
   }
 

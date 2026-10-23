@@ -101,6 +101,24 @@ business context.
 
 ## Agent-surface-audit receipts
 
+### 2026-10-23 — repo-scoped Compound Writing trial
+
+Compound Writing 2.4.1 is retained as an advisory challenger for this repo only.
+Its official marketplace is pinned locally to upstream commit
+`8fd0ec88c00976cf0274cb76552dc7ad9405ca92`; user-level configuration keeps
+the plugin disabled, while this repo's `.codex/config.toml` enables it. The
+audited package has 33 skills, one non-overwriting writing-home scaffold helper,
+no MCP server, and no lifecycle hooks. The scaffold was not run because the Site
+already owns voice, style, briefs, examples and publication gates. A three-case
+trial produced a clear property-description win, a slight owner-hero win and a
+tie/marginal guide-introduction win. This is initial editorial evidence, not
+conversion, ranking or reduced-supervision proof. Use Compound Writing for
+substantial drafting or source-aware line editing; its broad skill descriptions
+mean Codex may also select it implicitly for matching copy tasks inside this
+repo. That selection grants no authority and never replaces OpenSEO, Site truth,
+active briefs, content lint or Voice Editor review. See
+`docs/research/2026-10-23-compound-writing-repo-trial.md`.
+
 ### 2026-10-02 — permissioned intake rename and UI donor trial
 
 Renamed `owner-outbound-batch` to `owner-opportunity-intake` so its trigger

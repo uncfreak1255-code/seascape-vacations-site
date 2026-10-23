@@ -25,8 +25,8 @@ const AI_PRIORITY_ROUTES = [
   {
     sourcePath: "src/guides/bradenton-vs-sarasota.html",
     answerMarkers: [
-      /<strong>Direct answer:<\/strong>/i,
-      /Bradenton suits a beach-first vacation/i
+      /class="guide-intro"/i,
+      /Choose Bradenton for a beach-focused vacation/i
     ],
     proofMarkers: [
       /Why trust this comparison:/i,

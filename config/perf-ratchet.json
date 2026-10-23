@@ -1,36 +1,36 @@
 {
   "routes": {
     "/": {
-      "script": 76730,
-      "stylesheet": 57430
+      "script": 76553,
+      "stylesheet": 57300
     },
     "/properties/": {
-      "script": 99223,
-      "stylesheet": 57030
+      "script": 99166,
+      "stylesheet": 57999
     },
     "/property-management/": {
-      "script": 88312,
-      "stylesheet": 54471
+      "script": 88135,
+      "stylesheet": 54341
     },
     "/property-management/vacation-rental-licensing-florida/": {
-      "script": 55065,
-      "stylesheet": 34742
+      "script": 54895,
+      "stylesheet": 34612
     },
     "/property-management/vacation-rental-management-fees-florida/": {
-      "script": 55065,
-      "stylesheet": 34742
+      "script": 54895,
+      "stylesheet": 34612
     },
     "/property-management/vrbo-management-services-florida/": {
-      "script": 55065,
-      "stylesheet": 34742
+      "script": 54895,
+      "stylesheet": 34612
     },
     "/stays/anna-maria-island-beachfront-rentals/": {
-      "script": 55065,
-      "stylesheet": 34742
+      "script": 54895,
+      "stylesheet": 34612
     },
     "/stays/anna-maria-island-vacation-rentals/": {
-      "script": 55065,
-      "stylesheet": 34742
+      "script": 54895,
+      "stylesheet": 34612
     }
   },
   "raises": [
@@ -497,6 +497,14 @@
       "to": 55065,
       "reason": "Exclude site-working agent, automated-test and nonproduction visits from GA4 (PR #709, outcome approved by Sawyer 2026-10-10): early native Google opt-out adds 970-975 B inline script per budgeted page; measured by performance-budget run 38076444127 at 035159ff. Existing Lighthouse ceilings remain unchanged.",
       "date": "2026-10-10"
+    },
+    {
+      "route": "/properties/",
+      "metric": "stylesheet",
+      "from": 57030,
+      "to": 57999,
+      "reason": "Approved website design improvements: persistent comparison controls and home-name headers, short-screen layout, and results focus; Lighthouse budgets passed in run 39877000051.",
+      "date": "2026-10-23"
     }
   ]
 }

@@ -26,6 +26,9 @@ enabled = false
 [plugins."github@openai-curated"]
 enabled = true
 
+[plugins."compound-writing@compound-writing"]
+enabled = true
+
 [plugins."build-web-apps@openai-curated"]
 enabled = true
 
@@ -88,6 +91,3 @@ enabled = false
 
 [plugins."founder-kit@sawyer-skills"]
 enabled = false
-
-[plugins."mattpocock-skills@claude-plugins-official"]
-enabled = true

@@ -182,6 +182,7 @@ test("guest searches, chooses the matching home, and reaches only the intercepte
   await screen.getByRole("button", "Find my home").tap();
 
   await expect(browser).toHaveURL(/\/properties\/\?.*arrive=2026-11-07/);
+  await expect(browser.locator("#catalog-heading")).toBeFocused();
   await expect(browser.locator(".catalog-card:visible")).toHaveCount(1);
   await expect(browser.locator('.catalog-card:visible[data-property="the-oasis"]')).toBeVisible();
 

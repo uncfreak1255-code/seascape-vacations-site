@@ -193,8 +193,8 @@
       if(guests.value)trip.guests=guests.value;
       rememberTrip();
       if(!form.dataset.bookingUrl){
-        var target=preserveSave50Params(new URL('/properties/',location.origin));Object.keys(trip).forEach(function(key){target.searchParams.set(key,trip[key]);});
-        emit('homepage_search_submit',{guest_count:count,has_dates:Boolean(arrive.value)});location.assign(target.pathname+target.search);return;
+        var target=preserveSave50Params(new URL(form.action));Object.keys(trip).forEach(function(key){target.searchParams.set(key,trip[key]);});
+        emit('homepage_search_submit',{guest_count:count,has_dates:Boolean(arrive.value)});location.assign(target.pathname+target.search+target.hash);return;
       }
       var current=new URL(location.href);['arrive','depart','checkin','checkout','guests'].forEach(function(key){current.searchParams.delete(key);});Object.keys(trip).forEach(function(key){current.searchParams.set(key,trip[key]);});history.replaceState(null,'',current.pathname+current.search+current.hash);
       // A press acts on the answer already on screen; a finished check never moves the guest by itself.

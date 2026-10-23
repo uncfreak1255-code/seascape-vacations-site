@@ -133,14 +133,15 @@
 .g-property-heading{display:flex;justify-content:space-between;gap:40px;align-items:end;padding:22px 0 28px}
 .g-property-heading h1{margin:0;font-size:clamp(40px,4.6vw,66px)}
 .g-property-heading .g-label{margin-bottom:12px}
-.g-property-heading p:last-child{margin:12px 0 0;color:var(--g-muted)}
+.g-property-heading p:not(.g-label){margin:12px 0 0;color:var(--g-muted)}
 .g-gallery{display:grid;grid-template-columns:1.6fr 1fr;grid-template-rows:230px 230px;gap:12px;position:relative}
 .g-gallery-photo:first-child{grid-row:span 2}
 .g-gallery-photo img{width:100%;height:100%;object-fit:cover}
 .g-gallery-open{position:absolute;right:18px;bottom:18px;min-height:44px;padding:12px 18px;color:var(--g-ink);background:var(--g-paper);border:0;border-radius:4px;cursor:pointer;font-size:12px!important}
 .g-property-columns{display:grid;grid-template-columns:minmax(0,1fr) 350px;gap:72px;align-items:start;margin-top:36px}
-.g-property-specs{display:flex;gap:34px;padding:10px 0 24px;border-bottom:1px solid var(--g-rule);font-size:15px}
-.g-property-specs strong{font-weight:500;font-size:22px}
+.g-property-specs{display:flex;flex-wrap:wrap;gap:12px 34px;padding-top:20px;font-size:15px}
+.g-property-specs span{display:flex;align-items:baseline;gap:4px}
+.g-property-specs strong{font:34px 'Instrument Serif',serif}
 .g-detail-nav{display:flex;flex-wrap:wrap;gap:26px;margin:22px 0 0;font-size:13px}
 .g-detail-nav a{text-decoration:none;min-height:44px;min-width:44px;padding:10px 0}
 .g-detail-section{padding:44px 0;border-bottom:1px solid var(--g-rule);scroll-margin-top:24px}
@@ -185,9 +186,8 @@
 .g-header{gap:20px;padding-inline:24px}
 .g-trip-form{grid-template-columns:1fr 1fr;gap:16px}
 .g-property-columns{grid-template-columns:minmax(0,1fr) 315px;gap:32px}
+.g-property-specs{gap:12px 16px;font-size:12px}
 .g-booking{padding:22px}
-.g-property-specs{gap:16px;font-size:12px}
-.g-property-specs strong{font-size:19px}
 .guest-site .catalog-card-body{padding-left:24px}
 .guest-site .catalog-card h3{font-size:34px}
 .g-gallery{grid-template-rows:190px 190px}}
@@ -225,15 +225,13 @@
 .g-property-heading{display:block;padding:16px 0 22px}
 .g-property-heading h1{font-size:40px}
 .g-property-heading .g-label{font-size:12px}
-.g-property-heading>div>p:last-child{font-size:14px}
+.g-property-heading>div>p:not(.g-label){font-size:14px}
 .g-property-heading>.g-inline-link{margin-top:10px;font-size:12px}
 .g-gallery{grid-template-columns:1fr 1fr;grid-template-rows:260px 105px;gap:8px}
 .g-gallery-photo:first-child{grid-column:1/-1;grid-row:auto}
 .g-gallery-open{bottom:12px;right:12px;font-size:12px!important;min-height:44px;padding:10px 12px}
 .g-property-columns{display:flex;flex-direction:column;gap:12px;margin-top:24px}
 .g-property-content{min-width:0;width:100%}
-.g-property-specs{font-size:12px;gap:15px}
-.g-property-specs strong{font-size:18px}
 .g-booking{order:-1;position:static;width:100%;padding:22px}
 .g-booking h2{font-size:30px}
 .g-booking>.g-label{font-size:12px}
@@ -328,13 +326,12 @@
 .guest-site .catalog-help h2{font-size:52px}
 .g-property-heading h1{font-size:clamp(72px,7.2vw,108px);line-height:.94}
 .g-property-heading{padding:22px 0 34px}
-.g-property-heading p:last-child{font-size:14px}
+.g-property-heading p:not(.g-label){font-size:14px}
 .g-gallery{grid-template-columns:1.7fr 1fr;grid-template-rows:245px 245px;gap:14px}
 .g-gallery-photo{overflow:hidden}
 .g-gallery-photo img{transition:transform .65s cubic-bezier(.2,.7,.2,1)}
 .g-gallery-photo:hover img{transform:scale(1.03)}
 .g-detail-section h2{font-size:47px;line-height:1.06}
-.g-property-specs strong{font:34px 'Instrument Serif',serif}
 .g-booking{background:#eceee4;padding:30px}
 .g-booking h2{font-size:39px}
 .g-detail-nav{border-bottom:1px solid var(--g-rule);padding-bottom:10px}
@@ -381,13 +378,13 @@
 .guest-site .catalog-help h2{font-size:44px}
 .g-property-heading h1{font-size:clamp(58px,17vw,88px);line-height:.94}
 .g-property-heading{padding:15px 0 26px}
-.g-property-heading p:last-child{font-size:13px}
+.g-property-heading p:not(.g-label){font-size:13px}
+.g-property-specs{justify-content:space-between;gap:12px 14px}
+.g-property-specs strong{font-size:28px}
 .g-gallery{grid-template-columns:1fr 1fr;grid-template-rows:300px 125px;gap:8px}
 .g-gallery-photo:first-child{grid-column:span 2;grid-row:auto}
 .g-gallery-photo:nth-child(n){display:block}
 .g-gallery-open{bottom:12px;right:12px;font-size:12px!important;padding:10px 14px}
-.g-property-specs strong{font-size:28px}
-.g-property-specs{justify-content:space-between;gap:14px;font-size:12px}
 .g-detail-section h2{font-size:41px}
 .g-booking{padding:24px}
 .g-booking h2{font-size:39px}

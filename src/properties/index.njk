@@ -57,7 +57,7 @@ headExtra: |
 
   <section class="catalog-trip" id="catalog-trip" aria-label="Your trip">
     <div class="catalog-trip-heading"><h2>Your trip</h2><span>Start with your group. Keep your dates as you explore.</span></div>
-    <form id="catalog-trip-form" method="get" action="/properties/">
+    <form id="catalog-trip-form" method="get" action="/properties/#catalog-heading">
       <div><label for="trip-arrive">Arrival</label><input id="trip-arrive" name="arrive" type="date"></div>
       <div><label for="trip-depart">Departure</label><input id="trip-depart" name="depart" type="date"></div>
       <div><label for="trip-guests">Guests</label><select id="trip-guests" name="guests"><option value="">Any group size</option>{% for n in range(1,17) %}<option value="{{ n }}">{{ n }} {% if n == 1 %}guest{% else %}guests{% endif %}</option>{% endfor %}<option value="17">More than 16 guests</option></select></div>
@@ -69,7 +69,7 @@ headExtra: |
 
   <section class="catalog-collection" aria-labelledby="catalog-heading">
     <div class="catalog-collection-heading">
-      <div><p class="section-tag">Our homes. Different ways to stay.</p><h2 id="catalog-heading">Find your kind of getaway.</h2></div>
+      <div><p class="section-tag">Our homes. Different ways to stay.</p><h2 id="catalog-heading" tabindex="-1">Find your kind of getaway.</h2></div>
       <p>All have private pools.<br>Our Bradenton homes are near Anna Maria Island, on the mainland.</p>
     </div>
     <div class="catalog-filters" role="group" aria-label="Property filters">
@@ -141,8 +141,9 @@ headExtra: |
     <div class="catalog-comparison-scroll" tabindex="0" role="region" aria-label="Home comparison. Scroll horizontally to see all homes.">
       <table class="catalog-comparison-table">
         <caption>Home features. Scroll sideways to see more homes.</caption>
-        <thead><tr><th scope="col">Your home</th>{% for property in properties %}<th scope="col" data-compare-column="{{ property.slug }}"><img data-property-photo="{{ property.slug }}" src="{{ property.photography.photos[0].src }}" srcset="{{ property.photography.photos[0].src | replace('.webp', '-800.webp') }} 800w, {{ property.photography.photos[0].src }} 1400w" sizes="(min-width: 900px) 30vw, calc(100vw - 40px)" alt="" width="280" height="170" loading="lazy"><a href="{{ property.pageUrl }}" data-trip-link data-track-event="catalog_view_details_click" data-page-slug="{{ property.slug }}" data-placement="catalog_comparison">{{ property.cardName or property.name }}</a></th>{% endfor %}</tr></thead>
+        <thead><tr><th scope="col">Your home</th>{% for property in properties %}<th scope="col" data-compare-column="{{ property.slug }}"><a href="{{ property.pageUrl }}" data-trip-link data-track-event="catalog_view_details_click" data-page-slug="{{ property.slug }}" data-placement="catalog_comparison">{{ property.cardName or property.name }}</a></th>{% endfor %}</tr></thead>
         <tbody>
+          <tr><td aria-hidden="true"></td>{% for property in properties %}<td data-compare-column="{{ property.slug }}"><img data-property-photo="{{ property.slug }}" src="{{ property.photography.photos[0].src }}" srcset="{{ property.photography.photos[0].src | replace('.webp', '-800.webp') }} 800w, {{ property.photography.photos[0].src }} 1400w" sizes="(min-width: 900px) 30vw, calc(100vw - 40px)" alt="" width="280" height="170" loading="lazy"></td>{% endfor %}</tr>
           <tr><th scope="row">Location</th>{% for property in properties %}<td data-compare-column="{{ property.slug }}">{{ property.city }}</td>{% endfor %}</tr>
           <tr><th scope="row">Bedrooms / baths</th>{% for property in properties %}<td data-compare-column="{{ property.slug }}">{{ property.bedrooms }} / {{ property.bathrooms }}</td>{% endfor %}</tr>
           <tr><th scope="row">Maximum guests</th>{% for property in properties %}<td data-compare-column="{{ property.slug }}">{{ property.guests }}<span class="comparison-capacity" data-capacity="{{ property.guests }}"></span></td>{% endfor %}</tr>

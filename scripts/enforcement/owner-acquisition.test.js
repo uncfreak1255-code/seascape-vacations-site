@@ -108,7 +108,7 @@ test("owner landing page keeps the owner revenue review close to the sales argum
   // The offer (seascape-hub/context/owner-offer.md) leads; fee vocabulary lives on the fee guide.
   assert.match(ownerLanding, /\{\{ homeCountWord \| capitalize \}\} homes\. One local team\./);
   assert.equal(
-    ownerLanding.includes("We list, price, host and clean each one, pay you monthly, and tell you what your home earned and what needs attention before you have to ask."),
+    ownerLanding.includes("You receive monthly payouts and updates on what needs attention before you have to ask."),
     true
   );
   assert.equal(ownerLanding.includes("Send the listing. We send back a one-page review."), true);
@@ -270,7 +270,7 @@ test("owner revenue review form lowers friction without losing tracking or inten
   assert.equal(ownerTemplate.includes('propertyFieldLabel: "Listing URL or property address"'), true);
   assert.equal(ownerLanding.includes("Send my review request"), true);
   assert.equal(ownerLanding.includes("Request My Review"), false);
-  assert.equal(ownerLanding.includes("A sentence on what feels off helps."), true);
+  assert.equal(ownerLanding.includes("Send a listing link or an address, plus a sentence on what feels off."), true);
   assert.equal(ownerLanding.includes("If something is missing we will ask for it rather than fill in the blanks."), true);
   assert.equal(ownerLanding.includes("We read the listing, look at what feels off, and reply with what we would check next."), true);
   assert.equal(ownerLanding.includes("No sales call"), false);
