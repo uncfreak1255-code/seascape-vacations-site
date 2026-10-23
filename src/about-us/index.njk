@@ -1,5 +1,5 @@
 ---
-layout: layouts/base.njk
+layout: layouts/guest.njk
 permalink: "/about-us/"
 pageTitle: "About Seascape Vacations | Local Gulf Coast Vacation Rental Experts"
 pageDescription: "Meet Seascape Vacations, the local team behind luxury vacation rentals in Anna Maria Island, Bradenton, Sarasota, and Siesta Key."
@@ -7,6 +7,7 @@ pageAuthor: "Seascape Vacations Team"
 pageImage: "https://seascape-vacations.com/images/seascape-og-default.jpg"
 pageUpdated: "2026-03-18T16:00:00-04:00"
 navActive: "about"
+pageStylesheet: "/css/about.css?v=waterline-v3"
 headExtra: |
   <script type="application/ld+json">
   {
@@ -36,117 +37,95 @@ headExtra: |
   }
   </script>
 ---
-<nav class="breadcrumbs" aria-label="Breadcrumb">
-  <ol>
-    <li><a href="/">Home</a></li>
-    <li><span>›</span></li>
-    <li><span aria-current="page">About Us</span></li>
-  </ol>
-</nav>
 
-<section class="section" style="background:linear-gradient(135deg, var(--brand-dark) 0%, #1a3a3c 100%); color:white;">
-  <div class="container" style="text-align:center;">
-    <p class="section-tag" style="color:var(--gold);">Welcome to Seascape</p>
-    <h1 style="font-size:clamp(34px, 5vw, 52px); margin-bottom:18px; color:white;">Exceptional Service & Exceptional Fun</h1>
-    <p style="max-width:760px; margin:0 auto 18px; opacity:0.92; font-size:18px;">Our guests book vacations confidently knowing they are going to find exactly what they are looking for without surprises. If anything is off about your stay, we make it right. That is the Seascape promise.</p>
-    <p style="display:inline-block; background:rgba(255,255,255,0.12); color:white; font-size:0.95rem; padding:8px 14px; border-radius:999px;">Local Gulf Coast support | Compare complete checkout totals | Fast local help</p>
-  </div>
-</section>
+<div class="g-about-page">
+<div class="g-wrap">
+  <nav class="g-breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><span aria-current="page">About Us</span></nav>
 
-<section class="section">
-  <div class="container">
-    <div class="section-header">
-      <p class="section-tag">Who We Are</p>
-      <h2 class="section-title">Local hospitality, not remote call-center management</h2>
-      <p class="section-subtitle">Seascape Vacations serves travelers and property owners across Anna Maria Island, Bradenton, Sarasota, and Siesta Key with hands-on local support, carefully selected homes, and fast response when something matters.</p>
+  <section class="g-about-intro" aria-labelledby="about-hero-heading">
+    <div>
+      <p class="g-label">Welcome to Seascape</p>
+      <h1 id="about-hero-heading">Exceptional Service &amp; Exceptional Fun</h1>
+      <p class="g-lede g-about-lede">Our guests book vacations confidently knowing they are going to find exactly what they are looking for without surprises. <em>If anything is off about your stay, we make it right.</em> That is the Seascape promise.</p>
+      <ul class="g-about-facts">
+        <li>Local Gulf Coast support</li>
+        <li>Compare complete checkout totals</li>
+        <li>Fast local help</li>
+      </ul>
     </div>
+    <figure>
+      <img src="/images/sarasota-sunset-hero.jpg" alt="Sunset over the Sarasota-Bradenton Gulf Coast" width="1024" height="1024" loading="eager" fetchpriority="high">
+      <figcaption>Sunset over the Sarasota-Bradenton Gulf Coast</figcaption>
+    </figure>
+  </section>
 
-    <div style="display:grid;grid-template-columns:1.15fr .85fr;gap:32px;align-items:center;">
-      <div style="display:grid;gap:18px;">
-        <div style="background:white;border-radius:20px;padding:28px;box-shadow:0 8px 28px rgba(0,0,0,0.06);">
-          <h3 style="margin-bottom:12px;color:var(--brand-dark);">What guests can expect</h3>
-          <p style="margin-bottom:12px;">Handpicked luxury vacation rentals, straightforward communication, and a team that knows the Sarasota-Bradenton coast well enough to help before problems become trip-ruiners.</p>
-          <p>That means cleaner handoffs, better local recommendations, faster answers, and less of the “someone will get back to you” nonsense that makes vacation rentals feel risky.</p>
-        </div>
-        <div style="background:var(--cream-light);border-radius:20px;padding:28px;border:1px solid rgba(95,138,139,0.12);">
-          <h3 style="margin-bottom:12px;color:var(--brand-dark);">What owners can expect</h3>
-          <p style="margin-bottom:12px;">A local operator focused on guest experience, revenue quality, and property standards rather than absentee management. The same service mindset that protects guest trust is what protects owner revenue.</p>
-          <a href="/property-management/" style="color:var(--brand-dark);font-weight:600;">See the owner page →</a>
-        </div>
+  <section class="g-section g-about-section" aria-labelledby="who-we-are-heading">
+    <div class="g-section-heading">
+      <div>
+        <p class="g-label">Who We Are</p>
+        <h2 id="who-we-are-heading">Local hospitality, not remote call-center management</h2>
       </div>
-
-      <div style="background:white;border-radius:24px;overflow:hidden;box-shadow:0 14px 40px rgba(0,0,0,0.08);">
-        <img src="/images/sarasota-sunset-hero.jpg" alt="Sunset over the Sarasota-Bradenton Gulf Coast" loading="eager" decoding="async" style="width:100%;height:100%;min-height:420px;object-fit:cover;">
-      </div>
+      <p>Seascape Vacations serves travelers and property owners across Anna Maria Island, Bradenton, Sarasota, and Siesta Key with hands-on local support, carefully selected homes, and fast response when something matters.</p>
     </div>
-  </div>
-</section>
-
-<section class="section" style="background:var(--cream-dark);">
-  <div class="container">
-    <div class="section-header">
-      <p class="section-tag">The Seascape Standard</p>
-      <h2 class="section-title">What we optimize for</h2>
-      <p class="section-subtitle" style="color:var(--stone);">Every decision we make — from the homes we manage to the way we respond at midnight — comes back to these four things.</p>
-    </div>
-
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;">
-      <div style="background:white;border-radius:18px;padding:24px;box-shadow:0 6px 20px rgba(0,0,0,0.05);">
-        <strong style="display:block;color:var(--brand-dark);margin-bottom:8px;">No-surprise stays</strong>
-        <span style="color:var(--stone-light);font-size:15px;">Guests should arrive to exactly what they were promised, with clear communication before and during the trip.</span>
+    <div class="g-about-pair">
+      <div>
+        <p class="g-label">Guests</p>
+        <h3>What guests can expect</h3>
+        <p>Handpicked luxury vacation rentals, straightforward communication, and a team that knows the Sarasota-Bradenton coast well enough to help before problems become trip-ruiners.</p>
+        <p>That means cleaner handoffs, better local recommendations, faster answers, and less of the &ldquo;someone will get back to you&rdquo; nonsense that makes vacation rentals feel risky.</p>
       </div>
-      <div style="background:white;border-radius:18px;padding:24px;box-shadow:0 6px 20px rgba(0,0,0,0.05);">
-        <strong style="display:block;color:var(--brand-dark);margin-bottom:8px;">Fast local support</strong>
-        <span style="color:var(--stone-light);font-size:15px;">When something is off, a local team matters more than polished marketing copy.</span>
-      </div>
-      <div style="background:white;border-radius:18px;padding:24px;box-shadow:0 6px 20px rgba(0,0,0,0.05);">
-        <strong style="display:block;color:var(--brand-dark);margin-bottom:8px;">Direct-booking value</strong>
-        <span style="color:var(--stone-light);font-size:15px;">Book direct so you can compare the complete checkout total and ask the local team about the stay.</span>
-      </div>
-      <div style="background:white;border-radius:18px;padding:24px;box-shadow:0 6px 20px rgba(0,0,0,0.05);">
-        <strong style="display:block;color:var(--brand-dark);margin-bottom:8px;">Homes worth repeating</strong>
-        <span style="color:var(--stone-light);font-size:15px;">We want guests to rebook, refer friends, and trust the Seascape name when they see it again.</span>
+      <div>
+        <p class="g-label">Owners</p>
+        <h3>What owners can expect</h3>
+        <p>A local operator focused on guest experience, revenue quality, and property standards rather than absentee management. The same service mindset that protects guest trust is what protects owner revenue.</p>
+        <a class="g-inline-link" href="/property-management/">See the owner page &rarr;</a>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<section class="section">
-  <div class="container">
-    <div class="section-header">
-      <p class="section-tag">Where We Focus</p>
-      <h2 class="section-title">Gulf Coast destinations we know well</h2>
-      <p class="section-subtitle">Not generic “Florida.” Specific markets, neighborhoods, and guest expectations across the Sarasota-Bradenton corridor.</p>
+  <section class="g-section g-about-section" aria-labelledby="standard-heading">
+    <div class="g-section-heading">
+      <div>
+        <p class="g-label">The Seascape Standard</p>
+        <h2 id="standard-heading">What we optimize for</h2>
+      </div>
+      <p>Every decision we make &mdash; from the homes we manage to the way we respond at midnight &mdash; comes back to these four things.</p>
     </div>
+    <div class="g-about-four">
+      <div><span class="g-about-n">01</span><h3>No-surprise stays</h3><p>Guests should arrive to exactly what they were promised, with clear communication before and during the trip.</p></div>
+      <div><span class="g-about-n">02</span><h3>Fast local support</h3><p>When something is off, a local team matters more than polished marketing copy.</p></div>
+      <div><span class="g-about-n">03</span><h3>Direct-booking value</h3><p>Book direct so you can compare the complete checkout total and ask the local team about the stay.</p></div>
+      <div><span class="g-about-n">04</span><h3>Homes worth repeating</h3><p>We want guests to rebook, refer friends, and trust the Seascape name when they see it again.</p></div>
+    </div>
+  </section>
 
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;">
-      <a href="/guides/anna-maria-island-area-guide/" style="background:white;border-radius:18px;padding:22px;box-shadow:0 6px 20px rgba(0,0,0,0.05);">
-        <strong style="display:block;color:var(--brand-dark);margin-bottom:8px;">Anna Maria Island</strong>
-        <span style="color:var(--stone-light);font-size:15px;">Beach-forward stays, family trips, and high-intent island planning.</span>
-      </a>
-      <a href="/guides/bradenton-area-guide/" style="background:white;border-radius:18px;padding:22px;box-shadow:0 6px 20px rgba(0,0,0,0.05);">
-        <strong style="display:block;color:var(--brand-dark);margin-bottom:8px;">Bradenton</strong>
-        <span style="color:var(--stone-light);font-size:15px;">Flexible group stays, sports travel, and better-value Gulf Coast trips.</span>
-      </a>
-      <a href="/guides/sarasota-area-guide/" style="background:white;border-radius:18px;padding:22px;box-shadow:0 6px 20px rgba(0,0,0,0.05);">
-        <strong style="display:block;color:var(--brand-dark);margin-bottom:8px;">Sarasota</strong>
-        <span style="color:var(--stone-light);font-size:15px;">Dining, arts, downtown access, and upscale leisure stays.</span>
-      </a>
-      <a href="/guides/siesta-key-area-guide/" style="background:white;border-radius:18px;padding:22px;box-shadow:0 6px 20px rgba(0,0,0,0.05);">
-        <strong style="display:block;color:var(--brand-dark);margin-bottom:8px;">Siesta Key</strong>
-        <span style="color:var(--stone-light);font-size:15px;">Iconic beach demand with different pace, pricing, and trip expectations.</span>
-      </a>
+  <section class="g-section g-about-section" aria-labelledby="focus-heading">
+    <div class="g-section-heading">
+      <div>
+        <p class="g-label">Where We Focus</p>
+        <h2 id="focus-heading">Gulf Coast destinations we know well</h2>
+      </div>
+      <p>Not generic &ldquo;Florida.&rdquo; Specific markets, neighborhoods, and guest expectations across the Sarasota-Bradenton corridor.</p>
+    </div>
+    <div class="g-about-tiles">
+      <a href="/guides/anna-maria-island-area-guide/"><img src="/images/owner-field-anna-maria.jpg" alt="" width="550" height="1024" loading="lazy"><h3>Anna Maria Island</h3><p>Beach-forward stays, family trips, and high-intent island planning.</p></a>
+      <a href="/guides/bradenton-area-guide/"><img src="/images/owner-field-bradenton.jpg" alt="" width="768" height="1024" loading="lazy"><h3>Bradenton</h3><p>Flexible group stays, sports travel, and better-value Gulf Coast trips.</p></a>
+      <a href="/guides/sarasota-area-guide/"><img src="/images/owner-field-sarasota.jpg" alt="" width="620" height="1024" loading="lazy"><h3>Sarasota</h3><p>Dining, arts, downtown access, and upscale leisure stays.</p></a>
+      <a href="/guides/siesta-key-area-guide/"><img src="/images/owner-field-siesta-key.jpg" alt="" width="1024" height="1024" loading="lazy"><h3>Siesta Key</h3><p>Iconic beach demand with different pace, pricing, and trip expectations.</p></a>
+    </div>
+  </section>
+</div>
+
+<section class="g-about-cta" aria-labelledby="about-cta-heading">
+  <div class="g-wrap">
+    <div>
+      <h2 id="about-cta-heading">See the homes behind the brand</h2>
+      <p>If the standard sounds right, the next thing to judge is whether the service fits your property.</p>
+    </div>
+    <div class="g-about-actions">
+      <a class="g-button" href="/properties/">Browse Properties</a>
+      <a class="g-inline-link" href="/guides/">Explore the Guides</a>
     </div>
   </div>
 </section>
-
-<section class="cta-section">
-  <div class="container">
-    <h2 class="cta-title">See the homes behind the brand</h2>
-    <p class="cta-subtitle">If the standard sounds right, the next thing to judge is whether the service fits your property.</p>
-    <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
-      <a class="btn btn-gold" href="/properties/">Browse Properties</a>
-      <a class="btn" href="/guides/">Explore the Guides</a>
-    </div>
-  </div>
-</section>
+</div>

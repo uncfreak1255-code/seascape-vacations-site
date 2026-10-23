@@ -14,7 +14,8 @@ const { gotoMarketingRoute, registerStableNetwork } = require("./test-helpers");
  * spec proves those floors on every money route.
  *
  * Scope rule (SPEC-common.md): F1 and F2 check the whole page on
- * `body.guest-site` pages (home, catalog, the six property pages, the owner page)
+ * `body.guest-site` pages (home, catalog, the six property pages, the owner page,
+ * the About page)
  * and on `body.planning-guide` pages (DESIGN.md "Planning guides"), and only
  * the header/mobile-menu/footer subtrees on every other route, whose bodies
  * are not fully restyled in this PR. The scope is read from the live DOM
