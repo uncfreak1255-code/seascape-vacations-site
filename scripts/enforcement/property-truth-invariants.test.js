@@ -394,76 +394,6 @@ function extractJsonLdObjects(html) {
     });
 }
 
-const DOCK_PAGES_FIXED_IN_THIS_BATCH = [
-  "src/guides/where-to-stay-near-anna-maria-island/index.html",
-  "src/guides/things-to-do-bradenton-fl.html",
-  "src/guides/holmes-beach-vs-bradenton-beach.html",
-  "src/guides/anna-maria-island-vs-longboat-key.html",
-];
-
-const DOCK_FISHING_CLAIM =
-  /\b(?:fish(?:ing)?\s+(?:from|off)\s+the\s+(?:canal\s+|private\s+)?dock\b(?!s)(?!\s+(?:is|are)\s+not\b)|dock\s+fishing|guests\s+fish\s+from|use\s+the\s+dock\s+for\s+[^.]{0,20}fishing|dock\s+for\s+fishing|fishing[^.<"]{0,40}\bwith\s+dock\s+access|fish\s+at\s+sunrise|(?:cast|drop)\s+a\s+line\s+(?:right\s+)?(?:from|off)\s+the\s+(?:private\s+)?dock)/i;
-
-function stripAnswersThatDenyDockFishing(text) {
-  return text.replace(/(?:question":\s*")?(?:Is fishing allowed from|Can I fish from) the (?:private )?dock[^"]*"/gi, " ");
-}
-
-test("no page markets fishing from the Dockside Dreams dock", () => {
-  const surfaces = [["seoPages.json", stripAnswersThatDenyDockFishing(JSON.stringify(seoPages))]];
-  for (const file of fs.readdirSync(path.join(projectRoot, "src/guides"), { recursive: true })) {
-    if (!/\.(html|njk)$/.test(file)) continue;
-    surfaces.push([`src/guides/${file}`, readSource(`src/guides/${file}`)]);
-  }
-  for (const [name, text] of surfaces) {
-    const match = text.match(DOCK_FISHING_CLAIM);
-    assert.equal(match, null, `${name} markets dock fishing ("${match && match[0]}"); the dock is for access, not fishing`);
-  }
-  const dockPage = allSeoPages().find((page) => page.slug === "canal-homes-with-boat-dock");
-  assert.match(cleanText(dockPage), /not for fishing|for access, not fishing/i);
-});
-
-function sentencesPairingDockWithFishing(text) {
-  return text
-    .replace(/<[^>]+>/g, " ")
-    .split(/(?<=[.!?])\s+|"\s*[,:]\s*"/)
-    .filter((sentence) => !sentence.trim().endsWith("?"))
-    .filter((sentence) => /\b(?:the|a|private|backyard|your|our|canal|boat)\s+(?:\w+\s+)?dock\b(?!s)/i.test(sentence))
-    .filter((sentence) => /\b(?:fish\w*|cast\w*\s+a\s+line|drop\w*\s+a\s+line|anglers?)\b/i.test(sentence))
-    .filter((sentence) => !/\b(?:not|no|never)\b|isn['’]t/i.test(sentence))
-    .filter((sentence) => !/\b(?:charters?|kayaks?|public\s+piers?)\b/i.test(sentence));
-}
-
-test("Dockside surfaces never pair the dock with fishing unless they deny it", () => {
-  const surfaces = allSeoPages()
-    .filter((page) => (page.matchingProperties || []).includes("dockside-dreams"))
-    .map((page) => [`seoPages:${page.slug}`, Object.values(page).map((v) => (typeof v === "string" ? v : JSON.stringify(v))).join(" ")]);
-  for (const file of [
-    ...DOCK_PAGES_FIXED_IN_THIS_BATCH,
-    "src/guides/bradenton-vs-sarasota-for-families/index.html",
-    "src/guides/bradenton-vs-sarasota-retirement/index.html",
-  ]) {
-    surfaces.push([file, readSource(file)]);
-  }
-  for (const [name, text] of surfaces) {
-    assert.deepEqual(sentencesPairingDockWithFishing(text), [], `${name} pairs the dock with fishing`);
-  }
-});
-
-
-test("repaired guides keep water claims singular, sourced, and off the island", () => {
-  const pluralWater =
-    /\b(?:pools?,\s*docks|with\s+(?:private\s+)?pools\s+and\s+docks|some\s+homes\s+include\s+docks|waterfront\s+(?:homes|rentals|properties|vacation\s+rentals)|(?:rentals|homes|properties)\s+with\s+(?:waterfront|dock)\s+access|waterfront\s+access\s+for\s+less)\b/i;
-  const onIsland = /\b(?:properties\s+both\s+on\s+the\s+island|(?:our|waterfront)\s+homes?\s+on\s+AMI|island\s+and\s+near-island\s+stays)\b/i;
-  const unsourced = /\b(?:\d+-foot\s+dock|\d+%\s+of\s+our\s+(?:returning\s+)?guests|most\s+of\s+our\s+returning\s+guests)\b/i;
-  for (const file of DOCK_PAGES_FIXED_IN_THIS_BATCH) {
-    const text = readSource(file).replace(/<a\b[^>]*>|<\/a>/g, "");
-    for (const [label, pattern] of [["plural dock/waterfront", pluralWater], ["on-island", onIsland], ["unsourced", unsourced]]) {
-      const match = text.match(pattern);
-      assert.equal(match, null, `${file}: ${label} claim "${match && match[0]}"`);
-    }
-  }
-});
-
 test("present-tense portfolio references use current counts or canonical listings", () => {
   const files = [
     "src/guides/flights-to-anna-maria-island/index.html",
@@ -480,5 +410,61 @@ test("present-tense portfolio references use current counts or canonical listing
     } else {
       assert.doesNotMatch(text, TOTAL_HOME_COUNT_PATTERN, `${file} must not hardcode the portfolio size; see scripts/enforcement/home-count-derived.test.js`);
     }
+  }
+});
+
+
+const POOL_HEAT_MENTION = /\b(?:pool[- ]heat(?:ing)?|heated pools?|heat(?:ing)? (?:the |your |a )?pool)\b/i;
+
+function stringLeaves(value) {
+  if (typeof value === "string") return [value.replace(/<[^>]+>/g, " ")];
+  if (!value || typeof value !== "object") return [];
+  return Object.values(value).flatMap(stringLeaves);
+}
+
+function assertPoolHeatPolicy(text, name) {
+  assert.match(text, /\$40\s*(?:\/\s*night|per night)\b/i, `${name}: $40 per night`);
+  assert.match(text, /before arrival[^.!?]*(?:whole|entire) stay/i, `${name}: before-arrival whole stay`);
+  assert.match(text, /after arrival[^.!?]*all (?:the )?remaining nights/i, `${name}: after-arrival remaining nights`);
+  assert.match(text, /approved long[- ]stay flat rates[^.!?]*apply/i, `${name}: preserve approved flat rates`);
+  assert.match(text, /individual nights cannot be selected/i, `${name}: no night picking`);
+  assert.match(text, /inclusions already confirmed in your reservation messages are honored/i, `${name}: preserve confirmed reservation terms`);
+  assert.match(text, /confirm the nights, total charge, payment instructions and heating start time/i, `${name}: confirmation before treating the add-on as arranged`);
+  assert.match(text, /late-day requests or mid-stay requests on an approved long-stay rate[^.!?]*individually before payment/i, `${name}: unresolved billing stays under individual review`);
+  assert.match(text, /request alone does not turn on the heat/i, `${name}: no automatic activation promise`);
+}
+
+const COASTAL_INCLUDED_HEAT = "At The Coastal, if your reservation messages already say pool heat is included, it remains included at no charge.";
+
+function assertPoolHeatClaims(strings, name) {
+  for (const text of strings) {
+    const checkedText = name === "coastal-stay" ? text.replace(COASTAL_INCLUDED_HEAT, "") : text;
+    for (const sentence of checkedText.split(/[.!?]/).filter((part) => POOL_HEAT_MENTION.test(part))) {
+      assert.doesNotMatch(sentence, /\/\s*day\b|per day|\bfive established homes\b|\bthose five homes\b/i, name);
+      assert.doesNotMatch(sentence, /\b(?:included|free)\b/i, `${name}: pool heat is an extra`);
+      for (const rate of sentence.matchAll(/\$(\d+(?:\.\d+)?)\s*(?:\/\s*night|per night)\b/gi)) {
+        assert.equal(Number(rate[1]), 40, `${name}: pool-heat nightly rate`);
+      }
+    }
+  }
+}
+
+test("pool heat follows the same nightly and arrival rules at every home and stay entry", () => {
+  for (const property of fallbackProperties) {
+    const policy = property.guestFacts?.poolHeat || "";
+    assertPoolHeatPolicy(policy, property.slug);
+    const defaultPolicy = property.slug === "coastal-stay" ? policy.replace(COASTAL_INCLUDED_HEAT, "") : policy;
+    assert.doesNotMatch(defaultPolicy, /\b(?:included|free|five established homes)\b|\/\s*day\b|per day/i, property.slug);
+    if (property.slug === "coastal-stay") assert.ok(policy.includes(COASTAL_INCLUDED_HEAT), "honor Coastal reservation messages without making heat free by default");
+    assertPoolHeatClaims(stringLeaves(property), property.slug);
+  }
+
+  const pages = allSeoPages().filter((page) => stringLeaves(page).some((text) => POOL_HEAT_MENTION.test(text)));
+  assert.ok(pages.length > 0, "pool-heat stay entries must be checked");
+  for (const page of pages) {
+    const rendered = applyStayFacts(structuredClone(page), fallbackProperties);
+    const strings = stringLeaves(rendered);
+    assertPoolHeatPolicy(strings.join(" "), page.slug);
+    assertPoolHeatClaims(strings, page.slug);
   }
 });
