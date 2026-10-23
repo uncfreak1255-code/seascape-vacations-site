@@ -26,6 +26,9 @@ enabled = false
 [plugins."github@openai-curated"]
 enabled = true
 
+[plugins."compound-writing@compound-writing"]
+enabled = true
+
 [plugins."build-web-apps@openai-curated"]
 enabled = true
 
