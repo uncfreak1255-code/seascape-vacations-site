@@ -72,6 +72,19 @@ function createCliRepo(t, testCommand) {
     path.join(__dirname, "proof-gate.js"),
     path.join(scriptDir, "proof-gate.js"),
   );
+  fs.copyFileSync(
+    path.join(__dirname, "fail-closed.js"),
+    path.join(scriptDir, "fail-closed.js"),
+  );
+  fs.writeFileSync(
+    path.join(scriptDir, "proof-gate.test.js"),
+    [
+      'test("loop guard: never blocks twice for the same stop", () => {});',
+      'test("clean tree is a no-op: does not spend 30s proving nothing changed", () => {});',
+      'test("empty testCommand does not silently pass as proof", () => {});',
+      ""
+    ].join("\n")
+  );
   fs.writeFileSync(
     path.join(projectRoot, ".guardrails.json"),
     `${JSON.stringify({ testCommand })}\n`,
@@ -668,6 +681,17 @@ test("CLI blocks when the declared proof command cannot be read", (t) => {
   assert.match(gate.stderr, /proof-command-read-failed/i);
   assert.equal(fs.existsSync(receiptPath), false);
   assert.doesNotMatch(gate.stderr, /proof recorded/i);
+});
+
+test("CLI blocks unresolved HEAD instead of allowing stop", (t) => {
+  const repo = createCliRepo(t, "node -e \"process.exit(0)\"");
+  fs.rmSync(path.join(repo.projectRoot, ".git"), { recursive: true, force: true });
+
+  const gate = runGate(repo);
+  assert.equal(gate.status, 2, gate.stderr);
+  assert.match(gate.stderr, /proof-head-unresolved/i);
+  assert.match(gate.stderr, /proof-gate\.js: could not resolve HEAD; cannot skip-as-pass/);
+  assert.doesNotMatch(gate.stderr, /allowing stop/i);
 });
 
 test("CLI blocks non-object guardrail config and invalidates same-HEAD proof", (t) => {

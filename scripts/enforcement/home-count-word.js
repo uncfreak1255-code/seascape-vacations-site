@@ -50,6 +50,7 @@ function catalogHomeCountHeading(catalog) {
 }
 
 module.exports = {
+  NUMBER,
   WORDS,
   TOTAL_COUNT_PATTERNS,
   numberWord,

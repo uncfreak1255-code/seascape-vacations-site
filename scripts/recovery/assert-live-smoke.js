@@ -405,13 +405,16 @@ function validateTargetResponse(target, response) {
   if (target.path === "/stays/sarasota-vacation-rentals-with-pool/") {
     requireIncludes(target.path, response.body, [
       "St. Armands Circle is also reached by car",
-      "are reached by car from Sarasota Luxe"
+      "are reached by car from Sarasota Luxe",
+      "Private pool, sleeps 12",
+      "hot tub (confirm heat terms when booking)"
     ]);
     requireExcludes(target.path, response.body, [
       "short drive or walk",
       "walkable to downtown",
       "walkable to St. Armands",
-      "walking distance"
+      "walking distance",
+      "hot tub included all year"
     ]);
   }
 

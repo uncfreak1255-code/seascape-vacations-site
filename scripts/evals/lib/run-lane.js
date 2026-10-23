@@ -30,17 +30,18 @@ const { loadGoldenDir } = require("./golden.js");
 const { judge } = require("./judge.js");
 const { createClient } = require("./anthropic-client.js");
 const { collectLaneCopies } = require("./lane-copy.js");
+const { refuseSkip } = require("../../enforcement/fail-closed");
 
 const projectRoot = path.resolve(__dirname, "..", "..", "..");
 
 function requireAnthropicApiKey(ownerFile) {
   if (!ownerFile || !String(ownerFile).trim()) {
-    throw new Error("scripts/evals/lib/run-lane.js: ownerFile is required for a missing-key failure");
+    refuseSkip("scripts/evals/lib/run-lane.js", "ownerFile is required for a missing-key failure");
   }
 
   const key = String(process.env.ANTHROPIC_API_KEY || "").trim();
   if (!key) {
-    throw new Error(`${ownerFile}: ANTHROPIC_API_KEY is missing; cannot skip-as-pass`);
+    refuseSkip(ownerFile, "ANTHROPIC_API_KEY is missing");
   }
 
   return key;

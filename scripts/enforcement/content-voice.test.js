@@ -12,6 +12,9 @@ const {
   lintPerformanceClaims,
   formatPerformanceClaimReport
 } = require("./performance-claim-scan");
+const { allowEmptyState, refuseSkip } = require("./fail-closed");
+const { applyStayFacts } = require("../../src/_data/stayFacts");
+const fallbackProperties = require("../../src/_data/properties-fallback.json");
 
 const projectRoot = path.resolve(__dirname, "..", "..");
 
@@ -564,15 +567,11 @@ function resolveContentLintMergeBase(execOptions = {}) {
       ...execOptions
     }).trim();
   } catch (error) {
-    throw new Error(
-      `content-voice: git merge-base HEAD origin/main failed; cannot skip the public-content gate. ${error.message}`
-    );
+    refuseSkip("content-voice", `git merge-base HEAD origin/main failed. ${error.message}`);
   }
 
   if (!mergeBase) {
-    throw new Error(
-      "content-voice: git merge-base HEAD origin/main returned empty; cannot skip the public-content gate."
-    );
+    refuseSkip("content-voice", "git merge-base HEAD origin/main returned empty");
   }
 
   return mergeBase;
@@ -595,9 +594,7 @@ function getChangedFiles() {
       )
     );
   } catch (error) {
-    throw new Error(
-      `content-voice: git diff after merge-base failed; cannot skip the public-content gate. ${error.message}`
-    );
+    refuseSkip("content-voice", `git diff after merge-base failed. ${error.message}`);
   }
 }
 
@@ -722,10 +719,24 @@ function lintLeakedInternalCopy(relativePath, text, scopeLabel) {
   return violations;
 }
 
+function resolvePublicSeoData(relativePath, data) {
+  if (!String(relativePath).endsWith("seoPages.json") || !data || typeof data !== "object") {
+    return data;
+  }
+  return {
+    ...data,
+    vacationer: Array.isArray(data.vacationer)
+      ? data.vacationer.map((page) =>
+          page && !page.rehomeTo ? applyStayFacts(page, fallbackProperties) : page
+        )
+      : data.vacationer
+  };
+}
+
 function lintLeakedInternalData(relativePath, data) {
   const violations = [];
 
-  for (const entry of collectStringLeaves(data)) {
+  for (const entry of collectStringLeaves(resolvePublicSeoData(relativePath, data))) {
     const normalizedValue = entry.value.replace(/\s+/g, " ").trim();
     violations.push(
       ...lintLeakedInternalCopy(`${relativePath}:${entry.path}`, normalizedValue, "source-backed copy")
@@ -738,7 +749,7 @@ function lintLeakedInternalData(relativePath, data) {
 function lintInstructionTemplateData(relativePath, data) {
   const violations = [];
 
-  for (const entry of collectStringLeaves(data)) {
+  for (const entry of collectStringLeaves(resolvePublicSeoData(relativePath, data))) {
     const normalizedValue = entry.value.replace(/\s+/g, " ").trim();
 
     for (const pattern of INSTRUCTION_TEMPLATE_PATTERNS) {
@@ -1491,7 +1502,11 @@ async function runChangedPublicContentGate() {
   const changedSeoPageCopy = changedFiles.includes(seoPagesPath);
 
   if (changedPublicContentFiles.length === 0 && !changedSeoPageCopy) {
-    assert.ok(true, "no changed public content or source-backed copy files on this branch");
+    allowEmptyState({
+      owner: "content-voice.test.js",
+      reason: "no changed public content or source-backed copy files on this branch",
+      proveRedTest: "failed git merge-base can no longer pass via a vacuous assert"
+    });
     return;
   }
 
@@ -1500,7 +1515,11 @@ async function runChangedPublicContentGate() {
   );
 
   if (changedReaderCopyFiles.length === 0 && !changedSeoPageCopy) {
-    assert.ok(true, "changed public content files have no reader-visible copy diff");
+    allowEmptyState({
+      owner: "content-voice.test.js",
+      reason: "changed public content files have no reader-visible copy diff",
+      proveRedTest: "failed git merge-base can no longer pass via a vacuous assert"
+    });
     return;
   }
 

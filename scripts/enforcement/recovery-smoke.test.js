@@ -292,6 +292,50 @@ test("stays smoke locks the customer-facing stay-collection hub", () => {
   });
 });
 
+test("Sarasota pool stay smoke locks resolved occupancy and heat copy", () => {
+  const smoke = loadSmokeModule();
+  const target = smoke.targets.find((entry) => entry.path === "/stays/sarasota-vacation-rentals-with-pool/");
+
+  assert.notEqual(target, undefined, "expected Sarasota pool stay to stay in the smoke target list");
+
+  const currentSarasotaStayBody = `
+    <main>
+      <h2>Private pool, sleeps 12</h2>
+      <p>St. Armands Circle is also reached by car</p>
+      <p>are reached by car from Sarasota Luxe</p>
+      <p>plus a hot tub (confirm heat terms when booking).</p>
+    </main>
+  `;
+
+  assert.doesNotThrow(() => {
+    smoke.validateTargetResponse(target, {
+      statusCode: 200,
+      location: null,
+      body: currentSarasotaStayBody
+    });
+  });
+});
+
+test("Sarasota pool stay smoke rejects stale included-heat copy", () => {
+  const smoke = loadSmokeModule();
+  const target = smoke.targets.find((entry) => entry.path === "/stays/sarasota-vacation-rentals-with-pool/");
+
+  assert.throws(() => {
+    smoke.validateTargetResponse(target, {
+      statusCode: 200,
+      location: null,
+      body: `
+        <main>
+          <h2>Private pool, sleeps 12</h2>
+          <p>St. Armands Circle is also reached by car</p>
+          <p>are reached by car from Sarasota Luxe</p>
+          <p>plus a hot tub included all year.</p>
+        </main>
+      `
+    });
+  }, /missing current live marker|stale live marker/);
+});
+
 test("stays smoke rejects leaked internal hub copy", () => {
   const smoke = loadSmokeModule();
   const target = smoke.targets.find((entry) => entry.path === "/stays/");

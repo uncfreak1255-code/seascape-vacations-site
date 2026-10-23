@@ -1,0 +1,860 @@
+{
+  "generatedAt": "2026-10-18",
+  "reason": "Grandfathered baseline of current stay sentences where a number sits near a guest/sleep/bedroom/bath/home/property/heat/room term, or a heat-inclusion claim. New sentences fail unless they use a property-truth token. This file can only shrink.",
+  "sentences": [
+    {
+      "hash": "30fcfb4a8703a0fcdcf346586717db3282c127b591d53039a218c5788e323b81",
+      "sentence": "4 Bedroom Vacation Rentals in Florida",
+      "slug": "4-bedroom-vacation-rentals-florida",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "fffc926bf1df16125712e068773ae3e351f1cc45e818b5252537d2ae075ac753",
+      "sentence": "Are 4-bedroom homes good for two families",
+      "slug": "4-bedroom-vacation-rentals-florida",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "2c8750b81cf7e0e83f2525e5b90c83ceac84d9a87d056a5857b4e47c15161673",
+      "sentence": "Do all 4-bedroom homes have pools",
+      "slug": "4-bedroom-vacation-rentals-florida",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "b735b1b782b6b17566c10eec90cf33eaea4f30a1c8b9d8627dd39c1c692e2afb",
+      "sentence": "Four-bedroom vacation homes hit the sweet spot for most vacation groups — enough room for families, friend groups, and multi-couple getaways without paying for more space than you need",
+      "slug": "4-bedroom-vacation-rentals-florida",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "6c44bd0de0445ef074352e35a562d3d86ba66792f25ae6554b95872355134c50",
+      "sentence": "How far are 4-bedroom homes from the beach",
+      "slug": "4-bedroom-vacation-rentals-florida",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "029f951fca21a2484e8077fdf2aa496cf64f0fae450c22d7462120ef53192fc2",
+      "sentence": "How many guests can a 4-bedroom home sleep",
+      "slug": "4-bedroom-vacation-rentals-florida",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "7fb0522bf324ebb8ee2071271426e40b7799d51f0a4a2234f7798d279122f41f",
+      "sentence": "Multiple properties in the current listing set feature 4 bedrooms, including options in Bradenton and Sarasota",
+      "slug": "4-bedroom-vacation-rentals-florida",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "cb6d2ef55b4e3e0f13f9913842960f9646e54c31bb461f45f1cb4f8a6e5fc1e9",
+      "sentence": "Our 4-bedroom Florida properties offer 3+ bathrooms, private heated pools, and full kitchens, all in prime Gulf Coast locations near Anna Maria Island and Sarasota beaches",
+      "slug": "4-bedroom-vacation-rentals-florida",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "fce7e034c1476c68d08b9916f29ce97df7ffce2145206854a4ff06be0b80b894",
+      "sentence": "Our 4-bedroom homes typically sleep guests depending on the property's bed configuration",
+      "slug": "4-bedroom-vacation-rentals-florida",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "74cd46f45d31123b7ccb4dae43df36d30482a8f5868d01021054fe6a66db25ea",
+      "sentence": "Our 4-bedroom vacation homes offer the perfect balance of space and privacy for groups",
+      "slug": "4-bedroom-vacation-rentals-florida",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "abf2d59123df5116cfe8c9beb577ae81ec2604ed17fa957c3277c621fd2cb12b",
+      "sentence": "Seascape Vacations has multiple 4-bedroom options across Bradenton and Sarasota",
+      "slug": "4-bedroom-vacation-rentals-florida",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "25c04064fcae194a704fc6648f09b8c50b4129cd5ca74a0648a795d29f2ca7fe",
+      "sentence": "Two families sharing a 4-bedroom home get their own bedrooms while sharing common spaces like the kitchen, pool, and living room",
+      "slug": "4-bedroom-vacation-rentals-florida",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "dae9ea120641c335ddc588fa4eb1dd5e0dc80c229b5e93a31606b706d3fbb1a0",
+      "sentence": "What's a typical nightly rate for 4 bedrooms",
+      "slug": "4-bedroom-vacation-rentals-florida",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "2df1b754d56a850c8abf9129407f88dc964450370054477fb0b210a4d796a734",
+      "sentence": "Which 4-bedroom properties do you have",
+      "slug": "4-bedroom-vacation-rentals-florida",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "13f370037b653349a7f09cec5806b40c76b9e2597ec964655ad21f5df09b89be",
+      "sentence": "5 bedroom vacation rental in Florida",
+      "slug": "5-bedroom-vacation-rentals-florida",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "d16503d941b0d494fd86b20603749ac3be5a82ec0f875393354d988a8d067f65",
+      "sentence": "5 Bedroom Vacation Rentals in Florida",
+      "slug": "5-bedroom-vacation-rentals-florida",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "7568c0395fa2ebcfdd72dfc737c10af5d243de9ac13d6bdb6507fa7e20e2f0da",
+      "sentence": "Are 5-bedroom homes affordable for groups",
+      "slug": "5-bedroom-vacation-rentals-florida",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "7855e4646e3cc15dca4756c1bd598e8b0bf8ff0b4f952da1c6c2ac37279c1a18",
+      "sentence": "Both have 3 bathrooms to handle large group needs comfortably",
+      "slug": "5-bedroom-vacation-rentals-florida",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "fb8f54a918d0a98eed31b9118304b0259d9f341c8af8156e723ae156864b24a4",
+      "sentence": "Do 5-bedroom homes work for corporate retreats",
+      "slug": "5-bedroom-vacation-rentals-florida",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "82199d6e170ec6c107ba89f838efaf2d6bd64a22d679b099a409a3027b43afc4",
+      "sentence": "Five-bedroom vacation homes are the gold standard for large group travel — enough space for extended families, multi-family trips, and group getaways where everyone wants their own room",
+      "slug": "5-bedroom-vacation-rentals-florida",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "20c9903a664db892970561f8193ea7f8d540eda25049929c122cd571feba0fa7",
+      "sentence": "How many guests can your 5-bedroom homes accommodate",
+      "slug": "5-bedroom-vacation-rentals-florida",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "df65b2eb4ee46dfad7f5a23fdf4a89486de9ca0b5470041c6dfdb041c121c661",
+      "sentence": "Our 5-bedroom Florida properties sleep guests and feature resort-level amenities: private heated pools, hot tubs, game rooms, and outdoor entertaining spaces",
+      "slug": "5-bedroom-vacation-rentals-florida",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "0a441b3055ea8e1586a3be69f8de31235aebcce3a65d6a6d3286f1eeb12587b2",
+      "sentence": "Our largest property, The Oasis, offers 5 bedrooms and endless entertainment options",
+      "slug": "5-bedroom-vacation-rentals-florida",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "857b87663110a6da231d421069d20b3e6ee51d4bb93e4f9451d4028a64cf5965",
+      "sentence": "The Oasis ( ) is our flagship 5-bedroom property, featuring a private heated pool, two hot tubs, putting green with kid putters, and spacious layouts designed for large groups",
+      "slug": "5-bedroom-vacation-rentals-florida",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "6db0e67d2a0f8c0ff9ed6ce47f5ffe2b53232ae3e6c638ad1158962faf040c1e",
+      "sentence": "The spacious common areas, WiFi, and resort-style amenities make our 5-bedroom homes ideal for small team retreats, planning sessions, and corporate getaways that combine work and relaxation",
+      "slug": "5-bedroom-vacation-rentals-florida",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "0e58178561a92cc65d11e1741729d481e282755052da4b5de6b59e0c6e0aee1a",
+      "sentence": "What amenities come with your 5-bedroom properties",
+      "slug": "5-bedroom-vacation-rentals-florida",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "e2eee2ef8d4325636c5a7a9723cf756e9c6054351154626dea25bb1258d7b99c",
+      "sentence": "Which 5-bedroom properties do you have",
+      "slug": "5-bedroom-vacation-rentals-florida",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "2889b3fa2fa5bab6e4d50af2a0454e981a39fc5a4732a1f00de264fcafb59abe",
+      "sentence": "Three practical checks: (1) compare the same home and dates across channels, including fees and taxes; (2) compare shoulder-season dates when available; and (3) compare mainland and island listings by the complete checkout total",
+      "slug": "affordable-vacation-rentals-florida-gulf-coast",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "e8992a251556108be851cdc08e26bf5f6e56bacb58a81b3231bcd7908e5c3ae8",
+      "sentence": "Coquina Beach and Manatee Public Beach in Holmes Beach are usually the easiest beach days from our Bradenton-side properties, generally around 12-15 minutes depending on bridge traffic",
+      "slug": "anna-maria-island-beachfront-rentals",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "a28f02907085c91d0bce4733d7256dabc6a246d5e0203427b92975fd7faba322",
+      "sentence": "Seascape's near-AMI homes sit in Bradenton, 10–15 minutes from Holmes Beach, Bradenton Beach, and Coquina Beach",
+      "slug": "anna-maria-island-homes-with-pool",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "c0675050eece517374227f818b1e78cca02993855361d3cddd28eb0481a8bceb",
+      "sentence": "Depending on the property: Anna Maria Island beaches (Holmes Beach, Bradenton Beach, Coquina Beach) are 10–15 minutes from our Bradenton homes",
+      "slug": "beach-house-rentals-florida-gulf-coast",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "c883744cac15bb15d0262bd0ce4475e89cee1b058d23eac3477335e19b2186dc",
+      "sentence": "Seascape's listed homes sit 10 to 20 minutes inland from beaches near Anna Maria Island and Siesta Key, with property-specific pools, yards, bedrooms, docks, or hot tubs",
+      "slug": "beach-house-rentals-florida-gulf-coast",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "a8682dc9801014ad6eb7a7ae3c434441115b297c29342a04aed520b87e7fd1c4",
+      "sentence": "Siesta Key Beach, Lido Beach, and Longboat Key are 15–25 minutes from our Sarasota property",
+      "slug": "beach-house-rentals-florida-gulf-coast",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "875f0d5ee41f820356968b9fe20ba702706be1699e69f81ea06a222b818782b1",
+      "sentence": "These Seascape homes sit 10–30 minutes from the Anna Maria and Sarasota beaches where couples marry, with space for the wedding party to stay together",
+      "slug": "beach-wedding-vacation-rentals-florida",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "79519de3183335023ebd60d5870dbd6860c4a29d7f901521773f1890bec867af",
+      "sentence": "Our nearest properties are 15–20 minutes from Bean Point by car",
+      "slug": "bean-point-luxury-rentals",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "2db8e9e0393ececda66b886f41b61fc146ec10da24bd663b1a95313abd26fa1e",
+      "sentence": "Pool heat is an optional $40/day add-on - it's not included by default but available at every home",
+      "slug": "book-direct-anna-maria-island",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "a415e8ea57b6b43ef9b545b73086b1a2d889ce627bb6b52d5e53131b48d7fa06",
+      "sentence": "River House is about 15 min to AMI via the Palma Sola Causeway",
+      "slug": "bradenton-vacation-rentals-near-beaches",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "e99bab76e95a63a9874bab703460f7fdbec89dc4d4ba1a535d442b2714fdfe83",
+      "sentence": "4 bedrooms, pool, hot tub , arcade - books direct",
+      "slug": "bradenton-waterfront-vacation-rentals",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "59a97dc37dc06b0262adb540dd8145281cb2f4a163e6a36688f74e0d377b920b",
+      "sentence": "9 miles away, about 10 minutes, so the home is a mainland stay rather than a beachfront address",
+      "slug": "bradenton-waterfront-vacation-rentals",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "695043cb5ac91c43dc07506d7fabc6127c9068a3f384a85e2e4b16e6fc233de6",
+      "sentence": "Dockside Dreams across 4 bedrooms with a private pool, hot tub , and arcade inside",
+      "slug": "bradenton-waterfront-vacation-rentals",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "19001f04f8e9190977b5ad402a131e8671edf9078f2cfe191f374779b8a33bbc",
+      "sentence": "Dockside Dreams is the one Seascape home on the water - a canal-front Bradenton property with a private dock, pool, and 10 minutes to Anna Maria Island beaches",
+      "slug": "bradenton-waterfront-vacation-rentals",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "7fdb8255e4f20bc9e08c18038d473d9365ee38f720f97e303f821b2bc6364288",
+      "sentence": "Here you get a 4-bedroom private-pool home with a dock and outdoor space",
+      "slug": "bradenton-waterfront-vacation-rentals",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "b8424e629f8c6a717e96173bd488c84d0e2e160cc33d839fda6520decc3d8f2f",
+      "sentence": "Four bedrooms, a private heated pool, and a screened lanai — a real home, not a hotel room",
+      "slug": "downtown-sarasota-vacation-rentals",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "f49eb378e1e5d66edfa06a6d8eb3d1141c00bdff5b491f63249748b6ee938feb",
+      "sentence": "Sarasota Luxe is a four-bedroom home that , with a private heated pool, screened lanai, and designer interiors, near Palm Avenue dining and shops, which require driving",
+      "slug": "downtown-sarasota-vacation-rentals",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "b2c31d575d4494e8d0a25b19f327359cd123766da1c1dc8419d34eaffcb2ebf3",
+      "sentence": "Our largest property under one roof",
+      "slug": "family-reunion-rentals-florida",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "3ae130559ba5598de38227181ab1bdeede0c192316ac3c08c675043ddada9986",
+      "sentence": "For larger families, Dockside Dreams offers 4 bedrooms with plenty of room for everyone",
+      "slug": "family-vacation-rentals-anna-maria-island",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "b57a2c163a6ad80b319cb259a918c97c79c7a774be00d7c4a4ad73b9b61f6cc0",
+      "sentence": "Seascape Vacations offers family-sized vacation homes with 3–5 bedrooms, private heated pools, game rooms, and fully stocked kitchens for family meals at home",
+      "slug": "family-vacation-rentals-anna-maria-island",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "f1dfafa911ea7da112253f18ef65e6c0552e0f7d17fe4f2bdd1aebffb419e022",
+      "sentence": "Dockside Dreams is the one Seascape home on the water - canal frontage, a private dock where you can tie up one boat, and a pool and hot tub on the same lot",
+      "slug": "gulf-coast-vacation-homes-with-dock",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "e163b0eb68e8dfd6de380803c8485c3bed4f4e1c6f2c3549d656d80d9e302837",
+      "sentence": "River House is the quiet one — a calm cul-de-sac near the Manatee River, about 15 minutes from the AMI beaches, with a private heated pool and hot tub",
+      "slug": "honeymoon-rentals-anna-maria-island",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "2911650f3edc6a63d3b0588ed7543cf6df2b9ee80d51b40c83152e033ca8da1e",
+      "sentence": "Dockside Dreams has a private canal-front dock; River House sits one minute from the Warner Bayou boat ramp on the Manatee River",
+      "slug": "kayaking-vacation-rentals-bradenton",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "4613e6f79b7ac86882ad9c3703a94240c87973bf4054cf6eb6f9dfee702ea17d",
+      "sentence": "Launch from Dockside Dreams' private dock or the Warner Bayou boat ramp one minute from River House, then explore mangrove islands and coastal waters",
+      "slug": "kayaking-vacation-rentals-bradenton",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "0eb2dc275de189777b700519021ffa3dee8da68fdaada4ed79f09b847b10718e",
+      "sentence": "River House sits one minute from the public Warner Bayou boat ramp on the Manatee River — bring your kayak and launch there in minutes",
+      "slug": "kayaking-vacation-rentals-bradenton",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "4716ba64e9c443f5f3310002d5fd1141e32fcfd678808a890aa65de11cc85e03",
+      "sentence": "5 bathrooms, heated pool, inground spa, outdoor grill area, and space for guests",
+      "slug": "large-group-vacation-rentals-anna-maria-island",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "4fb9e36e9b0182a4cd36e36b39dba19928b3c90e8bfb4f338f3fd9893f3b297d",
+      "sentence": "Bradenton Pool Home is 6",
+      "slug": "large-group-vacation-rentals-anna-maria-island",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "6b7e2f6328906f7773b7bf061c922318199a06f4dc325003cc7450410d27f6d7",
+      "sentence": "Bradenton vacation rental near Anna Maria Island with 3 bedrooms, 3",
+      "slug": "large-group-vacation-rentals-anna-maria-island",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "7c2e3eda898617eee10851af9db5c2b1bf418da9d6fc36c81f92463e857830db",
+      "sentence": "Bradenton vacation rental near Anna Maria Island with 4 bedrooms, 3 bathrooms, heated pool, spa, gameroom, yard games, and space for guests",
+      "slug": "large-group-vacation-rentals-anna-maria-island",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "442c9ad7c95bf5e368a4333605250b1f033726f83b93ffaf53fd667660cdd7b0",
+      "sentence": "Bradenton vacation rental near Anna Maria Island with 5 bedrooms, 3 bathrooms, heated pool, 2 hot tubs, putting green, gameroom, and space for guests",
+      "slug": "large-group-vacation-rentals-anna-maria-island",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "6a485a0e6ed30fffde4050a2a68f66a62c3e98d9fe0d0146d6422f4b2bbb5b8e",
+      "sentence": "Bradenton waterfront vacation rental near Anna Maria Island with 4 bedrooms, 3 bathrooms, private dock, heated pool, spa, gameroom, and space for guests",
+      "slug": "large-group-vacation-rentals-anna-maria-island",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "91ed03240d995a971d9a1aa3a121d9647938e3d9de8c1584e67a5b6dd9422956",
+      "sentence": "Heated pool, 2 hot tubs, putting green",
+      "slug": "large-group-vacation-rentals-anna-maria-island",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "a475375f864f3d76159740288c68afd648083f7a1c73c675579fb187de10ed6c",
+      "sentence": "River House is about 15 minutes to Anna Maria Island beaches",
+      "slug": "large-group-vacation-rentals-anna-maria-island",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "3467093125657c60915356dbe4c1e5482fc8173f4c0e808046f48ef631430339",
+      "sentence": "The Oasis for guests, or when the group wants the biggest layout, the game room, and two hot tubs",
+      "slug": "large-group-vacation-rentals-anna-maria-island",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "b2363bd32af6b31ee8ded891e0b896afb95d49e4670b8f9094bf33537d23c3aa",
+      "sentence": "The Oasis with a pool, two hot tubs , game room, putting green, and turf yard",
+      "slug": "large-group-vacation-rentals-anna-maria-island",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "cca2fbf93198b151742014260859d1bbc99efa3881a83420d2d5a42ae7c5cfd5",
+      "sentence": "Bradenton has Seascape homes that handle groups of , including a waterfront dock home and an oversized two-hot-tub game-room home",
+      "slug": "large-group-vacation-rentals-bradenton",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "c420651e52afcebe2c38acabd424d5f1727035739f8af0b0c765723051845485",
+      "sentence": "Dockside Dreams across 4 bedrooms",
+      "slug": "large-group-vacation-rentals-bradenton",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "1b595dc36a14ff607ca62f0a24e670208c7bc7ca90316fa21648a552aaf9c5c0",
+      "sentence": "Dockside Dreams across 4 bedrooms with a private dock, pool, hot tub , and arcade",
+      "slug": "large-group-vacation-rentals-bradenton",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "894e9dbb7aa129c26d75b8ad810bb142a57f8b33806d058a8ae42ffba418ea03",
+      "sentence": "For guests, The Oasis is the clear call - it has the bedrooms, the two-hot-tub setup, and the extra outdoor zones",
+      "slug": "large-group-vacation-rentals-bradenton",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "e7e667ef9021e5d4f5a4425987e5598a41597c670a380a1f9667bd90adb06e5d",
+      "sentence": "The Oasis across 5 bedrooms",
+      "slug": "large-group-vacation-rentals-bradenton",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "d2a245d450c3e0dc4c548039db2c08f308590548a7bce96aff0f5c0dca0c3038",
+      "sentence": "The Oasis across 5 bedrooms with a putting green, game room, two hot tubs , turf yard, and grill",
+      "slug": "large-group-vacation-rentals-bradenton",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "210e0a031d8ab4af62803f72ed7a4538dc89d58b274995df55f252b2e3e7dca5",
+      "sentence": "Minimum stays vary by season and property, typically 3–4 nights",
+      "slug": "long-weekend-getaway-florida",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "5f7ecec6c41c218432613c982dd8b0c9fcac1e13e6854153eac7f63156daf701",
+      "sentence": "Sarasota-Bradenton International Airport (SRQ) is 15–25 minutes from our properties",
+      "slug": "long-weekend-getaway-florida",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "c9223c4c36d57847b211c7fa594182b4814a79a13ced45d411d1807a30eb680d",
+      "sentence": "Families and friend groups use it because 4 bedrooms sleeping is hard to find near downtown Sarasota",
+      "slug": "luxury-vacation-rentals-sarasota",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "0f510000e82b77d18b5a021ea8247e297d25263c35bcb83f87b6097ffa8aae7f",
+      "sentence": "Sarasota Luxe is a 4-bedroom pool home near downtown dining and galleries, which require driving - the right base when your group wants Sarasota's arts and restaurant scene without giving up a private pool",
+      "slug": "luxury-vacation-rentals-sarasota",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "acdfe9a93152074ec6a8a29c300426433e417295e97c84a231c5cf224711865c",
+      "sentence": "Sarasota Luxe is the exception - a 4-bedroom home sleeping , near downtown, with a private pool and hot tub; downtown destinations require driving",
+      "slug": "luxury-vacation-rentals-sarasota",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "d126000a6462a8ed6ac83a82f5031fd62ef5fb23887037da2bdd1210fa796149",
+      "sentence": "Dockside Dreams (4 bedrooms, boat dock) is great for active families who want water access",
+      "slug": "multigenerational-vacation-rentals-florida",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "d24f0c59ac8d314c43607467439bd48b1201895622c6cd7c0ad4431ff0a8316c",
+      "sentence": "Our 4–5 bedroom properties offer multiple living areas so different generations can have their own space, while large open kitchens and dining rooms bring everyone together for meals",
+      "slug": "multigenerational-vacation-rentals-florida",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "0608b22bd43240639c7d8386aa2792b57548313b817bb8bf809e40afd17b825f",
+      "sentence": "The Oasis ( , 5 bedrooms, 3 bathrooms) is our top multigenerational pick — it offers a large layout with separate living areas, a game room for kids, and a resort-style pool area",
+      "slug": "multigenerational-vacation-rentals-florida",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "e469b89bd5f37edf491038c00427df87cd2c5d217abd954b4b090df5d7c589ac",
+      "sentence": "Dockside Dreams has 4 bedrooms and ; confirm your dog’s approval before booking",
+      "slug": "pet-friendly-vacation-rentals-bradenton",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "ad741e354921e683dd9ee6ec97cf0785a2f278fbe822cdd8d19f4a02ce0bde0e",
+      "sentence": "It has 4 bedrooms, , and includes a private pool, hot tub and private dock",
+      "slug": "pet-friendly-vacation-rentals-bradenton",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "0cd868d0d35df0f9bfad79308171cea4265b7c1e3c846624b8d7ee9129212b8b",
+      "sentence": "Pet-friendly homes take one small dog under 30 pounds with prior approval",
+      "slug": "pet-friendly-vacation-rentals-bradenton",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "ed8a272567010a11644591fcbf0d2e6a2eba878634f2410386c07aacccb31dd8",
+      "sentence": "Pick by group: The Oasis with a pool, two hot tubs, a game room, and a putting green for a big celebration; Sarasota Luxe suits a smaller, upscale gathering near downtown dining",
+      "slug": "retirement-celebration-rentals-florida",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "6f4f9b1fdb33c547993578be39638fc47a01fabb89a57d3c032a427616098b23",
+      "sentence": "The Oasis for the largest groups — up to , with a pool, two hot tubs, game room, and putting green",
+      "slug": "retirement-celebration-rentals-florida",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "08f2492d383e29115768c5911fdc08f30066aaf3d6a833fab74fe4640ecabf65",
+      "sentence": "If the AMI beaches are the priority, one of the Bradenton homes is a better starting point",
+      "slug": "sarasota-arts-culture-vacation-rentals",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "230ed3682b5717dccf77f033fb6f16ca6c0c79f91b6a23b6d13005e506e0816f",
+      "sentence": "It's a 4-bedroom home sleeping near downtown Sarasota; dinner and galleries require a car",
+      "slug": "sarasota-arts-culture-vacation-rentals",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "bee64a70c2369628dc872ec960b58baf04aad9886207e9b69d1904e67400c8d0",
+      "sentence": "Four bedrooms, a private heated pool, and a screened lanai — room for a family or two couples splitting the cost",
+      "slug": "sarasota-vacation-rentals-with-pool",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "cbd21e7cf85f3cb6a5bad8e6272acaf3ec20fff105b68c91983ccbdbdd249563",
+      "sentence": "Book vacation rentals near Siesta Key, home to America's #1 beach",
+      "slug": "siesta-key-area-vacation-rentals",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "fb7445212dff419c09a7f1466c719b0eca2e5e3edc2361ba71e5265b4aaf1dfd",
+      "sentence": "Sarasota Luxe across four bedrooms, with a private heated pool, screened lanai, and a Sarasota location near downtown; downtown destinations require driving",
+      "slug": "siesta-key-area-vacation-rentals",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "82b56f11a54e40ac66e17d10063c903b2cf2f765f8807ed23583f4e2a50f207e",
+      "sentence": "Sarasota Luxe is a four-bedroom home with a private heated pool and screened lanai near downtown Sarasota",
+      "slug": "siesta-key-area-vacation-rentals",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "e2fc9bff40fb3077fc79c9d0b6c95c48cd070d5e6a1bc4f8043d5a1d2b5d43d6",
+      "sentence": "Fair warning: Spring Break is peak season on Anna Maria Island, and our best properties book 3–6 months in advance",
+      "slug": "spring-break-rentals-anna-maria-island",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "54401222d51c53f42a7262d3775dbd3016a636acdd8405b051747bc7054bb0ee",
+      "sentence": "If you're planning a 2026 Spring Break trip, booking in the fall of 2025 gives you the best property selection",
+      "slug": "spring-break-rentals-anna-maria-island",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "352de75fdf6697aaf37e9dfaf440960b04a8b61c889655314ba9ae1dc59c8472",
+      "sentence": "3-5 BR, sleeps",
+      "slug": "vacation-rentals-near-anna-maria-island",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "6a00321a985e655785ad5c619099150ee7a1225c1a5614f69d7d499d3dac5f34",
+      "sentence": "Coquina Beach is about 14 minutes from most Bradenton homes",
+      "slug": "vacation-rentals-near-anna-maria-island",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "d2b3dc8cd4cde8324db1847371e9f35e230edc2520dd79968dc0f62976f74c8b",
+      "sentence": "Our listed homes sit 10-15 minutes inland in Bradenton and Sarasota; review each listing for its capacity, pool, parking, and drive time",
+      "slug": "vacation-rentals-near-anna-maria-island",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "2cd21dcb9e5411a094fbf5cb0ecd5cb311ab6514249392e3ef4a3420105e6532",
+      "sentence": "4BR, 3+ Bathrooms Each",
+      "slug": "vacation-rentals-sleeps-12-florida",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "84bf81cc60bc75c8dbf0d5764fcefef89d30c083d98e6bfa5676dfb3e3185b27",
+      "sentence": "All have 4 bedrooms with a mix of king, queen, and twin configurations",
+      "slug": "vacation-rentals-sleeps-12-florida",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "5ab637e7efb822645ea4a30b1b9278a043a46e9538023650e38e0fd9ae0b4aeb",
+      "sentence": "Dockside Dreams, River House, and Sarasota Luxe each sleep across 4 bedrooms",
+      "slug": "vacation-rentals-sleeps-12-florida",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "d027072f0892995caa4c2d72fcc505574a716e6b4a2fb7bdf1bc82af9b320faa",
+      "sentence": "Each home has 3 or more bathrooms",
+      "slug": "vacation-rentals-sleeps-12-florida",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "682e1fa03a47e8f3e6506455159e389d1723a715d565e85872eea1fae8d1bce8",
+      "sentence": "Florida vacation rentals with 4 bedrooms, pools, and room for everyone",
+      "slug": "vacation-rentals-sleeps-12-florida",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "dcf3fa0572faa4537afa6d3e77dd33828c607e3f30e813c2cbf8a4a2c4f20fa3",
+      "sentence": "guests across 4 bedrooms and 3+ baths is a workable ratio",
+      "slug": "vacation-rentals-sleeps-12-florida",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "05d6feffcf2cbf00317afe890c2fb1a08c22b76e45a5b2096920c0f531d67da6",
+      "sentence": "No morning bottleneck - each home has 3 or more bathrooms and a bed for every guest",
+      "slug": "vacation-rentals-sleeps-12-florida",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "ad5f7293e5f2be10444c506e2e7b78171a443d9f07e7325f0063c219d1dea51d",
+      "sentence": "Seascape homes sleep across 4 bedrooms - each in a different location and with a different setup, so the right pick depends on where you want to be",
+      "slug": "vacation-rentals-sleeps-12-florida",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "a1dce0c9f347d58c531ba565ff7f11de0c2b2e636a2143cc99fb59ef11ad5387",
+      "sentence": "The Seascape homes that hold each have 4 bedrooms and 3+ bathrooms, and they cover two markets: Bradenton (near Anna Maria Island) and downtown Sarasota",
+      "slug": "vacation-rentals-sleeps-12-florida",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "4711c01134ccea28c8f6075078cbeccf66cf38ed0dae26dbf0a2651af3d2ba79",
+      "sentence": "5 bedrooms, pool, hot tubs, putting green",
+      "slug": "vacation-rentals-sleeps-16-florida",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "2dde34866dabc688ef7d1c06ab0d9763e9fe4cb633251e27006a35a0bfbb75c7",
+      "sentence": "Our flagship property, The Oasis , sleeps up to guests across 5 bedrooms and 3 bathrooms, with a resort-style pool, hot tub, game room, and massive outdoor living area designed for big groups",
+      "slug": "vacation-rentals-sleeps-16-florida",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "5e2e104edb34c5ff37c3ed221bf3545be7c17f9404f5d1e2531e57a434191651",
+      "sentence": "The Oasis features 5 bedrooms with a mix of king, queen, and twin beds configured to accommodate up to guests",
+      "slug": "vacation-rentals-sleeps-16-florida",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "cd196b8657385916671a1094c1d59ca254c3cde519804dc61212bc85b89e0462",
+      "sentence": "The Oasis is our largest property, sleeping up to guests with 5 bedrooms, 3 bathrooms, a resort-style pool, hot tub, game room, and expansive outdoor areas",
+      "slug": "vacation-rentals-sleeps-16-florida",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "4b2424b2c35c10deff50e3156f35fec6b1d4de4db7c55f682d741b2d2cd4f024",
+      "sentence": "The Oasis has the largest deck with two hot tubs and room for a big group",
+      "slug": "vacation-rentals-with-pool-and-hot-tub",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "46576b1308f2d1bee210cd1153599b3486c806f13221e6aaef4ecabe49ccf2dc",
+      "sentence": "While the north freezes, enjoy 70-degree days and heated pools on Florida's Gulf Coast",
+      "slug": "winter-vacation-rentals-florida-gulf-coast",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "f769c68b36f084f7f38ea94a9c50ff4a06d01aae2c4d1804bccb62ecd1960384",
+      "sentence": "You can finish the workday, close your laptop, and walk straight out to your private heated pool — or drive 10 minutes to Anna Maria Island for a sunset beach session before dinner",
+      "slug": "work-from-home-vacation-rentals-florida",
+      "tag": "non-claim",
+      "reason": "grandfathered current stay copy after token swaps"
+    },
+    {
+      "hash": "5d6eab53f48bd8f0b47212352eb75d868ee8b9952c261d6e85e5093fa47e697c",
+      "sentence": "Every home has a private pool you can heat as an optional add-on for the cooler months; the hot tub heat is included year-round",
+      "slug": "anna-maria-island-homes-with-pool",
+      "tag": "suspected-claim",
+      "reason": "reverted heat-inclusion prose beyond a token swap"
+    },
+    {
+      "hash": "034e53a6e61e80cee4e3d416c613bf4881e1855f47dac6812c3f698c36e3f19f",
+      "sentence": "Hot tub and spa heat is included at no extra charge",
+      "slug": "book-direct-anna-maria-island",
+      "tag": "suspected-claim",
+      "reason": "reverted heat-inclusion prose beyond a token swap"
+    },
+    {
+      "hash": "878576356da2f4dfa442f6f1d3b4f97d9d8a01e664f7c11856ed36a78d0e8e49",
+      "sentence": "Pool heat is an optional add-on; the hot tub heat is included year-round",
+      "slug": "bradenton-vacation-rentals-with-hot-tub",
+      "tag": "suspected-claim",
+      "reason": "reverted heat-inclusion prose beyond a token swap"
+    },
+    {
+      "hash": "0e2bf89efe0c9c9b39c8128cbe54f29927336afba766ef1dbb36a778bda7b311",
+      "sentence": "Yes — the hot tubs are heated year-round and included with your stay, kept around 100–104°F whether you visit in December or July",
+      "slug": "bradenton-vacation-rentals-with-hot-tub",
+      "tag": "suspected-claim",
+      "reason": "reverted heat-inclusion prose beyond a token swap"
+    },
+    {
+      "hash": "cb6314a42e97598a1dde6ca4b80bf338021935093075cecb6dbf23e83782b755",
+      "sentence": "Hot tub and spa heat is included at no extra charge at all listed homes",
+      "slug": "florida-gulf-coast-vacation-rentals",
+      "tag": "suspected-claim",
+      "reason": "reverted heat-inclusion prose beyond a token swap"
+    },
+    {
+      "hash": "12a09556d96b816428e279272f82d4a63ce5a3c06dd991933b97479606cef51b",
+      "sentence": "At the five established homes with a hot tub or spa, they are separate units with independent controls",
+      "slug": "vacation-rentals-with-pool-and-hot-tub",
+      "tag": "suspected-claim",
+      "reason": "reverted heat-inclusion prose beyond a token swap"
+    },
+    {
+      "hash": "300415c06b45ed804fdb40bf35bf65f55927b27e37e04aeaf5c5f60ab41f0ef2",
+      "sentence": "Hot tub heat is included at the five established homes that have a hot tub or spa",
+      "slug": "vacation-rentals-with-pool-and-hot-tub",
+      "tag": "suspected-claim",
+      "reason": "reverted heat-inclusion prose beyond a token swap"
+    },
+    {
+      "hash": "2072ada973c9cf71a4dd56d8ad8cb5895b417583887aac84a8a05ef063009ea6",
+      "sentence": "Hot tub heat is included at the five established homes that have one - no add-on fee, runs year-round; confirm the hot-tub terms for the newest Bradenton home when booking",
+      "slug": "vacation-rentals-with-pool-and-hot-tub",
+      "tag": "suspected-claim",
+      "reason": "reverted heat-inclusion prose beyond a token swap"
+    },
+    {
+      "hash": "b7155b53e18aea9b083b48f9d65f4b590f1bc7c63e3053e56f870515b9c64867",
+      "sentence": "Hot tub or spa heat is included at the five established homes that have one",
+      "slug": "vacation-rentals-with-pool-and-hot-tub",
+      "tag": "suspected-claim",
+      "reason": "reverted heat-inclusion prose beyond a token swap"
+    },
+    {
+      "hash": "767ff747cfe9ae28843f36d67247f124bd0231dd92d9addd0fe9854268fa80db",
+      "sentence": "Pool heat is $40/day at the five established homes - worth it November through March, rarely needed in summer; confirm the fee for the newest Bradenton home when booking",
+      "slug": "vacation-rentals-with-pool-and-hot-tub",
+      "tag": "suspected-claim",
+      "reason": "reverted heat-inclusion prose beyond a token swap"
+    },
+    {
+      "hash": "4724f1f59810da4f8d4f3bd6c35d60f90d6fce853bd69f4795ff707ceec69830",
+      "sentence": "Pool heat is an optional add-on ($40/day at those five homes) that most guests request November through March - the Gulf runs warm enough the rest of the year that an unheated pool is comfortable",
+      "slug": "vacation-rentals-with-pool-and-hot-tub",
+      "tag": "suspected-claim",
+      "reason": "reverted heat-inclusion prose beyond a token swap"
+    },
+    {
+      "hash": "dcb445870e7344cd9bdd0c4f06324a0f39ed94f7c0cb2c7eb41610dacd467e7b",
+      "sentence": "Pool heat is an optional add-on at $40 per day at those five homes - most useful November through March",
+      "slug": "vacation-rentals-with-pool-and-hot-tub",
+      "tag": "suspected-claim",
+      "reason": "reverted heat-inclusion prose beyond a token swap"
+    },
+    {
+      "hash": "b08ed5ce4e26c93db43870affa2734e1d181ab5a27e52315396edb3eb60ddf5c",
+      "sentence": "Yes, at the five established homes with a hot tub or spa: those hot tubs run year-round and there's no shutoff time imposed by the property",
+      "slug": "vacation-rentals-with-pool-and-hot-tub",
+      "tag": "suspected-claim",
+      "reason": "reverted heat-inclusion prose beyond a token swap"
+    },
+    {
+      "hash": "e2521b85bb6c8457d8f5a3532c45fc2d020d9e12ffa5346ad9491451d2d82bf0",
+      "sentence": "Warm up the pool whenever you want it, and the hot tub is included with your stay year-round",
+      "slug": "winter-vacation-rentals-florida-gulf-coast",
+      "tag": "suspected-claim",
+      "reason": "reverted heat-inclusion prose beyond a token swap"
+    }
+  ]
+}
