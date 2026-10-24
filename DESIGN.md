@@ -29,21 +29,22 @@ waterline:
       fontFamily: "Poppins"
       fontSize: "12px"
       letterSpacing: "0.13em"
+  control-treatment: "sliding-arrow-pill" # ink-pill | ink-rounded
   rounded:
-    button: "4px"
+    button: "999px"
   components:
     button-primary:
       backgroundColor: "{waterline.colors.ink}"
       textColor: "#FFFFFF"
       rounded: "{waterline.rounded.button}"
       padding: "14px 24px"
-      minHeight: "48px, never below the 44px mobile floor"
+      minHeight: "48px, 44px mobile floor"
       typography: "500 14px/1.35 Poppins"
     button-on-dark:
       backgroundColor: "{waterline.colors.citron}"
       textColor: "{waterline.colors.ink}"
       rounded: "{waterline.rounded.button}"
-      usage: "only where ink loses separation from its own surface: the homepage header over the scene photo, the two sticky CTA bars, the near-black owner hero"
+      usage: "homepage header over the scene, sticky CTA bars, near-black owner hero"
 
 # LEGACY — the pre-Waterline system. Kept for two reasons, neither of them
 # guidance. scripts/design/design-lint.js treats every hex in this file as the
@@ -193,7 +194,7 @@ A planning guide finishes one trip-planning task: when to come, how to get there
 - **Steps.** Sections carry numerals 01, 02, 03 beside the heading, leaving the heading text as written. On desktop an "In this guide" rail lists the steps and stays in view; on a phone the numerals carry the sequence.
 - **Tables.** Every column is visible at 360, 375 and 393px wide, so a converted guide has no swipe hint.
 - **Your dates.** When the site's trip memory holds dates, the instrument marks those months with a citron surface and an ink "Your dates" label. It is a progressive enhancement reading only the stored arrive and depart dates; the figure is complete without it, and the mark states the guest's dates only, never an opening or a quote.
-- **Booking box and close.** The guide booking box keeps its position, content and tracking through a conversion. Sawyer approved the Waterline restyle of the box on October 24, 2026: same words, links and tracking, with an ink top rule, ruled rows, ink buttons and no old-palette surfaces (no gradient, shadow, gold or radius above 4px). The closing band is solid ink with the paper button and ink text guides already use there (10.62:1 against the band, so it needs no hairline). Citron stays reserved for the surfaces listed under `button-on-dark`.
+- **Booking box and close.** The guide booking box keeps its position, content and tracking through a conversion. Sawyer approved the Waterline restyle of the box on October 24, 2026: same words, links and tracking, with an ink top rule, ruled rows, ink buttons using `control-treatment`, and no old-palette surfaces (no gradient, shadow, or gold). The closing band is solid ink with the paper button and ink text guides already use there (10.62:1 against the band, so it needs no hairline). Citron stays reserved for the surfaces listed under `button-on-dark`.
 - **Floors.** A converted guide is held to F1, F2 and F3 across the whole page; see the scope note under Floors.
 - **Measurement.** A guide inside an open readback window converts after that window is read.
 
