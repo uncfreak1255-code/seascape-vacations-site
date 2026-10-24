@@ -1,0 +1,169 @@
+/*
+ * Planning-guide frame (DESIGN.md "Planning guides (October 2026)").
+ * Loaded by src/_includes/layouts/guide-planning.njk before guest.css, the
+ * same order the first converted guide used when this lived inline. Tokens
+ * are scoped to body.planning-guide. See
+ * docs/briefs/2026-10-guide-family-1-planning-frame.md for the components
+ * and what a page may put in them.
+ */
+
+:root {
+  --brand: #5F8A8B;
+  --brand-dark: #3D5C5D;
+  --gold: #C9A962;
+  --gold-light: #E8D5A3;
+  --cream: #F5EED6;
+  --cream-dark: #EBE4CC;
+  --stone: #3A3A3A;
+  --stone-light: #6A6A6A;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* Planning-guide frame (DESIGN.md "Planning guides"): Waterline tokens, scoped to this body. */
+body.planning-guide {
+  --pg-paper: #F6F3EB;
+  --pg-ink: #173D42;
+  --pg-muted: #52676A;
+  --pg-clay: #A4533E;
+  --pg-rule: #CAD4CF;
+  --pg-serif: "Instrument Serif", Georgia, serif;
+  background: var(--pg-paper);
+  color: var(--pg-ink);
+  font: 400 15px/1.65 Poppins, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+body.planning-guide main a { color: var(--pg-ink); }
+body.planning-guide main a:hover { color: var(--pg-clay); }
+body.planning-guide main a:focus-visible { outline: 3px solid var(--pg-clay); outline-offset: 4px; }
+body.planning-guide .guide-conversion-label { font-size: 12px; }
+body.planning-guide main .guide-save50-cta,
+body.planning-guide main .guide-save50-cta:hover,
+body.planning-guide main .guide-cta-btn,
+body.planning-guide main .guide-cta-btn:hover { color: var(--pg-paper); }
+
+.breadcrumb { border-bottom: 1px solid var(--pg-rule); }
+.breadcrumb ol { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; list-style: none; margin: 0 auto; max-width: 1180px; padding: 0 20px; font-size: 13px; line-height: 1.3; color: var(--pg-muted); }
+.breadcrumb a { display: inline-flex; align-items: center; min-height: 44px; min-width: 44px; color: var(--pg-muted) !important; }
+.breadcrumb [aria-current="page"] { color: var(--pg-ink); }
+
+.pg-wrap { margin: 0 auto; max-width: 1180px; padding: 0 20px; }
+.pg-label { color: var(--pg-muted); font: 500 12px/1.4 Poppins, system-ui, sans-serif; letter-spacing: .13em; text-transform: uppercase; }
+
+/* Opening */
+.pg-open { padding-top: 40px; }
+.pg-open-grid { display: grid; gap: 28px; grid-template-columns: minmax(0, 1fr); }
+.pg-open h1 { font: 400 44px/1.1 var(--pg-serif); letter-spacing: -0.025em; margin: 16px 0; }
+.pg-sub { color: var(--pg-muted); }
+.guide-intro { border-left: 1px solid var(--pg-ink); padding: 2px 0 2px 18px; }
+.guide-intro p:first-child { font: 400 22px/1.34 var(--pg-serif); }
+.guide-intro p:first-child strong { font-style: italic; font-weight: 400; }
+.guide-intro p + p { margin-top: 14px !important; }
+
+/* Trip planning rows retain the existing comparison layout. */
+.pg-figure { margin: 40px 0 0; padding-top: 22px; border-top: 1px solid var(--pg-ink); }
+.pg-fig-head, .pg-fig-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 12px; }
+.pg-fig-head { padding-bottom: 10px; border-bottom: 1px solid var(--pg-rule); }
+.pg-fig-row { align-items: baseline; padding: 16px 0 18px; border-bottom: 1px solid var(--pg-rule); }
+.pg-tier { font: 400 22px/1.2 var(--pg-serif); }
+.pg-total { font-size: 14px; font-weight: 500; white-space: nowrap; }
+.pg-bar { position: relative; display: block; grid-column: 1 / -1; height: 12px; margin-top: 12px; background: linear-gradient(var(--pg-rule), var(--pg-rule)) center / 100% 1px no-repeat; }
+.pg-bar i { position: absolute; top: 0; height: 12px; background: var(--pg-ink); }
+.pg-bar i.pg-bar-tail { top: 4px; height: 0; background: none; border-top: 4px dotted var(--pg-ink); }
+
+.guide-author-card { display: flex; flex-wrap: wrap; gap: 8px 32px; margin-top: 18px; padding-bottom: 44px; color: var(--pg-muted); font-size: 13px; line-height: 1.65; }
+.pg-reviewed-by .pg-label { display: block; }
+.pg-reviewed-by .pg-name { margin-top: 4px; color: var(--pg-ink); font-size: 15px; font-weight: 500; }
+
+/* Steps and rail */
+.pg-body { max-width: 1180px; margin: 0 auto; padding: 0 20px; }
+.pg-rail { display: none; }
+.pg-step { padding: 40px 0 44px; border-top: 1px solid var(--pg-rule); }
+.pg-num { margin-bottom: 10px; color: var(--pg-clay); font: 500 12px/1.4 Poppins, system-ui, sans-serif; letter-spacing: .13em; }
+.pg-step h2 { margin-bottom: 18px; font: 400 32px/1.12 var(--pg-serif); letter-spacing: -0.02em; }
+.pg-step h3 { font: 400 24px/1.2 var(--pg-serif); }
+.pg-step p + p { margin-top: 14px; }
+
+.pg-facts { list-style: none; margin: 0 0 32px; border-bottom: 1px solid var(--pg-rule); }
+.pg-facts li { margin: 0; padding: 13px 0; border-top: 1px solid var(--pg-rule); }
+.pg-facts strong { font-weight: 600; }
+
+.cost-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+.cost-table th { padding: 0 8px 10px 0; border-bottom: 1px solid var(--pg-ink); color: var(--pg-muted); font: 500 12px/1.3 Poppins, system-ui, sans-serif; text-align: left; vertical-align: bottom; overflow-wrap: anywhere; }
+.cost-table td { padding: 11px 8px 11px 0; border-bottom: 1px solid var(--pg-rule); font-size: 13px; line-height: 1.4; vertical-align: top; overflow-wrap: anywhere; }
+.cost-table th:last-child, .cost-table td:last-child { padding-right: 0; }
+.cost-table td:first-child, .cost-table td:nth-child(3) { font-weight: 500; }
+
+.budget-card { padding: 16px 0 24px; border-top: 1px solid var(--pg-ink); }
+.budget-card h3 { margin-bottom: 10px; }
+.budget-grid { margin-top: 24px; }
+.savings-card { margin-top: 20px; }
+.savings-card h3 { margin-bottom: 8px; }
+.savings-card ul { list-style: none; }
+.savings-card li { position: relative; margin: 0; padding: 13px 0 13px 30px; border-bottom: 1px solid var(--pg-rule); }
+.savings-card li:last-child { border-bottom: 0; }
+.savings-card li::before { content: ""; position: absolute; left: 0; top: 19px; width: 14px; height: 14px; border: 1px solid var(--pg-ink); }
+.pg-step p a { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+
+.pg-tail { max-width: 940px; margin: 0 auto; padding: 0 20px; }
+.related-guides { padding: 40px 0 76px; }
+.related-guides h2 { margin-bottom: 18px; font: 400 32px/1.12 var(--pg-serif); letter-spacing: -0.02em; }
+.related-grid { border-bottom: 1px solid var(--pg-rule); }
+.related-card { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 52px; padding: 14px 0; border-top: 1px solid var(--pg-rule); text-decoration: none; }
+.related-card strong { display: block; font-weight: 500; }
+.related-card span span, .related-card > span { color: var(--pg-muted); }
+.related-card svg { flex: none; }
+
+@media (min-width: 900px) {
+  .breadcrumb ol, .pg-wrap, .pg-body, .pg-tail { padding-left: 40px; padding-right: 40px; }
+  .pg-tail { max-width: 1020px; } /* 940px content column once the 40px gutters are added, matching the mock's booking kit and Keep Reading width */
+  .pg-open { padding-top: 72px; }
+  .pg-open-grid { grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr); gap: 72px; align-items: end; }
+  .pg-open h1 { font-size: clamp(52px, 5.28vw, 76px); margin: 18px 0 22px; }
+  .guide-intro { padding-left: 28px; }
+  .guide-intro p:first-child { font-size: 25px; }
+  .pg-figure { margin-top: 64px; padding-top: 28px; }
+  .pg-fig-head, .pg-fig-row { grid-template-columns: 300px 190px minmax(0, 1fr); column-gap: 32px; }
+  .pg-fig-head { padding-bottom: 12px; }
+  .pg-fig-row { align-items: center; padding: 20px 0; }
+  .pg-tier { font-size: 27px; }
+  .pg-total { font-size: 15px; }
+  .pg-bar { grid-column: auto; height: 14px; margin-top: 0; }
+  .pg-bar i { height: 14px; }
+  .pg-bar i.pg-bar-tail { top: 5px; height: 0; }
+  .guide-author-card { margin-top: 22px; padding-bottom: 64px; }
+  .pg-reviewed-by { flex: 0 0 300px; }
+  .guide-author-card > p { flex: 1 1 320px; max-width: 72ch; }
+  .pg-body { display: flex; gap: 88px; align-items: flex-start; border-top: 1px solid var(--pg-rule); padding-top: 8px; }
+  .pg-rail { display: block; flex: 0 0 232px; position: sticky; top: 104px; padding-top: 56px; }
+  .pg-rail p { margin-bottom: 18px; }
+  .pg-rail ol { list-style: none; border-bottom: 1px solid var(--pg-rule); }
+  .pg-rail li { border-top: 1px solid var(--pg-rule); }
+  .pg-rail a { display: grid; grid-template-columns: 34px 1fr; gap: 4px; padding: 13px 0; font-size: 14px; line-height: 1.4; text-decoration: none; }
+  .pg-rail a span:first-child { color: var(--pg-clay); font-weight: 500; }
+  .pg-steps { flex: 1 1 0; min-width: 0; max-width: 780px; }
+  .pg-step { padding: 56px 0 60px; }
+  .pg-step:first-child { border-top: 0; }
+  .pg-step h2 { margin-bottom: 22px; font-size: 44px; }
+  .pg-num { margin-bottom: 12px; }
+  .pg-facts { margin-bottom: 40px; }
+  .pg-facts li { padding: 14px 0; }
+  .cost-table th { padding-right: 16px; letter-spacing: .06em; text-transform: uppercase; }
+  .cost-table td { padding: 14px 16px 14px 0; font-size: 15px; line-height: 1.5; }
+  .cost-table th:last-child, .cost-table td:last-child { padding-right: 0; }
+  .budget-grid { margin-top: 28px; }
+  .budget-card { display: flex; gap: 40px; padding: 20px 0 26px; }
+  .budget-card h3 { flex: 0 0 220px; margin-bottom: 0; font-size: 25px; }
+  .budget-card div { flex: 1 1 0; min-width: 0; }
+  .savings-card { margin-top: 34px; }
+  .savings-card h3 { margin-bottom: 10px; font-size: 25px; }
+  .savings-card li { padding-left: 32px; }
+  .pg-step p { max-width: 68ch; }
+  .related-guides h2 { font-size: 44px; margin-bottom: 22px; }
+  .related-card { gap: 24px; }
+}
+
+/* Sticky booking bar: fixed to the viewport bottom, content set per guide. */
+#sticky-book-bar { position: fixed; bottom: 0; left: 0; right: 0; z-index: 99; background: linear-gradient(135deg, var(--brand-dark) 0, #2D4647 100%); padding: 12px 20px; display: flex; justify-content: center; align-items: center; gap: 16px; box-shadow: 0 -4px 20px rgba(0, 0, 0, .15); transform: none; }
+#sticky-book-bar span { color: #fff; font-size: 14px; font-weight: 500; }
+#sticky-book-bar a { background: linear-gradient(135deg, #C9A962 0, #B8943A 100%); color: #3A3A3A; padding: 10px 22px; border-radius: 50px; font-weight: 600; font-size: 13px; text-decoration: none; white-space: nowrap; }

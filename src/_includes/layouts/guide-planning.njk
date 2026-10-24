@@ -1,0 +1,199 @@
+{#
+  Planning-guide frame (DESIGN.md "Planning guides"). Every word comes from the
+  page's front matter or its content; this file holds structure only.
+  Contract: docs/briefs/2026-10-guide-family-1-planning-frame.md
+#}
+{% from "partials/guide-conversion-kit.njk" import guideConversionKit %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{{ pageTitle }}</title>
+  <meta name="description" content="{{ pageDescription }}">
+  {% if pageKeywords %}<meta name="keywords" content="{{ pageKeywords }}">{% endif %}
+  <meta name="author" content="{{ guideAuthor.name }}">
+  <meta name="robots" content="{{ pageRobots or 'index, follow' }}">
+  <link rel="canonical" href="{{ site.url }}{{ page.url }}">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="{{ site.url }}{{ page.url }}">
+  <meta property="og:title" content="{{ pageTitle }}">
+  <meta property="og:description" content="{{ guideOgDescription or pageDescription }}">
+  <meta property="og:image" content="{{ site.url }}{{ guideImage }}">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:site_name" content="Seascape Vacations">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{ pageTitle }}">
+  <meta name="twitter:description" content="{{ guideTwitterDescription or pageDescription }}">
+  <meta name="twitter:image" content="{{ site.url }}{{ guideImage }}">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": {{ pageTitle | json | safe }},
+    "description": {{ guideSchemaDescription | json | safe }},
+    "image": "{{ site.url }}{{ guideImage }}",
+    "author": {
+      "@type": "Person",
+      "name": {{ guideAuthor.name | json | safe }},
+      "jobTitle": {{ guideAuthor.jobTitle | json | safe }},
+      "worksFor": {
+        "@type": "Organization",
+        "name": "Seascape Vacations",
+        "url": "{{ site.url }}"
+      }
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Seascape Vacations",
+      "url": "{{ site.url }}"
+    },
+    "datePublished": {{ guidePublished | json | safe }},
+    "dateModified": {{ guideModified | json | safe }},
+    "mainEntityOfPage": "{{ site.url }}{{ page.url }}"
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {"@type": "ListItem", "position": 1, "name": "Home", "item": "{{ site.url }}"},
+      {"@type": "ListItem", "position": 2, "name": "Guides", "item": "{{ site.url }}/guides/"},
+      {"@type": "ListItem", "position": 3, "name": {{ guideSchemaBreadcrumb | json | safe }}, "item": "{{ site.url }}{{ page.url }}"}
+    ]
+  }
+  </script>
+  {% if guideFaqs and guideFaqs | length %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {%- for faq in guideFaqs %}
+      {
+        "@type": "Question",
+        "name": {{ faq.question | json | safe }},
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": {{ faq.answer | json | safe }}
+        }
+      }{% if not loop.last %},{% endif %}
+      {%- endfor %}
+    ]
+  }
+  </script>
+  {% endif %}
+  {% if guideLocalFonts %}
+  {% include "partials/local-font-head.njk" %}
+  {% else %}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=Playfair+Display:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+    media="print"
+    onload='this.media="all"'
+  >
+  <noscript>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=Playfair+Display:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    >
+  </noscript>
+  {% endif %}
+  <link rel="stylesheet" href="/css/planning-guide.css">
+  <link rel="stylesheet" href="/css/guest.css?v=waterline-v3">
+</head>
+<body class="guest-shell planning-guide">
+{% include "partials/guest-header.njk" %}
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <ol>
+      <li><a href="/">Home</a></li>
+      <li aria-hidden="true">></li>
+      <li><a href="/guides/">Guides</a></li>
+      <li aria-hidden="true">></li>
+      <li aria-current="page">{{ guideBreadcrumbLabel }}</li>
+    </ol>
+  </nav>
+
+  <main>
+    <section class="pg-open">
+      <div class="pg-wrap">
+        <div class="pg-open-grid">
+          <div>
+            <span class="pg-label">{{ guideLabel }}</span>
+            <h1>{{ guideTitle }}</h1>
+            <p class="pg-sub">{{ guideSub }}</p>
+          </div>
+          <div class="guide-intro">
+            {% for paragraph in guideIntro %}
+            <p>{{ paragraph | safe }}</p>
+            {% endfor %}
+          </div>
+        </div>
+
+        {% if guideFigure %}
+        <div class="pg-figure" aria-hidden="true">
+          <div class="pg-fig-head pg-label"><span>{{ guideFigure.heads[0] }}</span><span>{{ guideFigure.heads[1] }}</span></div>
+          {% for row in guideFigure.rows %}
+          <div class="pg-fig-row"><span class="pg-tier">{{ row.label }}</span><span class="pg-total">{{ row.value }}</span></div>
+          {% endfor %}
+        </div>
+        {% endif %}
+
+        <div class="guide-author-card" data-guide-author="{{ guideAuthor.id }}">
+          <div class="pg-reviewed-by">
+            <p class="pg-label">Reviewed by</p>
+            <p class="pg-name">{{ guideAuthor.name }}</p>
+          </div>
+          <p>{{ guideAuthor.bio }}</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="pg-body">
+      <nav class="pg-rail" aria-label="In this guide">
+        <p class="pg-label">In this guide</p>
+        <ol>
+          {% for step in guideSteps %}
+          <li><a href="#pg-{{ loop.index }}"><span>{% if loop.index < 10 %}0{% endif %}{{ loop.index }}</span><span>{{ step }}</span></a></li>
+          {% endfor %}
+        </ol>
+      </nav>
+
+      <article class="pg-steps article-text">
+        {{ content | safe }}
+      </article>
+    </div>
+
+    <div class="pg-tail">
+      {{ guideConversionKit(guideKit) }}
+      <div class="related-guides">
+        <h2>Keep Reading</h2>
+        <div class="related-grid">
+          {% for related in guideRelated %}
+          <a class="related-card" href="{{ related.href }}">
+            <span><strong>{{ related.title }}</strong>
+            <span>{{ related.copy }}</span></span>
+          </a>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div id="sticky-book-bar">
+    <span>{{ guideSticky.text }}</span>
+    <a
+      href="{{ guideSticky.href }}"
+      data-track-event="guide_book_direct_click"
+      data-guide-slug="{{ guideKit.guideSlug }}"
+      data-track-label="{{ guideSticky.trackLabel }}"
+    >{{ guideSticky.label }}</a>
+  </div>
+
+  {% include "partials/analytics-ga4.njk" %}
+{% include "partials/guest-footer.njk" %}
+</body>
+</html>

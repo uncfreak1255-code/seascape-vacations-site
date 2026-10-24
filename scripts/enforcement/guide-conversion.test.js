@@ -1062,10 +1062,12 @@ test("owner form tracking preserves owner_source attribution from email follow-u
 test("priority guides use the shared conversion kit with page-specific stay links", () => {
   for (const guide of guideFiles) {
     const source = fs.readFileSync(guide.file, "utf8");
-    assert.equal(source.includes('from "partials/guide-conversion-kit.njk" import guideConversionKit'), true);
-    assert.equal(source.includes("guideConversionKit({"), true);
-    assert.equal(source.includes(`guideSlug: "${guide.slug}"`), true, `${guide.slug} should pass its slug`);
     const layout = source.match(/^layout:\s*(\S+)$/m);
+    const framed = layout?.[1] === "layouts/guide-planning.njk";
+    const kitSource = framed ? fs.readFileSync(path.join(projectRoot, "src", "_includes", layout[1]), "utf8") : source;
+    assert.equal(kitSource.includes('from "partials/guide-conversion-kit.njk" import guideConversionKit'), true);
+    assert.equal(kitSource.includes(framed ? "guideConversionKit(guideKit)" : "guideConversionKit({"), true);
+    assert.equal(source.includes(framed ? `  guideSlug: ${guide.slug}\n` : `guideSlug: "${guide.slug}"`), true, `${guide.slug} should pass its slug`);
     const analyticsSource = layout
       ? fs.readFileSync(path.join(projectRoot, "src", "_includes", layout[1]), "utf8")
       : source;
@@ -1148,11 +1150,9 @@ test("week 2 booking guides use named authorship and retire legacy conversion cl
       slug: "anna-maria-island-vacation-cost",
       file: path.join(projectRoot, "src", "guides", "anna-maria-island-vacation-cost.html"),
       requiredMarkers: [
-        '<title>How Much Does a Vacation to Anna Maria Island Cost? (2026 Budget Guide)</title>',
-        '<meta name="author" content="Sawyer Beckett">',
-        '"@type": "Person"',
-        '"name": "Sawyer Beckett"',
-        'data-guide-author="sawyer-beck"'
+        'pageTitle: "How Much Does a Vacation to Anna Maria Island Cost? (2026 Budget Guide)"',
+        "  name: Sawyer Beckett",
+        "  id: sawyer-beck"
       ],
       forbiddenMarkers: [
         "guide-related-stays",
@@ -1175,31 +1175,26 @@ test("week 2 booking guides use named authorship and retire legacy conversion cl
 });
 
 test("AMI vacation cost planning frame removes unsupported range bars and keeps its booking kit uncollided", () => {
-  const source = fs.readFileSync(
-    path.join(projectRoot, "src", "guides", "anna-maria-island-vacation-cost.html"),
-    "utf8"
-  );
+  const read = (...parts) => fs.readFileSync(path.join(projectRoot, "src", ...parts), "utf8");
+  const source = read("guides", "anna-maria-island-vacation-cost.html");
+  const layout = read("_includes", "layouts", "guide-planning.njk");
+  const css = read("css", "planning-guide.css");
 
   assert.doesNotMatch(source, /<i class="pg-bar-tail"/);
   assert.match(source, /Price your dates/);
   assert.doesNotMatch(source, /<i class="pg-tail"/);
-  assert.match(source, /\.pg-bar i\.pg-bar-tail/);
-  assert.doesNotMatch(source, /\.pg-bar i\.pg-tail/);
+  assert.match(css, /\.pg-bar i\.pg-bar-tail/);
+  assert.doesNotMatch(css, /\.pg-bar i\.pg-tail/);
 
-  const step3Start = source.indexOf('id="pg-3"');
-  const step3End = source.indexOf("</section>", step3Start);
-  const kitIndex = source.indexOf("{{ guideConversionKit({");
-  const tailIndex = source.indexOf('<div class="pg-tail">');
-  const relatedIndex = source.indexOf('<div class="related-guides">');
+  const contentIndex = layout.indexOf("{{ content | safe }}");
+  const kitIndex = layout.indexOf("{{ guideConversionKit(guideKit) }}");
+  const tailIndex = layout.indexOf('<div class="pg-tail">');
+  const relatedIndex = layout.indexOf('<div class="related-guides">');
 
-  assert.notEqual(step3Start, -1, "step 03 should exist");
-  assert.notEqual(step3End, -1, "step 03 should close");
-  assert.notEqual(kitIndex, -1, "booking kit should exist");
-  assert.notEqual(tailIndex, -1, "Keep Reading wrapper should exist");
-  assert.notEqual(relatedIndex, -1, "Keep Reading should exist");
-  assert.equal(kitIndex > step3End, true, "booking kit must sit after #pg-3 closes");
-  assert.equal(kitIndex > tailIndex, true, "booking kit must sit inside .pg-tail");
-  assert.equal(kitIndex < relatedIndex, true, "booking kit must sit before Keep Reading");
+  assert.notEqual(contentIndex, -1);
+  assert.equal(kitIndex > contentIndex, true, "kit after steps");
+  assert.equal(kitIndex > tailIndex && tailIndex !== -1, true, "kit inside .pg-tail");
+  assert.equal(kitIndex < relatedIndex, true, "kit before Keep Reading");
 });
 
 test("winner guides surface the shared conversion kit before late-stage related content", () => {
