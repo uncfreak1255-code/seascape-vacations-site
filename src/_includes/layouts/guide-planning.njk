@@ -26,6 +26,11 @@
   <meta name="twitter:title" content="{{ pageTitle }}">
   <meta name="twitter:description" content="{{ guideTwitterDescription or pageDescription }}">
   <meta name="twitter:image" content="{{ site.url }}{{ guideImage }}">
+  {%- if guideJsonLd %}
+  {%- for block in guideJsonLd %}
+  <script type="application/ld+json">{{ block | safe }}</script>
+  {%- endfor %}
+  {%- else %}
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -84,6 +89,7 @@
   }
   </script>
   {% endif %}
+  {%- endif %}
   {% if guideLocalFonts %}
   {% include "partials/local-font-head.njk" %}
   {% else %}
@@ -142,13 +148,13 @@
         </div>
         {% endif %}
 
-        <div class="guide-author-card" data-guide-author="{{ guideAuthor.id }}">
+        {% if guideAuthor.bio %}<div class="guide-author-card" data-guide-author="{{ guideAuthor.id }}">
           <div class="pg-reviewed-by">
             <p class="pg-label">Reviewed by</p>
             <p class="pg-name">{{ guideAuthor.name }}</p>
           </div>
           <p>{{ guideAuthor.bio }}</p>
-        </div>
+        </div>{% endif %}
       </div>
     </section>
 
@@ -194,6 +200,6 @@
   </div>
 
   {% include "partials/analytics-ga4.njk" %}
-{% include "partials/guest-footer.njk" %}
+{% include "partials/guest-footer.njk" %}{% if guideEmailPopup %}{% include "partials/email-popup.njk" %}{% endif %}
 </body>
 </html>
