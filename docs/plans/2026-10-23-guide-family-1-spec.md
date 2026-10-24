@@ -63,9 +63,13 @@ JSON-LD and the booking box (position and `data-track-*` attributes) stay identi
    - uses the layout; drops inline legacy styles and Google Fonts;
    - numbers steps 01, 02, 03 with the "In this guide" rail; keeps the existing h2 text;
    - leaves the Instrument figure slot empty (figures are lane B);
-   - keeps every table column visible at 360, 375 and 393px;
-   - adds the route to `planningGuideRoutes` in `tests/visual/design-floors.spec.js` and to
-     `tests/visual/routes.js`, and refreshes baselines for that route only;
+   - keeps every table's information visible at 360, 375 and 393px with no sideways scroll.
+     A column may hide below 900px only when its values stay visible in another cell of the
+     same row (the how-to-get-to airport Code column, whose codes stay in the airport name,
+     is the one case so far). SRQ keeps every column visible (E2c);
+   - adds the route to `moneyRoutes` in `tests/visual/routes.js` only (the floors spec reads
+     `floorRoutes = moneyRoutes`, so a second registration duplicates test titles), and
+     refreshes baselines for that route only;
    - shrinks `scripts/design/design-lint-baseline.json` with `npm run lint:design:update`
      (entries only removed, never added);
    - SRQ only: keeps "Reviewed August 19, 2026", "<strong>August 2026 review:</strong>",

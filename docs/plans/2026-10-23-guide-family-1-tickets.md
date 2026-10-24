@@ -48,8 +48,8 @@ plus desktop 1440 and mobile 393 screenshots from `npm run proof:visual` attache
 
 ### L1. Do you need a car: planning frame
 - Blocked by: L0.
-- Write set: `src/guides/do-you-need-a-car-anna-maria-island.html`, `tests/visual/routes.js`,
-  `tests/visual/design-floors.spec.js` (`planningGuideRoutes`), that route's screenshots,
+- Write set: `src/guides/do-you-need-a-car-anna-maria-island.html`, `tests/visual/routes.js`
+  (`moneyRoutes`; the floors spec picks the route up from there), that route's screenshots,
   `scripts/design/design-lint-baseline.json`, family layout brief (only if lint forces swaps).
 - Done:
   - Common criteria pass; `npm run lint:design:update` only removed entries
@@ -65,7 +65,8 @@ plus desktop 1440 and mobile 393 screenshots from `npm run proof:visual` attache
 - Blocked by: L1.
 - Write set: `src/guides/how-to-get-to-anna-maria-island.html`, plus the same test, baseline
   and brief files as L1 for this route.
-- Done: as L1 for this route; all five airport-table columns visible at 360px.
+- Done: as L1 for this route; every airport-table value visible at 360px. The standalone
+  Code column may hide below 900px because each code stays in its airport name.
 
 ### L3. Flights to AMI: planning frame
 - Blocked by: L2.
@@ -96,8 +97,14 @@ plus desktop 1440 and mobile 393 screenshots from `npm run proof:visual` attache
   any kept dollar range), `scripts/recovery/assert-live-smoke.js` only if a smoke string changes.
 - Done:
   - Common criteria pass; `npm run lint:content` passes with no new unsourced price claim.
-  - Each airport's miles and drive time are the same number on every guide that states them:
-    `grep -ho 'SRQ[^<]*mi' src/guides/how-to-get-to-anna-maria-island.html src/guides/flights-to-anna-maria-island/index.html src/guides/srq-airport-to-anna-maria-island.html | sort -u` shows one value set.
+  - Each airport's miles and drive time are the same numbers on every guide that states them.
+    Proof: a scratch script over the built `_site` pages of the three guides (how-to-get-to,
+    flights, SRQ) parses every airport table row into airport code, miles and minutes as
+    numbers (code from the airport or Code cell; a range such as "45-60 min" kept as its two
+    ends), and also collects prose sentences that name an airport with a mile or minute value.
+    For each airport code it prints one line per distinct (miles, minutes) value with the
+    guides that state it; the check passes when every code has exactly one line. Paste the
+    output in the PR.
   - Every remaining dollar range has a source link on the page or a `sourcedClaims.json` row.
   - Brief records each source URL with its read date; Voice Editor returned `Approved`.
 
