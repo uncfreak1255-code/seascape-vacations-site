@@ -59,6 +59,12 @@ test("guest.css cannot grow and the tap-hover rule is gated", () => {
   assert.doesNotMatch(css, /grid-template-rows:300px 125px/);
 });
 
+test("visual proof skips unhydrated swipe slides instead of treating them as missing photos", () => {
+  const helper = read("tests/visual/test-helpers.js");
+  assert.match(helper, /dataset\.src && !image\.getAttribute\("src"\)/);
+  assert.match(helper, /node\.dataset\.src && !node\.getAttribute\("src"\)/);
+});
+
 test("property-gallery CSS and JS stay inside the motion budget", () => {
   const cssBytes = fs.statSync(path.join(projectRoot, galleryCssPath)).size;
   const jsBytes = fs.statSync(path.join(projectRoot, galleryJsPath)).size;
@@ -73,7 +79,8 @@ test("property-gallery CSS and JS stay inside the motion budget", () => {
   assert.match(css, /background:\s*var\(--g-soft\)/);
   assert.match(css, /@media\(prefers-reduced-motion:no-preference\)/);
   assert.match(css, /transition:opacity 200ms cubic-bezier\(\.23,1,\.32,1\)/);
-  assert.match(css, /\.g-gallery-frame\{position:relative\}/);
+  assert.match(css, /\.g-gallery-frame\{position:relative;min-width:0;max-width:100%\}/);
+  assert.match(css, /width:100%;min-width:0;scroll-snap-type:x mandatory/);
   assert.match(css, /@media\(min-width:701px\)\{\.g-gallery-photo:nth-child\(n\+4\)\{display:none\}\}/);
   assert.doesNotMatch(css, /gsap|swiper|splide|tiny-slider|flickity/i);
   const js = read(galleryJsPath);
