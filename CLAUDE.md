@@ -2,15 +2,9 @@
 
 @AGENTS.md
 
-Read `AGENTS.md` first. It is canonical for this repo: scope ownership,
-non-negotiable rules, repo truth, business priorities, the workflow/skill layer
-with every `.claude/skills/*/SKILL.md` path, environment, commands, testing,
-deploy, the SEO reading order, the content gate, and the design lanes. This file
-holds Claude-specific guidance and a pointer to the shared content workflow.
-
-Use its "Load context for the task" routes after checking source currency.
-Load the matching branches before their actions; the Claude delta does not
-require reading unrelated SEO, design or measurement documents at startup.
+Read `AGENTS.md` first. It is canonical for this repo; use its "Load context
+for the task" routes after checking source currency. This file holds only the
+Claude harness delta.
 
 - Skills: shared `.claude/skills/<name>` entries link to the maintained
   `.agents/skills/<name>` source. The six Claude-only UI craft skills are
@@ -18,10 +12,7 @@ require reading unrelated SEO, design or measurement documents at startup.
   optional under the Site design rules. Respect each skill's invocation policy
   and applicable user skill overrides. A displayed or installed skill is not
   proof that its body loaded or its procedure ran.
-- SEO role cards live in `.claude/agents/`. Select the task route in
-  `docs/process/batch-workflow.md`; source-backed existing-guide repairs use
-  one lead plus one targeted reviewer. `.claude/settings.json` holds this
-  repo's Claude permissions.
+- `.claude/settings.json` holds this repo's Claude permissions.
 - For UI/visual work, dispatch subagents with `model: "sonnet"`.
 - Worktrees: when the harness pins the session to `.claude/worktrees/<name>`,
   that is the isolated worktree `AGENTS.md` asks for. Work there on the
