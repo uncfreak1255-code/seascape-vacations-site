@@ -5,7 +5,7 @@ This file exists to stop agents and humans from improvising Git in this repo.
 Use it at the start of any session that might change files.
 
 These checkout and wrapper commands apply to the local coordinator. For a
-Codex cloud task's disposable checkout, use `AGENTS.md` -> Codex Cloud Handoff;
+Codex cloud task's disposable checkout, use `docs/process/codex-cloud-handoff.md`;
 the coordinator retains these gates for integration and publication.
 
 ## Source currency
