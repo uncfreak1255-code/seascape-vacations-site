@@ -94,6 +94,9 @@ test("property-gallery CSS and JS stay inside the motion budget", () => {
   assert.match(css, /\.g-gallery-count\{[^}]*border-radius:var\(--g-control-radius\)/);
   assert.doesNotMatch(css, /border-radius:4px/);
   assert.equal(/border-radius:var\(--g-control-radius\)/.test(""), false, "empty CSS must fail the chrome pill gate");
+  assert.match(css, /\.g-gallery,\.g-gallery-photo,\.g-gallery-open,\.g-photo-dialog button\{-webkit-tap-highlight-color:transparent\}/);
+  assert.doesNotMatch(css, /html[^{]*\{[^}]*-webkit-tap-highlight-color/);
+  assert.equal(/-webkit-tap-highlight-color:transparent/.test(""), false, "empty CSS must fail the gallery tap-highlight gate");
   assert.doesNotMatch(css, /gsap|swiper|splide|tiny-slider|flickity/i);
   const js = read(galleryJsPath);
   assert.match(js, /IntersectionObserver/);

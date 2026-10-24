@@ -2,6 +2,7 @@
 .g-gallery-frame{position:relative;min-width:0;max-width:100%}
 .g-gallery:focus-visible{outline:3px solid var(--g-accent);outline-offset:4px}
 .g-gallery-count{display:none}
+.g-gallery,.g-gallery-photo,.g-gallery-open,.g-photo-dialog button{-webkit-tap-highlight-color:transparent}
 @media(min-width:701px){.g-gallery-photo:nth-child(n+4){display:none}}
 @media(max-width:700px){
 .g-gallery{display:flex;overflow-x:auto;width:100%;min-width:0;scroll-snap-type:x mandatory;scroll-snap-stop:always;overscroll-behavior-x:contain;overscroll-behavior-y:contain;touch-action:pan-x pan-y pinch-zoom;scrollbar-width:none;grid-template-columns:none;grid-template-rows:none;gap:8px}
