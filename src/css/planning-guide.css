@@ -97,6 +97,16 @@ body.planning-guide main .guide-cta-btn:hover { color: var(--pg-paper); }
 /* Airport table: the code column repeats the name's code, so phones drop it and widen the name column. */
 .route-table th:nth-child(2), .route-table td:nth-child(2) { display: none; }
 .route-table th:first-child { width: 34%; }
+/* Wide comparison tables: phones stack each row, labelling every value with its column header (data-label). */
+@media (max-width: 899px) {
+  .stack-table, .stack-table tbody, .stack-table tr, .stack-table td { display: block; }
+  .stack-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .stack-table tr { padding: 10px 0; border-bottom: 1px solid var(--pg-rule); }
+  .stack-table td { display: grid; grid-template-columns: 38% minmax(0, 1fr); gap: 12px; padding: 4px 0; border-bottom: 0; }
+  .stack-table td:first-child { display: block; padding-bottom: 6px; }
+  .stack-table td:first-child::before { content: none; }
+  .stack-table td::before { content: attr(data-label); color: var(--pg-muted); font-size: 12px; font-weight: 500; }
+}
 
 .budget-card { padding: 16px 0 24px; border-top: 1px solid var(--pg-ink); }
 .budget-card h3 { margin-bottom: 10px; }
