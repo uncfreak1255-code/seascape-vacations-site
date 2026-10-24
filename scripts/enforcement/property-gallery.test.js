@@ -83,6 +83,15 @@ test("property-gallery CSS and JS stay inside the motion budget", () => {
   assert.match(css, /\.g-gallery-frame\{position:relative;min-width:0;max-width:100%\}/);
   assert.match(css, /width:100%;min-width:0;scroll-snap-type:x mandatory/);
   assert.match(css, /@media\(min-width:701px\)\{\.g-gallery-photo:nth-child\(n\+4\)\{display:none\}\}/);
+  assert.match(css, /width:calc\(100% \+ 40px\);max-width:none;margin-inline:-20px/);
+  assert.match(css, /scroll-snap-stop:\s*always/);
+  assert.match(css, /overscroll-behavior-y:\s*contain/);
+  assert.match(css, /border-radius:var\(--g-control-radius\)/);
+  assert.match(css, /\.g-gallery-open::after/);
+  assert.match(css, /\.g-gallery-open\{[^}]*background:var\(--g-ink\)/);
+  assert.match(css, /\.g-gallery-count\{[^}]*border-radius:var\(--g-control-radius\)/);
+  assert.doesNotMatch(css, /border-radius:4px/);
+  assert.equal(/border-radius:var\(--g-control-radius\)/.test(""), false, "empty CSS must fail the chrome pill gate");
   assert.doesNotMatch(css, /gsap|swiper|splide|tiny-slider|flickity/i);
   const js = read(galleryJsPath);
   assert.match(js, /IntersectionObserver/);
