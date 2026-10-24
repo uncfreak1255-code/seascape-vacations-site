@@ -43,10 +43,10 @@ including drafts. Use the connected GitHub reads or the existing authenticated
 CLI; do not wait for the Hub's six-hour report:
 
 ```bash
-gh api --paginate 'repos/uncfreak1255-code/seascape-vacations-site/pulls?state=open&per_page=100' \\
+gh api --paginate 'repos/uncfreak1255-code/seascape-vacations-site/pulls?state=open&per_page=100' \
   --jq '.[] | {number, title, html_url, draft, head_ref: .head.ref, head_sha: .head.sha}'
 # For each candidate, replace NUMBER with its PR number:
-gh api --paginate 'repos/uncfreak1255-code/seascape-vacations-site/pulls/NUMBER/files?per_page=100' \\
+gh api --paginate 'repos/uncfreak1255-code/seascape-vacations-site/pulls/NUMBER/files?per_page=100' \
   --jq '.[] | {filename, previous_filename}'
 ```
 
