@@ -279,8 +279,6 @@
 .g-property-heading p:not(.g-label){font-size:14px}
 .g-gallery{grid-template-columns:1.7fr 1fr;grid-template-rows:245px 245px;gap:14px}
 .g-gallery-photo{overflow:hidden}
-.g-gallery-photo img{transition:transform .65s cubic-bezier(.2,.7,.2,1)}
-.g-gallery-photo:hover img{transform:scale(1.03)}
 .g-detail-section h2{font-size:47px;line-height:1.06}
 .g-booking{background:#eceee4;padding:30px}
 .g-booking h2{font-size:39px}
