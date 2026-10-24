@@ -24,7 +24,19 @@
   <link rel="stylesheet" href="/css/base.css">
   {{ headExtra | safe }}
   <link rel="stylesheet" href="/css/guest.css?v=waterline-v3">
-  {% if guestHome %}<link rel="stylesheet" href="/css/arrival.css?v=waterline-v4">{% endif %}
+  {% if guestHome %}
+  <script>
+    (function () {
+      function resolveHomepageHeroStyle(value) {
+        return value === "cinema" || value === "split" || value === "inset" ? value : "";
+      }
+      var style = resolveHomepageHeroStyle(new URLSearchParams(location.search).get("hero"));
+      if (style) document.documentElement.setAttribute("data-hero-style", style);
+    })();
+  </script>
+  <link rel="stylesheet" href="/css/arrival.css?v=waterline-v4">
+  <link rel="stylesheet" href="/css/arrival-hero-previews.css?v=1">
+  {% endif %}
   {# Page sheets load after guest.css so their equal-specificity rules win the cascade. #}
   {% if pageStylesheet %}<link rel="stylesheet" href="{{ pageStylesheet }}">{% elif propertySlug %}<link rel="stylesheet" href="/css/property-gallery.css">{% endif %}
 </head>

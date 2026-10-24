@@ -1,0 +1,55 @@
+/* Homepage hero style previews. Default (no data-hero-style) stays current Waterline.
+   cinema → Godly Poolsuite—GRAND LEISURE (title-card over a full-bleed photo)
+   split  → Landdding Montamont (named direction: paper panel + photo, not full-bleed)
+   inset  → Godly Anna Jóna (named direction: light paper, framed rectangular photo)
+   Preview with ?hero=cinema|split|inset. Do not restyle the trip form or booking panel. */
+html[data-hero-style=cinema] .g-arrival-copy{top:auto;bottom:176px;left:6vw}
+html[data-hero-style=cinema] .g-arrival-copy h1{font-size:clamp(88px,9vw,148px)}
+html[data-hero-style=cinema] .g-scene::after{background:linear-gradient(180deg,#071d3266 0,transparent 28%),linear-gradient(0deg,#071d32f2 0,#071d32a6 28%,transparent 58%),linear-gradient(90deg,#071d3273,transparent 62%)}
+html[data-hero-style=cinema] .g-scene-caption{left:0;right:0;padding:22px 5vw 28px;border-top-color:#ffffff3d}
+@media(max-width:700px){html[data-hero-style=cinema] .g-arrival{height:620px}
+html[data-hero-style=cinema] .g-arrival-copy{top:108px;bottom:auto;left:24px;right:24px}
+html[data-hero-style=cinema] .g-arrival-copy h1{font-size:clamp(52px,14vw,76px);line-height:.9}
+html[data-hero-style=cinema] .g-arrival-copy>p:last-child{margin:12px 0 0}
+html[data-hero-style=cinema] .g-scene-caption{left:0;right:0;padding:16px 24px 18px}}
+
+html[data-hero-style=split] .g-homepage .g-header,html[data-hero-style=inset] .g-homepage .g-header{position:relative;color:var(--g-ink);background:var(--g-paper);border-color:var(--g-rule)}
+html[data-hero-style=split] .g-homepage .g-header .g-wordmark,html[data-hero-style=split] .g-homepage .g-nav a,html[data-hero-style=split] .g-homepage .g-header-phone,html[data-hero-style=split] .g-homepage .g-menu-button,html[data-hero-style=inset] .g-homepage .g-header .g-wordmark,html[data-hero-style=inset] .g-homepage .g-nav a,html[data-hero-style=inset] .g-homepage .g-header-phone,html[data-hero-style=inset] .g-homepage .g-menu-button{color:var(--g-ink)}
+html[data-hero-style=split] .g-homepage .g-header-phone,html[data-hero-style=inset] .g-homepage .g-header-phone{border-color:var(--g-rule)}
+html[data-hero-style=split] .g-homepage .g-header-phone:hover,html[data-hero-style=inset] .g-homepage .g-header-phone:hover{color:var(--g-accent)}
+html[data-hero-style=split] .g-homepage .g-header-actions .g-button,html[data-hero-style=inset] .g-homepage .g-header-actions .g-button{background:var(--g-ink);color:#fff;border-color:var(--g-ink)}
+
+html[data-hero-style=split] .g-arrival{display:grid;grid-template-columns:minmax(280px,40%) 1fr;align-items:stretch;height:clamp(640px,82svh,840px);background:var(--g-paper);color:var(--g-ink)}
+html[data-hero-style=split] .g-arrival-copy{position:relative;top:auto;left:auto;align-self:center;z-index:2;pointer-events:auto;padding:48px 40px 48px 5vw;max-width:none}
+html[data-hero-style=split] .g-arrival-copy .g-label{color:var(--g-ink);margin-bottom:20px}
+html[data-hero-style=split] .g-arrival-copy h1{font-size:clamp(56px,5.4vw,92px);line-height:.92;color:var(--g-ink)}
+html[data-hero-style=split] .g-arrival-copy h1 em{margin-left:0;color:var(--g-ink)}
+html[data-hero-style=split] .g-arrival-copy>p:last-child{margin:22px 0 0;color:var(--g-muted);font-size:14px;line-height:1.7}
+html[data-hero-style=split] .g-scenes{position:relative;min-height:100%}
+html[data-hero-style=split] .g-arrival-seal{display:none}
+html[data-hero-style=split] .g-scene-caption{left:28px;right:28px;padding:20px 0 24px}
+html[data-hero-style=split] .g-scene::after{background:linear-gradient(0deg,#071d32d6,transparent 42%),linear-gradient(90deg,#071d3240,transparent 40%)}
+@media(max-width:1050px){html[data-hero-style=split] .g-arrival-copy{padding:36px 28px}
+html[data-hero-style=split] .g-arrival-copy h1{font-size:64px}
+html[data-hero-style=split] .g-scene-caption{left:20px;right:20px;gap:20px}}
+@media(max-width:700px){html[data-hero-style=split] .g-arrival{display:flex;flex-direction:column;height:auto}
+html[data-hero-style=split] .g-scenes{order:-1;height:460px;min-height:460px}
+html[data-hero-style=split] .g-arrival-copy{padding:28px 24px 32px}
+html[data-hero-style=split] .g-arrival-copy h1{font-size:clamp(48px,13vw,72px)}
+html[data-hero-style=split] .g-scene-caption{left:20px;right:20px}}
+
+html[data-hero-style=inset] .g-arrival{display:flex;flex-direction:column;height:auto;min-height:clamp(640px,86svh,900px);background:var(--g-paper);color:var(--g-ink);padding:12px 4.5vw 0;overflow:hidden}
+html[data-hero-style=inset] .g-arrival-copy{position:relative;top:auto;left:auto;z-index:2;pointer-events:auto;max-width:760px;padding:12px 0 28px}
+html[data-hero-style=inset] .g-arrival-copy .g-label{color:var(--g-ink);margin-bottom:16px}
+html[data-hero-style=inset] .g-arrival-copy h1{font-size:clamp(52px,6.2vw,96px);line-height:.94;color:var(--g-ink)}
+html[data-hero-style=inset] .g-arrival-copy h1 em{margin-left:0;color:var(--g-ink)}
+html[data-hero-style=inset] .g-arrival-copy>p:last-child{margin:18px 0 0;color:var(--g-muted);font-size:14px}
+html[data-hero-style=inset] .g-scenes{position:relative;flex:1 1 auto;height:clamp(420px,58svh,640px);min-height:420px}
+html[data-hero-style=inset] .g-arrival-seal{display:none}
+html[data-hero-style=inset] .g-scene-caption{left:28px;right:28px;padding:20px 0 24px}
+html[data-hero-style=inset] .g-scene::after{background:linear-gradient(0deg,#071d32d4,transparent 46%)}
+@media(max-width:700px){html[data-hero-style=inset] .g-arrival{padding:8px 16px 0;min-height:0}
+html[data-hero-style=inset] .g-arrival-copy{padding:8px 4px 20px}
+html[data-hero-style=inset] .g-arrival-copy h1{font-size:clamp(44px,12vw,64px)}
+html[data-hero-style=inset] .g-scenes{height:400px;min-height:400px}
+html[data-hero-style=inset] .g-scene-caption{left:16px;right:16px;padding:16px 0 18px}}
