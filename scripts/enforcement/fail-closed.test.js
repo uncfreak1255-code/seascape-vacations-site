@@ -182,7 +182,7 @@ test("safe-commit without -m fails", () => {
     () =>
       runGitKitFallback("safe-commit", ["--stage-source"], {
         kitDir: fs.mkdtempSync(path.join(os.tmpdir(), "fail-closed-no-msg-")),
-        spawn: { stdio: "pipe", cwd: PROJECT_ROOT }
+        spawn: { stdio: "pipe", cwd: fs.mkdtempSync(path.join(os.tmpdir(), "fail-closed-no-msg-cwd-")) }
       }),
     /git-kit-fallback\.js: safe-commit requires -m <message>; cannot skip-as-pass/
   );

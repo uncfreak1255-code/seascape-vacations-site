@@ -107,15 +107,15 @@ function listChangedFiles(cwd) {
 }
 
 function runPortableSafeCommit(args, spawnOptions) {
+  const { stageSource, message } = parseSafeCommitArgs(args);
+  if (!message) {
+    refuseSkip("git-kit-fallback.js", "safe-commit requires -m <message>");
+  }
+
   const cwd = spawnOptions.cwd || process.cwd();
   const preCommitStatus = runPreCommit([], spawnOptions);
   if (preCommitStatus !== 0) {
     return preCommitStatus;
-  }
-
-  const { stageSource, message } = parseSafeCommitArgs(args);
-  if (!message) {
-    refuseSkip("git-kit-fallback.js", "safe-commit requires -m <message>");
   }
 
   const generatedPaths = loadGeneratedPaths(cwd);
