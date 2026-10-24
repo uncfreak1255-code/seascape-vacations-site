@@ -1,0 +1,30 @@
+/* Group-fit planner (who is coming -> who sleeps where). Waterline tokens only; mirrors DESIGN.md. */
+.g-fit{border-top:1px solid var(--g-rule);padding-top:32px;margin-top:40px}
+.g-fit>h2{margin:8px 0 0}
+.g-fit-form{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:end;margin-top:16px}
+.g-fit-form label{grid-column:1/-1;font:500 12px Poppins,sans-serif;letter-spacing:.13em;text-transform:uppercase;color:var(--g-muted)}
+.g-fit-form input{min-height:48px;padding:12px 14px;border:1px solid var(--g-ink);border-radius:4px;background:#fff;color:var(--g-ink);font:15px/1.4 Poppins,sans-serif;width:100%}
+.g-fit-form input::placeholder{color:var(--g-muted)}
+.g-fit-echo{min-height:1.5em;margin:12px 0 0}
+.g-fit-summary{font-family:'Instrument Serif',Georgia,serif;font-size:24px;line-height:1.2;color:var(--g-ink);margin:24px 0 8px}
+.g-fit-results{display:grid;gap:16px;margin-top:16px}
+.g-fit-home{border:1px solid var(--g-rule);border-radius:4px;padding:20px;background:#fff}
+.g-fit-home header{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px 16px}
+.g-fit-home h3{font-size:24px;margin:0}
+.g-fit-home .g-small{margin:4px 0 0}
+.g-fit-verdict{font:500 12px Poppins,sans-serif;letter-spacing:.13em;text-transform:uppercase;padding:6px 10px;border-radius:4px;background:var(--g-soft);color:var(--g-ink)}
+.g-fit-fits .g-fit-verdict{background:var(--g-citron)}
+.g-fit-over .g-fit-verdict{background:var(--g-paper);color:var(--g-accent);border:1px solid var(--g-accent)}
+.g-fit-home details{margin-top:12px}
+.g-fit-home summary{cursor:pointer;min-height:44px;display:flex;align-items:center;font:500 14px Poppins,sans-serif;color:var(--g-ink)}
+.g-fit-rooms{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:10px}
+.g-fit-rooms li{display:grid;gap:2px;padding:10px 0;border-top:1px solid var(--g-rule);font-size:14px;line-height:1.5}
+.g-fit-rooms strong{font-weight:500;color:var(--g-muted);font-size:12px;letter-spacing:.13em;text-transform:uppercase}
+.g-fit-rooms span{display:block}
+.g-fit-unplaced strong,.g-fit-unplaced span{color:var(--g-accent)}
+.g-fit-notes{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:8px;font-size:14px;line-height:1.5;color:var(--g-muted)}
+.g-fit-notes li{padding-left:16px;position:relative}
+.g-fit-notes li::before{content:"";position:absolute;left:0;top:.6em;width:6px;height:6px;border-radius:50%;background:var(--g-ink)}
+.g-fit-notes .g-fit-note-capacity::before,.g-fit-notes .g-fit-note-beds::before,.g-fit-notes .g-fit-note-access::before{background:var(--g-accent)}
+.g-fit-home .g-inline-link{display:inline-flex;align-items:center;min-height:44px;margin-top:8px}
+@media (max-width:720px){.g-fit-form{grid-template-columns:1fr}.g-fit-form .g-button{width:100%}.g-fit-summary{font-size:22px}}

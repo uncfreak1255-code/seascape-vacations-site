@@ -15,6 +15,29 @@ function expectTrip(href, booking = false) {
   expect(url.searchParams.get(booking ? 'numberOfGuests' : 'guests')).toBe('8');
 }
 
+test('group planner updates flexible-date checkout counts and keeps dates on result links', async ({ page }) => {
+  await visit(page, '/properties/');
+  await page.locator('#catalog-fit-party').fill('4 adults and 3 kids (5, 8, 11)');
+  await page.getByRole('button', { name: 'Match the beds', exact: true }).click();
+  await expect(page.locator('#trip-guests')).toHaveValue('7');
+  const catalogCheckout = page.locator('.catalog-card[data-property="dockside-dreams"] a[data-booking-base]');
+  await expect(catalogCheckout).toHaveAttribute('href', /numberOfGuests=7/);
+  await page.locator('#trip-arrive').fill('2026-12-05');
+  await page.locator('#trip-depart').fill('2026-12-12');
+  await page.getByRole('button', { name: 'Find my home', exact: true }).click();
+  const detail = page.locator('[data-group-fit-results] a').filter({ hasText: 'See Dockside Dreams' });
+  const url = new URL(await detail.getAttribute('href'), 'https://seascape-vacations.com');
+  expect(url.searchParams.get('arrive')).toBe('2026-12-05');
+  expect(url.searchParams.get('depart')).toBe('2026-12-12');
+  expect(url.searchParams.get('guests')).toBe('7');
+  await detail.click();
+  await expect(page.locator('[data-property-checkout]')).toHaveAttribute('href', /numberOfGuests=7/);
+  await page.locator('#home-fit-party').fill('13 adults');
+  await page.getByRole('button', { name: 'Match the beds', exact: true }).click();
+  await expect(page.locator('[data-property-checkout]')).not.toHaveAttribute('href', /checkout\//);
+  await expect(page.locator('#property-trip-guests')).toHaveValue('13');
+});
+
 test('returning home restores dates and a non-default group before searching again', async ({ page }) => {
   await visit(page, '/properties/?' + trip.replace('guests=8', 'guests=6'));
   // Use an existing homepage link, as a guest returning through site navigation does.

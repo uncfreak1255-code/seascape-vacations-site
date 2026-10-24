@@ -1,0 +1,19 @@
+{# Group-fit planner. Pass `groupFitHomes` (array of property objects) and
+   `groupFitId` (unique per page). Hidden until group-fit.js mounts; the
+   guests select and trip form remain the complete no-script path. Bed, pet,
+   pool-heat and capacity facts come only from each property's guestFacts. #}
+<link rel="stylesheet" href="/css/group-fit.css">
+<section class="g-fit" data-group-fit data-guests-select="{{ groupFitGuestsSelect or '#trip-guests' }}" aria-labelledby="{{ groupFitId }}-heading" hidden>
+  <script type="application/json">{{ groupFitHomes | groupFitData | safe }}</script>
+  <p class="g-label">Who is coming?</p>
+  <h2 id="{{ groupFitId }}-heading">{% if groupFitHomes | length == 1 %}See who sleeps where.{% else %}Tell us about your group.{% endif %}</h2>
+  <p>{% if groupFitHomes | length == 1 %}Describe your group in a sentence and we match everyone to a listed bed in this home, and answer the pet and pool-heat questions from this home's details.{% else %}Describe your group in a sentence. We match everyone to a listed bed in each home and show which homes fit.{% endif %}</p>
+  <form class="g-fit-form">
+    <label for="{{ groupFitId }}-party">Your group</label>
+    <input id="{{ groupFitId }}-party" type="text" name="party" autocomplete="off" maxlength="200" placeholder="2 couples, 3 kids (4, 7, 10), grandma, and a small dog">
+    <button class="g-button btn-brand" type="submit">Match the beds</button>
+  </form>
+  <p class="g-fit-echo g-small" data-group-fit-echo aria-live="polite"></p>
+  <div class="g-fit-results" data-group-fit-results aria-live="polite"></div>
+  <p class="g-small">Beds and policies are listed per home. Availability and the full total are confirmed on the booking page.</p>
+</section>
