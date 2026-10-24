@@ -3,7 +3,7 @@
   var root = document.querySelector('.g-gallery');
   if (!root) return;
   var slides = root.querySelectorAll('.g-gallery-photo');
-  var count = root.querySelector('[data-gallery-count]');
+  var count = document.querySelector('[data-gallery-count]');
   var total = slides.length;
   function hydrate(image) {
     if (!image || (image.getAttribute && image.getAttribute('src'))) return;

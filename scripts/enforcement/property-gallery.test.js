@@ -73,6 +73,7 @@ test("property-gallery CSS and JS stay inside the motion budget", () => {
   assert.match(css, /background:\s*var\(--g-soft\)/);
   assert.match(css, /@media\(prefers-reduced-motion:no-preference\)/);
   assert.match(css, /transition:opacity 200ms cubic-bezier\(\.23,1,\.32,1\)/);
+  assert.match(css, /\.g-gallery-frame\{position:relative\}/);
   assert.match(css, /@media\(min-width:701px\)\{\.g-gallery-photo:nth-child\(n\+4\)\{display:none\}\}/);
   assert.doesNotMatch(css, /gsap|swiper|splide|tiny-slider|flickity/i);
   const js = read(galleryJsPath);
@@ -91,6 +92,7 @@ test("property layout keeps photo 1 as LCP and adds the counter only", () => {
   assert.match(layout, /aria-label="Photo \{\{ loop\.index \}\} of \{\{ property\.photography\.photos \| length \}\}"/);
   assert.match(layout, /data-gallery-count aria-live="polite">1 \/ \{\{ property\.photography\.photos \| length \}\}/);
   assert.match(layout, />View all \{\{ property\.photography\.photos \| length \}\} photos</);
+  assert.match(layout, /<\/section><span class="g-gallery-count"/);
   assert.doesNotMatch(layout, /See all \{\{ property\.name \}\} photos/);
 });
 
@@ -105,6 +107,7 @@ test("built property pages ship every photo on mobile and keep View all copy", (
   assert.match(river, /<script defer src="\/assets\/js\/property-gallery\.js">/);
   assert.match(river, />View all 12 photos</);
   assert.match(blue, />View all 13 photos</);
+  assert.match(river, /<\/section><span class="g-gallery-count"[^>]*>1 \/ 12</);
   assert.match(river, /aria-live="polite">1 \/ 12</);
   assert.match(river, /fetchpriority="high"/);
   assert.match(river, /data-transition-home="river-house"/);
@@ -165,7 +168,11 @@ function installGallery({ reducedMotion = false, complete = [true, false], obser
   }
   const sandbox = {
     document: {
-      querySelector(sel) { return sel === ".g-gallery" ? root : null; }
+      querySelector(sel) {
+        if (sel === ".g-gallery") return root;
+        if (sel === "[data-gallery-count]") return count;
+        return null;
+      }
     },
     window: {
       matchMedia(query) {

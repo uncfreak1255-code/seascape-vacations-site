@@ -1,4 +1,5 @@
 /* Mobile property swipe strip. Desktop .g-gallery grid stays in guest.css. */
+.g-gallery-frame{position:relative}
 .g-gallery:focus-visible{outline:3px solid var(--g-accent);outline-offset:4px}
 .g-gallery-count{display:none}
 @media(min-width:701px){.g-gallery-photo:nth-child(n+4){display:none}}
