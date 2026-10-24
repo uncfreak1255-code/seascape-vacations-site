@@ -18,8 +18,7 @@ Google API credentials. Production inquiry counts, deployed capture behavior,
 effective access, and live imports remain UNPROVEN.
 
 CURRENT POLICY: [private-store decision](https://github.com/uncfreak1255-code/seascape-hub/blob/main/decisions/2026-09-29-owner-intelligence-private-store.md)
-requires Sawyer's effective-access and retention acceptance, owner-direct
-permission and Patrick's method acceptance. The chosen policy is not inferred
+is supplemented by the [October 7 active decision](https://github.com/uncfreak1255-code/seascape-hub/blob/main/decisions/2026-10-07-owner-outreach-rules-v2.md): Sawyer accepted the private-store access policy and 90-day inactive review without automatic deletion. Do not request the same policy approval again. Fresh operational access-hash/expiry and accepted-seat evidence, owner-direct permission and Patrick's method acceptance remain distinct requirements. The chosen policy is not inferred
 from this runbook. Source permission scope is an inbound review request;
 ownership, property fit, marketing consent and exact delivery approval remain
 separate. New rows always enter `Intake incomplete`, with no invented complete
@@ -29,6 +28,44 @@ TEMPORARY PROOF BLOCK: source implementation and synthetic proof can be reviewed
 before those real-record conditions are accepted. A source merge deploys the
 additional capture fields under the normal Site release boundary; it does not
 install, authorize or run the private sync command.
+
+## Writer-seat check and compatible commercial schema
+
+Use `node scripts/owner-intelligence/sync.js --inspect-writer` on the existing
+Ops operator host. This mode reads only the existing private policy and declared
+writer identity. It creates no directory, lock or receipt, calls no provider,
+and reports status only. `local_binding_matches` means the environment's seat
+matches an unexpired private policy for this tracker; it does not authenticate
+the machine, prove fresh provider access, satisfy every write gate, or activate
+anything. Missing, unsafe, malformed, mismatched or expired policy is reported
+without exposing a seat ID, credential, policy reference or owner data.
+
+Do not create a policy, invent a writer ID or set credentials merely to obtain
+a passing result. This cloud preparation cannot inspect the Mac's private
+runtime; the accepted seat remains unverified until that owning-host read.
+
+The adapter accepts three exact header shapes: original 16 columns, current
+26-column intake schema, and that schema plus the 11 commercial/reply fields
+specified in [HQ issue 8](https://github.com/uncfreak1255-code/seascape-hq/issues/8).
+It reads the full header row before selecting the bounded body range. Unknown,
+reordered or partial commercial schemas are rejected. The existing 16-to-26
+intake extension is unchanged. Neither preview nor import adds the commercial
+columns: this change only tolerates them after a separately controlled source
+migration. With 37 headers already present, appends/readback use all 37 and
+preserve every existing operator row and commercial cell. New imported rows
+bind Opportunity ID to Record ID, leaving commercial stage and reply lifecycle
+blank/Unknown rather than inventing a milestone or an all-clear.
+
+This is compatibility preparation, not a commercial/reply update command or
+an Ops/HQ read projection. Existing intake still never updates operator fields.
+Before a live schema extension, land/install this compatible intake reader,
+confirm the accepted seat and operational evidence, prepare the source-owned
+maintenance/read projection in the existing lane, and prove source transitions
+and HQ counts. The live Sheet remains unchanged by this source work.
+
+Focused proof: `node --test scripts/enforcement/owner-tracker-compat.test.js
+scripts/enforcement/owner-intelligence-sync.test.js
+scripts/enforcement/owner-lead-contacts.test.js` (one shell command).
 
 ## Production source and recovery
 

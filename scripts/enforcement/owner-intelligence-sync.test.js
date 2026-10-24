@@ -306,3 +306,29 @@ test("unavailable or malformed proof-label receipts block reconciliation instead
     return null;
   } })), /proof_labels_read_failed/);
 });
+
+
+test("extended commercial schema survives the full import and readback without changing existing operator cells", async () => {
+  const { COMMERCIAL_HEADERS } = require("../owner-intelligence/schema");
+  const f = fakeProvider();
+  const headers = [...HEADERS, ...COMMERCIAL_HEADERS];
+  const existing = Array(headers.length).fill("");
+  existing[0] = "synthetic-existing";
+  existing[26] = existing[0]; existing[27] = "Proposal"; existing[30] = "Open";
+  f.data.rows = [headers, existing];
+  const provider = async (url, options) => {
+    const response = await f.fetchImpl(url, options);
+    const value = await response.json();
+    if (value.sheets) value.sheets[0].properties.gridProperties.columnCount = headers.length;
+    return { ok: true, json: async () => value };
+  };
+  const source = await readSource(f.env, provider, emptyStores);
+  const p = plan(source.contacts, f.data.rows);
+  const tracker = { rows: structuredClone(f.data.rows), sheet: { sheetId: 1, gridProperties: { rowCount: 1000 } } };
+  assert.equal((await applyPlan({ plan: p, tracker, source, policy, env: f.env, now, fetchImpl: provider, storeFactory: emptyStores })).imported, 1);
+  assert.deepEqual(f.data.rows[0], headers);
+  assert.deepEqual(f.data.rows[1], existing);
+  assert.equal(f.data.rows[2][26], "netlify-owner:synthetic-1");
+  assert.equal(f.data.rows[2][30], "");
+  assert.equal(plan(source.contacts, f.data.rows).alreadyImported, 1);
+});
