@@ -73,6 +73,7 @@ body.planning-guide main .guide-cta-btn:hover { color: var(--pg-paper); }
 
 .guide-author-card { display: flex; flex-wrap: wrap; gap: 8px 32px; margin-top: 18px; padding-bottom: 44px; color: var(--pg-muted); font-size: 13px; line-height: 1.65; }
 .pg-reviewed-by .pg-label { display: block; }
+.pg-intro-label { display: block; margin-bottom: 10px; }
 .pg-reviewed-by .pg-name { margin-top: 4px; color: var(--pg-ink); font-size: 15px; font-weight: 500; }
 
 /* Steps and rail */
