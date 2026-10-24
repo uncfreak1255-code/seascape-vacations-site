@@ -113,10 +113,9 @@ sections and searches rather than concatenating unrelated directories or logs.
 - UX, DX, AX: choose the simplest solution that improves user, developer, and
   agent experience together. Preserve behavior, verify affected flows, and
   explain material tradeoffs when all three cannot win.
-- UI clarity: cut redundant taglines, helper text, and secondary labels.
-  If a screen needs them to make sense,
-  fix its layout. Keep accessible names, essential instructions, errors, and
-  required disclosures; follow the design and content gates.
+- UI clarity: remove redundant marketing filler and repeated labels. Make layout
+  and primary actions clear. Keep accessible names, essential instructions,
+  errors, and required disclosures; follow the design and content gates.
 - Think before coding: state assumptions explicitly, ask when the missing fact matters, push back when a simpler approach exists, and stop to clarify before editing when the path is unclear.
 - Simplicity first: make the minimum change that solves the problem. Nothing speculative. No abstractions for single-use code.
 - Surgical changes: touch only what you must, match existing style, and do not refactor adjacent code that is not broken unless the task requires it.

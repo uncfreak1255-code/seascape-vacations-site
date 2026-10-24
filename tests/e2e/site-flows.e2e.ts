@@ -193,7 +193,7 @@ test("guest searches, chooses the matching home, and reaches only the intercepte
   await expect(screen.getByLabel("Guests")).toHaveValue("14");
   await expect(browser.locator(".g-form-status")).toContainText(/dates are open/i);
 
-  await screen.getByRole("link", /book these dates/i).tap();
+  await screen.getByRole("button", /book these dates/i).tap();
   await expect(screen.getByRole("heading", "Simulated secure checkout")).toBeVisible();
   expect(network.checkoutRequests).toHaveLength(1);
   expect(network.blockedExternalRequests).toEqual([]);
