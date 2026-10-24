@@ -1,0 +1,43 @@
+/* Booking-box live feedback. One-line swap on [data-booking-feedback]:
+   reel → odometer digits (bencho rolling-counter)
+   rise → outgoing lifts, incoming rises (bencho price-flow)
+   pulse → ink flash, no travel
+   Default reel. --g-control-treatment stays sliding-arrow-pill. */
+[data-property-page]{--g-booking-feedback:reel;--g-ease-out:cubic-bezier(.23,1,.32,1);--g-feedback-ms:220ms}
+.g-booking-quote{border-top:1px solid var(--g-rule);margin:16px 0 8px;padding:14px 0 2px}
+.g-booking-quote-row{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin:0 0 10px}
+.g-booking-quote .g-label{margin:0}
+.g-booking-quote-meta{display:flex;flex-direction:column;gap:2px}
+.g-quote-value{position:relative;display:inline-flex;align-items:baseline;justify-content:flex-end;min-width:5ch;min-height:1.1em;overflow:hidden;font:400 28px/1 "Instrument Serif",Georgia,serif;letter-spacing:-.02em;color:var(--g-ink)}
+.g-booking-quote-unit{font:12px/1.4 Poppins,sans-serif;color:var(--g-muted);white-space:nowrap}
+.g-quote-view{display:inline-flex;align-items:baseline}
+.g-quote-glyph{display:inline-block}
+.g-quote-col{display:inline-block;height:1em;overflow:hidden;vertical-align:bottom}
+.g-quote-strip{display:block;line-height:1;transform:translateY(0);transition:transform var(--g-feedback-ms) var(--g-ease-out)}
+.is-reel.is-set .g-quote-col .g-quote-strip{transform:translateY(calc(var(--g-digit)*-1em))}
+.is-rise{position:relative;min-width:6ch;height:1.1em}
+.is-rise .g-quote-out,.is-rise .g-quote-in{display:block;text-align:right}
+.is-rise .g-quote-out{position:absolute;right:0;top:0;opacity:0;transform:translateY(-35%);transition:opacity var(--g-feedback-ms) var(--g-ease-out),transform var(--g-feedback-ms) var(--g-ease-out)}
+.is-rise .g-quote-in{opacity:1;transform:translateY(0);transition:opacity var(--g-feedback-ms) var(--g-ease-out),transform var(--g-feedback-ms) var(--g-ease-out)}
+.is-pulse{animation:g-quote-pulse var(--g-feedback-ms) var(--g-ease-out)}
+.g-booking .g-button[data-booking-action],.g-mobile-booking .g-button[data-booking-action]{position:relative}
+.g-booking-spinner,.g-booking-check{position:absolute;left:50%;top:50%;opacity:0;pointer-events:none}
+.g-booking-spinner{width:16px;height:16px;margin:-8px 0 0 -8px;border:1.5px solid currentColor;border-top-color:transparent;border-radius:50%}
+.g-booking-check{width:12px;height:7px;margin:-6px 0 0 -6px;border-left:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(-45deg) scale(.92);transform-origin:center}
+[data-booking-ui=pending] .g-booking-spinner{opacity:1;animation:g-booking-spin .7s linear infinite}
+[data-booking-ui=pending] [data-booking-label],[data-booking-ui=success] [data-booking-label]{opacity:0}
+[data-booking-ui=pending] .g-button[data-booking-action],[data-booking-ui=success] .g-button[data-booking-action]{--g-button-arrow:0}
+[data-booking-ui=success] .g-booking-check{opacity:1;transform:rotate(-45deg) scale(1);transition:opacity 160ms var(--g-ease-out),transform 160ms var(--g-ease-out)}
+[data-feedback-frame=dates] .is-reel .g-quote-strip{transform:translateY(calc((var(--g-digit) - .58)*-1em));transition:none}
+[data-feedback-frame=dates] .is-rise .g-quote-out{opacity:.55;transform:translateY(-40%)}
+[data-feedback-frame=dates] .is-rise .g-quote-in{opacity:1;transform:translateY(28%)}
+[data-feedback-frame=dates] .is-pulse{animation:none;color:var(--g-accent)}
+@media(max-width:700px){.g-quote-value{font-size:26px}}
+@media(prefers-reduced-motion:reduce){
+.g-quote-strip,.is-rise .g-quote-out,.is-rise .g-quote-in{transition:none;transform:none}
+.is-pulse{animation:none}
+.g-booking-spinner{animation:none;border-top-color:currentColor}
+.g-booking-check{transition:none}
+}
+@keyframes g-booking-spin{to{transform:rotate(1turn)}}
+@keyframes g-quote-pulse{50%{color:var(--g-accent)}}

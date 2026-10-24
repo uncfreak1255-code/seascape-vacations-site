@@ -64,9 +64,98 @@
   var bookingForm=document.querySelector('form[data-booking-url]');
   var checkoutLink=document.querySelector('[data-property-checkout]');
   var bookingDefault=bookingForm?bookingForm.querySelector('.g-form-status').textContent:'';
-  var bookingState='none',tripNotice='',openHomes='',stayRequest=0,stayResult=null;
+  var bookingState='none',tripNotice='',openHomes='',stayRequest=0,stayResult=null,lastStay=0,lastBookingUi='idle';
   var datesOpen='These dates are open. You’ll see the full price on the next screen, before you pay.';
   var groupNeeded='These dates are open. Choose your group size to book them.';
+  var feedbackAllowed={reel:1,rise:1,pulse:1};
+  function feedbackQuery(){return new URLSearchParams(location.search);}
+  function feedbackTreatment(){var next=feedbackQuery().get('booking-feedback');return feedbackAllowed[next]?next:'reel';}
+  function feedbackFrame(){return feedbackQuery().get('feedback-frame')||'';}
+  function money(value){return new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0}).format(value);}
+  function reducedMotion(){return window.matchMedia('(prefers-reduced-motion: reduce)').matches;}
+  function applyFeedbackTreatment(){
+    if(!pageRoot)return;
+    pageRoot.setAttribute('data-booking-feedback',feedbackTreatment());
+    var frame=feedbackFrame();
+    if(frame)pageRoot.setAttribute('data-feedback-frame',frame);
+  }
+  function setActionWord(control,word){
+    var label=control.querySelector('[data-booking-label]');
+    if(label)label.textContent=word;
+    else control.textContent=word;
+  }
+  function setBookingUi(state){
+    if(!pageRoot)return;
+    var frame=feedbackFrame();
+    var ui=state==='pending'?'pending':(state==='open'&&lastBookingUi==='pending')?'success':'idle';
+    if(frame==='pending'||frame==='success')ui=frame;
+    if(frame==='dates')ui='idle';
+    lastBookingUi=ui==='success'?'open':ui;
+    pageRoot.setAttribute('data-booking-ui',ui);
+    var panel=bookingForm&&bookingForm.querySelector('[data-booking-action]');
+    if(panel){
+      if(ui==='pending')panel.setAttribute('aria-busy','true');
+      else panel.removeAttribute('aria-busy');
+    }
+    if(ui==='success'&&frame!=='success'){
+      window.setTimeout(function(){
+        if(pageRoot.getAttribute('data-booking-ui')==='success')pageRoot.setAttribute('data-booking-ui','idle');
+      },900);
+    }
+  }
+  function reelHtml(display){
+    return String(display).split('').map(function(ch){
+      if(/\d/.test(ch))return '<span class="g-quote-col" style="--g-digit:'+ch+'"><span class="g-quote-strip">0<br>1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9</span></span>';
+      return '<span class="g-quote-glyph">'+ch+'</span>';
+    }).join('');
+  }
+  function paintValue(root,display,animate){
+    if(!root)return;
+    var view=root.querySelector('[data-quote-view]');
+    var sr=root.querySelector('[data-quote-sr]');
+    var prev=sr?sr.textContent:'';
+    if(sr)sr.textContent=display;
+    if(!view){root.textContent=display;return;}
+    var treatment=feedbackTreatment();
+    var play=animate&&prev&&prev!==display&&!reducedMotion();
+    if(!play||treatment==='pulse'){
+      view.className='g-quote-view'+(play?' is-pulse':'');
+      view.textContent=display;
+      return;
+    }
+    if(treatment==='rise'){
+      view.className='g-quote-view is-rise';
+      view.innerHTML='<span class="g-quote-out">'+prev+'</span><span class="g-quote-in">'+display+'</span>';
+      return;
+    }
+    view.className='g-quote-view is-reel';
+    view.innerHTML=reelHtml(display);
+    requestAnimationFrame(function(){view.classList.add('is-set');});
+  }
+  function updateQuote(){
+    var quote=document.querySelector('[data-booking-quote]');
+    if(!quote)return;
+    var nightly=Number(quote.getAttribute('data-nightly')||0);
+    if(!nightly){quote.hidden=true;return;}
+    quote.hidden=false;
+    var nights=trip.arrive&&trip.depart?Math.round((Date.parse(trip.depart+'T00:00:00Z')-Date.parse(trip.arrive+'T00:00:00Z'))/86400000):0;
+    paintValue(quote.querySelector('[data-quote-nightly]'),money(nightly),false);
+    var stay=quote.querySelector('[data-quote-stay]');
+    var nightsEl=quote.querySelector('[data-quote-nights]');
+    if(nights>0&&stay){
+      var stayAmount=nightly*nights;
+      var stayRoot=quote.querySelector('[data-quote-stay-total]');
+      var staySr=stayRoot&&stayRoot.querySelector('[data-quote-sr]');
+      if(feedbackFrame()==='dates'&&staySr&&!staySr.textContent)staySr.textContent=money(nightly*Math.max(nights-2,1));
+      stay.hidden=false;
+      paintValue(stayRoot,money(stayAmount),Boolean(lastStay&&lastStay!==stayAmount)||feedbackFrame()==='dates');
+      if(nightsEl)nightsEl.textContent=nights===1?'1 night':nights+' nights';
+      lastStay=stayAmount;
+    }else if(stay){
+      stay.hidden=true;
+      lastStay=0;
+    }
+  }
   // Hostaway's priced checkout for one home. Return listingUrl unchanged to send guests to the listing page instead.
   function checkoutUrl(listingUrl){return listingUrl.replace('/listings/','/checkout/');}
   function withStay(base){
@@ -86,9 +175,10 @@
     checkoutLink.textContent=word;checkoutLink.dataset.trackLabel=word;
     if(state==='oversized'||state==='invalid')checkoutLink.removeAttribute('href');
     else checkoutLink.href=tracking?tracking.buildBookingEngineHandoffUrl(handoff,checkoutLink):handoff;
+    setBookingUi(state);
     document.querySelectorAll('[data-booking-action]').forEach(function(control){
       var link=control.tagName==='A';
-      control.textContent=word;
+      setActionWord(control,word);
       // The panel button hands off through the checkout link, so that link reports the booking click.
       if(booked||(outbound&&!link))control.removeAttribute('data-track-event');
       else control.dataset.trackEvent=outbound?'property_booking_page_click':'property_check_availability_click';
@@ -107,6 +197,7 @@
     });
     document.querySelectorAll('[data-trip-summary]').forEach(function (node) { node.textContent=summary(); });
     document.querySelectorAll('[data-mobile-trip]').forEach(function (node) { node.textContent=summary(); });
+    updateQuote();
     if (checkoutLink && bookingForm) {
       var listing=withStay(bookingForm.dataset.bookingUrl);
       document.querySelectorAll('[data-property-booking-link]').forEach(function(link){link.href=tracking ? tracking.buildBookingEngineHandoffUrl(listing,link) : listing;});
@@ -278,5 +369,6 @@
   if(sticky&&booking&&'IntersectionObserver' in window){new IntersectionObserver(function(entries){sticky.hidden=entries[0].isIntersecting;},{threshold:.15}).observe(booking);}
   var topic=document.getElementById('question-topic');if(topic)topic.addEventListener('change',updateQuestion);
   var question=document.querySelector('[data-question-email]');if(question)question.addEventListener('click',function(){emit('property_question_prepare',{topic:topic.value});});
+  applyFeedbackTreatment();
   if(!document.querySelector('[data-catalog-version]'))syncTrip();
 })();
