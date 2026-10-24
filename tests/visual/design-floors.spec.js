@@ -24,12 +24,9 @@ const { gotoMarketingRoute, registerStableNetwork } = require("./test-helpers");
  */
 
 const SCENES = ["the-oasis", "dockside-dreams", "sarasota-luxe", "river-house", "bradenton-pool-home", "blue-house", "coastal-stay"];
-// Guides restyled with the planning-guide frame. Kept local (not in routes.js)
-// so the floors cover them without adding visual/axe snapshot routes.
-const planningGuideRoutes = [
-  { slug: "guide-ami-vacation-cost", path: "/guides/anna-maria-island-vacation-cost/", readySelector: "main h1" },
-];
-const floorRoutes = [...moneyRoutes, ...planningGuideRoutes];
+// Planning-frame guides are registered in routes.js so each move is checked
+// against a visual baseline taken from the unchanged page.
+const floorRoutes = moneyRoutes;
 
 const SHELL_ROOT_SELECTOR = ".g-header, .g-mobile-menu, .g-footer";
 
