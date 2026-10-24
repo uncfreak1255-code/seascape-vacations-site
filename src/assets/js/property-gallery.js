@@ -6,7 +6,7 @@
   var count = document.querySelector('[data-gallery-count]');
   var total = slides.length;
   function hydrate(image) {
-    if (!image || (image.getAttribute && image.getAttribute('src'))) return;
+    if (!image || image.getAttribute('src')) return;
     if (image.dataset.srcset) image.srcset = image.dataset.srcset;
     if (image.dataset.sizes) image.sizes = image.dataset.sizes;
     if (image.dataset.src) image.src = image.dataset.src;
@@ -29,14 +29,15 @@
       });
     }, { root: root, threshold: 0.6 });
     slides.forEach(function (slide) { io.observe(slide); });
+  } else {
+    for (var i = 0; i < total; i++) hydrateAround(i);
   }
   root.addEventListener('keydown', function (event) {
     if (event.key !== 'ArrowRight' && event.key !== 'ArrowLeft') return;
     event.preventDefault();
     root.scrollBy({ left: (event.key === 'ArrowRight' ? 1 : -1) * root.clientWidth, behavior: 'auto' });
   });
-  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (reduce) return;
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   root.querySelectorAll('.g-gallery-photo img').forEach(function (image) {
     if (image.complete) return;
     function show() { image.classList.add('is-loaded'); }

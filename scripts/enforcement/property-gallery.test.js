@@ -61,8 +61,9 @@ test("guest.css cannot grow and the tap-hover rule is gated", () => {
 
 test("visual proof skips unhydrated swipe slides instead of treating them as missing photos", () => {
   const helper = read("tests/visual/test-helpers.js");
-  assert.match(helper, /dataset\.src && !image\.getAttribute\("src"\)/);
-  assert.match(helper, /node\.dataset\.src && !node\.getAttribute\("src"\)/);
+  assert.match(helper, /closest\("\.g-gallery"\) && image\.dataset\.src && !image\.getAttribute\("src"\)/);
+  assert.match(helper, /closest\("\.g-gallery"\) && node\.dataset\.src && !node\.getAttribute\("src"\)/);
+  assert.match(helper, /dataset\.src, location\.href\)\.pathname\.startsWith\(homePath\)/);
 });
 
 test("property-gallery CSS and JS stay inside the motion budget", () => {
@@ -73,11 +74,11 @@ test("property-gallery CSS and JS stay inside the motion budget", () => {
   const css = read(galleryCssPath);
   assert.match(css, /scroll-snap-type:\s*x mandatory/);
   assert.match(css, /overscroll-behavior-x:\s*contain/);
-  assert.match(css, /touch-action:\s*pan-x pan-y/);
+  assert.match(css, /touch-action:\s*pan-x pan-y pinch-zoom/);
   assert.match(css, /flex:\s*0 0 100%/);
   assert.match(css, /aspect-ratio:\s*4\/3/);
   assert.match(css, /background:\s*var\(--g-soft\)/);
-  assert.match(css, /@media\(prefers-reduced-motion:no-preference\)/);
+  assert.match(css, /@media\(max-width:700px\) and \(prefers-reduced-motion:no-preference\)/);
   assert.match(css, /transition:opacity 200ms cubic-bezier\(\.23,1,\.32,1\)/);
   assert.match(css, /\.g-gallery-frame\{position:relative;min-width:0;max-width:100%\}/);
   assert.match(css, /width:100%;min-width:0;scroll-snap-type:x mandatory/);
@@ -130,13 +131,14 @@ test("built property pages ship every photo on mobile and keep View all copy", (
   assert.doesNotMatch(river, /swiper|splide|flickity/i);
 });
 
-function installGallery({ reducedMotion = false, complete = [true, false], observe } = {}) {
+function installGallery({ reducedMotion = false, complete = [true, false], mobile = true, observer = true, deferred = [], observe } = {}) {
   const observed = [];
   const images = complete.map((isComplete, index) => {
+    const deferredSrc = deferred[index];
     const image = {
       complete: isComplete,
-      dataset: {},
-      getAttribute(name) { return name === "src" && isComplete ? "/photo.webp" : ""; },
+      dataset: deferredSrc ? { src: deferredSrc } : {},
+      getAttribute(name) { return name === "src" && isComplete && !deferredSrc ? "/photo.webp" : ""; },
       classList: {
         items: new Set(),
         add(name) { this.items.add(name); }
@@ -183,13 +185,17 @@ function installGallery({ reducedMotion = false, complete = [true, false], obser
     },
     window: {
       matchMedia(query) {
-        return { matches: reducedMotion && query.includes("reduce") };
-      },
-      IntersectionObserver: Observer
+        if (query.includes("reduce")) return { matches: reducedMotion };
+        if (query.includes("max-width:700px")) return { matches: mobile };
+        return { matches: false };
+      }
     },
-    IntersectionObserver: Observer,
     Array
   };
+  if (observer) {
+    sandbox.window.IntersectionObserver = Observer;
+    sandbox.IntersectionObserver = Observer;
+  }
   vm.runInNewContext(read(galleryJsPath), sandbox);
   if (typeof observe === "function") observe({ root, count, images, slides, sandbox });
   return { root, count, images, slides, sandbox };
@@ -212,4 +218,12 @@ test("gallery script is a no-op without a gallery and updates the counter", () =
   assert.equal(root.prevented, true);
   const reduced = installGallery({ reducedMotion: true, complete: [false] });
   assert.ok(!reduced.images[0].classList.items.has("g-gallery-fade"));
+  const noObserver = installGallery({
+    observer: false,
+    complete: [true, false, false],
+    deferred: ["", "/images/homes/river-house/2.webp", "/images/homes/river-house/3.webp"]
+  });
+  assert.equal(noObserver.images[1].src, "/images/homes/river-house/2.webp");
+  assert.equal(noObserver.images[2].src, "/images/homes/river-house/3.webp");
+  assert.equal(noObserver.sandbox.observer, undefined);
 });

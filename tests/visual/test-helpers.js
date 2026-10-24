@@ -193,7 +193,7 @@ async function prepareFullPageScreenshot(page) {
 
   await page.waitForFunction(() =>
     Array.from(document.images).every((image) => {
-      if (image.dataset.src && !image.getAttribute("src")) {
+      if (image.closest(".g-gallery") && image.dataset.src && !image.getAttribute("src")) {
         return true;
       }
       const isRendered = image.getClientRects().length > 0;
@@ -207,10 +207,13 @@ async function prepareFullPageScreenshot(page) {
   const badPhotos = await page.locator("[data-property-photo]").evaluateAll(nodes => nodes
     .filter(node => {
       if (!node.getClientRects().length) return false;
-      if (node.tagName === "IMG" && node.dataset.src && !node.getAttribute("src")) return false;
-      return node.tagName !== "IMG" || !node.naturalWidth || node.dataset.photoFailed || !new URL(node.currentSrc, location.href).pathname.startsWith("/images/homes/" + node.dataset.propertyPhoto + "/");
+      const homePath = "/images/homes/" + node.dataset.propertyPhoto + "/";
+      if (node.tagName === "IMG" && node.closest(".g-gallery") && node.dataset.src && !node.getAttribute("src")) {
+        return !new URL(node.dataset.src, location.href).pathname.startsWith(homePath);
+      }
+      return node.tagName !== "IMG" || !node.naturalWidth || node.dataset.photoFailed || !new URL(node.currentSrc, location.href).pathname.startsWith(homePath);
     })
-    .map(node => ({property: node.dataset.propertyPhoto, src: node.currentSrc || "unavailable"})));
+    .map(node => ({property: node.dataset.propertyPhoto, src: node.currentSrc || node.dataset.src || "unavailable"})));
   if (badPhotos.length) throw new Error("Refusing visual proof: property photos missing or mismatched " + JSON.stringify(badPhotos));
   await waitForFonts(page);
   await waitForStableLayout(page);
