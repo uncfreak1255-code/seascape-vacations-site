@@ -154,6 +154,10 @@ function installGallery({ reducedMotion = false, complete = [true, false], obser
     },
     scrollBy(opts) { root.scrolled += opts.left; }
   };
+  function Observer(callback, options) {
+    sandbox.observer = { callback, options, observed };
+    this.observe = function (node) { observed.push(node); };
+  }
   const sandbox = {
     document: {
       querySelector(sel) { return sel === ".g-gallery" ? root : null; }
@@ -161,12 +165,10 @@ function installGallery({ reducedMotion = false, complete = [true, false], obser
     window: {
       matchMedia(query) {
         return { matches: reducedMotion && query.includes("reduce") };
-      }
+      },
+      IntersectionObserver: Observer
     },
-    IntersectionObserver: function (callback, options) {
-      sandbox.observer = { callback, options, observed };
-      this.observe = function (node) { observed.push(node); };
-    },
+    IntersectionObserver: Observer,
     Array
   };
   vm.runInNewContext(read(galleryJsPath), sandbox);
