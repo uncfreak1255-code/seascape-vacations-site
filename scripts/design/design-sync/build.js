@@ -272,14 +272,14 @@ card({
   file: "type-display.html",
   group: "Type",
   name: "Type — Display (Instrument Serif)",
-  subtitle: "h1 clamp(46px,5.4vw,78px) · h2 · h3 · caption · quote",
+  subtitle: "h1 clamp(44px,5vw,72px) · h2 · h3 · caption · quote",
   viewport: [900, 760],
   css: [...GUEST, arrivalCss],
   title: "Instrument Serif, regular only, set large and tight",
-  note: `Weight 400, letter-spacing -0.025em, line-height 1.12. Italic carries emphasis and takes clay through <code>em</code>. Large, compact display lines are deliberate; factual text stays readable.`,
-  body: `<div class="ds-line"><div class="ds-spec">h1 · clamp(46,5.4vw,78)<br>homepage arrival goes to 166px</div><h1 style="margin:0">Make yourself <em>at home.</em></h1></div>
-<div class="ds-line"><div class="ds-spec">h2 · clamp(30,3.3vw,46)</div><h2 style="margin:0">${HomeCount} real homes. One phone number.</h2></div>
-<div class="ds-line"><div class="ds-spec">h3 · 28px<br>postcard title 30px</div><h3 style="margin:0">Dockside Dreams</h3></div>
+  note: `Weight 400, letter-spacing -0.03em, line-height 1.08. Italic carries emphasis and takes clay through <code>em</code>. Large, compact display lines are deliberate; factual text stays readable.`,
+  body: `<div class="ds-line"><div class="ds-spec">h1 · clamp(44,5vw,72)<br>homepage arrival goes to 166px</div><h1 style="margin:0">Make yourself <em>at home.</em></h1></div>
+<div class="ds-line"><div class="ds-spec">h2 · clamp(28,3vw,42)</div><h2 style="margin:0">${HomeCount} real homes. One phone number.</h2></div>
+<div class="ds-line"><div class="ds-spec">h3 · 26px<br>postcard title 30px</div><h3 style="margin:0">Dockside Dreams</h3></div>
 <div class="ds-line"><div class="ds-spec">scene caption h2 · 37px<br>white over the photo</div><div style="background:${C.ink};padding:18px 22px"><p class="g-label" style="color:#fff;margin:0 0 6px">In the collection · Bradenton, Florida</p><h2 style="color:#fff;font-size:37px;margin:0">The Oasis</h2></div></div>
 <div class="ds-line"><div class="ds-spec">review quote · 22/1.35</div><div class="g-review-grid" style="border:0;margin:0"><figure style="border:0;padding:0"><blockquote><p>The pool was the whole trip for the kids. We never left the backyard.</p></blockquote><figcaption>Guest review, Bradenton Pool Home</figcaption></figure></div></div>`,
 });
@@ -288,14 +288,14 @@ card({
   file: "type-body.html",
   group: "Type",
   name: "Type — Body, labels and controls (Poppins)",
-  subtitle: "Body 15/1.65 · label 12 caps .13em · control 500 14 · small 13",
+  subtitle: "Body 15/1.55 · label 12 caps .13em · control 500 14 · small 13",
   viewport: [900, 560],
   css: GUEST,
   title: "Poppins does the practical work",
-  note: `Body 15px / 1.65 in ink. Labels are 12px uppercase Poppins 500 with .13em tracking in muted; that is the eyebrow pattern and the only tracking in the system. No text renders below 12px anywhere (floor F1).`,
+  note: `Body 15px / 1.55 in ink. Labels are 12px uppercase Poppins 500 with .13em tracking in muted; that is the eyebrow pattern and the only tracking in the system. No text renders below 12px anywhere (floor F1).`,
   body: `<div class="ds-line"><div class="ds-spec">.g-label · eyebrow</div><p class="g-label" style="margin:0">Your time on the coast</p></div>
-<div class="ds-line"><div class="ds-spec">body · 15/1.65</div><p style="margin:0;max-width:560px">Seascape is a small, owner-operated collection of homes in Bradenton and Sarasota. Choose the home, understand the details that could change your choice, and arrive at the booking page with dates and guest count intact.</p></div>
-<div class="ds-line"><div class="ds-spec">.g-small · 13/1.65 muted</div><p class="g-small" style="margin:0">Choose your dates and group size. You’ll see the full price before you pay.</p></div>
+<div class="ds-line"><div class="ds-spec">body · 15/1.55</div><p style="margin:0;max-width:560px">Seascape is a small, owner-operated collection of homes in Bradenton and Sarasota. Choose the home, understand the details that could change your choice, and arrive at the booking page with dates and guest count intact.</p></div>
+<div class="ds-line"><div class="ds-spec">.g-small · 13/1.55 muted</div><p class="g-small" style="margin:0">Choose your dates and group size. You’ll see the full price before you pay.</p></div>
 <div class="ds-line"><div class="ds-spec">nav link · 14px<br>active = clay + underline</div><nav class="g-nav" style="gap:28px"><a href="#">Our homes</a><a href="#" aria-current="page">Explore the coast</a><a href="#">About Seascape</a></nav></div>
 <div class="ds-line"><div class="ds-spec">.g-inline-link · 14/500 underline</div><a class="g-inline-link" href="#">See every home <span aria-hidden="true">&rarr;</span></a></div>
 <div class="ds-line"><div class="ds-spec">form label · 12px .05em</div><div><label style="display:block;font-size:12px;letter-spacing:.05em;margin-bottom:8px">Arrival</label><input type="date" style="height:46px;border:0;border-bottom:1px solid ${C.muted};background:transparent;color:${C.ink};border-radius:0;padding:6px 0;font:inherit"></div></div>`,
@@ -462,9 +462,9 @@ card({
   viewport: [760, 360],
   css: GUEST,
   title: "Wide, calm, ruled",
-  note: `Content reaches 1280px (<code>min(1280px, 100% - 80px)</code>), 48px gutters under 1050px, 40px on phones. Sections breathe 76px desktop and 50px mobile. Rules do the separating.`,
+  note: `Content reaches 1280px (<code>min(1280px, 100% - 64px)</code>), 40px gutters under 1050px, 32px on phones. Sections breathe 60px desktop and 36px mobile. Rules do the separating.`,
   body: `<div class="ds-line"><div class="ds-spec">.g-wrap</div><div>min(1280px, 100% − 80px), centred</div></div>
-<div class="ds-line"><div class="ds-spec">.g-section</div><div>76px top and bottom · 50px on mobile</div></div>
+<div class="ds-line"><div class="ds-spec">.g-section</div><div>60px top and bottom · 36px on mobile</div></div>
 <div class="ds-line"><div class="ds-spec">.g-header</div><div>92px tall · 76px on mobile · 4.5vw side padding</div></div>
 <div class="ds-line"><div class="ds-spec">Form and grid gaps</div><div>18px desktop · 14–16px mobile</div></div>
 <div class="ds-line"><div class="ds-spec">Controls</div><div>inputs 46px (44px mobile) · buttons min 48px · 44px is the floor</div></div>

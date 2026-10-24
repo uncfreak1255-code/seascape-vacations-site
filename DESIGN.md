@@ -18,17 +18,28 @@ waterline:
     display:
       fontFamily: "Instrument Serif"
       fontWeight: 400
-      lineHeight: "1.12"
-      letterSpacing: "-0.025em"
-      h1: "clamp(46px,5.4vw,78px)"
+      lineHeight: "1.08"
+      letterSpacing: "-0.03em"
+      h1: "clamp(44px,5vw,72px)"
+      h2: "clamp(28px,3vw,42px)"
+      h3: "26px"
     body:
       fontFamily: "Poppins"
       fontSize: "15px"
-      lineHeight: "1.65"
+      lineHeight: "1.55"
+    lede:
+      fontFamily: "Poppins"
+      fontSize: "17px"
+      lineHeight: "1.55"
     label:
       fontFamily: "Poppins"
       fontSize: "12px"
       letterSpacing: "0.13em"
+  spacing:
+    paragraph: "12px"
+    section: "60px"
+    section-phone: "36px"
+    heading-gap: "24px"
   control-treatment: "sliding-arrow-pill" # ink-pill | ink-rounded
   rounded:
     button: "999px"
@@ -177,7 +188,7 @@ Help a group choose one of the real homes, understand the details that could cha
 The homepage, catalog, property details, owner hub, and About page use the scoped `guest-site` theme in `src/css/guest.css`, plus `src/css/arrival.css` (homepage scenes) and `src/css/about.css` (About sections). The guide index, field-journal guides, two homepage comparison guides, and stay collections share the guest header and footer. Their editorial bodies keep their existing typography, except a guide converted to the planning-guide frame below and one long-read exception: on the older field-journal guides, body paragraphs and list items read at 17px over 1.75 line height with a 68ch measure, set once in `guest.css` on `article.article-text` (October 2026; the inline guide styles stay as written). Generated owner landers and other legacy routes keep the tokens above until redesigned.
 
 - Canvas: sun-warmed paper `#F6F3EB`; ink and primary controls: deep marine `#173D42`; supporting text: `#52676A`; accent: clay `#A4533E`; selected scene and photographic CTA: citron `#D6EB85`; rules: `#CAD4CF`. Citron is a surface/accent, never small text on paper.
-- Display type: self-hosted Instrument Serif, regular and italic, under its included SIL Open Font License. Poppins remains the practical body and control face. Large, compact display lines are deliberate; factual text stays readable.
+- Display type: self-hosted Instrument Serif, regular and italic, under its included SIL Open Font License. Poppins remains the practical body and control face. Large, compact display lines are deliberate; factual text stays readable. Body reads 15px over 1.55. Sections use 60px desktop / 36px phone so phones keep more of the page in view.
 - The photographic homepage opening leads on both desktop and mobile. Name the actual pictured home. Guests can preview each home manually; never auto-rotate scenes. Keep a direct property link for each scene and a clearly labeled date/guest form immediately after the collection selector. Navigation offers a direct jump to the form.
 - The postcard collection uses shallow perspective, an open fan on desktop, and full readable cards in a native horizontal snap list on mobile. Desktop cards stay in one count-agnostic row so a new home cannot wrap off the fan. Hover enhances a card; tap and keyboard provide the complete path. Never hide information behind hover alone.
 - Carry expressive type, photographic scale, calm rules and marine/paper contrast through the catalog and property pages. A catalog card carries no photo-number badge; its title is Instrument Serif at 40px on every width, the one reason to choose sits in open space under it, the ink "Check dates" button is the only strong control, and the details link stays at its quiet 12px secondary weight (October 2026). Keep the working comparison table and conventional booking panel. Property photos remain real rectangles, not simulated rooms or a fictitious floor plan.
