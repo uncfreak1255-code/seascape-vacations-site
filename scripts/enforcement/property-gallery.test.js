@@ -155,6 +155,7 @@ function installGallery({ reducedMotion = false, complete = [true, false], mobil
   const count = { textContent: "" };
   const root = {
     clientWidth: 390,
+    scrollLeft: 0,
     scrolled: 0,
     querySelector(sel) {
       if (sel === "[data-gallery-count]") return count;
@@ -185,9 +186,13 @@ function installGallery({ reducedMotion = false, complete = [true, false], mobil
     },
     window: {
       matchMedia(query) {
-        if (query.includes("reduce")) return { matches: reducedMotion };
-        if (query.includes("max-width:700px")) return { matches: mobile };
-        return { matches: false };
+        const media = {
+          matches: query.includes("reduce") ? reducedMotion : query.includes("max-width:700px") ? mobile : false,
+          addEventListener(type, handler) { media.onChange = handler; },
+          addListener(handler) { media.onChange = handler; }
+        };
+        if (query.includes("max-width:700px")) sandbox.mobileMq = media;
+        return media;
       }
     },
     Array
@@ -226,4 +231,11 @@ test("gallery script is a no-op without a gallery and updates the counter", () =
   assert.equal(noObserver.images[1].src, "/images/homes/river-house/2.webp");
   assert.equal(noObserver.images[2].src, "/images/homes/river-house/3.webp");
   assert.equal(noObserver.sandbox.observer, undefined);
+  const rotate = installGallery({ mobile: false });
+  rotate.sandbox.observer.callback([{ isIntersecting: true, target: rotate.slides[1] }]);
+  assert.equal(rotate.count.textContent, "2 / 2");
+  rotate.sandbox.mobileMq.matches = true;
+  rotate.root.scrollLeft = 0;
+  rotate.sandbox.mobileMq.onChange();
+  assert.equal(rotate.count.textContent, "1 / 2");
 });
