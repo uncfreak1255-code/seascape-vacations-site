@@ -13,7 +13,7 @@ This project is **generated from the repository**, not authored here. Synced {{S
 | Repo file | Role |
 | --- | --- |
 | `DESIGN.md` (copied to `waterline/DESIGN.md`) | The visual law: tokens, product promise, photography rules, floors F1 to F6, button treatments, direction decisions |
-| `src/css/base.css`, `src/css/guest.css`, `src/css/arrival.css`, `src/css/catalog.css`, `src/css/catalog-card.css` (copied to `waterline/`) | The live stylesheets the guest routes ship |
+| `src/css/base.css`, `src/css/guest.css`, `src/css/arrival.css`, `src/css/catalog.css`, `src/css/catalog-card.css`, `src/css/about.css`, `src/css/property-gallery.css` (copied to `waterline/`) | The live stylesheets the guest routes ship |
 | `src/_includes/partials/guest-*.njk`, `src/_includes/layouts/guest.njk` | The shared shell and guest components; the cards use their built output |
 | `src/assets/fonts/` (copied to `waterline/fonts/`) | Self-hosted Poppins and Instrument Serif (SIL OFL) |
 | `docs/process/design-review-workflow.md` | How a design becomes a change on the site |
@@ -30,7 +30,8 @@ This project is **generated from the repository**, not authored here. Synced {{S
 │   ├── DESIGN.md                verbatim visual law
 │   ├── tokens.css               generated CSS custom properties (--wl-*)
 │   ├── fonts.css, fonts/        self-hosted faces
-│   ├── base.css, guest.css, arrival.css, catalog.css, catalog-card.css   live stylesheets
+│   ├── base.css, guest.css, arrival.css, catalog.css, catalog-card.css,
+│   │   about.css, property-gallery.css   live stylesheets
 │   ├── shell.html               the real shared header + footer markup
 │   ├── design-review-workflow.md
 │   ├── writing-style-guide.md
@@ -79,6 +80,6 @@ and content-quality gates still govern public-page implementation.
 
 ## Using this system
 
-For a mock, start from the component cards; they are the site's real markup and CSS, so class names carry over. Link `waterline/fonts.css`, `waterline/base.css` and `waterline/guest.css` (plus `arrival.css` for the homepage or `catalog.css` and `catalog-card.css` for the catalog), put `class="guest-site"` on `body`, and use the live photo URLs the cards use. For an email, slide or PDF, use the tokens in `waterline/tokens.css` and the type and button rules above; the PNG logos in `assets/` are for those surfaces, never the site header.
+For a mock, start from the component cards; they are the site's real markup and CSS, so class names carry over. Link `waterline/fonts.css`, `waterline/base.css` and `waterline/guest.css` (plus `arrival.css` for the homepage, `catalog.css` and `catalog-card.css` for the catalog, `property-gallery.css` for a property page, or `about.css` for the about page), put `class="guest-site"` on `body`, and use the live photo URLs the cards use. For an email, slide or PDF, use the tokens in `waterline/tokens.css` and the type and button rules above; the PNG logos in `assets/` are for those surfaces, never the site header.
 
 Once Sawyer approves a design here, it is the implementation contract for the site change. Implementation follows `waterline/design-review-workflow.md`, is proven with Playwright at 393px and desktop, and names any deviation before it ships. New patterns change `DESIGN.md` in the repo first; this project follows on the next sync.
