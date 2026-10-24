@@ -82,7 +82,8 @@ baseline refresh.
   are identical between `origin/main` and the L0 head (JSON-LD byte-identical;
   text compared after whitespace collapse).
 - Body markup differs only in whitespace and the sticky bar's inline style, which
-  moved into `planning-guide.css` with the same declarations.
+  moved into `planning-guide.css` with the same declarations. The head swaps the
+  inline `<style>` block for a `planning-guide.css` stylesheet link.
 - `tests/visual/visual.spec.js` `guide-ami-vacation-cost` passes against the
   baseline taken from the unchanged page, with no snapshot update in the move.
 
@@ -102,8 +103,8 @@ check behind keeping them unchanged.
 | SERP stale after | 2026-11-23 |
 | Current proof | Seascape ranks organic position 6 for "anna maria island vacation cost" in the 2026-10-24 OpenSEO SERP read (US, en, depth 20); not in the top 20 for "how much does a trip to anna maria island cost" |
 | Top visible competitors | expedia.com and travelocity.com package pages, tripadvisor.com hotel lists, wimdu.com, mikenormanrealty.com budget post |
-| Competitor angle | Package "from $X" prices and hotel nightly averages; few complete-trip totals |
-| Visual/format gap | Competitors show single headline prices; none show a trip-tier table with what to price |
+| Competitor angle | From SERP titles and snippets only: package and hotel listing pages (expedia, travelocity, tripadvisor) and one budget-planning post (mikenormanrealty) |
+| Visual/format gap | Not assessed: the SERP read gives titles and snippets, not page layouts; no format claim is made for this move |
 | Seascape gap | No change needed for the layout move; any content change belongs to a later copy-lane brief |
 | Search fit | Current page already matches the budget-planning intent and ranks on page one |
 | Local/GBP proof | Not applicable: a layout-only move with no local-pack or Google Business change |
