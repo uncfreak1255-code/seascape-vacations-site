@@ -127,10 +127,10 @@
 .g-faqs summary{cursor:pointer;min-height:58px;padding:18px 24px 18px 0;font-weight:500;font-size:14px}
 .g-faqs details p{font-size:14px;margin:0 0 22px}
 .g-source-note{font-size:12px;color:var(--g-muted);margin-top:30px!important}
-.g-booking{position:sticky;top:24px;background:var(--g-soft);padding:28px;border:1px solid var(--g-rule);scroll-margin-top:20px}
-.g-booking h2{font-size:32px}
+.g-booking{position:sticky;top:24px;background:#eceee4;padding:30px;border:1px solid var(--g-rule);scroll-margin-top:20px}
+.g-booking h2{font-size:39px}
 .g-booking .g-trip-form{grid-template-columns:1fr 1fr;gap:20px 16px}
-.g-booking .g-trip-form>div:nth-child(3),.g-booking .g-trip-form>button{grid-column:1/-1}
+.g-booking .g-trip-form .g-trip-field:nth-child(3),.g-booking .g-trip-form>button{grid-column:1/-1}
 .g-booking .g-trip-form input{font-size:13px}
 .g-booking .property-trip-context{display:block;background:none;border:0;box-shadow:none;border-top:1px solid var(--g-rule);padding:14px 0;margin:18px 0 12px;font-size:12px}
 .g-booking .property-trip-context p{margin:0 0 8px}
@@ -158,7 +158,6 @@
 .g-trip-form{grid-template-columns:1fr 1fr;gap:16px}
 .g-property-columns{grid-template-columns:minmax(0,1fr) 315px;gap:32px}
 .g-property-specs{gap:12px 16px;font-size:12px}
-.g-booking{padding:22px}
 .g-gallery{grid-template-rows:190px 190px}}
 @media(max-width:700px){.guest-site{font-size:15px}
 .g-wrap,.guest-site .catalog-page{width:calc(100% - 40px)}
@@ -198,12 +197,10 @@
 .g-property-heading>.g-inline-link{margin-top:10px;font-size:12px}
 .g-property-columns{display:flex;flex-direction:column;gap:12px;margin-top:24px}
 .g-property-content{min-width:0;width:100%}
-.g-booking{order:-1;position:static;width:100%;padding:22px}
-.g-booking h2{font-size:30px}
-.g-booking>.g-label{font-size:12px}
-.g-booking .g-trip-form>div:nth-child(3),.g-booking .g-trip-form>button{grid-column:auto}
-.g-booking .g-trip-form input{font-size:12px}
-.g-booking .g-trip-form>button{font-size:12px}
+.g-booking{order:-1;position:static;width:100%;padding:24px}
+.g-booking .g-trip-form{grid-template-columns:1fr;gap:14px}
+.g-booking .g-trip-form input,.g-booking .g-trip-form select{font-size:16px;height:48px;padding:10px 12px;background:var(--g-paper);border:1px solid var(--g-rule);border-radius:4px;-webkit-appearance:none;appearance:none;min-width:0}
+.g-booking .g-trip-form .g-button{font-size:14px;min-height:48px;padding:14px 24px}
 .g-booking .property-trip-context a{min-height:44px;display:inline-flex;align-items:center}
 .g-detail-nav{gap:18px;font-size:12px;margin:10px 0}
 .g-detail-section{padding:32px 0}
@@ -221,7 +218,7 @@
 .g-mobile-booking{position:fixed;bottom:0;left:0;right:0;background:var(--g-paper);border-top:1px solid var(--g-rule);padding:12px 20px;z-index:30;display:flex;align-items:center;justify-content:space-between;gap:18px;box-shadow:0 -6px 22px #173d4210;padding-bottom:max(12px,env(safe-area-inset-bottom))}
 .g-mobile-booking strong{font-size:13px}
 .g-mobile-booking span{display:block;font-size:12px;color:var(--g-muted)}
-.g-mobile-booking .g-button{font-size:12px;padding:12px 18px;white-space:nowrap}
+.g-mobile-booking .g-button{font-size:14px;padding:12px 20px;white-space:nowrap}
 .g-photo-dialog{width:calc(100% - 20px);max-height:94vh;padding:16px}
 .g-photo-dialog>div:first-child{top:-16px}
 .g-photo-dialog h2{font-size:23px}
@@ -282,8 +279,6 @@
 .g-gallery-photo img{transition:transform .65s cubic-bezier(.2,.7,.2,1)}
 .g-gallery-photo:hover img{transform:scale(1.03)}
 .g-detail-section h2{font-size:47px;line-height:1.06}
-.g-booking{background:#eceee4;padding:30px}
-.g-booking h2{font-size:39px}
 .g-detail-nav{border-bottom:1px solid var(--g-rule);padding-bottom:10px}
 .g-sleeping-list span{font-size:30px}
 .g-sleeping-list li{align-items:center}
@@ -325,8 +320,6 @@
 .g-property-specs{justify-content:space-between;gap:12px 14px}
 .g-property-specs strong{font-size:28px}
 .g-detail-section h2{font-size:41px}
-.g-booking{padding:24px}
-.g-booking h2{font-size:39px}
 .g-photo-grid{gap:18px}
 .g-photo-grid figure:nth-child(even){margin-top:0}
 .g-photo-grid img{height:300px}
