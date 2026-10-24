@@ -89,8 +89,9 @@ That includes:
    materially different visual direction after approval.
 7. If the approved direction changes the visual law, update `DESIGN.md` first,
    then re-run `npm run design:sync` and push so Claude Design follows the law.
-8. Implement the approved mockup or brief closely in source. Preserve the approved
-   hierarchy, spacing intent, imagery direction, CTA treatment, and interaction
+8. Implement the approved mockup or brief closely in source, preferring existing
+   components. Preserve the approved hierarchy, spacing intent, imagery direction,
+   CTA treatment, and interaction
    intent unless a named constraint requires adjustment.
 9. Rebuild the branch output locally.
 10. Run the repo-local `.agents/skills/design-review/SKILL.md` against the affected routes, or use its
@@ -103,7 +104,9 @@ That includes:
 13. Capture or retain fresh desktop and mobile proof artifacts for every changed
     route. If a full-page capture lies about a fixed or sticky element, also
     capture viewport-level screenshots that show the real behavior.
-14. Run the relevant build and release checks for the lane.
+14. Verify the complete desktop and mobile guest journey through the existing
+    tests and rendered review: accessibility, property facts, pricing disclosures,
+    and booking handoffs. Run the relevant build and release checks for the lane.
 15. Use `docs/process/before-user-review-checklist.md` before asking Sawyer to
     review.
 
