@@ -5,8 +5,20 @@
   var slides = root.querySelectorAll('.g-gallery-photo');
   var count = root.querySelector('[data-gallery-count]');
   var total = slides.length;
+  function hydrate(image) {
+    if (!image || (image.getAttribute && image.getAttribute('src'))) return;
+    if (image.dataset.srcset) image.srcset = image.dataset.srcset;
+    if (image.dataset.sizes) image.sizes = image.dataset.sizes;
+    if (image.dataset.src) image.src = image.dataset.src;
+  }
+  function hydrateAround(index) {
+    [index - 1, index, index + 1].forEach(function (i) {
+      if (slides[i]) hydrate(slides[i].querySelector('img'));
+    });
+  }
   function setCount(index) {
     if (count && total) count.textContent = index + ' / ' + total;
+    hydrateAround(index - 1);
   }
   setCount(1);
   if (total && 'IntersectionObserver' in window) {

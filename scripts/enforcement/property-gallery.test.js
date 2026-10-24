@@ -108,6 +108,9 @@ test("built property pages ship every photo on mobile and keep View all copy", (
   assert.match(river, /aria-live="polite">1 \/ 12</);
   assert.match(river, /fetchpriority="high"/);
   assert.match(river, /data-transition-home="river-house"/);
+  const deferred = [...river.matchAll(/<img[^>]+data-src="[^"]+"[^>]*>/g)];
+  assert.ok(deferred.length >= 8, "photos 4+ must defer src until swipe");
+  deferred.forEach(([tag]) => assert.doesNotMatch(tag, /\ssrc="/));
   const firstImg = river.match(/<section class="g-gallery"[\s\S]*?<img([^>]+)>/);
   assert.ok(firstImg, "river-house gallery must render an LCP image");
   assert.match(firstImg[1], /fetchpriority="high"/);
@@ -122,6 +125,8 @@ function installGallery({ reducedMotion = false, complete = [true, false], obser
   const images = complete.map((isComplete, index) => {
     const image = {
       complete: isComplete,
+      dataset: {},
+      getAttribute(name) { return name === "src" && isComplete ? "/photo.webp" : ""; },
       classList: {
         items: new Set(),
         add(name) { this.items.add(name); }
