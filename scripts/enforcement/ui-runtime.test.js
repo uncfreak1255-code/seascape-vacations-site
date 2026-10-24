@@ -154,7 +154,9 @@ test("property booking panels provide native controls and hide their mobile shor
   const script=readSource("src/assets/js/guest.js");
   assert.match(script,/if \(rawHref\.charAt\(0\) === '#'\) return;/);
   assert.match(script,/IntersectionObserver/);
-  assert.match(script,/sticky.hidden=entries\[0\].isIntersecting/);
+  assert.match(script,/sticky.hidden=true/);
+  assert.match(script,/\.g-gallery-frame/);
+  assert.match(script,/h\.b\|\|h\.g/);
   assert.match(readSource("src/css/guest.css"),/env\(safe-area-inset-bottom\)/);
   for(const property of require("../../src/_data/properties-fallback.json")) {
     const html=readSource("_site/properties",property.slug,"index.html");

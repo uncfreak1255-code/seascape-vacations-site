@@ -7,7 +7,8 @@
     {% set pageDescription = metaProperty.name + " in " + metaProperty.city + ": " + metaProperty.bedrooms + " bedrooms, " + metaProperty.bathrooms + " bathrooms, up to " + metaProperty.guests + " guests. " + metaProperty.guestFacts.tagline + " Compare the full total and book direct." %}
     {% set pageImage = site.url + metaProperty.photography.photos[0].src %}
   {% endif %}
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#f6f3eb">
   <title>{{ pageTitle | seoTitle }}</title><meta name="description" content="{{ pageDescription | seoDescription }}">
   <link rel="alternate" type="application/json" title="Seascape property and booking information" href="https://seascape-vacations.com/ai-discovery.json">
   <link rel="canonical" href="{{ site.url }}{{ page.url }}"><meta name="robots" content="index, follow">

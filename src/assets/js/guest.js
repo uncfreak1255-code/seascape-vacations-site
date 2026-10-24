@@ -8,7 +8,7 @@
     var fallback = root.querySelector('[data-email-capture-unavailable]');
     if (fallback) fallback.hidden = true;
   });
-  // Homepage leave-the-page signup: desktop only, once a week, never after a signup.
+  // Exit signup: desktop, weekly, never after subscribe.
   var exitSignup = document.querySelector('[data-home-exit-signup]');
   if (exitSignup && tracking && typeof exitSignup.showModal === 'function' && window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
     var exitKey = 'seascape_email_popup_shown';
@@ -60,14 +60,14 @@
   function label(value) { return new Intl.DateTimeFormat('en-US', {month:'short',day:'numeric',year:'numeric',timeZone:'UTC'}).format(new Date(value+'T12:00:00Z')); }
   function summary() { return (trip.arrive ? label(trip.arrive)+' – '+label(trip.depart) : 'Flexible dates') + (trip.guests ? ' · '+(trip.guests === '17' ? 'more than 16' : trip.guests)+' guests' : ''); }
   function emit(name, extras) { if (tracking) tracking.trackEvent(name, Object.assign({page_slug:pageRoot ? pageRoot.dataset.propertyPage : 'home',placement:'guest_journey'},extras || {})); }
-  // One state sets the word, destination and event of every booking control on a home's page.
+  // One state sets every booking control on a home page.
   var bookingForm=document.querySelector('form[data-booking-url]');
   var checkoutLink=document.querySelector('[data-property-checkout]');
   var bookingDefault=bookingForm?bookingForm.querySelector('.g-form-status').textContent:'';
   var bookingState='none',tripNotice='',openHomes='',stayRequest=0,stayResult=null;
   var datesOpen='These dates are open. You’ll see the full price on the next screen, before you pay.';
   var groupNeeded='These dates are open. Choose your group size to book them.';
-  // Hostaway's priced checkout for one home. Return listingUrl unchanged to send guests to the listing page instead.
+  // Hostaway checkout. Return listingUrl to send guests to the listing.
   function checkoutUrl(listingUrl){return listingUrl.replace('/listings/','/checkout/');}
   function withStay(base){
     var url=preserveSave50Params(new URL(base));
@@ -221,7 +221,7 @@
     var notice=document.createElement('div');notice.className='g-photo-unavailable';notice.dataset.propertyPhoto=image.dataset.propertyPhoto;notice.dataset.photoFailed='true';notice.setAttribute('role','img');notice.setAttribute('aria-label',image.alt+' unavailable');notice.textContent='Photo unavailable. View this home’s photos on the booking page.';image.replaceWith(notice);
   }
   document.querySelectorAll('img[data-property-photo]').forEach(function(image){image.addEventListener('error',function(){photoFailed(image);});if(image.getAttribute('src')&&image.complete&&!image.naturalWidth)photoFailed(image);});
-  // The collection preview is progressive: without JS these remain ordinary home links.
+  // Collection preview: without JS these stay home links.
   var sceneRoot=document.querySelector('[data-home-scenes]');
   if(sceneRoot){
     var choices=Array.from(document.querySelectorAll('[data-scene-choice]'));
@@ -275,7 +275,7 @@
   var gallery=document.querySelector('.g-photo-dialog'),openGallery=document.querySelector('[data-open-gallery]');
   if(gallery&&openGallery){openGallery.hidden=false;openGallery.addEventListener('click',function(){gallery.querySelectorAll('[data-gallery-src]').forEach(function(image){if(!image.src)image.src=image.dataset.gallerySrc;});gallery.showModal();});gallery.querySelector('[data-close-gallery]').addEventListener('click',function(){gallery.close();});}
   var sticky=document.querySelector('.g-mobile-booking'),booking=document.getElementById('booking');
-  if(sticky&&booking&&'IntersectionObserver' in window){new IntersectionObserver(function(entries){sticky.hidden=entries[0].isIntersecting;},{threshold:.15}).observe(booking);}
+  if(sticky&&booking&&'IntersectionObserver' in window){var h={};function s(){sticky.hidden=!!(h.b||h.g)}function w(el,k,t){el&&new IntersectionObserver(function(e){h[k]=e[0].isIntersecting;s()},{threshold:t}).observe(el)}sticky.hidden=true;w(booking,'b',.15);w(document.querySelector('.g-gallery-frame'),'g',0)}
   var topic=document.getElementById('question-topic');if(topic)topic.addEventListener('change',updateQuestion);
   var question=document.querySelector('[data-question-email]');if(question)question.addEventListener('click',function(){emit('property_question_prepare',{topic:topic.value});});
   if(!document.querySelector('[data-catalog-version]'))syncTrip();
