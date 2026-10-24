@@ -27,7 +27,7 @@
  *
  * The push itself is done with the DesignSync tool from Claude Code (list -> finalize_plan
  * -> write_files/delete_files) using _sync-manifest.json. Re-run after any PR that touches
- * DESIGN.md, src/css/{base,guest,arrival,catalog,catalog-card,about,property-gallery}.css
+ * DESIGN.md, src/css/{base,guest,motion,arrival,catalog,catalog-card,about,property-gallery}.css
  * or the guest partials.
  */
 
@@ -106,6 +106,7 @@ const catalogCss = read("src/css/catalog.css");
 const catalogCardCss = read("src/css/catalog-card.css");
 const aboutCss = read("src/css/about.css");
 const propertyGalleryCss = read("src/css/property-gallery.css");
+const motionCss = read("src/css/motion.css");
 
 /* ----------------------------------------------------------- homes */
 // Home count and names come from canonical property data, never a literal.
@@ -221,10 +222,11 @@ write("waterline/catalog.css", catalogCss);
 write("waterline/catalog-card.css", catalogCardCss);
 write("waterline/about.css", aboutCss);
 write("waterline/property-gallery.css", propertyGalleryCss);
+write("waterline/motion.css", motionCss);
 write("waterline/shell.html", `<!-- Real shared shell as built at ${commit}. -->\n${headerPaper}\n<main id="main"><!-- page --></main>\n${footer}\n`);
 
 /* ---------------------------------------------------------------- cards */
-const GUEST = [baseCss, guestCss];
+const GUEST = [baseCss, guestCss, motionCss];
 const swatch = (hex, name, role, dark) =>
   `<div class="ds-sw" style="background:${hex};color:${dark ? "#fff" : C.ink}"><small>${name}</small><div><b>${hex}</b><small>${role}</small></div></div>`;
 

@@ -32,11 +32,11 @@
 .g-header-phone{font:14px Poppins,sans-serif;min-height:44px;display:inline-flex;align-items:center;color:var(--g-ink);text-decoration:none}
 .g-header-phone:hover{color:var(--g-accent)}
 .g-header-phone-icon{display:none}
-.guest-shell .g-button,.guest-site .g-button,.guest-site .btn-brand,.guest-site .btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:14px 24px;background:var(--g-ink);color:white;border:1px solid var(--g-ink);border-radius:var(--g-control-radius);font:500 14px/1.35 Poppins,sans-serif;text-decoration:none;letter-spacing:0;text-transform:none;box-shadow:none;cursor:pointer;touch-action:manipulation;transition:background .15s,transform .12s cubic-bezier(.23,1,.32,1)}
+.guest-shell .g-button,.guest-site .g-button,.guest-site .btn-brand,.guest-site .btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:14px 24px;background:var(--g-ink);color:white;border:1px solid var(--g-ink);border-radius:var(--g-control-radius);font:500 14px/1.35 Poppins,sans-serif;text-decoration:none;letter-spacing:0;text-transform:none;box-shadow:none;cursor:pointer;touch-action:manipulation}
 .guest-shell .g-button::before,.guest-site .btn::before,.guest-site .g-button::before{display:none}
-.guest-shell .g-button::after,.guest-site .btn::after,.guest-site .g-button::after{content:"";display:inline-block;flex:0 0 auto;width:calc(.42em*var(--g-button-arrow));height:calc(.42em*var(--g-button-arrow));margin-inline-start:calc(.7em*var(--g-button-arrow));opacity:var(--g-button-arrow);border-inline-end:1.5px solid currentColor;border-block-end:1.5px solid currentColor;transform:rotate(-45deg);transition:transform .2s cubic-bezier(.23,1,.32,1)}
+.guest-shell .g-button::after,.guest-site .btn::after,.guest-site .g-button::after{content:"";display:inline-block;flex:0 0 auto;width:calc(.42em*var(--g-button-arrow));height:calc(.42em*var(--g-button-arrow));margin-inline-start:calc(.7em*var(--g-button-arrow));opacity:var(--g-button-arrow);border-inline-end:1.5px solid currentColor;border-block-end:1.5px solid currentColor;transform:rotate(-45deg)}
 .guest-shell .g-button .ui-icon,.guest-site .g-button .ui-icon{display:none!important}
-@media(hover:hover) and (pointer:fine){.g-button:hover,.guest-site .btn:hover{background:var(--g-muted);transform:none;box-shadow:none;color:white}.g-button:hover::after,.guest-site .btn:hover::after{transform:rotate(-45deg) translate(3px,3px)}}
+/* Hover, press, and interrupt: src/css/motion.css */
 .g-menu-button{display:none;background:none;border:0;padding:12px 0;color:var(--g-ink);min-height:44px;min-width:44px}
 .g-mobile-menu{position:absolute;inset:100% 0 auto;background:var(--g-paper);padding:20px;border-bottom:1px solid var(--g-rule);box-shadow:0 20px 30px #173d4214}
 .g-mobile-menu a{display:block;padding:13px 0;border-bottom:1px solid var(--g-rule);text-decoration:none}
@@ -371,8 +371,6 @@
    dropping under the 12px floor, so the lockup reduces to the wordmark. */
 .g-wordmark span{display:none}
 .g-header-actions .g-button{padding-inline:10px}}
-
-@media(prefers-reduced-motion:no-preference){.guest-shell .g-button:active:not(:focus-visible),.guest-site .g-button:active:not(:focus-visible),.guest-site .btn-brand:active:not(:focus-visible),.guest-site .btn:active:not(:focus-visible),.guest-shell .g-button[data-pressed],.guest-site .g-button[data-pressed],.guest-site .btn-brand[data-pressed],.guest-site .btn[data-pressed]{transform:scale(.97)}}
 
 /* Legacy field-journal guides: long-read body, 17px over 1.75, 68ch measure on nested blocks too (DESIGN.md Oct 2026). Classed or styled boxes keep their width. */
 .guest-shell article.article-text{font-size:17px;line-height:1.75}

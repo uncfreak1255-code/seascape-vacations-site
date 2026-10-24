@@ -5,7 +5,7 @@
   document.addEventListener('pointerdown',function(event){
     if(!event.isPrimary||event.button!==0)return;
     releasePress();
-    var button=event.target.closest('.guest-shell .g-button,.guest-site .g-button,.guest-site .btn-brand,.guest-site .btn');
+    var button=event.target.closest('.guest-shell .g-button,.guest-site .g-button,.guest-site .btn-brand,.guest-site .btn,.guest-site .catalog-filter,.guest-site .catalog-compare-toggle');
     if(button){pressedButton=button;button.setAttribute('data-pressed','true');}
   });
   document.addEventListener('pointerup',releasePress);
