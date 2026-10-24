@@ -26,7 +26,7 @@
   <link rel="stylesheet" href="/css/guest.css?v=waterline-v3">
   {% if guestHome %}<link rel="stylesheet" href="/css/arrival.css?v=waterline-v4">{% endif %}
   {# Page sheets load after guest.css so their equal-specificity rules win the cascade. #}
-  {% if pageStylesheet %}<link rel="stylesheet" href="{{ pageStylesheet }}">{% endif %}
+  {% if pageStylesheet %}<link rel="stylesheet" href="{{ pageStylesheet }}">{% elif propertySlug %}<link rel="stylesheet" href="/css/property-gallery.css">{% endif %}
 </head>
 <body class="guest-site{% if guestHome %} g-homepage{% endif %}" data-guest-version="waterline-v3">
   <a class="g-skip" href="#main">Skip to content</a>
@@ -35,4 +35,5 @@
   {% include "partials/guest-footer.njk" %}
   {% include "partials/analytics-ga4.njk" %}
   <script defer src="/assets/js/guest.js?v=waterline-v4"></script>
+  {% if pageScript %}<script defer src="{{ pageScript }}"></script>{% elif propertySlug %}<script defer src="/assets/js/property-gallery.js"></script>{% endif %}
 </body></html>
