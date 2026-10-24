@@ -228,9 +228,10 @@ these swaps, each forced by the frame:
 10. "Plan Your Stay" link list becomes `.related-card` rows (same five titles and
     hrefs) so each link meets the 44px tap floor; list bullets are gone.
 11. Airport table: its inline styles, row banding and scroll wrapper are gone; it uses
-    `.cost-table` as step 09 (five columns, no horizontal scroll at 360px). Cell text and
-    order unchanged. At 360px long cells such as "Sarasota-Bradenton (SRQ)" break
-    mid-word because the sheet's table sets `overflow-wrap: anywhere`.
+    `.cost-table route-table` as step 09 (five columns on desktop, no horizontal scroll at
+    360px). Cell text and order unchanged. Below 900px `.route-table` hides the Code
+    column, which repeats the code already in each airport name, and widens the name
+    column so names wrap only at hyphens and spaces.
 12. Order: the table, which sat after the Keep Reading block, is now step 09 and
     precedes the booking kit and Keep Reading. The trailing paragraph "Explore SRQ
     airport transfer guide for more info." moves with it to the end of step 09, words
