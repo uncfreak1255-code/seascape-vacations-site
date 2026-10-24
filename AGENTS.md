@@ -47,7 +47,7 @@ delivery, sender credentials, schedules, or send receipts. Email policy lives in
 `seascape-hub/context/operating-canon.md#business-email` and execution in
 `seascape-ops` (2026-08-20 lock): Mailchimp is the paid guest-marketing sender
 (Journey 8592, tag `guest-capture`); Outlook Graph `info@` campaigns and
-post-stay email stay Phase 1 hard-disabled; owner Graph `info@` is
+post-stay email stay Phase 1 hard-disabled (do not activate); owner Graph `info@` is
 transactional only (form confirmations and founder-approved replies); personal
 Gmail is prohibited.
 
@@ -57,7 +57,8 @@ Gmail is prohibited.
   Verify any ranking of the bottleneck (owner acquisition, direct booking)
   against the owning business or analytics source before redirecting work;
   dated holds and forecasts in status files are not current facts.
-- `docs/status/next-batch.md` governs measured SEO and entity expansion.
+- `docs/status/next-batch.md` governs measured SEO and entity expansion;
+  preserve its thresholds, evidence requirements, and publication gates.
   Missing analytics limits measurement and impact claims; it does not block an
   authorized bug fix, local prototype, or reversible capability trial with
   independent source and behavior proof.
@@ -83,7 +84,7 @@ Gmail is prohibited.
 - claims about amenities must trace to property truth: no invented equipment, no fake waterfront spread, no padded sleeping-capacity claims
 - owner proof claims must trace to approved proof assets or current source truth; do not reuse old sitewide review-count theater
 - use seomachine only as a reference for context rules, brief shape, rewrite workflow, and prioritization; never import its code, publishing assumptions, or folder structure
-- when code changes affect active instructions, runbooks, status, source-of-truth, or active brief docs, update them in the same branch; label dated reports historical only when they could pass for current guidance
+- when code changes affect active instructions, runbooks, status, source-of-truth, or active brief docs, update them in the same branch and run their focused check; label dated reports historical only when they could pass for current guidance
 - if a workflow doc conflicts with repo safety docs, the stricter repo rule wins
 
 ## Repo Truth
