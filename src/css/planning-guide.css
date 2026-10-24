@@ -94,6 +94,9 @@ body.planning-guide main .guide-cta-btn:hover { color: var(--pg-paper); }
 .cost-table td { padding: 11px 8px 11px 0; border-bottom: 1px solid var(--pg-rule); font-size: 13px; line-height: 1.4; vertical-align: top; overflow-wrap: anywhere; }
 .cost-table th:last-child, .cost-table td:last-child { padding-right: 0; }
 .cost-table td:first-child, .cost-table td:nth-child(3) { font-weight: 500; }
+/* Airport table: the code column repeats the name's code, so phones drop it and widen the name column. */
+.route-table th:nth-child(2), .route-table td:nth-child(2) { display: none; }
+.route-table th:first-child { width: 34%; }
 
 .budget-card { padding: 16px 0 24px; border-top: 1px solid var(--pg-ink); }
 .budget-card h3 { margin-bottom: 10px; }
@@ -152,6 +155,8 @@ body.planning-guide main .guide-cta-btn:hover { color: var(--pg-paper); }
   .cost-table th { padding-right: 16px; letter-spacing: .06em; text-transform: uppercase; }
   .cost-table td { padding: 14px 16px 14px 0; font-size: 15px; line-height: 1.5; }
   .cost-table th:last-child, .cost-table td:last-child { padding-right: 0; }
+  .route-table th:nth-child(2), .route-table td:nth-child(2) { display: table-cell; }
+  .route-table th:first-child { width: auto; }
   .budget-grid { margin-top: 28px; }
   .budget-card { display: flex; gap: 40px; padding: 20px 0 26px; }
   .budget-card h3 { flex: 0 0 220px; margin-bottom: 0; font-size: 25px; }
