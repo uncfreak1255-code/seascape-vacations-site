@@ -64,6 +64,7 @@ colors:
   cream-light: "#FAF7EE"
   stone: "#3A3A3A"
   stone-light: "#6A6A6A"
+  stone-mid: "#595959"
   white: "#FFFFFF"
 typography:
   display-xl:
@@ -192,7 +193,7 @@ A planning guide finishes one trip-planning task: when to come, how to get there
 - **Steps.** Sections carry numerals 01, 02, 03 beside the heading, leaving the heading text as written. On desktop an "In this guide" rail lists the steps and stays in view; on a phone the numerals carry the sequence.
 - **Tables.** Every column is visible at 360, 375 and 393px wide, so a converted guide has no swipe hint.
 - **Your dates.** When the site's trip memory holds dates, the instrument marks those months with a citron surface and an ink "Your dates" label. It is a progressive enhancement reading only the stored arrive and depart dates; the figure is complete without it, and the mark states the guest's dates only, never an opening or a quote.
-- **Booking box and close.** The guide booking box keeps its position, content and tracking through a conversion; restyling it is its own decision. The closing band is solid ink with the paper button and ink text guides already use there (10.62:1 against the band, so it needs no hairline). Citron stays reserved for the surfaces listed under `button-on-dark`.
+- **Booking box and close.** The guide booking box keeps its position, content and tracking through a conversion. Sawyer approved the Waterline restyle of the box on October 24, 2026: same words, links and tracking, with an ink top rule, ruled rows, ink buttons and no old-palette surfaces (no gradient, shadow, gold or radius above 4px). The closing band is solid ink with the paper button and ink text guides already use there (10.62:1 against the band, so it needs no hairline). Citron stays reserved for the surfaces listed under `button-on-dark`.
 - **Floors.** A converted guide is held to F1, F2 and F3 across the whole page; see the scope note under Floors.
 - **Measurement.** A guide inside an open readback window converts after that window is read.
 
