@@ -103,14 +103,48 @@ test("missing Mac kit merge-check fails instead of skip-as-pass", () => {
 
 test("missing Mac kit safe-commit without a message fails instead of skip-as-pass", () => {
   assert.deepEqual(parseSafeCommitArgs(["--stage-source"]), { stageSource: true, message: "" });
-  assert.throws(
-    () =>
-      runGitKitFallback("safe-commit", ["--stage-source"], {
-        kitDir: makeTempDir("site-1-no-commit-msg-"),
-        spawn: { stdio: "pipe", cwd: makeCommitRepo() }
-      }),
-    /git-kit-fallback\.js: safe-commit requires -m/
-  );
+  for (const branch of ["cursor/site-1-kit-test", "main", "master"]) {
+    const cwd = makeCommitRepo();
+    if (branch !== "cursor/site-1-kit-test") runGit(["branch", "-m", branch], cwd);
+    fs.writeFileSync(path.join(cwd, "note.txt"), "must remain untracked\n");
+    const beforeHead = runGit(["rev-parse", "HEAD"], cwd);
+    const beforeIndex = fs.readFileSync(path.join(cwd, ".git", "index"));
+
+    for (const args of [["--stage-source"], ["--stage-source", "-m", " \t "]]) {
+      assert.throws(
+        () =>
+          runGitKitFallback("safe-commit", args, {
+            kitDir: makeTempDir("site-1-no-commit-msg-"),
+            spawn: { stdio: "pipe", cwd }
+          }),
+        /git-kit-fallback\.js: safe-commit requires -m/,
+        `${branch} must reject the missing message before checking the branch`
+      );
+    }
+    assert.equal(runGit(["rev-parse", "HEAD"], cwd), beforeHead);
+    assert.deepEqual(fs.readFileSync(path.join(cwd, ".git", "index")), beforeIndex);
+    assert.equal(runGit(["status", "--porcelain"], cwd), "?? note.txt");
+  }
+});
+
+test("portable safe-commit refuses protected branches before staging or committing", () => {
+  for (const branch of ["main", "master"]) {
+    const cwd = makeCommitRepo();
+    runGit(["branch", "-m", branch], cwd);
+    fs.writeFileSync(path.join(cwd, "note.txt"), "must remain untracked\n");
+    const beforeHead = runGit(["rev-parse", "HEAD"], cwd);
+    const beforeIndex = fs.readFileSync(path.join(cwd, ".git", "index"));
+
+    const status = runGitKitFallback("safe-commit", ["--stage-source", "-m", "test: refuse protected branch"], {
+      kitDir: makeTempDir("site-1-protected-commit-"),
+      spawn: { stdio: "pipe", cwd }
+    });
+
+    assert.notEqual(status, 0, `${branch} must refuse the commit`);
+    assert.equal(runGit(["rev-parse", "HEAD"], cwd), beforeHead);
+    assert.deepEqual(fs.readFileSync(path.join(cwd, ".git", "index")), beforeIndex);
+    assert.equal(runGit(["status", "--porcelain"], cwd), "?? note.txt");
+  }
 });
 
 test("missing Mac kit safe-commit --stage-source creates a commit", () => {

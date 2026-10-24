@@ -49,7 +49,7 @@ test("flagged aria-label hosts use allowed semantics instead of role-less generi
   );
   assert.match(
     propertyLayout,
-    /<section class="g-gallery" aria-label="\{\{ property\.name \}\} photos">/
+    /<section class="g-gallery" role="region" aria-label="\{\{ property\.name \}\} photos" aria-roledescription="carousel" tabindex="0">/
   );
   assert.match(
     propertyLayout,
@@ -68,7 +68,7 @@ test("built catalog, property, and owner routes keep the named region semantics"
   const ownerHtml = readBuilt("property-management/index.html");
 
   assert.match(catalogHtml, /class="catalog-filters"[^>]*role="group"[^>]*aria-label="Property filters"/);
-  assert.match(propertyHtml, /<section class="g-gallery" aria-label="Dockside Dreams photos">/);
+  assert.match(propertyHtml, /<section class="g-gallery" role="region" aria-label="Dockside Dreams photos" aria-roledescription="carousel" tabindex="0">/);
   assert.match(propertyHtml, /class="property-trip-context" role="group" aria-label="Your trip"/);
   assert.equal(countMains(propertyHtml), 1);
   assert.equal(countMains(catalogHtml), 1);
