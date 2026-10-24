@@ -83,7 +83,9 @@ test("property-gallery CSS and JS stay inside the motion budget", () => {
   assert.match(css, /\.g-gallery-frame\{position:relative;min-width:0;max-width:100%\}/);
   assert.match(css, /width:100%;min-width:0;scroll-snap-type:x mandatory/);
   assert.match(css, /@media\(min-width:701px\)\{\.g-gallery-photo:nth-child\(n\+4\)\{display:none\}\}/);
-  assert.match(css, /width:calc\(100% \+ 40px\);max-width:none;margin-inline:-20px/);
+  assert.doesNotMatch(css, /width:calc\(100% \+ 40px\)/);
+  assert.doesNotMatch(css, /margin-inline:-20px/);
+  assert.equal(/width:calc\(100% \+ 40px\)/.test(".g-gallery-frame{width:calc(100% + 40px);margin-inline:-20px}"), true, "full-bleed CSS must fail the inset gate");
   assert.match(css, /scroll-snap-stop:\s*always/);
   assert.match(css, /overscroll-behavior-y:\s*contain/);
   assert.match(css, /border-radius:var\(--g-control-radius\)/);

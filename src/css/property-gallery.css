@@ -4,7 +4,6 @@
 .g-gallery-count{display:none}
 @media(min-width:701px){.g-gallery-photo:nth-child(n+4){display:none}}
 @media(max-width:700px){
-.g-gallery-frame{width:calc(100% + 40px);max-width:none;margin-inline:-20px}
 .g-gallery{display:flex;overflow-x:auto;width:100%;min-width:0;scroll-snap-type:x mandatory;scroll-snap-stop:always;overscroll-behavior-x:contain;overscroll-behavior-y:contain;touch-action:pan-x pan-y pinch-zoom;scrollbar-width:none;grid-template-columns:none;grid-template-rows:none;gap:8px}
 .g-gallery::-webkit-scrollbar{display:none}
 .g-gallery-photo{flex:0 0 100%;width:100%;min-width:0;scroll-snap-align:center;aspect-ratio:4/3;background:var(--g-soft);-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
