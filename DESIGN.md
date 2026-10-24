@@ -243,6 +243,7 @@ If an image cannot load, show a neutral named unavailable state. Never substitut
 - Do not label capacity matching as availability. A remembered trip or cached opening is not a valid quote.
 - Use clear labels, keyboard-operable controls, visible focus, native date inputs/dialog behavior, and reduced motion. Test 390px, a narrower 375px, tablet, and desktop.
 - A sticky action must not cover the form, navigation, or content. No unsolicited popup should interrupt the core guest journey.
+- Exception (Sawyer, 2026-10-24): the desktop-only homepage exit-intent email signup in `src/assets/js/guest.js`, shown once per 7 days when the cursor leaves the page. Audits do not flag it.
 
 Floors (the contract every change to these routes must leave true, enforced in `tests/visual/design-floors.spec.js`, `scripts/enforcement/shared-shell.test.js` and `scripts/enforcement/internal-link-floor.test.js`):
 - F1 — Minimum font size: no visible text renders below 12px, on desktop or mobile, including decorative eyebrows.

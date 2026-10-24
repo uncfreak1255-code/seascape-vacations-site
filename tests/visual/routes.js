@@ -58,6 +58,11 @@ const moneyRoutes = [
     readySelector: "main h1",
   },
   {
+    slug: "guide-ami-need-a-car",
+    path: "/guides/do-you-need-a-car-anna-maria-island/",
+    readySelector: "main h1",
+  },
+  {
     slug: "guide-shelling-florida",
     path: "/guides/shelling-guide-florida/",
     readySelector: ".journal-cover h1",

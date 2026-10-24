@@ -30,7 +30,8 @@
  *
  * The push itself is done with the DesignSync tool from Claude Code (list -> finalize_plan
  * -> write_files/delete_files) using _sync-manifest.json. Re-run after any PR that touches
- * DESIGN.md, src/css/{base,guest,arrival,catalog,catalog-card}.css or the guest partials.
+ * DESIGN.md, src/css/{base,guest,arrival,catalog,catalog-card,about,property-gallery}.css
+ * or the guest partials.
  */
 
 const fs = require("fs");
@@ -53,6 +54,7 @@ if (!(OUT === SYNC_ROOT || OUT.startsWith(SYNC_ROOT + path.sep))) {
   throw new Error(`--out must resolve inside ${SYNC_ROOT}; got ${OUT}`);
 }
 const { LIVE, extract, absolutize } = require("./markup");
+const { numberWord } = require("../../enforcement/home-count-word");
 
 function read(rel) {
   return fs.readFileSync(path.join(ROOT, rel), "utf8");
@@ -105,6 +107,15 @@ const guestCss = stripFontFace(read("src/css/guest.css"));
 const arrivalCss = read("src/css/arrival.css");
 const catalogCss = read("src/css/catalog.css");
 const catalogCardCss = read("src/css/catalog-card.css");
+const aboutCss = read("src/css/about.css");
+const propertyGalleryCss = read("src/css/property-gallery.css");
+
+/* ----------------------------------------------------------- homes */
+// Home count and names come from canonical property data, never a literal.
+const homes = JSON.parse(read("src/_data/properties-fallback.json"));
+const homeNames = homes.map((home) => home.name);
+const homeCount = numberWord(homes.length);
+const HomeCount = `${homeCount[0].toUpperCase()}${homeCount.slice(1)}`;
 
 const fonts = [
   ["src/assets/fonts/homepage/poppins-400-latin.woff2", "Poppins", 400, "normal"],
@@ -150,24 +161,7 @@ ${fontFace("fonts/")}
 `;
 
 /* ---------------------------------------------------------------- card factory */
-const chromeCss = `
-.ds-doc{padding:32px 36px 40px}
-.ds-eyebrow{font:500 12px/1.4 Poppins,sans-serif;letter-spacing:.13em;text-transform:uppercase;color:${C.muted};margin:0 0 10px}
-.ds-title{font:400 30px/1.12 'Instrument Serif',Georgia,serif;letter-spacing:-.02em;color:${C.ink};margin:0 0 8px}
-.ds-note{font:13px/1.65 Poppins,sans-serif;color:${C.muted};max-width:640px;margin:0 0 24px}
-.ds-note strong{color:${C.ink};font-weight:500}
-.ds-frame{position:relative;border:1px solid ${C.rule};background:${C.paper};overflow:hidden}
-.ds-caption{font:12px/1.5 Poppins,sans-serif;color:${C.muted};margin:8px 0 24px}
-.ds-grid{display:grid;gap:12px}
-.ds-sw{min-height:124px;padding:14px;display:flex;flex-direction:column;justify-content:space-between;border:1px solid ${C.rule}}
-.ds-sw b{font:400 20px 'Instrument Serif',serif;letter-spacing:-.01em}
-.ds-sw small{font:12px/1.45 Poppins,sans-serif;display:block}
-.ds-row{display:flex;gap:16px;flex-wrap:wrap;align-items:center}
-.ds-spec{font:12px/1.5 Poppins,sans-serif;color:${C.muted};min-width:170px}
-.ds-line{display:grid;grid-template-columns:190px 1fr;gap:24px;align-items:baseline;padding:18px 0;border-bottom:1px solid ${C.rule}}
-.ds-line:last-child{border-bottom:0}
-.ds-rule{height:1px;background:${C.rule};margin:24px 0}
-`;
+const chromeCss = require("./chrome-css")(C);
 
 function card({ file, group, name, subtitle, viewport, css = [], bodyClass = "guest-site", body, title, eyebrow, note }) {
   const [w, h] = viewport;
@@ -227,6 +221,8 @@ write("waterline/guest.css", `/* Verbatim src/css/guest.css minus @font-face (se
 write("waterline/arrival.css", arrivalCss);
 write("waterline/catalog.css", catalogCss);
 write("waterline/catalog-card.css", catalogCardCss);
+write("waterline/about.css", aboutCss);
+write("waterline/property-gallery.css", propertyGalleryCss);
 write("waterline/shell.html", `<!-- Real shared shell as built at ${commit}. -->\n${headerPaper}\n<main id="main"><!-- page --></main>\n${footer}\n`);
 
 /* ---------------------------------------------------------------- cards */
@@ -284,7 +280,7 @@ card({
   title: "Instrument Serif, regular only, set large and tight",
   note: `Weight 400, letter-spacing -0.025em, line-height 1.12. Italic carries emphasis and takes clay through <code>em</code>. Large, compact display lines are deliberate; factual text stays readable.`,
   body: `<div class="ds-line"><div class="ds-spec">h1 · clamp(46,5.4vw,78)<br>homepage arrival goes to 166px</div><h1 style="margin:0">Make yourself <em>at home.</em></h1></div>
-<div class="ds-line"><div class="ds-spec">h2 · clamp(30,3.3vw,46)</div><h2 style="margin:0">Six real homes. One phone number.</h2></div>
+<div class="ds-line"><div class="ds-spec">h2 · clamp(30,3.3vw,46)</div><h2 style="margin:0">${HomeCount} real homes. One phone number.</h2></div>
 <div class="ds-line"><div class="ds-spec">h3 · 28px<br>postcard title 30px</div><h3 style="margin:0">Dockside Dreams</h3></div>
 <div class="ds-line"><div class="ds-spec">scene caption h2 · 37px<br>white over the photo</div><div style="background:${C.ink};padding:18px 22px"><p class="g-label" style="color:#fff;margin:0 0 6px">In the collection · Bradenton, Florida</p><h2 style="color:#fff;font-size:37px;margin:0">The Oasis</h2></div></div>
 <div class="ds-line"><div class="ds-spec">review quote · 22/1.35</div><div class="g-review-grid" style="border:0;margin:0"><figure style="border:0;padding:0"><blockquote><p>The pool was the whole trip for the kids. We never left the backyard.</p></blockquote><figcaption>Guest review, Bradenton Pool Home</figcaption></figure></div></div>`,
@@ -328,7 +324,7 @@ card({
 <div class="ds-teal ds-row"><a class="g-button" href="#">Get your free rental estimate</a></div>
 <div class="ds-rule"></div>
 <p class="ds-caption">Secondary intent is a text link, not a second button.</p>
-<div class="ds-row"><a class="g-inline-link" href="#">Compare all six homes <span aria-hidden="true">&rarr;</span></a></div>`,
+<div class="ds-row"><a class="g-inline-link" href="#">Compare all ${homeCount} homes <span aria-hidden="true">&rarr;</span></a></div>`,
 });
 
 card({
@@ -392,7 +388,7 @@ card({
   name: "Catalog card",
   subtitle: "Real photo · specs · reason to choose · ink CTA · rule below",
   viewport: [1100, 480],
-  css: [...GUEST, catalogCss],
+  css: [...GUEST, catalogCss, catalogCardCss],
   body: `<div class="catalog-page" style="padding-top:24px"><div class="catalog-grid">${catalogCard}</div></div>`,
 });
 
@@ -400,7 +396,7 @@ card({
   file: "postcard-collection.html",
   group: "Components",
   name: "Postcard collection",
-  subtitle: "Six homes, shallow fan on desktop, snap list on mobile",
+  subtitle: `${HomeCount} homes (${homeNames.join(", ")}), shallow fan on desktop, snap list on mobile`,
   viewport: [1280, 520],
   css: [...GUEST, arrivalCss, `.g-postcards{animation:none!important}`],
   body: `<div class="g-wrap" style="padding-top:36px"><section class="g-collection g-section" style="padding:0">${postcards}</section></div>`,
