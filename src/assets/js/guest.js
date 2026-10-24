@@ -279,4 +279,27 @@
   var topic=document.getElementById('question-topic');if(topic)topic.addEventListener('change',updateQuestion);
   var question=document.querySelector('[data-question-email]');if(question)question.addEventListener('click',function(){emit('property_question_prepare',{topic:topic.value});});
   if(!document.querySelector('[data-catalog-version]'))syncTrip();
+  var whyDirect=document.querySelector('[data-why-direct]');
+  if(whyDirect){
+    var whyOptions=whyDirect.querySelectorAll('[data-why-direct-option]');
+    var applyWhyDirect=function(value){
+      var layout=value==='2'||value==='3'?value:'1';
+      whyDirect.setAttribute('data-why-direct-layout',layout);
+      whyOptions.forEach(function(button){
+        var selected=button.getAttribute('data-why-direct-option')===layout;
+        button.classList.toggle('is-active',selected);
+        button.setAttribute('aria-pressed',String(selected));
+      });
+    };
+    applyWhyDirect(new URLSearchParams(location.search).get('why-direct')||whyDirect.getAttribute('data-why-direct-layout')||'1');
+    whyOptions.forEach(function(button){
+      button.addEventListener('click',function(){
+        var layout=button.getAttribute('data-why-direct-option');
+        applyWhyDirect(layout);
+        var next=new URL(location.href);
+        next.searchParams.set('why-direct',layout);
+        if(history.replaceState)history.replaceState({},'',next);
+      });
+    });
+  }
 })();
