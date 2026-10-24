@@ -36,6 +36,48 @@ Before loading task documents or choosing an implementation base:
    If the harness already loaded older instructions, compare affected rules
    with current source before acting and report material conflicts.
 
+## Advisory overlap check before new work
+
+Before creating a branch, identify the intended files and check live open PRs,
+including drafts. Use the connected GitHub reads or the existing authenticated
+CLI; do not wait for the Hub's six-hour report:
+
+```bash
+gh api --paginate 'repos/uncfreak1255-code/seascape-vacations-site/pulls?state=open&per_page=100' \
+  --jq '.[] | {number, title, html_url, draft, head_ref: .head.ref, head_sha: .head.sha}'
+# For each candidate, replace NUMBER with its PR number:
+gh api --paginate 'repos/uncfreak1255-code/seascape-vacations-site/pulls/NUMBER/files?per_page=100' \
+  --jq '.[] | {filename, previous_filename}'
+```
+
+- Compare planned paths with the candidates' changed files, including rename
+  source paths. Read matching titles, bodies and diffs to distinguish the same
+  task from independent edits. Inspect relevant merges from the last seven
+  days too; file overlap alone is an advisory, not proof of duplicated work.
+- If the same task already has a PR, continue its branch and review destination.
+  Name that PR and the mutation owner. A restack or harness-created branch does
+  not need a second PR; preserve its commits and update the existing task branch
+  through the normal safe Git route. Do not overwrite another agent's work.
+- If scopes only share a file, decide a bounded order or consolidation from the
+  actual diffs. Generated indexes and append-only logs often overlap without
+  duplicating a task. Record the disposition in the handoff or PR body; do not
+  create a new approval request merely because a path overlaps.
+- Repeat the live read immediately before the first push/review request, PR
+  creation and merge. Compare `git rev-parse HEAD` with open PR `head_sha`
+  values, and inspect the intended keeper PR's current state. An identical
+  commit on another branch is strong evidence to reuse that review destination.
+  If that task has already merged, verify remaining changes against fresh main
+  before spending another review or CI run. Do not open a duplicate PR.
+- An inaccessible repo, incomplete file list or failed read means unknown
+  coverage, not clear. Continue independent local work and report the missing
+  evidence; do not mint credentials or treat a green scheduled job as coverage.
+
+This is an agent procedure using existing reads, not a required status check,
+merge lock, new job or permission change. The Hub checker remains a periodic
+backstop; its file/key rows are candidates for inspection, not merge conflicts
+or automatic close instructions. Simultaneous agents can still race; changed
+agent behavior and saved CI require subsequent live-task evidence.
+
 ## First decision: sync or work
 
 Ask this first:
@@ -52,7 +94,7 @@ If the answer is `sync`:
 
 If the answer is `real work`:
 
-1. Do not edit root `main`
+1. Do not edit root `main`; complete the advisory overlap check above
 2. Create `codex/<task>`
 3. Create `.worktrees/<task>`
 4. Do the work in that worktree only
