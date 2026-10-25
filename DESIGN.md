@@ -30,7 +30,46 @@ waterline:
       fontSize: "12px"
       letterSpacing: "0.13em"
   rounded:
+    none: "0"
     button: "4px"
+    control: "4px"
+  # Spacing steps the Waterline CSS already uses. New rules pick from this list.
+  space:
+    "1": "4px"
+    "2": "8px"
+    "3": "12px"
+    "4": "16px"
+    "6": "24px"
+    "8": "32px"
+    tap: "44px"
+    "14": "56px"
+    section: "76px"
+    section-mobile: "50px"
+  # Durations and curves, measured from the live CSS (October 2026).
+  motion:
+    duration:
+      fast: "120ms"
+      hover: "150ms"
+      move: "200ms"
+      route: "550ms"
+      drift: "650ms"
+    easing:
+      out: "cubic-bezier(.23,1,.32,1)"
+      glide: "cubic-bezier(.2,.7,.2,1)"
+  # Shadows are for things that float over the page, and for printed photos.
+  # Ink (#173D42) with an alpha byte; values are exact copies of the live CSS.
+  shadow:
+    menu: "0 20px 30px #173D4214"
+    tray: "0 10px 40px #173D4226"
+    bar: "0 -6px 22px #173D4210"
+    print: "0 20px 32px #173D421C"
+    print-lift: "0 26px 50px #173D4233"
+    photo: "0 20px 40px #173D421F"
+  breakpoints:
+    phone: "430px"
+    narrow: "700px"
+    mid: "900px"
+    wide: "1050px"
   components:
     button-primary:
       backgroundColor: "{waterline.colors.ink}"
@@ -198,34 +237,8 @@ A planning guide finishes one trip-planning task: when to come, how to get there
 - **Measurement.** A guide inside an open readback window converts after that window is read.
 
 ## Guide figures: when a guide earns a chart or diagram
-A table and a clear answer at the top carry a guide in search and in AI answers. A figure helps the human reader only. Add one figure to a guide only when all four are true:
 
-1. **Real comparison.** The guide compares at least 6 data points, or 3 items across 2 or more measures (for example 12 months of heat and rain).
-2. **Data already published, with a source.** The figure draws only from numbers the guide already shows. It adds no new number and no new claim.
-3. **Faster than words.** The reader sees the answer in about 3 seconds.
-4. **The question fits.** "When" and "how much" questions fit a figure. "Which area" questions fit a table. "What to do" questions fit real photographs.
-
-If one test fails, add no figure. Improve the table or the lead sentence instead.
-
-| Guide type | Add | Do not add |
-| --- | --- | --- |
-| When to go (season, weather) | Twelve-month strip plus the table | Pie chart, animated chart |
-| Cost | Tier cards plus the table | A savings percentage that has no source |
-| Place A versus place B | Side-by-side table | Chart |
-| Distance or drive times | Labeled map, only when the drive times are published | Decorative map |
-| Family, shelling, activities | Real photographs of the named place | Stock-style diagram |
-| Process with three steps or fewer | Numbered steps | Flow chart |
-
-A figure ships only when all of these hold:
-
-- Plain SVG or HTML made at build time. It needs no script and is never an image of text.
-- A text label, and the full table stays on the page as the data source.
-- One figure per guide, directly under the answer (see Instrument above).
-- Colors only from this file.
-- Readable at 360, 375 and 393px wide with no sideways swipe.
-- A text diff against the page it replaces shows no new fact.
-- Shown to Sawyer as two or three variants before it is built.
-- Held to the design review lane in `docs/process/design-review-workflow.md`.
+The four tests a guide must pass before it gets a chart or diagram, and how that figure is built, live in `docs/design/guide-figures.md`.
 
 ## Photography is evidence
 Only an actual photograph of the named property may illustrate its accommodation. A destination scene may illustrate a clearly named destination, never a failed home photo.
@@ -254,6 +267,10 @@ Floors (the contract every change to these routes must leave true, enforced in `
 - F6 — Internal-link distribution: a hub page the shared shell links to stays linked from at least 70% of built pages. Editing a shared header or footer redistributes internal links across the whole site at once, and no other gate here can see it: URLs, titles, canonicals and JSON-LD stay identical, the link validator only checks that links which exist still resolve, and the visual gate's per-route pixel tolerance absorbs a footer change without a diff.
 
 F1 and F2 apply to the whole page on the Waterline guest routes (`body.guest-site`, the routes under Guest journey above) and, on every other route, to the shared header, mobile menu and footer only. A converted planning guide (`body.planning-guide`) joins the whole-page scope, and `tests/visual/design-floors.spec.js` enforces it on every converted guide route (first conversion: the vacation cost guide, October 2026). The other pages carry the shared shell but keep their legacy body typography, which has not been brought to the floors yet. That narrower scope is a stopping point for one release, not a permanent rule: widening it is the work that finishes the redesign, and until then a legacy page body can still ship text below 12px without the gate objecting.
+
+## Scales, states and forms (October 2026)
+
+The `space`, `motion`, `shadow` and `breakpoints` keys in the `waterline:` block are the scales. How they are used and checked, plus the state rules and the nine form patterns, live in `docs/design/scales-states-forms.md`.
 
 ## How this direction changes
 This file records deliberate current choices; it is not proof that a choice is good. Authorized product/design work may revise it after examining a rendered alternative, the guest task, truth, accessibility and performance. A specific model, external design app, color, font, button shape, or template is not an approval authority.
