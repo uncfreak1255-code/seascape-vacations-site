@@ -39,11 +39,11 @@ Findings:
    - The sibling `/guides/siesta-key-vs-anna-maria-island-families/` fell 8 to 1 click on
      the same query family; too small to rescue alone, but a possible cannibalization
      partner of the winner.
-   - `/guides/srq-airport-to-anna-maria-island/` fell 31 to 18 clicks (-42%) before its L4
+   - `/guides/srq-airport-to-anna-maria-island/` fell 31 to 17 clicks (-45%) before its L4
      layout move (#799) went live. It is not a winner-portfolio guide, so the rescue
      trigger does not apply, but the L4 readback must compare against this falling trend
      and the controls, not against the six-month average.
-   - Other earners held or grew (best-time +50%, rainy-day +240%, weather +4%,
+   - Other earners held or grew (best-time +48%, rainy-day +240%, weather +4%,
      bradenton-vs-sarasota +125%); AMI vs Clearwater -25% and dolphins -18% are below the
      trigger.
 3. **AI Overview citations seen** (in the 100 rows read): weather (8 queries), shelling (5),
