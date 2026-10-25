@@ -13,9 +13,12 @@ another operating system. Stale deploy, monthly-reset, broad marketing, and
 generic SEO skills stay out of active discovery unless a new `repo-dev-setup` inventory
 proves they should return.
 
-For AI discovery, GEO/AEO, and schema work, use the existing Search Operator
-role in `.claude/agents/search-operator.md` and
+For choosing the next SEO batch, use the existing Search Operator role in
+`.claude/agents/search-operator.md` and
 `docs/process/seo-competitor-operating-loop.md` for proof and attack research.
+For AI-visibility research, follow the local `openseo-local-ai-visibility-audit`
+skill inside that role. `docs/process/seo-workflow-map.md` lists every SEO job,
+role and skill for both Claude and Codex.
 The repo-local `schema-markup` skill owns JSON-LD and structured-data
 implementation rules inside this site repo.
 
