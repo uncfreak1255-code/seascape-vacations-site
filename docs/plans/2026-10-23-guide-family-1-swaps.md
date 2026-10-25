@@ -185,3 +185,61 @@ the frame:
     cards keep title, blurb and href.
 
 All internal hrefs on the legacy page are still present.
+
+## L4 swaps (SRQ guide)
+
+`src/guides/srq-airport-to-anna-maria-island.html` moved onto the frame. Title, meta
+description, keywords, canonical, og/twitter text and all four `application/ld+json`
+blocks (Article, BreadcrumbList, FAQPage, LocalBusiness) match main except swap 14
+(carried in `guideJsonLd`; the first three as YAML block scalars so the source still
+holds the raw `"dateModified": "2026-08-19"`, headline and breadcrumb strings the pinned
+enforcement tests read). The H1 text is unchanged (its `guide-title` class is gone). No
+fact, number or wording was corrected. "Reviewed August 19, 2026",
+"<strong>August 2026 review:</strong>" and "planning ranges, not live quotes" are
+unchanged. Body words are unchanged except for these swaps, each forced by the frame:
+
+1. JSON-LD, author, email popup, fonts, analytics: as L1 swaps 1, 2, 3, 16 and 17.
+2. Breadcrumb: separator `›` becomes `>` (frame breadcrumb); labels and links unchanged.
+3. Rail: "In this guide" plus five rail labels repeating the five `h2`s, and step numbers
+   `01` to `05`. The legacy page had four `h2`s and a table `h3`; the table `h3` "SRQ
+   Airport to AMI Transport Options" becomes the `h2` of step 05.
+4. "Travel Guide" tag becomes the `pg-label` kicker; "Reviewed August 19, 2026 • 8 min
+   read" becomes the sub line under the H1. Words unchanged.
+5. The "TL;DR Quick Summary" box, the opening paragraph and the "August 2026 review"
+   paragraph become the opening column (`guideIntro`); words unchanged.
+6. Hero image (`/images/ami-hero.webp`, with its alt text) is dropped; the frame has no
+   hero slot. The OG image is unchanged.
+7. Driving-route step lists use `.pg-facts`; wording unchanged. The inline
+   `margin-top` on the "Planning your travel?" paragraph is gone.
+8. Order: the transport table, which sat after the Keep Reading block, is now step 05
+   and precedes the booking kit and Keep Reading. The "Own a rental home on the
+   island or in Bradenton?" paragraph, which sat before the kit, moves with it to the end
+   of step 05, words unchanged.
+9. The table uses `.cost-table stack-table` (as L3 swap 6): inline scroll wrapper, inline
+   styles and row banding are gone; below 900px each row stacks as a card with every
+   value beside its column header (`data-label` repeats the table's own header words).
+10. The booking kit is unchanged in title, copy, bullets, stay cards, repeat links and
+    button labels (now passed as `guideKit`). The legacy "Related Vacation Rentals" list
+    folds into the kit's "Relevant Stays" module: its heading "Related Vacation
+    Rentals" is dropped, "Gulf Coast Beach House Rentals" and "Coquina Beach Vacation
+    Rentals" join as cards with the same hrefs (no blurb: the legacy list had none; they
+    gain `guide_stay_click` tracking), and "Bradenton Rentals Near Beaches" and "Siesta
+    Key Area Rentals" are dropped as titles because the kit already links the same hrefs
+    under "Bradenton homes near AMI beaches" and "Siesta Key area stays".
+11. "Related Guides" heading and the separate "Keep Reading" box merge into the frame's
+    single "Keep Reading". The three cards keep title, blurb and href; their thumbnails
+    (and alt text) are dropped. The two legacy "Keep Reading" links join as cards with
+    the same titles and hrefs, without blurbs (the legacy list had none).
+12. Sticky bar: the legacy page had none. The frame always renders one, so it carries
+    the same words as the other planning guides ("Book Direct & Compare Totals",
+    "Browse Our Homes →", `/properties/`, `guide_book_direct_click`, slug
+    `srq-airport-to-anna-maria-island`). This is new on-page text, not guide copy.
+13. Source marker: the pinned test `search-content-rescue.test.js` reads this source file
+    for a literal `<title>` tag. A Nunjucks comment at the top of the body spells it; it
+    is stripped from the built page and renders no text.
+14. FAQPage JSON-LD, rental-car answer: "a rental car is usually the cleaner move" becomes
+    "a rental car is usually the better move". The content voice gate bans "cleaner" once
+    the file counts as changed. This is the only JSON-LD change; the other three blocks are
+    byte-identical to main.
+
+All internal hrefs on the legacy page are still present.
