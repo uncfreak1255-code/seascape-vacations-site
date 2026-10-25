@@ -28,7 +28,7 @@ then load only the matching branches:
 | Commit, push, PR or merge | `docs/process/git-session-rules.md` and `docs/process/before-merge-checklist.md`; read the user-review or post-merge checklist when entering that phase |
 | A red or queued CI check, a visual-baseline refresh, or a missing Netlify deploy | `docs/process/checks-and-runners.md` |
 | Submitting or integrating a Codex cloud task | `docs/process/codex-cloud-handoff.md` |
-| Skills, SEO tooling, or workflow changes | `docs/process/skill-policy.md`, `docs/process/learning-contract.md`, and `docs/process/openseo.md` (SEO starts from local OpenSEO) |
+| Skills, SEO tooling, or workflow changes | `docs/process/skill-policy.md`, `docs/process/learning-contract.md`, and `docs/process/openseo.md` (SEO starts from local OpenSEO); `docs/process/seo-workflow-map.md` for which SEO jobs and roles exist |
 
 Combine branches when the task spans them. Conditional reading never waives a
 content, design, safety, measurement or release requirement; read each linked
