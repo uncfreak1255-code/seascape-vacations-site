@@ -25,6 +25,7 @@
  * USAGE
  *   npm run build                                  # or eleventy to a temp dir
  *   node scripts/design/design-sync/build.js --site _site [--out .design-sync/out]
+ *     --out must stay inside .design-sync/ (the folder is wiped on every build)
  *   node scripts/design/design-sync/render-check.js   # Playwright proof of every card
  *
  * The push itself is done with the DesignSync tool from Claude Code (list -> finalize_plan
@@ -45,7 +46,6 @@ const argValue = (flag, fallback) => {
 };
 const SITE = path.resolve(ROOT, argValue("--site", "_site"));
 const OUT = path.resolve(ROOT, argValue("--out", ".design-sync/out"));
-// The bundle folder is wiped on every build, so --out must stay inside the ignored .design-sync/ tree.
 const SYNC_ROOT = path.join(ROOT, ".design-sync");
 if (!(OUT === SYNC_ROOT || OUT.startsWith(SYNC_ROOT + path.sep))) {
   throw new Error(`--out must resolve inside ${SYNC_ROOT}; got ${OUT}`);

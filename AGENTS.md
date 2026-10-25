@@ -134,6 +134,9 @@ lock, Hostaway cache sync, Eleventy, availability validation).
 
 - Fast gate for copy-only work: `npm run lint:content`
 - Fast gate for structural source work: `npm run build`
+- A single `node --test` run skips `pretest`; tests that read `_site/` (such
+  as `property-gallery` and `waterline-tokens`) fail in a fresh worktree until
+  `npm run build` has run once
 - Full pre-PR gate: `npm run verify:release`. It builds once, then runs the
   full suite (including content lint) and release checks under one worktree
   lock; use standalone `npm test` and `npm run lint:content` for iteration, not

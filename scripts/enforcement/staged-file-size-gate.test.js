@@ -110,3 +110,25 @@ test("a file named like an index-stage spec is measured as itself", (t) => {
   stage("big.js", 2);
   assert.deepEqual(blocked(), ["0:big.js"]);
 });
+
+test("--range checks committed growth against the merge-base, not the index", (t) => {
+  const { repo, git, stage } = makeRepo(t);
+  const base = git("rev-parse", "HEAD").toString().trim();
+  stage("committed-big.js", LIMIT + 1);
+  git("commit", "-q", "--no-verify", "-m", "oversized");
+  stage("staged-big.js", LIMIT + 1);
+  const ranged = findViolations(repo, { base }).map((v) => v.path);
+  assert.deepEqual(ranged, ["committed-big.js"]);
+  const run = spawnSync(process.execPath, [script, "--range", base], { cwd: repo, encoding: "utf8" });
+  assert.equal(run.status, 1);
+  assert.match(run.stderr, /Range blocked/);
+  assert.match(run.stderr, /committed-big\.js/);
+});
+
+test("--range passes a legacy file that only shrank since the base", (t) => {
+  const { repo, git, stage } = makeRepo(t);
+  const base = git("rev-parse", "HEAD").toString().trim();
+  stage("legacy.njk", LIMIT + 4000);
+  git("commit", "-q", "--no-verify", "-m", "shrink");
+  assert.deepEqual(findViolations(repo, { base }), []);
+});
