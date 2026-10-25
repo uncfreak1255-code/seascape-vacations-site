@@ -212,7 +212,7 @@ for (const guidePath of [
 }
 
 test('flights guide keeps distinct numbered tips and question-specific FAQs after savings removal', () => {
-  const source = read('src/guides/flights-to-anna-maria-island/index.html');
+  const source = read('_site/guides/flights-to-anna-maria-island/index.html');
   const leftoverBoilerplate = source.match(quoteBoilerplate) || [];
   assert.equal(
     leftoverBoilerplate.length,
