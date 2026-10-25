@@ -21,6 +21,7 @@
  *   preview/*.html                 self-contained cards for the Design System pane,
  *                                  built from the REAL built HTML of the site
  *   _sync-manifest.json            exact writes + deletes for the DesignSync push
+ *   _sync-push.json                ready DesignSync arguments (push-payload.js)
  *
  * USAGE
  *   npm run build                                  # or eleventy to a temp dir
@@ -28,8 +29,8 @@
  *     --out must stay inside .design-sync/ (the folder is wiped on every build)
  *   node scripts/design/design-sync/render-check.js   # Playwright proof of every card
  *
- * The push itself is done with the DesignSync tool from Claude Code (list -> finalize_plan
- * -> write_files/delete_files) using _sync-manifest.json. Re-run after any PR that touches
+ * The push itself is done with the DesignSync tool from Claude Code, using the arguments
+ * in _sync-push.json; the build prints the call order. Re-run after any PR that touches
  * DESIGN.md, a stylesheet listed in stylesheets.js or the guest partials.
  */
 
@@ -541,43 +542,16 @@ write(
 );
 
 /* ---------------------------------------------------------------- deletes */
-// Legacy cards with no Waterline equivalent. They contradict the current system
-// (gold pills, Playfair numerals, 20px cards) and must leave the pane. The full
-// project was exported to a zip before the first sync (see README).
-const deletes = [
-  // Files Claude Design adds inside the project when a mock is run from its chat.
-  // The system is generated; mocks live in their own design project (see README).
-  "waterline/components/Button.jsx",
-  "waterline/components/Button.d.ts",
-  "waterline/components/button.html",
-  "waterline/tokens.html",
-  "live-mockup/Property Management Waterline.html",
-  "live-mockup/Property Management Waterline - Desktop & Mobile.html",
-  "preview/badge-gps-chip.html",
-  "preview/badges.html",
-  "preview/colors-gradients.html",
-  "preview/colors-neutral.html",
-  "preview/colors-warm.html",
-  "preview/component-postcard-cta.html",
-  "preview/editorial-issue-meta.html",
-  "preview/numerals-stat-arrow.html",
-  "preview/property-card-a-editorial.html",
-  "preview/property-card-b-price-anchored.html",
-  "preview/property-card-c-hotel-group.html",
-  "preview/property-card-d-gallery.html",
-  "preview/property-card-e-availability.html",
-  "preview/property-card-f-list.html",
-  "preview/review-card.html",
-  "preview/shadows.html",
-  "preview/spec-live-availability.html",
-  "preview/stats-bar.html",
-  "preview/type-drop-cap.html",
-  "preview/type-numerals.html",
-];
+const deletes = require("./legacy-deletes");
 
 fs.writeFileSync(
   path.join(OUT, "_sync-manifest.json"),
   JSON.stringify({ generatedAt: new Date().toISOString(), commit, site: SITE, writes, deletes }, null, 2)
 );
 
+const { buildPushPayload, pushRecipe } = require("./push-payload");
+const push = buildPushPayload({ outDir: OUT, writes, deletes });
+fs.writeFileSync(path.join(OUT, "_sync-push.json"), JSON.stringify(push, null, 2));
+
 console.log(`design-sync bundle: ${writes.length} files to write, ${deletes.length} to delete -> ${OUT}`);
+console.log(pushRecipe(push, path.relative(ROOT, path.join(OUT, "_sync-push.json"))));

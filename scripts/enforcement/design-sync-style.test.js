@@ -33,3 +33,26 @@ test('every stylesheet in stylesheets.js is exported verbatim (guest.css minus @
     assert.equal(exported(`${name}.css`), expected, `waterline/${name}.css drifted from src/css/${name}.css`);
   }
 });
+
+test('DESIGN.md pointer docs, including direction-changes.md, ship verbatim', () => {
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  for (const name of ['legacy-gold-ctas.md', 'scales-states-forms.md', 'guide-figures.md', 'direction-changes.md']) {
+    assert.equal(exported(name), source(`docs/design/${name}`), `waterline/${name} drifted from docs/design/${name}`);
+  }
+});
+
+test('_sync-push.json holds DesignSync-ready arguments matching the manifest', () => {
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  const read = (name) => JSON.parse(fs.readFileSync(path.join(root, out, name), 'utf8'));
+  const manifest = read('_sync-manifest.json');
+  const push = read('_sync-push.json');
+  assert.equal(push.localDir, path.join(root, out));
+  assert.deepEqual(push.finalizePlan, { writes: manifest.writes, deletes: manifest.deletes });
+  assert.deepEqual(push.writeFiles.files.map((f) => f.path), manifest.writes);
+  for (const f of push.writeFiles.files) {
+    assert.ok(!path.isAbsolute(f.localPath), `localPath must be relative to localDir: ${f.localPath}`);
+    assert.ok(fs.existsSync(path.join(push.localDir, f.localPath)), `localPath missing: ${f.localPath}`);
+  }
+  assert.ok(push.writeFiles.files.length <= 256 && push.finalizePlan.deletes.length <= 256);
+  assert.match(result.stdout, /list_projects[\s\S]*finalize_plan[\s\S]*write_files/);
+});
