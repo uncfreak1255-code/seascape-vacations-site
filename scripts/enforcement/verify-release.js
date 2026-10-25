@@ -287,6 +287,11 @@ function recordAssertion(pathAssertions, label, fn) {
 
 function buildCommandSteps(range) {
   return [
+    {
+      label: "file-size",
+      command: "node",
+      args: ["scripts/enforcement/check-staged-file-size.js", "--range", designLintBaseFromRange(range)],
+    },
     { label: "property:truth:check", command: "npm", args: ["run", "property:truth:check"] },
     { label: "build", command: "npm", args: ["run", "build"] },
     { label: "test", command: "npm", args: ["run", "test:unit"] },
