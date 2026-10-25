@@ -16,7 +16,7 @@
 
 | Source | Window or date | Use |
 | --- | --- | --- |
-| Search Console via `seascape-analytics/scripts/gsc-search-performance.sh` | 2026-04-24 to 2026-10-21 (6 months); 2026-08-26 to 2026-09-22 (prior 28 days); 2026-09-23 to 2026-10-21 (last 28 days) | clicks, impressions, position per guide (Appendices A and B) |
+| Search Console via `seascape-analytics/scripts/gsc-search-performance.sh` | 2026-04-24 to 2026-10-21 (6 months); 2026-08-26 to 2026-09-22 (prior 28 days); 2026-09-24 to 2026-10-21 (last 28 days) | clicks, impressions, position per guide (Appendices A and B) |
 | OpenSEO `get_ranked_keywords`, `/guides/` subfolder, US | 2026-10-25 | 100 of 514 ranked keywords (the top 100 by volume): demand, difficulty, AI Overview citations |
 | OpenSEO `get_serp_results`, US, depth 20 (20 SERP items, about 16 organic) | 2026-10-25 (stale after 2026-11-01) | who ranks for eight head queries |
 
@@ -28,15 +28,15 @@ Findings:
    30%+ click decline on a winner, comparing the last 28 days with the prior 28 days;
    Appendix B):
    - `/guides/anna-maria-island-vs-siesta-key/`: clicks 46 to 27 (-41%), impressions
-     -28%. Its head queries "anna maria island vs siesta key" (6.1 to 9.3) and "siesta key
-     vs anna maria island" (5.8 to 8.3) left the top 5 with 0 clicks, while their
-     impressions held (118 to 106; 132 to 120). The guide is absent from the first 20 SERP
+     -30%. Its head queries "anna maria island vs siesta key" (6.1 to 9.3) and "siesta key
+     vs anna maria island" (5.8 to 8.4) left the top 5 with 0 clicks, while their
+     impressions held (118 to 104; 132 to 116). The guide is absent from the first 20 SERP
      items for the head query on 2026-10-25 (Reddit, Herald-Tribune, Tripadvisor, Facebook
      threads and vacationflorida.tv lead). Search Console averages include local and
      personalized results, so its positions differ from a national SERP.
-   - `/guides/shelling-guide-florida/`: clicks 30 to 19 (-37%), impressions -9%, average
-     position 7.0 to 7.4.
-   - The sibling `/guides/siesta-key-vs-anna-maria-island-families/` fell 8 to 2 clicks on
+   - `/guides/shelling-guide-florida/`: clicks 30 to 19 (-37%), impressions -12%, average
+     position 7.0 to 7.5.
+   - The sibling `/guides/siesta-key-vs-anna-maria-island-families/` fell 8 to 1 click on
      the same query family; too small to rescue alone, but a possible cannibalization
      partner of the winner.
    - `/guides/srq-airport-to-anna-maria-island/` fell 31 to 18 clicks (-42%) before its L4
@@ -188,77 +188,77 @@ guide never share a PR.
 
 ## Appendix B: comparable windows (Search Console, pulled 2026-10-25)
 
-Prior 28 days (2026-08-26 to 2026-09-22) against the last 28 days (2026-09-23 to
+Prior 28 days (2026-08-26 to 2026-09-22) against the last 28 days (2026-09-24 to
 2026-10-21). URL variants summed; position impression-weighted.
 
 | Guide | Prior clicks | Prior impressions | Prior position | Last clicks | Last impressions | Last position | Click change |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| `/guides/anna-maria-island-vs-siesta-key/` | 46 | 3753 | 5.3 | 27 | 2694 | 5.7 | -41% |
-| `/guides/best-time-visit-anna-maria-island/` | 64 | 5957 | 5.1 | 96 | 6482 | 4.9 | +50% |
-| `/guides/shelling-guide-florida/` | 30 | 2072 | 7.0 | 19 | 1888 | 7.4 | -37% |
-| `/guides/rainy-day-activities-bradenton-sarasota/` | 15 | 930 | 9.4 | 51 | 2591 | 8.8 | +240% |
-| `/guides/anna-maria-island-weather/` | 28 | 9854 | 8.0 | 29 | 10277 | 7.8 | +4% |
-| `/guides/bradenton-vs-sarasota/` | 8 | 1846 | 5.9 | 18 | 1980 | 5.0 | +125% |
-| `/guides/srq-airport-to-anna-maria-island/` | 31 | 3970 | 6.5 | 18 | 3745 | 5.9 | -42% |
-| `/guides/anna-maria-island-vs-clearwater-beach/` | 16 | 1608 | 5.8 | 12 | 1219 | 4.9 | -25% |
-| `/guides/anna-maria-island-vs-longboat-key/` | 15 | 1414 | 6.0 | 15 | 1204 | 5.9 | +0% |
-| `/guides/dolphins-manatees-bradenton/` | 22 | 957 | 7.0 | 18 | 1030 | 6.6 | -18% |
-| `/guides/is-anna-maria-island-worth-visiting/` | 9 | 919 | 5.0 | 14 | 1063 | 4.7 | +56% |
-| `/guides/holmes-beach-vs-bradenton-beach/` | 12 | 572 | 5.9 | 13 | 470 | 5.9 | +8% |
-| `/guides/siesta-key-vs-anna-maria-island-families/` | 8 | 292 | 8.6 | 2 | 184 | 8.0 | -75% |
-| `/guides/family-vacation-anna-maria-island/` | 1 | 108 | 8.8 | 1 | 115 | 8.8 | +0% |
+| `/guides/anna-maria-island-vs-siesta-key/` | 46 | 3753 | 5.3 | 27 | 2625 | 5.7 | -41% |
+| `/guides/best-time-visit-anna-maria-island/` | 64 | 5957 | 5.1 | 95 | 6236 | 4.9 | +48% |
+| `/guides/shelling-guide-florida/` | 30 | 2072 | 7.0 | 19 | 1821 | 7.5 | -37% |
+| `/guides/rainy-day-activities-bradenton-sarasota/` | 15 | 930 | 9.4 | 51 | 2570 | 8.8 | +240% |
+| `/guides/anna-maria-island-weather/` | 28 | 9854 | 8.0 | 29 | 9908 | 7.8 | +4% |
+| `/guides/bradenton-vs-sarasota/` | 8 | 1846 | 5.9 | 18 | 1918 | 5.0 | +125% |
+| `/guides/srq-airport-to-anna-maria-island/` | 31 | 3970 | 6.5 | 17 | 3591 | 5.9 | -45% |
+| `/guides/anna-maria-island-vs-clearwater-beach/` | 16 | 1608 | 5.8 | 12 | 1160 | 4.9 | -25% |
+| `/guides/anna-maria-island-vs-longboat-key/` | 15 | 1414 | 6.0 | 15 | 1145 | 5.9 | +0% |
+| `/guides/dolphins-manatees-bradenton/` | 22 | 957 | 7.0 | 18 | 1004 | 6.6 | -18% |
+| `/guides/is-anna-maria-island-worth-visiting/` | 9 | 919 | 5.0 | 13 | 1035 | 4.7 | +44% |
+| `/guides/holmes-beach-vs-bradenton-beach/` | 12 | 572 | 5.9 | 12 | 456 | 5.9 | +0% |
+| `/guides/siesta-key-vs-anna-maria-island-families/` | 8 | 292 | 8.6 | 1 | 172 | 8.0 | -88% |
+| `/guides/family-vacation-anna-maria-island/` | 1 | 108 | 8.8 | 1 | 110 | 8.9 | +0% |
 
 ## Appendix A: baseline (Search Console, pulled 2026-10-25)
 
-Search Console 2026-04-24 to 2026-10-21 and 2026-09-23 to 2026-10-21. Rows with at least 5 six-month clicks or 30 recent impressions. URL variants are listed
+Search Console 2026-04-24 to 2026-10-21 and 2026-09-24 to 2026-10-21. Rows with at least 5 six-month clicks or 30 recent impressions. URL variants are listed
 separately as Search Console reports them. Historical once a guide's PR publishes.
 
 | Guide | 6-mo clicks | 6-mo avg pos | 28-day clicks | 28-day impressions | 28-day avg pos |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| `/guides/anna-maria-island-vs-siesta-key/` | 428 | 5.4 | 27 | 2652 | 5.8 |
-| `/guides/best-time-visit-anna-maria-island/` | 365 | 5.6 | 96 | 6405 | 5.0 |
-| `/guides/shelling-guide-florida/` | 194 | 8.1 | 19 | 1888 | 7.4 |
-| `/guides/rainy-day-activities-bradenton-sarasota/` | 173 | 9.3 | 51 | 2591 | 8.8 |
-| `/guides/anna-maria-island-weather/` | 157 | 8.1 | 29 | 10277 | 7.8 |
-| `/guides/bradenton-vs-sarasota/` | 145 | 5.0 | 18 | 1979 | 5.0 |
-| `/guides/srq-airport-to-anna-maria-island/` | 142 | 6.8 | 18 | 3742 | 5.9 |
-| `/guides/anna-maria-island-vs-clearwater-beach/` | 116 | 6.2 | 12 | 1217 | 4.9 |
-| `/guides/anna-maria-island-vs-longboat-key/` | 89 | 6.4 | 15 | 1201 | 5.9 |
-| `/guides/dolphins-manatees-bradenton/` | 83 | 7.1 | 18 | 1030 | 6.6 |
-| `/guides/is-anna-maria-island-worth-visiting/` | 80 | 4.8 | 14 | 1063 | 4.7 |
-| `/guides/holmes-beach-vs-bradenton-beach/` | 79 | 6.5 | 13 | 470 | 5.9 |
-| `/guides/siesta-key-vs-anna-maria-island-families/` | 61 | 4.9 | 2 | 184 | 8.0 |
-| `/guides/anna-maria-island-vacation-cost/` | 38 | 5.5 | 3 | 1011 | 5.6 |
-| `/guides/best-waterfront-restaurants-with-boat-dock/` | 32 | 10.5 | 2 | 156 | 8.9 |
-| `/guides/anna-maria-island-noise-ordinance-guide/` | 27 | 6.4 | 6 | 374 | 5.9 |
-| `/guides/bradenton-vs-sarasota-beaches/` | 25 | 5.9 | 4 | 438 | 7.3 |
-| `/guides/bradenton-vs-sarasota-for-families/` | 19 | 5.8 | 1 | 337 | 5.5 |
-| `/guides/pet-friendly-anna-maria-island/` | 16 | 11.8 | 0 | 178 | 14.2 |
+| `/guides/anna-maria-island-vs-siesta-key/` | 428 | 5.4 | 27 | 2586 | 5.7 |
+| `/guides/best-time-visit-anna-maria-island/` | 365 | 5.6 | 95 | 6159 | 5.0 |
+| `/guides/shelling-guide-florida/` | 194 | 8.1 | 19 | 1821 | 7.5 |
+| `/guides/rainy-day-activities-bradenton-sarasota/` | 173 | 9.3 | 51 | 2570 | 8.8 |
+| `/guides/anna-maria-island-weather/` | 157 | 8.1 | 29 | 9908 | 7.8 |
+| `/guides/bradenton-vs-sarasota/` | 145 | 5.0 | 18 | 1917 | 5.0 |
+| `/guides/srq-airport-to-anna-maria-island/` | 142 | 6.8 | 17 | 3588 | 5.9 |
+| `/guides/anna-maria-island-vs-clearwater-beach/` | 116 | 6.2 | 12 | 1158 | 4.9 |
+| `/guides/anna-maria-island-vs-longboat-key/` | 89 | 6.4 | 15 | 1142 | 5.9 |
+| `/guides/dolphins-manatees-bradenton/` | 83 | 7.1 | 18 | 1004 | 6.6 |
+| `/guides/is-anna-maria-island-worth-visiting/` | 80 | 4.8 | 13 | 1035 | 4.7 |
+| `/guides/holmes-beach-vs-bradenton-beach/` | 79 | 6.5 | 12 | 456 | 5.9 |
+| `/guides/siesta-key-vs-anna-maria-island-families/` | 61 | 4.9 | 1 | 172 | 8.0 |
+| `/guides/anna-maria-island-vacation-cost/` | 38 | 5.5 | 3 | 974 | 5.6 |
+| `/guides/best-waterfront-restaurants-with-boat-dock/` | 32 | 10.5 | 2 | 151 | 9.1 |
+| `/guides/anna-maria-island-noise-ordinance-guide/` | 27 | 6.4 | 5 | 363 | 5.9 |
+| `/guides/bradenton-vs-sarasota-beaches/` | 25 | 5.9 | 4 | 426 | 7.3 |
+| `/guides/bradenton-vs-sarasota-for-families/` | 19 | 5.8 | 1 | 326 | 5.3 |
+| `/guides/pet-friendly-anna-maria-island/` | 16 | 11.8 | 0 | 166 | 14.5 |
 | `/guides/florida-gulf-coast-vacation-rental-market-report-2026/` | 15 | 7.4 | 1 | 41 | 7.6 |
-| `/guides/best-restaurants-anna-maria-island/` | 12 | 30.0 | 1 | 126 | 13.4 |
-| `/guides/things-to-do-bradenton-fl/` | 9 | 29.5 | 6 | 721 | 16.2 |
-| `/guides/best-vacation-rental-companies-ami/` | 9 | 32.7 | 2 | 234 | 18.1 |
-| `/guides/anna-maria-island-area-guide/` | 7 | 15.8 | 0 | 469 | 11.8 |
-| `/guides/fishing-guide-anna-maria-sarasota/` | 6 | 20.7 | 2 | 895 | 14.4 |
+| `/guides/best-restaurants-anna-maria-island/` | 12 | 30.0 | 1 | 125 | 13.5 |
+| `/guides/things-to-do-bradenton-fl/` | 9 | 29.5 | 6 | 701 | 16.2 |
+| `/guides/best-vacation-rental-companies-ami/` | 9 | 32.7 | 1 | 225 | 18.3 |
+| `/guides/anna-maria-island-area-guide/` | 7 | 15.8 | 0 | 454 | 11.9 |
+| `/guides/fishing-guide-anna-maria-sarasota/` | 6 | 20.7 | 2 | 886 | 14.3 |
 | `/guides/longboat-key-area-guide/` | 5 | 10.1 | 0 | 38 | 6.1 |
-| `/guides/do-you-need-a-car-anna-maria-island/` | 4 | 7.1 | 2 | 319 | 8.2 |
-| `/guides/snowbirds-guide-extended-stays-florida/` | 4 | 10.1 | 1 | 62 | 9.4 |
-| `/guides/bradenton-vs-tampa-vacation-rentals/` | 4 | 7.8 | 0 | 104 | 8.7 |
-| `/guides/bradenton-vs-sarasota-cost-of-living/` | 3 | 6.1 | 3 | 650 | 6.1 |
-| `/guides/bradenton-vs-sarasota-retirement/` | 3 | 7.8 | 1 | 92 | 11.1 |
-| `/guides/anna-maria-island-beaches/` | 3 | 17.4 | 1 | 277 | 14.1 |
-| `/guides/family-vacation-anna-maria-island/` | 2 | 9.4 | 1 | 115 | 8.8 |
-| `/guides/booking-direct-vacation-rentals/` | 2 | 23.6 | 0 | 411 | 24.5 |
-| `/guides/bradenton-area-guide/` | 2 | 14.8 | 0 | 54 | 21.1 |
-| `/guides/bradenton-vs-sarasota-restaurants/` | 1 | 10.2 | 0 | 67 | 10.5 |
-| `/guides/how-to-get-to-anna-maria-island/` | 1 | 8.1 | 0 | 78 | 8.2 |
-| `/guides/anna-maria-island-vs-siesta-key/#stay-base` | 1 | 7.4 | 0 | 623 | 8.4 |
-| `/guides/bradenton-insider-guide/` | 1 | 11.7 | 1 | 41 | 10.0 |
-| `/guides/anna-maria-island-vs-siesta-key` | 1 | 2.3 | 0 | 42 | 2.5 |
-| `/guides/2026-bradenton-vacation-rental-market-analysis/` | 1 | 6.5 | 1 | 48 | 5.5 |
+| `/guides/do-you-need-a-car-anna-maria-island/` | 4 | 7.1 | 2 | 310 | 8.2 |
+| `/guides/snowbirds-guide-extended-stays-florida/` | 4 | 10.1 | 1 | 55 | 9.1 |
+| `/guides/bradenton-vs-tampa-vacation-rentals/` | 4 | 7.8 | 0 | 98 | 8.8 |
+| `/guides/bradenton-vs-sarasota-cost-of-living/` | 3 | 6.1 | 3 | 623 | 6.0 |
+| `/guides/bradenton-vs-sarasota-retirement/` | 3 | 7.8 | 1 | 91 | 11.1 |
+| `/guides/anna-maria-island-beaches/` | 3 | 17.4 | 1 | 261 | 14.5 |
+| `/guides/family-vacation-anna-maria-island/` | 2 | 9.4 | 1 | 110 | 8.9 |
+| `/guides/booking-direct-vacation-rentals/` | 2 | 23.6 | 0 | 402 | 24.4 |
+| `/guides/bradenton-area-guide/` | 2 | 14.8 | 0 | 51 | 22.1 |
+| `/guides/bradenton-vs-sarasota-restaurants/` | 1 | 10.2 | 0 | 66 | 10.5 |
+| `/guides/how-to-get-to-anna-maria-island/` | 1 | 8.1 | 0 | 76 | 8.2 |
+| `/guides/anna-maria-island-vs-siesta-key/#stay-base` | 1 | 7.4 | 0 | 605 | 8.4 |
+| `/guides/bradenton-insider-guide/` | 1 | 11.7 | 1 | 40 | 10.2 |
+| `/guides/anna-maria-island-vs-siesta-key` | 1 | 2.3 | 0 | 39 | 2.4 |
+| `/guides/2026-bradenton-vacation-rental-market-analysis/` | 1 | 6.5 | 1 | 44 | 5.8 |
 | `/guides/best-time-visit-anna-maria-island` | 0 | 2.9 | 0 | 77 | 2.9 |
-| `/guides/anna-maria-island-vs-siesta-key/#beaches` | 0 | 7.4 | 0 | 623 | 8.4 |
+| `/guides/anna-maria-island-vs-siesta-key/#beaches` | 0 | 7.4 | 0 | 605 | 8.4 |
 | `/guides/holmes-beach-area-guide/` | 0 | 15.4 | 0 | 172 | 11.0 |
-| `/guides/flights-to-anna-maria-island/` | 0 | 9.0 | 0 | 247 | 8.7 |
-| `/guides/anna-maria-island-vs-siesta-key/#quick-comparison` | 0 | 7.4 | 0 | 623 | 8.4 |
-| `/guides/anna-maria-island-vs-siesta-key/#dining` | 0 | 7.4 | 0 | 623 | 8.4 |
+| `/guides/flights-to-anna-maria-island/` | 0 | 9.0 | 0 | 246 | 8.7 |
+| `/guides/anna-maria-island-vs-siesta-key/#quick-comparison` | 0 | 7.4 | 0 | 605 | 8.4 |
+| `/guides/anna-maria-island-vs-siesta-key/#dining` | 0 | 7.4 | 0 | 605 | 8.4 |
