@@ -1,9 +1,11 @@
 #!/usr/bin/env node
 "use strict";
 
-// Pre-commit gate: keeps agent-authored files small enough for an agent to read
+// File size gate: keeps agent-authored files small enough for an agent to read
 // whole. Tokens are estimated as bytes / 4. Files already over the limit before
 // this gate existed may stay as they are or shrink, but may not grow.
+// Two modes: no flag checks the index against HEAD (the pre-commit hook);
+// --range <base> checks HEAD against merge-base(base, HEAD) (verify:release, CI).
 
 const { execFileSync } = require("child_process");
 
@@ -39,11 +41,11 @@ function blobSize(spec, repoRoot) {
   return Number(git(["cat-file", "-s", spec], repoRoot).toString().trim());
 }
 
-// Size at HEAD, or null when the path is new (or there is no HEAD yet). A
-// null baseline is the strict case: the file gets no legacy allowance.
-function headSize(path, repoRoot) {
+// Size at the baseline revision, or null when the path is new there (or there
+// is no baseline yet). A null baseline is the strict case: no legacy allowance.
+function baselineSize(path, repoRoot, base) {
   try {
-    return blobSize(`HEAD:${path}`, repoRoot);
+    return blobSize(`${base}:${path}`, repoRoot);
   } catch {
     return null;
   }
@@ -59,10 +61,11 @@ function isBinary(spec, repoRoot) {
   return head.includes(0);
 }
 
-// Returns [{ path, previousPath }] for staged additions, copies, edits, renames.
-function stagedFiles(repoRoot) {
+// Returns [{ path, previousPath }] for additions, copies, edits and renames,
+// in the index (no revs) or between two revisions.
+function changedFiles(repoRoot, revs) {
   const fields = git(
-    ["diff", "--cached", "--name-status", "-z", "-M", "--diff-filter=ACMR"],
+    ["diff", ...(revs || ["--cached"]), "--name-status", "-z", "-M", "--diff-filter=ACMR"],
     repoRoot
   )
     .toString()
@@ -93,16 +96,30 @@ function mergeInProgress(repoRoot) {
   }
 }
 
-function findViolations(repoRoot) {
+// Oldest common ancestor of base and HEAD, so upstream growth merged into a
+// branch is never charged to it; a base with no common history stands as is.
+function rangeBase(base, repoRoot) {
+  try {
+    return git(["merge-base", base, "HEAD"], repoRoot).toString().trim();
+  } catch {
+    return base;
+  }
+}
+
+// options.base: a revision to compare HEAD against instead of the index.
+function findViolations(repoRoot, options = {}) {
   const violations = [];
-  if (mergeInProgress(repoRoot)) return violations;
-  for (const { path, previousPath } of stagedFiles(repoRoot)) {
+  const ranged = Boolean(options.base);
+  if (!ranged && mergeInProgress(repoRoot)) return violations;
+  const base = ranged ? rangeBase(options.base, repoRoot) : "HEAD";
+  const spec = (path) => (ranged ? `HEAD:${path}` : `:0:${path}`);
+  for (const { path, previousPath } of changedFiles(repoRoot, ranged ? [base, "HEAD"] : null)) {
     if (IGNORED.some((pattern) => pattern.test(path))) continue;
-    // A staged blob that cannot be read throws: the gate blocks, never passes.
-    const size = blobSize(`:0:${path}`, repoRoot);
+    // A blob that cannot be read throws: the gate blocks, never passes.
+    const size = blobSize(spec(path), repoRoot);
     if (size <= MAX_BYTES) continue;
-    if (isBinary(`:0:${path}`, repoRoot)) continue;
-    const before = headSize(previousPath, repoRoot);
+    if (isBinary(spec(path), repoRoot)) continue;
+    const before = baselineSize(previousPath, repoRoot, base);
     const legacy = before !== null && before > MAX_BYTES;
     if (legacy && size <= before) continue;
     violations.push({ path, size, before: legacy ? before : null });
@@ -114,9 +131,9 @@ function tokens(bytes) {
   return Math.ceil(bytes / BYTES_PER_TOKEN).toLocaleString("en-US");
 }
 
-function formatMessage(violations) {
+function formatMessage(violations, ranged = false) {
   const lines = [
-    `Commit blocked: staged file(s) exceed ${MAX_TOKENS.toLocaleString("en-US")} tokens (tokens = bytes / 4).`,
+    `${ranged ? "Range" : "Commit"} blocked: ${ranged ? "committed" : "staged"} file(s) exceed ${MAX_TOKENS.toLocaleString("en-US")} tokens (tokens = bytes / 4).`,
     "",
   ];
   for (const v of violations) {
@@ -149,9 +166,15 @@ function formatMessage(violations) {
 
 function main() {
   const repoRoot = git(["rev-parse", "--show-toplevel"], process.cwd()).toString().trim();
-  const violations = findViolations(repoRoot);
+  const flag = process.argv.indexOf("--range");
+  const base = flag === -1 ? "" : process.argv[flag + 1] || "";
+  if (flag !== -1 && !base) {
+    console.error("check-staged-file-size: --range needs a base revision");
+    process.exit(2);
+  }
+  const violations = findViolations(repoRoot, { base });
   if (violations.length) {
-    console.error(formatMessage(violations));
+    console.error(formatMessage(violations, Boolean(base)));
     process.exit(1);
   }
 }
