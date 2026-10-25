@@ -134,6 +134,8 @@ lock, Hostaway cache sync, Eleventy, availability validation).
 
 - Fast gate for copy-only work: `npm run lint:content`
 - Fast gate for structural source work: `npm run build`
+- Fast gate for a brief: `npm run check:brief -- <brief.md>` lists every
+  content-gate and Gate 0 problem at once, without a build
 - Full pre-PR gate: `npm run verify:release`. It builds once, then runs the
   full suite (including content lint) and release checks under one worktree
   lock; use standalone `npm test` and `npm run lint:content` for iteration, not

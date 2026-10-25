@@ -9,6 +9,7 @@ const {
 const { assertValidFigmaBriefHandoffs } = require("./figma-brief-handoff");
 const { assertRepoHtmlCachePolicyConsistency } = require("./release-cache-policy");
 const { assertSearchDecisionBriefContract } = require("./search-brief-gate");
+const { assertNoNetAssertionRemoval } = require("./assertion-removal-gate");
 const { withWorktreeLock } = require("./worktree-lock");
 const {
   assertOwnerBenchmarkProof,
@@ -328,6 +329,9 @@ function main() {
     recordAssertion(pathAssertions, "forbidden public runtime", assertNoForbiddenPublicRuntime);
     recordAssertion(pathAssertions, "search decision brief gate", () =>
       assertSearchDecisionBriefContract({ range: args.range })
+    );
+    recordAssertion(pathAssertions, "test assertion removal", () =>
+      assertNoNetAssertionRemoval({ range: args.range })
     );
     recordAssertion(pathAssertions, "valid figma brief handoffs", () =>
       assertValidFigmaBriefs(args.range)

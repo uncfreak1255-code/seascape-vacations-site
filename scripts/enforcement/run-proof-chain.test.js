@@ -5,7 +5,7 @@ const test = require("node:test");
 const assert = require("node:assert/strict");
 const { spawn } = require("node:child_process");
 
-const { runProofChain } = require("./run-proof-chain");
+const { childEnv, runProofChain } = require("./run-proof-chain");
 
 const RUNNER_MODULE_PATH = path.join(__dirname, "run-proof-chain.js");
 
@@ -188,4 +188,17 @@ test("overlapping proof chains cannot rewrite _site during rendered inspection",
 
     fs.rmSync(rootDir, { recursive: true, force: true });
   }
+});
+
+test("proof commands run without the commit hook's git repository variables", () => {
+  const env = childEnv({
+    PATH: "/usr/bin",
+    GIT_DIR: "/repo/.git/worktrees/task",
+    GIT_INDEX_FILE: "/repo/.git/worktrees/task/index",
+    GIT_AUTHOR_NAME: "kept"
+  });
+  assert.equal(env.PATH, "/usr/bin");
+  assert.equal(env.GIT_AUTHOR_NAME, "kept");
+  assert.equal("GIT_DIR" in env, false);
+  assert.equal("GIT_INDEX_FILE" in env, false);
 });
