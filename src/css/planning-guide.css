@@ -7,17 +7,6 @@
  * and what a page may put in them.
  */
 
-:root {
-  --brand: #5F8A8B;
-  --brand-dark: #3D5C5D;
-  --gold: #C9A962;
-  --gold-light: #E8D5A3;
-  --cream: #F5EED6;
-  --cream-dark: #EBE4CC;
-  --stone: #3A3A3A;
-  --stone-light: #6A6A6A;
-}
-
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 /* Planning-guide frame (DESIGN.md "Planning guides"): Waterline tokens, scoped to this body. */
@@ -180,6 +169,6 @@ body.planning-guide main .guide-cta-btn:hover { color: var(--pg-paper); }
 }
 
 /* Sticky booking bar: fixed to the viewport bottom, content set per guide. */
-#sticky-book-bar { position: fixed; bottom: 0; left: 0; right: 0; z-index: 99; background: linear-gradient(135deg, var(--brand-dark) 0, #2D4647 100%); padding: 12px 20px; display: flex; justify-content: center; align-items: center; gap: 16px; box-shadow: 0 -4px 20px rgba(0, 0, 0, .15); transform: none; }
+#sticky-book-bar { position: fixed; bottom: 0; left: 0; right: 0; z-index: 99; background: var(--pg-ink); padding: 12px 20px; display: flex; justify-content: center; align-items: center; gap: 16px; box-shadow: 0 -4px 20px rgba(0, 0, 0, .15); transform: none; }
 #sticky-book-bar span { color: #fff; font-size: 14px; font-weight: 500; }
 #sticky-book-bar a { background: linear-gradient(135deg, #C9A962 0, #B8943A 100%); color: #3A3A3A; padding: 10px 22px; border-radius: 50px; font-weight: 600; font-size: 13px; text-decoration: none; white-space: nowrap; }

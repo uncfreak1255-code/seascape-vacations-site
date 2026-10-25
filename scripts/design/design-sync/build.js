@@ -6,10 +6,9 @@
  *
  * WHY THIS EXISTS
  * The Claude Design project "Seascape Vacations Design System" is what Claude Design
- * builds from when it mocks a Seascape surface. It went stale (pre-Waterline teal/gold,
- * Playfair, pill buttons). This script regenerates it from repo truth so the two never
- * drift by hand: DESIGN.md's Waterline block, the live guest CSS, the self-hosted fonts
- * and the real rendered markup of the shared shell and guest components.
+ * mocks Seascape surfaces from. This script regenerates it from repo truth so the two
+ * never drift by hand: DESIGN.md's Waterline block, the live guest CSS, the self-hosted
+ * fonts and the real rendered markup of the shared shell and guest components.
  *
  * WHAT IT PRODUCES (into --out, default .design-sync/out, gitignored)
  *   SKILL.md, README.md            entrypoints Claude Design reads first (templates/)
@@ -18,7 +17,7 @@
  *   waterline/fonts.css + fonts/   self-hosted Poppins + Instrument Serif
  *   waterline/*.css                verbatim copies of the live guest stylesheets
  *   waterline/DESIGN.md            verbatim DESIGN.md (visual law)
- *   waterline/{design-review-workflow,writing-style-guide,legacy-gold-ctas,scales-states-forms,guide-figures}.md
+ *   waterline/*.md                 reference docs (copy-reference-documents.js)
  *   preview/*.html                 self-contained cards for the Design System pane,
  *                                  built from the REAL built HTML of the site
  *   _sync-manifest.json            exact writes + deletes for the DesignSync push
@@ -30,8 +29,7 @@
  *
  * The push itself is done with the DesignSync tool from Claude Code (list -> finalize_plan
  * -> write_files/delete_files) using _sync-manifest.json. Re-run after any PR that touches
- * DESIGN.md, src/css/{base,guest,arrival,catalog,catalog-card,about,property-gallery}.css
- * or the guest partials.
+ * DESIGN.md, a stylesheet listed in stylesheets.js or the guest partials.
  */
 
 const fs = require("fs");
@@ -47,8 +45,7 @@ const argValue = (flag, fallback) => {
 };
 const SITE = path.resolve(ROOT, argValue("--site", "_site"));
 const OUT = path.resolve(ROOT, argValue("--out", ".design-sync/out"));
-// The bundle folder is wiped on every build, so it must stay inside the ignored
-// .design-sync/ tree; `--out ..` or an absolute path elsewhere is refused.
+// The bundle folder is wiped on every build, so --out must stay inside the ignored .design-sync/ tree.
 const SYNC_ROOT = path.join(ROOT, ".design-sync");
 if (!(OUT === SYNC_ROOT || OUT.startsWith(SYNC_ROOT + path.sep))) {
   throw new Error(`--out must resolve inside ${SYNC_ROOT}; got ${OUT}`);
@@ -102,13 +99,10 @@ const today = new Date().toISOString().slice(0, 10);
 
 /* ---------------------------------------------------------------- css */
 const stripFontFace = (css) => css.replace(/@font-face\s*\{[^}]*\}\n?/g, "");
-const baseCss = read("src/css/base.css");
-const guestCss = stripFontFace(read("src/css/guest.css"));
-const arrivalCss = read("src/css/arrival.css");
-const catalogCss = read("src/css/catalog.css");
-const catalogCardCss = read("src/css/catalog-card.css");
-const aboutCss = read("src/css/about.css");
-const propertyGalleryCss = read("src/css/property-gallery.css");
+const sheets = Object.fromEntries(require("./stylesheets").map((name) => [name, read(`src/css/${name}.css`)]));
+sheets.guest = stripFontFace(sheets.guest);
+const inlined = (name) => sheets[name] ?? (() => { throw new Error(`stylesheets.js must list "${name}": the preview cards inline it.`); })();
+const [baseCss, guestCss, arrivalCss, catalogCss, catalogCardCss] = ["base", "guest", "arrival", "catalog", "catalog-card"].map(inlined);
 
 /* ----------------------------------------------------------- homes */
 // Home count and names come from canonical property data, never a literal.
@@ -176,13 +170,9 @@ write("waterline/fonts.css", `/* Self-hosted faces, same files the site ships. *
 for (const [src] of fonts) copy(src, `waterline/fonts/${path.basename(src)}`);
 copy("src/assets/fonts/guest/OFL.txt", "waterline/fonts/OFL-instrument-serif.txt");
 require("./copy-reference-documents")(copy);
-write("waterline/base.css", baseCss);
-write("waterline/guest.css", `/* Verbatim src/css/guest.css minus @font-face (see fonts.css). */\n${guestCss}`);
-write("waterline/arrival.css", arrivalCss);
-write("waterline/catalog.css", catalogCss);
-write("waterline/catalog-card.css", catalogCardCss);
-write("waterline/about.css", aboutCss);
-write("waterline/property-gallery.css", propertyGalleryCss);
+for (const [name, css] of Object.entries(sheets)) {
+  write(`waterline/${name}.css`, name === "guest" ? `/* Verbatim src/css/guest.css minus @font-face (see fonts.css). */\n${css}` : css);
+}
 write("waterline/shell.html", `<!-- Real shared shell as built at ${commit}. -->\n${headerPaper}\n<main id="main"><!-- page --></main>\n${footer}\n`);
 
 /* ---------------------------------------------------------------- cards */

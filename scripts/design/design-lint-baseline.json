@@ -1,5 +1,11 @@
 {
   "offBrandHex": [
+    "src/_includes/partials/email-popup.njk",
+    "src/_includes/partials/guide-stay-here.njk",
+    "src/_includes/partials/property-card-image.njk",
+    "src/css/arrival.css",
+    "src/css/guest.css",
+    "src/css/owner.css",
     "src/guides/anna-maria-city.html",
     "src/guides/anna-maria-island-area-guide/index.html",
     "src/guides/anna-maria-island-beaches.html",
@@ -43,6 +49,7 @@
     "src/guides/where-to-stay-near-anna-maria-island/index.html"
   ],
   "googleFonts": [
+    "src/_includes/layouts/guide-planning.njk",
     "src/guides/anna-maria-city.html",
     "src/guides/anna-maria-island-area-guide/index.html",
     "src/guides/anna-maria-island-beaches.html",
