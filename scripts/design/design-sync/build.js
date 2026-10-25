@@ -30,8 +30,7 @@
  *
  * The push itself is done with the DesignSync tool from Claude Code (list -> finalize_plan
  * -> write_files/delete_files) using _sync-manifest.json. Re-run after any PR that touches
- * DESIGN.md, src/css/{base,guest,arrival,catalog,catalog-card,about,property-gallery}.css
- * or the guest partials.
+ * DESIGN.md, a stylesheet listed in stylesheets.js or the guest partials.
  */
 
 const fs = require("fs");
@@ -102,13 +101,9 @@ const today = new Date().toISOString().slice(0, 10);
 
 /* ---------------------------------------------------------------- css */
 const stripFontFace = (css) => css.replace(/@font-face\s*\{[^}]*\}\n?/g, "");
-const baseCss = read("src/css/base.css");
-const guestCss = stripFontFace(read("src/css/guest.css"));
-const arrivalCss = read("src/css/arrival.css");
-const catalogCss = read("src/css/catalog.css");
-const catalogCardCss = read("src/css/catalog-card.css");
-const aboutCss = read("src/css/about.css");
-const propertyGalleryCss = read("src/css/property-gallery.css");
+const sheets = Object.fromEntries(require("./stylesheets").map((name) => [name, read(`src/css/${name}.css`)]));
+sheets.guest = stripFontFace(sheets.guest);
+const { base: baseCss, guest: guestCss, arrival: arrivalCss, catalog: catalogCss, "catalog-card": catalogCardCss } = sheets;
 
 /* ----------------------------------------------------------- homes */
 // Home count and names come from canonical property data, never a literal.
@@ -176,13 +171,9 @@ write("waterline/fonts.css", `/* Self-hosted faces, same files the site ships. *
 for (const [src] of fonts) copy(src, `waterline/fonts/${path.basename(src)}`);
 copy("src/assets/fonts/guest/OFL.txt", "waterline/fonts/OFL-instrument-serif.txt");
 require("./copy-reference-documents")(copy);
-write("waterline/base.css", baseCss);
-write("waterline/guest.css", `/* Verbatim src/css/guest.css minus @font-face (see fonts.css). */\n${guestCss}`);
-write("waterline/arrival.css", arrivalCss);
-write("waterline/catalog.css", catalogCss);
-write("waterline/catalog-card.css", catalogCardCss);
-write("waterline/about.css", aboutCss);
-write("waterline/property-gallery.css", propertyGalleryCss);
+for (const [name, css] of Object.entries(sheets)) {
+  write(`waterline/${name}.css`, name === "guest" ? `/* Verbatim src/css/guest.css minus @font-face (see fonts.css). */\n${css}` : css);
+}
 write("waterline/shell.html", `<!-- Real shared shell as built at ${commit}. -->\n${headerPaper}\n<main id="main"><!-- page --></main>\n${footer}\n`);
 
 /* ---------------------------------------------------------------- cards */

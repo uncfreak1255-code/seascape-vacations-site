@@ -28,7 +28,17 @@ const SCENES = ["the-oasis", "dockside-dreams", "sarasota-luxe", "river-house", 
 // against a visual baseline taken from the unchanged page.
 const floorRoutes = moneyRoutes;
 
-const SHELL_ROOT_SELECTOR = ".g-header, .g-mobile-menu, .g-footer";
+// One route per page family that must keep whole-page F1/F2 scope. A layout
+// that drops `guest-site` or `planning-guide` from <body> would otherwise
+// shrink the floors to the shell on every page of that family without a
+// single failing test (PR C, 2026-10-25).
+const WHOLE_PAGE_FAMILIES = {
+  owner: "property-management",
+  about: "about-seascape",
+  catalog: "properties-catalog",
+  property: "the-oasis",
+  guide: "guide-ami-how-to-get-to",
+};
 
 // -- in-page scan functions (serialized into the browser by page.evaluate) --
 
@@ -225,6 +235,19 @@ function heroTextSelectors(isMobileProject) {
   return isMobileProject
     ? [".g-menu-button", ...shared]
     : [".g-nav a", ".g-header-phone", ".g-arrival-seal", ...shared];
+}
+
+for (const [family, slug] of Object.entries(WHOLE_PAGE_FAMILIES)) {
+  const routeConfig = floorRoutes.find((route) => route.slug === slug);
+  if (!routeConfig) throw new Error(`[design-floors] routes.js lost the "${slug}" route the ${family} family floor needs`);
+  test(`${slug} — F1/F2 scope is the whole ${family} page`, async ({ page }) => {
+    await gotoMarketingRoute(page, routeConfig);
+    const classes = await page.evaluate(() => Array.from(document.body.classList));
+    assert.ok(
+      classes.includes("guest-site") || classes.includes("planning-guide"),
+      `${slug} <body class="${classes.join(" ")}"> scopes F1/F2 to the shell only; the ${family} family must keep whole-page floors`
+    );
+  });
 }
 
 // -- F1: no visible text below the 12px floor --

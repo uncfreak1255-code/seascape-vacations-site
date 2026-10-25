@@ -2,7 +2,8 @@
 "use strict";
 
 /*
- * design-lint — machine enforcement of the DESIGN.md visual law for guide pages.
+ * design-lint — machine enforcement of the DESIGN.md visual law for guides,
+ * stylesheets and shared templates (design-lint-sources.js lists the roots).
  *
  * WHY THIS EXISTS
  * The repo has a rich design SYSTEM (DESIGN.md), a specialist -> critic PROCESS,
@@ -12,8 +13,8 @@
  * script closes that gap the same way the other enforcement gates work: a plain
  * node scan that returns a non-zero exit on new violations.
  *
- * WHAT IT CHECKS (per guide source file)
- *   offBrandHex : hex color literals inside style="" / <style> that are NOT part
+ * WHAT IT CHECKS (per source file)
+ *   offBrandHex : hex color literals in style="" / <style> / a .css file NOT part
  *                 of the sanctioned palette (derived from DESIGN.md + the shared
  *                 CSS + shared partials, so approved colors never false-positive).
  *   googleFonts : fonts.googleapis.com / fonts.gstatic.com loaded in-page instead
@@ -46,6 +47,8 @@
 const fs = require("fs");
 const path = require("path");
 const { execFileSync } = require("child_process");
+
+const { listSourceFiles, isStylesheet } = require("./design-lint-sources");
 
 const projectRoot = path.resolve(__dirname, "..", "..");
 const baselinePath = path.join(__dirname, "design-lint-baseline.json");
@@ -141,26 +144,9 @@ function stripToVisibleText(source) {
     .replace(/<[^>]+>/g, " ");
 }
 
-function listGuideFiles() {
-  const guidesDir = path.join(projectRoot, "src", "guides");
-  const results = [];
-  function walk(dir) {
-    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
-      const full = path.join(dir, entry.name);
-      if (entry.isDirectory()) {
-        walk(full);
-        continue;
-      }
-      if (/\.(html|njk)$/i.test(entry.name)) {
-        results.push(path.relative(projectRoot, full).split(path.sep).join("/"));
-      }
-    }
-  }
-  walk(guidesDir);
-  return results.sort();
-}
+const styleContextOf = (source, rel) => (rel && isStylesheet(rel) ? source : extractStyleContexts(source));
 
-function lintSource(source, allowlist) {
+function lintSource(source, allowlist, rel) {
   // counts back the per-check ratchet: hexCounts maps each off-brand hex to how
   // many times it appears in style contexts, so migrate-on-touch can tell "same
   // debt as the base" apart from "one more use of the same debt".
@@ -171,8 +157,7 @@ function lintSource(source, allowlist) {
     counts: { hex: {}, googleFonts: 0, emoji: 0 },
   };
 
-  const styleContext = extractStyleContexts(source);
-  for (const match of styleContext.match(HEX_RE) || []) {
+  for (const match of styleContextOf(source, rel).match(HEX_RE) || []) {
     const norm = normalizeHex(match);
     if (!allowlist.has(norm)) {
       if (!(norm in violations.counts.hex)) {
@@ -197,7 +182,7 @@ function lintSource(source, allowlist) {
 }
 
 function lintFile(rel, allowlist) {
-  return lintSource(read(rel), allowlist);
+  return lintSource(read(rel), allowlist, rel);
 }
 
 function hasViolation(v, check) {
@@ -290,7 +275,7 @@ function buildBaseReport({ files, report, allowlist }, touched, baseRef) {
       continue;
     }
     const baseSource = readSourceAtRef(mergeBase, rel);
-    baseReport[rel] = baseSource === null ? null : lintSource(baseSource, allowlist);
+    baseReport[rel] = baseSource === null ? null : lintSource(baseSource, allowlist, rel);
   }
   return baseReport;
 }
@@ -324,7 +309,7 @@ function checkCoverage({ files, report }, baseline) {
 
   if (!files.length) {
     failures.push(
-      "0 guide sources scanned. listGuideFiles() found nothing under src/guides, " +
+      "0 sources scanned. listSourceFiles() found nothing under the design-lint-sources.js roots, " +
         "so every check below would pass vacuously."
     );
     return failures;
@@ -373,9 +358,8 @@ function paletteUsageFiles(files, touched, changedPaletteSources) {
   ];
 }
 
-function paletteUsesAddedHexes(source, addedHexes) {
-  const styleContext = extractStyleContexts(source);
-  const used = new Set((styleContext.match(HEX_RE) || []).map(normalizeHex));
+function paletteUsesAddedHexes(source, addedHexes, rel) {
+  const used = new Set((styleContextOf(source, rel).match(HEX_RE) || []).map(normalizeHex));
   return [...addedHexes].filter((hex) => used.has(hex));
 }
 
@@ -436,7 +420,7 @@ function checkPaletteIntegrity(touched, baseRef, { files, report }) {
     } catch {
       continue;
     }
-    const abused = paletteUsesAddedHexes(source, addedHexes);
+    const abused = paletteUsesAddedHexes(source, addedHexes, rel);
     if (abused.length) {
       failures.push(
         `${rel} uses ${abused.join(", ")}, legalized in this same branch by ` +
@@ -451,7 +435,7 @@ function checkPaletteIntegrity(touched, baseRef, { files, report }) {
 
 function run() {
   const allowlist = buildPaletteAllowlist();
-  const files = listGuideFiles();
+  const files = listSourceFiles(projectRoot);
   const report = {};
   for (const rel of files) {
     report[rel] = lintFile(rel, allowlist);
@@ -544,8 +528,8 @@ function main() {
   const touched = changedFiles(baseRef);
 
   // COVERAGE FLOOR. Adversarial review, 2026-07-28: thinning or emptying
-  // src/guides made listGuideFiles() return [], the evaluate() loop never ran,
-  // and the gate printed "0 guide sources scanned, 0 new violations" and exited
+  // src/guides made the file list empty, the evaluate() loop never ran, and
+  // the gate printed "0 guide sources scanned, 0 new violations" and exited
   // 0 — a required CI check reporting success after checking nothing. A baseline
   // entry that no longer resolves to a scanned file is the signal: the corpus
   // shrank without going through --update-baseline.
@@ -598,7 +582,7 @@ function main() {
 
   if (newViolations.length === 0) {
     console.log(
-      `design-lint OK against ${baseRef}: ${state.files.length} guide sources scanned, 0 new violations (${debt} grandfathered legacy entries remain; ${graduated.length} ready to graduate).`
+      `design-lint OK against ${baseRef}: ${state.files.length} sources scanned, 0 new violations (${debt} grandfathered legacy entries remain; ${graduated.length} ready to graduate).`
     );
     return 0;
   }
@@ -628,7 +612,7 @@ module.exports = {
   buildPaletteAllowlist,
   lintFile,
   lintSource,
-  listGuideFiles,
+  listSourceFiles,
   resolveBaseRef,
   changedFiles,
   buildBaseReport,

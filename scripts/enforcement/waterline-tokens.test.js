@@ -67,6 +67,7 @@ const CEILINGS = {
   'src/css/property-gallery.css': { breakpoint: 1 },
   'src/css/owner.css': { color: 5, shadow: 1 },
   'src/css/about.css': {},
+  'src/css/planning-guide.css': { color: 4, shadow: 1, breakpoint: 1 },
 };
 
 for (const [file, ceiling] of Object.entries(CEILINGS)) {
