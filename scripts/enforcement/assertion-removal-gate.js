@@ -10,9 +10,11 @@ const TEST_PATH_PATTERNS = [
 ];
 const ASSERTION_PATTERN = /\b(?:assert(?:\.\w+)?|expect)\s*\(/;
 const TRAILER_PATTERN = /^Assertions-Removed:\s*\S.*$/im;
+// A commented-out assertion no longer runs, so it never counts as an addition.
+const COMMENT_LINE_PATTERN = /^\s*(?:\/\/|\/\*|\*)/;
 
-function capture(args, cwd) {
-  const result = spawnSync("git", args, { cwd, encoding: "utf8", maxBuffer: 64 * 1024 * 1024 });
+function capture(args, cwd, env) {
+  const result = spawnSync("git", args, { cwd, env, encoding: "utf8", maxBuffer: 64 * 1024 * 1024 });
   if (result.status !== 0) {
     throw new Error(result.stderr || `git ${args.join(" ")} failed`);
   }
@@ -37,7 +39,8 @@ function countAssertionChanges(diffText) {
       continue;
     }
     const sign = line[0];
-    if ((sign !== "+" && sign !== "-") || !ASSERTION_PATTERN.test(line.slice(1))) {
+    const body = line.slice(1);
+    if ((sign !== "+" && sign !== "-") || COMMENT_LINE_PATTERN.test(body) || !ASSERTION_PATTERN.test(body)) {
       continue;
     }
     const entry = perFile.get(currentFile) || { added: 0, removed: 0 };
@@ -66,17 +69,20 @@ function logRangeFor(range) {
   return value.includes("..") ? value : `${value}..HEAD`;
 }
 
-function assertNoNetAssertionRemoval({ range, cwd = process.cwd() } = {}) {
+function assertNoNetAssertionRemoval({ range, cwd = process.cwd(), env = process.env } = {}) {
   if (!range) {
     throw new Error("assertion removal gate requires a non-empty range");
   }
 
-  const { added, removed, perFile } = countAssertionChanges(capture(["diff", range], cwd));
+  const { added, removed, perFile } = countAssertionChanges(
+    // --no-renames: a test renamed out of discovery shows as a deleted test file.
+    capture(["diff", "--no-renames", range], cwd, env)
+  );
   if (removed <= added) {
     return { added, removed, status: "passed" };
   }
 
-  const messages = capture(["log", "--format=%B", logRangeFor(range)], cwd);
+  const messages = capture(["log", "--format=%B", logRangeFor(range)], cwd, env);
   if (TRAILER_PATTERN.test(messages)) {
     return { added, removed, status: "acknowledged" };
   }

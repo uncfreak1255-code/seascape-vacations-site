@@ -38,9 +38,16 @@ test("log range follows the diff range shape", () => {
   assert.equal(logRangeFor("a..b"), "a..b");
 });
 
+// Fixture repos must not inherit a commit hook's GIT_DIR or GIT_INDEX_FILE, which
+// would point these git calls at the real repository.
+const FIXTURE_ENV = Object.fromEntries(
+  Object.entries(process.env).filter(([key]) => !key.startsWith("GIT_"))
+);
+
 function makeRepo() {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), "assertion-gate-"));
-  const git = (...args) => execFileSync("git", args, { cwd: dir, encoding: "utf8" });
+  const git = (...args) =>
+    execFileSync("git", args, { cwd: dir, env: FIXTURE_ENV, encoding: "utf8" });
   git("init", "-q", "-b", "main");
   git("config", "user.email", "test@example.com");
   git("config", "user.name", "test");
@@ -59,7 +66,7 @@ test("fails a net assertion loss and names the file", () => {
   fs.writeFileSync(path.join(dir, "a.test.js"), "assert.equal(1, 1);\n");
   git("commit", "-q", "-am", "drop checks");
   assert.throws(
-    () => assertNoNetAssertionRemoval({ range: "base", cwd: dir }),
+    () => assertNoNetAssertionRemoval({ range: "base", cwd: dir, env: FIXTURE_ENV }),
     /removes 2 test assertions and adds 0[\s\S]*a\.test\.js[\s\S]*Assertions-Removed/
   );
 });
@@ -71,9 +78,30 @@ test("passes a like-for-like update and an acknowledged removal", () => {
     "assert.equal(1, 1);\nassert.equal(2, 2);\nassert.equal(4, 4);\n"
   );
   git("commit", "-q", "-am", "update");
-  assert.equal(assertNoNetAssertionRemoval({ range: "base", cwd: dir }).status, "passed");
+  assert.equal(assertNoNetAssertionRemoval({ range: "base", cwd: dir, env: FIXTURE_ENV }).status, "passed");
 
   fs.writeFileSync(path.join(dir, "a.test.js"), "assert.equal(1, 1);\n");
   git("commit", "-q", "-am", "retire checks\n\nAssertions-Removed: feature deleted");
-  assert.equal(assertNoNetAssertionRemoval({ range: "base", cwd: dir }).status, "acknowledged");
+  assert.equal(assertNoNetAssertionRemoval({ range: "base", cwd: dir, env: FIXTURE_ENV }).status, "acknowledged");
+});
+
+test("commenting out or renaming a test out of discovery counts as removal", () => {
+  const { dir, git } = makeRepo();
+  fs.writeFileSync(
+    path.join(dir, "a.test.js"),
+    "// assert.equal(1, 1);\n// assert.equal(2, 2);\nassert.equal(3, 3);\n"
+  );
+  git("commit", "-q", "-am", "comment out");
+  assert.throws(
+    () => assertNoNetAssertionRemoval({ range: "base", cwd: dir, env: FIXTURE_ENV }),
+    /removes 2 test assertions and adds 0/
+  );
+
+  git("reset", "-q", "--hard", "base");
+  git("mv", "a.test.js", "a.js");
+  git("commit", "-q", "-m", "rename");
+  assert.throws(
+    () => assertNoNetAssertionRemoval({ range: "base", cwd: dir, env: FIXTURE_ENV }),
+    /removes 3 test assertions and adds 0/
+  );
 });

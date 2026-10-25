@@ -190,15 +190,27 @@ test("overlapping proof chains cannot rewrite _site during rendered inspection",
   }
 });
 
-test("proof commands run without the commit hook's git repository variables", () => {
-  const env = childEnv({
+test("proof commands drop a worktree hook's GIT_DIR but keep an alternate index", () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "proof-env-"));
+  const normal = path.join(dir, "index");
+  const alternate = path.join(dir, "index.lock");
+  fs.writeFileSync(normal, "");
+  fs.writeFileSync(alternate, "");
+  const hookEnv = {
     PATH: "/usr/bin",
-    GIT_DIR: "/repo/.git/worktrees/task",
-    GIT_INDEX_FILE: "/repo/.git/worktrees/task/index",
+    GIT_DIR: path.join(dir, "worktrees", "task"),
     GIT_AUTHOR_NAME: "kept"
-  });
-  assert.equal(env.PATH, "/usr/bin");
-  assert.equal(env.GIT_AUTHOR_NAME, "kept");
-  assert.equal("GIT_DIR" in env, false);
-  assert.equal("GIT_INDEX_FILE" in env, false);
+  };
+
+  const plain = childEnv({ ...hookEnv, GIT_INDEX_FILE: normal }, { cwd: dir, defaultIndex: normal });
+  assert.equal(plain.PATH, "/usr/bin");
+  assert.equal(plain.GIT_AUTHOR_NAME, "kept");
+  assert.equal("GIT_DIR" in plain, false);
+  assert.equal("GIT_INDEX_FILE" in plain, false);
+
+  const partial = { ...hookEnv, GIT_INDEX_FILE: alternate };
+  assert.deepEqual(childEnv(partial, { cwd: dir, defaultIndex: normal }), partial);
+
+  const outsideHook = { PATH: "/usr/bin" };
+  assert.equal(childEnv(outsideHook, { cwd: dir, defaultIndex: normal }), outsideHook);
 });
