@@ -134,6 +134,8 @@ lock, Hostaway cache sync, Eleventy, availability validation).
 
 - Fast gate for copy-only work: `npm run lint:content`
 - Fast gate for structural source work: `npm run build`
+- Fast gate for a brief: `npm run check:brief -- <brief.md>` lists every
+  content-gate and Gate 0 problem at once, without a build
 - A single `node --test` run skips `pretest`; tests that read `_site/` (such
   as `property-gallery` and `waterline-tokens`) fail in a fresh worktree until
   `npm run build` has run once

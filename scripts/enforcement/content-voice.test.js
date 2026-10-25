@@ -8,6 +8,11 @@ const { runBuildForLint } = require("./build-for-lint");
 const { withWorktreeLock } = require("./worktree-lock");
 const { extractAuthorizedSourceSectionText } = require("./search-brief-gate");
 const {
+  REQUIRED_BRIEF_FIELDS,
+  parseMissingBriefFields,
+  parseRequiredLinksFromBrief,
+} = require("./brief-contract");
+const {
   assertNoPublicPerformanceClaims,
   lintPerformanceClaims,
   formatPerformanceClaimReport
@@ -17,17 +22,6 @@ const { applyStayFacts } = require("../../src/_data/stayFacts");
 const fallbackProperties = require("../../src/_data/properties-fallback.json");
 
 const projectRoot = path.resolve(__dirname, "..", "..");
-
-const REQUIRED_BRIEF_FIELDS = [
-  "persona",
-  "primary keyword",
-  "secondary keywords",
-  "audience pattern",
-  "proof source",
-  "required internal links",
-  "CTA target",
-  "anti-claims"
-];
 
 const BANNED_GENERIC_PATTERNS = [
   /\bcurated\b/i,
@@ -434,18 +428,6 @@ function getFirstParagraphText(source) {
   return normalizeVisibleText(paragraphMatch[1]);
 }
 
-function parseRequiredLinksFromBrief(briefContent) {
-  const match = briefContent.match(/^- required internal links:\s*(.+)$/im);
-  if (!match) {
-    return [];
-  }
-
-  return match[1]
-    .split(",")
-    .map((value) => value.trim())
-    .filter((value) => value.startsWith("/"));
-}
-
 function parseRequiredLinkMapFromBrief(briefContent) {
   const map = new Map();
   const sectionStart = briefContent.search(/^## Required Internal Link Map\s*$/im);
@@ -478,13 +460,6 @@ function parseRequiredLinkMapFromBrief(briefContent) {
   }
 
   return map;
-}
-
-function parseMissingBriefFields(briefContent) {
-  return REQUIRED_BRIEF_FIELDS.filter((field) => {
-    const expression = new RegExp(`^- ${field}:\\s+.+$`, "im");
-    return !expression.test(briefContent);
-  });
 }
 
 // Owner-lane pages must name the line of the hub's owner offer they exist to land.

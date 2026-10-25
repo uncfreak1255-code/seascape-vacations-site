@@ -7,6 +7,7 @@
     "pretest": "npm run build",
     "test": "npm run test:unit",
     "test:unit": "node --test scripts/enforcement/*.test.js scripts/recovery/*.test.js scripts/evals/*.test.js scripts/perf/*.test.js",
+    "check:brief": "node scripts/enforcement/check-brief.js",
     "lint:content": "node --test scripts/enforcement/content-voice.test.js scripts/enforcement/p0-factual-integrity.test.js",
     "lint:design": "node scripts/design/design-lint.js",
     "lint:design:update": "node scripts/design/design-lint.js --update-baseline",
