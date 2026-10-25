@@ -118,10 +118,10 @@
   .catalog-trip { padding:20px 16px; order:2; }
   .catalog-trip-heading { gap:8px; margin-bottom:16px; }
   .catalog-trip-heading span { font-size:12px; }
-  #catalog-trip-form { grid-template-columns:1fr 1fr; gap:12px; }
+  #catalog-trip-form { grid-template-columns:1fr; gap:12px; }
   #catalog-trip-form .btn { padding:12px 8px; font-size:12px; }
-  #catalog-trip-form select { font-size:13px; padding:10px 8px; }
-  #catalog-trip-form input { font-size:13px; padding:10px 8px; }
+  #catalog-trip-form select { font-size:16px; padding:10px 8px; }
+  #catalog-trip-form input { font-size:16px; padding:10px 8px; }
   .catalog-collection { padding-top:40px; order:4; }
   .catalog-collection-heading { display:block; }
   .catalog-collection-heading>p { margin-top:16px; }

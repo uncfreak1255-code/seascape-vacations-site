@@ -267,3 +267,7 @@ Gold is retired on every legacy route; the per-surface replacement rules (ink, c
 
 ## Direction decision
 The September 4 Open House draft preserved useful guest behavior but was visually too restrained. On September 5, two new real-photo slices were rendered on desktop and mobile: cinematic Waterline and Spatial Atlas. Waterline won for photographic presence and a clear active home; the atlas won for personality but obscured adjacent cards on a narrow screen. The chosen direction combines Waterline's opening with a readable, responsive postcard collection. The prior draft remains in Git and the before/after proof; its existence is not a reason to keep weak composition.
+
+## Homepage consolidation direction (October 25, 2026)
+
+Authorized selection from existing drafts: cinema title-card typography over the full-bleed home photography, followed by one paper/ink mosaic for why book direct. The mosaic leads with comparison of complete checkout totals; no guaranteed savings or universal platform-fee statement. Keep original photo identity, manual scene selection, trip continuity and Hostaway handoff. No guest-facing prototype pickers or price-counter animation. Mobile booking inputs/selects are at least 16px with native select affordance and full-width property/catalog controls. Final rendered and release review remains required before publication.

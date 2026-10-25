@@ -33,7 +33,7 @@ test("guest.css ships one named --g-control-treatment token", () => {
   assert.match(css, /--g-control-radius:999px/);
   assert.match(css, /--g-button-arrow:1/);
   assert.match(css, /border-radius:var\(--g-control-radius\)/);
-  assert.match(css, /\.g-button::after/);
+  assert.match(css, /\.g-button::after\{content:"";position:static;inset:auto;border:0;border-radius:0/);
   assert.match(css, /ink-pill/);
   assert.match(css, /ink-rounded/);
 });

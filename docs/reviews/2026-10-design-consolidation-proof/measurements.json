@@ -1,0 +1,158 @@
+[
+  {
+    "name": "desktop",
+    "route": "/",
+    "fields": [
+      {
+        "font": "14px",
+        "width": 271.6875,
+        "appearance": "auto"
+      },
+      {
+        "font": "14px",
+        "width": 271.6875,
+        "appearance": "auto"
+      },
+      {
+        "font": "14px",
+        "width": 230.953125,
+        "appearance": "auto"
+      }
+    ],
+    "arrow": {
+      "position": "static",
+      "inset": "auto",
+      "borderRadius": "0px"
+    }
+  },
+  {
+    "name": "desktop",
+    "route": "/properties/",
+    "fields": [
+      {
+        "font": "14px",
+        "width": 340.09375,
+        "appearance": "auto"
+      },
+      {
+        "font": "14px",
+        "width": 340.109375,
+        "appearance": "auto"
+      },
+      {
+        "font": "14px",
+        "width": 374.125,
+        "appearance": "auto"
+      }
+    ],
+    "arrow": {
+      "position": "static",
+      "inset": "auto",
+      "borderRadius": "0px"
+    }
+  },
+  {
+    "name": "desktop",
+    "route": "/properties/blue-house/",
+    "fields": [
+      {
+        "font": "13px",
+        "width": 136,
+        "appearance": "auto"
+      },
+      {
+        "font": "13px",
+        "width": 136,
+        "appearance": "auto"
+      },
+      {
+        "font": "14px",
+        "width": 288,
+        "appearance": "auto"
+      }
+    ],
+    "arrow": {
+      "position": "static",
+      "inset": "auto",
+      "borderRadius": "0px"
+    }
+  },
+  {
+    "name": "phone",
+    "route": "/",
+    "fields": [
+      {
+        "font": "16px",
+        "width": 350,
+        "appearance": "auto"
+      },
+      {
+        "font": "16px",
+        "width": 350,
+        "appearance": "auto"
+      },
+      {
+        "font": "16px",
+        "width": 350,
+        "appearance": "auto"
+      }
+    ],
+    "arrow": {
+      "position": "static",
+      "inset": "auto",
+      "borderRadius": "0px"
+    }
+  },
+  {
+    "name": "phone",
+    "route": "/properties/",
+    "fields": [
+      {
+        "font": "16px",
+        "width": 350,
+        "appearance": "auto"
+      },
+      {
+        "font": "16px",
+        "width": 350,
+        "appearance": "auto"
+      },
+      {
+        "font": "16px",
+        "width": 350,
+        "appearance": "auto"
+      }
+    ],
+    "arrow": {
+      "position": "static",
+      "inset": "auto",
+      "borderRadius": "0px"
+    }
+  },
+  {
+    "name": "phone",
+    "route": "/properties/blue-house/",
+    "fields": [
+      {
+        "font": "16px",
+        "width": 300,
+        "appearance": "auto"
+      },
+      {
+        "font": "16px",
+        "width": 300,
+        "appearance": "auto"
+      },
+      {
+        "font": "16px",
+        "width": 300,
+        "appearance": "auto"
+      }
+    ],
+    "arrow": {
+      "position": "static",
+      "inset": "auto",
+      "borderRadius": "0px"
+    }
+  }
+]
