@@ -24,7 +24,7 @@ A figure ships only when all of these hold:
 
 - Plain SVG or HTML made at build time. It needs no script and is never an image of text.
 - A text label, and the full table stays on the page as the data source.
-- One figure per guide, directly under the answer (see Instrument above).
+- One figure per guide, directly under the answer (see Instrument in the guide frame in `DESIGN.md`).
 - Colors only from this file.
 - Readable at 360, 375 and 393px wide with no sideways swipe.
 - A text diff against the page it replaces shows no new fact.
