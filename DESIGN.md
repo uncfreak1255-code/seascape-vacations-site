@@ -273,13 +273,8 @@ F1 and F2 apply to the whole page on the Waterline guest routes (`body.guest-sit
 The `space`, `motion`, `shadow` and `breakpoints` keys in the `waterline:` block are the scales. How they are used and checked, plus the state rules and the nine form patterns, live in `docs/design/scales-states-forms.md`.
 
 ## How this direction changes
-This file records deliberate current choices; it is not proof that a choice is good. Authorized product/design work may revise it after examining a rendered alternative, the guest task, truth, accessibility and performance. A specific model, external design app, color, font, button shape, or template is not an approval authority.
-
-Use the existing design specialist/critic for useful challenges and the existing browser/Playwright workflow for proof. Do not add a new review layer. For material changes capture the actual desktop/mobile route, important interactive states, and real photos. Label mocked availability or pricing. Inspect images and page identity before updating any baseline.
+This file records current choices, not proof they are good. How to revise it, and why Waterline won in September 2026, live in `docs/design/direction-changes.md`.
 
 ## Legacy gold CTAs
 
 Gold is retired on every legacy route; the per-surface replacement rules (ink, citron or paper, picked by measured contrast) live in `docs/design/legacy-gold-ctas.md`.
-
-## Direction decision
-The September 4 Open House draft preserved useful guest behavior but was visually too restrained. On September 5, two new real-photo slices were rendered on desktop and mobile: cinematic Waterline and Spatial Atlas. Waterline won for photographic presence and a clear active home; the atlas won for personality but obscured adjacent cards on a narrow screen. The chosen direction combines Waterline's opening with a readable, responsive postcard collection. The prior draft remains in Git and the before/after proof; its existence is not a reason to keep weak composition.
