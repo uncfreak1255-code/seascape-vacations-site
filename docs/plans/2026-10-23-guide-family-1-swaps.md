@@ -190,7 +190,7 @@ All internal hrefs on the legacy page are still present.
 
 `src/guides/srq-airport-to-anna-maria-island.html` moved onto the frame. Title, meta
 description, keywords, canonical, og/twitter text and all four `application/ld+json`
-blocks (Article, BreadcrumbList, FAQPage, LocalBusiness) are byte-identical to main
+blocks (Article, BreadcrumbList, FAQPage, LocalBusiness) match main except swap 14
 (carried in `guideJsonLd`; the first three as YAML block scalars so the source still
 holds the raw `"dateModified": "2026-08-19"`, headline and breadcrumb strings the pinned
 enforcement tests read). The H1 text is unchanged (its `guide-title` class is gone). No
