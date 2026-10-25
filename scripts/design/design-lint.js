@@ -144,7 +144,9 @@ function stripToVisibleText(source) {
     .replace(/<[^>]+>/g, " ");
 }
 
-const styleContextOf = (source, rel) => (rel && isStylesheet(rel) ? source : extractStyleContexts(source));
+// A /* comment */ is not a style context: a contrast note naming a hex is not a use of it.
+const styleContextOf = (source, rel) =>
+  (rel && isStylesheet(rel) ? source : extractStyleContexts(source)).replace(/\/\*[\s\S]*?\*\//g, "");
 
 function lintSource(source, allowlist, rel) {
   // counts back the per-check ratchet: hexCounts maps each off-brand hex to how
@@ -527,12 +529,10 @@ function main() {
   const baseRef = resolveBaseRef(args);
   const touched = changedFiles(baseRef);
 
-  // COVERAGE FLOOR. Adversarial review, 2026-07-28: thinning or emptying
-  // src/guides made the file list empty, the evaluate() loop never ran, and
-  // the gate printed "0 guide sources scanned, 0 new violations" and exited
-  // 0 — a required CI check reporting success after checking nothing. A baseline
-  // entry that no longer resolves to a scanned file is the signal: the corpus
-  // shrank without going through --update-baseline.
+  // COVERAGE FLOOR. Adversarial review, 2026-07-28: an emptied source root made
+  // the file list empty, evaluate() never ran, and the gate reported success
+  // after checking nothing. A baseline entry that no longer resolves to a
+  // scanned file is the signal: the corpus shrank without --update-baseline.
   const coverageFailures = checkCoverage(state, baseline);
 
   // PALETTE INTEGRITY. Same review: appending two hex values to DESIGN.md widened

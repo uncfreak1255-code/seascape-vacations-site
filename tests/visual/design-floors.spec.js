@@ -14,12 +14,9 @@ const { gotoMarketingRoute, registerStableNetwork } = require("./test-helpers");
  * spec proves those floors on every money route.
  *
  * Scope rule (SPEC-common.md): F1 and F2 check the whole page on
- * `body.guest-site` pages (home, catalog, the six property pages, the owner page,
- * the About page)
- * and on `body.planning-guide` pages (DESIGN.md "Planning guides"), and only
- * the header/mobile-menu/footer subtrees on every other route, whose bodies
- * are not fully restyled in this PR. The scope is read from the live DOM
- * (`document.body.classList`), not hardcoded per route, so it stays correct as
+ * `body.guest-site` and `body.planning-guide` pages (WHOLE_PAGE_CLASSES) and
+ * only the header/mobile-menu/footer subtrees on every other route. The scope
+ * is read from the live DOM, not hardcoded per route, so it stays correct as
  * routes move between the states.
  */
 
@@ -28,24 +25,23 @@ const SCENES = ["the-oasis", "dockside-dreams", "sarasota-luxe", "river-house", 
 // against a visual baseline taken from the unchanged page.
 const floorRoutes = moneyRoutes;
 
-// One route per page family that must keep whole-page F1/F2 scope. A layout
-// that drops `guest-site` or `planning-guide` from <body> would otherwise
-// shrink the floors to the shell on every page of that family without a
-// single failing test (PR C, 2026-10-25).
+// Body classes that widen F1/F2 from the shell to the whole page, and one
+// route per family with the class its layout must keep. Dropping the class
+// would otherwise shrink the floors silently (PR C, 2026-10-25).
+const WHOLE_PAGE_CLASSES = ["guest-site", "planning-guide"];
 const WHOLE_PAGE_FAMILIES = {
-  owner: "property-management",
-  about: "about-seascape",
-  catalog: "properties-catalog",
-  property: "the-oasis",
-  guide: "guide-ami-how-to-get-to",
+  owner: ["property-management", "guest-site"],
+  about: ["about-seascape", "guest-site"],
+  catalog: ["properties-catalog", "guest-site"],
+  property: ["the-oasis", "guest-site"],
+  guide: ["guide-ami-how-to-get-to", "planning-guide"],
 };
 
 // -- in-page scan functions (serialized into the browser by page.evaluate) --
 
-function collectSmallText() {
+function collectSmallText(wholePageClasses) {
   const FLOOR = 12;
-  const isGuestSite =
-    document.body.classList.contains("guest-site") || document.body.classList.contains("planning-guide");
+  const isGuestSite = wholePageClasses.some((c) => document.body.classList.contains(c));
   const roots = isGuestSite
     ? [document.body]
     : Array.from(document.querySelectorAll(".g-header, .g-mobile-menu, .g-footer"));
@@ -97,10 +93,9 @@ function collectSmallText() {
   return out;
 }
 
-function collectSmallTargets() {
+function collectSmallTargets(wholePageClasses) {
   const FLOOR = 44;
-  const isGuestSite =
-    document.body.classList.contains("guest-site") || document.body.classList.contains("planning-guide");
+  const isGuestSite = wholePageClasses.some((c) => document.body.classList.contains(c));
   const roots = isGuestSite
     ? [document.body]
     : Array.from(document.querySelectorAll(".g-header, .g-mobile-menu, .g-footer"));
@@ -237,15 +232,16 @@ function heroTextSelectors(isMobileProject) {
     : [".g-nav a", ".g-header-phone", ".g-arrival-seal", ...shared];
 }
 
-for (const [family, slug] of Object.entries(WHOLE_PAGE_FAMILIES)) {
+for (const [family, [slug, bodyClass]] of Object.entries(WHOLE_PAGE_FAMILIES)) {
   const routeConfig = floorRoutes.find((route) => route.slug === slug);
   if (!routeConfig) throw new Error(`[design-floors] routes.js lost the "${slug}" route the ${family} family floor needs`);
+  if (!WHOLE_PAGE_CLASSES.includes(bodyClass)) throw new Error(`[design-floors] "${bodyClass}" is not a whole-page class`);
   test(`${slug} — F1/F2 scope is the whole ${family} page`, async ({ page }) => {
     await gotoMarketingRoute(page, routeConfig);
     const classes = await page.evaluate(() => Array.from(document.body.classList));
     assert.ok(
-      classes.includes("guest-site") || classes.includes("planning-guide"),
-      `${slug} <body class="${classes.join(" ")}"> scopes F1/F2 to the shell only; the ${family} family must keep whole-page floors`
+      classes.includes(bodyClass),
+      `${slug} <body class="${classes.join(" ")}"> lost "${bodyClass}", so F1/F2 would cover only the shell for the ${family} family`
     );
   });
 }
@@ -255,7 +251,7 @@ for (const [family, slug] of Object.entries(WHOLE_PAGE_FAMILIES)) {
 for (const routeConfig of floorRoutes) {
   test(`${routeConfig.slug} — F1 no text below 12px`, async ({ page }, testInfo) => {
     await gotoMarketingRoute(page, routeConfig);
-    const offenders = await page.evaluate(collectSmallText);
+    const offenders = await page.evaluate(collectSmallText, WHOLE_PAGE_CLASSES);
     assert.equal(
       offenders.length,
       0,
@@ -272,7 +268,7 @@ for (const routeConfig of floorRoutes) {
     test.skip(testInfo.project.name !== "mobile-chromium", "F2 tap targets is a mobile-only floor");
 
     await gotoMarketingRoute(page, routeConfig);
-    const before = await page.evaluate(collectSmallTargets);
+    const before = await page.evaluate(collectSmallTargets, WHOLE_PAGE_CLASSES);
 
     // The mobile nav lives behind .g-menu-button; its links are [hidden]
     // (and therefore skipped above) until opened, so check it explicitly.
@@ -284,7 +280,7 @@ for (const routeConfig of floorRoutes) {
         const menu = document.getElementById("guest-menu");
         return Boolean(menu) && !menu.hidden;
       });
-      afterMenuOpen = await page.evaluate(collectSmallTargets);
+      afterMenuOpen = await page.evaluate(collectSmallTargets, WHOLE_PAGE_CLASSES);
     }
 
     const offenders = dedupeTargets([...before, ...afterMenuOpen]);

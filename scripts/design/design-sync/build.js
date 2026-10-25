@@ -6,10 +6,9 @@
  *
  * WHY THIS EXISTS
  * The Claude Design project "Seascape Vacations Design System" is what Claude Design
- * builds from when it mocks a Seascape surface. It went stale (pre-Waterline teal/gold,
- * Playfair, pill buttons). This script regenerates it from repo truth so the two never
- * drift by hand: DESIGN.md's Waterline block, the live guest CSS, the self-hosted fonts
- * and the real rendered markup of the shared shell and guest components.
+ * mocks Seascape surfaces from. This script regenerates it from repo truth so the two
+ * never drift by hand: DESIGN.md's Waterline block, the live guest CSS, the self-hosted
+ * fonts and the real rendered markup of the shared shell and guest components.
  *
  * WHAT IT PRODUCES (into --out, default .design-sync/out, gitignored)
  *   SKILL.md, README.md            entrypoints Claude Design reads first (templates/)
@@ -18,7 +17,7 @@
  *   waterline/fonts.css + fonts/   self-hosted Poppins + Instrument Serif
  *   waterline/*.css                verbatim copies of the live guest stylesheets
  *   waterline/DESIGN.md            verbatim DESIGN.md (visual law)
- *   waterline/{design-review-workflow,writing-style-guide,legacy-gold-ctas,scales-states-forms,guide-figures}.md
+ *   waterline/*.md                 reference docs (copy-reference-documents.js)
  *   preview/*.html                 self-contained cards for the Design System pane,
  *                                  built from the REAL built HTML of the site
  *   _sync-manifest.json            exact writes + deletes for the DesignSync push
@@ -46,8 +45,7 @@ const argValue = (flag, fallback) => {
 };
 const SITE = path.resolve(ROOT, argValue("--site", "_site"));
 const OUT = path.resolve(ROOT, argValue("--out", ".design-sync/out"));
-// The bundle folder is wiped on every build, so it must stay inside the ignored
-// .design-sync/ tree; `--out ..` or an absolute path elsewhere is refused.
+// The bundle folder is wiped on every build, so --out must stay inside the ignored .design-sync/ tree.
 const SYNC_ROOT = path.join(ROOT, ".design-sync");
 if (!(OUT === SYNC_ROOT || OUT.startsWith(SYNC_ROOT + path.sep))) {
   throw new Error(`--out must resolve inside ${SYNC_ROOT}; got ${OUT}`);
@@ -103,7 +101,8 @@ const today = new Date().toISOString().slice(0, 10);
 const stripFontFace = (css) => css.replace(/@font-face\s*\{[^}]*\}\n?/g, "");
 const sheets = Object.fromEntries(require("./stylesheets").map((name) => [name, read(`src/css/${name}.css`)]));
 sheets.guest = stripFontFace(sheets.guest);
-const { base: baseCss, guest: guestCss, arrival: arrivalCss, catalog: catalogCss, "catalog-card": catalogCardCss } = sheets;
+const inlined = (name) => sheets[name] ?? (() => { throw new Error(`stylesheets.js must list "${name}": the preview cards inline it.`); })();
+const [baseCss, guestCss, arrivalCss, catalogCss, catalogCardCss] = ["base", "guest", "arrival", "catalog", "catalog-card"].map(inlined);
 
 /* ----------------------------------------------------------- homes */
 // Home count and names come from canonical property data, never a literal.
