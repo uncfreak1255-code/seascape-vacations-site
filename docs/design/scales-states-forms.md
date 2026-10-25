@@ -9,6 +9,7 @@ The `space`, `motion`, `shadow` and `breakpoints` keys in the `waterline:` block
 
 States, for every control:
 - **Focus:** 3px clay outline, 4px offset, on every focusable element; no component overrides it. Known exception: the owner-form consent checkbox still uses a 2px ink ring (`owner.css`).
+  On ink (the footer), the ring is 3px citron `#D6EB85` instead, because clay on ink is too low-contrast to see. The same footer uses rule `#CAD4CF` for labels and tagline, paper for links, citron for link hover, and white at 15% (`#ffffff26`) for its bottom rule.
 - **Disabled:** rule background, muted text, no hover or press, `cursor:not-allowed`. Prefer removing a control to disabling it; disabled means "wait", not "no".
 - **Loading:** muted background, a 14px ring spinner, the verb in its -ing form, `aria-busy` on the control; the label stays readable. Never a skeleton on paper.
 - **Error:** 2px clay underline, `aria-invalid`, and one 13px clay sentence under the field that says what to do next.

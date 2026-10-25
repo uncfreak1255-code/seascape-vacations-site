@@ -29,7 +29,7 @@
 .g-header-phone-icon{display:none}
 .guest-shell .g-button,.guest-site .g-button,.guest-site .btn-brand,.guest-site .btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:14px 24px;background:var(--g-ink);color:white;border:1px solid var(--g-ink);border-radius:4px;font:500 14px/1.35 Poppins,sans-serif;text-decoration:none;letter-spacing:0;text-transform:none;box-shadow:none;cursor:pointer;touch-action:manipulation;transition:background .15s,transform .12s cubic-bezier(.23,1,.32,1)}
 .guest-shell .g-button::before,.guest-shell .g-button::after,.guest-site .btn::after,.guest-site .btn::before,.guest-site .g-button::after,.guest-site .g-button::before{display:none}
-@media(hover:hover) and (pointer:fine){.g-button:hover,.guest-site .btn:hover{background:var(--g-muted);transform:none;box-shadow:none;color:white}}
+@media(hover:hover) and (pointer:fine){.g-button:hover,.guest-site .btn:hover{background:var(--g-muted);transform:none;box-shadow:none;color:white}.g-footer a[href]:hover{color:#d6eb85}}
 .g-menu-button{display:none;background:none;border:0;padding:12px 0;color:var(--g-ink);min-height:44px;min-width:44px}
 .g-mobile-menu{position:absolute;inset:100% 0 auto;background:var(--g-paper);padding:20px;border-bottom:1px solid var(--g-rule);box-shadow:0 20px 30px #173d4214}
 .g-mobile-menu a{display:block;padding:13px 0;border-bottom:1px solid var(--g-rule);text-decoration:none}
@@ -48,19 +48,18 @@
 .g-section-heading>p{max-width:360px;color:var(--g-muted)}
 .g-footer{background:var(--g-ink);color:var(--g-paper);padding:56px 0 24px}
 .g-footer-grid{display:grid;grid-template-columns:1fr 1fr .8fr .8fr;gap:48px}
-.g-footer .g-label{color:var(--g-paper)}
+.g-footer .g-label,.g-footer-grid p{color:var(--g-rule)}
 .g-footer a{color:var(--g-paper);text-decoration:none}
+.g-footer a:focus-visible{outline:3px solid #d6eb85;outline-offset:4px}
 .g-footer-grid>div>a:not(.g-wordmark){display:flex;align-items:center;min-height:44px;font-size:14px;padding:10px 0}
 .g-footer-grid p{font-size:14px}
-.g-footer-bottom{display:flex;justify-content:space-between;border-top:1px solid #ffffff33;padding-top:24px;margin-top:40px;font-size:13px}
+.g-footer-bottom{display:flex;justify-content:space-between;border-top:1px solid #ffffff26;padding-top:24px;margin-top:40px;font-size:13px}
 .g-footer-bottom div{display:flex;gap:24px}
 .g-footer-bottom a{display:inline-flex;align-items:center;min-height:44px}
-/* Legacy guide CTA bars. 42 guides hard-code #sticky-book-bar and 16 hard-code
-   .mobile-cta-bar, with the gold pill and the old teal call circle as inline styles, so each property below needs !important
-   to win over them. The Waterline tokens are declared locally because .guest-shell
-   scopes that palette to the header and footer only, so it never reaches these
-   bars. Replaces white-on-gold (2.25:1) with ink-on-citron (9.02:1) and lifts both
-   controls to the 44px mobile floor. */
+/* Legacy guide CTA bars: 42 guides hard-code #sticky-book-bar and 16 .mobile-cta-bar,
+   with the gold pill and teal call circle inline, so each property needs !important.
+   Tokens are local because .guest-shell scopes the palette to header and footer.
+   Ink-on-citron (9.02:1) replaces white-on-gold (2.25:1); both controls reach 44px. */
 .guest-shell #sticky-book-bar,.guest-shell .mobile-cta-bar{--g-paper:#f6f3eb;--g-citron:#d6eb85;--g-ink:#173d42;background:var(--g-ink)!important;background-image:none!important;box-shadow:0 -1px 0 #ffffff26!important}
 .guest-shell #sticky-book-bar>span,.guest-shell .mobile-cta-bar .cta-title,.guest-shell .mobile-cta-bar .cta-subtitle{color:var(--g-paper)!important;font-family:Poppins,sans-serif!important}
 .guest-shell #sticky-book-bar a,.guest-shell .mobile-cta-bar .btn-gold{display:inline-flex!important;align-items:center!important;justify-content:center!important;min-height:44px!important;padding:12px 20px!important;background:var(--g-citron)!important;background-image:none!important;color:var(--g-ink)!important;border:0!important;border-radius:4px!important;font:500 14px/1.35 Poppins,sans-serif!important;white-space:nowrap!important}
@@ -368,7 +367,7 @@
 .guest-shell .g-header a,.guest-shell .g-footer a{color:inherit;text-decoration:none}
 .guest-shell .g-header .g-button{color:white}
 .guest-shell .g-header [hidden]{display:none!important}
-.guest-shell .g-header a:focus-visible,.guest-shell .g-header button:focus-visible,.guest-shell .g-footer a:focus-visible{outline:3px solid var(--g-accent);outline-offset:4px}
+.guest-shell .g-header a:focus-visible,.guest-shell .g-header button:focus-visible{outline:3px solid var(--g-accent);outline-offset:4px}
 .guest-shell .main-content,.guest-shell .journal-page{padding-top:0}
 
 @media(min-width:701px) and (max-width:1000px){.g-nav{display:none}.g-menu-button{display:block}.g-header{gap:20px}}
