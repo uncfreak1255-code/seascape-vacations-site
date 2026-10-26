@@ -32,6 +32,20 @@ the agent finds no inputs and invents its own, which makes scores drift
 between runs. The property-schema sample includes a rating with no review
 count, to check that the agent does not invent an `aggregateRating`.
 
+First fixture run (single run per case, about $1.10 in total, 2026-10-25). Every
+answer quoted the sample data, so the agents read the inputs.
+- `property-schema` passed 3/3 judge votes, and `specialist-concept` 2/3.
+- `owner-form-cro` scored 1/3 with the default Haiku judge and 3/3 with
+  `--judge-model sonnet`. Grading noise was part of the drift, so pass
+  `--judge-model sonnet` when comparing runs.
+- `openseo-loop` failed under both judges. With data in hand, the agent skipped
+  `openseo-review` and offered live OpenSEO lookups without a cost check.
+  That is a real skill-trigger gap to fix next.
+- `design-review-qa` failed under both judges. The answer covered rendered
+  checks, design rules, screenshots and baselines but never said to fix
+  failures before human review. The skill or the rubric wording needs a
+  follow-up.
+
 Retired the Claude-only `animate`, `break-ui` and `review-animations` skills.
 The audit showed no recorded use, and `emil-design-eng` and `design-review`
 cover the same ground.
