@@ -124,6 +124,10 @@ This is the operating standard:
   proof gate, or leave a named blocker.
 - After deploy: reread the first 7 complete days after Google has final data,
   then compare against the pre-edit page/query baseline.
+- After the rescue ships: add the page to `docs/status/page-ledger.json` so no
+  other change lands on it for 28 days without a `Settle-Override: <reason>`
+  commit trailer. A rescue of a settling page uses that trailer; the 7-day
+  readback still applies.
 
 No page that has already been called a winner should fall from #1 to #5 and sit
 in a generic wait state with no named owner, no brief, and no attack-lane move.
