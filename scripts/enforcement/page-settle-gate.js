@@ -22,16 +22,23 @@ function capture(args, cwd, env) {
   return result.stdout;
 }
 
-function baseRevFor(range, cwd, env) {
+// Holds come from the base side of the range: its tip (holds added to the target
+// branch after this branch was cut) and the merge-base. The head's own ledger is
+// never read, so an entry added by the shipping PR does not block that PR.
+function baseRevsFor(range, cwd, env) {
   const value = String(range || "").trim();
+  let left;
+  let right;
   if (value.includes("...")) {
-    const [left, right] = value.split("...");
-    return capture(["merge-base", left || "HEAD", right || "HEAD"], cwd, env).trim();
+    [left, right] = value.split("...");
+  } else if (value.includes("..")) {
+    [left, right] = value.split("..");
+  } else {
+    left = value;
   }
-  if (value.includes("..")) {
-    return value.split("..")[0] || "HEAD";
-  }
-  return capture(["merge-base", value, "HEAD"], cwd, env).trim();
+  left = left || "HEAD";
+  const mergeBase = capture(["merge-base", left, right || "HEAD"], cwd, env).trim();
+  return [...new Set([left, mergeBase])];
 }
 
 function readLedgerAt(rev, cwd, env) {
@@ -45,6 +52,8 @@ function readLedgerAt(rev, cwd, env) {
 function settlingEntries(ledger, now) {
   const settleDays = Number(ledger.settleDays) || 0;
   return (ledger.pages || [])
+    // An entry recorded before publication has no shipped date yet and holds nothing.
+    .filter((entry) => entry.shipped !== undefined && entry.shipped !== null && entry.shipped !== "")
     .map((entry) => {
       const shipped = Date.parse(`${entry.shipped}T00:00:00Z`);
       if (Number.isNaN(shipped)) {
@@ -60,7 +69,13 @@ function assertNoSettlingPageEdits({ range, cwd = process.cwd(), env = process.e
     throw new Error("page settle gate requires a non-empty range");
   }
 
-  const settling = settlingEntries(readLedgerAt(baseRevFor(range, cwd, env), cwd, env), now);
+  const seen = new Set();
+  const settling = baseRevsFor(range, cwd, env)
+    .flatMap((rev) => settlingEntries(readLedgerAt(rev, cwd, env), now))
+    .filter((entry) => {
+      const key = `${entry.route}|${entry.shipped}`;
+      return seen.has(key) ? false : seen.add(key);
+    });
   if (settling.length === 0) {
     return { status: "passed", touched: [] };
   }
@@ -97,6 +112,6 @@ function assertNoSettlingPageEdits({ range, cwd = process.cwd(), env = process.e
 module.exports = {
   LEDGER_PATH,
   assertNoSettlingPageEdits,
-  baseRevFor,
+  baseRevsFor,
   settlingEntries,
 };

@@ -80,3 +80,23 @@ test("the PR that adds an entry is not blocked by it", () => {
   git("commit", "-q", "-am", "ship a and record it");
   assert.equal(run().status, "passed");
 });
+
+test("an entry with no shipped date yet holds nothing", () => {
+  const unpublished = { settleDays: 28, pages: [{ route: "/guides/a/", sources: ["src/guides/a.html"], pr: 2, shipped: "" }] };
+  assert.equal(settlingEntries(unpublished, NOW).length, 0);
+  assert.throws(() => settlingEntries(JSON.parse(ledger("soon")), NOW), /invalid shipped date "soon"/);
+});
+
+test("a branch cut before a hold landed on main is still held", () => {
+  const { dir, git } = makeRepo();
+  fs.writeFileSync(path.join(dir, LEDGER_PATH), JSON.stringify({ settleDays: 28, pages: [] }));
+  git("commit", "-q", "-am", "empty ledger");
+  git("checkout", "-q", "-b", "topic");
+  fs.writeFileSync(path.join(dir, "src/guides/a.html"), "<title>A from old branch</title>\n");
+  git("commit", "-q", "-am", "edit a");
+  git("checkout", "-q", "main");
+  fs.writeFileSync(path.join(dir, LEDGER_PATH), ledger("2026-10-25"));
+  git("commit", "-q", "-am", "hold a");
+  const gate = (range) => assertNoSettlingPageEdits({ range, cwd: dir, env: FIXTURE_ENV, now: NOW });
+  assert.throws(() => gate("main...topic"), /\/guides\/a\/ .*settles until/);
+});
