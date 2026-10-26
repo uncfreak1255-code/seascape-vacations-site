@@ -1,7 +1,12 @@
 const test = require("node:test");
 const assert = require("node:assert/strict");
 
-const { verdict, tally, claudeSkillNames, readFrontmatter } = require("./audit-skills");
+const fs = require("node:fs");
+const os = require("node:os");
+const path = require("node:path");
+const { execFileSync } = require("node:child_process");
+
+const { verdict, tally, codexUsage, claudeSkillNames, readFrontmatter } = require("./audit-skills");
 
 function row(overrides) {
   return {
@@ -78,4 +83,21 @@ test("claudeSkillNames reads Skill calls and SKILL.md reads", () => {
 test("readFrontmatter returns the description", () => {
   const fm = readFrontmatter("---\nname: x\ndescription: Use when testing.\n---\nbody\n");
   assert.equal(fm.description, "Use when testing.");
+});
+
+test("codexUsage counts a skill read on a later line of a multiline command", () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "audit-skills-"));
+  const db = path.join(dir, "threads.sqlite");
+  const item = (command) => JSON.stringify({ command }).replace(/'/g, "''");
+  execFileSync("sqlite3", [
+    db,
+    "create table thread_items (thread_id text, item_type text, created_at_ms integer, item_json text);" +
+      `insert into thread_items values ('single', 'commandExecution', 10, '${item("cat .agents/skills/example/SKILL.md")}');` +
+      `insert into thread_items values ('multi', 'commandExecution', 10, '${item("pwd\ncat .agents/skills/example/SKILL.md")}');`
+  ]);
+  try {
+    assert.deepEqual(codexUsage(db, 0, new Set(["example"])), { example: { all: 2, focused: 2 } });
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
 });

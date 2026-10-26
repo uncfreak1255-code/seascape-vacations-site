@@ -129,10 +129,9 @@ function codexUsage(dbPath, sinceMs, known) {
       "sqlite3",
       [
         "-readonly",
-        "-separator",
-        "\t",
+        "-json",
         dbPath,
-        "select thread_id, json_extract(item_json,'$.command') from thread_items " +
+        "select thread_id as thread, json_extract(item_json,'$.command') as command from thread_items " +
           `where item_type='commandExecution' and created_at_ms >= ${Math.floor(sinceMs)} ` +
           "and item_json like '%SKILL.md%';"
       ],
@@ -141,13 +140,16 @@ function codexUsage(dbPath, sinceMs, known) {
   } catch {
     return null;
   }
+  // JSON output keeps multiline commands intact; sqlite3 prints nothing for zero rows.
+  let records;
+  try {
+    records = rows.trim() ? JSON.parse(rows) : [];
+  } catch {
+    return null;
+  }
   const threads = new Map();
-  for (const line of rows.split("\n")) {
-    const tab = line.indexOf("\t");
-    if (tab < 0) continue;
-    const command = line.slice(tab + 1);
-    if (!PAGING_VERB_RE.test(command)) continue;
-    const thread = line.slice(0, tab);
+  for (const { thread, command } of records) {
+    if (typeof command !== "string" || !PAGING_VERB_RE.test(command)) continue;
     for (const match of command.matchAll(SKILL_PATH_RE)) {
       if (!threads.has(thread)) threads.set(thread, new Set());
       threads.get(thread).add(match[1]);
@@ -309,4 +311,4 @@ if (require.main === module) {
   process.stdout.write(args.json ? `${JSON.stringify(report, null, 2)}\n` : `${toMarkdown(report)}\n`);
 }
 
-module.exports = { audit, verdict, tally, claudeSkillNames, brokenPointers, readFrontmatter, toMarkdown };
+module.exports = { audit, verdict, tally, codexUsage, claudeSkillNames, brokenPointers, readFrontmatter, toMarkdown };
