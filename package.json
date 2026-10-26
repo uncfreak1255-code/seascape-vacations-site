@@ -101,6 +101,9 @@
     },
     "tmp-promise": {
       "tmp": "0.2.7"
+    },
+    "puppeteer-core": {
+      "@puppeteer/browsers": "3.2.6"
     }
   },
   "devDependencies": {

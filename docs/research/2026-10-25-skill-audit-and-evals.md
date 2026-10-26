@@ -23,6 +23,15 @@ passed 2/3. The suite cost about $1.05 in total. These are single-run results
 in a sandbox that cannot read this repo, so they test the skill text, not
 repo-grounded output.
 
+Five cases now ship fixed sample inputs under `<case>/fixtures/`, which a
+`case.yaml` scaffold copies into the sandbox's working folder; critic-verdict
+needs none because its prompt carries the whole input. The scaffold runs only
+with `--scaffold`, so run the suite as
+`claude plugin eval plugins/seascape-seo-os --scaffold ...`. Without that flag
+the agent finds no inputs and invents its own, which makes scores drift
+between runs. The property-schema sample includes a rating with no review
+count, to check that the agent does not invent an `aggregateRating`.
+
 Retired the Claude-only `animate`, `break-ui` and `review-animations` skills.
 The audit showed no recorded use, and `emil-design-eng` and `design-review`
 cover the same ground.
