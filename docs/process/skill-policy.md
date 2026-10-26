@@ -104,6 +104,14 @@ business context.
 
 ## Agent-surface-audit receipts
 
+### 2026-10-25 — skill audit, plugin evals and design-skill repair
+
+Added read-only `npm run audit:skills` and a six-case `claude plugin eval`
+suite in `plugins/seascape-seo-os/evals/`. `seascape-design-specialist` and
+`design-review` failed their evals and now pass. Each skill now states its own
+deliverable and proof contract. Retired the unused `animate`, `break-ui` and
+`review-animations` skills. See `docs/research/2026-10-25-skill-audit-and-evals.md`.
+
 ### 2026-10-23 — repo-scoped Compound Writing trial
 
 Compound Writing 2.4.1 is retained as an advisory challenger for this repo only.

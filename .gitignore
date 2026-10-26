@@ -66,3 +66,6 @@ scripts/data/
 /index.html
 /stays/
 /property-management/
+
+# claude plugin eval run output
+plugins/seascape-seo-os/evals/results/

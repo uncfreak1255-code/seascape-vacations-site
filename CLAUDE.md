@@ -7,7 +7,7 @@ for the task" routes after checking source currency. This file holds only the
 Claude harness delta.
 
 - Skills: shared `.claude/skills/<name>` entries link to the maintained
-  `.agents/skills/<name>` source. The six Claude-only UI craft skills are
+  `.agents/skills/<name>` source. The three Claude-only UI craft skills are
   real directories declared in `.agents/skills-divergence.json`; they remain
   optional under the Site design rules. Respect each skill's invocation policy
   and applicable user skill overrides. A displayed or installed skill is not
