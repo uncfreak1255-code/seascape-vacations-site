@@ -56,6 +56,16 @@ answer quoted the sample data, so the agents read the inputs.
   failures before human review. The skill or the rubric wording needs a
   follow-up.
 
+Follow-up on `design-review-qa` (2026-10-26). The skill already said to fix
+in-scope failures before human review. The failing answer opened with "fix
+those before you do any QA", so the rubric was too literal: it wanted the exact
+phrase. The rubric bullet now accepts any wording that puts fixes before review,
+but a bare "needs a passing check" still fails. Rerun with `--scaffold
+--judge-model sonnet`: 3/3 runs passed with the plugin and 3/3 in the
+no-plugin baseline, for $0.65. With fixture inputs this case no longer tells
+the skill apart from the base model (Δ 0.00). It now checks that answers stay
+correct, not that the skill helps.
+
 Retired the Claude-only `animate`, `break-ui` and `review-animations` skills.
 The audit showed no recorded use, and `emil-design-eng` and `design-review`
 cover the same ground.
