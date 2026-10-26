@@ -223,6 +223,15 @@ If the work changes Seascape’s business understanding, write back to
 durable writebacks to any other repo through a clean keeper branch or PR from
 that repo's current `origin/main`, never by mutating a local sibling checkout.
 
+## Review guidelines
+
+Request `@codex review` on every PR except Dependabot's, on the head you intend
+to merge, and answer each finding before merge. If the run is unfinished after
+15 minutes, request it again naming the head SHA. Codex unavailability (quota,
+outage, or no result) does not block a BASELINE PR; say so in the PR body.
+Every reviewer, `@codex review` included, follows `REVIEW.md` from the base
+branch, not the PR.
+
 ## Closeout Rule
 
 Before finishing, check the touched area for stale instructions, dead code,
