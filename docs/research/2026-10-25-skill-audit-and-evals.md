@@ -41,6 +41,16 @@ answer quoted the sample data, so the agents read the inputs.
 - `openseo-loop` failed under both judges. With data in hand, the agent skipped
   `openseo-review` and offered live OpenSEO lookups without a cost check.
   That is a real skill-trigger gap to fix next.
+  Fixed 2026-10-26: the rubric was right and the description was the fault.
+  It named "rank-tracking regressions" and "OpenSEO audits" but not the way
+  people actually describe the problem, a page dropping in Google with a
+  Search Console export in hand. The description now leads with that case and
+  says the skill reads Search Console evidence first and checks cost before
+  paid lookups. The body did not change. Rerun with `--scaffold --case
+  openseo-loop --judge-model sonnet`: the with-skill arm scored 3/3 runs, all
+  judge votes PASS, and loaded the skill each time. Each answer said a paid
+  OpenSEO lookup needs a quoted cost and approval first. The without-skill arm
+  scored 1/3 (delta +0.67). The run cost $0.80.
 - `design-review-qa` failed under both judges. The answer covered rendered
   checks, design rules, screenshots and baselines but never said to fix
   failures before human review. The skill or the rubric wording needs a

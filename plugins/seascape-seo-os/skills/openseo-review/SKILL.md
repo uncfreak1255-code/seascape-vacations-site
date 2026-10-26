@@ -1,6 +1,6 @@
 ---
 name: openseo-review
-description: Use for Seascape SEO improvement loops, OpenSEO audits, keyword or competitor research, AI citation visibility, and rank-tracking regressions; preserves local evidence, owning-repo proof and paid-run approval.
+description: Use when a Seascape page drops in Google rank or clicks, and for SEO loops, OpenSEO audits, keyword, competitor, AI-citation or rank-tracking review; reads Search Console evidence first, cost-checks paid lookups.
 ---
 
 # OpenSEO Opportunity Review
