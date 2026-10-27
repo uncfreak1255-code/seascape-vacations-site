@@ -112,3 +112,21 @@ Normal publication is the existing daily 09:05 UTC production batch. No direct
 push to production or workflow dispatch is part of this source change. Retain
 71b9f3ac as the source rollback reference for this page only. A merge receipt
 proves source completion; loaded revision and live checks prove delivery.
+
+## Implementation verification — October 27, 2026
+
+The approved draft is integrated with the two bounded query-coverage edits.
+The independent read-only Voice Editor/Release Gate approved the copy with zero
+findings and confirmed five visible/schema FAQs. Full local release verification
+passed 1,277 tests, design lint, build, internal links and JSON-LD. The focused
+FAQ parity regression was observed red on old source and green on this page.
+Four isolated desktop/mobile browser cases reached both mapped stay collections
+and emitted the existing guide-click event with the correct guide slug; no
+external telemetry, form or send was used.
+
+Source checkpoint: 271931a05600d15e6f4c91db9a08a737a58d18a7. The existing native
+Update Visual Baselines run 40578574009 regenerated only this article's desktop
+and mobile screenshots, committed as fa7f88ee. Their rendered layout was
+inspected. Source publication is PR #819; production and outcome readback stay
+pending their separate delivery gates. No production dispatch or new schedule
+was created.
