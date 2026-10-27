@@ -152,11 +152,11 @@ test("winner guide metadata and conversion markers stay decision-forward", () =>
   );
   assert.match(
     bradentonVsSarasota,
-    /"dateModified": "2026-10-22"/
+    /"dateModified": "2026-10-27"/
   );
   assert.match(
     bradentonVsSarasota,
-    /Reviewed June 2026/
+    /Updated October 27, 2026/
   );
 });
 
