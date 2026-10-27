@@ -97,6 +97,13 @@ controls in each brief, under each brief's own approval route.
 
 Rules this plan follows until then:
 
+October 27 exception: Sawyer approved the full Compound Writing copy in PR
+#819, then selected Waterline A and authorized normal review/publication for
+Bradenton vs Sarasota. That named guide is released from the hold below and
+cannot be an unchanged control across those changes. See
+`docs/briefs/2026-10-27-bradenton-sarasota-full-article.md`. Other holdouts and
+rescue readback windows are unchanged; this exception does not replace R0.
+
 - **Holdouts.** bradenton-vs-sarasota, best-time and the weather guide get no layout or copy
   change until both rescues' 28-day readbacks are recorded and Lane 4's weather decision
   is made. They are the largest unchanged pages and anchor every readback.

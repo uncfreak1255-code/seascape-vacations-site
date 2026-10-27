@@ -35,6 +35,7 @@ const WHOLE_PAGE_FAMILIES = {
   catalog: ["properties-catalog", "guest-site"],
   property: ["the-oasis", "guest-site"],
   guide: ["guide-ami-how-to-get-to", "planning-guide"],
+  comparison: ["guide-bradenton-vs-sarasota", "planning-guide"],
 };
 
 // -- in-page scan functions (serialized into the browser by page.evaluate) --
