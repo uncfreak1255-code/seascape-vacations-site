@@ -27,6 +27,8 @@
   {% if guestHome %}<link rel="stylesheet" href="/css/arrival.css?v=waterline-v4">{% endif %}
   {# Page sheets load after guest.css so their equal-specificity rules win the cascade. #}
   {% if pageStylesheet %}<link rel="stylesheet" href="{{ pageStylesheet }}">{% elif propertySlug %}<link rel="stylesheet" href="/css/property-gallery.css">{% endif %}
+  {% if propertySlug and metaProperty.guestFacts.reviews.length >= 2 and metaProperty.guestFacts.sourceUrl and metaProperty.guestFacts.verifiedAt %}<link rel="stylesheet" href="/css/property-reviews.css">{% endif %}
+  {% if propertySlug == "dockside-dreams" %}<link rel="stylesheet" href="/css/dockside-story.css">{% endif %}
 </head>
 <body class="guest-site{% if guestHome %} g-homepage{% endif %}" data-guest-version="waterline-v3">
   <a class="g-skip" href="#main">Skip to content</a>
@@ -36,4 +38,6 @@
   {% include "partials/analytics-ga4.njk" %}
   <script defer src="/assets/js/guest.js?v=waterline-v4"></script>
   {% if pageScript %}<script defer src="{{ pageScript }}"></script>{% elif propertySlug %}<script defer src="/assets/js/property-gallery.js"></script>{% endif %}
+  {% if propertySlug and metaProperty.guestFacts.reviews.length >= 2 and metaProperty.guestFacts.sourceUrl and metaProperty.guestFacts.verifiedAt %}<script defer src="/assets/js/property-reviews.js"></script>{% endif %}
+  {% if propertySlug == "dockside-dreams" %}<script defer src="/assets/js/dockside-story.js"></script>{% endif %}
 </body></html>
