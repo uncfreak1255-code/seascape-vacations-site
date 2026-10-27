@@ -118,7 +118,7 @@ group-fit and full-price advice remains the article's purpose.
 | Current proof | October 27 native local OpenSEO GSC read, September 26–October 23 window, all 234 query rows; October 22 saved tracker run aaaa61d5; frozen October 27 full-draft editorial comparison. |
 | Top visible competitors | Bright Florida Homes, Head to Sarasota and Dwellingwell in public web results; this is not a paid Google rank measurement. |
 | Competitor angle | Inspected Bright Florida Homes emphasizes buying/renting, taxes and relocation; inspected Head to Sarasota emphasizes local lifestyle and moving. |
-| Visual/format gap | Preserve the existing article shell and comparison-table treatment; no design experiment. |
+| Visual/format gap | The legacy body remained after the copy rollout. Sawyer selected the full Waterline A preview; retain its split opening, ruled comparison and reading rail without changing copy. |
 | Seascape gap | Old body and hidden FAQs retain unsupported parking/water guarantees and broad relocation framing. The approved draft gives vacation-specific address/layout/total checks. |
 | Search fit | Existing canonical winner answers which vacation suits the guest and routes to the two portfolio-mapped stay collections; no alias or sibling changes. |
 | Local/GBP proof | Not applicable to this guest article: no business-profile, NAP or Maps change. |
@@ -129,7 +129,7 @@ group-fit and full-price advice remains the article's purpose.
 | SERP source | Free public web search and page reads October 27; local saved tracker separately dated October 22. |
 | Competitor URLs inspected | https://www.brightfloridahomes.com/guides/sarasota-vs-bradenton/; https://www.headtosarasota.com/guides/sarasota-vs-bradenton/ |
 | Content gap and Seascape answer | Vacation decision before relocation detail; specific rental checks without unsupported citywide winners. |
-| Design/format strategy | Reuse the current hero, intro, author/source card, table, conversion kit, FAQ and related-guide patterns. |
+| Design/format strategy | Implement selected Waterline A through the shared comparison frame, keeping the approved intro, table, source, conversion kit, FAQ and related-guide content and reading order. |
 | Seascape proof available | Maintained Site portfolio/event contract, approved full draft and current primary-source destination checks. |
 | Tools/plugins used | Installed Compound Writing instructions applied in the October 27 trial; native local OpenSEO saved/free reads; free public web; native Site checks and browser proof. |
 | Decision and reason | Sawyer approved the complete draft; retain its small editorial advantage while addressing actual query intent without keyword stuffing. |
