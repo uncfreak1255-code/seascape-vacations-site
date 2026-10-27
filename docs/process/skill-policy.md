@@ -13,6 +13,12 @@ another operating system. Stale deploy, monthly-reset, broad marketing, and
 generic SEO skills stay out of active discovery unless a new `repo-dev-setup` inventory
 proves they should return.
 
+To check a skill change, run `npm run audit:skills` for recorded use and
+`npm run eval:skills` (pass `-- --case <name>` for one case) to score the
+plugin eval cases in `plugins/seascape-seo-os/evals/`. The script bakes in
+`--scaffold` so cases load their fixed sample inputs, a Sonnet judge, a $2
+cost ceiling, and a closed stdin that keeps the run from hanging.
+
 For choosing the next SEO batch, use the existing Search Operator role in
 `.claude/agents/search-operator.md` and
 `docs/process/seo-competitor-operating-loop.md` for proof and attack research.

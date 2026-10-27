@@ -55,6 +55,7 @@
     "test:visual:update": "node scripts/enforcement/run-visual-tests.js --update-snapshots",
     "test:visual:install": "playwright install chromium",
     "audit:skills": "node scripts/enforcement/audit-skills.js",
+    "eval:skills": "claude plugin eval plugins/seascape-seo-os --scaffold --judge-model sonnet --max-cost-usd 2 --trust-plugin </dev/null",
     "audit:deps": "npm audit --audit-level=moderate --omit=dev",
     "perf:psi": "node scripts/perf/pagespeed-insights-status.js",
     "perf:budget": "npm run build && lhci autorun --config=./lighthouserc.js",
