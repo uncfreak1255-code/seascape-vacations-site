@@ -32,7 +32,7 @@ for (const property of eligible) {
       await expect(page.locator('.review-count')).not.toHaveText(`01 / ${String(reviews.length).padStart(2, '0')}`);
       await cdp.detach();
     }
-    if (property.slug !== 'dockside-dreams') await expect(page.locator('#stay-story')).toHaveCount(0);
+    await expect(page.locator('#stay-story')).toHaveCount(1);
   });
 }
 
@@ -42,7 +42,7 @@ test('homes without sourced reviews do not load a carousel or Dockside media', a
   for (const p of properties.filter(p => !p.guestFacts?.reviews.length)) {
     await page.goto(`/properties/${p.slug}/`);
     await expect(page.locator('#review-track')).toHaveCount(0);
-    await expect(page.locator('#stay-story')).toHaveCount(0);
+    await expect(page.locator('#stay-story')).toHaveCount(1);
   }
   expect(requests.filter(url => /property-reviews\.(js|css)|dockside-story|assets\/media\/dockside/.test(url))).toEqual([]);
 });
