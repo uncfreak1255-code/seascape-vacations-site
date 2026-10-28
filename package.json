@@ -109,16 +109,16 @@
   },
   "devDependencies": {
     "@11ty/eleventy": "^3.1.7",
-    "@axe-core/playwright": "^4.13.0",
-    "@e2e-dev/web": "0.14.0",
+    "@axe-core/playwright": "^4.14.0",
+    "@e2e-dev/web": "0.15.2",
     "@lhci/cli": "^0.15.1",
-    "@playwright/test": "^1.64.0",
-    "e2e": "0.19.0",
+    "@playwright/test": "^1.64.1",
+    "e2e": "0.21.2",
     "html-minifier-terser": "^7.2.0",
     "js-yaml": "4.3.2",
     "sharp": "^0.35.5"
   },
   "dependencies": {
-    "@netlify/blobs": "^11.1.4"
+    "@netlify/blobs": "^11.1.6"
   }
 }
