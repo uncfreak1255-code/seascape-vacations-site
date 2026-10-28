@@ -57,9 +57,9 @@ The pre-Waterline layers that used to live here (v1 `colors_and_type.css`, v2 `d
 
 **Colour.** Paper `#F6F3EB` canvas. Ink `#173D42` text and primary controls. Muted `#52676A` supporting text. Clay `#A4533E` accent, italic emphasis, active nav, focus ring. Citron `#D6EB85` selected scene and CTA over photos or dark surfaces, never small text on paper. Rule `#CAD4CF`. Soft `#F0F3EE` quiet panels. The old teal, gold and cream are retired and survive only as non-clickable accents on unmigrated legacy routes.
 
-**Type.** Instrument Serif 400 for display, set large and tight (h1 `clamp(46px,5.4vw,78px)`, -0.025em, 1.12; the homepage arrival reaches 166px). Poppins for body 15/1.65, labels 12px uppercase .13em, controls 500 14px. Floor F1: nothing below 12px.
+**Type.** Instrument Serif 400 for display, set large and tight (h1 `clamp(44px,5vw,72px)`, -0.03em, 1.08; the homepage arrival reaches 166px). Poppins for body 15/1.55, labels 12px uppercase .13em, controls 500 14px. Floor F1: nothing below 12px.
 
-**Shape and space.** 4px radius on controls, never a pill. Photos are rectangles. Rules separate; shadows do not. Content reaches 1280px; sections breathe 76px (50px mobile); header 92px (76px mobile). Controls are at least 44px tall on mobile and buttons 48px elsewhere.
+**Shape and space.** 4px radius on controls, never a pill. Photos are rectangles. Rules separate; shadows do not. Content reaches 1280px; sections breathe 60px (36px mobile); header 92px (76px mobile). Controls are at least 44px tall on mobile and buttons 48px elsewhere.
 
 **Photography is evidence.** Only an actual photograph of the named property may illustrate it. A destination scene may illustrate a clearly named destination. No generated, retouched or substituted rooms. A missing image shows a neutral named unavailable state, never another home.
 
