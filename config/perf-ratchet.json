@@ -9,19 +9,19 @@
       "stylesheet": 59988
     },
     "/property-management/": {
-      "script": 88944,
+      "script": 90918,
       "stylesheet": 54396
     },
     "/property-management/vacation-rental-licensing-florida/": {
-      "script": 55704,
+      "script": 57678,
       "stylesheet": 34667
     },
     "/property-management/vacation-rental-management-fees-florida/": {
-      "script": 55704,
+      "script": 57678,
       "stylesheet": 34667
     },
     "/property-management/vrbo-management-services-florida/": {
-      "script": 55704,
+      "script": 57678,
       "stylesheet": 34667
     },
     "/stays/anna-maria-island-beachfront-rentals/": {
@@ -768,6 +768,38 @@
       "from": 32978,
       "to": 34667,
       "reason": "Sawyer kept #795 guest-path motion (overlay enter/exit, phone menu, gallery zoom): about +745B script and +1.6KB CSS per page",
+      "date": "2026-10-28"
+    },
+    {
+      "route": "/property-management/",
+      "metric": "script",
+      "from": 88944,
+      "to": 90918,
+      "reason": "owner-first-touch.js (1974 B) on owner form routes only: first-touch referrer/utm capture approved by Sawyer 2026-10-28, site #826",
+      "date": "2026-10-28"
+    },
+    {
+      "route": "/property-management/vacation-rental-management-fees-florida/",
+      "metric": "script",
+      "from": 55704,
+      "to": 57678,
+      "reason": "owner-first-touch.js (1974 B) on owner form routes only: first-touch referrer/utm capture approved by Sawyer 2026-10-28, site #826",
+      "date": "2026-10-28"
+    },
+    {
+      "route": "/property-management/vacation-rental-licensing-florida/",
+      "metric": "script",
+      "from": 55704,
+      "to": 57678,
+      "reason": "owner-first-touch.js (1974 B) on owner form routes only: first-touch referrer/utm capture approved by Sawyer 2026-10-28, site #826",
+      "date": "2026-10-28"
+    },
+    {
+      "route": "/property-management/vrbo-management-services-florida/",
+      "metric": "script",
+      "from": 55704,
+      "to": 57678,
+      "reason": "owner-first-touch.js (1974 B) on owner form routes only: first-touch referrer/utm capture approved by Sawyer 2026-10-28, site #826",
       "date": "2026-10-28"
     }
   ]

@@ -93,7 +93,7 @@ headExtra: |
           <input type="hidden" name="proof_label" value="">
           <input type="hidden" name="form_placement" value="hero-review-panel">
           <input type="hidden" name="concerns" data-owner-concerns>
-          <div hidden aria-hidden="true"><input type="text" name="bot-field" tabindex="-1" autocomplete="off"></div>
+          {% include "partials/owner-form-source-fields.njk" %}
 
           <nav class="g-owner-steps" aria-label="Form progress">
             <button class="g-owner-step-dot is-active" type="button" data-form-goto="0" aria-label="Go to step 1">1</button>
