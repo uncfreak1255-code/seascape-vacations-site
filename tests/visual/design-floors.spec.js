@@ -20,10 +20,10 @@ const { gotoMarketingRoute, registerStableNetwork } = require("./test-helpers");
  * routes move between the states.
  */
 
-const SCENES = ["the-oasis", "dockside-dreams", "sarasota-luxe", "river-house", "bradenton-pool-home", "blue-house", "coastal-stay"];
+const SCENES = require("./design-floor-scenes");
 // Planning-frame guides are registered in routes.js so each move is checked
 // against a visual baseline taken from the unchanged page.
-const floorRoutes = moneyRoutes;
+const floorRoutes = moneyRoutes.concat(require("./extra-property-routes"));
 
 const { WHOLE_PAGE_CLASSES, WHOLE_PAGE_FAMILIES } = require("./design-floor-families");
 

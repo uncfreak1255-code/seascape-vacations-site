@@ -20,7 +20,7 @@ const ownerHub = moneyRoutes.find((route) => route.slug === "property-management
 const catalogRoute = moneyRoutes.find((route) => route.slug === "properties-catalog");
 const propertyRoute = moneyRoutes.find((route) => route.slug === "dockside-dreams");
 
-for (const routeConfig of moneyRoutes) {
+for (const routeConfig of moneyRoutes.concat(require("./extra-property-routes"))) {
   test(`${routeConfig.slug} has no serious or critical accessibility violations`, async ({ page }) => {
     await gotoMarketingRoute(page, routeConfig);
 
