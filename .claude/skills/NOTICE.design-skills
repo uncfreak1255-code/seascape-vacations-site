@@ -4,8 +4,9 @@ Third-party attribution for the UI craft skills in this folder
 Moved 2026-10-12 from sawyer-skills `skills/` (global set) into this repo as
 repo-local skills: better-ui (jakubkrehel/skills, adapted: explicit invocation
 metadata, project design and accessibility precedence), and emil-design-eng,
-animate, mobile-native, break-ui, review-animations (emilkowalski/skills,
-verbatim at the pinned commit). License texts follow.
+mobile-native (emilkowalski/skills, verbatim at the pinned commit). animate,
+break-ui and review-animations were retired 2026-10-25: no use in Claude or Codex since
+they were added on 2026-10-12, and DESIGN.md already limits motion. License texts follow.
 
 ==========================================================================
 3. jakubkrehel/skills
@@ -54,8 +55,8 @@ SOFTWARE.
 Upstream: https://github.com/emilkowalski/skills
 Pinned at: e8a175de22ae1e49370fc144c1f3bb9aeedf988d (re-imported 2026-10-08; first imported 2026-09-14 at d23d7f88)
 
-  emil-design-eng, animate, mobile-native, break-ui, review-animations were
-  moved 2026-10-12 to seascape-vacations-site .claude/skills/<name>
+  emil-design-eng, mobile-native (plus animate, break-ui, review-animations,
+  retired 2026-10-25) were moved 2026-10-12 to seascape-vacations-site .claude/skills/<name>
   (verbatim, same pin). Their attribution and this license travel with them.
 
 Verbatim copies of the upstream files at the pinned commit, no deltas. The

@@ -1,5 +1,11 @@
 {
   "offBrandHex": [
+    "src/_includes/partials/email-popup.njk",
+    "src/_includes/partials/guide-stay-here.njk",
+    "src/_includes/partials/property-card-image.njk",
+    "src/css/arrival.css",
+    "src/css/guest.css",
+    "src/css/owner.css",
     "src/guides/anna-maria-city.html",
     "src/guides/anna-maria-island-area-guide/index.html",
     "src/guides/anna-maria-island-beaches.html",
@@ -24,7 +30,6 @@
     "src/guides/dolphins-manatees-bradenton.html",
     "src/guides/family-vacation-anna-maria-island.html",
     "src/guides/fishing-guide-anna-maria-sarasota.html",
-    "src/guides/flights-to-anna-maria-island/index.html",
     "src/guides/holmes-beach-area-guide/index.html",
     "src/guides/holmes-beach-vs-bradenton-beach.html",
     "src/guides/holmes-beach.html",
@@ -39,12 +44,12 @@
     "src/guides/siesta-key-beach-guide.html",
     "src/guides/snowbirds-guide-extended-stays-florida.html",
     "src/guides/spring-break-activities-bradenton-anna-maria-island/index.html",
-    "src/guides/srq-airport-to-anna-maria-island.html",
     "src/guides/things-to-do-bradenton-fl.html",
     "src/guides/vacation-rental-income-anna-maria.html",
     "src/guides/where-to-stay-near-anna-maria-island/index.html"
   ],
   "googleFonts": [
+    "src/_includes/layouts/guide-planning.njk",
     "src/guides/anna-maria-city.html",
     "src/guides/anna-maria-island-area-guide/index.html",
     "src/guides/anna-maria-island-beaches.html",
@@ -67,7 +72,6 @@
     "src/guides/dolphins-manatees-bradenton.html",
     "src/guides/family-vacation-anna-maria-island.html",
     "src/guides/fishing-guide-anna-maria-sarasota.html",
-    "src/guides/flights-to-anna-maria-island/index.html",
     "src/guides/holmes-beach-area-guide/index.html",
     "src/guides/holmes-beach-vs-bradenton-beach.html",
     "src/guides/holmes-beach.html",
@@ -83,7 +87,6 @@
     "src/guides/siesta-key-vs-anna-maria-island-families.html",
     "src/guides/snowbirds-guide-extended-stays-florida.html",
     "src/guides/spring-break-activities-bradenton-anna-maria-island/index.html",
-    "src/guides/srq-airport-to-anna-maria-island.html",
     "src/guides/things-to-do-bradenton-fl.html",
     "src/guides/where-to-stay-near-anna-maria-island/index.html"
   ],

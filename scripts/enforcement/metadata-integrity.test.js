@@ -83,10 +83,10 @@ test("winner guide metadata and conversion markers stay decision-forward", () =>
   const amiWebPage = amiContract.jsonLdObjects.find((entry) => entry["@type"] === "WebPage");
   const bradentonWebPage = bradentonContract.jsonLdObjects.find((entry) => entry["@type"] === "WebPage");
 
-  assert.equal(amiContract.head.title, "AMI vs Siesta Key: Beach, Crowds & Where to Stay");
+  assert.equal(amiContract.head.title, "Anna Maria Island vs Siesta Key: Where to Stay");
   assert.equal(
     amiContract.head.description,
-    "Compare Anna Maria Island vs Siesta Key for beach vibe, crowds, and where to stay—so you can pick the Gulf coast that fits your trip."
+    "Compare AMI, Bradenton near AMI beaches, and Siesta Key area stays after choosing between quieter beach days and famous quartz sand."
   );
   assert.equal(amiContract.head.ogTitle, amiContract.head.title);
   assert.equal(amiContract.head.ogDescription, amiContract.head.description);
@@ -152,11 +152,11 @@ test("winner guide metadata and conversion markers stay decision-forward", () =>
   );
   assert.match(
     bradentonVsSarasota,
-    /"dateModified": "2026-10-22"/
+    /"dateModified": "2026-10-27"/
   );
   assert.match(
     bradentonVsSarasota,
-    /Reviewed June 2026/
+    /Updated October 27, 2026/
   );
 });
 

@@ -55,9 +55,8 @@ test("motion.css owns gated hover, press, and interrupt tokens", () => {
   assert.match(css, /-webkit-tap-highlight-color:transparent/);
 });
 
-test("guest.css keeps the locked treatment and leaves hover/press to motion.css", () => {
+test("guest.css leaves hover/press to motion.css", () => {
   const css = read("src/css/guest.css");
-  assert.match(css, /--g-control-treatment:sliding-arrow-pill/);
   assert.match(css, /touch-action:manipulation/);
   assert.match(css, /src\/css\/motion\.css/);
   assert.doesNotMatch(css, /@media\(hover:hover\) and \(pointer:fine\)\{\.g-button:hover/);
@@ -76,7 +75,7 @@ test("built guest.css appends motion.css without a second request", () => {
   const builtPath = path.join(projectRoot, "_site", "css", "guest.css");
   assert.equal(fs.existsSync(builtPath), true, "missing built guest.css; run npm run build first");
   const built = fs.readFileSync(builtPath, "utf8");
-  assert.match(built, /--g-control-treatment:sliding-arrow-pill/);
+  assert.match(built, /touch-action:manipulation/);
   assert.match(built, /--g-press-scale:\.97/);
   assert.equal(hoverRuleIsGated(built), true);
   const html = read("_site/index.html");

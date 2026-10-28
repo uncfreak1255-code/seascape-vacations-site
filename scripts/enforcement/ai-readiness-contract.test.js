@@ -26,7 +26,7 @@ const AI_PRIORITY_ROUTES = [
     sourcePath: "src/guides/bradenton-vs-sarasota.html",
     answerMarkers: [
       /class="guide-intro"/i,
-      /Choose Bradenton for a beach-focused vacation/i
+      /Start with Bradenton if you want to spend your beach days on Anna Maria Island/i
     ],
     proofMarkers: [
       /Why trust this comparison:/i,

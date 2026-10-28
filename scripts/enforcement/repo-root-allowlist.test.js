@@ -28,6 +28,7 @@ const ALLOWED_ROOT_ENTRIES = new Set([
   "CLAUDE.md",
   "DESIGN.md",
   "GLOSSARY.md",
+  "REVIEW.md",
   "_headers",
   "config",
   "content-priorities-2026-10.md",

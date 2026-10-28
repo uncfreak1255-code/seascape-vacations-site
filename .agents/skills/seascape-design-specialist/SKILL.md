@@ -39,6 +39,13 @@ recommendation, a concrete implementation brief, and desktop/mobile proof plan.
 Use the studio's approval boundary for design direction; a new visual rule needs
 an accepted `DESIGN.md` change before implementation.
 
+If `DESIGN.md`, the studio doc, the route, or the critic is unavailable, still
+deliver the whole packet: critique the current design, give the directions,
+recommend one, and write the implementation brief and the desktop/mobile proof
+plan. Mark it provisional, name each check you could not run, and say which
+checks must pass before approval. Never hold back the brief while waiting for
+access.
+
 When implementation is authorized, follow the approved direction closely and
 continue through `docs/process/design-review-workflow.md` and `design-review`,
 including correction of in-scope failures before human review. Name any required
