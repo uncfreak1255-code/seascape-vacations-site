@@ -24,9 +24,19 @@ function galleryHoverIsGated(css) {
   return lastHoverMedia >= 0 && lastHoverMedia > lastOtherMedia;
 }
 
+// motion.css appends after guest.css, so an ungated zoom beats its reduced-motion reset.
+function galleryHoverAllowsMotionOnly(css) {
+  if (!galleryHoverIsGated(css)) return false;
+  const hoverIndex = css.search(/\.g-gallery-photo:hover img\{transform:scale\(1\.03\)\}/);
+  const mediaStart = css.slice(0, hoverIndex).lastIndexOf("@media(hover:hover) and (pointer:fine)");
+  const query = css.slice(mediaStart, css.indexOf("{", mediaStart));
+  return query.includes("(prefers-reduced-motion:no-preference)");
+}
+
 test("empty overlay CSS fails the gallery and dialog gates", () => {
   assert.equal(galleryHoverIsGated(""), false);
   assert.equal(galleryHoverIsGated(".g-gallery-photo:hover img{transform:scale(1.03)}"), false);
+  assert.equal(galleryHoverAllowsMotionOnly("@media(hover:hover) and (pointer:fine){.g-gallery-photo:hover img{transform:scale(1.03)}}"), false);
   assert.doesNotMatch("", /--g-overlay-in:250ms/);
 });
 
@@ -44,6 +54,7 @@ test("motion.css extends #788 tokens for overlay enter and exit", () => {
   assert.match(css, /allow-discrete/);
   assert.match(css, /\.g-mobile-menu\.is-open/);
   assert.equal(galleryHoverIsGated(css), true, "desktop gallery hover must sit inside (hover:hover) and (pointer:fine)");
+  assert.equal(galleryHoverAllowsMotionOnly(css), true, "gallery zoom must also require prefers-reduced-motion:no-preference");
 });
 
 test("guest.css no longer owns the 650ms ungated gallery zoom", () => {
