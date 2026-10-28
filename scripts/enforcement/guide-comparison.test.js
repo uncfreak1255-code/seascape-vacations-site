@@ -6,6 +6,17 @@ const assert = require("node:assert/strict");
 const root = path.resolve(__dirname, "../..");
 const read = (file) => fs.readFileSync(path.join(root, file), "utf8");
 
+test("AMI Clearwater uses the selected Decision ledger with whole-page Waterline floors", () => {
+  const source=read("src/guides/anna-maria-island-vs-clearwater-beach.html");
+  assert.match(source,/extends "layouts\/guide-decision-ledger\.njk"/);
+  const layout=read("src/_includes/layouts/guide-decision-ledger.njk");
+  assert.match(layout,/guest-shell planning-guide decision-ledger/);
+  assert.match(layout,/partials\/guest-header\.njk/);
+  assert.match(layout,/partials\/guest-footer\.njk/);
+  assert.match(layout,/partials\/analytics-ga4\.njk/);
+  assert.doesNotMatch(source,/<style\b|\bstyle=|data-prototype-ui|cw-toolbar/);
+});
+
 test("Bradenton comparison uses the approved Waterline frame without legacy styling", () => {
   const source = read("src/guides/bradenton-vs-sarasota.html");
   assert.match(source, /\{% extends "layouts\/guide-comparison\.njk" %\}/,

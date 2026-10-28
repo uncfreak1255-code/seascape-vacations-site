@@ -251,6 +251,11 @@ and `comparison-guide`, bringing this frame into the whole-page F1/F2/F3 floors.
 This approval covers the named guide; no photo, chart, filter or accordion is
 part of A. Other guides convert only under their own approved scope.
 
+Sawyer selected Decision ledger A for AMI vs Clearwater on October28,2026.
+`layouts/guide-decision-ledger.njk` and `decision-ledger.css` preserve its compact
+split opening, Structured tables, right contents rail and original booking
+actions. Original reader words, SEO and rating values remain unchanged.
+
 ## Activity guides
 
 Sawyer selected Rainy Day B on October 27, 2026: compact title/answer and side photo, existing comparison before the article, right contents rail and persistent booking action. The frame and Structured table treatment are specified in `docs/design/activity-guides.md`; approval covers this guide only.
@@ -265,6 +270,19 @@ semantics and reuse rules, with shadcn/ui as a pattern reference. Adapt to the
 existing site components; a reference does not require a new framework.
 Rainy Day uses the approved Structured comparison. The other patterns are
 available for separately scoped work; this catalog changes no held guide.
+
+## Iconography
+
+Sawyer reaffirmed on October 28, 2026: use polished SVG icons, never emoji, on
+the site. Reuse `src/_includes/partials/ui-icon.njk`, as required by the design
+review workflow. Keep its consistent 24px viewBox, currentColor strokes and
+quiet Waterline ink/clay treatment; do not add an icon package or mix icon
+families. Use an icon only when it helps the label or action. Decorative icons
+are hidden from assistive technology; icon-only controls retain a useful name.
+Existing rating values may use SVG stars with a spoken count, preserving the
+original values. New ratings still require the evidence under Trust and
+usability. Applying this rule to a legacy route follows that route's approved
+scope; it does not authorize a held-guide edit or publication.
 
 ## Guide figures: when a guide earns a chart or diagram
 
