@@ -26,7 +26,7 @@
 
 Sawyer selected B after full-article A/B previews and asked for a more premium presentation of the existing table. Keep B's compact title/answer and side photo, activity comparison before the reading body, right-hand desktop contents rail, full mobile reading flow, actual shared header/footer, and persistent booking action. Use the exact original source text and image. New numeric section markers and navigation labels are interface aids only.
 
-The table refinement stays within B: clearer activity hierarchy, restrained Waterline rules/surfaces and labeled mobile rows. It remains a real semantic table with all original headers/cells. No fake charts, ratings, new data, interaction framework or dependency. Show the refined table treatments for preference while implementing the already-approved layout; do not substitute a materially different article direction.
+The table refinement stays within B: clearer activity hierarchy, restrained Waterline rules/surfaces and labeled mobile rows. It remains a real semantic table with all original headers/cells. No fake charts, ratings, new data, interaction framework or dependency. Sawyer selected Structured after the two rendered table refinements. Implement that treatment in B; do not substitute a materially different article direction.
 
 The prototype omitted the rendered dynamic stay-here include when reading raw template source. Production must keep that real component at its original article position, between the Sarasota and Bradenton recommendations, including its home facts, links and tracking. Preserve the existing email-popup include and actual tracking scripts; preview-only UI or disabled forms must not ship.
 
@@ -79,3 +79,5 @@ Run the full release gate, full visual suite with the intended Rainy Day baselin
 - What stops if this starts: no other guide rewrite, migration, keyword expansion or schedule starts.
 
 Accessibility adjustment: the comparison heading keeps its exact words but uses h2 after the page h1, and the persistent booking control gains a named aside landmark. This corrects the heading-order and landmark violations observed in rendered axe proof; it adds no visible copy or claim.
+
+October27 direction checkpoint: Structured selected. Add reusable Waterline component patterns to DESIGN.md, with detailed rules in docs/design/component-patterns.md. Preserve the existing planning-guide law verbatim in docs/design/planning-guides.md to keep DESIGN.md within the repository size limit. No new components or dependencies ship beyond this approved table.
