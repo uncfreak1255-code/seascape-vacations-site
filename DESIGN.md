@@ -236,6 +236,21 @@ A planning guide finishes one trip-planning task: when to come, how to get there
 - **Floors.** A converted guide is held to F1, F2 and F3 across the whole page; see the scope note under Floors.
 - **Measurement.** A guide inside an open readback window converts after that window is read.
 
+## Comparison guides
+
+### Comparison frame (October 27, 2026)
+
+Sawyer selected Waterline A for Bradenton vs Sarasota from full desktop/mobile
+previews. `layouts/guide-comparison.njk` and `comparison-guide.css` carry the
+split title/answer, full-width ruled comparison, open author/source treatment,
+numbered reading sections and desktop contents rail. Keep every original word,
+SEO field, source and booking link; the post-table decision aside and conversion
+kit retain their reading positions. Phones show every comparison value as a
+labeled pair without sideways scrolling. The body carries `planning-guide`
+and `comparison-guide`, bringing this frame into the whole-page F1/F2/F3 floors.
+This approval covers the named guide; no photo, chart, filter or accordion is
+part of A. Other guides convert only under their own approved scope.
+
 ## Guide figures: when a guide earns a chart or diagram
 
 The four tests a guide must pass before it gets a chart or diagram, and how that figure is built, live in `docs/design/guide-figures.md`.

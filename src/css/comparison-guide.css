@@ -1,0 +1,113 @@
+/* Waterline comparison frame, selected A. See DESIGN.md and the active Bradenton brief. */
+@font-face{font-family:Poppins;src:url('/assets/fonts/homepage/poppins-400-latin.woff2') format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:Poppins;src:url('/assets/fonts/homepage/poppins-500-latin.woff2') format('woff2');font-weight:500;font-display:swap}
+@font-face{font-family:Poppins;src:url('/assets/fonts/homepage/poppins-600-latin.woff2') format('woff2');font-weight:600;font-display:swap}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:44px}
+body.comparison-guide{--wl-paper:#f6f3eb;--wl-ink:#173d42;--wl-muted:#52676a;--wl-clay:#a4533e;--wl-rule:#cad4cf;--wl-soft:#f0f3ee;--wl-serif:'Instrument Serif',Georgia,serif;margin:0;background:var(--wl-paper);color:var(--wl-ink);font:400 17px/1.75 Poppins,sans-serif;-webkit-font-smoothing:antialiased}
+.comparison-guide main{max-width:1180px;margin:auto;padding:0 40px}
+.comparison-guide main a{color:var(--wl-ink);text-underline-offset:4px;text-decoration-thickness:1px}
+.comparison-guide a:hover{color:var(--wl-clay)}
+.comparison-guide :is(a,button,input,summary):focus-visible{outline:3px solid var(--wl-clay);outline-offset:4px}
+.comparison-guide main h1,.comparison-guide main h2,.comparison-guide main h3{font-family:var(--wl-serif);font-weight:400;letter-spacing:-.025em;line-height:1.12;color:var(--wl-ink)}
+.comparison-guide main h2{font-size:44px;margin:0 0 24px}
+.comparison-guide main h3{font-size:28px;margin:24px 0 12px}
+.comparison-guide main p{margin:0 0 20px}
+.comparison-guide main p:last-child{margin-bottom:0}
+.comparison-guide main img{display:block;width:100%;height:auto}
+.comparison-guide .breadcrumb{border-bottom:1px solid var(--wl-rule)}
+.comparison-guide .breadcrumb ol{max-width:1180px;padding:0 40px;margin:auto;list-style:none;display:flex;gap:12px;align-items:center;flex-wrap:wrap;font:400 12px/1.5 Poppins,sans-serif;color:var(--wl-muted)}
+.comparison-guide .breadcrumb li{display:flex;align-items:center}
+.comparison-guide .breadcrumb a{min-height:44px;min-width:44px;display:inline-flex;align-items:center;color:var(--wl-muted);text-decoration:none}
+.wl-open{padding:76px 0 32px}
+.wl-open-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:76px;align-items:start}
+.wl-title h1{font-size:clamp(46px,5.4vw,78px);margin:16px 0 24px;max-width:12ch}
+.wl-kicker,.wl-date,.wl-step-number,.guide-author-card p:first-child,.wl-contents>p{font:500 12px/1.5 Poppins,sans-serif;letter-spacing:.13em;text-transform:uppercase;color:var(--wl-muted)}
+.wl-kicker{display:inline-flex;align-items:center;gap:8px}
+.wl-kicker svg{display:none}
+.wl-date{letter-spacing:.04em;text-transform:none;margin-bottom:16px!important}
+.wl-deck{max-width:40ch;color:var(--wl-muted);font-size:15px;line-height:1.65}
+.comparison-guide .guide-intro{border-left:1px solid var(--wl-rule);padding-left:32px;margin:6px 0 0;background:none;border-radius:0}
+.comparison-guide .guide-intro p:first-child{font:400 27px/1.35 var(--wl-serif);letter-spacing:-.01em;color:var(--wl-ink)}
+.comparison-guide .guide-intro p:nth-child(n+2){font-size:14px;line-height:1.75;color:var(--wl-muted)}
+.comparison-guide .guide-intro p:nth-child(3){padding-top:20px;border-top:1px solid var(--wl-rule)}
+.comparison-guide .guide-author-card{display:flex;gap:12px 24px;flex-wrap:wrap;align-items:baseline;margin-top:40px;padding:24px 0 0;border-top:1px solid var(--wl-rule);font-size:13px;color:var(--wl-muted)}
+.comparison-guide .guide-author-card p{margin:0}
+.comparison-guide .guide-author-card p:nth-child(2){font-weight:500;color:var(--wl-ink)}
+.wl-quick{padding:56px 0 0;border-top:1px solid var(--wl-ink);margin-top:24px}
+.comparison-guide .wl-quick>h2{font-size:44px}
+.comparison-guide .compare-table-wrap{overflow:visible;width:100%;border-radius:0;border:0;margin:0}
+.comparison-guide .compare-table{width:100%;table-layout:fixed;border-collapse:collapse;border:0;background:none;margin:0}
+.comparison-guide .compare-table th{font:500 12px/1.5 Poppins,sans-serif;letter-spacing:.08em;text-transform:uppercase;text-align:left;color:var(--wl-muted);background:var(--wl-soft);padding:20px 24px;border:0;border-bottom:1px solid var(--wl-ink)}
+.comparison-guide .compare-table th:nth-child(1){width:38%}
+.comparison-guide .compare-table th:nth-child(2){width:22%}
+.comparison-guide .compare-table th:nth-child(3){width:40%}
+.comparison-guide .compare-table td{font:400 15px/1.65 Poppins,sans-serif;padding:24px;border:0;border-bottom:1px solid var(--wl-rule);vertical-align:top;background:none;color:var(--wl-ink);overflow-wrap:break-word}
+.comparison-guide .compare-table td:nth-child(2){font-weight:500}
+.comparison-guide .direct-book-decision-aside{margin:32px 0 0;padding:32px 0;border-top:1px solid var(--wl-ink);border-bottom:1px solid var(--wl-rule);background:none;border-radius:0;display:grid;grid-template-columns:1fr 1fr;gap:12px 56px}
+.comparison-guide .direct-book-decision-aside>p:first-child{font:500 12px/1.5 Poppins,sans-serif;letter-spacing:.13em;text-transform:uppercase;grid-column:1/-1;margin:0;color:var(--wl-muted)}
+.comparison-guide .direct-book-decision-aside h2{font-size:36px;grid-column:1;margin:0}
+.comparison-guide .direct-book-decision-aside>p:nth-of-type(2){grid-column:2;grid-row:2/span 2;margin:0;font-size:15px}
+.comparison-guide .direct-book-decision-aside>p:nth-of-type(3){grid-column:1;font-size:14px;color:var(--wl-muted);margin:0}
+.comparison-guide .direct-book-decision-aside>p:last-child{grid-column:1/-1;font-size:12px;line-height:1.65;color:var(--wl-muted);max-width:92ch;margin:12px 0 0}
+.wl-reading{display:grid;grid-template-columns:232px minmax(0,1fr);gap:76px;padding:56px 0 76px;align-items:start}
+.wl-contents{position:sticky;top:32px;font-size:13px;line-height:1.5}
+.wl-contents ol{margin:20px 0 0;padding:0;list-style:none;border-bottom:1px solid var(--wl-rule)}
+.wl-contents li{border-top:1px solid var(--wl-rule)}
+.wl-contents a{display:grid;grid-template-columns:26px 1fr;gap:8px;min-height:52px;align-items:center;padding:12px 0;text-decoration:none}
+.wl-contents a>span:first-child{color:var(--wl-clay);font-size:12px}
+.wl-contents a[aria-current]{font-weight:500;text-decoration:underline;text-underline-offset:4px}
+.wl-prose{min-width:0}
+.wl-step{padding:50px 0;border-top:1px solid var(--wl-rule);scroll-margin-top:32px}
+.wl-step:first-of-type{margin-top:32px}
+.wl-step-number{display:block;color:var(--wl-clay);margin-bottom:12px}
+.comparison-guide .wl-step>p,.comparison-guide .wl-faq p{max-width:68ch}
+.comparison-guide .evidence-card{background:none;border:0;border-left:1px solid var(--wl-rule);border-radius:0;padding:0 0 0 24px;margin:0 0 32px;font-size:13px;line-height:1.7;color:var(--wl-muted)}
+.comparison-guide .evidence-card h2{font:500 12px/1.5 Poppins,sans-serif;letter-spacing:.08em;text-transform:uppercase;margin:0 0 12px;color:var(--wl-muted)}
+.comparison-guide .category-card{background:none;border:0;border-radius:0;padding:24px 0;border-top:1px solid var(--wl-rule);margin:0}
+.comparison-guide .category-card h3{margin:0 0 12px}
+.comparison-guide .wl-faq>h2{margin-bottom:24px}
+.comparison-guide .related-guides{border-top:1px solid var(--wl-ink);background:none;border-radius:0;padding:40px 0 0;margin:50px 0 0}
+.comparison-guide .related-guides h3{font-size:32px;margin:0 0 24px}
+.comparison-guide .related-guides ul{padding:0;margin:0;list-style:none}
+.comparison-guide .related-guides li{border-top:1px solid var(--wl-rule);margin:0}
+.comparison-guide .related-guides a{display:block;padding:14px 0;font-size:14px;min-height:48px;text-decoration:none}
+.comparison-guide .guide-conversion-shell{margin:44px 0}
+.comparison-guide .guide-conversion-shell :is(h2,h3){letter-spacing:-.02em}
+.comparison-guide .guide-conversion-shell a.guide-cta-btn,.comparison-guide .guide-conversion-shell a.guide-save50-cta{color:var(--wl-paper)}
+.comparison-guide .guide-conversion-shell :is(input,button,a.guide-cta-btn){min-height:44px}
+@media(max-width:900px){
+  .comparison-guide main{padding:0 24px}
+  .comparison-guide .breadcrumb ol{padding:0 24px;font-size:12px;gap:8px}
+  .wl-open{padding-top:40px}
+  .wl-open-grid{display:block}
+  .wl-title h1{font-size:56px;max-width:16ch;margin:16px 0 24px}
+  .comparison-guide .guide-intro{margin:32px 0 0;padding:24px 0 0;border:0;border-top:1px solid var(--wl-ink)}
+  .comparison-guide .guide-intro p:first-child{font-size:26px;line-height:1.35}
+  .comparison-guide .guide-author-card{margin-top:24px;padding-top:20px;gap:6px 16px}
+  .guide-author-card p:first-child{flex-basis:100%}
+  .wl-quick{margin-top:16px;padding-top:32px}
+  .comparison-guide main h2,.comparison-guide .wl-quick>h2{font-size:36px}
+  .wl-reading{display:block;padding-top:40px;padding-bottom:50px}
+  .comparison-guide .wl-contents{display:none}
+  .wl-step{padding:32px 0}
+  .comparison-guide .direct-book-decision-aside{display:block;padding:24px 0}
+  .comparison-guide .direct-book-decision-aside h2{font-size:32px;margin:12px 0 20px}
+  .comparison-guide .direct-book-decision-aside>p:nth-of-type(2){margin-bottom:16px}
+  .comparison-guide .direct-book-decision-aside>p:last-child{margin-top:16px}
+  .comparison-guide .compare-table,.comparison-guide .compare-table tbody{display:block}
+  .comparison-guide .compare-table thead{position:absolute;clip-path:inset(50%);width:1px;height:1px;overflow:hidden;white-space:nowrap}
+  .comparison-guide .compare-table tr{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--wl-rule);padding:0 0 24px;gap:0 16px}
+  .comparison-guide .compare-table td{display:block;font-size:14px;line-height:1.65;border:0;padding:16px 0 0}
+  .comparison-guide .compare-table td:first-child{grid-column:1/-1;font-weight:500;font-size:16px;padding-bottom:0}
+  .comparison-guide .compare-table td:nth-child(n+2)::before{content:attr(data-label);display:block;font-weight:400;font-size:12px;line-height:1.5;color:var(--wl-muted);margin-bottom:8px}
+  .comparison-guide .compare-table td:nth-child(2){font-weight:500}
+}
+@media(max-width:430px){
+  .wl-title h1{font-size:46px;line-height:1.08;max-width:15ch}
+  .comparison-guide main{padding:0 20px}
+  .comparison-guide .breadcrumb ol{padding:0 20px}
+  .comparison-guide .guide-intro p:first-child{font-size:25px}
+  .comparison-guide .guide-intro p:nth-child(n+2){font-size:14px}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
