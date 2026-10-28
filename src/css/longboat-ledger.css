@@ -1,0 +1,22 @@
+/* Route-scoped details for the approved AMI / Longboat ledger. */
+.decision-ledger .longboat-ledger .hero-badge{display:block;margin:0 0 16px;color:var(--clay);font:500 12px/1.5 Poppins,sans-serif;letter-spacing:.12em;text-transform:uppercase;}
+.decision-ledger .longboat-ledger .quick-answer p+p{margin-top:12px;}
+.decision-ledger .longboat-ledger .cw-article>.cw-step:first-of-type{margin-top:20px;}
+.decision-ledger .longboat-ledger .category-card{margin:24px 0;padding:0;background:none;box-shadow:none;border-radius:0;}
+.decision-ledger .longboat-ledger .local-tip{margin:28px 0;padding:20px 24px;border-left:2px solid var(--clay);background:var(--soft);font-size:15px;}
+.decision-ledger .longboat-ledger .local-tip .ui-icon{margin-right:8px;vertical-align:middle;}
+.decision-ledger .longboat-ledger .local-tip p,.decision-ledger .longboat-ledger td p{margin:0;}
+.decision-ledger .longboat-ledger .verdict-card{margin:24px 0;padding:28px 24px;background:var(--soft);border-top:2px solid var(--clay);}
+.decision-ledger .longboat-ledger .verdict-card h3{margin-top:0;}
+.decision-ledger .longboat-ledger td[colspan="2"]{grid-column:1/-1;}
+.decision-ledger .longboat-ledger .guide-related-stays,.decision-ledger .longboat-ledger .related-guides{padding:32px 0;border-top:1px solid var(--rule);}
+.decision-ledger .longboat-ledger .guide-related-stays .container{padding:0;max-width:none;}
+.decision-ledger .longboat-ledger :is(.guide-related-stays,.related-guides) ul{padding:0;list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:0 24px;margin:24px 0 0;}
+.decision-ledger .longboat-ledger :is(.guide-related-stays,.related-guides) li{margin:0;border-bottom:1px solid var(--rule);}
+.decision-ledger .longboat-ledger :is(.guide-related-stays,.related-guides) a{display:flex;align-items:center;min-height:48px;padding:12px 0;font-size:14px;text-decoration:none;}
+@media(max-width:700px){.decision-ledger .longboat-ledger :is(.guide-related-stays,.related-guides) ul{grid-template-columns:1fr;}.decision-ledger .longboat-ledger .local-tip{padding:20px;}}
+.longboat-ledger .longboat-sources{padding:28px 24px;margin:32px 0;background:var(--soft);border-top:2px solid var(--clay);}
+.longboat-ledger .longboat-sources h3{margin-top:0;}
+.longboat-ledger .longboat-sources ul{margin:16px 0 0;padding-left:20px;}
+.longboat-ledger .longboat-sources li{margin:0;}
+.longboat-ledger .longboat-sources a{display:inline-flex;align-items:center;min-height:44px;min-width:44px;padding:8px 0;}

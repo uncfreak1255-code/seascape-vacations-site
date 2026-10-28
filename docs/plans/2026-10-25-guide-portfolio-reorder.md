@@ -97,6 +97,11 @@ controls in each brief, under each brief's own approval route.
 
 Rules this plan follows until then:
 
+October28 exception: Sawyer approved the AMI vs Longboat Key factual repair and
+Decision ledger A migration under `docs/briefs/2026-10-28-ami-longboat-waterline.md`.
+Exclude that changed route from unchanged controls after its rollout; held
+guide sources and existing rescue readback windows remain unchanged.
+
 October 27 exception: Sawyer approved the full Compound Writing copy in PR
 #819, then selected Waterline A and authorized normal review/publication for
 Bradenton vs Sarasota. That named guide is released from the hold below and
