@@ -137,7 +137,7 @@
 .g-arrival-copy>p:last-child{font-size:12px;margin:10px 0 0 16px;line-height:1.55}
 .g-arrival-seal{display:none}
 .g-scene-photo{object-position:57% center}
-.g-scene::after{background:linear-gradient(180deg,#071d32b8 0,#071d3266 110px,transparent 38%),radial-gradient(78% 48% at 34% 36%,#071d32a6,transparent 76%),linear-gradient(90deg,#071d3240,transparent),linear-gradient(0deg,#071d32cc,transparent 65%,#071d3266)}
+.g-scene::after{background:linear-gradient(180deg,#071d32b8 0,#071d3266 110px,transparent 38%),radial-gradient(78% 48% at 34% 40%,#071d32b8,transparent 76%),linear-gradient(90deg,#071d3240,transparent),linear-gradient(0deg,#071d32cc,transparent 65%,#071d3266)}
 .g-scene-caption{left:24px;right:24px;padding:14px 0 16px;grid-template-columns:1fr 66px;gap:6px 12px;align-items:start}
 .g-scene-caption .g-label{font-size:12px;letter-spacing:.05em;margin-bottom:8px}
 .g-scene-caption h2{font-size:28px}
