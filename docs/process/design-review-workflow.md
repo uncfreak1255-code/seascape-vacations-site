@@ -40,6 +40,8 @@ That includes:
   which `npm run design:sync` generates from this repo (`DESIGN.md`, the live
   guest CSS, the self-hosted fonts and the built shell markup). Prove the cards
   with `npm run design:sync:check` before pushing them with the DesignSync tool.
+  Re-sync after any PR that touches `DESIGN.md`,
+  `src/css/{base,guest,arrival,catalog}.css` or the guest partials.
   The project's `colors_and_type.css`, `design-system/`, `ui_kits/`,
   `explorations/` and `live-mockup/` folders are pre-Waterline history and never
   a source. Sawyer's approval of a Claude Design mock is the implementation

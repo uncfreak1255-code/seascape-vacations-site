@@ -30,6 +30,17 @@ only a candidate until all three proofs exist.
 Follow `docs/process/design-review-workflow.md` for the required Playwright,
 visual, and accessibility gates; browser inspection does not replace them.
 
+The PR carries this proof, even if the workflow doc cannot be read:
+- fresh desktop and mobile screenshots of every changed route
+- a passing `npm run test:visual` run (committed desktop/mobile baselines plus
+  the axe spec)
+- the `DESIGN.md` tokens the change uses, with contrast and focus checked for any
+  color change
+
+Update baselines (`npm run test:visual:update`) only for an intended, reviewed
+change. Never update one to turn a red check green. Fix in-scope failures and
+rerun the affected proof before asking for human review.
+
 ## Completion
 
 Return findings by severity with route, source where known, viewport, impact,

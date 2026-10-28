@@ -36,21 +36,18 @@ test("guest footer legal and support links point to real routes", () => {
   assert.ok(html.includes('tel:9417048545'));
 });
 
-test("Bradenton vs Sarasota comparison table fits mobile width without forced horizontal overflow", () => {
+test("Bradenton comparison keeps all mobile values labeled in its shared frame", () => {
   const guide = readSource("src", "guides", "bradenton-vs-sarasota.html");
-
-  assert.equal(guide.includes(".compare-table-wrap"), true);
+  const layout = readSource("src", "_includes", "layouts", "guide-comparison.njk");
+  const css = readSource("src", "css", "comparison-guide.css");
+  assert.match(layout, /href="\/css\/comparison-guide\.css"/);
   assert.match(guide, /<div class="compare-table-wrap"[^>]*aria-label="Quick comparison table"[^>]*>/);
   assert.match(guide, /<div class="compare-table-wrap"[\s\S]*?<table class="compare-table">/);
-  assert.equal(guide.includes("min-width:560px"), false);
-  assert.match(
-    guide,
-    /@media\(max-width:600px\)\{\.compare-table\{table-layout:fixed;font-size:12px\}/
-  );
-  assert.match(
-    guide,
-    /\.compare-table td,\.compare-table th\{padding:10px 8px;white-space:normal;overflow-wrap:anywhere\}/
-  );
+  assert.doesNotMatch(css, /min-width:\s*560px/);
+  const headers = [...guide.matchAll(/<th\b[^>]*>([^<]+)<\/th>/g)].map(match => match[1]);
+  const labels = [...guide.matchAll(/<td data-label="([^"]+)">/g)].map(match => match[1]);
+  assert.equal(labels.length, 15);
+  assert.deepEqual(labels, Array.from({ length: 5 }, () => headers).flat());
 });
 
 test("visible source templates do not ship emoji glyphs", () => {

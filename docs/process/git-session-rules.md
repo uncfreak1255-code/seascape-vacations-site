@@ -5,7 +5,7 @@ This file exists to stop agents and humans from improvising Git in this repo.
 Use it at the start of any session that might change files.
 
 These checkout and wrapper commands apply to the local coordinator. For a
-Codex cloud task's disposable checkout, use `AGENTS.md` -> Codex Cloud Handoff;
+Codex cloud task's disposable checkout, use `docs/process/codex-cloud-handoff.md`;
 the coordinator retains these gates for integration and publication.
 
 ## Source currency
@@ -120,9 +120,11 @@ Stay in that worktree on the branch the harness created; do not add a
 ## File size gate
 
 The pre-commit hook blocks staged files over 5,000 tokens (bytes / 4) and
-growth of files already over it; its error says how to split the file. Guide
-pages, mockups, `src/_data` JSON and lockfiles are exempt; the list lives in
-`scripts/enforcement/check-staged-file-size.js#IGNORED`.
+growth of files already over it; its error says how to split the file. The
+same check runs over the PR range as the `file-size` step of
+`npm run verify:release`, so a commit made with hooks bypassed still fails the
+`release-safety` CI check. Guide pages, mockups, `src/_data` JSON and lockfiles
+are exempt; the list lives in `scripts/enforcement/check-staged-file-size.js#IGNORED`.
 
 ## Session coaching rules
 

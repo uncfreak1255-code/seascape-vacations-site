@@ -29,22 +29,60 @@ waterline:
       fontFamily: "Poppins"
       fontSize: "12px"
       letterSpacing: "0.13em"
-  control-treatment: "sliding-arrow-pill" # ink-pill | ink-rounded
   rounded:
-    button: "999px"
+    none: "0"
+    button: "4px"
+    control: "4px"
+  # Spacing steps the Waterline CSS already uses. New rules pick from this list.
+  space:
+    "1": "4px"
+    "2": "8px"
+    "3": "12px"
+    "4": "16px"
+    "6": "24px"
+    "8": "32px"
+    tap: "44px"
+    "14": "56px"
+    section: "76px"
+    section-mobile: "50px"
+  # Durations and curves, measured from the live CSS (October 2026).
+  motion:
+    duration:
+      fast: "120ms"
+      hover: "150ms"
+      move: "200ms"
+      route: "550ms"
+      drift: "650ms"
+    easing:
+      out: "cubic-bezier(.23,1,.32,1)"
+      glide: "cubic-bezier(.2,.7,.2,1)"
+  # Shadows are for things that float over the page, and for printed photos.
+  # Ink (#173D42) with an alpha byte; values are exact copies of the live CSS.
+  shadow:
+    menu: "0 20px 30px #173D4214"
+    tray: "0 10px 40px #173D4226"
+    bar: "0 -6px 22px #173D4210"
+    print: "0 20px 32px #173D421C"
+    print-lift: "0 26px 50px #173D4233"
+    photo: "0 20px 40px #173D421F"
+  breakpoints:
+    phone: "430px"
+    narrow: "700px"
+    mid: "900px"
+    wide: "1050px"
   components:
     button-primary:
       backgroundColor: "{waterline.colors.ink}"
       textColor: "#FFFFFF"
       rounded: "{waterline.rounded.button}"
       padding: "14px 24px"
-      minHeight: "48px, 44px mobile floor"
+      minHeight: "48px, never below the 44px mobile floor"
       typography: "500 14px/1.35 Poppins"
     button-on-dark:
       backgroundColor: "{waterline.colors.citron}"
       textColor: "{waterline.colors.ink}"
       rounded: "{waterline.rounded.button}"
-      usage: "homepage header over the scene, sticky CTA bars, near-black owner hero"
+      usage: "only where ink loses separation from its own surface: the homepage header over the scene photo, the two sticky CTA bars, the near-black owner hero"
 
 # LEGACY — the pre-Waterline system. Kept for two reasons, neither of them
 # guidance. scripts/design/design-lint.js treats every hex in this file as the
@@ -182,7 +220,7 @@ The homepage, catalog, property details, owner hub, and About page use the scope
 - The postcard collection uses shallow perspective, an open fan on desktop, and full readable cards in a native horizontal snap list on mobile. Desktop cards stay in one count-agnostic row so a new home cannot wrap off the fan. Hover enhances a card; tap and keyboard provide the complete path. Never hide information behind hover alone.
 - Carry expressive type, photographic scale, calm rules and marine/paper contrast through the catalog and property pages. A catalog card carries no photo-number badge; its title is Instrument Serif at 40px on every width, the one reason to choose sits in open space under it, the ink "Check dates" button is the only strong control, and the details link stays at its quiet 12px secondary weight (October 2026). Keep the working comparison table and conventional booking panel. Property photos remain real rectangles, not simulated rooms or a fictitious floor plan.
 - Motion has three jobs: identify a newly selected home, give the collection tactile depth, and connect its photo to the detail page. Use browser-native CSS/Web Animations and same-origin view transitions as progressive enhancements. No loader, scroll hijacking, autoplay, custom cursor, or required animation library. The static reduced-motion and no-JavaScript paths remain complete.
-- Pointer and touch presses use subtle feedback (up to 3% scale, 120ms) when motion is allowed. Keyboard scene selection and horizontal selector movement are immediate. Keyboard card focus keeps the visible outline without lifting or enlarging the card. Desktop card hover movement is limited to fine pointers and 200ms; reduced-motion users keep the static layout. Control hover, press, and interrupt live in `src/css/motion.css` and append onto built `guest.css` so they do not add a stylesheet request. Press uses `scale(0.97)` at 120ms with `cubic-bezier(0.23, 1, 0.32, 1)`; hover color and the sliding arrow stay behind `(hover: hover) and (pointer: fine)` at 200ms. Keyboard focus does not scale. Compare and photo dialogs, the phone menu, and the email overlay enter at 250ms and leave at 150ms with opacity and `scale(0.96)`; Escape closes the menu instantly. Desktop gallery zoom is fine-pointer only at 200ms. Do not change `--g-control-treatment` from `motion.css`.
+- Pointer and touch presses use subtle feedback (up to 3% scale, 120ms) when motion is allowed. Keyboard scene selection and horizontal selector movement are immediate. Keyboard card focus keeps the visible outline without lifting or enlarging the card. Desktop card hover movement is limited to fine pointers and 200ms; reduced-motion users keep the static layout. Control hover, press, and interrupt live in `src/css/motion.css` and append onto built `guest.css` so they do not add a stylesheet request. Press uses `scale(0.97)` at 120ms with `cubic-bezier(0.23, 1, 0.32, 1)`; hover color stays behind `(hover: hover) and (pointer: fine)` at 200ms. Keyboard focus does not scale. Dialogs, the phone menu and the email overlay enter in 250ms and leave in 150ms (opacity, `scale(0.96)`); Escape closes the menu at once. Gallery zoom: fine pointers, 200ms.
 - Desktop content can reach 1280px, with a full-width opening photograph. Controls remain at least 44px tall, with visible focus, clear labels and quiet solid surfaces. No animation may delay booking or be required to reveal essential information.
 
 ## Planning guides (October 2026)
@@ -194,39 +232,28 @@ A planning guide finishes one trip-planning task: when to come, how to get there
 - **Steps.** Sections carry numerals 01, 02, 03 beside the heading, leaving the heading text as written. On desktop an "In this guide" rail lists the steps and stays in view; on a phone the numerals carry the sequence.
 - **Tables.** Every column is visible at 360, 375 and 393px wide, so a converted guide has no swipe hint.
 - **Your dates.** When the site's trip memory holds dates, the instrument marks those months with a citron surface and an ink "Your dates" label. It is a progressive enhancement reading only the stored arrive and depart dates; the figure is complete without it, and the mark states the guest's dates only, never an opening or a quote.
-- **Booking box and close.** The guide booking box keeps its position, content and tracking through a conversion. Sawyer approved the Waterline restyle of the box on October 24, 2026: same words, links and tracking, with an ink top rule, ruled rows, ink buttons using `control-treatment`, and no old-palette surfaces (no gradient, shadow, or gold). The closing band is solid ink with the paper button and ink text guides already use there (10.62:1 against the band, so it needs no hairline). Citron stays reserved for the surfaces listed under `button-on-dark`.
+- **Booking box and close.** The guide booking box keeps its position, content and tracking through a conversion. Sawyer approved the Waterline restyle of the box on October 24, 2026: same words, links and tracking, with an ink top rule, ruled rows, ink buttons and no old-palette surfaces (no gradient, shadow, gold or radius above 4px). The closing band is solid ink with the paper button and ink text guides already use there (10.62:1 against the band, so it needs no hairline). Citron stays reserved for the surfaces listed under `button-on-dark`.
 - **Floors.** A converted guide is held to F1, F2 and F3 across the whole page; see the scope note under Floors.
 - **Measurement.** A guide inside an open readback window converts after that window is read.
 
+## Comparison guides
+
+### Comparison frame (October 27, 2026)
+
+Sawyer selected Waterline A for Bradenton vs Sarasota from full desktop/mobile
+previews. `layouts/guide-comparison.njk` and `comparison-guide.css` carry the
+split title/answer, full-width ruled comparison, open author/source treatment,
+numbered reading sections and desktop contents rail. Keep every original word,
+SEO field, source and booking link; the post-table decision aside and conversion
+kit retain their reading positions. Phones show every comparison value as a
+labeled pair without sideways scrolling. The body carries `planning-guide`
+and `comparison-guide`, bringing this frame into the whole-page F1/F2/F3 floors.
+This approval covers the named guide; no photo, chart, filter or accordion is
+part of A. Other guides convert only under their own approved scope.
+
 ## Guide figures: when a guide earns a chart or diagram
-A table and a clear answer at the top carry a guide in search and in AI answers. A figure helps the human reader only. Add one figure to a guide only when all four are true:
 
-1. **Real comparison.** The guide compares at least 6 data points, or 3 items across 2 or more measures (for example 12 months of heat and rain).
-2. **Data already published, with a source.** The figure draws only from numbers the guide already shows. It adds no new number and no new claim.
-3. **Faster than words.** The reader sees the answer in about 3 seconds.
-4. **The question fits.** "When" and "how much" questions fit a figure. "Which area" questions fit a table. "What to do" questions fit real photographs.
-
-If one test fails, add no figure. Improve the table or the lead sentence instead.
-
-| Guide type | Add | Do not add |
-| --- | --- | --- |
-| When to go (season, weather) | Twelve-month strip plus the table | Pie chart, animated chart |
-| Cost | Tier cards plus the table | A savings percentage that has no source |
-| Place A versus place B | Side-by-side table | Chart |
-| Distance or drive times | Labeled map, only when the drive times are published | Decorative map |
-| Family, shelling, activities | Real photographs of the named place | Stock-style diagram |
-| Process with three steps or fewer | Numbered steps | Flow chart |
-
-A figure ships only when all of these hold:
-
-- Plain SVG or HTML made at build time. It needs no script and is never an image of text.
-- A text label, and the full table stays on the page as the data source.
-- One figure per guide, directly under the answer (see Instrument above).
-- Colors only from this file.
-- Readable at 360, 375 and 393px wide with no sideways swipe.
-- A text diff against the page it replaces shows no new fact.
-- Shown to Sawyer as two or three variants before it is built.
-- Held to the design review lane in `docs/process/design-review-workflow.md`.
+The four tests a guide must pass before it gets a chart or diagram, and how that figure is built, live in `docs/design/guide-figures.md`.
 
 ## Photography is evidence
 Only an actual photograph of the named property may illustrate its accommodation. A destination scene may illustrate a clearly named destination, never a failed home photo.
@@ -256,14 +283,13 @@ Floors (the contract every change to these routes must leave true, enforced in `
 
 F1 and F2 apply to the whole page on the Waterline guest routes (`body.guest-site`, the routes under Guest journey above) and, on every other route, to the shared header, mobile menu and footer only. A converted planning guide (`body.planning-guide`) joins the whole-page scope, and `tests/visual/design-floors.spec.js` enforces it on every converted guide route (first conversion: the vacation cost guide, October 2026). The other pages carry the shared shell but keep their legacy body typography, which has not been brought to the floors yet. That narrower scope is a stopping point for one release, not a permanent rule: widening it is the work that finishes the redesign, and until then a legacy page body can still ship text below 12px without the gate objecting.
 
-## How this direction changes
-This file records deliberate current choices; it is not proof that a choice is good. Authorized product/design work may revise it after examining a rendered alternative, the guest task, truth, accessibility and performance. A specific model, external design app, color, font, button shape, or template is not an approval authority.
+## Scales, states and forms (October 2026)
 
-Use the existing design specialist/critic for useful challenges and the existing browser/Playwright workflow for proof. Do not add a new review layer. For material changes capture the actual desktop/mobile route, important interactive states, and real photos. Label mocked availability or pricing. Inspect images and page identity before updating any baseline.
+The `space`, `motion`, `shadow` and `breakpoints` keys in the `waterline:` block are the scales. How they are used and checked, plus the state rules and the nine form patterns, live in `docs/design/scales-states-forms.md`.
+
+## How this direction changes
+This file records current choices, not proof they are good. How to revise it, and why Waterline won in September 2026, live in `docs/design/direction-changes.md`.
 
 ## Legacy gold CTAs
 
 Gold is retired on every legacy route; the per-surface replacement rules (ink, citron or paper, picked by measured contrast) live in `docs/design/legacy-gold-ctas.md`.
-
-## Direction decision
-The September 4 Open House draft preserved useful guest behavior but was visually too restrained. On September 5, two new real-photo slices were rendered on desktop and mobile: cinematic Waterline and Spatial Atlas. Waterline won for photographic presence and a clear active home; the atlas won for personality but obscured adjacent cards on a narrow screen. The chosen direction combines Waterline's opening with a readable, responsive postcard collection. The prior draft remains in Git and the before/after proof; its existence is not a reason to keep weak composition.

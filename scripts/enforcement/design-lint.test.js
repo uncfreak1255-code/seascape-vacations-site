@@ -251,6 +251,16 @@ test("lintSource reports occurrence counts, not just presence", () => {
   assert.equal(result.emoji, true);
 });
 
+test("lintSource scans a stylesheet whole, a template only in style contexts, and never a CSS comment", () => {
+  const css = "/* contrast note: #0a1a1c on #faf7ee */\n.a{color:#ff00ff}\n";
+  assert.deepEqual(lintSource(css, new Set(), "src/css/x.css").offBrandHex, ["#ff00ff"]);
+  assert.deepEqual(lintSource(`<style>${css}</style>`, new Set(), "src/_includes/x.njk").offBrandHex, ["#ff00ff"]);
+  // Outside a <style> block or style attribute, a template's hex is content, not style.
+  assert.deepEqual(lintSource(`<p data-swatch="#ff00ff">${css}</p>`, new Set(), "src/_includes/x.njk").offBrandHex, []);
+  // Without a path the source is treated as a template, as every pre-PR-C caller did.
+  assert.deepEqual(lintSource(css, new Set()).offBrandHex, []);
+});
+
 test("checkWorsened treats a missing base as worsened and compares hex sets by membership", () => {
   assert.equal(checkWorsened(violations({ hex: ["#aaa111"] }), null, "offBrandHex"), true);
   assert.equal(

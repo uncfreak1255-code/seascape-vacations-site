@@ -50,7 +50,6 @@ test("guest.css no longer owns the 650ms ungated gallery zoom", () => {
   const css = read("src/css/guest.css");
   assert.doesNotMatch(css, /transform \.65s/);
   assert.doesNotMatch(css, /\.g-gallery-photo:hover img\{transform:scale\(1\.03\)\}/);
-  assert.match(css, /--g-control-treatment:sliding-arrow-pill/);
 });
 
 test("catalog.css drops the ungated card zoom leftover", () => {

@@ -8,8 +8,8 @@ Use `docs/process/git-session-rules.md` alongside this file when deciding whethe
 
 1. Treat root `main` as release history, not a scratchpad.
 2. For local non-trivial work, use `codex/<task>` in `.worktrees/<task>`.
-   Codex cloud isolation and local integration follow `AGENTS.md` -> Codex
-   Cloud Handoff; publication remains with the local coordinator.
+   Codex cloud isolation and local integration follow
+   `docs/process/codex-cloud-handoff.md`; publication remains with the local coordinator.
 3. Edit source files only. In this repo that means `src/`, data/config, and docs.
 4. Never hand-edit `_site/`.
 5. Never use `DEPLOY THIS FOLDER TO NETLIFY/` as the source of truth.
