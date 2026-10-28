@@ -160,6 +160,9 @@ lock, Hostaway cache sync, Eleventy, availability validation).
   `publish-production.yml` fast-forwards to `main` daily at 09:05 UTC.
 - Agents never push to `production` and never dispatch Publish Production; an
   early publish costs a Netlify build and needs Sawyer's approval each time.
+- Live revision: the `commit_ref` of Netlify's current production deploy
+  (project `cozy-licorice-e83928`). It trails `main` until the next publish,
+  so a merge alone never changes the live site.
 - Post-deploy proof: `npm run verify:recovery:live && npm run verify:direct-booking-events && npm run verify:owner-funnel-routes`
 - "Shipped" means: merged to `main`, published to `production`, Netlify built
   successfully, and the relevant live smoke checks passed
