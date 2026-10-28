@@ -39,7 +39,7 @@ test("DESIGN.md Waterline type and spacing match guest.css", () => {
   const displayTrack = yamlValue(waterline.match(/display:\n([\s\S]*?)\n    body:/)[1], "letterSpacing");
   const h1 = yamlValue(waterline, "h1");
   const section = yamlValue(waterline, "section");
-  const sectionPhone = yamlValue(waterline, "section-phone");
+  const sectionPhone = yamlValue(waterline, "section-mobile");
 
   assert.equal(bodySize, "15px");
   assert.equal(bodyLead, "1.55");
@@ -59,15 +59,11 @@ test("DESIGN.md Waterline type and spacing match guest.css", () => {
   assert.doesNotMatch(css, /font-size:1[01]px/);
 });
 
-test("button and pill treatment stay locked while type tokens change", () => {
+test("button shape stays locked while type tokens change", () => {
   const css = read("src/css/guest.css");
-  assert.match(css, /--g-control-treatment:sliding-arrow-pill/);
-  assert.match(css, /--g-control-radius:999px/);
-  assert.match(css, /--g-button-arrow:1/);
-  assert.match(css, /min-height:48px;padding:14px 24px/);
-  assert.match(css, /font:500 14px\/1\.35 Poppins,sans-serif/);
-  const design = read("DESIGN.md");
-  assert.match(design, /control-treatment:\s*"sliding-arrow-pill"/);
+  assert.doesNotMatch(css, /--g-control-treatment|--g-control-radius|--g-button-arrow/);
+  assert.match(css, /min-height:48px;padding:14px 24px;[^}]*border-radius:4px;font:500 14px\/1\.35 Poppins,sans-serif/);
+  assert.doesNotMatch(read("DESIGN.md"), /control-treatment/);
 });
 
 test("guest.css cannot grow when type tokens change", () => {

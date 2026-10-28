@@ -16,12 +16,17 @@ suggestions into public claims without a current source-backed receipt.
 
 ## Local Capability Trials
 
-Use the "Business Priorities And Experiments" contract in `AGENTS.md`. A trial
-may use an already available tool or proposed instruction change in an isolated
-checkout before it earns adoption. Test the candidate against the current
-method on the same task and compare correctness, useful output, and Sawyer's
-intervention. New purchases, installation, permissions, external actions, and
-global activation remain outside that authority.
+`AGENTS.md` -> Business Priorities And Experiments sets when a trial is in
+scope; this section owns how to run one. A trial may use an already available
+tool or proposed instruction change in an isolated checkout before it earns
+adoption. It needs a named task, isolated checkout, affected surface,
+comparison with the current method, time limit, and stop condition. Test the
+candidate against the current method on the same task and compare correctness,
+useful output, and Sawyer's intervention; file counts and a polished report are
+not evidence of improvement. Retain or reverse the candidate on that result
+before expanding its scope. New purchases, installation, paid services,
+credential or permission changes, external sends, production mutation,
+publication, and global activation remain outside that authority.
 
 When an instruction changes, inspect a fresh session's loaded guidance and
 task decisions. Static text checks alone do not prove changed agent behavior.

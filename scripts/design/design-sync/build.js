@@ -5,8 +5,10 @@
  * design-sync build — generate the Claude Design bundle for the Waterline system.
  *
  * WHY THIS EXISTS
- * Regenerates the Claude Design "Seascape Vacations Design System" bundle from
- * repo truth: DESIGN.md Waterline, live guest CSS, fonts, and real shell markup.
+ * The Claude Design project "Seascape Vacations Design System" is what Claude Design
+ * mocks Seascape surfaces from. This script regenerates it from repo truth so the two
+ * never drift by hand: DESIGN.md's Waterline block, the live guest CSS, the self-hosted
+ * fonts and the real rendered markup of the shared shell and guest components.
  *
  * WHAT IT PRODUCES (into --out, default .design-sync/out, gitignored)
  *   SKILL.md, README.md            entrypoints Claude Design reads first (templates/)
@@ -15,20 +17,21 @@
  *   waterline/fonts.css + fonts/   self-hosted Poppins + Instrument Serif
  *   waterline/*.css                verbatim copies of the live guest stylesheets
  *   waterline/DESIGN.md            verbatim DESIGN.md (visual law)
- *   waterline/{design-review-workflow,writing-style-guide,legacy-gold-ctas}.md
+ *   waterline/*.md                 reference docs (copy-reference-documents.js)
  *   preview/*.html                 self-contained cards for the Design System pane,
  *                                  built from the REAL built HTML of the site
  *   _sync-manifest.json            exact writes + deletes for the DesignSync push
+ *   _sync-push.json                ready DesignSync arguments (push-payload.js)
  *
  * USAGE
  *   npm run build                                  # or eleventy to a temp dir
  *   node scripts/design/design-sync/build.js --site _site [--out .design-sync/out]
+ *     --out must stay inside .design-sync/ (the folder is wiped on every build)
  *   node scripts/design/design-sync/render-check.js   # Playwright proof of every card
  *
- * The push itself is done with the DesignSync tool from Claude Code (list -> finalize_plan
- * -> write_files/delete_files) using _sync-manifest.json. Re-run after any PR that touches
- * DESIGN.md, src/css/{base,guest,arrival,catalog,catalog-card,about,property-gallery}.css
- * or the guest partials.
+ * The push itself is done with the DesignSync tool from Claude Code, using the arguments
+ * in _sync-push.json; the build prints the call order. Re-run after any PR that touches
+ * DESIGN.md, a stylesheet listed in stylesheets.js or the guest partials.
  */
 
 const fs = require("fs");
@@ -44,8 +47,6 @@ const argValue = (flag, fallback) => {
 };
 const SITE = path.resolve(ROOT, argValue("--site", "_site"));
 const OUT = path.resolve(ROOT, argValue("--out", ".design-sync/out"));
-// The bundle folder is wiped on every build, so it must stay inside the ignored
-// .design-sync/ tree; `--out ..` or an absolute path elsewhere is refused.
 const SYNC_ROOT = path.join(ROOT, ".design-sync");
 if (!(OUT === SYNC_ROOT || OUT.startsWith(SYNC_ROOT + path.sep))) {
   throw new Error(`--out must resolve inside ${SYNC_ROOT}; got ${OUT}`);
@@ -84,7 +85,7 @@ const designMd = read("DESIGN.md");
 const frontMatter = (designMd.match(/^---\n([\s\S]*?)\n---/) || [])[1];
 if (!frontMatter) throw new Error("DESIGN.md has no YAML front matter");
 const wl = yaml.load(frontMatter).waterline;
-if (!wl || !wl.colors || !wl.typography || !wl["control-treatment"]) {
+if (!wl || !wl.colors || !wl.typography) {
   throw new Error("DESIGN.md front matter has no waterline block; refusing to build from legacy tokens.");
 }
 const C = wl.colors;
@@ -99,13 +100,10 @@ const today = new Date().toISOString().slice(0, 10);
 
 /* ---------------------------------------------------------------- css */
 const stripFontFace = (css) => css.replace(/@font-face\s*\{[^}]*\}\n?/g, "");
-const baseCss = read("src/css/base.css");
-const guestCss = stripFontFace(read("src/css/guest.css"));
-const arrivalCss = read("src/css/arrival.css");
-const catalogCss = read("src/css/catalog.css");
-const catalogCardCss = read("src/css/catalog-card.css");
-const aboutCss = read("src/css/about.css");
-const propertyGalleryCss = read("src/css/property-gallery.css");
+const sheets = Object.fromEntries(require("./stylesheets").map((name) => [name, read(`src/css/${name}.css`)]));
+sheets.guest = stripFontFace(sheets.guest);
+const inlined = (name) => sheets[name] ?? (() => { throw new Error(`stylesheets.js must list "${name}": the preview cards inline it.`); })();
+const [baseCss, guestCss, arrivalCss, catalogCss, catalogCardCss] = ["base", "guest", "arrival", "catalog", "catalog-card"].map(inlined);
 
 /* ----------------------------------------------------------- homes */
 // Home count and names come from canonical property data, never a literal.
@@ -114,49 +112,8 @@ const homeNames = homes.map((home) => home.name);
 const homeCount = numberWord(homes.length);
 const HomeCount = `${homeCount[0].toUpperCase()}${homeCount.slice(1)}`;
 
-const fonts = [
-  ["src/assets/fonts/homepage/poppins-400-latin.woff2", "Poppins", 400, "normal"],
-  ["src/assets/fonts/homepage/poppins-500-latin.woff2", "Poppins", 500, "normal"],
-  ["src/assets/fonts/homepage/poppins-600-latin.woff2", "Poppins", 600, "normal"],
-  ["src/assets/fonts/homepage/poppins-700-latin.woff2", "Poppins", 700, "normal"],
-  ["src/assets/fonts/guest/instrument-serif.woff2", "Instrument Serif", 400, "normal"],
-  ["src/assets/fonts/guest/instrument-serif-italic.woff2", "Instrument Serif", 400, "italic"],
-];
-// `prefix` is the path from the consuming file to waterline/fonts/.
-function fontFace(prefix) {
-  return fonts
-    .map(([src, family, weight, style]) =>
-      `@font-face{font-family:'${family}';font-style:${style};font-weight:${weight};font-display:swap;src:url('${prefix}${path.basename(src)}') format('woff2')}`
-    )
-    .join("\n");
-}
-
-const tokensCss = `/* Generated by scripts/design/design-sync/build.js from DESIGN.md (waterline block)
-   at ${today}, commit ${commit}. Do not edit by hand; edit DESIGN.md and re-run the build. */
-:root{
-  --wl-paper:${C.paper};   /* canvas: sun-warmed paper */
-  --wl-ink:${C.ink};       /* text, primary controls, deep marine */
-  --wl-citron:${C.citron}; /* selected scene + CTA over photos/dark; never small text on paper */
-  --wl-muted:${C.muted};   /* supporting text, hover fill */
-  --wl-clay:${C.clay};     /* accent, <em>, active nav, focus ring */
-  --wl-rule:${C.rule};     /* 1px rules and borders */
-  --wl-soft:${C.soft};     /* quiet solid surface (booking panel) */
-  --wl-font-display:'${T.display.fontFamily}',Georgia,serif;
-  --wl-font-body:${T.body.fontFamily},sans-serif;
-  --wl-display-weight:${T.display.fontWeight};
-  --wl-display-lh:${T.display.lineHeight};
-  --wl-display-ls:${T.display.letterSpacing};
-  --wl-h1:${T.display.h1};
-  --wl-body-size:${T.body.fontSize};
-  --wl-body-lh:${T.body.lineHeight};
-  --wl-label-size:${T.label.fontSize};
-  --wl-label-ls:${T.label.letterSpacing};
-  --wl-radius-button:${wl.rounded.button};
-  --wl-control-treatment:${wl["control-treatment"]};
-  --wl-control-min:48px; /* buttons; 44px is the mobile floor (F2) */
-}
-${fontFace("fonts/")}
-`;
+const { fonts, fontFace, tokensCss: buildTokensCss } = require("./tokens-css");
+const tokensCss = buildTokensCss(wl, `${today}, commit ${commit}`);
 
 /* ---------------------------------------------------------------- card factory */
 const chromeCss = require("./chrome-css")(C);
@@ -214,13 +171,9 @@ write("waterline/fonts.css", `/* Self-hosted faces, same files the site ships. *
 for (const [src] of fonts) copy(src, `waterline/fonts/${path.basename(src)}`);
 copy("src/assets/fonts/guest/OFL.txt", "waterline/fonts/OFL-instrument-serif.txt");
 require("./copy-reference-documents")(copy);
-write("waterline/base.css", baseCss);
-write("waterline/guest.css", `/* Verbatim src/css/guest.css minus @font-face (see fonts.css). */\n${guestCss}`);
-write("waterline/arrival.css", arrivalCss);
-write("waterline/catalog.css", catalogCss);
-write("waterline/catalog-card.css", catalogCardCss);
-write("waterline/about.css", aboutCss);
-write("waterline/property-gallery.css", propertyGalleryCss);
+for (const [name, css] of Object.entries(sheets)) {
+  write(`waterline/${name}.css`, name === "guest" ? `/* Verbatim src/css/guest.css minus @font-face (see fonts.css). */\n${css}` : css);
+}
 write("waterline/shell.html", `<!-- Real shared shell as built at ${commit}. -->\n${headerPaper}\n<main id="main"><!-- page --></main>\n${footer}\n`);
 
 /* ---------------------------------------------------------------- cards */
@@ -305,13 +258,13 @@ card({
   file: "buttons.html",
   group: "Components",
   name: "Buttons",
-  subtitle: "Ink primary · citron on dark · paper on legacy teal · control-treatment · 48px min",
+  subtitle: "Ink primary · citron on dark · paper on legacy teal · 4px · 48px min",
   viewport: [900, 640],
   css: [...GUEST, `.ds-dark{background:${C.ink};padding:28px}.ds-dark .g-button{background:${C.citron};color:${C.ink};border-color:${C.citron}}.ds-dark .g-button:hover{background:#c3d97a;color:${C.ink}}
 .ds-teal{background:linear-gradient(135deg,#5F8A8B,#203F40);padding:28px}.ds-teal .g-button{background:${C.paper};color:${C.ink};border:1px solid ${C.ink}}
 .ds-hover{background:${C.muted}!important}.ds-focus{outline:3px solid ${C.clay};outline-offset:4px}`],
   title: "One button, three measured treatments",
-  note: `Shape from --g-control-treatment (default sliding-arrow-pill). 14px/24px padding, min-height 48px (44px floor). Poppins 500 14px. Hover fills muted and slides the arrow. No lift, shine or gold. Focus is 3px clay offset 4px. <strong>Pick the fill by measured contrast, not by eye.</strong>`,
+  note: `Radius 4px, never a pill. 14px/24px padding, min-height 48px (44px mobile floor). Poppins 500 14px. Hover fills with muted, no lift, no shadow, no shine. Focus is a 3px clay outline offset 4px. <strong>Pick the treatment by measured contrast on its surface, not by eye.</strong>`,
   body: `<p class="ds-caption">Ink with white text on paper, white and photos (10.14:1 on cream). Rest · hover · focus.</p>
 <div class="ds-row"><a class="g-button btn-brand" href="#">Find my home</a><a class="g-button btn-brand ds-hover" href="#">Find my home</a><a class="g-button btn-brand ds-focus" href="#">Find my home</a><button class="g-button btn-brand" type="submit">Check dates</button></div>
 <div class="ds-rule"></div>
@@ -440,13 +393,13 @@ card({
   file: "radii.html",
   group: "Spacing",
   name: "Radii and surfaces",
-  subtitle: "tokenized controls · square photos · 1px rules · quiet solid surfaces",
+  subtitle: "4px controls · square photos · 1px rules · quiet solid surfaces",
   viewport: [760, 300],
   css: GUEST,
   title: "Almost nothing is rounded",
-  note: `Buttons and pills use the control-treatment token. Photos are real rectangles, never simulated rooms. Cards are separated by 1px rules, not shadows; the postcard stock is the one lifted surface and its shadow is ink at 11%.`,
+  note: `Buttons and inputs take 4px. Photos are real rectangles, never simulated rooms. Cards are separated by 1px rules, not shadows; the postcard stock is the one lifted surface and its shadow is ink at 11%.`,
   body: `<div class="ds-row" style="align-items:flex-end">
-<div class="ds-sw" style="border-radius:999px;background:${C.ink};color:#fff;min-height:96px"><small>Control</small><b>pill</b></div>
+<div class="ds-sw" style="border-radius:4px;background:${C.ink};color:#fff;min-height:96px"><small>Control</small><b>4px</b></div>
 <div class="ds-sw" style="border-radius:0;min-height:96px"><small>Photo · card</small><b>0</b></div>
 <div class="ds-sw" style="border-radius:0;background:${C.soft};min-height:96px"><small>Panel (soft)</small><b>0 + rule</b></div>
 <div class="ds-sw" style="border-radius:0;background:#FFFCF4;border:0;box-shadow:0 20px 32px #173d421c;min-height:96px"><small>Postcard</small><b>shadow</b></div>
@@ -589,43 +542,16 @@ write(
 );
 
 /* ---------------------------------------------------------------- deletes */
-// Legacy cards with no Waterline equivalent. They contradict the current system
-// (gold pills, Playfair numerals, 20px cards) and must leave the pane. The full
-// project was exported to a zip before the first sync (see README).
-const deletes = [
-  // Files Claude Design adds inside the project when a mock is run from its chat.
-  // The system is generated; mocks live in their own design project (see README).
-  "waterline/components/Button.jsx",
-  "waterline/components/Button.d.ts",
-  "waterline/components/button.html",
-  "waterline/tokens.html",
-  "live-mockup/Property Management Waterline.html",
-  "live-mockup/Property Management Waterline - Desktop & Mobile.html",
-  "preview/badge-gps-chip.html",
-  "preview/badges.html",
-  "preview/colors-gradients.html",
-  "preview/colors-neutral.html",
-  "preview/colors-warm.html",
-  "preview/component-postcard-cta.html",
-  "preview/editorial-issue-meta.html",
-  "preview/numerals-stat-arrow.html",
-  "preview/property-card-a-editorial.html",
-  "preview/property-card-b-price-anchored.html",
-  "preview/property-card-c-hotel-group.html",
-  "preview/property-card-d-gallery.html",
-  "preview/property-card-e-availability.html",
-  "preview/property-card-f-list.html",
-  "preview/review-card.html",
-  "preview/shadows.html",
-  "preview/spec-live-availability.html",
-  "preview/stats-bar.html",
-  "preview/type-drop-cap.html",
-  "preview/type-numerals.html",
-];
+const deletes = require("./legacy-deletes");
 
 fs.writeFileSync(
   path.join(OUT, "_sync-manifest.json"),
   JSON.stringify({ generatedAt: new Date().toISOString(), commit, site: SITE, writes, deletes }, null, 2)
 );
 
+const { buildPushPayload, pushRecipe } = require("./push-payload");
+const push = buildPushPayload({ outDir: OUT, writes, deletes });
+fs.writeFileSync(path.join(OUT, "_sync-push.json"), JSON.stringify(push, null, 2));
+
 console.log(`design-sync bundle: ${writes.length} files to write, ${deletes.length} to delete -> ${OUT}`);
+console.log(pushRecipe(push, path.relative(ROOT, path.join(OUT, "_sync-push.json"))));

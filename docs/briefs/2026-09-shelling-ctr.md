@@ -1,5 +1,7 @@
 # Brief: Shelling guide CTR correction
 
+> Status 2026-10-25: the title and meta description element of this brief is superseded by `2026-10-shelling-guide-rescue.md`. The retitle (#604, 2026-09-19) met this brief's own revert rule (page CTR fell from 1.64% to 0.89% across the change date), and the rescue brief restores the earlier title and meta text. The rest of this brief stays as history.
+
 ## Content Gate Inputs
 
 - persona: trip planner deciding which Anna Maria Island beach to shell and when
