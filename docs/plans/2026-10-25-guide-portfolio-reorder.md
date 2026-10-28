@@ -126,6 +126,8 @@ rescue readback windows are unchanged; this exception does not replace R0.
 
 ### Lane 2: layout moves (factory)
 
+October 27 execution: Sawyer selected Rainy Day B and authorized its normal review/publication, including polish of the existing table with unchanged data. `docs/briefs/2026-10-guide-portfolio-layout.md` scopes this one activity conversion. Other guide moves and holds remain unchanged.
+
 Before the first move, ticket L5 writes `docs/briefs/2026-10-guide-portfolio-layout.md`
 (an active brief for these moves; the family-1 brief covered L0-L4 only). Comparison and
 activity guides are different page types from the planning guides the frame was built for,

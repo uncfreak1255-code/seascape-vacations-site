@@ -1,0 +1,30 @@
+{# Selected Rainy Day B activity frame. DESIGN.md and activity-guides.md govern. #}
+<!doctype html>
+<html lang="en">
+<head>
+{% block guideHead %}{% endblock %}
+{% include "partials/local-font-head.njk" %}
+<link rel="stylesheet" href="/css/guest.css?v=waterline-v3">
+<link rel="stylesheet" href="/css/activity-guide.css">
+</head>
+<body class="guest-shell planning-guide activity-guide">
+{% include "partials/guest-header.njk" %}
+<main class="ag-page">
+{% block guideBreadcrumb %}{% endblock %}
+{% block guideOpening %}{% endblock %}
+{% block guideComparison %}{% endblock %}
+<div class="ag-reading">
+<article class="ag-article article-text">
+{% block guideArticle %}{% endblock %}
+</article>
+{% block guideContents %}{% endblock %}
+</div>
+{% block guideRelated %}{% endblock %}
+</main>
+{% block guideSticky %}{% endblock %}
+{% include "partials/guest-footer.njk" %}
+<script defer src="/assets/js/guide-contents.js"></script>
+{% include "partials/analytics-ga4.njk" %}
+{% include "partials/email-popup.njk" %}
+</body>
+</html>
