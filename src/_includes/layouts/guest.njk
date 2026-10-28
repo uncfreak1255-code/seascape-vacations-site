@@ -3,14 +3,14 @@
 <html lang="en">
 <head>
   {% if propertySlug %}
-    {% set metaProperty = properties | propertyBySlug(propertySlug) %}
-    {% set pageDescription = metaProperty.name + " in " + metaProperty.city + ": " + metaProperty.bedrooms + " bedrooms, " + metaProperty.bathrooms + " bathrooms, up to " + metaProperty.guests + " guests. " + metaProperty.guestFacts.tagline + " Compare the full total and book direct." %}
+    {% if propertyDetails %}{% set metaProperty = propertyDetails %}{% else %}{% set metaProperty = properties | propertyBySlug(propertySlug) %}{% endif %}
+    {% if metaProperty.bedrooms and metaProperty.bathrooms %}{% set pageDescription = metaProperty.name + " in " + metaProperty.city + ": " + metaProperty.bedrooms + " bedrooms, " + metaProperty.bathrooms + " bathrooms, up to " + metaProperty.guests + " guests. " + metaProperty.guestFacts.tagline + " Compare the full total and book direct." %}{% else %}{% set pageDescription = metaProperty.name + " in " + metaProperty.city + ": up to " + metaProperty.guests + " guests. " + metaProperty.guestFacts.tagline + " Compare the full total and book direct." %}{% endif %}
     {% set pageImage = site.url + metaProperty.photography.photos[0].src %}
   {% endif %}
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <title>{{ pageTitle | seoTitle }}</title><meta name="description" content="{{ pageDescription | seoDescription }}">
   <link rel="alternate" type="application/json" title="Seascape property and booking information" href="https://seascape-vacations.com/ai-discovery.json">
-  <link rel="canonical" href="{{ site.url }}{{ page.url }}"><meta name="robots" content="index, follow">
+  <link rel="canonical" href="{{ site.url }}{{ page.url }}"><meta name="robots" content="{% if seoIndexable == false %}noindex{% else %}index{% endif %}, follow">
   <meta property="og:type" content="website"><meta property="og:url" content="{{ site.url }}{{ page.url }}">
   <meta property="og:title" content="{{ pageTitle }}"><meta property="og:description" content="{{ pageDescription }}">
   <meta property="og:image" content="{{ pageImage or site.url + '/images/homes/the-oasis/01.webp' }}">

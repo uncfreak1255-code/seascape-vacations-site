@@ -40,5 +40,11 @@
     "heading": "A moment at The Coastal.",
     "description": "A game on the court, another indoors, dinner together, and a quiet poolside finish. A short photo story of The Coastal.",
     "mediaDir": "coastal-stay"
+  },
+  "relaxing-oasis": {
+    "name": "Relaxing Oasis",
+    "heading": "A moment at Relaxing Oasis.",
+    "description": "A bright living room, the kitchen, shaded outdoor dining, and a palm-lined backyard. A short photo story of Relaxing Oasis.",
+    "mediaDir": "relaxing-oasis"
   }
 }
