@@ -32,6 +32,9 @@ belongs to the rendered design-review lane, not this review.
 - Cite a file and line for every finding. A guess from a function name or a
   pattern you expect to be there is not a finding.
 - On a bug fix, check that the fix addresses the cause, not the symptom.
+- If the change alters behavior and the PR has no test or proof that would
+  fail without it, report that as a P2 finding. Docs-only and wording
+  changes are exempt.
 - When one defect appears in several places, report the class once and list
   every instance, so the author fixes all of them in one round.
 - Tag a defect the PR did not introduce as **Pre-existing**. It is an optional
