@@ -41,7 +41,10 @@ test('existing homepage search carries the trip through catalog and property che
   await expect(page).toHaveURL(/\/properties\//);
   expectTrip(page.url());
   const detail = page.locator('a[aria-label="View Dockside Dreams details"]').first();
-  expectTrip(await detail.getAttribute('href'));
+  // URL navigation can finish before the catalog script decorates its links.
+  await expect(async () => {
+    expectTrip(await detail.getAttribute('href'));
+  }).toPass({ timeout: 10_000 });
   await detail.click();
   await expect(page).toHaveURL(/\/properties\/dockside-dreams\//);
   const checkout = page.locator('a[data-track-event="property_booking_page_click"]:visible').first();

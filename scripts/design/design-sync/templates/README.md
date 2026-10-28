@@ -13,7 +13,7 @@ This project is **generated from the repository**, not authored here. Synced {{S
 | Repo file | Role |
 | --- | --- |
 | `DESIGN.md` (copied to `waterline/DESIGN.md`) | The visual law: tokens, product promise, photography rules, floors F1 to F6, button treatments, direction decisions |
-| `src/css/base.css`, `src/css/guest.css`, `src/css/arrival.css`, `src/css/catalog.css`, `src/css/catalog-card.css`, `src/css/about.css`, `src/css/property-gallery.css`, `src/css/owner.css`, `src/css/planning-guide.css`, `src/css/comparison-guide.css`, `src/css/activity-guide.css` (copied to `waterline/`) | The live stylesheets the guest routes, owner pages and converted guides ship |
+| `src/css/base.css`, `src/css/guest.css`, `src/css/motion.css`, `src/css/arrival.css`, `src/css/catalog.css`, `src/css/catalog-card.css`, `src/css/about.css`, `src/css/property-gallery.css`, `src/css/owner.css`, `src/css/planning-guide.css`, `src/css/comparison-guide.css`, `src/css/activity-guide.css` (copied to `waterline/`) | The live stylesheets the guest routes, owner pages and converted guides ship |
 | `src/_includes/partials/guest-*.njk`, `src/_includes/layouts/guest.njk` | The shared shell and guest components; the cards use their built output |
 | `src/assets/fonts/` (copied to `waterline/fonts/`) | Self-hosted Poppins and Instrument Serif (SIL OFL) |
 | `docs/process/design-review-workflow.md` | How a design becomes a change on the site |
@@ -30,7 +30,7 @@ This project is **generated from the repository**, not authored here. Synced {{S
 │   ├── DESIGN.md                verbatim visual law
 │   ├── tokens.css               generated CSS custom properties (--wl-*)
 │   ├── fonts.css, fonts/        self-hosted faces
-│   ├── base.css, guest.css, arrival.css, catalog.css, catalog-card.css,
+│   ├── base.css, guest.css, motion.css, arrival.css, catalog.css, catalog-card.css,
 │   │   about.css, property-gallery.css, owner.css, planning-guide.css, comparison-guide.css, activity-guide.css
 │   ├── shell.html               the real shared header + footer markup
 │   ├── design-review-workflow.md
@@ -80,6 +80,6 @@ and content-quality gates still govern public-page implementation.
 
 ## Using this system
 
-For a mock, start from the component cards; they are the site's real markup and CSS, so class names carry over. Link `waterline/fonts.css`, `waterline/base.css` and `waterline/guest.css` (plus `arrival.css` for the homepage, `catalog.css` and `catalog-card.css` for the catalog, `property-gallery.css` for a property page, `about.css` for the about page, `owner.css` for the owner pages, or `planning-guide.css` for a planning guide and `comparison-guide.css` for a comparison guide), put `class="guest-site"` on `body` (a planning guide uses `class="guest-shell planning-guide"` instead; a converted comparison adds `comparison-guide`), and use the live photo URLs the cards use. For an email, slide or PDF, use the tokens in `waterline/tokens.css` and the type and button rules above; the PNG logos in `assets/` are for those surfaces, never the site header.
+For a mock, start from the component cards; they are the site's real markup and CSS, so class names carry over. Link `waterline/fonts.css`, `waterline/base.css` and `waterline/guest.css` (plus `arrival.css` for the homepage, `catalog.css` and `catalog-card.css` for the catalog, `property-gallery.css` for a property page, `about.css` for the about page, `owner.css` for the owner pages, or `planning-guide.css` for a planning guide `comparison-guide.css` for a comparison guide, or `activity-guide.css` for an activity guide), put `class="guest-site"` on `body` (a planning guide uses `class="guest-shell planning-guide"` instead; a converted comparison adds `comparison-guide`, an activity guide adds `activity-guide`), and use the live photo URLs the cards use. For an email, slide or PDF, use the tokens in `waterline/tokens.css` and the type and button rules above; the PNG logos in `assets/` are for those surfaces, never the site header.
 
 Once Sawyer approves a design here, it is the implementation contract for the site change. Implementation follows `waterline/design-review-workflow.md`, is proven with Playwright at 393px and desktop, and names any deviation before it ships. New patterns change `DESIGN.md` in the repo first; this project follows on the next sync.
