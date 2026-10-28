@@ -197,10 +197,7 @@ function showEmailPopup() {
 
     applySave50PopupReminder();
     emailPopupShown = true;
-    popup.style.display = 'flex';
-    window.requestAnimationFrame(function() {
-        popup.classList.add('active');
-    });
+    popup.classList.add('active');
 }
 
 function closeEmailPopup() {
@@ -208,9 +205,6 @@ function closeEmailPopup() {
     if (!popup) return;
 
     popup.classList.remove('active');
-    window.setTimeout(function() {
-        popup.style.display = 'none';
-    }, 400);
     localStorage.setItem(EMAIL_POPUP_KEY, Date.now().toString());
 }
 

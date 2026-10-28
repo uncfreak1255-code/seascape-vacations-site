@@ -218,7 +218,7 @@ components:
 Help a group choose one of the real homes, understand the details that could change its choice, and arrive at Hostaway with dates and guest count intact. Seascape is a small, owner-operated collection in Bradenton and Sarasota. Do not make it look like an island-wide resort or an unlimited marketplace.
 
 ## Guest journey: Waterline (September 2026)
-The homepage, catalog, property details, owner hub, and About page use the scoped `guest-site` theme in `src/css/guest.css`, plus `src/css/arrival.css` (homepage scenes) and `src/css/about.css` (About sections). The guide index, field-journal guides, two homepage comparison guides, and stay collections share the guest header and footer. Their editorial bodies keep their existing typography, except a guide converted to the planning-guide frame below and one long-read exception: on the older field-journal guides, body paragraphs and list items read at 17px over 1.75 line height with a 68ch measure, set once in `guest.css` on `article.article-text` (October 2026; the inline guide styles stay as written). Generated owner landers and other legacy routes keep the tokens above until redesigned.
+The homepage, catalog, property details, owner hub, and About page use the scoped `guest-site` theme in `src/css/guest.css` and `src/css/motion.css`, plus `src/css/arrival.css` (homepage scenes) and `src/css/about.css` (About sections). The guide index, field-journal guides, two homepage comparison guides, and stay collections share the guest header and footer. Their editorial bodies keep their existing typography, except a guide converted to the planning-guide frame below and one long-read exception: on the older field-journal guides, body paragraphs and list items read at 17px over 1.75 line height with a 68ch measure, set once in `guest.css` on `article.article-text` (October 2026; the inline guide styles stay as written). Generated owner landers and other legacy routes keep the tokens above until redesigned.
 
 - Canvas: sun-warmed paper `#F6F3EB`; ink and primary controls: deep marine `#173D42`; supporting text: `#52676A`; accent: clay `#A4533E`; selected scene and photographic CTA: citron `#D6EB85`; rules: `#CAD4CF`. Citron is a surface/accent, never small text on paper.
 - Display type: self-hosted Instrument Serif, regular and italic, under its included SIL Open Font License. Poppins remains the practical body and control face. Large, compact display lines are deliberate; factual text stays readable. Body reads 15px over 1.55. Sections use 60px desktop / 36px phone so phones keep more of the page in view.
@@ -226,21 +226,15 @@ The homepage, catalog, property details, owner hub, and About page use the scope
 - The postcard collection uses shallow perspective, an open fan on desktop, and full readable cards in a native horizontal snap list on mobile. Desktop cards stay in one count-agnostic row so a new home cannot wrap off the fan. Hover enhances a card; tap and keyboard provide the complete path. Never hide information behind hover alone.
 - Carry expressive type, photographic scale, calm rules and marine/paper contrast through the catalog and property pages. A catalog card carries no photo-number badge; its title is Instrument Serif at 40px on every width, the one reason to choose sits in open space under it, the ink "Check dates" button is the only strong control, and the details link stays at its quiet 12px secondary weight (October 2026). Keep the working comparison table and conventional booking panel. Property photos remain real rectangles, not simulated rooms or a fictitious floor plan.
 - Motion has three jobs: identify a newly selected home, give the collection tactile depth, and connect its photo to the detail page. Use browser-native CSS/Web Animations and same-origin view transitions as progressive enhancements. No loader, scroll hijacking, autoplay, custom cursor, or required animation library. The static reduced-motion and no-JavaScript paths remain complete.
-- Pointer and touch presses use subtle feedback (up to 3% scale, 120ms) when motion is allowed. Keyboard scene selection and horizontal selector movement are immediate. Keyboard card focus keeps the visible outline without lifting or enlarging the card. Desktop card hover movement is limited to fine pointers and 200ms; reduced-motion users keep the static layout.
+- Pointer and touch presses use subtle feedback (up to 3% scale, 120ms) when motion is allowed. Keyboard scene selection and horizontal selector movement are immediate. Keyboard card focus keeps the visible outline without lifting or enlarging the card. Desktop card hover movement is limited to fine pointers and 200ms; reduced-motion users keep the static layout. Control hover, press, and interrupt live in `src/css/motion.css` and append onto built `guest.css` so they do not add a stylesheet request. Press uses `scale(0.97)` at 120ms with `cubic-bezier(0.23, 1, 0.32, 1)`; hover color stays behind `(hover: hover) and (pointer: fine)` at 200ms. Keyboard focus does not scale. Dialogs, the phone menu and the email overlay enter in 250ms and leave in 150ms (opacity, `scale(0.96)`); Escape closes the menu at once. Gallery zoom: fine pointers, 200ms.
 - Desktop content can reach 1280px, with a full-width opening photograph. Controls remain at least 44px tall, with visible focus, clear labels and quiet solid surfaces. No animation may delay booking or be required to reveal essential information.
 
 ## Planning guides (October 2026)
-A planning guide finishes one trip-planning task: when to come, how to get there, what a week costs. A guide in this family converts to the frame below one guide at a time; a converted guide carries `planning-guide` on its `body` and renders its body in the Waterline tokens. The design launcher's `planning` family (`scripts/design/design-donor-router.js`) names the candidates; each conversion names its guide and is its own approval from Sawyer. Sawyer approved the direction on October 2, 2026 from desktop and phone boards of the weather guide. The build contract for each conversion is a mock built in the synced Claude Design project.
 
-- **Frame, same words.** Conversion keeps the title, description, headings, answer, table figures, sources and links identical; prove it with a text diff against the page it replaces.
-- **Opening.** Label and Instrument Serif title on the left, the quick answer as a serif lede on the right, stacked on a phone. Rules separate the parts; the legacy banner, pill badge and boxed answer are retired on a converted guide.
-- **Instrument.** One figure directly under the answer, specific to the guide's subject and drawn from data the guide already publishes (weather: a twelve-month strip of normal highs, lows and rain days). It is static markup generated at build time, carries a text label, and the full table stays on the page as its data source. Ink draws the primary marks; clay is reserved for cautionary readings such as rain and storm season. The instrument is a data figure, separate from the editorial illustrations below; a guide's existing illustrations and photographs stay as they are through a conversion. A guide with no dataset of its own uses the steps alone.
-- **Steps.** Sections carry numerals 01, 02, 03 beside the heading, leaving the heading text as written. On desktop an "In this guide" rail lists the steps and stays in view; on a phone the numerals carry the sequence.
-- **Tables.** Every column is visible at 360, 375 and 393px wide, so a converted guide has no swipe hint.
-- **Your dates.** When the site's trip memory holds dates, the instrument marks those months with a citron surface and an ink "Your dates" label. It is a progressive enhancement reading only the stored arrive and depart dates; the figure is complete without it, and the mark states the guest's dates only, never an opening or a quote.
-- **Booking box and close.** The guide booking box keeps its position, content and tracking through a conversion. Sawyer approved the Waterline restyle of the box on October 24, 2026: same words, links and tracking, with an ink top rule, ruled rows, ink buttons and no old-palette surfaces (no gradient, shadow, gold or radius above 4px). The closing band is solid ink with the paper button and ink text guides already use there (10.62:1 against the band, so it needs no hairline). Citron stays reserved for the surfaces listed under `button-on-dark`.
-- **Floors.** A converted guide is held to F1, F2 and F3 across the whole page; see the scope note under Floors.
-- **Measurement.** A guide inside an open readback window converts after that window is read.
+Each planning guide converts under its own approved scope. The opening,
+existing-data instrument, numbered steps, full mobile tables, booking box,
+floors and measurement rules live in [Planning guides](docs/design/planning-guides.md).
+Conversion preserves the original copy, facts, SEO and booking contracts.
 
 ## Comparison guides
 
@@ -256,6 +250,21 @@ labeled pair without sideways scrolling. The body carries `planning-guide`
 and `comparison-guide`, bringing this frame into the whole-page F1/F2/F3 floors.
 This approval covers the named guide; no photo, chart, filter or accordion is
 part of A. Other guides convert only under their own approved scope.
+
+## Activity guides
+
+Sawyer selected Rainy Day B on October 27, 2026: compact title/answer and side photo, existing comparison before the article, right contents rail and persistent booking action. The frame and Structured table treatment are specified in `docs/design/activity-guides.md`; approval covers this guide only.
+
+## Reusable Waterline components
+
+Use comparison tables, tabs/filters, FAQ disclosures and data figures when they
+help a guest make a trip decision. Keep Waterline's paper/ink surfaces,
+Instrument Serif headings, Poppins labels, 4px controls and F1–F6 floors.
+[Component patterns](docs/design/component-patterns.md) defines their states,
+semantics and reuse rules, with shadcn/ui as a pattern reference. Adapt to the
+existing site components; a reference does not require a new framework.
+Rainy Day uses the approved Structured comparison. The other patterns are
+available for separately scoped work; this catalog changes no held guide.
 
 ## Guide figures: when a guide earns a chart or diagram
 

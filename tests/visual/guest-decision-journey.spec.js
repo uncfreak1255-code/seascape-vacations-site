@@ -202,6 +202,8 @@ test("trip controls fit the viewport and the comparison meets automated accessib
   expect(tray.y).toBeGreaterThan(0);
   expect(tray.y+tray.height).toBeLessThanOrEqual(page.viewportSize().height);
   await page.locator("#open-comparison").click();
+  // the dialog fades in; scan its resting colours, not a mid-fade frame
+  await page.locator("#catalog-comparison").evaluate(dialog => Promise.all(dialog.getAnimations({subtree:true}).map(animation => animation.finished)));
   const twoColumnsFit = await page.locator(".catalog-comparison-scroll").evaluate(node => node.scrollWidth <= node.clientWidth + 1);
   expect(twoColumnsFit).toBe(true);
   const scan = await new AxeBuilder({page}).include("#catalog-comparison").analyze();

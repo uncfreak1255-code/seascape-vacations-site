@@ -1,0 +1,12 @@
+(()=>{const v=document.getElementById('stay-story-film'),button=document.querySelector('.story-play'),status=document.querySelector('.story-player-status'),m=matchMedia('(max-width:700px)'),player=button.parentElement;const mediaDir='/assets/media/'+v.dataset.mediaDir+'/';let current,busy=false,version=0,posterVisible=false;
+function poster(){if(posterVisible)v.poster=mediaDir+current+'-poster.jpg';}
+function state(label,message=''){player.classList.remove('is-playing');button.removeAttribute('aria-hidden');button.removeAttribute('tabindex');button.setAttribute('aria-label',label);button.removeAttribute('aria-busy');button.removeAttribute('aria-disabled');status.textContent=message;busy=false;button.hidden=false;}
+function format(){const mode=m.matches?'portrait':'cinema';if(mode===current)return;current=mode;version++;v.pause();v.removeAttribute('src');v.controls=false;poster();v.width=m.matches?720:1920;v.height=m.matches?1280:1080;v.load();state('Play stay story');}
+button.addEventListener('click',async()=>{if(busy)return;const request=version;busy=true;button.setAttribute('aria-busy','true');button.setAttribute('aria-disabled','true');button.setAttribute('aria-label','Loading stay story');status.textContent='Loading film…';if(!v.getAttribute('src')||v.error){v.src=current==='portrait'?mediaDir+'stay-story-portrait-mobile.mp4':mediaDir+'stay-story-cinema-web.mp4';}if(v.ended)v.currentTime=0;try{await v.play();if(request!==version)return;v.controls=true;v.focus({preventScroll:true});player.classList.add('is-playing');button.setAttribute('aria-hidden','true');button.tabIndex=-1;button.removeAttribute('aria-busy');button.removeAttribute('aria-disabled');status.textContent='';busy=false;}catch{if(request!==version)return;v.controls=false;state('Retry stay story','Couldn’t load the film. Tap to retry.');}});
+v.addEventListener('ended',()=>{v.controls=false;state('Replay stay story');});
+v.addEventListener('error',()=>{if(!v.getAttribute('src'))return;v.controls=false;state('Retry stay story','Couldn’t load the film. Tap to retry.');});
+v.addEventListener('waiting',()=>{if(player.classList.contains('is-playing'))status.textContent='Buffering…';});
+v.addEventListener('playing',()=>{status.textContent='';});
+v.addEventListener('pause',()=>{if(!v.ended)status.textContent='';});
+format();m.addEventListener('change',format);
+const posterObserver=new IntersectionObserver(entries=>{if(entries.some(e=>e.isIntersecting)){posterVisible=true;poster();posterObserver.disconnect();}},{rootMargin:'300px'});posterObserver.observe(player);})();
