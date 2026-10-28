@@ -99,11 +99,8 @@ try {
 const today = new Date().toISOString().slice(0, 10);
 
 /* ---------------------------------------------------------------- css */
-const stripFontFace = (css) => css.replace(/@font-face\s*\{[^}]*\}\n?/g, "");
-const sheets = Object.fromEntries(require("./stylesheets").map((name) => [name, read(`src/css/${name}.css`)]));
-sheets.guest = stripFontFace(sheets.guest);
-const inlined = (name) => sheets[name] ?? (() => { throw new Error(`stylesheets.js must list "${name}": the preview cards inline it.`); })();
-const [baseCss, guestCss, arrivalCss, catalogCss, catalogCardCss] = ["base", "guest", "arrival", "catalog", "catalog-card"].map(inlined);
+const { sheets, inlined } = require("./read-stylesheets")(read);
+const [baseCss, guestCss, motionCss, arrivalCss, catalogCss, catalogCardCss] = ["base", "guest", "motion", "arrival", "catalog", "catalog-card"].map(inlined);
 
 /* ----------------------------------------------------------- homes */
 // Home count and names come from canonical property data, never a literal.
@@ -177,7 +174,7 @@ for (const [name, css] of Object.entries(sheets)) {
 write("waterline/shell.html", `<!-- Real shared shell as built at ${commit}. -->\n${headerPaper}\n<main id="main"><!-- page --></main>\n${footer}\n`);
 
 /* ---------------------------------------------------------------- cards */
-const GUEST = [baseCss, guestCss];
+const GUEST = [baseCss, guestCss, motionCss];
 const swatch = (hex, name, role, dark) =>
   `<div class="ds-sw" style="background:${hex};color:${dark ? "#fff" : C.ink}"><small>${name}</small><div><b>${hex}</b><small>${role}</small></div></div>`;
 

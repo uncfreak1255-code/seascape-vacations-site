@@ -16,7 +16,7 @@ Sawyer requested a worktree-only property page with its already approved desktop
 and mobile film. Reuse the existing Waterline property template and gallery;
 no new design tokens, animation or catalog rollout. The design specialist
 approved reuse with an edge: final rendered desktop/mobile proof is required.
-The route remains excluded from indexing and the global catalog until review.
+The route remains excluded from indexing and the global catalog until the physical inventory is reconciled.
 
 Source files: `src/properties/relaxing-oasis/`, shared property/guest layouts,
 `partials/property-schema.njk`, `src/_data/stayStories.json`, and exact-home
@@ -77,3 +77,24 @@ is not included in this preview; rebase and repeat affected proof before publica
 Only source and preview files changed. No push, PR, merge, deployment, reservation or send.
 Await Sawyer's review of this page before publication. Room-layout reconciliation
 and catalog/indexing rollout remain separate from this route-only preview.
+
+## Approved release — October 27, 2026 EDT
+
+Sawyer approved publishing this page and its video after PR review and release
+checks, with live desktop/mobile verification. Keep bedroom/bathroom counts
+out. This supersedes the preview-only hold above; it does not authorize a
+global catalog rollout or invent missing inventory. This chat is the sole
+mutation owner and merger.
+
+Public property claims and fee/rule copy make the source change BOUNDARY.
+Classification was recorded after implementation. The acceptance section above
+was written before implementation from Sawyer's request, Hub facts and the
+existing property-page behavior. The new-route test was observed failing on
+the old site and passing here. The final PR must preserve exact listing 607228,
+no unsupported room counts in copy/meta/schema, the approved pool terminology
+and correct desktop/mobile movie selection without preloading MP4s.
+
+Latest main integrated for release: c591021f2cfe190804c14c9bc1ea42a81954f3eb.
+Its motion, guide and test-helper changes are preserved. Other open PRs787/790
+cover separate design consolidation/type work; no Relaxing Oasis task duplicates
+this branch. Final integrated checks and release readback belong in the PR.

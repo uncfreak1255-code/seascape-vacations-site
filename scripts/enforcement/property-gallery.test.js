@@ -9,6 +9,7 @@ const assert = require("node:assert/strict");
 
 const projectRoot = path.resolve(__dirname, "..", "..");
 const guestCssPath = "src/css/guest.css";
+const motionCssPath = "src/css/motion.css";
 const galleryCssPath = "src/css/property-gallery.css";
 const galleryJsPath = "src/assets/js/property-gallery.js";
 const propertyLayoutPath = "src/_includes/layouts/property.njk";
@@ -46,8 +47,9 @@ test("guest.css cannot grow and the tap-hover rule is gated", () => {
   const before = Number(headBytes(guestCssPath));
   assert.ok(now <= before, `guest.css grew from ${before} to ${now}; oversized files may not grow`);
   const css = read(guestCssPath);
+  const motion = read(motionCssPath);
   assert.match(css, /touch-action:manipulation/);
-  assert.equal(hoverRuleIsGated(css), true, "button hover must sit inside (hover:hover) and (pointer:fine)");
+  assert.equal(hoverRuleIsGated(motion), true, "button hover must sit inside (hover:hover) and (pointer:fine)");
   assert.equal(hoverRuleIsGated(""), false, "empty CSS must fail the hover gate");
   assert.equal(
     hoverRuleIsGated(".g-button:hover,.guest-site .btn:hover{background:red}"),

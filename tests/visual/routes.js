@@ -38,6 +38,11 @@ const moneyRoutes = [
     readySelector: "main h1",
   },
   {
+    slug: "guide-rainy-day",
+    path: "/guides/rainy-day-activities-bradenton-sarasota/",
+    readySelector: "main h1",
+  },
+  {
     slug: "guide-bradenton-vs-sarasota",
     path: "/guides/bradenton-vs-sarasota/",
     readySelector: "main h1",
