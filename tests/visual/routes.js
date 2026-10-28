@@ -1,4 +1,5 @@
 const moneyRoutes = [
+  {slug:"guide-ami-vs-clearwater",path:"/guides/anna-maria-island-vs-clearwater-beach/",readySelector:"main h1"},
   {slug:"guides-index", path:"/guides/", readySelector:"main h1"},
   {slug:"about-seascape", path:"/about-us/", readySelector:"main h1"},
   {slug:"stay-bradenton-near-beaches", path:"/stays/bradenton-vacation-rentals-near-beaches/", readySelector:"main h1"},

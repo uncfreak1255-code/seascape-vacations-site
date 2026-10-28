@@ -1,0 +1,21 @@
+{# Selected Decision ledger A. Original copy/SEO/booking contracts remain owned by the guide. #}
+{% from "partials/ui-icon.njk" import uiIcon %}
+<!doctype html>
+<html lang="en">
+<head>
+{% block guideHead %}{% endblock %}
+{% include "partials/local-font-head.njk" %}
+<link rel="stylesheet" href="/css/guest.css?v=waterline-v3">
+<link rel="stylesheet" href="/css/decision-ledger.css">
+</head>
+<body class="guest-shell planning-guide decision-ledger">
+{% include "partials/guest-header.njk" %}
+{% block guideBody %}{% endblock %}
+{% include "partials/guest-footer.njk" %}
+<script defer src="/assets/js/guide-contents.js"></script>
+{% include "partials/analytics-ga4.njk" %}
+{# Keep the real form/runtime; replace decorative glyphs only for this guide. #}
+{% set ledgerEmail %}{% include "partials/email-popup.njk" %}{% endset %}
+{{ ledgerEmail | replace("&#10024;", uiIcon("email")) | replace("&#128274; ", "") | replace("&#10003;", uiIcon("check")) | safe }}
+</body>
+</html>
