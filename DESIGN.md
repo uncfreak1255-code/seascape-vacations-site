@@ -251,6 +251,10 @@ and `comparison-guide`, bringing this frame into the whole-page F1/F2/F3 floors.
 This approval covers the named guide; no photo, chart, filter or accordion is
 part of A. Other guides convert only under their own approved scope.
 
+## Activity guides
+
+Sawyer selected Rainy Day B on October 27, 2026: compact title/answer and side photo, existing comparison before the article, right contents rail and persistent booking action. The frame and existing-data table refinement are specified in `docs/design/activity-guides.md`; approval covers this guide only.
+
 ## Guide figures: when a guide earns a chart or diagram
 
 The four tests a guide must pass before it gets a chart or diagram, and how that figure is built, live in `docs/design/guide-figures.md`.

@@ -13,7 +13,7 @@ This project is **generated from the repository**, not authored here. Synced {{S
 | Repo file | Role |
 | --- | --- |
 | `DESIGN.md` (copied to `waterline/DESIGN.md`) | The visual law: tokens, product promise, photography rules, floors F1 to F6, button treatments, direction decisions |
-| `src/css/base.css`, `src/css/guest.css`, `src/css/arrival.css`, `src/css/catalog.css`, `src/css/catalog-card.css`, `src/css/about.css`, `src/css/property-gallery.css`, `src/css/owner.css`, `src/css/planning-guide.css`, `src/css/comparison-guide.css` (copied to `waterline/`) | The live stylesheets the guest routes, owner pages and converted guides ship |
+| `src/css/base.css`, `src/css/guest.css`, `src/css/arrival.css`, `src/css/catalog.css`, `src/css/catalog-card.css`, `src/css/about.css`, `src/css/property-gallery.css`, `src/css/owner.css`, `src/css/planning-guide.css`, `src/css/comparison-guide.css`, `src/css/activity-guide.css` (copied to `waterline/`) | The live stylesheets the guest routes, owner pages and converted guides ship |
 | `src/_includes/partials/guest-*.njk`, `src/_includes/layouts/guest.njk` | The shared shell and guest components; the cards use their built output |
 | `src/assets/fonts/` (copied to `waterline/fonts/`) | Self-hosted Poppins and Instrument Serif (SIL OFL) |
 | `docs/process/design-review-workflow.md` | How a design becomes a change on the site |
@@ -31,7 +31,7 @@ This project is **generated from the repository**, not authored here. Synced {{S
 │   ├── tokens.css               generated CSS custom properties (--wl-*)
 │   ├── fonts.css, fonts/        self-hosted faces
 │   ├── base.css, guest.css, arrival.css, catalog.css, catalog-card.css,
-│   │   about.css, property-gallery.css, owner.css, planning-guide.css, comparison-guide.css
+│   │   about.css, property-gallery.css, owner.css, planning-guide.css, comparison-guide.css, activity-guide.css
 │   ├── shell.html               the real shared header + footer markup
 │   ├── design-review-workflow.md
 │   ├── writing-style-guide.md
