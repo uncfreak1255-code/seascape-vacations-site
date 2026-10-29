@@ -10,8 +10,8 @@ active skill set is not exhaustively re-listed here on purpose — it lives in
 The active local skill layer is intentionally lean and site-specific. Use the
 skills in `.agents/skills/` as helpers under the task route in `docs/process/batch-workflow.md`, not as
 another operating system. Stale deploy, monthly-reset, broad marketing, and
-generic SEO skills stay out of active discovery unless a new `repo-dev-setup` inventory
-proves they should return.
+generic SEO skills stay out of active discovery unless a current source and
+consumer inventory proves they should return.
 
 To check a skill change, run `npm run audit:skills` for recorded use and
 `npm run eval:skills` (pass `-- --case <name>` for one case) to score the
