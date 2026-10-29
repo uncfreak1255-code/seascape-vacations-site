@@ -63,5 +63,6 @@
       "Edit(**/package-lock.json)",
       "Write(**/package-lock.json)"
     ]
-  }
+  },
+  "disableClaudeAiConnectors": true
 }
