@@ -168,6 +168,20 @@ lock, Hostaway cache sync, Eleventy, availability validation).
   (project `cozy-licorice-e83928`). It trails `main` until the next publish,
   so a merge alone never changes the live site.
 - Post-deploy proof: `npm run verify:recovery:live && npm run verify:direct-booking-events && npm run verify:owner-funnel-routes`
+- Prove it is live, in order, after every merge (checklist and receipt:
+  `docs/process/post-merge-runtime-proof-checklist.md`):
+  1. `git fetch origin production && git merge-base --is-ancestor <merge-sha> origin/production`
+     exits 0 only when the production branch contains the merge. Exit 1 means
+     "merged, queued for publish", not live (PR 766 on 2026-10-22 was merged
+     while production lacked it).
+  2. Netlify's current production deploy is complete and its `commit_ref`
+     contains the merge.
+  3. The Post-deploy proof commands pass; for a change to a specific page, add
+     `npm run verify:recovery:entity-live` or fetch that production URL and
+     confirm the new text.
+- Source, CI, merge, deploy and live page are separate claims. Every merge
+  report names the live check it ran (command and exit code) or says "not yet
+  live".
 - "Shipped" means: merged to `main`, published to `production`, Netlify built
   successfully, and the relevant live smoke checks passed
 
