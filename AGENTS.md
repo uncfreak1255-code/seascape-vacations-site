@@ -105,7 +105,11 @@ Gmail is prohibited.
 - skills: `.agents/skills/` (`.claude/skills/` mirrors the active ones;
   Claude-only exceptions in `.agents/skills-divergence.json`); SEO role cards:
   `.claude/agents/`. A skill never replaces the gates, approval, or proof
-  requirements in this file.
+  requirements in this file. Managed engineering skills use the
+  [issue tracker](docs/agents/issue-tracker.md),
+  [triage labels](docs/agents/triage-labels.md), and
+  [domain conventions](docs/agents/domain.md); read the matching file before
+  that operation.
 
 For behavior changes, start with the matching source and existing proof below.
 Browser scripts live in `src/assets/js/`; layout identifiers such as
