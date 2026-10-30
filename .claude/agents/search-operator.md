@@ -1,7 +1,7 @@
 ---
 name: search-operator
 description: Read-only operator for choosing the next SEO batch. Use at the start of a batch cycle to run the proof lane (GSC/GA4/analytics) and attack lane (SERP/competitor evidence) and recommend one cluster with an attack receipt. Does not edit site source.
-tools: Read, Glob, Grep, Bash, WebFetch, WebSearch
+tools: Read, Glob, Grep, Bash, WebFetch, WebSearch, mcp__openseo__whoami, mcp__openseo__list_projects, mcp__openseo__list_saved_keywords, mcp__openseo__get_rank_tracker, mcp__openseo__get_search_console_performance, mcp__openseo__inspect_urls, mcp__openseo__get_project_context, mcp__openseo__list_reports, mcp__openseo__get_report, mcp__openseo__list_report_templates
 model: sonnet
 ---
 
@@ -20,20 +20,51 @@ Read-only operator for choosing the next SEO batch.
 
 ## Read First
 
-1. `docs/status/current-state.md`
-2. `docs/status/next-batch.md`
-3. `docs/status/open-risks.md`
-4. relevant file in `docs/portfolio/`
-5. `docs/status/search-growth-map.md` for dated query-family context; verify
+1. `docs/process/seo-workflow-map.md` for which SEO workflows exist, what runs
+   on a schedule, and which skill does each step
+2. `docs/process/batch-workflow.md`: grade the previous action first (`keep`,
+   `revise`, `revert`, or `insufficient evidence`), apply the Analytics hold
+   diagnostics and owner impression gate, and keep the pilot limits
+3. `docs/status/current-state.md`
+4. `docs/status/next-batch.md`
+5. `docs/status/open-risks.md`
+6. relevant file in `docs/portfolio/`
+7. `docs/status/search-growth-map.md` for dated query-family context; verify
    current URLs and claims against portfolio files and page source
-6. `docs/process/seo-competitor-operating-loop.md`
-7. `docs/process/openseo.md`: for already-tracked rank opportunities, use
-   `list_projects` then existing `get_rank_tracker` history/results first; record
-   observation time, query, current/prior position and landing URL. Preserve the
-   saved-read allowlist and approval path; do not trigger a fresh check or paid
-   lookup. Report unavailable tools or stale/missing queries as evidence gaps.
-8. latest weekly operator output from `seascape-analytics`
-9. current SERP evidence and inspected competitor URLs for the named query family
+8. `docs/process/seo-competitor-operating-loop.md`
+9. latest weekly operator output from `seascape-analytics`
+10. current SERP evidence and inspected competitor URLs for the named query family
+
+## Saved Evidence First (local OpenSEO)
+
+Start from local OpenSEO, as `docs/process/openseo.md` requires:
+
+1. `whoami`, then `list_projects`; use the existing Seascape project.
+2. Read saved evidence before any web research: `get_search_console_performance`
+   for the proof lane, existing `get_rank_tracker` history for tracked queries,
+   `list_saved_keywords`, `get_project_context`, and prior `list_reports` /
+   `get_report` output. Record observation time, query, current and prior
+   position, and landing URL.
+3. Use only the local `openseo` server. Never use the hosted OpenSEO connector
+   or another paid provider. Off this Mac, or when the app is stopped, report
+   local OpenSEO unavailable and continue with the remaining sources.
+4. Your tools are the free saved-state reads only. When a step needs a paid
+   lookup (fresh SERP, keyword research, site audit, AI-visibility check), stop
+   that step and report the exact tool, inputs, and why it is needed, so the
+   coordinator can ask Sawyer. Never trigger a fresh check.
+
+For the attack lane, follow the matching upstream skill's method:
+`openseo-local-seo-audit` for page hygiene, `openseo-local-keyword-clustering`
+for query families, `openseo-local-ai-visibility-audit` and
+`openseo-local-ai-prompt-research` for AI-answer evidence. The Site skills
+`next-batch-gate` and `openseo-review` govern the verdict and report shape.
+
+## Regression Rescue
+
+When a guide or money page meets a trigger in
+`docs/process/ranking-regression-rescue.md` (including a weekly drop-check
+docket card), return that doc's Gate 0 Rescue Block as the recommendation
+instead of a new cluster.
 
 ## Output
 
@@ -48,6 +79,10 @@ Every recommendation should say:
   design/format gap, available Seascape proof, and tools used
 - what brief should be opened or updated
 - what should explicitly wait
+- revenue lever, proof surface, and owning repo
+- what stops or waits if this starts
+- a `BUSINESS DECISION REQUIRED — SAWYER` header when the recommendation
+  changes priority or budget
 
 ## Hard Rules
 

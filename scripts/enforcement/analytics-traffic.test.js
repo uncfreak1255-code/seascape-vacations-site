@@ -7,7 +7,9 @@ const vm = require("node:vm");
 const siteRoot = path.resolve(__dirname, "../../_site");
 const measurementId = require("../../src/_data/site.json").analytics.ga4MeasurementId;
 const disableKey = `ga-disable-${measurementId}`;
-const routes = ["index.html", "properties/index.html", "property-management/index.html", "guides/anna-maria-island-beaches/index.html"];
+const routes = ["index.html", "properties/index.html", "property-management/index.html", "guides/anna-maria-island-beaches/index.html", "guides/rainy-day-activities-bradenton-sarasota/index.html"];
+routes.push("guides/anna-maria-island-vs-clearwater-beach/index.html");
+routes.push("guides/anna-maria-island-vs-longboat-key/index.html");
 
 // Execute the built inline scripts in document order and observe the public GA4 switch.
 function runPage(route, href, { storage = new Map(), webdriver = false, storageBlocked = false } = {}) {
@@ -67,4 +69,15 @@ test("ordinary production visitors remain tracked, including when browser storag
     }
   }
   assert.equal(runPage(routes[0], "https://seascape-vacations.com/?sv_developer=1", { storageBlocked: true }).context[disableKey], true);
+});
+
+
+for (const route of ["guides/rainy-day-activities-bradenton-sarasota/index.html", "guides/anna-maria-island-vs-clearwater-beach/index.html", "guides/anna-maria-island-vs-longboat-key/index.html"]) test(`${route} initializes GA4 once for an ordinary production visitor`, () => {
+  for (const origin of ["https://seascape-vacations.com", "https://www.seascape-vacations.com"]) {
+    for (const storageBlocked of [false, true]) {
+      const result = runPage(route, `${origin}/${route.replace(/index.html$/, '')}`, { storageBlocked });
+      assert.equal(result.configurations.length, 1, "one initializer must queue one automatic page view");
+      assert.equal(result.configurations[0].disabled, false);
+    }
+  }
 });

@@ -6,10 +6,9 @@
  *
  * WHY THIS EXISTS
  * The Claude Design project "Seascape Vacations Design System" is what Claude Design
- * builds from when it mocks a Seascape surface. It went stale (pre-Waterline teal/gold,
- * Playfair, pill buttons). This script regenerates it from repo truth so the two never
- * drift by hand: DESIGN.md's Waterline block, the live guest CSS, the self-hosted fonts
- * and the real rendered markup of the shared shell and guest components.
+ * mocks Seascape surfaces from. This script regenerates it from repo truth so the two
+ * never drift by hand: DESIGN.md's Waterline block, the live guest CSS, the self-hosted
+ * fonts and the real rendered markup of the shared shell and guest components.
  *
  * WHAT IT PRODUCES (into --out, default .design-sync/out, gitignored)
  *   SKILL.md, README.md            entrypoints Claude Design reads first (templates/)
@@ -18,20 +17,21 @@
  *   waterline/fonts.css + fonts/   self-hosted Poppins + Instrument Serif
  *   waterline/*.css                verbatim copies of the live guest stylesheets
  *   waterline/DESIGN.md            verbatim DESIGN.md (visual law)
- *   waterline/{design-review-workflow,writing-style-guide,legacy-gold-ctas}.md
+ *   waterline/*.md                 reference docs (copy-reference-documents.js)
  *   preview/*.html                 self-contained cards for the Design System pane,
  *                                  built from the REAL built HTML of the site
  *   _sync-manifest.json            exact writes + deletes for the DesignSync push
+ *   _sync-push.json                ready DesignSync arguments (push-payload.js)
  *
  * USAGE
  *   npm run build                                  # or eleventy to a temp dir
  *   node scripts/design/design-sync/build.js --site _site [--out .design-sync/out]
+ *     --out must stay inside .design-sync/ (the folder is wiped on every build)
  *   node scripts/design/design-sync/render-check.js   # Playwright proof of every card
  *
- * The push itself is done with the DesignSync tool from Claude Code (list -> finalize_plan
- * -> write_files/delete_files) using _sync-manifest.json. Re-run after any PR that touches
- * DESIGN.md, src/css/{base,guest,arrival,catalog,catalog-card,about,property-gallery}.css
- * or the guest partials.
+ * The push itself is done with the DesignSync tool from Claude Code, using the arguments
+ * in _sync-push.json; the build prints the call order. Re-run after any PR that touches
+ * DESIGN.md, a stylesheet listed in stylesheets.js or the guest partials.
  */
 
 const fs = require("fs");
@@ -47,8 +47,6 @@ const argValue = (flag, fallback) => {
 };
 const SITE = path.resolve(ROOT, argValue("--site", "_site"));
 const OUT = path.resolve(ROOT, argValue("--out", ".design-sync/out"));
-// The bundle folder is wiped on every build, so it must stay inside the ignored
-// .design-sync/ tree; `--out ..` or an absolute path elsewhere is refused.
 const SYNC_ROOT = path.join(ROOT, ".design-sync");
 if (!(OUT === SYNC_ROOT || OUT.startsWith(SYNC_ROOT + path.sep))) {
   throw new Error(`--out must resolve inside ${SYNC_ROOT}; got ${OUT}`);
@@ -101,14 +99,8 @@ try {
 const today = new Date().toISOString().slice(0, 10);
 
 /* ---------------------------------------------------------------- css */
-const stripFontFace = (css) => css.replace(/@font-face\s*\{[^}]*\}\n?/g, "");
-const baseCss = read("src/css/base.css");
-const guestCss = stripFontFace(read("src/css/guest.css"));
-const arrivalCss = read("src/css/arrival.css");
-const catalogCss = read("src/css/catalog.css");
-const catalogCardCss = read("src/css/catalog-card.css");
-const aboutCss = read("src/css/about.css");
-const propertyGalleryCss = read("src/css/property-gallery.css");
+const { sheets, inlined } = require("./read-stylesheets")(read);
+const [baseCss, guestCss, motionCss, arrivalCss, catalogCss, catalogCardCss] = ["base", "guest", "motion", "arrival", "catalog", "catalog-card"].map(inlined);
 
 /* ----------------------------------------------------------- homes */
 // Home count and names come from canonical property data, never a literal.
@@ -117,48 +109,8 @@ const homeNames = homes.map((home) => home.name);
 const homeCount = numberWord(homes.length);
 const HomeCount = `${homeCount[0].toUpperCase()}${homeCount.slice(1)}`;
 
-const fonts = [
-  ["src/assets/fonts/homepage/poppins-400-latin.woff2", "Poppins", 400, "normal"],
-  ["src/assets/fonts/homepage/poppins-500-latin.woff2", "Poppins", 500, "normal"],
-  ["src/assets/fonts/homepage/poppins-600-latin.woff2", "Poppins", 600, "normal"],
-  ["src/assets/fonts/homepage/poppins-700-latin.woff2", "Poppins", 700, "normal"],
-  ["src/assets/fonts/guest/instrument-serif.woff2", "Instrument Serif", 400, "normal"],
-  ["src/assets/fonts/guest/instrument-serif-italic.woff2", "Instrument Serif", 400, "italic"],
-];
-// `prefix` is the path from the consuming file to waterline/fonts/.
-function fontFace(prefix) {
-  return fonts
-    .map(([src, family, weight, style]) =>
-      `@font-face{font-family:'${family}';font-style:${style};font-weight:${weight};font-display:swap;src:url('${prefix}${path.basename(src)}') format('woff2')}`
-    )
-    .join("\n");
-}
-
-const tokensCss = `/* Generated by scripts/design/design-sync/build.js from DESIGN.md (waterline block)
-   at ${today}, commit ${commit}. Do not edit by hand; edit DESIGN.md and re-run the build. */
-:root{
-  --wl-paper:${C.paper};   /* canvas: sun-warmed paper */
-  --wl-ink:${C.ink};       /* text, primary controls, deep marine */
-  --wl-citron:${C.citron}; /* selected scene + CTA over photos/dark; never small text on paper */
-  --wl-muted:${C.muted};   /* supporting text, hover fill */
-  --wl-clay:${C.clay};     /* accent, <em>, active nav, focus ring */
-  --wl-rule:${C.rule};     /* 1px rules and borders */
-  --wl-soft:${C.soft};     /* quiet solid surface (booking panel) */
-  --wl-font-display:'${T.display.fontFamily}',Georgia,serif;
-  --wl-font-body:${T.body.fontFamily},sans-serif;
-  --wl-display-weight:${T.display.fontWeight};
-  --wl-display-lh:${T.display.lineHeight};
-  --wl-display-ls:${T.display.letterSpacing};
-  --wl-h1:${T.display.h1};
-  --wl-body-size:${T.body.fontSize};
-  --wl-body-lh:${T.body.lineHeight};
-  --wl-label-size:${T.label.fontSize};
-  --wl-label-ls:${T.label.letterSpacing};
-  --wl-radius-button:${wl.rounded.button};
-  --wl-control-min:48px; /* buttons; 44px is the mobile floor (F2) */
-}
-${fontFace("fonts/")}
-`;
+const { fonts, fontFace, tokensCss: buildTokensCss } = require("./tokens-css");
+const tokensCss = buildTokensCss(wl, `${today}, commit ${commit}`);
 
 /* ---------------------------------------------------------------- card factory */
 const chromeCss = require("./chrome-css")(C);
@@ -216,17 +168,13 @@ write("waterline/fonts.css", `/* Self-hosted faces, same files the site ships. *
 for (const [src] of fonts) copy(src, `waterline/fonts/${path.basename(src)}`);
 copy("src/assets/fonts/guest/OFL.txt", "waterline/fonts/OFL-instrument-serif.txt");
 require("./copy-reference-documents")(copy);
-write("waterline/base.css", baseCss);
-write("waterline/guest.css", `/* Verbatim src/css/guest.css minus @font-face (see fonts.css). */\n${guestCss}`);
-write("waterline/arrival.css", arrivalCss);
-write("waterline/catalog.css", catalogCss);
-write("waterline/catalog-card.css", catalogCardCss);
-write("waterline/about.css", aboutCss);
-write("waterline/property-gallery.css", propertyGalleryCss);
+for (const [name, css] of Object.entries(sheets)) {
+  write(`waterline/${name}.css`, name === "guest" ? `/* Verbatim src/css/guest.css minus @font-face (see fonts.css). */\n${css}` : css);
+}
 write("waterline/shell.html", `<!-- Real shared shell as built at ${commit}. -->\n${headerPaper}\n<main id="main"><!-- page --></main>\n${footer}\n`);
 
 /* ---------------------------------------------------------------- cards */
-const GUEST = [baseCss, guestCss];
+const GUEST = [baseCss, guestCss, motionCss];
 const swatch = (hex, name, role, dark) =>
   `<div class="ds-sw" style="background:${hex};color:${dark ? "#fff" : C.ink}"><small>${name}</small><div><b>${hex}</b><small>${role}</small></div></div>`;
 
@@ -274,14 +222,14 @@ card({
   file: "type-display.html",
   group: "Type",
   name: "Type — Display (Instrument Serif)",
-  subtitle: "h1 clamp(46px,5.4vw,78px) · h2 · h3 · caption · quote",
+  subtitle: "h1 clamp(44px,5vw,72px) · h2 · h3 · caption · quote",
   viewport: [900, 760],
   css: [...GUEST, arrivalCss],
   title: "Instrument Serif, regular only, set large and tight",
-  note: `Weight 400, letter-spacing -0.025em, line-height 1.12. Italic carries emphasis and takes clay through <code>em</code>. Large, compact display lines are deliberate; factual text stays readable.`,
-  body: `<div class="ds-line"><div class="ds-spec">h1 · clamp(46,5.4vw,78)<br>homepage arrival goes to 166px</div><h1 style="margin:0">Make yourself <em>at home.</em></h1></div>
-<div class="ds-line"><div class="ds-spec">h2 · clamp(30,3.3vw,46)</div><h2 style="margin:0">${HomeCount} real homes. One phone number.</h2></div>
-<div class="ds-line"><div class="ds-spec">h3 · 28px<br>postcard title 30px</div><h3 style="margin:0">Dockside Dreams</h3></div>
+  note: `Weight 400, letter-spacing -0.03em, line-height 1.08. Italic carries emphasis and takes clay through <code>em</code>. Large, compact display lines are deliberate; factual text stays readable.`,
+  body: `<div class="ds-line"><div class="ds-spec">h1 · clamp(44,5vw,72)<br>homepage arrival goes to 166px</div><h1 style="margin:0">Make yourself <em>at home.</em></h1></div>
+<div class="ds-line"><div class="ds-spec">h2 · clamp(28,3vw,42)</div><h2 style="margin:0">${HomeCount} real homes. One phone number.</h2></div>
+<div class="ds-line"><div class="ds-spec">h3 · 26px<br>postcard title 30px</div><h3 style="margin:0">Dockside Dreams</h3></div>
 <div class="ds-line"><div class="ds-spec">scene caption h2 · 37px<br>white over the photo</div><div style="background:${C.ink};padding:18px 22px"><p class="g-label" style="color:#fff;margin:0 0 6px">In the collection · Bradenton, Florida</p><h2 style="color:#fff;font-size:37px;margin:0">The Oasis</h2></div></div>
 <div class="ds-line"><div class="ds-spec">review quote · 22/1.35</div><div class="g-review-grid" style="border:0;margin:0"><figure style="border:0;padding:0"><blockquote><p>The pool was the whole trip for the kids. We never left the backyard.</p></blockquote><figcaption>Guest review, Bradenton Pool Home</figcaption></figure></div></div>`,
 });
@@ -290,14 +238,14 @@ card({
   file: "type-body.html",
   group: "Type",
   name: "Type — Body, labels and controls (Poppins)",
-  subtitle: "Body 15/1.65 · label 12 caps .13em · control 500 14 · small 13",
+  subtitle: "Body 15/1.55 · label 12 caps .13em · control 500 14 · small 13",
   viewport: [900, 560],
   css: GUEST,
   title: "Poppins does the practical work",
-  note: `Body 15px / 1.65 in ink. Labels are 12px uppercase Poppins 500 with .13em tracking in muted; that is the eyebrow pattern and the only tracking in the system. No text renders below 12px anywhere (floor F1).`,
+  note: `Body 15px / 1.55 in ink. Labels are 12px uppercase Poppins 500 with .13em tracking in muted; that is the eyebrow pattern and the only tracking in the system. No text renders below 12px anywhere (floor F1).`,
   body: `<div class="ds-line"><div class="ds-spec">.g-label · eyebrow</div><p class="g-label" style="margin:0">Your time on the coast</p></div>
-<div class="ds-line"><div class="ds-spec">body · 15/1.65</div><p style="margin:0;max-width:560px">Seascape is a small, owner-operated collection of homes in Bradenton and Sarasota. Choose the home, understand the details that could change your choice, and arrive at the booking page with dates and guest count intact.</p></div>
-<div class="ds-line"><div class="ds-spec">.g-small · 13/1.65 muted</div><p class="g-small" style="margin:0">Choose your dates and group size. You’ll see the full price before you pay.</p></div>
+<div class="ds-line"><div class="ds-spec">body · 15/1.55</div><p style="margin:0;max-width:560px">Seascape is a small, owner-operated collection of homes in Bradenton and Sarasota. Choose the home, understand the details that could change your choice, and arrive at the booking page with dates and guest count intact.</p></div>
+<div class="ds-line"><div class="ds-spec">.g-small · 13/1.55 muted</div><p class="g-small" style="margin:0">Choose your dates and group size. You’ll see the full price before you pay.</p></div>
 <div class="ds-line"><div class="ds-spec">nav link · 14px<br>active = clay + underline</div><nav class="g-nav" style="gap:28px"><a href="#">Our homes</a><a href="#" aria-current="page">Explore the coast</a><a href="#">About Seascape</a></nav></div>
 <div class="ds-line"><div class="ds-spec">.g-inline-link · 14/500 underline</div><a class="g-inline-link" href="#">See every home <span aria-hidden="true">&rarr;</span></a></div>
 <div class="ds-line"><div class="ds-spec">form label · 12px .05em</div><div><label style="display:block;font-size:12px;letter-spacing:.05em;margin-bottom:8px">Arrival</label><input type="date" style="height:46px;border:0;border-bottom:1px solid ${C.muted};background:transparent;color:${C.ink};border-radius:0;padding:6px 0;font:inherit"></div></div>`,
@@ -464,9 +412,9 @@ card({
   viewport: [760, 360],
   css: GUEST,
   title: "Wide, calm, ruled",
-  note: `Content reaches 1280px (<code>min(1280px, 100% - 80px)</code>), 48px gutters under 1050px, 40px on phones. Sections breathe 76px desktop and 50px mobile. Rules do the separating.`,
+  note: `Content reaches 1280px (<code>min(1280px, 100% - 64px)</code>), 40px gutters under 1050px, 32px on phones. Sections breathe 60px desktop and 36px mobile. Rules do the separating.`,
   body: `<div class="ds-line"><div class="ds-spec">.g-wrap</div><div>min(1280px, 100% − 80px), centred</div></div>
-<div class="ds-line"><div class="ds-spec">.g-section</div><div>76px top and bottom · 50px on mobile</div></div>
+<div class="ds-line"><div class="ds-spec">.g-section</div><div>60px top and bottom · 36px on mobile</div></div>
 <div class="ds-line"><div class="ds-spec">.g-header</div><div>92px tall · 76px on mobile · 4.5vw side padding</div></div>
 <div class="ds-line"><div class="ds-spec">Form and grid gaps</div><div>18px desktop · 14–16px mobile</div></div>
 <div class="ds-line"><div class="ds-spec">Controls</div><div>inputs 46px (44px mobile) · buttons min 48px · 44px is the floor</div></div>
@@ -591,43 +539,16 @@ write(
 );
 
 /* ---------------------------------------------------------------- deletes */
-// Legacy cards with no Waterline equivalent. They contradict the current system
-// (gold pills, Playfair numerals, 20px cards) and must leave the pane. The full
-// project was exported to a zip before the first sync (see README).
-const deletes = [
-  // Files Claude Design adds inside the project when a mock is run from its chat.
-  // The system is generated; mocks live in their own design project (see README).
-  "waterline/components/Button.jsx",
-  "waterline/components/Button.d.ts",
-  "waterline/components/button.html",
-  "waterline/tokens.html",
-  "live-mockup/Property Management Waterline.html",
-  "live-mockup/Property Management Waterline - Desktop & Mobile.html",
-  "preview/badge-gps-chip.html",
-  "preview/badges.html",
-  "preview/colors-gradients.html",
-  "preview/colors-neutral.html",
-  "preview/colors-warm.html",
-  "preview/component-postcard-cta.html",
-  "preview/editorial-issue-meta.html",
-  "preview/numerals-stat-arrow.html",
-  "preview/property-card-a-editorial.html",
-  "preview/property-card-b-price-anchored.html",
-  "preview/property-card-c-hotel-group.html",
-  "preview/property-card-d-gallery.html",
-  "preview/property-card-e-availability.html",
-  "preview/property-card-f-list.html",
-  "preview/review-card.html",
-  "preview/shadows.html",
-  "preview/spec-live-availability.html",
-  "preview/stats-bar.html",
-  "preview/type-drop-cap.html",
-  "preview/type-numerals.html",
-];
+const deletes = require("./legacy-deletes");
 
 fs.writeFileSync(
   path.join(OUT, "_sync-manifest.json"),
   JSON.stringify({ generatedAt: new Date().toISOString(), commit, site: SITE, writes, deletes }, null, 2)
 );
 
+const { buildPushPayload, pushRecipe } = require("./push-payload");
+const push = buildPushPayload({ outDir: OUT, writes, deletes });
+fs.writeFileSync(path.join(OUT, "_sync-push.json"), JSON.stringify(push, null, 2));
+
 console.log(`design-sync bundle: ${writes.length} files to write, ${deletes.length} to delete -> ${OUT}`);
+console.log(pushRecipe(push, path.relative(ROOT, path.join(OUT, "_sync-push.json"))));

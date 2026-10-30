@@ -9,6 +9,8 @@ const {
 const { assertValidFigmaBriefHandoffs } = require("./figma-brief-handoff");
 const { assertRepoHtmlCachePolicyConsistency } = require("./release-cache-policy");
 const { assertSearchDecisionBriefContract } = require("./search-brief-gate");
+const { assertNoNetAssertionRemoval } = require("./assertion-removal-gate");
+const { assertNoSettlingPageEdits } = require("./page-settle-gate");
 const { withWorktreeLock } = require("./worktree-lock");
 const {
   assertOwnerBenchmarkProof,
@@ -286,6 +288,11 @@ function recordAssertion(pathAssertions, label, fn) {
 
 function buildCommandSteps(range) {
   return [
+    {
+      label: "file-size",
+      command: "node",
+      args: ["scripts/enforcement/check-staged-file-size.js", "--range", designLintBaseFromRange(range)],
+    },
     { label: "property:truth:check", command: "npm", args: ["run", "property:truth:check"] },
     { label: "build", command: "npm", args: ["run", "build"] },
     { label: "test", command: "npm", args: ["run", "test:unit"] },
@@ -328,6 +335,12 @@ function main() {
     recordAssertion(pathAssertions, "forbidden public runtime", assertNoForbiddenPublicRuntime);
     recordAssertion(pathAssertions, "search decision brief gate", () =>
       assertSearchDecisionBriefContract({ range: args.range })
+    );
+    recordAssertion(pathAssertions, "test assertion removal", () =>
+      assertNoNetAssertionRemoval({ range: args.range })
+    );
+    recordAssertion(pathAssertions, "settling page edits", () =>
+      assertNoSettlingPageEdits({ range: args.range })
     );
     recordAssertion(pathAssertions, "valid figma brief handoffs", () =>
       assertValidFigmaBriefs(args.range)

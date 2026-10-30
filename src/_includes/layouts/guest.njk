@@ -3,14 +3,14 @@
 <html lang="en">
 <head>
   {% if propertySlug %}
-    {% set metaProperty = properties | propertyBySlug(propertySlug) %}
-    {% set pageDescription = metaProperty.name + " in " + metaProperty.city + ": " + metaProperty.bedrooms + " bedrooms, " + metaProperty.bathrooms + " bathrooms, up to " + metaProperty.guests + " guests. " + metaProperty.guestFacts.tagline + " Compare the full total and book direct." %}
+    {% if propertyDetails %}{% set metaProperty = propertyDetails %}{% else %}{% set metaProperty = properties | propertyBySlug(propertySlug) %}{% endif %}
+    {% if metaProperty.bedrooms and metaProperty.bathrooms %}{% set pageDescription = metaProperty.name + " in " + metaProperty.city + ": " + metaProperty.bedrooms + " bedrooms, " + metaProperty.bathrooms + " bathrooms, up to " + metaProperty.guests + " guests. " + metaProperty.guestFacts.tagline + " Compare the full total and book direct." %}{% else %}{% set pageDescription = metaProperty.name + " in " + metaProperty.city + ": up to " + metaProperty.guests + " guests. " + metaProperty.guestFacts.tagline + " Compare the full total and book direct." %}{% endif %}
     {% set pageImage = site.url + metaProperty.photography.photos[0].src %}
   {% endif %}
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <title>{{ pageTitle | seoTitle }}</title><meta name="description" content="{{ pageDescription | seoDescription }}">
   <link rel="alternate" type="application/json" title="Seascape property and booking information" href="https://seascape-vacations.com/ai-discovery.json">
-  <link rel="canonical" href="{{ site.url }}{{ page.url }}"><meta name="robots" content="index, follow">
+  <link rel="canonical" href="{{ site.url }}{{ page.url }}"><meta name="robots" content="{% if seoIndexable == false %}noindex{% else %}index{% endif %}, follow">
   <meta property="og:type" content="website"><meta property="og:url" content="{{ site.url }}{{ page.url }}">
   <meta property="og:title" content="{{ pageTitle }}"><meta property="og:description" content="{{ pageDescription }}">
   <meta property="og:image" content="{{ pageImage or site.url + '/images/homes/the-oasis/01.webp' }}">
@@ -27,6 +27,8 @@
   {% if guestHome %}<link rel="stylesheet" href="/css/arrival.css?v=waterline-v4">{% endif %}
   {# Page sheets load after guest.css so their equal-specificity rules win the cascade. #}
   {% if pageStylesheet %}<link rel="stylesheet" href="{{ pageStylesheet }}">{% elif propertySlug %}<link rel="stylesheet" href="/css/property-gallery.css">{% endif %}
+  {% if propertySlug and metaProperty.guestFacts.reviews.length >= 2 and metaProperty.guestFacts.sourceUrl and metaProperty.guestFacts.verifiedAt %}<link rel="stylesheet" href="/css/property-reviews.css">{% endif %}
+  {% if propertySlug and stayStories[propertySlug] %}<link rel="stylesheet" href="/css/stay-story.css">{% endif %}
 </head>
 <body class="guest-site{% if guestHome %} g-homepage{% endif %}" data-guest-version="waterline-v3">
   <a class="g-skip" href="#main">Skip to content</a>
@@ -36,4 +38,6 @@
   {% include "partials/analytics-ga4.njk" %}
   <script defer src="/assets/js/guest.js?v=waterline-v4"></script>
   {% if pageScript %}<script defer src="{{ pageScript }}"></script>{% elif propertySlug %}<script defer src="/assets/js/property-gallery.js"></script>{% endif %}
+  {% if propertySlug and metaProperty.guestFacts.reviews.length >= 2 and metaProperty.guestFacts.sourceUrl and metaProperty.guestFacts.verifiedAt %}<script defer src="/assets/js/property-reviews.js"></script>{% endif %}
+  {% if propertySlug and stayStories[propertySlug] %}<script defer src="/assets/js/stay-story.js"></script>{% endif %}
 </body></html>

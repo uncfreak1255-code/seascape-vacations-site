@@ -7,17 +7,6 @@
  * and what a page may put in them.
  */
 
-:root {
-  --brand: #5F8A8B;
-  --brand-dark: #3D5C5D;
-  --gold: #C9A962;
-  --gold-light: #E8D5A3;
-  --cream: #F5EED6;
-  --cream-dark: #EBE4CC;
-  --stone: #3A3A3A;
-  --stone-light: #6A6A6A;
-}
-
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 /* Planning-guide frame (DESIGN.md "Planning guides"): Waterline tokens, scoped to this body. */
@@ -73,6 +62,7 @@ body.planning-guide main .guide-cta-btn:hover { color: var(--pg-paper); }
 
 .guide-author-card { display: flex; flex-wrap: wrap; gap: 8px 32px; margin-top: 18px; padding-bottom: 44px; color: var(--pg-muted); font-size: 13px; line-height: 1.65; }
 .pg-reviewed-by .pg-label { display: block; }
+.pg-intro-label { display: block; margin-bottom: 10px; }
 .pg-reviewed-by .pg-name { margin-top: 4px; color: var(--pg-ink); font-size: 15px; font-weight: 500; }
 
 /* Steps and rail */
@@ -93,6 +83,19 @@ body.planning-guide main .guide-cta-btn:hover { color: var(--pg-paper); }
 .cost-table td { padding: 11px 8px 11px 0; border-bottom: 1px solid var(--pg-rule); font-size: 13px; line-height: 1.4; vertical-align: top; overflow-wrap: anywhere; }
 .cost-table th:last-child, .cost-table td:last-child { padding-right: 0; }
 .cost-table td:first-child, .cost-table td:nth-child(3) { font-weight: 500; }
+/* Airport table: the code column repeats the name's code, so phones drop it and widen the name column. */
+.route-table th:nth-child(2), .route-table td:nth-child(2) { display: none; }
+.route-table th:first-child { width: 34%; }
+/* Wide comparison tables: phones stack each row, labelling every value with its column header (data-label). */
+@media (max-width: 899px) {
+  .stack-table, .stack-table tbody, .stack-table tr, .stack-table td { display: block; }
+  .stack-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .stack-table tr { padding: 10px 0; border-bottom: 1px solid var(--pg-rule); }
+  .stack-table td { display: grid; grid-template-columns: 38% minmax(0, 1fr); gap: 12px; padding: 4px 0; border-bottom: 0; }
+  .stack-table td:first-child { display: block; padding-bottom: 6px; }
+  .stack-table td:first-child::before { content: none; }
+  .stack-table td::before { content: attr(data-label); color: var(--pg-muted); font-size: 12px; font-weight: 500; }
+}
 
 .budget-card { padding: 16px 0 24px; border-top: 1px solid var(--pg-ink); }
 .budget-card h3 { margin-bottom: 10px; }
@@ -151,6 +154,8 @@ body.planning-guide main .guide-cta-btn:hover { color: var(--pg-paper); }
   .cost-table th { padding-right: 16px; letter-spacing: .06em; text-transform: uppercase; }
   .cost-table td { padding: 14px 16px 14px 0; font-size: 15px; line-height: 1.5; }
   .cost-table th:last-child, .cost-table td:last-child { padding-right: 0; }
+  .route-table th:nth-child(2), .route-table td:nth-child(2) { display: table-cell; }
+  .route-table th:first-child { width: auto; }
   .budget-grid { margin-top: 28px; }
   .budget-card { display: flex; gap: 40px; padding: 20px 0 26px; }
   .budget-card h3 { flex: 0 0 220px; margin-bottom: 0; font-size: 25px; }
@@ -164,6 +169,6 @@ body.planning-guide main .guide-cta-btn:hover { color: var(--pg-paper); }
 }
 
 /* Sticky booking bar: fixed to the viewport bottom, content set per guide. */
-#sticky-book-bar { position: fixed; bottom: 0; left: 0; right: 0; z-index: 99; background: linear-gradient(135deg, var(--brand-dark) 0, #2D4647 100%); padding: 12px 20px; display: flex; justify-content: center; align-items: center; gap: 16px; box-shadow: 0 -4px 20px rgba(0, 0, 0, .15); transform: none; }
+#sticky-book-bar { position: fixed; bottom: 0; left: 0; right: 0; z-index: 99; background: var(--pg-ink); padding: 12px 20px; display: flex; justify-content: center; align-items: center; gap: 16px; box-shadow: 0 -4px 20px rgba(0, 0, 0, .15); transform: none; }
 #sticky-book-bar span { color: #fff; font-size: 14px; font-weight: 500; }
 #sticky-book-bar a { background: linear-gradient(135deg, #C9A962 0, #B8943A 100%); color: #3A3A3A; padding: 10px 22px; border-radius: 50px; font-weight: 600; font-size: 13px; text-decoration: none; white-space: nowrap; }

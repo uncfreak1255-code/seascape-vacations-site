@@ -39,8 +39,7 @@
 .catalog-grid { display:grid; grid-template-columns:1fr; gap:32px; }
 .catalog-card { display:grid; grid-template-columns:1fr 1fr; background:var(--cream-light); border-radius:20px; border:1px solid var(--cream-dark); overflow:hidden; }
 .catalog-card-media { display:block; position:relative; min-height:380px; overflow:hidden; background:var(--cream-dark); }
-.catalog-card-media img { height:100%; width:100%; position:absolute; inset:0; object-fit:cover; transition:transform .3s ease; }
-.catalog-card-media:hover img { transform:scale(1.025); }
+.catalog-card-media img { height:100%; width:100%; position:absolute; inset:0; object-fit:cover; }
 .catalog-card-body { padding:24px 32px; }
 .catalog-card-topline { display:flex; justify-content:space-between; align-items:center; gap:8px; font-size:13px; color:var(--stone-light); }
 .catalog-compare-toggle { min-height:44px; padding:8px 12px; border:1px solid var(--brand); border-radius:50px; background:transparent; color:var(--brand-dark); display:inline-flex; gap:6px; align-items:center; cursor:pointer; font-size:12px!important; }

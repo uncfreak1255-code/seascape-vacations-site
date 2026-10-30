@@ -1,0 +1,50 @@
+{
+  "dockside-dreams": {
+    "name": "Dockside Dreams",
+    "heading": "A moment at Dockside.",
+    "description": "Dock seating, the dining table, the screened patio, and the pool at dusk. A short photo story of Dockside Dreams.",
+    "mediaDir": "dockside"
+  },
+  "the-oasis": {
+    "name": "The Oasis",
+    "heading": "A moment at The Oasis.",
+    "description": "Gather in the living room, share a meal, then settle into the spa and the backyard at dusk. A short photo story of The Oasis.",
+    "mediaDir": "the-oasis"
+  },
+  "sarasota-luxe": {
+    "name": "Sarasota Luxe",
+    "heading": "A moment at Sarasota Luxe.",
+    "description": "An inviting living room, dinner together, a quiet bedroom, and the screened pool after dark. A short photo story of Sarasota Luxe.",
+    "mediaDir": "sarasota-luxe"
+  },
+  "river-house": {
+    "name": "River House",
+    "heading": "A moment at River House.",
+    "description": "Time outside, a game indoors, dinner on the lanai, and the pool at dusk. A short photo story of River House.",
+    "mediaDir": "river-house"
+  },
+  "bradenton-pool-home": {
+    "name": "Bradenton Pool Home",
+    "heading": "A moment by the pool.",
+    "description": "An easy afternoon through the living room and kitchen, out to the backyard and pool. A short photo story of Bradenton Pool Home.",
+    "mediaDir": "bradenton-pool-home"
+  },
+  "blue-house": {
+    "name": "Pickleball Pool Home Retreat",
+    "heading": "A moment between games.",
+    "description": "From the court to the living room, the outdoor table, and the screened pool at twilight. A short photo story of Pickleball Pool Home Retreat.",
+    "mediaDir": "blue-house"
+  },
+  "coastal-stay": {
+    "name": "The Coastal",
+    "heading": "A moment at The Coastal.",
+    "description": "A game on the court, another indoors, dinner together, and a quiet poolside finish. A short photo story of The Coastal.",
+    "mediaDir": "coastal-stay"
+  },
+  "relaxing-oasis": {
+    "name": "Relaxing Oasis",
+    "heading": "A moment at Relaxing Oasis.",
+    "description": "A bright living room, the kitchen, shaded outdoor dining, and a palm-lined backyard. A short photo story of Relaxing Oasis.",
+    "mediaDir": "relaxing-oasis"
+  }
+}

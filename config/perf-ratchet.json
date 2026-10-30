@@ -1,36 +1,36 @@
 {
   "routes": {
     "/": {
-      "script": 76553,
-      "stylesheet": 55026
+      "script": 77362,
+      "stylesheet": 57355
     },
     "/properties/": {
-      "script": 99166,
-      "stylesheet": 57964
+      "script": 99975,
+      "stylesheet": 59988
     },
     "/property-management/": {
-      "script": 88135,
-      "stylesheet": 52067
+      "script": 88944,
+      "stylesheet": 54396
     },
     "/property-management/vacation-rental-licensing-florida/": {
-      "script": 54895,
-      "stylesheet": 32338
+      "script": 55704,
+      "stylesheet": 34667
     },
     "/property-management/vacation-rental-management-fees-florida/": {
-      "script": 54895,
-      "stylesheet": 32338
+      "script": 55704,
+      "stylesheet": 34667
     },
     "/property-management/vrbo-management-services-florida/": {
-      "script": 54895,
-      "stylesheet": 32338
+      "script": 55704,
+      "stylesheet": 34667
     },
     "/stays/anna-maria-island-beachfront-rentals/": {
-      "script": 54895,
-      "stylesheet": 32338
+      "script": 55704,
+      "stylesheet": 34667
     },
     "/stays/anna-maria-island-vacation-rentals/": {
-      "script": 54895,
-      "stylesheet": 32338
+      "script": 55704,
+      "stylesheet": 34667
     }
   },
   "raises": [
@@ -513,6 +513,262 @@
       "to": 58863,
       "reason": "Catalog card C and 17px long-read guides (critic picks, Sawyer 2026-10-23): the catalog-card family moved out of guest.css into catalog-card.css so guest.css stays under the staged-file size gate; one extra stylesheet request on /properties/ adds 864 B uncompressed (7439+15948+32339+3137). Other routes shrink because guest.css lost those rules.",
       "date": "2026-10-23"
+    },
+    {
+      "route": "/",
+      "metric": "script",
+      "from": 76553,
+      "to": 76617,
+      "reason": "Press and hover motion for guest buttons (motion.css +640B CSS, guest-menu.js +64B), kept by Sawyer 2026-10-27 in the design PR restack (#788)",
+      "date": "2026-10-28"
+    },
+    {
+      "route": "/",
+      "metric": "stylesheet",
+      "from": 55026,
+      "to": 55666,
+      "reason": "Press and hover motion for guest buttons (motion.css +640B CSS, guest-menu.js +64B), kept by Sawyer 2026-10-27 in the design PR restack (#788)",
+      "date": "2026-10-28"
+    },
+    {
+      "route": "/properties/",
+      "metric": "script",
+      "from": 99166,
+      "to": 99230,
+      "reason": "Press and hover motion for guest buttons (motion.css +640B CSS, guest-menu.js +64B), kept by Sawyer 2026-10-27 in the design PR restack (#788)",
+      "date": "2026-10-28"
+    },
+    {
+      "route": "/properties/",
+      "metric": "stylesheet",
+      "from": 57964,
+      "to": 58388,
+      "reason": "Press and hover motion for guest buttons (motion.css +640B CSS, guest-menu.js +64B), kept by Sawyer 2026-10-27 in the design PR restack (#788)",
+      "date": "2026-10-28"
+    },
+    {
+      "route": "/property-management/",
+      "metric": "script",
+      "from": 88135,
+      "to": 88199,
+      "reason": "Press and hover motion for guest buttons (motion.css +640B CSS, guest-menu.js +64B), kept by Sawyer 2026-10-27 in the design PR restack (#788)",
+      "date": "2026-10-28"
+    },
+    {
+      "route": "/property-management/",
+      "metric": "stylesheet",
+      "from": 52067,
+      "to": 52707,
+      "reason": "Press and hover motion for guest buttons (motion.css +640B CSS, guest-menu.js +64B), kept by Sawyer 2026-10-27 in the design PR restack (#788)",
+      "date": "2026-10-28"
+    },
+    {
+      "route": "/property-management/vacation-rental-management-fees-florida/",
+      "metric": "script",
+      "from": 54895,
+      "to": 54959,
+      "reason": "Press and hover motion for guest buttons (motion.css +640B CSS, guest-menu.js +64B), kept by Sawyer 2026-10-27 in the design PR restack (#788)",
+      "date": "2026-10-28"
+    },
+    {
+      "route": "/property-management/vacation-rental-management-fees-florida/",
+      "metric": "stylesheet",
+      "from": 32338,
+      "to": 32978,
+      "reason": "Press and hover motion for guest buttons (motion.css +640B CSS, guest-menu.js +64B), kept by Sawyer 2026-10-27 in the design PR restack (#788)",
+      "date": "2026-10-28"
+    },
+    {
+      "route": "/property-management/vacation-rental-licensing-florida/",
+      "metric": "script",
+      "from": 54895,
+      "to": 54959,
+      "reason": "Press and hover motion for guest buttons (motion.css +640B CSS, guest-menu.js +64B), kept by Sawyer 2026-10-27 in the design PR restack (#788)",
+      "date": "2026-10-28"
+    },
+    {
+      "route": "/property-management/vacation-rental-licensing-florida/",
+      "metric": "stylesheet",
+      "from": 32338,
+      "to": 32978,
+      "reason": "Press and hover motion for guest buttons (motion.css +640B CSS, guest-menu.js +64B), kept by Sawyer 2026-10-27 in the design PR restack (#788)",
+      "date": "2026-10-28"
+    },
+    {
+      "route": "/property-management/vrbo-management-services-florida/",
+      "metric": "script",
+      "from": 54895,
+      "to": 54959,
+      "reason": "Press and hover motion for guest buttons (motion.css +640B CSS, guest-menu.js +64B), kept by Sawyer 2026-10-27 in the design PR restack (#788)",
+      "date": "2026-10-28"
+    },
+    {
+      "route": "/property-management/vrbo-management-services-florida/",
+      "metric": "stylesheet",
+      "from": 32338,
+      "to": 32978,
+      "reason": "Press and hover motion for guest buttons (motion.css +640B CSS, guest-menu.js +64B), kept by Sawyer 2026-10-27 in the design PR restack (#788)",
+      "date": "2026-10-28"
+    },
+    {
+      "route": "/stays/anna-maria-island-vacation-rentals/",
+      "metric": "script",
+      "from": 54895,
+      "to": 54959,
+      "reason": "Press and hover motion for guest buttons (motion.css +640B CSS, guest-menu.js +64B), kept by Sawyer 2026-10-27 in the design PR restack (#788)",
+      "date": "2026-10-28"
+    },
+    {
+      "route": "/stays/anna-maria-island-vacation-rentals/",
+      "metric": "stylesheet",
+      "from": 32338,
+      "to": 32978,
+      "reason": "Press and hover motion for guest buttons (motion.css +640B CSS, guest-menu.js +64B), kept by Sawyer 2026-10-27 in the design PR restack (#788)",
+      "date": "2026-10-28"
+    },
+    {
+      "route": "/stays/anna-maria-island-beachfront-rentals/",
+      "metric": "script",
+      "from": 54895,
+      "to": 54959,
+      "reason": "Press and hover motion for guest buttons (motion.css +640B CSS, guest-menu.js +64B), kept by Sawyer 2026-10-27 in the design PR restack (#788)",
+      "date": "2026-10-28"
+    },
+    {
+      "route": "/stays/anna-maria-island-beachfront-rentals/",
+      "metric": "stylesheet",
+      "from": 32338,
+      "to": 32978,
+      "reason": "Press and hover motion for guest buttons (motion.css +640B CSS, guest-menu.js +64B), kept by Sawyer 2026-10-27 in the design PR restack (#788)",
+      "date": "2026-10-28"
+    },
+    {
+      "route": "/",
+      "metric": "script",
+      "from": 76617,
+      "to": 77362,
+      "reason": "Sawyer kept #795 guest-path motion (overlay enter/exit, phone menu, gallery zoom): about +745B script and +1.6KB CSS per page",
+      "date": "2026-10-28"
+    },
+    {
+      "route": "/",
+      "metric": "stylesheet",
+      "from": 55666,
+      "to": 57355,
+      "reason": "Sawyer kept #795 guest-path motion (overlay enter/exit, phone menu, gallery zoom): about +745B script and +1.6KB CSS per page",
+      "date": "2026-10-28"
+    },
+    {
+      "route": "/properties/",
+      "metric": "script",
+      "from": 99230,
+      "to": 99975,
+      "reason": "Sawyer kept #795 guest-path motion (overlay enter/exit, phone menu, gallery zoom): about +745B script and +1.6KB CSS per page",
+      "date": "2026-10-28"
+    },
+    {
+      "route": "/properties/",
+      "metric": "stylesheet",
+      "from": 58388,
+      "to": 59988,
+      "reason": "Sawyer kept #795 guest-path motion (overlay enter/exit, phone menu, gallery zoom): about +745B script and +1.6KB CSS per page",
+      "date": "2026-10-28"
+    },
+    {
+      "route": "/property-management/",
+      "metric": "script",
+      "from": 88199,
+      "to": 88944,
+      "reason": "Sawyer kept #795 guest-path motion (overlay enter/exit, phone menu, gallery zoom): about +745B script and +1.6KB CSS per page",
+      "date": "2026-10-28"
+    },
+    {
+      "route": "/property-management/",
+      "metric": "stylesheet",
+      "from": 52707,
+      "to": 54396,
+      "reason": "Sawyer kept #795 guest-path motion (overlay enter/exit, phone menu, gallery zoom): about +745B script and +1.6KB CSS per page",
+      "date": "2026-10-28"
+    },
+    {
+      "route": "/property-management/vacation-rental-management-fees-florida/",
+      "metric": "script",
+      "from": 54959,
+      "to": 55704,
+      "reason": "Sawyer kept #795 guest-path motion (overlay enter/exit, phone menu, gallery zoom): about +745B script and +1.6KB CSS per page",
+      "date": "2026-10-28"
+    },
+    {
+      "route": "/property-management/vacation-rental-management-fees-florida/",
+      "metric": "stylesheet",
+      "from": 32978,
+      "to": 34667,
+      "reason": "Sawyer kept #795 guest-path motion (overlay enter/exit, phone menu, gallery zoom): about +745B script and +1.6KB CSS per page",
+      "date": "2026-10-28"
+    },
+    {
+      "route": "/property-management/vacation-rental-licensing-florida/",
+      "metric": "script",
+      "from": 54959,
+      "to": 55704,
+      "reason": "Sawyer kept #795 guest-path motion (overlay enter/exit, phone menu, gallery zoom): about +745B script and +1.6KB CSS per page",
+      "date": "2026-10-28"
+    },
+    {
+      "route": "/property-management/vacation-rental-licensing-florida/",
+      "metric": "stylesheet",
+      "from": 32978,
+      "to": 34667,
+      "reason": "Sawyer kept #795 guest-path motion (overlay enter/exit, phone menu, gallery zoom): about +745B script and +1.6KB CSS per page",
+      "date": "2026-10-28"
+    },
+    {
+      "route": "/property-management/vrbo-management-services-florida/",
+      "metric": "script",
+      "from": 54959,
+      "to": 55704,
+      "reason": "Sawyer kept #795 guest-path motion (overlay enter/exit, phone menu, gallery zoom): about +745B script and +1.6KB CSS per page",
+      "date": "2026-10-28"
+    },
+    {
+      "route": "/property-management/vrbo-management-services-florida/",
+      "metric": "stylesheet",
+      "from": 32978,
+      "to": 34667,
+      "reason": "Sawyer kept #795 guest-path motion (overlay enter/exit, phone menu, gallery zoom): about +745B script and +1.6KB CSS per page",
+      "date": "2026-10-28"
+    },
+    {
+      "route": "/stays/anna-maria-island-vacation-rentals/",
+      "metric": "script",
+      "from": 54959,
+      "to": 55704,
+      "reason": "Sawyer kept #795 guest-path motion (overlay enter/exit, phone menu, gallery zoom): about +745B script and +1.6KB CSS per page",
+      "date": "2026-10-28"
+    },
+    {
+      "route": "/stays/anna-maria-island-vacation-rentals/",
+      "metric": "stylesheet",
+      "from": 32978,
+      "to": 34667,
+      "reason": "Sawyer kept #795 guest-path motion (overlay enter/exit, phone menu, gallery zoom): about +745B script and +1.6KB CSS per page",
+      "date": "2026-10-28"
+    },
+    {
+      "route": "/stays/anna-maria-island-beachfront-rentals/",
+      "metric": "script",
+      "from": 54959,
+      "to": 55704,
+      "reason": "Sawyer kept #795 guest-path motion (overlay enter/exit, phone menu, gallery zoom): about +745B script and +1.6KB CSS per page",
+      "date": "2026-10-28"
+    },
+    {
+      "route": "/stays/anna-maria-island-beachfront-rentals/",
+      "metric": "stylesheet",
+      "from": 32978,
+      "to": 34667,
+      "reason": "Sawyer kept #795 guest-path motion (overlay enter/exit, phone menu, gallery zoom): about +745B script and +1.6KB CSS per page",
+      "date": "2026-10-28"
     }
   ]
 }

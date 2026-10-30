@@ -15,7 +15,7 @@ content gate reads every active brief.
 - secondary keywords: unchanged from each guide's current page
 - audience pattern: answer first, one table, numbered steps with a rail, then the booking kit.
 - proof source: each guide's own published table and sources; the frame adds none.
-- required internal links: /stays/anna-maria-island-vacation-rentals/, /guides/booking-direct-vacation-rentals/
+- required internal links: /properties/, /guides/best-time-visit-anna-maria-island/
 - CTA target: the existing booking kit and sticky bar on each guide (`guide_book_direct_click` tracking unchanged)
 - anti-claims: no new rate figures, no changed totals, no amenity or capacity claims, no review counts, no savings percentages beyond a page's existing copy.
 
@@ -87,35 +87,43 @@ baseline refresh.
 - `tests/visual/visual.spec.js` `guide-ami-vacation-cost` passes against the
   baseline taken from the unchanged page, with no snapshot update in the move.
 
-## Gate 0 Search And Attack Receipt
+## Gate 0 Search And Attack Receipt (L0 cost guide, L1 car guide, L2 how-to-get-to guide, L3 flights guide, L4 SRQ guide)
 
-L0 moves page source into front matter and a layout, so the gate reads it as a
-search-facing source edit. The rendered title, meta description, canonical, H1
-and JSON-LD are unchanged (proof above). This receipt records the live search
-check behind keeping them unchanged.
+L0, L1 and L2 move page source into front matter and a layout, so the gate reads
+each as a search-facing source edit. The gate parses one Gate 0 table per brief,
+so each row below covers all three pages; the pages are named in order L0, L1, L2.
+The rendered title, meta description, canonical, H1 and JSON-LD of both pages
+are unchanged (proof sections). This receipt records the live search checks
+behind keeping them unchanged.
 
 | Field | Required answer |
 | --- | --- |
-| Target query family | anna maria island vacation cost; how much does a trip to anna maria island cost |
-| Searcher intent | Informational budget planning before choosing dates and a stay |
-| Current Seascape URL | https://seascape-vacations.com/guides/anna-maria-island-vacation-cost/ |
+| Target query family | anna maria island vacation cost; how much does a trip to anna maria island cost (L0). do you need a car on anna maria island (L1). how to get to anna maria island (L2). flights to anna maria island (L3). srq airport to anna maria island; sarasota airport to anna maria island (L4) |
+| Searcher intent | Informational: budget planning before choosing dates and a stay (L0); deciding whether to rent a car for an island trip (L1); working out how to reach the island by air, road or ferry (L2). choosing which airport to fly into for an island trip (L3). getting from SRQ to the island after landing (L4) |
+| Current Seascape URL | https://seascape-vacations.com/guides/anna-maria-island-vacation-cost/ (L0); https://seascape-vacations.com/guides/do-you-need-a-car-anna-maria-island/ (L1); https://seascape-vacations.com/guides/how-to-get-to-anna-maria-island/ (L2). https://seascape-vacations.com/guides/flights-to-anna-maria-island/ (L3). https://seascape-vacations.com/guides/srq-airport-to-anna-maria-island/ (L4) |
 | SERP observed date | 2026-10-24 |
 | SERP stale after | 2026-11-23 |
-| Current proof | Seascape ranks organic position 6 for "anna maria island vacation cost" in the 2026-10-24 OpenSEO SERP read (US, en, depth 20); not in the top 20 for "how much does a trip to anna maria island cost" |
-| Top visible competitors | expedia.com and travelocity.com package pages, tripadvisor.com hotel lists, wimdu.com, mikenormanrealty.com budget post |
-| Competitor angle | From SERP titles and snippets only: package and hotel listing pages (expedia, travelocity, tripadvisor) and one budget-planning post (mikenormanrealty) |
-| Visual/format gap | Not assessed: the SERP read gives titles and snippets, not page layouts; no format claim is made for this move |
-| Seascape gap | No change needed for the layout move; any content change belongs to a later copy-lane brief |
-| Search fit | Current page already matches the budget-planning intent and ranks on page one |
-| Local/GBP proof | Not applicable: a layout-only move with no local-pack or Google Business change |
-| AEO/readback note | Not applicable to this move: answer paragraph and FAQ JSON-LD are byte-identical; recheck position after the 2026-11-23 stale date |
-| Recommendation | Keep title, meta, H1 and JSON-LD unchanged; ship the layout move |
+| Current proof | 2026-10-24 OpenSEO SERP reads (US, en, depth 20): L0 ranks organic position 6 for "anna maria island vacation cost" and is not in the top 20 for "how much does a trip to anna maria island cost"; L1 ranks organic position 14 for "do you need a car on anna maria island" (monthly volume 30); L2: an OpenSEO SERP read on the same date (local OpenSEO report c7a1a49d-2b8e-4d90-9666-c66646126ab4, US, en, depth 20) found Seascape not in the top 20 for "how to get to anna maria island". L3: no new SERP read; this move changes no title, meta, H1, copy or JSON-LD, so no ranking claim is made for the flights guide. L4: no new SERP read; Search Console 2026-04-24 to 2026-10-21 shows the page at average position 6.7 with 142 clicks, and this move keeps title, meta, canonical and H1 identical |
+| Top visible competitors | L0: expedia.com and travelocity.com package pages, tripadvisor.com hotel lists, wimdu.com, mikenormanrealty.com budget post. L1: annamaria.com, tripadvisor.com forum, amivacationrental.com, thecoconutrentals.com, florida-dreams.com, annamarialifevacationrentals.com, plus Facebook and Reddit threads. L2: not itemized; competitors for "how to get to anna maria island" were not listed from the saved read. L3: not itemized; no SERP read for this move. L4: not itemized; no SERP read for this move |
+| Competitor angle | From SERP titles and snippets only. L0: package and hotel listing pages (expedia, travelocity, tripadvisor) and one budget-planning post (mikenormanrealty). L1: titles lead with the no-car answer ("5 Ways to Get Around on Anna Maria Island Without a Car", "How To Get Around Anna Maria Island Without a Car", "Anna Maria Island: Car or Golf Cart? What's the Best Option?"); two community threads and a TripAdvisor forum topic also rank. L2: no competitor titles or snippets were itemized for this query, so no competitor angle is claimed. L3: none claimed. L4: none claimed |
+| Visual/format gap | Not assessed: the SERP reads give titles and snippets, not page layouts; no format claim is made for any of the three moves. L3: not assessed either |
+| Seascape gap | L2: the page is not in the top 20 for the query, so a ranking gap exists, but this move changes no copy, title or markup that search reads. No change needed for the layout moves; any content change belongs to a later copy-lane brief. L3: none claimed; any content change belongs to later copy tickets (E1, E3). L4: none claimed for the layout move; ranking work belongs to a later copy-lane brief |
+| Search fit | L0 already matches the budget-planning intent and ranks on page one. L1 already answers the no-car question in its title and first paragraph; it ranks organic 14 with title and snippet matching the query. L2: the title already names the query ("How to Get to Anna Maria Island"); the page is not in the top 20, and a copy ticket (E1) owns any change. L3: the title already names the query ("Flights to Anna Maria Island"); E3 owns any change. L4: the title already names the route and the page ranks on page one |
+| Local/GBP proof | Not applicable: layout-only moves with no local-pack or Google Business change |
+| AEO/readback note | Not applicable to these moves: L0 answer paragraph and FAQ JSON-LD, and L1 Article, BreadcrumbList and LocalBusiness JSON-LD, and L2 Article, BreadcrumbList, FAQPage and LocalBusiness JSON-LD, are byte-identical; recheck positions after the 2026-11-23 stale date. L3 Article, BreadcrumbList, FAQPage and LocalBusiness JSON-LD are byte-identical to main. L4: Article, BreadcrumbList and LocalBusiness JSON-LD are byte-identical; the FAQPage answer about rental cars swaps one word, "cleaner" to "better", because the voice gate bans "cleaner" once the file changes |
+| Recommendation | Keep title, meta, H1 and JSON-LD unchanged on all three pages; ship the layout moves; L3 likewise. L4 likewise, with the one-word FAQ swap |
 | Attack status | completed |
-| Query variants inspected | anna maria island vacation cost; how much does a trip to anna maria island cost |
+| Query variants inspected | anna maria island vacation cost; how much does a trip to anna maria island cost; do you need a car on anna maria island (none new for L3) |
 | SERP source | OpenSEO local get_serp_results (DataForSEO), observed 2026-10-24 |
-| Competitor URLs inspected | https://www.expedia.com/Anna-Maria-Island.d553248622847118534.Destination-Travel-Guides; https://www.mikenormanrealty.com/island-info/things-to-do/how-to-plan-your-trip-to-anna-maria-island-on-a-budget/ |
-| Content gap and Seascape answer | Competitors lead with package prices; Seascape's answer is pricing the complete checkout total, unchanged here |
-| Design/format strategy | Shared planning frame; same table and steps, no new figure in L0 |
-| Seascape proof available | Current source, the 2026-10-24 SERP read, and the main-versus-head build diff |
+| Competitor URLs inspected | https://www.expedia.com/Anna-Maria-Island.d553248622847118534.Destination-Travel-Guides; https://www.mikenormanrealty.com/island-info/things-to-do/how-to-plan-your-trip-to-anna-maria-island-on-a-budget/; https://www.annamaria.com/news-and-blog/5-ways-to-get-around-on-anna-maria-island-without-a-car/; https://www.florida-dreams.com/how-to-get-around-anna-maria-island-without-a-car/ |
+| Content gap and Seascape answer | L0: competitors lead with package prices; Seascape's answer is pricing the complete checkout total, unchanged here. L1: the ranking titles quoted above frame the question as car versus no car (one names golf carts); Seascape's title asks the same question and its opening answers it, unchanged here. L2: Seascape's title and opening already name the query; no competitor content is claimed, unchanged here. L3: no competitor content is claimed; the page's answer is unchanged here |
+| Design/format strategy | Shared planning frame; same table and steps, no new figure in L0 or L1 |
+| Seascape proof available | Current source, the 2026-10-24 SERP reads (L2: the saved report named above), and the main-versus-head build diffs |
 | Tools/plugins used | OpenSEO local MCP (SERP), node build diff, Playwright visual and floors specs |
-| Decision and reason | Hold search-facing output unchanged: the page already ranks on page one, and L0 is a technical layout move |
+| Decision and reason | Hold search-facing output unchanged: L0 and L1 already rank and L2 is not in the top 20 for its query; all three are technical layout moves, and L2's ranking is left to the copy ticket; L3 is the same kind of layout move, left unchanged for search. L4 (SRQ) is the same layout move on a page-one ranking page; the only search-facing change is the one-word FAQ swap the voice gate requires |
+
+## Swaps
+
+The numbered swap list for each guide (L1 car, L2 how-to-get-to, L3 flights, L4 SRQ)
+lives in `docs/plans/2026-10-23-guide-family-1-swaps.md`. A text difference from main
+that is not listed there fails the ticket.

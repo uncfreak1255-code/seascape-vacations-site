@@ -240,6 +240,13 @@ module.exports = function(eleventyConfig) {
       }
     }
     require("./scripts/enforcement/listing-id-owned").writeGeneratedClientListingIdMap(root);
+    const guestSrc = path.join(root, "src", "css", "guest.css");
+    const guestOut = path.join(root, "_site", "css", "guest.css");
+    const motionSrc = path.join(root, "src", "css", "motion.css");
+    if (fs.existsSync(guestSrc) && fs.existsSync(motionSrc)) {
+      fs.mkdirSync(path.dirname(guestOut), { recursive: true });
+      fs.writeFileSync(guestOut, fs.readFileSync(guestSrc, "utf8") + "\n" + fs.readFileSync(motionSrc, "utf8"));
+    }
   });
   
   // Watch for changes during development

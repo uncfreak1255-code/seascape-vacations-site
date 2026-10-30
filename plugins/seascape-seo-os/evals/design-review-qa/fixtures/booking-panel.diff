@@ -1,0 +1,17 @@
+# Sample: the change about to go up for review
+--- a/src/css/guest.css
++++ b/src/css/guest.css
+@@ .booking-panel @@
+ .booking-panel {
+-  padding: 24px;
+-  gap: 16px;
++  padding: 18px;
++  gap: 10px;
+ }
+ .booking-panel .btn-primary {
+-  background: #173D42;
+-  color: #FFFFFF;
++  background: #D6EB85;
++  color: #FFFFFF;
+   min-height: 48px;
+ }

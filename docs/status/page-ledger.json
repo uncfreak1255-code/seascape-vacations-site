@@ -1,0 +1,15 @@
+{
+  "about": "Pages settling after a published SEO change. While an entry is inside its settle window, scripts/enforcement/page-settle-gate.js fails a release range that edits its sources unless a commit carries a 'Settle-Override: <reason>' trailer. Add an entry in the PR that ships a title, meta, heading or body change meant to move rankings; the gate reads this file at the range base, so the shipping PR is not blocked by its own entry. Remove an entry once its window has passed and the readback is recorded.",
+  "settleDays": 28,
+  "pages": [
+    {
+      "route": "/guides/anna-maria-island-vs-siesta-key/",
+      "sources": ["src/guides/anna-maria-island-vs-siesta-key.html"],
+      "change": "Restored the pre-#607 title and meta description (Gate 0 rescue)",
+      "pr": 807,
+      "shipped": "2026-10-25",
+      "targetQuery": "anna maria island vs siesta key",
+      "brief": "docs/briefs/2026-10-ami-vs-siesta-key-rescue.md"
+    }
+  ]
+}

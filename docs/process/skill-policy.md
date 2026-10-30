@@ -10,12 +10,21 @@ active skill set is not exhaustively re-listed here on purpose — it lives in
 The active local skill layer is intentionally lean and site-specific. Use the
 skills in `.agents/skills/` as helpers under the task route in `docs/process/batch-workflow.md`, not as
 another operating system. Stale deploy, monthly-reset, broad marketing, and
-generic SEO skills stay out of active discovery unless a new `repo-dev-setup` inventory
-proves they should return.
+generic SEO skills stay out of active discovery unless a current source and
+consumer inventory proves they should return.
 
-For AI discovery, GEO/AEO, and schema work, use the existing Search Operator
-role in `.claude/agents/search-operator.md` and
+To check a skill change, run `npm run audit:skills` for recorded use and
+`npm run eval:skills` (pass `-- --case <name>` for one case) to score the
+plugin eval cases in `plugins/seascape-seo-os/evals/`. The script bakes in
+`--scaffold` so cases load their fixed sample inputs, a Sonnet judge, a $2
+cost ceiling, and a closed stdin that keeps the run from hanging.
+
+For choosing the next SEO batch, use the existing Search Operator role in
+`.claude/agents/search-operator.md` and
 `docs/process/seo-competitor-operating-loop.md` for proof and attack research.
+For AI-visibility research, follow the local `openseo-local-ai-visibility-audit`
+skill inside that role. `docs/process/seo-workflow-map.md` lists every SEO job,
+role and skill for both Claude and Codex.
 The repo-local `schema-markup` skill owns JSON-LD and structured-data
 implementation rules inside this site repo.
 
@@ -100,6 +109,14 @@ authority, bypass the required task responsibilities, or replace Seascape Hub as
 business context.
 
 ## Agent-surface-audit receipts
+
+### 2026-10-25 — skill audit, plugin evals and design-skill repair
+
+Added read-only `npm run audit:skills` and a six-case `claude plugin eval`
+suite in `plugins/seascape-seo-os/evals/`. `seascape-design-specialist` and
+`design-review` failed their evals and now pass. Each skill now states its own
+deliverable and proof contract. Retired the unused `animate`, `break-ui` and
+`review-animations` skills. See `docs/research/2026-10-25-skill-audit-and-evals.md`.
 
 ### 2026-10-23 — repo-scoped Compound Writing trial
 

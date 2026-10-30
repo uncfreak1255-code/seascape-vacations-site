@@ -138,6 +138,14 @@ legacy conversion paths, desktop/mobile behavior and performance. Record the
 rollback revision and the condition that triggers it; use the same owning
 review/release lane for a rollback rather than an ad hoc live edit.
 
+When the action changes a page's title, meta, headings or body to move rankings,
+add the page to `docs/status/page-ledger.json` in the same PR (route, sources,
+PR, shipped date once published, target query). For 28 days after `shipped`,
+`npm run verify:release` fails any range that edits those sources unless a
+commit carries `Settle-Override: <reason>`; use the override only for a real
+break or a rescue the readback supports, and name it in the PR body. Remove the
+entry after its window ends and the readback is recorded.
+
 Record source merge, publication and deployed behavior separately. Production
 activation uses the existing approved consolidated release lane and runtime
 proof checklist. A merged PR remains pending release until deployment evidence

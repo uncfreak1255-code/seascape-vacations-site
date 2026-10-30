@@ -1,4 +1,6 @@
 const moneyRoutes = [
+  {slug:"guide-ami-vs-longboat",path:"/guides/anna-maria-island-vs-longboat-key/",readySelector:"main h1"},
+  {slug:"guide-ami-vs-clearwater",path:"/guides/anna-maria-island-vs-clearwater-beach/",readySelector:"main h1"},
   {slug:"guides-index", path:"/guides/", readySelector:"main h1"},
   {slug:"about-seascape", path:"/about-us/", readySelector:"main h1"},
   {slug:"stay-bradenton-near-beaches", path:"/stays/bradenton-vacation-rentals-near-beaches/", readySelector:"main h1"},
@@ -38,6 +40,11 @@ const moneyRoutes = [
     readySelector: "main h1",
   },
   {
+    slug: "guide-rainy-day",
+    path: "/guides/rainy-day-activities-bradenton-sarasota/",
+    readySelector: "main h1",
+  },
+  {
     slug: "guide-bradenton-vs-sarasota",
     path: "/guides/bradenton-vs-sarasota/",
     readySelector: "main h1",
@@ -55,6 +62,26 @@ const moneyRoutes = [
   {
     slug: "guide-ami-vacation-cost",
     path: "/guides/anna-maria-island-vacation-cost/",
+    readySelector: "main h1",
+  },
+  {
+    slug: "guide-ami-need-a-car",
+    path: "/guides/do-you-need-a-car-anna-maria-island/",
+    readySelector: "main h1",
+  },
+  {
+    slug: "guide-ami-how-to-get-to",
+    path: "/guides/how-to-get-to-anna-maria-island/",
+    readySelector: "main h1",
+  },
+  {
+    slug: "guide-ami-flights",
+    path: "/guides/flights-to-anna-maria-island/",
+    readySelector: "main h1",
+  },
+  {
+    slug: "guide-ami-srq",
+    path: "/guides/srq-airport-to-anna-maria-island/",
     readySelector: "main h1",
   },
   {

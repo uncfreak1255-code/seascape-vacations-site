@@ -1,0 +1,27 @@
+{# Waterline comparison frame. Contract: DESIGN.md, approved A, October 27. #}
+<!doctype html>
+<html lang="en">
+<head>
+{% block guideHead %}{% endblock %}
+{% include "partials/local-font-head.njk" %}
+<link rel="stylesheet" href="/css/guest.css?v=waterline-v3">
+<link rel="stylesheet" href="/css/comparison-guide.css">
+</head>
+<body class="guest-shell planning-guide comparison-guide">
+{% include "partials/guest-header.njk" %}
+{% block guideBreadcrumb %}{% endblock %}
+<main>
+{% block guideOpening %}{% endblock %}
+{% block guideComparison %}{% endblock %}
+<div class="wl-reading">
+{% block guideContents %}{% endblock %}
+<article class="wl-prose article-text">
+{% block guideArticle %}{% endblock %}
+</article>
+</div>
+</main>
+{% include "partials/guest-footer.njk" %}
+<script defer src="/assets/js/guide-contents.js"></script>
+{% include "partials/analytics-ga4.njk" %}
+</body>
+</html>

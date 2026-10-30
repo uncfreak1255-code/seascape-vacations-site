@@ -1,0 +1,35 @@
+{
+  "name": "Dockside Dreams",
+  "slug": "dockside-dreams",
+  "city": "Bradenton",
+  "bedrooms": 4,
+  "bathrooms": 3,
+  "guests": 12,
+  "rating": 5,
+  "price": 450,
+  "amenities": [
+    "pool",
+    "waterfront",
+    "dock",
+    "hot-tub"
+  ],
+  "highlights": [
+    "Private Pool & Spa",
+    "Waterfront Dock"
+  ],
+  "description": "Wake up to stunning water views and watch dolphins play right from your private dock. This magnificent waterfront home features a heated pool and spa, gourmet kitchen, and direct water access.",
+  "specs": "4 BR \u00b7 3 BA \u00b7 Sleeps 12",
+  "marketing_amenities": [
+    "private-heated-pool",
+    "hot-tub-spa",
+    "private-dock",
+    "waterfront",
+    "game-room",
+    "outdoor-kitchen",
+    "fast-wifi",
+    "pet-friendly",
+    "single-level",
+    "outdoor-living"
+  ],
+  "image": "/images/homes/dockside-dreams/02.webp"
+}

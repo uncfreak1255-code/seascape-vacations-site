@@ -53,7 +53,8 @@ approval, brief, review and proof requirements. This is a workflow default,
 not a new scheduler, automatic page editor or grant of spending authority.
 
 Claude's twelve free workflow tools have native allow rules. Every other tool
-in the installed 0.1.12 catalog has a native ask rule, so auto mode cannot
+in the installed 0.1.16 catalog has a native ask rule (seven tools added in
+0.1.13–0.1.16 got ask rules on October 25, 2026), so auto mode cannot
 silently approve paid research or other unapproved effects. Verify this catalog
 coverage again before an OpenSEO upgrade. Codex continues to exclude paid
 lookup tools from its default allowlist. For an approved paid step, make only
@@ -138,8 +139,12 @@ The Mac installs the public skill directories as user-scope symlinks named
 `openseo-local-<skill>` under `~/.agents/skills/` for Codex and
 `~/.claude/skills/` for Claude, pointing to
 `~/Projects/open-seo-review/plugins/openseo/skills/<skill>`. Their upstream
-skill names stay unchanged. The initial source is official release 0.1.12,
-commit `89e5a00717cdf049b7c2b4e29646edb3a7d4995b`. The installed local
+skill names stay unchanged. The initial source was official release 0.1.12,
+commit `89e5a00717cdf049b7c2b4e29646edb3a7d4995b`. Sawyer approved the upgrade
+to release 0.1.16 (commit `236761ad848716077cd10d8503713bb690971b3b`) on
+October 25, 2026; the twelve skills and their links were rechecked after it.
+The pre-upgrade local database is kept under
+`~/Projects/open-seo-backups/2026-10-25-pre-v0.1.16/`. The installed local
 OpenSEO checkout supplies the skills and their supporting files; no plugin
 fork, copied skill pack or hosted migration is needed. A later approved local
 OpenSEO upgrade also changes these symlink targets' contents, so rediscover
