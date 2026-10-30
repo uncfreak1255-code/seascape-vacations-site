@@ -17,6 +17,9 @@ const {
   canonicalPermissions, requirePrivacy, planImport, timestamp
 } = require("./mapping");
 
+const { trackerHeaders, columnName } = require("./schema");
+const { inspectWriter } = require("./writer-seat");
+
 function required(env, key) {
   if (!env[key]) throw new Error("missing_" + key);
   return env[key];
@@ -166,23 +169,43 @@ async function readTracker(token, fetchImpl) {
   if (!sheet || sheet.gridProperties.columnCount < HEADERS.length || sheet.gridProperties.rowCount > 1900) {
     throw new Error("tracker_bounds_require_review");
   }
-  const result = await request("https://sheets.googleapis.com/v4/spreadsheets/" + TRACKER_ID + "/values/" +
-    encodeURIComponent("'" + TAB + "'!A1:Z" + sheet.gridProperties.rowCount) + "?valueRenderOption=FORMULA", token, {}, fetchImpl);
+  const base = "https://sheets.googleapis.com/v4/spreadsheets/" + TRACKER_ID + "/values/";
+  // Inspect the complete header row: unknown columns must not be silently hidden.
+  const readHeader = () => request(base + encodeURIComponent("'" + TAB + "'!1:1") +
+    "?valueRenderOption=FORMULA", token, {}, fetchImpl);
+  const normalizeHeader = (value) => {
+    const row = (value || []).slice();
+    while (row.length && !row.at(-1)) row.pop();
+    return row;
+  };
+  const header = await readHeader();
+  const headers = trackerHeaders(header.values?.[0] || []);
+  if (sheet.gridProperties.columnCount < headers.length) throw new Error("tracker_bounds_require_review");
+  const result = await request(base + encodeURIComponent("'" + TAB + "'!A1:" +
+    columnName(headers.length) + sheet.gridProperties.rowCount) + "?valueRenderOption=FORMULA", token, {}, fetchImpl);
   if (!Array.isArray(result.values)) throw new Error("tracker_values_unavailable");
+  const finalHeader = await readHeader();
+  const observed = normalizeHeader(header.values?.[0]);
+  if (digest(normalizeHeader(result.values[0])) !== digest(observed) ||
+      digest(normalizeHeader(finalHeader.values?.[0])) !== digest(observed)) {
+    throw new Error("source_or_tracker_changed_repreview_required");
+  }
   return { rows: result.values, sheet };
 }
 
 function batchForPlan(plan, tracker) {
+  const headers = trackerHeaders(tracker.rows[0] || []);
+  if (plan.append.some((row) => row.length !== headers.length)) throw new Error("tracker_plan_width_mismatch");
   if (tracker.rows.length + plan.append.length > tracker.sheet.gridProperties.rowCount) {
     throw new Error("tracker_capacity_requires_review");
   }
   const update = (startRowIndex, rows) => ({ updateCells: {
     range: { sheetId: tracker.sheet.sheetId, startRowIndex, endRowIndex: startRowIndex + rows.length,
-      startColumnIndex: 0, endColumnIndex: HEADERS.length },
+      startColumnIndex: 0, endColumnIndex: headers.length },
     rows: rows.map((row) => ({ values: row.map((value) => ({ userEnteredValue: { stringValue: value } })) })),
     fields: "userEnteredValue"
   } });
-  return [update(0, [HEADERS]), ...(plan.append.length ? [update(tracker.rows.length, plan.append)] : [])];
+  return [update(0, [headers]), ...(plan.append.length ? [update(tracker.rows.length, plan.append)] : [])];
 }
 
 async function applyPlan({ plan, tracker, source, policy, env, now, fetchImpl, storeFactory = getStore }) {
@@ -203,7 +226,7 @@ async function applyPlan({ plan, tracker, source, policy, env, now, fetchImpl, s
   } catch (_error) { throw new Error("tracker_write_unconfirmed_reconcile_before_retry"); }
   const readback = await readTracker(token, fetchImpl);
   const expected = [...tracker.rows];
-  expected[0] = HEADERS;
+  expected[0] = trackerHeaders(tracker.rows[0] || []);
   expected.push(...plan.append);
   // Sheets omits trailing empty strings on reads.
   const canonical = (rows) => rows.map((r) => { const row = r.slice(); while (row.length && row.at(-1) === "") row.pop(); return row; });
@@ -247,6 +270,7 @@ function readPrivate(directory, name) {
 
 async function main(argv = process.argv.slice(2), env = process.env) {
   const mode = argv[0] || "--preview";
+  if (mode === "--inspect-writer" && argv.length === 1) return inspectWriter(env);
   if (!["--inspect-access", "--inspect-source", "--preview", "--apply"].includes(mode) || argv.length > 1) {
     throw new Error("use_inspect_access_inspect_source_preview_or_apply");
   }
@@ -309,4 +333,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { request, readAccess, readSource, readTracker, batchForPlan, applyPlan, privateDirectory, savePrivate };
+module.exports = { request, readAccess, readSource, readTracker, batchForPlan, applyPlan, privateDirectory, savePrivate, main };

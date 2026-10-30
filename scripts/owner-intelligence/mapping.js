@@ -6,16 +6,7 @@ const TRACKER_ID = "1Zs4I4ZqBbberw4fZnJPirnS44pHxvDfiLi7v89qev9s";
 const FOLDER_ID = "1q1gsZ6UOxPtrnQvWB39d_evFp4NHc8LK";
 const DRIVE_ID = "0ALwEazFmxQSoUk9PVA";
 const TAB = "Owner pipeline";
-const HEADERS = [
-  "Record ID", "Owner / representative", "Contact", "Property / listing",
-  "Ownership confirmation", "Permission source / date", "Primary question",
-  "Complete intake / time zone", "Stage", "Assessment / evidence link",
-  "Next action", "Action owner / due", "Disposition / reason",
-  "Exact approval evidence", "Delivery status / time", "Retention review date",
-  "Source submission ID", "Source timestamp", "Source page", "Source market",
-  "Last activity timestamp", "Verification status", "Ingested at",
-  "Duplicate review", "Permission scope", "Retention status"
-];
+const { HEADERS, trackerHeaders } = require("./schema");
 
 function digest(value) {
   return createHash("sha256").update(JSON.stringify(value)).digest("hex");
@@ -59,12 +50,8 @@ function requirePrivacy(policy, accessHash, now, writerId) {
   }
 }
 
-function assertHeaders(headers) {
-  const used = headers.slice();
-  while (used.length && !used[used.length - 1]) used.pop();
-  if (![16, HEADERS.length].includes(used.length) ||
-      used.some((h, i) => h !== HEADERS[i])) throw new Error("tracker_schema_changed");
-}
+
+function assertHeaders(headers) { trackerHeaders(headers); }
 
 function identity(contact, property) {
   // Exact normalized handle + property only. Do not guess fuzzy property identities.
@@ -80,7 +67,7 @@ function planImport({ contacts, rows, reviews = {}, now }) {
   if (!Array.isArray(contacts) || !Array.isArray(rows) || !timestamp(now)) {
     throw new Error("invalid_source_or_tracker");
   }
-  assertHeaders(rows[0] || []);
+  const headers = trackerHeaders(rows[0] || []);
   const ids = new Set();
   const identities = new Set();
   for (const row of rows.slice(1)) {
@@ -114,7 +101,7 @@ function planImport({ contacts, rows, reviews = {}, now }) {
     else if (keys.some((key) => identities.has(key))) reason = "possible_repeat_prospect";
     if (reason) { held.push({ submissionId: id, reason }); continue; }
     const retention = new Date(Date.parse(c.createdAt) + 90 * 86400000).toISOString().slice(0, 10);
-    append.push([
+    const row = [
       recordId, text(c.name), contact, property,
       c.submitterAuthority === "owner_or_authorized_representative"
         ? "Owner/representative self-attestation; ownership unverified" : "Not captured; see permission review",
@@ -126,7 +113,12 @@ function planImport({ contacts, rows, reviews = {}, now }) {
       "Genuine inquiry reviewed; ownership and fit unverified", now,
       "No exact contact/property match; manual identity review still required",
       "inbound_review_only; no marketing or delivery authority", "Review only; no automatic deletion"
-    ]);
+    ];
+    const values = Object.fromEntries(HEADERS.map((header, index) => [header, row[index]]));
+    values["Opportunity ID"] = recordId;
+    // Source and commercial lifecycle stay blank without their own evidence.
+    // Map by header so a legacy Came from cell is never shifted or overwritten.
+    append.push(headers.map(header => values[header] ?? ""));
     ids.add(recordId);
     for (const key of keys) identities.add(key);
   }
