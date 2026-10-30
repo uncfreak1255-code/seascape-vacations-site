@@ -114,10 +114,11 @@ function planImport({ contacts, rows, reviews = {}, now }) {
       "No exact contact/property match; manual identity review still required",
       "inbound_review_only; no marketing or delivery authority", "Review only; no automatic deletion"
     ];
-    if (headers.length > HEADERS.length) {
-      row.push(recordId, ...Array(headers.length - HEADERS.length - 1).fill(""));
-    }
-    append.push(row);
+    const values = Object.fromEntries(HEADERS.map((header, index) => [header, row[index]]));
+    values["Opportunity ID"] = recordId;
+    // Source and commercial lifecycle stay blank without their own evidence.
+    // Map by header so a legacy Came from cell is never shifted or overwritten.
+    append.push(headers.map(header => values[header] ?? ""));
     ids.add(recordId);
     for (const key of keys) identities.add(key);
   }

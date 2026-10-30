@@ -41,20 +41,20 @@ anything. Missing, unsafe, malformed, mismatched or expired policy is reported
 without exposing a seat ID, credential, policy reference or owner data.
 
 Do not create a policy, invent a writer ID or set credentials merely to obtain
-a passing result. This cloud preparation cannot inspect the Mac's private
-runtime; the accepted seat remains unverified until that owning-host read.
+a passing result. The October 30 Mac continuation observed `policy_unavailable`;
+the accepted seat remains unverified until the existing configuration is found.
 
-The adapter accepts three exact header shapes: original 16 columns, current
-26-column intake schema, and that schema plus the 11 commercial/reply fields
-specified in [HQ issue 8](https://github.com/uncfreak1255-code/seascape-hq/issues/8).
-It reads the full header row before selecting the bounded body range. Unknown,
-reordered or partial commercial schemas are rejected. The existing 16-to-26
-intake extension is unchanged. Neither preview nor import adds the commercial
-columns: this change only tolerates them after a separately controlled source
-migration. With 37 headers already present, appends/readback use all 37 and
-preserve every existing operator row and commercial cell. New imported rows
-bind Opportunity ID to Record ID, leaving commercial stage and reply lifecycle
-blank/Unknown rather than inventing a milestone or an all-clear.
+The adapter accepts the exact 16-column original layout, the 26-column intake
+layout and the 37-column commercial layout, with an optional final `Came from`
+column on each. Unknown, reordered and partial layouts are rejected. The old
+16-to-26 intake extension remains; a 17-column source-bearing legacy layout
+stays at 17 columns so no existing source cell is moved. Imported values map
+by header; existing operator Stage, source and commercial cells remain intact.
+New Came from and commercial lifecycle values stay blank without evidence.
+Readback compares every accepted column and every existing row; replay still
+uses the durable Record ID. No preview or compatibility change extends the
+live source column. The read adapter rereads the full header around its body
+read and rejects concurrent schema changes.
 
 This is compatibility preparation, not a commercial/reply update command or
 an Ops/HQ read projection. Existing intake still never updates operator fields.
@@ -155,8 +155,8 @@ After actual acceptance, create `approved-policy.json` there with these fields
 }
 ```
 
-The 90-day inactive/declined review proposal requires actual acceptance. Nothing
-deletes automatically. An imported old inquiry's review date is based on its
+Sawyer has accepted the 90-day inactive/declined review policy. Nothing
+deletes automatically; do not request that same policy approval again. An imported old inquiry's review date is based on its
 original activity date and can already be overdue. Later verified interaction
 can update last activity and retention review under the accepted policy; this
 command never refreshes existing operator fields or handles signed-owner records.
@@ -236,8 +236,9 @@ separate Sawyer-approved rules and are not fabricated by this form adapter.
 2. Use the authorized production operator environment for the two inspect modes.
    Verify production counts, original submissions, current effective access and
    the deployed capture fields; do not infer those from GitHub main.
-3. Obtain actual access/90-day retention acceptance and Patrick method proof;
-   designate one writer and preserve owner-direct permission evidence.
+3. Refresh operational access-hash/expiry evidence under the accepted access
+   and 90-day retention policy. Verify the existing accepted writer and Patrick
+   method proof, and preserve owner-direct permission evidence.
 4. Preview genuine inquiries, apply the reviewed batch and verify tracker readback.
    Only then claim a live connection/import. Ongoing scheduling and Deals-tab
    writes remain separate activation work; no outreach is authorized here.
@@ -245,3 +246,22 @@ separate Sawyer-approved rules and are not fabricated by this form adapter.
 API references: [Netlify Blobs](https://docs.netlify.com/build/data-and-storage/netlify-blobs/),
 [Netlify API](https://docs.netlify.com/api-and-cli-guides/api-guides/get-started-with-api/),
 [Sheets batch updates](https://developers.google.com/workspace/sheets/api/reference/rest/v4/spreadsheets/batchUpdate).
+
+
+## HQ issue 43 continuation (October 30, 2026)
+
+The existing scorecard account identity was verified locally without exposing
+keys. The #784 read-only writer inspection against existing Mac runtime
+configuration returned `policy_unavailable`, with no provider access or write.
+This is an operational gap, not a revocation of Sawyer's already accepted
+access and 90-day retention policy. Do not invent a writer ID, policy or
+method acceptance to pass it. Live schema extension remains blocked until the
+accepted writer and operational evidence are verified. New file-only Viewer
+sharing must preserve all existing permissions and refresh affected access
+hash evidence; it does not authorize folder access or broader credentials.
+
+Ops owns the `ops-read owner-leads` privacy projection; HQ consumes it through
+its existing read seam. The existing `Stage` is the assessment Stage. The
+commercial and reply-cycle work stays separate. Missing tracker records do
+not establish that no inquiries exist; blank or unfamiliar Stage/source values
+remain Unknown. No referrals are backfilled without record-specific evidence.

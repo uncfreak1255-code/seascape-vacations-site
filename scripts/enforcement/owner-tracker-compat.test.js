@@ -61,7 +61,7 @@ test('read adapter reads all headers before selecting its bounded body width', a
 });
 
 test('writer inspection is read-only, distinguishes mismatch and expiry, and exposes no credentials', async () => {
-  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'synthetic-seat-'));
+  const root = fs.mkdtempSync(path.join(fs.realpathSync(os.tmpdir()), 'synthetic-seat-'));
   const env = { SEASCAPE_RUNTIME_HOME: root, OWNER_INTELLIGENCE_WRITER_ID: 'synthetic-seat',
     OWNER_INTELLIGENCE_GOOGLE_ACCESS_TOKEN: 'secret-synthetic-do-not-print' };
   const now = '2026-10-24T12:00:00Z';
@@ -106,5 +106,15 @@ test('header expansion during a bounded body read is rejected instead of hiding 
       return { ok: true, json: async () => value };
     };
     await assert.rejects(readTracker('synthetic', fake), /changed_repreview_required/);
+  }
+});
+
+
+test('Came from is accepted only as an exact final column, preserving each existing layout', () => {
+  for (const base of [HEADERS.slice(0, 16), HEADERS, [...HEADERS, ...COMMERCIAL_HEADERS]]) {
+    const headers = [...base, 'Came from'];
+    assert.deepEqual(trackerHeaders([...headers, '', '']), headers);
+    assert.throws(() => trackerHeaders(['Came from', ...base]), /tracker_schema_changed/);
+    assert.throws(() => trackerHeaders([...headers, 'Unexpected']), /tracker_schema_changed/);
   }
 });

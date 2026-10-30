@@ -19,14 +19,13 @@ const COMMERCIAL_HEADERS = [
 function trackerHeaders(headers) {
   const used = headers.slice();
   while (used.length && !used.at(-1)) used.pop();
-  const expanded = [...HEADERS, ...COMMERCIAL_HEADERS];
-  const expected = used.length === expanded.length ? expanded : HEADERS;
-  if (![16, HEADERS.length, expanded.length].includes(used.length) ||
-      used.some((header, index) => header !== expected[index])) {
-    throw new Error("tracker_schema_changed");
-  }
-  // Preserve the existing 16 -> 26 intake extension, never opt into commercial fields.
-  return expected.slice();
+  const layouts = [HEADERS.slice(0, 16), HEADERS, [...HEADERS, ...COMMERCIAL_HEADERS]];
+  const accepted = layouts.flatMap(layout => [layout, [...layout, "Came from"]])
+    .find(layout => layout.length === used.length && layout.every((value, index) => value === used[index]));
+  if (!accepted) throw new Error("tracker_schema_changed");
+  // Preserve the old 16 -> 26 expansion. A source-bearing legacy layout stays
+  // in place: extending it would move Came from over an existing operator cell.
+  return used.length === 16 ? HEADERS.slice() : accepted.slice();
 }
 
 function columnName(count) {
