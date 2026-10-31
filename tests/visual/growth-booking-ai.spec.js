@@ -55,6 +55,7 @@ test("family collection names the verified mainland home and opens its booking p
   await expect(main).toContainText("mainland Bradenton");
   await expect(main).not.toContainText("all our pools have proper safety fencing");
   await expect(main).not.toContainText("at no additional charge");
+  await expect(main).not.toContainText("10-15 minutes to beaches");
   const card = page.locator(".property-card").filter({ has: page.getByRole("heading", { name: "Bradenton Pool Home", exact: true }) });
   await expect(card).toHaveCount(1);
   await expect(card).toContainText("3 BR");
