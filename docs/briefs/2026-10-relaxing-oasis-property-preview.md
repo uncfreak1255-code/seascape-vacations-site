@@ -5,10 +5,39 @@
 - primary keyword: Relaxing Oasis; existing exact listing identity, no search expansion
 - secondary keywords: Bradenton vacation home; no ranking or traffic claim
 - audience pattern: inspect the actual home, watch its optional film, check important rules, choose dates
-- proof source: Hub `context/seascape-properties.md` section 8 at `3d12c21255a0988796a092c63bda231bd8314b2f`; exact public Hostaway listing 607228 and its photo gallery read 2026-10-28 UTC
+- proof source: October 31 Hostaway 607228 Basic info, Rooms & beds, description and captions via Aside; direct booking page; Hub section 8 at c563a0a259e1d241f8084d19f8fac87df92087d8
 - required internal links: /properties/, /guides/anna-maria-island-area-guide/
 - CTA target: https://book.seascape-vacations.com/listings/607228 with guest dates and group size preserved
-- anti-claims: no verified bedroom/bathroom totals or room assignments; no separate hot tub, in-ground pool, waterfront, beach distance, review quotes or guaranteed temperature; no private owner/access information
+- anti-claims: no room arrangements beyond the October 31 exact-listing verification; no separate hot tub, in-ground pool, waterfront, beach distance, review quotes or guaranteed temperature; no private owner/access information
+
+## Current scope — October 31, 2026
+
+This chat owns the worktree-only count and room-breakdown update. Sawyer requested
+5 bedrooms, 4 bathrooms, the verified five-room breakdown, and removal of the
+outdated sleeping warning. Hostaway, production, catalog membership and indexing
+remain unchanged. Reuse the existing sleeping-list component without design changes.
+
+Current proof: read-only Aside review of exact Hostaway 607228 on October 31,
+including Basic info, Rooms & beds, description and photo captions; direct booking
+agrees on 5 bedrooms, 4 bathrooms and 11 guests. Hub origin/main
+c563a0a259e1d241f8084d19f8fac87df92087d8 section 8 records the detached suite
+and its bathroom within the totals. The current Hostaway description explicitly
+maps two king rooms with private bathrooms; queen and two twin-over-twin bunks
+sharing a bathroom; detached twin daybed suite with private bathroom. Each bathroom
+is described with a walk-in shower. Eight beds total does not mean eight bedrooms.
+
+Acceptance gate, written before implementation: show 5 bedrooms / 4 bathrooms /
+11 guests, exactly five room entries with the correct shared/private bathroom
+relationships, no obsolete detached-inclusion warning. Preserve gallery, noindex,
+booking listing 607228, guest/date handoff and both stay-story formats. Update the
+existing route test; observe it fail on the old page, then pass on the changed
+page. Build, content lint, focused route/story tests and desktop/mobile rendered
+inspection prove this preview. Do not refresh approved screenshot baselines or
+publish before Sawyer reviews the preview.
+
+The dated sections below are historical release evidence. Their count omission
+and physical-inventory hold are superseded for this update; they do not block
+using the now-verified room map. Catalog/indexing remains separately deferred.
 
 ## Scope and approved direction
 
@@ -98,3 +127,15 @@ Latest main integrated for release: c591021f2cfe190804c14c9bc1ea42a81954f3eb.
 Its motion, guide and test-helper changes are preserved. Other open PRs787/790
 cover separate design consolidation/type work; no Relaxing Oasis task duplicates
 this branch. Final integrated checks and release readback belong in the PR.
+
+## October 31 worktree proof
+
+Owner: this Codex chat; branch `codex/relaxing-oasis-verified-rooms`, base
+`696f0abf185630596d01a50554f6747cc66602c2`. Preview on localhost:8776.
+Updated route test failed on the old page (missing 5 bedrooms), then all six
+focused desktop/mobile property and film tests passed. Content lint passed
+41 checks. Native browser inspected the heading and five-room list at desktop
+and 390px mobile; overflow checks passed 360/375/390/768/1440px. Screenshots in
+`artifacts/verified-rooms/desktop.jpg` and `mobile.jpg`. Independent Voice Editor:
+Approved. No template, stylesheet, Hostaway, indexing, catalog or live changes.
+Approved screenshot baselines remain untouched pending user review.
