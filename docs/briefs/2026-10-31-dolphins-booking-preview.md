@@ -85,3 +85,9 @@ The execution checkpoint records source SHA, stage, completed checks, failures, 
 ## Publication approval — October31,2026
 
 Sawyer reviewed the three-page package and approved normal review/publication. This chat remains mutation owner and sole merger. Preserve SEO and booking contracts and held guides. The approved Tuesday/Friday09:10 Eastern heartbeat is local continuation, not a change to the Site production publish schedule.
+
+## Approved publication proof — October31,2026
+
+Originating issue #840 quotes Sawyer’s approved publication request. The earlier public-issue write block was cleared by his explicit approval. Fresh-context issue-only spec review at b93cba34e5762c5c43716377682e05998a3887c2 found no missing/wrong requirement; current-head pre-PR bug review found0defects. Briefs, required owner live-smoke coverage and visual journeys support the requested page publication.
+
+Owner screenshot baselines were refreshed after Sawyer’s design approval through native workflow run41248253866; bot commit1c112fce055c2cc1d6689d589c37e88ddcac8e52 changes only the intended desktop/mobile property-management PNGs. Both were inspected. Required current-head native review/CI and actual normal production publication/readback remain separate steps. Final reconciled local release passed1319tests and all release checks; six actual guest/owner desktop/mobile journeys passed.
