@@ -10,6 +10,17 @@
       "shipped": "2026-10-25",
       "targetQuery": "anna maria island vs siesta key",
       "brief": "docs/briefs/2026-10-ami-vs-siesta-key-rescue.md"
+    },
+    {
+      "route": "/stays/family-vacation-rentals-anna-maria-island/",
+      "sources": [
+        "src/_data/seoPages.json"
+      ],
+      "change": "Verified Bradenton family pool-home comparison and property links; unsupported safety/equipment assurances removed",
+      "pr": 839,
+      "shipped": null,
+      "targetQuery": "family friendly pool home rental in Bradenton Florida",
+      "brief": "docs/briefs/2026-10-family-pool-comparison.md"
     }
   ]
 }
