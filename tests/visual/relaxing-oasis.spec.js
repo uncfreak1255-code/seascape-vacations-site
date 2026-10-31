@@ -47,3 +47,41 @@ test('Relaxing Oasis booking handoff preserves trip without submitting a reserva
     expect(url.searchParams.get('numberOfGuests')).toBe('6');
   }).toPass();
 });
+
+test('Relaxing Oasis can be discovered on the homepage and filtered and compared in the catalog', async ({ page }) => {
+  await page.route('**/.netlify/functions/booking-availability?*', route => route.fulfill({ status: 503, body: '{}' }));
+  await page.goto('/');
+  const postcard = page.locator('.g-postcard').filter({ hasText: 'Relaxing Oasis' });
+  await expect(postcard).toHaveCount(1);
+  await expect(postcard.locator('a')).toHaveAttribute('href', '/properties/relaxing-oasis/');
+  await expect(postcard.locator('img')).toHaveAttribute('src', '/images/homes/relaxing-oasis/01.webp');
+  await page.getByRole('button', { name: 'Preview Relaxing Oasis', exact: true }).click();
+  await expect(page.locator('#scene-relaxing-oasis')).toBeVisible();
+  await expect.poll(() => page.locator('#scene-relaxing-oasis img').evaluate(i => i.complete && i.naturalWidth > 0)).toBe(true);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  await page.goto('/properties/');
+  const card = page.locator('.catalog-card[data-property="relaxing-oasis"]');
+  await expect(card).toContainText('5 bedrooms');
+  await expect(card).toContainText('4 baths');
+  await expect(card).toContainText('Up to 11 guests');
+  await expect(card.locator('img')).toHaveAttribute('src', '/images/homes/relaxing-oasis/01.webp');
+  await card.scrollIntoViewIfNeeded();
+  await expect.poll(() => card.locator('img').evaluate(i => i.complete && i.naturalWidth > 0)).toBe(true);
+  await expect(card.getByRole('link', { name: 'Check dates for Relaxing Oasis', exact: true })).toHaveAttribute('href', /\/listings\/607228(?:\?|$)/);
+  for (const filter of ['waterfront', 'pet-friendly', 'sarasota']) {
+    await page.locator(`[data-filter="${filter}"]`).click();
+    await expect(card).toBeHidden();
+  }
+  await page.locator('[data-filter="bradenton"]').click();
+  await expect(card).toBeVisible();
+  await page.getByRole('button', { name: 'Compare Relaxing Oasis', exact: true }).click();
+  await expect(page.getByRole('button', { name: 'Compare Relaxing Oasis', exact: true })).toHaveAttribute('aria-pressed', 'true');
+  await page.goto('/properties/?compare=relaxing-oasis,the-oasis');
+  await page.locator('#open-comparison').click();
+  await expect(page.locator('td[data-compare-column="relaxing-oasis"]').filter({ hasText: /^5 \/ 4$/ })).toBeVisible();
+  await page.goto('/properties/?guests=12');
+  await expect(card).toBeHidden();
+  await page.goto('/properties/?guests=11');
+  await expect(card).toBeVisible();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+});

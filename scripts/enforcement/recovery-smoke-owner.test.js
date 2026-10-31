@@ -19,14 +19,14 @@ test("property-management smoke follows the current Waterline owner offer hub", 
   const currentOwnerHubBody = `
     <main>
       <h1>Know what your home earned <em>and what needs attention.</em></h1>
-      <p>Seven homes. One local team.</p>
+      <p>Eight homes. One local team.</p>
       <a href="#owner-cta">Request your 48-hour revenue review</a>
       <form name="owner-revenue-teardown" method="POST"></form>
       <input type="checkbox" name="submitter_authority" value="owner_or_authorized_representative" required>
       I confirm I am the property owner or an authorized representative for this property.
       Owner statement, optional
       <h2>What we do for your home</h2>
-      <h2>Why a seven-home operator</h2>
+      <h2>Why a eight-home operator</h2>
       <h2>The homes we manage</h2>
       <a href="/property-management/vacation-rental-management-sarasota/">Sarasota</a>
     </main>
@@ -47,14 +47,14 @@ test("property-management smoke accepts the live minified single-quoted form nam
   const minifiedOwnerHubBody = `
     <main>
       <h1>Know what your home earned <em>and what needs attention.</em></h1>
-      <p>Seven homes. One local team.</p>
+      <p>Eight homes. One local team.</p>
       <a href="#owner-cta">Request your 48-hour revenue review</a>
       <form name='owner-revenue-teardown' method='POST'></form>
       <input type="checkbox" name="submitter_authority" value="owner_or_authorized_representative" required>
       I confirm I am the property owner or an authorized representative for this property.
       Owner statement, optional
       <h2>What we do for your home</h2>
-      <h2>Why a seven-home operator</h2>
+      <h2>Why a eight-home operator</h2>
       <h2>The homes we manage</h2>
     </main>
   `;
@@ -68,38 +68,38 @@ test("property-management smoke accepts the live minified single-quoted form nam
   });
 });
 
-test("property-management smoke rejects Five homes on a seven-row catalog (#705)", () => {
+test("property-management smoke rejects Five homes on a eight-row catalog (#705)", () => {
   const smoke = loadSmokeModule();
   const target = smoke.targets.find((entry) => entry.path === "/property-management/");
   const catalog = require(path.join(projectRoot, "src/_data/properties-fallback.json"));
   const { catalogHomeCountWord } = require("./home-count-word");
 
-  assert.equal(catalog.length, 7);
-  assert.equal(catalogHomeCountWord(), "seven");
+  assert.equal(catalog.length, 8);
+  assert.equal(catalogHomeCountWord(), "eight");
 
-  const sevenHomesOwnerHubBody = `
+  const eightHomesOwnerHubBody = `
     <main>
       <h1>Know what your home earned <em>and what needs attention.</em></h1>
-      <p>Seven homes. One local team.</p>
+      <p>Eight homes. One local team.</p>
       <a href="#owner-cta">Request your 48-hour revenue review</a>
       <form name="owner-revenue-teardown" method="POST"></form>
       <input type="checkbox" name="submitter_authority" value="owner_or_authorized_representative" required>
       I confirm I am the property owner or an authorized representative for this property.
       Owner statement, optional
       <h2>What we do for your home</h2>
-      <h2>Why a seven-home operator</h2>
+      <h2>Why a eight-home operator</h2>
       <h2>The homes we manage</h2>
     </main>
   `;
-  const fiveHomesOwnerHubBody = sevenHomesOwnerHubBody
-    .replace("Seven homes. One local team.", "Five homes. One local team.")
-    .replace("Why a seven-home operator", "Why a five-home operator");
+  const fiveHomesOwnerHubBody = eightHomesOwnerHubBody
+    .replace("Eight homes. One local team.", "Five homes. One local team.")
+    .replace("Why a eight-home operator", "Why a five-home operator");
 
   assert.doesNotThrow(() => {
     smoke.validateTargetResponse(target, {
       statusCode: 200,
       location: null,
-      body: sevenHomesOwnerHubBody
+      body: eightHomesOwnerHubBody
     });
   });
 
@@ -149,10 +149,10 @@ test("property-management smoke fails when the owner form name is missing", () =
       body: `
         <main>
           <h1>Know what your home earned <em>and what needs attention.</em></h1>
-      <p>Seven homes. One local team.</p>
+      <p>Eight homes. One local team.</p>
           <a href="#owner-cta">Request your 48-hour revenue review</a>
           <h2>What we do for your home</h2>
-          <h2>Why a seven-home operator</h2>
+          <h2>Why a eight-home operator</h2>
           <h2>The homes we manage</h2>
         </main>
       `

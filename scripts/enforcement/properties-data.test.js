@@ -125,6 +125,7 @@ test("fallback property seed includes all curated homes shown in the collection"
     "bradenton-pool-home",
     "coastal-stay",
     "dockside-dreams",
+    "relaxing-oasis",
     "river-house",
     "sarasota-luxe",
     "the-oasis"
@@ -305,7 +306,7 @@ test("safe property projection overlays public availability without replacing cu
   const properties = propertiesData.loadSafePropertyProjection(projectionPath);
   const dockside = properties.find((property) => property.slug === "dockside-dreams");
 
-  assert.equal(properties.length, 7);
+  assert.equal(properties.length, 8);
   assert.equal(dockside.name, "Dockside Dreams");
   assert.equal(dockside.id, "206016");
   assert.equal(dockside.availability.source, "seascape-ops");
@@ -321,7 +322,7 @@ test("visual test mode keeps fixture availability live for deterministic snapsho
     const properties = await propertiesData();
     const availabilityLabels = properties.map((property) => property.availability?.nextAvailable?.label ?? null);
 
-    assert.equal(properties.length, 7);
+    assert.equal(properties.length, 8);
     assert.deepEqual(availabilityLabels, [
       "Jun 08 - Jun 10",
       "May 18 - May 20",
@@ -329,6 +330,7 @@ test("visual test mode keeps fixture availability live for deterministic snapsho
       "Aug 21 - Aug 23",
       "May 18 - May 19",
       "Sep 18 - Sep 21",
+      null,
       null
     ]);
     assert.equal(properties[0].availability.syncedAt, "2026-05-17T15:39:21.311Z");
@@ -363,7 +365,7 @@ test("The Coastal keeps final identity, ten guests and provider conflicts outsid
 });
 
 test("legacy cache requires every curated exact identity after onboarding", () => {
-  assert.equal(propertiesData.normalizeCompleteCachedProperties({ properties: fallbackProperties }).length, 7);
+  assert.equal(propertiesData.normalizeCompleteCachedProperties({ properties: fallbackProperties }).length, 8);
   assert.equal(propertiesData.normalizeCompleteCachedProperties({ properties: fallbackProperties.filter(p => p.slug !== "coastal-stay") }), null);
   const wrongIdentity = fallbackProperties.map(p => p.slug === "coastal-stay" ? { ...p, listingId: "589288", id: "589288" } : p);
   assert.equal(propertiesData.normalizeCompleteCachedProperties({ properties: wrongIdentity }), null);

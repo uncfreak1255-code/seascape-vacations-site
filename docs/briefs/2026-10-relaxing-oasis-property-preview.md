@@ -139,3 +139,22 @@ and 390px mobile; overflow checks passed 360/375/390/768/1440px. Screenshots in
 `artifacts/verified-rooms/desktop.jpg` and `mobile.jpg`. Independent Voice Editor:
 Approved. No template, stylesheet, Hostaway, indexing, catalog or live changes.
 Approved screenshot baselines remain untouched pending user review.
+
+## October 31 — homepage and catalog preview
+
+User-authorized scope: include Relaxing Oasis in the existing homepage scenes/postcards and Our homes catalog, with its own approved photos and the verified 5 bedrooms, 4 bathrooms and capacity of 11. Reuse Waterline cards and responsive behavior; no new design direction. The catalog hold above is superseded; the property's noindex setting remains unchanged. Hostaway and production remain untouched.
+
+Acceptance: desktop and mobile show the home's own photo and details, link to its property page, and preserve its exact booking identity. Bradenton filtering includes it; waterfront and pet-friendly filters exclude it. Comparison and capacity filtering use the verified counts. Existing property page/video remain intact. The prior missing-home version must fail the collection presence check. Review screenshots before any baseline refresh or release.
+
+Content source: the read-only Hostaway 607228 verification recorded above and existing approved property photography. No invented ratings, coordinates, fees, amenities or reviews. One shared inventory record will own both cards and the detail page.
+
+Implementation and proof:
+- Moved the approved route-local facts/photos into the shared catalog; the detail route reads that same record. Homepage scene/picker/postcard, catalog, comparison and generated property summary now include Relaxing Oasis. No new ratings or reviews are displayed; existing noindex/schema omission and reservation-sensitive heat wording are retained.
+- Added exact listing 607228 to the existing read-only availability lookup and regenerated the client identity map. Updated inventory-count and smoke fixtures for eight homes; no provider writes.
+- Collection presence test failed before integration and passes afterward. Six desktop/mobile page, handoff and collection tests passed (own photo, correct links, location/pet/waterfront filters, comparison, 11-person inclusion and 12-person exclusion).
+- 1,318 unit tests and 41 content tests passed. Homepage, catalog and property accessibility checks found no serious/critical violations on desktop/mobile. Both video-format playback checks passed.
+- Voice Editor: Approved. Desktop 1440px and mobile 390px inspected in native browser. Screenshots retained locally under artifacts/relaxing-collection; existing visual baselines are intentionally not refreshed before user approval.
+- Owner-count surfaces derive from the same catalog and now reflect eight homes. No source publication, deployment or Hostaway mutation. Local preview stays on port 8776.
+- Rendered design review: Approved after inspecting desktop catalog normal state, desktop homepage, mobile homepage scene/postcard and mobile catalog. Screenshot regression comparison: three expected differences (desktop home, desktop/mobile catalog); mobile homepage's initial viewport remains unchanged. Baseline approval remains pending.
+- Final local checkpoint cleanup: extracted property schema-fact tests and stable smoke detail links to respect repository file-size limits. The existing build generator supplies the current client listing map; its parity test now checks the built script actually served to guests rather than the pre-generation source seed. Focused rerun: 64 passed.
+- Main advanced independently to c930a7c7 (#841) during this preview. This worktree preserves its original 696f0abf base plus the approved room checkpoint; integration with that unrelated guide/owner change is a later pre-release step, not performed here.

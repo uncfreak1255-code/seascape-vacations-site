@@ -51,6 +51,7 @@ test("properties smoke checks durable property detail hrefs instead of old CTA c
       <article><a href="/properties/bradenton-pool-home/">Bradenton Pool Home</a></article>
       <article data-property="blue-house" data-max-guests="11"><a href="/properties/blue-house/">Pickleball Pool Home Retreat</a><p>Up to 11 guests</p></article>
       <article><a href="/properties/coastal-stay/">The Coastal</a></article>
+      <article><a href="/properties/relaxing-oasis/">Relaxing Oasis</a></article>
       <a class="catalog-check-dates" href="https://book.seascape-vacations.com">Check dates</a>
     </main>
   `;
