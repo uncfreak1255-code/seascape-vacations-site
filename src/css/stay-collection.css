@@ -61,9 +61,12 @@
 .stay-collection .property-img { position: relative; aspect-ratio: 3/2; overflow: hidden; background: var(--g-soft); }
 .stay-collection .property-badge { position: absolute; top: 12px; left: 12px; padding: 8px 12px; background: var(--g-paper); color: var(--g-ink); font-size: 12px; border-radius: 0; }
 .stay-collection .property-body { display: flex; flex-direction: column; flex: 1; padding: 24px 0 0; }
-.stay-collection .property-rating { display: inline-flex; align-items: center; gap: 6px; color: var(--g-muted); font-size: 12px; }
-.stay-collection .property-rating .ui-icon { width: 16px; height: 16px; }
-.stay-collection .property-title { margin: 12px 0; font-size: 40px; }
+.stay-collection .stay-star-rating { display: block; position: relative; color: var(--g-ink); }
+.stay-collection .stay-star-row { display: flex; gap: 2px; width: max-content; }
+.stay-collection .stay-star-row .ui-icon { width: 14px; height: 14px; }
+.stay-collection .stay-star-fill { position: absolute; top: 0; left: 0; width: var(--stay-rating); height: 100%; overflow: hidden; }
+.stay-collection .stay-star-fill svg { fill: currentColor; }
+.stay-collection .property-title { margin: 0 0 12px; font-size: 40px; }
 .stay-collection .property-meta { margin: 0 0 12px; color: var(--g-muted); font-size: 13px; }
 .stay-collection .property-highlight { margin: 0 0 24px; font-size: 15px; min-height: 46px; }
 .stay-collection .property-card-bottom { display: grid; gap: 12px; margin-top: auto; padding-top: 16px; border-top: 1px solid var(--g-rule); }

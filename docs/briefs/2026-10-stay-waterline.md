@@ -64,6 +64,20 @@ ranking, demand, recommendation lift or new property claim.
 
 ## Worklog
 
+October 31 rating revision: Sawyer requested five-star graphics in place of
+the photo's Rated label. Use five existing SVG stars with proportional fill
+from the actual score and an accessible score out of five; omit missing/zero
+ratings and remove the duplicate body rating. No rating values, review counts,
+provider identities, facts, photos, SEO or links change. The unchanged 20f0a5dd
+render was captured as rating-baseline.json, excluding only those two old
+rating presentations. Compare with `--star-ratings --history-dates` (without
+`--property-actions`, because this snapshot already contains named actions).
+The rating fixture must reject the old text presentation, prove fractional
+scores and omit unrated badges. Publication remains held.
+Verified: both rating tests failed on the old version and pass on the new;
+release verification, 27 focused browser checks and 59-route preservation pass.
+Critic approved desktop/360px and the synthetic fractional-star capture.
+
 October 31 revision (Sawyer's browser comment): booking actions feel detached
 from their properties. Preserve the existing photo-led collection and group
 each price with one full-width action that repeats that home's existing name.

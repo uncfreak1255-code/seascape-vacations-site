@@ -6,7 +6,12 @@ const { execFileSync } = require('node:child_process');
 const { buildRouteContract } = require('../../../scripts/enforcement/rendered-route-contract');
 const root = path.resolve(__dirname, '../../..');
 
-function collect(html, route, { propertyActions = false } = {}) {
+function collect(html, route, { propertyActions = false, starRatings = false } = {}) {
+  if (starRatings) {
+    // Only the two old rating presentations replaced by SVG stars.
+    html = html.replace(/<span class="property-badge">\s*Rated \d+(?:\.\d+)?\s*<\/span>/g, '');
+    html = html.replace(/<div class="property-rating">[\s\S]*?<\/div>/g, '');
+  }
   if (propertyActions) {
     // The one copy change authorized in Sawyer's October 31 browser feedback.
     // Accept only the exact existing home name inside its own tracked action.
@@ -45,7 +50,10 @@ if (require.main === module) {
   for (const [slug, before] of Object.entries(baseline)) {
     const route = slug === '__index' ? '/stays/' : `/stays/${slug}/`;
     const html = fs.readFileSync(path.join(root, '_site', route, 'index.html'), 'utf8');
-    const after = collect(html, route, { propertyActions: process.argv.includes('--property-actions') });
+    const after = collect(html, route, {
+      propertyActions: process.argv.includes('--property-actions'),
+      starRatings: process.argv.includes('--star-ratings'),
+    });
     if (process.argv.includes('--history-dates')) {
       // A source commit legitimately advances Eleventy's Git-backed freshness.
       // Validate the exact Git date; never discard other schema or reader copy.

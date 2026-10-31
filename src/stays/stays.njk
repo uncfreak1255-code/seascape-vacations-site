@@ -371,7 +371,6 @@ eleventyComputed:
                     <article class="property-card">
                         {% include "partials/stay-property-photo.njk" %}
                         <div class="property-body">
-                            <div class="property-rating">{{ uiIcon("star") }} Rated {{ property.rating }}</div>
                             <h3 class="property-title">{{ property.name }}</h3>
                             <p class="property-meta">{{ property.bedrooms }} BR · {{ property.bathrooms }} BA · Sleeps {{ property.guests }}</p>
                             <p class="property-highlight">{{ property.highlights | join(" · ") }}</p>
