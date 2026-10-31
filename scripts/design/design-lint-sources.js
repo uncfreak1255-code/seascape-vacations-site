@@ -8,7 +8,7 @@
 const fs = require("fs");
 const path = require("path");
 
-const SOURCE_ROOTS = ["src/guides", "src/css", "src/_includes"];
+const SOURCE_ROOTS = ["src/guides", "src/css", "src/_includes", "src/stays"];
 const SOURCE_RE = /\.(html|njk|css)$/i;
 
 // A .css file is style from top to bottom; a template only inside <style> and

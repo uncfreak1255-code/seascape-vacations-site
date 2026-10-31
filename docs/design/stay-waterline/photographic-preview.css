@@ -1,0 +1,16 @@
+/* Local alternative only; never copied to the public build. */
+.stay-collection .hero { display: flex; flex-direction: column; gap: 32px; }
+.stay-collection .hero::after { display: block; order: -1; min-height: 440px; width: 100%; }
+.stay-collection .hero-inner { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 56px; width: 100%; padding: 0; }
+.stay-collection .hero-eyebrow { grid-column: 1 / -1; }
+.stay-collection .hero h1 { grid-column: 1; grid-row: 2 / 5; max-width: 18ch; }
+.stay-collection .hero-subhead, .stay-collection .hero-actions, .stay-collection .trust-chips { grid-column: 2; }
+.stay-collection .properties-grid { grid-template-columns: minmax(0, 1fr); }
+.stay-collection .property-card { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 32px; align-items: center; }
+.stay-collection .property-body { padding: 0; }
+@media (max-width: 700px) {
+  .stay-collection .hero::after { min-height: 220px; height: 220px; }
+  .stay-collection .hero-inner { display: block; }
+  .stay-collection .property-card { display: block; }
+  .stay-collection .property-body { padding-top: 24px; }
+}

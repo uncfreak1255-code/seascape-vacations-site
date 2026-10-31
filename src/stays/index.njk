@@ -69,17 +69,13 @@ eleventyComputed:
   }
   </script>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" media="print" onload='this.media="all"'>
-  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap"></noscript>
+  {% include "partials/local-font-head.njk" %}
   <link rel="stylesheet" href="/css/guest.css?v=waterline-v3">
   <style>
     :root {
       --brand: #5F8A8B;
       --brand-dark: #3D5C5D;
-      --brand-darker: #22393A;
+      --brand-darker: #173D42;
       --gold: #C9A962;
       --cream: #F5EED6;
       --cream-light: #FAF7EE;
@@ -94,7 +90,7 @@ eleventyComputed:
       font-family: Poppins, -apple-system, sans-serif;
       background:
         radial-gradient(circle at top left, rgba(232, 213, 163, 0.28), transparent 32%),
-        linear-gradient(180deg, #fbf7ef 0%, #f4ecdb 100%);
+        linear-gradient(180deg, #F6F3EB 0%, #F0F3EE 100%);
       color: var(--stone);
       line-height: 1.65;
     }
