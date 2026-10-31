@@ -1,7 +1,7 @@
 # Dolphins guide: direct-booking review package
 
 - lifecycle: active
-- approved scope: local Decision ledger A implementation and contextual booking preview; publication held for Sawyer
+- approved scope: local Decision ledger A implementation and contextual booking preview; Sawyer approved normal publication on October31,2026
 - persona: guest planning wildlife outings near Bradenton and Anna Maria Island
 - primary keyword: dolphins and manatees near Bradenton
 - secondary keywords: manatee watching Bradenton, waterfront vacation rental Bradenton
@@ -81,3 +81,7 @@ Current state is local implementation awaiting one bundled copy/design review. A
 Freeze compatible baseline and post windows at actual publication, excluding the partial launch day. At the existing weekly review, first verify current Analytics quality, pilot ownership and live experiment counts. Guest counts stay separated: guide clicks, property arrivals, date checks, handoffs, reviewed confirmed reservations. Owner counts stay separated: CTA, form activity, unlabeled server receipts, qualified owner outcome. AI mentions, cited URLs, referral sessions and recommendations are separate measures; preserve failed/no-answer rows, exact property identities, engine/market and the October 12 frozen cohort. Use existing approved runs only; new checks need exact cost approval. Four-week readback starts only after actual publication; no reset of prior pilot history. Verdict: keep, revise, revert or insufficient evidence. Thin or missing coverage is not zero conversion. No expansion on click/mention gains alone. Rollback is the previous source through the normal reviewed lane if factual, SEO or booking guardrails fail.
 
 The execution checkpoint records source SHA, stage, completed checks, failures, owner, rollback, next action and approval boundary in the existing private handoff. Stop only at the actual publishing hold or a material blocker. Saving a report or recommending an authorized next step is not completion. No new trigger is enabled by this brief.
+
+## Publication approval — October31,2026
+
+Sawyer reviewed the three-page package and approved normal review/publication. This chat remains mutation owner and sole merger. Preserve SEO and booking contracts and held guides. The approved Tuesday/Friday09:10 Eastern heartbeat is local continuation, not a change to the Site production publish schedule.

@@ -1,7 +1,7 @@
 # Local owner alternative: factual answer and review action
 
 - lifecycle: active
-- approved scope: existing owner-hub FAQ copy/schema local preview; publication held for Sawyer
+- approved scope: existing owner-hub FAQ copy/schema local preview; Sawyer approved normal publication on October31,2026
 - persona: Bradenton or Sarasota pool-home owner comparing management companies
 - primary keyword: local vacation rental management Bradenton Sarasota
 - secondary keywords: Vacasa alternative, Evolve alternative, Seascape Vacations property management
@@ -54,3 +54,7 @@
 Draft, remove internal wording, then check voice/specificity. Explain only Seascape’s own operation. A competitor name identifies the owner question; it does not imply another firm lacks local care or guarantee better results. Keep all existing reader copy. Add FAQPage for all four visible answers with exact text parity; this establishes machine-readable consistency, not search eligibility or a recommendation guarantee. One independent Voice Editor must approve before human review.
 
 The owner page was already over the file-size limit. Extract its existing FAQ details and new FAQPage object into the named partial; retain the real section/heading in the owner entry point and all original head/schema fields. The new FAQPage object is JSON-LD in the body. This offsets the added answer/schema without compression or a file-size exemption.
+
+## Publication approval — October31,2026
+
+Sawyer reviewed the three-page package and approved normal review/publication. This chat remains mutation owner and sole merger. Preserve SEO and booking contracts and held guides. The approved Tuesday/Friday09:10 Eastern heartbeat is local continuation, not a change to the Site production publish schedule.

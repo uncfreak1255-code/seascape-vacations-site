@@ -1,7 +1,7 @@
 # Family collection: verified homes and property-specific amenities
 
 - lifecycle: active
-- approved scope: bounded factual and named-home correction on an existing collection for the October31 growth review package; publication held
+- approved scope: bounded factual and named-home correction on an existing collection for the October31 growth review package; Sawyer approved normal publication on October31,2026
 - persona: family choosing a private-pool rental near Anna Maria Island
 - primary keyword: family vacation rentals near Anna Maria Island
 - secondary keywords: Bradenton private pool homes, Bradenton Pool Home
@@ -51,3 +51,7 @@
 ## Preservation and outcome ownership
 
 Use the same coordinator, worktree, publishing hold, existing handoff and measurement contract as the companion Dolphins brief. All other SEO data entries and all four held guide sources must remain unchanged. Retain title, descriptions, canonical/robots, OG/Twitter, original property cards/hrefs and tracking; add one verified home/card. FAQ schema changes follow the visible answers through the existing template. Pool heat wording remains untouched. Original image/alt pairs remain; the added card uses that home's own source photography. Freeze baseline at publication, exclude partial launch day, reuse existing pilot/cohort and do not change schedules or buy research. Paid checks and sends remain excluded.
+
+## Publication reconciliation — October31,2026
+
+PR #839 merged as696f0abf185630596d01a50554f6747cc66602c2 after this local preview. Preserve its separately approved four-home comparison, exact links, bed/pool/pet tradeoffs, FAQs and card order verbatim. This package adds only the already-reviewed mainland drive label; it does not restore the superseded five-card draft. The current regression is scripts/enforcement/stay-facts-derived.test.js; the package browser check must still reach Bradenton Pool Home and listing487798. Compare unrelated entries against current main, not the superseded preview.
