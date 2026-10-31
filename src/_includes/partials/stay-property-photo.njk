@@ -1,0 +1,8 @@
+{% set badge = "Rated " ~ property.rating %}
+{% set loading = "lazy" %}
+{% set fetchpriority = "" %}
+{% if loop.index == 1 %}
+{% set loading = "eager" %}
+{% set fetchpriority = "high" %}
+{% endif %}
+{% include "partials/property-card-image.njk" %}

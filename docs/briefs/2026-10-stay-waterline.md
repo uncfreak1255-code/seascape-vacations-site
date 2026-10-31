@@ -8,7 +8,8 @@
 - secondary keywords: Existing per-page terms preserved verbatim.
 - audience pattern: Read the collection's existing answer, compare the listed homes and follow its existing property/booking links.
 - proof source: Current DESIGN.md, shared Waterline guest.css and catalog/activity-guide patterns; all 58 active generated stay pages at base 696f0abf; October 31 rendered diagnosis of family page versus homepage/Rainy Day.
-- required internal links: /properties/, /guides/, /properties/bradenton-pool-home/, /properties/the-oasis/
+- required internal links: /properties/, /guides/
+- family reference links: /properties/bradenton-pool-home/ and /properties/the-oasis/ stay on the family collection; other generated collections keep their own matched homes. The 59-route preservation check verifies every original destination, rather than requiring those two homes on all shared-template renders.
 - CTA target: Every existing anchor destination and tracking tuple remains unchanged, including hero/section jumps, property cards, bottom and mobile booking actions.
 - anti-claims: No copy rewrite, new property fact, rate, review, savings or availability promise. Preserve all existing text, metadata, JSON-LD, link destinations/order, tracking and photos; no held guide edits, host changes, paid checks, new dependencies or schedules. Existing copy is preserved, not newly fact-certified.
 
@@ -28,7 +29,69 @@ Independent design acceptance comes from DESIGN.md and the current rendered cata
 
 Local browser proof: 1440, 1024, 768, 393, 375 and 360 widths; no overflow or covered final content; real property photos load; menu and anchor/booking links work; desktop/mobile axe plus existing full visual/release gates. Reuse native tests and screenshot helpers. CSS/template edits only; preserve data and scripts. Preview variants belong only to local preview tooling, not public visitor controls.
 
+## Gate 0 Search And Attack Receipt
+
+This is a guest-interface refinement requested from the preview, not an SEO
+priority change. The checker treats the added property name as search-facing
+copy. Free public reads below supply its required context; they establish no
+ranking, demand, recommendation lift or new property claim.
+
+| Field | Evidence / decision |
+| --- | --- |
+| Target query family | Existing family/private-pool rentals near Anna Maria Island; unchanged. |
+| Searcher intent | Compare a real home and continue to that home's dates. |
+| Current Seascape URL | https://seascape-vacations.com/stays/family-vacation-rentals-anna-maria-island/ (implementation reviewed on local 4212). |
+| SERP observed date | 2026-10-31 |
+| SERP stale after | 2026-11-07 |
+| Current proof | 2026-10-31 user-marked desktop screenshot; old generic action failed the identity test; 27 current browser checks pass. |
+| Top visible competitors | Airbnb family collection and Seabreeze private-pool collection appeared in the public search read; no ordered-rank claim. |
+| Competitor angle | Airbnb presents distinct named family listings; Seabreeze presents a pool collection with dates/guest filters. |
+| Visual/format gap | Local stay cards put a generic narrow action far from each home's title. |
+| Seascape gap | Each action needs a clear visible home identity and closer grouping with its own price/specs. |
+| Search fit | Keep existing keyword, answer, title, metadata and schema content; improve the existing conversion decision only. |
+| Local/GBP proof | Not applicable: no Maps/profile/local-entity change. |
+| AEO/readback note | No new AI checks or lift claim; preserve existing answer modules and schema. |
+| Recommendation | Group each price with a full-width action that includes the existing home name; restrained pointer feedback only. |
+| Attack status | completed |
+| Query variants inspected | Single bounded public query: Anna Maria Island family vacation rentals private pool family friendly homes; no expansion batch. |
+| SERP source | Public web search read on 2026-10-31; research context only. |
+| Competitor URLs inspected | https://www.airbnb.com/anna-maria-island-fl/stays/family-friendly and https://www.seabreezevacation.com/vacation-rentals/search-by-amenity/private-pool-rentals/ |
+| Content gap and Seascape answer | Booking action lacked the home's identity; add only its existing name, without new amenity or location claims. |
+| Design/format strategy | Preserve Waterline photo-led grid; full-width named action/price group; 200ms pointer photo response, 120ms press feedback, static keyboard/reduced-motion paths. |
+| Seascape proof available | Existing dynamic property names, image markup, exact destinations/tracking and original unchanged-build snapshot. |
+| Tools/plugins used | Free public web reads, official Emil guidance as donor reference, Site specialist/critic, Playwright, axe and native source gates; no paid OpenSEO checks. |
+| Decision and reason | Finish the explicitly requested local UI refinement; hold publication and broader SEO changes. |
+
 ## Worklog
+
+October 31 revision (Sawyer's browser comment): booking actions feel detached
+from their properties. Preserve the existing photo-led collection and group
+each price with one full-width action that repeats that home's existing name.
+This explicitly permits only adding the dynamic property name to each dates
+action; all other reader copy, SEO, facts, images, links and tracking stay exact.
+Acceptance: the accessible and visible action name must identify its own home
+(the old generic action must fail); 59-route preservation permits only that
+precise addition. Verify desktop/mobile grouping and all links, focus, press,
+fine-pointer hover and static reduced-motion behavior before updating preview.
+
+Specialist/critic recommends retaining the photo-led two-column collection.
+Motion opportunities: subtle photo zoom (1.02, 200ms) and arrow feedback on
+pointer hover, existing 120ms press response. Reject scroll reveals, animated
+facts/prices and automatic image movement: they delay reading or imply
+interactivity where none exists. Use native CSS and existing Waterline tokens;
+no package or global skill installation. Emil's official emil-design-eng and
+find-animation-opportunities guidance was consulted as donor reference, not
+installed or promoted to site policy. Publication hold remains unchanged.
+
+Revision proof: critic approved desktop 1261px and phone 393/360px cards.
+Observed pointer photo scale 1.02 / arrow translation 2px; keyboard focus
+shows a 3px outline with static photo/arrow, and reduced motion is static.
+Release verification and the 105-source design scan pass. Preservation still
+checks all 59 routes: use `--property-actions --history-dates` for this revision.
+The latter validates normal freshness changes against the exact source Git
+timestamp, including the hub's generated Updated label; it does not discard
+other dates, schema, metadata or reader text. Screenshot baselines remain
+unapproved and publication remains held, as in the original preview.
 
 October 31: current base verified; root .claude/launch.json preserved. Open #734 overlaps src/stays/stays.njk in a separate claim-parser task; no competing migration exists and no changes are copied from it.
 

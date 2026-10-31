@@ -369,14 +369,7 @@ eleventyComputed:
                     {% for property in properties %}
                     {% if property.slug == matchingSlug %}
                     <article class="property-card">
-                        {% set badge = "Rated " ~ property.rating %}
-                        {% set loading = "lazy" %}
-                        {% set fetchpriority = "" %}
-                        {% if loop.index == 1 %}
-                        {% set loading = "eager" %}
-                        {% set fetchpriority = "high" %}
-                        {% endif %}
-                        {% include "partials/property-card-image.njk" %}
+                        {% include "partials/stay-property-photo.njk" %}
                         <div class="property-body">
                             <div class="property-rating">{{ uiIcon("star") }} Rated {{ property.rating }}</div>
                             <h3 class="property-title">{{ property.name }}</h3>
@@ -386,12 +379,12 @@ eleventyComputed:
                                 <span class="property-price">From ${{ property.price }}/night</span>
                                 <a
                                     href="{{ property.pageUrl }}"
-                                    class="btn"
+                                    class="btn property-action"
                                     data-track-event="stay_view_property_click"
                                     data-page-slug="{{ property.slug }}"
                                     data-placement="stay_property_card"
                                     data-track-label="{{ property.name }}"
-                                >Check direct dates</a>
+                                ><span class="property-action-copy"><span class="property-action-label">Check direct dates</span><span class="property-action-home">{{ property.name }}</span></span>{{ uiIcon("chevron-right") }}</a>
                             </div>
                         </div>
                     </article>
