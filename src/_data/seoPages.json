@@ -1031,27 +1031,27 @@
       "title": "Family Vacation Rentals Near Anna Maria Island",
       "h1": "Family-Friendly Homes Near Anna Maria Island",
       "description": "Plan your family vacation near Anna Maria Island in spacious Bradenton/Sarasota homes with pools, games, and beach access.",
-      "intro": "Create lasting family memories with our spacious, kid-friendly vacation rentals.",
+      "intro": "Stay in mainland Bradenton for a private-pool family rental near Anna Maria Island, with beach days reached by car. Seascape Vacations’ Bradenton Pool Home has the fewest bedrooms of these options; The Oasis has the most room for a larger gathering.",
       "faqs": [
         {
           "question": "Are the pools safe for children?",
-          "answer": "Yes, all our pools have proper safety fencing and gates that meet Florida code requirements. Pool areas are enclosed and private. We always recommend direct adult supervision whenever children are near the water, and we can provide additional safety information upon request."
+          "answer": "Ask us about the selected home’s pool barriers, door access and layout before booking, especially if you are traveling with young children. A fenced yard or screened enclosure does not tell you whether a child can reach the pool from the house. Supervise children closely whenever they are near the water."
         },
         {
           "question": "What family activities are near Anna Maria Island?",
-          "answer": "The area is packed with family fun: Anna Maria Island beaches, Robinson Preserve nature trails, Bishop Museum of Science and Nature, Mixon Fruit Farms, putting green, dolphin-watching tours, kayaking, shelling on Egmont Key, the Anna Maria City Pier, and kid-friendly restaurants like the Ugly Grouper and Tide Tables."
+          "answer": "Beach days, kayaking and trails at Robinson Preserve, and the Bishop Museum of Science and Nature are options around Anna Maria Island and Bradenton. Check current hours, weather and water conditions before heading out."
         },
         {
           "question": "Do you provide cribs, high chairs, and baby equipment?",
-          "answer": "Yes, cribs and high chairs are available upon request at most properties at no additional charge. For other baby equipment like strollers, pack-n-plays, and beach gear, we can recommend local rental companies that deliver directly to the property before your arrival."
+          "answer": "Tell us which home you are considering and what equipment your family needs before booking. We will confirm what is available at that home and any rental or delivery costs. Do not assume every home includes a crib, high chair or baby equipment at no extra charge."
         },
         {
-          "question": "Which property is best for a family with young children?",
-          "answer": "The Oasis is our top pick for families with young children \u2014 it features a large fenced yard, private heated pool with safety fence, spacious living areas, and a game room. For larger families, Dockside Dreams offers 4 bedrooms with plenty of room for everyone."
+          "question": "How should I choose a home for my family?",
+          "answer": "Start with the sleeping arrangements and pool access, then compare the features your family will use. Bradenton Pool Home has {br:bradenton-pool-home} bedrooms and {sleeps-phrase:bradenton-pool-home}; The Oasis has {br:the-oasis} bedrooms and {sleeps-phrase:the-oasis}. Dockside Dreams adds a waterfront dock; River House has king suites and a bunk room. Ask us about the specific home’s steps, pool barriers and baby equipment before booking."
         },
         {
           "question": "How far are your homes from the beach?",
-          "answer": "The Bradenton homes require a drive to Anna Maria Island beaches. Check the selected property\u2019s location and current traffic. Compare its bedrooms, pool, parking and complete checkout total with the beachfront listings you are considering."
+          "answer": "The Bradenton homes require a drive to Anna Maria Island beaches. Check the selected property’s location and current traffic. Compare its bedrooms, pool, parking and complete checkout total with the beachfront listings you are considering."
         },
         {
           "question": "Is Anna Maria Island safe for families?",
@@ -1063,12 +1063,12 @@
         }
       ],
       "matchingProperties": [
-        "dockside-dreams",
+        "bradenton-pool-home",
         "the-oasis",
-        "sarasota-luxe",
+        "dockside-dreams",
         "river-house"
       ],
-      "geoIntro": "<p>Anna Maria Island has earned a reputation as one of Florida's best family vacation destinations, and it's easy to see why. Unlike the mega-resort beaches of South Florida, AMI offers a laid-back, small-town atmosphere where kids can safely ride bikes, play on uncrowded beaches, and spot dolphins from the historic city pier. The island and surrounding Bradenton area are packed with family-friendly activities \u2014 from Robinson Preserve's nature trails to the Bishop Museum of Science and Nature, from putting green to dolphin-watching boat tours.</p><p><strong>Seascape Vacations</strong> offers family-sized vacation homes with 3\u20135 bedrooms, private heated pools, game rooms, and fully stocked kitchens for family meals at home. Our homes are spread across Bradenton and the AMI area, putting you 10\u201315 minutes from the island's best beaches while giving you significantly more space and privacy than any beachfront condo or hotel.</p><p>We're parents ourselves, and we understand what families need: safe pool fencing, enough bedrooms so everyone sleeps well, reliable WiFi for the teenagers, and a kitchen where you can prep snacks without spending $50 at a restaurant every meal. Compare the same dates and complete checkout total across channels.</p>",
+      "geoIntro": "<p><a href=\"/properties/bradenton-pool-home/\"><strong>Bradenton Pool Home</strong></a> has {br:bradenton-pool-home} bedrooms and {sleeps-phrase:bradenton-pool-home}, with a private pool, in-ground spa and screened outdoor dining. Its sleeping arrangements include queen beds, a king bed and a sofa bed. The pool and spa cannot be heated at the same time; there are exterior and interior steps, and pets are not permitted.</p><p><a href=\"/properties/the-oasis/\"><strong>The Oasis</strong></a> has {br:the-oasis} bedrooms and {sleeps-phrase:the-oasis}. Its private pool, two hot tubs, putting green and game room give a larger group more to do at the house. Check the bunk-bed and trundle arrangements before choosing rooms; pets are not permitted.</p><p><a href=\"/properties/dockside-dreams/\"><strong>Dockside Dreams</strong></a> has {br:dockside-dreams} bedrooms and {sleeps-phrase:dockside-dreams}, with a private pool, spa and waterfront dock. The bedrooms include king beds and a bunk room. Fishing from the dock is not permitted; ask about boat fit and dog approval before booking.</p><p><a href=\"/properties/river-house/\"><strong>River House</strong></a> has {br:river-house} bedrooms and {sleeps-phrase:river-house}, with a private pool and spa, king bedrooms with ensuite bathrooms, a queen room and a bunk room. There is an interior step, and this home does not have a private waterfront dock.</p><p>These homes are in Bradenton, on the mainland. Check the selected home's location and current bridge traffic for beach days. For a city stay farther south, compare <a href=\"/stays/sarasota-vacation-rentals-with-pool/\">Sarasota homes with private pools</a>.</p>",
       "relatedStaySlugs": [
         "honeymoon-rentals-anna-maria-island",
         "large-group-vacation-rentals-anna-maria-island",

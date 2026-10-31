@@ -32,6 +32,27 @@ function visibleStayText(page) {
   ].join(" ");
 }
 
+test("family collection connects Bradenton options to property truth without blanket child-safety promises", () => {
+  const page = vacationerPages().find((item) => item.slug === "family-vacation-rentals-anna-maria-island");
+  const familySlugs = ["bradenton-pool-home", "the-oasis", "dockside-dreams", "river-house"];
+  assert.ok(page.matchingProperties.includes("bradenton-pool-home"), "include the verified three-bedroom Bradenton option");
+  assert.ok(!page.matchingProperties.includes("sarasota-luxe"), "keep Sarasota distinct from this Bradenton comparison");
+  assertNoHandTypedStayFacts(page);
+  assertStayCapacityBindings(page, fallback);
+  for (const slug of familySlugs) {
+    const updated = fallback.map((home) => home.slug === slug ? { ...home, guests: 97 } : home);
+    const resolved = applyStayFacts(page, updated);
+    const paragraph = resolved.geoIntro.split(/<p>/).find((part) => part.includes(`href="/properties/${slug}/"`));
+    assert.ok(paragraph, `provide an exact property link for ${slug}`);
+    assert.match(paragraph, /sleeps 97\b/, `${slug} comparison must follow catalog capacity`);
+  }
+  const text = visibleStayText(applyStayFacts(page, fallback));
+  assert.match(text, /Bradenton/);
+  assert.match(text, /mainland/);
+  assert.doesNotMatch(text, /all our pools have proper safety fencing|gates that meet Florida code|at no additional charge|safely ride bikes|best for families with young children/i);
+  assert.match(text, /pool and spa cannot be heated at the same time/i);
+});
+
 test("hand-typed sleeps, heat, and home-count facts fail stay JSON", () => {
   assert.throws(
     () => assertNoHandTypedStayFacts({ slug: "plant", geoIntro: "Blue House sleeps 10" }),
