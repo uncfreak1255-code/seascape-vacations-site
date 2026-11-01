@@ -1,36 +1,36 @@
 {
   "routes": {
     "/": {
-      "script": 77362,
-      "stylesheet": 57355
+      "script": 77585,
+      "stylesheet": 58798
     },
     "/properties/": {
-      "script": 99975,
-      "stylesheet": 59988
+      "script": 100198,
+      "stylesheet": 61435
     },
     "/property-management/": {
-      "script": 90918,
-      "stylesheet": 54396
+      "script": 91141,
+      "stylesheet": 55843
     },
     "/property-management/vacation-rental-licensing-florida/": {
-      "script": 57678,
-      "stylesheet": 34667
+      "script": 57901,
+      "stylesheet": 36114
     },
     "/property-management/vacation-rental-management-fees-florida/": {
-      "script": 57678,
-      "stylesheet": 34667
+      "script": 57901,
+      "stylesheet": 36114
     },
     "/property-management/vrbo-management-services-florida/": {
-      "script": 57678,
-      "stylesheet": 34667
+      "script": 57901,
+      "stylesheet": 36114
     },
     "/stays/anna-maria-island-beachfront-rentals/": {
-      "script": 55704,
-      "stylesheet": 34667
+      "script": 55927,
+      "stylesheet": 36114
     },
     "/stays/anna-maria-island-vacation-rentals/": {
-      "script": 55704,
-      "stylesheet": 34667
+      "script": 55927,
+      "stylesheet": 36114
     }
   },
   "raises": [
@@ -801,6 +801,134 @@
       "to": 57678,
       "reason": "owner-first-touch.js (1974 B) on owner form routes only: first-touch referrer/utm capture approved by Sawyer 2026-10-28, site #826",
       "date": "2026-10-28"
+    },
+    {
+      "route": "/",
+      "metric": "script",
+      "from": 77362,
+      "to": 77585,
+      "reason": "guide CTA, sticky book bar and legacy mobile bar join the shared motion.css hover/press and guest-menu.js press tracking; Sawyer chose option B in thread, 2026-11-01",
+      "date": "2026-11-01"
+    },
+    {
+      "route": "/",
+      "metric": "stylesheet",
+      "from": 57355,
+      "to": 58798,
+      "reason": "guide CTA, sticky book bar and legacy mobile bar join the shared motion.css hover/press and guest-menu.js press tracking; Sawyer chose option B in thread, 2026-11-01",
+      "date": "2026-11-01"
+    },
+    {
+      "route": "/properties/",
+      "metric": "script",
+      "from": 99975,
+      "to": 100198,
+      "reason": "guide CTA, sticky book bar and legacy mobile bar join the shared motion.css hover/press and guest-menu.js press tracking; Sawyer chose option B in thread, 2026-11-01",
+      "date": "2026-11-01"
+    },
+    {
+      "route": "/properties/",
+      "metric": "stylesheet",
+      "from": 59988,
+      "to": 61435,
+      "reason": "guide CTA, sticky book bar and legacy mobile bar join the shared motion.css hover/press and guest-menu.js press tracking; Sawyer chose option B in thread, 2026-11-01",
+      "date": "2026-11-01"
+    },
+    {
+      "route": "/property-management/",
+      "metric": "script",
+      "from": 90918,
+      "to": 91141,
+      "reason": "guide CTA, sticky book bar and legacy mobile bar join the shared motion.css hover/press and guest-menu.js press tracking; Sawyer chose option B in thread, 2026-11-01",
+      "date": "2026-11-01"
+    },
+    {
+      "route": "/property-management/",
+      "metric": "stylesheet",
+      "from": 54396,
+      "to": 55843,
+      "reason": "guide CTA, sticky book bar and legacy mobile bar join the shared motion.css hover/press and guest-menu.js press tracking; Sawyer chose option B in thread, 2026-11-01",
+      "date": "2026-11-01"
+    },
+    {
+      "route": "/property-management/vacation-rental-management-fees-florida/",
+      "metric": "script",
+      "from": 57678,
+      "to": 57901,
+      "reason": "guide CTA, sticky book bar and legacy mobile bar join the shared motion.css hover/press and guest-menu.js press tracking; Sawyer chose option B in thread, 2026-11-01",
+      "date": "2026-11-01"
+    },
+    {
+      "route": "/property-management/vacation-rental-management-fees-florida/",
+      "metric": "stylesheet",
+      "from": 34667,
+      "to": 36114,
+      "reason": "guide CTA, sticky book bar and legacy mobile bar join the shared motion.css hover/press and guest-menu.js press tracking; Sawyer chose option B in thread, 2026-11-01",
+      "date": "2026-11-01"
+    },
+    {
+      "route": "/property-management/vacation-rental-licensing-florida/",
+      "metric": "script",
+      "from": 57678,
+      "to": 57901,
+      "reason": "guide CTA, sticky book bar and legacy mobile bar join the shared motion.css hover/press and guest-menu.js press tracking; Sawyer chose option B in thread, 2026-11-01",
+      "date": "2026-11-01"
+    },
+    {
+      "route": "/property-management/vacation-rental-licensing-florida/",
+      "metric": "stylesheet",
+      "from": 34667,
+      "to": 36114,
+      "reason": "guide CTA, sticky book bar and legacy mobile bar join the shared motion.css hover/press and guest-menu.js press tracking; Sawyer chose option B in thread, 2026-11-01",
+      "date": "2026-11-01"
+    },
+    {
+      "route": "/property-management/vrbo-management-services-florida/",
+      "metric": "script",
+      "from": 57678,
+      "to": 57901,
+      "reason": "guide CTA, sticky book bar and legacy mobile bar join the shared motion.css hover/press and guest-menu.js press tracking; Sawyer chose option B in thread, 2026-11-01",
+      "date": "2026-11-01"
+    },
+    {
+      "route": "/property-management/vrbo-management-services-florida/",
+      "metric": "stylesheet",
+      "from": 34667,
+      "to": 36114,
+      "reason": "guide CTA, sticky book bar and legacy mobile bar join the shared motion.css hover/press and guest-menu.js press tracking; Sawyer chose option B in thread, 2026-11-01",
+      "date": "2026-11-01"
+    },
+    {
+      "route": "/stays/anna-maria-island-vacation-rentals/",
+      "metric": "script",
+      "from": 55704,
+      "to": 55927,
+      "reason": "guide CTA, sticky book bar and legacy mobile bar join the shared motion.css hover/press and guest-menu.js press tracking; Sawyer chose option B in thread, 2026-11-01",
+      "date": "2026-11-01"
+    },
+    {
+      "route": "/stays/anna-maria-island-vacation-rentals/",
+      "metric": "stylesheet",
+      "from": 34667,
+      "to": 36114,
+      "reason": "guide CTA, sticky book bar and legacy mobile bar join the shared motion.css hover/press and guest-menu.js press tracking; Sawyer chose option B in thread, 2026-11-01",
+      "date": "2026-11-01"
+    },
+    {
+      "route": "/stays/anna-maria-island-beachfront-rentals/",
+      "metric": "script",
+      "from": 55704,
+      "to": 55927,
+      "reason": "guide CTA, sticky book bar and legacy mobile bar join the shared motion.css hover/press and guest-menu.js press tracking; Sawyer chose option B in thread, 2026-11-01",
+      "date": "2026-11-01"
+    },
+    {
+      "route": "/stays/anna-maria-island-beachfront-rentals/",
+      "metric": "stylesheet",
+      "from": 34667,
+      "to": 36114,
+      "reason": "guide CTA, sticky book bar and legacy mobile bar join the shared motion.css hover/press and guest-menu.js press tracking; Sawyer chose option B in thread, 2026-11-01",
+      "date": "2026-11-01"
     }
   ]
 }

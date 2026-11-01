@@ -83,26 +83,50 @@ test("built guest.css appends motion.css without a second request", () => {
   assert.doesNotMatch(html, /href="\/css\/motion\.css/);
 });
 
+function mediaBlock(css, prefix) {
+  const start = css.indexOf(prefix);
+  if (start < 0) return "";
+  let depth = 0;
+  for (let i = css.indexOf("{", start); i < css.length; i += 1) {
+    if (css[i] === "{") depth += 1;
+    if (css[i] === "}") depth -= 1;
+    if (depth === 0) return css.slice(start, i + 1);
+  }
+  return "";
+}
+
+test("mediaBlock returns only the named block", () => {
+  const css = "@media(a){.x{b:1}}.y:hover{c:2}";
+  assert.equal(mediaBlock(css, "@media(a)"), "@media(a){.x{b:1}}");
+  assert.equal(mediaBlock(css, "@media(z)"), "");
+});
+
 test("guide CTAs and the sticky book bar share the guest press and hover", () => {
   const css = read("src/css/motion.css");
   const js = read("src/assets/js/guest-menu.js");
   const kit = read("src/_includes/partials/guide-conversion-kit.njk");
-  const controls = [
+  const hoverBlock = mediaBlock(css, "@media(hover:hover) and (pointer:fine){");
+  const pressBlock = mediaBlock(css, "@media(prefers-reduced-motion:no-preference){");
+  const nudgeBlock = mediaBlock(css, "@media(hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference){");
+  const pressed = [
     ".guest-shell .guide-conversion-shell a.guide-cta-btn",
     ".guest-shell .guide-save50-module a.guide-save50-cta",
     ".guest-shell .guide-email-capture-form button",
     ".guest-shell #sticky-book-bar a",
     ".guest-shell .mobile-cta-bar .btn-gold",
   ];
-  const pressStart = css.lastIndexOf("@media(prefers-reduced-motion:no-preference)");
-  const hoverStart = css.indexOf("@media(hover:hover) and (pointer:fine){");
-  for (const control of controls) {
-    assert.ok(css.indexOf(`${control}:active:not(:focus-visible)`) > pressStart, `${control} press must be motion-gated`);
-    assert.ok(css.includes(`${control}[data-pressed]`), `${control} needs touch press`);
-    assert.ok(css.indexOf(`${control}:hover`) > hoverStart, `${control} hover must be fine-pointer gated`);
+  for (const control of pressed) {
+    assert.ok(pressBlock.includes(`${control}:active:not(:focus-visible)`), `${control} press must be motion-gated`);
+    assert.ok(pressBlock.includes(`${control}[data-pressed]`), `${control} needs touch press`);
     assert.ok(js.includes(control), `guest-menu.js must track presses on ${control}`);
   }
-  const guideHover = css.slice(css.indexOf(".guest-shell .guide-conversion-shell a.guide-cta-btn:hover"));
+  for (const control of pressed.slice(0, 4)) {
+    assert.ok(hoverBlock.includes(`${control}:hover`), `${control} hover must be fine-pointer gated`);
+  }
+  // Legacy .btn-gold anchors carry inline backgrounds that force white text; a citron hover would drop contrast.
+  assert.doesNotMatch(css, /\.btn-gold:hover/);
+  const guideHover = hoverBlock.slice(hoverBlock.indexOf(".guest-shell .guide-conversion-shell a.guide-cta-btn:hover"));
   assert.match(guideHover, /^[^}]*background:var\(--kit-muted\)/, "guide body has no --g-muted; use the kit token");
+  assert.match(nudgeBlock, /a\.guide-cta-btn--ghost:hover::after\{transform:translateX\(4px\)\}/);
   assert.doesNotMatch(kit, /text-decoration: underline;\s*text-underline-offset: 4px;\s*\}\s*\.guide-conversion-shell a\.guide-cta-btn--ghost,/);
 });
