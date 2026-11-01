@@ -26,7 +26,7 @@ matching art direction.
 Check each of these on the rendered route, not the source: hover, focus,
 pressed, empty, loading, and error states; tap targets and focus rings; the
 `prefers-reduced-motion` path; and motion limits in `DESIGN.md` (CSS and
-browser-native only, no animation library, no loader). Flag any direction that
+browser-native only, no animation library, no page loader; inline loading text is fine). Flag any direction that
 needs a new script or heavy asset, since page-speed budgets are enforced. Flag
 reader copy that names software or vendors. A direction shown only as prose
 gets a provisional verdict: ask for rendered variants.
