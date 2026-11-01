@@ -12,10 +12,15 @@ Use OpenSEO as an evidence source. Do not treat it as strategy canon or proof th
 This is the shared Seascape SEO entry point for local Codex and Claude agents.
 Use the public upstream OpenSEO skill matching the task: coach/setup, audit,
 keyword research/clustering, competitors, local search, AI visibility/prompts,
-link prospects or report. Prefer the installed local skill paths under
-`~/.agents/skills/openseo-local-*` (Codex) or `~/.claude/skills/openseo-local-*`
-(Claude), which resolve to the official local OpenSEO release. Skills are
-workflows; their presence does not grant paid calls or website publication.
+link prospects or report. Codex uses the installed `~/.agents/skills/openseo-local-*`
+skills. Claude reads the matching workflow by path from the official local
+OpenSEO release, `~/Projects/open-seo-review/plugins/openseo/skills/<name>/SKILL.md`
+(`ai-prompt-research`, `ai-visibility-audit`, `competitive-landscape`,
+`competitor-analysis`, `keyword-clustering`, `keyword-research`,
+`link-prospecting`, `local-seo`, `seo-audit`, `seo-coach`,
+`seo-project-setup`, `seo-report`); they are kept out of Claude's always-loaded
+skill list, so this skill is the entry point. Skills are workflows; their
+presence does not grant paid calls or website publication.
 
 1. Read the local project and saved evidence first. Confirm exact domain,
    market, device, timestamps and any existing report before buying research.
