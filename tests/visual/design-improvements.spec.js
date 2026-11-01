@@ -44,7 +44,7 @@ for (const outcome of ['empty', 'failed']) {
     await page.route('**/.netlify/functions/booking-availability**', route => route.fulfill({
       status: outcome === 'failed' ? 503 : 200,
       contentType: 'application/json',
-      body: JSON.stringify({ ok: true, homes: ['dockside-dreams', 'the-oasis', 'sarasota-luxe', 'river-house', 'bradenton-pool-home', 'blue-house', 'coastal-stay'].map(slug => ({ slug, bookable: false, reason: 'booked' })) })
+      body: JSON.stringify({ ok: true, homes: ['dockside-dreams', 'the-oasis', 'sarasota-luxe', 'river-house', 'bradenton-pool-home', 'blue-house', 'coastal-stay', 'relaxing-oasis'].map(slug => ({ slug, bookable: false, reason: 'booked' })) })
     }));
     await page.goto('/properties/');
     await page.locator('#trip-arrive').fill('2026-12-01');

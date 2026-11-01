@@ -76,9 +76,9 @@ test("empty catalog input fails and names the owner file", () => {
 
 test("live fallback rows each own a listingId", () => {
   const catalog = liveCatalog();
-  assert.equal(catalog.length, 7);
+  assert.equal(catalog.length, 8);
   const bySlug = listingIdBySlug(catalog);
-  assert.equal(Object.keys(bySlug).length, 7);
+  assert.equal(Object.keys(bySlug).length, 8);
   for (const row of catalog) {
     assert.match(String(row.listingId), /^\d+$/, `${row.slug} listingId`);
     assert.equal(bySlug[row.slug], String(row.listingId));
@@ -100,8 +100,8 @@ test("generate fails when the client map assignment is missing", () => {
   );
 });
 
-test("source client map equals the invert of the derived server map", () => {
-  const trackingSource = fs.readFileSync(trackingPath, "utf8");
+test("built client map equals the invert of the derived server map", () => {
+  const trackingSource = fs.readFileSync(path.join(projectRoot, "_site/assets/js/conversion-tracking.js"), "utf8");
   assert.deepEqual(
     clientMapFrom(trackingSource),
     invertListingIdBySlug(listingIdBySlug(liveCatalog()))

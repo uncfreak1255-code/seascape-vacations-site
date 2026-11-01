@@ -5,7 +5,8 @@ const LISTINGS = Object.freeze([
   { slug: "river-house", id: "135880" },
   { slug: "bradenton-pool-home", id: "487798" },
   { slug: "blue-house", id: "589288" },
-  { slug: "coastal-stay", id: "599394" }
+  { slug: "coastal-stay", id: "599394" },
+  { slug: "relaxing-oasis", id: "607228" }
 ]);
 
 const DATE_STAMP = /^\d{4}-\d{2}-\d{2}$/;
