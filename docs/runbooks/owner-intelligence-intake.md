@@ -18,7 +18,7 @@ Google API credentials. Production inquiry counts, deployed capture behavior,
 effective access, and live imports remain UNPROVEN.
 
 CURRENT POLICY: [private-store decision](https://github.com/uncfreak1255-code/seascape-hub/blob/main/decisions/2026-09-29-owner-intelligence-private-store.md)
-is supplemented by the [October 7 active decision](https://github.com/uncfreak1255-code/seascape-hub/blob/main/decisions/2026-10-07-owner-outreach-rules-v2.md): Sawyer accepted the private-store access policy and 90-day inactive review without automatic deletion. Do not request the same policy approval again. Fresh operational access-hash/expiry and accepted-seat evidence, owner-direct permission and Patrick's method acceptance remain distinct requirements. The chosen policy is not inferred
+is supplemented by the [October 7 active decision](https://github.com/uncfreak1255-code/seascape-hub/blob/main/decisions/2026-10-07-owner-outreach-rules-v2.md): Sawyer accepted the private-store access policy and 90-day inactive review without automatic deletion. Do not request the same policy approval again. Fresh operational access-hash/expiry, accepted-seat evidence and owner-direct permission remain distinct intake requirements. Financial-method acceptance applies to assessments, not recording or displaying an inquiry. The chosen policy is not inferred
 from this runbook. Source permission scope is an inbound review request;
 ownership, property fit, marketing consent and exact delivery approval remain
 separate. New rows always enter `Intake incomplete`, with no invented complete
@@ -56,12 +56,11 @@ uses the durable Record ID. No preview or compatibility change extends the
 live source column. The read adapter rereads the full header around its body
 read and rejects concurrent schema changes.
 
-This is compatibility preparation, not a commercial/reply update command or
-an Ops/HQ read projection. Existing intake still never updates operator fields.
+This compatibility is not a commercial/reply update command. The existing Ops/HQ projection remains read-only. Existing intake still never updates operator fields.
 Before a live schema extension, land/install this compatible intake reader,
-confirm the accepted seat and operational evidence, prepare the source-owned
-maintenance/read projection in the existing lane, and prove source transitions
-and HQ counts. The live Sheet remains unchanged by this source work.
+confirm the accepted seat and operational evidence, and use only a reviewed
+source-write procedure in the existing lane with complete readback and matching
+Ops/HQ counts. The live Sheet remains unchanged by this source work.
 
 Focused proof: `node --test scripts/enforcement/owner-tracker-compat.test.js
 scripts/enforcement/owner-intelligence-sync.test.js
@@ -103,21 +102,29 @@ verified source evidence. A self-attestation does not verify ownership.
 
 Use the existing authorized operator account; credentials stay in its environment
 and never in a command argument, Sheet, tracked file or PR. Do not ask someone to
-paste a token into chat. No permission change or credential creation is part of
-this implementation.
+paste a token into chat. No permission change, login or credential creation is performed by this command.
+The opt-in existing-Google-CLI reuse and reviewed email/manual input are documented
+in [reviewed inquiry intake](owner-reviewed-inquiry.md).
 
 | Environment setting | Purpose |
 | --- | --- |
 | `OWNER_LEAD_CONTACT_BLOBS_SITE_ID` | Verified production Netlify project ID |
 | `OWNER_LEAD_CONTACT_BLOBS_TOKEN` | Existing authorized Netlify read credential for Site, Forms and Blobs |
 | `OWNER_LEAD_BLOBS_TOKEN` | Optional existing separate credential for the same site's metrics store; defaults to the contact-store credential |
-| `OWNER_INTELLIGENCE_GOOGLE_ACCESS_TOKEN` | Existing Google bearer credential able to read Drive metadata/membership and read/write this Sheet |
+| `OWNER_INTELLIGENCE_GOOGLE_ACCESS_TOKEN` | Existing Google bearer credential; default authentication mode |
+| `OWNER_INTELLIGENCE_GOOGLE_AUTH` | Optional explicit `gws` mode reuses the installed operator credentials in memory; never opens login |
+| `OWNER_INTELLIGENCE_GOOGLE_ACCOUNT` | Required exact expected business-account email for `gws` mode; verified with Drive before proceeding |
+| `OWNER_INTELLIGENCE_GWS_BIN` | Optional installed `gws` executable path; no installation or update is performed |
 | `OWNER_INTELLIGENCE_WRITER_ID` | Accepted single operator host/seat identity; never run a second writer |
 | `SEASCAPE_RUNTIME_HOME` | Existing Ops runtime home; staging must be outside every Git checkout |
 
 The Google credential needs the existing authorized Sheets write and Drive
 membership read scopes. Connector access does not expose a reusable bearer
 token to this command; connected Google Drive access alone does not activate it.
+Opt-in `gws` mode captures existing authorized-user credentials only through a
+private process pipe, refreshes only in memory without requesting scopes, and
+verifies the expected Google account. It never prints or saves credentials.
+Actual login repair and any scope change require separate exact approval.
 
 Run `node scripts/owner-intelligence/sync.js --inspect-access`. This reads
 membership for the tracker, its parent folder and business shared drive;
@@ -149,8 +156,6 @@ After actual acceptance, create `approved-policy.json` there with these fields
   "retentionReviewDays": 90,
   "automaticDeletion": false,
   "singleWriterId": "ACCEPTED_OPERATOR_SEAT",
-  "methodAcceptedBy": "Patrick",
-  "methodAcceptanceEvidence": "PRIVATE_REFERENCE_TO_ACTUAL_METHOD_ACCEPTANCE",
   "permissionScope": "inbound_review_only"
 }
 ```
@@ -161,9 +166,12 @@ original activity date and can already be overdue. Later verified interaction
 can update last activity and retention review under the accepted policy; this
 command never refreshes existing operator fields or handles signed-owner records.
 If another retention policy is chosen, revise and review the bounded mapping
-before activating it. Method acceptance is retained as a first-real-record gate
-because the existing tracker instructions require it; an imported inquiry is
-still not an assessment or a qualified lead.
+before activating it. Recording an inquiry is intake visibility, not a financial assessment or a
+qualified lead. Sawyer corrected this boundary on November 1 in
+[HQ #43](https://github.com/uncfreak1255-code/seascape-hq/issues/43#issuecomment-6565053971):
+financial-method acceptance must not gate intake. Financial assessments retain
+their separate evidence, method review and business decision requirements.
+Neither an import nor a populated Stage supplies that acceptance.
 
 ## Review, synthetic proof, then import
 
@@ -237,8 +245,9 @@ separate Sawyer-approved rules and are not fabricated by this form adapter.
    Verify production counts, original submissions, current effective access and
    the deployed capture fields; do not infer those from GitHub main.
 3. Refresh operational access-hash/expiry evidence under the accepted access
-   and 90-day retention policy. Verify the existing accepted writer and Patrick
-   method proof, and preserve owner-direct permission evidence.
+   and 90-day retention policy. Verify the existing accepted writer
+   and preserve owner-direct permission evidence. Method acceptance is separate
+   for financial assessment work, not an intake condition.
 4. Preview genuine inquiries, apply the reviewed batch and verify tracker readback.
    Only then claim a live connection/import. Ongoing scheduling and Deals-tab
    writes remain separate activation work; no outreach is authorized here.
@@ -254,8 +263,7 @@ The existing scorecard account identity was verified locally without exposing
 keys. The #784 read-only writer inspection against existing Mac runtime
 configuration returned `policy_unavailable`, with no provider access or write.
 This is an operational gap, not a revocation of Sawyer's already accepted
-access and 90-day retention policy. Do not invent a writer ID, policy or
-method acceptance to pass it. Live schema extension remains blocked until the
+access and 90-day retention policy. Do not invent a writer ID or policy to pass it. Financial-method acceptance does not gate intake. Live schema extension remains blocked until the
 accepted writer and operational evidence are verified. New file-only Viewer
 sharing must preserve all existing permissions and refresh affected access
 hash evidence; it does not authorize folder access or broader credentials.
