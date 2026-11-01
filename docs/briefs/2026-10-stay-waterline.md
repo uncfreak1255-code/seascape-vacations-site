@@ -64,6 +64,17 @@ ranking, demand, recommendation lift or new property claim.
 
 ## Worklog
 
+November 1 spacing pass: fresh 1261x903 capture measured first home at836px.
+The native trip panel inherited margin16px 0 40px, and its tall right column
+left unused space under the intro. The browse preview now uses a compact
+title/description row and full-width horizontal trip form on desktop, with
+stacked touch-friendly controls on phones. Removed inherited panel margins and
+tightened collection/card gaps using the existing spacing scale. First home
+now starts at720px (116px earlier). Booking logic, fields, copy and links are
+unchanged. Product Design audit guidance informed the screenshot/measurement
+pass; actual capture and functional proof use the Site's existing Playwright
+route. No plugin installation, new design system, canvas or publication.
+
 November 1 architecture correction: Sawyer rejected the photo-led page and
 oversized dates controls as unhelpful for choosing/booking Dockside Dreams.
 The previous critic's visual approval did not establish that the architecture
