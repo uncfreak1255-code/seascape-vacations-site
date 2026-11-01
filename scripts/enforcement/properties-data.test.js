@@ -158,12 +158,15 @@ test("homepage postcard fan stays in one count-agnostic desktop row", () => {
   assert.match(postcardBlock[0], /grid-auto-flow:column/);
   assert.match(postcardBlock[0], /grid-auto-columns:minmax\(0,1fr\)/);
   assert.doesNotMatch(postcardBlock[0], /repeat\(5/);
-  // Seven tilt steps mirror around a flat centre card, and any later card gets a neutral default
-  // so a newly onboarded home never renders with an undefined transform.
-  assert.match(css, /\.g-postcard:nth-child\(1\)\{--card-angle:-6deg/);
-  assert.match(css, /\.g-postcard:nth-child\(4\)\{--card-angle:0deg/);
-  assert.match(css, /\.g-postcard:nth-child\(7\)\{--card-angle:6deg/);
-  assert.match(css, /\.g-postcard:nth-child\(n\+8\)\{--card-angle:0deg;--card-offset:0px/);
+  const poses = [...css.matchAll(/\.g-postcard:nth-child\((\d+)\)\{--card-angle:([\d.-]+)deg;--card-offset:([\d.-]+)px;z-index:(\d+)/g)]
+    .map((match) => ({ angle: Number(match[2]), offset: Number(match[3]), layer: Number(match[4]) }));
+  assert.equal(poses.length, fallbackProperties.length, "every home needs a position in the fan");
+  for (let i = 0; i < poses.length / 2; i++) {
+    const opposite = poses[poses.length - 1 - i];
+    assert.equal(poses[i].angle, -opposite.angle, "opposite cards must mirror their tilt");
+    assert.equal(poses[i].offset, opposite.offset, "opposite cards must share a height");
+    assert.equal(poses[i].layer, opposite.layer, "opposite cards must share stacking order");
+  }
 });
 
 test("River House gallery leads with the dusk outdoor set and keeps one daytime yard shot", () => {
