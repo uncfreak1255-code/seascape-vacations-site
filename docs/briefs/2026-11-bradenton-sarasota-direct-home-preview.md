@@ -1,7 +1,7 @@
 # Bradenton vs Sarasota: direct-home booking preview
 
 - lifecycle: active
-- approved scope: Sawyer November1 authorizes a local before/after direct-booking improvement preview only; publication and paid checks held
+- approved scope: Sawyer November1 approved the rendered preview and normal review/publication/live verification; paid checks remain prohibited
 - persona: guest choosing Bradenton or Sarasota for a Gulf Coast vacation
 - primary keyword: Bradenton vs Sarasota
 - secondary keywords: Bradenton vacation homes, Sarasota vacation homes
@@ -44,7 +44,15 @@ Revenue lever: direct bookings. Proof surface: exact guide-to-property-to-bookin
 | Local/GBP proof | Canonical mainland home locations; no GBP or Maps change |
 | AEO/readback note | Preserve all answer/table/FAQ/schema; no AI recommendation claim or new collection |
 | Recommendation | Add one restrained exact-home comparison after the early decision aside, using existing property data and tracking |
-| Attack status | completed: free Nov1 search and source/measurement inspection, no paid checks |
+| Query variants inspected | Bradenton vs Sarasota vacation where to stay; Bradenton or Sarasota vacation homes |
+| SERP source | Free live web search November1; no paid provider or OpenSEO research call |
+| Competitor URLs inspected | https://www.headtosarasota.com/guides/sarasota-vs-bradenton/ ; https://www.brightfloridahomes.com/guides/sarasota-vs-bradenton/ ; https://www.dwellingwell.com/blog/sarasota-vs-bradenton/ — direct page opens November1 |
+| Content gap and Seascape answer | Competitor comparisons emphasize relocation/real estate; retain the vacation answer and connect each city to a real, data-backed mainland home and its existing dates panel. No new geographic claims imported. |
+| Design/format strategy | Keep approved comparison table; add open ruled real-home rows with photos, capacity and separate dates actions, rather than another generic card grid. |
+| Seascape proof available | Canonical source property records/photos, native booking destinations and independently frozen original reader/SEO/link contract. |
+| Tools/plugins used | Local OpenSEO saved project/context, existing Analytics evidence, free web search and competitor-page reads, native Site build/Playwright/release tools. No paid checks. |
+| Decision and reason | Improve this existing approved route by removing an intermediate collection-browsing step. No keyword/meta/title rewrite or route expansion. |
+| Attack status | completed |
 
 ## Independent acceptance and preservation before implementation
 
@@ -54,10 +62,16 @@ Original has no link to either exact property booking panel: observe that test f
 
 ## Design and copy contract
 
-Keep approved Waterline comparison frame and all article copy. Add an open ruled two-home ledger with factual room/capacity and mainland tradeoff, real selected photos only if the design critic accepts them, clear named Check dates actions and existing SVGs. No full redesign, card grid, availability badge, price from fallback, new framework or dependency. Existing source homes are Bradenton Pool Home (3bedrooms,3.5bathrooms,up to10) and Sarasota Luxe (4bedrooms,3bathrooms,up to12 direct; individual page retains its extra group-size qualifications). Existing optional pool-heat policy stays on property/checkout; no included-heat assertion. This is a review draft; awaiting publication approval.
+Keep approved Waterline comparison frame and all article copy. Add an open ruled two-home ledger with factual room/capacity and mainland tradeoff, real selected photos only if the design critic accepts them, clear named Check dates actions and existing SVGs. No full redesign, card grid, availability badge, price from fallback, new framework or dependency. Existing source homes are Bradenton Pool Home (3bedrooms,3.5bathrooms,up to10) and Sarasota Luxe (4bedrooms,3bathrooms,up to12 direct; individual page retains its extra group-size qualifications). Existing optional pool-heat policy stays on property/checkout; no included-heat assertion. Sawyer approved this rendered design November1; complete normal source review, daily publication and live verification without an early publish.
 
 ## Local preview readback — November1
 
 Independent Voice Editor: Approved. Rendered design critic: Approved with edge, no design-floor blocker. Six widths360–1440 pass new-module layout/image/tap checks; module axe has zero violations. Desktop and phone each complete both exact-home paths, including trip and guide lineage into correct existing checkout links without submitting a form. Keyboard focus3px, reduced motion0s, no-JS home paths work. All17metadata fields,5renderedJSONLD objects,41originalmainlinks/tracking, originalreaderwords/order/table and allfourheldsource+builthashes match the frozen before. No shared source change. A nonblocking Chromium cross-document transition-cancellation warning appeared during one successful navigation; no shared transition code changed, no missing critical assets, all four journeys complete.
 
-Native changed-guide run:11passed,1desktop-mobile-onlycheckskipped,2expectedapproved-baseline differences (desktop/phone) caused by the added module. Baselines remain frozen for Sawyer's review; this is not release-ready or publication approval. Broader visual sweep was bounded and stopped while unrelated story tests ran; retain its partial log, do not claim the full590-test suite passed. Local checkpoint/pre-commit proof must pass; no push, PR, merge, deploy, schedule, paid check or booking. The existing growth checkpoint resumes this same pending-approval package rather than duplicating it.
+Native changed-guide run:11passed,1desktop-mobile-onlycheckskipped,2expectedapproved-baseline differences (desktop/phone) caused by the added module. Baselines remain frozen for Sawyer's review; this is not release-ready or publication approval. Broader visual sweep was bounded and stopped while unrelated story tests ran; retain its partial log, do not claim the full590-test suite passed. Local checkpoint/pre-commit proof must pass; no push, PR, merge, deploy, schedule, paid check or booking. The existing growth checkpoint resumes this same approved package through normal publication rather than duplicating it.
+
+## Publication acceptance — recorded after initial preview implementation
+
+Originating issue: #850, quoting Sawyer's approval. Classification BOUNDARY: publicly visible property facts and booking actions. Sole mutation owner and merger: Codex chat01a17ebb-5b0b-73b2-8874-810ec98c2bac. Invariants come from the approved request, frozen original article and canonical property data, not the new implementation: preserve original reader copy/order,17metadata fields,5renderedJSONLD objects,41originalmainhref/tracking tuples/table and held guide content/output. Each city action must reach its actual home (Bradenton487798, Sarasota135881), retain valid trip and guide lineage into existing checkout links, and create no form/booking or paid effect during QA.
+
+Independent failing case: the unmodified current-main guide lacks both exact-home actions; the focused city-to-booking journey must fail there and pass here. Existing frozen before absence-red remains preserved. Held output comparison uses a separate current-main control at45136d89 because already-merged PR849 intentionally added shared view-transition opt-in; this task must add no held-page difference beyond that upstream control. PR848/849 source stays unchanged. Approved rendered design/VoiceEditor remain valid for unchanged public copy. Route-only native baseline refresh is now authorized; full release gate and current-head reviews precede guarded merge. Actual production ancestry plus ready Netlify deploy and live six-width/four-journey/SEO/smoke proof precede live completion. No source merge or preview substitutes for deployment.

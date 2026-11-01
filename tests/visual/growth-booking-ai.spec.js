@@ -66,3 +66,34 @@ test("family collection names the verified mainland home and opens its booking p
   await expect(page.locator("main h1")).toContainText("Bradenton Pool Home");
   await expect(page.locator('a[data-property-booking-link]').first()).toHaveAttribute("href", /487798/);
 });
+
+test("city comparison reaches each real home's dates and retains the trip through checkout", async ({ page }) => {
+  const homes = [
+    { slug: "bradenton-pool-home", name: "Bradenton Pool Home", listing: "487798" },
+    { slug: "sarasota-luxe", name: "Sarasota Luxe", listing: "135881" }
+  ];
+  for (const home of homes) {
+    await gotoMarketingRoute(page, { slug: "city-comparison", path: "/guides/bradenton-vs-sarasota/?sv_developer=1&arrive=2027-02-10&depart=2027-02-17&guests=6&utm_source=qa&utm_medium=email&utm_campaign=save50_welcome" });
+    await expect(page.locator("[data-city-home-bridge] .city-home-action")).toHaveCount(2, { timeout: 1500 });
+    await page.waitForFunction(() => Boolean(window.SeascapeConversionTracking));
+    const action = page.locator(`[data-city-home-bridge] a[data-property-slug="${home.slug}"]`);
+    await expect(action).toContainText(home.name);
+    await action.click();
+    await expect(page).toHaveURL(new RegExp(`/properties/${home.slug}/\\?.*#booking$`));
+    await expect(page.locator("main h1")).toContainText(home.name);
+    await expect(page.locator("#booking")).toBeVisible();
+    const propertyUrl = new URL(page.url());
+    const guideClick = propertyUrl.searchParams.get("sv_guide_click_id");
+    expect(guideClick).toMatch(/^svg_/);
+    await expect(page.locator('a[data-track-event="property_booking_page_click"]').first()).toHaveAttribute("href", /numberOfGuests=6/);
+    const checkout = new URL(await page.locator('a[data-track-event="property_booking_page_click"]').first().getAttribute("href"));
+    expect(checkout.hostname).toBe("book.seascape-vacations.com");
+    expect(checkout.pathname).toBe(`/checkout/${home.listing}`);
+    expect(checkout.searchParams.get("start")).toBe("2027-02-10");
+    expect(checkout.searchParams.get("end")).toBe("2027-02-17");
+    expect(checkout.searchParams.get("numberOfGuests")).toBe("6");
+    expect(checkout.searchParams.get("utm_campaign")).toBe("save50_welcome");
+    expect(checkout.searchParams.get("sv_guide_click_id")).toBe(guideClick);
+    expect(checkout.searchParams.get("sv_handoff_id")).toBeTruthy();
+  }
+});
