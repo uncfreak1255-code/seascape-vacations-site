@@ -8,6 +8,8 @@
     {% set pageImage = site.url + metaProperty.photography.photos[0].src %}
   {% endif %}
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  {# Opt in before external CSS loads: Chromium can reveal the destination before its stylesheet opt-in is available. #}
+  <style>@media(prefers-reduced-motion:no-preference){@view-transition{navigation:auto}}</style>
   <title>{{ pageTitle | seoTitle }}</title><meta name="description" content="{{ pageDescription | seoDescription }}">
   <link rel="alternate" type="application/json" title="Seascape property and booking information" href="https://seascape-vacations.com/ai-discovery.json">
   <link rel="canonical" href="{{ site.url }}{{ page.url }}"><meta name="robots" content="{% if seoIndexable == false %}noindex{% else %}index{% endif %}, follow">
