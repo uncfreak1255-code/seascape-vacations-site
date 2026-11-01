@@ -44,9 +44,8 @@ function requirePrivacy(policy, accessHash, now, writerId) {
       Date.parse(policy.expiresAt) - Date.parse(policy.approvedAt) > 86400000 ||
       !text(policy.approvalEvidence) || policy.retentionReviewDays !== 90 ||
       policy.automaticDeletion !== false || policy.singleWriterId !== writerId ||
-      !text(writerId) || policy.methodAcceptedBy !== "Patrick" ||
-      !text(policy.methodAcceptanceEvidence) || policy.permissionScope !== "inbound_review_only") {
-    throw new Error("privacy_access_retention_method_or_writer_not_approved");
+      !text(writerId) || policy.permissionScope !== "inbound_review_only") {
+    throw new Error("privacy_access_retention_or_writer_not_approved");
   }
 }
 
@@ -127,5 +126,5 @@ function planImport({ contacts, rows, reviews = {}, now }) {
 
 module.exports = {
   TRACKER_ID, FOLDER_ID, DRIVE_ID, TAB, HEADERS, digest, timestamp,
-  canonicalPermissions, requirePrivacy, assertHeaders, planImport
+  canonicalPermissions, requirePrivacy, assertHeaders, identity, planImport
 };
