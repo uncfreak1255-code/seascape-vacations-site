@@ -129,7 +129,17 @@
 .g-postcard h3{font-size:22px}
 .g-postcard>p{font-size:12px}
 .g-home-trip{grid-template-columns:190px 1fr}
-.g-postcards{padding-inline:32px;gap:10px}}
+}
+/* Keep the approved card strip readable when eight fan cards no longer fit. */
+@media(max-width:1050px){.g-postcards{display:flex;gap:20px;overflow-x:auto;margin-inline:-16px;padding:12px 20px 28px;scroll-snap-type:x mandatory;scroll-padding-inline:20px;perspective:none;scrollbar-width:thin;scrollbar-color:var(--g-muted) var(--g-paper)}
+.g-postcard,.g-postcard:nth-child(n){transform:none;width:78vw;max-width:330px;flex:0 0 78vw;margin:0;scroll-snap-align:start;padding:10px 10px 22px}
+.g-postcard:hover,.g-postcard:focus-within{transform:none;box-shadow:0 20px 32px #173d421c}
+.g-postcard-photo img{height:260px}
+.g-postcard .g-label{font-size:12px;margin-top:20px}
+.g-postcard h3{font-size:32px}
+.g-postcard>p{font-size:13px;max-width:250px}
+}
+
 @media(max-width:700px){.g-arrival{height:580px}
 .g-arrival-copy{top:100px;left:24px;right:24px}
 .g-arrival-copy .g-label{font-size:12px;letter-spacing:.075em;margin-bottom:10px;max-width:290px}
@@ -161,13 +171,6 @@
 .g-collection .g-section-heading{margin-bottom:18px}
 .g-collection .g-section-heading h2{font-size:38px}
 .g-collection .g-section-heading>p{font-size:13px;max-width:320px}
-.g-postcards{display:flex;gap:20px;overflow-x:auto;margin-inline:-16px;padding:12px 20px 28px;scroll-snap-type:x mandatory;scroll-padding-inline:20px;perspective:none;scrollbar-width:thin;scrollbar-color:var(--g-muted) var(--g-paper)}
-.g-postcard,.g-postcard:nth-child(n){transform:none;width:78vw;max-width:330px;flex:0 0 78vw;margin:0;scroll-snap-align:start;padding:10px 10px 22px}
-.g-postcard:hover,.g-postcard:focus-within{transform:none;box-shadow:0 20px 32px #173d421c}
-.g-postcard-photo img{height:260px}
-.g-postcard .g-label{font-size:12px;margin-top:20px}
-.g-postcard h3{font-size:32px}
-.g-postcard>p{font-size:13px;max-width:250px}
 .g-collection-end{margin-top:22px}
 .g-collection-end p{font-size:14px}
 .g-collection-end .g-button{width:100%}

@@ -1,35 +1,35 @@
 {
   "routes": {
     "/": {
-      "script": 77585,
-      "stylesheet": 58798
+      "script": 77611,
+      "stylesheet": 58939
     },
     "/properties/": {
-      "script": 100198,
+      "script": 100224,
       "stylesheet": 61435
     },
     "/property-management/": {
-      "script": 91141,
+      "script": 91167,
       "stylesheet": 55843
     },
     "/property-management/vacation-rental-licensing-florida/": {
-      "script": 57901,
+      "script": 57927,
       "stylesheet": 36114
     },
     "/property-management/vacation-rental-management-fees-florida/": {
-      "script": 57901,
+      "script": 57927,
       "stylesheet": 36114
     },
     "/property-management/vrbo-management-services-florida/": {
-      "script": 57901,
+      "script": 57927,
       "stylesheet": 36114
     },
     "/stays/anna-maria-island-beachfront-rentals/": {
-      "script": 55927,
+      "script": 55953,
       "stylesheet": 36114
     },
     "/stays/anna-maria-island-vacation-rentals/": {
-      "script": 55927,
+      "script": 55953,
       "stylesheet": 36114
     }
   },
@@ -928,6 +928,78 @@
       "from": 34667,
       "to": 36114,
       "reason": "guide CTA, sticky book bar and legacy mobile bar join the shared motion.css hover/press and guest-menu.js press tracking; Sawyer chose option B in thread, 2026-11-01",
+      "date": "2026-11-01"
+    },
+    {
+      "route": "/",
+      "metric": "script",
+      "from": 77585,
+      "to": 77611,
+      "reason": "Approved eighth-home booking identity adds 26 uncompressed script bytes per route. Balanced eight-card desktop fan and reuse of native card scrolling at tablet widths add only measured homepage CSS bytes; no new dependency, asset or media preload. All 24 final Lighthouse runs pass the unchanged speed and transfer ceilings.",
+      "date": "2026-11-01"
+    },
+    {
+      "route": "/",
+      "metric": "stylesheet",
+      "from": 58798,
+      "to": 58939,
+      "reason": "Approved eighth-home booking identity adds 26 uncompressed script bytes per route. Balanced eight-card desktop fan and reuse of native card scrolling at tablet widths add only measured homepage CSS bytes; no new dependency, asset or media preload. All 24 final Lighthouse runs pass the unchanged speed and transfer ceilings.",
+      "date": "2026-11-01"
+    },
+    {
+      "route": "/properties/",
+      "metric": "script",
+      "from": 100198,
+      "to": 100224,
+      "reason": "Approved eighth-home booking identity adds 26 uncompressed script bytes per route. Balanced eight-card desktop fan and reuse of native card scrolling at tablet widths add only measured homepage CSS bytes; no new dependency, asset or media preload. All 24 final Lighthouse runs pass the unchanged speed and transfer ceilings.",
+      "date": "2026-11-01"
+    },
+    {
+      "route": "/property-management/",
+      "metric": "script",
+      "from": 91141,
+      "to": 91167,
+      "reason": "Approved eighth-home booking identity adds 26 uncompressed script bytes per route. Balanced eight-card desktop fan and reuse of native card scrolling at tablet widths add only measured homepage CSS bytes; no new dependency, asset or media preload. All 24 final Lighthouse runs pass the unchanged speed and transfer ceilings.",
+      "date": "2026-11-01"
+    },
+    {
+      "route": "/property-management/vacation-rental-management-fees-florida/",
+      "metric": "script",
+      "from": 57901,
+      "to": 57927,
+      "reason": "Approved eighth-home booking identity adds 26 uncompressed script bytes per route. Balanced eight-card desktop fan and reuse of native card scrolling at tablet widths add only measured homepage CSS bytes; no new dependency, asset or media preload. All 24 final Lighthouse runs pass the unchanged speed and transfer ceilings.",
+      "date": "2026-11-01"
+    },
+    {
+      "route": "/property-management/vacation-rental-licensing-florida/",
+      "metric": "script",
+      "from": 57901,
+      "to": 57927,
+      "reason": "Approved eighth-home booking identity adds 26 uncompressed script bytes per route. Balanced eight-card desktop fan and reuse of native card scrolling at tablet widths add only measured homepage CSS bytes; no new dependency, asset or media preload. All 24 final Lighthouse runs pass the unchanged speed and transfer ceilings.",
+      "date": "2026-11-01"
+    },
+    {
+      "route": "/property-management/vrbo-management-services-florida/",
+      "metric": "script",
+      "from": 57901,
+      "to": 57927,
+      "reason": "Approved eighth-home booking identity adds 26 uncompressed script bytes per route. Balanced eight-card desktop fan and reuse of native card scrolling at tablet widths add only measured homepage CSS bytes; no new dependency, asset or media preload. All 24 final Lighthouse runs pass the unchanged speed and transfer ceilings.",
+      "date": "2026-11-01"
+    },
+    {
+      "route": "/stays/anna-maria-island-vacation-rentals/",
+      "metric": "script",
+      "from": 55927,
+      "to": 55953,
+      "reason": "Approved eighth-home booking identity adds 26 uncompressed script bytes per route. Balanced eight-card desktop fan and reuse of native card scrolling at tablet widths add only measured homepage CSS bytes; no new dependency, asset or media preload. All 24 final Lighthouse runs pass the unchanged speed and transfer ceilings.",
+      "date": "2026-11-01"
+    },
+    {
+      "route": "/stays/anna-maria-island-beachfront-rentals/",
+      "metric": "script",
+      "from": 55927,
+      "to": 55953,
+      "reason": "Approved eighth-home booking identity adds 26 uncompressed script bytes per route. Balanced eight-card desktop fan and reuse of native card scrolling at tablet widths add only measured homepage CSS bytes; no new dependency, asset or media preload. All 24 final Lighthouse runs pass the unchanged speed and transfer ceilings.",
       "date": "2026-11-01"
     }
   ]
