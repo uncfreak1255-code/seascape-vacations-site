@@ -1,0 +1,62 @@
+/* Local functional alternatives; no public build changes. */
+.stay-flow .hero { display: block; padding: 32px 40px 24px; max-width: 1180px; }
+.stay-flow .hero::after { display: none; }
+.stay-flow .hero-inner { padding: 0; }
+.stay-flow .hero-eyebrow { margin-bottom: 12px; }
+.stay-flow .hero h1 { max-width: 24ch; font-size: clamp(38px, 4vw, 56px); margin-bottom: 16px; }
+.stay-flow .hero-subhead { max-width: 76ch; font-size: 15px; }
+.stay-flow .hero-actions { margin-top: 16px; }
+.stay-flow .trust-chips { margin-top: 16px; padding-top: 12px; }
+.stay-flow .intro-copy { margin-top: 24px; }
+.flow-browse .hero { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 40px; align-items: start; }
+.flow-browse .hero .catalog-trip { grid-column: 2; grid-row: 1; }
+.flow-browse .hero #catalog-trip-form { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.flow-browse .hero .catalog-trip-heading { display: block; }
+.flow-browse .hero .catalog-trip-heading span { display: block; font-size: 12px; margin-top: 8px; }
+.flow-browse .hero h1 { font-size: 46px; }
+.flow-browse .hero-inner { align-self: start; }
+.flow-dockside .hero h1 { font-size: 36px; max-width: none; }
+.stay-flow .catalog-page { max-width: 1180px; padding: 0 40px 40px; color: var(--g-ink); }
+.stay-flow .catalog-trip { padding: 24px; background: var(--g-soft); border: 1px solid var(--g-rule); border-radius: 4px; box-shadow: none; }
+.stay-flow .catalog-trip h2 { font-size: 28px; }
+.stay-flow #catalog-trip-form input, .stay-flow #catalog-trip-form select { border-radius: 4px; border-color: var(--g-rule); background: var(--g-paper); }
+.stay-flow .catalog-collection { padding-top: 36px; }
+.stay-flow .catalog-collection-heading h2 { font-size: 32px; }
+.stay-flow .catalog-page .stay-star-fill svg { fill: currentColor; }
+.stay-flow .catalog-card-media .property-img { width: 100%; height: 100%; aspect-ratio: auto; }
+.stay-flow .catalog-card .property-price { display: block; margin-top: 20px; }
+.stay-flow .catalog-card .catalog-card-foot { margin-top: 16px; gap: 20px; }
+.stay-flow .catalog-card .btn { min-width: 136px; }
+.stay-flow .catalog-card .catalog-details-link { font-size: 13px; min-height: 44px; display: inline-flex; align-items: center; }
+.stay-flow .flow-secondary-links { display: flex; gap: 16px; padding: 24px 40px; }
+.stay-flow .flow-secondary-links a { min-height: 44px; display: inline-flex; align-items: center; }
+.stay-flow .flow-home-chooser { display: flex; flex-wrap: wrap; gap: 8px 24px; max-width: 1100px; margin: 0 auto 24px; padding: 0 40px; }
+.stay-flow .flow-home-chooser a { min-height: 44px; display: inline-flex; align-items: center; text-decoration: underline; }
+.stay-flow .flow-feature { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(300px, 1fr); gap: 40px; max-width: 1180px; margin: 0 auto 40px; padding: 0 40px; align-items: start; }
+.stay-flow .flow-feature .catalog-card { display: block; border: 0; padding: 0; }
+.stay-flow .flow-feature .catalog-card-media { display: block; min-height: 300px; }
+.stay-flow .flow-feature .catalog-card-media .property-img { height: 300px; aspect-ratio: auto; }
+.stay-flow .flow-feature .catalog-card-body { padding: 20px 0 0; }
+.stay-flow .flow-feature h2 { margin: 0 0 12px; font-size: 40px; }
+.stay-flow .flow-feature .catalog-card-reason { margin: 16px 0; }
+.stay-flow .flow-feature .catalog-card-reason .section-tag { display: none; }
+.stay-flow .flow-feature .g-booking { position: static; }
+.stay-flow .flow-more-homes .property-action { display: inline-flex; width: auto; }
+@media (max-width: 700px) {
+  .stay-flow { padding-bottom: 0; }
+  .stay-flow .hero { padding: 24px 16px; }
+  .flow-browse .hero { display: block; }
+  .flow-browse .hero .catalog-trip { margin-top: 24px; }
+  .stay-flow .hero h1 { font-size: 40px; }
+  .stay-flow .catalog-page { padding: 0 16px 24px; }
+  .stay-flow .catalog-trip { padding: 20px 16px; }
+  .stay-flow #catalog-trip-form { grid-template-columns: minmax(0, 1fr); }
+  .stay-flow .catalog-card-media .property-img { height: 280px; }
+  .stay-flow .catalog-collection-heading { display: block; }
+  .stay-flow .catalog-collection-heading > p { margin-top: 16px; }
+  .stay-flow .flow-feature { grid-template-columns: minmax(0, 1fr); padding: 0 16px; gap: 24px; }
+  .flow-dockside .flow-feature .g-booking { order: -1; }
+  .stay-flow .flow-home-chooser { padding: 0 16px; }
+  .stay-flow .flow-feature .catalog-card-media .property-img { height: 250px; }
+  .stay-flow .flow-secondary-links { padding: 24px 16px; }
+}

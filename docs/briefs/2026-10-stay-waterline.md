@@ -64,6 +64,40 @@ ranking, demand, recommendation lift or new property claim.
 
 ## Worklog
 
+November 1 architecture correction: Sawyer rejected the photo-led page and
+oversized dates controls as unhelpful for choosing/booking Dockside Dreams.
+The previous critic's visual approval did not establish that the architecture
+served that task. Source read confirms its dates actions open detail-page tops,
+and there are no trip inputs on the collection.
+
+Two local-only functional alternatives are now composed in docs/design:
+`build-flows.cjs` uses the actual built catalog and Dockside components;
+`preview.cjs` serves `?flow=browse` and `?flow=dockside`. Public src, the
+existing migration checkpoint and committed screenshot baselines are unchanged.
+The reference surfaces are Seascape's existing Our homes catalog and Dockside
+property booking panel. The donor inventory returned optional skill metadata,
+not an available external reference-site implementation; none was installed.
+
+A recommends trip-first comparison of the four matched homes with real direct
+booking links plus distinct detail links. B leads with Dockside's native booking
+panel and a chooser for the other homes, at the cost of privileging one home.
+Both retain all 58 original paragraphs/headings and the original SEO/JSON-LD;
+the architecture intentionally changes ordering and the confusing action labels.
+Existing original internal destinations remain available. No invented rates,
+availability, new imagery or new booking engine is introduced.
+
+Run `node docs/design/stay-waterline/build-flows.cjs` after the native build,
+then start the existing preview server. Generated alternatives live in
+/private/tmp/stay-flow-previews (override with STAY_FLOW_PREVIEW_DIR).
+Run `node docs/design/stay-waterline/check-flows.cjs <receipt.json>` for source
+copy/SEO, pending state, actual intercepted Dockside click, dates/guests, four
+widths and axe proof. Availability is synthetic and provider navigation is
+intercepted; this proves the handoff contract, not live availability or a
+reservation. Both 503 states retain an honest confirmation-on-booking-page
+message; A's 17-guest case shows no single matching home. No sends, paid checks,
+push, public PR, merge, deployment or new schedule. Preview selection remains
+the next user decision before applying a replacement shared architecture.
+
 October 31 rating revision: Sawyer requested five-star graphics in place of
 the photo's Rated label. Use five existing SVG stars with proportional fill
 from the actual score and an accessible score out of five; omit missing/zero
