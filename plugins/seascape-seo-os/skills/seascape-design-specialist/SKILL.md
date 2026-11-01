@@ -32,6 +32,20 @@ direction identifies its core idea, hero, rhythm, imagery, CTA, memorable moment
 mobile behavior, and tradeoff. Preserve strong art direction rather than reducing
 it to default grids, badges, serif fonts, or gold decoration.
 
+## Show, do not describe
+
+Sawyer cannot steer design from prose. For any visible change, return 2–3
+rendered variants (screenshots or preview links), each anchored to a named
+reference site from `npm run design:donors`. Ask only "which one" or "keep X,
+lose Y". A critic `Approve` does not remove this; it only removes the
+extra-alternatives rule above.
+
+Each direction states its hover, focus, pressed, empty, loading, and error
+states, and its reduced-motion path. Stay inside `DESIGN.md` motion limits: CSS
+and browser-native motion only, no animation library, no loader. Keep the
+change inside the page-speed budget (`npm run perf:ratchet`). Reader-facing
+copy in a variant describes the capability and never names software or vendors.
+
 ## Completion and implementation
 
 The concept is complete with a critic verdict, required alternatives, one

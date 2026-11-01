@@ -21,6 +21,16 @@ behavior with concrete examples. Watch for generic card grids, same-weight
 sections, boxed/badge clutter, decorative gold, and premium claims without
 matching art direction.
 
+## Polish and fit checks
+
+Check each of these on the rendered route, not the source: hover, focus,
+pressed, empty, loading, and error states; tap targets and focus rings; the
+`prefers-reduced-motion` path; and motion limits in `DESIGN.md` (CSS and
+browser-native only, no animation library, no loader). Flag any direction that
+needs a new script or heavy asset, since page-speed budgets are enforced. Flag
+reader copy that names software or vendors. A direction shown only as prose
+gets a provisional verdict: ask for rendered variants.
+
 ## Verdict and completion
 
 Return exactly one verdict: `Reject`, `Needs another pass`, `Approved with edge`,
