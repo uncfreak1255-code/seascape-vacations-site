@@ -82,3 +82,27 @@ test("built guest.css appends motion.css without a second request", () => {
   assert.match(html, /href="\/css\/guest\.css/);
   assert.doesNotMatch(html, /href="\/css\/motion\.css/);
 });
+
+test("guide CTAs and the sticky book bar share the guest press and hover", () => {
+  const css = read("src/css/motion.css");
+  const js = read("src/assets/js/guest-menu.js");
+  const kit = read("src/_includes/partials/guide-conversion-kit.njk");
+  const controls = [
+    ".guest-shell .guide-conversion-shell a.guide-cta-btn",
+    ".guest-shell .guide-save50-module a.guide-save50-cta",
+    ".guest-shell .guide-email-capture-form button",
+    ".guest-shell #sticky-book-bar a",
+    ".guest-shell .mobile-cta-bar .btn-gold",
+  ];
+  const pressStart = css.lastIndexOf("@media(prefers-reduced-motion:no-preference)");
+  const hoverStart = css.indexOf("@media(hover:hover) and (pointer:fine){");
+  for (const control of controls) {
+    assert.ok(css.indexOf(`${control}:active:not(:focus-visible)`) > pressStart, `${control} press must be motion-gated`);
+    assert.ok(css.includes(`${control}[data-pressed]`), `${control} needs touch press`);
+    assert.ok(css.indexOf(`${control}:hover`) > hoverStart, `${control} hover must be fine-pointer gated`);
+    assert.ok(js.includes(control), `guest-menu.js must track presses on ${control}`);
+  }
+  const guideHover = css.slice(css.indexOf(".guest-shell .guide-conversion-shell a.guide-cta-btn:hover"));
+  assert.match(guideHover, /^[^}]*background:var\(--kit-muted\)/, "guide body has no --g-muted; use the kit token");
+  assert.doesNotMatch(kit, /text-decoration: underline;\s*text-underline-offset: 4px;\s*\}\s*\.guide-conversion-shell a\.guide-cta-btn--ghost,/);
+});
