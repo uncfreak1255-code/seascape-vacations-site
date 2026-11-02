@@ -5,6 +5,22 @@ const source = applyStayFacts(require('../../src/_data/seoPages.json').vacatione
 const route = '/stays/' + source.slug + '/';
 const homes = ['bradenton-pool-home', 'the-oasis', 'dockside-dreams', 'river-house'];
 
+test('family guide restores a returning guest trip before initializing its form', async ({ page }) => {
+  await registerStableNetwork(page);
+  await page.clock.setFixedTime(new Date('2026-11-02T17:00:00Z'));
+  await page.addInitScript(() => localStorage.setItem('seascape_trip', JSON.stringify({arrive:'2026-11-30',depart:'2026-12-05',guests:'12',saved:Date.now()})));
+  await page.goto(route);
+  await expect(page.locator('#trip-arrive')).toHaveValue('2026-11-30');
+  await expect(page.locator('#trip-depart')).toHaveValue('2026-12-05');
+  await expect(page.locator('#trip-guests')).toHaveValue('12');
+  await expect(page.locator('[data-property="bradenton-pool-home"]')).toBeHidden();
+  const action = page.locator('[data-property="dockside-dreams"] .catalog-check-dates');
+  await expect(action).toHaveText('Book these dates');
+  const target = new URL(await action.getAttribute('href'));
+  expect(target.pathname).toBe('/checkout/206016');
+  expect(target.searchParams.get('numberOfGuests')).toBe('12');
+});
+
 test('family guide keeps its answer before trip controls and full article after the four homes', async ({ page }) => {
   await registerStableNetwork(page);
   await page.goto(route);

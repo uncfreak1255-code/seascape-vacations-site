@@ -191,7 +191,6 @@ eleventyComputed:
 <link rel="stylesheet" href="/css/catalog.css">
 <link rel="stylesheet" href="/css/catalog-card.css?v=waterline-v3">
 <link rel="stylesheet" href="/css/stay-family.css">
-<script defer src="/assets/js/catalog.js"></script>
 {% endif %}
 </head>
 <body class="guest-site stay-collection{% if isFamilyBrowse %} stay-flow flow-browse{% endif %}">
@@ -538,6 +537,6 @@ eleventyComputed:
     <p class="container"><a href="/properties/">Compare all homes</a> · <a href="/guides/">Explore local guides</a></p>
     {% include "partials/guest-footer.njk" %}
 
-    {% include "partials/analytics-ga4.njk" %}
+    {% include "partials/stay-scripts.njk" %}
 </body>
 </html>
