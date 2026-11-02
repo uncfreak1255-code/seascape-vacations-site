@@ -5,7 +5,7 @@
   document.addEventListener('pointerdown',function(event){
     if(!event.isPrimary||event.button!==0)return;
     releasePress();
-    var button=event.target.closest('.guest-shell .g-button,.guest-site .g-button,.guest-site .btn-brand,.guest-site .btn,.guest-site .catalog-filter,.guest-site .catalog-compare-toggle');
+    var button=event.target.closest('.guest-shell .g-button,.guest-site .g-button,.guest-site .btn-brand,.guest-site .btn,.guest-site .catalog-filter,.guest-site .catalog-compare-toggle,.guest-shell .guide-conversion-shell a.guide-cta-btn,.guest-shell .guide-save50-module a.guide-save50-cta,.guest-shell .guide-email-capture-form button,.guest-shell #sticky-book-bar a,.guest-shell .mobile-cta-bar .btn-gold');
     if(button){pressedButton=button;button.setAttribute('data-pressed','true');}
   });
   document.addEventListener('pointerup',releasePress);

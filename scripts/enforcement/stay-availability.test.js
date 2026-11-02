@@ -89,7 +89,8 @@ test("availability endpoint reports only the homes open for the requested stay",
     "river-house": stay("2026-09-26", 2, { minimumStay: 2 }),
     "bradenton-pool-home": stay("2026-09-26", 2).map((entry) => ({ ...entry, isAvailable: 0, status: "reserved" })),
     "blue-house": stay("2026-09-26", 2, { minimumStay: 4 }),
-    "coastal-stay": stay("2026-09-26", 2).map(entry => ({ ...entry, isAvailable: 0, status: "reserved" }))
+    "coastal-stay": stay("2026-09-26", 2).map(entry => ({ ...entry, isAvailable: 0, status: "reserved" })),
+    "relaxing-oasis": stay("2026-09-26", 2, { minimumStay: 2 })
   };
 
   const response = await handleBookingAvailability(
@@ -101,7 +102,7 @@ test("availability endpoint reports only the homes open for the requested stay",
   assert.equal(response.statusCode, 200);
   assert.deepEqual(
     body.homes.filter((home) => home.bookable).map((home) => home.slug),
-    ["river-house"]
+    ["river-house", "relaxing-oasis"]
   );
   assert.equal(body.homes.find((home) => home.slug === "sarasota-luxe").reason, "minimum-stay");
   assert.equal(JSON.stringify(body).includes("price"), false);

@@ -20,8 +20,8 @@ then load only the matching branches:
 | When the task involves… | Read before acting |
 | --- | --- |
 | Behavior diagnosis, a focused fix, or tests | Affected source and existing tests from Repo Truth; read Git Session Rules before edits or publication |
-| UI, CSS, templates or layout | `DESIGN.md`, then `docs/process/design-review-workflow.md`; Design below |
-| Public copy or SEO copy | Select the exact brief through `docs/briefs/README.md`, then follow Content Gate below |
+| UI, CSS, templates or layout | `DESIGN.md`, `docs/agents/rules/design.md`, then `docs/process/design-review-workflow.md` |
+| Public copy or SEO copy | Select the exact brief through `docs/briefs/README.md`, then follow `docs/agents/rules/content-gate.md` |
 | Measured SEO expansion, title/meta rewrites, or prioritization from analytics | `docs/status/current-state.md`, `docs/status/next-batch.md`, the matching brief and portfolio file; apply the owning measurement gate |
 | Business-priority, experiment, or capability-trial recommendations | Business Priorities below, `docs/process/learning-contract.md`, and current evidence from the owning repo |
 | Browser, DOM, screenshots, Playwright, web search or desktop automation | `docs/process/agent-evidence-routing.md` before selecting a tool |
@@ -77,7 +77,7 @@ Gmail is prohibited.
 - edit source, not `_site`
 - never use `DEPLOY THIS FOLDER TO NETLIFY/` as the source of truth
 - one serious SEO cluster at a time, with one brief driving it
-- no public content PR without one active brief, the content gate read, and passing content lint through `npm run lint:content` or `npm run verify:release`
+- no public content PR without one active brief, the content gate (`docs/agents/rules/content-gate.md`) read, and passing content lint through `npm run lint:content` or `npm run verify:release`
 - review the diff before push, PR, or merge
 - any PR changing visible copy on smoke-asserted routes (homepage, `/properties/`, `/property-management/`, `/stays/`) must update `scripts/recovery/assert-live-smoke.js` in the same PR, or the daily live-smoke workflow goes red on a healthy site
 - live `/.netlify/functions/*` endpoint paths, metrics `receipts[]` field names, and `verify:*` npm script names have cross-repo consumers in seascape-ops, seascape-hub, and seascape-analytics; check the contract locks in `docs/plans/2026-06-12-v1-implementation-handoff.md` before renaming any of them
@@ -170,10 +170,13 @@ lock, Hostaway cache sync, Eleventy, availability validation).
 - Post-deploy proof: `npm run verify:recovery:live && npm run verify:direct-booking-events && npm run verify:owner-funnel-routes`
 - Prove it is live, in order, after every merge (checklist and receipt:
   `docs/process/post-merge-runtime-proof-checklist.md`):
-  1. `git fetch origin production && git merge-base --is-ancestor <merge-sha> origin/production`
-     exits 0 only when the production branch contains the merge. Exit 1 means
-     "merged, queued for publish", not live (PR 766 on 2026-10-22 was merged
-     while production lacked it).
+  1. `npm run verify:merge-live -- <merge-sha>` fetches `main` and
+     `production`, then exits 0 only when the production branch contains the
+     merge, 1 for "merged, queued for publish" (not live; PR 766 on 2026-10-22
+     was merged while production lacked it), 2 for an unknown or unmerged
+     SHA or a shallow clone that cannot decide (pass the squash commit on
+     `main`, not the PR head), and 3 for a git or usage error. A bare
+     `merge-base --is-ancestor` exits 128 on an unfetched commit.
   2. Netlify's current production deploy is complete and its `commit_ref`
      contains the merge.
   3. The Post-deploy proof commands pass; for a change to a specific page, add
@@ -195,47 +198,17 @@ non-negotiable: **Draft the copy**, then **Remove internal wording**, then
 Complete these steps before content lint through `npm run lint:content` or the
 full `npm run verify:release` gate.
 
-## Content Gate
+## Path-scoped rules
 
-For any PR that changes public copy in `src/`, read in order:
-`docs/status/current-state.md`, the active brief in `docs/briefs/`,
-`docs/process/content-quality-gate.md`, the page-family file in
-`docs/portfolio/`, `docs/style/voice.md`, `docs/style/banned-patterns.md`,
-`docs/style/approved-examples.md`, then the source file. Then:
+These rules live outside this file. Read the matching one before touching its
+area; Claude also loads it automatically through `.claude/rules/`.
 
-- run the visible-copy lane in order: **Draft the copy** for the draft, **Remove internal wording** to strip internal/process wording, then **Check voice and specificity** for the final pass on reader copy
-- keep reader copy, proof copy, and agent copy separate
-- pass `npm run lint:content` or the full `npm run verify:release` before push,
-  PR, or merge; both run the same content checks against fresh rendered output
-- when a required source is stale, refresh the affected evidence before scaling
-  a measured batch or making an impact claim
-
-## Design
-
-- `DESIGN.md` is the visual law: read it before UI work and use only its
-  colors, fonts, spacing, radius, shadows, and component styles. Figma, Stitch,
-  and other outside tools are donors; a new direction from any tool lands as a
-  `DESIGN.md` change first. Claude Design is the approved mock surface only
-  while synced by `npm run design:sync`.
-- Meaningful visual work (mockups, page concepts, layout, type, color,
-  imagery, CTA treatment, motion) starts in the `seascape-design-specialist`
-  lane with `seascape-design-critic` as taste gate (`npm run design:lane --
-  "<task>"`) and ends with the `design-review` rendered QA loop.
-- An approved mock or direction is the implementation contract: build it
-  closely and name any deviation with its source, accessibility, performance,
-  or responsive reason.
-- Sawyer cannot steer design by describing it. For any visible design change,
-  show two or three rendered variants (deploy-preview links or screenshots),
-  each anchored to a named reference site from `npm run design:donors`, and ask
-  only "which one" or "keep X, lose Y".
-- Keep UI lean: cut marketing filler and repeated labels; keep accessible
-  names, essential instructions, errors, and required disclosures.
-- Treat any edit to a shared header, footer or nav partial as an SEO change as
-  well as a visual one: it redistributes internal links across every built
-  page. Run `node --test scripts/enforcement/internal-link-floor.test.js`
-  against a fresh build; a green visual gate is not proof a shell edit was
-  safe — its per-route pixel tolerance absorbed an entire new footer column on
-  2026-09-10 without a single diff.
+- Public copy in `src/` (pages, templates, `src/_data/`, briefs):
+  `docs/agents/rules/content-gate.md` (Content Gate reading order and lane)
+- UI, CSS, templates, layout, browser scripts, or a shared header, footer or nav
+  partial: `docs/agents/rules/design.md` (`DESIGN.md` authority, the
+  `seascape-design-specialist` lane via `npm run design:lane`, rendered
+  variants, and the internal-link floor for shell edits)
 
 ## Writeback Boundary
 
@@ -248,7 +221,11 @@ that repo's current `origin/main`, never by mutating a local sibling checkout.
 
 Request `@codex review` on every PR except Dependabot's, on the head you intend
 to merge, and answer each finding before merge. If the run is unfinished after
-15 minutes, request it again naming the head SHA. Codex unavailability (quota,
+15 minutes, request it again naming the head SHA. Where `pr-gate-wait` is
+installed, wait for checks and review with
+`pr-gate-wait <pr> -R uncfreak1255-code/seascape-vacations-site` (exit 0
+ready, 1 blocker, 2 usage error, 3 timeout) rather than a hand-written polling
+loop; elsewhere read `gh pr checks <pr>`. Codex unavailability (quota,
 outage, or no result) does not block a BASELINE PR; say so in the PR body.
 Every reviewer, `@codex review` included, follows `REVIEW.md` from the base
 branch, not the PR.

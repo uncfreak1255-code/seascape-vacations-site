@@ -5,10 +5,39 @@
 - primary keyword: Relaxing Oasis; existing exact listing identity, no search expansion
 - secondary keywords: Bradenton vacation home; no ranking or traffic claim
 - audience pattern: inspect the actual home, watch its optional film, check important rules, choose dates
-- proof source: Hub `context/seascape-properties.md` section 8 at `3d12c21255a0988796a092c63bda231bd8314b2f`; exact public Hostaway listing 607228 and its photo gallery read 2026-10-28 UTC
+- proof source: October 31 Hostaway 607228 Basic info, Rooms & beds, description and captions via Aside; direct booking page; Hub section 8 at c563a0a259e1d241f8084d19f8fac87df92087d8
 - required internal links: /properties/, /guides/anna-maria-island-area-guide/
 - CTA target: https://book.seascape-vacations.com/listings/607228 with guest dates and group size preserved
-- anti-claims: no verified bedroom/bathroom totals or room assignments; no separate hot tub, in-ground pool, waterfront, beach distance, review quotes or guaranteed temperature; no private owner/access information
+- anti-claims: no room arrangements beyond the October 31 exact-listing verification; no separate hot tub, in-ground pool, waterfront, beach distance, review quotes or guaranteed temperature; no private owner/access information
+
+## Current scope — October 31, 2026
+
+This chat owns the worktree-only count and room-breakdown update. Sawyer requested
+5 bedrooms, 4 bathrooms, the verified five-room breakdown, and removal of the
+outdated sleeping warning. Hostaway, production, catalog membership and indexing
+remain unchanged. Reuse the existing sleeping-list component without design changes.
+
+Current proof: read-only Aside review of exact Hostaway 607228 on October 31,
+including Basic info, Rooms & beds, description and photo captions; direct booking
+agrees on 5 bedrooms, 4 bathrooms and 11 guests. Hub origin/main
+c563a0a259e1d241f8084d19f8fac87df92087d8 section 8 records the detached suite
+and its bathroom within the totals. The current Hostaway description explicitly
+maps two king rooms with private bathrooms; queen and two twin-over-twin bunks
+sharing a bathroom; detached twin daybed suite with private bathroom. Each bathroom
+is described with a walk-in shower. Eight beds total does not mean eight bedrooms.
+
+Acceptance gate, written before implementation: show 5 bedrooms / 4 bathrooms /
+11 guests, exactly five room entries with the correct shared/private bathroom
+relationships, no obsolete detached-inclusion warning. Preserve gallery, noindex,
+booking listing 607228, guest/date handoff and both stay-story formats. Update the
+existing route test; observe it fail on the old page, then pass on the changed
+page. Build, content lint, focused route/story tests and desktop/mobile rendered
+inspection prove this preview. Do not refresh approved screenshot baselines or
+publish before Sawyer reviews the preview.
+
+The dated sections below are historical release evidence. Their count omission
+and physical-inventory hold are superseded for this update; they do not block
+using the now-verified room map. Catalog/indexing remains separately deferred.
 
 ## Scope and approved direction
 
@@ -98,3 +127,50 @@ Latest main integrated for release: c591021f2cfe190804c14c9bc1ea42a81954f3eb.
 Its motion, guide and test-helper changes are preserved. Other open PRs787/790
 cover separate design consolidation/type work; no Relaxing Oasis task duplicates
 this branch. Final integrated checks and release readback belong in the PR.
+
+## October 31 worktree proof
+
+Owner: this Codex chat; branch `codex/relaxing-oasis-verified-rooms`, base
+`696f0abf185630596d01a50554f6747cc66602c2`. Preview on localhost:8776.
+Updated route test failed on the old page (missing 5 bedrooms), then all six
+focused desktop/mobile property and film tests passed. Content lint passed
+41 checks. Native browser inspected the heading and five-room list at desktop
+and 390px mobile; overflow checks passed 360/375/390/768/1440px. Screenshots in
+`artifacts/verified-rooms/desktop.jpg` and `mobile.jpg`. Independent Voice Editor:
+Approved. No template, stylesheet, Hostaway, indexing, catalog or live changes.
+Approved screenshot baselines remain untouched pending user review.
+
+## October 31 — homepage and catalog preview
+
+User-authorized scope: include Relaxing Oasis in the existing homepage scenes/postcards and Our homes catalog, with its own approved photos and the verified 5 bedrooms, 4 bathrooms and capacity of 11. Reuse Waterline cards and responsive behavior; no new design direction. The catalog hold above is superseded; the property's noindex setting remains unchanged. Hostaway and production remain untouched.
+
+Acceptance: desktop and mobile show the home's own photo and details, link to its property page, and preserve its exact booking identity. Bradenton filtering includes it; waterfront and pet-friendly filters exclude it. Comparison and capacity filtering use the verified counts. Existing property page/video remain intact. The prior missing-home version must fail the collection presence check. Review screenshots before any baseline refresh or release.
+
+Content source: the read-only Hostaway 607228 verification recorded above and existing approved property photography. No invented ratings, coordinates, fees, amenities or reviews. One shared inventory record will own both cards and the detail page.
+
+Implementation and proof:
+- Moved the approved route-local facts/photos into the shared catalog; the detail route reads that same record. Homepage scene/picker/postcard, catalog, comparison and generated property summary now include Relaxing Oasis. No new ratings or reviews are displayed; existing noindex/schema omission and reservation-sensitive heat wording are retained.
+- Added exact listing 607228 to the existing read-only availability lookup and regenerated the client identity map. Updated inventory-count and smoke fixtures for eight homes; no provider writes.
+- Collection presence test failed before integration and passes afterward. Six desktop/mobile page, handoff and collection tests passed (own photo, correct links, location/pet/waterfront filters, comparison, 11-person inclusion and 12-person exclusion).
+- 1,318 unit tests and 41 content tests passed. Homepage, catalog and property accessibility checks found no serious/critical violations on desktop/mobile. Both video-format playback checks passed.
+- Voice Editor: Approved. Desktop 1440px and mobile 390px inspected in native browser. Screenshots retained locally under artifacts/relaxing-collection; existing visual baselines are intentionally not refreshed before user approval.
+- Owner-count surfaces derive from the same catalog and now reflect eight homes. No source publication, deployment or Hostaway mutation. Local preview stays on port 8776.
+- Rendered design review: Approved after inspecting desktop catalog normal state, desktop homepage, mobile homepage scene/postcard and mobile catalog. Screenshot regression comparison: three expected differences (desktop home, desktop/mobile catalog); mobile homepage's initial viewport remains unchanged. Baseline approval remains pending.
+- Final local checkpoint cleanup: extracted property schema-fact tests and stable smoke detail links to respect repository file-size limits. The existing build generator supplies the current client listing map; its parity test now checks the built script actually served to guests rather than the pre-generation source seed. Focused rerun: 64 passed.
+- Main advanced independently to c930a7c7 (#841) during this preview. This worktree preserves its original 696f0abf base plus the approved room checkpoint; integration with that unrelated guide/owner change is a later pre-release step, not performed here.
+
+## November 1 — eight-card fan correction
+
+Sawyer identified the neutral eighth-card fallback as visually unbalanced and approved a worktree-only correction. All eight desktop cards now form four mirrored pairs in angle, height and stacking order; the two center cards share the raised center. Preserve photos, copy, hover/focus behavior and the upright native mobile snap list. Acceptance: mirrored outer/inner pairs, no page overflow, readable mobile first/last cards, desktop/mobile screenshots. Regression check first failed because only seven of eight homes had a fan position. No new design direction, baseline refresh or live changes.
+
+Proof: 13 focused unit checks passed; desktop/mobile homepage discovery and axe checks passed (4). Native desktop1395px and phone390/375px readback confirmed mirrored fan and flat mobile transforms; horizontal browsing and keyboard access reached the last card. At768px the new outer tilt exposed4px of page overflow; tablet fan padding now uses32px rather than24px and readback is766px scroll width within768px viewport. Desktop and phone CSS unaffected by that margin adjustment. Desktop/mobile rendered review approved. Screenshots: artifacts/eight-card-fan/{desktop,mobile,tablet}.jpg. Existing desktop screenshot differs as intended; mobile baseline passes. Baselines remain unchanged pending user review. Local preview server restarted on8776; no publication or live changes.
+
+## November 1 — approved release checks
+
+Sawyer approved the room details, homepage/catalog inclusion and balanced fan, then authorized baseline refresh, PR review, release and live desktop/mobile verification. Hostaway stays unchanged. Issue #845 is the approved spec; PR #846 owns this release. This chat is the sole mutation owner and merger.
+
+Integrated main b95c7030 without changing the approved design. Full release gate passed: 1,321 tests, content/recovery checks, 164 pages of internal links and 690 JSON-LD blocks. Production dependency audit found zero vulnerabilities. Lighthouse budget passed 24 runs across eight routes. Independent author bug review found no defects. Spec reviewer withdrew an indexing concern after confirming noindex/sitemap behavior was unchanged.
+
+Baseline workflow 41354457757 committed seven intended desktop/mobile images at 193dc4cc, including new full-page Relaxing Oasis coverage. The homepage mobile reference remains unchanged. Inventory-derived owner-page cards/count also refresh. Browser fixtures now include listing607228 and eight homes: the old seven-home mock was observed failing closed as an incomplete availability response, then corrected; product fallback behavior was preserved. Final full visual run and current-head CI/review precede release. Deployment and live proof remain separate pending steps, not claims made by this source checkpoint.
+
+Final release regression checks supersede the earlier static tablet result: resizing from phone to 768px exposed text overflow because eight fan cards were too narrow. Reused the approved upright, native scrolling card strip through 1050px; desktop fan above 1050px and phone presentation remain unchanged. The existing viewport-matrix test failed before this repair and passed afterward. Rendered tablet review: Approved; readable two-card view, visible next-card cue, original Waterline typography and photos, no new assets or motion. Five-width checks (375/390/768/1024/1440) passed, including scrolling to the eighth card. Nine affected desktop/mobile tests passed; one desktop-only matrix is intentionally skipped on the mobile project. Test fixtures now preserve Relaxing Oasis's existing noindex/schema omission and lack of an offer module instead of inventing new claims.

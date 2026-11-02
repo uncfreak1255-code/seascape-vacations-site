@@ -166,6 +166,7 @@ permalink: "/guides/bradenton-vs-sarasota/"
         ]
     }
     </script>
+<link rel="stylesheet" href="/css/comparison-home-bridge.css">
 {% endblock %}
 
 {% block guideBreadcrumb %}
@@ -237,6 +238,38 @@ permalink: "/guides/bradenton-vs-sarasota/"
   <p>Booking direct keeps the comparison tied to the full checkout price, not just the headline nightly rate. That matters most when the same week could work from either side of the corridor.</p>
   <p>Source note: use this as a stay-planning shortcut. Rates and availability change by date, property, and party size.</p>
 </aside>
+</section>
+
+<section class="city-homes" id="city-homes" data-city-home-bridge aria-labelledby="city-homes-title">
+  <header class="city-homes-intro">
+    <p class="city-homes-label">Two cities. Two real homes.</p>
+    <h2 id="city-homes-title">Picture your week here.</h2>
+    <p>Start with a home on each side, then check the dates and details that matter to your group. Both are on the mainland; beach days mean a drive.</p>
+  </header>
+  <div class="city-home-list">
+    {% for citySlug in ["bradenton-pool-home", "sarasota-luxe"] %}
+    {% for cityHome in properties %}
+    {% if cityHome.slug == citySlug %}
+    <article class="city-home" aria-labelledby="city-home-{{ cityHome.slug }}">
+      <img class="city-home-photo" src="{{ cityHome.photography.photos[0].src }}" alt="{{ cityHome.photography.photos[0].alt }}" width="{{ cityHome.photography.photos[0].width }}" height="{{ cityHome.photography.photos[0].height }}" loading="lazy" decoding="async">
+      <div class="city-home-copy">
+        <p class="city-home-city">{{ cityHome.city }}</p>
+        <h3 id="city-home-{{ cityHome.slug }}">{{ cityHome.name }}</h3>
+        <p class="city-home-facts"><span class="city-home-fact">{{ cityHome.bedrooms }} bedrooms</span> <span class="city-home-facts-separator" aria-hidden="true">·</span> <span class="city-home-fact">{{ cityHome.bathrooms }} bathrooms</span> <span class="city-home-facts-separator" aria-hidden="true">·</span> <span class="city-home-fact">Up to {{ cityHome.guests }} guests</span></p>
+        {% if cityHome.slug == "bradenton-pool-home" %}
+        <p>Private pool and spa in mainland Bradenton. Plan to drive to Anna Maria Island.</p>
+        {% else %}
+        <p>Private pool and spa in Sarasota. Plan to drive to Siesta or Lido Beach.</p>
+        <p class="city-home-note">For 9–12 guests, confirm your group size before booking.</p>
+        {% endif %}
+      </div>
+      <a class="g-button city-home-action" href="/properties/{{ cityHome.slug }}/#booking" data-track-event="guide_property_check_dates_click" data-guide-slug="bradenton-vs-sarasota" data-property-slug="{{ cityHome.slug }}" data-placement="city_comparison_early" data-track-label="Check {{ cityHome.name }} dates">Check dates<span class="city-home-action-name">{{ cityHome.name }}</span><span class="city-home-arrow" aria-hidden="true">→</span></a>
+    </article>
+    {% endif %}
+    {% endfor %}
+    {% endfor %}
+  </div>
+  <p class="city-homes-footer">Your dates and group size travel with you. Review availability and the full checkout total on the property's booking page.</p>
 </section>
 {% endblock %}
 

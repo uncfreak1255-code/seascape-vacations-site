@@ -22,7 +22,6 @@ const policy = {
   trackerId: TRACKER_ID, accessHash, approvedBy: "Sawyer", approvedAt: now,
   expiresAt: "2026-10-09T15:00:00.000Z", approvalEvidence: "Synthetic approval only",
   retentionReviewDays: 90, automaticDeletion: false, singleWriterId: "synthetic-writer",
-  methodAcceptedBy: "Patrick", methodAcceptanceEvidence: "Synthetic method proof",
   permissionScope: "inbound_review_only"
 };
 const plan = (contacts = [contact()], rows = [HEADERS.slice(0, 16)], r = reviews) =>
@@ -55,7 +54,11 @@ function fakeProvider({ lostReply = false, sourceChanged = false, accessChanged 
       data.writes += 1;
       for (const r of JSON.parse(options.body).requests) {
         for (let i = 0; i < r.updateCells.rows.length; i += 1) {
-          data.rows[r.updateCells.range.startRowIndex + i] = r.updateCells.rows[i].values.map((v) => v.userEnteredValue.stringValue);
+          const rowIndex = r.updateCells.range.startRowIndex + i;
+          data.rows[rowIndex] ||= [];
+          r.updateCells.rows[i].values.forEach((v, column) => {
+            data.rows[rowIndex][r.updateCells.range.startColumnIndex + column] = v.userEnteredValue.stringValue;
+          });
         }
       }
       if (lostReply) throw new Error("Synthetic lost response");

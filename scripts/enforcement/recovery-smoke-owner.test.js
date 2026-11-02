@@ -18,15 +18,18 @@ test("property-management smoke follows the current Waterline owner offer hub", 
 
   const currentOwnerHubBody = `
     <main>
+      <h2>Is Seascape a local alternative to Vacasa or Evolve?</h2>
+      <p>Seascape Vacations is an owner-operated vacation rental manager</p>
+      <a href="#owner-cta" data-placement="local-alternative">Request your 48-hour revenue review</a>
       <h1>Know what your home earned <em>and what needs attention.</em></h1>
-      <p>Seven homes. One local team.</p>
+      <p>Eight homes. One local team.</p>
       <a href="#owner-cta">Request your 48-hour revenue review</a>
       <form name="owner-revenue-teardown" method="POST"></form>
       <input type="checkbox" name="submitter_authority" value="owner_or_authorized_representative" required>
       I confirm I am the property owner or an authorized representative for this property.
       Owner statement, optional
       <h2>What we do for your home</h2>
-      <h2>Why a seven-home operator</h2>
+      <h2>Why a eight-home operator</h2>
       <h2>The homes we manage</h2>
       <a href="/property-management/vacation-rental-management-sarasota/">Sarasota</a>
     </main>
@@ -46,15 +49,18 @@ test("property-management smoke accepts the live minified single-quoted form nam
   const target = smoke.targets.find((entry) => entry.path === "/property-management/");
   const minifiedOwnerHubBody = `
     <main>
+      <h2>Is Seascape a local alternative to Vacasa or Evolve?</h2>
+      <p>Seascape Vacations is an owner-operated vacation rental manager</p>
+      <a href="#owner-cta" data-placement="local-alternative">Request your 48-hour revenue review</a>
       <h1>Know what your home earned <em>and what needs attention.</em></h1>
-      <p>Seven homes. One local team.</p>
+      <p>Eight homes. One local team.</p>
       <a href="#owner-cta">Request your 48-hour revenue review</a>
       <form name='owner-revenue-teardown' method='POST'></form>
       <input type="checkbox" name="submitter_authority" value="owner_or_authorized_representative" required>
       I confirm I am the property owner or an authorized representative for this property.
       Owner statement, optional
       <h2>What we do for your home</h2>
-      <h2>Why a seven-home operator</h2>
+      <h2>Why a eight-home operator</h2>
       <h2>The homes we manage</h2>
     </main>
   `;
@@ -68,38 +74,41 @@ test("property-management smoke accepts the live minified single-quoted form nam
   });
 });
 
-test("property-management smoke rejects Five homes on a seven-row catalog (#705)", () => {
+test("property-management smoke rejects Five homes on a eight-row catalog (#705)", () => {
   const smoke = loadSmokeModule();
   const target = smoke.targets.find((entry) => entry.path === "/property-management/");
   const catalog = require(path.join(projectRoot, "src/_data/properties-fallback.json"));
   const { catalogHomeCountWord } = require("./home-count-word");
 
-  assert.equal(catalog.length, 7);
-  assert.equal(catalogHomeCountWord(), "seven");
+  assert.equal(catalog.length, 8);
+  assert.equal(catalogHomeCountWord(), "eight");
 
-  const sevenHomesOwnerHubBody = `
+  const eightHomesOwnerHubBody = `
     <main>
+      <h2>Is Seascape a local alternative to Vacasa or Evolve?</h2>
+      <p>Seascape Vacations is an owner-operated vacation rental manager</p>
+      <a href="#owner-cta" data-placement="local-alternative">Request your 48-hour revenue review</a>
       <h1>Know what your home earned <em>and what needs attention.</em></h1>
-      <p>Seven homes. One local team.</p>
+      <p>Eight homes. One local team.</p>
       <a href="#owner-cta">Request your 48-hour revenue review</a>
       <form name="owner-revenue-teardown" method="POST"></form>
       <input type="checkbox" name="submitter_authority" value="owner_or_authorized_representative" required>
       I confirm I am the property owner or an authorized representative for this property.
       Owner statement, optional
       <h2>What we do for your home</h2>
-      <h2>Why a seven-home operator</h2>
+      <h2>Why a eight-home operator</h2>
       <h2>The homes we manage</h2>
     </main>
   `;
-  const fiveHomesOwnerHubBody = sevenHomesOwnerHubBody
-    .replace("Seven homes. One local team.", "Five homes. One local team.")
-    .replace("Why a seven-home operator", "Why a five-home operator");
+  const fiveHomesOwnerHubBody = eightHomesOwnerHubBody
+    .replace("Eight homes. One local team.", "Five homes. One local team.")
+    .replace("Why a eight-home operator", "Why a five-home operator");
 
   assert.doesNotThrow(() => {
     smoke.validateTargetResponse(target, {
       statusCode: 200,
       location: null,
-      body: sevenHomesOwnerHubBody
+      body: eightHomesOwnerHubBody
     });
   });
 
@@ -122,7 +131,10 @@ test("property-management smoke rejects a non-number-word home count", () => {
       location: null,
       body: `
         <main>
-          <h1>Know what your home earned <em>and what needs attention.</em></h1>
+          <h2>Is Seascape a local alternative to Vacasa or Evolve?</h2>
+      <p>Seascape Vacations is an owner-operated vacation rental manager</p>
+      <a href="#owner-cta" data-placement="local-alternative">Request your 48-hour revenue review</a>
+      <h1>Know what your home earned <em>and what needs attention.</em></h1>
           <p>Many homes. One local team.</p>
           <a href="#owner-cta">Request your 48-hour revenue review</a>
           <form name="owner-revenue-teardown" method="POST"></form>
@@ -148,11 +160,14 @@ test("property-management smoke fails when the owner form name is missing", () =
       location: null,
       body: `
         <main>
-          <h1>Know what your home earned <em>and what needs attention.</em></h1>
-      <p>Seven homes. One local team.</p>
+          <h2>Is Seascape a local alternative to Vacasa or Evolve?</h2>
+      <p>Seascape Vacations is an owner-operated vacation rental manager</p>
+      <a href="#owner-cta" data-placement="local-alternative">Request your 48-hour revenue review</a>
+      <h1>Know what your home earned <em>and what needs attention.</em></h1>
+      <p>Eight homes. One local team.</p>
           <a href="#owner-cta">Request your 48-hour revenue review</a>
           <h2>What we do for your home</h2>
-          <h2>Why a seven-home operator</h2>
+          <h2>Why a eight-home operator</h2>
           <h2>The homes we manage</h2>
         </main>
       `
@@ -176,4 +191,19 @@ test("property-management smoke rejects the retired explainer-hub surface", () =
       `
     });
   }, /property-management hub is missing the Waterline owner offer surface/);
+});
+
+
+test("owner smoke rejects a missing local-alternative answer and tracked action", () => {
+  const fs = require("fs");
+  const smoke = loadSmokeModule();
+  const target = smoke.targets.find(entry => entry.path === "/property-management/");
+  const body = fs.readFileSync(path.join(projectRoot, "_site/property-management/index.html"), "utf8");
+  assert.doesNotThrow(() => smoke.validateTargetResponse(target, { statusCode: 200, body }));
+  for (const stale of [
+    body.replaceAll("Is Seascape a local alternative to Vacasa or Evolve?", "removed answer"),
+    body.replace(/data-placement=["']local-alternative["']/g, "removed-tracking")
+  ]) {
+    assert.throws(() => smoke.validateTargetResponse(target, { statusCode: 200, body: stale }), /local-alternative/);
+  }
 });

@@ -6,7 +6,7 @@ role owns each step. Process detail lives in the linked docs; this page only
 routes. Verified 2026-10-25; re-verify the scheduled rows before relying on
 them.
 
-## What Runs On Its Own
+## Local SEO Jobs
 
 | Job | Where | What it does | Re-verify |
 | --- | --- | --- | --- |
@@ -14,10 +14,12 @@ them.
 | OpenSEO scheduler tick | launchd `com.sawbeck.open-seo-review-scheduler`, every 15 minutes | Runs OpenSEO's own scheduled work (saved rank trackers, AI-visibility schedules). Paid schedules exist only when Sawyer approved them | `launchctl list com.sawbeck.open-seo-review-scheduler` |
 | Weekly search drop check | launchd `com.seascape.seo-weekly-drop-check`, Mondays 07:47 Eastern; plist owned by `seascape-ops`, script owned by `seascape-analytics` | Compares the last 28 days of Search Console clicks with the 28 days before for each page with 10+ prior clicks. A page down 30% or more puts one card on Sawyer's docket and replaces the prior week's card | `launchctl print gui/501/com.seascape.seo-weekly-drop-check` |
 
-Nothing else SEO-related is scheduled. The Analytics weekly operator report
-(`scripts/weekly-search-operator-report.sh`) runs only on request and needs the
-BigQuery CLI. No GitHub workflow in this repo runs SEO research; the Site
-workflows test, preview and publish pages.
+This table covers local SEO jobs, not every Site or GitHub schedule. The
+Analytics weekly operator report (`scripts/weekly-search-operator-report.sh`)
+runs on request and needs the BigQuery CLI. Site workflows under
+`.github/workflows/` separately test, preview, publish, and check live pages;
+inspect their current triggers before making schedule claims. This map does
+not add or enable any schedule.
 
 ## What An Agent Runs On Request
 

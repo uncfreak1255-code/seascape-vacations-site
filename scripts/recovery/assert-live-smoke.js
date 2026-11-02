@@ -1,7 +1,7 @@
 const https = require("https");
 const { isCurrentAvailabilityRange } = require("../cache/normalize-hostaway");
 const { LISTINGS } = require("../booking/stay-availability");
-const { catalogHomeCountWord } = require("../enforcement/home-count-word");
+const validateOwnerLiveSurface = require("./validate-owner-live-surface");
 
 // "Book these dates" on a home's page and on a catalog card opens this Hostaway address. Hostaway does
 // not document it, so the daily smoke loads it for an open stay and fails when the priced checkout stops appearing.
@@ -49,15 +49,7 @@ const targets = [
   { path: "/images/siesta-key-og.jpg", status: 200 }
 ];
 
-const stablePropertyDetailLinks = [
-  { href: "/properties/dockside-dreams/", label: "View Dockside Dreams details" },
-  { href: "/properties/the-oasis/", label: "View The Oasis details" },
-  { href: "/properties/sarasota-luxe/", label: "View Sarasota Luxe details" },
-  { href: "/properties/river-house/", label: "View River House details" },
-  { href: "/properties/bradenton-pool-home/", label: "View Bradenton Pool Home details" },
-  { href: "/properties/blue-house/", label: "View Pickleball Pool Home Retreat details" },
-  { href: "/properties/coastal-stay/", label: "View The Coastal details" }
-];
+const stablePropertyDetailLinks = require("./property-detail-links");
 
 function requireIncludes(path, body, fragments) {
   const missing = fragments.filter((fragment) => !body.includes(fragment));
@@ -339,31 +331,7 @@ function validateTargetResponse(target, response) {
   }
 
   if (target.path === "/property-management/") {
-    const homeCountWord = catalogHomeCountWord();
-    const hasOwnerOfferSurface = require("./owner-offer-surface")(response.body, homeCountWord);
-
-    if (!hasOwnerOfferSurface) {
-      throw new Error("property-management hub is missing the Waterline owner offer surface");
-    }
-
-    if (
-      response.body.includes("What Is Vacation Rental Property Management?")
-      || response.body.includes("View All Properties")
-      || response.body.includes("Request a property evaluation")
-      || response.body.includes("$119,923")
-      || response.body.includes("13.4%")
-      || response.body.includes("Reply guaranteed")
-      || response.body.includes("The Fee Comparison")
-      || response.body.includes("Before you renew,")
-    ) {
-      throw new Error("property-management hub is serving retired owner copy");
-    }
-
-    requireExcludes(target.path, response.body, [
-      "/property-management/vacation-rental-taxes-florida/",
-      "/property-management/vacation-rental-insurance-florida/",
-      "Average Guest Rating"
-    ]);
+    validateOwnerLiveSurface(response.body, { requireIncludes, requireExcludes });
   }
 
   if (target.path === "/research/gulf-coast-vacation-booking-trends-2026/") {

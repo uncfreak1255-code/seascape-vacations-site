@@ -1,7 +1,8 @@
 # Required Batch Workflow
 
 Choose the route before starting work. All routes retain the content,
-source-truth, measurement, design and publication requirements in `AGENTS.md`.
+source-truth, measurement, design and publication requirements in `AGENTS.md`
+and the `docs/agents/rules/` files it points to.
 
 ## Approved Friday pilot: action and evaluation
 

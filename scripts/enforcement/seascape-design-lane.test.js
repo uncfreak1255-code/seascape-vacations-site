@@ -140,6 +140,7 @@ test("design lane prompt wires the repo-local skills and proof contract", () => 
   assert.match(prompt, /Never install, copy, globally load, or promote a donor/);
   assert.match(prompt, /npm run test:visual/);
   assert.match(prompt, /Figma is optional/);
+  assert.match(prompt, /\n3\. DESIGN\.md\n4\. docs\/agents\/rules\/design\.md\n/);
 });
 
 test("donor discovery reads metadata only and ignores fixtures and unrelated skills", () => {
@@ -532,6 +533,8 @@ test("design lane rejects task names that escape the worktree root", () => {
 
 test("design workflow docs and claude compatibility layer advertise the local lane", () => {
   const agents = read("AGENTS.md");
+  const designRule = read("docs/agents/rules/design.md");
+  const claudeDesignRule = fs.readlinkSync(path.join(projectRoot, ".claude/rules/design.md"));
   const workflow = read("docs/process/design-review-workflow.md");
   const studio = read("docs/process/seascape-design-studio.md");
   const readme = read(".claude/skills/README.md");
@@ -543,8 +546,14 @@ test("design workflow docs and claude compatibility layer advertise the local la
     path.join(projectRoot, ".claude/skills/seascape-design-specialist")
   );
 
-  assert.match(agents, /seascape-design-specialist/);
-  assert.match(agents, /npm run design:lane/);
+  assert.match(agents, /docs\/agents\/rules\/design\.md/);
+  assert.equal(claudeDesignRule, "../../docs/agents/rules/design.md");
+  assert.match(
+    designRule,
+    /^---\npaths:\n  - "DESIGN\.md"\n  - "src\/css\/\*\*"\n  - "src\/_includes\/\*\*"\n  - "src\/\*\*\/\*\.njk"\n  - "src\/\*\*\/\*\.html"\n  - "src\/assets\/js\/\*\*"\n  - "tests\/visual\/\*\*"\n---\n/
+  );
+  assert.match(designRule, /seascape-design-specialist/);
+  assert.match(designRule, /npm run design:lane/);
   assert.match(workflow, /seascape-design-critic/);
   assert.match(workflow, /npm run design:lane/);
   assert.match(studio, /npm run design:donors/);

@@ -4,39 +4,19 @@
 // Private, operator-invoked adapter. No webhook, public endpoint, scheduler or sender.
 const fs = require("node:fs");
 const path = require("node:path");
-const os = require("node:os");
 const { getStore } = require("@netlify/blobs");
 const {
-  OWNER_LEAD_CONTACT_STORE_NAME, OWNER_LEAD_CONTACTS_KEY, buildOwnerLeadContact
-} = require("../../netlify/functions/_owner-lead-contacts");
-const {
-  OWNER_LEAD_FORM_NAME, OWNER_LEAD_STORE_NAME, OWNER_LEAD_METRICS_KEY
-} = require("../../netlify/functions/_owner-lead-metrics");
-const {
-  TRACKER_ID, FOLDER_ID, DRIVE_ID, TAB, HEADERS, digest,
+  TRACKER_ID, FOLDER_ID, DRIVE_ID, TAB, digest,
   canonicalPermissions, requirePrivacy, planImport, timestamp
 } = require("./mapping");
 
 const { trackerHeaders, columnName } = require("./schema");
 const { inspectWriter } = require("./writer-seat");
-
-function required(env, key) {
-  if (!env[key]) throw new Error("missing_" + key);
-  return env[key];
-}
-
-async function request(url, token, options = {}, fetchImpl = fetch) {
-  let response;
-  try {
-    response = await fetchImpl(url, {
-      ...options, redirect: "error", signal: AbortSignal.timeout(30000),
-      headers: { authorization: "Bearer " + token, "content-type": "application/json" }
-    });
-  } catch (_error) { throw new Error("private_api_transport_failed"); }
-  if (!response.ok) throw new Error("private_api_http_" + response.status);
-  try { return await response.json(); }
-  catch (_error) { throw new Error("private_api_invalid_json"); }
-}
+const { request } = require("./provider-request");
+const { readSource } = require("./netlify-source");
+const { privateDirectory, savePrivate, readPrivate } = require("./private-state");
+const { googleToken } = require("./google-auth");
+const { readReviewedSource, planReviewedInquiry, requireInquiryApproval } = require("./reviewed-inquiry");
 
 async function readPermissions(id, token, fetchImpl) {
   const permissions = [];
@@ -79,94 +59,11 @@ async function readAccess(token, fetchImpl) {
   return { surfaces: canonical, accessHash: digest(canonical) };
 }
 
-async function readSource(env, fetchImpl, storeFactory = getStore) {
-  const siteID = required(env, "OWNER_LEAD_CONTACT_BLOBS_SITE_ID");
-  const token = required(env, "OWNER_LEAD_CONTACT_BLOBS_TOKEN");
-  const site = await request("https://api.netlify.com/api/v1/sites/" + encodeURIComponent(siteID), token, {}, fetchImpl);
-  if (site.id !== siteID || !["seascape-vacations.com", "www.seascape-vacations.com"].includes(site.custom_domain) ||
-      !site.published_deploy?.id || site.published_deploy.context !== "production") {
-    throw new Error("production_site_unverified");
-  }
-  let blob;
-  try {
-    const store = storeFactory({ name: OWNER_LEAD_CONTACT_STORE_NAME, siteID, token, consistency: "strong" });
-    blob = await store.get(OWNER_LEAD_CONTACTS_KEY, { type: "json", consistency: "strong" });
-  } catch (_error) { throw new Error("contact_store_read_failed"); }
-  if (blob !== null && (!Array.isArray(blob.contacts) || blob.totalContacts !== blob.contacts.length)) {
-    throw new Error("contact_store_invalid");
-  }
-  // Forms is the recovery source for evicted/legacy contacts. It preserves the
-  // actual submission ID, original time and authority field the old blob omitted.
-  const forms = await request("https://api.netlify.com/api/v1/sites/" + encodeURIComponent(siteID) + "/forms", token, {}, fetchImpl);
-  if (!Array.isArray(forms)) throw new Error("forms_source_invalid");
-  const matching = forms.filter((f) => f.name === OWNER_LEAD_FORM_NAME);
-  if (matching.length !== 1 || !matching[0].id) throw new Error("owner_form_source_unverified");
-  const contacts = new Map();
-  for (const c of blob?.contacts || []) {
-    if (!c?.submissionId || contacts.has(c.submissionId)) throw new Error("source_submission_ids_missing_or_duplicate");
-    contacts.set(c.submissionId, c);
-  }
-  let formCount = 0;
-  const formIds = new Set();
-  const pages = new Set();
-  for (let page = 1; page <= 100; page += 1) {
-    const submissions = await request("https://api.netlify.com/api/v1/forms/" + encodeURIComponent(matching[0].id) +
-      "/submissions?per_page=100&page=" + page, token, {}, fetchImpl);
-    if (!Array.isArray(submissions)) throw new Error("forms_source_invalid");
-    if (!submissions.length) break;
-    const fingerprint = digest(submissions.map((s) => s.id));
-    if (pages.has(fingerprint)) throw new Error("forms_pagination_repeated");
-    pages.add(fingerprint);
-    for (const s of submissions) {
-      if (!s.id || !s.created_at || !s.data || (s.form_id && s.form_id !== matching[0].id)) {
-        throw new Error("form_submission_invalid");
-      }
-      if (formIds.has(String(s.id))) throw new Error("forms_changed_during_pagination");
-      formIds.add(String(s.id));
-      formCount += 1;
-      const contact = buildOwnerLeadContact({ ...s, form_name: OWNER_LEAD_FORM_NAME });
-      if (contact) {
-        // Recovery must not erase a proof marker retained in the private capture.
-        contact.proofLabel = contact.proofLabel || contacts.get(contact.submissionId)?.proofLabel || "";
-        contacts.set(contact.submissionId, contact);
-      }
-    }
-    if (page === 100) throw new Error("forms_pagination_limit");
-  }
-  // The existing relabel endpoint updates only metrics receipts. Join its labels
-  // into this private projection by ID; never copy contact fields into metrics.
-  if (env.OWNER_LEAD_BLOBS_SITE_ID && env.OWNER_LEAD_BLOBS_SITE_ID !== siteID) {
-    throw new Error("proof_labels_site_mismatch");
-  }
-  let metrics;
-  try {
-    const store = storeFactory({ name: OWNER_LEAD_STORE_NAME, siteID,
-      token: env.OWNER_LEAD_BLOBS_TOKEN || token, consistency: "strong" });
-    metrics = await store.get(OWNER_LEAD_METRICS_KEY, { type: "json", consistency: "strong" });
-  } catch (_error) { throw new Error("proof_labels_read_failed"); }
-  if (!metrics || !Array.isArray(metrics.receipts)) throw new Error("proof_labels_unavailable_or_invalid");
-  for (const receipt of metrics.receipts) {
-    if (!receipt || typeof receipt.submissionId !== "string" || !receipt.submissionId.trim() ||
-        (receipt.proofLabel !== undefined && typeof receipt.proofLabel !== "string")) {
-      throw new Error("proof_labels_unavailable_or_invalid");
-    }
-    const label = receipt.proofLabel?.trim();
-    const contact = contacts.get(receipt.submissionId);
-    if (label && contact) contact.proofLabel = contact.proofLabel || label;
-  }
-  const list = [...contacts.values()].sort((a, b) => a.submissionId.localeCompare(b.submissionId));
-  return {
-    contacts: list, sourceHash: digest(list), blobCount: blob?.contacts.length || 0,
-    blobPresent: blob !== null, formCount, deployId: site.published_deploy.id,
-    deployCommit: site.published_deploy.commit_ref || null
-  };
-}
-
 async function readTracker(token, fetchImpl) {
   const metadata = await request("https://sheets.googleapis.com/v4/spreadsheets/" + TRACKER_ID +
     "?fields=sheets(properties)", token, {}, fetchImpl);
   const sheet = metadata.sheets?.find((s) => s.properties.title === TAB)?.properties;
-  if (!sheet || sheet.gridProperties.columnCount < HEADERS.length || sheet.gridProperties.rowCount > 1900) {
+  if (!sheet || sheet.gridProperties.columnCount < 16 || sheet.gridProperties.rowCount > 1900) {
     throw new Error("tracker_bounds_require_review");
   }
   const base = "https://sheets.googleapis.com/v4/spreadsheets/" + TRACKER_ID + "/values/";
@@ -194,26 +91,41 @@ async function readTracker(token, fetchImpl) {
 }
 
 function batchForPlan(plan, tracker) {
-  const headers = trackerHeaders(tracker.rows[0] || []);
+  const original = (tracker.rows[0] || []).slice();
+  while (original.length && !original.at(-1)) original.pop();
+  const headers = plan.headers || trackerHeaders(original);
+  trackerHeaders(headers);
+  if (plan.headers && (original.some((value, index) => headers[index] !== value) ||
+      ![original.length, original.length + 1].includes(headers.length) ||
+      (headers.length > original.length && headers.at(-1) !== "Came from"))) {
+    throw new Error("tracker_schema_changed");
+  }
   if (plan.append.some((row) => row.length !== headers.length)) throw new Error("tracker_plan_width_mismatch");
+  if (tracker.sheet.gridProperties.columnCount < headers.length) throw new Error("tracker_bounds_require_review");
   if (tracker.rows.length + plan.append.length > tracker.sheet.gridProperties.rowCount) {
     throw new Error("tracker_capacity_requires_review");
   }
-  const update = (startRowIndex, rows) => ({ updateCells: {
+  const update = (startRowIndex, rows, startColumnIndex = 0) => ({ updateCells: {
     range: { sheetId: tracker.sheet.sheetId, startRowIndex, endRowIndex: startRowIndex + rows.length,
-      startColumnIndex: 0, endColumnIndex: headers.length },
+      startColumnIndex, endColumnIndex: startColumnIndex + rows[0].length },
     rows: rows.map((row) => ({ values: row.map((value) => ({ userEnteredValue: { stringValue: value } })) })),
     fields: "userEnteredValue"
   } });
-  return [update(0, [headers]), ...(plan.append.length ? [update(tracker.rows.length, plan.append)] : [])];
+  const headerUpdates = plan.headers
+    ? (headers.length > original.length ? [update(0, [["Came from"]], original.length)] : [])
+    : [update(0, [headers])];
+  return [...headerUpdates, ...(plan.append.length ? [update(tracker.rows.length, plan.append)] : [])];
 }
 
-async function applyPlan({ plan, tracker, source, policy, env, now, fetchImpl, storeFactory = getStore }) {
-  const token = required(env, "OWNER_INTELLIGENCE_GOOGLE_ACCESS_TOKEN");
-  const freshSource = await readSource(env, fetchImpl, storeFactory);
+async function applyPlan({ plan, tracker, source, policy, env, now, fetchImpl, storeFactory = getStore,
+  sourceReader = readSource, googleAccessToken }) {
+  const token = googleAccessToken || await googleToken(env, { fetchImpl });
+  const freshSource = await sourceReader(env, fetchImpl, storeFactory);
   const freshTracker = await readTracker(token, fetchImpl);
   const freshAccess = await readAccess(token, fetchImpl);
   requirePrivacy(policy, freshAccess.accessHash, now, env.OWNER_INTELLIGENCE_WRITER_ID);
+  requireInquiryApproval(policy, freshSource);
+  if (source.kind === "reviewed-inquiry" && plan.held.length) throw new Error("reviewed_inquiry_held");
   if (source.sourceHash !== freshSource.sourceHash || plan.snapshotHash !== digest(freshTracker.rows)) {
     throw new Error("source_or_tracker_changed_repreview_required");
   }
@@ -221,12 +133,12 @@ async function applyPlan({ plan, tracker, source, policy, env, now, fetchImpl, s
   try {
     // Do not retry an ambiguous write. Fixed ranges + source IDs make a subsequent
     // full reconciliation safe, but a new run must read the tracker first.
-    await request("https://sheets.googleapis.com/v4/spreadsheets/" + TRACKER_ID + ":batchUpdate", token,
+    if (requests.length) await request("https://sheets.googleapis.com/v4/spreadsheets/" + TRACKER_ID + ":batchUpdate", token,
       { method: "POST", body: JSON.stringify({ requests }) }, fetchImpl);
   } catch (_error) { throw new Error("tracker_write_unconfirmed_reconcile_before_retry"); }
   const readback = await readTracker(token, fetchImpl);
   const expected = [...tracker.rows];
-  expected[0] = trackerHeaders(tracker.rows[0] || []);
+  expected[0] = plan.headers || trackerHeaders(tracker.rows[0] || []);
   expected.push(...plan.append);
   // Sheets omits trailing empty strings on reads.
   const canonical = (rows) => rows.map((r) => { const row = r.slice(); while (row.length && row.at(-1) === "") row.pop(); return row; });
@@ -236,43 +148,17 @@ async function applyPlan({ plan, tracker, source, policy, env, now, fetchImpl, s
   return { imported: plan.append.length, held: plan.held.length, alreadyImported: plan.alreadyImported };
 }
 
-function privateDirectory(env) {
-  const runtime = env.SEASCAPE_RUNTIME_HOME || path.join(os.homedir(), "Library", "Application Support", "seascape-ops");
-  const directory = path.join(runtime, "state", "staging", "owner-intelligence");
-  fs.mkdirSync(directory, { recursive: true, mode: 0o700 });
-  const real = fs.realpathSync(directory);
-  for (let current = real; ; current = path.dirname(current)) {
-    if (fs.existsSync(path.join(current, ".git"))) throw new Error("private_state_inside_repository");
-    if (path.dirname(current) === current) break;
-  }
-  fs.chmodSync(real, 0o700);
-  return real;
-}
-
-function savePrivate(directory, name, value) {
-  const target = path.join(directory, name);
-  // Atomic replacement; never follow an existing symlink to a permissive file.
-  const temporary = path.join(directory, "." + name + "." + process.pid);
-  const fd = fs.openSync(temporary, "wx", 0o600);
-  try { fs.writeFileSync(fd, JSON.stringify(value, null, 2) + "\n"); }
-  finally { fs.closeSync(fd); }
-  fs.renameSync(temporary, target);
-}
-
-function readPrivate(directory, name) {
-  const file = path.join(directory, name);
-  const stat = fs.lstatSync(file);
-  if (!stat.isFile() || stat.isSymbolicLink() || (stat.mode & 0o077) !== 0) {
-    throw new Error("private_input_permissions_require_review");
-  }
-  return JSON.parse(fs.readFileSync(file, "utf8"));
-}
-
 async function main(argv = process.argv.slice(2), env = process.env) {
   const mode = argv[0] || "--preview";
   if (mode === "--inspect-writer" && argv.length === 1) return inspectWriter(env);
-  if (!["--inspect-access", "--inspect-source", "--preview", "--apply"].includes(mode) || argv.length > 1) {
-    throw new Error("use_inspect_access_inspect_source_preview_or_apply");
+  const reviewed = ["--inspect-reviewed", "--preview-reviewed", "--apply-reviewed"].includes(mode);
+  if (reviewed && (argv.length !== 2 || !argv[1])) throw new Error("reviewed_inquiry_file_required");
+  if (mode === "--inspect-reviewed") {
+    const source = readReviewedSource(argv[1]);
+    return { localInputValid: true, inquiryHash: source.sourceHash, liveAccessVerified: false, writesPerformed: false };
+  }
+  if (!reviewed && (!["--inspect-access", "--inspect-source", "--preview", "--apply"].includes(mode) || argv.length > 1)) {
+    throw new Error("use_inspect_preview_or_apply_mode");
   }
   const directory = privateDirectory(env);
   const lockPath = path.join(directory, "writer.lock");
@@ -288,33 +174,39 @@ async function main(argv = process.argv.slice(2), env = process.env) {
       return { blobPresent: source.blobPresent, blobCount: source.blobCount, formCount: source.formCount,
         reconciledCandidates: source.contacts.length, sourceVerified: true };
     }
-    const token = required(env, "OWNER_INTELLIGENCE_GOOGLE_ACCESS_TOKEN");
+    const token = await googleToken(env);
     const access = await readAccess(token);
     savePrivate(directory, "access-review.json", { ...access, observedAt: now });
     if (mode === "--inspect-access") return { accessVerified: true, surfaceCount: access.surfaces.length };
     const policy = readPrivate(directory, "approved-policy.json");
     requirePrivacy(policy, access.accessHash, now, env.OWNER_INTELLIGENCE_WRITER_ID);
-    const source = await readSource(env);
+    const sourceReader = reviewed ? () => readReviewedSource(argv[1], now) : readSource;
+    const source = await sourceReader(env);
+    requireInquiryApproval(policy, source);
     const tracker = await readTracker(token);
     const reviewPath = path.join(directory, "inquiry-reviews.json");
     const reviews = fs.existsSync(reviewPath) ? readPrivate(directory, "inquiry-reviews.json") : {};
-    const plan = planImport({ contacts: source.contacts, rows: tracker.rows, reviews, now });
-    if (mode === "--preview") {
-      savePrivate(directory, "preview.json", { now, accessHash: access.accessHash, source, plan });
-      return { candidates: source.contacts.length, importable: plan.append.length, held: plan.held.length,
+    const plan = reviewed ? planReviewedInquiry({ source, rows: tracker.rows, now })
+      : planImport({ contacts: source.contacts, rows: tracker.rows, reviews, now });
+    const previewName = reviewed ? "reviewed-preview.json" : "preview.json";
+    if (["--preview", "--preview-reviewed"].includes(mode)) {
+      savePrivate(directory, previewName, { now, accessHash: access.accessHash, source, plan });
+      return { candidates: reviewed ? 1 : source.contacts.length, importable: plan.append.length, held: plan.held.length,
         alreadyImported: plan.alreadyImported, written: false };
     }
-    const preview = readPrivate(directory, "preview.json");
+    const preview = readPrivate(directory, previewName);
     if (!timestamp(preview.now) || Date.parse(now) - Date.parse(preview.now) > 3600000 || Date.parse(preview.now) > Date.parse(now) ||
         preview.accessHash !== access.accessHash || preview.source.sourceHash !== source.sourceHash ||
         preview.plan.snapshotHash !== plan.snapshotHash ||
+        digest(preview.plan.headers || []) !== digest(plan.headers || []) ||
         digest(preview.plan.held) !== digest(plan.held) ||
         // Ignore only ingestion time in reviewed rows; source, disposition and permission must match.
         digest(preview.plan.append.map((r) => r.filter((_v, i) => i !== 22))) !==
           digest(plan.append.map((r) => r.filter((_v, i) => i !== 22)))) {
       throw new Error("preview_stale_or_changed");
     }
-    const result = await applyPlan({ plan, tracker, source, policy, env, now, fetchImpl: fetch });
+    const result = await applyPlan({ plan, tracker, source, policy, env, now, fetchImpl: fetch,
+      sourceReader, googleAccessToken: token });
     savePrivate(directory, "last-result.json", { now, ...result });
     return result;
   } finally {

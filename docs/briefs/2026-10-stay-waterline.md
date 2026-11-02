@@ -9,6 +9,10 @@
 - audience pattern: Read the collection's existing answer, compare the listed homes and follow its existing property/booking links.
 - proof source: Current DESIGN.md, shared Waterline guest.css and catalog/activity-guide patterns; all 58 active generated stay pages at base 696f0abf; October 31 rendered diagnosis of family page versus homepage/Rainy Day.
 - required internal links: /properties/, /guides/
+- Source files changed in this batch:
+  - `src/stays/stays.njk`
+  - `src/stays/index.njk`
+  - `src/_includes/partials/stay-property-photo.njk`
 - family reference links: /properties/bradenton-pool-home/ and /properties/the-oasis/ stay on the family collection; other generated collections keep their own matched homes. The 59-route preservation check verifies every original destination, rather than requiring those two homes on all shared-template renders.
 - CTA target: Every existing anchor destination and tracking tuple remains unchanged, including hero/section jumps, property cards, bottom and mobile booking actions.
 - anti-claims: No copy rewrite, new property fact, rate, review, savings or availability promise. Preserve all existing text, metadata, JSON-LD, link destinations/order, tracking and photos; no held guide edits, host changes, paid checks, new dependencies or schedules. Existing copy is preserved, not newly fact-certified.

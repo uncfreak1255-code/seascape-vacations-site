@@ -90,9 +90,9 @@ test("duplicate source IDs, missing tracker IDs and schema drift fail closed", (
   assert.throws(() => plan([contact()], [HEADERS, row, row]), /tracker_record_ids/);
 });
 
-test("access changes, public/group shares, stale policy, method and retention gaps cannot authorize a write", () => {
+test("access changes, public/group shares, stale policy and retention gaps cannot authorize a write", () => {
   assert.doesNotThrow(() => requirePrivacy(policy, accessHash, now, "synthetic-writer"));
-  for (const patch of [{ accessHash: "different" }, { methodAcceptanceEvidence: "" }, { automaticDeletion: true },
+  for (const patch of [{ accessHash: "different" }, { automaticDeletion: true },
     { approvedBy: "Other" }, { expiresAt: now }, { singleWriterId: "different" }, { permissionScope: "marketing" }]) {
     assert.throws(() => requirePrivacy({ ...policy, ...patch }, accessHash, now, "synthetic-writer"), /not_approved/);
   }

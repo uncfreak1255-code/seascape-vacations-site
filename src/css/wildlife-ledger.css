@@ -1,0 +1,39 @@
+/* Dolphins guide: reuse ledger A and adapt its four-column wildlife data. */
+.wildlife-ledger .hero h1 { font-size: clamp(44px, 4.4vw, 64px); max-width: 20ch; }
+.wildlife-ledger .guide-tag { display: block; font: 500 12px/1.5 Poppins, sans-serif; color: var(--clay); text-transform: uppercase; letter-spacing: .13em; margin-bottom: 16px; }
+.wildlife-ledger .guide-meta { font: 400 12px/1.5 Poppins, sans-serif; color: var(--muted); margin: 20px 0 0; }
+.wildlife-ledger .guide-hero-img { display: block; width: 100%; height: auto; aspect-ratio: 16/9; object-fit: cover; margin: 40px 0 32px; }
+.wildlife-ledger .cw-comparison table th:nth-child(1) { width: 24%; }
+.wildlife-ledger .cw-comparison table th:nth-child(2) { width: 20%; }
+.wildlife-ledger .cw-comparison table th:nth-child(3) { width: 36%; }
+.wildlife-ledger .cw-comparison table th:nth-child(4) { width: 20%; }
+.wildlife-ledger .wildlife-related { background: none; border: 0; border-top: 1px solid var(--rule); border-radius: 0; padding: 32px 0; margin: 0; }
+.wildlife-ledger .wildlife-related .container { max-width: none; padding: 0; }
+.wildlife-ledger .wildlife-related h3 { margin: 0 0 24px; font: 400 30px/1.2 var(--display); color: var(--ink); }
+.wildlife-ledger .related-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+.wildlife-ledger .related-card { display: block; border: 0; background: none; text-decoration: none; }
+.wildlife-ledger .related-card img { display: block; width: 100%; aspect-ratio: 3/2; object-fit: cover; }
+.wildlife-ledger .related-card h4 { font: 500 16px/1.5 Poppins, sans-serif; margin: 16px 0 8px; }
+.wildlife-ledger .related-card p { font: 400 14px/1.6 Poppins, sans-serif; }
+.wildlife-ledger .wildlife-related li { margin-bottom: 0; }
+.wildlife-ledger .wildlife-related li a { display: inline-flex; align-items: center; min-height: 44px; }
+.wildlife-ledger .guide-related-stays ul { display: block; padding-left: 0; list-style: none; }
+.wildlife-ledger .guide-related-stays li { border-bottom: 1px solid var(--rule); }
+@media (max-width: 700px) {
+  .wildlife-ledger .hero h1 { font-size: clamp(42px, 10.8vw, 54px); max-width: 16ch; }
+  .wildlife-ledger .cw-comparison table tr { grid-template-columns: minmax(0, 1fr); }
+  .wildlife-ledger .cw-comparison table td:nth-child(n+2) { display: grid; grid-template-columns: 100px minmax(0, 1fr); gap: 16px; border: 0; border-top: 1px solid var(--rule); }
+  .wildlife-ledger .cw-comparison table td:nth-child(n+2)::before { margin: 0; }
+  .wildlife-ledger .guide-hero-img { margin-top: 32px; }
+  .wildlife-ledger .related-grid { grid-template-columns: 1fr; }
+}
+
+.wildlife-stay { display: grid; grid-template-columns: minmax(0, 1fr) minmax(220px, .55fr); gap: 32px; border-block: 1px solid var(--rule); padding: 32px 0; margin: 32px 0; }
+.wildlife-stay h2 { font: 400 36px/1.08 var(--display); margin: 8px 0 16px; }
+.wildlife-stay p { font-size: 15px; line-height: 1.65; }
+.wildlife-stay .wildlife-stay-label { color: var(--clay); font-size: 12px; text-transform: uppercase; letter-spacing: .13em; }
+.wildlife-stay-actions { display: flex; flex-direction: column; justify-content: center; align-items: flex-start; gap: 16px; }
+.wildlife-stay-actions a { color: var(--ink); min-height: 44px; display: inline-flex; align-items: center; }
+@media(max-width:700px) { .wildlife-stay { grid-template-columns: minmax(0,1fr); gap: 24px; } }
+
+.wildlife-ledger .wildlife-stay-actions .g-button { background: var(--ink); color: var(--paper); border-radius: 4px; padding: 16px 24px; text-decoration: none; }

@@ -1,0 +1,1 @@
+../../docs/agents/rules/content-gate.md
