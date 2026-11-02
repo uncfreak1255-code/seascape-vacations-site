@@ -85,3 +85,21 @@ test("a shallow clone that cannot see ancestry gives no verdict instead of not-o
   assert.equal(result.state, "shallow-history");
   assert.equal(result.exitCode, 2);
 });
+
+test("a shallow clone whose production tip hides its ancestry gives no verdict instead of queued", (t) => {
+  const { clone, queued } = makeFixture(t);
+  const run = (cwd, ...args) => execFileSync("git", args, { cwd, encoding: "utf8", stdio: "pipe" }).trim();
+  // production = queued -> publish, so production really contains `queued`.
+  run(clone, "fetch", "-q", "origin", "main");
+  run(clone, "checkout", "-q", "--detach", queued);
+  run(clone, "-c", "user.email=test@example.com", "-c", "user.name=test", "commit", "-q", "--no-verify", "--allow-empty", "-m", "publish");
+  run(clone, "push", "-q", "origin", "HEAD:production");
+  const origin = `file://${path.join(path.dirname(clone), "origin.git")}`;
+  const shallow = path.join(path.dirname(clone), "shallow");
+  run(path.dirname(clone), "clone", "-q", "--depth", "1", "-b", "main", origin, shallow);
+  // A depth-1 production fetch cuts the publish commit off from `queued`.
+  run(shallow, "fetch", "-q", "--depth", "1", "origin", "+refs/heads/production:refs/remotes/origin/production");
+  const result = mergeLiveState({ sha: queued, cwd: shallow, fetch: false });
+  assert.equal(result.state, "shallow-history");
+  assert.equal(result.exitCode, 2);
+});
