@@ -1,7 +1,7 @@
 # Brief: Shared stay collections on Waterline
 
 - lifecycle: active
-- approved scope: Sawyer, October 31, 2026: migrate the stay template to Waterline; fix the legacy exception and design checks; preserve copy, SEO and booking links; show a preview before publishing. Local implementation/preview is authorized; no push, public PR, merge or production activation before preview selection.
+- approved scope: Sawyer approved the guide-first browse preview on November 2, 2026, then authorized PR, normal publication and live verification. Preserve original copy, SEO, booking links and host identities; no paid checks or manual early publish. Earlier preview-only holds are superseded.
 - owner: Codex chat 01a18dda-ff9c-73e3-8451-d3f1e9e059ee, sole writer and eventual merger; worktree .worktrees/stay-waterline, branch codex/stay-waterline, base 696f0abf185630596d01a50554f6747cc66602c2.
 - persona: Guest comparing real Bradenton/Sarasota homes and their trip tradeoffs before opening property details.
 - primary keyword: Existing stay-collection intents; no keyword or ranking change.
@@ -88,6 +88,13 @@ after analytics-ga4's conversion-tracking.js, without duplicating the tracking
 script. The returning-guest regression was observed failing with blank inputs
 despite restored URL dates; it must now restore dates and 12 guests, hide the
 10-guest home and route Dockside to the same trip. No host/provider change.
+
+Performance CI passed its unchanged Lighthouse ceilings but correctly flagged
+two stay routes' stylesheet byte counts: the old 14,129-byte inline style was
+not counted as an external resource; its shared replacement is 14,633 bytes.
+The native ratchet updater uses CI run 41531519260's actual Lighthouse reports
+to record only those two measured stylesheet changes, with a reason. No speed,
+transfer, script, accessibility or visual tolerance is relaxed.
 
 Before production implementation, family boundary invariants: retain the
 approved short answer once before the form, four exact matched homes in order,
