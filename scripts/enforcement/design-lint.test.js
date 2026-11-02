@@ -386,3 +386,10 @@ test("design-lint does not false-positive on sanctioned tokens, palette hex, or 
   );
   assert.deepEqual(nonStyle.offBrandHex, [], "hex outside style contexts must not be flagged");
 });
+
+// The active stay template previously sat outside SOURCE_ROOTS entirely.
+test("design-lint includes generated stay templates in its real scan", () => {
+  const { listSourceFiles } = require("../design/design-lint-sources");
+  const files = listSourceFiles(path.resolve(__dirname, "../.."));
+  assert.ok(files.includes("src/stays/stays.njk"), "stay template cannot be invisible to design lint");
+});

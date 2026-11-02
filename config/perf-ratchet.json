@@ -26,11 +26,11 @@
     },
     "/stays/anna-maria-island-beachfront-rentals/": {
       "script": 55953,
-      "stylesheet": 36114
+      "stylesheet": 50747
     },
     "/stays/anna-maria-island-vacation-rentals/": {
       "script": 55953,
-      "stylesheet": 36114
+      "stylesheet": 50747
     }
   },
   "raises": [
@@ -1001,6 +1001,22 @@
       "to": 55953,
       "reason": "Approved eighth-home booking identity adds 26 uncompressed script bytes per route. Balanced eight-card desktop fan and reuse of native card scrolling at tablet widths add only measured homepage CSS bytes; no new dependency, asset or media preload. All 24 final Lighthouse runs pass the unchanged speed and transfer ceilings.",
       "date": "2026-11-01"
+    },
+    {
+      "route": "/stays/anna-maria-island-vacation-rentals/",
+      "metric": "stylesheet",
+      "from": 36114,
+      "to": 50747,
+      "reason": "Approved Waterline stay migration moves 14,129 bytes of formerly uncounted inline CSS into the shared 14,633-byte stay stylesheet; records the real external stylesheet requests while keeping Lighthouse LCP/CLS/TBT and absolute budgets unchanged.",
+      "date": "2026-11-02"
+    },
+    {
+      "route": "/stays/anna-maria-island-beachfront-rentals/",
+      "metric": "stylesheet",
+      "from": 36114,
+      "to": 50747,
+      "reason": "Approved Waterline stay migration moves 14,129 bytes of formerly uncounted inline CSS into the shared 14,633-byte stay stylesheet; records the real external stylesheet requests while keeping Lighthouse LCP/CLS/TBT and absolute budgets unchanged.",
+      "date": "2026-11-02"
     }
   ]
 }

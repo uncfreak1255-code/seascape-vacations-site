@@ -1,0 +1,7 @@
+    {% if heroImage %}
+    <link
+        rel="preload"
+        as="image"
+        href="{{ heroImage | imgProxy(1200) }}"
+        fetchpriority="high">
+    {% endif %}

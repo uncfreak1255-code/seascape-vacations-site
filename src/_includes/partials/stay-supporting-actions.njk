@@ -1,0 +1,15 @@
+<div class="hero-actions">
+                    <a
+                        href="#featured-homes"
+                        class="btn"
+                        data-track-event="catalog_book_direct_click"
+                        data-placement="stay_hero"
+                        data-track-label="{{ seoPage.slug }}"
+                    >Browse the homes</a>
+                    <a href="{% if hasComparison %}#compare{% else %}#intro{% endif %}" class="btn-ghost">Why stay here?</a>
+                </div>
+                <div class="trust-chips" aria-label="Booking highlights">
+                    <span class="trust-chip">{{ uiIcon("star") }} {{ seoPage.reviewTrustLabel or "Rated 5.0" }}</span>
+                    <span class="trust-chip">{{ uiIcon("car") }} {{ seoPage.driveTimeLabel or "10-15 minutes to beaches" }}</span>
+                    <span class="trust-chip">{{ uiIcon("dollar") }} Compare full checkout totals</span>
+                </div>

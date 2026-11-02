@@ -1,0 +1,16 @@
+{% set loading = "lazy" %}
+{% set fetchpriority = "" %}
+{% if loop.index == 1 %}
+{% set loading = "eager" %}
+{% set fetchpriority = "high" %}
+{% endif %}
+{% set badge = "" %}
+{% if property.rating > 0 and property.rating <= 5 %}
+{% set badge %}
+<span class="stay-star-rating" role="img" aria-label="{{ property.rating }} out of 5 stars" style="--stay-rating: {{ property.rating * 20 }}%">
+  <span class="stay-star-row" aria-hidden="true">{% for star in range(0, 5) %}{{ uiIcon("star") }}{% endfor %}</span>
+  <span class="stay-star-fill" aria-hidden="true"><span class="stay-star-row">{% for star in range(0, 5) %}{{ uiIcon("star") }}{% endfor %}</span></span>
+</span>
+{% endset %}
+{% endif %}
+{% include "partials/property-card-image.njk" %}

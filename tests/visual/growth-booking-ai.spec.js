@@ -56,12 +56,14 @@ test("family collection names the verified mainland home and opens its booking p
   await expect(main).not.toContainText("all our pools have proper safety fencing");
   await expect(main).not.toContainText("at no additional charge");
   await expect(main).not.toContainText("10-15 minutes to beaches");
-  const card = page.locator(".property-card").filter({ has: page.getByRole("heading", { name: "Bradenton Pool Home", exact: true }) });
+  const card = page.locator('.catalog-card[data-property="bradenton-pool-home"]');
   await expect(card).toHaveCount(1);
+  await expect(card.locator('h3')).toHaveText('Bradenton Pool Home');
   await expect(card).toContainText("3 BR");
   await expect(card).toContainText("Sleeps 10");
   await expect(card.locator("img")).toHaveAttribute("src", /bradenton-pool-home/);
-  await card.getByRole("link", { name: "Check direct dates" }).click();
+  await expect(card.getByRole("link", { name: "Check dates for Bradenton Pool Home", exact: true })).toHaveAttribute("href", /book\.seascape-vacations\.com\/listings\/487798/);
+  await card.locator('[data-placement="stay_property_card"]').click();
   await expect(page).toHaveURL(/\/properties\/bradenton-pool-home\//);
   await expect(page.locator("main h1")).toContainText("Bradenton Pool Home");
   await expect(page.locator('a[data-property-booking-link]').first()).toHaveAttribute("href", /487798/);

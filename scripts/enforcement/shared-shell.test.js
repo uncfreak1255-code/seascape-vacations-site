@@ -125,3 +125,11 @@ test("every non-exempt HTML page has exactly one g-header and one g-footer (F5)"
       Array.from(unusedExemptions).join("\n")
   );
 });
+
+// A shared shell alone must not certify a legacy stay body as Waterline.
+test("stay collections use the shared Waterline body and stylesheet without a legacy inline shell", () => {
+  const template = fs.readFileSync(path.join(repoRoot, "src/stays/stays.njk"), "utf8");
+  assert.match(template, /<body class="[^"]*guest-site[^"]*stay-collection/);
+  assert.match(template, /href="\/css\/stay-collection\.css/);
+  assert.doesNotMatch(template, /<style\b/i);
+});

@@ -1,0 +1,69 @@
+{% set familyProperties = [] %}
+{% for matchingSlug in seoPage.matchingProperties %}
+  {% for property in properties %}
+    {% if property.slug == matchingSlug %}{% set familyProperties = familyProperties.concat([property]) %}{% endif %}
+  {% endfor %}
+{% endfor %}
+<div class="catalog-page" id="rentals" data-catalog-version="waterline-v3">
+  <section class="catalog-collection" id="featured-homes" aria-labelledby="catalog-heading">
+    <div class="catalog-collection-heading">
+      <div><p class="section-tag">Featured rentals</p><h2 id="catalog-heading" tabindex="-1">Direct-book homes that fit this search</h2></div>
+      <p>Book direct to compare the complete checkout total for the home and dates you select.</p>
+    </div>
+    <div class="catalog-filters" role="group" aria-label="Property filters">
+      <button class="catalog-filter active" type="button" data-filter="all" aria-pressed="true">All stays</button>
+      <button class="catalog-filter" type="button" data-filter="waterfront" aria-pressed="false">Waterfront</button>
+    </div>
+    <p id="catalog-count" class="catalog-count" role="status">{{ familyProperties | length }} homes · Availability confirmed on the booking page</p>
+    <noscript><p>Explore our homes below. Open a home’s booking page to select dates and guests. Interactive filters and comparisons need JavaScript.</p></noscript>
+
+    <div class="catalog-grid" id="catalog-grid">
+      {% for property in familyProperties %}
+      {% set filterTokens = ((property.amenities or []) | join('|') ~ '|' ~ ((property.marketing_amenities or []) | join('|')) ~ '|' ~ property.destination ~ '|' ~ property.city) | lower %}
+      {% set availability = property.availability %}
+      <article class="catalog-card" data-property="{{ property.slug }}" data-filters="{{ filterTokens }}" data-max-guests="{{ property.guests }}" data-availability-mode="checkout">
+        <a class="catalog-card-media" href="{{ property.pageUrl }}" data-trip-link data-track-event="catalog_view_details_click" data-page-slug="{{ property.slug }}" data-placement="catalog_photo" aria-label="View {{ property.cardName or property.name }} photos and details">
+          {% include "partials/stay-property-photo.njk" %}
+        </a>
+        <div class="catalog-card-body">
+          <div class="catalog-card-topline"><span>{{ property.city }}, Florida</span><button class="catalog-compare-toggle" type="button" data-compare="{{ property.slug }}" aria-pressed="false" aria-label="Compare {{ property.cardName or property.name }}" hidden>{{ uiIcon('plus', 'catalog-compare-add') }}{{ uiIcon('check', 'catalog-compare-selected') }} <span>Compare</span></button></div>
+          <h3><a class="catalog-title-link" href="{{ property.pageUrl }}" data-trip-link aria-label="View {{ property.cardName or property.name }} details" data-track-event="catalog_view_details_click" data-page-slug="{{ property.slug }}" data-placement="catalog_card_title">{{ property.name }}</a></h3>
+          <p class="catalog-card-specs">{{ property.bedrooms }} BR · {{ property.bathrooms }} BA · Sleeps {{ property.guests }}</p>
+          <div class="catalog-card-reason">
+            <p class="section-tag">The draw</p>
+            <p>{{ property.highlights | join(' · ') }}</p>
+          </div>
+          <span class="property-price">From ${{ property.price }}/night</span>
+          <div class="catalog-card-foot">
+            <a class="btn btn-brand catalog-check-dates" href="{{ property.bookingUrl }}" data-booking-base="{{ property.bookingUrl }}" data-track-event="catalog_book_direct_click" data-page-slug="{{ property.slug }}" data-placement="catalog_card" target="_blank" rel="noopener noreferrer" aria-label="Check dates for {{ property.cardName or property.name }}">Check dates</a>
+            <a class="catalog-details-link" href="{{ property.pageUrl }}" data-trip-link data-track-event="stay_view_property_click" data-page-slug="{{ property.slug }}" data-placement="stay_property_card" data-track-label="{{ property.name }}">Explore this home <span aria-hidden="true">→</span></a>
+          </div>
+          <p class="catalog-quote-note">Full price, fees and cancellation terms on the booking page.</p>
+          {% if availability and availability.nextAvailable %}
+          <details hidden class="catalog-opening" data-opening-start="{{ availability.nextAvailable.startDate }}" data-opening-end="{{ availability.nextAvailable.endDate }}" data-opening-synced="{{ availability.syncedAt }}">
+            <summary>Dates flexible? See a recent opening</summary>
+            <p>{{ availability.nextAvailable.label }} · {{ availability.nextAvailable.nights }} nights. From a recent calendar check; confirm before booking.</p>
+            <a href="{{ property.bookingUrl }}?start={{ availability.nextAvailable.startDate }}&end={{ availability.nextAvailable.endDate }}" data-track-event="catalog_book_direct_click" data-page-slug="{{ property.slug }}" data-placement="catalog_recent_opening" target="_blank" rel="noopener noreferrer">Check this opening</a>
+          </details>
+          {% endif %}
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+
+    <div class="catalog-empty" id="catalog-empty" hidden>
+      <h3>No single home fits these choices.</h3><p id="catalog-empty-copy">Try another area or check your group size. Changing dates will not change a home’s maximum capacity.</p>
+      <button class="btn btn-brand" id="reset-filter" type="button">Show all areas</button>
+      <a href="tel:9417048545">Talk with our local team</a>
+    </div>
+
+    <aside class="catalog-shortlist" id="catalog-shortlist" aria-label="Your comparison" hidden>
+      <div><strong id="shortlist-count">1 home selected</strong><span id="shortlist-hint">Add one more to compare.</span></div>
+      <button class="btn btn-brand" id="open-comparison" type="button" disabled>Compare homes</button>
+      <button class="catalog-text-button" id="clear-comparison" type="button">Clear</button>
+    </aside>
+  </section>
+
+  {% set comparisonProperties = familyProperties %}
+  {% include "partials/catalog-comparison.njk" %}
+</div>

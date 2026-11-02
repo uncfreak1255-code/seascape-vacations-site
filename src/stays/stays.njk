@@ -38,6 +38,7 @@ eleventyComputed:
 {% set hasDriveFacts = seoPage.propertyFacts and seoPage.propertyFacts.length > 0 and seoPage.propertyFacts[0].time %}
 {% set hasReviews = seoPage.reviewProof and seoPage.reviewProof.length > 0 %}
 {% set hasFaqs = seoPage.faqs and seoPage.faqs.length > 0 %}
+{% set isFamilyBrowse = seoPage.slug == "family-vacation-rentals-anna-maria-island" %}
 {% set hasRelatedGuides = seoPage.relatedGuideLinks and seoPage.relatedGuideLinks.length > 0 %}
 <!DOCTYPE html>
 <html lang="en">
@@ -68,13 +69,7 @@ eleventyComputed:
     <link rel="preconnect" href="https://bookingenginecdn.hostaway.com" crossorigin>
     <link rel="dns-prefetch" href="https://bookingenginecdn.hostaway.com">
     {% include "partials/local-font-head.njk" %}
-    {% if heroImage %}
-    <link
-        rel="preload"
-        as="image"
-        href="{{ heroImage | imgProxy(1200) }}"
-        fetchpriority="high">
-    {% endif %}
+    {% include "partials/stay-hero-preload.njk" %}
 
     <script type="application/ld+json">
     {
@@ -189,144 +184,16 @@ eleventyComputed:
     {% elif properties and properties | length %}
     {% endif %}
 
-    <style>
-        :root {
-            --brand: #5F8A8B;
-            --brand-light: #7BA3A4;
-            --brand-dark: #3D5C5D;
-            --brand-darker: #2D4647;
-            --gold: #C9A962;
-            --gold-light: #E8D5A3;
-            --cream: #F5EED6;
-            --cream-dark: #EBE4CC;
-            --cream-light: #FAF7EE;
-            --stone: #3A3A3A;
-            --stone-light: #6A6A6A;
-            --white: #FFFFFF;
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
-        body { font-family: 'Poppins', -apple-system, sans-serif; background: var(--cream); color: var(--stone); line-height: 1.7; padding-bottom: 0; }
-        h1, h2, h3, h4 { font-family: 'Playfair Display', Georgia, serif; font-weight: 500; letter-spacing: -0.02em; }
-        img { max-width: 100%; height: auto; }
-        a { text-decoration: none; color: inherit; }
-        .nav { position: sticky; top: 0; left: 0; right: 0; z-index: 100; background: rgba(245, 238, 214, 0.98); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(0, 0, 0, 0.06); box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08); }
-        .nav-inner { display: flex; justify-content: space-between; align-items: center; padding: 16px 24px; max-width: 1400px; margin: 0 auto; }
-        .nav-logo { display: flex; align-items: center; gap: 14px; }
-        .nav-logo img { width: auto; height: 40px; max-width: none; flex: 0 0 auto; display: block; }
-        .nav-logo-text { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 500; color: var(--brand-dark); letter-spacing: 0.05em; }
-        .nav-logo-sub { font-size: 9px; letter-spacing: 0.2em; color: var(--stone-light); text-transform: uppercase; margin-top: -2px; }
-        .nav-link { color: var(--brand-dark); font-size: 14px; font-weight: 600; }
-        .btn { background: linear-gradient(135deg, var(--brand) 0%, var(--brand-dark) 100%); color: var(--white); padding: 15px 32px; border-radius: 50px; font-weight: 600; font-size: 14px; border: none; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 4px 15px rgba(61, 92, 93, 0.28); }
-        .btn:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(61, 92, 93, 0.36); }
-        .btn-gold { background: linear-gradient(135deg, var(--gold) 0%, #B8943A 100%); color: #2A2014; box-shadow: 0 4px 15px rgba(201, 169, 98, 0.3); }
-        .btn-ghost { display: inline-flex; align-items: center; justify-content: center; padding: 15px 32px; border-radius: 50px; font-weight: 600; font-size: 14px; border: 1px solid rgba(255, 255, 255, 0.52); background: rgba(255, 255, 255, 0.1); color: var(--white); backdrop-filter: blur(16px); }
-        .main-content { background: var(--cream); }
-        .section { padding: 80px 24px; }
-        .container { max-width: 1100px; margin: 0 auto; }
-        .container-narrow { max-width: 860px; margin: 0 auto; }
-        .section-header { text-align: center; margin-bottom: 40px; }
-        .section-tag { display: inline-block; font-size: 12px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--brand-dark); margin-bottom: 12px; }
-        .section-title { font-size: clamp(28px, 4vw, 38px); color: var(--stone); margin-bottom: 12px; }
-        .section-subtitle { color: var(--stone-light); max-width: 660px; margin: 0 auto; }
-        .hero { min-height: calc(86vh - 88px); display: grid; place-items: center; padding: 72px 24px; color: var(--white); background-image: linear-gradient(180deg, rgba(0,0,0,.34), rgba(0,0,0,.68)), var(--hero-image); background-size: cover; background-position: center; }
-        .hero-inner { width: min(980px, 100%); text-align: center; }
-        .hero-eyebrow { display: inline-flex; align-items: center; gap: 16px; color: var(--gold-light); font-size: 12px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; margin-bottom: 18px; }
-        .hero-eyebrow::before, .hero-eyebrow::after { content: ""; width: 40px; height: 1px; background: rgba(232, 213, 163, 0.72); }
-        .hero h1 { font-size: clamp(38px, 6vw, 68px); color: var(--white); line-height: 1.05; margin-bottom: 20px; }
-        .hero-subhead { max-width: 760px; margin: 0 auto; color: rgba(255,255,255,0.92); font-size: clamp(17px, 2.2vw, 21px); line-height: 1.7; }
-        .hero-actions { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; margin-top: 32px; }
-        .trust-chips { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-top: 28px; }
-        .trust-chip { display: inline-flex; align-items: center; gap: 8px; padding: 9px 14px; border: 1px solid rgba(255,255,255,0.25); border-radius: 50px; background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.94); font-size: 13px; font-weight: 600; backdrop-filter: blur(12px); }
-        .trust-chip .ui-icon { color: var(--gold-light); }
-        .breadcrumbs { background: rgba(250, 247, 238, 0.96); padding: 12px 24px; border-bottom: 1px solid rgba(61, 92, 93, 0.08); }
-        .breadcrumbs ol { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; margin: 0 auto; padding: 0; font-size: 13px; max-width: 1100px; }
-        .breadcrumbs a { color: var(--brand-dark); font-weight: 500; }
-        .breadcrumbs span { color: var(--stone-light); }
-        .stats-bar { background: var(--brand-darker); color: var(--white); padding: 26px 24px; }
-        .stats-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; max-width: 1100px; margin: 0 auto; }
-        .stat { text-align: center; border-right: 1px solid rgba(255,255,255,0.16); }
-        .stat:last-child { border-right: 0; }
-        .stat-value { display: block; color: var(--gold-light); font-family: 'Playfair Display', Georgia, serif; font-size: 28px; line-height: 1.1; margin-bottom: 6px; }
-        .stat-label { display: block; color: rgba(255,255,255,0.78); font-size: 12px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; }
-        .intro-copy { display: grid; gap: 22px; font-size: 18px; line-height: 1.85; color: var(--stone); }
-        .intro-copy p { margin: 0; }
-        .jump-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 34px; }
-        .jump-links a { padding: 9px 15px; border-radius: 50px; background: var(--white); color: var(--brand-dark); font-size: 13px; font-weight: 600; box-shadow: 0 8px 24px rgba(28, 38, 39, 0.06); }
-        .comparison-table-wrap { overflow-x: auto; border-radius: 24px; background: var(--white); box-shadow: 0 10px 40px rgba(0,0,0,.04), 0 2px 10px rgba(0,0,0,.02); }
-        .comparison-table { width: 100%; min-width: 760px; border-collapse: collapse; }
-        .comparison-table th { padding: 18px 20px; text-align: left; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; border-bottom: 1px solid rgba(61,92,93,0.12); }
-        .comparison-table th:nth-child(2) { color: var(--brand-dark); }
-        .comparison-table th:nth-child(3) { color: var(--stone-light); }
-        .comparison-table td { padding: 18px 20px; border-bottom: 1px solid rgba(61,92,93,0.1); vertical-align: top; font-size: 15px; line-height: 1.65; }
-        .comparison-table tr:last-child td { border-bottom: 0; }
-        .comparison-label { font-weight: 700; color: var(--brand-dark); }
-        .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; }
-        .guide-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
-        .info-card, .guide-card, .review-card, .faq-item { background: var(--white); border-radius: 20px; padding: 24px; box-shadow: 0 10px 40px rgba(0,0,0,.04), 0 2px 10px rgba(0,0,0,.02); border: 1px solid rgba(61, 92, 93, 0.08); }
-        .icon-mark { width: 42px; height: 42px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; background: rgba(201,169,98,0.18); color: var(--brand-dark); margin-bottom: 18px; font-size: 21px; }
-        .info-card h3, .guide-card h3, .faq-question { font-size: 20px; color: var(--brand-dark); margin-bottom: 10px; }
-        .info-card p, .guide-card p, .faq-answer { font-size: 15px; color: var(--stone); line-height: 1.75; }
-        .card-link { display: inline-flex; align-items: center; gap: 8px; color: var(--brand-dark); font-weight: 700; font-size: 13px; margin-top: 16px; }
-        .properties-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; }
-        .property-card { background: var(--white); border-radius: 20px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,.04), 0 2px 10px rgba(0,0,0,.02); transition: transform 0.3s ease; border: 1px solid rgba(61, 92, 93, 0.08); }
-        .property-card:hover { transform: translateY(-5px); }
-        .property-img { height: 220px; background: linear-gradient(135deg, rgba(95, 138, 139, 0.16), rgba(201, 169, 98, 0.22)); background-size: cover; background-position: center; position: relative; }
-        .property-badge { position: absolute; top: 12px; left: 12px; background: var(--gold); color: var(--stone); padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 600; }
-        .property-body { padding: 22px; }
-        .property-rating { display: inline-flex; align-items: center; gap: 6px; color: var(--brand-dark); font-size: 13px; font-weight: 700; margin-bottom: 10px; }
-        .property-title { font-size: 21px; color: var(--stone); margin-bottom: 8px; }
-        .property-meta { font-size: 13px; color: var(--stone-light); margin-bottom: 12px; }
-        .property-highlight { font-size: 14px; color: var(--stone); margin-bottom: 18px; min-height: 44px; }
-        .property-card-bottom { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
-        .property-price { font-size: 16px; color: var(--brand-dark); font-weight: 700; white-space: nowrap; }
-        .drive-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; }
-        .drive-card { background: var(--cream-light); border-left: 4px solid var(--gold); border-radius: 0 20px 20px 0; padding: 22px; }
-        .drive-time { color: var(--brand-dark); font-weight: 700; font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px; }
-        .review-stars { display: flex; gap: 3px; color: var(--gold); margin-bottom: 14px; }
-        .review-copy { color: var(--stone); font-size: 15px; line-height: 1.75; margin-bottom: 14px; }
-        .review-source { color: var(--stone-light); font-size: 13px; font-weight: 600; }
-        .faq-section { background: var(--cream-dark); }
-        .faq-list { display: grid; gap: 16px; }
-        .guide-card { display: block; transition: transform 0.2s ease, box-shadow 0.2s ease; }
-        .guide-card:hover { transform: translateY(-3px); box-shadow: 0 14px 44px rgba(28, 38, 39, 0.1); }
-        .guide-category { display: block; color: var(--brand-dark); font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 10px; }
-        .guide-arrow { color: var(--gold); font-weight: 700; }
-        .cta-section { color: var(--white); text-align: center; padding: 92px 24px; background-image: linear-gradient(135deg, rgba(45,70,71,0.88), rgba(95,138,139,0.78)), var(--cta-image); background-size: cover; background-position: center; }
-        .cta-title { font-size: clamp(30px, 4vw, 44px); margin-bottom: 16px; color: var(--white); }
-        .cta-subtitle { opacity: 0.92; max-width: 600px; margin: 0 auto 32px; font-size: 17px; }
-        .cta-actions { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; }
-        .sticky-mobile-cta { display: none; }
-        .footer { background: var(--brand-darker); color: rgba(255, 255, 255, 0.8); padding: 60px 24px 30px; }
-        .footer-inner { max-width: 1100px; margin: 0 auto; text-align: center; }
-        .footer-logo { font-family: 'Playfair Display', serif; font-size: 24px; color: var(--white); margin-bottom: 16px; }
-        .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
-        .footer-links a { color: rgba(255, 255, 255, 0.7); font-size: 14px; transition: color 0.3s ease; }
-        .footer-links a:hover { color: var(--white); }
-        .footer-copyright { font-size: 13px; opacity: 0.88; }
-        @media (max-width: 820px) {
-            body { padding-bottom: 78px; }
-            .nav-inner { padding: 12px 16px; }
-            .nav-logo-text { font-size: 18px; }
-            .nav .btn { display: none; }
-            .hero { min-height: calc(82vh - 69px); padding: 56px 18px; }
-            .hero-eyebrow::before, .hero-eyebrow::after { width: 26px; }
-            .hero-actions { flex-direction: column; }
-            .hero-actions .btn, .hero-actions .btn-ghost { width: 100%; }
-            .stats-grid { grid-template-columns: 1fr; gap: 14px; }
-            .stat { border-right: 0; border-bottom: 1px solid rgba(255,255,255,0.16); padding-bottom: 14px; }
-            .stat:last-child { border-bottom: 0; padding-bottom: 0; }
-            .section { padding: 58px 18px; }
-            .property-card-bottom { flex-direction: column; align-items: stretch; }
-            .property-card-bottom .btn { width: 100%; }
-            .sticky-mobile-cta { position: fixed; left: 0; right: 0; bottom: 0; z-index: 120; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 14px calc(12px + env(safe-area-inset-bottom)); background: rgba(245,238,214,0.97); backdrop-filter: blur(16px); border-top: 1px solid rgba(61,92,93,0.14); box-shadow: 0 -10px 28px rgba(28,38,39,0.14); }
-            .sticky-phone { width: 44px; height: 44px; border-radius: 50%; background: var(--white); color: var(--brand-dark); display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 6px 18px rgba(28,38,39,0.1); }
-            .sticky-mobile-cta .btn { flex: 1; padding: 13px 18px; font-size: 13px; }
-        }
-    </style>
+
 <link rel="stylesheet" href="/css/guest.css?v=waterline-v3">
+<link rel="stylesheet" href="/css/stay-collection.css">
+{% if isFamilyBrowse %}
+<link rel="stylesheet" href="/css/catalog.css">
+<link rel="stylesheet" href="/css/catalog-card.css?v=waterline-v3">
+<link rel="stylesheet" href="/css/stay-family.css">
+{% endif %}
 </head>
-<body class="guest-shell">
+<body class="guest-site stay-collection{% if isFamilyBrowse %} stay-flow flow-browse{% endif %}">
     {% set navButtonHref = seoPage.collectionCtaHref or "/properties/" %}
     {% set navButtonAttributes = 'data-track-event="catalog_book_direct_click" data-placement="stay_nav" data-track-label="' ~ seoPage.slug ~ '"' %}
     {% include "partials/guest-header.njk" %}
@@ -353,23 +220,14 @@ eleventyComputed:
                 <p class="hero-eyebrow">{{ destinationLabel }}</p>
                 <h1>{{ seoPage.h1 }}</h1>
                 <p class="hero-subhead">{{ seoPage.description }}</p>
-                <div class="hero-actions">
-                    <a
-                        href="#featured-homes"
-                        class="btn btn-gold"
-                        data-track-event="catalog_book_direct_click"
-                        data-placement="stay_hero"
-                        data-track-label="{{ seoPage.slug }}"
-                    >Browse the homes</a>
-                    <a href="{% if hasComparison %}#compare{% else %}#intro{% endif %}" class="btn-ghost">Why stay here?</a>
-                </div>
-                <div class="trust-chips" aria-label="Booking highlights">
-                    <span class="trust-chip">{{ uiIcon("star") }} {{ seoPage.reviewTrustLabel or "Rated 5.0" }}</span>
-                    <span class="trust-chip">{{ uiIcon("car") }} {{ seoPage.driveTimeLabel or "10-15 minutes to beaches" }}</span>
-                    <span class="trust-chip">{{ uiIcon("dollar") }} Compare full checkout totals</span>
-                </div>
+                {% if not isFamilyBrowse %}{% include "partials/stay-supporting-actions.njk" %}{% endif %}
             </div>
+            {% if isFamilyBrowse %}
+            <p class="flow-guide-answer">{{ seoPage.intro }}</p>
+            {% include "partials/catalog-trip.njk" %}
+            {% endif %}
         </section>
+        {% if isFamilyBrowse %}{% include "partials/stay-family-homes.njk" %}{% endif %}
 
         <section class="stats-bar" aria-label="Seascape stay highlights">
             <div class="stats-grid">
@@ -390,12 +248,13 @@ eleventyComputed:
 
         <section class="section" id="intro">
             <div class="container-narrow">
+                {% if isFamilyBrowse %}{% include "partials/stay-supporting-actions.njk" %}{% endif %}
                 <div class="section-header">
                     <p class="section-tag">{{ seoPage.introEyebrow or "The short version" }}</p>
                     <h2 class="section-title">{{ seoPage.introHeading or ("Stay near " + destinationLabel + ", with the trip details up front") }}</h2>
                 </div>
                 <div class="intro-copy">
-                    {% if seoPage.intro %}<p>{{ seoPage.intro }}</p>{% endif %}
+                    {% if seoPage.intro and not isFamilyBrowse %}<p>{{ seoPage.intro }}</p>{% endif %}
                     {% if seoPage.geoIntro %}{{ seoPage.geoIntro | safe }}{% endif %}
                 </div>
                 <nav class="jump-links" aria-label="On this page">
@@ -411,7 +270,7 @@ eleventyComputed:
         </section>
 
         {% if seoPage.decisionHighlights and seoPage.decisionHighlights.length > 0 %}
-        <section class="section" style="background: var(--cream-light);">
+        <section class="section section--soft">
             <div class="container">
                 <div class="section-header">
                     <p class="section-tag">Best fit</p>
@@ -431,7 +290,7 @@ eleventyComputed:
         {% endif %}
 
         {% if hasComparison %}
-        <section class="section" id="compare" style="background: var(--cream-light);">
+        <section class="section section--soft" id="compare">
             <div class="container">
                 <div class="section-header">
                     <p class="section-tag">Compare the tradeoff</p>
@@ -488,8 +347,8 @@ eleventyComputed:
         </section>
         {% endif %}
 
-        {% if hasMatchingHomes %}
-        <section class="section" id="rentals" style="background: var(--cream-light);">
+        {% if hasMatchingHomes and not isFamilyBrowse %}
+        <section class="section section--soft" id="rentals">
             <span id="featured-homes" aria-hidden="true"></span>
             <div class="container">
                 <div class="section-header">
@@ -502,16 +361,8 @@ eleventyComputed:
                     {% for property in properties %}
                     {% if property.slug == matchingSlug %}
                     <article class="property-card">
-                        {% set badge = "Rated " ~ property.rating %}
-                        {% set loading = "lazy" %}
-                        {% set fetchpriority = "" %}
-                        {% if loop.index == 1 %}
-                        {% set loading = "eager" %}
-                        {% set fetchpriority = "high" %}
-                        {% endif %}
-                        {% include "partials/property-card-image.njk" %}
+                        {% include "partials/stay-property-photo.njk" %}
                         <div class="property-body">
-                            <div class="property-rating">{{ uiIcon("star") }} Rated {{ property.rating }}</div>
                             <h3 class="property-title">{{ property.name }}</h3>
                             <p class="property-meta">{{ property.bedrooms }} BR · {{ property.bathrooms }} BA · Sleeps {{ property.guests }}</p>
                             <p class="property-highlight">{{ property.highlights | join(" · ") }}</p>
@@ -519,13 +370,12 @@ eleventyComputed:
                                 <span class="property-price">From ${{ property.price }}/night</span>
                                 <a
                                     href="{{ property.pageUrl }}"
-                                    class="btn"
-                                    style="padding: 10px 20px; font-size: 13px;"
+                                    class="btn property-action"
                                     data-track-event="stay_view_property_click"
                                     data-page-slug="{{ property.slug }}"
                                     data-placement="stay_property_card"
                                     data-track-label="{{ property.name }}"
-                                >Check direct dates</a>
+                                ><span class="property-action-copy"><span class="property-action-label">Check direct dates</span><span class="property-action-home">{{ property.name }}</span></span>{{ uiIcon("chevron-right") }}</a>
                             </div>
                         </div>
                     </article>
@@ -558,7 +408,7 @@ eleventyComputed:
         {% endif %}
 
         {% if hasReviews %}
-        <section class="section" id="reviews" style="background: var(--cream-light);">
+        <section class="section section--soft" id="reviews">
             <div class="container">
                 <div class="section-header">
                     <p class="section-tag">Guest notes</p>
@@ -602,9 +452,9 @@ eleventyComputed:
         {% endif %}
 
         {% if seoPage.longContent %}
-        <section class="section" style="background: var(--white);">
+        <section class="section">
             <div class="container-narrow">
-                <h2 class="section-title" style="margin-bottom: 24px;">{{ seoPage.contentTitle | default("About " + seoPage.h1) }}</h2>
+                <h2 class="section-title">{{ seoPage.contentTitle | default("About " + seoPage.h1) }}</h2>
                 <div class="intro-copy">
                     {{ seoPage.longContent | safe }}
                 </div>
@@ -613,7 +463,7 @@ eleventyComputed:
         {% endif %}
 
         {% if hasRelatedGuides %}
-        <section class="section" id="related-guides" style="background: var(--cream-dark);">
+        <section class="section section--soft" id="related-guides">
             <div class="container">
                 <div class="section-header">
                     <p class="section-tag">Related guides</p>
@@ -632,7 +482,7 @@ eleventyComputed:
             </div>
         </section>
         {% elif seoPage.relatedStaySlugs and seoPage.relatedStaySlugs.length > 0 %}
-        <section class="section" id="related-guides" style="background: var(--cream-dark);">
+        <section class="section section--soft" id="related-guides">
             <div class="container">
                 <div class="section-header">
                     <p class="section-tag">Related stays</p>
@@ -662,7 +512,7 @@ eleventyComputed:
                 <div class="cta-actions">
                     <a
                         href="{{ seoPage.collectionCtaHref or '/properties/' }}"
-                        class="btn btn-gold"
+                        class="btn"
                         data-track-event="catalog_book_direct_click"
                         data-placement="stay_bottom_cta"
                         data-track-label="{{ seoPage.collectionCtaLabel or seoPage.slug }}"
@@ -673,11 +523,11 @@ eleventyComputed:
         </section>
     </main>
 
-    <div class="sticky-mobile-cta" aria-label="Mobile booking actions">
+    <div class="{% if isFamilyBrowse %}flow-secondary-links{% else %}sticky-mobile-cta{% endif %}" aria-label="Mobile booking actions">
         <a class="sticky-phone" href="tel:+19417048545" aria-label="Call Seascape Vacations">{{ uiIcon("phone") }}</a>
         <a
             href="{{ seoPage.collectionCtaHref or '/properties/' }}"
-            class="btn btn-gold"
+            class="btn"
             data-track-event="catalog_book_direct_click"
             data-placement="stay_mobile_sticky"
             data-track-label="{{ seoPage.collectionCtaLabel or seoPage.slug }}"
@@ -687,6 +537,6 @@ eleventyComputed:
     <p class="container"><a href="/properties/">Compare all homes</a> · <a href="/guides/">Explore local guides</a></p>
     {% include "partials/guest-footer.njk" %}
 
-    {% include "partials/analytics-ga4.njk" %}
+    {% include "partials/stay-scripts.njk" %}
 </body>
 </html>
