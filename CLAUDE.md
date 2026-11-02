@@ -13,6 +13,11 @@ Claude harness delta.
   and applicable user skill overrides. A displayed or installed skill is not
   proof that its body loaded or its procedure ran.
 - `.claude/settings.json` holds this repo's Claude permissions.
+- `.claude/rules/*.md` are symlinks to the shared `docs/agents/rules/` files;
+  Claude loads each one only when it reads a path in that file's `paths:`
+  frontmatter. Keep them symlinks: an `@import` inside a rule file loads at
+  session start whatever its paths say. Codex reaches the same files through
+  the pointers in `AGENTS.md`; keep both routes when adding a rule.
 - For UI/visual work, dispatch subagents with `model: "sonnet"`.
 - Worktrees: when the harness pins the session to `.claude/worktrees/<name>`,
   that is the isolated worktree `AGENTS.md` asks for. Work there on the
@@ -24,7 +29,7 @@ Claude harness delta.
 ## Content Work
 
 Follow the canonical [Required Batch Workflow](AGENTS.md#required-batch-workflow)
-and Content Gate in `AGENTS.md` before public-copy work.
+and the Content Gate in `docs/agents/rules/content-gate.md` before public-copy work.
 
 ## GBrain Search Guidance (local, optional)
 <!-- gstack-gbrain-search-guidance:start -->

@@ -50,8 +50,9 @@ Read these before filling the packet:
 4. `docs/process/git-session-rules.md`
 5. `docs/status/current-state.md`
 6. `DESIGN.md`
-7. `docs/process/design-review-workflow.md`
-8. one task-relevant source file, brief, route, screenshot, or portfolio doc
+7. `docs/agents/rules/design.md`
+8. `docs/process/design-review-workflow.md`
+9. one task-relevant source file, brief, route, screenshot, or portfolio doc
 
 `DESIGN.md` is the visual law. This packet can propose a new design-system rule,
 but implementation waits until that rule is accepted and written into

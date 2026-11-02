@@ -34,6 +34,7 @@ This project is **generated from the repository**, not authored here. Synced {{S
 │   │   about.css, property-gallery.css, owner.css, planning-guide.css, comparison-guide.css, activity-guide.css
 │   ├── shell.html               the real shared header + footer markup
 │   ├── design-review-workflow.md
+│   ├── design-rules.md          the repo's Design rules (variants, lean UI, shell-edit link floor)
 │   ├── writing-style-guide.md
 │   └── voice.md, banned-patterns.md, approved-examples.md
 ├── preview/                     cards for the Design System pane (real markup + real CSS)
