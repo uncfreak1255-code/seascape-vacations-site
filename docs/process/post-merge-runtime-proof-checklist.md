@@ -10,7 +10,9 @@ This is required for deploy-sensitive site work.
 ## 1. Wait for deploy
 
 - [ ] A Netlify production deploy is complete for a `production` commit that
-  contains the merge (`git fetch origin production && git merge-base --is-ancestor <merge-sha> origin/production`).
+  contains the merge (`npm run verify:merge-live -- <merge-sha>` exits 0; 1
+  means queued for publish, 2 an unknown or unmerged SHA, 3 a git or usage
+  error).
   The deployed SHA is usually a later `main` commit carrying several merges.
   A batch that changes only agent docs, tooling or CI is skipped on purpose
   while live availability is under 12 hours old

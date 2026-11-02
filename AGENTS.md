@@ -170,10 +170,13 @@ lock, Hostaway cache sync, Eleventy, availability validation).
 - Post-deploy proof: `npm run verify:recovery:live && npm run verify:direct-booking-events && npm run verify:owner-funnel-routes`
 - Prove it is live, in order, after every merge (checklist and receipt:
   `docs/process/post-merge-runtime-proof-checklist.md`):
-  1. `git fetch origin production && git merge-base --is-ancestor <merge-sha> origin/production`
-     exits 0 only when the production branch contains the merge. Exit 1 means
-     "merged, queued for publish", not live (PR 766 on 2026-10-22 was merged
-     while production lacked it).
+  1. `npm run verify:merge-live -- <merge-sha>` fetches `main` and
+     `production`, then exits 0 only when the production branch contains the
+     merge, 1 for "merged, queued for publish" (not live; PR 766 on 2026-10-22
+     was merged while production lacked it), 2 for an unknown or unmerged
+     SHA (pass the squash commit on `main`, not the PR head), and 3 for a git
+     or usage error. A bare `merge-base --is-ancestor` exits 128 on an
+     unfetched commit.
   2. Netlify's current production deploy is complete and its `commit_ref`
      contains the merge.
   3. The Post-deploy proof commands pass; for a change to a specific page, add
@@ -218,7 +221,11 @@ that repo's current `origin/main`, never by mutating a local sibling checkout.
 
 Request `@codex review` on every PR except Dependabot's, on the head you intend
 to merge, and answer each finding before merge. If the run is unfinished after
-15 minutes, request it again naming the head SHA. Codex unavailability (quota,
+15 minutes, request it again naming the head SHA. Where `pr-gate-wait` is
+installed, wait for checks and review with
+`pr-gate-wait <pr> -R uncfreak1255-code/seascape-vacations-site` (exit 0
+ready, 1 blocker, 2 usage error, 3 timeout) rather than a hand-written polling
+loop; elsewhere read `gh pr checks <pr>`. Codex unavailability (quota,
 outage, or no result) does not block a BASELINE PR; say so in the PR body.
 Every reviewer, `@codex review` included, follows `REVIEW.md` from the base
 branch, not the PR.
