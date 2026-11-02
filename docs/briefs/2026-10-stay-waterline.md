@@ -163,3 +163,13 @@ Preservation helper compares an unchanged base-build snapshot with all 58 leaf p
 Preview: run `node docs/design/stay-waterline/preview.cjs` after the native build. A is http://127.0.0.1:4212/stays/family-vacation-rentals-anna-maria-island/ ; B adds `?variant=photo`. B's stylesheet is served only by the local review server and is not part of public output. Desktop/mobile hero, homes, FAQ and full-page captures plus baseline.json are in /Users/sawbeck/.codex/visualizations/2026/10/30/01a18dda-ff9c-73e3-8451-d3f1e9e059ee/stay-waterline.
 
 Publication remains held for Sawyer's preview selection. Intentional stay screenshot changes and the new family baseline must be refreshed through the owning update-visual-baselines workflow after that selection permits a branch push; do not commit local snapshot updates. Then complete current-head source review and the ordinary publication route. No paid checks, host changes, schedules, pushes, public PRs, merges or deployments belong to this preview checkpoint.
+
+November 2: Sawyer approved the recommendation to give the family browse preview
+a short useful answer before its dates and homes, with detailed advice and FAQs
+below. Move the existing first intro paragraph verbatim, once, between the
+heading/description and native trip form. Preserve the remaining five article
+paragraphs below the homes, all seven FAQs, metadata, schema and booking links.
+This changes only the local family preview generator and CSS. The focused
+check-flows gate now verifies this order and the absence of duplicate intro
+copy, alongside original copy/SEO preservation, four responsive widths, axe and
+the intercepted dates/guests booking handoff. Publication remains held.

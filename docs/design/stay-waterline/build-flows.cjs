@@ -57,6 +57,9 @@ const read = (route) => fs.readFileSync(path.join(root, '_site', route, 'index.h
           root.querySelector('.catalog-collection').id = 'featured-homes';
           oldHomes.replaceWith(root);
           hero.after(root); root.after(stats); stats.after(intro);
+          const answer = intro.querySelector('.intro-copy > p');
+          answer.classList.add('flow-guide-answer');
+          hero.append(answer);
           hero.append(root.querySelector('.catalog-trip'));
           addScript('/assets/js/catalog.js');
         } else {

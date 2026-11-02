@@ -9,7 +9,8 @@
 .stay-flow .trust-chips { margin-top: 16px; padding-top: 12px; }
 .stay-flow .intro-copy { margin-top: 24px; }
 .flow-browse .hero { display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; padding-top: 24px; padding-bottom: 16px; }
-.flow-browse .hero .catalog-trip { grid-column: 1; grid-row: 2; margin: 0; padding: 16px 24px; }
+.flow-browse .hero .catalog-trip { grid-column: 1; grid-row: 3; margin: 0; padding: 16px 24px; }
+.flow-browse .flow-guide-answer { margin: 0; max-width: 76ch; font-size: 17px; line-height: 1.55; color: var(--g-ink); }
 .flow-browse .hero #catalog-trip-form { grid-template-columns: 1fr 1fr 1fr auto; gap: 16px; }
 .flow-browse .hero .catalog-trip-heading { display: flex; margin-bottom: 12px; gap: 16px; }
 .flow-browse .hero .catalog-trip-heading span { font-size: 12px; margin: 0; }
@@ -58,6 +59,7 @@
   .stay-flow .hero { padding: 24px 16px; }
   .flow-browse .hero { display: block; }
   .flow-browse .hero-inner { display: block; }
+  .flow-browse .flow-guide-answer { margin-top: 16px; }
   .flow-browse .hero h1 { margin: 12px 0 16px; }
   .flow-browse .hero .catalog-trip { margin-top: 20px; padding: 16px; }
   .flow-browse .hero #catalog-trip-form { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }

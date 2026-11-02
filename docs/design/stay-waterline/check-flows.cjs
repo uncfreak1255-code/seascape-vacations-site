@@ -37,6 +37,18 @@ const slugs = ['bradenton-pool-home', 'the-oasis', 'dockside-dreams', 'river-hou
       assert.deepEqual(after.jsonLd, before.jsonLd, `${flow}: JSON-LD`);
       const body = after.text;
       for (const text of copy) assert.ok(!text || body.includes(text), `${flow}: missing original copy: ${text}`);
+      if (flow === 'browse') {
+        assert.equal(await page.locator('.flow-guide-answer').count(), 1, 'one opening answer');
+        const order = await page.evaluate(() => {
+          const answer = document.querySelector('.flow-guide-answer');
+          return {
+            beforeForm: !!(answer.compareDocumentPosition(document.querySelector('#catalog-trip-form')) & Node.DOCUMENT_POSITION_FOLLOWING),
+            detailsAfterHomes: !!(document.querySelector('#catalog-grid').compareDocumentPosition(document.querySelector('.intro-copy')) & Node.DOCUMENT_POSITION_FOLLOWING),
+            answerCopies: [...document.querySelectorAll('main p')].filter((p) => p.textContent === answer.textContent).length
+          };
+        });
+        assert.deepEqual(order, { beforeForm: true, detailsAfterHomes: true, answerCopies: 1 });
+      }
       const form = page.locator(flow === 'browse' ? '#catalog-trip-form' : 'form[data-booking-url]');
       const status = page.locator(flow === 'browse' ? '#trip-status' : '.g-booking .g-form-status');
       await form.locator('input[type=date]').nth(0).fill('2026-11-30');
