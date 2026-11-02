@@ -1,0 +1,11 @@
+  <section class="catalog-trip" id="catalog-trip" aria-label="Your trip">
+    <div class="catalog-trip-heading"><h2>Your trip</h2><span>Start with your group. Keep your dates as you explore.</span></div>
+    <form id="catalog-trip-form" method="get" action="/properties/#catalog-heading">
+      <div><label for="trip-arrive">Arrival</label><input id="trip-arrive" name="arrive" type="date"></div>
+      <div><label for="trip-depart">Departure</label><input id="trip-depart" name="depart" type="date"></div>
+      <div><label for="trip-guests">Guests</label><select id="trip-guests" name="guests"><option value="">Any group size</option>{% for n in range(1,17) %}<option value="{{ n }}">{{ n }} {% if n == 1 %}guest{% else %}guests{% endif %}</option>{% endfor %}<option value="17">More than 16 guests</option></select></div>
+      <button class="btn btn-brand" type="submit">Find my home</button>
+    </form>
+    <p id="trip-status" class="catalog-trip-status" aria-live="polite">Compare homes here. Check availability and the full total on our booking page.</p>
+    <button id="clear-dates" class="catalog-text-button" type="button" hidden>My dates are flexible</button>
+  </section>

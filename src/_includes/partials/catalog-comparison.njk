@@ -1,0 +1,25 @@
+  <dialog class="catalog-dialog" id="catalog-comparison" aria-labelledby="comparison-heading">
+    <div class="catalog-dialog-header"><div><p class="section-tag">Your shortlist</p><h2 id="comparison-heading">Which one feels like your vacation?</h2></div><button type="button" id="close-comparison" class="catalog-close" aria-label="Close comparison">Close {{ uiIcon('close') }}</button></div>
+    <p id="comparison-trip"></p>
+    <div class="catalog-comparison-scroll" tabindex="0" role="region" aria-label="Home comparison. Scroll horizontally to see all homes.">
+      <table class="catalog-comparison-table">
+        <caption>Home features. Scroll sideways to see more homes.</caption>
+        <thead><tr><th scope="col">Your home</th>{% for property in comparisonProperties or properties %}<th scope="col" data-compare-column="{{ property.slug }}"><a href="{{ property.pageUrl }}" data-trip-link data-track-event="catalog_view_details_click" data-page-slug="{{ property.slug }}" data-placement="catalog_comparison">{{ property.cardName or property.name }}</a></th>{% endfor %}</tr></thead>
+        <tbody>
+          <tr><td aria-hidden="true"></td>{% for property in comparisonProperties or properties %}<td data-compare-column="{{ property.slug }}"><img data-property-photo="{{ property.slug }}" src="{{ property.photography.photos[0].src }}" srcset="{{ property.photography.photos[0].src | replace('.webp', '-800.webp') }} 800w, {{ property.photography.photos[0].src }} 1400w" sizes="(min-width: 900px) 30vw, calc(100vw - 40px)" alt="" width="280" height="170" loading="lazy"></td>{% endfor %}</tr>
+          <tr><th scope="row">Location</th>{% for property in comparisonProperties or properties %}<td data-compare-column="{{ property.slug }}">{{ property.city }}</td>{% endfor %}</tr>
+          <tr><th scope="row">Bedrooms / baths</th>{% for property in comparisonProperties or properties %}<td data-compare-column="{{ property.slug }}">{{ property.bedrooms }} / {{ property.bathrooms }}</td>{% endfor %}</tr>
+          <tr><th scope="row">Maximum guests</th>{% for property in comparisonProperties or properties %}<td data-compare-column="{{ property.slug }}">{{ property.guests }}<span class="comparison-capacity" data-capacity="{{ property.guests }}"></span></td>{% endfor %}</tr>
+          <tr><th scope="row">Beds</th>{% for property in comparisonProperties or properties %}<td data-compare-column="{{ property.slug }}">{% for room in property.guestFacts.sleeping %}<p>{{ room }}</p>{% endfor %}</td>{% endfor %}</tr>
+          <tr><th scope="row">Before choosing</th>{% for property in comparisonProperties or properties %}<td data-compare-column="{{ property.slug }}">{{ property.guestFacts.fitNote }}</td>{% endfor %}</tr>
+          <tr><th scope="row">What stands out</th>{% for property in comparisonProperties or properties %}<td data-compare-column="{{ property.slug }}">{{ property.highlights | join(' · ') }}</td>{% endfor %}</tr>
+          <tr><th scope="row">Waterfront / dock</th>{% for property in comparisonProperties or properties %}<td data-compare-column="{{ property.slug }}">{% if "waterfront" in property.amenities %}Waterfront · private dock{% else %}No private waterfront dock{% endif %}</td>{% endfor %}</tr>
+          <tr><th scope="row">Dogs</th>{% for property in comparisonProperties or properties %}<td data-compare-column="{{ property.slug }}">{{ property.guestFacts.pets.text }}</td>{% endfor %}</tr>
+          <tr><th scope="row">Dates & total</th>{% for property in comparisonProperties or properties %}<td data-compare-column="{{ property.slug }}"><a class="btn btn-brand" href="{{ property.bookingUrl }}" data-booking-base="{{ property.bookingUrl }}" data-track-event="catalog_book_direct_click" data-page-slug="{{ property.slug }}" data-placement="catalog_comparison" target="_blank" rel="noopener noreferrer" aria-label="Check dates for {{ property.cardName or property.name }}">Check dates</a></td>{% endfor %}</tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="catalog-share"><div><strong>Let the group weigh in.</strong><p>Share these homes and trip details in your group chat. No account needed.</p></div><button type="button" class="btn btn-brand" id="share-comparison">Copy shortlist link</button></div>
+    <p id="share-status" role="status"></p>
+    <label id="share-fallback-label" for="share-fallback" hidden>Copy this shortlist link</label><input id="share-fallback" type="text" readonly hidden>
+  </dialog>

@@ -13,6 +13,12 @@
   - `src/stays/stays.njk`
   - `src/stays/index.njk`
   - `src/_includes/partials/stay-property-photo.njk`
+  - `src/_includes/partials/stay-family-homes.njk`
+  - `src/_includes/partials/stay-supporting-actions.njk`
+  - `src/_includes/partials/catalog-trip.njk`
+  - `src/_includes/partials/catalog-comparison.njk`
+  - `src/properties/index.njk`
+  - `src/css/stay-family.css`
 - family reference links: /properties/bradenton-pool-home/ and /properties/the-oasis/ stay on the family collection; other generated collections keep their own matched homes. The 59-route preservation check verifies every original destination, rather than requiring those two homes on all shared-template renders.
 - CTA target: Every existing anchor destination and tracking tuple remains unchanged, including hero/section jumps, property cards, bottom and mobile booking actions.
 - anti-claims: No copy rewrite, new property fact, rate, review, savings or availability promise. Preserve all existing text, metadata, JSON-LD, link destinations/order, tracking and photos; no held guide edits, host changes, paid checks, new dependencies or schedules. Existing copy is preserved, not newly fact-certified.
@@ -67,6 +73,28 @@ ranking, demand, recommendation lift or new property claim.
 | Decision and reason | Finish the explicitly requested local UI refinement; hold publication and broader SEO changes. |
 
 ## Worklog
+
+November 2 publication: Sawyer approved the displayed guide-first browse
+preview, PR, normal publication and live verification. Issue #855 records the
+originating request. This supersedes the earlier preview-only holds below.
+Preserve host identities and no paid checks. Sole mutation owner remains this
+chat. Integrate the selected family layout in real Nunjucks source, reusing
+the native catalog trip form, comparison dialog and catalog.js; retain the
+other stay leaves' shared Waterline migration.
+
+Before production implementation, family boundary invariants: retain the
+approved short answer once before the form, four exact matched homes in order,
+five detailed paragraphs and seven FAQs below; preserve property facts/photo
+identity, all original internal destinations/tracking, metadata and schema
+except source-derived modified dates. Native dates/guest inputs must reach the
+correct home; failed availability must stay honest. No provider/host changes.
+Acceptance derives from issue #855 and the approved rendered preview, not the
+new implementation. Compare rendered public HTML with the approved preview
+and its original source contract; test actual intercepted booking navigation,
+empty/loading/error, comparison and no-JavaScript access. The old photo-only
+family page lacks the trip form and must fail the new journey assertion.
+Run release verification, visual floors and native screenshot gates, refreshing
+intentional baselines only via the existing workflow after inspected proof.
 
 November 1 spacing pass: fresh 1261x903 capture measured first home at836px.
 The native trip panel inherited margin16px 0 40px, and its tall right column

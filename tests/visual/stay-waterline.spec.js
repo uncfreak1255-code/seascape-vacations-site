@@ -19,11 +19,11 @@ test("stay-family-pool — Waterline type and surfaces cannot fall back to the l
 
 test("stay-family-pool — each dates action identifies its own home", async ({ page }) => {
   await gotoMarketingRoute(page, moneyRoutes.find((route) => route.slug === "stay-family-pool"));
-  for (const card of await page.locator(".property-card").all()) {
-    const name = (await card.locator(".property-title").innerText()).trim();
-    const action = card.locator('[data-placement="stay_property_card"]');
-    await expect(action).toHaveAccessibleName(`Check direct dates ${name}`);
-    await expect(action).toContainText(name);
+  await expect(page.locator('.catalog-card')).toHaveCount(4);
+  for (const card of await page.locator(".catalog-card").all()) {
+    const name = (await card.locator("h3").innerText()).trim();
+    const action = card.locator('.catalog-check-dates');
+    await expect(action).toHaveAccessibleName(`Check dates for ${name}`);
   }
 });
 

@@ -231,9 +231,7 @@ The homepage, catalog, property details, owner hub, and About page use the scope
 
 ## Stay collections (October 31, 2026)
 
-Stay leaves use the shared Waterline body, without a legacy typography exception.
-See [stay collection design](docs/design/stay-collections.md) for the template,
-components, preservation contract and whole-page coverage.
+See [stay collection design](docs/design/stay-collections.md).
 
 ## Planning guides (October 2026)
 

@@ -123,7 +123,9 @@ test("stay pages push into tracked property actions instead of generic browse es
   assert.equal(staysTemplate.includes('data-track-event="stay_view_property_click"'), true);
   assert.equal(staysTemplate.includes("seoPage.decisionHighlights"), true);
   assert.equal(staysTemplate.includes("seoPage.relatedStaySlugs"), true);
-  assert.equal(staysTemplate.includes('href="#featured-homes"'), true);
+  const supportingActions = fs.readFileSync(path.join(projectRoot, "src", "_includes", "partials", "stay-supporting-actions.njk"), "utf8");
+  assert.equal(staysTemplate.includes('include "partials/stay-supporting-actions.njk"'), true);
+  assert.equal(supportingActions.includes('href="#featured-homes"'), true);
   assert.equal(staysTemplate.includes("View All Properties"), false);
   assert.equal(staysTemplate.includes("Browse All Properties"), false);
   assert.equal(staysTemplate.includes("Ready to Book Your Getaway?"), false);

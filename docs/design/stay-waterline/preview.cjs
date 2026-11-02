@@ -15,7 +15,7 @@ const port = Number(process.env.STAY_PREVIEW_PORT || 4212);
       res.writeHead(200, { 'Content-Type': 'text/css; charset=utf-8', 'Cache-Control': 'no-store' });
       return res.end(fs.readFileSync(path.join(__dirname, 'flow-preview.css')));
     }
-    if (['browse', 'dockside'].includes(url.searchParams.get('flow')) && url.pathname === '/stays/family-vacation-rentals-anna-maria-island/') {
+    if (['browse', 'dockside'].includes(url.searchParams.get('flow')) && url.pathname === '/stays/family-vacation-rentals-anna-maria-island/' && !fs.readFileSync(path.join(root, url.pathname, 'index.html'), 'utf8').includes('stay-flow flow-browse')) {
       const file = path.join(process.env.STAY_FLOW_PREVIEW_DIR || '/private/tmp/stay-flow-previews', `${url.searchParams.get('flow')}.html`);
       if (!fs.existsSync(file)) { res.writeHead(503); return res.end('Run build-flows.cjs to prepare this local preview.'); }
       res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store' });

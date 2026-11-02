@@ -38,6 +38,7 @@ eleventyComputed:
 {% set hasDriveFacts = seoPage.propertyFacts and seoPage.propertyFacts.length > 0 and seoPage.propertyFacts[0].time %}
 {% set hasReviews = seoPage.reviewProof and seoPage.reviewProof.length > 0 %}
 {% set hasFaqs = seoPage.faqs and seoPage.faqs.length > 0 %}
+{% set isFamilyBrowse = seoPage.slug == "family-vacation-rentals-anna-maria-island" %}
 {% set hasRelatedGuides = seoPage.relatedGuideLinks and seoPage.relatedGuideLinks.length > 0 %}
 <!DOCTYPE html>
 <html lang="en">
@@ -68,13 +69,7 @@ eleventyComputed:
     <link rel="preconnect" href="https://bookingenginecdn.hostaway.com" crossorigin>
     <link rel="dns-prefetch" href="https://bookingenginecdn.hostaway.com">
     {% include "partials/local-font-head.njk" %}
-    {% if heroImage %}
-    <link
-        rel="preload"
-        as="image"
-        href="{{ heroImage | imgProxy(1200) }}"
-        fetchpriority="high">
-    {% endif %}
+    {% include "partials/stay-hero-preload.njk" %}
 
     <script type="application/ld+json">
     {
@@ -192,8 +187,14 @@ eleventyComputed:
 
 <link rel="stylesheet" href="/css/guest.css?v=waterline-v3">
 <link rel="stylesheet" href="/css/stay-collection.css">
+{% if isFamilyBrowse %}
+<link rel="stylesheet" href="/css/catalog.css">
+<link rel="stylesheet" href="/css/catalog-card.css?v=waterline-v3">
+<link rel="stylesheet" href="/css/stay-family.css">
+<script defer src="/assets/js/catalog.js"></script>
+{% endif %}
 </head>
-<body class="guest-site stay-collection">
+<body class="guest-site stay-collection{% if isFamilyBrowse %} stay-flow flow-browse{% endif %}">
     {% set navButtonHref = seoPage.collectionCtaHref or "/properties/" %}
     {% set navButtonAttributes = 'data-track-event="catalog_book_direct_click" data-placement="stay_nav" data-track-label="' ~ seoPage.slug ~ '"' %}
     {% include "partials/guest-header.njk" %}
@@ -220,23 +221,14 @@ eleventyComputed:
                 <p class="hero-eyebrow">{{ destinationLabel }}</p>
                 <h1>{{ seoPage.h1 }}</h1>
                 <p class="hero-subhead">{{ seoPage.description }}</p>
-                <div class="hero-actions">
-                    <a
-                        href="#featured-homes"
-                        class="btn"
-                        data-track-event="catalog_book_direct_click"
-                        data-placement="stay_hero"
-                        data-track-label="{{ seoPage.slug }}"
-                    >Browse the homes</a>
-                    <a href="{% if hasComparison %}#compare{% else %}#intro{% endif %}" class="btn-ghost">Why stay here?</a>
-                </div>
-                <div class="trust-chips" aria-label="Booking highlights">
-                    <span class="trust-chip">{{ uiIcon("star") }} {{ seoPage.reviewTrustLabel or "Rated 5.0" }}</span>
-                    <span class="trust-chip">{{ uiIcon("car") }} {{ seoPage.driveTimeLabel or "10-15 minutes to beaches" }}</span>
-                    <span class="trust-chip">{{ uiIcon("dollar") }} Compare full checkout totals</span>
-                </div>
+                {% if not isFamilyBrowse %}{% include "partials/stay-supporting-actions.njk" %}{% endif %}
             </div>
+            {% if isFamilyBrowse %}
+            <p class="flow-guide-answer">{{ seoPage.intro }}</p>
+            {% include "partials/catalog-trip.njk" %}
+            {% endif %}
         </section>
+        {% if isFamilyBrowse %}{% include "partials/stay-family-homes.njk" %}{% endif %}
 
         <section class="stats-bar" aria-label="Seascape stay highlights">
             <div class="stats-grid">
@@ -257,12 +249,13 @@ eleventyComputed:
 
         <section class="section" id="intro">
             <div class="container-narrow">
+                {% if isFamilyBrowse %}{% include "partials/stay-supporting-actions.njk" %}{% endif %}
                 <div class="section-header">
                     <p class="section-tag">{{ seoPage.introEyebrow or "The short version" }}</p>
                     <h2 class="section-title">{{ seoPage.introHeading or ("Stay near " + destinationLabel + ", with the trip details up front") }}</h2>
                 </div>
                 <div class="intro-copy">
-                    {% if seoPage.intro %}<p>{{ seoPage.intro }}</p>{% endif %}
+                    {% if seoPage.intro and not isFamilyBrowse %}<p>{{ seoPage.intro }}</p>{% endif %}
                     {% if seoPage.geoIntro %}{{ seoPage.geoIntro | safe }}{% endif %}
                 </div>
                 <nav class="jump-links" aria-label="On this page">
@@ -355,7 +348,7 @@ eleventyComputed:
         </section>
         {% endif %}
 
-        {% if hasMatchingHomes %}
+        {% if hasMatchingHomes and not isFamilyBrowse %}
         <section class="section section--soft" id="rentals">
             <span id="featured-homes" aria-hidden="true"></span>
             <div class="container">
@@ -531,7 +524,7 @@ eleventyComputed:
         </section>
     </main>
 
-    <div class="sticky-mobile-cta" aria-label="Mobile booking actions">
+    <div class="{% if isFamilyBrowse %}flow-secondary-links{% else %}sticky-mobile-cta{% endif %}" aria-label="Mobile booking actions">
         <a class="sticky-phone" href="tel:+19417048545" aria-label="Call Seascape Vacations">{{ uiIcon("phone") }}</a>
         <a
             href="{{ seoPage.collectionCtaHref or '/properties/' }}"
