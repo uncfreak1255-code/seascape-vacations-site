@@ -56,8 +56,9 @@ test("family collection names the verified mainland home and opens its booking p
   await expect(main).not.toContainText("all our pools have proper safety fencing");
   await expect(main).not.toContainText("at no additional charge");
   await expect(main).not.toContainText("10-15 minutes to beaches");
-  const card = page.locator(".catalog-card").filter({ has: page.getByRole("heading", { name: "Bradenton Pool Home", exact: true }) });
+  const card = page.locator('.catalog-card[data-property="bradenton-pool-home"]');
   await expect(card).toHaveCount(1);
+  await expect(card.locator('h3')).toHaveText('Bradenton Pool Home');
   await expect(card).toContainText("3 BR");
   await expect(card).toContainText("Sleeps 10");
   await expect(card.locator("img")).toHaveAttribute("src", /bradenton-pool-home/);
