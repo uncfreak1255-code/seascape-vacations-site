@@ -96,6 +96,14 @@ The native ratchet updater uses CI run 41531519260's actual Lighthouse reports
 to record only those two measured stylesheet changes, with a reason. No speed,
 transfer, script, accessibility or visual tolerance is relaxed.
 
+Full visual run 41533583075: 587 passed, 37 skipped; its only two failures
+were desktop/phone instances of the existing growth-booking-ai family test
+still selecting the old property-card and dates label. Update that journey to
+the approved catalog-card and distinct details action; retain every existing
+truth assertion, correct photo and internal property destination, and assert
+the separate direct-booking action still belongs to listing 487798. Public
+page source and approved screenshot output do not change in this correction.
+
 Before production implementation, family boundary invariants: retain the
 approved short answer once before the form, four exact matched homes in order,
 five detailed paragraphs and seven FAQs below; preserve property facts/photo
