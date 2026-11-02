@@ -4,6 +4,7 @@ paths:
   - "src/css/**"
   - "src/_includes/**"
   - "src/**/*.njk"
+  - "src/**/*.html"
   - "src/assets/js/**"
   - "tests/visual/**"
 ---

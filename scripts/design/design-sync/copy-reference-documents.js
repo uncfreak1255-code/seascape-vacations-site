@@ -6,6 +6,7 @@ module.exports = function copyReferenceDocuments(copy) {
   copy("docs/design/guide-figures.md", "waterline/guide-figures.md"); // DESIGN.md "Guide figures" points here
   copy("docs/design/direction-changes.md", "waterline/direction-changes.md"); // DESIGN.md "How this direction changes" points here
   copy("docs/process/design-review-workflow.md", "waterline/design-review-workflow.md");
+  copy("docs/agents/rules/design.md", "waterline/design-rules.md"); // design-review-workflow.md "Source Order" points here
   for (const name of ["writing-style-guide.md", "voice.md", "banned-patterns.md", "approved-examples.md"]) {
     copy(`docs/style/${name}`, `waterline/${name}`);
   }

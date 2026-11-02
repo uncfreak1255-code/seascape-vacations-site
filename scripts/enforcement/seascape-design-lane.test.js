@@ -140,6 +140,7 @@ test("design lane prompt wires the repo-local skills and proof contract", () => 
   assert.match(prompt, /Never install, copy, globally load, or promote a donor/);
   assert.match(prompt, /npm run test:visual/);
   assert.match(prompt, /Figma is optional/);
+  assert.match(prompt, /\n3\. DESIGN\.md\n4\. docs\/agents\/rules\/design\.md\n/);
 });
 
 test("donor discovery reads metadata only and ignores fixtures and unrelated skills", () => {
@@ -547,7 +548,10 @@ test("design workflow docs and claude compatibility layer advertise the local la
 
   assert.match(agents, /docs\/agents\/rules\/design\.md/);
   assert.equal(claudeDesignRule, "../../docs/agents/rules/design.md");
-  assert.match(designRule, /^---\npaths:\n(?:  - .+\n)*  - "src\/css\/\*\*"\n/);
+  assert.match(
+    designRule,
+    /^---\npaths:\n  - "DESIGN\.md"\n  - "src\/css\/\*\*"\n  - "src\/_includes\/\*\*"\n  - "src\/\*\*\/\*\.njk"\n  - "src\/\*\*\/\*\.html"\n  - "src\/assets\/js\/\*\*"\n  - "tests\/visual\/\*\*"\n---\n/
+  );
   assert.match(designRule, /seascape-design-specialist/);
   assert.match(designRule, /npm run design:lane/);
   assert.match(workflow, /seascape-design-critic/);

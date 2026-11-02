@@ -60,7 +60,10 @@ test("repo instructions require the content gate and lint command for content PR
 
   assert.equal(agents.includes("docs/agents/rules/content-gate.md"), true);
   assert.equal(claudeContentRule, "../../docs/agents/rules/content-gate.md");
-  assert.match(contentGate, /^---\npaths:\n(?:  - .+\n)*  - "src\/\*\*\/\*\.njk"\n/);
+  assert.match(
+    contentGate,
+    /^---\npaths:\n  - "src\/\*\*\/\*\.njk"\n  - "src\/\*\*\/\*\.html"\n  - "src\/_data\/\*\*"\n  - "src\/assets\/js\/\*\*"\n  - "src\/llms\.txt"\n  - "docs\/briefs\/\*\*"\n---\n/
+  );
   assert.equal(contentGate.includes("docs/process/content-quality-gate.md"), true);
   assert.equal(contentGate.includes("npm run lint:content"), true);
   assert.equal(agents.includes("npm run lint:content"), true);

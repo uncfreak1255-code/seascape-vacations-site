@@ -1,9 +1,10 @@
 ---
 paths:
   - "src/**/*.njk"
-  - "src/**/*.md"
   - "src/**/*.html"
   - "src/_data/**"
+  - "src/assets/js/**"
+  - "src/llms.txt"
   - "docs/briefs/**"
 ---
 

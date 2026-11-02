@@ -39,6 +39,7 @@ test('DESIGN.md pointer docs, including direction-changes.md, ship verbatim', ()
   for (const name of ['legacy-gold-ctas.md', 'scales-states-forms.md', 'guide-figures.md', 'direction-changes.md']) {
     assert.equal(exported(name), source(`docs/design/${name}`), `waterline/${name} drifted from docs/design/${name}`);
   }
+  assert.equal(exported('design-rules.md'), source('docs/agents/rules/design.md'), 'waterline/design-rules.md drifted from docs/agents/rules/design.md');
 });
 
 test('_sync-push.json holds DesignSync-ready arguments matching the manifest', () => {
