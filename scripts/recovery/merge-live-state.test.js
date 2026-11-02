@@ -76,3 +76,12 @@ test("a ref name instead of a SHA is refused before any git call", () => {
   assert.throws(() => mergeLiveState({ sha: "HEAD", cwd: os.tmpdir(), fetch: false }), /usage/);
   assert.throws(() => mergeLiveState({ sha: undefined, cwd: os.tmpdir(), fetch: false }), /usage/);
 });
+
+test("a shallow clone that cannot see ancestry gives no verdict instead of not-on-main", (t) => {
+  const { clone, base } = makeFixture(t);
+  const shallow = path.join(path.dirname(clone), "shallow");
+  execFileSync("git", ["clone", "-q", "--depth", "1", "-b", "main", `file://${path.join(path.dirname(clone), "origin.git")}`, shallow], { stdio: "pipe" });
+  const result = mergeLiveState({ sha: base, cwd: shallow });
+  assert.equal(result.state, "shallow-history");
+  assert.equal(result.exitCode, 2);
+});

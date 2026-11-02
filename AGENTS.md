@@ -174,9 +174,9 @@ lock, Hostaway cache sync, Eleventy, availability validation).
      `production`, then exits 0 only when the production branch contains the
      merge, 1 for "merged, queued for publish" (not live; PR 766 on 2026-10-22
      was merged while production lacked it), 2 for an unknown or unmerged
-     SHA (pass the squash commit on `main`, not the PR head), and 3 for a git
-     or usage error. A bare `merge-base --is-ancestor` exits 128 on an
-     unfetched commit.
+     SHA or a shallow clone that cannot decide (pass the squash commit on
+     `main`, not the PR head), and 3 for a git or usage error. A bare
+     `merge-base --is-ancestor` exits 128 on an unfetched commit.
   2. Netlify's current production deploy is complete and its `commit_ref`
      contains the merge.
   3. The Post-deploy proof commands pass; for a change to a specific page, add

@@ -11,8 +11,8 @@ This is required for deploy-sensitive site work.
 
 - [ ] A Netlify production deploy is complete for a `production` commit that
   contains the merge (`npm run verify:merge-live -- <merge-sha>` exits 0; 1
-  means queued for publish, 2 an unknown or unmerged SHA, 3 a git or usage
-  error).
+  means queued for publish, 2 an unknown or unmerged SHA or a shallow clone
+  that cannot decide, 3 a git or usage error).
   The deployed SHA is usually a later `main` commit carrying several merges.
   A batch that changes only agent docs, tooling or CI is skipped on purpose
   while live availability is under 12 hours old

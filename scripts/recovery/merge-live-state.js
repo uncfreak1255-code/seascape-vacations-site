@@ -6,8 +6,9 @@
 // fetches both branches and names each state.
 //
 // Exit codes: 0 live-branch (production contains the merge; next confirm the
-// Netlify deploy), 1 queued (on main, not yet published), 2 unknown commit or
-// not on origin/main, 3 usage or git/fetch error (no verdict).
+// Netlify deploy), 1 queued (on main, not yet published), 2 unknown commit,
+// not on origin/main, or shallow history that cannot decide; 3 usage or
+// git/fetch error (no verdict).
 const { execFileSync, spawnSync } = require("node:child_process");
 
 function git(cwd, args) {
@@ -32,22 +33,22 @@ function mergeLiveState({ sha, cwd = process.cwd(), fetch = true }) {
       "+refs/heads/main:refs/remotes/origin/main",
       "+refs/heads/production:refs/remotes/origin/production"]);
   }
+  // Shallow history can hide a commit or cut its ancestry, so only a positive
+  // ancestry result is a verdict there; anything else is "shallow-history".
+  const shallow = git(cwd, ["rev-parse", "--is-shallow-repository"]) === "true";
   const exists = spawnSync("git", ["cat-file", "-e", `${sha}^{commit}`], { cwd }).status === 0;
-  if (!exists) {
-    const shallow = git(cwd, ["rev-parse", "--is-shallow-repository"]) === "true";
-    return { state: shallow ? "unknown-commit-shallow" : "unknown-commit", exitCode: 2, sha };
-  }
+  if (!exists) return { state: shallow ? "shallow-history" : "unknown-commit", exitCode: 2, sha };
   const full = git(cwd, ["rev-parse", `${sha}^{commit}`]);
-  if (!isAncestor(cwd, full, "origin/main")) return { state: "not-on-main", exitCode: 2, sha: full };
+  if (!isAncestor(cwd, full, "origin/main")) return { state: shallow ? "shallow-history" : "not-on-main", exitCode: 2, sha: full };
   if (isAncestor(cwd, full, "origin/production")) return { state: "live-branch", exitCode: 0, sha: full };
-  return { state: "queued", exitCode: 1, sha: full };
+  return shallow ? { state: "shallow-history", exitCode: 2, sha: full } : { state: "queued", exitCode: 1, sha: full };
 }
 
 const MESSAGES = {
   "live-branch": "origin/production contains the merge; next confirm Netlify's production deploy commit_ref (step 2)",
   queued: "merged to origin/main, queued for the next publish; not live",
   "unknown-commit": "commit not found after fetching origin main and production; check the SHA",
-  "unknown-commit-shallow": "commit not found in this shallow clone; run `git fetch --unshallow origin` and retry",
+  "shallow-history": "this shallow clone cannot prove the commit's ancestry; run `git fetch --unshallow origin` and retry",
   "not-on-main": "commit is not on origin/main; pass the merge (squash) commit from main, not a PR head SHA"
 };
 
