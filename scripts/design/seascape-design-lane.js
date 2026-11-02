@@ -292,6 +292,7 @@ function buildPrompt({
       "AGENTS.md",
       "CLAUDE.md",
       "DESIGN.md",
+      "docs/agents/rules/design.md",
       "docs/process/design-review-workflow.md",
       "docs/process/seascape-design-studio.md",
       "one task-relevant route, source file, screenshot, mockup, or brief",

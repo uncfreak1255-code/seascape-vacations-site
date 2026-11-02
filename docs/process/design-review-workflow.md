@@ -16,9 +16,10 @@ That includes:
 1. `AGENTS.md`
 2. `CLAUDE.md`
 3. `DESIGN.md`
-4. `docs/process/agent-evidence-routing.md`
-5. this file
-6. the task-relevant source file
+4. `docs/agents/rules/design.md`
+5. `docs/process/agent-evidence-routing.md`
+6. this file
+7. the task-relevant source file
 
 ## Design Authority
 

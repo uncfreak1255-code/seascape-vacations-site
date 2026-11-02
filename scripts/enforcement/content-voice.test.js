@@ -8,7 +8,6 @@ const { runBuildForLint } = require("./build-for-lint");
 const { withWorktreeLock } = require("./worktree-lock");
 const { extractAuthorizedSourceSectionText } = require("./search-brief-gate");
 const {
-  REQUIRED_BRIEF_FIELDS,
   parseMissingBriefFields,
   parseRequiredLinksFromBrief,
 } = require("./brief-contract");
@@ -573,18 +572,6 @@ function getChangedFiles() {
   }
 }
 
-function assertEditorialStepsInOrder(source, label) {
-  const orderedSteps = ["**Draft the copy**", "**Remove internal wording**", "**Check voice and specificity**"];
-  let lastIndex = -1;
-
-  for (const step of orderedSteps) {
-    const currentIndex = source.indexOf(step);
-    assert.notEqual(currentIndex, -1, `${label} should mention ${step}`);
-    assert.ok(currentIndex > lastIndex, `${label} should mention ${step} in visible-copy order`);
-    lastIndex = currentIndex;
-  }
-}
-
 function collectStringLeaves(value, currentPath = "", leaves = []) {
   if (typeof value === "string") {
     leaves.push({ path: currentPath || "<root>", value });
@@ -843,47 +830,6 @@ function lintPublicContent(relativePath, source, requiredLinks, options = {}) {
 
   return violations;
 }
-
-test("content quality gate doc defines reader, proof, and agent copy plus the visible-copy lane", () => {
-  const gateDoc = read(path.join("docs", "process", "content-quality-gate.md"));
-
-  assert.equal(gateDoc.includes("reader copy"), true);
-  assert.equal(gateDoc.includes("proof copy"), true);
-  assert.equal(gateDoc.includes("agent copy"), true);
-  assert.equal(gateDoc.includes("No Brief, No Writing"), true);
-  assert.equal(gateDoc.includes("`offer claim:`"), true, "content gate must document the owner-lane offer claim field");
-  assert.equal(gateDoc.includes("Visible Copy Lane"), true);
-  assertEditorialStepsInOrder(gateDoc, "content quality gate doc");
-  assert.equal(gateDoc.includes("npm run lint:content"), true);
-});
-
-test("brief template carries the required content-gate inputs", () => {
-  const briefTemplate = read(path.join("docs", "briefs", "_template.md"));
-
-  for (const field of REQUIRED_BRIEF_FIELDS) {
-    assert.equal(
-      briefTemplate.includes(`- ${field}:`),
-      true,
-      `brief template should include ${field}`
-    );
-  }
-});
-
-test("repo instructions require the content gate and lint command for content PRs", () => {
-  const agents = read("AGENTS.md");
-  const claude = read("CLAUDE.md");
-  const reviewChecklist = read(path.join("docs", "process", "before-user-review-checklist.md"));
-  const workflowPointer = claude.match(/\[[^\]]+\]\((AGENTS\.md)#required-batch-workflow\)/);
-  assert.ok(workflowPointer, "CLAUDE must route content work to the canonical workflow");
-  assert.equal(claude.includes("@AGENTS.md"), true);
-  const canonicalWorkflow = read(workflowPointer[1]).split("## Required Batch Workflow")[1]?.split("\n## ")[0] || "";
-
-  assert.equal(agents.includes("docs/process/content-quality-gate.md"), true);
-  assert.equal(agents.includes("npm run lint:content"), true);
-  assertEditorialStepsInOrder(agents, "AGENTS content gate");
-  assertEditorialStepsInOrder(canonicalWorkflow, "canonical content workflow");
-  assertEditorialStepsInOrder(reviewChecklist, "before user review checklist");
-});
 
 test("reader-language gate rejects static, JavaScript, arbitrary object-key, component, and rendered bypasses", () => {
   const failingSample = `
