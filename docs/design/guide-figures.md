@@ -11,9 +11,11 @@ A table and a clear answer at the top carry a guide in search and in AI answers.
 
 If one test fails, add no figure. Improve the table or the lead sentence instead.
 
+When all four pass, choose the smallest useful treatment from [Waterline chart patterns](chart-patterns.md). Paired seasonal plots are Sawyer's selected weather direction; agents can propose the other patterns when their data fits. Keep the page-specific preview and publication boundaries below.
+
 | Guide type | Add | Do not add |
 | --- | --- | --- |
-| When to go (season, weather) | Twelve-month strip plus the table | Pie chart, animated chart |
+| When to go (season, weather) | Paired seasonal plots or a twelve-month strip, plus the table | Pie chart, animated chart |
 | Cost | Tier cards plus the table | A savings percentage that has no source |
 | Place A versus place B | Side-by-side table | Chart |
 | Distance or drive times | Labeled map, only when the drive times are published | Decorative map |
@@ -25,7 +27,7 @@ A figure ships only when all of these hold:
 - Plain SVG or HTML made at build time. It needs no script and is never an image of text.
 - A text label, and the full table stays on the page as the data source.
 - One figure per guide, directly under the answer (see Instrument in the guide frame in `DESIGN.md`).
-- Colors only from this file.
+- Colors only from the Waterline tokens in `DESIGN.md`.
 - Readable at 360, 375 and 393px wide with no sideways swipe.
 - A text diff against the page it replaces shows no new fact.
 - Shown to Sawyer as two or three variants before it is built.
