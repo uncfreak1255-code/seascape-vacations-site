@@ -1,0 +1,134 @@
+[
+  {
+    "month": "January",
+    "high": "72.5",
+    "low": "52.3",
+    "rain": "2.79",
+    "rainDays": "8.5",
+    "water": "62.7",
+    "short": "Jan",
+    "highTone": 1,
+    "rainTone": 3
+  },
+  {
+    "month": "February",
+    "high": "74.9",
+    "low": "54.6",
+    "rain": "1.92",
+    "rainDays": "6.8",
+    "water": "65.9",
+    "short": "Feb",
+    "highTone": 1,
+    "rainTone": 2
+  },
+  {
+    "month": "March",
+    "high": "78.2",
+    "low": "58.1",
+    "rain": "2.85",
+    "rainDays": "6.4",
+    "water": "70.9",
+    "short": "Mar",
+    "highTone": 2,
+    "rainTone": 2
+  },
+  {
+    "month": "April",
+    "high": "82.5",
+    "low": "62.7",
+    "rain": "2.46",
+    "rainDays": "5.1",
+    "water": "76.5",
+    "short": "Apr",
+    "highTone": 3,
+    "rainTone": 2
+  },
+  {
+    "month": "May",
+    "high": "87.5",
+    "low": "68.2",
+    "rain": "2.58",
+    "rainDays": "6.0",
+    "water": "82.3",
+    "short": "May",
+    "highTone": 4,
+    "rainTone": 2
+  },
+  {
+    "month": "June",
+    "high": "90.0",
+    "low": "73.6",
+    "rain": "7.05",
+    "rainDays": "12.8",
+    "water": "86.0",
+    "short": "Jun",
+    "highTone": 5,
+    "rainTone": 4
+  },
+  {
+    "month": "July",
+    "high": "91.1",
+    "low": "75.2",
+    "rain": "7.39",
+    "rainDays": "15.6",
+    "water": "87.9",
+    "short": "Jul",
+    "highTone": 5,
+    "rainTone": 4
+  },
+  {
+    "month": "August",
+    "high": "91.5",
+    "low": "75.3",
+    "rain": "9.11",
+    "rainDays": "17.5",
+    "water": "87.9",
+    "short": "Aug",
+    "highTone": 5,
+    "rainTone": 5
+  },
+  {
+    "month": "September",
+    "high": "90.2",
+    "low": "74.1",
+    "rain": "6.00",
+    "rainDays": "13.7",
+    "water": "86.0",
+    "short": "Sep",
+    "highTone": 5,
+    "rainTone": 4
+  },
+  {
+    "month": "October",
+    "high": "86.3",
+    "low": "68.3",
+    "rain": "2.76",
+    "rainDays": "7.0",
+    "water": "80.0",
+    "short": "Oct",
+    "highTone": 4,
+    "rainTone": 2
+  },
+  {
+    "month": "November",
+    "high": "80.0",
+    "low": "60.1",
+    "rain": "1.81",
+    "rainDays": "5.6",
+    "water": "71.8",
+    "short": "Nov",
+    "highTone": 3,
+    "rainTone": 2
+  },
+  {
+    "month": "December",
+    "high": "75.2",
+    "low": "55.2",
+    "rain": "2.33",
+    "rainDays": "7.6",
+    "water": "67.2",
+    "short": "Dec",
+    "highTone": 2,
+    "rainTone": 2
+  }
+]

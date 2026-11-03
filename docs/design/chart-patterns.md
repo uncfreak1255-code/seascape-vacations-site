@@ -8,8 +8,9 @@ understand. Name that choice in the existing design packet; charts are optional.
 
 On November 3, 2026, Sawyer selected B from the rendered current/A/B weather
 comparison and requested charts like it as future design choices. B is the
-selected weather direction, not a published weather migration. The public
-article, SEO, source table and booking contracts remain unchanged in this work.
+selected weather direction. Its source implementation and normal-publication
+proof are tracked in [the weather B brief](../briefs/2026-11-weather-waterline-b.md);
+the article, SEO, source values and booking contracts must be preserved.
 
 B uses two aligned monthly plots: normal high temperature in marine ink and
 rain days in clay. Every month has its exact value printed above its mark.

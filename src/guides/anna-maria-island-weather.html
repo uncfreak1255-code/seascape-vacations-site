@@ -79,22 +79,10 @@ permalink: "/guides/anna-maria-island-weather/"
   }
   </script>
   {% include "partials/local-font-head.njk" %}
-  <style>
-    :root{--brand:#5F8A8B;--brand-dark:#3D5C5D;--gold:#C9A962;--cream:#F5EED6;--cream-dark:#EBE4CC;--stone:#3A3A3A;--stone-light:#595959;--white:#fff}
-    *{box-sizing:border-box}body{margin:0;font-family:Poppins,sans-serif;background:var(--cream);color:var(--stone)}
-    .breadcrumb{background:#fff;padding:12px 24px;border-bottom:1px solid var(--cream-dark)}.breadcrumb ol{display:flex;flex-wrap:wrap;gap:8px;list-style:none;max-width:900px;margin:0 auto;padding:0;font-size:13px}.breadcrumb a{color:var(--brand-dark)}
-    .hero{background:linear-gradient(135deg,var(--brand),var(--brand-dark));padding:76px 24px 56px;text-align:center;color:#fff}.hero-badge{display:inline-block;background:rgba(255,255,255,.15);padding:6px 16px;border-radius:30px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.1em}.hero h1{font-family:'Playfair Display',serif;font-size:clamp(32px,5vw,48px);line-height:1.15;margin:18px 0 12px}.hero p{max-width:680px;margin:8px auto;font-size:17px}
-    .container{max-width:900px;margin:0 auto;padding:52px 24px}.article-text{font-size:16px;line-height:1.8}.article-text h2{font-family:'Playfair Display',serif;font-size:clamp(24px,3.5vw,32px);color:var(--brand-dark);margin:44px 0 14px}.article-text h3{font-size:20px;margin:26px 0 8px}.article-text a{color:var(--brand-dark)}
-    .answer,.source-note,.safety-card{background:#fff;border-left:4px solid var(--brand);padding:20px 22px;margin:0 0 26px;border-radius:0 10px 10px 0}.source-note{border-left-color:var(--gold)}.safety-card{border-left-color:var(--gold)}
-    .table-wrap{overflow-x:auto;margin:24px 0 12px}.table-hint{display:none;color:var(--stone-light);font-size:14px;margin:0 0 8px}.weather-table{width:100%;min-width:670px;border-collapse:collapse;background:#fff;border-radius:14px;overflow:hidden}.weather-table th{background:var(--brand);color:#fff;padding:11px 12px;text-align:right;font-size:13px}.weather-table th:first-child,.weather-table td:first-child{text-align:left}.weather-table td{padding:10px 12px;border-bottom:1px solid var(--cream-dark);text-align:right;font-size:13px}.weather-table tr:last-child td{border-bottom:0}
-    .month-strip{margin:0 0 30px}.month-strip figcaption{font-size:14px;line-height:1.6;color:#52676A;margin:0 0 12px}.ms-grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:6px}.ms-grid li{display:flex;flex-direction:column;gap:4px;min-width:0}.ms-m{font-size:12px;font-weight:600;color:#173D42;text-align:center}.ms-h,.ms-r{border-radius:6px;padding:8px 2px;text-align:center;font-size:12px;line-height:1.25;display:flex;flex-direction:column;align-items:center}.ms-v{font-size:14px;font-weight:600}.ms-h{color:#173D42}.ms-h.h1{background:color-mix(in srgb,#173D42 12%,#F6F3EB)}.ms-h.h2{background:color-mix(in srgb,#173D42 35%,#F6F3EB)}.ms-h.h3{background:#173D42;background:color-mix(in srgb,#173D42 70%,#F6F3EB);color:#fff}.ms-h.h4{background:#173D42;background:color-mix(in srgb,#173D42 88%,#F6F3EB);color:#fff}.ms-h.h5{background:#173D42;color:#fff}.ms-r{color:#173D42}.ms-r.r1{background:color-mix(in srgb,#A4533E 12%,#F6F3EB)}.ms-r.r2{background:color-mix(in srgb,#A4533E 30%,#F6F3EB)}.ms-r.r3{background:color-mix(in srgb,#A4533E 48%,#F6F3EB)}.ms-r.r4{background:#A4533E;color:#fff}.ms-r.r5{background:#A4533E;background:color-mix(in srgb,#A4533E 75%,#173D42);color:#fff}
-    .season-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.season-card{background:#fff;border-radius:14px;padding:22px}.season-card h3{color:var(--brand-dark);margin-top:0}
-    .cta-section{background:linear-gradient(135deg,var(--brand),var(--brand-dark));padding:52px 24px;text-align:center;color:#fff}.cta-section h2{font-family:'Playfair Display',serif;font-size:clamp(26px,4vw,36px);margin:0 0 12px}.cta-btn{display:inline-block;background:var(--gold);color:var(--stone);padding:14px 28px;border-radius:50px;font-weight:600;text-decoration:none}
-    @media(max-width:700px){.ms-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.season-grid{grid-template-columns:1fr}.container{padding:40px 18px}.hero{padding:58px 18px 42px}.table-hint{display:block}}
-  </style>
+  <link rel="stylesheet" href="/css/weather-guide.css">
 <link rel="stylesheet" href="/css/guest.css?v=waterline-v3">
 </head>
-<body class="guest-shell">
+<body class="guest-shell planning-guide weather-guide">
 {% include "partials/guest-header.njk" %}
   <nav class="breadcrumb" aria-label="Breadcrumb"><ol><li><a href="/">Home</a></li><li>›</li><li><a href="/guides/">Guides</a></li><li>›</li><li aria-current="page">Anna Maria Island Weather</li></ol></nav>
   <main>
@@ -102,28 +90,27 @@ permalink: "/guides/anna-maria-island-weather/"
       <span class="hero-badge">{{ uiLabel('weather', 'Weather Guide') }}</span>
       <h1>Anna Maria Island Weather by Month</h1>
       <p><strong>Reviewed August 19, 2026.</strong> Monthly climate normals, a nearby Gulf water proxy, and practical storm safety.</p>
-    </section>
-    <article class="container article-text">
       <section class="answer" aria-label="Quick answer">
         <strong>Quick answer:</strong> Late fall through spring has milder air and lower monthly rainfall in the nearby NOAA normals. Summer has the warmest Gulf water proxy and the most rain days. Choose the month that fits your heat, water, rain, and storm-season tolerance.
       </section>
+    </section>
+    <article class="container article-text">
 
       <figure class="month-strip" aria-labelledby="month-strip-cap">
         <figcaption id="month-strip-cap"><strong>The year at a glance.</strong> Each month shows its normal high in °F, shaded darker as it gets hotter, and its rain days, shaded clay as it gets wetter. The full table below has every value.</figcaption>
-        <ol class="ms-grid">
-          <li><span class="ms-m">Jan</span><span class="ms-h h1"><span class="ms-v">72.5°</span></span><span class="ms-r r2"><span class="ms-v">8.5</span> rain days</span></li>
-          <li><span class="ms-m">Feb</span><span class="ms-h h1"><span class="ms-v">74.9°</span></span><span class="ms-r r1"><span class="ms-v">6.8</span> rain days</span></li>
-          <li><span class="ms-m">Mar</span><span class="ms-h h2"><span class="ms-v">78.2°</span></span><span class="ms-r r1"><span class="ms-v">6.4</span> rain days</span></li>
-          <li><span class="ms-m">Apr</span><span class="ms-h h3"><span class="ms-v">82.5°</span></span><span class="ms-r r1"><span class="ms-v">5.1</span> rain days</span></li>
-          <li><span class="ms-m">May</span><span class="ms-h h3"><span class="ms-v">87.5°</span></span><span class="ms-r r1"><span class="ms-v">6.0</span> rain days</span></li>
-          <li><span class="ms-m">Jun</span><span class="ms-h h4"><span class="ms-v">90.0°</span></span><span class="ms-r r3"><span class="ms-v">12.8</span> rain days</span></li>
-          <li><span class="ms-m">Jul</span><span class="ms-h h5"><span class="ms-v">91.1°</span></span><span class="ms-r r4"><span class="ms-v">15.6</span> rain days</span></li>
-          <li><span class="ms-m">Aug</span><span class="ms-h h5"><span class="ms-v">91.5°</span></span><span class="ms-r r5"><span class="ms-v">17.5</span> rain days</span></li>
-          <li><span class="ms-m">Sep</span><span class="ms-h h4"><span class="ms-v">90.2°</span></span><span class="ms-r r4"><span class="ms-v">13.7</span> rain days</span></li>
-          <li><span class="ms-m">Oct</span><span class="ms-h h3"><span class="ms-v">86.3°</span></span><span class="ms-r r2"><span class="ms-v">7.0</span> rain days</span></li>
-          <li><span class="ms-m">Nov</span><span class="ms-h h2"><span class="ms-v">80.0°</span></span><span class="ms-r r1"><span class="ms-v">5.6</span> rain days</span></li>
-          <li><span class="ms-m">Dec</span><span class="ms-h h1"><span class="ms-v">75.2°</span></span><span class="ms-r r2"><span class="ms-v">7.6</span> rain days</span></li>
-        </ol>
+        <div class="climate-plots">
+          {% set plots = [{label: "Normal high °F", key: "high", max: 100, suffix: "°", kind: "high", scale: "0–100°F"}, {label: "Rain days ≥0.01 in", key: "rainDays", max: 20, suffix: "", kind: "rain", scale: "0–20 days"}] %}
+          {% for plot in plots %}
+          <section class="climate-plot {{ plot.kind }}" aria-label="{{ plot.label }}">
+            <div class="plot-head"><h3>{{ plot.label }}</h3><span>{{ plot.scale }}</span></div>
+            <ol class="plot-months">
+              {% for month in weatherClimate %}
+              <li><div class="bar-space"><div class="bar {{ plot.kind }}-{% if plot.kind == 'high' %}{{ month.highTone }}{% else %}{{ month.rainTone }}{% endif %}" style="--value:{{ month[plot.key] / plot.max * 100 }}%"><span>{{ month[plot.key] }}{{ plot.suffix }}</span></div></div><span class="plot-month">{{ month.short }}</span></li>
+              {% endfor %}
+            </ol>
+          </section>
+          {% endfor %}
+        </div>
       </figure>
 
       <section class="source-note" aria-label="Data sources">
@@ -136,18 +123,9 @@ permalink: "/guides/anna-maria-island-weather/"
         <table class="weather-table">
           <thead><tr><th>Month</th><th>Normal high °F</th><th>Normal low °F</th><th>Rain in</th><th>Rain days ≥0.01 in</th><th>Water proxy °F</th></tr></thead>
           <tbody>
-            <tr><td>January</td><td>72.5</td><td>52.3</td><td>2.79</td><td>8.5</td><td>62.7</td></tr>
-            <tr><td>February</td><td>74.9</td><td>54.6</td><td>1.92</td><td>6.8</td><td>65.9</td></tr>
-            <tr><td>March</td><td>78.2</td><td>58.1</td><td>2.85</td><td>6.4</td><td>70.9</td></tr>
-            <tr><td>April</td><td>82.5</td><td>62.7</td><td>2.46</td><td>5.1</td><td>76.5</td></tr>
-            <tr><td>May</td><td>87.5</td><td>68.2</td><td>2.58</td><td>6.0</td><td>82.3</td></tr>
-            <tr><td>June</td><td>90.0</td><td>73.6</td><td>7.05</td><td>12.8</td><td>86.0</td></tr>
-            <tr><td>July</td><td>91.1</td><td>75.2</td><td>7.39</td><td>15.6</td><td>87.9</td></tr>
-            <tr><td>August</td><td>91.5</td><td>75.3</td><td>9.11</td><td>17.5</td><td>87.9</td></tr>
-            <tr><td>September</td><td>90.2</td><td>74.1</td><td>6.00</td><td>13.7</td><td>86.0</td></tr>
-            <tr><td>October</td><td>86.3</td><td>68.3</td><td>2.76</td><td>7.0</td><td>80.0</td></tr>
-            <tr><td>November</td><td>80.0</td><td>60.1</td><td>1.81</td><td>5.6</td><td>71.8</td></tr>
-            <tr><td>December</td><td>75.2</td><td>55.2</td><td>2.33</td><td>7.6</td><td>67.2</td></tr>
+            {% for month in weatherClimate %}
+            <tr><td>{{ month.month }}</td><td>{{ month.high }}</td><td>{{ month.low }}</td><td>{{ month.rain }}</td><td>{{ month.rainDays }}</td><td>{{ month.water }}</td></tr>
+            {% endfor %}
           </tbody>
         </table>
       </div>

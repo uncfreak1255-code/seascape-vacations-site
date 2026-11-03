@@ -1,4 +1,5 @@
 const moneyRoutes = [
+  {slug:"guide-weather",path:"/guides/anna-maria-island-weather/",readySelector:".climate-plots"},
   {slug:"stay-family-pool", path:"/stays/family-vacation-rentals-anna-maria-island/", readySelector:"main h1"},
   {slug:"guide-ami-vs-longboat",path:"/guides/anna-maria-island-vs-longboat-key/",readySelector:"main h1"},
   {slug:"guide-ami-vs-clearwater",path:"/guides/anna-maria-island-vs-clearwater-beach/",readySelector:"main h1"},

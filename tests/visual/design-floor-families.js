@@ -3,6 +3,7 @@
 // would otherwise shrink the floors silently (PR C, 2026-10-25).
 const WHOLE_PAGE_CLASSES = ["guest-site", "planning-guide"];
 const WHOLE_PAGE_FAMILIES = {
+  weather: ["guide-weather", "planning-guide"],
   stay: ["stay-family-pool", "guest-site"],
   owner: ["property-management", "guest-site"],
   about: ["about-seascape", "guest-site"],
