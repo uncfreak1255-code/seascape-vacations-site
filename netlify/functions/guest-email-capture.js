@@ -17,6 +17,7 @@ const {
   writeGuestEmailCaptureMetrics
 } = require("./_guest-email-capture-metrics");
 const { assessGuestCaptureBotSignals } = require("./_guest-capture-bot-guard");
+const { recordGuestCaptureRejection } = require("./_guest-capture-rejection-metrics");
 
 const CAPTURE_STATES = Object.freeze({
   TAGGED: "guest_capture_tag_applied",
@@ -388,10 +389,28 @@ async function handleGuestEmailCapture(event, _context, injectedStore, injectedF
       reasons: botScreen.reasons,
       ...buildGuestCaptureLogContext(payload)
     });
+    // The reply never names the rule, so a bot cannot probe the screen; the
+    // count of which rule fired is kept privately for the metrics endpoint.
+    try {
+      await recordGuestCaptureRejection(resolveWritableStore(event, injectedStore), {
+        reasons: botScreen.reasons,
+        placement: receipt.placement
+      });
+    } catch (error) {
+      console.error("guest_capture_rejection_metrics_write_failed", {
+        submissionId: receipt.submissionId,
+        message: error && error.message ? error.message : String(error)
+      });
+    }
     return {
       statusCode: 422,
       headers: { "content-type": "application/json; charset=utf-8" },
-      body: JSON.stringify({ stored: false, tagged: false, captureState: CAPTURE_STATES.REJECTED, reason: "rejected" })
+      body: JSON.stringify({
+        stored: false,
+        tagged: false,
+        captureState: CAPTURE_STATES.REJECTED,
+        reason: "rejected"
+      })
     };
   }
 
