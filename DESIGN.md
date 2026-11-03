@@ -262,7 +262,7 @@ actions. Original reader words, SEO and rating values remain unchanged.
 
 ## Activity guides
 
-Sawyer selected Rainy Day B on October 27, 2026: compact title/answer and side photo, existing comparison before the article, right contents rail and persistent booking action. The frame and Structured table treatment are specified in `docs/design/activity-guides.md`; approval covers this guide only.
+Sawyer selected Rainy Day C on November 2, 2026: three rainy-day plans, real game-room photography, an early Coastal dates card, the complete Structured comparison in a disclosure, and the full article with a contents rail. `docs/design/activity-guides.md` records the scoped contract; other guides keep their existing formats.
 
 ## Reusable Waterline components
 

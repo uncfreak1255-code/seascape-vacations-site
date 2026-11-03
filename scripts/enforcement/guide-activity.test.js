@@ -5,7 +5,7 @@ const assert = require("node:assert/strict");
 const root = path.resolve(__dirname, "../..");
 const read = file => fs.readFileSync(path.join(root, file), "utf8");
 
-test("Rainy Day uses selected B's shared Waterline activity frame", () => {
+test("Rainy Day uses selected C's shared Waterline activity frame", () => {
   const source = read("src/guides/rainy-day-activities-bradenton-sarasota.html");
   assert.match(source, /\{% extends "layouts\/guide-activity\.njk" %\}/,
     "the selected article must leave its legacy standalone design");
@@ -17,9 +17,13 @@ test("Rainy Day uses selected B's shared Waterline activity frame", () => {
   assert.match(layout, /partials\/analytics-ga4\.njk/);
   assert.doesNotMatch(source, /<style\b|\bstyle=|__prototype|preview-switcher/);
   assert.ok(source.indexOf("{% block guideComparison %}") < source.indexOf("{% block guideArticle %}"),
-    "B presents its comparison before the long article");
+    "C keeps its full comparison available before the long article");
   assert.match(source, /partials\/guide-stay-here\.njk/,
     "the real property box must survive the raw-template prototype");
+  for (const key of ['short', 'afternoon', 'home']) {
+    assert.ok(source.includes(`data-plan="${key}"`));
+    assert.ok(source.includes(`data-plan-panel="${key}"`));
+  }
   assert.match(source, /data-placement="sticky_book_bar"/);
   assert.match(source, /data-placement="bottom_cta"/);
 });
