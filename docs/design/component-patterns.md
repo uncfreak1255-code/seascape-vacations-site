@@ -48,6 +48,11 @@ complete accessible table, and explain uncertainty. Prefer build-time SVG or
 HTML for a static guide. No decorative ratings, fabricated live values or
 chart library solely for appearance. Interaction must earn its loading cost.
 
+Use [Waterline chart patterns](chart-patterns.md) for paired seasonal plots,
+monthly strips, ranked bars, time-series lines and sourced ranges. Choose from
+the actual reader question and published dataset after the guide-figures tests
+pass. The catalog includes the selected weather B reference.
+
 ## Reference and implementation
 
 [shadcn/ui components](https://ui.shadcn.com/docs/components) provide reference
