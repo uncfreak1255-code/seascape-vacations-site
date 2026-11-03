@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+const { read, expectContains } = require("./build-output-text");
 const {
   findMarkerMatches,
   findStandaloneShellMarkers,
@@ -70,10 +71,6 @@ const PROPERTY_PAGE_FILES = [
   "_site/properties/the-oasis/index.html"
 ];
 
-function read(file) {
-  return fs.readFileSync(path.resolve(file), "utf8");
-}
-
 function expectExists(file) {
   if (!fs.existsSync(path.resolve(file))) {
     throw new Error(`Missing expected file: ${file}`);
@@ -90,13 +87,6 @@ function expectNotContains(file, needle) {
   const contents = read(file);
   if (contents.includes(needle)) {
     throw new Error(`Unexpected content in ${file}: ${needle}`);
-  }
-}
-
-function expectContains(file, needle) {
-  const contents = read(file);
-  if (!contents.includes(needle)) {
-    throw new Error(`Missing expected content in ${file}: ${needle}`);
   }
 }
 
@@ -453,7 +443,7 @@ if (phase === "remediation") {
   expectContains("_site/property-management/index.html", "images/seascape-og-default.jpg");
   expectContains(
     "_site/property-management/index.html",
-    "assets/fonts/homepage/poppins-400-latin.woff2"
+    require("../fonts/manifest.json")["poppins-400-latin.woff2"].parts.core.path.replace(/^src\//, "")
   );
   expectContains(
     "_site/guides/bradenton-vs-sarasota/index.html",

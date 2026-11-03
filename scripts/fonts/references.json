@@ -1,0 +1,26 @@
+{
+  "urls": {
+    "/assets/fonts/guest/instrument-serif-italic.woff2": "/assets/fonts/guest/instrument-serif-italic-core-cc4750ef3649.woff2",
+    "/assets/fonts/guest/instrument-serif.woff2": "/assets/fonts/guest/instrument-serif-core-107d55de3480.woff2",
+    "/assets/fonts/homepage/playfair-display-latin.woff2": "/assets/fonts/homepage/playfair-display-latin-core-00aaf5d22f34.woff2",
+    "/assets/fonts/homepage/poppins-400-latin.woff2": "/assets/fonts/homepage/poppins-400-latin-core-1cbbe7788dad.woff2",
+    "/assets/fonts/homepage/poppins-500-latin.woff2": "/assets/fonts/homepage/poppins-500-latin-core-b4c3f37de8f7.woff2",
+    "/assets/fonts/homepage/poppins-600-latin.woff2": "/assets/fonts/homepage/poppins-600-latin-core-dddb9b174cbb.woff2",
+    "/assets/fonts/homepage/poppins-700-latin.woff2": "/assets/fonts/homepage/poppins-700-latin-core-acbbb08b31d0.woff2",
+    "https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap": "/css/fonts/50c0a4c2a993.css",
+    "https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=Playfair+Display:wght@400;500;600;700&display=swap": "/css/fonts/fec2322439ab.css",
+    "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap": "/css/fonts/ccbff380d132.css",
+    "https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@400;500;600&display=swap": "/css/fonts/aa2172dcd195.css",
+    "https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap": "/css/fonts/8da069271d61.css",
+    "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap": "/css/fonts/e03fe63eb0dd.css",
+    "https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap": "/css/fonts/428d1738a267.css",
+    "https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Playfair+Display:wght@500;600&display=swap": "/css/fonts/41e01164587b.css"
+  },
+  "css_revision": "bdb8346c1739",
+  "css_paths": [
+    "/css/guest.css",
+    "/css/activity-guide.css",
+    "/css/comparison-guide.css",
+    "/css/decision-ledger.css"
+  ]
+}

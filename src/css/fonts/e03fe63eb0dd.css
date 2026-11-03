@@ -1,0 +1,115 @@
+/* Generated manually by scripts/fonts/subset.py; preserve face order. */
+/* cyrillic-ext */
+
+/* cyrillic */
+
+/* greek-ext */
+
+/* greek */
+
+/* vietnamese */
+
+/* latin-ext */
+
+/* latin */
+
+/* cyrillic-ext */
+
+/* cyrillic */
+
+/* greek-ext */
+
+/* greek */
+
+/* vietnamese */
+
+/* latin-ext */
+
+/* latin */
+
+/* cyrillic-ext */
+
+/* cyrillic */
+
+/* greek-ext */
+
+/* greek */
+
+/* vietnamese */
+
+/* latin-ext */
+
+/* latin */
+
+/* cyrillic */
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(/assets/fonts/extended/playfair-display-shaping-2dc18711-4b813d0cdb0c.woff2) format('woff2');
+  unicode-range: U+301;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(/assets/fonts/extended/playfair-display-shaping-6a8efa58-b09119017d76.woff2) format('woff2');
+  unicode-range: U+102-103,U+110-111,U+128-129,U+168-169,U+300-301,U+303-304,U+308;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(/assets/fonts/extended/playfair-display-d81b51cf60ef.woff2) format('woff2');
+  unicode-range: U+100-130,U+132-151,U+154-17F,U+304,U+308;
+}
+/* latin */
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(/assets/fonts/homepage/playfair-display-latin-core-00aaf5d22f34.woff2) format('woff2');
+  unicode-range: U+20-7E,U+A0-B4,U+B6-FF,U+131,U+152-153,U+2BB-2BC,U+2C6,U+2DA,U+2DC,U+304,U+308,U+2010,U+2013-2014,U+2018-2019,U+201C-201D,U+2022,U+2026,U+203A,U+2193;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(/assets/fonts/extended/playfair-display-shaping-2dc18711-4b813d0cdb0c.woff2) format('woff2');
+  unicode-range: U+301;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(/assets/fonts/extended/playfair-display-shaping-6a8efa58-b09119017d76.woff2) format('woff2');
+  unicode-range: U+102-103,U+110-111,U+128-129,U+168-169,U+300-301,U+303-304,U+308;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(/assets/fonts/extended/playfair-display-d81b51cf60ef.woff2) format('woff2');
+  unicode-range: U+100-130,U+132-151,U+154-17F,U+304,U+308;
+}
+/* latin */
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(/assets/fonts/homepage/playfair-display-latin-core-00aaf5d22f34.woff2) format('woff2');
+  unicode-range: U+20-7E,U+A0-B4,U+B6-FF,U+131,U+152-153,U+2BB-2BC,U+2C6,U+2DA,U+2DC,U+304,U+308,U+2010,U+2013-2014,U+2018-2019,U+201C-201D,U+2022,U+2026,U+203A,U+2193;
+}

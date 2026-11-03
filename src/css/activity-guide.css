@@ -1,7 +1,7 @@
 /* Rainy Day B: scoped Waterline activity frame; original data and copy remain intact. */
-@font-face{font-family:Poppins;src:url('/assets/fonts/homepage/poppins-400-latin.woff2') format('woff2');font-weight:400;font-display:swap}
-@font-face{font-family:Poppins;src:url('/assets/fonts/homepage/poppins-500-latin.woff2') format('woff2');font-weight:500;font-display:swap}
-@font-face{font-family:Poppins;src:url('/assets/fonts/homepage/poppins-600-latin.woff2') format('woff2');font-weight:600;font-display:swap}
+@font-face{font-family:Poppins;src:url('/assets/fonts/homepage/poppins-400-latin-core-1cbbe7788dad.woff2') format('woff2');font-weight:400;font-display:swap;unicode-range:U+20-7E,U+A0-FF,U+131,U+152-153,U+2BC,U+2C6,U+2DA,U+2DC,U+2010,U+2013-2014,U+2018-2019,U+201C-201D,U+2022,U+2026,U+203A;}
+@font-face{font-family:Poppins;src:url('/assets/fonts/homepage/poppins-500-latin-core-b4c3f37de8f7.woff2') format('woff2');font-weight:500;font-display:swap;unicode-range:U+20-7E,U+A0-FF,U+131,U+152-153,U+2BC,U+2C6,U+2DA,U+2DC,U+2010,U+2013-2014,U+2018-2019,U+201C-201D,U+2022,U+2026,U+203A;}
+@font-face{font-family:Poppins;src:url('/assets/fonts/homepage/poppins-600-latin-core-dddb9b174cbb.woff2') format('woff2');font-weight:600;font-display:swap;unicode-range:U+20-7E,U+A0-FF,U+131,U+152-153,U+2BC,U+2C6,U+2DA,U+2DC,U+2010,U+2013-2014,U+2018-2019,U+201C-201D,U+2022,U+2026,U+203A;}
 body.activity-guide{--ag-paper:#f6f3eb;--ag-ink:#173d42;--ag-muted:#52676a;--ag-rule:#cad4cf;--ag-soft:#f0f3ee;--ag-clay:#a4533e;--ag-serif:'Instrument Serif',Georgia,serif;margin:0;padding-bottom:80px;background:var(--ag-paper);color:var(--ag-ink);font:400 15px/1.65 Poppins,sans-serif}
 .activity-guide *{box-sizing:border-box}
 .activity-guide main{max-width:1120px;margin:auto;padding:0 40px}

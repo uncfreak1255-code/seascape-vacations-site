@@ -1,0 +1,33 @@
+{
+  "P0": [
+    "/assets/fonts/guest/instrument-serif.woff2"
+  ],
+  "P1": [
+    "/assets/fonts/guest/instrument-serif-core-107d55de3480.woff2"
+  ],
+  "P2": [],
+  "P3": [
+    "/assets/fonts/homepage/poppins-400-latin.woff2",
+    "/assets/fonts/homepage/poppins-600-latin.woff2",
+    "/assets/fonts/homepage/playfair-display-latin.woff2"
+  ],
+  "P4": [
+    "/assets/fonts/homepage/poppins-400-latin-core-1cbbe7788dad.woff2",
+    "/assets/fonts/homepage/poppins-600-latin-core-dddb9b174cbb.woff2",
+    "/assets/fonts/homepage/playfair-display-latin-core-00aaf5d22f34.woff2"
+  ],
+  "P5": [
+    "/assets/fonts/homepage/poppins-400-latin.woff2",
+    "/assets/fonts/homepage/poppins-500-latin.woff2",
+    "/assets/fonts/homepage/poppins-600-latin.woff2",
+    "/assets/fonts/homepage/poppins-700-latin.woff2",
+    "/assets/fonts/homepage/playfair-display-latin.woff2"
+  ],
+  "P6": [
+    "/assets/fonts/homepage/poppins-400-latin-core-1cbbe7788dad.woff2",
+    "/assets/fonts/homepage/poppins-500-latin-core-b4c3f37de8f7.woff2",
+    "/assets/fonts/homepage/poppins-600-latin-core-dddb9b174cbb.woff2",
+    "/assets/fonts/homepage/poppins-700-latin-core-acbbb08b31d0.woff2",
+    "/assets/fonts/homepage/playfair-display-latin-core-00aaf5d22f34.woff2"
+  ]
+}

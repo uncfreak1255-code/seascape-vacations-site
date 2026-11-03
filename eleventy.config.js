@@ -245,7 +245,8 @@ module.exports = function(eleventyConfig) {
     const motionSrc = path.join(root, "src", "css", "motion.css");
     if (fs.existsSync(guestSrc) && fs.existsSync(motionSrc)) {
       fs.mkdirSync(path.dirname(guestOut), { recursive: true });
-      fs.writeFileSync(guestOut, fs.readFileSync(guestSrc, "utf8") + "\n" + fs.readFileSync(motionSrc, "utf8"));
+      const fontCss = fs.readFileSync(path.join(root, "src/css/guest-fonts.css"), "utf8");
+      fs.writeFileSync(guestOut, fontCss + "\n" + fs.readFileSync(guestSrc, "utf8") + "\n" + fs.readFileSync(motionSrc, "utf8"));
     }
   });
   
@@ -306,6 +307,7 @@ module.exports = function(eleventyConfig) {
   });
 
   const analyticsTrafficScript = renderAnalyticsTrafficScript(require("./src/_data/site.json").analytics.ga4MeasurementId);
+  eleventyConfig.addTransform("committedFontReferences", require("./scripts/fonts/references").fontReferences);
   eleventyConfig.addTransform("analyticsTraffic", function(content, outputPath) {
     if (!outputPath || !outputPath.endsWith(".html")) return content;
     return content.replace(/<head\b[^>]*>/i, (head) => head + analyticsTrafficScript);

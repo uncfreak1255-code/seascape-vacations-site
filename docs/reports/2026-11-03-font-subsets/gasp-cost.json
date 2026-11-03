@@ -1,0 +1,52 @@
+{
+  "instrument-serif-italic.woff2:core": {
+    "retained_bytes": 13484,
+    "without_gasp_bytes": 13516,
+    "cost": -32
+  },
+  "instrument-serif-italic.woff2:extended": {
+    "retained_bytes": 1608,
+    "without_gasp_bytes": 1604,
+    "cost": 4
+  },
+  "instrument-serif.woff2:core": {
+    "retained_bytes": 12824,
+    "without_gasp_bytes": 12832,
+    "cost": -8
+  },
+  "instrument-serif.woff2:extended": {
+    "retained_bytes": 1580,
+    "without_gasp_bytes": 1576,
+    "cost": 4
+  },
+  "playfair-display-latin.woff2:core": {
+    "retained_bytes": 34184,
+    "without_gasp_bytes": 34060,
+    "cost": 124
+  },
+  "upstream-playfair-display.woff2:extended": {
+    "retained_bytes": 15904,
+    "without_gasp_bytes": 16032,
+    "cost": -128
+  },
+  "upstream-instrument-serif-italic.woff2:extended": {
+    "retained_bytes": 8000,
+    "without_gasp_bytes": 7980,
+    "cost": 20
+  },
+  "upstream-instrument-serif.woff2:extended": {
+    "retained_bytes": 7532,
+    "without_gasp_bytes": 7528,
+    "cost": 4
+  },
+  "upstream-playfair-display-shaping-2dc18711.woff2:extended": {
+    "retained_bytes": 1800,
+    "without_gasp_bytes": 1824,
+    "cost": -24
+  },
+  "upstream-playfair-display-shaping-6a8efa58.woff2:extended": {
+    "retained_bytes": 4104,
+    "without_gasp_bytes": 4032,
+    "cost": 72
+  }
+}

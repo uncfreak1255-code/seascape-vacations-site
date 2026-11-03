@@ -6,7 +6,8 @@
  */
 const path = require("path");
 
-const fonts = [
+const manifest = require("../../fonts/manifest.json");
+const fontSources = [
   ["src/assets/fonts/homepage/poppins-400-latin.woff2", "Poppins", 400, "normal"],
   ["src/assets/fonts/homepage/poppins-500-latin.woff2", "Poppins", 500, "normal"],
   ["src/assets/fonts/homepage/poppins-600-latin.woff2", "Poppins", 600, "normal"],
@@ -14,11 +15,14 @@ const fonts = [
   ["src/assets/fonts/guest/instrument-serif.woff2", "Instrument Serif", 400, "normal"],
   ["src/assets/fonts/guest/instrument-serif-italic.woff2", "Instrument Serif", 400, "italic"],
 ];
+const fonts = fontSources.flatMap(([src, family, weight, style]) =>
+  Object.values(manifest[path.basename(src)].parts).map(part =>
+    [part.path, family, weight, style, part.legacy_unrestricted ? null : part.unicode_range]));
 // `prefix` is the path from the consuming file to waterline/fonts/.
 function fontFace(prefix) {
   return fonts
-    .map(([src, family, weight, style]) =>
-      `@font-face{font-family:'${family}';font-style:${style};font-weight:${weight};font-display:swap;src:url('${prefix}${path.basename(src)}') format('woff2')}`
+    .map(([src, family, weight, style, range]) =>
+      `@font-face{font-family:'${family}';font-style:${style};font-weight:${weight};font-display:swap;src:url('${prefix}${path.basename(src)}') format('woff2');${range ? `unicode-range:${range}` : ''}}`
     )
     .join("\n");
 }

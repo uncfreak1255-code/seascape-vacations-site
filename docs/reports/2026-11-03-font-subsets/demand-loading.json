@@ -1,0 +1,11 @@
+{
+  "asciiExtendedRequests": 0,
+  "providerCharacterRequests": [
+    "/assets/fonts/extended/playfair-display-d81b51cf60ef.woff2",
+    "/assets/fonts/extended/poppins-400-3d0163540afe.woff2"
+  ],
+  "instrumentCharacterRequests": [
+    "/assets/fonts/guest/instrument-serif-extended-c00c0c5a56ca.woff2",
+    "/assets/fonts/guest/instrument-serif-italic-extended-d04b10b39139.woff2"
+  ]
+}
