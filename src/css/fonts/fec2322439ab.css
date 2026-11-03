@@ -1,0 +1,267 @@
+/* Generated manually by scripts/fonts/subset.py; preserve face order. */
+/* latin-ext */
+@font-face {
+  font-family: 'Instrument Serif';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url(/assets/fonts/extended/instrument-serif-italic-f8e6d29a743a.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Instrument Serif';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url(/assets/fonts/extended/instrument-serif-italic-latin-compat-6ee678c33f38.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Instrument Serif';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(/assets/fonts/extended/instrument-serif-5b5e99d3d3ff.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Instrument Serif';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(/assets/fonts/extended/instrument-serif-normal-latin-compat-60c06664b5a9.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(/assets/fonts/extended/playfair-display-shaping-2dc18711-4b813d0cdb0c.woff2) format('woff2');
+  unicode-range: U+301;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(/assets/fonts/extended/playfair-display-shaping-6a8efa58-b09119017d76.woff2) format('woff2');
+  unicode-range: U+102-103,U+110-111,U+128-129,U+168-169,U+300-301,U+303-304,U+308;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(/assets/fonts/extended/playfair-display-d81b51cf60ef.woff2) format('woff2');
+  unicode-range: U+100-130,U+132-151,U+154-17F,U+304,U+308;
+}
+/* latin */
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(/assets/fonts/homepage/playfair-display-latin-core-00aaf5d22f34.woff2) format('woff2');
+  unicode-range: U+20-7E,U+A0-B4,U+B6-FF,U+131,U+152-153,U+2BB-2BC,U+2C6,U+2DA,U+2DC,U+304,U+308,U+2010,U+2013-2014,U+2018-2019,U+201C-201D,U+2022,U+2026,U+203A,U+2193;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(/assets/fonts/extended/playfair-display-shaping-2dc18711-4b813d0cdb0c.woff2) format('woff2');
+  unicode-range: U+301;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(/assets/fonts/extended/playfair-display-shaping-6a8efa58-b09119017d76.woff2) format('woff2');
+  unicode-range: U+102-103,U+110-111,U+128-129,U+168-169,U+300-301,U+303-304,U+308;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(/assets/fonts/extended/playfair-display-d81b51cf60ef.woff2) format('woff2');
+  unicode-range: U+100-130,U+132-151,U+154-17F,U+304,U+308;
+}
+/* latin */
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(/assets/fonts/homepage/playfair-display-latin-core-00aaf5d22f34.woff2) format('woff2');
+  unicode-range: U+20-7E,U+A0-B4,U+B6-FF,U+131,U+152-153,U+2BB-2BC,U+2C6,U+2DA,U+2DC,U+304,U+308,U+2010,U+2013-2014,U+2018-2019,U+201C-201D,U+2022,U+2026,U+203A,U+2193;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(/assets/fonts/extended/playfair-display-shaping-2dc18711-4b813d0cdb0c.woff2) format('woff2');
+  unicode-range: U+301;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(/assets/fonts/extended/playfair-display-shaping-6a8efa58-b09119017d76.woff2) format('woff2');
+  unicode-range: U+102-103,U+110-111,U+128-129,U+168-169,U+300-301,U+303-304,U+308;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(/assets/fonts/extended/playfair-display-d81b51cf60ef.woff2) format('woff2');
+  unicode-range: U+100-130,U+132-151,U+154-17F,U+304,U+308;
+}
+/* latin */
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(/assets/fonts/homepage/playfair-display-latin-core-00aaf5d22f34.woff2) format('woff2');
+  unicode-range: U+20-7E,U+A0-B4,U+B6-FF,U+131,U+152-153,U+2BB-2BC,U+2C6,U+2DA,U+2DC,U+304,U+308,U+2010,U+2013-2014,U+2018-2019,U+201C-201D,U+2022,U+2026,U+203A,U+2193;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(/assets/fonts/extended/playfair-display-shaping-2dc18711-4b813d0cdb0c.woff2) format('woff2');
+  unicode-range: U+301;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(/assets/fonts/extended/playfair-display-shaping-6a8efa58-b09119017d76.woff2) format('woff2');
+  unicode-range: U+102-103,U+110-111,U+128-129,U+168-169,U+300-301,U+303-304,U+308;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(/assets/fonts/extended/playfair-display-d81b51cf60ef.woff2) format('woff2');
+  unicode-range: U+100-130,U+132-151,U+154-17F,U+304,U+308;
+}
+/* latin */
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(/assets/fonts/homepage/playfair-display-latin-core-00aaf5d22f34.woff2) format('woff2');
+  unicode-range: U+20-7E,U+A0-B4,U+B6-FF,U+131,U+152-153,U+2BB-2BC,U+2C6,U+2DA,U+2DC,U+304,U+308,U+2010,U+2013-2014,U+2018-2019,U+201C-201D,U+2022,U+2026,U+203A,U+2193;
+}
+/* devanagari */
+
+/* latin-ext */
+
+/* latin */
+
+/* devanagari */
+
+/* latin-ext */
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(/assets/fonts/extended/poppins-400-3d0163540afe.woff2) format('woff2');
+  unicode-range: U+100-107,U+10A-11B,U+11E-123,U+128-130,U+136-137,U+139-148,U+14C-151,U+154-15B,U+15E-165,U+168-17E;
+}
+/* latin */
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(/assets/fonts/homepage/poppins-400-latin-core-1cbbe7788dad.woff2) format('woff2');
+  unicode-range: U+20-7E,U+A0-FF,U+131,U+152-153,U+2BC,U+2C6,U+2DA,U+2DC,U+2010,U+2013-2014,U+2018-2019,U+201C-201D,U+2022,U+2026,U+203A;
+}
+/* devanagari */
+
+/* latin-ext */
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(/assets/fonts/extended/poppins-500-d87c1a8870ef.woff2) format('woff2');
+  unicode-range: U+100-107,U+10A-11B,U+11E-123,U+128-130,U+136-137,U+139-148,U+14C-151,U+154-15B,U+15E-165,U+168-17E;
+}
+/* latin */
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(/assets/fonts/homepage/poppins-500-latin-core-b4c3f37de8f7.woff2) format('woff2');
+  unicode-range: U+20-7E,U+A0-FF,U+131,U+152-153,U+2BC,U+2C6,U+2DA,U+2DC,U+2010,U+2013-2014,U+2018-2019,U+201C-201D,U+2022,U+2026,U+203A;
+}
+/* devanagari */
+
+/* latin-ext */
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(/assets/fonts/extended/poppins-600-3e59a07c3a90.woff2) format('woff2');
+  unicode-range: U+100-107,U+10A-11B,U+11E-123,U+128-130,U+136-137,U+139-148,U+14C-151,U+154-15B,U+15E-165,U+168-17E;
+}
+/* latin */
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(/assets/fonts/homepage/poppins-600-latin-core-dddb9b174cbb.woff2) format('woff2');
+  unicode-range: U+20-7E,U+A0-FF,U+131,U+152-153,U+2BC,U+2C6,U+2DA,U+2DC,U+2010,U+2013-2014,U+2018-2019,U+201C-201D,U+2022,U+2026,U+203A;
+}
+/* devanagari */
+
+/* latin-ext */
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(/assets/fonts/extended/poppins-700-ac7371e1fad9.woff2) format('woff2');
+  unicode-range: U+100-107,U+10A-11B,U+11E-123,U+128-130,U+136-137,U+139-148,U+14C-151,U+154-15B,U+15E-165,U+168-17E;
+}
+/* latin */
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(/assets/fonts/homepage/poppins-700-latin-core-acbbb08b31d0.woff2) format('woff2');
+  unicode-range: U+20-7E,U+A0-FF,U+131,U+152-153,U+2BC,U+2C6,U+2DA,U+2DC,U+2010,U+2013-2014,U+2018-2019,U+201C-201D,U+2022,U+2026,U+203A;
+}

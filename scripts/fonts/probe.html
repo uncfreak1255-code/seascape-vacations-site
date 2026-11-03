@@ -1,0 +1,25 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<!-- FONT_FACES -->
+<link rel="stylesheet" href="/css/guest.css">
+<style>
+body{background:#f6f3eb;color:#173d42;padding:24px}
+section{margin:20px 0}p{margin:8px 0;line-height:1.6;hyphens:auto}
+code{font-family:ui-monospace,Menlo,monospace}
+</style></head><body>
+<h1>Font rendering probe (synthetic, never published)</h1>
+<script>
+const alphabet = `<!-- ALPHABET -->`;
+for (const family of ['Poppins','Playfair Display','Instrument Serif']) {
+  const section = document.createElement('section');
+  section.style.fontFamily = `'${family}',serif`;
+  section.innerHTML = `<h2>${family}</h2>` + [400,500,600,700].map(weight => `
+    <p style="font-weight:${weight};font-size:17px">AVATAR Toffee office ffi ffl café Noël Ångström Œuvre ı ă Ā Ĳ — “curly” … © ° × · ¢<br>
+    <em>Italics with <strong>bold inside italics</strong>: déjà vu, façade.</em></p>`).join('') + `
+    <p lang="en" style="max-width:16ch;font-size:23px;hyphens:auto">Internationalization and extraordinary accommodation re‐entry.</p>
+    <p>中文 日本語 한글</p><p>↓</p><p style="font-size:15px">${alphabet}</p>`;
+  document.body.append(section);
+}
+const code = document.createElement('pre');
+code.innerHTML = '<code>const rate = total / nights; // € £ ¥ accents café; 中文</code>';
+document.body.append(code);
+</script></body></html>

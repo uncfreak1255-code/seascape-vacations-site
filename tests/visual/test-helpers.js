@@ -1,4 +1,6 @@
 const path = require("node:path");
+const localizedProviderStyles = new Set(Object.values(require("../../scripts/fonts/upstream.json").stylesheets)
+  .map(entry => entry.output));
 const STABLE_VISUAL_DATE = "2026-06-01";
 const STABLE_VISUAL_DATE_LABEL = "June 1, 2026";
 const STABLE_PROPERTY_AVAILABILITY_NOW = new Date("2026-05-17T16:00:00.000Z");
@@ -69,6 +71,13 @@ async function registerStableNetwork(page) {
     }
 
     if (url.hostname === "127.0.0.1" || url.hostname === "localhost") {
+      // These baselines were recorded with the original Google stylesheets blocked.
+      // Preserve that network fixture after localization; real-font equivalence
+      // is proved separately by scripts/fonts/compare.js against frozen originals.
+      if (localizedProviderStyles.has(url.pathname)) {
+        await route.abort();
+        return;
+      }
       await route.continue();
       return;
     }

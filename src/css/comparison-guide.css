@@ -1,7 +1,7 @@
 /* Waterline comparison frame, selected A. See DESIGN.md and the active Bradenton brief. */
-@font-face{font-family:Poppins;src:url('/assets/fonts/homepage/poppins-400-latin.woff2') format('woff2');font-weight:400;font-display:swap}
-@font-face{font-family:Poppins;src:url('/assets/fonts/homepage/poppins-500-latin.woff2') format('woff2');font-weight:500;font-display:swap}
-@font-face{font-family:Poppins;src:url('/assets/fonts/homepage/poppins-600-latin.woff2') format('woff2');font-weight:600;font-display:swap}
+@font-face{font-family:Poppins;src:url('/assets/fonts/homepage/poppins-400-latin-core-1cbbe7788dad.woff2') format('woff2');font-weight:400;font-display:swap;unicode-range:U+20-7E,U+A0-FF,U+131,U+152-153,U+2BC,U+2C6,U+2DA,U+2DC,U+2010,U+2013-2014,U+2018-2019,U+201C-201D,U+2022,U+2026,U+203A;}
+@font-face{font-family:Poppins;src:url('/assets/fonts/homepage/poppins-500-latin-core-b4c3f37de8f7.woff2') format('woff2');font-weight:500;font-display:swap;unicode-range:U+20-7E,U+A0-FF,U+131,U+152-153,U+2BC,U+2C6,U+2DA,U+2DC,U+2010,U+2013-2014,U+2018-2019,U+201C-201D,U+2022,U+2026,U+203A;}
+@font-face{font-family:Poppins;src:url('/assets/fonts/homepage/poppins-600-latin-core-dddb9b174cbb.woff2') format('woff2');font-weight:600;font-display:swap;unicode-range:U+20-7E,U+A0-FF,U+131,U+152-153,U+2BC,U+2C6,U+2DA,U+2DC,U+2010,U+2013-2014,U+2018-2019,U+201C-201D,U+2022,U+2026,U+203A;}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;scroll-padding-top:44px}
 body.comparison-guide{--wl-paper:#f6f3eb;--wl-ink:#173d42;--wl-muted:#52676a;--wl-clay:#a4533e;--wl-rule:#cad4cf;--wl-soft:#f0f3ee;--wl-serif:'Instrument Serif',Georgia,serif;margin:0;background:var(--wl-paper);color:var(--wl-ink);font:400 17px/1.75 Poppins,sans-serif;-webkit-font-smoothing:antialiased}

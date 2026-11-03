@@ -1,0 +1,79 @@
+{
+  "--split-poppins": {
+    "instrument-serif-italic.woff2": {
+      "core": 13484,
+      "extended": 1608
+    },
+    "instrument-serif.woff2": {
+      "core": 12824,
+      "extended": 1580
+    },
+    "playfair-display-latin.woff2": {
+      "core": 34184
+    },
+    "poppins-400-latin.woff2": {
+      "core": 6640,
+      "extended": 1924
+    },
+    "poppins-500-latin.woff2": {
+      "core": 6540,
+      "extended": 1888
+    },
+    "poppins-600-latin.woff2": {
+      "core": 6724,
+      "extended": 1900
+    },
+    "poppins-700-latin.woff2": {
+      "core": 6600,
+      "extended": 1856
+    }
+  },
+  "--limit-weight": {
+    "instrument-serif-italic.woff2": {
+      "core": 13484,
+      "extended": 1608
+    },
+    "instrument-serif.woff2": {
+      "core": 12824,
+      "extended": 1580
+    },
+    "playfair-display-latin.woff2": {
+      "core": 32692
+    },
+    "poppins-400-latin.woff2": {
+      "core": 7664
+    },
+    "poppins-500-latin.woff2": {
+      "core": 7556
+    },
+    "poppins-600-latin.woff2": {
+      "core": 7740
+    },
+    "poppins-700-latin.woff2": {
+      "core": 7604
+    }
+  },
+  "--whole-instrument": {
+    "instrument-serif-italic.woff2": {
+      "core": 14224
+    },
+    "instrument-serif.woff2": {
+      "core": 13580
+    },
+    "playfair-display-latin.woff2": {
+      "core": 34184
+    },
+    "poppins-400-latin.woff2": {
+      "core": 7664
+    },
+    "poppins-500-latin.woff2": {
+      "core": 7556
+    },
+    "poppins-600-latin.woff2": {
+      "core": 7740
+    },
+    "poppins-700-latin.woff2": {
+      "core": 7604
+    }
+  }
+}

@@ -1,0 +1,192 @@
+{
+  "run": 41731912405,
+  "reports": 24,
+  "assertion_result": "PASS using unchanged LHCI aggregation and ceilings",
+  "per_route": {
+    "/": {
+      "largest-contentful-paint": {
+        "min": 3018.35715,
+        "median": 3244.69215,
+        "max": 4978.6656
+      },
+      "cumulative-layout-shift": {
+        "min": 0.03073375982462352,
+        "median": 0.03073375982462352,
+        "max": 0.03073375982462352
+      },
+      "total-blocking-time": {
+        "min": 5,
+        "median": 35,
+        "max": 542
+      },
+      "performance_score": {
+        "min": 0.67,
+        "median": 0.92,
+        "max": 0.94
+      }
+    },
+    "/stays/anna-maria-island-beachfront-rentals/": {
+      "largest-contentful-paint": {
+        "min": 3013.8742999999995,
+        "median": 3135.52825,
+        "max": 3137.6565
+      },
+      "cumulative-layout-shift": {
+        "min": 0.003357860268411242,
+        "median": 0.003357860268411242,
+        "max": 0.003357860268411242
+      },
+      "total-blocking-time": {
+        "min": 0,
+        "median": 2,
+        "max": 4
+      },
+      "performance_score": {
+        "min": 0.93,
+        "median": 0.93,
+        "max": 0.94
+      }
+    },
+    "/property-management/vrbo-management-services-florida/": {
+      "largest-contentful-paint": {
+        "min": 1807.6401,
+        "median": 1807.8244,
+        "max": 1809.1155
+      },
+      "cumulative-layout-shift": {
+        "min": 0.02430009467907545,
+        "median": 0.02430009467907545,
+        "max": 0.02430009467907545
+      },
+      "total-blocking-time": {
+        "min": 0,
+        "median": 5,
+        "max": 8
+      },
+      "performance_score": {
+        "min": 0.99,
+        "median": 0.99,
+        "max": 1
+      }
+    },
+    "/property-management/vacation-rental-management-fees-florida/": {
+      "largest-contentful-paint": {
+        "min": 1809.0848,
+        "median": 1811.5387999999998,
+        "max": 1816.1802000000002
+      },
+      "cumulative-layout-shift": {
+        "min": 0.034284753603019524,
+        "median": 0.04992725916333814,
+        "max": 0.04992725916333814
+      },
+      "total-blocking-time": {
+        "min": 1,
+        "median": 4,
+        "max": 7
+      },
+      "performance_score": {
+        "min": 0.99,
+        "median": 0.99,
+        "max": 1
+      }
+    },
+    "/stays/anna-maria-island-vacation-rentals/": {
+      "largest-contentful-paint": {
+        "min": 3014.021,
+        "median": 3016.3815999999997,
+        "max": 3018.1185
+      },
+      "cumulative-layout-shift": {
+        "min": 0.03689319026632983,
+        "median": 0.03689319026632983,
+        "max": 0.03689319026632983
+      },
+      "total-blocking-time": {
+        "min": 8,
+        "median": 14,
+        "max": 39
+      },
+      "performance_score": {
+        "min": 0.94,
+        "median": 0.94,
+        "max": 0.94
+      }
+    },
+    "/properties/": {
+      "largest-contentful-paint": {
+        "min": 2490.276,
+        "median": 2494.03245,
+        "max": 2495.8689000000004
+      },
+      "cumulative-layout-shift": {
+        "min": 0.0008701603806080844,
+        "median": 0.0008701603806080844,
+        "max": 0.06454739097477503
+      },
+      "total-blocking-time": {
+        "min": 41,
+        "median": 65,
+        "max": 69
+      },
+      "performance_score": {
+        "min": 0.96,
+        "median": 0.97,
+        "max": 0.98
+      }
+    },
+    "/property-management/": {
+      "largest-contentful-paint": {
+        "min": 1816.55325,
+        "median": 1817.1051,
+        "max": 1819.64775
+      },
+      "cumulative-layout-shift": {
+        "min": 0.02002307015221712,
+        "median": 0.02002307015221712,
+        "max": 0.02002307015221712
+      },
+      "total-blocking-time": {
+        "min": 0,
+        "median": 0,
+        "max": 0
+      },
+      "performance_score": {
+        "min": 0.99,
+        "median": 0.99,
+        "max": 0.99
+      }
+    },
+    "/property-management/vacation-rental-licensing-florida/": {
+      "largest-contentful-paint": {
+        "min": 1810.6956,
+        "median": 1810.8831,
+        "max": 1813.6697
+      },
+      "cumulative-layout-shift": {
+        "min": 0.01444571988807206,
+        "median": 0.01444571988807206,
+        "max": 0.01444571988807206
+      },
+      "total-blocking-time": {
+        "min": 9,
+        "median": 27,
+        "max": 40
+      },
+      "performance_score": {
+        "min": 1,
+        "median": 1,
+        "max": 1
+      }
+    }
+  },
+  "individual_run_ceiling_outliers": [
+    {
+      "route": "/",
+      "largest-contentful-paint": 4978.6656,
+      "cumulative-layout-shift": 0.03073375982462352,
+      "total-blocking-time": 542,
+      "performance_score": 0.67
+    }
+  ]
+}
