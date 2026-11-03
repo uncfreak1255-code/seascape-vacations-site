@@ -6,6 +6,7 @@ const {
   readAuthToken,
   readGuestEmailCaptureMetrics
 } = require("./_guest-email-capture-metrics");
+const { readGuestCaptureRejections } = require("./_guest-capture-rejection-metrics");
 
 const GUEST_EMAIL_CAPTURE_METRICS_TOKEN =
   process.env.GUEST_EMAIL_CAPTURE_METRICS_TOKEN ||
@@ -44,11 +45,14 @@ async function handleGuestEmailCaptureMetricsRequest(event, _context, injectedSt
     return { statusCode: 401, body: "Unauthorized" };
   }
 
-  const metrics = await readGuestEmailCaptureMetrics(store);
+  const [metrics, rejections] = await Promise.all([
+    readGuestEmailCaptureMetrics(store),
+    readGuestCaptureRejections(store)
+  ]);
   return {
     statusCode: 200,
     headers: { "content-type": "application/json; charset=utf-8" },
-    body: JSON.stringify(formatGuestEmailCaptureSummary(metrics))
+    body: JSON.stringify({ ...formatGuestEmailCaptureSummary(metrics), rejections })
   };
 }
 
