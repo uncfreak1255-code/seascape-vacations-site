@@ -6,7 +6,7 @@ proof; publication and production readback are separate.
 
 Baseline content: `96094344` (#862), with deterministic availability fixtures.
 Final implementation proof: committed source `7f96c3a5` (followed only by this
-report/evidence update).
+report/evidence and measured CSS-byte baseline updates).
 The candidate also incorporates `3e6b8eea` (#863), which changes design docs only.
 No public copy, fallback family, font-display, weight synthesis or CJK font is
 changed. Font generation is manual and its outputs are committed. Normal builds
@@ -191,3 +191,22 @@ regeneration was byte-identical, including output hashes. Font binary inspection
 confirmed exact cmap partitions, axes, glyph hints, CJK exclusion and Playfair
 family/instance renaming. The pre-PR fresh-context bug review had no findings.
 Current-head CI/review and publication status belong to the PR delivery readback.
+
+## CSS metadata cost and performance gate
+
+The exact core/extended font-face declarations add **995 uncompressed CSS bytes**
+to guest.css on each of the eight budgeted routes. The stylesheet outside
+font-face declarations/comments is byte-identical. The homepage therefore saves
+14,233 uncompressed font-plus-CSS bytes after this cost (15,228 fewer font bytes
+minus 995 metadata bytes). Other guide stylesheets gain 453–459 declaration
+bytes; the page table deliberately reports font bytes rather than hiding CSS
+inside those figures.
+
+The initial CI performance job passed Lighthouse assertions on all eight routes
+and failed only the separate CSS byte ratchet. Its measured reports reproduced
+the ratchet failure locally. The existing reasoned-update flow records exactly
+the 995-byte delta, with all script baselines and Lighthouse timing/transfer
+ceilings unchanged; the same reports then pass the strict ratchet. Future
+unrecorded CSS growth still fails. [lighthouse.json](lighthouse.json) records
+the 24 runs: the existing aggregation passes, but one first-homepage run exceeded
+individual LCP/TBT ceilings. No before/after LCP improvement is claimed.

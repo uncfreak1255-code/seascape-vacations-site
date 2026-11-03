@@ -2,35 +2,35 @@
   "routes": {
     "/": {
       "script": 77611,
-      "stylesheet": 58939
+      "stylesheet": 59934
     },
     "/properties/": {
       "script": 100224,
-      "stylesheet": 61435
+      "stylesheet": 62430
     },
     "/property-management/": {
       "script": 91167,
-      "stylesheet": 55843
+      "stylesheet": 56838
     },
     "/property-management/vacation-rental-licensing-florida/": {
       "script": 57927,
-      "stylesheet": 36114
+      "stylesheet": 37109
     },
     "/property-management/vacation-rental-management-fees-florida/": {
       "script": 57927,
-      "stylesheet": 36114
+      "stylesheet": 37109
     },
     "/property-management/vrbo-management-services-florida/": {
       "script": 57927,
-      "stylesheet": 36114
+      "stylesheet": 37109
     },
     "/stays/anna-maria-island-beachfront-rentals/": {
       "script": 55953,
-      "stylesheet": 50747
+      "stylesheet": 51742
     },
     "/stays/anna-maria-island-vacation-rentals/": {
       "script": 55953,
-      "stylesheet": 50747
+      "stylesheet": 51742
     }
   },
   "raises": [
@@ -1017,6 +1017,70 @@
       "to": 50747,
       "reason": "Approved Waterline stay migration moves 14,129 bytes of formerly uncounted inline CSS into the shared 14,633-byte stay stylesheet; records the real external stylesheet requests while keeping Lighthouse LCP/CLS/TBT and absolute budgets unchanged.",
       "date": "2026-11-02"
+    },
+    {
+      "route": "/",
+      "metric": "stylesheet",
+      "from": 58939,
+      "to": 59934,
+      "reason": "Font subset metadata adds 995 uncompressed CSS bytes for exact cmap core/extended font-face declarations; unchanged rendering saves 15,228 homepage font bytes (14,233 net font-plus-CSS bytes). Lighthouse assertions pass on all8 routes with the existing3-run aggregation; timing/transfer ceilings, budget logic and display/fallback behavior are unchanged.",
+      "date": "2026-11-03"
+    },
+    {
+      "route": "/properties/",
+      "metric": "stylesheet",
+      "from": 61435,
+      "to": 62430,
+      "reason": "Font subset metadata adds 995 uncompressed CSS bytes for exact cmap core/extended font-face declarations; unchanged rendering saves 15,228 homepage font bytes (14,233 net font-plus-CSS bytes). Lighthouse assertions pass on all8 routes with the existing3-run aggregation; timing/transfer ceilings, budget logic and display/fallback behavior are unchanged.",
+      "date": "2026-11-03"
+    },
+    {
+      "route": "/property-management/",
+      "metric": "stylesheet",
+      "from": 55843,
+      "to": 56838,
+      "reason": "Font subset metadata adds 995 uncompressed CSS bytes for exact cmap core/extended font-face declarations; unchanged rendering saves 15,228 homepage font bytes (14,233 net font-plus-CSS bytes). Lighthouse assertions pass on all8 routes with the existing3-run aggregation; timing/transfer ceilings, budget logic and display/fallback behavior are unchanged.",
+      "date": "2026-11-03"
+    },
+    {
+      "route": "/property-management/vacation-rental-management-fees-florida/",
+      "metric": "stylesheet",
+      "from": 36114,
+      "to": 37109,
+      "reason": "Font subset metadata adds 995 uncompressed CSS bytes for exact cmap core/extended font-face declarations; unchanged rendering saves 15,228 homepage font bytes (14,233 net font-plus-CSS bytes). Lighthouse assertions pass on all8 routes with the existing3-run aggregation; timing/transfer ceilings, budget logic and display/fallback behavior are unchanged.",
+      "date": "2026-11-03"
+    },
+    {
+      "route": "/property-management/vacation-rental-licensing-florida/",
+      "metric": "stylesheet",
+      "from": 36114,
+      "to": 37109,
+      "reason": "Font subset metadata adds 995 uncompressed CSS bytes for exact cmap core/extended font-face declarations; unchanged rendering saves 15,228 homepage font bytes (14,233 net font-plus-CSS bytes). Lighthouse assertions pass on all8 routes with the existing3-run aggregation; timing/transfer ceilings, budget logic and display/fallback behavior are unchanged.",
+      "date": "2026-11-03"
+    },
+    {
+      "route": "/property-management/vrbo-management-services-florida/",
+      "metric": "stylesheet",
+      "from": 36114,
+      "to": 37109,
+      "reason": "Font subset metadata adds 995 uncompressed CSS bytes for exact cmap core/extended font-face declarations; unchanged rendering saves 15,228 homepage font bytes (14,233 net font-plus-CSS bytes). Lighthouse assertions pass on all8 routes with the existing3-run aggregation; timing/transfer ceilings, budget logic and display/fallback behavior are unchanged.",
+      "date": "2026-11-03"
+    },
+    {
+      "route": "/stays/anna-maria-island-vacation-rentals/",
+      "metric": "stylesheet",
+      "from": 50747,
+      "to": 51742,
+      "reason": "Font subset metadata adds 995 uncompressed CSS bytes for exact cmap core/extended font-face declarations; unchanged rendering saves 15,228 homepage font bytes (14,233 net font-plus-CSS bytes). Lighthouse assertions pass on all8 routes with the existing3-run aggregation; timing/transfer ceilings, budget logic and display/fallback behavior are unchanged.",
+      "date": "2026-11-03"
+    },
+    {
+      "route": "/stays/anna-maria-island-beachfront-rentals/",
+      "metric": "stylesheet",
+      "from": 50747,
+      "to": 51742,
+      "reason": "Font subset metadata adds 995 uncompressed CSS bytes for exact cmap core/extended font-face declarations; unchanged rendering saves 15,228 homepage font bytes (14,233 net font-plus-CSS bytes). Lighthouse assertions pass on all8 routes with the existing3-run aggregation; timing/transfer ceilings, budget logic and display/fallback behavior are unchanged.",
+      "date": "2026-11-03"
     }
   ]
 }
