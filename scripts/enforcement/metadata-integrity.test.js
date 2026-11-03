@@ -50,7 +50,7 @@ test("rainy-day guide answers current Sarasota and Bradenton rain intent", () =>
   assert.equal(contract.head.twitterTitle, contract.head.title);
   assert.match(source, /<h1 class="guide-title">Rainy Day Activities in Sarasota & Bradenton<\/h1>/);
   assert.match(source, /"@type": "FAQPage"/);
-  assert.match(source, /"dateModified": "2026-10-22"/);
+  assert.match(source, /"dateModified": "2026-11-02"/);
   assert.match(source, /Mote Science Education Aquarium/);
   assert.match(source, /Sarasota Art Museum/);
   assert.match(source, /The Bishop Museum/);

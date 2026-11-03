@@ -45,7 +45,7 @@ for (const cta of [
   { name: "main", selector: ".btn-white", placement: "bottom_cta" },
   { name: "sticky", selector: "#sticky-book-bar a", placement: "sticky_book_bar" },
 ]) {
-  test(`Rainy-day guide ${cta.name} CTA records one legacy handoff and carries its lineage to stays`, async ({ app, browser }) => {
+  test(`Rainy-day guide ${cta.name} CTA records one legacy handoff and carries its lineage to The Coastal`, async ({ app, browser }) => {
     await browser.route("**/*", async (route) => {
       const host = new URL(route.request.url).hostname;
       if (host === "127.0.0.1" || host === "localhost") await route.continue();
@@ -69,7 +69,7 @@ for (const cta of [
 
     await app.open("/guides/rainy-day-activities-bradenton-sarasota/?utm_source=google&utm_medium=organic");
     await browser.locator(cta.selector).tap();
-    await expect(browser).toHaveURL(/\/stays\/bradenton-vacation-rentals-near-beaches\//);
+    await expect(browser).toHaveURL(/\/properties\/coastal-stay\//);
     const result = await browser.evaluate(() => ({
       url: window.location.href,
       events: JSON.parse(sessionStorage.getItem("rainy-handoff-proof") || "[]"),

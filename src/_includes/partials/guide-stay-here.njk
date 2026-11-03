@@ -28,6 +28,9 @@
 </style>
 <aside class="guide-stay-here" data-guide-stay-here="{{ stayHereHome.slug }}" aria-labelledby="stay-here-title-{{ stayHereGuide }}">
   {%- set stayHerePhoto = stayHereHome.photography.photos[0] if (stayHereHome.photography and stayHereHome.photography.photos and stayHereHome.photography.photos.length) else null %}
+  {%- if stayHereCfg.photo and stayHereHome.photography %}
+  {%- for photo in stayHereHome.photography.photos %}{%- if photo.src == stayHereCfg.photo %}{%- set stayHerePhoto = photo %}{%- endif %}{%- endfor %}
+  {%- endif %}
   {%- if stayHerePhoto %}
   <div class="guide-stay-here__media"><img src="{{ stayHerePhoto.src }}" alt="{{ stayHerePhoto.alt }}" width="{{ stayHerePhoto.width }}" height="{{ stayHerePhoto.height }}" loading="lazy" decoding="async"></div>
   {%- endif %}
