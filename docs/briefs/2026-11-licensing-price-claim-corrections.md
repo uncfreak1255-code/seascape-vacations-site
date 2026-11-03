@@ -2,7 +2,7 @@
 
 - lifecycle: active
 - task scope: Sawyer's November 3 approval to remove proposed Manatee rental requirements presented as law, unsupported fixed savings/prices, and stale current portfolio counts; preserve existing corrections and held guides
-- completion or successor: local proof, reviewed source release and scheduled production readback remain required; public issue creation was denied by automatic approval review
+- completion or successor: local proof complete; originating issue #861 is filed with the approved unchanged spec; final-head review, source release and scheduled production readback remain required
 
 ## Content Gate Inputs
 
