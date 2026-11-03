@@ -263,7 +263,7 @@
     "width": 393,
     "route": "/research/owner-fee-revenue-leak-benchmark-2026/",
     "sameContent": true,
-    "sameTextLayout": false,
+    "sameTextLayout": true,
     "differentPixels": 0,
     "totalPixels": 4342257,
     "maxChannelDelta": 0,

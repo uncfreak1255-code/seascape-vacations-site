@@ -5,6 +5,8 @@ original rendered appearance in Mac Chromium 156.0.8078.4. This is source/local
 proof; publication and production readback are separate.
 
 Baseline content: `96094344` (#862), with deterministic availability fixtures.
+Final implementation proof: committed source `7f96c3a5` (followed only by this
+report/evidence update).
 The candidate also incorporates `3e6b8eea` (#863), which changes design docs only.
 No public copy, fallback family, font-display, weight synthesis or CJK font is
 changed. Font generation is manual and its outputs are committed. Normal builds
@@ -50,7 +52,8 @@ the 164 real pages.
 ## What the site uses
 
 The source inspection includes stylesheets, inline styles, component overrides,
-CSS-generated text and built/JavaScript text. The browser audit records computed
+CSS-generated text and built/JavaScript text. [usage.json](usage.json) lists observed character ranges and font settings
+for every computed family. The browser audit records computed
 families, weight, style, variation/features, variants, kerning, optical sizing,
 hyphenation and characters on all 164 routes. The generator conservatively
 keeps supported source characters, Latin-1, Latin Extended-A and canonical
@@ -108,7 +111,7 @@ preloaded. No core embedding, idle precaching or new preload planner is added.
 [pixels.json](pixels.json): 17 routes × 2 viewports (1440 and 393 CSS pixels),
 DPR 1, macOS, Chromium 156.0.8078.4, frozen clock 2026-11-03T20:00:00Z and
 fixed availability fixtures. All 34 comparisons have equal text, equal text-node
-rectangles, equal image dimensions and **0 changed pixels / 199,785,349 pixels**.
+rectangles in document coordinates, equal image dimensions and **0 changed pixels / 199,785,349 pixels**.
 Every RGB channel is compared exactly, with no tolerance or baseline update.
 
 Coverage includes home/catalog/property/owner components, a generated owner
@@ -116,7 +119,13 @@ page, old and new guide styles, accented restaurant content, chart/code
 content, and two unpublished synthetic probes. The probes cover Latin-1/A,
 all requested weights, italics and bold italics, native hyphens, symbols and
 CJK. Screenshots and visual diff images are in the task's external font-proof
-artifact directory. Mac Chromium proof does not establish identical hinting or
+artifact directory. Representative homepage captures are committed here:
+[desktop before](screenshots/home-1440-before.png),
+[desktop after](screenshots/home-1440-after.png),
+[desktop diff](screenshots/home-1440-diff.png),
+[phone before](screenshots/home-393-before.png),
+[phone after](screenshots/home-393-after.png),
+[phone diff](screenshots/home-393-diff.png). Mac Chromium proof does not establish identical hinting or
 rasterization on Windows, Safari or Firefox; those platforms were not tested.
 
 No visible difference is accepted as harmless rounding. Rejected font trials
@@ -172,5 +181,13 @@ condition for the equivalent localized provider CSS URLs. This avoids accepting
 new baselines that compare real fonts with system fallback. The separate
 frozen-original comparisons test actual fonts. No screenshot baseline changes.
 
-The release gate passed locally; native visual suite/source review/publication
-status belongs to the PR's current-head checks and final delivery readback.
+Local verification: `verify:release`, `guardrail-merge-check`, recovery
+remediation and the generated-font test passed. The 630-test native visual run
+had 583 passes, 37 existing skips and 10 failures (provider fixture plus the
+concurrent-build disruption); all 10 passed on the final `test:visual --
+--last-failed` rerun. All affected screenshot/design-floor assertions were also
+rerun: 262 passed, 34 existing skips. No visual baseline was changed. Manual
+regeneration was byte-identical, including output hashes. Font binary inspection
+confirmed exact cmap partitions, axes, glyph hints, CJK exclusion and Playfair
+family/instance renaming. The pre-PR fresh-context bug review had no findings.
+Current-head CI/review and publication status belong to the PR delivery readback.
