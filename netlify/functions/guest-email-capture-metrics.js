@@ -45,14 +45,14 @@ async function handleGuestEmailCaptureMetricsRequest(event, _context, injectedSt
     return { statusCode: 401, body: "Unauthorized" };
   }
 
-  const metrics = await readGuestEmailCaptureMetrics(store);
+  const [metrics, rejections] = await Promise.all([
+    readGuestEmailCaptureMetrics(store),
+    readGuestCaptureRejections(store)
+  ]);
   return {
     statusCode: 200,
     headers: { "content-type": "application/json; charset=utf-8" },
-    body: JSON.stringify({
-      ...formatGuestEmailCaptureSummary(metrics),
-      rejections: await readGuestCaptureRejections(store)
-    })
+    body: JSON.stringify({ ...formatGuestEmailCaptureSummary(metrics), rejections })
   };
 }
 

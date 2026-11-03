@@ -5,7 +5,10 @@ const path = require("path");
 
 const { assessGuestCaptureBotSignals, MIN_FORM_DWELL_MS } = require("../../netlify/functions/_guest-capture-bot-guard");
 const { handleGuestEmailCapture, CAPTURE_STATES } = require("../../netlify/functions/guest-email-capture");
-const { GUEST_CAPTURE_REJECTIONS_KEY } = require("../../netlify/functions/_guest-capture-rejection-metrics");
+const {
+  GUEST_CAPTURE_REJECTIONS_KEY,
+  readGuestCaptureRejections
+} = require("../../netlify/functions/_guest-capture-rejection-metrics");
 
 const projectRoot = path.resolve(__dirname, "..", "..");
 const NOW = Date.parse("2026-09-16T12:00:00.000Z");
@@ -120,8 +123,9 @@ function memoryStore() {
   const entries = new Map();
   return {
     entries,
-    async get(key) {
-      return entries.has(key) ? JSON.parse(entries.get(key)) : null;
+    async get(key, { type } = {}) {
+      if (!entries.has(key)) return null;
+      return type === "json" ? JSON.parse(entries.get(key)) : entries.get(key);
     },
     async set(key, value) {
       entries.set(key, value);
@@ -230,6 +234,51 @@ test("a wrong-shaped stored rejection record starts a fresh count", async () => 
   const record = JSON.parse(store.entries.get(GUEST_CAPTURE_REJECTIONS_KEY));
   assert.equal(record.total, 1);
   assert.deepEqual(record.byPlacement, { other: 1 });
+});
+
+test("stored bytes that are not JSON start a fresh count instead of stopping every later count", async () => {
+  const store = memoryStore();
+  store.entries.set(GUEST_CAPTURE_REJECTIONS_KEY, "{truncated");
+  await postRejected(store, { trip_url: "x" });
+  await postRejected(store, { trip_url: "x" });
+  assert.equal(JSON.parse(store.entries.get(GUEST_CAPTURE_REJECTIONS_KEY)).total, 2);
+});
+
+test("placements named after object built-ins count as other and keep the counts numeric", async () => {
+  const store = memoryStore();
+  for (const placement of ["constructor", "__proto__", "tostring", "home_inline"]) {
+    await postRejected(store, { trip_url: "x", placement });
+  }
+  const record = JSON.parse(store.entries.get(GUEST_CAPTURE_REJECTIONS_KEY));
+  assert.equal(record.total, 4);
+  assert.deepEqual(record.byPlacement, { other: 3, home_inline: 1 });
+});
+
+test("only the fields the counter writes survive a read of the stored record", async () => {
+  const store = memoryStore();
+  store.entries.set(
+    GUEST_CAPTURE_REJECTIONS_KEY,
+    JSON.stringify({
+      total: 1,
+      byReason: { honeypot: 1 },
+      byPlacement: { home_inline: 1 },
+      recent: [{ at: "2026-11-01T00:00:00.000Z", placement: "home_inline", reasons: ["honeypot"], email: "x@example.com" }],
+      updatedAt: "2026-11-01T00:00:00.000Z"
+    })
+  );
+  const record = await readGuestCaptureRejections(store);
+  assert.deepEqual(record.recent, [{ at: "2026-11-01T00:00:00.000Z", placement: "home_inline", reasons: ["honeypot"] }]);
+  assert.equal(JSON.stringify(record).includes("example.com"), false);
+});
+
+test("a failed read of the rejection counts is flagged rather than reported as zero", async () => {
+  const record = await readGuestCaptureRejections({
+    async get() {
+      throw new Error("read failed");
+    }
+  });
+  assert.equal(record.total, 0);
+  assert.equal(record.readFailed, true);
 });
 
 test("the token-protected metrics endpoint returns the private rejection counts", async () => {
