@@ -95,9 +95,10 @@ async function readGuestCaptureRejections(store) {
 }
 
 // A failed read throws rather than starting from zero, so a transient store
-// error cannot overwrite the accumulated counts.
+// error cannot overwrite the accumulated counts. The read is strongly
+// consistent so a rejection seconds after the last one sees its write.
 async function recordGuestCaptureRejection(store, { reasons, placement, at = new Date().toISOString() }) {
-  const existing = await store.get(GUEST_CAPTURE_REJECTIONS_KEY, { type: "text" });
+  const existing = await store.get(GUEST_CAPTURE_REJECTIONS_KEY, { type: "text", consistency: "strong" });
   const next = mergeGuestCaptureRejection(existing, { reasons, placement, at });
   await store.set(GUEST_CAPTURE_REJECTIONS_KEY, JSON.stringify(next), {
     contentType: "application/json; charset=utf-8"

@@ -244,6 +244,17 @@ test("stored bytes that are not JSON start a fresh count instead of stopping eve
   assert.equal(JSON.parse(store.entries.get(GUEST_CAPTURE_REJECTIONS_KEY)).total, 2);
 });
 
+test("sequential rejections inside the cache window keep counting from the latest record", async () => {
+  // Blobs reads are eventually consistent by default; only a strong read sees
+  // the previous request's write, so a default read here returns no record.
+  const store = memoryStore();
+  const strongGet = store.get;
+  store.get = async (key, options = {}) => (options.consistency === "strong" ? strongGet(key, options) : null);
+  await postRejected(store, { trip_url: "x" });
+  await postRejected(store, { trip_url: "x" });
+  assert.equal(JSON.parse(store.entries.get(GUEST_CAPTURE_REJECTIONS_KEY)).total, 2);
+});
+
 test("placements named after object built-ins count as other and keep the counts numeric", async () => {
   const store = memoryStore();
   for (const placement of ["constructor", "__proto__", "tostring", "home_inline"]) {
