@@ -290,7 +290,7 @@ scope; it does not authorize a held-guide edit or publication.
 
 ## Guide figures: when a guide earns a chart or diagram
 
-Use [Guide figures](docs/design/guide-figures.md) for eligibility and [Chart patterns](docs/design/chart-patterns.md) for treatments, including Sawyer's selected weather B. Weather remains preview-only.
+See [Guide figures](docs/design/guide-figures.md) for eligibility and [Chart patterns](docs/design/chart-patterns.md) for treatments, including selected weather B.
 
 ## Photography is evidence
 Only an actual photograph of the named property may illustrate its accommodation. A destination scene may illustrate a clearly named destination, never a failed home photo.

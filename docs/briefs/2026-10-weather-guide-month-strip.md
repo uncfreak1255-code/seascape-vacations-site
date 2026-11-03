@@ -1,8 +1,8 @@
 # Brief: Weather guide twelve-month strip
 
-- lifecycle: active
+- lifecycle: reference
 - task scope: add one build-time HTML figure (two-row heat map: normal high shaded by heat, rain days shaded clay by wetness) directly under the quick answer on `/guides/anna-maria-island-weather/`. Uses only the numbers already in that page's table. No new fact, no copy change outside the figure caption, no schema change, no date change.
-- completion or successor: not complete; record the merged PR here when it lands.
+- completion or successor: historical strip is present in base1c2c3456. The November3 selected B implementation supersedes this scope; see [active B brief](2026-11-weather-waterline-b.md).
 
 ## Content Gate Inputs
 
