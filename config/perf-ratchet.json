@@ -1095,7 +1095,7 @@
       "metric": "script",
       "from": 77499,
       "to": 80120,
-      "reason": "PR875: measured inline code for sanitized, consume-once same-tab guide card tracking; Lighthouse timing ceilings passed in run41936425686 at4d8a172a. No thresholds or tolerances changed.",
+      "reason": "PR875: measured inline code for sanitized, consume-once same-tab guide card tracking; Lighthouse timing ceilings passed in run41936425686 at4d8a172a. Byte baseline updated to measured repair cost; Lighthouse timing ceilings and ratchet logic unchanged.",
       "date": "2026-11-04"
     },
     {
@@ -1103,7 +1103,7 @@
       "metric": "script",
       "from": 96746,
       "to": 99456,
-      "reason": "PR875: measured inline code for sanitized, consume-once same-tab guide card tracking; Lighthouse timing ceilings passed in run41936425686 at4d8a172a. No thresholds or tolerances changed.",
+      "reason": "PR875: measured inline code for sanitized, consume-once same-tab guide card tracking; Lighthouse timing ceilings passed in run41936425686 at4d8a172a. Byte baseline updated to measured repair cost; Lighthouse timing ceilings and ratchet logic unchanged.",
       "date": "2026-11-04"
     },
     {
@@ -1111,7 +1111,7 @@
       "metric": "script",
       "from": 87689,
       "to": 90399,
-      "reason": "PR875: measured inline code for sanitized, consume-once same-tab guide card tracking; Lighthouse timing ceilings passed in run41936425686 at4d8a172a. No thresholds or tolerances changed.",
+      "reason": "PR875: measured inline code for sanitized, consume-once same-tab guide card tracking; Lighthouse timing ceilings passed in run41936425686 at4d8a172a. Byte baseline updated to measured repair cost; Lighthouse timing ceilings and ratchet logic unchanged.",
       "date": "2026-11-04"
     },
     {
@@ -1119,7 +1119,7 @@
       "metric": "script",
       "from": 57927,
       "to": 60637,
-      "reason": "PR875: measured inline code for sanitized, consume-once same-tab guide card tracking; Lighthouse timing ceilings passed in run41936425686 at4d8a172a. No thresholds or tolerances changed.",
+      "reason": "PR875: measured inline code for sanitized, consume-once same-tab guide card tracking; Lighthouse timing ceilings passed in run41936425686 at4d8a172a. Byte baseline updated to measured repair cost; Lighthouse timing ceilings and ratchet logic unchanged.",
       "date": "2026-11-04"
     },
     {
@@ -1127,7 +1127,7 @@
       "metric": "script",
       "from": 57927,
       "to": 60637,
-      "reason": "PR875: measured inline code for sanitized, consume-once same-tab guide card tracking; Lighthouse timing ceilings passed in run41936425686 at4d8a172a. No thresholds or tolerances changed.",
+      "reason": "PR875: measured inline code for sanitized, consume-once same-tab guide card tracking; Lighthouse timing ceilings passed in run41936425686 at4d8a172a. Byte baseline updated to measured repair cost; Lighthouse timing ceilings and ratchet logic unchanged.",
       "date": "2026-11-04"
     },
     {
@@ -1135,7 +1135,7 @@
       "metric": "script",
       "from": 57927,
       "to": 60637,
-      "reason": "PR875: measured inline code for sanitized, consume-once same-tab guide card tracking; Lighthouse timing ceilings passed in run41936425686 at4d8a172a. No thresholds or tolerances changed.",
+      "reason": "PR875: measured inline code for sanitized, consume-once same-tab guide card tracking; Lighthouse timing ceilings passed in run41936425686 at4d8a172a. Byte baseline updated to measured repair cost; Lighthouse timing ceilings and ratchet logic unchanged.",
       "date": "2026-11-04"
     },
     {
@@ -1143,7 +1143,7 @@
       "metric": "script",
       "from": 55953,
       "to": 58663,
-      "reason": "PR875: measured inline code for sanitized, consume-once same-tab guide card tracking; Lighthouse timing ceilings passed in run41936425686 at4d8a172a. No thresholds or tolerances changed.",
+      "reason": "PR875: measured inline code for sanitized, consume-once same-tab guide card tracking; Lighthouse timing ceilings passed in run41936425686 at4d8a172a. Byte baseline updated to measured repair cost; Lighthouse timing ceilings and ratchet logic unchanged.",
       "date": "2026-11-04"
     },
     {
@@ -1151,7 +1151,7 @@
       "metric": "script",
       "from": 55953,
       "to": 58663,
-      "reason": "PR875: measured inline code for sanitized, consume-once same-tab guide card tracking; Lighthouse timing ceilings passed in run41936425686 at4d8a172a. No thresholds or tolerances changed.",
+      "reason": "PR875: measured inline code for sanitized, consume-once same-tab guide card tracking; Lighthouse timing ceilings passed in run41936425686 at4d8a172a. Byte baseline updated to measured repair cost; Lighthouse timing ceilings and ratchet logic unchanged.",
       "date": "2026-11-04"
     }
   ]
