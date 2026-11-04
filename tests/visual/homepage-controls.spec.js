@@ -29,3 +29,21 @@ test('the homepage fetches only its matching responsive Oasis hero', async ({ pa
   expect(requests).toEqual(['/images/homes/the-oasis/hero-clarity'+(mobile?'-mobile':'')+'.webp']);
   expect(await photo.evaluate(n=>n.naturalWidth)).toBeGreaterThan(0);
 });
+
+test('a slow photo does not take focus back from the trip form', async ({ page }) => {
+  await registerStableNetwork(page);
+  await page.goto('/');
+  let release;
+  const waiting=new Promise(resolve=>{release=resolve;});
+  await page.route(/\/images\/homes\/river-house\/01(?:-800)?\.webp$/,async route=>{await waiting;await route.continue();});
+  const next=page.getByRole('button',{name:'Next featured home',exact:true});
+  await next.press('ArrowRight');
+  await next.press('ArrowRight');
+  await next.focus();
+  await next.dispatchEvent('click',{detail:1});
+  const arrival=page.getByLabel('Arrival',{exact:true});
+  await arrival.focus();
+  release();
+  await expect(page.locator('#scene-river-house')).toBeVisible();
+  await expect(arrival).toBeFocused();
+});

@@ -11,7 +11,8 @@
     async function chooseScene(choice,animateScene){
       var request=++sceneRequest;
       requestedIndex=choices.indexOf(choice);
-      var focusedStep=document.activeElement&&document.activeElement.dataset.sceneStep;
+      var focusedControl=document.activeElement;
+      var focusedStep=focusedControl&&focusedControl.dataset.sceneStep;
       var slug=choice.dataset.sceneChoice;
       var panel=document.getElementById('scene-'+slug);
       if(!panel)return;
@@ -26,9 +27,8 @@
       if(animateScene&&photo&&photo.decode){try{await photo.decode();}catch(error){/* The shared photo handler provides a named unavailable state. */}}
       if(request!==sceneRequest)return;
       sceneRoot.querySelectorAll('[data-scene]').forEach(function(scene){scene.hidden=scene!==panel;});
-      choices.forEach(function(item){var selected=item===choice;item.classList.toggle('is-active',selected);item.setAttribute('aria-pressed',String(selected));});
       sceneRoot.setAttribute('aria-busy','false');
-      if(focusedStep)panel.querySelector('[data-scene-step="'+focusedStep+'"]').focus({preventScroll:true});
+      if(focusedStep&&document.activeElement===focusedControl)panel.querySelector('[data-scene-step="'+focusedStep+'"]').focus({preventScroll:true});
       sceneStatus.textContent='Previewing '+name+'. Home '+(requestedIndex+1)+' of '+choices.length+'. '+panel.querySelector('.g-scene-caption p:last-child').textContent;
       if(panel.getAnimations)panel.getAnimations({subtree:true}).forEach(function(animation){animation.cancel();});
       if(animateScene&&!reducedMotion.matches&&panel.animate){
