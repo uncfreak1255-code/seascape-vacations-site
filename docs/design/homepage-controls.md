@@ -22,3 +22,9 @@ Cleaned master SHA256: `2019a0271d32fcc86af2e91e0e12d0f95f854d41cd79785dec7f88b1
 
 - `hero-clarity.webp`: 201762 bytes; SHA256 `0c30c5e85fa394c7c37ccfd6bae3f336bdc30cc2904f4929ddc96018673c9cf5`.
 - `hero-clarity-mobile.webp`: 92136 bytes; SHA256 `7786b7d4d709645d9a6400e24bf8d26bd0c2f9f327d25d4dfa366143547998a9`.
+
+## Verification checkpoint
+
+The new visible-controls browser test failed on the original strip, then passed with B on desktop/mobile. Focused scene, keyboard, failure, latest-choice and trip tests passed. The full release verifier passed 1362 unit tests and its remaining checks. Fresh 1440×900 and 390×844 screenshots match the selected direction, with no overflow or script errors; mobile fetched only the mobile hero. Separate design review: Approved with edge (existing dense desktop fan); Voice Editor: Approved. Matt Standards and Spec reviews found no defects in implementation head 7bab59fcc9a1bd3761f5c2356126fb56aaa32819, against originating issue #867.
+
+Lighthouse's existing ceilings passed for eight budgeted routes (three samples each). After obsolete strip handlers were removed, the affected homepage was measured again: script 77499 bytes (112 below prior baseline), stylesheet 61256 (1322 above). The existing ratchet records that intentional CSS cost for selected controls/focus/type. Hero savings are 32678 desktop bytes / 3296 mobile bytes; this does not establish field LCP. No LCP, CLS, TBT or image ceiling was relaxed. Only the homepage screenshot baselines were refreshed through workflow run 41744647436. Final visual/native PR checks remain release prerequisites; publication stays held.

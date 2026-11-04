@@ -1,15 +1,15 @@
 {
   "routes": {
     "/": {
-      "script": 77611,
-      "stylesheet": 59934
+      "script": 77499,
+      "stylesheet": 61256
     },
     "/properties/": {
-      "script": 100224,
+      "script": 96746,
       "stylesheet": 62430
     },
     "/property-management/": {
-      "script": 91167,
+      "script": 87689,
       "stylesheet": 56838
     },
     "/property-management/vacation-rental-licensing-florida/": {
@@ -1081,6 +1081,14 @@
       "to": 51742,
       "reason": "Font subset metadata adds 995 uncompressed CSS bytes for exact cmap core/extended font-face declarations; unchanged rendering saves 15,228 homepage font bytes (14,233 net font-plus-CSS bytes). Lighthouse assertions pass on all8 routes with the existing3-run aggregation; timing/transfer ceilings, budget logic and display/fallback behavior are unchanged.",
       "date": "2026-11-03"
+    },
+    {
+      "route": "/",
+      "metric": "stylesheet",
+      "from": 59934,
+      "to": 61256,
+      "reason": "Selected homepage B adds manual 44px Prev/Next controls, focus styling and larger supporting text; homepage CSS +1322 bytes, script -112 bytes, desktop hero -32678 bytes and mobile hero -3296 bytes. Existing Lighthouse LCP/CLS/TBT ceilings passed; no field-speed claim.",
+      "date": "2026-11-04"
     }
   ]
 }
