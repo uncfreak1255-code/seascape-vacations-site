@@ -100,6 +100,50 @@
 
         window.seascapeSanitizeAnalyticsPayload = window.seascapeSanitizeAnalyticsPayload || sanitizeAnalyticsPayload;
 
+        // Same-tab guide cards leave before the tag's network batch may be dispatched.
+        // Carry just this sanitized click to its destination; never send from both pages.
+        var guideCardKey = "seascape_pending_guide_card";
+        function takeGuideCard() {
+            try {
+                var raw = window.sessionStorage.getItem(guideCardKey);
+                window.sessionStorage.removeItem(guideCardKey);
+                if (!raw) return null;
+                var pending = JSON.parse(raw);
+                var age = Date.now() - pending.createdAt;
+                if (pending.event !== "guide_property_check_dates_click" || !Number.isFinite(age) || age < 0 || age > 60000) return null;
+                var destination = new URL(pending.destination);
+                if (destination.origin !== window.location.origin || destination.pathname !== window.location.pathname) return null;
+                return pending;
+            } catch (error) {
+                return null;
+            }
+        }
+        function stageGuideCard(eventName, params) {
+            if (eventName !== "guide_property_check_dates_click" || typeof params.event_callback !== "function") return false;
+            try {
+                var destination = new URL(params.link_url, window.location.href);
+                if (destination.origin !== window.location.origin || !/^\/properties\/[^/]+\/$/.test(destination.pathname)) return false;
+                var payload = window.seascapeSanitizeAnalyticsPayload(Object.assign({}, params, {
+                    page_location: getSanitizedPageLocation(),
+                    page_path: getSanitizedPagePath(),
+                    page_referrer: document.referrer ? sanitizeAnalyticsUrl(document.referrer) : "",
+                    page_title: document.title
+                }));
+                delete payload.event_callback;
+                delete payload.event_timeout;
+                window.sessionStorage.setItem(guideCardKey, JSON.stringify({
+                    event: eventName,
+                    destination: destination.origin + destination.pathname,
+                    createdAt: Date.now(),
+                    payload: payload
+                }));
+                return true;
+            } catch (error) {
+                return false;
+            }
+        }
+        var pendingGuideCard = takeGuideCard();
+
         window.__seascapeAnalyticsSuppressed = isLocalHost || window.__seascapeAnalyticsSuppressed;
         window.gtag = window.gtag || gtag;
 
@@ -127,8 +171,16 @@
         });
         window.seascapeTrackEvent = function(eventName, params) {
             if (!eventName) return;
-            gtag('event', eventName, window.seascapeSanitizeAnalyticsPayload(params || {}));
+            var safeParams = window.seascapeSanitizeAnalyticsPayload(params || {});
+            if (stageGuideCard(eventName, safeParams)) {
+                safeParams.event_callback();
+                return;
+            }
+            gtag('event', eventName, safeParams);
         };
+        if (pendingGuideCard) {
+            gtag('event', pendingGuideCard.event, window.seascapeSanitizeAnalyticsPayload(pendingGuideCard.payload));
+        }
     })();
 </script>
 {% endif %}

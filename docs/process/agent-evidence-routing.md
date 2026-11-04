@@ -68,6 +68,21 @@ persistence and removal, and confirms ordinary visitor tracking remains enabled.
 Browser proof must intercept Analytics collection endpoints instead of sending
 unlabeled QA events to the real property. Historical traffic stays unchanged.
 
+## Same-tab guide card proof
+
+`analytics-ga4.njk` carries a sanitized `guide_property_check_dates_click` through
+same-tab navigation in one session-storage slot, consumed once by the matching
+property page within 60 seconds. The event retains the source guide's page
+identity. New-tab/external clicks and unavailable storage use direct tracking;
+QA suppression discards the pending slot. No retry queue or server receipt is added.
+
+Run `node --test scripts/enforcement/guide-card-handoff.test.js` and
+`npx playwright test tests/visual/guide-card-tracking.spec.js`. The browser
+fixture reproduces tag processing that calls back before its network batch and
+intercepts every request. A queued event or a callback alone does not prove a
+collection request. Real-tag interception proves dispatch; only GA4 readback
+proves receiver acceptance. Synthetic events are never demand or booking lift.
+
 ## Website Review Pattern
 
 For website design or copy-adjacent changes:
