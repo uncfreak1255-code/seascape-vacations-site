@@ -24,6 +24,16 @@ column before pushing; read the CI column when a PR check is red.
 
 Dependency-manifest and release-workflow changes also install locked Chromium and run the complete existing accessibility spec inside `release-safety`. A failed browser result fails that required job; optional or cancelled visual results do not substitute for it. The dependency comparison fails when its Git range cannot be read.
 
+The visual workflow uses two workers on the self-hosted runner and one on
+GitHub-hosted runners. A four-run, counterbalanced local trial on 2026-11-03
+reduced median full-suite time from 934.9s to 470.4s (49.7%) with identical
+616 passed / 38 skipped results and no retries. Assertions, baselines and
+tolerances stayed fixed. Local defaults remain one worker; use `--workers=2`
+to reproduce the measured concurrency. CI uploads the native JSON results as
+`visual-results` for seven days on success or failure, alongside the existing
+failure reports. Full Git history remains unchanged: the blobless checkout
+trial did not establish a repeatable benefit.
+
 GitHub rulesets on `main` require exactly three status checks: `build`,
 `release-safety` and `performance-budget`. Every other job is informational
 and a red one does not block a merge by itself; read it anyway.

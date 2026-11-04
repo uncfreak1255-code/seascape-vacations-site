@@ -123,6 +123,19 @@ test("visual regression cancels superseded pull request runs", () => {
   assert.match(workflow, /cancel-in-progress:\s*true/);
 });
 
+test("visual concurrency uses two workers only on the measured self-hosted runner", () => {
+  const workflow = require("js-yaml").load(readWorkflow("playwright-visual.yml"));
+  const command = workflow.jobs["visual-regression"].steps.find((step) =>
+    step.run && /run-visual-tests\.js/.test(step.run)).run;
+  const expression = command.match(/--workers=\$\{\{ (.+) \}\}/);
+  assert.ok(expression, "concurrency must be selected from the actual runner environment");
+  for (const [environment, expected] of [["self-hosted", 2], ["github-hosted", 1], ["unknown", 1]]) {
+    assert.equal(require("node:vm").runInNewContext(expression[1], {
+      runner: { environment },
+    }, { timeout: 100 }), expected);
+  }
+});
+
 test("CI speed lane keeps non-rendering package commands off expensive visual gates", () => {
   const visual = readWorkflow("playwright-visual.yml");
   const performance = readWorkflow("performance-budget.yml");
