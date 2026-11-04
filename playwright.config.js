@@ -12,7 +12,7 @@ module.exports = defineConfig({
   retries: isCI ? 1 : 0,
   workers: 1,
   reporter: isCI
-    ? [["github"], ["html", { open: "never" }]]
+    ? [["github"], ["html", { open: "never" }], ["json", { outputFile: "artifacts/visual-results.json" }]]
     : [["list"], ["html", { open: "never" }]],
   expect: {
     timeout: 10_000,

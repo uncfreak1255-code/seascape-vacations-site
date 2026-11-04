@@ -55,7 +55,7 @@ test('Relaxing Oasis can be discovered on the homepage and filtered and compared
   await expect(postcard).toHaveCount(1);
   await expect(postcard.locator('a')).toHaveAttribute('href', '/properties/relaxing-oasis/');
   await expect(postcard.locator('img')).toHaveAttribute('src', '/images/homes/relaxing-oasis/01.webp');
-  await page.getByRole('button', { name: 'Previous featured home', exact: true }).click();
+  await page.getByRole('button', { name: 'Prev featured home', exact: true }).click();
   await expect(page.locator('#scene-relaxing-oasis')).toBeVisible();
   await expect.poll(() => page.locator('#scene-relaxing-oasis img').evaluate(i => i.complete && i.naturalWidth > 0)).toBe(true);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);

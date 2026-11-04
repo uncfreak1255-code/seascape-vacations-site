@@ -7,7 +7,7 @@
 {% endif %}
 {% set resolvedNavButtonHref = navButtonHref or "/properties/" %}
   <header class="g-header">
-    <a class="g-wordmark" href="/" data-trip-link aria-label="Seascape Vacations home">seascape<span>VACATIONS</span></a>
+    <a class="g-wordmark" href="/" data-trip-link aria-label="Seascape Vacations home">seascape <span>VACATIONS</span></a>
     <nav class="g-nav" aria-label="Primary">
       <a href="/properties/" data-trip-link{% if navCurrent == "our-homes" %} aria-current="page"{% endif %}>Our homes</a><a href="/guides/" data-trip-link{% if navCurrent == "explore" %} aria-current="page"{% endif %}>Explore the coast</a><a href="/about-us/" data-trip-link{% if navCurrent == "about" %} aria-current="page"{% endif %}>About Seascape</a><a href="/property-management/" data-track-event="owner_primary_cta_click" data-page-slug="{{ page.url | replace('/', '') or 'home' }}" data-placement="guest_navigation"{% if navCurrent == "owners" %} aria-current="page"{% endif %}>Property Owners</a>
     </nav>

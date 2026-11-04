@@ -14,7 +14,7 @@ test('simple controls replace the strip and retain keyboard focus while browsing
   await expect(page.locator('.g-scene:visible')).toContainText('Home 2 of 8');
   await next.press('Home');
   await expect(page.locator('.g-scene:visible h2')).toHaveText('The Oasis');
-  await page.getByRole('button', { name: 'Previous featured home', exact: true }).click();
+  await page.getByRole('button', { name: 'Prev featured home', exact: true }).click();
   await expect(page.locator('.g-scene:visible h2')).toHaveText('Relaxing Oasis');
 });
 

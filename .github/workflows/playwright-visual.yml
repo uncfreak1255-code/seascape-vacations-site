@@ -36,7 +36,15 @@ jobs:
 
       - run: npm ci
       - run: npx --no-install playwright install chromium
-      - run: node scripts/enforcement/run-visual-tests.js
+      - run: node scripts/enforcement/run-visual-tests.js --workers=${{ runner.environment == 'self-hosted' && 2 || 1 }}
+      - name: Upload visual results
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: visual-results
+          path: artifacts/visual-results.json
+          if-no-files-found: error
+          retention-days: 7
       - run: node scripts/enforcement/capture-visual-proof.js
         if: failure()
 
