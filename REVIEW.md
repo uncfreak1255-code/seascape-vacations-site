@@ -29,6 +29,8 @@ belongs to the rendered design-review lane, not this review.
 
 ## Evidence
 
+- If the PR body links an issue, list each requirement of that issue as met or missed, with file:line.
+- Before posting, re-score each finding 0–10 on whether it reaches an outcome above; drop anything under 7.
 - Cite a file and line for every finding. A guess from a function name or a
   pattern you expect to be there is not a finding.
 - On a bug fix, check that the fix addresses the cause, not the symptom.
@@ -45,6 +47,10 @@ belongs to the rendered design-review lane, not this review.
   the outcomes above. If those keep recurring, say the approach needs
   rethinking rather than another patch.
 
+## Review order
+
+Review `src/` and `netlify/functions/` first, before tests, docs, screenshots or `tests/visual/` baselines.
+
 ## Noise
 
 - At most three nits per review. Prefer none. A nit is anything content lint or
@@ -60,3 +66,5 @@ belongs to the rendered design-review lane, not this review.
 Open with a count: "3 findings (1 important, 2 pre-existing)" or "0 findings,
 nothing needs fixing." Then the findings, most severe first. Say plainly when a
 change looks correct; a clean PR deserves a short review.
+
+End the summary with `merge: no_concerns | needs_review | changes_required` and up to 3 concrete ways the change could fail live.
