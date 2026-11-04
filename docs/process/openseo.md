@@ -52,10 +52,9 @@ owning-repo action → Analytics outcome readback. Apply each repo's existing
 approval, brief, review and proof requirements. This is a workflow default,
 not a new scheduler, automatic page editor or grant of spending authority.
 
-Claude's twelve free workflow tools have native allow rules. Every other tool
-in the installed 0.1.16 catalog has a native ask rule (seven tools added in
-0.1.13–0.1.16 got ask rules on October 25, 2026), so auto mode cannot
-silently approve paid research or other unapproved effects. Verify this catalog
+Claude's free read-only OpenSEO tools, including `get_rank_history`, have native
+allow rules. Every other tool in the installed 0.1.24 catalog has a native ask
+rule, so auto mode cannot silently approve paid research or other unapproved effects. Verify this catalog
 coverage again before an OpenSEO upgrade. Codex continues to exclude paid
 lookup tools from its default allowlist. For an approved paid step, make only
 the exact required capability available; approval never enables an entire pack.
