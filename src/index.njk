@@ -14,8 +14,12 @@ pageDescription: "Private-pool vacation homes in Bradenton and Sarasota. Compare
     <div class="g-scenes">
       {% for slug in sceneSlugs %}{% set home = properties | propertyBySlug(slug) %}{% set photo = home.photography.photos[0] %}
       <div class="g-scene" id="scene-{{ home.slug }}" data-scene="{{ home.slug }}"{% if not loop.first %} hidden{% endif %}>
+        {% if home.slug == 'the-oasis' %}
+        <picture><source media="(max-width:700px)" srcset="/images/homes/the-oasis/hero-clarity-mobile.webp"><img class="g-scene-photo" data-transition-home="{{ home.slug }}" data-property-photo="{{ home.slug }}" src="/images/homes/the-oasis/hero-clarity.webp" width="1400" height="934" fetchpriority="high" alt="{{ photo.alt }}"></picture>
+        {% else %}
         <img class="g-scene-photo" data-transition-home="{{ home.slug }}" data-property-photo="{{ home.slug }}" {% if loop.first %}src="{{ photo.src }}" srcset="{{ photo.src | replace('.webp', '-800.webp') }} 800w, {{ photo.src }} {{ photo.width }}w" fetchpriority="high"{% else %}data-scene-src="{{ photo.src }}" data-scene-srcset="{{ photo.src | replace('.webp', '-800.webp') }} 800w, {{ photo.src }} {{ photo.width }}w"{% endif %} sizes="100vw" width="{{ photo.width }}" height="{{ photo.height }}" alt="{{ photo.alt }}">
-        <div class="g-scene-caption"><div><p class="g-label">In the collection · {{ home.city }}, Florida</p><h2>{{ home.cardName or home.name }}</h2><p>{{ home.guestFacts.tagline }}</p></div><a class="g-scene-explore" href="{{ home.pageUrl }}" data-trip-link>Explore this home <span aria-hidden="true">{{ uiIcon('arrow-up-right') }}</span></a><span class="g-scene-index" aria-hidden="true">{{ "0" if loop.index < 10 else "" }}{{ loop.index }}<small>/{{ "0" if sceneCount < 10 else "" }}{{ sceneCount }}</small></span></div>
+        {% endif %}
+        <div class="g-scene-caption"><div><p class="g-label">In the collection · {{ home.city }}, Florida</p><h2>{{ home.cardName or home.name }}</h2><p>{{ home.guestFacts.tagline }}</p></div><a class="g-scene-explore" href="{{ home.pageUrl }}" data-trip-link>Explore this home <span aria-hidden="true">{{ uiIcon('arrow-up-right') }}</span></a><div class="g-scene-controls" hidden><span>Home {{ loop.index }} of {{ sceneCount }}</span><button type="button" data-scene-step="-1" aria-label="Previous featured home">Prev</button><button type="button" data-scene-step="1" aria-label="Next featured home">Next</button></div></div>
       </div>{% endfor %}
     </div>
 
