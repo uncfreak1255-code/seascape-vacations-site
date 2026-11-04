@@ -50,7 +50,8 @@ jobs:
         id: dependency_changes
         shell: bash
         run: |
-          if git diff --name-only "$RANGE" | grep -Eq '^(package(-lock)?\.json)$'; then
+          changed_files="$(git diff --name-only "$RANGE")"
+          if printf '%s\n' "$changed_files" | grep -Eq '^(package(-lock)?\.json|\.github/workflows/release-safety\.yml)$'; then
             echo "changed=true" >> "$GITHUB_OUTPUT"
           else
             echo "changed=false" >> "$GITHUB_OUTPUT"
@@ -62,6 +63,16 @@ jobs:
 
       - name: Run release safety gate
         run: npm run verify:release -- --range "$RANGE"
+
+      # A toolchain update can pass unit checks while a new axe or browser
+      # exposes a real regression. Keep that proof in this required job.
+      - name: Install locked Chromium for dependency proof
+        if: steps.dependency_changes.outputs.changed == 'true'
+        run: npx --no-install playwright install --with-deps chromium
+
+      - name: Verify accessibility with updated dependencies
+        if: steps.dependency_changes.outputs.changed == 'true'
+        run: node scripts/enforcement/run-visual-tests.js tests/visual/accessibility.spec.js
 
   build:
     name: build

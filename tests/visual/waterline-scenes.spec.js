@@ -58,7 +58,7 @@ test('a slow earlier image cannot overwrite the most recent home choice',async({
   await page.route(/\/images\/homes\/river-house\/01(?:-800)?\.webp$/,async route=>{await gate;await route.continue();});
   await selectScene(page,'sarasota-luxe');
   await page.getByRole('button',{name:'Next featured home',exact:true}).dispatchEvent('click',{detail:1});
-  await page.getByRole('button',{name:'Previous featured home',exact:true}).press('Enter');
+  await page.getByRole('button',{name:'Prev featured home',exact:true}).press('Enter');
   await expect(page.locator('.g-scene:visible')).toHaveAttribute('data-scene','sarasota-luxe');release();
   await expect(page.locator('#scene-river-house img')).toHaveJSProperty('complete',true);
   await expect(page.locator('.g-scene:visible')).toHaveAttribute('data-scene','sarasota-luxe');

@@ -28,6 +28,40 @@ function readWorkflow(filename) {
   return fs.readFileSync(path.join(projectRoot, ".github", "workflows", filename), "utf8");
 }
 
+test("dependency updates owe blocking accessibility proof in the required release job", () => {
+  const workflow = require("js-yaml").load(readWorkflow("release-safety.yml"));
+  const job = workflow.jobs["release-safety"];
+  const browser = job.steps.find((step) =>
+    step.run && /run-visual-tests\.js\s+tests\/visual\/accessibility\.spec\.js/.test(step.run));
+  assert.ok(browser, "dependency changes must execute the existing accessibility suite inside release-safety");
+  assert.notEqual(browser["continue-on-error"], true);
+  assert.notEqual(job["continue-on-error"], true);
+  const expression = browser.if.replace(/^\$\{\{\s*|\s*\}\}$/g, "");
+  for (const changed of [true, false]) {
+    assert.equal(require("node:vm").runInNewContext(expression, {
+      steps: { dependency_changes: { outputs: { changed: String(changed) } } },
+    }), changed);
+  }
+  assert.doesNotMatch(browser.run, /\|\||--update-snapshots|--ignore-snapshots/);
+  assert.ok(job.steps.some((step) => step.run && /playwright install.*chromium/.test(step.run)),
+    "the locked browser must be installed before dependency accessibility proof");
+});
+
+test("an unreadable dependency comparison fails instead of claiming no browser proof is owed", (t) => {
+  const workflow = require("js-yaml").load(readWorkflow("release-safety.yml"));
+  const classifier = workflow.jobs["release-safety"].steps.find((step) => step.id === "dependency_changes");
+  const dir = fs.mkdtempSync(path.join(require("node:os").tmpdir(), "dependency-scope-"));
+  t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
+  const output = path.join(dir, "output");
+  const result = require("node:child_process").spawnSync("bash", ["-e", "-o", "pipefail", "-c", classifier.run], {
+    cwd: projectRoot,
+    env: { ...process.env, RANGE: "missing-dependency-comparison-ref", GITHUB_OUTPUT: output },
+    encoding: "utf8",
+  });
+  assert.notEqual(result.status, 0, "missing history must reject the required job");
+  assert.equal(fs.existsSync(output), false, "failure must not emit changed=false");
+});
+
 test("release safety preserves main coverage and both required check names", () => {
   const workflow = readWorkflow("release-safety.yml");
 

@@ -15,11 +15,14 @@ column before pushing; read the CI column when a PR check is red.
 | `npm run lint:content` | `content-voice.test.js` and sourced-claim enforcement against the fresh build | inside `release-safety` via `verify:release` |
 | `npm run verify:release` | build, full suite and release checks under one lock | `release-safety` |
 | `npm run audit:deps` | `npm audit` at moderate on production dependencies | `release-safety` |
+| `node scripts/enforcement/run-visual-tests.js tests/visual/accessibility.spec.js` | existing desktop/mobile accessibility assertions with the installed lockfile | inside required `release-safety` when dependency manifests or that workflow change |
 | `npm run test:e2e` | 19 guest-flow journeys (desktop and mobile Chromium) against a fresh build | `e2e-flows` |
 | `npm run test:visual` | Playwright screenshot diffs against `tests/visual/__screenshots__/` plus the axe spec | `visual-regression` |
 | `npm run perf:budget` / `npm run perf:ratchet` | Lighthouse budgets in `lighthouserc.js` and the byte-size ratchet | `performance-budget` |
 | `npm run verify:preview-surface -- <url>` | homepage, property and booking-handoff assertions against a served `_site` | `preview-surface` |
 | post-deploy smoke trio in `AGENTS.md` -> Deploy | the live production site | `live-smoke` |
+
+Dependency-manifest and release-workflow changes also install locked Chromium and run the complete existing accessibility spec inside `release-safety`. A failed browser result fails that required job; optional or cancelled visual results do not substitute for it. The dependency comparison fails when its Git range cannot be read.
 
 GitHub rulesets on `main` require exactly three status checks: `build`,
 `release-safety` and `performance-budget`. Every other job is informational
