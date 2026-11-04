@@ -137,7 +137,7 @@ test('invalid dates recover and incomplete edits do not open checkout',async({pa
 
 test('a missing accommodation photo is explicit and cannot pass visual proof',async({page})=>{
   await visit(page,'/');
-  await page.route(/\/images\/homes\/the-oasis\/01(?:-800)?\.webp$/,route=>route.abort());
+  await page.route(/\/images\/homes\/the-oasis\/(?:01(?:-800)?|hero-clarity(?:-mobile)?)\.webp$/,route=>route.abort());
   await page.reload({waitUntil:'networkidle'});
   await expect(page.locator('[data-photo-failed]').first()).toBeVisible();
   expect(await page.locator('img[src*="seascape-og-default"]').count()).toBe(0);

@@ -1,5 +1,6 @@
 const { test, expect } = require('@playwright/test');
 const { registerStableNetwork } = require('./test-helpers');
+const {selectScene} = require('./home-scene-helpers');
 const homes = require('../../src/_data/properties-fallback.json');
 const trip = 'arrive=2026-11-07&depart=2026-11-14&guests=8';
 async function visit(page) {
@@ -12,13 +13,13 @@ test('every manual scene keeps its identity, own photo, facts and trip link', as
   await visit(page);
   for (const home of homes) {
     const cardName=home.cardName||home.name;
-    const choice=page.getByRole('button',{name:'Preview '+cardName,exact:true});
-    await choice.click();
+    await selectScene(page,home.slug);
     const panel=page.locator('.g-scene:visible');
     await expect(panel).toHaveAttribute('data-scene',home.slug);
-    await expect(choice).toHaveAttribute('aria-pressed','true');
     await expect(panel.locator('h2')).toHaveText(cardName);
     await expect(panel.locator('.g-scene-caption')).toContainText(home.guestFacts.tagline);
+    await expect(panel.locator('img')).toHaveJSProperty('complete',true);
+    await expect.poll(()=>panel.locator('img').evaluate(n=>n.naturalWidth)).toBeGreaterThan(0);
     const photo=await panel.locator('img').evaluate(n=>({src:new URL(n.currentSrc).pathname,loaded:n.naturalWidth>0}));
     expect(photo.loaded).toBe(true);expect(photo.src).toContain('/images/homes/'+home.slug+'/');
     const url=new URL(await panel.locator('a').getAttribute('href'),page.url());
@@ -32,10 +33,10 @@ test('every manual scene keeps its identity, own photo, facts and trip link', as
 
 test('keyboard previews and reduced motion keep the scene usable',async({page})=>{
   await page.emulateMedia({reducedMotion:'reduce'});await visit(page);
-  const first=page.getByRole('button',{name:'Preview The Oasis',exact:true});await first.focus();
+  const first=page.getByRole('button',{name:'Next featured home',exact:true});await first.focus();
   await page.keyboard.press('ArrowRight');await expect(page.locator('.g-scene:visible')).toHaveAttribute('data-scene','dockside-dreams');
   await page.keyboard.press('End');await expect(page.locator('.g-scene:visible')).toHaveAttribute('data-scene','relaxing-oasis');
-  await page.keyboard.press('Home');await expect(first).toBeFocused();await expect(first).toHaveAttribute('aria-pressed','true');
+  await page.keyboard.press('Home');await expect(first).toBeFocused();await expect(page.locator('.g-scene:visible')).toHaveAttribute('data-scene','the-oasis');
   expect(await page.evaluate(()=>document.getAnimations().filter(a=>a.playState==='running').length)).toBe(0);
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
 });
@@ -44,30 +45,31 @@ test('a failed selected photo never shows another accommodation as its replaceme
   await registerStableNetwork(page);
   await page.route(/\/images\/homes\/river-house\/01(?:-800)?\.webp$/,r=>r.abort());
   await page.goto('/?'+trip,{waitUntil:'networkidle'});
-  await page.getByRole('button',{name:'Preview River House',exact:true}).click();
+  await selectScene(page,'river-house');
   const scene=page.locator('.g-scene:visible');await expect(scene).toHaveAttribute('data-scene','river-house');
   await expect(scene.locator('[data-photo-failed]')).toHaveAttribute('data-property-photo','river-house');
   await expect(scene.locator('a')).toHaveAttribute('href',/properties\/river-house\//);
-  await page.getByRole('button',{name:'Preview The Oasis',exact:true}).click();await expect(page.locator('.g-scene:visible img')).toHaveAttribute('data-property-photo','the-oasis');
+  await selectScene(page,'the-oasis');await expect(page.locator('.g-scene:visible img')).toHaveAttribute('data-property-photo','the-oasis');
 });
 
 test('a slow earlier image cannot overwrite the most recent home choice',async({page})=>{
   await visit(page);
   let release;const gate=new Promise(resolve=>{release=resolve;});
   await page.route(/\/images\/homes\/river-house\/01(?:-800)?\.webp$/,async route=>{await gate;await route.continue();});
-  await page.getByRole('button',{name:'Preview River House',exact:true}).click();
-  await page.getByRole('button',{name:'Preview Dockside Dreams',exact:true}).click();
-  await expect(page.locator('.g-scene:visible')).toHaveAttribute('data-scene','dockside-dreams');release();
+  await selectScene(page,'sarasota-luxe');
+  await page.getByRole('button',{name:'Next featured home',exact:true}).dispatchEvent('click',{detail:1});
+  await page.getByRole('button',{name:'Previous featured home',exact:true}).press('Enter');
+  await expect(page.locator('.g-scene:visible')).toHaveAttribute('data-scene','sarasota-luxe');release();
   await expect(page.locator('#scene-river-house img')).toHaveJSProperty('complete',true);
-  await expect(page.locator('.g-scene:visible')).toHaveAttribute('data-scene','dockside-dreams');
+  await expect(page.locator('.g-scene:visible')).toHaveAttribute('data-scene','sarasota-luxe');
 });
 
 test('motion preference changes stop subsequent preview animation',async({page})=>{
   await visit(page);await page.emulateMedia({reducedMotion:'no-preference'});
-  await page.getByRole('button',{name:'Preview Dockside Dreams',exact:true}).click();
+  await selectScene(page,'dockside-dreams');
   await expect(page.locator('.g-scene:visible')).toHaveAttribute('data-scene','dockside-dreams');
   await page.emulateMedia({reducedMotion:'reduce'});
-  await page.getByRole('button',{name:'Preview Sarasota Luxe',exact:true}).click();
+  await selectScene(page,'sarasota-luxe');
   await expect(page.locator('.g-scene:visible')).toHaveAttribute('data-scene','sarasota-luxe');
   expect(await page.locator('.g-scene:visible').evaluate(n=>n.getAnimations({subtree:true}).length)).toBe(0);
 });
@@ -85,7 +87,7 @@ test('editing the homepage trip carries it into a home even before search is sub
   await page.getByLabel('Arrival',{exact:true}).fill('2026-12-05');
   await page.getByLabel('Departure',{exact:true}).fill('2026-12-12');
   await page.getByLabel('Guests',{exact:true}).selectOption('6');
-  await page.getByRole('button',{name:'Preview Dockside Dreams',exact:true}).click();
+  await selectScene(page,'dockside-dreams');
   await expect(page.locator('.g-scene:visible')).toHaveAttribute('data-scene','dockside-dreams');
   await page.locator('.g-scene:visible a').click();
   await expect(page).toHaveURL(/\/properties\/dockside-dreams\/\?/);
@@ -99,17 +101,14 @@ test('keyboard scene changes are immediate even when motion is allowed',async({p
   await registerStableNetwork(page);
   await page.emulateMedia({reducedMotion:'no-preference'});
   await page.goto('/');
-  const choice=page.getByRole('button',{name:'Preview Dockside Dreams',exact:true});
-  await choice.focus();
-  await choice.press('Enter');
-  const scene=page.locator('#scene-dockside-dreams');
-  await expect(scene).toBeVisible();
-  expect(await scene.evaluate(n=>n.getAnimations({subtree:true}).length)).toBe(0);
+  const choice=page.getByRole('button',{name:'Next featured home',exact:true});
+  await choice.focus();await choice.press('Enter');
+  await expect(page.locator('#scene-dockside-dreams')).toBeVisible();
+  expect(await page.locator('#scene-dockside-dreams').evaluate(n=>n.getAnimations({subtree:true}).length)).toBe(0);
   await choice.press('ArrowRight');
   await expect(page.locator('#scene-sarasota-luxe')).toBeVisible();
   expect(await page.locator('#scene-sarasota-luxe').evaluate(n=>n.getAnimations({subtree:true}).length)).toBe(0);
-  await page.getByRole('button',{name:'Preview River House',exact:true}).focus();
-  await page.keyboard.press('Space');
+  await choice.press('Space');
   await expect(page.locator('#scene-river-house')).toBeVisible();
   expect(await page.locator('#scene-river-house').evaluate(n=>n.getAnimations({subtree:true}).length)).toBe(0);
 });
@@ -121,10 +120,10 @@ test('keyboard selection shows the chosen home while its photo is loading', asyn
   const loading = new Promise(resolve => { release = resolve; });
   await page.route(/\/images\/homes\/river-house\/01(?:-800)?\.webp$/, async route => { await loading; await route.continue(); });
   try {
-    const choice = page.getByRole('button', { name: 'Preview River House', exact: true });
-    await choice.focus();
+    await selectScene(page,'sarasota-luxe');
+    const choice=page.getByRole('button',{name:'Next featured home',exact:true});
     await choice.press('Enter');
     await expect(page.locator('#scene-river-house')).toBeVisible();
-    await expect(choice).toHaveAttribute('aria-pressed', 'true');
+    await expect(choice).toBeFocused();
   } finally { release(); }
 });

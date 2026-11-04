@@ -204,3 +204,20 @@
 .g-exit-close{position:absolute;top:8px;right:8px;width:44px;height:44px;border:0;background:none;color:var(--g-muted);font-size:28px;line-height:1;cursor:pointer}
 @media(max-width:900px){.g-home-signup,.g-home-owners{gap:36px;grid-template-columns:1fr}}
 @media(max-width:480px){.g-home-signup-form{grid-template-columns:1fr}.g-home-signup-form button{width:100%}}
+
+/* Selected homepage candidate: fonts and native form remain Waterline. */
+.g-scene-picker[hidden],.g-scene-controls[hidden]{display:none}
+.g-scene picture{display:contents}
+.g-scene-controls{display:grid;grid-template-columns:1fr 1fr;gap:6px;width:150px;font-family:Poppins,sans-serif}
+.g-scene-controls>span{grid-column:1/-1;font-size:12px;text-align:center;line-height:1.4}
+.g-scene-controls button{font:500 13px Poppins,sans-serif;min-height:44px;min-width:44px;padding:8px;color:white;border:1px solid color-mix(in srgb,currentColor 50%,transparent);border-radius:4px;background:#173d4266;cursor:pointer}
+.g-scene-controls button:hover{background:var(--g-ink)}
+.g-scene-controls button:focus-visible{outline:3px solid var(--g-citron);outline-offset:3px}
+.g-arrival-copy>p:last-child{font-size:16px;line-height:1.55}
+.g-scene-caption p:last-child{font-size:15px;line-height:1.55}
+.g-collection .g-section-heading>p,.g-postcard>p{font-size:15px;line-height:1.6}
+.g-postcard .g-label{font-size:13px;letter-spacing:.04em;line-height:1.5}
+#home-trip label[for="home-trip-arrive"]{font-weight:500}
+@media(max-width:700px){.g-scene-caption{grid-template-columns:minmax(0,1fr) 112px;gap:8px 12px}
+.g-scene-controls{grid-column:2;grid-row:1/3;width:112px;align-self:end}
+.g-scene-controls button{padding:6px;font-size:12px}}

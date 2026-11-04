@@ -1,3 +1,4 @@
+const {selectScene} = require('./home-scene-helpers');
 const { test, expect } = require('@playwright/test');
 const { gotoMarketingRoute } = require('./test-helpers');
 
@@ -45,7 +46,7 @@ test('Every homepage scene keeps copy clear of the property caption', async ({ p
   for (const width of [375, 390, 768, 1440]) {
     await page.setViewportSize({ width, height: 900 });
     for (const slug of ['the-oasis', 'dockside-dreams', 'sarasota-luxe', 'river-house', 'bradenton-pool-home']) {
-      await page.locator(`[data-scene-choice="${slug}"]`).click();
+      await selectScene(page,slug);
       await expect(page.locator(`[data-scene="${slug}"]`)).toBeVisible();
       const metrics = await page.evaluate(() => {
         const copy = document.querySelector('.g-arrival-copy').getBoundingClientRect();

@@ -1,3 +1,4 @@
+const {selectScene} = require('./home-scene-helpers');
 const assert = require("node:assert/strict");
 const fs = require("node:fs");
 const path = require("node:path");
@@ -360,7 +361,7 @@ for (const slug of SCENES) {
     const isMobileProject = testInfo.project.name === "mobile-chromium";
     const selectors = heroTextSelectors(isMobileProject);
 
-    await page.click(`[data-scene-choice="${slug}"]`);
+    await selectScene(page,slug);
     await page.waitForFunction(() => {
       const sceneRoot = document.querySelector("[data-home-scenes]");
       return Boolean(sceneRoot) && sceneRoot.getAttribute("aria-busy") !== "true";
