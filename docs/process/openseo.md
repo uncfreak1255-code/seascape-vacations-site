@@ -52,10 +52,9 @@ owning-repo action → Analytics outcome readback. Apply each repo's existing
 approval, brief, review and proof requirements. This is a workflow default,
 not a new scheduler, automatic page editor or grant of spending authority.
 
-Claude's twelve free workflow tools have native allow rules. Every other tool
-in the installed 0.1.16 catalog has a native ask rule (seven tools added in
-0.1.13–0.1.16 got ask rules on October 25, 2026), so auto mode cannot
-silently approve paid research or other unapproved effects. Verify this catalog
+Claude's free read-only OpenSEO tools, including `get_rank_history`, have native
+allow rules. Every other tool in the installed 0.1.24 catalog has a native ask
+rule, so auto mode cannot silently approve paid research or other unapproved effects. Verify this catalog
 coverage again before an OpenSEO upgrade. Codex continues to exclude paid
 lookup tools from its default allowlist. For an approved paid step, make only
 the exact required capability available; approval never enables an entire pack.
@@ -141,10 +140,18 @@ The Mac installs the public skill directories as user-scope symlinks named
 `~/Projects/open-seo-review/plugins/openseo/skills/<skill>`. Their upstream
 skill names stay unchanged. The initial source was official release 0.1.12,
 commit `89e5a00717cdf049b7c2b4e29646edb3a7d4995b`. Sawyer approved the upgrade
-to release 0.1.16 (commit `236761ad848716077cd10d8503713bb690971b3b`) on
-October 25, 2026; the twelve skills and their links were rechecked after it.
-The pre-upgrade local database is kept under
-`~/Projects/open-seo-backups/2026-10-25-pre-v0.1.16/`. The installed local
+to release 0.1.24 (commit `0c04886f521f3626bb9037e91707bcf6762380ca`, branch
+`codex/openseo-v0.1.24`, migration `0063_account_deletion_requests` applied) on
+November 4, 2026, from 0.1.16 (October 25, 2026); the twelve skills and their
+links were rechecked after the earlier upgrade. The pre-upgrade backup (database
+`.wrangler` and the launchd plist) is
+`~/Projects/open-seo-backups/2026-11-04b-pre-v0.1.24/`. The launchd service
+`com.sawbeck.open-seo-review` now starts `pnpm run dev --host 127.0.0.1`: without
+a host, Vite bound `::1` or `127.0.0.1` at random on each restart and broke the
+scheduler, which calls `127.0.0.1:3001`. 0.1.24 adds the read-only MCP tool
+`get_rank_history` (82 tools). Rollback: switch to `codex/openseo-v0.1.16`,
+restore the `.wrangler` and plist backups, then `launchctl bootout` and
+`bootstrap`. The installed local
 OpenSEO checkout supplies the skills and their supporting files; no plugin
 fork, copied skill pack or hosted migration is needed. A later approved local
 OpenSEO upgrade also changes these symlink targets' contents, so rediscover
