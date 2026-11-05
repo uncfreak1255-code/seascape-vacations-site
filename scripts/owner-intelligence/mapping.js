@@ -7,6 +7,7 @@ const FOLDER_ID = "1q1gsZ6UOxPtrnQvWB39d_evFp4NHc8LK";
 const DRIVE_ID = "0ALwEazFmxQSoUk9PVA";
 const TAB = "Owner pipeline";
 const { HEADERS, trackerHeaders } = require("./schema");
+const { sourceCategory } = require("../../netlify/functions/_owner-first-touch");
 
 function digest(value) {
   return createHash("sha256").update(JSON.stringify(value)).digest("hex");
@@ -115,7 +116,8 @@ function planImport({ contacts, rows, reviews = {}, now }) {
     ];
     const values = Object.fromEntries(HEADERS.map((header, index) => [header, row[index]]));
     values["Opportunity ID"] = recordId;
-    // Source and commercial lifecycle stay blank without their own evidence.
+    values["Came from"] = sourceCategory(c.firstTouch);
+    // Source uses only original first-touch evidence; commercial lifecycle stays blank.
     // Map by header so a legacy Came from cell is never shifted or overwritten.
     append.push(headers.map(header => values[header] ?? ""));
     ids.add(recordId);
