@@ -231,6 +231,38 @@ become no-ops. This avoids a checkpoint that could lose an inquiry after a crash
 | Ingested at / Source page / Source market | Import time separate from source time; private provenance |
 | Verification / Duplicate review / Retention status | Human-reviewed inquiry, ownership/fit unverified; exact-match duplicate screen; review only |
 
+### Original first-touch attribution
+
+Contact capture retains sanitized `firstTouch` evidence from the original
+`referrer`, `utm_source`, `utm_medium` and `utm_campaign` form fields. Referrers
+retain only an external hostname; credentials, path, query and fragment are
+discarded. UTM values retain bounded lowercase tokens, excluding contact-like
+values, controls and expressions. Missing historical fields stay missing;
+explicit blank first touches stay blank. A safe `sourceRejected` flag preserves
+the distinction when a nonempty source is discarded; it blocks referrer fallback
+without retaining the rejected value. Authenticated original Forms override
+later contact captures, including when original values are empty.
+
+On a newly accepted row, `Came from` maps recognized Google domains or the exact
+`google` source token to `Google`; recognized ChatGPT, Perplexity, Claude, Gemini
+and Copilot hosts/source tokens map to `AI answer`. Conflicting recognized
+evidence or an unsupported nonempty source token leaves the cell blank (Ops/HQ
+show Unknown). A form is an acquisition channel, not proof of marketing origin.
+Neither Outlook delivery nor a generic referral/UTM label establishes a Gretter
+referral, mailed letter or other origin. Existing manual categories are retained.
+This mapping does not verify ownership, qualification, causality or permission.
+
+Replay never fills or replaces existing source/operator cells. Historical
+attribution requires authenticated original evidence and a separately approved
+exact tracker update; no such update command or recurring writer is added here.
+If originals provide no supported origin, retain blank/Unknown and report zero
+historical changes. Preserve the original retention review and dispositions.
+
+Focused source-to-tracker proof (synthetic providers only):
+`node --test scripts/enforcement/owner-first-touch-intake.test.js
+scripts/enforcement/owner-intelligence-sync.test.js
+scripts/enforcement/owner-tracker-compat.test.js`.
+
 Repeated submission IDs never append again. Exact contact/property matches with
 different IDs are held. Different properties from one owner can remain separate
 opportunities. Fuzzy identities and old manually entered rows need review; this

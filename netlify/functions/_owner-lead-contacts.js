@@ -1,5 +1,6 @@
 const { connectLambda, getStore } = require("@netlify/blobs");
 const { OWNER_LEAD_FORM_NAME } = require("./_owner-lead-metrics");
+const { firstTouch } = require("./_owner-first-touch");
 
 // Full owner-lead CONTACT capture lives in its own restricted store, kept
 // strictly separate from the attribution metrics blob (owner_lead_metrics_v1.json)
@@ -57,6 +58,7 @@ function buildOwnerLeadContact(rawPayload) {
   const name = normalizeText(data.name);
   const email = normalizeText(data.email);
   const phone = normalizeText(data.phone);
+  const originalTouch = firstTouch(data);
 
   // No way to follow up on a lead with zero contact handles -> nothing to store.
   if (!name && !email && !phone) return null;
@@ -69,6 +71,7 @@ function buildOwnerLeadContact(rawPayload) {
     sourceTimestampVerified: Boolean(normalizeText(payload.created_at || payload.createdAt)),
     submitterAuthority: normalizeText(data.submitter_authority),
     proofLabel: normalizeText(data.proof_label),
+    ...(originalTouch === undefined ? {} : { firstTouch: originalTouch }),
     name,
     email,
     phone,

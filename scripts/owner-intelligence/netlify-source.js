@@ -52,6 +52,8 @@ async function readSource(env, fetchImpl, storeFactory = getStore) {
       formCount += 1;
       const contact = buildOwnerLeadContact({ ...s, form_name: OWNER_LEAD_FORM_NAME });
       if (contact) {
+        // Original Forms first-touch fields (including explicit blanks) win over
+        // a later/private capture. Never backfill attribution from that capture.
         // Recovery must not erase a proof marker retained in the private capture.
         contact.proofLabel = contact.proofLabel || contacts.get(contact.submissionId)?.proofLabel || "";
         contacts.set(contact.submissionId, contact);
