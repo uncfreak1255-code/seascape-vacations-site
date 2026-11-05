@@ -238,7 +238,9 @@ Contact capture retains sanitized `firstTouch` evidence from the original
 retain only an external hostname; credentials, path, query and fragment are
 discarded. UTM values retain bounded lowercase tokens, excluding contact-like
 values, controls and expressions. Missing historical fields stay missing;
-explicit blank first touches stay blank. Authenticated original Forms override
+explicit blank first touches stay blank. A safe `sourceRejected` flag preserves
+the distinction when a nonempty source is discarded; it blocks referrer fallback
+without retaining the rejected value. Authenticated original Forms override
 later contact captures, including when original values are empty.
 
 On a newly accepted row, `Came from` maps recognized Google domains or the exact

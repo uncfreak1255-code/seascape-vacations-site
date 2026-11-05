@@ -53,6 +53,16 @@ test('only supported original origins populate Came from; form, delivery and gen
   }
 });
 
+test('a rejected nonempty original source cannot fall back to a recognized referrer', () => {
+  for(const bad of ['website form','partner/newsletter','owner@example.invalid','google\nprivate',{source:'google'}]) {
+    const c=capture({...fields,referrer:'www.google.com',utm_source:bad});
+    const p=planImport({contacts:[c],rows:[[...HEADERS,'Came from']],reviews,now});
+    assert.equal(p.append[0].at(-1),'');
+    assert.equal(c.firstTouch.sourceRejected,true);
+    assert.equal(c.firstTouch.utm_source,'');
+  }
+});
+
 test('original Forms including a blank first touch override later blob attribution; source hash tracks changes',async()=>{
   const f=fakeProvider();
   const blank=await sourceFor(f,fields,{...fields,utm_source:'google'});
