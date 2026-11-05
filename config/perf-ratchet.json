@@ -1,35 +1,35 @@
 {
   "routes": {
     "/": {
-      "script": 77499,
+      "script": 80120,
       "stylesheet": 61256
     },
     "/properties/": {
-      "script": 96746,
+      "script": 99456,
       "stylesheet": 62430
     },
     "/property-management/": {
-      "script": 87689,
+      "script": 90399,
       "stylesheet": 56838
     },
     "/property-management/vacation-rental-licensing-florida/": {
-      "script": 57927,
+      "script": 60637,
       "stylesheet": 37109
     },
     "/property-management/vacation-rental-management-fees-florida/": {
-      "script": 57927,
+      "script": 60637,
       "stylesheet": 37109
     },
     "/property-management/vrbo-management-services-florida/": {
-      "script": 57927,
+      "script": 60637,
       "stylesheet": 37109
     },
     "/stays/anna-maria-island-beachfront-rentals/": {
-      "script": 55953,
+      "script": 58663,
       "stylesheet": 51742
     },
     "/stays/anna-maria-island-vacation-rentals/": {
-      "script": 55953,
+      "script": 58663,
       "stylesheet": 51742
     }
   },
@@ -1088,6 +1088,70 @@
       "from": 59934,
       "to": 61256,
       "reason": "Selected homepage B adds manual 44px Prev/Next controls, focus styling and larger supporting text; homepage CSS +1322 bytes, script -112 bytes, desktop hero -32678 bytes and mobile hero -3296 bytes. Existing Lighthouse LCP/CLS/TBT ceilings passed; no field-speed claim.",
+      "date": "2026-11-04"
+    },
+    {
+      "route": "/",
+      "metric": "script",
+      "from": 77499,
+      "to": 80120,
+      "reason": "PR875: measured inline code for sanitized, consume-once same-tab guide card tracking; Lighthouse timing ceilings passed in run41936425686 at4d8a172a. Byte baseline updated to measured repair cost; Lighthouse timing ceilings and ratchet logic unchanged.",
+      "date": "2026-11-04"
+    },
+    {
+      "route": "/properties/",
+      "metric": "script",
+      "from": 96746,
+      "to": 99456,
+      "reason": "PR875: measured inline code for sanitized, consume-once same-tab guide card tracking; Lighthouse timing ceilings passed in run41936425686 at4d8a172a. Byte baseline updated to measured repair cost; Lighthouse timing ceilings and ratchet logic unchanged.",
+      "date": "2026-11-04"
+    },
+    {
+      "route": "/property-management/",
+      "metric": "script",
+      "from": 87689,
+      "to": 90399,
+      "reason": "PR875: measured inline code for sanitized, consume-once same-tab guide card tracking; Lighthouse timing ceilings passed in run41936425686 at4d8a172a. Byte baseline updated to measured repair cost; Lighthouse timing ceilings and ratchet logic unchanged.",
+      "date": "2026-11-04"
+    },
+    {
+      "route": "/property-management/vacation-rental-management-fees-florida/",
+      "metric": "script",
+      "from": 57927,
+      "to": 60637,
+      "reason": "PR875: measured inline code for sanitized, consume-once same-tab guide card tracking; Lighthouse timing ceilings passed in run41936425686 at4d8a172a. Byte baseline updated to measured repair cost; Lighthouse timing ceilings and ratchet logic unchanged.",
+      "date": "2026-11-04"
+    },
+    {
+      "route": "/property-management/vacation-rental-licensing-florida/",
+      "metric": "script",
+      "from": 57927,
+      "to": 60637,
+      "reason": "PR875: measured inline code for sanitized, consume-once same-tab guide card tracking; Lighthouse timing ceilings passed in run41936425686 at4d8a172a. Byte baseline updated to measured repair cost; Lighthouse timing ceilings and ratchet logic unchanged.",
+      "date": "2026-11-04"
+    },
+    {
+      "route": "/property-management/vrbo-management-services-florida/",
+      "metric": "script",
+      "from": 57927,
+      "to": 60637,
+      "reason": "PR875: measured inline code for sanitized, consume-once same-tab guide card tracking; Lighthouse timing ceilings passed in run41936425686 at4d8a172a. Byte baseline updated to measured repair cost; Lighthouse timing ceilings and ratchet logic unchanged.",
+      "date": "2026-11-04"
+    },
+    {
+      "route": "/stays/anna-maria-island-vacation-rentals/",
+      "metric": "script",
+      "from": 55953,
+      "to": 58663,
+      "reason": "PR875: measured inline code for sanitized, consume-once same-tab guide card tracking; Lighthouse timing ceilings passed in run41936425686 at4d8a172a. Byte baseline updated to measured repair cost; Lighthouse timing ceilings and ratchet logic unchanged.",
+      "date": "2026-11-04"
+    },
+    {
+      "route": "/stays/anna-maria-island-beachfront-rentals/",
+      "metric": "script",
+      "from": 55953,
+      "to": 58663,
+      "reason": "PR875: measured inline code for sanitized, consume-once same-tab guide card tracking; Lighthouse timing ceilings passed in run41936425686 at4d8a172a. Byte baseline updated to measured repair cost; Lighthouse timing ceilings and ratchet logic unchanged.",
       "date": "2026-11-04"
     }
   ]
