@@ -289,6 +289,14 @@ module.exports = function(eleventyConfig) {
     return toHostawayCdn(url, width, 82);
   });
 
+  // Appends the sharp rendition (scripts/prepare-hd-property-photos.js) to a
+  // srcset when one exists for this photo; otherwise adds nothing.
+  const photoHd = new Map(require("./src/_data/photoHd.json").map((entry) => [entry.src, entry.width]));
+  eleventyConfig.addFilter("hdSrcset", function(src) {
+    const width = photoHd.get(src);
+    return width ? `, ${src.replace(/\.webp$/, "-hd.webp")} ${width}w` : "";
+  });
+
   eleventyConfig.addFilter("dateLabel", function(dateStr) {
     const value = String(dateStr || "").trim();
     if (!value) return "";
