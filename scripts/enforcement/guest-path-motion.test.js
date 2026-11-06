@@ -144,3 +144,12 @@ test("legacy buttons and review controls avoid transition:all and slow curves", 
 test("the unreferenced Hostaway mobile calendar partial is gone", () => {
   assert.equal(fs.existsSync(path.join(projectRoot, "src/_includes/partials/hostaway-mobile-calendar-fix.njk")), false);
 });
+
+test("home photo morph between pages plays in 400ms on the shared ease-out curve, motion-safe only", () => {
+  const css = read("src/css/guest.css");
+  const groups = [...css.matchAll(/::view-transition-group\(\*\)\{([^}]*)\}/g)];
+  assert.equal(groups.length, 1, "one rule times every shared-photo morph");
+  assert.equal(groups[0][1], "animation-duration:.4s;animation-timing-function:cubic-bezier(.23,1,.32,1)");
+  assert.match(css, /@media\(prefers-reduced-motion:no-preference\)\{@view-transition\{navigation:auto\}\s*::view-transition-group\(\*\)\{/, "the morph only runs when reduced motion is off");
+  assert.match(css, /@media\(prefers-reduced-motion:no-preference\)\{::view-transition-group\(root\)\{animation-duration:\.2s\}\}/, "the page crossfade stays at 200ms");
+});

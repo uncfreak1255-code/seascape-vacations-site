@@ -57,7 +57,7 @@ waterline:
       fast: "120ms"
       hover: "150ms"
       move: "200ms"
-      route: "550ms"
+      route: "400ms"
       drift: "650ms"
     easing:
       out: "cubic-bezier(.23,1,.32,1)"
