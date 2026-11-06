@@ -9,6 +9,7 @@ const repoRoot = path.resolve(__dirname, "..", "..");
 const siteDir = process.env.SEASCAPE_SITE_DIR
   ? path.resolve(process.env.SEASCAPE_SITE_DIR)
   : path.join(repoRoot, "_site");
+const briefsDir = path.join(repoRoot, "docs", "briefs");
 
 /*
  * Why this gate exists.
@@ -24,14 +25,20 @@ const siteDir = process.env.SEASCAPE_SITE_DIR
  * absorbed a rewritten page. The regression was found by hand a week later.
  *
  * So: a brief's required internal links are a contract on the built page,
- * not on the draft that first added them. This gate pins the brief's
- * "Required Internal Link Map" as a literal fixture and counts each link in
- * the built guide, so a later rewrite of a donor guide has to keep them or
- * change this file and say so in the PR.
+ * not on the draft that first added them. This gate reads the "Required
+ * Internal Link Map" of every brief whose lifecycle is `completed` (the
+ * scoped source change is finished, per docs/briefs/README.md -> Lifecycle)
+ * and counts each link in the built page. Marking a brief `completed` enrolls
+ * its map here with no other change. `active` briefs may still be adding
+ * their links, `reference` and `superseded` briefs record history, and an
+ * unlabeled brief has unknown lifecycle by the README's own rule, so none of
+ * those are enforced. The #654 map is also pinned below as a literal fixture,
+ * because it is the regression this file was written for.
  */
 
-// Literal copy of the brief's Required Internal Link Map (lines 24-27 of
+// Literal copy of the #654 brief's Required Internal Link Map (lines 24-27 of
 // docs/briefs/2026-10-owner-market-page-links.md). Keyed by the built route.
+const OWNER_MARKET_BRIEF = "2026-10-owner-market-page-links.md";
 const REQUIRED_LINK_MAP = {
   "/guides/bradenton-vs-sarasota/": [
     "/property-management/vacation-rental-management-bradenton/",
@@ -56,19 +63,35 @@ const REQUIRED_LINK_MAP = {
 // green even if the owner sentence itself is dropped; the three market-page
 // targets are linked only by the owner sentence on every donor guide today.
 
-const BRIEF_PATH = path.join(repoRoot, "docs", "briefs", "2026-10-owner-market-page-links.md");
+function briefLifecycle(markdown) {
+  const match = markdown.match(/^- lifecycle:\s*([a-z]+)/m);
+  return match ? match[1] : null;
+}
 
-// Parse the brief's "## Required Internal Link Map" bullets so the fixture
-// above cannot drift from the contract it pins without this test saying so.
+// Map a brief's source path to its built route. Returns null for a source
+// that is not a page (a data file, a layout), which the sweep skips.
+function routeFromSource(source) {
+  const trimmed = source.trim();
+  if (trimmed.startsWith("src/_")) return null;
+  const relative = trimmed.replace(/^src\//, "");
+  if (relative === "index.njk" || relative === "index.html") return "/";
+  const match = relative.match(/^(.+?)(?:\/index)?\.(?:njk|html|md)$/);
+  return match ? `/${match[1]}/` : null;
+}
+
+// Parse a brief's "## Required Internal Link Map" bullets
+// (`- src/<path>: /a/, /b/`) into { route: [targets] }.
 function linkMapFromBrief(markdown) {
   const section = markdown.split(/^## Required Internal Link Map\s*$/m)[1];
-  assert.ok(section, `[owner-market-link-map] ${BRIEF_PATH} has no "## Required Internal Link Map" section`);
+  if (!section) return null;
   const body = section.split(/^## /m)[0];
   const map = {};
   for (const line of body.split("\n")) {
-    const match = line.match(/^- src\/guides\/([a-z0-9-]+)\.html:\s*(.+)$/);
+    const match = line.match(/^- (src\/\S+?):\s*(.+)$/);
     if (!match) continue;
-    map[`/guides/${match[1]}/`] = match[2].split(",").map((href) => href.trim());
+    const route = routeFromSource(match[1]);
+    if (!route) continue;
+    map[route] = match[2].split(",").map((href) => href.trim()).filter(Boolean);
   }
   return map;
 }
@@ -87,24 +110,11 @@ function builtPagePath(route) {
   return path.join(siteDir, ...route.split("/").filter(Boolean), "index.html");
 }
 
-test("the fixture matches the brief's Required Internal Link Map", () => {
-  assert.deepEqual(
-    linkMapFromBrief(fs.readFileSync(BRIEF_PATH, "utf8")),
-    REQUIRED_LINK_MAP,
-    `REQUIRED_LINK_MAP in this file and the link map in ${BRIEF_PATH} differ; change both together.`,
-  );
-});
-
-test("each donor guide still carries the owner market links its brief requires", () => {
-  assert.ok(
-    fs.existsSync(siteDir),
-    `[owner-market-link-map] no build output at ${siteDir} — run \`npm run build\` first`,
-  );
-
+// Check one link map against the built site. Returns { missing, counts }.
+function checkLinkMap(map) {
   const missing = [];
   const counts = [];
-
-  for (const [route, targets] of Object.entries(REQUIRED_LINK_MAP)) {
+  for (const [route, targets] of Object.entries(map)) {
     const file = builtPagePath(route);
     if (!fs.existsSync(file)) {
       missing.push(`${route} was not built at ${file}`);
@@ -117,6 +127,38 @@ test("each donor guide still carries the owner market links its brief requires",
       if (count === 0) missing.push(`${route} has no anchor to ${target}`);
     }
   }
+  return { missing, counts };
+}
+
+function completedBriefsWithLinkMaps() {
+  return fs
+    .readdirSync(briefsDir)
+    .filter((name) => name.endsWith(".md"))
+    .sort()
+    .map((name) => {
+      const markdown = fs.readFileSync(path.join(briefsDir, name), "utf8");
+      return { name, lifecycle: briefLifecycle(markdown), map: linkMapFromBrief(markdown) };
+    })
+    .filter((brief) => brief.lifecycle === "completed" && brief.map && Object.keys(brief.map).length > 0);
+}
+
+test("the #654 fixture matches its brief's Required Internal Link Map", () => {
+  const markdown = fs.readFileSync(path.join(briefsDir, OWNER_MARKET_BRIEF), "utf8");
+  assert.equal(briefLifecycle(markdown), "completed", `${OWNER_MARKET_BRIEF} must stay a completed brief`);
+  assert.deepEqual(
+    linkMapFromBrief(markdown),
+    REQUIRED_LINK_MAP,
+    `REQUIRED_LINK_MAP in this file and the link map in docs/briefs/${OWNER_MARKET_BRIEF} differ; change both together.`,
+  );
+});
+
+test("each donor guide still carries the owner market links its brief requires", () => {
+  assert.ok(
+    fs.existsSync(siteDir),
+    `[owner-market-link-map] no build output at ${siteDir} — run \`npm run build\` first`,
+  );
+
+  const { missing, counts } = checkLinkMap(REQUIRED_LINK_MAP);
 
   assert.deepEqual(
     missing,
@@ -127,3 +169,32 @@ test("each donor guide still carries the owner market links its brief requires",
       "Link Map and REQUIRED_LINK_MAP in this file together and say so in the PR.",
   );
 });
+
+test("every completed brief's Required Internal Link Map still holds in the built site", () => {
+  assert.ok(
+    fs.existsSync(siteDir),
+    `[owner-market-link-map] no build output at ${siteDir} — run \`npm run build\` first`,
+  );
+
+  const briefs = completedBriefsWithLinkMaps();
+  assert.ok(
+    briefs.some((brief) => brief.name === OWNER_MARKET_BRIEF),
+    `the completed-brief sweep must include docs/briefs/${OWNER_MARKET_BRIEF}`,
+  );
+
+  const failures = [];
+  for (const brief of briefs) {
+    const { missing } = checkLinkMap(brief.map);
+    for (const line of missing) failures.push(`docs/briefs/${brief.name}: ${line}`);
+  }
+
+  assert.deepEqual(
+    failures,
+    [],
+    `A completed brief's link map regressed:\n  ${failures.join("\n  ")}\n\n` +
+      "Restore the link, or if it was intentionally removed, update that brief's " +
+      "Required Internal Link Map in the same PR and say so.",
+  );
+});
+
+module.exports = { linkMapFromBrief, routeFromSource, countAnchors, checkLinkMap, briefLifecycle };
