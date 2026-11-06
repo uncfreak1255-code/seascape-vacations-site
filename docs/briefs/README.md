@@ -35,6 +35,12 @@ Record `lifecycle` near the top when creating or reopening a brief:
 - `active`: the named approved scope has work remaining; record that scope.
 - `completed`: the scoped source change is finished; cite its merged PR or
   commit. Source completion alone does not prove deployment or business lift.
+  When the batch added internal links that must outlive later rewrites, add
+  `- link map: enforced` to the header: `scripts/enforcement/owner-market-link-map.test.js`
+  then counts every entry of the brief's Required Internal Link Map in the
+  built page, so list only built pages and hrefs exactly as rendered
+  (trailing slash included). A map of links a page already carried is an
+  inventory, not a contract; leave it unenforced.
 - `superseded`: another brief replaces the named scope; link the replacement.
 - `reference`: retained decisions or constraints consulted by later tasks.
 

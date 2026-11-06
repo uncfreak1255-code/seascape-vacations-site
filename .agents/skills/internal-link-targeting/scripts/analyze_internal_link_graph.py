@@ -260,6 +260,7 @@ def analyze(repo: Path) -> dict:
 
     return {
         "files_scanned": len(files),
+        "inbound_by_page": {page: inbound_by_page[page] for page in sorted(pages)},
         "excluded_pages": sorted(excluded_pages),
         "skipped_template_sources": skipped_template_sources,
         "families": family_rows,
