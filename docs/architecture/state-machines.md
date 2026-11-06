@@ -21,6 +21,7 @@ Red proof: R1–R3 observed 2 calls vs 1; A1 stale open=true vs false; A2 old
 checkout href; M1 stale is-open. Green: 1,395 unit tests; release gate; 16 focused
 browser checks. Full browser: 618 pass/38 skip; 6 build-interference failures
 passed on clean rerun. GitHub PR records final review/publication.
+CI 42283421788 ratchet: +410/+86 script bytes; performance ceilings unchanged.
 
 ## Confirmed findings, prioritized by impact
 
