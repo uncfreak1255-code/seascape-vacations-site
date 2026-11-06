@@ -130,6 +130,7 @@ Testing below still governs required checks.
 | Homepage scenes and native trip search | `src/assets/js/guest.js`, `src/index.njk` | `scripts/enforcement/ui-runtime.test.js`, `tests/visual/waterline-scenes.spec.js`, `tests/e2e/site-flows.e2e.ts` |
 | Header menu button state | `src/assets/js/guest-menu.js` | no unit test; covered only by `tests/visual/*.spec.js` |
 | Live-smoke assertions after visible-copy changes | `scripts/recovery/assert-live-smoke.js` | `scripts/enforcement/recovery-smoke.test.js` |
+| Owner market-page links inside the four donor guides (brief `docs/briefs/2026-10-owner-market-page-links.md`) | `src/guides/bradenton-vs-sarasota.html`, `src/guides/anna-maria-island-vs-siesta-key.html`, `src/guides/srq-airport-to-anna-maria-island.html`, `src/guides/best-time-visit-anna-maria-island.html` | `scripts/enforcement/owner-market-link-map.test.js` (reads `_site/`; build first) |
 
 ## Testing
 
@@ -141,7 +142,7 @@ lock, Hostaway cache sync, Eleventy, availability validation).
 - Fast gate for a brief: `npm run check:brief -- <brief.md>` lists every
   content-gate and Gate 0 problem at once, without a build
 - A single `node --test` run skips `pretest`; tests that read `_site/` (such
-  as `property-gallery` and `waterline-tokens`) fail in a fresh worktree until
+  as `property-gallery`, `waterline-tokens` and `owner-market-link-map`) fail in a fresh worktree until
   `npm run build` has run once
 - Full pre-PR gate: `npm run verify:release`. It builds once, then runs the
   full suite (including content lint) and release checks under one worktree
