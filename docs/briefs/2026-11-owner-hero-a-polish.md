@@ -55,3 +55,5 @@ This batch edits visible hero copy on a search-facing page (the lede loses one s
 ## Copy and review contract
 
 Hero copy is shortened to a label, the existing headline, one sentence taken from the existing lede, and one field. The visible label under the field repeats the existing field name "Listing link or street address". The owner statement upload moves to step 2 and the "Skip" link is removed; every form field, endpoint and tracking attribute is otherwise unchanged. Not in scope: any other page, DESIGN.md changes, or publication.
+
+- Visual baselines: only `property-management` (desktop and mobile) regenerated through update-visual-baselines.yml run 42294289104; all other routes passed unchanged in CI.
