@@ -3,6 +3,7 @@ const { LISTINGS, summarizeStay, validateRange } = require("../../scripts/bookin
 
 const CACHE_MS = 3 * 60 * 1000;
 let cache = null;
+let loadVersion = 0;
 
 function todayStamp(now = new Date()) {
   return new Intl.DateTimeFormat("en-CA", {
@@ -30,6 +31,7 @@ async function loadCalendars(fetchCalendar, now = new Date()) {
     return cache.calendars;
   }
 
+  const version = ++loadVersion;
   const loader = fetchCalendar || fetchBookingEngineCalendar;
   const entries = await Promise.all(
     LISTINGS.map(async (listing) => [listing.slug, await loader(listing.id, startingDate)])
@@ -42,7 +44,9 @@ async function loadCalendars(fetchCalendar, now = new Date()) {
   if (incomplete) {
     throw new Error("calendar-unavailable");
   }
-  cache = { startingDate, at: now.getTime(), calendars };
+  if (!cache || version > cache.version) {
+    cache = { startingDate, at: now.getTime(), calendars, version };
+  }
   return calendars;
 }
 

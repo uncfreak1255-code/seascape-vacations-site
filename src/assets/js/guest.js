@@ -180,7 +180,14 @@
     var raw=new URLSearchParams(location.search);
     if((raw.has('arrive')||raw.has('depart'))&&!trip.arrive){status.textContent='Those dates are incomplete, past or out of order. Choose new dates, or keep both blank.';if(form.dataset.bookingUrl)tripNotice=status.textContent;}
     function clearValidity(){depart.setCustomValidity('');depart.min=arrive.value||today;}
-    arrive.addEventListener('input',clearValidity);depart.addEventListener('input',clearValidity);
+    function datesEdited(){
+      clearValidity();
+      if(form.dataset.bookingUrl&&(arrive.value!==(trip.arrive||'')||depart.value!==(trip.depart||''))){
+        stayRequest+=1;
+        renderBooking('invalid','Choose a departure after arrival, or clear both dates to stay flexible.');
+      }
+    }
+    arrive.addEventListener('input',datesEdited);depart.addEventListener('input',datesEdited);
     form.addEventListener('submit',function(event){
       event.preventDefault();clearValidity();
       if(Boolean(arrive.value)!==Boolean(depart.value)||(arrive.value&&depart.value<=arrive.value)){depart.setCustomValidity('Choose a departure after arrival, or clear both dates.');depart.reportValidity();return;}
@@ -198,7 +205,7 @@
       }
       var current=new URL(location.href);['arrive','depart','checkin','checkout','guests'].forEach(function(key){current.searchParams.delete(key);});Object.keys(trip).forEach(function(key){current.searchParams.set(key,trip[key]);});history.replaceState(null,'',current.pathname+current.search+current.hash);
       // A press acts on the answer already on screen; a finished check never moves the guest by itself.
-      if(pressed!==[trip.arrive,trip.depart,trip.guests].join('|')){tripNotice='';syncTrip();}
+      if(bookingState==='invalid'||pressed!==[trip.arrive,trip.depart,trip.guests].join('|')){tripNotice='';syncTrip();}
       else if(bookingState==='open'||bookingState==='failed'){checkoutLink.click();return;}
       else if(bookingState==='booked'){location.assign(openHomes);return;}
       if(bookingState==='none'){status.textContent='Choose your arrival and departure dates.';arrive.focus();}
