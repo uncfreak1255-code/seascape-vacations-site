@@ -3,8 +3,7 @@
 Base: `fbe2ed5fb6cf6e2bb9d70fe6889c0b1d4139b4a0`, fresh origin/main on
 2026-11-06. Owner/sole merger: Codex `codex/state-machines`.
 Scope: browser and Netlify app; excludes build/SEO/deploy jobs and provider
-internals. Explicit=named state; implicit=DOM/storage/flags/promises. Tables
-group equivalent events; omitted events leave state unchanged or stay native.
+internals. Explicit=named state; implicit=DOM/storage/flags/promises. Tables group equivalent events; omitted events leave state unchanged or stay native.
 Source/synthetic proof is not production incidence. Handoff isn't reservation.
 
 ## Acceptance and worklog
@@ -19,8 +18,9 @@ support stops before sending. Preserve three attempts, ten records/batch, existi
 15-minute schedule and response contracts. Derived from request/existing behavior.
 
 Red proof: R1–R3 observed 2 calls vs 1; A1 stale open=true vs false; A2 old
-checkout href; M1 stale is-open. Commands below. Current: 44 capture tests and 18
-initial browser tests pass; final release/browser/review pending.
+checkout href; M1 stale is-open. Green: 1,395 unit tests; release gate; 16 focused
+browser checks. Full browser: 618 pass/38 skip; 6 build-interference failures
+passed on clean rerun. GitHub PR records final review/publication.
 
 ## Confirmed findings, prioritized by impact
 
@@ -33,7 +33,7 @@ initial browser tests pass; final release/browser/review pending.
 | A2 | P2 old-date handoff | Date input precedes change; old checkout href persists | #881: invalidate input; explicit-submit recovery |
 | M1 | P3 inconsistent menu | Open frames run after Escape; hidden plus is-open | [#882](https://github.com/uncfreak1255-code/seascape-vacations-site/issues/882): invalidate frames |
 
-All repaired on branch; final checks/review/publication pending. No live claim.
+All six repaired with regressions. Source proof only; no live claim.
 
 ## 1. Trip memory and handoff — implicit
 
@@ -213,7 +213,7 @@ isn't inquiry creation; source fields are sanitized, no raw referrer URL.
 | blocked storage | page load | use current page touch |
 
 Proof: owner-first-touch/intake, owner-form-steps, TesterArmy owner recovery.
-Independent PR#877 characterization tests untouched; empty touch is preserved.
+Empty first-touch is preserved.
 
 ## 8. Owner intake/delivery/rate reservation — explicit
 
@@ -310,8 +310,7 @@ Paths are under src/assets/js unless stated otherwise.
 | Legacy site-header-script.njk/homepage.js/email-popup.njk | collapsed/expanded; popup not-ready/eligible/open/dismissed/suppressed | resize collapses; delay/exit shows if target exists; dismiss records cooldown |
 
 Proof: control-motion/guest-path-motion unit; state-transitions/waterline-scenes/
-open-house-journey/design-floors and media browser suites. Legacy consumers are
-retained; removal needs separate consumer proof.
+open-house-journey/design-floors and media browser suites. Legacy consumers retained.
 
 ## Verification and limits
 
