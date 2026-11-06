@@ -1,5 +1,5 @@
 const { test, expect } = require('@playwright/test');
-const { registerStableNetwork } = require('./test-helpers');
+const { openTripSheet, registerStableNetwork } = require('./test-helpers');
 
 test('simple controls replace the strip and retain keyboard focus while browsing', async ({ page }) => {
   await registerStableNetwork(page);
@@ -41,6 +41,7 @@ test('a slow photo does not take focus back from the trip form', async ({ page }
   await next.press('ArrowRight');
   await next.focus();
   await next.dispatchEvent('click',{detail:1});
+  await openTripSheet(page);
   const arrival=page.getByLabel('Arrival',{exact:true});
   await arrival.focus();
   release();

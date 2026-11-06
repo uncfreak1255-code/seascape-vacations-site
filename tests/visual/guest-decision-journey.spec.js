@@ -1,6 +1,6 @@
 const { test, expect } = require("@playwright/test");
 const AxeBuilder = require("@axe-core/playwright").default;
-const { registerStableNetwork } = require("./test-helpers");
+const { closeTripSheet, openTripSheet, registerStableNetwork } = require("./test-helpers");
 
 const itinerary = "arrive=2026-11-07&depart=2026-11-14&guests=8";
 async function visit(page, query = itinerary) {
@@ -62,12 +62,15 @@ test("area and group matching preserve the selected trip into details and checko
 
 test("editing fields requires applying the trip; global booking links update too", async ({ page }) => {
   await visit(page);
+  await openTripSheet(page);
   await page.getByLabel("Arrival", {exact:true}).fill("2026-12-05");
   await page.getByLabel("Departure", {exact:true}).fill("2026-12-12");
   await page.getByLabel("Guests", {exact:true}).selectOption("14");
+  await closeTripSheet(page);
   await page.getByRole("button", {name:"Waterfront",exact:true}).click();
   expect(trip(await page.locator(".catalog-check-dates").first().getAttribute("href")).start).toBe("2026-11-07");
-  await page.getByRole("button", {name:"Find my home",exact:true}).click();
+  await openTripSheet(page);
+  await page.getByRole('button',{name:'Find my home',exact:true}).and(page.locator('[type=submit]')).click();
   await expect(page.locator("#catalog-empty")).toBeVisible();
   await page.getByRole("button", {name:"Show all areas"}).click();
   await expect(page.locator(".catalog-card:visible")).toHaveCount(1);
@@ -82,6 +85,7 @@ test("editing fields requires applying the trip; global booking links update too
     expect(planned.searchParams.get("depart")).toBe("2026-12-12");
     expect(planned.searchParams.get("guests")).toBe("14");
   }
+  await openTripSheet(page);
   await page.getByRole("button", {name:"My dates are flexible"}).click();
   expect(trip(await page.locator(".catalog-check-dates").first().getAttribute("href"))).toEqual({start:null,end:null,guests:"14"});
 });
@@ -90,10 +94,11 @@ test("SAVE50 campaign survives catalog and property trip edits", async ({ page }
   await registerStableNetwork(page);
   await page.clock.setFixedTime(new Date("2026-09-04T16:00:00Z"));
   await page.goto("/?visual-test=1&promo=save50&utm_source=mailchimp", {waitUntil:"networkidle"});
+  await openTripSheet(page);
   await page.getByLabel("Arrival", {exact:true}).fill("2026-12-05");
   await page.getByLabel("Departure", {exact:true}).fill("2026-12-12");
   await page.getByLabel("Guests", {exact:true}).selectOption("8");
-  await page.getByRole("button", {name:"Find my home",exact:true}).click();
+  await page.getByRole('button',{name:'Find my home',exact:true}).and(page.locator('[type=submit]')).click();
   await expect(page).toHaveURL(/\/properties\//);
   var catalogUrl = new URL(page.url());
   expect(catalogUrl.searchParams.get("promo")).toBe("save50");
@@ -152,7 +157,7 @@ test("comparison is capped, keyboard dismissible and shareable without campaign 
   await expect(page.locator("#trip-status")).toContainText("three homes");
   await expect(page.locator("#shortlist-count")).toHaveText("3 homes selected");
   await page.locator("#open-comparison").click();
-  await expect(page.locator("dialog")).toBeVisible();
+  await expect(page.locator("#catalog-comparison")).toBeVisible();
   await expect(page.locator('thead [data-compare-column]:visible')).toHaveCount(3);
   await page.locator("#share-comparison").click();
   const shared = await page.evaluate(()=>navigator.clipboard.readText());
@@ -160,10 +165,10 @@ test("comparison is capped, keyboard dismissible and shareable without campaign 
   expect([...sharedUrl.searchParams.keys()].sort()).toEqual(["arrive","compare","depart","guests"]);
   expect(sharedUrl.hash).toBe("#compare");
   await page.keyboard.press("Escape");
-  await expect(page.locator("dialog")).not.toBeVisible();
+  await expect(page.locator("#catalog-comparison")).not.toBeVisible();
   await expect(page.locator("#open-comparison")).toBeFocused();
   await page.goto(shared, {waitUntil:"networkidle"});
-  await expect(page.locator("dialog")).toBeVisible();
+  await expect(page.locator("#catalog-comparison")).toBeVisible();
   await expect(page.locator("#comparison-trip")).toContainText("8 guests");
   await expect(page.locator('thead [data-compare-column]:visible')).toHaveCount(3);
 });
@@ -180,11 +185,13 @@ test("clipboard denial gives a usable manual copy link", async ({ page }) => {
 test("a shared shortlist does not cover the trip form", async ({ page }) => {
   await visit(page,itinerary+"&compare=dockside-dreams,the-oasis");
   await expect(page.locator("#shortlist-count")).toHaveText("2 homes selected");
-  await page.evaluate(() => {
-    const form = document.getElementById("catalog-trip").getBoundingClientRect();
+  // On phones the trip control is the "Dates and guests" pill; the form itself is in the sheet.
+  const control = await page.locator(".ts-pill").first().isVisible() ? ".ts-pill" : "#catalog-trip";
+  await page.evaluate(selector => {
+    const form = document.querySelector(selector).getBoundingClientRect();
     scrollTo(0, form.bottom + scrollY - innerHeight);
-  });
-  const form = await page.locator("#catalog-trip").boundingBox();
+  }, control);
+  const form = await page.locator(control).first().boundingBox();
   const tray = await page.locator("#catalog-shortlist").boundingBox();
   expect(form.y + form.height).toBeLessThanOrEqual(page.viewportSize().height + 1);
   expect(tray.y).toBeGreaterThanOrEqual(form.y + form.height);
@@ -192,9 +199,12 @@ test("a shared shortlist does not cover the trip form", async ({ page }) => {
 
 test("trip controls fit the viewport and the comparison meets automated accessibility checks", async ({ page }, testInfo) => {
   await visit(page);
-  const button = await page.getByRole("button",{name:"Find my home",exact:true}).boundingBox();
+  // On phones the form sits in the sheet, so check it with the sheet open.
+  await openTripSheet(page);
+  const button = await page.getByRole('button',{name:'Find my home',exact:true}).and(page.locator('[type=submit]')).boundingBox();
   expect(button.y + button.height).toBeLessThanOrEqual(page.viewportSize().height);
   expect(await page.evaluate(()=>document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  await closeTripSheet(page);
   await page.screenshot({path:testInfo.outputPath("catalog-first-screen.png")});
   await page.getByRole("button", {name:"Compare Dockside Dreams",exact:true}).click();
   await page.getByRole("button", {name:"Compare The Oasis",exact:true}).click();

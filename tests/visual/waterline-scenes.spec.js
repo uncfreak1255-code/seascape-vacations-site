@@ -1,5 +1,5 @@
 const { test, expect } = require('@playwright/test');
-const { registerStableNetwork } = require('./test-helpers');
+const { closeTripSheet, openTripSheet, registerStableNetwork } = require('./test-helpers');
 const {selectScene} = require('./home-scene-helpers');
 const homes = require('../../src/_data/properties-fallback.json');
 const trip = 'arrive=2026-11-07&depart=2026-11-14&guests=8';
@@ -84,9 +84,11 @@ test('without JavaScript all eight scene choices are ordinary property links',as
 
 test('editing the homepage trip carries it into a home even before search is submitted',async({page})=>{
   await visit(page);
+  await openTripSheet(page);
   await page.getByLabel('Arrival',{exact:true}).fill('2026-12-05');
   await page.getByLabel('Departure',{exact:true}).fill('2026-12-12');
   await page.getByLabel('Guests',{exact:true}).selectOption('6');
+  await closeTripSheet(page);
   await selectScene(page,'dockside-dreams');
   await expect(page.locator('.g-scene:visible')).toHaveAttribute('data-scene','dockside-dreams');
   await page.locator('.g-scene:visible a').click();

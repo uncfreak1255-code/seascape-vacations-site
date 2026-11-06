@@ -51,12 +51,14 @@
     dialog.addEventListener('click', function (event) { if (event.target === dialog) dialog.close(); });
     document.addEventListener('trip-applied', function () { if (dialog.open) dialog.close(); });
     window.addEventListener('pageshow', function (event) { if (event.persisted && dialog.open) dialog.close(); });
-    // A link to the trip form (the catalog header button) opens the sheet on phones.
-    if (source.id) document.addEventListener('click', function (event) {
-      var link = event.target.closest && event.target.closest('a[href="#' + source.id + '"]');
-      if (!link || !phone.matches) return;
+    // A link to the trip form or one of its fields (the catalog header button, a card asking for the group size) opens the sheet on phones.
+    document.addEventListener('click', function (event) {
+      var link = event.target.closest && event.target.closest('a[href^="#"]');
+      var target = link && link.getAttribute('href').length > 1 && document.getElementById(link.getAttribute('href').slice(1));
+      if (!target || !phone.matches || (target !== source && !source.contains(target))) return;
       event.preventDefault();
       open();
+      if (target !== source) target.focus();
     });
     var action = bar && bar.querySelector('[data-trip-bar-action]');
     if (action) action.addEventListener('click', function () {
@@ -96,7 +98,7 @@
       requestAnimationFrame(function () {
         ticking = false;
         var index = Math.min(total - 1, Math.max(0, Math.round(strip.scrollLeft / strip.clientWidth)));
-        count.textContent = (index + 1) + ' / ' + total;
+        count.setAttribute('data-n', index + 1);
         dots.forEach(function (dot, i) { dot.className = i === index ? 'on' : ''; });
       });
     }, { passive: true });

@@ -1,5 +1,5 @@
 const { test, expect } = require('@playwright/test');
-const { registerStableNetwork } = require('./test-helpers');
+const { closeTripSheet, openTripSheet, registerStableNetwork } = require('./test-helpers');
 const trip = 'arrive=2026-12-05&depart=2026-12-12&guests=8';
 
 async function visit(page, route) {
@@ -24,7 +24,8 @@ test('returning home restores dates and a non-default group before searching aga
   await expect(page.locator('#home-trip-arrive')).toHaveValue('2026-12-05');
   await expect(page.locator('#home-trip-depart')).toHaveValue('2026-12-12');
   await expect(page.locator('#home-trip-guests')).toHaveValue('6');
-  await page.getByRole('button', { name: 'Find my home', exact: true }).click();
+  await openTripSheet(page);
+  await page.getByRole('button',{name:'Find my home',exact:true}).and(page.locator('[type=submit]')).click();
   await expect(page).toHaveURL(/\/properties\//);
   const url = new URL(page.url());
   expect(url.searchParams.get('arrive')).toBe('2026-12-05');
@@ -34,10 +35,11 @@ test('returning home restores dates and a non-default group before searching aga
 
 test('existing homepage search carries the trip through catalog and property checkout', async ({ page }) => {
   await visit(page, '/');
+  await openTripSheet(page);
   await page.getByLabel('Arrival', { exact: true }).fill('2026-12-05');
   await page.getByLabel('Departure', { exact: true }).fill('2026-12-12');
   await page.getByLabel('Guests', { exact: true }).selectOption('8');
-  await page.getByRole('button', { name: 'Find my home', exact: true }).click();
+  await page.getByRole('button',{name:'Find my home',exact:true}).and(page.locator('[type=submit]')).click();
   await expect(page).toHaveURL(/\/properties\//);
   expectTrip(page.url());
   const detail = page.locator('a[aria-label="View Dockside Dreams details"]').first();
@@ -142,6 +144,7 @@ test('a remembered trip follows the guest to pages opened without one', async ({
 
 test('flexible dates on the catalog are forgotten on the next page', async ({ page }) => {
   await visit(page, '/properties/?' + trip);
+  await openTripSheet(page);
   await page.locator('#clear-dates').click();
   await open(page, '/');
   await expect(page.locator('#home-trip-arrive')).toHaveValue('');
@@ -163,12 +166,15 @@ test('a shared shortlist or a rejected trip link is not given the remembered dat
 
 test('no catalog link keeps dates the guest changed or cleared', async ({ page }) => {
   await visit(page, '/properties/?' + trip);
+  await openTripSheet(page);
   await page.locator('#trip-depart').fill('2026-12-10');
-  await page.getByRole('button', { name: 'Find my home', exact: true }).click();
+  await page.getByRole('button',{name:'Find my home',exact:true}).and(page.locator('[type=submit]')).click();
   const withOldDeparture = await page.locator('a[href]').evaluateAll(nodes => nodes.map(n => n.href).filter(href => href.includes('2026-12-12')));
   expect(withOldDeparture).toEqual([]);
 
+  await openTripSheet(page);
   await page.locator('#clear-dates').click();
+  await closeTripSheet(page);
   const withDates = await page.locator('a[href]').evaluateAll(nodes => nodes.filter(n => n.origin === location.origin && new URL(n.href).searchParams.has('arrive')).map(n => n.href));
   expect(withDates).toEqual([]);
   // The breadcrumb is a real way back to the homepage; it must not bring the cleared dates with it.

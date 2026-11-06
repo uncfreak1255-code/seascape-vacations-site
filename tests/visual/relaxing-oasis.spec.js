@@ -54,7 +54,7 @@ test('Relaxing Oasis can be discovered on the homepage and filtered and compared
   const postcard = page.locator('.g-postcard').filter({ hasText: 'Relaxing Oasis' });
   await expect(postcard).toHaveCount(1);
   await expect(postcard.locator('a')).toHaveAttribute('href', '/properties/relaxing-oasis/');
-  await expect(postcard.locator('img')).toHaveAttribute('src', '/images/homes/relaxing-oasis/01.webp');
+  await expect(postcard.locator('img[data-property-photo]').first()).toHaveAttribute('src', '/images/homes/relaxing-oasis/01.webp');
   await page.getByRole('button', { name: 'Prev featured home', exact: true }).click();
   await expect(page.locator('#scene-relaxing-oasis')).toBeVisible();
   await expect.poll(() => page.locator('#scene-relaxing-oasis img').evaluate(i => i.complete && i.naturalWidth > 0)).toBe(true);
@@ -64,9 +64,9 @@ test('Relaxing Oasis can be discovered on the homepage and filtered and compared
   await expect(card).toContainText('5 bedrooms');
   await expect(card).toContainText('4 baths');
   await expect(card).toContainText('Up to 11 guests');
-  await expect(card.locator('img')).toHaveAttribute('src', '/images/homes/relaxing-oasis/01.webp');
+  await expect(card.locator('img[data-property-photo]')).toHaveAttribute('src', '/images/homes/relaxing-oasis/01.webp');
   await card.scrollIntoViewIfNeeded();
-  await expect.poll(() => card.locator('img').evaluate(i => i.complete && i.naturalWidth > 0)).toBe(true);
+  await expect.poll(() => card.locator('img[data-property-photo]').evaluate(i => i.complete && i.naturalWidth > 0)).toBe(true);
   await expect(card.getByRole('link', { name: 'Check dates for Relaxing Oasis', exact: true })).toHaveAttribute('href', /\/listings\/607228(?:\?|$)/);
   for (const filter of ['waterfront', 'pet-friendly', 'sarasota']) {
     await page.locator(`[data-filter="${filter}"]`).click();

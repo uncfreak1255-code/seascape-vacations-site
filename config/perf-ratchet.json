@@ -1,12 +1,12 @@
 {
   "routes": {
     "/": {
-      "script": 86484,
-      "stylesheet": 69609
+      "script": 86726,
+      "stylesheet": 69764
     },
     "/properties/": {
-      "script": 106403,
-      "stylesheet": 70783
+      "script": 106921,
+      "stylesheet": 70938
     },
     "/property-management/": {
       "script": 90809,
@@ -1280,6 +1280,38 @@
       "from": 62532,
       "to": 70783,
       "reason": "Phone booking flow: new trip-sheet.js and trip-sheet.css loaded on / and /properties/ (sheet, sticky bar, photo strips, chips)",
+      "date": "2026-11-06"
+    },
+    {
+      "route": "/",
+      "metric": "script",
+      "from": 86484,
+      "to": 86726,
+      "reason": "Phone booking flow (PR #890): trip-sheet.js now opens the sheet for links to any trip-form field (card 'Book these dates' asking for group size) and drives the photo-strip count from a data attribute so the catalog card link name matches its label; trip-sheet.css adds the generated count and strip focus ring; /properties/ also carries the catalog-trip-text.js extraction",
+      "date": "2026-11-06"
+    },
+    {
+      "route": "/",
+      "metric": "stylesheet",
+      "from": 69609,
+      "to": 69764,
+      "reason": "Phone booking flow (PR #890): trip-sheet.js now opens the sheet for links to any trip-form field (card 'Book these dates' asking for group size) and drives the photo-strip count from a data attribute so the catalog card link name matches its label; trip-sheet.css adds the generated count and strip focus ring; /properties/ also carries the catalog-trip-text.js extraction",
+      "date": "2026-11-06"
+    },
+    {
+      "route": "/properties/",
+      "metric": "script",
+      "from": 106403,
+      "to": 106921,
+      "reason": "Phone booking flow (PR #890): trip-sheet.js now opens the sheet for links to any trip-form field (card 'Book these dates' asking for group size) and drives the photo-strip count from a data attribute so the catalog card link name matches its label; trip-sheet.css adds the generated count and strip focus ring; /properties/ also carries the catalog-trip-text.js extraction",
+      "date": "2026-11-06"
+    },
+    {
+      "route": "/properties/",
+      "metric": "stylesheet",
+      "from": 70783,
+      "to": 70938,
+      "reason": "Phone booking flow (PR #890): trip-sheet.js now opens the sheet for links to any trip-form field (card 'Book these dates' asking for group size) and drives the photo-strip count from a data attribute so the catalog card link name matches its label; trip-sheet.css adds the generated count and strip focus ring; /properties/ also carries the catalog-trip-text.js extraction",
       "date": "2026-11-06"
     }
   ]
