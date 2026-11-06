@@ -347,7 +347,7 @@
 .g-next-home h2{font-size:36px}
 .g-photo-dialog .g-photo-grid img{height:auto}}
 @media(prefers-reduced-motion:no-preference){@view-transition{navigation:auto}
-::view-transition-group(*){animation-duration:.55s;animation-timing-function:cubic-bezier(.2,.7,.2,1)}
+::view-transition-group(*){animation-duration:.4s;animation-timing-function:cubic-bezier(.23,1,.32,1)}
 [data-transition-home="the-oasis"]{view-transition-name:home-oasis}
 [data-transition-home="dockside-dreams"]{view-transition-name:home-dockside}
 [data-transition-home="sarasota-luxe"]{view-transition-name:home-sarasota}
