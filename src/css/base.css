@@ -87,7 +87,7 @@ a {
     font-family: inherit;
     border: none;
     cursor: pointer;
-    transition: all .35s cubic-bezier(.22,.9,.28,1);
+    transition: background-color .2s ease, color .2s ease, border-color .2s ease, box-shadow .2s ease, transform .2s cubic-bezier(.23,1,.32,1);
     white-space: nowrap;
     position: relative;
     text-decoration: none;
@@ -104,7 +104,7 @@ a {
     border: 1px solid rgba(201, 169, 98, .45);
     border-radius: 50px;
     pointer-events: none;
-    transition: border-color .35s;
+    transition: border-color .2s ease;
 }
 .btn-brand:hover::after { border-color: var(--gold, #C9A962); }
 
@@ -119,7 +119,7 @@ a {
     letter-spacing: .2em;
 }
 .btn-link:hover { background: transparent; }
-.btn-link .arr { transition: transform .3s; display: inline-block; }
+.btn-link .arr { transition: transform .2s cubic-bezier(.23,1,.32,1); display: inline-block; }
 .btn-link:hover .arr { transform: translateX(4px); }
 
 /* Rare-use — gold foil (ONE per page MAX) */

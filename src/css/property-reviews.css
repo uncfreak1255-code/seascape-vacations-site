@@ -9,7 +9,7 @@
 #reviews .review-track blockquote p{font-family:'Instrument Serif',serif;font-size:clamp(28px,3vw,38px);font-weight:400;line-height:1.24;letter-spacing:-.02em;margin:0}
 #reviews .review-track figcaption{margin-top:28px;padding-top:20px;font-size:13px;color:#52676A}
 .review-controls{display:grid;grid-template-columns:48px 1fr 48px;align-items:center;gap:12px;margin:8px 0 30px}
-.review-controls button{width:48px;height:48px;display:grid;place-items:center;border:1px solid #CAD4CF;border-radius:50%;background:transparent;color:#173D42;padding:0;cursor:pointer;transition:background-color 240ms cubic-bezier(.22,1,.36,1),color 240ms cubic-bezier(.22,1,.36,1),transform 240ms cubic-bezier(.22,1,.36,1)}
+.review-controls button{width:48px;height:48px;display:grid;place-items:center;border:1px solid #CAD4CF;border-radius:50%;background:transparent;color:#173D42;padding:0;cursor:pointer;transition:background-color var(--g-hover-duration,200ms) var(--g-ease-out,cubic-bezier(.23,1,.32,1)),color var(--g-hover-duration,200ms) var(--g-ease-out,cubic-bezier(.23,1,.32,1)),transform var(--g-press-duration,120ms) var(--g-ease-out,cubic-bezier(.23,1,.32,1))}
 .review-controls button:not(:disabled):active{transform:scale(.96)}
 @media(prefers-reduced-motion:reduce){.review-controls button{transition:none}.review-controls button:not(:disabled):active{transform:none}}
 .review-controls button svg{width:20px;height:20px}

@@ -92,3 +92,42 @@ test("phone menu Escape stays instant and click can wait for exit", () => {
   assert.match(js, /classList\.add\('is-open'\)/);
   assert.doesNotMatch(js, /menuPanel\.hidden=!open/);
 });
+
+// UI motion stays under 300ms with an ease-out curve (instant-feedback rule).
+function animateDurations(js) {
+  return [...js.matchAll(/\.animate\(\[[^\]]*\],\{duration:(\d+)/g)].map((match) => Number(match[1]));
+}
+
+test("animateDurations reads every Web Animations duration", () => {
+  assert.deepEqual(animateDurations("a.animate([{o:1}],{duration:650,easing:'x'});b.animate([{o:0}],{duration:250})"), [650, 250]);
+  assert.deepEqual(animateDurations(""), []);
+});
+
+test("homepage scene switch animates in 300ms or less with the shared ease-out curve", () => {
+  const js = read("src/assets/js/home-scenes.js");
+  const durations = animateDurations(js);
+  assert.equal(durations.length, 2, "photo and caption animations");
+  for (const duration of durations) assert.ok(duration <= 300, `scene animation ${duration}ms exceeds 300ms`);
+  assert.doesNotMatch(js, /easing:'ease-out'/);
+  assert.match(js, /cubic-bezier\(\.23,1,\.32,1\)/);
+});
+
+test("area-guide mobile booking bar enters at 250ms and leaves at 150ms on ease-out", () => {
+  const partial = read("src/_includes/partials/area-guide-mobile-cta-guard.njk");
+  assert.doesNotMatch(partial, /0\.28s ease/);
+  assert.match(partial, /transform var\(--g-overlay-out,150ms\) var\(--g-ease-out,cubic-bezier\(\.23,1,\.32,1\)\)/);
+  assert.match(partial, /transform var\(--g-overlay-in,250ms\) var\(--g-ease-out,cubic-bezier\(\.23,1,\.32,1\)\)/);
+});
+
+test("legacy buttons and review controls avoid transition:all and slow curves", () => {
+  const base = read("src/css/base.css");
+  assert.doesNotMatch(base, /transition:\s*all/);
+  assert.doesNotMatch(base, /\.35s/);
+  const reviews = read("src/css/property-reviews.css");
+  assert.doesNotMatch(reviews, /240ms/);
+  assert.match(reviews, /var\(--g-hover-duration,200ms\)/);
+});
+
+test("the unreferenced Hostaway mobile calendar partial is gone", () => {
+  assert.equal(fs.existsSync(path.join(projectRoot, "src/_includes/partials/hostaway-mobile-calendar-fix.njk")), false);
+});

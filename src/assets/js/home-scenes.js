@@ -33,8 +33,8 @@
       if(panel.getAnimations)panel.getAnimations({subtree:true}).forEach(function(animation){animation.cancel();});
       if(animateScene&&!reducedMotion.matches&&panel.animate){
         var picture=panel.querySelector('.g-scene-photo');
-        if(picture)picture.animate([{opacity:.45,transform:'scale(1.035)'},{opacity:1,transform:'scale(1)'}],{duration:650,easing:'cubic-bezier(.2,.7,.2,1)'});
-        panel.querySelector('.g-scene-caption').animate([{opacity:0,transform:'translateY(10px)'},{opacity:1,transform:'translateY(0)'}],{duration:450,easing:'ease-out'});
+        if(picture)picture.animate([{opacity:.45,transform:'scale(1.035)'},{opacity:1,transform:'scale(1)'}],{duration:300,easing:'cubic-bezier(.23,1,.32,1)'});
+        panel.querySelector('.g-scene-caption').animate([{opacity:0,transform:'translateY(10px)'},{opacity:1,transform:'translateY(0)'}],{duration:250,easing:'cubic-bezier(.23,1,.32,1)'});
       }
     }
     sceneRoot.querySelectorAll('[data-scene-step]').forEach(function(button){
