@@ -1,0 +1,30 @@
+---
+layout: layouts/guest.njk
+permalink: "/internal/booking-1/"
+pageTitle: "Booking-first prototype 1: search sheet"
+pageDescription: "Noindex prototype of a booking-first phone homepage for Sawyer to review."
+pageStylesheet: "/css/booking-prototype.css"
+seoIndexable: false
+eleventyExcludeFromCollections: true
+---
+{% set homeCountWord = properties | length | numberWord %}
+<div class="bk bk-1">
+  <p class="bk-reason bk-reason-top"><strong>Book direct</strong><span>See the full price before you pay.</span></p>
+  <section class="bk-search" aria-labelledby="bk1-heading">
+    <p class="g-label">Bradenton &amp; Sarasota</p>
+    <h1 id="bk1-heading">Your people.<br><em>Your place.</em></h1>
+    <div class="bk-sheet">
+      {% set tripFormId = 'bk1-trip' %}{% include "partials/guest-trip-form.njk" %}
+    </div>
+  </section>
+  <section class="bk-list" aria-labelledby="bk1-list-heading">
+    <h2 id="bk1-list-heading">{{ homeCountWord | capitalize }} homes. Every one has a private pool.</h2>
+    <div class="bk-stack">{% for home in properties %}{% set photo = home.photography.photos[0] %}
+      <a class="bk-card" href="{{ home.pageUrl }}" data-trip-link>
+        <img src="{{ photo.src | replace('.webp', '-800.webp') }}" srcset="{{ photo.src | replace('.webp', '-800.webp') }} 800w, {{ photo.src }} 1400w" sizes="(min-width:700px) 50vw, 100vw" width="{{ photo.width }}" height="{{ photo.height }}" alt="{{ photo.alt }}"{% if not loop.first %} loading="lazy"{% endif %}>
+        <span class="bk-card-body"><span class="bk-card-name">{{ home.cardName or home.name }}</span><span class="bk-card-meta">{{ home.city }} · Sleeps {{ home.guests }} · {{ home.bedrooms }} bedrooms · {{ home.bathrooms }} baths</span></span>
+      </a>{% endfor %}
+    </div>
+    <p class="bk-all"><a class="g-inline-link" href="/properties/" data-trip-link>Compare all the homes <span aria-hidden="true">→</span></a></p>
+  </section>
+</div>

@@ -1,0 +1,36 @@
+---
+layout: layouts/guest.njk
+permalink: "/internal/booking-3/"
+pageTitle: "Booking-first prototype 3: photo hero and rail"
+pageDescription: "Noindex prototype of a booking-first phone homepage for Sawyer to review."
+pageStylesheet: "/css/booking-prototype.css"
+seoIndexable: false
+eleventyExcludeFromCollections: true
+---
+{% set homeCountWord = properties | length | numberWord %}
+{% set oasis = properties | propertyBySlug("the-oasis") %}
+<div class="bk bk-3">
+  <section class="bk-hero" aria-labelledby="bk3-heading">
+    <picture><source media="(max-width:700px)" srcset="/images/homes/the-oasis/hero-clarity-mobile.webp"><img class="bk-hero-photo" src="/images/homes/the-oasis/hero-clarity.webp" width="1400" height="934" fetchpriority="high" alt="{{ oasis.photography.photos[0].alt }}"></picture>
+    <div class="bk-hero-copy">
+      <p class="g-label">Book direct · Bradenton &amp; Sarasota</p>
+      <h1 id="bk3-heading">Your people.<br><em>Your place.</em></h1>
+    </div>
+    <div class="bk-sheet">
+      {% set tripFormId = 'bk3-trip' %}{% include "partials/guest-trip-form.njk" %}
+    </div>
+    <p class="bk-hero-caption">{{ oasis.cardName or oasis.name }} · {{ oasis.city }}</p>
+  </section>
+  <section class="bk-rail-section" aria-labelledby="bk3-rail-heading">
+    <div class="bk-rail-head"><h2 id="bk3-rail-heading">{{ homeCountWord | capitalize }} homes, each with a private pool</h2><a class="g-inline-link" href="/properties/" data-trip-link>Compare <span aria-hidden="true">→</span></a></div>
+    <ul class="bk-rail">{% for home in properties %}{% set photo = home.photography.photos[0] %}
+      <li><a class="bk-tile" href="{{ home.pageUrl }}" data-trip-link>
+        <span class="bk-tile-photo"><img src="{{ photo.src | replace('.webp', '-800.webp') }}" width="{{ photo.width }}" height="{{ photo.height }}" alt="{{ photo.alt }}" loading="lazy"><span class="bk-badge">Book direct</span></span>
+        <span class="bk-card-name">{{ home.cardName or home.name }}</span>
+        <span class="bk-card-meta">{{ home.city }} · Sleeps {{ home.guests }}</span>
+        <span class="bk-card-meta">{{ home.bedrooms }} bedrooms · {{ home.bathrooms }} baths</span>
+      </a></li>{% endfor %}
+    </ul>
+    <p class="bk-reason bk-reason-foot"><strong>Why book direct</strong><span>You deal with the local team that runs these homes, and you see the full price before you pay.</span></p>
+  </section>
+</div>
