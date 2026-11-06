@@ -1,0 +1,3 @@
+{# Owner hero photograph: the first real photo of a named Seascape home, passed in as `heroHome`. #}
+{% set heroPhoto = heroHome.photography.photos[0] if heroHome and heroHome.photography else null %}
+{% if heroPhoto %}<img class="g-owner-hero-photo" src="{{ heroPhoto.src }}" srcset="{{ heroPhoto.src | replace('.webp', '-800.webp') }} 800w, {{ heroPhoto.src }} 1400w" sizes="100vw" width="{{ heroPhoto.width }}" height="{{ heroPhoto.height }}" alt="{{ heroPhoto.alt }}" fetchpriority="high" decoding="async">{% endif %}

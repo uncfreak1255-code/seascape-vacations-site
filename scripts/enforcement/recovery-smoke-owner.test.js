@@ -23,7 +23,7 @@ test("property-management smoke follows the current Waterline owner offer hub", 
       <a href="#owner-cta" data-placement="local-alternative">Request your 48-hour revenue review</a>
       <h1>Know what your home earned <em>and what needs attention.</em></h1>
       <p>Eight homes. One local team.</p>
-      <a href="#owner-cta">Request your 48-hour revenue review</a>
+      <a href="#owner-cta">Get my review</a>
       <form name="owner-revenue-teardown" method="POST"></form>
       <input type="checkbox" name="submitter_authority" value="owner_or_authorized_representative" required>
       I confirm I am the property owner or an authorized representative for this property.
@@ -54,7 +54,7 @@ test("property-management smoke accepts the live minified single-quoted form nam
       <a href="#owner-cta" data-placement="local-alternative">Request your 48-hour revenue review</a>
       <h1>Know what your home earned <em>and what needs attention.</em></h1>
       <p>Eight homes. One local team.</p>
-      <a href="#owner-cta">Request your 48-hour revenue review</a>
+      <a href="#owner-cta">Get my review</a>
       <form name='owner-revenue-teardown' method='POST'></form>
       <input type="checkbox" name="submitter_authority" value="owner_or_authorized_representative" required>
       I confirm I am the property owner or an authorized representative for this property.
@@ -90,7 +90,7 @@ test("property-management smoke rejects Five homes on a eight-row catalog (#705)
       <a href="#owner-cta" data-placement="local-alternative">Request your 48-hour revenue review</a>
       <h1>Know what your home earned <em>and what needs attention.</em></h1>
       <p>Eight homes. One local team.</p>
-      <a href="#owner-cta">Request your 48-hour revenue review</a>
+      <a href="#owner-cta">Get my review</a>
       <form name="owner-revenue-teardown" method="POST"></form>
       <input type="checkbox" name="submitter_authority" value="owner_or_authorized_representative" required>
       I confirm I am the property owner or an authorized representative for this property.
@@ -136,7 +136,7 @@ test("property-management smoke rejects a non-number-word home count", () => {
       <a href="#owner-cta" data-placement="local-alternative">Request your 48-hour revenue review</a>
       <h1>Know what your home earned <em>and what needs attention.</em></h1>
           <p>Many homes. One local team.</p>
-          <a href="#owner-cta">Request your 48-hour revenue review</a>
+          <a href="#owner-cta">Get my review</a>
           <form name="owner-revenue-teardown" method="POST"></form>
           <input type="checkbox" name="submitter_authority" value="owner_or_authorized_representative" required>
           I confirm I am the property owner or an authorized representative for this property.
@@ -165,7 +165,7 @@ test("property-management smoke fails when the owner form name is missing", () =
       <a href="#owner-cta" data-placement="local-alternative">Request your 48-hour revenue review</a>
       <h1>Know what your home earned <em>and what needs attention.</em></h1>
       <p>Eight homes. One local team.</p>
-          <a href="#owner-cta">Request your 48-hour revenue review</a>
+          <a href="#owner-cta">Get my review</a>
           <h2>What we do for your home</h2>
           <h2>Why a eight-home operator</h2>
           <h2>The homes we manage</h2>

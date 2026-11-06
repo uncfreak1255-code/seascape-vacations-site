@@ -65,19 +65,16 @@ headExtra: |
 ---
 {% set homeCountWord = properties | length | numberWord %}
 {% set bandHome = properties | propertyBySlug("dockside-dreams") %}
+{% set heroHome = properties | propertyBySlug("the-oasis") %}
 <div class="g-owner" data-owner-page>
 
   <section class="g-owner-hero" aria-labelledby="owner-title">
+    {% include "partials/owner-hero-photo.njk" %}
     <div class="g-wrap">
       <div class="g-owner-hero-copy">
         <p class="g-label">Property management &middot; Bradenton &amp; Sarasota</p>
         <h1 id="owner-title">Know what your home earned <em>and what needs attention.</em></h1>
-        <p class="g-owner-lede">{{ homeCountWord | capitalize }} homes. One local team. We handle listings, pricing, guest care and cleaning for your pool home. You receive monthly payouts and updates on what needs attention before you have to ask.</p>
-        <div class="g-owner-actions">
-          <a class="g-button" href="#owner-cta" data-track-event="owner_primary_cta_click" data-page-slug="property-management">Request your 48-hour revenue review</a>
-
-        </div>
-        <p class="g-small g-owner-hero-note">Send a listing link or an address, plus a sentence on what feels off.</p>
+        <p class="g-owner-lede">{{ homeCountWord | capitalize }} homes. One local team. We handle listings, pricing, guest care and cleaning for your pool home.</p>
       </div>
 
       <aside class="g-owner-review" id="owner-cta" aria-labelledby="owner-review-title">
@@ -109,11 +106,9 @@ headExtra: |
           <div class="g-owner-panel is-active" data-form-step="0">
             <h3>Which listing or property?</h3>
             <p>Paste the Airbnb or Vrbo link, or type the street address.</p>
-            <label class="g-owner-field"><span>Listing link or street address</span><input type="text" name="property_address" autocomplete="street-address" placeholder="airbnb.com/h/your-listing or 4250 Palm Ave, Sarasota"></label>
-            <label class="g-owner-field g-owner-file"><span>Owner statement, optional</span><input type="file" name="owner_statement" accept=".pdf,.csv,.xls,.xlsx,.png,.jpg,.jpeg,.webp"><small>PDF, spreadsheet or screenshot.</small></label>
-            <div class="g-owner-panel-actions">
-              <button class="g-button" type="button" data-form-next>Continue</button>
-              <button class="g-owner-text-button" type="button" data-form-next>Skip, I would rather describe it</button>
+            <div class="g-owner-search">
+              <label class="g-owner-field"><span>Listing link or street address</span><input type="text" name="property_address" autocomplete="street-address" placeholder="airbnb.com/h/your-listing"></label>
+              <button class="g-button" type="button" data-form-next>Get my review</button>
             </div>
           </div>
 
@@ -129,6 +124,7 @@ headExtra: |
               <button class="g-owner-choice" type="button" aria-pressed="false" data-concern="Current manager concerns">Current manager concerns</button>
             </div>
             <label class="g-owner-field"><span>One line in your own words</span><textarea name="what_feels_off" rows="3" placeholder="The payout feels light and the statements are hard to follow." data-owner-concerns-mirror data-owner-context-field></textarea></label>
+            <label class="g-owner-field g-owner-file"><span>Owner statement, optional</span><input type="file" name="owner_statement" accept=".pdf,.csv,.xls,.xlsx,.png,.jpg,.jpeg,.webp"><small>PDF, spreadsheet or screenshot.</small></label>
             <div class="g-owner-panel-actions">
               <button class="g-button" type="button" data-form-next>Continue</button>
               <button class="g-owner-text-button" type="button" data-form-back>Back</button>
@@ -172,6 +168,7 @@ headExtra: |
         </form>
         <p class="g-owner-review-foot">If something is missing we will ask for it rather than fill in the blanks. </p>
       </aside>
+      {% if heroHome %}<p class="g-owner-hero-caption">{{ heroHome.name }} &middot; managed by Seascape</p>{% endif %}
     </div>
   </section>
 

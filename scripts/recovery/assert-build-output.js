@@ -492,8 +492,8 @@ if (phase === "remediation") {
   );
   expectMatches(
     "_site/property-management/index.html",
-    /<a\b(?=[^>]*href="#owner-cta")(?=[^>]*class="g-button")(?=[^>]*data-track-event="owner_primary_cta_click")[^>]*>Request your 48-hour revenue review<\/a>/,
-    "property management hero CTA"
+    /<button class="g-button" type="button" data-form-next>Get my review<\/button>/,
+    "property management hero field button"
   );
   expectMatches(
     "_site/property-management/index.html",
