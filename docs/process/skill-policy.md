@@ -189,8 +189,8 @@ Inspecting it rather than trusting the directory listing:
   one-letter naming collision with `.agents/`.
 - 1 was real content: `seo-audit/SKILL.md`, 8453 bytes, unique. Larger than
   both the 3375-byte copy already in `_disabled-skills-2026-04-28/` and the
-  global `~/.codex/skills/seo-audit`, so it was preserved at
-  `_disabled-skills-2026-04-28/seo-audit-full-2026-03/` rather than deleted.
+  global `~/.codex/skills/seo-audit`, so it was archived as
+  `seo-audit-full-2026-03/` (archive deleted 2026-11-06; in git at fbe2ed5f).
 
 Counting tools disagreed and both were wrong until checked: `git ls-files`
 reported 49 files (symlinks are tracked), while `find -type f` reported 1 (the
