@@ -92,3 +92,55 @@ test("phone menu Escape stays instant and click can wait for exit", () => {
   assert.match(js, /classList\.add\('is-open'\)/);
   assert.doesNotMatch(js, /menuPanel\.hidden=!open/);
 });
+
+// UI motion stays under 300ms with an ease-out curve (instant-feedback rule).
+function animateDurations(js) {
+  return [...js.matchAll(/\.animate\(\[[^\]]*\],\{([^}]*)\}/g)].map((match) => {
+    const duration = /duration:(\d+)/.exec(match[1]);
+    const easing = /easing:'([^']*)'/.exec(match[1]);
+    return { duration: duration ? Number(duration[1]) : Infinity, easing: easing ? easing[1] : "" };
+  });
+}
+
+test("animateDurations reads every Web Animations duration", () => {
+  assert.deepEqual(animateDurations("a.animate([{o:1}],{duration:650,easing:'x'});b.animate([{o:0}],{easing:'y',duration:250})"), [{ duration: 650, easing: "x" }, { duration: 250, easing: "y" }]);
+  assert.deepEqual(animateDurations("a.animate([{o:1}],{easing:'x'})"), [{ duration: Infinity, easing: "x" }]);
+  assert.deepEqual(animateDurations(""), []);
+});
+
+test("homepage scene switch animates in 300ms or less with the shared ease-out curve", () => {
+  const js = read("src/assets/js/home-scenes.js");
+  const durations = animateDurations(js);
+  assert.equal(durations.length, 2, "photo and caption animations");
+  for (const { duration, easing } of durations) {
+    assert.ok(duration <= 300, `scene animation ${duration}ms exceeds 300ms`);
+    assert.equal(easing, "cubic-bezier(.23,1,.32,1)", "every scene animation uses the shared ease-out curve");
+  }
+});
+
+test("area-guide mobile booking bar enters at 250ms and leaves at 150ms on ease-out", () => {
+  const partial = read("src/_includes/partials/area-guide-mobile-cta-guard.njk");
+  assert.doesNotMatch(partial, /0\.28s ease/);
+  const curve = "var(--g-ease-out,cubic-bezier(.23,1,.32,1))";
+  const hidden = /\.mobile-cta-bar \{[^}]*transition: ([^;]*);/.exec(partial);
+  const shown = /mobile-cta-visible \.mobile-cta-bar \{[^}]*transition: ([^;]*);/.exec(partial);
+  assert.ok(hidden && shown, "both bar states declare a transition");
+  assert.equal(hidden[1], `transform var(--g-overlay-out,150ms) ${curve}, opacity var(--g-overlay-out,150ms) ${curve}, visibility 0s linear var(--g-overlay-out,150ms)`);
+  assert.equal(shown[1], `transform var(--g-overlay-in,250ms) ${curve}, opacity var(--g-overlay-in,250ms) ${curve}`);
+});
+
+test("legacy buttons and review controls avoid transition:all and slow curves", () => {
+  const base = read("src/css/base.css");
+  assert.doesNotMatch(base, /transition:\s*all/);
+  for (const match of base.matchAll(/transition:([^;]*);/g)) {
+    for (const seconds of match[1].matchAll(/(\d*\.?\d+)s\b/g)) assert.ok(Number(seconds[1]) <= 0.3, `base.css transition ${match[1]} exceeds 300ms`);
+  }
+  const reviews = read("src/css/property-reviews.css");
+  assert.doesNotMatch(reviews, /240ms/);
+  assert.match(reviews, /background-color var\(--g-hover-duration,200ms\) var\(--g-ease-out,cubic-bezier\(\.23,1,\.32,1\)\)/);
+  assert.match(reviews, /transform var\(--g-press-duration,120ms\) var\(--g-ease-out,cubic-bezier\(\.23,1,\.32,1\)\)/);
+});
+
+test("the unreferenced Hostaway mobile calendar partial is gone", () => {
+  assert.equal(fs.existsSync(path.join(projectRoot, "src/_includes/partials/hostaway-mobile-calendar-fix.njk")), false);
+});

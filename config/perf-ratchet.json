@@ -1,16 +1,16 @@
 {
   "routes": {
     "/": {
-      "script": 80120,
-      "stylesheet": 61256
+      "script": 80138,
+      "stylesheet": 61358
     },
     "/properties/": {
       "script": 99456,
-      "stylesheet": 62430
+      "stylesheet": 62532
     },
     "/property-management/": {
       "script": 90399,
-      "stylesheet": 56838
+      "stylesheet": 56940
     },
     "/property-management/vacation-rental-licensing-florida/": {
       "script": 60637,
@@ -1153,6 +1153,38 @@
       "to": 58663,
       "reason": "PR875: measured inline code for sanitized, consume-once same-tab guide card tracking; Lighthouse timing ceilings passed in run41936425686 at4d8a172a. Byte baseline updated to measured repair cost; Lighthouse timing ceilings and ratchet logic unchanged.",
       "date": "2026-11-04"
+    },
+    {
+      "route": "/",
+      "metric": "script",
+      "from": 80120,
+      "to": 80138,
+      "reason": "PR 879: named-property transitions replace transition:all on legacy .btn (+102 B CSS) and shared ease-out curve string in home-scenes.js (+18 B JS)",
+      "date": "2026-11-06"
+    },
+    {
+      "route": "/",
+      "metric": "stylesheet",
+      "from": 61256,
+      "to": 61358,
+      "reason": "PR 879: named-property transitions replace transition:all on legacy .btn (+102 B CSS) and shared ease-out curve string in home-scenes.js (+18 B JS)",
+      "date": "2026-11-06"
+    },
+    {
+      "route": "/properties/",
+      "metric": "stylesheet",
+      "from": 62430,
+      "to": 62532,
+      "reason": "PR 879: named-property transitions replace transition:all on legacy .btn (+102 B CSS) and shared ease-out curve string in home-scenes.js (+18 B JS)",
+      "date": "2026-11-06"
+    },
+    {
+      "route": "/property-management/",
+      "metric": "stylesheet",
+      "from": 56838,
+      "to": 56940,
+      "reason": "PR 879: named-property transitions replace transition:all on legacy .btn (+102 B CSS) and shared ease-out curve string in home-scenes.js (+18 B JS)",
+      "date": "2026-11-06"
     }
   ]
 }

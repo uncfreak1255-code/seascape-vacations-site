@@ -12,7 +12,7 @@
       opacity: 0;
       visibility: hidden;
       pointer-events: none;
-      transition: transform 0.28s ease, opacity 0.28s ease, visibility 0s linear 0.28s;
+      transition: transform var(--g-overlay-out,150ms) var(--g-ease-out,cubic-bezier(.23,1,.32,1)), opacity var(--g-overlay-out,150ms) var(--g-ease-out,cubic-bezier(.23,1,.32,1)), visibility 0s linear var(--g-overlay-out,150ms);
     }
 
     body.mobile-cta-visible .mobile-cta-bar {
@@ -20,7 +20,7 @@
       opacity: 1;
       visibility: visible;
       pointer-events: auto;
-      transition: transform 0.28s ease, opacity 0.28s ease;
+      transition: transform var(--g-overlay-in,250ms) var(--g-ease-out,cubic-bezier(.23,1,.32,1)), opacity var(--g-overlay-in,250ms) var(--g-ease-out,cubic-bezier(.23,1,.32,1));
     }
 
     body {
