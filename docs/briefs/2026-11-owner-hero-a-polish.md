@@ -1,7 +1,7 @@
-# Owner hero Option A polish (prototype)
+# Owner hero Option A polish
 
-- lifecycle: draft
-- approved scope: Sawyer approved a polished Option A owner hero on 2026-11-06 for review only; this is a deploy-preview prototype, not an approved publication. It must not merge without his selection.
+- lifecycle: selected
+- approved scope: Sawyer approved a polished Option A owner hero on 2026-11-06 and selected it from the deploy preview the same day ("I like this one"). Merging publishes it, so the merge itself still needs his explicit go-ahead.
 - persona: Bradenton or Sarasota pool-home owner who wants to know what their home earned and what needs attention
 - primary keyword: property management Bradenton Sarasota
 - secondary keywords: vacation rental management Sarasota, revenue review
@@ -16,7 +16,7 @@
 - guardrail event: owner_primary_cta_click now fires from the hero "Get my review" button with the same attributes the hero link had (data-page-slug property-management). The only consumer found, seascape-analytics collectors/ga4_funnel_events.py, counts it by event name with no placement grain, so the count stays comparable.
 - entry criteria: Sawyer picks this direction from the deploy preview
 - readback window: none until selected and published
-- decision rule: do not merge; Sawyer selects or rejects from the preview
+- decision rule: merge only on Sawyer's explicit go-ahead after he has seen the preview
 - Source files changed in this batch:
   - `src/property-management/index.njk`
   - `src/_includes/partials/owner-hero-photo.njk`
@@ -41,7 +41,7 @@ This batch edits visible hero copy on a search-facing page (the lede loses one s
 | Search fit | /property-management/ stays the owner money destination for this query family; this batch changes presentation only and keeps the existing headline, H1 and offer |
 | Local/GBP proof | N/A for this batch: no business-profile, category or NAP change is made; the page keeps its existing phone and address markup |
 | AEO/readback note | N/A for this batch: no AI-answer readback was run and no AEO claim is made |
-| Recommendation | improve: ship the presentation prototype only if Sawyer selects it; make no title, meta, schema or claim change |
+| Recommendation | improve: ship the presentation change Sawyer selected; make no title, meta, schema or claim change |
 | Attack status | completed |
 | Query variants inspected | "vacation rental property management Bradenton"; "property management Bradenton Sarasota vacation rental owners revenue review" |
 | SERP source | WebSearch results observed 2026-11-06 |
@@ -50,10 +50,10 @@ This batch edits visible hero copy on a search-facing page (the lede loses one s
 | Design/format strategy | Match the photographic hero competitors use, using a real managed home with its real name in the caption; answer the long-form gap with one field and one button |
 | Seascape proof available | The Oasis photograph and name from src/_data/properties-fallback.json; offer from seascape-hub/context/owner-offer.md sections 4 and 7 |
 | Tools/plugins used | WebSearch, WebFetch |
-| Decision and reason | Proceed as a draft prototype for Sawyer's selection: presentation change only, no new search-facing claim, no ranking claim |
+| Decision and reason | Proceed with the option Sawyer selected: presentation change only, no new search-facing claim, no ranking claim |
 
 ## Copy and review contract
 
-Hero copy is shortened to a label, the existing headline, one sentence taken from the existing lede, and one field. The visible label under the field repeats the existing field name "Listing link or street address". The owner statement upload moves to step 2 and the "Skip" link is removed; every form field, endpoint and tracking attribute is otherwise unchanged. Not in scope: any other page, DESIGN.md changes, or publication.
+Hero copy is shortened to a label, the existing headline, one sentence taken from the existing lede, and one field. The visible label under the field repeats the existing field name "Listing link or street address". The owner statement upload moves to step 2 and the "Skip, I would rather describe it" button is removed. The hero button now reads "Get my review" and keeps the owner_primary_cta_click event. Endpoints and the other form fields are unchanged. Not in scope: any other page, DESIGN.md changes, or publication.
 
 - Visual baselines: only `property-management` (desktop and mobile) regenerated through update-visual-baselines.yml run 42294289104; all other routes passed unchanged in CI.
