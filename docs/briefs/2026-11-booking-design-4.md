@@ -27,6 +27,10 @@
 
 Draft the copy: "Dates and guests", "Your trip", "Find my home" (the existing button label), "All stays / Waterfront / Near AMI / Sarasota" (the existing catalog filter labels), "Available for your dates", "1 / 5". Remove internal wording: none reaches the page. Check voice and specificity: short functional labels, no marketing claims. The owner section and all owner links are untouched.
 
+## Proof notes
+
+Phone visual baselines for `home` and `properties-catalog` were regenerated on 2026-11-06 by the update-visual-baselines workflow (run 42313667334) because the sheet, pill, photo strips and chips change those pages on phones. Specs open the sheet through `openTripSheet` in `tests/visual/test-helpers.js`.
+
 ## Gate 0 Search And Attack Receipt
 
 This batch edits visible controls on two search-facing routes (homepage and /properties/). No title, meta, schema, heading, redirect or sitemap change is made. Evidence gathered 2026-11-06 with one WebSearch; no DataForSEO, GSC or GA4 pull was run.
