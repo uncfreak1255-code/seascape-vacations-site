@@ -43,8 +43,7 @@ not add or enable any schedule.
   Analytics decision. It follows this map and `docs/process/openseo.md`; Claude
   runs the same loop through the search-operator role and the steps above.
 - Codex's global `ai-seo` skill (`~/.codex/skills/ai-seo`) is generic
-  marketing background. It is disabled in this repo
-  (`.agents/_disabled-skills-2026-04-28/ai-seo`). For Seascape AEO, the
+  marketing background and is not a local skill in this repo. For Seascape AEO, the
   `docs/process/aeo-citability-rubric.md` and `content-quality-rubric` govern.
 - Both harnesses use only the local `openseo` MCP server for Seascape, never
   the hosted OpenSEO connector.

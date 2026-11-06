@@ -25,14 +25,9 @@ function assertDocumentReference(documentPath, reference, targetPath) {
 test("current skill guidance links to the owning directories instead of caching inventories or counts", () => {
   const countedSkills = /\b(?:zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|\d+)\s+(?:active\s+)?(?:local\s+|site-specific\s+)?skills\b/i;
   const claudeReadme = read(".claude/skills/README.md");
-  const disabledReadme = read(".agents/_disabled-skills-2026-04-28/README.md");
-  const disabledCurrentSection = disabledReadme.split("Archived snapshot moved here")[0];
   const pluginReadme = read("plugins/seascape-seo-os/README.md");
 
   assert.doesNotMatch(claudeReadme, /^\s*- `[^`]+`\s*$/m);
-  assert.doesNotMatch(disabledCurrentSection, /^\s*- `[^`]+`\s*$/m);
-  assert.match(disabledReadme, /mirror only the current directories under `\.agents\/skills\/`/);
-  assert.doesNotMatch(disabledReadme, /mirror only these approved local skills/i);
   assert.doesNotMatch(pluginReadme, countedSkills);
 });
 
