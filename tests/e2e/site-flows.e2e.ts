@@ -290,7 +290,7 @@ test("owner revenue review validates authority and posts only to the intercepted
   const form = browser.locator('form[name="owner-revenue-teardown"]');
   await expect(browser.locator('form[name="owner-revenue-teardown"] [data-form-step="0"]')).toBeVisible();
   await form.getByLabel("Listing link or street address").fill("4250 Palm Ave, Sarasota");
-  await form.getByRole("button", "Continue").tap();
+  await form.getByRole("button", "Get my review").tap();
   await form.getByRole("button", "Booking-site fees feel heavy").tap();
   await form.getByLabel("One line in your own words").fill("The current payout looks lower than expected.");
   await form.getByRole("button", "Continue").tap();
@@ -385,7 +385,7 @@ test("phone-sized visitors can open navigation and reach the owner review", asyn
 async function completeOwnerReview(browser: Browser) {
   const form = browser.locator('form[name="owner-revenue-teardown"]');
   await form.getByLabel("Listing link or street address").fill("4250 Palm Ave, Sarasota");
-  await form.getByRole("button", "Continue").tap();
+  await form.getByRole("button", "Get my review").tap();
   await form.getByRole("button", "Booking-site fees feel heavy").tap();
   await form.getByLabel("One line in your own words").fill("The current payout looks lower than expected.");
   await form.getByRole("button", "Continue").tap();

@@ -2,21 +2,38 @@
    via the layout's pageStylesheet slot; rules that collide with `.guest-site p` or
    `.guest-site button` carry the .guest-site prefix to outrank them; tokens come from guest.css. Every control keeps the 44px floor,
    no text under 12px, rules not shadows, ink primary and citron on the ink bar. */
-.g-owner-hero{padding:44px 0 64px;border-bottom:1px solid var(--g-rule)}
-.g-owner-hero .g-wrap{display:grid;grid-template-columns:minmax(0,1fr) 440px;gap:64px;align-items:start}
-.g-owner-hero h1{max-width:12ch;margin:0}
-.g-owner-hero .g-label{margin-bottom:18px}
-.guest-site .g-owner-lede{font-size:17px;line-height:1.6;max-width:56ch;margin:26px 0 30px}
+/* Hero: dusk photo, one field. A real managed home under an ink scrim, paper type,
+   and a single search-bar field. Steps 2-4 open as a paper card beneath it. */
+.g-owner-hero{position:relative;isolation:isolate;display:grid;align-items:end;min-height:min(760px,calc(100svh - 92px));padding:56px 0 32px;color:var(--g-paper);background:var(--g-ink);border-bottom:1px solid var(--g-rule);overflow:hidden}
+.g-owner-hero-photo{position:absolute;inset:0;z-index:-2;width:100%;height:100%;object-fit:cover}
+.g-owner-hero::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(to top,color-mix(in srgb,var(--g-ink) 92%,transparent) 0%,color-mix(in srgb,var(--g-ink) 78%,transparent) 55%,color-mix(in srgb,var(--g-ink) 45%,transparent) 100%)}
+.g-owner-hero-copy,.g-owner-review{max-width:720px}
+.guest-site .g-owner-hero h1{max-width:14ch;margin:0;color:var(--g-paper);font-size:clamp(44px,5vw,72px)}
+.guest-site .g-owner-hero h1 em{color:var(--g-citron)}
+.g-owner-hero .g-label{margin-bottom:16px;color:var(--g-rule)}
+.guest-site .g-owner-hero .g-owner-lede{font-size:17px;line-height:1.55;max-width:48ch;margin:24px 0 32px;color:var(--g-paper)}
+.guest-site .g-owner-hero-caption{margin:32px 0 0;font-size:12px;letter-spacing:.13em;text-transform:uppercase;color:var(--g-rule)}
 .g-owner-actions{display:flex;flex-wrap:wrap;gap:12px 28px;align-items:center}
 .g-owner-phone{display:inline-flex;align-items:center;min-height:44px;font-size:14px;font-weight:500;text-decoration:underline;text-underline-offset:5px}
 .g-owner-phone:hover{color:var(--g-accent)}
-.guest-site .g-owner-hero-note{margin:20px 0 0}
-/* Review panel: the conversion. It sits beside the hero copy on desktop and
-   directly under it on a phone, so the first question is one tap away. */
-.g-owner-review{background:var(--g-soft);border:1px solid var(--g-rule);padding:24px;scroll-margin-top:24px}
-.g-owner-review .g-label{margin-bottom:10px}
-.g-owner-review h2{font-size:32px;margin:0 0 6px}
-.guest-site .g-owner-review-intro{font-size:13px;color:var(--g-muted);margin:0 0 18px}
+/* Review panel: one search-bar field on first view; the other three questions
+   open as a paper card after Continue. */
+.g-owner-review{scroll-margin-top:24px}
+/* Two separate controls on a 12px gap: a visible label, a paper field and a citron button.
+   Not one glued bar. Field text is 16px so iOS does not zoom the page on focus. */
+.g-owner-review>.g-label,.g-owner-review h2,.g-owner-review-intro,.g-owner-review:has([data-form-step="0"].is-active) :is(.g-owner-panel[data-form-step="0"]>h3,.g-owner-panel[data-form-step="0"]>p,.g-owner-steps){position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.g-owner-search{display:flex;align-items:flex-end;gap:12px}
+.g-owner-search .g-owner-field{flex:1 1 auto;margin:0}
+.guest-site .g-owner-search .g-owner-field span{margin:0 0 8px;font-size:13px;letter-spacing:.04em;color:var(--g-paper)}
+.guest-site .g-owner-search .g-owner-field input{height:56px;min-height:56px;padding:0 16px;border:1px solid var(--g-paper);border-radius:4px;background:var(--g-paper);color:var(--g-ink);font-size:16px}
+.guest-site .g-owner-search .g-owner-field input::placeholder{color:var(--g-muted);opacity:1}
+.guest-site .g-owner-search .g-owner-field input:focus-visible{outline:3px solid var(--g-citron);outline-offset:3px}
+.guest-site .g-owner-search .g-button{flex:0 0 auto;min-height:56px;padding:0 28px;border-radius:4px;background:var(--g-citron);color:var(--g-ink);border-color:var(--g-citron);touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.guest-site .g-owner-search .g-button:focus-visible{outline:3px solid var(--g-paper);outline-offset:3px}
+@media(hover:hover) and (pointer:fine){.guest-site .g-owner-search .g-button:hover{background:var(--g-paper);border-color:var(--g-paper);color:var(--g-ink)}}
+.g-owner-review:has([data-form-step="0"].is-active) .g-owner-review-foot{display:none}
+.g-owner-review:not(:has([data-form-step="0"].is-active)) .g-owner-form{background:var(--g-paper);color:var(--g-ink);border:1px solid var(--g-rule);padding:24px}
+.guest-site .g-owner-review-foot{color:var(--g-rule)}
 .g-owner-steps{display:flex;align-items:center;gap:8px;margin:0 0 20px}
 .guest-site .g-owner-step-dot{width:44px;height:44px;flex:0 0 44px;border:1px solid var(--g-rule);border-radius:4px;background:transparent;color:var(--g-ink);font:500 13px/1 Poppins,sans-serif;cursor:pointer;padding:0}
 .g-owner-step-dot.is-active,.g-owner-step-dot.is-complete{background:var(--g-ink);color:#fff;border-color:var(--g-ink)}
@@ -49,7 +66,7 @@
 .g-owner-recap div{display:grid;grid-template-columns:120px minmax(0,1fr);gap:12px;padding:10px 0;border-bottom:1px solid var(--g-rule);font-size:14px}
 .g-owner-recap dt{font-weight:500}
 .g-owner-recap dd{margin:0;overflow-wrap:anywhere}
-.guest-site .g-owner-review-foot{font-size:12px;line-height:1.6;color:var(--g-muted);margin:18px 0 0}
+.guest-site .g-owner-review-foot{font-size:12px;line-height:1.6;margin:18px 0 0}
 .g-owner-review-foot a{color:var(--g-ink)}
 .g-owner-three p a,.g-owner-switchers p a,.g-owner-faq details p a,.g-owner-review-foot a{text-decoration:underline;text-underline-offset:4px}
 .g-owner-three p a:hover,.g-owner-switchers p a:hover,.g-owner-faq details p a:hover{color:var(--g-accent)}
@@ -121,18 +138,17 @@
    so it never covers the form it points to. */
 .g-owner-sticky{display:none}
 @media(max-width:1050px){
-.g-owner-hero .g-wrap{grid-template-columns:minmax(0,1fr) 380px;gap:40px}
 .g-owner-three,.g-owner-homes,.g-owner-guides{grid-template-columns:1fr 1fr}
 .g-owner-band img{height:340px}
 }
 @media(max-width:700px){
-.g-owner-hero{padding:32px 0 44px}
-.g-owner-hero .g-wrap{grid-template-columns:1fr;gap:36px}
-.g-owner-hero h1{max-width:none;font-size:44px}
-.guest-site .g-owner-lede{font-size:15px;margin:20px 0 24px}
-.g-owner-actions .g-button{width:100%}
-.g-owner-review{padding:22px 20px}
-.g-owner-review h2{font-size:30px}
+.g-owner-hero{min-height:calc(100svh - 92px);padding:36px 0 24px}
+.guest-site .g-owner-hero h1{max-width:none;font-size:44px}
+.guest-site .g-owner-hero .g-owner-lede{font-size:15px;margin:16px 0 24px}
+.g-owner-search{flex-direction:column;align-items:stretch}
+.g-owner-search .g-owner-field{flex:0 0 auto}
+.guest-site .g-owner-search .g-button{width:100%}
+.g-owner-review:not(:has([data-form-step="0"].is-active)) .g-owner-form{padding:20px}
 /* Four 44px dots plus the counter do not fit 280px; the counter takes its own line. */
 .g-owner-steps{flex-wrap:wrap}
 .g-owner-step-meta{flex-basis:100%;margin:8px 0 0}

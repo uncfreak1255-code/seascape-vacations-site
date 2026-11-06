@@ -8,42 +8,7 @@ const {
 } = require("../enforcement/lib");
 
 const phase = process.argv[2] || "p0";
-const HOMEPAGE_PUBLIC_EMOJI_MARKERS = ["📞", "✉", "✉️", "📍", "⭐ TOP 1% OCCUPANCY IN MANATEE COUNTY", "5.0 ⭐"];
-const STAY_TEMPLATE_EMOJI_MARKERS = ["✍️", "⭐ "];
-const PROPERTY_PAGE_EMOJI_MARKERS = [
-  "🛏️",
-  "🚿",
-  "👥",
-  "🏖️",
-  "🏟️",
-  "⚽",
-  "✈️",
-  "🏊",
-  "♨️",
-  "⚓",
-  "🎱",
-  "📺",
-  "🍳",
-  "🎮",
-  "🔥",
-  "👶",
-  "📶",
-  "👗",
-  "👕",
-  "⛳",
-  "🎲",
-  "🌴",
-  "🎯",
-  "🌽",
-  "🍽️",
-  "🏠",
-  "🔒",
-  "🚫",
-  "📞",
-  "✉",
-  "✉️",
-  "📍"
-];
+const { HOMEPAGE_PUBLIC_EMOJI_MARKERS, STAY_TEMPLATE_EMOJI_MARKERS, PROPERTY_PAGE_EMOJI_MARKERS } = require("./build-output-emoji-markers");
 const PROPERTY_STALE_LINK_MARKERS = [
   "/stays/img-academy-vacation-rentals-bradenton/",
   "/stays/coquina-beach-vacation-rentals/",
@@ -492,8 +457,8 @@ if (phase === "remediation") {
   );
   expectMatches(
     "_site/property-management/index.html",
-    /<a\b(?=[^>]*href="#owner-cta")(?=[^>]*class="g-button")(?=[^>]*data-track-event="owner_primary_cta_click")[^>]*>Request your 48-hour revenue review<\/a>/,
-    "property management hero CTA"
+    /<button class="g-button" type="button" data-form-next data-track-event="owner_primary_cta_click" data-page-slug="property-management">Get my review<\/button>/,
+    "property management hero field button"
   );
   expectMatches(
     "_site/property-management/index.html",

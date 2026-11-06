@@ -32,8 +32,8 @@ test('owners have a navigation path and a homepage path to the existing review f
   for (const name of ['property_address', 'owner_statement', 'what_feels_off', 'name', 'email', 'phone']) {
     await expect(form.locator('[name="' + name + '"]')).toHaveCount(1);
   }
-  // The existing first step is optional; retain the flow into the owner context step.
-  await form.getByRole('button', { name: 'Continue', exact: true }).first().click();
+  // The existing first step is the listing field; retain the flow into the owner context step.
+  await form.getByRole('button', { name: 'Get my review', exact: true }).click();
   await expect(form.locator('[name="what_feels_off"]')).toBeVisible();
 });
 
@@ -48,7 +48,7 @@ test('owner intake requires and records submitter authority while keeping the st
   await expect(authority).toHaveAttribute('value', 'owner_or_authorized_representative');
   await expect(statement).not.toHaveAttribute('required', '');
 
-  await form.getByRole('button', { name: 'Continue', exact: true }).first().click();
+  await form.getByRole('button', { name: 'Get my review', exact: true }).click();
   await form.locator('[name="what_feels_off"]').fill('I want to understand my current payout.');
   await form.getByRole('button', { name: 'Continue', exact: true }).click();
   await form.locator('[name="name"]').fill('Test Owner');
