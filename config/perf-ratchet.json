@@ -1,12 +1,12 @@
 {
   "routes": {
     "/": {
-      "script": 80548,
-      "stylesheet": 61358
+      "script": 86484,
+      "stylesheet": 69609
     },
     "/properties/": {
-      "script": 99866,
-      "stylesheet": 62532
+      "script": 106403,
+      "stylesheet": 70783
     },
     "/property-management/": {
       "script": 90809,
@@ -1248,6 +1248,38 @@
       "from": 58663,
       "to": 58749,
       "reason": "PR #883 state-transition safety: date-input invalidation (+324 bytes) and stale-menu-frame rejection (+86 bytes). Exact uncompressed script measurements from CI 42283421788; no CSS or performance ceiling change.",
+      "date": "2026-11-06"
+    },
+    {
+      "route": "/",
+      "metric": "script",
+      "from": 80548,
+      "to": 86484,
+      "reason": "Phone booking flow: new trip-sheet.js and trip-sheet.css loaded on / and /properties/ (sheet, sticky bar, photo strips, chips)",
+      "date": "2026-11-06"
+    },
+    {
+      "route": "/",
+      "metric": "stylesheet",
+      "from": 61358,
+      "to": 69609,
+      "reason": "Phone booking flow: new trip-sheet.js and trip-sheet.css loaded on / and /properties/ (sheet, sticky bar, photo strips, chips)",
+      "date": "2026-11-06"
+    },
+    {
+      "route": "/properties/",
+      "metric": "script",
+      "from": 99866,
+      "to": 106403,
+      "reason": "Phone booking flow: new trip-sheet.js and trip-sheet.css loaded on / and /properties/ (sheet, sticky bar, photo strips, chips)",
+      "date": "2026-11-06"
+    },
+    {
+      "route": "/properties/",
+      "metric": "stylesheet",
+      "from": 62532,
+      "to": 70783,
+      "reason": "Phone booking flow: new trip-sheet.js and trip-sheet.css loaded on / and /properties/ (sheet, sticky bar, photo strips, chips)",
       "date": "2026-11-06"
     }
   ]

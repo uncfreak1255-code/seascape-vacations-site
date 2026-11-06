@@ -36,18 +36,9 @@
     return url;
   }
 
-  function validDate(value) {
-    if (!/^\d{4}-\d{2}-\d{2}$/.test(value || "")) return false;
-    var date = new Date(value + "T00:00:00Z");
-    return !Number.isNaN(date.getTime()) && date.toISOString().slice(0,10) === value;
-  }
-  function dateLabel(value) {
-    return new Intl.DateTimeFormat("en-US", { month:"short", day:"numeric", year:"numeric", timeZone:"UTC" }).format(new Date(value + "T12:00:00Z"));
-  }
-  function tripText() {
-    var dates = trip.arrive && trip.depart ? dateLabel(trip.arrive) + " – " + dateLabel(trip.depart) : "Flexible dates";
-    return dates + (trip.guests ? " · " + (trip.guests === "17" ? "More than 16 guests" : trip.guests + (trip.guests === "1" ? " guest" : " guests")) : "");
-  }
+  var text = window.SeascapeTripText;
+  var validDate = text.validDate;
+  function tripText() { return text.tripText(trip); }
   function emit(name, extras) {
     if (window.SeascapeConversionTracking) window.SeascapeConversionTracking.trackEvent(name, Object.assign({ page_slug:"properties", placement:"catalog_journey" },extras || {}));
   }
@@ -123,6 +114,8 @@
     // Even a render with no date request supersedes an outstanding response.
     availabilityRequest++;
     openHomes = [];
+    cards.forEach(function (card) { var label = card.querySelector("[data-available]"); if (label) label.hidden = true; });
+    document.querySelectorAll("[data-trip-summary]").forEach(function (node) { node.textContent = tripText(); });
     var count = 0;
     cards.forEach(function (card) {
       var fitsArea = activeFilter === "all" || card.dataset.filters.split("|").includes(activeFilter);
@@ -204,6 +197,7 @@
         });
         if (selected.length < 2 && dialog.open) dialog.close();
         openHomes = cards.filter(function (card) { return !card.hidden; }).map(function (card) { return card.dataset.property; });
+        cards.forEach(function (card) { var label = card.querySelector("[data-available]"); if (label) label.hidden = card.hidden; });
         var openCount = openHomes.length;
         document.getElementById("catalog-count").textContent = openCount === 0
           ? "No home is open for these dates."
@@ -269,6 +263,8 @@
     if (!form.reportValidity()) return;
     trip = { arrive:arrive.value, depart:depart.value, guests:guests.value };
     rememberTrip(); render(); emit("catalog_trip_update",{guest_count:Number(guests.value)||0,has_dates:Boolean(arrive.value)});
+    // Closes the phone trip sheet before focus moves to the results heading.
+    if (event) document.dispatchEvent(new CustomEvent("trip-applied"));
     if (event) { var heading = document.getElementById("catalog-heading"); heading.focus(); heading.scrollIntoView(); }
   }
   form.addEventListener("submit",submitTrip);

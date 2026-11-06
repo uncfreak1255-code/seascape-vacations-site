@@ -1,4 +1,4 @@
-  <section class="catalog-trip" id="catalog-trip" aria-label="Your trip">
+  <section class="catalog-trip" id="catalog-trip" aria-label="Your trip"{% if tripSheet %} data-trip-sheet-source{% endif %}>
     <div class="catalog-trip-heading"><h2>Your trip</h2><span>Start with your group. Keep your dates as you explore.</span></div>
     <form id="catalog-trip-form" method="get" action="/properties/#catalog-heading">
       <div><label for="trip-arrive">Arrival</label><input id="trip-arrive" name="arrive" type="date"></div>

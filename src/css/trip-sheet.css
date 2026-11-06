@@ -1,0 +1,79 @@
+/* Phone booking flow (homepage and /properties/): trip sheet, sticky trip bar, photo strips, filter chips.
+ * Waterline tokens only. Phone rules sit under 700px; wider screens keep the existing layouts. */
+.ts-pill,.ts-bar,.ts-overlay,.ts-chips,.ts-status{display:none}
+.ts-strip{display:contents}
+.guest-site .ts-extra{display:none}
+.catalog-available{display:flex;align-items:center;gap:6px;margin:8px 0 0;font:500 13px/1.4 Poppins,sans-serif;color:var(--g-ink)}
+.catalog-available .ui-icon{flex:none;width:18px;height:18px;color:var(--g-ink)}
+.guest-site .catalog-page .catalog-available[hidden]{display:none!important}
+
+/* The sheet: a native dialog docked to the bottom edge. It only opens on phones. */
+.ts-dialog{position:fixed;inset:auto 0 0 0;margin:0;width:100%;max-width:100%;max-height:92dvh;padding:0 16px calc(16px + env(safe-area-inset-bottom));background:var(--g-paper);color:var(--g-ink);border:0;border-top:1px solid var(--g-rule);border-radius:4px 4px 0 0;overflow-y:auto;overscroll-behavior:contain;transform:translateY(16px);opacity:0;transition:opacity var(--g-overlay-out) var(--g-ease-out),transform var(--g-overlay-out) var(--g-ease-out),overlay var(--g-overlay-out) var(--g-ease-out) allow-discrete,display var(--g-overlay-out) var(--g-ease-out) allow-discrete}
+.ts-dialog[open]{transform:none;opacity:1;transition-duration:var(--g-overlay-in)}
+@starting-style{.ts-dialog[open]{transform:translateY(16px);opacity:0}}
+.ts-dialog::backdrop{background:#173d42d9;opacity:0;transition:opacity var(--g-overlay-out) var(--g-ease-out),overlay var(--g-overlay-out) var(--g-ease-out) allow-discrete,display var(--g-overlay-out) var(--g-ease-out) allow-discrete}
+.ts-dialog[open]::backdrop{opacity:1;transition-duration:var(--g-overlay-in)}
+@starting-style{.ts-dialog[open]::backdrop{opacity:0}}
+@media(prefers-reduced-motion:reduce){.ts-dialog,.ts-dialog::backdrop{transition:none}}
+body:has(.ts-dialog[open]){overflow:hidden}
+.ts-dialog-head{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 0}
+.ts-dialog-head h2{font-size:28px;margin:0}
+.ts-close{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;padding:0;background:none;color:var(--g-ink);border:0;border-radius:4px;font-size:22px;cursor:pointer;touch-action:manipulation}
+.guest-site .ts-dialog .g-trip-form,.guest-site .ts-dialog #catalog-trip-form{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px;align-items:end}
+.guest-site .ts-dialog .g-trip-form>div,.guest-site .ts-dialog #catalog-trip-form>div{min-width:0}
+.guest-site .ts-dialog .g-trip-form>div:nth-child(3),.guest-site .ts-dialog #catalog-trip-form>div:nth-child(3),.guest-site .ts-dialog .g-trip-form>button,.guest-site .ts-dialog #catalog-trip-form>button,.guest-site .ts-dialog .g-form-status{grid-column:1/-1}
+.guest-site .ts-dialog label,.guest-site .ts-dialog #catalog-trip-form label{display:block;font-size:13px;font-weight:400;letter-spacing:0;margin-bottom:4px;color:var(--g-muted)}
+.guest-site .ts-dialog input,.guest-site .ts-dialog select,.guest-site .ts-dialog #catalog-trip-form input,.guest-site .ts-dialog #catalog-trip-form select{box-sizing:border-box;width:100%;min-width:0;height:52px;min-height:52px;font-size:16px;border:1px solid var(--g-rule);border-radius:4px;padding:0 12px;background:var(--g-paper);color:var(--g-ink)}
+.guest-site .ts-dialog .g-trip-form .g-button,.guest-site .ts-dialog #catalog-trip-form .btn{min-height:56px;width:100%;background:var(--g-citron);color:var(--g-ink);border:0;font:500 15px/1.35 Poppins,sans-serif}
+.guest-site .ts-dialog .catalog-trip{margin:0;padding:0;border:0}
+.guest-site .ts-dialog .catalog-trip-heading{display:none}
+.guest-site .ts-dialog .catalog-trip-status{margin:12px 0 0}
+@media(hover:hover) and (pointer:fine){.guest-site .ts-dialog .g-trip-form .g-button:hover,.guest-site .ts-dialog #catalog-trip-form .btn:hover{background:var(--g-citron);color:var(--g-ink)}}
+
+@media(max-width:700px){
+  /* Search pill */
+  .ts-pill:not([hidden]){display:flex;align-items:center;gap:12px;width:100%;min-height:60px;margin-top:16px;padding:8px 16px;background:var(--g-paper);color:var(--g-ink);border:1px solid var(--g-rule);border-radius:4px;font:inherit;text-align:left;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+  .catalog-page .ts-pill:not([hidden]){order:2;width:auto;margin:16px 0 8px}
+  .ts-pill-icon{flex:none}
+  .ts-pill-text{display:flex;flex-direction:column;min-width:0}
+  .ts-pill-label{font-weight:500;font-size:15px;line-height:1.3}
+  .ts-pill-value{font-size:13px;line-height:1.4;color:var(--g-muted)}
+  .ts-sheet-on .g-home-trip{padding-bottom:8px}
+  /* Sticky trip bar */
+  .ts-bar:not([hidden]){position:fixed;left:0;right:0;bottom:0;z-index:30;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 16px calc(12px + env(safe-area-inset-bottom));background:var(--g-paper);border-top:1px solid var(--g-rule)}
+  .ts-bar-trip{display:flex;flex-direction:column;min-width:0;margin:0}
+  .ts-bar-label{font-weight:500;font-size:13px;line-height:1.3}
+  .ts-bar-value{font-size:13px;line-height:1.4;color:var(--g-muted)}
+  .guest-site .ts-bar-action{flex:none;min-height:48px}
+  .ts-bar-on body{padding-bottom:76px}
+  .has-catalog-shortlist .ts-bar{display:none!important}
+  /* Photo strips */
+  .guest-site .ts-strip{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;overscroll-behavior-x:contain;scrollbar-width:none;touch-action:pan-x pan-y}
+  .ts-strip::-webkit-scrollbar{display:none}
+  .guest-site .ts-strip img,.guest-site .ts-strip .ts-extra{display:block;flex:0 0 100%;width:100%;scroll-snap-align:start}
+  .ts-overlay{display:block;position:absolute;inset:0;pointer-events:none}
+  .ts-count{position:absolute;top:12px;right:12px;padding:4px 8px;background:var(--g-ink);color:var(--g-paper);border-radius:4px;font:400 12px/1.3 Poppins,sans-serif}
+  /* Dots sit on an ink plate so they hold 3:1 against any photo. Active is larger and citron; idle is rule. */
+  .ts-dots{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);display:flex;align-items:center;gap:6px;padding:6px 8px;background:var(--g-ink);border-radius:4px}
+  .ts-dots i{display:block;width:6px;height:6px;border-radius:50%;background:var(--g-rule)}
+  .ts-dots i.on{width:8px;height:8px;background:var(--g-citron)}
+  /* Chips and live count */
+  .ts-chips:not([hidden]){display:flex;gap:8px;margin:16px -16px 0;padding:0 16px 4px;overflow-x:auto;scroll-padding-inline:16px;scrollbar-width:none}
+  .ts-chips::-webkit-scrollbar{display:none}
+  .ts-chip,.guest-site .catalog-page .catalog-filter{flex:none;min-height:44px;padding:8px 16px;background:var(--g-paper);color:var(--g-ink);border:1px solid var(--g-rule);border-radius:4px;font:500 14px/1.3 Poppins,sans-serif;white-space:nowrap;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+  .ts-chip[aria-pressed="true"],.guest-site .catalog-page .catalog-filter[aria-pressed="true"]{background:var(--g-citron);color:var(--g-ink);border-color:var(--g-ink)}
+  .ts-status:not([hidden]){display:block;margin:12px 0 0;font-size:13px;color:var(--g-muted)}
+  .guest-site .catalog-page .catalog-filters{flex-wrap:nowrap;overflow-x:auto;margin-inline:-16px;padding:0 16px 4px;scroll-padding-inline:16px;scrollbar-width:none}
+  .catalog-filters::-webkit-scrollbar{display:none}
+  .catalog-page .catalog-count{margin:12px 0 20px}
+  /* Homepage cards stack, one photo strip each */
+  .g-home .g-postcards{display:grid;grid-auto-flow:row;grid-template-columns:minmax(0,1fr);grid-auto-columns:auto;gap:28px;overflow:visible;margin-inline:0;padding:16px 0 8px;scroll-snap-type:none}
+  .g-home .g-postcard,.g-home .g-postcard:nth-child(n){width:auto;max-width:none;flex:none;margin:0}
+  .g-home .g-postcard.ts-filtered{display:none}
+  .g-home .g-postcard-photo img{height:260px}
+  .g-home .g-postcard-photo>span{display:none}
+  .g-home .g-postcard>p{max-width:none}
+  /* Catalog cards: the strip fills the existing photo box */
+  .guest-site .catalog-page .ts-strip{position:absolute;inset:0}
+  .guest-site .catalog-page .ts-strip img,.guest-site .catalog-page .ts-strip .ts-extra{position:static;height:100%;min-height:0}
+}

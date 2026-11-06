@@ -1,0 +1,13 @@
+{# Sticky trip bar and the bottom sheet that holds the trip form on phones. Both stay hidden until trip-sheet.js turns them on. #}
+{% from "partials/ui-icon.njk" import uiIcon %}
+<div class="ts-bar" data-trip-bar hidden>
+  <p class="ts-bar-trip"><span class="ts-bar-label">Your trip</span><span class="ts-bar-value" data-trip-summary>Flexible dates</span></p>
+  <button class="g-button ts-bar-action" type="button" data-trip-bar-action aria-haspopup="dialog" aria-controls="trip-sheet">Find my home</button>
+</div>
+<dialog class="ts-dialog" id="trip-sheet" aria-labelledby="trip-sheet-title" data-trip-sheet>
+  <div class="ts-dialog-head">
+    <h2 id="trip-sheet-title">Dates and guests</h2>
+    <button class="ts-close" type="button" data-trip-sheet-close aria-label="Close dates and guests">{{ uiIcon('close') }}</button>
+  </div>
+  <div class="ts-dialog-body" data-trip-sheet-body></div>
+</dialog>
