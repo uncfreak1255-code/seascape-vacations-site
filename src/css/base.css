@@ -87,7 +87,7 @@ a {
     font-family: inherit;
     border: none;
     cursor: pointer;
-    transition: background-color .2s ease, color .2s ease, border-color .2s ease, box-shadow .2s ease, transform .2s cubic-bezier(.23,1,.32,1);
+    transition: .2s cubic-bezier(.23,1,.32,1); transition-property: background-color, color, border-color, box-shadow, transform;
     white-space: nowrap;
     position: relative;
     text-decoration: none;
@@ -104,7 +104,7 @@ a {
     border: 1px solid rgba(201, 169, 98, .45);
     border-radius: 50px;
     pointer-events: none;
-    transition: border-color .2s ease;
+    transition: border-color .2s;
 }
 .btn-brand:hover::after { border-color: var(--gold, #C9A962); }
 
