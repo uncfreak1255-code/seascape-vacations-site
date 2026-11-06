@@ -1,0 +1,65 @@
+---
+layout: layouts/guest.njk
+permalink: "/internal/booking-4/"
+pageTitle: "Booking-first prototype 4: platform patterns"
+pageDescription: "Noindex prototype of a booking-first phone homepage built from the platform patterns playbook, for Sawyer to review."
+pageStylesheet: "/css/booking-prototype.css"
+pageScript: "/assets/js/booking-prototype.js"
+seoIndexable: false
+eleventyExcludeFromCollections: true
+---
+{% from "partials/ui-icon.njk" import uiIcon %}
+{% set homeCountWord = properties | length | numberWord %}
+<div class="bk bk-4">
+  <section class="bk-search" aria-labelledby="bk4-heading">
+    <h1 id="bk4-heading">Your people.<br><em>Your place.</em></h1>
+    <button class="bk4-pill" type="button" data-bk4-open aria-haspopup="dialog" aria-controls="bk4-sheet">
+      <svg class="bk4-pill-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <span class="bk4-pill-text"><span class="bk4-pill-label">Dates and guests</span><span class="bk4-pill-value" data-trip-summary>Flexible dates</span></span>
+    </button>
+  </section>
+  <section class="bk-list" aria-labelledby="bk4-list-heading">
+    <h2 id="bk4-list-heading" class="bk4-heading">{{ homeCountWord | capitalize }} homes. Every one has a private pool.</h2>
+    <div class="bk4-chips" role="group" aria-label="Filter the homes" data-bk4-chips>
+      <button class="bk4-chip" type="button" data-bk4-filter="all" aria-pressed="true">All homes</button>
+      <button class="bk4-chip" type="button" data-bk4-filter="bradenton" aria-pressed="false">Bradenton</button>
+      <button class="bk4-chip" type="button" data-bk4-filter="sarasota" aria-pressed="false">Sarasota</button>
+      <button class="bk4-chip" type="button" data-bk4-filter="waterfront" aria-pressed="false">Waterfront</button>
+      <button class="bk4-chip" type="button" data-bk4-filter="hot-tub" aria-pressed="false">Hot tub</button>
+      <button class="bk4-chip" type="button" data-bk4-filter="game-room" aria-pressed="false">Game room</button>
+    </div>
+    <p class="bk4-status" role="status" data-bk4-status>{{ properties | length }} homes</p>
+    <div class="bk4-stack">{% for home in properties %}{% set firstCard = loop.first %}{% set photos = home.photography.photos.slice(0, 5) %}{% set cardTokens = ((home.amenities or []) | join('|') ~ '|' ~ home.destination ~ '|' ~ home.city) | lower %}
+      <article class="bk4-card" data-bk4-card data-filters="{{ cardTokens }}">
+        <div class="bk4-photos">
+          <div class="bk4-strip" data-bk4-strip role="region" aria-label="{{ home.cardName or home.name }} photos" tabindex="0">{% for photo in photos %}
+            <a class="bk4-slide" href="{{ home.pageUrl }}" data-trip-link tabindex="-1" aria-hidden="true"><img src="{{ photo.src | replace('.webp', '-800.webp') }}" width="{{ photo.width }}" height="{{ photo.height }}" alt="{{ photo.alt }}" decoding="async"{% if not (loop.first and firstCard) %} loading="lazy"{% endif %}></a>{% endfor %}
+          </div>
+          <span class="bk4-count" aria-hidden="true" data-bk4-count>1 / {{ photos | length }}</span>
+          <span class="bk4-dots" aria-hidden="true">{% for photo in photos %}<span{% if loop.first %} class="on"{% endif %}></span>{% endfor %}</span>
+        </div>
+        <a class="bk4-body" href="{{ home.pageUrl }}" data-trip-link>
+          <span class="bk-card-name">{{ home.cardName or home.name }}</span>
+          <span class="bk-card-meta">{{ home.city }}, Florida</span>
+          <span class="bk-card-meta">Sleeps {{ home.guests }} · {{ home.bedrooms }} bedrooms · {{ home.bathrooms }} baths</span>
+        </a>
+      </article>{% endfor %}
+    </div>
+    <p class="bk-all"><a class="g-inline-link" href="/properties/" data-trip-link>Compare all the homes <span aria-hidden="true">→</span></a></p>
+  </section>
+
+  <div class="bk4-bar" data-bk4-bar hidden>
+    <p class="bk4-bar-trip"><span class="bk4-bar-label">Your trip</span><span class="bk4-bar-value" data-trip-summary>Flexible dates</span></p>
+    <button class="g-button bk4-bar-action" type="button" data-bk4-open aria-haspopup="dialog" aria-controls="bk4-sheet">Find my home</button>
+  </div>
+
+  <dialog class="bk4-dialog" id="bk4-sheet" aria-labelledby="bk4-sheet-title" data-bk4-dialog>
+    <div class="bk4-dialog-head">
+      <h2 id="bk4-sheet-title">Dates and guests</h2>
+      <button class="bk4-close" type="button" data-bk4-close aria-label="Close dates and guests">{{ uiIcon('close') }}</button>
+    </div>
+    <div class="bk-sheet">
+      {% set tripFormId = 'bk4-trip' %}{% include "partials/guest-trip-form.njk" %}
+    </div>
+  </dialog>
+</div>
