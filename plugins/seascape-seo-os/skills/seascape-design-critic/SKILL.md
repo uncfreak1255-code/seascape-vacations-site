@@ -21,6 +21,10 @@ behavior with concrete examples. Watch for generic card grids, same-weight
 sections, boxed/badge clutter, decorative gold, and premium claims without
 matching art direction.
 
+## Platform patterns
+
+For search, catalog, property-page, booking, filter, gallery or sticky-bar work, read `docs/design/platform-patterns.md` first: Sawyer's direction (2026-11-06) is Airbnb, Vrbo, Booking.com and Expedia interaction patterns in Waterline's look, not local competitors. Name the pattern applied or the reason for departing from it.
+
 ## Polish and fit checks
 
 Check each of these on the rendered route, not the source: hover, focus,
