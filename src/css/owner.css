@@ -19,12 +19,11 @@
 /* Review panel: one search-bar field on first view; the other three questions
    open as a paper card after Continue. */
 .g-owner-review{scroll-margin-top:24px}
-.g-owner-review>.g-label,.g-owner-review h2,.g-owner-review-intro{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 /* Two separate controls on a 12px gap: a visible label, a paper field and a citron button.
    Not one glued bar. Field text is 16px so iOS does not zoom the page on focus. */
+.g-owner-review>.g-label,.g-owner-review h2,.g-owner-review-intro,.g-owner-review:has([data-form-step="0"].is-active) :is(.g-owner-panel[data-form-step="0"]>h3,.g-owner-panel[data-form-step="0"]>p,.g-owner-steps){position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .g-owner-search{display:flex;align-items:flex-end;gap:12px}
 .g-owner-search .g-owner-field{flex:1 1 auto;margin:0}
-.g-owner-review:has([data-form-step="0"].is-active) .g-owner-panel[data-form-step="0"]>h3,.g-owner-review:has([data-form-step="0"].is-active) .g-owner-panel[data-form-step="0"]>p{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .guest-site .g-owner-search .g-owner-field span{margin:0 0 8px;font-size:13px;letter-spacing:.04em;color:var(--g-paper)}
 .guest-site .g-owner-search .g-owner-field input{height:56px;min-height:56px;padding:0 16px;border:1px solid var(--g-paper);border-radius:4px;background:var(--g-paper);color:var(--g-ink);font-size:16px}
 .guest-site .g-owner-search .g-owner-field input::placeholder{color:var(--g-muted);opacity:1}
@@ -32,7 +31,6 @@
 .guest-site .g-owner-search .g-button{flex:0 0 auto;min-height:56px;padding:0 28px;border-radius:4px;background:var(--g-citron);color:var(--g-ink);border-color:var(--g-citron);touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 .guest-site .g-owner-search .g-button:focus-visible{outline:3px solid var(--g-paper);outline-offset:3px}
 @media(hover:hover) and (pointer:fine){.guest-site .g-owner-search .g-button:hover{background:var(--g-paper);border-color:var(--g-paper);color:var(--g-ink)}}
-.g-owner-review:has([data-form-step="0"].is-active) .g-owner-steps{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);margin:0}
 .g-owner-review:has([data-form-step="0"].is-active) .g-owner-review-foot{display:none}
 .g-owner-review:not(:has([data-form-step="0"].is-active)) .g-owner-form{background:var(--g-paper);color:var(--g-ink);border:1px solid var(--g-rule);padding:24px}
 .guest-site .g-owner-review-foot{color:var(--g-rule)}

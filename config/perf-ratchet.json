@@ -9,8 +9,8 @@
       "stylesheet": 62532
     },
     "/property-management/": {
-      "script": 90809,
-      "stylesheet": 56940
+      "script": 90912,
+      "stylesheet": 59535
     },
     "/property-management/vacation-rental-licensing-florida/": {
       "script": 60723,
@@ -1248,6 +1248,22 @@
       "from": 58663,
       "to": 58749,
       "reason": "PR #883 state-transition safety: date-input invalidation (+324 bytes) and stale-menu-frame rejection (+86 bytes). Exact uncompressed script measurements from CI 42283421788; no CSS or performance ceiling change.",
+      "date": "2026-11-06"
+    },
+    {
+      "route": "/property-management/",
+      "metric": "script",
+      "from": 90809,
+      "to": 90912,
+      "reason": "Owner hero Option A (Sawyer-selected 2026-11-06): dusk photo hero CSS adds ~2.6 KB of stylesheet and the step-nav inert toggle adds ~100 B of inline script; Lighthouse budgets pass",
+      "date": "2026-11-06"
+    },
+    {
+      "route": "/property-management/",
+      "metric": "stylesheet",
+      "from": 56940,
+      "to": 59535,
+      "reason": "Owner hero Option A (Sawyer-selected 2026-11-06): dusk photo hero CSS adds ~2.6 KB of stylesheet and the step-nav inert toggle adds ~100 B of inline script; Lighthouse budgets pass",
       "date": "2026-11-06"
     }
   ]

@@ -92,23 +92,14 @@ headExtra: |
           <input type="hidden" name="concerns" data-owner-concerns>
           {% include "partials/owner-form-source-fields.njk" %}
 
-          <nav class="g-owner-steps" aria-label="Form progress">
-            <button class="g-owner-step-dot is-active" type="button" data-form-goto="0" aria-label="Go to step 1">1</button>
-            <span class="g-owner-step-line" aria-hidden="true"></span>
-            <button class="g-owner-step-dot" type="button" data-form-goto="1" aria-label="Go to step 2">2</button>
-            <span class="g-owner-step-line" aria-hidden="true"></span>
-            <button class="g-owner-step-dot" type="button" data-form-goto="2" aria-label="Go to step 3">3</button>
-            <span class="g-owner-step-line" aria-hidden="true"></span>
-            <button class="g-owner-step-dot" type="button" data-form-goto="3" aria-label="Go to step 4">4</button>
-            <span class="g-owner-step-meta" data-form-meta>Question 1 of 4</span>
-          </nav>
+          {% include "partials/owner-form-steps.njk" %}
 
           <div class="g-owner-panel is-active" data-form-step="0">
             <h3>Which listing or property?</h3>
             <p>Paste the Airbnb or Vrbo link, or type the street address.</p>
             <div class="g-owner-search">
               <label class="g-owner-field"><span>Listing link or street address</span><input type="text" name="property_address" autocomplete="street-address" placeholder="airbnb.com/h/your-listing"></label>
-              <button class="g-button" type="button" data-form-next>Get my review</button>
+              <button class="g-button" type="button" data-form-next data-track-event="owner_primary_cta_click" data-page-slug="property-management">Get my review</button>
             </div>
           </div>
 
@@ -423,6 +414,7 @@ headExtra: |
     var lines = form.querySelectorAll(".g-owner-step-line");
     var steps = form.querySelectorAll("[data-form-step]");
     var meta = form.querySelector("[data-form-meta]");
+    var stepNav = form.querySelector(".g-owner-steps");
     var concernsInput = form.querySelector("[data-owner-concerns]");
     var concernsMirror = form.querySelector("[data-owner-concerns-mirror]");
     var listingField = form.querySelector('input[name="property_address"]');
@@ -524,6 +516,7 @@ headExtra: |
         panel.classList.toggle("is-active", active);
         panel.hidden = !active;
       });
+      if (stepNav) stepNav.inert = step === 0;
       dots.forEach(function (dot, index) {
         dot.classList.toggle("is-active", index === step);
         dot.classList.toggle("is-complete", index < step);
