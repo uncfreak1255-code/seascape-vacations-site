@@ -12,6 +12,8 @@ const {
 } = require("./guest-email-capture");
 
 const MAX_RETRY_BATCH_SIZE = 10;
+const RETRY_RUNNING = "retry_running";
+const RETRY_LEASE_MS = 120000;
 
 function resolveRetryStore(event, candidateStore) {
   if (
@@ -42,98 +44,85 @@ function parseRetryState(value) {
 }
 
 async function persistRetryState(store, entry, state) {
-  const options = { contentType: "application/json; charset=utf-8" };
-  if (entry && entry.etag) options.onlyIfMatch = entry.etag;
-  const result = await store.set(entry.key, JSON.stringify(state), options);
-  if (result && result.modified === false) {
+  if (!entry.etag) throw new Error("guest_capture_retry_missing_etag");
+  const result = await store.set(entry.key, JSON.stringify(state), {
+    contentType: "application/json; charset=utf-8", onlyIfMatch: entry.etag
+  });
+  if (!result || !result.modified || !result.etag) {
     throw new Error("guest_capture_retry_state_conflict");
   }
+  return { key: entry.key, etag: result.etag };
 }
 
-async function persistTerminalState(store, retryKey, directory, state) {
+async function archiveTerminalState(store, key, state) {
+  const directory = state.state === CAPTURE_STATES.TAGGED ? "tagged" : "manual";
   const terminalKey = `${GUEST_CAPTURE_STATE_KEY_PREFIX}/${directory}/${state.queueId}.json`;
   await store.set(terminalKey, JSON.stringify(state), {
     contentType: "application/json; charset=utf-8"
   });
-  await store.delete(retryKey);
+  await store.delete(key);
 }
 
 async function processGuestCaptureRetryRecord(store, entry, injectedFetch) {
-  const state = parseRetryState(
-    await store.get(entry.key, { type: "json", consistency: "strong" })
-  );
-  if (!state || state.state !== CAPTURE_STATES.RETRY_QUEUED) {
-    return { state: "skipped", key: entry.key };
+  // The listing etag can be stale. Claim the strongly-read revision before any
+  // provider call; missing CAS support is an error, never an unconditional send.
+  if (typeof store.getWithMetadata !== "function") throw new Error("guest_capture_retry_missing_cas");
+  const record = await store.getWithMetadata(entry.key, { type: "json", consistency: "strong" });
+  if (!record) return { state: "skipped", key: entry.key };
+  let state = parseRetryState(record.data);
+  if (!state) return { state: "skipped", key: entry.key };
+  let revision = { key: entry.key, etag: record.etag };
+  if ([CAPTURE_STATES.TAGGED, CAPTURE_STATES.MANUAL_ATTENTION].includes(state.state)) {
+    await archiveTerminalState(store, entry.key, state);
+    return { state: state.state, key: entry.key };
   }
+  if (state.state === RETRY_RUNNING) {
+    const age = Date.now() - Date.parse(state.updatedAt);
+    if (Number.isFinite(age) && age >= 0 && age < RETRY_LEASE_MS) return { state: "skipped", key: entry.key };
+    // A worker may have died after the provider accepted. Never replay that
+    // ambiguous attempt; retain an explicit manual outcome instead.
+    state = { ...state, state: CAPTURE_STATES.MANUAL_ATTENTION, reason: "retry_delivery_unknown", updatedAt: new Date().toISOString() };
+    await persistRetryState(store, revision, state);
+    await archiveTerminalState(store, entry.key, state);
+    return { state: state.state, key: entry.key };
+  }
+  if (state.state !== CAPTURE_STATES.RETRY_QUEUED) return { state: "skipped", key: entry.key };
 
   const config = buildMailchimpConfig();
   const attempts = Math.max(0, Number(state.attempts) || 0) + 1;
-  const base = {
-    ...state,
-    attempts,
-    maxAttempts: MAX_TAG_RETRY_ATTEMPTS,
-    updatedAt: new Date().toISOString()
-  };
-
-  if (
-    !config ||
-    !state.queueId ||
-    !state.audienceId ||
-    state.audienceId !== config.audienceId ||
-    !state.subscriberHash ||
-    !Array.isArray(state.tags) ||
-    state.tags.length === 0
-  ) {
-    const next = {
-      ...base,
-      state: CAPTURE_STATES.MANUAL_ATTENTION,
-      reason: "retry_config_invalid"
-    };
-    await persistTerminalState(store, entry.key, "manual", next);
-    console.error("guest_capture_retry_manual_attention", {
-      key: entry.key,
-      attempts,
-      reason: next.reason
-    });
+  const base = { ...state, attempts, maxAttempts: MAX_TAG_RETRY_ATTEMPTS, updatedAt: new Date().toISOString() };
+  if (!config || !state.queueId || !state.audienceId || state.audienceId !== config.audienceId ||
+      !state.subscriberHash || !Array.isArray(state.tags) || !state.tags.length || attempts > MAX_TAG_RETRY_ATTEMPTS) {
+    const next = { ...base, state: CAPTURE_STATES.MANUAL_ATTENTION, reason: "retry_config_invalid" };
+    await persistRetryState(store, revision, next);
+    await archiveTerminalState(store, entry.key, next);
     return { state: next.state, key: entry.key };
   }
-
   try {
-    await requestMailchimpJson(
-      config,
-      `/lists/${encodeURIComponent(config.audienceId)}/members/${state.subscriberHash}/tags`,
-      "POST",
-      {
-        tags: state.tags.map((name) => ({ name, status: "active" }))
-      },
-      injectedFetch
-    );
-    const next = {
-      ...base,
-      state: CAPTURE_STATES.TAGGED,
-      reason: "tag_retry_succeeded"
-    };
-    await persistTerminalState(store, entry.key, "tagged", next);
-    return { state: next.state, key: entry.key };
+    revision = await persistRetryState(store, revision, { ...base, state: RETRY_RUNNING });
   } catch (error) {
-    const exhausted = attempts >= MAX_TAG_RETRY_ATTEMPTS;
-    const next = {
-      ...base,
-      state: exhausted ? CAPTURE_STATES.MANUAL_ATTENTION : CAPTURE_STATES.RETRY_QUEUED,
-      reason: "mailchimp_tags_sync_failed"
-    };
-    if (exhausted) {
-      await persistTerminalState(store, entry.key, "manual", next);
-      console.error("guest_capture_retry_manual_attention", {
-        key: entry.key,
-        attempts,
-        reason: next.reason
-      });
-    } else {
-      await persistRetryState(store, entry, next);
-    }
-    return { state: next.state, key: entry.key };
+    if (error.message === "guest_capture_retry_state_conflict") return { state: "skipped", key: entry.key };
+    throw error;
   }
+  let next;
+  try {
+    await requestMailchimpJson(config,
+      `/lists/${encodeURIComponent(config.audienceId)}/members/${state.subscriberHash}/tags`,
+      "POST", { tags: state.tags.map(name => ({ name, status: "active" })) }, injectedFetch);
+    next = { ...base, state: CAPTURE_STATES.TAGGED, reason: "tag_retry_succeeded" };
+  } catch (error) {
+    const ambiguous = !Number.isInteger(error.status);
+    next = { ...base, state: ambiguous || attempts >= MAX_TAG_RETRY_ATTEMPTS ? CAPTURE_STATES.MANUAL_ATTENTION : CAPTURE_STATES.RETRY_QUEUED,
+      reason: ambiguous ? "retry_delivery_unknown" : "mailchimp_tags_sync_failed" };
+  }
+  // Storage failures must not be caught as provider failures. Commit the outcome
+  // in the claimed record first; archive/cleanup can be retried without sending.
+  await persistRetryState(store, revision, next);
+  if (next.state !== CAPTURE_STATES.RETRY_QUEUED) await archiveTerminalState(store, entry.key, next);
+  if (next.state === CAPTURE_STATES.MANUAL_ATTENTION) {
+    console.error("guest_capture_retry_manual_attention", { key: entry.key, attempts, reason: next.reason });
+  }
+  return { state: next.state, key: entry.key };
 }
 
 async function handleGuestCaptureRetries(event, _context, injectedStore, injectedFetch) {

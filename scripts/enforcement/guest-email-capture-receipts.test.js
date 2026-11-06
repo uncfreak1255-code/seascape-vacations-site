@@ -132,36 +132,7 @@ function buildCaptureStateKeys(overrides = {}) {
   };
 }
 
-function createMemoryStore(options = {}) {
-  const values = new Map();
-  let metricsFailuresRemaining = Number(options.failMetricsWrites) || 0;
-  return {
-    values,
-    async get(key) {
-      return values.get(key) || null;
-    },
-    async set(key, value) {
-      if (options.failStateWrites && key.startsWith("guest_capture_state_v1/")) {
-        throw new Error("state write failed");
-      }
-      if (key === GUEST_EMAIL_CAPTURE_METRICS_KEY && metricsFailuresRemaining > 0) {
-        metricsFailuresRemaining -= 1;
-        throw new Error("metrics write failed");
-      }
-      values.set(key, value);
-    },
-    async delete(key) {
-      values.delete(key);
-    },
-    async list({ prefix } = {}) {
-      return {
-        blobs: [...values.keys()]
-          .filter((key) => !prefix || key.startsWith(prefix))
-          .map((key) => ({ key, etag: `"${key}"` }))
-      };
-    }
-  };
-}
+const { createMemoryStore } = require("./fixtures/guest-capture-store");
 
 function buildMailchimpFetch({ failTags = false, calls = [] } = {}) {
   return async function mailchimpFetch(url, options = {}) {

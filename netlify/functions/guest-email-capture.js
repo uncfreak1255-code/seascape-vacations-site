@@ -106,7 +106,9 @@ async function requestMailchimpJson(config, pathname, method, body, injectedFetc
   );
 
   if (!response.ok) {
-    throw new Error(`Mailchimp API ${method} ${pathname} failed with status ${response.status}`);
+    const error = new Error(`Mailchimp API ${method} ${pathname} failed with status ${response.status}`);
+    error.status = response.status;
+    throw error;
   }
 
   if (response.status === 204) {
@@ -180,9 +182,10 @@ async function writeGuestCaptureState(store, key, state) {
     throw new Error("guest_capture_state_store_unavailable");
   }
 
-  await store.set(key, JSON.stringify(state), {
-    contentType: "application/json; charset=utf-8"
+  const result = await store.set(key, JSON.stringify(state), {
+    contentType: "application/json; charset=utf-8", onlyIfNew: true
   });
+  if (result?.modified === false) throw new Error("guest_capture_state_conflict");
 }
 
 function buildGuestCaptureState({ state, payload, receipt, attempts, reason }) {
@@ -425,7 +428,20 @@ async function handleGuestEmailCapture(event, _context, injectedStore, injectedF
   }
 
   const manualStateKey = buildGuestCaptureManualStateKey(payload.email, receipt.submissionId);
-  const manualState = await readGuestCaptureState(store, manualStateKey);
+  const stateKey = buildGuestCaptureStateKey(payload.email, receipt.submissionId);
+  const priorState = await readGuestCaptureState(store, stateKey);
+  const manualState = priorState?.state === CAPTURE_STATES.MANUAL_ATTENTION
+    ? priorState : await readGuestCaptureState(store, manualStateKey);
+  const taggedKey = `${GUEST_CAPTURE_STATE_KEY_PREFIX}/tagged/${buildGuestCaptureQueueId(payload.email, receipt.submissionId)}.json`;
+  const taggedState = priorState?.state === CAPTURE_STATES.TAGGED
+    ? priorState : await readGuestCaptureState(store, taggedKey);
+  if (taggedState?.state === CAPTURE_STATES.TAGGED) {
+    return {
+      statusCode: 200, headers: { "content-type": "application/json; charset=utf-8" },
+      body: JSON.stringify(buildCaptureResponseBody({ stored: false, tagged: true,
+        captureState: CAPTURE_STATES.TAGGED, receipt, deliveryMode: "marketing_api" }))
+    };
+  }
   if (manualState && manualState.state === CAPTURE_STATES.MANUAL_ATTENTION) {
     const manualReceipt = withMailchimpDelivery(receipt, {
       mode: "marketing_api",
@@ -452,9 +468,7 @@ async function handleGuestEmailCapture(event, _context, injectedStore, injectedF
     };
   }
 
-  const stateKey = buildGuestCaptureStateKey(payload.email, receipt.submissionId);
-  const priorState = await readGuestCaptureState(store, stateKey);
-  if (priorState && priorState.state === CAPTURE_STATES.RETRY_QUEUED) {
+  if (priorState && [CAPTURE_STATES.RETRY_QUEUED, "retry_running"].includes(priorState.state)) {
     const queuedReceipt = withMailchimpDelivery(receipt, {
       mode: "marketing_api",
       warnings: [priorState.reason || "mailchimp_tags_sync_failed"],
@@ -585,29 +599,6 @@ async function handleGuestEmailCapture(event, _context, injectedStore, injectedF
     };
   }
 
-  if (captureState === CAPTURE_STATES.MANUAL_ATTENTION) {
-    console.error("guest_capture_retry_exhausted", {
-      submissionId: storedReceipt.submissionId,
-      attempts: retryAttempts,
-      reason: incompleteReason
-    });
-    return {
-      statusCode: 503,
-      headers: { "content-type": "application/json; charset=utf-8" },
-      body: JSON.stringify(
-        buildCaptureResponseBody({
-          stored: metricsStored,
-          tagged: false,
-          captureState,
-          retryAttempts,
-          receipt: storedReceipt,
-          deliveryMode: delivery.mode,
-          reason: incompleteReason,
-          totalCaptures
-        })
-      )
-    };
-  }
 
   return {
     statusCode: 200,

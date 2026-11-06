@@ -189,3 +189,20 @@ test("an unreadable calendar is not shown as open dates on a home's page", () =>
   assert.match(guest, /home\.reason==='no-calendar'\)throw/);
   assert.match(guest, /renderBooking\('failed'/);
 });
+
+test('an older concurrent calendar load cannot replace a newer cached snapshot', async () => {
+  resetBookingAvailabilityCache();
+  let release;
+  const held = new Promise(resolve => { release = resolve; });
+  const event = { queryStringParameters: { arrive: '2026-11-07', depart: '2026-11-09' } };
+  const older = handleBookingAvailability(event, { now: new Date('2026-11-06T12:00:00Z'), fetchCalendar: async () => {
+    await held; return stay('2026-11-07', 2);
+  }});
+  await handleBookingAvailability(event, { now: new Date('2026-11-06T12:00:01Z'), fetchCalendar: async () =>
+    stay('2026-11-07', 2, { isAvailable: 0, status: 'reserved' }) });
+  release(); await older;
+  const cached = await handleBookingAvailability(event, { now: new Date('2026-11-06T12:00:02Z'), fetchCalendar: async () => {
+    throw new Error('must use the newer cache');
+  }});
+  assert.equal(JSON.parse(cached.body).homes[0].bookable, false);
+});

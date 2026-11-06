@@ -1,35 +1,35 @@
 {
   "routes": {
     "/": {
-      "script": 80138,
+      "script": 80548,
       "stylesheet": 61358
     },
     "/properties/": {
-      "script": 99456,
+      "script": 99866,
       "stylesheet": 62532
     },
     "/property-management/": {
-      "script": 90399,
+      "script": 90809,
       "stylesheet": 56940
     },
     "/property-management/vacation-rental-licensing-florida/": {
-      "script": 60637,
+      "script": 60723,
       "stylesheet": 37109
     },
     "/property-management/vacation-rental-management-fees-florida/": {
-      "script": 60637,
+      "script": 60723,
       "stylesheet": 37109
     },
     "/property-management/vrbo-management-services-florida/": {
-      "script": 60637,
+      "script": 60723,
       "stylesheet": 37109
     },
     "/stays/anna-maria-island-beachfront-rentals/": {
-      "script": 58663,
+      "script": 58749,
       "stylesheet": 51742
     },
     "/stays/anna-maria-island-vacation-rentals/": {
-      "script": 58663,
+      "script": 58749,
       "stylesheet": 51742
     }
   },
@@ -1184,6 +1184,70 @@
       "from": 56838,
       "to": 56940,
       "reason": "PR 879: named-property transitions replace transition:all on legacy .btn (+102 B CSS) and shared ease-out curve string in home-scenes.js (+18 B JS)",
+      "date": "2026-11-06"
+    },
+    {
+      "route": "/",
+      "metric": "script",
+      "from": 80138,
+      "to": 80548,
+      "reason": "PR #883 state-transition safety: date-input invalidation (+324 bytes) and stale-menu-frame rejection (+86 bytes). Exact uncompressed script measurements from CI 42283421788; no CSS or performance ceiling change.",
+      "date": "2026-11-06"
+    },
+    {
+      "route": "/properties/",
+      "metric": "script",
+      "from": 99456,
+      "to": 99866,
+      "reason": "PR #883 state-transition safety: date-input invalidation (+324 bytes) and stale-menu-frame rejection (+86 bytes). Exact uncompressed script measurements from CI 42283421788; no CSS or performance ceiling change.",
+      "date": "2026-11-06"
+    },
+    {
+      "route": "/property-management/",
+      "metric": "script",
+      "from": 90399,
+      "to": 90809,
+      "reason": "PR #883 state-transition safety: date-input invalidation (+324 bytes) and stale-menu-frame rejection (+86 bytes). Exact uncompressed script measurements from CI 42283421788; no CSS or performance ceiling change.",
+      "date": "2026-11-06"
+    },
+    {
+      "route": "/property-management/vacation-rental-management-fees-florida/",
+      "metric": "script",
+      "from": 60637,
+      "to": 60723,
+      "reason": "PR #883 state-transition safety: date-input invalidation (+324 bytes) and stale-menu-frame rejection (+86 bytes). Exact uncompressed script measurements from CI 42283421788; no CSS or performance ceiling change.",
+      "date": "2026-11-06"
+    },
+    {
+      "route": "/property-management/vacation-rental-licensing-florida/",
+      "metric": "script",
+      "from": 60637,
+      "to": 60723,
+      "reason": "PR #883 state-transition safety: date-input invalidation (+324 bytes) and stale-menu-frame rejection (+86 bytes). Exact uncompressed script measurements from CI 42283421788; no CSS or performance ceiling change.",
+      "date": "2026-11-06"
+    },
+    {
+      "route": "/property-management/vrbo-management-services-florida/",
+      "metric": "script",
+      "from": 60637,
+      "to": 60723,
+      "reason": "PR #883 state-transition safety: date-input invalidation (+324 bytes) and stale-menu-frame rejection (+86 bytes). Exact uncompressed script measurements from CI 42283421788; no CSS or performance ceiling change.",
+      "date": "2026-11-06"
+    },
+    {
+      "route": "/stays/anna-maria-island-vacation-rentals/",
+      "metric": "script",
+      "from": 58663,
+      "to": 58749,
+      "reason": "PR #883 state-transition safety: date-input invalidation (+324 bytes) and stale-menu-frame rejection (+86 bytes). Exact uncompressed script measurements from CI 42283421788; no CSS or performance ceiling change.",
+      "date": "2026-11-06"
+    },
+    {
+      "route": "/stays/anna-maria-island-beachfront-rentals/",
+      "metric": "script",
+      "from": 58663,
+      "to": 58749,
+      "reason": "PR #883 state-transition safety: date-input invalidation (+324 bytes) and stale-menu-frame rejection (+86 bytes). Exact uncompressed script measurements from CI 42283421788; no CSS or performance ceiling change.",
       "date": "2026-11-06"
     }
   ]
