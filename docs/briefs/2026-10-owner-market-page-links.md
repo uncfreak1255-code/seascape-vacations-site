@@ -1,6 +1,7 @@
 # Brief: Owner market pages, guide internal links
 
 - lifecycle: completed
+- link map: enforced
 - completion: source PR #654 merged as `aac361b8` (2026-10-02).
   The measurement contract below still needs its own readback; source
   completion does not prove deployment or owner demand.

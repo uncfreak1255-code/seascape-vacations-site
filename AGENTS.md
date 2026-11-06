@@ -130,7 +130,7 @@ Testing below still governs required checks.
 | Homepage scenes and native trip search | `src/assets/js/guest.js`, `src/index.njk` | `scripts/enforcement/ui-runtime.test.js`, `tests/visual/waterline-scenes.spec.js`, `tests/e2e/site-flows.e2e.ts` |
 | Header menu button state | `src/assets/js/guest-menu.js` | no unit test; covered only by `tests/visual/*.spec.js` |
 | Live-smoke assertions after visible-copy changes | `scripts/recovery/assert-live-smoke.js` | `scripts/enforcement/recovery-smoke.test.js` |
-| A `completed` brief's Required Internal Link Map (every such brief is enforced; the regression case is the four donor guides of `docs/briefs/2026-10-owner-market-page-links.md`) | the `src/` pages listed in that brief's map | `scripts/enforcement/owner-market-link-map.test.js` (reads `_site/`; build first) |
+| A brief's Required Internal Link Map marked `link map: enforced` (`docs/briefs/README.md` -> Lifecycle; the regression case is the four donor guides of `docs/briefs/2026-10-owner-market-page-links.md`) | the `src/` pages listed in that brief's map | `scripts/enforcement/owner-market-link-map.test.js` (reads `_site/`; build first) |
 
 ## Testing
 
