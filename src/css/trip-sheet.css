@@ -129,6 +129,7 @@ body:has(.ts-dialog[open]){overflow:hidden}
   /* Cards: no frame, large photo, plain text */
   .g-home .g-postcards{gap:32px;padding:4px 0 8px}
   .g-home .g-postcard,.g-home .g-postcard:nth-child(n){display:grid;background:none;box-shadow:none;padding:0;transform:none}
+  .g-home .g-postcard.ts-filtered,.g-home .g-postcard.ts-filtered:nth-child(n){display:none}
   .g-home .g-postcard>a{display:contents}
   .g-home .g-postcard-photo{aspect-ratio:1/1;margin-bottom:12px}
   .g-home .g-postcard-photo .ts-strip,.g-home .g-postcard-photo img,.g-home .g-postcard-photo .ts-extra{height:100%}
