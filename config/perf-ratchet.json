@@ -1,11 +1,11 @@
 {
   "routes": {
     "/": {
-      "script": 86726,
+      "script": 86853,
       "stylesheet": 69764
     },
     "/properties/": {
-      "script": 106921,
+      "script": 107073,
       "stylesheet": 70938
     },
     "/property-management/": {
@@ -1312,6 +1312,22 @@
       "from": 70783,
       "to": 70938,
       "reason": "Phone booking flow (PR #890): trip-sheet.js now opens the sheet for links to any trip-form field (card 'Book these dates' asking for group size) and drives the photo-strip count from a data attribute so the catalog card link name matches its label; trip-sheet.css adds the generated count and strip focus ring; /properties/ also carries the catalog-trip-text.js extraction",
+      "date": "2026-11-06"
+    },
+    {
+      "route": "/",
+      "metric": "script",
+      "from": 86726,
+      "to": 86853,
+      "reason": "Phone booking flow (PR #890) review fixes: availability labels hide when the dates change and show only on homes a finished check found open (catalog.js); the sticky trip bar opens the sheet when the form is invalid (trip-sheet.js)",
+      "date": "2026-11-06"
+    },
+    {
+      "route": "/properties/",
+      "metric": "script",
+      "from": 106921,
+      "to": 107073,
+      "reason": "Phone booking flow (PR #890) review fixes: availability labels hide when the dates change and show only on homes a finished check found open (catalog.js); the sticky trip bar opens the sheet when the form is invalid (trip-sheet.js)",
       "date": "2026-11-06"
     }
   ]
