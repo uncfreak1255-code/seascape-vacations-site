@@ -160,6 +160,15 @@ test('dates edited but not searched again take the booking buttons back to "Chec
   }  await expect(availableLabels(page)).toHaveCount(3);
 });
 
+test('an arrival typed and cleared without a search shows no availability labels', async ({ page }) => {
+  await visit(page, 'guests=6');
+  await openTripSheet(page);
+  await page.locator('#trip-arrive').fill('2026-11-07');
+  await page.locator('#trip-arrive').fill('');
+  await closeTripSheet(page);
+  await expect(availableLabels(page)).toHaveCount(0);
+});
+
 test('with no group size, an unsearched date edit does not ask for the group size', async ({ page }) => {
   await visit(page, dates);
   await openTripSheet(page);

@@ -22,8 +22,7 @@
   var openHomes = [];
   // Only while the form still shows it.
   function searched() { return arrive.value === trip.arrive && depart.value === trip.depart; }
-  // "Available for your dates" shows only for the dates that were checked.
-  function labels(off) { cards.forEach(function (card) { var label = card.querySelector("[data-available]"); if (label) label.hidden = off || card.hidden || !searched(); }); }
+  function labels(off) { cards.forEach(function (card) { var label = card.querySelector("[data-available]"); if (label) label.hidden = off || card.hidden || !trip.arrive || !searched() || !openHomes.includes(card.dataset.property); }); }
   function isOpen(home) { return searched() && guests.value === trip.guests && openHomes.includes(home); }
 
   function preserveSave50Params(url) {
