@@ -112,6 +112,11 @@ body:has(.ts-dialog[open]){overflow:hidden}
   .g-home>.g-wrap>.g-collection{order:2;padding-top:0;margin-top:0}
   .g-home>.g-arrival,.g-home>.g-scene-picker{order:3}
   .g-home>.g-scene-status{order:3}
+  /* Phone homepage is the catalog: hide the hero, the second homes strip and the two "go find homes" sections; reviews come right after the homes */
+  .g-home>.g-arrival,.g-home>.g-scene-picker,.g-home>.g-scene-status,.g-home>.g-wrap>.g-organizer,.g-home>.g-wrap>.g-return{display:none}
+  .g-home>.g-wrap>.g-home-reviews{order:3}
+  .g-home-owners h2,.g-home-owners>div>p,.g-home-owners .g-button{display:none}
+  .g-homepage .g-header-actions .g-button{display:none}
   .g-home>.g-wrap>.g-home-trip{margin-top:0}
   .ts-sheet-on .g-home-trip{height:0;margin:0;padding:0;border:0}
   .ts-sheet-on .g-home-trip>div:first-child{display:none}
