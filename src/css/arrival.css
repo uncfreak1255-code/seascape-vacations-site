@@ -232,7 +232,8 @@
   .ts-sheet-on .g-homepage .g-arrival{height:420px}
   .ts-sheet-on .g-arrival-copy{top:88px}
   .ts-sheet-on .g-arrival-copy h1{font-size:clamp(42px,10vw,56px)}
-  .ts-sheet-on .g-arrival-copy>p:last-child{display:none}
+  .ts-sheet-on .g-arrival-copy>p:last-child,
+  .ts-sheet-on .g-scene-caption>div:first-child>p:last-child{display:none}
   .ts-sheet-on .g-homepage .g-home-trip,.ts-sheet-on .g-homepage .ts-bar{display:none}
   .ts-bar-on .g-homepage{padding-bottom:0}
   .ts-sheet-on .g-homepage .g-collection{padding-top:24px}
