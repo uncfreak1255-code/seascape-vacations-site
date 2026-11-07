@@ -23,6 +23,7 @@ async function visit(page, query, stay = answer) {
 const cardButtons = page => page.locator('.catalog-card:not([hidden]) .catalog-check-dates');
 const count = page => page.locator('#catalog-count');
 const status = page => page.locator('#trip-status');
+const availableLabels = page => page.locator('.catalog-card [data-available]:not([hidden])');
 const links = locator => locator.evaluateAll(nodes => nodes.map(node => ({
   href: node.href, raw: node.getAttribute('href'), target: node.getAttribute('target'), slug: node.dataset.pageSlug,
   label: node.getAttribute('aria-label'), text: node.textContent, event: node.getAttribute('data-track-event')
@@ -127,9 +128,12 @@ test('a group size chosen while dates are open applies at once, every time it ch
 test('dates edited but not searched again take the booking buttons back to "Check dates"', async ({ page }) => {
   await visit(page, dates + '&guests=6&compare=dockside-dreams,sarasota-luxe');
   await expect(cardButtons(page)).toHaveText(['Book these dates', 'Book these dates', 'Book these dates']);
+  await expect(availableLabels(page)).toHaveCount(3);
   await openTripSheet(page);
   await page.locator('#trip-depart').fill('2026-11-16');
   await closeTripSheet(page);
+  // "Available for your dates" was true only for the checked dates.
+  await expect(availableLabels(page)).toHaveCount(0);
   // No card may open checkout for the earlier dates while the form shows different ones.
   for (const link of await links(cardButtons(page))) {
     expect(new URL(link.href).pathname).toBe('/listings/' + listingIds[link.slug]);
@@ -153,7 +157,7 @@ test('dates edited but not searched again take the booking buttons back to "Chec
   for (const link of await links(cardButtons(page))) {
     expect(new URL(link.href).pathname).toBe('/checkout/' + listingIds[link.slug]);
     expect(new URL(link.href).searchParams.get('end')).toBe('2026-11-16');
-  }
+  }  await expect(availableLabels(page)).toHaveCount(3);
 });
 
 test('with no group size, an unsearched date edit does not ask for the group size', async ({ page }) => {

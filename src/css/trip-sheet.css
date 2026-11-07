@@ -50,7 +50,6 @@ body:has(.ts-dialog[open]){overflow:hidden}
   /* Photo strips */
   .guest-site .ts-strip{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;overscroll-behavior-x:contain;scrollbar-width:none;touch-action:pan-x pan-y}
   .ts-strip::-webkit-scrollbar{display:none}
-  .guest-site .ts-strip:focus-visible{outline:3px solid var(--g-accent);outline-offset:-3px}
   .guest-site .ts-strip img,.guest-site .ts-strip .ts-extra{display:block;flex:0 0 100%;width:100%;scroll-snap-align:start}
   .ts-overlay{display:block;position:absolute;inset:0;pointer-events:none}
   .ts-count::before{content:attr(data-n) " / " attr(data-of)}

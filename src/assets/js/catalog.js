@@ -22,6 +22,8 @@
   var openHomes = [];
   // Only while the form still shows it.
   function searched() { return arrive.value === trip.arrive && depart.value === trip.depart; }
+  // "Available for your dates" shows only for the dates that were checked.
+  function labels(off) { cards.forEach(function (card) { var label = card.querySelector("[data-available]"); if (label) label.hidden = off || card.hidden || !searched(); }); }
   function isOpen(home) { return searched() && guests.value === trip.guests && openHomes.includes(home); }
 
   function preserveSave50Params(url) {
@@ -114,7 +116,7 @@
     // Even a render with no date request supersedes an outstanding response.
     availabilityRequest++;
     openHomes = [];
-    cards.forEach(function (card) { var label = card.querySelector("[data-available]"); if (label) label.hidden = true; });
+    labels(true);
     document.querySelectorAll("[data-trip-summary]").forEach(function (node) { node.textContent = tripText(); });
     var count = 0;
     cards.forEach(function (card) {
@@ -197,7 +199,7 @@
         });
         if (selected.length < 2 && dialog.open) dialog.close();
         openHomes = cards.filter(function (card) { return !card.hidden; }).map(function (card) { return card.dataset.property; });
-        cards.forEach(function (card) { var label = card.querySelector("[data-available]"); if (label) label.hidden = card.hidden; });
+        labels();
         var openCount = openHomes.length;
         document.getElementById("catalog-count").textContent = openCount === 0
           ? "No home is open for these dates."
@@ -278,7 +280,7 @@
   });
   // For open homes, a group size applies at once.
   guests.addEventListener("change",function() { if (searched() && openHomes.length) submitTrip(); });
-  function datesEdited() { depart.setCustomValidity(""); depart.min=arrive.value || today; if (openHomes.length) { renderComparison(); syncLinks(); } }
+  function datesEdited() { depart.setCustomValidity(""); depart.min=arrive.value || today; labels(); if (openHomes.length) { renderComparison(); syncLinks(); } }
   depart.addEventListener("input",datesEdited);
   arrive.addEventListener("input",datesEdited);
   document.getElementById("clear-dates").addEventListener("click",function() {

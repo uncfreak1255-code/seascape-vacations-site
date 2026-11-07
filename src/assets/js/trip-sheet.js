@@ -64,8 +64,9 @@
     if (action) action.addEventListener('click', function () {
       var f = form();
       var dates = f ? f.querySelectorAll('input[type="date"]') : [];
-      // Valid dates set: run the search. Otherwise ask for them in the sheet.
-      if (f && dates.length === 2 && dates[0].value && dates[1].value > dates[0].value) {
+      // Valid dates set: run the search. Otherwise (missing, past or invalid) open the sheet,
+      // where the browser can show why; a closed sheet cannot show a validation message.
+      if (f && f.checkValidity() && dates.length === 2 && dates[0].value && dates[1].value > dates[0].value) {
         if (f.requestSubmit) f.requestSubmit();
         else f.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
       } else open();
