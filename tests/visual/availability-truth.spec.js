@@ -1,5 +1,5 @@
 const { test, expect } = require("@playwright/test");
-const { registerStableNetwork } = require("./test-helpers");
+const { closeTripSheet, openTripSheet, registerStableNetwork } = require("./test-helpers");
 
 test("expired build snapshots stay hidden without replacing a guest's dates", async ({ page }) => {
   await registerStableNetwork(page);
@@ -13,6 +13,7 @@ test("expired build snapshots stay hidden without replacing a guest's dates", as
     expect(params.get("end")).toBe("2027-11-14");
     expect(params.has("startingDate")).toBe(false);
   }
+  await openTripSheet(page);
   await page.getByRole("button",{name:"My dates are flexible"}).click();
   await expect(page.locator(".catalog-opening:visible")).toHaveCount(0);
 });
@@ -23,9 +24,10 @@ test("recent openings are optional dated suggestions and disappear once a trip i
   await page.goto("/properties/?visual-test=1", {waitUntil:"networkidle"});
   await expect(page.locator(".catalog-opening:visible")).toHaveCount(6);
   await expect(page.locator(".catalog-check-dates").first()).not.toHaveAttribute("href",/start=/);
+  await openTripSheet(page);
   await page.getByLabel("Arrival",{exact:true}).fill("2026-11-07");
   await page.getByLabel("Departure",{exact:true}).fill("2026-11-14");
-  await page.getByRole("button",{name:"Find my home",exact:true}).click();
+  await page.getByRole('button',{name:'Find my home',exact:true}).and(page.locator('[type=submit]')).click();
   await expect(page.locator(".catalog-opening:visible")).toHaveCount(0);
   await expect(page.locator(".catalog-check-dates").first()).toHaveAttribute("href",/start=2026-11-07/);
 });

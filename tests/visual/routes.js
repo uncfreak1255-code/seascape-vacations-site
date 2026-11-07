@@ -10,7 +10,7 @@ const moneyRoutes = [
   {
     slug: "home",
     path: "/",
-    readySelector: "[data-guest-trip-form]",
+    readySelector: "#home-heading",
   },
   {
     slug: "property-management",

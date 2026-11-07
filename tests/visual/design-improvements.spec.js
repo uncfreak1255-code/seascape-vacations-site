@@ -1,6 +1,6 @@
 const { test, expect } = require('@playwright/test');
 const AxeBuilder = require('@axe-core/playwright').default;
-const { registerStableNetwork } = require('./test-helpers');
+const { openTripSheet, registerStableNetwork } = require('./test-helpers');
 
 test.beforeEach(async ({ page }) => {
   await registerStableNetwork(page);
@@ -15,27 +15,31 @@ async function expectResults(page) {
 
 test('explicit homepage and catalog searches reveal results without moving passive edits', async ({ page }, testInfo) => {
   await page.goto('/', { waitUntil: 'networkidle' });
+  await openTripSheet(page);
   await page.locator('#home-trip-arrive').fill('2026-12-01');
   await page.locator('#home-trip-depart').fill('2026-12-08');
   await page.locator('#home-trip-guests').selectOption('12');
-  await page.getByRole('button', { name: 'Find my home', exact: true }).click();
+  await page.getByRole('button',{name:'Find my home',exact:true}).and(page.locator('[type=submit]')).click();
   await expect(page).toHaveURL(/\/properties\//);
   await expect(page.locator('#catalog-count')).toContainText('homes are open');
   await expectResults(page);
   await page.screenshot({ path: testInfo.outputPath('search-results.png'), scale: 'css' });
+  await openTripSheet(page);
   await page.locator('#trip-guests').focus();
   await page.locator('#trip-guests').selectOption('8');
   await expect(page.locator('#trip-guests')).toBeFocused();
-  await page.getByRole('button', { name: 'Find my home', exact: true }).click();
+  await page.getByRole('button',{name:'Find my home',exact:true}).and(page.locator('[type=submit]')).click();
   await expectResults(page);
   // Repeating a search at the same fragment must still return to the results.
+  await openTripSheet(page);
   await page.locator('#trip-arrive').fill('2026-12-02');
-  await page.getByRole('button', { name: 'Find my home', exact: true }).click();
+  await page.getByRole('button',{name:'Find my home',exact:true}).and(page.locator('[type=submit]')).click();
   await expectResults(page);
   await page.goto('/properties/?arrive=2026-12-01&depart=2026-12-08&guests=12', { waitUntil: 'networkidle' });
   expect(await page.evaluate(() => scrollY)).toBe(0);
+  await openTripSheet(page);
   await page.locator('#trip-depart').fill('2026-11-30');
-  await page.getByRole('button', { name: 'Find my home', exact: true }).click();
+  await page.getByRole('button',{name:'Find my home',exact:true}).and(page.locator('[type=submit]')).click();
   await expect(page.locator('#trip-depart')).toBeFocused();
 });
 
@@ -47,9 +51,10 @@ for (const outcome of ['empty', 'failed']) {
       body: JSON.stringify({ ok: true, homes: ['dockside-dreams', 'the-oasis', 'sarasota-luxe', 'river-house', 'bradenton-pool-home', 'blue-house', 'coastal-stay', 'relaxing-oasis'].map(slug => ({ slug, bookable: false, reason: 'booked' })) })
     }));
     await page.goto('/properties/');
+    await openTripSheet(page);
     await page.locator('#trip-arrive').fill('2026-12-01');
     await page.locator('#trip-depart').fill('2026-12-08');
-    await page.getByRole('button', { name: 'Find my home', exact: true }).click();
+    await page.getByRole('button',{name:'Find my home',exact:true}).and(page.locator('[type=submit]')).click();
     await expect(page.locator('#catalog-heading')).toBeFocused();
     await expect(page.locator('#catalog-count')).toBeInViewport();
     await expect(page.locator('#catalog-count')).toContainText(outcome === 'empty' ? 'No home is open' : 'Availability could not be checked');
