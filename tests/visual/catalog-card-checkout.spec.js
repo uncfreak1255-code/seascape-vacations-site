@@ -157,7 +157,8 @@ test('dates edited but not searched again take the booking buttons back to "Chec
   for (const link of await links(cardButtons(page))) {
     expect(new URL(link.href).pathname).toBe('/checkout/' + listingIds[link.slug]);
     expect(new URL(link.href).searchParams.get('end')).toBe('2026-11-16');
-  }  await expect(availableLabels(page)).toHaveCount(3);
+  }
+  await expect(availableLabels(page)).toHaveCount(3);
 });
 
 test('an arrival typed and cleared without a search shows no availability labels', async ({ page }) => {
@@ -167,6 +168,23 @@ test('an arrival typed and cleared without a search shows no availability labels
   await page.locator('#trip-arrive').fill('');
   await closeTripSheet(page);
   await expect(availableLabels(page)).toHaveCount(0);
+});
+
+test('on a phone, the trip bar with a past arrival opens the sheet instead of searching', async ({ page }) => {
+  let checks = 0;
+  await visit(page, '', route => { checks += 1; return answer(route); });
+  test.skip(!(await page.locator('.ts-pill').first().isVisible()), 'the trip bar is phone only');
+  await openTripSheet(page);
+  await page.locator('#trip-arrive').fill('2026-09-01');
+  await page.locator('#trip-depart').fill('2026-09-03');
+  await closeTripSheet(page);
+  await page.evaluate(() => window.scrollTo(0, 1500));
+  const action = page.locator('[data-trip-bar-action]');
+  await expect(action).toBeVisible();
+  await action.click();
+  // A closed sheet cannot show why the dates are invalid, so the bar opens it.
+  await expect(page.locator('dialog[data-trip-sheet]')).toBeVisible();
+  expect(checks).toBe(0);
 });
 
 test('with no group size, an unsearched date edit does not ask for the group size', async ({ page }) => {
