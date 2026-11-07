@@ -22,6 +22,17 @@ column before pushing; read the CI column when a PR check is red.
 | `npm run verify:preview-surface -- <url>` | homepage, property and booking-handoff assertions against a served `_site` | `preview-surface` |
 | post-deploy smoke trio in `AGENTS.md` -> Deploy | the live production site | `live-smoke` |
 
+The visual runner holds the existing `repo-build` lock through its build,
+browser run and server shutdown. A competing build or safe-commit proof in
+the same worktree waits, then reports the existing timeout if testing is still
+running. Let the visual run finish before retrying that command.
+
+Before publishing browser JavaScript or CSS changes, run `npm run perf:budget`
+and then `npm run perf:ratchet` against the fresh reports from that same source.
+`verify:release` does not include these performance checks. Inspect byte growth;
+use `perf:ratchet:update -- --allow-raise "<reason>"` only for an intentional,
+measured increase. The existing commands and required CI check own this proof.
+
 Dependency-manifest and release-workflow changes also install locked Chromium and run the complete existing accessibility spec inside `release-safety`. A failed browser result fails that required job; optional or cancelled visual results do not substitute for it. The dependency comparison fails when its Git range cannot be read.
 
 The visual workflow uses two workers on the self-hosted runner and one on

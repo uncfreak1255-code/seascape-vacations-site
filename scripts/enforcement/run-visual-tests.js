@@ -3,6 +3,7 @@
 const path = require("node:path");
 const { spawn } = require("node:child_process");
 const { closeServer, startStaticServer } = require("./serve-static");
+const { withWorktreeLock } = require("./worktree-lock");
 
 const projectRoot = path.resolve(__dirname, "..", "..");
 const playwrightCli = require.resolve("@playwright/test/cli");
@@ -61,58 +62,57 @@ async function runPlaywright(baseUrl, extraArgs, setActiveChild) {
 
 async function main() {
   let activeChild = null;
-  let closing = false;
+  let interruptedExitCode;
   let started;
 
-  const shutdown = async (exitCode) => {
-    if (closing) {
-      return;
-    }
-
-    closing = true;
-
-    if (activeChild && activeChild.exitCode === null) {
+  const interrupt = (exitCode) => {
+    interruptedExitCode ??= exitCode;
+    if (activeChild && activeChild.exitCode === null && activeChild.signalCode === null) {
       activeChild.kill("SIGTERM");
-      await waitForChild(activeChild).catch(() => {});
-      activeChild = null;
     }
-
-    if (started) {
-      await closeServer(started.server).catch(() => {});
-    }
-
-    process.exit(exitCode);
   };
-
-  process.once("SIGINT", () => {
-    void shutdown(130);
-  });
-  process.once("SIGTERM", () => {
-    void shutdown(143);
-  });
+  const onSigint = () => interrupt(130);
+  const onSigterm = () => interrupt(143);
+  process.once("SIGINT", onSigint);
+  process.once("SIGTERM", onSigterm);
 
   try {
-    const buildExitCode = await runBuild((child) => {
-      activeChild = child;
-    });
-    if (buildExitCode !== 0) {
-      process.exit(buildExitCode);
-      return;
-    }
+    // The browser reads this build until its server closes. Nested builds
+    // inherit ownership; unrelated builds must wait for the entire inspection.
+    const exitCode = await withWorktreeLock(
+      { name: "repo-build", repoRootDir: projectRoot },
+      async () => {
+        try {
+          const buildExitCode = await runBuild((child) => {
+            activeChild = child;
+          });
+          if (interruptedExitCode !== undefined || buildExitCode !== 0) {
+            return interruptedExitCode ?? buildExitCode;
+          }
 
-    started = await startStaticServer({
-      host: "127.0.0.1",
-      port: 0,
-      root: "_site",
-    });
+          started = await startStaticServer({
+            host: "127.0.0.1",
+            port: 0,
+            root: "_site",
+          });
+          if (interruptedExitCode !== undefined) return interruptedExitCode;
 
-    const result = await runPlaywright(started.url, process.argv.slice(2), (child) => {
-      activeChild = child;
-    });
-    await shutdown(result.signal ? 1 : result.code);
+          const result = await runPlaywright(started.url, process.argv.slice(2), (child) => {
+            activeChild = child;
+          });
+          return interruptedExitCode ?? (result.signal ? 1 : result.code);
+        } finally {
+          if (started) await closeServer(started.server);
+        }
+      }
+    );
+    process.exitCode = interruptedExitCode ?? exitCode;
   } catch (error) {
     console.error(error instanceof Error ? error.message : error);
-    await shutdown(1);
+    process.exitCode = interruptedExitCode ?? 1;
+  } finally {
+    process.removeListener("SIGINT", onSigint);
+    process.removeListener("SIGTERM", onSigterm);
   }
 }
 
