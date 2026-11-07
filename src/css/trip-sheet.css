@@ -147,3 +147,36 @@ body:has(.ts-dialog[open]){overflow:hidden}
   .catalog-page .catalog-collection{margin-top:0;padding-top:0}
   .catalog-page .ts-chips{margin-top:0}
 }
+/* Prototype: rounded phone pass (Emil Kowalski / Jakub Krehel surface rules). Phone only. */
+@media(max-width:700px){
+  .guest-site{--r-field:12px;--r-card:20px;--shadow-ring:0 0 0 1px oklch(0 0 0 / .06),0 1px 2px -1px oklch(0 0 0 / .06),0 2px 4px 0 oklch(0 0 0 / .04);--shadow-lift:0 0 0 1px oklch(0 0 0 / .04),0 6px 20px -4px oklch(0 0 0 / .14)}
+  /* White page on phones (DESIGN.md decision: cream stays on wider screens) */
+  html .guest-site,html .guest-shell .g-header,html .guest-shell .g-footer{--g-paper:#fff}
+  html{-webkit-tap-highlight-color:transparent}
+  /* Header: no rule line, round icon buttons */
+  html .guest-site .g-header{border-bottom:0}
+  html .guest-site .g-header-phone{width:44px;height:44px;border:0;border-radius:999px;box-shadow:var(--shadow-ring)}
+  /* Search pill floats on a shadow, not a border */
+  .ts-pill:not([hidden]),.catalog-page .ts-pill:not([hidden]){border:0;box-shadow:var(--shadow-lift)}
+  .ts-sheet-on body::before{box-shadow:none}
+  /* Buttons: 12px corners, full width CTAs stay rectangles with soft corners */
+  html .guest-site .g-button,html .guest-site .btn,html .guest-site .btn-brand{border-radius:var(--r-field)}
+  html .guest-site .catalog-compare-toggle{border:0;border-radius:999px;box-shadow:var(--shadow-ring);background:var(--g-paper)}
+  html .guest-site .catalog-compare-toggle[aria-pressed=true]{box-shadow:none}
+  /* Fields: 12px corners and 16px text so iPhone does not zoom on focus */
+  html .guest-site input:not([type=checkbox]):not([type=radio]),html .guest-site select,html .guest-site textarea{border-radius:var(--r-field);font-size:16px}
+  /* Photos: hairline neutral edge so light photos keep their shape */
+  html .guest-site .ts-strip,.g-postcard-photo,html .guest-site .catalog-page .catalog-card-media{outline:1px solid oklch(0 0 0 / .1);outline-offset:-1px}
+  /* Cards press like a native tile */
+  .g-home .g-postcard,html .guest-site .catalog-page .catalog-card{transition:transform 160ms cubic-bezier(.23,1,.32,1)}
+  .g-home .g-postcard:active,html .guest-site .catalog-page .catalog-card:active{transform:scale(.98)}
+  /* Flat bands become rounded soft panels */
+  html .guest-site .catalog-help,.g-home-signup{border-radius:var(--r-card)}
+  .g-home-signup{border-top:0;background:var(--g-soft);padding:24px 20px;margin-block:24px}
+  html .guest-site .catalog-help{border-top:0}
+  /* /properties/ card names match the homepage cards */
+  html .guest-site .catalog-page .catalog-card h3{font:400 26px/1.1 'Instrument Serif',Georgia,serif;letter-spacing:-.01em;margin:12px 0 6px}
+}
+@media(max-width:700px) and (prefers-reduced-motion:reduce){
+  .g-home .g-postcard:active,html .guest-site .catalog-page .catalog-card:active{transform:none}
+}
