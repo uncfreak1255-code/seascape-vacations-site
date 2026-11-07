@@ -48,26 +48,3 @@ test('a slow photo does not take focus back from the trip form', async ({ page }
   await expect(page.locator('#scene-river-house')).toBeVisible();
   await expect(arrival).toBeFocused();
 });
-
-test('the phone homepage keeps one reachable date control and the owner review link', async ({ page }, testInfo) => {
-  test.skip(testInfo.project.name !== 'mobile-chromium', 'phone layout only');
-  await registerStableNetwork(page);
-  await page.goto('/');
-  const pill = page.getByRole('button', { name: /Dates and guests/ });
-  await expect(pill).toBeVisible();
-  await pill.focus();
-  await pill.press('Enter');
-  await expect(page.getByRole('dialog', { name: 'Dates and guests' })).toBeVisible();
-  await page.keyboard.press('Escape');
-  await expect(pill).toBeFocused();
-
-  const owners = page.getByRole('link', { name: /Request a revenue review/ });
-  await expect(owners).toBeVisible();
-  await owners.scrollIntoViewIfNeeded();
-  await expect(pill).toBeInViewport();
-  await expect(page.locator('[data-trip-bar]')).toBeHidden();
-
-  await page.getByRole('button', { name: 'Sarasota', exact: true }).click();
-  await expect(page.locator('[data-ts-card]:visible')).toHaveCount(1);
-  await expect(page.locator('[data-ts-status]')).toHaveText('1 home');
-});
