@@ -17,7 +17,7 @@ pageScript: "/assets/js/trip-sheet.js"
       {% for slug in sceneSlugs %}{% set home = properties | propertyBySlug(slug) %}{% set photo = home.photography.photos[0] %}
       <div class="g-scene" id="scene-{{ home.slug }}" data-scene="{{ home.slug }}"{% if not loop.first %} hidden{% endif %}>
         {% if home.slug == 'the-oasis' %}
-        <picture><source media="(max-width:700px)" srcset="/images/homes/the-oasis/hero-clarity-mobile.webp"><img class="g-scene-photo" data-transition-home="{{ home.slug }}" data-property-photo="{{ home.slug }}" src="/images/homes/the-oasis/hero-clarity.webp" width="1400" height="934" fetchpriority="high" alt="{{ photo.alt }}"></picture>
+        <picture>{# Phones hide the hero, so they get a 1px placeholder instead of downloading the photo. #}<source media="(max-width:700px)" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"><img class="g-scene-photo" data-transition-home="{{ home.slug }}" data-property-photo="{{ home.slug }}" src="/images/homes/the-oasis/hero-clarity.webp" width="1400" height="934" fetchpriority="high" alt="{{ photo.alt }}"></picture>
         {% else %}
         <img class="g-scene-photo" data-transition-home="{{ home.slug }}" data-property-photo="{{ home.slug }}" {% if loop.first %}src="{{ photo.src }}" srcset="{{ photo.src | replace('.webp', '-800.webp') }} 800w, {{ photo.src }} {{ photo.width }}w{{ photo.src | hdSrcset }}" fetchpriority="high"{% else %}data-scene-src="{{ photo.src }}" data-scene-srcset="{{ photo.src | replace('.webp', '-800.webp') }} 800w, {{ photo.src }} {{ photo.width }}w{{ photo.src | hdSrcset }}"{% endif %} sizes="100vw" width="{{ photo.width }}" height="{{ photo.height }}" alt="{{ photo.alt }}">
         {% endif %}
