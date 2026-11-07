@@ -124,7 +124,9 @@ body:has(.ts-dialog[open]){overflow:hidden}
   html .guest-site .g-home>.g-arrival .g-scenes,html .guest-site .g-home>.g-arrival .g-arrival-seal{display:none}
   .g-home>.g-wrap>.g-home-reviews{order:3}
   .g-home-owners h2,.g-home-owners>div>p:not(.g-label){display:none}
-  .g-home-owners{gap:12px}
+  html .guest-site .g-home-owners{gap:10px;padding:24px 0 28px}
+  html .guest-site .g-home-owners .g-label{margin:0}
+  html .guest-site .g-home-owners .g-inline-link{margin-top:14px}
   .g-homepage .g-header-actions .g-button{display:none}
   .g-home>.g-wrap>.g-home-trip{margin-top:0}
   .ts-sheet-on .g-home-trip{height:0;margin:0;padding:0;border:0}
