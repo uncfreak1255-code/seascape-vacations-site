@@ -2,7 +2,7 @@ const assert = require("node:assert/strict");
 const AxeBuilder = require("@axe-core/playwright").default;
 const { expect, test } = require("@playwright/test");
 const { moneyRoutes } = require("./routes");
-const { gotoMarketingRoute } = require("./test-helpers");
+const { gotoMarketingRoute, withoutPhotoStrips } = require("./test-helpers");
 
 function formatViolations(routeSlug, violations) {
   return violations
@@ -14,15 +14,6 @@ function formatViolations(routeSlug, violations) {
       return `${routeSlug}: [${violation.impact}] ${violation.id} -> ${targets}`;
     })
     .join("\n");
-}
-
-// A phone photo strip scrolls inside its card link, and a focusable element is
-// not allowed inside a link. Its extra photos are decorative (empty alt) and the
-// link itself is the keyboard path to the home, so the strip is exempt from
-// scrollable-region-focusable only; every other rule still checks it.
-function withoutPhotoStrips(violation) {
-  if (violation.id !== "scrollable-region-focusable") return violation;
-  return { ...violation, nodes: violation.nodes.filter((node) => !node.html.includes("data-ts-strip")) };
 }
 
 const ownerHub = moneyRoutes.find((route) => route.slug === "property-management");
