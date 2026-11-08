@@ -33,6 +33,8 @@
 
    Rules for fix 4: each comparison or money line is taken from the linked guide's own verdict and is traceable to a sentence in that guide; where the guide has no clear verdict, the line describes the guide's content plainly rather than inventing one. No stock AI patterns from `docs/style/banned-patterns.md`: no abstract noun lists standing in for a real difference, no mirrored "the wrong X for the wrong Y" phrasing, no "personalities"/"vibe" filler, no "quietly", no line that only promises the guide will help.
 
+   Starting drafts for four of these lines, each with its guide sentence, are in `docs/research/2026-11-07-writing-plugin-bakeoff.md`. That test also found that the card title "Why Booking Direct Saves You Hundreds" contradicts its guide ("There is no fixed saving."); the title stays out of this brief's scope unless Sawyer adds it.
+
 ## Why This Batch
 
 - what changed in the data: nothing measured; Sawyer spotted these while reviewing the rendered Waterline redesign of `/guides/`
