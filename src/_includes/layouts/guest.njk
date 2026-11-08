@@ -22,6 +22,7 @@
   {% set localFontDisplay = "swap" %}
   {% include "partials/local-font-head.njk" %}
   <link rel="preload" href="/assets/fonts/guest/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
+  {% if (pageScript and 'trip-sheet.js' in pageScript) or (headExtra and 'trip-sheet.js' in headExtra) %}{% include "partials/trip-sheet-early.njk" %}{% endif %}
   {% include "partials/organization-schema.njk" %}
   <link rel="stylesheet" href="/css/base.css">
   {{ headExtra | safe }}

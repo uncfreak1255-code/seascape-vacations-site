@@ -10,7 +10,8 @@ const moneyRoutes = [
   {
     slug: "home",
     path: "/",
-    readySelector: "#home-heading",
+    // The hero H1 is visually hidden on phones, so wait for the home cards, which every width shows.
+    readySelector: ".g-postcard",
   },
   {
     slug: "property-management",

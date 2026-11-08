@@ -178,7 +178,10 @@ test('no catalog link keeps dates the guest changed or cleared', async ({ page }
   const withDates = await page.locator('a[href]').evaluateAll(nodes => nodes.filter(n => n.origin === location.origin && new URL(n.href).searchParams.has('arrive')).map(n => n.href));
   expect(withDates).toEqual([]);
   // The breadcrumb is a real way back to the homepage; it must not bring the cleared dates with it.
-  await page.locator('.catalog-breadcrumb a').click();
+  // Phones hide the breadcrumb, so follow the same link by its address there.
+  const crumb = page.locator('.catalog-breadcrumb a');
+  if (await crumb.isVisible()) await crumb.click();
+  else await page.goto(await crumb.getAttribute('href'));
   await expect(page.locator('#home-trip-arrive')).toHaveValue('');
   await expect(page.locator('#home-trip-guests')).toHaveValue('8');
 });

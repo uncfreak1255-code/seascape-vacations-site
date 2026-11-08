@@ -3,6 +3,7 @@ const { closeTripSheet, openTripSheet, registerStableNetwork } = require('./test
 const {selectScene} = require('./home-scene-helpers');
 const homes = require('../../src/_data/properties-fallback.json');
 const trip = 'arrive=2026-11-07&depart=2026-11-14&guests=8';
+test.skip(({ isMobile }) => isMobile, 'Phones show the homepage as a list of homes with no hero (PR #892); desktop still covers the hero.');
 async function visit(page) {
   await registerStableNetwork(page);
   await page.clock.setFixedTime(new Date('2026-09-05T16:00:00Z'));

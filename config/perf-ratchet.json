@@ -1,36 +1,36 @@
 {
   "routes": {
     "/": {
-      "script": 86853,
-      "stylesheet": 70549
+      "script": 87481,
+      "stylesheet": 83524
     },
     "/properties/": {
-      "script": 107073,
-      "stylesheet": 71723
+      "script": 107701,
+      "stylesheet": 84698
     },
     "/property-management/": {
-      "script": 90809,
-      "stylesheet": 57818
+      "script": 91144,
+      "stylesheet": 58852
     },
     "/property-management/vacation-rental-licensing-florida/": {
-      "script": 60723,
-      "stylesheet": 37987
+      "script": 61058,
+      "stylesheet": 38424
     },
     "/property-management/vacation-rental-management-fees-florida/": {
-      "script": 60723,
-      "stylesheet": 37987
+      "script": 61058,
+      "stylesheet": 38424
     },
     "/property-management/vrbo-management-services-florida/": {
-      "script": 60723,
-      "stylesheet": 37987
+      "script": 61058,
+      "stylesheet": 38424
     },
     "/stays/anna-maria-island-beachfront-rentals/": {
-      "script": 58749,
-      "stylesheet": 52620
+      "script": 59084,
+      "stylesheet": 53057
     },
     "/stays/anna-maria-island-vacation-rentals/": {
-      "script": 58749,
-      "stylesheet": 52620
+      "script": 59084,
+      "stylesheet": 53057
     }
   },
   "raises": [
@@ -1392,6 +1392,174 @@
       "from": 51742,
       "to": 52620,
       "reason": "PR #896: desktop nav hover underline + color (motion.css, ~0.8 KB), approved by Sawyer 2026-11-07",
+      "date": "2026-11-08"
+    },
+    {
+      "route": "/",
+      "metric": "script",
+      "from": 86853,
+      "to": 87146,
+      "reason": "PR #892: Airbnb-style phone layout CSS for / and /properties/ (trip-sheet.css phone block, rating line, chips) plus one trip-sheet.js line; Lighthouse LCP/CLS/TBT ceilings unchanged",
+      "date": "2026-11-08"
+    },
+    {
+      "route": "/",
+      "metric": "stylesheet",
+      "from": 70549,
+      "to": 83087,
+      "reason": "PR #892: Airbnb-style phone layout CSS for / and /properties/ (trip-sheet.css phone block, rating line, chips) plus one trip-sheet.js line; Lighthouse LCP/CLS/TBT ceilings unchanged",
+      "date": "2026-11-08"
+    },
+    {
+      "route": "/properties/",
+      "metric": "script",
+      "from": 107073,
+      "to": 107366,
+      "reason": "PR #892: Airbnb-style phone layout CSS for / and /properties/ (trip-sheet.css phone block, rating line, chips) plus one trip-sheet.js line; Lighthouse LCP/CLS/TBT ceilings unchanged",
+      "date": "2026-11-08"
+    },
+    {
+      "route": "/properties/",
+      "metric": "stylesheet",
+      "from": 71723,
+      "to": 84261,
+      "reason": "PR #892: Airbnb-style phone layout CSS for / and /properties/ (trip-sheet.css phone block, rating line, chips) plus one trip-sheet.js line; Lighthouse LCP/CLS/TBT ceilings unchanged",
+      "date": "2026-11-08"
+    },
+    {
+      "route": "/",
+      "metric": "script",
+      "from": 87146,
+      "to": 87481,
+      "reason": "Page transitions on top of #892, approved by Sawyer 2026-11-07",
+      "date": "2026-11-08"
+    },
+    {
+      "route": "/",
+      "metric": "stylesheet",
+      "from": 83087,
+      "to": 83524,
+      "reason": "Page transitions on top of #892, approved by Sawyer 2026-11-07",
+      "date": "2026-11-08"
+    },
+    {
+      "route": "/properties/",
+      "metric": "script",
+      "from": 107366,
+      "to": 107701,
+      "reason": "Page transitions on top of #892, approved by Sawyer 2026-11-07",
+      "date": "2026-11-08"
+    },
+    {
+      "route": "/properties/",
+      "metric": "stylesheet",
+      "from": 84261,
+      "to": 84698,
+      "reason": "Page transitions on top of #892, approved by Sawyer 2026-11-07",
+      "date": "2026-11-08"
+    },
+    {
+      "route": "/property-management/",
+      "metric": "script",
+      "from": 90809,
+      "to": 91144,
+      "reason": "Page transitions on top of #892, approved by Sawyer 2026-11-07",
+      "date": "2026-11-08"
+    },
+    {
+      "route": "/property-management/",
+      "metric": "stylesheet",
+      "from": 57818,
+      "to": 58255,
+      "reason": "Page transitions on top of #892, approved by Sawyer 2026-11-07",
+      "date": "2026-11-08"
+    },
+    {
+      "route": "/property-management/vacation-rental-management-fees-florida/",
+      "metric": "script",
+      "from": 60723,
+      "to": 61058,
+      "reason": "Page transitions on top of #892, approved by Sawyer 2026-11-07",
+      "date": "2026-11-08"
+    },
+    {
+      "route": "/property-management/vacation-rental-management-fees-florida/",
+      "metric": "stylesheet",
+      "from": 37987,
+      "to": 38424,
+      "reason": "Page transitions on top of #892, approved by Sawyer 2026-11-07",
+      "date": "2026-11-08"
+    },
+    {
+      "route": "/property-management/vacation-rental-licensing-florida/",
+      "metric": "script",
+      "from": 60723,
+      "to": 61058,
+      "reason": "Page transitions on top of #892, approved by Sawyer 2026-11-07",
+      "date": "2026-11-08"
+    },
+    {
+      "route": "/property-management/vacation-rental-licensing-florida/",
+      "metric": "stylesheet",
+      "from": 37987,
+      "to": 38424,
+      "reason": "Page transitions on top of #892, approved by Sawyer 2026-11-07",
+      "date": "2026-11-08"
+    },
+    {
+      "route": "/property-management/vrbo-management-services-florida/",
+      "metric": "script",
+      "from": 60723,
+      "to": 61058,
+      "reason": "Page transitions on top of #892, approved by Sawyer 2026-11-07",
+      "date": "2026-11-08"
+    },
+    {
+      "route": "/property-management/vrbo-management-services-florida/",
+      "metric": "stylesheet",
+      "from": 37987,
+      "to": 38424,
+      "reason": "Page transitions on top of #892, approved by Sawyer 2026-11-07",
+      "date": "2026-11-08"
+    },
+    {
+      "route": "/stays/anna-maria-island-vacation-rentals/",
+      "metric": "script",
+      "from": 58749,
+      "to": 59084,
+      "reason": "Page transitions on top of #892, approved by Sawyer 2026-11-07",
+      "date": "2026-11-08"
+    },
+    {
+      "route": "/stays/anna-maria-island-vacation-rentals/",
+      "metric": "stylesheet",
+      "from": 52620,
+      "to": 53057,
+      "reason": "Page transitions on top of #892, approved by Sawyer 2026-11-07",
+      "date": "2026-11-08"
+    },
+    {
+      "route": "/stays/anna-maria-island-beachfront-rentals/",
+      "metric": "script",
+      "from": 58749,
+      "to": 59084,
+      "reason": "Page transitions on top of #892, approved by Sawyer 2026-11-07",
+      "date": "2026-11-08"
+    },
+    {
+      "route": "/stays/anna-maria-island-beachfront-rentals/",
+      "metric": "stylesheet",
+      "from": 52620,
+      "to": 53057,
+      "reason": "Page transitions on top of #892, approved by Sawyer 2026-11-07",
+      "date": "2026-11-08"
+    },
+    {
+      "route": "/property-management/",
+      "metric": "stylesheet",
+      "from": 58255,
+      "to": 58852,
+      "reason": "Owner page editorial home cards (option C) on top of #899, approved by Sawyer 2026-11-07",
       "date": "2026-11-08"
     }
   ]

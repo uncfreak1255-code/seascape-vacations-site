@@ -359,6 +359,7 @@ for (const slug of SCENES) {
   test(`home — F4 hero contrast holds for the ${slug} scene`, async ({ page }, testInfo) => {
     await gotoMarketingRoute(page, homeRoute);
     const isMobileProject = testInfo.project.name === "mobile-chromium";
+    test.skip(isMobileProject, "Phones show the homepage as a list of homes with no hero (PR #892); desktop still covers the hero.");
     const selectors = heroTextSelectors(isMobileProject);
 
     await selectScene(page,slug);
