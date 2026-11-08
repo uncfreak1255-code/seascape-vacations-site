@@ -65,6 +65,7 @@
 .guides-index .utility-pills{display:flex;flex-wrap:wrap;gap:8px;list-style:none;margin:24px 0 0;padding:0}
 .guides-index .utility-pills a{display:inline-flex;align-items:center;min-height:44px;padding:8px 16px;border:1px solid var(--g-rule);border-radius:4px;background:var(--g-paper);font-size:13px;font-weight:500;color:var(--g-ink)}
 .guides-index .utility-links{margin-top:16px}
+.guides-index .utility-card .section-tag{margin:0 0 12px}
 
 /* Desktop hover: fine pointers only. Cards never move; the rule darkens and the photo scales inside its frame. */
 @media (hover:hover) and (pointer:fine){

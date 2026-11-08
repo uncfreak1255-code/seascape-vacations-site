@@ -33,7 +33,6 @@ Desktop hover feedback for the guest header nav and the guides index
 
 Layout and tokens: [guides index design](guides-index.md).
 
-
 - Featured and side story cards: the 1px rule darkens to ink (`--g-ink`) and
   the title turns clay. The card itself does not move.
 - Card photos scale to 1.03 inside the card's `overflow: hidden`; the card has
