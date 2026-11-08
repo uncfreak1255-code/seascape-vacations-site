@@ -3,7 +3,7 @@ const { test, expect } = require('@playwright/test');
 const { gotoMarketingRoute } = require('./test-helpers');
 
 test('Waterline facts and navigation remain readable and usable', async ({ page }) => {
-  await gotoMarketingRoute(page, { slug: 'home', path: '/', readySelector: '#home-heading' });
+  await gotoMarketingRoute(page, { slug: 'home', path: '/', readySelector: '.g-postcard' });
   const measurements = await page.locator('.g-header-actions .g-button, .g-menu-button, .g-scene:not([hidden]) .g-scene-explore, .g-footer-grid > div > a, .g-footer-bottom a').evaluateAll(nodes => nodes
     .filter(node => node.getClientRects().length)
     .map(node => ({ text: node.textContent.trim(), height: node.getBoundingClientRect().height })));
@@ -42,8 +42,9 @@ test('Waterline comparison icons, badges and row labels fit their controls', asy
 
 test('Every homepage scene keeps copy clear of the property caption', async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== 'desktop-chromium', 'Explicit viewport matrix covers both device sizes.');
-  await gotoMarketingRoute(page, { slug: 'home', path: '/', readySelector: '#home-heading' });
-  for (const width of [375, 390, 768, 1440]) {
+  await gotoMarketingRoute(page, { slug: 'home', path: '/', readySelector: '.g-postcard' });
+  // Phones show the homepage as a list of homes with no hero (PR #892); desktop still covers the hero.
+  for (const width of [768, 1440]) {
     await page.setViewportSize({ width, height: 900 });
     for (const slug of ['the-oasis', 'dockside-dreams', 'sarasota-luxe', 'river-house', 'bradenton-pool-home']) {
       await selectScene(page,slug);

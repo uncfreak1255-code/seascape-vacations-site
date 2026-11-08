@@ -48,16 +48,19 @@ test('Relaxing Oasis booking handoff preserves trip without submitting a reserva
   }).toPass();
 });
 
-test('Relaxing Oasis can be discovered on the homepage and filtered and compared in the catalog', async ({ page }) => {
+test('Relaxing Oasis can be discovered on the homepage and filtered and compared in the catalog', async ({ page, isMobile }) => {
   await page.route('**/.netlify/functions/booking-availability?*', route => route.fulfill({ status: 503, body: '{}' }));
   await page.goto('/');
   const postcard = page.locator('.g-postcard').filter({ hasText: 'Relaxing Oasis' });
   await expect(postcard).toHaveCount(1);
   await expect(postcard.locator('a')).toHaveAttribute('href', '/properties/relaxing-oasis/');
   await expect(postcard.locator('img[data-property-photo]').first()).toHaveAttribute('src', '/images/homes/relaxing-oasis/01.webp');
-  await page.getByRole('button', { name: 'Prev featured home', exact: true }).click();
-  await expect(page.locator('#scene-relaxing-oasis')).toBeVisible();
-  await expect.poll(() => page.locator('#scene-relaxing-oasis img').evaluate(i => i.complete && i.naturalWidth > 0)).toBe(true);
+  // Phones have no hero; the homepage card above is how a phone guest finds the home.
+  if (!isMobile) {
+    await page.getByRole('button', { name: 'Prev featured home', exact: true }).click();
+    await expect(page.locator('#scene-relaxing-oasis')).toBeVisible();
+    await expect.poll(() => page.locator('#scene-relaxing-oasis img').evaluate(i => i.complete && i.naturalWidth > 0)).toBe(true);
+  }
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.goto('/properties/');
   const card = page.locator('.catalog-card[data-property="relaxing-oasis"]');

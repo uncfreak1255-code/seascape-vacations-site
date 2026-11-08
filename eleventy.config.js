@@ -248,6 +248,14 @@ module.exports = function(eleventyConfig) {
       const fontCss = fs.readFileSync(path.join(root, "src/css/guest-fonts.css"), "utf8");
       fs.writeFileSync(guestOut, fontCss + "\n" + fs.readFileSync(guestSrc, "utf8") + "\n" + fs.readFileSync(motionSrc, "utf8"));
     }
+    // trip-sheet.css is at its size cap; the card rating and chip rules live in trip-sheet-cards.css and ship inside it.
+    const tripSrc = path.join(root, "src", "css", "trip-sheet.css");
+    const tripCardsSrc = path.join(root, "src", "css", "trip-sheet-cards.css");
+    if (fs.existsSync(tripSrc) && fs.existsSync(tripCardsSrc)) {
+      const tripOut = path.join(root, "_site", "css", "trip-sheet.css");
+      fs.mkdirSync(path.dirname(tripOut), { recursive: true });
+      fs.writeFileSync(tripOut, fs.readFileSync(tripSrc, "utf8") + "\n" + fs.readFileSync(tripCardsSrc, "utf8"));
+    }
   });
   
   // Watch for changes during development
@@ -256,6 +264,7 @@ module.exports = function(eleventyConfig) {
   // Simple title filter - just appends site name if not already there
   eleventyConfig.addFilter("propertySchemaAmenities", require("./scripts/regenerate-property-surfaces").renderSchemaAmenityLabels);
   eleventyConfig.addFilter("numberWord", require("./scripts/enforcement/home-count-word").numberWord);
+  eleventyConfig.addFilter("airbnbRating", (listingId) => require("./scripts/enforcement/airbnb-rating").airbnbRatingLabel(listingId));
   eleventyConfig.addFilter("propertyBySlug", (properties, slug) => {
     const property = properties.find((entry) => entry.slug === slug);
     if (!property) throw new Error(`Unknown property slug: ${slug}`);

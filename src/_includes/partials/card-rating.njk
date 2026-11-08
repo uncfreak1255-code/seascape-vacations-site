@@ -1,0 +1,10 @@
+{#- The Airbnb rating on a home card, laid out like Airbnb's own cards (Sawyer, 2026-11-07).
+    Expects `rating` from the airbnbRating filter (null renders nothing).
+    ratingPart "line": "★ 5.0 (44)" at the right of the name row, hidden from screen readers.
+    ratingPart "spoken": the sentence a screen reader hears, naming Airbnb, placed after the name row.
+    The list above the cards carries the visible "Ratings from Airbnb" label. -#}
+{%- if rating -%}
+{%- if ratingPart == "spoken" -%}<span class="g-sr-only">{{ rating.spoken }}</span>
+{%- else -%}<span class="g-card-rating" aria-hidden="true">★ {{ rating.short }}</span>
+{%- endif -%}
+{%- endif -%}

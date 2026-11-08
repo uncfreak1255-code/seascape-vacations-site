@@ -1,0 +1,15 @@
+{
+  "source": "seascape-analytics market tracker: latest market_listing_observations row per Seascape listing (market_watchlist.is_ours), joined on our_hostaway_id",
+  "readAt": "2026-11-07T07:19:29Z",
+  "minimumReviews": 3,
+  "homes": {
+    "206016": { "name": "Dockside Dreams", "rating": 4.97, "reviews": 112 },
+    "607228": { "name": "Relaxing Oasis", "rating": 4.88, "reviews": 42 },
+    "487798": { "name": "Bradenton Pool Home", "rating": 5.0, "reviews": 44 },
+    "589288": { "name": "Blue House", "rating": 5.0, "reviews": 3 },
+    "599394": { "name": "Coastal Stay", "rating": 5.0, "reviews": 1 },
+    "135880": { "name": "River House", "rating": 4.96, "reviews": 193 },
+    "135881": { "name": "Sarasota Luxe", "rating": 4.98, "reviews": 110 },
+    "189511": { "name": "The Oasis", "rating": 4.99, "reviews": 135 }
+  }
+}
