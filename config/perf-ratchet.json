@@ -10,7 +10,7 @@
     },
     "/property-management/": {
       "script": 91144,
-      "stylesheet": 58255
+      "stylesheet": 58852
     },
     "/property-management/vacation-rental-licensing-florida/": {
       "script": 61058,
@@ -1552,6 +1552,14 @@
       "from": 52620,
       "to": 53057,
       "reason": "Page transitions on top of #892, approved by Sawyer 2026-11-07",
+      "date": "2026-11-08"
+    },
+    {
+      "route": "/property-management/",
+      "metric": "stylesheet",
+      "from": 58255,
+      "to": 58852,
+      "reason": "Owner page editorial home cards (option C) on top of #899, approved by Sawyer 2026-11-07",
       "date": "2026-11-08"
     }
   ]
