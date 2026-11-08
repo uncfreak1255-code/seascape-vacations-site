@@ -29,20 +29,18 @@ Desktop hover feedback for the guest header nav and the guides index
 - The old ungated `.g-nav a:hover` rule in `guest.css` is gone. On the
   homepage, `arrival.css` used to override it, so hover there did nothing.
 
-## Guides index (`src/guides/index.njk`, inline styles)
+## Guides index (`src/css/guides-index.css`)
 
-- Featured, side and start-here cards: the border darkens to brand teal at
-  32%. The shadow stays as it was, and the card itself does not move.
-- Card photos scale to 1.03 inside the card's `overflow: hidden`. The card
-  gets `isolation: isolate` so Safari keeps the rounded corners while the photo
-  scales.
-- "Read this first" turns `--brand-dark` while its card is hovered.
-- Guide links and resource links: the color moves to `--brand` and an
-  underline fades in through `text-decoration-color`, so nothing reflows.
-- Stay-collection chips: the fill turns white and the border turns brand teal.
+Layout and tokens: [guides index design](guides-index.md).
+
+- Featured and side story cards: the 1px rule darkens to ink (`--g-ink`) and
+  the title turns clay. The card itself does not move.
+- Card photos scale to 1.03 inside the card's `overflow: hidden`; the card has
+  `isolation: isolate` so Safari keeps the clip while the photo scales.
+- Start-here items: the title and "Read this first" turn clay.
+- Guide links and resource links: the color moves to clay and an underline
+  fades in through `text-decoration-color`, so nothing reflows.
+- Stay-collection chips: the fill turns soft (`--g-soft`) and the border ink.
   On fine pointers with motion allowed, a press scales the chip to 0.97 over
   120ms. Phones keep their default tap behaviour. Cards get no press scale,
   because 3% of a 400px card is a visible lurch.
-
-The guides index still uses its legacy inline palette. These rules use only
-the variables already declared there.
