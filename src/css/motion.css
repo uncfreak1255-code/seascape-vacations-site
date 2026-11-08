@@ -18,4 +18,4 @@
 .g-mobile-menu:not([hidden]){transform-origin:top right;transition:opacity var(--g-overlay-in) var(--g-ease-out),transform var(--g-overlay-in) var(--g-ease-out)}
 .g-mobile-menu:not([hidden]):not(.is-open){opacity:0;transform:scale(var(--g-overlay-scale));pointer-events:none;transition-duration:var(--g-overlay-out)}
 .g-mobile-menu.is-open{opacity:1;transform:scale(1)}
-.g-header{view-transition-name:g-header}::view-transition-old(root){animation:150ms cubic-bezier(.23,1,.32,1) both g-page-out}::view-transition-new(root){animation:200ms cubic-bezier(.23,1,.32,1) both g-page-in}@keyframes g-page-out{to{opacity:0}}@keyframes g-page-in{from{opacity:0;transform:translateY(8px)}}}
+.g-header{view-transition-name:g-header}::view-transition-group(g-header),::view-transition-new(g-header){animation:none}::view-transition-old(g-header){display:none}::view-transition-old(root){animation:150ms cubic-bezier(.23,1,.32,1) both g-page-out}::view-transition-new(root){animation:200ms cubic-bezier(.23,1,.32,1) both g-page-in}@keyframes g-page-out{to{opacity:0}}@keyframes g-page-in{from{opacity:0;transform:translateY(8px)}}}
