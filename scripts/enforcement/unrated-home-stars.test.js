@@ -7,24 +7,28 @@ const nunjucks = require("nunjucks");
 const { normalizeProperties } = require("../../src/_data/properties");
 const { hostawayStarRating } = require("../../scripts/cache/normalize-hostaway");
 const fallbackProperties = require("../../src/_data/properties-fallback.json");
+const { airbnbRatingLabel } = require("./airbnb-rating");
 
 const projectRoot = path.resolve(__dirname, "../..");
 
 function renderStayPhoto(property) {
   const env = new nunjucks.Environment(new nunjucks.FileSystemLoader(path.join(projectRoot, "src/_includes")), { autoescape: true });
   env.addFilter("imgProxy", (url) => url);
+  env.addFilter("airbnbRating", (listingId) => airbnbRatingLabel(listingId));
   return env.renderString('{% from "partials/ui-icon.njk" import uiIcon %}{% include "partials/stay-property-photo.njk" %}', {
     property,
     loop: { index: 1 },
   });
 }
 
+// Stay cards take their stars from the Airbnb snapshot, like the home cards.
+// A home still "New" on Airbnb (under the minimum review count) shows none.
 const unratedSlugs = fallbackProperties
-  .filter((property) => !(Number(property.rating) > 0))
+  .filter((property) => { const label = airbnbRatingLabel(property.listingId); return !label || label.isNew; })
   .map((property) => property.slug);
 
-test("the fallback still holds unrated homes, so this test guards something", () => {
-  assert.ok(unratedSlugs.length > 0, "expected at least one unrated home in properties-fallback.json");
+test("the snapshot still holds a home that is New on Airbnb, so this test guards something", () => {
+  assert.ok(unratedSlugs.length > 0, "expected at least one home under the Airbnb review minimum");
 });
 
 test("an unrated home keeps a null rating through property normalization", () => {
@@ -36,14 +40,15 @@ test("an unrated home keeps a null rating through property normalization", () =>
   assert.equal(rated.rating, 4.86);
 });
 
-test("unrated homes render no stars on stay cards, rated homes keep theirs", () => {
+test("homes New on Airbnb render no stars on stay cards; rated homes show their Airbnb rating", () => {
   for (const home of normalizeProperties(fallbackProperties)) {
     const html = renderStayPhoto(home);
     if (unratedSlugs.includes(home.slug)) {
-      assert.equal(home.rating, null, `${home.slug} is unrated and must not get a default rating`);
-      assert.ok(!html.includes("stay-star-rating"), `${home.slug} is unrated and must not show stars`);
+      assert.ok(!html.includes("stay-star-rating"), `${home.slug} is New on Airbnb and must not show stars`);
     } else {
-      assert.ok(html.includes(`aria-label="${home.rating} out of 5 stars"`), `${home.slug} should keep its rating`);
+      const label = airbnbRatingLabel(home.listingId);
+      assert.ok(html.includes(`aria-label="${label.spoken}"`), `${home.slug} should show its Airbnb rating`);
+      assert.ok(html.includes(`--stay-rating: ${label.rating * 20}%`), `${home.slug} star fill should match ${label.rating}`);
     }
   }
 });

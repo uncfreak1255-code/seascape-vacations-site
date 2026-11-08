@@ -15,7 +15,7 @@ function airbnbRatingLabel(listingId, data = snapshot) {
   const rating = Number(home.rating);
   if (!Number.isInteger(reviews) || reviews < 0) return null;
   if (reviews < data.minimumReviews) {
-    return { isNew: true, text: "New", spoken: "New home, not yet rated on Airbnb" };
+    return { isNew: true, text: "New", score: "New", count: "", spoken: "New home, not yet rated on Airbnb" };
   }
   if (!Number.isFinite(rating) || rating <= 0 || rating > 5) return null;
   const rounded = (Math.round(rating * 10) / 10).toFixed(1);
@@ -25,6 +25,8 @@ function airbnbRatingLabel(listingId, data = snapshot) {
     rating: rounded,
     reviews,
     text: `${rounded} · ${reviews} Airbnb ${noun}`,
+    score: rounded,
+    count: `${reviews} Airbnb ${noun}`,
     spoken: `Rated ${rounded} out of 5 from ${reviews} Airbnb ${noun}`
   };
 }

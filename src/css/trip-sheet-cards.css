@@ -1,0 +1,14 @@
+/* Home-card rating badge and phone filter chips. The build appends this file to /css/trip-sheet.css (eleventy.config.js), so pages still load one stylesheet. */
+/* Airbnb rating badge on the card photo (homepage and /properties/), top-left like Airbnb's "Guest favorite" badge */
+.g-postcard-photo,.catalog-card-media{position:relative}
+.g-card-rating{position:absolute;top:12px;left:12px;z-index:2;padding:5px 10px;border-radius:999px;background:var(--g-paper);color:var(--g-ink);font:500 13px/1.3 Poppins,sans-serif;white-space:nowrap;box-shadow:0 1px 4px oklch(0 0 0 / .18);pointer-events:none}
+/* Desktop homepage postcards are narrow: score on one line, count on the next */
+@media(min-width:701px){.g-postcard .g-card-rating{top:6px;left:6px;padding:3px 6px;border-radius:8px;font-size:12px;letter-spacing:-.01em}.g-postcard .g-card-rating-score,.g-postcard .g-card-rating-count{display:block}.g-postcard .g-card-rating-sep{display:none}}
+@media(max-width:700px){
+  /* Chips: a 34px Airbnb-size pill drawn inside a 44px tap area (design floor F2) */
+  html .guest-site .ts-chip,html .guest-site .catalog-page .catalog-filter{position:relative;isolation:isolate;min-height:44px;padding:0 14px;background:transparent;border-color:transparent;font:500 14px/1.3 Poppins,sans-serif}
+  html .guest-site .ts-chip::before,html .guest-site .catalog-page .catalog-filter::before{content:"";position:absolute;inset:5px 0;z-index:-1;border-radius:999px;background:color-mix(in srgb,var(--g-ink) 7%,var(--g-paper))}
+  html .guest-site .ts-chip[aria-pressed="true"]::before,html .guest-site .catalog-page .catalog-filter[aria-pressed="true"]::before{background:var(--g-citron)}
+  html .guest-site .ts-chip:focus-visible,html .guest-site .catalog-page .catalog-filter:focus-visible{outline:none}
+  html .guest-site .ts-chip:focus-visible::before,html .guest-site .catalog-page .catalog-filter:focus-visible::before{outline:2px solid var(--g-ink);outline-offset:2px}
+}
