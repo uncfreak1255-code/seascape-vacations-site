@@ -81,7 +81,7 @@
 .g-owner-home:nth-child(3n+2){margin-top:56px}
 .g-owner-home img{width:100%;height:400px;object-fit:cover;border-radius:4px}
 .g-owner-home .g-photo-unavailable{height:400px;border-radius:4px}
-.g-owner-home p{order:1;margin:14px 0 4px;font:500 11px/1.4 Poppins,sans-serif;letter-spacing:.13em;text-transform:uppercase;color:var(--g-muted)}
+.g-owner-home p{order:1;margin:14px 0 4px;font:500 12px/1.4 Poppins,sans-serif;letter-spacing:.13em;text-transform:uppercase;color:var(--g-muted)}
 .g-owner-home h3{order:2;font-size:30px;margin:0}
 .g-owner-home:hover h3{color:var(--g-accent)}
 .g-owner-two{display:grid;grid-template-columns:1.1fr .9fr;gap:64px;align-items:start}
