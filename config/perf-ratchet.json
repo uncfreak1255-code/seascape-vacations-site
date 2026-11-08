@@ -1,36 +1,36 @@
 {
   "routes": {
     "/": {
-      "script": 86853,
-      "stylesheet": 70549
+      "script": 87192,
+      "stylesheet": 70860
     },
     "/properties/": {
-      "script": 107073,
-      "stylesheet": 71723
+      "script": 107412,
+      "stylesheet": 72034
     },
     "/property-management/": {
-      "script": 90809,
-      "stylesheet": 57818
+      "script": 91148,
+      "stylesheet": 58129
     },
     "/property-management/vacation-rental-licensing-florida/": {
-      "script": 60723,
-      "stylesheet": 37987
+      "script": 61062,
+      "stylesheet": 38298
     },
     "/property-management/vacation-rental-management-fees-florida/": {
-      "script": 60723,
-      "stylesheet": 37987
+      "script": 61062,
+      "stylesheet": 38298
     },
     "/property-management/vrbo-management-services-florida/": {
-      "script": 60723,
-      "stylesheet": 37987
+      "script": 61062,
+      "stylesheet": 38298
     },
     "/stays/anna-maria-island-beachfront-rentals/": {
-      "script": 58749,
-      "stylesheet": 52620
+      "script": 59088,
+      "stylesheet": 52931
     },
     "/stays/anna-maria-island-vacation-rentals/": {
-      "script": 58749,
-      "stylesheet": 52620
+      "script": 59088,
+      "stylesheet": 52931
     }
   },
   "raises": [
@@ -1392,6 +1392,134 @@
       "from": 51742,
       "to": 52620,
       "reason": "PR #896: desktop nav hover underline + color (motion.css, ~0.8 KB), approved by Sawyer 2026-11-07",
+      "date": "2026-11-08"
+    },
+    {
+      "route": "/",
+      "metric": "script",
+      "from": 86853,
+      "to": 87192,
+      "reason": "Page transitions: header holds still + page settle (motion.css, guest-menu.js pageswap guard), approved by Sawyer 2026-11-07",
+      "date": "2026-11-08"
+    },
+    {
+      "route": "/",
+      "metric": "stylesheet",
+      "from": 70549,
+      "to": 70860,
+      "reason": "Page transitions: header holds still + page settle (motion.css, guest-menu.js pageswap guard), approved by Sawyer 2026-11-07",
+      "date": "2026-11-08"
+    },
+    {
+      "route": "/properties/",
+      "metric": "script",
+      "from": 107073,
+      "to": 107412,
+      "reason": "Page transitions: header holds still + page settle (motion.css, guest-menu.js pageswap guard), approved by Sawyer 2026-11-07",
+      "date": "2026-11-08"
+    },
+    {
+      "route": "/properties/",
+      "metric": "stylesheet",
+      "from": 71723,
+      "to": 72034,
+      "reason": "Page transitions: header holds still + page settle (motion.css, guest-menu.js pageswap guard), approved by Sawyer 2026-11-07",
+      "date": "2026-11-08"
+    },
+    {
+      "route": "/property-management/",
+      "metric": "script",
+      "from": 90809,
+      "to": 91148,
+      "reason": "Page transitions: header holds still + page settle (motion.css, guest-menu.js pageswap guard), approved by Sawyer 2026-11-07",
+      "date": "2026-11-08"
+    },
+    {
+      "route": "/property-management/",
+      "metric": "stylesheet",
+      "from": 57818,
+      "to": 58129,
+      "reason": "Page transitions: header holds still + page settle (motion.css, guest-menu.js pageswap guard), approved by Sawyer 2026-11-07",
+      "date": "2026-11-08"
+    },
+    {
+      "route": "/property-management/vacation-rental-management-fees-florida/",
+      "metric": "script",
+      "from": 60723,
+      "to": 61062,
+      "reason": "Page transitions: header holds still + page settle (motion.css, guest-menu.js pageswap guard), approved by Sawyer 2026-11-07",
+      "date": "2026-11-08"
+    },
+    {
+      "route": "/property-management/vacation-rental-management-fees-florida/",
+      "metric": "stylesheet",
+      "from": 37987,
+      "to": 38298,
+      "reason": "Page transitions: header holds still + page settle (motion.css, guest-menu.js pageswap guard), approved by Sawyer 2026-11-07",
+      "date": "2026-11-08"
+    },
+    {
+      "route": "/property-management/vacation-rental-licensing-florida/",
+      "metric": "script",
+      "from": 60723,
+      "to": 61062,
+      "reason": "Page transitions: header holds still + page settle (motion.css, guest-menu.js pageswap guard), approved by Sawyer 2026-11-07",
+      "date": "2026-11-08"
+    },
+    {
+      "route": "/property-management/vacation-rental-licensing-florida/",
+      "metric": "stylesheet",
+      "from": 37987,
+      "to": 38298,
+      "reason": "Page transitions: header holds still + page settle (motion.css, guest-menu.js pageswap guard), approved by Sawyer 2026-11-07",
+      "date": "2026-11-08"
+    },
+    {
+      "route": "/property-management/vrbo-management-services-florida/",
+      "metric": "script",
+      "from": 60723,
+      "to": 61062,
+      "reason": "Page transitions: header holds still + page settle (motion.css, guest-menu.js pageswap guard), approved by Sawyer 2026-11-07",
+      "date": "2026-11-08"
+    },
+    {
+      "route": "/property-management/vrbo-management-services-florida/",
+      "metric": "stylesheet",
+      "from": 37987,
+      "to": 38298,
+      "reason": "Page transitions: header holds still + page settle (motion.css, guest-menu.js pageswap guard), approved by Sawyer 2026-11-07",
+      "date": "2026-11-08"
+    },
+    {
+      "route": "/stays/anna-maria-island-vacation-rentals/",
+      "metric": "script",
+      "from": 58749,
+      "to": 59088,
+      "reason": "Page transitions: header holds still + page settle (motion.css, guest-menu.js pageswap guard), approved by Sawyer 2026-11-07",
+      "date": "2026-11-08"
+    },
+    {
+      "route": "/stays/anna-maria-island-vacation-rentals/",
+      "metric": "stylesheet",
+      "from": 52620,
+      "to": 52931,
+      "reason": "Page transitions: header holds still + page settle (motion.css, guest-menu.js pageswap guard), approved by Sawyer 2026-11-07",
+      "date": "2026-11-08"
+    },
+    {
+      "route": "/stays/anna-maria-island-beachfront-rentals/",
+      "metric": "script",
+      "from": 58749,
+      "to": 59088,
+      "reason": "Page transitions: header holds still + page settle (motion.css, guest-menu.js pageswap guard), approved by Sawyer 2026-11-07",
+      "date": "2026-11-08"
+    },
+    {
+      "route": "/stays/anna-maria-island-beachfront-rentals/",
+      "metric": "stylesheet",
+      "from": 52620,
+      "to": 52931,
+      "reason": "Page transitions: header holds still + page settle (motion.css, guest-menu.js pageswap guard), approved by Sawyer 2026-11-07",
       "date": "2026-11-08"
     }
   ]
