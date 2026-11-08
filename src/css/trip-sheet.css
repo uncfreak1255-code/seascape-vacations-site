@@ -183,9 +183,10 @@ body:has(.ts-dialog[open]){overflow:hidden}
   .g-home-signup{border-top:0;background:var(--g-soft);padding:24px 20px;margin-block:24px}
   html .guest-site .catalog-help{border-top:0}
   /* /properties/ card names match the homepage cards */
-  html .guest-site .catalog-page .catalog-card h3{font:400 26px/1.1 'Instrument Serif',Georgia,serif;letter-spacing:-.01em;margin:4px 0 4px}
+  html .guest-site .catalog-page .catalog-card h3{font:400 26px/1.1 'Instrument Serif',Georgia,serif;letter-spacing:-.01em;margin:0}
   /* /properties/ phone cards: the same facts in less height. The photo and name already open the home, so the second details link goes; the price note and fit note stay. */
   html .guest-site .catalog-page .catalog-card-body{padding-top:12px}
+  html .guest-site .catalog-page .catalog-title-link{display:inline-flex;align-items:center;min-height:44px}
   html .guest-site .catalog-page .catalog-card-specs{margin:0}
   html .guest-site .catalog-page .catalog-card-reason{margin:8px 0 0}
   html .guest-site .catalog-page .catalog-card-reason p{font-size:14px;line-height:1.45}

@@ -5,7 +5,10 @@ test('pointer presses respond without changing the booking destination or reduce
   await registerStableNetwork(page);
   await page.emulateMedia({ reducedMotion: 'no-preference' });
   await page.goto('/');
-  const button = page.locator('.g-header-actions .g-button');
+  // The phone homepage hides the header button; the owner button is the visible linked button there.
+  const header = page.locator('.g-header-actions .g-button');
+  const button = (await header.isVisible()) ? header : page.locator('.g-home-owners .g-button');
+  await button.scrollIntoViewIfNeeded();
   const destination = await button.getAttribute('href');
   const bounds = await button.boundingBox();
   await page.mouse.move(bounds.x + bounds.width / 2, bounds.y + bounds.height / 2);
@@ -43,7 +46,10 @@ test('touch presses show feedback before release', async ({ page, context }, tes
   await registerStableNetwork(page);
   await page.emulateMedia({ reducedMotion: 'no-preference' });
   await page.goto('/');
-  const button = page.locator('.g-header-actions .g-button');
+  // The phone homepage hides the header button; the owner button is the visible linked button there.
+  const header = page.locator('.g-header-actions .g-button');
+  const button = (await header.isVisible()) ? header : page.locator('.g-home-owners .g-button');
+  await button.scrollIntoViewIfNeeded();
   const bounds = await button.boundingBox();
   const input = await context.newCDPSession(page);
   await input.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: bounds.x + bounds.width / 2, y: bounds.y + bounds.height / 2 }] });

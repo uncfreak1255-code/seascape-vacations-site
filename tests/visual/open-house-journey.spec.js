@@ -163,7 +163,8 @@ test('without JavaScript the home form, interior photos, rules and matching book
   await page.locator('#home-trip-guests').selectOption('12');
   await page.getByRole('button',{name:'Find my home',exact:true}).and(page.locator('[type=submit]')).click();
   await expect(page).toHaveURL(/\/properties\/\?.*guests=12#catalog-heading$/);
-  await expect(page.locator('#catalog-heading')).toBeInViewport();
+  // The heading is screen-reader-only on phones; the list of homes it labels must be on screen.
+  await expect(page.locator('.catalog-collection')).toBeInViewport();
   await page.goto('/properties/bradenton-pool-home/');await expect(page.locator('#sleeping')).toContainText('Bedroom');
   await page.getByText('Can I bring a dog?',{exact:true}).click();await expect(page.locator('#before-booking')).toContainText(properties.find(p=>p.slug==='bradenton-pool-home').guestFacts.pets.text);
   expect(await page.locator('.g-guests option').evaluateAll(options=>Math.max(...options.map(o=>Number(o.value))))).toBe(10);
