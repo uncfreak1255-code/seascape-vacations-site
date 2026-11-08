@@ -20,7 +20,7 @@
 .g-wordmark span{display:block;font:500 12px Poppins,sans-serif;letter-spacing:.14em;margin-top:6px}
 .g-nav,.g-header-actions{display:flex;align-items:center;gap:32px}
 .g-nav a{text-decoration:none;font-size:14px;padding:10px 0}
-.g-nav a:hover,.g-inline-link:hover{color:var(--g-accent)}
+.g-inline-link:hover{color:var(--g-accent)}
 .g-nav a[aria-current="page"],.g-mobile-menu a[aria-current="page"]{color:var(--g-accent);text-decoration:underline;text-underline-offset:5px;font-weight:400}
 .g-header-phone{font:14px Poppins,sans-serif;min-height:44px;display:inline-flex;align-items:center;color:var(--g-ink);text-decoration:none}
 .g-header-phone:hover{color:var(--g-accent)}

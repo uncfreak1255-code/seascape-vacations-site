@@ -4,7 +4,7 @@ Moved out of `DESIGN.md` so that file stays under the staged-file size gate; `DE
 
 The `space`, `motion`, `shadow` and `breakpoints` keys in the `waterline:` block are the scales. They were measured from the live CSS, so adopting them changed nothing on screen. `npm run design:sync` emits them as `--wl-*` tokens in the design system's `tokens.css`. The site stylesheets write the scale values literally, because `src/css/guest.css` has a no-growth byte budget and a custom property used once costs more bytes than the value. `scripts/enforcement/waterline-tokens.test.js` checks every colour, duration, easing, shadow and breakpoint in the Waterline stylesheets against these scales. Off-scale values that already exist are counted debt per file, and a count may only fall; a new value goes into the `DESIGN.md` scale first.
 
-- **Motion:** pick a duration and a curve from the scale. `out` is for presses and fades, `glide` for things that travel. Every motion respects `prefers-reduced-motion`. Known exception: the catalog card hover in `catalog.css` still uses `.3s ease`.
+- **Motion:** pick a duration and a curve from the scale. `out` is for presses and fades, `glide` for things that travel. Every motion respects `prefers-reduced-motion`. Known exception: the catalog card hover in `catalog.css` still uses `.3s ease`. Header nav and guides index hover: `docs/design/hover-motion.md`.
 - **Shadows:** only the menu, the shortlist tray, the bottom booking bars and printed photos (postcards, the catalog intro photo) carry a shadow. Cards, buttons and fields are flat. The legacy `rgba(0,0,0,…)` shadows in `catalog.css` and `planning-guide.css` are debt, not examples.
 
 States, for every control:
