@@ -1,0 +1,57 @@
+const assert = require("node:assert/strict");
+const fs = require("node:fs");
+const path = require("node:path");
+const test = require("node:test");
+const nunjucks = require("nunjucks");
+
+const { airbnbRatingLabel } = require("./airbnb-rating");
+const snapshot = require("../../src/_data/airbnbRatings.json");
+const fallbackProperties = require("../../src/_data/properties-fallback.json");
+
+const projectRoot = path.resolve(__dirname, "../..");
+const data = (homes) => ({ minimumReviews: 3, homes });
+
+function renderCardRating(listingId, ratings = snapshot) {
+  const env = new nunjucks.Environment(new nunjucks.FileSystemLoader(path.join(projectRoot, "src/_includes")), { autoescape: true });
+  return env.renderString('{% include "partials/card-rating.njk" %}', { rating: airbnbRatingLabel(listingId, ratings) });
+}
+
+test("ratings round to one decimal with no floor", () => {
+  assert.equal(airbnbRatingLabel("1", data({ 1: { rating: 4.96, reviews: 193 } })).text, "5.0 · 193 Airbnb reviews");
+  assert.equal(airbnbRatingLabel("1", data({ 1: { rating: 4.88, reviews: 42 } })).text, "4.9 · 42 Airbnb reviews");
+  assert.equal(airbnbRatingLabel("1", data({ 1: { rating: 4.84, reviews: 42 } })).text, "4.8 · 42 Airbnb reviews");
+  assert.equal(airbnbRatingLabel("1", data({ 1: { rating: 4.2, reviews: 10 } })).text, "4.2 · 10 Airbnb reviews");
+});
+
+test("a home below the minimum review count shows New; at the minimum it shows the rating", () => {
+  assert.equal(airbnbRatingLabel("1", data({ 1: { rating: 5, reviews: 2 } })).text, "New");
+  assert.equal(airbnbRatingLabel("1", data({ 1: { rating: 5, reviews: 0 } })).text, "New");
+  assert.equal(airbnbRatingLabel("1", data({ 1: { rating: 5, reviews: 3 } })).text, "5.0 · 3 Airbnb reviews");
+});
+
+test("a home missing from the snapshot, or with a bad rating, renders nothing", () => {
+  assert.equal(airbnbRatingLabel("999", data({})), null);
+  assert.equal(airbnbRatingLabel("1", data({ 1: { rating: 0, reviews: 20 } })), null);
+  assert.equal(airbnbRatingLabel("1", data({ 1: { rating: 6, reviews: 20 } })), null);
+  assert.equal(renderCardRating("999", data({})).trim(), "");
+});
+
+test("the card shows the star line and a screen reader hears a sentence", () => {
+  const html = renderCardRating("1", data({ 1: { rating: 4.97, reviews: 112 } }));
+  assert.match(html, /<span aria-hidden="true">★ 5\.0 · 112 Airbnb reviews<\/span>/);
+  assert.match(html, /<span class="g-sr-only">Rated 5\.0 out of 5 from 112 Airbnb reviews<\/span>/);
+  assert.doesNotMatch(html, /4\.97/, "only the rounded value may reach the page");
+});
+
+test("every home on the site has an Airbnb rating entry", () => {
+  for (const property of fallbackProperties) {
+    assert.ok(snapshot.homes[String(property.listingId)], `${property.slug} (${property.listingId}) is missing from src/_data/airbnbRatings.json`);
+  }
+});
+
+test("both home card lists render the rating line", () => {
+  for (const file of ["src/index.njk", "src/properties/index.njk"]) {
+    const source = fs.readFileSync(path.join(projectRoot, file), "utf8");
+    assert.match(source, /\| airbnbRating %\}\{% include "partials\/card-rating\.njk" %\}/, file);
+  }
+});

@@ -1,0 +1,2 @@
+{#- The Airbnb rating line on a home card. Expects `rating` from the airbnbRating filter (null renders nothing). -#}
+{%- if rating -%}<div class="g-card-rating"><span class="g-sr-only">{{ rating.spoken }}</span><span aria-hidden="true">★ {{ rating.text }}</span></div>{%- endif -%}

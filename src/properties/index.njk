@@ -88,6 +88,7 @@ headExtra: |
         <div class="catalog-card-body">
           <div class="catalog-card-topline"><span>{{ property.city }}, Florida</span><button class="catalog-compare-toggle" type="button" data-compare="{{ property.slug }}" aria-pressed="false" aria-label="Compare {{ property.cardName or property.name }}" hidden>{{ uiIcon('plus', 'catalog-compare-add') }}{{ uiIcon('check', 'catalog-compare-selected') }} <span>Compare</span></button></div>
           <h3><a class="catalog-title-link" href="{{ property.pageUrl }}" data-trip-link aria-label="View {{ property.cardName or property.name }} details" data-track-event="catalog_view_details_click" data-page-slug="{{ property.slug }}" data-placement="catalog_card_title">{{ property.cardName or property.name }}</a></h3>
+          {% set rating = property.listingId | airbnbRating %}{% include "partials/card-rating.njk" %}
           <p class="catalog-available" data-available hidden>{{ uiIcon('check') }} <span>Available for your dates</span></p>
           <p class="catalog-card-specs"><span>{{ property.bedrooms }} bedrooms</span><span>{{ property.bathrooms }} baths</span><span>Up to {{ property.guests }} guests</span></p>
           <div class="catalog-card-reason">
