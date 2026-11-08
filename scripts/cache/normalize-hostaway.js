@@ -230,6 +230,18 @@ function normalizeAvailability(calendarDays, options = {}) {
   };
 }
 
+// Hostaway reports a listing's review average as `averageReviewRating` on a
+// 10-point scale (a perfect listing reads 10). The site shows stars out of 5,
+// so halve it. Missing, zero or out-of-range values mean "no rating": return
+// null and let the templates show no stars rather than a default.
+function hostawayStarRating(listing) {
+  const raw = listing ? listing.averageReviewRating : undefined;
+  if (raw === undefined || raw === null || raw === "") return null;
+  const tenPoint = Number(raw);
+  if (!Number.isFinite(tenPoint) || tenPoint <= 0 || tenPoint > 10) return null;
+  return Math.round((tenPoint / 2) * 100) / 100;
+}
+
 function normalizeListing(listing, slugMap = {}) {
   const images = (listing.listingImages || [])
     .map((img) => normalizeImage(img.url))
@@ -253,7 +265,7 @@ function normalizeListing(listing, slugMap = {}) {
     bedrooms: listing.bedroomsNumber ?? listing.bedrooms ?? 0,
     bathrooms: normalizeBathroomCount(listing),
     guests: listing.personCapacity ?? listing.guests ?? 0,
-    rating: listing.reviewAverageRating ?? null,
+    rating: hostawayStarRating(listing),
     price: { amount: listing.listingPrice || 0, currency: "USD", unit: "night" },
     description: listing.description || "",
     highlights: [],
@@ -271,6 +283,7 @@ module.exports = {
   BUSINESS_TIME_ZONE,
   businessDateStamp,
   isCurrentAvailabilityRange,
+  hostawayStarRating,
   normalizeListing,
   normalizeImage,
   normalizeAvailability,

@@ -2,7 +2,7 @@
 
 const fs = require("fs");
 const path = require("path");
-const { normalizeImage } = require("./cache/normalize-hostaway");
+const { hostawayStarRating, normalizeImage } = require("./cache/normalize-hostaway");
 const { ensureCatalogListingIds, preserveListingIds } = require("./enforcement/listing-id-owned");
 
 const projectRoot = path.resolve(__dirname, "..");
@@ -84,7 +84,7 @@ function normalizeHostawayListing(listing, slugMap = DEFAULT_SLUG_MAP) {
     bedrooms,
     bathrooms,
     guests,
-    rating: listing.reviewAverageRating ?? null,
+    rating: hostawayStarRating(listing),
     price: { amount: normalizeNumber(listing.listingPrice), currency: "USD", unit: "night" },
     description: listing.description || "",
     highlights: [],

@@ -88,6 +88,14 @@ function normalizeCount(value) {
   return Number.isFinite(numeric) ? numeric : 0;
 }
 
+// Stars out of 5, or null when the home has no rating. Never default: an
+// unrated home must render without stars.
+function normalizeRating(value) {
+  if (value === undefined || value === null || value === "") return null;
+  const numeric = Number(value);
+  return Number.isFinite(numeric) && numeric > 0 && numeric <= 5 ? numeric : null;
+}
+
 function deriveListingId(property, slug) {
   if (property && property.listingId !== undefined && property.listingId !== null && `${property.listingId}`.trim()) {
     return String(property.listingId);
@@ -397,7 +405,7 @@ function normalizeProperties(list) {
         bedrooms: normalizeCount(property.bedrooms),
         bathrooms: normalizeCount(property.bathrooms),
         guests: normalizeCount(property.guests),
-        rating: normalizeCount(property.rating) || 5,
+        rating: normalizeRating(property.rating),
         specs: deriveSpecs(property),
         schemaIdentifier: property.schemaIdentifier || `seascape-${listingId}`,
         latitude: Number.isFinite(Number(property.latitude)) ? Number(property.latitude) : staticSchemaFacts.latitude || null,
