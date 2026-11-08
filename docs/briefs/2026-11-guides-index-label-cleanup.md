@@ -1,7 +1,7 @@
-# Brief: Guides index label cleanup
+# Brief: Guides index label and teaser cleanup
 
 - lifecycle: draft
-- task scope: three label fixes on `/guides/` (`src/guides/index.njk`), requested by Sawyer on 2026-11-07 after the Waterline redesign review (PR #897): replace the hard-coded "Reviewed June 2026" freshness label, remove labels that repeat their own heading, and collapse the featured card's two stacked labels into one. No other copy, link, metadata or schema change.
+- task scope: three label fixes on `/guides/` (`src/guides/index.njk`), requested by Sawyer on 2026-11-07 after the Waterline redesign review (PR #897): replace the hard-coded "Reviewed June 2026" freshness label, remove labels that repeat their own heading, collapse the featured card's two stacked labels into one, and rewrite the hub's short teaser lines (added by Sawyer on 2026-11-07: they read as AI-written). No link, page title, meta description, H1 or schema change.
 - completion or successor: none yet; set `active` only after Sawyer approves this scope
 
 ## Content Gate Inputs
@@ -14,19 +14,30 @@
 - offer claim: not applicable; guest lane, no owner offer
 - required internal links: /guides/bradenton-vs-sarasota/, /properties/
 - CTA target: unchanged; the hub's existing guide links and the hero's /properties/ link
-- anti-claims: no new review date, reviewer or freshness claim the source guide does not carry; no new savings, ranking or "best" claim; no change to any guide title, href, page title, meta description, H1 or JSON-LD
+- anti-claims: no new review date, reviewer or freshness claim the source guide does not carry; no savings, ranking, "best" or comparison claim that the linked guide does not already make and support; no change to any guide title, href, page title, meta description, H1 or JSON-LD
 
-## The Three Fixes
+## The Four Fixes
 
 1. **Freshness label.** `featuredStory.meta` is the literal string "Reviewed June 2026". Either derive it from the featured guide's own last-updated date (the same source as its visible "Updated" line and `dateModified`) or drop the date and keep only "Best for travelers still deciding where to base their trip". A hard-coded month is not allowed back.
 2. **Labels that repeat their heading.** "Start Here" label over "Start Here" heading; "Browse by Category" over "Browse by category"; and each category card's label repeating its own heading ("Comparisons", "Area Guides", "Trip Planning", "Owner Insights"). Remove the duplicate label, or give it distinct wording that adds information. The heading text stays.
 3. **Two stacked labels on the featured card.** "Featured Story" plus "City Comparison". Keep one; the other goes.
+4. **Teaser lines.** Rewrite each short descriptive line on the hub so it says something the linked guide actually concludes, in plain words, instead of describing the guide in the abstract. Lines in scope (current text at `0edf8f04`):
+   - featured excerpt: "Pick the coast that matches your pace, budget, dining expectations, and beach priorities before you book the wrong stay for the wrong kind of trip."
+   - featured meta tail: "Best for travelers still deciding where to base their trip"
+   - Anna Maria Island vs Siesta Key: "Two Gulf Coast favorites. Very different vacation personalities."
+   - booking direct: "The booking decision that quietly changes your total trip cost."
+   - the four Start Here descriptions ("Start here if you are still deciding what kind of trip you want."; "Useful when the destination is narrowing but the vibe still is not."; "See how direct booking changes the total before you default to Airbnb or VRBO."; "The practical guide that reduces panic and bad assumptions.")
+   - the two section notes under Start Here and Browse by category
+   - the four category intros (the Owner Insights intro keeps both of its links and their anchor text)
+   - the two utility-card paragraphs (Stay collections, Market reports and local help)
+
+   Rules for fix 4: each comparison or money line is taken from the linked guide's own verdict and is traceable to a sentence in that guide; where the guide has no clear verdict, the line describes the guide's content plainly rather than inventing one. No stock AI patterns from `docs/style/banned-patterns.md`: no abstract noun lists standing in for a real difference, no mirrored "the wrong X for the wrong Y" phrasing, no "personalities"/"vibe" filler, no "quietly", no line that only promises the guide will help.
 
 ## Why This Batch
 
 - what changed in the data: nothing measured; Sawyer spotted these while reviewing the rendered Waterline redesign of `/guides/`
-- why this cluster wins now: the freshness label is a factual contradiction with the featured guide; the duplicates are cheap, low-risk cleanup on a hub that every guide page links to
-- what should explicitly wait: any rewrite of excerpts, section notes, guide titles or the hub's title/meta; any search-driven change (`docs/status/next-batch.md` reads "fresh but below threshold" and names no /guides/ opportunity)
+- why this cluster wins now: the freshness label is a factual contradiction with the featured guide; the duplicates are cheap, low-risk cleanup on a hub that every guide page links to; the teaser lines are the first copy readers see on the hub and Sawyer flagged them as reading AI-written
+- what should explicitly wait: guide titles (including "Why Booking Direct Saves You Hundreds") and the hub's title/meta; any search-driven change (`docs/status/next-batch.md` reads "fresh but below threshold" and names no /guides/ opportunity)
 
 ## Experiment And Readback Contract
 
@@ -54,13 +65,13 @@
 | Search fit | unchanged; title, meta, H1, links and schema stay identical |
 | Local/GBP proof | N/A: the fix changes labels only and makes no local, address or review claim, so no GBP evidence is needed |
 | AEO/readback note | assistants quoting the hub would repeat "Reviewed June 2026"; the fix removes a contradictory date |
-| Recommendation | ship the three label fixes; no search change |
+| Recommendation | ship the label fixes and teaser rewrites; no search change |
 | Attack status | completed |
 | Query variants inspected | "Anna Maria Island Bradenton Sarasota travel guides" |
 | SERP source | web search (standard), observed 2026-11-07 |
 | Competitor URLs inspected | https://bradentongulfislands.com/?p=9197, https://visitflorida.com/travel-ideas/articles/scenic-florida-drive-bradenton-beach (result titles and summaries only, not full pages) |
-| Content gap and Seascape answer | none sought; repair only |
-| Design/format strategy | keep the PR #897 Waterline layout; text-only changes |
+| Content gap and Seascape answer | hub teasers describe guides abstractly; Seascape answer is each guide's own verdict in one plain line |
+| Design/format strategy | keep the PR #897 Waterline layout; text-only changes; rewritten lines stay within about the current length so cards keep their height |
 | Seascape proof available | the featured guide's own visible updated date and `dateModified` |
 | Tools/plugins used | source read (`rg`, `git show`); one standard web search; OpenSEO not queried |
 | Decision and reason | draft; repair is justified by source contradiction, not search data |
@@ -82,16 +93,16 @@
 
 ## Page Builder Tasks
 
-- source files likely to change: `src/guides/index.njk` only (labels and the `featuredStory.meta` value or its source); `src/css/guides-index.css` only if a removed label leaves a spacing gap
+- source files likely to change: `src/guides/index.njk` only (labels, the `featuredStory.meta` value or its source, and the teaser lines listed in fix 4); `src/css/guides-index.css` only if a removed label leaves a spacing gap
 - redirect or schema work: none
 - internal-link or CTA work: none; the internal-link set must stay identical
 - money CTA and downstream tracking event to verify: hero /properties/ link and guide links unchanged
 
 ## Voice Editor Checklist
 
-- tone risks: none expected; labels only
-- generic or mechanical patterns to kill: labels that restate the heading under them
-- proof or specificity checks: any date shown matches the featured guide's visible updated date
+- tone risks: teaser rewrites drifting into new claims, or into a different set of stock phrases
+- generic or mechanical patterns to kill: labels that restate the heading under them; abstract noun lists, mirrored phrasing, "personalities"/"vibe"/"quietly" filler, lines that only promise help
+- proof or specificity checks: any date shown matches the featured guide's visible updated date; each rewritten comparison or money line cites the guide sentence it comes from in the build PR body
 - customer wording kept where it sounds natural: headings unchanged
 
 ## Release Gate Checklist
@@ -102,7 +113,8 @@
 
 ## Done When
 
-- /guides/ shows no hard-coded review month, no label that repeats its own heading, and one label on the featured card
+- /guides/ shows no hard-coded review month, no label that repeats its own heading, one label on the featured card, and every fix 4 line rewritten and traceable to its guide
+- the independent Voice Editor pass returns `Approved` on the rewritten lines
 - page title, meta, H1, JSON-LD and the internal-link set are unchanged against `main`
 - release gate and guides-index visual baselines pass
 
@@ -116,7 +128,7 @@
 
 ## Not In Scope
 
-- excerpt, section-note or guide-title rewrites
+- guide titles, and any copy on the linked guide pages themselves
 - the hub's page title, meta description or schema
 - any new guide or link
 - layout changes beyond closing a gap left by a removed label
