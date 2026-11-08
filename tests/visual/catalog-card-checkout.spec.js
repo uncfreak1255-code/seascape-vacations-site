@@ -170,19 +170,21 @@ test('an arrival typed and cleared without a search shows no availability labels
   await expect(availableLabels(page)).toHaveCount(0);
 });
 
-test('on a phone, the trip bar with a past arrival opens the sheet instead of searching', async ({ page }) => {
+test('on a phone, the fixed search pill with a past arrival opens the sheet instead of searching', async ({ page }) => {
   let checks = 0;
   await visit(page, '', route => { checks += 1; return answer(route); });
-  test.skip(!(await page.locator('.ts-pill').first().isVisible()), 'the trip bar is phone only');
+  test.skip(!(await page.locator('.ts-pill').first().isVisible()), 'the search pill is phone only');
   await openTripSheet(page);
   await page.locator('#trip-arrive').fill('2026-09-01');
   await page.locator('#trip-depart').fill('2026-09-03');
   await closeTripSheet(page);
   await page.evaluate(() => window.scrollTo(0, 1500));
-  const action = page.locator('[data-trip-bar-action]');
-  await expect(action).toBeVisible();
-  await action.click();
-  // A closed sheet cannot show why the dates are invalid, so the bar opens it.
+  // Phones replaced the old scroll-in trip bar with a pill fixed at the top, so it stays on screen.
+  await expect(page.locator('[data-trip-bar]')).toBeHidden();
+  const pill = page.locator('.ts-pill').first();
+  await expect(pill).toBeInViewport();
+  await pill.click();
+  // A closed sheet cannot show why the dates are invalid, so the pill opens it and runs no search.
   await expect(page.locator('dialog[data-trip-sheet]')).toBeVisible();
   expect(checks).toBe(0);
 });

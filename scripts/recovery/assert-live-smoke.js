@@ -91,12 +91,12 @@ function validateTargetResponse(target, response) {
     }
 
     // Manual hero controls keep their scene-list-derived counter and real home imagery.
-    requireIncludes(target.path, response.body, ['data-guest-version="waterline-v3"', 'id="home-heading"', 'href="/properties/" data-trip-link>Find your home</a>', "Your people.", "Your place.", "Our homes", 'data-guest-trip-form', '/images/homes/the-oasis/01.webp', 'href="/guest-support/"', 'href="/terms/#booking-and-confirmation"', 'Explore', 'Where we are', 'href="/guides/anna-maria-island-area-guide/"', 'id="email-signup"', 'data-inline-email-capture="true"', 'data-placement="home_owner_section"', 'Home 1 of ', 'data-scene-step="-1"', 'data-scene-step="1"', '/images/homes/the-oasis/hero-clarity.webp', 'data-trip-sheet-open', 'Dates and guests']);
+    requireIncludes(target.path, response.body, ['data-guest-version="waterline-v3"', 'id="home-heading"', 'href="/properties/" data-trip-link>Find your home</a>', "Your people.", "Your place.", "Our homes", 'data-guest-trip-form', '/images/homes/the-oasis/01.webp', 'href="/guest-support/"', 'href="/terms/#booking-and-confirmation"', 'Explore', 'Where we are', 'href="/guides/anna-maria-island-area-guide/"', 'id="email-signup"', 'data-inline-email-capture="true"', 'data-placement="home_owner_section"', 'Home 1 of ', 'data-scene-step="-1"', 'data-scene-step="1"', '/images/homes/the-oasis/hero-clarity.webp', 'data-trip-sheet-open', 'Dates and guests', '<p class="g-card-source">Ratings from Airbnb</p>', '<span class="g-card-rating" aria-hidden="true">★ ']);
     requireExcludes(target.path, response.body, ["Best rates guaranteed", "Best Price Guaranteed", "save up to 20%"]);
   }
 
   if (target.path === "/properties/") {
-    requireIncludes(target.path, response.body, ['data-trip-sheet-open', 'Dates and guests']);
+    requireIncludes(target.path, response.body, ['data-trip-sheet-open', 'Dates and guests', '<p class="g-card-source">Ratings from Airbnb</p>', '<span class="g-card-rating" aria-hidden="true">★ ']);
     if (!response.body.includes("Dockside Dreams") || !response.body.includes("The Oasis")) {
       throw new Error("properties page is missing premium catalog property cards");
     }
