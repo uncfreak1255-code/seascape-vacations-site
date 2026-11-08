@@ -3,6 +3,8 @@
 // The Airbnb rating line on home cards. Sawyer approved it on 2026-11-07:
 // the real Airbnb rating to one decimal with standard rounding (no floor),
 // labelled as Airbnb, and "New" until a home has the minimum review count.
+// On cards it shows Airbnb-style as "★ 5.0 (44)" beside the name; each list
+// carries one "Ratings from Airbnb" label (Sawyer, 2026-11-08).
 // Only the rounded value reaches the page; the raw two-decimal value stays in
 // src/_data/airbnbRatings.json.
 
@@ -15,7 +17,7 @@ function airbnbRatingLabel(listingId, data = snapshot) {
   const rating = Number(home.rating);
   if (!Number.isInteger(reviews) || reviews < 0) return null;
   if (reviews < data.minimumReviews) {
-    return { isNew: true, text: "New", score: "New", count: "", spoken: "New home, not yet rated on Airbnb" };
+    return { isNew: true, text: "New", short: "New", spoken: "New home, not yet rated on Airbnb" };
   }
   if (!Number.isFinite(rating) || rating <= 0 || rating > 5) return null;
   const rounded = (Math.round(rating * 10) / 10).toFixed(1);
@@ -25,8 +27,7 @@ function airbnbRatingLabel(listingId, data = snapshot) {
     rating: rounded,
     reviews,
     text: `${rounded} · ${reviews} Airbnb ${noun}`,
-    score: rounded,
-    count: `${reviews} Airbnb ${noun}`,
+    short: `${rounded} (${reviews})`,
     spoken: `Rated ${rounded} out of 5 from ${reviews} Airbnb ${noun}`
   };
 }

@@ -14,7 +14,7 @@ const data = (homes) => ({ minimumReviews: 3, homes });
 function renderCardRating(listingId, ratings = snapshot) {
   const env = new nunjucks.Environment(new nunjucks.FileSystemLoader(path.join(projectRoot, "src/_includes")), { autoescape: true });
   const rating = airbnbRatingLabel(listingId, ratings);
-  return env.renderString('{% set ratingPart = "badge" %}{% include "partials/card-rating.njk" %}|{% set ratingPart = "spoken" %}{% include "partials/card-rating.njk" %}', { rating });
+  return env.renderString('{% set ratingPart = "line" %}{% include "partials/card-rating.njk" %}|{% set ratingPart = "spoken" %}{% include "partials/card-rating.njk" %}', { rating });
 }
 
 test("ratings round to one decimal with no floor", () => {
@@ -44,10 +44,9 @@ test("a home missing from the snapshot, or with a bad rating, renders nothing", 
 
 test("the card shows the star line and a screen reader hears a sentence", () => {
   const html = renderCardRating("1", data({ 1: { rating: 4.97, reviews: 112 } }));
-  const [badge, spoken] = html.split("|");
-  assert.match(badge, /^<div class="g-card-rating" aria-hidden="true">/);
-  const shown = badge.replace(/<[^>]+>/g, "");
-  assert.equal(shown, "★ 5.0 · 112 Airbnb reviews");
+  const [line, spoken] = html.split("|");
+  assert.match(line, /^<span class="g-card-rating" aria-hidden="true">/);
+  assert.equal(line.replace(/<[^>]+>/g, ""), "★ 5.0 (112)", "Airbnb's own card format");
   assert.match(spoken, /^<span class="g-sr-only">Rated 5\.0 out of 5 from 112 Airbnb reviews<\/span>/);
   assert.doesNotMatch(html, /4\.97/, "only the rounded value may reach the page");
 });
@@ -58,10 +57,12 @@ test("every home on the site has an Airbnb rating entry", () => {
   }
 });
 
-test("both home card lists put the badge on the photo and the spoken rating after the name", () => {
+test("both home card lists show the rating beside the name, the spoken rating after it, and one Airbnb label", () => {
   for (const file of ["src/index.njk", "src/properties/index.njk"]) {
     const source = fs.readFileSync(path.join(projectRoot, file), "utf8");
-    assert.match(source, /\| airbnbRating %\}\{% set ratingPart = "badge" %\}\{% include "partials\/card-rating\.njk" %\}/, file);
-    assert.match(source, /<\/h3>\s*\{% set ratingPart = "spoken" %\}\{% include "partials\/card-rating\.njk" %\}/, file);
+    assert.match(source, /<div class="g-card-name"><h3>[\s\S]*?<\/h3>\{% set ratingPart = "line" %\}\{% include "partials\/card-rating\.njk" %\}<\/div>/, file);
+    assert.match(source, /<\/div>\s*\{% set ratingPart = "spoken" %\}\{% include "partials\/card-rating\.njk" %\}/, file);
+    assert.equal((source.match(/<p class="g-card-source">Ratings from Airbnb<\/p>/g) || []).length, 1, `${file} labels the list once`);
+    assert.doesNotMatch(source, /ratingPart = "badge"/, `${file} has no photo badge`);
   }
 });
