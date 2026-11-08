@@ -29,7 +29,7 @@ eleventyExcludeFromCollections: true
       <button class="bk4-chip" type="button" data-bk4-filter="game-room" aria-pressed="false">Game room</button>
     </div>
     <p class="bk4-status" role="status" data-bk4-status>{{ properties | length }} homes</p>
-    <div class="bk4-stack">{% for home in properties %}{% set firstCard = loop.first %}{% set photos = home.photography.photos.slice(0, 5) %}{% set cardTokens = ((home.amenities or []) | join('|') ~ '|' ~ home.destination ~ '|' ~ home.city) | lower %}
+    <div class="bk4-stack">{% for home in properties %}{% set firstCard = loop.first %}{% set photos = home.photography.photos.slice(0, 5) %}{# Filter tokens: both amenity arrays, as the catalog does; hot-tub-spa also counts as hot-tub. #}{% set cardTokens = ((home.amenities or []) | join('|') ~ '|' ~ ((home.marketing_amenities or []) | join('|')) ~ '|' ~ home.destination ~ '|' ~ home.city) | lower | replace('hot-tub-spa', 'hot-tub-spa|hot-tub') %}
       <article class="bk4-card" data-bk4-card data-filters="{{ cardTokens }}">
         <div class="bk4-photos">
           <div class="bk4-strip" data-bk4-strip role="region" aria-label="{{ home.cardName or home.name }} photos" tabindex="0">{% for photo in photos %}
