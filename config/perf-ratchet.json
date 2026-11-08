@@ -10,7 +10,7 @@
     },
     "/property-management/": {
       "script": 90809,
-      "stylesheet": 57818
+      "stylesheet": 58415
     },
     "/property-management/vacation-rental-licensing-florida/": {
       "script": 60723,
@@ -1392,6 +1392,14 @@
       "from": 51742,
       "to": 52620,
       "reason": "PR #896: desktop nav hover underline + color (motion.css, ~0.8 KB), approved by Sawyer 2026-11-07",
+      "date": "2026-11-08"
+    },
+    {
+      "route": "/property-management/",
+      "metric": "stylesheet",
+      "from": 57818,
+      "to": 58415,
+      "reason": "Owner page editorial home cards (option C), approved by Sawyer 2026-11-07",
       "date": "2026-11-08"
     }
   ]
