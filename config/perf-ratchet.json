@@ -1,36 +1,36 @@
 {
   "routes": {
     "/": {
-      "script": 87192,
-      "stylesheet": 70860
+      "script": 87188,
+      "stylesheet": 70986
     },
     "/properties/": {
-      "script": 107412,
-      "stylesheet": 72034
+      "script": 107408,
+      "stylesheet": 72160
     },
     "/property-management/": {
-      "script": 91148,
-      "stylesheet": 58129
+      "script": 91144,
+      "stylesheet": 58255
     },
     "/property-management/vacation-rental-licensing-florida/": {
-      "script": 61062,
-      "stylesheet": 38298
+      "script": 61058,
+      "stylesheet": 38424
     },
     "/property-management/vacation-rental-management-fees-florida/": {
-      "script": 61062,
-      "stylesheet": 38298
+      "script": 61058,
+      "stylesheet": 38424
     },
     "/property-management/vrbo-management-services-florida/": {
-      "script": 61062,
-      "stylesheet": 38298
+      "script": 61058,
+      "stylesheet": 38424
     },
     "/stays/anna-maria-island-beachfront-rentals/": {
-      "script": 59088,
-      "stylesheet": 52931
+      "script": 59084,
+      "stylesheet": 53057
     },
     "/stays/anna-maria-island-vacation-rentals/": {
-      "script": 59088,
-      "stylesheet": 52931
+      "script": 59084,
+      "stylesheet": 53057
     }
   },
   "raises": [
@@ -1520,6 +1520,70 @@
       "from": 52620,
       "to": 52931,
       "reason": "Page transitions: header holds still + page settle (motion.css, guest-menu.js pageswap guard), approved by Sawyer 2026-11-07",
+      "date": "2026-11-08"
+    },
+    {
+      "route": "/",
+      "metric": "stylesheet",
+      "from": 70860,
+      "to": 70986,
+      "reason": "Page transitions review fixes: header snapshot swaps instantly (+126 bytes CSS), approved by Sawyer 2026-11-07",
+      "date": "2026-11-08"
+    },
+    {
+      "route": "/properties/",
+      "metric": "stylesheet",
+      "from": 72034,
+      "to": 72160,
+      "reason": "Page transitions review fixes: header snapshot swaps instantly (+126 bytes CSS), approved by Sawyer 2026-11-07",
+      "date": "2026-11-08"
+    },
+    {
+      "route": "/property-management/",
+      "metric": "stylesheet",
+      "from": 58129,
+      "to": 58255,
+      "reason": "Page transitions review fixes: header snapshot swaps instantly (+126 bytes CSS), approved by Sawyer 2026-11-07",
+      "date": "2026-11-08"
+    },
+    {
+      "route": "/property-management/vacation-rental-management-fees-florida/",
+      "metric": "stylesheet",
+      "from": 38298,
+      "to": 38424,
+      "reason": "Page transitions review fixes: header snapshot swaps instantly (+126 bytes CSS), approved by Sawyer 2026-11-07",
+      "date": "2026-11-08"
+    },
+    {
+      "route": "/property-management/vacation-rental-licensing-florida/",
+      "metric": "stylesheet",
+      "from": 38298,
+      "to": 38424,
+      "reason": "Page transitions review fixes: header snapshot swaps instantly (+126 bytes CSS), approved by Sawyer 2026-11-07",
+      "date": "2026-11-08"
+    },
+    {
+      "route": "/property-management/vrbo-management-services-florida/",
+      "metric": "stylesheet",
+      "from": 38298,
+      "to": 38424,
+      "reason": "Page transitions review fixes: header snapshot swaps instantly (+126 bytes CSS), approved by Sawyer 2026-11-07",
+      "date": "2026-11-08"
+    },
+    {
+      "route": "/stays/anna-maria-island-vacation-rentals/",
+      "metric": "stylesheet",
+      "from": 52931,
+      "to": 53057,
+      "reason": "Page transitions review fixes: header snapshot swaps instantly (+126 bytes CSS), approved by Sawyer 2026-11-07",
+      "date": "2026-11-08"
+    },
+    {
+      "route": "/stays/anna-maria-island-beachfront-rentals/",
+      "metric": "stylesheet",
+      "from": 52931,
+      "to": 53057,
+      "reason": "Page transitions review fixes: header snapshot swaps instantly (+126 bytes CSS), approved by Sawyer 2026-11-07",
       "date": "2026-11-08"
     }
   ]
