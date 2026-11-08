@@ -307,7 +307,7 @@ const SCENARIOS = [
         assertExcludes(html, "$119,923");
         assertExcludes(html, "13.4%");
         assertExcludes(html, "Reply guaranteed");
-        assertIncludes(html, "Request your 48-hour revenue review");
+        assertIncludes(html, "Get my review");
         assertIncludes(html, 'data-track-event="owner_primary_cta_click"');
         assertIncludes(html, 'data-placement="review-section"');
         assertIncludes(html, 'data-placement="sticky"');

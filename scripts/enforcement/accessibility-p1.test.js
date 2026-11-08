@@ -56,7 +56,7 @@ test("flagged aria-label hosts use allowed semantics instead of role-less generi
     /<div class="property-trip-context" role="group" aria-label="Your trip">/
   );
 
-  assert.match(ownerLanding, /<nav class="g-owner-steps" aria-label="Form progress">/);
+  assert.match(ownerLanding, /partials\/owner-form-steps\.njk/);
   assert.match(ownerLanding, /class="g-owner-choices" role="group" aria-label="What feels off"/);
   assert.match(ownerLanding, /<dl class="g-owner-recap" aria-label="Your answers">/);
   assert.match(ownerLanding, /<aside class="g-owner-review" id="owner-cta" aria-labelledby="owner-review-title">/);
@@ -73,7 +73,8 @@ test("built catalog, property, and owner routes keep the named region semantics"
   assert.equal(countMains(propertyHtml), 1);
   assert.equal(countMains(catalogHtml), 1);
 
-  assert.match(ownerHtml, /<nav class="g-owner-steps" aria-label="Form progress">/);
+  // The step buttons are hidden at step 1, so the nav ships inert until the form advances.
+  assert.match(ownerHtml, /<nav class="g-owner-steps" aria-label="Form progress" inert>/);
   assert.match(ownerHtml, /role="group"[^>]*aria-label="What feels off"/);
   assert.match(ownerHtml, /<aside class="g-owner-review" id="owner-cta" aria-labelledby="owner-review-title">/);
 });

@@ -49,7 +49,7 @@ test("owner landing page uses a real owner revenue review form instead of generi
   assert.equal(fs.existsSync(ownerFormPath), true, "owner form partial should exist");
 
   const ownerFormPartial = fs.readFileSync(ownerFormPath, "utf8");
-  assert.equal(ownerLanding.includes("Request your 48-hour revenue review"), true);
+  assert.equal(ownerLanding.includes("Get my review"), true);
   // novalidate is load-bearing: without it the browser blocks submit on required
 // fields inside hidden step panels and the form dead-ends with no feedback.
   assert.equal(ownerLanding.includes('<form class="g-owner-form" novalidate name="owner-revenue-teardown" method="POST" action="/property-management/revenue-review-requested/" enctype="multipart/form-data"'), true);
@@ -107,10 +107,6 @@ test("owner landing page keeps the owner revenue review close to the sales argum
   assert.notEqual(reviewIndex, -1, "owner hub needs the revenue review anchor");
   // The offer (seascape-hub/context/owner-offer.md) leads; fee vocabulary lives on the fee guide.
   assert.match(ownerLanding, /\{\{ homeCountWord \| capitalize \}\} homes\. One local team\./);
-  assert.equal(
-    ownerLanding.includes("You receive monthly payouts and updates on what needs attention before you have to ask."),
-    true
-  );
   assert.equal(ownerLanding.includes("Send the listing. We send back a one-page review."), true);
   assert.equal(ownerLanding.includes("We do not have one fee for every home."), true);
   assert.equal(ownerLanding.includes("proven cost, likely cost, and missing information"), false);
@@ -270,7 +266,6 @@ test("owner revenue review form lowers friction without losing tracking or inten
   assert.equal(ownerTemplate.includes('propertyFieldLabel: "Listing URL or property address"'), true);
   assert.equal(ownerLanding.includes("Send my review request"), true);
   assert.equal(ownerLanding.includes("Request My Review"), false);
-  assert.equal(ownerLanding.includes("Send a listing link or an address, plus a sentence on what feels off."), true);
   assert.equal(ownerLanding.includes("If something is missing we will ask for it rather than fill in the blanks."), true);
   assert.equal(ownerLanding.includes("We read the listing, look at what feels off, and reply with what we would check next."), true);
   assert.equal(ownerLanding.includes("No sales call"), false);
@@ -518,7 +513,7 @@ test("owner hub removes the retired operator proof pack while the benchmark stan
     "/property-management/?owner_source=owner-fee-revenue-leak-benchmark-2026#owner-cta"
   );
   assert.equal(ownerBenchmark.includes('href="{{ ctaPath }}"'), true);
-  assert.equal(ownerLanding.includes("Request your 48-hour revenue review"), true);
+  assert.equal(ownerLanding.includes("Get my review"), true);
   assert.equal(ownerBenchmark.includes("Request Your Revenue Review"), true);
 });
 
