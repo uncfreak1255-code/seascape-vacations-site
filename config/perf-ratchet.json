@@ -2,35 +2,35 @@
   "routes": {
     "/": {
       "script": 86853,
-      "stylesheet": 69764
+      "stylesheet": 70549
     },
     "/properties/": {
       "script": 107073,
-      "stylesheet": 70938
+      "stylesheet": 71723
     },
     "/property-management/": {
       "script": 90809,
-      "stylesheet": 56940
+      "stylesheet": 57818
     },
     "/property-management/vacation-rental-licensing-florida/": {
       "script": 60723,
-      "stylesheet": 37109
+      "stylesheet": 37987
     },
     "/property-management/vacation-rental-management-fees-florida/": {
       "script": 60723,
-      "stylesheet": 37109
+      "stylesheet": 37987
     },
     "/property-management/vrbo-management-services-florida/": {
       "script": 60723,
-      "stylesheet": 37109
+      "stylesheet": 37987
     },
     "/stays/anna-maria-island-beachfront-rentals/": {
       "script": 58749,
-      "stylesheet": 51742
+      "stylesheet": 52620
     },
     "/stays/anna-maria-island-vacation-rentals/": {
       "script": 58749,
-      "stylesheet": 51742
+      "stylesheet": 52620
     }
   },
   "raises": [
@@ -1329,6 +1329,70 @@
       "to": 107073,
       "reason": "Phone booking flow (PR #890) review fixes: availability labels hide when the dates change and show only on homes a finished check found open (catalog.js); the sticky trip bar opens the sheet when the form is invalid (trip-sheet.js)",
       "date": "2026-11-06"
+    },
+    {
+      "route": "/",
+      "metric": "stylesheet",
+      "from": 69764,
+      "to": 70549,
+      "reason": "PR #896: desktop nav hover underline + color (motion.css, ~0.8 KB), approved by Sawyer 2026-11-07",
+      "date": "2026-11-08"
+    },
+    {
+      "route": "/properties/",
+      "metric": "stylesheet",
+      "from": 70938,
+      "to": 71723,
+      "reason": "PR #896: desktop nav hover underline + color (motion.css, ~0.8 KB), approved by Sawyer 2026-11-07",
+      "date": "2026-11-08"
+    },
+    {
+      "route": "/property-management/",
+      "metric": "stylesheet",
+      "from": 56940,
+      "to": 57818,
+      "reason": "PR #896: desktop nav hover underline + color (motion.css, ~0.8 KB), approved by Sawyer 2026-11-07",
+      "date": "2026-11-08"
+    },
+    {
+      "route": "/property-management/vacation-rental-management-fees-florida/",
+      "metric": "stylesheet",
+      "from": 37109,
+      "to": 37987,
+      "reason": "PR #896: desktop nav hover underline + color (motion.css, ~0.8 KB), approved by Sawyer 2026-11-07",
+      "date": "2026-11-08"
+    },
+    {
+      "route": "/property-management/vacation-rental-licensing-florida/",
+      "metric": "stylesheet",
+      "from": 37109,
+      "to": 37987,
+      "reason": "PR #896: desktop nav hover underline + color (motion.css, ~0.8 KB), approved by Sawyer 2026-11-07",
+      "date": "2026-11-08"
+    },
+    {
+      "route": "/property-management/vrbo-management-services-florida/",
+      "metric": "stylesheet",
+      "from": 37109,
+      "to": 37987,
+      "reason": "PR #896: desktop nav hover underline + color (motion.css, ~0.8 KB), approved by Sawyer 2026-11-07",
+      "date": "2026-11-08"
+    },
+    {
+      "route": "/stays/anna-maria-island-vacation-rentals/",
+      "metric": "stylesheet",
+      "from": 51742,
+      "to": 52620,
+      "reason": "PR #896: desktop nav hover underline + color (motion.css, ~0.8 KB), approved by Sawyer 2026-11-07",
+      "date": "2026-11-08"
+    },
+    {
+      "route": "/stays/anna-maria-island-beachfront-rentals/",
+      "metric": "stylesheet",
+      "from": 51742,
+      "to": 52620,
+      "reason": "PR #896: desktop nav hover underline + color (motion.css, ~0.8 KB), approved by Sawyer 2026-11-07",
+      "date": "2026-11-08"
     }
   ]
 }
