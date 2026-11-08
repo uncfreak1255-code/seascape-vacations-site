@@ -45,7 +45,7 @@
 | SERP source | Not a search batch; source is the analytics read on 2026-11-07. |
 | Competitor URLs inspected | source check: live cards at https://seascape-vacations.com/ and https://seascape-vacations.com/properties/ on 2026-11-07; SERP check: no DataForSEO or public SERP action because no title, meta or indexable copy changed; competitor-page check: no competitor page rewrite, Airbnb card layout used only as the design reference |
 | Content gap and Seascape answer | Cards lacked a rating; answer is the real Airbnb rating, labelled and dated in the data file. |
-| Design/format strategy | Airbnb's card layout (Sawyer, 2026-11-08): rating right-aligned on the name line, no photo badge; one list label names Airbnb; existing tokens only. |
+| Design/format strategy | Airbnb's card layout (Sawyer, 2026-11-07): rating right-aligned on the name line, no photo badge; one list label names Airbnb; existing tokens only. |
 | Seascape proof available | `src/_data/airbnbRatings.json` with read time and source query. |
 | Tools/plugins used | psql read of the analytics database; local build and Playwright checks. |
 | Decision and reason | Ship on existing cards; Sawyer approved on 2026-11-07. |

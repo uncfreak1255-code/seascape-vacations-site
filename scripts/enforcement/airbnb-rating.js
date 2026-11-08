@@ -4,7 +4,7 @@
 // the real Airbnb rating to one decimal with standard rounding (no floor),
 // labelled as Airbnb, and "New" until a home has the minimum review count.
 // On cards it shows Airbnb-style as "★ 5.0 (44)" beside the name; each list
-// carries one "Ratings from Airbnb" label (Sawyer, 2026-11-08).
+// carries one "Ratings from Airbnb" label (Sawyer, 2026-11-07).
 // Only the rounded value reaches the page; the raw two-decimal value stays in
 // src/_data/airbnbRatings.json.
 

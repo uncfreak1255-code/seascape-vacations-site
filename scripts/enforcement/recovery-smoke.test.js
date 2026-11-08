@@ -44,6 +44,8 @@ test("properties smoke checks durable property detail hrefs instead of old CTA c
       <h1>Find the house.<br>Bring your people.</h1>
       <form id="catalog-trip-form"></form><dialog id="catalog-comparison"></dialog>
       <button type="button" data-trip-sheet-open>Dates and guests</button>
+      <p class="g-card-source">Ratings from Airbnb</p>
+      <span class="g-card-rating" aria-hidden="true">★ 5.0 (112)</span>
       <p>Full price, fees and cancellation terms on the booking page.</p>
       <article><a href="/properties/dockside-dreams/">Dockside Dreams</a></article>
       <article><a href="/properties/the-oasis/">The Oasis</a></article>
@@ -65,6 +67,11 @@ test("properties smoke checks durable property detail hrefs instead of old CTA c
     });
   });
 
+  assert.throws(() => smoke.validateTargetResponse(target, {
+    statusCode: 200,
+    location: null,
+    body: currentPropertiesBody.replace('<p class="g-card-source">Ratings from Airbnb</p>', "")
+  }), /missing current live marker\(s\): <p class="g-card-source">Ratings from Airbnb<\/p>/);
   assert.equal(currentPropertiesBody.includes("View Details"), false);
   assert.throws(() => smoke.validateTargetResponse(target, {
     statusCode: 200,
@@ -92,6 +99,8 @@ test("properties smoke rejects missing stable property detail hrefs", () => {
       body: `
         <main>
           <button type="button" data-trip-sheet-open>Dates and guests</button>
+          <p class="g-card-source">Ratings from Airbnb</p>
+          <span class="g-card-rating" aria-hidden="true">★ 5.0 (112)</span>
           <article>Dockside Dreams</article>
           <article>The Oasis</article>
           <a class="catalog-check-dates" href="https://book.seascape-vacations.com">Check dates</a>
