@@ -1,5 +1,5 @@
 const { test, expect } = require('@playwright/test');
-const { registerStableNetwork } = require('./test-helpers');
+const { closeTripSheet, openTripSheet, registerStableNetwork } = require('./test-helpers');
 const dates = 'arrive=2026-11-07&depart=2026-11-14';
 const listingIds = { 'dockside-dreams': '206016', 'the-oasis': '189511', 'sarasota-luxe': '135881', 'river-house': '135880', 'bradenton-pool-home': '487798', 'blue-house': '589288', 'coastal-stay': '599394', 'relaxing-oasis': '607228' };
 const open = ['dockside-dreams', 'sarasota-luxe', 'bradenton-pool-home'];
@@ -23,6 +23,7 @@ async function visit(page, query, stay = answer) {
 const cardButtons = page => page.locator('.catalog-card:not([hidden]) .catalog-check-dates');
 const count = page => page.locator('#catalog-count');
 const status = page => page.locator('#trip-status');
+const availableLabels = page => page.locator('.catalog-card [data-available]:not([hidden])');
 const links = locator => locator.evaluateAll(nodes => nodes.map(node => ({
   href: node.href, raw: node.getAttribute('href'), target: node.getAttribute('target'), slug: node.dataset.pageSlug,
   label: node.getAttribute('aria-label'), text: node.textContent, event: node.getAttribute('data-track-event')
@@ -113,6 +114,7 @@ test('open dates without a group size ask for the group, then book', async ({ pa
 test('a group size chosen while dates are open applies at once, every time it changes', async ({ page }) => {
   await visit(page, dates);
   await expect(cardButtons(page)).toHaveText(['Book these dates', 'Book these dates', 'Book these dates']);
+  await openTripSheet(page);
   for (const size of ['6', '4']) {
     await page.locator('#trip-guests').selectOption(size);
     await expect(count(page)).toHaveText('3 homes are open for these dates. You’ll see the full price before you pay.');
@@ -126,7 +128,12 @@ test('a group size chosen while dates are open applies at once, every time it ch
 test('dates edited but not searched again take the booking buttons back to "Check dates"', async ({ page }) => {
   await visit(page, dates + '&guests=6&compare=dockside-dreams,sarasota-luxe');
   await expect(cardButtons(page)).toHaveText(['Book these dates', 'Book these dates', 'Book these dates']);
+  await expect(availableLabels(page)).toHaveCount(3);
+  await openTripSheet(page);
   await page.locator('#trip-depart').fill('2026-11-16');
+  await closeTripSheet(page);
+  // "Available for your dates" was true only for the checked dates.
+  await expect(availableLabels(page)).toHaveCount(0);
   // No card may open checkout for the earlier dates while the form shows different ones.
   for (const link of await links(cardButtons(page))) {
     expect(new URL(link.href).pathname).toBe('/listings/' + listingIds[link.slug]);
@@ -144,16 +151,47 @@ test('dates edited but not searched again take the booking buttons back to "Chec
   await page.locator('#close-comparison').click();
 
   // Searching again with the new dates books the new dates.
+  await openTripSheet(page);
   await page.locator('#catalog-trip-form [type="submit"]').click();
   await expect(cardButtons(page)).toHaveText(['Book these dates', 'Book these dates', 'Book these dates']);
   for (const link of await links(cardButtons(page))) {
     expect(new URL(link.href).pathname).toBe('/checkout/' + listingIds[link.slug]);
     expect(new URL(link.href).searchParams.get('end')).toBe('2026-11-16');
   }
+  await expect(availableLabels(page)).toHaveCount(3);
+});
+
+test('an arrival typed and cleared without a search shows no availability labels', async ({ page }) => {
+  await visit(page, 'guests=6');
+  await openTripSheet(page);
+  await page.locator('#trip-arrive').fill('2026-11-07');
+  await page.locator('#trip-arrive').fill('');
+  await closeTripSheet(page);
+  await expect(availableLabels(page)).toHaveCount(0);
+});
+
+test('on a phone, the fixed search pill with a past arrival opens the sheet instead of searching', async ({ page }) => {
+  let checks = 0;
+  await visit(page, '', route => { checks += 1; return answer(route); });
+  test.skip(!(await page.locator('.ts-pill').first().isVisible()), 'the search pill is phone only');
+  await openTripSheet(page);
+  await page.locator('#trip-arrive').fill('2026-09-01');
+  await page.locator('#trip-depart').fill('2026-09-03');
+  await closeTripSheet(page);
+  await page.evaluate(() => window.scrollTo(0, 1500));
+  // Phones replaced the old scroll-in trip bar with a pill fixed at the top, so it stays on screen.
+  await expect(page.locator('[data-trip-bar]')).toBeHidden();
+  const pill = page.locator('.ts-pill').first();
+  await expect(pill).toBeInViewport();
+  await pill.click();
+  // A closed sheet cannot show why the dates are invalid, so the pill opens it and runs no search.
+  await expect(page.locator('dialog[data-trip-sheet]')).toBeVisible();
+  expect(checks).toBe(0);
 });
 
 test('with no group size, an unsearched date edit does not ask for the group size', async ({ page }) => {
   await visit(page, dates);
+  await openTripSheet(page);
   await page.locator('#trip-depart').fill('2026-11-16');
   expect((await links(cardButtons(page))).map(link => link.text + ' ' + new URL(link.href).pathname)).toEqual(open.map(slug => 'Check dates /listings/' + listingIds[slug]));
 });
@@ -161,9 +199,11 @@ test('with no group size, an unsearched date edit does not ask for the group siz
 test('a group size changed while edited dates wait is not booked until the next search', async ({ page }) => {
   await visit(page, dates + '&guests=6&compare=dockside-dreams,sarasota-luxe');
   await expect(cardButtons(page)).toHaveText(['Book these dates', 'Book these dates', 'Book these dates']);
+  await openTripSheet(page);
   await page.locator('#trip-depart').fill('2026-11-16');
   await page.locator('#trip-guests').selectOption('4');
   await page.locator('#trip-depart').fill('2026-11-14');
+  await closeTripSheet(page);
   // The form shows the checked dates again, but 4 guests was never searched: no button may book for 6.
   const cards = await links(cardButtons(page));
   expect(cards).toHaveLength(3);
@@ -178,6 +218,7 @@ test('a group size changed while edited dates wait is not booked until the next 
   for (const link of compared) expect(new URL(link.href).pathname).toBe('/listings/' + listingIds[link.slug]);
   await page.locator('#close-comparison').click();
 
+  await openTripSheet(page);
   await page.locator('#catalog-trip-form [type="submit"]').click();
   await expect(cardButtons(page)).toHaveText(['Book these dates', 'Book these dates', 'Book these dates']);
   for (const link of await links(cardButtons(page))) {
@@ -189,6 +230,7 @@ test('a group size changed while edited dates wait is not booked until the next 
 test('a first group size chosen while edited dates wait does not bring back the ask', async ({ page }) => {
   await visit(page, dates);
   await expect(cardButtons(page)).toHaveText(['Book these dates', 'Book these dates', 'Book these dates']);
+  await openTripSheet(page);
   await page.locator('#trip-depart').fill('2026-11-16');
   await page.locator('#trip-guests').selectOption('6');
   await page.locator('#trip-depart').fill('2026-11-14');
@@ -199,15 +241,18 @@ test('a group size changed while the dates check is running is not booked with t
   let release;
   const held = new Promise(resolve => { release = resolve; });
   await visit(page, 'guests=6', async route => { await held; await answer(route); });
+  await openTripSheet(page);
   await page.locator('#trip-arrive').fill('2026-11-07');
   await page.locator('#trip-depart').fill('2026-11-14');
   await page.locator('#catalog-trip-form [type="submit"]').click();
   // The answer for 6 guests is still on its way when the form changes to 4.
+  await openTripSheet(page);
   await page.locator('#trip-guests').selectOption('4');
   release();
   await expect(count(page)).toContainText('3 homes are open for these dates.');
   expect((await links(cardButtons(page))).map(link => link.text + ' ' + new URL(link.href).pathname)).toEqual(open.map(slug => 'Check dates /listings/' + listingIds[slug]));
 
+  await openTripSheet(page);
   await page.locator('#catalog-trip-form [type="submit"]').click();
   await expect(cardButtons(page)).toHaveText(['Book these dates', 'Book these dates', 'Book these dates']);
   for (const link of await links(cardButtons(page))) {
@@ -244,6 +289,7 @@ test('flexible dates keep "Check dates", and clearing open dates puts it back', 
 
   await page.goto('/properties/?' + dates + '&guests=6', { waitUntil: 'networkidle' });
   await expect(cardButtons(page)).toHaveText(['Book these dates', 'Book these dates', 'Book these dates']);
+  await openTripSheet(page);
   await page.locator('#clear-dates').click();
   const cleared = await links(cardButtons(page));
   expect(cleared.length).toBeGreaterThan(3);

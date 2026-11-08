@@ -1,7 +1,8 @@
 const { test, expect } = require('@playwright/test');
-const { registerStableNetwork } = require('./test-helpers');
+const { openTripSheet, registerStableNetwork } = require('./test-helpers');
 
-test('simple controls replace the strip and retain keyboard focus while browsing', async ({ page }) => {
+test('simple controls replace the strip and retain keyboard focus while browsing', async ({ page, isMobile }) => {
+  test.skip(isMobile, 'Phones show the homepage as a list of homes with no hero (PR #892); desktop still covers the hero.');
   await registerStableNetwork(page);
   await page.goto('/');
   await expect(page.locator('.g-scene-picker')).toBeHidden();
@@ -26,11 +27,13 @@ test('the homepage fetches only its matching responsive Oasis hero', async ({ pa
   const photo=page.locator('#scene-the-oasis img');
   await expect(photo).toHaveJSProperty('complete',true);
   const mobile=testInfo.project.name==='mobile-chromium';
-  expect(requests).toEqual(['/images/homes/the-oasis/hero-clarity'+(mobile?'-mobile':'')+'.webp']);
+  // Phones hide the hero, so they download no hero photo at all.
+  expect(requests).toEqual(mobile?[]:['/images/homes/the-oasis/hero-clarity.webp']);
   expect(await photo.evaluate(n=>n.naturalWidth)).toBeGreaterThan(0);
 });
 
-test('a slow photo does not take focus back from the trip form', async ({ page }) => {
+test('a slow photo does not take focus back from the trip form', async ({ page, isMobile }) => {
+  test.skip(isMobile, 'Phones show the homepage as a list of homes with no hero (PR #892); desktop still covers the hero.');
   await registerStableNetwork(page);
   await page.goto('/');
   let release;
@@ -41,6 +44,7 @@ test('a slow photo does not take focus back from the trip form', async ({ page }
   await next.press('ArrowRight');
   await next.focus();
   await next.dispatchEvent('click',{detail:1});
+  await openTripSheet(page);
   const arrival=page.getByLabel('Arrival',{exact:true});
   await arrival.focus();
   release();

@@ -37,6 +37,10 @@ Return:
 3. Candidate donor-page suggestions per priority target.
 4. A single execution sequence: highest impact first.
 
+For a before/after readback on named pages, use the JSON `inbound_by_page`
+field (every page's inbound source-link count) rather than patching the
+script; run it on the base and on the branch and diff the two values.
+
 ## Reference
 
 Use [family mapping](references/family-mapping.md) when interpreting or changing

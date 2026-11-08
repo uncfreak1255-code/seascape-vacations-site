@@ -1,0 +1,22 @@
+/* Home-card rating line and phone filter chips. The build appends this file to /css/trip-sheet.css (eleventy.config.js), so pages still load one stylesheet. */
+/* Airbnb-style rating (Sawyer, 2026-11-07): "★ 5.0 (44)" at the right of the name row; one "Ratings from Airbnb" label per list */
+.g-card-name{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;column-gap:10px;row-gap:2px}
+.g-card-name h3{min-width:0}
+.g-card-rating{flex:none;margin-left:auto;font:500 15px/1.3 Poppins,sans-serif;color:var(--g-ink);white-space:nowrap}
+.g-card-source{margin:0 0 16px;font:400 13px/1.4 Poppins,sans-serif;color:var(--g-muted)}
+/* Desktop homepage postcards are narrow: a smaller rating that sits on its own line under the name, left-aligned */
+@media(min-width:701px){.g-postcard .g-card-name{margin:0 4px}.g-postcard .g-card-name h3{margin:0}.g-postcard .g-card-rating{margin-left:0;font-size:13px}}
+@media(max-width:700px){
+  .g-home .g-postcard .g-card-name{order:1}
+  .g-home .g-postcard .g-card-name h3{order:0}
+  .g-home .g-postcard .g-card-rating{order:1}
+  .g-home .ts-status+.g-card-source{margin:2px 0 0}
+  .catalog-page .g-card-source{margin:12px 0 0}
+  .catalog-page .g-card-source+.catalog-count{margin-top:2px}
+  /* Chips: a 34px Airbnb-size pill drawn inside a 44px tap area (design floor F2) */
+  html .guest-site .ts-chip,html .guest-site .catalog-page .catalog-filter{position:relative;isolation:isolate;min-height:44px;padding:0 14px;background:transparent;border-color:transparent;font:500 14px/1.3 Poppins,sans-serif}
+  html .guest-site .ts-chip::before,html .guest-site .catalog-page .catalog-filter::before{content:"";position:absolute;inset:5px 0;z-index:-1;border-radius:999px;background:color-mix(in srgb,var(--g-ink) 7%,var(--g-paper))}
+  html .guest-site .ts-chip[aria-pressed="true"]::before,html .guest-site .catalog-page .catalog-filter[aria-pressed="true"]::before{background:var(--g-citron)}
+  html .guest-site .ts-chip:focus-visible,html .guest-site .catalog-page .catalog-filter:focus-visible{outline:none}
+  html .guest-site .ts-chip:focus-visible::before,html .guest-site .catalog-page .catalog-filter:focus-visible::before{outline:2px solid var(--g-ink);outline-offset:2px}
+}

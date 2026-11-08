@@ -48,25 +48,28 @@ test('Relaxing Oasis booking handoff preserves trip without submitting a reserva
   }).toPass();
 });
 
-test('Relaxing Oasis can be discovered on the homepage and filtered and compared in the catalog', async ({ page }) => {
+test('Relaxing Oasis can be discovered on the homepage and filtered and compared in the catalog', async ({ page, isMobile }) => {
   await page.route('**/.netlify/functions/booking-availability?*', route => route.fulfill({ status: 503, body: '{}' }));
   await page.goto('/');
   const postcard = page.locator('.g-postcard').filter({ hasText: 'Relaxing Oasis' });
   await expect(postcard).toHaveCount(1);
   await expect(postcard.locator('a')).toHaveAttribute('href', '/properties/relaxing-oasis/');
-  await expect(postcard.locator('img')).toHaveAttribute('src', '/images/homes/relaxing-oasis/01.webp');
-  await page.getByRole('button', { name: 'Prev featured home', exact: true }).click();
-  await expect(page.locator('#scene-relaxing-oasis')).toBeVisible();
-  await expect.poll(() => page.locator('#scene-relaxing-oasis img').evaluate(i => i.complete && i.naturalWidth > 0)).toBe(true);
+  await expect(postcard.locator('img[data-property-photo]').first()).toHaveAttribute('src', '/images/homes/relaxing-oasis/01.webp');
+  // Phones have no hero; the homepage card above is how a phone guest finds the home.
+  if (!isMobile) {
+    await page.getByRole('button', { name: 'Prev featured home', exact: true }).click();
+    await expect(page.locator('#scene-relaxing-oasis')).toBeVisible();
+    await expect.poll(() => page.locator('#scene-relaxing-oasis img').evaluate(i => i.complete && i.naturalWidth > 0)).toBe(true);
+  }
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.goto('/properties/');
   const card = page.locator('.catalog-card[data-property="relaxing-oasis"]');
   await expect(card).toContainText('5 bedrooms');
   await expect(card).toContainText('4 baths');
   await expect(card).toContainText('Up to 11 guests');
-  await expect(card.locator('img')).toHaveAttribute('src', '/images/homes/relaxing-oasis/01.webp');
+  await expect(card.locator('img[data-property-photo]')).toHaveAttribute('src', '/images/homes/relaxing-oasis/01.webp');
   await card.scrollIntoViewIfNeeded();
-  await expect.poll(() => card.locator('img').evaluate(i => i.complete && i.naturalWidth > 0)).toBe(true);
+  await expect.poll(() => card.locator('img[data-property-photo]').evaluate(i => i.complete && i.naturalWidth > 0)).toBe(true);
   await expect(card.getByRole('link', { name: 'Check dates for Relaxing Oasis', exact: true })).toHaveAttribute('href', /\/listings\/607228(?:\?|$)/);
   for (const filter of ['waterfront', 'pet-friendly', 'sarasota']) {
     await page.locator(`[data-filter="${filter}"]`).click();

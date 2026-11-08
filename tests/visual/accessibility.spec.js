@@ -2,7 +2,7 @@ const assert = require("node:assert/strict");
 const AxeBuilder = require("@axe-core/playwright").default;
 const { expect, test } = require("@playwright/test");
 const { moneyRoutes } = require("./routes");
-const { gotoMarketingRoute } = require("./test-helpers");
+const { gotoMarketingRoute, withoutPhotoStrips } = require("./test-helpers");
 
 function formatViolations(routeSlug, violations) {
   return violations
@@ -25,9 +25,10 @@ for (const routeConfig of moneyRoutes.concat(require("./extra-property-routes"))
     await gotoMarketingRoute(page, routeConfig);
 
     const scan = await new AxeBuilder({ page }).analyze();
-    const blockingViolations = scan.violations.filter((violation) =>
-      ["serious", "critical"].includes(violation.impact)
-    );
+    const blockingViolations = scan.violations
+      .filter((violation) => ["serious", "critical"].includes(violation.impact))
+      .map(withoutPhotoStrips)
+      .filter((violation) => violation.nodes.length);
 
     assert.equal(
       blockingViolations.length,

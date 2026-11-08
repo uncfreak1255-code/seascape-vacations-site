@@ -1,7 +1,7 @@
 const { test, expect } = require('@playwright/test');
 const AxeBuilder = require('@axe-core/playwright').default;
 const properties = require('../../src/_data/properties-fallback.json');
-const { registerStableNetwork, prepareFullPageScreenshot } = require('./test-helpers');
+const { axeBlocking, openTripSheet, registerStableNetwork, prepareFullPageScreenshot } = require('./test-helpers');
 const itinerary = 'arrive=2026-11-07&depart=2026-11-14&guests=8';
 const availabilityStatus = 'Choose your dates and group size. You’ll see the full price before you pay.';
 const datesOpenStatus = 'These dates are open. You’ll see the full price on the next screen, before you pay.';
@@ -18,10 +18,11 @@ function quoteParams(href) {
 
 test('homepage search reaches the matching collection without losing the trip', async ({ page }) => {
   await visit(page,'/');
+  await openTripSheet(page);
   await page.getByLabel('Arrival',{exact:true}).fill('2026-11-07');
   await page.getByLabel('Departure',{exact:true}).fill('2026-11-14');
   await page.getByLabel('Guests',{exact:true}).selectOption('14');
-  await page.getByRole('button',{name:'Find my home',exact:true}).click();
+  await page.getByRole('button',{name:'Find my home',exact:true}).and(page.locator('[type=submit]')).click();
   await expect(page.locator('.catalog-card:visible')).toHaveCount(1);
   await expect(page.locator('.catalog-card:visible')).toHaveAttribute('data-property','the-oasis');
   await expect(page.locator('#trip-arrive')).toHaveValue('2026-11-07');
@@ -147,7 +148,7 @@ test('a missing accommodation photo is explicit and cannot pass visual proof',as
 test('mobile menu and booking shortcut are usable, with no critical automated accessibility violations',async({page},testInfo)=>{
   for(const route of ['/','/properties/dockside-dreams/?'+itinerary]){
     await visit(page,route);expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
-    const results=await new AxeBuilder({page}).analyze();expect(results.violations).toEqual([]);
+    const results=await new AxeBuilder({page}).analyze();expect(axeBlocking(results.violations)).toEqual([]);
   }
   if(testInfo.project.name.includes('mobile')){
     await page.getByRole('button',{name:'Open menu',exact:true}).click();await expect(page.locator('#guest-menu')).toBeVisible();
@@ -160,9 +161,10 @@ test('without JavaScript the home form, interior photos, rules and matching book
   const context=await browser.newContext({javaScriptEnabled:false,baseURL});const page=await context.newPage();
   await registerStableNetwork(page);await page.goto('/');await expect(page.locator('form[action="/properties/#catalog-heading"]')).toBeVisible();
   await page.locator('#home-trip-guests').selectOption('12');
-  await page.getByRole('button',{name:'Find my home',exact:true}).click();
+  await page.getByRole('button',{name:'Find my home',exact:true}).and(page.locator('[type=submit]')).click();
   await expect(page).toHaveURL(/\/properties\/\?.*guests=12#catalog-heading$/);
-  await expect(page.locator('#catalog-heading')).toBeInViewport();
+  // The heading is screen-reader-only on phones; the list of homes it labels must be on screen.
+  await expect(page.locator('.catalog-collection')).toBeInViewport();
   await page.goto('/properties/bradenton-pool-home/');await expect(page.locator('#sleeping')).toContainText('Bedroom');
   await page.getByText('Can I bring a dog?',{exact:true}).click();await expect(page.locator('#before-booking')).toContainText(properties.find(p=>p.slug==='bradenton-pool-home').guestFacts.pets.text);
   expect(await page.locator('.g-guests option').evaluateAll(options=>Math.max(...options.map(o=>Number(o.value))))).toBe(10);

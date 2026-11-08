@@ -149,6 +149,23 @@ async function stabilizePropertyManagementVisualState(page, routeConfig) {
   }
 }
 
+// On phones the trip form lives in the "Dates and guests" bottom sheet (src/assets/js/trip-sheet.js).
+// These open and close it when it is there and do nothing on wider screens, so one test covers both widths.
+async function openTripSheet(page) {
+  const pill = page.locator(".ts-pill").first();
+  const dialog = page.locator("dialog[data-trip-sheet]");
+  if (!(await pill.isVisible()) || (await dialog.evaluate(node => node.open))) return;
+  await pill.click();
+  await dialog.waitFor({ state: "visible" });
+}
+
+async function closeTripSheet(page) {
+  const dialog = page.locator("dialog[data-trip-sheet]");
+  if (!(await dialog.count()) || !(await dialog.evaluate(node => node.open))) return;
+  await page.locator("[data-trip-sheet-close]").click();
+  await dialog.waitFor({ state: "hidden" });
+}
+
 async function gotoMarketingRoute(page, routeConfig) {
   await registerStableNetwork(page);
   if (routeConfig.slug === "properties-catalog") {
@@ -232,8 +249,26 @@ async function prepareFullPageScreenshot(page) {
   await waitForStableLayout(page);
 }
 
+// A phone photo strip scrolls inside its card link, and a focusable element is
+// not allowed inside a link. Its extra photos are decorative (empty alt) and the
+// link itself is the keyboard path to the home, so the strip is exempt from
+// scrollable-region-focusable only; every other rule still checks it.
+function withoutPhotoStrips(violation) {
+  if (violation.id !== "scrollable-region-focusable") return violation;
+  return { ...violation, nodes: violation.nodes.filter((node) => !node.html.includes("data-ts-strip")) };
+}
+
+// Axe helpers: drop photo-strip nodes from scrollable-region-focusable (see withoutPhotoStrips).
+function axeBlocking(violations) {
+  return violations.map(withoutPhotoStrips).filter((violation) => violation.nodes.length);
+}
+
 module.exports = {
+  axeBlocking,
+  withoutPhotoStrips,
+  closeTripSheet,
   gotoMarketingRoute,
+  openTripSheet,
   prepareFullPageScreenshot,
   registerStableNetwork,
 };
