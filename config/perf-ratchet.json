@@ -1,12 +1,12 @@
 {
   "routes": {
     "/": {
-      "script": 86853,
-      "stylesheet": 70549
+      "script": 87146,
+      "stylesheet": 83087
     },
     "/properties/": {
-      "script": 107073,
-      "stylesheet": 71723
+      "script": 107366,
+      "stylesheet": 84261
     },
     "/property-management/": {
       "script": 90809,
@@ -1395,11 +1395,43 @@
       "date": "2026-11-08"
     },
     {
+      "route": "/",
+      "metric": "script",
+      "from": 86853,
+      "to": 87146,
+      "reason": "PR #892: Airbnb-style phone layout CSS for / and /properties/ (trip-sheet.css phone block, rating line, chips) plus one trip-sheet.js line; Lighthouse LCP/CLS/TBT ceilings unchanged",
+      "date": "2026-11-08"
+    },
+    {
+      "route": "/",
+      "metric": "stylesheet",
+      "from": 70549,
+      "to": 83087,
+      "reason": "PR #892: Airbnb-style phone layout CSS for / and /properties/ (trip-sheet.css phone block, rating line, chips) plus one trip-sheet.js line; Lighthouse LCP/CLS/TBT ceilings unchanged",
+      "date": "2026-11-08"
+    },
+    {
+      "route": "/properties/",
+      "metric": "script",
+      "from": 107073,
+      "to": 107366,
+      "reason": "PR #892: Airbnb-style phone layout CSS for / and /properties/ (trip-sheet.css phone block, rating line, chips) plus one trip-sheet.js line; Lighthouse LCP/CLS/TBT ceilings unchanged",
+      "date": "2026-11-08"
+    },
+    {
+      "route": "/properties/",
+      "metric": "stylesheet",
+      "from": 71723,
+      "to": 84261,
+      "reason": "PR #892: Airbnb-style phone layout CSS for / and /properties/ (trip-sheet.css phone block, rating line, chips) plus one trip-sheet.js line; Lighthouse LCP/CLS/TBT ceilings unchanged",
+      "date": "2026-11-08"
+    },
+    {
       "route": "/property-management/",
       "metric": "stylesheet",
       "from": 57818,
       "to": 58415,
-      "reason": "Owner page editorial home cards (option C), approved by Sawyer 2026-11-07",
+      "reason": "Owner page editorial home cards (option C) on top of #892, approved by Sawyer 2026-11-07",
       "date": "2026-11-08"
     }
   ]

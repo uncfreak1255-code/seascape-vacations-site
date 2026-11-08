@@ -1,0 +1,2 @@
+{# Sets the phone sheet class before first paint so the space for the fixed pill does not shift the page when trip-sheet.js runs (Lighthouse CLS). If trip-sheet.js never runs, the class comes off at load and the plain trip form returns. #}
+<script>(function(){var d=document.documentElement;if(!window.matchMedia||!matchMedia('(max-width:700px)').matches)return;d.classList.add('ts-sheet-on');addEventListener('load',function(){if(!d.classList.contains('ts-ready'))d.classList.remove('ts-sheet-on')})})();</script>

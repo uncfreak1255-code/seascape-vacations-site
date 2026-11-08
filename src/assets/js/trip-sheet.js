@@ -32,6 +32,7 @@
     }
     pills.forEach(function (pill) { pill.hidden = !on; });
     root.classList.toggle('ts-sheet-on', on);
+    root.classList.add('ts-ready');
     showBar();
   }
 

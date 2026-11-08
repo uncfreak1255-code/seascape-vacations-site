@@ -5,9 +5,11 @@
 {% set fetchpriority = "high" %}
 {% endif %}
 {% set badge = "" %}
-{% if property.rating > 0 and property.rating <= 5 %}
+{# Stars use the same Airbnb rating as the home cards (Sawyer, 2026-11-07); a home still "New" on Airbnb shows none. #}
+{% set airbnb = property.listingId | airbnbRating %}
+{% if airbnb and not airbnb.isNew %}
 {% set badge %}
-<span class="stay-star-rating" role="img" aria-label="{{ property.rating }} out of 5 stars" style="--stay-rating: {{ property.rating * 20 }}%">
+<span class="stay-star-rating" role="img" aria-label="{{ airbnb.spoken }}" style="--stay-rating: {{ airbnb.rating * 20 }}%">
   <span class="stay-star-row" aria-hidden="true">{% for star in range(0, 5) %}{{ uiIcon("star") }}{% endfor %}</span>
   <span class="stay-star-fill" aria-hidden="true"><span class="stay-star-row">{% for star in range(0, 5) %}{{ uiIcon("star") }}{% endfor %}</span></span>
 </span>
