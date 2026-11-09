@@ -7,6 +7,9 @@
   var depart = document.getElementById("trip-depart");
   var guests = document.getElementById("trip-guests");
   var status = document.getElementById("trip-status");
+  var countLabel = document.getElementById("catalog-count");
+  var emptyPanel = document.getElementById("catalog-empty");
+  var heading = document.getElementById("catalog-heading");
   var cards = Array.from(root.querySelectorAll(".catalog-card"));
   var filters = Array.from(root.querySelectorAll("[data-filter]"));
   var dialog = document.getElementById("catalog-comparison");
@@ -90,7 +93,7 @@
         // Rollback: remove this line to send open homes to the listing page.
         if (open) url.pathname = url.pathname.replace("/listings/","/checkout/");
       }
-      // conversion-tracking.js now runs first, so apply its handoff fields here as the home pages do.
+      // Apply the same handoff fields as the property pages.
       link.href = window.SeascapeConversionTracking ? window.SeascapeConversionTracking.buildBookingEngineHandoffUrl(url.toString(),link) : url.toString();
     });
   }
@@ -128,9 +131,10 @@
       var active = button.dataset.filter === activeFilter;
       button.classList.toggle("active",active); button.setAttribute("aria-pressed",String(active));
     });
+    document.getElementById("reset-filter").hidden = activeFilter === "all";
     if (trip.arrive && trip.depart && count > 0 && !visualTestMode) {
-      document.getElementById("catalog-count").textContent = "Checking these dates.";
-      document.getElementById("catalog-empty").hidden = true;
+      countLabel.textContent = "Checking these dates.";
+      emptyPanel.hidden = true;
       status.textContent = "Checking these dates.";
     } else {
       showCapacityState(count);
@@ -152,9 +156,9 @@
   }
   function showCapacityState(count, extras) {
     extras = extras || {};
-    document.getElementById("catalog-count").textContent = extras.countText
+    countLabel.textContent = extras.countText
       || (count + (count === 1 ? " home fits" : " homes fit") + " · Check dates on each booking page");
-    document.getElementById("catalog-empty").hidden = count > 0;
+    emptyPanel.hidden = count > 0;
     if (count === 0) document.getElementById("catalog-empty-copy").textContent = emptyCopy();
     status.textContent = extras.status || (tripText() + ". Availability, fees and the full total are confirmed on the booking page.");
   }
@@ -200,13 +204,14 @@
         openHomes = cards.filter(function (card) { return !card.hidden; }).map(function (card) { return card.dataset.property; });
         labels();
         var openCount = openHomes.length;
-        document.getElementById("catalog-count").textContent = openCount === 0
-          ? "No home is open for these dates."
+        var emptyMessage = text.emptyAvailability(activeFilter);
+        countLabel.textContent = openCount === 0
+          ? emptyMessage
           : openCount + (openCount === 1 ? " home is open for these dates." : " homes are open for these dates.")
             + (trip.guests ? " You’ll see the full price before you pay." : " Choose your group size to book.");
-        document.getElementById("catalog-empty").hidden = openCount > 0;
+        emptyPanel.hidden = openCount > 0;
         document.getElementById("catalog-empty-copy").textContent = reasons.slice(0, 6).join(" ") || "Try different dates, or call us.";
-        status.textContent = tripText() + (openCount === 0 ? ". No home is open for these dates." : ". Open homes are shown below.");
+        status.textContent = tripText() + ". " + (openCount === 0 ? emptyMessage : "Open homes are shown below.");
         renderComparison(); syncUrl(); syncLinks();
       })
       .catch(function () {
@@ -266,7 +271,7 @@
     rememberTrip(); render(); emit("catalog_trip_update",{guest_count:Number(guests.value)||0,has_dates:Boolean(arrive.value)});
     // Closes the phone trip sheet before focus moves to the results heading.
     if (event) document.dispatchEvent(new CustomEvent("trip-applied"));
-    if (event) { var heading = document.getElementById("catalog-heading"); heading.focus(); heading.scrollIntoView(); }
+    if (event) { heading.focus(); heading.scrollIntoView(); }
   }
   form.addEventListener("submit",submitTrip);
   root.addEventListener("click",function(event) {
@@ -285,7 +290,10 @@
   document.getElementById("clear-dates").addEventListener("click",function() {
     arrive.value=""; depart.value=""; depart.setCustomValidity(""); depart.min=today; trip.arrive=""; trip.depart=""; rememberTrip(); render();
   });
-  document.getElementById("reset-filter").addEventListener("click",function() { activeFilter="all"; render(); });
+  document.getElementById("reset-filter").addEventListener("click",function() {
+    root.querySelector('[data-filter="all"]').click();
+    heading.focus();
+  });
   document.getElementById("clear-comparison").addEventListener("click",function() { selected=[]; renderComparison(); syncUrl(); syncLinks(); });
   document.getElementById("open-comparison").addEventListener("click",function() { renderComparison(); dialog.showModal(); emit("catalog_compare_open",{selected_count:selected.length}); });
   document.getElementById("close-comparison").addEventListener("click",function() { dialog.close(); });

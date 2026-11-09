@@ -72,7 +72,7 @@ test("editing fields requires applying the trip; global booking links update too
   await openTripSheet(page);
   await page.getByRole('button',{name:'Find my home',exact:true}).and(page.locator('[type=submit]')).click();
   await expect(page.locator("#catalog-empty")).toBeVisible();
-  await page.getByRole("button", {name:"Show all areas"}).click();
+  await page.getByRole("button", {name:"Show all stays"}).click();
   await expect(page.locator(".catalog-card:visible")).toHaveCount(1);
   await expect(page.locator(".catalog-card:visible")).toHaveAttribute("data-property","the-oasis");
   const hrefs = await page.locator('a[data-booking-base]').evaluateAll(nodes=>nodes.map(node=>node.href));
@@ -258,6 +258,28 @@ test("a closed stay is removed from the comparison shortlist and compare URL", a
   await expect(page.locator("#open-comparison")).toBeDisabled();
   await expect(page.locator('[data-compare-column="dockside-dreams"]:visible')).toHaveCount(0);
   expect(new URL(page.url()).searchParams.get("compare")).toBe("river-house");
+});
+
+test("a Sarasota availability miss can show all stays without changing the trip", async ({ page }, testInfo) => {
+  await registerStableNetwork(page);
+  await page.route("**/.netlify/functions/booking-availability**", catalogAvailability(
+    ["dockside-dreams", "the-oasis", "sarasota-luxe", "river-house", "bradenton-pool-home", "blue-house", "coastal-stay", "relaxing-oasis"].map(slug => ({
+      slug, bookable: slug === "coastal-stay", reason: slug === "coastal-stay" ? null : "booked"
+    }))
+  ));
+  await page.clock.setFixedTime(new Date("2026-11-09T16:00:00Z"));
+  const itinerary = "arrive=2027-05-04&depart=2027-05-08&guests=4";
+  await page.goto("/properties/?" + itinerary + "&area=sarasota");
+  await expect(page.locator("#catalog-count")).toHaveText("No Sarasota homes are open for these dates.");
+  const reset = page.getByRole("button", { name: "Show all stays", exact: true });
+  await reset.scrollIntoViewIfNeeded();
+  await page.screenshot({ path: testInfo.outputPath("sarasota-empty.png") });
+  await reset.click();
+  await expect(page).toHaveURL(new RegExp("/properties/\\?" + itinerary + "$"));
+  await expect(page.locator("#catalog-heading")).toBeFocused();
+  const coastal = page.getByRole("link", { name: "Book these dates for The Coastal" });
+  await expect(coastal).toBeVisible();
+  expect(trip(await coastal.getAttribute("href"))).toEqual({ start: "2027-05-04", end: "2027-05-08", guests: "4" });
 });
 
 test("a failed calendar check leaves the comparison shortlist in place", async ({ page }) => {
