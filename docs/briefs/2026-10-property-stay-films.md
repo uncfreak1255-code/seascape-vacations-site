@@ -33,15 +33,20 @@ Draft, internal-wording removal, and voice/specificity inspection are complete;
 the required independent voice verdict is recorded with PR review.
 
 Preserve existing page facts, structured data, canonical URLs and booking
-continuity. Load no MP4 before a guest presses play; choose the matching desktop
-or mobile file, support loading/error/retry/end/replay, and retain native media
-controls. Keep the approved compact control and reduced-motion behavior.
+continuity. When the film is visible, prepare its matching desktop or mobile
+file unless the browser reports a data-saving preference; stop preparing if
+it leaves view before play. Sawyer approved this change on 2026-11-09. Browsers
+that do not expose a data-saving preference cannot be detected by the page.
+Explicit Play must work regardless of that preference. Support
+loading/error/retry/end/replay, and retain native media controls. Keep the
+approved compact control and reduced-motion behavior.
 Enable swipe carousels only for existing sufficiently sourced review sets;
 preserve quoted text, attribution and source links.
 
 Proof: existing `tests/visual/stay-stories.spec.js`,
 `tests/visual/dockside-story.spec.js`, `tests/visual/property-reviews.spec.js`,
 desktop/mobile property baselines, booking journeys and `verify:release`.
-The current tests cover deferred media requests, responsive source identity,
-play/replay and swipe/keyboard interaction. Production verification repeats
-these affected behaviors after the normal release workflow completes.
+The current tests cover visible-only preparation, exposed data-saving signals,
+responsive source identity, play/replay and swipe/keyboard interaction.
+Production verification repeats these affected behaviors after the normal
+release workflow completes.

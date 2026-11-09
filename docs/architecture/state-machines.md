@@ -303,7 +303,7 @@ Paths are under src/assets/js unless stated otherwise.
 | Photos, guest.js/property-gallery.js | unhydrated/loading/loaded/unavailable; never another home's photo | view hydrates neighbors; load reveals; error replaces once; scroll/arrows update count |
 | Gallery dialog, guest.js | closed/open; native modal semantics | open hydrates/showModal; close/Escape closes |
 | Reviews, property-reviews.js | active/target/dragging; index clamped | arrow/button targets; scroll updates active; scrollend reconciles; release snaps; resize preserves active |
-| Film, stay-story.js | orientation × idle/loading/playing/buffering/ended/error; one play per version | click plays/retries; resize invalidates/reset; stale promise ignored; waiting/playing update; stalls offer retry; ended offers replay |
+| Film, stay-story.js | orientation × idle/preparing/loading/playing/buffering/ended/error | visible prepares unless saving data; click plays/retries; resize resets and invalidates stale promises; stalls offer retry; ended offers replay |
 | Plans, rainy-day.js | one selected plan and visible panel | click synchronously updates pressed values and panels |
 | Contents, guide-contents.js | none/current; at most one aria-current | intersection sets matching anchor |
 | Sticky CTAs, guest/rainy-day/owner/area-guide-mobile-cta-guard.njk | hidden/visible | intersection/scroll/resize recomputes; no booking effect |
