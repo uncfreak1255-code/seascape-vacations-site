@@ -240,6 +240,7 @@ function renderBranchInstruction(receipt) {
 
   return [
     "Do not open a new owner, stay, guide, GEO, or SEO expansion branch from this read.",
+    "Existing-page rescue and AEO drafts require Gate 0 or defect evidence. Ranked ideas and experiment proposals remain allowed during a hold.",
     "If a tracked winner or money page has regressed, use `docs/process/ranking-regression-rescue.md` for a bounded rescue brief instead of waiting passively.",
     "`docs/status/next-batch.md` should move to `open next batch` only when the analytics receipt says so."
   ].join("\n");
