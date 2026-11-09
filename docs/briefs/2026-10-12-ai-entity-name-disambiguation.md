@@ -1,6 +1,6 @@
 # Brief: AI entity name disambiguation and llms.txt fact repair
 
-- lifecycle: active
+- lifecycle: completed (source change merged in PR #718, `be5d1cab`; readback recorded 2026-11-09 below)
 
 ## Content Gate Inputs
 
@@ -66,5 +66,12 @@
 
 ## Post-Reread Readback
 
-- reread window used: pending (rerun no sooner than 2026-11-09)
-- decision taken: `hold`
+- reread window used: one identical rerun of tracker `3bab4c09`, run `4e420ff5-6e5a-4358-adf5-704bdc3c8d61`, 2026-11-09 15:01Z (22 prompts x 5 engines, US; 109 of 110 collected, 1 failed, 5 no-answer; estimate $5.10 under a $6 cap). Tracker left paused, no schedule. Compared with baseline `33cd86bb` (2026-10-12) and the intervening run `c3add468` (2026-10-27).
+- change still live on 2026-11-09: `/llms.txt` carries the name clarification and the pickleball and St. Armands retrieval lines; the homepage Organization JSON-LD carries `disambiguatingDescription`. The full JSON-LD parse on every page was not rerun.
+- brand prompts (wrong-company content): not reduced. Brand answers naming another "Seascape" business: 5 of 14 (Oct 12), 8 of 14 (Oct 27), 7 of 13 (Nov 9). The framing changed: on Nov 9, Claude and Perplexity named the other companies as different businesses, while on Oct 12 Gemini put Sea Scape Properties' rating under a Seascape Vacations heading. New confusions appeared: Gemini's "Seascape Vacations reviews" answer and Google AI Overviews' owner-vetting answer were about Seascape Resort (Miramar Beach), with no Bradenton reference. ChatGPT's owner-vetting answer asked which of three similarly named companies was meant.
+- pickleball prompt: gained. 0 of 5 engines (Oct 12); cited by Claude and Perplexity (Oct 27); cited by Claude and Gemini (Nov 9).
+- St. Armands prompt: flat at 0 of 5 engines on all three runs.
+- non-brand visibility by engine (Seascape named or cited, over answered cells; Oct 12 -> Oct 27 -> Nov 9): ChatGPT 6/19 -> 2/19 -> 4/19; Claude 5/19 -> 7/19 -> 8/19; Perplexity 7/19 -> 8/19 -> 3/19; Gemini 1/19 -> 4/19 -> 6/19; Google AI Overviews 0/12 -> 1/15 -> 0/15.
+- run-to-run noise: of the non-brand prompt-and-engine cells answered in both runs, 11 of 86 flipped between Oct 12 and Oct 27 and 9 of 87 between Oct 27 and Nov 9, so single-cell moves are within noise.
+- concurrent changes, so no lift is attributed to this batch: owner outreach emails (2026-10-27), a Yelp profile update (2026-11-05), and the site merges since 2026-10-27 (owner page hero and home cards, Waterline stay pages and guides).
+- decision taken: `keep` under this brief's rule, because the pickleball prompt gained mentions on two consecutive runs and no guardrail failure was found. Wrong-company content on the brand prompts was not reduced and St. Armands stayed at zero; both remain open, and fixing them is off-site entity work outside this brief's scope. No AI citation lift is claimed. `seascape-analytics` owns any further readback.
