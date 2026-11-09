@@ -865,40 +865,37 @@
     return segments[segments.length - 1] || "home";
   }
 
+  function handleTrackedClick(event) {
+    if (!event.target || typeof event.target.closest !== "function") return;
+
+    var target = event.target.closest("[data-track-event]");
+    if (event.type === "auxclick" && (event.button !== 1 || !target ||
+        target.tagName !== "A" || target.dataset.trackEvent !== "guide_property_check_dates_click")) return;
+
+    preserveTripLink(event.target.closest("a[href]"));
+    if (!target) return;
+
+    syncFunnelLineageLink(target);
+    var payload = getPayloadFromElement(target);
+    var primaryEvent = target.dataset.trackEvent;
+    var options;
+    if (shouldDelayTrackedNavigation(target, event)) {
+      event.preventDefault();
+      options = { onComplete: function () {
+        continueTrackedNavigation(target);
+      } };
+    }
+
+    trackEvent(primaryEvent, payload, options);
+    if (isBookingEngineUrl(payload.link_url) &&
+        primaryEvent !== "booking_engine_handoff" && primaryEvent !== "property_booking_page_click") {
+      trackEvent("booking_engine_handoff", payload);
+    }
+  }
+
   function bindTrackedClicks() {
-    document.addEventListener("click", function (event) {
-      if (!event.target || typeof event.target.closest !== "function") return;
-
-      preserveTripLink(event.target.closest("a[href]"));
-      var target = event.target.closest("[data-track-event]");
-      if (!target) return;
-
-      syncFunnelLineageLink(target);
-      syncBookingEngineLink(target);
-      var payload = getPayloadFromElement(target);
-      var primaryEvent = target.dataset.trackEvent;
-      var targetsBookingEngine = isBookingEngineUrl(payload.link_url);
-      var hasExplicitHandoffEvent =
-        primaryEvent === "booking_engine_handoff" ||
-        primaryEvent === "property_booking_page_click";
-      if (shouldDelayTrackedNavigation(target, event)) {
-        event.preventDefault();
-        trackEvent(primaryEvent, payload, {
-          onComplete: function () {
-            continueTrackedNavigation(target);
-          }
-        });
-        if (targetsBookingEngine && !hasExplicitHandoffEvent) {
-          trackEvent("booking_engine_handoff", payload);
-        }
-        return;
-      }
-
-      trackEvent(primaryEvent, payload);
-      if (targetsBookingEngine && !hasExplicitHandoffEvent) {
-        trackEvent("booking_engine_handoff", payload);
-      }
-    });
+    document.addEventListener("click", handleTrackedClick);
+    document.addEventListener("auxclick", handleTrackedClick);
   }
 
   function bindOwnerFormStarts() {
