@@ -3,11 +3,14 @@
   const button = document.querySelector('.story-play');
   const status = document.querySelector('.story-player-status');
   const m = matchMedia('(max-width:700px)');
+  const reducedData = matchMedia('(prefers-reduced-data: reduce)');
+  const connection = navigator.connection;
   const player = button.parentElement;
   const mediaDir = '/assets/media/' + v.dataset.mediaDir + '/';
   const stallMs = 12_000;
   let current, busy = false, buffering = false, version = 0, posterVisible = false;
   let watchdog, bufferedEnd = 0;
+  let filmVisible = false, preparing = false, userRequested = false;
 
   function poster() {
     if (posterVisible) v.poster = mediaDir + current + '-poster.jpg';
@@ -53,32 +56,63 @@
     watch();
   }
 
+  function source() {
+    return current === 'portrait' ? mediaDir + 'stay-story-portrait-mobile.mp4' : mediaDir + 'stay-story-cinema-web.mp4';
+  }
+
+  function cancelPreparation() {
+    if (!preparing || busy) return;
+    preparing = false;
+    v.removeAttribute('src');
+    v.preload = 'none';
+    v.load();
+  }
+
+  function updatePreparation() {
+    if (!filmVisible || document.visibilityState !== 'visible' || connection?.saveData || reducedData.matches) {
+      cancelPreparation();
+      return;
+    }
+    if (busy || userRequested || v.getAttribute('src')) return;
+    preparing = true;
+    v.preload = 'metadata';
+    v.src = source();
+    v.load();
+  }
+
   function format() {
     const mode = m.matches ? 'portrait' : 'cinema';
     if (mode === current) return;
     current = mode;
     version++;
     stopWatching();
+    preparing = false;
+    userRequested = false;
     v.pause();
     v.removeAttribute('src');
+    v.preload = 'none';
     v.controls = false;
     poster();
     v.width = m.matches ? 720 : 1920;
     v.height = m.matches ? 1280 : 1080;
     v.load();
     state('Play stay story');
+    updatePreparation();
   }
 
   button.addEventListener('click', async () => {
     if (busy) return;
     const request = ++version;
     busy = true;
+    preparing = false;
+    userRequested = true;
+    v.preload = 'auto';
     button.setAttribute('aria-busy', 'true');
     button.setAttribute('aria-disabled', 'true');
     button.setAttribute('aria-label', 'Loading stay story');
     status.textContent = 'Loading film…';
     if (!v.getAttribute('src') || v.error) {
-      v.src = current === 'portrait' ? mediaDir + 'stay-story-portrait-mobile.mp4' : mediaDir + 'stay-story-cinema-web.mp4';
+      v.src = source();
     }
     if (v.ended) v.currentTime = 0;
     startWatching();
@@ -107,7 +141,9 @@
     state('Replay stay story');
   });
   v.addEventListener('error', () => {
-    if (v.getAttribute('src')) fail(version);
+    if (!v.getAttribute('src')) return;
+    if (preparing && !busy) cancelPreparation();
+    else fail(version);
   });
   v.addEventListener('waiting', () => {
     if (player.classList.contains('is-playing') && !buffering) {
@@ -145,4 +181,13 @@
     }
   }, { rootMargin: '300px' });
   posterObserver.observe(player);
+  const filmObserver = new IntersectionObserver(entries => {
+    const entry = entries[entries.length - 1];
+    filmVisible = entry.isIntersecting && entry.intersectionRatio >= 0.25;
+    updatePreparation();
+  }, { threshold: [0, 0.25] });
+  filmObserver.observe(player);
+  connection?.addEventListener?.('change', updatePreparation);
+  reducedData.addEventListener('change', updatePreparation);
+  document.addEventListener('visibilitychange', updatePreparation);
 })();
