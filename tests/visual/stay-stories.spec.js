@@ -30,3 +30,86 @@ for (const [slug, story] of Object.entries(stories)) {
     await expect.poll(() => film.evaluate(v => !v.paused && v.currentTime < 5)).toBe(true);
   });
 }
+
+test('a stalled film offers a retry that can play', async ({ page }, testInfo) => {
+  test.setTimeout(35_000);
+  const mobile = testInfo.project.name.includes('mobile');
+  const filmUrl = `**/assets/media/river-house/stay-story-${mobile ? 'portrait-mobile' : 'cinema-web'}.mp4`;
+  let releaseStalledRequest;
+  let firstRequest = true;
+  await page.route(filmUrl, async route => {
+    if (!firstRequest) return route.continue();
+    firstRequest = false;
+    await new Promise(resolve => { releaseStalledRequest = resolve; });
+    await route.abort().catch(() => {});
+  });
+
+  await page.goto('/properties/river-house/');
+  await page.getByRole('button', { name: 'Play stay story', exact: true }).click();
+  await expect(page.getByRole('button', { name: 'Retry stay story', exact: true })).toBeVisible({ timeout: 16_000 });
+  await expect(page.locator('.story-player-status')).toContainText('Tap to retry');
+
+  releaseStalledRequest();
+  await page.getByRole('button', { name: 'Retry stay story', exact: true }).click();
+  await expect.poll(() => page.locator('#stay-story-film').evaluate(v => !v.paused && v.currentTime > 0)).toBe(true);
+});
+
+test('a film that stops buffering after it starts offers a retry', async ({ page }, testInfo) => {
+  test.skip(!testInfo.project.name.includes('mobile'), 'Exercises the reported phone format');
+  test.setTimeout(35_000);
+  const videoBytes = fs.readFileSync(path.resolve(__dirname, '../../src/assets/media/river-house/stay-story-portrait-mobile.mp4'));
+  let firstRequest = true;
+  let releaseStalledRequest;
+  await page.route('**/assets/media/river-house/stay-story-portrait-mobile.mp4', async route => {
+    if (firstRequest) {
+      firstRequest = false;
+      const end = 300_000;
+      return route.fulfill({
+        status: 206,
+        contentType: 'video/mp4',
+        headers: { 'accept-ranges': 'bytes', 'content-range': `bytes 0-${end - 1}/${videoBytes.length}` },
+        body: videoBytes.subarray(0, end),
+      });
+    }
+    await new Promise(resolve => { releaseStalledRequest = resolve; });
+    await route.abort().catch(() => {});
+  });
+
+  try {
+    await page.goto('/properties/river-house/?sv_developer=1');
+    await page.getByRole('button', { name: 'Play stay story', exact: true }).click();
+    await expect.poll(() => page.locator('#stay-story-film').evaluate(v => v.currentTime)).toBeGreaterThan(0.4);
+    await expect(page.getByRole('button', { name: 'Retry stay story', exact: true })).toBeVisible({ timeout: 18_000 });
+  } finally {
+    if (releaseStalledRequest) releaseStalledRequest();
+  }
+});
+
+test('a slow film keeps loading while its buffer grows', async ({ page }, testInfo) => {
+  const mobile = testInfo.project.name.includes('mobile');
+  const filmUrl = `**/assets/media/river-house/stay-story-${mobile ? 'portrait-mobile' : 'cinema-web'}.mp4`;
+  let releaseStalledRequest;
+  await page.clock.install();
+  await page.route(filmUrl, async route => {
+    await new Promise(resolve => { releaseStalledRequest = resolve; });
+    await route.abort().catch(() => {});
+  });
+
+  try {
+    await page.goto('/properties/river-house/?sv_developer=1');
+    const requested = page.waitForRequest(filmUrl);
+    await page.getByRole('button', { name: 'Play stay story', exact: true }).click();
+    await requested;
+    await page.clock.fastForward(11_000);
+    await page.locator('#stay-story-film').evaluate(v => {
+      Object.defineProperty(v, 'buffered', { configurable: true, get: () => ({ length: 1, end: () => 1 }) });
+      v.dispatchEvent(new Event('progress'));
+    });
+    await page.clock.fastForward(2_000);
+    await expect(page.getByRole('button', { name: 'Loading stay story', exact: true })).toBeVisible();
+    await page.clock.fastForward(10_100);
+    await expect(page.getByRole('button', { name: 'Retry stay story', exact: true })).toBeVisible();
+  } finally {
+    if (releaseStalledRequest) releaseStalledRequest();
+  }
+});
