@@ -18,6 +18,14 @@ enabled_tools = [
   "get_report",
   "list_report_templates",
   "save_report",
+  "get_ai_visibility_tracker",
+  "get_ai_visibility_run",
+  "get_ai_visibility_results",
+  "get_ai_visibility_answer",
+  "get_ai_visibility_sources",
+  "get_ai_visibility_trend",
+  "estimate_ai_visibility_cost",
+  "export_ai_visibility_data",
 ]
 
 [plugins."build-macos-apps@openai-curated"]

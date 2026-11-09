@@ -59,7 +59,10 @@ Gmail is prohibited.
   dated holds and forecasts in status files are not current facts.
 - `docs/status/next-batch.md` governs measured SEO and entity expansion;
   preserve its thresholds, evidence requirements, and publication gates.
-  Missing analytics limits measurement and impact claims; it does not block an
+  Those thresholds gate publication and expansion claims only. Ranked ideas,
+  experiment proposals and draft PRs are reversible work and proceed under a
+  hold; merge, live publication, paid lookups and guest or owner sends keep
+  their own approvals. Missing analytics limits measurement and impact claims; it does not block an
   authorized bug fix, local prototype, or reversible capability trial with
   independent source and behavior proof.
 - For an AI-workflow or product-improvement request, propose one concrete
@@ -100,7 +103,10 @@ Gmail is prohibited.
 - status: `docs/status/next-batch.md` is the canonical reread handoff surface
   for volatile measurement truth; after every reread it must say exactly one of
   `blocked by freshness`, `fresh but below threshold`, or `open next batch`,
-  plus one concrete next move. `docs/status/current-state.md` keeps durable
+  plus one concrete next move. Every hold also carries a ranked opportunities
+  section (the Analytics `ranked_opportunities`, or equivalent ranked ideas and
+  experiment proposals); a run that only restates the hold is a failed run, as
+  in the `seascape-seo-improvement-loop` skill. `docs/status/current-state.md` keeps durable
   repo truth only, never reread windows or `data_date` details.
 - skills: `.agents/skills/` (`.claude/skills/` mirrors the active ones;
   Claude-only exceptions in `.agents/skills-divergence.json`); SEO role cards:

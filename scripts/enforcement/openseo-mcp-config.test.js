@@ -19,6 +19,14 @@ const expectedTools = [
   "get_report",
   "list_report_templates",
   "save_report",
+  "get_ai_visibility_tracker",
+  "get_ai_visibility_run",
+  "get_ai_visibility_results",
+  "get_ai_visibility_answer",
+  "get_ai_visibility_sources",
+  "get_ai_visibility_trend",
+  "estimate_ai_visibility_cost",
+  "export_ai_visibility_data",
 ];
 
 const blockedTools = [
@@ -38,6 +46,12 @@ const blockedTools = [
   "delete_report",
   "run_rank_tracker",
   "run_site_audit",
+  "run_ai_visibility_check",
+  "save_ai_visibility_tracker",
+  "set_ai_visibility_schedule",
+  "explore_prompt",
+  "research_ai_visibility_prompts",
+  "generate_ai_visibility_prompts",
 ];
 
 test("OpenSEO MCP config is optional, local, approval-gated, and bounded", () => {

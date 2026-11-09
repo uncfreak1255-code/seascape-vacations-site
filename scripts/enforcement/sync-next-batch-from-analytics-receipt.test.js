@@ -122,6 +122,7 @@ test("renderLatestExecutionRead turns analytics receipt into the status contract
   assert.match(rendered, /- Reread status: `blocked by freshness`\./);
   assert.match(rendered, /- Concrete next move: rerun the targeted operator read after BigQuery GSC covers 2026-05-16\./);
   assert.match(rendered, /Do not open a new owner, stay, guide, GEO, or SEO expansion branch from this read\./);
+  assert.match(rendered, /Draft PRs and rescue or AEO briefs remain allowed when Gate 0 or defect evidence exists/);
   assert.match(rendered, /ranking-regression-rescue\.md/);
 });
 
