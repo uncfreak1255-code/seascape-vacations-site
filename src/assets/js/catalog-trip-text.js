@@ -1,4 +1,4 @@
-/* Date and trip-summary text helpers for the properties catalog (catalog.js) and the phone trip sheet. */
+/* Trip and search-result text for the properties catalog and phone trip sheet. */
 (function () {
   function validDate(value) {
     if (!/^\d{4}-\d{2}-\d{2}$/.test(value || "")) return false;
@@ -12,5 +12,10 @@
     var dates = trip.arrive && trip.depart ? dateLabel(trip.arrive) + " – " + dateLabel(trip.depart) : "Flexible dates";
     return dates + (trip.guests ? " · " + (trip.guests === "17" ? "More than 16 guests" : trip.guests + (trip.guests === "1" ? " guest" : " guests")) : "");
   }
-  window.SeascapeTripText = { validDate: validDate, dateLabel: dateLabel, tripText: tripText };
+  function emptyAvailability(filter) {
+    if (filter === "sarasota") return "No Sarasota homes are open for these dates.";
+    if (filter !== "all") return "No homes match this filter for these dates.";
+    return "No home is open for these dates.";
+  }
+  window.SeascapeTripText = { validDate: validDate, dateLabel: dateLabel, tripText: tripText, emptyAvailability: emptyAvailability };
 })();

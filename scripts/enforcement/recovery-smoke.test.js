@@ -45,6 +45,7 @@ test("properties smoke checks durable property detail hrefs instead of old CTA c
       <form id="catalog-trip-form"></form><dialog id="catalog-comparison"></dialog>
       <button type="button" data-trip-sheet-open>Dates and guests</button>
       <p class="g-card-source">Ratings from Airbnb</p>
+      <button id="reset-filter" type="button">Show all stays</button>
       <span class="g-card-rating" aria-hidden="true">★ 5.0 (112)</span>
       <p>Full price, fees and cancellation terms on the booking page.</p>
       <article><a href="/properties/dockside-dreams/">Dockside Dreams</a></article>
@@ -100,6 +101,7 @@ test("properties smoke rejects missing stable property detail hrefs", () => {
         <main>
           <button type="button" data-trip-sheet-open>Dates and guests</button>
           <p class="g-card-source">Ratings from Airbnb</p>
+          <button id="reset-filter" type="button">Show all stays</button>
           <span class="g-card-rating" aria-hidden="true">★ 5.0 (112)</span>
           <article>Dockside Dreams</article>
           <article>The Oasis</article>
