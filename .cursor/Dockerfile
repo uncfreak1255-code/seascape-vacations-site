@@ -1,4 +1,4 @@
-FROM node:24.14.0-bookworm-slim
+FROM node:24.22.2-bookworm-slim
 
 # Cursor checks out the repo at the requested commit. Do not COPY the project.
 RUN apt-get update \
