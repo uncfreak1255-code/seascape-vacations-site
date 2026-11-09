@@ -43,16 +43,16 @@ tracks acknowledgement, source/release evidence and evaluation separately.
 
 ## Latest Execution Read
 
-Run date: 2026-10-18.
+Run date: 2026-11-09.
 
 The targeted joined operator read was executed in `seascape-analytics` and
 rendered here from its machine-readable next-batch decision receipt.
 
-- Requested last-7-complete-day window: 2026-10-10 to 2026-10-16.
-- Latest BigQuery GSC `data_date`: 2026-10-16.
+- Requested last-7-complete-day window: 2026-11-01 to 2026-11-07.
+- Latest BigQuery GSC `data_date`: 2026-11-07.
 - Site work gate: `clear` - joined GSC + GA4 read covers the requested window.
 - Reread status: `fresh but below threshold`.
-- Concrete next move: owner cluster cannot clear by waiting - qualify one owner-direct, permissioned signal (see the Owner-Direct Intake Escalation section in seascape-vacations-site/docs/status/next-batch.md and seascape-vacations-site/docs/status/owner-direct-intake-policy.md). Do not use Airbnb or Vrbo host messaging; qualification is not a lead, named candidate state does not belong in the public site repo, and any one-to-one message still requires Sawyer's separate approval.
+- Concrete next move: open a bounded rescue brief through `docs/process/ranking-regression-rescue.md` (Gate 0 block first, draft PRs only) for the money guides: primary `/guides/best-time-visit-anna-maria-island/` (Nov 9 digest: clicks fell from 28 to 11, down 61%. Analytics receipt: 209 sessions and 0 stay or book-direct clicks); secondary `/guides/anna-maria-island-vs-siesta-key/` snippet CTR (1,307 impressions in the receipt. Nov 9 digest: 4 clicks, 0.31% CTR and 3.4x prior-week impressions). Expansion stays held. Owner-direct intake stays allowed as a parallel free-evidence path under the Owner-Direct Intake Escalation section, but it is not this week's default site action.
 - Report recommendation: `hold-and-reread`.
 - Reason: No cluster cleared the bar for a stronger next branch than holding for more readback.
 
@@ -60,24 +60,24 @@ Cluster read from the analytics receipt:
 
 | cluster | pages | gsc_clicks | gsc_impressions | gsc_ctr | gsc_position | ga4_sessions |
 |---|---:|---:|---:|---:|---:|---:|
-| brand | 1 | 5 | 109 | 4.59% | 12.96 | 67 |
-| catalog | 1 | 0 | 36 | 0.00% | 7.44 | 67 |
-| guide_support | 1 | 0 | 11 | 0.00% | 8.55 | 1 |
-| guide_winners | 4 | 31 | 2606 | 1.19% | 5.12 | 50 |
-| owner_hub | 1 | 0 | 56 | 0.00% | 11.43 | 3 |
-| owner_money | 4 | 0 | 86 | 0.00% | 11.36 | 0 |
-| owner_support | 1 | 0 | 0 | 0.00% | 0.00 | 0 |
-| property_pages | 1 | 0 | 5 | 0.00% | 8.00 | 1 |
-| stay_money | 2 | 0 | 8 | 0.00% | 21.13 | 5 |
-| stay_support | 2 | 0 | 14 | 0.00% | 30.71 | 1 |
+| brand | 1 | 6 | 151 | 3.97% | 10.48 | 894 |
+| catalog | 1 | 0 | 48 | 0.00% | 3.48 | 1325 |
+| guide_support | 1 | 0 | 8 | 0.00% | 7.00 | 174 |
+| guide_winners | 4 | 20 | 2975 | 0.67% | 6.13 | 787 |
+| owner_hub | 1 | 0 | 43 | 0.00% | 10.35 | 4 |
+| owner_money | 4 | 0 | 14 | 0.00% | 20.21 | 2 |
+| owner_support | 1 | 0 | 5 | 0.00% | 24.00 | 1 |
+| property_pages | 1 | 0 | 3 | 0.00% | 5.33 | 653 |
+| stay_money | 2 | 0 | 14 | 0.00% | 37.79 | 856 |
+| stay_support | 2 | 0 | 40 | 0.00% | 47.50 | 792 |
 
 SEO queue read from the analytics receipt:
 
 | queue_bucket | pages | gsc_clicks | gsc_impressions | ga4_sessions |
 |---|---:|---:|---:|---:|
-| measurement issue | 1 | 19 | 1518 | 27 |
-| too thin to call | 14 | 0 | 263 | 79 |
-| wait | 3 | 17 | 1150 | 89 |
+| too thin to call | 11 | 0 | 161 | 2951 |
+| transfer/CRO issue | 5 | 16 | 1682 | 1415 |
+| wait | 2 | 10 | 1458 | 1122 |
 
 Do not open a new owner, stay, guide, GEO, or SEO expansion branch from this read.
 Existing-page rescue and AEO drafts require Gate 0 or defect evidence. Ranked ideas and experiment proposals remain allowed during a hold.
@@ -91,10 +91,12 @@ expansion gate for opening and shipping an expansion batch. Ranked ideas,
 experiment proposals and evidence-backed existing-page drafts may proceed
 while that gate holds.
 
-1. if `queries/rank_history_deltas.sql`, a rank tracker, or a live SERP read
-   confirms a tracked winner or money-page regression, use
-   `docs/process/ranking-regression-rescue.md` and the exact receipt-named
-   branch before normal expansion thresholds
+1. default next action this window (Nov 1-7): money-guide rescue via
+   `docs/process/ranking-regression-rescue.md`, draft PRs only, ahead of
+   expansion thresholds. Primary: Best-time AMI (30%+ click-decline trigger);
+   secondary: AMI vs Siesta Key CTR (weak-CTR trigger). Confirm the
+   digest figures in Gate 0. Later windows use this lane when a rank read
+   confirms a winner or money-page regression
 2. rerun the targeted operator read on the five tracked money pages after more recrawl time using the last 7 complete days:
    - `/property-management/vacation-rental-management-fees-florida/`
    - `/property-management/vacation-rental-licensing-florida/`
@@ -124,9 +126,13 @@ while that gate holds.
 10. if any tracked page has GSC impressions `< 100` in the 7-day window, treat that page as too thin to call and do not let it drive the branch choice
 11. keep Phase 4 and other entity-expansion work frozen unless the measured gates above move
 
+Watchlist for later triage: `/guides/bradenton-vs-sarasota/` (265 sessions) and
+`/guides/siesta-key-vs-anna-maria-island-families/` (85). The receipt flagged
+both for zero stay or book-direct clicks.
+
 ## Hold follow-up requirements
 
-For the dated October 18 hold above, the next review is **2026-10-23**, owned by
+For the dated November 9 hold above, the next review is **2026-11-14**, owned by
 **seascape-analytics** for the source readback. Missing observation: reverified
 complete GSC/GA4 coverage and branch-qualified evidence. Clearance threshold:
 the Analytics receipt must cover the requested window and explicitly say
@@ -136,7 +142,7 @@ insufficient. Keep the current dated read until a verified receipt replaces it.
 For alternate evidence, **seascape-hub** owns a real permissioned owner-intake
 signal meeting the existing validation standard; **seascape-vacations-site**
 owns existing-page fixes supported by the rescue/defect route. Both report their
-missing observation and acceptance threshold at the **2026-10-23** pilot review.
+missing observation and acceptance threshold at the **2026-11-14** review.
 Qualification, test forms, outreach and impressions are not owner demand or
 bookings. New live experiments and guest or owner sends require Sawyer’s
 approval. Ranked proposals and evidence-backed existing-page drafts can proceed.
