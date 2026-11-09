@@ -80,16 +80,16 @@ SEO queue read from the analytics receipt:
 | wait | 2 | 10 | 1458 | 1122 |
 
 Do not open a new owner, stay, guide, GEO, or SEO expansion branch from this read.
-Draft PRs and rescue or AEO briefs remain allowed when Gate 0 or defect evidence exists; this hold gates expansion and publication claims, not ranked ideas or experiment proposals.
+Existing-page rescue and AEO drafts require Gate 0 or defect evidence. Ranked ideas and experiment proposals remain allowed during a hold.
 If a tracked winner or money page has regressed, use `docs/process/ranking-regression-rescue.md` for a bounded rescue brief instead of waiting passively.
 `docs/status/next-batch.md` should move to `open next batch` only when the analytics receipt says so.
 
 ## Likely Priorities
 
 The combined-impressions `>= 1000` thresholds below are the ship-eligible
-expansion gate: they decide when an expansion batch may open and ship. They do
-not ban ranked ideas, experiment proposals or draft PRs, which proceed while
-the gate holds.
+expansion gate for opening and shipping an expansion batch. Ranked ideas,
+experiment proposals and evidence-backed existing-page drafts may proceed
+while that gate holds.
 
 1. default next action this window (Nov 1-7): money-guide rescue via
    `docs/process/ranking-regression-rescue.md`, draft PRs only, ahead of
@@ -144,9 +144,8 @@ signal meeting the existing validation standard; **seascape-vacations-site**
 owns existing-page fixes supported by the rescue/defect route. Both report their
 missing observation and acceptance threshold at the **2026-11-14** review.
 Qualification, test forms, outreach and impressions are not owner demand or
-bookings. No new live experiment or guest/owner send starts without Sawyer;
-ranked experiment proposals and draft PRs proceed without asking, as
-reversible work.
+bookings. New live experiments and guest or owner sends require Sawyer’s
+approval. Ranked proposals and evidence-backed existing-page drafts can proceed.
 
 ## Owner-Direct Intake Escalation
 

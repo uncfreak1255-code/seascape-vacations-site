@@ -1,6 +1,6 @@
 const { test, expect } = require('@playwright/test');
 
-test('Dockside defers story media until needed and plays the matching format', async ({ page }, testInfo) => {
+test('Dockside prepares its visible story and plays the matching format', async ({ page }, testInfo) => {
   const media = [];
   page.on('request', request => {
     if (request.url().includes('/assets/media/dockside/')) media.push(request.url());
@@ -9,11 +9,10 @@ test('Dockside defers story media until needed and plays the matching format', a
   await page.waitForLoadState('networkidle');
   const mobile = testInfo.project.name.includes('mobile');
   if (mobile) expect(media).toEqual([]);
-  expect(media.filter(url => url.endsWith('.mp4'))).toEqual([]);
   const film = page.locator('#stay-story-film');
   await film.scrollIntoViewIfNeeded();
   await expect(film).toHaveAttribute('poster', new RegExp(mobile ? '/portrait-poster.jpg$' : '/cinema-poster.jpg$'));
-  expect(media.filter(url => url.endsWith('.mp4'))).toEqual([]);
+  await expect.poll(() => media.some(url => url.endsWith('.mp4'))).toBe(true);
   await page.getByRole('button', { name: 'Play stay story', exact: true }).click();
   await expect.poll(() => film.evaluate(video => !video.paused && video.currentTime > 0)).toBe(true);
   await expect(film).toHaveAttribute('src', new RegExp(mobile ? 'portrait-mobile.mp4$' : 'cinema-web.mp4$'));
