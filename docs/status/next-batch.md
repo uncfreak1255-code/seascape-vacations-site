@@ -52,7 +52,7 @@ rendered here from its machine-readable next-batch decision receipt.
 - Latest BigQuery GSC `data_date`: 2026-11-07.
 - Site work gate: `clear` - joined GSC + GA4 read covers the requested window.
 - Reread status: `fresh but below threshold`.
-- Concrete next move: open a bounded rescue brief through `docs/process/ranking-regression-rescue.md` (Gate 0 block first, draft PRs only) for the money guides: primary `/guides/best-time-visit-anna-maria-island/` (clicks down 61% week over week, 28 to 11, and 209 GA4 sessions with 0 stay or book-direct clicks); secondary `/guides/anna-maria-island-vs-siesta-key/` snippet CTR (1,307 impressions, 4 clicks, 0.31% CTR, impressions 3.4x week over week). Expansion stays held. Owner-direct intake stays allowed as a parallel free-evidence path under the Owner-Direct Intake Escalation section, but it is not this week's default site action.
+- Concrete next move: open a bounded rescue brief through `docs/process/ranking-regression-rescue.md` (Gate 0 block first, draft PRs only) for the money guides: primary `/guides/best-time-visit-anna-maria-island/` (Nov 9 digest: clicks fell from 28 to 11, down 61%. Analytics receipt: 209 sessions and 0 stay or book-direct clicks); secondary `/guides/anna-maria-island-vs-siesta-key/` snippet CTR (1,307 impressions in the receipt. Nov 9 digest: 4 clicks, 0.31% CTR and 3.4x prior-week impressions). Expansion stays held. Owner-direct intake stays allowed as a parallel free-evidence path under the Owner-Direct Intake Escalation section, but it is not this week's default site action.
 - Report recommendation: `hold-and-reread`.
 - Reason: No cluster cleared the bar for a stronger next branch than holding for more readback.
 
@@ -94,11 +94,9 @@ the gate holds.
 1. default next action this window (Nov 1-7): money-guide rescue via
    `docs/process/ranking-regression-rescue.md`, draft PRs only, ahead of
    expansion thresholds. Primary: Best-time AMI (30%+ click-decline trigger);
-   secondary: AMI vs Siesta Key CTR (weak-CTR trigger); figures in the
-   Concrete next move. Also transfer/CRO-flagged (sessions, 0 stay or
-   book-direct clicks): `/guides/bradenton-vs-sarasota/` (265) and
-   `/guides/siesta-key-vs-anna-maria-island-families/` (85). Later windows use
-   this lane when a rank read confirms a winner or money-page regression
+   secondary: AMI vs Siesta Key CTR (weak-CTR trigger). Confirm the
+   digest figures in Gate 0. Later windows use this lane when a rank read
+   confirms a winner or money-page regression
 2. rerun the targeted operator read on the five tracked money pages after more recrawl time using the last 7 complete days:
    - `/property-management/vacation-rental-management-fees-florida/`
    - `/property-management/vacation-rental-licensing-florida/`
@@ -127,6 +125,10 @@ the gate holds.
 9. if the AMI stay winners clear `>= 1000` impressions but still show `stay_view_property_clicks = 0`, open `stay-money-cro-round-2` instead of expansion
 10. if any tracked page has GSC impressions `< 100` in the 7-day window, treat that page as too thin to call and do not let it drive the branch choice
 11. keep Phase 4 and other entity-expansion work frozen unless the measured gates above move
+
+Watchlist for later triage: `/guides/bradenton-vs-sarasota/` (265 sessions) and
+`/guides/siesta-key-vs-anna-maria-island-families/` (85). The receipt flagged
+both for zero stay or book-direct clicks.
 
 ## Hold follow-up requirements
 
