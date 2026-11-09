@@ -20,7 +20,7 @@ const tag = `(() => {
   [...layer].forEach(process);
 })();`;
 
-test("normal same-tab guide card delivers once after navigation with the source guide context", async ({ page, context }) => {
+async function interceptGuideTracking(context) {
   const root = path.resolve(__dirname, "../../_site");
   const received = [];
   // Emulate a normal visitor only within a fully intercepted, synthetic origin.
@@ -40,9 +40,16 @@ test("normal same-tab guide card delivers once after navigation with the source 
     if (!file.startsWith(root + path.sep) || !fs.existsSync(file) || !fs.statSync(file).isFile()) return route.abort();
     return route.fulfill({ path: file });
   });
-  const guide = "https://seascape-vacations.com/guides/anna-maria-island-vs-siesta-key/";
+  return received;
+}
+
+const guide = "https://seascape-vacations.com/guides/anna-maria-island-vs-siesta-key/";
+const guideCard = 'a[data-track-event="guide_property_check_dates_click"][data-placement="guide_stay_here"]';
+
+test("normal same-tab guide card delivers once after navigation with the source guide context", async ({ page, context }) => {
+  const received = await interceptGuideTracking(context);
   await page.goto(guide);
-  const card = page.locator('a[data-track-event="guide_property_check_dates_click"][data-placement="guide_stay_here"]');
+  const card = page.locator(guideCard);
   await expect(card).toHaveAttribute("href", "/properties/river-house/#check-availability");
   expect(await card.getAttribute("target")).toBeNull();
   await card.click();
@@ -59,4 +66,35 @@ test("normal same-tab guide card delivers once after navigation with the source 
   await page.reload();
   await expect(page).toHaveURL(/\/properties\/river-house\//);
   expect(received).toHaveLength(1);
+});
+
+test("middle-click opens the property in a new tab and tracks the same guide click ID once", async ({ page, context }) => {
+  const received = await interceptGuideTracking(context);
+  await page.goto(guide);
+
+  const newTab = context.waitForEvent("page");
+  await page.locator(guideCard).click({ button: "middle" });
+  const property = await newTab;
+
+  await expect(page).toHaveURL(guide);
+  await expect(property).toHaveURL(/\/properties\/river-house\/.*#check-availability$/);
+  const clickId = new URL(property.url()).searchParams.get("sv_guide_click_id");
+  expect(clickId).toMatch(/^svg_/);
+
+  const guideEvents = () => received.filter(({ event }) => event === "guide_property_check_dates_click");
+  await expect.poll(guideEvents).toHaveLength(1);
+  expect(guideEvents()[0].payload).toMatchObject({
+    placement: "guide_stay_here", guide_slug: "anna-maria-island-vs-siesta-key", property_slug: "river-house"
+  });
+  expect(new URL(guideEvents()[0].payload.link_url).searchParams.get("sv_guide_click_id")).toBe(clickId);
+
+  // Direct dispatch belongs to the guide. The new tab must not replay it.
+  const guideEventCount = (tab) => tab.evaluate(() => window.dataLayer.filter(
+    entry => entry[0] === "event" && entry[1] === "guide_property_check_dates_click"
+  ).length);
+  expect(await guideEventCount(page)).toBe(1);
+  expect(await guideEventCount(property)).toBe(0);
+  await property.reload();
+  expect(await guideEventCount(property)).toBe(0);
+  expect(guideEvents()).toHaveLength(1);
 });
