@@ -28,6 +28,14 @@ It also exposes the free workflow tools `get_project_context`,
 project facts or dated research notes; they do not promote Hub canon. Report
 saves create private local reports. Replacing an existing report requires
 checking its sharing state first: replacement preserves any existing sharing.
+
+It also exposes the free AI-visibility reads `get_ai_visibility_tracker`,
+`get_ai_visibility_run`, `get_ai_visibility_results`,
+`get_ai_visibility_answer`, `get_ai_visibility_sources`,
+`get_ai_visibility_trend`, `estimate_ai_visibility_cost` and
+`export_ai_visibility_data`. They read saved trackers, runs, answers, citations
+and trends, or estimate a cost; none collects new answers.
+
 Public sharing, report deletion, new checks and paid research remain excluded.
 
 OpenSEO calls use Codex's configured approval route. With a human reviewer,

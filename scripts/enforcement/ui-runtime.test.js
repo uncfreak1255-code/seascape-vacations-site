@@ -51,7 +51,7 @@ test("Bradenton comparison keeps all mobile values labeled in its shared frame",
 });
 
 test("visible source templates do not ship emoji glyphs", () => {
-  const allowedSymbols = new Set(["©"]);
+  const allowedSymbols = new Set(["©", "★"]); // ★ = Airbnb-style card rating (Sawyer 2026-11-07)
   const emojiPattern =
     /\p{Extended_Pictographic}(?:\uFE0F|\uFE0E)?(?:\u200D\p{Extended_Pictographic}(?:\uFE0F|\uFE0E)?)*?/gu;
   const offenders = [];
