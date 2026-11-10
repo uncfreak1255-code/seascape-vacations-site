@@ -216,12 +216,7 @@ eleventyComputed:
         </nav>
 
         <section class="hero" style="--hero-image: url('{{ heroImage | imgProxy(1200) }}');">
-            <div class="hero-inner">
-                <p class="hero-eyebrow">{{ destinationLabel }}</p>
-                <h1>{{ seoPage.h1 }}</h1>
-                <p class="hero-subhead">{{ seoPage.description }}</p>
-                {% if not isFamilyBrowse %}{% include "partials/stay-supporting-actions.njk" %}{% endif %}
-            </div>
+            {% include "partials/stay-hero-content.njk" %}
             {% if isFamilyBrowse %}
             <p class="flow-guide-answer">{{ seoPage.intro }}</p>
             {% include "partials/catalog-trip.njk" %}

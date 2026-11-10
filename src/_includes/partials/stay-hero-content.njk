@@ -1,0 +1,6 @@
+<div class="hero-inner">
+    <p class="hero-eyebrow">{{ destinationLabel }}</p>
+    <h1>{{ seoPage.heroBookingAction.heading or seoPage.h1 }}</h1>
+    <p class="hero-subhead">{{ seoPage.heroBookingAction.description or seoPage.description }}</p>
+    {% if not isFamilyBrowse %}{% include "partials/stay-supporting-actions.njk" %}{% endif %}
+</div>
