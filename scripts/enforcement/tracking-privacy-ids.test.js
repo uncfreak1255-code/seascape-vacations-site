@@ -5,10 +5,15 @@ const path = require("node:path");
 const vm = require("node:vm");
 
 const uuid = "aaaaaaaa-aaaa-4aaa-8aaa-123456789012";
+// Pages run the inline GA4 script first, so its privacy filter is the one registered before the shared runtime loads.
+const privacyFilterSources = {
+  "conversion-tracking.js": fs.readFileSync(path.join(__dirname, "../../src/assets/js/conversion-tracking.js"), "utf8"),
+  "analytics-ga4.njk": fs.readFileSync(path.join(__dirname, "../../src/_includes/partials/analytics-ga4.njk"), "utf8")
+    .match(/<script>([\s\S]*?)<\/script>/)[1]
+    .replaceAll("{{ site.analytics.ga4MeasurementId }}", "G-TEST")
+};
 function loadRuntime(file, { storedId = "", randomUUID = () => uuid } = {}) {
-  let source = fs.readFileSync(path.join(__dirname, "../../src/assets/js", file), "utf8");
-  // The homepage's first IIFE owns its privacy filter before the shared runtime loads.
-  if (file === "homepage.js") source = source.split("(function loadConversionTracking()")[0];
+  const source = privacyFilterSources[file];
   const storage = new Map(storedId ? [["seascape_booking_handoff_session_id", storedId]] : []);
   const context = {
     URL, URLSearchParams,
@@ -17,13 +22,13 @@ function loadRuntime(file, { storedId = "", randomUUID = () => uuid } = {}) {
       crypto: { randomUUID },
       localStorage: { getItem: key => storage.get(key), setItem: (key, value) => storage.set(key, value) }
     },
-    document: { readyState: "loading", addEventListener() {} }
+    document: { readyState: "loading", addEventListener() {}, createElement: () => ({}), head: { appendChild() {} } }
   };
   vm.runInNewContext(source, context);
   return context.window;
 }
 
-for (const file of ["conversion-tracking.js", "homepage.js"]) {
+for (const file of Object.keys(privacyFilterSources)) {
   test(`${file}: phone-like values remain private even inside valid UUID shapes`, () => {
     const sanitize = loadRuntime(file).seascapeSanitizeAnalyticsPayload;
     for (const value of [
@@ -59,7 +64,7 @@ test("generated IDs retain their full random token and survive both privacy filt
     const decoded = id.slice(4).replace(/q([a-jq])/g, (_, letter) => letter === "q" ? "q" : String(letter.charCodeAt(0) - 97));
     assert.equal(decoded, uuid, "encoding preserves every random UUID character");
   }
-  for (const file of ["conversion-tracking.js", "homepage.js"]) {
+  for (const file of Object.keys(privacyFilterSources)) {
     const payload = loadRuntime(file).seascapeSanitizeAnalyticsPayload({ sessionId, handoffId, linkUrl: url.href });
     assert.equal(payload.sessionId, sessionId);
     assert.equal(payload.handoffId, handoffId);

@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "Seascape Vacations marketing website with programmatic SEO",
   "scripts": {
-    "clean:site": "node -e \"require('fs').rmSync('_site', { recursive: true, force: true })\"",
     "pretest": "npm run build",
     "test": "npm run test:unit",
     "test:unit": "node --test scripts/enforcement/*.test.js scripts/recovery/*.test.js scripts/evals/*.test.js scripts/perf/*.test.js",
@@ -18,17 +17,12 @@
     "design:donors": "node scripts/design/design-donor-router.js",
     "design:sync": "node scripts/design/design-sync/build.js",
     "design:sync:check": "node scripts/design/design-sync/render-check.js",
-    "normalize:guides": "node scripts/guides/normalize-guides.js",
-    "upgrade:priority-guides": "node scripts/guides/upgrade-priority-guides.js",
     "start": "node scripts/enforcement/build-site.js --serve",
     "build": "node scripts/enforcement/build-site.js",
     "build:prod": "NODE_ENV=production node scripts/enforcement/build-site.js",
     "setup:hooks": "node scripts/enforcement/install-hooks.js",
     "property:truth:regen": "node scripts/regenerate-property-surfaces.js",
     "property:truth:check": "node scripts/regenerate-property-surfaces.js --check",
-    "repo:hygiene": "node scripts/enforcement/repo-hygiene.js",
-    "repo:graveyard:audit": "node scripts/enforcement/graveyard-prune.js",
-    "repo:graveyard:apply": "node scripts/enforcement/graveyard-prune.js --apply",
     "verify:recovery:p0": "node scripts/recovery/assert-build-output.js p0",
     "verify:recovery:guides": "node scripts/recovery/assert-build-output.js guides",
     "verify:recovery:remediation": "node scripts/recovery/assert-build-output.js remediation",
@@ -44,7 +38,6 @@
     "verify:skills-divergence": "node scripts/enforcement/skills-divergence.js",
     "verify:release": "node scripts/enforcement/verify-release.js",
     "verify:ami-vs-siesta-readback": "node scripts/enforcement/assert-ami-vs-siesta-readback-gate.js",
-    "report:release-scorecard": "node scripts/enforcement/create-release-scorecard.js",
     "dataforseo:mcp:check": "./scripts/mcp/dataforseo-mcp.sh --check",
     "seo:import-findings": "node scripts/seo/import-dataforseo-findings.js",
     "seo:triage": "node scripts/seo/generate-pseo-triage.js",
@@ -67,9 +60,7 @@
     "eval:aeo": "node scripts/evals/run-aeo-eval.js",
     "eval:guest": "node scripts/evals/run-guest-eval.js",
     "lint:evals": "node scripts/evals/lint-evals.js",
-    "test:evals": "node --test scripts/evals/*.test.js",
-    "test:capability-scenarios": "npm run build && node scripts/enforcement/capability-scenarios.js",
-    "audit:deps:all": "npm audit --audit-level=moderate"
+    "test:capability-scenarios": "npm run build && node scripts/enforcement/capability-scenarios.js"
   },
   "overrides": {
     "minimatch": "10.2.5",
@@ -88,9 +79,6 @@
     "@11ty/eleventy": {
       "picomatch": "4.0.4"
     },
-    "anymatch": {
-      "picomatch": "2.3.2"
-    },
     "readdirp": {
       "picomatch": "2.3.2"
     },
@@ -99,9 +87,6 @@
       "uuid": "11.1.1"
     },
     "external-editor": {
-      "tmp": "0.2.7"
-    },
-    "tmp-promise": {
       "tmp": "0.2.7"
     },
     "puppeteer-core": {
@@ -115,7 +100,6 @@
     "@lhci/cli": "^0.15.1",
     "@playwright/test": "^1.64.1",
     "e2e": "0.22.0",
-    "html-minifier-terser": "^7.2.0",
     "js-yaml": "4.3.2",
     "sharp": "^0.35.5"
   },

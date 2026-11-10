@@ -42,11 +42,6 @@ const priorityRoutes = new Set([
   "/research/owner-fee-revenue-leak-benchmark-2026/",
 ]);
 
-const ignoredStaticSourcePrefixes = [
-  "src/guides/anna-maria-island-vacation-cost-guide-2026/",
-  "src/guides/best-time-to-visit-anna-maria-island/",
-];
-
 function parseArgs(argv) {
   const args = {
     asOf: new Date(),
@@ -138,10 +133,6 @@ function routeFromSourcePath(relativePath) {
   return `/${withoutExtension}/`;
 }
 
-function normalizeRelativePath(relativePath) {
-  return relativePath.replace(/\\/g, "/");
-}
-
 function hasFrontMatterFlag(text, key, value) {
   const pattern = new RegExp(`(^|\\n)\\s*${key}\\s*:\\s*${value}\\s*(?:#.*)?(?:\\r?\\n|$)`, "i");
   return pattern.test(text);
@@ -155,11 +146,7 @@ function hasRobotsNoindex(text) {
   );
 }
 
-function isIndexableStaticSource(relativePath, text) {
-  const normalized = normalizeRelativePath(relativePath);
-  if (ignoredStaticSourcePrefixes.some((prefix) => normalized.startsWith(prefix))) {
-    return false;
-  }
+function isIndexableStaticSource(text) {
   if (hasFrontMatterFlag(text, "permalink", "false")) {
     return false;
   }
@@ -348,7 +335,7 @@ function collectStaticFindings({ root = rootDir, asOf, staleDays }) {
   return files.flatMap((absolutePath) => {
     const relativePath = path.relative(root, absolutePath);
     const text = fs.readFileSync(absolutePath, "utf8");
-    if (!isIndexableStaticSource(relativePath, text)) {
+    if (!isIndexableStaticSource(text)) {
       return [];
     }
     return extractFindingsFromText({

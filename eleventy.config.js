@@ -212,9 +212,7 @@ module.exports = function(eleventyConfig) {
 
   // Pass through static assets (preserves current design)
   eleventyConfig.addPassthroughCopy("images");
-  eleventyConfig.addPassthroughCopy("css");
   eleventyConfig.addPassthroughCopy({ "src/css": "css" });
-  eleventyConfig.addPassthroughCopy("js");
   eleventyConfig.addPassthroughCopy("hero-optimized.jpg");
   eleventyConfig.addPassthroughCopy("hero-mobile.jpg");
   eleventyConfig.addPassthroughCopy("*.png");
@@ -225,8 +223,6 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.addPassthroughCopy({ "src/llms.txt": "llms.txt" });
   eleventyConfig.addPassthroughCopy({ "src/robots.txt": "robots.txt" });
   eleventyConfig.addPassthroughCopy({ "src/assets": "assets" });
-  eleventyConfig.ignores.add("src/guides/anna-maria-island-vacation-cost-guide-2026/**");
-  eleventyConfig.ignores.add("src/guides/best-time-to-visit-anna-maria-island/**");
 
   eleventyConfig.on("eleventy.after", () => {
     const root = process.cwd();
@@ -257,10 +253,7 @@ module.exports = function(eleventyConfig) {
       fs.writeFileSync(tripOut, fs.readFileSync(tripSrc, "utf8") + "\n" + fs.readFileSync(tripCardsSrc, "utf8"));
     }
   });
-  
-  // Watch for changes during development
-  eleventyConfig.addWatchTarget("./_data/");
-  
+
   // Simple title filter - just appends site name if not already there
   eleventyConfig.addFilter("propertySchemaAmenities", require("./scripts/regenerate-property-surfaces").renderSchemaAmenityLabels);
   eleventyConfig.addFilter("numberWord", require("./scripts/enforcement/home-count-word").numberWord);

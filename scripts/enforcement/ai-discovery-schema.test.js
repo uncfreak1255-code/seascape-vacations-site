@@ -441,3 +441,11 @@ test("River House structured amenities do not turn an unknown pet policy into pe
   const rental=blocks.find(block=>block["@type"]==="VacationRental");
   assert.equal(rental.containsPlace.amenityFeature.some(amenity=>amenity.name==="pet friendly"&&amenity.value===true),false);
 });
+
+test("llms source does not contain unresolved merge markers", () => {
+  assert.equal(
+    /^(<<<<<<<|=======|>>>>>>>)/m.test(llms),
+    false,
+    "src/llms.txt still contains unresolved merge markers"
+  );
+});
