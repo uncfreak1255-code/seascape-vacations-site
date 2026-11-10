@@ -194,9 +194,11 @@
       "slug": "large-group-vacation-rentals-bradenton",
       "destination": "bradenton",
       "title": "Large Group Vacation Rentals in Bradenton FL",
-      "h1": "Bradenton vacation homes for groups of up to {sleeps:the-oasis}",
-      "description": "The Oasis sleeps up to {sleeps:the-oasis} in {br:the-oasis} bedrooms with {ba:the-oasis} bathrooms. There’s a private pool and two hot tubs. Dockside Dreams sleeps up to {sleeps:dockside-dreams}.",
+      "h1": "Bradenton Vacation Homes for Large Groups",
+      "description": "Spacious vacation rentals in Bradenton for large groups. Sleep {sleeps-matching} guests. Private pools.",
       "heroBookingAction": {
+        "heading": "Bradenton vacation homes for groups of up to {sleeps:the-oasis}",
+        "description": "The Oasis sleeps up to {sleeps:the-oasis} in {br:the-oasis} bedrooms with {ba:the-oasis} bathrooms. There’s a private pool and two hot tubs. Dockside Dreams sleeps up to {sleeps:dockside-dreams}.",
         "href": "/properties/the-oasis/?guests={sleeps:the-oasis}#booking",
         "propertySlug": "the-oasis",
         "label": "Check dates for {sleeps:the-oasis} at The Oasis",
