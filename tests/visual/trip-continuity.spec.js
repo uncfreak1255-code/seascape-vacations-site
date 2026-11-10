@@ -95,6 +95,26 @@ test('catalog direct links retain requested dates and capacity filtering', async
   await expect(page.locator('#catalog-empty')).toBeVisible();
 });
 
+test('the Bradenton large-group button carries 16 guests and selected dates to The Oasis checkout', async ({ page }) => {
+  await visit(page, '/stays/large-group-vacation-rentals-bradenton/');
+  await page.route('https://book.seascape-vacations.com/checkout/**', route =>
+    route.fulfill({ status: 200, contentType: 'text/plain', body: 'Checkout test destination' })
+  );
+
+  await page.getByRole('link', { name: 'Check dates for 16 at The Oasis', exact: true }).click();
+  await expect(page).toHaveURL(/\/properties\/the-oasis\//);
+  const booking = page.locator('#booking');
+  await expect(booking.getByLabel('Guests', { exact: true })).toHaveValue('16');
+  await booking.getByLabel('Arrival', { exact: true }).fill('2026-12-05');
+  await booking.getByLabel('Departure', { exact: true }).fill('2026-12-12');
+  await booking.getByRole('button', { name: 'Book these dates', exact: true }).click();
+  await expect(page).toHaveURL(/https:\/\/book\.seascape-vacations\.com\/checkout\/189511\?/);
+  const checkout = new URL(page.url());
+  expect(checkout.searchParams.get('start')).toBe('2026-12-05');
+  expect(checkout.searchParams.get('end')).toBe('2026-12-12');
+  expect(checkout.searchParams.get('numberOfGuests')).toBe('16');
+});
+
 test('invalid date and guest queries do not reach the booking page', async ({ page }) => {
   await visit(page, '/properties/?arrive=2026-12-12&depart=2026-12-05&guests=8oops');
   const urls = await page.locator('a[data-track-event="catalog_book_direct_click"]').evaluateAll(nodes => nodes.map(n => n.href));
