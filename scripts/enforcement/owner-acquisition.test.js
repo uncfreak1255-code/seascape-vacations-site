@@ -12,14 +12,6 @@ const ownerTemplate = fs.readFileSync(
   path.join(projectRoot, "src", "property-management", "property-management.njk"),
   "utf8"
 );
-const siteHeader = fs.readFileSync(
-  path.join(projectRoot, "src", "_includes", "partials", "site-header.njk"),
-  "utf8"
-);
-const siteHeaderStyles = fs.readFileSync(
-  path.join(projectRoot, "src", "_includes", "partials", "site-header-styles.njk"),
-  "utf8"
-);
 const guestHeader = fs.readFileSync(
   path.join(projectRoot, "src", "_includes", "partials", "guest-header.njk"),
   "utf8"
@@ -120,31 +112,12 @@ test("owner landing page keeps the owner revenue review close to the sales argum
   assert.ok(reviewIndex < specialSituationsIndex, "owner CTA should land before special-situations content");
 });
 
-// The owner hub moved to layouts/guest.njk (DESIGN.md floor F5, one shared shell),
-// so it no longer renders site-header.njk. Assertions about that template passed
-// here regardless of this page and are removed; the live rule is the shared
-// header's CTA wiring, asserted below.
-test("owner-only nav stays wired for the pages that still use it", () => {
-  // The owner hub moved to layouts/guest.njk, but ownerNavOnly: true is still set
-  // by src/property-management/revenue-review-requested.njk -- the page every
-  // submitted lead lands on -- and src/internal/ai-engine-click-test.njk. Removing
-  // these assertions with the hub left that branch live but unguarded.
-  const thankYou = fs.readFileSync(path.join(projectRoot, "src", "property-management", "revenue-review-requested.njk"), "utf8");
-  assert.equal(thankYou.includes("ownerNavOnly: true"), true, "the lead thank-you page still opts into owner-only nav");
-  assert.equal(siteHeader.includes("{% if resolvedOwnerNavOnly %}"), true, "site header must keep the owner-only nav branch");
-  assert.equal(siteHeader.includes('class="nav-links nav-links--owner"'), true, "owner-only nav keeps its CTA container");
-  assert.equal(siteHeader.includes('class="nav-owner-cta"'), true, "owner-only nav keeps its bespoke CTA treatment");
-  assert.equal(siteHeaderStyles.includes(".nav-links--owner {"), true, "owner-only nav CSS keeps the CTA visible below desktop");
-  assert.equal(siteHeaderStyles.includes(".nav-owner-cta {"), true, "owner-only nav CSS styles the compact CTA");
-  assert.equal(siteHeaderStyles.includes("margin-left: auto;"), true, "owner-only nav pushes the CTA right without guest links");
-});
-
 test("owner landing page uses the shared Waterline shell with an owner CTA", () => {
   assert.equal(ownerLanding.includes("layout: layouts/guest.njk"), true, "owner landing uses the shared Waterline shell (floor F5)");
   assert.equal(ownerLanding.includes('navButtonHref: "#owner-cta"'), true, "shared header CTA should jump to the review form");
   assert.equal(ownerLanding.includes('navButtonLabel: "Revenue Review"'), true, "owner landing should use compact owner nav CTA copy");
-  assert.equal(siteHeader.includes("href=\"/properties/\""), true, "shared header still needs guest-nav links for non-owner pages");
-  assert.equal(siteHeader.includes("Request Your Revenue Review"), false, "shared header should stay page-driven, not hard-code owner CTA copy");
+  assert.equal(guestHeader.includes("href=\"/properties/\""), true, "shared header still needs guest-nav links for non-owner pages");
+  assert.equal(guestHeader.includes("Request Your Revenue Review"), false, "shared header should stay page-driven, not hard-code owner CTA copy");
 });
 
 test("shared header keeps hash CTAs as instant jumps instead of trip-link navigations", () => {

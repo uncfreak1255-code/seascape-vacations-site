@@ -272,15 +272,13 @@ These nontransactional metrics permit lost counts; no exactly-once claim.
 
 ## 10. Analytics/guide carry — implicit
 
-Sources: homepage.js, conversion-tracking.js, analytics-ga4.njk.
-States: suppressed/deferred/loading/queued/dispatched; navigation waiting/done;
+Sources: conversion-tracking.js, analytics-ga4.njk.
+States: suppressed/dispatched; navigation waiting/done;
 guide carry absent/staged/consumed/discarded. Invariants: PII scrubbed; QA disabled;
 callback once; guide carry one tab slot, consumed once within 60s at matching home.
 
 | From | Event/guard | To/action |
 | --- | --- | --- |
-| deferred | interaction/load timeout | load once; queue events |
-| loading | resolves | drain queue |
 | any | QA suppression | no collection; discard carry |
 | guide click | same-tab property, storage works | stage sanitized event with guide identity |
 | guide click | new-tab/external/no storage | direct best-effort event |
@@ -308,10 +306,10 @@ Paths are under src/assets/js unless stated otherwise.
 | Contents, guide-contents.js | none/current; at most one aria-current | intersection sets matching anchor |
 | Sticky CTAs, guest/rainy-day/owner/area-guide-mobile-cta-guard.njk | hidden/visible | intersection/scroll/resize recomputes; no booking effect |
 | Offer, save50-offer.njk/guide-conversion-kit.njk | cold/warm; idle/copying/copied/manual | campaign reveals; clipboard success/failure copies/selects; reset after 2100ms |
-| Legacy site-header-script.njk/homepage.js/email-popup.njk | collapsed/expanded; popup not-ready/eligible/open/dismissed/suppressed | resize collapses; delay/exit shows if target exists; dismiss records cooldown |
+| Guide email popup, src/_includes/partials/email-popup.njk | not-ready/eligible/open/dismissed/suppressed | delay/exit shows if target exists; dismiss records cooldown |
 
 Proof: control-motion/guest-path-motion unit; state-transitions/waterline-scenes/
-open-house-journey/design-floors and media browser suites. Legacy consumers retained.
+open-house-journey/design-floors and media browser suites.
 
 ## Verification and limits
 

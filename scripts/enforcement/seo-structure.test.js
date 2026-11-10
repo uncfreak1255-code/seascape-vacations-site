@@ -339,20 +339,27 @@ test("retired duplicate guides are excluded and redirect to canonical guide path
   const redirects = fs.readFileSync(path.join(projectRoot, "src", "_redirects"), "utf8");
   const eleventyConfig = fs.readFileSync(path.join(projectRoot, "eleventy.config.js"), "utf8");
 
-  for (const retiredGuidePath of [
-    path.join(projectRoot, "src", "guides", "anna-maria-island-vacation-cost-guide-2026", "index.html"),
-    path.join(projectRoot, "src", "guides", "best-time-to-visit-anna-maria-island", "index.html")
-  ]) {
-    const retiredGuide = fs.readFileSync(retiredGuidePath, "utf8");
-    assert.equal(retiredGuide.includes("permalink: false"), true);
-    assert.equal(retiredGuide.includes("eleventyExcludeFromCollections: true"), true);
-  }
+  const builtGuides = path.join(projectRoot, "_site", "guides");
+  assert.equal(fs.existsSync(path.join(builtGuides, "index.html")), true, "Run npm run build first");
 
-  assert.equal(
-    fs.existsSync(path.join(projectRoot, "src", "guides", "bradenton-vs-sarasota-vacation-rental-comparison", "index.html")),
-    false,
-    "Expected the retired duplicate comparison source route to be removed entirely"
-  );
+  for (const retiredGuide of [
+    "anna-maria-island-vacation-cost-guide-2026",
+    "best-time-to-visit-anna-maria-island",
+    "bradenton-vs-sarasota-vacation-rental-comparison"
+  ]) {
+    assert.equal(
+      fs.existsSync(path.join(projectRoot, "src", "guides", retiredGuide)),
+      false,
+      `Expected the retired ${retiredGuide} source to be removed entirely`
+    );
+    for (const builtName of [retiredGuide, `${retiredGuide}.html`]) {
+      assert.equal(
+        fs.existsSync(path.join(builtGuides, builtName)),
+        false,
+        `Expected no built /guides/${builtName} page shadowing its redirect`
+      );
+    }
+  }
   assert.equal(
     fs.existsSync(
       path.join(projectRoot, "src", "guides", "2026-bradenton-vacation-rental-market-analysis.html")
@@ -377,19 +384,6 @@ test("retired duplicate guides are excluded and redirect to canonical guide path
       "/guides/2026-bradenton-vacation-rental-market-analysis  /property-management/vacation-rental-management-bradenton/  301"
     ) < redirects.indexOf("/guides/:slug  /guides/:slug/  301"),
     "Expected retired market-analysis slashless redirect to come before the broad slashless guide redirect"
-  );
-
-  for (const ignoredGuideDir of [
-    'src/guides/anna-maria-island-vacation-cost-guide-2026/**',
-    'src/guides/best-time-to-visit-anna-maria-island/**'
-  ]) {
-    assert.equal(eleventyConfig.includes(ignoredGuideDir), true);
-  }
-
-  assert.equal(
-    eleventyConfig.includes('src/guides/bradenton-vs-sarasota-vacation-rental-comparison/**'),
-    false,
-    "Expected Eleventy to stop carrying an ignore for a deleted duplicate comparison guide"
   );
 
   assert.equal(

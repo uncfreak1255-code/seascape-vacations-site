@@ -22,10 +22,9 @@ test("routeFromSourcePath maps common source files to public routes", () => {
   assert.equal(routeFromSourcePath("src/stays/stays.njk"), "template: src/stays/stays.njk");
 });
 
-test("static source patrol skips ignored, permalink false, and noindex pages", () => {
+test("static source patrol skips permalink false and noindex pages", () => {
   assert.equal(
     isIndexableStaticSource(
-      "src/guides/best-time-to-visit-anna-maria-island/index.html",
       `---
 permalink: false
 eleventyExcludeFromCollections: true
@@ -37,14 +36,12 @@ eleventyExcludeFromCollections: true
   );
   assert.equal(
     isIndexableStaticSource(
-      "src/guides/live-guide.html",
       `<meta name="robots" content="index, follow"><p>Updated March 2026</p>`,
     ),
     true,
   );
   assert.equal(
     isIndexableStaticSource(
-      "src/guides/collection-hidden-live-guide.html",
       `---
 eleventyExcludeFromCollections: true
 ---

@@ -3,6 +3,7 @@ const assert = require("node:assert/strict");
 
 const {
   parseArgs,
+  buildReceipt,
   resolveReleaseRange,
   getChangedFiles
 } = require("./verify-release");
@@ -50,5 +51,27 @@ test("explicit --range wins on a dirty tree", () => {
   assert.equal(
     resolveReleaseRange({ rangeProvided: true, range: "abc...def" }, { dirty: true }),
     "abc...def"
+  );
+});
+
+test("release receipt counts path assertions and command checks and names the first failure", () => {
+  const { summary } = buildReceipt({
+    args: { range: "origin/main...HEAD" },
+    pathAssertions: [{ label: "netlify build truth", status: "passed" }],
+    checks: [
+      { label: "build", status: "failed" },
+      { label: "tests", status: "failed" }
+    ]
+  });
+
+  assert.deepEqual(summary, {
+    verdict: "fail",
+    total_checks: 3,
+    failed_checks: 2,
+    first_failure: "build"
+  });
+  assert.equal(
+    buildReceipt({ args: { range: "" }, pathAssertions: [], checks: [] }).summary.verdict,
+    "pass"
   );
 });

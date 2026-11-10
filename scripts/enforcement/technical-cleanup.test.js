@@ -189,16 +189,6 @@ test("supporting family comparison guide now uses the tracked guide conversion f
   assert.equal(familyGuide.includes('{% include "partials/analytics-ga4.njk" %}'), true);
 });
 
-test("legacy best-time-to-visit source stays excluded from output", () => {
-  const legacyBestTimeSource = fs.readFileSync(path.join(sourceRoot, "guides", "best-time-to-visit-anna-maria-island", "index.html"), "utf8");
-
-  assert.equal(legacyBestTimeSource.includes("permalink: false"), true);
-  assert.equal(legacyBestTimeSource.includes("eleventyExcludeFromCollections: true"), true);
-  assert.equal(legacyBestTimeSource.includes('<meta name="robots" content="noindex, follow">'), true);
-  assert.equal(legacyBestTimeSource.includes("https://seascape-vacations.com/guides/best-time-to-visit-anna-maria-island/"), false);
-  assert.equal(legacyBestTimeSource.includes("https://seascape-vacations.com/guides/best-time-visit-anna-maria-island/"), true);
-});
-
 test("highest-priority weather redirects point to the canonical slash route", () => {
   const redirects = fs.readFileSync(path.join(sourceRoot, "_redirects"), "utf8");
 

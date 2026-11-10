@@ -18,7 +18,6 @@ const {
   readOwnerBenchmarkProofAsset,
   readOwnerOperatorProofAssets
 } = require("./owner-proof-freshness");
-const { normalizeReleaseChecks } = require("./release-scorecard");
 
 function run(command, args, options = {}) {
   const startedAt = process.hrtime.bigint();
@@ -227,10 +226,7 @@ function assertValidFigmaBriefs(range) {
 }
 
 function buildReceipt({ args, pathAssertions, checks }) {
-  const combinedChecks = normalizeReleaseChecks({
-    path_assertions: pathAssertions,
-    checks,
-  });
+  const combinedChecks = [...pathAssertions, ...checks];
   const failedChecks = combinedChecks.filter((check) => check.status !== "passed");
 
   return {
@@ -405,6 +401,7 @@ if (require.main === module) {
 
 module.exports = {
   parseArgs,
+  buildReceipt,
   designLintBaseFromRange,
   buildCommandSteps,
   resolveReleaseRange,
