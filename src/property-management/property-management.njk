@@ -153,7 +153,6 @@ eleventyComputed:
 {% set landerMarket = landerMarkets[seoPage.destination] %}
 {% set heroHomeSlug = "sarasota-luxe" if (seoPage.destination == "sarasota" or seoPage.destination == "siesta-key") else "the-oasis" %}
 {% set heroHome = properties | propertyBySlug(heroHomeSlug) %}
-{% set homeCountWord = properties | length | numberWord %}
 <body class="guest-site owner-lander" data-guest-version="waterline-v3">
     <a class="g-skip" href="#main">Skip to content</a>
     {#- The shared header holds a wordmark, a call target, this button and the
@@ -293,7 +292,7 @@ eleventyComputed:
         {% set bandPhoto = heroHome.photography.photos[0] %}
         <figure class="g-owner-band g-lander-band">
             <img src="{{ bandPhoto.src }}" srcset="{{ bandPhoto.src | replace('.webp', '-800.webp') }} 800w, {{ bandPhoto.src }} 1400w" sizes="100vw" width="{{ bandPhoto.width }}" height="{{ bandPhoto.height }}" alt="{{ bandPhoto.alt }}" loading="lazy" decoding="async">
-            <figcaption class="g-wrap">{{ heroHome.name }}, {{ heroHome.city }}. One of the {{ homeCountWord }} homes Seascape manages.</figcaption>
+            <figcaption class="g-wrap">{{ heroHome.name }}, {{ heroHome.city }}. A home we manage.</figcaption>
         </figure>
         {% endif %}
 

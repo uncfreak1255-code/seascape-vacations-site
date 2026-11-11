@@ -13,7 +13,7 @@
 .guest-site .g-lander-hero .g-owner-lede{max-width:56ch;margin:28px 0 32px;font-size:17px;line-height:1.55}
 .guest-site .g-lander-subcopy{max-width:56ch;margin:20px 0 0;font-size:14px;color:var(--g-muted)}
 .guest-site .g-lander-primary{min-height:56px;padding:0 28px}
-.g-lander-sheet{position:relative;background:white;border:1px solid var(--g-rule);padding:32px 32px 24px;box-shadow:0 20px 32px #173D421C;transform:rotate(1.2deg)}
+.g-lander-sheet{position:relative;background:var(--g-soft);border:1px solid var(--g-rule);padding:32px 32px 24px;box-shadow:0 20px 32px #173D421C;transform:rotate(1.2deg)}
 .g-lander-sheet::before{content:"";position:absolute;inset:0 auto 0 0;width:4px;background:var(--g-accent)}
 .g-lander-sheet .g-label{margin:0 0 16px}
 .g-lander-sheet ol{list-style:none;margin:0;padding:0;border-top:1px solid var(--g-ink)}
@@ -95,8 +95,8 @@
 .g-lander .owner-form-help{display:block;margin-top:4px;font-size:12px;color:var(--g-muted)}
 .g-lander .owner-form-authority{display:flex;align-items:center;gap:4px;min-height:44px;margin:4px 0 8px;font-size:13px;line-height:1.5;cursor:pointer}
 .g-lander .owner-form-authority input{appearance:none;-webkit-appearance:none;flex:0 0 44px;display:grid;place-content:center;width:44px;height:44px;margin:0 0 0 -12px;border:0;background:none;cursor:pointer}
-.g-lander .owner-form-authority input::before{content:"";width:20px;height:20px;border:1px solid var(--g-ink);border-radius:4px;background:white center/14px no-repeat}
-.g-lander .owner-form-authority input:checked::before{background-color:var(--g-ink);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E")}
+.g-lander .owner-form-authority input::before{content:"";width:20px;height:20px;border:1px solid var(--g-ink);border-radius:4px;background:var(--g-soft) center/14px no-repeat}
+.g-lander .owner-form-authority input:checked::before{background-color:var(--g-ink);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23F6F3EB' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E")}
 .g-lander .owner-form-authority input:focus-visible::before{outline:2px solid var(--g-ink);outline-offset:3px}
 .g-lander .owner-form-actions{margin-top:16px}
 .guest-site .g-lander .owner-form-submit{width:100%;min-height:56px}
@@ -137,7 +137,9 @@
 .g-lander .owner-form-field input,.g-lander .owner-form-field textarea{transition:border-color var(--g-hover-duration) var(--g-ease-color)}
 .g-lander .owner-form-field input:focus,.g-lander .owner-form-field textarea:focus{border-bottom-color:var(--g-ink)}
 .g-lander .owner-form-authority input::before{transition:background-color var(--g-press-duration) var(--g-ease-out)}
-.g-lander .owner-form-authority{-webkit-tap-highlight-color:transparent}
+.g-lander .owner-form-authority,.g-lander a,.g-lander summary{-webkit-tap-highlight-color:transparent}
+/* Touch has no hover, and the grey tap flash is off, so a pressed link answers in the same colour a hovered one does. */
+.g-lander-crumbs a:active,.g-lander-path a:active,.g-lander-sources a:active,.g-lander-byline a:active,.g-lander-prose a:active,.g-lander-related a:active h3{color:var(--g-accent)}
 @media(hover:hover) and (pointer:fine){
 .g-lander-crumbs a,.g-lander-path a,.g-lander-sources a,.g-lander-byline a,.g-lander-prose a,.g-lander-related h3{transition:color var(--g-hover-duration) var(--g-ease-color)}
 .g-lander-crumbs a:hover,.g-lander-path a:hover,.g-lander-sources a:hover,.g-lander-byline a:hover,.g-lander-prose a:hover,.g-lander-related a:hover h3{color:var(--g-accent)}
