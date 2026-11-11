@@ -30,6 +30,9 @@
 .g-lander-ledger>div{display:flex;flex-direction:column;padding:28px 28px 28px 0;border-bottom:1px solid var(--g-rule)}
 .g-lander-ledger>div+div{padding-left:28px;border-left:1px solid var(--g-rule)}
 .g-lander-ledger dd{margin:0}
+/* The label is the dt and comes first in the markup; the figure is drawn above it. */
+.g-lander-ledger-value{order:-1}
+.g-lander.g-owner{padding-bottom:0}
 .g-lander-ledger-value{font:clamp(40px,4.4vw,64px)/1 'Instrument Serif',Georgia,serif;letter-spacing:-.03em;color:var(--g-ink)}
 .g-lander-ledger dt{margin:16px 0 0;font:500 12px/1.4 Poppins,sans-serif;letter-spacing:.13em;text-transform:uppercase;color:var(--g-muted)}
 .g-lander-ledger-detail{margin-top:12px!important;font-size:14px;color:var(--g-muted)}
@@ -98,6 +101,9 @@
 .g-lander .owner-form-authority input::before{content:"";width:20px;height:20px;border:1px solid var(--g-ink);border-radius:4px;background:var(--g-soft) center/14px no-repeat}
 .g-lander .owner-form-authority input:checked::before{background-color:var(--g-ink);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23F6F3EB' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E")}
 .g-lander .owner-form-authority input:focus-visible::before{outline:2px solid var(--g-ink);outline-offset:3px}
+.g-lander .owner-form-authority input:focus-visible{outline:0}
+/* Forced colours drop backgrounds, which would hide the tick: hand the box back to the system there. */
+@media(forced-colors:active){.g-lander .owner-form-authority input{appearance:auto;-webkit-appearance:auto;flex-basis:20px;width:20px;height:20px;margin:0 12px 0 0}.g-lander .owner-form-authority input::before{content:none}.g-lander .owner-form-authority input:focus-visible{outline:2px solid}}
 .g-lander .owner-form-actions{margin-top:16px}
 .guest-site .g-lander .owner-form-submit{width:100%;min-height:56px}
 .guest-site .g-lander .owner-form-note{grid-column:1/-1;margin:0;font-size:13px;color:var(--g-rule)}
@@ -128,7 +134,6 @@
 .g-lander-cta{padding:50px 0}
 .g-lander .owner-form-card{padding:24px 20px}
 .g-lander .owner-form-grid{grid-template-columns:1fr}
-.g-lander.g-owner{padding-bottom:0}
 }
 
 /* Motion. Colour hovers only where a pointer can hover; fields answer focus;

@@ -9,7 +9,6 @@ eleventyComputed:
   pageDescription: "{{ seoPage.description }}"
 ---
 {% from "partials/owner-evaluation-form.njk" import ownerEvaluationForm %}
-{% from "partials/ui-icon.njk" import uiIcon %}
 {% set ownerProofSource = "" %}
 {% if seoPage.proofAssetKey %}{% set ownerProofSource = "src/_data/ownerProofAssets.json" %}{% endif %}
 {% set pageUpdatedIso = seoPageLastModifiedIso("owner", seoPage.slug, page.inputPath, ownerProofSource) %}
@@ -240,8 +239,8 @@ eleventyComputed:
                 <dl class="g-lander-ledger">
                     {% for stat in pageProofStats %}
                     <div>
-                        <dd class="g-lander-ledger-value">{{ stat.value }}</dd>
                         <dt>{{ stat.label }}</dt>
+                        <dd class="g-lander-ledger-value">{{ stat.value }}</dd>
                         {% if stat.detail %}
                         <dd class="g-lander-ledger-detail">{{ stat.detail }}</dd>
                         {% endif %}
@@ -279,10 +278,10 @@ eleventyComputed:
         <section class="g-owner-section g-lander-proof">
             <div class="g-wrap">
                 <dl class="g-lander-ledger">
-                    <div><dd class="g-lander-ledger-value">Tailored</dd><dt>Management Pricing</dt></div>
-                    <div><dd class="g-lander-ledger-value">24/7</dd><dt>Guest Support</dt></div>
-                    <div><dd class="g-lander-ledger-value">48 hr</dd><dt>One-Page Revenue Review</dt></div>
-                    <div><dd class="g-lander-ledger-value">Local</dd><dt>Gulf Coast Team</dt></div>
+                    <div><dt>Management Pricing</dt><dd class="g-lander-ledger-value">Tailored</dd></div>
+                    <div><dt>Guest Support</dt><dd class="g-lander-ledger-value">24/7</dd></div>
+                    <div><dt>One-Page Revenue Review</dt><dd class="g-lander-ledger-value">48 hr</dd></div>
+                    <div><dt>Gulf Coast Team</dt><dd class="g-lander-ledger-value">Local</dd></div>
                 </dl>
             </div>
         </section>
