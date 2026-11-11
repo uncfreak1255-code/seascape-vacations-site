@@ -144,7 +144,7 @@ eleventyComputed:
     <link rel="stylesheet" href="/css/base.css">
     <link rel="stylesheet" href="/css/guest.css?v=waterline-v3">
     <link rel="stylesheet" href="/css/owner.css?v=waterline-v3">
-    <link rel="stylesheet" href="/css/owner-lander.css?v=waterline-v1">
+    <link rel="stylesheet" href="/css/owner-lander.css?v=waterline-v2">
 </head>
 {#- Waterline owner lander (November 2026). Shares tokens and section rules with
     the owner hub (owner.css); lander-only rules live in owner-lander.css. -#}
@@ -182,8 +182,9 @@ eleventyComputed:
             <span aria-current="page">{{ seoPage.h1 }}</span>
         </nav>
 
-        <section class="g-lander-hero owner-dark-band" aria-labelledby="lander-title">
-            <div class="g-wrap g-lander-hero-grid">
+        <section class="g-owner-hero g-lander-hero owner-dark-band" aria-labelledby="lander-title">
+            {% include "partials/owner-hero-photo.njk" %}
+            <div class="g-wrap">
                 <div class="g-lander-hero-copy">
                     <p class="g-label">For Property Owners{% if landerMarket %} &middot; {{ landerMarket }}{% endif %}</p>
                     <h1 id="lander-title">{{ seoPage.h1 }}</h1>
@@ -193,18 +194,7 @@ eleventyComputed:
                     </div>
                     <p class="g-lander-subcopy">{{ seoPage.ctaSubcopy or "We break down management fees, booking-source costs, and what your current setup is actually costing you before you decide anything." }}</p>
                 </div>
-                <aside class="g-lander-sheet" aria-labelledby="lander-sheet-title">
-                    <p class="g-label" id="lander-sheet-title">The one-page review</p>
-                    <ol>
-                        <li><span aria-hidden="true">01</span>What looks right</li>
-                        <li><span aria-hidden="true">02</span>What deserves a second look</li>
-                        <li><span aria-hidden="true">03</span>What we would check next</li>
-                    </ol>
-                    <p class="g-lander-sheet-foot">Usually back within 48 hours.</p>
-                </aside>
-            </div>
-            {% if showOwnerBenchmarkPath %}
-            <div class="g-wrap">
+                {% if showOwnerBenchmarkPath %}
                 <div class="g-lander-path">
                     <p class="g-label">{% if ownerNetBridgePage %}Start Here{% else %}Before You Switch{% endif %}</p>
                     <p>
@@ -222,8 +212,9 @@ eleventyComputed:
                         {% endif %}
                     </p>
                 </div>
+                {% endif %}
+                {% if heroHome %}<p class="g-owner-hero-caption">{{ heroHome.name }}, {{ heroHome.city }}. A home we manage.</p>{% endif %}
             </div>
-            {% endif %}
         </section>
 
         {% if pageProofStats and pageProofStats | length %}
@@ -287,13 +278,6 @@ eleventyComputed:
         </section>
         {% endif %}
 
-        {% if heroHome and heroHome.photography and heroHome.photography.photos[0] %}
-        {% set bandPhoto = heroHome.photography.photos[0] %}
-        <figure class="g-owner-band g-lander-band">
-            <img src="{{ bandPhoto.src }}" srcset="{{ bandPhoto.src | replace('.webp', '-800.webp') }} 800w, {{ bandPhoto.src }} 1400w" sizes="100vw" width="{{ bandPhoto.width }}" height="{{ bandPhoto.height }}" alt="{{ bandPhoto.alt }}" loading="lazy" decoding="async">
-            <figcaption class="g-wrap">{{ heroHome.name }}, {{ heroHome.city }}. A home we manage.</figcaption>
-        </figure>
-        {% endif %}
 
         {% if seoPage.switchReasons and seoPage.switchReasons | length %}
         <section class="g-owner-section">
@@ -636,6 +620,5 @@ eleventyComputed:
     {% include "partials/guest-footer.njk" %}
 
     {% include "partials/analytics-ga4.njk" %}
-    <script defer src="/assets/js/guest.js?v=waterline-v5"></script>
 </body>
 </html>

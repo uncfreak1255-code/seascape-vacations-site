@@ -5,23 +5,17 @@
 .g-lander-crumbs{align-items:center;color:var(--g-muted)}
 .g-lander-crumbs a{display:inline-flex;align-items:center;min-height:44px;min-width:44px;color:var(--g-ink);text-decoration:underline;text-underline-offset:4px}
 
-/* Hero: the answer on the left, the thing an owner gets back on the right. */
-.g-lander-hero{position:relative;isolation:isolate;padding:24px 0 72px;border-bottom:1px solid var(--g-rule)}
-.g-lander-hero-grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(300px,.75fr);gap:72px;align-items:end}
-.guest-site .g-lander-hero h1{margin:0;max-width:16ch;font-size:clamp(44px,5.4vw,84px);line-height:1}
-.g-lander-hero .g-label{margin-bottom:20px}
-.guest-site .g-lander-hero .g-owner-lede{max-width:56ch;margin:28px 0 32px;font-size:17px;line-height:1.55}
-.guest-site .g-lander-subcopy{max-width:56ch;margin:20px 0 0;font-size:14px;color:var(--g-muted)}
-.guest-site .g-lander-primary{min-height:56px;padding:0 28px}
-.g-lander-sheet{position:relative;background:var(--g-soft);border:1px solid var(--g-rule);padding:32px 32px 24px;box-shadow:0 20px 32px #173D421C;transform:rotate(1.2deg)}
-.g-lander-sheet::before{content:"";position:absolute;inset:0 auto 0 0;width:4px;background:var(--g-accent)}
-.g-lander-sheet .g-label{margin:0 0 16px}
-.g-lander-sheet ol{list-style:none;margin:0;padding:0;border-top:1px solid var(--g-ink)}
-.g-lander-sheet li{display:grid;grid-template-columns:44px minmax(0,1fr);gap:12px;align-items:baseline;padding:20px 0;border-bottom:1px solid var(--g-rule);font:26px/1.12 'Instrument Serif',Georgia,serif;letter-spacing:-.02em}
-.g-lander-sheet li span{font-size:20px;color:var(--g-accent)}
-.guest-site .g-lander-sheet-foot{margin:16px 0 0;font-size:13px;color:var(--g-muted)}
-.g-lander-path{max-width:860px;margin-top:40px;padding:20px 24px;background:var(--g-soft);border:1px solid var(--g-rule);font-size:14px}
-.g-lander-path .g-label{margin-bottom:8px}
+/* Hero: a real managed home under the ink scrim, as on the owner hub. The photo,
+   scrim, paper type and caption come from .g-owner-hero in owner.css; this only
+   widens the measure for longer page claims and puts the CTA in citron. */
+.g-lander-hero-copy{max-width:760px}
+.guest-site .g-lander-hero h1{max-width:16ch;font-size:clamp(44px,5.4vw,80px);line-height:1}
+.guest-site .g-lander-hero .g-owner-lede{max-width:56ch}
+.guest-site .g-lander-subcopy{max-width:56ch;margin:20px 0 0;font-size:14px;color:var(--g-rule)}
+.guest-site .g-lander-primary{min-height:56px;padding:0 28px;background:var(--g-citron);border-color:var(--g-citron);color:var(--g-ink)}
+.g-lander-path{max-width:860px;margin-top:32px;padding:20px 24px;border:1px solid color-mix(in srgb,var(--g-paper) 40%,transparent);font-size:14px;color:var(--g-paper)}
+.g-lander-path .g-label{margin-bottom:8px;color:var(--g-rule)}
+.g-lander-path a{color:var(--g-paper)}
 .guest-site .g-lander-path p:last-child{margin:0}
 .g-lander-path a,.g-lander-sources a,.g-lander-byline a,.g-lander-prose a,.g-lander-cta-foot a{text-decoration:underline;text-underline-offset:4px}
 
@@ -40,7 +34,6 @@
 .g-lander-sources h3{font-size:26px;margin:0 0 12px}
 .guest-site .g-lander-sources p{margin:0 0 8px}
 .g-lander-muted{color:var(--g-muted)}
-.g-lander-band figcaption{padding-bottom:0}
 
 /* Ruled columns for reasons, levers and deliverables. */
 .g-lander-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:0 40px;border-top:1px solid var(--g-ink)}
@@ -111,20 +104,15 @@
 .g-lander-cta-foot a{color:var(--g-paper);font-weight:500}
 
 @media(max-width:900px){
-.g-lander-hero-grid{grid-template-columns:1fr;gap:40px}
-.g-lander-sheet{max-width:440px}
 .g-lander-ledger{grid-template-columns:1fr 1fr}
 .g-lander-ledger>div:nth-child(odd){padding-left:0;border-left:0}
 .g-lander-split,.g-lander .owner-lead-form{grid-template-columns:1fr;gap:32px}
 .g-lander-benefits{columns:1}
 }
 @media(max-width:700px){
-.g-lander-hero{padding:8px 0 44px}
 .guest-site .g-lander-hero h1{max-width:none;font-size:44px}
-.guest-site .g-lander-hero .g-owner-lede{font-size:16px;margin:20px 0 24px}
 .guest-site .g-lander-primary{width:100%}
-.g-lander-sheet{padding:24px 24px 20px;transform:none}
-.g-lander-sheet li{font-size:22px;padding:16px 0;grid-template-columns:36px minmax(0,1fr)}
+.g-lander-path{padding:16px 20px}
 .g-lander-ledger>div{padding:20px 16px 20px 0}
 .g-lander-ledger>div:nth-child(even){padding-left:16px}
 .g-lander-ledger-value{font-size:36px}
@@ -136,25 +124,16 @@
 .g-lander .owner-form-grid{grid-template-columns:1fr}
 }
 
-/* Motion. Colour hovers only where a pointer can hover; fields answer focus;
-   the review sheet settles once on arrival, its three lines a beat apart.
-   Reduced motion keeps every state and drops the movement. */
+/* Motion. Colour hovers only where a pointer can hover; fields answer focus. */
 .g-lander .owner-form-field input,.g-lander .owner-form-field textarea{transition:border-color var(--g-hover-duration) var(--g-ease-color)}
 .g-lander .owner-form-field input:focus,.g-lander .owner-form-field textarea:focus{border-bottom-color:var(--g-ink)}
 .g-lander .owner-form-authority input::before{transition:background-color var(--g-press-duration) var(--g-ease-out)}
 .g-lander .owner-form-authority,.g-lander a,.g-lander summary{-webkit-tap-highlight-color:transparent}
 /* Touch has no hover, and the grey tap flash is off, so a pressed link answers in the same colour a hovered one does. */
-.g-lander-crumbs a:active,.g-lander-path a:active,.g-lander-sources a:active,.g-lander-byline a:active,.g-lander-prose a:active,.g-lander-related a:active h3{color:var(--g-accent)}
+.g-lander-crumbs a:active,.g-lander-sources a:active,.g-lander-byline a:active,.g-lander-prose a:active,.g-lander-related a:active h3{color:var(--g-accent)}
+.g-lander-path a:active{color:var(--g-citron)}
 @media(hover:hover) and (pointer:fine){
 .g-lander-crumbs a,.g-lander-path a,.g-lander-sources a,.g-lander-byline a,.g-lander-prose a,.g-lander-related h3{transition:color var(--g-hover-duration) var(--g-ease-color)}
-.g-lander-crumbs a:hover,.g-lander-path a:hover,.g-lander-sources a:hover,.g-lander-byline a:hover,.g-lander-prose a:hover,.g-lander-related a:hover h3{color:var(--g-accent)}
+.g-lander-crumbs a:hover,.g-lander-sources a:hover,.g-lander-byline a:hover,.g-lander-prose a:hover,.g-lander-related a:hover h3{color:var(--g-accent)}
+.g-lander-path a:hover{color:var(--g-citron)}
 }
-@media(prefers-reduced-motion:no-preference){
-.g-lander-sheet{animation:g-lander-sheet-in 200ms cubic-bezier(.23,1,.32,1) both}
-.g-lander-sheet li{animation:g-lander-line-in 200ms cubic-bezier(.23,1,.32,1) both}
-.g-lander-sheet li:nth-child(1){animation-delay:120ms}
-.g-lander-sheet li:nth-child(2){animation-delay:150ms}
-.g-lander-sheet li:nth-child(3){animation-delay:200ms}
-}
-@keyframes g-lander-sheet-in{from{opacity:0;transform:translateY(12px) rotate(0)}}
-@keyframes g-lander-line-in{from{opacity:0;transform:translateY(6px)}}
