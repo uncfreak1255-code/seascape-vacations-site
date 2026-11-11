@@ -1,7 +1,7 @@
 # Brief: Sarasota Airbnb management owner page rescue (2026-11-10)
 
 - lifecycle: active
-- task scope: rewrite the search snippet and reader copy of the existing owner page `/property-management/airbnb-management-services-sarasota/` (one `seoPages.owner` entry). No new URL, no layout, CSS, template, form, tracking or redirect change. Requested by Sawyer on 2026-11-10: "Set the best outcome and achieve it in this session", with the goal stated as more direct bookings and more owners under management, and up to $20 of paid OpenSEO lookups approved.
+- task scope: rewrite the search snippet and reader copy of the existing owner page `/property-management/airbnb-management-services-sarasota/` (one `seoPages.owner` entry). No new URL, no layout, CSS, template, form, tracking or redirect change. Requested by Sawyer on 2026-11-10: "Set the best outcome and achieve it in this session", with the goal stated as more direct bookings and more owners under management, and up to $20 of paid OpenSEO lookups approved. Follow-on, same day: after seeing the page Sawyer said "God that is the old design legacy template", then approved moving the shared owner-lander template onto the Waterline owner design ("Yes push the design further though if needed"). That follow-on changes the template and one new stylesheet for every generated owner lander; it adds no claim and keeps the form, tracking and routes.
 - completion or successor: draft PR only. `docs/status/next-batch.md` (2026-11-09 read) allows evidence-backed fixes to existing pages as draft PRs while expansion is held; merge needs review of the final head and Sawyer's decision.
 
 ## Content Gate Inputs
@@ -74,6 +74,12 @@ Evidence receipts (dated; raw JSON not committed): OpenSEO `get_serp_results`, U
   - `docs/status/page-ledger.json` (ledger entry for this change)
   - `scripts/seo/generate-pseo-triage.js` and `docs/portfolio/pseo-inventory-triage.md` (triage note follows the completed SERP capture)
   - `tests/visual/__screenshots__/*/visual.spec.js/owner-airbnb-management-sarasota.png` (baseline follows the new words, refreshed by the baseline workflow)
+
+  - follow-on design change: `src/property-management/property-management.njk` and `src/css/owner-lander.css` (Waterline layout for every generated owner lander), `scripts/enforcement/waterline-tokens.test.js` (ledger row for the new stylesheet), `DESIGN.md`
+
+## Required Internal Link Map
+
+- src/property-management/property-management.njk: /property-management/, /property-management/vacation-rental-management-fees-florida/, /property-management/switch-vacation-rental-management-company/
 
 ## Boundary Proof
 

@@ -66,6 +66,7 @@ const CEILINGS = {
   'src/css/catalog-card.css': { breakpoint: 1 },
   'src/css/property-gallery.css': { breakpoint: 1 },
   'src/css/owner.css': { color: 5, shadow: 1 },
+  'src/css/owner-lander.css': {},
   'src/css/about.css': {},
   'src/css/planning-guide.css': { color: 4, shadow: 1, breakpoint: 1 },
   'src/css/comparison-guide.css': {},
