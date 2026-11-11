@@ -35,28 +35,24 @@ and the Content Gate in `docs/agents/rules/content-gate.md` before public-copy w
 ## GBrain Search Guidance (local, optional)
 <!-- gstack-gbrain-search-guidance:start -->
 
-GBrain is machine-local and optional. The decisions lane below works whenever
-the `gbrain` MCP tool or `gbrain` CLI is available; repo code search also needs
-a `.gbrain-source` file here. Without them, use Grep/Glob. Two things live in
-the brain, reached two ways:
+GBrain is machine-local and optional. It holds decisions and dated context
+(the `session-briefs` facts lane), not this repo's code: the brain has no
+index of this repository, so search code and docs with Grep/Glob.
 
-- **Decisions and dated context** (the `session-briefs` facts lane). Before
-  answering "what did we decide" or "what do we know about X", or asserting a
-  non-trivial detail about a person, project, or past change, read it first:
-  - Claude: the `gbrain` MCP tool `recall` with `source_id: "session-briefs"`
-    plus `entity: projects/<name>` or `grep: "<text>"`. A repo-scoped
-    connection keeps its own facts; if it refuses that source, use the CLI.
-  - Codex or shell: `GBRAIN_SOURCE=session-briefs gbrain recall "<topic>" --json`
-    or `gbrain recall <entity-slug> --source session-briefs --json`.
-  Save a durable decision the same way (`remember` with `source_id:
-  "session-briefs"`, date, and provenance).
-- **This repo's code and docs** (the source pinned by `.gbrain-source`).
-  `gbrain search "<terms>"` or `gbrain query "<question>"` for semantic
-  questions with no exact identifier; `gbrain code-def`, `code-refs`,
-  `code-callers` for symbols. Grep is still right for exact strings and globs.
+Before answering "what did we decide" or "what do we know about X", or
+asserting a non-trivial detail about a person, project, or past change, read
+it first whenever the `gbrain` MCP tool or `gbrain` CLI is available:
 
-Zero results are not proof of absence: an unsynced source or unbuilt graph
-returns nothing. Do not run `gbrain sync` or graph builds from a task session;
-the machine's approved sync lane owns that.
+- Claude: the `gbrain` MCP tool `recall` with `source_id: "session-briefs"`
+  plus `entity: projects/<name>` or `grep: "<text>"`. A repo-scoped
+  connection keeps its own facts; if it refuses that source, use the CLI.
+- Codex or shell: `GBRAIN_SOURCE=session-briefs gbrain recall "<topic>" --json`
+  or `gbrain recall <entity-slug> --source session-briefs --json`.
+
+Save a durable decision the same way (`remember` with `source_id:
+"session-briefs"`, date, and provenance).
+
+Zero results are not proof of absence. Do not run `gbrain sync` from a task
+session; the machine's approved sync lane owns that.
 
 <!-- gstack-gbrain-search-guidance:end -->
