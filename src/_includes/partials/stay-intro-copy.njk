@@ -1,0 +1,15 @@
+<div class="intro-copy">
+    {% if seoPage.intro and not isFamilyBrowse %}<p>{{ seoPage.intro }}</p>{% endif %}
+    {% if seoPage.sleepingFit %}
+    <div id="sleeping-fit">
+        <p>{{ seoPage.sleepingFit.heading }}</p>
+        <dl class="sleeping-fit">
+            {% for group in seoPage.sleepingFit.groups %}
+            <div><dt>{{ group.label }}</dt><dd>{{ group.detail }}</dd></div>
+            {% endfor %}
+        </dl>
+        <p class="sleeping-fit-note">{{ seoPage.sleepingFit.note }}</p>
+    </div>
+    {% endif %}
+    {% if seoPage.geoIntro %}{{ seoPage.geoIntro | safe }}{% endif %}
+</div>

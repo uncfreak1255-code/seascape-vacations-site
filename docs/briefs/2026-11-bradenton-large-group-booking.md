@@ -1,7 +1,7 @@
 # Brief: The Oasis for groups of 16
 
 - lifecycle: active
-- task scope: Sawyer-approved copy and booking button on the existing Bradenton large-group page, tracked in #921.
+- task scope: Sawyer-approved copy and booking button from #921, followed by the selected A design and live delivery in #923.
 - persona: The person booking a Bradenton vacation home for a group of 16.
 - primary keyword: large vacation rental that sleeps 16 near Bradenton
 - secondary keywords: Bradenton vacation home for 16, large group vacation rentals in Bradenton
@@ -59,3 +59,24 @@
 - On a local build, followed the new button, entered December 6–9, 2026 and clicked the site's booking action. The real Hostaway checkout for listing 189511 returned HTTP 200 and visibly showed The Oasis, December 6–9 and 16 guests in desktop Chrome and Pixel 5 emulation. Browser routing excluded analytics and blocked non-GET requests. No form was submitted. Checkout totals were outside this proof.
 - `npm run verify:release -- --range origin/main` passed 1,390 tests, content and design gates, internal links and JSON-LD verification.
 - The full visual pass caught a changed related card on the Bradenton fishing page. Keeping the new headline and summary in the target hero preserved collection metadata on other pages. Both fishing-page screenshots match their baselines, and both 16-guest trip checks pass on the narrowed change.
+
+## Selected A design, approved November 10
+
+Sawyer selected the rendered A direction and said “doesnt matter a is fine just ship it”. The implementation contract is the compact split opening with the actual Oasis pool photograph, the headline “A Bradenton home for all 16.”, an open guest/bedroom/bathroom row, one primary Oasis action and a quiet comparison link. The surcharge and sharing notes sit near the action. The complete sleeping arrangement becomes three readable bed groups. Existing Waterline tokens support this direction without a new design-system rule.
+
+This approval covers source delivery and publication of the named page through the existing Site release flow. This Codex chat is the sole mutation owner and merger. The existing unpublished main range contains #919 cleanup and the previously approved #922 booking change.
+
+### Boundary proof for #923, written before source edits
+
+- The pictured home must be The Oasis. The independent reference is its verified `photography.photos` entry in `src/_data/properties-fallback.json`, including `/images/homes/the-oasis/01.webp`. The current page wrongly shows listing 206016, Dockside Dreams. The existing two-device booking regression will be strengthened and observed red on that wrong case before the source repair.
+- The approved A rendering sets the visible hierarchy, real photo, 16/5/3 fit facts, 48px primary action and readable sleeping groups. Check 375px, 393px, 768px and desktop for overflow and inspect fresh desktop/mobile screenshots against the selected renders.
+- Preserve the already-proven booking invariant from #921. The actual action must carry 16 and entered dates to Oasis checkout listing 189511 on desktop and mobile. Stop before contact or payment submission. Keep all sleeping, surcharge, parking, mainland-location and Dockside capacity facts accurate.
+- Scope the new markup and stylesheet to the selected collection. Existing stay pages must retain their rendering and booking routes. Use the full visual and release checks to catch shared-template regressions.
+- Completion requires source checks and current-head reviews, merge, production deploy identity and actual production page/checkout readback. Preview screenshots alone do not satisfy live delivery.
+
+### A implementation proof
+
+- The canonical-image assertion failed on the old page in both desktop and mobile projects. The new image comes from the named home's verified photography record, which also sets the page's hero/social/schema image.
+- Fresh source renders at 375px, 393px, 768px and 1440px have no horizontal overflow, the selected Oasis photo loads, and the primary action is 48.9px high. Desktop/mobile screenshots match A's composition. To keep the existing fact checker intact, the lede is split into two sentences and sleeping-group labels use equivalent prose with the counts in their descriptions.
+- Source-to-provider readback passed on desktop Chrome and Pixel 5 emulation for December 6–9, 2026. Real checkout returned HTTP 200 and displayed The Oasis and 16 guests. The local server proxied only its missing availability GET to the production availability endpoint. Analytics and non-GET requests were blocked. Checkout pricing is outside this proof.
+- The release gate passed 1,390 tests plus content/design, redirects, internal links and JSON-LD checks. The full visual suite passed with 632 passed and 58 skipped, including the strengthened image/checkout case. Both guide-to-stay end-to-end controls passed. Lighthouse budgets and the performance ratchet passed across eight routes.
