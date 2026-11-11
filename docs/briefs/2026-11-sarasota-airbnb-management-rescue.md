@@ -75,7 +75,7 @@ Evidence receipts (dated; raw JSON not committed): OpenSEO `get_serp_results`, U
   - `scripts/seo/generate-pseo-triage.js` and `docs/portfolio/pseo-inventory-triage.md` (triage note follows the completed SERP capture)
   - `tests/visual/__screenshots__/*/visual.spec.js/owner-airbnb-management-sarasota.png` (baseline follows the new words, refreshed by the baseline workflow)
 
-  - follow-on design change: `src/property-management/property-management.njk` and `src/css/owner-lander.css` (Waterline layout for every generated owner lander), `scripts/enforcement/waterline-tokens.test.js` (ledger row for the new stylesheet), `DESIGN.md` The template's own reader text is limited to the approved owner offer in `seascape-hub/context/owner-offer.md` (free one-page review, usually within 48 hours, and the three things it returns), a caption naming the pictured managed home and its city, and the shorter header label "For owners" on the two quarantined pages so the header fits a phone.
+  - follow-on design change: `src/property-management/property-management.njk` and `src/css/owner-lander.css` (Waterline layout for every generated owner lander), `scripts/enforcement/waterline-tokens.test.js` (ledger row for the new stylesheet), `DESIGN.md` The template's own reader text is limited to the approved owner offer in `seascape-hub/context/owner-offer.md` (the one-page review, usually within 48 hours, and the three things it returns), a caption naming the pictured managed home and its city, and the shorter header label "For owners" on the two quarantined pages so the header fits a phone.
 
 ## Required Internal Link Map
 
