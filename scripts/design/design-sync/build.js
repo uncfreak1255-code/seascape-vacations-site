@@ -30,8 +30,8 @@
  *   node scripts/design/design-sync/render-check.js   # Playwright proof of every card
  *
  * The push itself is done with the DesignSync tool from Claude Code, using the arguments
- * in _sync-push.json; the build prints the call order. Re-run after any PR that touches
- * DESIGN.md, a stylesheet listed in stylesheets.js or the guest partials.
+ * in _sync-push.json; the build prints the call order. Re-sync triggers: see
+ * docs/process/design-review-workflow.md.
  */
 
 const fs = require("fs");

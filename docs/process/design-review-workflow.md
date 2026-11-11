@@ -43,7 +43,8 @@ That includes:
   with `npm run design:sync:check` before pushing them with the DesignSync tool.
   Re-sync after any PR that touches `DESIGN.md`,
   a stylesheet listed in `scripts/design/design-sync/stylesheets.js`
-  (including `trip-sheet.css`, which holds the phone rules), a `docs/design/`
+  (including `trip-sheet.css`, which holds the phone rules, and
+  `trip-sheet-cards.css`, which is joined into it), a `docs/design/`
   file `DESIGN.md` links, or the guest partials.
   The project's `colors_and_type.css`, `design-system/`, `ui_kits/`,
   `explorations/` and `live-mockup/` folders are pre-Waterline history and never
