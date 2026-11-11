@@ -4513,52 +4513,86 @@
     {
       "slug": "airbnb-management-services-sarasota",
       "destination": "sarasota",
-      "title": "Airbnb Management Services in Sarasota FL",
-      "h1": "Professional Airbnb Management Sarasota",
-      "description": "Full-service Airbnb management for Sarasota vacation rentals. We handle everything.",
-      "intro": "Managing an Airbnb doesn't have to consume your life. We run the day-to-day for you.",
+      "title": "Airbnb Property Management in Sarasota, FL",
+      "h1": "Airbnb Management in Sarasota",
+      "description": "Local, owner-operated Airbnb management for Sarasota homes. Pricing is set per home. Send your listing for a one-page review, usually within 48 hours.",
+      "intro": "If your Sarasota home is on Airbnb and you are done running it yourself, or your manager's statement doesn't show what you were paid, a small local team can take it over. Sawyer and Patrick answer the phone, and your management pricing is quoted for your home after we review it.",
       "benefits": [
-        "Superhost-level guest experience",
-        "Professional listings",
-        "Instant messaging response",
-        "VRBO cross-listing",
-        "Maintenance coordination",
-        "Transparent pricing"
+        "Your home listed on Airbnb, Vrbo and our own direct-booking site, with one connected calendar across all three",
+        "Nightly rates set for your home and reviewed with you",
+        "Guests screened and answered by a real local person",
+        "Cleaning and maintenance coordinated, and you hear about a problem from us before you have to ask",
+        "Guest payments collected, taxes remitted, and your payout sent monthly",
+        "A monthly statement of what your home earned, what was spent, and what you were paid"
       ],
-      "cta": "Free Consultation",
-      "geoIntro": "<p>Airbnb properties in Sarasota County represent a significant revenue opportunity, but managing them effectively requires expertise in platform algorithms, dynamic pricing, and the specific local market dynamics that drive bookings. Seascape Vacations specializes in comprehensive Airbnb management services for Sarasota property owners, combining hands-on operational management with data-driven optimization strategies. Our team understands Sarasota's unique appeal\u2014from Siesta Key beaches to downtown's cultural attractions\u2014and positions your property to capture demand from tourists, business travelers, and extended-stay guests seeking quality accommodations.</p><p>Managing Airbnb successfully involves far more than just accepting bookings and collecting payments. We handle guest screening and communication, coordinate professional cleaning between guests, respond to host messages within Airbnb's strict timeframes, manage preventative maintenance, handle platform reporting and payouts, and implement strategies to improve your Superhost status. Your calendar, pricing and guest information stay synchronized across every platform you list on, so a booking on one channel closes those dates everywhere else. We monitor Airbnb's algorithm changes and adjust your listing optimization, pricing strategy, and marketing approach accordingly.</p><p>Sarasota's competitive Airbnb market\u2014with thousands of listings competing for the same guests\u2014demands sophisticated property management. Seascape Vacations brings the expertise, local knowledge, and attention to detail that separate five-star properties from struggling ones.</p>",
+      "benefitsTag": "What We Do",
+      "benefitsTitle": "What managing your Sarasota Airbnb covers",
+      "benefitsSubtitle": "The work we take over once your home is with us, and what you see from us each month.",
+      "proofTag": "Before You Compare Managers",
+      "proofTitle": "Airbnb's fee and a manager's price are separate",
+      "proofSubtitle": "Airbnb takes its fee first. A manager's price comes after that, and ours is quoted for your home.",
+      "proofStats": [
+        {
+          "value": "15.5%",
+          "label": "Published Airbnb host fee",
+          "detail": "Airbnb says most listings on its single-fee structure pay 15.5%; check its pricing page for current terms."
+        },
+        {
+          "value": "Per home",
+          "label": "Management pricing",
+          "detail": "Quoted as a share of net rent after we look at your listing or statement, with the basis in writing."
+        },
+        {
+          "value": "48 hr",
+          "label": "One-page review",
+          "detail": "Send your listing or a recent statement and a one-page review comes back, usually within 48 hours."
+        },
+        {
+          "value": "Local",
+          "label": "Owner-operated team",
+          "detail": "Sawyer and Patrick answer the phone. Patrick sets the pricing and walks you through the reasoning."
+        }
+      ],
+      "cta": "Request Your Revenue Review",
+      "primaryCta": "Request Your Revenue Review",
+      "ctaSubcopy": "Send us your Sarasota listing or a recent statement, and we will send back a one-page review, usually within 48 hours: what looks right, what deserves a second look, and what we would check next.",
+      "geoIntro": "<p>A management percentage tells you little until you know what it is taken from and what is billed separately. Before you compare Sarasota Airbnb managers, ask each one three things: what the percentage is taken from, which charges sit outside it, and who answers your guests.</p><p>Airbnb's fee is separate from any manager's. Airbnb says most listings on its single-fee structure pay a 15.5% host fee; check its pricing page for current terms. Our management pricing is set for your home. After we look at your listing and a recent statement, we quote a share of net rent for your home, and we put the basis, the included services and any separate charges in writing.</p><p>Inside Sarasota city limits, the city requires a vacation rental certificate for some homes in residential zones before they can be advertised. Whether your home needs one depends on its address and zoning, so check with the city. The <a href=\"https://www.sarasotafl.gov/I-Want-to/Register-a-Vacation-Rental\" target=\"_blank\" rel=\"noopener\">City of Sarasota vacation rental registration page</a> lists who has to register, and your association may add rules of its own.</p><p>Seascape is a small local team managing vacation homes in Bradenton and Sarasota. If you send your listing or a recent statement, we send back a one-page review, usually within 48 hours: what looks right, what deserves a second look, and what we would check next.</p>",
       "faqs": [
+        {
+          "q": "How much does Airbnb management cost in Sarasota?",
+          "a": "It depends on the home, so we do not publish one rate. After we look at your listing and a recent statement, we quote a share of net rent for your home, and we put the basis, the included services and any separate charges in writing. Airbnb's own host fee is separate: Airbnb says most listings on its single-fee structure pay 15.5%, and its pricing page has the current terms."
+        },
+        {
+          "q": "What does Seascape do on a Sarasota Airbnb it manages?",
+          "a": "We list your home on Airbnb, Vrbo and our own direct-booking site with one connected calendar, set and adjust the nightly rate, screen and answer guests, coordinate cleaning and maintenance, collect payments, remit taxes and pay you monthly. Each month you get a statement of what your home earned, what was spent and what you were paid."
+        },
+        {
+          "q": "Who will I talk to about my home?",
+          "a": "Sawyer and Patrick. They run Seascape and they answer the phone. Patrick sets the pricing for your home and walks you through the reasoning whenever you want it."
+        },
+        {
+          "q": "Do you only list my home on Airbnb?",
+          "a": "No. Your home goes on Airbnb, Vrbo and our own direct-booking site. One connected calendar covers all three, so a booking on one closes those dates on the others."
+        },
+        {
+          "q": "Does my Sarasota home need a city vacation rental certificate?",
+          "a": "It depends on the address. The City of Sarasota requires a certificate of registration for some homes in residential zones before they are advertised or rented as vacation rentals. Whether yours is one depends on its address and zoning, so ask the city. Your association may add its own rules. The city's vacation rental registration page explains who has to register."
+        },
         {
           "q": "What does Airbnb Superhost status require and how do I achieve it?",
           "a": "Airbnb sets the Superhost bar: a 4.8 or higher overall rating, a high response rate, very few host cancellations, and a minimum number of completed stays each year; check Airbnb's Superhost page for the current terms. Meeting it takes steady guest communication, quick fixes when something breaks, and clean, accurate stays. On homes we manage, we watch those numbers with you and act on the reviews that pull them down."
         },
         {
-          "q": "How do you optimize my Sarasota Airbnb listing to increase bookings?",
-          "a": "Optimization includes professional photography highlighting your property's unique features, SEO-optimized title and description keywords, strategic amenity listings, competitive pricing analysis, and consistent availability. We also encourage positive reviews, respond to guest inquiries quickly, and update your listing regularly with seasonal adjustments. These factors improve your property's visibility in Airbnb search results and dramatically increase booking conversion rates."
-        },
-        {
-          "q": "What's the ideal dynamic pricing strategy for an Airbnb in Sarasota?",
-          "a": "Sarasota's pricing strategy should account for seasonal demand (winter peak, summer lull), local events (festivals, holidays), weekday vs. weekend premiums, and competitive pricing from similar properties. We analyze historical booking data and market conditions to set optimal prices that maximize revenue while maintaining occupancy. Underpricing leaves income on the table; overpricing creates vacancies\u2014our balance ensures maximum yield."
-        },
-        {
-          "q": "How important is professional cleaning between Airbnb guests?",
-          "a": "Professional cleaning is essential for Airbnb success. Guests expect immaculate properties, and poor cleanliness is the primary reason for negative reviews and cancellations. We schedule professional betters immediately after checkout, conduct quality inspections, and maintain high cleanliness standards. This investment in quality directly improves guest satisfaction, reviews, and repeat bookings."
-        },
-        {
-          "q": "What should I include in my Airbnb house rules and communication with guests?",
-          "a": "Clear house rules covering check-in/checkout, guest capacity, parking, noise, and event policies prevent misunderstandings and conflicts. We communicate rules professionally in your listing and send a welcome message with detailed property information before guest arrival. This proactive communication sets expectations, reduces issues, and improves guest satisfaction and reviews."
-        },
-        {
-          "q": "How do you handle negative reviews and platform disputes on Airbnb?",
-          "a": "We monitor reviews carefully and respond professionally to any negative feedback, addressing guest concerns and explaining our perspective to future potential guests. For disputes, we work with Airbnb's resolution center, providing documentation and evidence to support host positions. Our proactive approach to guest satisfaction means negative reviews are rare, and when they do occur, we manage the impact carefully."
+          "q": "What comes back from the 48-hour review?",
+          "a": "One page. You send your listing or a recent statement, and we send back what looks right, what deserves a second look, and what we would check next. It is free, and you decide what to do with it."
         }
       ],
       "relatedOwnerResources": [
-        "vacation-rental-management-siesta-key",
-        "vacation-rental-management-longboat-key",
+        "vacation-rental-management-sarasota",
         "vacation-rental-management-fees-florida",
+        "switch-from-airbnb-self-manage",
         "switch-vacation-rental-management-company",
-        "switch-from-airbnb-self-manage"
+        "vacation-rental-licensing-florida"
       ]
     },
     {

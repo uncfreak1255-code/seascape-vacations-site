@@ -7,14 +7,14 @@ const path = require("node:path");
 const propertiesData = require("../../src/_data/properties.js");
 const fallbackProperties = require("../../src/_data/properties-fallback.json");
 
-test("Oasis and River House reject stale cached ordinary-pet permissions without changing other homes", () => {
+test("Oasis and River House reject stale ordinary-pet permissions from incoming records without changing other homes", () => {
   const cached = fallbackProperties.map(home => ({
     ...home,
     amenities: [...home.amenities, "pet-friendly"],
     marketing_amenities: [...home.marketing_amenities, "pet-friendly"],
     guestFacts: { ...home.guestFacts, pets: { status: "approval", text: "Pets allowed with approval." } }
   }));
-  const normalized = propertiesData.normalizeCompleteCachedProperties({ properties: cached });
+  const normalized = propertiesData.normalizeProperties(cached);
   for (const [slug, id] of [["the-oasis", "189511"], ["river-house", "135880"]]) {
     const home = normalized.find(home => home.slug === slug);
     assert.equal(home.id, id);
@@ -365,13 +365,6 @@ test("The Coastal keeps final identity, ten guests and provider conflicts outsid
   assert.ok(home.photography.photos.every(p => p.sourceUrl.includes("51916-599394-")));
   assert.doesNotMatch(JSON.stringify(home.guestFacts), /\b85\b|\bcrib\b|highchair|infants do not count/i);
   assert.ok(!home.amenities.includes("fire-pit"));
-});
-
-test("legacy cache requires every curated exact identity after onboarding", () => {
-  assert.equal(propertiesData.normalizeCompleteCachedProperties({ properties: fallbackProperties }).length, 8);
-  assert.equal(propertiesData.normalizeCompleteCachedProperties({ properties: fallbackProperties.filter(p => p.slug !== "coastal-stay") }), null);
-  const wrongIdentity = fallbackProperties.map(p => p.slug === "coastal-stay" ? { ...p, listingId: "589288", id: "589288" } : p);
-  assert.equal(propertiesData.normalizeCompleteCachedProperties({ properties: wrongIdentity }), null);
 });
 
 test("unreadable public calendar leaves The Coastal availability unknown", async t => {
