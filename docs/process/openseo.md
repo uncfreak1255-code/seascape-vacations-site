@@ -116,7 +116,16 @@ worth it." A one-off paid lookup needs no new approval when all of these hold:
   outcome for Seascape, and saved or free evidence cannot answer the question;
 - it runs on local OpenSEO against the `Seascape Vacations` project;
 - you take the tool's cost estimate first where one exists, and the report
-  states estimated and actual cost.
+  states estimated and actual cost;
+- it stays within the spending cap below.
+
+Spending cap (Sawyer, 2026-11-11, `agent-issues#54`): paid lookups under this
+standing approval total at most $25 per calendar month (Eastern time), and no
+single lookup may be estimated above $6. Before a paid lookup, add up the
+estimated and actual costs stated in this month's OpenSEO reports
+(`list_reports`, `get_report`). Ask Sawyer first if this lookup's estimate would
+take the month past $25, if it is estimated above $6, or if you cannot
+establish the month's total.
 
 Ask Sawyer before any of these; the standing approval does not cover them:
 
