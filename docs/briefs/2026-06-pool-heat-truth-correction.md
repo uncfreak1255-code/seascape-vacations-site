@@ -9,14 +9,17 @@
 - proof source: Hub main `73bb60b135c0e947aa615b4353368f9d80a9446f`, verified against its remote on 2026-10-20; `decisions/2026-10-10-pool-heat-whole-stay-only.md`, `decisions/2026-10-11-pool-heat-mid-stay-remaining-nights.md`, `decisions/2026-10-13-pool-heat-every-managed-home.md`, and `context/seascape-properties.md` Portfolio Amenity Billing Baseline. Site base `41ecf4faeda5faccd4bfbee79434eac5e0254321`.
 - required internal links: /properties/sarasota-luxe/, /properties/the-oasis/
 - CTA target: Existing property and direct-booking links, unchanged.
-- anti-claims: No default free or included pool heat (honor the approved Coastal reservation-message exception), daily pricing, five-home billing restriction, selected heated nights, automatic activation, guaranteed temperature or heat-up time. Preserve approved long-stay flat rates. Hot-tub/spa terms remain distinct from pool billing.
+- anti-claims: No free or included pool heat at any home except The Coastal, which has no pool-heat charge (Sawyer, 2026-11-11), daily pricing, five-home billing restriction, selected heated nights, automatic activation, guaranteed temperature or heat-up time. Preserve approved long-stay flat rates. Hot-tub/spa terms remain distinct from pool billing.
 
 ## Approved correction
 
-Pool heat is optional at $40 per night at every managed home. A request before
+Pool heat is optional at $40 per night at every managed home except The Coastal,
+whose owner no longer charges for it (Sawyer, 2026-11-11; Coastal's entry says there
+is no charge and states no price or billing period, and promises no automatic heat,
+guaranteed temperature or refund). A request before
 arrival covers the whole stay; a request after arrival covers all remaining
 nights. Approved long-stay flat rates still apply. No individual night picking.
-All seven fallback entries, including Blue House and The Coastal, must say this.
+The six other fallback entries must say this, and every "every managed home" mention must name the Coastal exception.
 Every stay entry advertising pool heat or a heated pool gets the same billing
 answer; remove contradictory fee copy in existing answers and paragraphs.
 Preserve weather limitations and other property facts. No new routes, search
@@ -30,7 +33,7 @@ supplies the implementation base. The June change is preserved in Git history.
 
 - `src/_data/seoPages.json`: pool-heat copy and billing FAQs, also feeding FAQPage schema.
 - `src/_data/properties-fallback.json`: all seven `guestFacts.poolHeat` values; the existing layout and AI-discovery template consume them.
-- `scripts/enforcement/property-truth-invariants.test.js`: enforce rate, request timing, flat-rate exceptions and prohibited billing claims across every home and heat-related stay entry.
+- `scripts/enforcement/property-pool-heat-invariants.test.js` (moved out of `property-truth-invariants.test.js` on 2026-11-11 to stay under the file-size limit): enforce rate, request timing, flat-rate exceptions and prohibited billing claims across every home and heat-related stay entry.
 - `scripts/enforcement/property-dock-copy-invariants.test.js`: existing dock-copy tests moved unchanged so the oversized invariant file shrinks despite the added heat checks.
 
 - `scripts/enforcement/p0-booking-evidence.test.js`: the retained price assertion now requires nightly billing, replacing its superseded daily rate.
