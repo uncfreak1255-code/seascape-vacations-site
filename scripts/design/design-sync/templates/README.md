@@ -13,9 +13,10 @@ This project is **generated from the repository**, not authored here. Synced {{S
 | Repo file | Role |
 | --- | --- |
 | `DESIGN.md` (copied to `waterline/DESIGN.md`) | The visual law: tokens, product promise, photography rules, floors F1 to F6, button treatments, direction decisions |
-| `src/css/base.css`, `src/css/guest.css`, `src/css/motion.css`, `src/css/arrival.css`, `src/css/catalog.css`, `src/css/catalog-card.css`, `src/css/about.css`, `src/css/property-gallery.css`, `src/css/owner.css`, `src/css/planning-guide.css`, `src/css/comparison-guide.css`, `src/css/activity-guide.css` (copied to `waterline/`) | The live stylesheets the guest routes, owner pages and converted guides ship |
+| `src/css/base.css`, `src/css/guest.css`, `src/css/motion.css`, `src/css/arrival.css`, `src/css/catalog.css`, `src/css/catalog-card.css`, `src/css/about.css`, `src/css/property-gallery.css`, `src/css/owner.css`, `src/css/planning-guide.css`, `src/css/comparison-guide.css`, `src/css/activity-guide.css`, `src/css/trip-sheet.css` + `src/css/trip-sheet-cards.css` (copied to `waterline/`; the two trip-sheet files join into `trip-sheet.css` as the site ships them) | The live stylesheets the guest routes, owner pages and converted guides ship; `trip-sheet.css` holds the phone rules (700px and narrower) |
 | `src/_includes/partials/guest-*.njk`, `src/_includes/layouts/guest.njk` | The shared shell and guest components; the cards use their built output |
 | `src/assets/fonts/` (copied to `waterline/fonts/`) | Self-hosted Poppins and Instrument Serif (SIL OFL) |
+| `docs/design/*.md` linked from `DESIGN.md` (copied to `waterline/`) | The rules `DESIGN.md` points to, including `cards-and-phone-surfaces.md` (phones, 700px and narrower) |
 | `docs/process/design-review-workflow.md` | How a design becomes a change on the site |
 | `docs/style/writing-style-guide.md` | Editorial entry point; companion `voice.md`, `banned-patterns.md`, and `approved-examples.md` are copied beside it |
 
@@ -31,8 +32,10 @@ This project is **generated from the repository**, not authored here. Synced {{S
 │   ├── tokens.css               generated CSS custom properties (--wl-*)
 │   ├── fonts.css, fonts/        self-hosted faces
 │   ├── base.css, guest.css, motion.css, arrival.css, catalog.css, catalog-card.css,
-│   │   about.css, property-gallery.css, owner.css, planning-guide.css, comparison-guide.css, activity-guide.css
+│   │   about.css, property-gallery.css, owner.css, planning-guide.css, comparison-guide.css, activity-guide.css,
+│   │   trip-sheet.css (phone rules, 700px and narrower)
 │   ├── shell.html               the real shared header + footer markup
+│   ├── cards-and-phone-surfaces.md and every other docs/design rule DESIGN.md links
 │   ├── design-review-workflow.md
 │   ├── design-rules.md          the repo's Design rules (variants, lean UI, shell-edit link floor)
 │   ├── writing-style-guide.md
@@ -40,7 +43,7 @@ This project is **generated from the repository**, not authored here. Synced {{S
 ├── preview/                     cards for the Design System pane (real markup + real CSS)
 │   ├── colors-brand, colors-retired
 │   ├── type-display, type-body
-│   ├── buttons, nav, nav-mobile, form-fields, booking-panel, sticky-cta
+│   ├── buttons, nav, nav-mobile, form-fields, booking-panel, sticky-cta, phone-surfaces
 │   ├── property-card, postcard-collection, scene-hero, footer
 │   ├── logo, radii, spacing, rules-floors
 │   └── voice, iconography       (unchanged from before; still valid)
@@ -61,6 +64,8 @@ The pre-Waterline layers that used to live here (v1 `colors_and_type.css`, v2 `d
 **Type.** Instrument Serif 400 for display, set large and tight (h1 `clamp(44px,5vw,72px)`, -0.03em, 1.08; the homepage arrival reaches 166px). Poppins for body 15/1.55, labels 12px uppercase .13em, controls 500 14px. Floor F1: nothing below 12px.
 
 **Shape and space.** 4px radius on controls, never a pill. Photos are rectangles. Rules separate; shadows do not. Content reaches 1280px; sections breathe 60px (36px mobile); header 92px (76px mobile). Controls are at least 44px tall on mobile and buttons 48px elsewhere.
+
+**Phones, 700px and narrower.** These override the shape rules above on phones only: white `#FFFFFF` canvas (paper stays on wider screens), photos 16px corners with a 1px neutral inner outline, panels 20px, buttons and fields 12px, small toggles (Compare, chips, the header phone button) are pills on a soft shadow ring, field text 16px, cards press to `scale(0.98)` in 160ms (off under reduced motion). Rules in `waterline/cards-and-phone-surfaces.md`; CSS in the phone blocks of `waterline/trip-sheet.css`; see the `phone-surfaces` card.
 
 **Photography is evidence.** Only an actual photograph of the named property may illustrate it. A destination scene may illustrate a clearly named destination. No generated, retouched or substituted rooms. A missing image shows a neutral named unavailable state, never another home.
 
