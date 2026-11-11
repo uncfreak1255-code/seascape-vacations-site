@@ -79,7 +79,7 @@ const ownerKeep = new Map([
 
 const ownerImprove = new Map([
   ["switch-vacation-rental-management-company", "High-intent pain page; validate against owner CTR and competitor offers."],
-  ["airbnb-management-services-sarasota", "Known competitor-heavy query; needs live SERP capture before copy changes."],
+  ["airbnb-management-services-sarasota", "SERP captured 2026-11-10; copy rewritten. Refresh SERP before more edits."],
   ["self-manage-vs-property-management-florida", "Useful comparison intent if it feeds revenue-teardown CTA."],
   ["vacation-rental-management-sarasota", "Core owner-service query; compare against live Sarasota managers."],
   ["increase-vacation-rental-bookings", "Owner pain page; check whether proof supports the claim path."],
