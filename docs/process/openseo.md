@@ -121,11 +121,14 @@ worth it." A one-off paid lookup needs no new approval when all of these hold:
 
 Spending cap (Sawyer, 2026-11-11, `agent-issues#54`): paid lookups under this
 standing approval total at most $25 per calendar month (Eastern time), and no
-single lookup may be estimated above $6. Before a paid lookup, add up the
-estimated and actual costs stated in this month's OpenSEO reports
-(`list_reports`, `get_report`). Ask Sawyer first if this lookup's estimate would
-take the month past $25, if it is estimated above $6, or if you cannot
-establish the month's total.
+single lookup may be estimated above $6. Save every paid lookup as an OpenSEO
+report (`save_report`) that states its cost in dollars. Before a paid lookup,
+add up this month's saved reports (`list_reports`, `get_report`), counting each
+lookup once at its actual cost, or at its estimate where no actual cost is
+known. Ask Sawyer first if this lookup's dollar estimate would take the month
+past $25, if it is estimated above $6, if it has no dollar estimate (an
+estimate only in credits counts as none), or if you cannot establish the
+month's total, including when a paid lookup this month has no saved report.
 
 Ask Sawyer before any of these; the standing approval does not cover them:
 
