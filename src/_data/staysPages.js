@@ -9,6 +9,13 @@ module.exports = async function staysPages() {
     .map((page) => {
       assertNoHandTypedStayFacts(page);
       assertStayCapacityBindings(page, catalog);
-      return applyStayFacts(page, catalog);
+      const resolvedPage = applyStayFacts(page, catalog);
+      if (page.heroBookingAction) {
+        const home = catalog.find(property => property.slug === page.heroBookingAction.propertySlug);
+        const photo = home?.photography?.photos?.[0];
+        if (!photo) throw new Error(`Missing verified hero photo for ${page.heroBookingAction.propertySlug}`);
+        resolvedPage.heroImage = photo.src;
+      }
+      return resolvedPage;
     });
 };

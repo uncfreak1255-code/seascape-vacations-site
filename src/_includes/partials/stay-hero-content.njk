@@ -1,6 +1,23 @@
 <div class="hero-inner">
-    <p class="hero-eyebrow">{{ destinationLabel }}</p>
+    <p class="hero-eyebrow">{{ seoPage.heroBookingAction.eyebrow or destinationLabel }}</p>
     <h1>{{ seoPage.heroBookingAction.heading or seoPage.h1 }}</h1>
     <p class="hero-subhead">{{ seoPage.heroBookingAction.description or seoPage.description }}</p>
+    {% if seoPage.heroBookingAction.facts %}
+    <dl class="group-facts">
+        {% for fact in seoPage.heroBookingAction.facts %}
+        <div><dt>{{ fact.label }}</dt><dd>{{ fact.value }}</dd></div>
+        {% endfor %}
+    </dl>
+    {% endif %}
     {% if not isFamilyBrowse %}{% include "partials/stay-supporting-actions.njk" %}{% endif %}
+    {% if seoPage.heroBookingAction %}
+    <p class="group-note">{{ seoPage.heroBookingAction.note }}</p>
+    <p class="group-note group-sleep-note">{{ seoPage.heroBookingAction.sharingNote }}</p>
+    {% endif %}
 </div>
+{% if seoPage.heroBookingAction %}
+<figure class="hero-photo">
+    <img src="{{ heroImage }}" alt="{{ seoPage.heroBookingAction.imageAlt }}" width="1920" height="1280" fetchpriority="high">
+    <figcaption><span>{{ seoPage.heroBookingAction.imageCaption }}</span><span>{{ seoPage.heroBookingAction.imageDetail }}</span></figcaption>
+</figure>
+{% endif %}

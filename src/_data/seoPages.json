@@ -197,15 +197,34 @@
       "h1": "Bradenton Vacation Homes for Large Groups",
       "description": "Spacious vacation rentals in Bradenton for large groups. Sleep {sleeps-matching} guests. Private pools.",
       "heroBookingAction": {
-        "heading": "Bradenton vacation homes for groups of up to {sleeps:the-oasis}",
-        "description": "The Oasis sleeps up to {sleeps:the-oasis} in {br:the-oasis} bedrooms with {ba:the-oasis} bathrooms. There’s a private pool and two hot tubs. Dockside Dreams sleeps up to {sleeps:dockside-dreams}.",
+        "eyebrow": "Bradenton · large-group stays",
+        "heading": "A Bradenton home for all {sleeps:the-oasis}.",
+        "description": "The Oasis has a private pool and two hot tubs. There’s a game room and a putting green for time together.",
         "href": "/properties/the-oasis/?guests={sleeps:the-oasis}#booking",
         "propertySlug": "the-oasis",
         "label": "Check dates for {sleeps:the-oasis} at The Oasis",
-        "note": "Groups of more than 12 pay an extra charge. Enter your dates and full guest count to see the total."
+        "note": "Groups of more than 12 pay an extra charge. Enter your dates and full guest count to see the total.",
+        "sharingNote": "Plan to share bedrooms and some beds.",
+        "imageAlt": "The Oasis — Pool and backyard at dusk",
+        "imageCaption": "The Oasis · Bradenton",
+        "imageDetail": "Private pool + two hot tubs",
+        "facts": [
+          { "label": "Guests", "value": "{sleeps:the-oasis}" },
+          { "label": "Bedrooms", "value": "{br:the-oasis}" },
+          { "label": "Bathrooms", "value": "{ba:the-oasis}" }
+        ]
       },
       "introHeading": "Bringing {sleeps:the-oasis} people? Start with The Oasis.",
       "intro": "This Seascape Vacations home in Bradenton has a game room, a putting green and space for the group to spend time together. Plan to drive to the Anna Maria Island beaches.",
+      "sleepingFit": {
+        "heading": "Will the sleeping setup work for your group?",
+        "groups": [
+          { "label": "King bedrooms", "detail": "Three king beds, each in its own bedroom." },
+          { "label": "Full beds", "detail": "A pair of full beds in a separate bedroom." },
+          { "label": "Bunk room", "detail": "Two twin-over-full bunks and two twin trundles." }
+        ],
+        "note": "For a group of {sleeps:the-oasis}, plan on sharing bedrooms and some beds."
+      },
       "faqs": [
         {
           "question": "What's the largest group you can accommodate?",
@@ -254,7 +273,7 @@
           "value": "The Oasis is 5.1 miles from IMG - 10 minutes on a weekday morning"
         }
       ],
-      "geoIntro": "<p><strong>Will the sleeping setup work for your group?</strong> There are three king beds, each in its own bedroom. A separate bedroom holds a pair of full beds. The bunk room has twin-over-full bunks and twin trundles, two of each. For a group of {sleeps:the-oasis}, plan on sharing bedrooms and some beds.</p><p><strong>Bringing {sleeps:dockside-dreams} and want a private dock?</strong> <a href=\"/properties/dockside-dreams/\">Dockside Dreams</a> sleeps up to {sleeps:dockside-dreams} in {br:dockside-dreams} bedrooms and has a private pool and waterfront dock. Dockside Dreams may welcome a dog with prior approval; pets are not permitted at The Oasis.</p><p>Compare the same dates and complete checkout total across channels before booking.</p>",
+      "geoIntro": "<p><strong>Bringing {sleeps:dockside-dreams} and want a private dock?</strong> <a href=\"/properties/dockside-dreams/\">Dockside Dreams</a> sleeps up to {sleeps:dockside-dreams} in {br:dockside-dreams} bedrooms and has a private pool and waterfront dock. Dockside Dreams may welcome a dog with prior approval; pets are not permitted at The Oasis.</p><p>Compare the same dates and complete checkout total across channels before booking.</p>",
       "relatedStaySlugs": [
         "vacation-rentals-near-anna-maria-island",
         "vacation-rentals-with-outdoor-grill",

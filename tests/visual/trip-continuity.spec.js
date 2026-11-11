@@ -1,6 +1,8 @@
 const { test, expect } = require('@playwright/test');
 const { closeTripSheet, openTripSheet, registerStableNetwork } = require('./test-helpers');
 const trip = 'arrive=2026-12-05&depart=2026-12-12&guests=8';
+const oasisPhoto = require('../../src/_data/properties-fallback.json')
+  .find(property => property.slug === 'the-oasis').photography.photos[0];
 
 async function visit(page, route) {
   await registerStableNetwork(page);
@@ -97,6 +99,7 @@ test('catalog direct links retain requested dates and capacity filtering', async
 
 test('the Bradenton large-group button carries 16 guests and selected dates to The Oasis checkout', async ({ page }) => {
   await visit(page, '/stays/large-group-vacation-rentals-bradenton/');
+  await expect(page.locator('.hero img')).toHaveAttribute('src', oasisPhoto.src);
   await page.route('https://book.seascape-vacations.com/checkout/**', route =>
     route.fulfill({ status: 200, contentType: 'text/plain', body: 'Checkout test destination' })
   );
