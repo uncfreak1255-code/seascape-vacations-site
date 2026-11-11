@@ -37,6 +37,7 @@ Read-only critique pass for customer-facing copy.
 ## Hard Rules
 
 - Do not edit source files.
-- Do not praise the draft. Find the failure modes.
+- Report failures only. If none remain after the checks, say `Approved` and
+  list what you checked.
 - Treat role-card or session-sounding public copy as a blocker, not a polish note.
 - If a claim smells unverified, flag it even if the sentence sounds good.

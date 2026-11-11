@@ -18,7 +18,8 @@ Claude harness delta.
   frontmatter. Keep them symlinks: an `@import` inside a rule file loads at
   session start whatever its paths say. Codex reaches the same files through
   the pointers in `AGENTS.md`; keep both routes when adding a rule.
-- For UI/visual work, dispatch subagents with `model: "sonnet"`.
+- When you delegate UI/visual work, run that subagent with `model: "sonnet"`.
+  Whether to delegate is your call.
 - Worktrees: when the harness pins the session to `.claude/worktrees/<name>`,
   that is the isolated worktree `AGENTS.md` asks for. Work there on the
   branch the harness created, run `npm ci` once (a fresh worktree has no
