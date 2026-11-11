@@ -25,7 +25,7 @@ not add or enable any schedule.
 
 | Step | Owner | Use |
 | --- | --- | --- |
-| Saved evidence | local OpenSEO | Free saved reads first, per `docs/process/openseo.md`. Paid lookups need Sawyer's approval for the exact run |
+| Saved evidence | local OpenSEO | Free saved reads first, per `docs/process/openseo.md`. Paid lookups follow its Cost Boundary: a standing approval for one-off lookups, with an ask-first list |
 | Choose the next batch | `.claude/agents/search-operator.md` with the `next-batch-gate` skill | Proof lane plus attack lane; one cluster or one rescue; follows `docs/process/batch-workflow.md` |
 | Rescue a dropped page | `docs/process/ranking-regression-rescue.md` | Triggered by a weekly drop-check card, a rank-tracker drop, or indexing drift; returns the Gate 0 block |
 | Research method | upstream `openseo-local-*` skills | `seo-audit`, `keyword-clustering`, `ai-visibility-audit`, `ai-prompt-research`, `competitor-analysis`, `seo-report`. Generic methods; Seascape gates still apply |

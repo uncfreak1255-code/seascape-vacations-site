@@ -27,8 +27,9 @@ presence does not grant paid calls or website publication.
 2. Run the matching upstream workflow with the native local `openseo` server
    at `http://localhost:3001/mcp`. Never substitute hosted plugin tools.
 3. If a paid lookup or new check is needed, state the tool, project, inputs,
-   market/depth, estimated cost and maximum spend; obtain Sawyer's approval
-   before that exact run. If the tool remains unavailable, report the missing
+   market/depth, estimated cost and maximum spend. Run it when it fits the
+   standing approval in `docs/process/openseo.md` -> Cost Boundary; obtain
+   Sawyer's approval first when it is on that section's ask-first list. If the tool remains unavailable, report the missing
    capability rather than switching providers or broadening access silently.
 4. Save a private, dated report and a bounded recommendation. Context notes
    use approved source facts and preserve their provenance; they are not canon.
@@ -55,7 +56,7 @@ For Seascape, default to `seascape-vacations.com`, United States, and the curren
 
 1. Confirm the current OpenSEO project, domain, country, device, and data timestamp.
 2. Prefer live OpenSEO MCP tools when already connected. Otherwise use the current OpenSEO UI through the available browser-control skill.
-3. Do not add the OpenSEO connector, change global MCP settings, sign in, or spend credits without the required current approval.
+3. Do not add the OpenSEO connector, change global MCP settings, sign in, or spend credits outside the Cost Boundary in `docs/process/openseo.md`.
 4. Name the proof gate: verified query export, verified cited-source export, current rank configuration readback, and an opportunity table tied to source rows.
 5. If live OpenSEO is unavailable, stop with the failed path. Do not replace it with guessed data.
 
@@ -69,11 +70,11 @@ configured approval path. Record observation time, query, current/prior position
 and landing URL; do not trigger a fresh check. Continue with live SERP and
 competitor evidence plus the owning Analytics receipt before recommending work.
 The configured free saved-state, context and private-report tools are the
-default surface; paid lookup tools require the exact approval above. Unavailable tools or stale/missing target queries are evidence gaps,
+default surface; paid lookup tools follow the Cost Boundary. Unavailable tools or stale/missing target queries are evidence gaps,
 not permission to start a paid run or change the measurement gate.
 
 Use the brand/citation steps below only when that evidence lane is requested
-and the lookup already exists or its exact paid run is separately approved.
+and the lookup already exists or the paid run fits the Cost Boundary.
 A tracked-rank review starts with the rank read, not a brand lookup.
 
 ## Review workflow
@@ -83,7 +84,7 @@ A tracked-rank review starts with the rank read, not a brand lookup.
 - Run or inspect the target-domain lookup.
 - Record lookup time, estimated or actual cost, total AI-search volume, platform split, visible query count, and cited-source count.
 - Keep brand mentions separate from citations. A mention is not proof of a cited source.
-- If the lookup is paid and not already complete, get approval before running it.
+- If the lookup is paid and not already complete, confirm it fits the Cost Boundary, or get Sawyer's approval, before running it.
 
 ### 2. Competitor comparison
 

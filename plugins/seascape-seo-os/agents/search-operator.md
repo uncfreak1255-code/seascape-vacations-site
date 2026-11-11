@@ -50,8 +50,9 @@ Start from local OpenSEO, as `docs/process/openseo.md` requires:
    local OpenSEO unavailable and continue with the remaining sources.
 4. Your tools are the free saved-state reads only. When a step needs a paid
    lookup (fresh SERP, keyword research, site audit, AI-visibility check), stop
-   that step and report the exact tool, inputs, and why it is needed, so the
-   coordinator can ask Sawyer. Never trigger a fresh check.
+   that step and report the exact tool, inputs, and why it is needed. The
+   coordinator runs it under `docs/process/openseo.md` -> Cost Boundary, or
+   asks Sawyer when that section says to. Never trigger a fresh check yourself.
 
 For the attack lane, follow the matching upstream skill's method:
 `openseo-local-seo-audit` for page hygiene, `openseo-local-keyword-clustering`
