@@ -61,9 +61,10 @@ Gmail is prohibited.
   preserve its thresholds, evidence requirements, and publication gates.
   An expansion hold still allows ranked ideas, experiment proposals and
   evidence-backed drafts to improve existing pages. New expansion branches
-  stay on hold. Merge, live publication, paid lookups and guest or owner sends
-  keep their own approvals. Missing analytics limits measurement and impact
-  claims and still permits an
+  stay on hold. Each of these keeps its own approval: a merge follows its PR
+  class and required checks; an early publish and any guest or owner send need
+  Sawyer; a paid lookup follows `docs/process/openseo.md` -> Cost Boundary.
+  Missing analytics limits measurement and impact claims and still permits an
   authorized bug fix, local prototype, or reversible capability trial with
   independent source and behavior proof.
 - For an AI-workflow or product-improvement request, propose one concrete
@@ -170,8 +171,9 @@ lock, Hostaway cache sync, Eleventy, availability validation).
 
 - Netlify publishes `https://seascape-vacations.com` from `production`, which
   `publish-production.yml` fast-forwards to `main` daily at 09:05 UTC.
-- Agents never push to `production` and never dispatch Publish Production; an
-  early publish costs a Netlify build and needs Sawyer's approval each time.
+- Agents never push to `production` and never dispatch Publish Production. An
+  early publish costs a Netlify build and is Sawyer's to run from his account;
+  ask him for it and wait for the daily publish otherwise.
 - Live revision: the `commit_ref` of Netlify's current production deploy
   (project `cozy-licorice-e83928`). It trails `main` until the next publish,
   so a merge alone never changes the live site.
