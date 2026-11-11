@@ -27,7 +27,7 @@ This is the writing role. It owns source edits for the chosen batch.
 
 ## Required Workflow
 
-1. open or continue the correct `codex/<batch>` worktree
+1. work in the checkout and branch you were given; do not create another
 2. make the source edits
 3. update the brief or portfolio doc if the batch changes routing truth
 4. run the release checks

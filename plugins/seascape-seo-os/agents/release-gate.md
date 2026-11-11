@@ -1,6 +1,6 @@
 ---
 name: release-gate
-description: Read-only verification pass before push, PR, merge, or deploy. Use when a batch branch is ready for promotion — runs lint:content, build, test, verify:release, and route smoke checks, and reports safe-for-review / safe-for-merge. Also performs the targeted voice/fact/release review for source-backed existing-guide accuracy repairs. Makes no edits.
+description: Read-only verification pass before push, PR, merge, or deploy. Use when a batch branch is ready for promotion — runs verify:release (one build, content lint, the full test suite and release checks) and route smoke checks, and reports safe-for-review / safe-for-merge. Also performs the targeted voice/fact/release review for source-backed existing-guide accuracy repairs. Makes no edits.
 tools: Read, Glob, Grep, Bash
 model: sonnet
 ---
@@ -35,10 +35,10 @@ repair route; other batches retain their separate voice/design requirements.
 
 ## Required Checks
 
-- `npm run lint:content`
-- `npm run build`
-- `npm test`
-- `npm run verify:release`
+- `npm run verify:release` (on a dirty worktree add `-- --range origin/main`).
+  It builds once, then runs content lint, the full test suite and the release
+  checks; do not also run `lint:content`, `build` or `npm test` on the same
+  unchanged tree.
 - route smoke checks on the touched URLs
 - diff sanity review for unrelated churn
 
