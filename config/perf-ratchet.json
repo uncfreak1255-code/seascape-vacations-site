@@ -1,35 +1,35 @@
 {
   "routes": {
     "/": {
-      "script": 87481,
+      "script": 87399,
       "stylesheet": 83524
     },
     "/properties/": {
-      "script": 107701,
+      "script": 107618,
       "stylesheet": 84698
     },
     "/property-management/": {
-      "script": 91247,
+      "script": 91165,
       "stylesheet": 61447
     },
     "/property-management/vacation-rental-licensing-florida/": {
-      "script": 61058,
-      "stylesheet": 38424
+      "script": 60976,
+      "stylesheet": 72552
     },
     "/property-management/vacation-rental-management-fees-florida/": {
-      "script": 61058,
-      "stylesheet": 38424
+      "script": 60976,
+      "stylesheet": 72552
     },
     "/property-management/vrbo-management-services-florida/": {
-      "script": 61058,
-      "stylesheet": 38424
+      "script": 60976,
+      "stylesheet": 72552
     },
     "/stays/anna-maria-island-beachfront-rentals/": {
-      "script": 59084,
+      "script": 59002,
       "stylesheet": 53057
     },
     "/stays/anna-maria-island-vacation-rentals/": {
-      "script": 59084,
+      "script": 59002,
       "stylesheet": 53057
     }
   },
@@ -1577,6 +1577,30 @@
       "to": 61447,
       "reason": "Owner hero Option A (Sawyer-selected 2026-11-06, merge approved 2026-11-08): dusk photo hero CSS (+2.6 KB) and step-nav inert toggle (+103 B); Lighthouse budgets pass",
       "date": "2026-11-08"
+    },
+    {
+      "route": "/property-management/vacation-rental-management-fees-florida/",
+      "metric": "stylesheet",
+      "from": 38424,
+      "to": 72552,
+      "reason": "Owner landers moved to the Waterline owner design (PR 926): about 13.5KB of inline styles became the guest.css, owner.css and owner-lander.css sheets shared with the owner hub. Total CSS per page grows about 22KB (51.9KB to 74.3KB). base.css stays because it centres the closing call to action.",
+      "date": "2026-11-11"
+    },
+    {
+      "route": "/property-management/vacation-rental-licensing-florida/",
+      "metric": "stylesheet",
+      "from": 38424,
+      "to": 72552,
+      "reason": "Owner landers moved to the Waterline owner design (PR 926): about 13.5KB of inline styles became the guest.css, owner.css and owner-lander.css sheets shared with the owner hub. Total CSS per page grows about 22KB (51.9KB to 74.3KB). base.css stays because it centres the closing call to action.",
+      "date": "2026-11-11"
+    },
+    {
+      "route": "/property-management/vrbo-management-services-florida/",
+      "metric": "stylesheet",
+      "from": 38424,
+      "to": 72552,
+      "reason": "Owner landers moved to the Waterline owner design (PR 926): about 13.5KB of inline styles became the guest.css, owner.css and owner-lander.css sheets shared with the owner hub. Total CSS per page grows about 22KB (51.9KB to 74.3KB). base.css stays because it centres the closing call to action.",
+      "date": "2026-11-11"
     }
   ]
 }

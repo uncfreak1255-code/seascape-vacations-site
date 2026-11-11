@@ -115,7 +115,6 @@ Stay in that worktree on the branch the harness created; do not add a
 - If `git status --short` on root `main` is noisy, do not start work there
 - If the next safe command is unclear, stop and fix workflow before editing
 - On this machine, `/Users/sawbeck/Projects/seascape-vacations-site` should be the only sync-only `main` checkout
-- `/Users/sawbeck/Projects/seascape-main` is a duplicate checkout; do not treat it as the long-term source for new work or for `main` sync
 
 ## File size gate
 
@@ -202,7 +201,5 @@ For this repo, the safe default is:
 10. Merge only after checks pass
 11. Complete `docs/process/post-merge-runtime-proof-checklist.md`
 12. Pull `main` again before the next task
-
-If you are standing in `/Users/sawbeck/Projects/seascape-main`, stop. That checkout is not the authoritative `main`.
 
 If this file conflicts with looser advice from chat, follow this file.
