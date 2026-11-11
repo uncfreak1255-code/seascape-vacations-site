@@ -1,6 +1,5 @@
 const fs = require("fs");
 const path = require("path");
-const { getStore } = require("@netlify/blobs");
 const { fetchBookingEngineCalendar } = require("../../scripts/cache/booking-engine-calendar");
 const {
   isCurrentAvailabilityRange,
@@ -10,8 +9,6 @@ const { listingIdBySlug } = require("../../scripts/enforcement/listing-id-owned"
 
 const FALLBACK_PATH = path.join(__dirname, "properties-fallback.json");
 const VISUAL_TEST_AVAILABILITY_PATH = path.join(__dirname, "..", "..", "tests", "visual", "fixtures", "properties-availability.json");
-const CACHE_KEY = "properties_cache_v1.json";
-const STORE_NAME = "seascape-cache";
 const HOSTAWAY_PREFIX = "https://hostaway-platform.s3.us-west-2.amazonaws.com/";
 const CDN_PREFIX = "https://bookingenginecdn.hostaway.com/";
 const BOOKING_ENGINE_PREFIX = "https://book.seascape-vacations.com/listings/";
@@ -263,22 +260,6 @@ async function enrichMissingAvailability(properties) {
   );
 }
 
-async function loadFromCache() {
-  const store = getStore(STORE_NAME);
-  const cached = await store.get(CACHE_KEY, { type: "json" });
-  return normalizeCompleteCachedProperties(cached);
-}
-
-function normalizeCompleteCachedProperties(cached) {
-  if (!cached || !Array.isArray(cached.properties)) return null;
-  const properties = normalizeProperties(cached.properties);
-  const approved = loadFallback();
-  // A pre-onboarding cache must never hide a newly approved home.
-  if (!approved.every(home => properties.some(property =>
-    property.slug === home.slug && property.id === home.id))) return null;
-  return properties;
-}
-
 function loadFallback() {
   if (!fs.existsSync(FALLBACK_PATH)) {
     return [];
@@ -286,6 +267,7 @@ function loadFallback() {
   return normalizeProperties(JSON.parse(fs.readFileSync(FALLBACK_PATH, "utf8")));
 }
 
+// Keep: the documented outage escape hatch (scripts/README.md) for building from an ops-owned projection file.
 function safeProjectionPath() {
   return process.env.SEASCAPE_SAFE_PROPERTY_PROJECTION_PATH || "";
 }
@@ -431,15 +413,8 @@ async function loadProperties() {
     if (projected) {
       return projected;
     }
-
-    if (process.env.NETLIFY_BLOBS_CONTEXT || global.netlifyBlobsContext) {
-      const cached = await loadFromCache();
-      if (cached) {
-        return enrichMissingAvailability(cached);
-      }
-    }
   } catch (error) {
-    // Fallback to local seed if cache is unavailable.
+    // Fall back to the local seed if the projection file is unreadable.
   }
 
   return enrichMissingAvailability(loadFallback());
@@ -459,5 +434,3 @@ module.exports.normalizeAvailabilitySummary = normalizeAvailabilitySummary;
 module.exports.enrichMissingAvailability = enrichMissingAvailability;
 module.exports.loadSafePropertyProjection = loadSafePropertyProjection;
 module.exports.mergeSafePropertyProjection = mergeSafePropertyProjection;
-
-module.exports.normalizeCompleteCachedProperties = normalizeCompleteCachedProperties;
