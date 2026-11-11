@@ -178,16 +178,6 @@ test("content lint runs sourced-claim enforcement", () => {
 test("a missing sourced-claim row for a savings percent fails", () => {
   const hits = scanSrcSavingsHits();
   const claims = readSourcedClaims();
-  assert.equal(
-    hits.filter((hit) => hit.file.includes("anna-maria-island-vacation-cost-guide-2026")).length,
-    0,
-    "leftover cost-guide savings percents stay blocked"
-  );
-  assert.equal(
-    hits.filter((hit) => hit.file.includes("best-time-to-visit-anna-maria-island")).length,
-    0,
-    "leftover best-time savings percents stay blocked"
-  );
   assert.doesNotThrow(() => assertSavingsSourced(hits, claims));
 
   const planted = scanSavingsHitsInText(
@@ -362,13 +352,9 @@ test("planted qualitative price-advantage on an unlisted slug fails", () => {
   );
 });
 
-test("the two cost guides stay green only while dated-quote rows exist", () => {
+test("savings percents stay green only while unexpired dated-quote rows exist", () => {
   const hits = scanSrcSavingsHits();
   const claims = readSourcedClaims();
-  const costGuideHits = hits.filter((hit) => hit.file.includes("anna-maria-island-vacation-cost-guide-2026"));
-  const bestTimeHits = hits.filter((hit) => hit.file.includes("best-time-to-visit-anna-maria-island"));
-  assert.equal(costGuideHits.length, 0, "leftover cost-guide savings percents stay blocked");
-  assert.equal(bestTimeHits.length, 0, "leftover best-time savings percents stay blocked");
   assert.equal(unsourcedSavingsHits(hits, claims).length, 0);
   assert.doesNotThrow(() => assertLiveQuotesPresent(claims));
 

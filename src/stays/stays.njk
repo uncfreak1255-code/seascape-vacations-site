@@ -187,6 +187,9 @@ eleventyComputed:
 
 <link rel="stylesheet" href="/css/guest.css?v=waterline-v3">
 <link rel="stylesheet" href="/css/stay-collection.css">
+{% if seoPage.heroBookingAction %}
+<link rel="stylesheet" href="/css/stay-group.css">
+{% endif %}
 {% if isFamilyBrowse %}
 <link rel="stylesheet" href="/css/catalog.css">
 <link rel="stylesheet" href="/css/catalog-card.css?v=waterline-v3">
@@ -215,13 +218,8 @@ eleventyComputed:
             </ol>
         </nav>
 
-        <section class="hero" style="--hero-image: url('{{ heroImage | imgProxy(1200) }}');">
-            <div class="hero-inner">
-                <p class="hero-eyebrow">{{ destinationLabel }}</p>
-                <h1>{{ seoPage.h1 }}</h1>
-                <p class="hero-subhead">{{ seoPage.description }}</p>
-                {% if not isFamilyBrowse %}{% include "partials/stay-supporting-actions.njk" %}{% endif %}
-            </div>
+        <section class="hero{% if seoPage.heroBookingAction %} hero--group{% endif %}" style="--hero-image: url('{{ heroImage | imgProxy(1200) }}');">
+            {% include "partials/stay-hero-content.njk" %}
             {% if isFamilyBrowse %}
             <p class="flow-guide-answer">{{ seoPage.intro }}</p>
             {% include "partials/catalog-trip.njk" %}
@@ -253,10 +251,7 @@ eleventyComputed:
                     <p class="section-tag">{{ seoPage.introEyebrow or "The short version" }}</p>
                     <h2 class="section-title">{{ seoPage.introHeading or ("Stay near " + destinationLabel + ", with the trip details up front") }}</h2>
                 </div>
-                <div class="intro-copy">
-                    {% if seoPage.intro and not isFamilyBrowse %}<p>{{ seoPage.intro }}</p>{% endif %}
-                    {% if seoPage.geoIntro %}{{ seoPage.geoIntro | safe }}{% endif %}
-                </div>
+                {% include "partials/stay-intro-copy.njk" %}
                 <nav class="jump-links" aria-label="On this page">
                     {% if hasComparison %}<a href="#compare">Compare options</a>{% endif %}
                     {% if hasTripMatches %}<a href="#trip-match">Match your trip</a>{% endif %}

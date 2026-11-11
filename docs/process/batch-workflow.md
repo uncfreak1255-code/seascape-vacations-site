@@ -211,5 +211,4 @@ and meaningful rescues. The five responsibilities may need separate specialists.
     existing authorization and runtime-proof requirements.
 12. Reread after the crawl window instead of inventing a new batch too early.
 
-See also `docs/process/five-roles.md` for who owns each step, and the "Reading
-Order For SEO Work" section in `CLAUDE.md`.
+See also `docs/process/five-roles.md` for who owns each step.

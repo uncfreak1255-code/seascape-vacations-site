@@ -1024,7 +1024,7 @@ test("conversion tracking scrubs obvious PII before analytics payloads reach dat
 
 test("the active shared popup keeps tracked email capture and honest states", () => {
   const homepage = fs.readFileSync(path.join(projectRoot, "src", "index.njk"), "utf8");
-  const homepageScript = fs.readFileSync(path.join(projectRoot, "src", "assets", "js", "homepage.js"), "utf8");
+  const builtHomepage = fs.readFileSync(path.join(projectRoot, "_site", "index.html"), "utf8");
   const popupPartial = fs.readFileSync(path.join(projectRoot, "src", "_includes", "partials", "email-popup.njk"), "utf8");
   const trackingScript = fs.readFileSync(path.join(projectRoot, "src", "assets", "js", "conversion-tracking.js"), "utf8");
   const homepageContract = buildRouteContract({
@@ -1053,7 +1053,7 @@ test("the active shared popup keeps tracked email capture and honest states", ()
   const guide=fs.readFileSync(path.join(projectRoot,"_site/guides/anna-maria-island-area-guide/index.html"),"utf8");
   assert.match(guide, /data-inline-email-capture="true"/);
   assert.match(guide, /\/assets\/js\/conversion-tracking\.js/);
-  assert.match(homepageScript, /\/assets\/js\/conversion-tracking\.js/);
+  assert.match(builtHomepage, /\/assets\/js\/conversion-tracking\.js/);
   assert.match(popupPartial, /\/assets\/js\/conversion-tracking\.js/);
   assert.match(trackingScript, /__seascapeConversionTrackingLoaded/);
 });

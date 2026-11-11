@@ -15,7 +15,7 @@ Read this before UI, CSS, template or layout work. `AGENTS.md` points here.
 Claude loads it when it reads a file matching `paths:` above, through the
 `.claude/rules/design.md` symlink.
 
-- For site design work, use the shared `emil-design` skill when it is available. If it is unavailable, name the gap; do not claim it was used.
+- For site design work, use the design craft skill your harness has: `emil-design` in Codex, `emil-design-eng` in Claude. If neither is available, name the gap; do not claim it was used.
 - `DESIGN.md` is the visual law: read it before UI work and use only its
   colors, fonts, spacing, radius, shadows, and component styles. Figma, Stitch,
   and other outside tools are donors; a new direction from any tool lands as a

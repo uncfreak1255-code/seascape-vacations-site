@@ -59,7 +59,6 @@ const PALETTE_SOURCE_FILES = [
   "src/css/base.css",
   "src/css/guide-field-journal.css",
   "src/_includes/partials/guide-conversion-kit.njk",
-  "src/_includes/partials/site-header-styles.njk",
 ];
 
 // Universally safe values that need no palette membership.

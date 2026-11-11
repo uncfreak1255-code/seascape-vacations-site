@@ -1,6 +1,8 @@
 const { test, expect } = require('@playwright/test');
 const { closeTripSheet, openTripSheet, registerStableNetwork } = require('./test-helpers');
 const trip = 'arrive=2026-12-05&depart=2026-12-12&guests=8';
+const oasisPhoto = require('../../src/_data/properties-fallback.json')
+  .find(property => property.slug === 'the-oasis').photography.photos[0];
 
 async function visit(page, route) {
   await registerStableNetwork(page);
@@ -93,6 +95,27 @@ test('catalog direct links retain requested dates and capacity filtering', async
   await page.goto('/properties/?' + trip.replace('guests=8', 'guests=17') + '&visual-test=1');
   await expect(page.locator('.catalog-card:visible')).toHaveCount(0);
   await expect(page.locator('#catalog-empty')).toBeVisible();
+});
+
+test('the Bradenton large-group button carries 16 guests and selected dates to The Oasis checkout', async ({ page }) => {
+  await visit(page, '/stays/large-group-vacation-rentals-bradenton/');
+  await expect(page.locator('.hero img')).toHaveAttribute('src', oasisPhoto.src);
+  await page.route('https://book.seascape-vacations.com/checkout/**', route =>
+    route.fulfill({ status: 200, contentType: 'text/plain', body: 'Checkout test destination' })
+  );
+
+  await page.getByRole('link', { name: 'Check dates for 16 at The Oasis', exact: true }).click();
+  await expect(page).toHaveURL(/\/properties\/the-oasis\//);
+  const booking = page.locator('#booking');
+  await expect(booking.getByLabel('Guests', { exact: true })).toHaveValue('16');
+  await booking.getByLabel('Arrival', { exact: true }).fill('2026-12-05');
+  await booking.getByLabel('Departure', { exact: true }).fill('2026-12-12');
+  await booking.getByRole('button', { name: 'Book these dates', exact: true }).click();
+  await expect(page).toHaveURL(/https:\/\/book\.seascape-vacations\.com\/checkout\/189511\?/);
+  const checkout = new URL(page.url());
+  expect(checkout.searchParams.get('start')).toBe('2026-12-05');
+  expect(checkout.searchParams.get('end')).toBe('2026-12-12');
+  expect(checkout.searchParams.get('numberOfGuests')).toBe('16');
 });
 
 test('invalid date and guest queries do not reach the booking page', async ({ page }) => {
