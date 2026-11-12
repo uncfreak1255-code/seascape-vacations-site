@@ -98,6 +98,8 @@
           <small class="owner-form-help">{{ options.fileHelp or "PDF, spreadsheet, or screenshot. You can submit the form without an upload." }}</small>
         </label>
         {% endif %}
+        {% set heardAboutFieldClass = "owner-form-field owner-form-field--wide" %}
+        {% include "partials/owner-heard-about-field.njk" %}
         <label class="owner-form-authority">
           <input type="checkbox" name="submitter_authority" value="owner_or_authorized_representative" required>
           <span>I confirm I am the property owner or an authorized representative for this property.</span>
