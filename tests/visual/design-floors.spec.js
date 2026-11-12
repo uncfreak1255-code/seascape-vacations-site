@@ -24,7 +24,7 @@ const { gotoMarketingRoute, registerStableNetwork } = require("./test-helpers");
 const SCENES = require("./design-floor-scenes");
 // Planning-frame guides are registered in routes.js so each move is checked
 // against a visual baseline taken from the unchanged page.
-const floorRoutes = moneyRoutes.concat(require("./extra-property-routes"));
+const { floorRoutes, measureOverflow } = require("./design-floor-overflow");
 
 const { WHOLE_PAGE_CLASSES, WHOLE_PAGE_FAMILIES } = require("./design-floor-families");
 
@@ -128,18 +128,6 @@ function collectSmallTargets(wholePageClasses) {
     });
   }
   return out;
-}
-
-function measureOverflow() {
-  // Compare against the layout viewport, not window.innerWidth: under mobile
-  // emulation Chromium widens innerWidth to swallow an overflowing document, so
-  // scrollWidth <= innerWidth stayed true while the page really did scroll
-  // sideways (measured 2026-09-10: a 391px document inside a 360px viewport
-  // reported innerWidth 391 and passed).
-  return {
-    scrollWidth: document.documentElement.scrollWidth,
-    innerWidth: document.documentElement.clientWidth,
-  };
 }
 
 // -- Node-side helpers --
