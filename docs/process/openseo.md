@@ -36,7 +36,23 @@ It also exposes the free AI-visibility reads `get_ai_visibility_tracker`,
 `export_ai_visibility_data`. They read saved trackers, runs, answers, citations
 and trends, or estimate a cost; none collects new answers.
 
-Public sharing, report deletion, new checks and paid research remain excluded.
+It also exposes the free Google Analytics and Search Console reads
+`list_google_analytics_properties`, `list_search_console_sites`,
+`get_google_analytics_measurement_health`,
+`get_google_analytics_organic_landing_pages`,
+`get_google_analytics_page_performance`, `get_google_analytics_key_events`,
+`get_google_analytics_organic_overview`,
+`get_google_analytics_traffic_acquisition`,
+`get_google_analytics_ecommerce_performance`,
+`get_google_analytics_site_search`, `get_google_analytics_audience_breakdown`
+and `get_search_opportunities`. They read the GA4 property and Search Console
+site already connected to the Seascape project and use no OpenSEO credits.
+The two `list_*` tools only show which property or site is bound; changing
+that binding (`set_google_analytics_property`, `set_search_console_site`) stays
+excluded, as does any Google connect or reconnect.
+
+Public sharing, report deletion, connection changes, new checks and paid
+research remain excluded.
 
 OpenSEO calls use Codex's configured approval route. With a human reviewer,
 that route can present a manual prompt; with automatic review, an allowed call
@@ -82,9 +98,10 @@ access and keep them on the local machine. Do not expose the endpoint through a
 public tunnel, shared network listener, or reverse proxy without a separate
 authentication and security review.
 
-Search Console access is a separate Google authorization. This integration may
-read performance and URL-inspection evidence through OpenSEO, but it may not
-connect, reconnect, or change the Google authorization. If OpenSEO reports that
+Search Console and GA4 access are separate Google authorizations. This
+integration may read Search Console performance, URL-inspection and GA4 report
+evidence through OpenSEO, but it may not connect, reconnect, rebind, or change
+either Google authorization. If OpenSEO reports that
 the connection expired or was revoked, stop and request Sawyer's approval
 before reconnecting it. These reads do not move analytics ownership or replace
 a `seascape-analytics` receipt.
@@ -95,8 +112,12 @@ a `seascape-analytics` receipt.
   to identify a candidate winner, money-page regression, or landing-page
   mismatch. The candidate still needs the evidence required by
   `docs/process/ranking-regression-rescue.md` before a page change.
-- `seascape-analytics` owns current Search Console, AI citation and mention
-  measurement, prompt packs, recurring pulls, joined attribution, and receipts.
+- `seascape-analytics` owns current Search Console, GA4, AI citation and
+  mention measurement, prompt packs, recurring pulls, joined attribution, and
+  receipts. OpenSEO GA4 and Search Console reads are available to Codex and
+  Claude as supporting evidence, but `seascape-analytics` receipts remain the
+  source of truth for measurement gates and the weekly digest. When an OpenSEO
+  read and a receipt disagree, cite the receipt and report the gap.
 - Use OpenSEO first for new SEO research, under the Cost Boundary below. The
   existing direct DataForSEO connection remains available for a
   specifically approved capability gap; changing provider does not waive Gate 0
@@ -149,6 +170,7 @@ DataForSEO balance through `whoami`, so tool annotations are not a cost gate.
 | --- | --- | --- | --- |
 | `whoami`, `list_projects`, `list_saved_keywords`, `get_rank_tracker` | saved OpenSEO project state and rank history | no | no; use the configured Codex approval route |
 | `get_search_console_performance`, `inspect_urls` | the existing Search Console authorization | no | no for reads; yes before any reconnect |
+| `list_google_analytics_properties`, `list_search_console_sites`, `get_search_opportunities`, and the `get_google_analytics_*` reads listed above | the existing GA4 and Search Console authorizations | no | no for reads; yes before any connect, reconnect or property/site change |
 | `get_project_context`, `list_reports`, `get_report`, `list_report_templates` | saved local workflow context, reports and templates | no | no for reads |
 | `update_project_context`, `save_report` | local project notes and private reports | no | use only within the requested task; verify the exact project and preserve existing content |
 | every paid lookup tool in the list below | live SERP, keyword, backlink, domain, local or AI lookups | yes, per call | no within the standing approval above; yes for anything on its ask-first list |
