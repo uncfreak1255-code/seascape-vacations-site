@@ -59,6 +59,11 @@ function buildOwnerLeadContact(rawPayload) {
   const email = normalizeText(data.email);
   const phone = normalizeText(data.phone);
   const originalTouch = firstTouch(data);
+  const propertyAddress = normalizeText(data.property_address);
+  const listingUrl = normalizeText(data.listing_url);
+  const combinedFieldHasUrl = !listingUrl
+    && /^https?:\/\//i.test(propertyAddress)
+    && URL.canParse(propertyAddress);
 
   // No way to follow up on a lead with zero contact handles -> nothing to store.
   if (!name && !email && !phone) return null;
@@ -75,8 +80,8 @@ function buildOwnerLeadContact(rawPayload) {
     name,
     email,
     phone,
-    propertyAddress: normalizeText(data.property_address),
-    listingUrl: normalizeText(data.listing_url),
+    propertyAddress: combinedFieldHasUrl ? "" : propertyAddress,
+    listingUrl: combinedFieldHasUrl ? propertyAddress : listingUrl,
     currentManager: normalizeText(data.current_manager),
     currentFeeQuote: normalizeText(data.current_fee_quote),
     whatFeelsOff: normalizeText(data.what_feels_off),

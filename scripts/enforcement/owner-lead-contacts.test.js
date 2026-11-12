@@ -94,6 +94,21 @@ test("owner lead contact captures full contact details on an owner form submit",
   assert.equal(contact.market, "florida-gulf-coast");
 });
 
+test("one owner property field routes listing links and addresses to the existing contact fields", () => {
+  const sourcePageSlug = "airbnb-management-services-sarasota";
+  for (const propertyAddress of ["https://www.airbnb.com/h/sample", "123 Sample Avenue"]) {
+    const contact = buildOwnerLeadContact(ownerSubmitPayload({
+      property_address: propertyAddress,
+      listing_url: "",
+      source_page_slug: sourcePageSlug,
+    }));
+    const isListing = propertyAddress.startsWith("https://");
+    assert.equal(contact.listingUrl, isListing ? propertyAddress : "");
+    assert.equal(contact.propertyAddress, isListing ? "" : propertyAddress);
+    assert.equal(contact.sourcePageSlug, sourcePageSlug);
+  }
+});
+
 test("owner lead contact ignores non-owner forms", () => {
   assert.equal(
     buildOwnerLeadContact({ id: "x", form_name: "newsletter-signup", data: { email: "a@b.com" } }),

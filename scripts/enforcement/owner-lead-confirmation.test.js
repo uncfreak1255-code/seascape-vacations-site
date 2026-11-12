@@ -420,7 +420,7 @@ test("owner confirmation copy matches the thank-you page promise", () => {
     path.join(__dirname, "../../src/property-management/revenue-review-requested.njk"),
     "utf8"
   );
-  assert.match(thankYou, /follow up within 48 hours/);
+  assert.match(thankYou, /follow up, usually within 48 hours/);
   assert.match(thankYou, /reply to the confirmation email/);
 });
 

@@ -81,8 +81,16 @@ Evidence receipts (dated; raw JSON not committed): OpenSEO `get_serp_results`, U
 
 - src/property-management/property-management.njk: /property-management/, /property-management/vacation-rental-management-fees-florida/, /property-management/switch-vacation-rental-management-company/
 
+- src/property-management/revenue-review-requested.njk: /property-management/, /property-management/vacation-rental-management-fees-florida/
+
 ## Boundary Proof
 
 Must not break: the route, canonical, form fields and tracking on the page; the unchanged Superhost FAQ; FAQ markup parity; every other `seoPages` entry (the diff touches one entry). Must not appear: any claim owner-offer section 7 excludes. Check from a source other than the new copy: `OWNER_EXCLUDED_CLAIM_PATTERNS` in `scripts/enforcement/content-voice.test.js`, which encodes section 7. Observed failing against a wrong variant on 2026-11-10: with "hands-off management" added to this entry's intro, `node --test scripts/enforcement/content-voice.test.js` failed with `airbnb-management-services-sarasota: owner copy makes an excluded performance claim ("hands-off")`; with the shipped copy it passes.
 
 Voice and specificity pass (2026-11-10): an independent Voice Editor read the entry three times. Round one asked for eight changes (city-rule detail that read as legal advice, an implied overnight-coverage promise, "every" in the proof title, a guaranteed-sounding 48 hours, an earnings implication, tone in the intro); round two asked for two more (the 48-hour wording beside the form, a repeated sentence). All were applied except the Patrick pricing sentence, which is the wording already published on `/property-management/`. Round three returned `Approved`.
+
+## Waterline inquiry follow-up (#932)
+
+Sawyer approved four draft changes after the Waterline comparison. Keep the approved photo hero and the existing titles, descriptions, URLs, schema types and tracking. Shorten the Sarasota hero intro and strengthen the shared lander scrim. Name the actual managed home and city before the island-page headline when the photo shows a nearby market. Use monthly owner statements and the approved one-page review with the usual 48-hour timing. The lander form shows one listing-or-address field, with optional inputs clearly identified. The receipt remains the success state; the form name, field names and attribution stay stable. The historical rescue boundaries above describe the original copy PR.
+
+Changed source: `src/_data/seoPages.json`, `src/property-management/property-management.njk`, `src/property-management/revenue-review-requested.njk`, `src/_includes/partials/owner-evaluation-form.njk`, and `src/css/owner-lander.css`. The recorded Sarasota search baseline still governs readback. This follow-up uses the shared template to correct inquiry clarity and verified claims, without a new ranking experiment or a second search brief.
