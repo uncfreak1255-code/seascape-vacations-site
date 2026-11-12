@@ -58,6 +58,11 @@
 
 ## Source Files Changed In This Batch
 
+### November 12 missing-rate display correction
+
+- The pool-and-hot-tub collection advertised The Coastal from $0/night. A zero or missing catalog rate is not a guest quote: show “Check rates for your dates” in the existing card and omit its priced schema offer. Keep positive rates, booking links, and page layout unchanged.
+- Verify the built guide preserves positive prices and does not emit a zero-dollar price in the card or schema. Recheck the public guide after its normal publication.
+
 ### October 22 approved P2 repair round
 
 - Sawyer approved one additional round limited to r4305146407 and r4305158882; keep PR #732 draft, with no merge or deployment.
