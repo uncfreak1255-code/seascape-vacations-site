@@ -37,7 +37,7 @@ function assertCoastalPoolHeatPolicy(text) {
   assert.match(text, /water temperature depends on the weather/i, "coastal-stay: no temperature promise");
   assert.doesNotMatch(text, /contact us to arrange|request alone does not turn on/i, "coastal-stay: no leftover on-request wording");
   assert.doesNotMatch(text, /\$\s*\d|\b(?:per night|per day|\/\s*night|\/\s*day)\b/i, "coastal-stay: no dollar amount in the heat policy");
-  assert.doesNotMatch(text, /\b(?:refund|always|guarantee[ds]?)\b|already on|\d+\s*(?:hours?|°|degrees?)/i, "coastal-stay: no refund, always-on, already-on, timing, temperature or guarantee claim");
+  assert.doesNotMatch(text, /\b(?:refund|always|guarantee[ds]?)\b|already on|\d+\s*(?:-?\s*hours?|°|degrees?)/i, "coastal-stay: no refund, always-on, already-on, timing, temperature or guarantee claim");
   assert.doesNotMatch(text, /\b(?:long-stay|before arrival|after arrival|remaining nights|individual nights)\b/i, "coastal-stay: no other-home billing rules");
 }
 
