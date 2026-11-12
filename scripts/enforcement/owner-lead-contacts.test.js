@@ -96,15 +96,19 @@ test("owner lead contact captures full contact details on an owner form submit",
 
 test("one owner property field routes listing links and addresses to the existing contact fields", () => {
   const sourcePageSlug = "airbnb-management-services-sarasota";
-  for (const propertyAddress of ["https://www.airbnb.com/h/sample", "123 Sample Avenue"]) {
+  const samples = [
+    ["https://www.airbnb.com/h/sample", "https://www.airbnb.com/h/sample"],
+    ["vrbo.com/123", "https://vrbo.com/123"],
+    ["123 Sample Avenue", ""],
+  ];
+  for (const [propertyAddress, listingUrl] of samples) {
     const contact = buildOwnerLeadContact(ownerSubmitPayload({
       property_address: propertyAddress,
       listing_url: "",
       source_page_slug: sourcePageSlug,
     }));
-    const isListing = propertyAddress.startsWith("https://");
-    assert.equal(contact.listingUrl, isListing ? propertyAddress : "");
-    assert.equal(contact.propertyAddress, isListing ? "" : propertyAddress);
+    assert.equal(contact.listingUrl, listingUrl);
+    assert.equal(contact.propertyAddress, listingUrl ? "" : propertyAddress);
     assert.equal(contact.sourcePageSlug, sourcePageSlug);
   }
 });
