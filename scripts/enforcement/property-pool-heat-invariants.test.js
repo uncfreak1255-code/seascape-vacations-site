@@ -29,14 +29,15 @@ function assertPoolHeatPolicy(text, name) {
   assert.match(text, /request alone does not turn on the heat/i, `${name}: no automatic activation promise`);
 }
 
-// The owner of The Coastal stopped charging for pool heat (Sawyer, 2026-11-11). Every other home keeps the $40 rule.
+// The owner of The Coastal stopped charging for pool heat (Sawyer, 2026-11-11), and its heat turns on
+// automatically unless the guest declines (Sawyer, 2026-11-12). Every other home keeps the $40 rule.
 function assertCoastalPoolHeatPolicy(text) {
   assert.match(text, /no charge for pool heat at The Coastal/i, "coastal-stay: no pool-heat charge");
-  assert.match(text, /contact us to arrange it and confirm the heating start time/i, "coastal-stay: arrange with us");
-  assert.match(text, /request alone does not turn on the heat/i, "coastal-stay: no automatic activation promise");
+  assert.match(text, /heat turns on automatically for your stay unless you tell us you don't want it/i, "coastal-stay: automatic unless declined");
   assert.match(text, /water temperature depends on the weather/i, "coastal-stay: no temperature promise");
+  assert.doesNotMatch(text, /contact us to arrange|request alone does not turn on/i, "coastal-stay: no leftover on-request wording");
   assert.doesNotMatch(text, /\$\s*\d|\b(?:per night|per day|\/\s*night|\/\s*day)\b/i, "coastal-stay: no dollar amount in the heat policy");
-  assert.doesNotMatch(text, /\b(?:refund|always|automatic(?:ally)?|guarantee[ds]?)\b/i, "coastal-stay: no refund, always-on or guarantee claim");
+  assert.doesNotMatch(text, /\b(?:refund|always|guarantee[ds]?)\b|already on|\d+\s*(?:hours?|°|degrees?)/i, "coastal-stay: no refund, always-on, already-on, timing, temperature or guarantee claim");
   assert.doesNotMatch(text, /\b(?:long-stay|before arrival|after arrival|remaining nights|individual nights)\b/i, "coastal-stay: no other-home billing rules");
 }
 
