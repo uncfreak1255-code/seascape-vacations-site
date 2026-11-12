@@ -158,13 +158,7 @@ eleventyComputed:
                     },
                     "latitude": {{ property.latitude }},
                     "longitude": {{ property.longitude }},
-                    "address": {
-                        "@type": "PostalAddress",
-                        "addressLocality": {{ property.city | json | safe }},
-                        "addressRegion": "FL",
-                        "addressCountry": "US"{% if property.postalCode %},
-                        "postalCode": {{ property.postalCode | json | safe }}{% endif %}
-                    }{% if property.price > 0 %},
+                    {% include "partials/stay-property-address-json.njk" %}{% if property.price > 0 %},
                     "offers": {
                         "@type": "Offer",
                         "price": {{ property.price | json | safe }},

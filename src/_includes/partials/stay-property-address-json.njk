@@ -1,0 +1,7 @@
+"address": {
+    "@type": "PostalAddress",
+    "addressLocality": {{ property.city | json | safe }},
+    "addressRegion": "FL",
+    "addressCountry": "US"{% if property.postalCode %},
+    "postalCode": {{ property.postalCode | json | safe }}{% endif %}
+}
