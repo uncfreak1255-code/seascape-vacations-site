@@ -23,7 +23,11 @@ for (const routeConfig of floorRoutes) {
     await gotoMarketingRoute(page, routeConfig);
     const original = page.viewportSize();
     const failures = [];
-    for (let width = 1024; width <= 1440; width += 16) {
+    // 1050 and 1051 straddle the fan breakpoint in src/css/arrival.css; the
+    // 16px steps cover the rest of the desktop range.
+    const widths = [1050, 1051];
+    for (let width = 1024; width <= 1440; width += 16) widths.push(width);
+    for (const width of widths) {
       await page.setViewportSize({ width, height: original.height });
       const measurement = await page.evaluate(measureOverflow);
       if (measurement.scrollWidth > measurement.innerWidth) {
