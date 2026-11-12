@@ -164,7 +164,7 @@ eleventyComputed:
                         "addressRegion": "FL",
                         "addressCountry": "US"{% if property.postalCode %},
                         "postalCode": {{ property.postalCode | json | safe }}{% endif %}
-                    },
+                    }{% if property.price > 0 %},
                     "offers": {
                         "@type": "Offer",
                         "price": {{ property.price | json | safe }},
@@ -172,7 +172,7 @@ eleventyComputed:
                         "unitText": "NIGHT",
                         "availability": "https://schema.org/InStock",
                         "url": "{{ property.bookingUrl }}"
-                    }
+                    }{% endif %}
                 }
             }{% if not isLastMatch %},{% endif %}
             {% endif %}
@@ -362,7 +362,7 @@ eleventyComputed:
                             <p class="property-meta">{{ property.bedrooms }} BR · {{ property.bathrooms }} BA · Sleeps {{ property.guests }}</p>
                             <p class="property-highlight">{{ property.highlights | join(" · ") }}</p>
                             <div class="property-card-bottom">
-                                <span class="property-price">From ${{ property.price }}/night</span>
+                                {% include "partials/stay-property-price.njk" %}
                                 <a
                                     href="{{ property.pageUrl }}"
                                     class="btn property-action"
