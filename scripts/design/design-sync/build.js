@@ -30,8 +30,8 @@
  *   node scripts/design/design-sync/render-check.js   # Playwright proof of every card
  *
  * The push itself is done with the DesignSync tool from Claude Code, using the arguments
- * in _sync-push.json; the build prints the call order. Re-run after any PR that touches
- * DESIGN.md, a stylesheet listed in stylesheets.js or the guest partials.
+ * in _sync-push.json; the build prints the call order. Re-sync triggers: see
+ * docs/process/design-review-workflow.md.
  */
 
 const fs = require("fs");
@@ -167,7 +167,7 @@ write("waterline/tokens.css", tokensCss);
 write("waterline/fonts.css", `/* Self-hosted faces, same files the site ships. */\n${fontFace("fonts/")}\n`);
 for (const [src] of fonts) copy(src, `waterline/fonts/${path.basename(src)}`);
 copy("src/assets/fonts/guest/OFL.txt", "waterline/fonts/OFL-instrument-serif.txt");
-require("./copy-reference-documents")(copy);
+require("./copy-reference-documents")(copy, designMd);
 for (const [name, css] of Object.entries(sheets)) {
   write(`waterline/${name}.css`, name === "guest" ? `/* Verbatim src/css/guest.css minus @font-face (see fonts.css). */\n${css}` : css);
 }
@@ -346,7 +346,7 @@ card({
   name: "Postcard collection",
   subtitle: `${HomeCount} homes (${homeNames.join(", ")}), shallow fan on desktop, snap list on mobile`,
   viewport: [1280, 520],
-  css: [...GUEST, arrivalCss, `.g-postcards{animation:none!important}`],
+  css: [...GUEST, arrivalCss, inlined("trip-sheet"), `.g-postcards{animation:none!important}`],
   body: `<div class="g-wrap" style="padding-top:36px"><section class="g-collection g-section" style="padding:0">${postcards}</section></div>`,
 });
 
@@ -485,58 +485,9 @@ card({
 <div class="ds-v"><p class="g-label" style="margin:0;color:${C.clay}">Banned</p><p style="margin:0"><s>A hidden gem nestled along the coast, curated for unforgettable memories.</s></p></div>`,
 });
 
-/* ---------------------------------------------------------------- pane manifest */
-// The Design System pane reads _ds_manifest.json for its card index and token list.
-// The app rebuilds it from @dsCard markers on its own self-check, but a DesignSync push
-// does not trigger that, so a stale manifest keeps showing deleted cards as "file not
-// found". Emit it here from the same data the cards were built from.
-// Claude Design's token vocabulary: color | spacing | radius | shadow | font | other.
-const tokenKind = (name, value) => {
-  if (/radius/.test(name)) return "radius";
-  if (/shadow/.test(name) || /shadow/.test(value)) return "shadow";
-  if (/^#|^rgba?\(/.test(value)) return "color";
-  if (/font|-h1$|-size$|-lh$|-ls$|weight/.test(name) || /'/.test(value)) return "font";
-  if (/px|em|%/.test(value)) return "spacing";
-  return "other";
-};
-// Claude Design reads a trailing `/* @kind x */` on a token line for its Tokens panel; emit it
-// here so nobody hand-edits the generated file to add it.
-const tokensCssAnnotated = tokensCss.replace(/^(\s*--wl-[a-z0-9-]+:)([^;]+);(.*)$/gm, (line, name, value, rest) => {
-  if (/@kind/.test(rest)) return line;
-  return `${name}${value}; /* @kind ${tokenKind(name.replace(/[:\s]/g, ""), value.trim())} */${rest ? " " + rest.trim() : ""}`;
-});
-fs.writeFileSync(path.join(OUT, "waterline/tokens.css"), tokensCssAnnotated);
-const tokens = [...tokensCss.matchAll(/^\s*(--wl-[a-z0-9-]+):([^;]+);/gm)].map((m) => ({
-  name: m[1],
-  value: m[2].trim(),
-  kind: tokenKind(m[1], m[2].trim()),
-  definedIn: "waterline/tokens.css",
-}));
-write(
-  "_ds_manifest.json",
-  JSON.stringify(
-    {
-      namespace: "SeascapeVacationsDesignSystem_57d1b4",
-      components: [],
-      startingPoints: [],
-      cards,
-      templates: [],
-      globalCssPaths: ["styles.css", "waterline/tokens.css"],
-      tokens,
-      themes: [],
-      fonts: [],
-      brandFonts: [
-        { family: "Instrument Serif", status: "ok", tokens: ["--wl-font-display"], path: "waterline/tokens.css" },
-        { family: "Poppins", status: "ok", tokens: ["--wl-font-body"], path: "waterline/tokens.css" },
-      ],
-      source: "design-sync",
-      syncedAt: today,
-      commit,
-    },
-    null,
-    2
-  )
-);
+/* ---------------------------------------------------------------- phone + pane manifest */
+require("./phone-card")({ card, GUEST, catalogCss, catalogCardCss, tripSheetCss: inlined("trip-sheet"), headerPaper, catalogCard, homeTrip, arrivalCss });
+require("./pane-manifest")({ OUT, tokensCss, cards, today, commit, write });
 
 /* ---------------------------------------------------------------- deletes */
 const deletes = require("./legacy-deletes");
