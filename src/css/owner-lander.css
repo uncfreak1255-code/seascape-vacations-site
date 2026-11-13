@@ -83,11 +83,11 @@
 .g-lander .owner-form-field{display:block;margin:0 0 12px}
 .g-lander .owner-form-field--wide,.g-lander .owner-form-authority{grid-column:1/-1}
 .g-lander .owner-form-field span{display:block;margin-bottom:4px;font-size:13px;font-weight:500}
-.g-lander .owner-form-field input,.g-lander .owner-form-field textarea,.g-lander .owner-form-field select{width:100%;min-width:0;min-height:48px;padding:8px 0;border:0;border-bottom:1px solid var(--g-muted);border-radius:0;background:transparent;color:var(--g-ink);font:16px/1.4 Poppins,sans-serif}
+.g-lander .owner-form-field :is(input,textarea,select){width:100%;min-width:0;min-height:48px;padding:8px 0;border:0;border-bottom:1px solid var(--g-muted);border-radius:0;background:transparent;color:var(--g-ink);font:16px/1.4 Poppins,sans-serif}
 .g-lander .owner-form-field textarea{min-height:88px;resize:vertical}
-.g-lander .owner-form-field select:has(option[value=""]:checked){color:var(--g-muted)}
+.g-lander .owner-form-field select:has([value=""]:checked){color:var(--g-muted)}
 .g-lander .owner-form-field input::placeholder,.g-lander .owner-form-field textarea::placeholder{color:var(--g-muted);font-size:14px;opacity:1}
-.g-lander .owner-form-field input:focus-visible,.g-lander .owner-form-field textarea:focus-visible,.g-lander .owner-form-field select:focus-visible{outline:2px solid var(--g-ink);outline-offset:4px}
+.g-lander .owner-form-field :is(input,textarea,select):focus-visible{outline:2px solid var(--g-ink);outline-offset:4px}
 .g-lander .owner-form-field input[type="file"]{padding:12px 0;font-size:13px;cursor:pointer}
 .g-lander .owner-form-help{display:block;margin-top:4px;font-size:12px;color:var(--g-muted)}
 .g-lander .owner-form-authority{display:flex;align-items:center;gap:4px;min-height:44px;margin:4px 0 8px;font-size:13px;line-height:1.5;cursor:pointer}
@@ -126,8 +126,8 @@
 }
 
 /* Motion. Colour hovers only where a pointer can hover; fields answer focus. */
-.g-lander .owner-form-field input,.g-lander .owner-form-field textarea,.g-lander .owner-form-field select{transition:border-color var(--g-hover-duration) var(--g-ease-color)}
-.g-lander .owner-form-field input:focus,.g-lander .owner-form-field textarea:focus,.g-lander .owner-form-field select:focus{border-bottom-color:var(--g-ink)}
+.g-lander .owner-form-field :is(input,textarea,select){transition:border-color var(--g-hover-duration) var(--g-ease-color)}
+.g-lander .owner-form-field :is(input,textarea,select):focus{border-bottom-color:var(--g-ink)}
 .g-lander .owner-form-authority input::before{transition:background-color var(--g-press-duration) var(--g-ease-out)}
 .g-lander .owner-form-authority,.g-lander a,.g-lander summary{-webkit-tap-highlight-color:transparent}
 /* Touch has no hover, and the grey tap flash is off, so a pressed link answers in the same colour a hovered one does. */

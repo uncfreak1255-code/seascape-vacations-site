@@ -10,19 +10,19 @@
     },
     "/property-management/": {
       "script": 91165,
-      "stylesheet": 61447
+      "stylesheet": 61512
     },
     "/property-management/vacation-rental-licensing-florida/": {
       "script": 60976,
-      "stylesheet": 72552
+      "stylesheet": 72614
     },
     "/property-management/vacation-rental-management-fees-florida/": {
       "script": 60976,
-      "stylesheet": 72552
+      "stylesheet": 72614
     },
     "/property-management/vrbo-management-services-florida/": {
       "script": 60976,
-      "stylesheet": 72552
+      "stylesheet": 72614
     },
     "/stays/anna-maria-island-beachfront-rentals/": {
       "script": 59002,
@@ -1601,6 +1601,38 @@
       "to": 72552,
       "reason": "Owner landers moved to the Waterline owner design (PR 926): about 13.5KB of inline styles became the guest.css, owner.css and owner-lander.css sheets shared with the owner hub. Total CSS per page grows about 22KB (51.9KB to 74.3KB). base.css stays because it centres the closing call to action.",
       "date": "2026-11-11"
+    },
+    {
+      "route": "/property-management/",
+      "metric": "stylesheet",
+      "from": 61447,
+      "to": 61512,
+      "reason": "PR 945: optional heard-about select on owner forms adds +65 B owner.css (select field rule + muted empty choice); lander CSS folded with :is() to net -3 B",
+      "date": "2026-11-13"
+    },
+    {
+      "route": "/property-management/vacation-rental-management-fees-florida/",
+      "metric": "stylesheet",
+      "from": 72552,
+      "to": 72614,
+      "reason": "PR 945: optional heard-about select on owner forms adds +65 B owner.css (select field rule + muted empty choice); lander CSS folded with :is() to net -3 B",
+      "date": "2026-11-13"
+    },
+    {
+      "route": "/property-management/vacation-rental-licensing-florida/",
+      "metric": "stylesheet",
+      "from": 72552,
+      "to": 72614,
+      "reason": "PR 945: optional heard-about select on owner forms adds +65 B owner.css (select field rule + muted empty choice); lander CSS folded with :is() to net -3 B",
+      "date": "2026-11-13"
+    },
+    {
+      "route": "/property-management/vrbo-management-services-florida/",
+      "metric": "stylesheet",
+      "from": 72552,
+      "to": 72614,
+      "reason": "PR 945: optional heard-about select on owner forms adds +65 B owner.css (select field rule + muted empty choice); lander CSS folded with :is() to net -3 B",
+      "date": "2026-11-13"
     }
   ]
 }
