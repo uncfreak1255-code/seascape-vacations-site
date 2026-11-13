@@ -9,7 +9,7 @@
 - OpenSEO project:
 - Data timestamps:
 - Spend approved / incurred:
-- Evidence method: MCP / UI
+- Evidence method: local `openseo` MCP tool and arguments
 - Proof gate result: PASS / PARTIAL / BLOCKED
 
 ## Source receipts
@@ -37,7 +37,7 @@
 
 ## Rules
 
-- Cite source rows or visible UI values.
+- Cite source rows or returned MCP values.
 - Keep brand mentions separate from cited sources.
 - Label competitor inputs that did not change results as input-only.
 - Do not claim an export exists without a file receipt.
