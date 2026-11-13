@@ -2,7 +2,7 @@
 
 - lifecycle: active
 - task scope: approved After A property collection on `/`; `src/index.njk`, `src/_includes/partials/home-deck-controls.njk`, `src/assets/js/home-deck.js`
-- completion or successor: implementation and rendered review complete; release blocked by locked Sharp native library load failure; no production approval
+- completion or successor: native-library blocker repaired; Sawyer authorized homepage-only baseline refresh and merge when verified on November 13, 2026; photo viewer excluded; final release evidence belongs to the PR
 - persona: guest choosing a real Seascape home on desktop or phone
 - primary keyword: none; UI-only on existing homepage
 - secondary keywords: none
