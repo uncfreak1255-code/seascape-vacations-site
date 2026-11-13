@@ -27,10 +27,16 @@ presence does not grant paid calls or website publication.
 2. Run the matching upstream workflow with the native local `openseo` server
    at `http://localhost:3001/mcp`. Never substitute hosted plugin tools.
 3. If a paid lookup or new check is needed, state the tool, project, inputs,
-   market/depth, estimated cost and maximum spend. Run it when it fits the
-   standing approval in `docs/process/openseo.md` -> Cost Boundary; obtain
-   Sawyer's approval first when it is on that section's ask-first list. If the tool remains unavailable, report the missing
-   capability rather than switching providers or broadening access silently.
+   market/depth, estimated cost and maximum spend. This is the paid-lookup rule
+   the rest of this skill refers to:
+   - In `seascape-vacations-site`, run it when it fits the standing approval in
+     the Site's `docs/process/openseo.md` -> Cost Boundary, and get Sawyer's
+     approval first when it is on that section's ask-first list.
+   - In any other repo, Analytics included, get Sawyer's approval before that
+     exact run. The Site's Cost Boundary grants no spending outside the Site.
+
+   If the tool remains unavailable, report the missing capability rather than
+   switching providers or broadening access silently.
 4. Save a private, dated report and a bounded recommendation. Context notes
    use approved source facts and preserve their provenance; they are not canon.
 5. Route the action: Hub owns strategy and promotion; Analytics owns GSC/GA4,
@@ -45,6 +51,7 @@ When local OpenSEO is unavailable, state the failed connection and route that
 step to a Mac session. Cloud sessions cannot reach this Mac through their own
 localhost. Do not expose the unauthenticated local server, reconnect Google,
 start paid research or fall back to hosted OpenSEO to hide that gap.
+Do not replace missing OpenSEO data with guessed data.
 
 ## Inputs
 
@@ -56,23 +63,26 @@ For Seascape, default to `seascape-vacations.com`, United States, and the curren
 
 1. Confirm the current OpenSEO project, domain, country, device, and data timestamp.
 2. Use the local `openseo` MCP tools.
-3. Do not add the OpenSEO connector, change global MCP settings, sign in, or spend credits outside the Cost Boundary in `docs/process/openseo.md`.
+3. Do not add the OpenSEO connector, change global MCP settings, sign in, or spend credits outside the paid-lookup rule (improvement loop, step 3).
 4. Name the proof gate: verified query export, verified cited-source export, current rank configuration readback, and an opportunity table tied to source rows.
 
 ## Select the evidence lane
 
 For Seascape rank-opportunity or regression triage on already-tracked queries,
-read the Site-owned OpenSEO preflight in `docs/process/openseo.md` first. Use `list_projects` and
+read the Site-owned OpenSEO preflight first: `docs/process/openseo.md` in
+`seascape-vacations-site` (from another repo, `git -C
+~/Projects/seascape-vacations-site show origin/main:docs/process/openseo.md`).
+Use `list_projects` and
 then existing `get_rank_tracker` configuration, results and history through the
 configured approval path. Record observation time, query, current/prior position
 and landing URL; do not trigger a fresh check. Continue with live SERP and
 competitor evidence plus the owning Analytics receipt before recommending work.
 The configured free saved-state, context and private-report tools are the
-default surface; paid lookup tools follow the Cost Boundary. Unavailable tools or stale/missing target queries are evidence gaps,
+default surface; paid lookup tools follow the paid-lookup rule. Unavailable tools or stale/missing target queries are evidence gaps,
 not permission to start a paid run or change the measurement gate.
 
 Use the brand/citation steps below only when that evidence lane is requested
-and the lookup already exists or the paid run fits the Cost Boundary.
+and the lookup already exists or its paid run is allowed by the paid-lookup rule.
 A tracked-rank review starts with the rank read, not a brand lookup.
 
 ## Review workflow
@@ -82,7 +92,7 @@ A tracked-rank review starts with the rank read, not a brand lookup.
 - Run or inspect the target-domain lookup.
 - Record lookup time, estimated or actual cost, total AI-search volume, platform split, visible query count, and cited-source count.
 - Keep brand mentions separate from citations. A mention is not proof of a cited source.
-- If the lookup is paid and not already complete, confirm it fits the Cost Boundary, or get Sawyer's approval, before running it.
+- If the lookup is paid and not already complete, apply the paid-lookup rule before running it.
 
 ### 2. Competitor comparison
 
