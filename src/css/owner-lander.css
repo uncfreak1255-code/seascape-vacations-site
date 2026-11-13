@@ -85,6 +85,7 @@
 .g-lander .owner-form-field span{display:block;margin-bottom:4px;font-size:13px;font-weight:500}
 .g-lander .owner-form-field input,.g-lander .owner-form-field textarea,.g-lander .owner-form-field select{width:100%;min-width:0;min-height:48px;padding:8px 0;border:0;border-bottom:1px solid var(--g-muted);border-radius:0;background:transparent;color:var(--g-ink);font:16px/1.4 Poppins,sans-serif}
 .g-lander .owner-form-field textarea{min-height:88px;resize:vertical}
+.g-lander .owner-form-field select:has(option[value=""]:checked){color:var(--g-muted)}
 .g-lander .owner-form-field input::placeholder,.g-lander .owner-form-field textarea::placeholder{color:var(--g-muted);font-size:14px;opacity:1}
 .g-lander .owner-form-field input:focus-visible,.g-lander .owner-form-field textarea:focus-visible,.g-lander .owner-form-field select:focus-visible{outline:2px solid var(--g-ink);outline-offset:4px}
 .g-lander .owner-form-field input[type="file"]{padding:12px 0;font-size:13px;cursor:pointer}
