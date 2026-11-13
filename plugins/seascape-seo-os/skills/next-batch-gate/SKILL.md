@@ -28,7 +28,7 @@ Continue bounded unpaid source/SERP/competitor checks when independently availab
 
 - Treat `docs/status/next-batch.md` as the only canonical reread and branch-opening contract.
 - `docs/status/current-state.md` is durable context, not the place to trust the latest volatile `data_date` or blocked-window detail.
-- `docs/status/next-batch.md` must contain exactly one `Reread status` and one `Concrete next move`.
+- `docs/status/next-batch.md` must contain exactly one `Reread status` and one `Concrete next move`, and, under any hold, a ranked opportunities section.
 - Allowed reread statuses are only:
   - `blocked by freshness`
   - `fresh but below threshold`
@@ -72,6 +72,7 @@ Include:
 - proof-lane block, if any
 - attack-lane action, if any
 - exact next action
+- ranked opportunities (required under a hold)
 - whether a new brief should open
 - attack status, inspected query variants, dated SERP source, competitor URLs,
   content and design strategy, tool route, and decision reason

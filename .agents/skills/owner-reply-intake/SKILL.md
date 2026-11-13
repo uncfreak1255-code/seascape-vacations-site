@@ -5,12 +5,11 @@ description: Use when classifying owner replies or form submits as Seascape dema
 
 # Owner Reply Intake
 
-Use this before any owner outbound result is treated as demand.
+Use this before any owner reply, form submit, or direct-intake result is treated as demand.
 
 ## Authority
 
-- Demand OS handoff: `docs/plans/2026-06-13-demand-os-handoff.md`
-- Owner outbound home: `docs/status/owner-outbound.md`
+- Archived outbound research (no active queue; do not send): `docs/status/owner-outbound.md`
 - Hub register: `/Users/sawbeck/Projects/seascape-hub/projects/owner-demand-trust-outcome-register.md`
 - Generated receipt block warning: `ingest-verification-receipts.py` overwrites `owner-receipt-projection`
 
