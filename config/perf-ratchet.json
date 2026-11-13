@@ -1,35 +1,35 @@
 {
   "routes": {
     "/": {
-      "script": 93230,
+      "script": 93608,
       "stylesheet": 89331
     },
     "/properties/": {
-      "script": 107618,
+      "script": 107996,
       "stylesheet": 84698
     },
     "/property-management/": {
-      "script": 91165,
+      "script": 91543,
       "stylesheet": 61447
     },
     "/property-management/vacation-rental-licensing-florida/": {
-      "script": 60976,
+      "script": 61354,
       "stylesheet": 72552
     },
     "/property-management/vacation-rental-management-fees-florida/": {
-      "script": 60976,
+      "script": 61354,
       "stylesheet": 72552
     },
     "/property-management/vrbo-management-services-florida/": {
-      "script": 60976,
+      "script": 61354,
       "stylesheet": 72552
     },
     "/stays/anna-maria-island-beachfront-rentals/": {
-      "script": 59002,
+      "script": 59380,
       "stylesheet": 53057
     },
     "/stays/anna-maria-island-vacation-rentals/": {
-      "script": 59002,
+      "script": 59380,
       "stylesheet": 53057
     }
   },
@@ -1616,6 +1616,70 @@
       "from": 83524,
       "to": 89331,
       "reason": "Sawyer-approved homepage focused-deck A: homepage-only home-deck.js (+5831 bytes) and home-deck.css (+5807 bytes); no dependencies; all 24 Lighthouse runs pass unchanged absolute budgets",
+      "date": "2026-11-13"
+    },
+    {
+      "route": "/",
+      "metric": "script",
+      "from": 93230,
+      "to": 93608,
+      "reason": "Measured 378 inline script bytes for once-only tracking on the two Anna Maria timing guide links. Lighthouse timing ceilings and ratchet logic stay fixed.",
+      "date": "2026-11-13"
+    },
+    {
+      "route": "/properties/",
+      "metric": "script",
+      "from": 107618,
+      "to": 107996,
+      "reason": "Measured 378 inline script bytes for once-only tracking on the two Anna Maria timing guide links. Lighthouse timing ceilings and ratchet logic stay fixed.",
+      "date": "2026-11-13"
+    },
+    {
+      "route": "/property-management/",
+      "metric": "script",
+      "from": 91165,
+      "to": 91543,
+      "reason": "Measured 378 inline script bytes for once-only tracking on the two Anna Maria timing guide links. Lighthouse timing ceilings and ratchet logic stay fixed.",
+      "date": "2026-11-13"
+    },
+    {
+      "route": "/property-management/vacation-rental-licensing-florida/",
+      "metric": "script",
+      "from": 60976,
+      "to": 61354,
+      "reason": "Measured 378 inline script bytes for once-only tracking on the two Anna Maria timing guide links. Lighthouse timing ceilings and ratchet logic stay fixed.",
+      "date": "2026-11-13"
+    },
+    {
+      "route": "/property-management/vacation-rental-management-fees-florida/",
+      "metric": "script",
+      "from": 60976,
+      "to": 61354,
+      "reason": "Measured 378 inline script bytes for once-only tracking on the two Anna Maria timing guide links. Lighthouse timing ceilings and ratchet logic stay fixed.",
+      "date": "2026-11-13"
+    },
+    {
+      "route": "/property-management/vrbo-management-services-florida/",
+      "metric": "script",
+      "from": 60976,
+      "to": 61354,
+      "reason": "Measured 378 inline script bytes for once-only tracking on the two Anna Maria timing guide links. Lighthouse timing ceilings and ratchet logic stay fixed.",
+      "date": "2026-11-13"
+    },
+    {
+      "route": "/stays/anna-maria-island-beachfront-rentals/",
+      "metric": "script",
+      "from": 59002,
+      "to": 59380,
+      "reason": "Measured 378 inline script bytes for once-only tracking on the two Anna Maria timing guide links. Lighthouse timing ceilings and ratchet logic stay fixed.",
+      "date": "2026-11-13"
+    },
+    {
+      "route": "/stays/anna-maria-island-vacation-rentals/",
+      "metric": "script",
+      "from": 59002,
+      "to": 59380,
+      "reason": "Measured 378 inline script bytes for once-only tracking on the two Anna Maria timing guide links. Lighthouse timing ceilings and ratchet logic stay fixed.",
       "date": "2026-11-13"
     }
   ]
