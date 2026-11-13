@@ -131,6 +131,8 @@ headExtra: |
               <label class="g-owner-field g-owner-field-full"><span>Phone, optional</span><input type="tel" name="phone" autocomplete="tel" placeholder="For a text when it is ready"></label>
               <label class="g-owner-field"><span>Current manager</span><input type="text" name="current_manager" placeholder="Manager name, or self-managed"></label>
               <label class="g-owner-field"><span>Fee quote, if known</span><input type="text" name="current_fee_quote" placeholder="15%, 20%, or the fee terms"></label>
+              {% set heardAboutFieldClass = "g-owner-field g-owner-field-full" %}
+              {% include "partials/owner-heard-about-field.njk" %}
               <label class="g-owner-authority g-owner-field-full"><input type="checkbox" name="submitter_authority" value="owner_or_authorized_representative" required data-owner-authority><span>I confirm I am the property owner or an authorized representative for this property.</span></label>
             </div>
             <div class="g-owner-panel-actions">
@@ -165,7 +167,7 @@ headExtra: |
 
   {% if bandHome and bandHome.photography and bandHome.photography.photos[0] %}
   <figure class="g-owner-band">
-    <img src="{{ bandHome.photography.photos[0].src }}" srcset="{{ bandHome.photography.photos[0].src | replace('.webp', '-800.webp') }} 800w, {{ bandHome.photography.photos[0].src }} 1400w" sizes="100vw" width="{{ bandHome.photography.photos[0].width }}" height="{{ bandHome.photography.photos[0].height }}" alt="{{ bandHome.photography.photos[0].alt }}" loading="lazy" decoding="async">
+    {% include "partials/owner-band-image.njk" %}
     <figcaption class="g-wrap">{{ bandHome.name }}, {{ bandHome.city }}. One of the {{ homeCountWord }} homes Seascape manages.</figcaption>
   </figure>
   {% endif %}

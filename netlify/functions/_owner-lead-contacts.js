@@ -16,6 +16,15 @@ function normalizeText(value) {
   return value.trim();
 }
 
+// Optional "How did you hear about us?" answer. Stable values; anything else
+// (missing, blank, tampered) is stored as "" and never rejects the lead.
+const HEARD_ABOUT_VALUES = ["ai_assistant", "google", "airbnb_vrbo", "referral", "other"];
+
+function normalizeHeardAbout(value) {
+  const text = normalizeText(value).toLowerCase();
+  return HEARD_ABOUT_VALUES.includes(text) ? text : "";
+}
+
 function readSubmissionPayload(rawPayload) {
   if (!rawPayload || typeof rawPayload !== "object") return {};
   return rawPayload.payload && typeof rawPayload.payload === "object"
@@ -71,6 +80,7 @@ function buildOwnerLeadContact(rawPayload) {
     sourceTimestampVerified: Boolean(normalizeText(payload.created_at || payload.createdAt)),
     submitterAuthority: normalizeText(data.submitter_authority),
     proofLabel: normalizeText(data.proof_label),
+    heardAbout: normalizeHeardAbout(data.heard_about),
     ...(originalTouch === undefined ? {} : { firstTouch: originalTouch }),
     name,
     email,

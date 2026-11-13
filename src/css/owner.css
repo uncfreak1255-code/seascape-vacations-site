@@ -44,8 +44,9 @@
 .g-owner-panel>p{font-size:14px;color:var(--g-muted);margin:0 0 16px}
 .g-owner-field{display:block;margin:0 0 14px}
 .g-owner-field span{display:block;font-size:12px;letter-spacing:.05em;margin-bottom:6px}
-.g-owner-field input,.g-owner-field textarea{width:100%;min-width:0;min-height:46px;border:0;border-bottom:1px solid var(--g-muted);background:transparent;color:var(--g-ink);border-radius:0;padding:8px 0;font:14px Poppins,sans-serif}
+.g-owner-field :is(input,textarea,select){width:100%;min-width:0;min-height:46px;border:0;border-bottom:1px solid var(--g-muted);background:transparent;color:var(--g-ink);border-radius:0;padding:8px 0;font:14px Poppins,sans-serif}
 .g-owner-field textarea{min-height:72px;line-height:1.45;resize:vertical}
+.g-owner-field select:has([value=""]:checked){color:var(--g-muted)}
 .g-owner-field input::placeholder,.g-owner-field textarea::placeholder{color:var(--g-muted)}
 .g-owner-file input[type="file"]{min-height:44px;padding:10px 0;font-size:13px;border-bottom:1px solid var(--g-rule);cursor:pointer}
 .g-owner-file small{display:block;font-size:12px;color:var(--g-muted);margin-top:6px}

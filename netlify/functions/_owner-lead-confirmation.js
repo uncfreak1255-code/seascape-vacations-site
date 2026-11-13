@@ -73,6 +73,7 @@ function buildInternalOwnerLeadNotifyEmail(contact, env = process.env) {
     `Listing URL: ${normalizeText(contact && contact.listingUrl) || "(none)"}`,
     `Current manager: ${normalizeText(contact && contact.currentManager) || "(none)"}`,
     `What feels off: ${normalizeText(contact && contact.whatFeelsOff) || "(none)"}`,
+    `Heard about us: ${normalizeText(contact && contact.heardAbout) || "(none)"}`,
     `Source page: ${normalizeText(contact && contact.sourcePageSlug) || "(none)"}`,
     `Market: ${normalizeText(contact && contact.market) || "(none)"}`,
     `Submission ID: ${submissionId}`,
