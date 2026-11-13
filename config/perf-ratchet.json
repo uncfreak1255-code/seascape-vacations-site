@@ -1,8 +1,8 @@
 {
   "routes": {
     "/": {
-      "script": 87399,
-      "stylesheet": 83524
+      "script": 93230,
+      "stylesheet": 89331
     },
     "/properties/": {
       "script": 107618,
@@ -1601,6 +1601,22 @@
       "to": 72552,
       "reason": "Owner landers moved to the Waterline owner design (PR 926): about 13.5KB of inline styles became the guest.css, owner.css and owner-lander.css sheets shared with the owner hub. Total CSS per page grows about 22KB (51.9KB to 74.3KB). base.css stays because it centres the closing call to action.",
       "date": "2026-11-11"
+    },
+    {
+      "route": "/",
+      "metric": "script",
+      "from": 87399,
+      "to": 93230,
+      "reason": "Sawyer-approved homepage focused-deck A: homepage-only home-deck.js (+5831 bytes) and home-deck.css (+5807 bytes); no dependencies; all 24 Lighthouse runs pass unchanged absolute budgets",
+      "date": "2026-11-13"
+    },
+    {
+      "route": "/",
+      "metric": "stylesheet",
+      "from": 83524,
+      "to": 89331,
+      "reason": "Sawyer-approved homepage focused-deck A: homepage-only home-deck.js (+5831 bytes) and home-deck.css (+5807 bytes); no dependencies; all 24 Lighthouse runs pass unchanged absolute budgets",
+      "date": "2026-11-13"
     }
   ]
 }
