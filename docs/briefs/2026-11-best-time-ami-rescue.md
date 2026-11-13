@@ -63,7 +63,7 @@ Evidence read 2026-11-12 (all free): OpenSEO `get_search_console_performance` (p
 
 ## Gate 0 blocker
 
-The paid OpenSEO `get_serp_results` call (about 5 credits per keyword at depth 20) was not run. The Cost Boundary in `docs/process/openseo.md` requires the November 2026 ET total from saved reports before any paid lookup. A paid SERP call on 2026-11-10 (cited in `docs/briefs/2026-11-sarasota-airbnb-management-rescue.md` on the open draft PR #937 branch) has no saved OpenSEO report with its dollar cost, so the month's total cannot be established, and the tool gives no dollar estimate. Next action: Sawyer approves one two-keyword desktop+mobile SERP, or the 2026-11-10 lookup's cost gets saved as a report, which lets the next session run it under the standing approval.
+The paid OpenSEO `get_serp_results` call (about 5 credits per keyword at depth 20) was not run. The Cost Boundary in `docs/process/openseo.md` requires the November 2026 ET total from saved reports before any paid lookup. A paid SERP call on 2026-11-10 (cited in `docs/briefs/2026-11-sarasota-airbnb-management-rescue.md` on the open draft PR #937 branch) has no saved OpenSEO report with its dollar cost, so the month's total cannot be established, and the tool gives no dollar estimate. The tool gives only a credit estimate, which the Cost Boundary counts as no dollar estimate, so this lookup needs Sawyer's approval even after the month's total is established. Next action: Sawyer approves one SERP lookup naming the two queries, desktop and mobile, depth 20, and a dollar cap. Saving the 2026-11-10 lookup's cost as a report only fixes this month's accounting; it does not authorize this call.
 
 ## Cluster In Scope
 
