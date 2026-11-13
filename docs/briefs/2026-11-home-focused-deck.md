@@ -3,6 +3,12 @@
 - lifecycle: active
 - task scope: approved After A property collection on `/`; `src/index.njk`, `src/_includes/partials/home-deck-controls.njk`, `src/assets/js/home-deck.js`
 - completion or successor: native-library blocker repaired; Sawyer authorized homepage-only baseline refresh and merge when verified on November 13, 2026; photo viewer excluded; final release evidence belongs to the PR
+- source files likely to change:
+  - `src/index.njk`
+  - `src/_includes/layouts/guest.njk`
+  - `src/_includes/partials/home-deck-controls.njk`
+  - `src/assets/js/home-deck.js`
+  - `src/css/home-deck.css`
 - persona: guest choosing a real Seascape home on desktop or phone
 - primary keyword: none; UI-only on existing homepage
 - secondary keywords: none

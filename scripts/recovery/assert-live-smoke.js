@@ -14,10 +14,12 @@ const targets = [
   { path: "/properties/", status: 200 },
   { path: "/properties/the-oasis/", status: 200 },
   { path: "/properties/river-house/", status: 200 },
+  { path: "/properties/dockside-dreams/", status: 200 },
   { path: "/property-management/", status: 200 },
   { path: "/guides/", status: 200 },
   { path: "/stays/", status: 200 },
   { path: "/stays/anna-maria-island-vacation-rentals/", status: 200 },
+  { path: "/stays/vacation-rentals-with-pool-and-hot-tub/", status: 200 },
   { path: "/property-management/vacation-rental-management-sarasota/", status: 200 },
   { path: "/guides/anna-maria-island-area-guide/", status: 200 },
   { path: "/guides/bradenton-vs-sarasota/", status: 200 },
@@ -68,6 +70,14 @@ function validateTargetResponse(target, response) {
     throw new Error(`${target.path} expected ${target.status}, got ${response.statusCode}`);
   }
 
+  if (["/properties/dockside-dreams/", "/stays/vacation-rentals-with-pool-and-hot-tub/"].includes(target.path)) {
+    const pageCopy = response.body.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, "");
+    requireIncludes(target.path, pageCopy, [
+      "$40 per night, capped at $280 per stay",
+      "There is no charge for pool heat at The Coastal.",
+      "Approved long-stay flat rates still apply"
+    ]);
+  }
   if (["/properties/the-oasis/", "/properties/river-house/"].includes(target.path)) {
     requireIncludes(target.path, response.body, ["Pets are not permitted at this home.", "Service animals are welcome without a pet fee"]);
     requireExcludes(target.path, response.body, ["One dog under 30 lb may stay", "Ask us to confirm pet approval", "Dog approval, boat size", 'value="pet approval"']);

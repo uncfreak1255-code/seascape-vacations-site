@@ -103,7 +103,7 @@ A tracked-rank review starts with the rank read, not a brand lookup.
 
 ### 3. Export and verify
 
-Export Queries and Cited sources as separate CSV files. For each file, verify the full path, modified time, non-zero size, headers, and row count. Record filters and tab state. A click on Export or a browser permission prompt is not an export receipt. If the file cannot be found, mark the export unverified and continue only with visible rows.
+Save Queries and Cited sources as separate CSV or JSON files from the MCP results (for AI visibility, `export_ai_visibility_data` or saved `get_ai_visibility_sources` pages). For each file, verify the full path, modified time, non-zero size, headers, and row count. Record the tool, its arguments (run, topic, engines, filters) and whether results were paginated or truncated; follow every returned cursor or label the file partial. A returned download link or a single truncated page is not an export receipt. If the file cannot be saved, mark the export unverified and continue only with the returned rows.
 
 ### 4. Rank-tracking check
 
@@ -130,7 +130,7 @@ For Seascape, name all four before recommending work: revenue lever, proof surfa
 
 ## Stop conditions
 
-Stop and report when the domain or project is wrong, paid approval is missing, the connector or UI cannot return current data, an export cannot be verified, rank history is absent for a trend claim, or competitor application is unconfirmed.
+Stop and report when the domain or project is wrong, paid approval is missing, the local `openseo` MCP tools cannot return current data, an export cannot be verified, rank history is absent for a trend claim, or competitor application is unconfirmed.
 
 ## Closeout receipt
 
