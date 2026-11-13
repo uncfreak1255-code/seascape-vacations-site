@@ -29,7 +29,7 @@
 - guardrail event: `guide_book_direct_click` and stay-box clicks on this route (analytics receipt), and average position of the family
 - entry criteria: every Gate 0 row filled from a dated Google SERP; content gate passed; `npm run lint:content` and `npm run build` green
 - readback window: first 7 complete days after production publish, then the 28-day settle window in `docs/status/page-ledger.json`
-- decision rule: revert if the family's average position falls below 4 for 7 complete days after publish; keep if family clicks recover to at least the 2026-10-25 to 2026-10-31 level (6) with position at or above 2.5; otherwise record `insufficient evidence`
+- decision rule: Search Console position is lower-is-better. Revert if the family's average position is worse than 4 (numerically > 4) over the first 7 complete days after publish; keep if family clicks recover to at least the 2026-10-25 to 2026-10-31 level (6) with average position 2.5 or better (numerically <= 2.5); otherwise record `insufficient evidence`
 
 ## Gate 0 Search And Attack Receipt
 
