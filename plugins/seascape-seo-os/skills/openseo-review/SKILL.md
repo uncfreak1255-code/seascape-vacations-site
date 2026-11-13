@@ -55,16 +55,14 @@ For Seascape, default to `seascape-vacations.com`, United States, and the curren
 ## Preflight
 
 1. Confirm the current OpenSEO project, domain, country, device, and data timestamp.
-2. Prefer live OpenSEO MCP tools when already connected. Otherwise use the current OpenSEO UI through the available browser-control skill.
+2. Use the local `openseo` MCP tools.
 3. Do not add the OpenSEO connector, change global MCP settings, sign in, or spend credits outside the Cost Boundary in `docs/process/openseo.md`.
 4. Name the proof gate: verified query export, verified cited-source export, current rank configuration readback, and an opportunity table tied to source rows.
-5. If live OpenSEO is unavailable, stop with the failed path. Do not replace it with guessed data.
 
 ## Select the evidence lane
 
 For Seascape rank-opportunity or regression triage on already-tracked queries,
-read the [Site-owned OpenSEO preflight](https://github.com/uncfreak1255-code/seascape-vacations-site/blob/main/docs/process/openseo.md)
-first. Use `list_projects` and
+read the Site-owned OpenSEO preflight in `docs/process/openseo.md` first. Use `list_projects` and
 then existing `get_rank_tracker` configuration, results and history through the
 configured approval path. Record observation time, query, current/prior position
 and landing URL; do not trigger a fresh check. Continue with live SERP and
