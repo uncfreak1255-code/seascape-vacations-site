@@ -100,8 +100,8 @@
 
         window.seascapeSanitizeAnalyticsPayload = window.seascapeSanitizeAnalyticsPayload || sanitizeAnalyticsPayload;
 
-        // Same-tab guide cards leave before the tag's network batch may be dispatched.
-        // Carry just this sanitized click to its destination; never send from both pages.
+        // Same-tab guide links can leave before the tag sends its batch.
+        // Carry the sanitized click to the matching destination and send it there once.
         var guideCardKey = "seascape_pending_guide_card";
         function takeGuideCard() {
             try {
@@ -110,19 +110,25 @@
                 if (!raw) return null;
                 var pending = JSON.parse(raw);
                 var age = Date.now() - pending.createdAt;
-                if (pending.event !== "guide_property_check_dates_click" || !Number.isFinite(age) || age < 0 || age > 60000) return null;
+                if (!Number.isFinite(age) || age < 0 || age > 60000) return null;
                 var destination = new URL(pending.destination);
                 if (destination.origin !== window.location.origin || destination.pathname !== window.location.pathname) return null;
+                if (!isGuideHandoff(pending.event, pending.payload, destination.pathname)) return null;
                 return pending;
             } catch (error) {
                 return null;
             }
         }
+        function isGuideHandoff(eventName, params, pathname) {
+            if (eventName === "guide_property_check_dates_click") return /^\/properties\/[^/]+\/$/.test(pathname);
+            return eventName === "guide_book_direct_click" && params.placement === "best_time_season_choice" &&
+                /^\/stays\/anna-maria-island-(vacation|beachfront)-rentals\/$/.test(pathname);
+        }
         function stageGuideCard(eventName, params) {
-            if (eventName !== "guide_property_check_dates_click" || typeof params.event_callback !== "function") return false;
+            if (typeof params.event_callback !== "function") return false;
             try {
                 var destination = new URL(params.link_url, window.location.href);
-                if (destination.origin !== window.location.origin || !/^\/properties\/[^/]+\/$/.test(destination.pathname)) return false;
+                if (destination.origin !== window.location.origin || !isGuideHandoff(eventName, params, destination.pathname)) return false;
                 var payload = window.seascapeSanitizeAnalyticsPayload(Object.assign({}, params, {
                     page_location: getSanitizedPageLocation(),
                     page_path: getSanitizedPagePath(),

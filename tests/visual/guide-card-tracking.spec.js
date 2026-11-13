@@ -98,3 +98,37 @@ test("middle-click opens the property in a new tab and tracks the same guide cli
   expect(await guideEventCount(property)).toBe(0);
   expect(guideEvents()).toHaveLength(1);
 });
+
+const timingGuide = "https://seascape-vacations.com/guides/best-time-visit-anna-maria-island/";
+for (const [label, destinationPath] of [
+  ["See homes closer to AMI", "/stays/anna-maria-island-vacation-rentals/"],
+  ["Compare the space tradeoff", "/stays/anna-maria-island-beachfront-rentals/"],
+]) {
+  test(`timing guide records one same-tab click for ${label}`, async ({ page, context }) => {
+    const received = await interceptGuideTracking(context);
+    await page.goto(timingGuide);
+    const link = page.getByRole("link", { name: label, exact: true });
+    await link.click();
+    await expect(page).toHaveURL(url => url.pathname === destinationPath);
+
+    const clicks = () => received.filter(({ event }) => event === "guide_book_direct_click");
+    await expect.poll(clicks).toHaveLength(1);
+    const { payload } = clicks()[0];
+    expect(payload).toMatchObject({
+      placement: "best_time_season_choice",
+      guide_slug: "best-time-visit-anna-maria-island",
+      page_location: timingGuide,
+      page_path: "/guides/best-time-visit-anna-maria-island/",
+    });
+    const destination = new URL(payload.link_url);
+    expect(destination.pathname).toBe(destinationPath);
+    expect(destination.searchParams.get("sv_guide_click_id")).toMatch(/^svg_/);
+    expect(new URL(page.url()).searchParams.get("sv_guide_click_id")).toBe(destination.searchParams.get("sv_guide_click_id"));
+
+    await page.reload();
+    expect(await page.evaluate(() => window.dataLayer.some(
+      entry => entry[0] === "event" && entry[1] === "guide_book_direct_click"
+    ))).toBe(false);
+    expect(clicks()).toHaveLength(1);
+  });
+}
