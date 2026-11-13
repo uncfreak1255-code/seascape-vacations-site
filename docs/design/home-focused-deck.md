@@ -73,3 +73,18 @@ unit suite and content, design, recovery, links and schema gates. The normal
 guarded checkpoint follows. Full visual, E2E and performance proof are separate
 and must pass before publication; no release-green claim follows from this
 repair alone. The photo viewer stays in a separate review prototype.
+
+## Post-repair browser verification
+
+The complete visual suite now executes: 663 passed, 94 intentional device skips,
+and 13 failures. Eleven failures were old single-anchor test assumptions after
+A introduced its separate Explore CTA. The three affected specs now select the
+photo link explicitly, use See all homes when browsing the full collection,
+and check both links' destinations/focus. Their focused rerun plus deck coverage
+passes: 28 tests, 4 intentional skips. No runtime or visual assertions were removed.
+The only outstanding visual failures are the intended desktop/phone homepage
+snapshot changes; the required reviewed baseline workflow has not run. No local
+baseline overwrite or tolerance relaxation was used. Publication remains held.
+
+The repaired TesterArmy E2E suite passes 27 tests with 1 intentional skip.
+The photo viewer is a separate offline review artifact, not part of this branch.

@@ -34,9 +34,12 @@ test('keyboard card focus stays visible without lifting or enlarging the card', 
   await card.scrollIntoViewIfNeeded();
   await page.mouse.move(1, 1);
   const resting = await card.evaluate(node => getComputedStyle(node).transform);
-  await card.locator('a').focus();
-  await expect.poll(() => card.evaluate(node => getComputedStyle(node).transform)).toBe(resting);
-  expect(await card.locator('a').evaluate(node => getComputedStyle(node).outlineStyle)).not.toBe('none');
+  // Both the photo link and the explicit A CTA must preserve a static focus state.
+  for (const link of await card.locator('a').all()) {
+    await link.focus();
+    await expect.poll(() => card.evaluate(node => getComputedStyle(node).transform)).toBe(resting);
+    expect(await link.evaluate(node => getComputedStyle(node).outlineStyle)).not.toBe('none');
+  }
   expect(await card.evaluate(node => node.getAnimations().length)).toBe(0);
 });
 
