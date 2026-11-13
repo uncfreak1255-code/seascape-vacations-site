@@ -1,0 +1,9 @@
+<p class="hd-hint">Swipe to explore the collection.</p>
+<div class="hd-controls" data-deck-controls hidden>
+  <button type="button" data-deck-step="-1" aria-label="Previous home">{{ uiIcon('chevron-left') }}</button>
+  <span class="hd-position" data-deck-position></span>
+  <button type="button" data-deck-step="1" aria-label="Next home">{{ uiIcon('chevron-right') }}</button>
+  <button type="button" data-deck-all aria-expanded="false" aria-controls="home-deck-stage">See all homes</button>
+</div>
+<div class="hd-names" data-deck-names hidden role="group" aria-label="Choose a home">{% for home in properties %}<button type="button" data-deck-go="{{ loop.index0 }}" aria-pressed="{{ 'true' if loop.first else 'false' }}">{{ home.cardName or home.name }}</button>{% endfor %}</div>
+<p class="g-sr-only" data-deck-status role="status" aria-live="polite" aria-atomic="true"></p>
