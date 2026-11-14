@@ -256,8 +256,7 @@ SEO field, source and booking link; the post-table decision aside and conversion
 kit retain their reading positions. Phones show every comparison value as a
 labeled pair without sideways scrolling. The body carries `planning-guide`
 and `comparison-guide`, bringing this frame into the whole-page F1/F2/F3 floors.
-This approval covers the named guide; no photo, chart, filter or accordion is
-part of A. Other guides convert only under their own approved scope.
+This covers the named guide only; A has no photo, chart, filter or accordion.
 
 Sawyer selected Decision ledger A for AMI vs Clearwater on October28,2026.
 `layouts/guide-decision-ledger.njk` and `decision-ledger.css` preserve its compact
@@ -266,7 +265,7 @@ actions. Original reader words, SEO and rating values remain unchanged.
 
 ## Activity guides
 
-Sawyer selected Rainy Day C on November 2, 2026: three rainy-day plans, real game-room photography, an early Coastal dates card, the complete Structured comparison in a disclosure, and the full article with a contents rail. `docs/design/activity-guides.md` records the scoped contract; other guides keep their existing formats.
+Sawyer selected Rainy Day C on November 2, 2026; `docs/design/activity-guides.md` records the scoped contract. Other guides keep their existing formats.
 
 ## Reusable Waterline components
 
@@ -276,8 +275,11 @@ Instrument Serif headings, Poppins labels, 4px controls and F1–F6 floors.
 [Component patterns](docs/design/component-patterns.md) defines their states,
 semantics and reuse rules, with shadcn/ui as a pattern reference. Adapt to the
 existing site components; a reference does not require a new framework.
-Rainy Day uses the approved Structured comparison. The other patterns are
-available for separately scoped work; this catalog changes no held guide.
+Rainy Day uses the approved Structured comparison; the rest need separate scope.
+
+## Platform patterns (November 6, 2026)
+
+Mobile first, follow the interaction patterns of Airbnb, then Vrbo, Booking.com and Expedia, in Waterline's look, not local competitors'. Before search, catalog, property, booking, filter, gallery or sticky-bar work, read [Platform patterns](docs/design/platform-patterns.md) and name the pattern applied.
 
 ## Iconography
 
@@ -287,9 +289,7 @@ review workflow. Keep its consistent 24px viewBox, currentColor strokes and
 quiet Waterline ink/clay treatment; do not add an icon package or mix icon
 families. Use an icon only when it helps the label or action. Decorative icons
 are hidden from assistive technology; icon-only controls retain a useful name.
-Existing rating values may use SVG stars with a spoken count, preserving the
-original values. New ratings still require the evidence under Trust and
-usability. Applying this rule to a legacy route follows that route's approved
+Existing rating values may use SVG stars with a spoken count. New ratings still require the evidence under Trust and usability. Applying this rule to a legacy route follows that route's approved
 scope; it does not authorize a held-guide edit or publication.
 
 ## Guide figures: when a guide earns a chart or diagram
