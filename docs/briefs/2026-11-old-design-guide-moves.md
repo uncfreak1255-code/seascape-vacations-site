@@ -77,7 +77,7 @@ content gate reads every active brief.
   where the og title differs (noise, snowbirds).
 - Swap list: `docs/plans/2026-11-14-old-design-guide-swaps.md` -> "L7 swaps
   (noise rules, Siesta Key beach, snowbirds)".
-- Proof: as M2.
+- Proof: as M2. Noise and snowbirds carry three JSON-LD blocks, Siesta Key four.
 - Receipts of merged batches (M1, M2):
   `docs/plans/2026-11-14-old-design-guide-receipts.md`.
 
