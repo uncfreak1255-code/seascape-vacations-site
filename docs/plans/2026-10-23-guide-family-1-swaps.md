@@ -297,7 +297,8 @@ three pages unless it names one.
    "N min read": as L5 swaps 1 to 3.
 2. The "TL;DR Quick Summary" label is removed and its sentence becomes the serif
    lede; the first body paragraph joins it in the opening column. Other words
-   unchanged.
+   unchanged. Beaches keeps its closing "Updated March 2026 guide." on purpose:
+   it is part of the sentence, and a date change belongs to a copy-lane brief.
 3. The opening photograph and its alt text are dropped (type-led opening, the
    M1 image rule). The OG image is unchanged.
 4. The closing comparison table ("AMI Beach Comparison", "Top AMI Restaurants by
@@ -306,7 +307,8 @@ three pages unless it names one.
    Cell text unchanged. The two five-column tables (beaches, restaurants) add
    `stack-table` and `data-label` so phones stack each row.
 5. CTA block: its title, sentence, button words and `/properties/` href move
-   into the shared booking kit, as L5 swap 8.
+   into the shared booking kit, as L5 swap 8. The title's heading level goes
+   from `h3` to the kit's `h2`.
 6. "Related Guides" becomes "Keep Reading": same links, titles and lines; the
    thumbnail images and their alt text are dropped. Beaches only: the family
    card's second sentence "Browse our family vacation rentals." leaves the card;
