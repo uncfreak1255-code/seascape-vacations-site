@@ -97,3 +97,47 @@ test("both owner form UIs include the shared source fields and script", () => {
     assert.ok(source.includes('{% include "partials/owner-form-source-fields.njk" %}'));
   }
 });
+
+test("an empty direct first touch remains unchanged after a later attributed landing", () => {
+  const storage = new Map();
+  const direct = fakeWindow({
+    href: "https://seascape-vacations.com/property-management/",
+    referrer: "",
+    storage,
+  });
+  fill(direct);
+  const empty = { referrer: "", utm_source: "", utm_medium: "", utm_campaign: "" };
+  assert.deepEqual(values(direct), empty);
+  const serialized = storage.get(KEY);
+  assert.equal(serialized, JSON.stringify(empty));
+
+  const later = fakeWindow({
+    href: "https://seascape-vacations.com/property-management/?utm_source=Search&utm_medium=Paid&utm_campaign=Owner_Winter",
+    referrer: "https://www.example.org/owners",
+    storage,
+  });
+  fill(later);
+  assert.deepEqual(values(later), empty);
+  assert.equal(storage.get(KEY), serialized);
+});
+
+test("blocked storage reads and writes still fill sanitized current-page attribution", () => {
+  const win = fakeWindow({
+    href: "https://seascape-vacations.com/property-management/?utm_source=%20SEARCH%20&utm_medium=%20PAID%20&utm_campaign=%20OWNER_WINTER%20",
+    referrer: "https://WWW.EXAMPLE.ORG/owners",
+  });
+  let reads = 0;
+  let writes = 0;
+  win.sessionStorage.getItem = () => { reads += 1; throw new Error("storage read blocked"); };
+  win.sessionStorage.setItem = () => { writes += 1; throw new Error("storage write blocked"); };
+
+  assert.doesNotThrow(() => fill(win));
+  assert.deepEqual(values(win), {
+    referrer: "www.example.org",
+    utm_source: "search",
+    utm_medium: "paid",
+    utm_campaign: "owner_winter",
+  });
+  assert.equal(reads, 1);
+  assert.equal(writes, 1);
+});
