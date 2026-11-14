@@ -460,8 +460,16 @@ test("priority guides ship complete metadata instead of truncated titles or brok
 
   for (const expectation of guideExpectations) {
     const source = fs.readFileSync(path.join(projectRoot, ...expectation.relativePath), "utf8");
-    const title = getFirstMatch(source, /<title>([\s\S]*?)<\/title>/i);
-    const description = getFirstMatch(source, /<meta name="description" content="([\s\S]*?)"/i);
+    // Guides on a shared layout carry these as quoted front-matter values.
+    const frontMatterValue = (key) => {
+      const quoted = getFirstMatch(source, new RegExp(`^${key}: (".*")$`, "m"));
+      return quoted ? JSON.parse(quoted) : "";
+    };
+    const title =
+      getFirstMatch(source, /<title>([\s\S]*?)<\/title>/i) || frontMatterValue("pageTitle");
+    const description =
+      getFirstMatch(source, /<meta name="description" content="([\s\S]*?)"/i) ||
+      frontMatterValue("pageDescription");
 
     assert.equal(title, expectation.expectedTitle);
 
