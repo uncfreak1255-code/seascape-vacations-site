@@ -27,6 +27,18 @@ const expectedTools = [
   "get_ai_visibility_trend",
   "estimate_ai_visibility_cost",
   "export_ai_visibility_data",
+  "list_google_analytics_properties",
+  "list_search_console_sites",
+  "get_google_analytics_measurement_health",
+  "get_google_analytics_organic_landing_pages",
+  "get_google_analytics_page_performance",
+  "get_google_analytics_key_events",
+  "get_google_analytics_organic_overview",
+  "get_google_analytics_traffic_acquisition",
+  "get_google_analytics_ecommerce_performance",
+  "get_google_analytics_site_search",
+  "get_google_analytics_audience_breakdown",
+  "get_search_opportunities",
 ];
 
 const blockedTools = [
@@ -52,6 +64,9 @@ const blockedTools = [
   "explore_prompt",
   "research_ai_visibility_prompts",
   "generate_ai_visibility_prompts",
+  "set_google_analytics_property",
+  "set_search_console_site",
+  "submit_indexnow_urls",
 ];
 
 test("OpenSEO MCP config is optional, local, approval-gated, and bounded", () => {
