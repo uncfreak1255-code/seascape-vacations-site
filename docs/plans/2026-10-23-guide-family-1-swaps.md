@@ -243,3 +243,42 @@ unchanged. Body words are unchanged except for these swaps, each forced by the f
     byte-identical to main.
 
 All internal hrefs on the legacy page are still present.
+
+## L5 swaps (family guide)
+
+`src/guides/family-vacation-anna-maria-island.html` moved onto the frame (2026-11-14,
+Sawyer's variant A). Title, meta description, keywords, canonical, og/twitter text
+and all four `application/ld+json` blocks (Article, BreadcrumbList, FAQPage,
+LocalBusiness) are byte-identical to main. Body words are unchanged except for
+these swaps:
+
+1. JSON-LD, author, email popup, breadcrumb glyph and Home link: as L1 swaps 1 to 4.
+2. Rail: "In this guide" plus the nine step headings, and `01` to `09` step numbers.
+3. "Family Travel" tag becomes the `pg-label` kicker. "Updated March 2026 • 12 min
+   read" becomes "12 min read": the chosen variant drops the stale date.
+4. The "TL;DR Quick Summary" label is removed and its sentence becomes the serif
+   lede; its closing "Updated March 2026." is removed with the label. The first
+   body paragraph joins it in the opening column. Other words unchanged.
+5. The hero photograph moves under the opening through the new optional
+   `guideHero` (same file and alt text, true `width`/`height`, no lazy loading).
+6. The packing aside keeps its words, illustration and `#beach-packing` id; its
+   inline style block moves into `planning-guide.css` in `--pg-*` tokens and its
+   kicker uses `pg-label`. Between 601 and 899px it now stacks (image first).
+7. "Family Activities & Costs": its `h3` becomes the `h2` of step 09 and the table
+   uses `.cost-table`; cell text unchanged; it now sits before the booking kit.
+8. CTA block ("Find Your Family's Perfect Home", its sentence, button "View
+   Family-Friendly Properties", href `/properties/`) is replaced by the shared
+   booking kit carrying those words as title, copy and primary button. The kit
+   brings its standard copy and `guide_book_direct_click` tracking, as in L1 swap 10.
+9. "Related Guides" becomes the frame's "Keep Reading" list: same three links,
+   titles and lines; the three thumbnail images (and their alt text) are dropped.
+10. "Related Vacation Rentals" becomes the kit's stays module with that label, the
+    same four titles and hrefs; the links gain `guide_stay_click` tracking.
+11. "Also worth reading: our Holmes Beach neighborhood guide." and "Related: AMI
+    noise ordinance guide." become the kit's repeat-link row under the label "Also
+    worth reading": same two links and link words; the "Related:" label, the colon
+    and the periods are dropped.
+12. Sticky bar: words unchanged; it now carries `guide_book_direct_click` tracking,
+    the guide slug and the label "Browse Our Homes" (legacy had none).
+13. Fonts and analytics: as L1 swaps 16 and 17 (local fonts, Playfair dropped; the
+    shared analytics partial).

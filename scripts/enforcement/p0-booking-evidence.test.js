@@ -151,8 +151,14 @@ function visibleText(html) {
 
 function extractFaqJsonLd(source) {
   const scripts = source.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g) || [];
-  for (const script of scripts) {
-    const raw = script.replace(/^<script[^>]*>/, '').replace(/<\/script>$/, '');
+  const blocks = scripts.map((script) => script.replace(/^<script[^>]*>/, '').replace(/<\/script>$/, ''));
+  // A guide on the planning frame carries its JSON-LD as quoted `guideJsonLd` front-matter entries.
+  const frontMatter = source.startsWith('---\n') ? source.slice(4, source.indexOf('\n---\n', 4)) : '';
+  const listed = frontMatter.match(/^guideJsonLd:\n((?:  - ".*"\n?)+)/m);
+  if (listed) {
+    for (const line of listed[1].split('\n').filter(Boolean)) blocks.push(JSON.parse(line.slice(4)));
+  }
+  for (const raw of blocks) {
     const parsed = JSON.parse(raw);
     if (parsed['@type'] === 'FAQPage') {
       return parsed.mainEntity;
