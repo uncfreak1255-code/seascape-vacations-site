@@ -5,7 +5,7 @@
  * are scoped to body.planning-guide. See
  * docs/briefs/2026-10-guide-family-1-planning-frame.md for the components
  * and what a page may put in them; docs/briefs/2026-11-old-design-guide-moves.md
- * adds the opening photograph and the long-read classes.
+ * adds the long-read classes.
  */
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -49,11 +49,6 @@ body.planning-guide main .guide-cta-btn:hover { color: var(--pg-paper); }
 .guide-intro p:first-child { font: 400 22px/1.34 var(--pg-serif); }
 .guide-intro p:first-child strong { font-style: italic; font-weight: 400; }
 .guide-intro p + p { margin-top: 14px !important; }
-
-/* Optional opening photograph (guideHero): one destination photo under the title. */
-.pg-hero { margin: 32px 0 0; }
-.pg-hero img { display: block; width: 100%; max-width: 760px; height: auto; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 4px; }
-.pg-open > .pg-wrap > .pg-hero:last-child { padding-bottom: 40px; }
 
 /* Packing aside (family guide): editorial illustration beside a short list. */
 .guide-packing { display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; align-items: center; padding: 28px 0; }
@@ -144,9 +139,6 @@ body.planning-guide main .guide-cta-btn:hover { color: var(--pg-paper); }
   .breadcrumb ol, .pg-wrap, .pg-body, .pg-tail { padding-left: 40px; padding-right: 40px; }
   .pg-tail { max-width: 1020px; } /* 940px content column once the 40px gutters are added, matching the mock's booking kit and Keep Reading width */
   .pg-open { padding-top: 72px; }
-  .pg-hero { margin-top: 56px; }
-  .pg-hero img { aspect-ratio: 16 / 10; }
-  .pg-open > .pg-wrap > .pg-hero:last-child { padding-bottom: 64px; }
   .guide-packing { grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: 32px; padding: 56px 0; }
   .guide-packing h2 { font-size: 40px; }
   .guide-packing h2 br { display: inline; }

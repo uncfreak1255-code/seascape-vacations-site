@@ -259,8 +259,9 @@ these swaps:
 4. The "TL;DR Quick Summary" label is removed and its sentence becomes the serif
    lede; its closing "Updated March 2026." is removed with the label. The first
    body paragraph joins it in the opening column. Other words unchanged.
-5. The hero photograph moves under the opening through the new optional
-   `guideHero` (same file and alt text, true `width`/`height`, no lazy loading).
+5. The hero photograph (`/images/anna-maria-island-og.jpg`, with its alt text) is
+   dropped: Sawyer chose one image style for the page (2026-11-14), and the painted
+   packing illustration is the only image. The OG image is unchanged.
 6. The packing aside keeps its words, illustration and `#beach-packing` id; its
    inline style block moves into `planning-guide.css` in `--pg-*` tokens and its
    kicker uses `pg-label`. Between 601 and 899px it now stacks (image first).

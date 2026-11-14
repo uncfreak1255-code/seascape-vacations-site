@@ -2,7 +2,7 @@
   Planning-guide frame (DESIGN.md "Planning guides"). Every word comes from the
   page's front matter or its content; this file holds structure only.
   Contract: docs/briefs/2026-10-guide-family-1-planning-frame.md
-  Old-design moves (guideHero, pg-prose): docs/briefs/2026-11-old-design-guide-moves.md
+  Old-design moves (pg-prose, guide-packing): docs/briefs/2026-11-old-design-guide-moves.md
 #}
 {% from "partials/guide-conversion-kit.njk" import guideConversionKit %}
 <!doctype html>
@@ -139,10 +139,6 @@
             {% endfor %}
           </div>
         </div>
-
-        {% if guideHero %}
-        <figure class="pg-hero"><img src="{{ guideHero.src }}" alt="{{ guideHero.alt }}" {% if guideHero.width %}width="{{ guideHero.width }}" height="{{ guideHero.height }}" {% endif %}decoding="async"></figure>
-        {% endif %}
 
         {% if guideFigure %}
         <div class="pg-figure" aria-hidden="true">

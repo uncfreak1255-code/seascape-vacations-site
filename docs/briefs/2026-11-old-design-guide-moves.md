@@ -16,7 +16,7 @@ content gate reads every active brief.
 - persona: a parent planning an Anna Maria Island trip who needs beaches, activities and a place to stay without reading around a legacy page.
 - primary keyword: family vacation Anna Maria Island (M1; each later move keeps its guide's existing keyword)
 - secondary keywords: unchanged from each guide's current page
-- audience pattern: answer first, one photograph, numbered steps with a rail, then the booking kit.
+- audience pattern: answer first, numbered steps with a rail, then the booking kit.
 - proof source: each guide's own published copy and sources; the move adds none.
 - required internal links: /properties/, /stays/family-vacation-rentals-anna-maria-island/
 - CTA target: the shared booking kit and sticky bar (`guide_book_direct_click` tracking)
@@ -25,14 +25,14 @@ content gate reads every active brief.
 ## M1 family guide
 
 - Source: `src/guides/family-vacation-anna-maria-island.html`.
-- Frame additions (this brief extends the frame contract): optional `guideHero`
-  photograph (`src`, `alt`, `width`, `height`; a destination scene, never a home),
-  `.pg-prose` (plain lists and sub-headings of a moved long read) and
-  `.guide-packing` (the packing aside in `--pg-*` tokens). The frame sheet and
-  layout comments point here for them.
-- Deviation from the chosen preview: the photograph is capped at 760px wide and
-  16:10 on desktop, not full width, because the source file is 550px wide and a
-  wider crop renders soft.
+- Frame additions (this brief extends the frame contract): `.pg-prose` (plain
+  lists and sub-headings of a moved long read) and `.guide-packing` (the packing
+  aside in `--pg-*` tokens). The frame sheet and layout comments point here.
+- Images: one image style per page. Sawyer saw the first preview on 2026-11-14,
+  said the old opening photograph and the painted packing illustration clash, and
+  chose option 1 of three rendered fixes: the photograph is removed and the
+  illustration is the page's only image. Later moves open with type; an
+  illustration is added only where it explains the content beside it.
 - Swap list: `docs/plans/2026-10-23-guide-family-1-swaps.md` -> "L5 swaps (family
   guide)". A text difference from main that is not listed there fails the move.
 - Proof: title, meta description, keywords, canonical, og/twitter text and the
@@ -69,7 +69,7 @@ unchanged.
 | SERP source | Web search, observed 2026-11-14 (titles and URLs only) |
 | Competitor URLs inspected | https://compasshotel.com/anna-maria-sound/local-guide/family-friendly-things-to-do-around-anna-maria-island/5-must-do-activities-to-do-with-kids-on-anna-maria-island; https://www.islandreal.com/blog/older-kids-visiting-anna-maria-island/ |
 | Content gap and Seascape answer | Competitor titles are activity lists; Seascape's page already groups activities by age and adds beaches, safety and rentals. Unchanged here |
-| Design/format strategy | Shared planning frame with the opening photograph; same words, numbered steps, rail and booking kit |
+| Design/format strategy | Shared planning frame, type-led opening, one illustration; same words, numbered steps, rail and booking kit |
 | Seascape proof available | Current source and the main-versus-head build diff |
 | Tools/plugins used | Web search, node build diff, Playwright render |
 | Decision and reason | Hold search-facing output unchanged: this is a layout move; ranking work waits for the tracker read and the SEO gate |
