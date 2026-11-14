@@ -53,13 +53,13 @@ content gate reads every active brief.
   pages in `docs/status/next-batch.md`; a layout move there would mix into
   their readback, so they wait for that window to close.
 - Frame additions: `guideOgTitle` (optional; keeps a page's own og/twitter
-  title when it differs from `pageTitle`). The shared booking kit hides the
-  "Plan The Stay" row when a page lists no `repeatLinks`.
+  title when it differs from `pageTitle`). The frame sheet hides the booking
+  kit's repeat-link row when a page lists no `repeatLinks`.
 - Images: type-led opening, no image (the M1 rule). The opening photograph and
   the related-card thumbnails are dropped; the OG image is unchanged.
 - Tables: five-column tables use `cost-table stack-table` so phones stack each
   row with its column label.
-- Swap list: `docs/plans/2026-10-23-guide-family-1-swaps.md` -> "L6 swaps
+- Swap list: `docs/plans/2026-11-14-old-design-guide-swaps.md` -> "L6 swaps
   (beaches, restaurants, fishing)".
 - Proof: same as M1. Title, description and og/twitter text match main after
   HTML entity decoding (the layout escapes `'` and `&`); the four JSON-LD
