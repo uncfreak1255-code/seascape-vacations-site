@@ -38,14 +38,34 @@ Internal booking and revenue figures are omitted from this public document. Veri
 | 6 | Bradenton private-pool answer page | Expansion | **No** — blocked until #1 closes and Analytics opens the next batch | §3 row 1 |
 | 7 | GBP primary category + completeness audit | Local | Audit yes; changes need Sawyer | candidate test |
 
-## 5. Open truth defects (block expansion, not rescue)
+## 5. Pool-heat truth and verification (block expansion, not rescue)
 
-Canon: pool heat is an optional extra at **every managed home**, **$40/night**. Before arrival it must cover the whole stay; after arrival it covers all remaining nights. Approved long-stay flat rates remain valid. Pool heat is never described as included (hub decisions 2026-10-10, 2026-10-11, 2026-10-13).
-1. `src/_data/seoPages.json` (around lines 443, 904, 1347, 1378, 1385) prices pool heat at "$40/day" and/or scopes it to "the five established homes".
-2. `src/_data/properties-fallback.json` `coastal-stay.poolHeat` says "Confirm the fee" — replace uncertainty about the standard price with the complete portfolio rule above.
-3. Five established homes' `poolHeat` ("Pool heating costs extra. Confirm the charge…") omit the price and charging-period rules. Blue House's fallback (around line 1054) says to request heat at booking/before arrival and omits the permitted remaining-nights option. These are incomplete versus canon.
-4. No invariant in `property-truth-invariants.test.js` covers the pool-heat price or charging-period rules. The suite contains 20 test declarations; a passing run is **(unverified — needs receipt)**.
-Verify-only: hub `seascape-properties.md` §3 notes the site once said River House has no pool. The current fallback lists a pool; confirm the live page.
+Current policy supersedes the October blanket paid-heat instruction: Site PRs
+[#942](https://github.com/uncfreak1255-code/seascape-vacations-site/pull/942)
+and [#949](https://github.com/uncfreak1255-code/seascape-vacations-site/pull/949).
+Paid pool heat is optional at **$40 per night, capped at $280 per stay**.
+Before arrival it covers the whole stay; after arrival it covers all remaining
+nights, not individual selected nights. Preserve approved long-stay flat rates,
+already-confirmed reservation inclusions, and property-specific exceptions.
+The Coastal has no charge: heat turns on automatically unless the guest declines.
+Relaxing Oasis keeps its already-confirmed heat-included reservations.
+
+The old defect list below this heading was a pre-repair snapshot, not a current
+instruction to overwrite exceptions. Source fixes are merged; this does not
+establish publication or clear expansion. Verify the current source and relevant
+published pages rather than reapplying the obsolete blanket rule:
+
+- Property facts: `src/_data/properties-fallback.json`; shared stay facts:
+  `src/_data/seoPages.json`.
+- Focused proof: `scripts/enforcement/property-pool-heat-invariants.test.js`
+  and `scripts/enforcement/recovery-smoke.test.js` cover the cap and exceptions.
+- Confirm the normal published revision and visible copy on the pool/hot-tub
+  stay page, Dockside Dreams and The Coastal before claiming live completion.
+- Expansion still requires an Analytics receipt opening the next batch;
+  source corrections alone do not clear that gate.
+
+Verify-only: Hub's historical River House no-pool report needs current live-page
+confirmation; do not infer an unresolved defect from that old report.
 
 ## 6. Candidate tests (CoS-filtered, 2026-10-19; none ships without a brief, a PR, and Sawyer)
 
@@ -56,5 +76,5 @@ Verify-only: hub `seascape-properties.md` §3 notes the site once said River Hou
 ## 7. Do not start this month
 
 - A new broad site-wide SEO audit.
-- Any page that says a home is on Anna Maria Island, or that pool heat is included.
+- Any page that places a managed home on Anna Maria Island or promises pool-heat inclusion without an approved property or reservation exception.
 - Any waterfront, dock, or canal claim for a home other than Dockside Dreams.
