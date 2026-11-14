@@ -1,0 +1,32 @@
+---
+layout: layouts/guest.njk
+permalink: "/internal/booking-2/"
+pageTitle: "Booking-first prototype 2: compact list"
+pageDescription: "Noindex prototype of a booking-first phone homepage for Sawyer to review."
+pageStylesheet: "/css/booking-prototype.css"
+seoIndexable: false
+eleventyExcludeFromCollections: true
+---
+{% set homeCountWord = properties | length | numberWord %}
+<div class="bk bk-2">
+  <section class="bk-search" id="search" aria-labelledby="bk2-heading">
+    <h1 id="bk2-heading">Book direct.<br><em>Choose your home.</em></h1>
+    <details class="bk-fold" open>
+      <summary><span class="bk-fold-label">Dates and guests</span><span class="bk-fold-value" data-trip-summary>Flexible dates</span></summary>
+      <div class="bk-sheet">{% set tripFormId = 'bk2-trip' %}{% include "partials/guest-trip-form.njk" %}</div>
+    </details>
+  </section>
+  <section class="bk-list" aria-labelledby="bk2-list-heading">
+    <h2 id="bk2-list-heading" class="bk-count">{{ homeCountWord | capitalize }} homes, each with a private pool</h2>
+    <ul class="bk-rows">{% for home in properties %}{% set photo = home.photography.photos[0] %}
+      <li><a class="bk-row" href="{{ home.pageUrl }}" data-trip-link>
+        <img src="{{ photo.src | replace('.webp', '-800.webp') }}" width="{{ photo.width }}" height="{{ photo.height }}" alt="{{ photo.alt }}"{% if not loop.first %} loading="lazy"{% endif %}>
+        <span class="bk-row-body"><span class="bk-card-name">{{ home.cardName or home.name }}</span><span class="bk-card-meta">{{ home.city }}</span><span class="bk-card-meta">Sleeps {{ home.guests }} · {{ home.bedrooms }} bedrooms · {{ home.bathrooms }} baths</span></span>
+      </a></li>{% endfor %}
+    </ul>
+  </section>
+  <div class="bk-bar" role="region" aria-label="Why book direct">
+    <p class="bk-reason"><strong>Book direct.</strong><span>Full price before you pay.</span></p>
+    <a class="g-button" href="#search">Dates</a>
+  </div>
+</div>
