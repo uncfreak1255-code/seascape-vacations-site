@@ -43,3 +43,23 @@ three pages unless it names one.
 9. Beaches only: og/twitter title stays "Ultimate Guide to Anna Maria Island
    Beaches | Seascape Vacations" through `guideOgTitle`.
 10. Sticky bar, fonts and analytics: as L5 swaps 12 and 13.
+
+## L7 swaps (noise rules, Siesta Key beach, snowbirds)
+
+Sources: `src/guides/anna-maria-island-noise-ordinance-guide.html`,
+`src/guides/siesta-key-beach-guide.html`,
+`src/guides/snowbirds-guide-extended-stays-florida.html`. Brief M3. Each item
+applies to all three pages unless it names one.
+
+1. Breadcrumb, rail, tag kicker, TL;DR label, opening photograph, CTA block,
+   "Related Guides", "Related Vacation Rentals", sticky bar, fonts and
+   analytics: as L6 swaps 1 to 3, 5 to 7 and 10. The date stamp removed is
+   "Updated March 2026 •" (noise, Siesta Key) and "Updated September 2026 •"
+   (snowbirds).
+2. Closing table ("AMI Noise Ordinance Summary", "Siesta Key Beaches
+   Compared", "Monthly Snowbird Budget Checklist"): as L6 swap 4. Snowbirds
+   keeps its sentence above the table. No table has five columns.
+3. No page has inline reading links, so no page shows the repeat-link row.
+4. og/twitter title stays as it was through `guideOgTitle`: noise "Anna Maria
+   Island Noise Ordinance Guide 2026 | Seascape Vacations"; snowbirds "The
+   Snowbird's Guide to Extended Stays on Florida's Gulf Coast".
