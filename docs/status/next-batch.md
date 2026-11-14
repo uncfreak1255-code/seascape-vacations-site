@@ -284,7 +284,7 @@ Rescue briefs: `docs/briefs/2026-10-property-pages-rescue.md`, `docs/briefs/2026
 
 ## Truth Remediation Before Expansion — Pool Heat
 
-Expansion branches (new stay / answer pages) stay closed until the pool-heat defects in `docs/plans/2026-11-content-priorities.md` §5 are fixed and an invariant asserts the complete rule at every managed home: optional **$40/night**, whole stay before arrival, all remaining nights after arrival, with approved long-stay flat rates valid; never included. **An Analytics receipt must also open the next batch.** Rescue work may proceed under its own gates.
+Expansion stays closed until policy proof in `docs/plans/2026-11-content-priorities.md` §5 and an Analytics receipt open the next batch. Paid heat: **$40/night, capped at $280/stay**; preserve approved exceptions. The Coastal: no charge, automatic unless declined. Rescue work retains its own gates.
 
 ## Workflow Validation Outcome
 

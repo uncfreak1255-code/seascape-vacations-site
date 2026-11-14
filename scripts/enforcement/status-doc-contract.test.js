@@ -125,3 +125,18 @@ test("a hold verdict still requires a completed attack lane", () => {
   assert.match(briefTemplate, /Design\/format strategy/i);
   assert.match(briefTemplate, /Tools\/plugins used/i);
 });
+
+test("active pool-heat instructions preserve the cap and property exceptions", () => {
+  const nextBatch = read("docs/status/next-batch.md");
+  const plan = read("docs/plans/2026-11-content-priorities.md");
+  assert.match(nextBatch, /docs\/plans\/2026-11-content-priorities\.md/);
+  for (const text of [nextBatch, plan]) {
+    assert.doesNotMatch(text, /never included|optional extra at \*\*every managed home\*\*/i);
+    assert.match(text, /Coastal/);
+    assert.match(text, /\$280/);
+  }
+  assert.match(plan, /automatically.*unless.*declines/);
+  assert.match(plan, /long-stay flat rates/);
+  assert.match(plan, /already-confirmed reservation inclusions/);
+  assert.match(plan, /property-pool-heat-invariants\.test\.js/);
+});
