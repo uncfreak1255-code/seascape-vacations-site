@@ -73,7 +73,7 @@ test("collectLaneCopies: resolves stay tokens before guest evaluation", () => {
   const result = collectLaneCopies(lane, "src/_data/seoPages.json", raw);
   assert.equal(result.length, 1);
   assert.doesNotMatch(result[0].copy, /\{(?:heat|sleeps|br|ba|matching)(?::[a-z0-9-]+)?\}/);
-  assert.match(result[0].copy, /sleeping 12–16/);
+  assert.match(result[0].copy, /bedrooms and sleep 12–16/);
   assert.match(result[0].copy, /the hot tub heat is included year-round/);
 });
 

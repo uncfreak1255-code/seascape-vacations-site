@@ -132,3 +132,37 @@ for (const [label, destinationPath] of [
     expect(clicks()).toHaveLength(1);
   });
 }
+
+const areaGuide = 'https://seascape-vacations.com/guides/anna-maria-island-area-guide/';
+test('AMI area native card delivers one event and preserves guide lineage', async ({ page, context }) => {
+  const received = await interceptGuideTracking(context);
+  await page.goto(areaGuide + '?utm_source=google&utm_medium=organic');
+  const card = page.locator('a.property-card[data-property-slug="dockside-dreams"]');
+  await expect(card).toHaveAttribute('href', '/properties/dockside-dreams/#check-availability');
+  await card.click();
+  await expect(page).toHaveURL(/\/properties\/dockside-dreams\/.*#check-availability$/);
+  const events = () => received.filter(e => e.event === 'guide_property_check_dates_click');
+  await expect.poll(events).toHaveLength(1);
+  expect(events()[0].payload).toMatchObject({ guide_slug: 'anna-maria-island-area-guide', property_slug: 'dockside-dreams', placement: 'area_guide_property_card' });
+  const destination = new URL(page.url());
+  expect(destination.searchParams.get('sv_guide_click_id')).toMatch(/^svg_/);
+  expect(destination.searchParams.get('utm_source')).toBe('google');
+  expect(new URL(events()[0].payload.link_url).searchParams.get('sv_guide_click_id')).toBe(destination.searchParams.get('sv_guide_click_id'));
+  await page.reload();
+  expect(events()).toHaveLength(1);
+});
+
+test.describe('AMI area native navigation', () => {
+  test.use({ javaScriptEnabled: false });
+  test('AMI area property cards navigate to dates without JavaScript', async ({ page, context }) => {
+  await interceptGuideTracking(context);
+  await page.goto(areaGuide);
+  for (const slug of ['dockside-dreams', 'the-oasis', 'river-house']) {
+    const card = page.locator(`a.property-card[href="/properties/${slug}/#check-availability"]`);
+    await expect(card).toHaveCount(1);
+    await card.click();
+    await expect(page).toHaveURL(`https://seascape-vacations.com/properties/${slug}/#check-availability`);
+    await page.goto(areaGuide);
+  }
+  });
+});
