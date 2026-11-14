@@ -59,6 +59,14 @@ function buildOwnerLeadContact(rawPayload) {
   const email = normalizeText(data.email);
   const phone = normalizeText(data.phone);
   const originalTouch = firstTouch(data);
+  const propertyAddress = normalizeText(data.property_address);
+  const listingUrl = normalizeText(data.listing_url);
+  const combinedListing = /^(?:www\.)?(?:airbnb\.com|vrbo\.com)\//i.test(propertyAddress)
+    ? `https://${propertyAddress}`
+    : propertyAddress;
+  const combinedFieldHasUrl = !listingUrl
+    && /^https?:\/\//i.test(combinedListing)
+    && URL.canParse(combinedListing);
 
   // No way to follow up on a lead with zero contact handles -> nothing to store.
   if (!name && !email && !phone) return null;
@@ -75,8 +83,8 @@ function buildOwnerLeadContact(rawPayload) {
     name,
     email,
     phone,
-    propertyAddress: normalizeText(data.property_address),
-    listingUrl: normalizeText(data.listing_url),
+    propertyAddress: combinedFieldHasUrl ? "" : propertyAddress,
+    listingUrl: combinedFieldHasUrl ? combinedListing : listingUrl,
     currentManager: normalizeText(data.current_manager),
     currentFeeQuote: normalizeText(data.current_fee_quote),
     whatFeelsOff: normalizeText(data.what_feels_off),

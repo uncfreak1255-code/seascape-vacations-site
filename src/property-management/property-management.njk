@@ -144,7 +144,7 @@ eleventyComputed:
     <link rel="stylesheet" href="/css/base.css">
     <link rel="stylesheet" href="/css/guest.css?v=waterline-v3">
     <link rel="stylesheet" href="/css/owner.css?v=waterline-v3">
-    <link rel="stylesheet" href="/css/owner-lander.css?v=waterline-v2">
+    <link rel="stylesheet" href="/css/owner-lander.css?v=waterline-v3">
 </head>
 {#- Waterline owner lander (November 2026). Shares tokens and section rules with
     the owner hub (owner.css); lander-only rules live in owner-lander.css. -#}
@@ -152,6 +152,7 @@ eleventyComputed:
 {% set landerMarket = landerMarkets[seoPage.destination] %}
 {% set heroHomeSlug = "sarasota-luxe" if (seoPage.destination == "sarasota" or seoPage.destination == "siesta-key") else "the-oasis" %}
 {% set heroHome = properties | propertyBySlug(heroHomeSlug) %}
+{% set islandPage = seoPage.destination in ["anna-maria-island", "siesta-key"] or seoPage.slug == "vacation-rental-management-longboat-key" %}
 <body class="guest-site owner-lander" data-guest-version="waterline-v3">
     <a class="g-skip" href="#main">Skip to content</a>
     {#- The shared header holds a wordmark, a call target, this button and the
@@ -186,6 +187,7 @@ eleventyComputed:
             {% include "partials/owner-hero-photo.njk" %}
             <div class="g-wrap">
                 <div class="g-lander-hero-copy">
+                    {% if islandPage and heroHome %}<p class="g-owner-hero-caption g-lander-nearby-photo">Nearby managed home: {{ heroHome.name }}, {{ heroHome.city }}.</p>{% endif %}
                     <p class="g-label">For Property Owners{% if landerMarket %} &middot; {{ landerMarket }}{% endif %}</p>
                     <h1 id="lander-title">{{ seoPage.h1 }}</h1>
                     <p class="g-owner-lede">{{ seoPage.intro }}</p>
@@ -213,7 +215,7 @@ eleventyComputed:
                     </p>
                 </div>
                 {% endif %}
-                {% if heroHome %}<p class="g-owner-hero-caption">{{ heroHome.name }}, {{ heroHome.city }}. A home we manage.</p>{% endif %}
+                {% if heroHome and not islandPage %}<p class="g-owner-hero-caption">{{ heroHome.name }}, {{ heroHome.city }}. A home we manage.</p>{% endif %}
             </div>
         </section>
 
@@ -270,8 +272,8 @@ eleventyComputed:
             <div class="g-wrap">
                 <dl class="g-lander-ledger">
                     <div><dt>Management Pricing</dt><dd class="g-lander-ledger-value">Tailored</dd></div>
-                    <div><dt>Guest Support</dt><dd class="g-lander-ledger-value">24/7</dd></div>
-                    <div><dt>One-Page Revenue Review</dt><dd class="g-lander-ledger-value">48 hr</dd></div>
+                    <div><dt>Owner Statements</dt><dd class="g-lander-ledger-value">Monthly</dd></div>
+                    <div><dt>Revenue Review</dt><dd class="g-lander-ledger-value">One page</dd></div>
                     <div><dt>Gulf Coast Team</dt><dd class="g-lander-ledger-value">Local</dd></div>
                 </dl>
             </div>
@@ -429,7 +431,7 @@ eleventyComputed:
                 <ol class="g-owner-rows">
                     <li><span aria-hidden="true">01</span><div><h3>Review Your Current Setup</h3><p>Send the listing link or property address and the documents you want reviewed.</p></div></li>
                     <li><span aria-hidden="true">02</span><div><h3>Check the Expensive Gaps</h3><p>We compare the information you provide and flag what still needs verification.</p></div></li>
-                    <li><span aria-hidden="true">03</span><div><h3>Get One Clear Next Step</h3><p>Within 48 hours, get a one-page review of what to keep, fix, or discuss.</p></div></li>
+                    <li><span aria-hidden="true">03</span><div><h3>Get One Clear Next Step</h3><p>Get a one-page review of what looks right, what deserves a second look, and what we’d check next, usually within 48 hours.</p></div></li>
                 </ol>
             </div>
         </section>
@@ -588,14 +590,9 @@ eleventyComputed:
                 <div id="owner-cta">
                     {{ ownerEvaluationForm({
                         eyebrow: "Private revenue review",
-                        title: "Want the same review on your home?",
-                        intro: "Send the listing link or property address, plus a sentence or two about what feels off. Seascape will read what you send and show what is clear, what looks expensive, and what still needs verification before any switch conversation.",
+                        title: "Get a review of your rental",
+                        intro: "Send your listing link or property address. We’ll send a one-page review, usually within 48 hours, covering what looks right, what deserves a second look, and what we’d check next.",
                         formTitle: "Request Your Revenue Review",
-                        formIntro: "Start with the listing URL or address. Add one line on what feels off; an owner statement or fee quote makes the review sharper.",
-                        proofNote: "Source note: Send what you have. We will tell you if a statement, booking calendar, guest review, or fee quote would make the review more useful.",
-                        detailLabel: "What the review checks",
-                        detailCopy: "The private revenue review shows what we can verify, what looks expensive, and what still needs a document before you decide whether to stay put, fix the setup, or talk about a transition.",
-                        confirmation: "Got it. Seascape will read what you send and return the clearest next step: stay put, fix the current setup, or talk about a transition.",
                         pageSlug: seoPage.slug,
                         market: seoPage.destination or "florida-gulf-coast",
                         leadType: "owner-revenue-teardown",
@@ -603,6 +600,7 @@ eleventyComputed:
                         propertyFieldLabel: "Listing URL or property address",
                         propertyFieldPlaceholder: "airbnb.com/h/your-listing, vrbo.com/..., or full street address",
                         showBenchmarkFields: true,
+                        suppressNote: true,
                         fileHelp: "PDF, spreadsheet, or screenshot. You can submit the form without an upload."
                     }) }}
                     <p class="g-lander-cta-foot">
