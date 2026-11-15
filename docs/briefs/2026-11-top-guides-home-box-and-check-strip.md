@@ -103,7 +103,7 @@
 ## Release Gate Checklist
 
 - `npm run verify:release -- --range origin/main`.
-- `guide-ami-srq` and `guide-ami-vs-clearwater` are visual baseline routes (`tests/visual/routes.js`); the box and the strip change their screenshots on purpose, so both baselines are regenerated through `update-visual-baselines.yml`.
+- `guide-ami-srq` and `guide-ami-vs-clearwater` are visual baseline routes (`tests/visual/routes.js`); the box and the strip change their screenshots on purpose, so both baselines are regenerated through `update-visual-baselines.yml`. Regenerated on 2026-11-15 (workflow run 43660183450, commit cbcd7ddb): four screenshots, the two routes on desktop and mobile.
 - Neither route is smoke-asserted for the added text; the airport guide's pinned strings ("Reviewed August 19, 2026", "August 2026 review:") are unchanged.
 
 ## Done When
