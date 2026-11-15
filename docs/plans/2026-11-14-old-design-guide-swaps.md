@@ -81,7 +81,8 @@ applies to both pages unless it names one.
 3. Waterfront restaurants closing table ("Waterfront Restaurants with Docks"):
    as L6 swap 4. It has five columns, so it uses `cost-table stack-table`.
 4. Bradenton vs Tampa comparison table (four columns, inside step 02): same
-   cells, restyled as `cost-table`; its scroll wrapper is removed.
+   cells, restyled as `cost-table stack-table` so a phone shows each row with
+   its column labels; its scroll wrapper is removed.
 5. No page has inline reading links, so no page shows the repeat-link row.
 6. og/twitter title of Bradenton vs Tampa stays "Bradenton vs Tampa Vacation
    Rentals 2026 | Seascape Vacations" through `guideOgTitle`.
