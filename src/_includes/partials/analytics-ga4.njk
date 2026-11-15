@@ -121,8 +121,13 @@
         }
         function isGuideHandoff(eventName, params, pathname) {
             if (eventName === "guide_property_check_dates_click") return /^\/properties\/[^/]+\/$/.test(pathname);
-            return eventName === "guide_book_direct_click" && params.placement === "best_time_season_choice" &&
-                /^\/stays\/anna-maria-island-(vacation|beachfront)-rentals\/$/.test(pathname);
+            if (eventName !== "guide_book_direct_click") return false;
+            if (params.placement === "best_time_season_choice") {
+                return /^\/stays\/anna-maria-island-(vacation|beachfront)-rentals\/$/.test(pathname);
+            }
+            return params.guide_slug === "anna-maria-island-area-guide" &&
+                params.placement === "sticky_book_bar" &&
+                pathname === "/stays/vacation-rentals-near-anna-maria-island/";
         }
         function stageGuideCard(eventName, params) {
             if (typeof params.event_callback !== "function") return false;

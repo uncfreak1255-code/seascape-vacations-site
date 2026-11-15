@@ -179,6 +179,9 @@ test("AMI area sticky booking link reaches the curated collection and tracks onc
   expect(trackedLink.searchParams.get("sv_guide_click_id")).toBe(clickId);
 
   await page.reload();
+  expect(await page.evaluate(() => window.dataLayer.some(
+    entry => entry[0] === "event" && entry[1] === "guide_book_direct_click"
+  ))).toBe(false);
   expect(guideClicks()).toHaveLength(1);
 });
 
