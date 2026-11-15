@@ -53,6 +53,28 @@ monthly strips, ranked bars, time-series lines and sourced ranges. Choose from
 the actual reader question and published dataset after the guide-figures tests
 pass. The catalog includes the selected weather B reference.
 
+### Guide Instrument
+
+Guide Instrument is the selected reusable direction for sourced numerical
+figures. Its rounded pill pillars are compact marks inside an editorial guide,
+not a dashboard card system. Keep direct values and units, separate unlike
+measures, preserve the accessible source table, and render without JavaScript.
+Use `GuideBars`, `GuideLine` or `GuideRange` only when the dataset matches the
+question defined in [Waterline chart patterns](chart-patterns.md).
+
+`GuideStacked` is a held pattern. It becomes eligible only when published parts
+form a meaningful whole; never stack unlike units or invent a remainder.
+
+### Editorial decision card
+
+The Studio-derived editorial decision card is a supporting hierarchy pattern,
+not the default figure and not a new guide shell. Use it when a short question
+and answer helps the reader interpret a complete comparison. Keep the direct
+answer visible, use a quiet Waterline surface and restrained radius, and place
+optional source context in native `details`/`summary` with a 44px minimum
+target. The card never replaces exact values, the source note, the accessible
+table or the booking action.
+
 ## Reference and implementation
 
 [shadcn/ui components](https://ui.shadcn.com/docs/components) provide reference
@@ -62,3 +84,10 @@ use Recharts. This Eleventy site should reuse its templates, native HTML,
 CSS and existing scripts for equivalent behavior. Actual third-party code
 reuse must retain the upstream license and be evaluated in its own scope.
 This catalog installs no React, Tailwind, Radix, Recharts or other dependency.
+
+[Mono Charts](https://amicro.dev/mono-charts) is likewise a visual donor rather
+than a runtime dependency. Guide Instrument borrows rounded mark geometry while
+retaining Waterline tokens, static rendering and the site's existing Eleventy
+stack. Sawyer's Claude Studio artifact contributed the decision-card hierarchy
+and native disclosure treatment; decorative shaders, orbs, tilt effects,
+chat-style FAQs, loops and its alternate palette are not part of this catalog.

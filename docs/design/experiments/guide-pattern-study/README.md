@@ -1,7 +1,8 @@
 # Guide pattern study
 
-Status: nonpublic comparison for Sawyer review. No pattern in this folder is
-approved for production use.
+Status: Sawyer selected **B — Guide Instrument** on November 15, 2026. The
+study remains nonpublic reference material; selection makes B a reusable design
+direction, not an automatic production migration.
 
 This study tests whether selected ideas from Mono Charts and Sawyer's Claude
 Studio artifact can improve future Seascape planning guides without turning
@@ -28,10 +29,9 @@ approved weather guide itself is not being reopened.
 - **GuideStacked:** held until a published dataset contains meaningful parts of
   a whole. The weather fixture does not qualify.
 
-After Sawyer selects a direction, the selected rule may be translated into
-`docs/design/chart-patterns.md` and `docs/design/component-patterns.md` in a
-separate adoption pass. `DESIGN.md` changes only if the selection introduces a
-new design law rather than another example of an existing one.
+The selected rule is translated into `docs/design/chart-patterns.md` and
+`docs/design/component-patterns.md`. `DESIGN.md` is unchanged because the
+selection fits its existing source, static-render, direct-label and mobile laws.
 
 ## Critic verdict
 
