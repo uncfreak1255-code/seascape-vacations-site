@@ -45,9 +45,9 @@ Layout and tokens: [guides index design](guides-index.md).
   120ms. Phones keep their default tap behaviour. Cards get no press scale,
   because 3% of a 400px card is a visible lurch.
 
-## Book-direct glint (`src/css/motion.css`, proposed November 15, 2026)
+## Book-direct glint (`src/css/motion.css`, November 15, 2026)
 
-Status: draft proposal for Sawyer's review; not approved until its PR merges.
+Sawyer picked this soft white version (option A) over a citron glint and no glint on November 15, 2026.
 
 - Applies to one control: the submit button in the property booking panel
   (`g-button-glint`, added in `partials/guest-trip-form.njk` only when the form
