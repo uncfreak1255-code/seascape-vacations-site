@@ -2,35 +2,35 @@
   "routes": {
     "/": {
       "script": 93608,
-      "stylesheet": 89331
+      "stylesheet": 89893
     },
     "/properties/": {
       "script": 107996,
-      "stylesheet": 84698
+      "stylesheet": 85260
     },
     "/property-management/": {
       "script": 91543,
-      "stylesheet": 61447
+      "stylesheet": 62009
     },
     "/property-management/vacation-rental-licensing-florida/": {
       "script": 61354,
-      "stylesheet": 72552
+      "stylesheet": 73114
     },
     "/property-management/vacation-rental-management-fees-florida/": {
       "script": 61354,
-      "stylesheet": 72552
+      "stylesheet": 73114
     },
     "/property-management/vrbo-management-services-florida/": {
       "script": 61354,
-      "stylesheet": 72552
+      "stylesheet": 73114
     },
     "/stays/anna-maria-island-beachfront-rentals/": {
       "script": 59380,
-      "stylesheet": 53057
+      "stylesheet": 53619
     },
     "/stays/anna-maria-island-vacation-rentals/": {
       "script": 59380,
-      "stylesheet": 53057
+      "stylesheet": 53619
     }
   },
   "raises": [
@@ -1681,6 +1681,70 @@
       "to": 59380,
       "reason": "Measured 378 inline script bytes for once-only tracking on the two Anna Maria timing guide links. Lighthouse timing ceilings and ratchet logic stay fixed.",
       "date": "2026-11-13"
+    },
+    {
+      "route": "/",
+      "metric": "stylesheet",
+      "from": 89331,
+      "to": 89893,
+      "reason": "Measured 562 stylesheet bytes in motion.css (appended to every Waterline bundle) for the one-pass hover glint on the property booking button, picked by Sawyer on 2026-11-15. CSS only; no script, request or layout change.",
+      "date": "2026-11-15"
+    },
+    {
+      "route": "/properties/",
+      "metric": "stylesheet",
+      "from": 84698,
+      "to": 85260,
+      "reason": "Measured 562 stylesheet bytes in motion.css (appended to every Waterline bundle) for the one-pass hover glint on the property booking button, picked by Sawyer on 2026-11-15. CSS only; no script, request or layout change.",
+      "date": "2026-11-15"
+    },
+    {
+      "route": "/property-management/",
+      "metric": "stylesheet",
+      "from": 61447,
+      "to": 62009,
+      "reason": "Measured 562 stylesheet bytes in motion.css (appended to every Waterline bundle) for the one-pass hover glint on the property booking button, picked by Sawyer on 2026-11-15. CSS only; no script, request or layout change.",
+      "date": "2026-11-15"
+    },
+    {
+      "route": "/property-management/vacation-rental-licensing-florida/",
+      "metric": "stylesheet",
+      "from": 72552,
+      "to": 73114,
+      "reason": "Measured 562 stylesheet bytes in motion.css (appended to every Waterline bundle) for the one-pass hover glint on the property booking button, picked by Sawyer on 2026-11-15. CSS only; no script, request or layout change.",
+      "date": "2026-11-15"
+    },
+    {
+      "route": "/property-management/vacation-rental-management-fees-florida/",
+      "metric": "stylesheet",
+      "from": 72552,
+      "to": 73114,
+      "reason": "Measured 562 stylesheet bytes in motion.css (appended to every Waterline bundle) for the one-pass hover glint on the property booking button, picked by Sawyer on 2026-11-15. CSS only; no script, request or layout change.",
+      "date": "2026-11-15"
+    },
+    {
+      "route": "/property-management/vrbo-management-services-florida/",
+      "metric": "stylesheet",
+      "from": 72552,
+      "to": 73114,
+      "reason": "Measured 562 stylesheet bytes in motion.css (appended to every Waterline bundle) for the one-pass hover glint on the property booking button, picked by Sawyer on 2026-11-15. CSS only; no script, request or layout change.",
+      "date": "2026-11-15"
+    },
+    {
+      "route": "/stays/anna-maria-island-beachfront-rentals/",
+      "metric": "stylesheet",
+      "from": 53057,
+      "to": 53619,
+      "reason": "Measured 562 stylesheet bytes in motion.css (appended to every Waterline bundle) for the one-pass hover glint on the property booking button, picked by Sawyer on 2026-11-15. CSS only; no script, request or layout change.",
+      "date": "2026-11-15"
+    },
+    {
+      "route": "/stays/anna-maria-island-vacation-rentals/",
+      "metric": "stylesheet",
+      "from": 53057,
+      "to": 53619,
+      "reason": "Measured 562 stylesheet bytes in motion.css (appended to every Waterline bundle) for the one-pass hover glint on the property booking button, picked by Sawyer on 2026-11-15. CSS only; no script, request or layout change.",
+      "date": "2026-11-15"
     }
   ]
 }

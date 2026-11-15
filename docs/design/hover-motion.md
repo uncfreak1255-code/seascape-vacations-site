@@ -44,3 +44,20 @@ Layout and tokens: [guides index design](guides-index.md).
   On fine pointers with motion allowed, a press scales the chip to 0.97 over
   120ms. Phones keep their default tap behaviour. Cards get no press scale,
   because 3% of a 400px card is a visible lurch.
+
+## Book-direct glint (`src/css/motion.css`, November 15, 2026)
+
+Sawyer picked this soft white version (option A) over a citron glint and no glint on November 15, 2026.
+
+- Applies to one control: the submit button in the property booking panel
+  (`g-button-glint`, added in `partials/guest-trip-form.njk` only when the form
+  belongs to a property). The homepage "Find my home" button and the header
+  button do not get it.
+- On fine-pointer hover with motion allowed, one soft white band (24% white,
+  skewed 20°, 36% of the button wide) crosses the button once over 650ms
+  (`drift`, glide curve `cubic-bezier(.2,.7,.2,1)`). It does not loop. Moving
+  off and back on plays it again.
+- No glint on touch, under `prefers-reduced-motion: reduce`, or while the
+  button has keyboard focus; keyboard focus keeps its outline only, as above.
+- CSS only: no script, no new request, no layout change. The button's fill,
+  label, link and tracking stay as they were.
