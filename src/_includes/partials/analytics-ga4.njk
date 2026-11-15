@@ -121,6 +121,12 @@
         }
         function isGuideHandoff(eventName, params, pathname) {
             if (eventName === "guide_property_check_dates_click") return /^\/properties\/[^/]+\/$/.test(pathname);
+{%- if page.url == "/guides/anna-maria-island-area-guide/" or page.url == "/stays/vacation-rentals-near-anna-maria-island/" %}
+            if (eventName === "guide_book_direct_click" &&
+                params.guide_slug === "anna-maria-island-area-guide" &&
+                (params.placement === "sticky_book_bar" || params.placement === "mobile_cta_bar") &&
+                pathname === "/stays/vacation-rentals-near-anna-maria-island/") return true;
+{%- endif %}
             return eventName === "guide_book_direct_click" && params.placement === "best_time_season_choice" &&
                 /^\/stays\/anna-maria-island-(vacation|beachfront)-rentals\/$/.test(pathname);
         }

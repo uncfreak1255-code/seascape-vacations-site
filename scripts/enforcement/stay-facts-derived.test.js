@@ -366,7 +366,7 @@ test("matching occupancy and home count come from the page list, not an unrelate
   const catalog = structuredClone(fallback);
   const amiPool = vacationerPages().find((page) => page.slug === "anna-maria-island-homes-with-pool");
   assert.ok(amiPool, "AMI pool stay must exist");
-  assert.match(JSON.stringify(amiPool.faqs), /\{br-matching\} bedrooms sleeping \{sleeps-matching\}/);
+  assert.match(JSON.stringify(amiPool.faqs), /\{br-matching\} bedrooms and sleep \{sleeps-matching\}/);
   assert.doesNotMatch(JSON.stringify(amiPool.faqs), /4.5 bedrooms sleeping/);
 
   const source = vacationerPages().find((page) => page.slug === "4-bedroom-vacation-rentals-florida");

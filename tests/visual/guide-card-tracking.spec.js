@@ -132,3 +132,77 @@ for (const [label, destinationPath] of [
     expect(clicks()).toHaveLength(1);
   });
 }
+
+const areaGuide = 'https://seascape-vacations.com/guides/anna-maria-island-area-guide/';
+test('AMI area native card delivers one event and preserves guide lineage', async ({ page, context }) => {
+  const received = await interceptGuideTracking(context);
+  await page.goto(areaGuide + '?utm_source=google&utm_medium=organic');
+  const card = page.locator('a.property-card[data-property-slug="dockside-dreams"]');
+  await expect(card).toHaveAttribute('href', '/properties/dockside-dreams/#check-availability');
+  await card.click();
+  await expect(page).toHaveURL(/\/properties\/dockside-dreams\/.*#check-availability$/);
+  const events = () => received.filter(e => e.event === 'guide_property_check_dates_click');
+  await expect.poll(events).toHaveLength(1);
+  expect(events()[0].payload).toMatchObject({ guide_slug: 'anna-maria-island-area-guide', property_slug: 'dockside-dreams', placement: 'area_guide_property_card' });
+  const destination = new URL(page.url());
+  expect(destination.searchParams.get('sv_guide_click_id')).toMatch(/^svg_/);
+  expect(destination.searchParams.get('utm_source')).toBe('google');
+  expect(new URL(events()[0].payload.link_url).searchParams.get('sv_guide_click_id')).toBe(destination.searchParams.get('sv_guide_click_id'));
+  await page.reload();
+  expect(events()).toHaveLength(1);
+});
+
+test("AMI area sticky booking link reaches the curated collection and tracks once", async ({ page, context }) => {
+  const received = await interceptGuideTracking(context);
+  const collection = "/stays/vacation-rentals-near-anna-maria-island/";
+  await page.goto(areaGuide);
+
+  const isMobile = page.viewportSize().width <= 768;
+  if (isMobile) {
+    await page.getByRole("heading", { name: "Featured Vacation Rentals" }).scrollIntoViewIfNeeded();
+  }
+  const link = isMobile
+    ? page.locator('.mobile-cta-bar a[data-placement="mobile_cta_bar"]')
+    : page.locator("#sticky-book-bar a");
+  await expect(link).toBeVisible();
+  await expect(link).toHaveAttribute("href", collection);
+  await link.click();
+  await expect(page).toHaveURL(url => url.pathname === collection);
+  await expect(page.getByRole("heading", { level: 1, name: "Vacation Rentals Near Anna Maria Island" })).toBeVisible();
+
+  const guideClicks = () => received.filter(({ event }) => event === "guide_book_direct_click");
+  await expect.poll(guideClicks).toHaveLength(1);
+  const { payload } = guideClicks()[0];
+  expect(payload).toMatchObject({
+    guide_slug: "anna-maria-island-area-guide",
+    placement: isMobile ? "mobile_cta_bar" : "sticky_book_bar",
+  });
+
+  const landing = new URL(page.url());
+  const clickId = landing.searchParams.get("sv_guide_click_id");
+  expect(clickId).toMatch(/^svg_/);
+  const trackedLink = new URL(payload.link_url);
+  expect(trackedLink.pathname).toBe(collection);
+  expect(trackedLink.searchParams.get("sv_guide_click_id")).toBe(clickId);
+
+  await page.reload();
+  expect(await page.evaluate(() => window.dataLayer.some(
+    entry => entry[0] === "event" && entry[1] === "guide_book_direct_click"
+  ))).toBe(false);
+  expect(guideClicks()).toHaveLength(1);
+});
+
+test.describe('AMI area native navigation', () => {
+  test.use({ javaScriptEnabled: false });
+  test('AMI area property cards navigate to dates without JavaScript', async ({ page, context }) => {
+  await interceptGuideTracking(context);
+  await page.goto(areaGuide);
+  for (const slug of ['dockside-dreams', 'the-oasis', 'river-house']) {
+    const card = page.locator(`a.property-card[href="/properties/${slug}/#check-availability"]`);
+    await expect(card).toHaveCount(1);
+    await card.click();
+    await expect(page).toHaveURL(`https://seascape-vacations.com/properties/${slug}/#check-availability`);
+    await page.goto(areaGuide);
+  }
+  });
+});

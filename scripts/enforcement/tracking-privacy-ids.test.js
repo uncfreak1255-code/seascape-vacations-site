@@ -3,14 +3,16 @@ const assert = require("node:assert/strict");
 const fs = require("node:fs");
 const path = require("node:path");
 const vm = require("node:vm");
+const nunjucks = require("nunjucks");
 
 const uuid = "aaaaaaaa-aaaa-4aaa-8aaa-123456789012";
 // Pages run the inline GA4 script first, so its privacy filter is the one registered before the shared runtime loads.
 const privacyFilterSources = {
   "conversion-tracking.js": fs.readFileSync(path.join(__dirname, "../../src/assets/js/conversion-tracking.js"), "utf8"),
-  "analytics-ga4.njk": fs.readFileSync(path.join(__dirname, "../../src/_includes/partials/analytics-ga4.njk"), "utf8")
-    .match(/<script>([\s\S]*?)<\/script>/)[1]
-    .replaceAll("{{ site.analytics.ga4MeasurementId }}", "G-TEST")
+  "analytics-ga4.njk": nunjucks.renderString(
+    fs.readFileSync(path.join(__dirname, "../../src/_includes/partials/analytics-ga4.njk"), "utf8"),
+    { page: { url: "/" }, site: { analytics: { ga4MeasurementId: "G-TEST" } } },
+  ).match(/<script>([\s\S]*?)<\/script>/)[1]
 };
 function loadRuntime(file, { storedId = "", randomUUID = () => uuid } = {}) {
   const source = privacyFilterSources[file];

@@ -3,10 +3,9 @@ const assert = require("node:assert/strict");
 const fs = require("node:fs");
 const path = require("node:path");
 const vm = require("node:vm");
+const nunjucks = require("nunjucks");
 
 const template = fs.readFileSync(path.join(__dirname, "../../src/_includes/partials/analytics-ga4.njk"), "utf8");
-const script = template.match(/<script>([\s\S]*?)<\/script>/)[1]
-  .replaceAll("{{ site.analytics.ga4MeasurementId }}", "G-TEST");
 const guide = "https://seascape-vacations.com/guides/anna-maria-island-vs-siesta-key/";
 const destination = "https://seascape-vacations.com/properties/river-house/?sv_guide_click_id=svg_test#check-availability";
 function storage() {
@@ -16,6 +15,11 @@ function storage() {
 function load(href, sessionStorage, { suppressed = false, date = Date } = {}) {
   const window = { location: new URL(href), sessionStorage, __seascapeAnalyticsSuppressed: suppressed };
   const document = { title: "Guide title", referrer: "https://www.google.com/", createElement: () => ({}), head: { appendChild() {} } };
+  const markup = nunjucks.renderString(template, {
+    page: { url: window.location.pathname },
+    site: { analytics: { ga4MeasurementId: "G-TEST" } },
+  });
+  const script = markup.match(/<script>([\s\S]*?)<\/script>/)[1];
   vm.runInNewContext(script, { window, document, URL, Date: date });
   return window;
 }

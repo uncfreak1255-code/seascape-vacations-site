@@ -26,11 +26,11 @@
         },
         {
           "question": "What size groups can your AMI pool homes accommodate?",
-          "answer": "These near-AMI homes are {br-matching} bedrooms sleeping {sleeps-matching} \u2014 The Oasis for up to {sleeps:the-oasis}, Dockside Dreams for {sleeps:dockside-dreams}, and River House for {sleeps:river-house}. Good for big families and groups."
+          "answer": "These Bradenton homes have {br-matching} bedrooms and sleep {sleeps-matching}. The Oasis accommodates up to {sleeps:the-oasis}, Dockside Dreams up to {sleeps:dockside-dreams}, and River House up to {sleeps:river-house}. Check the selected home\u2019s guest limit, including visitors. Parties and events are not permitted."
         },
         {
           "question": "Can I host a pool party or event at my rental?",
-          "answer": "The pool areas suit family gatherings \u2014 outdoor dining, grills, and big pool decks. For a larger event, check with us first so we can point you to the right home and go over guidelines."
+          "answer": "No. Parties and events are not permitted. Keep your group within the selected home\u2019s guest limit, including visitors."
         },
         {
           "question": "What does pool heat cost?",
@@ -1176,12 +1176,13 @@
       "h1": "Vacation Rentals Near Anna Maria Island",
       "description": "Vacation rentals near Anna Maria Island, book direct: mainland Bradenton homes, private pools, and listing-specific features. Compare full checkout totals for your dates.",
       "introHeading": "Plan a stay near Anna Maria Island",
+      "driveTimeLabel": "Drive from Bradenton to AMI beaches",
       "reviewTrustLabel": "Review each home\u2019s guest feedback",
-      "intro": "Anna Maria Island has the sandbars and sunsets, while near-island homes offer a mainland base. Our listed homes sit 10-15 minutes inland in Bradenton and Sarasota; review each listing for its capacity, pool, parking, and drive time. You can reach Coquina Beach in about 14 minutes.",
+      "intro": "These mainland Bradenton homes offer a private pool and room to spread out between Anna Maria Island beach days. Plan to drive to the island, and check the selected home’s beach route, parking and current bridge traffic before setting out.",
       "faqs": [
         {
           "question": "How far are your homes from Anna Maria Island?",
-          "answer": "About 10-15 minutes by car. Coquina Beach is about 14 minutes from most Bradenton homes."
+          "answer": "These homes are in mainland Bradenton, not on Anna Maria Island. The route and drive time depend on the home, the beach and bridge traffic. Review the selected home’s location before booking."
         },
         {
           "question": "Why stay near Anna Maria Island instead of on it?",
@@ -1201,7 +1202,7 @@
         },
         {
           "question": "Are the homes good for large groups and families?",
-          "answer": "Yes. They sleep {sleeps-matching}, with Dockside Dreams for dock time and The Oasis for the largest groups."
+          "answer": "The listed homes sleep {sleeps-matching}, with different bedroom layouts and amenities. Compare the selected home’s capacity, including visitors, and parking for your group. Parties and events are not permitted."
         },
         {
           "question": "What does pool heat cost?",
@@ -1212,8 +1213,7 @@
         "dockside-dreams",
         "the-oasis",
         "river-house",
-        "bradenton-pool-home",
-        "sarasota-luxe"
+        "bradenton-pool-home"
       ],
       "valueComparison": [
         {
@@ -1238,7 +1238,7 @@
         },
         {
           "label": "Drive to Gulf beaches",
-          "us": "10-15 minutes",
+          "us": "Varies by home, beach and bridge traffic",
           "them": "On the sand"
         },
         {
@@ -1250,22 +1250,22 @@
       "propertyFacts": [
         {
           "name": "Coquina Beach",
-          "time": "14 min",
+          "time": "Check route",
           "note": "Wide south-end sand with shade and a free lot."
         },
         {
           "name": "Manatee Public Beach",
-          "time": "15 min",
+          "time": "Check route",
           "note": "Cafe, restrooms, and gentle water on Holmes Beach."
         },
         {
           "name": "Cortez and the village",
-          "time": "10 min",
+          "time": "Check route",
           "note": "Watch the fishing fleet come in, then eat grouper at the docks."
         },
         {
           "name": "Bean Point",
-          "time": "20 min",
+          "time": "Check route",
           "note": "The quiet north tip where the Gulf meets the bay."
         }
       ],
