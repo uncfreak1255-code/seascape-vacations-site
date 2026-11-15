@@ -98,6 +98,7 @@ body.planning-guide main .guide-cta-btn:hover { color: var(--pg-paper); }
 
 /* A moved guide with no repeatLinks: hide the kit's empty repeat-link row and its label. */
 .guide-repeat-stay-links:not(:has(a)) { display: none; }
+.pg-step > .table-note + .cost-table { margin-top: 18px; }
 .cost-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
 .cost-table th { padding: 0 8px 10px 0; border-bottom: 1px solid var(--pg-ink); color: var(--pg-muted); font: 500 12px/1.3 Poppins, system-ui, sans-serif; text-align: left; vertical-align: bottom; overflow-wrap: anywhere; }
 .cost-table td { padding: 11px 8px 11px 0; border-bottom: 1px solid var(--pg-rule); font-size: 13px; line-height: 1.4; vertical-align: top; overflow-wrap: anywhere; }
