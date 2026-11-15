@@ -23,7 +23,7 @@ The pool FAQ invited larger events despite the shared house rule. The near-AMI c
 
 - hypothesis: correcting false policy/location claims and using native links removes demonstrated decision and navigation defects; this is a repair, not a ranking test
 - primary event: existing guide_property_check_dates_click, with guide_slug, property_slug, placement and sv_guide_click_id
-- guardrail event: existing guide_book_direct_click on sticky collection link; no duplicate primary click
+- guardrail event: existing guide_book_direct_click on desktop and mobile sticky collection links; no duplicate primary click
 - entry criteria: verified source contradiction and JS-only card implementation at base 75892900
 - readback window: source/build and isolated browser regression now; any later demand read uses the existing frozen 22-prompt cohort and complete deployed analytics windows
 - decision rule: retain if facts match canon, links work without JavaScript and one click delivers one event with lineage; do not infer bookings or lift from synthetic checks
@@ -61,7 +61,7 @@ The pool FAQ invited larger events despite the shared house rule. The near-AMI c
 - source files likely to change: `src/_data/seoPages.json`; `src/guides/anna-maria-island-area-guide/index.html`
 - supporting tests: `scripts/enforcement/marketing-guest-facts.test.js`; `scripts/enforcement/ui-runtime.test.js`; `scripts/enforcement/stay-facts-derived.test.js`; `scripts/evals/lane-copy.test.js`; `tests/visual/guide-card-tracking.spec.js`
 - redirect or schema work: none separately authored; stay FAQ data continues to render visible answers and schema from the same source
-- internal-link or CTA work: three native home anchors with dates hash and area_guide_property_card placement; one tracked sticky collection link
+- internal-link or CTA work: three native home anchors with dates hash and area_guide_property_card placement; both tracked sticky collection links
 - money CTA and downstream tracking event to verify: guide_property_check_dates_click once, with matching guide click ID at destination; no-JavaScript native navigation for all three cards
 
 ## Voice Editor Checklist

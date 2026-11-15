@@ -157,7 +157,14 @@ test("AMI area sticky booking link reaches the curated collection and tracks onc
   const collection = "/stays/vacation-rentals-near-anna-maria-island/";
   await page.goto(areaGuide);
 
-  const link = page.locator("#sticky-book-bar a");
+  const isMobile = page.viewportSize().width <= 768;
+  if (isMobile) {
+    await page.getByRole("heading", { name: "Featured Vacation Rentals" }).scrollIntoViewIfNeeded();
+  }
+  const link = isMobile
+    ? page.locator('.mobile-cta-bar a[data-placement="mobile_cta_bar"]')
+    : page.locator("#sticky-book-bar a");
+  await expect(link).toBeVisible();
   await expect(link).toHaveAttribute("href", collection);
   await link.click();
   await expect(page).toHaveURL(url => url.pathname === collection);
@@ -168,7 +175,7 @@ test("AMI area sticky booking link reaches the curated collection and tracks onc
   const { payload } = guideClicks()[0];
   expect(payload).toMatchObject({
     guide_slug: "anna-maria-island-area-guide",
-    placement: "sticky_book_bar",
+    placement: isMobile ? "mobile_cta_bar" : "sticky_book_bar",
   });
 
   const landing = new URL(page.url());
