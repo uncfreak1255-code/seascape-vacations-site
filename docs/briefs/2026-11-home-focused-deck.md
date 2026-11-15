@@ -21,15 +21,14 @@
 
 ## Copy lane
 
-Draft: Previous home, Next home, See all homes, Back to focused deck, Explore this home, Swipe to explore the collection.
+Draft: Previous home, Next home, See all homes, Back to focused deck, Explore this home. The former mobile swipe hint was removed November 15.
 Internal wording removed: no prototype labels or implementation notes reach the page.
 Voice/specificity: functional control labels only; original surrounding copy unchanged.
 Independent voice and rendered review remain with the parent reviewer.
 
 ## Acceptance
 
-Approved A is the baseline for later optional motion. Preserve native phone scrolling,
-filters, trip URLs, date sheet, all property links without JavaScript and reduced motion.
+The approved focused cards apply on desktop. The phone homepage opens a vertical list with swipeable photos within each card. Preserve filters, trip URLs, the date sheet, all property links without JavaScript and reduced motion.
 The existing homepage-controls hero contract is unchanged. No metadata, schema or
 routing changes; no new search-facing claims or research requested.
 

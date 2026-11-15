@@ -1,7 +1,8 @@
 const { test, expect } = require('@playwright/test');
 const { registerStableNetwork } = require('./test-helpers');
 
-test('focused A wraps, supports immediate keyboard and restores the collection', async ({ page }) => {
+test('focused A wraps, supports immediate keyboard and restores the collection', async ({ page, isMobile }) => {
+  test.skip(isMobile, 'desktop deck controls');
   await registerStableNetwork(page);
   const errors = []; page.on('pageerror', e => errors.push(e.message));
   await page.goto('/?guests=6');
@@ -27,17 +28,28 @@ test('focused A wraps, supports immediate keyboard and restores the collection',
   expect(errors).toEqual([]);
 });
 
-test('phone filtering and native snap keep active home and count aligned', async ({ page, isMobile }) => {
-  test.skip(!isMobile);
-  await registerStableNetwork(page); await page.goto('/');
+test('phone opens a vertical list with usable photo strips and filters', async ({ page, isMobile }) => {
+  test.skip(!isMobile, 'phone layout');
+  await registerStableNetwork(page);
+  await page.goto('/');
   const root = page.locator('[data-home-deck]');
-  await page.getByRole('button', { name: 'Sarasota', exact: true }).click();
-  await expect(root.locator('[data-deck-position]')).toHaveText('1 / 1');
-  await expect(root.locator('.g-postcard[data-active="true"] h3')).toHaveText('Sarasota Luxe');
-  await page.getByRole('button', { name: 'All stays', exact: true }).click();
-  await root.locator('.g-postcards').evaluate(el => el.scrollTo({ left: el.children[1].offsetLeft, behavior: 'instant' }));
-  await expect(root.locator('[data-deck-position]')).toHaveText('2 / 8');
+  const cards = root.locator('.g-postcard[aria-hidden="false"]');
+  await expect(root.locator('[data-deck-controls]')).toBeHidden();
+  await expect(root.locator('[data-deck-back]')).toBeHidden();
+  await expect(cards).toHaveCount(8);
+  const first = await cards.nth(0).boundingBox();
+  const second = await cards.nth(1).boundingBox();
+  expect(second.x).toBeCloseTo(first.x, 0);
+  expect(second.y).toBeGreaterThan(first.y + first.height);
+  await expect(cards.last().locator('[data-deck-explore]')).toHaveAttribute('tabindex', '0');
+  const strip = cards.first().locator('[data-ts-strip]');
+  await strip.evaluate(el => el.scrollTo({ left: el.clientWidth, behavior: 'instant' }));
+  await expect(cards.first().locator('[data-ts-count]')).toHaveAttribute('data-n', '2');
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  await page.getByRole('button', { name: 'Sarasota', exact: true }).click();
+  await expect(cards.locator('h3')).toHaveText('Sarasota Luxe');
+  await page.getByRole('button', { name: 'All stays', exact: true }).click();
+  await expect(cards).toHaveCount(8);
 });
 
 test('without JavaScript every homepage property remains linked', async ({ browser, baseURL }) => {
@@ -58,14 +70,21 @@ test('deck survives narrow resize, broken photos and rapid selection without pag
   for (const width of [375, 390, 700, 701, 768, 1051, 1440]) {
     await page.setViewportSize({ width, height: 900 });
     const next = root.getByRole('button', { name: 'Next home', exact: true });
-    await next.press('End'); await next.press('Home');
-    await expect(root.locator('[data-deck-position]')).toHaveText('1 / 8');
-    await expect(root.locator('.g-postcard[data-active="true"] [data-deck-explore]')).toBeVisible();
+    if (width <= 700) {
+      await expect(next).toBeHidden();
+      await expect(root.locator('.g-postcard[aria-hidden="false"]')).toHaveCount(8);
+    } else {
+      await next.press('End');
+      await next.press('Home');
+      await expect(root.locator('[data-deck-position]')).toHaveText('1 / 8');
+      await expect(root.locator('.g-postcard[data-active="true"] [data-deck-explore]')).toBeVisible();
+    }
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   }
 });
 
-test('keyboard selection from the active home never strands focus on hidden content', async ({ page }) => {
+test('keyboard selection from the active home never strands focus on hidden content', async ({ page, isMobile }) => {
+  test.skip(isMobile, 'desktop deck controls');
   await registerStableNetwork(page); await page.goto('/');
   const root = page.locator('[data-home-deck]');
   await root.locator('.g-postcard[data-active="true"] [data-deck-explore]').press('ArrowRight');
@@ -73,8 +92,7 @@ test('keyboard selection from the active home never strands focus on hidden cont
   await expect(root.locator('[data-deck-position]')).toHaveText('2 / 8');
 });
 
-// Approved A fidelity: keep the CTA arrow aligned and native phone snap flush.
-test('focused deck keeps its approved CTA and phone swipe cue aligned', async ({ page, isMobile }) => {
+test('home card keeps its CTA arrow aligned', async ({ page }) => {
   await registerStableNetwork(page); await page.goto('/');
   const root = page.locator('[data-home-deck]');
   const link = root.locator('.g-postcard[data-active="true"] [data-deck-explore]');
@@ -82,11 +100,4 @@ test('focused deck keeps its approved CTA and phone swipe cue aligned', async ({
   const box = await link.boundingBox();
   const arrow = await link.locator(':scope > span').boundingBox();
   expect(Math.abs(box.x + box.width - arrow.x - arrow.width)).toBeLessThanOrEqual(2);
-  if (isMobile) {
-    await expect(root.locator('.hd-hint')).toHaveText('Swipe to explore the collection.');
-    await expect(root.locator('.hd-hint')).toBeVisible();
-    await root.getByRole('button', { name: 'Next home', exact: true }).click();
-    const stage = await root.locator('.g-postcards').boundingBox();
-    await expect.poll(async () => (await root.locator('.g-postcard[data-active="true"]').boundingBox()).x).toBeCloseTo(stage.x, 0);
-  }
 });
