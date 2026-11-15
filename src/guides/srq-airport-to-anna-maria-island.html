@@ -111,6 +111,14 @@ guideKit:
   bookingEngineLabel: Check Available Dates
 ---
 {# Pinned by scripts/enforcement/search-content-rescue.test.js, which reads this source file: <title>SRQ to Anna Maria Island: Time, Cost, Best Route</title> (the layout renders it from pageTitle) #}
+<aside class="pg-checked" aria-label="How we checked this guide">
+  <p class="pg-label">How we checked this guide</p>
+  <ul>
+    <li><strong>November 15, 2026:</strong> rental car counters, the rental car lot and the Uber and Lyft pickup zone, checked against the <a href="https://flysrq.com/ground-transportation" rel="noopener">airport's ground transportation</a> and <a href="https://flysrq.com/car-rentals" rel="noopener">car rental</a> pages.</li>
+    <li><strong>August 2026:</strong> the free island trolley, checked against Manatee County's transit information.</li>
+  </ul>
+</aside>
+
 <section class="pg-step" id="pg-1">
   <p class="pg-num">01</p>
   <h2>Why SRQ is the Best Airport for Anna Maria Island</h2>
@@ -129,6 +137,8 @@ guideKit:
   <h3>3. Private Car Services and Shuttles</h3>
   <p>For groups traveling with a lot of luggage or those arriving late at night, booking a private car service in advance provides peace of mind. Local companies like AMI Taxi and Paradise Car Service monitor your flight and meet you at baggage claim. A private SUV holding up to 6 people generally runs around $80 to $100 one-way.</p>
 </section>
+
+{% set stayHereGuide = "srq-airport-to-anna-maria-island" %}{% include "partials/guide-stay-here.njk" %}
 
 <section class="pg-step" id="pg-3">
   <p class="pg-num">03</p>

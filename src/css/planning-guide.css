@@ -83,6 +83,15 @@ body.planning-guide main .guide-cta-btn:hover { color: var(--pg-paper); }
 .pg-intro-label { display: block; margin-bottom: 10px; }
 .pg-reviewed-by .pg-name { margin-top: 4px; color: var(--pg-ink); font-size: 15px; font-weight: 500; }
 
+/* "How we checked this guide" strip: dated source checks, placed above step 01.
+   A guide carries it only when each line names a check that was done. */
+.pg-checked { margin: 0 0 40px; padding: 18px 20px 20px; border-top: 1px solid var(--pg-ink); border-bottom: 1px solid var(--pg-rule); }
+.pg-checked .pg-label { margin: 0 0 10px; }
+.pg-checked ul { margin: 0; padding: 0; list-style: none; }
+.pg-checked li { color: var(--pg-ink); font-size: 14px; line-height: 1.55; }
+.pg-checked li + li { margin-top: 6px; }
+.pg-checked a { color: var(--pg-ink); text-decoration: underline; text-underline-offset: 3px; }
+
 /* Steps and rail */
 .pg-body { max-width: 1180px; margin: 0 auto; padding: 0 20px; }
 .pg-rail { display: none; }
