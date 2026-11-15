@@ -6,7 +6,7 @@
       "title": "Vacation Rentals Near Anna Maria Island with Private Pools",
       "h1": "Private-Pool Homes Near Anna Maria Island",
       "description": "Book private-pool vacation rentals near Anna Maria Island in Bradenton. Compare the full checkout total for your dates.",
-      "intro": "A private-pool home minutes from Anna Maria Island with a mainland base, a private pool, and listing-specific space and parking details to review before booking.",
+      "intro": "Book a private-pool home in Bradenton, on the mainland near Anna Maria Island. Beach days require a drive; compare each home and check dates for your group.",
       "faqs": [
         {
           "question": "Do all AMI rentals have heated pools?",
@@ -56,7 +56,7 @@
           "value": "Review the complete total for the same home, dates, taxes, fees, and booking terms."
         }
       ],
-      "geoIntro": "<p>A private pool home near Anna Maria Island gives you beach days with a mainland home base. Seascape's near-AMI homes sit in Bradenton, 10\u201315 minutes from Holmes Beach, Bradenton Beach, and Coquina Beach. Review each listing for its capacity, parking, and amenities before booking.</p><p>The tradeoff is plain: you give up a beachfront address for a mainland stay. <strong>The Oasis</strong> {sleeps-phrase:the-oasis} with two hot tubs and a putting green; <strong>Dockside Dreams</strong> {sleeps-phrase:dockside-dreams} with a dock; River House {sleeps-phrase:river-house} near the river.</p><p>Compare the same dates and complete checkout total across channels, including fees, taxes, and booking terms.</p>",
+      "geoIntro": "<p><a href=\"/properties/the-oasis/#booking\" data-track-event=\"stay_view_property_click\" data-page-slug=\"the-oasis\" data-placement=\"stay_intro\"><strong>Check dates at The Oasis</strong></a> — {sleeps-phrase:the-oasis}, with two hot tubs and a putting green.</p><p><a href=\"/properties/dockside-dreams/#booking\" data-track-event=\"stay_view_property_click\" data-page-slug=\"dockside-dreams\" data-placement=\"stay_intro\"><strong>Check dates at Dockside Dreams</strong></a> — {sleeps-phrase:dockside-dreams}, with a waterfront dock.</p><p><a href=\"/properties/river-house/#booking\" data-track-event=\"stay_view_property_click\" data-page-slug=\"river-house\" data-placement=\"stay_intro\"><strong>Check dates at River House</strong></a> — {sleeps-phrase:river-house}, near the river.</p><p>Compare the same dates and complete checkout total across channels, including fees, taxes, and booking terms.</p>",
       "relatedStaySlugs": [
         "anna-maria-island-vacation-rentals",
         "bean-point-luxury-rentals",
