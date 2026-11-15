@@ -83,6 +83,8 @@ applies to both pages unless it names one.
 4. Bradenton vs Tampa comparison table (four columns, inside step 02): same
    cells, restyled as `cost-table stack-table` so a phone shows each row with
    its column labels; its scroll wrapper is removed.
-5. No page has inline reading links, so no page shows the repeat-link row.
-6. og/twitter title of Bradenton vs Tampa stays "Bradenton vs Tampa Vacation
+5. Bradenton vs Tampa step 05: the two "Choose ... If..." cards become two
+   sub-headings with their lists; same words, no card boxes.
+6. No page has inline reading links, so no page shows the repeat-link row.
+7. og/twitter title of Bradenton vs Tampa stays "Bradenton vs Tampa Vacation
    Rentals 2026 | Seascape Vacations" through `guideOgTitle`.
