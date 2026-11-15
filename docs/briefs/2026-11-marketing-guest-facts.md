@@ -11,8 +11,8 @@
 - secondary keywords: Anna Maria Island homes with pool; Anna Maria Island area guide
 - audience pattern: compare actual location, capacity and rules before opening a home's dates
 - proof source: site base 75892900; Seascape Hub origin/main e1f3aa2e context/seascape-properties.md, inspected 2026-11-14, shared no-parties/events rule line 269, guest limits including visitors, Bradenton addresses and Sarasota Luxe address at 119 South Shade Avenue, Sarasota; approved PR #949 pool-heat terms unchanged
-- required internal links: /properties/dockside-dreams/#check-availability, /properties/the-oasis/#check-availability, /properties/river-house/#check-availability, /properties/?area=anna-maria-island
-- CTA target: /properties/dockside-dreams/#check-availability; /properties/the-oasis/#check-availability; /properties/river-house/#check-availability; /properties/?area=anna-maria-island
+- required internal links: /properties/dockside-dreams/#check-availability, /properties/the-oasis/#check-availability, /properties/river-house/#check-availability, /stays/vacation-rentals-near-anna-maria-island/
+- CTA target: /properties/dockside-dreams/#check-availability; /properties/the-oasis/#check-availability; /properties/river-house/#check-availability; /stays/vacation-rentals-near-anna-maria-island/
 - anti-claims: no parties/events invitation; no all-homes 10–15-minute promise; no Sarasota home represented as Bradenton near-AMI inventory; no new inclusions, prices, on-island address, availability, title/ranking experiment or booking/conversion lift claim
 
 ## Why This Repair

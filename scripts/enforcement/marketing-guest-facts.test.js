@@ -29,7 +29,7 @@ test('AMI area cards use native dates anchors with one tracking owner', () => {
   for (const slug of ['dockside-dreams', 'the-oasis', 'river-house']) {
     assert.ok(guide.includes(`href="/properties/${slug}/#check-availability" data-track-event="guide_property_check_dates_click" data-guide-slug="anna-maria-island-area-guide" data-property-slug="${slug}" data-placement="area_guide_property_card"`));
   }
-  assert.match(guide, /href="\/properties\/\?area=anna-maria-island" data-track-event="guide_book_direct_click" data-guide-slug="anna-maria-island-area-guide" data-placement="sticky_book_bar"/);
+  assert.match(guide, /href="\/stays\/vacation-rentals-near-anna-maria-island\/" data-track-event="guide_book_direct_click" data-guide-slug="anna-maria-island-area-guide" data-placement="sticky_book_bar"/);
 });
 
 test('AMI locality copy does not imply walkable mainland homes or unsupported pet policies', () => {

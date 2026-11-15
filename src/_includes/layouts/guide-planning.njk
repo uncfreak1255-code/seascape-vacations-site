@@ -2,6 +2,7 @@
   Planning-guide frame (DESIGN.md "Planning guides"). Every word comes from the
   page's front matter or its content; this file holds structure only.
   Contract: docs/briefs/2026-10-guide-family-1-planning-frame.md
+  Old-design moves (pg-prose, guide-packing): docs/briefs/2026-11-old-design-guide-moves.md
 #}
 {% from "partials/guide-conversion-kit.njk" import guideConversionKit %}
 <!doctype html>
@@ -17,13 +18,13 @@
   <link rel="canonical" href="{{ site.url }}{{ page.url }}">
   <meta property="og:type" content="article">
   <meta property="og:url" content="{{ site.url }}{{ page.url }}">
-  <meta property="og:title" content="{{ pageTitle }}">
+  <meta property="og:title" content="{{ guideOgTitle or pageTitle }}">
   <meta property="og:description" content="{{ guideOgDescription or pageDescription }}">
   <meta property="og:image" content="{{ site.url }}{{ guideImage }}">
   <meta property="og:locale" content="en_US">
   <meta property="og:site_name" content="Seascape Vacations">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="{{ pageTitle }}">
+  <meta name="twitter:title" content="{{ guideOgTitle or pageTitle }}">
   <meta name="twitter:description" content="{{ guideTwitterDescription or pageDescription }}">
   <meta name="twitter:image" content="{{ site.url }}{{ guideImage }}">
   {%- if guideJsonLd %}

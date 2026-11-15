@@ -152,6 +152,36 @@ test('AMI area native card delivers one event and preserves guide lineage', asyn
   expect(events()).toHaveLength(1);
 });
 
+test("AMI area sticky booking link reaches the curated collection and tracks once", async ({ page, context }) => {
+  const received = await interceptGuideTracking(context);
+  const collection = "/stays/vacation-rentals-near-anna-maria-island/";
+  await page.goto(areaGuide);
+
+  const link = page.locator("#sticky-book-bar a");
+  await expect(link).toHaveAttribute("href", collection);
+  await link.click();
+  await expect(page).toHaveURL(url => url.pathname === collection);
+  await expect(page.getByRole("heading", { level: 1, name: "Vacation Rentals Near Anna Maria Island" })).toBeVisible();
+
+  const guideClicks = () => received.filter(({ event }) => event === "guide_book_direct_click");
+  await expect.poll(guideClicks).toHaveLength(1);
+  const { payload } = guideClicks()[0];
+  expect(payload).toMatchObject({
+    guide_slug: "anna-maria-island-area-guide",
+    placement: "sticky_book_bar",
+  });
+
+  const landing = new URL(page.url());
+  const clickId = landing.searchParams.get("sv_guide_click_id");
+  expect(clickId).toMatch(/^svg_/);
+  const trackedLink = new URL(payload.link_url);
+  expect(trackedLink.pathname).toBe(collection);
+  expect(trackedLink.searchParams.get("sv_guide_click_id")).toBe(clickId);
+
+  await page.reload();
+  expect(guideClicks()).toHaveLength(1);
+});
+
 test.describe('AMI area native navigation', () => {
   test.use({ javaScriptEnabled: false });
   test('AMI area property cards navigate to dates without JavaScript', async ({ page, context }) => {
