@@ -46,3 +46,33 @@ SEO queue read from the analytics receipt:
 Do not open a new owner, stay, guide, GEO, or SEO expansion branch from this read.
 If a tracked winner or money page has regressed, use `docs/process/ranking-regression-rescue.md` for a bounded rescue brief instead of waiting passively.
 `docs/status/next-batch.md` should move to `open next batch` only when the analytics receipt says so.
+
+## Bounded Attack Check — October 2, 2026
+
+Attack status: `completed` for the existing AMI-versus-Siesta comparison.
+Query variants checked: `Anna Maria Island vs Siesta Key vacation families` and
+`best time visit Anna Maria Island`; guest destination-choice intent. Free web
+search and competitor-page reads were used, not paid DataForSEO or a new rank
+check. Search results are research evidence, not a Google rank-tracker receipt.
+
+Inspected competitors: [Compass Hotel](https://www.compasshotel.com/anna-maria-sound/anna-maria-island-vs-siesta-key),
+[Vacation Florida](https://vacationflorida.tv/anna-maria-island-vs-siesta-key/), and
+[Mousin Around](https://mousinaround.com/siesta-key-vs-anna-maria-island/).
+They compete on destination fit, family logistics and accommodation choices.
+Current Site source already supplies a verdict, comparison table, parking and
+stay-base choices; preserve that decision format rather than add another page.
+
+The Analytics September 24–30 read reports 888 impressions, 12 clicks and
+14 impressions on the no-slash variant. Source already has the trailing-slash
+canonical and 301 rule; an October 2 live HEAD read of that exact variant returned
+301 to `/guides/anna-maria-island-vs-siesta-key/`. No redundant redirect repair is
+warranted from this evidence. It does not prove Google has recrawled the variant.
+Next bounded proof action: Analytics should compare variant rows on the next
+complete window before proposing any consolidation change. No title rewrite,
+new expansion, design change or booking-PR overlap is authorized by this check.
+
+OpenSEO configuration readback showed the optional localhost MCP and exactly
+six allowed saved-state reads with approval mode `prompt`; the local endpoint
+responded. This task exposes no OpenSEO tool calls or browser-control execution
+surface, so `list_projects` and two saved-tracker reads remain unverified. Do not
+replace them with guessed rank history or invoke paid lookup tools.
