@@ -35,6 +35,13 @@ test('fileCard refuses a bad header or a bundle card without exactly one @dsCard
   assert.throws(() => fileCard('<!DOCTYPE html>\n<html></html>', header), /exactly one @dsCard/);
 });
 
+test('fileCard keeps body text that mentions @dsCard and never double-prefixes an already nested path', () => {
+  const filed = fileCard(bundleCard('<p>Each card starts with @dsCard.</p>\n<img src="../../waterline/a.png">'), header);
+  assert.match(filed, /<p>Each card starts with @dsCard\.<\/p>/);
+  assert.match(filed, /src="\.\.\/\.\.\/waterline\/a\.png"/);
+  assert.doesNotMatch(filed, /\.\.\/\.\.\/\.\.\/waterline/);
+});
+
 test('publishedPath follows the component layout and covers every mapped card', () => {
   assert.equal(publishedPath('property-card'), 'components/CatalogCard/preview.html');
   assert.equal(publishedPath('buttons'), 'components/Button/preview.html');
@@ -101,4 +108,5 @@ test('main writes only changed cards under --dest', (t) => {
   }
   assert.ok(fs.existsSync(path.join(dest, 'components/Button/preview.html')));
   assert.ok(!fs.existsSync(path.join(dest, 'components/Wordmark')));
+  assert.throws(() => main(['--out', out, '--live', liveDir, '--dest', dest]), /is not empty/);
 });

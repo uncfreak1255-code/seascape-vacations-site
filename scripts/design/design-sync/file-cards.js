@@ -65,11 +65,11 @@ function fileCard(bundleHtml, publishedHeader) {
     throw new Error(`Published header is not an @dsCard line: ${publishedHeader.slice(0, 80)}`);
   }
   const lines = bundleHtml.split("\n");
-  const kept = lines.filter((line) => !/@dsCard\b/.test(line));
+  const kept = lines.filter((line) => !/^<!--\s*@dsCard\b/.test(line));
   if (kept.length !== lines.length - 1) {
     throw new Error(`Bundle card must carry exactly one @dsCard line; found ${lines.length - kept.length}`);
   }
-  return [publishedHeader, ...kept].join("\n").split("../waterline/").join("../../waterline/");
+  return [publishedHeader, ...kept].join("\n").replace(/(?<!\.\.\/)\.\.\/waterline\//g, "../../waterline/");
 }
 
 // The opening-synced stamp changes on every build; a card with no other change is not republished.
@@ -119,6 +119,10 @@ function main(argv) {
   const dest = value("--dest");
   if (!liveDir || !dest) {
     throw new Error("Usage: file-cards.js --live <dir> --dest <dir> [--out .design-sync/out]");
+  }
+  // A leftover card from an earlier run would be published as if it had changed.
+  if (fs.existsSync(dest) && fs.readdirSync(dest).length > 0) {
+    throw new Error(`--dest ${dest} is not empty; pass a new or empty folder`);
   }
   const previewDir = path.join(out, "preview");
   const bundle = {};
