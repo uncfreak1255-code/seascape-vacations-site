@@ -244,35 +244,32 @@ Before implementation, write a short experiment brief with:
 - Copy placing any Seascape home on Anna Maria Island.
 - A licence trust strip.
 
+## Index Finding And Target Searches — November 14, 2026
+
+- `/stays/anna-maria-island-homes-with-pool/` read `Discovered - currently not
+  indexed` with no crawl date on Nov 14 (Search Console URL inspection through
+  local OpenSEO `inspect_urls`). Sawyer requested indexing that day; the same
+  read then returned `Submitted and indexed`, last crawl 2026-11-14T20:19Z. A
+  source search ruled out missing internal links. Indexed is not ranked; no
+  position is claimed.
+- Rechecks are Claude scheduled tasks: `pool-lander-index-recheck-2026-11-21`
+  (once) and `weekly-index-coverage-check` (Mondays; inspects every sitemap
+  stay and guide page and files an `Index check:` issue here for any page not
+  indexed). Its first run is not yet observed.
+- Five target searches are saved in OpenSEO under the tag
+  `reverse-engineer-seo`; evidence and proposed moves are in OpenSEO report
+  `06315225-b08e-46b5-8f4d-7d493b88d84a`. They are proposals: they open no
+  batch and are not ranked opportunities under the Reread Contract.
+- One ChatGPT run is noise: Seascape was cited in 0 of 19 answers on Nov 14
+  and 4 of 19 on Nov 9 with no site change between (OpenSEO report
+  `4dfd4da9-f54d-4526-809c-188bd1b8083d`). Judge a page change on two or more
+  consecutive checks.
+
 ## Bounded Attack Check — October 2, 2026
 
-Attack status: `completed` for the existing AMI-versus-Siesta comparison.
-Query variants checked: `Anna Maria Island vs Siesta Key vacation families` and
-`best time visit Anna Maria Island`; guest destination-choice intent. Free web
-search and competitor-page reads were used, not paid DataForSEO or a new rank
-check. Search results are research evidence, not a Google rank-tracker receipt.
-
-Inspected competitors: [Compass Hotel](https://www.compasshotel.com/anna-maria-sound/anna-maria-island-vs-siesta-key),
-[Vacation Florida](https://vacationflorida.tv/anna-maria-island-vs-siesta-key/), and
-[Mousin Around](https://mousinaround.com/siesta-key-vs-anna-maria-island/).
-They compete on destination fit, family logistics and accommodation choices.
-Current Site source already supplies a verdict, comparison table, parking and
-stay-base choices; preserve that decision format rather than add another page.
-
-The Analytics September 24–30 read reports 888 impressions, 12 clicks and
-14 impressions on the no-slash variant. Source already has the trailing-slash
-canonical and 301 rule; an October 2 live HEAD read of that exact variant returned
-301 to `/guides/anna-maria-island-vs-siesta-key/`. No redundant redirect repair is
-warranted from this evidence. It does not prove Google has recrawled the variant.
-Next bounded proof action: Analytics should compare variant rows on the next
-complete window before proposing any consolidation change. No title rewrite,
-new expansion, design change or booking-PR overlap is authorized by this check.
-
-OpenSEO configuration readback showed the optional localhost MCP and exactly
-six allowed saved-state reads with approval mode `prompt`; the local endpoint
-responded. This task exposes no OpenSEO tool calls or browser-control execution
-surface, so `list_projects` and two saved-tracker reads remain unverified. Do not
-replace them with guessed rank history or invoke paid lookup tools.
+Moved to [`docs/status/next-batch-history.md`](next-batch-history.md). Verdict
+kept here: attack `completed` for the AMI-versus-Siesta comparison; no title
+rewrite, expansion or redirect repair was authorized by it.
 
 ## Confirmed Regressions — October 20, 2026
 
