@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Guide pattern study — Seascape</title>
+  <link rel="stylesheet" href="study.css">
+  <style>
+    .pill-chart,
+    .decision-card { border-radius: 12px; }
+    .decision-card .eyebrow { color: var(--clay); }
+    @media (max-width: 520px) {
+      .pill-chart,
+      .decision-card { border-radius: 10px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="study-header">
+    <p class="eyebrow">Nonpublic design study · November 2026</p>
+    <h1>One weather answer, three guide treatments</h1>
+    <p class="lede">Every option uses the same published Seascape data and Waterline tokens. This study changes presentation only; it is not a proposed rewrite of the approved weather guide.</p>
+    <nav aria-label="Study variants">
+      <a href="#waterline">A · Waterline control</a>
+      <a href="#instrument">B · Instrument</a>
+      <a href="#editorial">C · Editorial</a>
+      <a href="#shelf">Component shelf</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="variant" id="waterline">
+      <div class="variant-note">
+        <span>A</span>
+        <div><p class="eyebrow">Waterline control</p><h2>Seasonal rhythm</h2></div>
+        <p>Existing paired-plot direction: open, editorial and exact.</p>
+      </div>
+      <article class="guide-frame control-frame">
+        <p class="guide-kicker">Weather guide</p>
+        <h3>Anna Maria Island weather by month</h3>
+        <p class="answer"><strong>Quick answer:</strong> Late fall through spring has milder air and lower monthly rainfall in the nearby NOAA normals. Summer has the warmest Gulf water proxy and the most rain days.</p>
+        <figure aria-labelledby="control-cap">
+          <figcaption id="control-cap"><strong>The year at a glance.</strong> Normal highs and rain days, with every published value visible.</figcaption>
+          <div class="plot control-plot">
+            <div class="plot-head"><h4>Normal high °F</h4><span>0–100°F</span></div>
+            <ol class="month-grid high-bars">
+              <li style="--v:72.5"><b>72.5°</b><i></i><span>Jan</span></li><li style="--v:74.9"><b>74.9°</b><i></i><span>Feb</span></li><li style="--v:78.2"><b>78.2°</b><i></i><span>Mar</span></li><li style="--v:82.5"><b>82.5°</b><i></i><span>Apr</span></li><li style="--v:87.5"><b>87.5°</b><i></i><span>May</span></li><li style="--v:90"><b>90.0°</b><i></i><span>Jun</span></li><li style="--v:91.1"><b>91.1°</b><i></i><span>Jul</span></li><li style="--v:91.5"><b>91.5°</b><i></i><span>Aug</span></li><li style="--v:90.2"><b>90.2°</b><i></i><span>Sep</span></li><li style="--v:86.3"><b>86.3°</b><i></i><span>Oct</span></li><li style="--v:80"><b>80.0°</b><i></i><span>Nov</span></li><li style="--v:75.2"><b>75.2°</b><i></i><span>Dec</span></li>
+            </ol>
+          </div>
+          <div class="plot control-plot">
+            <div class="plot-head"><h4>Rain days ≥0.01 in</h4><span>0–20 days</span></div>
+            <ol class="month-grid rain-bars">
+              <li style="--v:42.5"><b>8.5</b><i></i><span>Jan</span></li><li style="--v:34"><b>6.8</b><i></i><span>Feb</span></li><li style="--v:32"><b>6.4</b><i></i><span>Mar</span></li><li style="--v:25.5"><b>5.1</b><i></i><span>Apr</span></li><li style="--v:30"><b>6.0</b><i></i><span>May</span></li><li style="--v:64"><b>12.8</b><i></i><span>Jun</span></li><li style="--v:78"><b>15.6</b><i></i><span>Jul</span></li><li style="--v:87.5"><b>17.5</b><i></i><span>Aug</span></li><li style="--v:68.5"><b>13.7</b><i></i><span>Sep</span></li><li style="--v:35"><b>7.0</b><i></i><span>Oct</span></li><li style="--v:28"><b>5.6</b><i></i><span>Nov</span></li><li style="--v:38"><b>7.6</b><i></i><span>Dec</span></li>
+            </ol>
+          </div>
+        </figure>
+        <p class="source"><strong>Source:</strong> NOAA 1991–2020 normals for Sarasota-Bradenton Airport. Full monthly table remains below the figure.</p>
+      </article>
+    </section>
+
+    <section class="variant" id="instrument">
+      <div class="variant-note">
+        <span>B</span>
+        <div><p class="eyebrow">Mono Charts donor</p><h2>Guide instrument</h2></div>
+        <p>Rounded pill marks and direct labels, translated into Waterline without dashboard chrome or animation.</p>
+      </div>
+      <article class="guide-frame instrument-frame">
+        <p class="guide-kicker">Weather guide</p>
+        <h3>Choose the weather window that fits your trip</h3>
+        <p class="answer"><strong>Quick answer:</strong> Late fall through spring has milder air and lower monthly rainfall in the nearby NOAA normals. Summer has the warmest Gulf water proxy and the most rain days.</p>
+        <figure aria-labelledby="instrument-cap">
+          <div class="figure-title"><figcaption id="instrument-cap"><strong>Twelve months, two separate measures.</strong> The pill shape makes the season change faster to scan.</figcaption><span class="figure-key">Exact normals</span></div>
+          <div class="instrument-pair">
+            <section class="pill-chart" aria-label="Normal high temperature">
+              <div class="plot-head"><h4>Normal high</h4><span>°F · 0–100</span></div>
+              <ol class="month-grid high-bars">
+                <li style="--v:72.5"><b>72.5°</b><i></i><span>Jan</span></li><li style="--v:74.9"><b>74.9°</b><i></i><span>Feb</span></li><li style="--v:78.2"><b>78.2°</b><i></i><span>Mar</span></li><li style="--v:82.5"><b>82.5°</b><i></i><span>Apr</span></li><li style="--v:87.5"><b>87.5°</b><i></i><span>May</span></li><li style="--v:90"><b>90.0°</b><i></i><span>Jun</span></li><li style="--v:91.1"><b>91.1°</b><i></i><span>Jul</span></li><li style="--v:91.5"><b>91.5°</b><i></i><span>Aug</span></li><li style="--v:90.2"><b>90.2°</b><i></i><span>Sep</span></li><li style="--v:86.3"><b>86.3°</b><i></i><span>Oct</span></li><li style="--v:80"><b>80.0°</b><i></i><span>Nov</span></li><li style="--v:75.2"><b>75.2°</b><i></i><span>Dec</span></li>
+              </ol>
+            </section>
+            <section class="pill-chart" aria-label="Rain days">
+              <div class="plot-head"><h4>Rain days</h4><span>≥0.01 in · 0–20</span></div>
+              <ol class="month-grid rain-bars">
+                <li style="--v:42.5"><b>8.5</b><i></i><span>Jan</span></li><li style="--v:34"><b>6.8</b><i></i><span>Feb</span></li><li style="--v:32"><b>6.4</b><i></i><span>Mar</span></li><li style="--v:25.5"><b>5.1</b><i></i><span>Apr</span></li><li style="--v:30"><b>6.0</b><i></i><span>May</span></li><li style="--v:64"><b>12.8</b><i></i><span>Jun</span></li><li style="--v:78"><b>15.6</b><i></i><span>Jul</span></li><li style="--v:87.5"><b>17.5</b><i></i><span>Aug</span></li><li style="--v:68.5"><b>13.7</b><i></i><span>Sep</span></li><li style="--v:35"><b>7.0</b><i></i><span>Oct</span></li><li style="--v:28"><b>5.6</b><i></i><span>Nov</span></li><li style="--v:38"><b>7.6</b><i></i><span>Dec</span></li>
+              </ol>
+            </section>
+          </div>
+        </figure>
+        <p class="source"><strong>Source:</strong> NOAA 1991–2020 normals for Sarasota-Bradenton Airport. Full monthly table remains below the figure.</p>
+      </article>
+    </section>
+
+    <section class="variant" id="editorial">
+      <div class="variant-note">
+        <span>C</span>
+        <div><p class="eyebrow">Studio donor</p><h2>Editorial decision card</h2></div>
+        <p>A quieter Studio-style card and native disclosure organize the same answer around the traveler’s choice.</p>
+      </div>
+      <article class="guide-frame editorial-frame">
+        <div class="editorial-grid">
+          <div>
+            <p class="guide-kicker">Weather guide</p>
+            <h3>Choose by heat, water and rain</h3>
+            <p class="answer"><strong>Quick answer:</strong> Late fall through spring has milder air and lower monthly rainfall in the nearby NOAA normals. Summer has the warmest Gulf water proxy and the most rain days.</p>
+            <figure aria-labelledby="editorial-cap">
+              <figcaption id="editorial-cap"><strong>Seasonal rhythm.</strong> Published high–low temperature ranges for four seasonal markers.</figcaption>
+              <div class="range-list">
+                <div><span>Jan</span><i style="--low:52.3;--high:72.5"></i><b>52.3–72.5°</b></div>
+                <div><span>Apr</span><i style="--low:62.7;--high:82.5"></i><b>62.7–82.5°</b></div>
+                <div><span>Jul</span><i style="--low:75.2;--high:91.1"></i><b>75.2–91.1°</b></div>
+                <div><span>Oct</span><i style="--low:68.3;--high:86.3"></i><b>68.3–86.3°</b></div>
+              </div>
+              <p class="sampling-note">Four seasonal markers shown here; the complete twelve-month table stays directly below.</p>
+            </figure>
+          </div>
+          <aside class="decision-card" aria-label="Weather decision summary">
+            <p class="eyebrow">Plan around your tolerance</p>
+            <h4>Milder air or warmer water?</h4>
+            <p>Late fall through spring is milder and normally drier. Summer has the warmest Gulf proxy and more rain days.</p>
+            <details>
+              <summary>How these numbers were sourced</summary>
+              <p>Air temperature and rainfall use NOAA 1991–2020 normals for Sarasota-Bradenton Airport. The full source note and table remain on the guide.</p>
+            </details>
+          </aside>
+        </div>
+      </article>
+    </section>
+
+    <section class="component-shelf" id="shelf">
+      <p class="eyebrow">Reusable guide vocabulary</p>
+      <h2>Four patterns worth keeping on the shelf</h2>
+      <p>These are shape studies, not a component API. Each still needs a page-specific dataset, accessible table and rendered review.</p>
+      <div class="shelf-grid">
+        <article><div class="mini line-mini"><svg viewBox="0 0 240 90" role="img" aria-label="Rounded line geometry sample"><path d="M8 72 C38 68, 46 42, 76 48 S118 68, 142 36 S186 14, 232 24"></path><g><circle cx="8" cy="72" r="4"></circle><circle cx="76" cy="48" r="4"></circle><circle cx="142" cy="36" r="4"></circle><circle cx="232" cy="24" r="4"></circle></g></svg></div><p class="pattern-name">GuideLine</p><h3>Rounded spline line</h3><p>Published observations over time. Keep visible points and honest intervals; no smoothing that invents a trend.</p></article>
+        <article><div class="mini bar-mini"><i style="--v:44"></i><i style="--v:62"></i><i style="--v:84"></i><i style="--v:70"></i><i style="--v:52"></i></div><p class="pattern-name">GuideBars</p><h3>Rounded pill pillars</h3><p>Comparable amounts with a shared zero baseline and direct end labels.</p></article>
+        <article><div class="mini range-mini"><i style="--a:16;--b:52"></i><i style="--a:28;--b:74"></i><i style="--a:45;--b:88"></i><i style="--a:34;--b:68"></i></div><p class="pattern-name">GuideRange</p><h3>Range band</h3><p>Published lower and upper values. Name both endpoints; do not imply a forecast or precise average.</p></article>
+        <article class="hold-pattern"><div class="mini stack-mini"><i><b></b><em></em></i><i><b></b><em></em></i><i><b></b><em></em></i></div><p class="pattern-name">GuideStacked · hold</p><h3>Stacked tones</h3><p>Use only when the published parts form a meaningful whole. The weather fixture does not justify it.</p></article>
+      </div>
+    </section>
+  </main>
+
+  <footer><p>Design study only · No production route, template, copy, schema, tracking or booking behavior changed.</p></footer>
+</body>
+</html>
