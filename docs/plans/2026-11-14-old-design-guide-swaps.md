@@ -63,3 +63,25 @@ applies to all three pages unless it names one.
 4. og/twitter title stays as it was through `guideOgTitle`: noise "Anna Maria
    Island Noise Ordinance Guide 2026 | Seascape Vacations"; snowbirds "The
    Snowbird's Guide to Extended Stays on Florida's Gulf Coast".
+
+## L8 swaps (waterfront restaurants, Bradenton vs Tampa)
+
+Sources: `src/guides/best-waterfront-restaurants-with-boat-dock.html`,
+`src/guides/bradenton-vs-tampa-vacation-rentals.html`. Brief M4. Each item
+applies to both pages unless it names one.
+
+1. Breadcrumb, rail, tag kicker, opening photograph, CTA block, "Related
+   Guides", "Related Vacation Rentals", sticky bar, fonts and analytics: as L6
+   swaps 1 to 3, 5 to 7 and 10. The date stamp removed is "Updated March
+   2026 •" on both pages.
+2. Summary label: "TL;DR Quick Summary" (waterfront restaurants) and "Quick
+   Answer" (Bradenton vs Tampa) are dropped; the text of each box becomes the
+   first intro paragraph. The other paragraphs above the first heading follow
+   it in the intro.
+3. Waterfront restaurants closing table ("Waterfront Restaurants with Docks"):
+   as L6 swap 4. It has five columns, so it uses `cost-table stack-table`.
+4. Bradenton vs Tampa comparison table (four columns, inside step 02): same
+   cells, restyled as `cost-table`; its scroll wrapper is removed.
+5. No page has inline reading links, so no page shows the repeat-link row.
+6. og/twitter title of Bradenton vs Tampa stays "Bradenton vs Tampa Vacation
+   Rentals 2026 | Seascape Vacations" through `guideOgTitle`.

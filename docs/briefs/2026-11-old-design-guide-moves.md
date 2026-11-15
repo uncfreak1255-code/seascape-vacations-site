@@ -7,8 +7,9 @@
   calm editorial variant A from three rendered desktop and mobile previews of the
   family guide and asked for every old-design guide to move. M1 moves the family
   guide. M2 moves the beaches, restaurants and fishing guides. M3 moves the noise
-  rules, Siesta Key beach and snowbird guides. Later moves are
-  added to this brief with their own swap list.
+  rules, Siesta Key beach and snowbird guides. M4 moves the waterfront
+  restaurants and Bradenton vs Tampa guides. Later moves are added to this
+  brief with their own swap list.
 
 ## Content Gate Inputs
 
@@ -78,87 +79,75 @@ content gate reads every active brief.
 - Swap list: `docs/plans/2026-11-14-old-design-guide-swaps.md` -> "L7 swaps
   (noise rules, Siesta Key beach, snowbirds)".
 - Proof: as M2. Noise and snowbirds carry three JSON-LD blocks, Siesta Key four.
-- Receipts of merged batches (M1, M2):
-  `docs/plans/2026-11-14-old-design-guide-receipts.md`.
+- Receipts of merged batches: M1 and M2 in
+  `docs/plans/2026-11-14-old-design-guide-receipts.md`, M3 in
+  `docs/plans/2026-11-15-old-design-guide-receipts-m3.md`.
 
-## Gate 0 Search And Attack Receipt (M3 noise rules guide)
+## M4 waterfront restaurants and Bradenton vs Tampa guides
+
+- Sources: `src/guides/best-waterfront-restaurants-with-boat-dock.html`,
+  `src/guides/bradenton-vs-tampa-vacation-rentals.html`.
+- Why these two: same legacy shell as M1 to M3, and no open measurement window
+  names them.
+- Same rules as M2: type-led opening with no image, same words, `guideOgTitle`
+  where the og title differs (Bradenton vs Tampa).
+- Bradenton vs Tampa opens with a "Quick Answer" box, not a TL;DR box; its text
+  becomes the first intro paragraph and the label is dropped, as for TL;DR.
+- Swap list: `docs/plans/2026-11-14-old-design-guide-swaps.md` -> "L8 swaps
+  (waterfront restaurants, Bradenton vs Tampa)".
+- Proof: as M2. Waterfront restaurants carries three JSON-LD blocks, Bradenton
+  vs Tampa four.
+
+## Gate 0 Search And Attack Receipt (M4 waterfront restaurants guide)
 
 | Field | Required answer |
 | --- | --- |
-| Target query family | anna maria island noise ordinance; quiet hours anna maria island |
-| Searcher intent | Informational: a renter checking quiet hours and rules before or during a stay |
-| Current Seascape URL | https://seascape-vacations.com/guides/anna-maria-island-noise-ordinance-guide/ |
-| SERP observed date | 2026-11-14 |
-| SERP stale after | 2026-12-14 |
-| Current proof | 2026-11-14 web search for "Anna Maria Island noise ordinance quiet hours vacation rental" (US). It lists result pages and is not a rank read: no Seascape position is claimed |
-| Top visible competitors | amisun.com (news and tag pages), islander.org, tampabaybeacons.com |
-| Competitor angle | From result titles only: local news reports on enforcement ("New Anna Maria noise ordinance in effect", "Anna Maria taking new approach to noise violations") |
+| Target query family | waterfront restaurants with boat dock anna maria island; dock and dine bradenton |
+| Searcher intent | Informational: a boater choosing where to tie up for a meal |
+| Current Seascape URL | https://seascape-vacations.com/guides/best-waterfront-restaurants-with-boat-dock/ |
+| SERP observed date | 2026-11-15 |
+| SERP stale after | 2026-12-15 |
+| Current proof | 2026-11-15 web search for "waterfront restaurants with boat dock Anna Maria Island Bradenton dock and dine" (US). It lists result pages and is not a rank read: no Seascape position is claimed |
+| Top visible competitors | bradentongulfislands.com (several pages), opentable (list pages), boatsetter.com, sarasotamagazine.com, islandreal.com |
+| Competitor angle | From result titles only: tourism-board "dock and dine" lists and restaurant-booking list pages |
 | Visual/format gap | Not assessed: the search gives titles, not page layouts; no format claim is made |
 | Seascape gap | None claimed for the layout move; any content change belongs to a later copy-lane brief |
-| Search fit | The title names the query ("Anna Maria Island Noise Ordinance Guide 2026") and the page covers quiet hours, violations, fines and a summary table; unchanged here |
+| Search fit | The title names the query and the page lists restaurants by area with docking notes and a closing table; unchanged here |
 | Local/GBP proof | Not applicable: layout-only move with no local-pack or Google Business change |
 | AEO/readback note | The JSON-LD blocks are byte-identical to main. Read tracker positions before and about four weeks after publish |
 | Recommendation | Keep title, meta, H1, body copy and JSON-LD unchanged; ship the layout move |
 | Attack status | completed |
-| Query variants inspected | Anna Maria Island noise ordinance quiet hours vacation rental |
-| SERP source | Web search, observed 2026-11-14 (titles and URLs only) |
-| Competitor URLs inspected | https://amisun.com/new-anna-maria-noise-ordinance-in-effect/; https://amisun.com/anna-maria-taking-new-approach-to-noise-violations/ |
+| Query variants inspected | waterfront restaurants with boat dock Anna Maria Island Bradenton dock and dine |
+| SERP source | Web search, observed 2026-11-15 (titles and URLs only) |
+| Competitor URLs inspected | https://www.bradentongulfislands.com/blogs/dock-and-dine-best-boat-up-restaurants/; https://boatsetter.com/boating-resources/anna-maria-island-restaurants |
 | Content gap and Seascape answer | Not assessed beyond titles; the page's content is unchanged here |
 | Design/format strategy | Shared planning frame, type-led opening, no image; same words, numbered steps, rail and booking kit |
 | Seascape proof available | Current source and the main-versus-head build diff |
 | Tools/plugins used | Web search, node build diff, Playwright render |
 | Decision and reason | Hold search-facing output unchanged: this is a layout move; ranking work waits for the tracker read and the SEO gate |
 
-## Gate 0 Search And Attack Receipt (M3 Siesta Key beach guide)
+## Gate 0 Search And Attack Receipt (M4 Bradenton vs Tampa guide)
 
 | Field | Required answer |
 | --- | --- |
-| Target query family | siesta key beach guide; siesta key beach parking |
-| Searcher intent | Informational: planning a day at Siesta Key beach (areas, parking, drum circle) |
-| Current Seascape URL | https://seascape-vacations.com/guides/siesta-key-beach-guide/ |
-| SERP observed date | 2026-11-14 |
-| SERP stale after | 2026-12-14 |
-| Current proof | 2026-11-14 web search for "Siesta Key beach guide parking drum circle" (US). It lists result pages and is not a rank read: no Seascape position is claimed |
-| Top visible competitors | tripadvisor.com, visitflorida.com, redawning.com, mustdo.com, siestakeychamber.com, parkingaccess.com, findrentals.com |
-| Competitor angle | From result titles only: destination overviews and single-topic pages ("Siesta Key Beach Parking Guide", "The Siesta Key Drum Circle") |
+| Target query family | bradenton vs tampa; bradenton or tampa vacation rental |
+| Searcher intent | Comparison before choosing a base for a Gulf Coast trip |
+| Current Seascape URL | https://seascape-vacations.com/guides/bradenton-vs-tampa-vacation-rentals/ |
+| SERP observed date | 2026-11-15 |
+| SERP stale after | 2026-12-15 |
+| Current proof | 2026-11-15 web search for "Bradenton vs Tampa vacation rental which is better" (US). It lists result pages and is not a rank read: no Seascape position is claimed |
+| Top visible competitors | vrbo.com, airbnb.com, vacasa.com, expedia.com, holidu.com, bnbfinder.com |
+| Competitor angle | From result titles only: listing pages for Bradenton rentals; no side-by-side comparison page is visible in the titles |
 | Visual/format gap | Not assessed: the search gives titles, not page layouts; no format claim is made |
 | Seascape gap | None claimed for the layout move; any content change belongs to a later copy-lane brief |
-| Search fit | The title names the query ("Siesta Key Beach Guide: Everything You Need to Know (2026)") and the page covers beach areas, parking, the drum circle and a comparison table; unchanged here |
+| Search fit | The title names the comparison and the page covers cost, beaches, trip types, airports and a FAQ; unchanged here |
 | Local/GBP proof | Not applicable: layout-only move with no local-pack or Google Business change |
 | AEO/readback note | The JSON-LD blocks are byte-identical to main. Read tracker positions before and about four weeks after publish |
 | Recommendation | Keep title, meta, H1, body copy and JSON-LD unchanged; ship the layout move |
 | Attack status | completed |
-| Query variants inspected | Siesta Key beach guide parking drum circle |
-| SERP source | Web search, observed 2026-11-14 (titles and URLs only) |
-| Competitor URLs inspected | https://www.visitflorida.com/travel-ideas/articles/beach-highlights-siesta-key; https://parkingaccess.com/siesta-key-beach-parking |
-| Content gap and Seascape answer | Not assessed beyond titles; the page's content is unchanged here |
-| Design/format strategy | Shared planning frame, type-led opening, no image; same words, numbered steps, rail and booking kit |
-| Seascape proof available | Current source and the main-versus-head build diff |
-| Tools/plugins used | Web search, node build diff, Playwright render |
-| Decision and reason | Hold search-facing output unchanged: this is a layout move; ranking work waits for the tracker read and the SEO gate |
-
-## Gate 0 Search And Attack Receipt (M3 snowbird guide)
-
-| Field | Required answer |
-| --- | --- |
-| Target query family | snowbird guide florida gulf coast; monthly winter rental anna maria island |
-| Searcher intent | Informational with booking intent: planning a one to three month winter stay |
-| Current Seascape URL | https://seascape-vacations.com/guides/snowbirds-guide-extended-stays-florida/ |
-| SERP observed date | 2026-11-14 |
-| SERP stale after | 2026-12-14 |
-| Current proof | 2026-11-14 web search for "snowbird guide monthly rental Anna Maria Island Bradenton winter stay" (US). It lists result pages and is not a rank read: no Seascape position is claimed |
-| Top visible competitors | furnishedfinder.com, vacasa.com, floridarentalbyowners.com, floridarentals.com, vrbo.com, travelawaits.com, emeraldcoastbyowner.com |
-| Competitor angle | From result titles only: listing pages for monthly rentals and a few how-to guides ("Guide to monthly rentals for snowbirds", "8 best Florida snowbird destinations") |
-| Visual/format gap | Not assessed: the search gives titles, not page layouts; no format claim is made |
-| Seascape gap | None claimed for the layout move; any content change belongs to a later copy-lane brief |
-| Search fit | The title names the topic and the page covers when to book, what to look for, packing and a budget checklist; unchanged here |
-| Local/GBP proof | Not applicable: layout-only move with no local-pack or Google Business change |
-| AEO/readback note | The JSON-LD blocks are byte-identical to main. Read tracker positions before and about four weeks after publish |
-| Recommendation | Keep title, meta, H1, body copy and JSON-LD unchanged; ship the layout move |
-| Attack status | completed |
-| Query variants inspected | snowbird guide monthly rental Anna Maria Island Bradenton winter stay |
-| SERP source | Web search, observed 2026-11-14 (titles and URLs only) |
-| Competitor URLs inspected | https://www.furnishedfinder.com/blog/guide-to-monthly-rentals-for-snowbirds; https://www.vacasa.com/discover/best-florida-snowbird-destinations |
+| Query variants inspected | Bradenton vs Tampa vacation rental which is better |
+| SERP source | Web search, observed 2026-11-15 (titles and URLs only) |
+| Competitor URLs inspected | https://www.vacasa.com/usa/Florida/Bradenton/; https://www.expedia.com/Bradenton-Vacation-Rentals.d6020.Travel-Guide-VacationRentals |
 | Content gap and Seascape answer | Not assessed beyond titles; the page's content is unchanged here |
 | Design/format strategy | Shared planning frame, type-led opening, no image; same words, numbered steps, rail and booking kit |
 | Seascape proof available | Current source and the main-versus-head build diff |
