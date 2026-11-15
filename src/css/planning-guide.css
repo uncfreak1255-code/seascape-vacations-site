@@ -83,6 +83,17 @@ body.planning-guide main .guide-cta-btn:hover { color: var(--pg-paper); }
 .pg-intro-label { display: block; margin-bottom: 10px; }
 .pg-reviewed-by .pg-name { margin-top: 4px; color: var(--pg-ink); font-size: 15px; font-weight: 500; }
 
+/* "How we checked this guide" strip: dated source checks, placed above step 01.
+   A guide carries it only when each line names a check that was done. It has
+   the top padding of a step, so its label lines up with the rail label, and
+   the step after it keeps its top rule as the divider. */
+.pg-checked { padding: 40px 0 36px; }
+.pg-checked .pg-label { margin: 0 0 10px; }
+.pg-checked ul { margin: 0; padding: 0; list-style: none; }
+.pg-checked li { color: var(--pg-ink); font-size: 14px; line-height: 1.55; }
+.pg-checked li + li { margin-top: 6px; }
+.pg-checked a { color: var(--pg-ink); text-decoration: underline; text-underline-offset: 3px; }
+
 /* Steps and rail */
 .pg-body { max-width: 1180px; margin: 0 auto; padding: 0 20px; }
 .pg-rail { display: none; }
@@ -173,6 +184,7 @@ body.planning-guide main .guide-cta-btn:hover { color: var(--pg-paper); }
   .pg-steps { flex: 1 1 0; min-width: 0; max-width: 780px; }
   .pg-step { padding: 56px 0 60px; }
   .pg-step:first-child { border-top: 0; }
+  .pg-checked { padding-top: 56px; }
   .pg-step h2 { margin-bottom: 22px; font-size: 44px; }
   .pg-num { margin-bottom: 12px; }
   .pg-facts { margin-bottom: 40px; }

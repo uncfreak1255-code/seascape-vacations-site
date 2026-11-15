@@ -24,5 +24,15 @@
     "heading": "Stay at The Coastal in Bradenton",
     "fit": "The Coastal has three bedrooms, two bathrooms and room for up to 10 guests in Bradenton. Enjoy the private pool and hot tub when the weather clears, or head to the air-conditioned game room for a game of pool.",
     "photo": "/images/homes/coastal-stay/08.webp"
+  },
+  "srq-airport-to-anna-maria-island": {
+    "home": "blue-house",
+    "heading": "Flight booked? Check dates at this Bradenton pool home",
+    "fit": "Four bedrooms, a private pool, a pickleball court and a fenced turf yard in Bradenton. It is on the mainland, so rent a car at the airport or plan on rideshares for beach days."
+  },
+  "anna-maria-island-vs-clearwater-beach": {
+    "home": "dockside-dreams",
+    "heading": "Chose Anna Maria Island? Check dates at Dockside Dreams",
+    "fit": "Four bedrooms with a private pool, spa, and a dock on the water in Bradenton. It is our only waterfront home, and it is on the mainland, so beach days mean a drive."
   }
 }
