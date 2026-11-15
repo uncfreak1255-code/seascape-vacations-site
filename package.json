@@ -17,6 +17,7 @@
     "design:donors": "node scripts/design/design-donor-router.js",
     "design:sync": "node scripts/design/design-sync/build.js",
     "design:sync:check": "node scripts/design/design-sync/render-check.js",
+    "design:sync:file": "node scripts/design/design-sync/file-cards.js",
     "start": "node scripts/enforcement/build-site.js --serve",
     "build": "node scripts/enforcement/build-site.js",
     "build:prod": "NODE_ENV=production node scripts/enforcement/build-site.js",
