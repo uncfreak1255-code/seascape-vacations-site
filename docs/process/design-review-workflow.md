@@ -41,6 +41,10 @@ That includes:
   which `npm run design:sync` generates from this repo (`DESIGN.md`, the live
   guest CSS, the self-hosted fonts and the built shell markup). Prove the cards
   with `npm run design:sync:check` before pushing them with the DesignSync tool.
+  When publishing to the design system artifact instead, read its live
+  `components/<Name>/preview.html` files back and run
+  `npm run design:sync:file -- --live <dir> --dest <dir>`: it converts the
+  bundle cards to the published layout and writes only the cards that changed.
   Re-sync after any PR that touches `DESIGN.md`,
   a stylesheet listed in `scripts/design/design-sync/stylesheets.js`
   (including `trip-sheet.css`, which holds the phone rules, and
