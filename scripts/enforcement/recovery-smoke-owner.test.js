@@ -207,3 +207,13 @@ test("owner smoke rejects a missing local-alternative answer and tracked action"
     assert.throws(() => smoke.validateTargetResponse(target, { statusCode: 200, body: stale }), /local-alternative/);
   }
 });
+
+test("owner smoke rejects a published management-fee range on the owner hub", () => {
+  const fs = require("fs");
+  const smoke = loadSmokeModule();
+  const target = smoke.targets.find(entry => entry.path === "/property-management/");
+  const body = fs.readFileSync(path.join(projectRoot, "_site/property-management/index.html"), "utf8");
+  assert.equal(body.includes("15%, 20%"), false);
+  const stale = body.replace("</main>", '<input placeholder="15%, 20%, or the fee terms"></main>');
+  assert.throws(() => smoke.validateTargetResponse(target, { statusCode: 200, body: stale }), /15%, 20%/);
+});
