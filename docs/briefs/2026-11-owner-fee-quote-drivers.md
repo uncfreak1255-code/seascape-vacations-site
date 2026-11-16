@@ -76,11 +76,14 @@ Inventory of links each changed page already carries; not an enforced link map.
 ## Copy and review contract
 
 Draft, remove internal wording, then check voice and specificity. Each answer's
-first sentence answers the question and names Seascape. Every service claim
+first sentence answers the question; answers 05 and 06 name Seascape there,
+and the neutral compare answer (07) names Seascape only in its last sentence. Every service claim
 traces to both current Site copy and Hub owner-offer section 2. Quote factors
 trace to the live fees-page FAQ and Hub section 1 and 3. Omitted as unverified:
 home size or sleeping capacity as a quote factor, seasonality as a separate
-factor, level-of-service tiers, onboarding or setup needs, and any market fee
-range. The fees page no longer says fees fall "within a range" or "a band"
-(geoIntro, one objection, one FAQ); each now says the home is quoted after a
-review. Keep other existing reader copy and the local-alternative answer unchanged.
+factor, level-of-service tiers, onboarding or setup needs as a Seascape quote
+factor or service, and any market fee range. The compare answer's "setup,
+maintenance or card processing" is a question to ask any manager and traces to
+`src/research/how-seascape-protects-owner-net-2026.njk` (Separate charges row).
+The fees page no longer says fees fall "within a range" or "a band" (geoIntro,
+one objection, one FAQ); each now says the home is quoted after a review. Keep other existing reader copy and the local-alternative answer unchanged.
