@@ -4,7 +4,7 @@ for (const motion of [null, 'no-preference', 'reduce']) {
   test.describe(`property navigation with ${motion || 'system'} motion preference`, () => {
     test.use({ reducedMotion: motion });
 
-    test('keeps native transitions available without navigation errors', async ({ page }) => {
+    test('keeps native transitions available without navigation errors', async ({ page, isMobile }) => {
       const errors = [];
       page.on('pageerror', error => errors.push(error.message));
       await page.addInitScript(() => {
@@ -23,8 +23,7 @@ for (const motion of [null, 'no-preference', 'reduce']) {
 
       for (const slug of ['dockside-dreams', 'relaxing-oasis']) {
         await page.goto('/?sv_developer=1');
-        // A keeps the photo link and a separate explicit CTA; browse the full collection.
-        await page.getByRole('button', { name: 'See all homes', exact: true }).click();
+        if (!isMobile) await page.getByRole('button', { name: 'See all homes', exact: true }).click();
         const link = page.locator(`.g-postcard a[href="/properties/${slug}/"]:not([data-deck-explore])`);
         await link.scrollIntoViewIfNeeded();
         await link.click();
