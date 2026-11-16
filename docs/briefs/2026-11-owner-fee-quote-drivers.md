@@ -48,7 +48,7 @@
 | Search fit | Existing owner money page answers the fee question without a number and routes to the real review form |
 | Local/GBP proof | Existing Bradenton/Sarasota local-team facts only; no GBP change |
 | AEO/readback note | Visible FAQ text and FAQPage JSON-LD match exactly, in the partial that already emits FAQPage; no new FAQPage elsewhere |
-| Recommendation | Add three FAQ answers; remove unsourced fee figures from the AMI vs Clearwater guide and the fees-page intro; neutralize owner-form fee placeholders |
+| Recommendation | Add three FAQ answers; remove unsourced fee figures from the AMI vs Clearwater guide and the fees-page intro; replace the fees page's "within a range" wording with per-home quote language; neutralize owner-form fee placeholders |
 | Attack status | completed |
 | Query variants inspected | vacation rental management fees Bradenton Sarasota what is included |
 | SERP source | Free live web search November 16, 2026; no paid rank, SERP or AI-visibility check |
@@ -81,4 +81,6 @@ traces to both current Site copy and Hub owner-offer section 2. Quote factors
 trace to the live fees-page FAQ and Hub section 1 and 3. Omitted as unverified:
 home size or sleeping capacity as a quote factor, seasonality as a separate
 factor, level-of-service tiers, onboarding or setup needs, and any market fee
-range. Keep existing reader copy and the local-alternative answer unchanged.
+range. The fees page no longer says fees fall "within a range" or "a band"
+(geoIntro, one objection, one FAQ); each now says the home is quoted after a
+review. Keep other existing reader copy and the local-alternative answer unchanged.
