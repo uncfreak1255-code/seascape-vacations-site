@@ -10,7 +10,7 @@
 - primary keyword: best time to visit anna maria island
 - secondary keywords: best time to go to anna maria island; when is the best time to visit anna maria island; best time of year to visit anna maria island; anna maria island best time to visit
 - audience pattern: reads the answer in the snippet or AI Overview first; clicks when the snippet promises a month-level answer it can trust for this year
-- proof source: Search Console and GA4 through OpenSEO free reads, 2026-11-12; Search Console and URL inspection free reads, 2026-11-17; live Google SERP export `/Users/sawbeck/Projects/runs/grokbot-openseo/serp-best-time-ami-2026-11-17.json`, captured 2026-11-17 at 17:03 ET; approved local OpenSEO Gate 0 report `14e1e432-1117-4898-a139-dbea8f845c8e`; repo source of the guide at `origin/main` `1c7188a5`
+- proof source: Search Console and GA4 through OpenSEO free reads, 2026-11-12; Search Console and URL inspection free reads, 2026-11-17; saved OpenSEO report `Best-time AMI Gate 0 SERP — Nov 17, 2026` (`14e1e432-1117-4898-a139-dbea8f845c8e`), observed 2026-11-17 at 17:03 ET; repo source of the guide at `origin/main` `1c7188a5`
 - required internal links: /stays/anna-maria-island-vacation-rentals/, /stays/anna-maria-island-beachfront-rentals/, /guides/anna-maria-island-weather/
 - CTA target: the existing stay box (`src/_data/guideStayHere.json` entry, currently The Oasis) and the existing `guide_book_direct_click` links; no CTA change
 - anti-claims: no managed home placed on Anna Maria Island (none is); no claim that pool heat is never included (Coastal Stay pool heat is included as of Sawyer 2026-11-11); no traffic, ranking or booking lift claimed before readback; no "best" price or "cheapest" claim without current quotes
@@ -33,7 +33,7 @@
 
 ## Gate 0 Search And Attack Receipt
 
-Free evidence already read: OpenSEO `get_search_console_performance` (page, query, date and device), `inspect_urls` and `get_google_analytics_organic_landing_pages` on 2026-11-12, followed by Search Console and URL inspection on 2026-11-17. Gate 0 completed from `/Users/sawbeck/Projects/runs/grokbot-openseo/serp-best-time-ami-2026-11-17.json`, the approved local OpenSEO `get_serp_results` capture made 2026-11-17 at 17:03 ET for the two head terms, US/en, desktop and mobile, depth 20. The capture exposes ranks, result types, titles, domains and snippets; it does not establish the current page-body or visual format of any winner. The private saved report is `Best-time AMI Gate 0 SERP — Nov 17, 2026` (`14e1e432-1117-4898-a139-dbea8f845c8e`); estimated cost was about 20 credits, approximately $0.02, and actual provider charge was not exposed.
+Free evidence already read: OpenSEO `get_search_console_performance` (page, query, date and device), `inspect_urls` and `get_google_analytics_organic_landing_pages` on 2026-11-12, followed by Search Console and URL inspection on 2026-11-17. Gate 0 completed from the saved OpenSEO report `Best-time AMI Gate 0 SERP — Nov 17, 2026` (`14e1e432-1117-4898-a139-dbea8f845c8e`), observed 2026-11-17 at 17:03 ET for the two head terms, US/en, desktop and mobile, depth 20. The report exposes ranks, result types, titles, domains and snippets; it does not establish the current page-body or visual format of any winner. Estimated cost was about 20 credits, approximately $0.02, and actual provider charge was not exposed.
 
 | Field | Answer |
 | --- | --- |
@@ -53,7 +53,7 @@ Free evidence already read: OpenSEO `get_search_console_performance` (page, quer
 | Recommendation | Apply the smallest honest rescue: set Article `dateModified` and the visible updated line to the verified 2026-10-22 substantive change, and test a title and description that state the page's existing month answer. Do not add a year hook because the page does not yet support a full 2027 freshness claim. Make no layout or stay-box change; format parity is unverified. |
 | Attack status | completed |
 | Query variants inspected | The 13 Search Console "best time" rows on this URL for both comparison weeks, plus `best time to visit anna maria island` and `best time to go to anna maria island` on Google desktop and mobile at depth 20 on 2026-11-17. |
-| SERP source | `/Users/sawbeck/Projects/runs/grokbot-openseo/serp-best-time-ami-2026-11-17.json`: local OpenSEO `get_serp_results`, Google US/en, desktop and mobile, depth 20, captured 2026-11-17 at 17:03 ET; private report id `14e1e432-1117-4898-a139-dbea8f845c8e`. |
+| SERP source | Saved OpenSEO report `Best-time AMI Gate 0 SERP — Nov 17, 2026` (`14e1e432-1117-4898-a139-dbea8f845c8e`): Google US/en, desktop and mobile, depth 20, observed 2026-11-17 at 17:03 ET. |
 | Competitor URLs inspected | Current winners: titles and snippets in the 2026-11-17 SERP export only; their page bodies and layouts were not re-fetched that day. Historical free reads fetched 2026-11-12: `https://everydayfamilytravel.blog/best-time-to-visit-anna-maria-island/`, `https://www.annamaria.com/news-and-blog/anna-maria-island-weather/`, `https://crabbyjoescartrentals.com/best-time-to-visit-anna-maria-island-a-month-by-month-guide-for-families/`, and `https://www.visitflorida.com/places-to-go/southwest/anna-maria-island/`; none establishes current-winner format parity. |
 | Content gap and Seascape answer | The current winners' titles and snippets offer different answers (2027 month comparison, fall, off-season, or weather by month). Seascape's existing sourced copy already splits the answer by goal. The supported rescue gap is the stale visible date plus metadata that does not state the page's existing month answer; current-winner content-depth and format parity remain unverified. |
 | Design/format strategy | Format parity is unverified, so make no layout or format change. Limit this rescue to title/description metadata and the verified visible date. |
@@ -64,6 +64,15 @@ Free evidence already read: OpenSEO `get_search_console_performance` (page, quer
 ## Gate 0 completion
 
 Sawyer approved the exact paid lookup, and Grok Bot completed it through local OpenSEO on 2026-11-17 at 17:03 ET: two queries, US/en, desktop and mobile, depth 20. The raw result contained the structured organic items used above. The private saved report is `Best-time AMI Gate 0 SERP — Nov 17, 2026` (`14e1e432-1117-4898-a139-dbea8f845c8e`). Estimated cost was about 20 credits, approximately $0.02; the actual provider charge was not exposed. This closes the Gate 0 research requirement and authorizes only the scoped source rescue described in this brief.
+
+## Metadata writing process
+
+- Draft the copy: completed 2026-11-17 for the metadata-only rescue. The working title was `Best Time to Visit Anna Maria Island: May or November`; the working description was `May and November balance weather and crowds. Choose March–April for certainty, or September–October if your dates can flex.`
+- Remove internal wording: completed 2026-11-17. The title and description contain no research, ranking, workflow, approval or measurement language; no wording change was needed in this pass.
+- Check claims against page source: completed 2026-11-17 against the guide's direct answer, month tiles and season sections. They support May and November as the balance months, March–April for weather certainty, and September–October only for travelers flexible around storm risk.
+- Check voice and specificity: completed 2026-11-17 against `docs/style/voice.md`, `docs/style/banned-patterns.md` and `docs/style/approved-examples.md`. The final wording answers the month question directly, names the tradeoffs, avoids tourism filler and preserves the page's degree of certainty.
+- Writing skill: `cw-line-edit` was loaded and applied 2026-11-17, including its source-fidelity, voice and AI-residue checks. It found no supported improvement to the final title or description. `cw-draft` was not run because this was a stable sentence-level metadata edit and the available line-edit route matched the task.
+- Independent voice review: not performed. A separate reviewer was not available in this session under the current no-delegation constraint, so no independent `Approved` verdict is claimed.
 
 ## Cluster In Scope
 
