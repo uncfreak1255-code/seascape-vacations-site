@@ -5,7 +5,7 @@ const os = require("node:os");
 const path = require("node:path");
 const { execFileSync, spawnSync } = require("node:child_process");
 
-const { renderLatestExecutionRead, replaceLatestExecutionRead } = require("./sync-next-batch-from-analytics-receipt");
+const { renderLatestExecutionRead, replaceLatestExecutionRead, uncitedAnalyticsLines } = require("./sync-next-batch-from-analytics-receipt");
 
 const receipt = {
   receipt_type: "next_batch_decision",
@@ -128,6 +128,15 @@ test("renderLatestExecutionRead turns analytics receipt into the status contract
   assert.match(rendered, /Do not open a new owner, stay, guide, GEO, or SEO expansion branch from this read\./);
   assert.match(rendered, /Existing-page rescue and AEO drafts require Gate 0 or defect evidence/);
   assert.match(rendered, /ranking-regression-rescue\.md/);
+});
+
+test("a generated read cites numeric prose and metric tables", () => {
+  const url = `https://github.com/uncfreak1255-code/seascape-analytics/blob/${"a".repeat(40)}/docs/status/decision.json`;
+  const rendered = renderLatestExecutionRead({ ...receipt, concrete_next_move: "Review 3 sessions." }, url);
+  assert.deepEqual(uncitedAnalyticsLines(rendered), []);
+  assert.match(rendered, /Cluster read from the analytics receipt: \[Analytics receipt\]/);
+  assert.match(rendered, /SEO queue read from the analytics receipt: \[Analytics receipt\]/);
+  assert.match(rendered, /SERP evidence from the analytics receipt: \[Analytics receipt\]/);
 });
 
 test("renderLatestExecutionRead renders PR 115 SEO queue and SERP receipt fields", () => {

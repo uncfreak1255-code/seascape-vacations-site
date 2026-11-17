@@ -62,7 +62,27 @@ const requiredAnalyticsRevision = "3236b73d84691658d04ba508bb9f8b0cae13e302";
 function hasNumericTrafficClaim(line) {
   const claim = line.replace(/\]\([^)]*\)/g, "]").replace(/\b\d{4}-\d{2}-\d{2}\b/g, "");
   return /\d/.test(claim) &&
-    /\b(?:traffic|sessions?|impressions?|clicks?|ctr|position|handoffs?|pageviews?|conversions?)\b/i.test(claim);
+    /\b(?:traffic|sessions?|users?|visitors?|impressions?|clicks?|ctr|positions?|handoffs?|pageviews?|views?|conversions?|bookings?|leads?|revenue|bounce|engagement)\b/i.test(claim);
+}
+
+function uncitedAnalyticsLines(markdown) {
+  const receiptLink = /\[Analytics receipt\]\((https:\/\/github\.com\/uncfreak1255-code\/seascape-analytics\/blob\/[a-f0-9]{40}\/docs\/status\/[A-Za-z0-9_.-]+\.json)\)/;
+  const lines = markdown.split("\n");
+  const failures = [];
+  for (let i = 0; i < lines.length; i += 1) {
+    const line = lines[i];
+    if (line.startsWith("|")) {
+      const isHeader = /^\|[\s:|-]+\|\s*$/.test(lines[i + 1] || "");
+      if (isHeader) {
+        let caption = i - 1;
+        while (caption >= 0 && !lines[caption].trim()) caption -= 1;
+        if (caption < 0 || !receiptLink.test(lines[caption])) failures.push(line);
+      }
+    } else if (hasNumericTrafficClaim(line) && !receiptLink.test(line)) {
+      failures.push(line);
+    }
+  }
+  return failures;
 }
 
 function verifyReceipt({ receiptPath, receiptUrl, analyticsRoot }) {
@@ -146,7 +166,7 @@ function runDate(receipt) {
   return emittedAt ? String(emittedAt).slice(0, 10) : new Date().toISOString().slice(0, 10);
 }
 
-function renderClusterSummary(receipt) {
+function renderClusterSummary(receipt, receiptUrl) {
   const clusters = Array.isArray(receipt.cluster_summary) ? receipt.cluster_summary : [];
   if (clusters.length === 0) {
     return "";
@@ -154,7 +174,7 @@ function renderClusterSummary(receipt) {
 
   return [
     "",
-    "Cluster read from the analytics receipt:",
+    `Cluster read from the analytics receipt:${receiptUrl ? ` [Analytics receipt](${receiptUrl}).` : ""}`,
     "",
     "| cluster | pages | gsc_clicks | gsc_impressions | gsc_ctr | gsc_position | ga4_sessions |",
     "|---|---:|---:|---:|---:|---:|---:|",
@@ -164,7 +184,7 @@ function renderClusterSummary(receipt) {
   ].join("\n");
 }
 
-function renderSeoQueueSummary(receipt) {
+function renderSeoQueueSummary(receipt, receiptUrl) {
   const queues = Array.isArray(receipt.seo_queue_summary) ? receipt.seo_queue_summary : [];
   if (queues.length === 0) {
     return "";
@@ -172,7 +192,7 @@ function renderSeoQueueSummary(receipt) {
 
   return [
     "",
-    "SEO queue read from the analytics receipt:",
+    `SEO queue read from the analytics receipt:${receiptUrl ? ` [Analytics receipt](${receiptUrl}).` : ""}`,
     "",
     "| queue_bucket | pages | gsc_clicks | gsc_impressions | ga4_sessions |",
     "|---|---:|---:|---:|---:|",
@@ -182,7 +202,7 @@ function renderSeoQueueSummary(receipt) {
   ].join("\n");
 }
 
-function renderSerpEvidence(receipt) {
+function renderSerpEvidence(receipt, receiptUrl) {
   const serp = receipt.serp_evidence;
   if (!serp || typeof serp !== "object") {
     return "";
@@ -190,7 +210,7 @@ function renderSerpEvidence(receipt) {
 
   const lines = [
     "",
-    "SERP evidence from the analytics receipt:",
+    `SERP evidence from the analytics receipt:${receiptUrl ? ` [Analytics receipt](${receiptUrl}).` : ""}`,
     "",
     `- Evidence status: \`${formatCell(serp.serp_evidence_status)}\`.`,
     `- Mode: \`${formatCell(serp.mode)}\`.`,
@@ -208,6 +228,8 @@ function renderSerpEvidence(receipt) {
   const evidenceAvailable = serp.serp_evidence_status === "available";
   if (support.length > 0) {
     lines.push(
+      "",
+      `SERP result table:${receiptUrl ? ` [Analytics receipt](${receiptUrl}).` : ""}`,
       "",
       "| query | page_path | seascape_rank | classification_support | top_visible_competitors | serp_features |",
       "|---|---|---|---|---|---|",
@@ -304,9 +326,9 @@ function renderLatestExecutionRead(receipt, receiptUrl) {
   const latestGsc = receipt.latest_gsc_data_date || "unavailable";
   const gateLabel = receipt.site_work_gate?.label || "`blocked` - analytics receipt did not include a gate label.";
   const freshnessWarning = receipt.site_work_gate?.freshness_warning;
-  const clusterSummary = renderClusterSummary(receipt);
-  const seoQueueSummary = renderSeoQueueSummary(receipt);
-  const serpEvidence = renderSerpEvidence(receipt);
+  const clusterSummary = renderClusterSummary(receipt, receiptUrl);
+  const seoQueueSummary = renderSeoQueueSummary(receipt, receiptUrl);
+  const serpEvidence = renderSerpEvidence(receipt, receiptUrl);
   const aiVisibilitySummary = renderAiVisibilitySummary(receipt);
   const reportRecommendation = receipt.report_recommendation || receipt.next_branch;
 
@@ -390,6 +412,7 @@ if (require.main === module) {
 
 module.exports = {
   hasNumericTrafficClaim,
+  uncitedAnalyticsLines,
   renderLatestExecutionRead,
   replaceLatestExecutionRead,
   syncNextBatch

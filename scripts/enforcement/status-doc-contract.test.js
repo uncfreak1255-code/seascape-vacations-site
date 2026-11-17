@@ -2,7 +2,9 @@ const fs = require("fs");
 const path = require("path");
 const test = require("node:test");
 const assert = require("node:assert/strict");
+const { createHash } = require("node:crypto");
 const { MAX_BYTES } = require("./check-staged-file-size");
+const { uncitedAnalyticsLines } = require("./sync-next-batch-from-analytics-receipt");
 
 const projectRoot = path.resolve(__dirname, "..", "..");
 const allowedStatuses = [
@@ -67,8 +69,20 @@ test("the current analytics read is cited or explicitly marked historical and un
   const activeRead = nextBatch.match(/## Latest Execution Read\n([\s\S]*?)\n## Likely Priorities/);
   assert.ok(activeRead, "next-batch should contain the active execution read");
   const cited = /^- Evidence for this read: \[Analytics receipt\]\(https:\/\/github\.com\/uncfreak1255-code\/seascape-analytics\/blob\/[a-f0-9]{40}\/docs\/status\/[A-Za-z0-9_.-]+\.json\)/m.test(activeRead[1]);
-  const legacy = /^Run date: 2026-11-09\.$/m.test(activeRead[1]) && /^- Historical receipt: unverified\. Do not use the numeric claims/m.test(activeRead[1]);
+  // Preserve only the unchanged pre-existing unverified block; any later edit
+  // must replace it with a sourced read instead of adding unsupported claims.
+  const legacy = createHash("sha256").update(activeRead[1]).digest("hex") ===
+    "827a5c38c2a8835525929b4c59c0f5ff4ab12da6b285f80303c8cbd2c8f2e146";
   assert.ok(cited || legacy, "a new analytics read needs a commit-pinned receipt");
+  if (cited) assert.deepEqual(uncitedAnalyticsLines(activeRead[1]), [], "active analytics claims and tables must cite their receipt");
+});
+
+test("each active traffic claim and numeric metrics table has a receipt", () => {
+  const url = `https://github.com/uncfreak1255-code/seascape-analytics/blob/${"a".repeat(40)}/docs/status/decision.json`;
+  const cited = `[Analytics receipt](${url})`;
+  assert.deepEqual(uncitedAnalyticsLines(`- Guide has 3 sessions. ${cited}\n\nCluster evidence ${cited}\n\n| cluster | sessions |\n|---|---:|\n| guide | 3 |`), []);
+  assert.deepEqual(uncitedAnalyticsLines(`- Guide has 3 sessions. ${cited}\n- Another guide has 2 clicks.`), ["- Another guide has 2 clicks."]);
+  assert.deepEqual(uncitedAnalyticsLines(`Cluster evidence\n\n| cluster | sessions |\n|---|---:|\n| guide | 3 |`), ["| cluster | sessions |"]);
 });
 
 test("next-batch warns near the staged-file size limit", (t) => {
