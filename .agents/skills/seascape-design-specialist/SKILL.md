@@ -32,6 +32,10 @@ direction identifies its core idea, hero, rhythm, imagery, CTA, memorable moment
 mobile behavior, and tradeoff. Preserve strong art direction rather than reducing
 it to default grids, badges, serif fonts, or gold decoration.
 
+## Platform patterns
+
+For search, catalog, property-page, booking, filter, gallery or sticky-bar work, read `docs/design/platform-patterns.md` first: Sawyer's direction (2026-11-06) is Airbnb, Vrbo, Booking.com and Expedia interaction patterns in Waterline's look, not local competitors. Name the pattern applied or the reason for departing from it.
+
 ## Show, do not describe
 
 Sawyer cannot steer design from prose. For any visible change, return 2–3
