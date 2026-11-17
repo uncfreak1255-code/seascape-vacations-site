@@ -65,6 +65,18 @@ question defined in [Waterline chart patterns](chart-patterns.md).
 `GuideStacked` is a held pattern. It becomes eligible only when published parts
 form a meaningful whole; never stack unlike units or invent a remainder.
 
+### Pick card
+
+Sawyer selected photo cards (variant C) for the waterfront restaurants guide on
+November 16, 2026, from three rendered variants. A pick card presents one named
+place inside a planning-guide step: place label, serif name, short description
+and one ruled practical note, with an optional ink tag. A card may open with a
+3:2 photograph only when it is a real photograph of that named place with a
+recorded source; without one the card is text only and shows no placeholder.
+Cards sit on a white surface with a rule; a card with a photograph uses the
+`photo` shadow. The selection covers the named guide; another guide needs its
+own scope. Rules: `.pick-*` in `src/css/planning-guide.css`.
+
 ### Editorial decision card
 
 The Studio-derived editorial decision card is a supporting hierarchy pattern,

@@ -98,6 +98,25 @@ content gate reads every active brief.
 - Proof: as M2. Waterfront restaurants carries three JSON-LD blocks, Bradenton
   vs Tampa four.
 
+## M5 waterfront restaurants pick cards
+
+- Source: `src/guides/best-waterfront-restaurants-with-boat-dock.html` (steps
+  01 to 03) and `.pick-*` rules in `src/css/planning-guide.css`.
+- Why: Sawyer compared the moved guide with the dining guides sent to guests
+  and asked for a higher-end, easier-to-scan page. He saw three rendered
+  variants on 2026-11-15 and chose C (photo cards) on 2026-11-16.
+- What changes: each of the seven restaurants becomes one card with its place
+  label, name, the same description and the same docking note. A card whose
+  docking note opens with a grade word shows that grade as a tag.
+- Photos: a card may open with a `.pick-photo` figure. Only a real photograph
+  of the named restaurant, with a recorded source and permission, may be used
+  (`DESIGN.md` image rule). No photo ships in this move; the cards are text
+  only until a photo is approved for each one. No placeholder is shown.
+- Swap list: `docs/plans/2026-11-14-old-design-guide-swaps.md` -> "L9 swaps
+  (waterfront restaurants pick cards)".
+- Proof: head fields and the three JSON-LD blocks are byte-identical to main; a
+  word-level diff of the rendered body shows only the listed swaps.
+
 ## Gate 0 Search And Attack Receipt (M4 waterfront restaurants guide)
 
 | Field | Required answer |
