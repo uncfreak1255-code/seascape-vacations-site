@@ -116,6 +116,10 @@ content gate reads every active brief.
   (waterfront restaurants pick cards)".
 - Proof: head fields and the three JSON-LD blocks are byte-identical to main; a
   word-level diff of the rendered body shows only the listed swaps.
+- Also in the M5 pull request: the phone `home` visual baseline is renewed. The
+  phone homepage changed on main (vertical home browsing) without a new
+  baseline, so the visual gate failed on every branch. No homepage source
+  changes here.
 
 ## Gate 0 Search And Attack Receipt (M4 waterfront restaurants guide)
 
