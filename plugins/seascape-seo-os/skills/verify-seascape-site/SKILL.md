@@ -1,6 +1,6 @@
 ---
 name: verify-seascape-site
-description: Verify Seascape Vacations guest booking, guide handoff, email capture, or owner inquiry journeys against the local website with browser fixtures.
+description: Use when verifying guest booking, guide handoff, email capture, or owner inquiry on the Seascape Vacations local website with browser fixtures.
 ---
 
 # Verify Seascape Site
