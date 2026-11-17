@@ -73,7 +73,7 @@ place inside a planning-guide step: place label, serif name, short description
 and one ruled practical note, with an optional ink tag. A card may open with a
 3:2 photograph only when it is a real photograph of that named place with a
 recorded source; without one the card is text only and shows no placeholder.
-Cards sit on a white surface with a rule; a card with a photograph uses the
+Cards sit on the `soft` surface with a rule; a card with a photograph uses the
 `photo` shadow. The selection covers the named guide; another guide needs its
 own scope. Rules: `.pick-*` in `src/css/planning-guide.css`.
 
