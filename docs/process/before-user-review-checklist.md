@@ -65,9 +65,9 @@ preview while preparing the evidence.
   opening description when there is a primary route, and opened each review
   link to verify the intended page on the current deploy.
 - [ ] I embedded labeled before-and-after Playwright screenshots in the PR
-  description. The before uses the PR's base revision and the after uses the
-  current candidate. Both use the same viewport, browser, fixture data, and
-  page state. For a new surface, I labeled the after and noted that it is new.
+  description; artifact or project-thread links alone do not count. Before is
+  the base and after is the candidate, with matching viewport, browser, fixture
+  data, and page state. If upload fails, keep draft; label new surfaces as new.
   I put mobile first for phone changes and included desktop and mobile proof
   for each affected visual section as required above.
 - [ ] I included one short instruction to reach any relevant interactive state.
