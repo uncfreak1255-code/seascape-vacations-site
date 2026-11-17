@@ -14,7 +14,7 @@
      Follow docs/process/before-user-review-checklist.md#6-visual-pr-handoff. -->
 
 - **Open the preview** — Link directly to each changed route or section.
-- **Before / after** — Embed matching Playwright screenshots, with mobile first for phone changes.
+- **Before / after** — Embed labeled, matching Playwright screenshots directly in this PR description, with mobile first for phone changes. Artifact or project-thread links can supplement the images but do not replace them. If images cannot be uploaded, keep the PR in draft and do not request review yet.
 - **Try it** — Give one short instruction and attach a brief clip if the interaction needs it.
 - **Decision** — State what you want Sawyer to approve in one sentence.
 
