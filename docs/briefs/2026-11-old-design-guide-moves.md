@@ -176,3 +176,44 @@ content gate reads every active brief.
 | Seascape proof available | Current source and the main-versus-head build diff |
 | Tools/plugins used | Web search, node build diff, Playwright render |
 | Decision and reason | Hold search-facing output unchanged: this is a layout move; ranking work waits for the tracker read and the SEO gate |
+
+## M5 approved photo and accuracy follow-up (2026-11-17)
+
+- Owner: this Codex chat is the sole updater and merger for PR #971; issue #986
+  records Sawyer's request and acceptance before implementation.
+- Steering: Sawyer asked "can you get the photos added?" and approved
+  "Replace outdated entries and add photos (Recommended)". This supersedes M5's
+  text-preservation scope only for this guide's restaurant recommendations,
+  docking advice and matching table. The URL, title/meta, canonical, schema
+  type/URL and booking/tracking paths stay unchanged; Article dateModified is
+  updated to 2026-11-17 for this accuracy repair.
+- Accuracy: replace Seafood Shack, the original Rod and Reel Pier and Caddy's
+  Bradenton with Swordfish Grill, Dry Dock and Riverhouse. Two Cortez, two
+  Manatee River and three Longboat Key cards keep seven recommendations. Replace
+  unsupported depth/price estimates with arrival arrangements. Remove subjective
+  docking grades. Check source-linked restaurant and marina details before a
+  boat trip; no slip or safe depth is guaranteed.
+- Photo evidence: `docs/design/waterfront-restaurant-photo-sources.md` records the
+  licensed Mar Vista photo, attribution and unresolved requests for six venues.
+  Only Mar Vista has an included photo so far. No placeholder or unlicensed
+  image is included. The full seven-photo outcome remains incomplete.
+- Proof: the two focused waterfront-guide regression tests failed on old
+  recommendations/table and passed after repair. Compare rendered desktop/phone
+  output, image decoding and preserved search/booking contracts; run Site gates.
+- Method: native factual editing and the existing design/closeout route. OpenSEO
+  and Compound drafting skipped: this is a current-source accuracy repair and
+  existing approved layout, without new search targets or a growth claim.
+  Draft -> remove internal wording -> voice/specificity pass completed by lead;
+  Independent targeted copy/release review returned Voice Editor Approved on
+  2026-11-17 at 23:24 UTC. Its Shore source gap was withdrawn after the reviewer
+  checked the CVB dock-and-dine list; final browser/CI gates remain separate.
+
+- Current work at 2026-11-17 23:45 UTC: requests sent under Sawyer's exact
+  approval; waiting for bureau images/permission. Desktop and phone photo
+  decoding, no-overflow and photo accessibility checks pass after correcting the
+  caption contrast (observed red at 3.94:1; Waterline paper background fixes it).
+  Six synthetic guide-handoff checks pass. Full 782-case visual run reported
+  683 passes, 96 skips, two pre-existing SRQ baseline failures and the now-fixed
+  caption failure. SRQ failure reproduced on unchanged main with a byte-identical
+  desktop image; tracked separately in #987. No full-visual-green or merge-ready
+  claim. Final photo assets, spec review, current-head review and landing remain.

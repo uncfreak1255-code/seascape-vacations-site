@@ -111,10 +111,10 @@ body.planning-guide main .guide-cta-btn:hover { color: var(--pg-paper); }
 .pick-grid { display: grid; gap: 20px; grid-template-columns: minmax(0, 1fr); margin-top: 26px; }
 .pick-card { display: flex; flex-direction: column; background: #F0F3EE; border: 1px solid var(--pg-rule); padding: 22px 22px 20px; }
 .pick-card:has(.pick-photo) { border: 0; box-shadow: 0 20px 40px #173D421F; }
-.pick-photo { position: relative; margin: -22px -22px 20px; aspect-ratio: 3 / 2; background: var(--pg-rule); }
-.pick-photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
-.pick-tag { align-self: flex-start; margin-bottom: 14px; padding: 6px 10px; background: var(--pg-ink); color: var(--pg-paper); font: 500 11px/1.3 Poppins, system-ui, sans-serif; letter-spacing: .13em; text-transform: uppercase; }
-.pick-photo .pick-tag { position: absolute; left: 14px; top: 14px; margin: 0; }
+.pick-photo { position: relative; margin: -22px -22px 20px; background: var(--pg-rule); }
+.pick-photo img { display: block; width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; }
+.pick-photo figcaption { padding: 10px 22px; background: var(--pg-paper); color: var(--pg-muted); font-size: 12px; line-height: 1.5; }
+.pick-photo figcaption a { text-underline-offset: 3px; }
 .pg-step .pick-card p { max-width: none; }
 .pg-step .pick-card p + p { margin-top: 0; }
 .pick-card h3 { margin: 8px 0 10px; font-size: 27px; line-height: 1.12; letter-spacing: -0.015em; }
