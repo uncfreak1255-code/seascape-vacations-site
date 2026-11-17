@@ -1,0 +1,26 @@
+{% set weeklyHome = seoPage.weeklyFeature %}
+<section class="hero sv-hero" data-weekly-guide>
+  <div class="sv-wrap">
+    <div class="sv-copy">
+      <p class="sv-eyebrow">Florida's Gulf Coast · A week away</p>
+      <h1>Weekly Florida<br><em>vacation rentals.</em></h1>
+      <p class="sv-lede">Beach days. Slow mornings. A pool to come home to. Find your week-long stay in Bradenton or Sarasota.</p>
+      <a class="sv-compare" href="#rentals">Browse all homes <span aria-hidden="true">{{ uiIcon("arrow-up-right") }}</span></a>
+      <p class="sv-guide-note"><strong>Your week, with the details up front.</strong><br>Compare homes, check each listing’s stay rules, and review the complete checkout total.</p>
+    </div>
+    <div class="sv-photo-stage">
+      <article class="sv-photo" aria-label="Featured home: {{ weeklyHome.name }}">
+        <img src="{{ heroImage }}" srcset="/images/homes/dockside-dreams/02-800.webp 800w, {{ heroImage }} 1400w" sizes="(max-width:700px) calc(100vw - 40px), 60vw" alt="{{ weeklyHome.name }} backyard at dusk, with a lit pool, palms and waterfront dock" width="1400" height="933" fetchpriority="high">
+        <div class="sv-photo-top">Featured home<span>{{ weeklyHome.city ~ ", Florida" }}</span></div>
+        <div class="sv-glare" aria-hidden="true"></div>
+        <div class="sv-photo-bottom">
+          <h2>{{ weeklyHome.name }}</h2>
+          <p class="sv-home-facts">Private pool &amp; spa · Waterfront dock<br>{{ weeklyHome.bedrooms }} bedrooms · Up to {{ weeklyHome.guests }} guests</p>
+          <a class="sv-cta" href="{{ weeklyHome.bookingUrl }}" data-weekly-open data-track-event="guide_property_check_dates_click" data-placement="weekly_photo" data-property-slug="{{ weeklyHome.slug }}" data-listing-id="{{ weeklyHome.listingId }}">Check dates &amp; book direct <span class="sv-arrow" aria-hidden="true">{{ uiIcon("arrow-up-right") }}</span></a>
+        </div>
+      </article>
+      <div class="sv-photo-caption"><span>A real evening at {{ weeklyHome.name }}.</span><a href="{{ weeklyHome.pageUrl }}" data-track-event="guide_property_check_dates_click" data-placement="weekly_photo_details" data-property-slug="{{ weeklyHome.slug }}">Explore this home</a></div>
+    </div>
+  </div>
+</section>
+{% include "partials/stay-weekly-booking.njk" %}

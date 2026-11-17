@@ -334,3 +334,5 @@ This file records current choices, not proof they are good. How to revise it, an
 ## Legacy gold CTAs
 
 Gold is retired on every legacy route; the per-surface replacement rules (ink, citron or paper, picked by measured contrast) live in `docs/design/legacy-gold-ctas.md`.
+
+Weekly photo-card exception: [rule](docs/design/weekly-photo-card.md).

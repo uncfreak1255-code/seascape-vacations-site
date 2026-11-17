@@ -1,0 +1,25 @@
+        {% if hasFaqs %}
+        <section class="section faq-section" id="faq">
+            <div class="container">
+                <div class="section-header">
+                    <p class="section-tag">Common questions</p>
+                    <h2 class="section-title">Frequently asked questions</h2>
+                </div>
+                <div class="faq-list">
+                    {% for faq in seoPage.faqs %}
+                    {% if seoPage.weeklyFeature %}
+                    <details class="sv-faq"{% if loop.first %} open{% endif %}>
+                        <summary>{{ faq.question or faq.q }}</summary>
+                        <p>{{ faq.answer or faq.a }}</p>
+                    </details>
+                    {% else %}
+                    <article class="faq-item">
+                        <h3 class="faq-question">{{ faq.question or faq.q }}</h3>
+                        <p class="faq-answer">{{ faq.answer or faq.a }}</p>
+                    </article>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+        {% endif %}
