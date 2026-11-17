@@ -1,8 +1,8 @@
 # Brief: AMI vs Siesta Key snippet CTR rescue (2026-11-17)
 
 - lifecycle: active
-- task scope: one draft-only search-description rescue for `/guides/anna-maria-island-vs-siesta-key/`, authorized by the 2026-11-09 read in `docs/status/next-batch.md`. Keep the title, H1, JSON-LD, body, layout, and images unchanged.
-- completion or successor: source draft only. Publication requires the normal content and release gates plus a `Settle-Override: weak CTR rescue authorized by the 2026-11-09 next-batch read` commit trailer because the page's 2026-10-25 rescue settles through 2026-11-22.
+- task scope: complete the evidence and Gate 0 attack receipt for `/guides/anna-maria-island-vs-siesta-key/`, authorized by the 2026-11-09 read in `docs/status/next-batch.md`. Keep the title, meta description, H1, JSON-LD, body, layout, images, source, tests, and CSS unchanged.
+- completion or successor: brief evidence only. The 2026-11-17 live SERP introduces a possible mobile cannibalization question, but this task does not act on it. Any later source change requires a separately bounded decision, the normal content and release gates, and a `Settle-Override: weak CTR rescue authorized by the 2026-11-09 next-batch read` commit trailer while the page's 2026-10-25 rescue settles through 2026-11-22.
 
 ## Content Gate Inputs
 
@@ -10,7 +10,7 @@
 - primary keyword: anna maria island vs siesta key
 - secondary keywords: anna maria island or siesta key; anna maria vs siesta key; anna maria or siesta key; how far is anna maria island from siesta key
 - audience pattern: comparison searcher who needs a direct beach-style choice and a stay-planning next step
-- proof source: free OpenSEO Search Console read on 2026-11-17 for 2026-10-18 through 2026-11-14, saved at `/Users/sawbeck/Projects/runs/grokbot-openseo/gsc-ami-vs-siesta-28d.txt`; prior completed SERP receipt in `docs/briefs/2026-10-ami-vs-siesta-key-rescue.md`
+- proof source: free OpenSEO Search Console read on 2026-11-17 for 2026-10-18 through 2026-11-14, saved at `/Users/sawbeck/Projects/runs/grokbot-openseo/gsc-ami-vs-siesta-28d.txt`; live local OpenSEO SERP captured 2026-11-17 17:29 ET for US/en, desktop and mobile, depth 20, saved at `/Users/sawbeck/Projects/runs/grokbot-openseo/serp-ami-vs-siesta-2026-11-17.json` and as the private report `AMI vs Siesta Key Gate 0 SERP — Nov 17, 2026` (about $0.01)
 - required internal links: unchanged
 - CTA target: unchanged existing `guide_book_direct_click` stay links
 - anti-claims: no ranking or click lift before readback; no claim that a Seascape home is on either island; no new distance, price, fee, capacity, or amenity claim
@@ -19,7 +19,7 @@
 
 - The URL earned 7,855 impressions and 5 clicks in the supplied 28-day read. The broad query `siesta key` accounted for 6,744 impressions at average position 8.5 and one click; mobile accounted for 7,128 total impressions at position 8.5.
 - The comparison family remains visible around positions 9–10: `anna maria island vs siesta key` (74 impressions), `anna maria island or siesta key` (53), `anna maria vs siesta key` (23), `anna maria or siesta key` (7), and `how far is anna maria island from siesta key` (8).
-- The title already matches the comparison word order. The description instead opens with the acronym `AMI`, so this rescue spells out both destinations early and answers the choice directly. It changes no page-body or visual surface.
+- The title already matches the comparison word order. The live SERP shows a device split rather than a simple snippet-only problem: Seascape is absent through desktop organic #16, while mobile ranks the families page at organic #6 and the target page at organic #8. That second Seascape result may indicate cannibalization, but one SERP capture is not enough to diagnose or change routing. This evidence-only repair leaves the title and description unchanged.
 
 ## Experiment And Readback Contract
 
@@ -36,27 +36,34 @@
 | Target query family | `anna maria island vs siesta key`, `anna maria island or siesta key`, `anna maria vs siesta key`, `anna maria or siesta key`, and close variants containing both destinations |
 | Searcher intent | Comparison and guide/research with downstream guest booking |
 | Current Seascape URL | `/guides/anna-maria-island-vs-siesta-key/` |
-| SERP observed date | 2026-10-25, from the completed OpenSEO SERP receipt in the October rescue brief; the new 2026-11-17 evidence is Search Console, not a new SERP lookup |
-| SERP stale after | 2026-11-01. Competitor ordering is stale and is not used to claim a current ranking gap. |
-| Current proof | Free Search Console read, 2026-10-18 through 2026-11-14: 7,855 impressions and 5 clicks on the URL; comparison-family rows remain around positions 9–10 with weak CTR. The 2026-11-09 next-batch read names this URL as the secondary snippet rescue and authorizes draft PRs only. |
-| Top visible competitors | Prior 2026-10-25 receipt: Reddit, Herald-Tribune/Thrillist, and Tripadvisor above comparable guides from vacationflorida.tv, annamariaislandbeachrentals.com, and headtosarasota.com. Current order is unverified. |
-| Competitor angle | Community answers lead with a personal choice; comparable guides use a quick answer, local framing, parking, getting around, and FAQs. |
-| Visual/format gap | None in scope. Seascape already has a direct answer, comparison tables, topic verdicts, FAQ schema, and stay choices. Skip layout, image, and visible-FAQ changes. |
-| Seascape gap | The current description leads with `AMI` and adds Bradenton before spelling out Anna Maria Island. It does not give the comparison searcher as direct a pick as the body does. |
-| Search fit | This winner guide already answers the two-destination choice and routes guests to the matching stay pages. Rescue the existing URL; do not create a new page. |
+| SERP observed date | 2026-11-17 |
+| SERP stale after | 2026-11-24 |
+| Current proof | Final free Search Console read for 2026-10-18 through 2026-11-14: 7,855 impressions and 5 clicks on the URL; `anna maria island vs siesta key` had 74 impressions, 0 clicks, and average position 9.6, while mobile had 7,128 impressions at average position 8.5. The 2026-11-17 live SERP shows no Seascape result through desktop organic #16; mobile shows `/guides/siesta-key-vs-anna-maria-island-families/` at organic #6 and the target at organic #8. The 2026-11-09 next-batch read authorizes draft work only. |
+| Top visible competitors | Desktop organic #1 Facebook, #2 Florida Vacation Advisor, and #3 Always on the Shore; mobile organic #1 Mousin' Around, #4 Compass Hotel, and #5 Tripadvisor are the leading named comparison results around the intent. |
+| Competitor angle | Desktop mixes UGC with direct “which is better” comparison guides. Mobile favors first-person/community choice, hotel/local-stay framing, and direct vacation-fit answers. AI Overview and People Also Ask appear on both devices, increasing the value of concise, extractable answers. |
+| Visual/format gap | The SERPs include AI Overview and People Also Ask on both devices, plus video and image features. Seascape already supplies a direct answer, comparison tables, topic verdicts, FAQ schema, and stay choices, so skip new visual formats in this evidence-only task; a later source proposal should answer differently through clearer page ownership rather than copying competitor media. |
+| Seascape gap | Seascape has no desktop organic visibility through #16, and mobile splits visibility between the families page at #6 and the target at #8. The device split and possible cannibalization are the concrete gaps; this single capture does not establish which page should own the family variant. |
+| Search fit | The target remains the intended broad two-destination comparison and supports existing `guide_book_direct_click` stay links. Rescue this URL rather than create a new page, but hold source changes until the families-page overlap is diagnosed from repeated query/landing-page evidence. |
 | Local/GBP proof | N/A. This is an informational comparison result, not a local-pack or map result. |
-| AEO/readback note | N/A for this metadata-only rescue. No paid AEO check was run, and body answer text remains unchanged. |
-| Recommended action | Keep the title. Replace only `meta description`, `og:description`, and `twitter:description` with: “Anna Maria Island or Siesta Key? Compare quieter Old Florida beaches with Siesta's famous quartz sand, plus Bradenton stays near the island.” |
+| AEO/readback note | The 2026-11-17 desktop and mobile SERPs both contain AI Overview and People Also Ask. No separate AEO score or answer-citation readback was run; the live feature readback is sufficient to record the surface, not to claim Seascape inclusion. |
+| Recommended action | Hold the title and all description fields unchanged. Record the desktop absence, mobile #6/#8 URL split, and possible cannibalization for a later repeated-query and GSC landing-page diagnosis; do not act on cannibalization from this one capture. |
+| Attack status | completed |
+| Query variants inspected | Live SERP: `anna maria island vs siesta key` on US/en desktop and mobile at depth 20. GSC: `anna maria island vs siesta key`, `anna maria island or siesta key`, `anna maria vs siesta key`, `anna maria or siesta key`, `siesta key anna maria island`, distance variants, and the broad `siesta key` row reported separately. |
+| SERP source | Local OpenSEO `get_serp_results`, observed 2026-11-17 17:29 ET, US/en, desktop and mobile, depth 20; `/Users/sawbeck/Projects/runs/grokbot-openseo/serp-ami-vs-siesta-2026-11-17.json`; saved report `AMI vs Siesta Key Gate 0 SERP — Nov 17, 2026`; about $0.01. |
+| Competitor URLs inspected | Captured SERP rows and snippets inspected for competitors on [Facebook](https://facebook.com), [Florida Vacation Advisor](https://floridavacationadvisor.com), [Always on the Shore](https://alwaysontheshore.com), [Mousin' Around](https://mousinaround.com), [Compass Hotel](https://compasshotel.com), and [Tripadvisor](https://tripadvisor.com); no independent competitor-page fetch was used. |
+| Content gap and Seascape answer | Gap: desktop absence and two mobile Seascape URLs for one broad query. Seascape answer: keep the broad target as the comparison destination and its existing direct answer; do not rewrite or consolidate until repeated SERP and landing-page evidence identifies whether the families page is actually competing. |
+| Design/format strategy | Keep the existing comparison table, topic verdicts, FAQ schema, imagery, and layout. Do not add video, image, or PAA-mirroring modules in this task; the evidence points first to page ownership and device visibility, not an unserved format. |
+| Seascape proof available | Current source/body support the existing direct island-choice answer and stay CTA; the dated GSC receipt supplies query, device, impression, click, CTR, and position evidence; the live SERP supplies device-specific ranks and features. No booking-lift or AI-citation proof is claimed. |
+| Tools/plugins used | Local OpenSEO `get_serp_results` receipt and saved-report title supplied by the task; free OpenSEO Search Console export supplied by the task; repository `check:brief` and content lint for validation. No new lookup, report readback, or hosted OpenSEO fallback was used. |
+| Decision and reason | Hold title and description changes. The current evidence confirms weak comparison CTR but also exposes a desktop/mobile visibility split and possible mobile cannibalization, so changing snippet copy before diagnosing page ownership would confound the rescue. |
 
-## Writing Pass
+## Writing Pass (held, not applied)
 
-- Draft the copy: put the choice first and spell out both destinations.
-- Remove internal wording: no metric, process, rescue, or acronym language appears in reader copy.
-- Check voice and specificity: the 140-character sentence uses only body-supported distinctions: `Quiet, Old Florida charm`, nearly pure quartz sand, and the existing where-to-stay decision.
-- Compound line edit and AI-residue check: passed; the sentence is direct, source-bounded, and free of stock framing or inflated claims.
+- Draft the copy: no new reader copy in this brief-only evidence repair.
+- Remove internal wording: not applicable because no reader copy changes.
+- Check voice and specificity: not applicable because the title and description remain unchanged.
+- Compound line edit and AI-residue check: not run; this task changes evidence notes only.
 
-## Source Files In This Draft
+## Source Files Changed In This Batch
 
-- `src/guides/anna-maria-island-vs-siesta-key.html` (three matching description fields only)
 - `docs/briefs/2026-11-ami-vs-siesta-snippet-rescue.md`
-- `docs/status/page-ledger.json` (unshipped entry for this rescue)
