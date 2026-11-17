@@ -298,6 +298,11 @@
   text-underline-offset:3px}
 .sv-dialog a[hidden] {
   display:none}
+.sv-dialog [data-weekly-alternatives]:not([hidden]) {
+  display:flex;
+  align-items:center;
+  min-height:44px;
+  margin-bottom:8px}
 .sv-close {
   line-height:1}
 .sv-dialog-header .sv-eyebrow {

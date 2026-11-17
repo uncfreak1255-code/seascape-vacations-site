@@ -115,3 +115,25 @@ test('weekly no-JavaScript page still has a real listing link and native FAQ', a
   await expect(page.locator('#faq details').nth(1)).toHaveAttribute('open', '');
   await context.close();
 });
+
+test('weekly incoming counts beyond the selector remain explicit and cannot reach Dockside booking', async ({ page }) => {
+  let outbound = 0;
+  for (const count of ['18', '99', '9007199254740991']) {
+    await visit(page, '?guests=' + count + '&arrive=2026-12-01&depart=2026-12-08');
+    await page.route('https://book.seascape-vacations.com/**', route => {
+      outbound += 1;
+      return route.fulfill({ status: 200, contentType: 'text/html', body: '<h1>Intercepted unexpected handoff</h1>' });
+    });
+    await page.locator('[data-weekly-open]').click();
+    await expect(page.locator('#weekly-guests')).toHaveValue(count);
+    await expect(page.locator('[data-weekly-status]')).toContainText('up to 12');
+    const alternative = new URL(await page.locator('[data-weekly-alternatives]').getAttribute('href'));
+    expect(alternative.pathname).toBe('/properties/');
+    expect(alternative.searchParams.get('guests')).toBe(count);
+    expect(alternative.searchParams.get('arrive')).toBe('2026-12-01');
+    expect((await page.locator('[data-weekly-alternatives]').boundingBox()).height).toBeGreaterThanOrEqual(44);
+    await page.getByRole('button', { name: 'Continue to direct booking', exact: true }).click();
+    await expect(page).toHaveURL(/week-long-vacation-rentals-florida/);
+    expect(outbound).toBe(0);
+  }
+});

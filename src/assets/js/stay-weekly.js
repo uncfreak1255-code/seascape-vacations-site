@@ -30,7 +30,14 @@
   var trip = tracking ? tracking.readTripParams(params) : {};
   var today = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/New_York', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
   arrive.min = today; depart.min = today;
-  arrive.value = trip.arrive || ''; depart.value = trip.depart || ''; guests.value = trip.guests || '1';
+  arrive.value = trip.arrive || ''; depart.value = trip.depart || '';
+  if (trip.guests && !Array.from(guests.options).some(function (option) { return option.value === trip.guests; })) {
+    var incomingGroup = document.createElement('option');
+    incomingGroup.value = trip.guests;
+    incomingGroup.textContent = trip.guests + ' guests · compare homes';
+    guests.appendChild(incomingGroup);
+  }
+  guests.value = trip.guests || '1';
   function addDays(value, days) {
     var date = new Date(value + 'T12:00:00Z'); date.setUTCDate(date.getUTCDate() + days);
     return date.toISOString().slice(0, 10);
@@ -38,6 +45,9 @@
   function sync() {
     arrive.setCustomValidity(''); depart.setCustomValidity(''); guests.setCustomValidity('');
     alternatives.hidden = true;
+    if (!guests.value || !Number.isSafeInteger(Number(guests.value)) || Number(guests.value) < 1) {
+      guests.setCustomValidity('Choose your group size.'); status.textContent = guests.validationMessage; return false;
+    }
     depart.min = arrive.value ? addDays(arrive.value, 1) : today;
     if (Number(guests.value) > maxGuests) {
       guests.setCustomValidity('Dockside Dreams hosts up to ' + maxGuests + ' guests. Compare homes for your group.');
