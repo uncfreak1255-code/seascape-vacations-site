@@ -56,9 +56,9 @@ function parseArgs(argv = process.argv.slice(2)) {
 }
 
 const analyticsReceiptUrl = /^https:\/\/github\.com\/uncfreak1255-code\/seascape-analytics\/blob\/([a-f0-9]{40})\/(docs\/status\/[A-Za-z0-9_.-]+\.json)$/;
-// PR #430's reviewed decision-freshness implementation; update this anchor to
-// its verified merge commit when Analytics lands it through its owning gate.
-const requiredAnalyticsRevision = "2f4e7e49c6d47dcaf1a243b25017cb2af8bcbc9f";
+// PR #430's test snapshot; update this anchor to its verified merge commit
+// when Analytics lands it through its owning review and check gates.
+const requiredAnalyticsRevision = "ad968676a0d326f3fdeda5f5c51e13f9e104bc87";
 
 function hasNumericTrafficClaim(line) {
   const claim = line.replace(/\]\([^)]*\)/g, "]").replace(/\b\d{4}-\d{2}-\d{2}\b/g, "");
