@@ -34,6 +34,17 @@
       "shipped": null,
       "targetQuery": "airbnb management sarasota",
       "brief": "docs/briefs/2026-11-sarasota-airbnb-management-rescue.md"
+    },
+    {
+      "route": "/guides/best-time-visit-anna-maria-island/",
+      "sources": [
+        "src/guides/best-time-visit-anna-maria-island.html"
+      ],
+      "change": "Corrected the visible and Article freshness date; title and descriptions now state the existing month answer (Gate 0 rescue)",
+      "pr": null,
+      "shipped": null,
+      "targetQuery": "best time to visit anna maria island",
+      "brief": "docs/briefs/2026-11-best-time-ami-rescue.md"
     }
   ]
 }
