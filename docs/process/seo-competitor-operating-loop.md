@@ -9,6 +9,37 @@ For a known winner or money page that has already regressed, use
 page batch. It is a bounded fix to an existing page that already proved it can
 matter.
 
+## Growth Decision: One Move Per Run
+
+Read the existing handoff, live project context and saved evidence before
+proposing a page change. Check the due outcome and open work first; reuse the
+existing brief, PR, report or private queue, not a new dashboard or report for
+the same job. Use the upstream skill matching the question, not the entire pack.
+
+| Business goal | OpenSEO evidence | Decide and verify |
+| --- | --- | --- |
+| Direct bookings | Settled GSC query/page data, saved rank history and GA4 organic landing pages/key events. Inspect the actual property and booking handoff on desktop and phone before blaming a guide. | Fix one verified break or improve one existing high-intent path before expanding content. Track property arrivals and checkout starts separately; Analytics confirms non-test native Hostaway channel 2013 bookings, not broad Direct, and verifies attribution separately. |
+| Owners under contract | Owner-intent GSC and saved AI answers plus cited pages. Start with an existing owner page and a real objection or traffic source. | Choose one offer, intake or distribution gap. A citation is not owner demand; measure qualified replies, conversations and signed agreements in the existing private intake/Hub workflow. Compare against warm referrals separately. |
+| Outreach and referral partners | Use the local AI Visibility Audit and Link Prospecting skill as methods: same-run results and sources, repeated citation URL, live page check and public business inquiry route. Check relevance and terms before proposing any partner. | Prefer one supported editorial listing or permissioned introduction over bulk outreach or paid placement. Route owners through the existing owner-intake policy; no scraping, guessed contacts, automated sends or private lead details in public Git or OpenSEO. Sawyer approves the exact outreach; Sawyer sends. |
+
+Do not use today's rank label or aggregate AI score as the baseline. Record
+market, device, window, current run IDs and coverage. In AEO, separate branded
+and non-branded prompts, mentions and owned citations, valid no-answer and
+failures. Compare the same prompts/engines/market across runs and do not turn
+missing tasks into losses. Before a paid lookup, name the decision it could
+change. Use saved reports and free source checks first; the [OpenSEO Cost Boundary](openseo.md#cost-boundary)
+still governs paid tools. New trackers, schedules and prompt expansions are not
+approved by a good baseline.
+
+**Gate before editing:** In the existing handoff, record the business lever,
+exact query/prompt family and URL, dated evidence and limitation, competing
+explanation checked, smallest change and owner, what waits, and the success/stop
+rule plus review date. A second reader should be able to reopen the evidence.
+Report one build disposition (verified/ready, killed, or blocked with an owner
+and next action) and a separate outcome verdict. A held publication or thin
+sample is not permission to edit a different guide or rerun the same window.
+Existing brief, ownership, approval and release gates still apply.
+
 ## Source Order
 
 1. Read `docs/status/next-batch.md`.
