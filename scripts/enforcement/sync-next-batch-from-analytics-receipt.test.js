@@ -1,5 +1,9 @@
 const test = require("node:test");
 const assert = require("node:assert/strict");
+const fs = require("node:fs");
+const os = require("node:os");
+const path = require("node:path");
+const { execFileSync, spawnSync } = require("node:child_process");
 
 const { renderLatestExecutionRead, replaceLatestExecutionRead } = require("./sync-next-batch-from-analytics-receipt");
 
@@ -283,4 +287,89 @@ test("unavailable SERP receipts cannot render rank or competitor evidence", () =
   assert.doesNotMatch(rendered, /\| fake query \| \/stays\/fake\/ \| 3 \|/);
   assert.doesNotMatch(rendered, /competitor\.example/);
   assert.doesNotMatch(rendered, /supports_ctr_issue/);
+});
+
+test("sync validates the cited bytes and current GA4 before changing the document", (t) => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), "next-batch-sync-"));
+  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  const git = (...args) => execFileSync("git", ["-C", root, ...args], { encoding: "utf8" }).trim();
+  const relativeReceipt = "docs/status/decision.json";
+  const receiptPath = path.join(root, relativeReceipt);
+  fs.mkdirSync(path.dirname(receiptPath), { recursive: true });
+  fs.writeFileSync(receiptPath, JSON.stringify({
+    ...receipt,
+    concrete_next_move: "Investigate the guide with 16 sessions."
+  }));
+  const checkerPath = path.join(root, "scripts", "weekly_kpi_receipt.py");
+  fs.mkdirSync(path.dirname(checkerPath), { recursive: true });
+  fs.writeFileSync(checkerPath, "# synthetic checker fixture\n");
+  git("init", "-q");
+  git("add", relativeReceipt, "scripts/weekly_kpi_receipt.py");
+  git("-c", "user.name=Fixture", "-c", "user.email=fixture@example.test", "commit", "-qm", "Receipt");
+  const url = `https://github.com/uncfreak1255-code/seascape-analytics/blob/${git("rev-parse", "HEAD")}/${relativeReceipt}`;
+  const original = "## Latest Execution Read\n\nPrevious read.\n\n## Likely Priorities\n\nKeep this.\n";
+  const nextBatch = path.join(root, "next-batch.md");
+  fs.writeFileSync(nextBatch, original);
+
+  const bin = path.join(root, "bin");
+  fs.mkdirSync(bin);
+  const realGit = execFileSync("which", ["git"], { encoding: "utf8" }).trim();
+  fs.writeFileSync(path.join(bin, "git"), [
+    "#!/bin/sh",
+    'if [ "$3" = "merge-base" ] && [ "$FIXTURE_SUPPORTED" = "yes" ]; then exit 0; fi',
+    'if [ "$3" = "diff" ] && [ "$FIXTURE_SUPPORTED" = "yes" ]; then exit 0; fi',
+    `exec "${realGit}" "$@"`,
+    ""
+  ].join("\n"), { mode: 0o755 });
+  fs.writeFileSync(path.join(bin, "python3"), [
+    "#!/bin/sh",
+    'test "$2" = "--check-ga4-receipt" || exit 2',
+    'cmp - "$FIXTURE_RECEIPT" || exit 2',
+    'if [ -n "$FIXTURE_FAILURE" ]; then echo "$FIXTURE_FAILURE" >&2; exit 1; fi',
+    ""
+  ].join("\n"), { mode: 0o755 });
+
+  function sync(failure = "", extraArgs = [], receiptUrl = url, supported = true) {
+    return spawnSync(process.execPath, [
+      path.join(__dirname, "sync-next-batch-from-analytics-receipt.js"),
+      "--receipt", receiptPath, "--receipt-url", receiptUrl,
+      "--analytics-root", root, "--next-batch", nextBatch, ...extraArgs
+    ], {
+      encoding: "utf8",
+      env: { ...process.env, PATH: `${bin}${path.delimiter}${process.env.PATH}`,
+        FIXTURE_RECEIPT: receiptPath, FIXTURE_FAILURE: failure, FIXTURE_SUPPORTED: supported ? "yes" : "no" }
+    });
+  }
+
+  assert.equal(sync("", [], url.replace(git("rev-parse", "HEAD"), "main")).status, 1);
+  const unsupported = sync("", [], url, false);
+  assert.equal(unsupported.status, 1);
+  assert.match(unsupported.stderr, /lacks the required decision-freshness verifier revision/);
+  assert.equal(fs.readFileSync(nextBatch, "utf8"), original);
+  for (const failure of ["Stale receipt", "GA4 freshness unavailable"]) {
+    const result = sync(failure);
+    assert.equal(result.status, 1);
+    assert.ok(result.stderr.includes(failure));
+    assert.equal(fs.readFileSync(nextBatch, "utf8"), original);
+  }
+  const success = sync();
+  assert.equal(success.status, 0, success.stderr);
+  const updated = fs.readFileSync(nextBatch, "utf8");
+  assert.ok(updated.includes(`16 sessions. [Analytics receipt](${url})`));
+  assert.ok(updated.endsWith("## Likely Priorities\n\nKeep this.\n"));
+  assert.equal(sync("", ["--check"]).status, 0);
+  assert.equal(sync("Stale receipt", ["--check"]).status, 1);
+
+  fs.appendFileSync(checkerPath, "# local modification\n");
+  const modifiedChecker = sync();
+  assert.equal(modifiedChecker.status, 1);
+  assert.match(modifiedChecker.stderr, /verifier source is modified or untracked/);
+  assert.equal(fs.readFileSync(nextBatch, "utf8"), updated);
+  fs.writeFileSync(checkerPath, "# synthetic checker fixture\n");
+
+  fs.appendFileSync(receiptPath, " ");
+  const mismatch = sync();
+  assert.equal(mismatch.status, 1);
+  assert.match(mismatch.stderr, /differs from its cited GitHub receipt/);
+  assert.equal(fs.readFileSync(nextBatch, "utf8"), updated);
 });

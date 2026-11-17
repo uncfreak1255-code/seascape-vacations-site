@@ -2,6 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const test = require("node:test");
 const assert = require("node:assert/strict");
+const { MAX_BYTES } = require("./check-staged-file-size");
 
 const projectRoot = path.resolve(__dirname, "..", "..");
 const allowedStatuses = [
@@ -59,6 +60,22 @@ test("next-batch contract points updates through the analytics receipt sync scri
     true,
     "sync script should validate next_batch_decision receipts"
   );
+});
+
+test("the current analytics read is cited or explicitly marked historical and unverified", () => {
+  const nextBatch = read("docs/status/next-batch.md");
+  const activeRead = nextBatch.match(/## Latest Execution Read\n([\s\S]*?)\n## Likely Priorities/);
+  assert.ok(activeRead, "next-batch should contain the active execution read");
+  const cited = /^- Evidence for this read: \[Analytics receipt\]\(https:\/\/github\.com\/uncfreak1255-code\/seascape-analytics\/blob\/[a-f0-9]{40}\/docs\/status\/[A-Za-z0-9_.-]+\.json\)/m.test(activeRead[1]);
+  const legacy = /^Run date: 2026-11-09\.$/m.test(activeRead[1]) && /^- Historical receipt: unverified\. Do not use the numeric claims/m.test(activeRead[1]);
+  assert.ok(cited || legacy, "a new analytics read needs a commit-pinned receipt");
+});
+
+test("next-batch warns near the staged-file size limit", (t) => {
+  const remaining = MAX_BYTES - fs.statSync(path.join(projectRoot, "docs/status/next-batch.md")).size;
+  if (remaining <= 500) {
+    t.diagnostic(`next-batch.md is ${remaining} bytes from the staged-file limit; move dated detail to docs/status/next-batch-history.md`);
+  }
 });
 
 test("current-state defers volatile reread detail to next-batch", () => {

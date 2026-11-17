@@ -9,7 +9,7 @@ tracks acknowledgement, source/release evidence and evaluation separately.
 
 - `docs/status/next-batch.md` is the only canonical reread handoff surface.
 - Every reread update must write exactly one `Reread status` line and exactly one `Concrete next move` line in `Latest Execution Read`.
-- Reread updates should be generated from a `seascape-analytics` next-batch decision receipt with `node scripts/enforcement/sync-next-batch-from-analytics-receipt.js --receipt <path>`.
+- Reread updates use the Analytics decision receipt sync; see [the freshness runbook](../runbooks/stale-analytics-receipt.md) for its required source and verification arguments.
 - Every hold names the missing observation or data, its numeric/observable
   clearance threshold, one accountable owner and a dated next review. Include
   named checks already performed; waiting without a condition that would break
@@ -47,6 +47,8 @@ Run date: 2026-11-09.
 
 The targeted joined operator read was executed in `seascape-analytics` and
 rendered here from its machine-readable next-batch decision receipt.
+
+- Historical receipt: unverified. Do not use the numeric claims in this read as current decision evidence; the separate guide correction is documented in [Site #938](https://github.com/uncfreak1255-code/seascape-vacations-site/pull/938).
 
 - Requested last-7-complete-day window: 2026-11-01 to 2026-11-07.
 - Latest BigQuery GSC `data_date`: 2026-11-07.
