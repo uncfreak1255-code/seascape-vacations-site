@@ -1,8 +1,9 @@
 # Brief: Airport guide — mainland booking guidance
 
 - lifecycle: active
-- task scope: November 17, 2026 Sawyer request: "Do the next most useful task from the plan. Get the page update ready for me to review, and ask before publishing." Prepare the plan's airport-guide task locally. Clarify the early rental paragraph and add one catalog link; retain the existing three collection links and their tracking. No publication is authorized.
-- completion or successor: local draft pending Sawyer review; source publication and live verification remain separate.
+- task scope: November 17, 2026 Sawyer request: "Do the next most useful task from the plan. Get the page update ready for me to review, and ask before publishing." Prepare the plan's airport-guide task locally. Clarify the early rental paragraph and add one catalog link; retain the existing three collection links and their tracking. Preparation was initially local-only; the release approval below governs publication.
+- completion or successor: Sawyer approved the rendered draft and normal review/release on November 17, 2026. Source publication and live verification remain separate.
+- release approval: Sawyer: "Yes, publish the airport-guide update through the normal review and release workflow, then verify it on the live page." Preserve the existing consolidated production lane; no new schedule, checkout, credential or guest-send effect.
 
 ## Content Gate Inputs
 
