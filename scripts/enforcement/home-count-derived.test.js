@@ -66,15 +66,20 @@ test("no template or guide hardcodes the portfolio size", () => {
 });
 
 // src/llms.txt is copied as-is, so it cannot use the numberWord filter and the
-// template scan above skips it. Any portfolio size it states must match the catalog.
+// template scan above skips it. It must state the portfolio size, and every
+// portfolio-size phrase in it must name the catalog count.
 test("llms.txt states the catalog home count", () => {
   const text = fs.readFileSync(path.join(projectRoot, "src", "llms.txt"), "utf8");
   const count = require("../../src/_data/properties-fallback.json").length;
-  const word = catalogHomeCountWord();
-  for (const pattern of TOTAL_COUNT_PATTERNS) {
-    const match = text.match(pattern);
-    if (!match) continue;
-    assert.match(match[0], new RegExp(`\\b(?:${word}|${count})\\b`, "i"), `src/llms.txt says "${match[0]}"; the catalog has ${word} homes`);
+  const expected = new Set([catalogHomeCountWord(), String(count)]);
+  const phrases = TOTAL_COUNT_PATTERNS.flatMap((pattern) => [
+    ...text.matchAll(new RegExp(pattern.source, `${pattern.flags}g`))
+  ].map((match) => match[0]));
+  assert.ok(phrases.length > 0, "src/llms.txt no longer states the portfolio size in a form the count patterns recognise");
+  for (const phrase of phrases) {
+    // The count is the first number in the phrase once a leading "one of" is set aside.
+    const stated = phrase.replace(/^one of\s+/i, "").match(/\b(?:zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|\d+)\b/i);
+    assert.ok(stated && expected.has(stated[0].toLowerCase()), `src/llms.txt says "${phrase}"; the catalog has ${count} homes`);
   }
 });
 

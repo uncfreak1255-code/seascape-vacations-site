@@ -15,9 +15,9 @@
 
 What must not break: every other line of `src/llms.txt`, including the generated `## Properties` block that `scripts/regenerate-property-surfaces.js` owns, and the existing rule that templates and guides never hardcode the portfolio size (`scripts/enforcement/home-count-derived.test.js`).
 
-The check comes from the catalog, not from the new text: the new test in `home-count-derived.test.js` reads the count from `src/_data/properties-fallback.json`, and fails when any portfolio-size phrase in `src/llms.txt` names another number. It was observed failing on the old line (`src/llms.txt says "manages seven homes"; the catalog has eight homes`) and passing after the edit.
+The check comes from the catalog, not from the new text: the new test in `home-count-derived.test.js` reads the count from `src/_data/properties-fallback.json`. It finds every phrase in `src/llms.txt` that the shared portfolio-size patterns (`scripts/enforcement/home-count-word.js`) recognise, fails if there are none, and fails if any of them names a count other than the catalog's. It was observed failing on the old line (`src/llms.txt says "manages seven homes"; the catalog has 8 homes`) and passing after the edit. Probes on a copy also failed a second stale phrase added after the correct one, a wrong count with another number later in the phrase, and a file with no count; the digit form "8" passed.
 
-The wrong case it must catch: a later catalog change (a ninth home, or a home leaving) that leaves `llms.txt` stating the old count. The old template scan missed this file because it reads only `.njk`, `.html`, `.md` and `.js`.
+The wrong case it must catch: a later catalog change (a ninth home, or a home leaving) that leaves `llms.txt` stating the old count. The old template scan missed this file because it reads only `.njk`, `.html`, `.md` and `.js`. Known limit: a count written in a form the shared patterns do not recognise (for example "a portfolio of seven homes") is not checked; the test then fails only if no recognised phrase remains.
 
 ## Source Files Changed
 
