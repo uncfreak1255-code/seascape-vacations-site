@@ -16,7 +16,7 @@ Lane: `docs/process/ranking-regression-rescue.md` (trigger: 30%+ click decline o
 - offer claim: n/a (guest lane)
 - required internal links: unchanged (`/stays/anna-maria-island-vacation-rentals/`, `/stays/bradenton-vacation-rentals-near-beaches/`)
 - CTA target: unchanged (`Compare AMI-Area Stays`, `guide_book_direct_click`, every `data-track-event` and `data-placement` stays)
-- anti-claims: never place a Seascape home on Anna Maria Island or Siesta Key (homes are a mainland Bradenton or downtown Sarasota base); pool heat is never included (optional, $40/night); no invented amenities; no licence or revenue claims; no claim of Florida-wide shelling expertise beyond what the page covers (it covers Bean Point, Coquina, Manatee Public Beach, Longboat Pass, Point of Rocks and Caspersen day trips, and nothing on Sanibel, Captiva, Marco Island or Caladesi); no claim that the restore recovered clicks before the readback proves it
+- anti-claims: never place a Seascape home on Anna Maria Island or Siesta Key (homes are a mainland Bradenton or downtown Sarasota base); pool heat optional ($40/night) except Coastal Stay (included); no invented amenities; no licence or revenue claims; no claim of Florida-wide shelling expertise beyond what the page covers (it covers Bean Point, Coquina, Manatee Public Beach, Longboat Pass, Point of Rocks and Caspersen day trips, and nothing on Sanibel, Captiva, Marco Island or Caladesi); no claim that the restore recovered clicks before the readback proves it
 
 ## Why This Batch
 

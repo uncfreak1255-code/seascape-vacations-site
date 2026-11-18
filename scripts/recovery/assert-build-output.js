@@ -9,6 +9,7 @@ const {
 
 const phase = process.argv[2] || "p0";
 const { HOMEPAGE_PUBLIC_EMOJI_MARKERS, STAY_TEMPLATE_EMOJI_MARKERS, PROPERTY_PAGE_EMOJI_MARKERS } = require("./build-output-emoji-markers");
+const { assertStayHubAndBradentonHeadTerm } = require("./assert-build-output-stays");
 const PROPERTY_STALE_LINK_MARKERS = [
   "/stays/img-academy-vacation-rentals-bradenton/",
   "/stays/coquina-beach-vacation-rentals/",
@@ -176,16 +177,11 @@ if (phase === "p0") {
   expectNotContains("_site/properties/index.html", "api.hostaway.com");
   expectNotContains("_site/properties/index.html", "hostaway-platform.s3.us-west-2.amazonaws.com");
   expectContains("_site/property-management/index.html", "Property Management");
-  expectContains("_site/stays/index.html", "Stay Collections");
-  expectContains("_site/stays/index.html", 'href="/stays/anna-maria-island-vacation-rentals/"');
-  expectContains("_site/stays/index.html", 'href="/stays/bradenton-vacation-rentals-near-beaches/"');
-  expectContains("_site/sitemap.xml", "<loc>https://seascape-vacations.com/stays/</loc>");
+  assertStayHubAndBradentonHeadTerm({ expectContains });
   expectContains("_site/properties/index.html", 'href="/css/base.css"');
   // These two pages must render site navigation with the brand mark. Until
   // 2026-09-10 that meant the legacy header's .nav-logo img; every page now
   // renders the shared Waterline header, whose wordmark is text, not an image.
-  expectContains("_site/stays/anna-maria-island-vacation-rentals/index.html", 'class="g-header"');
-  expectContains("_site/stays/anna-maria-island-vacation-rentals/index.html", 'class="g-wordmark"');
   expectContains("_site/property-management/index.html", 'href="/css/base.css"');
   expectContains("_site/property-management/index.html", 'class="g-header"');
   expectContains("_site/property-management/index.html", 'class="g-wordmark"');

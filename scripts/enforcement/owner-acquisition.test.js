@@ -100,7 +100,7 @@ test("owner landing page keeps the owner revenue review close to the sales argum
   // The offer (seascape-hub/context/owner-offer.md) leads; fee vocabulary lives on the fee guide.
   assert.match(ownerLanding, /\{\{ homeCountWord \| capitalize \}\} homes\. One local team\./);
   assert.equal(ownerLanding.includes("Send the listing. We send back a one-page review."), true);
-  assert.equal(ownerLanding.includes("We do not have one fee for every home."), true);
+  assert.equal(ownerLanding.includes("Vacation rental management from 17%."), true);
   assert.equal(ownerLanding.includes("proven cost, likely cost, and missing information"), false);
   assert.equal(ownerLanding.includes("The Fee Comparison"), false, "fee comparison content belongs to the fee guide, not the offer page");
   assert.equal(ownerLanding.includes("15.5%"), false, "no third-party fee figures above the offer");
@@ -193,8 +193,8 @@ test("owner revenue review form lowers friction without losing tracking or inten
   assert.equal(ownerFormPartial.includes('name="property_address" autocomplete="street-address" placeholder="{{ options.propertyFieldPlaceholder or \'airbnb.com/h/your-listing, vrbo.com/..., or 123 Palm Ave\' }}" data-owner-context-field'), true);
   assert.equal(ownerFormPartial.includes('name="property_address" autocomplete="street-address" placeholder="{{ options.propertyFieldPlaceholder or \'airbnb.com/h/your-listing, vrbo.com/..., or 123 Palm Ave\' }}" required'), false);
   assert.equal(ownerFormPartial.includes('enctype="multipart/form-data"'), true);
-  assert.equal(ownerFormPartial.includes('name="listing_url"'), true);
-  assert.equal(ownerFormPartial.includes('name="listing_url" inputmode="url" placeholder="Paste the Airbnb or Vrbo listing URL" data-owner-context-field'), true);
+  assert.match(ownerFormPartial, /<input type="hidden" name="listing_url">/);
+  assert.doesNotMatch(ownerFormPartial, /<input type="url" name="listing_url"/);
   assert.equal(ownerFormPartial.includes('name="current_manager"'), true);
   assert.equal(ownerFormPartial.includes('name="current_fee_quote"'), true);
   assert.equal(ownerFormPartial.includes('name="what_feels_off"'), true);
@@ -209,19 +209,8 @@ test("owner revenue review form lowers friction without losing tracking or inten
   assert.equal(ownerLanding.includes('name="what_feels_off" rows="3"'), true);
   assert.equal(ownerLanding.includes("One line in your own words"), true);
   assert.equal(ownerLanding.includes("The payout feels light and the statements are hard to follow."), true);
-  assert.equal(
-    ownerFormPartial.includes("The fastest first pass comes from two things: the listing URL or address, and one line on what feels off. An owner statement or fee quote makes the review sharper."),
-    true
-  );
-  assert.equal(
-    ownerFormPartial.includes("Source note: Send what you have. We will tell you if a statement, booking calendar, guest review, or fee quote would make the review more useful."),
-    true
-  );
-  assert.equal(ownerFormPartial.includes("The private revenue review shows what we can verify, what looks expensive, and what still needs a document"), true);
-  assert.equal(
-    ownerFormPartial.includes("If you do not know the street address yet, paste the Airbnb or Vrbo link and tell us what feels off."),
-    true
-  );
+  assert.match(ownerFormPartial, /An Airbnb or Vrbo link works in place of an address/);
+  assert.doesNotMatch(ownerFormPartial, /Got it\./);
   assert.equal(ownerFormPartial.includes("What feels off right now?"), true);
   assert.equal(
     ownerFormPartial.includes("owner payout feels light, booking-site fees look high, reporting is hard to trust, or the current manager setup feels off"),
@@ -253,7 +242,7 @@ test("Pat-like Sarasota leads are prompted for the property context and the reas
   const sarasotaPage = ownerData.find((entry) => entry.slug === "vacation-rental-management-sarasota");
 
   assert.ok(sarasotaPage, "Sarasota owner page should exist");
-  assert.equal(ownerTemplate.includes("Send the listing link or property address, plus a sentence or two about what feels off."), true);
+  assert.equal(ownerTemplate.includes("Send your listing link or property address."), true);
   assert.equal(ownerLanding.includes("Paste the Airbnb or Vrbo link, or type the street address."), true);
   assert.equal(ownerLanding.includes("Revenue feels low for the market"), true);
   assert.equal(ownerLanding.includes("Booking-site fees feel heavy"), true);
@@ -298,7 +287,7 @@ test("owner review submit path lands on a qualified-owner confirmation route", (
   assert.equal(ownerReviewRequested.includes('permalink: "/property-management/revenue-review-requested/"'), true);
   assert.equal(ownerReviewRequested.includes("Your 48-hour review request is in."), true);
   assert.equal(
-    ownerReviewRequested.includes("A real Seascape person will follow up within 48 hours. If the listing or address and what feels off are there, we can take a more useful first look right away."),
+    ownerReviewRequested.includes("A real Seascape person will follow up, usually within 48 hours. If the listing or address and what feels off are there, we can take a more useful first look right away."),
     true
   );
   assert.equal(ownerReviewRequested.includes("listing link or property address"), true);
@@ -522,9 +511,9 @@ test("week 3 owner pages do not collapse back into fake flat-fee messaging", () 
   assert.ok(sarasotaPage, "Sarasota owner page should exist");
   assert.equal(ownerLanding.includes("10-15% management fees"), false, "owner landing should not hard-code a flat fee band");
   assert.equal(
-    ownerLanding.includes("we quote a share of net rent that fits what the home can earn, and we put the basis, the included services and any separate charges in writing."),
+    ownerLanding.includes("Our fee is 17–20% of net rent, plus $85 a month for booking and accounting software."),
     true,
-    "owner landing should explain the property-specific pricing model"
+    "owner landing should publish the management fee"
   );
   assert.equal(switchPage.benefits.includes("10-15% management fees instead of paying more for the same misses"), false, "switch page should not claim a flat fee band");
   assert.equal(switchPage.geoIntro.includes("10-15%"), false, "switch page GEO intro should not hard-code a flat fee");
@@ -581,9 +570,9 @@ test("owner hub restores the fee page and keeps pricing framed as tailored", () 
     "fee page should explain pricing as tailored"
   );
   assert.equal(
-    feePage.geoIntro.includes("We do not use one flat management fee for every home."),
+    feePage.geoIntro.includes("Our fee is 17–20% of net rent, plus $85 a month for booking and accounting software."),
     true,
-    "fee page GEO intro should explain the tailored pricing model"
+    "fee page GEO intro should state the published fee"
   );
   assert.equal(
     feePage.benefits.includes("Clear breakdown of management fee, marketplace booking costs, and direct-booking savings"),

@@ -59,8 +59,8 @@ test("named catalog, gallery, and owner regions are not role-less aria-label hos
   await expect(page.locator(".catalog-filters")).toHaveAccessibleName("Property filters");
 
   await gotoMarketingRoute(page, propertyRoute);
-  await expect(page.locator(".g-gallery")).toHaveAccessibleName("Dockside Dreams photos");
-  assert.equal(await page.locator(".g-gallery").evaluate((node) => node.tagName), "SECTION");
+  await expect(page.locator(".g-gallery:visible, .inpage-book:visible")).toHaveAccessibleName("Dockside Dreams photos");
+  assert.equal(await page.locator(".g-gallery:visible, .inpage-book:visible").evaluate((node) => node.tagName), "SECTION");
   await expect(page.locator(".property-trip-context")).toHaveRole("group");
   await expect(page.locator(".property-trip-context")).toHaveAccessibleName("Your trip");
 

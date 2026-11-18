@@ -40,6 +40,16 @@ function numberWord(count) {
   return WORDS[count];
 }
 
+const AN_COUNT_WORDS = new Set(["eight", "eleven"]);
+
+function indefiniteArticle(word) {
+  return AN_COUNT_WORDS.has(word) ? "an" : "a";
+}
+
+function homeOperator(word) {
+  return `${indefiniteArticle(word)} ${word}-home operator`;
+}
+
 function catalogHomeCountWord(catalog = require("../../src/_data/properties-fallback.json")) {
   return numberWord(catalog.length);
 }
@@ -54,6 +64,8 @@ module.exports = {
   WORDS,
   TOTAL_COUNT_PATTERNS,
   numberWord,
+  indefiniteArticle,
+  homeOperator,
   catalogHomeCountWord,
   catalogHomeCountHeading
 };

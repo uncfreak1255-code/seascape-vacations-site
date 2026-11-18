@@ -1,14 +1,14 @@
-# Homepage focused deck: approved After A
+# Homepage collection: desktop deck and vertical phone list
 
 November 13, 2026. This replaces the open desktop fan, not the hero or booking sheet.
 The approval reference is the saved in-context After A desktop/phone preview.
 
 - Desktop: centered 420px postcard, landscape photo, photo-only neighbors, manual
   Previous/Next and home-name selectors. No autoplay, drag experiment or scroll choreography.
-- Phone: native horizontal home snap, a card 24px narrower than the track with a photo-only neighbor peek, active-card height and details.
-- See all homes restores complete readable cards and the existing phone photo strips.
-  Nested horizontal gestures cannot reliably choose both a home and a photo, so focused
-  mode shows each home's first photo; open collection retains every original photo.
+- Phone, revised November 15, 2026: the full collection stacks vertically by default.
+  Each home keeps its own swipeable photo strip.
+- On desktop, See all homes opens the complete collection. Focused mode shows
+  each home's first photo.
 - Data, ratings, first-image eager loading, trip links and filters stay source-backed.
 - The no-JavaScript layout is the complete list; all controls are hidden until initialized.
 - Keyboard navigation is immediate, offscreen details cannot take focus, reduced motion
@@ -20,7 +20,7 @@ Proof: `home-focused-deck.test.js` and `home-focused-deck.spec.js`.
 Rollback: revert this bounded change to restore base ada10a34; after approval, this A
 revision becomes the rollback baseline for any later motion branch. No feature flags.
 
-## Earlier verification checkpoint: November 13, 2026
+## Historical checkpoint for the original After A design, November 13, 2026
 
 Independent rendered critic: Approved with edge at 1440px, 393px and 320px.
 The three low-impact edges (CTA arrow placement, missing swipe hint, and 4px

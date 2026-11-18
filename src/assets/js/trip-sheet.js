@@ -87,15 +87,29 @@
   }
 
   // Count and dots follow each photo strip's scroll position.
+  // Extra photos stay on data-src until this strip is swiped or touched, so a
+  // nearby card does not start four lazy extras and starve the next cover.
   document.querySelectorAll('[data-ts-strip]').forEach(function (strip) {
     var wrap = strip.parentNode;
     var count = wrap.querySelector('[data-ts-count]');
     var dots = wrap.querySelectorAll('.ts-dots i');
     var total = dots.length;
     var ticking = false;
-    if (!count || total < 2) return;
+    var hydrated = false;
+    function hydrateExtras() {
+      if (hydrated) return;
+      hydrated = true;
+      strip.querySelectorAll('img.ts-extra').forEach(function (img) {
+        if (img.getAttribute('src')) return;
+        if (img.dataset.srcset) img.srcset = img.dataset.srcset;
+        if (img.dataset.src) img.src = img.dataset.src;
+      });
+    }
+    strip.classList.add('ts-strip-live');
+    strip.addEventListener('pointerdown', hydrateExtras, { passive: true });
     strip.addEventListener('scroll', function () {
-      if (ticking || !strip.clientWidth) return;
+      hydrateExtras();
+      if (!count || total < 2 || ticking || !strip.clientWidth) return;
       ticking = true;
       requestAnimationFrame(function () {
         ticking = false;
