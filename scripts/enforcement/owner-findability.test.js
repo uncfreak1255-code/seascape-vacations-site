@@ -34,6 +34,7 @@ test("owner alias file 301s guessed URLs to the property-management hub", () => 
 test("shared phone header exposes Owners except on property-management pages", () => {
   const header = read("src/_includes/partials/guest-header.njk");
   assert.match(header, /class="g-header-owners"/);
+  assert.match(header, /g-header-guest-cta/);
   assert.match(header, /page\.url\.indexOf\('\/property-management\/'\) != 0/);
   assert.match(header, /data-placement="guest_header_owners"/);
   assert.equal((header.match(/class="g-header-owners"/g) || []).length, 1);
@@ -91,6 +92,13 @@ test("built pages keep the phone Owners link off the owner hub and on guest rout
   assert.match(homeHtml, /class="g-header-owners"/);
   assert.match(catalogHtml, /class="g-header-owners"/);
   assert.doesNotMatch(ownerHtml, /class="g-header-owners"/);
+  assert.match(homeHtml, /g-header-guest-cta/);
+  assert.match(catalogHtml, /g-header-guest-cta/);
+  assert.doesNotMatch(ownerHtml, /g-header-guest-cta/);
+  const guestCss = fs.readFileSync(path.join(projectRoot, "_site", "css", "guest.css"), "utf8");
+  assert.match(guestCss, /\.g-menu-button,\.g-header-owners\{display:none/);
+  assert.doesNotMatch(guestCss, /\.g-header-actions:has\(\.g-header-owners\)/);
+  assert.equal(fs.existsSync(path.join(projectRoot, "src", "css", "header-owners.css")), false);
   assert.match(ownerHtml, /Why an eight-home operator/);
   assert.doesNotMatch(ownerHtml, /Why a eight-home operator/);
   for (const from of ["/owners/", "/owner/", "/list-your-property/"]) {

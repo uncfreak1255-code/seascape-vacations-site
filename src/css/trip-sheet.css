@@ -111,7 +111,7 @@ body:has(.ts-dialog[open]){overflow:hidden}
   /* Homepage: homes first, hero and intro below */
   .g-homepage .g-header{position:relative;color:var(--g-ink);background:var(--g-paper);border-color:var(--g-rule)}
   .g-homepage .g-header .g-wordmark{color:var(--g-ink)}
-  .g-homepage .g-header-phone,.g-homepage .g-header-owners,.g-homepage .g-menu-button{color:var(--g-ink);border-color:var(--g-rule)}
+  .g-homepage .g-header-phone,.g-homepage .g-menu-button{color:var(--g-ink);border-color:var(--g-rule)}
   .g-homepage .g-header-actions .g-button{background:var(--g-ink);color:var(--g-paper);border-color:var(--g-ink)}
   .g-homepage .g-home{display:flex;flex-direction:column}
   .g-home>.g-wrap{display:contents}

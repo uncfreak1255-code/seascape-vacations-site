@@ -80,7 +80,7 @@ Required because `src/index.njk` and `src/property-management/index.njk` are sea
 
 - source files changed in this batch:
   - `src/_includes/partials/guest-header.njk`
-  - `src/css/header-owners.css`
+  - `src/css/guest.css`
   - `src/index.njk`
   - `src/css/trip-sheet.css`
   - `src/property-management/index.njk`

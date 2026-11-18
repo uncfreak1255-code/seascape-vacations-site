@@ -77,7 +77,7 @@ test("built guest.css appends motion.css without a second request", () => {
   const built = fs.readFileSync(builtPath, "utf8");
   assert.match(built, /touch-action:manipulation/);
   assert.match(built, /--g-press-scale:\.97/);
-  assert.match(built, /\.g-header-owners\{display:none\}/);
+  assert.match(built, /\.g-menu-button,\.g-header-owners\{display:none/);
   assert.equal(hoverRuleIsGated(built), true);
   const html = read("_site/index.html");
   assert.match(html, /href="\/css\/guest\.css/);
