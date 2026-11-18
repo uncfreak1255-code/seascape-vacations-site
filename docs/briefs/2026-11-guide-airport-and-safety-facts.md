@@ -1,6 +1,6 @@
 # Airport estimates and guide claim repairs
 
-- lifecycle: active
+- lifecycle: completed — source change finished in Site PR #1010 (issue #972), merged under Sawyer's November 18 standing SEO rule (#1008). Source completion is not proof that it is live.
 - task scope: Sawyer's November 16 airport, crowd, wildlife, parking and beach-safety corrections; issue #972. Existing-guide accuracy route; no layout, intent or URL changes.
 - persona: families planning transport and beach days near Anna Maria Island
 - primary keyword: how to get to Anna Maria Island (unchanged intent)
@@ -37,6 +37,8 @@ The wrong case is a page with a corrected table but old 25-minute SRQ FAQ or an 
 This repairs factual contradictions and unsafe absolutes. It is not a ranking experiment; no new paid research, FAQ expansion, tracking setting or directory rename. The private-pool experiment is already Site #967 and agent-issues #72. Analytics owns its Nov 2–15 / Nov 17–30 matched windows and Dec 4 readback.
 
 Revenue lever: preserve guest trust and usable booking journeys. Proof surface: sourced before/after copy and built pages. Owning repo: Site. What stops: new SEO copy experiments and FAQ expansion while the existing pool action matures. Attribution remains Analytics #427; clicks cannot prove completed bookings.
+
+Keep-or-revert (standing SEO rule, `AGENTS.md`): the baseline is Search Console clicks and impressions for the ten routes from October 22 to November 18, 2026. The verdict is due December 17, 2026, 28 days after the expected November 19 publish; move it if the publish slips. These are accuracy repairs, so a drop leads to revising wording, never to restoring the old airport times or the removed guarantees.
 
 ## Gate 0 — factual repair, no search expansion
 
