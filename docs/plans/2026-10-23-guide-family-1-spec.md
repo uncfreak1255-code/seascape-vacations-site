@@ -2,6 +2,9 @@
 
 Status: draft for Sawyer's approval (spec and tickets approved together, one checkpoint).
 Tickets: `docs/plans/2026-10-23-guide-family-1-tickets.md`.
+Since 2026-11-18, `AGENTS.md` -> Business Priorities And Experiments (Standing SEO authority,
+#1008) replaces Sawyer's copy-lane review and OpenSEO-run approval below. Layout moves and figures
+stay under `DESIGN.md` and `docs/process/design-review-workflow.md`, including E0's figure pick.
 Written 2026-10-23 against `origin/main` `9772be5f`. Drafted natively; the typed-only
 `/to-spec` and `/to-tickets` commands were not invoked.
 

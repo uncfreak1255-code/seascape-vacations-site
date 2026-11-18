@@ -195,7 +195,7 @@ For this repo, the safe default is:
 4. Make source changes
 5. Use `npm run git:safe-commit -- --stage-source -m "<message>"` for checkpoint commits
 6. Run `npm run git:merge-check`
-7. Let the user review visible changes
+7. Check visible changes on desktop and a simulated phone; Sawyer reviews only what `AGENTS.md` -> Business Priorities And Experiments or `docs/process/design-review-workflow.md` leaves to him
 8. Push the branch
 9. Open a PR
 10. Merge only after checks pass
