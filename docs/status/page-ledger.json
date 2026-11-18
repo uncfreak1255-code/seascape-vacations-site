@@ -61,7 +61,7 @@
         "src/guides/anna-maria-island-weather.html"
       ],
       "change": "Rewrote title/meta to name NOAA monthly air, rain, water, and milder Nov–April (CTR repair)",
-      "pr": null,
+      "pr": 998,
       "shipped": null,
       "targetQuery": "anna maria island weather by month",
       "brief": "docs/briefs/2026-11-ami-weather-ctr.md"
