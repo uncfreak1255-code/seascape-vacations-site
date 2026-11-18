@@ -37,7 +37,7 @@ function buildOwnerConfirmationEmail(contact, env = process.env) {
   const text = [
     greeting,
     "",
-    "Thanks for sending your revenue review request. A real person at Seascape will follow up within 48 hours.",
+    "Thanks for sending your revenue review request. A real person at Seascape will follow up, usually within 48 hours.",
     "",
     "If you still need to add a listing link or property address, or a sentence about what feels off, reply to this email.",
     "",
