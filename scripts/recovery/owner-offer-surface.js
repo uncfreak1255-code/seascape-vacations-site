@@ -1,9 +1,11 @@
 // Shared by live smoke; keep the approved offer, catalog size and authority confirmation intact.
+const { homeOperator } = require("../enforcement/home-count-word");
+
 module.exports = function hasOwnerOfferSurface(body, homeCountWord) {
   return /Know what your home earned <em>and what needs attention\.<\/em>/.test(body)
     && new RegExp(`\\b${homeCountWord} homes\\. One local team\\.`, "i").test(body)
     && body.includes("What we do for your home")
-    && new RegExp(`Why a ${homeCountWord}-home operator`, "i").test(body)
+    && body.includes(`Why ${homeOperator(homeCountWord)}`)
     && body.includes("The homes we manage")
     && body.includes("Get my review")
     && body.includes('name="submitter_authority" value="owner_or_authorized_representative" required')

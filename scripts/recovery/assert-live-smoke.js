@@ -40,6 +40,9 @@ const targets = [
   { path: "/contact", status: 301, followRedirects: false },
   { path: "/guides/bradenton-vs-sarasota-cost-of-living/", status: 301, followRedirects: false },
   { path: "/property-owners/", status: 301, followRedirects: false },
+  { path: "/owners/", status: 301, followRedirects: false, location: "/property-management/" },
+  { path: "/owner/", status: 301, followRedirects: false, location: "/property-management/" },
+  { path: "/list-your-property/", status: 301, followRedirects: false, location: "/property-management/" },
   { path: "/hero-mobile.webp", status: 200 },
   { path: "/hero-optimized.webp", status: 200 },
   { path: "/images/seascape-og-default.jpg", status: 200 },
@@ -102,12 +105,12 @@ function validateTargetResponse(target, response) {
     }
 
     // Manual hero controls keep their scene-list-derived counter and real home imagery.
-    requireIncludes(target.path, response.body, ['data-guest-version="waterline-v3"', 'id="home-heading"', 'href="/properties/" data-trip-link>Find your home</a>', "Your people.", "Your place.", "Our homes", 'data-guest-trip-form', '/images/homes/the-oasis/01.webp', 'href="/guest-support/"', 'href="/terms/#booking-and-confirmation"', 'Explore', 'Where we are', 'href="/guides/anna-maria-island-area-guide/"', 'id="email-signup"', 'data-inline-email-capture="true"', 'data-placement="home_owner_section"', 'Home 1 of ', 'data-scene-step="-1"', 'data-scene-step="1"', '/images/homes/the-oasis/hero-clarity.webp', 'data-home-deck', 'data-deck-step="-1"', 'data-deck-step="1"', 'See all homes', 'Back to focused deck', 'data-trip-sheet-open', 'Dates and guests', '<p class="g-card-source">Ratings from Airbnb</p>', '<span class="g-card-rating" aria-hidden="true">★ ']);
+    requireIncludes(target.path, response.body, ['data-guest-version="waterline-v3"', 'id="home-heading"', 'href="/properties/" data-trip-link>Find your home</a>', "Your people.", "Your place.", "Our homes", 'data-guest-trip-form', '/images/homes/the-oasis/01.webp', 'href="/guest-support/"', 'href="/terms/#booking-and-confirmation"', 'Explore', 'Where we are', 'href="/guides/anna-maria-island-area-guide/"', 'id="email-signup"', 'data-inline-email-capture="true"', 'data-placement="home_owner_section"', 'Home 1 of ', 'data-scene-step="-1"', 'data-scene-step="1"', '/images/homes/the-oasis/hero-clarity.webp', 'data-home-deck', 'data-deck-step="-1"', 'data-deck-step="1"', 'See all homes', 'Back to focused deck', 'data-trip-sheet-open', 'Dates and guests', '<p class="g-card-source">Ratings from Airbnb</p>', '<span class="g-card-rating" aria-hidden="true">★ ', 'class="g-header-owners"']);
     requireExcludes(target.path, response.body, ["Best rates guaranteed", "Best Price Guaranteed", "save up to 20%", "Swipe to explore the collection."]);
   }
 
   if (target.path === "/properties/") {
-    requireIncludes(target.path, response.body, ['data-trip-sheet-open', 'Dates and guests', '<p class="g-card-source">Ratings from Airbnb</p>', '<span class="g-card-rating" aria-hidden="true">★ ']);
+    requireIncludes(target.path, response.body, ['data-trip-sheet-open', 'Dates and guests', '<p class="g-card-source">Ratings from Airbnb</p>', '<span class="g-card-rating" aria-hidden="true">★ ', 'class="g-header-owners"']);
     requireIncludes(target.path, response.body, ['id="reset-filter" type="button">Show all stays</button>']);
     if (!response.body.includes("Dockside Dreams") || !response.body.includes("The Oasis")) {
       throw new Error("properties page is missing premium catalog property cards");
@@ -178,6 +181,10 @@ function validateTargetResponse(target, response) {
     requireIncludes(target.path, response.body, ['<meta name="robots" content="noindex, follow">',
       "figures are withdrawn"]);
     requireExcludes(target.path, response.body, ["totalEstimate", "feeLow", "74-day"]);
+  }
+
+  if (target.location && response.location !== target.location) {
+    throw new Error(`${target.path} expected Location ${target.location}, got ${response.location || "no Location header"}`);
   }
 
   if (target.path === "/contact" && response.location !== "/#contact") {

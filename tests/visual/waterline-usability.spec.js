@@ -4,7 +4,7 @@ const { gotoMarketingRoute } = require('./test-helpers');
 
 test('Waterline facts and navigation remain readable and usable', async ({ page }) => {
   await gotoMarketingRoute(page, { slug: 'home', path: '/', readySelector: '.g-postcard' });
-  const measurements = await page.locator('.g-header-actions .g-button, .g-menu-button, .g-scene:not([hidden]) .g-scene-explore, .g-footer-grid > div > a, .g-footer-bottom a').evaluateAll(nodes => nodes
+  const measurements = await page.locator('.g-header-actions .g-button, .g-header-owners, .g-menu-button, .g-scene:not([hidden]) .g-scene-explore, .g-footer-grid > div > a, .g-footer-bottom a').evaluateAll(nodes => nodes
     .filter(node => node.getClientRects().length)
     .map(node => ({ text: node.textContent.trim(), height: node.getBoundingClientRect().height })));
   for (const item of measurements) expect(item.height, item.text).toBeGreaterThanOrEqual(44);
