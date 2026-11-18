@@ -99,15 +99,31 @@ test("Bradenton head-term page is on the settle ledger before publication", () =
   assert.equal(entry.pr, 1002);
 });
 
-test("Bradenton donor guides and related stay pages point at the head-term URL", () => {
-  const donors = [
-    ["src/guides/bradenton-area-guide/index.html", 'href="/stays/bradenton-vacation-rentals/"'],
-    ["src/guides/things-to-do-bradenton-fl.html", 'href="/stays/bradenton-vacation-rentals/"'],
-    ["src/guides/bradenton-vs-sarasota.html", 'href="/stays/bradenton-vacation-rentals/"']
-  ];
-  for (const [relative, needle] of donors) {
+test("Bradenton donor guides keep the brief's required stay destinations", () => {
+  const brief = fs.readFileSync(
+    path.join(__dirname, "..", "..", "docs/briefs/2026-11-bradenton-vacation-rentals.md"),
+    "utf8"
+  );
+  const mapStart = brief.indexOf("## Required Internal Link Map");
+  const mapBody = brief.slice(mapStart, brief.indexOf("\n## ", mapStart + 1));
+  const donors = [];
+  for (const line of mapBody.split("\n")) {
+    const match = line.match(/^- (src\/\S+):\s*(.+)$/);
+    if (!match) continue;
+    donors.push([
+      match[1],
+      match[2].split(",").map((value) => value.trim()).filter((value) => value.startsWith("/"))
+    ]);
+  }
+  assert.ok(donors.length > 0, "brief must list donor pages in the Required Internal Link Map");
+  for (const [relative, hrefs] of donors) {
     const source = fs.readFileSync(path.join(__dirname, "..", "..", relative), "utf8");
-    assert.ok(source.includes(needle), `${relative} must link to the head-term stay page`);
+    for (const href of hrefs) {
+      assert.ok(
+        source.includes(`href="${href}"`),
+        `${relative} must keep ${href}`
+      );
+    }
   }
 
   for (const slug of [
