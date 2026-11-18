@@ -26,9 +26,9 @@ not add or enable any schedule.
 | Step | Owner | Use |
 | --- | --- | --- |
 | Saved evidence | local OpenSEO | Free saved reads first, per `docs/process/openseo.md`. Paid lookups follow its Cost Boundary: a standing approval for one-off lookups up to $25 a month and $6 a lookup, with an ask-first list |
-| Choose the next batch | `.claude/agents/search-operator.md` with the `next-batch-gate` skill | Proof lane plus attack lane; one cluster or one rescue; follows `docs/process/batch-workflow.md` |
+| Choose the next batch | Search Operator; `next-batch-gate` when exposed | Apply `docs/status/next-batch.md` and `docs/process/batch-workflow.md` even when the helper is unavailable; one cluster or one rescue, proof lane plus attack lane |
 | Rescue a dropped page | `docs/process/ranking-regression-rescue.md` | Triggered by a weekly drop-check card, a rank-tracker drop, or indexing drift; returns the Gate 0 block |
-| Research method | upstream `openseo-local-*` skills | `seo-audit`, `keyword-clustering`, `ai-visibility-audit`, `ai-prompt-research`, `competitor-analysis`, `seo-report`. Generic methods; Seascape gates still apply |
+| Required SEO/AEO research method | local OpenSEO's upstream skills (user-scope `openseo-local-*` paths; exposed as `openseo:*`) | Select the matching audit, keyword, competitor or AI-visibility skill through `docs/process/openseo.md`; Site checks and Analytics measurement still apply |
 | Evidence report | `openseo-review` skill | Saved-evidence review and private report |
 | Write or change copy | brief from `docs/briefs/README.md`, `content-quality-rubric`, `docs/process/aeo-citability-rubric.md`, the content gate | Copy changes need a brief |
 | Titles and meta | `serp-ctr-title-rewrite` | High-impression, weak-CTR pages |
@@ -42,9 +42,9 @@ not add or enable any schedule.
   Codex-only runner that walks one improvement from OpenSEO evidence to an
   Analytics decision. It follows this map and `docs/process/openseo.md`; Claude
   runs the same loop through the search-operator role and the steps above.
-- Codex's global `ai-seo` skill (`~/.codex/skills/ai-seo`) is generic
-  marketing background and is not a local skill in this repo. For Seascape AEO, the
-  `docs/process/aeo-citability-rubric.md` and `content-quality-rubric` govern.
+- For AEO research, use local OpenSEO's `ai-visibility-audit` or
+  `ai-prompt-research`. For Site copy, retain `docs/process/aeo-citability-rubric.md`
+  and `content-quality-rubric`; the retired global `ai-seo` helper is not required.
 - Both harnesses use only the local `openseo` MCP server for Seascape, never
   the hosted OpenSEO connector.
 
