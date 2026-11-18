@@ -240,6 +240,7 @@ function validateTargetResponse(target, response) {
       && response.body.includes("Compare Gulf Coast private-pool homes by area, group size, and trip priorities")
       && response.body.includes("/stays/anna-maria-island-vacation-rentals/")
       && response.body.includes("/stays/bradenton-vacation-rentals-near-beaches/")
+      && response.body.includes('href="/stays/bradenton-vacation-rentals/"')
       && response.body.includes("/properties/");
 
     if (!hasStayHubSurface) {

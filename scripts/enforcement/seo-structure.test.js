@@ -92,6 +92,7 @@ test("redirects avoid the known missing legacy target pages", () => {
     // /properties/ and the pet guide instead of dropping equity into noindex.
     "/guides/pet-friendly-anna-maria-island/",
     "/stays/bradenton-vacation-rentals-near-beaches/",
+    "/stays/bradenton-vacation-rentals/",
     "/guides/bradenton-area-guide/"
   ]) {
     assert.equal(redirects.includes(safeTarget), true);

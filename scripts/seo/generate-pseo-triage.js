@@ -12,7 +12,8 @@ const stayNoindexSlugs = new Set(seoGovernance.staysNoindexSlugs || []);
 const stayKeep = new Map([
   ["anna-maria-island-vacation-rentals", "AMI stay-money winner tracked in next-batch gate."],
   ["anna-maria-island-beachfront-rentals", "AMI near-beachfront alternative tracked in next-batch gate."],
-  ["bradenton-vacation-rentals-near-beaches", "Bradenton stay-money destination in portfolio map."],
+  ["bradenton-vacation-rentals", "Founder-authorized Bradenton head-term collection (2026-11-17)."],
+  ["bradenton-vacation-rentals-near-beaches", "Bradenton beach-access stay page in portfolio map."],
   ["siesta-key-area-vacation-rentals", "Sarasota-side stay-money destination in portfolio map."],
   ["book-direct-anna-maria-island", "Direct-book trust angle supports the AMI money page family."],
   ["anna-maria-island-homes-with-pool", "Distinct high-intent AMI pool query with multiple matching properties."],
@@ -23,37 +24,37 @@ const stayKeep = new Map([
 ]);
 
 const stayImprove = new Map([
-  ["bradenton-waterfront-vacation-rentals", "High-intent waterfront/dock query, but one-property page needs competitor and truth check."],
-  ["bradenton-vacation-rentals-with-hot-tub", "Amenity query with multiple matching properties; check SERP and opening answer."],
-  ["fishing-vacation-rentals-bradenton", "Activity-led query can support dock/water pages if competitor read confirms demand."],
-  ["romantic-getaway-anna-maria-island", "Persona page is still indexable; verify demand and consolidate if weak."],
-  ["sarasota-vacation-rentals-with-pool", "Sarasota pool query has commercial intent but thin inventory."],
-  ["downtown-sarasota-vacation-rentals", "Sarasota location page needs competitor check because inventory is thin."],
-  ["sarasota-arts-culture-vacation-rentals", "Guide-style Sarasota angle may need routing into stronger Sarasota stay page."],
-  ["luxury-vacation-rentals-sarasota", "High-value term, but one-property support needs SERP validation."],
-  ["vacation-rentals-with-pool-and-hot-tub", "Distinct amenity stack; check if it should feed AMI or Bradenton winners."],
-  ["beach-house-rentals-florida-gulf-coast", "Broad commercial term with multiple properties; needs SERP specificity check."],
-  ["gulf-coast-vacation-homes-with-dock", "Dock query has commercial intent but current inventory is narrow."],
-  ["golf-vacation-rentals-bradenton", "Activity page may support Bradenton if live SERP demand exists."],
-  ["kayaking-vacation-rentals-bradenton", "Activity page can feed waterfront/dock demand if competitor read confirms."],
-  ["dolphin-watching-vacation-rentals-florida", "Activity page is thin; verify whether guide or stay destination is better."],
-  ["honeymoon-rentals-anna-maria-island", "Persona page is indexable; check demand before keeping independent."],
-  ["multigenerational-vacation-rentals-florida", "Could support large-group fit, but likely overlaps with large-group pages."],
-  ["accessible-vacation-rentals-florida", "Accessibility claims need property-truth verification before promotion."],
-  ["long-weekend-getaway-florida", "Useful trip-length intent if it transfers to property clicks."],
-  ["week-long-vacation-rentals-florida", "Useful trip-length intent if it transfers to property clicks."],
-  ["extended-stay-vacation-rentals-florida", "Extended-stay intent can matter for snowbirds, but needs query evidence."],
-  ["work-from-home-vacation-rentals-florida", "Work-from-anywhere angle needs demand and amenity proof check."],
-  ["quiet-relaxing-vacation-rentals-florida", "One-property intent page; verify whether it should consolidate into property or guide copy."],
-  ["last-minute-vacation-rentals-florida", "Commercial intent, but must match real availability/booking behavior."],
-  ["affordable-vacation-rentals-florida-gulf-coast", "Price-sensitive page needs careful direct-book savings proof."],
-  ["vacation-rentals-with-game-room", "Amenity query is thin; verify against property truth and SERP."],
-  ["vacation-rentals-with-fire-pit", "Amenity query is thin; verify against property truth and SERP."],
-  ["vacation-rentals-with-outdoor-grill", "Amenity query may be useful but should be routed by property truth."],
-  ["bean-point-luxury-rentals", "Risky unless the near-AMI positioning is explicit and SERP supports it."],
-  ["vacation-rentals-near-restaurants-florida", "Location/amenity hybrid likely needs consolidation unless SERP proves demand."],
-  ["vacation-rentals-with-elevator", "Accessibility/elevator claims need property-truth verification before promotion."],
-  ["canal-homes-with-boat-dock", "High-intent water-access page but one-property support needs careful proof."],
+  ["bradenton-waterfront-vacation-rentals", "Waterfront/dock query; one-property; needs competitor and truth check."],
+  ["bradenton-vacation-rentals-with-hot-tub", "Amenity query with matching homes; check SERP and opening answer."],
+  ["fishing-vacation-rentals-bradenton", "Activity query can support dock pages if SERP confirms demand."],
+  ["romantic-getaway-anna-maria-island", "Persona page; verify demand and consolidate if weak."],
+  ["sarasota-vacation-rentals-with-pool", "Sarasota pool query; commercial intent, thin inventory."],
+  ["downtown-sarasota-vacation-rentals", "Sarasota location page; thin inventory; needs competitor check."],
+  ["sarasota-arts-culture-vacation-rentals", "Guide-style Sarasota angle; may route into a stronger stay page."],
+  ["luxury-vacation-rentals-sarasota", "High-value term; one-property support needs SERP validation."],
+  ["vacation-rentals-with-pool-and-hot-tub", "Amenity stack; check if it should feed AMI or Bradenton winners."],
+  ["beach-house-rentals-florida-gulf-coast", "Broad commercial term; needs SERP specificity check."],
+  ["gulf-coast-vacation-homes-with-dock", "Dock query; current inventory is narrow."],
+  ["golf-vacation-rentals-bradenton", "Activity page may support Bradenton if SERP demand exists."],
+  ["kayaking-vacation-rentals-bradenton", "Activity page can feed waterfront demand if SERP confirms."],
+  ["dolphin-watching-vacation-rentals-florida", "Thin activity page; check guide vs stay destination."],
+  ["honeymoon-rentals-anna-maria-island", "Persona page; check demand before keeping independent."],
+  ["multigenerational-vacation-rentals-florida", "Likely overlaps with large-group pages."],
+  ["accessible-vacation-rentals-florida", "Accessibility claims need property-truth verification."],
+  ["long-weekend-getaway-florida", "Trip-length intent if it transfers to property clicks."],
+  ["week-long-vacation-rentals-florida", "Trip-length intent if it transfers to property clicks."],
+  ["extended-stay-vacation-rentals-florida", "Snowbird intent; needs query evidence."],
+  ["work-from-home-vacation-rentals-florida", "Work-from-anywhere angle needs demand and amenity proof."],
+  ["quiet-relaxing-vacation-rentals-florida", "One-property page; check consolidate vs keep."],
+  ["last-minute-vacation-rentals-florida", "Commercial intent; must match real availability."],
+  ["affordable-vacation-rentals-florida-gulf-coast", "Price-sensitive; needs careful direct-book proof."],
+  ["vacation-rentals-with-game-room", "Thin amenity query; verify truth and SERP."],
+  ["vacation-rentals-with-fire-pit", "Thin amenity query; verify truth and SERP."],
+  ["vacation-rentals-with-outdoor-grill", "Amenity query; route by property truth."],
+  ["bean-point-luxury-rentals", "Keep only if near-AMI positioning is explicit and SERP supports it."],
+  ["vacation-rentals-near-restaurants-florida", "Hybrid likely needs consolidation unless SERP proves demand."],
+  ["vacation-rentals-with-elevator", "Elevator claims need property-truth verification."],
+  ["canal-homes-with-boat-dock", "Water-access query; one-property; needs careful proof."],
 ]);
 
 const stayConsolidate = new Map([
@@ -245,7 +246,7 @@ Generated by \`node scripts/seo/generate-pseo-triage.js\`.
 - Current reread status: read the exact status from \`docs/status/next-batch.md\`;
   do not copy the volatile value into this generated triage note.
 - Current next move: read the exact next move from \`docs/status/next-batch.md\`.
-- Branch rule: do not open a new owner, stay, guide, GEO, or SEO expansion branch until the analytics receipt moves \`docs/status/next-batch.md\` to \`open next batch\`.
+- Branch rule: do not open a new owner, stay, guide, GEO, or SEO expansion branch until the analytics receipt moves \`docs/status/next-batch.md\` to \`open next batch\`. Founder exception 2026-11-17: \`/stays/bradenton-vacation-rentals/\` only.
 - Regression exception: a tracked winner or money-page regression uses
   \`docs/process/ranking-regression-rescue.md\`; this does not authorize new pSEO
   volume.
