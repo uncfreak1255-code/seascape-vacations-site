@@ -108,7 +108,7 @@ Site source. Preserve the distinction when updating an entry.
 
 | Pattern / status | Reference and quality to borrow | Seascape application and constraints |
 | --- | --- | --- |
-| Property photo booklet — explored | [Amicro Dither Book](https://amicro.dev/3d), Studio `PropertyStorybook`: a deliberate photographic sequence, paper depth and user-directed page turns | [Dockside study](experiments/property-photo-study/README.md). Two-page desktop, single-photo phone. Full-size and all-photo access stay available. No dither, fake property details or autoplay. Reduced motion swaps directly. |
+| Page-turn booklet — selected | [Amicro Dither Book](https://amicro.dev/3d), Studio `PropertyStorybook`: a deliberate photographic sequence, paper depth and user-directed page turns | [Dockside study](experiments/property-photo-study/README.md). Selected by Sawyer November 17, 2026; reusable for photo stories and visual guides. Two-page desktop, single-photo phone. Full-size and all-photo access stay available. No dither, fake property details or autoplay. Reduced motion swaps directly. |
 | Photographic folio — explored | Amicro CoverFlow: a dominant image with restrained neighboring depth | Same Dockside study; show the whole active photo and thumbnail access. Phone layout preserves photo size. No pointer tilt or parallax; reduced motion swaps directly. |
 | Responsive CTA — reference | Studio `Cta`: clear action hierarchy and an arrow that responds to intent | Explore gallery and editorial actions with Waterline colors, visible focus and stable labels. Press/hover cannot delay activation. No hold-to-book, decorative trails or hover-only meaning. |
 | Filter / selection pill — reference | Studio `Pagination`, Amicro pill controls: unmistakable active state and continuous selection feedback | Real filters or gallery choices. Preserve result counts and keyboard behavior; narrow screens wrap or offer reachable controls. Reduced motion changes selection immediately. Existing radius is not an experiment's limit. |
@@ -122,6 +122,43 @@ The README lists these components and explicitly keeps Studio separate from the
 live site. That observation establishes reference provenance, not functional
 verification of every Studio component. Its `PropertyStorybook` is already a
 concept; do not create another Studio catalog or claim it is shipped on Site.
+
+### Selected page-turn booklet
+
+Sawyer selected the working Dockside booklet on November 17, 2026: “i like
+that can we add that to the design system ... for guides or in general.” This
+selects a reusable pattern, not a sitewide gallery replacement. The earlier
+Studio storybook's short slide is not the selected motion.
+
+Use it for a deliberate visual sequence: property photography, a destination
+photo essay, a local field guide, or an editorial story with meaningful pages.
+Agents may independently propose and adapt it within assigned page work. Say
+why paging helps this reader, preserve the selected physical turn, and show the
+adaptation in context at desktop and phone sizes. Compare a simpler treatment
+when scanning or comparison may work better. Do not default every guide to a
+book: long articles, numerical comparisons and essential booking information
+need directly accessible content outside the moving pages.
+
+**Working reference:** [source and run instructions](experiments/property-photo-study/README.md),
+[rendered proof and motion recording](experiments/property-photo-study/review.md).
+Reuse this implementation before rebuilding it from a donor link. Supply ordered,
+verified image sources, dimensions, accessible captions and a collection label;
+remove Dockside-specific labels when adapting. Guide text and images remain
+sourced, and all content must be present in a static semantic list or contact
+sheet before progressively enhancing a production page.
+
+Preserve a full 180-degree sheet turn hinged at the spine, two printed faces
+on desktop, the underlying destination spread, restrained paper depth and
+moving shade. The reference uses 700ms ease-in-out for deliberate storytelling;
+this is not a new timing default for buttons or filters. One readable page on
+phones, immediate interruptible navigation, no autoplay, direct keyboard and
+reduced-motion changes, visible progress, 44px controls, and an always-available
+all-content view are part of the pattern. Keep originals/full-size photos
+reachable and never distort or invent property imagery. Test both directions,
+odd final pages, rapid input, resizing and reduced-motion changes mid-turn.
+Real-device touch feel remains an implementation check, not a claim from the
+emulated phone proof. Apply Emil's relevant guidance through the existing Site
+specialist and critic workflow.
 
 ### Craft and evidence
 

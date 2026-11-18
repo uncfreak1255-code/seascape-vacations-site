@@ -3,7 +3,7 @@ const stage = document.querySelector('#stage'), spread = document.querySelector(
 const previous = document.querySelector('#previous'), next = document.querySelector('#next');
 const status = document.querySelector('#load-status'), position = document.querySelector('#position');
 const phone = matchMedia('(max-width:700px)'), reduced = matchMedia('(prefers-reduced-motion:reduce)');
-let photos = [], index = 0, animation;
+let photos = [], index = 0, animation, motion = [];
 document.body.classList.toggle('folio', mode === 'folio');
 document.querySelector(`[data-view="${mode}"]`).setAttribute('aria-current','page');
 if(mode === 'folio') {
@@ -21,29 +21,88 @@ function image(photo) {
 }
 function page(photo, number) {
  const fig=document.createElement('figure');fig.className='page';
+ if(!photo){
+  fig.classList.add('endpaper');
+  const name=document.createElement('p'),note=document.createElement('p');
+  name.textContent='Dockside Dreams';note.textContent='End of photo collection';
+  fig.append(name,note);return fig;
+ }
  const button=document.createElement('button');button.className='photo-button';button.setAttribute('aria-label',`View ${caption(photo)} full size`);button.append(image(photo));button.addEventListener('click',()=>openPhoto(photo));
  const cap=document.createElement('figcaption'),label=document.createElement('span'),n=document.createElement('span');label.textContent=caption(photo);n.textContent=String(number+1).padStart(2,'0');cap.append(label,n);fig.append(button,cap);return fig;
 }
 function render() {
- spread.replaceChildren(...photos.slice(index,index+pageSize()).map((p,n)=>page(p,index+n)));
+ const pages=photos.slice(index,index+pageSize()).map((p,n)=>page(p,index+n));
+ if(pageSize()===2 && pages.length===1)pages.push(page(null));
+ spread.replaceChildren(...pages);
  position.textContent=`${index+1}${pageSize()>1 && index+1<photos.length?'–'+Math.min(index+pageSize(),photos.length):''} / ${photos.length}`;
  previous.disabled=index===0;next.disabled=index+pageSize()>=photos.length;
  document.querySelectorAll('.thumbnails button').forEach((b,n)=>b.setAttribute('aria-current',String(n>=index && n<index+pageSize())));
 }
+// A sheet has two printed faces. Keep the outgoing resting page visible until
+// its new counterpart physically lands over it; never flash the whole spread.
+function finishMotion() {
+ const active=motion;motion=[];animation=null;
+ active.forEach(a=>a.cancel());
+ spread.querySelectorAll('.turn-leaf,.turn-rest,.turn-shadow').forEach(n=>n.remove());
+}
+function decorative(className, content) {
+ const node=document.createElement('div');node.className=className;
+ node.setAttribute('aria-hidden','true');node.inert=true;
+ if(content)node.append(content);
+ return node;
+}
+function turnSheet(old, forward) {
+ const single=phone.matches;
+ const leaf=decorative('turn-leaf');
+ const front=decorative('turn-face turn-front');
+ const back=decorative('turn-face turn-back');
+ const rest=decorative('turn-rest');
+ let from=0,to=forward?-180:180;
+ leaf.style.left=single?'0':forward?'50%':'0';
+ leaf.style.transformOrigin=single||forward?'left center':'right center';
+ if(single){
+  leaf.classList.add('turn-single');rest.classList.add('turn-single');
+  front.append(page(photos[forward?old:index],forward?old:index));
+  back.append(page(null));
+  if(!forward){from=-180;to=0;rest.append(page(photos[old],old));spread.append(rest);}
+ }else{
+  front.append(page(photos[old+(forward?1:0)],old+(forward?1:0)));
+  back.append(page(photos[index+(forward?0:1)],index+(forward?0:1)));
+  rest.style.left=forward?'0':'50%';
+  rest.append(page(photos[old+(forward?0:1)],old+(forward?0:1)));
+  spread.append(rest);
+ }
+ const frontShade=decorative('turn-shade'),backShade=decorative('turn-shade');
+ front.append(frontShade);back.append(backShade);leaf.append(front,back);
+ const shadow=decorative('turn-shadow');spread.append(shadow,leaf);
+ // Deliberate photographic storytelling: longer than a utility-control response
+ // so the full physical turn can be read. State and navigation update immediately.
+ const timing={duration:700,easing:'cubic-bezier(.77,0,.175,1)',fill:'both'};
+ const turning=leaf.animate([{transform:`rotateY(${from}deg)`},{transform:`rotateY(${to}deg)`}],timing);
+ animation=turning;
+ motion=[turning,
+  frontShade.animate([{opacity:0},{opacity:.24},{opacity:0}],timing),
+  backShade.animate([{opacity:.2},{opacity:.12},{opacity:0}],timing),
+  shadow.animate([{opacity:0,transform:'scaleX(.25)'},{opacity:.2,transform:'scaleX(1)'},{opacity:0,transform:'scaleX(.4)'}],timing)];
+ turning.onfinish=()=>{if(animation===turning)finishMotion();};
+}
 function move(target, animate=true) {
- animation?.cancel();document.querySelectorAll('.turn-leaf').forEach(n=>n.remove());
- const old=index;index=Math.max(0,Math.min(target,Math.floor((photos.length-1)/pageSize())*pageSize()));
- const leafPhoto=photos[old+(index>old?Math.min(pageSize()-1,photos.length-1-old):0)];render();
+ if(!photos.length)return;
+ finishMotion();
+ const old=index;
+ index=Math.max(0,Math.min(target,Math.floor((photos.length-1)/pageSize())*pageSize()));
+ render();
  if(!animate || reduced.matches || old===index)return;
- if(mode==='book' && !phone.matches) {
-  const leaf=document.createElement('div');leaf.className='turn-leaf';leaf.setAttribute('aria-hidden','true');leaf.inert=true;leaf.style.left=index>old?'50%':'0';leaf.style.transformOrigin=index>old?'left center':'right center';leaf.append(page(leafPhoto,old+(index>old?1:0)));spread.append(leaf);
-  animation=leaf.animate([{transform:'rotateY(0deg)'},{transform:`rotateY(${index>old?-105:105}deg)`}],{duration:200,easing:'cubic-bezier(.23,1,.32,1)'});animation.onfinish=()=>leaf.remove();animation.oncancel=()=>leaf.remove();
- } else {animation=spread.animate([{opacity:.65,transform:`translateX(${index>old?10:-10}px)`},{opacity:1,transform:'translateX(0)'}],{duration:200,easing:'cubic-bezier(.23,1,.32,1)'});}
+ if(mode==='book')turnSheet(old,index>old);
+ else{
+  animation=spread.animate([{opacity:.65,transform:`translateX(${index>old?10:-10}px)`},{opacity:1,transform:'translateX(0)'}],{duration:200,easing:'cubic-bezier(.23,1,.32,1)'});
+  motion=[animation];
+ }
 }
 previous.addEventListener('click',e=>move(index-pageSize(),e.detail!==0));next.addEventListener('click',e=>move(index+pageSize(),e.detail!==0));
 stage.addEventListener('keydown',e=>{if(e.target!==stage)return;if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();move(index+(e.key==='ArrowRight'?pageSize():-pageSize()),false);}});
 phone.addEventListener('change',()=>move(Math.floor(index/pageSize())*pageSize(),false));
-reduced.addEventListener('change',()=>{animation?.cancel();document.querySelectorAll('.turn-leaf').forEach(n=>n.remove());});
+reduced.addEventListener('change',finishMotion);
 const dialog=document.querySelector('dialog');
 document.querySelector('#full-image').addEventListener('error',()=>{document.querySelector('#full-image').hidden=true;document.querySelector('#full-error').hidden=false;});
 function openPhoto(photo){const img=document.querySelector('#full-image');img.hidden=false;document.querySelector('#full-error').hidden=true;img.src=photo.src;img.alt=photo.alt;document.querySelector('#full-caption').textContent=caption(photo);document.querySelector('#original').href=photo.src;dialog.showModal();}

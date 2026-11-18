@@ -96,3 +96,54 @@ Proof section; this record claims only the runs and reviews described above.
 
 Source publication stays draft while these broader gates are unresolved. No
 baseline, pricing fact, review expiry or enforcement check was weakened.
+
+## Physical page-turn refinement — November 18, 2026
+
+Sawyer requested an actual book page flip in the existing local preview. The
+refinement gives the turning sheet front and reverse faces, a full 180-degree
+spine rotation, a resting-page mask and moving shade. Phone navigation also
+turns a sheet; reduced motion and keyboard navigation remain immediate. The
+last odd-photo spread has an endpaper rather than a vacant half.
+
+The targeted verifier passed all **7 scenario groups** after this refinement,
+including face identity, full rotation, reverse and phone turns, interruption
+and a reduced-motion change during the turn. The new front-face assertion
+failed against the earlier implementation, establishing regression coverage.
+
+Mid-turn captures: [front](proof/book-turn-front.png),
+[reverse](proof/book-turn-back.png). These supplement the refreshed interaction
+recording; they do not establish real-device touch feel. Earlier review receipts
+above describe their original source and are not reviews of this refinement.
+
+Sawyer then selected this as a reusable design-system pattern for guides and
+photo stories. Native `/root/design_critic` reviewed the refreshed captures
+and sampled recording frames: “Approved as an optional design-system pattern.”
+No concrete introduced visual issue was found. Its verdict covers the rendered
+preview; real-device touch and any production adaptation remain unverified.
+
+Studio readback: the existing `PropertyStorybook` usage notes were updated
+through its editable UI and verified after reload. They record the selection,
+reuse guidance, source/proof link and motion contract. The existing Studio
+preview still uses its older short slide: its Claude editor reached the usage
+limit before executing the requested code update. No usage reset, plan change
+or claim of animation parity was made.
+
+### Refined source review
+
+Fresh spec reviewer `/root/selected_booklet_spec` read updated issue #988 and
+the complete intended diff. It initially inferred that the phone reverse face
+hid the next photo, then inspected [the paused phone frame](proof/book-phone-midturn.png)
+and withdrew that P1: “The Living room target is already fully visible ...
+before teardown.” No missing/wrong requirement or unsolicited scope remained.
+
+Scoped bug reviewer `/root/preview_bug_review` also retracted its blank-photo
+claim after rendering. Its remaining P2 is a visual tradeoff: the phone sheet
+turns off the edge, hiding part of its rotation. Disposition: intentional. A
+single large phone photo remains readable while desktop carries the full
+spread metaphor; this is documented rather than expanding phone layout. No
+review-driven source repair was made. Real-device feel remains unverified.
+
+Broader visual follow-through: sanctioned baseline workflow44214375484 updated
+exactly the approved vertical mobile homepage screenshot (bot commitd1fafe62).
+The new capture was inspected. Full visual rerun then passed **684 tests,96
+skipped,0 failures** in8.8minutes with2workers. No threshold was changed.
