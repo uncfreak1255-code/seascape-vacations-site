@@ -126,6 +126,11 @@ offer rewrite: skip new OpenSEO research and Compound Writing for this factual
 date-only correction; the primary-source reads above supply its evidence.
 The existing Site content/release checks and targeted voice/proof review apply.
 
+Verification: the full release gate passed all 1,415 tests. Baseline workflow
+`44213687812` updated only this route's two date-label screenshots; both fresh
+desktop and mobile comparisons passed after inspection. Source notes, visible
+byline and Article metadata agree on November 17, with no horizontal overflow.
+
 ### October 18, 2026 published-pricing recheck
 
 Source files changed in this batch:
