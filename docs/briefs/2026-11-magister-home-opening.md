@@ -3,7 +3,7 @@
 - lifecycle: active
 - task scope: Prepare the existing homepage opening and title for Sawyer's review; production publication requires his approval. Magister item 27237de4-52a6-4c35-bdc8-de2be30e0bba.
 - completion or successor: Draft phase; no merge or production publication yet.
-- source files: `src/index.njk`, `scripts/recovery/assert-live-smoke.js`, `scripts/enforcement/ai-discovery-schema.test.js`; existing title assertion follows the requested title.
+- source files likely to change: `src/index.njk`, `scripts/recovery/assert-live-smoke.js`, `scripts/enforcement/ai-discovery-schema.test.js`; existing title assertion follows the requested title.
 
 ## Content Gate Inputs
 
@@ -67,3 +67,7 @@ Run brief/content checks and full release verification, synthetic desktop/phone 
 ## Not In Scope
 
 The pre-existing mobile-home baseline mismatch, screenshot-baseline regeneration, other pages, hero restyling, live settings, pricing, sends, paid checks and new schedules.
+
+## Release Dependency Readback — November 17, 2026
+
+Sawyer requested clearing the separate owner-fee evidence blocker and finishing release checks. PR #989 is merged as 1ccb3e082d168f88d9cf4fadd16f7d2a4a19a2d5 and issue #990 is closed. Integrate that verified main revision; the owner-proof freshness check now passes. Homepage source, styles and both homepage screenshot baselines are unchanged by the integration. Publication approval for PR #994 remains pending. The explicit source-file heading above lets the content gate identify this brief when the merge temporarily includes upstream briefs.
