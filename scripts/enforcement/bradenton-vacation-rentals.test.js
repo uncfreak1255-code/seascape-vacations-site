@@ -6,6 +6,7 @@ const fs = require("node:fs");
 const path = require("node:path");
 const fallback = require("../../src/_data/properties-fallback.json");
 const pages = require("../../src/_data/seoPages.json");
+const ledger = require("../../docs/status/page-ledger.json");
 const { applyStayFacts } = require("../../src/_data/stayFacts");
 
 const SLUG = "bradenton-vacation-rentals";
@@ -86,6 +87,16 @@ test("stay ItemList schema omits empty coordinates instead of emitting invalid J
     template,
     /\{% if property\.latitude and property\.longitude %\}\s*"latitude": \{\{ property\.latitude \}\}/
   );
+});
+
+test("Bradenton head-term page is on the settle ledger before publication", () => {
+  const entry = ledger.pages.find((page) => page.route === "/stays/bradenton-vacation-rentals/");
+  assert.ok(entry, "page-ledger.json must include the new head-term route");
+  assert.deepEqual(entry.sources, ["src/_data/seoPages.json"]);
+  assert.equal(entry.targetQuery, "bradenton vacation rentals");
+  assert.equal(entry.brief, "docs/briefs/2026-11-bradenton-vacation-rentals.md");
+  assert.equal(entry.shipped, null);
+  assert.equal(entry.pr, 1002);
 });
 
 test("Bradenton donor guides and related stay pages point at the head-term URL", () => {

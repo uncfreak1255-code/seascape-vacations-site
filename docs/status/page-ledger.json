@@ -3,6 +3,15 @@
   "settleDays": 28,
   "pages": [
     {
+      "route": "/stays/bradenton-vacation-rentals/",
+      "sources": ["src/_data/seoPages.json"],
+      "change": "New mainland Bradenton head-term collection for bradenton vacation rentals",
+      "pr": 1002,
+      "shipped": null,
+      "targetQuery": "bradenton vacation rentals",
+      "brief": "docs/briefs/2026-11-bradenton-vacation-rentals.md"
+    },
+    {
       "route": "/",
       "sources": ["src/index.njk"],
       "change": "Clarify the private-pool vacation-home offer and Bradenton/Sarasota locations in the title and desktop/phone opening",
