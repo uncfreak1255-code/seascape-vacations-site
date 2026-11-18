@@ -24,7 +24,8 @@ module.exports = function validateOwnerLiveSurface(body, { requireIncludes, requ
     requireExcludes("/property-management/", body, [
       "/property-management/vacation-rental-taxes-florida/",
       "/property-management/vacation-rental-insurance-florida/",
-      "Average Guest Rating"
+      "Average Guest Rating",
+      "g-header-owners"
     ]);
     requireIncludes("/property-management/ local-alternative", body, [
       "Is Seascape a local alternative to Vacasa or Evolve?",
