@@ -17,7 +17,7 @@ Preserve the canonical URLs, layout, internal booking links and existing FAQ cou
 
 The wrong case is a page with a corrected table but old 25-minute SRQ FAQ or an unchanged harmless-manatee schema answer. Source review must catch this even if visible prose improves.
 
-## Allowed files
+## Source Files Changed
 
 - src/guides/how-to-get-to-anna-maria-island.html
 - src/guides/srq-airport-to-anna-maria-island.html
