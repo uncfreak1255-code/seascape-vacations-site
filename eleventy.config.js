@@ -235,14 +235,19 @@ module.exports = function(eleventyConfig) {
         fs.copyFileSync(source, target);
       }
     }
+    fs.appendFileSync(
+      path.join(root, "_site", "_redirects"),
+      "\n" + fs.readFileSync(path.join(root, "scripts", "redirects", "owner-aliases"), "utf8")
+    );
     require("./scripts/enforcement/listing-id-owned").writeGeneratedClientListingIdMap(root);
     const guestSrc = path.join(root, "src", "css", "guest.css");
     const guestOut = path.join(root, "_site", "css", "guest.css");
     const motionSrc = path.join(root, "src", "css", "motion.css");
+    const headerOwnersSrc = path.join(root, "src", "css", "header-owners.css");
     if (fs.existsSync(guestSrc) && fs.existsSync(motionSrc)) {
       fs.mkdirSync(path.dirname(guestOut), { recursive: true });
       const fontCss = fs.readFileSync(path.join(root, "src/css/guest-fonts.css"), "utf8");
-      fs.writeFileSync(guestOut, fontCss + "\n" + fs.readFileSync(guestSrc, "utf8") + "\n" + fs.readFileSync(motionSrc, "utf8"));
+      fs.writeFileSync(guestOut, fontCss + "\n" + fs.readFileSync(guestSrc, "utf8") + "\n" + fs.readFileSync(motionSrc, "utf8") + "\n" + fs.readFileSync(headerOwnersSrc, "utf8"));
     }
     // trip-sheet.css is at its size cap; the card rating and chip rules live in trip-sheet-cards.css and ship inside it.
     const tripSrc = path.join(root, "src", "css", "trip-sheet.css");
@@ -257,6 +262,7 @@ module.exports = function(eleventyConfig) {
   // Simple title filter - just appends site name if not already there
   eleventyConfig.addFilter("propertySchemaAmenities", require("./scripts/regenerate-property-surfaces").renderSchemaAmenityLabels);
   eleventyConfig.addFilter("numberWord", require("./scripts/enforcement/home-count-word").numberWord);
+  eleventyConfig.addFilter("homeOperator", require("./scripts/enforcement/home-count-word").homeOperator);
   eleventyConfig.addFilter("airbnbRating", (listingId) => require("./scripts/enforcement/airbnb-rating").airbnbRatingLabel(listingId));
   eleventyConfig.addFilter("propertyBySlug", (properties, slug) => {
     const property = properties.find((entry) => entry.slug === slug);
