@@ -43,6 +43,17 @@
   <script defer src="/assets/js/guest.js?v=waterline-v5"></script>
   {% if guestHome %}<script defer src="/assets/js/home-scenes.js"></script>{% endif %}
   {% if pageScript %}<script defer src="{{ pageScript }}"></script>{% elif propertySlug %}<script defer src="/assets/js/property-gallery.js"></script>{% endif %}
+  {% if propertySlug %}<script type="module">
+    const desktop = matchMedia('(min-width:900px)');
+    let requested = false;
+    function loadBooklet() {
+      if (!desktop.matches || requested) return; requested = true;
+      const css = document.createElement('link'); css.rel = 'stylesheet'; css.href = '/css/property-booklet.css';
+      css.onload = () => { if (desktop.matches) import('/assets/js/property-booklet.js'); else requested = false; };
+      css.onerror = () => { requested = false; }; document.head.append(css);
+    }
+    loadBooklet(); desktop.addEventListener('change', loadBooklet);
+  </script>{% endif %}
   {% if guestHome %}<script defer src="/assets/js/home-deck.js"></script>{% endif %}
   {% if propertySlug and metaProperty.guestFacts.reviews.length >= 2 and metaProperty.guestFacts.sourceUrl and metaProperty.guestFacts.verifiedAt %}<script defer src="/assets/js/property-reviews.js"></script>{% endif %}
   {% if propertySlug and stayStories[propertySlug] %}<script defer src="/assets/js/stay-story.js"></script>{% endif %}

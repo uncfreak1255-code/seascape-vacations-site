@@ -168,7 +168,7 @@ test('without JavaScript the home form, interior photos, rules and matching book
   await page.goto('/properties/bradenton-pool-home/');await expect(page.locator('#sleeping')).toContainText('Bedroom');
   await page.getByText('Can I bring a dog?',{exact:true}).click();await expect(page.locator('#before-booking')).toContainText(properties.find(p=>p.slug==='bradenton-pool-home').guestFacts.pets.text);
   expect(await page.locator('.g-guests option').evaluateAll(options=>Math.max(...options.map(o=>Number(o.value))))).toBe(10);
-  await expect(page.locator('.g-photo-grid figure')).toHaveCount(6);await expect(page.locator('[data-property-checkout]')).toHaveAttribute('href',/listings\/487798/);await context.close();
+  await expect(page.locator('.g-photo-grid figure')).toHaveCount(6 + properties.find(p=>p.slug==='bradenton-pool-home').photography.photos.length);await expect(page.locator('[data-property-checkout]')).toHaveAttribute('href',/listings\/487798/);await context.close();
 });
 
 test('the catalog and property pages retain their approved offer coverage',async({page})=>{

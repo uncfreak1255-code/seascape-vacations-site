@@ -32,6 +32,8 @@ module.exports = {
       url: budgetRoutes.map((route) => `http://localhost${route}`),
       numberOfRuns: 3,
       settings: {
+        // Every assertion and the byte-size ratchet use performance audits.
+        onlyCategories: ["performance"],
         chromeFlags: "--headless=new --no-sandbox",
       },
     },
