@@ -99,6 +99,33 @@ Source claims checked July 17, 2026:
 
 ## Retired Proof
 
+### November 17, 2026 published-pricing recheck
+
+Sawyer approved refreshing verification dates and source-check labels with
+unchanged fee figures and the existing 30-day expiry policy to unblock PR #989
+(issue #990). Source change: `src/_data/ownerProofAssets.json` only; the fee
+guide template, fee figures, founder review date and retired proof stay unchanged.
+
+Direct reads of [Airbnb's service fees](https://www.airbnb.com/help/article/1857)
+and [Stripe's US pricing](https://stripe.com/en-us/pricing) on November 17
+Eastern (November 18 UTC) still support the existing figures: most Airbnb
+single-fee hosts pay 15.5%, others typically 14–16%; Stripe domestic online
+cards are 2.9% + 30 cents per successful transaction. Airbnb still requires the
+single-fee structure for most software-connected hosts. These rates cover
+different services and do not establish owner savings or a Seascape fee.
+
+Use November 17 for the check/update labels and December 17 for pricing expiry.
+Acceptance: the old asset fails current freshness, the refreshed asset passes,
+and the existing expiry test still rejects stale pricing. Rendered source
+notes, byline and Article date must agree; retain URLs, CTA attribution and
+layout. Refresh only the intended date-text screenshot baselines if needed.
+
+Visible-copy pass: drafted the check-date labels, removed internal wording,
+then checked voice and specificity against `docs/style/`. No search-intent or
+offer rewrite: skip new OpenSEO research and Compound Writing for this factual
+date-only correction; the primary-source reads above supply its evidence.
+The existing Site content/release checks and targeted voice/proof review apply.
+
 ### October 18, 2026 published-pricing recheck
 
 Source files changed in this batch:
