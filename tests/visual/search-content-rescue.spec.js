@@ -8,7 +8,7 @@ const routes = [
     slug: "anna-maria-island-weather",
     path: "/guides/anna-maria-island-weather/",
     canonical: "https://seascape-vacations.com/guides/anna-maria-island-weather/",
-    title: "Anna Maria Island Weather by Month (Temps & Rain)",
+    title: "Anna Maria Island Weather by Month: Temps, Rain & Water",
     heading: "Anna Maria Island Weather by Month",
     ctaSelector: '[data-track-event="guide_book_direct_click"][href="/stays/anna-maria-island-vacation-rentals/"]',
   },
