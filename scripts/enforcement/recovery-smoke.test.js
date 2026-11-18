@@ -33,6 +33,20 @@ test("live smoke script exposes reusable helpers for unit coverage", () => {
   );
 });
 
+test("pool-heat smoke requires the cap in page copy, not just FAQ schema", () => {
+  const smoke = loadSmokeModule();
+  const cap = "$40 per night, capped at $280 per stay";
+  const exceptions = "There is no charge for pool heat at The Coastal. Approved long-stay flat rates still apply.";
+  for (const route of ["/properties/dockside-dreams/", "/stays/vacation-rentals-with-pool-and-hot-tub/"]) {
+    const target = smoke.targets.find((entry) => entry.path === route);
+    assert.ok(target);
+    assert.doesNotThrow(() => smoke.validateTargetResponse(target, { statusCode: 200, body: `<p>${cap}. ${exceptions}</p>` }));
+    assert.throws(() => smoke.validateTargetResponse(target, {
+      statusCode: 200, body: `<script type="application/ld+json">"${cap}"</script><p>${exceptions}</p>`
+    }), /missing current live marker/);
+  }
+});
+
 test("properties smoke checks durable property detail hrefs instead of old CTA copy", () => {
   const smoke = loadSmokeModule();
   const target = smoke.targets.find((entry) => entry.path === "/properties/");

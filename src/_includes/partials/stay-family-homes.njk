@@ -33,7 +33,7 @@
             <p class="section-tag">The draw</p>
             <p>{{ property.highlights | join(' · ') }}</p>
           </div>
-          <span class="property-price">From ${{ property.price }}/night</span>
+          {% include "partials/stay-property-price.njk" %}
           <div class="catalog-card-foot">
             <a class="btn btn-brand catalog-check-dates" href="{{ property.bookingUrl }}" data-booking-base="{{ property.bookingUrl }}" data-track-event="catalog_book_direct_click" data-page-slug="{{ property.slug }}" data-placement="catalog_card" target="_blank" rel="noopener noreferrer" aria-label="Check dates for {{ property.cardName or property.name }}">Check dates</a>
             <a class="catalog-details-link" href="{{ property.pageUrl }}" data-trip-link data-track-event="stay_view_property_click" data-page-slug="{{ property.slug }}" data-placement="stay_property_card" data-track-label="{{ property.name }}">Explore this home <span aria-hidden="true">→</span></a>

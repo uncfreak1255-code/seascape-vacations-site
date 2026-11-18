@@ -98,6 +98,6 @@ now counts toward `guide_book_direct_click`.
 4. Compare the readback to the baseline table above and apply the decision rule.
 5. If the analytics receipt changes the broader branch-opening decision, update
    `docs/status/next-batch.md` with
-   `node scripts/enforcement/sync-next-batch-from-analytics-receipt.js --receipt <path>`.
+   the receipt sync described in [the freshness runbook](../runbooks/stale-analytics-receipt.md).
 6. Close this note only after the analytics receipt exists; otherwise leave
    `Status: pending first 7 complete days after deploy`.

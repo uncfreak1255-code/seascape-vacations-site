@@ -53,7 +53,31 @@ Minimum expectation for UI review:
 - [ ] Visible guest/owner copy does not lean on instruction-template framing like `Use this when`, `Use this if`, `Read this if`, `Open this page if`, or other helper-note phrasing that sounds like a session draft.
 - [ ] Any proof-heavy paragraph still sounds like Seascape: direct, specific, locally grounded, and useful.
 
-## 6. Handoff standard
+## 6. Visual PR handoff
+
+Complete the PR template's **Review this change** section before asking Sawyer
+to review a visible design change. Use a draft PR when needed to get a Netlify
+preview while preparing the evidence.
+
+- [ ] I linked each affected Netlify preview route and any useful section anchor.
+  For shared layouts, I identified the affected pages and linked representative
+  routes for each changed layout or state. I used `@netlify /path/` in the
+  opening description when there is a primary route, and opened each review
+  link to verify the intended page on the current deploy.
+- [ ] I embedded labeled before-and-after Playwright screenshots in the PR
+  description; artifact or project-thread links alone do not count. Before is
+  the base and after is the candidate, with matching viewport, browser, fixture
+  data, and page state. If upload fails, keep draft; label new surfaces as new.
+  I put mobile first for phone changes and included desktop and mobile proof
+  for each affected visual section as required above.
+- [ ] I included one short instruction to reach any relevant interactive state.
+  If a gesture, transition, or multistep flow needs motion to make the change
+  clear, I attached a short recording of that interaction, about 10–20 seconds.
+- [ ] I stated the review decision in one sentence. The evidence is readable
+  from the PR description on a phone, and I refreshed any links or captures
+  affected by later changes. Test and release results are in **Proof**.
+
+## 7. Handoff standard
 
 When asking for review, state:
 

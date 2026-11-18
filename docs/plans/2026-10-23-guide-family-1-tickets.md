@@ -1,6 +1,9 @@
 # Guide family 1 tickets: Getting there and around
 
-Spec: `docs/plans/2026-10-23-guide-family-1-spec.md`. One ticket is one PR, built in a fresh
+Spec: `docs/plans/2026-10-23-guide-family-1-spec.md`. Since 2026-11-18, `AGENTS.md` -> Business
+Priorities And Experiments (Standing SEO authority, #1008) replaces Sawyer's copy-lane review and
+OpenSEO-run approval in both files. Layout moves and figures stay under `DESIGN.md` and
+`docs/process/design-review-workflow.md`, including E0's figure pick. One ticket is one PR, built in a fresh
 session by a `worker`, with `verifier` run on HEAD. PRs open ready. Layout (L) and enhancement
 (E) tickets never share a PR.
 
@@ -10,7 +13,7 @@ session by a `worker`, with `verifier` run on HEAD. PRs open ready. Layout (L) a
 L0 shared frame + cost guide move
  ├── L1 car ── L2 how-to-get-to ── L3 flights ── L4 SRQ
  │
-E1 family facts brief (needs Sawyer's OpenSEO approval) ── E0 figure board (Sawyer picks)
+E1 family facts brief (OpenSEO run under Cost Boundary) ── E0 figure board (Sawyer picks)
  └──────────────┬─────────────────────────────────────────────┘
                 ├── E2a how-to-get-to figure   (also blocked by L2)
                 ├── E2b flights figure          (also blocked by L3)
@@ -87,10 +90,11 @@ plus desktop 1440 and mobile 393 screenshots from `npm run proof:visual` attache
 
 ---
 
-## Enhancement lane (copy lane: brief, Gate 0, Voice Editor, Sawyer review)
+## Enhancement lane (copy lane: brief, Gate 0, Voice Editor, independent review)
 
 ### E1. Family facts brief: reconcile and source travel data
-- Blocked by: Sawyer's approval of the OpenSEO run in the spec (research runs inside this ticket).
+- Paid research: the spec's OpenSEO run (about $0.10) follows `docs/process/openseo.md` -> Cost
+  Boundary (#1008); it runs inside this ticket.
   Not blocked by L tickets; if an L PR is open on the same file, E1 waits for it to merge.
 - Write set: `docs/briefs/2026-10-guide-family-1-travel-facts.md` (new, with Gate 0 block),
   the four guide files (fact and source lines only), `src/_data/sourcedClaims.json` (rows for

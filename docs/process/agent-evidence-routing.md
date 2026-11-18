@@ -68,15 +68,16 @@ persistence and removal, and confirms ordinary visitor tracking remains enabled.
 Browser proof must intercept Analytics collection endpoints instead of sending
 unlabeled QA events to the real property. Historical traffic stays unchanged.
 
-## Guide card tracking proof
+## Guide click tracking proof
 
-`analytics-ga4.njk` carries a sanitized `guide_property_check_dates_click` through
-same-tab navigation in one session-storage slot, consumed once by the matching
-property page within 60 seconds. The event retains the source guide's page
-identity. New-tab/external clicks and unavailable storage use direct tracking;
-QA suppression discards the pending slot. A middle-click on the property card
+`analytics-ga4.njk` carries sanitized `guide_property_check_dates_click` events
+and the Anna Maria timing guide's two `best_time_season_choice` clicks through
+same-tab navigation. The matching destination consumes the session-storage
+entry once within 60 seconds and sends it with the source guide's page
+identity. New-tab/external clicks and unavailable storage use direct tracking.
+QA suppression discards the pending entry. A middle-click on the property card
 adds its guide click ID before the browser opens the new tab and dispatches
-from the guide. No retry queue or server receipt is added.
+from the guide.
 
 Run `node --test scripts/enforcement/guide-card-handoff.test.js` and
 `npx playwright test tests/visual/guide-card-tracking.spec.js`. The browser

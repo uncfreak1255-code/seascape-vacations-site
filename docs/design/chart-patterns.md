@@ -33,21 +33,58 @@ full article copy, metadata, schema, data, photos and link/tracking identities.
 It had no page overflow or serious/critical axe findings. These are bounded
 preview results, not production behavior or conversion-lift evidence.
 
+## Selected reusable direction: Guide Instrument
+
+On November 15, 2026, Sawyer selected **B — Guide Instrument** from the
+rendered Waterline control / Guide Instrument / Editorial decision-card study.
+This selection adds a reusable visual direction for future guide figures; it
+does not replace the already-approved weather figure or authorize another page
+migration.
+
+Guide Instrument translates Mono Charts' rounded pill geometry into Waterline:
+
+- use compact pill pillars when several sourced amounts share a meaningful zero
+  baseline;
+- print every exact value and unit directly, without relying on hover or a
+  tooltip;
+- separate measures with different units into aligned plots rather than using
+  a dual axis or stacking unlike values;
+- keep Waterline paper, ink, clay, rules, Instrument Serif and Poppins instead
+  of importing dark dashboard chrome, filters or a donor palette; and
+- render as semantic HTML/CSS or build-time SVG, with no chart framework,
+  animation dependency or client-side data requirement.
+
+Desktop may keep a full comparison on one line when labels remain readable.
+Phone layouts use a bounded grid, normally four items per row, so values and
+labels stay visible without horizontal scrolling. The selection study passed
+rendered overflow checks at 393, 375 and 360px. A new guide still needs its own
+source, scale and booking-position review.
+
+The study's **C — Editorial decision card** is retained as a supporting
+composition pattern, not the default chart. It may summarize the choice beside
+or after a complete figure, and may use native `details`/`summary` for source
+context. It must not hide the direct answer, exact values, source note, table or
+booking path. See [Reusable Waterline component patterns](component-patterns.md).
+
 ## Choose by the reader's question
 
 | Existing data and decision | Treatment | Design choice |
 | --- | --- | --- |
 | Two seasonal measures with different units: when fits my trip? | **Paired seasonal plots (B)** | Separate aligned plots, explicit scale per measure, exact labels; no overlaid dual axes. |
 | Exact monthly values matter more than the trend shape | **Monthly climate strip (A)** | Open ruled columns, direct labels, ink/clay shading; four columns on phones. |
-| Several comparable numerical options: how do amounts compare? | **Horizontal bars** | Shared zero baseline, unit and end labels; meaningful source order or an explicit sort. Qualitative destination comparisons stay tables. |
-| Published observations over time: how did this change? | **Time-series line** | Actual intervals and visible points; gaps stay gaps. No smoothing, forecasts or invented observations. Climate normals remain normals, not a live forecast. |
-| Published lower/upper values: what range should I plan for? | **Range marks** | Name both endpoints and unit. A range is not a precise average or current quote. If the guide only says price your dates, retain its qualitative tiers. |
+| Several comparable numerical options: how do amounts compare? | **GuideBars: pill pillars or horizontal bars** | Shared zero baseline, direct value/unit labels, meaningful source order or an explicit sort. Use pillars for compact peer periods; use horizontal bars when labels need more room. Qualitative destination comparisons stay tables. |
+| Published observations over time: how did this change? | **GuideLine: time-series line** | Actual intervals and visible points; gaps stay gaps. No smoothing, forecasts or invented observations. Climate normals remain normals, not a live forecast. |
+| Published lower/upper values: what range should I plan for? | **GuideRange: range marks or band** | Name both endpoints and unit. A range is not a precise average or current quote. If the guide only says price your dates, retain its qualitative tiers. |
 
 B is the selected rendered reference; A remains the compact alternative.
 Horizontal bars, lines and ranges are available design choices, not preapproved
 page layouts or new factual claims. They still need page-specific rendered
 variants and review. A guide with no useful numerical comparison keeps its
 words, photographs or table.
+
+`GuideStacked` remains on hold until a published dataset contains meaningful
+parts of one whole. Never stack unlike units, use a stacked shape as decoration
+or derive missing parts merely to make the pattern fit.
 
 ## Shared treatment
 
@@ -89,3 +126,8 @@ research or publication.
 No Mebius code, assets or license rights are included. Actual third-party reuse
 needs its specific license checked first. The screenshots above are Seascape's
 own local weather preview.
+
+[Mono Charts](https://amicro.dev/mono-charts) was the geometry reference for
+Guide Instrument, GuideLine and GuideRange. No Mono Charts React, Motion or
+Tailwind code was copied or installed. The rendered selection study is
+[recorded here](experiments/guide-pattern-study/README.md).

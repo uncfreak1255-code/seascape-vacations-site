@@ -4,7 +4,7 @@ for (const motion of [null, 'no-preference', 'reduce']) {
   test.describe(`property navigation with ${motion || 'system'} motion preference`, () => {
     test.use({ reducedMotion: motion });
 
-    test('keeps native transitions available without navigation errors', async ({ page }) => {
+    test('keeps native transitions available without navigation errors', async ({ page, isMobile }) => {
       const errors = [];
       page.on('pageerror', error => errors.push(error.message));
       await page.addInitScript(() => {
@@ -23,7 +23,8 @@ for (const motion of [null, 'no-preference', 'reduce']) {
 
       for (const slug of ['dockside-dreams', 'relaxing-oasis']) {
         await page.goto('/?sv_developer=1');
-        const link = page.locator(`.g-postcard a[href="/properties/${slug}/"]`);
+        if (!isMobile) await page.getByRole('button', { name: 'See all homes', exact: true }).click();
+        const link = page.locator(`.g-postcard a[href="/properties/${slug}/"]:not([data-deck-explore])`);
         await link.scrollIntoViewIfNeeded();
         await link.click();
         await expect(page).toHaveURL(new RegExp(`/properties/${slug}/`));
@@ -42,7 +43,7 @@ test.describe('static navigation', () => {
   test.use({ javaScriptEnabled: false, reducedMotion: 'reduce' });
   test('property links remain usable without JavaScript', async ({ page }) => {
     await page.goto('/');
-    await page.locator('.g-postcard a[href="/properties/relaxing-oasis/"]').click();
+    await page.locator('.g-postcard a[href="/properties/relaxing-oasis/"]:not([data-deck-explore])').click();
     await expect(page.locator('h1')).toHaveText('Relaxing Oasis');
     await expect(page.locator('[data-property-checkout]')).toHaveAttribute('href', /listings\/607228/);
   });

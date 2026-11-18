@@ -2,6 +2,7 @@
 
 const fs = require("fs");
 const path = require("path");
+const { execFileSync } = require("node:child_process");
 
 const projectRoot = path.resolve(__dirname, "..", "..");
 const allowedStatuses = new Set([
@@ -15,7 +16,7 @@ function usage(message = null) {
     console.error(message);
   }
   console.error(
-    "Usage: sync-next-batch-from-analytics-receipt.js --receipt <path> [--next-batch <path>] [--check]"
+    "Usage: sync-next-batch-from-analytics-receipt.js --receipt <path> --receipt-url <commit-pinned GitHub URL> --analytics-root <path> [--next-batch <path>] [--check]"
   );
   process.exit(1);
 }
@@ -23,6 +24,8 @@ function usage(message = null) {
 function parseArgs(argv = process.argv.slice(2)) {
   const args = {
     receipt: "",
+    receiptUrl: "",
+    analyticsRoot: "",
     nextBatch: path.join(projectRoot, "docs", "status", "next-batch.md"),
     check: false
   };
@@ -32,6 +35,10 @@ function parseArgs(argv = process.argv.slice(2)) {
     if (arg === "--receipt") {
       args.receipt = argv[index + 1] || "";
       index += 1;
+    } else if (arg === "--receipt-url") {
+      args.receiptUrl = argv[++index] || "";
+    } else if (arg === "--analytics-root") {
+      args.analyticsRoot = argv[++index] || "";
     } else if (arg === "--next-batch") {
       args.nextBatch = argv[index + 1] || "";
       index += 1;
@@ -42,14 +49,79 @@ function parseArgs(argv = process.argv.slice(2)) {
     }
   }
 
-  if (!args.receipt) {
-    usage("--receipt is required");
+  if (!args.receipt || !args.receiptUrl || !args.analyticsRoot) {
+    usage("--receipt, --receipt-url, and --analytics-root are required.");
   }
   return args;
 }
 
-function readJson(filePath) {
-  return JSON.parse(fs.readFileSync(filePath, "utf8"));
+const analyticsReceiptUrl = /^https:\/\/github\.com\/uncfreak1255-code\/seascape-analytics\/blob\/([a-f0-9]{40})\/(docs\/status\/[A-Za-z0-9_.-]+\.json)$/;
+// Analytics #430's merged decision-freshness implementation.
+const requiredAnalyticsRevision = "3236b73d84691658d04ba508bb9f8b0cae13e302";
+
+function hasNumericTrafficClaim(line) {
+  const claim = line.replace(/\]\([^)]*\)/g, "]").replace(/\b\d{4}-\d{2}-\d{2}\b/g, "");
+  return /\d/.test(claim) &&
+    /\b(?:traffic|sessions?|users?|visitors?|impressions?|clicks?|ctr|positions?|handoffs?|pageviews?|views?|conversions?|bookings?|leads?|revenue|bounce|engagement)\b/i.test(claim);
+}
+
+function uncitedAnalyticsLines(markdown) {
+  const receiptLink = /\[Analytics receipt\]\((https:\/\/github\.com\/uncfreak1255-code\/seascape-analytics\/blob\/[a-f0-9]{40}\/docs\/status\/[A-Za-z0-9_.-]+\.json)\)/;
+  const lines = markdown.split("\n");
+  const failures = [];
+  for (let i = 0; i < lines.length; i += 1) {
+    const line = lines[i];
+    if (line.startsWith("|")) {
+      const isHeader = /^\|[\s:|-]+\|\s*$/.test(lines[i + 1] || "");
+      if (isHeader) {
+        let caption = i - 1;
+        while (caption >= 0 && !lines[caption].trim()) caption -= 1;
+        if (caption < 0 || !receiptLink.test(lines[caption])) failures.push(line);
+      }
+    } else if (hasNumericTrafficClaim(line) && !receiptLink.test(line)) {
+      failures.push(line);
+    }
+  }
+  return failures;
+}
+
+function verifyReceipt({ receiptPath, receiptUrl, analyticsRoot }) {
+  const ref = analyticsReceiptUrl.exec(receiptUrl || "");
+  if (!ref) {
+    throw new Error("Receipt needs a commit-pinned Analytics docs/status JSON URL");
+  }
+  try {
+    execFileSync("git", ["-C", analyticsRoot, "merge-base", "--is-ancestor", requiredAnalyticsRevision, "HEAD"], {
+      stdio: "pipe", timeout: 10000
+    });
+  } catch {
+    throw new Error("Analytics checkout lacks the required decision-freshness verifier revision");
+  }
+  try {
+    execFileSync("git", ["-C", analyticsRoot, "diff", "--quiet", requiredAnalyticsRevision, "HEAD", "--", "scripts", "queries"], {
+      stdio: "pipe", timeout: 10000
+    });
+  } catch {
+    throw new Error("Analytics verifier source differs from the tested revision; revalidate before syncing");
+  }
+  const dirty = execFileSync("git", ["-C", analyticsRoot, "status", "--porcelain", "--untracked-files=all", "--", "scripts", "queries"], {
+    encoding: "utf8", stdio: ["ignore", "pipe", "pipe"], timeout: 10000
+  });
+  if (dirty.trim()) {
+    throw new Error("Analytics verifier source is modified or untracked; use a clean verified checkout");
+  }
+  const committed = execFileSync("git", ["-C", analyticsRoot, "show", `${ref[1]}:${ref[2]}`], {
+    stdio: ["ignore", "pipe", "pipe"], timeout: 10000
+  });
+  const local = fs.readFileSync(receiptPath);
+  if (!committed.equals(local)) {
+    throw new Error("Local receipt differs from its cited GitHub receipt");
+  }
+  // Use the exact committed bytes for both checks and rendering.
+  execFileSync("python3", [
+    path.join(analyticsRoot, "scripts", "weekly_kpi_receipt.py"), "--check-ga4-receipt", "-"
+  ], { input: committed, stdio: ["pipe", "pipe", "pipe"], timeout: 130000 });
+  return JSON.parse(committed);
 }
 
 function assertReceipt(receipt) {
@@ -94,7 +166,7 @@ function runDate(receipt) {
   return emittedAt ? String(emittedAt).slice(0, 10) : new Date().toISOString().slice(0, 10);
 }
 
-function renderClusterSummary(receipt) {
+function renderClusterSummary(receipt, receiptUrl) {
   const clusters = Array.isArray(receipt.cluster_summary) ? receipt.cluster_summary : [];
   if (clusters.length === 0) {
     return "";
@@ -102,7 +174,7 @@ function renderClusterSummary(receipt) {
 
   return [
     "",
-    "Cluster read from the analytics receipt:",
+    `Cluster read from the analytics receipt:${receiptUrl ? ` [Analytics receipt](${receiptUrl}).` : ""}`,
     "",
     "| cluster | pages | gsc_clicks | gsc_impressions | gsc_ctr | gsc_position | ga4_sessions |",
     "|---|---:|---:|---:|---:|---:|---:|",
@@ -112,7 +184,7 @@ function renderClusterSummary(receipt) {
   ].join("\n");
 }
 
-function renderSeoQueueSummary(receipt) {
+function renderSeoQueueSummary(receipt, receiptUrl) {
   const queues = Array.isArray(receipt.seo_queue_summary) ? receipt.seo_queue_summary : [];
   if (queues.length === 0) {
     return "";
@@ -120,7 +192,7 @@ function renderSeoQueueSummary(receipt) {
 
   return [
     "",
-    "SEO queue read from the analytics receipt:",
+    `SEO queue read from the analytics receipt:${receiptUrl ? ` [Analytics receipt](${receiptUrl}).` : ""}`,
     "",
     "| queue_bucket | pages | gsc_clicks | gsc_impressions | ga4_sessions |",
     "|---|---:|---:|---:|---:|",
@@ -130,7 +202,7 @@ function renderSeoQueueSummary(receipt) {
   ].join("\n");
 }
 
-function renderSerpEvidence(receipt) {
+function renderSerpEvidence(receipt, receiptUrl) {
   const serp = receipt.serp_evidence;
   if (!serp || typeof serp !== "object") {
     return "";
@@ -138,7 +210,7 @@ function renderSerpEvidence(receipt) {
 
   const lines = [
     "",
-    "SERP evidence from the analytics receipt:",
+    `SERP evidence from the analytics receipt:${receiptUrl ? ` [Analytics receipt](${receiptUrl}).` : ""}`,
     "",
     `- Evidence status: \`${formatCell(serp.serp_evidence_status)}\`.`,
     `- Mode: \`${formatCell(serp.mode)}\`.`,
@@ -156,6 +228,8 @@ function renderSerpEvidence(receipt) {
   const evidenceAvailable = serp.serp_evidence_status === "available";
   if (support.length > 0) {
     lines.push(
+      "",
+      `SERP result table:${receiptUrl ? ` [Analytics receipt](${receiptUrl}).` : ""}`,
       "",
       "| query | page_path | seascape_rank | classification_support | top_visible_competitors | serp_features |",
       "|---|---|---|---|---|---|",
@@ -246,15 +320,15 @@ function renderBranchInstruction(receipt) {
   ].join("\n");
 }
 
-function renderLatestExecutionRead(receipt) {
+function renderLatestExecutionRead(receipt, receiptUrl) {
   assertReceipt(receipt);
 
   const latestGsc = receipt.latest_gsc_data_date || "unavailable";
   const gateLabel = receipt.site_work_gate?.label || "`blocked` - analytics receipt did not include a gate label.";
   const freshnessWarning = receipt.site_work_gate?.freshness_warning;
-  const clusterSummary = renderClusterSummary(receipt);
-  const seoQueueSummary = renderSeoQueueSummary(receipt);
-  const serpEvidence = renderSerpEvidence(receipt);
+  const clusterSummary = renderClusterSummary(receipt, receiptUrl);
+  const seoQueueSummary = renderSeoQueueSummary(receipt, receiptUrl);
+  const serpEvidence = renderSerpEvidence(receipt, receiptUrl);
   const aiVisibilitySummary = renderAiVisibilitySummary(receipt);
   const reportRecommendation = receipt.report_recommendation || receipt.next_branch;
 
@@ -272,17 +346,23 @@ function renderLatestExecutionRead(receipt) {
     `- Reason: ${receipt.reason}`
   ];
 
+  if (receiptUrl) lines.push(`- Evidence for this read: [Analytics receipt](${receiptUrl}).`);
+
   if (freshnessWarning) {
     lines.push(`- GSC freshness warning: ${freshnessWarning}`);
   }
 
   lines.push(clusterSummary, seoQueueSummary, serpEvidence, aiVisibilitySummary, "", renderBranchInstruction(receipt));
 
-  return lines.filter((line, index) => line !== "" || lines[index - 1] !== "").join("\n").trim();
+  return lines.join("\n").split("\n")
+    .filter((line, index, all) => line !== "" || all[index - 1] !== "")
+    .map((line) => receiptUrl && line.startsWith("- ") && hasNumericTrafficClaim(line)
+      ? `${line} [Analytics receipt](${receiptUrl}).` : line)
+    .join("\n").trim();
 }
 
-function replaceLatestExecutionRead(markdown, receipt) {
-  const replacement = renderLatestExecutionRead(receipt);
+function replaceLatestExecutionRead(markdown, receipt, receiptUrl) {
+  const replacement = renderLatestExecutionRead(receipt, receiptUrl);
   const startMarker = "## Latest Execution Read";
   const nextMarker = "\n## Likely Priorities";
   const start = markdown.indexOf(startMarker);
@@ -295,10 +375,10 @@ function replaceLatestExecutionRead(markdown, receipt) {
   return `${markdown.slice(0, start + startMarker.length).trimEnd()}\n\n${replacement}\n${markdown.slice(next)}`;
 }
 
-function syncNextBatch({ receiptPath, nextBatchPath, check = false }) {
-  const receipt = readJson(receiptPath);
+function syncNextBatch({ receiptPath, receiptUrl, analyticsRoot, nextBatchPath, check = false }) {
+  const receipt = verifyReceipt({ receiptPath, receiptUrl, analyticsRoot });
   const original = fs.readFileSync(nextBatchPath, "utf8");
-  const updated = replaceLatestExecutionRead(original, receipt);
+  const updated = replaceLatestExecutionRead(original, receipt, receiptUrl);
 
   if (check) {
     if (updated !== original) {
@@ -315,6 +395,8 @@ async function main() {
   const args = parseArgs();
   const result = syncNextBatch({
     receiptPath: path.resolve(args.receipt),
+    receiptUrl: args.receiptUrl,
+    analyticsRoot: path.resolve(args.analyticsRoot),
     nextBatchPath: path.resolve(args.nextBatch),
     check: args.check
   });
@@ -329,6 +411,8 @@ if (require.main === module) {
 }
 
 module.exports = {
+  hasNumericTrafficClaim,
+  uncitedAnalyticsLines,
   renderLatestExecutionRead,
   replaceLatestExecutionRead,
   syncNextBatch

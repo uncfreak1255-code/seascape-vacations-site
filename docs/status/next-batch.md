@@ -9,7 +9,7 @@ tracks acknowledgement, source/release evidence and evaluation separately.
 
 - `docs/status/next-batch.md` is the only canonical reread handoff surface.
 - Every reread update must write exactly one `Reread status` line and exactly one `Concrete next move` line in `Latest Execution Read`.
-- Reread updates should be generated from a `seascape-analytics` next-batch decision receipt with `node scripts/enforcement/sync-next-batch-from-analytics-receipt.js --receipt <path>`.
+- Reread updates use the Analytics decision receipt sync; see [the freshness runbook](../runbooks/stale-analytics-receipt.md) for its required source and verification arguments.
 - Every hold names the missing observation or data, its numeric/observable
   clearance threshold, one accountable owner and a dated next review. Include
   named checks already performed; waiting without a condition that would break
@@ -48,11 +48,13 @@ Run date: 2026-11-09.
 The targeted joined operator read was executed in `seascape-analytics` and
 rendered here from its machine-readable next-batch decision receipt.
 
+- Historical receipt: unverified. Do not use the numeric claims in this read as current decision evidence; the separate guide correction is documented in [Site #938](https://github.com/uncfreak1255-code/seascape-vacations-site/pull/938).
+
 - Requested last-7-complete-day window: 2026-11-01 to 2026-11-07.
 - Latest BigQuery GSC `data_date`: 2026-11-07.
 - Site work gate: `clear` - joined GSC + GA4 read covers the requested window.
 - Reread status: `fresh but below threshold`.
-- Concrete next move: open a bounded rescue brief through `docs/process/ranking-regression-rescue.md` (Gate 0 block first, draft PRs only) for the money guides: primary `/guides/best-time-visit-anna-maria-island/` (Nov 9 digest: clicks fell from 28 to 11, down 61%. Analytics receipt: 209 sessions and 0 stay or book-direct clicks); secondary `/guides/anna-maria-island-vs-siesta-key/` snippet CTR (1,307 impressions in the receipt. Nov 9 digest: 4 clicks, 0.31% CTR and 3.4x prior-week impressions). Expansion stays held. Owner-direct intake stays allowed as a parallel free-evidence path under the Owner-Direct Intake Escalation section, but it is not this week's default site action.
+- Concrete next move: open a bounded rescue brief through `docs/process/ranking-regression-rescue.md` (Gate 0 block first, draft PRs only) for the money guides: primary `/guides/best-time-visit-anna-maria-island/` (Nov 9 digest: clicks fell from 28 to 11, down 61%. 2026-11-11, after the bot exclusion: 16 sessions in Nov 1-7, not 209; Nov 2-8 receipt: 17 sessions, 0 stay-box and 1 book-direct click. Keep The Oasis in the box until the event window from Nov 10 has two weeks; no managed home is on the island); secondary `/guides/anna-maria-island-vs-siesta-key/` snippet CTR (1,307 impressions in the receipt. Nov 9 digest: 4 clicks, 0.31% CTR and 3.4x prior-week impressions). Expansion stays held. Owner-direct intake stays allowed as a parallel free-evidence path under the Owner-Direct Intake Escalation section, but it is not this week's default site action.
 - Report recommendation: `hold-and-reread`.
 - Reason: No cluster cleared the bar for a stronger next branch than holding for more readback.
 
@@ -244,47 +246,43 @@ Before implementation, write a short experiment brief with:
 - Copy placing any Seascape home on Anna Maria Island.
 - A licence trust strip.
 
+## Index Finding And Target Searches — November 14, 2026
+
+- `/stays/anna-maria-island-homes-with-pool/` read `Discovered - currently not
+  indexed` with no crawl date on Nov 14 (Search Console URL inspection through
+  local OpenSEO `inspect_urls`). Sawyer requested indexing that day; the same
+  read then returned `Submitted and indexed`, last crawl 2026-11-14T20:19Z. A
+  source search ruled out missing internal links. Indexed is not ranked; no
+  position is claimed.
+- Rechecks are Claude scheduled tasks: `pool-lander-index-recheck-2026-11-21`
+  (once) and `weekly-index-coverage-check` (Mondays; inspects every sitemap
+  stay and guide page and files an `Index check:` issue here for any page not
+  indexed). Its first run is not yet observed.
+- Five target searches are saved in OpenSEO under the tag
+  `reverse-engineer-seo`; evidence and proposed moves are in OpenSEO report
+  `06315225-b08e-46b5-8f4d-7d493b88d84a`. They are proposals: they open no
+  batch and are not ranked opportunities under the Reread Contract.
+- One ChatGPT run is noise: Seascape was cited in 0 of 19 answers on Nov 14
+  and 4 of 19 on Nov 9 with no site change between (OpenSEO report
+  `4dfd4da9-f54d-4526-809c-188bd1b8083d`). Judge a page change on two or more
+  consecutive checks.
+
 ## Bounded Attack Check — October 2, 2026
 
-Attack status: `completed` for the existing AMI-versus-Siesta comparison.
-Query variants checked: `Anna Maria Island vs Siesta Key vacation families` and
-`best time visit Anna Maria Island`; guest destination-choice intent. Free web
-search and competitor-page reads were used, not paid DataForSEO or a new rank
-check. Search results are research evidence, not a Google rank-tracker receipt.
-
-Inspected competitors: [Compass Hotel](https://www.compasshotel.com/anna-maria-sound/anna-maria-island-vs-siesta-key),
-[Vacation Florida](https://vacationflorida.tv/anna-maria-island-vs-siesta-key/), and
-[Mousin Around](https://mousinaround.com/siesta-key-vs-anna-maria-island/).
-They compete on destination fit, family logistics and accommodation choices.
-Current Site source already supplies a verdict, comparison table, parking and
-stay-base choices; preserve that decision format rather than add another page.
-
-The Analytics September 24–30 read reports 888 impressions, 12 clicks and
-14 impressions on the no-slash variant. Source already has the trailing-slash
-canonical and 301 rule; an October 2 live HEAD read of that exact variant returned
-301 to `/guides/anna-maria-island-vs-siesta-key/`. No redundant redirect repair is
-warranted from this evidence. It does not prove Google has recrawled the variant.
-Next bounded proof action: Analytics should compare variant rows on the next
-complete window before proposing any consolidation change. No title rewrite,
-new expansion, design change or booking-PR overlap is authorized by this check.
-
-OpenSEO configuration readback showed the optional localhost MCP and exactly
-six allowed saved-state reads with approval mode `prompt`; the local endpoint
-responded. This task exposes no OpenSEO tool calls or browser-control execution
-surface, so `list_projects` and two saved-tracker reads remain unverified. Do not
-replace them with guessed rank history or invoke paid lookup tools.
+Moved to [`docs/status/next-batch-history.md`](next-batch-history.md). Verdict
+kept here: attack `completed` for the AMI-versus-Siesta comparison; no title
+rewrite, expansion or redirect repair was authorized by it.
 
 ## Confirmed Regressions — October 20, 2026
 
 Proof (GSC domain property, all page rows, 2026-08-21–2026-09-17 vs 2026-09-18–2026-10-15):
 - Money pages: the supplied group had clicks 14 → 7 and impressions 675 → 370. The claim that it contains seven observed GSC URLs is **(unverified — needs receipt)**; attach the exact URL list and aggregation method. The source scope is eight routes: seven property-detail routes plus the `/properties/` catalogue; do not assign these totals to all eight without that receipt. The Oasis 197 → 41 impressions; Sarasota Luxe 198 → 45.
 - Winner guide: `/guides/anna-maria-island-vs-siesta-key/` (all variants) clicks 51 → 29, impressions 6,712 → 5,002 (≥30% click decline trigger).
-- Site overall rose (400 → 428 clicks; guides 327 → 363), so the decline is concentrated.
 Rescue briefs: `docs/briefs/2026-10-property-pages-rescue.md`, `docs/briefs/2026-10-ami-vs-siesta-key-rescue.md`. Both remain research until actual SERP competitors and inspected URLs are recorded and every Gate 0 field, including the nine attack fields, is complete. A SERP read alone does not complete the gate.
 
 ## Truth Remediation Before Expansion — Pool Heat
 
-Expansion branches (new stay / answer pages) stay closed until the pool-heat defects in `docs/plans/2026-11-content-priorities.md` §5 are fixed and an invariant asserts the complete rule at every managed home: optional **$40/night**, whole stay before arrival, all remaining nights after arrival, with approved long-stay flat rates valid; never included. **An Analytics receipt must also open the next batch.** Rescue work may proceed under its own gates.
+Expansion stays closed until policy proof in `docs/plans/2026-11-content-priorities.md` §5 and an Analytics receipt open the next batch. Paid heat: **$40/night, capped at $280/stay**; preserve approved exceptions. The Coastal: no charge, automatic unless declined. Rescue work retains its own gates.
 
 ## Workflow Validation Outcome
 

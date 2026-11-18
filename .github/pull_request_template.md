@@ -2,10 +2,25 @@
 
 <!-- One or two sentences on the outcome. Name the brief for public copy. -->
 
+<!-- For a visual PR with a primary route, uncomment and replace this example
+     in the opening description so Netlify links to that route.
+@netlify /path/
+-->
+
+## Review this change
+
+<!-- Required before asking Sawyer to review a visible design change.
+     Remove this section for PRs with no visible design change.
+     Follow docs/process/before-user-review-checklist.md#6-visual-pr-handoff. -->
+
+- **Open the preview** — Link directly to each changed route or section.
+- **Before / after** — Embed labeled, matching Playwright screenshots directly in this PR description, with mobile first for phone changes. Artifact or project-thread links can supplement the images but do not replace them. If images cannot be uploaded, keep the PR in draft and do not request review yet.
+- **Try it** — Give one short instruction and attach a brief clip if the interaction needs it.
+- **Decision** — State what you want Sawyer to approve in one sentence.
+
 ## Proof
 
-<!-- The command you ran and its result, for the behavior this changes.
-     For visual changes: the deploy-preview link or screenshots. -->
+<!-- The command you ran and its result, for the behavior this changes. -->
 
 ## Merge danger
 

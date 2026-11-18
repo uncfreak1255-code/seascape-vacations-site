@@ -1,36 +1,36 @@
 {
   "routes": {
     "/": {
-      "script": 87399,
-      "stylesheet": 83524
+      "script": 94182,
+      "stylesheet": 89475
     },
     "/properties/": {
-      "script": 107618,
-      "stylesheet": 84698
+      "script": 108639,
+      "stylesheet": 85522
     },
     "/property-management/": {
-      "script": 91165,
-      "stylesheet": 61447
+      "script": 91543,
+      "stylesheet": 62009
     },
     "/property-management/vacation-rental-licensing-florida/": {
-      "script": 60976,
-      "stylesheet": 72552
+      "script": 61354,
+      "stylesheet": 73114
     },
     "/property-management/vacation-rental-management-fees-florida/": {
-      "script": 60976,
-      "stylesheet": 72552
+      "script": 61354,
+      "stylesheet": 73114
     },
     "/property-management/vrbo-management-services-florida/": {
-      "script": 60976,
-      "stylesheet": 72552
+      "script": 61354,
+      "stylesheet": 73114
     },
     "/stays/anna-maria-island-beachfront-rentals/": {
-      "script": 59002,
-      "stylesheet": 53057
+      "script": 59380,
+      "stylesheet": 53619
     },
     "/stays/anna-maria-island-vacation-rentals/": {
-      "script": 59002,
-      "stylesheet": 53057
+      "script": 59380,
+      "stylesheet": 53619
     }
   },
   "raises": [
@@ -1601,6 +1601,174 @@
       "to": 72552,
       "reason": "Owner landers moved to the Waterline owner design (PR 926): about 13.5KB of inline styles became the guest.css, owner.css and owner-lander.css sheets shared with the owner hub. Total CSS per page grows about 22KB (51.9KB to 74.3KB). base.css stays because it centres the closing call to action.",
       "date": "2026-11-11"
+    },
+    {
+      "route": "/",
+      "metric": "script",
+      "from": 87399,
+      "to": 93230,
+      "reason": "Sawyer-approved homepage focused-deck A: homepage-only home-deck.js (+5831 bytes) and home-deck.css (+5807 bytes); no dependencies; all 24 Lighthouse runs pass unchanged absolute budgets",
+      "date": "2026-11-13"
+    },
+    {
+      "route": "/",
+      "metric": "stylesheet",
+      "from": 83524,
+      "to": 89331,
+      "reason": "Sawyer-approved homepage focused-deck A: homepage-only home-deck.js (+5831 bytes) and home-deck.css (+5807 bytes); no dependencies; all 24 Lighthouse runs pass unchanged absolute budgets",
+      "date": "2026-11-13"
+    },
+    {
+      "route": "/",
+      "metric": "script",
+      "from": 93230,
+      "to": 93608,
+      "reason": "Measured 378 inline script bytes for once-only tracking on the two Anna Maria timing guide links. Lighthouse timing ceilings and ratchet logic stay fixed.",
+      "date": "2026-11-13"
+    },
+    {
+      "route": "/properties/",
+      "metric": "script",
+      "from": 107618,
+      "to": 107996,
+      "reason": "Measured 378 inline script bytes for once-only tracking on the two Anna Maria timing guide links. Lighthouse timing ceilings and ratchet logic stay fixed.",
+      "date": "2026-11-13"
+    },
+    {
+      "route": "/property-management/",
+      "metric": "script",
+      "from": 91165,
+      "to": 91543,
+      "reason": "Measured 378 inline script bytes for once-only tracking on the two Anna Maria timing guide links. Lighthouse timing ceilings and ratchet logic stay fixed.",
+      "date": "2026-11-13"
+    },
+    {
+      "route": "/property-management/vacation-rental-licensing-florida/",
+      "metric": "script",
+      "from": 60976,
+      "to": 61354,
+      "reason": "Measured 378 inline script bytes for once-only tracking on the two Anna Maria timing guide links. Lighthouse timing ceilings and ratchet logic stay fixed.",
+      "date": "2026-11-13"
+    },
+    {
+      "route": "/property-management/vacation-rental-management-fees-florida/",
+      "metric": "script",
+      "from": 60976,
+      "to": 61354,
+      "reason": "Measured 378 inline script bytes for once-only tracking on the two Anna Maria timing guide links. Lighthouse timing ceilings and ratchet logic stay fixed.",
+      "date": "2026-11-13"
+    },
+    {
+      "route": "/property-management/vrbo-management-services-florida/",
+      "metric": "script",
+      "from": 60976,
+      "to": 61354,
+      "reason": "Measured 378 inline script bytes for once-only tracking on the two Anna Maria timing guide links. Lighthouse timing ceilings and ratchet logic stay fixed.",
+      "date": "2026-11-13"
+    },
+    {
+      "route": "/stays/anna-maria-island-beachfront-rentals/",
+      "metric": "script",
+      "from": 59002,
+      "to": 59380,
+      "reason": "Measured 378 inline script bytes for once-only tracking on the two Anna Maria timing guide links. Lighthouse timing ceilings and ratchet logic stay fixed.",
+      "date": "2026-11-13"
+    },
+    {
+      "route": "/stays/anna-maria-island-vacation-rentals/",
+      "metric": "script",
+      "from": 59002,
+      "to": 59380,
+      "reason": "Measured 378 inline script bytes for once-only tracking on the two Anna Maria timing guide links. Lighthouse timing ceilings and ratchet logic stay fixed.",
+      "date": "2026-11-13"
+    },
+    {
+      "route": "/",
+      "metric": "stylesheet",
+      "from": 89331,
+      "to": 89893,
+      "reason": "Measured 562 stylesheet bytes in motion.css (appended to every Waterline bundle) for the one-pass hover glint on the property booking button, picked by Sawyer on 2026-11-15. CSS only; no script, request or layout change.",
+      "date": "2026-11-15"
+    },
+    {
+      "route": "/properties/",
+      "metric": "stylesheet",
+      "from": 84698,
+      "to": 85260,
+      "reason": "Measured 562 stylesheet bytes in motion.css (appended to every Waterline bundle) for the one-pass hover glint on the property booking button, picked by Sawyer on 2026-11-15. CSS only; no script, request or layout change.",
+      "date": "2026-11-15"
+    },
+    {
+      "route": "/property-management/",
+      "metric": "stylesheet",
+      "from": 61447,
+      "to": 62009,
+      "reason": "Measured 562 stylesheet bytes in motion.css (appended to every Waterline bundle) for the one-pass hover glint on the property booking button, picked by Sawyer on 2026-11-15. CSS only; no script, request or layout change.",
+      "date": "2026-11-15"
+    },
+    {
+      "route": "/property-management/vacation-rental-licensing-florida/",
+      "metric": "stylesheet",
+      "from": 72552,
+      "to": 73114,
+      "reason": "Measured 562 stylesheet bytes in motion.css (appended to every Waterline bundle) for the one-pass hover glint on the property booking button, picked by Sawyer on 2026-11-15. CSS only; no script, request or layout change.",
+      "date": "2026-11-15"
+    },
+    {
+      "route": "/property-management/vacation-rental-management-fees-florida/",
+      "metric": "stylesheet",
+      "from": 72552,
+      "to": 73114,
+      "reason": "Measured 562 stylesheet bytes in motion.css (appended to every Waterline bundle) for the one-pass hover glint on the property booking button, picked by Sawyer on 2026-11-15. CSS only; no script, request or layout change.",
+      "date": "2026-11-15"
+    },
+    {
+      "route": "/property-management/vrbo-management-services-florida/",
+      "metric": "stylesheet",
+      "from": 72552,
+      "to": 73114,
+      "reason": "Measured 562 stylesheet bytes in motion.css (appended to every Waterline bundle) for the one-pass hover glint on the property booking button, picked by Sawyer on 2026-11-15. CSS only; no script, request or layout change.",
+      "date": "2026-11-15"
+    },
+    {
+      "route": "/stays/anna-maria-island-beachfront-rentals/",
+      "metric": "stylesheet",
+      "from": 53057,
+      "to": 53619,
+      "reason": "Measured 562 stylesheet bytes in motion.css (appended to every Waterline bundle) for the one-pass hover glint on the property booking button, picked by Sawyer on 2026-11-15. CSS only; no script, request or layout change.",
+      "date": "2026-11-15"
+    },
+    {
+      "route": "/stays/anna-maria-island-vacation-rentals/",
+      "metric": "stylesheet",
+      "from": 53057,
+      "to": 53619,
+      "reason": "Measured 562 stylesheet bytes in motion.css (appended to every Waterline bundle) for the one-pass hover glint on the property booking button, picked by Sawyer on 2026-11-15. CSS only; no script, request or layout change.",
+      "date": "2026-11-15"
+    },
+    {
+      "route": "/",
+      "metric": "script",
+      "from": 93608,
+      "to": 94182,
+      "reason": "Defer ts-extra photos until a card strip is swiped, so later covers load first and the 800 KB image budget can be enforced.",
+      "date": "2026-11-18"
+    },
+    {
+      "route": "/properties/",
+      "metric": "script",
+      "from": 107996,
+      "to": 108639,
+      "reason": "Defer ts-extra photos until a card strip is swiped, so later covers load first and the 800 KB image budget can be enforced.",
+      "date": "2026-11-18"
+    },
+    {
+      "route": "/properties/",
+      "metric": "stylesheet",
+      "from": 85260,
+      "to": 85522,
+      "reason": "Defer ts-extra photos until a card strip is swiped, so later covers load first and the 800 KB image budget can be enforced.",
+      "date": "2026-11-18"
     }
   ]
 }

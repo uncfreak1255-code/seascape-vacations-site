@@ -1,7 +1,7 @@
 # Brief: Pool-heat billing correction
 
 - lifecycle: active
-- scope approved: Sawyer requested this separate draft PR on 2026-10-20 and authorized a focused review/correction on 2026-10-22. Continue in PR #753; no merge, deployment or payment activation.
+- scope approved: Sawyer requested the shared nightly-rate and stay-cap copy correction on 2026-11-13. Existing pages only; no change to payments, heater controls, or quoted exceptions.
 - persona: Guest comparing pool homes and the complete cost before booking.
 - primary keyword: vacation rentals with heated pool
 - secondary keywords: Anna Maria Island pool heat fee, Bradenton heated pool rental, Sarasota pool home
@@ -12,6 +12,21 @@
 - anti-claims: No free or included pool heat at any home except The Coastal, which has no pool-heat charge (Sawyer, 2026-11-11), daily pricing, five-home billing restriction, selected heated nights, automatic activation, guaranteed temperature or heat-up time. Preserve approved long-stay flat rates. Hot-tub/spa terms remain distinct from pool billing.
 
 ## Approved correction
+
+November 13 follow-up: state "$40 per night, capped at $280 per stay" in the
+shared stay copy and paid property copy. The cap is supported by the Hub's
+[pool-heat billing guide](https://github.com/uncfreak1255-code/seascape-hub/blob/main/context/pool-heat-billing-policy.md)
+and October 28 billing decision, rechecked November 13. Keep The Coastal's
+November 12 no-charge, automatic-unless-declined property answer unchanged.
+Keep approved flat rates and existing reservation-specific inclusions.
+The new scope supersedes the October draft-only instructions below.
+
+Primary proof routes: `/stays/vacation-rentals-with-pool-and-hot-tub/` and
+`/properties/dockside-dreams/`. The November 13 public read found the nightly
+rate on both without its cap; this is a pricing accuracy repair, not an SEO
+expansion.
+
+### Historical October/early November correction
 
 Pool heat is optional at $40 per night at every managed home except The Coastal,
 whose owner no longer charges for it (Sawyer, 2026-11-11; Coastal's entry says there

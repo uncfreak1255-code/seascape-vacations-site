@@ -4,12 +4,7 @@ description: Polish surfaces, alignment, icons, and interaction details when bet
 disable-model-invocation: true
 ---
 
-<!-- SOURCE: moved from plugins/eng-core/skills/better-ui on 2026-09-17 (flat skill consolidation). The plugin copy is frozen and retires in the prune PR; edit only this file. -->
-<!-- VENDORED from jakubkrehel/skills @ 267330e1adfc66a718fb65fa6918c1f06d0a689e
-     (skills/better-ui/SKILL.md, original sha256-16: 2482b7b89d851a31).
-     MIT; see plugins/eng-core/NOTICE. ADAPTED, not verbatim.
-     Deltas: Explicit invocation; project design and accessibility precedence. Replace unavailable sibling-skill pointers with project guidance. UI findings do not grant repository approval.
-     Ownership and update policy: OWNERSHIP.md. -->
+<!-- Vendored from jakubkrehel/skills @ 267330e1 (adapted). MIT; attribution and deltas in .claude/skills/NOTICE.design-skills. -->
 
 # UI polish
 

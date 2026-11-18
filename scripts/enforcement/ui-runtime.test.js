@@ -122,9 +122,9 @@ test("guide cards expose full-card taps without breaking inline links", () => {
   assert.match(annaMariaGuide, /class="neighborhood-card" data-card-link="\/guides\/holmes-beach-area-guide\/"/);
   assert.match(annaMariaGuide, /class="neighborhood-card" data-card-link="\/guides\/bradenton-beach-area-guide\/"/);
   assert.match(annaMariaGuide, /class="neighborhood-card" data-card-link="\/stays\/gulf-coast-vacation-homes-with-dock\/"/);
-  assert.match(annaMariaGuide, /class="property-card" data-card-link="\/properties\/dockside-dreams\/"/);
-  assert.match(annaMariaGuide, /class="property-card" data-card-link="\/properties\/the-oasis\/"/);
-  assert.match(annaMariaGuide, /class="property-card" data-card-link="\/properties\/river-house\/"/);
+  assert.match(annaMariaGuide, /<a class="property-card" href="\/properties\/dockside-dreams\/#check-availability" data-track-event="guide_property_check_dates_click"/);
+  assert.match(annaMariaGuide, /<a class="property-card" href="\/properties\/the-oasis\/#check-availability" data-track-event="guide_property_check_dates_click"/);
+  assert.match(annaMariaGuide, /<a class="property-card" href="\/properties\/river-house\/#check-availability" data-track-event="guide_property_check_dates_click"/);
   assert.match(
     annaMariaGuide,
     /<p class="neighborhood-desc">The historic north end\. <a href="\/stays\/quiet-relaxing-vacation-rentals-florida\/">/

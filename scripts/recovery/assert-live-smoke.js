@@ -14,10 +14,12 @@ const targets = [
   { path: "/properties/", status: 200 },
   { path: "/properties/the-oasis/", status: 200 },
   { path: "/properties/river-house/", status: 200 },
+  { path: "/properties/dockside-dreams/", status: 200 },
   { path: "/property-management/", status: 200 },
   { path: "/guides/", status: 200 },
   { path: "/stays/", status: 200 },
   { path: "/stays/anna-maria-island-vacation-rentals/", status: 200 },
+  { path: "/stays/vacation-rentals-with-pool-and-hot-tub/", status: 200 },
   { path: "/property-management/vacation-rental-management-sarasota/", status: 200 },
   { path: "/guides/anna-maria-island-area-guide/", status: 200 },
   { path: "/guides/bradenton-vs-sarasota/", status: 200 },
@@ -68,12 +70,21 @@ function validateTargetResponse(target, response) {
     throw new Error(`${target.path} expected ${target.status}, got ${response.statusCode}`);
   }
 
+  if (["/properties/dockside-dreams/", "/stays/vacation-rentals-with-pool-and-hot-tub/"].includes(target.path)) {
+    const pageCopy = response.body.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, "");
+    requireIncludes(target.path, pageCopy, [
+      "$40 per night, capped at $280 per stay",
+      "There is no charge for pool heat at The Coastal.",
+      "Approved long-stay flat rates still apply"
+    ]);
+  }
   if (["/properties/the-oasis/", "/properties/river-house/"].includes(target.path)) {
     requireIncludes(target.path, response.body, ["Pets are not permitted at this home.", "Service animals are welcome without a pet fee"]);
     requireExcludes(target.path, response.body, ["One dog under 30 lb may stay", "Ask us to confirm pet approval", "Dog approval, boat size", 'value="pet approval"']);
   }
 
   if (target.path === "/") {
+    requireIncludes(target.path, response.body, ['Private-Pool Vacation Homes in Bradenton &amp; Sarasota | Seascape Vacations', 'Private-pool vacation homes in Bradenton and Sarasota.', 'Private-pool vacation homes in Bradenton &amp; Sarasota.']);
     if (!response.body.includes("Dockside Dreams") || !response.body.includes("/properties/dockside-dreams/")) {
       throw new Error("homepage is missing stable featured property markup");
     }
@@ -91,8 +102,8 @@ function validateTargetResponse(target, response) {
     }
 
     // Manual hero controls keep their scene-list-derived counter and real home imagery.
-    requireIncludes(target.path, response.body, ['data-guest-version="waterline-v3"', 'id="home-heading"', 'href="/properties/" data-trip-link>Find your home</a>', "Your people.", "Your place.", "Our homes", 'data-guest-trip-form', '/images/homes/the-oasis/01.webp', 'href="/guest-support/"', 'href="/terms/#booking-and-confirmation"', 'Explore', 'Where we are', 'href="/guides/anna-maria-island-area-guide/"', 'id="email-signup"', 'data-inline-email-capture="true"', 'data-placement="home_owner_section"', 'Home 1 of ', 'data-scene-step="-1"', 'data-scene-step="1"', '/images/homes/the-oasis/hero-clarity.webp', 'data-trip-sheet-open', 'Dates and guests', '<p class="g-card-source">Ratings from Airbnb</p>', '<span class="g-card-rating" aria-hidden="true">★ ']);
-    requireExcludes(target.path, response.body, ["Best rates guaranteed", "Best Price Guaranteed", "save up to 20%"]);
+    requireIncludes(target.path, response.body, ['data-guest-version="waterline-v3"', 'id="home-heading"', 'href="/properties/" data-trip-link>Find your home</a>', "Your people.", "Your place.", "Our homes", 'data-guest-trip-form', '/images/homes/the-oasis/01.webp', 'href="/guest-support/"', 'href="/terms/#booking-and-confirmation"', 'Explore', 'Where we are', 'href="/guides/anna-maria-island-area-guide/"', 'id="email-signup"', 'data-inline-email-capture="true"', 'data-placement="home_owner_section"', 'Home 1 of ', 'data-scene-step="-1"', 'data-scene-step="1"', '/images/homes/the-oasis/hero-clarity.webp', 'data-home-deck', 'data-deck-step="-1"', 'data-deck-step="1"', 'See all homes', 'Back to focused deck', 'data-trip-sheet-open', 'Dates and guests', '<p class="g-card-source">Ratings from Airbnb</p>', '<span class="g-card-rating" aria-hidden="true">★ ']);
+    requireExcludes(target.path, response.body, ["Best rates guaranteed", "Best Price Guaranteed", "save up to 20%", "Swipe to explore the collection."]);
   }
 
   if (target.path === "/properties/") {

@@ -53,7 +53,10 @@ test('Relaxing Oasis can be discovered on the homepage and filtered and compared
   await page.goto('/');
   const postcard = page.locator('.g-postcard').filter({ hasText: 'Relaxing Oasis' });
   await expect(postcard).toHaveCount(1);
-  await expect(postcard.locator('a')).toHaveAttribute('href', '/properties/relaxing-oasis/');
+  await expect(postcard.locator('a')).toHaveCount(2);
+  for (const link of await postcard.locator('a').all()) {
+    await expect(link).toHaveAttribute('href', '/properties/relaxing-oasis/');
+  }
   await expect(postcard.locator('img[data-property-photo]').first()).toHaveAttribute('src', '/images/homes/relaxing-oasis/01.webp');
   // Phones have no hero; the homepage card above is how a phone guest finds the home.
   if (!isMobile) {
