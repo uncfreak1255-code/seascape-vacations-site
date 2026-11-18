@@ -20,7 +20,7 @@ then load only the matching branches:
 | When the task involves… | Read before acting |
 | --- | --- |
 | Behavior diagnosis, a focused fix, or tests | Affected source and existing tests from Repo Truth; read Git Session Rules before edits or publication |
-| UI, CSS, templates or layout | `DESIGN.md`, `docs/agents/rules/design.md`, then `docs/process/design-review-workflow.md` |
+| UI, CSS, templates or layout | `DESIGN.md`, `docs/agents/rules/design.md` (required Emil craft skill), then `docs/process/design-review-workflow.md` for the Site specialist, critic and rendered checks |
 | Public copy or SEO copy | Select the exact brief through `docs/briefs/README.md`, then follow `docs/agents/rules/content-gate.md` |
 | Measured SEO expansion, title/meta rewrites, or prioritization from analytics | `docs/status/current-state.md`, `docs/status/next-batch.md`, the matching brief and portfolio file; apply the owning measurement gate |
 | Business-priority, experiment, or capability-trial recommendations | Business Priorities below, `docs/process/learning-contract.md`, and current evidence from the owning repo |
@@ -28,7 +28,7 @@ then load only the matching branches:
 | Commit, push, PR or merge | `docs/process/git-session-rules.md` and `docs/process/before-merge-checklist.md`; read the user-review or post-merge checklist when entering that phase |
 | A red or queued CI check, a visual-baseline refresh, or a missing Netlify deploy | `docs/process/checks-and-runners.md` |
 | Submitting or integrating a Codex cloud task | `docs/process/codex-cloud-handoff.md` |
-| Skills, SEO tooling, or workflow changes | `docs/process/skill-policy.md`, `docs/process/learning-contract.md`, and `docs/process/openseo.md` (SEO starts from local OpenSEO); `docs/process/seo-workflow-map.md` for which SEO jobs and roles exist |
+| SEO/AEO research, skills, tooling or workflow changes | `docs/process/skill-policy.md`, `docs/process/learning-contract.md`, and `docs/process/openseo.md` (required local OpenSEO methods); `docs/process/seo-workflow-map.md` routes research skills and Site checks |
 
 Combine branches when the task spans them. Conditional reading never waives a
 content, design, safety, measurement or release requirement; read each linked

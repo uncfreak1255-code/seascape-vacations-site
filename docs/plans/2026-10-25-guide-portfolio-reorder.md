@@ -165,7 +165,8 @@ on pages that are not regressing, which `next-batch.md` treats as expansion. Eac
 only when `next-batch.md` reads `open next batch` (after the pool-heat fix it names), or
 with Sawyer's explicit written exception to that gate recorded in the brief. Each brief
 carries the standard anti-claims: no Seascape home on Anna Maria Island or Siesta Key;
-pool heat is optional and never included. An upgrade and a layout move of the same
+pool heat is optional and not included,
+except at Coastal Stay, where it is included as of 2026-11-11 (Sawyer). An upgrade and a layout move of the same
 guide never share a PR.
 
 ### Lane 4: decisions for Sawyer (nothing ships without his list approval)
