@@ -79,7 +79,7 @@
 
 ## Page Builder Tasks
 
-- source files likely to change: `src/_data/seoPages.json`, `src/_redirects`, `src/guides/bradenton-area-guide/index.html`, `src/guides/things-to-do-bradenton-fl.html`, `src/guides/bradenton-vs-sarasota.html`, `docs/status/next-batch.md`, `docs/plans/2026-11-content-priorities.md`, `docs/portfolio/stay-money-pages.md`, `docs/portfolio/pseo-inventory-triage.md`, `docs/status/page-ledger.json`, `scripts/seo/generate-pseo-triage.js`, `scripts/recovery/assert-live-smoke.js`
+- source files likely to change: `src/_data/seoPages.json`, `src/stays/stays.njk`, `src/_redirects`, `src/guides/bradenton-area-guide/index.html`, `src/guides/things-to-do-bradenton-fl.html`, `src/guides/bradenton-vs-sarasota.html`, `docs/status/next-batch.md`, `docs/plans/2026-11-content-priorities.md`, `docs/portfolio/stay-money-pages.md`, `docs/portfolio/pseo-inventory-triage.md`, `docs/status/page-ledger.json`, `scripts/seo/generate-pseo-triage.js`, `scripts/recovery/assert-live-smoke.js`
 - redirect or schema work: retarget the head-term alias; FAQPage plus ItemList of VacationRental from the existing stays template
 - internal-link or CTA work: donor guides and related Bradenton stay pages; Check dates in geoIntro
 - money CTA and downstream tracking event to verify: `stay_view_property_click`
@@ -87,10 +87,12 @@
 ## Source Files Changed
 
 - src/_data/seoPages.json
+- src/stays/stays.njk
 - src/_redirects
 - src/guides/bradenton-area-guide/index.html
 - src/guides/things-to-do-bradenton-fl.html
 - src/guides/bradenton-vs-sarasota.html
+- docs/status/page-ledger.json
 
 ## Required Internal Link Map
 
