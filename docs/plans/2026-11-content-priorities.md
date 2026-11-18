@@ -1,7 +1,7 @@
 # Content Priorities — November 2026
 
-> Status: DRAFT for Sawyer's review. Drafted 2026-10-20 by SEO & AEO Desk (Grok Bot).
-> Replaces: `content-priorities-2026-10.md` when approved.
+> Status: APPROVED by Sawyer on 2026-11-18 as the November work queue. Drafted 2026-10-20 by SEO & AEO Desk (Grok Bot).
+> Replaces: `content-priorities-2026-10.md` (superseded 2026-11-18).
 > Canon: `seascape-hub/context/seascape-properties.md` (7 live homes, all in Bradenton or Sarasota; **no home on Anna Maria Island**). North star: direct-booking revenue.
 
 ## 1. Gate status

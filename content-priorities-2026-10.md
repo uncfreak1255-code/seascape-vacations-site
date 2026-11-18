@@ -1,6 +1,7 @@
 # Content Priorities — October 2026
 
-> Status: DRAFT proposal, not an approved work queue. Drafted 2026-10-02.
+> Status: SUPERSEDED on 2026-11-18 by `docs/plans/2026-11-content-priorities.md`
+> (approved November queue). Historical only. Drafted 2026-10-02.
 > Gate details below are a snapshot from that date. Read
 > `docs/status/next-batch.md` for the current gate and next move; revalidate any
 > proposed task against current source and its owning brief before starting.
