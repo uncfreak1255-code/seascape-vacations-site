@@ -47,6 +47,8 @@ test("Bradenton head-term intro names Seascape and stays on the mainland", () =>
   assert.doesNotMatch(`${resolved.intro} ${resolved.geoIntro}`, /\b(?:are|is) on Anna Maria Island\b/);
   assert.doesNotMatch(`${resolved.intro} ${resolved.geoIntro}`, /\d+\s*%/);
   assert.doesNotMatch(`${resolved.intro} ${resolved.geoIntro}`, /management fee/i);
+  assert.doesNotMatch(`${resolved.intro} ${resolved.geoIntro}`, /verified/i);
+  assert.equal(page.introHeading, "Stay in mainland Bradenton");
 });
 
 test("Bradenton head-term geoIntro links every listed home to its date panel", () => {

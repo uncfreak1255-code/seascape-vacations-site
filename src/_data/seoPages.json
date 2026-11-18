@@ -5,7 +5,7 @@
       "destination": "bradenton",
       "title": "Bradenton Vacation Rentals",
       "h1": "Bradenton Vacation Rentals",
-      "description": "Compare Seascape Vacations' mainland Bradenton vacation rentals, then check dates on each home's booking panel.",
+      "description": "Compare Seascape Vacations' mainland Bradenton vacation rentals, then check dates on each home.",
       "intro": "Seascape Vacations manages {matching} mainland Bradenton vacation rentals. These homes are in Bradenton, not on Anna Maria Island. Compare the listings and check dates for your group.",
       "faqs": [
         {
@@ -53,29 +53,29 @@
         },
         {
           "label": "Check dates on each home",
-          "value": "Use the date panel on the property page. The Bradenton catalog filter is a fallback when you want every listing in one view."
+          "value": "Use the date panel on each property page, or open every Bradenton listing in one view."
         }
       ],
-      "geoIntro": "<p><a href=\"/properties/dockside-dreams/#booking\" data-track-event=\"stay_view_property_click\" data-page-slug=\"dockside-dreams\" data-placement=\"stay_intro\"><strong>Check dates at Dockside Dreams</strong></a> \u2014 {sleeps-phrase:dockside-dreams}, the only waterfront home, with a canal dock.</p><p><a href=\"/properties/the-oasis/#booking\" data-track-event=\"stay_view_property_click\" data-page-slug=\"the-oasis\" data-placement=\"stay_intro\"><strong>Check dates at The Oasis</strong></a> \u2014 {sleeps-phrase:the-oasis}, with two hot tubs and a putting green.</p><p><a href=\"/properties/river-house/#booking\" data-track-event=\"stay_view_property_click\" data-page-slug=\"river-house\" data-placement=\"stay_intro\"><strong>Check dates at River House</strong></a> \u2014 {sleeps-phrase:river-house}, with a private pool and spa near the river.</p><p><a href=\"/properties/bradenton-pool-home/#booking\" data-track-event=\"stay_view_property_click\" data-page-slug=\"bradenton-pool-home\" data-placement=\"stay_intro\"><strong>Check dates at Bradenton Pool Home</strong></a> \u2014 {sleeps-phrase:bradenton-pool-home}, the closest Seascape home to IMG Academy.</p><p><a href=\"/properties/blue-house/#booking\" data-track-event=\"stay_view_property_click\" data-page-slug=\"blue-house\" data-placement=\"stay_intro\"><strong>Check dates at Pickleball Pool Home Retreat</strong></a> \u2014 {sleeps-phrase:blue-house}, with a private pool and pickleball court. The pool does not have a verified hot tub.</p><p><a href=\"/properties/coastal-stay/#booking\" data-track-event=\"stay_view_property_click\" data-page-slug=\"coastal-stay\" data-placement=\"stay_intro\"><strong>Check dates at The Coastal</strong></a> \u2014 {sleeps-phrase:coastal-stay}. There is no charge for pool heat at The Coastal.</p><p><a href=\"/properties/relaxing-oasis/#booking\" data-track-event=\"stay_view_property_click\" data-page-slug=\"relaxing-oasis\" data-placement=\"stay_intro\"><strong>Check dates at Relaxing Oasis</strong></a> \u2014 {sleeps-phrase:relaxing-oasis}, with an above-ground pool, putting green, and game room.</p><p>Compare the same dates and complete checkout total across channels, including fees, taxes, and booking terms.</p>",
+      "geoIntro": "<p><a href=\"/properties/dockside-dreams/#booking\" data-track-event=\"stay_view_property_click\" data-page-slug=\"dockside-dreams\" data-placement=\"stay_intro\"><strong>Check dates at Dockside Dreams</strong></a> \u2014 {sleeps-phrase:dockside-dreams}, the only waterfront home, with a canal dock.</p><p><a href=\"/properties/the-oasis/#booking\" data-track-event=\"stay_view_property_click\" data-page-slug=\"the-oasis\" data-placement=\"stay_intro\"><strong>Check dates at The Oasis</strong></a> \u2014 {sleeps-phrase:the-oasis}, with two hot tubs and a putting green.</p><p><a href=\"/properties/river-house/#booking\" data-track-event=\"stay_view_property_click\" data-page-slug=\"river-house\" data-placement=\"stay_intro\"><strong>Check dates at River House</strong></a> \u2014 {sleeps-phrase:river-house}, with a private pool and spa, near the Warner Bayou boat ramp.</p><p><a href=\"/properties/bradenton-pool-home/#booking\" data-track-event=\"stay_view_property_click\" data-page-slug=\"bradenton-pool-home\" data-placement=\"stay_intro\"><strong>Check dates at Bradenton Pool Home</strong></a> \u2014 {sleeps-phrase:bradenton-pool-home}, the closest Seascape home to IMG Academy.</p><p><a href=\"/properties/blue-house/#booking\" data-track-event=\"stay_view_property_click\" data-page-slug=\"blue-house\" data-placement=\"stay_intro\"><strong>Check dates at Pickleball Pool Home Retreat</strong></a> \u2014 {sleeps-phrase:blue-house}, with a private pool, pickleball court, and no hot tub.</p><p><a href=\"/properties/coastal-stay/#booking\" data-track-event=\"stay_view_property_click\" data-page-slug=\"coastal-stay\" data-placement=\"stay_intro\"><strong>Check dates at The Coastal</strong></a> \u2014 {sleeps-phrase:coastal-stay}. There is no charge for pool heat at The Coastal.</p><p><a href=\"/properties/relaxing-oasis/#booking\" data-track-event=\"stay_view_property_click\" data-page-slug=\"relaxing-oasis\" data-placement=\"stay_intro\"><strong>Check dates at Relaxing Oasis</strong></a> \u2014 {sleeps-phrase:relaxing-oasis}, with an above-ground pool, putting green, and game room.</p><p>Compare the same dates and complete checkout total across channels, including fees, taxes, and booking terms.</p>",
       "collectionCtaTitle": "Want every Bradenton listing in one view?",
-      "collectionCtaBody": "Use the Bradenton catalog filter when you want to scan the same mainland homes by dates and guest count.",
+      "collectionCtaBody": "Open every Bradenton listing when you want to scan the same mainland homes by dates and guest count.",
       "collectionCtaHref": "/properties/?area=bradenton",
       "collectionCtaLabel": "Open Bradenton homes",
       "relatedGuideLinks": [
         {
           "href": "/guides/bradenton-area-guide/",
           "title": "Bradenton area guide",
-          "copy": "Use the area guide for Riverwalk, IMG, and mainland neighborhood context before you pick a home."
+          "copy": "Read the area guide for Riverwalk, IMG, and the mainland neighborhoods around these homes."
         },
         {
           "href": "/guides/things-to-do-bradenton-fl/",
           "title": "Things to do in Bradenton",
-          "copy": "Match the outing list to a mainland home instead of assuming an island address."
+          "copy": "Match things to do with a mainland Bradenton home, not an island address."
         },
         {
           "href": "/guides/bradenton-vs-sarasota/",
           "title": "Bradenton vs Sarasota",
-          "copy": "Compare the two cities, then come back here for the Bradenton homes Seascape manages."
+          "copy": "Compare Bradenton and Sarasota, then pick from the Bradenton homes Seascape manages."
         }
       ],
       "relatedStaySlugs": [
@@ -87,7 +87,7 @@
       ],
       "longContent": "<p>Need a tighter filter? Compare <a href=\"/stays/bradenton-vacation-rentals-near-beaches/\">Bradenton homes near the beaches</a>, the <a href=\"/stays/bradenton-waterfront-vacation-rentals/\">waterfront home</a>, <a href=\"/stays/large-group-vacation-rentals-bradenton/\">large-group layouts</a>, or <a href=\"/stays/bradenton-vacation-rentals-with-hot-tub/\">homes with a hot tub</a>.</p>",
       "driveTimeLabel": "Plan to drive to island beaches",
-      "introHeading": "Stay in mainland Bradenton, with the trip details up front",
+      "introHeading": "Stay in mainland Bradenton",
       "reviewTrustLabel": "Mainland Bradenton homes"
     },
     {
