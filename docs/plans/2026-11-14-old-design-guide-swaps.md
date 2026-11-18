@@ -88,3 +88,23 @@ applies to both pages unless it names one.
 6. No page has inline reading links, so no page shows the repeat-link row.
 7. og/twitter title of Bradenton vs Tampa stays "Bradenton vs Tampa Vacation
    Rentals 2026 | Seascape Vacations" through `guideOgTitle`.
+
+## L9 swaps (waterfront restaurants pick cards)
+
+Brief: `docs/briefs/2026-11-old-design-guide-moves.md` -> M5. Sawyer chose
+variant C on 2026-11-16.
+
+1. Restaurant headings lose their list number ("1." to "7."). Four headings
+   lose their place in parentheses ("(Cortez)", "(Anna Maria City)",
+   "(Longboat Key)"); the place moves to the label above the name.
+2. Each card has a place label above the name. Where the old heading named no
+   place, the label comes from the page's own text: "Bradenton" for the two
+   Manatee River cards (the step's area) and "Longboat Key" for Mar Vista (its
+   description says "north end of Longboat Key").
+3. Five cards add a tag that repeats the first words of their docking note:
+   "Docking: Plentiful", "Docking: Very limited", "Docking: Excellent" (twice)
+   and "Docking: Very good".
+4. The description and the docking note are two paragraphs in place of one
+   paragraph with a line break. Same words.
+5. Steps 01 to 03 no longer use the long-read list styles (`pg-prose`); the
+   cards carry their own spacing. Not visible as a text change.
