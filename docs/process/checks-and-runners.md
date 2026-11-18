@@ -32,6 +32,9 @@ and then `npm run perf:ratchet` against the fresh reports from that same source.
 `verify:release` does not include these performance checks. Inspect byte growth;
 use `perf:ratchet:update -- --allow-raise "<reason>"` only for an intentional,
 measured increase. The existing commands and required CI check own this proof.
+Lighthouse collects the performance category on all eight configured routes,
+with three samples per route. The visual and dependency lanes own the separate
+axe accessibility checks.
 
 Dependency-manifest and release-workflow changes also install locked Chromium and run the complete existing accessibility spec inside `release-safety`. A failed browser result fails that required job; optional or cancelled visual results do not substitute for it. The dependency comparison fails when its Git range cannot be read.
 
