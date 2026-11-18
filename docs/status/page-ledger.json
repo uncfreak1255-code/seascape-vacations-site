@@ -23,6 +23,17 @@
       "brief": "docs/briefs/2026-10-ami-vs-siesta-key-rescue.md"
     },
     {
+      "route": "/guides/anna-maria-island-vs-siesta-key/",
+      "sources": [
+        "src/guides/anna-maria-island-vs-siesta-key.html"
+      ],
+      "change": "Rewrote the search description for comparison-query CTR; title and body unchanged",
+      "pr": null,
+      "shipped": null,
+      "targetQuery": "anna maria island vs siesta key",
+      "brief": "docs/briefs/2026-11-ami-vs-siesta-snippet-rescue.md"
+    },
+    {
       "route": "/stays/family-vacation-rentals-anna-maria-island/",
       "sources": [
         "src/_data/seoPages.json"
