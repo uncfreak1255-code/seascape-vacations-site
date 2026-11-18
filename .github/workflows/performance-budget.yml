@@ -29,10 +29,15 @@ jobs:
         uses: actions/checkout@v7
         with:
           fetch-depth: 0
+          filter: blob:none
 
       - name: Determine performance scope
         id: performance_scope
         run: node scripts/perf/performance-scope.js
+
+      - name: Prefetch page-date history
+        if: steps.performance_scope.outputs.run_lighthouse == 'true'
+        run: bash scripts/enforcement/prefetch-page-history.sh
 
       - name: Set up Node.js
         if: steps.performance_scope.outputs.run_lighthouse == 'true'
