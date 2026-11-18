@@ -34,7 +34,10 @@ Record `lifecycle` near the top when creating or reopening a brief:
 - `draft`: proposed scope, not approved implementation.
 - `active`: the named approved scope has work remaining; record that scope.
 - `completed`: the scoped source change is finished; cite its merged PR or
-  commit. Source completion alone does not prove deployment or business lift.
+  commit. Set it in the PR that lands the change and cite that PR's number
+  (as `2026-11-guide-airport-and-safety-facts.md` cites #1010): the merge SHA
+  does not exist yet, and a follow-up PR only to relabel the brief is waste.
+  Source completion alone does not prove deployment or business lift.
   When the batch added internal links that must outlive later rewrites, add
   `- link map: enforced` to the header: `scripts/enforcement/owner-market-link-map.test.js`
   then counts every entry of the brief's Required Internal Link Map in the
