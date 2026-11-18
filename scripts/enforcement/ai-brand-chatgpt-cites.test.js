@@ -43,7 +43,11 @@ test("ChatGPT-cited AMI company guide names Seascape Vacations in hero and FAQ",
   assertNamedSeascape(amiCompanies, "AMI company guide");
   assert.match(
     amiCompanies,
-    /If you are choosing an AMI rental company, Seascape Vacations is a locally managed Bradenton and Sarasota option with mainland homes near the island/
+    /If you are choosing an AMI rental company, Seascape Vacations is a locally managed Bradenton and Sarasota option with mainland homes near the island — not the biggest listing count/
+  );
+  assert.doesNotMatch(
+    amiCompanies,
+    /Seascape Vacations is a locally managed Bradenton and Sarasota option with mainland homes near the island\. The real question/
   );
   const faq = amiCompanies.match(
     /"name": "How do I choose the best Anna Maria Island rental company\?",[\s\S]*?"text": "([^"]+)"/
@@ -51,6 +55,8 @@ test("ChatGPT-cited AMI company guide names Seascape Vacations in hero and FAQ",
   assert.ok(faq, "first FAQ JSON-LD is present");
   assertNamedSeascape(faq[1], "AMI company FAQ");
   assert.match(faq[1], /mainland homes near Anna Maria Island/);
+  assert.match(faq[1], /judge it the same way as any AMI company/);
+  assert.doesNotMatch(faq[1], /A good AMI rental company should/);
 });
 
 test("unnamed extracts fail the brand contract", () => {
