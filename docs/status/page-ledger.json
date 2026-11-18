@@ -39,7 +39,7 @@
         "src/guides/sarasota-area-guide/index.html"
       ],
       "change": "Replaced 'Luxury Beach Homes' title/meta with downtown private-pool snippet",
-      "pr": null,
+      "pr": 996,
       "shipped": null,
       "targetQuery": "sarasota vacation rentals",
       "brief": "docs/briefs/2026-11-sarasota-area-guide-truth.md"
