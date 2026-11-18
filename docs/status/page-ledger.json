@@ -7,7 +7,7 @@
       "sources": ["src/index.njk"],
       "change": "Clarify the private-pool vacation-home offer and Bradenton/Sarasota locations in the title and desktop/phone opening",
       "pr": 994,
-      "shipped": null,
+      "shipped": "2026-11-17",
       "targetQuery": "Bradenton Sarasota private-pool vacation homes",
       "brief": "docs/briefs/2026-11-magister-home-opening.md"
     },
