@@ -42,8 +42,14 @@ reduced median full-suite time from 934.9s to 470.4s (49.7%) with identical
 tolerances stayed fixed. Local defaults remain one worker; use `--workers=2`
 to reproduce the measured concurrency. CI uploads the native JSON results as
 `visual-results` for seven days on success or failure, alongside the existing
-failure reports. Full Git history remains unchanged: the blobless checkout
-trial did not establish a repeatable benefit.
+failure reports. The visual workflow retains its existing checkout because its
+blobless trial did not establish a repeatable benefit.
+
+The hosted release and performance jobs keep full commit history for range
+checks and page dates. They defer historical file contents during checkout and
+fetch the versions Eleventy needs for per-page dates in one batch before a
+build. Documentation-only performance runs use the commit comparison without
+that extra fetch.
 
 GitHub rulesets on `main` require exactly three status checks: `build`,
 `release-safety` and `performance-budget`. Every other job is informational
