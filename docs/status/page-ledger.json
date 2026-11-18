@@ -3,6 +3,15 @@
   "settleDays": 28,
   "pages": [
     {
+      "route": "/",
+      "sources": ["src/index.njk"],
+      "change": "Clarify the private-pool vacation-home offer and Bradenton/Sarasota locations in the title and desktop/phone opening",
+      "pr": 994,
+      "shipped": null,
+      "targetQuery": "Bradenton Sarasota private-pool vacation homes",
+      "brief": "docs/briefs/2026-11-magister-home-opening.md"
+    },
+    {
       "route": "/guides/anna-maria-island-vs-siesta-key/",
       "sources": [
         "src/guides/anna-maria-island-vs-siesta-key.html"
