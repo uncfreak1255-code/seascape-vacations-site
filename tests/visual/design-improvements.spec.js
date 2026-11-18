@@ -98,7 +98,7 @@ test('property facts precede photos and booking on desktop and mobile', async ({
     const facts = page.locator('.g-property-specs');
     await expect(facts).toBeInViewport({ ratio: 1 });
     const box = await facts.boundingBox();
-    const photo = await page.locator('.g-gallery').boundingBox();
+    const photo = await page.locator('.g-gallery:visible, .inpage-book:visible').boundingBox();
     expect(box.y + box.height).toBeLessThanOrEqual(photo.y);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     if (slug === 'dockside-dreams') await page.screenshot({ path: testInfo.outputPath('property-facts.png'), scale: 'css' });

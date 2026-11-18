@@ -15,6 +15,7 @@ const {
 const REPO_ROOT = path.resolve(__dirname, "..", "..");
 
 const DESCRIPTION_TRIGGERS = {
+  "verify-seascape-site": ["guest booking", "owner inquiry", "local website"],
   "openseo-review": ["OpenSEO", "citation", "rank-tracking"],
   "accessibility": [
     "accessibility",

@@ -3,6 +3,15 @@
   "settleDays": 28,
   "pages": [
     {
+      "route": "/",
+      "sources": ["src/index.njk"],
+      "change": "Clarify the private-pool vacation-home offer and Bradenton/Sarasota locations in the title and desktop/phone opening",
+      "pr": 994,
+      "shipped": "2026-11-17",
+      "targetQuery": "Bradenton Sarasota private-pool vacation homes",
+      "brief": "docs/briefs/2026-11-magister-home-opening.md"
+    },
+    {
       "route": "/guides/anna-maria-island-vs-siesta-key/",
       "sources": [
         "src/guides/anna-maria-island-vs-siesta-key.html"
@@ -12,6 +21,17 @@
       "shipped": "2026-10-25",
       "targetQuery": "anna maria island vs siesta key",
       "brief": "docs/briefs/2026-10-ami-vs-siesta-key-rescue.md"
+    },
+    {
+      "route": "/guides/anna-maria-island-vs-siesta-key/",
+      "sources": [
+        "src/guides/anna-maria-island-vs-siesta-key.html"
+      ],
+      "change": "Rewrote the search description for comparison-query CTR; title and body unchanged",
+      "pr": null,
+      "shipped": null,
+      "targetQuery": "anna maria island vs siesta key",
+      "brief": "docs/briefs/2026-11-ami-vs-siesta-snippet-rescue.md"
     },
     {
       "route": "/stays/family-vacation-rentals-anna-maria-island/",
@@ -25,6 +45,17 @@
       "brief": "docs/briefs/2026-10-family-pool-comparison.md"
     },
     {
+      "route": "/guides/sarasota-area-guide/",
+      "sources": [
+        "src/guides/sarasota-area-guide/index.html"
+      ],
+      "change": "Replaced 'Luxury Beach Homes' title/meta with downtown private-pool snippet",
+      "pr": 996,
+      "shipped": null,
+      "targetQuery": "sarasota vacation rentals",
+      "brief": "docs/briefs/2026-11-sarasota-area-guide-truth.md"
+    },
+    {
       "route": "/property-management/airbnb-management-services-sarasota/",
       "sources": [
         "src/_data/seoPages.json"
@@ -34,6 +65,17 @@
       "shipped": null,
       "targetQuery": "airbnb management sarasota",
       "brief": "docs/briefs/2026-11-sarasota-airbnb-management-rescue.md"
+    },
+    {
+      "route": "/guides/best-time-visit-anna-maria-island/",
+      "sources": [
+        "src/guides/best-time-visit-anna-maria-island.html"
+      ],
+      "change": "Corrected the visible and Article freshness date; title and descriptions now state the existing month answer (Gate 0 rescue)",
+      "pr": null,
+      "shipped": null,
+      "targetQuery": "best time to visit anna maria island",
+      "brief": "docs/briefs/2026-11-best-time-ami-rescue.md"
     }
   ]
 }
