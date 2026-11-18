@@ -7,11 +7,11 @@ active skill set is not exhaustively re-listed here on purpose — it lives in
 
 ## Local skills
 
-The active local skill layer is intentionally lean and site-specific. Use the
-skills in `.agents/skills/` as helpers under the task route in `docs/process/batch-workflow.md`, not as
-another operating system. Stale deploy, monthly-reset, broad marketing, and
-generic SEO skills stay out of active discovery unless a current source and
-consumer inventory proves they should return.
+Use local OpenSEO's upstream skills for SEO/AEO research and Emil for design
+craft. Their user-scope installation is separate from `.agents/skills/`, whose
+Site-specific checks remain required under `docs/process/batch-workflow.md`.
+Select the matching exposed skill; report a missing method and continue only
+independent work. A missing skill never waives a Site gate or enables a replacement pack.
 
 To check a skill change, run `npm run audit:skills` for recorded use and
 `npm run eval:skills` (pass `-- --case <name>` for one case) to score the
@@ -40,11 +40,8 @@ counted as real owner demand. The website repository is public, so the intake
 skill returns a founder decision card but never persists a named candidate,
 permission receipt, fit note, contact channel, or contact detail here.
 
-For design direction, use the local `seascape-design-specialist` and
-`seascape-design-critic` pair. The specialist owns the concept pass and
-implementation brief. The critic owns the blunt taste verdict. They are local
-because Seascape taste, page economics, and the "do not bless bland work"
-standard are repo-specific.
+For required Emil craft and the Site specialist, critic and rendered QA,
+follow `docs/agents/rules/design.md`; `DESIGN.md` remains the visual authority.
 
 The repo design launcher may scan locally cached Codex and Claude plugin skill
 frontmatter to find task-specific donor capabilities. That scan is read-only,
