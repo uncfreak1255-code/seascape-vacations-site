@@ -123,7 +123,7 @@ KD 0, and Seascape does not rank (local OpenSEO tracker `247b971a`, checked 2026
 flights guide is the natural owner. Title, H1 and answer changes follow Gate 0 with the SERP
 evidence from the research below. Runs after L3 so the layout and copy diffs stay separate.
 
-## OpenSEO research (needs Sawyer's approval; nothing run)
+## OpenSEO research (runs under the Cost Boundary; nothing run as of 2026-10-23)
 
 Saved evidence read for free: project `7c97b83b-1950-41f1-a797-f7c7a79390e4` (no saved
 keywords; six reports, none about these guides) and mobile tracker `247b971a` (SRQ queries
