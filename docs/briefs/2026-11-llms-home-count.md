@@ -1,6 +1,6 @@
 # llms.txt home count repair
 
-- lifecycle: active — one-line factual correction in `src/llms.txt` (issue #1012), under Sawyer's November 18 standing SEO rule (#1008).
+- lifecycle: completed — one-line factual correction in `src/llms.txt` (issue #1012), under Sawyer's November 18 standing SEO rule (#1008). Merged in PR #1014 as `edd0e9ae4ca58e38011f5e48573ff617781dd485` on 2026-11-18. Source completion only: the live readback after the first daily publish is tracked on #1012.
 - task scope: change the portfolio size stated in `src/llms.txt` from seven to eight, and add a test that keeps that line in step with the catalog. No other copy, layout, URL or schema change.
 - persona: people who ask an AI assistant for a small local vacation rental manager in Bradenton or Sarasota
 - primary keyword: none; this is an AI-summary accuracy repair, not a ranking change
