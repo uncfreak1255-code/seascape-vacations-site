@@ -67,7 +67,9 @@ Other guides, SEO expansion, prices or policies, shared header/footer changes, n
 
 ## Shared test-fixture prerequisite
 
-The full visual suite found one existing failure on the untouched base 4c542004: mobile homepage expected 393×4460 (old carousel), actual 393×7776 (the vertical list already merged in PR #965). Candidate and untouched-base tests failed with the same 1,391,046-pixel diff. PR #971 commit 6ad104e8b8a98d8b3762293f8d756fef1f1467f8 already commits the correct 393×7776 fixture, produced in commit ea7b0d00 by the repository update-visual-baselines workflow. Its decoded pixels exactly match the candidate capture. This branch reuses only that committed test fixture, without regenerating, editing, raising tolerances, changing homepage source or importing PR #971's restaurant changes. The fixture file overlap is intentional and identical in both branches. Re-run the whole visual suite after import.
+The full visual suite found one existing failure on the untouched base 4c542004: mobile homepage expected 393×4460 (old carousel), actual 393×7776 (the vertical list already merged in PR #965). Candidate and untouched-base tests failed with the same 1,391,046-pixel diff. PR #971 commit 6ad104e8b8a98d8b3762293f8d756fef1f1467f8 already commits the correct 393×7776 fixture, produced in commit ea7b0d00 by the repository update-visual-baselines workflow. Its decoded pixels exactly match the candidate capture. This branch originally reused only that committed test fixture, without regenerating, editing, raising tolerances, changing homepage source or importing PR #971's restaurant changes.
+
+November 18 integration: `main` has since replaced that phone homepage snapshot. Keep `main`'s `tests/visual/__screenshots__/mobile-chromium/visual.spec.js/home.png`. Do not restore the #971 fixture or regenerate a homepage snapshot for this guide.
 
 ## Review follow-up
 
