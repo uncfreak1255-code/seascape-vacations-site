@@ -91,3 +91,51 @@ retaining Waterline tokens, static rendering and the site's existing Eleventy
 stack. Sawyer's Claude Studio artifact contributed the decision-card hierarchy
 and native disclosure treatment; decorative shaders, orbs, tilt effects,
 chat-style FAQs, loops and its alternate palette are not part of this catalog.
+
+
+## Exploration shelf: Studio and Amicro
+
+These references broaden assigned design work, not the live site's palette or
+framework. Use the existing specialist → critic → rendered-review workflow.
+Propose at least two materially different treatments, recommend one by guest
+usefulness and visual quality, and let Sawyer choose from working previews.
+Current component geometry is a default; isolated previews may challenge it.
+Do not silently turn a promising reference into a selected or implemented rule.
+
+Statuses: **reference** is inspiration; **explored** has a working local preview;
+**selected** records Sawyer's named choice; **implemented** links to verified
+Site source. Preserve the distinction when updating an entry.
+
+| Pattern / status | Reference and quality to borrow | Seascape application and constraints |
+| --- | --- | --- |
+| Property photo booklet — explored | [Amicro Dither Book](https://amicro.dev/3d), Studio `PropertyStorybook`: a deliberate photographic sequence, paper depth and user-directed page turns | [Dockside study](experiments/property-photo-study/README.md). Two-page desktop, single-photo phone. Full-size and all-photo access stay available. No dither, fake property details or autoplay. Reduced motion swaps directly. |
+| Photographic folio — explored | Amicro CoverFlow: a dominant image with restrained neighboring depth | Same Dockside study; show the whole active photo and thumbnail access. Phone layout preserves photo size. No pointer tilt or parallax; reduced motion swaps directly. |
+| Responsive CTA — reference | Studio `Cta`: clear action hierarchy and an arrow that responds to intent | Explore gallery and editorial actions with Waterline colors, visible focus and stable labels. Press/hover cannot delay activation. No hold-to-book, decorative trails or hover-only meaning. |
+| Filter / selection pill — reference | Studio `Pagination`, Amicro pill controls: unmistakable active state and continuous selection feedback | Real filters or gallery choices. Preserve result counts and keyboard behavior; narrow screens wrap or offer reachable controls. Reduced motion changes selection immediately. Existing radius is not an experiment's limit. |
+| Disclosure — reference | Studio `Collapsible`: expansion feels connected to its trigger | Native details/summary for supporting facts; essential booking facts stay visible. Keep focus and touch targets. No spatial animation under reduced motion. |
+| Photo lightbox — reference | Studio `Lightbox`: continuity from thumbnail to a generous photo view | Native dialog, Escape, focus return, explicit close and original-image access. Phone content remains readable; keyboard and reduced-motion paths do not depend on animation. |
+| Editorial decision card — existing catalog pattern | Studio `EditorialDecisionCard`: direct answer with source context nearby | Keep the constraints above; it supplements complete comparison facts rather than replacing them. |
+
+Studio inspected November 17, 2026 at
+[the user's artifact](https://claude.ai/artifact/D9eQSY9M8UcUP6JgCoFbiZ#readme).
+The README lists these components and explicitly keeps Studio separate from the
+live site. That observation establishes reference provenance, not functional
+verification of every Studio component. Its `PropertyStorybook` is already a
+concept; do not create another Studio catalog or claim it is shipped on Site.
+
+### Craft and evidence
+
+Use installed `emil-design` in Codex (`emil-design-eng` in Claude), loading only
+relevant design, animation and mobile guidance. Reuse Site timing and easing
+scales first; motion should respond promptly, interrupt cleanly and leave all
+controls usable. Test actual transitions, keyboard use, touch-sized controls,
+reduced motion and missing images, not only a still screenshot. Distinguish
+emulated mobile checks from real-device touch proof.
+
+Each exploration records the donor, quality borrowed, actual skill/reference
+use, source assets, recommendation, desktop/phone preview, tradeoff and status.
+This happens inside an assigned task, not a scheduled autonomous redesign.
+No new skill installation or review layer is required. Amicro's own skill sets
+its palette, React/Motion and haptic conventions; do not install it wholesale
+as Seascape's authority. Rebuild the interaction with native HTML/CSS/JavaScript
+when that meets the result; any actual third-party code reuse retains its license.

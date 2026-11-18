@@ -276,8 +276,9 @@ Instrument Serif headings, Poppins labels, 4px controls and F1–F6 floors.
 [Component patterns](docs/design/component-patterns.md) defines their states,
 semantics and reuse rules, with shadcn/ui as a pattern reference. Adapt to the
 existing site components; a reference does not require a new framework.
-Rainy Day uses the approved Structured comparison. The other patterns are
-available for separately scoped work; this catalog changes no held guide.
+Rainy Day uses Structured comparison. The catalog adds Studio/Amicro references
+and private photo studies. In assigned work, render and recommend alternatives;
+production geometry may vary in previews. Select before shared adoption.
 
 ## Iconography
 
